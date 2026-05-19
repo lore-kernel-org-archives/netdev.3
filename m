@@ -1,367 +1,302 @@
-Received: from smtp.uniroma2.it (smtp.uniroma2.it [160.80.4.36])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD68A2745E;
-	Tue, 19 May 2026 01:32:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.80.4.36
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20F6C2DA75A
+	for <netdev@vger.kernel.org>; Tue, 19 May 2026 01:33:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779154363; cv=none; b=FLB7sotUHhoAF6qVFnCCra9oZMkUttKAy14cWZb7vTvVxOdxd1FLZwkCJlhcS89H8NvvM+1wp41YUcWI2JQX05fNTjdioii4Zeia9SD2UCwI1OrYums1FXl4ORIeID2ry/qzYSr9paHIgJErphvcAQxARvmVOl2+GeNBRHGEwMI=
+	t=1779154430; cv=none; b=Ci7c05upOvHxnOC0FarRh5Qk6AiKGohtwzZmVg1/Tuxu9esTT0v+Xo/1+nGwphkUJ9Za0138z4vgbGvb7U3DEksBJunmBdxpM197GtLMxJpevZk9RqjMRQEJaBVqcn0EemS9b0kXGdZuwUTOLhJgZRsduiA61pTt82MRkbTm/ug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779154363; c=relaxed/simple;
-	bh=19AS5m6DpWZUofHaWHAFmpxkQ8nP3eMiVfmqSuQijEk=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=i3CfpYHye/Pxz8b90fjRcBP0acMwdnzNmeKIS16qPat+zr/hCkZvWkpdTJGfH3YCcohuQXoIZuCqCc2/9bWuQGWjEQJ+CcdUo8Bundm6Fo9p7TTOiZlTASoxdgJeWWcx887fSYEaPuSffRTXx/sBU6tZ2Ezyw6g1qAO0D5YOeRU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it; spf=pass smtp.mailfrom=uniroma2.it; dkim=permerror (0-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b=xyrOEBRk; dkim=pass (2048-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b=E+obnzLO; arc=none smtp.client-ip=160.80.4.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniroma2.it
+	s=arc-20240116; t=1779154430; c=relaxed/simple;
+	bh=yfu3HXA6WpN97f2/JLOaEHAfe4Lu3Fr+ei26pjJ6UjE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mxlVlLUNI40aIu4ijjfDzo3dpaCCMKaEBjVEXnyfWyXY8mDDZbPSL4kL2juk7uvyuWN2l+SJzN58lYugsBe26sof93VJ3lekKE2BxpfOWBVNnPuszE8CYAnyuzf+E3GZBoY4615QdY9NKvVFQqNliOwWn3MxF2Xh7rXeZqLsWn8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jrife.io; spf=none smtp.mailfrom=jrife.io; dkim=pass (2048-bit key) header.d=jrife-io.20251104.gappssmtp.com header.i=@jrife-io.20251104.gappssmtp.com header.b=Nl9JUDMZ; arc=none smtp.client-ip=209.85.214.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jrife.io
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=jrife.io
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=permerror (0-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b="xyrOEBRk";
-	dkim=pass (2048-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b="E+obnzLO"
-Received: from smtpauth-2019-1.uniroma2.it (smtpauth.uniroma2.it [160.80.5.46])
-	by smtp-2015.uniroma2.it (8.14.4/8.14.4/Debian-8) with ESMTP id 64J1VuIH028920;
-	Tue, 19 May 2026 03:32:01 +0200
-Received: from lubuntu-18.04 (unknown [160.80.103.126])
-	by smtpauth-2019-1.uniroma2.it (Postfix) with ESMTPSA id 56F7D12287D;
-	Tue, 19 May 2026 03:31:51 +0200 (CEST)
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=uniroma2.it;
-	s=ed201904; t=1779154311; h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mCYhMids7R2HSFnbeiCSYYddMvIksaDpTjVyh3nQZfk=;
-	b=xyrOEBRkvR6M5VEAzqU6S8uqGrXzLn9heHo/+SvmHjEzfZ5kq4863UJFZf6ZAXSMd0eIUK
-	H0SKK9oPIY0u53BA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniroma2.it; s=rsa201904;
-	t=1779154311; h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mCYhMids7R2HSFnbeiCSYYddMvIksaDpTjVyh3nQZfk=;
-	b=E+obnzLOWLZhtPujpaX+YW3ahX/BTbUYDYOYpwwIMB8s+TOlwT7cXTP0nCMXV6V9z58kgP
-	2XiFA+exJRk2qoCJE1gkk0oxRhqPASDg6533NGI92SYRyWOxZgGDD6+NcE571kAWrErszF
-	OAc+ORSAh+ywYT5QbouKeHtJ7bJ7iD/+9N6e8rAv/rI95y2EafKymjR1jKO2Qcr7+URpEU
-	kYVFatPsnsXqi5yqmyqdBDtkGmD6YRHUltILT6PJaaVwz01gslQpCVRB/JAftTJD8LeT8p
-	s4tF4EGOrV8KpbjDeI7VXxc6oFbW8VkDfntEtdelEJEdhnJzw+ZzdmqxbPEMJQ==
-Date: Tue, 19 May 2026 03:31:51 +0200
-From: Andrea Mayer <andrea.mayer@uniroma2.it>
-To: Yuya Kusakabe <yuya.kusakabe@gmail.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet
- <edumazet@google.com>, David Ahern <dsahern@kernel.org>,
-        Jakub Kicinski
- <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-        Simon Horman
- <horms@kernel.org>,
-        Justin Iurman <justin.iurman@gmail.com>,
-        Shuah Khan
- <shuah@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
-        Shuah Khan
- <skhan@linuxfoundation.org>, linux-kernel@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        linux-doc@vger.kernel.org, stefano.salsano@uniroma2.it,
-        ahabdels@cisco.com, Andrea Mayer <andrea.mayer@uniroma2.it>
-Subject: Re: [PATCH v2 1/7] seg6: add End.MAP behavior
-Message-Id: <20260519033151.b01e47a877b01d3b68931abc@uniroma2.it>
-In-Reply-To: <20260505-seg6-mobile-v2-1-9e8022bdfdb6@gmail.com>
-References: <20260505-seg6-mobile-v2-0-9e8022bdfdb6@gmail.com>
-	<20260505-seg6-mobile-v2-1-9e8022bdfdb6@gmail.com>
-X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=jrife-io.20251104.gappssmtp.com header.i=@jrife-io.20251104.gappssmtp.com header.b="Nl9JUDMZ"
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2b95a78a11dso5969975ad.0
+        for <netdev@vger.kernel.org>; Mon, 18 May 2026 18:33:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=jrife-io.20251104.gappssmtp.com; s=20251104; t=1779154428; x=1779759228; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=PMUulh6qid06yp999kMZYRmV0VRKarV0DjzjDNUvDFI=;
+        b=Nl9JUDMZSi2Y7h5AOqoLvz7XV7wbX66yP8vU6ojg+DRPPGuANXRxW1KkDVpB0McFzW
+         NNVJRZZe90ACPhbIIGTQ8rahvxpR28Ml3Z4t5vXMlAGAnUqR8c78lfnrWZZ7E2H+AxE9
+         12cy5sX1yiFVnrqt3iIbnl500nRYseapg4RGYhvm/N8iRe0heT0vCWO7itB+qAuSKkWM
+         nhbHw5sdYaWnuvVLxiUaIcXYF/jS6kdq5QcYcVHp5oRFoBl8XfcfEF4sZLlplzlCayw4
+         vbLto2R7/e2b88bdePQPLqLRKX9TJctORZt/HizMRugAFV5QpkTbbjG6ugMVBa8OjSXh
+         UL9A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779154428; x=1779759228;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=PMUulh6qid06yp999kMZYRmV0VRKarV0DjzjDNUvDFI=;
+        b=Awgq4dj8jSQOJiG50Rc2WVqL4VGXDdcEV36Ks45k3SgsJIIVfS9EfOnMxmJfL2g7SW
+         MMshKIo0wNG4MW8t9NZi6oKDyqvH841PtKxq8RfZSVLljcZ+hvtLklXYIuUmS3oYdDcV
+         Aym7ECMENQsxdsa+618xRZpsr7SyHsyDgYyqpAjqGm35H5957WADj3Sxzr/ZKuMhSiBG
+         nNlovT18atkUf8/woPAxm0mRMVI05PgwPdZh7M9n/OlV2rzg2lSVmuRvs+YjUK+jOTq4
+         x+Ayd0iq3yktfvvEOlJef4dF5k2heZegxoCK/aAEneBquSjq0OdUhYt6ZjlpptzSE/yx
+         BvQQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/1uRAcIaGHY1Z/2qBW9WeKNj58GWxx4aDX+Aobwmu+R4zqPsg055ABdgdvdSNoheNMdM2VY9c=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyLhjmOYftbSsWJsF2j6/IPrO/DV6yhlGSIWqUR6PBicqgxUFAe
+	760Q4xc2loXRO5x3UXW+cXhygFRxoP1DDLFVtMdkWA/jm7nWqAgkXJtK2b5tHSgkmxU=
+X-Gm-Gg: Acq92OHE9dSvEqRtki6c6ZHDzT0mhd8CUAPMNMiiJzm6iKovDD4cQv5yimRMNOZngIl
+	/mLewos8UAhVGNeRkCqI0F66yibFVuP5jlybJaJkfbbqj/TaIuCHG1smD5RQInDTbs6SA28AckP
+	pCufoZJXCfXZ/mYhQH6CY/eqrrTpLBgGf7mr91bi3dHULXBMRxt+4LywQr4hVTspcMwpOTm1lzB
+	qsboILycqvh4fy/3TSwijg4agzv2QvbQq3qAbQ4zJFmnBb7W8NhmphoMO7dywoo1zVRIZmNTyh0
+	pTyoKdCkQMdkpp+txDVAzU9cA5tn1MrUSOIebFk5DwJTAz2iQwJwFBpNrjNtG/awdVPo1wSt7Q9
+	6mJOFrOoxfvqFLLxFCU+Q2GKsQJ2KdmVXVk3IG3HGCRCsDJsclGqem1PMBQXbf2AvEPPAt6uzrl
+	r+t8N9Mo8yCXwXFQIuo8g8pUwi
+X-Received: by 2002:a17:903:2302:b0:2bd:e01c:d78 with SMTP id d9443c01a7336-2bde01c0e48mr37358615ad.7.1779154428357;
+        Mon, 18 May 2026 18:33:48 -0700 (PDT)
+Received: from m2 ([83.171.251.18])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2bd5bd5f291sm170130185ad.15.2026.05.18.18.33.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 18 May 2026 18:33:48 -0700 (PDT)
+Date: Mon, 18 May 2026 18:33:45 -0700
+From: Jordan Rife <jordan@jrife.io>
+To: Mahe Tardy <mahe.tardy@gmail.com>
+Cc: bpf@vger.kernel.org, martin.lau@linux.dev, daniel@iogearbox.net, 
+	john.fastabend@gmail.com, ast@kernel.org, andrii@kernel.org, yonghong.song@linux.dev, 
+	netdev@vger.kernel.org, netfilter-devel@vger.kernel.org, edumazet@google.com, 
+	kuba@kernel.org, pabeni@redhat.com
+Subject: Re: [PATCH bpf-next v6 3/6] bpf: add bpf_icmp_send kfunc
+Message-ID: <onco52d3vpxkcc6hh3s5vuqjxanasucteq7wnqfqgzg4d65alc@q7h22nu3ytjn>
+References: <20260518122842.218522-1-mahe.tardy@gmail.com>
+ <20260518122842.218522-4-mahe.tardy@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: clamav-milter 0.100.0 at smtp-2015
-X-Virus-Status: Clean
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260518122842.218522-4-mahe.tardy@gmail.com>
 
-On Tue, 05 May 2026 01:30:11 +0900
-Yuya Kusakabe <yuya.kusakabe@gmail.com> wrote:
-
-> Add the End.MAP behavior (RFC 9433 Section 6.2): an endpoint that
-> replaces the IPv6 destination address with a configured next SID
-> and forwards via IPv6 routing without consuming the SRH.  The new
-> nh6 attribute selects the replacement SID.
->
-> Add three drop reasons that End.MAP emits to dropreason-core.h, so
-> dropped packets show up in the standard skb:kfree_skb tracepoint:
->
->   SEG6_MOBILE_INVALID_SRH_SL
->   SEG6_MOBILE_HOP_LIMIT_EXCEEDED
->   SEG6_MOBILE_NOMEM
-
-The commit message lists three drop reasons including
-SEG6_MOBILE_HOP_LIMIT_EXCEEDED, but the code does not add that one.
-The likely third reason (SEG6_MOBILE_MTU_EXCEEDED) appears in
-patch 2. (Flagged by Sashiko, the Patchwork AI reviewer.)
-
->
-> Configuration:
->
->   ip -6 route add 2001:db8:f::/64 \
->       encap seg6local action End.MAP nh6 2001:db8:1::e \
->       dev <dev>
->
-> Link: https://www.rfc-editor.org/rfc/rfc9433.html#section-6.2
-
-Nit: As far as I can see, Link: tags in this tree usually point to mailing
-list messages (patch.msgid.link, lore.kernel.org). Other commits that
-reference RFCs typically cite them in the commit body instead. Same for
-patches 2-7.
-
-> Signed-off-by: Yuya Kusakabe <yuya.kusakabe@gmail.com>
+On Mon, May 18, 2026 at 12:28:39PM +0000, Mahe Tardy wrote:
+> This is needed in the context of Tetragon to provide improved feedback
+> (in contrast to just dropping packets) to east-west traffic when blocked
+> by policies using cgroup_skb programs. We also extend this kfunc to tc
+> program as a convenience.
+> 
+> This reuses concepts from netfilter reject target codepath with the
+> differences that:
+> * Packets are cloned since the BPF user can still let the packet pass
+>   (SK_PASS from the cgroup_skb progs for example) and the current skb
+>   need to stay untouched (cgroup_skb hooks only allow read-only skb
+>   payload).
+> * We protect against recursion since the kfunc, by generating an ICMP
+>   error message, could retrigger the BPF prog that invoked it.
+> 
+> For now, we support cgroup_skb and tc program types. For cgroup_skb and
+> tc egress, almost everything should be good. However for tc ingress:
+> - packet will not be routed yet: need to set the net device for
+>   icmp_send, thus the call to ip[6]_route_reply_fill_dst.
+> - fragments could trigger hook: icmp_send will only reply to fragment 0.
+> - ensure the ip headers is linearized before processing, and zero out
+>   the SKB control block after cloning to prevent icmp_send()/icmpv6_send()
+>   from misinterpreting garbage data as IP options.
+> 
+> Only ICMP_DEST_UNREACH and ICMPV6_DEST_UNREACH are currently supported.
+> The interface accepts a type parameter to facilitate future extension to
+> other ICMP control message types.
+> 
+> Signed-off-by: Mahe Tardy <mahe.tardy@gmail.com>
 > ---
->  include/net/dropreason-core.h                    |  12 +++
->  include/uapi/linux/seg6_local.h                  |   2 +
->  net/ipv6/seg6_local.c                            |  73 ++++++++++++++++
->  tools/testing/selftests/net/Makefile             |   1 +
->  tools/testing/selftests/net/srv6_end_map_test.sh | 103 +++++++++++++++++++++++
->  5 files changed, 191 insertions(+)
->
-> diff --git a/include/net/dropreason-core.h b/include/net/dropreason-core.h
-> index e0ca3904ff8e..1be5c54d7605 100644
-> --- a/include/net/dropreason-core.h
-> +++ b/include/net/dropreason-core.h
-> @@ -127,6 +127,8 @@
->  	FN(PSP_INPUT)			\
->  	FN(PSP_OUTPUT)			\
->  	FN(RECURSION_LIMIT)		\
-> +	FN(SEG6_MOBILE_INVALID_SRH_SL)	\
-> +	FN(SEG6_MOBILE_NOMEM)		\
->  	FNe(MAX)
->
->  /**
-> @@ -600,6 +602,16 @@ enum skb_drop_reason {
->  	SKB_DROP_REASON_PSP_OUTPUT,
->  	/** @SKB_DROP_REASON_RECURSION_LIMIT: Dead loop on virtual device. */
->  	SKB_DROP_REASON_RECURSION_LIMIT,
-> +	/**
-> +	 * @SKB_DROP_REASON_SEG6_MOBILE_INVALID_SRH_SL: invalid Segments Left
-> +	 * value or SRH validation failure on an SRv6 Mobile path.
-> +	 */
-> +	SKB_DROP_REASON_SEG6_MOBILE_INVALID_SRH_SL,
-
-This single reason covers several distinct failure modes across the
-patchset: wrong Segments Left, SRH absent, SRH structurally malformed, and
-HMAC validation failure. An operator seeing this drop cannot tell which
-check failed. Using separate SRv6-level drop reasons seems reasonable. See
-my cover letter reply for the broader discussion on drop reasons.
-
-> +	/**
-> +	 * @SKB_DROP_REASON_SEG6_MOBILE_NOMEM: skb head/tail expansion or
-> +	 * helper allocation failed on an SRv6 Mobile path.
-> +	 */
-> +	SKB_DROP_REASON_SEG6_MOBILE_NOMEM,
-
-This overlaps with the existing generic SKB_DROP_REASON_NOMEM in
-dropreason-core.h. Why not use the generic one?
-
->  	/**
->  	 * @SKB_DROP_REASON_MAX: the maximum of core drop reasons, which
->  	 * shouldn't be used as a real 'reason' - only for tracing code gen
-> diff --git a/include/uapi/linux/seg6_local.h b/include/uapi/linux/seg6_local.h
-> index 4fdc424c9cb3..45386fdfa821 100644
-> --- a/include/uapi/linux/seg6_local.h
-> +++ b/include/uapi/linux/seg6_local.h
-> @@ -67,6 +67,8 @@ enum {
->  	SEG6_LOCAL_ACTION_END_BPF	= 15,
->  	/* decap and lookup of DA in v4 or v6 table */
->  	SEG6_LOCAL_ACTION_END_DT46	= 16,
-> +	/* swap DA with new SID, leave SRH untouched (RFC 9433 Section 6.2) */
-> +	SEG6_LOCAL_ACTION_END_MAP	= 17,
->
->  	__SEG6_LOCAL_ACTION_MAX,
->  };
-> diff --git a/net/ipv6/seg6_local.c b/net/ipv6/seg6_local.c
-> index 2b41e4c0dddd..bd8e3312973f 100644
-> --- a/net/ipv6/seg6_local.c
-> +++ b/net/ipv6/seg6_local.c
-> @@ -1468,6 +1468,73 @@ static int input_action_end_bpf(struct sk_buff *skb,
->  	return -EINVAL;
+>  net/core/filter.c | 118 ++++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 118 insertions(+)
+> 
+> diff --git a/net/core/filter.c b/net/core/filter.c
+> index 9590877b0714..843fa775596b 100644
+> --- a/net/core/filter.c
+> +++ b/net/core/filter.c
+> @@ -84,6 +84,8 @@
+>  #include <linux/un.h>
+>  #include <net/xdp_sock_drv.h>
+>  #include <net/inet_dscp.h>
+> +#include <linux/icmpv6.h>
+> +#include <net/icmp.h>
+> 
+>  #include "dev.h"
+> 
+> @@ -12464,6 +12466,110 @@ __bpf_kfunc int bpf_xdp_pull_data(struct xdp_md *x, u32 len)
+>  	return 0;
 >  }
->
-> +/* SRH validation helper for SRv6 Mobile (RFC 9433) behaviors that may
-> + * receive an SRv6 encapsulated packet.  Returns the SRH on success or
-> + * NULL on validation failure / when the SRH is absent.  The caller
-> + * uses @missing to distinguish the two NULL cases: an SRH-less packet
-> + * may be acceptable depending on the behavior.
+> 
+> +static DEFINE_PER_CPU(bool, bpf_icmp_send_in_progress);
+> +
+> +/**
+> + * bpf_icmp_send - Send an ICMP control message
+> + * @skb_ctx: Packet that triggered the control message
+> + * @type: ICMP type (only ICMP_DEST_UNREACH/ICMPV6_DEST_UNREACH supported)
+> + * @code: ICMP code (0-15 for IPv4, 0-6 for IPv6)
+> + *
+> + * Sends an ICMP control message in response to the packet. The original packet
+> + * is cloned before sending the ICMP message, so the BPF program can still let
+> + * the packet pass if desired.
+> + *
+> + * Currently only ICMP_DEST_UNREACH (IPv4) and ICMPV6_DEST_UNREACH (IPv6) are
+> + * supported.
+> + *
+> + * Recursion protection: If called from a context that would trigger recursion
+> + * (e.g., root cgroup processing its own ICMP packets), returns -EBUSY on
+> + * re-entry.
+> + *
+> + * Return: 0 on success, negative error code on failure:
+> + *         -EINVAL: Invalid code parameter
+> + *         -EBADMSG: Packet too short or malformed
+> + *         -ENOMEM: Memory allocation failed
+> + *         -EBUSY: Recursion detected
+> + *         -EHOSTUNREACH: Routing failed
+> + *         -EPROTONOSUPPORT: Non-IP protocol
+> + *         -EOPNOTSUPP: Unsupported ICMP type
 > + */
-> +static struct ipv6_sr_hdr *seg6_mobile_get_validated_srh(struct sk_buff *skb,
-> +							 bool *missing)
+> +__bpf_kfunc int bpf_icmp_send(struct __sk_buff *skb_ctx, int type, int code)
 > +{
-> +	struct ipv6_sr_hdr *srh = seg6_get_srh(skb, 0);
+> +	struct sk_buff *skb = (struct sk_buff *)skb_ctx;
+> +	struct sk_buff *nskb;
+> +	bool *in_progress;
 > +
-> +	if (!srh) {
-> +		if (missing)
-> +			*missing = true;
-> +		return NULL;
-> +	}
-> +	if (missing)
-> +		*missing = false;
+> +	in_progress = this_cpu_ptr(&bpf_icmp_send_in_progress);
+> +	if (*in_progress)
+> +		return -EBUSY;
 > +
-> +#ifdef CONFIG_IPV6_SEG6_HMAC
-> +	if (!seg6_hmac_validate_skb(skb))
-> +		return NULL;
+> +	switch (skb->protocol) {
+> +#if IS_ENABLED(CONFIG_INET)
+> +	case htons(ETH_P_IP):
+> +		if (type != ICMP_DEST_UNREACH)
+> +			return -EOPNOTSUPP;
+> +		if (code < 0 || code > NR_ICMP_UNREACH)
+> +			return -EINVAL;
+> +
+> +		nskb = skb_clone(skb, GFP_ATOMIC);
+> +		if (!nskb)
+> +			return -ENOMEM;
+> +
+> +		if (!pskb_network_may_pull(nskb, sizeof(struct iphdr))) {
+> +			kfree_skb(nskb);
+> +			return -EBADMSG;
+
+nit: Instead of having several places where you call kfree_skb, maybe
+consider just cleaning up in once place at the end like:
+
+out:
+	if (nskb)
+		kfree_skb(nskb);
+	return err;
+	
+then in places like this do something like:
+
+	err = -EBADMSG;
+	goto out;
+
+> +		}
+> +
+> +		if (!skb_dst(nskb) && ip_route_reply_fill_dst(nskb) < 0) {
+> +			kfree_skb(nskb);
+> +			return -EHOSTUNREACH;
+> +		}
+> +
+> +		memset(IPCB(nskb), 0, sizeof(struct inet_skb_parm));
+> +
+> +		*in_progress = true;
+> +		icmp_send(nskb, type, code, 0);
+> +		*in_progress = false;
+> +		kfree_skb(nskb);
+> +		break;
 > +#endif
-> +	return srh;
-> +}
-
-seg6_get_srh() returns NULL both when the SRH is absent and when it is
-malformed (seg6_validate_srh fails, e.g. type != 4) or truncated.
-seg6_mobile_get_validated_srh() sets *missing = true in all these cases,
-so input_action_end_map() treats a malformed SRH the same as an absent
-one and continues processing. HMAC validation is also bypassed because
-seg6_get_srh() returns NULL before HMAC is reached.
-
-seg6_mobile_get_validated_srh() needs to distinguish "absent" from
-"malformed/truncated" so callers can drop on malformed instead of silently
-accepting the packet.
-
+> +#if IS_ENABLED(CONFIG_IPV6)
+> +	case htons(ETH_P_IPV6):
+> +		if (type != ICMPV6_DEST_UNREACH)
+> +			return -EOPNOTSUPP;
+> +		if (code < 0 || code > ICMPV6_REJECT_ROUTE)
+> +			return -EINVAL;
 > +
-> +/* RFC 9433 Section 6.2 -- End.MAP
-> + * Replace the outer IPv6 destination address with the configured next
-> + * SID, decrement the Hop Limit, and forward via IPv6 routing.  The
-> + * SRH is left untouched, so any subsequent End* behavior continues to
-> + * see the original Segment List unchanged.
-> + */
-
-Nit: the function comment says "decrement the Hop Limit" but the code does not
-do it explicitly. The forwarding path handles it (ip6_forward). Maybe
-remove that part from the comment or add a note that the forwarding path
-handles it?
-
-> +static int input_action_end_map(struct sk_buff *skb,
-> +				struct seg6_local_lwt *slwt)
-> +{
-> +	enum skb_drop_reason reason;
-> +	struct ipv6_sr_hdr *srh;
-> +	struct ipv6hdr *ip6h;
-> +	bool no_srh = false;
+> +		nskb = skb_clone(skb, GFP_ATOMIC);
+> +		if (!nskb)
+> +			return -ENOMEM;
 > +
-> +	reason = SKB_DROP_REASON_SEG6_MOBILE_INVALID_SRH_SL;
-
-Because of the bug described above, the only path that reaches the
-drop label with this reason is HMAC validation failure (when HMAC is
-enabled). Same drop reason granularity point as above.
-
+> +		if (!pskb_network_may_pull(nskb, sizeof(struct ipv6hdr))) {
+> +			kfree_skb(nskb);
+> +			return -EBADMSG;
+> +		}
 > +
-> +	/* When an SRH is present it must HMAC-validate before we touch
-> +	 * the destination; an SRH-less packet is also accepted because
-> +	 * End.MAP does not consume the SRH.
-> +	 */
-> +	srh = seg6_mobile_get_validated_srh(skb, &no_srh);
-> +	if (!srh && !no_srh)
-> +		goto drop;
-
-See above: this only catches HMAC failure. A malformed SRH falls through as
-if the SRH were absent.
-
+> +		if (!skb_dst(nskb) && ip6_route_reply_fill_dst(nskb) < 0) {
+> +			kfree_skb(nskb);
+> +			return -EHOSTUNREACH;
+> +		}
 > +
-> +	if (skb_ensure_writable(skb, sizeof(*ip6h))) {
-> +		reason = SKB_DROP_REASON_SEG6_MOBILE_NOMEM;
-> +		goto drop;
+> +		memset(IP6CB(nskb), 0, sizeof(struct inet6_skb_parm));
+> +
+> +		*in_progress = true;
+> +		icmpv6_send(nskb, type, code, 0);
+> +		*in_progress = false;
+> +		kfree_skb(nskb);
+> +		break;
+> +#endif
+> +	default:
+> +		return -EPROTONOSUPPORT;
 > +	}
 > +
-> +	ip6h = ipv6_hdr(skb);
-> +	ip6h->daddr = slwt->nh6;
-
-Sashiko flagged that for SRH-less packets this breaks the ICMPv6 checksum,
-because the pseudo-header includes the DA. The AI bot was right, but when I
-ran the selftest it passed. Digging a bit further, I noticed why:
-2001:db8:f::1 and 2001:db8:2::e have the same 16-bit word sum
-(0x000f+0x0001 = 0x0002+0x000e), so the checksum stays valid by
-coincidence. Changing nh6 to 2001:db8:2::2 makes the ping fail with
-Icmp6InCsumErrors.
-
-> +
-> +	skb_dst_drop(skb);
-> +	seg6_lookup_nexthop(skb, NULL, 0);
-> +	return dst_input(skb);
-
-seg6_lookup_nexthop() calls seg6_lookup_any_nexthop() which already calls
-skb_dst_drop() internally. The explicit skb_dst_drop(skb) above is
-redundant.
-
-> +
-> +drop:
-> +	kfree_skb_reason(skb, reason);
-> +	return -EINVAL;
+> +	return 0;
 > +}
 > +
->  static struct seg6_action_desc seg6_action_table[] = {
->  	{
->  		.action		= SEG6_LOCAL_ACTION_END,
-> @@ -1565,6 +1632,12 @@ static struct seg6_action_desc seg6_action_table[] = {
->  		.optattrs	= SEG6_F_LOCAL_COUNTERS,
->  		.input		= input_action_end_bpf,
->  	},
-> +	{
-> +		.action		= SEG6_LOCAL_ACTION_END_MAP,
-> +		.attrs		= SEG6_F_ATTR(SEG6_LOCAL_NH6),
-> +		.optattrs	= SEG6_F_LOCAL_COUNTERS,
-> +		.input		= input_action_end_map,
-> +	},
-
-End.MAP reuses SEG6_LOCAL_NH6 to mean "replacement SID", not "next-hop"
-as in End.X/End.DX6. This overloads the existing UAPI semantics of
-the attribute. The cover letter reply discusses this attribute-semantics
-question across the patchset.
-
->
+>  __bpf_kfunc_end_defs();
+> 
+>  int bpf_dynptr_from_skb_rdonly(struct __sk_buff *skb, u64 flags,
+> @@ -12506,6 +12612,10 @@ BTF_KFUNCS_START(bpf_kfunc_check_set_sock_ops)
+>  BTF_ID_FLAGS(func, bpf_sock_ops_enable_tx_tstamp)
+>  BTF_KFUNCS_END(bpf_kfunc_check_set_sock_ops)
+> 
+> +BTF_KFUNCS_START(bpf_kfunc_check_set_icmp_send)
+> +BTF_ID_FLAGS(func, bpf_icmp_send)
+> +BTF_KFUNCS_END(bpf_kfunc_check_set_icmp_send)
+> +
+>  static const struct btf_kfunc_id_set bpf_kfunc_set_skb = {
+>  	.owner = THIS_MODULE,
+>  	.set = &bpf_kfunc_check_set_skb,
+> @@ -12536,6 +12646,11 @@ static const struct btf_kfunc_id_set bpf_kfunc_set_sock_ops = {
+>  	.set = &bpf_kfunc_check_set_sock_ops,
 >  };
->
-> diff --git a/tools/testing/selftests/net/Makefile b/tools/testing/selftests/net/Makefile
-> index a275ed584026..4fbb1eff79f8 100644
-> --- a/tools/testing/selftests/net/Makefile
-> +++ b/tools/testing/selftests/net/Makefile
-> @@ -90,6 +90,7 @@ TEST_PROGS := \
->  	srv6_end_dx4_netfilter_test.sh \
->  	srv6_end_dx6_netfilter_test.sh \
->  	srv6_end_flavors_test.sh \
-> +	srv6_end_map_test.sh \
->  	srv6_end_next_csid_l3vpn_test.sh \
->  	srv6_end_x_next_csid_l3vpn_test.sh \
->  	srv6_hencap_red_l3vpn_test.sh \
-> diff --git a/tools/testing/selftests/net/srv6_end_map_test.sh b/tools/testing/selftests/net/srv6_end_map_test.sh
-> new file mode 100755
-> index 000000000000..7ee54b4cc97f
-> --- /dev/null
-> +++ b/tools/testing/selftests/net/srv6_end_map_test.sh
-> @@ -0,0 +1,103 @@
-> +#!/bin/bash
-> +# SPDX-License-Identifier: GPL-2.0
-> +# shellcheck disable=SC2034,SC2154
-> +#
-> +# Selftest for the SRv6 End.MAP behavior (RFC 9433 Section 6.2).
-> +#
-> +#   +--------+   2001:db8:1::/64   +--------+   2001:db8:2::/64   +--------+
-> +#   | srupf1 | ------------------- | srupf2 | ------------------- | srupf3 |
-> +#   +--------+       veth-1        +--------+       veth-2        +--------+
-> +#                                (intermediate
-> +#                                 SRv6-aware UPF,
-> +#                                 End.MAP)
-> +#
-> +# All three netns are SRv6-aware UPFs in the RFC 9433 sense (not
-> +# 3GPP UPFs).  Per RFC 9433 Section 6.2 End.MAP is used by the
-> +# intermediate UPF (here srupf2): srupf2 has an End.MAP SID for
-> +# locator 2001:db8:f::/64 mapping to the new SID 2001:db8:2::e.
-> +# srupf1 sends an IPv6 packet to 2001:db8:f::1; on srupf3 the
-> +# destination address is expected to have been replaced by
-> +# 2001:db8:2::e.
+> 
+> +static const struct btf_kfunc_id_set bpf_kfunc_set_icmp_send = {
+> +	.owner = THIS_MODULE,
+> +	.set = &bpf_kfunc_check_set_icmp_send,
+> +};
+> +
+>  static int __init bpf_kfunc_init(void)
+>  {
+>  	int ret;
+> @@ -12557,6 +12672,9 @@ static int __init bpf_kfunc_init(void)
+>  	ret = ret ?: register_btf_kfunc_id_set(BPF_PROG_TYPE_CGROUP_SOCK_ADDR,
+>  					       &bpf_kfunc_set_sock_addr);
+>  	ret = ret ?: register_btf_kfunc_id_set(BPF_PROG_TYPE_SCHED_CLS, &bpf_kfunc_set_tcp_reqsk);
+> +	ret = ret ?: register_btf_kfunc_id_set(BPF_PROG_TYPE_CGROUP_SKB, &bpf_kfunc_set_icmp_send);
+> +	ret = ret ?: register_btf_kfunc_id_set(BPF_PROG_TYPE_SCHED_CLS, &bpf_kfunc_set_icmp_send);
 
-The selftest only covers the SRH-less path. End.MAP also accepts packets
-with an SRH, and that case should be covered as well.
+Thanks, this could come in handy for TC.
 
-To expose the ICMPv6 checksum issue noted above, the address pair should be
-chosen so that the daddr rewrite changes the checksum.
+I'm not quite sure yet on using it in lieu of the sock_destroy kfunc for
+the UDP connected socket use case we discussed at LSFMMBPF. For socket
+LB mode in Cilium to make this work you'd need to add at least one new
+map lookup in the fast path to check for backend liveness and this
+partially defeats the performance benefits of socket LB which right
+now avoids service + backend lookups in the fast path for connected UDP.
+Ultimately, it might be better to stick with sock_destroy to kill
+sockets out-of-band for that use case, but still it's good to have this
+option.
 
-> [snip]
+> +	ret = ret ?: register_btf_kfunc_id_set(BPF_PROG_TYPE_SCHED_ACT, &bpf_kfunc_set_icmp_send);
+>  	return ret ?: register_btf_kfunc_id_set(BPF_PROG_TYPE_SOCK_OPS, &bpf_kfunc_set_sock_ops);
+>  }
+>  late_initcall(bpf_kfunc_init);
+> --
+> 2.34.1
+> 
 
-Thanks,
-
-Ciao,
-Andrea
+Jordan
