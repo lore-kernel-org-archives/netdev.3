@@ -1,128 +1,166 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F2072F7F06
-	for <netdev@vger.kernel.org>; Tue, 19 May 2026 09:16:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F04C53F0759;
+	Tue, 19 May 2026 09:21:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779182215; cv=none; b=j+N8S3sXXKubYMGVV3a7E5pp6PPCZnd8s9YWFYVX6zuojB7YuZUBxWBb6sw4atuO/4NlDUQo8XRG9qZUisyCVf9FLynSlCzO+ZwJ+h3xeaBxP2906FsdbMWINQzhawGfOD9tnS69w87lO8AjY8i1UOFuC6wCcUbj2PphTOAGcK4=
+	t=1779182479; cv=none; b=MEpaiZMxt0iSD+9V9hNeH+cmEF09JLB9+cbRk5z5doWdOBfnM2o0ehJ+vKBrKh5Z0+BI1pqvDgxEDnwD9Y61IDr62G2st5N/xIydEwV+eLRJP9PKuo+uSRhpouC+3GN+ycCXN6dmT1bf5yBVa4MCjPJl8FRzILpL67iN02RM5hI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779182215; c=relaxed/simple;
-	bh=POGVjhh97Wkq6I7DJgr4RTvlvpO4sa4R0ktxh1slj8M=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZRIjtdhoDtsRKenB/xu9odQDTo4xVwQyFCkf6YNI9jYjEHBVlDLdxp+RXRmcToEpgzCE6A4CZl47dyNi2qYjnwqLiPVAS00nYaoejz3jC+dLi1TOggCSNrVw7kkNpCctQtB97CQXzDwb85PCb9pbKtpQZUMhAr9IRzYJghOnO3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=eXBySPMz; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=dO3ooaav; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1779182479; c=relaxed/simple;
+	bh=GRAKj2Ib8S95YESwx1eZ8spnsRs+B52kf5emJu29s5E=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=pValBtAl1hGlDk8Qu/mjnu7EM3CQDglqzwZJREHc+nbYgKhLfbvOeR8kYlhl83paYTxL6lrSLqKsQpY+imwBzfD3kYtHEOxRmgLPMnGGsI/FJlOsh8wpRYE0XmhZtJLXe0WyhOv/D3fEkaN50KrnAnq393u7JfYyhkk49zJMkFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sU6V6Rs4; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="eXBySPMz";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="dO3ooaav"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1779182213;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=Psnh/1orvkXMNjpOzKqZw/Hf5BXfe/yVOhTHlyVoMU0=;
-	b=eXBySPMzCjXTmXoQffdxpPehgohKZuPds6OYZcpZKQur3TxB4N1ZTAlYocRgFYAPAu67Ql
-	Slitbi51KRZ+ZtkCMdUhZuO9H3OygT/a1oWi3oksL92mPdB4RasIGIufMF7qF9Hsir6g2J
-	qcYgp8wMvVLjxutFByAgczyfxxTIwms=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-593-fpR1zOk-N3yTv1pjFsctSw-1; Tue, 19 May 2026 05:16:51 -0400
-X-MC-Unique: fpR1zOk-N3yTv1pjFsctSw-1
-X-Mimecast-MFC-AGG-ID: fpR1zOk-N3yTv1pjFsctSw_1779182210
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-45b7ff2140eso2880116f8f.3
-        for <netdev@vger.kernel.org>; Tue, 19 May 2026 02:16:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1779182210; x=1779787010; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Psnh/1orvkXMNjpOzKqZw/Hf5BXfe/yVOhTHlyVoMU0=;
-        b=dO3ooaavu8NebkdbszYP6Hg6HCcOcTGZlRa+t90/q5L9wQp/s8qG+tJ3U2d4woZ2l5
-         d7b1cmmivDxWd8++PSlZk4nn4qJWZyuwgYVAL/nn83TztCeGY1gryWvLb42qcsTWejwA
-         gFjsrZWtws2iuSQJoDPSCq4UdzGdha4+YWxOA/GWCjYCA4WBgTDAYx1GU67fISPtjsov
-         Cd3wP1/2XlzVs6824WJxB9kcSvHBXxzPFkPoYvJ8t45phJhwY6awn7XIc6HqfQLtNyWq
-         tshHB+e5LikSvP+FnNFIDsRaCcvptAXy3i97kmsyTm7WCjJs9VPxWh+xxVQYgcgATc2L
-         hQVg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779182210; x=1779787010;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Psnh/1orvkXMNjpOzKqZw/Hf5BXfe/yVOhTHlyVoMU0=;
-        b=cbWh2U1Eo4DaJxKUwHajhyLchNueXqljN/nSHKI5U7QgkjB0g7+tTi7hF5bXtF65Tq
-         v+LFl6s3a/q0S+So6RZkFGR/giSSGufyEVJfEQlqOyTrVcFr4AKG7P+CdNphLyYdAKp+
-         n/l/30OYk++/rxUzNvYuwv6Cy5uQi5ifOH5RbmZLb/y4Xc/vtmVLpgyULfKiglcsYiwe
-         Y5KwaEXsNseg1gVS5t7UuUVrqQq39lJiyCh4UxxcWfDMKl0tnbR8R9oZcMgeHlyaBnM9
-         i+jj3pR0A05ii9QGdRTE3TvUMmt6EjWjqYYNzlJQzIsjHb1nTipWb6ZokDQ8232/lmbm
-         TKPw==
-X-Forwarded-Encrypted: i=1; AFNElJ/Qre8ourzfmaR0xXePTdeJCgm1+eAH7m0SxYajMVjdurBVi/cX5+bi/XGnnOtZ+Ru+9FJrlDc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxp/AKaW2HRJJWzfXf7ZNfbTJ5HQQRiJsImMZUsL09bIkXmeoQ+
-	JG2rnamBH33v1gSlHSISi8Bz7ypJazCZHDdiaiFbkchjXlJdEO58ak+LZ4ZYQmaLjWCVqHioUi1
-	bfUmY+/GbQcwPHYdTiHXm46+Dm1sOhSLEag+S4DETw7/zYj/Os6JV4TMTpg==
-X-Gm-Gg: Acq92OFEbFp0TTdUOQwO6nV20U5VR43FRwyykrY6BAegFbE1WpOzJhYladvroYmOyje
-	uFBNXj5+xwhXMo/+PZQjOl8iqhqS3z4h4lbLi/h9IPrpHPhMi7S7TXwHRN+mcQKJIAXnfxrKvfb
-	9v6RxAaCko8c7M8tukYFdnsID/opFfndMXGjmUlwrCNpjY1WK+TFQuJxYBUQ/Xm+QZJ2KHGGyqj
-	Ww4tAVwNHliTACl7SsQLjnJ7Z1mG3CRUHPOK+pnPinOOMLkA1I8GlPDq/pw65qRRgxsL4WFb22n
-	cWjcKjr+/Vt4CQ90zxjYkNGuERaC3q05QIcs1QPT6IfUMournmp18Q1PzG2OpmVe+IYUeyNh1wm
-	Af9CUFXagHg3tO5ckLGTDY7ni1TjLaOKWhZKG96sMarBVo0qfB7Pqm9o8+q3hgSvrWN6d9JU=
-X-Received: by 2002:a05:6000:1aca:b0:451:bbe4:b48e with SMTP id ffacd0b85a97d-45e5c57d380mr28511211f8f.5.1779182210480;
-        Tue, 19 May 2026 02:16:50 -0700 (PDT)
-X-Received: by 2002:a05:6000:1aca:b0:451:bbe4:b48e with SMTP id ffacd0b85a97d-45e5c57d380mr28511159f8f.5.1779182210116;
-        Tue, 19 May 2026 02:16:50 -0700 (PDT)
-Received: from lbulwahn-thinkpadx1carbongen12.rmtde.csb ([2a02:810d:7e01:ef00:ff56:9b88:c93b:ed43])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45da15a6454sm45178454f8f.34.2026.05.19.02.16.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 May 2026 02:16:49 -0700 (PDT)
-From: Lukas Bulwahn <lbulwahn@redhat.com>
-X-Google-Original-From: Lukas Bulwahn <lukas.bulwahn@redhat.com>
-To: Arnd Bergmann <arnd@arndb.de>,
-	Jakub Kicinski <kuba@kernel.org>,
-	netdev@vger.kernel.org
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	kernel-janitors@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Lukas Bulwahn <lukas.bulwahn@redhat.com>
-Subject: [PATCH] MAINTAINERS: remove obsolete file entry in NETWORKING DRIVERS
-Date: Tue, 19 May 2026 11:16:46 +0200
-Message-ID: <20260519091646.302458-1-lukas.bulwahn@redhat.com>
-X-Mailer: git-send-email 2.54.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sU6V6Rs4"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 8D8EEC2BCB3;
+	Tue, 19 May 2026 09:21:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1779182478;
+	bh=GRAKj2Ib8S95YESwx1eZ8spnsRs+B52kf5emJu29s5E=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=sU6V6Rs4o93t21TSs5hknCXz6HLxJuDBo4ccU3HY63KzstqOh2mWZ82ZUESMTFCk2
+	 NVIDYGPGasZRnAod+sqrZ4lJmhhm6tBV5xFrYZJBB0vkjisnlDLH3BlRbQ6FhZQXHq
+	 o1f4wWL1BuayP6UUry4UzbR561WRYYLe/Et9wBAwYUQV0hsHincKK9pP8tks0BQaK3
+	 FOrqtxpoNDiu77id8c5IRcm8kyEogan2J3MlyJ/DRCSeXQx8vTSshjU+zTquhkt6Se
+	 aoSz1OYGv3NbsHwXGPFNROxo0zksmPdGShzkygPYkNn4klZoJ4p+Suhtll6quY+fFP
+	 FuGdtxu1FnreQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 85185CD4F5B;
+	Tue, 19 May 2026 09:21:18 +0000 (UTC)
+From: Carl Lee via B4 Relay <devnull+carl.lee.amd.com@kernel.org>
+Date: Tue, 19 May 2026 17:06:42 +0800
+Subject: [PATCH v4] nfc: nxp-nci: i2c: use rising-edge IRQ on ACPI systems
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260519-nfc-nxp-nci-i2c-restore-irq-trigger-fallback-v4-1-8580d8e18016@amd.com>
+X-B4-Tracking: v=1; b=H4sIACEoDGoC/53NQW7CMBCF4asgrzuVZ2wcwqr3QCwcZxxGBYc6K
+ AqKcnccNrRLunyW5/tnNXAWHtR+M6vMowzSpzLsx0aFk08dg7RlK9LktEGEFAOk6QopCAgFyDz
+ c+ly+5R+4Zek6zhD9+dz48A2h9bWlrdHBaVXIa+Yo0zN3OJZ9kvX4/qyPuL7+MzQiINRMukJrE
+ dvqy1/az9Bf1JoZ6TdNb9JUaOPI2F2sojf6L21e9Bbdm7RZ6arxtnFc65170cuyPACQvfTdnAE
+ AAA==
+X-Change-ID: 20260311-nfc-nxp-nci-i2c-restore-irq-trigger-fallback-cda942530c60
+To: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, krzk@kernel.org, carl.lee@amd.com, 
+ peter.shen@amd.com, colin.huang2@amd.com, kuba@kernel.org, david@ixit.cz, 
+ luca.stefani.ge1@gmail.com, brgl@kernel.org, mpearson@squebb.ca
+Cc: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1779181624; l=3416;
+ i=carl.lee@amd.com; s=20260203; h=from:subject:message-id;
+ bh=I6n0L9eb1IHalW1YqScUbq1aaruqpfXyz2Bqif4BPPQ=;
+ b=P8Fx4sPh+ns6A89txt1r/WXw111Hu3eAigKcHtshKjOuTKAHXR3UaAD8xjES+guySNyh+Mc1u
+ gDBXvJ5gbWyBARyuV+wH6mdOPO0+cNlj5ewKezTP4b364v4sK2rZli+
+X-Developer-Key: i=carl.lee@amd.com; a=ed25519;
+ pk=pyq7QaQvoxMg806KVkRwpCbiah+7ncWr4MBpK1AEyjA=
+X-Endpoint-Received: by B4 Relay for carl.lee@amd.com/20260203 with
+ auth_id=623
+X-Original-From: Carl Lee <carl.lee@amd.com>
+Reply-To: carl.lee@amd.com
 
-From: Lukas Bulwahn <lukas.bulwahn@redhat.com>
+From: Carl Lee <carl.lee@amd.com>
 
-Commit 5e138e0ec32b ("w5100: remove MMIO support") removes
-include/linux/platform_data/wiznet.h, but misses to remove the file entry
-in NETWORKING DRIVERS referring to that file.
+Some ACPI-based platforms report incorrect IRQ trigger types (e.g.
+IRQF_TRIGGER_HIGH), which can lead to interrupt storms.
 
-Remove the obsolete file entry in NETWORKING DRIVERS.
+Use the historically working rising-edge trigger on ACPI systems to
+avoid this regression.
 
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@redhat.com>
+Device Tree-based systems continue to use the firmware-provided
+trigger type.
+
+Fixes: 57be33f85e36 ("nfc: nxp-nci: remove interrupt trigger type")
+Cc: stable@vger.kernel.org
+
+Tested-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Signed-off-by: Carl Lee <carl.lee@amd.com>
 ---
- MAINTAINERS | 1 -
- 1 file changed, 1 deletion(-)
+Some ACPI-based platforms report incorrect IRQ trigger types,
+which can lead to interrupt storms.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index e541617ac448..27dbf1ca8283 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -18631,7 +18631,6 @@ F:	include/linux/fddidevice.h
- F:	include/linux/if_*
- F:	include/linux/inetdevice.h
- F:	include/linux/netdev*
--F:	include/linux/platform_data/wiznet.h
- F:	include/uapi/linux/cn_proc.h
- F:	include/uapi/linux/ethtool_netlink*
- F:	include/uapi/linux/if_*
+Use rising-edge IRQ on ACPI systems to avoid this regression,
+while keeping firmware-provided trigger types on non-ACPI systems.
+---
+Changes in v4:
+- Add Fixes tag
+- Add Cc: stable@vger.kernel.org
+- Link to v3: https://lore.kernel.org/r/20260516-nfc-nxp-nci-i2c-restore-irq-trigger-fallback-v3-1-37ba4b6e9086@amd.com
+
+Changes in v3:
+- Use rising-edge IRQ on ACPI systems to avoid interrupt storms
+- Keep using firmware-provided trigger type on non-ACPI systems
+- Refine commit message to focus on regression on ACPI platforms
+- Link to v2: https://lore.kernel.org/r/20260312-nfc-nxp-nci-i2c-restore-irq-trigger-fallback-v2-1-362348f7fa30@amd.com
+
+Changes in v2:
+- Add missing <linux/irq.h> include for irq_get_trigger_type().
+- Link to v1: https://lore.kernel.org/r/20260311-nfc-nxp-nci-i2c-restore-irq-trigger-fallback-v1-1-9e20714411d7@amd.com
+---
+ drivers/nfc/nxp-nci/i2c.c | 21 ++++++++++++++++++++-
+ 1 file changed, 20 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/nfc/nxp-nci/i2c.c b/drivers/nfc/nxp-nci/i2c.c
+index 6a5ce8ff91f0..266dc231c47d 100644
+--- a/drivers/nfc/nxp-nci/i2c.c
++++ b/drivers/nfc/nxp-nci/i2c.c
+@@ -16,6 +16,7 @@
+ #include <linux/delay.h>
+ #include <linux/i2c.h>
+ #include <linux/interrupt.h>
++#include <linux/irq.h>
+ #include <linux/module.h>
+ #include <linux/nfc.h>
+ #include <linux/gpio/consumer.h>
+@@ -267,6 +268,7 @@ static int nxp_nci_i2c_probe(struct i2c_client *client)
+ {
+ 	struct device *dev = &client->dev;
+ 	struct nxp_nci_i2c_phy *phy;
++	unsigned long irqflags;
+ 	int r;
+ 
+ 	if (!i2c_check_functionality(client->adapter, I2C_FUNC_I2C)) {
+@@ -303,9 +305,26 @@ static int nxp_nci_i2c_probe(struct i2c_client *client)
+ 	if (r < 0)
+ 		return r;
+ 
++	/*
++	 * ACPI platforms may report incorrect IRQ trigger types
++	 * (e.g. level-high), which can lead to interrupt storms.
++	 *
++	 * Use the historically stable rising-edge trigger for ACPI devices.
++	 *
++	 * On non-ACPI systems (e.g. Device Tree), prefer the firmware-
++	 * provided trigger type, falling back to rising-edge if not set.
++	 */
++	if (ACPI_COMPANION(dev)) {
++		irqflags = IRQF_TRIGGER_RISING;
++	} else {
++		irqflags = irq_get_trigger_type(client->irq);
++		if (!irqflags)
++			irqflags = IRQF_TRIGGER_RISING;
++	}
++
+ 	r = request_threaded_irq(client->irq, NULL,
+ 				 nxp_nci_i2c_irq_thread_fn,
+-				 IRQF_ONESHOT,
++				 irqflags | IRQF_ONESHOT,
+ 				 NXP_NCI_I2C_DRIVER_NAME, phy);
+ 	if (r < 0)
+ 		nfc_err(&client->dev, "Unable to register IRQ handler\n");
+
+---
+base-commit: 7109a2155340cc7b21f27e832ece6df03592f2e8
+change-id: 20260311-nfc-nxp-nci-i2c-restore-irq-trigger-fallback-cda942530c60
+
+Best regards,
 -- 
-2.54.0
+Carl Lee <carl.lee@amd.com>
+
 
