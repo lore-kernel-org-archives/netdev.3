@@ -1,100 +1,120 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10980352000
-	for <netdev@vger.kernel.org>; Tue, 19 May 2026 12:21:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08E39313E2B
+	for <netdev@vger.kernel.org>; Tue, 19 May 2026 12:22:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.185
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779193280; cv=none; b=Okuqi64DZX1Vi5mnX/Aaf1dHqAZSfC1T8ARUUDQZEg71/3thHTjZGb9wI2w0yZFpcFpK98nk9FNW3iNU12Qy2bsh1fKUNmbNsJOH28zYxQb4oPbf7KQSLAu9ZL2DeDgEM6wTCTqDacj5JLTtGWz8+uEPm6Y7m2Z37rLIzlVm1u8=
+	t=1779193363; cv=none; b=Qe2Y5GVixVFwsSSYP6IJEmTkCxId5KrnzpR+vI60H+F+L82srjsVz56GCUCo8p6G7jQBk9YuGKgcJI9T2/wNSL2M19FsMXs8Qy5jGYcSQfKExhqMQ16UO1g/zlm/0JYz1AnYpEbWB8Y4QeHAtDWXuyT+PY4N7GBgLjwjDv1dV4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779193280; c=relaxed/simple;
-	bh=4YPC6McjepweewladknEsCxM3GMex0C/sNPCjbzCacw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=K/J3Id1ZUKDGNbYk0Ha1zHPdJNW07irUq8drQwLMcPk+ocdYQmWcj+eSW49uzsZu/08rfi+r93yL3hTJohYN56xxPbZ4ZvlbZyTkxwq1SJCLPb0vTa9FnzuyxPZup5ElVTB/5yfUqjhFhHGbrLkP5nEzDST5+Wm62agtNQMU8xg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Z9feTK7S; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1779193363; c=relaxed/simple;
+	bh=aE7HqcTHcnlb/+YNZUr6kc1HayvdOjauZA6jbD+QaBg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Gd8uBrbClUe+CFhRvRpdt6L0RyHa3y1I6bd7HGwgGJ61pWSFMzG69qeyn9mumZS14fR6/VP+32fgObAo5ag9n0TSA3yLgY4W6qYNLXZiyLI74o3kuyNQdSzQuCfenmSdm9nO1hgPISeONMCIoGpX9kY6QfYE2jDz4RhX7RY4EVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=vVeULiwj; arc=none smtp.client-ip=91.218.175.185
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Z9feTK7S"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779193279; x=1810729279;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=4YPC6McjepweewladknEsCxM3GMex0C/sNPCjbzCacw=;
-  b=Z9feTK7Si78cfu6srkcKLjZvWpDWDDfU7IxRM4Av6EY5JJUZ1xhSi1af
-   p5BtNMRcjXoLnGiW5sDiqc0P+XGtdhHZtogAev9XArPlxCVzpdrdS4Eqm
-   TAov/0hXJTJlgrls7wTZCz0tYfMp1fNPs2//il+XWIM9Ou+wAI4Iuov0S
-   PgP+Gw5rb8jrt24aInlqM5iU1AnlWud7Q9fxTT5wHVqjiSsOXDhwMNMqO
-   Bsis5nYnw0DaS8IIumCfaJEgHlD39ELujK7TsJAhtjiHE0V9s2x+7SP42
-   cBWL3alA1wqi9jOJ2w1EnN6ETsQNnNbtmf3sLutgFieDj5M59/R3Q4axA
-   g==;
-X-CSE-ConnectionGUID: gY9ECYGQThagJBW6bAgmjA==
-X-CSE-MsgGUID: kkQRqxx5QT2P8jueaKygoQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11791"; a="80048317"
-X-IronPort-AV: E=Sophos;i="6.23,243,1770624000"; 
-   d="scan'208";a="80048317"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2026 05:21:18 -0700
-X-CSE-ConnectionGUID: kGmWhDvgRDGtKOqOmV/IZA==
-X-CSE-MsgGUID: C7TeWnBBQkazB3t5dD/MtA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,243,1770624000"; 
-   d="scan'208";a="263533568"
-Received: from irvmail002.ir.intel.com ([10.43.11.120])
-  by fmviesa001.fm.intel.com with ESMTP; 19 May 2026 05:21:17 -0700
-Received: from gond.igk.intel.com (gond.igk.intel.com [10.123.220.52])
-	by irvmail002.ir.intel.com (Postfix) with ESMTP id 5B18528765;
-	Tue, 19 May 2026 13:21:16 +0100 (IST)
-From: Marcin Szycik <marcin.szycik@linux.intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: netdev@vger.kernel.org,
-	Marcin Szycik <marcin.szycik@linux.intel.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Dave Ertman <david.m.ertman@intel.com>
-Subject: [PATCH iwl-net] ice: fix LAG recipe to profile association
-Date: Tue, 19 May 2026 13:20:41 +0200
-Message-ID: <20260519112041.125907-1-marcin.szycik@linux.intel.com>
-X-Mailer: git-send-email 2.49.0
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="vVeULiwj"
+Date: Tue, 19 May 2026 20:22:31 +0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1779193359;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=AZqfc1hPR9zQBT77bzEHRTrK4ZS6Eiz+ZKNHV1Y5UQI=;
+	b=vVeULiwj5/v8VmP25FxN1O9ulK6mXgvF7gbKrNzWhhEc+37Og5XuxWvVC2RQRc6paDnhzV
+	L7o0ALy3UJZ1Bj/cdkr4luMjwbbX667zKj+OMn8R8LyGjZ95dCpXxErbP7W7w08S4SLdsF
+	TdGRP8GmdjIRxKeZp9UUckpo64q1ruY=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+To: Zijing yin <yzjaurora@gmail.com>
+Cc: Jakub Sitnicki <jakub@cloudflare.com>, 
+	Stanislav Fomichev <sdf@fomichev.me>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Qingfang Deng <qingfang.deng@linux.dev>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next] net: dev_addr_lists: don't WARN on GFP_ATOMIC
+ kmalloc failure in netif_rx_mode_run
+Message-ID: <ewjfjqocrhwmdoa6mgz3mibtuepp7c3mr5c6zixz26lzfa3g5r@4qfqvbesfv5n>
+References: <20260519095557.3749407-1-yzjaurora@gmail.com>
+ <878q9fod8m.fsf@cloudflare.com>
+ <d864aff0-d9e9-42c9-87e8-0074dc35e857@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d864aff0-d9e9-42c9-87e8-0074dc35e857@gmail.com>
+X-Migadu-Flow: FLOW_OUT
 
-ice_init_lag() associates recipes to profiles, assuming that Link
-Aggregation-related profiles will always have profile ID lower than 70
-(ICE_PROFID_IPV6_GTPU_IPV6_TCP_INNER). This value seems arbitrary and
-might not always be valid for some versions of DDP package, i.e. LAG
-profiles may have profile ID greater than 70. This would lead to
-misconfigured switch and LAG not working properly.
+On Tue, May 19, 2026 at 02:11:53PM +0800, Zijing yin wrote:
+> Thank you so much for the feedback! I will address these comments in the 
+> next version. This is not found by syzbot by the way.
 
-Fix it by checking up to maximum profile ID.
+There has the a syzbot report now:
+https://syzkaller.appspot.com/bug?extid=f2421634072a4b47071e
 
-Fixes: 1e0f9881ef79 ("ice: Flesh out implementation of support for SRIOV on bonded interface")
-Signed-off-by: Marcin Szycik <marcin.szycik@linux.intel.com>
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Dave Ertman <david.m.ertman@intel.com>
----
- drivers/net/ethernet/intel/ice/ice_lag.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/intel/ice/ice_lag.c b/drivers/net/ethernet/intel/ice/ice_lag.c
-index 310e8fe2925c..08a17ded0ad5 100644
---- a/drivers/net/ethernet/intel/ice/ice_lag.c
-+++ b/drivers/net/ethernet/intel/ice/ice_lag.c
-@@ -2623,7 +2623,7 @@ int ice_init_lag(struct ice_pf *pf)
- 		goto  free_lport_res;
- 
- 	/* associate recipes to profiles */
--	for (n = 0; n < ICE_PROFID_IPV6_GTPU_IPV6_TCP_INNER; n++) {
-+	for (n = 0; n < ICE_MAX_NUM_PROFILES; n++) {
- 		err = ice_aq_get_recipe_to_profile(&pf->hw, n,
- 						   &recipe_bits, NULL);
- 		if (err)
--- 
-2.49.0
-
+> 
+> Hope you have a great day!
+> 
+> On 19.05.2026 13:22, Jakub Sitnicki wrote:
+> > On Tue, May 19, 2026 at 02:55 AM -07, Zijing Yin wrote:
+> >> netif_rx_mode_run() fires netdev_WARN() when netif_addr_lists_snapshot()
+> >> returns non-zero. The only path to a non-zero return is -ENOMEM from
+> >> __hw_addr_create() failing its kmalloc(GFP_ATOMIC) -- syzkaller hits it
+> >> via failslab, and it can also be reached under real memory pressure.
+> >>
+> >> This is the only allocator-failure site in this file that WARNs.
+> >> __hw_addr_create() itself, and every other caller of it in this file
+> >> (__hw_addr_add_ex(), dev_uc_add_excl(), dev_uc_add(), dev_mc_add(), ...)
+> >> just propagate the -ENOMEM silently. GFP_ATOMIC is a may-fail allocator;
+> >> callers are required to handle NULL, so a returned -ENOMEM here is an
+> >> expected runtime condition, not an invariant violation.
+> >>
+> >> The miss is self-healing: any subsequent change to dev->uc / dev->mc
+> >> (every dev_{uc,mc}_{add,del}, IFF_PROMISC flip, etc.) calls
+> >> __dev_set_rx_mode() -> netif_rx_mode_queue(), which re-queues the device
+> >> and retries the sync. The only cost of a failed attempt is one stale
+> >> rx-mode window until the next update; nothing in the kernel relies on
+> >> this attempt succeeding.
+> >>
+> >> Demote to net_err_ratelimited() so the condition stays observable in
+> >> dmesg without tripping panic_on_warn.
+> >>
+> >> Reproducer (syzkaller .prog format with setup notes): 
+> >> https://pastebin.com/t7AQKx9v
+> >>
+> >> Fixes: 3554b4345d85 ("net: introduce ndo_set_rx_mode_async and netdev_rx_mode_work")
+> >> Signed-off-by: Zijing Yin <yzjaurora@gmail.com>
+> >> ---
+> >>  net/core/dev_addr_lists.c | 3 ++-
+> >>  1 file changed, 2 insertions(+), 1 deletion(-)
+> >>
+> >> diff --git a/net/core/dev_addr_lists.c b/net/core/dev_addr_lists.c
+> >> index d73fcb0c6..c6fdcac74 100644
+> >> --- a/net/core/dev_addr_lists.c
+> >> +++ b/net/core/dev_addr_lists.c
+> >> @@ -1275,7 +1275,8 @@ static void netif_rx_mode_run(struct net_device *dev)
+> >>  		err = netif_addr_lists_snapshot(dev, &uc_snap, &mc_snap,
+> >>  						&uc_ref, &mc_ref);
+> >>  		if (err) {
+> >> -			netdev_WARN(dev, "failed to sync uc/mc addresses\n");
+> >> +			net_err_ratelimited("%s: failed to sync uc/mc addresses\n",
+> >> +					    netdev_name(dev));
+> >>  			netif_addr_unlock_bh(dev);
+> >>  			return;
+> >>  		}
+> > 
+> > 1) I'd go with net_warn_ratelimited() instead. The promoted message
+> > level in syslog might cause operational pain, and as you say the
+> > condition is self-healing. Seems unwarranted.
+> > 
+> > 2) Since it has a Fixes tag, should probably be sumitted for 'net' tree.
+> > 
+> > 3) Was this reported by syzbot? If so, there should also be Reported-by
+> > and Closes tags.
+> 
