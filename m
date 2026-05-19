@@ -1,193 +1,169 @@
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011007.outbound.protection.outlook.com [40.93.194.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63C222DF153;
-	Tue, 19 May 2026 16:03:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.7
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779206618; cv=fail; b=llAIP3Hq7n7XdyrdmKFoQfTzV/j9DU3/b0lvJr6pRUls9xSc8VwbDjyqJ9zC/YaHYCMgttvwuiu6tz7aQqTemITh04ddl3p+84DLzk6A6wmMjIizcVAt8IUkkXn0VRc8kAxiGSWMEZJ/ox2hPTE2XWQ4jLE7S7KginjyKFNyV/k=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779206618; c=relaxed/simple;
-	bh=JgV+Y8a/U5HTQuwV4SI8+j4bl13nKeyMADiZ2D5uglE=;
-	h=References:From:To:CC:Subject:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=m1/FIPQ/e4KH/RVG+AT00sXALISR7MgQRVX3gniUu0el8kbzhynjsfQ4T7r2dyNNc32nnc3aIwArSE3sGhCAUEsysxxW93JFHgx5dNm7aylbJXrs0D3wIbcAertgHFCkMfXNB4r+CeygkA1+egH1icRSOxMgFQdfnnUHb4lgKsg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=sSCLvZ9U; arc=fail smtp.client-ip=40.93.194.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E115D2E8DE3
+	for <netdev@vger.kernel.org>; Tue, 19 May 2026 16:04:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779206671; cv=none; b=u3t4Zt1pWIc783J2WSzVPbn4aISXzPaTvdjrnMIr2RG9krXHPp9XbBwQphcDuNAKJFBv8RXjodxImTytDrEpkiPF2kJXqP131bInrQ+MUMAfloDxqYU3o2fs5x+YFfUNvbsZZoV2HfWoMjygmLJWL4ZyIyzmOiAtJ68mPVoI43A=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779206671; c=relaxed/simple;
+	bh=2tjWB4WUQQSaJNP4H/chO839vCPnJWUadjgVObpCiKE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=VVz6zS/XlCtNmUWGn0sWajHMoGv5P1pXQgY255jYumwlT8Q1Ni2XRysdn0zzwKhHB2iy6A802DVQndWe1gVOpwqVFJgAS67PDDubU0XDXA2xAluGDOJm8PL3v1OFTBZlDqHpIiTZ7DuUi+swbjOQ2okXW9I4/q1VhXKOPL+ITdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kg74Crdt; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="sSCLvZ9U"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Q2mRZIrdPXHAkwlhsXU8/YjVu4D5t53nFmk9zSrMFGb9HQAxERVCiTQIzCS6xzK0fRm+fW1nkyt2Qo0OZAUMQmHCTL9I0HjxooME0sYccgwaNUjRaUfH3KPIotgbyxGw+ahAhwgHiHj90m3jxPRiQ2IEIlvtVGQxsRLkLkUPNlqBjql7olSVKGntXnTfJWdVf0sLzu0U4pq9Uvl7amGnPAFj4/nxscsfgljlLLHcKf2Q3MHA8jn0x/ajLrexIEOi0KKAPYF/ZzPWlLWebwDVjRCrfrDjP2P/5iU9Vf9Lf951GjQn80nwghAcDFkYoVU0EgdCfrf+NCUPf1Qf2C62cA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=g/Ig8+Gc8GyhlMFsDvndSipNwRU0S3b3/VVQddws5GU=;
- b=B5fQW4hZB5AgXSop/D4kb/YxDuscTVEVl4DBRybIUVdpBrlamq3GQSxISWQI7T9Ndd5k320OjU2hH3+qzP6Uop1lDNBt7tirHHyuNcMfnbkCV/gG+wODbqzDTHVG0GlA6LRgK4579KK+XBKsXyDIzxP0GMhjrOUjpmSLs5DgBNFFkoyC+PBNh02+9AgzzVLC9RaZt2Zzg5+0+tqpCrZTaTAItTMjqMdHzWILR/cU1OCtFrScIHrEUeAcN6mB2FZ6/0YyX/FY/p79CuAPJc0gCvNRvt01iu0OfR2IgkpxJ1LMMYmTt1dQcQB4AYzXIiuIstEJop7NZ6dH28C2Xfsazg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=g/Ig8+Gc8GyhlMFsDvndSipNwRU0S3b3/VVQddws5GU=;
- b=sSCLvZ9UFZCWiYM60iqOmLKeznDqgHgnU1F87RAZCOpn41dAlOcTJ2xZMDnPieVZpB3/0XGp6qVP+YNUHs0s9Xd2i4c5vSYo22NssaDzhPvZyDmXphuQUdDIEFTPUjjJ2ZBfkzF6WTSdL1MSgxXsrwsyiQRydSwNpNpNYd0vjVo36AYHqUvKyPXpRA/lxHWBOMwjM0aYs1zbiSvZGCBHoSdjN2lD+N38ZhZuDY3ajjdDUb6Vrds9ewBulSmDUJ1sr5/zP0fgo442qqDc2fnlcZQXyQelGCUza5qg5ZZZyJqWhqh1HVu4vz2+iwkFk0OyHuwSXtp1WgJbz6AuIukouw==
-Received: from MN2PR03CA0011.namprd03.prod.outlook.com (2603:10b6:208:23a::16)
- by PH7PR12MB6812.namprd12.prod.outlook.com (2603:10b6:510:1b6::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.25.23; Tue, 19 May
- 2026 16:03:30 +0000
-Received: from MN1PEPF0000F0E3.namprd04.prod.outlook.com
- (2603:10b6:208:23a:cafe::4d) by MN2PR03CA0011.outlook.office365.com
- (2603:10b6:208:23a::16) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.48.14 via Frontend Transport; Tue, 19
- May 2026 16:03:29 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- MN1PEPF0000F0E3.mail.protection.outlook.com (10.167.242.41) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.48.11 via Frontend Transport; Tue, 19 May 2026 16:03:29 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Tue, 19 May
- 2026 09:03:02 -0700
-Received: from fedora (10.126.231.37) by rnnvmail201.nvidia.com (10.129.68.8)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Tue, 19 May
- 2026 09:02:59 -0700
-References: <agqqK_6PxbvAwsMX@juliahub.com>
-User-agent: mu4e 1.8.14; emacs 30.2
-From: Petr Machata <petrm@nvidia.com>
-To: Keno Fischer <keno@juliahub.com>
-CC: <netdev@vger.kernel.org>, Ido Schimmel <idosch@nvidia.com>, Petr Machata
-	<petrm@nvidia.com>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net-next] mlxsw: spectrum_dcb: Reject writes owned by an
- offloaded qdisc
-Date: Tue, 19 May 2026 17:14:48 +0200
-In-Reply-To: <agqqK_6PxbvAwsMX@juliahub.com>
-Message-ID: <87ik8jmlow.fsf@nvidia.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kg74Crdt"
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-488af96f6b2so41232185e9.0
+        for <netdev@vger.kernel.org>; Tue, 19 May 2026 09:04:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779206668; x=1779811468; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=kKpR0xmeanMEpxqOiWggE8obfMM9EdqhCBPTTtEFV9I=;
+        b=kg74Crdtz3jf/JJtHhf+jrCoyCfor+1DIZDOm3W26dYJL9sBEcbkCbeqvD3q+lvR4x
+         l71Si9gwcnpjBBOCHdK3o/Vk0IK6zncLBYfvQKeJK3gNzrwEiJUGJlLsJ2ls6ECgv47r
+         89c3sxNV9iuMpKfEwkYGhRpYtC9yEyRoOvVcNnS/UadKBhhF4UArTzzFvwxNjr74Pksp
+         tHGqKUeMdp+0+K1MD2n8a3CGkmw/1tsDWy5V8cVzaBRwAvom7/mCBlcnT7ULkvE0whnL
+         wufKro9tSaQVjH0JRp3pb2IMoBQSipGify23USt+bdwsK36QbB/8rh9wghsduRYM0WOS
+         kPjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779206668; x=1779811468;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=kKpR0xmeanMEpxqOiWggE8obfMM9EdqhCBPTTtEFV9I=;
+        b=O5wCcRz8NN2kZEiLOrZnx2lXDZBVqB+tu8o2wNN5eiX/0phOCsOvfPc92CZ74H/0+0
+         5aofjYcQbcdjN2mGKhxgbmxX0AhhYZhKRurVLevgH6uJtN7t1XwBLSCYvTlGudTe/G7X
+         Xq0qc3J3xqggCUW5dij4zz6anbt16Ugs8g09umM9GIRvJpE1aSUN0PP54UKaPyg6E+Rx
+         18sjsGsNTM9NfX3S9MIyoSfWsxEg3ZGYUSnh2F/0HsdYyNPfQqRxYHRz8tlxQJ+XLVYX
+         D6HBb+k/k0CDwF5JdmYHD/KjZ+ZYypreGYFPquUVOYJ0JshOFCxJb6PWvdxrX++rv5Y4
+         CgdA==
+X-Gm-Message-State: AOJu0YzT+9QmL4+H1KKUAdtoQfuaOJIfeh12y9w4Qei3IlRS7pI4578Q
+	WO2Wx/Jb7SgzcKeAPIndZl7Nl2BLMjCIt5e+kHhNFBN+g3QsHCE4D3Rc
+X-Gm-Gg: Acq92OEt4hQmE/ZOgTVA1PckyxVDcJtbK08h9SabaGkJevtv6UH4HF9c/vi7QexbJMy
+	MVLQvVROIzNANE4fIXdyfArBeDHrXF+0jXI9DoxlbvhPH4Gh2PySkj7EFnMYb7OOJBmVy9BWFv5
+	MA7OCAGmRheS3DIYHOTe25Hjfmw+UiuwlNhjZa0fOpOqZ+DscLOSBJNqQFl6ed+vvpyPpsblrLz
+	dxmblq/eCnIxwhd11Y0ohJtjjrIS2aOLKQ5JYyQAvUDDEn0wNT3bLHV7tDIO/ZgZ4osLCQPwwde
+	a9iYxKqdubkLhoJ+TZ7uJ4BU+LxGXG9cRf0phOczOWahGR2Q6tL+3lp4buGRvQCao8UnzQkEHOm
+	1XGb48slXQ697iUOHBfISNN1PtxuLq51i8TVzKnWVhgbT4taxK21h9uG8K2MC9yRbBG44fO5pgG
+	p74ThFVJMEXd5D1SOhx+O4gXPWILr9L53erli0kQ8aT0q4kJRk4kkpcFbDSqNRpCHZpKKFva5Lu
+	6ITTm6H30RDBz+BzAbRK3VbEIeVAWNmByvyw7Uv8zrgg0Q0mtWg9PsLu5sKZpz9HOhbtccY5ZsL
+	Ng==
+X-Received: by 2002:a05:600c:46cf:b0:48f:d5a0:284e with SMTP id 5b1f17b1804b1-48fe66267eemr303236615e9.28.1779206668014;
+        Tue, 19 May 2026 09:04:28 -0700 (PDT)
+Received: from ?IPV6:2a01:4b00:bd21:4f00:7cc6:d3ca:494:116c? ([2a01:4b00:bd21:4f00:7cc6:d3ca:494:116c])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45d9e767ee0sm43798869f8f.1.2026.05.19.09.04.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 19 May 2026 09:04:27 -0700 (PDT)
+Message-ID: <7db0d602-bbbd-4554-996c-1dcefd69e2bf@gmail.com>
+Date: Tue, 19 May 2026 17:04:24 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN1PEPF0000F0E3:EE_|PH7PR12MB6812:EE_
-X-MS-Office365-Filtering-Correlation-Id: 49bb0758-1a1d-4608-e9e5-08deb5c02b5f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|376014|36860700016|1800799024|22082099003|11063799006|56012099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	G5c1WFOl569z7a9ERFoUPESasKe7EGbBtCdtJNG60SZkiGAcKs47jPv5a7tPvFbslh175zKgzK40xGfZ+EIQ1AurGl60mHFW0NwtcMYE2qpuDp3FnUwk03jF2mFdNLVeJcrVJhfLgrWp3le+HCDf1k0RGRzCS8dPgIvwkhdMLwJxyiSkNGXrmrZ/VKg4GLH8Q93oBz+PZhC1NwIVpnZPbifMKkzPc5Ca9JBFsuPl8WqKXVb3wpEJUmoESoTaK2QAsTFAhGYn+yfHz42xHKI0HRCk7P6iFuKS0tLqXHN5mcbeip/JkGSfPDfDajx8jCsdvoIdzICWcVfj4T/qA31sNGd0araeJz7mXdbDtykUU+Nh/TV1uGsXPBcgqxos9UZeP214bL0oMuAhWnDWg0PUQzJX2Er0ZNaKefn8mdIogjGMgcF07Kuz2PJu9vcYR4n6GlTk+hpFOVwZtT+vYalCLfwCLHJYoJvYhk11CBSHeoKaGJ1Wk9UAT1fzL11ndUfYnDCyLsWa+oorvrds/YrIQy17xqera1cg9sTrsDhQtZTZcVwUZ9IZq7S4snDGAAJo8sz6iQl+E/OT5yIb3BDuXDCvYgP0lzchn99FK+NL200Nny/aK5WI+hLuRzcY13hEW+ts7lGVuPLZxd7760G24/RMcI+eKYbhOdJdY+E1t7p0SyKQ3SeGgDwuEbCaKMmpOEucj/gLez4Ai2R+4akEuIIgER/CD/PF8Rn2gok5Qt8=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(376014)(36860700016)(1800799024)(22082099003)(11063799006)(56012099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	rrq+777cn6yxtRhosaFcoXlGa6+gghRkd19r3ww8dfOyS5StbdtZFlfQaTAveCuMRzM9vXubIhuGbVFLQ337xGPxIqZWAswu7wXdi0bbq2U0SfBqzXy6pAasPviVRUz5Qy+/V4lTnp6Yoq+Pa3F3jCrlqsOKufCR2KwEJze81RMszYYB13ZP5j2TiAlLIr2t3u/f1VfYqmzCTe+kPhd+avIRJBL1Sxb/dq6/BCQpP5zwoWbllVQK0+ECP3BZPTsRkViGaVuU5dVRpQgWc1S8jW5c8mkS6sEtfRVSPRNW3s8mOxRYDrPqpaFJNkLvT6cCadWMiZc9+YDT6I2rE6om0PjdTbcQJ7dL6QRGbc19eGO1gWplaTNVwmxk/o3jnvsNaC0R5Dq0HLXASzz1UlR2kkg9dnw8yitRum3bSKjC5b88XY3YGMYJUQ1vvCE6MGtW
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 May 2026 16:03:29.7398
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 49bb0758-1a1d-4608-e9e5-08deb5c02b5f
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	MN1PEPF0000F0E3.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6812
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6/8] io_uring/zcrx: notify user when out of buffers
+To: Jens Axboe <axboe@kernel.dk>, io-uring@vger.kernel.org
+Cc: netdev@vger.kernel.org, =?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?=
+ <cleger@meta.com>, Vishwanath Seshagiri <vishs@meta.com>
+References: <cover.1779189667.git.asml.silence@gmail.com>
+ <35cd307a03a43583838a2e151fc641c69abd786f.1779189667.git.asml.silence@gmail.com>
+ <7bfd707b-1e21-413e-a2e7-71e8df3e43d7@kernel.dk>
+ <6d1187c8-ba4f-41ad-b692-351d8b072038@gmail.com>
+ <a2a92049-0974-478a-9297-76af96b455d8@kernel.dk>
+ <c8a21efc-1443-4ff2-ac53-7846533a26bb@gmail.com>
+ <2305e4d6-55cf-421c-94b0-ad8aae8db99c@kernel.dk>
+Content-Language: en-US
+From: Pavel Begunkov <asml.silence@gmail.com>
+In-Reply-To: <2305e4d6-55cf-421c-94b0-ad8aae8db99c@kernel.dk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
+On 5/19/26 16:43, Jens Axboe wrote:
+> On 5/19/26 9:40 AM, Pavel Begunkov wrote:
+>> On 5/19/26 16:37, Jens Axboe wrote:
+>>> On 5/19/26 9:30 AM, Pavel Begunkov wrote:
+>>>> On 5/19/26 16:26, Jens Axboe wrote:
+>>>>> On 5/19/26 5:44 AM, Pavel Begunkov wrote:
+>>>>>> @@ -1126,6 +1142,48 @@ static unsigned io_zcrx_refill_slow(struct page_pool *pp, struct io_zcrx_ifq *if
+>>>>>>         return allocated;
+>>>>>>     }
+>>>>>>     +static void zcrx_notif_tw(struct io_tw_req tw_req, io_tw_token_t tw)
+>>>>>> +{
+>>>>>> +    struct io_kiocb *req = tw_req.req;
+>>>>>> +    struct io_ring_ctx *ctx = req->ctx;
+>>>>>> +
+>>>>>> +    io_post_aux_cqe(ctx, req->cqe.user_data, req->cqe.res, 0);
+>>>>>> +    percpu_ref_put(&ctx->refs);
+>>>>>> +    io_poison_req(req);
+>>>>>> +    kmem_cache_free(req_cachep, req);
+>>>>>> +}
+>>>>>> +
+>>>>>> +static void zcrx_send_notif(struct io_zcrx_ifq *ifq, unsigned type)
+>>>>>> +{
+>>>>>> +    gfp_t gfp = GFP_ATOMIC | __GFP_NOWARN | __GFP_ZERO;
+>>>>>> +    u32 type_mask = 1 << type;
+>>>>>> +    struct io_kiocb *req;
+>>>>>> +
+>>>>>> +    if (!(type_mask & ifq->allowed_notif_mask))
+>>>>>> +        return;
+>>>>>> +
+>>>>>> +    guard(spinlock_bh)(&ifq->ctx_lock);
+>>>>>> +    if (!ifq->master_ctx)
+>>>>>> +        return;
+>>>>>> +    if (type_mask & ifq->fired_notifs)
+>>>>>> +        return;
+>>>>>> +
+>>>>>> +    req = kmem_cache_alloc(req_cachep, gfp);
+>>>>>> +    if (unlikely(!req))
+>>>>>> +        return;
+>>>>>
+>>>>> It'd be nice to avoid an allocation here inside ctx_lock and with bh's
+>>>>> disabled, which looks like is also the only reason why GFP_ATOMIC is
+>>>>> being used here.
+>>>>
+>>>> I thought about it, but it's already bh, it'd need to do pre
+>>>> allocations + caching to be reliable, but that's left out for now.
+>>>
+>>> Not sure I follow - GFP_KERNEL would be more reliable than GFP_ATOMIC.
+>>> What's the contract in terms of the notification? If we fail the alloc,
+>>> then userspace can't rely on the notification on the refill failure.
+>>>
+>>> Are we under bh save already here, before doing it ourselves? If so,
+>>> then how does the guard work?
+>>
+>> In 99% of cases it's called from softirq, not sure what you mean
+>> by how it works.
+> 
+> Ah ok, I thought you meant it was already called with softirqs disabled.
+> In which case the guard would seem broken, as we'd enable softirqs when
+> exiting. But if we're just inside softirq yeah it's fine, and there's no
+> point shuffling the allocation either.
 
-Keno Fischer <keno@juliahub.com> writes:
+Softirqs are run with bh disabled, but bh_disable()/enable() are
+reenterable.
 
-> Some bits of state in the mlxsw driver can be controlled by two
-> mechanisms. The first is the DCB netlink command set (RTM_SETDCB
-> and e.g. DCB_ATTR_IEEE_ETS/DCB_ATTR_IEEE_MAXRATE), reachable e.g. from
-> the `dcb` userspace utility. The second is via the qdisc framework
-> (reachable e.g. from the `tc` userspace utility). Because they touch
-> the same bit of state, it is currently possible for the ETS config
-> to get out of sync with what the qdisc expects. One hard-to-debug
-> consequence is that a config script becomes non-idempotent. E.g.,
-> consider
->
-> ```
-> dcb ets set dev "${port}" prio-tc 0:0 1:1 2:2 3:3 4:4 5:5 6:6 7:7
-> tc qdisc replace dev "${port}" root handle 1: prio bands 8 \
-> 	priomap 0 1 2 3 4 5 6 7
-> ```
->
-> Here the user made a mistake and put the priomap in the wrong order.
-> The first time this code is run, the `qdisc` specification overwrites
-> the `prio-tc` specification. However, the second time this code is run,
-> the subsystem sees that the qdisc is identical and does nothing, causing
-> the `prio-tc` setting to stick and the final mapping to be different.
-> This can be very confusing, since the same config script creates two
-> different states.
->
-> I think there's two reasonable ways to fix this. One would be by
-> reflecting the ets state changes back into the qdisc, so that the
-> qdisc subsystem notices that it's been changed. However, I think it
-> is clearer to just forbid the non-qdisc API from trying to make
-> changes while the qdisc is offloaded.
->
-> This is similar to the existing check in mlxsw_sp_dcbnl_setbuffer,
-> which does essentially the same thing in reverse (buffers are only
-> explicitly managed when there is an offloaded qdisc, otherwise
-> they're managed explicitly).
->
-> I hope this saves the next person a few hours of debugging wondering
-> why their tc_no_buffer_discard_uc_tc_ counters are going up.
->
-> Assisted-by: Claude:claude-opus-4-7
-> Signed-off-by: Keno Fischer <keno@juliahub.com>
+> Question on the contract still stands, in terms of missing a
+> notification. I guess since it's a hint basically it doesn't really
+> matter, just something that should be documented on the userspace side.
 
-We do have this overwriting behavior documented on the wiki, but I don't
-think it was ever really a deliberate consideration. I think it makes
-sense to distance the DCB and qdisc configurations that way. I ran the
-mlxsw-specific qos / sch tests that we have have, and everything passes,
-which indicates that at least we didn't rely on the behavior in any way.
+Should rather be improved than documented, I'd say, but it's still
+better than not getting anything at all. And it's the only place
+where it can in theory be dropped, e.g. CQE overflow handling,
+though different GFP.
 
-I'll let it pass through a full regression tonight. Overall the patch
-looks OK to me, but Sashiko found something:
+> Do you have test cases for these?
 
-> diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_qdisc.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_qdisc.c
-> index 73519301b744..c2ce4f3f562e 100644
-> --- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_qdisc.c
-> +++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_qdisc.c
-> @@ -2316,6 +2316,49 @@ int mlxsw_sp_setup_tc_block_qevent_mark(struct mlxsw_sp_port *mlxsw_sp_port,
->  					      action_mask);
->  }
->  
-> +bool mlxsw_sp_qdisc_has_prio_ets(struct mlxsw_sp_port *mlxsw_sp_port)
-> +{
-> +	struct mlxsw_sp_qdisc_state *qdisc_state = mlxsw_sp_port->qdisc;
-> +	struct mlxsw_sp_qdisc *root_qdisc;
-> +	bool found;
-> +
-> +	mutex_lock(&qdisc_state->lock);
-> +	root_qdisc = &qdisc_state->root_qdisc;
-> +	found = root_qdisc->ops &&
-> +		    (root_qdisc->ops->type == MLXSW_SP_QDISC_PRIO ||
-> +		     root_qdisc->ops->type == MLXSW_SP_QDISC_ETS);
-> +	mutex_unlock(&qdisc_state->lock);
-> +
-> +	return found;
-> +}
+Clement needs to resend them. Actually, seems I forgot to CC Vish
+and Clement here, my bad.
 
-From Sashiko review:
+-- 
+Pavel Begunkov
 
-    The check here only examines the root qdisc type. However, a prio or ets
-    qdisc can be a valid child of a root tbf qdisc in the offloaded
-    configuration.
-
-This is correct, ETS/PRIO are offloaded when under root TBF as well.
