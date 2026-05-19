@@ -1,81 +1,80 @@
 Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38EAC1C3BFC
-	for <netdev@vger.kernel.org>; Tue, 19 May 2026 07:55:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA9F516A395
+	for <netdev@vger.kernel.org>; Tue, 19 May 2026 07:59:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779177352; cv=none; b=Pn1NVlQWwJyJnGp0YXpiMxak63JuAj9To1sW5p1ePgiCotBDX1GWjHujKKU6SoaQI8u/Ll6PH+NtCrakYAWOinelfMExo4hT2SvHcbNzbu3L/3kl0xdV2UbuZxk1TT4HWimE5b9KQtZYlompifcVOiDwd05keJuJb8eEJPfzV54=
+	t=1779177590; cv=none; b=NKDNLwXEnJ6irJcEdCFXgqT8v23Oj7iNGkrkk/+M7TEI9HcJGg5gckPeBpiXqraCIV5kKF4kOcziFAd9XoPCFezA6ydHhzivH4d9KUCqY0cGWjiPXYCxMZP8Z19ZaJthWx03KdXcY4QDTh41IiWVF0hnCZa08siJlamRJJH+OW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779177352; c=relaxed/simple;
-	bh=ljnwFwORCer+VUJr1iMq1FU8ABqb7EObT0yQgeghEPM=;
+	s=arc-20240116; t=1779177590; c=relaxed/simple;
+	bh=T7+jilZHGvY4EQupEtQ6+7XjvCfq/CXs996JRBCu0wE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ci8eHFvt/tRgkz5x5S1H92Kqi7kaSkGbhKlTagvUIOzbrUh3+dj0zTfCddsH158D4NT6r4A0seRVTqQkQ3ONuvoH6DepGza13WOrB8l+Is5GRWHyGfFkBIe9ckpo318zm71qTe7AigFCLIPX7D99pMk+p+xW+NtQVBF1xbaZI+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=veWnd5gU; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=MvxkyHAx; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=veWnd5gU; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=MvxkyHAx; arc=none smtp.client-ip=195.135.223.131
+	 In-Reply-To:Content-Type; b=G7USak0fEsW7v4ZyxZaudsDYuFPkQB+Yb/sEfQd0zMXlpnZVMQaBMqkhxxQTyxIapJ3l5+EU9oMfyYbsSWIZE6wNnmrvQUCBlK+2gUU2vbwk/Ur5fLR4QaL6RkwUhC/Ww8rPzm0v8Q2v4/ezxhGq2SIW7YL3ekYPRLhtfz3Ntrk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=K1um8r1v; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=GzWtOa6D; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=K1um8r1v; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=GzWtOa6D; arc=none smtp.client-ip=195.135.223.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="veWnd5gU";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="MvxkyHAx";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="veWnd5gU";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="MvxkyHAx"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="K1um8r1v";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="GzWtOa6D";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="K1um8r1v";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="GzWtOa6D"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 41E0767BE0;
-	Tue, 19 May 2026 07:55:49 +0000 (UTC)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 0BDCB66DC9;
+	Tue, 19 May 2026 07:59:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1779177349; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1779177587; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=aIuSa4Q4dMultZ8PBSbLMyy9WSo6AwaKdXcHKLDBDC8=;
-	b=veWnd5gU+IacJtakxKB5Bq8XPrPBybU2tIE8hkMMKOAdihO+GSBQZR8k3K9L6bnimySqeI
-	rxEvYgGBKVJY6usR26pgMDrBMmbl4/k8UulRf7LtlyzMduJjGyJtEY8D8Ge6kpdgj2iqPl
-	0j9QpsIoN/hN6ckvB0OwjTWBXeA2xZA=
+	bh=cI4aPSozWh78t1SQ/0I7HGIjm0423IGba5gD7goL/dc=;
+	b=K1um8r1v8Yx0gZO6qc3IhyB7LMDT3BIhS0XxPSq6rvSulTwua5OkUN73zskCz69t4Zpfil
+	AtT+xr57Kz4RFafFokLbRxKqf4fTD5XDXnUM2uIjsch5Jw/CSc4l+xoVHdivmhLKNktGHz
+	83F51CfI0E6wurIbJjMe8d1m2t1tQgQ=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1779177349;
+	s=susede2_ed25519; t=1779177587;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=aIuSa4Q4dMultZ8PBSbLMyy9WSo6AwaKdXcHKLDBDC8=;
-	b=MvxkyHAxTy0I4vLj366t/wr5Xz5/Dv70kNQvK1NcxhrEhCZnNeQIjb0XIgT60eD/9AuL8S
-	OmWpaMScjiFfSEAw==
+	bh=cI4aPSozWh78t1SQ/0I7HGIjm0423IGba5gD7goL/dc=;
+	b=GzWtOa6DuBGtjzOM1Npd67vt4GewXzZn03+/PNF21r8NMJ8pEB9SpAvAAXFvIFzIcfEJhU
+	yrO5rx/mbba+tTDw==
 Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=veWnd5gU;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=MvxkyHAx
+	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1779177349; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1779177587; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=aIuSa4Q4dMultZ8PBSbLMyy9WSo6AwaKdXcHKLDBDC8=;
-	b=veWnd5gU+IacJtakxKB5Bq8XPrPBybU2tIE8hkMMKOAdihO+GSBQZR8k3K9L6bnimySqeI
-	rxEvYgGBKVJY6usR26pgMDrBMmbl4/k8UulRf7LtlyzMduJjGyJtEY8D8Ge6kpdgj2iqPl
-	0j9QpsIoN/hN6ckvB0OwjTWBXeA2xZA=
+	bh=cI4aPSozWh78t1SQ/0I7HGIjm0423IGba5gD7goL/dc=;
+	b=K1um8r1v8Yx0gZO6qc3IhyB7LMDT3BIhS0XxPSq6rvSulTwua5OkUN73zskCz69t4Zpfil
+	AtT+xr57Kz4RFafFokLbRxKqf4fTD5XDXnUM2uIjsch5Jw/CSc4l+xoVHdivmhLKNktGHz
+	83F51CfI0E6wurIbJjMe8d1m2t1tQgQ=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1779177349;
+	s=susede2_ed25519; t=1779177587;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=aIuSa4Q4dMultZ8PBSbLMyy9WSo6AwaKdXcHKLDBDC8=;
-	b=MvxkyHAxTy0I4vLj366t/wr5Xz5/Dv70kNQvK1NcxhrEhCZnNeQIjb0XIgT60eD/9AuL8S
-	OmWpaMScjiFfSEAw==
+	bh=cI4aPSozWh78t1SQ/0I7HGIjm0423IGba5gD7goL/dc=;
+	b=GzWtOa6DuBGtjzOM1Npd67vt4GewXzZn03+/PNF21r8NMJ8pEB9SpAvAAXFvIFzIcfEJhU
+	yrO5rx/mbba+tTDw==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 19245593A8;
-	Tue, 19 May 2026 07:55:49 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D45C8593A8;
+	Tue, 19 May 2026 07:59:46 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id J7w8BYUXDGrLagAAD6G6ig
-	(envelope-from <hare@suse.de>); Tue, 19 May 2026 07:55:49 +0000
-Message-ID: <76f6bb7c-c0b4-4dfc-b101-13d0bb7d7f0e@suse.de>
-Date: Tue, 19 May 2026 09:55:48 +0200
+	id mDNTM3IYDGp4bwAAD6G6ig
+	(envelope-from <hare@suse.de>); Tue, 19 May 2026 07:59:46 +0000
+Message-ID: <20c1c773-ea29-4c1a-b960-eb12afd2995a@suse.de>
+Date: Tue, 19 May 2026 09:59:42 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -83,8 +82,8 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 4/7] net/handshake: Take a long-lived file reference
- at submit
+Subject: Re: [PATCH net 5/7] net/handshake: hand off the pinned file reference
+ to accept_doit
 To: Chuck Lever <cel@kernel.org>, "David S. Miller" <davem@davemloft.net>,
  Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
  Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
@@ -92,21 +91,18 @@ Cc: Chris Mason <clm@meta.com>, Christian Brauner <brauner@kernel.org>,
  kernel-tls-handshake@lists.linux.dev, linux-nvme@lists.infradead.org,
  netdev@vger.kernel.org, Chuck Lever <chuck.lever@oracle.com>
 References: <20260518-handshake-file-pin-v1-0-4bbcb7e62fda@oracle.com>
- <20260518-handshake-file-pin-v1-4-4bbcb7e62fda@oracle.com>
+ <20260518-handshake-file-pin-v1-5-4bbcb7e62fda@oracle.com>
 Content-Language: en-US
 From: Hannes Reinecke <hare@suse.de>
-In-Reply-To: <20260518-handshake-file-pin-v1-4-4bbcb7e62fda@oracle.com>
+In-Reply-To: <20260518-handshake-file-pin-v1-5-4bbcb7e62fda@oracle.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Spam-Level: 
-X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-4.51 / 50.00];
+X-Spamd-Result: default: False [-4.30 / 50.00];
 	BAYES_HAM(-3.00)[100.00%];
 	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
 	NEURAL_HAM_SHORT(-0.20)[-1.000];
 	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
@@ -115,47 +111,66 @@ X-Spamd-Result: default: False [-4.51 / 50.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_TLS_ALL(0.00)[];
 	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_EQ_ENVFROM(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,suse.de:dkim,suse.de:email,suse.de:mid,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo];
-	RCVD_COUNT_TWO(0.00)[2];
+	FROM_EQ_ENVFROM(0.00)[];
 	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+]
-X-Rspamd-Queue-Id: 41E0767BE0
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+	RCVD_COUNT_TWO(0.00)[2];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:mid,suse.de:email,oracle.com:email]
 X-Spam-Flag: NO
-X-Spam-Score: -4.51
+X-Spam-Score: -4.30
 
 On 5/18/26 20:24, Chuck Lever wrote:
 > From: Chuck Lever <chuck.lever@oracle.com>
 > 
-> handshake_nl_accept_doit() needs the file pointer backing
-> req->hr_sk->sk_socket to survive the window between
-> handshake_req_next() and the subsequent FD_PREPARE() and get_file().
-> The submit-side sock_hold() does not provide that. sk_refcnt keeps
-> struct sock alive, but struct socket is owned by sock->file: when
-> the consumer fputs the last file reference, sock_release() tears
-> the socket down regardless of any sock_hold.
+> handshake_req_next() removes the request from the per-net
+> pending list and drops hn_lock before handshake_nl_accept_doit()
+> reads req->hr_sk->sk_socket and dereferences sock->file (once in
+> FD_PREPARE() and again in get_file()).  In that window a
+> consumer running tls_handshake_cancel() followed by sockfd_put()
+> (svc_sock_free) or __fput_sync() (xs_reset_transport) releases
+> sock->file.  sock_release() then runs sock_orphan(), zeroing
+> sk_socket, and frees the struct socket.  The accept-side code
+> either reads NULL through sk_socket or chases freed memory.
 > 
-> Prepare for a fix by adding an hr_file pointer to struct
-> handshake_req and acquiring an explicit reference on sock->file
-> during handshake_req_submit(). Release the reference on the
-> completion-bit-winning path of handshake_complete() and
-> handshake_req_cancel(), and on the submit error paths that destroy
-> the request before it has been published.
+> The submit-side sock_hold() does not prevent this.  sk_refcnt
+> protects struct sock, but struct socket and sock->file are
+> independently refcounted via the file descriptor the consumer
+> owns.  Pinning sk leaves sock and sock->file unprotected.
 > 
-> The accept-side dereferences are not yet retargeted; that change
-> comes in the next patch.
+> Retarget the accept-side dereferences at req->hr_file, which was
+> pinned at submit time, instead of req->hr_sk->sk_socket->file.
+> Pinning on its own is not sufficient: a consumer that cancels
+> between handshake_req_next() returning and accept_doit reaching
+> FD_PREPARE() takes the !remove_pending() branch in
+> handshake_req_cancel() and drops hr_file before the accept side
+> takes its own reference.  Hand off an additional file reference
+> inside handshake_req_next(), under hn_lock, so the accept side
+> operates on a reference that no concurrent handshake_req_cancel()
+> can revoke.  FD_PREPARE() consumes that handed-off reference,
+> either by transferring it to the new fd in fd_publish() or by
+> dropping it in the cleanup destructor on error; the explicit
+> get_file() that previously balanced FD_PREPARE() is therefore
+> redundant and goes away.
 > 
+> Update handshake_req_cancel_test2 and _test3 to simulate the
+> FD_PREPARE() consumption with an fput() so the kunit file-count
+> assertions stay balanced.
+> 
+> Reported-by: Chris Mason <clm@meta.com>
+> Fixes: 3b3009ea8abb ("net/handshake: Create a NETLINK service for handling handshake requests")
 > Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 > ---
->   net/handshake/handshake.h |  2 ++
->   net/handshake/netlink.c   |  6 ------
->   net/handshake/request.c   | 27 ++++++++++++++++++++++++++-
->   3 files changed, 28 insertions(+), 7 deletions(-)
+>   net/handshake/handshake-test.c |  8 ++++++++
+>   net/handshake/netlink.c        |  7 ++-----
+>   net/handshake/request.c        | 18 ++++++++++++++++++
+>   3 files changed, 28 insertions(+), 5 deletions(-)
 > 
+I _think_ this should fix the issue I had reported about a kernel oops 
+in __sys_recvfrom() in tlshd.
+Which has all the symptoms described here.
+So glad that it's been addressed.
+
 Reviewed-by: Hannes Reinecke <hare@kernel.org>
 
 Cheers,
