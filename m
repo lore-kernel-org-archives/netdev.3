@@ -1,132 +1,122 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+Received: from mail-oa1-f48.google.com (mail-oa1-f48.google.com [209.85.160.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7C4D3E1220
-	for <netdev@vger.kernel.org>; Tue, 19 May 2026 09:51:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.47
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779184274; cv=pass; b=jKUL70IOtgu4arI5eUNNQK6tKSx4xVsECyBao9Qn3vh8SObKi7uT7uB0rGDME9/9bngSIdfNF4Ij1ChMief8t7SbaXgH10iqvTlGl20RL8nZImHl98uERp9j0BkjASlSikA4YqQ4yhyenkZMx3KWkERzsD53MeuBWDnxN3gfipg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779184274; c=relaxed/simple;
-	bh=TB/bJKw7MHs8Q9hGToh22DreZhJ4zZwPmafVNxSq/RM=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE332388E53
+	for <netdev@vger.kernel.org>; Tue, 19 May 2026 09:51:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.48
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779184315; cv=none; b=NaX2qyTYOjeQ2PzcK4OFlXb1Zqx5LH83L7bJEDARCYyUqgfjHtRiCl6eAKX5xbXT+VOGGkUq6lwD6zOa4S1KXKCJhmQGj/Bdoun9uKT/98aL5AYoTXprgQ1VekZOpbcrVXr0f1t+l68kk7opXGuYapDeiOu5qYI8p71vwJiFM60=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779184315; c=relaxed/simple;
+	bh=VV0WQeCgbPqBTi7yab+uEYQeq6u9LFtTUX4clbsM2Vw=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=X5TC4UXfIL0d52dMrWxQ6M7Ku2yWxP6anPUaO22LlQRuMGUfOlr3SZfEAdwFPaEnUqAGSHbUnE9EwWND+ZcldfxcOywH5rAsme1FuK+Z8Z1EGAteCqPzWKIyn4HB9bro0e8uhV0o0KpaFvYcKxc0vmnAWodQnlg+iQ+Z3YGkXAM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ckEu7Kx3; arc=pass smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	 To:Cc:Content-Type; b=qfO2e4yeMYCqOZOr8ndx7qo28YtjK/74D+l/Y7NB6B1NUnRIJWpH3wqmpbKKnBxXQEEKBT3C/3RtJptjqPrVxZZGKm3E0r/7ooI/+ZoBR3hKvMVFjvEcKiDqJ6E7Txd4UzFsQrWE1liDz562xIN/8cvcZdJVEmxdhmy+9pGKXJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.160.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ckEu7Kx3"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-488ad135063so25751425e9.0
-        for <netdev@vger.kernel.org>; Tue, 19 May 2026 02:51:12 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779184271; cv=none;
-        d=google.com; s=arc-20240605;
-        b=jhWhW22Y6K1LR8aHVqpkp5NB5RG7Yb3zJVmhhdnva7zovAOZXdqT3/w/6T7RouVQSX
-         IkCl+8/57lxgRlY2p86F58w063EcG5mfCzKPlXYEM5raZN9kVtlVRC+ZRAf0HZSjDUBO
-         tjNkNye5WBUt2VU9nsasQF3chirMe5ALy60kQbNGbhUQGDrKYsk9r9YFpBwqrcWwQtTC
-         VPsh8pSnAsupV0vhdvv9QVx1VJPLeGLYfBb2zYReln8HC4msuraueQn1mvItnPB6mnOj
-         +f6q3I24EQt2sI/Q2FUtp4pm3sMTMTQapG6NtsE73oKuM0stHmoI19oi9yXOG9dl0K7S
-         DIrg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=zzBciGV3pvoJiMk74fETh4aCWpr1Cl0HORpY1+OAFd4=;
-        fh=wLfur8T6QYqHmd6C9lAoU08LePvM7BFqgdLPC3QYJdU=;
-        b=RJIHNVRR8LZ6EX8mReWD3nEPenOCjRI1D0VbfjSH1PJSAah3EWj1toCQR5oEWODPAw
-         bX93k7ZFxVNY/1J5ujOdPCvf7+Lpg6z6/zAAnKXTIdN3vhPpfjNqhnckpvtY915mrzQ4
-         nhgn0jNwpFgt7QFTzpjpfNPEr5UALq34pK9mX81jy3OBMr9dezZeJ3ezV/ex7aVWyQtq
-         6OFn8j8ZTi4Yn6O3XbrpTGUvdeoX9C526DL3gkvYxtJ/qwRlM/kfilWAY15/7j+G+6QL
-         t0VXarQlDxX3dgDFfiz2ETFiHB7AeVMZ/nJDm8jJMQsSplGOjnNUX0w6qlc0fyeOb6HZ
-         j9aQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779184271; x=1779789071; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zzBciGV3pvoJiMk74fETh4aCWpr1Cl0HORpY1+OAFd4=;
-        b=ckEu7Kx3t1sXVtdmEKKt39iV3kCD0szer8wpESRu/N4HPWaE9oOJmw/i9fco9tFjL4
-         SzlOwOPMe7wzskUQ0F1VhemS8ciRtCZgqRuwZJQ6vvNcPzUkw0KgkMlQB9gl2r8Z0o8c
-         tY6OXD/jwPJldZVYpwmFNnLdYdo6pMbhF9DSxfYJnZsmMrsHyl7NsGJo1/1bGgL/Nip6
-         dPcJUjF0v0O8ubM6U+Svx9hoJk6UKhkYVp1xCjeIAOcI/h11ot/n8c8JgxNit//cgTZb
-         zdvCHxVRW0IRWDUoXb4gVHmK3yiVSxRwHGH0+TtShCaQQAuxTa4kCvgcLXuBXGI+DFmn
-         sMXQ==
+Received: by mail-oa1-f48.google.com with SMTP id 586e51a60fabf-43a6faf8d1eso1229198fac.2
+        for <netdev@vger.kernel.org>; Tue, 19 May 2026 02:51:53 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779184271; x=1779789071;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=zzBciGV3pvoJiMk74fETh4aCWpr1Cl0HORpY1+OAFd4=;
-        b=AnPMX9gEWGigdWp1UW4k8Gkb2skIxi0SadBKBmp43omODdpA0Etsr9uu7qlWvi2cpJ
-         L1zO0oFUb+BuAsiq+lDvblTqFwJeHIG05/CO5HXtJrTc81bD/yslu+0GSwFHJF0fWzjY
-         VuXCQxMN0V6JDAkAN1RSV8ze89EjiUI4WN1nyg1CrrxyZ4a1OUN/odkx+Fk2dzz//Yta
-         rdCsqZ4IbbHw1v/DyC/URlWgV+f9S2xvweBqUOsZubc/5DIK/PAh44EcAAkb2ZMJQlon
-         2ZEWGw6dlFnln9TmdpGIxIwunujFwwBEk5fNa18pepJSf5trzIVPaSABDR1B2KAh4yjA
-         kEtw==
-X-Gm-Message-State: AOJu0YzZ5WvzIGdj+SEqK2CwpzzNiZnHkOZk3cST7DpsiKPdqQ2cblv2
-	Tn+Pl8yK5TSGnhH4tuFlaGEPwb5yMS4KVglHA5Th8h20aspvhjY3Wj+jEJUnG9TJYvR7feOSVsP
-	8bgPEn7+q9pP04AljcR8LRIy8Fw/WxY8=
-X-Gm-Gg: Acq92OG1hXWCMUgDvcsxhnaE55544vjE3O6HBmwv+PEAMr2jVUG5qeIEcFUo1viyOXo
-	yhULm6DngKrY4irpO2Wvv9P5bma3cYXSd92VMtdot7W5IOi8YAgT56dSDdZXiJt/M+Bo6YVxIeB
-	QxgnQUlIehmJO189wAO8rWISSLJQRhPbLm3Rq2Do6D5O+wTyTvdV7qlTLuFc2of+rdF8OC6efM1
-	yjH0THZu0VQelaqfsmrdjYg2l8DqTc/vH6CVLojVf5WvQvqmTaUqPTMUjAlsWYug2eKgxFeQoWr
-	DmQG7A2zbjp25zmh2A==
-X-Received: by 2002:a05:600c:5296:b0:490:31e:d6f4 with SMTP id
- 5b1f17b1804b1-490031ed905mr176358885e9.18.1779184270955; Tue, 19 May 2026
- 02:51:10 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1779184313; x=1779789113;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=T+2SZGl9spcuw3ZVraVsNeWL62/l5e6HnqNdDh6fCso=;
+        b=i1BRUaYrZU5o+1qMJUMU4ujm0QbEYY6earethr0et1NT3+CelA4QG3kRltzbCNUodr
+         LWTOEAszGIMqKbd45S0QVjhMbDa3xTQMh1aW8ynVQeKtCx1fEldVu5FhBpSDSWb46dgj
+         CNwDRHlKqOzd8OnGOd+IqdAdKvbiq1hL2pBPqrUc474k7VwYZKuNZgXkPSCHtkcnrXjN
+         txEj3IdDOTBH5knb9DTGST1NYkdS4jyhj/FvHHSihhxCjZeEWnU7knWDukVHtLigCWfs
+         l9Jdfg81aLyQBojY0LtTSZ3QTMogAzvroqffj8nCjde4WqynjtF251DWNMmBSLWYCuJk
+         sIUw==
+X-Forwarded-Encrypted: i=1; AFNElJ/LCmw8Kfbuh5twXr3DxX2LeMT49UkFY9VVGlQ6GldJSkSloB4JQAbLro9bdHLmLM54H9GOr/o=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzyvF0WHtH/c3POhq6wg5QbSqY/HahD9fCjwuPugP3UFc//T3P+
+	z1RxEmJVaBMbCVzsouRCbL0e0QYWSD/b/FNJ694OGLgNX3Iz+gPkhCkNeGMtmQXX
+X-Gm-Gg: Acq92OFL0WhfRrWOFR4bEPGw81PhHFCvAfVZu7jpK2z9cL2RmyTXVtL0oKCRxBP5/i1
+	y13jg4qGk2o7qgEMtzzfcyUY3wy6EirJc8hCmijgpMDq4XG6/GAhsd744NB55uMCxUayCdp/LBs
+	K6w6qXEUbO8JlJ74uvrqHkrOCnW9UNdtGHL/YEF9IsceRxkpA2t2GB9lmSDGA97l7dqxePHNvH5
+	2MrwWXhmCYZfjUbMJtmwuDDGO0Tn1sqRTJck6zyOWdzoQPPbUu71Vo+2RjGrGgbiOx6NOyMpO7P
+	eXXYo/4+8B7QwKY7W86q45v9vj3Nd0FR1UrBvjV846WJjTOINAJxa1I6EHltBBgObdbKASfAkwe
+	SkrzfRDwSJn+CRk5rAoXzedIH0u8sQftCX566y/GSw5usS49dV6oPiYIM6/spqQjFpj3YpcEoLz
+	PCfB+mbjHoMqM8+6CaJe9Qm4XFUS4jP6EM9/EPZn9LiuQ+DR87p93y92cQIwZ+wK0YRJQTnrZYA
+	OU=
+X-Received: by 2002:a05:6871:3a21:b0:42c:d98:9540 with SMTP id 586e51a60fabf-43a2d4aeba7mr12302063fac.0.1779184312744;
+        Tue, 19 May 2026 02:51:52 -0700 (PDT)
+Received: from mail-oi1-f182.google.com (mail-oi1-f182.google.com. [209.85.167.182])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-43a94f49da9sm7027295fac.3.2026.05.19.02.51.51
+        for <netdev@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 19 May 2026 02:51:52 -0700 (PDT)
+Received: by mail-oi1-f182.google.com with SMTP id 5614622812f47-47cba53479aso2455637b6e.0
+        for <netdev@vger.kernel.org>; Tue, 19 May 2026 02:51:51 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ9tZguR0BzGcUwphlQmY70UBz+cfaof/QLC2cm+T7x13Pc7ErRX53uJlU1GW9dZpFMlY+HJ9ao=@vger.kernel.org
+X-Received: by 2002:a05:6102:511f:b0:634:d42d:15e2 with SMTP id
+ ada2fe7eead31-63a403ac9a2mr7077474137.26.1779183821499; Tue, 19 May 2026
+ 02:43:41 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260518164029.439928-1-houminxi@gmail.com> <20260518164029.439928-3-houminxi@gmail.com>
- <m2y0hfu41y.fsf@gmail.com>
-In-Reply-To: <m2y0hfu41y.fsf@gmail.com>
-From: =?UTF-8?B?5L6v5pWP54aZ?= <houminxi@gmail.com>
-Date: Tue, 19 May 2026 17:50:45 +0800
-X-Gm-Features: AVHnY4KcYbYyx-kseY_JI870sBNRUaJeN7IBKDXDbauadJ8hFG6-pioM-7K-T2M
-Message-ID: <CAJ0BgHc7c9h_pOmGQjjKLZ2-dz_dvo8XxwjbUrPOWSOz+11g_Q@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] tools: ynl: add unicast notification receive support
-To: Donald Hunter <donald.hunter@gmail.com>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com, 
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, aconole@redhat.com, 
-	linux-kernel@vger.kernel.org
+References: <20260518042833.272221-1-enelsonmoore@gmail.com> <20260519094820.1f05ab8e@pumpkin>
+In-Reply-To: <20260519094820.1f05ab8e@pumpkin>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Tue, 19 May 2026 11:43:30 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdVw349EBZUuYZAns3FnTndx0A=PHbznxarYuAQr8nbqDQ@mail.gmail.com>
+X-Gm-Features: AVHnY4Lfn8Mcrjf-CZtgFTL8ilhwbGlXFwz-O3Z8xcIZpla9SRL4d3C994HiNs4
+Message-ID: <CAMuHMdVw349EBZUuYZAns3FnTndx0A=PHbznxarYuAQr8nbqDQ@mail.gmail.com>
+Subject: Re: [PATCH] nios2: remove the architecture
+To: David Laight <david.laight.linux@gmail.com>
+Cc: Ethan Nelson-Moore <enelsonmoore@gmail.com>, linux-doc@vger.kernel.org, 
+	devicetree@vger.kernel.org, workflows@vger.kernel.org, 
+	linux-arch@vger.kernel.org, dmaengine@vger.kernel.org, 
+	linux-i2c@vger.kernel.org, linux-iio@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-pci@vger.kernel.org, linux-pwm@vger.kernel.org, 
+	linux-hardening@vger.kernel.org, linux-kbuild@vger.kernel.org, 
+	linux-csky@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Daniel Lezcano <daniel.lezcano@kernel.org>, Thomas Gleixner <tglx@kernel.org>, Alex Shi <alexs@kernel.org>, 
+	Yanteng Si <si.yanteng@linux.dev>, Dongliang Mu <dzm91@hust.edu.cn>, 
+	Hu Haowen <2023002089@link.tyut.edu.cn>, Dinh Nguyen <dinguyen@kernel.org>, 
+	Kees Cook <kees@kernel.org>, Oleg Nesterov <oleg@redhat.com>, Will Deacon <will@kernel.org>, 
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Nick Piggin <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>, Vinod Koul <vkoul@kernel.org>, 
+	Frank Li <Frank.Li@kernel.org>, Dave Penkler <dpenkler@gmail.com>, 
+	Andi Shyti <andi.shyti@kernel.org>, Jonathan Cameron <jic23@kernel.org>, 
+	David Lechner <dlechner@baylibre.com>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
+	Andy Shevchenko <andy@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Lorenzo Pieralisi <lpieralisi@kernel.org>, =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Hello Donald
+Hi David,
 
-Should I re-spain a new version to fix the yaml check issue?
-
- =3D=3D=3D=3D=3D=3D Checking the tree with the patch =3D=3D=3D=3D=3D=3D
-New warnings added
---- /tmp/tmp.2uYmXlzyoK 2026-05-18 12:59:32.034644770 -0400
-+++ /tmp/tmp.UAwK6To8IX 2026-05-18 12:59:32.187643683 -0400
-@@ -0,0 +1,3 @@
-+ovs_packet.yaml
-+  3:1       warning  missing document start "---"  (document-start)
-
-+
-B.R
-Minxi
-
-Donald Hunter <donald.hunter@gmail.com> =E4=BA=8E2026=E5=B9=B45=E6=9C=8819=
-=E6=97=A5=E5=91=A8=E4=BA=8C 17:45=E5=86=99=E9=81=93=EF=BC=9A
+On Tue, 19 May 2026 at 10:55, David Laight <david.laight.linux@gmail.com> wrote:
+> The company I used to work for used 4 NIOS II inside an fpga.
+> The instruction timing for one is pretty critical, it has some code that
+> has to complete in 122 clocks (worst case).
+> Our solution was to spend a few man-weeks writing a compatible cpu!
+> I think it came out with fewer pipeline stalls (in particular it 'lost'
+> the one for a (predicted) taken branch).
+> The maximum clock frequency might be lower; but it is ok at 62.5MHz and the
+> higher 125MHz in just impossible for all sorts of reasons.
 >
-> Minxi Hou <houminxi@gmail.com> writes:
->
-> > Add ntf_listen() method to YnlFamily for binding the netlink
-> > socket without joining a multicast group. This enables receiving
-> > unicast notifications through the existing poll_ntf/check_ntf
-> > path.
-> >
-> > The OVS packet family sends MISS and ACTION upcalls via
-> > genlmsg_unicast() to a per-vport PID rather than through a
-> > multicast group. The existing ntf_subscribe() couples bind()
-> > with setsockopt(ADD_MEMBERSHIP), which does not fit the unicast
-> > case. ntf_listen() provides the bind-only alternative.
-> >
-> > Signed-off-by: Minxi Hou <houminxi@gmail.com>
->
-> Reviewed-by: Donald Hunter <donald.hunter@gmail.com>
+> OTOH I really wouldn't run Linux on it!
+
+Sounds similar to what CoreSemi is doing with J2 (nommu, also for
+predictable latency), but their products do run Linux.
+See the video from the LPC session at
+https://lpc.events/event/19/contributions/2097/
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
