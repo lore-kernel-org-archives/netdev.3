@@ -1,75 +1,175 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D1194779BB
-	for <netdev@vger.kernel.org>; Tue, 19 May 2026 09:46:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 827883F0AB3;
+	Tue, 19 May 2026 09:47:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779184022; cv=none; b=ZSxTTLNRwYfhnnHqgAyqVpoP5bicPyFiR3Egd0giuvD+KrzgT+41ZhHHf78YHyRQZc+idl3vPtLId44zNHue8nZQyMTHZxiceCqv6mmgVsitbKD5MAHCpH7eFA2L9UDxFOiojwXoIP0mOEM2jzpjTCZhU3tbROskSQNKJ2P8S8c=
+	t=1779184029; cv=none; b=XNgOn2+TRnC5pL5o3R1MqwDjxxg10awdMHRdWqgjS3UQlSSuQ5Y8h3UicxMgXee05HjtLDCBhBUJWBA3tXh1mewB/Ttjlme5Dbm/rD6iaaAtFuQga6/FSOBnRZZjD37JKKAfhrLUjW/vxCSrWaUZrJQgRE8u2flwoWVCG8ejbSE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779184022; c=relaxed/simple;
-	bh=F8kTF1D2OoAq6tQua9BrBBUgOLLriwTpFSv7Q3WjqzE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FeHb3yGyaJwXVJzL/l2BX/n+U5Ok0rQLhJe9uS09dxw4409kutIHRvBx29K85QX/z4N6Lsf/gNecn1oo4oYB1/DaGTC6a/3vZQadamdoT4p1Mg6Vb+1ruZgkNNOpnCKCh53tqqUUZ8Hp8AXwiX84loL0rH4XBPA5IFBTGsXIbTk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <ore@pengutronix.de>)
-	id 1wPH2C-0005rH-LI; Tue, 19 May 2026 11:46:44 +0200
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1wPH29-000jyf-1A;
-	Tue, 19 May 2026 11:46:41 +0200
-Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
-	(envelope-from <ore@pengutronix.de>)
-	id 1wPH29-0000000HDDn-3Rdz;
-	Tue, 19 May 2026 11:46:41 +0200
-Date: Tue, 19 May 2026 11:46:41 +0200
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: Rosen Penev <rosenp@gmail.com>
-Cc: netdev@vger.kernel.org, Chris Snook <chris.snook@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCHv2 net] net: ag71xx: check error for platform_get_irq
-Message-ID: <agwxgUG5R6CxnlMC@pengutronix.de>
-References: <20260516212616.11758-1-rosenp@gmail.com>
+	s=arc-20240116; t=1779184029; c=relaxed/simple;
+	bh=OH/yfiCu0Mp3b66K0reocEsxvYcepzYQzij9x5dEOxk=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=JvKGX4nM6HKFtUD+gmuhHJqZYJJ0c76C33xi1oVEdwL8PYFo+VehyZ2X08G3XpyYqP4FJ47FqppXDvRCgnTuvgP+nWTqPIlQozde4/57yoahQb9QcV00okJ/XCehsAk4QHgCPi7EHvTjIkWbae29rrkeSnB3wDezqLdBlBzf5m0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SjXN07us; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SjXN07us"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 1ACBDC2BCB3;
+	Tue, 19 May 2026 09:47:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1779184029;
+	bh=OH/yfiCu0Mp3b66K0reocEsxvYcepzYQzij9x5dEOxk=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=SjXN07usVOFyeVoXxp8t0WX9DMiBCBYdY4olW/q5/kw7SB0rwIn/dNuOEbs82JQ7S
+	 uYQjQEt4d94I3CuKzfoEmKLwmVDh2jwstzG5Di4e/QcDmWzbmEM10wWxKnOXdClDGF
+	 FUrLQVI5qkIYIFJ8R7z2hvdZcvlXYfx7meNkOZcbqVEj8cVkgHf8dktSiRPTmGiEZH
+	 YMiDuZadgB1TZJXR/7X1YGpoWsdfFvFxyMSJoIxeeTZvxY413tX8HAVsw2EVgPYNPh
+	 h8OKXNo70DO34FJjlS7LeuRHGlFkCX3zBs2bCjcLWZwdqWIyyAXxHrkbKB8jL8eIDl
+	 LTbNSC+jkVlNA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 09478CD4F57;
+	Tue, 19 May 2026 09:47:09 +0000 (UTC)
+From: Carl Lee via B4 Relay <devnull+carl.lee.amd.com@kernel.org>
+Date: Tue, 19 May 2026 17:32:53 +0800
+Subject: [PATCH v5] nfc: nxp-nci: i2c: use rising-edge IRQ on ACPI systems
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260516212616.11758-1-rosenp@gmail.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ore@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: netdev@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260519-nfc-nxp-nci-i2c-restore-irq-trigger-fallback-v5-1-1a826cfbc128@amd.com>
+X-B4-Tracking: v=1; b=H4sIAEQuDGoC/53NQW7DIBCF4atErDsVAxjjrnqPqgsMgzNqglMcW
+ aki3704mzpLd/kQ8/13MVFhmsTb4S4KzTzxmOtoXg4iHH0eCDjWLZRUVmpEyClAvl0gBwZWAQp
+ N17HUb+UbroWHgQokfzr1PnxBiL4zqtEyWCkqeSmU+PbIfXzWfeT1+OdRn3F9/WdoRkDoSMkWj
+ UGM7bs/x9cwnsWamdWWVjtpVWltlTYutclr+UzrP7pBu5PWK9323vSWOunsM222dLeTNpV2jZP
+ RETqJG3pZll9X+str9wEAAA==
+X-Change-ID: 20260311-nfc-nxp-nci-i2c-restore-irq-trigger-fallback-cda942530c60
+To: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, krzk@kernel.org, carl.lee@amd.com, 
+ peter.shen@amd.com, colin.huang2@amd.com, kuba@kernel.org, david@ixit.cz, 
+ luca.stefani.ge1@gmail.com, brgl@kernel.org, mpearson@squebb.ca
+Cc: Mark Pearson <mpearson-lenovo@squebb.ca>, 
+ Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1779183174; l=3788;
+ i=carl.lee@amd.com; s=20260203; h=from:subject:message-id;
+ bh=AuJE8naMhN8VuJ0Xkt3hE9rAU8BuKShRUpf+0Ld/H78=;
+ b=+nkcf9jeJ6vKQ5w1r1mJahWWd1a9UhYHs8pHNRr6OI7EWQ0ABp+xQ5psnJJzSPb06KK5Gdaqc
+ m0/zySMbxyMA8Bphn4KY3AcN9/huCEfkvZaBPiR8o0HFZjkI0SHiQGS
+X-Developer-Key: i=carl.lee@amd.com; a=ed25519;
+ pk=pyq7QaQvoxMg806KVkRwpCbiah+7ncWr4MBpK1AEyjA=
+X-Endpoint-Received: by B4 Relay for carl.lee@amd.com/20260203 with
+ auth_id=623
+X-Original-From: Carl Lee <carl.lee@amd.com>
+Reply-To: carl.lee@amd.com
 
-On Sat, May 16, 2026 at 02:26:16PM -0700, Rosen Penev wrote:
-> Complete error handling for a failed platform_get_irq() call
-> 
-> Fixes: d51b6ce441d3 ("net: ethernet: add ag71xx driver")
-> Signed-off-by: Rosen Penev <rosenp@gmail.com>
+From: Carl Lee <carl.lee@amd.com>
 
-LGTM,
+Some ACPI-based platforms report incorrect IRQ trigger types (e.g.
+IRQF_TRIGGER_HIGH), which can lead to interrupt storms.
 
-Reviewed-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Use the historically working rising-edge trigger on ACPI systems to
+avoid this regression.
 
+Device Tree-based systems continue to use the firmware-provided
+trigger type.
+
+Fixes: 57be33f85e36 ("nfc: nxp-nci: remove interrupt trigger type")
+Cc: stable@vger.kernel.org
+
+Tested-by: Luca Stefani <luca.stefani.ge1@gmail.com>
+Tested-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+Tested-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Signed-off-by: Carl Lee <carl.lee@amd.com>
+---
+Some ACPI-based platforms report incorrect IRQ trigger types,
+which can lead to interrupt storms.
+
+Use rising-edge IRQ on ACPI systems to avoid this regression,
+while keeping firmware-provided trigger types on non-ACPI systems.
+---
+Changes in v5:
+- Add missing Reviewed-by and Tested-by tags
+- No functional changes
+- Link to v4: https://lore.kernel.org/r/20260519-nfc-nxp-nci-i2c-restore-irq-trigger-fallback-v4-1-8580d8e18016@amd.com
+
+Changes in v4:
+- Add Fixes tag
+- Add Cc: stable@vger.kernel.org
+- Link to v3: https://lore.kernel.org/r/20260516-nfc-nxp-nci-i2c-restore-irq-trigger-fallback-v3-1-37ba4b6e9086@amd.com
+
+Changes in v3:
+- Use rising-edge IRQ on ACPI systems to avoid interrupt storms
+- Keep using firmware-provided trigger type on non-ACPI systems
+- Refine commit message to focus on regression on ACPI platforms
+- Link to v2: https://lore.kernel.org/r/20260312-nfc-nxp-nci-i2c-restore-irq-trigger-fallback-v2-1-362348f7fa30@amd.com
+
+Changes in v2:
+- Add missing <linux/irq.h> include for irq_get_trigger_type().
+- Link to v1: https://lore.kernel.org/r/20260311-nfc-nxp-nci-i2c-restore-irq-trigger-fallback-v1-1-9e20714411d7@amd.com
+---
+ drivers/nfc/nxp-nci/i2c.c | 21 ++++++++++++++++++++-
+ 1 file changed, 20 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/nfc/nxp-nci/i2c.c b/drivers/nfc/nxp-nci/i2c.c
+index 6a5ce8ff91f0..266dc231c47d 100644
+--- a/drivers/nfc/nxp-nci/i2c.c
++++ b/drivers/nfc/nxp-nci/i2c.c
+@@ -16,6 +16,7 @@
+ #include <linux/delay.h>
+ #include <linux/i2c.h>
+ #include <linux/interrupt.h>
++#include <linux/irq.h>
+ #include <linux/module.h>
+ #include <linux/nfc.h>
+ #include <linux/gpio/consumer.h>
+@@ -267,6 +268,7 @@ static int nxp_nci_i2c_probe(struct i2c_client *client)
+ {
+ 	struct device *dev = &client->dev;
+ 	struct nxp_nci_i2c_phy *phy;
++	unsigned long irqflags;
+ 	int r;
+ 
+ 	if (!i2c_check_functionality(client->adapter, I2C_FUNC_I2C)) {
+@@ -303,9 +305,26 @@ static int nxp_nci_i2c_probe(struct i2c_client *client)
+ 	if (r < 0)
+ 		return r;
+ 
++	/*
++	 * ACPI platforms may report incorrect IRQ trigger types
++	 * (e.g. level-high), which can lead to interrupt storms.
++	 *
++	 * Use the historically stable rising-edge trigger for ACPI devices.
++	 *
++	 * On non-ACPI systems (e.g. Device Tree), prefer the firmware-
++	 * provided trigger type, falling back to rising-edge if not set.
++	 */
++	if (ACPI_COMPANION(dev)) {
++		irqflags = IRQF_TRIGGER_RISING;
++	} else {
++		irqflags = irq_get_trigger_type(client->irq);
++		if (!irqflags)
++			irqflags = IRQF_TRIGGER_RISING;
++	}
++
+ 	r = request_threaded_irq(client->irq, NULL,
+ 				 nxp_nci_i2c_irq_thread_fn,
+-				 IRQF_ONESHOT,
++				 irqflags | IRQF_ONESHOT,
+ 				 NXP_NCI_I2C_DRIVER_NAME, phy);
+ 	if (r < 0)
+ 		nfc_err(&client->dev, "Unable to register IRQ handler\n");
+
+---
+base-commit: 7109a2155340cc7b21f27e832ece6df03592f2e8
+change-id: 20260311-nfc-nxp-nci-i2c-restore-irq-trigger-fallback-cda942530c60
+
+Best regards,
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Carl Lee <carl.lee@amd.com>
+
+
