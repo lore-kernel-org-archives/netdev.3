@@ -1,99 +1,74 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3DB31C5D59
-	for <netdev@vger.kernel.org>; Tue, 19 May 2026 04:07:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C6EF2D7DC6
+	for <netdev@vger.kernel.org>; Tue, 19 May 2026 04:20:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779163638; cv=none; b=VJ7m17YWk+kvob0+Bwjy1uz0k2hnQLlUeOvFwEr4uNwERkZ/Hahewpot2P+2ANUm18DGHk4pMTz1yMZSo6WlLehM27+x1Gea4fcWuPNtdSi713fN9J6sD+BgDFs/TAD5GhytRB8J96rbO06hVnvaLEiPK4jAQfUuuNPCdSasb3M=
+	t=1779164450; cv=none; b=UiWneYQ6KMuxewJeiWjSyK4RmqTgUV9BmPZbV9tRK5wd935ONq+aiM17gOBbDekBqfelMnc6wPg19ef9qERDqrYCJGT+ppOtZr9R6NI2R0lO3YiDpuVT70Ho4cwYO1bH9T/AdSXUUmT7KeErf49gc2IuhNuDQeGE35QLKUreV+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779163638; c=relaxed/simple;
-	bh=dtwft2ZAn+emgpNWFam/8M0EFSFiw1kKcLaYVRyaKC8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CUnDkxDfJboTMRb6IdkSGQwPHCrpcY4KoTA03PrvpdOkmAWtDsGO2gkKWBqg6uNQ7i4lykIacYssD3BTp/9xAoFM73X5E6ih8SBneH5sVnfp7HFYu42WRmKGHxtWcmGVsCQ9Ip2nUHRrrt9uHBJzyRw11IvWASnf2Ewo9+mP4K0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=PKT2RwJ1; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=fr93tShP; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1779164450; c=relaxed/simple;
+	bh=LiV0xUqYF1sDgcQ4JGiJk2vaMfz4EW5Z764wJBePVXg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Kuwp0R3mY88eXKEpV9Swdyp7x4++e95HO4dyxx/FUXByuwiR/1vdH4URid2Mh+B2RwN0+ZDdprdbgndQtPuYjeDNtQ4r/oiO3h4X8o9m07wlFBe6KSJvK/FohJC4R0DkQpsvmnW4JHDGE4GF2/UwFo6Ba3E77lcCrc9+kbaDwao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mN+9HMmP; arc=none smtp.client-ip=209.85.210.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="PKT2RwJ1";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="fr93tShP"
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64J3AC1W2091009
-	for <netdev@vger.kernel.org>; Tue, 19 May 2026 04:07:16 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=qcppdkim1; bh=dtwft2ZAn+e
-	mgpNWFam/8M0EFSFiw1kKcLaYVRyaKC8=; b=PKT2RwJ1EDSh07DUg/jgthv571S
-	CGJitNzFkNsvVyjc2eF5+yWGiLKSeAP9zC0UtXe4OoNQQqI+n2wz7kztstjFq6Ox
-	DUB1PPcumZ8zBXYRjqvRL78Qk633UEBYjbj72DtCCCd+vSEZmHVWPmaBKJPvc/p2
-	mO1W3nV87+j3bOXqcaJGlfuixi3K1wYZyMyznxfd7ob5EPd4hGXVV13rqushjwo1
-	wh4vFsXktOrMoitQzwyKLHYtxWCB/y7VLeePepUNyPUzX7QnVjpe7g1DnrYmpYmE
-	t4KPLxr+GQcVztXzyvr/Xjqro0VQylBjMW11S6VMyT+p4TIE9h/aOQX8mCg==
-Received: from mail-dy1-f197.google.com (mail-dy1-f197.google.com [74.125.82.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4e80rpkkyt-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Tue, 19 May 2026 04:07:16 +0000 (GMT)
-Received: by mail-dy1-f197.google.com with SMTP id 5a478bee46e88-2f2d983d109so13286697eec.0
-        for <netdev@vger.kernel.org>; Mon, 18 May 2026 21:07:16 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mN+9HMmP"
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-8353fd1cb5fso1443040b3a.0
+        for <netdev@vger.kernel.org>; Mon, 18 May 2026 21:20:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1779163636; x=1779768436; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dtwft2ZAn+emgpNWFam/8M0EFSFiw1kKcLaYVRyaKC8=;
-        b=fr93tShPSx7YxO4lAeBBcPOz6Q1n+awEAz+ZCsYeUEMNVFFGL2z0z/f2/V90VhQs+P
-         4LaWKo33zUIl5tSDD9BnlvnnsG/sGBdhMATnMQiW6qYxKcWxAceMwR71igkhZHOKotEA
-         r7hZ39cUzJsZi3vcHTfb4jakao4oYDskP9BtpHIo2YD7YHYqZ+nN3GSIi8m3kCfh5NQY
-         w7re6sPTycTjmxhAM65Kug9YRXaPgOs1Kd7O++Ww4ctGD+X+emKPygnZjPxw7ON7WKjz
-         wk+elD8gHil+a83iCFJ0A4b8Q4a1yRdkJREAhxNVvMQhKMIWXjVlbaugGWQKqr0N+Flv
-         Nxjw==
+        d=gmail.com; s=20251104; t=1779164447; x=1779769247; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=YUFBQc52UJfk2XrsTn834tkvWEs3F4USHaB2v8AXGtk=;
+        b=mN+9HMmPwfWflA/7V+bxot6Y4Hn438kqmFqWq2bw80NYUjYm/3J1Gxto+O/muGvWuo
+         OxJUihMzIi5Alo3NMs2cw2VHEIbgU4Mi/dwFz2ycRazpYswheoQUQ1coLAFQ/ojOZNwr
+         LCv+SSpzQIxl4ufz6zbZbaM3Jcgvds6sIgICsa/9OymWQUqZ4oZzM9DaVBp/9NjNW0wb
+         WcDvOVCRbbsOApabXyUjWNfPAiOioOTj9rJbh2p1uA/XdO88/+LIpluveUIwOFNyHD2z
+         ECaet5dPLoOKGWT/tSS17wzKjnTGjxxmNi+7oKIiMyUJnUYXIXzz7YnqshMxPSJTrNmW
+         tPLw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779163636; x=1779768436;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=dtwft2ZAn+emgpNWFam/8M0EFSFiw1kKcLaYVRyaKC8=;
-        b=Bf2gYS+Z4V6d7nbHrXYsmj6AGYoxkPvywPWK5mxqw4gB/kHbsKSr8Nx3iDLFUQuHZr
-         Ukfjux8HbM/9ju8pBkad2zHBF9WzdQAMgM0mD3qOtAv0zZgLNxYjSArAYnhq9995p0ab
-         STGqV+GmnpPfZA3OQRcmlFKSFkJnWnZRq/tgflWiWJjkleE6EKicMX1DpzXaps/jasPP
-         3zKTgXF8d50WTqpSYepEGYyy4j0B3bkkWHj+JXga5KyxY1OkkvkMFqZrA/IjKn0varlp
-         gDKAzMG1Cu6QbQTFTyRHZal/UzGMlEb/S6BhvlE7bceqqrU5De3KVxH3fBbZJI8gpe2H
-         ewSA==
-X-Forwarded-Encrypted: i=1; AFNElJ8OhJjbf4ABmfJ1blSP0KrxQmwWFEWbJdZ56m8B6uGbPfBfkmLWnmYPlh0aXP6ZaYHXd7puQTs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzF28EQtzsuFGpxNqIQJ53OcVDclp/MR/KfW62V93hy3hLfjN5U
-	jA+cN9wHCYQngf4pwn1anBkOWkD50aEYmh6vH3QuYbhlquNrtmkoF35p5QmdN6NXTGFME5E0Fpv
-	bTsnjSbzDT30Qfzquqx/mIKzHdqxIdmhA1D/EJYj2LGogOGgbPHLUQ8ACQx0=
-X-Gm-Gg: Acq92OHmJ+/2m0TSvwYNBk1uEWGSUAZdxE0Me1H4TP55865W9VAGTo2JFw9glATPbHJ
-	mCqBxoO083wftbPgkZpHNKTnJrzjYfujWlU1PVXUE9xpMN7BzfFcEdrtdgEl9/iXkYfY8/qcCfb
-	Ls0b0kYeYcQSzXKnkOAxpBpzsXHZEEMUACG9mUzEgweqlUc3Q1k0w40UHCiDlEvZNf2K3rYAlwW
-	YrLUk198PcBPxFeCX/T+hQHiJFeChh3utpR3QRlAtiOQjoihXVbtbt4/6XgjuUemrswVJG0WNOq
-	Kt2dNulzIZl61dVfpVRb6579mkc/28YIGrjOoGyoH7o8q/p3ciwnadR1SjG9T04NpSGl0cOyQoW
-	sct65lLItgSnGNwlJ/tuyH7aaMY8C1CdtdRFV7jMpztoSvPRlc3WxsVkg61r70zvJyy8NMU6qRd
-	/XgyBFs+/hog==
-X-Received: by 2002:a05:7300:dc03:b0:2f5:5907:3a49 with SMTP id 5a478bee46e88-3039867718cmr8011764eec.30.1779163635610;
-        Mon, 18 May 2026 21:07:15 -0700 (PDT)
-X-Received: by 2002:a05:7300:dc03:b0:2f5:5907:3a49 with SMTP id 5a478bee46e88-3039867718cmr8011738eec.30.1779163635062;
-        Mon, 18 May 2026 21:07:15 -0700 (PDT)
-Received: from WOSSA.na.qualcomm.com (i-global254.qualcomm.com. [199.106.103.254])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-30296dcb6e9sm18592694eec.16.2026.05.18.21.07.14
+        d=1e100.net; s=20251104; t=1779164447; x=1779769247;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YUFBQc52UJfk2XrsTn834tkvWEs3F4USHaB2v8AXGtk=;
+        b=dVwITiiW9Pas2xAcV+FJFeaSPwu3pAV0rp99P9AwwFaxBhx8wwuS9WAvczxlgQSXkg
+         mdkoXR9gk9wZ/Pd5gBEWrT49ulYFk/IE3iepteAe5MIP+GhGnlpWREcMLpu3LZOGXJKS
+         FWQ118gMZk1z+NeH7YFn9Ve8dQkRe1Jyh4x5KSuD2ZjM+Cc++0ec/7KkPLl1koOjqo++
+         EwJeVk1OZeh8I6SMRiPYagtU6oeZ5Sk04FCZpy8sbzDeX214miWO4FPTBqE03eotBGQo
+         0W/L2UjhbScIhLs7AaJmQLYJoElVjxfT1SbeiKAqWSvWPYWB31zkx0EYQbZfp9F+ylPf
+         eeNQ==
+X-Gm-Message-State: AOJu0YyBK1VOAKFEN7WQ5rR+KJsCqUep72JHawBM/Zi+FL4M1YFoTu5O
+	gDlpzvxvDncEK2mGDzMEhuSW5ZxvVjXE1vaBH/jBbYgLZouCvQ5g98TC
+X-Gm-Gg: Acq92OF7OxJWVP+e6zWt15Skhfjg8/d/zYcNENbAZvhq2eiu2qRE8AYDZZx+FQZSYY1
+	+NsNyD7N8JDlitguXmjIzj/7dChrspIdvfxsMF/J+jtiBn1vQBgklgvh5+zvSTaZj4/XNS8aWgA
+	I/ta1FvykD0QAAUJC2+U9zzN5AwFF8a7Ns73WATI6tC+ph6ssuxUQ9h5qDq8OnUs/GaIUFClbme
+	wpNFbleS68X6IMypCBVYzsYlnRVlx9GrKLiy/lGJkAV9JX38NJQSGax2/w7dyeb/9caFnAA3/CK
+	0S3HzTK1IudnRCdA/wqw/m3SGFo2dqqiXVm5/73ToT8WyqBUoa7AFgNWiGieJKr1/yaMylHqHRx
+	LP+opTHvEX2HUVRXN9jVpZK/uE5eDjCYrg5ET+g2aKXz22VzmgVbX/2LGhPzN+JiGBSHukdMSTG
+	eYzW/saBKrIqpZoKrLaQqJdFPniEGfr5teHnh3nvCeiLyljAGPNAj5Uwgd91+GqHJzqCutzn6wY
+	Q==
+X-Received: by 2002:a05:6a00:2394:b0:82c:7420:82bf with SMTP id d2e1a72fcca58-83f33c8a27amr13455006b3a.19.1779164446475;
+        Mon, 18 May 2026 21:20:46 -0700 (PDT)
+Received: from node ([202.47.63.86])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-83f19c5b4bfsm16929148b3a.28.2026.05.18.21.20.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 May 2026 21:07:14 -0700 (PDT)
-From: Rajat Gupta <rajat.gupta@oss.qualcomm.com>
-To: imv4bel@gmail.com
-Cc: aaron1esau@gmail.com, ben@decadent.org.uk, davem@davemloft.net,
-        dsahern@kernel.org, edumazet@google.com, herbert@gondor.apana.org.au,
-        horms@kernel.org, jiayuan.chen@linux.dev, kerneljasonxing@gmail.com,
-        kuba@kernel.org, kuniyu@google.com, malin89@huawei.com, mhal@rbox.co,
-        netdev@vger.kernel.org, pabeni@redhat.com, sd@queasysnail.net,
-        stable@vger.kernel.org, steffen.klassert@secunet.com,
-        sultan@kerneltoast.com, tanjingguo@huawei.com,
-        Rajat Gupta <rajat.gupta@oss.qualcomm.com>
-Subject: Re: [PATCH net v5] net: skbuff: propagate shared-frag marker through frag-transfer helpers
-Date: Mon, 18 May 2026 21:02:32 -0700
-Message-ID: <20260519040232.1395-1-rajat.gupta@oss.qualcomm.com>
-X-Mailer: git-send-email 2.51.2.windows.1
-In-Reply-To: <ageeJfJHwgzmKXbh@v4bel>
-References: <ageeJfJHwgzmKXbh@v4bel>
+        Mon, 18 May 2026 21:20:46 -0700 (PDT)
+From: Muhammad Bilal <meatuni001@gmail.com>
+To: linux-bluetooth@vger.kernel.org
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Marcel Holtmann <marcel@holtmann.org>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	Kees Cook <kees@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Muhammad Bilal <meatuni001@gmail.com>
+Subject: [PATCH] Bluetooth: RFCOMM: add minimum length check in rfcomm_recv_frame
+Date: Tue, 19 May 2026 00:20:17 -0400
+Message-ID: <20260519042017.29564-1-meatuni001@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -101,40 +76,71 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: _UrZZNA2xXjO77z0AcAjhzSX0765tcy-
-X-Proofpoint-ORIG-GUID: _UrZZNA2xXjO77z0AcAjhzSX0765tcy-
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTE5MDAzNyBTYWx0ZWRfXxQrcF3VRA7Nv
- Ow2FxKftNgI8u745WG0/ciiw4Dxxz2Mw/Tkm6hoYYjOH4wGrhnAtLz2lofrAbQ33y6+xLLika7P
- TwxRdk9qm0wzeBw5o88Hc3wPnnXjmlfFAigX/+sOcCZjYtqYDa6u2Ve0nIwk43Z9iide0VDYydL
- B7R03ycH2FMk2PJ1vJi58vNyh0bfinpuJgux7QkQsCvA7iB05fj0pXt52uiB962HDppuVSPauZi
- CMZJcXkS4zmRCmyvGB10qMU/DaID3GNm736IHpCJ1w8t8X9ClAw1Q2v00AhbDmj0XqFkSXzUEtJ
- LVfVJ0aBRS/eXsm+EklkXnkaSu1WrlwqXnHzEfOkMNfB/v1zJz/C+NnzqNoOJfQZpPSsW8RrLI5
- m3RNe3SMHvU6OUO7L6gUuiGesL2scRTebHPu9EMDBsY+XjFj6vJMTCawBOBpAsggS2bYBH17nCF
- DYC/jSmZyVVAWFqCn+w==
-X-Authority-Analysis: v=2.4 cv=ecMNubEH c=1 sm=1 tr=0 ts=6a0be1f4 cx=c_pps
- a=Uww141gWH0fZj/3QKPojxA==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
- a=NGcC8JguVDcA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=gowsoOTTUOVcmtlkKump:22 a=VwQbUJbxAAAA:8
- a=EUspDBNiAAAA:8 a=qQm7GNJJ0ztNeIs_msoA:9 a=ZXulRonScM0A:10
- a=PxkB5W3o20Ba91AHUih5:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-19_01,2026-05-18_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 spamscore=0 adultscore=0 lowpriorityscore=0 impostorscore=0
- phishscore=0 priorityscore=1501 bulkscore=0 clxscore=1015 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2605130000 definitions=main-2605190037
 
-The skb_gro_receive() and skb_shift() fixes look correct -- we
-independently reported both to security@kernel.org with working
-LPE exploits confirming they are exploitable from unprivileged
-user namespaces.
+rfcomm_recv_frame() casts skb->data to struct rfcomm_hdr * and
+immediately dereferences hdr->addr and hdr->ctrl without first
+validating that skb->len is large enough to hold the header. A
+remote device can send a crafted short RFCOMM frame over L2CAP to
+trigger an out-of-bounds read before any session state is checked.
 
-Could you add the following tags when respinning or applying?
+The FCS trimming code that follows compounds the problem:
 
-Reported-by: Rajat Gupta <rajat.gupta@oss.qualcomm.com>
-Tested-by: Rajat Gupta <rajat.gupta@oss.qualcomm.com>
+	skb->len--; skb->tail--;
 
-Thanks,
-Rajat
+If skb->len is already zero the decrement wraps to UINT_MAX, causing
+skb_tail_pointer() to return a pointer far outside the skb and
+producing a second out-of-bounds read when the FCS byte is consumed.
+
+Add a minimum length check before the header pointer is assigned. A
+well-formed RFCOMM frame requires at least addr(1) + ctrl(1) +
+len(1) + fcs(1) = sizeof(struct rfcomm_hdr) + 1 bytes. This single
+guard prevents both the header out-of-bounds read and the skb->len
+integer underflow.
+
+Note: SeungJu Cheon posted a related patch that adds equivalent
+length checks inside the individual MCC sub-handlers
+(rfcomm_recv_pn, rfcomm_recv_rpn, rfcomm_recv_rls, rfcomm_recv_msc,
+rfcomm_recv_mcc). That fix and this one are complementary and
+independent; neither subsumes the other.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Muhammad Bilal <meatuni001@gmail.com>
+---
+ net/bluetooth/rfcomm/core.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
+
+diff --git a/net/bluetooth/rfcomm/core.c b/net/bluetooth/rfcomm/core.c
+index d11bd5337..6b300237c 100644
+--- a/net/bluetooth/rfcomm/core.c
++++ b/net/bluetooth/rfcomm/core.c
+@@ -1741,7 +1741,7 @@ static int rfcomm_recv_data(struct rfcomm_session *s, u8 dlci, int pf, struct sk
+ static struct rfcomm_session *rfcomm_recv_frame(struct rfcomm_session *s,
+ 						struct sk_buff *skb)
+ {
+-	struct rfcomm_hdr *hdr = (void *) skb->data;
++	struct rfcomm_hdr *hdr;
+ 	u8 type, dlci, fcs;
+ 
+ 	if (!s) {
+@@ -1750,10 +1750,17 @@ static struct rfcomm_session *rfcomm_recv_frame(struct rfcomm_session *s,
+ 		return s;
+ 	}
+ 
++	/* Minimum valid frame: addr(1) + ctrl(1) + len(1) + fcs(1) */
++	if (skb->len < sizeof(*hdr) + 1) {
++		kfree_skb(skb);
++		return s;
++	}
++
++	hdr = (void *) skb->data;
+ 	dlci = __get_dlci(hdr->addr);
+ 	type = __get_type(hdr->ctrl);
+ 
+-	/* Trim FCS */
++	/* Trim FCS - safe: skb->len >= sizeof(*hdr) + 1 >= 1 */
+ 	skb->len--; skb->tail--;
+ 	fcs = *(u8 *)skb_tail_pointer(skb);
+ 
+-- 
+2.54.0
+
