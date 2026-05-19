@@ -1,128 +1,133 @@
-Received: from relay.yourmailgateway.de (relay.yourmailgateway.de [188.68.63.166])
+Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010020.outbound.protection.outlook.com [52.101.193.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD53D3A963C;
-	Tue, 19 May 2026 11:01:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.68.63.166
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779188511; cv=none; b=QtSRINb+y6OHt7C/wem7vBaIEG5CccfNhcSW+nBs4NyB6aQpzR5Nl4vUaqjVNk6t3jFMBqNOTXpeeQihqwvynPeOQGJWZPt22+8jIJ/ZKEYH3B0Ig0vXzx2+qZ5lkEP9TacayV/lUEMp0YZHkreDZ0pugIbmMwAij6v8PP/Q9dc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779188511; c=relaxed/simple;
-	bh=UvKTp4x0mCge/k9ULQ3nfbUrbKhzzezk9rEfjTIgX4I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cSjGdjU8BkCewYeRfai60wJTqIXw2eQ95jx4sBKIZulza6Kvc9VrL8vp0uQiaJVHfi2TR6kIX2Vn3OyVlSiHDo0LY7seTVuSVOIyRId6U9uQckAAXi1l0+LCFy6BbJfdGn6Gh9zXr6mW5KczFf9ae0SBo9hBR8LI6q86n64LVZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=kOjQWObS; arc=none smtp.client-ip=188.68.63.166
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D9F83DD503
+	for <netdev@vger.kernel.org>; Tue, 19 May 2026 11:02:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.193.20
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779188536; cv=fail; b=ux6ebTjwgKelE+EB0z8qY589kgYB+v0HB8WBGQtmLdM8xqVS0eIRH45wQdz1xFWKXXApIy25j8WLL81hrLS5LrbeKCOXM9G/DdEbDRW8GB+ah5xhEV5A0c6MQ0rDghWyZV2vGAaAZ5baDc9Ykvxsy5Rk526Z1B9xhOWR2ChVNd8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779188536; c=relaxed/simple;
+	bh=MQKX6OQvk/aOBUZ4V/DPBpQSod17RdonxOQALYNmbMw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=PS42r4QD7UypkRSx1OUvkUqJ1hcnoTtODjZMYYeG9PXNMf+8vC9h6jWi83+5umxMkeihMIt3xm8+GAxih4YAxaSaouWFSxo3NAlIM5z/Ak0Z9InPG+ocajj2XswigXpLAkK6mMAnxRggT3V0Sk1tCUmaEJ2ezpvbtAksiId3hcs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=pvIxDIGu; arc=fail smtp.client-ip=52.101.193.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="kOjQWObS"
-Received: from mors-relay-8202.netcup.net (localhost [127.0.0.1])
-	by mors-relay-8202.netcup.net (Postfix) with ESMTPS id 4gKWkS18FKz44SK;
-	Tue, 19 May 2026 12:53:52 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=leemhuis.info;
-	s=key2; t=1779188032;
-	bh=UvKTp4x0mCge/k9ULQ3nfbUrbKhzzezk9rEfjTIgX4I=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=kOjQWObSkNRSY6GpO9V1lb+edbSnAgNSMZrmsa8fhyxRC+yJP6PCF/xtPa/n9DVeN
-	 O9qkeH2Kx41hiXXph4CcNbEsq+nM7dbVuVM100n/+P20NEeF5rUryKXjcoMOXwFPy9
-	 IPmf6i5OT+DCg78mlGT+i+epBGKvphvC+aHWYjqw5lQXiMM1f5MDzKqIVZuQGDlcmo
-	 mCwEG4R5KsclNKZTGn15qonz/kMR2CAiOfW3wa1AVHhCeOOb0wpT1Zhlm0MPPeF7hr
-	 h6cenmWmMvCAEpIYXt9Am32RuFNNF5LT3uvfV/EPkXL1JXXhPURfhnExAh8xGttreZ
-	 TcV7ksRFU8M5g==
-Received: from policy02-mors.netcup.net (unknown [46.38.225.35])
-	by mors-relay-8202.netcup.net (Postfix) with ESMTPS id 4gKWkS0Nr9z44Lf;
-	Tue, 19 May 2026 12:53:52 +0200 (CEST)
-Received: from mxe9fb.netcup.net (unknown [10.243.12.53])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by policy02-mors.netcup.net (Postfix) with ESMTPS id 4gKWkR1Zlnz8sZw;
-	Tue, 19 May 2026 12:53:50 +0200 (CEST)
-Received: from [IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f] (unknown [IPv6:2a02:8108:8984:1d00:a0cf:1912:4be:477f])
-	by mxe9fb.netcup.net (Postfix) with ESMTPSA id 25B7761840;
-	Tue, 19 May 2026 12:53:50 +0200 (CEST)
-Authentication-Results: mxe9fb;
-        spf=pass (sender IP is 2a02:8108:8984:1d00:a0cf:1912:4be:477f) smtp.mailfrom=regressions@leemhuis.info smtp.helo=[IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f]
-Received-SPF: pass (mxe9fb: connection is authenticated)
-Message-ID: <eb5301f9-3133-4fe3-b358-61f14d1ffa5b@leemhuis.info>
-Date: Tue, 19 May 2026 12:53:49 +0200
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="pvIxDIGu"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=H0yKSMQj5emXNcERvN+jru3L5JrxPHp/MzcWnuTqlwbhMYD7HhtXOv5xoYCT9o+FmaeZDXQVzwieEfueRbGfXwg2l88oJ9uF6b9DXXC2S41rUoGo/m+0U0SzzIl2AffiN74+L8rozfVa6jXeTc8wp1xAASIeEz22qRiW0rexRkIksjt81P/lSN/PdNjapy9g8nZ2M+r9z0CEotzOFF77ooH6SS2tuCqZP9+DzySzfxnJQdIR/3HxFoHidvgyEqyHcpsEfPhDleIsaS241f5sRAu6P5C3NqUOpll4e7p/2gTMrPnRXy2T4tp2a0UqIk8e+ohp9aYoSO6h1GfSJVwM1A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=SLXxBysE+1lFmA3sb4UPoSHiNq5MkuMCErB1cSBB/Ds=;
+ b=QWt42fAwEfx2eI2kzg9b6GNAq0Nm1RrEWQ0UYPNrGYPVh259hQrnwqz9RGZef2qtHpXoadIk9FtQp6dkjHxiv4MXaUT+TH1EKulEXgnolXZoJIZNRJHhtFmeqMz9U0p8zPC/uCLZDkD0klvg234xwHto1Kt/YLYn7QFlBKWU5ZC/8hm7ElShAQezhvqL53Sb/ZP5nNw7qbUYkId387wKXNsVOoMPi2tooYgqMB9AEam30ZiHS8idvdlSi6+8/S+xT3VLxzdf6R6SbC6SFozoG8B5/Urj085xa2xSlKdCLivSjnlXNf3uPQEvWYR5nLm7SXQ4jhWPPi9ttX5Fk3+Gxg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=SLXxBysE+1lFmA3sb4UPoSHiNq5MkuMCErB1cSBB/Ds=;
+ b=pvIxDIGurArZSGOp4ItcEcX2TKzigHwFTRhjXi+7ugY27eJ8CIOwsGQg+BKamhUohgfgzNDRy0+xEF+UaDGeqJUD41RJQIV39DBFPtuC6Hd0Vd9RngKdsYvHuMT79U6SG2B9mkvmuapM0iEoQ30YLVd+nTg+s6Nn1GElgELuCV9eb1ATI4k2eSOGKH8dhFjaPXM5DfHoAY0EHZrF0hpbqNkYH+TsUbW1vzbG4KXTYg7nvBZlNm4YJVqZC2uvq2B3HQjm5spoN8Yn7TsqFkRWXK6KEGaPzXUKbJbZH58ySnMSSrJoLHKitT2OGpkZYsd+UMcwjXGJbO8ZXLQV4hfy0g==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DS0PR12MB7900.namprd12.prod.outlook.com (2603:10b6:8:14e::10)
+ by CH2PR12MB4119.namprd12.prod.outlook.com (2603:10b6:610:aa::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.25.21; Tue, 19 May
+ 2026 11:02:10 +0000
+Received: from DS0PR12MB7900.namprd12.prod.outlook.com
+ ([fe80::3033:67fc:3646:c62f]) by DS0PR12MB7900.namprd12.prod.outlook.com
+ ([fe80::3033:67fc:3646:c62f%5]) with mapi id 15.21.0048.013; Tue, 19 May 2026
+ 11:02:10 +0000
+Date: Tue, 19 May 2026 14:01:55 +0300
+From: Ido Schimmel <idosch@nvidia.com>
+To: Eric Dumazet <edumazet@google.com>
+Cc: "David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+	eric.dumazet@gmail.com, Nikolay Aleksandrov <razor@blackwall.org>
+Subject: Re: [PATCH net-next] net: bridge: remove stale rcu_barrier() in
+ br_multicast_dev_del()
+Message-ID: <20260519110155.GA415776@shredder>
+References: <20260519095540.2643318-1-edumazet@google.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260519095540.2643318-1-edumazet@google.com>
+X-ClientProxiedBy: FR4P281CA0419.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:d0::18) To DS0PR12MB7900.namprd12.prod.outlook.com
+ (2603:10b6:8:14e::10)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [GIT PULL] bluetooth 2026-05-14
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>,
- Sasha Levin <sashal@kernel.org>, linux-bluetooth@vger.kernel.org,
- netdev@vger.kernel.org, Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
- davem@davemloft.net, kuba@kernel.org,
- Linux kernel regressions list <regressions@lists.linux.dev>,
- Linus Torvalds <torvalds@linux-foundation.org>
-References: <20260514172340.1515042-1-luiz.dentz@gmail.com>
- <f5cf1c30-48a4-4102-ae00-b74cf02e639e@leemhuis.info>
- <4946f5f3-b7e2-4949-89f7-6427015027c6@leemhuis.info>
- <2026051954-revision-sierra-6bb4@gregkh>
-From: Thorsten Leemhuis <regressions@leemhuis.info>
-Content-Language: de-DE, en-US
-In-Reply-To: <2026051954-revision-sierra-6bb4@gregkh>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-PPP-Message-ID: 
- <177918803061.1343717.15758093569918065765@mxe9fb.netcup.net>
-X-NC-CID: 5/lidQX7YWK2JsbqflFpPFEJrT/M+G2UxvrEQe6WMwPRweMqOoM=
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR12MB7900:EE_|CH2PR12MB4119:EE_
+X-MS-Office365-Filtering-Correlation-Id: 58bbd444-a3c4-49df-e10d-08deb5961313
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|1800799024|366016|22082099003|56012099003|18002099003|11063799006;
+X-Microsoft-Antispam-Message-Info:
+	WPEMOie5PGf4JSLc4bs7eEG8a5T8e/URb4pdegPFIYYdaoCGv3SNLbjYi5Tzpn2jg4AXYyUjOV9kU4NxTIoIBCuPz2mcFYpMjBNx6ucWmAYYctiaFkoa+B/Oh3wcY8QNxI34iRMu93/LZbQTxw71PKZgMN9cnpI2RtmH8OnR4BO9neElwAueQsqWEtjNu19QhnWjxUWIvMGrBfeET+HpHC5/tlR2q9XKS+cKKBbiM27G27lyQyNGHfZROhH97ckSDpYlIe/FClm1govXdFm5D+fswUmffnnpmrNbD8RTevrFufgkqtKK16iY+Tu3tDkuN/rMu7f5VUZL/5sU2Zba8L3nL9WzkjZcRtwgs4MAzh/NnerTANtRWqXVDhdjYtMH+RTaUeF6Ds+NcHstjpkCP+G+GRFOr38670r+z755T2M2pXgrqqMTpGLR/QfPgjjXdLSmadDLXejfjXSFbCyX+8OmHV2IJYjokxzg+0UuorotIBtWU6ab+5oSJTyQAj8cW8PMrr3a5eGuQo4x3I6eREO1q9D00dAjikQVmAyJTQ7kycHKFqsp6NIwoQzHRzcdA3X/MhqD6fxB7q1H5MkhdM7lSpLs38nmtTLJvMl1NKWrv71dRnOr1QzUxAssmzKXBaejRY6AS/D/yKtbVId2DjM5NzecKSFqODGKVdtViCgnpGVKdkM9kQLz2Sq3z9Ii
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB7900.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(22082099003)(56012099003)(18002099003)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?+vFzFQtrxiU9cdxk0ux7bAdelbW+6/Jikr7xLo1rkxNtQdfMPjVngH9ZaOvr?=
+ =?us-ascii?Q?VgYy55bxk6j2Z6aAWqV40SXJH7Rpo6djFJj9sajpNTWIqK/qa5TNMgA18bt2?=
+ =?us-ascii?Q?CoqOD7t2OoZAxxQCvV54+uJNSY/vQy/gMQCmIAQKS1pJw16rph4g/5On8g2i?=
+ =?us-ascii?Q?Mv5doFhGaCh3G+/0oW5PAyvnzwTPT1puckh4TcVj4VfeTZ0Z3IoSlPub1s+x?=
+ =?us-ascii?Q?PKbkbiF6oGcnS72uq8iY0wX3FPB99rCCHkpiZLFkB4KogKqfUE+dEtqqSINd?=
+ =?us-ascii?Q?SB0WKIpLMqbJQwr3s0TmCoLaJkOn+azhmGMcFoeuuxqV49b9QGVFVMtaZH6w?=
+ =?us-ascii?Q?ADlsFIEW5emORwIeq4s90EbBDM+FxdPXdwQ01SZ2nEgeyv54DijQpyfVGY2I?=
+ =?us-ascii?Q?8h1GGlVBAMqTzedRio1E7r0i/MiqZoWpFs2PghJVt4vWP7nTn0pvzwRjcpRm?=
+ =?us-ascii?Q?QU5Qj/RcoG0Hi6b/GQ584vQA88gVeqj/cybGJ9tEsV0R+AgnqbIB+2EKF+r4?=
+ =?us-ascii?Q?xE9TiErpOhrx2U1M5WecnJ/HiYoawVSBx4SryrNmnxrlB6mBFVQ0R8uFp5Jf?=
+ =?us-ascii?Q?fDKT4Wmg2et9MhHpcszV+vbTJ7Cw2kDUsW2AHkLl1B8+Iyz/vlIpMNGdzD68?=
+ =?us-ascii?Q?LkjxB/BDpozQR5SUoxFeR4MO5pEnG99nmCjBtAncSE10+fk+Osh6VJ+KaA7H?=
+ =?us-ascii?Q?abB8L2m6KUP2hLDWYvtf6TPk1j/PlhZ9u/WrfA8WbTiQmAWEw6Z2Ob4Rph+N?=
+ =?us-ascii?Q?RLaAFwCst6nXqBhyG3BwLKmZ5L6kiCeaAQvV+eQ+bqcFjVVfCfOFZ5T/yrfT?=
+ =?us-ascii?Q?1x7pR9NwfeYAF7NMR4qjfcvEJPw6P7aAa0DfwrdELrXuSKSwcrDCWuLnjuhh?=
+ =?us-ascii?Q?dZcHWt7AZW90iZ/foA9Plq9xDuaUzThLCs2+e15AjljSYlprc1xeMfda/QnW?=
+ =?us-ascii?Q?XhVzN/v35iWgzGkIYheKtnwg82Doop5+HtIFS3dgDZdmOvwj3SPC2nFSqJMU?=
+ =?us-ascii?Q?aP6e1Rwr7uZXZlVQqz8aZUuee75qtDwszU4WDJcANFnwrteDGF/Ez04K0+xH?=
+ =?us-ascii?Q?D43E/AW3HUcLR/54bTvVeg1U5Nani+VJ9ZLJ8lPvWC+tdm1iPKD5BL2Zy2fk?=
+ =?us-ascii?Q?Og/HQE1qcJSTAoFZMhKHS5/5Pg1hKw/1TLlwGH0KYxeh3o2EDZ7d9AGJ8ON2?=
+ =?us-ascii?Q?aoDsLi5/EFAQRJAhjtNFHfip8/i6V6hkAohuoRquhj1fPH55UtbwShgL1wY+?=
+ =?us-ascii?Q?KQCh1lh5AUQeon1bdqNvAWABwI3mtfVd6hiLiGFMpYhBCbEqXoYDcn3Z87Jx?=
+ =?us-ascii?Q?YWlN37TG1YyqT3ABZb29O8Ww0VVQVkzq/7ae4ADaH5wBZS8TUDOXCvr8WQBp?=
+ =?us-ascii?Q?JsaNxLHpR3brOrs+9TlrtNrxMektMDSZjwsjt6ZuM4ftY4CzehJ6rkuxAjB0?=
+ =?us-ascii?Q?/xmRBdfakadD62BNWC3fA5xyHLIw9v4g2setNMWbWh9rg1jsVcKJrssGEgG1?=
+ =?us-ascii?Q?JBFhXrhVoyRNMGpfjdOr/30kcIvcZ0ZewbnsYQD95j7jbJLzp1IMsKUNUaOq?=
+ =?us-ascii?Q?GbhGS+iX8dQumaz+S2jFmrD1kegx6bCA4sNsO2nrbte4P3aon51gq+7mYs1z?=
+ =?us-ascii?Q?zsw0Ox9eb0ZwuJXBrptX3a9AuLJLix8p5/kX+mihrs+sllHMJxPHywGJxmLP?=
+ =?us-ascii?Q?t1gwBrPydJbROfYUdPIcShOLSLJ2vRpkRx7s3pzkOWtq0183?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 58bbd444-a3c4-49df-e10d-08deb5961313
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB7900.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 May 2026 11:02:10.6050
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 2Gm3TXIbCsTENTGycLwnDltSUmFeKED0B2p90MonptEI6ftad1LSb5mbJTIjSZtre2urSuNJjjxJ/yjaAjppcg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4119
 
-On 5/19/26 12:30, Greg KH wrote:
-> On Tue, May 19, 2026 at 09:04:38AM +0200, Thorsten Leemhuis wrote:
->> On 5/15/26 17:10, Thorsten Leemhuis wrote:
->>> On 5/14/26 19:23, Luiz Augusto von Dentz wrote:
->>>
->>>> The following changes since commit c78bdba7b9666020c0832150a4fc4c0aebc7c6ac:
->>>>   net: phy: DP83TC811: add reading of abilities (2026-05-14 15:17:12 +0200)
->>>>
->>>> are available in the Git repository at:
->>>>
->>>>   git://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth.git tags/for-net-2026-05-14
->>>>
->>>> for you to fetch changes up to 375ba7484132662a4a8c7547d088fb6275c00282:
->>>>
->>>>   Bluetooth: hci_qca: Convert timeout from jiffies to ms (2026-05-14 09:58:08 -0400)
->>>
->>> It seems this PR sadly came too late for this week's net PR to mainline
->>> that was merged yesterday.
->>>
->>> TWIMC, from my point of view, it would be great if we somehow could
->>> still get the changes from this PR or at least the btmtk fix it
->>> contains[1] to mainline this week before -rc4, as it is fixing a
->>> regression known since 2026-04-24 that at least five people encountered
->>> with mainline since -rc3 due to 634a4408c0615c ("Bluetooth: btmtk:
->>> validate WMT event SKB length before struct access") [006b9943b982 in
->>> -next].
->>
->> Greg, Sasha, that [1] fix I was talking about now reached -next as
->> 162b1adeb057d2 ("Bluetooth: btmtk: accept too short WMT FUNC_CTRL
->> events") and will likely hit mainline on Thursday or so with the weekly
->> -net PR to -mainline. If that's good enough for you, I'd say it would be
->> good to pick this up for the next round of stable kernels.
+On Tue, May 19, 2026 at 09:55:40AM +0000, Eric Dumazet wrote:
+> This rcu_barrier() came from a time call_rcu() calls were used in
+> net/bridge/br_multicast.c.
 > 
-> That "Fixes:" tag is referring to something that is also not in any
-> tree, but that commit does have a cc: stable in it.  So do we need both
-> of these:
+> Now kfree_rcu() is there, we can remove this problematic rcu_barrier()
+> which causes extreme RTNL pressure in many syzbot reports.
 
-Valid question, as yes, there is a slight mixup here:
+[...]
 
-> 041e88fb0c08 ("Bluetooth: btmtk: validate WMT event SKB length before struct access")
+> Signed-off-by: Eric Dumazet <edumazet@google.com>
 
-That is already in v7.0.7, v6.18.30, v6.12.88, as 041e88fb0c08 is the
--next commit-id for mainline commit-id 634a4408c0615c ("Bluetooth:
-btmtk: validate WMT event SKB length before struct access") -- the one
-that is causing the regression that I want to get fixed. So we now only
-need:
-
-> 162b1adeb057 ("Bluetooth: btmtk: accept too short WMT FUNC_CTRL events")
-
-thx!
-
-Ciao, Thorsten
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
