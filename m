@@ -1,149 +1,100 @@
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 277424BCAA6
-	for <netdev@vger.kernel.org>; Tue, 19 May 2026 12:11:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10980352000
+	for <netdev@vger.kernel.org>; Tue, 19 May 2026 12:21:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779192718; cv=none; b=EyNDnuy25gN8wTxfXdMlRF0ed0ACj7JM4QytSj2VE0kkmLM0kkwj+e2cxAEZnslSyCp/z1xLndtx0lrsBrcWLYwIOnoWwzVTNt6Ib7eqzYJm9uW/RC+MURPUmvDM323uQQukk9Q6eFelqN0LnPp6MkMnxlVdJZSDFvAVaxW7BVI=
+	t=1779193280; cv=none; b=Okuqi64DZX1Vi5mnX/Aaf1dHqAZSfC1T8ARUUDQZEg71/3thHTjZGb9wI2w0yZFpcFpK98nk9FNW3iNU12Qy2bsh1fKUNmbNsJOH28zYxQb4oPbf7KQSLAu9ZL2DeDgEM6wTCTqDacj5JLTtGWz8+uEPm6Y7m2Z37rLIzlVm1u8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779192718; c=relaxed/simple;
-	bh=IYaQaJj5MVcvrd+hSHbZutQNIAVNVlA6s1NlpyumyNE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kgFV7o94roEkv/BbtUNgWmECNn0FqzMfi+c1flF4F6nb5tv+pfWYHCefeN2EuAKhK8csicfHryFzMIvEe36rKniVnyfXvhKK4snAv79uHavCjKiJoeySYT6yrZm5U8okq1RIo8T1DFZTcJWqov3Quxco6+mK6nOEsrI0FvIkHAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fRZjJq4t; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1779193280; c=relaxed/simple;
+	bh=4YPC6McjepweewladknEsCxM3GMex0C/sNPCjbzCacw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=K/J3Id1ZUKDGNbYk0Ha1zHPdJNW07irUq8drQwLMcPk+ocdYQmWcj+eSW49uzsZu/08rfi+r93yL3hTJohYN56xxPbZ4ZvlbZyTkxwq1SJCLPb0vTa9FnzuyxPZup5ElVTB/5yfUqjhFhHGbrLkP5nEzDST5+Wm62agtNQMU8xg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Z9feTK7S; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fRZjJq4t"
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-48d10c981e4so4860555e9.0
-        for <netdev@vger.kernel.org>; Tue, 19 May 2026 05:11:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779192715; x=1779797515; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ww4CKOsmbnsFPVH2QTfL4TQf7KmUuJr3ZNu7Wd6tZ5Q=;
-        b=fRZjJq4ttyYIGVGyskHuLjAE1hsUdBlf90mnpquzsTzMLlU/BbucUhUEvyorqfFccK
-         h1lcmEBz/RmewteGB5Gd9f2LBcf/hKKpFcH/vD2z/WOkvAUZJ2zBZAo6tDiTDSsWXUFx
-         6GNXIGV8I3LnQujh5qfWIH8dfKh73oIkQSzgVs4efaDYDqlr718V3OzviP7QL5k9xkWU
-         X/HJRsoxhCKVNcClUtmBun+yBLrOUgrskIrQmLpu4iSplYi0l5vGTVmPd4vmbMTjdiMd
-         bZTfan5gt/klXXhzGXQ5sW+8JsO7Jfm2DpMUeQ7guU6qZFNEFmSlAfdT0p7T6fJ2/PAr
-         b3+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779192715; x=1779797515;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ww4CKOsmbnsFPVH2QTfL4TQf7KmUuJr3ZNu7Wd6tZ5Q=;
-        b=OxxWkYnKofSk7kb8PjZWO/mEXbZq9rWYyvwd6PaRBnNYK4sbrot1O0tXeWYOhB1Q3/
-         UbeoBZ2LCxdAhlph+BdR2ut81rnPJ2wOsIPPNUAxwX2h68xHSjzjDGF5zoOFINgrvcl0
-         b/Vke5q7ASVJKDsKdzjXHlKIlCM4oPtkLPAGw2l5RZSFwoCMp1LpntK62L8JLH2RgHzf
-         IW9j63ttFuGSZSK4Q+UhB+DYdm3jcULbAioNDV3SviptzUmkxLD7Q4IEXb73NUHRdIro
-         lD3VnZPrYUJSqBiBc6PttFiD0XF0rRoZhq0I7mCMImQ8McOVrKi7fXWEkwX1irJmXXna
-         6T8w==
-X-Forwarded-Encrypted: i=1; AFNElJ+Yjh8RgCfjywufsMOfamqmhtsVHKkdW2iYEZrGZZn+GZHoBmVgnGI9uzwLhewhLboRIf2k9f8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzx7T/y6zPIebq+YAouYLdCINPagMO7H4czhzrGGyi9PnyvbBP3
-	6Ke7+XRLIQNqqihLrbTR/Ux7mxGt9vjZv5vsg8KhKtTCv6ar77HxnScL
-X-Gm-Gg: Acq92OEGDPlx2NtPncaPsa8GpFLByOb4L6afyQIb52rGz4oHlj65osguuDbgKIqE6t4
-	jBDdHCz+0W3XH7Kdsdy5jrIPfvxN0ovko6huZVB1URnICn5FVawN3LwYKgmYrbb/YlryWnayXPO
-	DeKl4g73cCd65zN5M+UoVcF7/dBF1NKyEXmAWBYBimpuOT/4WV9cjrw6VtlkYADybM+A4hVmO+3
-	WotQ63y0L527JksQtnkMpKVu6HzD5JGSI9mWv+MO4A+6vUmgXeN1Dcs9/C8rvskB1GbObySqlKD
-	XR+HSVRXFMw/Y8A3vUfC7t39sZfqvwZU7jU0rkLWcr9nNo1o7+C1XOo9+W9F/sGz8qIw87fwMcl
-	0I4gdzafGGLFbx83SoN0RtrHWMS90WKVVmtz5GEPyIJW804WUjrD8geZUCLkRZvA8FThEQW77jm
-	bff59hTZcq+VbvKbkzZZTmx61Nr0ZXumGSmosgcWya1UEtKkKut1YeFHI8+LAB4zmvmQcJC506w
-	ECZT1K537jV+hnHTKMq
-X-Received: by 2002:a05:600c:4588:b0:489:1c1f:35e5 with SMTP id 5b1f17b1804b1-48fe664be2amr136275035e9.6.1779192715261;
-        Tue, 19 May 2026 05:11:55 -0700 (PDT)
-Received: from ?IPV6:2a02:aa16:1105:8100:aca5:18d3:d87:7987? ([2a02:aa16:1105:8100:aca5:18d3:d87:7987])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48feab2896bsm109146625e9.4.2026.05.19.05.11.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 19 May 2026 05:11:54 -0700 (PDT)
-Message-ID: <d864aff0-d9e9-42c9-87e8-0074dc35e857@gmail.com>
-Date: Tue, 19 May 2026 14:11:53 +0200
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Z9feTK7S"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1779193279; x=1810729279;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=4YPC6McjepweewladknEsCxM3GMex0C/sNPCjbzCacw=;
+  b=Z9feTK7Si78cfu6srkcKLjZvWpDWDDfU7IxRM4Av6EY5JJUZ1xhSi1af
+   p5BtNMRcjXoLnGiW5sDiqc0P+XGtdhHZtogAev9XArPlxCVzpdrdS4Eqm
+   TAov/0hXJTJlgrls7wTZCz0tYfMp1fNPs2//il+XWIM9Ou+wAI4Iuov0S
+   PgP+Gw5rb8jrt24aInlqM5iU1AnlWud7Q9fxTT5wHVqjiSsOXDhwMNMqO
+   Bsis5nYnw0DaS8IIumCfaJEgHlD39ELujK7TsJAhtjiHE0V9s2x+7SP42
+   cBWL3alA1wqi9jOJ2w1EnN6ETsQNnNbtmf3sLutgFieDj5M59/R3Q4axA
+   g==;
+X-CSE-ConnectionGUID: gY9ECYGQThagJBW6bAgmjA==
+X-CSE-MsgGUID: kkQRqxx5QT2P8jueaKygoQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11791"; a="80048317"
+X-IronPort-AV: E=Sophos;i="6.23,243,1770624000"; 
+   d="scan'208";a="80048317"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2026 05:21:18 -0700
+X-CSE-ConnectionGUID: kGmWhDvgRDGtKOqOmV/IZA==
+X-CSE-MsgGUID: C7TeWnBBQkazB3t5dD/MtA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,243,1770624000"; 
+   d="scan'208";a="263533568"
+Received: from irvmail002.ir.intel.com ([10.43.11.120])
+  by fmviesa001.fm.intel.com with ESMTP; 19 May 2026 05:21:17 -0700
+Received: from gond.igk.intel.com (gond.igk.intel.com [10.123.220.52])
+	by irvmail002.ir.intel.com (Postfix) with ESMTP id 5B18528765;
+	Tue, 19 May 2026 13:21:16 +0100 (IST)
+From: Marcin Szycik <marcin.szycik@linux.intel.com>
+To: intel-wired-lan@lists.osuosl.org
+Cc: netdev@vger.kernel.org,
+	Marcin Szycik <marcin.szycik@linux.intel.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Dave Ertman <david.m.ertman@intel.com>
+Subject: [PATCH iwl-net] ice: fix LAG recipe to profile association
+Date: Tue, 19 May 2026 13:20:41 +0200
+Message-ID: <20260519112041.125907-1-marcin.szycik@linux.intel.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next] net: dev_addr_lists: don't WARN on GFP_ATOMIC
- kmalloc failure in netif_rx_mode_run
-To: Jakub Sitnicki <jakub@cloudflare.com>
-Cc: Stanislav Fomichev <sdf@fomichev.me>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, Qingfang Deng <qingfang.deng@linux.dev>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260519095557.3749407-1-yzjaurora@gmail.com>
- <878q9fod8m.fsf@cloudflare.com>
-Content-Language: en-US
-From: Zijing yin <yzjaurora@gmail.com>
-In-Reply-To: <878q9fod8m.fsf@cloudflare.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Thank you so much for the feedback! I will address these comments in the 
-next version. This is not found by syzbot by the way.
+ice_init_lag() associates recipes to profiles, assuming that Link
+Aggregation-related profiles will always have profile ID lower than 70
+(ICE_PROFID_IPV6_GTPU_IPV6_TCP_INNER). This value seems arbitrary and
+might not always be valid for some versions of DDP package, i.e. LAG
+profiles may have profile ID greater than 70. This would lead to
+misconfigured switch and LAG not working properly.
 
-Hope you have a great day!
+Fix it by checking up to maximum profile ID.
 
-On 19.05.2026 13:22, Jakub Sitnicki wrote:
-> On Tue, May 19, 2026 at 02:55 AM -07, Zijing Yin wrote:
->> netif_rx_mode_run() fires netdev_WARN() when netif_addr_lists_snapshot()
->> returns non-zero. The only path to a non-zero return is -ENOMEM from
->> __hw_addr_create() failing its kmalloc(GFP_ATOMIC) -- syzkaller hits it
->> via failslab, and it can also be reached under real memory pressure.
->>
->> This is the only allocator-failure site in this file that WARNs.
->> __hw_addr_create() itself, and every other caller of it in this file
->> (__hw_addr_add_ex(), dev_uc_add_excl(), dev_uc_add(), dev_mc_add(), ...)
->> just propagate the -ENOMEM silently. GFP_ATOMIC is a may-fail allocator;
->> callers are required to handle NULL, so a returned -ENOMEM here is an
->> expected runtime condition, not an invariant violation.
->>
->> The miss is self-healing: any subsequent change to dev->uc / dev->mc
->> (every dev_{uc,mc}_{add,del}, IFF_PROMISC flip, etc.) calls
->> __dev_set_rx_mode() -> netif_rx_mode_queue(), which re-queues the device
->> and retries the sync. The only cost of a failed attempt is one stale
->> rx-mode window until the next update; nothing in the kernel relies on
->> this attempt succeeding.
->>
->> Demote to net_err_ratelimited() so the condition stays observable in
->> dmesg without tripping panic_on_warn.
->>
->> Reproducer (syzkaller .prog format with setup notes): 
->> https://pastebin.com/t7AQKx9v
->>
->> Fixes: 3554b4345d85 ("net: introduce ndo_set_rx_mode_async and netdev_rx_mode_work")
->> Signed-off-by: Zijing Yin <yzjaurora@gmail.com>
->> ---
->>  net/core/dev_addr_lists.c | 3 ++-
->>  1 file changed, 2 insertions(+), 1 deletion(-)
->>
->> diff --git a/net/core/dev_addr_lists.c b/net/core/dev_addr_lists.c
->> index d73fcb0c6..c6fdcac74 100644
->> --- a/net/core/dev_addr_lists.c
->> +++ b/net/core/dev_addr_lists.c
->> @@ -1275,7 +1275,8 @@ static void netif_rx_mode_run(struct net_device *dev)
->>  		err = netif_addr_lists_snapshot(dev, &uc_snap, &mc_snap,
->>  						&uc_ref, &mc_ref);
->>  		if (err) {
->> -			netdev_WARN(dev, "failed to sync uc/mc addresses\n");
->> +			net_err_ratelimited("%s: failed to sync uc/mc addresses\n",
->> +					    netdev_name(dev));
->>  			netif_addr_unlock_bh(dev);
->>  			return;
->>  		}
-> 
-> 1) I'd go with net_warn_ratelimited() instead. The promoted message
-> level in syslog might cause operational pain, and as you say the
-> condition is self-healing. Seems unwarranted.
-> 
-> 2) Since it has a Fixes tag, should probably be sumitted for 'net' tree.
-> 
-> 3) Was this reported by syzbot? If so, there should also be Reported-by
-> and Closes tags.
+Fixes: 1e0f9881ef79 ("ice: Flesh out implementation of support for SRIOV on bonded interface")
+Signed-off-by: Marcin Szycik <marcin.szycik@linux.intel.com>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Dave Ertman <david.m.ertman@intel.com>
+---
+ drivers/net/ethernet/intel/ice/ice_lag.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/ethernet/intel/ice/ice_lag.c b/drivers/net/ethernet/intel/ice/ice_lag.c
+index 310e8fe2925c..08a17ded0ad5 100644
+--- a/drivers/net/ethernet/intel/ice/ice_lag.c
++++ b/drivers/net/ethernet/intel/ice/ice_lag.c
+@@ -2623,7 +2623,7 @@ int ice_init_lag(struct ice_pf *pf)
+ 		goto  free_lport_res;
+ 
+ 	/* associate recipes to profiles */
+-	for (n = 0; n < ICE_PROFID_IPV6_GTPU_IPV6_TCP_INNER; n++) {
++	for (n = 0; n < ICE_MAX_NUM_PROFILES; n++) {
+ 		err = ice_aq_get_recipe_to_profile(&pf->hw, n,
+ 						   &recipe_bits, NULL);
+ 		if (err)
+-- 
+2.49.0
 
