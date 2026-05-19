@@ -1,121 +1,140 @@
-Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFB841C5D59;
-	Tue, 19 May 2026 04:06:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.241.158
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3DB31C5D59
+	for <netdev@vger.kernel.org>; Tue, 19 May 2026 04:07:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779163594; cv=none; b=fR2F2k2neyg/mvwom4iVhBcVy3XBeSnjVKtnkb0Lq9d/2vWJ0PHTQFI5lri1dpMO7JJB91j8G7UP4JBJtSnj960exxUlzsjbsT1ZIth5788RzDqitw+24YyqWF+s6ZsdKq0ntl8ZRbUIbzr7CQWOPAkEw61/FlJFuWY1i5nl9+Y=
+	t=1779163638; cv=none; b=VJ7m17YWk+kvob0+Bwjy1uz0k2hnQLlUeOvFwEr4uNwERkZ/Hahewpot2P+2ANUm18DGHk4pMTz1yMZSo6WlLehM27+x1Gea4fcWuPNtdSi713fN9J6sD+BgDFs/TAD5GhytRB8J96rbO06hVnvaLEiPK4jAQfUuuNPCdSasb3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779163594; c=relaxed/simple;
-	bh=a0FFF8UWIgGnE2Sg2dQt5JXH3hA5G4j19E/rDP378CQ=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=JrrEtVAE8G0qFHON5IiT93Nji4Cl3BIchfrY9g8SV2dA045nRhzOkKrQjpjLwY4pHFHmyQ/xzQZvo/2PvhY+siCouDL8+RkZa+F4J+OfpErENL62xfjEw4zVWPvuUAj9gCPRFgWABOgyaWYDii9kp1xoa2aOd+7VoEThJTHzmq8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=VdCskvjt; arc=none smtp.client-ip=203.29.241.158
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeconstruct.com.au
+	s=arc-20240116; t=1779163638; c=relaxed/simple;
+	bh=dtwft2ZAn+emgpNWFam/8M0EFSFiw1kKcLaYVRyaKC8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=CUnDkxDfJboTMRb6IdkSGQwPHCrpcY4KoTA03PrvpdOkmAWtDsGO2gkKWBqg6uNQ7i4lykIacYssD3BTp/9xAoFM73X5E6ih8SBneH5sVnfp7HFYu42WRmKGHxtWcmGVsCQ9Ip2nUHRrrt9uHBJzyRw11IvWASnf2Ewo9+mP4K0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=PKT2RwJ1; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=fr93tShP; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="VdCskvjt"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="PKT2RwJ1";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="fr93tShP"
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64J3AC1W2091009
+	for <netdev@vger.kernel.org>; Tue, 19 May 2026 04:07:16 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=qcppdkim1; bh=dtwft2ZAn+e
+	mgpNWFam/8M0EFSFiw1kKcLaYVRyaKC8=; b=PKT2RwJ1EDSh07DUg/jgthv571S
+	CGJitNzFkNsvVyjc2eF5+yWGiLKSeAP9zC0UtXe4OoNQQqI+n2wz7kztstjFq6Ox
+	DUB1PPcumZ8zBXYRjqvRL78Qk633UEBYjbj72DtCCCd+vSEZmHVWPmaBKJPvc/p2
+	mO1W3nV87+j3bOXqcaJGlfuixi3K1wYZyMyznxfd7ob5EPd4hGXVV13rqushjwo1
+	wh4vFsXktOrMoitQzwyKLHYtxWCB/y7VLeePepUNyPUzX7QnVjpe7g1DnrYmpYmE
+	t4KPLxr+GQcVztXzyvr/Xjqro0VQylBjMW11S6VMyT+p4TIE9h/aOQX8mCg==
+Received: from mail-dy1-f197.google.com (mail-dy1-f197.google.com [74.125.82.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4e80rpkkyt-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Tue, 19 May 2026 04:07:16 +0000 (GMT)
+Received: by mail-dy1-f197.google.com with SMTP id 5a478bee46e88-2f2d983d109so13286697eec.0
+        for <netdev@vger.kernel.org>; Mon, 18 May 2026 21:07:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=codeconstruct.com.au; s=2022a; t=1779163584;
-	bh=a0FFF8UWIgGnE2Sg2dQt5JXH3hA5G4j19E/rDP378CQ=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=VdCskvjtfkRPR1ypTEVetgKvX6GR5eUrfE+8xMsp6PLB6rZPVjwwSLzxBNXufL6h8
-	 7eV4v0Z1LExj+yJxJMTu0QtHnCHwC2Fvu6sixGvy6g5NNh0mB7Fnftk2lid+c40Q4F
-	 3b9nECtRpI9SYbYEieLctL6x9qi29Zj1OoROU0ih4UWBIvnve1uAgb0Ze0WT+z+hD+
-	 GyaegA4ylBL4W7xGuqtzZxlQWNUBdjkwdvTV+gQ+S/FUA0fGkZTe34ilqCZvcTlSx5
-	 zO2G4AezGdf5qyQ47NagRxiGrHcwY0oVyilWGnApK6dP3Irhe1enlH44ZzQEWMFJie
-	 OBpSUR/U/SqJw==
-Received: from [10.36.158.48] (unknown [50.175.227.221])
-	by mail.codeconstruct.com.au (Postfix) with ESMTPSA id DDA83605C8;
-	Tue, 19 May 2026 12:06:19 +0800 (AWST)
-Message-ID: <bca423e86899791f96c626b10f816ac1bff8059e.camel@codeconstruct.com.au>
-Subject: Re: [net-next v42] mctp pcc: Implement MCTP over PCC Transport
-From: Jeremy Kerr <jk@codeconstruct.com.au>
-To: Adam Young <admiyo@os.amperecomputing.com>, Tony Nguyen
- <anthony.l.nguyen@intel.com>, Przemek Kitszel
- <przemyslaw.kitszel@intel.com>,  Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, Matt Johnston <matt@codeconstruct.com.au>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Sudeep Holla
-	 <sudeep.holla@arm.com>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
-	Huisong Li <lihuisong@huawei.com>
-Date: Mon, 18 May 2026 21:06:17 -0700
-In-Reply-To: <20260518203900.30720-1-admiyo@os.amperecomputing.com>
-References: <20260518203900.30720-1-admiyo@os.amperecomputing.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
-User-Agent: Evolution 3.46.4-2+deb12u1 
+        d=oss.qualcomm.com; s=google; t=1779163636; x=1779768436; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=dtwft2ZAn+emgpNWFam/8M0EFSFiw1kKcLaYVRyaKC8=;
+        b=fr93tShPSx7YxO4lAeBBcPOz6Q1n+awEAz+ZCsYeUEMNVFFGL2z0z/f2/V90VhQs+P
+         4LaWKo33zUIl5tSDD9BnlvnnsG/sGBdhMATnMQiW6qYxKcWxAceMwR71igkhZHOKotEA
+         r7hZ39cUzJsZi3vcHTfb4jakao4oYDskP9BtpHIo2YD7YHYqZ+nN3GSIi8m3kCfh5NQY
+         w7re6sPTycTjmxhAM65Kug9YRXaPgOs1Kd7O++Ww4ctGD+X+emKPygnZjPxw7ON7WKjz
+         wk+elD8gHil+a83iCFJ0A4b8Q4a1yRdkJREAhxNVvMQhKMIWXjVlbaugGWQKqr0N+Flv
+         Nxjw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779163636; x=1779768436;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=dtwft2ZAn+emgpNWFam/8M0EFSFiw1kKcLaYVRyaKC8=;
+        b=Bf2gYS+Z4V6d7nbHrXYsmj6AGYoxkPvywPWK5mxqw4gB/kHbsKSr8Nx3iDLFUQuHZr
+         Ukfjux8HbM/9ju8pBkad2zHBF9WzdQAMgM0mD3qOtAv0zZgLNxYjSArAYnhq9995p0ab
+         STGqV+GmnpPfZA3OQRcmlFKSFkJnWnZRq/tgflWiWJjkleE6EKicMX1DpzXaps/jasPP
+         3zKTgXF8d50WTqpSYepEGYyy4j0B3bkkWHj+JXga5KyxY1OkkvkMFqZrA/IjKn0varlp
+         gDKAzMG1Cu6QbQTFTyRHZal/UzGMlEb/S6BhvlE7bceqqrU5De3KVxH3fBbZJI8gpe2H
+         ewSA==
+X-Forwarded-Encrypted: i=1; AFNElJ8OhJjbf4ABmfJ1blSP0KrxQmwWFEWbJdZ56m8B6uGbPfBfkmLWnmYPlh0aXP6ZaYHXd7puQTs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzF28EQtzsuFGpxNqIQJ53OcVDclp/MR/KfW62V93hy3hLfjN5U
+	jA+cN9wHCYQngf4pwn1anBkOWkD50aEYmh6vH3QuYbhlquNrtmkoF35p5QmdN6NXTGFME5E0Fpv
+	bTsnjSbzDT30Qfzquqx/mIKzHdqxIdmhA1D/EJYj2LGogOGgbPHLUQ8ACQx0=
+X-Gm-Gg: Acq92OHmJ+/2m0TSvwYNBk1uEWGSUAZdxE0Me1H4TP55865W9VAGTo2JFw9glATPbHJ
+	mCqBxoO083wftbPgkZpHNKTnJrzjYfujWlU1PVXUE9xpMN7BzfFcEdrtdgEl9/iXkYfY8/qcCfb
+	Ls0b0kYeYcQSzXKnkOAxpBpzsXHZEEMUACG9mUzEgweqlUc3Q1k0w40UHCiDlEvZNf2K3rYAlwW
+	YrLUk198PcBPxFeCX/T+hQHiJFeChh3utpR3QRlAtiOQjoihXVbtbt4/6XgjuUemrswVJG0WNOq
+	Kt2dNulzIZl61dVfpVRb6579mkc/28YIGrjOoGyoH7o8q/p3ciwnadR1SjG9T04NpSGl0cOyQoW
+	sct65lLItgSnGNwlJ/tuyH7aaMY8C1CdtdRFV7jMpztoSvPRlc3WxsVkg61r70zvJyy8NMU6qRd
+	/XgyBFs+/hog==
+X-Received: by 2002:a05:7300:dc03:b0:2f5:5907:3a49 with SMTP id 5a478bee46e88-3039867718cmr8011764eec.30.1779163635610;
+        Mon, 18 May 2026 21:07:15 -0700 (PDT)
+X-Received: by 2002:a05:7300:dc03:b0:2f5:5907:3a49 with SMTP id 5a478bee46e88-3039867718cmr8011738eec.30.1779163635062;
+        Mon, 18 May 2026 21:07:15 -0700 (PDT)
+Received: from WOSSA.na.qualcomm.com (i-global254.qualcomm.com. [199.106.103.254])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-30296dcb6e9sm18592694eec.16.2026.05.18.21.07.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 18 May 2026 21:07:14 -0700 (PDT)
+From: Rajat Gupta <rajat.gupta@oss.qualcomm.com>
+To: imv4bel@gmail.com
+Cc: aaron1esau@gmail.com, ben@decadent.org.uk, davem@davemloft.net,
+        dsahern@kernel.org, edumazet@google.com, herbert@gondor.apana.org.au,
+        horms@kernel.org, jiayuan.chen@linux.dev, kerneljasonxing@gmail.com,
+        kuba@kernel.org, kuniyu@google.com, malin89@huawei.com, mhal@rbox.co,
+        netdev@vger.kernel.org, pabeni@redhat.com, sd@queasysnail.net,
+        stable@vger.kernel.org, steffen.klassert@secunet.com,
+        sultan@kerneltoast.com, tanjingguo@huawei.com,
+        Rajat Gupta <rajat.gupta@oss.qualcomm.com>
+Subject: Re: [PATCH net v5] net: skbuff: propagate shared-frag marker through frag-transfer helpers
+Date: Mon, 18 May 2026 21:02:32 -0700
+Message-ID: <20260519040232.1395-1-rajat.gupta@oss.qualcomm.com>
+X-Mailer: git-send-email 2.51.2.windows.1
+In-Reply-To: <ageeJfJHwgzmKXbh@v4bel>
+References: <ageeJfJHwgzmKXbh@v4bel>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-GUID: _UrZZNA2xXjO77z0AcAjhzSX0765tcy-
+X-Proofpoint-ORIG-GUID: _UrZZNA2xXjO77z0AcAjhzSX0765tcy-
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTE5MDAzNyBTYWx0ZWRfXxQrcF3VRA7Nv
+ Ow2FxKftNgI8u745WG0/ciiw4Dxxz2Mw/Tkm6hoYYjOH4wGrhnAtLz2lofrAbQ33y6+xLLika7P
+ TwxRdk9qm0wzeBw5o88Hc3wPnnXjmlfFAigX/+sOcCZjYtqYDa6u2Ve0nIwk43Z9iide0VDYydL
+ B7R03ycH2FMk2PJ1vJi58vNyh0bfinpuJgux7QkQsCvA7iB05fj0pXt52uiB962HDppuVSPauZi
+ CMZJcXkS4zmRCmyvGB10qMU/DaID3GNm736IHpCJ1w8t8X9ClAw1Q2v00AhbDmj0XqFkSXzUEtJ
+ LVfVJ0aBRS/eXsm+EklkXnkaSu1WrlwqXnHzEfOkMNfB/v1zJz/C+NnzqNoOJfQZpPSsW8RrLI5
+ m3RNe3SMHvU6OUO7L6gUuiGesL2scRTebHPu9EMDBsY+XjFj6vJMTCawBOBpAsggS2bYBH17nCF
+ DYC/jSmZyVVAWFqCn+w==
+X-Authority-Analysis: v=2.4 cv=ecMNubEH c=1 sm=1 tr=0 ts=6a0be1f4 cx=c_pps
+ a=Uww141gWH0fZj/3QKPojxA==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
+ a=NGcC8JguVDcA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=u7WPNUs3qKkmUXheDGA7:22 a=gowsoOTTUOVcmtlkKump:22 a=VwQbUJbxAAAA:8
+ a=EUspDBNiAAAA:8 a=qQm7GNJJ0ztNeIs_msoA:9 a=ZXulRonScM0A:10
+ a=PxkB5W3o20Ba91AHUih5:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-19_01,2026-05-18_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 spamscore=0 adultscore=0 lowpriorityscore=0 impostorscore=0
+ phishscore=0 priorityscore=1501 bulkscore=0 clxscore=1015 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2605130000 definitions=main-2605190037
 
-SGkgQWRhbSwKCj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L2V0aGVybmV0L2ludGVsL3N0WU5G
-ckNUIGIvZHJpdmVycy9uZXQvZXRoZXJuZXQvaW50ZWwvc3RZTkZyQ1QKPiBuZXcgZmlsZSBtb2Rl
-IDEwMDY0NAo+IGluZGV4IDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAu
-LjliMDFkMWU5MDlmMjBmZTAzN2VlYTY4NTExNmQzNDRhMjE2NWRiNTIKPiBHSVQgYmluYXJ5IHBh
-dGNoCj4gbGl0ZXJhbCA1NjQwNzMKClsxMjU1IGxpbmVzIG9mIGI4NSBkYXRhXQoKSSB0aGluayBz
-b21ldGhpbmcgbGVha2VkIGludG8geW91ciBjb21taXQ/Cgo+ICtzdGF0aWMgdm9pZCBtY3RwX3Bj
-Y19jbGllbnRfcnhfY2FsbGJhY2soc3RydWN0IG1ib3hfY2xpZW50ICpjbCwgdm9pZCAqbXNzZykK
-PiArewo+ICvCoMKgwqDCoMKgwqDCoHN0cnVjdCBhY3BpX3BjY3RfZXh0X3BjY19zaGFyZWRfbWVt
-b3J5IHBjY19oZWFkZXI7Cj4gK8KgwqDCoMKgwqDCoMKgc3RydWN0IG1jdHBfcGNjX25kZXYgKm1j
-dHBfcGNjX25kZXY7Cj4gK8KgwqDCoMKgwqDCoMKgc3RydWN0IG1jdHBfcGNjX21haWxib3ggKmlu
-Ym94Owo+ICvCoMKgwqDCoMKgwqDCoHN0cnVjdCBtY3RwX3NrYl9jYiAqY2I7Cj4gK8KgwqDCoMKg
-wqDCoMKgc3RydWN0IHNrX2J1ZmYgKnNrYjsKPiArwqDCoMKgwqDCoMKgwqB1MzIgaGVhZGVyX2xl
-bmd0aDsKPiArwqDCoMKgwqDCoMKgwqBpbnQgc2l6ZTsKPiArCj4gK8KgwqDCoMKgwqDCoMKgbWN0
-cF9wY2NfbmRldiA9IGNvbnRhaW5lcl9vZihjbCwgc3RydWN0IG1jdHBfcGNjX25kZXYsIGluYm94
-LmNsaWVudCk7Cj4gK8KgwqDCoMKgwqDCoMKgaW5ib3ggPSAmbWN0cF9wY2NfbmRldi0+aW5ib3g7
-Cj4gK8KgwqDCoMKgwqDCoMKgbWVtY3B5X2Zyb21pbygmcGNjX2hlYWRlciwgaW5ib3gtPmNoYW4t
-PnNobWVtLCBzaXplb2YocGNjX2hlYWRlcikpOwo+ICsKPiArwqDCoMKgwqDCoMKgwqAvLyBUaGUg
-bWVzc2FnZSBtdXN0IGF0IGxlYXN0IGhhdmUgdGhlIFBDQyBjb21tYW5kIGluZGljYXRpbmcgaXQg
-aXMgYW4gTUNUUAo+ICvCoMKgwqDCoMKgwqDCoC8vIG1lc3NhZ2UgZm9sbG93ZWQgYnkgdGhlIE1D
-VFAgaGVhZGVyLCBvciB3ZSBoYXZlIGEgbWFsZm9ybWVkIG1lc3NhZ2UuCj4gK8KgwqDCoMKgwqDC
-oMKgLy8gVGhpcyBtYXkgYmUgcnVuIG9uIGJpZyBlbmRpYW4gc3lzdGVtLCBidXQgdGhlIGRhdGEg
-aW4gdGhlIGJ1ZmZlciBpcwo+ICvCoMKgwqDCoMKgwqDCoC8vIGV4cGxpY2l0bHkgbGl0dGxlIGVu
-ZGlhbi4KPiArwqDCoMKgwqDCoMKgwqBoZWFkZXJfbGVuZ3RoID0gbGUzMl90b19jcHUocGNjX2hl
-YWRlci5sZW5ndGgpOwoKSXMgdGhpcyBzdGlsbCBPSyB3aXRoIHBjY19oZWFkZXIubGVuZ3RoIGJl
-aW5nIGEgdTMyIChhbmQgbm90IGEgX19sZTMyPykKCj4gK3N0YXRpYyBuZXRkZXZfdHhfdCBtY3Rw
-X3BjY190eChzdHJ1Y3Qgc2tfYnVmZiAqc2tiLCBzdHJ1Y3QgbmV0X2RldmljZSAqbmRldikKPiAr
-ewo+ICvCoMKgwqDCoMKgwqDCoHN0cnVjdCBhY3BpX3BjY3RfZXh0X3BjY19zaGFyZWRfbWVtb3J5
-ICpwY2NfaGVhZGVyOwo+ICvCoMKgwqDCoMKgwqDCoHN0cnVjdCBtY3RwX3BjY19uZGV2ICptcG5k
-ID0gbmV0ZGV2X3ByaXYobmRldik7Cj4gK8KgwqDCoMKgwqDCoMKgaW50IGxlbiA9IHNrYi0+bGVu
-Owo+ICsKPiArwqDCoMKgwqDCoMKgwqBpZiAoc2tiX2Nvd19oZWFkKHNrYiwgc2l6ZW9mKCpwY2Nf
-aGVhZGVyKSkpCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGdvdG8gZXJyb3I7Cj4g
-Kwo+ICvCoMKgwqDCoMKgwqDCoHBjY19oZWFkZXIgPSBza2JfcHVzaChza2IsIHNpemVvZigqcGNj
-X2hlYWRlcikpOwo+ICvCoMKgwqDCoMKgwqDCoHBjY19oZWFkZXItPnNpZ25hdHVyZSA9IFBDQ19T
-SUdOQVRVUkUgfCBtcG5kLT5vdXRib3guaW5kZXg7Cj4gK8KgwqDCoMKgwqDCoMKgcGNjX2hlYWRl
-ci0+ZmxhZ3MgPSBQQ0NfQ01EX0NPTVBMRVRJT05fTk9USUZZOwo+ICvCoMKgwqDCoMKgwqDCoG1l
-bWNweSgmcGNjX2hlYWRlci0+Y29tbWFuZCwgTUNUUF9TSUdOQVRVUkUsIE1DVFBfU0lHTkFUVVJF
-X0xFTkdUSCk7Cj4gK8KgwqDCoMKgwqDCoMKgcGNjX2hlYWRlci0+bGVuZ3RoID0gbGVuICsgTUNU
-UF9TSUdOQVRVUkVfTEVOR1RIOwoKWW91J3JlIGRvaW5nIHRoZSBlbmRpYW4gY29udmVyc2lvbiBv
-biByZWFkLCBidXQgbm90IG9uIHdyaXRlLiBXaGF0IHdhcwp0aGUgZGVjaXNpb24gb24gd2hldGhl
-ciB5b3UgbmVlZCBpdCBvciBub3Q/Cgo+ICsKPiArwqDCoMKgwqDCoMKgwqBpZiAoc2tiLT5sZW4g
-PiBtcG5kLT5vdXRib3guY2hhbi0+c2htZW1fc2l6ZSkKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgZ290byBlcnJvcjsKPiArCj4gK8KgwqDCoMKgwqDCoMKgaWYgKG1ib3hfc2VuZF9t
-ZXNzYWdlKG1wbmQtPm91dGJveC5jaGFuLT5tY2hhbiwgc2tiKSA8IDApIHsKPiArwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgbmV0aWZfc3RvcF9xdWV1ZShuZGV2KTsKPiArwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgLyoKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-ICogVGhlcmUgaXMgYSBwb3NzaWJpbGl0eSB0aGF0IHRoZSBtYWlsYm94IHdhcyBjbGVhcmVkIG9u
-Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAqIGFub3RoZXIgdGhyZWFkIGJldHdl
-ZW4gdGhlIGZhaWxlZCBzZW5kIGF0dGVtcHQgYW5kCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoCAqIHN0b3BwaW5nIHRoZSBxdWV1ZS7CoCBJZiB0aGF0IGlzIHRoZSBjYXNlLCBhbmQg
-d2UgZG9uJ3QgcmVzdGFydAo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgKiB0aGUg
-cXVldWUsIGl0IHdpbGwgcmVtYWluIHBlcm1hbmVudGx5IHN0b3BwZWQuwqAgVG8gdGVzdCwKPiAr
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgICogdHJ5IHN1Ym1pdHRpbmcgdGhlIG1lc3Nh
-Z2UgYWdhaW4uIElmIHN1Y2Nlc3NmdWwsIHJlc3RhcnQgdGhlCj4gK8KgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoCAqIHF1ZXVlLgo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAg
-Ki8KPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWYgKG1ib3hfc2VuZF9tZXNzYWdl
-KG1wbmQtPm91dGJveC5jaGFuLT5tY2hhbiwgc2tiKSA+PSAwKSB7Cj4gK8KgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBuZXRpZl93YWtlX3F1ZXVlKG5kZXYpOwoK
-VGhlIHJldHJ5IGlzIGEgYml0IG9kZDsgeW91IGNhbiBzaW1wbGlmeSB0aGlzIHJhY2UgaGFuZGxp
-bmcgYnkgZG9pbmcgdGhlCnN0b3BfcXVldWUgcGVzc2ltaXN0aWNhbGx5LCBhbmQgdGhlIHJlLXN0
-YXJ0aW5nIHRoZSBxdWV1ZSBvbiBzdWNjZXNzOgoKICAgIG5ldGlmX3N0b3BfcXVldWUoKTsKICAg
-IGlmIChtYm94X3NlbmRfbWVzc2FnZSguLi4pID49IDApIHsKICAgICAgICBuZXRpZl9zdGFydF9x
-dWV1ZSgpOwogICAgfQoKSSBkb24ndCB0aGluayB5b3UgbmVlZCBhIHdha2UgKHZzIHN0YXJ0KSwg
-c2luY2UgeW91J3JlIHJ1bm5pbmcgaW4gdGhlCnNhbWUgc29mdGlycSBjb250ZXh0IGFzIHRoZSBz
-dG9wLgoKQ2hlZXJzLAoKCkplcmVteQo=
+The skb_gro_receive() and skb_shift() fixes look correct -- we
+independently reported both to security@kernel.org with working
+LPE exploits confirming they are exploitable from unprivileged
+user namespaces.
 
+Could you add the following tags when respinning or applying?
+
+Reported-by: Rajat Gupta <rajat.gupta@oss.qualcomm.com>
+Tested-by: Rajat Gupta <rajat.gupta@oss.qualcomm.com>
+
+Thanks,
+Rajat
