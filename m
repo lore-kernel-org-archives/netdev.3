@@ -1,141 +1,97 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 914924ADD8F
-	for <netdev@vger.kernel.org>; Tue, 19 May 2026 11:44:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09CC532E72F
+	for <netdev@vger.kernel.org>; Tue, 19 May 2026 11:46:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779191098; cv=none; b=pWF5ux6c56toM1UQA9u2nu8/uR3QlvaBa6TQ9oZrUyVvJMFiC3SU2RH5auQOzTAa+MpSEWvw/2PfILlZTtBSkQiJEGuo6yoalIXtQC0foa08iyZ4ZFojFFRtuWFzfxWxiLJ5PNfxBcnlYynkygcp7r9Y5mgP8V8J4opHXNabrww=
+	t=1779191188; cv=none; b=mPOPgRtzPt0vDPB26t62GYl6I/Z1boc7xuHZ++P4osKLamoMIcghWyOU91yLmCPfO0IvdhmFWaAiWYtOGAQs2caG2oP4lWFo8i/casPcCZQWVE8JhY/sS9+3uUAp/1S6qPUpz5NfVlprI4l2zscFGso3VvL9dT3MZFN6eN0N0bQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779191098; c=relaxed/simple;
-	bh=tltTlQ3YCwN7E+MKCK/eCm7hU0LC7TKmmGm6F8GyX/g=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PZqnFo299/Hsb9RODi2QG53JHxIIaMT6okO2MWnVoFY8ajD5b++Xiu99InGrLIoKGinpzA7cC8zUV0d/cwEYfYboC/aXCmEqIC6cH75NpG1RIt8dFuyRzz/7sJQnfdw6KcwYlRKr9+kA8qwrTDIG7u8GjxR3ov856VTYQ4ICrwQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T0Kyt5Np; arc=none smtp.client-ip=209.85.128.47
+	s=arc-20240116; t=1779191188; c=relaxed/simple;
+	bh=hDncoP6wUhrOO7HNw6wBMZMEIPeuvOboSQoIXCb8/Po=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nhyrR4WnwktQe08f5y3+GFt3S605SfOUzTlFbz0vr7ir2hScD+IVyoHoQeN/9193GTyuPFAfVN86eDn/oJhW5YRc8gSOFOqvyghc882NG4cXADS8n9yGW0KIjMegpJ1G9tQGUfkwCTkY5cXIYELF1Bl4ut8qDTMZPCzmcoWfUo0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fyaIlGIj; arc=none smtp.client-ip=209.85.221.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T0Kyt5Np"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-488a8ca4aadso33814695e9.3
-        for <netdev@vger.kernel.org>; Tue, 19 May 2026 04:44:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fyaIlGIj"
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-44509921fbcso2097310f8f.3
+        for <netdev@vger.kernel.org>; Tue, 19 May 2026 04:46:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779191090; x=1779795890; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GLYW+cBqNKZlUyA1TVrGmuB7j5Td0XVJ7Y06ky9n+m8=;
-        b=T0Kyt5NpzOptgR5dP4fAwGwf/sZJF3C8OA6rmY2Jq6enwYo2DHxRcBpzii8rM1Sffv
-         Dsf5bgkBTgpuNTefsNAv3ZjBhMepWO8eGhmRq/1bbixeuLqypUChQxQN3X508O5lMTYh
-         cJGPjs5GZMd4WZ903Jfp5Q9g8SjSl2jvWI4w7VvGkhlLxaT5B3XF4q5tcSSTogoGbXTk
-         TWEVkST6jrwuD31huOeGhkEPzVT8baYQ52N9Nw5XuMU+07gk8Kz8mQv1aEMN3vwhEPvJ
-         7rZsGomAVr5a9Jt6slWQ/Z8QmBmWeXr55rFc0YnL1urINXI39UqaZyBZPB+BRAsO7Bwg
-         kOzw==
+        d=gmail.com; s=20251104; t=1779191185; x=1779795985; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=PEw0M2zsj3EzjVifOGhWM0yGOgGSRULUyqR8ZQQHmn0=;
+        b=fyaIlGIjcJTMQtNNbQX0Q4mberRuQh1PLGwE55LJ/YDnGWV3bDQ5VqU83WuKLQoWiW
+         ytpcWE7G/EPE6JtzUaoZiSOWsqf0t+o6VdHjkkb3RaC76MvOnmhNLIwLiWC2OEAJO1M5
+         Juc/VaV8V+5/QbV5zIK91RlAinU2nvnb5Dbf9D/wAEcrc3KP+EXz5pLxXY3I3WTB/VN/
+         c1UmUiqRzUORy3mLAMxGmwJGTwq5eKqolQ15P/p186S2/NZFba3EF5FAu5rPNsOyOjz+
+         bUO3msc0iykvWUXTO25tAS8RAyQazbj2PJH4gTU/KC9aNat7qHIjnDhjixhF0YZCRGS3
+         GHAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779191090; x=1779795890;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=GLYW+cBqNKZlUyA1TVrGmuB7j5Td0XVJ7Y06ky9n+m8=;
-        b=ZS+sV73Mr+zS7H4l9g2n5TOZl8SB3UwuqoZrbWK6cAEgpWP1A05lrMhhY+Tx1svm0P
-         pBe7hfuMmLHLMkJUsB5xb0PJchLfF3MPpZZQh8PUZr17455LEQFdqS1B/GMN4A5B7tb0
-         gKK7QN07AGJi6mZFATihi9NxrS8s6s5J+lD0B/qdD2UfiYeSzmdS//BUM7MFDbPyUZeF
-         DBfkZOklgXgvQyVudlSTOBX4eEzFBb84N4v4KrePOQVo7YICscg2ICfJBsqCARuvHBdq
-         5orgcupxGvj5s9m76MOKQevpf0hqfHTGobuo7CJC1hH5s2tuxsQBy4CfLwyDwcAuNp+7
-         BqnA==
-X-Forwarded-Encrypted: i=1; AFNElJ89tQUC7TiQRmCZU+8YYEy6IjkDRPqz4KyF/1//O/HZiMp1LRSyw+C8cOhogIude8ncx9F19gA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzL5js8FGLonO5uTp3nB8nMdkzJ/VLdqy6CDDiimVce6YUExUFt
-	8Ne2sr2nPBqLubotGG0D2p72VRygzr95Em3G3n18XYjf78oSukj6r3ID
-X-Gm-Gg: Acq92OEqU3lw0eSi3umT1/7x7FzdRpMZ2UDPAnvslU5Fe+0Xzq9Lkp+uPbM7dRKYwS6
-	OnuKA45PTxGqpz+SPmj24u04IgALVkHmoctUwqAPizaWrzc8oTy0tG9NBU358vNzmz0Jh1fBzA2
-	4me0vd9W1nA45EmZX7XLRfdcaHK67tjfG3znL1ZAkKWThPPtj4djS8V/TppEPH79ITm8R1Kxn0b
-	TzbWi2K2C0c1ClamA5dd/s+uOJDh0z+kt6WYHiIbthbB2d05fp3C7RbeiTYMLqmxfS56J6nGbAb
-	9l9tHZkz+t4PWibxKOMMkXc/gxfrKNwvlrayVSkBGUQyg8AaiZuI6+i8ylDFeqqFz0XN9FTI1IE
-	35sC/P5Eu1Q79P4myGJCtm4yjGOODunwy6lLkf0bhV8h2/c3yVr8MmwRQkVfSBM/JPP0GqIPzKn
-	4xQlilg2VgSkNnh0oSp7oLhaRY/IyrdFnsaUhezxnhSB7DOJH3jtDjyO0jNE3ph/XoDEQS3SjPm
-	xv+oBuhVHz/Cy6hDJhSaIH1QHM/Mg==
-X-Received: by 2002:a05:600c:4692:b0:485:4eaf:eb53 with SMTP id 5b1f17b1804b1-48fe632661bmr308857595e9.19.1779191089839;
-        Tue, 19 May 2026 04:44:49 -0700 (PDT)
-Received: from 127.mynet ([2a01:4b00:bd21:4f00:7cc6:d3ca:494:116c])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48fe5694f2csm323392445e9.4.2026.05.19.04.44.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 May 2026 04:44:49 -0700 (PDT)
-From: Pavel Begunkov <asml.silence@gmail.com>
-To: io-uring@vger.kernel.org
-Cc: asml.silence@gmail.com,
-	netdev@vger.kernel.org
-Subject: [PATCH 7/8] io_uring/zcrx: notify user on frag copy fallback
-Date: Tue, 19 May 2026 12:44:33 +0100
-Message-ID: <3d54bcd8bf10b3a1e88beb0cd39c40c3937bea4f.1779189667.git.asml.silence@gmail.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <cover.1779189667.git.asml.silence@gmail.com>
-References: <cover.1779189667.git.asml.silence@gmail.com>
+        d=1e100.net; s=20251104; t=1779191185; x=1779795985;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=PEw0M2zsj3EzjVifOGhWM0yGOgGSRULUyqR8ZQQHmn0=;
+        b=U0wJFa16w/mUK5VV/BHTuXjm3sQTZeBERkjviM5NfwAp4QqXruQdyIWzCy/rmq+Q96
+         pgg04aV3MihSoax/leX7g8CzOIsag5nLoMqZLdlPS5ED2O1dj/NhPh6tU+lorRlOANaw
+         NUUOPIy24pg4oofKB5d4+iE/tWesb2VA+meeZG5s5BxdR9buogpb+ysMzz/4jwLqh2s/
+         CzkGedoOvWeZjm2AmUmYnVP1DuaIFMU9QXmruytXqXkziRr0tXPr47hFkG3ZWQC3IDB0
+         EYxw0acaYrsvB9gRh2lxNR3VurxO97j/QKuXh1J02gLB9l1210slobNkGGPJcN/VjP7m
+         KxEA==
+X-Gm-Message-State: AOJu0YwrsHPgg9IcBWoIcpgzPTT9Va5sbVoQ7vH7b+pRX/AK0UNK33dX
+	s+8ZNQ1Y/jN1EeFQDX/qVm/zgCASQUaKImQCMMLKqT4ASB4wD4vLR53yEqMCcw==
+X-Gm-Gg: Acq92OGgWCi0q1Kvns/EZm/7nIWAF23XtnDPaHREtY6rfO1GBsSUe1UxiERSBG5bOwM
+	JEtt6IdNT5ZU2OUYBJRPuU2vaxuvJVXMxsqUGJaNOnO0FQvAuG1ghPqI9NXljE47ggyRZxd47YL
+	+DEzvayjtizTCwQYmbCIJl9Z21hK4ZaK0GDPVRy17VS4xs9/Yox4VPT7TJ/aVNBTa6Hl9KU5HCA
+	4Lp2YVcQhFpBtk7FU8DGlUy96+i01AARAHhy5YbqG9+UloKM79M+uKSImmhjSL4ixFslhZnoSjx
+	06WbPEwQdMnsNKPg5ZPiyJDRnTaxw+XGu3u0MxySUljfuLGB9rEFHLnZZ8e5kY8GdIONLw9ya+c
+	YJiNa9BSXUhp1zfd59k4FSis1xE+HjhclOhpm2yn9csiJMQQuT/jwHwYpQb+tdU0W8b13daKBjv
+	0BhC46vtwEQan5qPWV84d5GJxtiMtkIPjmHrwyhCOJYMYhzzHHH1cz64XXFGbRP8dJLd1sCdQ9A
+	JEAVGU70BOCSD9MKbRew2h2ODbQn8mTDrfNl//3cToUSDCWEU/f/HJWKQpaaDOT+iW+9N/6+99H
+	nORfs/CHvP6O
+X-Received: by 2002:a05:6000:4383:b0:454:1e65:32f0 with SMTP id ffacd0b85a97d-45e5c59fee0mr30666607f8f.10.1779191185357;
+        Tue, 19 May 2026 04:46:25 -0700 (PDT)
+Received: from ?IPV6:2a01:4b00:bd21:4f00:7cc6:d3ca:494:116c? ([2a01:4b00:bd21:4f00:7cc6:d3ca:494:116c])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45da0a178adsm47570648f8f.18.2026.05.19.04.46.24
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 19 May 2026 04:46:24 -0700 (PDT)
+Message-ID: <f4dd9cbb-c0fc-4170-9dc6-014cfc267f44@gmail.com>
+Date: Tue, 19 May 2026 12:46:22 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5/8] io_uring/zcrx: add ctx pointer to zcrx
+To: io-uring@vger.kernel.org
+Cc: netdev@vger.kernel.org
+References: <cover.1779189667.git.asml.silence@gmail.com>
+ <b60514b3d1bd92f571e3bd91751166f8c3599256.1779189667.git.asml.silence@gmail.com>
+Content-Language: en-US
+From: Pavel Begunkov <asml.silence@gmail.com>
+In-Reply-To: <b60514b3d1bd92f571e3bd91751166f8c3599256.1779189667.git.asml.silence@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: Clément Léger <cleger@meta.com>
+On 5/19/26 12:44, Pavel Begunkov wrote:
+> zcrx will need to have a pointer to an owning ctx to communicate
+> different events. Reference the ctx while it's attached to zcrx, and
+> rely on zcrx termination to drop the ctx to avoid circular ref deps.
+> 
+> Co-developed-by: Vishwanath Seshagiri <vishs@meta.com>
 
-Add a ZCRX_NOTIF_COPY notification type to signal userspace when a
-received fragment could not be delivered using zero-copy and was
-instead copied into a buffer.
+Vish, can I have your sob for this and the next patches?
 
-Signed-off-by: Clément Léger <cleger@meta.com>
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
----
- include/uapi/linux/io_uring/zcrx.h | 1 +
- io_uring/zcrx.c                    | 7 ++++++-
- io_uring/zcrx.h                    | 2 +-
- 3 files changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/include/uapi/linux/io_uring/zcrx.h b/include/uapi/linux/io_uring/zcrx.h
-index 67185566ad3c..3f7b72b09878 100644
---- a/include/uapi/linux/io_uring/zcrx.h
-+++ b/include/uapi/linux/io_uring/zcrx.h
-@@ -70,6 +70,7 @@ enum zcrx_features {
- 
- enum zcrx_notification_type {
- 	ZCRX_NOTIF_NO_BUFFERS,
-+	ZCRX_NOTIF_COPY,
- 
- 	__ZCRX_NOTIF_TYPE_LAST,
- };
-diff --git a/io_uring/zcrx.c b/io_uring/zcrx.c
-index 455226790553..1e7c305da0d0 100644
---- a/io_uring/zcrx.c
-+++ b/io_uring/zcrx.c
-@@ -1533,8 +1533,13 @@ static int io_zcrx_copy_frag(struct io_kiocb *req, struct io_zcrx_ifq *ifq,
- 			     const skb_frag_t *frag, int off, int len)
- {
- 	struct page *page = skb_frag_page(frag);
-+	int ret;
-+
-+	ret = io_zcrx_copy_chunk(req, ifq, page, off + skb_frag_off(frag), len);
-+	if (ret > 0)
-+		zcrx_send_notif(ifq, ZCRX_NOTIF_COPY);
- 
--	return io_zcrx_copy_chunk(req, ifq, page, off + skb_frag_off(frag), len);
-+	return ret;
- }
- 
- static int io_zcrx_recv_frag(struct io_kiocb *req, struct io_zcrx_ifq *ifq,
-diff --git a/io_uring/zcrx.h b/io_uring/zcrx.h
-index e8b7717d6adf..54d91b580eaf 100644
---- a/io_uring/zcrx.h
-+++ b/io_uring/zcrx.h
-@@ -11,7 +11,7 @@
- #define ZCRX_SUPPORTED_REG_FLAGS	(ZCRX_REG_IMPORT | ZCRX_REG_NODEV)
- #define ZCRX_FEATURES			(ZCRX_FEATURE_RX_PAGE_SIZE |\
- 					 ZCRX_FEATURE_NOTIFICATION)
--#define ZCRX_NOTIF_TYPE_MASK		(1U << ZCRX_NOTIF_NO_BUFFERS)
-+#define ZCRX_NOTIF_TYPE_MASK		((1U << ZCRX_NOTIF_NO_BUFFERS) | (1U << ZCRX_NOTIF_COPY))
- 
- struct io_zcrx_mem {
- 	unsigned long			size;
+> Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+
 -- 
-2.54.0
+Pavel Begunkov
 
