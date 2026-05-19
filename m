@@ -1,95 +1,82 @@
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+Received: from mail-qk1-f201.google.com (mail-qk1-f201.google.com [209.85.222.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86FD9477E27
-	for <netdev@vger.kernel.org>; Tue, 19 May 2026 09:45:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D10FF47886E
+	for <netdev@vger.kernel.org>; Tue, 19 May 2026 09:46:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779183926; cv=none; b=Gp2XqlWMqB8pV2BWy+UDHxLpkSlfWrB/kzMrd+PuyhSq57ST8C0LvGBGXewPV0PPKDtThnpVVHa02Svf88kB3lZf+O2PyhJxlq4oqpgsD7UVxvjd/Xjq+vCxP1yZlhZx4FX8Y7TmfLjUM7WXcKQSU+xzc8Kv96KP864mXeRYYpM=
+	t=1779183982; cv=none; b=AR6iE+z+keLR2EQD2bZUMmTkLdCUHSEwRo784uepBjrlC2aVVxaVofJGaXlHxiAljQ4gcnOMTLF1qqa/jrMBGqRO49KLa5Pbd+8pLIYxj3XFec8BTYCF40dIjM7C6EDvWez1qCFFioXkw7cakQpMHr0PnDdIcygvyTv/Jkpibyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779183926; c=relaxed/simple;
-	bh=j68GLJAWsgTDjcn8Jjh0WM+87fcdzxnCvkpJ+dJt4t0=;
-	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References:
-	 MIME-Version:Content-Type; b=a+5dBmKApWGUQ4jtO3Rwv+CPXJVgqaDa2MyX8leDGAS4hkDos3zzigTB+3OjuozxrBDaLVX3gOy/vF3i8miUVXlT+9cdHo5Sfvfg/FK25LpC67p6sbapPW03dOZZgOuf2+MsZEH7SZKNBUeXkzHoLS+17uG5Krkb1o1zPSONZKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nq5iSO0y; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1779183982; c=relaxed/simple;
+	bh=LWbN8zNdoO0XYiKgo/f0nDuS/3FSoGzKuXA9aNp4TSk=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=B6CYej4l4jJCJqsABNQNIEXltc2FGXzOAHzCGiwy1jaNS2c/F3qWtVMSPLxPYLwCSyrVCbXABzgSEW2f9pj/bW2vdB78DZLfYQc7ncpAIamfbzqcYVe7jMecPp5QbGTEL+IYyLSxMIiEmGl0BUbaI1Unncm+60Aloz+Vyl8yOQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Jzr1wbJQ; arc=none smtp.client-ip=209.85.222.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nq5iSO0y"
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4891e5b9c1fso28045405e9.2
-        for <netdev@vger.kernel.org>; Tue, 19 May 2026 02:45:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Jzr1wbJQ"
+Received: by mail-qk1-f201.google.com with SMTP id af79cd13be357-9112b2755abso903222285a.1
+        for <netdev@vger.kernel.org>; Tue, 19 May 2026 02:46:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779183923; x=1779788723; darn=vger.kernel.org;
-        h=mime-version:user-agent:references:message-id:date:in-reply-to
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=j68GLJAWsgTDjcn8Jjh0WM+87fcdzxnCvkpJ+dJt4t0=;
-        b=nq5iSO0yGjQfu8wS6Ukoh57FEaasHgsRM4JBKQol4IGgsLDdEGPyFPrJXVPKUuKkD3
-         mvkCJQ6qJDaQlanRydqM/i1O3PjHl42JvX/6w+fm2OwOVDGGAEzIcNr0oky1Xz/COuIY
-         N0IDZY1vOIn5rlm6se5CXmgYoFt/jv7djA4Ddghl7Q4FdLY4Vz++W4NauiA2Ltnz8/ch
-         GngN4Ty+ernxWBIxOEDzoHtl4RYkRkrrOLebEnAvV7c4gW/pMsWCVqCLm/1p/D43RX5N
-         RlQORVQCAHh8FZqclzF6h4cW2Znne5IzB+uSwnQGq4G8I3dbGnldI5lJwmWf34F6qtFu
-         V6FQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779183923; x=1779788723;
-        h=mime-version:user-agent:references:message-id:date:in-reply-to
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+        d=google.com; s=20251104; t=1779183980; x=1779788780; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=j68GLJAWsgTDjcn8Jjh0WM+87fcdzxnCvkpJ+dJt4t0=;
-        b=VdVSSIjTH4xAovxUVspqtDx+KSm+KWB/B5Tr/+0czA/vocQE8zHS9fG68aw5ArjKlC
-         N4oabRHjLU+YjWTNJtoeXmpt8Nnv01oTkgBgbg3pjI3CFiKzY7nb/m/dGezc6cxtBpXn
-         cH8FXPs6CwOTTReTk4VqHakJh1sIOSh1u0OyJ4ZwySTHxm2NaS6nMXY862rgG18FdNIb
-         nqNtC501SI03dp53xkngqLgW7mqPwiRrLAU1HTp4uuZYyPHU8yiZl+Aq0FACCm/2onub
-         FTk+E0qTlnfe1/iOjvWlOsGoBatrYN67HaMhGw6OeL0FxDak7KrE5Ve2jnJuj9CBhJdJ
-         ICtQ==
-X-Gm-Message-State: AOJu0YxX8UiXgAU4FMepXlGl9Rz76YLI4lpZRMwmQDJ+KfpT+rSZg+gP
-	/LeW7xNi8ZIBVsgUfOszAwUIbA4IHNUWKB9sEYOhKxBIESfA9DgkqMFb
-X-Gm-Gg: Acq92OG4YU0CKUVbMC/nuDZtbyEbqaFnclUU/43nTGzqmQhtpCjp0cs9yzOvSnPC1Du
-	+E6T6YM/UxnIrgmc2InvcxCeL9ap9IOkUrMij0PXkeAfVgAOCthwSNBef1mqIth8WdAZxCEptTp
-	IUgt+Iaw9lmjtBhHnULMiNdhXKXJcHQ6mjTbDzeL/u5Z+xFU84TWcHVf06Tn+HT1Jc7oVQ3f4RI
-	U7OnenA0Wz8jx2W+HH3PSRfPMiMGwZNvq5WriU+h7ON7Og5xPM14uvE1rLdIrZHil/yALlGgw8j
-	fd4UVqL4ddeiYKZqoXCvpxMKoz2W+qA/Pnst4VbuIJvnqmBhIYKh6Y0YR/nCId/1WcNlLmN9JRy
-	JqcVgUbMlWp2oeyK5tgEqeoTmdcJPyFry7NbxVU6QeWtZUcXwvrfOe/s1edQa0XZufWb5DCDF/R
-	UyFzSNAMA+X//yV/tGUth9PwolXw==
-X-Received: by 2002:a05:600c:871b:b0:48a:75b9:b0bc with SMTP id 5b1f17b1804b1-48fe6613ac0mr282123125e9.29.1779183922787;
-        Tue, 19 May 2026 02:45:22 -0700 (PDT)
-Received: from imac ([88.97.103.74])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4900c16c62dsm123421935e9.11.2026.05.19.02.45.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 May 2026 02:45:22 -0700 (PDT)
-From: Donald Hunter <donald.hunter@gmail.com>
-To: Minxi Hou <houminxi@gmail.com>
-Cc: netdev@vger.kernel.org,  davem@davemloft.net,  edumazet@google.com,
-  kuba@kernel.org,  pabeni@redhat.com,  horms@kernel.org,
-  aconole@redhat.com,  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] tools: ynl: add unicast notification receive
- support
-In-Reply-To: <20260518164029.439928-3-houminxi@gmail.com>
-Date: Tue, 19 May 2026 10:44:25 +0100
-Message-ID: <m2y0hfu41y.fsf@gmail.com>
-References: <20260518164029.439928-1-houminxi@gmail.com>
-	<20260518164029.439928-3-houminxi@gmail.com>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+        bh=5ck0nioZIpXfDeqaJmryEQdE/4o5C/f9MbjAkvgRDk8=;
+        b=Jzr1wbJQHc9uk7xU8XVUnWUsmkG68VfFGfwb764Bl7VXnlYW2EqZrj/HvMWyChSq1J
+         2GXU1CWoqMtUABTT1qAxhGOvySE/SxXvTkLfsURNEJFW8jqc53Q2Qlo5yaM0ZZsy5HTm
+         1GX3yHlo5by8HCvhe8+hL1VSgvRiXDnGCByBQ6pIsr/VNydDBKk6Nmvc3LzmZi0+RnNt
+         R75WQ6zG+r74MlM/5ynI68AfXiSkksfCT4e2w2waphiQlM38E8L41ZsDmuNk7t13Xy0v
+         IH+4q84MCk/+B7w3OaOfd09bs78dhqQkcynOifgoVMBJsAFzonnxMls3zK6Dtg7B+jAX
+         jdTw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779183980; x=1779788780;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=5ck0nioZIpXfDeqaJmryEQdE/4o5C/f9MbjAkvgRDk8=;
+        b=Gz6WTqLV2gFOjH6x0nBWTtr6EI+qnJGdm+WTiamOC8ufDR8NYSWFYChrPSZHN0WNQP
+         DHmws42gD7FGN4ML/0kt/cYWcoskUhRcZWkG8ptXALUL4o/xAHdUGjuhYpWbHB04WyYe
+         h5Frb4D5qmrbmiPmEXKV1csK9d8o45Bm40nncOvWlmVWnbvDLryVLX7jA3GhDFdcZ7vw
+         v5NMr7PqnsvE9k47qdKFOOGCFfKDRbqg0dBioMtKXs+5wgFf1r+iD9dUmLrY1h09zffR
+         HylS8L33wHM+sKicmbZZGJ9UBUynEqWjGgALk5vxUp3MoiesXIl3rhYyo1f0oFnqcalT
+         ZrfQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+7jSPzHzXr+JSMBq31BVwqEY+Eix0coGoecDyej6qTUQSdu/Ncn0at7VIh0RUW6mg4nY0GL+A=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwpDNAqdL26UdLlgJLOITWFatwZ4y3EjQKlihs8KL5iNcPtDDVH
+	aKPf7Hk+AxCUiIqHEYY/AXLxssjlZVJiUiL4f9VFm5CFeGU+IguR4LfiPHuxYKXkAhi555ARr97
+	aNUOH6PuAoG5BOg==
+X-Received: from qkaq25.prod.google.com ([2002:a05:620a:aa19:b0:913:351:9730])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:620a:2a0c:b0:8f8:7765:27da with SMTP id af79cd13be357-911cec0ece3mr2497073385a.42.1779183979535;
+ Tue, 19 May 2026 02:46:19 -0700 (PDT)
+Date: Tue, 19 May 2026 09:46:16 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.54.0.563.g4f69b47b94-goog
+Message-ID: <20260519094618.2632073-1-edumazet@google.com>
+Subject: [PATCH net-next 0/2] net/sched: sch_drr: lockless cl->deficit and cl->quantum
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, Jamal Hadi Salim <jhs@mojatatu.com>, 
+	Victor Nogueira <victor@mojatatu.com>, Jiri Pirko <jiri@resnulli.us>, netdev@vger.kernel.org, 
+	eric.dumazet@gmail.com, Eric Dumazet <edumazet@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Minxi Hou <houminxi@gmail.com> writes:
+First patch adds missing annotations around cl->deficit.
 
-> Add ntf_listen() method to YnlFamily for binding the netlink
-> socket without joining a multicast group. This enables receiving
-> unicast notifications through the existing poll_ntf/check_ntf
-> path.
->
-> The OVS packet family sends MISS and ACTION upcalls via
-> genlmsg_unicast() to a per-vport PID rather than through a
-> multicast group. The existing ntf_subscribe() couples bind()
-> with setsockopt(ADD_MEMBERSHIP), which does not fit the unicast
-> case. ntf_listen() provides the bind-only alternative.
->
-> Signed-off-by: Minxi Hou <houminxi@gmail.com>
+Second patch makes cl->quantum lockless, to prepare
+future lockless qdisc dumps.
 
-Reviewed-by: Donald Hunter <donald.hunter@gmail.com>
+Eric Dumazet (2):
+  net/sched: sch_drr: annotate data-races around cl->deficit
+  net/sched: sch_drr: make cl->quantum lockless
+
+ net/sched/sch_drr.c | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
+
+-- 
+2.54.0.563.g4f69b47b94-goog
+
