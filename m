@@ -1,43 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75E9A373C1E;
-	Tue, 19 May 2026 22:44:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88E67233924;
+	Tue, 19 May 2026 22:46:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779230665; cv=none; b=L5XlvmxOrhiSnxNiGIqdYUWZ1Ut6BGnOlZ3mqLzzjqY4r7NO4YYlgjdpNKIFVLSqHsYPKgoEBxVfpvLhMjNnDSya//TLaDWcdioinVHAgEdt38aDt4T1dla+0+9kGjC1D2NoCi+rBhKeGJ1vIPKGcwkiFLYDuyVuupjH4I9PIGs=
+	t=1779230787; cv=none; b=KTZTqdfn9OosGFq6LJ3v+RojAp9KmHHPLAK1eju8G5jOeZaWVgzDyG8vyoqHKSu9FbyZEDMD4X5cbJG6dSBydbv2DomyA9fJ/zR2m/TJS1f/H3n8krQMMSi8l1j21PDfuQiewi9AXAC4HNKiCPEdAYAc/6U6OVqU76YWU5jyRH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779230665; c=relaxed/simple;
-	bh=GnmL58nUJ+aQYfo5c+N8DIjsRzLma8nqcxDsscZWYO8=;
+	s=arc-20240116; t=1779230787; c=relaxed/simple;
+	bh=CCPmPTbfFv5he77EFc/fjGyY6j6WEa645ygiEI0mMfw=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AyGYhkvbn0YG1ec94VQgqX22jK1gliaMJScFSuQjFCLIsupBdfqSYkE87uGWZOhr/ntU8fv+Rw5NJPdQMrPYPQwV2iXvrqudUnz+fwdu4LBtykQbc2rQGhv5SBsPlYxWBAAo+hSqz/MYXwI3DHOV1vXix/e1dC8Ho6yuUNCnx2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mUP8lvw+; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=RFdl9Qu+zznFQidMiydTfEJITsYWO61+8LBH0b3y7D0UEhQ6/ptSzFu5O6YcXXY10njyS72UnAxW7HdKLvmT/Gh1VCFgKRkARhiMbUFka0WsKGhKS01gn3lfl16hFWyzhMzMuiQfCSRcrAHmGVShRlAHttULc1AJLL8ThAMQDBs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gIoGyJ1Z; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mUP8lvw+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACF621F000E9;
-	Tue, 19 May 2026 22:44:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gIoGyJ1Z"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B61891F000E9;
+	Tue, 19 May 2026 22:46:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779230664;
-	bh=Ug7LuOJAwKawavxSmCtMPtqb0Cen/S35O6/Igj6pVwA=;
+	s=k20260515; t=1779230786;
+	bh=9dxkO42r5a+IWZjuGgvUPHesx13P6vVGJsquyNsJLyU=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=mUP8lvw+pUzIkaoB8nwIy6Cs8ohIykTozdroxvySZsNhR1gQyVRt6ZJ79zggrZbG8
-	 LKVTrKgTb9n5znQgknZU+jKjLwm2a5m3/GblJr1T86zSnJnMa6snAGRp0SN/1afxBa
-	 2OXAT5ylzz4i8X5X9gKw7cq1t3KqnlR2gKRxfyiwXvSlSfQC4PE0oIoIr5DBh/Y48W
-	 yvqj8mmaZRV9274zDaSdaErWebw0TIcByMNI31lVVt6o1xuVerLLTfVJWytcx2kEY2
-	 DpFMS6m2oBDTFg9YcGSDA2NvbhgSCDc6GJjVskj1SsdObd31F57PDjFtvcTkdl8t8g
-	 sGEPw7PilcpEg==
-Date: Tue, 19 May 2026 15:44:22 -0700
+	b=gIoGyJ1ZP7MOqHD05kodIcTJaOWhFpxJygkgkE4y0wUtgmRaixFCq5u9L8dPAHqwc
+	 5JLeNUIimJIyAbrQ/CebvSc7//r04PwUmaa/axybfnFDDHGoAulfx2sNs7sIxI1Pvw
+	 9QovZc0gFdW7w4HekBIlv5FPhaTTAph0pswSwLO/yhWZVMGGx/JcM5i5ZM3V1QdW0o
+	 95QG2FD1ph7d+jw4Mv7UHAeNynJ76BVqrtGl4w4ugQF9kECPdXACL+aHBsA59+wSyf
+	 oXiH2tWBoDfvY7AnXTkiUkPE05uHyzDm1iLSKXeW1+BCrQYngLM+LxQis8R2AqzOL/
+	 YJKoBaaHoJfIg==
+Date: Tue, 19 May 2026 15:46:24 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Minxi Hou <houminxi@gmail.com>
-Cc: netdev@vger.kernel.org, donald.hunter@gmail.com, davem@davemloft.net,
- edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
- aconole@redhat.com, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v3 2/2] tools: ynl: add unicast notification
- receive support
-Message-ID: <20260519154422.525b32e6@kernel.org>
-In-Reply-To: <20260519103153.968549-3-houminxi@gmail.com>
-References: <20260519103153.968549-1-houminxi@gmail.com>
-	<20260519103153.968549-3-houminxi@gmail.com>
+To: Francois Romieu <romieu@fr.zoreil.com>
+Cc: Lukas Bulwahn <lbulwahn@redhat.com>, Andrew Lunn <andrew@lunn.ch>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+ netdev@vger.kernel.org, kernel-janitors@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] MAINTAINERS: drop obsolete 3C509 NETWORK DRIVER section
+Message-ID: <20260519154624.109b6ffd@kernel.org>
+In-Reply-To: <20260519142345.GA2451985@electric-eye.fr.zoreil.com>
+References: <20260519040532.277078-1-lukas.bulwahn@redhat.com>
+	<20260519142345.GA2451985@electric-eye.fr.zoreil.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,25 +48,14 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 19 May 2026 18:31:53 +0800 Minxi Hou wrote:
->        ynl.ntf_subscribe(mcast_name)      -- join a multicast group
-> +      ynl.ntf_listen()                   -- bind socket for unicast notifications
->        ynl.check_ntf()                    -- drain pending notifications
->        ynl.poll_ntf(duration=None)        -- yield notifications
->  
-> @@ -748,6 +749,10 @@ class YnlFamily(SpecFamily):
->          self.sock.setsockopt(Netlink.SOL_NETLINK, Netlink.NETLINK_ADD_MEMBERSHIP,
->                               mcast_id)
->  
-> +    def ntf_listen(self):
-> +        """Bind socket for receiving unicast notifications."""
-> +        self.sock.bind((0, 0))
+On Tue, 19 May 2026 16:23:45 +0200 Francois Romieu wrote:
+> Lukas Bulwahn <lbulwahn@redhat.com> :
+> > Commit 91f3a27ae9f66 ("drivers: net: 3com: 3c509: Remove this driver")
+> > removes the 3c509 network driver, but misses to also remove the MAINTAINERS
+> > section 3C509 NETWORK DRIVER.
+> > 
+> > Simply drop the obsolete 3C509 NETWORK DRIVER section.  
+> 
+> Actually, the maintainer section was recently added.
 
-_listen() seems like a pretty bad name, given that listen()
-is also a system call name, and we're doing a bind().
-
-If we want a method to do this (as opposed to the user calling
-ynl.sock.bind() themselves) we should probably call the method
-bind() and pass the address tuple as an arg (default to (0, 0)).
--- 
-pw-bot: cr
+Yes, the driver is coming back.
