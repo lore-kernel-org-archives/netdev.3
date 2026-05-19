@@ -1,85 +1,159 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D42543E00A2;
-	Tue, 19 May 2026 08:09:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E66083DCD8E
+	for <netdev@vger.kernel.org>; Tue, 19 May 2026 08:10:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779178195; cv=none; b=e9oZjAF38buM6XNkI46of1UB2J7MXwCvszlovGWaIoK+VwkmUCcVByX5P66teQVkADWS7vjdLaGLlpArguRmlWVLb7lPTD8YGKL9ek5GCgLA+OnQhmDM6nlXhSTGSqxdbHtGrM9lDNYdTwjCAce3KklxzrKeA+PvVnLpSUGVxOo=
+	t=1779178206; cv=none; b=GNRnJBD0z7FT1J0zbukzfydlsfJ36YJBzSVr2JiXie9QPemBbjNL72OT2gVCJAp6H5XoSRKVzzuk4NgZ2+GUhESt1axtumrpSNTNqpgOpKT+lYTv4VmpgmHgcpTZuDgvdIPt8yBeYPb4P9TcbgDOa+kcaDwCGausf6MQ3Q2tsSU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779178195; c=relaxed/simple;
-	bh=VmMmEMWfS9cFzB7Eeb6N342RO4jFNK5fLY7jxXQmAPs=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=dlDx/vCdyc+ydN5KmEban8APIAhDTML9mc9tGYNmgZ+WHSbQUs43vRTU8yWXeqcXGrYUaUJi+JmIpL81f+Dxv8s9eDfbe2+eUSj9Y5VgI9jGBqpjmMkOAG1zWgdmJFF+0qVJn2lZMDyryehPaJ3Rd+PwFepcVo+kekawDXBzeX4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m4+0yZwN; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1779178206; c=relaxed/simple;
+	bh=Nz3rSNu9zVS3yzH3mh9tWAgp4wMrjab4VlPPaO9g/iQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=itMrdW7CJ2kdi/KZu7U6a/6WZOL6EJtsp51CyeLbgAeQvBUcvbw4RCRTEGXiBqU1KCXkDQ+wxkp+jOW0lM+vC1xiRmrICeZAGLMEN4dknxxoAwhXa8h+4G7gzfuotZP6IDT7QE1O84ZRE+5UdE88JCHJif80c9f+O2kwjln1Aek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=h7FXl/5l; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=VPXkKFkO; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m4+0yZwN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 772BAC2BCB3;
-	Tue, 19 May 2026 08:09:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779178195;
-	bh=VmMmEMWfS9cFzB7Eeb6N342RO4jFNK5fLY7jxXQmAPs=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=m4+0yZwNfqlEewvcJ5Okf8UjI/B3MVv3Aliy//dhO2yniYblDyT+fWU3xppffv8Z6
-	 3TfGsGbHX/hfDqO05R+ZOJfucgSksIEDh5m/+Jj4cu5gaRs4AmDVnRv7Aw4g+IzrkL
-	 qQ9VFgGKlbTUXK+vvH4gEZFs5lwX5fuC0AODbl/ovcwo9EJ9TGZQ5jlxqVTRirb784
-	 t4yMznLj+2in0aNhd9iRmS1N/QeL+k3vkBi6pvdgpZHzIdgqzU0gxKw4NF8+ACMX64
-	 bi4S+Pb+gEpmMtXHaksU7uPyoBDdc5KLcom5rofCwYCvUZUL4VgWEkNfKEkAw/MI0E
-	 Y5xZqn1O9IGVA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0A4D3930DC3;
-	Tue, 19 May 2026 08:10:07 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="h7FXl/5l";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="VPXkKFkO"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1779178204;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hz4WqFcaJrUTE5OjjN9FY4tws1Nc4Bwkqhu4It5u51A=;
+	b=h7FXl/5lkIbYS/QaS065L5A4IVUHbRmqxplHRxEOoFB1z9gPcJ+oigUGUyinmblIbA45Ig
+	oFhchJZIzXXWX19tKkBAZLEZOmMLJAZ0NvX7nTctmAbgawjtmjgMwr/W9PWf/1sJ5cBNYY
+	XBMZzbJfEUS0DrnhFjiuuDbNLIL19VM=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-168-B4fYt9B-POSH2HqiIeaZmg-1; Tue, 19 May 2026 04:10:02 -0400
+X-MC-Unique: B4fYt9B-POSH2HqiIeaZmg-1
+X-Mimecast-MFC-AGG-ID: B4fYt9B-POSH2HqiIeaZmg_1779178201
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-44f65835b77so2563404f8f.2
+        for <netdev@vger.kernel.org>; Tue, 19 May 2026 01:10:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1779178201; x=1779783001; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=hz4WqFcaJrUTE5OjjN9FY4tws1Nc4Bwkqhu4It5u51A=;
+        b=VPXkKFkOYknpbr5B4+CXMWlB/vLw5QfPwcXDWKRd7omJYRx8JY/Czi9PU8mt0RF1WH
+         FGtmCiyWrVBdMvwIGBjHYLBD0Qx0iEKT/71vqpGeczPd9V3693D7eZ6Ep83mLtjQdPUp
+         +XDnp3rSDqqPkZDPgYn3cbxEMHU27ALye6ZPaDHvVh69HSl6KekSc/zd/vguC/8yPCR6
+         pLwF23DyHNEqQsLkDwsnAuPnNq19peCsiYfCztRagkdutN6d8Pdl1sjYZrz2KEMhWP5c
+         +Cwr6fKT4RqkspQKtkPJXU7TIi1SMg5O8fHFoQdNIKOZQsdbt0/duBnYboiB4TRp3O7w
+         X9RA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779178201; x=1779783001;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=hz4WqFcaJrUTE5OjjN9FY4tws1Nc4Bwkqhu4It5u51A=;
+        b=az5nrkaDvxiLNfvhg5vcBmW1+MsdVPULJbH+cT8dx3znqbpGeEW/2hvte0GIiOTOSW
+         ivcsAjYP4UVmqwp0Mz8wdjh0yG3aqKA2CyTzrKt3gsO0dB0b79KXsdk3tOf0PcwjqGJ7
+         J8F2Y9OcUx647IL/BF+kjiTuRDJhaGnGvj8uQ6kiEs89uNS74yyB0zsIg9D5d8yEbbMP
+         1msjkXZ7/4kgLXfkNnYXutwaZ70DfQBaC6P6FFdBVdshzhNYl/pSpJPI8WG69NdvQAI/
+         k1gNQ8HJMxCHJggc4CosFdvYshWGw65GTM8kyBwamr5yqYvXURMWxNT3g4Iqt2nl6d9s
+         TlDA==
+X-Forwarded-Encrypted: i=1; AFNElJ8p9FZsqpNJAKbVhNFWevEWTRa+R+ZdNXNnXadoeEwG9TvBpXB5WMPh9rSaVa78c6eHl1W400M=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzruvAgHFLc02UUoB2Xvb7MHEJcryeDO8/bD5FMt+xBlSc+rUHX
+	Thg8Sncp++ifGwzf2OHUQtFj92AIIIXUw0L8qL7p0TxZi7R6lzLz6j4tWBFiznIpjBznsGTcMrR
+	psxgsibt62OWySuWYQFuAV3pH3Gc0yaVygLKtf5B+1isHCq0vblxyzY5fwA==
+X-Gm-Gg: Acq92OHhtqWoL4qkV7n/fkwwoa5bt61Ob3mw9/+Jv4lVGAlX9YKxucKqTURif6pUAr4
+	042PiDKVbqvJbizB47hkgOhZjkfxqwL9N5uYie3ZTq1O50bfM69Ti7Il8wQXDsCUZ3H1wOZdJsg
+	t3ab/yU45F9Z91n4EUKq+GJvI0PxJTPGdOI85bPDu6EIgqZEeWSyGOnQubdxa7guO/787bqIfe+
+	GqYXJ94n/wqhjD/mbyErZz74X4j5C+gMBvMLDVX366rerTxerKxcc5FQl2lplu0lgPnP5b/PZ6E
+	TPzYIDp7SsfT8cAoqtJ3//biqxgZ+2Fc2DjTcfWR/uKMnNLbIzY42YlWPyUV/hWmfsxUw+pyXbh
+	3P6V2ytoUrsdX+SZpMBOq6PddNMARClOVRgo3VpWcqOyFvYN6+ym8OYs=
+X-Received: by 2002:a05:600c:c087:b0:488:d6eb:e63c with SMTP id 5b1f17b1804b1-48fe61f2768mr209624245e9.15.1779178200617;
+        Tue, 19 May 2026 01:10:00 -0700 (PDT)
+X-Received: by 2002:a05:600c:c087:b0:488:d6eb:e63c with SMTP id 5b1f17b1804b1-48fe61f2768mr209623505e9.15.1779178200067;
+        Tue, 19 May 2026 01:10:00 -0700 (PDT)
+Received: from [192.168.88.32] ([150.228.25.33])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45da15a5653sm44145281f8f.35.2026.05.19.01.09.58
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 19 May 2026 01:09:59 -0700 (PDT)
+Message-ID: <c7e0dd4f-e34b-42a6-ae4d-8060a59e9b8f@redhat.com>
+Date: Tue, 19 May 2026 10:09:57 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v10 1/2] net: pppoe: implement GRO/GSO support
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177917820664.2159730.6924688114154497068.git-patchwork-notify@kernel.org>
-Date: Tue, 19 May 2026 08:10:06 +0000
-References: <20260513013400.7467-1-qingfang.deng@linux.dev>
-In-Reply-To: <20260513013400.7467-1-qingfang.deng@linux.dev>
-To: Qingfang Deng <qingfang.deng@linux.dev>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, dsahern@kernel.org,
- idosch@nvidia.com, gnault@redhat.com, kees@kernel.org, nbd@nbd.name,
- ericwouds@gmail.com, willemb@google.com, kuniyu@google.com,
- richardbgobert@gmail.com, jiayuan.chen@linux.dev, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-ppp@vger.kernel.org, pablo@netfilter.org,
- aleksander.lobakin@intel.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] net/mlx5e: Skip IPsec flow modify when MAC address is
+ unchanged
+To: Simon Horman <horms@kernel.org>, tariqt@nvidia.com
+Cc: edumazet@google.com, kuba@kernel.org, andrew+netdev@lunn.ch,
+ davem@davemloft.net, borisp@nvidia.com, saeedm@nvidia.com, leon@kernel.org,
+ mbloch@nvidia.com, jianbol@nvidia.com, cjubran@nvidia.com,
+ acassen@corp.free.fr, kees@kernel.org, Jason@zx2c4.com,
+ michal.swiatkowski@linux.intel.com, fmancera@suse.de, antonio@openvpn.net,
+ cratiu@nvidia.com, ecree.xilinx@gmail.com, sridhar.samudrala@intel.com,
+ netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
+ linux-kernel@vger.kernel.org, gal@nvidia.com, leonro@nvidia.com
+References: <20260513190226.335562-1-tariqt@nvidia.com>
+ <20260518112710.510979-2-horms@kernel.org>
+From: Paolo Abeni <pabeni@redhat.com>
+Content-Language: en-US
+In-Reply-To: <20260518112710.510979-2-horms@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hello:
-
-This series was applied to netdev/net-next.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
-
-On Wed, 13 May 2026 09:33:48 +0800 you wrote:
-> From: Felix Fietkau <nbd@nbd.name>
+On 5/18/26 1:27 PM, Simon Horman wrote:
+> From: 'Simon Horman' <horms@kernel.org>
 > 
-> Only handles packets where the pppoe header length field matches the exact
-> packet length. Significantly improves rx throughput.
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
+> Full review at: https://sashiko.dev
+> ---
+> net/mlx5e: Skip IPsec flow modify when MAC address is unchanged
 > 
-> When running NAT traffic through a MediaTek MT7621 devices from a host
-> behind PPPoE to a host directly connected via ethernet, the TCP throughput
-> that the device is able to handle improves from ~130 Mbit/s to ~630 Mbit/s,
-> using fraglist GRO.
+> When a netdev event fires for an IPsec SA, skip calling
+> mlx5e_accel_ipsec_fs_modify() if the MAC address has not changed and
+> the rule is not in drop mode. This avoids redundant hardware updates.
 > 
-> [...]
+>> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c
+>> index a52e12c3c95a2..f567cd801adb3 100644
+>> --- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c
+>> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c
+>> @@ -674,19 +674,26 @@ static void mlx5e_ipsec_handle_netdev_event(struct work_struct *_work)
+>>  	struct mlx5e_ipsec_sa_entry *sa_entry = work->sa_entry;
+>>  	struct mlx5e_ipsec_netevent_data *data = work->data;
+>>  	struct mlx5_accel_esp_xfrm_attrs *attrs;
+> [ ... ]
+>> +
+>> +	if (ether_addr_equal(mac, data->addr) && !attrs->drop)
+>> +		return;
+>> +
+>> +	ether_addr_copy(mac, data->addr);
+>>  	attrs->drop = false;
+>>  	mlx5e_accel_ipsec_fs_modify(sa_entry);
+> 
+> If mlx5e_accel_ipsec_fs_modify() fails (for example, due to a memory
+> allocation failure), does this early return prevent the hardware state
+> from recovering?
+> 
+> Since attrs->drop and the mac address are updated before calling
+> mlx5e_accel_ipsec_fs_modify(), a failure in the hardware update leaves the
+> software state out of sync with the hardware.
+> 
+> Prior to this patch, a subsequent netdev event for the same neighbor would
+> unconditionally retry the hardware update. With this patch, the early return
+> sees the optimistically updated software state, matches it, and skips the
+> retry, potentially leaving the hardware permanently stuck in a dropped or
+> failed state.
 
-Here is the summary with links:
-  - [net-next,v10,1/2] net: pppoe: implement GRO/GSO support
-    https://git.kernel.org/netdev/net-next/c/55a5d8fca836
-  - [net-next,v10,2/2] selftests: net: test PPPoE packets in gro.sh
-    https://git.kernel.org/netdev/net-next/c/6160ec9d03d7
+@Tariq, @Jianbo: I tend to think that the above qualifies as
+pre-existing issue: when mlx5e_accel_ipsec_fs_modify() failed the S/W
+and the H/W ended-up in out-of-sync state for a potentially unlimited
+time even before this patch. WDYT?
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+/P
 
