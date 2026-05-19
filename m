@@ -1,75 +1,72 @@
-Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C743409625
-	for <netdev@vger.kernel.org>; Tue, 19 May 2026 13:28:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99A78348C4D
+	for <netdev@vger.kernel.org>; Tue, 19 May 2026 13:29:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779197299; cv=none; b=PG7kPcwGPUPf2M91toHirjnQlmCas1Y72S7K/fxjZzYaFijDdUah2qfXpVav2tdBzNx4S2AdJ4dPTPSXnxO0+q82XLvCeovumVtnDdK0RyQtNmXwyhw30c/4EBIFKBK6lf8Y+bWpdCltexBi6z4k+o/pqY9lWB7z0cm7UJ1tJPY=
+	t=1779197345; cv=none; b=BZ3hY2jHqiZSAd0ZPymSOm2e5vEMJTXz/Yo8bgtFuOvmMs3qHSxlzk61vxSmiqp17eK4EDDd5FPVqcgdd/ndSXNK/4iKmFyx5DG/EJpocHzVHWci1zkrSNF7aGohlOXzBcvynnZFARLuX5M8S0+uWbAjFjFBs30X1Zqmhge7QXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779197299; c=relaxed/simple;
-	bh=1/xVXZdKhAdlqMiTsVet9wqnGJk84XqklvnZCAnXSxE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Pe6MQeNGqOV1X8giawg8WkM835k32RJ/VufRK8nPQFRPPwE0vcjVXqxo85vB40WbPTpxoka1UpdBuKG7bZSfW5kKEbz9Y+godnvdOg9d+KU9o9NBtLh5u2P9cbs8ca6uInt6/0ba8qjbC8Be6UajVStolUI6IimL7PqtqYms1PI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WQRmhD+G; arc=none smtp.client-ip=209.85.219.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1779197345; c=relaxed/simple;
+	bh=aUfCvghQl/ZChtCIkP6PVkVCfuJMS0qHqltd5CaS2eE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=UX9GT79soZJYoRtcXVoLItZEZ4gmL+oyxPOgQBETYYPaJAHsZoTChdnG9ThgOlWEs71gxrfrjywTzMRkN7hhHA+LfC5UKPXhpl6VatLF5OMqxdzuTic1FO0FE/43E6jRP2qX/Dn1Cy7IDsVg6Pku3ilcVCxqCiZeWPEBrJzfd8A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OIdtM2p8; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WQRmhD+G"
-Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-8b98482b253so60990136d6.1
-        for <netdev@vger.kernel.org>; Tue, 19 May 2026 06:28:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779197296; x=1779802096; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=oKPSUbsZSmEbkWfEx2IzJ+tvdP/7UtkEfOkK4Ns846w=;
-        b=WQRmhD+GsTxM99UctZQImKqgMss9hTw9l2MQazpvr3FZstGLz2SoF8aFCc7AEAmW2a
-         K66b7mlGX5NmdLmSghSl3eHBuV/kyl6w09MMtWRB3y7B6yTSx4j+YA0R4JuXj1jZOpRa
-         xt+qKay8QxXQtfMWkW5L6BZkb0v8H4PNimVFZtjFB1Md9YMgOwC0HXxVBS45BxGRUs4T
-         DEmL/2SGsuyUZPOWkj+VQQ9+wKxdksWVVYDtt06lLOqEZHLpikMppckjokUWNRHvc++K
-         JOlaZ+JqRouTaKqLGV671E9kCRL0eDIBYU5CPm9J3JFf7dEwtcQCWX8P8qXj+FcIO2oL
-         8nRQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779197296; x=1779802096;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=oKPSUbsZSmEbkWfEx2IzJ+tvdP/7UtkEfOkK4Ns846w=;
-        b=G42amG4fGpz5M6MWRYojdmX/vUVvUYL/rmhqlpaXlI8TryDDfrS/Ovq1mA5/xECP+Y
-         yOet2ahtcASnKvKOgG7ScPL0i5sGdb+jIGOvG2tIt01pFbfct5TURbuZQfcSNgE47Vj/
-         r6JtUv286Ke5CF4cwfPaT2ertB3QelTkrUXC5fWFCveCa6Oon6pRZX8FQERjQfJdu1aL
-         bTskwmHP2E8I3tsNbZ/b9cltzP0wlbmOtoOw7mUDAHheFvuyDhco+SIME0dpUsjcss9+
-         VR81W9NOmawly6ouam6mfuIvI0quJvTyvcuJXKd9Z9eN3I+EHsUQhjHg57+3W7MIOxHI
-         nX3w==
-X-Gm-Message-State: AOJu0YxlAvTgUknxWvCVJYz/WN/7RkLzdzezaGcXoH4yv0T4Zfqr0F5N
-	AU+NiyYphWC5n724EcnhbrhP52rAN0oMgEPaeoZiLsi4buJ/hnRX0lWjzPzSLw==
-X-Gm-Gg: Acq92OHcWygoXkiR3QrwR+X6aQjhgPDj3UPcRis18QcoriMUkOPFpA+AHh1AU4XYlCb
-	pNTl8xSKZXrrgPkKsytiOPbehBmFXGHDtOrVrfAXIx/r30eTvTB0SuHEs08CCZUA0FXdu+NyMys
-	BlhoVpPEg3oABvdCo4F2HcP33MNBhkVlkoRoQHGWyOKJ56sbzEU2/Dq6MGnfnABzcUt+olAGVIZ
-	lO6cWnB2ul8uEOWgKTz3C1hP8lkyLqavSeIeHO34TDI2rKOsBR1WJF0tZiphZrGri/H8Ks58aBF
-	9I74tcWMGUuTtUk/9yyHWirBcvAEo51WtYYj9oFgTi30embIKx+0dbaTgWuL8XXM9sOejOXZp3l
-	hsezfTZy3gW5WWhTskon1kLDeA7FOkFTRJV32IkTzEDQaiqmSHMiz7beCr6uXq1fQVMQiis67Jw
-	PFswiG5l9iLcSTIlolhDS5HyzI5rFG+UZG9Za08BimaF2KnYrOYF2qDQqII6sZ5dmZvRolTJHJV
-	84UDEQJYKC7v3rqjVRSV9rumT7ylPs=
-X-Received: by 2002:a05:6214:8085:b0:8b0:2017:958e with SMTP id 6a1803df08f44-8ca0f5eab0emr293198356d6.13.1779197295866;
-        Tue, 19 May 2026 06:28:15 -0700 (PDT)
-Received: from hunt.homenet.telecomitalia.it (host-79-3-197-232.business.telecomitalia.it. [79.3.197.232])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8ca3609784bsm90218616d6.16.2026.05.19.06.28.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 May 2026 06:28:15 -0700 (PDT)
-From: Federico Brasili <federico.brasili@gmail.com>
-To: netdev@vger.kernel.org
-Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
-	netfilter-devel@vger.kernel.org
-Subject: [net] AF_PACKET PACKET_VNET_HDR CHECKSUM_PARTIAL packets bypass ct invalid classification
-Date: Tue, 19 May 2026 15:25:35 +0200
-Message-ID: <20260519132535.3806659-1-federico.brasili@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OIdtM2p8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1779197342;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5HemROw5eZfm9qZYYG1ru2tUaiNrpeY5fpyXTbpzGJg=;
+	b=OIdtM2p8hf+w3ql2leW08/ZNdHWIJmjx3kjTym+3u35QrN6ACfEpe37coplmvvRC3I3Q8J
+	l7AwNdNgngYbLMIcU31HMa/Y1k3FPvVT8jApl8ZjeQnMhr2iAXi3GL4KPhc6B+MHx2hopn
+	Ipsen0ywMpVHlhZu50JzsxgDP5OToGY=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-676-zyPlOsJ4OdyVjgvMp6zDBg-1; Tue,
+ 19 May 2026 09:28:57 -0400
+X-MC-Unique: zyPlOsJ4OdyVjgvMp6zDBg-1
+X-Mimecast-MFC-AGG-ID: zyPlOsJ4OdyVjgvMp6zDBg_1779197330
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 855521956054;
+	Tue, 19 May 2026 13:28:50 +0000 (UTC)
+Received: from gerbillo.redhat.com (unknown [10.44.33.47])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 21A5F19560A2;
+	Tue, 19 May 2026 13:28:44 +0000 (UTC)
+From: Paolo Abeni <pabeni@redhat.com>
+To: longli@microsoft.com
+Cc: kotaranov@microsoft.com,
+	kuba@kernel.org,
+	davem@davemloft.net,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	andrew+netdev@lunn.ch,
+	jgg@ziepe.ca,
+	leon@kernel.org,
+	haiyangz@microsoft.com,
+	kys@microsoft.com,
+	wei.liu@kernel.org,
+	decui@microsoft.com,
+	shradhagupta@linux.microsoft.com,
+	horms@kernel.org,
+	netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	linux-hyperv@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v10 1/6] net: mana: Create separate EQs for each vPort
+Date: Tue, 19 May 2026 15:28:25 +0200
+Message-ID: <20260519132825.172490-1-pabeni@redhat.com>
+In-Reply-To: <20260515040508.491748-2-longli@microsoft.com>
+References: <20260515040508.491748-2-longli@microsoft.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -77,77 +74,204 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-Hello,
+From: AI Reviewer <ai@example.com>
 
-I would like to ask for feedback on a possible checksum/conntrack inconsistency in the AF_PACKET PACKET_VNET_HDR transmit path.
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+Full review at: https://netdev-ai.bots.linux.dev/sashiko/
+---
+net: mana: Create separate EQs for each vPort
 
-A locally injected IPv4/UDP packet with an invalid raw UDP checksum is classified as ct state invalid when sent as a normal AF_PACKET raw frame. However, an otherwise equivalent packet sent through AF_PACKET with PACKET_VNET_HDR and VIRTIO_NET_HDR_F_NEEDS_CSUM is not classified as invalid and is delivered to a UDP socket, even though packet sockets still observe the UDP checksum field unchanged and report CSUMNOTREADY.
+This patch moves EQ allocation from per-device to per-vPort, exports
+mana_create_eq()/mana_destroy_eq() for use by the RDMA driver, takes
+a vport reference for RSS QPs, and adds cross-port PD-sharing
+rejection for raw QPs along with serialization between
+mana_set_channels() and the RDMA vport configuration.
 
-Minimal behavior observed:
+> diff --git a/drivers/infiniband/hw/mana/main.c b/drivers/infiniband/hw/mana/main.c
+> index ac5e75dd3494..f8a9013f0ca3 100644
+> --- a/drivers/infiniband/hw/mana/main.c
+> +++ b/drivers/infiniband/hw/mana/main.c
+> @@ -40,13 +42,27 @@ int mana_ib_cfg_vport(struct mana_ib_dev *dev, u32 port, struct mana_ib_pd *pd,
+>  
+>  	pd->vport_use_count++;
+>  	if (pd->vport_use_count > 1) {
+> +		/* Reject cross-port PD sharing. EQs and vport config
+> +		 * are per-port, so the PD must stay bound to the port
+> +		 * that was configured on the first raw QP creation.
+> +		 */
+> +		if (pd->vport_port != port) {
+> +			pd->vport_use_count--;
+> +			mutex_unlock(&pd->vport_mutex);
+> +			ibdev_dbg(&dev->ib_dev,
+> +				  "PD already bound to port %u\n",
+> +				  pd->vport_port);
+> +			return -EINVAL;
+> +		}
+>  		ibdev_dbg(&dev->ib_dev,
+>  			  "Skip as this PD is already configured vport\n");
+>  		mutex_unlock(&pd->vport_mutex);
+>  		return 0;
+>  	}
+>  
+> -	err = mana_cfg_vport(mpc, pd->pdn, doorbell_id);
+> +	pd->vport_port = port;
+> +
+> +	err = mana_cfg_vport(mpc, pd->pdn, doorbell_id, true);
+>  	if (err) {
+>  		pd->vport_use_count--;
+>  		mutex_unlock(&pd->vport_mutex);
 
-1. RAW_BAD
+[Low]
+In the failure path of mana_ib_cfg_vport(), if mana_cfg_vport() or the
+later mana_create_eq() fails, vport_use_count is rolled back to 0 but
+pd->vport_port keeps the value just written.
 
-AF_PACKET raw frame
-UDP checksum field: 0x1111
+Is the contract that pd->vport_port is only meaningful while
+vport_use_count > 0?  That invariant is not documented in the struct
+mana_ib_pd comment, and a future reader who consults pd->vport_port
+without first checking vport_use_count under vport_mutex would see stale
+data.  Would it be worth either resetting pd->vport_port on the rollback
+path or documenting the rule explicitly?
 
-nft:
-ct state invalid counter packets 1 drop
-udp dport 12345 counter packets 0 accept
+> @@ -55,15 +71,23 @@ int mana_ib_cfg_vport(struct mana_ib_dev *dev, u32 port, struct mana_ib_pd *pd,
+>  		return err;
+>  	}
+>  
+> -	mutex_unlock(&pd->vport_mutex);
+>  
+> -	pd->tx_shortform_allowed = mpc->tx_shortform_allowed;
+> -	pd->tx_vp_offset = mpc->tx_vp_offset;
+> +	err = mana_create_eq(mpc);
+> +	if (err) {
+> +		mana_uncfg_vport(mpc);
+> +		pd->vport_use_count--;
+> +	} else {
+> +		pd->tx_shortform_allowed = mpc->tx_shortform_allowed;
+> +		pd->tx_vp_offset = mpc->tx_vp_offset;
+> +	}
 
-UDP socket:
-no packet received
+[ ... ]
 
-2. VNET_BAD
+> diff --git a/drivers/infiniband/hw/mana/qp.c b/drivers/infiniband/hw/mana/qp.c
+> index 0fbcf449c134..108ec4c5ce51 100644
+> --- a/drivers/infiniband/hw/mana/qp.c
+> +++ b/drivers/infiniband/hw/mana/qp.c
+> @@ -155,6 +156,18 @@ static int mana_ib_create_qp_rss(struct ib_qp *ibqp, struct ib_pd *pd,
+>  
+>  	qp->port = port;
+>  
+> +	/* Take a reference on the vport to ensure EQs outlive this QP.
+> +	 * The vport must already be configured by a raw QP.
+> +	 */
+> +	mutex_lock(&mana_pd->vport_mutex);
+> +	if (!mana_pd->vport_use_count) {
+> +		mutex_unlock(&mana_pd->vport_mutex);
+> +		ret = -EINVAL;
+> +		goto fail;
+> +	}
+> +	mana_pd->vport_use_count++;
+> +	mutex_unlock(&mana_pd->vport_mutex);
+> +
 
-AF_PACKET + PACKET_VNET_HDR
-VIRTIO_NET_HDR_F_NEEDS_CSUM
-csum_start = 34
-csum_offset = 6
-UDP checksum field: 0x1111
+[Critical]
+The cross-port PD-sharing check added to mana_ib_cfg_vport() is not
+mirrored here.  mana_ib_create_qp_rss() takes the user-supplied port
+from ucmd.port and only checks that vport_use_count is non-zero, so the
+RSS path will happily attach to a different port than the one bound to
+the PD by the first raw QP.
 
-packet socket:
-PACKET_AUXDATA reports CSUMNOTREADY
-UDP header still contains checksum 0x1111
+If a user creates a raw QP on port A (which sets pd->vport_port=A and
+allocates mpc_A->eqs via mana_create_eq()), then creates an RSS QP on
+the same PD with ucmd.port=B where port B has no Ethernet up and no
+RDMA activity, mpc_B->eqs is NULL.  The subsequent code in this same
+function:
 
-nft:
-ct state invalid counter packets 0 drop
-udp dport 12345 counter packets 1 accept
+	eq = &mpc->eqs[cq->comp_vector % mpc->num_queues];
+	cq_spec.attached_eq = eq->eq->id;
 
-UDP socket:
-packet received
+would then dereference NULL through mpc_B->eqs.
 
-A trace of the VNET case shows the packet being converted to CHECKSUM_PARTIAL and reaching conntrack/UDP in that state:
+If port B does have Ethernet up, mpc_B->eqs is owned by the Ethernet
+driver and the RSS QP attaches to those EQs.  When the QP is destroyed
+mana_ib_destroy_qp_rss() calls mana_ib_uncfg_vport(mdev, pd, qp->port=B),
+and once pd->vport_use_count reaches 0 mana_ib_uncfg_vport() will run
+mana_destroy_eq(mpc_B) on Ethernet's live EQs and call mana_uncfg_vport
+on a port whose apc->vport_use_count was never incremented by this PD,
+tripping the WARN_ON in mana_uncfg_vport() and corrupting Ethernet's
+vport state.  Meanwhile port A's EQs and vport configuration are leaked
+because nothing on this PD will destroy them.
 
-skb_partial_csum_set(... arg_start=34 arg_off=6) = 1
-XMIT      ip_summed=3 csum_start=36 csum_offset=6
-NF_CT_UDP ip_summed=3 csum_start=36 csum_offset=6
-UDP_RCV   ip_summed=3 csum_start=36 csum_offset=6
-UDP_QUEUE ip_summed=3 csum_start=36 csum_offset=6
+Should mana_ib_create_qp_rss() apply the same pd->vport_port == port
+check that mana_ib_cfg_vport() now performs, before bumping
+vport_use_count?
 
-The relevant path appears to be:
+[Medium]
+The new "vport must already be configured by a raw QP" requirement is a
+visible uAPI change.  Before this patch, EQs were allocated device-wide
+on mana_context at probe time, so an RSS QP could be created without any
+prior raw QP on the PD.  After the patch, applications that legitimately
+use only RSS QPs (RX-only RDMA workloads) will see -EINVAL here unless
+they also create a raw QP first.
 
-net/packet/af_packet.c
-  packet_snd()
-  tpacket_snd()
-  __packet_snd_vnet_parse()
-  virtio_net_hdr_to_skb()
+Was breaking the RSS-only case considered, and would lazy EQ creation on
+the first QP regardless of type be feasible to avoid the
+incompatibility?
 
-include/linux/virtio_net.h
-  __virtio_net_hdr_to_skb()
-  skb_partial_csum_set()
+>  	for (i = 0; i < ind_tbl_size; i++) {
+>  		struct mana_obj_spec wq_spec = {};
+>  		struct mana_obj_spec cq_spec = {};
+> @@ -171,13 +184,13 @@ static int mana_ib_create_qp_rss(struct ib_qp *ibqp, struct ib_pd *pd,
+>  		cq_spec.gdma_region = cq->queue.gdma_region;
+>  		cq_spec.queue_size = cq->cqe * COMP_ENTRY_SIZE;
+>  		cq_spec.modr_ctx_id = 0;
+> -		eq = &mpc->ac->eqs[cq->comp_vector];
+> +		eq = &mpc->eqs[cq->comp_vector % mpc->num_queues];
+>  		cq_spec.attached_eq = eq->eq->id;
 
-The same behavior was also reproduced through PACKET_TX_RING + PACKET_VNET_HDR.
+[ ... ]
 
-An explicit nftables rule such as udp dport 12345 drop still works correctly, so this is not a general firewall bypass. The observed difference is specifically around checksum-invalid classification: raw invalid packets are treated as ct state invalid, while PACKET_VNET_HDR/NEEDS_CSUM packets with the same invalid raw checksum are not.
+> diff --git a/drivers/net/ethernet/microsoft/mana/mana_ethtool.c b/drivers/net/ethernet/microsoft/mana/mana_ethtool.c
+> index 04350973e19e..4633acc976f0 100644
+> --- a/drivers/net/ethernet/microsoft/mana/mana_ethtool.c
+> +++ b/drivers/net/ethernet/microsoft/mana/mana_ethtool.c
+> @@ -462,10 +467,22 @@ static int mana_set_channels(struct net_device *ndev,
+>  	unsigned int new_count = channels->combined_count;
+>  	unsigned int old_count = apc->num_queues;
+>  	int err;
+>  
+> +	/* Set channel_changing to block RDMA from grabbing the vport
+> +	 * during the detach/attach window. mana_cfg_vport() checks
+> +	 * this flag under vport_mutex and returns -EBUSY if set.
+> +	 */
+> +	mutex_lock(&apc->vport_mutex);
+> +	if (!apc->port_is_up && apc->vport_use_count) {
+> +		mutex_unlock(&apc->vport_mutex);
+> +		return -EBUSY;
+> +	}
+> +	apc->channel_changing = true;
+> +	mutex_unlock(&apc->vport_mutex);
 
-My question is whether this is considered intended behavior for locally injected CHECKSUM_PARTIAL skbs, or whether AF_PACKET should reject or normalize this case before the packet reaches conntrack/UDP.
+[Low]
+The commit message says:
 
-I can provide the minimal reproducer and full logs privately if useful.
+    When the port is down, apc->vport_mutex is held for the entire
+    operation since mana_detach()/mana_attach() do not take vport_mutex
+    in that case. When the port is up, Ethernet owns the vport
+    exclusively so no additional locking is needed.
 
-Tested on:
+Does this description match the code?  mana_set_channels() drops
+apc->vport_mutex immediately after setting channel_changing=true and
+runs mana_pre_alloc_rxbufs(), mana_detach() and mana_attach() without
+the mutex held, then re-acquires the mutex only at the end to clear the
+flag.
 
-Linux 6.19.14+kali-amd64 x86_64
+The actual serialization mechanism is the channel_changing boolean
+checked by mana_cfg_vport() under vport_mutex, not a long mutex hold.
+Could the commit message be updated to match the implemented design so
+that future readers do not assume a different invariant?
+-- 
+This is an AI-generated review.
 
-Thanks,
-Federico
