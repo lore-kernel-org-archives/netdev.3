@@ -1,72 +1,116 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f196.google.com (mail-qk1-f196.google.com [209.85.222.196])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 179922EFD9B;
-	Tue, 19 May 2026 02:19:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779157202; cv=none; b=Jmp91onNgYeggrUDkJVoBiBULZloOM7IdlRtdHdmtInSZ52bpJRWK/voKPetIRkBB/DNupZs+uRPfPtl0Ebx2rMtcyMaKI9Gaxlfcx/XFjzeEiN6FoWZ7xcoS1xDqnwIcMhYvAuIvsvMGuUG4vlnEgbyErSl6wcssoZURC139pw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779157202; c=relaxed/simple;
-	bh=S+Be9QbRUA8mj/wKyMTanDw0iY8dOqs8erFeNPqm30o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rIP6TzCQNf7wA8vrDRR32yKulbassEdZECE0Rfz2vznoJfUWH+fzkAAhwf6BmZFm3sy6mzmFLRWyUaCMinZr3jv2NW/njydbbiM7av0COc8r7ET4MxqI82jZhtBjRsUUy0VlMWniKJE7pge5Gfl8WGhplLKUICbl2TZrxMMY9ao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=ri6LkZ6H; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AC7331355B
+	for <netdev@vger.kernel.org>; Tue, 19 May 2026 02:21:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.196
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779157278; cv=pass; b=pHJrd1Gaz/aV/yRmOz6YfKrc/rqb6DyVJshj/1skl3olGfQzL6F65PESW++wl38n1gUcP16BGWLNMGhn+eR13nApEA0NOM1u8QbI8UBgaGQY9szll1WpE/zc2wyM7GAZfEqngE/lNhUHzyrJJybS9nRsJXzYP9InLXfi2pS9MiQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779157278; c=relaxed/simple;
+	bh=LXVepd7dNd3zA26xI58VT4Whz27BenyseiDtEWoziio=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=bxF5/j16R3q2Uw5w98ZTnAk+HJjFv3avNA5sAsf0VT+xg3UKSFXk4IeQNYowcNssx869T8wcxfwETq8rVSVvsa4vsCOK2bi/aekNqN/zKCJCia7r5udCYvgNzzuvF2jSOEsV/XeRpT4gk2Ooiv83S1/7cYy2yoprtyLu99TWjuM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TVfL5rGB; arc=pass smtp.client-ip=209.85.222.196
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="ri6LkZ6H"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=TD50u8oIXhVSPGMfaOTBqShX/wD9XGWEgPD9NWB+GWo=; b=ri6LkZ6Ho5Ur2lSZiVBS6AMU40
-	HSNEZfer3zgDEqdJGjurhNVIFbLakDoFyIuVjGE7CmAh9D+aKhUYPYb7ov3J+WySOtu3S4hDs3b0X
-	nZlhEOQBvxLB34r1R4fLJGyZ5Ltd5xHonDf4dATB0RYbf81GdzKDLQm9YgB8FMtetb3M=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wPA3Y-003aFZ-NN; Tue, 19 May 2026 04:19:40 +0200
-Date: Tue, 19 May 2026 04:19:40 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Nicolai Buchwitz <nb@tipi-net.de>
-Cc: Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Oleksij Rempel <o.rempel@pengutronix.de>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v2 1/2] net: phy: honor eee_disabled_modes in
- phy_support_eee()
-Message-ID: <05a24b73-ff89-41e2-a655-224f1c2dbc31@lunn.ch>
-References: <20260518-devel-phy-support-eee-fix-v2-0-05b52626fa68@tipi-net.de>
- <20260518-devel-phy-support-eee-fix-v2-1-05b52626fa68@tipi-net.de>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TVfL5rGB"
+Received: by mail-qk1-f196.google.com with SMTP id af79cd13be357-912278ed3b5so329131885a.0
+        for <netdev@vger.kernel.org>; Mon, 18 May 2026 19:21:16 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779157276; cv=none;
+        d=google.com; s=arc-20240605;
+        b=EoXyYH1NUqZC+EwU5DeqGIE9IIrYRNYxbg05QHHRxWF26aPZ+AiapfHA2gTm8V9u17
+         N5x7i7v4qxOwx2y0V5IYhF+KX5DjPttdMTPVTI9F2kW48Of6oi61K5d9jWCp7JOVUBNO
+         PvPzbNNWVH/mNOLU6QQUFnk/GlULkdtLc+BDctERRUheFoHSXlAoESasElB5DEWTFnW/
+         Z9bGYfEDZaomVA08CSxYVKkrWiYuWwXD87jTVHFmCRzI7euiAjSTjfGHh/MGCNy8vZV5
+         7OPsmKIB3XvPM4/IPYkRMKBeXBC8MxqxrruZ0v3l2yuNqeh772hulzqQEdrmXlNXXwta
+         N4+Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=LXVepd7dNd3zA26xI58VT4Whz27BenyseiDtEWoziio=;
+        fh=GwuQ7veYuf77ovxzW9yr2gdJyC7kih3MdI9XgSIkITU=;
+        b=efYEkpPvKpPEE5D7AGpyp4Y2G0H3u4Ec+/Rsv37BdVB1QTBqgGT3Mlz0gOazNHXNsQ
+         okwp0dMGEZr3z92niPUL0n4SnbDWqMvn96xbC6VAPRV4m/X3gVowvi1fKQcFQgIWDVnZ
+         cAeBpP0TapNu2jFsXjmv7KKuL5cqoJernLlC5D9c3EEEAd1qX59lySkjFJ9YzduFjL7Z
+         MSghOebRTTV+NtsrBcJW8uq7Ui/H4Mna5ioesSE7737RLoFjIHnLo3GK67l+Iujg8blG
+         BQZ2DNOXzQ0Im2kXmE9RVwS0oERgddAsglNS3SwrTfuqXjHBSVyChdDZhvGbr10Zqc6s
+         phzg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779157276; x=1779762076; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LXVepd7dNd3zA26xI58VT4Whz27BenyseiDtEWoziio=;
+        b=TVfL5rGBtzkwj+JRL4a4ftoPGNC3usaJCJ1Ge8G4U0aFt3qRS4wVEP91gRtWWzWaNp
+         5rEDnM6Xyha9ubwPOt+iB4qcQ5VJ0E20yL0AUdWPELFjJVKXQkdZjfNEIyfmKOSzLLw/
+         LQfnl5y+wYlnc11FUtAYBb3QK7rx6kN78zGxgP9RNH1WzaiEWt9OXMJmI5rolkw+APRI
+         FgR3JqF+uCfcJ/voYR9PYTkWUphC7IEXoX0L2osRNzNIOfBUEYvTI3Gn6PUwgt2eSIAe
+         D2qd6nZUpDX2kZ/wyO6m6GKvhwRKG62Otvx9pl/FBM259lKs+XeENzwfnAe2EpA4tsLY
+         q/QQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779157276; x=1779762076;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=LXVepd7dNd3zA26xI58VT4Whz27BenyseiDtEWoziio=;
+        b=LIxX73r6CVGrDmkzUZHcxOF7R+UyFoSB18YoIFJQUm13c6Ahuc/tXwiNy9POj9uGRO
+         Wzr/1apYqlfccp7XZOrdZ2aQCpwIPHw3LAEAY8aBkVkn/8W2DDiBXUBWVT0kGxFioJgA
+         YyZlMQJyQrHe/WPRPCwpY5M4d04pShs9SWredJckg5qLJebZjgZkzms/+jBqd9cgW4SS
+         lBYTWsapMVd8CWfWPibnjax9TV7VnWeukVsN4TI59k+Vjc1oT/tN2MTU29S9DmaG7syo
+         /KO4nhF+BXvrOR+JgceDoJj1yvayoTgLT4KCOW5WSwVlOf6dzC258d9dWtkTfNUFsFO4
+         ag4A==
+X-Gm-Message-State: AOJu0YyHI3+b/aNby4KJHp63MOLgdaqV8TV/xou0gUq1c/NkXpjbEVSO
+	CwBKv9zjS38W7i7EoWW81bWZdvmFxd42RbCe9ot1YH18DV0EN6BN6RZjPj2wulNrC8jTYk1+b4f
+	a88ZTsaGGGeCrs7RXoDqZQKejcFYhfkQ=
+X-Gm-Gg: Acq92OH+Or7CBV2jDm6nsOVAfyBfbs57FbV40NKGsMzA4E2i9YM76x6Va2EUyK97vF4
+	e0bNtgh1cuFg0mAjt8jKbWXGArN1JmJYt/XVymAYR0iGAKwaRG0KBh8ZrJ3NJhiiek+cvtSj4PJ
+	QH7gyrrTq4ZpZIMhF4g2YXLag7xpSdw9URF0XfAGm70SvRA22dIxs0bd+K3GbPBtTksvhRA93vV
+	G6BcniutJI6JvW2gj6hpvcoQA6wYsbxyonQ0dpJQBncXfOi8fDEnWJJQjWTA5kL+ldyA/7oBQtu
+	7fYLEN3gsQCF2k/7hrlTKRKWPP8jACv4DzvbaiHADL001VpgjGdMOwcvf6e6OgcK8fZkl0rZUNt
+	nhaU=
+X-Received: by 2002:a05:620a:2907:b0:905:ea56:6ce4 with SMTP id
+ af79cd13be357-911cdd4d811mr2628043485a.17.1779157275995; Mon, 18 May 2026
+ 19:21:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260518-devel-phy-support-eee-fix-v2-1-05b52626fa68@tipi-net.de>
+References: <20260518010739.80979-1-enelsonmoore@gmail.com>
+ <20260518010739.80979-5-enelsonmoore@gmail.com> <20260518182220.78a9ae80@kernel.org>
+In-Reply-To: <20260518182220.78a9ae80@kernel.org>
+From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+Date: Mon, 18 May 2026 19:21:05 -0700
+X-Gm-Features: AVHnY4LBxUaISZgE8Evh7OSO0l1fsWdbNpDU8JL1EHgeiwXhSnm1KAHeQgUtqXU
+Message-ID: <CADkSEUhXU7f+k+yBO2Y=eonch2k7YmwbQe6o9RP9osRoo1KFBA@mail.gmail.com>
+Subject: Re: [PATCH 4/7] net: arcnet: expand unnecessary I/O abstraction macros
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: netdev@vger.kernel.org, Michael Grzeschik <m.grzeschik@pengutronix.de>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, May 18, 2026 at 10:23:09AM +0200, Nicolai Buchwitz wrote:
-> phy_support_eee() copies supported_eee into advertising_eee
-> unconditionally, overwriting any filtering applied during phy_probe()
-> based on DT eee-broken-* properties or driver-populated
-> eee_disabled_modes.
+Hi, Jakub,
 
-Sorry, i should of questioned this on v1. What PHY are you using which
-masks advertising_eee in probe? It seems like this is wrong, and it
-should be setting >eee_disabled_modes, or maybe eee_supported.
+On Mon, May 18, 2026 at 6:22=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wr=
+ote:
+> On Sun, 17 May 2026 18:07:24 -0700 Ethan Nelson-Moore wrote:
+> > Now that the BUS_ALIGN variable has been removed, the
+> > arcnet_in/out/read/write* macros behave identically to the functions
+> > they wrap. Expand them and remove their definitions to make the code
+> > easier to maintain.
+>
+> This one reportedly transiently breaks the build.
 
-> Fixes: 49168d1980e2 ("net: phy: Add phy_support_eee() indicating MAC support EEE")
-> Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
+This is due to incorrect patch ordering on my part - if you apply the
+ISA/PCMCIA removal patch before the two I/O abstraction cleanup
+commits, the code compiles after every patch.
+i.e., use this patch order: 1 2 5 3 4 6 7
 
-This patch itself looks O.K.
-
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-
-    Andrew
+Ethan
