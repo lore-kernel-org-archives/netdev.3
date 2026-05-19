@@ -1,203 +1,178 @@
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59ED43191D6
-	for <netdev@vger.kernel.org>; Tue, 19 May 2026 21:46:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.46
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779227163; cv=pass; b=XjEGXZrgujU1BxSg+2B3Nv/kz5PmKgBRzEN0oAwkxReWrvsKRA+q+kp8KEYLcrK41y9yrdB9IY6BlRzpMCZz+U440vbI1koUtQpiwqSgEoYh37JCYGTY1NMGtVsUgoZ7BYxrNboWaywHxpTUVQYJ0WeNwQvCHqqIa7Ii4k3XIf4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779227163; c=relaxed/simple;
-	bh=E+tTTb2GqI1vaGquqP1jTXz6HThVzWgXkisHH8EuO8M=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DAjSpJiV0P2lD0i5gpdqbXXZzebmH9cXiLHRD7/4AhMqHpfqxtlW+8dbw2KMd+C1x5I5+2Nx95vJP4RbApf83KuGXEXoSfvKM0Hco+0G0q75vMaxnNv/g/mqJSdoZp2IX7rRYCev+F/819HCL9wiLyN63FRQJOFFfCk9kseJx0c=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qH/zNhS6; arc=pass smtp.client-ip=209.85.218.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 433453DF00B
+	for <netdev@vger.kernel.org>; Tue, 19 May 2026 21:59:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.171
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779227949; cv=none; b=maoZXEct/gt2y+HBYr7NZwTJ1lUjiAtHBhbgho123Iw5SujOUH/0/lEkcqNfIPpL2ENPFSdbY+I7dtYFBpnvQVMKOFbFJdWxiOd8Wosn/3oLn8jdoieSZS6hClzznQYpGEhwBf8gikYgkGustQL7BQ4CroLutyy7wdRN86stNJg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779227949; c=relaxed/simple;
+	bh=diuE7PQ8Pon9vMXdOPJIS446mlbcUV4fCnM51klAihE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=RKtqoYkJkPaPX+feU+AfMWiY9IO2ZY+SKVz+sCVTBzMoeeU7OA/ALhtlU1e0YkwlDYsnRa18wm2a3DmYKDCCsGAjyEEPskatR2HJp54tfY61eSmr3euwd/WpdKR0QJ/9GpWCDPwC+tAAMcLScl1JEPzG2qKty3O03DknBMgx+qY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=wU9E1OOV; arc=none smtp.client-ip=95.215.58.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qH/zNhS6"
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-bcda7765d64so995846766b.1
-        for <netdev@vger.kernel.org>; Tue, 19 May 2026 14:46:01 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779227160; cv=none;
-        d=google.com; s=arc-20240605;
-        b=fDFuPzjjFJn8+uSzCi11y1eZhK0YpefNTmIExE+KAeqf5/9P0mlRMSB+w1orYd32mv
-         Vv1ZkJd/uBbenwqzi5ZUWB3aWeg2VcPgN0wma5h/7y97MYRPLJSJ81P7eIXkGl0nsomk
-         YwwBTiC06NBLqzgs5fBjJTsdYvBXGlu2WfyGFr0uxc7iQA8heTiIaOtpiG5UAnBhCt0t
-         +0AzcKV9hgaQBfWkDdvaQ7tnD6C6rxAgdLcLO/UpI7V2RnbOMMKWVCOEmorNkV0sQjTR
-         QPCRPDWwy+4yYPtleJYjvb0We86U2x3C58BWQxfTnqskxgCdlWBwib3+OQTs+GvzNCc6
-         /Lsw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=pgd9wE8Ebw9Qeq3ppb48yPpKAYw41QQCB9/zb11k+vo=;
-        fh=WjdmtJl5Pd25BodYoV280QC9qA6yiThquUu+rG/plHg=;
-        b=fArK2ZNxJTezoMhU60WIns33mjUGZcNazx8zNF2Rb+O6/hbgbpgHPnY9g3lvHzO/9i
-         SXQIu5jZ3Tl0HjPpeMNCfPaV7aDLD6eVEQ4w+/tPp/A03N1NvvS5vaccp6z+Wo9nyZPZ
-         PZxbO1hshxiiyaJAYuQvFrjLz6M1JPvCSaSDtxPtuyqNv4ELOKOVROTOAhSCAZy1ZNTL
-         KGbPtqiYZBh+TQpu1P5ygW1N2HZx1HESaMSStbyLmSTTSih1gIy0WynRWAWNPOxKxbAh
-         fYY6UBnnH8rsascxTGwub4KxAnX502ATqsbbcbVwMSITN4wHBRzglqn69m5VXqZGLZk4
-         hG8g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779227160; x=1779831960; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pgd9wE8Ebw9Qeq3ppb48yPpKAYw41QQCB9/zb11k+vo=;
-        b=qH/zNhS6SIUfjxARuMltjUodOjqSlRYKcR0o+zLMBNogXSHqlZQEMROvOJeC4f+f2E
-         vLiEwZ0KUkgNGb+zoOfElkOVC713+DtaP4WZV9waekz+vU46a7NoDVWILgMsoDCezKT8
-         FSHAz7tLZ3pD2vhTmhUfY6KiKSKdQ4x9dvtDvX6LI85Q6P96xQCCBLJizkqXaw5OtLRj
-         jdafE8d7/JlkF70wStQuo26FL+txH1Ro8Fgth/OhWw+uenQEwgf0lMncusjGt0qbig8u
-         jOEMJttZd/ZNnsssN5mDfT7QEI1QsqUGrOKAcLYyGfZKDPRihUu1MlMA6ZmuGeSyMXkC
-         Irnw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779227160; x=1779831960;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=pgd9wE8Ebw9Qeq3ppb48yPpKAYw41QQCB9/zb11k+vo=;
-        b=nugppNmkpPkAjBTovdrY4pF0gRfzFy+tY12l6msqEgWglWUDiGhLRn0Imlue907qFq
-         j3zY2wcrwi8J5wksvWlpG7Y1pHSJLniFvLz3Ew0LLOlza9zv4eWGDlFCGjJGP9cjNMXW
-         vc1y8h4imrMR4k9gIQVm6jdlZR8tuLAqR9pc9pokHS2xqnSdq8tuL9l6bxrXlJu1Hqi8
-         Z5UPHpKERE9XLIaS/oRxgnFy5FEst8cbktp1OG4+Ii/DFsjcg59Q3kU23apZ4LpshSll
-         M3/9fYtV1wqIBqSjUzEPl+rFKlMiR1FZfj4EbEg5+jZHcbDTaB/T4OriZ26y7zXnLcpX
-         82Yg==
-X-Forwarded-Encrypted: i=1; AFNElJ/zcRy127HuYR5EngUpJdkD3tArHvPaWvwNTVTLCzCHIiyLNoR1BMx6LbDYql78R4lKgG4E0Kc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyMNDKSbo+uKJ/Qm3pImB6C+ewAFHjtcEq4TDTDYLIYuAOXW/Ax
-	H2u/JuS7AOGExZJLYLjegv9DNSuLsNhK0KcPtYBeG8z+poRHRO7yjtlcNJ+OQs++9vE0t8kaxVP
-	QO510Qc1nb1J9tK5puBeMXSTb/Lc8X0U=
-X-Gm-Gg: Acq92OH3wHyK+FuAB8u6gyf3xHkhc0zl08GnijS9gycOisyinTOwt2MmHUsnWY7OKao
-	Lm773rQeeNgwXp7FXNGFS41NHx9BKTCetRAbkRfFOuMAbluA3HmSboYTMUtNRmUTpGtH/eD1wuZ
-	sb7wwYbujiuaC5eLGeeRzWFezXeUPvP2lOx/T8DEEGtiV2PTwq0ulOB+qnd3WULBeTM0X8v4YIL
-	m8wImh2yteBcKacizpw5BbjCZTllt4GT41U3vZhccW6NRoWucCHpKM/qtjD51SYgak2I7myvKPR
-	pfFBmqPpFI1Hy1BnP0BS7SjQ0lf84r0P0IKTz8ksbYAqrpX4N51AgVqQdXe4xfoLMSJ1yBXJV/b
-	0Ug3QkpxsZOOyfBOYXIu88nVqEeCIhfJYozLPnu6IrgsPOduuGgSbMITQ7GujfGwc21dQ
-X-Received: by 2002:a17:907:c10:b0:bd1:f09f:f819 with SMTP id
- a640c23a62f3a-bd4f34bd039mr1176086066b.25.1779227159626; Tue, 19 May 2026
- 14:45:59 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="wU9E1OOV"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1779227946;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=j+XTc5KfpwasDw2bVqQ0ao7p4cs5JHtFCbk2g1BNKx4=;
+	b=wU9E1OOVibgOPnB7VTXwdXftkcnRedZ3P232U2wIayqqFxkeJgzPNaiwuerSQWo2ITmUoV
+	NKAnGIVPaa8buPkv95P966Nlk+m1sfq8xv5JMBf0tKnqU4fPV8tLJFmvlkiBSPLUfxVAUI
+	zmjp5JL4FY8N00/kvjfCeKa1Q1N6lfI=
+From: Martin KaFai Lau <martin.lau@linux.dev>
+To: bpf@vger.kernel.org
+Cc: 'Alexei Starovoitov ' <ast@kernel.org>,
+	'Andrii Nakryiko ' <andrii@kernel.org>,
+	'Daniel Borkmann ' <daniel@iogearbox.net>,
+	'Shakeel Butt ' <shakeel.butt@linux.dev>,
+	'Roman Gushchin ' <roman.gushchin@linux.dev>,
+	'Amery Hung ' <ameryhung@gmail.com>,
+	netdev@vger.kernel.org
+Subject: [RFC PATCH bpf-next 01/12] bpf: Remove __rcu tagging in st_link->map
+Date: Tue, 19 May 2026 14:58:08 -0700
+Message-ID: <20260519215841.2984970-2-martin.lau@linux.dev>
+In-Reply-To: <20260519215841.2984970-1-martin.lau@linux.dev>
+References: <20260519215841.2984970-1-martin.lau@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260519005206.628071-1-rosenp@gmail.com> <0b4cff6d-b9e7-4c34-9279-93bec10bcc9d@linux.ibm.com>
-In-Reply-To: <0b4cff6d-b9e7-4c34-9279-93bec10bcc9d@linux.ibm.com>
-From: Rosen Penev <rosenp@gmail.com>
-Date: Tue, 19 May 2026 14:45:47 -0700
-X-Gm-Features: AVHnY4L2A3cissyWzUYO1tXUDK8qIVjkmnbUtyGij0zc_S6K7Z3Goo3Q7aTrmVA
-Message-ID: <CAKxU2N8_JhZhsSqm15DxFBkXv=ZBYQXQJ7xdw6SHrwG9dsWZVg@mail.gmail.com>
-Subject: Re: [PATCH] smc: Use flexible array for SMCD connections
-To: Alexandra Winter <wintera@linux.ibm.com>
-Cc: linux-rdma@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, "D. Wythe" <alibuda@linux.alibaba.com>, 
-	Dust Li <dust.li@linux.alibaba.com>, Sidraya Jayagond <sidraya@linux.ibm.com>, 
-	Wenjia Zhang <wenjia@linux.ibm.com>, Mahanta Jambigi <mjambigi@linux.ibm.com>, 
-	Tony Lu <tonylu@linux.alibaba.com>, Wen Gu <guwen@linux.alibaba.com>, 
-	"open list:NETWORKING [GENERAL]" <netdev@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, 
-	"open list:SHARED MEMORY COMMUNICATIONS (SMC) SOCKETS" <linux-s390@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-On Tue, May 19, 2026 at 1:57=E2=80=AFAM Alexandra Winter <wintera@linux.ibm=
-.com> wrote:
->
->
->
-> On 19.05.26 02:52, Rosen Penev wrote:
-> > Store the per-DMB connection pointers in the SMCD device allocation
-> > instead of allocating a separate connection array.
-> >
-> > This keeps the connection table tied to the SMCD device lifetime and
-> > simplifies the allocation and cleanup paths.
-> >
-> > Assisted-by: Codex:GPT-5.5
-> > Signed-off-by: Rosen Penev <rosenp@gmail.com>
-> > ---
->
-> I don't think GPT did a good job here.
-> There are many other instances, where smcd->conn is freed,
-> those would need adoption as well afaiu.
-git grep kfree | grep \\\-\>conn\)
-drivers/media/dvb-core/dvbdev.c: kfree(dvbdev->adapter->conn);
-net/wireless/sme.c: kfree(wdev->conn);
-net/wireless/sme.c: kfree(wdev->conn);
+From: Martin KaFai Lau <martin.lau@kernel.org>
 
-I assume you mean net/wireless/sme.c
->
-> I am also not sure that there is enough improvement in the idea
-> to warrant a patch, but I leave that to the SMC maintainers.
->
->
->
-> >  include/net/smc.h |  2 +-
-> >  net/smc/smc_ism.c | 10 ++--------
-> >  2 files changed, 3 insertions(+), 9 deletions(-)
-> >
-> > diff --git a/include/net/smc.h b/include/net/smc.h
-> > index bfdc4c41f019..a2bc3ab88075 100644
-> > --- a/include/net/smc.h
-> > +++ b/include/net/smc.h
-> > @@ -40,7 +40,6 @@ struct smcd_dev {
-> >       struct dibs_dev *dibs;
-> >       struct list_head list;
-> >       spinlock_t lock;
-> > -     struct smc_connection **conn;
-> >       struct list_head vlan;
-> >       struct workqueue_struct *event_wq;
-> >       u8 pnetid[SMC_MAX_PNETID_LEN];
-> > @@ -50,6 +49,7 @@ struct smcd_dev {
-> >       atomic_t lgr_cnt;
-> >       wait_queue_head_t lgrs_deleted;
-> >       u8 going_away : 1;
-> > +     struct smc_connection *conn[];
-> >  };
-> >
-> >  #define SMC_HS_CTRL_NAME_MAX 16
-> > diff --git a/net/smc/smc_ism.c b/net/smc/smc_ism.c
-> > index e0dba2c7b6e3..bde938c5eb39 100644
-> > --- a/net/smc/smc_ism.c
-> > +++ b/net/smc/smc_ism.c
-> > @@ -467,17 +467,14 @@ static struct smcd_dev *smcd_alloc_dev(const char=
- *name, int max_dmbs)
-> >  {
-> >       struct smcd_dev *smcd;
-> >
-> > -     smcd =3D kzalloc_obj(*smcd);
-> > +     smcd =3D kzalloc_flex(*smcd, conn, max_dmbs);
-> >       if (!smcd)
-> >               return NULL;
-> > -     smcd->conn =3D kzalloc_objs(struct smc_connection *, max_dmbs);
-> > -     if (!smcd->conn)
-> > -             goto free_smcd;
-> >
-> >       smcd->event_wq =3D alloc_ordered_workqueue("ism_evt_wq-%s)",
-> >                                                WQ_MEM_RECLAIM, name);
-> >       if (!smcd->event_wq)
-> > -             goto free_conn;
-> > +             goto free_smcd;
-> >
-> >       spin_lock_init(&smcd->lock);
-> >       spin_lock_init(&smcd->lgr_lock);
-> > @@ -486,8 +483,6 @@ static struct smcd_dev *smcd_alloc_dev(const char *=
-name, int max_dmbs)
-> >       init_waitqueue_head(&smcd->lgrs_deleted);
-> >       return smcd;
-> >
-> > -free_conn:
-> > -     kfree(smcd->conn);
-> >  free_smcd:
-> >       kfree(smcd);
-> >       return NULL;
-> > @@ -557,7 +552,6 @@ static void smcd_unregister_dev(struct dibs_dev *di=
-bs)
-> >       list_del_init(&smcd->list);
-> >       mutex_unlock(&smcd_dev_list.mutex);
-> >       destroy_workqueue(smcd->event_wq);
-> > -     kfree(smcd->conn);
-> >       kfree(smcd);
-> >  }
-> >
->
+st_link->map is always written under update_mutex. The paths that read
+st_link->map with rcu_read_lock() are not in the fast path, so they can
+simply take update_mutex instead. Remove the __rcu annotation and replace
+all RCU accessors with direct pointer reads under update_mutex. Use
+READ_ONCE() in bpf_struct_ops_map_link_poll() which reads the pointer
+without holding update_mutex.
+
+It is a simplification change.
+
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+---
+ kernel/bpf/bpf_struct_ops.c | 29 ++++++++++++++---------------
+ 1 file changed, 14 insertions(+), 15 deletions(-)
+
+diff --git a/kernel/bpf/bpf_struct_ops.c b/kernel/bpf/bpf_struct_ops.c
+index 521cb9d7e8c7..08791180d71d 100644
+--- a/kernel/bpf/bpf_struct_ops.c
++++ b/kernel/bpf/bpf_struct_ops.c
+@@ -57,7 +57,7 @@ struct bpf_struct_ops_map {
+ 
+ struct bpf_struct_ops_link {
+ 	struct bpf_link link;
+-	struct bpf_map __rcu *map;
++	struct bpf_map *map;
+ 	wait_queue_head_t wait_hup;
+ };
+ 
+@@ -1220,8 +1220,7 @@ static void bpf_struct_ops_map_link_dealloc(struct bpf_link *link)
+ 	struct bpf_struct_ops_map *st_map;
+ 
+ 	st_link = container_of(link, struct bpf_struct_ops_link, link);
+-	st_map = (struct bpf_struct_ops_map *)
+-		rcu_dereference_protected(st_link->map, true);
++	st_map = (struct bpf_struct_ops_map *)st_link->map;
+ 	if (st_map) {
+ 		st_map->st_ops_desc->st_ops->unreg(&st_map->kvalue.data, link);
+ 		bpf_map_put(&st_map->map);
+@@ -1236,11 +1235,11 @@ static void bpf_struct_ops_map_link_show_fdinfo(const struct bpf_link *link,
+ 	struct bpf_map *map;
+ 
+ 	st_link = container_of(link, struct bpf_struct_ops_link, link);
+-	rcu_read_lock();
+-	map = rcu_dereference(st_link->map);
++	mutex_lock(&update_mutex);
++	map = st_link->map;
+ 	if (map)
+ 		seq_printf(seq, "map_id:\t%d\n", map->id);
+-	rcu_read_unlock();
++	mutex_unlock(&update_mutex);
+ }
+ 
+ static int bpf_struct_ops_map_link_fill_link_info(const struct bpf_link *link,
+@@ -1250,11 +1249,11 @@ static int bpf_struct_ops_map_link_fill_link_info(const struct bpf_link *link,
+ 	struct bpf_map *map;
+ 
+ 	st_link = container_of(link, struct bpf_struct_ops_link, link);
+-	rcu_read_lock();
+-	map = rcu_dereference(st_link->map);
++	mutex_lock(&update_mutex);
++	map = st_link->map;
+ 	if (map)
+ 		info->struct_ops.map_id = map->id;
+-	rcu_read_unlock();
++	mutex_unlock(&update_mutex);
+ 	return 0;
+ }
+ 
+@@ -1277,7 +1276,7 @@ static int bpf_struct_ops_map_link_update(struct bpf_link *link, struct bpf_map
+ 
+ 	mutex_lock(&update_mutex);
+ 
+-	old_map = rcu_dereference_protected(st_link->map, lockdep_is_held(&update_mutex));
++	old_map = st_link->map;
+ 	if (!old_map) {
+ 		err = -ENOLINK;
+ 		goto err_out;
+@@ -1299,7 +1298,7 @@ static int bpf_struct_ops_map_link_update(struct bpf_link *link, struct bpf_map
+ 		goto err_out;
+ 
+ 	bpf_map_inc(new_map);
+-	rcu_assign_pointer(st_link->map, new_map);
++	WRITE_ONCE(st_link->map, new_map);
+ 	bpf_map_put(old_map);
+ 
+ err_out:
+@@ -1316,7 +1315,7 @@ static int bpf_struct_ops_map_link_detach(struct bpf_link *link)
+ 
+ 	mutex_lock(&update_mutex);
+ 
+-	map = rcu_dereference_protected(st_link->map, lockdep_is_held(&update_mutex));
++	map = st_link->map;
+ 	if (!map) {
+ 		mutex_unlock(&update_mutex);
+ 		return 0;
+@@ -1325,7 +1324,7 @@ static int bpf_struct_ops_map_link_detach(struct bpf_link *link)
+ 
+ 	st_map->st_ops_desc->st_ops->unreg(&st_map->kvalue.data, link);
+ 
+-	RCU_INIT_POINTER(st_link->map, NULL);
++	WRITE_ONCE(st_link->map, NULL);
+ 	/* Pair with bpf_map_get() in bpf_struct_ops_link_create() or
+ 	 * bpf_map_inc() in bpf_struct_ops_map_link_update().
+ 	 */
+@@ -1345,7 +1344,7 @@ static __poll_t bpf_struct_ops_map_link_poll(struct file *file,
+ 
+ 	poll_wait(file, &st_link->wait_hup, pts);
+ 
+-	return rcu_access_pointer(st_link->map) ? 0 : EPOLLHUP;
++	return READ_ONCE(st_link->map) ? 0 : EPOLLHUP;
+ }
+ 
+ static const struct bpf_link_ops bpf_struct_ops_map_lops = {
+@@ -1401,7 +1400,7 @@ int bpf_struct_ops_link_create(union bpf_attr *attr)
+ 		link = NULL;
+ 		goto err_out;
+ 	}
+-	RCU_INIT_POINTER(link->map, map);
++	link->map = map;
+ 	mutex_unlock(&update_mutex);
+ 
+ 	return bpf_link_settle(&link_primer);
+-- 
+2.53.0-Meta
+
