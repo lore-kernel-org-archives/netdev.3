@@ -1,73 +1,35 @@
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BCB62FB97B
-	for <netdev@vger.kernel.org>; Tue, 19 May 2026 01:58:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9016E2FB969;
+	Tue, 19 May 2026 02:00:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779155933; cv=none; b=B/sGZiZhM4pjw9FYfiyA6MQBhos0FRIypCvVRDSMdI5fuRXie/51G3guSVnB0UTyzmJM6BChThUZQkyvHMgTjy3gLcvuNiIC2z8QVDW/2f1UY9NE2VPrc74eMezNzRa4/OQYCKuptO6FppBLb/e2Hvlc3VZ7wpjTJY8k3R4j0+Y=
+	t=1779156006; cv=none; b=p7WeGAzJziu5ziJ4RLxS0GYAGIL1lAqz67oP3nICGDxfg4Ul3osfuqA20zyOr4zkxuUN2TW4z5UV42erAXZ3fvxkDbIbWjr2HHnZly6ymvlXlsvUCrvvWE7y7u+ohlW9iLzG1IMcCgMDro9qLdTU5yzTx/P6haDtzKA4l6jECT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779155933; c=relaxed/simple;
-	bh=o9tpwTNBKfUuronh2IiA7Q31eMmatIzAB4cU4aq6YU8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nIWYg+QUxqXmWvmQyBg0k2QGxwWOa2pz75GSAG0LsNzPkYuMtq46Tn5ppjuBHyXtGkHh9uva3itVFqY3EUV1uX1scd/WOPGpyhSQiTfH1B0pD9/16x9LrxOz6AKTuotM/bF5dQtdamrMtT5sYxFJP41IQvIljB69s7s/Z7VHO1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GFtwA/JM; arc=none smtp.client-ip=209.85.216.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1779156006; c=relaxed/simple;
+	bh=KWvE0n4HLkfgFgaWO1y39G6mfV9oqV5D07CE+uU53YU=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=A3QqKDwmwsgnmfSYG+SOD6nmXDLqNsslE/hBPymuW/rLBbNsO+aqqG4AU/D2DULmTAJerMwXIvfV8JUHbME3qFY87RALTDb/fjsKdfIEkSwxdI8dmTPuyb8KbXgBFoOwsHFPKNDfJ3ds0IUiLJdPDoQmiX/QzIEeiyS2W7rymdY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kYCqbc3T; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GFtwA/JM"
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-367cbac9cb1so2799998a91.3
-        for <netdev@vger.kernel.org>; Mon, 18 May 2026 18:58:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779155932; x=1779760732; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=cJBOwsmVOS7e0w8Q9mvj/KZhpczr6xeaK0EFoTPkDf4=;
-        b=GFtwA/JMJRHL2m89MeRU6sYFKKNU00eqY7jiPwOPGNaBTmqhARmsVHtRRH0o3w0KCr
-         VsrhyMx1OxWfgHgSTHurPIUlyYxtu4TKX5pEx5Z0o7a6mZ0hjmAXCQv5GmZBMx5TBdjN
-         5yOBH8SubWLi/gzQfpOzUM6PwAlx6YCYwmN5QLMIDSE+LHJY2Nz8EmNOM2b3K4t7MNKJ
-         ZwWaEmACh8VyI7dIvC6DWZb74TmZT0UC/Kp8Lbg0/0tUA3qtkShBsrQozX+nNOzf/HZt
-         a//YBa/yBVP1FayFjWcvma8GQSlYtuCGUaYDiwXn+CHwmi8wcxDYfq/refyNseze9LxG
-         PbIQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779155932; x=1779760732;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cJBOwsmVOS7e0w8Q9mvj/KZhpczr6xeaK0EFoTPkDf4=;
-        b=mNZQDavRN1aaXXn2/yQp4Uzu1ol/TOU8F9vxI4JlwL8PdxC32NICGjipRQrr92kxUI
-         +RYBGaVQbJ1BNxZftYhHgxZiAMx2qYpEL3/+jrf0cQDCrFJzBsYlpp9RQB/tl3Xayiht
-         OlHVAfFGrLwRBrLk1SnzcSsImsrfqWlFpSZP7t1Af1k3Pd4aGtqBTBSR/1BO5WSQ+hqy
-         KGXGWHgPLrm+sDSCg46XITV9cF1rl2JSgStH5eQqQQ6QvUFXRVDA4X9XnHdsm5aIvAdv
-         g/5/EWcqpxlTArnlaqWBVaytv0k7TbIm98644d+PUEDwN/smCVu+GkyRO7bBotgEoBpL
-         N6xw==
-X-Gm-Message-State: AOJu0Yws9TZSo5PzpGl7u2E9MwQEpGz0eNkXaalHoIG52v9feGqp1Y6D
-	54g5lGkAhmz3Gso1fTTa8paLPBcPySvH1hu2gI+FaInJTvYdkuNg5cEKm7z0g31L
-X-Gm-Gg: Acq92OEV6DqlKbqdAVPbjurxTIbjtuat5T3TeKCuNsMv8XvtHSbygszfOIceHFFfTYa
-	X3HcDz8P9VDq0vEvbwQZlIL6vvrYX7LM7vILbQztIGKaxHsguipanWSCJDlcER0WbgVhrlp9IHW
-	aEhBRgVy1hJi4D1JZrpqdc5ayHXMxmb+gdgac2y679mphX7yYu7VW8ej+4Pzfu3BgOi2yd+uZd/
-	43QjxXmT/r+/urVLCvvGs3Y/M+T/cTN6tisxgizlhom1I8DwukX/GG5jQdfozX71++3gzKvZvyZ
-	+XAeudOvt6RBWyjeH5/y3Dwz/nnHh8FpMxPAKc+WpKBc8jN8eyBq1kzgXRILyAu/rMEpNens3Z7
-	SwZNCFLcv91GlkXqgqmc1dnQTniGCDzk8kgRcAIVDVnhm+6xZ0iR5Ujvhmy/TbDmGaeGnFoDTDr
-	mBbVoULPz7qyjmJOFcs0JIlHQWE1nsEu8XjA4pUyWoxTvkUX7WD7jrMhKObXFxdYSqG8SBwlLUy
-	VmKFy9+RwATvf8pLnEPX0Hs+rj4QlLYhwk=
-X-Received: by 2002:a17:90b:57c7:b0:365:7e4d:bcb8 with SMTP id 98e67ed59e1d1-369519cdb59mr16915705a91.1.1779155931783;
-        Mon, 18 May 2026 18:58:51 -0700 (PDT)
-Received: from ryzen ([2601:644:8000:5b5d:7285:c2ff:fe45:8a32])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-369513fe6f2sm12016286a91.0.2026.05.18.18.58.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 May 2026 18:58:51 -0700 (PDT)
-From: Rosen Penev <rosenp@gmail.com>
-To: netdev@vger.kernel.org
-Cc: Jiri Pirko <jiri@resnulli.us>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Kees Cook <kees@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	linux-kernel@vger.kernel.org (open list:LIBRARY CODE),
-	linux-hardening@vger.kernel.org (open list:KERNEL HARDENING (not covered by other areas):Keyword:\b__counted_by(_le|_be|_ptr)?\b)
-Subject: [PATCH] lib: objagg: Use flexible arrays for object storage
-Date: Mon, 18 May 2026 18:58:33 -0700
-Message-ID: <20260519015833.634602-1-rosenp@gmail.com>
-X-Mailer: git-send-email 2.54.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kYCqbc3T"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD43DC2BCB8;
+	Tue, 19 May 2026 02:00:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1779156006;
+	bh=KWvE0n4HLkfgFgaWO1y39G6mfV9oqV5D07CE+uU53YU=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=kYCqbc3TFn1CG/MjChsg5WeUIHBvjYdCDxA3O+kvHtv6yP7Ekbpc2y0OXP+D83TBr
+	 GU4TP1IQ3SNI4M1+FD1xChz715jWbz/k3UBLPcgrkgaW0rC+7fo2FYiTEoAvDsGOKb
+	 uyj1tita3zzK8J5eWjutnqKJyF4LE7tlj3tcft9GxX9lx5mlmFN/dEVmoKawyApUy/
+	 i2q7WD+azjtkrlFJN85Dfycn/Gso/mRp80FkSvvcW2zfgxveA5rroD+egO1evX8htN
+	 x5ne4ER/ZarktvXowXYxsny93F4Vsk7KkPNGF+1Hle3lMhckrMvZo84A1QZyUJceRk
+	 8Q1Iu05AQxiPQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 6DA493930D10;
+	Tue, 19 May 2026 02:00:18 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -75,104 +37,50 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next 0/2] net/mlx5e: simplify and optimize napi poll
+ flow
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177915601713.2051001.3494173884962273155.git-patchwork-notify@kernel.org>
+Date: Tue, 19 May 2026 02:00:17 +0000
+References: <20260514111038.338251-1-tariqt@nvidia.com>
+In-Reply-To: <20260514111038.338251-1-tariqt@nvidia.com>
+To: Tariq Toukan <tariqt@nvidia.com>
+Cc: edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, borisp@nvidia.com,
+ saeedm@nvidia.com, leon@kernel.org, mbloch@nvidia.com, ast@kernel.org,
+ daniel@iogearbox.net, hawk@kernel.org, john.fastabend@gmail.com,
+ sdf@fomichev.me, shshitrit@nvidia.com, witu@nvidia.com, kuniyu@google.com,
+ dtatulea@nvidia.com, sd@queasysnail.net, kees@kernel.org,
+ netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
+ linux-kernel@vger.kernel.org, bpf@vger.kernel.org, gal@nvidia.com
 
-Store object payloads and temporary graph nodes in their parent
-allocations instead of open-coding trailing storage or allocating the
-node array separately.
+Hello:
 
-Use byte-sized flexible arrays for object payloads so kzalloc_flex() is
-passed the same byte count as the previous allocation sizes.
+This series was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-Assisted-by: Codex:GPT-5.5
-Signed-off-by: Rosen Penev <rosenp@gmail.com>
----
- lib/objagg.c | 19 ++++++-------------
- 1 file changed, 6 insertions(+), 13 deletions(-)
+On Thu, 14 May 2026 14:10:36 +0300 you wrote:
+> Hi,
+> 
+> This series simplifies the mlx5e napi poll flow and reduces branching in
+> hot paths by leveraging existing dependencies between channel features.
+> 
+> Patch 1 avoids passing the full channel object to kTLS RX code paths
+> when only the async ICOSQ is needed, and slightly optimizes the common
+> flow in the pending resync handling logic.
+> 
+> [...]
 
-diff --git a/lib/objagg.c b/lib/objagg.c
-index 23c7105a3f9f..995ec67fbc2f 100644
---- a/lib/objagg.c
-+++ b/lib/objagg.c
-@@ -28,7 +28,7 @@ struct objagg_hints_node {
- 	struct objagg_hints_node *parent;
- 	unsigned int root_id;
- 	struct objagg_obj_stats_info stats_info;
--	unsigned long obj[];
-+	u8 obj[];
- };
- 
- static struct objagg_hints_node *
-@@ -66,7 +66,7 @@ struct objagg_obj {
- 				* including nested objects
- 				*/
- 	struct objagg_obj_stats stats;
--	unsigned long obj[];
-+	u8 obj[];
- };
- 
- static unsigned int objagg_obj_ref_inc(struct objagg_obj *objagg_obj)
-@@ -369,8 +369,7 @@ static struct objagg_obj *objagg_obj_create(struct objagg *objagg, void *obj)
- 	struct objagg_obj *objagg_obj;
- 	int err;
- 
--	objagg_obj = kzalloc(sizeof(*objagg_obj) + objagg->ops->obj_size,
--			     GFP_KERNEL);
-+	objagg_obj = kzalloc_flex(*objagg_obj, obj, objagg->ops->obj_size);
- 	if (!objagg_obj)
- 		return ERR_PTR(-ENOMEM);
- 	objagg_obj_ref_inc(objagg_obj);
-@@ -657,7 +656,7 @@ objagg_hints_node_create(struct objagg_hints *objagg_hints,
- 	struct objagg_hints_node *hnode;
- 	int err;
- 
--	hnode = kzalloc(sizeof(*hnode) + obj_size, GFP_KERNEL);
-+	hnode = kzalloc_flex(*hnode, obj, obj_size);
- 	if (!hnode)
- 		return ERR_PTR(-ENOMEM);
- 	memcpy(hnode->obj, &objagg_obj->obj, obj_size);
-@@ -705,9 +704,9 @@ struct objagg_tmp_node {
- };
- 
- struct objagg_tmp_graph {
--	struct objagg_tmp_node *nodes;
- 	unsigned long nodes_count;
- 	unsigned long *edges;
-+	struct objagg_tmp_node nodes[] __counted_by(nodes_count);
- };
- 
- static int objagg_tmp_graph_edge_index(struct objagg_tmp_graph *graph,
-@@ -786,13 +785,10 @@ static struct objagg_tmp_graph *objagg_tmp_graph_create(struct objagg *objagg)
- 	struct objagg_obj *objagg_obj;
- 	int i, j;
- 
--	graph = kzalloc_obj(*graph);
-+	graph = kzalloc_flex(*graph, nodes, nodes_count);
- 	if (!graph)
- 		return NULL;
- 
--	graph->nodes = kzalloc_objs(*graph->nodes, nodes_count);
--	if (!graph->nodes)
--		goto err_nodes_alloc;
- 	graph->nodes_count = nodes_count;
- 
- 	graph->edges = bitmap_zalloc(nodes_count * nodes_count, GFP_KERNEL);
-@@ -825,8 +821,6 @@ static struct objagg_tmp_graph *objagg_tmp_graph_create(struct objagg *objagg)
- 	return graph;
- 
- err_edges_alloc:
--	kfree(graph->nodes);
--err_nodes_alloc:
- 	kfree(graph);
- 	return NULL;
- }
-@@ -834,7 +828,6 @@ static struct objagg_tmp_graph *objagg_tmp_graph_create(struct objagg *objagg)
- static void objagg_tmp_graph_destroy(struct objagg_tmp_graph *graph)
- {
- 	bitmap_free(graph->edges);
--	kfree(graph->nodes);
- 	kfree(graph);
- }
- 
+Here is the summary with links:
+  - [net-next,1/2] net/mlx5e: Reduce branches in napi poll
+    https://git.kernel.org/netdev/net-next/c/cc199cd1b912
+  - [net-next,2/2] net/mlx5e: Let kTLS RX get async ICOSQ param in napi poll
+    https://git.kernel.org/netdev/net-next/c/425d0e2df5c2
+
+You are awesome, thank you!
 -- 
-2.54.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
