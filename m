@@ -1,133 +1,140 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B9494028C0
-	for <netdev@vger.kernel.org>; Tue, 19 May 2026 14:21:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B4683ED3A9
+	for <netdev@vger.kernel.org>; Tue, 19 May 2026 14:27:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779200490; cv=none; b=AZd+uX4byJmMSwbIjIEx6nokFGyri48E5LR0sNmNTeHPS8HrjZXGgZl3jDIQ9rtPq7REi8kUd7Xt3DnVJGKiMqJh4yze4iO2o0uu5UzHYTT9ZFlr7uvZBjQOqKxY6kLudaY3nPyigTtEzdD4Y6j0LyxuhVkvT815bzdK5hEkjZ8=
+	t=1779200840; cv=none; b=Rt6p0+rJTUlt8OSEqJR6TQ0ZRwP4X3ZcZREIJyvCaEHoo3KUwAHBn3hE4KM8SKCBNps/ASaZWP9F6DWdh9AkzolH1cuA4549rlhaOddxhkro0hOOkqrP1HA3T7B+NVPO7n31T3Aif1oESuRaCBS6ZqGJCAn4dsN2jRl2bg27RGY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779200490; c=relaxed/simple;
-	bh=py1MRqKn7exNdjXsmsX1yh47Z7tsmCUTS6qgb/gwScY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fzeYWCUPbTRx0OnRe4EW9WnQDxSBjaxRREH2juwZV/nC9ixwDLQw7aSrYMjiQXenjcDD0wqMpO3N+7Og+h6rX2mJwPkvdeIlx3T8NPvNa+0EJb1PUyvHESDj+Zqz1SW631ptTej5tC6LFvYtvLdgdDGYGtTuFioQfjbp5J45rJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WTQ+vmDH; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=atxcp2sF; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1779200840; c=relaxed/simple;
+	bh=0XIrWrrKOXAS4JSnBkq9LW5tElkQkITWVSOhNm7XbxY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=k6x3NvoFFX3F2Qwcbq1GF4zDUwARJzX7hi+H1cfHsRKefgEstaCxrLBVWvXLGEEW8SntKBgFshaE40HxXg+qGa65a0jtQBY9z5fx4MlLYztxR1XMnjqV0oyDJdJbBKvHYGcSV49yqv0qRgtHjbXU/E0jkP/v/uk5QOF6pqgLxjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b=H9CfzdgY; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WTQ+vmDH";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="atxcp2sF"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1779200488;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9ShAj6l51xuzBF/j17UKisc3z8T5wY7lSXY12qKT0nQ=;
-	b=WTQ+vmDHRD44iDFNooHkJLEpGwk9D80uB2rqmC43hGAj/BMQYb1wh5LpKbwxd8BVVtSlUW
-	ozlqLir9E90RLANL4vFPX+n+SsjwKLll2wFNd3Z+aeMy9aXdQLYZSuS7b8EUv66lR11TzT
-	G4ievXIR9VXpoIHINDZCCxfC9K0D9oI=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-612-N-l55fu6Pvqp8U20jcuVVw-1; Tue, 19 May 2026 10:21:27 -0400
-X-MC-Unique: N-l55fu6Pvqp8U20jcuVVw-1
-X-Mimecast-MFC-AGG-ID: N-l55fu6Pvqp8U20jcuVVw_1779200486
-Received: by mail-ed1-f70.google.com with SMTP id 4fb4d7f45d1cf-67ff00a6997so3425744a12.1
-        for <netdev@vger.kernel.org>; Tue, 19 May 2026 07:21:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b="H9CfzdgY"
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-488a9033b2cso29818515e9.2
+        for <netdev@vger.kernel.org>; Tue, 19 May 2026 07:27:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1779200486; x=1779805286; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=9ShAj6l51xuzBF/j17UKisc3z8T5wY7lSXY12qKT0nQ=;
-        b=atxcp2sFzsNwNoRHq10FJjiYp5yXGrDIXgsUuRUObNPJuwOJt/DbOgPqvCmw7MiKQD
-         2K0XJtd03bK5cvv3p0HyJlg2uO33vTsTd7UKtQhHPVZlLNhRRVTeZgQzYJsqln730bla
-         hB93zGKCsl+Y/Md1U0z16l/bZf6d55DXJto96PgsHZsTqqPYpSsPHSbpeJz5u6bu/cVa
-         qmZF7oRf+7IsXXFgBBRUlRsu3CIHVAHw74URPVZPIA7w3wYX+Jeanhr9gOZsfuQnV6qf
-         vQaCoZJFUlWKJZ7H/pYTON0/y2352zCf1fzLJqrCjXXXA7BWHj9A8rgKLorzlIm8JZnZ
-         yunQ==
+        d=baylibre.com; s=google; t=1779200837; x=1779805637; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=GnYW6cai+fx/W9v9Sht8UdcFwU9lnBLs3mWevgJE49k=;
+        b=H9CfzdgYi3z46QMaZV7su4v1RA8u55NUFY3DOv8imzinUetRJAyt2M82Ks1CvcD3qx
+         OlbEaLtzNuhwgbVqexNmZvnmoPhLcRCyILArafpw/9fHjYqq1/Ni+F7xNhV4cNAxQPR9
+         Q0yZOxfEAWzuf6L8A2+pJ5V8KxhjUehRuWI5R86NqFXmU27wG+koSprRqxSDO9ooxo+P
+         zu+Q8PUU6dXeMhxP5ZaQOi00jkvD7SK3dgWyl+p0pHtecyUEFD4rHFTa4pBvx1wph/gE
+         11HVOMpyzVce1dCUmekOGHrUB6W5Vbg6qhj6hfI8HYbgiTq94gxlIWQyjVJjL3kMMden
+         sfKw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779200486; x=1779805286;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=9ShAj6l51xuzBF/j17UKisc3z8T5wY7lSXY12qKT0nQ=;
-        b=bYA+299pr0KDkuz3skSsSlYQlelEGPZJtfi2o1FGX0WgfBqq0hPe9zpdi+/j8iZaTG
-         ijv+AfDxOj8YmG4Cc7ZXzeuvg/BdSiFZThj5PmzM/BgyLLGKGj2et9QzlECZcyWQ4rew
-         Q63abiwRt4HQ+/fjuMTTgLaexrpzHVFq6PE7/w2Ov9zokFtL9pZrZ7OuBv5n2C+GCy9R
-         c9aWslLY45u4vdKMi3DR2dHWFTvzt1Dz4RPtXIQm40eYRthpg7Ozj3cgQu3f+DDVu/i0
-         pbnk0yhgRBbLyHVwB9+gFYa+tdZvAPUXsw+YQUhVpKdNTMsicGss6J/xbwese0c9hwlG
-         A5bg==
-X-Forwarded-Encrypted: i=1; AFNElJ+p2dkvIngCOFjZtr1gfCp5qLIe3AcwTMdyBNYiC7qj5smYLsBYpTLXu7VP8OPaq4sCq4zQ9Bg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyDc2oR4L4bl+cU+b9QUMN5u2yrPxSi+NYT/8BYpPnz7n4iZvN1
-	EXWq6tiidMStGm5Ez8fXW4QlHNs1NH0dp0apkJ6Ugg6/qZCoplrJPa5Qo/1VCK5BDBKQ/UE3Dpw
-	4su906PhizpXHw7d0A53vmwwlSeioIYNfOAl/604c2+mKjk2abjfyf+qQgw==
-X-Gm-Gg: Acq92OFbnZukBAY8gndBv6f2sk0BAOFmkVqyYQbsZ4AyppuvzB+vTWLJfjS3yj0mx0b
-	zo0vvssVm2opFgwHnyVMTX9JAY2fLdTxnmVqKMMBvi29XYIbikNWVBZuowVrIA3BYCBBD/Bhy7s
-	oKWdCYhvAvuWNkq7ZDe1egUNuF4MmbydoPFyzRL1M6oIzeIzS6h1dGWJ/Tv8EYEuSGLTsMm86Q0
-	kQtG28/ScXi/Z7sYNECwsAvEMxlA0a/dmawezgdNKNBxEO0uUIEocA56BKGuhkjwA1Z3PlqI0sb
-	lNWF/eplzJhHo8c2Qd/phQy6tLb0HrBnNkhiqksXf1jJ3F94wnXw7bPv0/HQ2oWLCLaiGwcLAxa
-	Xug/FHsrs5E31qCWBCMKL4ryL0pPTajmjwWSJ/OagFygS+Xrmmq0XIZhxvCA84K6qIQ==
-X-Received: by 2002:a05:600c:5304:b0:490:17da:27f8 with SMTP id 5b1f17b1804b1-49017da2830mr97673695e9.18.1779199722801;
-        Tue, 19 May 2026 07:08:42 -0700 (PDT)
-X-Received: by 2002:a05:600c:5304:b0:490:17da:27f8 with SMTP id 5b1f17b1804b1-49017da2830mr97672985e9.18.1779199722357;
-        Tue, 19 May 2026 07:08:42 -0700 (PDT)
-Received: from [192.168.88.32] ([150.228.25.33])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48febe5bc94sm204874615e9.4.2026.05.19.07.08.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 19 May 2026 07:08:41 -0700 (PDT)
-Message-ID: <c05304bd-1c7a-486a-9929-e6947de07adb@redhat.com>
-Date: Tue, 19 May 2026 16:08:39 +0200
+        d=1e100.net; s=20251104; t=1779200837; x=1779805637;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GnYW6cai+fx/W9v9Sht8UdcFwU9lnBLs3mWevgJE49k=;
+        b=AWg8oQ4oE+pHQq9gtnt7aYTHG37JmB+Dc9EozmiHcNHmnilZQ66/gx6EP9TiP/BkRX
+         4i/7O/hs3qeGlA7WKE2VRFqrEL2RAq0vs8kt/3T/sph4p+70bioeCY9tJxX8DTACoSER
+         zhWtH+RsISNadV+BWjQQqLqaMXsVHl1DyweNWZCfUQxvhB9CAOQJ1OnoTHZD1HmxZD4d
+         U3dBO27DVmbeeZRUooLoppsBmZsxcMTbnwehx66U+HxcCZo8d4LARf7NUCwLIkiAXOHb
+         vsms/TGW6f0fzWJqc3KhvtZ6DUsfcr9QFdklpbP6rUv8zHpIT6owYou+pYgbflKKrE+z
+         Aljg==
+X-Gm-Message-State: AOJu0YwY5SKCnVIBM24Xxg11NhatHe70AbZMo2o4fiNyT4bgRqfwl2wz
+	cG18f5eoiWBLCDF8xm36d2UEeofHACuHE0TvkKNU4wIAviW/nkNLccwSvgAgPkVg/4Y=
+X-Gm-Gg: Acq92OHQKLWaySAel/m2dcW4t9sC8Ajkdy+0UPmlM6eePd5c+ygMV4K6d9y/XF3295X
+	hrz+HqN7yK0Op3fEVO2+U4SfwAuPDO+2UbU2PfRPtw9xjRxazYRUkKNWprVjjSttiIU7x7Oswg5
+	A+/mpSwOkzndiET7A+pLhxZY5k9ut4Q0w6H0m66cxVJVkKdJ95u+/e4S4Xuss2czTZ70cC0Qf9/
+	m2UE3jS1u7Cr3KIEz9KiRJZVwYmW/A+TTFA1FuHgw4nbq0g2NQg0ZcIrG5du6/IeDjXSjofRK01
+	xuXDPEkORM+AVkebe8zcW1ggLkpq4A5pRUdVb7nzuXGF2dT8n+p2NkqKdWkOSMEu3bdC0JzEZD/
+	uOueqotoMVdXyuyXqIkXOwSAd9yy1jNXvH3xoEy3DBlbdtjcH8V3MwuKCY8osD5Hd1Kuyt25aYf
+	RGOjtFQdEgd4QDAFOQRfnAKgJWifxgE2G+NbwnfhFVdfUpVnyK+0d3+fHhACrWQhPhZPq4rhOiM
+	GypAEovQWd3S/U=
+X-Received: by 2002:a05:600c:3e1b:b0:48a:8905:a500 with SMTP id 5b1f17b1804b1-48fe60da647mr333513865e9.12.1779200836810;
+        Tue, 19 May 2026 07:27:16 -0700 (PDT)
+Received: from localhost (p200300f65f47db048a8dfcf61053817f.dip0.t-ipconnect.de. [2003:f6:5f47:db04:8a8d:fcf6:1053:817f])
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-45d9ec39ff1sm49364941f8f.10.2026.05.19.07.27.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 19 May 2026 07:27:16 -0700 (PDT)
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig=20=28The=20Capable=20Hub=29?= <u.kleine-koenig@baylibre.com>
+To: Ivan Vecera <ivecera@redhat.com>,
+	Prathosh Satish <Prathosh.Satish@microchip.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+	Jiri Pirko <jiri@resnulli.us>
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v1] dpll: zl3073x: Use named initializers for struct i2c_device_id
+Date: Tue, 19 May 2026 16:27:10 +0200
+Message-ID: <20260519142710.1587324-2-u.kleine-koenig@baylibre.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v2 7/7] tipc: convert to getsockopt_iter
-To: Breno Leitao <leitao@debian.org>, Chas Williams <3chas3@gmail.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>,
- Magnus Karlsson <magnus.karlsson@intel.com>,
- Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
- Stanislav Fomichev <sdf@fomichev.me>, Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>,
- Jesper Dangaard Brouer <hawk@kernel.org>,
- John Fastabend <john.fastabend@gmail.com>, Jon Maloy <jmaloy@redhat.com>,
- Alexandra Winter <wintera@linux.ibm.com>,
- Thorsten Winkler <twinkler@linux.ibm.com>,
- James Chapman <jchapman@katalix.com>, David Howells <dhowells@redhat.com>,
- Marc Dionne <marc.dionne@auristor.com>, David Heidelberg
- <david+nfc@ixit.cz>, Samuel Ortiz <sameo@linux.intel.com>
-Cc: linux-atm-general@lists.sourceforge.net, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
- tipc-discussion@lists.sourceforge.net, linux-s390@vger.kernel.org,
- linux-afs@lists.infradead.org, oe-linux-nfc@lists.linux.dev,
- kernel-team@meta.com
-References: <20260515-getsock_four-v2-0-0d8eed952627@debian.org>
- <20260515-getsock_four-v2-7-0d8eed952627@debian.org>
-From: Paolo Abeni <pabeni@redhat.com>
-Content-Language: en-US
-In-Reply-To: <20260515-getsock_four-v2-7-0d8eed952627@debian.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1926; i=u.kleine-koenig@baylibre.com; h=from:subject; bh=0XIrWrrKOXAS4JSnBkq9LW5tElkQkITWVSOhNm7XbxY=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBqDHM+D4fIZMJcwHlRIDBr/rS0Oqb6HZFnub+fA zJI8208+l2JATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCagxzPgAKCRCPgPtYfRL+ TqIoB/95YWl5qAe6ho7LJkiiQ7hS8dEb6um0QjbYJHsChmMD/7b5EoqN5f5vwrtrZtvIj1k8J0u UvBovJsqwWKWoA3/GtHrZLQOlbrMTM4hdg5p6UM1DAm3RFFnBhWXv3wOqrR4GGNHqBqPUI/Fg2D kaHBL3yHa0IFz5bfM6S3sYo2GVjcwVfrEwP44kLZvh+gJ3jge/Yp8AaMfaTG9jaCSbJYP1HfSSM 3GnFN0e1I0QuuFRx/5VJCz2SWudQ3Hro80BmtxLrLm1PS4ExLMmb2KsI1efr0iuG4iNst/cQhPZ fmhriOB54ZIXMuZn219o3eLBhnElyMq3PfxwK+HZvt9hWjyn
+X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
+Content-Transfer-Encoding: 8bit
 
-On 5/15/26 10:32 AM, Breno Leitao wrote:
-> @@ -3260,7 +3260,6 @@ static int tipc_getsockopt(struct socket *sock, int lvl, int opt,
->  		break;
->  	case TIPC_CONN_TIMEOUT:
->  		value = tsk->conn_timeout;
-> -		/* no need to set "res", since already 0 at this point */
+While being less compact, using named initializers allows to more easily
+see which members of the structs are assigned which value without having
+to lookup the declaration of the struct. And it's also more robust
+against changes to the struct definition.
 
-Since you have to repost, there is another obsoleted comment referring
-to "res" later on:
+This patch doesn't modify the compiled arrays, only their representation
+in source form benefits. The former was confirmed with x86 and arm64
+builds.
 
-		return res;	/* "get" failed */
+Signed-off-by: Uwe Kleine-König (The Capable Hub) <u.kleine-koenig@baylibre.com>
+---
+Hello,
 
-please strip it, too.
+this patch is part of a bigger quest to use named initializers for
+mainly struct i2c_device_id::driver_data to be able to modify
+i2c_device_id. See e.g.
+https://lore.kernel.org/all/20260518111203.639603-2-u.kleine-koenig@baylibre.com/
+for the details.
 
-/P
+This patch here isn't critical for this quest, as no driver makes use of
+.driver_data, so apart from the better readability this is only about
+consistency with other subsystems.
+
+This is the only i2c driver under drivers/dpll, so this is the only
+patch needed to adapt the whole system to the new style for initializing
+i2c_device_id arrays.
+
+Best regards
+Uwe
+---
+ drivers/dpll/zl3073x/i2c.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/dpll/zl3073x/i2c.c b/drivers/dpll/zl3073x/i2c.c
+index 979df85826ab..4a23340e29d0 100644
+--- a/drivers/dpll/zl3073x/i2c.c
++++ b/drivers/dpll/zl3073x/i2c.c
+@@ -26,11 +26,11 @@ static int zl3073x_i2c_probe(struct i2c_client *client)
+ }
+ 
+ static const struct i2c_device_id zl3073x_i2c_id[] = {
+-	{ "zl30731" },
+-	{ "zl30732" },
+-	{ "zl30733" },
+-	{ "zl30734" },
+-	{ "zl30735" },
++	{ .name = "zl30731" },
++	{ .name = "zl30732" },
++	{ .name = "zl30733" },
++	{ .name = "zl30734" },
++	{ .name = "zl30735" },
+ 	{ /* sentinel */ }
+ };
+ MODULE_DEVICE_TABLE(i2c, zl3073x_i2c_id);
+
+base-commit: 254f49634ee16a731174d2ae34bc50bd5f45e731
+-- 
+2.47.3
 
