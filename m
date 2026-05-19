@@ -1,32 +1,32 @@
-Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
+Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E65F3E8671
-	for <netdev@vger.kernel.org>; Tue, 19 May 2026 21:59:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 145413E7BB0
+	for <netdev@vger.kernel.org>; Tue, 19 May 2026 21:59:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779227953; cv=none; b=cuIYVdQSuQPdnhOQIwECjgtHfL7EjlwvLofCuAf19b3UciVx7TGRbF1uRwBID+lKv/QFniPqhm4l0+OafLJ22buz+GEoSe7WPZxTD1ij1Lss/IMr7QccOtHeDQ5G1XEhjzvlZUHM6gwI5h81DPYRnk8qgJBzTcWXcTyDoeqKjx4=
+	t=1779227955; cv=none; b=patlsfys3pSippJkCFH0zKMOVAEGO+NEJk5MxAq3N6wckw3aFqxsmhLJaqtBlpkuYIUPVmEr/YpmhMF1h8HryzdYXDNmtxe4HGKlrkbLmKR4gCfPIR2DBuCONH9ccQOCkpTcBaSK1EysQhy079cYbpmssbjGiZxj3MVU205h0DY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779227953; c=relaxed/simple;
-	bh=H5zf7hyY5jhHjLE/Um6PIp4ND2nSLp3EuddCQZIZAwI=;
+	s=arc-20240116; t=1779227955; c=relaxed/simple;
+	bh=+rfnj4QnnOYGyDCpppuPP2TiOGyFsjPCa/gzWos4Hzk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rlm+UOXDlTZYtW+7z1gAK5RQUWWNV1edgsVq7tjHxIGXgrSsRB2O97mY+xt65rtlAKx57PtWhIKEmstzGKe/vhVxKZG0tBCAaI3eVqNHsK/dPOVF+M7wAsqqg4UFUJuyOdb6xi9K0EPKjg2CUcBQU88mvYsPKgprG4ixN7S7ZgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=L2lOC/3/; arc=none smtp.client-ip=95.215.58.181
+	 MIME-Version; b=kcFIywgfEd4wKiMLVUvpwCGwCecYJx4qLu8NZFFvxPGM5UbCUgbPwRuO6sTfyxSgDxxkdGWRXuh2tEMCr77aGRc9jKL3D8m3jN684oUG2zDQSEOOfwkDfXydsLJZUHMH9xYNVJ5oI3k/i3B5SwCKLk+O0zPCehfrxXEGGIaVt5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=tRsCoZdt; arc=none smtp.client-ip=95.215.58.188
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="L2lOC/3/"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="tRsCoZdt"
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1779227948;
+	t=1779227951;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=U/I6S8Kw28BAahmP437WtXsPWiDEg/SpJL4HlJOaL8M=;
-	b=L2lOC/3/L8+LUVnPOV/TD7LY9UayHbWUq6pU7DrtaGzDgC2nnsccBjOZ9+2HhskbA23HCS
-	PRX9ubEmN53EyK9VP0LSPs8sPLCtFV9tw2SmMvU4hC8ZQgNOhIYcBUFc94mmUNMNE3q0d+
-	HGfZzy7jHqIXpVT/2h1M/LqHgZi9SPM=
+	bh=LCXw97qlulha7oHoZkSW7OTUpRrUdsbmlMhHwgO81yg=;
+	b=tRsCoZdtJlKSH9ErDufq/L9Y+rgUVIm4/uf3xFmghm2xYQrJzSLKBX72PWUoj3dAk/CTqG
+	cikjJeFWDYaffMUsKwf/ba8SRnXDJ4Wgb8I1TFhq3T78Ue+DjCcEZzM6mhXL9xW8SLpS6v
+	XYBpcxvZcudXA5OAyYcZFjd7vCdMAeU=
 From: Martin KaFai Lau <martin.lau@linux.dev>
 To: bpf@vger.kernel.org
 Cc: 'Alexei Starovoitov ' <ast@kernel.org>,
@@ -36,9 +36,9 @@ Cc: 'Alexei Starovoitov ' <ast@kernel.org>,
 	'Roman Gushchin ' <roman.gushchin@linux.dev>,
 	'Amery Hung ' <ameryhung@gmail.com>,
 	netdev@vger.kernel.org
-Subject: [RFC PATCH bpf-next 03/12] bpf: Add bpf_struct_ops accessor helpers
-Date: Tue, 19 May 2026 14:58:10 -0700
-Message-ID: <20260519215841.2984970-4-martin.lau@linux.dev>
+Subject: [RFC PATCH bpf-next 05/12] bpf: Replace prog_list_prog() check with direct pl->prog and pl->link check
+Date: Tue, 19 May 2026 14:58:12 -0700
+Message-ID: <20260519215841.2984970-6-martin.lau@linux.dev>
 In-Reply-To: <20260519215841.2984970-1-martin.lau@linux.dev>
 References: <20260519215841.2984970-1-martin.lau@linux.dev>
 Precedence: bulk
@@ -52,162 +52,48 @@ X-Migadu-Flow: FLOW_OUT
 
 From: Martin KaFai Lau <martin.lau@kernel.org>
 
-Add the helper functions bpf_struct_ops_map_kdata(),
-bpf_struct_ops_kdata_map_id(), and bpf_struct_ops_map_cfi_stubs()
-in bpf_struct_ops.c. They will be called from cgroup.c in the upcoming
-patch to create a struct_ops to cgroup attachment link.
+prog_list_length() and compute_effective_progs() use !prog_list_prog(pl)
+to skip a 'detaching' pl.
 
-bpf_struct_ops_valid_to_reg() is also exposed for the upcoming caller
-in cgroup.c.
+When pl->link is not NULL, prog_list_prog(pl) returns
+the pl->link->link.prog. This does not work for the upcoming struct_ops
+patch where pl->link is not NULL but pl->link->link.prog is NULL,
+because a struct_ops map is attached to the cgroup instead of a BPF prog.
 
-The link update validation is also refactored into a new function
-bpf_struct_ops_link_update_check() such that it can be reused by the caller
-in cgroup.c in the upcoming patch.
+To prepare for the upcoming struct_ops patch, this patch
+replaces the prog_list_prog() test with the
+"!pl->prog && !pl->link". In __cgroup_bpf_detach(),
+both pl->prog and pl->link are set to NULL, so testing
+"!pl->prog && !pl->link" is the same test to tell
+if a pl is being detached. This change should be a no-op.
 
 Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
 ---
- include/linux/bpf.h         | 28 +++++++++++++++++
- kernel/bpf/bpf_struct_ops.c | 63 ++++++++++++++++++++++++++++---------
- 2 files changed, 77 insertions(+), 14 deletions(-)
+ kernel/bpf/cgroup.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/bpf.h b/include/linux/bpf.h
-index a276eada19c4..dbf98741f15b 100644
---- a/include/linux/bpf.h
-+++ b/include/linux/bpf.h
-@@ -2136,6 +2136,12 @@ int bpf_prog_assoc_struct_ops(struct bpf_prog *prog, struct bpf_map *map);
- void bpf_prog_disassoc_struct_ops(struct bpf_prog *prog);
- void *bpf_prog_get_assoc_struct_ops(const struct bpf_prog_aux *aux);
- u32 bpf_struct_ops_id(const void *kdata);
-+void *bpf_struct_ops_map_kdata(struct bpf_map *map);
-+u32 bpf_struct_ops_kdata_map_id(void *kdata);
-+void *bpf_struct_ops_map_cfi_stubs(struct bpf_map *map);
-+bool bpf_struct_ops_valid_to_reg(struct bpf_map *map);
-+int bpf_struct_ops_link_update_check(struct bpf_map *new_map, struct bpf_map *old_map,
-+				     struct bpf_map *expected_old_map);
+diff --git a/kernel/bpf/cgroup.c b/kernel/bpf/cgroup.c
+index 71591f6dc458..abfd6df349d4 100644
+--- a/kernel/bpf/cgroup.c
++++ b/kernel/bpf/cgroup.c
+@@ -387,7 +387,7 @@ static u32 prog_list_length(struct hlist_head *head, int *preorder_cnt)
+ 	u32 cnt = 0;
  
- #ifdef CONFIG_NET
- /* Define it here to avoid the use of forward declaration */
-@@ -2200,6 +2206,28 @@ static inline void bpf_map_struct_ops_info_fill(struct bpf_map_info *info, struc
- static inline void bpf_struct_ops_desc_release(struct bpf_struct_ops_desc *st_ops_desc)
- {
- }
-+static inline void *bpf_struct_ops_map_kdata(struct bpf_map *map)
-+{
-+	return NULL;
-+}
-+static inline u32 bpf_struct_ops_kdata_map_id(void *kdata)
-+{
-+	return 0;
-+}
-+static inline void *bpf_struct_ops_map_cfi_stubs(struct bpf_map *map)
-+{
-+	return NULL;
-+}
-+static inline bool bpf_struct_ops_valid_to_reg(struct bpf_map *map)
-+{
-+	return false;
-+}
-+static inline int bpf_struct_ops_link_update_check(struct bpf_map *new_map,
-+						   struct bpf_map *old_map,
-+						   struct bpf_map *expected_old_map)
-+{
-+	return -EOPNOTSUPP;
-+}
+ 	hlist_for_each_entry(pl, head, node) {
+-		if (!prog_list_prog(pl))
++		if (!pl->prog && !pl->link)
+ 			continue;
+ 		if (preorder_cnt && (pl->flags & BPF_F_PREORDER))
+ 			(*preorder_cnt)++;
+@@ -461,7 +461,7 @@ static int compute_effective_progs(struct cgroup *cgrp,
  
- #endif
+ 		init_bstart = bstart;
+ 		hlist_for_each_entry(pl, &p->bpf.progs[atype], node) {
+-			if (!prog_list_prog(pl))
++			if (!pl->prog && !pl->link)
+ 				continue;
  
-diff --git a/kernel/bpf/bpf_struct_ops.c b/kernel/bpf/bpf_struct_ops.c
-index 28eab24ef0ed..8650a3b88bf6 100644
---- a/kernel/bpf/bpf_struct_ops.c
-+++ b/kernel/bpf/bpf_struct_ops.c
-@@ -1199,7 +1199,33 @@ u32 bpf_struct_ops_id(const void *kdata)
- }
- EXPORT_SYMBOL_GPL(bpf_struct_ops_id);
- 
--static bool bpf_struct_ops_valid_to_reg(struct bpf_map *map)
-+void *bpf_struct_ops_map_kdata(struct bpf_map *map)
-+{
-+	struct bpf_struct_ops_map *st_map;
-+
-+	st_map = container_of(map, struct bpf_struct_ops_map, map);
-+	return st_map->kvalue.data;
-+}
-+
-+u32 bpf_struct_ops_kdata_map_id(void *kdata)
-+{
-+	struct bpf_struct_ops_value *kvalue =
-+		container_of(kdata, struct bpf_struct_ops_value, data);
-+	struct bpf_struct_ops_map *st_map =
-+		container_of(kvalue, struct bpf_struct_ops_map, kvalue);
-+
-+	return st_map->map.id;
-+}
-+
-+void *bpf_struct_ops_map_cfi_stubs(struct bpf_map *map)
-+{
-+	struct bpf_struct_ops_map *st_map;
-+
-+	st_map = container_of(map, struct bpf_struct_ops_map, map);
-+	return st_map->st_ops_desc->st_ops->cfi_stubs;
-+}
-+
-+bool bpf_struct_ops_valid_to_reg(struct bpf_map *map)
- {
- 	struct bpf_struct_ops_map *st_map = (struct bpf_struct_ops_map *)map;
- 
-@@ -1252,6 +1278,26 @@ static int bpf_struct_ops_map_link_fill_link_info(const struct bpf_link *link,
- 	return 0;
- }
- 
-+int bpf_struct_ops_link_update_check(struct bpf_map *new_map,
-+				     struct bpf_map *old_map,
-+				     struct bpf_map *expected_old_map)
-+{
-+	struct bpf_struct_ops_map *st_map, *old_st_map;
-+
-+	if (!old_map)
-+		return -ENOLINK;
-+	if (expected_old_map && old_map != expected_old_map)
-+		return -EPERM;
-+
-+	st_map = container_of(new_map, struct bpf_struct_ops_map, map);
-+	old_st_map = container_of(old_map, struct bpf_struct_ops_map, map);
-+	/* The new and old struct_ops must be the same type. */
-+	if (st_map->st_ops_desc != old_st_map->st_ops_desc)
-+		return -EINVAL;
-+
-+	return 0;
-+}
-+
- static int bpf_struct_ops_map_link_update(struct bpf_link *link, struct bpf_map *new_map,
- 					  struct bpf_map *expected_old_map)
- {
-@@ -1270,23 +1316,12 @@ static int bpf_struct_ops_map_link_update(struct bpf_link *link, struct bpf_map
- 		return -EOPNOTSUPP;
- 
- 	mutex_lock(&update_mutex);
--
- 	old_map = st_link->map;
--	if (!old_map) {
--		err = -ENOLINK;
--		goto err_out;
--	}
--	if (expected_old_map && old_map != expected_old_map) {
--		err = -EPERM;
-+	err = bpf_struct_ops_link_update_check(new_map, old_map, expected_old_map);
-+	if (err)
- 		goto err_out;
--	}
- 
- 	old_st_map = container_of(old_map, struct bpf_struct_ops_map, map);
--	/* The new and old struct_ops must be the same type. */
--	if (st_map->st_ops_desc != old_st_map->st_ops_desc) {
--		err = -EINVAL;
--		goto err_out;
--	}
- 
- 	err = st_map->st_ops_desc->st_ops->update(st_map->kvalue.data, old_st_map->kvalue.data, link);
- 	if (err)
+ 			if (pl->flags & BPF_F_PREORDER) {
 -- 
 2.53.0-Meta
 
