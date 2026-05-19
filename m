@@ -1,62 +1,35 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A9E33D88FC
-	for <netdev@vger.kernel.org>; Tue, 19 May 2026 10:57:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F4B2369D44;
+	Tue, 19 May 2026 11:00:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779188230; cv=none; b=nfOcdu7XKlme5IjVBVI8mQnc9JC0LGXIZwmfMcqnLap/x7srgSVS1aYTwnfaTkpFa3gW6o7oiDNrjqRTWhCFgsFp4XHPP13INkaD6ngdcGZ336hH1051bdk8vY2zyv85+2KWAnv+8YdqmI+EJEbymsyoXF8i73EuszLQ6z2FMlM=
+	t=1779188406; cv=none; b=MFiSrNX9maZN2v2hBL7EAKElY4IkG+KN9z3XxxRAQtlIByJOeyrIL64l71gIGiNzSFXIxTDMu1PcNGipR348g+BGd4qqU+h5M3Swd/rgAXc/+AKs9f7tDF888H1/4g9YEz52co8TvT9NA8emfkhGPXVeMnIg/Vn+h42JJDqZgnM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779188230; c=relaxed/simple;
-	bh=lsBVMREThc1wx/FRt7E+QCeVCwR4ZbEJEAKra/cO96g=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Pgz+IqpMFpZYfySmNmPVEDacCA9qhxkpdqjHTRyo6OqFk6rMfW8BQpVsh4SKVmtrV6pzj7FY72PHSasjbhV+HqZz9zeFSSygWb0MjnW/aOm5gZIPZq+LIR0RQu8+FQEOapgZX22IrKkEtf3hP8gt14uSN/FzMNOuF4LMEkMbcPg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eybWjlsl; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1779188406; c=relaxed/simple;
+	bh=D70H8Z4eH+y64Ue+L6Bm0Ag7ZBzliT4c6WevcCypox4=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=Bpeys8mO/pDs3w/2sRROqiIJqnJFzhD/KnIg4Xp9mNjmUQBSYV7nsdB70Al01d1GnAR9Qr0Y/HNnvyLc9EYy+gfEpuo2RCmRhAR0C2HwnXLjjNVfLHh/n0TejDwxq70C+oAhezxh7eG9N9iqrv/6/DqAe3jOMbBvp9I5rtuZRSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iPUIODfC; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eybWjlsl"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779188228; x=1810724228;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=lsBVMREThc1wx/FRt7E+QCeVCwR4ZbEJEAKra/cO96g=;
-  b=eybWjlsl6/aLww82hQ2pcmzxzWwWX2mf7N9NGabIcEg7eSYY12cmni07
-   5AHY1N7NJZoIPIsljNgXMRxCivuwENQo4yGMDSIngsV2S1Jey8jU0/abb
-   AVh+LLi50bxF+5R9F8FFAmD0bFQVmIyTvvlfEvrhTrhVxU56JI5GSMLG8
-   8FREXHg1aut/9mW9+FUaM6migD987ZOuNE3HUAk0nYcFtkJk/2Utzu0VG
-   KDC4FPkLdaLtAoqojGwB0Hixy/XUSWINPJGtrr8O+uiWMadWcrT7nnbJZ
-   zRVwBARDExj7+mRwV/SjicY7USNWG/xniHFLVMnCkN9T3Fi/r+hRzIXtE
-   w==;
-X-CSE-ConnectionGUID: rhBShf0aT4GSdpPWDNBp+w==
-X-CSE-MsgGUID: MLvqugEFQfKIgRKtier7Vg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11790"; a="82626789"
-X-IronPort-AV: E=Sophos;i="6.23,243,1770624000"; 
-   d="scan'208";a="82626789"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2026 03:57:00 -0700
-X-CSE-ConnectionGUID: BaVOWXebSbS9DesvgV6Uyg==
-X-CSE-MsgGUID: KrVgaAA7SkmaoJajXSmd1g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,243,1770624000"; 
-   d="scan'208";a="241568910"
-Received: from boxer.igk.intel.com ([10.102.20.173])
-  by fmviesa004.fm.intel.com with ESMTP; 19 May 2026 03:56:58 -0700
-From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: netdev@vger.kernel.org,
-	magnus.karlsson@intel.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	przemyslaw.kitszel@intel.com,
-	jacob.e.keller@intel.com,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	Sunitha Mekala <sunithax.d.mekala@intel.com>
-Subject: [PATCH v3 iwl-net] i40e: keep q_vectors array in sync with channel count changes
-Date: Tue, 19 May 2026 12:56:38 +0200
-Message-Id: <20260519105637.839438-1-maciej.fijalkowski@intel.com>
-X-Mailer: git-send-email 2.38.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iPUIODfC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA096C2BCB3;
+	Tue, 19 May 2026 11:00:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1779188404;
+	bh=D70H8Z4eH+y64Ue+L6Bm0Ag7ZBzliT4c6WevcCypox4=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=iPUIODfCaMJLjvG1v/JW2fhHgzecuRBBH7AUIjfNTi71epV71OjlhZYJh4xCpQhJM
+	 7e4Tqi1cmzpd7I71T6IoVh0qMQwmlMVcosJG0zIIwxfk49XfiwOVPmFTyBscfBCYDd
+	 uVYF1E4N8df6Le51DRnK7qrx1BtvQtzKX6qCUs6fsL95KEWuf3fojbbLtgUcEOmOIP
+	 ZofkHQxlkOvLQzcrAfXnc4fQIXhv9LLZ3+1XsLoWH+bc/1TXwoB1Ks/FM4spfRIuHs
+	 78v6i5kEBUkvC77X5kJwTT6vhZlBM/0q3VlaagGXLEkZXJ9QJTmX1045li2XHmrVE7
+	 F6KzNGZHPSrBA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 1995D3930E03;
+	Tue, 19 May 2026 11:00:17 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -64,266 +37,52 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v2 0/5] net: dsa: mt7530: assorted fixes
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177918841597.2243186.15077319366803058468.git-patchwork-notify@kernel.org>
+Date: Tue, 19 May 2026 11:00:15 +0000
+References: <cover.1778766629.git.daniel@makrotopia.org>
+In-Reply-To: <cover.1778766629.git.daniel@makrotopia.org>
+To: Daniel Golle <daniel@makrotopia.org>
+Cc: chester.a.unal@arinc9.com, andrew@lunn.ch, olteanv@gmail.com,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com,
+ dqfext@gmail.com, f.fainelli@gmail.com, arinc.unal@arinc9.com,
+ sean.wang@mediatek.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org
 
-For the main VSI, i40e_set_num_rings_in_vsi() always derives
-num_q_vectors from pf->num_lan_msix. At the same time, ethtool -L stores
-the user requested channel count in vsi->req_queue_pairs and the queue
-setup path uses that value for the effective number of queue pairs.
+Hello:
 
-This leaves queue and vector counts out of sync after shrinking channel
-count via ethtool -L. The active queue configuration is reduced, but the
-VSI still keeps the full PF-sized q_vector topology.
+This series was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-That mismatch breaks reconfiguration flows which rely on vector/NAPI
-state matching the effective channel configuration. In particular,
-toggling /sys/class/net/<dev>/threaded after reducing the channel count
-can hang, and later channel-count changes can fail because VSI reinit
-does not rebuild q_vectors to match the new vector count.
+On Thu, 14 May 2026 15:04:06 +0100 you wrote:
+> A batch of small, independent fixes for the MediaTek MT7530 family DSA
+> driver, addressing long-standing correctness issues that surface on
+> hardware with bridge VLAN filtering enabled, on link-local frame
+> reception, and during bridge join/leave transitions.
+> ---
+> Changes since v1:
+>  - rework patch 1/5 following up Paolo Abeni and Sashiko reviews
+> 
+> [...]
 
-Fix this by making the main VSI num_q_vectors follow the effective
-requested channel count, capped by the available MSI-X vectors. Update
-i40e_vsi_reinit_setup() to rebuild q_vectors during VSI reinit so the
-vector topology is refreshed together with the ring arrays when channel
-count changes.
+Here is the summary with links:
+  - [net,v2,1/5] net: dsa: mt7530: fix FDB entries not aging out with short timeout
+    https://git.kernel.org/netdev/net/c/e824e40d0e84
+  - [net,v2,2/5] net: dsa: mt7530: preserve VLAN tags on trapped link-local frames
+    https://git.kernel.org/netdev/net/c/3ac85bcfd404
+  - [net,v2,3/5] net: dsa: mt7530: fix CPU port VLAN not being reset to unaware
+    https://git.kernel.org/netdev/net/c/2c4c76cacc9d
+  - [net,v2,4/5] net: dsa: mt7530: clear flood flags on bridge leave
+    (no matching commit)
+  - [net,v2,5/5] net: dsa: mt7530: untag VLAN-aware bridge PVID
+    https://git.kernel.org/netdev/net/c/4cb3cd670b2a
 
-Keep alloc_queue_pairs unchanged and based on pf->num_lan_qps so the VSI
-retains its full queue capacity.
-
-Selftest napi_threaded.py was originally used when Jakub reported hang
-on /sys/class/net/<dev>/threaded toggle. In order to make it pass on
-i40e, use persistent NAPI configuration for q_vector NAPIs so NAPI
-identity and threaded settings survive q_vector reallocation across
-channel-count changes. This is achieved by using netif_napi_add_config()
-when configuring q_vectors.
-
-$ export NETIF=ens259f1np1
-$ sudo -E env PATH="$PATH" ./tools/testing/selftests/drivers/net/napi_threaded.py
-TAP version 13
-1..3
-ok 1 napi_threaded.napi_init
-ok 2 napi_threaded.change_num_queues
-ok 3 napi_threaded.enable_dev_threaded_disable_napi_threaded
-Totals: pass:3 fail:0 xfail:0 xpass:0 skip:0 error:0
-
-Reported-by: Jakub Kicinski <kuba@kernel.org>
-Closes: https://lore.kernel.org/intel-wired-lan/20260316133100.6054a11f@kernel.org/
-Fixes: d2a69fefd756 ("i40e: Fix changing previously set num_queue_pairs for PFs")
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Sunitha Mekala <sunithax.d.mekala@intel.com>
-Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
----
-v3:
-- address UAF when ring arrays where freed before q_vector's ring
-  containers (Sashiko, Jacob)
-- remove bool params from alloc/free array routines (Simon)
-v2:
-- NULL vsi->tx_rings in i40e_vsi_alloc_arrays() (Sashiko)
----
- drivers/net/ethernet/intel/i40e/i40e_main.c | 73 +++++++++++++--------
- 1 file changed, 44 insertions(+), 29 deletions(-)
-
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
-index a04683004a56..4e7cffb23d03 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_main.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
-@@ -11406,10 +11406,14 @@ static void i40e_service_timer(struct timer_list *t)
- static int i40e_set_num_rings_in_vsi(struct i40e_vsi *vsi)
- {
- 	struct i40e_pf *pf = vsi->back;
-+	u16 qps;
- 
- 	switch (vsi->type) {
- 	case I40E_VSI_MAIN:
- 		vsi->alloc_queue_pairs = pf->num_lan_qps;
-+		qps = vsi->req_queue_pairs ?
-+		      min(vsi->req_queue_pairs, pf->num_lan_qps) :
-+		      pf->num_lan_qps;
- 		if (!vsi->num_tx_desc)
- 			vsi->num_tx_desc = ALIGN(I40E_DEFAULT_NUM_DESCRIPTORS,
- 						 I40E_REQ_DESCRIPTOR_MULTIPLE);
-@@ -11417,7 +11421,7 @@ static int i40e_set_num_rings_in_vsi(struct i40e_vsi *vsi)
- 			vsi->num_rx_desc = ALIGN(I40E_DEFAULT_NUM_DESCRIPTORS,
- 						 I40E_REQ_DESCRIPTOR_MULTIPLE);
- 		if (test_bit(I40E_FLAG_MSIX_ENA, pf->flags))
--			vsi->num_q_vectors = pf->num_lan_msix;
-+			vsi->num_q_vectors = clamp(qps, 1, pf->num_lan_msix);
- 		else
- 			vsi->num_q_vectors = 1;
- 
-@@ -11469,12 +11473,11 @@ static int i40e_set_num_rings_in_vsi(struct i40e_vsi *vsi)
- /**
-  * i40e_vsi_alloc_arrays - Allocate queue and vector pointer arrays for the vsi
-  * @vsi: VSI pointer
-- * @alloc_qvectors: a bool to specify if q_vectors need to be allocated.
-  *
-  * On error: returns error code (negative)
-  * On success: returns 0
-  **/
--static int i40e_vsi_alloc_arrays(struct i40e_vsi *vsi, bool alloc_qvectors)
-+static int i40e_vsi_alloc_arrays(struct i40e_vsi *vsi)
- {
- 	struct i40e_ring **next_rings;
- 	int size;
-@@ -11493,19 +11496,18 @@ static int i40e_vsi_alloc_arrays(struct i40e_vsi *vsi, bool alloc_qvectors)
- 	}
- 	vsi->rx_rings = next_rings;
- 
--	if (alloc_qvectors) {
--		/* allocate memory for q_vector pointers */
--		size = sizeof(struct i40e_q_vector *) * vsi->num_q_vectors;
--		vsi->q_vectors = kzalloc(size, GFP_KERNEL);
--		if (!vsi->q_vectors) {
--			ret = -ENOMEM;
--			goto err_vectors;
--		}
-+	/* allocate memory for q_vector pointers */
-+	size = sizeof(struct i40e_q_vector *) * vsi->num_q_vectors;
-+	vsi->q_vectors = kzalloc(size, GFP_KERNEL);
-+	if (!vsi->q_vectors) {
-+		ret = -ENOMEM;
-+		goto err_vectors;
- 	}
- 	return ret;
- 
- err_vectors:
- 	kfree(vsi->tx_rings);
-+	vsi->tx_rings = NULL;
- 	return ret;
- }
- 
-@@ -11578,7 +11580,7 @@ static int i40e_vsi_mem_alloc(struct i40e_pf *pf, enum i40e_vsi_type type)
- 	if (ret)
- 		goto err_rings;
- 
--	ret = i40e_vsi_alloc_arrays(vsi, true);
-+	ret = i40e_vsi_alloc_arrays(vsi);
- 	if (ret)
- 		goto err_rings;
- 
-@@ -11603,18 +11605,15 @@ static int i40e_vsi_mem_alloc(struct i40e_pf *pf, enum i40e_vsi_type type)
- /**
-  * i40e_vsi_free_arrays - Free queue and vector pointer arrays for the VSI
-  * @vsi: VSI pointer
-- * @free_qvectors: a bool to specify if q_vectors need to be freed.
-  *
-  * On error: returns error code (negative)
-  * On success: returns 0
-  **/
--static void i40e_vsi_free_arrays(struct i40e_vsi *vsi, bool free_qvectors)
-+static void i40e_vsi_free_arrays(struct i40e_vsi *vsi)
- {
- 	/* free the ring and vector containers */
--	if (free_qvectors) {
--		kfree(vsi->q_vectors);
--		vsi->q_vectors = NULL;
--	}
-+	kfree(vsi->q_vectors);
-+	vsi->q_vectors = NULL;
- 	kfree(vsi->tx_rings);
- 	vsi->tx_rings = NULL;
- 	vsi->rx_rings = NULL;
-@@ -11674,7 +11673,7 @@ static int i40e_vsi_clear(struct i40e_vsi *vsi)
- 	i40e_put_lump(pf->irq_pile, vsi->base_vector, vsi->idx);
- 
- 	bitmap_free(vsi->af_xdp_zc_qps);
--	i40e_vsi_free_arrays(vsi, true);
-+	i40e_vsi_free_arrays(vsi);
- 	i40e_clear_rss_config_user(vsi);
- 
- 	pf->vsi[vsi->idx] = NULL;
-@@ -12046,7 +12045,8 @@ static int i40e_vsi_alloc_q_vector(struct i40e_vsi *vsi, int v_idx)
- 	cpumask_copy(&q_vector->affinity_mask, cpu_possible_mask);
- 
- 	if (vsi->netdev)
--		netif_napi_add(vsi->netdev, &q_vector->napi, i40e_napi_poll);
-+		netif_napi_add_config(vsi->netdev, &q_vector->napi,
-+				      i40e_napi_poll, v_idx);
- 
- 	/* tie q_vector and vsi together */
- 	vsi->q_vectors[v_idx] = q_vector;
-@@ -14267,12 +14267,26 @@ static struct i40e_vsi *i40e_vsi_reinit_setup(struct i40e_vsi *vsi)
- 
- 	pf = vsi->back;
- 
-+	if (test_bit(I40E_FLAG_MSIX_ENA, pf->flags)) {
-+		i40e_put_lump(pf->irq_pile, vsi->base_vector, vsi->idx);
-+		vsi->base_vector = 0;
-+	}
-+
- 	i40e_put_lump(pf->qp_pile, vsi->base_queue, vsi->idx);
-+	i40e_vsi_free_q_vectors(vsi);
- 	i40e_vsi_clear_rings(vsi);
-+	i40e_vsi_free_arrays(vsi);
- 
--	i40e_vsi_free_arrays(vsi, false);
- 	i40e_set_num_rings_in_vsi(vsi);
--	ret = i40e_vsi_alloc_arrays(vsi, false);
-+	ret = i40e_vsi_alloc_arrays(vsi);
-+	if (ret)
-+		goto err_vsi;
-+
-+	/* Rebuild q_vectors during VSI reinit because the effective channel
-+	 * count may change num_q_vectors. Keep vector topology aligned with the
-+	 * queue configuration after ethtool's .set_channels() callback.
-+	 */
-+	ret = i40e_vsi_setup_vectors(vsi);
- 	if (ret)
- 		goto err_vsi;
- 
-@@ -14284,7 +14298,7 @@ static struct i40e_vsi *i40e_vsi_reinit_setup(struct i40e_vsi *vsi)
- 		dev_info(&pf->pdev->dev,
- 			 "failed to get tracking for %d queues for VSI %d err %d\n",
- 			 alloc_queue_pairs, vsi->seid, ret);
--		goto err_vsi;
-+		goto err_lump;
- 	}
- 	vsi->base_queue = ret;
- 
-@@ -14308,7 +14322,6 @@ static struct i40e_vsi *i40e_vsi_reinit_setup(struct i40e_vsi *vsi)
- 	return vsi;
- 
- err_rings:
--	i40e_vsi_free_q_vectors(vsi);
- 	if (vsi->netdev_registered) {
- 		vsi->netdev_registered = false;
- 		unregister_netdev(vsi->netdev);
-@@ -14318,6 +14331,8 @@ static struct i40e_vsi *i40e_vsi_reinit_setup(struct i40e_vsi *vsi)
- 	if (vsi->type == I40E_VSI_MAIN)
- 		i40e_devlink_destroy_port(pf);
- 	i40e_aq_delete_element(&pf->hw, vsi->seid, NULL);
-+err_lump:
-+	i40e_vsi_free_q_vectors(vsi);
- err_vsi:
- 	i40e_vsi_clear(vsi);
- 	return NULL;
-@@ -14459,12 +14474,12 @@ struct i40e_vsi *i40e_vsi_setup(struct i40e_pf *pf, u8 type,
- #endif /* CONFIG_I40E_DCB */
- 		fallthrough;
- 	case I40E_VSI_FDIR:
--		/* set up vectors and rings if needed */
--		ret = i40e_vsi_setup_vectors(vsi);
-+		ret = i40e_alloc_rings(vsi);
- 		if (ret)
- 			goto err_msix;
- 
--		ret = i40e_alloc_rings(vsi);
-+		/* set up vectors and rings if needed */
-+		ret = i40e_vsi_setup_vectors(vsi);
- 		if (ret)
- 			goto err_rings;
- 
-@@ -14487,9 +14502,9 @@ struct i40e_vsi *i40e_vsi_setup(struct i40e_pf *pf, u8 type,
- 	return vsi;
- 
- err_config:
--	i40e_vsi_clear_rings(vsi);
--err_rings:
- 	i40e_vsi_free_q_vectors(vsi);
-+err_rings:
-+	i40e_vsi_clear_rings(vsi);
- err_msix:
- 	if (vsi->netdev_registered) {
- 		vsi->netdev_registered = false;
+You are awesome, thank you!
 -- 
-2.43.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
