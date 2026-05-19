@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2687C248886;
-	Tue, 19 May 2026 00:35:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31F6C248F62
+	for <netdev@vger.kernel.org>; Tue, 19 May 2026 00:42:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779150909; cv=none; b=DGWu7z20CtNvvutsk+9Xq0arJOLTNZtXNC6ub8a740dukLcB90Rb1LMPr5L8Jx+7MaVqpPVx4Du8Udq6Sy/6Rzj6k6bxcY/Vc1n4cEwIG8gOgdPesRP4P+68v+vguhQdyY79+J/5fOPvJX48WUrn3H9IIb1tbiQmls5IebRJ+mM=
+	t=1779151331; cv=none; b=ToF1FJvJXfemg0FVZcWUhQ2dtm91Zyt5l7gC6bjHezxwHmRE25BnaCa30ylnd+Mhc63fnCcBlCMd5tIuJWdAqp57pr4c6e8vYiC3pOl8eoTru33qb4+70vsazwhqFOng4FPj0PXQ0klUuuplBn7wTugM/7YL/SAzZrfDe9eAQDE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779150909; c=relaxed/simple;
-	bh=bcUAzun7DuQa2FpfbLLFAcM6nRlL97zheKTEUXqRsAQ=;
+	s=arc-20240116; t=1779151331; c=relaxed/simple;
+	bh=khJuqC4VgFub/c9zDNpa7BGP+NHfJDHSSBUiFNN8ae4=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SevAc+pPRw1dsZzbTSvh3kogdZIivhU8tzU2Dy2OCPmqvy0zWtIc0RR3aavj1QTIEgT686YxQZA/nBHnYfD3sE+SwFdgHnt2SM9+SA/yubqY2cJAO/fcrswcvFgDKBoDRP6ahLSc8gVNrRiE1BYttGAljIUq0wZ8eEusFxCoudQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LiAB3Jxy; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=rTFQW8YXJsNWGz9G4hLyTiCoTI2crAHBMMAKhziVONB5gnFEciy2iV9SymYKsXNEA2Ir2CLpVVLzx9btHL1n5keP0q09g9RiExe6VwrOFmkrivQYQytkowpURhJFlikoCO9RAKep9hen+HiSZ4cIQyPT1XO8t4tAUOgux4iJ/NE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gpRUIa5I; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LiAB3Jxy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49251C2BCB7;
-	Tue, 19 May 2026 00:35:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gpRUIa5I"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E918C2BCB7;
+	Tue, 19 May 2026 00:42:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779150908;
-	bh=bcUAzun7DuQa2FpfbLLFAcM6nRlL97zheKTEUXqRsAQ=;
+	s=k20201202; t=1779151330;
+	bh=khJuqC4VgFub/c9zDNpa7BGP+NHfJDHSSBUiFNN8ae4=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=LiAB3Jxyo1+A0tOUzJeHpOdwErFpWhiv97/kgCDbjQ23i9lVOb5Bxofn/WMMnWeSJ
-	 0dINgQnRghqhsLgkXrCAX2IPwR8QFpXCfAENLKP4jepPjnvWvnRWJiJ5DJcNRJb5zk
-	 X8yQKYoC+e3eAv2KAQqTcsi5DFJ6AtEuMn6hbzzBFHdfA3RvqEx6ER3uOUEdLH37Rz
-	 ANTPH20Qj62bQjUc6ydc4NZzUsuPMibY1mL3ne7/CSZMe1BsiIrjE2iQMEPPh048KA
-	 KgJIT4muXwN0Y7PxUdnXxHDTlmUvse23DV0VZeBDL+GosmPERCl86q1MhzqTsF/QoT
-	 IdjFUmp2FOAOA==
-Date: Mon, 18 May 2026 17:35:07 -0700
+	b=gpRUIa5IPpHZaMFmjWq7hp1z3zaf0DVnMw53GAkjUa9p+El/p6LaRmwDfJK6eMHEy
+	 acp56o0rXA4I73j0woSjKfcpVtBnJy5vFjSZ/Pv906+ay1h2XFZPdBhasVIrKffPsI
+	 CFLZKBPic87leuWxmx2wifrqoiUT3c9MXOnJbVQMI0nWRjQLfXE5WFB93E8GU8aBHU
+	 BCoebCzRoSfQOpvl9Dkoy79vbfPeZeV88BrDLKw2FjE2bw2hMCBNciB+JCgRQa7UWC
+	 5sLtbPax/kXNTtYIbOpjwnEBiHEc2jZ2ALXLHPSPKunk5BKLiNrgJnS5Gvsk3BZW8o
+	 bN4NRIFy1Oeqw==
+Date: Mon, 18 May 2026 17:42:09 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Ricardo Robaina <rrobaina@redhat.com>
-Cc: audit@vger.kernel.org, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org, paul@paul-moore.com, eparis@redhat.com,
- edumazet@google.com, pabeni@redhat.com, horms@kernel.org, Steve Grubb
- <sgrubb@redhat.com>
-Subject: Re: [PATCH v2] netlink, audit: prevent false ENOBUFS on timeout
- expiry
-Message-ID: <20260518173507.2f2529c9@kernel.org>
-In-Reply-To: <20260513172443.1128496-1-rrobaina@redhat.com>
-References: <20260513172443.1128496-1-rrobaina@redhat.com>
+To: Maciek Machnikowski <maciek@machnikowski.net>
+Cc: netdev@vger.kernel.org, richardcochran@gmail.com,
+ milena.olech@intel.com, willemdebruijn.kernel@gmail.com, andrew@lunn.ch,
+ vadim.fedorenko@linux.dev, horms@kernel.org
+Subject: Re: [PATCH v6 net-next 3/3] selftests:net: Implement ptp4l sync
+ test using netdevsim
+Message-ID: <20260518174209.41e2e039@kernel.org>
+In-Reply-To: <20260513094520.325693-4-maciek@machnikowski.net>
+References: <20260513094520.325693-1-maciek@machnikowski.net>
+	<20260513094520.325693-4-maciek@machnikowski.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,30 +47,57 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 13 May 2026 14:24:43 -0300 Ricardo Robaina wrote:
-> When auditd is bottlenecked (e.g., by slow disk I/O), kauditd blocks on
-> the netlink socket.
-
-Holding socket lock during slow IO sounds very wrong. One could say -
-that's abuse of the socket lock?
-
-> If the wait timeout fully expires (timeo == 0),
-> netlink mistakenly interprets the zeroed timeout as a non-blocking
-> request. It then triggers netlink_overrun that drops the event,
-> completely bypassing the audit subsystem's internal retry queue, and
-> falsely returns ENOBUFS to user-space, resulting in the following error:
+On Wed, 13 May 2026 11:45:20 +0200 Maciek Machnikowski wrote:
+> Add PTP synchronization test using ptp4l and netdevsim.
 > 
->  auditd[]: Error receiving audit netlink packet (No buffer space available)
+> The test creates two netdevsim adapters, links them together
+> and runs the ptp4l leader and ptp4l follower on two ends
+> of the netdevsim link and waits for the follower to report the
+> synchronized state (s2) in its output log.
 > 
-> Fix this by detecting when a blocking sender's timeout has expired
-> (timeo == 0 && !nonblock) in netlink_unicast(). In this case, instead
-> of retrying with timeo=0 (which would incorrectly trigger netlink_overrun
-> on the next iteration), safely free the skb and return -EAGAIN, allowing
-> the audit subsystem to gracefully enqueue the pending event into its
-> internal backlog.
+> This implementation runs the test runs over IPv4 link.
 
-The socket _is_ the queue, normally.
 
-Please explore fixing this in audit?
--- 
-pw-bot: cr
+> @@ -135,3 +135,4 @@ CONFIG_VLAN_8021Q=y
+>  CONFIG_VXLAN=m
+>  CONFIG_XFRM_INTERFACE=m
+>  CONFIG_XFRM_USER=m
+> +CONFIG_PTP_1588_CLOCK_MOCK=y
+
+config needs to be sorted too
+
+> diff --git a/tools/testing/selftests/net/ptp.py b/tools/testing/selftests/net/ptp.py
+> new file mode 100755
+> index 000000000000..dd6f12cf3d91
+> --- /dev/null
+> +++ b/tools/testing/selftests/net/ptp.py
+> @@ -0,0 +1,184 @@
+> +#!/usr/bin/env python3
+> +# SPDX-License-Identifier: GPL-2.0-only
+> +#
+> +# By Maciek Machnikowski <maciek@machnikowski.net> (c) 2026,
+> +#
+> +# Self-tests for HW timestamping and 1588 synchronization
+> +#
+> +# This test runs a ptp4l leader/follower pair and waits for follower sync
+> +# state (s2), using one common execution path.
+> +#
+> +# By default, it:
+> +# - Creates two netdevsim instances in separate namespaces
+> +# - Assigns IPv4 addresses and links them together
+> +# - Uses those interfaces as leader/follower endpoints for ptp4l
+> +# Optional: --leader and --follower override endpoints with existing
+> +# interfaces. Each argument can be either "ifname" (initial netns) or
+> +# "netns:ifname". Both options must be provided together.
+
+Please use the existing DrvEpEnv infra!?
+
+> +import os
+> +import shutil
+> +import subprocess
+
+And existing helpers from net/lib/py
+
+There's a bunch of legit-looking pylint warnings, too.
+The expectation is that the warnings levels higher than R should be
+addressed, but the Rs here also seem legit
