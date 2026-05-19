@@ -1,62 +1,62 @@
-Received: from mail-yx1-f52.google.com (mail-yx1-f52.google.com [74.125.224.52])
+Received: from mail-yx1-f41.google.com (mail-yx1-f41.google.com [74.125.224.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BE3F33FE2F
-	for <netdev@vger.kernel.org>; Tue, 19 May 2026 18:13:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B921344D8C
+	for <netdev@vger.kernel.org>; Tue, 19 May 2026 18:13:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779214416; cv=none; b=GQRXU9dckgihljZ1GBEzWenPklLug/OqTPP9Vn9tHQgCbb2F9Evo3usDxzhmGAgJGtP35hfUwXDk5+0cxwUsqbtvG2R0wQekn/RJyUlg0uAqI+z31Dd//Y9uPNE70qpnbABKPCfRi0ierJvW9WVDlb6lxAzgyh9ou1U822yaJys=
+	t=1779214418; cv=none; b=T0Ser1zTaYQ3/aMHz+pZv30yLebyKG5MmpGP0xa+4SXWTeQ8YgfDrRu61f+MO+0j4buxxYE8zB1lmkaYqgRhCZKjelOOAEme1n0pJM87g9gx81YoXIlWgiNf45nPTJJE40IfjzGhJceAzq+Z3ibfmo1G0zuJuTjhq67lH+hTJ5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779214416; c=relaxed/simple;
-	bh=CbH0GQGnrqtdv+IXNXwA+lMpTJgcvOCY20p6I9jjt2U=;
+	s=arc-20240116; t=1779214418; c=relaxed/simple;
+	bh=YuyvY6lR4seLVkjZlpLKISV+5zAbgi9YvwGKD3oZZtc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LY6sKAzBkLyM9N9oVfm/oz9vF0WSwN6ah9mYwtGxBN3AMf4Yyvv9m+I7RVZZCShn1vtkxGtCM4JbD9BCOgXklxLzQd/HPLKg3r93Yrw4DBLazM25TnYkowik+6TWzUGF/snIGmfgs6As5OY3mjjtUCtKErwb62TQzLuq4s3MANw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Zuv4Hmr4; arc=none smtp.client-ip=74.125.224.52
+	 MIME-Version; b=LBknv7pdhxOrhps3xITWQ1dDPcQEtdYmwaYYPtXRzHPIvcj3WoEoGFj0hHT5jKVQH/CfoWleJLKk5o4O101leLXNDlDNPs3SLlljK1ReWFV8XTCplf8u3iAQZEc6dwAaHYLkrgveUJ2j1gJoVHoxCuw/FUeU0OUBeBTLplnZ/fQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RXpyePLz; arc=none smtp.client-ip=74.125.224.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Zuv4Hmr4"
-Received: by mail-yx1-f52.google.com with SMTP id 956f58d0204a3-6530287803cso4050614d50.1
-        for <netdev@vger.kernel.org>; Tue, 19 May 2026 11:13:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RXpyePLz"
+Received: by mail-yx1-f41.google.com with SMTP id 956f58d0204a3-651bf695701so3774362d50.2
+        for <netdev@vger.kernel.org>; Tue, 19 May 2026 11:13:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779214412; x=1779819212; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1779214416; x=1779819216; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=d0yAWHTYUvXRF9uWUqsfdJogZ4AYkoOMfCE+mxoxLKA=;
-        b=Zuv4Hmr4pluZhDh4pnJA1IIVWXSWfw+GPIXOIPHErZgKRq2PAvSuj6JHJWohBNk/mO
-         loCTjvNTcqpAgbKhJEaM5m+IVYxVlj7gR/APuMcCuO6mPWY/PEkXKYIHoosX4LzKzwch
-         Zk0AXQ/QxFIyxyCZoeSeD8TBFeLhkO0AN9Uo3hd7Po3Sp/F0nlo4wkOGCHyqoeSO/21h
-         847DouI+zyzE0SAbrbJPGNNjlmwpRlAaWzbmB5ndXR5AtocvxHr1jq8CeBCENcff4kLe
-         0ejTL5E0bRpGXthZs6EEhw4X71H2nGp7F9qrf31wNETyf8zHhf49kiabRI3e/+Ji3hJO
-         ux7g==
+        bh=sK9UDeebClR71GiLjHRDE0WHrjlQxfeEp/nIlqA3ZAA=;
+        b=RXpyePLzTz8/zoJcTlYL943yi0/WFUu5Goh+jnaP4G88ItwlcVqt9Q22l+Uh6liPa2
+         HtcG04Gva4sWhlwbgNj+HueaQeX494DspJjZCXk7T3Zom80amrm9Ulhq3RzZZRpipH9C
+         48ym+sNBMik0b7Y/XsQgoUy9otfpO1UPghxOP/qK5nLEcAAFUJAuETp5L3FwD3RLE855
+         IB8Vs3yBSPoS220If/lgpGGGw9aNMfTHe1Q7fS3FwrCQBH6jmkN8amLs5dPjrj7RuVG0
+         1iw30pLw3hk4GLbESOxUYoLxXZEivq2ko6eKEf1YDkQ/+IPvfcDTxo1oTcQCbFLg1tS9
+         +/jQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779214412; x=1779819212;
+        d=1e100.net; s=20251104; t=1779214416; x=1779819216;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=d0yAWHTYUvXRF9uWUqsfdJogZ4AYkoOMfCE+mxoxLKA=;
-        b=U3zAPzPlhbA+Mc+L86s/yhLZoqBQwsrE1cGrqNYne9nKFFMgj6nA3oEvS11ioHyhxH
-         l+pq9xMkDI4F4uqBSAx4GCollQpvTQ/8rfHLL3UDvvBSWgIi0VLR5auuDFc2J3X0flrw
-         oQX8Qrialrj51GZy7CtpLugrOksQIA0AYxwEQDmu5S+gbdMbZTKecWniIKHOJi2Oo+xD
-         bLRakzthn2Q0pWRARNrzXMInMDD0JTbY0bNPHkSUmJ8zJyy/kqohcC4GlZKoSUr61OA4
-         4sPtqs3smu/MNOCl7wjMLHYoqJcgWlysB37kIi+vnyl8xIakzUz3Tm2VjqpWs9++OoI4
-         Qj2Q==
-X-Gm-Message-State: AOJu0Yy2y6t9RIgSCy8lJ7a6FxxrkgKnIO1QiLIER+H7YdImh2naaAWX
-	nDKKGVprcLcchtOKCxaB1KUlBXRjeAIYDLXd05wZ3Aln8OZ+PrRwnZn2kCg3T1Cm
-X-Gm-Gg: Acq92OFcoEJLRFgW/mu+P4DmeEyZLe9pfb2Htlk07TLAi3QUq05PFumH5LPFr6nt7+K
-	yyNMqmDScE6GsS1sScb3waqt2cqO5088Mi1Z5aDg7ZscEQbvZVUKvswb+weJoOsrNYE6IH2Na0a
-	G6oUyA7t0KLrXO5F0asiKUEH9G9dQ1aI79dofubWnEhDSnQd2itimjaoEQ6a2chUNk+kpng4Ugd
-	N/QvB1HFQDipCubopTl/FUXYa59BxyZ/ag9ZbgDuZSmNA2apRWPgEqdjW10zJh8T5MHv+vQBDyr
-	hd7lq4su21EnOpXC5gwlJywlxzqy97rKHLso1M7ivPCA9jA5d7ictDI441DYXBNRUURZ7nRN/HB
-	aj2+EVBx6CvgB+54++hN4EJKk8HCEeRr9qmPQBwQT6sM43/PzAEuaTFwL7D1AX77FKRpXrXrV9a
-	NaG5pyB6kcSFXk07/nK4Z7YUvHqV4=
-X-Received: by 2002:a53:c043:0:10b0:654:5120:60aa with SMTP id 956f58d0204a3-65e228060a4mr16888047d50.45.1779214411475;
-        Tue, 19 May 2026 11:13:31 -0700 (PDT)
-Received: from localhost ([2a03:2880:f806:51::])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-65e0dbd101asm8138986d50.19.2026.05.19.11.13.30
+        bh=sK9UDeebClR71GiLjHRDE0WHrjlQxfeEp/nIlqA3ZAA=;
+        b=DYDnFbVhAByhbZxOxXkoaKR7gvy/TxLGn0u18v9ARAWoskvdxl+6c3VjTKatGbX9C7
+         B2qi/H4OlsSGEKKaYjzIWlmhIVDX2qIRlGzihb4LfjQYFoN8+heZh3/f2WDLN6f837hK
+         0S8G/emk8F74qH1m2neDCsYljijt8F3XEv36RIuwis1Xn08w+Ah0uLJuyrvdjmlOSpzZ
+         nZqMjqAxgAzI/7lecaGYRHQWUKXolPwLD53upcvcZ3ikzHpug2cqmEY1GWFnzsn3uvUy
+         S9JYU0M89HexrjymUaOh27t/vMq0L8/Ce1S060E18gPUp3+NoHSzHsI15bfxxl482Fj1
+         8MuA==
+X-Gm-Message-State: AOJu0YwjNT3Qz3wtsDa0iKZ7gfmFaxo8K7RHdsMwhXEfd2X8MStcvuyw
+	rWFFFVCnWzfmcvTMOnWBiqwUDxPCw4FSS9RAHnakLQlKJqLW/GMGoVXJ
+X-Gm-Gg: Acq92OF4tRCpqNcZYA5/b/7gJ9mGqWSwMTu0+nk1DzcUzTzt8FiN2cGtQsT9uGZLlUH
+	YKTAl8ge0RoAIKibNL5PEnCNM+ak20kGgGjLDesOtjuSngUJ9KWJRzkM1yv3bU2KEkHeM0lZO8e
+	cc1KpUNBX/dVUi/zh7J/aXDBgkCReBfG70zwZyaGzrGrrTrpMQRkwzfyxT2nrEUjLTSJN4JMbpC
+	X/Q5m5efZAnIuTVqUcCGCMGPgF6YfIv9GN+XA6rRtaNOfaQxQVqgN1f1p4VKuWB/oV6XKTbH51W
+	jLJ0bqAmNSD8cG2POWYEpRHLCNXCEFWMyJVHPeG7/gw8cCpxyWIdfJgl8rP78fyIqLhSAV5cC/k
+	dj+tfGQuut6xHhk9LuOAhPy+FfHA+Kbc7+TsbAB4u9+9F4NIaxbaoHkL5znDav7Wy2cBzQaobFe
+	YS640vezFVYmeG7g==
+X-Received: by 2002:a05:690e:4409:10b0:65e:d38:aca9 with SMTP id 956f58d0204a3-65e22895bf1mr17448042d50.63.1779214416089;
+        Tue, 19 May 2026 11:13:36 -0700 (PDT)
+Received: from localhost ([2a03:2880:ff:73::])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-65e0d878cf2sm8359429d50.2.2026.05.19.11.13.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 May 2026 11:13:31 -0700 (PDT)
+        Tue, 19 May 2026 11:13:35 -0700 (PDT)
 From: Amery Hung <ameryhung@gmail.com>
 To: bpf@vger.kernel.org
 Cc: netdev@vger.kernel.org,
@@ -69,9 +69,9 @@ Cc: netdev@vger.kernel.org,
 	mykyta.yatsenko5@gmail.com,
 	ameryhung@gmail.com,
 	kernel-team@meta.com
-Subject: [PATCH bpf-next v5 10/14] bpf: Fix dynptr ref counting to scan all call frames
-Date: Tue, 19 May 2026 11:13:08 -0700
-Message-ID: <20260519181314.2731658-11-ameryhung@gmail.com>
+Subject: [PATCH bpf-next v5 13/14] selftests/bpf: Test using slice after invalidating dynptr clone
+Date: Tue, 19 May 2026 11:13:11 -0700
+Message-ID: <20260519181314.2731658-14-ameryhung@gmail.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260519181314.2731658-1-ameryhung@gmail.com>
 References: <20260519181314.2731658-1-ameryhung@gmail.com>
@@ -83,111 +83,117 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-When checking whether a referenced dynptr can be overwritten,
-destroy_if_dynptr_stack_slot only counted sibling dynptrs in the
-current call frame. If a clone sharing the same virtual ref parent
-existed in a different frame (e.g., passed to a subprog), it would
-not be counted, causing the verifier to incorrectly reject the
-overwrite with "cannot overwrite referenced dynptr".
+The parent object of a cloned dynptr is skb not the original dynptr.
+Invalidate the original dynptr should not prevent the program from
+using the slice derived from the cloned dynptr.
 
-Fix by extracting the counting into dynptr_ref_cnt() which uses
-bpf_for_each_reg_in_vstate_mask() to scan dynptr stack slots across
-all call frames.
-
-Fixes: 017f5c4ef73c ("bpf: Allow overwriting referenced dynptr when refcnt > 1")
-Reported-by: Eduard Zingerman <eddyz87@gmail.com>
 Signed-off-by: Amery Hung <ameryhung@gmail.com>
 ---
- kernel/bpf/verifier.c                         | 52 +++++++++++--------
- .../selftests/bpf/progs/wakeup_source_fail.c  |  2 +-
- 2 files changed, 30 insertions(+), 24 deletions(-)
+ .../selftests/bpf/prog_tests/bpf_qdisc.c      |  2 +
+ ..._qdisc_dynptr_use_after_invalidate_clone.c | 74 +++++++++++++++++++
+ 2 files changed, 76 insertions(+)
+ create mode 100644 tools/testing/selftests/bpf/progs/bpf_qdisc_dynptr_use_after_invalidate_clone.c
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index b7984c42ca14..97eb8033d732 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -786,10 +786,29 @@ static void mark_reg_invalid(const struct bpf_verifier_env *env, struct bpf_reg_
- 		__mark_reg_unknown(env, reg);
+diff --git a/tools/testing/selftests/bpf/prog_tests/bpf_qdisc.c b/tools/testing/selftests/bpf/prog_tests/bpf_qdisc.c
+index 65277c8fc887..77f1c0550c9b 100644
+--- a/tools/testing/selftests/bpf/prog_tests/bpf_qdisc.c
++++ b/tools/testing/selftests/bpf/prog_tests/bpf_qdisc.c
+@@ -11,6 +11,7 @@
+ #include "bpf_qdisc_fail__invalid_dynptr.skel.h"
+ #include "bpf_qdisc_fail__invalid_dynptr_slice.skel.h"
+ #include "bpf_qdisc_fail__invalid_dynptr_cross_frame.skel.h"
++#include "bpf_qdisc_dynptr_use_after_invalidate_clone.skel.h"
+ 
+ #define LO_IFINDEX 1
+ 
+@@ -229,6 +230,7 @@ void test_ns_bpf_qdisc(void)
+ 	RUN_TESTS(bpf_qdisc_fail__invalid_dynptr);
+ 	RUN_TESTS(bpf_qdisc_fail__invalid_dynptr_cross_frame);
+ 	RUN_TESTS(bpf_qdisc_fail__invalid_dynptr_slice);
++	RUN_TESTS(bpf_qdisc_dynptr_use_after_invalidate_clone);
  }
  
-+static int dynptr_ref_cnt(struct bpf_verifier_env *env, int v_parent_id)
+ void serial_test_bpf_qdisc_default(void)
+diff --git a/tools/testing/selftests/bpf/progs/bpf_qdisc_dynptr_use_after_invalidate_clone.c b/tools/testing/selftests/bpf/progs/bpf_qdisc_dynptr_use_after_invalidate_clone.c
+new file mode 100644
+index 000000000000..ac626cfa2a98
+--- /dev/null
++++ b/tools/testing/selftests/bpf/progs/bpf_qdisc_dynptr_use_after_invalidate_clone.c
+@@ -0,0 +1,74 @@
++// SPDX-License-Identifier: GPL-2.0
++
++#include <vmlinux.h>
++#include "bpf_experimental.h"
++#include "bpf_qdisc_common.h"
++#include "bpf_misc.h"
++
++char _license[] SEC("license") = "GPL";
++
++int proto;
++
++SEC("struct_ops")
++__success
++int BPF_PROG(dynptr_use_after_invalidate_clone, struct sk_buff *skb, struct Qdisc *sch,
++	     struct bpf_sk_buff_ptr *to_free)
 +{
-+	struct bpf_stack_state *stack;
-+	struct bpf_func_state *state;
-+	struct bpf_reg_state *reg;
-+	int ref_cnt = 0;
++	struct bpf_dynptr ptr, ptr_clone;
++	struct ethhdr *hdr;
 +
-+	bpf_for_each_reg_in_vstate_mask(env->cur_state, state, reg, stack, 1 << STACK_DYNPTR, ({
-+		if (!stack || stack->slot_type[0] != STACK_DYNPTR)
-+			continue;
-+		if (!stack->spilled_ptr.dynptr.first_slot)
-+			continue;
-+		if (stack->spilled_ptr.parent_id == v_parent_id)
-+			ref_cnt++;
-+	}));
++	bpf_dynptr_from_skb((struct __sk_buff *)skb, 0, &ptr);
 +
-+	return ref_cnt;
++	bpf_dynptr_clone(&ptr, &ptr_clone);
++
++	hdr = bpf_dynptr_slice(&ptr_clone, 0, NULL, sizeof(*hdr));
++	if (!hdr) {
++		bpf_qdisc_skb_drop(skb, to_free);
++		return NET_XMIT_DROP;
++	}
++
++	*(int *)&ptr = 0;
++
++	proto = hdr->h_proto;
++
++	bpf_qdisc_skb_drop(skb, to_free);
++
++	return NET_XMIT_DROP;
 +}
 +
- static int destroy_if_dynptr_stack_slot(struct bpf_verifier_env *env,
- 				        struct bpf_func_state *state, int spi)
- {
--	int i, err = 0;
-+	int err = 0;
- 
- 	/* We always ensure that STACK_DYNPTR is never set partially,
- 	 * hence just checking for slot_type[0] is enough. This is
-@@ -803,28 +822,15 @@ static int destroy_if_dynptr_stack_slot(struct bpf_verifier_env *env,
- 	if (!state->stack[spi].spilled_ptr.dynptr.first_slot)
- 		spi = spi + 1;
- 
--	if (dynptr_type_referenced(state->stack[spi].spilled_ptr.dynptr.type)) {
--		int v_parent_id = state->stack[spi].spilled_ptr.parent_id;
--		int ref_cnt = 0;
--
--		/*
--		 * A referenced dynptr can be overwritten only if there is at
--		 * least one other dynptr sharing the same virtual ref parent,
--		 * ensuring the reference can still be properly released.
--		 */
--		for (i = 0; i < state->allocated_stack / BPF_REG_SIZE; i++) {
--			if (state->stack[i].slot_type[0] != STACK_DYNPTR)
--				continue;
--			if (!state->stack[i].spilled_ptr.dynptr.first_slot)
--				continue;
--			if (state->stack[i].spilled_ptr.parent_id == v_parent_id)
--				ref_cnt++;
--		}
--
--		if (ref_cnt <= 1) {
--			verbose(env, "cannot overwrite referenced dynptr\n");
--			return -EINVAL;
--		}
-+	/*
-+	 * A referenced dynptr can be overwritten only if there is at
-+	 * least one other dynptr sharing the same virtual ref parent,
-+	 * ensuring the reference can still be properly released.
-+	 */
-+	if (dynptr_type_referenced(state->stack[spi].spilled_ptr.dynptr.type) &&
-+	    dynptr_ref_cnt(env, state->stack[spi].spilled_ptr.parent_id) <= 1) {
-+		verbose(env, "cannot overwrite referenced dynptr\n");
-+		return -EINVAL;
- 	}
- 
- 	/* Invalidate the dynptr and any derived slices */
-diff --git a/tools/testing/selftests/bpf/progs/wakeup_source_fail.c b/tools/testing/selftests/bpf/progs/wakeup_source_fail.c
-index b8bbb61d4d4e..d4d0f1610853 100644
---- a/tools/testing/selftests/bpf/progs/wakeup_source_fail.c
-+++ b/tools/testing/selftests/bpf/progs/wakeup_source_fail.c
-@@ -42,7 +42,7 @@ int wakeup_source_access_lock_fields(void *ctx)
- }
- 
- SEC("syscall")
--__failure __msg("type=scalar expected=fp")
-+__failure __msg("release kfunc bpf_wakeup_sources_read_unlock expects referenced PTR_TO_BTF_ID passed to R1")
- int wakeup_source_unlock_no_lock(void *ctx)
- {
- 	struct bpf_ws_lock *lock = (void *)0x1;
++SEC("struct_ops")
++__auxiliary
++struct sk_buff *BPF_PROG(bpf_qdisc_test_dequeue, struct Qdisc *sch)
++{
++	return NULL;
++}
++
++SEC("struct_ops")
++__auxiliary
++int BPF_PROG(bpf_qdisc_test_init, struct Qdisc *sch, struct nlattr *opt,
++	     struct netlink_ext_ack *extack)
++{
++	return 0;
++}
++
++SEC("struct_ops")
++__auxiliary
++void BPF_PROG(bpf_qdisc_test_reset, struct Qdisc *sch)
++{
++}
++
++SEC("struct_ops")
++__auxiliary
++void BPF_PROG(bpf_qdisc_test_destroy, struct Qdisc *sch)
++{
++}
++
++SEC(".struct_ops")
++struct Qdisc_ops test = {
++	.enqueue   = (void *)dynptr_use_after_invalidate_clone,
++	.dequeue   = (void *)bpf_qdisc_test_dequeue,
++	.init      = (void *)bpf_qdisc_test_init,
++	.reset     = (void *)bpf_qdisc_test_reset,
++	.destroy   = (void *)bpf_qdisc_test_destroy,
++	.id        = "bpf_qdisc_test",
++};
 -- 
 2.53.0-Meta
 
