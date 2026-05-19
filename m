@@ -1,80 +1,80 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6282839EF35
-	for <netdev@vger.kernel.org>; Tue, 19 May 2026 07:34:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 799423D9025
+	for <netdev@vger.kernel.org>; Tue, 19 May 2026 07:35:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779176084; cv=none; b=Va7mU+pQOG8Qwo+kfUPDC5U6DG49iNnb9wS42pcTjXAvFjf4GLeEyUqZSycFfiTct4XOdQFP+jb5vCD/j7/p4byps2EQKO20Kx90PTOlAYHxmdInZ/OHQE5zVvmF2QR+pF+Pd43bAvVmjX2WduOa1mCqOY1P9QoAJ+lSO0iJCnE=
+	t=1779176155; cv=none; b=BwMDKsyDTTXTNdH3qE05weWNNQ+CZUjXBoJzG1OCstX8at53I6sWHgLtFGRWKPm+e/SQR7j9g12g3JkbMuORU8FfwwSmp1XW13AzNUR6jvlGLetDZ6eltivhOLa0r78hTyG6bW9FIsMQRMU1fIXd6YyUH9qo72+hbuDhlPFnOnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779176084; c=relaxed/simple;
-	bh=/T/L34l0ybueJLJN5wUhediWSB/vVYizfN2TNN4ytJQ=;
+	s=arc-20240116; t=1779176155; c=relaxed/simple;
+	bh=BBEaOE2kSFjEO1HfHPLWHbqdDf4bwILqH4Cd4p7Q2KA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cIIqEN2fsXH7m/TqowfpBWpqLH6barFYxEiqlPXvj/MfpEFpuJVf00em6oYHxdxohARKRvJNVvrxEkQp5uDNgGoCmF5llE2q/T1YTu5wL3Cvl+ZVb7ljwPR2R/rWQh/iA7UZ2FMMsbXCNxoOXQoq+/NzAfiXVMWMv0fPWEZ7eEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=QBDzXkkf; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=o4AxXcA6; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=QBDzXkkf; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=o4AxXcA6; arc=none smtp.client-ip=195.135.223.130
+	 In-Reply-To:Content-Type; b=jbhmuamLEdxhljdoLf5pG9ufeGNO5MiRPoh/HbhYOCmDZPuMPmDdoXQogtWB+nIvBn05DvZfiBvMTIBQGkyvJZAnQqcb3+CkS3HJ5H+C3rHIDWLpqpSgNt8F8EpHbPj9YpP7GJlIDCoUBFICtUog1NVumAto+a+ZjXd2tzoVlMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=lFwn1/sp; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=bwF1wxRb; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=lFwn1/sp; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=bwF1wxRb; arc=none smtp.client-ip=195.135.223.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="QBDzXkkf";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="o4AxXcA6";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="QBDzXkkf";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="o4AxXcA6"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="lFwn1/sp";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="bwF1wxRb";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="lFwn1/sp";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="bwF1wxRb"
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id A8C035CAFC;
-	Tue, 19 May 2026 07:34:02 +0000 (UTC)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 51C726702B;
+	Tue, 19 May 2026 07:35:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1779176042; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1779176138; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=BajQC+5sYEP4FXnTqsvlmtfnE6e07wzfI4oyozjDq5Q=;
-	b=QBDzXkkflDQ3fPEoqG74bx8JlDg3d/ooyJjIbA/hyw+13Z9TX/Iw7hReSlxFVIieeBcjfO
-	jI1pZ5PqgyheXRXYW65Vwyvlku7j4ERmm1K1ykViGggAV1mL/8Z4FFhOvnaIMcRIdjUzTJ
-	pqARPDLDMYYHu7kJofPSuPtQq48XUgU=
+	bh=zFureT96pnOMvipUwq84ExskMrDl8S0Pk11p8gNk27I=;
+	b=lFwn1/spHRGg5snk0GjMtxyBFHidkqMIsLmPKmij4pgmcXPcsvvftXQiBKfvnY5xBIDY0d
+	E4nYK7I5Eg45QaDvxk0VG87KeiZDOfqHZt6ofH8lhCU80VI9N7sfCagN6V5slcrhWd5Zqy
+	YQUotrdVcLKqBnANwdbGBv8CGzqdiic=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1779176042;
+	s=susede2_ed25519; t=1779176138;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=BajQC+5sYEP4FXnTqsvlmtfnE6e07wzfI4oyozjDq5Q=;
-	b=o4AxXcA6pdV7qnI0Pp4guyU4qjVdsa8idy08+oRWy2tezgyYRSVvbiusFeaNkVz8xyA9qU
-	S+173QmmY5huXsBg==
-Authentication-Results: smtp-out1.suse.de;
+	bh=zFureT96pnOMvipUwq84ExskMrDl8S0Pk11p8gNk27I=;
+	b=bwF1wxRb/EfE+5qM9h7pVYf0e/nll8rZTeoW69m2HJqVFjztWQRBgLR/Lb43U0iIe+wOCt
+	aVXk7N4Ho+RN9kBA==
+Authentication-Results: smtp-out2.suse.de;
 	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1779176042; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1779176138; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=BajQC+5sYEP4FXnTqsvlmtfnE6e07wzfI4oyozjDq5Q=;
-	b=QBDzXkkflDQ3fPEoqG74bx8JlDg3d/ooyJjIbA/hyw+13Z9TX/Iw7hReSlxFVIieeBcjfO
-	jI1pZ5PqgyheXRXYW65Vwyvlku7j4ERmm1K1ykViGggAV1mL/8Z4FFhOvnaIMcRIdjUzTJ
-	pqARPDLDMYYHu7kJofPSuPtQq48XUgU=
+	bh=zFureT96pnOMvipUwq84ExskMrDl8S0Pk11p8gNk27I=;
+	b=lFwn1/spHRGg5snk0GjMtxyBFHidkqMIsLmPKmij4pgmcXPcsvvftXQiBKfvnY5xBIDY0d
+	E4nYK7I5Eg45QaDvxk0VG87KeiZDOfqHZt6ofH8lhCU80VI9N7sfCagN6V5slcrhWd5Zqy
+	YQUotrdVcLKqBnANwdbGBv8CGzqdiic=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1779176042;
+	s=susede2_ed25519; t=1779176138;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=BajQC+5sYEP4FXnTqsvlmtfnE6e07wzfI4oyozjDq5Q=;
-	b=o4AxXcA6pdV7qnI0Pp4guyU4qjVdsa8idy08+oRWy2tezgyYRSVvbiusFeaNkVz8xyA9qU
-	S+173QmmY5huXsBg==
+	bh=zFureT96pnOMvipUwq84ExskMrDl8S0Pk11p8gNk27I=;
+	b=bwF1wxRb/EfE+5qM9h7pVYf0e/nll8rZTeoW69m2HJqVFjztWQRBgLR/Lb43U0iIe+wOCt
+	aVXk7N4Ho+RN9kBA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 83832593A8;
-	Tue, 19 May 2026 07:34:02 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2E4FA593A8;
+	Tue, 19 May 2026 07:35:38 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 4cdGH2oSDGrmVQAAD6G6ig
-	(envelope-from <hare@suse.de>); Tue, 19 May 2026 07:34:02 +0000
-Message-ID: <556f3d0c-8e69-49cc-84ce-3358eb3996b8@suse.de>
-Date: Tue, 19 May 2026 09:33:58 +0200
+	id jhrOCsoSDGrhVgAAD6G6ig
+	(envelope-from <hare@suse.de>); Tue, 19 May 2026 07:35:38 +0000
+Message-ID: <8d6f65a0-408a-479e-a2c6-054e1aa54c39@suse.de>
+Date: Tue, 19 May 2026 09:35:29 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -82,8 +82,7 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 1/7] net/handshake: Drain pending requests at net
- namespace exit
+Subject: Re: [PATCH net 2/7] nvme-tcp: store negative errno in queue->tls_err
 To: Chuck Lever <cel@kernel.org>, "David S. Miller" <davem@davemloft.net>,
  Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
  Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
@@ -91,78 +90,59 @@ Cc: Chris Mason <clm@meta.com>, Christian Brauner <brauner@kernel.org>,
  kernel-tls-handshake@lists.linux.dev, linux-nvme@lists.infradead.org,
  netdev@vger.kernel.org, Chuck Lever <chuck.lever@oracle.com>
 References: <20260518-handshake-file-pin-v1-0-4bbcb7e62fda@oracle.com>
- <20260518-handshake-file-pin-v1-1-4bbcb7e62fda@oracle.com>
+ <20260518-handshake-file-pin-v1-2-4bbcb7e62fda@oracle.com>
 Content-Language: en-US
 From: Hannes Reinecke <hare@suse.de>
-In-Reply-To: <20260518-handshake-file-pin-v1-1-4bbcb7e62fda@oracle.com>
+In-Reply-To: <20260518-handshake-file-pin-v1-2-4bbcb7e62fda@oracle.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Spam-Flag: NO
 X-Spam-Score: -4.30
 X-Spamd-Result: default: False [-4.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
+	BAYES_HAM(-3.00)[99.99%];
 	NEURAL_HAM_LONG(-1.00)[-1.000];
 	NEURAL_HAM_SHORT(-0.20)[-1.000];
 	MIME_GOOD(-0.10)[text/plain];
-	FROM_HAS_DN(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	ARC_NA(0.00)[];
 	RCPT_COUNT_TWELVE(0.00)[12];
-	MIME_TRACE(0.00)[0:+];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
 	MID_RHS_MATCH_FROM(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:email,suse.de:mid]
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:mid,oracle.com:email]
 X-Spam-Level: 
 
 On 5/18/26 20:24, Chuck Lever wrote:
 > From: Chuck Lever <chuck.lever@oracle.com>
 > 
-> The arguments to list_splice_init() in handshake_net_exit() are
-> reversed. The call moves the local empty "requests" list onto
-> hn->hn_requests, leaving the local list empty, so the subsequent
-> drain loop runs zero iterations. Pending handshake requests that
-> had not yet been accepted are not torn down when the net namespace
-> is destroyed; each one keeps a reference on a socket file and on
-> the handshake_req allocation.
+> nvme_tcp_tls_done() assigns queue->tls_err in three branches.  The
+> ENOKEY lookup failure and the EOPNOTSUPP initializer both store
+> negative errnos.  The third branch, reached when the handshake
+> layer reports a non-zero status, stores -status.
 > 
-> Pass the source and destination in the documented order
-> (list_splice_init(list, head) moves list onto head) so the pending
-> list is transferred to the local scratch list and drained through
-> handshake_complete().
+> The handshake layer delivers status to the consumer callback as a
+> negative errno; the other in-tree consumers --
+> xs_tls_handshake_done() and the nvmet target callback -- treat
+> their status argument that way.  The extra negation in
+> nvme_tcp_tls_done() flips the sign, leaving tls_err as a positive
+> value (for instance, +EIO), which nvme_tcp_start_tls() then
+> returns to its caller.
 > 
-> Fixing the splice direction exposes a list-corruption race. After
-> the splice each req->hr_list still has non-empty link pointers,
-> threading the stack-local scratch list rather than hn_requests.
-> A concurrent handshake_req_cancel() -- for example, from sunrpc's
-> TLS timeout on a kernel socket whose netns reference was not
-> taken -- finds the request through the rhashtable, calls
-> remove_pending(), and sees !list_empty(&req->hr_list).
-> __remove_pending_locked() then list_del_init()s an entry off the
-> scratch list while the drain iterates, corrupting it. The same
-> call arriving after the drain loop has run list_del() on an
-> entry hits LIST_POISON instead.
+> Drop the extra negation so queue->tls_err uniformly carries a
+> negative errno on failure.
 > 
-> Have remove_pending() check HANDSHAKE_F_NET_DRAINING under
-> hn_lock and report not-found when drain is in progress. The
-> drain has already taken ownership; handshake_complete()'s
-> existing test_and_set on HANDSHAKE_F_REQ_COMPLETED still
-> arbitrates between drain and cancel for who calls the consumer's
-> hp_done. Use list_del_init() rather than list_del() in the drain
-> so req->hr_list does not carry LIST_POISON after drain releases
-> the entry.
-> 
-> Fixes: 3b3009ea8abb ("net/handshake: Create a NETLINK service for handling handshake requests")
+> Fixes: be8e82caa685 ("nvme-tcp: enable TLS handshake upcall")
 > Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 > ---
->   net/handshake/netlink.c | 4 ++--
->   net/handshake/request.c | 3 ++-
->   2 files changed, 4 insertions(+), 3 deletions(-)
+>   drivers/nvme/host/tcp.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
 Reviewed-by: Hannes Reinecke <hare@kernel.org>
 
