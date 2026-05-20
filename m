@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4C863A5426
-	for <netdev@vger.kernel.org>; Wed, 20 May 2026 18:35:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B05C33FBEB3
+	for <netdev@vger.kernel.org>; Wed, 20 May 2026 18:35:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302112; cv=none; b=k7rIuw6wRQAxzEC/e17NPUM4WFM/sdMSGzeRPDidID9iuQ3VcrzX6PhYHoL0eap68zJd1LcNSuFjs3A9Ic247uDDSAf37Hy+HWH4AHXy1TWKBRexhIxyXkQSoWfcBQYUqnkyekeItM9E8PGl7dTfnvAjH2xovWMhyLdsnOafaQg=
+	t=1779302113; cv=none; b=gQ5Iwo7OkFjhBRny1XqGNOi8cQ6zxb8iejDV77vHlrRJH5MPn7Xau9yDvIa6TibRBFavC2uBgBRj6yG8AUymcgX6GReIEIb09EiExN/sNmVvVHDn8rFapW9wCnbTY8QK0UwRXBUspz/6KJRN39TnrNhlgZKStHlv9CdApb8uuyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302112; c=relaxed/simple;
-	bh=xUGR7Z+W+6HPvyU9z5uuXhcelpLD7nwrHH0gFgBWfqw=;
+	s=arc-20240116; t=1779302113; c=relaxed/simple;
+	bh=YjIFpceXumzYuQOJFoApvkkRKN9MLrnLFf5J3hWq3qI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rb9MsG9QyKVpEYVQK30vuiqP6wWZwb3YsNoRzcAX1Ys0GixFc6ruuHbsdA5L+0pX0h/GCb2w6h5xsTmOYTc4kd/Hi5ZooKlKhmNCp3TptEEgTQdR6uwQaFj2pwZVItedifzaPEL+TuK5BS90t8HmWTG9Y52yxmRVcKqAFBLMWHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iqC9g8gn; arc=none smtp.client-ip=198.175.65.16
+	 MIME-Version; b=jTAm4SqYA6+Tk9wkDeKFdt9KPm8hb80RAkbr8HPvPWEPgcelEaTCvJ7h9lNx1eIe8Jq5NEPfBAvpc1u3h/MAo3t9yzfetxKU+5uMfHc5IHNvjPSGxShvhaJeBdr0EUUqptiDBLsCklgFfDOob02YGAfd6AhBDviZ0k0p5AZzpdw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BuqwnJXi; arc=none smtp.client-ip=198.175.65.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iqC9g8gn"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BuqwnJXi"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779302110; x=1810838110;
+  t=1779302112; x=1810838112;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=xUGR7Z+W+6HPvyU9z5uuXhcelpLD7nwrHH0gFgBWfqw=;
-  b=iqC9g8gnsnHRnv2Sdq+M+E2fQ/W4AaTEuAcUeyPFUYY64USbKoPGHdX8
-   Hooi1KtoCgn1tZIvriIG9xBbcwR2j9VGvwILtHXaUPIP7jX+aH9Toms4i
-   OZW7EqXqCPZVimvX+f3wy3FK+MGoNGYNP6BZxYXB1sGjzkzaZWyYbVgO5
-   MRZoZnBSJ9JgqWjV1Ws7SDWLFcSiTm0zYTwWHlKrV4VU/AS1CyG1mA8c4
-   /YW75mFH4MPdTenz8YpmjU7+LFTDssPo1trQaqXw2TXMwjTri+bcv6ATH
-   wE+yS+YmpugopnHtpm4n8JMxLm5WnjhvQhrVXcCgdBfDrz6KfdZ1SusHd
+  bh=YjIFpceXumzYuQOJFoApvkkRKN9MLrnLFf5J3hWq3qI=;
+  b=BuqwnJXiH5AyJ4nkeQCXsPOFEHUB3fxrqWldF4JS5KVE9KsLr27pK2wr
+   ToUy0XZGkzOAeA7MMrB1lPlTxjdYCSrXGy+BEA1SdCj9DpMSZ4JzdfKsc
+   wOWh05lAKQiTbW3GxkTX90NXOasx0jgFGwFDqFaaQn9QnATS2nbEiMPjU
+   WyFHzc4x6D2lNiQKLAzo/UMUuXXEtC0iL+Mle7dJhtMoi44U/MyJ+LvU5
+   eTCuGT2LG9Y/Jmp/yRb1kWgft9Hhv2AhH6MPgnXynwZ+3fDh0PxHEaD04
+   ASymlETWLVeaNNPeXObpYzpqyxhI1J5o0ClMotOUkCyHk+nZN8BN6lYH5
    w==;
-X-CSE-ConnectionGUID: JELWnI4NQ7aVRkfYW1wRgA==
-X-CSE-MsgGUID: p6g5vNM5SqybUdnU57Djfg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11792"; a="80391757"
+X-CSE-ConnectionGUID: KIuvT9GZS/GUKg/I3sfp5g==
+X-CSE-MsgGUID: vtRGqGouTxqOQjPiw25w5A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11792"; a="80391781"
 X-IronPort-AV: E=Sophos;i="6.23,244,1770624000"; 
-   d="scan'208";a="80391757"
+   d="scan'208";a="80391781"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
   by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2026 11:35:08 -0700
-X-CSE-ConnectionGUID: fJq7y32JRkiROxL7f7pDkQ==
-X-CSE-MsgGUID: DC0rtfXdR7ODHxQdMXpW9g==
+X-CSE-ConnectionGUID: mOzdmUeqRPiWNj4GU8JT3A==
+X-CSE-MsgGUID: OjJnyqCsRIy8Zfr5oKuQRA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,244,1770624000"; 
-   d="scan'208";a="239423892"
+   d="scan'208";a="239423907"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
-  by orviesa010.jf.intel.com with ESMTP; 20 May 2026 11:35:08 -0700
+  by orviesa010.jf.intel.com with ESMTP; 20 May 2026 11:35:09 -0700
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
 To: davem@davemloft.net,
 	kuba@kernel.org,
@@ -50,16 +50,18 @@ To: davem@davemloft.net,
 	edumazet@google.com,
 	andrew+netdev@lunn.ch,
 	netdev@vger.kernel.org
-Cc: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>,
+Cc: Przemyslaw Korba <przemyslaw.korba@intel.com>,
 	anthony.l.nguyen@intel.com,
-	przemyslaw.kitszel@intel.com,
-	jacob.e.keller@intel.com,
-	horms@kernel.org,
+	richardcochran@gmail.com,
+	kory.maincent@bootlin.com,
+	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
 	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Rafal Romanowski <rafal.romanowski@intel.com>
-Subject: [PATCH net 3/8] iavf: return EBUSY if reset in progress or not ready during MAC change
-Date: Wed, 20 May 2026 11:34:51 -0700
-Message-ID: <20260520183501.3360810-4-anthony.l.nguyen@intel.com>
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Sunitha Mekala <sunithax.d.mekala@intel.com>
+Subject: [PATCH net 7/8] i40e: set supported_extts_flags for rising edge
+Date: Wed, 20 May 2026 11:34:55 -0700
+Message-ID: <20260520183501.3360810-8-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20260520183501.3360810-1-anthony.l.nguyen@intel.com>
 References: <20260520183501.3360810-1-anthony.l.nguyen@intel.com>
@@ -71,46 +73,37 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+From: Przemyslaw Korba <przemyslaw.korba@intel.com>
 
-When a MAC address change is requested while the VF is resetting or still
-initializing, return -EBUSY immediately instead of attempting the
-operation.
+The i40e driver always supported only rising edge detection, so
+advertise PTP_RISING_EDGE, and PTP_STRICT_FLAGS to ensure the
+PTP core properly validates user requests.
 
-Additionally, during early initialization states (before __IAVF_DOWN),
-the PF may be slow to respond to MAC change requests, causing long
-delays. Only allow MAC changes once the VF reaches __IAVF_DOWN state or
-later, when the watchdog is running and the VF is ready for operations.
-
-After commit ad7c7b2172c3 ("net: hold netdev instance lock
-during sysfs operations"), MAC changes are called with the netdev lock
-held, so we should not wait with the lock held during reset or
-initialization. This allows the caller to retry or handle the busy state
-appropriately without blocking other operations.
-
-Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Fixes: 7c571ac57d9d ("net: ptp: introduce .supported_extts_flags to ptp_clock_info")
+Signed-off-by: Przemyslaw Korba <przemyslaw.korba@intel.com>
+Reviewed-by: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
 Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Sunitha Mekala <sunithax.d.mekala@intel.com> (A Contingent worker at Intel)
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
- drivers/net/ethernet/intel/iavf/iavf_main.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/ethernet/intel/i40e/i40e_ptp.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
-index d2914c511e1e..78c59a58e0b2 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_main.c
-+++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
-@@ -1042,6 +1042,9 @@ static int iavf_set_mac(struct net_device *netdev, void *p)
- 	struct sockaddr *addr = p;
- 	int ret;
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_ptp.c b/drivers/net/ethernet/intel/i40e/i40e_ptp.c
+index 7d07c389bb23..c4525bfab09c 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_ptp.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_ptp.c
+@@ -1344,6 +1344,8 @@ static int i40e_init_pin_config(struct i40e_pf *pf)
+ 	pf->ptp_caps.n_ext_ts = 2;
+ 	pf->ptp_caps.pps = 1;
+ 	pf->ptp_caps.n_per_out = 2;
++	pf->ptp_caps.supported_extts_flags = PTP_RISING_EDGE |
++					     PTP_STRICT_FLAGS;
  
-+	if (iavf_is_reset_in_progress(adapter) || adapter->state < __IAVF_DOWN)
-+		return -EBUSY;
-+
- 	if (!is_valid_ether_addr(addr->sa_data))
- 		return -EADDRNOTAVAIL;
- 
+ 	pf->ptp_caps.pin_config = kzalloc_objs(*pf->ptp_caps.pin_config,
+ 					       pf->ptp_caps.n_pins);
 -- 
 2.47.1
 
