@@ -1,33 +1,33 @@
 Received: from angie.orcam.me.uk (angie.orcam.me.uk [78.133.224.34])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6D3F39C636;
-	Wed, 20 May 2026 11:18:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 048B93BFAD1;
+	Wed, 20 May 2026 11:18:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.133.224.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779275937; cv=none; b=ay53chJmYCF9m8sY+HBLjjVWN5aIlEueVpDnHqRJElF8VcPIMd0H+XhFeengLZVdJSXju3dhfAXV16l8dergfxnBNDCnjethKU9dmVaDhf8nku/7R5rxPzuocCv4QvWU0BVv/IvqPkPBR2kEMM9nS7HX17gb9taKJaKTU6YSCGQ=
+	t=1779275940; cv=none; b=PemKmby4AZGSY3AFkGyQt+P6b1eEk7IjxnqYyvYC7lmWbGddOPoj+b5kAsXIAM757kB7a6yQvbpwK2kgebI65IIFfV+qYqoprdPbGZTIrECvHMXEr5wULMNN2f4vfzinyPUpseai5/IReBKpNGmol0dznXoDey/4riAHktRdLVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779275937; c=relaxed/simple;
-	bh=rhroXm6SCr/NQ8PxGDprYub37B17PaAS4WvIeJrIifg=;
+	s=arc-20240116; t=1779275940; c=relaxed/simple;
+	bh=Gga684UYpjR7e5qC9JO6/UvxtvUp3k6Cm0LtoDfgVXc=;
 	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=Yr6/6S+j+B1BtJeEAH6RypOlrIz1uSjeI2NIwlU0u0WSwourivIm+ZoOP9chqUVJ/Tm6CfbkyCsS3jToPmPP1uprBLyNLBkZ5eTBZz61siQrcPb7UdlPTXdT+ryPmP1SzbrIv4nyhjp9uU9vMk05PDi2AD/OcqtkXShwNTSBtOw=
+	 MIME-Version:Content-Type; b=BWNoG+IfKZulwUiqn7t6f5rwlhin4jqm8ltosmhjPhVOLaEYGycYqSg3kmL3VpJIDwecF06VSZQy2oBrXYDBn1peFx0WxSGT53/Un1O+ohHHRycbtb1TqfZwb0hVD7IqIRC8UzzM1n3G/nSYSQwwrP66IPkAKKu76OKLDdLsHkI=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=orcam.me.uk; spf=none smtp.mailfrom=orcam.me.uk; arc=none smtp.client-ip=78.133.224.34
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=orcam.me.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=orcam.me.uk
 Received: by angie.orcam.me.uk (Postfix, from userid 500)
-	id 9985192009E; Wed, 20 May 2026 13:18:53 +0200 (CEST)
+	id 02B9692009C; Wed, 20 May 2026 13:18:57 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
-	by angie.orcam.me.uk (Postfix) with ESMTP id 92B5692009B;
-	Wed, 20 May 2026 12:18:53 +0100 (BST)
-Date: Wed, 20 May 2026 12:18:53 +0100 (BST)
+	by angie.orcam.me.uk (Postfix) with ESMTP id EFD0592009B;
+	Wed, 20 May 2026 12:18:57 +0100 (BST)
+Date: Wed, 20 May 2026 12:18:57 +0100 (BST)
 From: "Maciej W. Rozycki" <macro@orcam.me.uk>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, 
     "David S. Miller" <davem@davemloft.net>, 
     Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
     Paolo Abeni <pabeni@redhat.com>
 cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH net 2/5] ethernet: 3c509: Fix AUI transceiver type
- selection
+Subject: [PATCH net 3/5] ethernet: 3c509: Add GPL 2.0 SPDX license
+ identifier
 In-Reply-To: <alpine.DEB.2.21.2605201115010.1450@angie.orcam.me.uk>
-Message-ID: <alpine.DEB.2.21.2605201205160.1450@angie.orcam.me.uk>
+Message-ID: <alpine.DEB.2.21.2605201206370.1450@angie.orcam.me.uk>
 References: <alpine.DEB.2.21.2605201115010.1450@angie.orcam.me.uk>
 User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
 Precedence: bulk
@@ -38,28 +38,23 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 
-The transceiver type is held in bits 15:14 of the Address Configuration
-Register, with the values of 0b00, 0b01, and 0b11 denoting TP, AUI, and
-BNC types respectively.  Therefore switching from BNC to AUI requires
-bits to be cleared before setting bit 14 or the setting won't change.
-
-NB this has always been wrong ever since this code was added in 2.5.42.
+This driver has landed with Linux 0.99.13k, which was covered by the GNU
+General Public License version 2, and no further conditions as to
+licensing terms have been specified within the copyright notice included
+with the driver itself.
 
 Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
 ---
  drivers/net/ethernet/3com/3c509.c |    1 +
  1 file changed, 1 insertion(+)
 
-linux-3c509-aui.diff
+linux-3c509-spdx.diff
 Index: linux-3c509/drivers/net/ethernet/3com/3c509.c
 ===================================================================
 --- linux-3c509.orig/drivers/net/ethernet/3com/3c509.c
 +++ linux-3c509/drivers/net/ethernet/3com/3c509.c
-@@ -1099,6 +1099,7 @@ el3_netdev_set_ecmd(struct net_device *d
- 		dev->if_port = 0;
- 		break;
- 	case PORT_AUI:
-+		tmp &= ~(3<<14);
- 		tmp |= (1<<14);
- 		dev->if_port = 1;
- 		break;
+@@ -1,3 +1,4 @@
++// SPDX-License-Identifier: GPL-2.0
+ /* 3c509.c: A 3c509 EtherLink3 ethernet driver for linux. */
+ /*
+ 	Written 1993-2000 by Donald Becker.
