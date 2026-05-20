@@ -1,197 +1,122 @@
-Received: from mx0a-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B17D7370AFA;
-	Wed, 20 May 2026 09:34:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 564993C9EF0;
+	Wed, 20 May 2026 09:40:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779269667; cv=none; b=XEhJco7Rc3ldfDg8T/Rav7AdCBOQaZPhmUPmF7wLVUelZVndFaR7+wlVhE4/lJYcY2+vzTSiyDt8z+MDRE+5dQheoalQKJzKwYbznf7ibzjS0w8dNCUImmIym/ukHt4qFamYqEjC5mWOsz0zYP4DylmcF6twD9R5n8wsaPh7g3o=
+	t=1779270036; cv=none; b=VSSNWWZfPhUn88vQrS2M/BDqZsqFKreCS00qGR0sbCp9Z5gdrjTlMz0emxmXQiFA1JC4qPlK62SDVJcmcX48ZvkzjCrOk3gnvW2iFgbKGOIKTYQDcco9Zqich0JawGDSXTkTcJ/068jAQBCbYJVgNEKsf4QvDwUvUUm92kN9d0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779269667; c=relaxed/simple;
-	bh=BoblhB4Xpk4LlfwvhT1PyKrbb08G4mcOXJ9gtHhleuU=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=tavmz/HyXzrPpsBMo+gEQ+4xXjqvEk6IU0lJuCPrpBKx5PtN+4HTZimBugCARMJISyBcJXjWGFUcAh+P8Btr5qRPmtNx6g7YSHOZIhv+sywK1XsRrV97XBiZ+gJIzFyVB9QetPo88Fg16Qa9ANc4be2wN1cXsbuzuOKtJot9uXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=PQC2yBc6; arc=none smtp.client-ip=67.231.148.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	s=arc-20240116; t=1779270036; c=relaxed/simple;
+	bh=VRZ71Huu8qSFEboEe06ikz+mahJiBdAa//EOmsH9Cuc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=aTCRjc/xBT/RMvMg2CjW/96zn9WORfV1FaA1N4TojaNoYkKmZkT/Jkqun+QH/wryTD0Ge3+vGoVBjaF0s7aH4lIW2KMz0dcvG3WYSCvMEzNaeDnWurZx4F3XuGs9fs6n1hc01t6+J+YQwsVTw4cJHH4L8B05D1L/IRK8vWHv+v4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I8IFs78V; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="PQC2yBc6"
-Received: from pps.filterd (m0431384.ppops.net [127.0.0.1])
-	by mx0a-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64K2pmZD3009289;
-	Wed, 20 May 2026 02:34:14 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pfpt0220; bh=tWEoPTrzvEZ7qqivt3k6eDh
-	pPFiR0vgOIDIx7kdmhaY=; b=PQC2yBc6zFg/1n9iRNMKqY2E9hcR6/tq7NoKIRi
-	xgJx1sWMjC0ZLCRoD6TdhBBYRV89unXYyvFQvgBunltr+e0GO2Y/CKbaa/Uu4qgG
-	hCdpsS7v4dbkU+GpuknUNJwPREFWBViv11/CufwONqPR54tPTE7ih+HJzPcpVs2O
-	7VFcGHwzjqD3zTXtGmg55Z2hJ4SVn/6o/0/l/4vnQwH9zUPrLUc7X7Ruk4fAQGRN
-	ElaMKkenEPRsRs2r656unBcvK6hK/fePcaY9kMc2F03Tnx2uRHtZz9XRNkFJcP3/
-	XLckOYgVN9Jwj2cQIP3Y5o+cfmhNyGlHpLSa3qe4hs+XNoQ==
-Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
-	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4e8jywcayt-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 20 May 2026 02:34:13 -0700 (PDT)
-Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
- DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Wed, 20 May 2026 02:34:12 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
- (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Wed, 20 May 2026 02:34:12 -0700
-Received: from hyd1vellox1.032marvell.com032caveonetworks.com (unknown [10.29.37.43])
-	by maili.marvell.com (Postfix) with ESMTP id 6356F5B693E;
-	Wed, 20 May 2026 02:34:08 -0700 (PDT)
-From: Anshumali Gaur <agaur@marvell.com>
-To: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
-        <kuba@kernel.org>, <pabeni@redhat.com>, <gakula@marvell.com>,
-        <hkelam@marvell.com>, <sbhatta@marvell.com>, <sgoutham@marvell.com>,
-        <bbhushan2@marvell.com>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-CC: Anshumali Gaur <agaur@marvell.com>
-Subject: [PATCH net-next v5] octeontx2-pf: Retain ethtool stats across interface down/up.
-Date: Wed, 20 May 2026 15:04:04 +0530
-Message-ID: <20260520093404.1945835-1-agaur@marvell.com>
-X-Mailer: git-send-email 2.25.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I8IFs78V"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2AA91F000E9;
+	Wed, 20 May 2026 09:40:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779270033;
+	bh=bmSSRx9MxDeEMTFENIR1UVxoLD5eJs49UhDqZFiJazI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=I8IFs78VJpQKZu0Yyyiq2TGAJy3gG6KZGQYaEvZwSjHt21DXQbWtalRrwkmb9YYjz
+	 Zw95zfFN8wIrw6qkLWeqcLr03DX9gtFzgaR0rfqXnnZYLHXGJLuV6aE3FB5Yp0tadb
+	 2lPGEztfqWIdoLjqXZfbRfsnMQU5CmvAVTISvQDIpVnjf0owc92aRsIEIAd6ynZnxo
+	 Tw/I9qpx3VPlQK17Eoa9lVE797eSDEAkooJ7fh659m5JvWp8wnCRLqX6XE9I3ZQJxm
+	 BR/5zSCwV0XTMjFWUqeiMHJx6Yo/haUDU+4+9+TneC8vrjp0Ld/gbxzFC+ZsXrkMqF
+	 qhp3uVGEbfZow==
+Message-ID: <6edd89b0-68f8-4e28-ba7c-7a5df7f47c01@kernel.org>
+Date: Wed, 20 May 2026 19:40:24 +1000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-GUID: vlheHNz2e9Dk8KHYFtohrHYvrX5uUwRz
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTIwMDA5MCBTYWx0ZWRfX3EEhXbd3U6gq
- sBDET3qP3z63Vz9w18iLwKQiMGIXIhoazv9boofV2BJ/2+LoFlodzAuq2Z0KG7TEOInFfahtpim
- YtiJLmek0KwrzgME54D1iuaR35zcxVwmC39PdNYJDu0ewJuMYihlKDCtNrseWFUjDEcEBgZkWlW
- 44M5GpPOIb79tjrPArCJJ5fuR5Eq3cLb2uBQtmF0xn1Ri6Fq7DrulY1W2M5rU8cIZZnV4F3QNBB
- lFRVeRSt3WqWJJiZjSNWCZ2S6JxBKstSw7BNknlwAIHHrdFqTDCefObeoNEw2SBu1Ys6Rt0ZA2h
- rnRc5xR+uKQGXy6exTX6LI305UEs0wgFBcKpxV9JR8uHBCtab00e2Nr9q8MYKyxCwqEsESXxtpd
- 9govGTatdNxrJQFNQ+xEgb2B9fEH+/D/Z65l8dDUkkU8GRFWH1wbV0oT+jc6UdwFffjiG6GbTAA
- U+y1nnHTOMPMAPMyVdw==
-X-Proofpoint-ORIG-GUID: vlheHNz2e9Dk8KHYFtohrHYvrX5uUwRz
-X-Authority-Analysis: v=2.4 cv=QbNWeMbv c=1 sm=1 tr=0 ts=6a0d8015 cx=c_pps
- a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17
- a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
- a=TtqV-g6YmW1Jfm2GSLaY:22 a=M5GUcnROAAAA:8 a=6arj5X4aKY2yYbu-eEwA:9
- a=OBjm3rFKGHvpk9ecZwUJ:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-20_02,2026-05-18_01,2025-10-01_01
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH net] selftests: rds: config: disable modules
+Content-Language: fr
+To: Allison Henderson <achender@kernel.org>
+Cc: netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
+ rds-devel@oss.oracle.com, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ Shuah Khan <shuah@kernel.org>
+References: <20260520-net-rds-config-modules-v1-1-2100df02fe9a@kernel.org>
+ <8a10cffb9bdde6f90f0fd7b00679755a593f2d6e.camel@kernel.org>
+From: Matthieu Baerts <matttbe@kernel.org>
+Autocrypt: addr=matttbe@kernel.org; keydata=
+ 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
+ lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
+Organization: NGI0 Core
+In-Reply-To: <8a10cffb9bdde6f90f0fd7b00679755a593f2d6e.camel@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Currently the hardware counters reset when the interface is
-brought down, causing stats visible to userspace to drop to zero.
-Save the accumulated stats before bringing the interface down
-so they persist across routine down/up cycles.
+Hi Allison,
 
-Signed-off-by: Anshumali Gaur <agaur@marvell.com>
----
-v5:
-  - Split variable declaration and initialization in otx2_stop (Paolo)
-  - Fix reverse christmas tree order in otx2_get_stats64() (Paolo)
-  - Move stats collection just before otx2_free_hw_resources() to
-    avoid race with NAPI (Paolo/Sashiko)
-  - Remove duplicate otx2_rxtx_enable() call
-v4:
-  - Move stats accumulation after disabling tx/rx (Dragos)
-  - Fetch latest HW counters before accumulating in otx2_stop()
-v3:
-  - Code format according to kernel coding style
-  - Reword commit message
-v2:
-  - Fix subject prefix to target net-next
- .../marvell/octeontx2/nic/otx2_common.c       | 20 ++++++++++--------
- .../marvell/octeontx2/nic/otx2_common.h       |  1 +
- .../ethernet/marvell/octeontx2/nic/otx2_pf.c  | 21 +++++++++++++++++++
- 3 files changed, 33 insertions(+), 9 deletions(-)
+On 20/05/2026 14:22, Allison Henderson wrote:
+> On Wed, 2026-05-20 at 11:34 +1000, Matthieu Baerts (NGI0) wrote:
+>> The run.sh script explicitly checks that CONFIG_MODULES is disabled.
+>>
+>> By default, this config option is enabled. Explicitly disable it to be
+>> able to run the RDS tests.
+>>
+>> Note that writing '# CONFIG_(...) is not set' is usually recommended to
+>> disable an option in the .config, but it looks like selftests usually
+>> set 'CONFIG_(...)=n', which looks clearer.
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-index 971fcab1c248..fce46816446f 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-@@ -138,20 +138,22 @@ void otx2_get_dev_stats(struct otx2_nic *pfvf)
- void otx2_get_stats64(struct net_device *netdev,
- 		      struct rtnl_link_stats64 *stats)
- {
-+	struct otx2_dev_stats *dev_stats, *old_stats;
- 	struct otx2_nic *pfvf = netdev_priv(netdev);
--	struct otx2_dev_stats *dev_stats;
- 
- 	otx2_get_dev_stats(pfvf);
- 
- 	dev_stats = &pfvf->hw.dev_stats;
--	stats->rx_bytes = dev_stats->rx_bytes;
--	stats->rx_packets = dev_stats->rx_frames;
--	stats->rx_dropped = dev_stats->rx_drops;
--	stats->multicast = dev_stats->rx_mcast_frames;
--
--	stats->tx_bytes = dev_stats->tx_bytes;
--	stats->tx_packets = dev_stats->tx_frames;
--	stats->tx_dropped = dev_stats->tx_drops;
-+	old_stats = &pfvf->hw.old_stats;
-+
-+	stats->rx_bytes = old_stats->rx_bytes + dev_stats->rx_bytes;
-+	stats->rx_packets = old_stats->rx_frames + dev_stats->rx_frames;
-+	stats->rx_dropped = old_stats->rx_drops + dev_stats->rx_drops;
-+	stats->multicast = old_stats->rx_mcast_frames + dev_stats->rx_mcast_frames;
-+
-+	stats->tx_bytes = old_stats->tx_bytes + dev_stats->tx_bytes;
-+	stats->tx_packets = old_stats->tx_frames + dev_stats->tx_frames;
-+	stats->tx_dropped = old_stats->tx_drops + dev_stats->tx_drops;
- }
- EXPORT_SYMBOL(otx2_get_stats64);
- 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
-index eecee612b7b2..ad65aa19b80d 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
-@@ -255,6 +255,7 @@ struct otx2_hw {
- 
- 	/* Stats */
- 	struct otx2_dev_stats	dev_stats;
-+	struct otx2_dev_stats	old_stats;
- 	struct otx2_drv_stats	drv_stats;
- 	u64			cgx_rx_stats[CGX_RX_STATS_COUNT];
- 	u64			cgx_tx_stats[CGX_TX_STATS_COUNT];
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-index ee623476e5ff..3b4e32d899b7 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-@@ -2154,6 +2154,7 @@ EXPORT_SYMBOL(otx2_open);
- int otx2_stop(struct net_device *netdev)
- {
- 	struct otx2_nic *pf = netdev_priv(netdev);
-+	struct otx2_dev_stats *old_stats, *dev;
- 	struct otx2_cq_poll *cq_poll = NULL;
- 	struct otx2_qset *qset = &pf->qset;
- 	int qidx, vec, wrk;
-@@ -2200,6 +2201,26 @@ int otx2_stop(struct net_device *netdev)
- 		cancel_delayed_work_sync(&pf->refill_wrk[wrk].pool_refill_work);
- 	devm_kfree(pf->dev, pf->refill_wrk);
- 
-+	/* Read final HW counters and accumulate */
-+	dev = &pf->hw.dev_stats;
-+	old_stats = &pf->hw.old_stats;
-+	otx2_get_dev_stats(pf);
-+
-+	/* Accumulate old stats */
-+	old_stats->rx_bytes     += dev->rx_bytes;
-+	old_stats->rx_drops     += dev->rx_drops;
-+	old_stats->rx_bcast_frames      += dev->rx_bcast_frames;
-+	old_stats->rx_mcast_frames      += dev->rx_mcast_frames;
-+	old_stats->rx_ucast_frames      += dev->rx_ucast_frames;
-+	old_stats->rx_frames            += dev->rx_frames;
-+
-+	old_stats->tx_bytes             += dev->tx_bytes;
-+	old_stats->tx_drops             += dev->tx_drops;
-+	old_stats->tx_bcast_frames      += dev->tx_bcast_frames;
-+	old_stats->tx_mcast_frames      += dev->tx_mcast_frames;
-+	old_stats->tx_ucast_frames      += dev->tx_ucast_frames;
-+	old_stats->tx_frames            += dev->tx_frames;
-+
- 	otx2_free_hw_resources(pf);
- 	otx2_free_cints(pf, pf->hw.cint_cnt);
- 	otx2_disable_napi(pf);
--- 
-2.25.1
+(...)
+> The fix looks fine to me.  Thanks for catching this.
+Thank you for the review. Note that NIPA is now validating these tests:
 
+  https://netdev.bots.linux.dev/contest.html?test=run-sh
+  https://netdev.bots.linux.dev/flakes.html?min-flip=0&tn-needle=run-sh
+
+Note that it might be good to rename the script name, "run.sh" is a bit
+too generic :)
+
+Cheers,
+Matt
