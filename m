@@ -1,104 +1,146 @@
-Received: from mail-m155101.qiye.163.com (mail-m155101.qiye.163.com [101.71.155.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5956F22425B;
-	Wed, 20 May 2026 07:18:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=101.71.155.101
+Received: from mailgw1.hygon.cn (unknown [101.204.27.37])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1486346AFB;
+	Wed, 20 May 2026 07:19:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=101.204.27.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779261539; cv=none; b=vAJFDlx37DeqJ5+ACiz87gshR67x4ItEJj9O1xt8mexiflCNaKiB7UMaiCY0INp3Dw8wVDFDN8Cg3hOf8+FltQDhXn6vb+/I9pcyNvk2AZHk7ZAq9ZQUpH7QnoMVeDYK5iE+2uyAD2IjhtXhwB6qQZQtVtvFDcatSMaYu7phuPo=
+	t=1779261567; cv=none; b=UkUoMxwaOJCcdldrssO7D0YKE9LftsROhnWoRfpCd+8ZKxIUc4EFbTbneac2VD2Btqhuktmx4eQ5MMbImwDIk04bW5bkjz21rEMzeW5CzuooOHrVv6vQVS2N77ideJsbW/CLTdW8OQoL2HZqusdvM4mfzp59NMvxgOVOs9vUeA0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779261539; c=relaxed/simple;
-	bh=NsWpWw0FtvU2LAjxVTrLyqACHUCJ4PnWXRAYqe3hUdg=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=N0JqM0kichUNZ+eDZTLWRSo31ftNqss1pdjjZYAxohBiufqUs90N1si3YC2Sg8b9SLKnGIaEXNuGQhwS3SXQL+Tip4GV6WnorLzXeexJwk0sLraNWStQGPzm0OQdbwlfc6iwrXb8Mke8zPEMj3264WQRCYtdP1n+KxRfo7rPa3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=fH2pRqpL; arc=none smtp.client-ip=101.71.155.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="fH2pRqpL"
-Received: from DESKTOP-SUEFNF9.taila7e912.ts.net (unknown [58.241.16.34])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 3f1c75b10;
-	Wed, 20 May 2026 15:03:32 +0800 (GMT+08:00)
-From: Dawei Feng <dawei.feng@seu.edu.cn>
-To: kuba@kernel.org
-Cc: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	kees@kernel.org,
-	Ariel.Elior@qlogic.com,
-	Yuval.Mintz@qlogic.com,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	jianhao.xu@seu.edu.cn,
-	Dawei Feng <dawei.feng@seu.edu.cn>,
-	stable@vger.kernel.org,
-	Zilin Guan <zilin@seu.edu.cn>
-Subject: [PATCH net] qed: fix double free in qed_cxt_tables_alloc()
-Date: Wed, 20 May 2026 15:03:23 +0800
-Message-Id: <20260520070323.2762379-1-dawei.feng@seu.edu.cn>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1779261567; c=relaxed/simple;
+	bh=DsB1y8zvTzcDbYBkIUfmm86TaPSA3yTGT1BxBy9/rjo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=h+paOKAaoMoMPAdH8q+sWtaruwOJnSECkV1wmlqey1bT9yKyRpKy1gPwnMVv/JMeAr4r6Wxbx9b5F9zECJ8TbDdci3+DXRqM9yMs3+5ZQyHgOClgKe0kphbGkMVU54IyCzicKSCvlbSPyhqBifJ1jawPh1y4FupETFbBUGnzNXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=hygon.cn; spf=fail smtp.mailfrom=hygon.cn; arc=none smtp.client-ip=101.204.27.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=hygon.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=hygon.cn
+Received: from maildlp1.hygon.cn (unknown [127.0.0.1])
+	by mailgw1.hygon.cn (Postfix) with ESMTP id 4gL2w32tVjzTNdP;
+	Wed, 20 May 2026 15:18:59 +0800 (CST)
+Received: from maildlp1.hygon.cn (unknown [172.23.18.60])
+	by mailgw1.hygon.cn (Postfix) with ESMTP id 4gL2w31JxwzTNdP;
+	Wed, 20 May 2026 15:18:59 +0800 (CST)
+Received: from cncheex04.Hygon.cn (unknown [172.23.18.114])
+	by maildlp1.hygon.cn (Postfix) with ESMTPS id B35114B60;
+	Wed, 20 May 2026 15:18:53 +0800 (CST)
+Received: from [172.19.24.96] (172.19.24.96) by cncheex04.Hygon.cn
+ (172.23.18.114) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Wed, 20 May
+ 2026 15:18:58 +0800
+Message-ID: <d832ba36-4b25-4ce1-a247-2520439f6548@hygon.cn>
+Date: Wed, 20 May 2026 15:18:57 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9e44325f5e03a2kunmed0efd2c2d89c
-X-HM-MType: 10
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlDGUtOVk9MSUhJHh5PH08aT1YeHw
-	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlOQ1VJT0pVSk1VSE9ZV1kWGg8SFR0UWUFZT0tIVUpLSUhOQ0
-	NVSktLVUtZBg++
-DKIM-Signature: a=rsa-sha256;
-	b=fH2pRqpLg/Ew5iiKHOQfMutHBqneVG972v7JIpsB+dr1o4+kEap/Qcr9QxBeSe4+T7wQSnSbottWzZxpkNISw6cFuYSCxNzCMJ8GnB8brVVvJREm0F1BPYRLoyVy5pk1mgcehniEq6XRZY3JzzBw1fJfcmLTmEsgskNPE3iWL2A=; c=relaxed/relaxed; s=default; d=seu.edu.cn; v=1;
-	bh=wGRVS72YUwJ3ysVjj/w2ltBkUei4mxyPkzLjiNJiYKE=;
-	h=date:mime-version:subject:message-id:from;
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] net/mlx5: Update mlx5_irq.mask when IRQ affinity changes
+To: Tariq Toukan <tariqt@nvidia.com>, Saeed Mahameed <saeedm@nvidia.com>, Leon
+ Romanovsky <leon@kernel.org>, Mark Bloch <mbloch@nvidia.com>
+CC: Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, <netdev@vger.kernel.org>,
+	<linux-rdma@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+References: <20260514074208.23353-1-liyi@hygon.cn>
+ <99c99bde-9800-4a5e-b8a1-7cc472af52cd@nvidia.com>
+From: Yi Li <liyi@hygon.cn>
+In-Reply-To: <99c99bde-9800-4a5e-b8a1-7cc472af52cd@nvidia.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: cncheex06.Hygon.cn (172.23.18.116) To cncheex04.Hygon.cn
+ (172.23.18.114)
 
-If one of the later PF or VF CID bitmap allocations fails,
-qed_cid_map_alloc() jumps to cid_map_fail and frees the previously
-allocated CID bitmaps before returning an error. qed_cxt_tables_alloc()
-then calls qed_cxt_mngr_free(), which invokes qed_cid_map_free()
-again.
+Hi Tariq,
 
-Fix this by setting each CID bitmap pointer to NULL after bitmap_free()
-to avoid double free.
+Thanks for the feedback.
 
-The bug was first flagged by an experimental analysis tool we are
-developing for kernel memory-management bugs while analyzing
-v6.13-rc1. The tool is still under development and is not yet publicly
-available. Manual inspection confirms that the bug is still
-present in v7.1-rc3.
+On 5/17/2026 4:58 PM, Tariq Toukan wrote:
 
-Runtime reproduction was not attempted because exercising the failing
-allocation path requires device-specific setup.
+> 
+> Hi,
+> 
+> Thanks for the patch. Looking at the proposal, I want to discuss two distinct aspects:
+> 
+> NAPI Execution Location: We already track effective affinity closely through irq_get_effective_affinity_mask(); NAPI processing is dynamically moved accordingly, including a forced NAPI cycle break if needed.
+> 
 
-Fixes: fe56b9e6a8d9 ("qed: Add module with basic common support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Signed-off-by: Dawei Feng <dawei.feng@seu.edu.cn>
----
- drivers/net/ethernet/qlogic/qed/qed_cxt.c | 2 ++
- 1 file changed, 2 insertions(+)
+Right. I also see the driver flushes the page_pool alloc cache via page_pool_nid_changed() in mlx5e_post_rx_wqes(),
+so RX data buffers follow the NAPI CPU as well.
 
-diff --git a/drivers/net/ethernet/qlogic/qed/qed_cxt.c b/drivers/net/ethernet/qlogic/qed/qed_cxt.c
-index 9861daa82d9e..b70262e70baf 100644
---- a/drivers/net/ethernet/qlogic/qed/qed_cxt.c
-+++ b/drivers/net/ethernet/qlogic/qed/qed_cxt.c
-@@ -1036,11 +1036,13 @@ static void qed_cid_map_free(struct qed_hwfn *p_hwfn)
- 
- 	for (type = 0; type < MAX_CONN_TYPES; type++) {
- 		bitmap_free(p_mngr->acquired[type].cid_map);
-+		p_mngr->acquired[type].cid_map = NULL;
- 		p_mngr->acquired[type].max_count = 0;
- 		p_mngr->acquired[type].start_cid = 0;
- 
- 		for (vf = 0; vf < MAX_NUM_VFS; vf++) {
- 			bitmap_free(p_mngr->acquired_vf[type][vf].cid_map);
-+			p_mngr->acquired_vf[type][vf].cid_map = NULL;
- 			p_mngr->acquired_vf[type][vf].max_count = 0;
- 			p_mngr->acquired_vf[type][vf].start_cid = 0;
- 		}
--- 
-2.34.1
+> Memory Allocation Location: This is the core focus of your patch.
+> 
+
+If I understand correctly, the current design keeps the page_pool cache
+near the NAPI CPU, and the channel queues near the NIC based on numa-distance.
+Please correct me if that's wrong.
+
+> I have serious comments on the proposed implementation, but first I want to discuss the idea.
+> 
+> We investigated a similar approach a few years ago but ultimately decided against upstreaming it due to stability concerns:
+> 
+> High Volatility: The "current affinity" value can be extremely dynamic, potentially shifting multiple times per second depending on system load and tuning.
+> 
+> Performance Risk: Sampling a highly volatile "current" value to allocate relatively permanent resources (like channel queues) risks severe worst-case performance regressions if the affinity shifts immediately after allocation.
+> 
+
+I agree with the concern. But page_pool already samples node id change on the hot path.
+Sampling affinity only in mlx5e_open_channel() might avoid most of the risk?
+
+> Because of this, we have historically relied on numa-distance logic for channel allocations to ensure a predictable baseline.
+> 
+> Do you have any benchmark data or specific use cases showing a clear net benefit over the existing numa-distance logic?
+> 
+
+Honestly, my Nginx test showed no measurable throughput change.
+
+It's more of a functional issue I ran into. My setup:
+  - 6 NUMA nodes, 32 SMT cores each
+  - ConnectX-6 on node0
+  - node1 and node2 equidistant from node0
+  - 63 combined queues
+  - default spread: 32 IRQs on node0, 16 on node1, 16 on node2
+
+I moved the 16 IRQs from node2 to node1 via smp_affinity. The IRQs
+followed, but the queues stayed on node2, and I observed a lot of
+cross-node traffic to/from node2. Nginx wasn't affected -- the
+bottleneck is elsewhere in my workload.
+
+Do you think it OK to have an option so users can change queue location?
+I'm not sure how common this need is in production, so I'd appreciate your idea.
+
+Also, I agree irq_get_effective_affinity_mask() is better than the IRQ notifier:
+
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+index b6c12460b54a..073239082144 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+@@ -2769,6 +2769,7 @@ static int mlx5e_open_channel(struct mlx5e_priv *priv, int ix,
+ {
+        struct net_device *netdev = priv->netdev;
+        struct mlx5e_channel_param *cparam;
++       const struct cpumask *eff_mask;
+        struct mlx5_core_dev *mdev;
+        struct mlx5e_xsk_param xsk;
+        bool async_icosq_needed;
+@@ -2786,6 +2787,10 @@ static int mlx5e_open_channel(struct mlx5e_priv *priv, int ix,
+        if (err)
+                return err;
+
++       eff_mask = irq_get_effective_affinity_mask(irq);
++       if (eff_mask)
++               cpu = cpumask_first(eff_mask);
++
+        err = mlx5e_channel_stats_alloc(priv, ix, cpu);
+        if (err)
+                return err;
+
+
+> Best regards,
+> Tariq
+> 
+> 
+
+Thanks,
+-Yi
+
 
