@@ -1,148 +1,121 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFA0B3ACF01
-	for <netdev@vger.kernel.org>; Wed, 20 May 2026 11:50:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C61B3B6363
+	for <netdev@vger.kernel.org>; Wed, 20 May 2026 11:54:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779277810; cv=none; b=EPcJ1b5OaDWGxTG+Jz9gu886kBhKOVEeq4C01dlEhdt9TpvaoIKrlgWKc6noVc1epKSkQ0IAVayZ/kfGu96PQQC4Nlx0Z9Y5ygVV/wJ9OhjOeqwjiQ6pgaJFV0P8q2GeSHJk4PD1j+LHY67AsYfJdyrK3y0OFmwa62lEaH06fYA=
+	t=1779278086; cv=none; b=fLdtrVhQmZ6XBiezF84zt5oO7qZiAY5CCEJy87TZK2bcu/w26lSRc0e7d1NWTeBK1iuyLl7PUf12bjbG0a6XFlTV8IDh4GVTgZ0nJg/hj3EXhA4Cd9Y1WjHvIdFGm4YWPC+SoBpThq5tkcnWlu4T8K5WCqyvpzGjMOF9+Gw0PEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779277810; c=relaxed/simple;
-	bh=zPj1Z4TXNV7bjfsNs+8ZdzoNcOa6GBLLRh60fYgacQQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DVkhzpw6ud1U/S7N+e+xZAwk2XcK8cC9Cy8M+NNPgPHP1ibY06lZOjUVSIw6z8U2jU4OlwVY6vsyKpUYLh3riegZh2xE5Q+1Rt5GBji6noXbcyj7lILDitjtl59py6JsAvoaZ0RsjSoXI1tViTaMmZu2JVf7xwVfkHPtcsZgYAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YPjcZYGW; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1779278086; c=relaxed/simple;
+	bh=vR1fDpcFLkqRqknyUjuTZ4PJxuKvXO03QMVETgIlL2k=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=jIPuBUeoAxPCrOhthnv6/6k2IptgIwfQyy5PFqgNrgoZxo5mgrGIqbzhiBCAjrgLp3HMpZUQLywMpm3bvtFbLJrKDjPxPradZ9YnoGornvOiRRlYtlE3SNxMukEeJFEl4kJydKq6BlwDOCy9+a3VAkoGMuy8cvZM4u5oPwAnQf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=tbQ7oyOt; arc=none smtp.client-ip=23.88.38.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YPjcZYGW"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779277808; x=1810813808;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=zPj1Z4TXNV7bjfsNs+8ZdzoNcOa6GBLLRh60fYgacQQ=;
-  b=YPjcZYGWd8j0M0VSLjQI6m0jlJKWfsHjX0msLRO9flh3YbMf9hMm7UQt
-   THkUZCCvb7GADkcE5SlYwnGyVC0RfQwbiiUnuSMUET/VH7drrydNzq4Ep
-   uixJi1gwMBC4OalloASsxy7xNIl9WzhK312QaMyrIu3Uff8ztCoHu38hb
-   lT9aQGZqcN9p/QsZmr8ZTvEpnxI1Rk/C61zWp+c0nMAvo1mAbaF6p3YKR
-   TFf3A+ZXpS6XOShq+llTFMy9RyuKzZ9CdHE07iSGolmO98y+GqgSY8qQR
-   pn33TEHbb6kl00o1pN29kE+/uZACoV94qGRoUqe3r11DCK8QXIRG8PESd
-   A==;
-X-CSE-ConnectionGUID: 8gRMJC34Rwm7INQWnjkMNA==
-X-CSE-MsgGUID: BQe/QFOjRP2Z/ucFPjKyXw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11791"; a="79320434"
-X-IronPort-AV: E=Sophos;i="6.23,244,1770624000"; 
-   d="scan'208";a="79320434"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2026 04:50:06 -0700
-X-CSE-ConnectionGUID: D2eCtjfWQZqK2cv1F579lg==
-X-CSE-MsgGUID: v2roAv3FR0mTP5wxyx0g+Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,244,1770624000"; 
-   d="scan'208";a="263948176"
-Received: from pae-d-dell-r7525-263.igk.intel.com ([172.28.191.240])
-  by fmviesa001.fm.intel.com with ESMTP; 20 May 2026 04:50:04 -0700
-From: Przemyslaw Korba <przemyslaw.korba@intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: netdev@vger.kernel.org,
-	anthony.l.nguyen@intel.com,
-	przemyslaw.kitszel@intel.com,
-	aleksandr.loktionov@intel.com,
-	arkadiusz.kubalewski@intel.com,
-	horms@kernel.org,
-	Przemyslaw Korba <przemyslaw.korba@intel.com>
-Subject: [PATCH iwl-net v2] ice: suppress DPLL errors during reset recovery
-Date: Wed, 20 May 2026 13:50:06 +0200
-Message-ID: <20260520115213.10864-2-przemyslaw.korba@intel.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="tbQ7oyOt"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=simonwunderlich.de;
+	s=09092022; t=1779278076;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=8BixBb1DIhQ8qq6hCCdb7nigjWog786sWdT3/VpFGno=;
+	b=tbQ7oyOtYkDHUCzAk1OGQdUYb+JvSVaIGTi0L5ZdtPVNam0zWxZ7TCtWG8E9jmYvMSo+VM
+	aasRqmqW7h5U4RP9nlUS9InTsoka5oddjwgGsVNxbfxL1XyzsntVAAUrvDtM9Zv0uDBJLo
+	B51Jktwg1JlRVFlJiENydCWgC4/6RI0WI8xK7ewRpy+m3jAB0ah2Ue++sLrde114Vc4QKN
+	tJ28+am++SFu0L+FAHTTqJjHKDQhWKkG6w6muuVYRt0Am3CujbvN9UN0ugEsjN8/lpKCoy
+	hX3bZ4WOGoiidJqJH7T5jcnlsufswGEHO7u3kL9cKKUoG6BPsQ2UHL9qhVPNpg==
+From: Simon Wunderlich <sw@simonwunderlich.de>
+To: netdev@vger.kernel.org
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	b.a.t.m.a.n@lists.open-mesh.org,
+	Simon Wunderlich <sw@simonwunderlich.de>
+Subject: [PATCH net 00/11] pull request: batman-adv 2026-05-20
+Date: Wed, 20 May 2026 13:54:11 +0200
+Message-ID: <20260520115422.53552-1-sw@simonwunderlich.de>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-During reset recovery, the admin queue returns EBUSY which is expected
-behavior. However, the DPLL subsystem was logging these as errors and
-incrementing the error counter, potentially leading to unnecessary
-warnings and even disabling the DPLL periodic worker if the threshold
-was reached.
+Dear net maintainers,
 
-Suppress error logging and error counter increments when the admin
-queue returns EBUSY, as this is expected during reset recovery and
-not a real failure condition.
+here is another round of bugfixes for batman-adv which we would like to have integrated into net.
 
-test case:
-- ethtool --reset eth3 irq-shared dma-shared filter-shared offload-shared
-mac-shared phy-shared ram-shared
-- observe if dmesg EBUSY errors are gone
+Please pull or let me know of any problem!
 
-Fixes: d7999f5ea64b ("ice: implement dpll interface to control cgu")
-Signed-off-by: Przemyslaw Korba <przemyslaw.korba@intel.com>
----
-v2:
-add missing EBUSY check in ice_dpll_pps_update_phase_offsets()
-v1:
-https://lore.kernel.org/intel-wired-lan/20260520105311.5336-1-przemyslaw.korba@intel.com/T/#u
----
- drivers/net/ethernet/intel/ice/ice_dpll.c | 19 ++++++++++++-------
- 1 file changed, 12 insertions(+), 7 deletions(-)
+Thank you,
+      Simon
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_dpll.c b/drivers/net/ethernet/intel/ice/ice_dpll.c
-index 0704e92ab043..815792567a94 100644
---- a/drivers/net/ethernet/intel/ice/ice_dpll.c
-+++ b/drivers/net/ethernet/intel/ice/ice_dpll.c
-@@ -784,7 +784,7 @@ ice_dpll_pin_state_update(struct ice_pf *pf, struct ice_dpll_pin *pin,
- 				   ret,
- 				   libie_aq_str(pf->hw.adminq.sq_last_status),
- 				   pin_type_name[pin_type], pin->idx);
--	else
-+	else if (pf->hw.adminq.sq_last_status != LIBIE_AQ_RC_EBUSY)
- 		dev_err_ratelimited(ice_pf_to_dev(pf),
- 				    "err:%d %s failed to update %s pin:%u\n",
- 				    ret,
-@@ -2821,7 +2821,8 @@ static int ice_dpll_pps_update_phase_offsets(struct ice_pf *pf,
- 	*phase_offset_pins_updated = 0;
- 	ret = ice_aq_get_cgu_input_pin_measure(&pf->hw, DPLL_TYPE_PPS, meas,
- 					       ARRAY_SIZE(meas));
--	if (ret && pf->hw.adminq.sq_last_status == LIBIE_AQ_RC_EAGAIN) {
-+	if (ret && (pf->hw.adminq.sq_last_status == LIBIE_AQ_RC_EAGAIN ||
-+		    pf->hw.adminq.sq_last_status == LIBIE_AQ_RC_EBUSY)) {
- 		return 0;
- 	} else if (ret) {
- 		dev_err(ice_pf_to_dev(pf),
-@@ -2883,10 +2884,12 @@ ice_dpll_update_state(struct ice_pf *pf, struct ice_dpll *d, bool init)
- 		d->dpll_idx, d->prev_input_idx, d->input_idx,
- 		d->dpll_state, d->prev_dpll_state, d->mode);
- 	if (ret) {
--		dev_err(ice_pf_to_dev(pf),
--			"update dpll=%d state failed, ret=%d %s\n",
--			d->dpll_idx, ret,
--			libie_aq_str(pf->hw.adminq.sq_last_status));
-+		/* EBUSY is expected during reset recovery, don't log error */
-+		if (pf->hw.adminq.sq_last_status != LIBIE_AQ_RC_EBUSY)
-+			dev_err(ice_pf_to_dev(pf),
-+				"update dpll=%d state failed, ret=%d %s\n",
-+				d->dpll_idx, ret,
-+				libie_aq_str(pf->hw.adminq.sq_last_status));
- 		return ret;
- 	}
- 	if (init) {
-@@ -2955,7 +2958,9 @@ static void ice_dpll_periodic_work(struct kthread_work *work)
- 	    d->periodic_counter % dp->phase_offset_monitor_period == 0)
- 		ret = ice_dpll_pps_update_phase_offsets(pf, &phase_offset_ntf);
- 	if (ret) {
--		d->cgu_state_acq_err_num++;
-+		/* EBUSY is expected during reset recovery */
-+		if (pf->hw.adminq.sq_last_status != LIBIE_AQ_RC_EBUSY)
-+			d->cgu_state_acq_err_num++;
- 		/* stop rescheduling this worker */
- 		if (d->cgu_state_acq_err_num >
- 		    ICE_CGU_STATE_ACQ_ERR_THRESHOLD) {
+The following changes since commit d5487249a81ea658717614009c8f46acc5b7101a:
 
-base-commit: 7fd738d8cf34f46a7ec485426e2a5423ade8a63b
-prerequisite-patch-id: 45f595ded339d5f7feea2ea7ff196db3c08e3503
--- 
-2.43.0
+  batman-adv: tp_meter: directly shut down timer on cleanup (2026-05-15 10:41:55 +0200)
 
+are available in the Git repository at:
+
+  https://git.open-mesh.org/batadv.git tags/batadv-net-pullrequest-20260520
+
+for you to fetch changes up to f80d3d98d2ff78d9e2fe5d68b1f45948c4f7bd24:
+
+  batman-adv: bla: avoid NULL-ptr deref for claim via dropped interface (2026-05-19 10:43:54 +0200)
+
+----------------------------------------------------------------
+Here are batman-adv bugfixes, all by by Sven Eckelmann.
+
+ - fix batadv_skb_is_frag() kernel-doc
+
+ - BATMAN V: stop OGMv2 on disabled interface
+
+ - BATMAN IV: abort OGM send on tvlv append failure
+
+ - BATMAN IV: reject oversized TVLV packets
+
+ - tp_meter: fix race condition in send error reporting
+
+ - tp_meter: avoid role confusion in tp_list
+
+ - mcast: fix use-after-free in orig_node RCU release
+
+ - BATMAN IV: recover OGM scheduling after forward packet error
+
+ - bla: fix report_work leak on backbone_gw purge
+
+ - bla: avoid double decrement of bla.num_requests
+
+ - bla: avoid NULL-ptr deref for claim via dropped interface
+
+----------------------------------------------------------------
+Sven Eckelmann (11):
+      batman-adv: fix batadv_skb_is_frag() kernel-doc
+      batman-adv: v: stop OGMv2 on disabled interface
+      batman-adv: tvlv: abort OGM send on tvlv append failure
+      batman-adv: tvlv: reject oversized TVLV packets
+      batman-adv: tp_meter: fix race condition in send error reporting
+      batman-adv: tp_meter: avoid role confusion in tp_list
+      batman-adv: mcast: fix use-after-free in orig_node RCU release
+      batman-adv: iv: recover OGM scheduling after forward packet error
+      batman-adv: bla: fix report_work leak on backbone_gw purge
+      batman-adv: bla: avoid double decrement of bla.num_requests
+      batman-adv: bla: avoid NULL-ptr deref for claim via dropped interface
+
+ net/batman-adv/bat_iv_ogm.c            |  82 ++++++++++++++++++++-----
+ net/batman-adv/bat_v_ogm.c             |  59 ++++++++++--------
+ net/batman-adv/bridge_loop_avoidance.c | 109 ++++++++++++++++++++++-----------
+ net/batman-adv/fragmentation.c         |   4 +-
+ net/batman-adv/mesh-interface.c        |   1 +
+ net/batman-adv/originator.c            |   4 +-
+ net/batman-adv/tp_meter.c              |  99 ++++++++++++++++++------------
+ net/batman-adv/tvlv.c                  |  28 ++++++---
+ net/batman-adv/tvlv.h                  |   2 +-
+ net/batman-adv/types.h                 |  52 ++++++++++++----
+ 10 files changed, 299 insertions(+), 141 deletions(-)
