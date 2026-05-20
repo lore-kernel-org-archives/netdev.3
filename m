@@ -1,74 +1,89 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5473A2652B0
-	for <netdev@vger.kernel.org>; Wed, 20 May 2026 01:09:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17C4D2652B0
+	for <netdev@vger.kernel.org>; Wed, 20 May 2026 01:10:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779239393; cv=none; b=uzNXQmAzNGw2XoX18yAB6Joc/7BQBnZDytkODdjXOneUgR+hNEwm0xO1/JdQSox6hS40qgQYIUC+HIFyR8JT4zFOCF4QIWpQygb2crEacBl3cI3clRPLfyoLZvY1NICq/C9+MNdy4dgmap4qAgVZqwzfFsTzgmkLsLrJF7JD3mI=
+	t=1779239405; cv=none; b=t04JDLvs1l45iuLhw60PhQ78ZxX/xuHn4pmKSPvR4jDlOB+Pk5s2sRmeJ2FbNWUPEdeTUuatBNvE3CQ5AhkBSL0Y2Hrj2ckbrWQGNDxGCglBh4SXLaAyyPnYLHKqt66EsJnGkaiozQzcuwfOUmOvRGpJnEkNciMp1gOsHpW0ihk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779239393; c=relaxed/simple;
-	bh=vaA+O6NNDw7rBBn35yIdxuzZbafQZI65CCh1ntUiqmc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mCMgnDWuxtt4Smue9YjmGfcVO5JiiYi6DBfVKggOCWjqOxHeTEEP4imGeXEXFLSq8FCRDp/cZEhX6Wa8IS5EEFNNOPodJynzzukuy5ZEecl+UGfmMKil/BiQuyg4LDNZKJKx4zNcSllBWfOfWzrzn9xcBXVD/a3hS2xZW/qcUQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=ycnqpPts; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1779239405; c=relaxed/simple;
+	bh=IkOHEI/LpGRqt7ytXDefJVi/kYvH1kGoXHVYRvK9MLo=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=qUCWUuWQoTUI1QUDZ1U6xoCSdITvoc2EViEd7iILqU7QNWWlNXo/Wq6dZ82diJlmcxj4nE5dBLBPqQium8PhItW43M+HQ+hit7JoM0octV2RowbVsCABVphnt6f3IwfTUJpwfBqhAhVFSiq2cygGm4bbZVEy+F72o4s+bEJr/Gw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PdhJTvQd; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="ycnqpPts"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=FTUaKu7hqlhjrHB9IMLzsE0a0hVpZmFonyggDQ+3VXg=; b=ycnqpPtsvapjQkOdrINC9+jnsw
-	JmTMC/Zh/BhbVvCzZk/eyYC4umCpu4Ut8F9QeWnP2HAGUCFGCNPcpZr3RgUruzXcWILunzkLgAYH7
-	lO/EeVuNnBO3PyEfLhKCLD/W+BEM3xx28jgdOPGxgXfNAC8BQvHSupNXrHfG92e9PIhg=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wPVRC-003kqQ-2L; Wed, 20 May 2026 03:09:30 +0200
-Date: Wed, 20 May 2026 03:09:30 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Daniel Golle <daniel@makrotopia.org>
-Cc: Markus Stockhausen <markus.stockhausen@gmx.de>, hkallweit1@gmail.com,
-	linux@armlinux.org.uk, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
-	chris.packham@alliedtelesis.co.nz
-Subject: Re: [PATCH 3/9] net: mdio: realtek-rtl9300: Add ports to info
- structure
-Message-ID: <82214c5e-23d5-4615-b2ae-81985fb573f8@lunn.ch>
-References: <20260519165747.1288903-1-markus.stockhausen@gmx.de>
- <20260519165747.1288903-4-markus.stockhausen@gmx.de>
- <agydm8V25M-jy5o6@makrotopia.org>
- <85d5f162-8999-43d4-b879-6e5e686246f7@lunn.ch>
- <01d801dce7c2$a0a08ba0$e1e1a2e0$@gmx.de>
- <fff19211-a41a-481d-a6a6-4429a6901129@lunn.ch>
- <agzoaMnmeVpjiFC0@makrotopia.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PdhJTvQd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C269B1F000E9;
+	Wed, 20 May 2026 01:10:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779239403;
+	bh=lPevcs8ANW9QNTT7TztESFlNNWQ0zhFljOBqzEMdK3w=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=PdhJTvQdF4jv8895zLEriI3gRB4aq3skzWYZMbl4U975eJ18d6LgCMp52PTuN3ND9
+	 Oun8tqymPyNYkrNNqsAd/5lJj7uxjmeeXT2CHJ3XudHOJmtWQwE5LLyn8Ttz6Hdo6m
+	 y5Zfo585Dn7/ATFliIGvuLkFS03StytHd9WTFhr9NEg40j6yL3WRJdP6zBOGCI4LTp
+	 qqrpekltsujnShB3MPSf2lxZBNP+eRvq7TMHQTIuBDv4ISQGNUWz4uiyPCkAQdCHiH
+	 SgnLs3F5+5nHYtaMQDZPAcKDlum8QfQhEB9D3KT1pIPV31Yt4SH1K/h4k7/icTbFh0
+	 /ZZAifnTS/EYg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0B28383BF53;
+	Wed, 20 May 2026 01:10:15 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <agzoaMnmeVpjiFC0@makrotopia.org>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [iproute2-next V4 0/6] netshaper: Extend netshaper support
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177923941445.2939832.1656899666620970575.git-patchwork-notify@kernel.org>
+Date: Wed, 20 May 2026 01:10:14 +0000
+References: <20260518202353.390827-1-mohsin.bashr@gmail.com>
+In-Reply-To: <20260518202353.390827-1-mohsin.bashr@gmail.com>
+To: Mohsin Bashir <mohsin.bashr@gmail.com>
+Cc: netdev@vger.kernel.org, alexander.duyck@gmail.com, dsahern@kernel.org,
+ stephen@networkplumber.org, pabeni@redhat.com, kuba@kernel.org,
+ ernis@linux.microsoft.com
 
-> The problem is that the hardware doesn't let you access the MDIO
-> busses directly -- you *have to* setup a mapping and then access each
-> PHY using the mapped port index. Also hardware PHY polling *has* to be
-> used to configure the MAC as there is no (known) way to directly
-> configure most of the MACs (but only a small number which is typically
-> used for SFPs), so setting up the mapping also for that is mandatory
-> and cannot be avoided.
+Hello:
+
+This series was applied to iproute2/iproute2-next.git (main)
+by David Ahern <dsahern@kernel.org>:
+
+On Mon, 18 May 2026 13:23:47 -0700 you wrote:
+> From: Mohsin Bashir <hmohsin@meta.com>
 > 
-> The driver does it's best to present MDIO busses with the PHYs available
-> with their actual (ie. as on the hardware) addresses 0-31 towards Linux,
-> so PHY drivers, packages or even userland tools all work as expected.
-> But internally it will have to setup this mapping port->(bus, phy), and
-> then reverse-resolve each (bus, phy)->port.
+> This series extends the netshaper CLI with missing parameter support
+> and adds the group command for building scheduling hierarchies.
+> 
+> The existing netshaper tool only supports setting bw-max on individual
+> shapers. This series adds the remaining shaper attributes (bw-min,
+> weight) needed for TX scheduling, and introduces the group command
+> which ties leaf shapers to a parent node in a single operation.
+> 
+> [...]
 
-Do any of these MDIO busses appear on the outside? Somewhere i can
-connect an external PHY, or another switch in cascade?
+Here is the summary with links:
+  - [iproute2-next,V4,1/6] netshaper: Extract parse_scope() and parse_rate() helpers
+    https://git.kernel.org/pub/scm/network/iproute2/iproute2-next.git/commit/?id=fd9d12a1423e
+  - [iproute2-next,V4,2/6] netshaper: Add bw-min and weight parameter support
+    https://git.kernel.org/pub/scm/network/iproute2/iproute2-next.git/commit/?id=dc5f7db81442
+  - [iproute2-next,V4,3/6] netshaper: Extend show output with parent, bw-min and weight
+    https://git.kernel.org/pub/scm/network/iproute2/iproute2-next.git/commit/?id=8c3177b174e7
+  - [iproute2-next,V4,4/6] netshaper: Extract struct shaper_args and parse_shaper_arg() helper
+    https://git.kernel.org/pub/scm/network/iproute2/iproute2-next.git/commit/?id=00a40c697f9c
+  - [iproute2-next,V4,5/6] netshaper: Add group command for creating scheduling hierarchies
+    https://git.kernel.org/pub/scm/network/iproute2/iproute2-next.git/commit/?id=e14b336a31b4
+  - [iproute2-next,V4,6/6] netshaper: Update man page for new parameters and group command
+    https://git.kernel.org/pub/scm/network/iproute2/iproute2-next.git/commit/?id=2638fef148e6
 
-	Andrew
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
