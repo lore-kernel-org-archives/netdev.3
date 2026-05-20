@@ -1,69 +1,71 @@
-Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45DB33FB7F1;
-	Wed, 20 May 2026 15:08:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B1173EF0BE;
+	Wed, 20 May 2026 15:12:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779289713; cv=none; b=Gu6hlqRZJtjvQcgEYZ/qyyGUCh2dOfXeubVY9GHoNiNL35f2KdaoMUkkocQ/Ukqquq5m4/NDmlTeyZVgjtab96zQ5dfQoYINCg/eCggTuvXcQurd2NUN2XojQD38lKRKkeNH9tvWkPzQLF4SPhK02KXDwLSFgYCfzU/ab7kMGQk=
+	t=1779289963; cv=none; b=HuqiadTAaeNtxwAjkCTt/DFpyygQiZYFtTHUmLaPChoUHIyzw9git8uuWxCqNI9LBiT3QclDNDK+1T3uZL6v4gc4/Bv0ifkv+prge2+K81fZkdtJE7VzNBz2oXrWxfgLgJtrzx2MHWpVa42ypLXBMyvtn4JX+xhY8LOHc5eHT58=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779289713; c=relaxed/simple;
-	bh=p9X+iFTHyuYBV6afYZx0rGktw25xdXQraLZz7JLR3FY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SfVN3MY7PkzVAuC3xWUeG52TdtxDLEMRcqyZWRwUpxYwngj5xCkmCeqTRBERBY0Ing1LOWev9w3LVfxqBbLtM366LgSeL/h2MQNcfjNVcRtIns2bJGX51azzW/iBo4t/bhoIKebUf8m+xmO9zv8CGehJTbfzZhybOlkOct4sbiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=epQoSsun; arc=none smtp.client-ip=178.251.229.89
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
+	s=arc-20240116; t=1779289963; c=relaxed/simple;
+	bh=tnAabweQiPGTrq4s5/XIUn2e/+Kp0dnE6fhKkBjI0zA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=c/T8mI1edYT02rS5dzXauVkX3F53Y5Ywzk+4pSoalglBkIwS2T9jbuqm6DBdD41YCAa37kHlMxEkISSq8QNrNM4ouiOL5kVqgL4uooM6YbXHk0wLxwNdUltY+bFG0g6Zpx7Xe9veSFMCCKjb1XkXi0wbmp0a2e+QXFIcZSLcKDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=r5gYaW/l; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="epQoSsun"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6882C11580F;
-	Wed, 20 May 2026 17:08:24 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
-	s=dkim; t=1779289705;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=mocp92mHgcPsQ5QAbnot/7r1RJv76ZxVRr1KYJD1irM=;
-	b=epQoSsuny1oAuuDJEuMX6RczcDsuNDsHDA3oI0yJV6Y6t0e4yHxpMq6NfEGEJBCvbeCVda
-	RGh2W+wNulLxM0rgs9K3qdSW68t9vOo6Wq64vLWAVI2oUhq0tT1bQLuR+d/WbABD5FDyOO
-	zsuJDvuwKUyTDnVIT0xQxi4zmi+i9qi338s114Pv8thstw4oFsMJJP4I//fR69HEO/Ldws
-	JStMAyomojqzSSYBWtPXAIsFQA9kmEXurRazFBFX+F9C9D/QKqCG5iZf1+WocPxwqT+tX8
-	vGYenPcDRqbPDQNXGKpvyW4LC0sV3DwPpzR/BZbcLJlPOda/zXVM4korzZtRrQ==
-Message-ID: <260b4704-56ae-40d7-bd53-4547928b9d52@nabladev.com>
-Date: Wed, 20 May 2026 14:01:07 +0200
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="r5gYaW/l"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=BxqIHkTrG2nPrftKJCbRNMPOYiQbepsL94rJ0TP7lWQ=; b=r5gYaW/l4lrtCKTy2DQqljigs8
+	SSwUnBAmM7jXZtLpmH3WKe7GsWm00/7fqRbzsP3bC7c3K8sEQBBJIb788ujvYQPYTG65YGy/vjceo
+	6N4056u7A8S8mUJj51/lQFvh5ZCuDfhlovnru9avTqk6xgwIMG54RU3gcf891h70sVZ4=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wPian-003qvT-OD; Wed, 20 May 2026 17:12:17 +0200
+Date: Wed, 20 May 2026 17:12:17 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Minda Chen <minda.chen@starfivetech.com>
+Cc: Frank <Frank.Sae@motor-comm.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [net-next v4 1/3] net: phy: motorcomm: move mdio lock out from
+ yt8531_set_ds()
+Message-ID: <83bae20f-7de1-4868-9a7b-d903af1b62ac@lunn.ch>
+References: <20260520101310.128969-1-minda.chen@starfivetech.com>
+ <20260520101310.128969-2-minda.chen@starfivetech.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 0/3] ksz87xx: add support for low-loss cable equalizer
- errata
-To: Fidelio LAWSON <lawson.fidelio@gmail.com>,
- Woojung Huh <woojung.huh@microchip.com>, UNGLinuxDriver@microchip.com,
- Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Maxime Chevallier <maxime.chevallier@bootlin.com>,
- Simon Horman <horms@kernel.org>, Heiner Kallweit <hkallweit1@gmail.com>,
- Russell King <linux@armlinux.org.uk>, Tristram Ha <Tristram.Ha@microchip.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- Fidelio Lawson <fidelio.lawson@exotec.com>
-References: <20260505-ksz87xx_errata_low_loss_connections-v5-0-da4002b21c42@exotec.com>
- <fe01752d-95d4-4686-b536-0acc8a2046cb@nabladev.com>
- <ad1d07ed-2fe7-40c3-a043-dd6d2c1c4f8f@gmail.com>
-Content-Language: en-US
-From: Marek Vasut <marex@nabladev.com>
-In-Reply-To: <ad1d07ed-2fe7-40c3-a043-dd6d2c1c4f8f@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260520101310.128969-2-minda.chen@starfivetech.com>
 
-On 5/20/26 8:49 AM, Fidelio LAWSON wrote:
-> On 5/16/26 03:44, Marek Vasut wrote:
->> Is there still anything left to do with this series ?
+On Wed, May 20, 2026 at 06:13:08PM +0800, Minda Chen wrote:
+> yt8531_set_ds() default set register with mdio lock and only called
+> with YT8531 PHY. But new type YT8531s support RGMII and has the same
+> pin strength setting with YT8531, YT8531s need to call yt8531_set_ds()
+> setting pin drive strength. But YT8531s config init function
+> yt8521_config_init() already get the mdio lock with phy_select_page().
+> If calling yt8521_config_init() with mdio lock will cause dead lock.
 > 
-> Hi, sorry for the delay I just got back from a trip.
-> Thanks for your feedback! I’ll fix everything and submit a new version 
-> today.
-No worries. Thank you for V6 !
+> Need to get the lock before calling yt8531_get_ds() and move mdio
+> lock out from it for YT8531s.
+> 
+> Signed-off-by: Minda Chen <minda.chen@starfivetech.com>
+> Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+
+    Andrew
