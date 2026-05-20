@@ -1,48 +1,50 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 466373B892D
-	for <netdev@vger.kernel.org>; Wed, 20 May 2026 22:05:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98D5C3BE642;
+	Wed, 20 May 2026 22:16:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779314722; cv=none; b=Q3b3qig70DuIyRufC+5NnMVeNfBoYQoPLWou3NH76dC5Rc9wu+agvoabEIZ7UgFjb1yRnFFRmYEq8Pzbtz0sBDfm3Enngj3a9HteP2KRyjJ7cGaoS4/ombvPXjf5HwkPydH/bTcxW7g3jqN9Afex69RaVCsCKWZJWwH07mQwCzg=
+	t=1779315372; cv=none; b=iteDpIBS3aIZuUUzZHRhW52oew6/+hJeFyg4tn2U5hwdpwNq+EziExgGKRj97t4nygwR8MC2o+aFIn/Obhnlc/k239OEKcznQftcqVwxvRVvMzpRmutwSn2RzKVJQ9KwVe5GVqfrSoXb9PEMdyGP5OquQ9hu65nfmSXcJRB08LA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779314722; c=relaxed/simple;
-	bh=EAHj+kn6zB+s9R9kYRpAYo5FWjV8HrADCmvZWmSfGnM=;
+	s=arc-20240116; t=1779315372; c=relaxed/simple;
+	bh=c/oDHDdVGvSyLqzoLzBh8Avjt+YlOJI5jmoykGAOf/c=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=frvi3huXGr5zyC34/OhqLgYw2EWPLoyDouovQyZpMUJdwLo7dEwEOMTtgkGAdrIQtB/l0TBgwPMRYzjgEV75N6oFpS7YJl2RZ+hCWbvomsVlBvF54l7tcnZJ/S7cJCNmXrWdhSaHiIpOqdsBhPj4ZH+Gk3s1m/02Ez1B8y0AM5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K+IBJMrN; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=lXir68NwqsL+xgOWwy7b2R6NM1eDistbDZcNb06ogbeDGOuV5mZq5g1WRKlNdCXLj+70NliLc2QeGdTF+ry8/fn0sIO+qX/iF7J7rrbOF9cmMwwSuGJChTdSyN4yqa7R+4vomig17O1VH4+AeimvfbNNbGGQdBRFFBNei1LVAbE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Tbk8kwOS; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K+IBJMrN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 355C71F000E9;
-	Wed, 20 May 2026 22:05:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Tbk8kwOS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0897A1F000E9;
+	Wed, 20 May 2026 22:16:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779314719;
-	bh=G1PwypRSKkHU7CNvvo+j/kzpCpTnWOTagmLtKbZfVNk=;
+	s=k20260515; t=1779315371;
+	bh=c/oDHDdVGvSyLqzoLzBh8Avjt+YlOJI5jmoykGAOf/c=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=K+IBJMrNxPlSbXrOGEQjMcu3pgfL385kGkvyiO9VffK78DnuQPiDQ5+Q+5VyaAS6+
-	 TybYAz2TS4QDvl9XQn6vdyYVYLig8/STJnJjOyyOfcdKMZbjkhzhz1alYEa08Vi7EN
-	 bGvd3cij1+eiTsluN1c3/yBBGw1++w4dvLFyHm+OK9hAFSFpWnV++QGI9V3ZwmzEFi
-	 Ww4nTlcU6iSxhPChDLvwBges7+4rRM7/ucWAncsJJVXq5UHaORu/TnacSwxZeXT0U4
-	 7pp02nb7ep1yQ70GkYmCM/p3kHlFMRNm7PWMTLPc7RKtG8E+ukrCrEF6Kkwl/Hzr2W
-	 82JBh5j3saO/w==
-Date: Wed, 20 May 2026 15:05:18 -0700
+	b=Tbk8kwOSJntaBrA7WS58xqdsZ4XdjJLNBvtCcXHpneMh2pudjAzO0rpVCax0rDUIO
+	 y1PCo6X+wCq/lJKIzsTsBmlrustqsr6xZz3HGJhtoqDORVZz2pnPiUdmuLydtSKz1w
+	 WZQlxK+PEk1yKQLAWE2rE6Tc8hUZZq3ZsxToqOsyvGVKPV60rCjamMl1DsgFFAZm0M
+	 MzMpgpgNGjuXffjV58mi7IWzl1OKwL+UxqujP/TYchjJcoLozA7PM8zTiAGvfmlSHJ
+	 xXSLpB8+Nn89lQcIke/XU+EAbHh/mGQn3/jZPzOTnLBicLSV28Sv82ciOgFvWOIn0K
+	 cvyjYzRVIrenw==
+Date: Wed, 20 May 2026 15:16:09 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Gal Pressman <gal@nvidia.com>
-Cc: Willem de Bruijn <willemb@google.com>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
- <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- netdev@vger.kernel.org, Simon Horman <horms@kernel.org>, Dragos Tatulea
- <dtatulea@nvidia.com>, Alice Mikityanska <alice@isovalent.com>, Matthew
- Schwartz <matthew.schwartz@linux.dev>
-Subject: Re: [PATCH net v2 2/2] udp: Fix UDP length on last GSO_PARTIAL
- segment
-Message-ID: <20260520150518.2e65eb26@kernel.org>
-In-Reply-To: <f829d309-a4b8-4474-85ab-da5ffffc801a@nvidia.com>
-References: <20260518062250.3019914-1-gal@nvidia.com>
-	<20260518062250.3019914-3-gal@nvidia.com>
-	<20260519181200.323fbaef@kernel.org>
-	<f829d309-a4b8-4474-85ab-da5ffffc801a@nvidia.com>
+To: Thomas Gleixner <tglx@kernel.org>
+Cc: Harshitha Ramamurthy <hramamurthy@google.com>, netdev@vger.kernel.org,
+ joshwash@google.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, pabeni@redhat.com, richardcochran@gmail.com,
+ jstultz@google.com, sboyd@kernel.org, willemb@google.com,
+ nktgrg@google.com, jfraker@google.com, ziweixiao@google.com,
+ maolson@google.com, jordanrhee@google.com, thostet@google.com,
+ alok.a.tiwari@oracle.com, pkaligineedi@google.com, horms@kernel.org,
+ dwmw2@infradead.org, jacob.e.keller@intel.com, yyd@google.com,
+ jefrogers@google.com, linux-kernel@vger.kernel.org, Naman Gulati
+ <namangulati@google.com>
+Subject: Re: [PATCH net-next v8 3/3] gve: implement PTP gettimex64
+Message-ID: <20260520151609.7e7272ac@kernel.org>
+In-Reply-To: <87mrxtwzz9.ffs@tglx>
+References: <20260514225842.110706-1-hramamurthy@google.com>
+	<20260514225842.110706-4-hramamurthy@google.com>
+	<87mrxtwzz9.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -52,24 +54,12 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 20 May 2026 19:34:17 +0300 Gal Pressman wrote:
-> On 20/05/2026 4:12, Jakub Kicinski wrote:
-> > On Mon, 18 May 2026 09:22:50 +0300 Gal Pressman wrote:  
-> >> +	if (!skb_is_gso(seg))
-> >> +		/* last packet can be partial gso_size, account for that in
-> >> +		 * checksum.
-> >> +		 */  
-> > 
-> > No need to repost but I think we should tweak this comment.
-> > Saying "partial gso_size" when it such segment is in fact
-> > not part of GSO_PARTIAL is a bit confusing. How about:
-> > 
-> > 	/* Unless skb fits perfectly as GSO_PARTIAL, the trailing
-> > 	 * segment may not be full MSS, account for that in the checksum
-> > 	 */
-> > 
-> > ?  
-> 
-> Sounds good, should I submit a patch?
+On Wed, 20 May 2026 23:08:42 +0200 Thomas Gleixner wrote:
+> Jakub, please back out this hackery before it makes a precedence for others
+> to copy from.
 
-I'll edit, don't want it to miss the PR
+Done! 0ae361f7e43c in net-next.
+
+I'd also appreciate if you could cast your eyes over:
+https://lore.kernel.org/20260515164033.6403-3-akiyano@amazon.com
+Different kettle of fish, but firmly more time than network..
