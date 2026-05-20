@@ -1,115 +1,267 @@
-Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [13.75.44.102])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA7A63A6B85;
-	Wed, 20 May 2026 08:13:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.75.44.102
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 801DA3A9618;
+	Wed, 20 May 2026 08:13:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779264837; cv=none; b=bibP1exkV6mZxtIdn3zkPxU3v4rV9ykme6RvgTfkgIgB415/X1wB4AxufpHyWfg3ecibLQ+UCshHM84krYYu5a2CzMn761TN0bRPIf1n3kAsdbadZswIWjfKVQ4kORltUBVM7qwqukvEZA4jf2QPr1SDU0q+uTRqBnXhntp20Og=
+	t=1779264837; cv=none; b=YIfjA8kBY/jwo4sCsxoyaV9OGQXmxvbNIu6Qtwe0Bdv/dsJ0Hp9NZjjyv2fwgJQMNdujQFPQ4OibVPKOTFr/gapX6Y3RrgCVfaDuFjuUxl42sAbja/j181xl3Vakih0CRU3/bz4+5Mhvf4cKMlFezwvudvSFoSA0LRpskcuIFj0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1779264837; c=relaxed/simple;
-	bh=mCej5s/Yy1VjGo+6rc5dQHYPIEQkYEXhZE8zsMN8jts=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oSun+71SBqF55qaLthC+/zVLHJdm5uWJ7lEBy9s1yFv9TrS4obEX2UNDK2K6lCJBU4gFDZ+9v/tj1mwB5vJBXj3v1bt4zVO0ympdZif/NveHIqH0w1FqH5BsYpJzpiRiOMrCu2Aq0MRY4liNZc0BnaliYM2PKQWaBZFtzdJWuLM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lzu.edu.cn; spf=pass smtp.mailfrom=lzu.edu.cn; arc=none smtp.client-ip=13.75.44.102
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lzu.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lzu.edu.cn
-Received: from enjou-Legion-Y7000P-2019 (unknown [172.23.56.36])
-	by app1 (Coremail) with SMTP id ygmowACHqMItbQ1qwY4YAA--.980S3;
-	Wed, 20 May 2026 16:13:37 +0800 (CST)
-From: Ren Wei <n05ec@lzu.edu.cn>
-To: linux-nfs@vger.kernel.org,
-	netdev@vger.kernel.org
-Cc: trondmy@kernel.org,
-	anna@kernel.org,
-	chuck.lever@oracle.com,
-	jlayton@kernel.org,
-	neil@brown.name,
-	okorniev@redhat.com,
-	Dai.Ngo@oracle.com,
-	tom@talpey.com,
-	yuantan098@gmail.com,
-	yifanwucs@gmail.com,
-	tomapufckgml@gmail.com,
-	bird@lzu.edu.cn,
-	rakukuip@gmail.com,
-	n05ec@lzu.edu.cn
-Subject: [PATCH 1/1] sunrpc: clear rq_procinfo in svc_release_rqst to prevent double-free
-Date: Wed, 20 May 2026 16:13:28 +0800
-Message-ID: <8c4cfe3656a817a64da9cf62e42282a1f308b9dd.1779253342.git.rakukuip@gmail.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <cover.1779253342.git.rakukuip@gmail.com>
-References: <cover.1779253342.git.rakukuip@gmail.com>
+	bh=LVJa7OLomApodwFo/TFA23Ll0HhUoBmeJWw5IkMtIZs=;
+	h=From:Subject:Date:Message-ID:MIME-Version:Content-Type:To:CC; b=nKhs754JcncxyipRpo0LRHM8YdFde4SswRO+H7VwfRdhM3PGAH7sbgBHXE7jAgs6KLTO+IVvXjBwwDi6b0NPbw8e5iHDJ4Pr45B7gK1rS5btj+0CjofJCWnCdfwY65CeE52PUb9/B4q6Ef7t8qDSkVekcanCOGyBAHtLFSm87ok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=HRxnodzn; arc=none smtp.client-ip=68.232.153.233
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="HRxnodzn"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1779264836; x=1810800836;
+  h=from:subject:date:message-id:mime-version:
+   content-transfer-encoding:to:cc;
+  bh=LVJa7OLomApodwFo/TFA23Ll0HhUoBmeJWw5IkMtIZs=;
+  b=HRxnodznsFVZv0nWzVQUps0N6hWE24CEQhytRPkqGLKcD8LjxCNyzhX4
+   lezFecKZp5HLbUHzwFKxGqasrVXNNGUFlx42u+xcdFIvyICCB8U6Bj8hS
+   l5IPzy6pAPktZnrmxzNf+6z9kF2UEJ6pMG+6L65w2vGBbjqFTvFjjEpVC
+   eV7s8KYc9Q0CXrwCrTN7sjUfGncYN5xK3CzIqs9B+VD0ya3L7c/xD3kJI
+   udiBAbN3kDSDJNI28x60E3YYqutq0eoMJvlK59wUgPsVaQNZ9lzTJs/J/
+   2MzYRVwhBt9R15ZYhh334meCHI7E/EuA7eVTa8GsMur34j2Yv3ZdiFcwF
+   w==;
+X-CSE-ConnectionGUID: u0ySWR97SFSrKQL3IyTtvw==
+X-CSE-MsgGUID: u7Tp5ZH1TPCeHfY2EgMQUQ==
+X-IronPort-AV: E=Sophos;i="6.23,243,1770620400"; 
+   d="scan'208";a="289165608"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa5.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2026 01:13:54 -0700
+Received: from chn-vm-ex03.mchp-main.com (10.10.87.152) by
+ chn-vm-ex2.mchp-main.com (10.10.87.31) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.2.2562.37; Wed, 20 May 2026 01:13:53 -0700
+Received: from DEN-DL-M70577.microsemi.net (10.10.85.11) by
+ chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server id
+ 15.1.2507.58 via Frontend Transport; Wed, 20 May 2026 01:13:50 -0700
+From: Daniel Machon <daniel.machon@microchip.com>
+Subject: [PATCH net-next v5 00/13] net: lan966x: add support for PCIe FDMA
+Date: Wed, 20 May 2026 10:12:12 +0200
+Message-ID: <20260520-lan966x-pci-fdma-v5-0-ca56197ae05b@microchip.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:ygmowACHqMItbQ1qwY4YAA--.980S3
-X-Coremail-Antispam: 1UD129KBjvJXoW7tF45tw1kJF4ruFy7Wr4Durg_yoW8AF4UpF
-	WSyw47JrykKF1DZwn0yFyrZr48CFsYgr17GrZFya1fZ3W3XryUAryF9FWv9w4DAFWrWa1j
-	vr1qvF4ayrs8Z3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUBY1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AE
-	w4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2
-	IY67AKxVW7JVWDJwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8Jr0_Cr1UM28EF7xvwVC2
-	z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s0DM2AIxVAIcxkEcV
-	Aq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j
-	6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64
-	vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0E
-	n4kS14v26r1q6r43MxkIecxEwVCm-wCF04k20xvY0x0EwIxGrwCF04k20xvE74AGY7Cv6c
-	x26r48MxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCj
-	r7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY6x
-	IIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAI
-	w20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x
-	0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUbGQ6JUUUUU==
-X-CM-SenderInfo: zqqvvuo6o23hxhgxhubq/1tbiAQENCWoNUPACIQAAsg
+X-B4-Tracking: v=1; b=H4sIANxsDWoC/23OwW7DIAwG4FepOJfKAUPJTnuPqQcCZkFqSESiK
+ FOVdy/KDp06jr9++7MfbKYcaWYfpwfLtMY5jqkEdT4x19v0TTz6kpkAoUE2kt9tarXe+OQiD36
+ wvEXyaJQXMlhW1qZMIW4H+cUSLTzRtrBbafo4L2P+OW6tzdH/sgL+s2vDgVNQ6Lq2A4fd5xBdH
+ l0fp4sbhwNcxQtBYSqIKIiX5LQm0GWuhsgXogAriCyIVTqoK4I3V6gh+BepfYIFaZDAmdYbr+U
+ 7su/7E5VQyviNAQAA
+X-Change-ID: 20260313-lan966x-pci-fdma-94ed485d23fa
+To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Horatiu Vultur
+	<horatiu.vultur@microchip.com>, Steen Hegelund
+	<steen.hegelund@microchip.com>, <UNGLinuxDriver@microchip.com>, "Alexei
+ Starovoitov" <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+	"Jesper Dangaard Brouer" <hawk@kernel.org>, John Fastabend
+	<john.fastabend@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>, Herve
+ Codina <herve.codina@bootlin.com>, Arnd Bergmann <arnd@arndb.de>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>, Mohsin Bashir
+	<mohsin.bashr@gmail.com>
+CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<bpf@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>
+X-Mailer: b4 0.14.3
 
-From: Luxiao Xu <rakukuip@gmail.com>
+When lan966x operates as a PCIe endpoint, the driver currently uses
+register-based I/O for frame injection and extraction. This approach is
+functional but slow, topping out at around 33 Mbps on an Intel x86 host
+with a lan966x PCIe card.
 
-The svc_release_rqst() function unconditionally calls
-rqstp->rq_procinfo->pc_release. However, svc_process_common()
-does not clear rq_procinfo when a worker thread starts processing
-a new request.
+This series adds FDMA (Frame DMA) support for the PCIe path. When
+operating as a PCIe endpoint, the internal FDMA engine on lan966x cannot
+directly access host memory, so DMA buffers are allocated as contiguous
+coherent memory and mapped through the PCIe Address Translation Unit
+(ATU). The ATU provides outbound windows that translate internal FDMA
+addresses to PCIe bus addresses, allowing the FDMA engine to read and
+write host memory. Because the ATU requires contiguous address regions,
+page_pool and normal per-page DMA mappings cannot be used. Instead,
+frames are transferred using memcpy between the ATU-mapped buffers and
+the network stack. With this, throughput increases from ~33 Mbps to
+~620 Mbps for default MTU.
 
-If a previous RPC selected a procedure with a non-idempotent
-release hook, and the subsequent RPC takes an early error path
-before a new rq_procinfo is installed (e.g., due to an oversized
-RPC fragment, bad auth, or unknown program), the stale release
-hook will run against reused state from the earlier RPC. This
-leads to a double-free or use-after-free vulnerability.
+Patch 1 adds the shared drivers/net/ethernet/microchip/fdma/ directory
+to the Sparx5 SoC MAINTAINERS entry.
 
-Fix this by setting rqstp->rq_procinfo to NULL immediately after
-executing the release hook in svc_release_rqst(), ensuring that
-stale procedure hooks cannot be re-triggered on early errors.
+Patches 2-3 prepare the shared FDMA library: patch 2 renames the
+contiguous dataptr helpers for clarity, and patch 3 adds PCIe ATU
+region management and coherent DMA allocation with ATU mapping.
 
-Fixes: d9adbb6e10bf ("sunrpc: delay pc_release callback until after the reply is sent")
-Cc: stable@kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Luxiao Xu <rakukuip@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Patches 4-6 refactor the lan966x FDMA code to support both platform
+and PCIe paths: extracting the LLP register write into a helper,
+exporting shared functions, and introducing an ops dispatch table
+selected at probe time.
+
+Patches 7-8 harden the existing FDMA path for the PCIe endpoint
+lifecycle: patch 7 clears latched FDMA error/interrupt stickies after
+the switch reset so they don't assert as soon as interrupts are
+enabled, and patch 8 adds a shutdown() callback that quiesces the
+FDMA engine on host warm reboot (on the PCIe card the FDMA survives
+host reset and would otherwise keep the shared INTx asserted into
+the next probe).
+
+Patch 9 adds the core PCIe FDMA implementation with RX/TX using
+contiguous ATU-mapped buffers. Patches 10 and 11 extend it with MTU
+change and XDP support respectively. XDP_PASS, XDP_TX, XDP_DROP and
+XDP_ABORTED are supported; XDP_REDIRECT is deliberately not, because
+the PCIe data path does not use page_pool.
+
+Patches 12-13 update the lan966x PCI device tree overlay to extend the
+cpu register mapping to cover the ATU register space and add the FDMA
+interrupt.
+
+To: Andrew Lunn <andrew+netdev@lunn.ch>
+To: David S. Miller <davem@davemloft.net>
+To: Eric Dumazet <edumazet@google.com>
+To: Jakub Kicinski <kuba@kernel.org>
+To: Paolo Abeni <pabeni@redhat.com>
+To: Horatiu Vultur <horatiu.vultur@microchip.com>
+To: Steen Hegelund <steen.hegelund@microchip.com>
+To: UNGLinuxDriver@microchip.com
+To: Alexei Starovoitov <ast@kernel.org>
+To: Daniel Borkmann <daniel@iogearbox.net>
+To: Jesper Dangaard Brouer <hawk@kernel.org>
+To: John Fastabend <john.fastabend@gmail.com>
+To: Stanislav Fomichev <sdf@fomichev.me>
+To: Herve Codina <herve.codina@bootlin.com>
+To: Arnd Bergmann <arnd@arndb.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Mohsin Bashir <mohsin.bashr@gmail.com>
+Cc: netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: bpf@vger.kernel.org
+Cc: linux-arm-kernel@lists.infradead.org
+
+Signed-off-by: Daniel Machon <daniel.machon@microchip.com>
 ---
- net/sunrpc/svc.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+Changes in v5:
 
-diff --git a/net/sunrpc/svc.c b/net/sunrpc/svc.c
-index d8ccb8e4b5c2..0332f05e7061 100644
---- a/net/sunrpc/svc.c
-+++ b/net/sunrpc/svc.c
-@@ -1572,8 +1572,10 @@ static void svc_release_rqst(struct svc_rqst *rqstp)
- {
- 	const struct svc_procedure *procp = rqstp->rq_procinfo;
- 
--	if (procp && procp->pc_release)
-+	if (procp && procp->pc_release) {
- 		procp->pc_release(rqstp);
-+		rqstp->rq_procinfo = NULL;
-+	}
- }
- 
- /**
+This version fixes a single AI review issue, flagged by Paolo. Other AI
+issues  for v4 has been classified as pre-existing or changes for
+follow-ups.
+
+- Fix premature napi_complete_done() in lan966x_fdma_pci_napi_poll() on
+  FDMA_ERROR and napi_alloc_skb() failure. Bailing out left DONE=1 DCBs
+  in the ring with no IRQ to drain them. Drop the frame and continue
+  the poll loop instead. Bump rx_dropped on memory-pressure drop.
+  (Paolo)
+- Link to v4: https://lore.kernel.org/r/20260508-lan966x-pci-fdma-v4-0-14e0c89d8d63@microchip.com
+
+Changes in v4:
+- Consolidate rx size checks into lan966x_fdma_pci_rx_size_fits().
+  Subtract XDP_PACKET_HEADROOM on the max size check, and add ETH_HLEN
+  on the min size check. This fixes potential OOB reads/writes.
+- On xdp_prepare_buff(), update comment to clarify that data is already
+  offset by XDP_PACKET_HEADROOM.
+- Link to v3:
+  https://lore.kernel.org/r/20260504-lan966x-pci-fdma-v3-0-a56f5740d870@microchip.com
+
+Changes in v3:
+
+Version 3 fixes a number of issues reported by sashiko - mostly
+hardening.
+
+- Fix double use of XDP_PACKET_HEADROOM.
+- Fix ERR_PTR persistence in fdma->atu_region and add missing
+  NULL/ERR_PTR guard in fdma_pci_atu_region_unmap().
+- Reject size <= 0 in fdma_pci_atu_region_map() and return
+  -ENOSPC (was -ENOMEM) when no region is free.
+- Introduce lan966x_fdma_pci_tx_size_fits() that accounts for
+  XDP_PACKET_HEADROOM; use it from both xmit paths to keep
+  bpf_xdp_adjust_tail from writing past the TX slot.
+- Validate BLOCKL in rx_check_frame() (reject < IFH+FCS or
+  > db_size) before it feeds memcpy/XDP sizes.
+- READ_ONCE(port->xdp_prog) inside lan966x_xdp_pci_run() to close
+  a TOCTOU on XDP detach that could deref NULL in
+  bpf_prog_run_xdp().
+- Strip IFH and FCS pre-XDP in rx_check_frame(). After BPF runs
+  the driver cannot tell whether the tail was modified; drop the
+  unconditional skb_pull/skb_trim in rx_get_frame().
+- Account tx_bytes/tx_packets on XDP_TX success and tx_dropped on
+  XDP_TX size reject.
+- Add dma_wmb()/dma_rmb() around DCB status writes and reads in
+  xmit, xmit_xdpf, and napi_poll.
+- Collected Tested-by: Hervé Codina.
+- Link to v2: https://lore.kernel.org/r/20260428-lan966x-pci-fdma-v2-0-d3ec66e06202@microchip.com
+
+Changes in v2:
+
+Version 2 primarily addresses issues with module unload/load, where
+traffic would stop working (Hervé), and XDP head/tail adjust that would be
+discarded (Mohsin).
+
+Apart from that, I ran through issues reported by Sashiko, and fixed a
+number of other issues.
+
+- New patch 1: add drivers/net/ethernet/microchip/fdma/ to the Sparx5
+  SoC MAINTAINERS entry.
+- New patch 7: clear latched FDMA error/interrupt stickies after the
+  switch reset so they don't fire as soon as interrupts are enabled.
+- New patch 8: shutdown() callback, quiescing FDMA on host warm reboot.
+- Replaced the depth-2 dev_is_pci(parent->parent) backend selector
+  with a parent-chain walk.
+- XDP: use xdp.data/xdp.data_end for the post-XDP frame length so that
+  bpf_xdp_adjust_head/tail are respected (Mohsin Bashir)
+- MTU change: drain in-flight xmits with netif_tx_disable() on every
+  port before reallocating rings, waking them again on completion.
+- MTU change: cap the PCIe DCB ring at 256 entries so a full-ring
+  coherent DMA allocation fits in a single MAX_PAGE_ORDER block at
+  jumbo MTU.
+- PCIe ATU: disable the region before clearing its translation on
+  unmap.
+- PCIe FDMA: hold tx_lock in napi_poll around the free-DCB check used
+  to wake stopped netdev queues.
+- PCIe FDMA: return -ENOSPC (not -1) when the DCB ring is exhausted.
+- Link to v1: https://lore.kernel.org/r/20260320-lan966x-pci-fdma-v1-0-ef54cb9b0c4b@microchip.com
+
+---
+Daniel Machon (13):
+      MAINTAINERS: add FDMA library to Sparx5 SoC entry
+      net: microchip: fdma: rename contiguous dataptr helpers
+      net: microchip: fdma: add PCIe ATU support
+      net: lan966x: add FDMA LLP register write helper
+      net: lan966x: export FDMA helpers for reuse
+      net: lan966x: add FDMA ops dispatch for PCIe support
+      net: lan966x: clear FDMA interrupt stickies after switch reset
+      net: lan966x: add shutdown callback to stop FDMA on reboot
+      net: lan966x: add PCIe FDMA support
+      net: lan966x: add PCIe FDMA MTU change support
+      net: lan966x: add PCIe FDMA XDP support
+      misc: lan966x-pci: dts: extend cpu reg to cover PCIE DBI space
+      misc: lan966x-pci: dts: add fdma interrupt to overlay
+
+ MAINTAINERS                                        |   1 +
+ drivers/misc/lan966x_pci.dtso                      |   5 +-
+ drivers/net/ethernet/microchip/fdma/Makefile       |   4 +
+ drivers/net/ethernet/microchip/fdma/fdma_api.c     |  33 +
+ drivers/net/ethernet/microchip/fdma/fdma_api.h     |  25 +-
+ drivers/net/ethernet/microchip/fdma/fdma_pci.c     | 182 ++++++
+ drivers/net/ethernet/microchip/fdma/fdma_pci.h     |  42 ++
+ drivers/net/ethernet/microchip/lan966x/Makefile    |   4 +
+ .../net/ethernet/microchip/lan966x/lan966x_fdma.c  |  51 +-
+ .../ethernet/microchip/lan966x/lan966x_fdma_pci.c  | 667 +++++++++++++++++++++
+ .../net/ethernet/microchip/lan966x/lan966x_main.c  |  74 ++-
+ .../net/ethernet/microchip/lan966x/lan966x_main.h  |  45 ++
+ .../net/ethernet/microchip/lan966x/lan966x_regs.h  |  25 +
+ .../net/ethernet/microchip/lan966x/lan966x_xdp.c   |  10 +
+ 14 files changed, 1128 insertions(+), 40 deletions(-)
+---
+base-commit: bf53bf33206137c2337bd8aacf0ef4c348b97a36
+change-id: 20260313-lan966x-pci-fdma-94ed485d23fa
+
+Best regards,
 -- 
-2.43.0
+Daniel Machon <daniel.machon@microchip.com>
 
