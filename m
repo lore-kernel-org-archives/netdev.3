@@ -1,86 +1,78 @@
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ECD031E83B;
-	Wed, 20 May 2026 15:51:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85B0B33ADB3;
+	Wed, 20 May 2026 15:55:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779292308; cv=none; b=DvxjnFY75NR1ktzvXaUi9aJxBhkdKwuwhzP19iYC6smnu2ktXEBmcgF3j9ph15bgAUC2Eht0i9pIFs7JkCZlLMrfWvtMd8SK/bX7FWfAdokB9ze/IHnWXT2YdQYIxWlzMA7toG3p2+0uiemsg8ClXeCdy96fb3ffxskk5vcyeu4=
+	t=1779292546; cv=none; b=pWPTKiEhvHzG1IZ8SD+VKDjm5bGKKcaU7iFsuRvjmzNz3nQLj6JxnVVPygvqAPcqk00HN84HZWRm4XmmVUQWtDm9Q7oiS0RY2qlA1B/VrInym35WsT0RjnOp/H+Nu5BQ5mVXLSQfZtmlUI84u0z6TJAAMbt+lT4QfxrZ4fzCTi4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779292308; c=relaxed/simple;
-	bh=NAhBWWg0ZB6CWA3GG19rCME9ogowW2XuxCUrHrVRqWE=;
+	s=arc-20240116; t=1779292546; c=relaxed/simple;
+	bh=N+l+E5fceXyJecjgVg6Eg+A806Ep0Y/Nudob3AriYgM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ap7UoCdBTzKycGODD8iDeXQzYsne+3WW2DKTiZd5RJOPiouGPMruWkhsX7TZL+IgS1LKvZjQar4wI1uei15FE3dYnwvTd3SMcFgKPxFzFol9oyTDTqZsobEF7GtC6lsVUkt0/hT7MQULiogXNPrDWIY8fYoOrHsVK6Ok8cT+PYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=DnSQVey9; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=OxqJEhm8Qvvl0XEdIuomQ7nPR9QFkMSy5MozY9+858fuY/S5vOgEatWGUCDNcyZAoc+8BjxPZHnTF3VSvYWenNxiXWLtSu1aRqZbaAb1KAWE2NIIOGU2IlwClgsU2CbuFCA00eGjlI81laTl6vaqN7h2LfvIuZaMNDQxVJwbII0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=AtZ2jJdF; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="DnSQVey9"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=zM2fDYjr7qWmpfBnwppxYNYYbD5OjkaB0pbTrkWJHgs=; b=DnSQVey97xe5fnMBLjn9QZx0HA
-	AF0XEKmr0IKIUtwOcQj4ehdpVygEk1fHUsdfsJKObiJJRG0jvsnBHV1kzrBOmWJMw42NGZjQSwtFj
-	/3jOVO2r8gD9NX6lNcxup6eJgTL6JWZSIwoDUeT2t1psaXtFYrpDJYPAhPk+sx0+HC6Q3p4Vec7Yp
-	rtUd/Whl6Q+Zppv5YuJlFgUVu92ny8tS7TJmfZXW1lPfGePNlLwHq9eFsBQpTpX+q05rYspQu2+sX
-	k5stw31rkkYrN6KAI77aVfp2VL9MtXnnCRzpXqOk6m5O0NE/69FXSaDdSR9UlyvMVnYmAgR+n3gO8
-	EazlwY1A==;
-Received: from authenticated user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1wPjCi-003DI3-0W;
-	Wed, 20 May 2026 15:51:28 +0000
-Date: Wed, 20 May 2026 08:51:21 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: Chas Williams <3chas3@gmail.com>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>, 
-	Magnus Karlsson <magnus.karlsson@intel.com>, Maciej Fijalkowski <maciej.fijalkowski@intel.com>, 
-	Stanislav Fomichev <sdf@fomichev.me>, Alexei Starovoitov <ast@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>, 
-	John Fastabend <john.fastabend@gmail.com>, Jon Maloy <jmaloy@redhat.com>, 
-	Alexandra Winter <wintera@linux.ibm.com>, Thorsten Winkler <twinkler@linux.ibm.com>, 
-	James Chapman <jchapman@katalix.com>, David Howells <dhowells@redhat.com>, 
-	Marc Dionne <marc.dionne@auristor.com>, David Heidelberg <david+nfc@ixit.cz>, 
-	Samuel Ortiz <sameo@linux.intel.com>, linux-atm-general@lists.sourceforge.net, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, bpf@vger.kernel.org, tipc-discussion@lists.sourceforge.net, 
-	linux-s390@vger.kernel.org, linux-afs@lists.infradead.org, oe-linux-nfc@lists.linux.dev, 
-	kernel-team@meta.com
-Subject: Re: [PATCH net-next v2 7/7] tipc: convert to getsockopt_iter
-Message-ID: <ag3Ya7YK3iTi3ERI@gmail.com>
-References: <20260515-getsock_four-v2-0-0d8eed952627@debian.org>
- <20260515-getsock_four-v2-7-0d8eed952627@debian.org>
- <c05304bd-1c7a-486a-9929-e6947de07adb@redhat.com>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="AtZ2jJdF"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
+	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
+	In-Reply-To:References; bh=1u/ohTUB+QTwLw2t6IUBUdKZdPCSQ9E31Qe3GG66JzY=; b=At
+	Z2jJdFOSFDLQb0jQv+AeUw3I+xxRH7P7pE0/xWPO95oVlHDM1ABKPguGtHcYDao/e2iZqETvUmQGa
+	08Bc/0QuL2lcmJqitzol/kDUCg9YpMkVY9HwB50QlccTl76zze6xYGnaJpcLIdoaxNWI3sFaO0B9j
+	LaSQbD9yI3MnlBI=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wPjGZ-003rNX-Fq; Wed, 20 May 2026 17:55:27 +0200
+Date: Wed, 20 May 2026 17:55:27 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: "leo.moerlein@proton.me" <leo.moerlein@proton.me>
+Cc: netdev@vger.kernel.org, Hauke Mehrtens <hauke@hauke-m.de>,
+	Russell King <linux@armlinux.org.uk>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Buday Csaba <buday.csaba@prolan.hu>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] net: phy: mdio_device: leave PHY reset deasserted on
+ unregister
+Message-ID: <57b43ade-2c7b-4eaf-b9fa-406edee0fe44@lunn.ch>
+References: <20260520151355.1371163-1-leo.moerlein@proton.me>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <c05304bd-1c7a-486a-9929-e6947de07adb@redhat.com>
-X-Debian-User: leitao
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260520151355.1371163-1-leo.moerlein@proton.me>
 
-On Tue, May 19, 2026 at 04:08:39PM +0200, Paolo Abeni wrote:
-> On 5/15/26 10:32 AM, Breno Leitao wrote:
-> > @@ -3260,7 +3260,6 @@ static int tipc_getsockopt(struct socket *sock, int lvl, int opt,
-> >  		break;
-> >  	case TIPC_CONN_TIMEOUT:
-> >  		value = tsk->conn_timeout;
-> > -		/* no need to set "res", since already 0 at this point */
+On Wed, May 20, 2026 at 03:13:59PM +0000, leo.moerlein@proton.me wrote:
+> From: Leonardo Mörlein <leo.moerlein@proton.me>
 > 
-> Since you have to repost, there is another obsoleted comment referring
-> to "res" later on:
+> Some PHY devices are discovered again after the MDIO bus is torn down and
+> reprobed, for example when a parent driver first returns -EPROBE_DEFER and
+> is probed again later.
 > 
-> 		return res;	/* "get" failed */
-> 
-> please strip it, too.
+> This breaks boards where external PHYs have per-device reset lines
+> described through reset-gpios. mdiobus_register_device() acquires the
+> reset GPIO and asserts reset, mdio_probe() later deasserts it for the
+> active device, but mdiobus_unregister_device() used to release the GPIO
+> descriptor without first driving the line back to the inactive state.
+> If that descriptor was the last owner, then the PHY could remain held
+> in reset across the next bus registration and disappear from the reprobe
+> scan.
 
-ack!
+I'm wondering if we are fixing the wrong thing here.
 
-thanks for the review,
---breno
+Rather than take it out of reset, should it not be put into reset? I
+assume the bootloader is taking it out of reset?
+
+Or does it have a pullup/down so if the GPIO defaults as an input/HiZ,
+it defaults out of reset? When the GPIO is unregistered, are we
+leaving it as an output?
+
+	Andrew
