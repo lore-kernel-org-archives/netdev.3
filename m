@@ -1,86 +1,80 @@
-Received: from mail-yx1-f47.google.com (mail-yx1-f47.google.com [74.125.224.47])
+Received: from mail-yx1-f41.google.com (mail-yx1-f41.google.com [74.125.224.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7C5C389119
-	for <netdev@vger.kernel.org>; Wed, 20 May 2026 21:30:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 455EC3793B0
+	for <netdev@vger.kernel.org>; Wed, 20 May 2026 21:38:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779312624; cv=none; b=mCJ5J7LtI2uErOrrY3i44/TgN6xN+hyK3qKL+2U1Flf22xfBi9X87/GK54yYkuZu0wBb41s/AuULu6lhEXjW6lbfcYWlZET00DhU/PXwjAQrpRLnA/il+tW+ucve0T62iKT7wnyNb0xBRUPWNuJ9YqScAX2O/2nVFhB4T6OwOYM=
+	t=1779313114; cv=none; b=luPJ0jS/EfvRmCS/s9PiG6YHI3zGV0RcXQy3B5RYRy267q1R7kigdlOaEPoawVM3/uUGI93IFt3FnUI/uyBXd0N4GA9s0SYasSC5ZEQ/acEU/LZle5oB4CksGuc1hlLPYCto8xvQYOFxyGMhGS4InklL7pLIexRvWb8PgrbSDlc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779312624; c=relaxed/simple;
-	bh=CNa2gn4pFs3ZChw13qtMs/nrIOyVd4U11OySKw0hQjc=;
+	s=arc-20240116; t=1779313114; c=relaxed/simple;
+	bh=m8Spt57/uFuz8wjsUieWfes589nQuJjHFzkyLWJK41E=;
 	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=FGIxipm7rA1cuTCXqZOkG5aiP+5gapER/dNltEqs8Viy28NAM/ww7qgw0vLDS7kSDYLF5SV8cC+H7tShrDG1FY888iLTz+fD3bV8r2ACUE+S+siv8sv9OI/DYYbCdAxlKWupL5VdFrNOlcHUGfyQYN6UK3IHWbK/fz8Xfafhb/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Qov4Ksyo; arc=none smtp.client-ip=74.125.224.47
+	 Mime-Version:Content-Type; b=lVukWRi0YST+SgVUq9s94NHP1QBaQwODOCm55BPd285CT/zrJA4KRvsJvNnai6PyUE5MmXRjeqPoS1Dfp95EaSq3y8pEGvlFuf1BHHxc2ZGULgpMi4UUrRmmLGFubPdJncK68nTM9KhOmLW8RfcFDESZtWpCK/aM2vuqeWqGjUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=oATaWhoz; arc=none smtp.client-ip=74.125.224.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Qov4Ksyo"
-Received: by mail-yx1-f47.google.com with SMTP id 956f58d0204a3-65c3ea2ebf7so6287849d50.0
-        for <netdev@vger.kernel.org>; Wed, 20 May 2026 14:30:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="oATaWhoz"
+Received: by mail-yx1-f41.google.com with SMTP id 956f58d0204a3-65c5361142fso5371764d50.0
+        for <netdev@vger.kernel.org>; Wed, 20 May 2026 14:38:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779312622; x=1779917422; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1779313112; x=1779917912; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:subject:references
          :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=C+KjHLBU525JouIaDV1NgtcuH83HscW0YCgR8XNPGw0=;
-        b=Qov4KsyodNaYoKKYGw8QXb0+Qu4SMVW8i44WdAko6Pn9HnrUsPa6L7IqX3v+/wC7+s
-         o4SvVPDi3hO/Ka5e9rgBvgaF/rOVe5ZD5fDc2hhPu+R9gk82O4v19sddEP43dDG/5SJl
-         0xXQO/w3Pt+qJdM3cGdz7gw2fZc5cwHDc3EzFXpr7Szk+iSe6FFDkYWbFYxNMpnOiG6C
-         hUfsQu2nBVJiOYio+6Q/pBEF989u6fI3mTeFsPAvqEZFu80dMIQK2jUN3BjepdAOsfKQ
-         CCbVpag47HIJWD1qjmXFu4KTEGlnWxQSMRD01mBEDL/JsOR6ihhyv6H7oLa+O/1Uggdk
-         IFoA==
+        bh=vEn5SJLrmk2tWKtgT2AI7BtGuIzpEIJPRNDHMeuM90o=;
+        b=oATaWhozEzsE80/wrL6bLnANKLunnAib2l1jQEHFJlWqGDV3u6z1FRoaV4yYPub2xh
+         eVfEwZp7hAVaKK78qysiX9aea+t//jLcHEQNnBqn2meVBdmNfHkuGsNrbFgb8f/dPave
+         tvF29mkUTonhdrRKMyHQT4qOYhuZ2EzGAya8w94SPKcb5YFfYuCNZgT2PtPQQmtDmV3z
+         +ULBVCZMHI1jpmc4JHB5G/sQP4K2NiZQYRo5euKyxTlxFDknuWs31iKmafCsevhS75dp
+         INfbGXVN8/f0aKb0IQBizJBCxl0m3Tscl3nSeymhwhj6yUvL5XYgE/iY6/Hgp+BDFRs3
+         9fqA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779312622; x=1779917422;
+        d=1e100.net; s=20251104; t=1779313112; x=1779917912;
         h=content-transfer-encoding:mime-version:subject:references
          :in-reply-to:message-id:cc:to:from:date:x-gm-gg:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=C+KjHLBU525JouIaDV1NgtcuH83HscW0YCgR8XNPGw0=;
-        b=CZadqwryb7J8suImxuKJJK+4Wgv7WYdUxG4NBk8+Th3UYTgbI/DIR1REnLMUehxbPt
-         N5/Xct1uxctjGEn980g6157HVwWWYKWDppVGvmQrxJh7sh+5D5j4oX6wlr9gH6LoZoNa
-         FdlBBjkSkKxwifJKtnAxrZCnJ72a5sPLHHV/2eSEO5y3d7CvbU573LPw6awI3b1eeg4D
-         Jq/uKtz6pdDVjVXclDeUa2iKok9kO6vek4AJ9SefX9zpXXIDbzxSv4idYilj7yYuegPU
-         Rd//ZcdhcEE9sNypA1Qfiqutn4Q4rVn8GN/fj6SF11ODfo3BbFsbo/+3xVI3Fr8MBSBM
-         MSjQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9jSoeNdgT5LyAp9wwf3eutbN6XcwHPbYaUXbiLiDUaUanIgBjgGJN2EocE2mN7Gm1d937NY0I=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzsTLC0QMYOL5JBrdIW3MCIfsWJ0HedEIx8UqUzwMVVMKpfS8kE
-	sDXMc7p83+MkoneVnBMKmIiMzQYJbHqNro5ixoDR4AxIpa54UFoLHukg
-X-Gm-Gg: Acq92OHWQEuM1orkQqzdHu7OkaOoQKmgm8h5XalWNRd3yRsGMdVtZag1N1GzQ5Y+ZJj
-	NCZ05k6jy5c6GvOglqH0xy3aSfzd5V5G7eOgRGVClMQwG0RzuZRF8OU5NXdU9IcmjDPu0DY+K7b
-	yGPCPRTa4q36LpTz9rJ2/5Z3QfEf8LlPN+PMB3WVDFCtNTsgsh6RhUdVLBqH6dq1PfG5lAqn8LY
-	dyCWmKsaM8+dTzukmam1mCK3/rz70wNVIcdWQ+0pIvzmv30I0GAwu8PRJxFponVLO7WnlyiwwKd
-	9C8f6M4/rvnXCru5++EpXr3hknRVURnVZuusOcQDWtznhxvp35JHaWZ3Ew0jDrN9kBrorsG0vic
-	YndkARjOtU7Nz9EsnFWcvXuRrMeSedCe6mbP5yWgNaL5XYj5dUYTBdxM6EpJ+T2f0eFbSAl8hdU
-	kZbefco9dga/4G1wq1uQ0Y8kh0CAXA4rsN9vVS4kDXlKz0bThOTagq31XtHqKcUNEyjyl4P7370
-	4I010SET6u+VoE=
-X-Received: by 2002:a05:690e:bc6:b0:65e:3c31:533f with SMTP id 956f58d0204a3-65e3c3156b6mr18817387d50.51.1779312621683;
-        Wed, 20 May 2026 14:30:21 -0700 (PDT)
+        bh=vEn5SJLrmk2tWKtgT2AI7BtGuIzpEIJPRNDHMeuM90o=;
+        b=Ef4SLFmnEsVYJoMteBa4E3MVj+5qQC8c+sJy/E6yngcT90TuX8sEV/VC3SDMZpQLGt
+         KuDKCX0JRaOvK22xqlA5oeU370UoitZT9tBfkeSeg0R7faVrpsbej8RX+/k05lXblQ8D
+         7bPL3eBpKOQSsRzdXuGn6Vxeww5RDbwQfoOShXEL06F2Et8k447R8U479j0gZIwfcW1K
+         ihGCK5Xc7N25v0VGXoS6mfJKOnW32MI3hAf9cvfFhyj/AWd1TnLec9UNkCv9AugYA5DL
+         SXACYoNNJVKXaVCq78OspLhscvsuN3LCshiCwfOM/b1I4Nx2e+24anUql6sf6FiB3u4P
+         d3cA==
+X-Forwarded-Encrypted: i=1; AFNElJ8Q8HdUhYCtkyV2QLogMNmzIWOc0hlSflQdbmAlUmdwfELW9AEa3JigRzCEEIe5pHe+mre9BSc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywi1BEBCJumjylo5zApxQTOTvQ9IOnMpo4ubMVXm1+qWQobc1/r
+	sBEbA9kbFiNBhQt8XXRVlhLW3pIem/Qc8ACLKKXsJroJryf6AhnlQuSo
+X-Gm-Gg: Acq92OFcxNwzn+GxiIU7jqoevkgYVMGtfbNMazyVMg0Ki2iPZjgNN+zRBOkV3TaTZE9
+	rv9XOPNZW7a1dsR17/219p8tH6Nhu6qS6tTzptDRiPnc+hionouT8ysFfubMOpCRqIx3tCVdErM
+	gmkdRnYFver1QcE3alBaI3UITYt/KiY7PkpbLEsFSMk86bf7KeBkFq8jVdsycV2KQ8tWxPumHhq
+	zpby5G39xP9awdxD6sFNL12ECbd56/YEbskvPWtz9WwK8WMOQuD8ujxRLvnG7Hip7UbZK9G1wB8
+	5w7R4X+ce1nqe046T3crCzK9nxErkbWQtsoXxhHozLW5pYP7TO1XAfrnn0mbU0MfUItPGHwgBpz
+	Rrqtg3Wc3+a5VdT35LQzC8cLqKVAT74XcIitoPQXNNp9gTY3oNLdNX62afo1D/i2IXJ86QQOgJS
+	94x3phUTvVI0/4CtAaKqCSQRvlomglFnBvtdw6IUEhJKqku5wCaqbZJkCI1EJtiPbBfnUGaMMo6
+	I9f
+X-Received: by 2002:a05:690e:4082:b0:65e:412e:681b with SMTP id 956f58d0204a3-65e412e68a9mr19150907d50.55.1779313112336;
+        Wed, 20 May 2026 14:38:32 -0700 (PDT)
 Received: from gmail.com (172.235.85.34.bc.googleusercontent.com. [34.85.235.172])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-65e0d89b130sm9894594d50.5.2026.05.20.14.30.20
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-65e0dbd1031sm9850856d50.20.2026.05.20.14.38.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 May 2026 14:30:20 -0700 (PDT)
-Date: Wed, 20 May 2026 17:30:20 -0400
+        Wed, 20 May 2026 14:38:31 -0700 (PDT)
+Date: Wed, 20 May 2026 17:38:31 -0400
 From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
- Weiming Shi <bestswngs@gmail.com>, 
- netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org
-Cc: willemdebruijn.kernel@gmail.com, 
- jasowang@redhat.com, 
- andrew+netdev@lunn.ch, 
- davem@davemloft.net, 
- edumazet@google.com, 
- kuba@kernel.org, 
- pabeni@redhat.com, 
- cong.wang@bytedance.com, 
- stable@vger.kernel.org, 
- xmei5@asu.edu, 
- Weiming Shi <bestswngs@gmail.com>
-Message-ID: <willemdebruijn.kernel.377fc4fbfbed@gmail.com>
-In-Reply-To: <willemdebruijn.kernel.69dc20190163@gmail.com>
-References: <20260520075736.3415676-3-bestswngs@gmail.com>
- <willemdebruijn.kernel.69dc20190163@gmail.com>
-Subject: Re: [PATCH] tap: fix stack info leak in tap_ioctl() SIOCGIFHWADDR
+To: Sabrina Dubroca <sd@queasysnail.net>, 
+ netdev@vger.kernel.org
+Cc: Sabrina Dubroca <sd@queasysnail.net>, 
+ Huzaifa Sidhpurwala <huzaifas@redhat.com>, 
+ "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, 
+ Pavel Begunkov <asml.silence@gmail.com>
+Message-ID: <willemdebruijn.kernel.8bb6e9bd9a42@gmail.com>
+In-Reply-To: <c3b7f906bbfcbdfd7b4fa9d6c18a438870df85be.1779307748.git.sd@queasysnail.net>
+References: <c3b7f906bbfcbdfd7b4fa9d6c18a438870df85be.1779307748.git.sd@queasysnail.net>
+Subject: Re: [PATCH net v3] net: gro: don't merge zcopy skbs
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -91,28 +85,57 @@ Content-Type: text/plain;
  charset=utf-8
 Content-Transfer-Encoding: 7bit
 
-Willem de Bruijn wrote:
-> Weiming Shi wrote:
-> > In the SIOCGIFHWADDR path, tap_ioctl() copies 16 bytes of an
-> > uninitialised on-stack struct sockaddr_storage to userspace via
-> > ifr_hwaddr, but netif_get_mac_address() only writes sa_family and
-> > dev->addr_len (6 for Ethernet) bytes, leaving sa_data[6..13] uninitialised.
-> > 
-> > Those 8 trailing bytes leak kernel stack contents; SIOCGIFHWADDR on a
-> > macvtap chardev returns kernel .text and direct-map pointers, defeating
-> > KASLR.
-> > 
-> > Initialise ss at declaration.
-> > 
-> > Fixes: 3b23a32a6321 ("net: fix dev_ifsioc_locked() race condition")
-> > Reported-by: Xiang Mei <xmei5@asu.edu>
-> > Assisted-by: Claude:claude-opus-4-7
-> > Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+Sabrina Dubroca wrote:
+> skb_gro_receive() can currently copy frags between the source and GRO
+> skb, without checking the zerocopy status, and in particular the
+> SKBFL_MANAGED_FRAG_REFS flag.
 > 
-> Reviewed-by: Willem de Bruijn <willemb@google.com>
+> When SKBFL_MANAGED_FRAG_REFS is set, the skb doesn't hold a reference
+> on the pages in shinfo->frags. Appending those frags to another skb's
+> frags without fixing up the page refcount can lead to UAF.
+> 
+> When either the last skb in the GRO chain (the one we would append
+> frags to) or the source skb is zerocopy, don't merge the skbs.
+> 
+> Fixes: 753f1ca4e1e5 ("net: introduce managed frags infrastructure")
+> Reported-by: Huzaifa Sidhpurwala <huzaifas@redhat.com>
+> Assisted-by: Claude:claude-mythos-preview
+> Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+> ---
+>  net/core/gro.c | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> Huzaifa has found this to be exploitable to overwrite the page cache
+> 
+> v3: maybe no stupid mistake this time. sorry again.
+> v2: as Eric suggested, don't merge those skbs
+>     https://lore.kernel.org/netdev/9f5afc14ea4ecd22c70d6eaf279a94d10fe29448.1779289597.git.sd@queasysnail.net/
+> v1: https://lore.kernel.org/netdev/4d583fc5401298453d0a2f1b4719a15be30c8e49.1779194090.git.sd@queasysnail.net/
+> 
+> diff --git a/net/core/gro.c b/net/core/gro.c
+> index 31d21de5b15a..bae89062a053 100644
+> --- a/net/core/gro.c
+> +++ b/net/core/gro.c
+> @@ -109,6 +109,9 @@ int skb_gro_receive(struct sk_buff *p, struct sk_buff *skb)
+>  	if (p->pp_recycle != skb->pp_recycle)
+>  		return -ETOOMANYREFS;
+>  
+> +	if (skb_zcopy(p) || skb_zcopy(skb))
+> +		return -ETOOMANYREFS;
+> +
 
-But it should target [PATCH net] and
+As Pavel pointed out in a previous version, MSG_ZEROCOPY skbs are not
+looped onto the receive path. From that PoV it's fine to add this
+check as it will not match them.
 
-Cc: Stable@vger.kernel.org
+What is the path that leads to managed frag skbs in the receive path?
+I can believe that it exists, e.g., a page pool. But since Pavel also
+brought up this question and knows the managed frag use much better
+than I do.
 
-
+>  	if (unlikely(p->len + len >= netif_get_gro_max_size(p->dev, p) ||
+>  		     NAPI_GRO_CB(skb)->flush))
+>  		return -E2BIG;
+> -- 
+> 2.54.0
+>
