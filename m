@@ -1,48 +1,49 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51B853DD538;
-	Wed, 20 May 2026 11:20:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B787F3E0C4D;
+	Wed, 20 May 2026 11:20:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779276016; cv=none; b=ZO5I8/Bpmd5SriwwEhVMG30wCTOX3+Tc45Uxp7GNWUqC5xWVqwJURXLQe19G1EfQmcgs9icRYsThtAEjJRMSe8vbgn3IsYZV1iGDFnaHyGGOUmJTi3xDiTMoglSIgDpsLD9O1v/Tf2q3WZtU9NYxkEC1QSnG3bIe8fvveT4h9oI=
+	t=1779276019; cv=none; b=l3b4S5z6wqrTIVGafxeeY6cW2yR9xUMf59yDGHNcmWh94kBuC+wh6DrjJjhnDScVUp3nervXfjxQhWCA97u0Pcxg7GijcL5sTN9Uhp968hynAp1FWrTwHx/zRdrrOxhayVSLpxuqnG3xiRkl9zU6jJ4/wsfYtDqDwvrttiySYLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779276016; c=relaxed/simple;
-	bh=FWsT6Yc/EVkU3tMWDeSo15/ZB5regyWNgHN7XRZLyl8=;
+	s=arc-20240116; t=1779276019; c=relaxed/simple;
+	bh=Zn4J0fHdy3xfzUz38tOmseZcZesPxgZvA1MCNOqyk+A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u+sDC8iGj1yaMDTvF839uiyJZYNR1ZfGbQ6vF0oDkwQ4p2JkYILRZZNYXa4NqduxgL1ULYZ+31CLgHpyBuES+bdwMjA54q2cZEv3dJOXBAVgQBeMkTv1sMDhemY4zqiAlQrpbmDMT52Cn0xsctGvdXLX1iFnVAOGFtLREF2BGmY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xd/VeaBx; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=lDSD9tmgrETvVKsmVw1OcqcY7LH5fKZ+WO4jNRiz5B7Np8Fem3kYXQuxrEzP/ISCngw0/FYTjfvf9zL61xaEnmmKMYQ/NOEZc38GUjRdND9z5OHsdJMLAeYKkockhApL8KhnKl8IF32yFUXxB3pk0NV4R+qXOnlvwxZLifNs3Jg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fpJCoZl2; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xd/VeaBx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F2BE1F00897;
-	Wed, 20 May 2026 11:20:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fpJCoZl2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0A1B1F00893;
+	Wed, 20 May 2026 11:20:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779276010;
-	bh=xMgtOFONSiE9sCxTbzj5oq9sEYekYwDjn2mOoCFmkls=;
+	s=k20260515; t=1779276014;
+	bh=XALIm2Iuwc7MsCYWith74rhgd3QLLhfXeWK1lqtsaxQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Xd/VeaBxubOtpEkPPxWDeTg9Ir9zvTe4pLosUoSqCGbL66oZlkoYeiqFDSsmhwgyY
-	 20sTGK5PF2m5hsi71k+q8Kn8FntjaNiyxD46a21tyUX3STmAeDAfE3NuwUBYF7cj44
-	 Vns72r4LC1S9XMKllYL/xkErF6kaD+O6tjN/KG79MLxnXBMl3EKnT0fiAiScsfsz/9
-	 ee2XmwJ3ZA9b+Ad7BwSggS/YJwYQ9+8jC8YcVpEjHCCNileKu88KUzbqXUTUFATzlQ
-	 A3dEKEm1u7953084LDMhDj8nUtNl7Psmfg6z1mhTFLSaN+fPWa+AsynvpylUWb8l+3
-	 4NRH41ETyWYRQ==
+	b=fpJCoZl2QBrLX0Z4G5TJF6nsQz3aN2V0gZIooY6tB+/ID+nOnClLOWYdWjN02RZOF
+	 kgI83q3GWGM25cVcXBCYaffMNANArdcSPG6iXt16KV0M6Xm180F6SRM0ejrAcLf9g3
+	 PRpa64sj2l5pchHx5ds52LMrsg/ACnbsZCXw8JHMXrj62xVjAdRw6lTowDHd4ZuPfi
+	 bZkK3Bz0DDOMmhCv9tGPd3hRo7/9Dlmd1zgO2vbP4i3zfemRCSjxn/FVREjCh1s9nz
+	 a0EMd+oAotqj5cHSHR5vChpHoTvHjri5J8EGi8VV5RUdx03gzs4VzJ3YdfXjCILEiv
+	 O6oskaVgLZ9bw==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Daniel Borkmann <daniel@iogearbox.net>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Justin Iurman <justin.iurman@gmail.com>,
+Cc: Aleksander Jan Bajkowski <olek2@wp.pl>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Birger Koblitz <mail@birger-koblitz.de>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
+	andrew+netdev@lunn.ch,
 	davem@davemloft.net,
+	edumazet@google.com,
 	pabeni@redhat.com,
-	dsahern@kernel.org,
+	linux-usb@vger.kernel.org,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 7.0-6.6] ipv6: Implement limits on extension header parsing
-Date: Wed, 20 May 2026 07:18:50 -0400
-Message-ID: <20260520111944.3424570-18-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 7.0-5.15] net: usb: r8152: add TRENDnet TUC-ET2G v2.0
+Date: Wed, 20 May 2026 07:18:52 -0400
+Message-ID: <20260520111944.3424570-20-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260520111944.3424570-1-sashal@kernel.org>
 References: <20260520111944.3424570-1-sashal@kernel.org>
@@ -55,424 +56,283 @@ MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 7.0.9
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Daniel Borkmann <daniel@iogearbox.net>
+From: Aleksander Jan Bajkowski <olek2@wp.pl>
 
-[ Upstream commit 3744b0964d5267c0b651bcd8f8c25db6bf4ccbac ]
+[ Upstream commit f93836b236773862e9ee268a82e3614caf77ea01 ]
 
-ipv6_{skip_exthdr,find_hdr}() and ip6_{tnl_parse_tlv_enc_lim,
-protocol_deliver_rcu}() iterate over IPv6 extension headers until they
-find a non-extension-header protocol or run out of packet data. The
-loops have no iteration counter, relying solely on the packet length
-to bound them. For a crafted packet with 8-byte extension headers
-filling a 64KB jumbogram, this means a worst case of up to ~8k
-iterations with a skb_header_pointer call each. ipv6_skip_exthdr(),
-for example, is used where it parses the inner quoted packet inside
-an incoming ICMPv6 error:
+The TRENDnet TUC-ET2G V2.0 is an RTL8156B based 2.5G Ethernet controller.
 
-  - icmpv6_rcv
-    - checksum validation
-    - case ICMPV6_DEST_UNREACH
-      - icmpv6_notify
-        - pskb_may_pull()       <- pull inner IPv6 header
-        - ipv6_skip_exthdr()    <- iterates here
-        - pskb_may_pull()
-        - ipprot->err_handler() <- sk lookup
+Add the vendor and product ID values to the driver. This makes Ethernet
+work with the adapter.
 
-The per-iteration cost of ipv6_skip_exthdr itself is generally
-light, but skb_header_pointer becomes more costly on reassembled
-packets: the first ~1232 bytes of the inner packet are in the skb's
-linear area, but the remaining ~63KB are in the frag_list where
-skb_copy_bits is needed to read data.
-
-Initially, the idea was to add a configurable limit via a new
-sysctl knob with default 8, in line with knobs from commit
-47d3d7ac656a ("ipv6: Implement limits on Hop-by-Hop and Destination
-options"), but two reasons eventually argued against it:
-
-- It adds to UAPI that needs to be maintained forever, and
-  upcoming work is restricting extension header ordering anyway,
-  leaving little reason for another sysctl knob
-- exthdrs_core.c is always built-in even when CONFIG_IPV6=n,
-  where struct net has no .ipv6 member, so the read site would
-  need an ifdef'd fallback to a constant anyway
-
-Therefore, just use a constant (IP6_MAX_EXT_HDRS_CNT). All four
-extension header walking functions are now bound by this limit.
-
-Note that the check in ip6_protocol_deliver_rcu() happens right
-before the goto resubmit, such that we don't have to have a test
-for ipv6_ext_hdr() in the fast-path.
-
-There's an ongoing IETF draft-iurman-6man-eh-occurrences to enforce
-IPv6 extension headers ordering and occurrence. The latter also
-discusses security implications. As per RFC8200 section 4.1, the
-occurrence rules for extension headers provide a practical upper
-bound which is 8. In order to be conservative, let's define
-IP6_MAX_EXT_HDRS_CNT as 12 to leave enough room for quirky setups.
-In the unlikely event that this is still not enough, then we might
-need to reconsider a sysctl.
-
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Justin Iurman <justin.iurman@gmail.com>
-Link: https://patch.msgid.link/20260429154648.809751-1-daniel@iogearbox.net
+Signed-off-by: Aleksander Jan Bajkowski <olek2@wp.pl>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Reviewed-by: Birger Koblitz <mail@birger-koblitz.de>
+Link: https://patch.msgid.link/20260430213435.21821-1-olek2@wp.pl
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-## Decision Summary
-This should be backported. It is a small IPv6 networking hardening/fix
-for a reachable CPU-exhaustion path: several IPv6 extension-header
-walkers were bounded only by packet length, allowing crafted packets
-with many minimal 8-byte extension headers to force thousands of
-iterations. The patch caps traversal at 12 headers, avoids new UAPI, and
-was reviewed by IPv6/networking reviewers. Risk is mainly dropping
-extremely exotic packets with more than 12 extension headers; the review
-discussion explicitly considered that and settled on 12 as a
-conservative compromise.
+## Phase 1: Commit Message Forensics
+Step 1.1 Record: Subsystem `net: usb: r8152`; action verb `add`; claimed
+intent: add TRENDnet TUC-ET2G v2.0 USB device ID so the existing `r8152`
+driver binds to the adapter.
 
-## Phase Walkthrough
-Phase 1: Commit Message Forensics
+Step 1.2 Record: Tags present:
+- `Signed-off-by: Aleksander Jan Bajkowski <olek2@wp.pl>`
+- `Reviewed-by: Andrew Lunn <andrew@lunn.ch>`
+- `Reviewed-by: Birger Koblitz <mail@birger-koblitz.de>`
+- `Link: https://patch.msgid.link/20260430213435.21821-1-olek2@wp.pl`
+- `Signed-off-by: Jakub Kicinski <kuba@kernel.org>`
 
-Record 1.1: Subsystem `ipv6`; action verb `Implement limits`; claimed
-intent is to bound IPv6 extension-header parsing loops.
+No `Fixes:`, `Reported-by:`, `Tested-by:`, or `Cc:
+stable@vger.kernel.org` tag was present. Absence of those tags is not a
+negative signal here.
 
-Record 1.2: Tags found: `Signed-off-by: Daniel Borkmann`, `Reviewed-by:
-Ido Schimmel`, `Reviewed-by: Eric Dumazet`, `Reviewed-by: Justin
-Iurman`, `Link:
-https://patch.msgid.link/20260429154648.809751-1-daniel@iogearbox.net`,
-`Signed-off-by: Jakub Kicinski`. No `Fixes:`, no `Reported-by:`, no `Cc:
-stable`.
+Step 1.3 Record: The body describes a real hardware support failure:
+TRENDnet TUC-ET2G V2.0 is RTL8156B-based, but without its USB
+vendor/product ID in `rtl8152_table`, Ethernet does not work with that
+adapter. No affected kernel versions are named.
 
-Record 1.3: The body describes crafted 64KB packets with 8-byte
-extension headers causing up to about 8k iterations, with costly
-`skb_header_pointer()`/`skb_copy_bits()` on reassembled packets. Symptom
-is CPU work amplification/DoS potential, not memory corruption or crash.
-It identifies `icmpv6_rcv -> icmpv6_notify -> ipv6_skip_exthdr()` as a
-concrete path.
+Step 1.4 Record: This is not a hidden memory/synchronization bug. It is
+an explicit new USB device ID addition to an existing driver, which is a
+stable exception category.
 
-Record 1.4: This is not disguised cleanup. It is a direct
-correctness/security hardening fix: add a bound to previously unbounded
-loops.
+## Phase 2: Diff Analysis
+Step 2.1 Record: One file changed: `drivers/net/usb/r8152.c`, `+1/-0`.
+No function body changed. The modified object is `rtl8152_table`. Scope:
+single-file surgical device-ID addition.
 
-Phase 2: Diff Analysis
+Step 2.2 Record: Before the change, the table contained TRENDnet
+`0xe02b` but not `0xe02c`, so USB matching would not select `r8152` for
+`20f4:e02c`. After the change, `USB_DEVICE(VENDOR_ID_TRENDNET, 0xe02c)`
+is matched by the driver table used by both `rtl8152_driver.id_table`
+and `rtl8152_cfgselector_driver.id_table`.
 
-Record 2.1: Five files changed, 25 insertions: `include/net/dropreason-
-core.h` +6, `include/net/ipv6.h` +3, `net/ipv6/exthdrs_core.c` +7,
-`net/ipv6/ip6_input.c` +5, `net/ipv6/ip6_tunnel.c` +4. Modified
-functions: `ipv6_skip_exthdr()`, `ipv6_find_hdr()`,
-`ip6_protocol_deliver_rcu()`, `ip6_tnl_parse_tlv_enc_lim()`.
+Step 2.3 Record: Bug category is hardware enablement / USB device ID
+addition. It does not touch error paths, locking, reference counts,
+memory safety, or public APIs.
 
-Record 2.2: Before, these loops stopped only at non-extension-header,
-`NEXTHDR_NONE`, malformed/truncated packet data, fragment handling, or
-protocol handler completion. After, each loop also stops/drops once
-`IP6_MAX_EXT_HDRS_CNT` is exceeded.
+Step 2.4 Record: The fix is obviously correct if the ID maps to RTL8156B
+hardware. I verified the device identity externally: WikiDevi lists TUC-
+ET2G v2.0R as USB ID `20f4:e02c` with Realtek RTL8156B, and TRENDnet’s
+own support page confirms the TUC-ET2G v2 product. Regression risk is
+very low; existing devices are unaffected unless another incompatible
+device uses the same exact USB ID.
 
-Record 2.3: Bug category is logic/performance DoS hardening: missing
-iteration bound in packet parser. It does not fix UAF/leak/race, but it
-prevents attacker-controlled excessive parsing work.
+## Phase 3: Git History Investigation
+Step 3.1 Record: `git blame` around the table showed the existing
+TRENDnet `0xe02b` entry came from `15fba71533bc` and the new `0xe02c`
+line comes from `f93836b23677`. The table terminator dates back to
+`ac718b69301c`. The “bug” is not introduced by a code commit; it is the
+absence of a product-specific ID for existing supported silicon.
 
-Record 2.4: Fix quality is good: small, local counters, no locking or
-lifetime changes, no new sysctl/API. Regression risk is limited to
-rejecting packets with more than 12 traversed extension headers.
+Step 3.2 Record: No `Fixes:` tag, so there is no introducing commit to
+follow.
 
-Phase 3: Git History Investigation
+Step 3.3 Record: Recent related history includes `15fba71533bc` adding
+the first TRENDnet TUC-ET2G ID and `dc9c67820f81` adding a TP-Link ID.
+The candidate is standalone on trees that already have
+`VENDOR_ID_TRENDNET`.
 
-Record 3.1: `git blame` shows the relevant loops are old:
-`ipv6_skip_exthdr()` loop traces to initial/early history with later
-signature changes; `ipv6_find_hdr()` to v3.8-era code;
-`ip6_protocol_deliver_rcu()` resubmit logic to v4.x/v5.0-era changes;
-`ip6_tnl_parse_tlv_enc_lim()` exists from initial/older tunnel code with
-later cleanups.
+Step 3.4 Record: The author has at least one prior `r8152` device-ID
+commit, `848b09d53d92` for Dell Alienware AW1022z. The patch was
+reviewed by Andrew Lunn and Birger Koblitz and applied by Jakub
+Kicinski.
 
-Record 3.2: No `Fixes:` tag, so no introducing commit to follow. I did
-inspect referenced commit `47d3d7ac656a`, which added limits for Hop-by-
-Hop/Destination TLV parsing and described similar DoS behavior.
+Step 3.5 Record: Dependency found: `VENDOR_ID_TRENDNET` was introduced
+by `15fba71533bc`, and `git merge-base --is-ancestor` confirms that
+commit is an ancestor of `f93836b23677`. Mainline release tags `v5.15`,
+`v6.1`, `v6.6`, `v6.12`, and `v6.19` lack `VENDOR_ID_TRENDNET`, while
+`v7.0-rc3` has it. Older stable backports therefore need either
+`15fba71533bc` first or a small backport adjustment adding `#define
+VENDOR_ID_TRENDNET 0x20f4`.
 
-Record 3.3: Recent file history shows related commit `076b8cad77aa9`
-capped TLV scanning in `ip6_tnl_parse_tlv_enc_lim()`. This commit is
-related but not a hard dependency for the outer extension-header-count
-limit.
+## Phase 4: Mailing List And External Research
+Step 4.1 Record: `b4 dig -c f93836b23677` found the original patch
+submission by patch-id. `b4 dig -a` reported the accepted one-patch
+submission at `20260430213435.21821-1-olek2@wp.pl`; `b4` also found an
+earlier identical submission from
+`20260426214909.3426105-1-olek2@wp.pl`. The earlier thread had Andrew
+Lunn asking for repost after netdev opened and giving his `Reviewed-by`.
+No NAK or technical objection found.
 
-Record 3.4: Daniel Borkmann has recent related IPv6 limit work in the
-same area. Commit was applied by Jakub Kicinski, and reviewed by Eric
-Dumazet, Ido Schimmel, and Justin Iurman.
+Step 4.2 Record: `b4 dig -w` showed the patch was sent to netdev
+maintainers/lists and USB networking lists, including Andrew Lunn, David
+Miller, Eric Dumazet, Jakub Kicinski, Paolo Abeni, Realtek contacts,
+`linux-usb`, `netdev`, and `linux-kernel`. `MAINTAINERS` confirms those
+netdev maintainers for `NETWORKING DRIVERS`, and `drivers/net/usb/` is
+under `USB NETWORKING DRIVERS`.
 
-Record 3.5: No functional prerequisite was found for the core idea.
-Older stable trees before `dropreason-core.h` will need a small backport
-adjustment for the new drop reason, or can use an existing generic
-reason.
+Step 4.3 Record: No separate bug report or `Reported-by` tag. External
+hardware verification found TUC-ET2G v2.0R as `20f4:e02c` / RTL8156B.
 
-Phase 4: Mailing List And External Research
+Step 4.4 Record: This is a single-patch submission, not a multi-patch
+fix series. The only practical dependency for older trees is the
+TRENDnet vendor define from the prior TUC-ET2G ID commit.
 
-Record 4.1: `b4 dig -c 3744b0964d5267c0b651bcd8f8c25db6bf4ccbac` found
-`[PATCH net v5]` at the provided lore/patch.msgid link.
+Step 4.5 Record: WebFetch to lore was blocked by Anubis. WebSearch did
+not find stable-specific discussion for `f93836b23677` or the patch
+message ID. No stable objection found.
 
-Record 4.2: `b4 dig -a` found v1 through v5. v1 added a sysctl and was
-NAKed by Justin Iurman; v4 switched to a hard-coded limit; v5 reduced
-the limit from 32 to 12.
+## Phase 5: Code Semantic Analysis
+Step 5.1 Record: No functions modified. Modified data structure:
+`rtl8152_table`.
 
-Record 4.3: No `Reported-by` or bug-report link exists. Web/lore stable
-search did not find a stable-specific request or objection.
+Step 5.2 Record: `rtl8152_table` is referenced by
+`MODULE_DEVICE_TABLE(usb, rtl8152_table)`, `rtl8152_driver.id_table`,
+and `rtl8152_cfgselector_driver.id_table`. Matching devices enter the
+normal USB probe path via `rtl8152_probe`.
 
-Record 4.4: Related series context: review discussion referenced IETF
-extension-header occurrence work; v5 was the latest and accepted
-version.
+Step 5.3 Record: The relevant probe path checks vendor-specific
+interface class, `rtl_check_vendor_ok`, `rtl8152_get_version`, then
+calls `rtl8152_probe_once`. The config selector uses `__rtl_get_hw_ver`.
+This patch adds no new calls.
 
-Record 4.5: No stable mailing-list-specific discussion found. WebFetch
-to lore was blocked/timed out, but `b4` successfully retrieved the
-thread.
+Step 5.4 Record: Reachability is USB device enumeration: plugging in or
+booting with the adapter attached. It is not a remote or syscall-
+triggered security issue.
 
-Phase 5: Code Semantic Analysis
+Step 5.5 Record: Similar pattern exists throughout the same table for
+Realtek, Lenovo, TP-Link, D-Link, Dell, ASUS, and earlier TRENDnet IDs.
+`git log -S'0xe02c'` found no prior `0xe02c` entry in the checked
+history.
 
-Record 5.1: Key functions are `ipv6_skip_exthdr()`, `ipv6_find_hdr()`,
-`ip6_protocol_deliver_rcu()`, `ip6_tnl_parse_tlv_enc_lim()`.
+## Phase 6: Stable Tree Analysis
+Step 6.1 Record: Checked mainline release tags `v5.15`, `v6.1`, `v6.6`,
+`v6.12`, and `v6.19`: all contain `0x8156` and RTL8156B version
+handling, but not the TRENDnet `0xe02c` ID. This means the supported
+chipset path exists in those releases, but the product-specific match is
+missing.
 
-Record 5.2: `git grep` found many callers of `ipv6_skip_exthdr()` across
-netfilter, XFRM/ESP, drivers, audit/security hooks, ICMPv6, and tunnel
-code. `ipv6_find_hdr()` is used by netfilter/nftables, BPF, OVS, IPVS,
-SRv6, drivers, and TC. `ip6_protocol_deliver_rcu()` is called from IPv6
-input and UDP encapsulation resubmission. `ip6_tnl_parse_tlv_enc_lim()`
-is called from GRE/tunnel paths.
+Step 6.2 Record: Backport difficulty is low. It applies cleanly to trees
+with `VENDOR_ID_TRENDNET` / `0xe02b`; older bases need a minor
+context/define adjustment or the prior TRENDnet ID patch.
 
-Record 5.3: Key callees are `skb_header_pointer()`, `pskb_pull()`,
-`pskb_may_pull()`, `raw6_local_deliver()`, `inet6_protos[]` dispatch,
-and protocol handlers.
+Step 6.3 Record: No alternate local fix for `0xe02c` was found. No
+stable-specific replacement fix was verified.
 
-Record 5.4: Reachability is verified from IPv6 receive paths:
-`ip6_input_finish()` calls `ip6_protocol_deliver_rcu()`, and
-`icmpv6_notify()` calls `ipv6_skip_exthdr()` on quoted inner packets.
-These are network packet processing paths.
+## Phase 7: Subsystem And Maintainer Context
+Step 7.1 Record: Subsystem is `drivers/net/usb`, USB Ethernet networking
+driver. Criticality: driver-specific, important for users of this
+hardware, not core-kernel-wide.
 
-Record 5.5: Similar prior pattern exists in `47d3d7ac656a` for TLV
-count/length limits and in `076b8cad77aa9` for tunnel TLV scanning.
+Step 7.2 Record: The file is active, with recent `r8152` feature and fix
+commits, but this change is isolated to the USB ID table and does not
+depend on recent functional refactoring except the vendor
+define/backport context noted above.
 
-Phase 6: Stable Tree Analysis
+## Phase 8: Impact And Risk
+Step 8.1 Record: Affected users are systems with TRENDnet TUC-ET2G V2.0
+and `CONFIG_USB_RTL8152`.
 
-Record 6.1: The four key functions exist in checked tags `v5.10`,
-`v5.15`, `v6.1`, `v6.6`, `v6.12`, and `v6.19`. Thus the affected code
-shape exists across active LTS/stable ranges.
+Step 8.2 Record: Trigger is common for affected users: adapter insertion
+or boot with the adapter connected. Not remotely triggerable; physical
+USB access is needed.
 
-Record 6.2: Expected backport difficulty: clean or minor for newer
-trees; minor rework for pre-`dropreason-core.h` trees because
-`include/net/dropreason-core.h` is absent in `v5.10`, `v5.15`, and
-`v6.1`.
+Step 8.3 Record: Failure mode is device non-binding / Ethernet
+unavailable. Severity is not crash/security-critical, but it is a real
+user-visible hardware functionality failure.
 
-Record 6.3: No alternate stable-specific fix for this exact extension-
-header traversal count was found. Related TLV-limiting commits address
-adjacent, not identical, loops.
+Step 8.4 Record: Benefit is high for affected stable users because it
+makes the adapter work with an already-supported RTL8156B driver. Risk
+is very low: one table entry, no behavior change for existing IDs.
 
-Phase 7: Subsystem Context
+## Phase 9: Final Synthesis
+Evidence for backporting:
+- New USB device ID for existing driver and already-supported RTL8156B
+  silicon.
+- Fixes a real user-visible failure: Ethernet does not work with this
+  adapter.
+- One-line, single-file, no API or behavior change for existing
+  hardware.
+- Reviewed by Andrew Lunn and Birger Koblitz; applied by Jakub Kicinski.
+- Hardware identity verified as TRENDnet `20f4:e02c` / RTL8156B.
 
-Record 7.1: Subsystem is IPv6 networking, criticality IMPORTANT to CORE
-for IPv6-enabled systems because packet receive, ICMPv6, netfilter,
-tunnel, and driver offload paths call these helpers.
+Evidence against backporting:
+- Not a crash, data corruption, security, or deadlock fix.
+- Older stable bases may need the prior `VENDOR_ID_TRENDNET` definition
+  or a tiny backport adjustment.
 
-Record 7.2: Subsystem is active; recent history shows multiple
-IPv6/tunnel/drop-reason changes, but the unbounded parsing loops
-themselves are longstanding.
+Unresolved:
+- I did not verify every active stable branch state directly; I verified
+  mainline release tags and the dependency relationship. Lore WebFetch
+  was blocked, but `b4` successfully fetched the thread.
 
-Phase 8: Impact And Risk
+Stable rules checklist:
+1. Obviously correct and tested? Yes, one matching-table entry;
+   reviewed; hardware ID verified.
+2. Fixes a real bug affecting users? Yes, adapter does not bind/work
+   without the ID.
+3. Important issue? Yes under the stable “new device IDs” exception,
+   though not crash/security.
+4. Small and contained? Yes, one insertion in one file.
+5. No new features/APIs? Yes, no API or behavioral change except
+   matching this USB device.
+6. Can apply to stable trees? Yes with low difficulty; older trees may
+   need `VENDOR_ID_TRENDNET`.
 
-Record 8.1: Affected users are IPv6-enabled systems, especially systems
-exposed to crafted IPv6 traffic or using IPv6 tunnels/netfilter paths.
-
-Record 8.2: Trigger is a crafted IPv6 packet chain with many small
-extension headers, especially costly when parsed from
-fragmented/reassembled skb data. Network reachability depends on
-filtering and IPv6 deployment.
-
-Record 8.3: Failure mode is CPU work amplification/DoS risk, not crash
-or corruption. Severity: HIGH for exposed IPv6 hosts because it is
-remote packet-triggered parser amplification; not CRITICAL because no
-verified panic, data loss, or privilege escalation was found.
-
-Record 8.4: Benefit is high: caps an attacker-controlled loop in common
-networking code. Risk is low-to-medium: packets with more than 12
-traversed extension headers may now be rejected, but reviewers
-explicitly judged 12 conservative relative to RFC/IETF occurrence
-expectations.
-
-Phase 9: Final Synthesis
-
-Record 9.1: Evidence for backporting: small 25-line fix; real attacker-
-controlled parser amplification; network receive reachability verified;
-reviewed by networking experts; v1 concerns were resolved; no new UAPI.
-Evidence against: behavior change for extreme extension-header chains;
-older trees need minor drop-reason backport adjustment; no syzbot/user
-report/CVE. Unresolved: no benchmark for this exact v5 patch was found,
-and no stable-specific discussion was found.
-
-Record 9.2: Stable rules: obviously correct and reviewed, yes; fixes a
-real bug, yes; important issue, yes as network DoS/performance
-amplification; small and contained, yes; no new feature/API, yes; stable
-apply, likely clean for newer trees and minor adjustment for older
-trees.
-
-Record 9.3: No automatic exception category applies. This is not a
-device ID, quirk, DT, build, or documentation fix.
-
-Record 9.4: The risk-benefit balance favors backporting.
+Exception category: New USB device ID for an existing driver. This is a
+standard stable-appropriate exception.
 
 ## Verification
-- [Phase 1] Parsed `git show 3744b0964d5267c0b651bcd8f8c25db6bf4ccbac`:
-  verified subject, tags, message, and 25-line diff.
-- [Phase 2] Read local code in `net/ipv6/exthdrs_core.c`,
-  `net/ipv6/ip6_input.c`, `net/ipv6/ip6_tunnel.c`, and
-  `include/net/ipv6.h`: verified loops were unbounded before the patch.
-- [Phase 3] Ran `git blame` on changed regions: verified long-lived code
-  and relevant commit ancestry.
-- [Phase 3] Inspected `47d3d7ac656a` and `076b8cad77aa9`: verified
-  similar prior DoS-limit work.
-- [Phase 4] Ran `b4 dig -c`, `b4 dig -a`, `b4 dig -w`, and `b4 mbox`:
-  verified v1-v5 history, reviewers, NAK of sysctl approach, and v5
-  acceptance.
-- [Phase 5] Ran caller searches for all four functions: verified broad
-  IPv6/netfilter/tunnel/driver call surface.
-- [Phase 6] Checked `v5.10`, `v5.15`, `v6.1`, `v6.6`, `v6.12`, `v6.19`:
-  verified the affected functions exist; verified `dropreason-core.h` is
-  absent before v6.6.
-- [Phase 8] Verified reachable call paths in `icmpv6_notify()`,
-  `ip6_input_finish()`, `udpv6_queue_rcv_skb()`, and `ip6_gre` tunnel
-  code.
-- UNVERIFIED: exact exploitability impact across real networks and exact
-  CPU-cost benchmark for this specific v5 patch.
-- UNVERIFIED: clean application to every currently maintained stable
-  branch; older trees likely need minor drop-reason context adjustment.
+- [Phase 1] Parsed commit `f93836b236773862e9ee268a82e3614caf77ea01`
+  with `git show`; confirmed subject, body, tags, and `+1/-0` diff.
+- [Phase 2] Compared `git diff f938^..f938`; confirmed only `{
+  USB_DEVICE(VENDOR_ID_TRENDNET, 0xe02c) }` is added.
+- [Phase 3] Ran `git blame` around `rtl8152_table`; confirmed existing
+  `0xe02b` from `15fba71533bc` and new `0xe02c` from `f93836b23677`.
+- [Phase 3] Ran `git merge-base --is-ancestor 15fba71533bc
+  f93836b23677`; confirmed the vendor define dependency is in the
+  candidate’s ancestry.
+- [Phase 3] Checked release tags `v5.15`, `v6.1`, `v6.6`, `v6.12`,
+  `v6.19`, `v7.0-rc3`, `v7.1-rc3`; confirmed older release tags have
+  RTL8156/RTL_VER_13 support but lack TRENDnet IDs until `v7.0-rc3`.
+- [Phase 4] Ran `b4 dig -c`, `b4 dig -a`, and `b4 dig -w`; confirmed
+  patch-id match, one-patch submission, recipients, and
+  review/application thread.
+- [Phase 4] Read full `b4 mbox` threads; confirmed Andrew Lunn review on
+  repost request, Birger Koblitz review, and patchwork notification that
+  Jakub applied it.
+- [Phase 4] WebFetch to lore was blocked by Anubis; external GitHub
+  commit fetch confirmed the commit metadata and diff.
+- [Phase 4] WebFetch of WikiDevi and TRENDnet pages verified TUC-ET2G v2
+  hardware identity; WikiDevi specifically listed USB ID `20f4:e02c` and
+  RTL8156B.
+- [Phase 5] Searched `rtl8152_table` references; confirmed use by
+  `MODULE_DEVICE_TABLE`, `rtl8152_driver.id_table`, and
+  `rtl8152_cfgselector_driver.id_table`.
+- [Phase 5] Read `rtl8152_probe` and config selector code; confirmed
+  affected path is USB enumeration/probe, with no changed runtime logic.
+- [Phase 7] Checked `MAINTAINERS`; confirmed netdev maintainers and
+  `drivers/net/usb/` list coverage.
+- [Phase 8] Checked `drivers/net/usb/Kconfig`; confirmed affected
+  configuration is `CONFIG_USB_RTL8152`.
+
+This is exactly the kind of low-risk new USB ID addition stable trees
+normally take.
 
 **YES**
 
- include/net/dropreason-core.h | 6 ++++++
- include/net/ipv6.h            | 3 +++
- net/ipv6/exthdrs_core.c       | 7 +++++++
- net/ipv6/ip6_input.c          | 5 +++++
- net/ipv6/ip6_tunnel.c         | 4 ++++
- 5 files changed, 25 insertions(+)
+ drivers/net/usb/r8152.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/net/dropreason-core.h b/include/net/dropreason-core.h
-index a7b7abd66e215..0b674a02665ab 100644
---- a/include/net/dropreason-core.h
-+++ b/include/net/dropreason-core.h
-@@ -102,6 +102,7 @@
- 	FN(FRAG_TOO_FAR)		\
- 	FN(TCP_MINTTL)			\
- 	FN(IPV6_BAD_EXTHDR)		\
-+	FN(IPV6_TOO_MANY_EXTHDRS)	\
- 	FN(IPV6_NDISC_FRAG)		\
- 	FN(IPV6_NDISC_HOP_LIMIT)	\
- 	FN(IPV6_NDISC_BAD_CODE)		\
-@@ -513,6 +514,11 @@ enum skb_drop_reason {
- 	SKB_DROP_REASON_TCP_MINTTL,
- 	/** @SKB_DROP_REASON_IPV6_BAD_EXTHDR: Bad IPv6 extension header. */
- 	SKB_DROP_REASON_IPV6_BAD_EXTHDR,
-+	/**
-+	 * @SKB_DROP_REASON_IPV6_TOO_MANY_EXTHDRS: Number of IPv6 extension
-+	 * headers in the packet exceeds IP6_MAX_EXT_HDRS_CNT.
-+	 */
-+	SKB_DROP_REASON_IPV6_TOO_MANY_EXTHDRS,
- 	/** @SKB_DROP_REASON_IPV6_NDISC_FRAG: invalid frag (suppress_frag_ndisc). */
- 	SKB_DROP_REASON_IPV6_NDISC_FRAG,
- 	/** @SKB_DROP_REASON_IPV6_NDISC_HOP_LIMIT: invalid hop limit. */
-diff --git a/include/net/ipv6.h b/include/net/ipv6.h
-index 53c5056508be5..ec95c11b8e434 100644
---- a/include/net/ipv6.h
-+++ b/include/net/ipv6.h
-@@ -90,6 +90,9 @@ struct ip_tunnel_info;
- #define IP6_DEFAULT_MAX_DST_OPTS_LEN	 INT_MAX /* No limit */
- #define IP6_DEFAULT_MAX_HBH_OPTS_LEN	 INT_MAX /* No limit */
- 
-+/* Hard limit on traversed IPv6 extension headers */
-+#define IP6_MAX_EXT_HDRS_CNT		 12
-+
- /*
-  *	Addr type
-  *	
-diff --git a/net/ipv6/exthdrs_core.c b/net/ipv6/exthdrs_core.c
-index 49e31e4ae7b7f..9d06d487e8b10 100644
---- a/net/ipv6/exthdrs_core.c
-+++ b/net/ipv6/exthdrs_core.c
-@@ -73,6 +73,7 @@ int ipv6_skip_exthdr(const struct sk_buff *skb, int start, u8 *nexthdrp,
- 		     __be16 *frag_offp)
- {
- 	u8 nexthdr = *nexthdrp;
-+	int exthdr_cnt = 0;
- 
- 	*frag_offp = 0;
- 
-@@ -82,6 +83,8 @@ int ipv6_skip_exthdr(const struct sk_buff *skb, int start, u8 *nexthdrp,
- 
- 		if (nexthdr == NEXTHDR_NONE)
- 			return -1;
-+		if (unlikely(exthdr_cnt++ >= IP6_MAX_EXT_HDRS_CNT))
-+			return -1;
- 		hp = skb_header_pointer(skb, start, sizeof(_hdr), &_hdr);
- 		if (!hp)
- 			return -1;
-@@ -190,6 +193,7 @@ int ipv6_find_hdr(const struct sk_buff *skb, unsigned int *offset,
- {
- 	unsigned int start = skb_network_offset(skb) + sizeof(struct ipv6hdr);
- 	u8 nexthdr = ipv6_hdr(skb)->nexthdr;
-+	int exthdr_cnt = 0;
- 	bool found;
- 
- 	if (fragoff)
-@@ -216,6 +220,9 @@ int ipv6_find_hdr(const struct sk_buff *skb, unsigned int *offset,
- 			return -ENOENT;
- 		}
- 
-+		if (unlikely(exthdr_cnt++ >= IP6_MAX_EXT_HDRS_CNT))
-+			return -EBADMSG;
-+
- 		hp = skb_header_pointer(skb, start, sizeof(_hdr), &_hdr);
- 		if (!hp)
- 			return -EBADMSG;
-diff --git a/net/ipv6/ip6_input.c b/net/ipv6/ip6_input.c
-index 2bcb981c91aa8..bbad1d4e6b854 100644
---- a/net/ipv6/ip6_input.c
-+++ b/net/ipv6/ip6_input.c
-@@ -363,6 +363,7 @@ INDIRECT_CALLABLE_DECLARE(int tcp_v6_rcv(struct sk_buff *));
- void ip6_protocol_deliver_rcu(struct net *net, struct sk_buff *skb, int nexthdr,
- 			      bool have_final)
- {
-+	int exthdr_cnt = IP6CB(skb)->flags & IP6SKB_HOPBYHOP ? 1 : 0;
- 	const struct inet6_protocol *ipprot;
- 	struct inet6_dev *idev;
- 	unsigned int nhoff;
-@@ -447,6 +448,10 @@ void ip6_protocol_deliver_rcu(struct net *net, struct sk_buff *skb, int nexthdr,
- 				nexthdr = ret;
- 				goto resubmit_final;
- 			} else {
-+				if (unlikely(exthdr_cnt++ >= IP6_MAX_EXT_HDRS_CNT)) {
-+					SKB_DR_SET(reason, IPV6_TOO_MANY_EXTHDRS);
-+					goto discard;
-+				}
- 				goto resubmit;
- 			}
- 		} else if (ret == 0) {
-diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
-index 0b53488a92290..c1ca9b2806359 100644
---- a/net/ipv6/ip6_tunnel.c
-+++ b/net/ipv6/ip6_tunnel.c
-@@ -400,11 +400,15 @@ __u16 ip6_tnl_parse_tlv_enc_lim(struct sk_buff *skb, __u8 *raw)
- 	unsigned int nhoff = raw - skb->data;
- 	unsigned int off = nhoff + sizeof(*ipv6h);
- 	u8 nexthdr = ipv6h->nexthdr;
-+	int exthdr_cnt = 0;
- 
- 	while (ipv6_ext_hdr(nexthdr) && nexthdr != NEXTHDR_NONE) {
- 		struct ipv6_opt_hdr *hdr;
- 		u16 optlen;
- 
-+		if (unlikely(exthdr_cnt++ >= IP6_MAX_EXT_HDRS_CNT))
-+			break;
-+
- 		if (!pskb_may_pull(skb, off + sizeof(*hdr)))
- 			break;
+diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
+index 0c83bbbea2e7c..0ac2b079e435c 100644
+--- a/drivers/net/usb/r8152.c
++++ b/drivers/net/usb/r8152.c
+@@ -10055,6 +10055,7 @@ static const struct usb_device_id rtl8152_table[] = {
+ 	{ USB_DEVICE(VENDOR_ID_DELL,    0xb097) },
+ 	{ USB_DEVICE(VENDOR_ID_ASUS,    0x1976) },
+ 	{ USB_DEVICE(VENDOR_ID_TRENDNET, 0xe02b) },
++	{ USB_DEVICE(VENDOR_ID_TRENDNET, 0xe02c) },
+ 	{}
+ };
  
 -- 
 2.53.0
