@@ -1,46 +1,46 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C7B23E832A
-	for <netdev@vger.kernel.org>; Wed, 20 May 2026 18:35:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4C863A5426
+	for <netdev@vger.kernel.org>; Wed, 20 May 2026 18:35:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302111; cv=none; b=Inc7SaSgc7TqCymmEnPDEd8WN702q5H4j8xIgSHNGiEdfQ78MBCexajy+dkB06h+fJ53mMKJ4Hbz6BfpxKfCE+SblfsXalxkVGpqhBFcJdBkNONGnNVeOYqowpb225kPHCHRtdJewROaDYSWrN2wVoN8+I5Mwb71eC0K04Zbhz0=
+	t=1779302112; cv=none; b=k7rIuw6wRQAxzEC/e17NPUM4WFM/sdMSGzeRPDidID9iuQ3VcrzX6PhYHoL0eap68zJd1LcNSuFjs3A9Ic247uDDSAf37Hy+HWH4AHXy1TWKBRexhIxyXkQSoWfcBQYUqnkyekeItM9E8PGl7dTfnvAjH2xovWMhyLdsnOafaQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302111; c=relaxed/simple;
-	bh=wG3YbvlaS9ph6jlxQ7R4ibbEe4AbjoR1lMzAaFq/eps=;
+	s=arc-20240116; t=1779302112; c=relaxed/simple;
+	bh=xUGR7Z+W+6HPvyU9z5uuXhcelpLD7nwrHH0gFgBWfqw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NXXhx0vNZr+ldVnAwNL1JwFLQ+l8iIGgcL8mrQbLxDrgMEQj+B/2alyLAyVjFFMmEFT45wdAu/W2LBVCUWt6C66AsHzsJeyF8I0ybY3JIH+XhIlczKyyO+yrto8rnzsjDgJDETIX98im3SMeV5atWTrwAEJ1QGysinSBT3lIxCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GFjHciwT; arc=none smtp.client-ip=198.175.65.16
+	 MIME-Version; b=Rb9MsG9QyKVpEYVQK30vuiqP6wWZwb3YsNoRzcAX1Ys0GixFc6ruuHbsdA5L+0pX0h/GCb2w6h5xsTmOYTc4kd/Hi5ZooKlKhmNCp3TptEEgTQdR6uwQaFj2pwZVItedifzaPEL+TuK5BS90t8HmWTG9Y52yxmRVcKqAFBLMWHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iqC9g8gn; arc=none smtp.client-ip=198.175.65.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GFjHciwT"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iqC9g8gn"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1779302110; x=1810838110;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=wG3YbvlaS9ph6jlxQ7R4ibbEe4AbjoR1lMzAaFq/eps=;
-  b=GFjHciwTPJ9fGCtI71HGCECZqGFdTL7gNgGJW2VhJfhrDxYTrTL9x0tO
-   DCD/LLV+1uxSBszpYZ5B9UR2S+uox47cHiVV5eRXRoeYqyA2aIkVzsujs
-   dyDNuFH8uC5JnF0QNdMIywRs7W6NfKfPScyFMd4qPR02wEh28cYMjSJtG
-   I6V2aGnv1B6816xiVPfFxzobrCH5Kfw0c1O+QlR5LCHp7E8RaVkLX5x+S
-   cCGmEcYTAcgbA/7Fyg3azccjVqoJt7LI8siQBrehyF91ay0K/KY6sQ1Cl
-   q+zt9lQxEwoR8a3OsOSXBTbxC5Xye9NmmkWhYfYbDpd1x8QcyhykWjJnr
+  bh=xUGR7Z+W+6HPvyU9z5uuXhcelpLD7nwrHH0gFgBWfqw=;
+  b=iqC9g8gnsnHRnv2Sdq+M+E2fQ/W4AaTEuAcUeyPFUYY64USbKoPGHdX8
+   Hooi1KtoCgn1tZIvriIG9xBbcwR2j9VGvwILtHXaUPIP7jX+aH9Toms4i
+   OZW7EqXqCPZVimvX+f3wy3FK+MGoNGYNP6BZxYXB1sGjzkzaZWyYbVgO5
+   MRZoZnBSJ9JgqWjV1Ws7SDWLFcSiTm0zYTwWHlKrV4VU/AS1CyG1mA8c4
+   /YW75mFH4MPdTenz8YpmjU7+LFTDssPo1trQaqXw2TXMwjTri+bcv6ATH
+   wE+yS+YmpugopnHtpm4n8JMxLm5WnjhvQhrVXcCgdBfDrz6KfdZ1SusHd
    w==;
-X-CSE-ConnectionGUID: QihS6nYYTMOya1tstRNR6Q==
-X-CSE-MsgGUID: bXGCfC0pSxOBbvroB7GB8Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11792"; a="80391763"
+X-CSE-ConnectionGUID: JELWnI4NQ7aVRkfYW1wRgA==
+X-CSE-MsgGUID: p6g5vNM5SqybUdnU57Djfg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11792"; a="80391757"
 X-IronPort-AV: E=Sophos;i="6.23,244,1770624000"; 
-   d="scan'208";a="80391763"
+   d="scan'208";a="80391757"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
   by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2026 11:35:08 -0700
-X-CSE-ConnectionGUID: kCOC+WURS06OD2HX7qSD5w==
-X-CSE-MsgGUID: sCBZkfIvQ5WZH/O0OtMCvA==
+X-CSE-ConnectionGUID: fJq7y32JRkiROxL7f7pDkQ==
+X-CSE-MsgGUID: DC0rtfXdR7ODHxQdMXpW9g==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,244,1770624000"; 
-   d="scan'208";a="239423895"
+   d="scan'208";a="239423892"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
   by orviesa010.jf.intel.com with ESMTP; 20 May 2026 11:35:08 -0700
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
@@ -55,10 +55,11 @@ Cc: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>,
 	przemyslaw.kitszel@intel.com,
 	jacob.e.keller@intel.com,
 	horms@kernel.org,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
 	Rafal Romanowski <rafal.romanowski@intel.com>
-Subject: [PATCH net 4/8] i40e: skip unnecessary VF reset when setting trust
-Date: Wed, 20 May 2026 11:34:52 -0700
-Message-ID: <20260520183501.3360810-5-anthony.l.nguyen@intel.com>
+Subject: [PATCH net 3/8] iavf: return EBUSY if reset in progress or not ready during MAC change
+Date: Wed, 20 May 2026 11:34:51 -0700
+Message-ID: <20260520183501.3360810-4-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20260520183501.3360810-1-anthony.l.nguyen@intel.com>
 References: <20260520183501.3360810-1-anthony.l.nguyen@intel.com>
@@ -72,91 +73,44 @@ Content-Transfer-Encoding: 8bit
 
 From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
 
-The current implementation triggers a VF reset when changing the trust
-setting, causing a ~10 second delay during bonding setup.
+When a MAC address change is requested while the VF is resetting or still
+initializing, return -EBUSY immediately instead of attempting the
+operation.
 
-In all the cases, the reset causes a ~10 second delay during which:
-- VF must reinitialize completely
-- Any in-progress operations (like bonding enslave) fail with timeouts
-- VF is unavailable
+Additionally, during early initialization states (before __IAVF_DOWN),
+the PF may be slow to respond to MAC change requests, causing long
+delays. Only allow MAC changes once the VF reaches __IAVF_DOWN state or
+later, when the watchdog is running and the VF is ready for operations.
 
-When granting trust, no reset is needed - we can just set the capability
-flag to allow privileged operations.
-
-When revoking trust, we only need to reset (conservative approach) if
-the VF has actually configured advanced features that require cleanup
-(ADQ/cloud filters, promiscuous mode). For VFs in a clean state, we can
-safely change the trust setting without the disruptive reset.
-
-When we don't reset, we manually handle capability flag via helper
-function, eliminating the delay.
+After commit ad7c7b2172c3 ("net: hold netdev instance lock
+during sysfs operations"), MAC changes are called with the netdev lock
+held, so we should not wait with the lock held during reset or
+initialization. This allows the caller to retry or handle the busy state
+appropriately without blocking other operations.
 
 Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
- .../ethernet/intel/i40e/i40e_virtchnl_pf.c    | 38 ++++++++++++++-----
- 1 file changed, 28 insertions(+), 10 deletions(-)
+ drivers/net/ethernet/intel/iavf/iavf_main.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-index a26c3d47ec15..0cc434b26eb8 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-@@ -4943,6 +4943,23 @@ int i40e_ndo_set_vf_spoofchk(struct net_device *netdev, int vf_id, bool enable)
- 	return ret;
- }
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
+index d2914c511e1e..78c59a58e0b2 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_main.c
++++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
+@@ -1042,6 +1042,9 @@ static int iavf_set_mac(struct net_device *netdev, void *p)
+ 	struct sockaddr *addr = p;
+ 	int ret;
  
-+/**
-+ * i40e_setup_vf_trust - Enable/disable VF trust mode without reset
-+ * @vf: VF to configure
-+ * @setting: trust setting
-+ *
-+ * Update VF flags when changing trust without performing a VF reset.
-+ * This is only called when it's safe to skip the reset (VF has no advanced
-+ * features configured that need cleanup).
-+ */
-+static void i40e_setup_vf_trust(struct i40e_vf *vf, bool setting)
-+{
-+	if (setting)
-+		set_bit(I40E_VIRTCHNL_VF_CAP_PRIVILEGE, &vf->vf_caps);
-+	else
-+		clear_bit(I40E_VIRTCHNL_VF_CAP_PRIVILEGE, &vf->vf_caps);
-+}
++	if (iavf_is_reset_in_progress(adapter) || adapter->state < __IAVF_DOWN)
++		return -EBUSY;
 +
- /**
-  * i40e_ndo_set_vf_trust
-  * @netdev: network interface device structure of the pf
-@@ -4987,19 +5004,20 @@ int i40e_ndo_set_vf_trust(struct net_device *netdev, int vf_id, bool setting)
- 	set_bit(__I40E_MACVLAN_SYNC_PENDING, pf->state);
- 	pf->vsi[vf->lan_vsi_idx]->flags |= I40E_VSI_FLAG_FILTER_CHANGED;
+ 	if (!is_valid_ether_addr(addr->sa_data))
+ 		return -EADDRNOTAVAIL;
  
--	i40e_vc_reset_vf(vf, true);
-+	/* Reset only if revoking trust and VF has advanced features configured */
-+	if (!setting &&
-+	    (vf->adq_enabled || vf->num_cloud_filters > 0 ||
-+	     test_bit(I40E_VF_STATE_UC_PROMISC, &vf->vf_states) ||
-+	     test_bit(I40E_VF_STATE_MC_PROMISC, &vf->vf_states))) {
-+		i40e_vc_reset_vf(vf, true);
-+		i40e_del_all_cloud_filters(vf);
-+	} else {
-+		i40e_setup_vf_trust(vf, setting);
-+	}
-+
- 	dev_info(&pf->pdev->dev, "VF %u is now %strusted\n",
- 		 vf_id, setting ? "" : "un");
- 
--	if (vf->adq_enabled) {
--		if (!vf->trusted) {
--			dev_info(&pf->pdev->dev,
--				 "VF %u no longer Trusted, deleting all cloud filters\n",
--				 vf_id);
--			i40e_del_all_cloud_filters(vf);
--		}
--	}
--
- out:
- 	clear_bit(__I40E_VIRTCHNL_OP_PENDING, pf->state);
- 	return ret;
 -- 
 2.47.1
 
