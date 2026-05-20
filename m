@@ -1,46 +1,46 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FD31371CEA
-	for <netdev@vger.kernel.org>; Wed, 20 May 2026 18:35:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C7B23E832A
+	for <netdev@vger.kernel.org>; Wed, 20 May 2026 18:35:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302110; cv=none; b=PoOHlDmUQX6Ehd1VI7U8xQcsmV1MVQNNqSBPmJVpfa9TNrwyc4mPBIrCqlBHJQMtt9i0cK8zFVGO6MCOH3FZtihL2RjWf+AVvjSSeiq3vfoO4x8y5Nn4us4ssUk85YEwAVAZJP26a1GpMISNr8Cv96opb9ysJWPRySM0JhzRijw=
+	t=1779302111; cv=none; b=Inc7SaSgc7TqCymmEnPDEd8WN702q5H4j8xIgSHNGiEdfQ78MBCexajy+dkB06h+fJ53mMKJ4Hbz6BfpxKfCE+SblfsXalxkVGpqhBFcJdBkNONGnNVeOYqowpb225kPHCHRtdJewROaDYSWrN2wVoN8+I5Mwb71eC0K04Zbhz0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302110; c=relaxed/simple;
-	bh=KP8sZ1CqPWGPGCiynv/T/K8D0sR99O1i1nkKXDcK2rY=;
+	s=arc-20240116; t=1779302111; c=relaxed/simple;
+	bh=wG3YbvlaS9ph6jlxQ7R4ibbEe4AbjoR1lMzAaFq/eps=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FgHkCHmY7y5Be7FeTn3P1bVRtP/XEc8gvS9RG76xCKErQCgnFuEskpnxjFHz5rbd8tLLuBmLc4lfEE8oNCyjy/i1Pog0lbdE9wYWsI+t2s/ZsHcCJEWeU1a4vc69JkXzR3387Dzlc06orKDK0kBFL7btA5KPbvOXtr62yngQ/vE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=X/E2sfDR; arc=none smtp.client-ip=198.175.65.16
+	 MIME-Version; b=NXXhx0vNZr+ldVnAwNL1JwFLQ+l8iIGgcL8mrQbLxDrgMEQj+B/2alyLAyVjFFMmEFT45wdAu/W2LBVCUWt6C66AsHzsJeyF8I0ybY3JIH+XhIlczKyyO+yrto8rnzsjDgJDETIX98im3SMeV5atWTrwAEJ1QGysinSBT3lIxCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GFjHciwT; arc=none smtp.client-ip=198.175.65.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="X/E2sfDR"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GFjHciwT"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1779302110; x=1810838110;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=KP8sZ1CqPWGPGCiynv/T/K8D0sR99O1i1nkKXDcK2rY=;
-  b=X/E2sfDRe8OHdbt4+ydS4zkc0x519q9KhuNy6CAFjW0v1QwrTtlWp7tu
-   bxZN8ur3GIPfTR4P3gWmh1hC+hlece5CgryNV5uxG+6H5upuZOIGbCymb
-   seIuMfBfLdiwrAvM2QtkvcM6XdX4dgMofcpBU0bw9HVfSNRoEQycX5T90
-   NlOz09dFaIpoTOEQjsQsWHxIkIexpccJiIdcu8qfvZF4EOXd+JEYlwWjH
-   6lCG5Ath86A4pC3Oiw1lvK4Rz0dDg2O5Kxh1C4gar/e01EpCZCnWvarwP
-   q41Rlw/T78XNs4Li85vs4bYbNaCKMaaMX3Ir8kygAIcnrR1BDTI3ShRjc
-   A==;
-X-CSE-ConnectionGUID: d8w1Kr55RdSrps0kztiVRg==
-X-CSE-MsgGUID: OOcT6qW8RBeywJtXNWT17g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11792"; a="80391751"
+  bh=wG3YbvlaS9ph6jlxQ7R4ibbEe4AbjoR1lMzAaFq/eps=;
+  b=GFjHciwTPJ9fGCtI71HGCECZqGFdTL7gNgGJW2VhJfhrDxYTrTL9x0tO
+   DCD/LLV+1uxSBszpYZ5B9UR2S+uox47cHiVV5eRXRoeYqyA2aIkVzsujs
+   dyDNuFH8uC5JnF0QNdMIywRs7W6NfKfPScyFMd4qPR02wEh28cYMjSJtG
+   I6V2aGnv1B6816xiVPfFxzobrCH5Kfw0c1O+QlR5LCHp7E8RaVkLX5x+S
+   cCGmEcYTAcgbA/7Fyg3azccjVqoJt7LI8siQBrehyF91ay0K/KY6sQ1Cl
+   q+zt9lQxEwoR8a3OsOSXBTbxC5Xye9NmmkWhYfYbDpd1x8QcyhykWjJnr
+   w==;
+X-CSE-ConnectionGUID: QihS6nYYTMOya1tstRNR6Q==
+X-CSE-MsgGUID: bXGCfC0pSxOBbvroB7GB8Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11792"; a="80391763"
 X-IronPort-AV: E=Sophos;i="6.23,244,1770624000"; 
-   d="scan'208";a="80391751"
+   d="scan'208";a="80391763"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2026 11:35:07 -0700
-X-CSE-ConnectionGUID: 8AaeRsA2TWOAnxvYwK+QwA==
-X-CSE-MsgGUID: jA/ERHWeQKq6pgrDdE+G7w==
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2026 11:35:08 -0700
+X-CSE-ConnectionGUID: kCOC+WURS06OD2HX7qSD5w==
+X-CSE-MsgGUID: sCBZkfIvQ5WZH/O0OtMCvA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,244,1770624000"; 
-   d="scan'208";a="239423889"
+   d="scan'208";a="239423895"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
   by orviesa010.jf.intel.com with ESMTP; 20 May 2026 11:35:08 -0700
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
@@ -50,17 +50,15 @@ To: davem@davemloft.net,
 	edumazet@google.com,
 	andrew+netdev@lunn.ch,
 	netdev@vger.kernel.org
-Cc: Michal Schmidt <mschmidt@redhat.com>,
+Cc: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>,
 	anthony.l.nguyen@intel.com,
 	przemyslaw.kitszel@intel.com,
 	jacob.e.keller@intel.com,
-	poros@redhat.com,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Simon Horman <horms@kernel.org>,
+	horms@kernel.org,
 	Rafal Romanowski <rafal.romanowski@intel.com>
-Subject: [PATCH net 2/8] ice: fix stats array overflow when VF requests more queues
-Date: Wed, 20 May 2026 11:34:50 -0700
-Message-ID: <20260520183501.3360810-3-anthony.l.nguyen@intel.com>
+Subject: [PATCH net 4/8] i40e: skip unnecessary VF reset when setting trust
+Date: Wed, 20 May 2026 11:34:52 -0700
+Message-ID: <20260520183501.3360810-5-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20260520183501.3360810-1-anthony.l.nguyen@intel.com>
 References: <20260520183501.3360810-1-anthony.l.nguyen@intel.com>
@@ -72,141 +70,93 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Michal Schmidt <mschmidt@redhat.com>
+From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
 
-When a VF increases its queue count via VIRTCHNL_OP_REQUEST_QUEUES,
-ice_vc_request_qs_msg() sets vf->num_req_qs and triggers a VF reset.
-The reset calls ice_vf_reconfig_vsi(), which does ice_vsi_decfg()
-followed by ice_vsi_cfg(). ice_vsi_decfg() does not free the per-ring
-stats arrays. Inside ice_vsi_cfg_def(), ice_vsi_set_num_qs() updates
-alloc_txq/alloc_rxq to the new larger value, but
-ice_vsi_alloc_stat_arrays() returns early because the stats already
-exist. ice_vsi_alloc_ring_stats() then iterates using the new larger
-alloc_txq and writes beyond the bounds of the old, smaller
-tx_ring_stats/rx_ring_stats pointer arrays, corrupting adjacent SLUB
-metadata.
+The current implementation triggers a VF reset when changing the trust
+setting, causing a ~10 second delay during bonding setup.
 
-KASAN detects the bug:
- ==================================================================
- BUG: KASAN: slab-out-of-bounds in ice_vsi_alloc_ring_stats+0x385/0x4a0 [ice]
- Read of size 8 at addr ffff88810affea60 by task kworker/u131:7/221
+In all the cases, the reset causes a ~10 second delay during which:
+- VF must reinitialize completely
+- Any in-progress operations (like bonding enslave) fail with timeouts
+- VF is unavailable
 
- CPU: 24 UID: 0 PID: 221 Comm: kworker/u131:7 Not tainted 7.1.0-rc1+ #1 PREEMPT(lazy)
- ...
- Workqueue: ice ice_service_task [ice]
- Call Trace:
-  <TASK>
-  ...
-  kasan_report+0xd7/0x120
-  ice_vsi_alloc_ring_stats+0x385/0x4a0 [ice]
-  ice_vsi_cfg_def+0x12e2/0x2060 [ice]
-  ice_vsi_cfg+0xb5/0x3c0 [ice]
-  ice_reset_vf+0x858/0xf80 [ice]
-  ice_vc_request_qs_msg+0x1da/0x290 [ice]
-  ice_vc_process_vf_msg+0xb15/0x1430 [ice]
-  __ice_clean_ctrlq+0x70d/0x9d0 [ice]
-  ice_service_task+0x840/0xf20 [ice]
-  process_one_work+0x690/0xff0
-  worker_thread+0x4d9/0xd20
-  kthread+0x322/0x410
-  ret_from_fork+0x332/0x660
-  ret_from_fork_asm+0x1a/0x30
-  </TASK>
+When granting trust, no reset is needed - we can just set the capability
+flag to allow privileged operations.
 
- Allocated by task 2439:
-  kasan_save_stack+0x1c/0x40
-  kasan_save_track+0x10/0x30
-  __kasan_kmalloc+0x96/0xb0
-  __kmalloc_noprof+0x1d8/0x580
-  ice_vsi_cfg_def+0x115c/0x2060 [ice]
-  ice_vsi_cfg+0xb5/0x3c0 [ice]
-  ice_vsi_setup+0x180/0x320 [ice]
-  ice_start_vfs+0x1f3/0x590 [ice]
-  ice_ena_vfs+0x66d/0x798 [ice]
-  ice_sriov_configure.cold+0xe4/0x121 [ice]
-  sriov_numvfs_store+0x279/0x480
-  kernfs_fop_write_iter+0x331/0x4f0
-  vfs_write+0x4c4/0xe40
-  ksys_write+0x10c/0x240
-  do_syscall_64+0xd9/0x650
-  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+When revoking trust, we only need to reset (conservative approach) if
+the VF has actually configured advanced features that require cleanup
+(ADQ/cloud filters, promiscuous mode). For VFs in a clean state, we can
+safely change the trust setting without the disruptive reset.
 
- The buggy address belongs to the object at ffff88810affea40
-                which belongs to the cache kmalloc-32 of size 32
- The buggy address is located 0 bytes to the right of
-                allocated 32-byte region [ffff88810affea40, ffff88810affea60)
- ...
- ==================================================================
+When we don't reset, we manually handle capability flag via helper
+function, eliminating the delay.
 
-ice_vsi_rebuild() handles this correctly by calling
-ice_vsi_realloc_stat_arrays() before reconfiguration, but
-ice_vf_reconfig_vsi() was missing this call.
-
-Fix by calling ice_vsi_realloc_stat_arrays() in ice_vf_reconfig_vsi()
-before ice_vsi_decfg(), mirroring the ice_vsi_rebuild() pattern. Set
-vsi->req_txq/req_rxq from vf->num_req_qs so the realloc function knows
-the target array size.
-
-See the linked RHEL Jira item for a reproducer.
-
-Fixes: 2a2cb4c6c181 ("ice: replace ice_vf_recreate_vsi() with ice_vf_reconfig_vsi()")
-Closes: https://redhat.atlassian.net/browse/RHEL-164321
-Signed-off-by: Michal Schmidt <mschmidt@redhat.com>
-Assisted-by: Claude:claude-opus-4-6 semcode
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
 Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
- drivers/net/ethernet/intel/ice/ice_lib.c    | 2 +-
- drivers/net/ethernet/intel/ice/ice_lib.h    | 1 +
- drivers/net/ethernet/intel/ice/ice_vf_lib.c | 7 +++++++
- 3 files changed, 9 insertions(+), 1 deletion(-)
+ .../ethernet/intel/i40e/i40e_virtchnl_pf.c    | 38 ++++++++++++++-----
+ 1 file changed, 28 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_lib.c b/drivers/net/ethernet/intel/ice/ice_lib.c
-index 837b71b7b2b7..fc78176a2a8d 100644
---- a/drivers/net/ethernet/intel/ice/ice_lib.c
-+++ b/drivers/net/ethernet/intel/ice/ice_lib.c
-@@ -3015,7 +3015,7 @@ ice_vsi_rebuild_set_coalesce(struct ice_vsi *vsi,
-  * ice_vsi_realloc_stat_arrays - Frees unused stat structures or alloc new ones
-  * @vsi: VSI pointer
-  */
--static int
-+int
- ice_vsi_realloc_stat_arrays(struct ice_vsi *vsi)
- {
- 	u16 req_txq = vsi->req_txq ? vsi->req_txq : vsi->alloc_txq;
-diff --git a/drivers/net/ethernet/intel/ice/ice_lib.h b/drivers/net/ethernet/intel/ice/ice_lib.h
-index 49454d98dcfe..6f7da84384e5 100644
---- a/drivers/net/ethernet/intel/ice/ice_lib.h
-+++ b/drivers/net/ethernet/intel/ice/ice_lib.h
-@@ -66,6 +66,7 @@ int ice_ena_vsi(struct ice_vsi *vsi, bool locked);
- void ice_vsi_decfg(struct ice_vsi *vsi);
- void ice_dis_vsi(struct ice_vsi *vsi, bool locked);
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+index a26c3d47ec15..0cc434b26eb8 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+@@ -4943,6 +4943,23 @@ int i40e_ndo_set_vf_spoofchk(struct net_device *netdev, int vf_id, bool enable)
+ 	return ret;
+ }
  
-+int ice_vsi_realloc_stat_arrays(struct ice_vsi *vsi);
- int ice_vsi_rebuild(struct ice_vsi *vsi, u32 vsi_flags);
- int ice_vsi_cfg(struct ice_vsi *vsi);
- struct ice_vsi *ice_vsi_alloc(struct ice_pf *pf);
-diff --git a/drivers/net/ethernet/intel/ice/ice_vf_lib.c b/drivers/net/ethernet/intel/ice/ice_vf_lib.c
-index b1f46707dcc0..cf4ed034ad8a 100644
---- a/drivers/net/ethernet/intel/ice/ice_vf_lib.c
-+++ b/drivers/net/ethernet/intel/ice/ice_vf_lib.c
-@@ -268,6 +268,13 @@ static int ice_vf_reconfig_vsi(struct ice_vf *vf)
- 
- 	vsi->flags = ICE_VSI_FLAG_NO_INIT;
- 
-+	vsi->req_txq = vf->num_req_qs;
-+	vsi->req_rxq = vf->num_req_qs;
++/**
++ * i40e_setup_vf_trust - Enable/disable VF trust mode without reset
++ * @vf: VF to configure
++ * @setting: trust setting
++ *
++ * Update VF flags when changing trust without performing a VF reset.
++ * This is only called when it's safe to skip the reset (VF has no advanced
++ * features configured that need cleanup).
++ */
++static void i40e_setup_vf_trust(struct i40e_vf *vf, bool setting)
++{
++	if (setting)
++		set_bit(I40E_VIRTCHNL_VF_CAP_PRIVILEGE, &vf->vf_caps);
++	else
++		clear_bit(I40E_VIRTCHNL_VF_CAP_PRIVILEGE, &vf->vf_caps);
++}
 +
-+	err = ice_vsi_realloc_stat_arrays(vsi);
-+	if (err)
-+		return err;
-+
- 	ice_vsi_decfg(vsi);
- 	ice_fltr_remove_all(vsi);
+ /**
+  * i40e_ndo_set_vf_trust
+  * @netdev: network interface device structure of the pf
+@@ -4987,19 +5004,20 @@ int i40e_ndo_set_vf_trust(struct net_device *netdev, int vf_id, bool setting)
+ 	set_bit(__I40E_MACVLAN_SYNC_PENDING, pf->state);
+ 	pf->vsi[vf->lan_vsi_idx]->flags |= I40E_VSI_FLAG_FILTER_CHANGED;
  
+-	i40e_vc_reset_vf(vf, true);
++	/* Reset only if revoking trust and VF has advanced features configured */
++	if (!setting &&
++	    (vf->adq_enabled || vf->num_cloud_filters > 0 ||
++	     test_bit(I40E_VF_STATE_UC_PROMISC, &vf->vf_states) ||
++	     test_bit(I40E_VF_STATE_MC_PROMISC, &vf->vf_states))) {
++		i40e_vc_reset_vf(vf, true);
++		i40e_del_all_cloud_filters(vf);
++	} else {
++		i40e_setup_vf_trust(vf, setting);
++	}
++
+ 	dev_info(&pf->pdev->dev, "VF %u is now %strusted\n",
+ 		 vf_id, setting ? "" : "un");
+ 
+-	if (vf->adq_enabled) {
+-		if (!vf->trusted) {
+-			dev_info(&pf->pdev->dev,
+-				 "VF %u no longer Trusted, deleting all cloud filters\n",
+-				 vf_id);
+-			i40e_del_all_cloud_filters(vf);
+-		}
+-	}
+-
+ out:
+ 	clear_bit(__I40E_VIRTCHNL_OP_PENDING, pf->state);
+ 	return ret;
 -- 
 2.47.1
 
