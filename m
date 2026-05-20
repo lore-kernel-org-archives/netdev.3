@@ -1,86 +1,122 @@
 Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFBDC1E51E0;
-	Wed, 20 May 2026 06:51:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E8393630AE;
+	Wed, 20 May 2026 06:59:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779259875; cv=none; b=tiVXc+lrEVnQQzRWpTgGz/MOsjzdqQaDqttXKgH90GlhoAC8zjMqLr6UR9/p35VlTdcUmQXHOvsrSmUHclRLvcmWn7PF14+cHYRn18dc9OY4TgyCpT0zlYEVVhAcNSjGXB35q/10I2StGBTnbsdrl7mOiKjhV/F0307BRAD1Y0Q=
+	t=1779260351; cv=none; b=M3swRzEF99lTQuDWe6oa9PU/VN+DxvmMW6yvOxsbgH1qOQaBZmf8GGgOWZ3ozzvBHgHVY/nPrpcQh7E+AuQYUiOEzCTgglervBadz2iKVDCBy6GhgWUnIeE2+yu49Jaiy7C5HT+YUvwFtHZSxipMGVHoWT03MhTC6GS1Kj30Axs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779259875; c=relaxed/simple;
-	bh=ND8kbuIVBSkCZgoXqR/WoD8dHGWbu0FC3i/yvI9gkrQ=;
+	s=arc-20240116; t=1779260351; c=relaxed/simple;
+	bh=PPpeI7Xb3kaI0X22TfVMKt7kBUpv1MRvdTnnpuHCPLs=;
 	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GzB+95GKiHLchT6rDIoKdwQGu2WTdm6OZLWJ+C4vGEZqhw4ntPxh9cbs+JNxpRHT+TtG5HjvcogumV5KS1kxFaN8aYIAtleJjF6EYkYjdslhcWcgsrd5DgsdbJMSDVXW+q9Nm8uHpmEhbQXaiMAHoxvjt6qzjS7U1x3QvSyRcfk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=coirRY3M; arc=none smtp.client-ip=62.96.220.36
+	 Content-Type:Content-Disposition:In-Reply-To; b=O3W3B1EEnPDNMNg2uWg/9gbjbNdOJHT96VXQoo0qex54/Mq1lqakIEUA1anLyv4eSZa3aiB/Zubrgf3lncXOHl6dkdQCLZcgg2ZFRvF+kfbGww8PWO5/I/kjJ3vZVzlaD8GwJXsD5cW1pD4P4Pnv/+Uy1wot1dxtSOm4+Vi3kcE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=bi5h0/rU; arc=none smtp.client-ip=62.96.220.36
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="coirRY3M"
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="bi5h0/rU"
 Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id 28ADD207B0;
-	Wed, 20 May 2026 08:51:12 +0200 (CEST)
+	by mx1.secunet.com (Postfix) with ESMTP id BCCF120190;
+	Wed, 20 May 2026 08:59:07 +0200 (CEST)
 X-Virus-Scanned: by secunet
 Received: from mx1.secunet.com ([127.0.0.1])
  by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id 6ZP1EmhL3nWy; Wed, 20 May 2026 08:51:11 +0200 (CEST)
+ with ESMTP id vOuMy8MEWuxJ; Wed, 20 May 2026 08:59:07 +0200 (CEST)
 Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id A39F620184;
-	Wed, 20 May 2026 08:51:11 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com A39F620184
+	by mx1.secunet.com (Postfix) with ESMTPS id 275A1207AC;
+	Wed, 20 May 2026 08:59:07 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 275A1207AC
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1779259871;
-	bh=bf52P203YyUk/5Ce0Svchn25/+VN6OGb10VcsgHSZfk=;
+	s=202301; t=1779260347;
+	bh=bBAywpfg57qsi59u8EKjLYTUBp30UBP9K7ik84Iwvjc=;
 	h=Date:From:To:CC:Subject:References:In-Reply-To:From;
-	b=coirRY3Mahz8WlYgUGe2E+7k9fXTBl/KZsgVZoLoOnyrKuZ1Tu4mMSCYl3CulwTBg
-	 Uhet26Me93r8057WX7G0B61oTcwTdyJolNMMZp9NHjgd3mcnr2HlZ8DZJtUY21IClf
-	 Rmk65/FBzcJS4jiWVA6/PQypsmfICBv7wbMJpgnEiUfzL7Nmc5RC6gQlpMHuoON1PF
-	 ODRparwQKhQVPBSqBwEV7UN5M/Fsn2tXtABMDCA/sfyasv2ZFirRu+hi8u/KB2rYCi
-	 Nf3Ie2XSu10NNEEgljPUtPgC56+PJu3Psp4AR8deQkQ/HJ7qIJiCZDz7LFMARl7mj7
-	 CGThsnJBW3HCw==
+	b=bi5h0/rUv3yV3Fa5mz5ohZRPheiYk2IBMQ70fDdxmgeMz1UoWJJlVS72aMo/uVgvp
+	 TtUi1hQkE+GA4yydRVJQI4dyvp3F4GPVyAAAvOvvNVnypvREKTkxVfESv34ClWw+UP
+	 XUlpNO/GwL3VoF4CTray2IldlhP3oqgimuc+mlbzQKG+HQxua+3t0O7oSTudFauuJJ
+	 dt8KZvA+N/LpDNI044Bbvn8myUQkAEI0bqiS2IkhgE6QK03kGQdPY/rXsBfiYeFoxU
+	 n5+kZqy10HvPqMHT7CeoDfvLyQGIm7w+IltFJakSUa/4r0JQFvrpIevEJ9sHDs7Bw+
+	 jTPeLxbPHnZgQ==
 Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Wed, 20 May
- 2026 08:51:11 +0200
-Received: (nullmailer pid 1140913 invoked by uid 1000);
-	Wed, 20 May 2026 06:51:10 -0000
-Date: Wed, 20 May 2026 08:51:10 +0200
+ 2026 08:59:06 +0200
+Received: (nullmailer pid 1147918 invoked by uid 1000);
+	Wed, 20 May 2026 06:59:05 -0000
+Date: Wed, 20 May 2026 08:59:05 +0200
 From: Steffen Klassert <steffen.klassert@secunet.com>
-To: Leon Romanovsky <leon@kernel.org>
-CC: =?iso-8859-1?Q?G=FCnther?= Muller <gunther.muller2008@gmail.com>, Herbert
- Xu <herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
- Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2] xfrm: fix missing headroom check in
- xfrm_dev_direct_output
-Message-ID: <ag1Z3halPB-km3Sn@secunet.com>
-References: <20260517111940.8987-1-gunther.muller2008@gmail.com>
- <20260518080410.11119-1-gunther.muller2008@gmail.com>
- <20260518123054.GS33515@unreal>
+To: Michael Bommarito <michael.bommarito@gmail.com>
+CC: Herbert Xu <herbert@gondor.apana.org.au>, "David S . Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Evan Nimmo
+	<evan.nimmo@alliedtelesis.co.nz>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net] xfrm: ah: use skb_to_full_sk in async output
+ callbacks
+Message-ID: <ag1budVqQmjiowDH@secunet.com>
+References: <20260515154531.1386683-1-michael.bommarito@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260518123054.GS33515@unreal>
-X-ClientProxiedBy: EXCH-01.secunet.de (10.32.0.171) To EXCH-01.secunet.de
+In-Reply-To: <20260515154531.1386683-1-michael.bommarito@gmail.com>
+X-ClientProxiedBy: EXCH-04.secunet.de (10.32.0.184) To EXCH-01.secunet.de
  (10.32.0.171)
 
-On Mon, May 18, 2026 at 03:30:54PM +0300, Leon Romanovsky wrote:
-> On Mon, May 18, 2026 at 10:04:09AM +0200, Günther Muller wrote:
-> > Ensure the skb has enough headroom for the hardware offload device's
-> > hard_header_len. If the headroom is insufficient (e.g., when routing
-> > through certain virtual or tunnel devices), __skb_push() underflows
-> > skb->data below skb->head, causing silent memory corruption.
+On Fri, May 15, 2026 at 11:45:31AM -0400, Michael Bommarito wrote:
+> When AH output is offloaded to an asynchronous crypto provider
+> (hardware accelerators such as AMD CCP, or a forced-async software
+> shim used for testing), the digest completion fires
+> ah_output_done() / ah6_output_done() on a workqueue.  The egress
+> skb at that point may have been originated by a TCP listener
+> sending a SYN-ACK, which sets skb->sk to a request_sock via
+> skb_set_owner_edemux(); it may also have been originated by an
+> inet_timewait_sock retransmit.  Neither is a full struct sock, and
+> passing the raw skb->sk to xfrm_output_resume() then forwards a
+> non-full socket through the rest of the xfrm output chain.
 > 
-> Could you please provide the steps required to reproduce the issue?
+> xfrm_output_resume() and its downstream consumers expect a full
+> sk where they dereference at all.  The natural egress path
+> through ah_output_done() does not crash today because the
+> consumers that read past sock_common are either gated by
+> sk_fullsock() or short-circuit on flags that are clear on a fresh
+> request_sock; an exhaustive walk of the 50 most plausible
+> consumers under sch_fq, dev_queue_xmit, netfilter, tc-egress and
+> cgroup-egress BPF found no current unguarded deref.  The bug is
+> still a real type confusion that future consumer changes could
+> turn into a memory-corruption primitive.
+> 
+> This is the same bug class fixed for ESP in commit 1620c88887b1
+> ("xfrm: Fix the usage of skb->sk").  Apply the analogous fix to
+> AH: convert skb->sk to a full socket pointer (or NULL) via
+> skb_to_full_sk() before handing it to xfrm_output_resume().
+> 
+> The same async AH callbacks were touched recently for an
+> independent ESN-related ICV layout bug in commit ec54093e6a8f
+> ("xfrm: ah: account for ESN high bits in async callbacks"); the
+> sk type-confusion addressed here is orthogonal.  This patch is
+> part of an ongoing audit of the AH callback paths; an ah_output
+> ihl-validation hardening series is also currently under review on
+> netdev.
+> 
+> Reproduced under UML + KASAN + lockdep with a forced-async
+> hmac(sha1) shim that registers at priority 9999 and wraps the
+> sync in-tree hmac-sha1-lib.  With the shim loaded, ah_output_done
+> runs on every SYN-ACK egress through a transport-mode AH SA and
+> skb->sk arrives as a request_sock (TCP_NEW_SYN_RECV); after this
+> patch, xfrm_output_resume() receives the listener (the result of
+> sk_to_full_sk()) and consumer derefs land on full-sock fields as
+> intended.
+> 
+> Fixes: 9ab1265d5231 ("xfrm: Use actual socket sk instead of skb socket for xfrm_output_resume")
+> Cc: stable@vger.kernel.org
+> Assisted-by: Claude:claude-opus-4-7
+> Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
 
-Please answer Leons question.
-
-Thanks!
+Applied to the ipsec tree, thanks!
