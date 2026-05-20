@@ -1,132 +1,149 @@
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9BED3DA5B5
-	for <netdev@vger.kernel.org>; Wed, 20 May 2026 12:44:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 676E62E3397;
+	Wed, 20 May 2026 12:46:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779281077; cv=none; b=Fva6NFebASwn1gp+YmGh5gdEAPYfXjXjX34qURwF7Kwrb/wRxqDs+agXH+t2rpXgFhgb/uXUAjOxF3Htd/G2o/7DAtXOBtUuV7J/vvaeOCI+//Syj/zmVrQ8YvHMde2etGWQICyATKyKJEOGoave7vcxpuCK2fhr8vehdKpoh9Q=
+	t=1779281200; cv=none; b=J7YYQ90HY3esLfL6MlemifnzT+hr0hVtf0xZXBJGK5lTvjbRDnw1P8uduCkA3jTMoUFuIhdjlh1sO204gK+etpIC2FNE0NtRXsMDhK3DAdmqr6nDwInAEdW4z/S7U3fRC6AuauPBJ24FF9p9P3GD2rTIl3JFgyee5EXfjbqk8zM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779281077; c=relaxed/simple;
-	bh=thxoksPQ+15g5hS+3SczibJzhdj7OfrhTFsfdTgiklA=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=RlCH5CXXSzguCSWCOmAOU0kvgUW9KlLYMzXam8rjo0Oh+Jpnl4Y20h3udkjDuCa12S+bBLe7NZe95ZWqFNmJs/90FHeKrBqubXMmu6Bxh5AywSW2wIyd88MSe+AqmKo7xqPSS+tf3XV/BbPOQfqa48QUYhFMkTTQ5qnRN2XpKcQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JJuCyU09; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1779281200; c=relaxed/simple;
+	bh=Oj8acMtU2G9Hnr5h1H8D/0eXrcjQ+7flWUVC72yYfbI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pI5us3bPC931Mw/hwIKKEb4DNi6ZyEv9G050gApqtj+uYqiL7gJxT3rONHtM2Cb4KqeUC1ehaYzK+ngIugSkzlROe8TVK41W1QHIvK8szS1TEe67Z+8FtkBWMkm1XLAMOnEtdjyxSbVeK/2kez7LlNDRBue+S68kn2XuDU6p8Do=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c+QefKMA; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JJuCyU09"
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-488ad135063so38959295e9.0
-        for <netdev@vger.kernel.org>; Wed, 20 May 2026 05:44:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779281071; x=1779885871; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=N5eLz8Qn47d0khh31ps9ZsK9pvOA5rKAX3QPAASD/ZA=;
-        b=JJuCyU09+0cIJBznTa1ERor6YqcU/jATezzLfr1erIFuYbTY4n7xZaerP7nIhQ7xYx
-         X5z7OTZuELOvRyddfzQ1cocE40Htwi81xU+QOKRVAfywKCT6apzHn9FkZeEEgbtt1jFg
-         l3fr3AXdUl+aoasL7Ax9u7MFhfDf/cKlCs5xsCRHLhIT2j4tKpe3vCm2b7+kqNMiG1nl
-         dbQw0eH+biiJlx4uyaL6x+1h0GdEGuZ8LtTTdGKDuneY++YtYjGJa5qW7sHr8Ql76Qoj
-         9X1DWJwwzAzQo0OO4v/0vbsOy0L/0s2hQ2CJN+DHDAQeYb2OWlWl6l+RJBgCHvJqelrE
-         R7SQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779281071; x=1779885871;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=N5eLz8Qn47d0khh31ps9ZsK9pvOA5rKAX3QPAASD/ZA=;
-        b=Gy0ibLERbhyLq5vylpPAN0mCq7jMXdwA/s6YvqAaNj1BMgkILD9vvMdw50BMHczrnt
-         13g0l3Hku3++I40GK6041GItL+0KNvseP2t7bkblzAv58XyldupR2Z3tgIsPo/tVEZMQ
-         pICs2lBnp0kYw0TPytoa05KaJwk9J0STZuRwV8T6BemypO+aAAVifl9QKzqjk0lQ52/V
-         +XL4V/EAJnDwI+h72wmUetW60NrjIYFddDItVcfUsECpbfOGqghMqvRu8dDVelFb4PJP
-         d8PC1Tbd2Mhj1+zIdScmfrjYsyDyM0nIG9Cd9BiKlgWDZunoX+eSuY1AGTSq9di1JtzG
-         HvCw==
-X-Gm-Message-State: AOJu0Yw8pgaVzoUO2aUg4cVFI0GH+p8d8+J9svZ4EuWNWQMqXK5APjHi
-	yNJWNB787OuDqT8/PLPSmohFZ6v8RbcGwrm434Ox6SyItHFrB/APENyErABOO95h
-X-Gm-Gg: Acq92OHTCdINLsIwbSSgV+2KOUFZfvvSa34ub/ZGhN54Sc6cKs8WTUCmBdnKuchCaSj
-	h4JFjglDLV2zhiBeVQxRr7Yyve5g8vpdP9zb+ihopgDup/Q4x03rq6PFSEoU6747cNTFHiDzIve
-	ehi0xs3md3ZXQCdWJEAImQz/mD1g4oZh01w2tg+koOslLcFmRVHz161V5OhCnC0vNo+mlBGIJ++
-	XvrDX4ldpiSp45HnMcB0k62bH/DMui1zWtuOAqe4FQsnFsFqza32VDaocNK3FR7T+AtDAYz4CjT
-	/CH1ViuvNt1vLkX8sUS5SXTUJL0gIswlobeBx/RLRcmWqojhJp+mS/UIdYWvyelQdP2cglHb+DF
-	DbWCJRYJPzqRDo2zf4HQHTeSqcTKZ0Z/hQ+5IDldMHd1c2M7+RWjgyQMRhSHQ9pA3MNKRQUtE1/
-	p8XBi4iRVmLAItE1KSi0BCni9hsHyIWo61jm0H
-X-Received: by 2002:a05:600c:1709:b0:490:327a:1b47 with SMTP id 5b1f17b1804b1-490327a1b5dmr7754165e9.8.1779281070939;
-        Wed, 20 May 2026 05:44:30 -0700 (PDT)
-Received: from localhost.localdomain ([31.4.38.187])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48fe4c88495sm387739955e9.4.2026.05.20.05.44.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 May 2026 05:44:30 -0700 (PDT)
-From: Justin Iurman <justin.iurman@gmail.com>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	dsahern@kernel.org,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	idosch@nvidia.com,
-	justin.iurman@gmail.com,
-	stable@vger.kernel.org
-Subject: [PATCH net] ipv6: ioam: refresh hdr pointer before ioam6_event()
-Date: Wed, 20 May 2026 14:42:42 +0200
-Message-Id: <20260520124242.32320-1-justin.iurman@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c+QefKMA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95D031F000E9;
+	Wed, 20 May 2026 12:46:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779281199;
+	bh=HA5J7j3Eq/ArC7Y7uw56ulwYKzG7952DMvsvOBRob3o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=c+QefKMAKzne3Mn1HFG8sfm1Z3y4hPEnQ8ELclV5VI7KM22VA9XLkzzUhIjarjDSc
+	 LKETPW3khf6THLBZaT36f9sXsxB7cCfUILoDC2L8Xf80T1vRH2gugYWUZstK/6OI77
+	 je1FR7UvZadmKoRlgV5Gt8US3JIjr/k+C6TMVr2x/Qeit2ZhQTJiT1oufSiu4Vr1zO
+	 giq5Nhz4UDyAq83Djie7WTdqew4MSvGO9WmPr4Y28BhvyFwN2Op9NVp+1hzfFja2nC
+	 Yzr99ZXTYXDI68ORc8IWqpfAgYrTydaCR9E1UUGez6nOY/uf0rb/am+tP4IMSydDNl
+	 N/FeLLP2r9LfA==
+Date: Wed, 20 May 2026 14:46:36 +0200
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+To: sashiko-reviews@lists.linux.dev
+Cc: conor+dt@kernel.org, robh@kernel.org, devicetree@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH net-next v8 09/10] net: airoha: Introduce WAN device flag
+Message-ID: <ag2tLKJfVLV82o7t@lore-desk>
+References: <20260519-airoha-eth-multi-serdes-v8-9-6bd70e329df6@kernel.org>
+ <20260520085933.C009F1F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="aIJq2R5uZPRpkgYw"
+Content-Disposition: inline
+In-Reply-To: <20260520085933.C009F1F00893@smtp.kernel.org>
 
-Reported by Sashiko:
 
-In ipv6_hop_ioam(), the hdr pointer is initialized to point into the
-skb's linear data buffer. Later, the code calls skb_ensure_writable(),
-which might reallocate the buffer:
+--aIJq2R5uZPRpkgYw
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-	if (skb_ensure_writable(skb, optoff + 2 + hdr->opt_len))
-		goto drop;
+[...]
+>=20
+> [ ... ]
+> > +static int airoha_dev_init(struct net_device *netdev)
+> > +{
+> > +	struct airoha_gdm_dev *dev =3D netdev_priv(netdev);
+> > +	struct airoha_gdm_port *port =3D dev->port;
+> > =20
+> >  	switch (port->id) {
+> >  	case AIROHA_GDM3_IDX:
+> > +	case AIROHA_GDM4_IDX: {
+> > +		struct airoha_eth *eth =3D dev->eth;
+> > =20
+> > +		/* GDM2 supports a single net_device */
+> > +		if (eth->ports[1] && eth->ports[1]->devs[0])
+> > +			break;
+>=20
+> Is there a strict probe-order dependency for these interfaces?
+>=20
+> If GDM3 or GDM4 is probed before GDM2, eth->ports[1]->devs[0] will be NUL=
+L.
+> This leads GDM3/GDM4 to assume GDM2 is inactive, take the WAN role, and f=
+orce
+> GDM2 into loopback mode.
+>=20
+> Later, when GDM2 initializes:
+>=20
+> > +	case AIROHA_GDM2_IDX:
+> > +		/* GDM2 is always used as wan */
+> > +		dev->flags |=3D AIROHA_PRIV_F_WAN;
+> >  		break;
+>=20
+> It unconditionally assigns itself the WAN role.
+>=20
+> Does this probe ordering create multiple WAN devices and leave GDM2's
+> hardware silently misconfigured since its routing capabilities were disab=
+led
+> by GDM3's loopback configuration?
 
-	/* Trace pointer may have changed */
-	trace = (struct ioam6_trace_hdr *)(skb_network_header(skb)
-					   + optoff + sizeof(*hdr));
+This is not a real issue since GDM2 is always registered before GDM3/GDM4.
 
-	ioam6_fill_trace_data(skb, ns, trace, true);
+>=20
+> >  	default:
+> >  		break;
+> >  	}
+> > =20
+> > +	airoha_dev_set_qdma(dev);
+> > +	airoha_set_macaddr(dev, netdev->dev_addr);
+>=20
+> When setting the MAC address, airoha_set_macaddr() does the following:
+>=20
+> static void airoha_set_macaddr(struct airoha_gdm_dev *dev, const u8 *addr)
+> {
+> 	...
+> 	reg =3D airoha_is_lan_gdm_dev(dev) ? REG_FE_LAN_MAC_H : REG_FE_WAN_MAC_H;
+> 	...
+> 	airoha_fe_wr(eth, reg, val);
+> }
+>=20
+> Since REG_FE_LAN_MAC_H is a global forwarding engine register rather than
+> per-port, will initializing subsequent LAN devices overwrite the hardware
+> MAC filter configured by the first LAN device?
+>=20
+> Might this cause the hardware to drop packets for LAN interfaces that do =
+not
+> match the single overwritten MAC address?
+>=20
+> (Note: This was observed to be fixed later in the series by commit "net:
+> airoha: Support multiple LAN/WAN interfaces for hw MAC address configurat=
+ion",
+> but is mentioned here as it appears to introduce a regression in this com=
+mit.)
 
-	ioam6_event(IOAM6_EVENT_TRACE, dev_net(skb->dev),
-		    GFP_ATOMIC, (void *)trace, hdr->opt_len - 2);
+As pointed out here, this is resolved in a subsequent patch in the series.
 
-If the skb is cloned or lacks sufficient linear headroom,
-skb_ensure_writable() will invoke pskb_expand_head(), which reallocates
-the skb's data buffer and frees the old one, invalidating pointers to
-it. While the code recalculates the trace pointer immediately after the
-call to skb_ensure_writable(), it fails to recalculate the hdr pointer.
+Regards,
+Lorenzo
 
-This patch fixes the above by recalculating the hdr pointer before
-passing hdr->opt_len to ioam6_event(), so that we avoid any UaF.
+>=20
+> --=20
+> Sashiko AI review =B7 https://sashiko.dev/#/patchset/20260519-airoha-eth-=
+multi-serdes-v8-0-6bd70e329df6@kernel.org?part=3D9
 
-Fixes: f655c78d6225 ("net: exthdrs: ioam6: send trace event")
-Cc: stable@vger.kernel.org
-Signed-off-by: Justin Iurman <justin.iurman@gmail.com>
----
- net/ipv6/exthdrs.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+--aIJq2R5uZPRpkgYw
+Content-Type: application/pgp-signature; name=signature.asc
 
-diff --git a/net/ipv6/exthdrs.c b/net/ipv6/exthdrs.c
-index 47c5502a34a2..2f991c974395 100644
---- a/net/ipv6/exthdrs.c
-+++ b/net/ipv6/exthdrs.c
-@@ -967,8 +967,8 @@ static bool ipv6_hop_ioam(struct sk_buff *skb, int optoff)
- 			goto drop;
- 
- 		/* Trace pointer may have changed */
--		trace = (struct ioam6_trace_hdr *)(skb_network_header(skb)
--						   + optoff + sizeof(*hdr));
-+		hdr = (struct ioam6_hdr *)(skb_network_header(skb) + optoff);
-+		trace = (struct ioam6_trace_hdr *)((u8 *)hdr + sizeof(*hdr));
- 
- 		ioam6_fill_trace_data(skb, ns, trace, true);
- 
--- 
-2.34.1
+-----BEGIN PGP SIGNATURE-----
 
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCag2tLAAKCRA6cBh0uS2t
+rCJ4AQDOp+QE+KOzGLeo06yV7X68jypkI6k1608m+Gw8zmz3ewD/Wa7eJ5k9/V09
+hqlXwG29615S1lPJYE8PZp/HISn3iwA=
+=9rTp
+-----END PGP SIGNATURE-----
+
+--aIJq2R5uZPRpkgYw--
