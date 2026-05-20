@@ -1,166 +1,267 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C99D3DDDB6;
-	Wed, 20 May 2026 12:46:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779281221; cv=none; b=WW/aJpq6MebsREUN+xY9o1wkWiBEqonoUAdErPi33yY8TVn8q0r0QAKJd9vK0G6M3fx74PJ3W2yKOS1Mj+UBeCCqJHmlAC9huQGQYta2DBsfJIJEKWPdMYE/10l/fB61YSn25feEDkK8Y7bPcByi2Auy+pUHu0Ks7z4gRnQXaqA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779281221; c=relaxed/simple;
-	bh=3/Un1eOoGYRy096NF5teMY/O3oMt370yJJNe4tNDORE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eODvKvGivwgdMCEklWk1gunwTlhaN7gcwfUrf6xh8UICw2zy8JvVHzQW60+LBCgnXBZxhHt26v6Uk5JXjRwYdU53QbiXnWWsWeiqfuALEAUWC2TZ/aSri+59E9s2hCP2u4jysTdu9Iup6RokwqqQvidBFJoU/zqp8pfhqXk0F7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pi7IKK24; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86FDC39BFFA;
+	Wed, 20 May 2026 12:47:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779281235; cv=pass; b=bdJYHOH0CWCoy3SAyjNOlfHFHu9UBzFYHan6sxj/zHeXAtXqLreuBEMy0CYgXV8JlZ3ST0ywzLb/2QQoZUYvTZX7mrw4Eynn7Bs+vtAdy8Hc0W2y3quwBehpVd1lqZLsNnlh4GFFe59Gi0xfxD0cfT22Yh8ysPCQfoT+sXBcEbk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779281235; c=relaxed/simple;
+	bh=dTXcnPiwDtqWk2v4IuUn3hfvsZ/QJSIh+tZ0dccqi6E=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=A7fF3ezaOSsBDaCKCNYIWqhOP8a16mqaHq1ABRC+l9aeQkQVJVA6nEMjklg7qarBhpecjh4PfteG5dmQROomBHwsJGIazh9MR680s8+CLTa2WWEtq6Mzgt0R67V43mmUu9t3SBEveCLDJTn7+9D0hy3to/7rGqiKM0dGnGg1CWM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=louisalexis.eyraud@collabora.com header.b=jHWswEbl; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pi7IKK24"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 630991F000E9;
-	Wed, 20 May 2026 12:46:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779281219;
-	bh=8BtRnQV9ve1mRwTxt1keynXJeLz4QoTeDa0cQ9uPH5Q=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=pi7IKK24E+1k8wRaaR2f/X9TDdtTLnfP2kXkrZ3uGFKw3myHS3arznZZMxizR1ZCN
-	 vCUigAxoM6uVGskN+bYHz9IZtlwOHe9bNmEznSkZ1DB5dTkPLBgtL/nC3vrsrwvwfN
-	 EFbQSC3yHnBih6e1G7Hh6eiJ2ioajZKEFgXLxORA=
-Date: Wed, 20 May 2026 14:47:03 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: August Wikerfors <git@augustwikerfors.se>
-Cc: Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	Thorsten Leemhuis <regressions@leemhuis.info>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>,
-	Sasha Levin <sashal@kernel.org>, linux-bluetooth@vger.kernel.org,
-	netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
-	Linux kernel regressions list <regressions@lists.linux.dev>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: Re: [GIT PULL] bluetooth 2026-05-14
-Message-ID: <2026052026-barber-espresso-1d9a@gregkh>
-References: <20260514172340.1515042-1-luiz.dentz@gmail.com>
- <f5cf1c30-48a4-4102-ae00-b74cf02e639e@leemhuis.info>
- <4946f5f3-b7e2-4949-89f7-6427015027c6@leemhuis.info>
- <2026051954-revision-sierra-6bb4@gregkh>
- <eb5301f9-3133-4fe3-b358-61f14d1ffa5b@leemhuis.info>
- <2026051909-impurity-nemesis-2f65@gregkh>
- <CABBYNZKKbTXc-okp9P2OncMYXHX9C1XC+pRC7XWOhv-8nPNZ5A@mail.gmail.com>
- <2026051942-uproar-drainpipe-6370@gregkh>
- <CABBYNZKzWgL3nmeA=CtN9s80LRyDiJ97aQXgvfSm9vYUBw_SpA@mail.gmail.com>
- <e666c332-e2aa-4525-a208-a4a08742d2e0@augustwikerfors.se>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=louisalexis.eyraud@collabora.com header.b="jHWswEbl"
+ARC-Seal: i=1; a=rsa-sha256; t=1779281190; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=mo1rJIqCjsETSxeBlA/L09pa826Mm+LiDvydim+2eo2AYNHhOluWEbNed8kaEfd97DMvCEdkl4PZznAoVkEIYssHGSkEW2p63Ihq2lB7QLtGr+VwznZNwhvdSrYOS95uSkVBaoFihQujArEUKAVI3dHjTxYrhbt/Jg13Kq/ntBQ=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1779281190; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=L6RTBcDwCUAggrkL6cocI+jcG+EHQ7is9sXnrTTyELw=; 
+	b=aGduDpgjxZOUrVuepzUN475CJOp0FxUmYSlpVfaKvE77g6l6aPj2sYxvUlV3dcVtyExK0vio8C5SAbNvwGEdkUsIanPddG0+yreOB5/+5UeBzJsXj4tyUI5zL/JU4Hyh4CWKZvZhxHJNjK0cijAlo7xDeUIzGnt5WDCH52rY6+8=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=louisalexis.eyraud@collabora.com;
+	dmarc=pass header.from=<louisalexis.eyraud@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1779281190;
+	s=zohomail; d=collabora.com; i=louisalexis.eyraud@collabora.com;
+	h=Message-ID:Subject:Subject:From:From:To:To:Cc:Cc:Date:Date:In-Reply-To:References:Content-Type:Content-Transfer-Encoding:MIME-Version:Message-Id:Reply-To;
+	bh=L6RTBcDwCUAggrkL6cocI+jcG+EHQ7is9sXnrTTyELw=;
+	b=jHWswEblvW1vK8XuhlZdi620omvMnhmjmsspqomaIrUxF6boKfMqcgaAawSVlJpk
+	/OAJH3cZ8+sxHYSO6fHHRAOt5VDvAZPGJuQYUTDV+4srCmRMXTX9N/f8J2aozt6iJyC
+	uIlWdFzbYc1wM3FSeLSZoRNviH8pHKE/ViT7MpFQ=
+Received: by mx.zohomail.com with SMTPS id 1779281188633314.64127682579726;
+	Wed, 20 May 2026 05:46:28 -0700 (PDT)
+Message-ID: <d61f709524326a4f9943188fcabb5746a1b11e3d.camel@collabora.com>
+Subject: Re: [PATCH net-next v3 5/6] net: phy: Introduce Airoha AN8801/R
+ Gigabit Ethernet PHY driver
+From: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>, Andrew Lunn	
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet	 <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
+ Abeni	 <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski	 <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit	 <hkallweit1@gmail.com>,
+ Russell King <linux@armlinux.org.uk>
+Cc: kevin-kw.huang@airoha.com, macpaul.lin@mediatek.com,
+ matthias.bgg@gmail.com, 	kernel@collabora.com, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, 	linux-arm-kernel@lists.infradead.org,
+ linux-mediatek@lists.infradead.org, 	linux-kernel@vger.kernel.org
+Date: Wed, 20 May 2026 14:46:22 +0200
+In-Reply-To: <e77b4028-c201-4dd4-9214-721bdf67e976@bootlin.com>
+References: 
+	<20260512-add-airoha-an8801-support-v3-0-1edb34e363ae@collabora.com>
+	 <20260512-add-airoha-an8801-support-v3-5-1edb34e363ae@collabora.com>
+	 <e77b4028-c201-4dd4-9214-721bdf67e976@bootlin.com>
+Organization: Collabora Ltd
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <e666c332-e2aa-4525-a208-a4a08742d2e0@augustwikerfors.se>
+X-ZohoMailClient: External
 
-On Tue, May 19, 2026 at 07:37:35PM +0200, August Wikerfors wrote:
-> On 2026-05-19 17:49, Luiz Augusto von Dentz wrote:
-> > Hi Greg,
-> > 
-> > On Tue, May 19, 2026 at 11:19 AM Greg KH <gregkh@linuxfoundation.org> wrote:
-> > > 
-> > > On Tue, May 19, 2026 at 09:44:39AM -0400, Luiz Augusto von Dentz wrote:
-> > > > Hi Greg,
-> > > > 
-> > > > On Tue, May 19, 2026 at 8:07 AM Greg KH <gregkh@linuxfoundation.org> wrote:
-> > > > > 
-> > > > > On Tue, May 19, 2026 at 12:53:49PM +0200, Thorsten Leemhuis wrote:
-> > > > > > On 5/19/26 12:30, Greg KH wrote:
-> > > > > > > On Tue, May 19, 2026 at 09:04:38AM +0200, Thorsten Leemhuis wrote:
-> > > > > > > > On 5/15/26 17:10, Thorsten Leemhuis wrote:
-> > > > > > > > > On 5/14/26 19:23, Luiz Augusto von Dentz wrote:
-> > > > > > > > > 
-> > > > > > > > > > The following changes since commit c78bdba7b9666020c0832150a4fc4c0aebc7c6ac:
-> > > > > > > > > >    net: phy: DP83TC811: add reading of abilities (2026-05-14 15:17:12 +0200)
-> > > > > > > > > > 
-> > > > > > > > > > are available in the Git repository at:
-> > > > > > > > > > 
-> > > > > > > > > >    git://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth.git tags/for-net-2026-05-14
-> > > > > > > > > > 
-> > > > > > > > > > for you to fetch changes up to 375ba7484132662a4a8c7547d088fb6275c00282:
-> > > > > > > > > > 
-> > > > > > > > > >    Bluetooth: hci_qca: Convert timeout from jiffies to ms (2026-05-14 09:58:08 -0400)
-> > > > > > > > > 
-> > > > > > > > > It seems this PR sadly came too late for this week's net PR to mainline
-> > > > > > > > > that was merged yesterday.
-> > > > > > > > > 
-> > > > > > > > > TWIMC, from my point of view, it would be great if we somehow could
-> > > > > > > > > still get the changes from this PR or at least the btmtk fix it
-> > > > > > > > > contains[1] to mainline this week before -rc4, as it is fixing a
-> > > > > > > > > regression known since 2026-04-24 that at least five people encountered
-> > > > > > > > > with mainline since -rc3 due to 634a4408c0615c ("Bluetooth: btmtk:
-> > > > > > > > > validate WMT event SKB length before struct access") [006b9943b982 in
-> > > > > > > > > -next].
-> > > > > > > > 
-> > > > > > > > Greg, Sasha, that [1] fix I was talking about now reached -next as
-> > > > > > > > 162b1adeb057d2 ("Bluetooth: btmtk: accept too short WMT FUNC_CTRL
-> > > > > > > > events") and will likely hit mainline on Thursday or so with the weekly
-> > > > > > > > -net PR to -mainline. If that's good enough for you, I'd say it would be
-> > > > > > > > good to pick this up for the next round of stable kernels.
-> > > > > > > 
-> > > > > > > That "Fixes:" tag is referring to something that is also not in any
-> > > > > > > tree, but that commit does have a cc: stable in it.  So do we need both
-> > > > > > > of these:
-> > > > > > 
-> > > > > > Valid question, as yes, there is a slight mixup here:
-> > > > > > 
-> > > > > > > 041e88fb0c08 ("Bluetooth: btmtk: validate WMT event SKB length before struct access")
-> > > > > > 
-> > > > > > That is already in v7.0.7, v6.18.30, v6.12.88, as 041e88fb0c08 is the
-> > > > > > -next commit-id for mainline commit-id 634a4408c0615c ("Bluetooth:
-> > > > > > btmtk: validate WMT event SKB length before struct access") -- the one
-> > > > > > that is causing the regression that I want to get fixed. So we now only
-> > > > > > need:
-> > > > > > 
-> > > > > > > 162b1adeb057 ("Bluetooth: btmtk: accept too short WMT FUNC_CTRL events")
-> > > > > 
-> > > > > Ok, but that "Fixes:" tag pointing to an invalid commit is going to be a
-> > > > > nightmare to track over time, ugh.
-> > > > 
-> > > > Hmm, did we get the wrong hash or something? Usually, that would show
-> > > > up in the verify-fixes.sh, but perhaps it didn't capture it this time
-> > > > for some reason, perhaps I'm running an outdated version or something
-> > > > similar.
-> > > 
-> > > Something went wrong if we ended up with a patch in the stable trees,
-> > > yet this fix is referring to it as a different git sha.  Don't know
-> > > where the disconnect happend :(
-> > 
-> > 041e88fb0c08 ("Bluetooth: btmtk: validate WMT event SKB length before
-> > struct access")
-> > 
-> > I don't have that in any of our tree either, this is actually
-> > 634a4408c061 on all trees in the chain:
-> > 
-> > https://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth.git/commit/?id=634a4408c061
-> > https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git/commit/?id=634a4408c061
-> > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=634a4408c061
-> > 
-> > Or actually that was the hash before it got rebased on bluetooth-next tree:
-> > 
-> > https://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth-next.git/commit/?id=041e88fb0c08
-> > 
-> > But I didn't send the PR from that three so perhaps somebody else sent
-> > it to stable with the wrong fixes tag?
-> I believe the confusion comes from "Bluetooth: btmtk: accept too short WMT
-> FUNC_CTRL events" itself currently having different commit hashes in
-> bluetooth (e3ac0d9f1a20) and bluetooth-next (162b1adeb057). The former
-> correctly refers to "Bluetooth: btmtk: validate WMT event SKB length before
-> struct access" as 634a4408c061 in the Fixes tag and was merged into net
-> yesterday heading for 7.1-rc5. The latter still refers to it as
-> 041e88fb0c08. Both are now in next-20260519 but only the latter was in
-> next-20260518 which was the latest at the time of Thorsten's message.
-> 
-> Greg, this means picking e3ac0d9f1a20 instead of 162b1adeb057 should result
-> in a valid Fixes tag.
+Hi Maxime,
 
-Ok, now done.  Be careful of duplicate commits in different branches
-that are marked for backporting with different ids.  It can cause
-massive confusion (i.e. don't be like the drm tree...)
+On Tue, 2026-05-12 at 12:06 +0200, Maxime Chevallier wrote:
+> Hi :)
+>=20
+> This looks good, I just have very minimal comments
+>=20
+> On 5/12/26 06:33, Louis-Alexis Eyraud wrote:
+> > From: AngeloGioacchino Del Regno
+> > <angelogioacchino.delregno@collabora.com>
+> >=20
+> > Introduce a driver for the Airoha AN8801R Series Gigabit Ethernet
+> > PHY; this currently supports setting up PHY LEDs, 10/100M, 1000M
+> > speeds, and Wake on LAN and PHY interrupts.
+> >=20
+> > Signed-off-by: AngeloGioacchino Del Regno
+> > <angelogioacchino.delregno@collabora.com>
+> > Signed-off-by: Louis-Alexis Eyraud
+> > <louisalexis.eyraud@collabora.com>
+>=20
+> [...]
+>=20
+> > +static u32 an8801r_led_blink_ms_to_hw(unsigned long req_ms)
+> > +{
+> > +	u32 req_ns, regval;
+> > +
+> > +	if (req_ms > AN8801_MAX_PERIOD_MS)
+> > +		req_ms =3D AN8801_MAX_PERIOD_MS;
+> > +
+> > +	req_ns =3D req_ms * 1000000;
+>=20
+> Use NSEC_PER_MSEC :)
+I'll fix this in the next version.
 
-thanks,
+>=20
+> > +
+> > +	/* Round to the nearest period unit... */
+> > +	regval =3D req_ns + (AN8801_PERIOD_UNIT / 2);
+> > +
+> > +	/* ...and now divide by the full period */
+> > +	regval >>=3D AN8801_PERIOD_SHIFT;
+> > +
+> > +	return regval;
+> > +}
+> > +
+>=20
+> [...]
+>=20
+> > +static int an8801r_led_hw_control_set(struct phy_device *phydev,
+> > u8 index,
+> > +				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 unsigned long rules)
+> > +{
+> > +	u16 on =3D 0, blink =3D 0;
+> > +	int ret;
+> > +
+> > +	if (index >=3D AN8801R_NUM_LEDS)
+> > +		return -EINVAL;
+> > +
+> > +	ret =3D an8801r_led_trig_to_hw(rules, &on, &blink);
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	ret =3D phy_modify_mmd(phydev, MDIO_MMD_VEND2,
+> > LED_ON_CTRL(index),
+> > +			=C2=A0=C2=A0=C2=A0=C2=A0 LED_ON_EVT_MASK, on);
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	ret =3D phy_modify_mmd(phydev, MDIO_MMD_VEND2,
+> > LED_BLINK_CTRL(index),
+> > +			=C2=A0=C2=A0=C2=A0=C2=A0 LED_BLINK_EVT_MASK, blink);
+> > +
+> > +	if (ret)
+> > +		return ret;
+>=20
+> Extra newline before the if()
+I'll fix this in the next version too.
 
-greg k-h
+>=20
+> > +
+> > +	return phy_modify_mmd(phydev, MDIO_MMD_VEND2,
+> > LED_ON_CTRL(index),
+> > +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 LED_ON_EN, on | blink ? LED_ON_EN :
+> > 0);
+> > +}
+> > +
+>=20
+> [...]
+>=20
+> > +static int an8801r_rgmii_rxdelay(struct phy_device *phydev, bool
+> > enable,
+> > +				 u16 delay_steps)
+> > +{
+> > +	u32 reg_val;
+> > +
+> > +	if (delay_steps > RGMII_DELAY_STEP_MASK)
+> > +		return -EINVAL;
+> > +
+> > +	if (enable) {
+> > +		reg_val =3D delay_steps & RGMII_DELAY_STEP_MASK;
+> > +
+> > +		 /* Set align bit to add extra offset for RX delay
+> > */
+> > +		reg_val |=3D RGMII_RXDELAY_ALIGN;
+> > +
+> > +		 /* Set force mode bit to enable RX delay
+> > insertion */
+> > +		reg_val |=3D RGMII_RXDELAY_FORCE_MODE;
+> > +	} else {
+> > +		reg_val =3D 0;
+> > +	}
+> > +
+> > +	return an8801_buckpbus_reg_write(phydev,
+> > AN8801_BPBUS_REG_RXDLY_STEP,
+> > +					 reg_val);
+> > +}
+> > +
+> > +static int an8801r_rgmii_txdelay(struct phy_device *phydev, bool
+> > enable,
+> > +				 u16 delay_steps)
+> > +{
+> > +	u32 reg_val;
+> > +
+> > +	if (delay_steps > RGMII_DELAY_STEP_MASK)
+> > +		return -EINVAL;
+> > +
+> > +	if (enable) {
+> > +		reg_val =3D delay_steps & RGMII_DELAY_STEP_MASK;
+>=20
+> Is this bitwise and needed, as you have the check above ?
+Indeed, it is not needed, so I'll remove this masking operation here
+and in an8801r_rgmii_rxdelay too.
+
+>=20
+> > +
+> > +		 /* Set force mode bit to enable TX delay
+> > insertion */
+> > +		reg_val |=3D RGMII_TXDELAY_FORCE_MODE;
+> > +	} else {
+> > +		reg_val =3D 0;
+> > +	}
+> > +
+> > +	return an8801_buckpbus_reg_write(phydev,
+> > AN8801_BPBUS_REG_TXDLY_STEP,
+> > +					 reg_val);
+> > +}
+> > +
+> > +static int an8801r_rgmii_delay_config(struct phy_device *phydev)
+> > +{
+> > +	bool enable_delay;
+> > +	u16 delay_step;
+> > +	int ret;
+> > +
+> > +	if (phydev->interface =3D=3D PHY_INTERFACE_MODE_RGMII_ID ||
+> > +	=C2=A0=C2=A0=C2=A0 phydev->interface =3D=3D PHY_INTERFACE_MODE_RGMII_=
+TXID) {
+> > +		enable_delay =3D true;
+> > +		delay_step =3D AN8801_RGMII_TXDELAY_DEFAULT;
+> > +	} else {
+> > +		enable_delay =3D false;
+> > +		delay_step =3D RGMII_DELAY_NO_STEP;
+> > +	}
+> > +
+> > +	ret =3D an8801r_rgmii_txdelay(phydev, enable_delay,
+> > delay_step);
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	if (phydev->interface =3D=3D PHY_INTERFACE_MODE_RGMII_ID ||
+> > +	=C2=A0=C2=A0=C2=A0 phydev->interface =3D=3D PHY_INTERFACE_MODE_RGMII_=
+RXID) {
+> > +		enable_delay =3D true;
+> > +		delay_step =3D AN8801_RGMII_RXDELAY_DEFAULT;
+>=20
+> Is it correct that AN8801_RGMII_RXDELAY_DEFAULT expands to=20
+> RGMII_DELAY_NO_STEP ? feels strange, but it may simply be how the HW
+> is=20
+> made :)
+As I replied in an earlier comment ([1]), for the inserted RX delay,
+when the RGMII_RXDELAY_ALIGN bit is set, the "no step" value is then
+the closest setting to the 2ns value.
+
+I'll improve the AN8801_RGMII_RXDELAY_DEFAULT comment to say that it
+corresponds to the 1.992ns delay value when the align bit is set and -
+0.008ns otherwise.
+
+[1]:https://lore.kernel.org/linux-mediatek/199e674cfdbccad104db761964611b1d=
+6352f9f3.camel@collabora.com/
+
+Best regards,
+Louis-Alexis
+>=20
+> Thanks,
+>=20
+> Maxime
