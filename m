@@ -1,100 +1,89 @@
-Received: from mail-24416.protonmail.ch (mail-24416.protonmail.ch [109.224.244.16])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EBB02D94B5
-	for <netdev@vger.kernel.org>; Wed, 20 May 2026 15:14:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 216DB30F547;
+	Wed, 20 May 2026 15:16:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779290059; cv=none; b=LUpYo8HJF9SKYQjfOTVib11xIHo51CrhqOYeWy4n9NH/G7enihcjVR7o4yW27Os+9qa5yVRpUg//Vps5+GZL56aWAC0Z5jxRunYjLg1cYXVTwDhCjdx4kMVvx5uY8RdgxlG/VUaUdxt9jNE//WmtGIBikVld6EcO+qevbgP5Gj8=
+	t=1779290208; cv=none; b=GepzmBNi9Ct0N+8n4QeBE/xGEOpAv0hPWG+tK/rkE5cZcIkS95j4hHbRDyXpzd9R/wsLIK2UA9LDsC7SfOsnF9tsnE+EUiqQ1+3zp3cFojMoFsqaSWXu/0yzJzI6ixPCra73+f34RN0AXrAej32HEuiULbcu0hCFXZ6LZZv5xQ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779290059; c=relaxed/simple;
-	bh=tBU/y8NXwO+HznKDeUAhUrw6+S0levSMmkSBR0DWUOE=;
-	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=U6q1QU5MSjM0ERuLIRVb8agyT12L/WfD5nfXrhn4eEAceD0X3MO64m7QQjUJtrDSzfn5dK+dNIttGvwEsmvHDx64z+Zm1dNGUmOLy862n3YmRUzCGBfNptwePFTUS8wJIv/u70OdSyrdgSeRBihwtrXOEkA9X6AZEzZ6ic1sW9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=NKYi+8O2; arc=none smtp.client-ip=109.224.244.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1779290208; c=relaxed/simple;
+	bh=aZ5IZZoW0dBNQUdAcAhYjJx+cBXakC6q5BoauhT3H7Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uiuswfLNsMeDxO5mB0dw3/QNqTcWCZm9fdoWvm/W7WqYV1pXgzD0/Li4WtckGWKjyZ65BFDqe5MLdQigZ+8tcd5Vtzah6GM7BdbzZTyQImyCAfdr1hRf0iHN85ygdBurVLlHA4KcDsZe2lkJcfd63ieLuJtzCcImrQF5ciZ0DDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=lUIooypV; arc=none smtp.client-ip=117.135.210.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="NKYi+8O2"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1779290045; x=1779549245;
-	bh=tBU/y8NXwO+HznKDeUAhUrw6+S0levSMmkSBR0DWUOE=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=NKYi+8O2U969qbeyTqpQH7SPY0E8UJibtW3e2OvwqrErFtgRMCynvKNGt19miZg1g
-	 e839TLKNeSRIJ3sYDHV0sbrKk8EzHh1QIDzjbBVWmF3qB5fo7jqVtMXpHpMcOv0LVg
-	 UhCMRybtwMcJecBy68ssQ+Nw0myoe677aNQX5h/OtS1pW1L7vrjZh773Quw+e5Gt7Y
-	 UmySrn1uMzfXOCv6vm1kSUOy123Up5vT+NvkR7FOyQjNJFjY/VYh6Lgjjf7sZQ++Ye
-	 byfAizxlX0wMmO9J/NwVaV4pvqFhDqRL2B13USGfD15GhwUiC45bVd1NliMFnFZafM
-	 HKjxTClv7ZY2A==
-Date: Wed, 20 May 2026 15:13:59 +0000
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="lUIooypV"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=8Z
+	2AzXHUKT2H2omvy06BjkSlm4zeHIifUYtRGSXDfG4=; b=lUIooypVuewvsKTWtj
+	LZclr9Ac+VMNEzUSeAQOxfVW1jTk+7R/bCaKbVSAJL8GlwtJPWD6VAo2BFlYPdZd
+	Htnp7CQC1XRgddEIcynZmjakg5aO6QDkCnPr5p739nfEBCUYwYlp/muuYZrt2FUe
+	xKu4cdV8kjXXGW0gUm3++yP98=
+Received: from computer (unknown [])
+	by gzga-smtp-mtada-g1-0 (Coremail) with SMTP id _____wD3_2JM0A1qNByPCQ--.11347S4;
+	Wed, 20 May 2026 23:16:29 +0800 (CST)
+From: weixiansen574 <weixiansen574@163.com>
 To: netdev@vger.kernel.org
-From: "leo.moerlein@proton.me" <leo.moerlein@proton.me>
-Cc: Hauke Mehrtens <hauke@hauke-m.de>, =?utf-8?Q?Leonardo_M=C3=B6rlein?= <leo.moerlein@proton.me>, Russell King <linux@armlinux.org.uk>, Paolo Abeni <pabeni@redhat.com>, Buday Csaba <buday.csaba@prolan.hu>, Andrew Lunn <andrew@lunn.ch>, linux-kernel@vger.kernel.org
-Subject: [PATCH net] net: phy: mdio_device: leave PHY reset deasserted on unregister
-Message-ID: <20260520151355.1371163-1-leo.moerlein@proton.me>
-Feedback-ID: 198615653:user:proton
-X-Pm-Message-ID: ebeb80a96ffe5828a66b7942284ec46f3495edd3
+Cc: kuba@kernel.org,
+	avinash.duduskar@gmail.com,
+	linux-kernel@vger.kernel.org,
+	weixiansen574 <weixiansen574@163.com>
+Subject: [PATCH] net: sfp: add quirk for OEM 2.5G optical modules
+Date: Wed, 20 May 2026 23:16:29 +0800
+Message-ID: <20260520151629.905-1-weixiansen574@163.com>
+X-Mailer: git-send-email 2.54.0.windows.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wD3_2JM0A1qNByPCQ--.11347S4
+X-Coremail-Antispam: 1Uf129KBjvJXoWxJr1UWw45trykAF4kJw1kKrg_yoW8GF4UpF
+	W5Cw1S9F93tF1Sya18Aw4DCFyrWa47AFyFgry2k3yruw45u3W8Z3WYqFyrtr1DZrs7GFWD
+	GrsxGFyfAr90kr7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zRBc_-UUUUU=
+X-CM-SenderInfo: xzhl5xpdqvv0qvxuqiywtou0bp/xtbC2w0l7GoN0E0WiAAA37
 
-From: Leonardo M=C3=B6rlein <leo.moerlein@proton.me>
+Some OEM-branded SFP modules are incorrectly detected as
+1000Base-X and fail to establish link on 2.5G-capable ports.
 
-Some PHY devices are discovered again after the MDIO bus is torn down and
-reprobed, for example when a parent driver first returns -EPROBE_DEFER and
-is probed again later.
+These modules do not properly advertise 2500Base-X capability
+in their EEPROM and require forcing the correct SerDes mode.
 
-This breaks boards where external PHYs have per-device reset lines
-described through reset-gpios. mdiobus_register_device() acquires the
-reset GPIO and asserts reset, mdio_probe() later deasserts it for the
-active device, but mdiobus_unregister_device() used to release the GPIO
-descriptor without first driving the line back to the inactive state.
-If that descriptor was the last owner, then the PHY could remain held
-in reset across the next bus registration and disappear from the reprobe
-scan.
+Add sfp_quirk_2500basex for:
 
-On a Lantiq GSWIP based FRITZ!Box 7360 v2 this left PHYs 0 and 1 missing
-after a deferred reprobe, while PHYs without external reset lines were
-still found. DSA then failed to attach those ports with -ENODEV.
+  - OEM SFP-2.5G-LH20-A
+  - OEM SFP-2.5G-LH03-B
 
-Before releasing optional reset resources, deassert reset again for
-PHY devices so the hardware stays discoverable across a later reprobe.
+Both modules report:
 
-Link: https://github.com/openwrt/openwrt/issues/20629
-Fixes: 8ea25274ebaf2 ("net: mdiobus: release reset_gpio in mdiobus_unregist=
-er_device()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Leonardo M=C3=B6rlein <leo.moerlein@proton.me>
-Assisted-by: GitHubCopilot:GPT-5.4
+  Vendor name: OEM
+  Vendor PN: SFP-2.5G-LH20-A / SFP-2.5G-LH03-B
+
+Tested on OpenWrt with successful 2.5G link establishment.
+
+Signed-off-by: weixiansen574 <weixiansen574@163.com>
 ---
- drivers/net/phy/mdio_device.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/phy/sfp.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/phy/mdio_device.c b/drivers/net/phy/mdio_device.c
-index 56080d3d2d25..9caeb9ea5248 100644
---- a/drivers/net/phy/mdio_device.c
-+++ b/drivers/net/phy/mdio_device.c
-@@ -215,6 +215,12 @@ int mdiobus_unregister_device(struct mdio_device *mdio=
-dev)
- =09if (mdiodev->bus->mdio_map[mdiodev->addr] !=3D mdiodev)
- =09=09return -EINVAL;
-=20
-+=09/*
-+=09 * Leave optional reset lines deasserted before releasing them so devic=
-es
-+=09 * remain discoverable across a later bus reprobe.
-+=09 */
-+=09mdio_device_reset(mdiodev, 0);
-+
- =09mdio_device_unregister_reset(mdiodev);
-=20
- =09mdiodev->bus->mdio_map[mdiodev->addr] =3D NULL;
---=20
-2.51.2
-
+diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
+index bd970f753..6f3213793 100644
+--- a/drivers/net/phy/sfp.c
++++ b/drivers/net/phy/sfp.c
+@@ -583,6 +583,8 @@ static const struct sfp_quirk sfp_quirks[] = {
+ 	SFP_QUIRK_S("OEM", "SFP-2.5G-T", sfp_quirk_oem_2_5g),
+ 	SFP_QUIRK_S("OEM", "SFP-2.5G-BX10-D", sfp_quirk_2500basex),
+ 	SFP_QUIRK_S("OEM", "SFP-2.5G-BX10-U", sfp_quirk_2500basex),
++	SFP_QUIRK_S("OEM", "SFP-2.5G-LH20-A", sfp_quirk_2500basex),
++	SFP_QUIRK_S("OEM", "SFP-2.5G-LH03-B", sfp_quirk_2500basex),
+ 	SFP_QUIRK_F("OEM", "RTSFP-10", sfp_fixup_rollball_cc),
+ 	SFP_QUIRK_F("OEM", "RTSFP-10G", sfp_fixup_rollball_cc),
+ 	SFP_QUIRK_F("Turris", "RTSFP-2.5G", sfp_fixup_rollball),
+-- 
+2.54.0.windows.1
 
