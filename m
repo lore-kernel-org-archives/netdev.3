@@ -1,90 +1,142 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6755221FD4
-	for <netdev@vger.kernel.org>; Wed, 20 May 2026 00:40:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 721B814A60F
+	for <netdev@vger.kernel.org>; Wed, 20 May 2026 00:43:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779237653; cv=none; b=ZmLN2QP/UCnWUo/0/XJErNiydM+UUTSXBsG6wfRm9O3CxQipiWtdA/jlH4r+H5kR/fxf8hYfjshLNYZn+deJSoQrIDmb5G6N/mwlbBlUjJkDsSp7XKFuX1UtAc1ooQawN0E4CD0AKN7w5eqDlc89Ftbvg/HLQ5KCsy1PMttYo+8=
+	t=1779237784; cv=none; b=BzWOat3/wnTBisYGD7HdYR1pZVQCFHnjHAfnuw+ustoAHCFfdLuR/IKjGR0wXIQPO+TQN/CGJewkNjB9VsPu+WlUEMZwCdGJWdSWvsWhHZhZOsaHdxr8zPwmhIOLypUCMm+NYJE5gzuZ8a4FSfutYIsT0F+QDQd7XzXY9G82cFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779237653; c=relaxed/simple;
-	bh=+Gjblp7M3nm3fb7Qqh70DRNtaSJm/lscaRx+1lLzqQw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fZe12rbXi0mM7yjFRrwljL+IIF0jM0Q1w+Wj5GBCiC6DLbw68RwgT8d5SEJ3xx0jXSn/fPvgYUHqcu7DZlW1IKjaSSVaCWl+q5Ov0gwMFOp/l3dtxusESzyRdhsOptupmr5Hi0Z4h88lnOJNalRZ/vhilVwe7foqWtSD7F1/3uM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H0t1IpZ1; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779237784; c=relaxed/simple;
+	bh=WMicqqE67ul0vJopAceY8vMx2lsESDQwi2nHwp0/MwQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Gy1SEeyrEZYSuFbeWz3/srg6ga8FJo34VjWDqztBlKlgU0w2o/+aL4CjfSpEcu5yOSkcpOQp9GW3zmbGrPh7PF97h5VKuSNS97DqyOSdpBhKlKtF9zWy1nCUKdf8Psc0J4cxk18ixO//sUOBDlxhvruklCOHI4b+ljhNvHbJHis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GaVwUlk3; arc=none smtp.client-ip=209.85.216.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H0t1IpZ1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82CD41F000E9;
-	Wed, 20 May 2026 00:40:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779237648;
-	bh=AWB3+5aE1Sgo9bbsCXjOYMPY8iPoSXHxVP/IKz6k3xg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=H0t1IpZ1mLARhzbzmOjcfRgipCpxhYOn51K2VGcwos3vzrc9+xhkGkfSRgW20oYCJ
-	 Z9F2p+HGeuu5KsYZLzzD94sWtgHynPVtuMMKf+iefTKSsha223UYo43f6U6X9EN8fu
-	 8QHvoVsJDdH/etAYegISMRdtbA7zg/Xliy3jTYUAjDz7v+G7St7SbU5fwHMUtoa9s0
-	 MUfuh0PTPUSgxG71E3xW48xL5DkemN+8etYcVY2nDCtq/YLX2PCLo4RdTOiYjJ6TS5
-	 XE02LExwYoiameq8fSSsLmq8a9yPRizAjO9X8ppC920lJb7TOfqA7u+HKOuS9qOubz
-	 xUfxBqbVoEEMA==
-Message-ID: <5c61b2be-49b2-4547-b343-4a87e2c9eee3@kernel.org>
-Date: Tue, 19 May 2026 18:40:48 -0600
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GaVwUlk3"
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-3684a6f3b0bso2197606a91.1
+        for <netdev@vger.kernel.org>; Tue, 19 May 2026 17:43:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779237782; x=1779842582; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=A6KfxgyTszx0aKCDT6/DObZfaaYFv6TITrxlgwGLf1A=;
+        b=GaVwUlk3x8DjGwvyt4MjzW0mIxh9tAOuZz/PFJGB3gqMIv8vu/8/O1GWxPWJFSNfmc
+         HOJu0ebrubxAIbDE/xz73w7gArO2hMQDPPmI12a4BF+4uPf1wEBkHHdTzHEaOmBxCL3y
+         8oHvWSZvnrrMiaN0QmsxMF37k/7rBBJN4IaBCRX0C06k330xAWNAEsRtWYm8I3aVUa3C
+         z1QpKtL481bUfan85Hc7sPrHTdRsSB6PrkAsp0M2j13Wv7bWqEq6PDBvt3YlDo6/0boW
+         ZYbv9bIAS8nHjufhJhbjmFVvGt9I1Sc/+gvzPXKZ5Yrnrsqp2rWwAVN+ZJar5TejGoP6
+         tcZw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779237782; x=1779842582;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=A6KfxgyTszx0aKCDT6/DObZfaaYFv6TITrxlgwGLf1A=;
+        b=dcVxZH+tOsEWm5DTGzSiuZcHHr0kwCZkx94JG+TpxRJbUufu5uzXNwVORaVYou2wtf
+         hXHCMmeKlC1KUIRLtsoiYSFBmPljtnKcQ5vmtme+0owBobOm3juCtz/T7B4S487v5yHU
+         CW/6x8De4N/qTpqlm1UE5bEAGr35uGuC7GyzTD5tFjwq2Qbo85rocnV9zawuxbxB9OvX
+         MNwk5raGkSnACNCbj2Xu4BuShPebmMb+xNqbhrM6lrlZxse4AIB8Xly7sQtNfnbTmkXg
+         XVY8vBDVLUYCuXR5Ab/0BPLjrEVHmqXuU/73VWq2r3VoenQyU7euJ2cUr/ZXel8gHbTl
+         DAZQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/oTB8xNU9nr0s0gyYuwl5Vg81s5fFnxRq1avkO7NJcGCJfBl21EslY1dNo1+8bu8hC7Sic1Ww=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxBBeIVUNo224qN2SrZ4lOUJmbvFyQItjhu+sTKHt2hirKNSxKr
+	hExJPQUwVQ/AJcBtTLVF+OzH2CmOhvqGfGzkpZnZR+3KtemzH30siBWm
+X-Gm-Gg: Acq92OG8TUbLlAiZbE4HR9kVqXtvySC/1/kaNXioLG3Xlq4ETS2cOvO1YYh5k5VGRoW
+	qH4hPe1KgJcZEnpUiYKKXMRjudGW6+eIEXscehNCFZztMFzPNIIoYWhoVRTRCRDA9wbQZPVsO1H
+	/fbFA/FzQqjA5GiNh6AjM932Qyt2wTC8WYZBkN75buLtJqzj7e9z8JaubkgXIAO0BxPtboEnzTt
+	Kq4iPL/yvCZt13yZgrrt3Zos9Gnhyt2qzbVpGVrd0/A1fx/ubD+zzIxuIvjqechpWosNOzGkOS1
+	f135UWTBulMtLN+UGjAIisipAfZnBFcp2z9R/vbgEIJZasIxjC5xKhQoexIOAx4nPOgp8EY69k4
+	ckHnZFfWOzDIGr8tovMijkvHXWUoGP10x8ji/xfVQaBGEmqMj9pOimxrSrR8ANSLejWJUyHLXqF
+	SvKzH7WMOH4lTSb2OIpGdT97HWlnojG82LOY27gou6ieugTuTNFbt3bph7pQuTzYMbNo/yxDgUr
+	3g+AdZ1GZXPkTbEhKpPf8UIq55lUksCHDfKBLBJWg==
+X-Received: by 2002:a17:90b:38c9:b0:369:9469:aeba with SMTP id 98e67ed59e1d1-3699469b41cmr10628387a91.1.1779237781689;
+        Tue, 19 May 2026 17:43:01 -0700 (PDT)
+Received: from KERNELXING-MC1.tencent.com ([2408:8207:1923:2c20:f1df:d520:8103:19c8])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36951059f4dsm14746277a91.0.2026.05.19.17.42.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 19 May 2026 17:43:00 -0700 (PDT)
+From: Jason Xing <kerneljasonxing@gmail.com>
+To: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	bjorn@kernel.org,
+	magnus.karlsson@intel.com,
+	maciej.fijalkowski@intel.com,
+	jonathan.lemon@gmail.com,
+	sdf@fomichev.me,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	hawk@kernel.org,
+	john.fastabend@gmail.com,
+	horms@kernel.org,
+	andrew+netdev@lunn.ch
+Cc: bpf@vger.kernel.org,
+	netdev@vger.kernel.org,
+	Jason Xing <kernelxing@tencent.com>
+Subject: [PATCH net v4 0/5] xsk: fix meta and publish of cq issues
+Date: Wed, 20 May 2026 08:42:39 +0800
+Message-Id: <20260520004244.55663-1-kerneljasonxing@gmail.com>
+X-Mailer: git-send-email 2.33.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH iproute2-next 2/2] dpll: monitor: add -t/--timestamp and
- --tshort options
-Content-Language: en-US
-To: Petr Oros <poros@redhat.com>, netdev@vger.kernel.org
-Cc: ivecera@redhat.com, stephen@networkplumber.org, vgrinber@redhat.com
-References: <20260512135225.167158-1-poros@redhat.com>
- <20260512135225.167158-2-poros@redhat.com>
-From: David Ahern <dsahern@kernel.org>
-In-Reply-To: <20260512135225.167158-2-poros@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 5/12/26 7:52 AM, Petr Oros wrote:
-> Bring dpll monitor in line with the rest of iproute2 by allowing each
-> received notification to be prefixed with a wall-clock timestamp.
-> 
->   -t / --timestamp  emit a separate "Timestamp:" line before each event,
->                     using the default text form of print_timestamp()
->                     (matches ip / bridge / tc -t monitor)
->   --tshort          emit a compact ISO 8601 prefix
->                     "[YYYY-MM-DDTHH:MM:SS.uuuuuu]" inline instead
->                     (matches ip -ts monitor)
-> 
-> When combined with -j, the timestamp shows up as a "timestamp" /
-> "timestamp_short" field on each notification object, the same way
-> ip -j -t mptcp monitor integrates the helper.
-> 
-> The flag is parsed globally but only consulted from the monitor
-> callback, so passing -t to non-monitor commands is a no-op.
-> 
-> --tshort has no short alias, so its long_options entry uses an
-> identifier above the ASCII range (OPT_TSHORT = 256) following the
-> iproute2 convention used in misc/ss.c, instead of consuming an
-> ASCII letter that could later collide with a real short option.
-> 
-> Signed-off-by: Petr Oros <poros@redhat.com>
-> ---
->  bash-completion/dpll |  8 ++++++--
->  dpll/dpll.c          | 21 +++++++++++++++++++--
->  man/man8/dpll.8      | 23 ++++++++++++++++++++++-
->  3 files changed, 47 insertions(+), 5 deletions(-)
-> 
+From: Jason Xing <kernelxing@tencent.com>
 
-no longer applies to iproute2-next.
+The series is the product of previous review from sashiko[1].
 
-Fixup and repost. I think you can keep Ivan's reviewed-by.
+1) META
+patch 1: address TOCTOU around metadata.
 
-Also, I merged main into next and had to fixup the dpll man page. Please
-take a look (Ivan as well) at the merge conflict and the way I resolved
-it. Send a fixup if needed.
+2) PUBLISH of CQ
+patch 2: make sure xsk_addr->addrs[] can be published to cq when
+         overflow occurs.
+patch 3: keep cleaning up the continuation descs (more than 17) and
+         publish its address when overflow occurs.
+patch 4: like patch 3, but only handles the invalid descs cases.
 
-Thanks,
+[1]: https://lore.kernel.org/all/20260502200722.53960-1-kerneljasonxing@gmail.com/
+
+---
+V4
+Link: https://lore.kernel.org/all/20260517063311.28921-1-kerneljasonxing@gmail.com/
+1. correct the description of xmit path in patch 3 (sashiko)
+2. move set logic into xmit path in patch 3 (Stan)
+
+V3
+Link: https://lore.kernel.org/all/20260515123018.80147-1-kerneljasonxing@gmail.com/
+1. avoid breaking previous usage of sendto, and siliently handle
+overflow case (Stan, sashiko)
+2. add one particular exception process in patch 4 (sashiko)
+3. adjust the selftest to make sure it passes in either virutal or
+physical machines, which includes add usleep to support physical machine.
+
+V2
+Link: https://lore.kernel.org/all/20260510012310.88570-1-kerneljasonxing@gmail.com/
+1. adjust selftests (Jakub)
+2. add READ_ONCE in patch 1 (Stan)
+
+
+Jason Xing (5):
+  xsk: cache csum_start/csum_offset to fix TOCTOU in xsk_skb_metadata()
+  xsk: fix buffer leak in xsk_drop_skb() for AF_XDP multi-buffer Tx
+  xsk: drain continuation descs after overflow in xsk_build_skb()
+  xsk: drain continuation descs on invalid descriptor in
+    __xsk_generic_xmit()
+  selftests/xsk: drain CQ to wait for TX completion
+
+ include/net/xdp_sock.h                        |  1 +
+ net/xdp/xsk.c                                 | 44 +++++++++++++----
+ .../selftests/bpf/prog_tests/test_xsk.c       | 48 +++++++++++--------
+ 3 files changed, 63 insertions(+), 30 deletions(-)
+
+-- 
+2.43.7
 
