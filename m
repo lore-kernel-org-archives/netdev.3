@@ -1,91 +1,143 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3BED33A9DA
-	for <netdev@vger.kernel.org>; Wed, 20 May 2026 19:20:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A1B6306B1B
+	for <netdev@vger.kernel.org>; Wed, 20 May 2026 19:20:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779304820; cv=none; b=HNP2sysgRkIsKhOWKRcjRROvsu//lrnDLJl4Z67hkjkV/RloNMXJrttcw3185zZ3m3DniRlPX/Pcw8Nx9R7+uWWcPh3kcP3e8IS1NKGE5T2OwgLeuNmJyqwB2nad4q/b+j7OjoTX6qbYdX6mYwa8ypkBKAovE5HkYGPAWfM1Dxw=
+	t=1779304851; cv=none; b=SjI+5BvEWqopOgJsDBoecIYFVztgHWvf8qsB5dHxdMarusAJvon6wtDynP7PW3vKhDOijHv8tuXEm/buDSLOIeWT+rtoRVYnLoyz501fPBpB15xc8pSox0TUqNGIUjoEcI6zhBDny8p/HpbeSCFdfV8c9Ykn7E3Vnrz1ii4aXzg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779304820; c=relaxed/simple;
-	bh=lbfVzL8f+z73dOtI+P8q0AIV1uUnO5Rs+tJxktujuM8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SPVxi93WauOsTT80HmtyI7NVCvH56317NM16vLKXuEUh5sZAiK1CsWbCGKiOsaJRmYmLghJCg/72gsURH7ivrDsofp0It44trv9DRisAN9zzIJfSh4ZNjiiNhE5a8IdDxGMLVwi1IPRQkSHdpqapkn/xV92042kJwtWphqZK5WY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <ore@pengutronix.de>)
-	id 1wPmSW-0006qJ-7E; Wed, 20 May 2026 21:20:00 +0200
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1wPmSS-000yxd-2l;
-	Wed, 20 May 2026 21:19:57 +0200
-Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
-	(envelope-from <ore@pengutronix.de>)
-	id 1wPmST-00000002Ahf-1Jej;
-	Wed, 20 May 2026 21:19:57 +0200
-Date: Wed, 20 May 2026 21:19:57 +0200
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: Uwe =?utf-8?Q?Kleine-K=C3=B6nig_=28The_Capable_Hub=29?= <u.kleine-koenig@baylibre.com>
-Cc: Kory Maincent <kory.maincent@bootlin.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v1] net: pse-pd: Use named initializers for
- arrays of i2c_device_data
-Message-ID: <ag4JXSHFosrbqCE5@pengutronix.de>
-References: <20260519140101.1584946-2-u.kleine-koenig@baylibre.com>
+	s=arc-20240116; t=1779304851; c=relaxed/simple;
+	bh=4/Lo7ChhuzCpClfioxkED+8KA9Q5Jky/0/oWzVmGRRE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=SpVtUaFIVHCB7xLZqWUSci2rq6Xlk1+FOldaTkiIcdBLDJj1Eu1LoNyYnYzNblLUL9zjrLKQxxOhqHJynRx76Qqdu5nWdFkChLTQgcCmW2zjlABALvjeIn44E4sxti7RpPNz2yq02HzdTZiUEsvfG7LH8w6jV1MmGiw2hLjUd+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h2oIsDOd; arc=none smtp.client-ip=209.85.128.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h2oIsDOd"
+Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-7cfc382d896so18776007b3.3
+        for <netdev@vger.kernel.org>; Wed, 20 May 2026 12:20:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779304849; x=1779909649; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=i9UA9aEbbdQ0kKVzOUrQK9f5EhaQWo43O1Q7AsJtofw=;
+        b=h2oIsDOdoLo5f3q0/5La5e7SVctBEHZH6WpbU5HldSuwqWt/o6o+1PGCRKu6OooQhT
+         pHvRM+v93zP33fuPks3DSWMSJu8RISUqrF5JF8/eFl1MMqMODdZ//JZm/oNxItGJmWPC
+         xRwaJk1zfECe1i+2RwtVKFwEzcvt+3SE7wZy6FbkI8vcEZTrAdoVP2tMrUPLa9sz9Mlz
+         fpvm9FU57LtOK6FFaFBUfvC4ueQ53/3lOwpYTtxoy8iYdqg37crHICO5FWMGl9bXBi5i
+         RgmmBhQ++L92+Zy794JltufIuAFUoz9NaQZiVLSHz6/GfNR6pww6UvoDgYONsvwwllMq
+         ZjGw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779304849; x=1779909649;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=i9UA9aEbbdQ0kKVzOUrQK9f5EhaQWo43O1Q7AsJtofw=;
+        b=biZcVUgTh1hv3UIVMYJvJ6mmMsh3LXsYPZJ3FxGA7TAAvIynyycB/EG+Qn7xDhZZnP
+         SeymRJDZ9YLE/TOLWX9GQwstRDdc/cAFOcDMUnkZWI1DDn31BW+xqMKy5IO4aBJoGtHQ
+         v5iJ/aP3Fft5GOq6Ho1uSi3x/HSIrjqLyDoPAFNI2ZG0xOYKZL1R4D5pbD8MO2JIpRpF
+         Ew5OoWzMyqFMsHHdnEi+HXUm5/jVv2s24EQNu1osBxj9n36Po5ZlMUsLiBsMI+iZ11Wm
+         PK6APVWJNl8bwx0riQCOE7JuUTqkt/Lwvej3aS5m1M7nwIksW1I4IUZmtn1wcqFScFG4
+         O/0g==
+X-Forwarded-Encrypted: i=1; AFNElJ+OaqExFB4CfObazbeWmOWchwde81vdatCtNNHoLswSJU2EXBOju3YOBUcUVsgi/PdmUwDDyDg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxaxyHnJWP/DPWZLcRzNat0uX7+4yd2QNLN0SNxZaps061RTT1r
+	2gv4djExpUkQMLUEeQD6cKzBslQb/Pyqdr1NbIbzIdAs6/WM1uXPXrU=
+X-Gm-Gg: Acq92OF1N2F+iyK/XcyGeTWphKHcq/iXJ1dkBj5ky9bzdmNtINEJqpp7hp1yq7XkaVC
+	JXMV/CadKUsN8TlDj9DnXmT16T17QGKGjCoBKRULoX+nQxOJ8KyGIu2Nqp1/W57JxsS6Ijnic7L
+	5NUbLuHX5AbzLX4SPEA7xj3qnaig7todpGwKmePlwb0NsYiEuU33Cs2spCDbjj3RJldAb2s2OIP
+	cQ31CeCXzHuUxH+5MlJmf45HAflsQJMxN8nOKZoekEfbpNlHeL6vzryzR9qZNfRVVxZJqjtbqmq
+	+eyxwElISdpBHUfyIRPcsZP2H7LW9QV+T1Av4awHCL8r46XQELsJdeYH9hevaSQ1Py8Ch1dEdS/
+	Jwh1eCvqU15jZTmzyDppqwK+6N+rtHcVLJJ8E1g2KV0OwFUU3T7S5JW+GpbJ8yve7cR9NzdePD6
+	zyE/yPbzQgEBLk2Kp1Hj7js55te7Q0MARxAgah7I54XfbnnQ==
+X-Received: by 2002:a05:690c:350d:b0:7d1:9c6a:d60c with SMTP id 00721157ae682-7d19c6b0ec5mr19272437b3.18.1779304849408;
+        Wed, 20 May 2026 12:20:49 -0700 (PDT)
+Received: from alir-mac.sitimecorp.com ([12.1.37.172])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-7cc9d18dcddsm56346757b3.49.2026.05.20.12.20.47
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Wed, 20 May 2026 12:20:48 -0700 (PDT)
+From: Ali Rouhi <rouhi.ali@gmail.com>
+X-Google-Original-From: Ali Rouhi <arouhi@sitime.com>
+To: jiri@resnulli.us
+Cc: vadim.fedorenko@linux.dev,
+	arkadiusz.kubalewski@intel.com,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	cjubran@nvidia.com,
+	Oleg.Zadorozhnyi@devoxsoftware.com,
+	devicetree@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Ali Rouhi <arouhi@sitime.com>
+Subject: [PATCH v2 net-next 0/3] dpll: add SiTime SiT9531x DPLL clock driver
+Date: Wed, 20 May 2026 12:19:40 -0700
+Message-Id: <20260520191943.73938-1-arouhi@sitime.com>
+X-Mailer: git-send-email 2.39.2 (Apple Git-143)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260519140101.1584946-2-u.kleine-koenig@baylibre.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ore@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-On Tue, May 19, 2026 at 04:01:01PM +0200, Uwe Kleine-König (The Capable Hub) wrote:
-> While being less compact, using named initializers allows to more easily
-> see which members of the structs are assigned which value without having
-> to lookup the declaration of the struct. And it's also more robust
-> against changes to the struct definition.
-> 
-> The mentioned robustness is relevant for a planned change to struct
-> i2c_device_id that replaces .driver_data by an anonymous union.
-> 
-> While touching all these arrays, unify usage of whitespace in the list
-> terminator.
-> 
-> This patch doesn't modify the compiled arrays, only their representation
-> in source form benefits. The former was confirmed with x86 and arm64
-> builds.
-> 
-> Signed-off-by: Uwe Kleine-König (The Capable Hub) <u.kleine-koenig@baylibre.com>
+This series adds a DPLL subsystem driver for the SiTime SiT95316 and
+SiT95317 programmable clock generators, along with the associated
+device tree bindings.
 
-Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
+This driver has been through multiple rounds of off-list review with
+Jiri Pirko and Carolina Jubran.
 
-Thank you!
+v1: https://lore.kernel.org/netdev/20260511211143.19792-1-arouhi@sitime.com/
 
-Best Regards,
-Oleksij
+Changes in v2:
+- Patch 2/3 (DT bindings):
+  - Remove Linux-specific runtime description paragraph (Conor)
+  - Simplify reset-gpios, interrupts descriptions to hardware behavior (Conor)
+  - Add allOf: $ref: /schemas/dpll/dpll-device.yaml#, switch to
+    unevaluatedProperties (Conor)
+  - Add pin sub-nodes in example 2 (Conor)
+  - Rename node clock-generator@68 to dpll@68 to match dpll-device.yaml (Sashiko)
+  - Add clocks/clock-names properties for xtal reference clock
+- Patch 3/3 (driver):
+  - Fix SiT95316 num_inputs: 8 -> 4 (Carolina)
+  - Initialize xtal_freq at probe via devm_clk_get_optional_enabled
+  - Move DPLL/kworker init before IRQ registration to prevent NULL deref
+  - Clear notification latches in periodic worker to prevent IRQ tight loop
+  - Use clkout_map[] in output_phase_adjust_set() for correct register addressing
+
+Ali Rouhi (3):
+  dt-bindings: vendor-prefixes: add SiTime Corporation
+  dt-bindings: dpll: add SiTime SiT9531x clock generator
+  dpll: add SiTime SiT9531x DPLL clock driver
+
+ .../bindings/dpll/sitime,sit9531x.yaml        |  145 +
+ .../devicetree/bindings/vendor-prefixes.yaml  |    2 +
+ MAINTAINERS                                   |    6 +
+ drivers/dpll/Kconfig                          |    1 +
+ drivers/dpll/Makefile                         |    1 +
+ drivers/dpll/sit9531x/Kconfig                 |   17 +
+ drivers/dpll/sit9531x/Makefile                |    4 +
+ drivers/dpll/sit9531x/core.c                  | 2636 +++++++++++++++++
+ drivers/dpll/sit9531x/core.h                  |  282 ++
+ drivers/dpll/sit9531x/dpll.c                  | 1147 +++++++
+ drivers/dpll/sit9531x/dpll.h                  |   90 +
+ drivers/dpll/sit9531x/prop.c                  |  345 +++
+ drivers/dpll/sit9531x/prop.h                  |   39 +
+ drivers/dpll/sit9531x/regs.h                  |  359 +++
+ 14 files changed, 5074 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/dpll/sitime,sit9531x.yaml
+ create mode 100644 drivers/dpll/sit9531x/Kconfig
+ create mode 100644 drivers/dpll/sit9531x/Makefile
+ create mode 100644 drivers/dpll/sit9531x/core.c
+ create mode 100644 drivers/dpll/sit9531x/core.h
+ create mode 100644 drivers/dpll/sit9531x/dpll.c
+ create mode 100644 drivers/dpll/sit9531x/dpll.h
+ create mode 100644 drivers/dpll/sit9531x/prop.c
+ create mode 100644 drivers/dpll/sit9531x/prop.h
+ create mode 100644 drivers/dpll/sit9531x/regs.h
+
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.43.0
+
