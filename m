@@ -1,80 +1,74 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E16B29AB02;
-	Wed, 20 May 2026 00:59:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5473A2652B0
+	for <netdev@vger.kernel.org>; Wed, 20 May 2026 01:09:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779238796; cv=none; b=aeM6M30QIkky9aZCo9l4qcSHz8YXoyemCKLAchO29Ux0BIDwlqZCSb0jMtAr0dANK3sf/jod6R1+4ZX3f4blKoEXxsr35l/aQLxpCefI+QUMLfU0a2WDEffFUUHj34GJgv+WoBsA+7tZvbwAMUG9HdbGO8aEEz5V6xEBy/PIV+E=
+	t=1779239393; cv=none; b=uzNXQmAzNGw2XoX18yAB6Joc/7BQBnZDytkODdjXOneUgR+hNEwm0xO1/JdQSox6hS40qgQYIUC+HIFyR8JT4zFOCF4QIWpQygb2crEacBl3cI3clRPLfyoLZvY1NICq/C9+MNdy4dgmap4qAgVZqwzfFsTzgmkLsLrJF7JD3mI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779238796; c=relaxed/simple;
-	bh=Gk+zrEidxeyH8/m65U8s2CofRddr5N2qo9NAbJEoFtc=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=lySeViyEHsz7Cdwg477yvb1JftZouuLtDQYmFJlQj2EioV+cZH46Xglu5aKcJwvPnXR3teMSGxMUBLW2F9SNwHuK+Vn2Wpv3/SEcChRLCbZjHdqfr5MQ7zUgOf5aXRB8gMQUijRc8GtmZmn0VWMmuIZqsxbrNdEX/SRm+wVZdTE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F3eByz9F; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779239393; c=relaxed/simple;
+	bh=vaA+O6NNDw7rBBn35yIdxuzZbafQZI65CCh1ntUiqmc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mCMgnDWuxtt4Smue9YjmGfcVO5JiiYi6DBfVKggOCWjqOxHeTEEP4imGeXEXFLSq8FCRDp/cZEhX6Wa8IS5EEFNNOPodJynzzukuy5ZEecl+UGfmMKil/BiQuyg4LDNZKJKx4zNcSllBWfOfWzrzn9xcBXVD/a3hS2xZW/qcUQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=ycnqpPts; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F3eByz9F"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06CFA1F000E9;
-	Wed, 20 May 2026 00:59:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779238795;
-	bh=LTA03XVNuI2B4/4ZJtJTbBevnemJyRqVpLCixthwgCs=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=F3eByz9FMv5J+9uICJjxo8nttu3TVFovs/DyLrQtM9EnGBEczlPLkgzHqfwZ3+NAP
-	 l/+QsLqMRqzIsjAQT/teKVI4+Nq/hc65mpLMfuEuoEqXDrVm1hIZSPUoEipOaByLWz
-	 JK6LpT2TyPGkbdF+fQBMBtVBMuqYgr5Rj5Na+mngxBGOkuC+woVTolwRNzDu0/fenU
-	 NJL6RMWF14cb+dqrTJjgWJF059FNDTpfmO59d13EzzuwsiMkjZ7+OvCnQUwC5UuvpG
-	 +Ss5/jtDsnGLCoRZnWKnqiuJdM1DLJYW7Daw5RgeC4N6f2auklID0pk4+gTXReJy0k
-	 Bpa9uMm5sWDhg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 197A0383BF53;
-	Wed, 20 May 2026 01:00:07 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="ycnqpPts"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=FTUaKu7hqlhjrHB9IMLzsE0a0hVpZmFonyggDQ+3VXg=; b=ycnqpPtsvapjQkOdrINC9+jnsw
+	JmTMC/Zh/BhbVvCzZk/eyYC4umCpu4Ut8F9QeWnP2HAGUCFGCNPcpZr3RgUruzXcWILunzkLgAYH7
+	lO/EeVuNnBO3PyEfLhKCLD/W+BEM3xx28jgdOPGxgXfNAC8BQvHSupNXrHfG92e9PIhg=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wPVRC-003kqQ-2L; Wed, 20 May 2026 03:09:30 +0200
+Date: Wed, 20 May 2026 03:09:30 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Daniel Golle <daniel@makrotopia.org>
+Cc: Markus Stockhausen <markus.stockhausen@gmx.de>, hkallweit1@gmail.com,
+	linux@armlinux.org.uk, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
+	chris.packham@alliedtelesis.co.nz
+Subject: Re: [PATCH 3/9] net: mdio: realtek-rtl9300: Add ports to info
+ structure
+Message-ID: <82214c5e-23d5-4615-b2ae-81985fb573f8@lunn.ch>
+References: <20260519165747.1288903-1-markus.stockhausen@gmx.de>
+ <20260519165747.1288903-4-markus.stockhausen@gmx.de>
+ <agydm8V25M-jy5o6@makrotopia.org>
+ <85d5f162-8999-43d4-b879-6e5e686246f7@lunn.ch>
+ <01d801dce7c2$a0a08ba0$e1e1a2e0$@gmx.de>
+ <fff19211-a41a-481d-a6a6-4429a6901129@lunn.ch>
+ <agzoaMnmeVpjiFC0@makrotopia.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] octeontx2-pf: avoid double free of pool->stack on AQ
- init
- failure
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177923880590.2938085.17920392610827952238.git-patchwork-notify@kernel.org>
-Date: Wed, 20 May 2026 01:00:05 +0000
-References: <20260515151826.1005397-1-dawei.feng@seu.edu.cn>
-In-Reply-To: <20260515151826.1005397-1-dawei.feng@seu.edu.cn>
-To: Dawei Feng <dawei.feng@seu.edu.cn>
-Cc: sgoutham@marvell.com, gakula@marvell.com, sbhatta@marvell.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, jianhao.xu@seu.edu.cn, stable@vger.kernel.org,
- zilin@seu.edu.cn
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <agzoaMnmeVpjiFC0@makrotopia.org>
 
-Hello:
-
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Fri, 15 May 2026 23:18:26 +0800 you wrote:
-> otx2_pool_aq_init() frees pool->stack when mailbox sync or retry
-> allocation fails, but leaves the pointer unchanged. Later,
-> otx2_sq_aura_pool_init() unwinds the partial setup through
-> otx2_aura_pool_free(), which frees pool->stack again. The CN20K-specific
-> cn20k_pool_aq_init() implementation has the same bug in
-> its corresponding error path.
+> The problem is that the hardware doesn't let you access the MDIO
+> busses directly -- you *have to* setup a mapping and then access each
+> PHY using the mapped port index. Also hardware PHY polling *has* to be
+> used to configure the MAC as there is no (known) way to directly
+> configure most of the MACs (but only a small number which is typically
+> used for SFPs), so setting up the mapping also for that is mandatory
+> and cannot be avoided.
 > 
-> [...]
+> The driver does it's best to present MDIO busses with the PHYs available
+> with their actual (ie. as on the hardware) addresses 0-31 towards Linux,
+> so PHY drivers, packages or even userland tools all work as expected.
+> But internally it will have to setup this mapping port->(bus, phy), and
+> then reverse-resolve each (bus, phy)->port.
 
-Here is the summary with links:
-  - [net] octeontx2-pf: avoid double free of pool->stack on AQ init failure
-    https://git.kernel.org/netdev/net/c/9b244c242bec
+Do any of these MDIO busses appear on the outside? Somewhere i can
+connect an external PHY, or another switch in cascade?
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+	Andrew
