@@ -1,44 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A90FD37BE6E;
-	Wed, 20 May 2026 21:40:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E968728DC4;
+	Wed, 20 May 2026 21:44:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779313260; cv=none; b=biZdKQwSMnO/Fw+zd8zrDZ4AQGdZ3EZM3mKpZ4lV0yqda75DECL5wNxFpY1CYn3eWV2tA8e4I55KIEgnz3P1qoduwir0qo0cfWyegCOTOGC5KSBOqqMARsA7NF+e7g1cAp8toaX5oxgVzubm/CxZG0Enwynrz8UMmrDefBOpf1Y=
+	t=1779313493; cv=none; b=tXi7Poqwpiyri4qK/lIoG/Nu8sOljtjThzU8chyfN8R88OstKzD+XZ1SEXgToZnc9HnRls/hN8xIFX7apiaYt5nW1u6/HIN83VWevvb8histtgTkD1DH5wZE2C03yy1Dt9d0zbx4u54yBNdQAT/8z2HWN69/TNDujc5aZtAduqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779313260; c=relaxed/simple;
-	bh=9seufv8THWEq9UNvU+ASZOlTFZquZrw6C9S120RkteY=;
+	s=arc-20240116; t=1779313493; c=relaxed/simple;
+	bh=ETTX8Z7cbHdMVHMr1vc60X+MDKxdCLF/OiXVHWv9heI=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JAq6r4JuzJQxywDd2FTVM8m+TnHu1xbTFx6ZiehCYpjPl2rVqciaHNjlIF2PGfaUiFxeUVbcslAexC842a+8boExs9987yEHOFrFThqo5xtwu5dt6pn5/VnOVJEZO0l+87ENCHd4iXDpY4dt8E1rFeYN5eBngbquAteaWOA4vw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B+iesas8; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=tmovAjYmkOlXsTMb8N2nTdfnNg2hijypbd07cv5eJHANKs3x/POy9uSFZ2p6Z5NJ460mwDGGpGShHuGAQM9BD4evx/TYt2zieU4ZBDMGcFyOA9VaEiiBIUh5CFirtok1ve9Fxik6BOftDv3zVomPIKcc9q5jqHAlVzAwaozcYGQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GBpc+bKH; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B+iesas8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B20FF1F000E9;
-	Wed, 20 May 2026 21:40:58 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GBpc+bKH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DF041F000E9;
+	Wed, 20 May 2026 21:44:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779313259;
-	bh=9seufv8THWEq9UNvU+ASZOlTFZquZrw6C9S120RkteY=;
+	s=k20260515; t=1779313492;
+	bh=ETTX8Z7cbHdMVHMr1vc60X+MDKxdCLF/OiXVHWv9heI=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=B+iesas8QX+kIgYNx+Tpxs3Y673kLpk/MCWZ28sAZ8zD4J4PnlQbdVu4WXM9Y4W5J
-	 CzXuFmhuaK634Bykf8jk9uukTaxkwujGAt4ISz305TDe/9epyQvub5UgT76bYXADNH
-	 Dl82oZnChNciS3cgO5FCwTtkTpVRIvU+gdJrMy0Lsv5EXcmiLMlRiUowiJ2J+8qk0n
-	 QL6fTHogsrH9QJJQCcBugpuYlTG3D2I1PZYdz/eEoaIZxiSkC/sqIOR1SF58AJog4Z
-	 F4zlbvVt4livETcXv9pOhN+zeFSDT1heFmkCJVn7FDJl9mhSgyjiKCa0slNgUONeBw
-	 fHr/ew0ElIu4g==
-Date: Wed, 20 May 2026 14:40:57 -0700
+	b=GBpc+bKHUfCNOEGs4e+X4S0NsXpDnID0qSPApfrFKJg28nlrrJwq/9Z3wvkbzAYI3
+	 AE+s3ERGSJ2Q0d9LpjwfFP4Vgqlf66eq63HiF7ma4EZp7o7Cs3cfbHhfyl85P9cPqS
+	 8ZwyuCos/cL9Yy5j6cF0Y9UZqatFxzsVgtM4GkSnnTQuFKmTotrEDZoFmYeY0cQAD6
+	 Y+MYuyBRtlndDYV0fTUojRl41SBRWrto28XDM+sY+vygms+wh/YA94BbYZBZoZ/21v
+	 kWH9ND8LOO/bwCvl9h5hkp/N60181XHBYyd3BCbNDoO6tEOSYd7c2TCpOj1n3Tjike
+	 CBcQ20c5zgebQ==
+Date: Wed, 20 May 2026 14:44:51 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Neil Spring <ntspring@meta.com>
-Cc: netdev@vger.kernel.org, edumazet@google.com, ncardwell@google.com,
- kuniyu@google.com, davem@davemloft.net, dsahern@kernel.org,
- pabeni@redhat.com, horms@kernel.org, shuah@kernel.org,
- linux-kselftest@vger.kernel.org, bpf@vger.kernel.org, martin.lau@linux.dev,
- daniel@iogearbox.net
-Subject: Re: [PATCH net-next v7 0/2] tcp: rehash onto different local ECMP
- path on retransmit timeout
-Message-ID: <20260520144057.1ab0e15e@kernel.org>
-In-Reply-To: <20260520064310.4154268-1-ntspring@meta.com>
-References: <20260520064310.4154268-1-ntspring@meta.com>
+To: Michael Grzeschik <mgr@kernel.org>
+Cc: netdev@vger.kernel.org, Markus Schneider-Pargmann <mail@markussp.com>,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] MAINTAINERS: Update address for Michael Grzeschik
+Message-ID: <20260520144451.281c5729@kernel.org>
+In-Reply-To: <ag4RnvXbAoITkwth@pengutronix.de>
+References: <20260426-maintainer-v1-1-d74d2f4343f7@kernel.org>
+	<DICBWQ0WBG05.1D9181KHYC61C@markussp.com>
+	<ag4RnvXbAoITkwth@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,9 +46,8 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 19 May 2026 23:43:08 -0700 Neil Spring wrote:
-> - Check post-rebuild busywait return status to avoid silent false pass
+On Wed, 20 May 2026 21:55:10 +0200 Michael Grzeschik wrote:
+> Gentle ping to ask if anyone is picking this up?
 
-still flakes:
-
-https://netdev-ctrl.bots.linux.dev/logs/vmksft/net/results/655182/43-ecmp-rehash-sh/stdout
+Please repost this with netdev@ on CC, if you expect us to take the
+patch. Only your ping has us CCed.
