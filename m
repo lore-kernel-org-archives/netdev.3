@@ -1,78 +1,49 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E55E400E1D;
-	Wed, 20 May 2026 18:40:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB97B3E277C;
+	Wed, 20 May 2026 18:44:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302408; cv=none; b=jISA3eoemvuUIbfeM7cdhnQdmWUBXKTGiBAqGDYb16SwOHaJiLDefYJenj+lWtFfZQ0ZmCWAKo2PHHPD8yz5Jjh2lLqlZHX+EviNVxsNlNhF9z2GVa74uFdVvTI2XCBknprq4WS/7bF3nXwjravE3hqeH/6PCdA2DzW4d+SXdvg=
+	t=1779302647; cv=none; b=ol+9hMoX+kLiZrO16g8xz9jp+pc+31jskP1TkWUs6HALtJRfPsnr0azj9nmgF4/2MELZhEdtRaoKZJXx9P+KLDK92zBA3u8kOJ/+IUeVtvyOqQv9DWwc4flkeIxRRqIILbG//4Es7CsnXJw1L9WDiecrRtJLoWfPdi++j/hzzpw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302408; c=relaxed/simple;
-	bh=DkSZfXOAffCCtFwAjz7g6qmQiQIlMDMjpPdApHgp6TE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=pRUFecsEeEN3IRyBst/STNE6jz0/pjXzZ0VUsVFNPlAml3p/3WAUUN/8QzuiwiOAVLEfVyqHdGU7sZxTlA9YBZjd6d+YntRmgytd0/4K0nggH94BAWskBAwzoy5hcs9L8UiQR7VQwi5T/0OyEIe/6dZ+yr5XJbZ+JuS++Q8cmaA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TxJsYXWd; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779302647; c=relaxed/simple;
+	bh=b03qRrZcAGccNMFvgTiUEzk6iVDZdoOo75O+YD1y1oA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=t2svFEnWHQRzgxqyDRhbRW8FXU0XawBBEsObtxd9mGZaQj58C55ZVCyWMSAnCjHLDEklWClkoG7L0S2gixbCPuDBF7HSjSuhDS9VtbpWrV7bhYFdiL1cb94yfy99WJwaJfxOp+IdIakcbtPVDxtFlfBtP/8atU/nxfvdHDQLFmg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=o8oFhaTo; arc=none smtp.client-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TxJsYXWd"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19B121F0089A;
-	Wed, 20 May 2026 18:39:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779302406;
-	bh=02+6d8dOXhR9E+F29QDQjM2pWkqHo3wDZDJjMa+yUu0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=TxJsYXWdfmza+UhP3R5pB3RwB3VkdHYGSwnVCeXIfZWjcwPv5hyYy1pozAEtav9zc
-	 ST23wnlxbaQNSejo3rEHwIRi3+Vsb+rGxZgXDu6Wg2SRyCm1gKgYG9kyT1s0+eLdMh
-	 jLq+3jUpE8uIKfQfhWYcZI1RUu3KhaTsvYTa7fcRh4jeGeHIn1KWH1IQXk1A+GPle+
-	 /fk//MJVx/io/TegeiPOyqkC6PuFHo2UABrmL27yz5Omg47Zm8XFMz0oUKynX/ZKE6
-	 XwChghHVCC5r3gWZlyQSDgbWCdunVnBYtGrwFl8Zgn+l6bnK9CSl/JfztXE0nTPRKy
-	 fbtvXvNZAq/IQ==
-From: Arnd Bergmann <arnd@kernel.org>
-To: linux-gpio@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	Arnd Bergmann <arnd@arndb.de>,
-	Christian Lamparter <chunkeey@googlemail.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Aaro Koskinen <aaro.koskinen@iki.fi>,
-	Andreas Kemnade <andreas@kemnade.info>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Roger Quadros <rogerq@kernel.org>,
-	Tony Lindgren <tony@atomide.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Linus Walleij <linusw@kernel.org>,
-	Bartosz Golaszewski <brgl@kernel.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Lee Jones <lee@kernel.org>,
-	Pavel Machek <pavel@kernel.org>,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	linux-wireless@vger.kernel.org,
-	linux-omap@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mips@vger.kernel.org,
-	linux-sh@vger.kernel.org,
-	linux-input@vger.kernel.org,
-	linux-leds@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH 10/10] gpiolib: turn off legacy interface by default
-Date: Wed, 20 May 2026 20:38:15 +0200
-Message-Id: <20260520183815.2510387-11-arnd@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20260520183815.2510387-1-arnd@kernel.org>
-References: <20260520183815.2510387-1-arnd@kernel.org>
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="o8oFhaTo"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 14B56A3E19;
+	Wed, 20 May 2026 20:43:46 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1779302634; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=5sb4b5JmNuf3m+PKjvTG++e3CU9o6TXzphhA4z3gnCE=;
+	b=o8oFhaTowOetH30VgwONoGjAb/GifoAEFAD/JavPTlVYM/llZLkTPD3W09toHmOUU85ojq
+	RQjUmydjNTMAOd3bpKODNKbkWUJkkX3ih0cX23WiRxQVltGS4wQQ9+2i9BTSAZOZV/rTmY
+	oG/xIbIweqG1ZL/+sBLN9ji2UFpjjKm8lBsI44mVxfNggYZh6tmh8XnWYC5mniiMLi2Yre
+	KNgm2d69FpQ3CUjpR//ApN7axkCnZZ5sJLzgfeERWzxrj0SEA7tRomHS8+L8dR9oTWrzON
+	8EZCre0IxUiFQn9nfTz8gWGsQmB83ZlezsOlZ6FyetDCgsRYJba0Y+7eTIYZ8g==
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: opendmb@gmail.com,
+	florian.fainelli@broadcom.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: justin.chen@broadcom.com,
+	phil@raspberrypi.com,
+	bcm-kernel-feedback-list@broadcom.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Nicolai Buchwitz <nb@tipi-net.de>
+Subject: [PATCH net] net: bcmgenet: keep RBUF EEE/PM disabled
+Date: Wed, 20 May 2026 20:43:20 +0200
+Message-ID: <20260520184320.652053-1-nb@tipi-net.de>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -80,44 +51,59 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-From: Arnd Bergmann <arnd@arndb.de>
+Setting RBUF_EEE_EN | RBUF_PM_EN in RBUF_ENERGY_CTRL breaks the RX
+path on GENET hardware once MAC EEE becomes active. RX traffic stops
+flowing while the link stays up and the usual descriptor/RX error
+counters remain quiet. In that state the MAC still accepts frames
+(rbuf_ovflow_cnt keeps climbing) but RBUF no longer forwards them to
+DMA, so rx_packets is no longer incremented at the netdev level. On
+some boards the corruption ends up as a paging fault in
+skb_release_data via bcmgenet_rx_poll on an LPI exit.
 
-All users of the legacy interface now select CONFIG_GPIOLIB_LEGACY,
-so it can be turned off by default and only get built on platforms
-that still have one unconverted driver.
+Reproduced on Pi 4B (BCM2711 + BCM54213PE) and confirmed by Florian
+Fainelli on an internal Broadcom 4908-family board with the same crash
+signature. RBUF_PM_EN is not publicly documented.
 
-Allow turning it on manually for compile testing, in order to keep
-the build coverage of the legacy drivers in allmodconfig and
-randconfig.
+This shows up more often now that phy_support_eee() enables EEE by
+default, but it also affects older kernels as soon as TX LPI is
+turned on via ethtool, so it is not specific to recent changes.
 
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Always clear RBUF_EEE_EN | RBUF_PM_EN in bcmgenet_eee_enable_set so
+the bits stay off across resets. UMAC and TBUF setup is left alone so
+TX-side EEE keeps working.
+
+Link: https://github.com/raspberrypi/linux/issues/7304
+Fixes: 6ef398ea60d9 ("net: bcmgenet: add EEE support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
 ---
- drivers/gpio/Kconfig | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/broadcom/genet/bcmgenet.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-This patch depends on patches 1 through 9 to be applied first.
-
-diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
-index 00fcab5d09a4..eec17089eaa6 100644
---- a/drivers/gpio/Kconfig
-+++ b/drivers/gpio/Kconfig
-@@ -4,7 +4,14 @@
- #
+diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+index 54f71b1e85fc..7c11cf916762 100644
+--- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
++++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+@@ -1368,13 +1368,12 @@ void bcmgenet_eee_enable_set(struct net_device *dev, bool enable)
+ 		reg &= ~(TBUF_EEE_EN | TBUF_PM_EN);
+ 	bcmgenet_writel(reg, priv->base + off);
  
- config GPIOLIB_LEGACY
--	def_bool y
-+	bool "Legacy GPIO interfaces" if COMPILE_TEST
-+	help
-+	  There are a few legacy platforms that use the traditional GPIO
-+	  number based interfaces instead of GPIO descriptors.
-+	  Say Y here to enable build testing drivers that are specific
-+	  to those platforms.
-+
-+	  If unsure, say N.
+-	/* Do the same for thing for RBUF */
++	/* RBUF EEE/PM can break the RX path on GENET. Keep it disabled. */
+ 	reg = bcmgenet_rbuf_readl(priv, RBUF_ENERGY_CTRL);
+-	if (enable)
+-		reg |= RBUF_EEE_EN | RBUF_PM_EN;
+-	else
++	if (reg & (RBUF_EEE_EN | RBUF_PM_EN)) {
+ 		reg &= ~(RBUF_EEE_EN | RBUF_PM_EN);
+-	bcmgenet_rbuf_writel(priv, reg, RBUF_ENERGY_CTRL);
++		bcmgenet_rbuf_writel(priv, reg, RBUF_ENERGY_CTRL);
++	}
  
- config HAVE_SHARED_GPIOS
- 	bool
+ 	if (!enable && priv->clk_eee_enabled) {
+ 		clk_disable_unprepare(priv->clk_eee);
 -- 
-2.39.5
+2.53.0
 
