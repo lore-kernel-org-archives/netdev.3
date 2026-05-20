@@ -1,120 +1,118 @@
-Received: from mail-dl1-f43.google.com (mail-dl1-f43.google.com [74.125.82.43])
+Received: from mail-dl1-f50.google.com (mail-dl1-f50.google.com [74.125.82.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43EE4308F23
-	for <netdev@vger.kernel.org>; Wed, 20 May 2026 02:30:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC0B9212554
+	for <netdev@vger.kernel.org>; Wed, 20 May 2026 02:32:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.50
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779244221; cv=pass; b=W+Z+qKkFPX6aqfJeK24AVoAAWMOzeGAH65WmZr3/g1sqj2LgBN/cKEWrDItE5GH9uhjGdN202/AejnaGMG+KGGJ47lVmy6OQIjE3Yn7dgAtklx0d7FWlVMqIU1uRg+K6LuD7KFZNukHztCI8GWD1PNi9x20/15IHMKe9FF6Eqwk=
+	t=1779244372; cv=pass; b=DXs81WWofkSHO7Fozu00m1LBxN3t+GWnSQr1PJVU4xpVi/PbdhnPWzhsf4/iioI3VXTVCJRATQ2erxAKwLKzWYkc3qJuPzyi2rIfU2WLQe9TdUV+H5Pk2EC/5sli8Q3nSSCQehRqnrugUtdau0pNMqq9/u2hzRrqgYSKuW8pq+A=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779244221; c=relaxed/simple;
-	bh=H2/5Mi0JEOVCVouNDzMmbA0sHScjrWiolgl9AbbbL+w=;
+	s=arc-20240116; t=1779244372; c=relaxed/simple;
+	bh=0IzU19FPXW2H2TM88ACN+eWu+//FSAxEfgL73Un5O0A=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WdtH15ysIZ6CWZJM753qyZl3ymbthLyIZrJWObsUr8yOCHJl+w6XEHUEiIskVjO91XY90onFJnbZa0dEXftwZql1tNMN4qzhLVNwWHQnH5PVfBs4JSHr/J6mdVp0WllGi3svGKJ/d3WUqzak/Db1ycnLGOpaudjgKJWfXB43LXg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CIBqx0lB; arc=pass smtp.client-ip=74.125.82.43
+	 To:Cc:Content-Type; b=SyVtAsJ6vpeWplO2wAIxrmnypal9BlOOd8kp2FTANEmCvvnbh+qCFjxHfodUjYb7bTlVKRuekATx0oXpBS9oDkOT9ekrNar1ubFPSb8KbWwtJ1FDS2NEz74EMYDUdFEer9YuJoYJxJoCy31Mo47LM81g+Am+v+QZQGfyPtapc/0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=X1vx8NsV; arc=pass smtp.client-ip=74.125.82.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CIBqx0lB"
-Received: by mail-dl1-f43.google.com with SMTP id a92af1059eb24-133466cf955so15188996c88.0
-        for <netdev@vger.kernel.org>; Tue, 19 May 2026 19:30:20 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779244219; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="X1vx8NsV"
+Received: by mail-dl1-f50.google.com with SMTP id a92af1059eb24-12c1a170a50so5392317c88.0
+        for <netdev@vger.kernel.org>; Tue, 19 May 2026 19:32:50 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779244370; cv=none;
         d=google.com; s=arc-20240605;
-        b=GgCjgduTnkHhf3vEM+D+1MA1GmCG22j3bMKl97CtlQsjnTi6s8QFpbEn3jEZ45OlJL
-         hkB9zjzdS49uZPTCzy8at1sYFRoA42mJSNp73qDqfUrKKQT1DRUjBXBzzpadBpNHTiVU
-         XYlvokwavBdFfcd8UMnURwSsVUBNDz84o2laltkYuD1bG9mHUjjY4HEhDBIHlXgWghil
-         GFc+NUIdbaRWVKHdOvcwCMtdtlhL5C5pAcsAjDS1Jvn2CaKQnM59ql9/0ez/G+w1Eumq
-         kzAIoK2vynUO6ttLCdI7fZdvhsT6NojBaZ9Vco2N2ZtKX1pbjcukAetXf+dlXfsl3teK
-         oAtA==
+        b=JU+mT9cd5vq13gzCPTIqCcHqirCibsUPX5fXSySRnWTOQUNaTOwAteUfMLQ1ONou1B
+         YYDvPMabbLRQ7u8O4tbq6EmeOiJ/vZEQrSNfWTpbrw9/HhLbOEaIb3qQMgzOpKg+cz4L
+         XUo1dejt5M9SmH7d8VKGpjY9mlQGeoTsFfCWxe8sb26ymANoTRSDi5a+F+4yKQTQMeCG
+         Lzg1+F38TQHqj1sn+PVLsRMraeXWzpGLJJJmsRxC1TMxwUJrREt7x3TNlAr6Ykfuf7aR
+         yBPrIZKYwiKTwsU0JumweIbZrtYQAK4BFibgB6h0BK0BZFM1KGAMzG53jpcTvSPcU2Ck
+         V1oA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=m7IdQEhWwPCpVw1bi2peGtCzo0AK4OeVuwJXm3Whg5A=;
-        fh=mf5sHxakTwYYRAcNGdhv6/VLKjMTa+PisafHgRd15Ts=;
-        b=BaDVGT/TaHj5W4wu4fVnQWjVO64wqHoLZi7vhdOvP2/2Y9MQxBV8Q6Bpiqz2C/MtSr
-         y5qI3gb8FxmhDN9BI6jzA/8vGz8m9C5tfY7ghdb2+p1OnvAX/pNQMuXejJqluqgxwQ44
-         gfxdcznk8Iz7/qbzMpotnCUIfVWWIrgI+J9iFCvQMrRuA93z40lAohMKBeD/rd4mLXqx
-         paGuxDSETRLwjKOVTbbwSUrGWRgF6Aw2Aq2CuFYCf6IBI6Z46x8E+5Ljkt/wuiZsRtjB
-         BXYx2c2JO/h2OW9/U+7zYk6lznJKIO4e7TzisKjOWc4FdHleK5A8mu2tmQQw6SW+2T+r
-         QF8A==;
+        bh=TOuVDgQGU+f+1u/58wwaeFqVXTyTyKt59iPLq47VrI8=;
+        fh=5hGq1nUam+GjxtsXzQxTx6b95SwUReML8pK87ZpF7k4=;
+        b=doguG84Uwz/0pG+sUVzVKm4L83P7WsksPVpuxlAaTJyoCCuAA3cK1D7fsYgy08akce
+         YwAPoFN2CsuLVi3QoxfW9R0498gT8R4lRZSlfs+05OBnJnQ1sC9WxBYTWHVQVAmQBJr8
+         H1f/tPB5zH1/CE7XOmn9xhKPUMUHA2Bfc7xOOtwV4SApOspqkbhWvhRIFmldwkBI6Igl
+         gbarV3cb34zao0NzRAkFw4Xz3Sy6fIWFN6698XCt7ViBBd6KUnUE4f0g9Cog/5FKMNfm
+         jEYXb9W9623rGSsDeKxF6n1Fx6BTZCZRcrJRU52iyzdQlN16w5aqvsl4q9FcNOJGt8za
+         8/zQ==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779244219; x=1779849019; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1779244370; x=1779849170; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=m7IdQEhWwPCpVw1bi2peGtCzo0AK4OeVuwJXm3Whg5A=;
-        b=CIBqx0lBMoQsZnONnhpF9F+pqWbotqKluRT2rva9CQS/w5sF0Qu9LClgFwpheKqhb6
-         FIJj12Av1xZ5KfR7c50fvMYluYpjUe6z/uSbU+GrQi+3LCdK5grw70dQoh6l3TmJHyri
-         XSCBHEanjKy+sPkoA7/BSHZTkrH5SzcOGi6lWpbUHLnY6so9OA/tvcmYhkToLhhui2qK
-         BQVjVs1/l9wK5v7GInUePzl2bovG+LB6YyOa0VgwMYgsEAa+cuzCzBsi1pBuj8hbjERL
-         gXiIAvopU/4zTQeRvuIr2fV6El7Eu0+GWkfL796LThlgC91gvxsphtFmqJ8atCm8mls/
-         fPTA==
+        bh=TOuVDgQGU+f+1u/58wwaeFqVXTyTyKt59iPLq47VrI8=;
+        b=X1vx8NsVTvlQP1kM9GafUP0ERgG0bhjQtpB3wLwMPhTtP6X7Z+idpcnkeuY37F48i7
+         mm+Og//Y2UpX+NjhpVHV8Gn+ui9X1wo6hHOLAS3m1GSbBXhe4g7mm6Mon9LFKVomQSij
+         0f82MG2bGfFaEb2LqZvKhEKtPGj6HPKMZ7+8Yz6Jf/kG8TquS+8sqtInndytqaDkEhSC
+         gtUcNoOF5u8LvCtjtXXP1z9SZBz+SZnbO93CiYAyO4YS0cOXtlZjgyeSvpxrg3FIrKxP
+         gJmdYVSMJSg0y7jWVPuTcPnHJPhjfjEGgLtMNddOvvYUvDkTdbUBscyKkiUVKvTrfBdn
+         teCA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779244219; x=1779849019;
+        d=1e100.net; s=20251104; t=1779244370; x=1779849170;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=m7IdQEhWwPCpVw1bi2peGtCzo0AK4OeVuwJXm3Whg5A=;
-        b=CMkeLNzQzdki1w86fMN4pCHy4MCSLxREL//vMCh6uwj5NRIJXf9KUmEAykHaF+/pNq
-         s9nq7ANPAYRJuYVdUU5/W3AiVSMG9vEftnM0kiebH35YA0RU7J4kPXTA6g+OrvzDRInu
-         h4weZVE9CnDE611lwyKn1YIGf8y5r+D8N27lnJkCgctIn5bbX33YDJ0XGHpJaBRvmWaD
-         onH+TNlxF5PEeoBDs3DZlBDkzNRjfIpBWtASaM3Tqbo3uq9DvRYJFRXhCWZCUnxJtRE7
-         WV8wpL+EoYZ35LN61iCs9vODL+0vgNF9VwYgOc/k97GgOQqVlZ3YBtOC2JhupuEV2epk
-         BJAw==
-X-Forwarded-Encrypted: i=1; AFNElJ/re2g4CHUtyJOmiyUhcnHwxODohyHjtANCRka4ax5WYdz54Fv7aQ6t7vAT7wwR2uSvLnbDYeY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxq91QSmneIx9nWZ32noVr4jaD3p3t58yYOsaceD54pV7qmrQba
-	sm09eVUE1oYFi3raXyUEpFhh2jzhNlD0K4/Py34SgybCENLmGri6aU833wnyEIIl5+TMX74d2HG
-	KavKBz72QZJ9JDDRRk13WmB6xOTkvI4DYsaVChG2J
-X-Gm-Gg: Acq92OE8VYe6KknnYBFH9jeb0B7jGXET0lmQZOKKFEka7oS2Ld+aBJ01yW6sqnADdk1
-	ZyRLS8lxj3kQCkLAYRfet6TYjtIC1T3EAHhjeuSg2XFwJ+S+QNyBVWIKtQ+9yzffjA1K6HNDYw5
-	zXSkcCLybliVfB/Z0RbaUxbHIcV97sR6IbDM8Myuy+I/QtR/RTtw4sIng4HuoGQCXgdNO3SBNB8
-	/znG2EQS7c/VfVGKUHvChCekGD3DFcc4333UTymLMyUzE6u4vYU4Vnii2UP+hgIfyXZOVLlxnwT
-	s/Bs0D41bgoOcD/sjtL0mcgK4WIIv9jrS5A5MHuIvsDFimVRr7W9kjheL49GR/eRLR3Kgbg7fZf
-	AY21t2kpYfpNh9WSloVb9JFWsHEXn
-X-Received: by 2002:a05:7023:b87:b0:12d:ea4f:99de with SMTP id
- a92af1059eb24-13503decf1dmr9907509c88.0.1779244218787; Tue, 19 May 2026
- 19:30:18 -0700 (PDT)
+        bh=TOuVDgQGU+f+1u/58wwaeFqVXTyTyKt59iPLq47VrI8=;
+        b=eEYec1UV5Nm6BpVSphJjUUwvraK35cHDis/SiSESHpnjDY0aA/qlOnJk1HnhiW736C
+         puMZG1EtfLsS85t963tObPppJ0nPG3cE5b4Rvy+N7Uh4PAb3UluUMDNp1MTWvH0MA1Ej
+         q4QSjz8bqNuav9pz9tKDIzxPyqdd9GqXQtYaSdDVFTGn+xMei1joI/8+kIu2IK0JdH2O
+         RLN2QFhjqWHrd/kp781X7o8pyFIFQy+EQh9mguZMs3YvmDiDBzWQvjnPhtImA3KuZaT2
+         sFHX+pyHgrlMknyS+ZY8mSCyAcLtHYWWgJ+1UDTWCyjUGFmnIpe6HAcODXGcg2oeQ5zc
+         E4Sw==
+X-Forwarded-Encrypted: i=1; AFNElJ/Qe93atPY6hLGd55x6nf2ccy4ii8W6xEsUozxWMuEqrSBouazNBNNajKLOc9vub8tI5kGaIC8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxP0PeT09wM1+uSkEAH9YLKMRlgybOD2WTfLK2wzD21K60DqUjY
+	dJI9Y3yyfu5e27wrmqj4XmIZbWk18qlgGHljVOo5IL6D+AWMeFj52yUiR5pt3qYGH3NAI2uG//U
+	uxN/p/SVhR35eFeY3TrpG/MPq4c6SX1oyQ6m/sWij
+X-Gm-Gg: Acq92OG8FU6GULtmLh/7rJec2+bWgu3wH03BX3dVUWihvbYRBJFutWckHuMDEn3rPlA
+	CjKiSWYTOjfoM4cWjylblwrRFDzqbDswc/iMzbInWs7Q3bd7cDoB7bWDSFKuPDIWDR0PPU4Ja0H
+	g7CrYXbgg3WevMzcAk34Bj1okEM4ZR4fHkdTXj/qyJrQztq7jsalRRYHvm5mat77BUFFwkIgp77
+	434K8Jqgyq889QEaqrzzwyY5sMPWMoosvdVJSuZ57ASyaRdTIqLXALTbO8ejowG8dbG3YUuMeAO
+	Fsf/D64rbsvwKec0oE8Qy9pAaI1pINA04VTObXuNE/2F31n92tUnEMhB6CXRrT2FFXy+4IgCiRS
+	/k8TUEFF+kD9B+QOMSC1ukHSCgZ/s
+X-Received: by 2002:a05:7022:23a9:b0:12d:de3f:f3e4 with SMTP id
+ a92af1059eb24-13504951d60mr9470268c88.36.1779244369297; Tue, 19 May 2026
+ 19:32:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260518050726.318824-1-kuniyu@google.com> <20260518050726.318824-3-kuniyu@google.com>
-In-Reply-To: <20260518050726.318824-3-kuniyu@google.com>
+References: <20260518050726.318824-1-kuniyu@google.com> <20260518050726.318824-4-kuniyu@google.com>
+In-Reply-To: <20260518050726.318824-4-kuniyu@google.com>
 From: Kuniyuki Iwashima <kuniyu@google.com>
-Date: Tue, 19 May 2026 19:30:07 -0700
-X-Gm-Features: AVHnY4KkGWpFUM0IUCGRMsbhFh46guUBXnvBnwvH8n3Q9DUygGC_xILj0oz3QME
-Message-ID: <CAAVpQUDeQ4p5fDOXuWy6fqFA=y58UfB3h7F5V1jvMYg9_p_TmA@mail.gmail.com>
-Subject: Re: [PATCH v1 net-next 2/5] geneve: Remove synchronize_net() in geneve_sock_release().
+Date: Tue, 19 May 2026 19:32:37 -0700
+X-Gm-Features: AVHnY4L8p1txP70EuVLSz-aReZLtZd-pnWF9iNixHV1kXsZXvgk82okVtd1KJH8
+Message-ID: <CAAVpQUB9hbU3Jt1g8qZa=M+vpXqrBJ10716PkvuUL4fvVQ1ZEw@mail.gmail.com>
+Subject: Re: [PATCH v1 net-next 3/5] geneve: Remove synchronize_net() in geneve_unquiesce().
 To: "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>
 Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-For Sashiko review:
-
 On Sun, May 17, 2026 at 10:07=E2=80=AFPM Kuniyuki Iwashima <kuniyu@google.c=
 om> wrote:
 >
-> vxlan previously had an issue where the fast path could access
-> stale pointers, which was fixed by commit c6fcc4fc5f8b ("vxlan:
-> avoid using stale vxlan socket.").
+> When changing the geneve config, geneve_changelink() sandwiches
+> the config memcpy() between geneve_quiesce() and geneve_unquiesce().
 >
-> geneve later followed the same pattern, and commit fceb9c3e3825
-> ("geneve: avoid using stale geneve socket.") copied synchronize_net()
-> from vxlan_sock_release() into geneve_sock_release().
+> geneve_quiesce() temporarily clears geneve->sock[46] and their
+> sk_user_data, and then calls synchronize_net() to wait for inflight
+> fast paths to finish.
 >
-> However, that change occurred after commit ca065d0cf80f ("udp: no
-> longer use SLAB_DESTROY_BY_RCU"), and geneve had already been
-> using kfree_rcu() to free geneve_sock.
+> geneve_unquiesce() then restores the cleared pointers, but it also
+> superfluously calls synchronize_net().
 >
-> Therefore, the synchronize_net() was never actually needed there.
+> The latter synchronize_net() provides no benefit; with or without it,
+> inflight fast paths can see either the NULL pointers or the original
+> pointers alongside the new configuration.
 >
-> Let's remove the redundant synchronize_net() in geneve_sock_release().
+> Let's remove the redundant synchronize_net() in geneve_unquiesce().
 >
 > Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
 > ---
@@ -122,34 +120,21 @@ om> wrote:
 >  1 file changed, 1 deletion(-)
 >
 > diff --git a/drivers/net/geneve.c b/drivers/net/geneve.c
-> index b36fad833724..4e5d0a09a82d 100644
+> index 4e5d0a09a82d..e8ff03ed87dc 100644
 > --- a/drivers/net/geneve.c
 > +++ b/drivers/net/geneve.c
-> @@ -1032,7 +1032,6 @@ static void geneve_sock_release(struct geneve_dev *=
-geneve)
+> @@ -2206,7 +2206,6 @@ static void geneve_unquiesce(struct geneve_dev *gen=
+eve, struct geneve_sock *gs4,
+>         if (gs6)
+>                 rcu_assign_sk_user_data(gs6->sk, gs6);
 >  #endif
->
->         rcu_assign_pointer(geneve->sock4, NULL);
 > -       synchronize_net();
->
->         __geneve_sock_release(gs4);
 
 ---8<---
-Does this function leave the device's hlist node linked in the socket's
-vni_list?
-In geneve_open(), if the IPv6 socket setup succeeds, the device's hlist6
-node is linked into the IPv6 socket's vni_list via hlist_add_head_rcu().
-If the subsequent IPv4 socket setup fails, it calls geneve_sock_release()
-and returns an error.
-While geneve_sock_release() drops the socket refcount, it doesn't remove
-the hlist node. Because geneve_open() failed, the interface never gets the
-IFF_UP flag. When the interface is subsequently deleted, dev_close()
-bypasses ndo_stop (geneve_stop()), which is where the hlist removal is
-normally handled.
-If the IPv6 socket is shared and remains active, can concurrent RX traffic
-trigger a use-after-free when geneve6_lookup() iterates the vni_list and
-accesses the freed geneve_dev?
+Can the fast path read a torn geneve->cfg during geneve_changelink()?
+...
 ---8<---
 
-pre-existing issue in geneve_open(), so orthogonal to
-this patch.  I'll follow up on net.git separately.
+Yes, it's a pre-existing issue, and probably that's why vxlan does
+not have even a function like geneve_quiesce() and accepts data-race
+during changelink.
