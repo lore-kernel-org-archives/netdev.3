@@ -1,87 +1,162 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013058.outbound.protection.outlook.com [52.101.83.58])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA24A25F7A9;
-	Wed, 20 May 2026 01:41:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779241277; cv=none; b=JnkDzbDJQMLWs8OTKhiNo13CgXqpNUn1optAYEcYZCh7UXAc3n6bsPYgMEy7iIxzUsiO7bPSSTC2vcx/gNC3NyGgVXIzPSmewQ827LR8ni/eM4yky5GO9/BsgYtu40og6+YLgcAYj0WjMOm6h1t82yPyyF+oyR8FNU1TMnpA9z8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779241277; c=relaxed/simple;
-	bh=QSISJm3wisD21ZC3XMsoWmnCg0KeSsHuERBM0fHvDYo=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MViZgYfionmZMYMzwWeCn3hhJrLSt8myIl0MNBMNZZsQakUTbWc7SP/TcJiu4bEPD50rm0zpL9Mf1XS3GaCs7RZtxFfTkry8vt+zG3nIJNnbCH4a1U/Ojnny9S817pMWuCfoRCWI4gzXoo1UwxUAwOsOnG4TOxsxHangrlss5m0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EDHyXsqE; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 490DE28980F;
+	Wed, 20 May 2026 01:42:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.58
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779241375; cv=fail; b=BAp60NhimKju4uH7fDj73qAjg64td989pJ0X/BCvNhgsIe8e2oZu1sMS2v9WtMLLPfzLAbMbPErO7CB3zKumJN1ZY7R+ueU8LCa2Mw4iIPvwT6OTjKlFDjK752tv4hJ4yp05UUeM4LVDm9Fo2lt5wYHaUgwaFnCoYNC7Gvb7Uds=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779241375; c=relaxed/simple;
+	bh=pC0PM+g2Yz+i4vpMdSbPm/cYlHSD4FmTX2MaelJrVY0=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=XWf8cGrooy2dCLS9h+e2D+++U2L5i7oZyW4qxUm60AnY8+7altCnQuflfMcXKGUC94OhUE3eNdzXui/HwpblWn1f/X2p1r/xYX1WFYWKjbL6xBm3Hxpc/+SqmbbHhpEGj5nuy8sEpOKteIpVDwuMKC1PadjZcn5egixIXtgfBM8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=b4OSmVWQ; arc=fail smtp.client-ip=52.101.83.58
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EDHyXsqE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63B0C1F000E9;
-	Wed, 20 May 2026 01:41:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779241276;
-	bh=W5B9RYtaf+LTErBNmxuOUqPeLuU8hcx+7feOZbc9ko0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=EDHyXsqEu+NbpUnUgYvDrz5WaJIidwbGZVhYlZfDCyM8THfM7IOyJaPl8uOnokna+
-	 nf8RtZCS6P9KAylcRtglgS8wEaXJMzlc7U95m1ZoImDMWvpUVeRt0hW2XqosCvYkzR
-	 GsimQOhT1ZJQE22cR5HzxfWDRS+ozC/LEyymesMM8Q9XcD6LQoPtPPGyCOaDMCwgBi
-	 EBz/end7y9QOEiQBydH61He5NEQBK7BrvpDPzORKZgP/XbJSv1/ZqePIzQpR2glpDM
-	 aDEl03SJZJPjBzqXYNtxGGiZb3k7jcKU0KpiinkiRSj8l5twov9eAQzWB7zzdGT7wY
-	 CsKXjoaAQbTcA==
-Date: Tue, 19 May 2026 18:41:15 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: David Thompson <davthompson@nvidia.com>
-Cc: <bryan.whitehead@microchip.com>, <UNGLinuxDriver@microchip.com>,
- <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
- <pabeni@redhat.com>, <netdev@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net] net: lan743x: avoid netdev-based logging before
- netdev registration
-Message-ID: <20260519184115.3c70f2ac@kernel.org>
-In-Reply-To: <20260515215229.3881949-1-davthompson@nvidia.com>
-References: <20260515215229.3881949-1-davthompson@nvidia.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="b4OSmVWQ"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ZAIdLQODHnDlqsfOcqr4zcaGUZfTuMEBmRTjhlekwePvxJ5Hsh+XdHakKUO5fN8XAcN1E5b6pwkHK/rkPaFTu8C5x41ZBxaXT8r47xOnAOkN1T5iewi/6hzqRmu7dJvIkez/v2KvYTZNhU73/J5Eu9HE3yn1Ej5jlLqjr2Ku4XbpRLiTU3PKmHAx++LP+4zItOHeVnY+Y68M+EhMeEg9VG7A4I6+txAtkY/7H+/R9I0TOPcNrWZpKKS65pTfWM+/rQDmYR2lD1/7YxsIaZBSErEwSa9/8axUQA8osWcczxyPoI+Rx1FKyMn7yfrMI089F/xiknyV1K7ISwLczmsHBQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=vCXtAXeIbrQ8mvQXjNtb7mF3i24Xd3SKjWHpVtsf4QE=;
+ b=F5tuyMUVVomKs32TEXtMhHNcoN/A04a9RQ2acu7slAf959Sew/ILaCmSkprOoX4rsxiDRshzy55JwcEEJkpLGMYVAas8wPyz5h/yiZK24nv5JF8lP7EFIrXXQN1TpmOjaR+qcAh9odf83vlRLmi6OA+dDQ1U91zQS+J7ocRvwFGKGTf2tR8qwjiGmGyp/RSO4rfMsjd0Z5Hhuj1A6SixdIGvQuXq1JOShyARf/SUwplNFylcRGfxIuXDax/FEc6b1/L61ih64hBQUwwSiMqD0kc7yI6k/voCS5YtdXUUukhey8vWUBqhBLQkWpFbkN21hmjZwAdBvtFrpLMEfmz9pA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=vCXtAXeIbrQ8mvQXjNtb7mF3i24Xd3SKjWHpVtsf4QE=;
+ b=b4OSmVWQy+m6V4rmf74uuJv2NWnWpxExJWGLCQhXL/Q8expfPvbgGWwgLUzEnyKkNJPlqg63CNKyQn1QarotgcTaoKjGuh+pnJyORTpsX+sY0jxwEBElkwHjF8UobgQgEMSC0hOWpNugM6NcgjxEPJCkLc/kfPuBJKYvSdwarzCmSbpuU1QgEjByYk3DnnhSRY+/sMu+ITiKUo17Ktf17Lzyllq2vdb5FC8f415aYaZvMhl5MaNnxcl3vVFEiLE4aw4GqIPwtMOnbzzYKzCwoJ9MHlyQxhfxRNxSq7SEB7asNGRYrLgtqFVSkJzJcyz4cBkxm/jps/GS6KXz8+tQ/Q==
+Received: from DBBPR04MB7500.eurprd04.prod.outlook.com (2603:10a6:10:1f4::16)
+ by AM0PR04MB12050.eurprd04.prod.outlook.com (2603:10a6:20b:73e::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.25.24; Wed, 20 May
+ 2026 01:42:51 +0000
+Received: from DBBPR04MB7500.eurprd04.prod.outlook.com
+ ([fe80::c291:543b:4bde:cee7]) by DBBPR04MB7500.eurprd04.prod.outlook.com
+ ([fe80::c291:543b:4bde:cee7%6]) with mapi id 15.20.9913.009; Wed, 20 May 2026
+ 01:42:50 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: Harshitha Ramamurthy <hramamurthy@google.com>
+CC: Claudiu Manoil <claudiu.manoil@nxp.com>, Vladimir Oltean
+	<vladimir.oltean@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net"
+	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "catalin.horghidan@nxp.com"
+	<catalin.horghidan@nxp.com>
+Subject: RE: [PATCH v2 net 8/9] net: enetc: fix initialization order to
+ prevent use of uninitialized resources
+Thread-Topic: [PATCH v2 net 8/9] net: enetc: fix initialization order to
+ prevent use of uninitialized resources
+Thread-Index: AQHc5nLpmOljOwZT/06dP/xS4Sj/2bYVmU4AgACM5AA=
+Date: Wed, 20 May 2026 01:42:50 +0000
+Message-ID:
+ <DBBPR04MB750048752B9378DF2B6BD94C88012@DBBPR04MB7500.eurprd04.prod.outlook.com>
+References: <20260518030535.1057228-1-wei.fang@nxp.com>
+ <20260518030535.1057228-9-wei.fang@nxp.com>
+ <CAEAWyHfk7y691oYNmYy5W8dA8cnpwG4ejnXPssMLOUO+Ljo24g@mail.gmail.com>
+In-Reply-To:
+ <CAEAWyHfk7y691oYNmYy5W8dA8cnpwG4ejnXPssMLOUO+Ljo24g@mail.gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DBBPR04MB7500:EE_|AM0PR04MB12050:EE_
+x-ms-office365-filtering-correlation-id: f207c55a-a770-4732-1007-08deb6111a5e
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|1800799024|19092799006|366016|376014|38070700021|11063799006|22082099003|18002099003|56012099003|4143699003;
+x-microsoft-antispam-message-info:
+ 5mWv0haOEiict3IrZaToSpKpa2Yf2lARAdkRruwAJglHEmZuZg+RRe+IBqV92cCXCxfGtrZraa62zNz6HUPYg8eztZDrpItHmlJK7tVXPC19OQgDabxAn3uP5bUEg2RHp+HTVmff5Z2xMkNAZ3NsIpthH24YjbTWbbIvthOsLdtJgIESfNI4M6y/WOliICH/YCqF0qZQQy6H8XFRJ4l44Uul0Yrnrwbsy97xneIHPpzmBfoMjfsNDgjZQ9J1Atlrk+UGYDQGWINpcmAVGq1d4RkQGqfGLOIC/ccz+DKVVbk9/O6qDKbLjijNNrQuJQI1Cq0k8Ve1U7g6Fzwkd9eU3hrdLQcdTb/hL/LRUpFt0c/RO23/QWn1tU05H9OD/CPKHGMUYaovKhblgBD3NbH6onIyLc+sgQ0qrYWxpkSZDPg3ATjKc/SwTLAANaD8vj7eWZlLHOFzaE/3t+PWqNr7NPq++clZNymROMjGmOmvJ7pyjueFPNd+Uktg949nL7tkEzkRsOJBGo1uELiaPq6XbdCCbp7+PrjpjOB+DiX3otS2bN2XBudWREG5ymtXzMzAKvyK/K6uGbX/1ZSTrjz8jXa4v7Vo2IMy5S6DRLi/wqQVkFMpcZ/8UBYOqMyTatO1z4RLi5MUNFN0eFNifXTpX8bX6RiHNx6QPk5d1W0SKHSPVTr6ku2QkV9RHf+xXMej601NDY7rPNa+TSjdg9NmHk35XFv7Pa2PpjJEFtQbiYI+26j2vBb56b49RcuLRYbn
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DBBPR04MB7500.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(19092799006)(366016)(376014)(38070700021)(11063799006)(22082099003)(18002099003)(56012099003)(4143699003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?Sn1RmD0moNTNPWTUCCaf7k+ntX7JRUYhCvToqffd3dnAot67lzD2YxyAQfj4?=
+ =?us-ascii?Q?JgLKbavxXAN/sg8xEymsKdW1oB4x64Hydvrj7ir/jKAHyvNNPGI7zt0jNk8y?=
+ =?us-ascii?Q?91FHippif+RGw6OVq76UfLvYpBM0Ssp6yyCUGB2tDsFx5l0MFWev0CoxZSsg?=
+ =?us-ascii?Q?q2SwXqkYx3rZ2TCjhX0Lujr7SFihz57jHMVgddW0P9rdjXH4k8z+a4OyIAJS?=
+ =?us-ascii?Q?M4NN3S7fjM+f519YRvxWFK77ZzTWtwQvS7RXhLqRfg6sIod2e2vOPKg5Yh1i?=
+ =?us-ascii?Q?G9XTK/kewjYqpumcBqlh2CmChBMjyF6xH+IZml86W6LJtmf2UVCMVWerT2Yo?=
+ =?us-ascii?Q?HOIYugVpaSMXIArbEMXUkDpi+KEImNbsqL1zoB3Y52w+rzKRF51UIC/UtSvT?=
+ =?us-ascii?Q?Vv0JF5cQGQIzDKGh/hi8loHsJJBTStzhNUMHXMgcKp6izBLOKN5y6pitlVEc?=
+ =?us-ascii?Q?TWMy2aJK0+OzSPGlOLt65C4Yun1+HkploxeLmuX1e7DzKYhkpBS6Ia875JHP?=
+ =?us-ascii?Q?VQiItlgbs93ry/bK6wyqpSaOVFmgmtVNksQfe2nU1YmC5xzBknhLmfqLXN71?=
+ =?us-ascii?Q?1aJbpl+VpiVr1mdeceiShuWYNe/ciD1pzfPynmajgY+jV1D8NrZFbr3c7IAJ?=
+ =?us-ascii?Q?Rm40blMLC2F5w6ZmNoz6F1/klH2wgk8mVqXayWQvUg8SI+ej+uKzgtKAMknl?=
+ =?us-ascii?Q?vI1GLcMyNgQtD4bg/AjOkKRIMoyMEyGw8FBsU97m/PGXKf/sY59yAlf13Tz8?=
+ =?us-ascii?Q?c9m7yAdhHsrwSpFwp5tUzlPMq+0hGeky+kUny32XE5XAiwEfL4/u9Vxjom+M?=
+ =?us-ascii?Q?QrjPkLXe4VIuUM9ZPpSRVlOu7gBhrXDIEk1S6NKdUV9L5tIs4r09TvARE8EK?=
+ =?us-ascii?Q?ixqtzZktAyQ4tt37hJnv8tFOGnCDjuUtGzAgN9g3HSgFMIPZLO0ca4EVZ6W9?=
+ =?us-ascii?Q?t2C7n679rXhH4fhHZS6I9LMARQzG+83BpzZW7IHpMx65k2XshLIsLsmOCQ3Q?=
+ =?us-ascii?Q?vnF8P525u7Abi/LbN1F+FIF+dBJltS41AKneq0w8Kng1CX39P8Y6pkRmwnGl?=
+ =?us-ascii?Q?XylIawhWSo0ypqM+1yqC9MbSVS6dpCubzc/J30Iyldiz/9Yd/p5sl7w6a6MU?=
+ =?us-ascii?Q?2UU9NfylaA0Qr4sM45JmWeHdF9KAXHgu9vFKO7V7T+2yWfacAf7z+eeVFdlg?=
+ =?us-ascii?Q?6wxHdZH3RTDVP/gldi4OKFl7Gl/s6jDZSc0OKdhtjGuaCfVVfYzhVF5oFV/n?=
+ =?us-ascii?Q?wUTgBo+NtN4lJ74+/wW2FHYX1To6V9toQof3bJPEhalO9YwBjBlu+vJCO8Rj?=
+ =?us-ascii?Q?eIJqE18cGW0t8DSH2fg/T8bgiv0es4OAGFMSxZa3DPhlpdpqwPXV0hM5Lm88?=
+ =?us-ascii?Q?U/JsVUN7MHi+21BWBFKS6PizAtbDRlQp3109H/gou9CPtGlzNLpwKuAL17sp?=
+ =?us-ascii?Q?MJwLniNetrgs/oLNujVJNw++t1ScRW8qnVRVPKU9DVmJf85Ije9TUTDWsM/+?=
+ =?us-ascii?Q?ibwxA5wmWzxsjDkMnhrnrUEr7AgbQPrYwlyJvjVudiG4z9Y1LpBT7bDxQAf/?=
+ =?us-ascii?Q?v5PMxdsDD9JGjKjQ70mjEbZCieUcRHTDtCg1sOfpSAoAZAQC93Q5vzoNftti?=
+ =?us-ascii?Q?pxjoM1l6RaeZcxblljOitjbjCxnavrTG7I+xK3mt3Zdznk3jgDQ5mvrsc+lo?=
+ =?us-ascii?Q?S5RCVHh1e0ANJczjgh6VjvbKzqOD0qbWZ3t0Chz9guF084D/?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DBBPR04MB7500.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f207c55a-a770-4732-1007-08deb6111a5e
+X-MS-Exchange-CrossTenant-originalarrivaltime: 20 May 2026 01:42:50.6174
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Ly2qyJsw2Ln2c49bopa0Tt1k0nDfguM9dArirys8lsjU0TAwbCPlZSGgng26JeG0aOqVzpc3NqxYkh0BAJ00yQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB12050
 
-On Fri, 15 May 2026 21:52:29 +0000 David Thompson wrote:
-> This patch updates the lan743x driver to prevent the use of netdev-based
-> logging APIs (such as netdev_dbg) before the network device has been
-> successfully registered. Using netdev-based logging prior to registration
-> results in log messages referencing "(unnamed net_device) (uninitialized)",
-> which can be confusing and less informative.
-> 
-> The driver must use netif_msg_x APIs and device-based logging (e.g. dev_dbg)
-> until netdev registration is complete. This ensures log entries are
-> associated with the correct device context and improves log clarity. After
-> registration, netdev-based logging APIs can be used safely.
-> 
-> Fixes: 23f0703c125b ("lan743x: Add main source files for new lan743x driver")
+> > @@ -151,14 +149,17 @@ void enetc_msg_psi_free(struct enetc_pf *pf)
+> >         struct enetc_si *si =3D pf->si;
+> >         int i;
+> >
+> > +       /* disable MR interrupts */
+> > +       enetc_msg_disable_mr_int(&si->hw);
+> > +
+> > +       /* de-register message passing interrupt handler */
+> > +       free_irq(pci_irq_vector(si->pdev, ENETC_SI_INT_IDX), si);
+> > +
+> >         cancel_work_sync(&pf->msg_task);
+> >
+> > -       /* disable MR interrupts */
+> > +       /* MR interrupts may be re-enabled by workqueue */
+> >         enetc_msg_disable_mr_int(&si->hw);
+> >
+> >         for (i =3D 0; i < pf->num_vfs; i++)
+> >                 enetc_msg_free_mbx(si, i);
+> > -
+> > -       /* de-register message passing interrupt handler */
+> > -       free_irq(pci_irq_vector(si->pdev, ENETC_SI_INT_IDX), si);
+>=20
+> Code looks good to me but a nit: would be good if the change here in
+> enetc_msg_psi_free() is also called out in the commit message.
 
-Not a fix
+Thanks, I will update the commit message.
 
-> Signed-off-by: David Thompson <davthompson@nvidia.com>
-> ---
->  drivers/net/ethernet/microchip/lan743x_main.c | 72 ++++++++++++-------
->  1 file changed, 45 insertions(+), 27 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/microchip/lan743x_main.c b/drivers/net/ethernet/microchip/lan743x_main.c
-> index f3332417162e..53492573f08d 100644
-> --- a/drivers/net/ethernet/microchip/lan743x_main.c
-> +++ b/drivers/net/ethernet/microchip/lan743x_main.c
-> @@ -108,9 +108,10 @@ static int lan743x_pci_init(struct lan743x_adapter *adapter,
->  	if (ret)
->  		goto return_error;
->  
-> -	netif_info(adapter, probe, adapter->netdev,
-> -		   "PCI: Vendor ID = 0x%04X, Device ID = 0x%04X\n",
-> -		   pdev->vendor, pdev->device);
-> +	if (netif_msg_probe(adapter))
-
-please drop these checks. They are always true.
-And the message categorization is not encouraged.
--- 
+--
 pw-bot: cr
