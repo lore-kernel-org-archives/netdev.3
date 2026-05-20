@@ -1,37 +1,37 @@
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D48330F932;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F379212554;
 	Wed, 20 May 2026 03:16:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779247002; cv=none; b=b4/bH7x7QVb20s3PVA/KsBoI3CdLJB/5YCD4n4Ru+XSqCHW64qxAqiTnh/e8EoIVGen7OykgMgQRRDQDFLq6qD7kb33832VVfa3ZWFjNShRxT8Uk0+fOvIH5B9jrzuOW/tNYqOz+SRI0Ytu6n+WoI1Rw+FwvFvfJallLOkPqvUc=
+	t=1779247002; cv=none; b=S+8ChG8w+8j11kji7BejkG6SMwStro1iwoF6vvJrSEG//HgeRWFh7ObcRfy8uFgahguN760E/ljzhjUYbk55aI0NGK0RDrhVHi5NAmCGrd3Aeo3VtLXQDOtnqJRtql79pUDDeYV4cuTIgUGbwLiDk5nx8IpzOWMxQuUL3TyRqMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1779247002; c=relaxed/simple;
-	bh=5SDwLN648XJ4dExxKCeX8DuE5J2gFkm8HKcyF+y5KFk=;
+	bh=LhYpPjdydcWALN90KvKyk5Yv85a5spC/ozBgAl2VIgc=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gwVNV1v2rIWth4Xk5S/oriMXiL3SQEKUJ4hZPjC5jnd5HosfdHq2qY8oDbcYkdC0/cQFqZIqKHpjrO2/tP0PdPXr7fHyq4X6TtVTt+uEM5dwZxxDs9MH16CblVSbxrj/yEIGwcbP8WIuTdcZ8JivER9LcylmR4ZYRmV++W9Xqec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn; spf=pass smtp.mailfrom=realsil.com.cn; dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b=vNLhkavw; arc=none smtp.client-ip=211.75.126.72
+	 MIME-Version:Content-Type; b=eiPCRms3W8moqkxRMao9Ex7KP0rLL4Jr+6WKtolZT0yCbYLSwP+nH+xAfpkas3Ha5TzVGAFEjNbQjIFC/MTq/f6428fRt8n2+/JvLD89us7Ww1cQtTo9th4zzx4CuiRLvpc22Ge1ABBJUKtXQcp37ByCrVNh4QYMpkf/zl2EL9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn; spf=pass smtp.mailfrom=realsil.com.cn; dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b=PqlqXVDZ; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realsil.com.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b="vNLhkavw"
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 64K3G7mkC3896058, This message is accepted by code: ctloc85258
+	dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b="PqlqXVDZ"
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 64K3G6mkC3896058, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realsil.com.cn;
-	s=dkim; t=1779246967;
-	bh=1d1BsS3ulpzi67R4HGumdP/MZs9tfVeXxg/MQRCCzKM=;
+	s=dkim; t=1779246966;
+	bh=d9hML5fusAr16T5RHg6rOrQbG2PFbgWVHjmY/NRpQtg=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=vNLhkavw6vtxwWWT19fOdA7Qiw4xuztZAJpT/iRM0U5Yyugghz6+GPsCIvK/vIaHc
-	 BOyQDhm1kqZ09MAYNfoj9JAKs09aoXBK8ZNOk7jvAv8+JPoslYGZCmrZXAPypJxaws
-	 f6hX+8ZrUDAWPD+n4bpsXslnEotseFLB2UlMp8x/bHCNOSDZU+DUIwL9uJLeUXD1oo
-	 NLo2K7/iBrJbi7LqITtZzUsQ9jJ/K735GuuRrDUleQxvOUzhUcgANjDfY400pVDh6/
-	 jAlY5CEe8q6APaBEScIEjdrfcQj6z3YcRxz/uMeVhBW5BXuPhEJgC7ZxbFPBSI819V
-	 MOZdgHfUaunEw==
+	b=PqlqXVDZIrlCfiI+Q6zCwNweXP0JyIx4y0JEzmW792lcVBOlcBDwO2X7azbdgNcLA
+	 sYobIIp+fcOjhGJl58/6/V/bT5I5wcJBgJqDsYRbdBMRNjxDlc+u4Dfc0SN8zslQaH
+	 MiLT6S/2ySPx6+mJ4bOItAfV+S98x0159q1qO5w/UBRFkgPrx0UQaMzFmMO9uRcsJt
+	 y+BgbgWtbHwF7ocnc2H/EP69qcPAIIID4nYzNe+ke+ZVA+7G/iqChf9zXDZDLqc/qB
+	 ezpILTTUTYUlB5uq9q7GYxEVuMVd3uLcMYCI5STt2rwi//EKWLU3/jbdX4AHva1xs8
+	 NrU0Lj3McFk0g==
 Received: from RS-EX-MBS1.realsil.com.cn ([172.29.17.101])
-	by rtits2.realtek.com.tw (8.15.2/3.28/5.94) with ESMTPS id 64K3G7mkC3896058
+	by rtits2.realtek.com.tw (8.15.2/3.28/5.94) with ESMTPS id 64K3G6mkC3896058
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Wed, 20 May 2026 11:16:07 +0800
+	Wed, 20 May 2026 11:16:06 +0800
 Received: from RS-EX-MBS2.realsil.com.cn (172.29.17.102) by
  RS-EX-MBS1.realsil.com.cn (172.29.17.101) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
@@ -46,9 +46,9 @@ To: <hkallweit1@gmail.com>, <nic_swsd@realtek.com>, <andrew+netdev@lunn.ch>,
 CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
         Javen Xu
 	<javen_xu@realsil.com.cn>
-Subject: [Patch net-next v5 3/7] r8169: add support for new interrupt mapping
-Date: Wed, 20 May 2026 11:15:59 +0800
-Message-ID: <20260520031603.700-4-javen_xu@realsil.com.cn>
+Subject: [Patch net-next v5 1/7] r8169: add support for multi irqs
+Date: Wed, 20 May 2026 11:15:57 +0800
+Message-ID: <20260520031603.700-2-javen_xu@realsil.com.cn>
 X-Mailer: git-send-email 2.50.1.windows.1
 In-Reply-To: <20260520031603.700-1-javen_xu@realsil.com.cn>
 References: <20260520031603.700-1-javen_xu@realsil.com.cn>
@@ -63,280 +63,341 @@ Content-Type: text/plain
 
 From: Javen Xu <javen_xu@realsil.com.cn>
 
-To support RSS, the number of hardware interrupt bits should match the
-interrupt of software. So we add support for new interrupt mapping here.
-ISR_VER_MAP_REG is the hardware register to indicate interrupt status.
-IMR_SET_VEC_MAP_REG is interrupt mask which is set to enable irq.
-
+RSS uses multi rx queues to receive packets, and each rx queue needs one
+irq and napi. So this patch adds support for multi irqs and napi here.
 Signed-off-by: Javen Xu <javen_xu@realsil.com.cn>
 ---
 Changes in v2:
- - no changes
+ - remove some unused definitions, such as index, name in rtl8169_irq
+ - remove array imr and isr
+ - remove min_irq_nvecs and max_irq_nvecs, replaced with help function
+   get_min_irq_nvecs and get_max_irq_nvecs
+ - alloc irq by flags, instead of PCI_IRQ_ALL_TYPES
 
 Changes in v3:
- - init index in napi_struct and get message_id from index
- - move rtl8169_disable_hw_interrupt_msix directly before the call to
-   napi_schedule()
- - change the condition in rtl8169_request_irq when RTL_VEC_MAP_ENABLE
-   enabled, use rtl8169_interrupt_msix
+ - add enum rtl_isr_version to replace macro definition
+ - remove struct rtl8169_napi, use napi_struct array instead and alloc
+   memory for this array dynamically
+ - remove struct rtl8169_irq
 
 Changes in v4:
- - remove flag tp->feature, replace tp->features & RTL_VEC_MAP_ENABLE
-   with tp->irq_nvecs > 1, they are equivalent.
- - follow reverse xmas tree, in rtl8169_interrupt_msix(),
-   rtl8169_poll_msix_rx(), rtl8169_poll_msix_tx(),
-   rtl8169_poll_msix_other()
- - use napi->index in rtl8169_poll_msix_other()
- - add a comment to describe RTL8127 MSI-X vector layout
- - simplify r8169_init_napi()
+ - change retval to ret in rtl8169_set_real_num_queue()
+ - reverse xmas tree in rtl8169_poll() and rtl8169_interrupt()
+ - remove tp->hw_supp_isr_ver
 
 Changes in v5:
- - replace magic number in rtl8169_poll_msix_tx()
+ - rtl8169_request_irq(), when failed, only free irqs which are
+   allocated
+ - remove rss_support, simplied napi init, call r8169_init_napi()
+   directly
+ - remove rtl_isr_version, INTR_VEC_MAP_MASK, INTR_VEC_MAP_STATUS,
+   R8169_MAX_MSIX_VEC, rss_enable, recheck_desc_ownbit
+ - rtl_software_parameter_initialize() this function will be expanded in
+   next patch, so i want to remain it here.
 ---
- drivers/net/ethernet/realtek/r8169_main.c | 163 ++++++++++++++++++++--
- 1 file changed, 149 insertions(+), 14 deletions(-)
+ drivers/net/ethernet/realtek/r8169_main.c | 126 ++++++++++++++++++----
+ 1 file changed, 106 insertions(+), 20 deletions(-)
 
 diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
-index f911d9e3b45a..cbc6285961c2 100644
+index ec4fc21fa21f..fd79c492005f 100644
 --- a/drivers/net/ethernet/realtek/r8169_main.c
 +++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -79,6 +79,7 @@
- #define R8169_TX_START_THRS	(2 * R8169_TX_STOP_THRS)
- #define R8169_MAX_RX_QUEUES	8
- #define R8127_MAX_RX_QUEUES	8
-+#define R8127_MAX_TX_QUEUES	8
- #define R8169_DEFAULT_RX_QUEUES	1
- #define R8169_MAX_TX_QUEUES	1
+@@ -733,7 +733,6 @@ struct rtl8169_private {
+ 	struct pci_dev *pci_dev;
+ 	struct net_device *dev;
+ 	struct phy_device *phydev;
+-	struct napi_struct napi;
+ 	enum mac_version mac_version;
+ 	enum rtl_dash_type dash_type;
+ 	u32 cur_rx; /* Index into the Rx descriptor buffer of next Rx pkt. */
+@@ -745,9 +744,12 @@ struct rtl8169_private {
+ 	dma_addr_t RxPhyAddr;
+ 	struct page *Rx_databuff[NUM_RX_DESC];	/* Rx data buffers */
+ 	struct ring_info tx_skb[NUM_TX_DESC];	/* Tx data buffers */
++	struct napi_struct *rtl8169_napi;
++	unsigned int num_rx_rings;
+ 	u16 cp_cmd;
+ 	u16 tx_lpi_timer;
+ 	u32 irq_mask;
++	unsigned int irq_nvecs;
+ 	int irq;
+ 	struct clk *clk;
  
-@@ -449,8 +450,12 @@ enum rtl8125_registers {
- 	RSS_CTRL_8125		= 0x4500,
- 	Q_NUM_CTRL_8125		= 0x4800,
- 	EEE_TXIDLE_TIMER_8125	= 0x6048,
-+	IMR_CLEAR_VEC_MAP_REG	= 0x0d00,
-+	ISR_VEC_MAP_REG		= 0x0d04,
-+	IMR_SET_VEC_MAP_REG	= 0x0d0c,
- };
- 
-+#define MSIX_ID_VEC_MAP_LINKCHG	29
- #define LEDSEL_MASK_8125	0x23f
- 
- #define RX_VLAN_INNER_8125	BIT(22)
-@@ -581,6 +586,9 @@ enum rtl_register_content {
- 
- 	/* magic enable v2 */
- 	MagicPacket_v2	= (1 << 16),	/* Wake up when receives a Magic Packet */
-+#define	ISRIMR_LINKCHG	BIT(29)
-+#define	ISRIMR_TOK_Q0	BIT(8)
-+#define	ISRIMR_ROK_Q0	BIT(0)
- };
- 
- enum rtl_desc_bit {
-@@ -1665,26 +1673,36 @@ static u32 rtl_get_events(struct rtl8169_private *tp)
- 
- static void rtl_ack_events(struct rtl8169_private *tp, u32 bits)
- {
--	if (rtl_is_8125(tp))
-+	if (rtl_is_8125(tp)) {
- 		RTL_W32(tp, IntrStatus_8125, bits);
--	else
-+		if (tp->irq_nvecs > 1)
-+			RTL_W32(tp, ISR_VEC_MAP_REG, 0xffffffff);
-+	} else {
- 		RTL_W16(tp, IntrStatus, bits);
-+	}
+@@ -2680,6 +2682,11 @@ static void rtl_hw_reset(struct rtl8169_private *tp)
+ 	rtl_loop_wait_low(tp, &rtl_chipcmd_cond, 100, 100);
  }
  
- static void rtl_irq_disable(struct rtl8169_private *tp)
- {
--	if (rtl_is_8125(tp))
-+	if (rtl_is_8125(tp)) {
- 		RTL_W32(tp, IntrMask_8125, 0);
--	else
-+		if (tp->irq_nvecs > 1)
-+			RTL_W32(tp, IMR_CLEAR_VEC_MAP_REG, 0xffffffff);
-+	} else {
- 		RTL_W16(tp, IntrMask, 0);
-+	}
- }
- 
- static void rtl_irq_enable(struct rtl8169_private *tp)
- {
--	if (rtl_is_8125(tp))
--		RTL_W32(tp, IntrMask_8125, tp->irq_mask);
--	else
-+	if (rtl_is_8125(tp)) {
-+		if (tp->irq_nvecs > 1)
-+			RTL_W32(tp, IMR_SET_VEC_MAP_REG, tp->irq_mask);
-+		else
-+			RTL_W32(tp, IntrMask_8125, tp->irq_mask);
-+	} else {
- 		RTL_W16(tp, IntrMask, tp->irq_mask);
-+	}
- }
- 
- static void rtl8169_irq_mask_and_ack(struct rtl8169_private *tp)
-@@ -5061,6 +5079,44 @@ static void rtl8169_free_irq(struct rtl8169_private *tp)
- 	}
- }
- 
-+static void rtl8169_disable_hw_interrupt_msix(struct rtl8169_private *tp, int message_id)
++static void rtl_software_parameter_initialize(struct rtl8169_private *tp)
 +{
-+	RTL_W32(tp, IMR_CLEAR_VEC_MAP_REG, BIT(message_id));
++	tp->num_rx_rings = 1;
 +}
 +
-+static void rtl8169_clear_hw_isr(struct rtl8169_private *tp, int message_id)
+ static void rtl_request_firmware(struct rtl8169_private *tp)
+ {
+ 	struct rtl_fw *rtl_fw;
+@@ -4266,9 +4273,21 @@ static void rtl8169_tx_clear(struct rtl8169_private *tp)
+ 	netdev_reset_queue(tp->dev);
+ }
+ 
++static void rtl8169_napi_disable(struct rtl8169_private *tp)
 +{
-+	RTL_W32(tp, ISR_VEC_MAP_REG, BIT(message_id));
++	for (int i = 0; i < tp->irq_nvecs; i++)
++		napi_disable(&tp->rtl8169_napi[i]);
 +}
 +
-+static void rtl8169_enable_hw_interrupt_msix(struct rtl8169_private *tp, int message_id)
++static void rtl8169_napi_enable(struct rtl8169_private *tp)
 +{
-+	RTL_W32(tp, IMR_SET_VEC_MAP_REG, BIT(message_id));
++	for (int i = 0; i < tp->irq_nvecs; i++)
++		napi_enable(&tp->rtl8169_napi[i]);
 +}
 +
-+static irqreturn_t rtl8169_interrupt_msix(int irq, void *dev_instance)
-+{
+ static void rtl8169_cleanup(struct rtl8169_private *tp)
+ {
+-	napi_disable(&tp->napi);
++	rtl8169_napi_disable(tp);
+ 
+ 	/* Give a racing hard_start_xmit a few cycles to complete. */
+ 	synchronize_net();
+@@ -4314,7 +4333,7 @@ static void rtl_reset_work(struct rtl8169_private *tp)
+ 	for (i = 0; i < NUM_RX_DESC; i++)
+ 		rtl8169_mark_to_asic(tp->RxDescArray + i);
+ 
+-	napi_enable(&tp->napi);
++	rtl8169_napi_enable(tp);
+ 	rtl_hw_start(tp);
+ }
+ 
+@@ -4820,7 +4839,7 @@ static int rtl_rx(struct net_device *dev, struct rtl8169_private *tp, int budget
+ 			goto release_descriptor;
+ 		}
+ 
+-		skb = napi_alloc_skb(&tp->napi, pkt_size);
++		skb = napi_alloc_skb(&tp->rtl8169_napi[0], pkt_size);
+ 		if (unlikely(!skb)) {
+ 			dev->stats.rx_dropped++;
+ 			goto release_descriptor;
+@@ -4844,7 +4863,7 @@ static int rtl_rx(struct net_device *dev, struct rtl8169_private *tp, int budget
+ 		if (skb->pkt_type == PACKET_MULTICAST)
+ 			dev->stats.multicast++;
+ 
+-		napi_gro_receive(&tp->napi, skb);
++		napi_gro_receive(&tp->rtl8169_napi[0], skb);
+ 
+ 		dev_sw_netstats_rx_add(dev, pkt_size);
+ release_descriptor:
+@@ -4856,8 +4875,12 @@ static int rtl_rx(struct net_device *dev, struct rtl8169_private *tp, int budget
+ 
+ static irqreturn_t rtl8169_interrupt(int irq, void *dev_instance)
+ {
+-	struct rtl8169_private *tp = dev_instance;
+-	u32 status = rtl_get_events(tp);
 +	struct napi_struct *napi = dev_instance;
-+	struct net_device *dev = napi->dev;
-+	int message_id = napi->index;
 +	struct rtl8169_private *tp;
++	u32 status;
 +
-+	tp = netdev_priv(dev);
-+
-+	rtl8169_clear_hw_isr(tp, message_id);
-+
-+	if (message_id == MSIX_ID_VEC_MAP_LINKCHG) {
-+		phy_mac_interrupt(tp->phydev);
-+		return IRQ_HANDLED;
-+	}
-+
-+	tp->recheck_desc_ownbit = true;
-+	rtl8169_disable_hw_interrupt_msix(tp, message_id);
++	tp = netdev_priv(napi->dev);
++	status = rtl_get_events(tp);
+ 
+ 	if ((status & 0xffff) == 0xffff || !(status & tp->irq_mask))
+ 		return IRQ_NONE;
+@@ -4873,13 +4896,43 @@ static irqreturn_t rtl8169_interrupt(int irq, void *dev_instance)
+ 		phy_mac_interrupt(tp->phydev);
+ 
+ 	rtl_irq_disable(tp);
+-	napi_schedule(&tp->napi);
 +	napi_schedule(napi);
+ out:
+ 	rtl_ack_events(tp, status);
+ 
+ 	return IRQ_HANDLED;
+ }
+ 
++static void rtl8169_free_irq(struct rtl8169_private *tp)
++{
++	for (int i = 0; i < tp->irq_nvecs; i++) {
++		struct napi_struct *napi = &tp->rtl8169_napi[i];
 +
-+	return IRQ_HANDLED;
++		pci_free_irq(tp->pci_dev, i, napi);
++	}
 +}
 +
- static int rtl8169_request_irq(struct rtl8169_private *tp)
- {
- 	struct net_device *dev = tp->dev;
-@@ -5069,8 +5125,12 @@ static int rtl8169_request_irq(struct rtl8169_private *tp)
- 
- 	for (i = 0; i < tp->irq_nvecs; i++) {
- 		napi = &tp->rtl8169_napi[i];
--		rc = pci_request_irq(tp->pci_dev, i, rtl8169_interrupt,
--				     NULL, napi, "%s-%d", dev->name, i);
-+		if (tp->irq_nvecs > 1)
-+			rc = pci_request_irq(tp->pci_dev, i, rtl8169_interrupt_msix,
-+					     NULL, napi, "%s-%d", dev->name, i);
-+		else
-+			rc = pci_request_irq(tp->pci_dev, i, rtl8169_interrupt,
-+					     NULL, napi, "%s-%d", dev->name, i);
- 		if (rc)
- 			goto err_unwind;
- 	}
-@@ -5516,10 +5576,16 @@ static const struct net_device_ops rtl_netdev_ops = {
- 
- static void rtl_set_irq_mask(struct rtl8169_private *tp)
- {
--	tp->irq_mask = RxOK | RxErr | TxOK | TxErr | LinkChg;
-+	if (tp->irq_nvecs > 1) {
-+		tp->irq_mask = ISRIMR_LINKCHG | ISRIMR_TOK_Q0;
-+		for (int i = 0; i < tp->num_rx_rings; i++)
-+			tp->irq_mask |= ISRIMR_ROK_Q0 << i;
-+	} else {
-+		tp->irq_mask = RxOK | RxErr | TxOK | TxErr | LinkChg;
- 
--	if (tp->mac_version <= RTL_GIGA_MAC_VER_06)
--		tp->irq_mask |= SYSErr | RxFIFOOver;
-+		if (tp->mac_version <= RTL_GIGA_MAC_VER_06)
-+			tp->irq_mask |= SYSErr | RxFIFOOver;
++static int rtl8169_request_irq(struct rtl8169_private *tp)
++{
++	struct net_device *dev = tp->dev;
++	struct napi_struct *napi;
++	int i, rc;
++
++	for (i = 0; i < tp->irq_nvecs; i++) {
++		napi = &tp->rtl8169_napi[i];
++		rc = pci_request_irq(tp->pci_dev, i, rtl8169_interrupt,
++				     NULL, napi, "%s-%d", dev->name, i);
++		if (rc)
++			goto err_unwind;
 +	}
- }
++	return 0;
++
++err_unwind:
++	while (--i >= 0)
++		pci_free_irq(tp->pci_dev, i, &tp->rtl8169_napi[i]);
++	return rc;
++}
++
+ static void rtl_task(struct work_struct *work)
+ {
+ 	struct rtl8169_private *tp =
+@@ -4914,9 +4967,9 @@ static void rtl_task(struct work_struct *work)
+ 
+ static int rtl8169_poll(struct napi_struct *napi, int budget)
+ {
+-	struct rtl8169_private *tp = container_of(napi, struct rtl8169_private, napi);
+-	struct net_device *dev = tp->dev;
+-	int work_done;
++	struct rtl8169_private *tp = netdev_priv(napi->dev);
++	struct net_device *dev = napi->dev;
++	int work_done = 0;
+ 
+ 	rtl_tx(dev, tp, budget);
+ 
+@@ -5035,7 +5088,7 @@ static void rtl8169_up(struct rtl8169_private *tp)
+ 	phy_init_hw(tp->phydev);
+ 	phy_resume(tp->phydev);
+ 	rtl8169_init_phy(tp);
+-	napi_enable(&tp->napi);
++	rtl8169_napi_enable(tp);
+ 	enable_work(&tp->wk.work);
+ 	rtl_reset_work(tp);
+ 
+@@ -5053,7 +5106,7 @@ static int rtl8169_close(struct net_device *dev)
+ 	rtl8169_down(tp);
+ 	rtl8169_rx_clear(tp);
+ 
+-	free_irq(tp->irq, tp);
++	rtl8169_free_irq(tp);
+ 
+ 	phy_disconnect(tp->phydev);
+ 
+@@ -5082,7 +5135,6 @@ static int rtl_open(struct net_device *dev)
+ {
+ 	struct rtl8169_private *tp = netdev_priv(dev);
+ 	struct pci_dev *pdev = tp->pci_dev;
+-	unsigned long irqflags;
+ 	int retval = -ENOMEM;
+ 
+ 	pm_runtime_get_sync(&pdev->dev);
+@@ -5107,8 +5159,7 @@ static int rtl_open(struct net_device *dev)
+ 
+ 	rtl_request_firmware(tp);
+ 
+-	irqflags = pci_dev_msi_enabled(pdev) ? IRQF_NO_THREAD : IRQF_SHARED;
+-	retval = request_irq(tp->irq, rtl8169_interrupt, irqflags, dev->name, tp);
++	retval = rtl8169_request_irq(tp);
+ 	if (retval < 0)
+ 		goto err_release_fw_2;
+ 
+@@ -5125,7 +5176,7 @@ static int rtl_open(struct net_device *dev)
+ 	return retval;
+ 
+ err_free_irq:
+-	free_irq(tp->irq, tp);
++	rtl8169_free_irq(tp);
+ err_release_fw_2:
+ 	rtl_release_firmware(tp);
+ 	rtl8169_rx_clear(tp);
+@@ -5328,7 +5379,9 @@ static void rtl_set_irq_mask(struct rtl8169_private *tp)
  
  static int rtl_alloc_irq(struct rtl8169_private *tp)
-@@ -5815,10 +5881,79 @@ static bool rtl_aspm_is_safe(struct rtl8169_private *tp)
+ {
++	struct pci_dev *pdev = tp->pci_dev;
+ 	unsigned int flags;
++	int nvecs;
+ 
+ 	switch (tp->mac_version) {
+ 	case RTL_GIGA_MAC_VER_02 ... RTL_GIGA_MAC_VER_06:
+@@ -5344,7 +5397,14 @@ static int rtl_alloc_irq(struct rtl8169_private *tp)
+ 		break;
+ 	}
+ 
+-	return pci_alloc_irq_vectors(tp->pci_dev, 1, 1, flags);
++	nvecs = pci_alloc_irq_vectors(pdev, 1, 1, flags);
++
++	if (nvecs < 0)
++		return nvecs;
++
++	tp->irq_nvecs = nvecs;
++
++	return 0;
+ }
+ 
+ static void rtl_read_mac_address(struct rtl8169_private *tp,
+@@ -5539,6 +5599,17 @@ static void rtl_hw_initialize(struct rtl8169_private *tp)
+ 	}
+ }
+ 
++static int rtl8169_set_real_num_queues(struct rtl8169_private *tp)
++{
++	int ret;
++
++	ret = netif_set_real_num_tx_queues(tp->dev, 1);
++	if (ret < 0)
++		return ret;
++
++	return netif_set_real_num_rx_queues(tp->dev, tp->num_rx_rings);
++}
++
+ static int rtl_jumbo_max(struct rtl8169_private *tp)
+ {
+ 	/* Non-GBit versions don't support jumbo frames */
+@@ -5599,6 +5670,12 @@ static bool rtl_aspm_is_safe(struct rtl8169_private *tp)
  	return false;
  }
  
-+static int rtl8169_poll_msix_rx(struct napi_struct *napi, int budget)
++static void r8169_init_napi(struct rtl8169_private *tp)
 +{
-+	struct net_device *dev = napi->dev;
-+	const int message_id = napi->index;
-+	struct rtl8169_private *tp;
-+	int work_done = 0;
-+
-+	tp = netdev_priv(dev);
-+
-+	if (message_id < tp->num_rx_rings)
-+		work_done += rtl_rx(dev, tp, &tp->rx_ring[message_id], budget);
-+
-+	if (work_done < budget && napi_complete_done(napi, work_done))
-+		rtl8169_enable_hw_interrupt_msix(tp, message_id);
-+
-+	return work_done;
++	for (int i = 0; i < tp->irq_nvecs; i++)
++		netif_napi_add(tp->dev, &tp->rtl8169_napi[i], rtl8169_poll);
 +}
 +
-+static int rtl8169_poll_msix_tx(struct napi_struct *napi, int budget)
-+{
-+	struct net_device *dev = napi->dev;
-+	const int message_id = napi->index;
-+	unsigned int work_done = 0;
-+	struct rtl8169_private *tp;
-+	int tx_ring_idx;
-+
-+	tp = netdev_priv(dev);
-+	tx_ring_idx = message_id - R8127_MAX_RX_QUEUES;
-+
-+	if (tx_ring_idx >= 0)
-+		rtl_tx(dev, tp, budget);
-+
-+	if (work_done < budget && napi_complete_done(napi, work_done))
-+		rtl8169_enable_hw_interrupt_msix(tp, message_id);
-+
-+	return work_done;
-+}
-+
-+static int rtl8169_poll_msix_other(struct napi_struct *napi, int budget)
-+{
-+	struct net_device *dev = napi->dev;
-+	const int message_id = napi->index;
-+	struct rtl8169_private *tp;
-+
-+	tp = netdev_priv(dev);
-+
-+	napi_complete_done(napi, budget);
-+	rtl8169_enable_hw_interrupt_msix(tp, message_id);
-+
-+	return 1;
-+}
-+
-+/* RTL8127 MSI-X vector layout:
-+ * Vectors 0 .. (RxQs - 1)		: Rx Queues
-+ * Vectors RxQs .. (RxQs + TxQs - 1)	: Tx Queues
-+ * Vector (RxQs + TxQs) and up		: Other events (Link status(29), etc.)
-+ */
- static void r8169_init_napi(struct rtl8169_private *tp)
- {
--	for (int i = 0; i < tp->irq_nvecs; i++)
--		netif_napi_add(tp->dev, &tp->rtl8169_napi[i], rtl8169_poll);
-+	for (int i = 0; i < tp->irq_nvecs; i++) {
-+		int (*poll_fn)(struct napi_struct *, int) = rtl8169_poll;
-+
-+		if (tp->irq_nvecs > 1) {
-+			if (i < R8127_MAX_RX_QUEUES)
-+				poll_fn = rtl8169_poll_msix_rx;
-+			else if (i < R8127_MAX_RX_QUEUES + R8127_MAX_TX_QUEUES)
-+				poll_fn = rtl8169_poll_msix_tx;
-+			else
-+				poll_fn = rtl8169_poll_msix_other;
-+		}
-+		netif_napi_add(tp->dev, &tp->rtl8169_napi[i], poll_fn);
-+		tp->rtl8169_napi[i].index = i;
-+	}
- }
- 
  static int rtl_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
+ {
+ 	const struct rtl_chip_info *chip;
+@@ -5703,11 +5780,16 @@ static int rtl_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 
+ 	rtl_hw_reset(tp);
+ 
++	rtl_software_parameter_initialize(tp);
++
+ 	rc = rtl_alloc_irq(tp);
+ 	if (rc < 0)
+ 		return dev_err_probe(&pdev->dev, rc, "Can't allocate interrupt\n");
+ 
+-	tp->irq = pci_irq_vector(pdev, 0);
++	tp->rtl8169_napi = devm_kcalloc(&pdev->dev, tp->irq_nvecs,
++					sizeof(struct napi_struct), GFP_KERNEL);
++	if (!tp->rtl8169_napi)
++		return -ENOMEM;
+ 
+ 	INIT_WORK(&tp->wk.work, rtl_task);
+ 	disable_work(&tp->wk.work);
+@@ -5716,7 +5798,7 @@ static int rtl_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 
+ 	dev->ethtool_ops = &rtl8169_ethtool_ops;
+ 
+-	netif_napi_add(dev, &tp->napi, rtl8169_poll);
++	r8169_init_napi(tp);
+ 
+ 	dev->hw_features = NETIF_F_IP_CSUM | NETIF_F_RXCSUM |
+ 			   NETIF_F_HW_VLAN_CTAG_TX | NETIF_F_HW_VLAN_CTAG_RX;
+@@ -5778,6 +5860,10 @@ static int rtl_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	if (jumbo_max)
+ 		dev->max_mtu = jumbo_max;
+ 
++	rc = rtl8169_set_real_num_queues(tp);
++	if (rc < 0)
++		return dev_err_probe(&pdev->dev, rc, "set tx/rx num failure\n");
++
+ 	rtl_set_irq_mask(tp);
+ 
+ 	tp->counters = dmam_alloc_coherent (&pdev->dev, sizeof(*tp->counters),
 -- 
 2.43.0
 
