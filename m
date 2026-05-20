@@ -1,75 +1,69 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 569BF2EA173
-	for <netdev@vger.kernel.org>; Wed, 20 May 2026 01:42:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A57B1A316E;
+	Wed, 20 May 2026 01:48:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779241379; cv=none; b=UGC4RP9Lh613lLUUVQ9Ez84D0GiIr8qEliCvpaMnByBfXECuA8e3SScZlvfDLBH910LleOKEOHGUQTV7BtofF4cFQGF9grxSU1UMTd6vtFlmwvERxDvcV/cuAoc8H5113stwdYu1KyH0m93BehLhtCNfVVSRB/L7wkcJ8oa8yso=
+	t=1779241722; cv=none; b=kz8j24xeR/ZqraqZYK57u+4VXyA7/WkRiVwU8SONKp+gQKsjCVJ7nk403ReL3GdJhYX++F39diHjtfnbnlB+iMsAXCqYVlfdeTZ5igwi47WpJW/Yl/APa4DO1Yd1BqbTYXeiW1DziIHNUxIiCdW9Wzc7re8qiCaatXZWQdqBg3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779241379; c=relaxed/simple;
-	bh=PdhaT0ubVsqOYRHBTCDGo5ORHCvLcaGvwG0rXj/+06k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=p0SHym3YFJUcky7hBOsQIhvbLL+WA8ZIOC8Kiop2TBnU+85mXbRzPudy8VrZbI8jg9crs2CFoiIFjHAEYy6V0GPo3f7xC7JO8HLi7CjIWGrHAahrkpWnSivRLHNC5aniaTVEHhJ+v+qsVqXqwiQeo502Rv8bXMg1IlW9nqzHSC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=q1ytBg52; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1779241722; c=relaxed/simple;
+	bh=r0hrPtdaLfzdMBPWJsvL43jbSfzuu59fR7trCtwXXvI=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=lqmtqY9XWQwMEbkZYUEFxYdld3ELkKVQopFj9JSHltXOcWMMnpcfU98UnFfhXwDJ9rbkFGLKpMk3wCGx5mZm33XDQB2w/M6iOYl2PyoEl34fP7jswzp47kcY+aVwebeeajfECuKbI884qr9aPdGHK6K6aslOUg32lPW7gpdfgY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UCchF8eZ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="q1ytBg52"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=R2W75KT3KTm9jbc7uZbaII6tAFYHP5USfGcUSXCiF7Y=; b=q1ytBg52QLdnuOrPBqT1Gu8LCo
-	LFTv/9zooaddGwSJb0NkJ0hdETctBFsLA5bdwO40OtxKDsYoE6giQCgNEJq8xDoJ8+d8F5a8iPviy
-	jPufhYc3BEAZwW0SXUZu0U1RO6W9hJH6lfUoWel/AR9uwzf+mQgPQEo3sJr7wfppf794=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wPVxM-003l5T-Hv; Wed, 20 May 2026 03:42:44 +0200
-Date: Wed, 20 May 2026 03:42:44 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Markus Stockhausen <markus.stockhausen@gmx.de>
-Cc: Daniel Golle <daniel@makrotopia.org>,
-	"hkallweit1@gmail.com" <hkallweit1@gmail.com>,
-	"linux@armlinux.org.uk" <linux@armlinux.org.uk>,
-	"davem@davemloft.net" <davem@davemloft.net>,
-	"edumazet@google.com" <edumazet@google.com>,
-	"kuba@kernel.org" <kuba@kernel.org>,
-	"pabeni@redhat.com" <pabeni@redhat.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"chris.packham@alliedtelesis.co.nz" <chris.packham@alliedtelesis.co.nz>
-Subject: Re: [PATCH 3/9] net: mdio: realtek-rtl9300: Add ports to info
- structure
-Message-ID: <87c64246-5f3e-44d5-8d62-6778c771e83c@lunn.ch>
-References: <20260519165747.1288903-1-markus.stockhausen@gmx.de>
- <20260519165747.1288903-4-markus.stockhausen@gmx.de>
- <agydm8V25M-jy5o6@makrotopia.org>
- <85d5f162-8999-43d4-b879-6e5e686246f7@lunn.ch>
- <01d801dce7c2$a0a08ba0$e1e1a2e0$@gmx.de>
- <fff19211-a41a-481d-a6a6-4429a6901129@lunn.ch>
- <agzoaMnmeVpjiFC0@makrotopia.org>
- <82214c5e-23d5-4615-b2ae-81985fb573f8@lunn.ch>
- <10121615-6F47-2A48-825A-0AC1E0C0F0C1@hxcore.ol>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UCchF8eZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65D721F000E9;
+	Wed, 20 May 2026 01:48:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779241720;
+	bh=wSF9Ql3zIM4WMFOVCaOX+47rMFfdcv+wlHVCJQF/LXc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=UCchF8eZrjmn3XJIM5l8N+/uKtFX3Mhts/29pT7wn8Aaa1R7NtQzwlj4ziFbew0cs
+	 VRESRkoajFsikUjBU9NI13udzSzQpcKRzTPTjAhrSewrygMAC9ckgugxt6GiEZgzVO
+	 kIAY6bt4ZILXDNzoPSMe3CPZrcVzfemWu8JQdv6sa9qNnyvScvdohTBpDe5MLO9qPm
+	 k2Hzr7a52d1p5+sXwATcT+7Gu+PMz2oG7pnOfAfs1H0rWTli7TV+VYoHpYZ1nxh84i
+	 UdlVB0iAXH4VUtrJioHz/5MxLLKrrCBfTpkShtlkhLvhuWH68ImOztD6hzZ9apm+tK
+	 J09XC2+id7Hlg==
+Date: Tue, 19 May 2026 18:48:39 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Jijie Shao <shaojijie@huawei.com>
+Cc: <davem@davemloft.net>, <edumazet@google.com>, <pabeni@redhat.com>,
+ <andrew+netdev@lunn.ch>, <horms@kernel.org>, <shenjian15@huawei.com>,
+ <liuyonglong@huawei.com>, <chenhao418@huawei.com>,
+ <huangdonghua3@h-partners.com>, <yangshuaisong@h-partners.com>,
+ <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net-next 4/6] net: hns3: support IP and tunnel VNI
+ dissectors for tc flow
+Message-ID: <20260519184839.4501f720@kernel.org>
+In-Reply-To: <20260518093526.1109595-5-shaojijie@huawei.com>
+References: <20260518093526.1109595-1-shaojijie@huawei.com>
+	<20260518093526.1109595-5-shaojijie@huawei.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <10121615-6F47-2A48-825A-0AC1E0C0F0C1@hxcore.ol>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-> > Do any of these MDIO busses appear on the 
-> > outside? Somewhere i can connect an 
-> > external PHY, or another switch in cascade?
+On Mon, 18 May 2026 17:35:24 +0800 Jijie Shao wrote:
+> Currently, the driver does not support FLOW_DISSECTOR_KEY_IP and
+> FLOW_DISSECTOR_KEY_ENC_KEYID. But the hardware supports
+> ip_tos (FLOW_DISSECTOR_KEY_IP) and
+> outer_tun_vni (FLOW_DISSECTOR_KEY_ENC_KEYID).
 > 
-> Yes. See 6.14 in datasheet [1]
-> We even can disable/enable each on RTL931x
+> This patch adds support for FLOW_DISSECTOR_KEY_IP and
+> FLOW_DISSECTOR_KEY_ENC_KEYID.
+> 
+> Additionally, since tc flow cannot effectively support
+> l2_user_def, l3_user_def, and l4_user_def,
+> this patch explicitly sets them to not be used.
 
-So how do you handle that this external PHY is not for a port of the
-switch? It is for an i210 hanging off the PCIe bus, or a USB-Ethernet
-dongle? Linux itself would have no problem with that.
-
-	Andrew
+drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c:5771:37: warning: restricted __le32 degrades to integer
+drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c:5773:37: warning: restricted __le32 degrades to integer
+drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c:7369:31: warning: restricted __be32 degrades to integer
+-- 
+pw-bot: cr
