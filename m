@@ -1,35 +1,35 @@
 Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6107E3F2115;
-	Wed, 20 May 2026 15:08:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47343351C3D;
+	Wed, 20 May 2026 15:08:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779289711; cv=none; b=jxNS3nXAwtCYBMcCO2uvByl8ucjY5ruGXDntOW4kbSbfPMjKcHm4FVq8ALiFXXot+HJUrTniT0B+luO9IDFKjJAoJ9OJ2lxNXe1M1wGI52MdBjEJ3CKMxYc/7RjXKQrNRUq5r5sNe6Hbb3KFdj46GEMFPJZiRub4sBJ3ug2Lq0M=
+	t=1779289712; cv=none; b=uNymhj23IGioVp/dHWldCYOIvmtVVqgQDFwfHvD1FdTA0ntlsuQvilgi5d/j+HarFFIdGLS5KteeHdT09W3nc/5vRRww+D/VgvpFKfG5irNzme73iSgdReZuZpHqK3Hsb4NrJFYXOhyD27q9ydaqL6B8EQAflhvRm0kuWhMVbyc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779289711; c=relaxed/simple;
-	bh=iwd3bci6J9zZ/APhwbGkT4+SLwwRy7nxJaMUKZ6Llhs=;
+	s=arc-20240116; t=1779289712; c=relaxed/simple;
+	bh=FN49JQ/90Rm3OBnfY5y2M53FCIUUiZNT9CeGOKOAhkU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LxfuVr++E2Vv97pbzamhZ0aY2qQkoer1HGdDg4NxcjHXVS/1TRte7yQxdPMgA/ocqlLA5dykfcQKot3bpPQbhjptR63OQJc3zVXopMJzCEatOhW+RPF5TDe0tvzxlC08kgg8gLeE9sf+t9eEswWeEyhY7xntq5AyimaN+rtezDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=SuR9font; arc=none smtp.client-ip=178.251.229.89
+	 In-Reply-To:Content-Type; b=KEi2YuGiq4MGmtagrhr5aUByeg5fMHy7fnF8c5VOIkR11fKXy5Sg4vOAEMqpQLMpfMPOWdZeXedUyTHj09fzP1zrpZfEXh8ZVxrzApbz1KsfUTVvo2I5pnfIN/2p+XpWCyjOc5IhdCF4SMcXpjKkGgVrXzXVrMr0GwD6p2OXjbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=GInqunYF; arc=none smtp.client-ip=178.251.229.89
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="SuR9font"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 96C481159AD;
-	Wed, 20 May 2026 17:08:21 +0200 (CEST)
+	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="GInqunYF"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 31D04115786;
+	Wed, 20 May 2026 17:08:23 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
-	s=dkim; t=1779289702;
+	s=dkim; t=1779289704;
 	h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=KMPZHz8s3zuc5m+dAfGa9Et6A0mOFmoCxo6Io4kBoF8=;
-	b=SuR9font6MHtd+7tPWA71YbkN/j6M95XUhmz87Rbli53iYYC9pksQx5LvYiyTqL1erQoVE
-	ZQ2NULqwpLJ1RrL2DATKmF8kyy9NptEJ24ZBpKX26CaZPI90otqcqMBqjcUhn8FmfRzVs7
-	Ezb8GkO4Y1y46Axbu+BG4gMltRxsDxLs5VUp9l6a68kyuc/D/gn9MOze6Sqfox2XFD1kZQ
-	5HW5N80AIkPX8DwaVI66mL9E5wECPz2xDdiqA94Lckkd2KdY67gRwDEy1u3zFcH2uN5b/h
-	xmHvTvK+N0Wh4+Is9nhGyOGGFUN5cB3MlUsS6SQCihgz3bDBtkj/nraX4oxBZA==
-Message-ID: <f8c53143-4aa2-41ca-b57c-58e04f3402d8@nabladev.com>
-Date: Wed, 20 May 2026 13:53:31 +0200
+	bh=tK9xzBMZUQfFxGGr0FVRb83qyvbMCEUNrkUqA8QZSQI=;
+	b=GInqunYFc3VqqY7ZMp7ojj7PnQlKclEZBTmy8qH/BcsLGbTtf2Ss0tz1f3J9775G3T0Ffi
+	kDfAGE+pc5oWtVHggao60XYSpcM+y5fPAEI2/qo7OxwgeyeByWAI1493R0lDawTPM9aIY+
+	JlmHVhfvEWXzl7FUwY/MuB25cOQCrBG+1Hr5GQSCBIeCVBH8CttYw7oWzAvJzmqlWTzx24
+	wut4kl3JynKlJuMQf4UrXBM+16fxwXYUFWVl4x9OYv78sihETmaFgZcpgB+9zs/IPVcQXR
+	7Lz7v3k28xEBV+GRaFTT1UaGxfUyX4ZkNgE856/2ULzqCQaKwJvim4Q1qW+1Rg==
+Message-ID: <26199882-dfcd-4ed4-b657-d640f4ea7cc3@nabladev.com>
+Date: Wed, 20 May 2026 14:00:55 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,7 +37,7 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 2/3] net: ethtool: add KSZ87xx low-loss cable PHY
+Subject: Re: [PATCH v6 3/3] net: phy: micrel: expose KSZ87xx low-loss cable
  tunables
 To: Fidelio Lawson <lawson.fidelio@gmail.com>,
  Woojung Huh <woojung.huh@microchip.com>, UNGLinuxDriver@microchip.com,
@@ -51,32 +51,29 @@ To: Fidelio Lawson <lawson.fidelio@gmail.com>,
 Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
  Fidelio Lawson <fidelio.lawson@exotec.com>
 References: <20260520-ksz87xx_errata_low_loss_connections-v6-0-43f33d4aaf0f@exotec.com>
- <20260520-ksz87xx_errata_low_loss_connections-v6-2-43f33d4aaf0f@exotec.com>
+ <20260520-ksz87xx_errata_low_loss_connections-v6-3-43f33d4aaf0f@exotec.com>
 Content-Language: en-US
 From: Marek Vasut <marex@nabladev.com>
-In-Reply-To: <20260520-ksz87xx_errata_low_loss_connections-v6-2-43f33d4aaf0f@exotec.com>
+In-Reply-To: <20260520-ksz87xx_errata_low_loss_connections-v6-3-43f33d4aaf0f@exotec.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Last-TLS-Session-Version: TLSv1.3
 
 On 5/20/26 10:48 AM, Fidelio Lawson wrote:
-> Introduce vendor-specific PHY tunable identifiers to control the
-> KSZ87xx low-loss cable erratum handling through the ethtool PHY
-> tunable interface.
+> Add support for the KSZ87xx low-loss cable PHY tunables in the Micrel
+> PHY driver by implementing get_tunable and set_tunable callbacks.
 > 
-> The following tunables are added:
+> These callbacks expose vendor-specific PHY tunables used to control the
+> KSZ87xx embedded PHY receiver behavior when operating with short or
+> low-loss Ethernet cables. The tunables provide:
 > 
-> - a boolean "short-cable" tunable, applying a documented and
->    conservative preset intended for short or low-loss Ethernet cables;
+> - a boolean short-cable preset applying known good settings;
+> - an integer LPF bandwidth control;
+> - an integer DSP EQ initial value control.
 > 
-> - an integer LPF bandwidth tunable, allowing advanced adjustment of the
->    receiver low-pass filter bandwidth;
-> 
-> - an integer DSP EQ initial value tunable, allowing advanced tuning of
->    the PHY equalizer initialization.
-> 
-> The actual behavior is implemented by the corresponding PHY and switch
-> drivers.
+> The Micrel PHY driver forwards these tunables via standard phy_read() /
+> phy_write() operations, which are virtualized by the KSZ8 DSA driver and
+> translated into the appropriate indirect switch register accesses.
 > 
 > Signed-off-by: Fidelio Lawson <fidelio.lawson@exotec.com>
 Reviewed-by: Marek Vasut <marex@nabladev.com>
