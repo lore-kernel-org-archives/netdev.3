@@ -1,101 +1,82 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11BF9165F1A;
-	Wed, 20 May 2026 01:35:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A89CB299937;
+	Wed, 20 May 2026 01:39:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779240907; cv=none; b=tcTCS7GnCz+TxuCDr5hkmR0su6Kj9a0WeAdGOHTXw4hOu5G60My7nRtWxzsiCTR6iXhioatjMVV/N/GqUU/PNdl+LOOwVK0dbN4xxSP46SA0fGo9Fe7NMj0orUSqcsxsUoFrR7kcvuBUCzHMjWzfKOaXgJrsplURsjYHwwq5x7U=
+	t=1779241196; cv=none; b=WHG5IQnd7CfwyCW98wGptgwHUUnKX2cyADowd8rU+tpRWGv5xqM8PX6gi8hYBA8ZQkPqykCNuD/eUO3xuG7/R0dZBZaeF/fcfr3NtGqbUmpaYshyJY6o/zXH5bP0Rg5OAWP+vMN1LS+TlMmV9lwBVRYSWGX6EV7X5pspZe0pFxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779240907; c=relaxed/simple;
-	bh=VlF106n3KI77nNqIHl5zCL5S+iUjsagCmF4QnDDQbUs=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=sGPTnBveeGuIZePeey5iktNYvAbU5/OliwAUEmlvfj2Tn1Jq2c4zIBLvyoWDFM5VBfD+dFSkzC96BigATbtLOmrPRWkjpciNzChu4gw6An3NQHhpWGfwmFSmxaIF9fcRGSoc4bTEdzqN1DzwfsErolDGq+Pd4PWdgorRb4ES02o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j+cT/oAG; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779241196; c=relaxed/simple;
+	bh=jaERvfP9vlS9HhCuR6b0QO4ihikNt88x6o4aaucV4TM=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=YkaSQ73gz76gXwa9h5xDV65sOxm9ZdqXqlj13uK/33MdmNaOFHLvW+cQIHMq9L0hxDjuEOqy4EPI2VE7zmG/qgXcyPY229aHgAfqgeem9mJ/mJ1WYsz66CW+w8g4Rc3YUUVHPXGHIoxY9yevYRIUjnu2zzvST8eLjaDSJEf1Vjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O8Ypcgbo; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j+cT/oAG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 918A41F000E9;
-	Wed, 20 May 2026 01:35:01 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O8Ypcgbo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A7D31F000E9;
+	Wed, 20 May 2026 01:39:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779240905;
-	bh=B0F19t3trMZWR71OsB5KaKjV93HVmCtzo2gfr6+e4uI=;
-	h=From:Date:Subject:To:Cc;
-	b=j+cT/oAGm85+UI+Y+awbCu0lQ3eVa4Ae5VcT8lfV+tKtXtZvOSHEftRtVc2kXPrwQ
-	 2TDtJte7WA+YuncaIE11kLRQR+7M+8AMUm1C07mUZKaymYl/uW9tlocD+u5dXQfNMJ
-	 oVCGLucl07oZaEgOyqI5BKX1q1PNQrXI+cKfQ1fkK3zddlw7nBEI9hrtthQnRdb9Jo
-	 dg9deoDp429A5aKqq55NNsgrYjT111zwRr+sZz/FfBIIndvCSEoIjZUyJvfFRcJbrr
-	 q7fbQz9fVceo1tbH/XPTx1irJK1JzFTl1kwFZB/1g0EK3DRD3C5BJHF5429somWVP4
-	 W/sB2fBfj2qjQ==
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Date: Wed, 20 May 2026 11:34:43 +1000
-Subject: [PATCH net] selftests: rds: config: disable modules
+	s=k20260515; t=1779241195;
+	bh=Sz4goEQEmPOxpmdjzuLQpA4CBuy9m4YUtFBD8eEbjTQ=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=O8Ypcgbo5d14UqP82dk1m2uy+BVfAp7s+GKqaWM7w9SEbD+74EJ8FLHfUOaPRq8lP
+	 64sMhJf48MK/sqqlGNMQMipTXLNealo2MTAD14F0oo5yon0zqTMPIq/SnjOv7BaNkY
+	 9Pl0vKmxujofIQG3EusGHP0IR1PQocyavw9VwEji0QjqHtXcF94sO7/lNt5ypPBsHW
+	 KFIOVgnOK/QCksyb6womhv+33Qpq9qCPdD/YZAA/8LGFKyOCP/edSsBCoXowELxkfC
+	 ZL/Q7UUaq15OSUPjRVynz1RIqipWyXpjvJa0PXXv8XgcNTHHNcfVWi0ph5vlOOB7D2
+	 7zgYJRqo/nBHg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 5683E383BF53;
+	Wed, 20 May 2026 01:40:07 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260520-net-rds-config-modules-v1-1-2100df02fe9a@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWM0QrCMAwAf2Xk2UANrKC/Ij7UJpsRbaXZRBj79
- 2X6eAd3C5g0FYNzt0CTj5rW4nA8dJDvqYyCys5AgWLoKWCRCRsb5loGHfFVeX6KY+J0osi5pwg
- ev5sM+v2NL+ANXP/S5ttD8rQvYV03KCFjBX8AAAA=
-X-Change-ID: 20260520-net-rds-config-modules-cada926dc526
-To: Allison Henderson <achender@kernel.org>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>
-Cc: netdev@vger.kernel.org, linux-rdma@vger.kernel.org, 
- rds-devel@oss.oracle.com, linux-kselftest@vger.kernel.org, 
- linux-kernel@vger.kernel.org, "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1103; i=matttbe@kernel.org;
- h=from:subject:message-id; bh=VlF106n3KI77nNqIHl5zCL5S+iUjsagCmF4QnDDQbUs=;
- b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBqDQ/FZv+ANFO1mdlB9G5PQA9p8tRaj2OEx/t0X
- SSwkI60tkuJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCag0PxQAKCRD2t4JPQmmg
- c0bHEACZAQgBnP1kX0SQ7NBPXwGMhwH2SMna/P37YREjvsl6wK4cH8DGBPzITjN7PpXPsSGF+B3
- 5y8DOuc8o70QmWZ52dFcJICluijtbEEZu+5UKo0pYez2TWMB/PoIfXSu2EAhSM1+fEx3hALoyKM
- wgjU8bg/O+hG9j8ETe+XOq49lBl+Ht3dXc8OloEl+AsBzr8zXK5zzwR5XQhziVftNhp+5eQ6qfT
- /oy+METGft6ytG26csBSV5+2L5lsFqBiy1147kI466Zi4nYmxM9egfykeY4dX+WzbSR44lLONJ4
- CDKtKewkC0j+QKuWJi2GYgDnG4ImFhJoLfuUhcqoXF8lBa/IXSDI0XWMxI6vRLpU52fHkE30N2J
- HZ+2cE0Uif11MyDmFsC8ogSs2B/1RMbeTVbJTaI6Wi9qN3b+sMYgGDKnIpNg2wC+7qpvbwkL+Ej
- 7ql6H/VSNiMD36KC0PBNowXoj2lTneN9GgW4SdoXJ0S8W4OspyrGtwLfd1iK81/JhHSUEmidXdz
- uC+ToxDY4gKUL2d7fnevp6NiT9NmUzKBMFITQI+JeDyFSMKUxSyXzTV5dP/IcXJT9kZ2x/F5qZW
- yxCeJ599WCW4j9iqL3Tw1eyk8krBFp3Qr7v1Jht7y69lzxq7Q08nXTQrCws8h3iE0d3e1KSjHLM
- 1V3kO/485UQMehQ==
-X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
- fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v2 net-next 0/2] net: Replace system_unbound_wq with
+ system_dfl_wq
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177924120589.2945535.5054552078846441379.git-patchwork-notify@kernel.org>
+Date: Wed, 20 May 2026 01:40:05 +0000
+References: <20260515135143.259669-1-marco.crivellari@suse.com>
+In-Reply-To: <20260515135143.259669-1-marco.crivellari@suse.com>
+To: Marco Crivellari <marco.crivellari@suse.com>
+Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org, tj@kernel.org,
+ jiangshanlai@gmail.com, frederic@kernel.org, bigeasy@linutronix.de,
+ mhocko@suse.com, horms@verge.net.au, edumazet@google.com,
+ davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, dsahern@kernel.org,
+ fw@strlen.de, idosch@nvidia.com, ja@ssi.bg, pablo@netfilter.org, phil@nwl.cc,
+ horms@kernel.org
 
-The run.sh script explicitly checks that CONFIG_MODULES is disabled.
+Hello:
 
-By default, this config option is enabled. Explicitly disable it to be
-able to run the RDS tests.
+This series was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-Note that writing '# CONFIG_(...) is not set' is usually recommended to
-disable an option in the .config, but it looks like selftests usually
-set 'CONFIG_(...)=n', which looks clearer.
+On Fri, 15 May 2026 15:51:35 +0200 you wrote:
+> Let's consider a nohz_full system with isolated CPUs: wq_unbound_cpumask is
+> set to the housekeeping CPUs, for !WQ_UNBOUND the local CPU is selected.
+> 
+> This leads to different scenarios if a work item is scheduled on an
+> isolated CPU where "delay" value is 0 or greater then 0:
+>         schedule_delayed_work(, 0);
+> 
+> [...]
 
-Fixes: 0f5d68004780 ("selftests: rds: add tools/testing/selftests/net/rds/config")
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
----
- tools/testing/selftests/net/rds/config | 1 +
- 1 file changed, 1 insertion(+)
+Here is the summary with links:
+  - [v2,net-next,1/2] ipmr: Replace use of system_unbound_wq with system_dfl_wq
+    https://git.kernel.org/netdev/net-next/c/2c57948924af
+  - [v2,net-next,2/2] ipvs: Replace use of system_unbound_wq with system_dfl_long_wq
+    (no matching commit)
 
-diff --git a/tools/testing/selftests/net/rds/config b/tools/testing/selftests/net/rds/config
-index 97db7ecb892a..3d62d0c750a8 100644
---- a/tools/testing/selftests/net/rds/config
-+++ b/tools/testing/selftests/net/rds/config
-@@ -1,3 +1,4 @@
-+CONFIG_MODULES=n
- CONFIG_NET_NS=y
- CONFIG_NET_SCH_NETEM=y
- CONFIG_RDS=y
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
----
-base-commit: 90fc1a393736063b2b4077115e215a2e2eebb797
-change-id: 20260520-net-rds-config-modules-cada926dc526
-
-Best regards,
---  
-Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
