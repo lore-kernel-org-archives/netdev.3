@@ -1,111 +1,84 @@
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E1D13EF642;
-	Wed, 20 May 2026 15:17:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DCCC37267A;
+	Wed, 20 May 2026 15:17:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779290223; cv=none; b=i2a+phbZ2It5ctMUj/bVQXKR++Ajh8qAQvQ4odM07RjLNiCulkYr2HGDndLwW/CMnsZViw4KK8VSMkJ3j1FMDqy/gqvugH2WOGmiN5tTaTCUsEh0M0YUUgpnZhlpJmaHa3wuTeB9T+bSfeapkukT8dmbgRbnCokQCabJrVJ/aFc=
+	t=1779290243; cv=none; b=SfYPQ1A+rCR9fEAvZZUyKQS5afg77fxkI170VXzIhGzHSCMBCjd06G3QRgPMIyg5jblG3NWguAaMtSIsgOS72SRgURdTdPJf2shfC24klDB3HQ4WYntBt8E3jTJMXy4kLFmysuMVPHAbffcobbKGzgqRKikwaoTI1qFdegJgGUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779290223; c=relaxed/simple;
-	bh=2IhOhT/g8r66zAMyV1dJLobZkqvOZ74vllZdclHnYEM=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mHLYd6Tydzhwc5Qm25WboTAgGysVWZ151HcIm6kkn0F6a2Dfg9G6uD7iTQ2wWPJfXm7rkJ9ZBrHamreBBel2wy+44dO1rifMmCGkxDIcFQnobARwtV2GSKTywPHe+V/8xMv2kwn4VZTLjRkrsvGHws8vtbwyonCShDUtTK1HEQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=L1rsEDsM; arc=none smtp.client-ip=148.163.135.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=analog.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
+	s=arc-20240116; t=1779290243; c=relaxed/simple;
+	bh=LVgcf9QcMEjJ9Tm6zTRsuGIFftxmSVAn8erg3o4ykuU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ntfig/0KLRQHFDWwBfwWU8yVNd/uIBbhO19YfuiwDT/8r+1pv5+eZQg1H7mDh3T5fZc+QNpdzqUCXoU/r8FtXHSEf5MF5CDq3Zdy37SOJd3ddxJwAJsuPBQeUSNhleXyZvGmX+sz3OdeUN+85HXhd6eL2919fi244vu+BtRMrv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=Fhvox5ri; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="L1rsEDsM"
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-	by mx0a-00128a01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64KDoukh417075;
-	Wed, 20 May 2026 11:16:50 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=DKIM; bh=g5b1M
-	kL3xOTz+4EinhhDYo3oQY1LO8pte1y8xB8Xja4=; b=L1rsEDsMIRc0Wthr2nLYx
-	pyvfPeG9uWAyABalygM8m9woI0Ra8MEdpDUE0dxJ5iwgeL5kSFDAnFL/+i6u2ROy
-	5Dl32dW04+7FgstWxsluvlQjZvb5nNyWNNBlXJJ+tX1FYMm6W6UCEKzrYMo1tSUu
-	0wm1eGlCre7L0M2/O5116vnau2NQ7WRkOTpDe7NigATEmxqh4xnRhDwliOYnaChX
-	VWXYQ2etiGXJ0ECtXxleg7Jr++PZJaPPlcJjAqKa3Sp/TET33LynOt7hVA3RP1NZ
-	3fASv22cj1gAYqCKgcTGDklSt1iKm8S1bvPMzin+dOW7tavaR6HAM+M4mzjvSh7n
-	A==
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 4e9e6wraq7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 20 May 2026 11:16:49 -0400 (EDT)
-Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
-	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 64KFGmnw037607
-	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Wed, 20 May 2026 11:16:48 -0400
-Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
- ASHBMBX9.ad.analog.com (10.64.17.10) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.37; Wed, 20 May 2026 11:16:48 -0400
-Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by
- ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.37; Wed, 20 May 2026 11:16:48 -0400
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server id 15.2.1748.37 via Frontend
- Transport; Wed, 20 May 2026 11:16:48 -0400
-Received: from xvr.ad.analog.com ([10.48.65.167])
-	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 64KFGVex021857;
-	Wed, 20 May 2026 11:16:34 -0400
-From: Ciprian Regus <ciprian.regus@analog.com>
-To: <selvamani.rajagopal@onsemi.com>
-CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
-        <kuba@kernel.org>, <linux-kernel@vger.kernel.org>,
-        <netdev@vger.kernel.org>, <pabeni@redhat.com>,
-        <parthiban.veerasooran@microchip.com>, <ciprian.regus@analog.com>
-Subject: Re: [PATCH net 1/2] net: ethernet: oa_tc6: Interrupt is active low, level triggered.
-Date: Wed, 20 May 2026 18:16:21 +0300
-Message-ID: <20260520151621.405125-1-ciprian.regus@analog.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <CY8PR02MB9249D2392242AF27988B9C0583042@CY8PR02MB9249.namprd02.prod.outlook.com>
-References: <CY8PR02MB9249D2392242AF27988B9C0583042@CY8PR02MB9249.namprd02.prod.outlook.com>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="Fhvox5ri"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=T57j/RjWbNfSgvM8NQpxyNYnlgIY8I5zNwVPohjLObg=; b=Fhvox5ricsEAyar19CUX7LcrXx
+	qPOySv8bi0rUnWUWHvCyhrBe3HfD3UVtpbnh6+EnG4Zj83xcWn0rG/LjnrcZ5x+74bANdqkh4Tk/1
+	uuieqwXdZ1N9tgUzPw9RrJaUEyg0AskFBWB6mSCbfP5KcAkXou6T6iLEMaMN6SmORcc0=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wPifT-003qxS-68; Wed, 20 May 2026 17:17:07 +0200
+Date: Wed, 20 May 2026 17:17:07 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Minda Chen <minda.chen@starfivetech.com>
+Cc: Frank <Frank.Sae@motor-comm.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [net-next v4 2/3] net: motorcomm: phy: set drive strength in
+ YT8531s RGMII
+Message-ID: <c7314c0e-fcb6-4484-9144-57e44a42f270@lunn.ch>
+References: <20260520101310.128969-1-minda.chen@starfivetech.com>
+ <20260520101310.128969-3-minda.chen@starfivetech.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-GUID: gYNbkJvFd1D6ArbRs6EZuWyqJN6OrKCd
-X-Proofpoint-ORIG-GUID: gYNbkJvFd1D6ArbRs6EZuWyqJN6OrKCd
-X-Authority-Analysis: v=2.4 cv=K8gS2SWI c=1 sm=1 tr=0 ts=6a0dd061 cx=c_pps
- a=3WNzaoukacrqR9RwcOSAdA==:117 a=3WNzaoukacrqR9RwcOSAdA==:17
- a=ZsT_3VxfWKg2-RS7:21 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=0sLvza09kfJOxVLZPwjg:22 a=Z0pTeXoby7EwIRygza74:22 a=GrngUzCRepzmGNCGzS8A:9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTIwMDE0OCBTYWx0ZWRfX9et7EkN5k8VV
- 1qGwYQyfhdHOsPFluyLBoHspuQy9OhEg8EXqOpx08QI1fNESKseMO9+XrGzWmfi4g6rAh4jP8mk
- 9HLs2o9cxDDvozYtE9fOe+YmAV+/sm4UM0xp7WRmdiJ93xXkClOMAfFadUXQz0m01pxDohOeXWu
- j6nH/UcnTL+5hooufwIyOOaz2R6FJaUC2tZzj1Nsl8rtH9xiICNlUuQq6Q42pmd/VS7B+9vDK5q
- hFt/nTjdz6RA0Hi1/K+3+I8C/Rh2b1CQkZg1snbRP7FCBpzJqWyfYmOstedEtD2kCRnp6lY/Ttg
- +icJlMwPW1AJnVS3MUU1M7El53hcIlEgkO8Qpu7A1luTVwJuupmugDcRYTfZpfV1LV0GKiuP4Tj
- DWC5d9mVlq4mVqwySLcgzI+43rh0X+3dw/aujFNiiXTZYr3rMVCYRqRrrdBQz5KbCaSAxzUnkLn
- XRfponGUFfvs0AcStOg==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-20_03,2026-05-18_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 lowpriorityscore=0 spamscore=0 impostorscore=0 phishscore=0
- priorityscore=1501 malwarescore=0 clxscore=1011 bulkscore=0 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2605130000 definitions=main-2605200148
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260520101310.128969-3-minda.chen@starfivetech.com>
 
->        ret = devm_request_irq(&tc6->spi->dev, tc6->spi->irq, oa_tc6_macphy_isr,
->-                              IRQF_TRIGGER_FALLING, dev_name(&tc6->spi->dev),
->+                              IRQF_TRIGGER_LOW, dev_name(&tc6->spi->dev),
->                               tc6);
+On Wed, May 20, 2026 at 06:13:09PM +0800, Minda Chen wrote:
+> Set RXD and RX CLK pin drive strength while in YT8531s connect
+> with RGMII. Need to check 8531s PHY ID because 8521 and 8531s
+> pin drive strength is different, 8521 can not call
+> yt8531_set_ds().
+> 
+> Signed-off-by: Minda Chen <minda.chen@starfivetech.com>
+> ---
+>  drivers/net/phy/motorcomm.c | 5 +++++
+>  1 file changed, 5 insertions(+)
+> 
+> diff --git a/drivers/net/phy/motorcomm.c b/drivers/net/phy/motorcomm.c
+> index 688679457ef9..3977ec5e45f7 100644
+> --- a/drivers/net/phy/motorcomm.c
+> +++ b/drivers/net/phy/motorcomm.c
+> @@ -1697,6 +1697,11 @@ static int yt8521_config_init(struct phy_device *phydev)
+>  		if (ret < 0)
+>  			goto err_restore_page;
+>  	}
+> +
+> +	if (phy_interface_is_rgmii(phydev) &&
+> +	    (phydev->drv->phy_id == PHY_ID_YT8531S))
 
-oa_tc6_macphy_isr() doesn't clear the interrupt condition or disable the
-interrupt. So it will be triggered several times until the oa tc6
-thread gets to run. Should we use something like this instead?
+phydev_id_compare() is probably better, since it takes into account
+the mask of how many bits are the version. The PHY_ID_YT8531S has 0
+bits, but i did not know that until i looked it up to see if this
+actually works. phydev_id_compare() i would be more likely to just
+trust is correct.
 
-devm_request_threaded_irq(..., IRQF_TRIGGER_LOW | IRQF_ONESHOT, ...)
-
-(together with some rework to call oa_tc6_try_spi_transfer() from the
-threaded irq part).
-
+	Andrew
