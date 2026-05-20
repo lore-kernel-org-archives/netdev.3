@@ -1,149 +1,148 @@
-Received: from mail-qt1-f201.google.com (mail-qt1-f201.google.com [209.85.160.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1467365A13
-	for <netdev@vger.kernel.org>; Wed, 20 May 2026 11:42:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFA0B3ACF01
+	for <netdev@vger.kernel.org>; Wed, 20 May 2026 11:50:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779277334; cv=none; b=pW/OGK5cJnlk3lt7jeXjrH1NnNP8xqLVUwZg3Rhe+nqH+i7ltVWOn9zthL42wv7vA3DDoXjjNWU16zByGF7h+J2LMyG4zx6dLhRUF7fVTdrZYELxoWnniNcpkM0tpqXsNS6j0QcE7j/VZLMhC73XFb46GFkKpH/+x1JeLb+dFVI=
+	t=1779277810; cv=none; b=EPcJ1b5OaDWGxTG+Jz9gu886kBhKOVEeq4C01dlEhdt9TpvaoIKrlgWKc6noVc1epKSkQ0IAVayZ/kfGu96PQQC4Nlx0Z9Y5ygVV/wJ9OhjOeqwjiQ6pgaJFV0P8q2GeSHJk4PD1j+LHY67AsYfJdyrK3y0OFmwa62lEaH06fYA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779277334; c=relaxed/simple;
-	bh=HyCy4WILmkBZi+hq1dJB6rltF17bSvnmXqDPoaFf+is=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=ib7hhlAq/qJTKLvPiGq9FfG2h7Lby3CwjlhQADRffZfM6cYsAaVs42mw918dSNeqFuCpxP5wsfNOjLam4RNhMULW6VjsE4Y++oD7wPstFxPSq4ajLRf1kAg72fFHBICXGKef8VvHDdZd0yPX43i2DvJo8HjjZLZbmoWj/PHHy1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=opjUvsFn; arc=none smtp.client-ip=209.85.160.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
+	s=arc-20240116; t=1779277810; c=relaxed/simple;
+	bh=zPj1Z4TXNV7bjfsNs+8ZdzoNcOa6GBLLRh60fYgacQQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DVkhzpw6ud1U/S7N+e+xZAwk2XcK8cC9Cy8M+NNPgPHP1ibY06lZOjUVSIw6z8U2jU4OlwVY6vsyKpUYLh3riegZh2xE5Q+1Rt5GBji6noXbcyj7lILDitjtl59py6JsAvoaZ0RsjSoXI1tViTaMmZu2JVf7xwVfkHPtcsZgYAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YPjcZYGW; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="opjUvsFn"
-Received: by mail-qt1-f201.google.com with SMTP id d75a77b69052e-50d9a6a853bso135234851cf.0
-        for <netdev@vger.kernel.org>; Wed, 20 May 2026 04:42:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779277331; x=1779882131; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=Wlle5DMc7ZBUDRnaeyWXWTc704a1wfEb/CL8LcRxd60=;
-        b=opjUvsFnXByWmRabhIVTzzaKQ2Yc5qNy0iMj00xznbnIF2gMHWTYoV59Uppr7eMMpP
-         sB3SWC0SEobmxh3WbSTSUZSxxw1ml6HbN1Our5GS61LORpEvqnkeEAjJW4k9jEZgIfW7
-         UAQW20VdpoNiNVIiHWQ65sLUxfbaNiFR3VqZcYJXAHMdKCFPkomqYrkx+xK4dgpQTr95
-         ZnR+KLgOLF/eGGC1UI8O32JQUaF3GixZ4FwRSBqTfOG9l5lcVdTh0KxsSCiNRuRbr981
-         pSYkga0pCA7XRtGT9O2v5rOMrrp3kfwvV5t24TxD/4N4K65KsugiZRi1+XTDNYt2yqWl
-         Z50A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779277331; x=1779882131;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Wlle5DMc7ZBUDRnaeyWXWTc704a1wfEb/CL8LcRxd60=;
-        b=JxX24e+qzIak+EahPNjgf3quDlr6T4jGeemNwHvKw6wqKE2HTpzFVJ9LwcDBRsDUQk
-         zE2yUqJYaDHrqYApZlLiVe9dPFuQoVGYReRGMMnLqzirt1F2WuARo4MGy5xsn9StVrxN
-         dbZtOiCSV3xoA7K5/WA4DvbeASqXd1z/Mjxwb5glews4l90UWxEZa999nX73pmuEdgdq
-         Aq8forAQs0gYaHl6R68iUA1Oio08ur+oJ6z2m279J49Jnguj9Bae66iRLCUocyHxWoDx
-         Qb/idcf5ztaSmmDC8PAt64Va8mePicUJ7qaqhPcSpyEE8QZihO2UJjLoPYm5yLL1fpWT
-         avMA==
-X-Forwarded-Encrypted: i=1; AFNElJ/6bbkdPdmAaDyqooKuijBvTjv8Ax2ky+Ovl/gPJg1KzHl7+qgKWz+CYrCNIQ+rBIL1LHhMK5Q=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzI8PFzPKYsFwkCPkkJgwjQtpXIBOpUXaeotTLKmeRXWtDXTd1q
-	bBPHosf0wPmiwyJfaJIYWZcpnk1wdFtKffEUrJWCX9UAO3Wy84M9JBMf9Pf32FPmMBdWfL29ZzW
-	layTTeomXTE0bUg==
-X-Received: from qtpi13.prod.google.com ([2002:ac8:71cd:0:b0:50d:75d9:61aa])
- (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:622a:6bcd:b0:50f:c36a:381a with SMTP id d75a77b69052e-5165a26a99emr253069561cf.55.1779277331174;
- Wed, 20 May 2026 04:42:11 -0700 (PDT)
-Date: Wed, 20 May 2026 11:42:07 +0000
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YPjcZYGW"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1779277808; x=1810813808;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=zPj1Z4TXNV7bjfsNs+8ZdzoNcOa6GBLLRh60fYgacQQ=;
+  b=YPjcZYGWd8j0M0VSLjQI6m0jlJKWfsHjX0msLRO9flh3YbMf9hMm7UQt
+   THkUZCCvb7GADkcE5SlYwnGyVC0RfQwbiiUnuSMUET/VH7drrydNzq4Ep
+   uixJi1gwMBC4OalloASsxy7xNIl9WzhK312QaMyrIu3Uff8ztCoHu38hb
+   lT9aQGZqcN9p/QsZmr8ZTvEpnxI1Rk/C61zWp+c0nMAvo1mAbaF6p3YKR
+   TFf3A+ZXpS6XOShq+llTFMy9RyuKzZ9CdHE07iSGolmO98y+GqgSY8qQR
+   pn33TEHbb6kl00o1pN29kE+/uZACoV94qGRoUqe3r11DCK8QXIRG8PESd
+   A==;
+X-CSE-ConnectionGUID: 8gRMJC34Rwm7INQWnjkMNA==
+X-CSE-MsgGUID: BQe/QFOjRP2Z/ucFPjKyXw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11791"; a="79320434"
+X-IronPort-AV: E=Sophos;i="6.23,244,1770624000"; 
+   d="scan'208";a="79320434"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2026 04:50:06 -0700
+X-CSE-ConnectionGUID: D2eCtjfWQZqK2cv1F579lg==
+X-CSE-MsgGUID: v2roAv3FR0mTP5wxyx0g+Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,244,1770624000"; 
+   d="scan'208";a="263948176"
+Received: from pae-d-dell-r7525-263.igk.intel.com ([172.28.191.240])
+  by fmviesa001.fm.intel.com with ESMTP; 20 May 2026 04:50:04 -0700
+From: Przemyslaw Korba <przemyslaw.korba@intel.com>
+To: intel-wired-lan@lists.osuosl.org
+Cc: netdev@vger.kernel.org,
+	anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com,
+	aleksandr.loktionov@intel.com,
+	arkadiusz.kubalewski@intel.com,
+	horms@kernel.org,
+	Przemyslaw Korba <przemyslaw.korba@intel.com>
+Subject: [PATCH iwl-net v2] ice: suppress DPLL errors during reset recovery
+Date: Wed, 20 May 2026 13:50:06 +0200
+Message-ID: <20260520115213.10864-2-przemyslaw.korba@intel.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.54.0.631.ge1b05301d1-goog
-Message-ID: <20260520114207.1394241-1-edumazet@google.com>
-Subject: [PATCH v2 net] net: bridge: prevent too big nested attributes in br_fill_linkxstats()
-From: Eric Dumazet <edumazet@google.com>
-To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
-	Eric Dumazet <edumazet@google.com>, syzbot+a35f9259d08f907c06e6@syzkaller.appspotmail.com, 
-	Nikolay Aleksandrov <razor@blackwall.org>, Ido Schimmel <idosch@nvidia.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-After commit ff205bf8c554 ("netlink: add one debug check in nla_nest_end()")
-syzbot found that br_fill_linkxstats() can send corrupted netlink packets.
+During reset recovery, the admin queue returns EBUSY which is expected
+behavior. However, the DPLL subsystem was logging these as errors and
+incrementing the error counter, potentially leading to unnecessary
+warnings and even disabling the DPLL periodic worker if the threshold
+was reached.
 
-Make sure the nested attribute size is bounded.
+Suppress error logging and error counter increments when the admin
+queue returns EBUSY, as this is expected during reset recovery and
+not a real failure condition.
 
-Fixes: a60c090361ea ("bridge: netlink: export per-vlan stats")
-Reported-by: syzbot+a35f9259d08f907c06e6@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/6a0b0da3.050a0220.175f0c.0000.GAE@google.com/
-Signed-off-by: Eric Dumazet <edumazet@google.com>
+test case:
+- ethtool --reset eth3 irq-shared dma-shared filter-shared offload-shared
+mac-shared phy-shared ram-shared
+- observe if dmesg EBUSY errors are gone
+
+Fixes: d7999f5ea64b ("ice: implement dpll interface to control cgu")
+Signed-off-by: Przemyslaw Korba <przemyslaw.korba@intel.com>
 ---
-Cc: Nikolay Aleksandrov <razor@blackwall.org>
-Cc: Ido Schimmel <idosch@nvidia.com>
+v2:
+add missing EBUSY check in ice_dpll_pps_update_phase_offsets()
+v1:
+https://lore.kernel.org/intel-wired-lan/20260520105311.5336-1-przemyslaw.korba@intel.com/T/#u
 ---
-v2: remove the WARN_ON(err == -EMSGSIZE) in rtnl_stats_get() (Ido)
-    adjust limit (Ido)
-v1: https://lore.kernel.org/netdev/20260518130531.1015332-1-edumazet@google.com/
+ drivers/net/ethernet/intel/ice/ice_dpll.c | 19 ++++++++++++-------
+ 1 file changed, 12 insertions(+), 7 deletions(-)
 
- net/bridge/br_netlink.c | 10 ++++++++++
- net/core/rtnetlink.c    |  5 +++--
- 2 files changed, 13 insertions(+), 2 deletions(-)
+diff --git a/drivers/net/ethernet/intel/ice/ice_dpll.c b/drivers/net/ethernet/intel/ice/ice_dpll.c
+index 0704e92ab043..815792567a94 100644
+--- a/drivers/net/ethernet/intel/ice/ice_dpll.c
++++ b/drivers/net/ethernet/intel/ice/ice_dpll.c
+@@ -784,7 +784,7 @@ ice_dpll_pin_state_update(struct ice_pf *pf, struct ice_dpll_pin *pin,
+ 				   ret,
+ 				   libie_aq_str(pf->hw.adminq.sq_last_status),
+ 				   pin_type_name[pin_type], pin->idx);
+-	else
++	else if (pf->hw.adminq.sq_last_status != LIBIE_AQ_RC_EBUSY)
+ 		dev_err_ratelimited(ice_pf_to_dev(pf),
+ 				    "err:%d %s failed to update %s pin:%u\n",
+ 				    ret,
+@@ -2821,7 +2821,8 @@ static int ice_dpll_pps_update_phase_offsets(struct ice_pf *pf,
+ 	*phase_offset_pins_updated = 0;
+ 	ret = ice_aq_get_cgu_input_pin_measure(&pf->hw, DPLL_TYPE_PPS, meas,
+ 					       ARRAY_SIZE(meas));
+-	if (ret && pf->hw.adminq.sq_last_status == LIBIE_AQ_RC_EAGAIN) {
++	if (ret && (pf->hw.adminq.sq_last_status == LIBIE_AQ_RC_EAGAIN ||
++		    pf->hw.adminq.sq_last_status == LIBIE_AQ_RC_EBUSY)) {
+ 		return 0;
+ 	} else if (ret) {
+ 		dev_err(ice_pf_to_dev(pf),
+@@ -2883,10 +2884,12 @@ ice_dpll_update_state(struct ice_pf *pf, struct ice_dpll *d, bool init)
+ 		d->dpll_idx, d->prev_input_idx, d->input_idx,
+ 		d->dpll_state, d->prev_dpll_state, d->mode);
+ 	if (ret) {
+-		dev_err(ice_pf_to_dev(pf),
+-			"update dpll=%d state failed, ret=%d %s\n",
+-			d->dpll_idx, ret,
+-			libie_aq_str(pf->hw.adminq.sq_last_status));
++		/* EBUSY is expected during reset recovery, don't log error */
++		if (pf->hw.adminq.sq_last_status != LIBIE_AQ_RC_EBUSY)
++			dev_err(ice_pf_to_dev(pf),
++				"update dpll=%d state failed, ret=%d %s\n",
++				d->dpll_idx, ret,
++				libie_aq_str(pf->hw.adminq.sq_last_status));
+ 		return ret;
+ 	}
+ 	if (init) {
+@@ -2955,7 +2958,9 @@ static void ice_dpll_periodic_work(struct kthread_work *work)
+ 	    d->periodic_counter % dp->phase_offset_monitor_period == 0)
+ 		ret = ice_dpll_pps_update_phase_offsets(pf, &phase_offset_ntf);
+ 	if (ret) {
+-		d->cgu_state_acq_err_num++;
++		/* EBUSY is expected during reset recovery */
++		if (pf->hw.adminq.sq_last_status != LIBIE_AQ_RC_EBUSY)
++			d->cgu_state_acq_err_num++;
+ 		/* stop rescheduling this worker */
+ 		if (d->cgu_state_acq_err_num >
+ 		    ICE_CGU_STATE_ACQ_ERR_THRESHOLD) {
 
-diff --git a/net/bridge/br_netlink.c b/net/bridge/br_netlink.c
-index 6fd5386a1d646542c184702e13cc2e6c8ee1820d..c04a4d0889ae412a9fc3e2458faa41200f26b098 100644
---- a/net/bridge/br_netlink.c
-+++ b/net/bridge/br_netlink.c
-@@ -1824,6 +1824,7 @@ static int br_fill_linkxstats(struct sk_buff *skb,
- 			      const struct net_device *dev,
- 			      int *prividx, int attr)
- {
-+	unsigned int limit = U16_MAX - nla_total_size(0);
- 	struct nlattr *nla __maybe_unused;
- 	struct net_bridge_port *p = NULL;
- 	struct net_bridge_vlan_group *vg;
-@@ -1841,6 +1842,7 @@ static int br_fill_linkxstats(struct sk_buff *skb,
- 		p = br_port_get_rtnl(dev);
- 		if (!p)
- 			return 0;
-+		limit -= nla_total_size_64bit(sizeof(p->stp_xstats));
- 		br = p->br;
- 		vg = nbp_vlan_group(p);
- 		break;
-@@ -1855,6 +1857,9 @@ static int br_fill_linkxstats(struct sk_buff *skb,
- 	if (vg) {
- 		u16 pvid;
- 
-+#ifdef CONFIG_BRIDGE_IGMP_SNOOPING
-+		limit -= nla_total_size_64bit(sizeof(struct br_mcast_stats));
-+#endif
- 		pvid = br_get_pvid(vg);
- 		list_for_each_entry(v, &vg->vlan_list, vlist) {
- 			struct bridge_vlan_xstats vxi;
-@@ -1862,6 +1867,11 @@ static int br_fill_linkxstats(struct sk_buff *skb,
- 
- 			if (++vl_idx < *prividx)
- 				continue;
-+
-+			if (skb_tail_pointer(skb) - (unsigned char *)nest +
-+			    nla_total_size(sizeof(vxi)) >= limit)
-+				goto nla_put_failure;
-+
- 			memset(&vxi, 0, sizeof(vxi));
- 			vxi.vid = v->vid;
- 			vxi.flags = v->flags;
-diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
-index df042da422ef3137ed67efaf8d243cc6b1fec6c7..511c25bf6f2a25563b7dd8d618fb46c9297d2ed7 100644
---- a/net/core/rtnetlink.c
-+++ b/net/core/rtnetlink.c
-@@ -6328,8 +6328,9 @@ static int rtnl_stats_get(struct sk_buff *skb, struct nlmsghdr *nlh,
- 				  NETLINK_CB(skb).portid, nlh->nlmsg_seq, 0,
- 				  0, &filters, &idxattr, &prividx, extack);
- 	if (err < 0) {
--		/* -EMSGSIZE implies BUG in if_nlmsg_stats_size */
--		WARN_ON(err == -EMSGSIZE);
-+		/* -EMSGSIZE implies BUG in if_nlmsg_stats_size
-+		 * or a too big nested attribute.
-+		 */
- 		kfree_skb(nskb);
- 	} else {
- 		err = rtnl_unicast(nskb, net, NETLINK_CB(skb).portid);
+base-commit: 7fd738d8cf34f46a7ec485426e2a5423ade8a63b
+prerequisite-patch-id: 45f595ded339d5f7feea2ea7ff196db3c08e3503
 -- 
-2.54.0.631.ge1b05301d1-goog
+2.43.0
 
