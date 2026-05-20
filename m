@@ -1,180 +1,81 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C483E3D1CA0;
-	Wed, 20 May 2026 18:39:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F8763FF1A4
+	for <netdev@vger.kernel.org>; Wed, 20 May 2026 18:39:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302365; cv=none; b=Q9IVCFAaT4vPnB70IQPB7NZecvAY/NeREe70i7T/tGqTS1uyzcIH7bKOankTGAU1FJC8dcjKfOQxy8/z+Ey5k5FUlBOkGtW1uTm6vCDDGcnwYt1AopIj8+1F5FefXP560HIWx9g5WK4L6Ns7uUYPApG09hP9hRV2lzcNj1+P/eo=
+	t=1779302374; cv=none; b=lryTKGJjDVfruxVQAMf/c5/NrbVsrXud60LA95qC/ZWikbBh/MrlP9nYrVuZgWwUpdvCR9GWN8UahXQX3VEo0BRAAKwpK0YzzRnV/gNQwB/LY9iNJJ7jGMOsh/cH9tgbpSQfv0UARncyOKEaojntz+QPySDxYR+Yd/4c3A/DPMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302365; c=relaxed/simple;
-	bh=1rBsdHO5ii6LAwx4TaDAiy+62lktJt4MM8CtSkPPwkk=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=OmZasYugYRtPqcm7WisfjcXjPofjV8s8RrlLzgNi6m6C90EccMbpYNMRDF9nyQBfDhhTizofZKQuYg9uS/58Q546o9lQisrVjib80tRp/1RsKOp/DNy+nXvNf+no42syvOAwjycOgK1WCUZR09xmzQkRh5ICKKas7yx31bcSSXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JLCEdIhj; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779302374; c=relaxed/simple;
+	bh=6tdWWTJ11C7Sr+A1qPIzMojRq37VjC1M8vczAlblpLA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=INOYL2JZ+s65gP3vrTXsRyo8yoTjQhE7NqgHtxJkGHe6jfebqNTqhXovOoAF7zrg8GMH/ozzY7n+UB/2yVKQq1ajDQHTXaZgDHgWtVuqhoJWlk0ZfX34WCIzc+q86Pbv7WBCYmwLKZBx1zEy35IzJ54a8WIdqEEUiJOIHJy0KNI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YxN/XarZ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JLCEdIhj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B8921F0089D;
-	Wed, 20 May 2026 18:39:16 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YxN/XarZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AD1E1F000E9;
+	Wed, 20 May 2026 18:39:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779302364;
-	bh=TV0+qdcdmk/5gJ3OGKgI5SQDH91h3lWhZ4d8lGRbL9E=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=JLCEdIhj+ggOrppkcYTTrQNTM5KqIoCtxO1KENxrD+9U8PWht6Vy6TAMPqqiknlxb
-	 6a1MobDRSDwonLHkb8k6hipwd6d7okdssLui9BmALeqBm36GRhcBjxVXezpAYhtc3P
-	 nMTGo+V4DYSSFLuRGdYBj4xSWfM8HAPTM0kpSBxtn78GbWehT1cK1V9zzYmqM/FNKE
-	 Or49PD8deMVtSMSljqB0Zu+RaI7Rj2FQRkH4sZHZtZ/lBsn3Z0sAfD84FsIflSjV5l
-	 nTzEA0Jh7v/sS3RlFlLhW2mz5htjnN1eTc3joHVAhGl7tXJh8xU5n1O9t7dhqWVbHO
-	 MfjrowIjjlgwg==
-From: Arnd Bergmann <arnd@kernel.org>
-To: linux-gpio@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	Arnd Bergmann <arnd@arndb.de>,
-	Christian Lamparter <chunkeey@googlemail.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Aaro Koskinen <aaro.koskinen@iki.fi>,
-	Andreas Kemnade <andreas@kemnade.info>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Roger Quadros <rogerq@kernel.org>,
-	Tony Lindgren <tony@atomide.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Linus Walleij <linusw@kernel.org>,
-	Bartosz Golaszewski <brgl@kernel.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Lee Jones <lee@kernel.org>,
-	Pavel Machek <pavel@kernel.org>,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	linux-wireless@vger.kernel.org,
-	linux-omap@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mips@vger.kernel.org,
-	linux-sh@vger.kernel.org,
-	linux-input@vger.kernel.org,
-	linux-leds@vger.kernel.org,
-	netdev@vger.kernel.org,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Subject: [PATCH 05/10] [v2] mips: select legacy gpiolib interfaces where used
-Date: Wed, 20 May 2026 20:38:10 +0200
-Message-Id: <20260520183815.2510387-6-arnd@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20260520183815.2510387-1-arnd@kernel.org>
-References: <20260520183815.2510387-1-arnd@kernel.org>
+	s=k20260515; t=1779302372;
+	bh=z/6d4XDsP8kzqaS2wZT45uE1TsRr5QPcLiTvEq5CEp4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=YxN/XarZZPxmKvMiwPj489ukmgHFMGOrsVkFyl/ynf53vG7zGHp8ViqspWjlnRwOT
+	 qoZdVQJz8txRV0T774UZaKnd5hwRT7vU0vqdmrz14YL9vA8jd6AaB1bGjxyP02Ldp3
+	 reCYb+KUZC1vQwHD9lNqMSiW0OXxJDCmRRhN+elpD/K7mQg6OWyQRA612on5CptqmB
+	 Bmxtl9XkF7bz+b6VQw8FbabVhCgmnDq9y/vGLPY4SNanC7lPwS8NYGyzP8Al8A8+T1
+	 /BDmie27y2nPmVCftGN7zoyQyvio1+JS+pnu+cq4tL9xHAYLPVBNE/xo/30uUIT5Ka
+	 2+Hlp3yw4HC1w==
+Date: Wed, 20 May 2026 19:39:28 +0100
+From: Simon Horman <horms@kernel.org>
+To: Przemyslaw Korba <przemyslaw.korba@intel.com>
+Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
+	anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com,
+	aleksandr.loktionov@intel.com, arkadiusz.kubalewski@intel.com
+Subject: Re: [PATCH iwl-net v2] ice: suppress DPLL errors during reset
+ recovery
+Message-ID: <20260520183928.GF988238@horms.kernel.org>
+References: <20260520115213.10864-2-przemyslaw.korba@intel.com>
+ <20260520183801.GE988238@horms.kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260520183801.GE988238@horms.kernel.org>
 
-From: Arnd Bergmann <arnd@arndb.de>
+On Wed, May 20, 2026 at 07:38:05PM +0100, Simon Horman wrote:
+> On Wed, May 20, 2026 at 01:50:06PM +0200, Przemyslaw Korba wrote:
+> > During reset recovery, the admin queue returns EBUSY which is expected
+> > behavior. However, the DPLL subsystem was logging these as errors and
+> > incrementing the error counter, potentially leading to unnecessary
+> > warnings and even disabling the DPLL periodic worker if the threshold
+> > was reached.
+> > 
+> > Suppress error logging and error counter increments when the admin
+> > queue returns EBUSY, as this is expected during reset recovery and
+> > not a real failure condition.
+> > 
+> > test case:
+> > - ethtool --reset eth3 irq-shared dma-shared filter-shared offload-shared
+> > mac-shared phy-shared ram-shared
+> > - observe if dmesg EBUSY errors are gone
+> > 
+> > Fixes: d7999f5ea64b ("ice: implement dpll interface to control cgu")
+> > Signed-off-by: Przemyslaw Korba <przemyslaw.korba@intel.com>
+> > ---
+> > v2:
+> > add missing EBUSY check in ice_dpll_pps_update_phase_offsets()
+> > v1:
+> > https://lore.kernel.org/intel-wired-lan/20260520105311.5336-1-przemyslaw.korba@intel.com/T/#u
+> 
+> Thanks for the update.
 
-A few old machines have not been converted away from the old-style
-gpiolib interfaces. Make these select the new CONFIG_GPIOLIB_LEGACY
-symbol so the code still works where it is needed but can be left
-out otherwise.
+Sorry, hit send too soon.
+I meant to also include:
 
-This is the list of all gpio_request() calls in mips:
-
-  arch/mips/alchemy/devboards/db1000.c:           gpio_request(19, "sd0_cd");
-  arch/mips/alchemy/devboards/db1000.c:           gpio_request(20, "sd1_cd");
-  arch/mips/alchemy/devboards/db1200.c:   gpio_request(215, "otg-vbus");
-  arch/mips/bcm47xx/workarounds.c:        err = gpio_request_one(usb_power, GPIOF_OUT_INIT_HIGH, "usb_power");
-  arch/mips/bcm63xx/boards/board_bcm963xx.c:              gpio_request_one(board.ephy_reset_gpio,
-  arch/mips/txx9/rbtx4927/setup.c:        gpio_request(15, "sio-dtr");
-
-Most of these should be easy enough to change to modern gpio descriptors
-or remove if they are no longer in use.
-
-Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Reviewed-by: Linus Walleij <linusw@kernel.org>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
-v2: no changes. There was no discussion on this, but the patch
-    has so far not made it into the linux-mips tree, so I'm including
-    it for completeness.
----
- arch/mips/Kconfig         | 5 +++++
- arch/mips/alchemy/Kconfig | 1 -
- arch/mips/txx9/Kconfig    | 1 +
- 3 files changed, 6 insertions(+), 1 deletion(-)
-
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 4364f3dba688..b91e62d69a5d 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -206,6 +206,8 @@ config MIPS_ALCHEMY
- 	select CSRC_R4K
- 	select IRQ_MIPS_CPU
- 	select DMA_NONCOHERENT		# Au1000,1500,1100 aren't, rest is
-+	select GPIOLIB
-+	select GPIOLIB_LEGACY
- 	select MIPS_FIXUP_BIGPHYS_ADDR if PCI
- 	select SYS_HAS_CPU_MIPS32_R1
- 	select SYS_SUPPORTS_32BIT_KERNEL
-@@ -307,6 +309,7 @@ config BCM47XX
- 	select SYS_HAS_EARLY_PRINTK
- 	select USE_GENERIC_EARLY_PRINTK_8250
- 	select GPIOLIB
-+	select GPIOLIB_LEGACY
- 	select LEDS_GPIO_REGISTER
- 	select BCM47XX_NVRAM
- 	select BCM47XX_SPROM
-@@ -330,6 +333,7 @@ config BCM63XX
- 	select SYS_HAS_CPU_BMIPS4380
- 	select SWAP_IO_SPACE
- 	select GPIOLIB
-+	select GPIOLIB_LEGACY
- 	select MIPS_L1_CACHE_SHIFT_4
- 	select HAVE_LEGACY_CLK
- 	help
-@@ -999,6 +1003,7 @@ config MIKROTIK_RB532
- 	select SWAP_IO_SPACE
- 	select BOOT_RAW
- 	select GPIOLIB
-+	select GPIOLIB_LEGACY
- 	select MIPS_L1_CACHE_SHIFT_4
- 	help
- 	  Support the Mikrotik(tm) RouterBoard 532 series,
-diff --git a/arch/mips/alchemy/Kconfig b/arch/mips/alchemy/Kconfig
-index 6ca81e1bd35c..cf5ad52c0a0f 100644
---- a/arch/mips/alchemy/Kconfig
-+++ b/arch/mips/alchemy/Kconfig
-@@ -12,7 +12,6 @@ config MIPS_MTX1
- 
- config MIPS_DB1XXX
- 	bool "Alchemy DB1XXX / PB1XXX boards"
--	select GPIOLIB
- 	select HAVE_PCI
- 	select HAVE_PATA_PLATFORM
- 	select SYS_SUPPORTS_LITTLE_ENDIAN
-diff --git a/arch/mips/txx9/Kconfig b/arch/mips/txx9/Kconfig
-index 7335efa4d528..92b759a434c0 100644
---- a/arch/mips/txx9/Kconfig
-+++ b/arch/mips/txx9/Kconfig
-@@ -37,6 +37,7 @@ config SOC_TX4927
- 	select IRQ_TXX9
- 	select PCI_TX4927
- 	select GPIO_TXX9
-+	select GPIOLIB_LEGACY
- 
- config SOC_TX4938
- 	bool
--- 
-2.39.5
+Reviewed-by: Simon Horman <horms@kernel.org>
 
