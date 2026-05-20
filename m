@@ -1,71 +1,178 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B1173EF0BE;
-	Wed, 20 May 2026 15:12:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A2853E1D07;
+	Wed, 20 May 2026 15:12:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.133.104.62
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779289963; cv=none; b=HuqiadTAaeNtxwAjkCTt/DFpyygQiZYFtTHUmLaPChoUHIyzw9git8uuWxCqNI9LBiT3QclDNDK+1T3uZL6v4gc4/Bv0ifkv+prge2+K81fZkdtJE7VzNBz2oXrWxfgLgJtrzx2MHWpVa42ypLXBMyvtn4JX+xhY8LOHc5eHT58=
+	t=1779289967; cv=none; b=H3MA0kgIssfHTMyg9VmoHmppTi5kxqhApVNJ9KI/YU58u12cBywqaC1xefMlJ1+tgUQX63Qtmu+Lema9Z5qAekGXRMgiemywisO3XRJFzrN9sW6Y5vyuD+vcBCFNegyHhBkvxRBSb2N0Mzp64BIfNTod5PcJMGsEg/U9lT1vcqg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779289963; c=relaxed/simple;
-	bh=tnAabweQiPGTrq4s5/XIUn2e/+Kp0dnE6fhKkBjI0zA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=c/T8mI1edYT02rS5dzXauVkX3F53Y5Ywzk+4pSoalglBkIwS2T9jbuqm6DBdD41YCAa37kHlMxEkISSq8QNrNM4ouiOL5kVqgL4uooM6YbXHk0wLxwNdUltY+bFG0g6Zpx7Xe9veSFMCCKjb1XkXi0wbmp0a2e+QXFIcZSLcKDw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=r5gYaW/l; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1779289967; c=relaxed/simple;
+	bh=tGtQjeU/68YJYtAlar9WmNrQ1Kf8bmpfGl/v/jPKSmk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=jY1ahtA+FmTmEezUPrHPyQjeQC7pv5HKvMMFklkPwhds+XqyPfd0L3PVtCpJnDNVZlQ5LNgjf8KCYSUvecebla4s/iSPX00MJfRinjNWdQCtLga8cQhntPaD+BqtYiViKPbW0QjSGD5ZxMcBijZI6i4yZlhht2AnXcpGn6L9kEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net; spf=pass smtp.mailfrom=iogearbox.net; dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b=oSaiv1bt; arc=none smtp.client-ip=213.133.104.62
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iogearbox.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="r5gYaW/l"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=BxqIHkTrG2nPrftKJCbRNMPOYiQbepsL94rJ0TP7lWQ=; b=r5gYaW/l4lrtCKTy2DQqljigs8
-	SSwUnBAmM7jXZtLpmH3WKe7GsWm00/7fqRbzsP3bC7c3K8sEQBBJIb788ujvYQPYTG65YGy/vjceo
-	6N4056u7A8S8mUJj51/lQFvh5ZCuDfhlovnru9avTqk6xgwIMG54RU3gcf891h70sVZ4=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wPian-003qvT-OD; Wed, 20 May 2026 17:12:17 +0200
-Date: Wed, 20 May 2026 17:12:17 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Minda Chen <minda.chen@starfivetech.com>
-Cc: Frank <Frank.Sae@motor-comm.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [net-next v4 1/3] net: phy: motorcomm: move mdio lock out from
- yt8531_set_ds()
-Message-ID: <83bae20f-7de1-4868-9a7b-d903af1b62ac@lunn.ch>
-References: <20260520101310.128969-1-minda.chen@starfivetech.com>
- <20260520101310.128969-2-minda.chen@starfivetech.com>
+	dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b="oSaiv1bt"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=QPXvLIkN6psp73tzXjNMpifHWdCYlylmGbN06uhNR4w=; b=oSaiv1bt5JDDUSxvfqdZmH78t4
+	o0cgYrVZa0la0sN6fvzkcjHAJf9ghPmVzKLi1WN7k5/+JCt+5ORp/LtE5F4xF1rOPO6zpAVTww/xM
+	VZqomeLDAytz/VYXwFwM/Z4rLKbrMeXQIC9gRY8B6qCaVA8EMVVE5nvofiaFUHHp4bAKugg+PtB6t
+	6SPP3q+dx3JniitJ4MZo6WB2FsSDj1GBN3YultHQS5gL6ljyNZ1RR3cc+X/jYQsJVvD7neXpp8oyr
+	YgVAVWnWgfOCLZAbH/C+jjJwRlTZ+AA12LDf3vRY4ArbeK+iK7nSBbMz9uDgFtE9+/3eH6j7fodbr
+	JlTGlk1w==;
+Received: from sslproxy03.your-server.de ([88.198.220.132])
+	by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <daniel@iogearbox.net>)
+	id 1wPiag-000GHz-3C;
+	Wed, 20 May 2026 17:12:11 +0200
+Received: from localhost ([127.0.0.1])
+	by sslproxy03.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <daniel@iogearbox.net>)
+	id 1wPiaf-000HqV-2I;
+	Wed, 20 May 2026 17:12:10 +0200
+Message-ID: <f6595728-06f2-4cdf-a515-f31fcec13c86@iogearbox.net>
+Date: Wed, 20 May 2026 17:12:09 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260520101310.128969-2-minda.chen@starfivetech.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v11 13/14] netkit: Add xsk support for af_xdp
+ applications
+To: Zhu Yanjun <yanjun.zhu@linux.dev>, netdev@vger.kernel.org
+Cc: bpf@vger.kernel.org, kuba@kernel.org, davem@davemloft.net,
+ razor@blackwall.org, pabeni@redhat.com, willemb@google.com, sdf@fomichev.me,
+ john.fastabend@gmail.com, martin.lau@kernel.org, jordan@jrife.io,
+ maciej.fijalkowski@intel.com, magnus.karlsson@intel.com, dw@davidwei.uk,
+ toke@redhat.com, yangzhenze@bytedance.com, wangdongdong.6@bytedance.com
+References: <20260402231031.447597-1-daniel@iogearbox.net>
+ <20260402231031.447597-14-daniel@iogearbox.net>
+ <ea99efb4-6ac0-4b29-8b38-e9865b46526c@linux.dev>
+Content-Language: en-US
+From: Daniel Borkmann <daniel@iogearbox.net>
+Autocrypt: addr=daniel@iogearbox.net; keydata=
+ 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
+In-Reply-To: <ea99efb4-6ac0-4b29-8b38-e9865b46526c@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: Clear (ClamAV 1.4.3/28006/Wed May 20 08:25:19 2026)
 
-On Wed, May 20, 2026 at 06:13:08PM +0800, Minda Chen wrote:
-> yt8531_set_ds() default set register with mdio lock and only called
-> with YT8531 PHY. But new type YT8531s support RGMII and has the same
-> pin strength setting with YT8531, YT8531s need to call yt8531_set_ds()
-> setting pin drive strength. But YT8531s config init function
-> yt8521_config_init() already get the mdio lock with phy_select_page().
-> If calling yt8521_config_init() with mdio lock will cause dead lock.
+On 5/20/26 5:10 AM, Zhu Yanjun wrote:
+> 在 2026/4/2 16:10, Daniel Borkmann 写道:
+>> Enable support for AF_XDP applications to operate on a netkit device.
+>> The goal is that AF_XDP applications can natively consume AF_XDP
+>> from network namespaces. The use-case from Cilium side is to support
+>> Kubernetes KubeVirt VMs through QEMU's AF_XDP backend. KubeVirt is a
+>> virtual machine management add-on for Kubernetes which aims to provide
+>> a common ground for virtualization. KubeVirt spawns the VMs inside
+>> Kubernetes Pods which reside in their own network namespace just like
+>> regular Pods.
+>>
+>> Raw QEMU AF_XDP backend example with eth0 being a physical device with
+>> 16 queues where netkit is bound to the last queue (for multi-queue RSS
+>> context can be used if supported by the driver):
+>>
+>>    # ethtool -X eth0 start 0 equal 15
+>>    # ethtool -X eth0 start 15 equal 1 context new
+>>    # ethtool --config-ntuple eth0 flow-type ether \
+>>              src 00:00:00:00:00:00 \
+>>              src-mask ff:ff:ff:ff:ff:ff \
+>>              dst $mac dst-mask 00:00:00:00:00:00 \
+>>              proto 0 proto-mask 0xffff action 15
+>>    [ ... setup BPF/XDP prog on eth0 to steer into shared xsk map ... ]
+>>    # ip netns add foo
+>>    # ip link add numrxqueues 2 nk type netkit single
+>>    # ynl --family netdev --output-json --do queue-create \
+>>          --json "{"ifindex": $(ifindex nk), "type": "rx", \
+>>                   "lease": { "ifindex": $(ifindex eth0), \
+>>                              "queue": { "type": "rx", "id": 15 } } }"
+>>    {'id': 1}
+>>    # ip link set nk netns foo
+>>    # ip netns exec foo ip link set lo up
+>>    # ip netns exec foo ip link set nk up
+>>    # ip netns exec foo qemu-system-x86_64 \
+>>            -kernel $kernel \
+>>            -drive file=${image_name},index=0,media=disk,format=raw \
+>>            -append "root=/dev/sda rw console=ttyS0" \
+>>            -cpu host \
+>>            -m $memory \
+>>            -enable-kvm \
+>>            -device virtio-net-pci,netdev=net0,mac=$mac \
+>>            -netdev af-xdp,ifname=nk,id=net0,mode=native,queues=1,start-queue=1,inhibit=on,map-path=$dir/xsks_map \
+>>            -nographic
+>>
+>> We have tested the above against a dual-port Nvidia ConnectX-6 (mlx5)
+>> 100G NIC with successful network connectivity out of QEMU. An earlier
+>> iteration of this work was presented at LSF/MM/BPF [0] and more
+>> recently at LPC [1].
+>>
+>> For getting to a first starting point to connect all things with
+>> KubeVirt, bind mounting the xsk map from Cilium into the VM launcher
+>> Pod which acts as a regular Kubernetes Pod while not perfect, is not
+>> a big problem given its out of reach from the application sitting
+>> inside the VM (and some of the control plane aspects are baked in
+>> the launcher Pod already), so the isolation barrier is still the VM.
+>> Eventually the goal is to have a XDP/XSK redirect extension where
+>> there is no need to have the xsk map, and the BPF program can just
+>> derive the target xsk through the queue where traffic was received
+>> on.
 > 
-> Need to get the lock before calling yt8531_get_ds() and move mdio
-> lock out from it for YT8531s.
+> Sorry, this may be a bit late regarding this commit.
 > 
-> Signed-off-by: Minda Chen <minda.chen@starfivetech.com>
-> Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-
-    Andrew
+> If I remember correctly, eBPF is already supported in netkit. Since eBPF can cover everything XDP does, I’m wondering what the motivation was for adding explicit XDP support to the netkit driver.
+Pls see the commit message which explains the details; tl;dr the need
+was to support zero-copy af_xdp based application in containers to bind
+against netkit, so that we can have native speed there. (see qemu example
+which uses af_xdp backend)
