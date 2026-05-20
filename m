@@ -1,71 +1,132 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D49D3F2101;
-	Wed, 20 May 2026 15:27:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89B283D903E;
+	Wed, 20 May 2026 15:36:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779290860; cv=none; b=fqUOZIYuSAQsrvob7kb8yi+vghOaF+oN+PaWbXDo6Dhf7LyGd7NtkV8pvFGxXNp8BQaLRDDex/y+kUhUzhD/KLhYooimDvqm8kYucvCQpnlcUrKYk7T0EJxjGHy7oBTHlGbWvUIiNKqcPO9SGctMU3rFEo31mjslJ/tCg4Flzvc=
+	t=1779291388; cv=none; b=ZIEEZ/n1VijTaS9ZXgGQntKYSBiruSNmvFhGBEtiEjzCTlO5OgkBd6Q9axaH8MnL/jHkzM1G8PT8b+na1v0JGUW3aVr8JmLPgVx4EYSIN1nmwEbcxW0NHo9EsUweGQyxUqONewj/P9KIF4bti5q7asUzrOaytpPYrovRrrHTmBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779290860; c=relaxed/simple;
-	bh=/dicLWyiTLIqJjMDqVvLE8H2Gl4zdK09ndu9K0HRk/8=;
+	s=arc-20240116; t=1779291388; c=relaxed/simple;
+	bh=MNY5MML6AuvZHU3oIRofKtZEGFa9zFjnoghjgfd7Ct8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Iyi6dutbvBWUxcOjwKm3Y6ifoLDuBpRht+x+kLQwJdo+RlQDBIsNoRpI2utPmpSC4zl7TcsfBbYQPsf/NIshqJXbVfanLroZ7tNg2IYDJkbI/rtvFxIkKaNk9erh+4PSPpIwZUj3l2Jgk1LanQ4evEi4qJYdqQbfo9jyxVzlZxk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=t4lJ0fky; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	 Content-Type:Content-Disposition:In-Reply-To; b=RmpUOl43lwP0lJxQj5i5p2grAIUgvUzzuOnZCGuxzZ9K7c4h7hdV+OYUzl0DyNwe6GJQozi1wfJPAqPjfUY853x8zH9tJ5BQ8nxiAv8iLg38Llsjm+lLlhzBBezBo12y0lFiEDNwQZ3SeDfgxqVmzJQtyrrEx/of7gKzfM9nGGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HmxflIBq; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="t4lJ0fky"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=JQPeBgT0x9f1XP/QHtccMLVQq0iA+4UUdcKuFEPxVD8=; b=t4lJ0fkyVyt32Heo44vAc5XaPm
-	tpjHmCfftDGnV0rv5zSDtHevhfxIPkn9+UtOKgFpzmsjhFoZW+KTy23OO+zT6hVOm9vy4ZF/1G0dx
-	fDJhlw+wNunGt8ZjFeU9cA0AcECVJAaAVsnVKbN71WNvNKZ3iLWLHSTSrI235cm3OsOo=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wPipW-003r3S-Nc; Wed, 20 May 2026 17:27:30 +0200
-Date: Wed, 20 May 2026 17:27:30 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Ciprian Regus <ciprian.regus@analog.com>
-Cc: selvamani.rajagopal@onsemi.com, andrew+netdev@lunn.ch,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	pabeni@redhat.com, parthiban.veerasooran@microchip.com
-Subject: Re: [PATCH net 1/2] net: ethernet: oa_tc6: Interrupt is active low,
- level triggered.
-Message-ID: <d17d1c7f-5fd6-41de-b935-83f96acde6d0@lunn.ch>
-References: <CY8PR02MB9249D2392242AF27988B9C0583042@CY8PR02MB9249.namprd02.prod.outlook.com>
- <20260520151621.405125-1-ciprian.regus@analog.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HmxflIBq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2EE51F000E9;
+	Wed, 20 May 2026 15:36:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779291387;
+	bh=a2tRUQgRwBejUhg1cYn+oCvO34Dh5HeYuLe9vbd7LI8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=HmxflIBqTEPMrZ+FGAoQNKSPX0MdonqQ8oPlwrBuupAyWh8MEA/9OI5MpxCzJm1wM
+	 QODUBzFOQ+Oqpwp9I0lQMxZvcd1zFDdeVNBxcgdL686H736PWU/zRbBoQb1Kl22FPi
+	 i4qJixTzCo5BEpVWY2XJ73Zh6vOIVWL3qRqzPhkzxkuHhTEAvYwmBdyU0oOCZVfXwg
+	 lMWx50jMpnZaXz6Uje8rPeHsmi74KdcPe4EgDvG5SIZSjwxWtLI6lA3RaiobMf5UoA
+	 nnTsPH6T+Liog+P/nQw9U2klbHKMi4zQwsKkZzUXeBSYhx8sT6ROmC425Uu734bObH
+	 b1VY5rjrZbHVg==
+Date: Wed, 20 May 2026 17:36:24 +0200
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Felix Fietkau <nbd@nbd.name>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Simon Horman <horms@kernel.org>, David Ahern <dsahern@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>, Phil Sutter <phil@nwl.cc>,
+	Shuah Khan <shuah@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org, netdev@vger.kernel.org,
+	netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+	linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH nf-next v2 0/6] Add IPv4 over IPv6 and SIT flowtable SW
+ acceleration
+Message-ID: <ag3U-DmEWiwcH0uB@lore-desk>
+References: <20260506-b4-flowtable-sw-accel-ip6ip-v2-0-439fd427726e@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="y1SQHS4FsUVyGc0Q"
+Content-Disposition: inline
+In-Reply-To: <20260506-b4-flowtable-sw-accel-ip6ip-v2-0-439fd427726e@kernel.org>
+
+
+--y1SQHS4FsUVyGc0Q
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260520151621.405125-1-ciprian.regus@analog.com>
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, May 20, 2026 at 06:16:21PM +0300, Ciprian Regus wrote:
-> >        ret = devm_request_irq(&tc6->spi->dev, tc6->spi->irq, oa_tc6_macphy_isr,
-> >-                              IRQF_TRIGGER_FALLING, dev_name(&tc6->spi->dev),
-> >+                              IRQF_TRIGGER_LOW, dev_name(&tc6->spi->dev),
-> >                               tc6);
-> 
-> oa_tc6_macphy_isr() doesn't clear the interrupt condition
+> Similar to IPIP and IP6I6 tunnels, introduce sw acceleration for IPv4 over
+> IPv6 and SIT tunnels in the netfilter flowtable infrastructure.
+>=20
+> ---
+> Changes in v2:
+> - Fix MTU check in nf_flow_offload_forward() and in
+>   nf_flow_offload_ipv6_forward()
+> - Add SIT sw acceleration support
+> - Link to v1: https://lore.kernel.org/r/20260505-b4-flowtable-sw-accel-ip=
+6ip-v1-0-9ac39ccc9ea9@kernel.org
 
-Since this is an SPI device, there is no way it can clear the
-condition, that needs a blocking operation.
+Hi Pablo and Florian,
 
-> devm_request_threaded_irq(..., IRQF_TRIGGER_LOW | IRQF_ONESHOT, ...)
-> 
-> (together with some rework to call oa_tc6_try_spi_transfer() from the
-> threaded irq part).
+Any update about this series? Thanks in advance.
 
-Threaded makes sense. Not so sure about ONESHOT. We need it to fire
-again when the thread handler exists and the condition is still true.
+Regards,
+Lorenzo
 
-      Andrew
+>=20
+> ---
+> Lorenzo Bianconi (6):
+>       net: netfilter: Add ether_type to net_device_path_ctx
+>       net: netfilter: Add encap_proto to flow_offload_tunnel
+>       net: netfilter: Add IPv4 over IPv6 tunnel flowtable acceleration
+>       selftests: netfilter: nft_flowtable.sh: Add IPv4 over IPv6 flowtabl=
+e selftest
+>       net: netfilter: Add SIT tunnel flowtable acceleration
+>       selftests: netfilter: nft_flowtable.sh: Add SIT flowtable selftest
+>=20
+>  drivers/net/ethernet/airoha/airoha_ppe.c           |  14 +-
+>  drivers/net/ethernet/mediatek/mtk_ppe_offload.c    |  13 +-
+>  include/linux/netdevice.h                          |   5 +-
+>  include/net/netfilter/nf_flow_table.h              |   1 +
+>  net/core/dev.c                                     |   6 +-
+>  net/ipv4/ipip.c                                    |   1 +
+>  net/ipv6/ip6_tunnel.c                              |   6 +-
+>  net/ipv6/sit.c                                     |  26 ++
+>  net/netfilter/nf_flow_table_core.c                 |  14 +-
+>  net/netfilter/nf_flow_table_ip.c                   | 386 +++++++++++++--=
+------
+>  net/netfilter/nf_flow_table_path.c                 |  16 +-
+>  tools/testing/selftests/net/netfilter/config       |   1 +
+>  .../selftests/net/netfilter/nft_flowtable.sh       |  78 ++++-
+>  13 files changed, 402 insertions(+), 165 deletions(-)
+> ---
+> base-commit: c1e5127b577c6b88fa48e532616932ae978528d5
+> change-id: 20260505-b4-flowtable-sw-accel-ip6ip-7101034cd147
+>=20
+> Best regards,
+> --=20
+> Lorenzo Bianconi <lorenzo@kernel.org>
+>=20
+
+--y1SQHS4FsUVyGc0Q
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCag3U+AAKCRA6cBh0uS2t
+rPv9AQCAeVJ4LW3/ZIxsIiBE3XnXj6UlIBCD6SYxGD9HVjHqTAD9ETIzVKrKIpnn
+TWQXuXJqNaEhL7TTPrv+698yNy3I2QA=
+=eDma
+-----END PGP SIGNATURE-----
+
+--y1SQHS4FsUVyGc0Q--
