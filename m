@@ -1,49 +1,35 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8D2735AC16;
-	Thu, 21 May 2026 02:20:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 523703655E5;
+	Thu, 21 May 2026 02:19:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779330007; cv=none; b=dVSXcXQ2YSZzyjN5VqETp0HyqQlRuDISxROUjFTF7y3bIAlm9hVzdVLvozjl8jdrLBTsN+CgnWd383V4LoYrOtuwQA7aOJzRgS20ztOOWI3vSr+Ua4D4yO9V85Xw5awkmefYatlnOEq0I1/prqsZsA6K2+J82QM+yFUJAp9M7Tk=
+	t=1779330019; cv=none; b=k8GgBJyOBeoQEAk7wZ9bQbdsGnkroAhrmVuk/fs1raVD842/tfvmUWKiM0tS13ERQcR0+/HMYLrFtET6cqpcV047EfDJzOnu0JgHk7FWX+Y/lZpRyrwNZrk34pXSK7Zwv6+hCRk4cSyPI3TYeLO6iqMJE9w/PpaTCKd0CkdNiVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779330007; c=relaxed/simple;
-	bh=EwcKMgCqeiakWJc2uhXVGqk/7K/uDWBZu/OPG+qCHsg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rxa3LHbd+amdULVLf0A8uE4XLGnrLNSZ/gto3plb0sX/ICNJeVNhrZAZkEDRr5rJfDuc++CnZ4fY6RhsAstUcTFZkcWGfy2ykQsSmTrjrfhy7+twtr5SKpDf819bsCtpmTN8xjv7vkm4aXtDH16trbDiGdGpTH8/4XPB9OyLcH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CpMIaL+c; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779330019; c=relaxed/simple;
+	bh=BjlukyP5bTQHvs0L2QCUfZaNLjb0pmJmzWqNyPaH4x8=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=FYufTrqNLKpuKPDgIHd774X0A0ZtFqwvr2ZlN8z2gvQ+jJX8DPYJ0ab6ojLQ77mJFFMZuNHgr2B72DQuHjbJat1PXke0EfKzOn0vv37JnQBez+I9vyUQQND0BAx+WskoSageO6vnqGc23qhuTypplzsMOUCmSWXotK1axsn/4Fo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c+qMr8Yn; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CpMIaL+c"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93D1B1F000E9;
-	Thu, 21 May 2026 02:19:55 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c+qMr8Yn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3F101F00A3B;
+	Thu, 21 May 2026 02:19:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1779329996;
-	bh=xstjoF/zJ5oZYerl5FVu9kOlDFuapp4BsgXi3VaC0Bw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=CpMIaL+cAI1j6hm0NlgZFY8RpYGZmAom/bO9wxzbrC0W3tnKOn6LZl3c+LmJc0gk4
-	 6YSBQpKEa3x4U74D7pLTs+j5PZUW76yN+sQOcg9wSe2sNvDnd7EzHEglhbndJ7H7q6
-	 kXSFik/VF8EXgajkRzuIZTTBuByVI/9HB894cykF8A3z15Ex4RcN23UfBeVsLWJkPX
-	 86F7kLvF2T8lcfKutPynZyg9CaKQyOZl/V315XJTC8sUvnJO9NFgVL0CIqgYWOmHpm
-	 cXA3sRGCfI078lp8JmSECsmtvi3rWn5tKa2Db4xjAb26TEsXEtRD+TpWB8xv3hssa6
-	 MHn1n+dv6GAJw==
-From: Jakub Kicinski <kuba@kernel.org>
-To: poros@redhat.com
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	netdev@vger.kernel.org,
-	ivecera@redhat.com,
-	vadim.fedorenko@linux.dev,
-	arkadiusz.kubalewski@intel.com,
-	jiri@resnulli.us,
-	milena.olech@intel.com,
-	davem@davemloft.net,
-	michal.michalik@intel.com,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net 1/2] dpll: fix NULL deref in dpll_device_ops() during teardown race
-Date: Wed, 20 May 2026 19:19:53 -0700
-Message-ID: <20260521021953.688132-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260516191317.1005612-2-poros@redhat.com>
-References: <20260516191317.1005612-2-poros@redhat.com>
+	bh=oxGAPtkWo6+OlSRC8RjNsfV13vDMRjGxMBTahMYmMYM=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=c+qMr8Yn8HYJbW/OjWYlXsWHr7hZ9p2k9OaCW0c8ykfn5HxUDGsEKyZPmDDcWemUC
+	 XkOGMjxPVzC+87W4pelYHsLKyHaaCjrZXRwaEYBVhHZBkkElLjtJadp/yx+pgXUniF
+	 RcZrHDU1e5yyQColjQ7PfYfPXQBR34kpbZRX+tYMlcDhc0VIiNaAv3OBvSLFBHHQfi
+	 Ee4V58Ae4FXzZ3Zx39k9HWGnYlwFGnLUzhFcSwE9Nv+5jLiGzDBV2qXTMYwiJ664Zn
+	 0tFMU4QRGXQXjA0kzn3svXEze0vdUjUMSqioUncQciImvWIn5D0uuQqHtgqOkzSZL9
+	 PsdCMj90IocNA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 569183930C38;
+	Thu, 21 May 2026 02:20:08 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -51,127 +37,47 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v4] vsock/vmci: fix UAF when peer resets connection
+ during
+ handshake
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177933000715.3834961.4605675753542747762.git-patchwork-notify@kernel.org>
+Date: Thu, 21 May 2026 02:20:07 +0000
+References: <20260519102310.237181-1-minhnguyen.080505@gmail.com>
+In-Reply-To: <20260519102310.237181-1-minhnguyen.080505@gmail.com>
+To: Minh Nguyen <minhnguyen.080505@gmail.com>
+Cc: pabeni@redhat.com, bryan-bt.tan@broadcom.com, sgarzare@redhat.com,
+ vishnu.dasa@broadcom.com, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, horms@kernel.org, bcm-kernel-feedback-list@broadcom.com,
+ netdev@vger.kernel.org, virtualization@lists.linux.dev,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
----
-dpll: fix NULL deref in dpll_device_ops() during teardown race
+Hello:
 
-This patch tolerates an empty registration_list on a still-indexed dpll
-by dropping a WARN_ON in dpll_device_registration_first(), making
-dpll_priv() and dpll_device_ops() return NULL in that state, and adding
-an early return in dpll_cmd_pin_get_one() when the first dpll-ref of a
-pin is already torn down.
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-> diff --git a/drivers/dpll/dpll_core.c b/drivers/dpll/dpll_core.c
-> index cbb635db4321..4a058b46c69d 100644
-> --- a/drivers/dpll/dpll_core.c
-> +++ b/drivers/dpll/dpll_core.c
-> @@ -1060,12 +1060,8 @@ EXPORT_SYMBOL_GPL(dpll_pin_ref_sync_pair_add);
->  static struct dpll_device_registration *
->  dpll_device_registration_first(struct dpll_device *dpll)
->  {
-> -	struct dpll_device_registration *reg;
-> -
-> -	reg = list_first_entry_or_null((struct list_head *)&dpll->registration_list,
-> -				       struct dpll_device_registration, list);
-> -	WARN_ON(!reg);
-> -	return reg;
-> +	return list_first_entry_or_null((struct list_head *)&dpll->registration_list,
-> +					struct dpll_device_registration, list);
->  }
->  
->  void *dpll_priv(struct dpll_device *dpll)
-> @@ -1073,6 +1069,8 @@ void *dpll_priv(struct dpll_device *dpll)
->  	struct dpll_device_registration *reg;
->  
->  	reg = dpll_device_registration_first(dpll);
-> +	if (!reg)
-> +		return NULL;
->  	return reg->priv;
->  }
+On Tue, 19 May 2026 17:23:10 +0700 you wrote:
+> vmci_transport_recv_connecting_server() returned err = 0 for a peer
+> RST in its default switch arm:
+> 
+> 	err = pkt->type == VMCI_TRANSPORT_PACKET_TYPE_RST ? 0 : -EINVAL;
+> 
+> That made vmci_transport_recv_listen() skip vsock_remove_pending(),
+> leaving the pending socket on the listener's pending_links with
+> sk_state = TCP_CLOSE while destroy: still dropped the explicit
+> reference taken before schedule_delayed_work().
+> 
+> [...]
 
-[High]
-With dpll_priv() now silently returning NULL for any half-dead dpll,
-the contract for the ~28 in-tree callers of dpll_priv() changes.  The
-commit message asserts that the only path which can observe the new
-NULL return is dpll_cmd_pin_get_one() reached from
-dpll_pin_event_send(), and that this path is "gated here" by the new
-check in dpll_cmd_pin_get_one().  Is that gate actually coextensive
-with the set of dplls walked by this code path?
+Here is the summary with links:
+  - [net,v4] vsock/vmci: fix UAF when peer resets connection during handshake
+    https://git.kernel.org/netdev/net/c/99e22ddf4edb
 
-> diff --git a/drivers/dpll/dpll_netlink.c b/drivers/dpll/dpll_netlink.c
-> index ea6360263786..b73d718e8a56 100644
-> --- a/drivers/dpll/dpll_netlink.c
-> +++ b/drivers/dpll/dpll_netlink.c
-> @@ -709,6 +709,12 @@ dpll_cmd_pin_get_one(struct sk_buff *msg, struct dpll_pin *pin,
->  	ref = dpll_xa_ref_dpll_first(&pin->dpll_refs);
->  	ASSERT_NOT_NULL(ref);
->  
-> +	/* The first dpll the pin references may be torn down while still
-> +	 * pinned by foreign-driver refs; drop the notification cleanly.
-> +	 */
-> +	if (!dpll_device_ops(ref->dpll))
-> +		return -ENODEV;
-> +
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-[High]
-The check only validates the dpll returned by
-dpll_xa_ref_dpll_first(&pin->dpll_refs), i.e. the first ref.  Later in
-the same function, when pin->parent_refs is empty, control falls
-through to dpll_msg_add_pin_dplls(), which walks every entry of
-pin->dpll_refs:
 
-    xa_for_each(&pin->dpll_refs, index, ref) {
-        ...
-        ret = dpll_msg_add_pin_on_dpll_state(msg, pin, ref, extack);
-        ...
-        ret = dpll_msg_add_pin_operstate(msg, pin, ref, extack);
-        ...
-        ret = dpll_msg_add_pin_prio(msg, pin, ref, extack);
-        ...
-        ret = dpll_msg_add_pin_direction(msg, pin, ref, extack);
-        ...
-        ret = dpll_msg_add_phase_offset(msg, pin, ref, extack);
-        ...
-    }
-
-Each of those helpers calls dpll_priv(ref->dpll) and passes the
-result as the dpll_priv argument to a driver ops callback.  Can a
-non-first ref->dpll in this loop be in the same half-dead state (entry
-still indexed in dpll_device_xa, but registration_list empty), so that
-dpll_priv() now hands a NULL back to a driver callback that expects a
-non-NULL private pointer (e.g. ice_dpll_pin_state_get does
-struct ice_dpll *d = dpll_priv; struct ice_pf *pf = d->pf;)?
-
-The teardown path the commit message describes
-(zl3073x_dev_dpll_fini iterating list_for_each_entry over zldev->dplls
-and calling zl3073x_dpll_unregister on each) drops dpll_lock between
-per-dpll unregisters.  If a pin from a foreign driver references two
-dplls of the unloading provider, can a notify work observe one
-already torn down and the other still healthy, with the new gate
-inspecting only the first?
-
-Should the same NULL-tolerant treatment also be applied to the
-xa_for_each loop in dpll_msg_add_pin_dplls(), or should the gate skip
-half-dead refs there as well, so the commit message claim "those
-callers cannot see the new NULL return ... only path that can is ...
-gated here" actually holds?
-
-[Medium]
-Separately, the new -ENODEV return interacts with dpll_nl_pin_get_dumpit():
-
-    ret = dpll_cmd_pin_get_one(skb, pin, cb->extack);
-    if (ret) {
-        genlmsg_cancel(skb, hdr);
-        break;
-    }
-
-dpll_pin_available(pin) returns true as long as any of the pin's
-parent_refs or dpll_refs is still DPLL_REGISTERED, so a pin can be
-"available" while its first dpll_ref is the torn-down one.  In that
-case the new -ENODEV breaks out of the dump loop and propagates to
-userspace, hiding every later pin from a single dump call.  Should
-this dumpit caller treat -ENODEV from dpll_cmd_pin_get_one() as a
-"continue" rather than a fatal error, so the dump skips the transient
-pin instead of failing wholesale?
