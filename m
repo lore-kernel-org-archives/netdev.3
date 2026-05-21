@@ -1,81 +1,63 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 540C825B0B3;
-	Thu, 21 May 2026 15:36:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 757EB13A3F7
+	for <netdev@vger.kernel.org>; Thu, 21 May 2026 15:37:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779377763; cv=none; b=Zu9Ohit2DqnMJg3CNfjn14qaZOFQxum4TwrAsPpd4xbYJ9ctjTrJEH0vud7bz4cQsb5GsUXLNGMeExtBvITuTCCIjI5qfHm2ZwXCQo6ST4ZnGmTCGSJQ4DRiwrJ9mpTzDVKywVk0HrA7hTqMfYBgElv6v5rOj7g5ap6bgcQHMUg=
+	t=1779377843; cv=none; b=Ayj/QC/NI+EXIF9h53q9nuG8okqOKL4UhYmhJa8GcS2ffpXNVwdKH2iHugQu+MBXcIBsnK3pt+JSgXm2PtNHZeqYd3mJMV+Wj4biM02Vsm7u1dGhRIlOk7tuyLwfticaAClkWo8Sww9OMXFmzGGqoK3yHiIx2bz8wZzS/pC9Cj4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779377763; c=relaxed/simple;
-	bh=5dDy/aBj4E9U494Qv23Ul+WC06rY5CyC63djaVJpECk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gFXYOoHNIcWqJbNEfu+tj7x8sEEKeOuL4mpa28C+5SQWifNHnGuatMWuXstasDA9PtT1dH5+X1AuCeoQ9MqKZs0Rmp/MT1ygd4MEEuEQGjBPqfogTj4XfyCYFJzJCVp9bWIware/aY2MkzjCxwJI+vGusTwL5Lw6VSpqu3etOVw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PG2XktR2; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779377843; c=relaxed/simple;
+	bh=VXOwYWX1xh9f7vfOxrTrZ9VWbfBjIvmBbptxVXN1+gQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Vtr/dNq1wjDNtehdFyqSC31V2BWLJ1zeg2ydH7kUsUHhnRh3q1UkIu3hIjuugz1zsoSw5BDMClrHPFrn5eE0Nw9TBujPAA2Dq7XlKFvE4qE6Uf0LJdczKjCH2sEA3eA9Fb5alD4D1kuZ5LBzIyA8HTOe4NeiSp6peVbjPpnYAvA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ja8dkwva; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PG2XktR2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0847C1F000E9;
-	Thu, 21 May 2026 15:35:59 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ja8dkwva"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD0361F000E9;
+	Thu, 21 May 2026 15:37:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779377762;
-	bh=XsAMDB0q4nKocT90tbJUfWc/eUcL09U3cACOei5OtWw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=PG2XktR2z9H5ojAna5dJquvxmb9MMvzHNlj61U4EM993BVkH44o9J9S3pCBhulWgR
-	 9TAsQjM94xzMd34dhMPglgf1jlfCVF5/l3wa6VpKNdaHnuhdeXMaBKfzP1Uf29HCjT
-	 NACsF43hHl9CE0AGKDN+JfiYmH/HfeL7VG8bh5JY6gIEOxTdgjiYUCxinpfqELTktd
-	 n6+y2wNBM8xZzOuObAUdCInziYzdkdFMNKfiSZqWkls5gpfYEfQi9BIuLKqcA/nDdC
-	 YppkciFylJUBMKW7fEjEVkshfDJSGVJXZhmfY4cCNigivI1PmIuzfI11IXitvmwY/4
-	 84qJbgnsxS5ZA==
-Date: Thu, 21 May 2026 16:35:57 +0100
-From: Simon Horman <horms@kernel.org>
-To: Muhammad Bilal <meatuni001@gmail.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	oe-linux-nfc@lists.linux.dev, david+nfc@ixit.cz,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, stable@vger.kernel.org
-Subject: Re: [PATCH net 0/2] nfc: llcp: fix OOB reads and integer bugs in TLV
- parsers
-Message-ID: <20260521153557.GE1506108@horms.kernel.org>
-References: <20260519011937.12903-1-meatuni001@gmail.com>
+	s=k20260515; t=1779377842;
+	bh=DeqdQCLUsjvjeynVPJcNzG3Q21M+KygIZErHrc8JodQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=Ja8dkwvaZr24Z4cr/C1nPi4Tog3LkboMBnczTRWyNnNoHqedX+ZXCNGliXIsnUxw6
+	 v/kEvcz7WddwLzt5kZVkAGzGRhquxgrNEWfswHW4qLEXlmuyf9ZsgWoQ7ELW2sk/lh
+	 mkgBQiIpp9i124Rj14587MdfGcmaypi7gmP18fOhvqlxhh1XX7crx2E3QI6cQ/witV
+	 EMKY6Rig1pi9+l1BjbvKK8UmaYdqxsMTMh/3DO1nPUAztKflb2xPUhjMuwtOPbQbUm
+	 vwHzx0JXKbA6tMSgNH29VMLNk8E3lDmNaHUUf/kTYT4EXzNFmc6GoH837JzhVlm07l
+	 82ll7i8UU/mvg==
+Date: Thu, 21 May 2026 08:37:20 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Tony Nguyen <anthony.l.nguyen@intel.com>
+Cc: davem@davemloft.net, pabeni@redhat.com, edumazet@google.com,
+ andrew+netdev@lunn.ch, netdev@vger.kernel.org, Kohei Enju <kohei@enjuk.jp>,
+ Simon Horman <horms@kernel.org>, Patryk Holda <patryk.holda@intel.com>
+Subject: Re: [PATCH net 1/8] ice: fix UAF/NULL deref when VSI rebuild and
+ XDP attach race
+Message-ID: <20260521083720.67b24a7b@kernel.org>
+In-Reply-To: <20260520183501.3360810-2-anthony.l.nguyen@intel.com>
+References: <20260520183501.3360810-1-anthony.l.nguyen@intel.com>
+	<20260520183501.3360810-2-anthony.l.nguyen@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260519011937.12903-1-meatuni001@gmail.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Mon, May 18, 2026 at 09:19:35PM -0400, Muhammad Bilal wrote:
-> This series fixes memory safety bugs in the NFC LLCP TLV parsing code,
-> reachable from a remote NFC peer via crafted LLCP frames.
-> 
-> Patch 1 fixes nfc_llcp_parse_gb_tlv() and nfc_llcp_parse_connection_tlv():
->   - u8 offset wraps to zero after 255 (widened to u16)
->   - OOB read of TLV header on truncated buffer
->   - OOB read of value field via attacker-controlled length byte
-> 
-> Patch 2 fixes nfc_llcp_recv_snl():
->   - OOB read of TLV header when tlv_len - offset == 1
->   - OOB read of SDREQ value via attacker-controlled length
->   - SIZE_MAX underflow when length == 0 in service_name_len,
->     bypassing the sn_len == 0 guard in nfc_llcp_sock_from_sn()
-> 
-> Previously reported to security@kernel.org on 2026-05-15. Willy Tarreau
-> advised posting to public lists as NFC is currently orphaned.
+On Wed, 20 May 2026 11:34:49 -0700 Tony Nguyen wrote:
+> +	if (test_bit(ICE_VSI_REBUILD_PENDING, vsi->state)) {
+> +		if (prog) {
+> +			NL_SET_ERR_MSG_MOD(extack, "VSI rebuild is pending");
+> +			return -EAGAIN;
+> +		}
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+I seem to recall complaining about this sort of error handling to you
+folks in the past. Chances are user space will just fail seeing this
+error, rather than retrying. The correct behavior would be to wait.
+Is that not possible?
 
-The AI generated review at sashiko.dev has flagged a number
-or pre-existing problems.
-
-While several of them do seem to impact the effectiveness of these
-patches I would suggest treating them as items for possible follow-up.
-
-I say that in order to expanding the scope of this patch-set.
-Which I believe risks growing significantly if related issues
-are solved; because I fully expect that to lead to more related issues.
-
-So I advocate an incremental approach, starting with this
-patchset in it's current form.
+(I think Sashiko is brewing a lot of comments for this series so it
+won't make today's PR either way :()
