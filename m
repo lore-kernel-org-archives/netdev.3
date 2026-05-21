@@ -1,81 +1,55 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ED1B223DFF;
-	Thu, 21 May 2026 00:19:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 687E21E5B88;
+	Thu, 21 May 2026 00:26:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779322799; cv=none; b=ihy4vTO2zgPAsz3VVXlEmA6DcQBX0Gz/bjA/VAqF65X2cXbKgcecYb6DWkyU30TBH2XgWoSu42S/Pvl+e+jNX+BkEYyDQyKb+ZqkPpIhdDTv9oTRpMP47uQnP5Mz98NQ17BcbwNT+M2PhvSSwueyNaGdShrPp5k5L4sP6fvOJ+E=
+	t=1779323173; cv=none; b=Q/IhjVx31HNsNO+yaxicJ563eFQwqeDBAxn9/5df0jQHSjaRpWmjOHJI3QxTP269zSZyUZ2Tc2D2zyHcxA9cYiFzvl4B3j9wxgrbbmpQ6R7xPZrmG5mtNR+FXyEw/WpTt9TeatG9XHhaTZkWE3cfzkLKmNmAiUljTksJ3yvG/q4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779322799; c=relaxed/simple;
-	bh=A1F8lhjzrsFLPFuKCrabgz1Q9thjbNW7K3wTJEyXvF4=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=QYqWLnmjAhL7y5P6E1aCPidBYLXZJHw24LJBvaaI/ecY8aVqXFwO7Ay+YblofaL7E3lAUcbb213DrxwaRkOl6/s7s6ArAoX98haMj9WMSySzZ90YFzUN80jgNoOyCPproUDuYmpyEfOEC05/diEXat5JaFCpsZ5XcqL+wwgQS7Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YZdvi63n; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779323173; c=relaxed/simple;
+	bh=JIBKqwX7IL5FbIet9rqh0HFHn29IohMbMw8Hf1pqEDk=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=KRnIMP3svBIDOOaltXLheF/SaRGyGLBgdnHCfpBwB4HLWZpT5VAI1kvFsyIBvMcn0Kl5ZstiTukcJ19CdBTH+i9w1NTZx6irAiin0f4p2Z+7GJamnz6Khr8Oo0nDDhbp62yA6vOvM62WJz/JwzFnTJ6UXxXG9bbmSHt8dc9uoko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jaXr6pn8; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YZdvi63n"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21E4E1F000E9;
-	Thu, 21 May 2026 00:19:58 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jaXr6pn8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC6521F000E9;
+	Thu, 21 May 2026 00:26:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779322798;
-	bh=QlU2pbcqqHQL0NLNQCmMKfaSic+pDUn/ZcMi5Hp6a/I=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=YZdvi63nWbV4gZRhmyPzRuM9tS7UBGmLZT+xPWUF27Zv8y7iL+A/n4tDYYcCq2N5j
-	 9MW/tVjMYkXpXZrKc0ytHTnqCO6DrKwAvAZ7Uh8rNEgy46M7PuZPpT0rprn/stigc2
-	 6oSX08pBcCHzsWVPE/Xp6VJLeyLSvjrAt/7ys7ICqpvGIhyaZo9Vo7pKz7Giysv35X
-	 5jFaAWviiOaIlURqqDs0hdlZimhWoTLb+A5zWaPbL6MDIw0I1+k1HbOd/Nie8eUgFT
-	 8FFMe+tfq7Rx2pj34ghNxXMUZ7RSoBtsaOo7RWCZec0FLiPirBNRKaAsjDMAgcjeV5
-	 aLL4dUq/t2EIQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 939873930C25;
-	Thu, 21 May 2026 00:20:09 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1779323170;
+	bh=JIBKqwX7IL5FbIet9rqh0HFHn29IohMbMw8Hf1pqEDk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=jaXr6pn84reZS5ubOWIWXvNn6VNd9TUmh+BEnhumXaVzgHJn9Ntapuy5vCmPoU2iH
+	 +Op3GtFPndMWuXJrjiRUlcHvkjxYmiY05UrVkqvS9uVvTU6K/JTbp3RQuNP8N8ahA5
+	 GP2KTJjtIHt9oIRmQHSQnAMtvLYpEWAzGVBFPAShE2ok+ODxgtEpnrqLaCpG3k8EIM
+	 28GbPLn6BzQz1N19+w97ytdemYp3fxo2Fli6Kmkw8LKX2DqInCd9BtFT3xmdckKvO2
+	 SJYwMmCcomEumo1bYiX2ipseLXPmwi+xNHqM2PTV19nXFshBVaHQpRld4E5qEbtBCh
+	 mzMjKeVz4/UVQ==
+Date: Wed, 20 May 2026 17:26:09 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Michael Bommarito <michael.bommarito@gmail.com>
+Cc: Marcel Holtmann <marcel@holtmann.org>, Luiz Augusto von Dentz
+ <luiz.dentz@gmail.com>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon
+ Horman <horms@kernel.org>, linux-bluetooth@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH v3] Bluetooth: L2CAP: reject BR/EDR signaling packets
+ over MTUsig
+Message-ID: <20260520172609.3034337f@kernel.org>
+In-Reply-To: <20260521001327.3729880-1-michael.bommarito@gmail.com>
+References: <20260521001327.3729880-1-michael.bommarito@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] smc: Use flexible array for SMCD connections
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177932280814.3806355.4057275719658528266.git-patchwork-notify@kernel.org>
-Date: Thu, 21 May 2026 00:20:08 +0000
-References: <20260519005206.628071-1-rosenp@gmail.com>
-In-Reply-To: <20260519005206.628071-1-rosenp@gmail.com>
-To: Rosen Penev <rosenp@gmail.com>
-Cc: linux-rdma@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- alibuda@linux.alibaba.com, dust.li@linux.alibaba.com, sidraya@linux.ibm.com,
- wenjia@linux.ibm.com, mjambigi@linux.ibm.com, tonylu@linux.alibaba.com,
- guwen@linux.alibaba.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
+On Wed, 20 May 2026 20:13:27 -0400 Michael Bommarito wrote:
+> From: Michael Bommarito <michael.bommarito@gmail.com>
 
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Mon, 18 May 2026 17:52:06 -0700 you wrote:
-> Store the per-DMB connection pointers in the SMCD device allocation
-> instead of allocating a separate connection array.
-> 
-> This keeps the connection table tied to the SMCD device lifetime and
-> simplifies the allocation and cleanup paths.
-> 
-> Assisted-by: Codex:GPT-5.5
-> Signed-off-by: Rosen Penev <rosenp@gmail.com>
-> 
-> [...]
-
-Here is the summary with links:
-  - smc: Use flexible array for SMCD connections
-    https://git.kernel.org/netdev/net-next/c/5026c42d7f14
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Please (tell your bot to) use the get_maintainer script.
