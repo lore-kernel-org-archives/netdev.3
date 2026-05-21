@@ -1,42 +1,42 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9719394EA7
-	for <netdev@vger.kernel.org>; Thu, 21 May 2026 06:12:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30C8A370AC3
+	for <netdev@vger.kernel.org>; Thu, 21 May 2026 06:12:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779343978; cv=none; b=l64+iAh6VX6IaqK1+NM7PscKCFLMW7I7bJqX0ZGWh2YvEx8dOBlTO4NnqkX4xcvtFZJXPWI/yG4SJj3JfQZf4g7zwyMa+DehJId0faJm5EH7rbbrNS6iy1hLSbp14iws84bdLOT2f2+j5yMMzKceljoFZTZ/8uKUTio3UeYISkM=
+	t=1779343980; cv=none; b=EwCNzrIJSpauuQp+yjDD2O16choZbods9TUcovSQG0Qf2hiTA1KZdzDq6+rr+CKBTA0MpmOAVC9C8uLF2P39abLjbxiA65v2MG25KuI0hBXKsSb1XM+4yIDNrI8ws0EuA8sOvNZb4m8QJR5qhontccoeF/2YFRclmwhVNu9ySmU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779343978; c=relaxed/simple;
-	bh=NltFvwOAM4viNi+4j8BaeJsOC5LZBG6x/Fk+OleHO3c=;
+	s=arc-20240116; t=1779343980; c=relaxed/simple;
+	bh=ld91UU0L0HSmWPpiKNfsfm48VRA3O2pevF+WesUfJ6g=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=DctA2hPB4/B9+wSNM1fLPKINYmNz3OfyTW5QvctkSP0vHtzH2aYu0nZv/vFMBwHfVuNzqSyZstB6otaaws5warf9aoZsahNTuDx1pdU9rXtyc8OJ8wrS0j/ke/vEXPxTA8+iNRf97Il1q+vWyMPPooP20oEZqOOHBQJvYMHc6vg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=PKG3zkUW; arc=none smtp.client-ip=185.246.84.56
+	 In-Reply-To:To:Cc; b=iITi7SNJZxea14ru/9VqmhAtPrDmwxQIylR1V7TIBuwucC8B1hMWeksy9Cv3NzlkE52C0ng3S5OplNnoWBs+YoyuibJr8LyJhs3Ebit48YqhjQkx4lV0QD2MT70XXHjU+dqdRYUELVN7jEzHZX4s9dD+ioBKm9uh23b7N1sDy5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Zx9PTO0c; arc=none smtp.client-ip=185.171.202.116
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="PKG3zkUW"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Zx9PTO0c"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 90C871A3659;
-	Thu, 21 May 2026 06:12:52 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id B5FE1C2C64D;
+	Thu, 21 May 2026 06:13:51 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 64CB060718;
-	Thu, 21 May 2026 06:12:52 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2B15B107EA39F;
-	Thu, 21 May 2026 08:12:49 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id B8E4660718;
+	Thu, 21 May 2026 06:12:57 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2C965107EA6BB;
+	Thu, 21 May 2026 08:12:54 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1779343971; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1779343976; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=nmENppGHEm6dYHHEJm+QZ3PPtAuIOcxQyD/PO6i+mZY=;
-	b=PKG3zkUWfLHyOAqr5hPT1y0tbw2kbTgd8HYWtBjcWQdKuf2DHyvOGKeUxqyjjdpF7C4teh
-	ivQW0idk70zmnREDUL4v1YzO5w2vRdVNQ61+Y9wW73qEjFH8G4UN4tw3eV+61qckW8u9H4
-	Kea74VoMoPvxhf4iclGvHaGgCV8FyqiynF/OD40AxSXHa97wZcHtrr3v+xWJoCn3VwMhRq
-	rQvRNJs2x5ubj+qgjtGc8evjEkqLLOB4y0PgRIMuYBv4wUPm99jWb73UgA4rKnK9sDfgXL
-	43Jx7CgPj6jlRSRpTqP743dwfITk2tQzey7OEqP5pkVvax19qIHnF26hZNTUmA==
+	bh=sId2BZ8mqqG0hBMYDKCUp5BU4QJP1FhJ+kadyR6vd+w=;
+	b=Zx9PTO0cE5/VKgqGIqj1Age5Eq+nsYgtxucuS4yE9ki4FYTNNosrvNpkn58L9zuQloaRUZ
+	cjY/4ir99MZzynD3JH/eUKwm5nerWXdM7psirfnCQbmTAz2YoI/M9GhpMIjbc2CRnzfhCq
+	3MEm++gn/u/eDWfH5EeNirEZwmgN2nM147D8nlWOKPNrxVy477pzYi0DAQG25/IEtp4CmT
+	EoCYq+VSNWq00+vVvzFvXUIkg7wqJErsvOwLzD/9uMZCR3RcQQDkPcW0Hf9yIZMkgfKvw1
+	irHu+ccqTEHUsjSWJO2FO+q04oUqipn17fA0attoGvLA4EPVWceu6LqZ/0L7XQ==
 From: Bastien Curutchet <bastien.curutchet@bootlin.com>
-Date: Thu, 21 May 2026 08:12:38 +0200
-Subject: [PATCH net-next v3 3/8] net: dsa: microchip: bypass
- dev_ops->setup() and teardown() for ksz9477
+Date: Thu, 21 May 2026 08:12:40 +0200
+Subject: [PATCH net-next v3 5/8] net: dsa: microchip: remove
+ dev_ops->setup() and teardown()
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -45,7 +45,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260521-clean-ksz-2nd-series-v3-3-75c38971c19a@bootlin.com>
+Message-Id: <20260521-clean-ksz-2nd-series-v3-5-75c38971c19a@bootlin.com>
 References: <20260521-clean-ksz-2nd-series-v3-0-75c38971c19a@bootlin.com>
 In-Reply-To: <20260521-clean-ksz-2nd-series-v3-0-75c38971c19a@bootlin.com>
 To: Woojung Huh <woojung.huh@microchip.com>, UNGLinuxDriver@microchip.com, 
@@ -66,191 +66,204 @@ X-Last-TLS-Session-Version: TLSv1.3
 
 From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-The KSZ switch families are sufficiently different that a common
-ds->ops->setup() - ksz_setup() with micro-managed dev_ops->reset(),
-dev_ops->pcs_create(), dev_ops->config_cpu_port(),
-dev_ops->enable_stp_addr(), dev_ops->setup() seems to be too convoluted.
+All switch families have been converted to have their own
+ds->ops->setup() methods and to call the common ksz_teardown().
 
-I am proposing to make each KSZ switch family part ways for
-dsa_switch_ops :: setup() and teardown(), to allow them greater
-flexibility. This here is the implementation for ksz9477, which is
-nothing other than a copy of ksz_setup() with the dev_ops function
-pointers replaced with direct function calls.
+Remove the no longer used ksz_setup() function and the associated
+ksz_dev_ops callbacks.
 
 Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
 Signed-off-by: Bastien Curutchet (Schneider Electric) <bastien.curutchet@bootlin.com>
 ---
- drivers/net/dsa/microchip/ksz9477.c | 127 +++++++++++++++++++++++++++++++++---
- 1 file changed, 118 insertions(+), 9 deletions(-)
+ drivers/net/dsa/microchip/ksz_common.c | 133 ---------------------------------
+ drivers/net/dsa/microchip/ksz_common.h |   8 --
+ 2 files changed, 141 deletions(-)
 
-diff --git a/drivers/net/dsa/microchip/ksz9477.c b/drivers/net/dsa/microchip/ksz9477.c
-index 88a5ff62aae8..7385aa4e788a 100644
---- a/drivers/net/dsa/microchip/ksz9477.c
-+++ b/drivers/net/dsa/microchip/ksz9477.c
-@@ -1477,9 +1477,54 @@ int ksz9477_enable_stp_addr(struct ksz_device *dev)
- static int ksz9477_setup(struct dsa_switch *ds)
- {
- 	struct ksz_device *dev = ds->priv;
--	const u16 *regs = dev->info->regs;
--	int ret = 0;
-+	u16 storm_mask, storm_rate;
-+	struct dsa_port *dp;
-+	struct ksz_port *p;
-+	const u16 *regs;
-+	int ret;
-+
-+	regs = dev->info->regs;
-+
-+	dev->vlan_cache = devm_kcalloc(dev->dev, sizeof(struct vlan_table),
-+				       dev->info->num_vlans, GFP_KERNEL);
-+	if (!dev->vlan_cache)
-+		return -ENOMEM;
-+
-+	ret = ksz9477_reset_switch(dev);
-+	if (ret) {
-+		dev_err(ds->dev, "failed to reset switch\n");
-+		return ret;
-+	}
-+
-+	ret = ksz_parse_drive_strength(dev);
-+	if (ret)
-+		return ret;
- 
-+	if (ksz_has_sgmii_port(dev)) {
-+		ret = ksz9477_pcs_create(dev);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	/* set broadcast storm protection 10% rate */
-+	storm_mask = BROADCAST_STORM_RATE;
-+	storm_rate = (BROADCAST_STORM_VALUE * BROADCAST_STORM_PROT_RATE) / 100;
-+	regmap_update_bits(ksz_regmap_16(dev), regs[S_BROADCAST_CTRL],
-+			   storm_mask, storm_rate);
-+
-+	ksz9477_config_cpu_port(ds);
-+
-+	ksz9477_enable_stp_addr(dev);
-+
-+	ds->num_tx_queues = dev->info->num_tx_queues;
-+
-+	regmap_update_bits(ksz_regmap_8(dev), regs[S_MULTICAST_CTRL],
-+			   MULTICAST_STORM_DISABLE, MULTICAST_STORM_DISABLE);
-+
-+	ksz_init_mib_timer(dev);
-+
-+	ds->configure_vlan_while_not_filtering = false;
-+	ds->dscp_prio_mapping_is_global = true;
- 	ds->mtu_enforcement_ingress = true;
- 
- 	/* Required for port partitioning. */
-@@ -1512,7 +1557,76 @@ static int ksz9477_setup(struct dsa_switch *ds)
- 	 * be enabled by ksz_wol_pre_shutdown(). Otherwise, some PMICs
- 	 * do not like PME events changes before shutdown.
- 	 */
--	return ksz_write8(dev, regs[REG_SW_PME_CTRL], 0);
-+	ret = ksz_write8(dev, regs[REG_SW_PME_CTRL], 0);
-+	if (ret < 0)
-+		return ret;
-+
-+	/* Start with learning disabled on standalone user ports, and enabled
-+	 * on the CPU port. In lack of other finer mechanisms, learning on the
-+	 * CPU port will avoid flooding bridge local addresses on the network
-+	 * in some cases.
-+	 */
-+	p = &dev->ports[dev->cpu_port];
-+	p->learning = true;
-+
-+	if (dev->irq > 0) {
-+		ret = ksz_girq_setup(dev);
-+		if (ret)
-+			return ret;
-+
-+		dsa_switch_for_each_user_port(dp, dev->ds) {
-+			ret = ksz_pirq_setup(dev, dp->index);
-+			if (ret)
-+				goto port_release;
-+
-+			if (dev->info->ptp_capable) {
-+				ret = ksz_ptp_irq_setup(ds, dp->index);
-+				if (ret)
-+					goto pirq_release;
-+			}
-+		}
-+	}
-+
-+	if (dev->info->ptp_capable) {
-+		ret = ksz_ptp_clock_register(ds);
-+		if (ret) {
-+			dev_err(dev->dev, "Failed to register PTP clock: %d\n",
-+				ret);
-+			goto port_release;
-+		}
-+	}
-+
-+	ret = ksz_mdio_register(dev);
-+	if (ret < 0) {
-+		dev_err(dev->dev, "failed to register the mdio");
-+		goto out_ptp_clock_unregister;
-+	}
-+
-+	ret = ksz_dcb_init(dev);
-+	if (ret)
-+		goto out_ptp_clock_unregister;
-+
-+	/* start switch */
-+	regmap_update_bits(ksz_regmap_8(dev), regs[S_START_CTRL],
-+			   SW_START, SW_START);
-+
-+	return 0;
-+
-+out_ptp_clock_unregister:
-+	if (dev->info->ptp_capable)
-+		ksz_ptp_clock_unregister(ds);
-+port_release:
-+	if (dev->irq > 0) {
-+		dsa_switch_for_each_user_port_continue_reverse(dp, dev->ds) {
-+			if (dev->info->ptp_capable)
-+				ksz_ptp_irq_free(ds, dp->index);
-+pirq_release:
-+			ksz_irq_free(&dev->ports[dp->index].pirq);
-+		}
-+		ksz_irq_free(&dev->girq);
-+	}
-+
-+	return ret;
+diff --git a/drivers/net/dsa/microchip/ksz_common.c b/drivers/net/dsa/microchip/ksz_common.c
+index 185131399742..103f79179446 100644
+--- a/drivers/net/dsa/microchip/ksz_common.c
++++ b/drivers/net/dsa/microchip/ksz_common.c
+@@ -2745,136 +2745,6 @@ int ksz_pirq_setup(struct ksz_device *dev, u8 p)
+ 	return ksz_irq_common_setup(dev, pirq);
  }
  
- u32 ksz9477_get_port_addr(int port, int offset)
-@@ -1779,7 +1893,6 @@ const struct phylink_mac_ops ksz9477_phylink_mac_ops = {
+-int ksz_setup(struct dsa_switch *ds)
+-{
+-	struct ksz_device *dev = ds->priv;
+-	u16 storm_mask, storm_rate;
+-	struct dsa_port *dp;
+-	struct ksz_port *p;
+-	const u16 *regs;
+-	int ret;
+-
+-	regs = dev->info->regs;
+-
+-	dev->vlan_cache = devm_kcalloc(dev->dev, sizeof(struct vlan_table),
+-				       dev->info->num_vlans, GFP_KERNEL);
+-	if (!dev->vlan_cache)
+-		return -ENOMEM;
+-
+-	ret = dev->dev_ops->reset(dev);
+-	if (ret) {
+-		dev_err(ds->dev, "failed to reset switch\n");
+-		return ret;
+-	}
+-
+-	ret = ksz_parse_drive_strength(dev);
+-	if (ret)
+-		return ret;
+-
+-	if (ksz_has_sgmii_port(dev) && dev->dev_ops->pcs_create) {
+-		ret = dev->dev_ops->pcs_create(dev);
+-		if (ret)
+-			return ret;
+-	}
+-
+-	/* set broadcast storm protection 10% rate */
+-	storm_mask = BROADCAST_STORM_RATE;
+-	storm_rate = (BROADCAST_STORM_VALUE * BROADCAST_STORM_PROT_RATE) / 100;
+-	if (ksz_is_ksz8463(dev)) {
+-		storm_mask = swab16(storm_mask);
+-		storm_rate = swab16(storm_rate);
+-	}
+-	regmap_update_bits(ksz_regmap_16(dev), regs[S_BROADCAST_CTRL],
+-			   storm_mask, storm_rate);
+-
+-	dev->dev_ops->config_cpu_port(ds);
+-
+-	dev->dev_ops->enable_stp_addr(dev);
+-
+-	ds->num_tx_queues = dev->info->num_tx_queues;
+-
+-	regmap_update_bits(ksz_regmap_8(dev), regs[S_MULTICAST_CTRL],
+-			   MULTICAST_STORM_DISABLE, MULTICAST_STORM_DISABLE);
+-
+-	ksz_init_mib_timer(dev);
+-
+-	ds->configure_vlan_while_not_filtering = false;
+-	ds->dscp_prio_mapping_is_global = true;
+-
+-	if (dev->dev_ops->setup) {
+-		ret = dev->dev_ops->setup(ds);
+-		if (ret)
+-			return ret;
+-	}
+-
+-	/* Start with learning disabled on standalone user ports, and enabled
+-	 * on the CPU port. In lack of other finer mechanisms, learning on the
+-	 * CPU port will avoid flooding bridge local addresses on the network
+-	 * in some cases.
+-	 */
+-	p = &dev->ports[dev->cpu_port];
+-	p->learning = true;
+-
+-	if (dev->irq > 0) {
+-		ret = ksz_girq_setup(dev);
+-		if (ret)
+-			return ret;
+-
+-		dsa_switch_for_each_user_port(dp, dev->ds) {
+-			ret = ksz_pirq_setup(dev, dp->index);
+-			if (ret)
+-				goto port_release;
+-
+-			if (dev->info->ptp_capable) {
+-				ret = ksz_ptp_irq_setup(ds, dp->index);
+-				if (ret)
+-					goto pirq_release;
+-			}
+-		}
+-	}
+-
+-	if (dev->info->ptp_capable) {
+-		ret = ksz_ptp_clock_register(ds);
+-		if (ret) {
+-			dev_err(dev->dev, "Failed to register PTP clock: %d\n",
+-				ret);
+-			goto port_release;
+-		}
+-	}
+-
+-	ret = ksz_mdio_register(dev);
+-	if (ret < 0) {
+-		dev_err(dev->dev, "failed to register the mdio");
+-		goto out_ptp_clock_unregister;
+-	}
+-
+-	ret = ksz_dcb_init(dev);
+-	if (ret)
+-		goto out_ptp_clock_unregister;
+-
+-	/* start switch */
+-	regmap_update_bits(ksz_regmap_8(dev), regs[S_START_CTRL],
+-			   SW_START, SW_START);
+-
+-	return 0;
+-
+-out_ptp_clock_unregister:
+-	if (dev->info->ptp_capable)
+-		ksz_ptp_clock_unregister(ds);
+-port_release:
+-	if (dev->irq > 0) {
+-		dsa_switch_for_each_user_port_continue_reverse(dp, dev->ds) {
+-			if (dev->info->ptp_capable)
+-				ksz_ptp_irq_free(ds, dp->index);
+-pirq_release:
+-			ksz_irq_free(&dev->ports[dp->index].pirq);
+-		}
+-		ksz_irq_free(&dev->girq);
+-	}
+-
+-	return ret;
+-}
+-
+ void ksz_teardown(struct dsa_switch *ds)
+ {
+ 	struct ksz_device *dev = ds->priv;
+@@ -2893,9 +2763,6 @@ void ksz_teardown(struct dsa_switch *ds)
+ 
+ 		ksz_irq_free(&dev->girq);
+ 	}
+-
+-	if (dev->dev_ops->teardown)
+-		dev->dev_ops->teardown(ds);
+ }
+ 
+ static void port_r_cnt(struct ksz_device *dev, int port)
+diff --git a/drivers/net/dsa/microchip/ksz_common.h b/drivers/net/dsa/microchip/ksz_common.h
+index 5fad56c2d067..f80034488cd1 100644
+--- a/drivers/net/dsa/microchip/ksz_common.h
++++ b/drivers/net/dsa/microchip/ksz_common.h
+@@ -359,8 +359,6 @@ struct alu_struct {
  };
  
- const struct ksz_dev_ops ksz9477_dev_ops = {
--	.setup = ksz9477_setup,
- 	.get_port_addr = ksz9477_get_port_addr,
- 	.cfg_port_member = ksz9477_cfg_port_member,
- 	.port_setup = ksz9477_port_setup,
-@@ -1793,19 +1906,15 @@ const struct ksz_dev_ops ksz9477_dev_ops = {
- 	.pme_write8 = ksz_write8,
- 	.pme_pread8 = ksz_pread8,
- 	.pme_pwrite8 = ksz_pwrite8,
--	.config_cpu_port = ksz9477_config_cpu_port,
- 	.tc_cbs_set_cinc = ksz9477_tc_cbs_set_cinc,
--	.enable_stp_addr = ksz9477_enable_stp_addr,
--	.reset = ksz9477_reset_switch,
- 	.init = ksz9477_switch_init,
--	.pcs_create = ksz9477_pcs_create,
+ struct ksz_dev_ops {
+-	int (*setup)(struct dsa_switch *ds);
+-	void (*teardown)(struct dsa_switch *ds);
+ 	u32 (*get_port_addr)(int port, int offset);
+ 	void (*cfg_port_member)(struct ksz_device *dev, int port, u8 member);
+ 	void (*port_setup)(struct ksz_device *dev, int port, bool cpu_port);
+@@ -417,12 +415,7 @@ struct ksz_dev_ops {
+ 	void (*port_init_cnt)(struct ksz_device *dev, int port);
+ 	void (*setup_rgmii_delay)(struct ksz_device *dev, int port);
+ 	int (*tc_cbs_set_cinc)(struct ksz_device *dev, int port, u32 val);
+-	void (*config_cpu_port)(struct dsa_switch *ds);
+-	int (*enable_stp_addr)(struct ksz_device *dev);
+-	int (*reset)(struct ksz_device *dev);
+ 	int (*init)(struct ksz_device *dev);
+-
+-	int (*pcs_create)(struct ksz_device *dev);
  };
  
- const struct dsa_switch_ops ksz9477_switch_ops = {
- 	.get_tag_protocol	= ksz9477_get_tag_protocol,
- 	.connect_tag_protocol   = ksz9477_connect_tag_protocol,
- 	.get_phy_flags		= ksz_get_phy_flags,
--	.setup			= ksz_setup,
-+	.setup			= ksz9477_setup,
- 	.teardown		= ksz_teardown,
- 	.phy_read		= ksz_phy_read16,
- 	.phy_write		= ksz_phy_write16,
+ struct ksz_device *ksz_switch_alloc(struct device *base,
+@@ -433,7 +426,6 @@ void ksz_switch_remove(struct ksz_device *dev);
+ int ksz_switch_suspend(struct device *dev);
+ int ksz_switch_resume(struct device *dev);
+ 
+-int ksz_setup(struct dsa_switch *ds);
+ void ksz_teardown(struct dsa_switch *ds);
+ int ksz_port_setup(struct dsa_switch *ds, int port);
+ void ksz_port_teardown(struct dsa_switch *ds, int port);
 
 -- 
 2.54.0
