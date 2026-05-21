@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF5F52FC876;
-	Thu, 21 May 2026 21:12:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71FDB2EA754;
+	Thu, 21 May 2026 21:12:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779397927; cv=none; b=O0FeHJP/V0ZkkqbshSXgmas5Iu8KgC1pmaO98EIdriACNTrseBMaO8qt2ljRPlWWJYH9RIJ4quNb+k4m5hqOrGBRi9G3OMm94o46boBtWOn2qE5FkcipPncMbm+vAOK99cRc9y/J6ZXQDF4y0PY4rxOW5/vNMCVmgCfc4DMpr/8=
+	t=1779397942; cv=none; b=eO4MP+EdrAeSkvnpIQYcw5s4D9SrXx157vYLdWHgRyhUMW5R0O4GTayXtyQyHcxZk4YBEnXg73YR07s4/SUEYtECqHCum9ZuJbbdDRkuti5NH48IszZlhS16ewV9Gymb1l6o3IhdPfjmGzgH6XHpnjVdOLTaS/EzH0JRqfDxBHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779397927; c=relaxed/simple;
-	bh=WzSompHWZa+TXS/OFktCRwuPIyYbFpUDARQgVaKVV7E=;
+	s=arc-20240116; t=1779397942; c=relaxed/simple;
+	bh=zq/Zk1NP59dmboSsqktnTMykD6FVDRojXL3NV0iKftY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eBtmXtXVNaYlS0QdJra1lrnR3kHsxNAKBvoF2W3KXnNgTymE/z1lT8lciwAqo//f5aHtSPbvzcDZYEIf9EUnVpxlfMd43X4Ln3r3hi5xKvrmp8Hsd4eT5EjcdppteCQMa/mu7oG8/1h5ewVbqQf4fJpaQyCmFCVA1gtcNNpwrgA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IfmqoT+U; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:Content-Type; b=OFpX3Vb+BhdhiRmwMPD4zVh4qhscHbQfU5JywLTb9XLdTTwiOsDS1V1uqtrsCl9i7cGVXXF/Ca5VwAAFOens8rXeqMYe0V9828Y2HvBqbLvfzhFnS9+9fLhYFvpzkNSg+JPp29kJ8d2sySNV8rAXjyj+l+5Jc9/Qehl4fPPaJcI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A0img0n2; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IfmqoT+U"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B41C71F000E9;
-	Thu, 21 May 2026 21:12:03 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A0img0n2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 903261F000E9;
+	Thu, 21 May 2026 21:12:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779397926;
-	bh=ObeRCQN+zlcP31xpZYcgGdti/iiyxcHhdVkYQKtl1Rs=;
+	s=k20260515; t=1779397941;
+	bh=uK87tQM6FAQD9EzXr9LyFcrsTL1nAOngFEp/QfCw33A=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=IfmqoT+UiB5T9t8gvFos4WTgZmNhjvfVaddk92FXEo4W9/hYStiDGF/7RMAJwADVB
-	 ayn1i/MphMJBTqYH97TB5+ASvZqyLGb3C4dSHM1d5J4aBQoNwckcVUB3+jNiqXGBwh
-	 C3TYSa+oMBCQADQi/R5Ec87NjcS7MnNWUt/DXnBNwYX92c1Xe+P8NYUIowpiup8Tlr
-	 Zz8vEDp7eEEuXTk5bf++od5nnr6MjQXmXgNxD0/x7FdsbV5xAW/IPlmz3cOlwKc1/7
-	 9R4FPCVevWqawJB+Ql6+7Kk8ESrSdFPqNglvL+jgiZ15Do1utNKwCFvKZ3Z0SjiWJA
-	 DZM5FeajtJQMA==
-Message-ID: <f0983d83-929d-421e-90cd-aa6962c6191c@kernel.org>
-Date: Thu, 21 May 2026 23:12:02 +0200
+	b=A0img0n21LxjoV9VKwmS/rch9n8f0H1naSsO+iRzkGpn/1Do9YvoD1QIZB47joeQ6
+	 RgiZNb9fUrWeBIZqIddJ2MRCSf5PHQig9Z60h/VyFIgWoVZLBoCd7HgC8p5YoXMtHG
+	 ygNLR9ybYrDMU1rcKr1hRAVyOS+NRxZMEhF+uTNNl7SmviipFOED4qsYyYIRS8eI92
+	 kPAIj4P+P0Ze3IzXQG4yP8SvWVED6MLj1y0S/ugDChinVc36VU8LS5TCnLPaBGMbog
+	 aLxQ5Kg81W/xTieOL5MXCojQYxpRbJQZydclQNorQmjI+R4pMTaQ9ZDxcaqokF473S
+	 1RTfg/yUvSC0w==
+Message-ID: <fa73a8fd-ee73-4a7b-b6c3-1d2edd73b45d@kernel.org>
+Date: Thu, 21 May 2026 23:12:16 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -35,8 +35,8 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 net-next 2/3] dt-bindings: dpll: add SiTime SiT9531x
- clock generator
+Subject: Re: [PATCH v2 net-next 1/3] dt-bindings: vendor-prefixes: add SiTime
+ Corporation
 To: Ali Rouhi <rouhi.ali@gmail.com>
 Cc: jiri@resnulli.us, vadim.fedorenko@linux.dev,
  arkadiusz.kubalewski@intel.com, robh@kernel.org, krzk+dt@kernel.org,
@@ -44,9 +44,9 @@ Cc: jiri@resnulli.us, vadim.fedorenko@linux.dev,
  devicetree@vger.kernel.org, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org, Ali Rouhi <arouhi@sitime.com>
 References: <20260520191943.73938-1-arouhi@sitime.com>
- <20260520191943.73938-3-arouhi@sitime.com>
- <48cc27ed-48e8-41db-8351-166774466a69@kernel.org>
- <CALFSGupB_eRHQ=h2PzwiLE1gTvd7kZbBP+eWOVWVxapVjzgeXw@mail.gmail.com>
+ <20260520191943.73938-2-arouhi@sitime.com>
+ <20260521-happy-celadon-hamster-94802c@quoll>
+ <CALFSGuoWkHYmtrouvLk2M7bWS1=qTSPUn5GuabFvK92cPBfuZA@mail.gmail.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -92,47 +92,41 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <CALFSGupB_eRHQ=h2PzwiLE1gTvd7kZbBP+eWOVWVxapVjzgeXw@mail.gmail.com>
+In-Reply-To: <CALFSGuoWkHYmtrouvLk2M7bWS1=qTSPUn5GuabFvK92cPBfuZA@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-On 21/05/2026 22:38, Ali Rouhi wrote:
->> Mismatched DCO. Use consistent identity or fix your commits.
+On 21/05/2026 22:40, Ali Rouhi wrote:
+>> Mismatch in From/DCO.
 > 
-> Apologies — Gmail's SMTP relay rewrites the From header to my
-> personal address (rouhi.ali@gmail.com).  I'm working with IT to
+> Acknowledged — Gmail SMTP relay issue, will fix for v3.
 
-I don't think so. Gmail does not do it. Properly configured Gmail SMTP
-should work fine with two From: headers.
-
-> get corporate SMTP credentials so the From matches the Signed-off-by
-> (arouhi@sitime.com) in v3.
-> 
->> Same as last time. Why are you describing drivers?
-> 
-> Will drop the clocks description entirely — maxItems and
-> clock-names are sufficient.
-
-You completely cut the context. No clue what was there.
+Do not top post.
 
 > 
->> Drop node. Wasn't here before, so why did you add it?
->> Drop.
+>> It looks like you received a tag and forgot to add it.
 > 
-> Will drop both xo and xo2 fixed-clock nodes from the examples.
+> Thank you for the reminder.  Will carry Conor's tag in v3:
 > 
-> Thanks for the review.
+>   Acked-by: Conor Dooley <conor.dooley@microchip.com>
 > 
 > Best regards,
 > Ali
 > 
-> On Thu, May 21, 2026 at 12:26 AM Krzysztof Kozlowski <krzk@kernel.org> wrote:
+> On Thu, May 21, 2026 at 3:18 AM Krzysztof Kozlowski <krzk@kernel.org> wrote:
 >>
->> On 20/05/2026 21:19, Ali Rouhi wrote:
+>> On Wed, May 20, 2026 at 12:19:41PM -0700, Ali Rouhi wrote:
+>>> Add vendor prefix for SiTime Corporation, manufacturer of
+>>> programmable clock generators and MEMS oscillators.
+>>>
+>>> Signed-off-by: Ali Rouhi <arouhi@sitime.com>
+>>
+>> Mismatch in From/DCO.
+>>
+>> Best regards,
+>> Krzysztof
+>>
 
-Heh, you just top posted.
-
-Do not top post ever.
 
 Best regards,
 Krzysztof
