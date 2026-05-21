@@ -1,152 +1,184 @@
-Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11023100.outbound.protection.outlook.com [40.107.201.100])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9349932B128;
-	Thu, 21 May 2026 02:22:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.100
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779330137; cv=fail; b=rEntLRgU2UNXqGhkjQVXqcYJoTkQLekJsis1BCey4rlNTn2HaxM4wihYhcvs782cW61aX6mNgsNrHBkIipUeJ+EY8dMbJfTYl9HJzh4YKydiyL2fvc//s6mXxiESU2VWDeBEqsItLgjAFuLd88AcqPXRSYOwYSWwfc9xWP1l+kE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779330137; c=relaxed/simple;
-	bh=/t8NsCIRV7/Fl6Vs0fvZ3xKwxi6FwoO3zXyk6Un96Rw=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=CDnjX8gHNod1ppxBXiXSpotr8seI3ZIJCNLpeLVP/2Bpi0haiPBVX5ZwmkEBmapjfqbSPWpHbvfDyUdEZWZZL4fEQDCx4q0XqLWvT6ZmqCW7zHiVy4tMIWwtjJ84OQ0qxUvBsB9yUZ/d4tO9QFDLXNqgVXcUKfJHiIN36PoCeNk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=amperemail.onmicrosoft.com; spf=pass smtp.mailfrom=os.amperecomputing.com; dkim=fail (0-bit key) header.d=amperemail.onmicrosoft.com header.i=@amperemail.onmicrosoft.com header.b=II0KPAqA reason="key not found in DNS"; arc=fail smtp.client-ip=40.107.201.100
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=amperemail.onmicrosoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=os.amperecomputing.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE1DA368D44;
+	Thu, 21 May 2026 02:23:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779330223; cv=none; b=K67TZ/eNe4MS0gKVJZXn+FqV2WKjSebvXuz+z0VPSlVPmdfLgs6NR0F6eqbewWSNJLmW019BHwCS3B4HcavpiG4t89KalnRj+rkU4O34LfFjNdrSzBgk8XxMjYpgLhrA3WCkikPf6aJQAVUg3imagrEr9iuE+XG6VQQYrBb5fps=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779330223; c=relaxed/simple;
+	bh=QY8td3YcQLWk5q7hECVjvlC2Mfr3wo/x/D/+0qQ8mA8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rcZh+ipz/7inUFMaRnKESDOK7ycdecEFg3OZvVhi4nQsfMpG9AsOehlFdXL9MJq3FyPL7wLvahT9TRIs6AiaLYAfcTQnO3eQE9gAOvlxqkEolxoM9YMrX4AH2+cx/HhDutJ88HOcEfJOF6ChqJB7PqB6WYfjbx6MyCsQViiuM2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mLUSfnbr; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=amperemail.onmicrosoft.com header.i=@amperemail.onmicrosoft.com header.b="II0KPAqA"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=a3yPEugWpqWKGiFlzpp/6+GJYPP5Dqdy8+JJyNGPrCXnyWvnDPHg7LASkMIefsiMOGytW8wSSJq/NZpQz97emKBOlpYrjNhZZQVTdwFhbkEmSjRJHk3I7ZIww5KPyAYWOSEVPg0/P+yYXkIs49rjSdBzUEh/yDgA4rT1goZcwRz/aYba+KzoP4XLW6xoFYkddtlXm6p/VcDWH0x1t6Ix9dNH7TeuyDBpmqj185q0w1iQDPLcWFzK4N94Bvb4C5vozus8GQqtw/8lykfZ40h4G8Pr+SrOf36S0u2O6QrK+WLwgtxRPGcTJ4YpRxhQrcJpBWZckPZgKq73Am0Df3mLQA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JvywOpxlh2/r9r3pwri6wRQZ845JA/UT8NZoOG7HdIc=;
- b=d+EChCWTJar1hjeeqdwN06S5sPfgH/Xy63quqKvd7m1lv+9WZ5Ko1V5BvV+WXH2F5vFPy5sq8d2UHlqyjhJ9gWKkrOzIv/ZDs305sYs6xtH+Wfk5y+xElqs/njfzIxsE5F58OIEHCnh6/Qj/myYtAjxtWjphPe7HEIvmfA/Y+J1Js3D7NHKUhvsvu1TKyJy8prbdjSQ0oP1gqNqYtSDp9YJALalNsUnLa44apvwpWDJAbsAC6h4J4/bUpvdbAQnILeSL9NVv+xnwwBLwHhzR+B3CtA1w7Rl6XloQKnXC/jhxvYCGEcq5kDNmYWXEQsKVeBI6+MrOyYopms7ZhTbh4g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=os.amperecomputing.com; dmarc=pass action=none
- header.from=amperemail.onmicrosoft.com; dkim=pass
- header.d=amperemail.onmicrosoft.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=amperemail.onmicrosoft.com; s=selector1-amperemail-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JvywOpxlh2/r9r3pwri6wRQZ845JA/UT8NZoOG7HdIc=;
- b=II0KPAqAXU9oJB2sRgqXlqmZdvCls6n12xnWGuPBi5s/vvst+d901tT4sUnTHmBUm24GflH5XnI7xV0iYv3yUw/8xuaNWNGjhsN0++m3SGrz8aysh8M9k7967DYx3wCJQqB4T2o+6pgWnlcJBjvBQ4BbAoguQzqsHAfS2tZR/dw=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amperemail.onmicrosoft.com;
-Received: from CY3PR01MB9194.prod.exchangelabs.com (2603:10b6:930:109::7) by
- BL3PR01MB6948.prod.exchangelabs.com (2603:10b6:208:35b::19) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.25.19; Thu, 21 May 2026 02:22:06 +0000
-Received: from CY3PR01MB9194.prod.exchangelabs.com
- ([fe80::4005:a1db:71b8:dc8c]) by CY3PR01MB9194.prod.exchangelabs.com
- ([fe80::4005:a1db:71b8:dc8c%5]) with mapi id 15.21.0048.013; Thu, 21 May 2026
- 02:22:05 +0000
-Message-ID: <8160e242-9e6b-49c9-93fd-88429378ceae@amperemail.onmicrosoft.com>
-Date: Wed, 20 May 2026 22:22:02 -0400
-User-Agent: Mozilla Thunderbird
-Subject: Re: [net-next v42] mctp pcc: Implement MCTP over PCC Transport
-To: Adam Young <admiyo@os.amperecomputing.com>,
- Tony Nguyen <anthony.l.nguyen@intel.com>,
- Przemek Kitszel <przemyslaw.kitszel@intel.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Jeremy Kerr <jk@codeconstruct.com.au>,
- Matt Johnston <matt@codeconstruct.com.au>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- Sudeep Holla <sudeep.holla@arm.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Huisong Li <lihuisong@huawei.com>
-References: <20260518203900.30720-1-admiyo@os.amperecomputing.com>
-Content-Language: en-US
-From: Adam Young <admiyo@amperemail.onmicrosoft.com>
-In-Reply-To: <20260518203900.30720-1-admiyo@os.amperecomputing.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: CY5PR15CA0213.namprd15.prod.outlook.com
- (2603:10b6:930:88::7) To CY3PR01MB9194.prod.exchangelabs.com
- (2603:10b6:930:109::7)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mLUSfnbr"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1779330218; x=1810866218;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=QY8td3YcQLWk5q7hECVjvlC2Mfr3wo/x/D/+0qQ8mA8=;
+  b=mLUSfnbr1X80MYQgTbzAaQzhcB5fxtbcl3M/WlL4QeaACj5swzOMJnbz
+   Ok0YYY018fE2NcYY5jVZpYll6LyS4eXQcgZQk+vHehxfpbfq07/Txnczg
+   zJPHcXHT77H6yf1cZfqcIlBBmGnHLJrlSH0WoAohhYFOdJH0TtDZMgdRP
+   O+4+LHZapf3dGwobU6PCVRFlPJYmfCZXrKFflW7uThg/8c7mv+PC0hq8R
+   07AD2QldjRs/aGC7ivcC18IJUwz+8hA4+I01O4BtVB/2cV3WmZ2qc4zHO
+   +rEhzr21K/hHTkI8I/uzFhVjUxzaUZ4OlsdRLRhmS70zF8/3slFtLCAkx
+   g==;
+X-CSE-ConnectionGUID: EKMC0QDbTkKAo4TTNZyeIw==
+X-CSE-MsgGUID: 65lwGY32SsiuVi22YNG3Bw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11792"; a="97813203"
+X-IronPort-AV: E=Sophos;i="6.23,245,1770624000"; 
+   d="scan'208";a="97813203"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2026 19:23:30 -0700
+X-CSE-ConnectionGUID: VRnRNF5SQcKoDdWsilWeNg==
+X-CSE-MsgGUID: xWay2sQbTXy0lVMKX4fchA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,245,1770624000"; 
+   d="scan'208";a="237785791"
+Received: from lkp-server02.sh.intel.com (HELO 30e86e9c1927) ([10.239.97.151])
+  by fmviesa008.fm.intel.com with ESMTP; 20 May 2026 19:23:26 -0700
+Received: from kbuild by 30e86e9c1927 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wPt3W-000000004DV-283m;
+	Thu, 21 May 2026 02:22:52 +0000
+Date: Thu, 21 May 2026 10:18:17 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Alexander A. Klimov" <grandmaster@al2klimov.de>,
+	Chris Snook <chris.snook@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Kees Cook <kees@kernel.org>,
+	Tobias Regnery <tobias.regnery@gmail.com>,
+	linux-kernel@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, netdev@vger.kernel.org
+Subject: Re: [PATCH] net: alx: fix possible buffer overflow
+Message-ID: <202605211017.m1y6JlIV-lkp@intel.com>
+References: <20260520180140.538826-1-grandmaster@al2klimov.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY3PR01MB9194:EE_|BL3PR01MB6948:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6a70e036-1d24-49f3-6cf2-08deb6dfc032
-X-MS-Exchange-AtpMessageProperties: SA
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|7416014|10070799003|1800799024|376014|56012099003|18002099003|22082099003|921020|55112099003|11063799006;
-X-Microsoft-Antispam-Message-Info:
-	sIrflI8odqZFYdP/Y5KczT1oqDjSPhgaku5uA4lC8WrMoKyzfV3CQRYEG+FSKZGQXwiZsaJR5xuEvQLamnPY3QdstAAKGsRxi5xH82j4J7IN7ofWy8yF2fY08cd1lulA0D+h5HfmwiCACzdLKPIxnqBlf0hFyHACx7wWO/FjH1ev1ePZE4u5/+vwCRL1FQZVIcFn0/mce5d4XskVUoLVdSKYC8kvH1qcAQkUIF7+N8dUT/mmRjMsS1Mo+xp5Z2AP2Mj1aRdGHfqJYC+gRdneuTOd33N1Yt5JGdhFlHx9PkzvArZLvOCM01qdSandZcStq+atuOFN2i7/HETyaYxSL0KhATmh20HdSeWtdCHZR3xD2tflcPH8Ry8MyuJiC87RVX/xrfa5J86QR0SrFOkKYSHr1T9bY4t1PMuaUiP9ovJ6wNq3yLv38P3D5FFkYdW1XQgy/pkF99f+BDvxwiL01G1PHs08NobdRpZ6DPmHwTQOEY4zBVClIXvRaVK7XTKRSmuKfeef3CMqd8RODZC6z42ha+wqK/oA4Mlqi939GGZrtxK0vZ1yqm4KKgGEsoBNx7+sXQVst+FruOvjwKaqheev5IKAXdh5SBkhcm4dmVAsEfj8xkA9+vLO5oHZyhc0Q3dRpY5UeFELvHdgmvYIjOTP12j5zfioj49lsWkcLJYZeMMC89Jc/6XDcRtKFne5OLP6v3uXvA1B/9gRFSnGv5JqxFNbKPomsF6M/L1PbwiWRgWE8zxZsQY7zNaqq7Sb
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY3PR01MB9194.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(10070799003)(1800799024)(376014)(56012099003)(18002099003)(22082099003)(921020)(55112099003)(11063799006);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ZDVPZ0RhWUxHTnlQQThLbGpQaG0rSi81VkZ2K1NJdXBkMDZGbVYxOERiVStS?=
- =?utf-8?B?QTVqQTVyY2NkUUxwNzZyZWRMbkc3dmVyNndlaW1leVdiSmRobmJ5cXdnVTE3?=
- =?utf-8?B?M3dZYzlYOTUwL3pBRTRWZkZHUFZDOFFUanNYTHp5K2dKK0k2cnlsOUlqTG1Q?=
- =?utf-8?B?V08yS2xjRktGakhFUGIxL3p2RFBncFBha1ZtVG1YVG1QcHpPZWsydUtnQ2p5?=
- =?utf-8?B?UmxNUmFyWm9XMTF0Z0FVZzMraXpvZ1U4di96ZmN0QytXcERCVktYRVdzekp2?=
- =?utf-8?B?K3o1TDBYOUhkZXNKR1dSWmszcnhpeC9TVHZic2xsc2ZEUzJFaVFxVFN2TzBz?=
- =?utf-8?B?UGZrZDdyRVVqYVpCczN4enRudGxZcW9RVmRqV1ZYbm1yNWJsWHpKQlVacC9H?=
- =?utf-8?B?Y2ZBZU51ODlxVmc0RjgxMElwSUtsNEFTS0w2NnBXdFFaY214NTh6ZFBDbS8v?=
- =?utf-8?B?SXY0UE53QVRmckNpYjh6eEczV3NSRzVtNzY4MThUY01pekZpUlJMbTR2SVFv?=
- =?utf-8?B?cVdvaXFNclA2bDZlZWJHMldsU3pqUG52bTY5UjFpaTV4c2t6ejlUdWt4WGZ1?=
- =?utf-8?B?WjdFZEtMUWg1b2NrUmpMM1RMeUVVYnppUEltVWdFRGV3dVkzN0NyTXNkdlNQ?=
- =?utf-8?B?bkkrYk5vRFVXNHFFemVmUzczc2UvUk9ZUEhSRGhZOTFSSHhDUEJVVFB6ZnlQ?=
- =?utf-8?B?V1pQVU1XSUxZaXBmMVk3NlZPQ3oyNXFLQ3g5OHAySXcxSVJwK1ppM2owSjlq?=
- =?utf-8?B?NkhINUFwZmNYWTJkVnprNjE1TWxzMzB6NjFJWnp5ZjAzVW8rMWxnZkI5cHl6?=
- =?utf-8?B?Sk1ycFR5TmJMU0gwQkN4SmRKOUFaRWJRNmVValczN3RuNEE5aDNqd05VOVVG?=
- =?utf-8?B?UkxaKzlWNFdvdFZ2U1NWdXRuY1lWekQwZnBxaldLUWRDUG9MMWNldkoyL1BJ?=
- =?utf-8?B?S0dnUUVvZUNnNGR1bkRoeGY4OXB5VmdxaE9ocEFBenBuVXdCL2JwaEUwZDBx?=
- =?utf-8?B?eWV1VkNORWJkajZPcGNzNm5tRTBqaHIwK2RBbWJ4K1VreDdlOTNxWUsvYjVU?=
- =?utf-8?B?bnJ1dURUZlRMZ0R4cUN6YnRHYm95R3YyWHJYdE55LzRYRUJxSzNMejBmZXIr?=
- =?utf-8?B?ZkxjZEg1QWlBbXA5cUVRNDJmNXpHblhhdU1aRkJURE1DWFJPNEZWc0VxUExM?=
- =?utf-8?B?Q0lLU3RWZVNkREZvUlFSQzJOQjZJakZtMURyakFmWXd2WGhUL2E0ZDlZaXI1?=
- =?utf-8?B?ZVlMK0FUdHpmNy9GTTVlK1hHUHdoajhybmZBdEwxU054R09EclA3OXlWRXJs?=
- =?utf-8?B?czlBdUdSL0E1ODBzckNJRlVGNkIrNWRFNnBQTDlXS1NsNmptdmxTdXliRHpo?=
- =?utf-8?B?L2cvSEJhdjMyUmFDaDc0bXJLQ1JFa29JNjhNUmhSc1RyQXVldGpJYlZuUzRy?=
- =?utf-8?B?RWwrY2poRW03ZXYrbzBDRmowUnZSOGlLM2ROK0NQYy94RXdmUDdWYXZFanNq?=
- =?utf-8?B?SC9PWlhZK0wvM0syWGhXTjAyNWhUV25nbEJXdFJ4UDRuZm5uTi9YMDMwRVRu?=
- =?utf-8?B?Z1RaanBIQUJWTjRYamFTQm9XdU5LVEJ5d1ZSVnUwZDBiMDFvaGlhTytvM0pB?=
- =?utf-8?B?K081VlJKem01SVBhc0toYUtETWhBSHV5S24wak12Wm5XYXZnbFM3UnVJRHdH?=
- =?utf-8?B?Uy82cHBtSWw5eVhxdEIvcHFUMm5hV1ZnWWxiRTU1S3Bvb0tEdGxDcFhxZVMx?=
- =?utf-8?B?ZzRxYjZSVWcra25LVytqMVpvMHZNd3ZHTzhKaW1XcWFjbGZnRXNqL0djNXNB?=
- =?utf-8?B?cms0b1licmFFTSs3RGgzQ1FwVDJyNXkrR1JhZFhSNitPOGx0czlLWWNlS0w5?=
- =?utf-8?B?TEQ0T1d0RTdTY2VJdVdzRGxpNkVyQU5wL3BaZURvWjVBK2RZU2FUV1orc2h4?=
- =?utf-8?B?bzd4Z2xEMEpySXA4cG1iZXM0LzJXMDhjUHRPd3BTQ25JLzhNazltb1l6WHVm?=
- =?utf-8?B?ZEowUmVxUkp0RllaTlIvcmhXeGtRbGJXMldsV0ZMb2ExK0EvSDJMUlpNMVFN?=
- =?utf-8?B?VkpXckV1RXhjcVZJclMyVlo2RmZSOVhkaEdkN3NYMGV1Y1ZGWVczSDY0aGJI?=
- =?utf-8?B?TzJZVUxDT0hUUzVHZTMyTTZsbGpWdW5XMmFiNWlUNVpWSW9xSldYbVhXUGlN?=
- =?utf-8?B?Q0JTYVlVbzVrbm1OWUYxMXZYaWR0T0lMMkp2RWJSQzNiZ2xZSVVzL3lkTHBs?=
- =?utf-8?B?QWxGRVQwbU11OGxnYUd6VTBVWUhYd0RJVzhETmVsT0FEbm95OE1qaDFrdkVl?=
- =?utf-8?B?b2dRNFU5d1FBTlVqNG5jZUV4RlZPSUJYZVVuYW1iN24za3Q2RVI1WThRN1dH?=
- =?utf-8?Q?AICwMEzUnyi5Ru2vVQWEK+kwd6+3fYKuQLfwBTVprI027?=
-X-MS-Exchange-AntiSpam-MessageData-1: cJw3HNZnoqdN4g==
-X-OriginatorOrg: amperemail.onmicrosoft.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6a70e036-1d24-49f3-6cf2-08deb6dfc032
-X-MS-Exchange-CrossTenant-AuthSource: CY3PR01MB9194.prod.exchangelabs.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 May 2026 02:22:05.5007
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3bc2b170-fd94-476d-b0ce-4229bdc904a7
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: e8mgvbJwR/7TeIBHZZUSNiRehuWJyq6e1ObEzlCG+SzKi80bYsdE/r/83i6e6DnmyKgzIKAnvjQCtNcqbjEu5gd07KNU5PRg5kxmmnIE0p38r0o4iFpnNTUwcnxb0080
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR01MB6948
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260520180140.538826-1-grandmaster@al2klimov.de>
+
+Hi Alexander,
+
+kernel test robot noticed the following build warnings:
+
+[auto build test WARNING on net-next/main]
+[also build test WARNING on net/main linus/master v7.1-rc4 next-20260520]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Alexander-A-Klimov/net-alx-fix-possible-buffer-overflow/20260521-022058
+base:   net-next/main
+patch link:    https://lore.kernel.org/r/20260520180140.538826-1-grandmaster%40al2klimov.de
+patch subject: [PATCH] net: alx: fix possible buffer overflow
+config: x86_64-rhel-9.4-ltp (https://download.01.org/0day-ci/archive/20260521/202605211017.m1y6JlIV-lkp@intel.com/config)
+compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260521/202605211017.m1y6JlIV-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202605211017.m1y6JlIV-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+   drivers/net/ethernet/atheros/alx/main.c: In function 'alx_request_msix':
+>> drivers/net/ethernet/atheros/alx/main.c:874:77: warning: 'snprintf' output may be truncated before the last format character [-Wformat-truncation=]
+     874 |                         snprintf(np->irq_lbl, sizeof(np->irq_lbl), "%s-rx-%u",
+         |                                                                             ^
+   drivers/net/ethernet/atheros/alx/main.c:874:25: note: 'snprintf' output between 6 and 25 bytes into a destination of size 24
+     874 |                         snprintf(np->irq_lbl, sizeof(np->irq_lbl), "%s-rx-%u",
+         |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     875 |                                  netdev->name, np->rxq->queue_idx);
+         |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   drivers/net/ethernet/atheros/alx/main.c:871:77: warning: 'snprintf' output may be truncated before the last format character [-Wformat-truncation=]
+     871 |                         snprintf(np->irq_lbl, sizeof(np->irq_lbl), "%s-tx-%u",
+         |                                                                             ^
+   drivers/net/ethernet/atheros/alx/main.c:871:25: note: 'snprintf' output between 6 and 25 bytes into a destination of size 24
+     871 |                         snprintf(np->irq_lbl, sizeof(np->irq_lbl), "%s-tx-%u",
+         |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     872 |                                  netdev->name, np->txq->queue_idx);
+         |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>> drivers/net/ethernet/atheros/alx/main.c:868:77: warning: '%u' directive output may be truncated writing between 1 and 5 bytes into a region of size between 3 and 18 [-Wformat-truncation=]
+     868 |                         snprintf(np->irq_lbl, sizeof(np->irq_lbl), "%s-TxRx-%u",
+         |                                                                             ^~
+   drivers/net/ethernet/atheros/alx/main.c:868:68: note: directive argument in the range [0, 65535]
+     868 |                         snprintf(np->irq_lbl, sizeof(np->irq_lbl), "%s-TxRx-%u",
+         |                                                                    ^~~~~~~~~~~~
+   drivers/net/ethernet/atheros/alx/main.c:868:25: note: 'snprintf' output between 8 and 27 bytes into a destination of size 24
+     868 |                         snprintf(np->irq_lbl, sizeof(np->irq_lbl), "%s-TxRx-%u",
+         |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     869 |                                  netdev->name, np->txq->queue_idx);
+         |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
-On 5/18/26 16:38, Adam Young wrote:
-> +		skb = chan->active_req;
-> +		chan->active_req = NULL;
-> +		if (skb) {
-> +			dev_dstats_tx_dropped(ndev);
-> +			dev_consume_skb_any(skb);
-> +		}
-It is worth noting also that this section is now wrong, as there is a 
-change to mailbox that uses a constant for no-active-req instead of NULL.
+vim +/snprintf +874 drivers/net/ethernet/atheros/alx/main.c
+
+   851	
+   852	static int alx_request_msix(struct alx_priv *alx)
+   853	{
+   854		struct net_device *netdev = alx->dev;
+   855		int i, err, vector = 0, free_vector = 0;
+   856	
+   857		err = request_irq(pci_irq_vector(alx->hw.pdev, 0), alx_intr_msix_misc,
+   858				  0, netdev->name, alx);
+   859		if (err)
+   860			goto out_err;
+   861	
+   862		for (i = 0; i < alx->num_napi; i++) {
+   863			struct alx_napi *np = alx->qnapi[i];
+   864	
+   865			vector++;
+   866	
+   867			if (np->txq && np->rxq)
+ > 868				snprintf(np->irq_lbl, sizeof(np->irq_lbl), "%s-TxRx-%u",
+   869					 netdev->name, np->txq->queue_idx);
+   870			else if (np->txq)
+   871				snprintf(np->irq_lbl, sizeof(np->irq_lbl), "%s-tx-%u",
+   872					 netdev->name, np->txq->queue_idx);
+   873			else if (np->rxq)
+ > 874				snprintf(np->irq_lbl, sizeof(np->irq_lbl), "%s-rx-%u",
+   875					 netdev->name, np->rxq->queue_idx);
+   876			else
+   877				snprintf(np->irq_lbl, sizeof(np->irq_lbl), "%s-unused",
+   878					 netdev->name);
+   879	
+   880			np->vec_idx = vector;
+   881			err = request_irq(pci_irq_vector(alx->hw.pdev, vector),
+   882					  alx_intr_msix_ring, 0, np->irq_lbl, np);
+   883			if (err)
+   884				goto out_free;
+   885		}
+   886		return 0;
+   887	
+   888	out_free:
+   889		free_irq(pci_irq_vector(alx->hw.pdev, free_vector++), alx);
+   890	
+   891		vector--;
+   892		for (i = 0; i < vector; i++)
+   893			free_irq(pci_irq_vector(alx->hw.pdev,free_vector++),
+   894				 alx->qnapi[i]);
+   895	
+   896	out_err:
+   897		return err;
+   898	}
+   899	
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
