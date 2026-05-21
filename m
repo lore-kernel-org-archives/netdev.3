@@ -1,99 +1,92 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 175A7611E
-	for <netdev@vger.kernel.org>; Thu, 21 May 2026 14:10:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 578D53ED3C7;
+	Thu, 21 May 2026 14:12:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779372611; cv=none; b=XzqxaOIAGRSPYwBzzMqrUh6RpdeVqoQyfUp/n+Y+eDbYxvIp1w80YeQUiIscQMIMsd5gggH7dnXsONr8h6qgD3Xdu7gxYMPbl5ceGs4oFjZaBHBDb5Y1TaiYHrGBWuiW70Cjw2qMY8A/IQbwaI1PPGhNQ7pWQgvrkJzltMa6vkE=
+	t=1779372779; cv=none; b=qaYz8V0bR/RB32CSWo0rKS+xgPGjsRLR5sB9zpWKABGOKJXDasntEGxn46srilNjGE3o00s9FzFqYWCXDv8LdBGfjKoKQpRSqy/6CbllS5xj/au9Phy4+YzCndWSJk/dXmrDTxNQTajcRrHcebfqKX81xnIWG4G1aj0jghl6Tis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779372611; c=relaxed/simple;
-	bh=LfJEed8FVi8NmPUXZMR6kRoE98S+/KBhKkfvSRpeUCw=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=JzWt+eer2hurujf6OtHUz/t1ZI5EF/N5N0Rh2XYbuIxJY/BTYpkoYdPSCCW9OJ/NI5nQPA1r0eGVfzWqQ2Rh0FHRXWDVSlx0C/S0Y0/DxjsI+BM7cRUQ7gE13gPkEnMI+ZXgqZFoCEtlodtDYdbUweUGIyyt/bsS6uoQnm1Kr4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GsKg+a+x; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779372779; c=relaxed/simple;
+	bh=3uHkCr3Czag36uOPZx+WfiLBDM/EZRglKu7YFz6fG0k=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SoXaLlGNsd7X8z7JYgggIIWXeCIhZJPANZe/UCETtJM9/TIJah21dPlwZnsO8GQDhh8nEpSkaQl7RhcnuBWXfnDv4/vO+700N2rMoRz/I7g13/5Mr5MBV7uOcDjS5xa1TLWFNsAzUx9spZCdHzYNM0np+AzF6v4n2x1gYDGDoiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=u6iz365J; arc=none smtp.client-ip=68.232.153.233
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GsKg+a+x"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3DD81F000E9;
-	Thu, 21 May 2026 14:10:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779372609;
-	bh=ALfJb7rTXQ+RL1IByyB+qWVeikkQgS87H8EQ9cZsr4c=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=GsKg+a+xtMFkLOTv9gk5rAV2YNiDd1JwYCvfUQ06co0bMlI5PBcMJ5h3HVl23IdVx
-	 2sqDESNsx1vavu/1uQ/YJ4QXgp5qSb3hURNwetG9+yRteE4MovXVBJK8HhH7VrzwVX
-	 5ST5Wcw5AtD3ZUr0suDJmr28B7GVYg7kSl0nFK2ZbbyHdl8QpyhKjVcYTWb8VesBHA
-	 6ThCx27WsUb7K7Nqc+Ul97zkTs6vsK+ltsCbATsiAVkDguDjHTFR3s3G89yMUncfyr
-	 whtcpogu4uGJYy2I1uP8qPRMWZ9cSSw8outrshzJ+Sz8cnyanbfZwTKw23OlVh/5Kg
-	 diJsydiCnFH5Q==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0B733930DE5;
-	Thu, 21 May 2026 14:10:20 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="u6iz365J"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1779372778; x=1810908778;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=3uHkCr3Czag36uOPZx+WfiLBDM/EZRglKu7YFz6fG0k=;
+  b=u6iz365JCaRj8ylvrIcs++kvxocuMFQc/C2viGrC2f4KkxO15tkacVfv
+   up0iWaDPakWoKzRtskXjnANmFINJUwJMbN09fDMzGkNu83HzDscev3ZBI
+   u1L/y5EjFs7hDFYbZDPHfjCW7jTUNcvT8rdnV48oZEAdNpD4R3Py4f3y6
+   sVmYljOd2+NEcbjEtBYYJg4GZg8pzOTVliF/LjUo9Zbk38QGowy+NBsee
+   uKuTPiIaVdJ3ObfEDN80oOpOwttyiqIXPFJnfnVHwItNgRVu3EoVSHeM0
+   QK8/u2TWAd+E6HmNfXBKvuobnij8MZvXfAZs5t6L4nm7V9OGTmB0yIDTJ
+   g==;
+X-CSE-ConnectionGUID: 3cMiK0fJTeCaxLknjkz8Lw==
+X-CSE-MsgGUID: fp/hYsMdTyu9+GLOBX8BnA==
+X-IronPort-AV: E=Sophos;i="6.23,246,1770620400"; 
+   d="scan'208";a="289245092"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa5.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 21 May 2026 07:12:52 -0700
+Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
+ chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.58; Thu, 21 May 2026 07:12:50 -0700
+Received: from DEN-DL-M70577.microsemi.net (10.10.85.11) by
+ chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server id
+ 15.1.2507.58 via Frontend Transport; Thu, 21 May 2026 07:12:47 -0700
+Date: Thu, 21 May 2026 16:12:47 +0200
+From: Daniel Machon <daniel.machon@microchip.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Horatiu Vultur
+	<horatiu.vultur@microchip.com>, Steen Hegelund
+	<steen.hegelund@microchip.com>, <UNGLinuxDriver@microchip.com>, "Alexei
+ Starovoitov" <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+	"Jesper Dangaard Brouer" <hawk@kernel.org>, John Fastabend
+	<john.fastabend@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>, Herve
+ Codina <herve.codina@bootlin.com>, Arnd Bergmann <arnd@arndb.de>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>, Mohsin Bashir
+	<mohsin.bashr@gmail.com>
+CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<bpf@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>
+Subject: Re: [PATCH net-next v5 00/13] net: lan966x: add support for PCIe FDMA
+Message-ID: <20260521141247.h2ekfhhzblopjm6s@DEN-DL-M70577.microsemi.net>
+References: <20260520-lan966x-pci-fdma-v5-0-ca56197ae05b@microchip.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 01/11] batman-adv: fix batadv_skb_is_frag() kernel-doc
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177937261940.334326.3846070326283907142.git-patchwork-notify@kernel.org>
-Date: Thu, 21 May 2026 14:10:19 +0000
-References: <20260520115422.53552-2-sw@simonwunderlich.de>
-In-Reply-To: <20260520115422.53552-2-sw@simonwunderlich.de>
-To: Simon Wunderlich <sw@simonwunderlich.de>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- b.a.t.m.a.n@lists.open-mesh.org, sven@narfation.org
+In-Reply-To: <20260520-lan966x-pci-fdma-v5-0-ca56197ae05b@microchip.com>
 
-Hello:
+> This series adds FDMA (Frame DMA) support for the PCIe path. When
+> operating as a PCIe endpoint, the internal FDMA engine on lan966x cannot
+> directly access host memory, so DMA buffers are allocated as contiguous
+> coherent memory and mapped through the PCIe Address Translation Unit
+> (ATU). The ATU provides outbound windows that translate internal FDMA
+> addresses to PCIe bus addresses, allowing the FDMA engine to read and
+> write host memory. Because the ATU requires contiguous address regions,
+> page_pool and normal per-page DMA mappings cannot be used. Instead,
+> frames are transferred using memcpy between the ATU-mapped buffers and
+> the network stack. With this, throughput increases from ~33 Mbps to
+> ~620 Mbps for default MTU.
 
-This series was applied to netdev/net.git (main)
-by Sven Eckelmann <sven@narfation.org>:
-
-On Wed, 20 May 2026 13:54:12 +0200 you wrote:
-> From: Sven Eckelmann <sven@narfation.org>
-> 
-> The kernel-doc comment for batadv_skb_is_frag() contained two errors:
-> 
-> * the function description referred to "gain a unicast packet" instead
->   of "contains unicast fragment".
-> * the Return section omitted "merged" from "newly skb", leaving the
->   description grammatically incorrect and inconsistent with the
->   function description.
-> 
-> [...]
-
-Here is the summary with links:
-  - [net,01/11] batman-adv: fix batadv_skb_is_frag() kernel-doc
-    https://git.kernel.org/netdev/net/c/0039ac830506
-  - [net,02/11] batman-adv: v: stop OGMv2 on disabled interface
-    https://git.kernel.org/netdev/net/c/f8ce8b8331a1
-  - [net,03/11] batman-adv: tvlv: abort OGM send on tvlv append failure
-    https://git.kernel.org/netdev/net/c/501368506563
-  - [net,04/11] batman-adv: tvlv: reject oversized TVLV packets
-    https://git.kernel.org/netdev/net/c/f50487e35663
-  - [net,05/11] batman-adv: tp_meter: fix race condition in send error reporting
-    https://git.kernel.org/netdev/net/c/71dce47f0758
-  - [net,06/11] batman-adv: tp_meter: avoid role confusion in tp_list
-    https://git.kernel.org/netdev/net/c/ff24f2ecfd94
-  - [net,07/11] batman-adv: mcast: fix use-after-free in orig_node RCU release
-    https://git.kernel.org/netdev/net/c/20c2d6a20ca9
-  - [net,08/11] batman-adv: iv: recover OGM scheduling after forward packet error
-    https://git.kernel.org/netdev/net/c/aa3153bd139a
-  - [net,09/11] batman-adv: bla: fix report_work leak on backbone_gw purge
-    https://git.kernel.org/netdev/net/c/0459430add32
-  - [net,10/11] batman-adv: bla: avoid double decrement of bla.num_requests
-    https://git.kernel.org/netdev/net/c/83ab69bd12b8
-  - [net,11/11] batman-adv: bla: avoid NULL-ptr deref for claim via dropped interface
-    https://git.kernel.org/netdev/net/c/f80d3d98d2ff
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+I went through the sashiko review for v5 (gemini and nipa). AFAICT no new
+series-level issues were raised — the only Critical (XDP features exposed before
+the xdp_setup() PCIe short-circuit lands) is a per-patch bisectability concern
+that sashiko itself flags as "likely fixed by the subsequent patch", and indeed
+patch [11/13] adds the guard. The NAPI bailout issue Paolo raised on v4 is
+fixed in this version and not reflagged.
