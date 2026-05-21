@@ -1,35 +1,75 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f180.google.com (mail-oi1-f180.google.com [209.85.167.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 799693672B1
-	for <netdev@vger.kernel.org>; Thu, 21 May 2026 02:20:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE7B0363083
+	for <netdev@vger.kernel.org>; Thu, 21 May 2026 02:20:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779330035; cv=none; b=GDIuxXITnr7Bf+BE2dg1HaGNdFtUnv5T7SSsw5jVQa3yXPOXfJ+dMBUMySGq0PBJSo7iUriCDBjkgk0ScIAEqJz+ZB53X+In2MrtuKg5uyN7JLgeS99hGmSUsh9uLwxalbTF/3t2ftKdkTMExqPXmHW9UTELA7YTRFdcfPQw9vE=
+	t=1779330033; cv=none; b=IM/6mscDL/1KcZCaRXHHbilZHboBFOBMw2F3+6SgU7jfvdJGR4Fr+VjRyyqUPlYgueN/mdh50IugRTBLMGB7MOr3fJPqvwhGM/689F1G02a8UAxT5KsQUl0U39jqba33VLJXHxB+G5w/DsMTHaHCxbavr+6AuP/P2wvb4xqJSxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779330035; c=relaxed/simple;
-	bh=TcYQl9X2SZ2hvBbp3TOMjCDRHScz/WrNUVVZuWEUU8U=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=rROEqrV4TNgiXTR0RCZe9L73IJref6ekNruTjMwY9NBI7DE66h5NIOGa0gRtxaByOiwJfMTLk/EpZLUz96eX03ZQeUscyTMAtq9NcXBGLNgF+oSjw3csA+WoJCHWSy3pvUZUpQAOjPU+HFoXmteoJC+U2C/UdB2cWWXCdjGJbl0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JrL800Rf; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779330033; c=relaxed/simple;
+	bh=sR0IMC2lxIT7oq78hReehczLAD93dLuWS2Pbfk9mJ5Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pg6sENNcEtQqTq0uwi5xLcUWQvmIlcrdyuAaK83v7THrLYJuYzbpLmUHn7ur9vtN/6Xj2nH+Jzraeq0kmvd0xESH8BdDvXa5gJdbYLzTQytijVVM0a9+QOFF0HChMX0YDE+E5iNqUpnGg9S6zEXpsUl6o0DGT2fM+hb5wmU6Z7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rBvCJi2X; arc=none smtp.client-ip=209.85.167.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JrL800Rf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A89701F00A3C;
-	Thu, 21 May 2026 02:20:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779330014;
-	bh=/277KEkO6bByVh5h7ePAs12l5Xlz58eQTSj3xCqUlys=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=JrL800Rf8FkgCSCv2ZGg4pujWbxpKTZN+YD2YNpCxdubK69Hi0FjwB4cz9zMKC6ST
-	 2GipBR8D3DTWuA9BsfbKygQvOR+EghFdvmrG09UeZ6bGefBsemx2kDPtUeucS0eq5r
-	 27SoBoVErca6XU0hWIZhec+63qJAXrQzgqobumSIavKw9gctV90SRn7nlXVYUMe05Y
-	 IPyRKD9INCjpobWFAEekAKqrcODrHAmaob+7VrdGLvRjUnKYdhN+VTmvrJ6YZQxY0v
-	 Orn4dARqsAX2QsxLN8EmhrhhsCcncfe7RXIKDyg/5UDUTBuIoEg3tIPbN/P1Y7EHtv
-	 qtpk2Wh8sEPYA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 197D43930C38;
-	Thu, 21 May 2026 02:20:26 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="rBvCJi2X"
+Received: by mail-oi1-f180.google.com with SMTP id 5614622812f47-47c35be02fdso2025293b6e.3
+        for <netdev@vger.kernel.org>; Wed, 20 May 2026 19:20:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779330020; x=1779934820; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=wItdenP8OH+7UqXadpcXzkNSudYXM+oPYSE7Yb54pbE=;
+        b=rBvCJi2XaMI85hMNQyfvJK1T3EfmoR+jbeFMKmGBFMJ2hbsS70aLf6HluSI1e4bUgr
+         GZWqmrs1LfBiZJ4xAEa6yLTI4kbaI6914v5zzp3pE3LezNd6oBEpRrE3sJqvN3etZd51
+         k8hF+/K+1oe1/P/z43ssO1GjZuSsSTSss1/w46/lIxZ0VsSTNBMbLInWq4yxBPxG51kN
+         sT6gqb1tI6FAp3vy3mMSqMaDkQpu1IBF+1696OPEjaqi5n0YgLdpjvgBIveGWDQRPXSP
+         4UoeoXTdWSHsEx6WPpX5rIWVFtHdmdquvXs9AJ2STiFTliYGk+JASL8PedNimaBV6i3N
+         M70g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779330020; x=1779934820;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wItdenP8OH+7UqXadpcXzkNSudYXM+oPYSE7Yb54pbE=;
+        b=ru4nFup2V4EHFKcmsh4ydIwLK54Cg2ChU70V2RkRcrGUX3olvQE8vS58DPcOcGO/T0
+         A5hKaixXkKGkohqGlawFvR6ID0P7tdqID1o98EdYky/FklAhUIBC3WZUHSPykXGvI3NZ
+         qnGfOSomAIOVN3W1NPv0VFb4xcgzXiq7zu9e0kV2qUHD1/eazdU0rI8sOazxT2BN3qP1
+         +oS6zRtgfVf5FUsJZQ7EYY8ybW42+nwymHPVDWPjZe//8PFFxAROMXQiYulm3QU64LU8
+         YNjP/Sa9FDsEeAQGb6nUqy5BHWkepn801wiR6LLQos4R9wxk1hoeCp3Gmi2RSWnkn2L0
+         FTFw==
+X-Gm-Message-State: AOJu0YwV80COrthXq8GvS3xgyiWjvjgQ6AyiMeDFx7UmdWWetXefkum/
+	l8Mf4zVWD/wpLFHTfDww0MMEUsDBVFN9rQrG9LJsWX5uuLEbmwP1Y1smhfyRNP9EHVA=
+X-Gm-Gg: Acq92OF5Dvwq547VsHPvGTV/jasraOQI+OKFPKe7dO0GyKudyJr0eTeWPqIDlGauR5/
+	N8T2XkVc8EXxoZAgL/nO+VYRQW/pCAfoGCQKn7qwWmMMHwe2bR0xotdBtQ0HCvbOJLzZHlaPUbn
+	PsRkNQymUaNfTefIhWg0pOpnO7mgkEfEEDyA9KSTsK+H3E+9O3PT8praHFzg5ABE+hAcvHr7ESP
+	EkHm0iywD05Yp7PXn9rBiI/+Kb3KapQ+ZJHlyijyDOE6zo9/lehEyqDktU8IXT/c//OQD1MVl63
+	VctOamwLW4MBmYl91Q5Fu6IehcudL+8v1iLG+4PIqsKYTxDt+Ee4PDTNLlMnY/ZavLvTcBFTwjV
+	M1H/8+EspDLE+0S/8Twho3HwHIaYEJbf1oBNFspR43PQZaOfuPMKDRUHOxriiEdStffEw51kuQU
+	ON42O+OxVtBg/CQz/Oump0CklbQg==
+X-Received: by 2002:a05:6808:148c:b0:479:e96e:65aa with SMTP id 5614622812f47-4852edb4dd5mr435645b6e.42.1779330020102;
+        Wed, 20 May 2026 19:20:20 -0700 (PDT)
+Received: from houminxi ([72.244.37.221])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7e55b7c6b38sm13791720a34.2.2026.05.20.19.20.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 20 May 2026 19:20:18 -0700 (PDT)
+From: Minxi Hou <houminxi@gmail.com>
+To: netdev@vger.kernel.org
+Cc: donald.hunter@gmail.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	aconole@redhat.com,
+	linux-kernel@vger.kernel.org,
+	Minxi Hou <houminxi@gmail.com>
+Subject: [PATCH net-next v4 0/2] Add OVS packet family YNL spec and unicast notification support
+Date: Thu, 21 May 2026 10:20:00 +0800
+Message-ID: <20260521022002.879334-1-houminxi@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,45 +77,39 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next 0/2] net/sched: sch_drr: lockless cl->deficit and
- cl->quantum
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177933002463.3834961.8475639807959531183.git-patchwork-notify@kernel.org>
-Date: Thu, 21 May 2026 02:20:24 +0000
-References: <20260519094618.2632073-1-edumazet@google.com>
-In-Reply-To: <20260519094618.2632073-1-edumazet@google.com>
-To: Eric Dumazet <edumazet@google.com>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- jhs@mojatatu.com, victor@mojatatu.com, jiri@resnulli.us,
- netdev@vger.kernel.org, eric.dumazet@gmail.com
 
-Hello:
+This series adds a YAML netlink spec for the OVS_PACKET_FAMILY genetlink
+family and a bind-only ntf_bind() helper for receiving unicast
+notifications.
 
-This series was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Changes in v4:
+- patch 2: rename ntf_listen() to ntf_bind(addr=(0, 0)); the name
+  listen() was misleading since the operation is a bind(), and the
+  address is now an explicit argument defaulting to (0, 0)
+  (suggested by Jakub Kicinski)
 
-On Tue, 19 May 2026 09:46:16 +0000 you wrote:
-> First patch adds missing annotations around cl->deficit.
-> 
-> Second patch makes cl->quantum lockless, to prepare
-> future lockless qdisc dumps.
-> 
-> Eric Dumazet (2):
->   net/sched: sch_drr: annotate data-races around cl->deficit
->   net/sched: sch_drr: make cl->quantum lockless
-> 
-> [...]
+Changes in v3:
+- patch 1: add missing document start "---" after SPDX comment
+  (yamllint warning in v2)
 
-Here is the summary with links:
-  - [net-next,1/2] net/sched: sch_drr: annotate data-races around cl->deficit
-    https://git.kernel.org/netdev/net-next/c/c67b104fd798
-  - [net-next,2/2] net/sched: sch_drr: make cl->quantum lockless
-    https://git.kernel.org/netdev/net-next/c/a4d880b85089
+Changes in v2:
+- patch 1: use YAML anchor (&event-attrs / *event-attrs) to avoid
+  repeating the same attribute list for miss and action events
+  (suggested by Donald Hunter)
+- patch 1: fix enum-name from ovs-packet-attrs to ovs-packet-attr
+  to match the kernel enum name ovs_packet_attr
+- patch 2: add ntf_bind() to the YnlFamily docstring under the
+  "Notification API" heading (suggested by Donald Hunter)
 
-You are awesome, thank you!
+Minxi Hou (2):
+  netlink: specs: add OVS packet family specification
+  tools: ynl: add unicast notification receive support
+
+ Documentation/netlink/specs/ovs_packet.yaml | 130 ++++++++++++++++++++
+ tools/net/ynl/pyynl/lib/ynl.py              |   5 +
+ 2 files changed, 135 insertions(+)
+ create mode 100644 Documentation/netlink/specs/ovs_packet.yaml
+
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.54.0
 
