@@ -1,42 +1,42 @@
 Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A85D538425A;
-	Thu, 21 May 2026 08:22:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8D543A3816;
+	Thu, 21 May 2026 08:22:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779351767; cv=none; b=K5GxWP3rJppN7cOCenRaUyNIUPP2a+Gi3BZMT4L6cnoUhb/QCWTbAlIMt71VY5kRvJbcr3Eey6wwLcTHtOOXOcJdDz7nmoItpxCGV8u6y3S9YfZ6374MF79kBX4ymcsr7hddWpeMse8PMKemkrhQruSA558oWVxpHQCbE0DEANQ=
+	t=1779351767; cv=none; b=K6amoCExnKLe6Rfe5R2AMOpPpUZhpUeSa0M4YZtWY3kunLpxqxTonj0Qxzox4aETK55BMVhRBacWAPViVSoio4gX2kskQY7xC4Vw4XuLuyrkiKAYCK4JmBpWe4VCc7E/qhIcbC7HbpLn76FZaubfJUsR7eXCP7UShGefiOBAAzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1779351767; c=relaxed/simple;
-	bh=RUycHHP1Y0L/ZH0+76X6ndWUTpwKu3V/QnwT1hPq1FY=;
+	bh=CWjNHp3lVq1P1BWK7ilWt1phFCJ5rYaKgQ1jBzqDdC4=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=QUE2Emrkbe1UB94l2x0tti+O1tMdpnyy9NUNXUp8Ig6Vpubu2TOEneLB8RUd5dTJnsNPhr/nrS1gs28JIinQyt5MrABR4r6caOOnbCLm9aEsyfrWuHNXSd1xa01/KAgdGFVYZbXH/z3wQZF24EjZt0AGw/lXrol2fmTWv2u0EF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=dcTeB416; arc=none smtp.client-ip=148.251.105.195
+	 In-Reply-To:To:Cc; b=taQXOwWCIEn7woJP7g07CzaHLHYUTPOtjSjDkJGP+FD7sFBKJTOpPYpEXXUH0c1qAlns2fkSVAjYlHCV2U6Q/5XXtcBwefcbICMJ4ga8HhasXmp+oU6FDnYju3dOEbp9JUlYAyJo+xeM7Js++IWGdCM+A6H0WpqL7XzkyENm1tc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=eYn7FEC4; arc=none smtp.client-ip=148.251.105.195
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="dcTeB416"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="eYn7FEC4"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1779351757;
-	bh=RUycHHP1Y0L/ZH0+76X6ndWUTpwKu3V/QnwT1hPq1FY=;
+	s=mail; t=1779351762;
+	bh=CWjNHp3lVq1P1BWK7ilWt1phFCJ5rYaKgQ1jBzqDdC4=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=dcTeB416Pdt5jfBMucRpLgc7AvzMTWjRLIftziWIBeoO9Ecdape1j61nQE1ibgt4J
-	 vAnU48HqvjA10IR8NUDzMkT6Zro7XyQlnOluaejhWUdNvOXNU+lJKtuZqov2nAG1hh
-	 A7DMK4Oe1ord+u5UvU0/vVGL23ntGjZqrFjXyfxaDGx7YrlwnsL/Iqhg/KnbMdWaxI
-	 aIXbhbuV7TXeIRhZe7KVAzrotIL+C9Z3McSOJp+ehEyOqjKOuHsxwaji7dJmA8EhzO
-	 umR+D4kLRCxK7bk9jC73Ea1oHsqaFtBhbND5gz0yYAuV7AtM83jfMnIWVHO24cqkvN
-	 UH5qAuKJVDZRg==
+	b=eYn7FEC4jU99Os15lM7ysV8MVNZ5cDHrPV2RrLJtQyJZNSfSx/3nLbeQgY1RQY7LK
+	 9cRRM3OJ/cBeavnPMiX0r6yQoePltpsfq9TmBRiUXrX4RtGhi45b5Ft/GkcarK1cO2
+	 TcXKgQWdUV87RHJ+Kp12fnCFlWTiEudDkB4gFFDkrw97reER9a64jHA+FOwPNTxgVt
+	 FA4lE+zLw+ecA3oM8Il7MHo0htM6qZek0vj31XvRCVDf8OyUEGXX6IMRIzD+qbAz+L
+	 fY3q9HbPVCXJRbvlpfQAiSYLKFgj7jLBLTB8i9dk9GpQ1Swo7j/rWs9P/rcPFhp+mo
+	 /ikV7Mg9pt15Q==
 Received: from yukiji.home (unknown [100.64.0.131])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
 	(Authenticated sender: laeyraud)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id D3E2D17E1412;
-	Thu, 21 May 2026 10:22:35 +0200 (CEST)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id CADAE17E132E;
+	Thu, 21 May 2026 10:22:40 +0200 (CEST)
 From: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
-Date: Thu, 21 May 2026 10:21:56 +0200
-Subject: [PATCH net-next v4 3/6] net: phy: air_phy_lib: Factorize BuckPBus
- register accessors
+Date: Thu, 21 May 2026 10:21:59 +0200
+Subject: [PATCH net-next v4 6/6] net: phy: air_an8801: ensure maximum
+ available speed link use
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -45,7 +45,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260521-add-airoha-an8801-support-v4-3-1e4837d30ef4@collabora.com>
+Message-Id: <20260521-add-airoha-an8801-support-v4-6-1e4837d30ef4@collabora.com>
 References: <20260521-add-airoha-an8801-support-v4-0-1e4837d30ef4@collabora.com>
 In-Reply-To: <20260521-add-airoha-an8801-support-v4-0-1e4837d30ef4@collabora.com>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, 
@@ -62,469 +62,89 @@ Cc: kevin-kw.huang@airoha.com, macpaul.lin@mediatek.com,
  linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org, 
  Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1779351750; l=12880;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1779351750; l=2402;
  i=louisalexis.eyraud@collabora.com; s=20250113; h=from:subject:message-id;
- bh=RUycHHP1Y0L/ZH0+76X6ndWUTpwKu3V/QnwT1hPq1FY=;
- b=TLqZjAty9JKVzTIO4APLzqs8DTIzZpmSPaQpuC4FMjkg9p9jgDV4EWXUZZGGLQfuH31PsqSm9
- N0n8Iehs+kmDcKDnD1qN/22kJvCsxJSnHiwTSLZtxggA2OkFIj9C4NH
+ bh=CWjNHp3lVq1P1BWK7ilWt1phFCJ5rYaKgQ1jBzqDdC4=;
+ b=VyzIoCdpeWn8XvAgkZ+U0CxFZMGW7ROgymrXgmziebcmXzI3bFPS7IqXSmZswrGGXY0MFsfe6
+ dQXDwoabVL4DJO8krNlUYO3VktXt3im52mbwf5gN+b3TNutVvD0dUPM
 X-Developer-Key: i=louisalexis.eyraud@collabora.com; a=ed25519;
  pk=CHFBDB2Kqh4EHc6JIqFn69GhxJJAzc0Zr4e8QxtumuM=
 
-In preparation of Airoha AN8801R PHY support, move the BuckPBus
-register accessors and definitions, present in air_en8811h driver,
-into the Airoha PHY shared code (air_phy_lib), so they will be usable
-by the new driver without duplicating them.
+To ensure that the Airoha AN8801R PHY uses the maximum available link
+speed, an additional register write is needed to configure the function
+mode for either 1G or 100M/10M operation after link detection.
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+So, in air_an8801 driver, implement a custom read_status callback, that
+after genphy_read_status determines the link speed, sets the bit 0 of
+the link mode register (REG_LINK_MODE) if the detected speed is 1Gbps,
+or unsets it otherwise.
+
 Signed-off-by: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
 ---
- drivers/net/phy/air_en8811h.c | 193 ------------------------------------------
- drivers/net/phy/air_phy_lib.c | 181 +++++++++++++++++++++++++++++++++++++++
- drivers/net/phy/air_phy_lib.h |  23 +++++
- 3 files changed, 204 insertions(+), 193 deletions(-)
+ drivers/net/phy/air_an8801.c | 43 +++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 43 insertions(+)
 
-diff --git a/drivers/net/phy/air_en8811h.c b/drivers/net/phy/air_en8811h.c
-index be7c3426182a..2498bd3f7993 100644
---- a/drivers/net/phy/air_en8811h.c
-+++ b/drivers/net/phy/air_en8811h.c
-@@ -42,22 +42,6 @@
- #define   AIR_AUX_CTRL_STATUS_SPEED_1000	0x8
- #define   AIR_AUX_CTRL_STATUS_SPEED_2500	0xc
+diff --git a/drivers/net/phy/air_an8801.c b/drivers/net/phy/air_an8801.c
+index 73f94e84da07..c64fa153b738 100644
+--- a/drivers/net/phy/air_an8801.c
++++ b/drivers/net/phy/air_an8801.c
+@@ -977,6 +977,48 @@ static int an8801r_config_init(struct phy_device *phydev)
+ 	return 0;
+ }
  
--#define   AIR_PHY_PAGE_STANDARD			0x0000
--#define   AIR_PHY_PAGE_EXTENDED_4		0x0004
--
--/* MII Registers Page 4*/
--#define AIR_BPBUS_MODE			0x10
--#define   AIR_BPBUS_MODE_ADDR_FIXED		0x0000
--#define   AIR_BPBUS_MODE_ADDR_INCR		BIT(15)
--#define AIR_BPBUS_WR_ADDR_HIGH		0x11
--#define AIR_BPBUS_WR_ADDR_LOW		0x12
--#define AIR_BPBUS_WR_DATA_HIGH		0x13
--#define AIR_BPBUS_WR_DATA_LOW		0x14
--#define AIR_BPBUS_RD_ADDR_HIGH		0x15
--#define AIR_BPBUS_RD_ADDR_LOW		0x16
--#define AIR_BPBUS_RD_DATA_HIGH		0x17
--#define AIR_BPBUS_RD_DATA_LOW		0x18
--
- /* Registers on MDIO_MMD_VEND1 */
- #define EN8811H_PHY_FW_STATUS		0x8009
- #define   EN8811H_PHY_READY			0x02
-@@ -245,183 +229,6 @@ static const unsigned long en8811h_led_trig = BIT(TRIGGER_NETDEV_FULL_DUPLEX) |
- 					      BIT(TRIGGER_NETDEV_RX)          |
- 					      BIT(TRIGGER_NETDEV_TX);
- 
--static int __air_buckpbus_reg_write(struct phy_device *phydev,
--				    u32 pbus_address, u32 pbus_data)
--{
--	int ret;
--
--	ret = __phy_write(phydev, AIR_BPBUS_MODE, AIR_BPBUS_MODE_ADDR_FIXED);
--	if (ret < 0)
--		return ret;
--
--	ret = __phy_write(phydev, AIR_BPBUS_WR_ADDR_HIGH,
--			  upper_16_bits(pbus_address));
--	if (ret < 0)
--		return ret;
--
--	ret = __phy_write(phydev, AIR_BPBUS_WR_ADDR_LOW,
--			  lower_16_bits(pbus_address));
--	if (ret < 0)
--		return ret;
--
--	ret = __phy_write(phydev, AIR_BPBUS_WR_DATA_HIGH,
--			  upper_16_bits(pbus_data));
--	if (ret < 0)
--		return ret;
--
--	ret = __phy_write(phydev, AIR_BPBUS_WR_DATA_LOW,
--			  lower_16_bits(pbus_data));
--	if (ret < 0)
--		return ret;
--
--	return 0;
--}
--
--static int air_buckpbus_reg_write(struct phy_device *phydev,
--				  u32 pbus_address, u32 pbus_data)
--{
--	int saved_page;
--	int ret = 0;
--
--	saved_page = phy_select_page(phydev, AIR_PHY_PAGE_EXTENDED_4);
--
--	if (saved_page >= 0) {
--		ret = __air_buckpbus_reg_write(phydev, pbus_address,
--					       pbus_data);
--		if (ret < 0)
--			phydev_err(phydev, "%s 0x%08x failed: %d\n", __func__,
--				   pbus_address, ret);
--	}
--
--	return phy_restore_page(phydev, saved_page, ret);
--}
--
--static int __air_buckpbus_reg_read(struct phy_device *phydev,
--				   u32 pbus_address, u32 *pbus_data)
--{
--	int pbus_data_low, pbus_data_high;
--	int ret;
--
--	ret = __phy_write(phydev, AIR_BPBUS_MODE, AIR_BPBUS_MODE_ADDR_FIXED);
--	if (ret < 0)
--		return ret;
--
--	ret = __phy_write(phydev, AIR_BPBUS_RD_ADDR_HIGH,
--			  upper_16_bits(pbus_address));
--	if (ret < 0)
--		return ret;
--
--	ret = __phy_write(phydev, AIR_BPBUS_RD_ADDR_LOW,
--			  lower_16_bits(pbus_address));
--	if (ret < 0)
--		return ret;
--
--	pbus_data_high = __phy_read(phydev, AIR_BPBUS_RD_DATA_HIGH);
--	if (pbus_data_high < 0)
--		return pbus_data_high;
--
--	pbus_data_low = __phy_read(phydev, AIR_BPBUS_RD_DATA_LOW);
--	if (pbus_data_low < 0)
--		return pbus_data_low;
--
--	*pbus_data = pbus_data_low | (pbus_data_high << 16);
--	return 0;
--}
--
--static int air_buckpbus_reg_read(struct phy_device *phydev,
--				 u32 pbus_address, u32 *pbus_data)
--{
--	int saved_page;
--	int ret = 0;
--
--	saved_page = phy_select_page(phydev, AIR_PHY_PAGE_EXTENDED_4);
--
--	if (saved_page >= 0) {
--		ret = __air_buckpbus_reg_read(phydev, pbus_address, pbus_data);
--		if (ret < 0)
--			phydev_err(phydev, "%s 0x%08x failed: %d\n", __func__,
--				   pbus_address, ret);
--	}
--
--	return phy_restore_page(phydev, saved_page, ret);
--}
--
--static int __air_buckpbus_reg_modify(struct phy_device *phydev,
--				     u32 pbus_address, u32 mask, u32 set)
--{
--	int pbus_data_low, pbus_data_high;
--	u32 pbus_data_old, pbus_data_new;
--	int ret;
--
--	ret = __phy_write(phydev, AIR_BPBUS_MODE, AIR_BPBUS_MODE_ADDR_FIXED);
--	if (ret < 0)
--		return ret;
--
--	ret = __phy_write(phydev, AIR_BPBUS_RD_ADDR_HIGH,
--			  upper_16_bits(pbus_address));
--	if (ret < 0)
--		return ret;
--
--	ret = __phy_write(phydev, AIR_BPBUS_RD_ADDR_LOW,
--			  lower_16_bits(pbus_address));
--	if (ret < 0)
--		return ret;
--
--	pbus_data_high = __phy_read(phydev, AIR_BPBUS_RD_DATA_HIGH);
--	if (pbus_data_high < 0)
--		return pbus_data_high;
--
--	pbus_data_low = __phy_read(phydev, AIR_BPBUS_RD_DATA_LOW);
--	if (pbus_data_low < 0)
--		return pbus_data_low;
--
--	pbus_data_old = pbus_data_low | (pbus_data_high << 16);
--	pbus_data_new = (pbus_data_old & ~mask) | set;
--	if (pbus_data_new == pbus_data_old)
--		return 0;
--
--	ret = __phy_write(phydev, AIR_BPBUS_WR_ADDR_HIGH,
--			  upper_16_bits(pbus_address));
--	if (ret < 0)
--		return ret;
--
--	ret = __phy_write(phydev, AIR_BPBUS_WR_ADDR_LOW,
--			  lower_16_bits(pbus_address));
--	if (ret < 0)
--		return ret;
--
--	ret = __phy_write(phydev, AIR_BPBUS_WR_DATA_HIGH,
--			  upper_16_bits(pbus_data_new));
--	if (ret < 0)
--		return ret;
--
--	ret = __phy_write(phydev, AIR_BPBUS_WR_DATA_LOW,
--			  lower_16_bits(pbus_data_new));
--	if (ret < 0)
--		return ret;
--
--	return 0;
--}
--
--static int air_buckpbus_reg_modify(struct phy_device *phydev,
--				   u32 pbus_address, u32 mask, u32 set)
--{
--	int saved_page;
--	int ret = 0;
--
--	saved_page = phy_select_page(phydev, AIR_PHY_PAGE_EXTENDED_4);
--
--	if (saved_page >= 0) {
--		ret = __air_buckpbus_reg_modify(phydev, pbus_address, mask,
--						set);
--		if (ret < 0)
--			phydev_err(phydev, "%s 0x%08x failed: %d\n", __func__,
--				   pbus_address, ret);
--	}
--
--	return phy_restore_page(phydev, saved_page, ret);
--}
--
- static int __air_write_buf(struct phy_device *phydev, u32 address,
- 			   const struct firmware *fw)
- {
-diff --git a/drivers/net/phy/air_phy_lib.c b/drivers/net/phy/air_phy_lib.c
-index 8ef5af4becf0..aba4f95fe9e6 100644
---- a/drivers/net/phy/air_phy_lib.c
-+++ b/drivers/net/phy/air_phy_lib.c
-@@ -10,11 +10,192 @@
- #include <linux/export.h>
- #include <linux/module.h>
- #include <linux/phy.h>
-+#include <linux/wordpart.h>
- 
- #include "air_phy_lib.h"
- 
- #define AIR_EXT_PAGE_ACCESS		0x1f
- 
-+static int __air_buckpbus_reg_read(struct phy_device *phydev,
-+				   u32 pbus_address, u32 *pbus_data)
++static int an8801r_read_status(struct phy_device *phydev)
 +{
-+	int pbus_data_low, pbus_data_high;
-+	int ret;
++	int prev_speed, ret;
++	u32 val;
 +
-+	ret = __phy_write(phydev, AIR_BPBUS_MODE, AIR_BPBUS_MODE_ADDR_FIXED);
-+	if (ret < 0)
++	prev_speed = phydev->speed;
++
++	ret = genphy_read_status(phydev);
++	if (ret)
 +		return ret;
 +
-+	ret = __phy_write(phydev, AIR_BPBUS_RD_ADDR_HIGH,
-+			  upper_16_bits(pbus_address));
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = __phy_write(phydev, AIR_BPBUS_RD_ADDR_LOW,
-+			  lower_16_bits(pbus_address));
-+	if (ret < 0)
-+		return ret;
-+
-+	pbus_data_high = __phy_read(phydev, AIR_BPBUS_RD_DATA_HIGH);
-+	if (pbus_data_high < 0)
-+		return pbus_data_high;
-+
-+	pbus_data_low = __phy_read(phydev, AIR_BPBUS_RD_DATA_LOW);
-+	if (pbus_data_low < 0)
-+		return pbus_data_low;
-+
-+	*pbus_data = pbus_data_low | (pbus_data_high << 16);
-+	return 0;
-+}
-+
-+static int __air_buckpbus_reg_write(struct phy_device *phydev,
-+				    u32 pbus_address, u32 pbus_data)
-+{
-+	int ret;
-+
-+	ret = __phy_write(phydev, AIR_BPBUS_MODE, AIR_BPBUS_MODE_ADDR_FIXED);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = __phy_write(phydev, AIR_BPBUS_WR_ADDR_HIGH,
-+			  upper_16_bits(pbus_address));
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = __phy_write(phydev, AIR_BPBUS_WR_ADDR_LOW,
-+			  lower_16_bits(pbus_address));
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = __phy_write(phydev, AIR_BPBUS_WR_DATA_HIGH,
-+			  upper_16_bits(pbus_data));
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = __phy_write(phydev, AIR_BPBUS_WR_DATA_LOW,
-+			  lower_16_bits(pbus_data));
-+	if (ret < 0)
-+		return ret;
-+
-+	return 0;
-+}
-+
-+static int __air_buckpbus_reg_modify(struct phy_device *phydev,
-+				     u32 pbus_address, u32 mask, u32 set)
-+{
-+	int pbus_data_low, pbus_data_high;
-+	u32 pbus_data_old, pbus_data_new;
-+	int ret;
-+
-+	ret = __phy_write(phydev, AIR_BPBUS_MODE, AIR_BPBUS_MODE_ADDR_FIXED);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = __phy_write(phydev, AIR_BPBUS_RD_ADDR_HIGH,
-+			  upper_16_bits(pbus_address));
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = __phy_write(phydev, AIR_BPBUS_RD_ADDR_LOW,
-+			  lower_16_bits(pbus_address));
-+	if (ret < 0)
-+		return ret;
-+
-+	pbus_data_high = __phy_read(phydev, AIR_BPBUS_RD_DATA_HIGH);
-+	if (pbus_data_high < 0)
-+		return pbus_data_high;
-+
-+	pbus_data_low = __phy_read(phydev, AIR_BPBUS_RD_DATA_LOW);
-+	if (pbus_data_low < 0)
-+		return pbus_data_low;
-+
-+	pbus_data_old = pbus_data_low | (pbus_data_high << 16);
-+	pbus_data_new = (pbus_data_old & ~mask) | set;
-+	if (pbus_data_new == pbus_data_old)
++	if (!phydev->link) {
++		phydev->speed = SPEED_UNKNOWN;
 +		return 0;
++	}
 +
-+	ret = __phy_write(phydev, AIR_BPBUS_WR_ADDR_HIGH,
-+			  upper_16_bits(pbus_address));
-+	if (ret < 0)
-+		return ret;
++	if (prev_speed != phydev->speed) {
++		/* Ensure that PHY switches to 1G speed when available,
++		 * by configuring the function mode for either 1G or 100M/10M
++		 * operation.
++		 * Therefore, set the link mode register, after read_status
++		 * determines the link speed.
++		 */
++		val = phydev->speed == SPEED_1000 ?
++		      AN8801_BPBUS_LINK_MODE_1000 : 0;
 +
-+	ret = __phy_write(phydev, AIR_BPBUS_WR_ADDR_LOW,
-+			  lower_16_bits(pbus_address));
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = __phy_write(phydev, AIR_BPBUS_WR_DATA_HIGH,
-+			  upper_16_bits(pbus_data_new));
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = __phy_write(phydev, AIR_BPBUS_WR_DATA_LOW,
-+			  lower_16_bits(pbus_data_new));
-+	if (ret < 0)
-+		return ret;
++		ret = an8801_buckpbus_reg_rmw(phydev,
++					      AN8801_BPBUS_REG_LINK_MODE,
++					      AN8801_BPBUS_LINK_MODE_1000,
++					      val);
++		if (ret) {
++			/* Restore previous speed on failure to ensure this
++			 * register setting is retried on the next poll
++			 */
++			phydev->speed = prev_speed;
++			return ret;
++		}
++	}
 +
 +	return 0;
 +}
 +
-+int air_buckpbus_reg_read(struct phy_device *phydev, u32 pbus_address,
-+			  u32 *pbus_data)
-+{
-+	int saved_page;
-+	int ret = 0;
-+
-+	saved_page = phy_select_page(phydev, AIR_PHY_PAGE_EXTENDED_4);
-+
-+	if (saved_page >= 0) {
-+		ret = __air_buckpbus_reg_read(phydev, pbus_address, pbus_data);
-+		if (ret < 0)
-+			phydev_err(phydev, "%s 0x%08x failed: %d\n", __func__,
-+				   pbus_address, ret);
-+	}
-+
-+	return phy_restore_page(phydev, saved_page, ret);
-+}
-+EXPORT_SYMBOL_GPL(air_buckpbus_reg_read);
-+
-+int air_buckpbus_reg_write(struct phy_device *phydev, u32 pbus_address,
-+			   u32 pbus_data)
-+{
-+	int saved_page;
-+	int ret = 0;
-+
-+	saved_page = phy_select_page(phydev, AIR_PHY_PAGE_EXTENDED_4);
-+
-+	if (saved_page >= 0) {
-+		ret = __air_buckpbus_reg_write(phydev, pbus_address,
-+					       pbus_data);
-+		if (ret < 0)
-+			phydev_err(phydev, "%s 0x%08x failed: %d\n", __func__,
-+				   pbus_address, ret);
-+	}
-+
-+	return phy_restore_page(phydev, saved_page, ret);
-+}
-+EXPORT_SYMBOL_GPL(air_buckpbus_reg_write);
-+
-+int air_buckpbus_reg_modify(struct phy_device *phydev, u32 pbus_address,
-+			    u32 mask, u32 set)
-+{
-+	int saved_page;
-+	int ret = 0;
-+
-+	saved_page = phy_select_page(phydev, AIR_PHY_PAGE_EXTENDED_4);
-+
-+	if (saved_page >= 0) {
-+		ret = __air_buckpbus_reg_modify(phydev, pbus_address, mask,
-+						set);
-+		if (ret < 0)
-+			phydev_err(phydev, "%s 0x%08x failed: %d\n", __func__,
-+				   pbus_address, ret);
-+	}
-+
-+	return phy_restore_page(phydev, saved_page, ret);
-+}
-+EXPORT_SYMBOL_GPL(air_buckpbus_reg_modify);
-+
- int air_phy_read_page(struct phy_device *phydev)
+ static int an8801r_probe(struct phy_device *phydev)
  {
- 	return __phy_read(phydev, AIR_EXT_PAGE_ACCESS);
-diff --git a/drivers/net/phy/air_phy_lib.h b/drivers/net/phy/air_phy_lib.h
-index 79367e8e5907..b637f3e0f2d5 100644
---- a/drivers/net/phy/air_phy_lib.h
-+++ b/drivers/net/phy/air_phy_lib.h
-@@ -10,6 +10,29 @@
- 
- #include <linux/phy.h>
- 
-+#define AIR_PHY_PAGE_STANDARD		0x0000
-+#define AIR_PHY_PAGE_EXTENDED_1		0x0001
-+#define AIR_PHY_PAGE_EXTENDED_4		0x0004
-+
-+/* MII Registers Page 4*/
-+#define AIR_BPBUS_MODE			0x10
-+#define   AIR_BPBUS_MODE_ADDR_FIXED		0x0000
-+#define   AIR_BPBUS_MODE_ADDR_INCR		BIT(15)
-+#define AIR_BPBUS_WR_ADDR_HIGH		0x11
-+#define AIR_BPBUS_WR_ADDR_LOW		0x12
-+#define AIR_BPBUS_WR_DATA_HIGH		0x13
-+#define AIR_BPBUS_WR_DATA_LOW		0x14
-+#define AIR_BPBUS_RD_ADDR_HIGH		0x15
-+#define AIR_BPBUS_RD_ADDR_LOW		0x16
-+#define AIR_BPBUS_RD_DATA_HIGH		0x17
-+#define AIR_BPBUS_RD_DATA_LOW		0x18
-+
-+int air_buckpbus_reg_modify(struct phy_device *phydev, u32 pbus_address,
-+			    u32 mask, u32 set);
-+int air_buckpbus_reg_read(struct phy_device *phydev, u32 pbus_address,
-+			  u32 *pbus_data);
-+int air_buckpbus_reg_write(struct phy_device *phydev, u32 pbus_address,
-+			   u32 pbus_data);
- int air_phy_read_page(struct phy_device *phydev);
- int air_phy_write_page(struct phy_device *phydev, int page);
- 
+ 	struct device *dev = &phydev->mdio.dev;
+@@ -1074,6 +1116,7 @@ static struct phy_driver airoha_driver[] = {
+ 	.suspend		= an8801r_suspend,
+ 	.resume			= an8801r_resume,
+ 	.config_aneg		= genphy_config_aneg,
++	.read_status		= an8801r_read_status,
+ 	.config_intr		= an8801r_config_intr,
+ 	.handle_interrupt	= an8801r_handle_interrupt,
+ 	.set_wol		= an8801r_set_wol,
 
 -- 
 2.54.0
