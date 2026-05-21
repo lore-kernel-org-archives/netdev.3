@@ -1,75 +1,46 @@
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C87BA3C8C75
-	for <netdev@vger.kernel.org>; Thu, 21 May 2026 12:22:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D70033B5F48;
+	Thu, 21 May 2026 12:24:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779366130; cv=none; b=mcTCdrHFq9NZxmGseUP/HdPueQjUsuKLGK1+BapyHEpY/R1w25pd5b80rOg2pmb2rQzUDoyPNMLzEUb4pNj62Li2phF+nl1BH/efwRt7BS2m6KjedSJSkcXvSpXVzPLn0G5H5modxcIIdmpU+Q+efd0R4g7fcQXGRSyQlp4VTB4=
+	t=1779366278; cv=none; b=KdMHDPHdJuP4Yon/Iqu9ioZMKbFspCHiLTK2m8H9rxWORzHyi7qrf7mUkUC6k99sdIacPL6MtqRHeA0wvjs5yB8Exe5JDGJNROVIzfmQEt44FFrEFkxg7nYdPUDYzC39mpo173Laxsi+0jQrgWwLgjBh15C1dfvIlxbHH9kpecs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779366130; c=relaxed/simple;
-	bh=6qIKQ4HGRNuC9b1VA8SW31u97PHcK3v1iZgV3ZjX7XM=;
+	s=arc-20240116; t=1779366278; c=relaxed/simple;
+	bh=pgR/sfOkC+dxjzDy3Ty4FCZCllfFQJu94UTUwiCulR8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=h5NvRdubSd2trAExs8/3N/LIS0lc2h12WLjmGeycj/tBLGsINPfPh4X4gkTAyzJmz/79VND3BeLkGKMDYC62m7c/XJe85HsS2oOldjvQ4XSBgXGsUO0L1iJtoeckrziW7GGrClKHDjnEpVl3f++pWolCmVLpXEuYJupoeYi/iEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=glANsFbB; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=Dxa6Hped6Z1tn8Tc4WI4b5DcpZ09cZB04NjzMH7XzbOc9IjCgnCMq6hhvQkFYBizACcAjpmIUbPokDn+aDEMxbHrFYvqDVe1SoR+mOS4fU9xw6fGUKZ/wX9+Gkuxx7POhh9b4NhsaRnTXLR88F5Jp+A3vbt4Y8TNCPnADia8KLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=sLOUzZvC; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="glANsFbB"
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-488a14c31eeso37313765e9.0
-        for <netdev@vger.kernel.org>; Thu, 21 May 2026 05:22:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=blackwall.org; s=google; t=1779366127; x=1779970927; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=IkozO53PWowE/Kmlnn2nLReMhnnLRxP/AG8BG4YN0IQ=;
-        b=glANsFbB63ZxtFs8dZm46vdfJQMP48QOSU+w0/EcXMRz5mZf5rzfwCgW+i6KpbSHn2
-         rnvPmSKM9i1KQ9Wba5YYlRGMEu5Oa2cygIyrZHSDTFJopsPiOPRFZHiwk8Vg8Af0cA0k
-         lrCDj8U2e1z3M1q5WySOg0gKZez9G/5SM4n6/Y6wcJgjnMuV/KAIeA8J1NDfk4oo23ya
-         LQJ0u/y+S1v9k6QO2xQUWSe7gmsXnFEJRx/kEBSCTuIJ+ZBSsbEarTqV0zA1ZNYGap+Z
-         /FnIdVbWdynhCx2I3PZb+QvtxrFNqQPibNam9pTeLKEWSQ5OJDNfUgcLsLat/HeHFIqA
-         O70Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779366127; x=1779970927;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=IkozO53PWowE/Kmlnn2nLReMhnnLRxP/AG8BG4YN0IQ=;
-        b=YCP0cCkkq+A0wZeAbcndi8zQoJjkDf6cDJQEJz8X20L/cxbLLaTFJvpUzMLGmc9gG5
-         ubbkjMEfRS1uFuoQ4FRo80qTWtrb8OppQS7fo5MZVtR5wZONZUmDe/MapFZRc8l6PxSI
-         KG2I0CzBLn91CaY/PjEjt4HlvBYGniqWkdIhyhxadVJmlFChYsqtibm/gmdpmIdNReHA
-         4B/2qMpZcyGXTL0t1Lx7g75TvAAw1XLFfnESloTf0vHoTa8al/KuaY7DoRzk4PHin5mL
-         XgZWLA18gKkqq1y6oZ6OBCkNKx1O1o0R6SaCF92IXGjyPNpHV2phgTUsewj3fEVMP9X9
-         bKwg==
-X-Forwarded-Encrypted: i=1; AFNElJ8JZiqNP0rg3SRmUthNKZk4xmf6WgT1CJziE14T/W5A6+XUePWPgE2IcXuavQDeHsjHmw9Ljqg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwRP1lZ/QImeh2R1Yy9OSHeA1eMCPh4e1kOorVP2XFGzAolzykz
-	8w8UcSFPcQSwkJimNhP2Mz7IvGCHMI7wnDt0nCCQJesJkOc4tdimkLa5VwsqUEepukg=
-X-Gm-Gg: Acq92OGK02/sxHjTK/pX6E6r5MFJEJNvX7KfaK1NdF+GULqQ4ehXUVur5xqniK8wOW+
-	gWtUKXv8C2xyGrWUvhyRJzWq7ng+3hcQ/0tBcv2Yv8jfIpHArimMebRCoh1aAfrRWAPrnd+RTgX
-	lf2sSUihCRhnH+nc1VqKx/BN8VPJua/nd3YzzCnUr27WTgde+lq2cppBuPJdPDsEYZKKlzcxDRt
-	lj7JFnAxPrWgE7Z5v5otz9pFhSp1rQeXQeHH2doZKsNi0t7pIz/LBNVpcq+SOYYvjtQSHP4Zm6Z
-	FN2qW4zmzFYD8ztuq6cC2c2MXh8Pprr0ApIbUqfVy+bJYDk2khmIDPG3elsxqZM/5o/+qG7mvJG
-	69c30U6z1ipkAXMRsSVIBwkPXzsBGBdu80kXm8fvRvZXpP/6DrtMa0jOsbHy+WCAa6XM1fsa22s
-	Qs7uyejOse6biRxQL5D58OaMyUXC4=
-X-Received: by 2002:a05:600c:1f8d:b0:488:936a:6220 with SMTP id 5b1f17b1804b1-4903607cc18mr37429845e9.21.1779366126687;
-        Thu, 21 May 2026 05:22:06 -0700 (PDT)
-Received: from localhost ([165.85.72.231])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45eaa92dbfdsm2368433f8f.18.2026.05.21.05.22.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 May 2026 05:22:06 -0700 (PDT)
-Date: Thu, 21 May 2026 15:22:03 +0300
-From: Nikolay Aleksandrov <razor@blackwall.org>
-To: Eric Dumazet <edumazet@google.com>
-Cc: "David S . Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
-	eric.dumazet@gmail.com,
-	syzbot+a35f9259d08f907c06e6@syzkaller.appspotmail.com,
-	Ido Schimmel <idosch@nvidia.com>
-Subject: Re: [PATCH v2 net] net: bridge: prevent too big nested attributes in
- br_fill_linkxstats()
-Message-ID: <ag7463AoU8pVuamX@penguin>
-References: <20260520114207.1394241-1-edumazet@google.com>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="sLOUzZvC"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=6Sq2Ha1ZC8o+rRc7gR1Qy/D/3XJfFdHu8duTVUUw/fQ=; b=sLOUzZvCCAz6CYaKHMGpe2AFD/
+	GrJoU5KRtsxRsew7SdzfePt/+2C7sZigzcmH30yqXDryrfhlTQ2zDn7WCEVUO80qKQqslPu4H7fLu
+	mVcYaY4WpBtvcD4jOLXx4jWSlWR86edXqixhLH+OkOEbBzK45KXs9ozWdItZVvQ9MrRw=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wQ2Rm-00411s-2F; Thu, 21 May 2026 14:24:18 +0200
+Date: Thu, 21 May 2026 14:24:18 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Ashwin Gundarapu <linuxuser509@zohomail.in>
+Cc: "anthony.l.nguyen@intel.com" <przemyslaw.kitszel@intel.com>,
+	andrewnetdev <andrew+netdev@lunn.ch>, davem <davem@davemloft.net>,
+	edumazet <edumazet@google.com>, kuba <kuba@kernel.org>,
+	pabeni <pabeni@redhat.com>,
+	intel-wired-lan <intel-wired-lan@lists.osuosl.org>,
+	netdev <netdev@vger.kernel.org>,
+	linux-kernel <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net-next] net: e100: replace silent 'hope for the best'
+ with debug message
+Message-ID: <db588334-0871-4b83-a020-da8f621816d5@lunn.ch>
+References: <19e49280392.4757403170773.5767589851918809405@zohomail.in>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -78,31 +49,33 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260520114207.1394241-1-edumazet@google.com>
+In-Reply-To: <19e49280392.4757403170773.5767589851918809405@zohomail.in>
 
-On Wed, May 20, 2026 at 11:42:07AM +0000, Eric Dumazet wrote:
-> After commit ff205bf8c554 ("netlink: add one debug check in nla_nest_end()")
-> syzbot found that br_fill_linkxstats() can send corrupted netlink packets.
+On Thu, May 21, 2026 at 11:40:19AM +0530, Ashwin Gundarapu wrote:
+> From: Ashwin Gundarapu <linuxuser509@zohomail.in>
+> Date: Sun, 10 May 2026 15:09:12 +0530
+> Subject: [PATCH] net: e100: replace silent 'hope for the best' with debug
+>  message
 > 
-> Make sure the nested attribute size is bounded.
+> Replace a silent return with a debug message when no MII PHY is
+> detected on known variants. This gives users visibility into the
+> failure instead of silently hoping for the best.
 > 
-> Fixes: a60c090361ea ("bridge: netlink: export per-vlan stats")
-> Reported-by: syzbot+a35f9259d08f907c06e6@syzkaller.appspotmail.com
-> Closes: https://lore.kernel.org/netdev/6a0b0da3.050a0220.175f0c.0000.GAE@google.com/
-> Signed-off-by: Eric Dumazet <edumazet@google.com>
-> ---
-> Cc: Nikolay Aleksandrov <razor@blackwall.org>
-> Cc: Ido Schimmel <idosch@nvidia.com>
-> ---
-> v2: remove the WARN_ON(err == -EMSGSIZE) in rtnl_stats_get() (Ido)
->     adjust limit (Ido)
-> v1: https://lore.kernel.org/netdev/20260518130531.1015332-1-edumazet@google.com/
-> 
->  net/bridge/br_netlink.c | 10 ++++++++++
->  net/core/rtnetlink.c    |  5 +++--
->  2 files changed, 13 insertions(+), 2 deletions(-)
-> 
- 
-Thanks!
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+> Found by checkpatch.pl inspection.
 
+Please make sure you really do compile test your changes.
+
+Also, look at the history of a driver. How old is e100? I guess this
+driver has been around 20 years? If this was an issue, somebody would
+of fixed it 15 years ago? 10 years ago?
+
+Please consider checkpatch as a tool which says there _might_ be an
+issue at this line of code, not there _is_ an issue at this line of
+code. You need to look at it, think about it, consider all the ways
+checkpatch could be wrong, and only once you have convinced yourself
+checkpatch is correct, fix it.
+
+    Andrew
+
+---
+pw-bot: cr
