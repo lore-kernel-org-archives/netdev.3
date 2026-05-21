@@ -1,69 +1,112 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71A1632E134;
-	Thu, 21 May 2026 02:16:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9D3F262A6
+	for <netdev@vger.kernel.org>; Thu, 21 May 2026 02:19:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779329800; cv=none; b=a45imBGoIhd2lOnpoE75LZ4Tdd6ODyFp9/GXXzaDQZsnzxx4RKy9p0JoUUh6br0+FJmuXzTmrIHl+xqYS3sbBH43ZJvJYzSIUDKENP1vBJ1pn1RgwyUUFop/kWevjrOQEjA0itOQ2tFxUfdDJKj15d+/qxbzCe8nmloDpUZpJpA=
+	t=1779329976; cv=none; b=ZHqiCSiRCwja5P+Fw/kdh1B/iWohvHHt5pbFfa7qaDc9vCCf+lDXPWL4fcOKuFpR8GkLfceiSJT3zahbwceYjIZq26F5CDTvO+YgW6ZTgGuWkknTGLw9EKuRIPAnwlnPIYvyJbcR0utcNiR89vFOWFncBG/53wUlnpaQmrkAPlI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779329800; c=relaxed/simple;
-	bh=5NNfixH43rJtIbq0/JHV8UMMN/w6MQSF5gq/5wPqC3M=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sTZc++XV+MBU6JGCs9yIy4W4Cvb5YKUkOFcwEy4JCCEY3Q25N8JeHeZW4kN5gyYF4YXKWzYF0qphoyc6jkKno1ZjXdJyK3pJHSjkZJjmI0MQvQ7ruHeXpQQrZ54T6ztNOJMtTlmEBYDmNlrzjVDYOBa5GPb0SeDKrwvjbJnohnI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HFTF0pde; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779329976; c=relaxed/simple;
+	bh=MJJWJjFQO1tvTUXM49tXnOL6TTRE3K5kXfe94A9tbio=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=NxW6uFcjQITGEUBPzhr03mgT5Z8lG2XNaBeGgZQwm0fqKYJOt+mNEPFFpoj4qlfSE1R6cJPvuXmWPs2XqGdKAZ00vErL/+uSGsF8NQL/vJGbG5Ta2Rawc3pKmHDklFi0U9nGIVt5qPsJfWoRql2RJe50Lo2Q1Q3yTCr/iFl5ltg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TVnty3VD; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HFTF0pde"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ADFF1F000E9;
-	Thu, 21 May 2026 02:16:32 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TVnty3VD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99ABB1F000E9;
+	Thu, 21 May 2026 02:19:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779329793;
-	bh=/Bp0SYVMP6JwekykUnpp109Yxa0slvT9rm10mIA60D8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=HFTF0pdevcJ2ZmKPVbmFLvzZGw1jxvli9uWf4+q7fporrrqx0aY/aTkzKBQnhpT2H
-	 FMbQnQplvuE5OmzhPGW7lkgdXDBrVckVxhXahCopMY0dRtKofd6cxGvH19an2vtDK3
-	 m3R++EBXTliVWCGrDIoLu2UnIGCwdttEiLbYmH85pQ2ZSN+DicUNFJKS8FZjaayQ74
-	 dHXQYcDWdaEaD88OWJ+QAPB6ON3yMDjdYcfL2ugN1w/oxEHTjxuaYodA8gSKn96si6
-	 IkJza/lCIyIHSb3y76s1Bhe58/eM77IdJqX09YZ13QGgeIrASAYolAZ2dp1f53FV5c
-	 CO/VoyG0LtBbQ==
-Date: Wed, 20 May 2026 19:16:31 -0700
+	s=k20260515; t=1779329963;
+	bh=IZMsp9VVUkxohN2N1/noF25ZmTTG1KRgWvp5nTOpuck=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=TVnty3VD/Z15AutxH3Xh9UQMTmyLpCoHBqPfLNm/9Y1ThEioJkyX/K/xFlsbDeHIx
+	 EERIbWhbaUmznX9O/7otr2O8p8Hf0VovwJx2W8rovMIkD4LsfdVf/94oDm/7WnGO3U
+	 j+9Uc0fuC1kIYf7J0ijABy6ZmI/5XujeBGjbeg6IJkmgcN6RHumvfxuTMeW3D4OjJD
+	 U1lSWiupo09QfMSakkgt7I0pJwZSug7XhQIQwyDJlp1QexF9yi4JQqtFr99PzskOL6
+	 i6XDFdyjcQ0VcFK10L2oGcYg0S7pIdc4udW2m2WTd+odpXtvwXjCSKx8I2uCNNTBtz
+	 dhK3isVjL+ZmA==
 From: Jakub Kicinski <kuba@kernel.org>
-To: Ivan Vecera <ivecera@redhat.com>
-Cc: netdev@vger.kernel.org, Arkadiusz Kubalewski
- <arkadiusz.kubalewski@intel.com>, "David S. Miller" <davem@davemloft.net>,
- Donald Hunter <donald.hunter@gmail.com>, Eric Dumazet
- <edumazet@google.com>, Jiri Pirko <jiri@resnulli.us>, Michal Schmidt
- <mschmidt@redhat.com>, Paolo Abeni <pabeni@redhat.com>, Pasi Vaananen
- <pvaanane@redhat.com>, Petr Oros <poros@redhat.com>, Prathosh Satish
- <Prathosh.Satish@microchip.com>, Simon Horman <horms@kernel.org>, Vadim
- Fedorenko <vadim.fedorenko@linux.dev>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v2 1/2] dpll: add DPLL_PIN_TYPE_INT_NCO pin
- type
-Message-ID: <20260520191631.639a9820@kernel.org>
-In-Reply-To: <20260516175744.26749-2-ivecera@redhat.com>
-References: <20260516175744.26749-1-ivecera@redhat.com>
-	<20260516175744.26749-2-ivecera@redhat.com>
+To: dhowells@redhat.com
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	netdev@vger.kernel.org,
+	michael.bommarito@gmail.com,
+	marc.dionne@auristor.com,
+	jaltman@auristor.com,
+	edumazet@google.com,
+	davem@davemloft.net,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	linux-afs@lists.infradead.org,
+	stable@kernel.org
+Subject: Re: [PATCH net] rxrpc: Fix the ACK parser to extract the SACK table for parsing
+Date: Wed, 20 May 2026 19:19:11 -0700
+Message-ID: <20260521021910.687776-2-kuba@kernel.org>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <488970.1779144259@warthog.procyon.org.uk>
+References: <488970.1779144259@warthog.procyon.org.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Sat, 16 May 2026 19:57:43 +0200 Ivan Vecera wrote:
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+---
+rxrpc: Fix the ACK parser to extract the SACK table for parsing
 
-> ---
-> v2:
->   - Clarify int-nco pin type documentation to describe frequency
->     control via the PTP clock interface instead of generic "controlled
->     by the host".
->   - Tighten FFO attribute documentation for INT_NCO pins to describe
->     the DPLL's output frequency offset from nominal frequency.
->   - Mention both fractional-frequency-offset (PPM) and
->     fractional-frequency-offset-ppt attributes in the commit message.
-> 
-> Signed-off-by: Ivan Vecera <ivecera@redhat.com>
+This commit fixes modification of the received skbuff and incorrect access
+of the buffer in fragmented UDP packets during SACK table parsing. It copies
+out the contents of the SACK table into a flat stack buffer instead of
+relying on skb_condense().
 
-Both patches have SoB after --- and changelog, please fix :(
+Link: https://lore.kernel.org/r/20260513180907.2061972-1-michael.bommarito@gmail.com
+
+> diff --git a/net/rxrpc/input.c b/net/rxrpc/input.c
+> index 24aceb183c2c3..0c15ebf19eae9 100644
+> --- a/net/rxrpc/input.c
+> +++ b/net/rxrpc/input.c
+> @@ -963,21 +963,34 @@ static void rxrpc_input_soft_acks(struct rxrpc_call *call,
+>  	struct rxrpc_skb_priv *sp = rxrpc_skb(skb);
+>  	struct rxrpc_txqueue *tq = call->tx_queue;
+>  	unsigned long extracted = ~0UL;
+> -	unsigned int nr = 0;
+> +	unsigned int nr = 0, nsack;
+>  	rxrpc_seq_t seq = call->acks_hard_ack + 1;
+>  	rxrpc_seq_t lowest_nak = seq + sp->ack.nr_acks;
+> -	u8 *acks = skb->data + sizeof(struct rxrpc_wire_header) + sizeof(struct rxrpc_ackpacket);
+> +	u8 sack[256] __aligned(sizeof(unsigned long));
+> +	u8 *acks = sack;
+
+[ ... ]
+
+>  	for (unsigned int i = 0; i < sp->ack.nr_acks; i++) {
+>  		/* Decant ACKs until we hit a txqueue boundary. */
+>  		shiftr_adv_rotr(acks, extracted);
+>  		if (i == 256) {
+> -			acks -= i;
+> +			acks = sack;
+>  			i = 0;
+>  		}
+
+Can this lead to an out-of-bounds access and an infinite loop if
+sp->ack.nr_acks is greater than 256?
+
+If a received packet has sp->ack.nr_acks > 256, on the 257th iteration
+(where i == 256), the shiftr_adv_rotr(acks, extracted) macro will execute
+before the wrap-around check resets the acks pointer.
+
+Since the acks pointer has been incremented 256 times by previous iterations,
+wouldn't it point to sack + 256 at this point, causing an out-of-bounds read
+and write on the sack[] array?
+
+Furthermore, resetting i to 0 inside the loop means the loop's i++
+operation will set it to 1 for the next iteration. Because the counter is
+reset without breaking out of the loop, will this ever terminate if
+sp->ack.nr_acks > 256, or will it cycle infinitely and eventually cause a NULL
+pointer dereference when tq->next runs out of transmit queues?
+-- 
+pw-bot: cr
