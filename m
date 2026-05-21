@@ -1,1226 +1,196 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B90383A3825;
-	Thu, 21 May 2026 08:22:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779351769; cv=none; b=AZly6h4mTWzBniKJBl0U/ywTUxeIpATWJ8YOYi7y7CiBgX6TjDUTcbLs5Eh42QnxuxH1FZohZs1J2cJOaH7qovTSC+p7uzSupa+pTiH1LyMcchSctYE8sbR8h7SPQgnYUEK9PLjNuVrFDgpqzibJJK/XdVyi/M/9lg6cfRHrAq4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779351769; c=relaxed/simple;
-	bh=2d9HFUGF1KqwQzL8+3LwftY3F3uWVFvNr31JSfiF168=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=NvRmyZl+et31YMTzmi5wx6sQ7Y+KjM/qVX7kU4DefJPyQ2IZCe6DRYJbbGsmZxI87HmCBTBnp9T3HOjprtQq1PXdaEO96JaCr8YksiDYbOjvNDwRzaqszMQah2zrjadXVwl17j7qRLv2PbniD18F0dhgSJMY2nP48utqtUqFnCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=fgK3sVML; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 513CF3016FC;
+	Thu, 21 May 2026 08:25:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.10
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779351949; cv=fail; b=irIimjkL/GcJLyOmAPTt2svWYu4MjVXGaYGN7b18Y9D4YlvHkHTGUjZZdzK6G2aTJSdJdDkcrkw3hyytA9e1ICVUsJu+AK9uYrdDxO/5ewZKQXS4nglsRufLm2UmcUh167tZef2CBoNrmRIm0LeGQtfYfWmOHVwDR2L53vHbseQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779351949; c=relaxed/simple;
+	bh=Vno1eiQ5KOMKvQNPpr4MqWKChMsbWaHmnQA7AOD3kiE=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=imLyMk3VWs9BoPoYYiOTYwrLpT7KGiAzuDJB1nL1xOhlVadJ7S+izWM0iZBSRYYG1iZA3+noiqv/N8MDhicZpaf0BW/KtPScqv5Co3R480vUldJdqdtgJp+49rmbH1YmWNjSKOPcv6yCwzGx1i2DpkBlEAWB6h6i+dQTWlwefiY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=R0SBYGF3; arc=fail smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="fgK3sVML"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1779351760;
-	bh=2d9HFUGF1KqwQzL8+3LwftY3F3uWVFvNr31JSfiF168=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=fgK3sVML61ZJL4cnTeDNddKCTKkiOq2VsrzU70fD6kFDj3Ky64LS6Rni9wV4p0RpX
-	 cQ2meaF1Z6Iudr9UArrbhahP7kuwyH9NuspUnadaH0V0fNzKGaAqjMrEIM3tcqjZHK
-	 g61Pr/bQGnU1zdhN8pN7/Pjxh6uWDJQ9KEX2dhssrNmnkKtMcMA8Xv3mHysNKCUzAO
-	 QRUC/v5XTBOPRPNGSMM4PUIg/H9t4ZKjlAZFyhNqS81VDm0/3roc7F5v40UL4nr2JL
-	 dI9n8coiOyeLV+L8uvyu0pUvLPeo7/6It4IHhzqzAox9lPnPOoWPpz7Kl/noFMMp7V
-	 dJl9Ka0FzFA6w==
-Received: from yukiji.home (unknown [100.64.0.131])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: laeyraud)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 2515117E125C;
-	Thu, 21 May 2026 10:22:39 +0200 (CEST)
-From: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
-Date: Thu, 21 May 2026 10:21:58 +0200
-Subject: [PATCH net-next v4 5/6] net: phy: Introduce Airoha AN8801R Gigabit
- Ethernet PHY driver
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="R0SBYGF3"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1779351947; x=1810887947;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=Vno1eiQ5KOMKvQNPpr4MqWKChMsbWaHmnQA7AOD3kiE=;
+  b=R0SBYGF3wmwrHdLZCihDj8m51SS1HCgBEjaAkWJLF+3ioCXdrO9nqHlT
+   egkJQEaKwUHGroPfjaYo9/TN6r5xBLSMj1STbkYkpgXHgGezZnnJveFbf
+   ZtrXhiCpWP9T7nR5qSaosn45zz9cGfE6QKZ0J+bjJ6l8gz+feh3xYx5Oy
+   TsTT8liz/ICEjnveZ0TN4tc7IL+WdnSrlEwljcAMVp+4q4t0sgWd1m+1P
+   O2kaI4fSKZ8iLrgpxtM7VVgCyCOZAotHuQ3Ty6jRRzd6keKOvGF59lcGd
+   QPbrkDRWcOmeNqoNAZTxf3ikAUYXCsEobgk3t3wZJJtGg9atHDY6ViKnr
+   g==;
+X-CSE-ConnectionGUID: FXi04lWpSJOBqEJ34cDsWw==
+X-CSE-MsgGUID: pE5KryyJR3KZRXhzYRFXbQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11792"; a="91658476"
+X-IronPort-AV: E=Sophos;i="6.23,246,1770624000"; 
+   d="scan'208";a="91658476"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2026 01:25:33 -0700
+X-CSE-ConnectionGUID: LE3SWCKAR3CKn/G/F2GkfA==
+X-CSE-MsgGUID: bWxTtDN2R6ys7FIK+uvNAA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,246,1770624000"; 
+   d="scan'208";a="236044529"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+  by fmviesa006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2026 01:25:33 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Thu, 21 May 2026 01:25:32 -0700
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Thu, 21 May 2026 01:25:32 -0700
+Received: from CO1PR03CU002.outbound.protection.outlook.com (52.101.46.59) by
+ edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Thu, 21 May 2026 01:25:32 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=IJ31sLIiBB2CWauNOsOJTlVR0iagBI4sho+IkY8h97rUrScucCUD/S6jtzyf2wiQ+J7qiLBfSzxrgOTFMXFHgjPriz6szdL5/Cdz+QyZkwOowpXdnGA0Mu+AhT94eYB1edjlo+2zwrdvPBi5ZT/14JxA8cmgMsffWZfEsTCfThQB25O0Zwo+KMv/JonCymo7ndHq/mwUB2sDGRmjSkmwoVq8LjP8Ucqb0WN4gn/0DtlCO1wTnVVGnw78fyp2pFDugt5PcNfhn2hqqxtcmdc8TWRnBfImdd+nPpwNlfvrabUIZ5kHUgxwrvzk16M5d8y1/cIpahJBLT5pLK3s3HXtYw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=TqxnN9EFK772KUToQHFP0eVVtPVjkOxwLCToJ8x1KC4=;
+ b=kJ0FHo53e0l/Qa/H70QkEQI0qWqQMzZ8WvCJC8pB3Cb1euWnCnPnin6OCv6xrKdAqkjkwkwgRla1Vb7b+KZcvfCNyZzarJxsFk50TsDdcjGaXNfvhlm00kgXtCd7t/6XI82wX/Z18Gx7B+3hmhqoKSf0ZZUIyMXCj6V8xio3yAM0xXSA3IcpZMs+jiE4SNIbNZxP9JoQeOiqcFISoy7KKmiKmNAHbNKSX6m7W899rp9QltDOYAujAV+sG+0z96j+TSun1vI5ER3rfBw/Y0SlsEuvQlQlOXa/v2M8DmVWtPhE2z0ihueqgHeViuKRkRLyGDH8NXM2Sbje4NxKEZ3qng==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from SN7PR11MB7540.namprd11.prod.outlook.com (2603:10b6:806:340::7)
+ by LVUPR11MB9811.namprd11.prod.outlook.com (2603:10b6:408:39c::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.48.16; Thu, 21 May
+ 2026 08:25:30 +0000
+Received: from SN7PR11MB7540.namprd11.prod.outlook.com
+ ([fe80::2edd:5c6d:169c:389b]) by SN7PR11MB7540.namprd11.prod.outlook.com
+ ([fe80::2edd:5c6d:169c:389b%6]) with mapi id 15.21.0048.016; Thu, 21 May 2026
+ 08:25:30 +0000
+Date: Thu, 21 May 2026 10:25:16 +0200
+From: Larysa Zaremba <larysa.zaremba@intel.com>
+To: Jakub Kicinski <kuba@kernel.org>
+CC: Tony Nguyen <anthony.l.nguyen@intel.com>, <davem@davemloft.net>,
+	<pabeni@redhat.com>, <edumazet@google.com>, <andrew+netdev@lunn.ch>,
+	<netdev@vger.kernel.org>, Phani R Burra <phani.r.burra@intel.com>,
+	<przemyslaw.kitszel@intel.com>, <aleksander.lobakin@intel.com>,
+	<sridhar.samudrala@intel.com>, <anjali.singhai@intel.com>,
+	<michal.swiatkowski@linux.intel.com>, <maciej.fijalkowski@intel.com>,
+	<emil.s.tantilov@intel.com>, <madhu.chittim@intel.com>,
+	<joshua.a.hay@intel.com>, <jacob.e.keller@intel.com>,
+	<jayaprakash.shanmugam@intel.com>, <jiri@resnulli.us>, <horms@kernel.org>,
+	<corbet@lwn.net>, <richardcochran@gmail.com>, <linux-doc@vger.kernel.org>,
+	Bharath R <bharath.r@intel.com>, Samuel Salin <Samuel.salin@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Subject: Re: [PATCH net-next v3 05/14] libie: add bookkeeping support for
+ control queue messages
+Message-ID: <ag7BbB7EsMokmH7e@soc-5CG4396X81.clients.intel.com>
+References: <20260515224443.2772147-1-anthony.l.nguyen@intel.com>
+ <20260515224443.2772147-6-anthony.l.nguyen@intel.com>
+ <20260520185121.6f380ad0@kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20260520185121.6f380ad0@kernel.org>
+X-ClientProxiedBy: VI6PEPF0000022F.AUTP296.PROD.OUTLOOK.COM
+ (2603:10a6:808:1::8e9) To SN7PR11MB7540.namprd11.prod.outlook.com
+ (2603:10b6:806:340::7)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260521-add-airoha-an8801-support-v4-5-1e4837d30ef4@collabora.com>
-References: <20260521-add-airoha-an8801-support-v4-0-1e4837d30ef4@collabora.com>
-In-Reply-To: <20260521-add-airoha-an8801-support-v4-0-1e4837d30ef4@collabora.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
- Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
- Russell King <linux@armlinux.org.uk>
-Cc: kevin-kw.huang@airoha.com, macpaul.lin@mediatek.com, 
- matthias.bgg@gmail.com, kernel@collabora.com, netdev@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1779351750; l=32619;
- i=louisalexis.eyraud@collabora.com; s=20250113; h=from:subject:message-id;
- bh=6tq6A+Jk/NqTbXie5JtZEm4kwOSs8tSP3hCJ5MSj4/E=;
- b=ukvhvyYCs+RKGFhy0ctZ3fmR0eIz4+pNHWFvGxaet6+GqTkj0NXPkAuF0aqDdGppjRcLHXrTC
- ivJq6IvdIS6Aq/hTZZIIxs0GzHufjWM2WHueCOYJP06NxbdnIdlcIoG
-X-Developer-Key: i=louisalexis.eyraud@collabora.com; a=ed25519;
- pk=CHFBDB2Kqh4EHc6JIqFn69GhxJJAzc0Zr4e8QxtumuM=
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN7PR11MB7540:EE_|LVUPR11MB9811:EE_
+X-MS-Office365-Filtering-Correlation-Id: 91476fcb-7f47-46c4-c5b2-08deb7128504
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|10070799003|366016|1800799024|22082099003|56012099003|18002099003|5023799004|11063799006|4143699003|6133799003;
+X-Microsoft-Antispam-Message-Info: beUd9OpwC2afCcRiiDwrGs/BMaHZ3GHnfKLgvk+L7dT+PH8xdJ9klQGI7o6jqDdEK8odxXrdCSu8SJqThlDLUaO6Bi3j38rWQ1pqNLIY2wp//fBbP/yOhxjsA2gIzAOYtwlRhCRn/6qTX3aA7etW2hTquJC/jNtfQumpbIiJBdVEKUr0iBQsfJfGDkHx/vkMPh9PFgfp8+dwPHRrey/1pP2pLTaiTCOg9yMyMAvqI9eiFvPnjVhdP9TozbPkMLp0D9QYOvUnbYuNJMBg1ytYYNTOeg6rtXsY2c79vUyMx2FOSc0eSIs7SsIGUe/IJt9p5Sy43s0oOF7B/KUznSsYCgzXPC8IKFjC1Ie3CGHBKqb4bHrSA5BEh/F4MsjCE4OQvcDEIEiBmONBMulINsxuyOyaKDc+qSGcN41ckwDWKoi4hB4CVrzc6BJhvvNNynDj46XAotqTZvKrlauzxewfJbDqfgNUGntEx7Bd4vO6l6VR6cDZIBOIGr0jgzAkyHrAL+PQDA6CIPTXZreasuzNOSbYt7ek9A8ineRoe7jvWZ7d6P1TRMGwQdABovFSTfLSv8tlwQspYaXvsjSkL2RrzQRS8IRVl8UkLTpbfcTlVDGpJQy7FKsdCCP3jFzU0LRhuRIE0i6I3sQf4EJL2RkWmu9E1qQAYy7o3TMo9pWyLXdpA3R5DaQ7WaD79AQNT4U2LVS9j6epzAP7HrZ2zP5GRA==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR11MB7540.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(10070799003)(366016)(1800799024)(22082099003)(56012099003)(18002099003)(5023799004)(11063799006)(4143699003)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?+93helK4e8cVjWkgj19h62GBYl3H6/MB+gug5H7XGVYtNsQxAEPmz7XO525y?=
+ =?us-ascii?Q?5ns3rQ13H8uZ/HiTF+D3Apb8RhZ3dykvJVAiTMEIeGeXNpcNPvvStNI49MC8?=
+ =?us-ascii?Q?QDZI4ah0isl31Z8PVCxTvBVWLf2u22U6PlnQ6wvZG68/IjilIhwxxgD+f+oq?=
+ =?us-ascii?Q?kYl21HEJOXYwsSh1lyhhmsiq7A8f4wG139nUTiDxQGi08VN6RnU4IvpfNarV?=
+ =?us-ascii?Q?DT6HFEXoyfMzv3FjaukFJpWJe9u2tqfAh9CM4+2Y7T5iAGQJ65cVX5jwXj/c?=
+ =?us-ascii?Q?9UWz2I9L+MfjSD1ibe9QFyHwlhKWllZBFVKdYLDGSCLOBLrZuPI58q8hndir?=
+ =?us-ascii?Q?ZcAsnk1XFp9zTNXVPindNig+YuUWXXm5KRGqow5Z4SMHJxrEe0m+8lY0/seD?=
+ =?us-ascii?Q?F6RVKiL8VySPQceItAqjnoUztTZLnLV3rI0Fv6WrJeUtzjfuKZYjZCGIBC4b?=
+ =?us-ascii?Q?JiMYwuvQI7M2TQpJ4jEEwoEZUBhQNSCH9i1KI78B42PWaGpb2JzVL7e7yEPj?=
+ =?us-ascii?Q?8ihcRhDat/MrzGt9/44nxELJWk28vNgbJi8xmqNZ++bSuIoZNR+neKgMmN2S?=
+ =?us-ascii?Q?bYSlXjiKA8dJpejXpnJ+RLXeJimMl67KbX0YXkWRaMQvH07HuYp/gxa3ZiKd?=
+ =?us-ascii?Q?mbz7zY6R+HvaFRRnGLTBpphfVIrIsveyhpaeulFpTUycvEjllqU+fo2dqlc9?=
+ =?us-ascii?Q?0/WglBcPADq4DP5xxrkII+wvg01ud2GhsdmUXqwy0SIqKL+gmMVe30uuxXpn?=
+ =?us-ascii?Q?J52ra0l8VsL3uw3/NZdCE0GKDBItBspVwVBF6wC+37zgExoUzjW1zwPIftNL?=
+ =?us-ascii?Q?E2L99Luo8fV6H3Z+MM2LaD947UjRi6zPB2QVzjF81TikqZXmv6VASaDas/Bj?=
+ =?us-ascii?Q?+4zCpubozVZNYghPmNcgY97c+FqrjzpQG15uBKIxmAaFyHIGgsQRXt+8o9+3?=
+ =?us-ascii?Q?Zexn7H0PSsl4cnml95p5BdB10kQvM/mws3+Be2/s3KnS3frMYiHiavMi+nwb?=
+ =?us-ascii?Q?dtWGJZzH8v9Fda1Klo7G/z8609DYAT0UypeUDI73xT8x1wiXsT0uHFD9P3Ox?=
+ =?us-ascii?Q?l0IsL2qruFHuCIMvkYj4+hFGXzqCTqWKNN0p/2zSN/hh9fn7mdDlQXxBnjxZ?=
+ =?us-ascii?Q?ICd+6ol4+ClGx6eVGLXtdG0tVBAzgKN3XK6EFNaQayw5DZ4v+KY0sshZ6FZC?=
+ =?us-ascii?Q?oxCUA1+6+/qEVoaHzolyLJsy1v6vADnwcA13mKjPCSJ6F8bHU31h4DSm211p?=
+ =?us-ascii?Q?7e2abkc/jXQpBHQhrhgXIYMJUY9tbVS/ebPLsIpf7lEizlN4k8SZMoylzt9t?=
+ =?us-ascii?Q?QnYU7Df+1kecB4dc1jR3HMwf+auSfTz/QsvKcN+j3brpaPbkSXWVihA8LJLR?=
+ =?us-ascii?Q?cePYJMgtdLLEhJEHq+x4utyLlEK2AqFqv619KQzjkySHzgC15sFaFuiBP8Dk?=
+ =?us-ascii?Q?S0ls9nuQwMcm17LaabxtJ2NWSJus0yafHrlC94ODMxPi/+XswNNcEP2sliMQ?=
+ =?us-ascii?Q?SS22U6NeHfpm93ux+qlJWlf/DaiUGhZ1GTSv26XFZeBlMowVFQbmhEUqCBzw?=
+ =?us-ascii?Q?QCZeExU4twoxR5M/lQujKV/qUPYpA1VZWrNVleWEetcQOcovOcbspvbUFBEj?=
+ =?us-ascii?Q?u/9QdvKzV2xDtcffOMduWaSNMvUFJ5SsnxANuKKhBUQmQH86gdS09Qncjd3l?=
+ =?us-ascii?Q?5/VUTDONuVWaYlnTg7e7KWsqc9G2zYbTudqMx4hkcJIB/MLn3Fi2L8SiwCp/?=
+ =?us-ascii?Q?8hMUYAe93H7+cTMVorSulj53NuWISqNdWkWcVSTZ6H2FT7S6GtuRg2z51u/j?=
+X-MS-Exchange-AntiSpam-MessageData-1: fdTWiKaOBOJpjiMoTwCR6MgaHx27eOHp1aY=
+X-Exchange-RoutingPolicyChecked: qQwPse/52y6TgIjYBFPDawOdghNGeJPj7sOXiTEqOubHJ1B+GeDisH9F0RCq1hIaMpCuQZxeMczkPLDfAYXrhF2r/CMFIbMAdQE/JT1kp3cW6vAa0M7ydrEUnOfr8JBANKDEiwRaZLoJkrM68EiwuNnEwzyFc6vOOb8Ku5vWv5PLJnM7U1LUF5D/riyeeVhF3cOzeOrJkcgAckgWjeWvYn+RSqhDkFWFzdckNsq6jYx2JRYO+mxbu21MYOcA/TjTR+5nXhOVdZ0Bm0mGqwm2lQb6aMBilIOIl52Q9c9ng2CW1Lt+Gmgyd7Z0NvzR4kP5jk4+zRYm5kfqFxSGrUURbw==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 91476fcb-7f47-46c4-c5b2-08deb7128504
+X-MS-Exchange-CrossTenant-AuthSource: SN7PR11MB7540.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 May 2026 08:25:30.5346
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: BdaWEHDwyxsCyXlPMK69fyBEaO1DIWokg7Q46SNd45SLGtDdOs1I0PJv6F5yFffShyFeMr5B5FkGUx9PjhBvCwnunWF4X010xV2C9uab4J4=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LVUPR11MB9811
+X-OriginatorOrg: intel.com
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+On Wed, May 20, 2026 at 06:51:21PM -0700, Jakub Kicinski wrote:
+> On Fri, 15 May 2026 15:44:29 -0700 Tony Nguyen wrote:
+> > +	guard(spinlock)(&xnm->free_xns_bm_lock);
+> 
+> Quoting documentation:
+> 
+>   Using device-managed and cleanup.h constructs
+>   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>   
+>   Netdev remains skeptical about promises of all "auto-cleanup" APIs,
+>   including even ``devm_`` helpers, historically. They are not the preferred
+>   style of implementation, merely an acceptable one.
+>   
+>   Use of ``guard()`` is discouraged within any function longer than 20 lines,
+>   ``scoped_guard()`` is considered more readable. Using normal lock/unlock is
+>   still (weakly) preferred.
+>
 
-Introduce a driver for the Airoha AN8801R Series Gigabit Ethernet
-PHY; this currently supports setting up PHY LEDs, 10/100M, 1000M
-speeds, and Wake on LAN and PHY interrupts.
+I agree that using guard in long functions is confusing, but the longest 
+function in this patchset that uses guard() is libie_ctlq_xn_pop_free(), which 
+has 18 lines between curly braces and represents a concrete atomic operation.
 
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
----
- drivers/net/phy/Kconfig      |    6 +
- drivers/net/phy/Makefile     |    1 +
- drivers/net/phy/air_an8801.c | 1101 ++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 1108 insertions(+)
-
-diff --git a/drivers/net/phy/Kconfig b/drivers/net/phy/Kconfig
-index d969a792beb5..099f25dceabb 100644
---- a/drivers/net/phy/Kconfig
-+++ b/drivers/net/phy/Kconfig
-@@ -90,6 +90,12 @@ config AS21XXX_PHY
- 	  AS21210PB1 that all register with the PHY ID 0x7500 0x7500
- 	  before the firmware is loaded.
- 
-+config AIR_AN8801_PHY
-+	tristate "Airoha AN8801 Gigabit PHY"
-+	select AIR_NET_PHYLIB
-+	help
-+	  Currently supports the Airoha AN8801R PHY.
-+
- config AIR_EN8811H_PHY
- 	tristate "Airoha EN8811H 2.5 Gigabit PHY"
- 	select AIR_NET_PHYLIB
-diff --git a/drivers/net/phy/Makefile b/drivers/net/phy/Makefile
-index 7cf1fa9e12cb..de660ae94945 100644
---- a/drivers/net/phy/Makefile
-+++ b/drivers/net/phy/Makefile
-@@ -29,6 +29,7 @@ obj-y				+= $(sfp-obj-y) $(sfp-obj-m)
- 
- obj-$(CONFIG_ADIN_PHY)		+= adin.o
- obj-$(CONFIG_ADIN1100_PHY)	+= adin1100.o
-+obj-$(CONFIG_AIR_AN8801_PHY)	+= air_an8801.o
- obj-$(CONFIG_AIR_EN8811H_PHY)   += air_en8811h.o
- obj-$(CONFIG_AIR_NET_PHYLIB)	+= air_phy_lib.o
- obj-$(CONFIG_AMD_PHY)		+= amd.o
-diff --git a/drivers/net/phy/air_an8801.c b/drivers/net/phy/air_an8801.c
-new file mode 100644
-index 000000000000..73f94e84da07
---- /dev/null
-+++ b/drivers/net/phy/air_an8801.c
-@@ -0,0 +1,1101 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+/*
-+ * Driver for the Airoha AN8801 Gigabit PHY.
-+ *
-+ * Copyright (C) 2025 Airoha Technology Corp.
-+ * Copyright (C) 2025 Collabora Ltd.
-+ *                    AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-+ */
-+
-+#include <linux/bitfield.h>
-+#include <linux/bitops.h>
-+#include <linux/delay.h>
-+#include <linux/errno.h>
-+#include <linux/init.h>
-+#include <linux/netdevice.h>
-+#include <linux/of.h>
-+#include <linux/phy.h>
-+#include <linux/pm_wakeirq.h>
-+
-+#include "air_phy_lib.h"
-+
-+#define AN8801R_PHY_ID			0xc0ff0421
-+
-+/* MII Registers */
-+
-+/* MII Registers - Airoha Page 1 */
-+#define AN8801_EXT_REG_PHY		0x14
-+#define   AN8801_EXT_PHY_STATUS0	GENMASK(1, 0)
-+#define   AN8801_EXT_PHY_DOWNSHIFT_CTL	GENMASK(3, 2) /* 2 to 5 1G auto-neg attempts (0..3) */
-+#define   AN8801_EXT_PHY_DOWNSHIFT_EN	BIT(4)
-+#define   AN8801_EXT_PHY_CTRL0		BIT(5)
-+#define   AN8801_EXT_PHY_STATUS1	GENMASK(8, 6)
-+#define   AN8801_EXT_PHY_CTRL1		GENMASK(14, 9)
-+
-+/* MII Registers - Airoha Page 4 */
-+#define AN8801_PBUS_ACCESS		BIT(28)
-+#define AN8801_PBUS_EPHY_ACCESS		BIT(24)
-+#define AN8801_PBUS_CL22_ACCESS		BIT(23)
-+
-+/* BPBUS Registers */
-+#define AN8801_BPBUS_REG_LED_GPIO	0x54
-+#define AN8801_BPBUS_REG_LED_ID_SEL	0x58
-+#define   LED_ID_GPIO_SEL(led, gpio)	((led) << ((gpio) * 3))
-+#define   LED_ID_GPIO_SEL_MASK(gpio)	(0x7 << ((gpio) * 3))
-+#define AN8801_BPBUS_REG_GPIO_MODE	0x70
-+#define AN8801_BPBUS_REG_PHY_IRQ_GPIO	0x7c
-+#define   AN8801_PHY_IRQ_GPIO_NUM_MASK	GENMASK(19, 16)
-+#define   AN8801_PHY_IRQ_GPIO_NUM	1
-+
-+#define AN8801_BPBUS_REG_CKO		0x1a4
-+#define AN8801_CKO_OUTPUT_MODE_AUTO	3
-+
-+#define AN8801_BPBUS_REG_LINK_MODE	0x5054
-+#define  AN8801_BPBUS_LINK_MODE_1000	BIT(0)
-+
-+#define AN8801_BPBUS_REG_BYPASS_PTP	0x21c004
-+#define   AN8801_BYP_PTP_SGMII_TO_GPHY	BIT(8)
-+#define   AN8801_BYP_PTP_RGMII_TO_GPHY	BIT(0)
-+
-+#define AN8801_BPBUS_REG_TXDLY_STEP	0x21c024
-+#define   RGMII_DELAY_STEP_MASK		GENMASK(2, 0)
-+#define   RGMII_DELAY_NO_STEP		0
-+#define   RGMII_DELAY_STEP_1		1
-+#define   RGMII_DELAY_STEP_2		2
-+#define   RGMII_DELAY_STEP_3		3
-+#define   RGMII_DELAY_STEP_4		4
-+#define   RGMII_DELAY_STEP_5		5
-+#define   RGMII_DELAY_STEP_6		6
-+#define   RGMII_DELAY_STEP_7		7
-+#define   RGMII_TXDELAY_FORCE_MODE	BIT(24)
-+
-+/* Default RGMII TX delay setting, corresponding to a 1.883ns delay */
-+#define AN8801_RGMII_TXDELAY_DEFAULT	RGMII_DELAY_STEP_4
-+
-+#define AN8801_BPBUS_REG_RXDLY_STEP	0x21c02c
-+#define   RGMII_RXDELAY_ALIGN		BIT(4)
-+#define   RGMII_RXDELAY_FORCE_MODE	BIT(24)
-+
-+/* Default RGMII RX delay setting,  corresponding to a 1.992ns delay,
-+ * when align bit is set or -0.008ns otherwise.
-+ */
-+#define AN8801_RGMII_RXDELAY_DEFAULT	RGMII_DELAY_NO_STEP
-+
-+#define AN8801_BPBUS_REG_EFIFO_CTL(x)	(0x270004 + (0x100 * (x))) /* 0..2 */
-+#define   AN8801_EFIFO_ALL_EN		GENMASK(7, 0)
-+#define   AN8801_EFIFO_RX_EN		BIT(0)
-+#define   AN8801_EFIFO_TX_EN		BIT(1)
-+#define   AN8801_EFIFO_RX_CLK_EN	BIT(2)
-+#define   AN8801_EFIFO_TX_CLK_EN	BIT(3)
-+#define   AN8801_EFIFO_RX_EEE_EN	BIT(4)
-+#define   AN8801_EFIFO_TX_EEE_EN	BIT(5)
-+#define   AN8801_EFIFO_RX_ODD_NIBBLE_EN	BIT(6)
-+#define   AN8801_EFIFO_TX_ODD_NIBBLE_EN	BIT(7)
-+
-+#define AN8801_BPBUS_REG_WOL_MAC_16_47	0x285114
-+#define AN8801_BPBUS_REG_WOL_MAC_0_15	0x285118
-+
-+#define AN8801_BPBUS_REG_WAKEUP_CTL1	0x285400
-+#define   AN8801_WOL_WAKE_MAGIC_EN	GENMASK(3, 1)
-+#define   AN8801_WOL_WAKE_LNKCHG_EN	BIT(4)
-+
-+#define AN8801_BPBUS_REG_WAKEUP_CTL2	0x285404
-+#define   AN8801_WAKE_OUT_TYPE_PULSE	BIT(0) /* Set/Unset: Pulse/Static */
-+#define   AN8801_WAKE_OUT_POLARITY_NEG	BIT(1) /* Set/Unset: Negative/Positive */
-+#define   AN8801_WAKE_OUT_WIDTH		GENMASK(3, 2)
-+#define    AN8801_WAKE_OUT_84MS		0
-+#define    AN8801_WAKE_OUT_168MS	1
-+#define    AN8801_WAKE_OUT_336MS	2
-+#define    AN8801_WAKE_OUT_672MS	3
-+#define   AN8801_WAKE_OUT_EN		BIT(4)
-+#define   AN8801_PME_WAKEUP_CLR		BIT(8)
-+
-+#define AN8801_BPBUS_REG_WAKE_IRQ_EN	0x285700
-+#define AN8801_BPBUS_REG_WAKE_IRQ_STS	0x285704
-+#define   AN8801_IRQ_WAKE_LNKCHG	BIT(0) /* Wake on link change */
-+#define   AN8801_IRQ_WAKE_UNIPKT	BIT(1) /* Wake on unicast packet */
-+#define   AN8801_IRQ_WAKE_MULPKT	BIT(2) /* Wake on multicast packet */
-+#define   AN8801_IRQ_WAKE_BCPKT		BIT(3) /* Wake on broadcast packet */
-+#define   AN8801_IRQ_WAKE_MAGICPKT	BIT(4) /* Wake on magic packet */
-+#define   AN8801_IRQ_WAKE_ALL		GENMASK(4, 0)
-+
-+/* MDIO_MMD_VEND1 Registers */
-+#define AN8801_PHY_TX_PAIR_DLY_SEL_GBE	0x13
-+#define   AN8801_PHY_PAIR_DLY_SEL_A_GBE	GENMASK(14, 12)
-+#define   AN8801_PHY_PAIR_DLY_SEL_B_GBE	GENMASK(10, 8)
-+#define   AN8801_PHY_PAIR_DLY_SEL_C_GBE	GENMASK(6, 4)
-+#define   AN8801_PHY_PAIR_DLY_SEL_D_GBE	GENMASK(2, 0)
-+#define AN8801_PHY_RXADC_CTRL		0xd8
-+#define   AN8801_PHY_RXADC_SAMP_PHSEL_A	BIT(12)
-+#define   AN8801_PHY_RXADC_SAMP_PHSEL_B	BIT(8)
-+#define   AN8801_PHY_RXADC_SAMP_PHSEL_C	BIT(4)
-+#define   AN8801_PHY_RXADC_SAMP_PHSEL_D	BIT(0)
-+#define AN8801_PHY_RXADC_REV_0		0xd9
-+#define   AN8801_PHY_RXADC_REV_MASK_A	GENMASK(15, 8)
-+#define   AN8801_PHY_RXADC_REV_MASK_B	GENMASK(7, 0)
-+#define AN8801_PHY_RXADC_REV_1		0xda
-+#define   AN8801_PHY_RXADC_REV_MASK_C	GENMASK(15, 8)
-+#define   AN8801_PHY_RXADC_REV_MASK_D	GENMASK(7, 0)
-+
-+/* MDIO_MMD_VEND2 Registers */
-+#define LED_BCR				0x21
-+#define   LED_BCR_MODE_MASK		GENMASK(1, 0)
-+#define   LED_BCR_TIME_TEST		BIT(2)
-+#define   LED_BCR_CLK_EN		BIT(3)
-+#define   LED_BCR_EVT_ALL		BIT(4)
-+#define   LED_BCR_EXT_CTRL		BIT(15)
-+#define   LED_BCR_MODE_DISABLE		0
-+#define   LED_BCR_MODE_2LED		1
-+#define   LED_BCR_MODE_3LED_1		2
-+#define   LED_BCR_MODE_3LED_2		3
-+
-+#define LED_ON_DUR			0x22
-+#define   LED_ON_DUR_MASK		GENMASK(15, 0)
-+
-+#define LED_BLINK_DUR			0x23
-+#define   LED_BLINK_DUR_MASK		GENMASK(15, 0)
-+
-+#define LED_ON_CTRL(i)			(0x24 + ((i) * 2))
-+#define   LED_ON_EVT_MASK		GENMASK(6, 0)
-+#define   LED_ON_EVT_LINK_1000M		BIT(0)
-+#define   LED_ON_EVT_LINK_100M		BIT(1)
-+#define   LED_ON_EVT_LINK_10M		BIT(2)
-+#define   LED_ON_EVT_LINK_DN		BIT(3)
-+#define   LED_ON_EVT_FDX		BIT(4)
-+#define   LED_ON_EVT_HDX		BIT(5)
-+#define   LED_ON_EVT_FORCE		BIT(6)
-+#define   LED_ON_POL			BIT(14)
-+#define   LED_ON_EN			BIT(15)
-+
-+#define LED_BLINK_CTRL(i)		(0x25 + ((i) * 2))
-+#define LED_BLINK_EVT_MASK		GENMASK(9, 0)
-+#define LED_BLINK_EVT_1000M_TX		BIT(0)
-+#define LED_BLINK_EVT_1000M_RX		BIT(1)
-+#define LED_BLINK_EVT_100M_TX		BIT(2)
-+#define LED_BLINK_EVT_100M_RX		BIT(3)
-+#define LED_BLINK_EVT_10M_TX		BIT(4)
-+#define LED_BLINK_EVT_10M_RX		BIT(5)
-+#define LED_BLINK_EVT_COLLISION		BIT(6)
-+#define LED_BLINK_EVT_RX_CRC_ERR	BIT(7)
-+#define LED_BLINK_EVT_RX_IDLE_ERR	BIT(8)
-+#define LED_BLINK_EVT_FORCE		BIT(9)
-+
-+#define AN8801R_NUM_LEDS		3
-+#define AN8801_PERIOD_SHIFT		15
-+#define AN8801_PERIOD_UNIT		32768 /* (1 << AN8801_PERIOD_SHIFT) */
-+#define AN8801_MAX_PERIOD_MS		2147
-+
-+#define AN8801_LED_DURATION_UNIT_US	32768
-+
-+#define AN8801_REG_PHY_INTERNAL0	0x600
-+#define AN8801_REG_PHY_INTERNAL1	0x601
-+#define   AN8801_PHY_INTFUNC_MASK	GENMASK(15, 0) /* PHY internal functions */
-+
-+enum an8801r_led_fn {
-+	AN8801R_LED_FN_NONE,
-+	AN8801R_LED_FN_LINK,
-+	AN8801R_LED_FN_ACTIVITY,
-+	AN8801R_LED_FN_MAX,
-+};
-+
-+struct an8801r_priv {
-+	bool wake_magic_enabled;
-+	bool wake_lnkchg_enabled;
-+};
-+
-+static const unsigned long an8801r_led_trig = BIT(TRIGGER_NETDEV_LINK) |
-+					      BIT(TRIGGER_NETDEV_LINK_10) |
-+					      BIT(TRIGGER_NETDEV_LINK_100) |
-+					      BIT(TRIGGER_NETDEV_LINK_1000) |
-+					      BIT(TRIGGER_NETDEV_RX) |
-+					      BIT(TRIGGER_NETDEV_RX_ERR) |
-+					      BIT(TRIGGER_NETDEV_TX);
-+
-+static int an8801_buckpbus_reg_rmw(struct phy_device *phydev,
-+				   u32 addr, u32 mask, u32 set)
-+{
-+	return air_phy_buckpbus_reg_modify(phydev,
-+					   addr | AN8801_PBUS_ACCESS,
-+					   mask, set);
-+}
-+
-+static int an8801_buckpbus_reg_set_bits(struct phy_device *phydev,
-+					u32 addr, u32 mask)
-+{
-+	return air_phy_buckpbus_reg_modify(phydev,
-+					   addr | AN8801_PBUS_ACCESS,
-+					   mask, mask);
-+}
-+
-+static int an8801_buckpbus_reg_clear_bits(struct phy_device *phydev,
-+					  u32 addr, u32 mask)
-+{
-+	return air_phy_buckpbus_reg_modify(phydev,
-+					   addr | AN8801_PBUS_ACCESS,
-+					   mask, 0);
-+}
-+
-+static int an8801_buckpbus_reg_write(struct phy_device *phydev, u32 addr,
-+				     u32 data)
-+{
-+	return air_phy_buckpbus_reg_write(phydev,
-+					  addr | AN8801_PBUS_ACCESS,
-+					  data);
-+}
-+
-+static int an8801_buckpbus_reg_read(struct phy_device *phydev, u32 addr,
-+				    u32 *data)
-+{
-+	return air_phy_buckpbus_reg_read(phydev,
-+					 addr | AN8801_PBUS_ACCESS,
-+					 data);
-+}
-+
-+static u32 an8801r_led_blink_ms_to_hw(unsigned long req_ms)
-+{
-+	u32 req_ns, regval;
-+
-+	if (req_ms > AN8801_MAX_PERIOD_MS)
-+		req_ms = AN8801_MAX_PERIOD_MS;
-+
-+	req_ns = req_ms * NSEC_PER_MSEC;
-+
-+	/* Round to the nearest period unit... */
-+	regval = req_ns + (AN8801_PERIOD_UNIT / 2);
-+
-+	/* ...and now divide by the full period */
-+	regval >>= AN8801_PERIOD_SHIFT;
-+
-+	return regval;
-+}
-+
-+static int an8801r_led_blink_set(struct phy_device *phydev, u8 index,
-+				 unsigned long *delay_on,
-+				 unsigned long *delay_off)
-+{
-+	u32 hw_delay_on, hw_delay_off;
-+	bool blink;
-+	int ret;
-+
-+	if (index >= AN8801R_NUM_LEDS)
-+		return -EINVAL;
-+
-+	if (delay_on && delay_off) {
-+		blink = true;
-+
-+		if (*delay_on == 0 || *delay_off == 0) {
-+			*delay_on = 64;
-+			*delay_off = 64;
-+		}
-+
-+		hw_delay_on = an8801r_led_blink_ms_to_hw(*delay_on);
-+		hw_delay_off = an8801r_led_blink_ms_to_hw(*delay_off);
-+	} else {
-+		blink = false;
-+	}
-+
-+	if (blink) {
-+		ret = phy_write_mmd(phydev, MDIO_MMD_VEND2, LED_BLINK_DUR,
-+				    (hw_delay_on + hw_delay_off) &
-+				    LED_BLINK_DUR_MASK);
-+		if (ret)
-+			goto error;
-+
-+		ret = phy_write_mmd(phydev, MDIO_MMD_VEND2, LED_ON_DUR,
-+				    hw_delay_on);
-+		if (ret)
-+			goto error;
-+	}
-+
-+	ret = phy_modify_mmd(phydev, MDIO_MMD_VEND2, LED_BLINK_CTRL(index),
-+			     LED_BLINK_EVT_MASK,
-+			     blink ? LED_BLINK_EVT_FORCE : 0);
-+	if (ret)
-+		return ret;
-+
-+	ret = phy_modify_mmd(phydev, MDIO_MMD_VEND2, LED_ON_CTRL(index),
-+			     LED_ON_EVT_MASK,
-+			     0);
-+	if (ret)
-+		return ret;
-+
-+	return phy_modify_mmd(phydev, MDIO_MMD_VEND2, LED_ON_CTRL(index),
-+			      LED_ON_EN, blink ? LED_ON_EN : 0);
-+
-+error:
-+	phy_modify_mmd(phydev, MDIO_MMD_VEND2, LED_ON_CTRL(index),
-+		       LED_ON_EN, 0);
-+	return ret;
-+}
-+
-+static int an8801r_led_brightness_set(struct phy_device *phydev, u8 index,
-+				      enum led_brightness value)
-+{
-+	int ret;
-+
-+	if (index >= AN8801R_NUM_LEDS)
-+		return -EINVAL;
-+
-+	ret = phy_modify_mmd(phydev, MDIO_MMD_VEND2, LED_ON_CTRL(index),
-+			     LED_ON_EVT_MASK,
-+			     (value == LED_OFF) ? 0 : LED_ON_EVT_FORCE);
-+	if (ret)
-+		return ret;
-+
-+	return phy_modify_mmd(phydev, MDIO_MMD_VEND2, LED_ON_CTRL(index),
-+			      LED_ON_EN, (value == LED_OFF) ? 0 : LED_ON_EN);
-+}
-+
-+static int an8801r_led_hw_control_get(struct phy_device *phydev, u8 index,
-+				      unsigned long *rules)
-+{
-+	int on, blink;
-+
-+	on = phy_read_mmd(phydev, MDIO_MMD_VEND2, LED_ON_CTRL(index));
-+	if (on < 0)
-+		return on;
-+
-+	blink = phy_read_mmd(phydev, MDIO_MMD_VEND2, LED_BLINK_CTRL(index));
-+	if (blink < 0)
-+		return blink;
-+
-+	if (FIELD_GET(LED_ON_EVT_LINK_10M, on))
-+		__set_bit(TRIGGER_NETDEV_LINK_10, rules);
-+
-+	if (FIELD_GET(LED_ON_EVT_LINK_100M, on))
-+		__set_bit(TRIGGER_NETDEV_LINK_100, rules);
-+
-+	if (FIELD_GET(LED_ON_EVT_LINK_1000M, on))
-+		__set_bit(TRIGGER_NETDEV_LINK_1000, rules);
-+
-+	if (FIELD_GET(LED_ON_EVT_LINK_10M, on) &&
-+	    FIELD_GET(LED_ON_EVT_LINK_100M, on) &&
-+	    FIELD_GET(LED_ON_EVT_LINK_1000M, on))
-+		__set_bit(TRIGGER_NETDEV_LINK, rules);
-+
-+	if (FIELD_GET(LED_BLINK_EVT_10M_RX, blink) ||
-+	    FIELD_GET(LED_BLINK_EVT_100M_RX, blink) ||
-+	    FIELD_GET(LED_BLINK_EVT_1000M_RX, blink))
-+		__set_bit(TRIGGER_NETDEV_RX, rules);
-+
-+	if (FIELD_GET(LED_BLINK_EVT_10M_TX, blink) ||
-+	    FIELD_GET(LED_BLINK_EVT_100M_TX, blink) ||
-+	    FIELD_GET(LED_BLINK_EVT_1000M_TX, blink))
-+		__set_bit(TRIGGER_NETDEV_TX, rules);
-+
-+	if (FIELD_GET(LED_BLINK_EVT_RX_CRC_ERR, blink))
-+		__set_bit(TRIGGER_NETDEV_RX_ERR, rules);
-+
-+	return 0;
-+}
-+
-+static int an8801r_led_trig_to_hw(unsigned long rules, u16 *on, u16 *blink)
-+{
-+	/* All combinations of the supported triggers are allowed */
-+	if (rules & ~an8801r_led_trig)
-+		return -EOPNOTSUPP;
-+
-+	if (test_bit(TRIGGER_NETDEV_LINK_10, &rules))
-+		*on |= LED_ON_EVT_LINK_10M;
-+
-+	if (test_bit(TRIGGER_NETDEV_LINK_100, &rules))
-+		*on |= LED_ON_EVT_LINK_100M;
-+
-+	if (test_bit(TRIGGER_NETDEV_LINK_1000, &rules))
-+		*on |= LED_ON_EVT_LINK_1000M;
-+
-+	if (test_bit(TRIGGER_NETDEV_LINK, &rules)) {
-+		*on |= LED_ON_EVT_LINK_10M;
-+		*on |= LED_ON_EVT_LINK_100M;
-+		*on |= LED_ON_EVT_LINK_1000M;
-+	}
-+
-+	if (test_bit(TRIGGER_NETDEV_RX, &rules)) {
-+		*blink |= LED_BLINK_EVT_10M_RX;
-+		*blink |= LED_BLINK_EVT_100M_RX;
-+		*blink |= LED_BLINK_EVT_1000M_RX;
-+	}
-+
-+	if (test_bit(TRIGGER_NETDEV_TX, &rules)) {
-+		*blink |= LED_BLINK_EVT_10M_TX;
-+		*blink |= LED_BLINK_EVT_100M_TX;
-+		*blink |= LED_BLINK_EVT_1000M_TX;
-+	}
-+
-+	if (test_bit(TRIGGER_NETDEV_RX_ERR, &rules))
-+		*blink |= LED_BLINK_EVT_RX_CRC_ERR;
-+
-+	return 0;
-+}
-+
-+static int an8801r_led_hw_is_supported(struct phy_device *phydev, u8 index,
-+				       unsigned long rules)
-+{
-+	u16 on = 0, blink = 0;
-+
-+	if (index >= AN8801R_NUM_LEDS)
-+		return -EINVAL;
-+
-+	return an8801r_led_trig_to_hw(rules, &on, &blink);
-+}
-+
-+static int an8801r_led_hw_control_set(struct phy_device *phydev, u8 index,
-+				      unsigned long rules)
-+{
-+	u16 on = 0, blink = 0;
-+	int ret;
-+
-+	if (index >= AN8801R_NUM_LEDS)
-+		return -EINVAL;
-+
-+	ret = an8801r_led_trig_to_hw(rules, &on, &blink);
-+	if (ret)
-+		return ret;
-+
-+	ret = phy_modify_mmd(phydev, MDIO_MMD_VEND2, LED_ON_CTRL(index),
-+			     LED_ON_EVT_MASK, on);
-+	if (ret)
-+		return ret;
-+
-+	ret = phy_modify_mmd(phydev, MDIO_MMD_VEND2, LED_BLINK_CTRL(index),
-+			     LED_BLINK_EVT_MASK, blink);
-+	if (ret)
-+		return ret;
-+
-+	return phy_modify_mmd(phydev, MDIO_MMD_VEND2, LED_ON_CTRL(index),
-+			      LED_ON_EN, on | blink ? LED_ON_EN : 0);
-+}
-+
-+static int an8801r_led_polarity_set(struct phy_device *phydev, int index,
-+				    unsigned long modes)
-+{
-+	bool active_high = true;
-+	unsigned long mode;
-+
-+	if (index >= AN8801R_NUM_LEDS)
-+		return -EINVAL;
-+
-+	for_each_set_bit(mode, &modes, __PHY_LED_MODES_NUM) {
-+		switch (mode) {
-+		case PHY_LED_ACTIVE_HIGH:
-+			break;
-+		case PHY_LED_ACTIVE_LOW:
-+			active_high = false;
-+			break;
-+		default:
-+			return -EINVAL;
-+		}
-+	}
-+
-+	return phy_modify_mmd(phydev, MDIO_MMD_VEND2, LED_ON_CTRL(index),
-+			      LED_ON_POL, active_high ? LED_ON_POL : 0);
-+}
-+
-+static int an8801r_led_init(struct phy_device *phydev, u8 *led_cfg)
-+{
-+	int led_id, ret;
-+
-+	/* Set LED BCR Enable */
-+	ret = phy_set_bits_mmd(phydev, MDIO_MMD_VEND2, LED_BCR,
-+			       LED_BCR_EXT_CTRL | LED_BCR_CLK_EN);
-+	if (ret)
-+		return ret;
-+
-+	for (led_id = 0; led_id < AN8801R_NUM_LEDS; led_id++) {
-+		unsigned long led_trigger = 0;
-+		u32 led_gpio = led_id + 1;
-+
-+		switch (led_cfg[led_id]) {
-+		case AN8801R_LED_FN_LINK:
-+			led_trigger = BIT(TRIGGER_NETDEV_LINK);
-+			break;
-+		case AN8801R_LED_FN_ACTIVITY:
-+			led_trigger = BIT(TRIGGER_NETDEV_RX) |
-+				    BIT(TRIGGER_NETDEV_TX);
-+			break;
-+		default:
-+			led_trigger = 0;
-+			break;
-+		}
-+
-+		ret = an8801_buckpbus_reg_set_bits(phydev,
-+						   AN8801_BPBUS_REG_LED_GPIO,
-+						   BIT(led_gpio));
-+		if (ret)
-+			return ret;
-+
-+		ret = an8801_buckpbus_reg_rmw(phydev,
-+					      AN8801_BPBUS_REG_LED_ID_SEL,
-+					      LED_ID_GPIO_SEL_MASK(led_gpio),
-+					      LED_ID_GPIO_SEL(led_id,
-+							      led_gpio));
-+		if (ret)
-+			return ret;
-+
-+		ret = an8801_buckpbus_reg_clear_bits(phydev,
-+						     AN8801_BPBUS_REG_GPIO_MODE,
-+						     BIT(led_gpio));
-+		if (ret)
-+			return ret;
-+
-+		if (!led_trigger)
-+			continue;
-+
-+		ret = an8801r_led_hw_control_set(phydev, led_id, led_trigger);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	return ret;
-+}
-+
-+static int an8801r_reset_wake(struct phy_device *phydev)
-+{
-+	struct an8801r_priv *priv = phydev->priv;
-+	u32 reg_val = 0;
-+	int ret;
-+
-+	/* Enable wakeup clear and disable wake up output */
-+	ret = an8801_buckpbus_reg_write(phydev, AN8801_BPBUS_REG_WAKEUP_CTL2,
-+					AN8801_PME_WAKEUP_CLR |
-+					AN8801_WAKE_OUT_POLARITY_NEG);
-+	if (ret)
-+		return ret;
-+
-+	/* Clear WAKEUP_CTL1 register before enabling the wakeup events
-+	 * again
-+	 */
-+	ret = an8801_buckpbus_reg_write(phydev, AN8801_BPBUS_REG_WAKEUP_CTL1,
-+					0);
-+	if (ret)
-+		return ret;
-+
-+	if (priv->wake_magic_enabled)
-+		reg_val |= AN8801_WOL_WAKE_MAGIC_EN;
-+
-+	if (priv->wake_lnkchg_enabled)
-+		reg_val |= AN8801_WOL_WAKE_LNKCHG_EN;
-+
-+	ret = an8801_buckpbus_reg_write(phydev, AN8801_BPBUS_REG_WAKEUP_CTL1,
-+					reg_val);
-+	if (ret)
-+		return ret;
-+
-+	/* Disable wake up clear and re-enable wake up output */
-+	return an8801_buckpbus_reg_write(phydev, AN8801_BPBUS_REG_WAKEUP_CTL2,
-+					 AN8801_WAKE_OUT_POLARITY_NEG |
-+					 AN8801_WAKE_OUT_EN);
-+}
-+
-+static int an8801r_ack_interrupt(struct phy_device *phydev)
-+{
-+	int ret;
-+
-+	/* Reset wake status */
-+	ret = an8801r_reset_wake(phydev);
-+	if (ret)
-+		return ret;
-+
-+	/* Clear the interrupts by writing the reg */
-+	return an8801_buckpbus_reg_write(phydev, AN8801_BPBUS_REG_WAKE_IRQ_STS,
-+					 AN8801_IRQ_WAKE_ALL);
-+}
-+
-+static int an8801r_config_intr(struct phy_device *phydev)
-+{
-+	int ret;
-+
-+	if (phydev->interrupts == PHY_INTERRUPT_ENABLED) {
-+		u32 val = FIELD_PREP(AN8801_PHY_IRQ_GPIO_NUM_MASK,
-+				     AN8801_PHY_IRQ_GPIO_NUM);
-+
-+		ret = an8801_buckpbus_reg_write(phydev,
-+						AN8801_BPBUS_REG_PHY_IRQ_GPIO,
-+						val);
-+		if (ret)
-+			return ret;
-+
-+		ret = an8801_buckpbus_reg_set_bits(phydev,
-+						   AN8801_BPBUS_REG_WAKE_IRQ_EN,
-+						   AN8801_IRQ_WAKE_LNKCHG);
-+		if (ret)
-+			return ret;
-+
-+	} else {
-+		ret = an8801_buckpbus_reg_write(phydev,
-+						AN8801_BPBUS_REG_PHY_IRQ_GPIO,
-+						0);
-+		if (ret)
-+			return ret;
-+
-+		ret = an8801_buckpbus_reg_clear_bits(phydev,
-+						     AN8801_BPBUS_REG_WAKE_IRQ_EN,
-+						     AN8801_IRQ_WAKE_LNKCHG);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	return an8801r_ack_interrupt(phydev);
-+}
-+
-+static irqreturn_t an8801r_handle_interrupt(struct phy_device *phydev)
-+{
-+	u32 irq_status = 0;
-+	bool irq_handled = false;
-+	int ret;
-+
-+	ret = an8801_buckpbus_reg_read(phydev, AN8801_BPBUS_REG_WAKE_IRQ_STS,
-+				       &irq_status);
-+	if (ret)
-+		return IRQ_NONE;
-+
-+	ret = an8801r_ack_interrupt(phydev);
-+	if (ret)
-+		return IRQ_NONE;
-+
-+	if (irq_status & AN8801_IRQ_WAKE_MAGICPKT) {
-+		pm_wakeup_event(&phydev->mdio.dev, 0);
-+		irq_handled = true;
-+	}
-+
-+	if (irq_status & AN8801_IRQ_WAKE_LNKCHG) {
-+		phy_trigger_machine(phydev);
-+		irq_handled = true;
-+	}
-+
-+	return irq_handled ? IRQ_HANDLED : IRQ_NONE;
-+}
-+
-+static void an8801r_get_wol(struct phy_device *phydev,
-+			    struct ethtool_wolinfo *wol)
-+{
-+	u32 reg_val;
-+	int ret;
-+
-+	/* If the PHY is not capable of waking the system, then WoL can not
-+	 * be supported.
-+	 */
-+	if (!device_can_wakeup(&phydev->mdio.dev)) {
-+		wol->supported = 0;
-+		return;
-+	}
-+
-+	wol->supported = WAKE_MAGIC;
-+	wol->wolopts = 0;
-+
-+	ret = an8801_buckpbus_reg_read(phydev, AN8801_BPBUS_REG_WAKEUP_CTL1,
-+				       &reg_val);
-+	if (ret)
-+		return;
-+
-+	if (reg_val & AN8801_WOL_WAKE_MAGIC_EN)
-+		wol->wolopts |= WAKE_MAGIC;
-+	else
-+		wol->wolopts &= ~WAKE_MAGIC;
-+}
-+
-+static int an8801r_set_wol(struct phy_device *phydev,
-+			   struct ethtool_wolinfo *wol)
-+{
-+	struct net_device *attach_dev = phydev->attached_dev;
-+	const unsigned char *macaddr = attach_dev->dev_addr;
-+	struct an8801r_priv *priv = phydev->priv;
-+	u32 reg_val;
-+	int ret;
-+
-+	if (!device_can_wakeup(&phydev->mdio.dev))
-+		return -EOPNOTSUPP;
-+
-+	if (wol->wolopts & ~WAKE_MAGIC)
-+		return -EINVAL;
-+
-+	if (wol->wolopts & WAKE_MAGIC) {
-+		/* MAC bits 16..47 */
-+		reg_val = (macaddr[2] << 24) | (macaddr[3] << 16);
-+		reg_val |= (macaddr[4] << 8) | (macaddr[5]);
-+
-+		ret = an8801_buckpbus_reg_write(phydev,
-+						AN8801_BPBUS_REG_WOL_MAC_16_47,
-+						reg_val);
-+		if (ret)
-+			return ret;
-+
-+		/* MAC bits 0..15 */
-+		reg_val = (macaddr[0] << 8) | (macaddr[1]);
-+
-+		ret = an8801_buckpbus_reg_write(phydev,
-+						AN8801_BPBUS_REG_WOL_MAC_0_15,
-+						reg_val);
-+		if (ret)
-+			return ret;
-+
-+		ret = an8801_buckpbus_reg_set_bits(phydev,
-+						   AN8801_BPBUS_REG_WAKEUP_CTL1,
-+						   AN8801_WOL_WAKE_MAGIC_EN);
-+		if (ret)
-+			return ret;
-+
-+		ret = an8801_buckpbus_reg_set_bits(phydev,
-+						   AN8801_BPBUS_REG_WAKE_IRQ_EN,
-+						   AN8801_IRQ_WAKE_MAGICPKT);
-+		if (ret)
-+			return ret;
-+
-+	} else {
-+		ret = an8801_buckpbus_reg_clear_bits(phydev,
-+						     AN8801_BPBUS_REG_WAKEUP_CTL1,
-+						     AN8801_WOL_WAKE_MAGIC_EN);
-+		if (ret)
-+			return ret;
-+
-+		ret = an8801_buckpbus_reg_clear_bits(phydev,
-+						     AN8801_BPBUS_REG_WAKE_IRQ_EN,
-+						     AN8801_IRQ_WAKE_MAGICPKT);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	priv->wake_magic_enabled = !!(wol->wolopts & WAKE_MAGIC);
-+
-+	return device_set_wakeup_enable(&phydev->mdio.dev,
-+					priv->wake_magic_enabled);
-+}
-+
-+static int an8801r_of_init_leds(struct phy_device *phydev, u8 *led_cfg)
-+{
-+	struct device *dev = &phydev->mdio.dev;
-+	struct device_node *np = dev->of_node;
-+	struct device_node *leds;
-+	u32 function_enum_idx;
-+	int ret = 0;
-+
-+	if (!np)
-+		return 0;
-+
-+	/* If devicetree is present, leds configuration is required */
-+	leds = of_get_child_by_name(np, "leds");
-+	if (!leds)
-+		return 0;
-+
-+	for_each_available_child_of_node_scoped(leds, led) {
-+		u32 led_idx;
-+
-+		ret = of_property_read_u32(led, "reg", &led_idx);
-+		if (ret)
-+			goto out;
-+
-+		if (led_idx >= AN8801R_NUM_LEDS) {
-+			ret = -EINVAL;
-+			goto out;
-+		}
-+
-+		ret = of_property_read_u32(led, "function-enumerator",
-+					   &function_enum_idx);
-+		if (ret) {
-+			function_enum_idx = AN8801R_LED_FN_NONE;
-+			ret = 0;
-+		}
-+
-+		if (function_enum_idx >= AN8801R_LED_FN_MAX) {
-+			ret = -EINVAL;
-+			goto out;
-+		}
-+
-+		led_cfg[led_idx] = function_enum_idx;
-+	}
-+out:
-+	of_node_put(leds);
-+	return ret;
-+}
-+
-+static int an8801r_rgmii_rxdelay(struct phy_device *phydev, bool enable,
-+				 u16 delay_steps)
-+{
-+	u32 reg_val;
-+
-+	if (delay_steps > RGMII_DELAY_STEP_MASK)
-+		return -EINVAL;
-+
-+	if (enable) {
-+		/* Set force mode bit to enable RX delay insertion */
-+		reg_val = delay_steps | RGMII_RXDELAY_FORCE_MODE;
-+
-+		/* Set align bit to add extra offset for RX delay */
-+		reg_val |= RGMII_RXDELAY_ALIGN;
-+	} else {
-+		reg_val = 0;
-+	}
-+
-+	return an8801_buckpbus_reg_write(phydev, AN8801_BPBUS_REG_RXDLY_STEP,
-+					 reg_val);
-+}
-+
-+static int an8801r_rgmii_txdelay(struct phy_device *phydev, bool enable,
-+				 u16 delay_steps)
-+{
-+	u32 reg_val;
-+
-+	if (delay_steps > RGMII_DELAY_STEP_MASK)
-+		return -EINVAL;
-+
-+	if (enable) {
-+		/* Set force mode bit to enable TX delay insertion */
-+		reg_val = delay_steps | RGMII_TXDELAY_FORCE_MODE;
-+	} else {
-+		reg_val = 0;
-+	}
-+
-+	return an8801_buckpbus_reg_write(phydev, AN8801_BPBUS_REG_TXDLY_STEP,
-+					 reg_val);
-+}
-+
-+static int an8801r_rgmii_delay_config(struct phy_device *phydev)
-+{
-+	bool enable_delay;
-+	u16 delay_step;
-+	int ret;
-+
-+	if (phydev->interface == PHY_INTERFACE_MODE_RGMII_ID ||
-+	    phydev->interface == PHY_INTERFACE_MODE_RGMII_TXID) {
-+		enable_delay = true;
-+		delay_step = AN8801_RGMII_TXDELAY_DEFAULT;
-+	} else {
-+		enable_delay = false;
-+		delay_step = RGMII_DELAY_NO_STEP;
-+	}
-+
-+	ret = an8801r_rgmii_txdelay(phydev, enable_delay, delay_step);
-+	if (ret)
-+		return ret;
-+
-+	if (phydev->interface == PHY_INTERFACE_MODE_RGMII_ID ||
-+	    phydev->interface == PHY_INTERFACE_MODE_RGMII_RXID) {
-+		enable_delay = true;
-+		delay_step = AN8801_RGMII_RXDELAY_DEFAULT;
-+	} else {
-+		enable_delay = false;
-+		delay_step = RGMII_DELAY_NO_STEP;
-+	}
-+
-+	return an8801r_rgmii_rxdelay(phydev, enable_delay, delay_step);
-+}
-+
-+static int an8801r_config_init(struct phy_device *phydev)
-+{
-+	u8 led_default_function[AN8801R_NUM_LEDS] = { 0 };
-+	int ret;
-+
-+	ret = an8801r_of_init_leds(phydev, led_default_function);
-+	if (ret)
-+		return ret;
-+
-+	/* Disable Low Power Mode (LPM) */
-+	ret = phy_write_mmd(phydev, MDIO_MMD_VEND2, AN8801_REG_PHY_INTERNAL0,
-+			    FIELD_PREP(AN8801_PHY_INTFUNC_MASK, 0x1e));
-+	if (ret)
-+		return ret;
-+
-+	ret = phy_write_mmd(phydev, MDIO_MMD_VEND2, AN8801_REG_PHY_INTERNAL1,
-+			    FIELD_PREP(AN8801_PHY_INTFUNC_MASK, 0x2));
-+	if (ret)
-+		return ret;
-+
-+	/* Set the PHY to perform auto-downshift after 3 auto-negotiation
-+	 * attempts
-+	 */
-+	ret = phy_write_paged(phydev, AIR_PHY_PAGE_EXTENDED_1,
-+			      AN8801_EXT_REG_PHY,
-+			      FIELD_PREP(AN8801_EXT_PHY_CTRL1, 0x1d) |
-+			      FIELD_PREP(AN8801_EXT_PHY_DOWNSHIFT_CTL, 1) |
-+			      AN8801_EXT_PHY_DOWNSHIFT_EN);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = an8801_buckpbus_reg_write(phydev, AN8801_BPBUS_REG_BYPASS_PTP,
-+					AN8801_BYP_PTP_RGMII_TO_GPHY);
-+	if (ret)
-+		return ret;
-+
-+	ret = an8801_buckpbus_reg_write(phydev, AN8801_BPBUS_REG_EFIFO_CTL(0),
-+					AN8801_EFIFO_RX_EN |
-+					AN8801_EFIFO_TX_EN |
-+					AN8801_EFIFO_RX_CLK_EN |
-+					AN8801_EFIFO_TX_CLK_EN |
-+					AN8801_EFIFO_RX_EEE_EN |
-+					AN8801_EFIFO_TX_EEE_EN);
-+	if (ret)
-+		return ret;
-+
-+	ret = an8801_buckpbus_reg_write(phydev, AN8801_BPBUS_REG_EFIFO_CTL(1),
-+					AN8801_EFIFO_ALL_EN);
-+	if (ret)
-+		return ret;
-+
-+	ret = an8801_buckpbus_reg_write(phydev, AN8801_BPBUS_REG_EFIFO_CTL(2),
-+					AN8801_EFIFO_ALL_EN);
-+	if (ret)
-+		return ret;
-+
-+	ret = phy_write_mmd(phydev, MDIO_MMD_VEND1,
-+			    AN8801_PHY_TX_PAIR_DLY_SEL_GBE,
-+			    FIELD_PREP(AN8801_PHY_PAIR_DLY_SEL_A_GBE, 4) |
-+			    FIELD_PREP(AN8801_PHY_PAIR_DLY_SEL_C_GBE, 4));
-+	if (ret)
-+		return ret;
-+
-+	ret = phy_write_mmd(phydev, MDIO_MMD_VEND1, AN8801_PHY_RXADC_CTRL,
-+			    AN8801_PHY_RXADC_SAMP_PHSEL_A |
-+			    AN8801_PHY_RXADC_SAMP_PHSEL_C);
-+	if (ret)
-+		return ret;
-+
-+	ret = phy_write_mmd(phydev, MDIO_MMD_VEND1, AN8801_PHY_RXADC_REV_0,
-+			    FIELD_PREP(AN8801_PHY_RXADC_REV_MASK_A, 1));
-+	if (ret)
-+		return ret;
-+
-+	ret = phy_write_mmd(phydev, MDIO_MMD_VEND1, AN8801_PHY_RXADC_REV_1,
-+			    FIELD_PREP(AN8801_PHY_RXADC_REV_MASK_C, 1));
-+	if (ret)
-+		return ret;
-+
-+	ret = an8801r_rgmii_delay_config(phydev);
-+	if (ret)
-+		return ret;
-+
-+	ret = an8801_buckpbus_reg_write(phydev, AN8801_BPBUS_REG_CKO,
-+					AN8801_CKO_OUTPUT_MODE_AUTO);
-+	if (ret)
-+		return ret;
-+
-+	ret = an8801r_led_init(phydev, led_default_function);
-+	if (ret) {
-+		phydev_err(phydev, "Cannot initialize LEDs: %d\n", ret);
-+		return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+static int an8801r_probe(struct phy_device *phydev)
-+{
-+	struct device *dev = &phydev->mdio.dev;
-+	struct an8801r_priv *priv;
-+
-+	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
-+	if (!priv)
-+		return -ENOMEM;
-+
-+	priv->wake_lnkchg_enabled = true;
-+
-+	phydev->priv = priv;
-+
-+	/* Mark this PHY as wakeup capable and register the interrupt as a
-+	 * wakeup IRQ if the PHY is marked as a wakeup source in devicetree,
-+	 * and the interrupt is valid.
-+	 */
-+	if (of_property_read_bool(dev->of_node, "wakeup-source") &&
-+	    phy_interrupt_is_valid(phydev)) {
-+		device_set_wakeup_capable(dev, true);
-+		devm_pm_set_wake_irq(dev, phydev->irq);
-+	}
-+
-+	return 0;
-+}
-+
-+static int an8801r_suspend(struct phy_device *phydev)
-+{
-+	struct an8801r_priv *priv = phydev->priv;
-+	int ret;
-+
-+	/* If the PHY may wake up by a wake-on-line event, disable the link
-+	 * interrupt to only keep the  WOL magic interrupt enabled
-+	 */
-+	if (device_may_wakeup(&phydev->mdio.dev)) {
-+		priv->wake_lnkchg_enabled = false;
-+
-+		if (phydev->interrupts == PHY_INTERRUPT_ENABLED) {
-+			ret = an8801_buckpbus_reg_clear_bits(phydev,
-+							     AN8801_BPBUS_REG_WAKE_IRQ_EN,
-+							     AN8801_IRQ_WAKE_LNKCHG);
-+			if (ret)
-+				return ret;
-+		}
-+
-+		/* Reset Wol status */
-+		ret = an8801r_reset_wake(phydev);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	if (!phydev->wol_enabled)
-+		return genphy_suspend(phydev);
-+
-+	return 0;
-+}
-+
-+static int an8801r_resume(struct phy_device *phydev)
-+{
-+	struct an8801r_priv *priv = phydev->priv;
-+	int ret;
-+
-+	ret = genphy_resume(phydev);
-+	if (ret)
-+		return ret;
-+
-+	/* Restore the interrupt enable so phylib can receive link
-+	 * state interrupts.
-+	 */
-+	if (device_may_wakeup(&phydev->mdio.dev)) {
-+		priv->wake_lnkchg_enabled = true;
-+
-+		ret = an8801_buckpbus_reg_set_bits(phydev,
-+						   AN8801_BPBUS_REG_WAKEUP_CTL1,
-+						   AN8801_WOL_WAKE_LNKCHG_EN);
-+		if (ret)
-+			return ret;
-+
-+		if (phydev->interrupts == PHY_INTERRUPT_ENABLED) {
-+			ret = an8801_buckpbus_reg_set_bits(phydev,
-+							   AN8801_BPBUS_REG_WAKE_IRQ_EN,
-+							   AN8801_IRQ_WAKE_LNKCHG);
-+		}
-+	}
-+
-+	return ret;
-+}
-+
-+static struct phy_driver airoha_driver[] = {
-+{
-+	PHY_ID_MATCH_MODEL(AN8801R_PHY_ID),
-+	.name			= "Airoha AN8801R",
-+	.probe			= an8801r_probe,
-+	.config_init		= an8801r_config_init,
-+	.suspend		= an8801r_suspend,
-+	.resume			= an8801r_resume,
-+	.config_aneg		= genphy_config_aneg,
-+	.config_intr		= an8801r_config_intr,
-+	.handle_interrupt	= an8801r_handle_interrupt,
-+	.set_wol		= an8801r_set_wol,
-+	.get_wol		= an8801r_get_wol,
-+	.read_page		= air_phy_read_page,
-+	.write_page		= air_phy_write_page,
-+	.flags			= PHY_ALWAYS_CALL_SUSPEND,
-+	.led_brightness_set	= an8801r_led_brightness_set,
-+	.led_blink_set		= an8801r_led_blink_set,
-+	.led_hw_is_supported	= an8801r_led_hw_is_supported,
-+	.led_hw_control_set	= an8801r_led_hw_control_set,
-+	.led_hw_control_get	= an8801r_led_hw_control_get,
-+	.led_polarity_set	= an8801r_led_polarity_set,
-+} };
-+module_phy_driver(airoha_driver);
-+
-+static struct mdio_device_id __maybe_unused an8801_tbl[] = {
-+	{ PHY_ID_MATCH_MODEL(AN8801R_PHY_ID) },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(mdio, an8801_tbl);
-+
-+MODULE_DESCRIPTION("Airoha AN8801 PHY driver");
-+MODULE_AUTHOR("AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>");
-+MODULE_LICENSE("GPL");
-
--- 
-2.54.0
-
+There is also scoped_guard() in libie_ctlq_xn_process_send(), which protects a 
+block of 22 lines, but I would consider it acceptable under the guidelines you 
+shared too.
+   
+>   Low level cleanup constructs (such as ``__free()``) can be used when building
+>   APIs and helpers, especially scoped iterators. However, direct use of
+>   ``__free()`` within networking core and drivers is discouraged.
+>   Similar guidance applies to declaring variables mid-function.
+>   
+> See: https://www.kernel.org/doc/html/next/process/maintainer-netdev.html#using-device-managed-and-cleanup-h-constructs
