@@ -1,39 +1,39 @@
 Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EDB83F210B
-	for <netdev@vger.kernel.org>; Thu, 21 May 2026 17:59:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0D5B3E5587
+	for <netdev@vger.kernel.org>; Thu, 21 May 2026 17:59:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779386389; cv=none; b=sa0V6h7aZTTlL/3+tesJvZARqPBnHs2oWTMRKtVyP4LJ+vzZXEzIM8UASP2p7yaPpNKY5sGc2TowpWIXIBJTHL7lc0n7iZIKzWm3caJAp5A26Ti+xP5KW42Y+5E0oo38tHeHOb0BLht+prHr+GYHhAWZ/JgDT951fUwDOD53HGY=
+	t=1779386391; cv=none; b=PLqAJbo9/p958auASLRIPpi4NMy1+rRNGIJ0Es1JQvZutIJ1BhAY4a+grrvnyf78FUEcY22IpqZ5c37WhCszgcq+pJ2Ma9ENfI2HTkmwrwnWqMgWmbpxnmGL1OJeFtuKouLYsDLqjUqHqWw3XC5P1gHY7LXt0JqrQi3CbfrNzYE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779386389; c=relaxed/simple;
-	bh=RFWH28xiyZL6UGfjauNvplsGVdLASD2SV76GNnK3YVs=;
+	s=arc-20240116; t=1779386391; c=relaxed/simple;
+	bh=R1I9KFE9fOZv9NX7CZ8r36ot2Jt55pIhJ4oYzduYNn8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=izFeDX4NgpoW2TV00LeB+lh0+Roh1gKn0QZNWUBPcqcud2QbFqYkLbhzyPrUfVIrKIS42kj1WGpqeXnu9E/dx7ujItvmdhaBJ3FjeO5mqYcP5yd/E3wfFQIYXo3PBPi9nC40CzsJCHIwLMbk67dT0+K4Q3l3WHRAIM00IbZiOdc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=markus.stockhausen@gmx.de header.b=B2lFnZ1h; arc=none smtp.client-ip=212.227.15.19
+	 MIME-Version; b=RFEJfORJP4WF6IT1+CiT4H8bxSiiY+S/6VaNDb8/mYs/GeIkrrtFMW3Fb4aI1a6Dyp3Oi7QpXfwCvk2zZOXzSMlg6phJ7qdkoPEJUQ8MFCl9NFHf01S8gBY/pBDTfNHyFFZTKc7YRC6Keive5JBXtBdqppndoPmp1ujFdvTAVHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=markus.stockhausen@gmx.de header.b=m0s0VKQp; arc=none smtp.client-ip=212.227.15.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=markus.stockhausen@gmx.de header.b="B2lFnZ1h"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=markus.stockhausen@gmx.de header.b="m0s0VKQp"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1779386376; x=1779991176;
+	s=s31663417; t=1779386377; x=1779991177;
 	i=markus.stockhausen@gmx.de;
-	bh=lrTI3H8Gl/3apM6ItYd3VAiWeRUHMOhbNUGZKLrfTnw=;
+	bh=yaq+uL6IDkWme7/hRSmyaY0YOdEuJ7ILqkA84J6bgfk=;
 	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-ID:In-Reply-To:
 	 References:MIME-Version:Content-Transfer-Encoding:cc:
 	 content-transfer-encoding:content-type:date:from:message-id:
 	 mime-version:reply-to:subject:to;
-	b=B2lFnZ1hB4ZlD0tfJSn5p6YmaZu9M2l9FpXWSBP6P/j8ypQqT/g9PnT44qpFc/2h
-	 fGtVDXsxe5vescDmGz3gDJcPaEYQsx2un+bLBcYJFuGkB/KzCf+1dZExDS+3d3dGh
-	 lIrZVEWZGFoQ2hn/kaJ3Xwj8AJfYUghZtu6k1Z8Ount9KEqlj8b/MTJwKw+BaDxn1
-	 hySjZzzpO++QS5MmwX1mcNaTXYogrWHPWbTunSerX/bHJqporolgVPVJN3b2HPFVU
-	 4UZbH30DvdZ/Mh/AwnQt6wtTUe2pixEqC7MCg7Zm9/X34cpmKhv+9pZ9KlSCzbKUb
-	 a5evk0NR+G7I/BqCPQ==
+	b=m0s0VKQpirV1ezMyydKvoQCKLyMtfX4tEz2pFqzFwSDlspCObt+AI/HHypLeGgL6
+	 EQdrITgojP426aK/VbsE0ZpqbaHLfXLvAfvmmgiuv9iJEXM97nig7ZWtI/dMuhei+
+	 9s0Q/iz2DICws121ahkvrRFcqs2EYiirhbRQTtc12VgbeyzpAVd2i5s5eDIyb75aa
+	 R667AzYBmWwnPSLDSs8bvVJvqc3gjehvhjo7wzNfGrX0U65fpdZV8bIWC+2kHvnL4
+	 JO+so3T3VZYi5zYjf4bvz+bTZeVvdZaRBvnNXKV+COpScIUT9/7oA+vc7uM07wfV/
+	 FjT0+8OeitqCS75AgQ==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
 Received: from client.hidden.invalid by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MtOKi-1xD8Z73moA-014WCS; Thu, 21
- May 2026 19:59:35 +0200
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MbzuH-1wvKhL3raR-00mZfx; Thu, 21
+ May 2026 19:59:36 +0200
 From: Markus Stockhausen <markus.stockhausen@gmx.de>
 To: andrew@lunn.ch,
 	hkallweit1@gmail.com,
@@ -46,9 +46,9 @@ To: andrew@lunn.ch,
 	chris.packham@alliedtelesis.co.nz,
 	daniel@makrotopia.org
 Cc: Markus Stockhausen <markus.stockhausen@gmx.de>
-Subject: [PATCH net-next v2 1/9] net: mdio: realtek-rtl9300: enhance documentation & naming
-Date: Thu, 21 May 2026 19:59:10 +0200
-Message-ID: <20260521175918.1494797-2-markus.stockhausen@gmx.de>
+Subject: [PATCH net-next v2 5/9] net: mdio: realtek-rtl9300: Add register structure
+Date: Thu, 21 May 2026 19:59:14 +0200
+Message-ID: <20260521175918.1494797-6-markus.stockhausen@gmx.de>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260521175918.1494797-1-markus.stockhausen@gmx.de>
 References: <20260521175918.1494797-1-markus.stockhausen@gmx.de>
@@ -59,520 +59,200 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:gm34J81Rk5eQ9tOmXRLSy7QacWIZ9o6lcBQzlAFhDy8RqRj7E10
- zsq8AGXSHozz8YtpYnuGZh/OUZtakynIYOXOAmvhmOAgbh66pHVWbB7WKknEUlQIi/EjWjD
- RFb36WL/IJd5dUz4vUfGZLID/g2qgAkhf/b3p1lzp9sOfZPIXgACXOXe4yBq0d4ElAT9GNH
- LicNPyUEh04qPCyFZZ0SQ==
+X-Provags-ID: V03:K1:tRnQ7VtkJDKRSARCbI6U70BZoJfoKHCTq5aMRPdTJOJUJHqPpsT
+ Bb92jLsyjfQbUqTKO74+aTBF+WZdOBRcXgZ2/P4bxDCc8MIg7TTYY204KaMD0u9Z2wv15pg
+ s4ldbHnunxCn2BT6on8ZA2U5zmoHbL/1N1aab1Jr3Kovs4D+pqz/cTBR97WofQMFh8prRDY
+ 4j2BM7ibelho5zwQ39GWg==
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:1VuQi4Q/3J8=;q/hHSr3n3dZ1QBb1vKf0hNnd+7c
- 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
+UI-OutboundReport: notjunk:1;M01:P0:vnP11JZ5p6E=;hLXxsaHpY9vqqZA9QbCvr7S9XVH
+ 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
+ 29pMzVcRMRHGtSKQJqYISY/T6nMpdsWO1Wzg7yB
 
-The Realtek ethernet MDIO driver currently only serves SOCs from the
-Realtek RTL930x series. This is only one lineup of the Realtek Otto
-switch series that also knows RTL838x, RTL839x, RTL931x devices.
-All of these share similar hardware with comparable MMIO access logic
-but have individual variations. Important to note
+The MDIO controller of the Realtek Otto switches has either 4 or 7 command
+registers. This depends on the number of supported ports. These registers
+are "scattered" around the MMIO block and their addresses depend on the
+specific model.
 
-- Controller works on switch ports instead of buses and addresses.
-- Devices incorporate additional MDIO hardware. E.g.
-  - an auxiliary MDIO controller for GPIO expanders [1]
-  - a MDIO style SerDes controller [2]
+Nevertheless all command registers share a common pattern:
 
-To avoid future confusion enhance the driver documentation and
-function naming. Make clear what this driver is about and what
-parts are generic and what parts are device specific. For this
-rename the function and structure prefix as follows:
+- A mask register with one bit per addressed port
+  (remark: the driver internally works on ports instead of bus/address)
+- A I/O data register that transfers the to be read/written data
+- A C45 registers that takes devnum and regnum
+- A C22 register that also includes run and status bits
+  (remark: this also takes the Realtek proprietary C22 PHY page)
 
-- for generic functions use otto_emdio_
-- for device specific helpers use e.g. otto_emdio_9300_
+Provide an additional structure for these command registers so it can be
+reused in two places.
 
-This prefix naming tries to align with the watchdog timer [3].
-It paves the way so that drivers for the other Realtek Otto MDIO
-controllers can be added in future commits using the same naming
-convention.
+1. For defining the register addresses in the regmap.
+2. For defining the to be read/written register data
 
-Remark 1: The read/write functions are kept device specific for now
-because they will only fit the RTL930x SOCs. Renaming will take place
-as soon as the I/O handling will be generalized.
+This will finally result in access patterns like
 
-Remark 2: The driver name "mdio-rtl9300" is kept for now.
+static int otto_emdio_run_cmd(u32 cmd,
+                              struct rtl_mdio_cmd_regs *cmd_regs, ...)
+{
+  regmap_write(regmap, priv->info->reg->cmd_regs.c45_data,
+                       cmd_regs->c45_data);
+  ...
+}
 
-[1] https://git.openwrt.org/openwrt/openwrt/tree/target/linux/realtek/patc=
-hes-6.18/723-net-mdio-Add-Realtek-Otto-auxiliary-controller.patch
-[2] https://git.openwrt.org/openwrt/openwrt/tree/target/linux/realtek/file=
-s-6.18/drivers/net/mdio/mdio-realtek-otto-serdes.c
-[3] https://elixir.bootlin.com/linux/v7.0/source/drivers/watchdog/realtek_=
-otto_wdt.c
+static int otto_emdio_9300_write_c45(...)
+{
+  struct otto_emdio_cmd_regs cmd_regs =3D {
+    .c45_data  =3D ...
+    .io_data   =3D ...,
+    .port_mask =3D ...,
+  };
+
+  return otto_emdio_run_cmd(RTL9300_CMD_WRITE_C45, &cmd_regs, ...);
+}
+
+As a first step start with the C45 register. This one takes the
+devnum/regnum data that is stored in the high/low 16 bits.
 
 Signed-off-by: Markus Stockhausen <markus.stockhausen@gmx.de>
 =2D--
- drivers/net/mdio/mdio-realtek-rtl9300.c | 139 ++++++++++++++----------
- 1 file changed, 84 insertions(+), 55 deletions(-)
+ drivers/net/mdio/mdio-realtek-rtl9300.c | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/net/mdio/mdio-realtek-rtl9300.c b/drivers/net/mdio/md=
 io-realtek-rtl9300.c
-index 8d5fb014ca06..98484c689126 100644
+index 94f59a56bc46..c992f09835f9 100644
 =2D-- a/drivers/net/mdio/mdio-realtek-rtl9300.c
 +++ b/drivers/net/mdio/mdio-realtek-rtl9300.c
-@@ -1,11 +1,40 @@
- // SPDX-License-Identifier: GPL-2.0-only
- /*
-- * MDIO controller for RTL9300 switches with integrated SoC.
-+ * Realtek switches of the Otto series (RTL838x, RTL839x, RTL930x and RTL=
-931x SoCs) have multiple
-+ * integrated MDIO controllers. This driver targets the ethernet MDIO con=
-troller. It serves only
-+ * 1G/2.5G/10G ethernet PHYs attached to up to 4 individual buses.
-  *
-- * The MDIO communication is abstracted by the switch. At the software le=
-vel
-- * communication uses the switch port to address the PHY. We work out the
-- * mapping based on the MDIO bus described in device tree and phandles on=
- the
-- * ethernet-ports property.
-+ * The controller is programmed through MMIO. The MDIO communication is a=
-bstracted by the hardware
-+ * and uses the switch port number for its addressing. For this to work, =
-mapping registers need to
-+ * be setup in advance. With that the controller translates each port bas=
-ed I/O operation into the
-+ * physical bus and address. This gives the following end-to-end communic=
-ation
-+ *
-+ *     +----------+       +----------+           +----------+       +----=
-=2D-----+
-+ *     |  phydev  |  ...  |  phydev  |           |  phydev  |  ...  |  ph=
-ydev  |
-+ *     +----------+       +----------+           +----------+       +----=
-=2D-----+
-+ *              |                  |               |                  |
-+ *   mii_bus 0  +------------------+               +------------------+  =
-mii_bus 1
-+ *                                 |               |
-+ *           +-----------------------------------------------------+
-+ *           |  MDIO driver                                        |
-+ *           |                      translate bus/address -> port  |
-+ *           +-----------------------------------------------------+
-+ *                                        |                             S=
-oftware
-+ *                             - - - - - - - - - - - - - - - - - - - - - =
-- - - -
-+ *                                        |                             H=
-ardware
-+ *           +-----------------------------------------------------+
-+ *           | MDIO controller                                     |
-+ *           |                      translate port -> bus/address  |
-+ *           +-----------------------------------------------------+
-+ *                                 |               |
-+ *       bus 0  +------------------+               +------------------+  =
-bus 1
-+ *              |                  |               |                  |
-+ *     +----------+       +----------+           +----------+       +----=
-=2D-----+
-+ *     | PHY 0/1  |  ...  | PHY 0/31 |           | PHY 1/1  |  ...  | PHY=
- 1/31 |
-+ *     +----------+       +----------+           +----------+       +----=
-=2D-----+
-+ *
-+ * The driver works out the mapping based on the MDIO bus described in de=
-vice tree and phandles on
-+ * the ethernet-ports property.
-  */
-=20
- #include <linux/bitfield.h>
-@@ -48,7 +77,7 @@
- #define MAX_SMI_BUSSES  4
+@@ -71,7 +71,7 @@
+ #define SMI_ACCESS_PHY_CTRL_2		0xcb78
+ #define   PHY_CTRL_INDATA		GENMASK(31, 16)
+ #define   PHY_CTRL_DATA			GENMASK(15, 0)
+-#define SMI_ACCESS_PHY_CTRL_3		0xcb7c
++#define RTL9300_SMI_ACCESS_PHY_CTRL_3	0xcb7c
+ #define   PHY_CTRL_MMD_DEVAD		GENMASK(20, 16)
+ #define   PHY_CTRL_MMD_REG		GENMASK(15, 0)
+ #define SMI_PORT0_5_ADDR_CTRL		0xcb80
+@@ -81,7 +81,13 @@
  #define MAX_SMI_ADDR	0x1f
+ #define RAW_PAGE(priv)	((priv)->info->num_pages - 1)
 =20
--struct rtl9300_mdio_priv {
-+struct otto_emdio_priv {
- 	struct regmap *regmap;
- 	struct mutex lock; /* protect HW access */
- 	DECLARE_BITMAP(valid_ports, MAX_PORTS);
-@@ -58,15 +87,15 @@ struct rtl9300_mdio_priv {
- 	struct mii_bus *bus[MAX_SMI_BUSSES];
- };
++
++struct otto_emdio_cmd_regs {
++	u32 c45_data;
++};
++
+ struct otto_emdio_info {
++	struct otto_emdio_cmd_regs cmd_regs;
+ 	u8 num_buses;
+ 	u8 num_ports;
+ 	u16 num_pages;
+@@ -262,7 +268,7 @@ static int otto_emdio_9300_read_c45(struct mii_bus *bu=
+s, int phy_id, int dev_add
 =20
--struct rtl9300_mdio_chan {
--	struct rtl9300_mdio_priv *priv;
-+struct otto_emdio_chan {
-+	struct otto_emdio_priv *priv;
- 	u8 mdio_bus;
- };
-=20
--static int rtl9300_mdio_phy_to_port(struct mii_bus *bus, int phy_id)
-+static int otto_emdio_phy_to_port(struct mii_bus *bus, int phy_id)
- {
--	struct rtl9300_mdio_chan *chan =3D bus->priv;
--	struct rtl9300_mdio_priv *priv;
-+	struct otto_emdio_chan *chan =3D bus->priv;
-+	struct otto_emdio_priv *priv;
- 	int i;
-=20
- 	priv =3D chan->priv;
-@@ -79,7 +108,7 @@ static int rtl9300_mdio_phy_to_port(struct mii_bus *bus=
-, int phy_id)
- 	return -ENOENT;
- }
-=20
--static int rtl9300_mdio_wait_ready(struct rtl9300_mdio_priv *priv)
-+static int otto_emdio_wait_ready(struct otto_emdio_priv *priv)
- {
- 	struct regmap *regmap =3D priv->regmap;
- 	u32 val;
-@@ -90,10 +119,10 @@ static int rtl9300_mdio_wait_ready(struct rtl9300_mdi=
-o_priv *priv)
- 					val, !(val & PHY_CTRL_CMD), 10, 1000);
- }
-=20
--static int rtl9300_mdio_read_c22(struct mii_bus *bus, int phy_id, int reg=
-num)
-+static int otto_emdio_9300_read_c22(struct mii_bus *bus, int phy_id, int =
-regnum)
- {
--	struct rtl9300_mdio_chan *chan =3D bus->priv;
--	struct rtl9300_mdio_priv *priv;
-+	struct otto_emdio_chan *chan =3D bus->priv;
-+	struct otto_emdio_priv *priv;
- 	struct regmap *regmap;
- 	int port;
- 	u32 val;
-@@ -102,12 +131,12 @@ static int rtl9300_mdio_read_c22(struct mii_bus *bus=
-, int phy_id, int regnum)
- 	priv =3D chan->priv;
- 	regmap =3D priv->regmap;
-=20
--	port =3D rtl9300_mdio_phy_to_port(bus, phy_id);
-+	port =3D otto_emdio_phy_to_port(bus, phy_id);
- 	if (port < 0)
- 		return port;
-=20
- 	mutex_lock(&priv->lock);
--	err =3D rtl9300_mdio_wait_ready(priv);
-+	err =3D otto_emdio_wait_ready(priv);
+ 	val =3D FIELD_PREP(PHY_CTRL_MMD_DEVAD, dev_addr) |
+ 	      FIELD_PREP(PHY_CTRL_MMD_REG, regnum);
+-	err =3D regmap_write(regmap, SMI_ACCESS_PHY_CTRL_3, val);
++	err =3D regmap_write(regmap, priv->info->cmd_regs.c45_data, val);
  	if (err)
  		goto out_err;
 =20
-@@ -123,7 +152,7 @@ static int rtl9300_mdio_read_c22(struct mii_bus *bus, =
-int phy_id, int regnum)
+@@ -320,7 +326,7 @@ static int otto_emdio_9300_write_c45(struct mii_bus *b=
+us, int phy_id, int dev_ad
+=20
+ 	val =3D FIELD_PREP(PHY_CTRL_MMD_DEVAD, dev_addr) |
+ 	      FIELD_PREP(PHY_CTRL_MMD_REG, regnum);
+-	err =3D regmap_write(regmap, SMI_ACCESS_PHY_CTRL_3, val);
++	err =3D regmap_write(regmap, priv->info->cmd_regs.c45_data, val);
  	if (err)
  		goto out_err;
 =20
--	err =3D rtl9300_mdio_wait_ready(priv);
-+	err =3D otto_emdio_wait_ready(priv);
- 	if (err)
- 		goto out_err;
-=20
-@@ -139,10 +168,10 @@ static int rtl9300_mdio_read_c22(struct mii_bus *bus=
-, int phy_id, int regnum)
- 	return err;
+@@ -541,6 +547,9 @@ static int otto_emdio_probe(struct platform_device *pd=
+ev)
  }
 =20
--static int rtl9300_mdio_write_c22(struct mii_bus *bus, int phy_id, int re=
-gnum, u16 value)
-+static int otto_emdio_9300_write_c22(struct mii_bus *bus, int phy_id, int=
- regnum, u16 value)
- {
--	struct rtl9300_mdio_chan *chan =3D bus->priv;
--	struct rtl9300_mdio_priv *priv;
-+	struct otto_emdio_chan *chan =3D bus->priv;
-+	struct otto_emdio_priv *priv;
- 	struct regmap *regmap;
- 	int port;
- 	u32 val;
-@@ -151,12 +180,12 @@ static int rtl9300_mdio_write_c22(struct mii_bus *bu=
-s, int phy_id, int regnum, u
- 	priv =3D chan->priv;
- 	regmap =3D priv->regmap;
-=20
--	port =3D rtl9300_mdio_phy_to_port(bus, phy_id);
-+	port =3D otto_emdio_phy_to_port(bus, phy_id);
- 	if (port < 0)
- 		return port;
-=20
- 	mutex_lock(&priv->lock);
--	err =3D rtl9300_mdio_wait_ready(priv);
-+	err =3D otto_emdio_wait_ready(priv);
- 	if (err)
- 		goto out_err;
-=20
-@@ -194,10 +223,10 @@ static int rtl9300_mdio_write_c22(struct mii_bus *bu=
-s, int phy_id, int regnum, u
- 	return err;
- }
-=20
--static int rtl9300_mdio_read_c45(struct mii_bus *bus, int phy_id, int dev=
-_addr, int regnum)
-+static int otto_emdio_9300_read_c45(struct mii_bus *bus, int phy_id, int =
-dev_addr, int regnum)
- {
--	struct rtl9300_mdio_chan *chan =3D bus->priv;
--	struct rtl9300_mdio_priv *priv;
-+	struct otto_emdio_chan *chan =3D bus->priv;
-+	struct otto_emdio_priv *priv;
- 	struct regmap *regmap;
- 	int port;
- 	u32 val;
-@@ -206,12 +235,12 @@ static int rtl9300_mdio_read_c45(struct mii_bus *bus=
-, int phy_id, int dev_addr,
- 	priv =3D chan->priv;
- 	regmap =3D priv->regmap;
-=20
--	port =3D rtl9300_mdio_phy_to_port(bus, phy_id);
-+	port =3D otto_emdio_phy_to_port(bus, phy_id);
- 	if (port < 0)
- 		return port;
-=20
- 	mutex_lock(&priv->lock);
--	err =3D rtl9300_mdio_wait_ready(priv);
-+	err =3D otto_emdio_wait_ready(priv);
- 	if (err)
- 		goto out_err;
-=20
-@@ -231,7 +260,7 @@ static int rtl9300_mdio_read_c45(struct mii_bus *bus, =
-int phy_id, int dev_addr,
- 	if (err)
- 		goto out_err;
-=20
--	err =3D rtl9300_mdio_wait_ready(priv);
-+	err =3D otto_emdio_wait_ready(priv);
- 	if (err)
- 		goto out_err;
-=20
-@@ -247,11 +276,11 @@ static int rtl9300_mdio_read_c45(struct mii_bus *bus=
-, int phy_id, int dev_addr,
- 	return err;
- }
-=20
--static int rtl9300_mdio_write_c45(struct mii_bus *bus, int phy_id, int de=
-v_addr,
-+static int otto_emdio_9300_write_c45(struct mii_bus *bus, int phy_id, int=
- dev_addr,
- 				  int regnum, u16 value)
- {
--	struct rtl9300_mdio_chan *chan =3D bus->priv;
--	struct rtl9300_mdio_priv *priv;
-+	struct otto_emdio_chan *chan =3D bus->priv;
-+	struct otto_emdio_priv *priv;
- 	struct regmap *regmap;
- 	int port;
- 	u32 val;
-@@ -260,12 +289,12 @@ static int rtl9300_mdio_write_c45(struct mii_bus *bu=
-s, int phy_id, int dev_addr,
- 	priv =3D chan->priv;
- 	regmap =3D priv->regmap;
-=20
--	port =3D rtl9300_mdio_phy_to_port(bus, phy_id);
-+	port =3D otto_emdio_phy_to_port(bus, phy_id);
- 	if (port < 0)
- 		return port;
-=20
- 	mutex_lock(&priv->lock);
--	err =3D rtl9300_mdio_wait_ready(priv);
-+	err =3D otto_emdio_wait_ready(priv);
- 	if (err)
- 		goto out_err;
-=20
-@@ -307,7 +336,7 @@ static int rtl9300_mdio_write_c45(struct mii_bus *bus,=
- int phy_id, int dev_addr,
- 	return err;
- }
-=20
--static int rtl9300_mdiobus_init(struct rtl9300_mdio_priv *priv)
-+static int otto_emdio_9300_mdiobus_init(struct otto_emdio_priv *priv)
- {
- 	u32 glb_ctrl_mask =3D 0, glb_ctrl_val =3D 0;
- 	struct regmap *regmap =3D priv->regmap;
-@@ -350,10 +379,10 @@ static int rtl9300_mdiobus_init(struct rtl9300_mdio_=
-priv *priv)
- 	return 0;
- }
-=20
--static int rtl9300_mdiobus_probe_one(struct device *dev, struct rtl9300_m=
-dio_priv *priv,
--				     struct fwnode_handle *node)
-+static int otto_emdio_probe_one(struct device *dev, struct otto_emdio_pri=
-v *priv,
-+				 struct fwnode_handle *node)
- {
--	struct rtl9300_mdio_chan *chan;
-+	struct otto_emdio_chan *chan;
- 	struct mii_bus *bus;
- 	u32 mdio_bus;
- 	int err;
-@@ -380,11 +409,11 @@ static int rtl9300_mdiobus_probe_one(struct device *=
-dev, struct rtl9300_mdio_pri
-=20
- 	bus->name =3D "Realtek Switch MDIO Bus";
- 	if (priv->smi_bus_is_c45[mdio_bus]) {
--		bus->read_c45 =3D rtl9300_mdio_read_c45;
--		bus->write_c45 =3D  rtl9300_mdio_write_c45;
-+		bus->read_c45 =3D otto_emdio_9300_read_c45;
-+		bus->write_c45 =3D otto_emdio_9300_write_c45;
- 	} else {
--		bus->read =3D rtl9300_mdio_read_c22;
--		bus->write =3D rtl9300_mdio_write_c22;
-+		bus->read =3D otto_emdio_9300_read_c22;
-+		bus->write =3D otto_emdio_9300_write_c22;
- 	}
- 	bus->parent =3D dev;
- 	chan =3D bus->priv;
-@@ -404,9 +433,9 @@ static int rtl9300_mdiobus_probe_one(struct device *de=
-v, struct rtl9300_mdio_pri
-  * ethernet-ports node and build a mapping of the switch port to MDIO bus=
-/addr
-  * based on the phy-handle.
-  */
--static int rtl9300_mdiobus_map_ports(struct device *dev)
-+static int otto_emdio_map_ports(struct device *dev)
- {
--	struct rtl9300_mdio_priv *priv =3D dev_get_drvdata(dev);
-+	struct otto_emdio_priv *priv =3D dev_get_drvdata(dev);
- 	struct device *parent =3D dev->parent;
- 	int err;
-=20
-@@ -462,10 +491,10 @@ static int rtl9300_mdiobus_map_ports(struct device *=
-dev)
- 	return 0;
- }
-=20
--static int rtl9300_mdiobus_probe(struct platform_device *pdev)
-+static int otto_emdio_probe(struct platform_device *pdev)
- {
- 	struct device *dev =3D &pdev->dev;
--	struct rtl9300_mdio_priv *priv;
-+	struct otto_emdio_priv *priv;
- 	int err;
-=20
- 	priv =3D devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
-@@ -482,38 +511,38 @@ static int rtl9300_mdiobus_probe(struct platform_dev=
-ice *pdev)
-=20
- 	platform_set_drvdata(pdev, priv);
-=20
--	err =3D rtl9300_mdiobus_map_ports(dev);
-+	err =3D otto_emdio_map_ports(dev);
- 	if (err)
- 		return err;
-=20
- 	device_for_each_child_node_scoped(dev, child) {
--		err =3D rtl9300_mdiobus_probe_one(dev, priv, child);
-+		err =3D otto_emdio_probe_one(dev, priv, child);
- 		if (err)
- 			return err;
- 	}
-=20
--	err =3D rtl9300_mdiobus_init(priv);
-+	err =3D otto_emdio_9300_mdiobus_init(priv);
- 	if (err)
- 		return dev_err_probe(dev, err, "failed to initialise MDIO bus controlle=
-r\n");
-=20
- 	return 0;
- }
-=20
--static const struct of_device_id rtl9300_mdio_ids[] =3D {
-+static const struct of_device_id otto_emdio_ids[] =3D {
- 	{ .compatible =3D "realtek,rtl9301-mdio" },
- 	{}
- };
--MODULE_DEVICE_TABLE(of, rtl9300_mdio_ids);
-+MODULE_DEVICE_TABLE(of, otto_emdio_ids);
-=20
--static struct platform_driver rtl9300_mdio_driver =3D {
--	.probe =3D rtl9300_mdiobus_probe,
-+static struct platform_driver otto_emdio_driver =3D {
-+	.probe =3D otto_emdio_probe,
- 	.driver =3D {
- 		.name =3D "mdio-rtl9300",
--		.of_match_table =3D rtl9300_mdio_ids,
-+		.of_match_table =3D otto_emdio_ids,
- 	},
- };
-=20
--module_platform_driver(rtl9300_mdio_driver);
-+module_platform_driver(otto_emdio_driver);
-=20
- MODULE_DESCRIPTION("RTL9300 MDIO driver");
- MODULE_LICENSE("GPL");
+ static const struct otto_emdio_info otto_emdio_9300_info =3D {
++	.cmd_regs =3D {
++		.c45_data =3D RTL9300_SMI_ACCESS_PHY_CTRL_3,
++	},
+ 	.num_buses =3D RTL9300_NUM_BUSES,
+ 	.num_ports =3D RTL9300_NUM_PORTS,
+ 	.num_pages =3D RTL9300_NUM_PAGES,
 =2D-=20
 2.54.0
 
