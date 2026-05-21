@@ -1,35 +1,68 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E033384CEC;
-	Thu, 21 May 2026 10:20:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1882C39EF1C
+	for <netdev@vger.kernel.org>; Thu, 21 May 2026 10:29:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779358808; cv=none; b=Xete1aMWzmRGpsvevnFCkVutje51Ayd6Gd+9GuPmxZaXNZW3UuV5QbKFyxT1PNaioHhKD+scCH64yGAs/TsFkW1BgxnuP1KYg3m04lo1vL/uqO8WGH785gRiKQCKk/xvz8O3iU7lrG2kOxoNxfnU7gBsvXFVMtlH7g58adobZjQ=
+	t=1779359393; cv=none; b=I77T9e66l2iDijGHr34Yj5qrIOdxMwdrK/L+NWUaJMUiKdKp1EkLmT8tsSuoRrnDHIHDvvcalKF/3X1KQ2Sy8RjR+fUthwYqiLYWsOMYsx7b09QZ4PwauMN5TErtFQd50YyC13MfHw/f5IEtpliyzKPJQlWvfBj0UPa3SDHU+3Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779358808; c=relaxed/simple;
-	bh=rEMZZhwAXoCug5lgIMCDd+Z0Nkvy4ekijw8jmTYbLVw=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=kn7X1kHOJvc0K/bqCPTtdltl8IvRIN+bIMTW4fc++4/75RK/2pGoyfXF0xhOPIxlKDvO2E5juxFUGjGS3h/igOE8ou2camDBzjcQyvTi5t+RxkH4T3zwtN/95LZcyX7g0Dcb2W4rfqrI7FKSOyTx80SRgGbBphUtLrl3w2ywc2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kDuCWhP0; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779359393; c=relaxed/simple;
+	bh=4P/zfAkb0g8d+gw+ZEAI4bYPL3nLbN1wptaJAr4uEsQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=E24ilNZGTEdZUuDyXZaMgpwiteoGT0s6qgpUaQMTIFAl1Kdj5lMZeqA9cj1tjSZPmDXofGTYppaB0FvLTJ/eYJ01sNMl+4JicX8EHm6VrN3k0B7h6VwbiL2Yk0hghP31h2gRpbjUOV8JTJ1/7cvvoqvS0WTHoUrqfHakT2ET62A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KiiQq5Wp; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kDuCWhP0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22B6F1F000E9;
-	Thu, 21 May 2026 10:20:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779358807;
-	bh=lHF1duPnZnQu1Yy1kRBvTgpJD653i4LN75OI6zxDh1U=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=kDuCWhP062yDIkP4/R6EOdm7l0k6wD8bFHqRnEiRvQB17Qh4zHLX9eBQoLCaPZQAP
-	 Ih7g7qRKbnJF7CZ8y/EQZ7rm/15VMggIB0kdQVK3uirjAY3f8VzCK0ZyQqeofjWLQj
-	 2j26GZFVXXRx/qwkLZS8Ik/i9uL9JfKivEJf8um5sbeejIrOBiddtGQTgp1yzpQsgU
-	 ++PONmtKgYNmcy98l8TPBR0p4vqMJKtb2BGpLzMq9J576eJYpicCJ98jsVbFlJY0SA
-	 +gwNRGF3PZO4ciOHeHX+Fr4X5/XNKHB8b8hCjSMpqOtLflWTXZlQsu5Y84qp3jOUSs
-	 kGzW8oiDpK+pQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 56CB43930D21;
-	Thu, 21 May 2026 10:20:18 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KiiQq5Wp"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1779359391;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ik2DCw78SxIVih/zQgvUo9wf5E1reoJnk6xvWC1gUYc=;
+	b=KiiQq5WphfnwDSVN/yVTWg51Ih8KdRf2MPCsKghWrGLNm9MJRx+bRfttMUe/BjMGIkQHb3
+	UfvNquOdooYpBsieSKBWf/2E78xY1ryWVWpXjhcAxskIOzhhQhi8IN35nAFV8u+xceE9/i
+	LMtOh1EuyoBKWcS2MlvSIb65TL5PVYY=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-247-CWAEpgTSOBeDsJGEsr0Wzg-1; Thu,
+ 21 May 2026 06:29:46 -0400
+X-MC-Unique: CWAEpgTSOBeDsJGEsr0Wzg-1
+X-Mimecast-MFC-AGG-ID: CWAEpgTSOBeDsJGEsr0Wzg_1779359384
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 12BE919560A7;
+	Thu, 21 May 2026 10:29:43 +0000 (UTC)
+Received: from gerbillo.redhat.com (unknown [10.44.32.233])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 8407E300019F;
+	Thu, 21 May 2026 10:29:37 +0000 (UTC)
+From: Paolo Abeni <pabeni@redhat.com>
+To: tim770802@gmail.com
+Cc: netdev@vger.kernel.org,
+	tim.jh.chen@wnc.com.tw,
+	chandrashekar.devegowda@intel.com,
+	haijun.liu@mediatek.com,
+	ricardo.martinez@linux.intel.com,
+	loic.poulain@oss.qualcomm.com,
+	ryazanov.s.a@gmail.com,
+	johannes@sipsolutions.net,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] net: wwan: t7xx: fix race between TX thread and system PM suspend
+Date: Thu, 21 May 2026 12:29:33 +0200
+Message-ID: <20260521102933.126040-1-pabeni@redhat.com>
+In-Reply-To: <20260518075033.58996-1-tim.jh.chen@wnc.com.tw>
+References: <20260518075033.58996-1-tim.jh.chen@wnc.com.tw>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,59 +70,109 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next V2 0/8] net/mlx5: Prepare eswitch infrastructure
- for
- satellite PF support
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177935881714.4017526.3447478285704976767.git-patchwork-notify@kernel.org>
-Date: Thu, 21 May 2026 10:20:17 +0000
-References: <20260518071356.345723-1-tariqt@nvidia.com>
-In-Reply-To: <20260518071356.345723-1-tariqt@nvidia.com>
-To: Tariq Toukan <tariqt@nvidia.com>
-Cc: edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, saeedm@nvidia.com,
- leon@kernel.org, mbloch@nvidia.com, moshe@nvidia.com, agoldberger@nvidia.com,
- netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
- linux-kernel@vger.kernel.org, gal@nvidia.com, dtatulea@nvidia.com,
- horms@kernel.org
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-Hello:
+From: AI Reviewer <ai@example.com>
 
-This series was applied to netdev/net-next.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+Full review at: https://netdev-ai.bots.linux.dev/sashiko/
+---
+net: wwan: t7xx: fix race between TX thread and system PM suspend
 
-On Mon, 18 May 2026 10:13:48 +0300 you wrote:
-> Hi,
-> 
-> See detailed description by Moshe below.
-> 
-> Regards,
-> Tariq
-> 
-> [...]
+This patch addresses a soft lockup observed when system suspend races with
+the DPMAIF TX kthread. It updates dpmaif_ctrl->state in the suspend and
+resume callbacks and adds a second state check in
+t7xx_dpmaif_tx_hw_push_thread() before pm_runtime_resume_and_get().
 
-Here is the summary with links:
-  - [net-next,V2,1/8] net/mlx5: Use helper to parse host PF info
-    https://git.kernel.org/netdev/net-next/c/920fdc4d21e3
-  - [net-next,V2,2/8] net/mlx5: Use v1 response layout for query_esw_functions
-    https://git.kernel.org/netdev/net-next/c/a4f75c4238b0
-  - [net-next,V2,3/8] net/mlx5: Use mlx5_eswitch_is_vf_vport() for IPsec VF checks
-    https://git.kernel.org/netdev/net-next/c/3fefa7e7c14b
-  - [net-next,V2,4/8] net/mlx5: Switch vport HCA cap helpers to kvzalloc
-    https://git.kernel.org/netdev/net-next/c/62af408fd772
-  - [net-next,V2,5/8] net/mlx5: Add mlx5_vport_set_other_func_general_cap macro
-    https://git.kernel.org/netdev/net-next/c/9244a323125c
-  - [net-next,V2,6/8] net/mlx5: Refactor mlx5_set_msix_vec_count() SET_HCA_CAP
-    https://git.kernel.org/netdev/net-next/c/fa2852a28c5b
-  - [net-next,V2,7/8] net/mlx5: Use vport helper for IPsec eswitch set caps
-    https://git.kernel.org/netdev/net-next/c/d7ec361003fa
-  - [net-next,V2,8/8] net/mlx5: Generalize enable/disable HCA for any PF vport
-    https://git.kernel.org/netdev/net-next/c/4a3b5efee2e5
+> diff --git a/drivers/net/wwan/t7xx/t7xx_hif_dpmaif.c b/drivers/net/wwan/t7xx/t7xx_hif_dpmaif.c
+> index 7ff33c1d6ac7..315a77e2465a 100644
+> --- a/drivers/net/wwan/t7xx/t7xx_hif_dpmaif.c
+> +++ b/drivers/net/wwan/t7xx/t7xx_hif_dpmaif.c
+> @@ -451,6 +453,7 @@ static int t7xx_dpmaif_resume(struct t7xx_pci_dev *t7xx_dev, void *param)
+>  	if (!dpmaif_ctrl)
+>  		return 0;
+>  
+> +	dpmaif_ctrl->state = DPMAIF_STATE_PWRON;
+>  	t7xx_dpmaif_start_txrx_qs(dpmaif_ctrl);
+>  	t7xx_dpmaif_enable_irq(dpmaif_ctrl);
+>  	t7xx_dpmaif_unmask_dlq_intr(dpmaif_ctrl);
 
-You are awesome, thank you!
+[High]
+Is the unconditional assignment to DPMAIF_STATE_PWRON safe when the modem
+was not running before suspend?
+
+Prior to this patch neither suspend nor resume modified dpmaif_ctrl->state,
+so a modem that had been moved to DPMAIF_STATE_PWROFF via
+t7xx_dpmaif_md_state_callback() (for MD_STATE_STOPPED or MD_STATE_EXCEPTION,
+which calls t7xx_dpmaif_stop()) stayed PWROFF across a suspend/resume cycle.
+
+After the patch t7xx_dpmaif_resume() forces state to PWRON and also
+restores que_started=true via t7xx_dpmaif_start_txrx_qs(). The TX kthread's
+state guard then permits it to proceed:
+
+	if (dpmaif_ctrl->state != DPMAIF_STATE_PWRON)
+		continue;
+
+	ret = pm_runtime_resume_and_get(dpmaif_ctrl->dev);
+	...
+	t7xx_do_tx_hw_push(dpmaif_ctrl);
+
+Could this cause TX HW writes against a modem that the MD state machine
+considers stopped or in exception?
+
+The commit message describes the resume change as "symmetric with the
+suspend change", but the suspend transition (PWRON -> PWROFF) tracks an
+actual HW teardown, while the resume transition forces PWRON regardless of
+the prior MD-driven state. Should the resume path only restore PWRON when
+the modem was PWRON before suspend?
+
+> diff --git a/drivers/net/wwan/t7xx/t7xx_hif_dpmaif_tx.c b/drivers/net/wwan/t7xx/t7xx_hif_dpmaif_tx.c
+> index 236d632cf591..d5a5befec71e 100644
+> --- a/drivers/net/wwan/t7xx/t7xx_hif_dpmaif_tx.c
+> +++ b/drivers/net/wwan/t7xx/t7xx_hif_dpmaif_tx.c
+> @@ -460,6 +460,9 @@ static int t7xx_dpmaif_tx_hw_push_thread(void *arg)
+>  				break;
+>  		}
+>  
+> +		if (dpmaif_ctrl->state != DPMAIF_STATE_PWRON)
+> +			continue;
+> +
+>  		ret = pm_runtime_resume_and_get(dpmaif_ctrl->dev);
+>  		if (ret < 0 && ret != -EACCES)
+>  			return ret;
+
+[Medium]
+Does this new check actually close the TOCTOU window described in the
+commit message, or does it just narrow it?
+
+dpmaif_ctrl->state is a plain enum read here without any lock,
+READ_ONCE/WRITE_ONCE, or memory barrier. It is also written without
+locking by t7xx_dpmaif_suspend(), t7xx_dpmaif_resume(), t7xx_dpmaif_start(),
+and t7xx_dpmaif_stop() (via t7xx_dpmaif_md_state_callback()), and read
+without locking from t7xx_do_tx_hw_push() and the ISR path.
+
+After this new check passes, can the system PM suspend path still set
+state = DPMAIF_STATE_PWROFF on another CPU and grab the PM spinlock before
+this thread reaches pm_runtime_resume_and_get(), reproducing the same
+deadlock the patch is intended to fix?
+
+The commit message states:
+
+	add a second state check immediately before
+	pm_runtime_resume_and_get() to close the TOCTOU window between
+	the wait_event guard and the pm call.
+
+Given that the window between the new check and the pm_runtime call is
+non-zero and the flag has no synchronization, would it be more accurate to
+say the window is reduced rather than closed?
+
+For reference, Documentation-style guidance on flags-as-locks (the gate
+guard pattern of reading a flag and then operating on shared state without
+holding a lock) suggests using a real mutex/spinlock or a completion that
+suspend waits on, so the kthread's PM reference is guaranteed to be
+dropped before the suspend path runs. Would something along those lines be
+a better fit here?
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+This is an AI-generated review.
 
