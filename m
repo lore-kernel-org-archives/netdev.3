@@ -1,79 +1,108 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED4362765C4
-	for <netdev@vger.kernel.org>; Thu, 21 May 2026 14:35:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21E8B371D1E;
+	Thu, 21 May 2026 14:38:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779374128; cv=none; b=HrA/1PaKLTSkHlSGR/bNF6df6LHKwVyDGIrsPrCRr0Lw8IV1ShwrAPhL6T9TVTCFbaIdNgUgck6reZ6deHbmPr5CYsKSLHsvMyizZqrxtqvPna5gSOa2Rj6LZye0kimc1SqtfhiU+l8WsknfzUE5lEJE1YCgvloQwDTQTSouDeA=
+	t=1779374288; cv=none; b=uH1R1mAZ9q5TMtSOwXmp6mtbyFY1Mu23toyDHC3gq6YYpG/BxY0NidftfRhFA1BOyeqhB6LutMf+Sq9FFRX5ZV+VDGY3ykxQ5UDFbks5TLK3exlqOjQdG9faqeMD3FLiFGB788OqVdbsZrOsQpVPdr0NFzQvorwiMSkCESYFqyY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779374128; c=relaxed/simple;
-	bh=tQDTeCG55a9v45cS8pokxYRImnjJwDJJ8ZdK0s2BXNE=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MqDt7c+DdXg4oah/OV2gbFgyUdDD4A0e4ovtsoxHZn9DPTtpnzPrRlDTckX5vt5fC0lrxLBEyaVw/YMRG9jXENIhsqdM5EJPhDRzAwPSP85qf2QbZhvYvwxAL1tVnJjbml73y8A3JBQ7BvroCcSb9B10RANxqTlh79qizO1A9UY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FOk4WR0+; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779374288; c=relaxed/simple;
+	bh=WRrXkbf9YoyTrpwsaB5szcpnFA4GtQb/j8QLGN43FTA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=okFBnj0Jilkyhn4nYbWKZJehoVmkXCZZHNItgRmcIsf5kPZzlp2y+8qgNsBX/I9PM0by3f2lExabl2Nh470luGOiUJITom08tjKUKMGaRVxWE6BYgX7I0cq2/J8mn5GK01hgy4K1fbGl01ikU6KWQxXZhLC9anUNMU0AVG1UOBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iNn4WNx3; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FOk4WR0+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66C641F000E9;
-	Thu, 21 May 2026 14:35:27 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iNn4WNx3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1750D1F000E9;
+	Thu, 21 May 2026 14:38:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779374127;
-	bh=5p3KvjlCX0IifGl+04Sx/DZ1HofmaqNkGakQk6OoiCg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=FOk4WR0+x+86BogWcyPhEp8EUPHTrL1cHAw2zjJ7UqSiuDuKldeKtUPkqORU+5mNx
-	 DpJXYvgFWsHv5CN+e7bmAd25dhPTQVYrDOrO4W98BLnVaywhLqwf6hOJzTnCuxPteE
-	 ZXJ5nCqIDPjGoAAj8O5zdaJwQJyOTR+ynrUHuuATSvMOcrZXBI4/SQF/8AoUYxDAkl
-	 RIRhX6mNfD1pqgrxh3POMFoKpOWpoi5PGYuuYUkOh1Ww9KSYRa2xSGcxhGEVydYB1i
-	 6vl35qj3Lvz/f7GkcXxw9BVXzx2qZYuK7EnLUJp2CGqVtIZjsx785xmg9Ud/MsNCZo
-	 j9B2NlxUJsyQQ==
-Date: Thu, 21 May 2026 07:35:26 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Jamal Hadi Salim <jhs@mojatatu.com>
-Cc: Rajat Gupta <rajat.gupta@oss.qualcomm.com>, netdev@vger.kernel.org,
- davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
- horms@kernel.org, jiri@resnulli.us, yimingqian591@gmail.com,
- keenanat2000@gmail.com, 2045gemini@gmail.com, rollkingzzc@gmail.com
-Subject: Re: [PATCH net] net/sched: fix pedit partial COW leading to page
- cache corruption
-Message-ID: <20260521073526.793d30c3@kernel.org>
-In-Reply-To: <CAM0EoM=sCnT69uPzB+HjOdRP9eQXVA+AcvPsBA80=dtQHi5sLQ@mail.gmail.com>
-References: <CAM0EoMkUPYSXKr2=+mR8YMq2a0TFdYPdzwPGob-UyU1fUWP9Ww@mail.gmail.com>
-	<20260519033950.2037-1-rajat.gupta@oss.qualcomm.com>
-	<CAM0EoMmj-9uDpKBN4vjJqzaLQL=OZ-sdFO_pHPFp6kL6hSVeRA@mail.gmail.com>
-	<CAM0EoMkDwdmP94yeoX7W-DOY3Emcq84jGcPf73vtRTpDf1N3-w@mail.gmail.com>
-	<CAM0EoMn-O7KU1R=b8jzb=DmMtRCuoEVmAH9hEsKehrdbmODAjA@mail.gmail.com>
-	<CAM0EoM=sCnT69uPzB+HjOdRP9eQXVA+AcvPsBA80=dtQHi5sLQ@mail.gmail.com>
+	s=k20260515; t=1779374287;
+	bh=oTM+eITGTchBcw+NoYaku3z1qr6Oghcm7yOLXYODklo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=iNn4WNx34I1rJOOclnNENZGftSk1JxerNi0KTn0ylUZXp1t21pejga8Kwqrl1TsM0
+	 egqhvieR2tcWsP+hDIxkGfLjx0z10f6HokF8PVGicDOSkohPUnpY7lbFBsmLk4lZNl
+	 FpqNAD3HqDgOLLOITOb2wJXTu9ooQiBKAgUW5Z6dxXynXRWR+LXUIDwzZl1dQ5AtgH
+	 6FBp1D/E057ud8p4UbDy5vFyxfVmwmI2XEJ9Ghjj4gOFa5pzV6doCm9hyOhu/44Bkt
+	 V5IK/K23lfYrnkj9MmyH3ovU+0XOZqWcDuW0924bqxb6SPZ0LbjSeUnzAAjN+KDPB2
+	 uCUom9riIVPpw==
+From: Simon Horman <horms@kernel.org>
+To: michael.bommarito@gmail.com
+Cc: 'Simon Horman' <horms@kernel.org>,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	jchapman@katalix.com,
+	tparkin@katalix.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] l2tp: use list_del_rcu in l2tp_session_unhash
+Date: Thu, 21 May 2026 15:36:53 +0100
+Message-ID: <20260521143654.1980290-1-horms@kernel.org>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260518183447.64078-1-michael.bommarito@gmail.com>
+References: <20260518183447.64078-1-michael.bommarito@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Thu, 21 May 2026 06:15:17 -0400 Jamal Hadi Salim wrote:
-> > This is the same claim as sashiko1 but sashiko2 gave a much more
-> > convincing description ;->
-> > skb_has_shared_frag() is only true if the frags are flagged as
-> > SKBFL_SHARED_FRAG (which is what the repro did); however, if we get
-> > frags from eg a driver on ingress and that skb gets cloned with frags
-> > we won't catch it.
-> > One approach is to do an if (skb_has_any_shared_frags(skb)) and then
-> > do a skb_linearize_cow() but that sounds like overkill.  
-> 
-> Yeah, this would be overkill - imagine running tcpdump 100% will be cloned
-> 
-> > Another which will make the patch even uglier (but less expensive) is
-> > to add an extra check insde the patch's "if (write_offset < 0)"
-> > to do:  if (write_offset + (int)sizeof(hdata) > 0) { skb_ensure_writable()}
-> >  
-> 
-> To be precise, something like attached (untested, uncompiled)
+From: 'Simon Horman' <horms@kernel.org>
 
-Can we not pull the headers? Do you know of anyone modifying payloads
-with pedit?
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+Full review at: https://sashiko.dev
+---
+l2tp: use list_del_rcu in l2tp_session_unhash
 
-The concept of "shared frags" is silly IMHO, if I'm checking right only
-rxrpc and xfrm think that it's a thing. I'm hoping to delete that and
-reclaim the flag id in net-next...
+An unprivileged local user can pin a host CPU indefinitely in
+l2tp_session_get_by_ifname() when l2tp_session_unhash() uses list_del_init()
+while the list is being walked under RCU. This commit changes
+l2tp_session_unhash() to use list_del_rcu() to match the existing
+list_add_rcu(), preventing the infinite loop.
+
+> diff --git a/net/l2tp/l2tp_core.c b/net/l2tp/l2tp_core.c
+> index 157fc23ce4e14..1455f67e01ddb 100644
+> --- a/net/l2tp/l2tp_core.c
+> +++ b/net/l2tp/l2tp_core.c
+> @@ -1360,7 +1360,7 @@ static void l2tp_session_unhash(struct l2tp_session *session)
+>  		spin_lock_bh(&pn->l2tp_session_idr_lock);
+>  
+>  		/* Remove from the per-tunnel list */
+> -		list_del_init(&session->list);
+> +		list_del_rcu(&session->list);
+
+Can this change lead to a use-after-free in l2tp_session_get_by_ifname()?
+
+By switching to list_del_rcu(), the deleted session remains visible to
+in-flight RCU readers. If l2tp_session_del_work() drops the session's
+reference count to 0 concurrently, the session will be queued for
+destruction via kfree_rcu().
+
+If an in-flight RCU reader in l2tp_session_get_by_ifname() encounters
+this session before the grace period ends, it will execute:
+
+	list_for_each_entry_rcu(session, &tunnel->session_list, list) {
+		if (!strcmp(session->ifname, ifname)) {
+			refcount_inc(&session->ref_count);
+			rcu_read_unlock_bh();
+			return session;
+		}
+	}
+
+Since refcount_inc() does not protect against zero-reference transitions,
+the reader will obtain a pointer to a session that is already pending
+destruction.
+
+Once the RCU grace period expires, kfree_rcu() will free the session
+memory, causing a use-after-free for the caller.
+
+Should l2tp_session_get_by_ifname() use refcount_inc_not_zero() and skip
+the session if it returns false, similar to other getters like
+l2tp_v3_session_get()?
+
+[ ... ]
