@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAF8135AC16
-	for <netdev@vger.kernel.org>; Thu, 21 May 2026 15:30:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57554360EE1
+	for <netdev@vger.kernel.org>; Thu, 21 May 2026 15:30:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779377401; cv=none; b=SxZ4WAnDg1VeDFi9TNnmiUdlweJxNhg0AP0zIxC4rJoY1qjpZ3K/BPuVxlfEW5v2JSyQJx4rvMsnFtDxJz6mNR/UVHaMoRsyHmV/r1x0kEN2cTrsjLPcLFGuE5E/8fWRGkAbVVPRCkTJ8/Ip1M8Zb37o12fdPLwQQV6mC/3I41Q=
+	t=1779377403; cv=none; b=D6acQg6POnwfeq9nUh03ipEL6cWTpXjcmGA/MB2HwNealcFmocoe0JD5em3iwriHOZ607FcqI7ULRIz2HYxVG28d+wi6Y/VJ6Ki2Wc0vWerHwRae0nPm94/BNAzunPZWMKd5Kbw1gmsonK3RKyMCcUJlQLTiuqQJU8C3gP0ZdgE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779377401; c=relaxed/simple;
-	bh=avYHqax9fnJxUU4NlMbkjO9tz0OABZ3yZxLTAF4fhE0=;
+	s=arc-20240116; t=1779377403; c=relaxed/simple;
+	bh=Yyr9IbzLYk/ixCtNxkr7zQ0VmhDiRtgH1bmYe8tOc5k=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=K6mHHs8gdvEMdtPfC0yR9plShs76KlmopA41wWrEbCJh2o6iymeZ7BzHvrDqBwukjXD6vlRAIPx/+rGtQKwNQ8ViG7hn4m/Qs8i2XDFDvNQL7INjwoDWRwn12QIriHn8l4oWBOpTamdQe6fAs/mK8KoCZ/jmqd46BOlwUMizNZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I0rbP9uF; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=iRvH2ONGis2XIjvXLTEy7PMIrnvuaZtDHyhct2yKS7dqu41zgWhqrd0zv/7O99SwvpqX7WNXFSnPohKT2JBZBQ7jb041vYQZRgG3WesTP//ejrqzuEMVHz0PL0mW22aJrQy7guSSViaHCRmKUTVrrVK8CeQ1ge1fDVo+kYyBnU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AUv0BR9t; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I0rbP9uF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 916FF1F00A3B;
-	Thu, 21 May 2026 15:30:00 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AUv0BR9t"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CFD91F00A3B;
+	Thu, 21 May 2026 15:30:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779377400;
-	bh=VKX9aIzCw03XHET/CqROEEEybFBojw+vJaSS15KR2Sw=;
+	s=k20260515; t=1779377402;
+	bh=UG4NapV2txzWaDpLsyk2dRJLCWoWVPtADyWjm+9V7q0=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=I0rbP9uFzGFzgx6WkmjIN5XTGq5WJQP7lBPUwPpy95ewjqmiyDLKkKTgYVBD811oB
-	 0TWwhDmGUu3TCPUHVUXk7XYEe1Pk34/m53Z/zGlwqFPzc9+MV5xSDEzBZDhlKyT82s
-	 6wv+rAkXQxBkv1NmGZQmlWCLPIlZs7pbrSOmEcY/iMgECI1w2dVQVu5armQV6CJO2u
-	 rNAUo3nNuQXOLUmvP9e1TSONHtVMJ5Ln2sRbEDYD7Iglo95UnmnG/nj7bBv+l/uRQF
-	 vc+zaAOWTIugKfZYXPa1BdiqFmAoKoLMyiuTmUQbDJrN7/r4ZI4l4t1ex4yl/87Xdy
-	 HGvCxt5yV5VmA==
+	b=AUv0BR9tIWSjq8IBQFT2wOHxF65S5W4Ibu8Dpsi6iPegUFN/N+VIpFcL6AID/h58K
+	 SmSTlK/6BTOo8rPFiF8hlyhpkV8c8K+xTjOcFPHYdahBygeCobX+sWX+FumN8Z0z5G
+	 Tf0fHISIiRh1v9iQWPk4B/QFi/9A8bMS6au4HZF80CQpVKgLea9wfO8A6/Q5wdKAWa
+	 8ce0D2sW8EoNvQDAbYfK4dvvA5VDPg64qFJjvYBtc/DiT3q6pXTYwaLcUymR8iFV+j
+	 ZOpNjgpXsxftza2Rs7sh/KTDLE/y/AFeKEH2dLG9TDDT7LGoBOVbTxuTIOhlRrv7vV
+	 226bpjpl/MLLg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93A753930E02;
-	Thu, 21 May 2026 15:30:11 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 1991E3930E02;
+	Thu, 21 May 2026 15:30:13 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,40 +37,39 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2] pds_core: ensure null-termination for firmware
- version
- strings
+Subject: Re: [PATCH net v3] net: gro: don't merge zcopy skbs
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <177937741014.384060.2930118060876469975.git-patchwork-notify@kernel.org>
-Date: Thu, 21 May 2026 15:30:10 +0000
-References: <20260520205842.1486718-1-nikhil.rao@amd.com>
-In-Reply-To: <20260520205842.1486718-1-nikhil.rao@amd.com>
-To: Nikhil P. Rao <nikhil.rao@amd.com>
-Cc: netdev@vger.kernel.org, kuba@kernel.org, brett.creeley@amd.com,
- eric.joyner@amd.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, pabeni@redhat.com
+ <177937741163.384060.17108249006950873409.git-patchwork-notify@kernel.org>
+Date: Thu, 21 May 2026 15:30:11 +0000
+References: 
+ <c3b7f906bbfcbdfd7b4fa9d6c18a438870df85be.1779307748.git.sd@queasysnail.net>
+In-Reply-To: 
+ <c3b7f906bbfcbdfd7b4fa9d6c18a438870df85be.1779307748.git.sd@queasysnail.net>
+To: Sabrina Dubroca <sd@queasysnail.net>
+Cc: netdev@vger.kernel.org, huzaifas@redhat.com, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ asml.silence@gmail.com
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Wed, 20 May 2026 20:58:42 +0000 you wrote:
-> The driver passes fw_version directly to devlink_info_version_stored_put()
-> without ensuring null-termination. While current firmware null-terminates
-> these strings, the driver should not rely on this behavior. Add explicit
-> null-termination to prevent potential issues if firmware behavior changes.
+On Wed, 20 May 2026 22:44:42 +0200 you wrote:
+> skb_gro_receive() can currently copy frags between the source and GRO
+> skb, without checking the zerocopy status, and in particular the
+> SKBFL_MANAGED_FRAG_REFS flag.
 > 
-> Fixes: 45d76f492938 ("pds_core: set up device and adminq")
-> Assisted-by: Claude:claude-opus-4
-> Signed-off-by: Nikhil P. Rao <nikhil.rao@amd.com>
+> When SKBFL_MANAGED_FRAG_REFS is set, the skb doesn't hold a reference
+> on the pages in shinfo->frags. Appending those frags to another skb's
+> frags without fixing up the page refcount can lead to UAF.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v2] pds_core: ensure null-termination for firmware version strings
-    https://git.kernel.org/netdev/net/c/3d4432d34c19
+  - [net,v3] net: gro: don't merge zcopy skbs
+    https://git.kernel.org/netdev/net/c/4db79a322db8
 
 You are awesome, thank you!
 -- 
