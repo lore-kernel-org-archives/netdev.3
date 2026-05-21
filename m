@@ -1,135 +1,81 @@
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69A2C2DC79A;
-	Thu, 21 May 2026 15:35:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 540C825B0B3;
+	Thu, 21 May 2026 15:36:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779377729; cv=none; b=hZZJWLjhN4UMvHuUIpEzp0p7F8VSL3+VWA90BkhiKqcMMf6reyD5pUb4UqUfZRnDV3Zj2B+5uMdO6fBuyCyl/KutZG7zOIqdG4BNMOKX6VvSWQAtENmuLjSB0P4l5Ywp5cl8Co6kWHHluSsoZy2r45rcx1C5vAhokhVnsWpjRSo=
+	t=1779377763; cv=none; b=Zu9Ohit2DqnMJg3CNfjn14qaZOFQxum4TwrAsPpd4xbYJ9ctjTrJEH0vud7bz4cQsb5GsUXLNGMeExtBvITuTCCIjI5qfHm2ZwXCQo6ST4ZnGmTCGSJQ4DRiwrJ9mpTzDVKywVk0HrA7hTqMfYBgElv6v5rOj7g5ap6bgcQHMUg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779377729; c=relaxed/simple;
-	bh=hAUkly468AWRI/7CgdtEVIMENOcJpCc6kG7C4EPEaSw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oXSIoVEJOigXspdILabkJCKqKqd1T4WB1CP34RIa1GVsIKNUj93ES1sRfuMa/PlcS8qGluNcmEK5cMlbPq/PNlVqxi1IFF8huxlbbAGf9fs3sqov3RYTxkZBf0ViovLrUYf+hdK4Skd4HpjOzthLfWbd05ds6hcead3eTpYouT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net; spf=none smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=C2wTQ8dw; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=sipsolutions.net
+	s=arc-20240116; t=1779377763; c=relaxed/simple;
+	bh=5dDy/aBj4E9U494Qv23Ul+WC06rY5CyC63djaVJpECk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gFXYOoHNIcWqJbNEfu+tj7x8sEEKeOuL4mpa28C+5SQWifNHnGuatMWuXstasDA9PtT1dH5+X1AuCeoQ9MqKZs0Rmp/MT1ygd4MEEuEQGjBPqfogTj4XfyCYFJzJCVp9bWIware/aY2MkzjCxwJI+vGusTwL5Lw6VSpqu3etOVw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PG2XktR2; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="C2wTQ8dw"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-	Resent-Message-ID:In-Reply-To:References;
-	bh=XdRokCzNV5ZuuttIV0+NR6JuOvOxi7zH8GQjAXfoeI4=; t=1779377727; x=1780587327; 
-	b=C2wTQ8dwCuFlSTtbA0H7Xb9OSKAHJtjRqKsAxni+x0b/aly0ClP6tKALMQHdd1wc/WxiDo1UqOW
-	OSWYkplsY9WAsxW5tm3e0p++kf6u7dtqmAqhfCUaAiqPviv1QTFtyz1GQLJHzaLl8/OGn109JhuGs
-	JhVAzFCF1OpLVwNMhlzijqbzqtNsusHcRgFBQavjEXHaP8P7ZC2siLeL8C5DZg7GaKGWjxapcnbyR
-	1+Old0qC+q5SU0Wx7CAOM7TFA6r484KS6z4LXuVkRBRFkWsWN4sWjEByGg70OxVY9T8WeGYqcLGz7
-	arBB5UzQcO+BFSxmxghmDaqmcF+AI6LCKl2Q==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1wQ5Qi-0000000ChVU-2AKh;
-	Thu, 21 May 2026 17:35:25 +0200
-From: Johannes Berg <johannes@sipsolutions.net>
-To: netdev@vger.kernel.org
-Cc: linux-wireless@vger.kernel.org
-Subject: [GIT PULL] wireless-next-2026-05-21
-Date: Thu, 21 May 2026 17:34:34 +0200
-Message-ID: <20260521153519.380276-3-johannes@sipsolutions.net>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PG2XktR2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0847C1F000E9;
+	Thu, 21 May 2026 15:35:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779377762;
+	bh=XsAMDB0q4nKocT90tbJUfWc/eUcL09U3cACOei5OtWw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=PG2XktR2z9H5ojAna5dJquvxmb9MMvzHNlj61U4EM993BVkH44o9J9S3pCBhulWgR
+	 9TAsQjM94xzMd34dhMPglgf1jlfCVF5/l3wa6VpKNdaHnuhdeXMaBKfzP1Uf29HCjT
+	 NACsF43hHl9CE0AGKDN+JfiYmH/HfeL7VG8bh5JY6gIEOxTdgjiYUCxinpfqELTktd
+	 n6+y2wNBM8xZzOuObAUdCInziYzdkdFMNKfiSZqWkls5gpfYEfQi9BIuLKqcA/nDdC
+	 YppkciFylJUBMKW7fEjEVkshfDJSGVJXZhmfY4cCNigivI1PmIuzfI11IXitvmwY/4
+	 84qJbgnsxS5ZA==
+Date: Thu, 21 May 2026 16:35:57 +0100
+From: Simon Horman <horms@kernel.org>
+To: Muhammad Bilal <meatuni001@gmail.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	oe-linux-nfc@lists.linux.dev, david+nfc@ixit.cz,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, stable@vger.kernel.org
+Subject: Re: [PATCH net 0/2] nfc: llcp: fix OOB reads and integer bugs in TLV
+ parsers
+Message-ID: <20260521153557.GE1506108@horms.kernel.org>
+References: <20260519011937.12903-1-meatuni001@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260519011937.12903-1-meatuni001@gmail.com>
 
-Hi,
+On Mon, May 18, 2026 at 09:19:35PM -0400, Muhammad Bilal wrote:
+> This series fixes memory safety bugs in the NFC LLCP TLV parsing code,
+> reachable from a remote NFC peer via crafted LLCP frames.
+> 
+> Patch 1 fixes nfc_llcp_parse_gb_tlv() and nfc_llcp_parse_connection_tlv():
+>   - u8 offset wraps to zero after 255 (widened to u16)
+>   - OOB read of TLV header on truncated buffer
+>   - OOB read of value field via attacker-controlled length byte
+> 
+> Patch 2 fixes nfc_llcp_recv_snl():
+>   - OOB read of TLV header when tlv_len - offset == 1
+>   - OOB read of SDREQ value via attacker-controlled length
+>   - SIZE_MAX underflow when length == 0 in service_name_len,
+>     bypassing the sn_len == 0 guard in nfc_llcp_sock_from_sn()
+> 
+> Previously reported to security@kernel.org on 2026-05-15. Willy Tarreau
+> advised posting to public lists as NFC is currently orphaned.
 
-OK this one's pretty sparse, but I'll send it anyway so we
-can sync up with wireless content etc. later. I guess I'll
-get more driver pull requests for -next as we get to later
-RCs.
+Reviewed-by: Simon Horman <horms@kernel.org>
 
-Please pull and let us know if there's any problem.
+The AI generated review at sashiko.dev has flagged a number
+or pre-existing problems.
 
-Thanks,
-johannes
+While several of them do seem to impact the effectiveness of these
+patches I would suggest treating them as items for possible follow-up.
 
+I say that in order to expanding the scope of this patch-set.
+Which I believe risks growing significantly if related issues
+are solved; because I fully expect that to lead to more related issues.
 
-
-The following changes since commit 878492af7d503f4b093ea903173500be00e9cbe7:
-
-  Merge git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net (2026-05-14 10:08:06 -0700)
-
-are available in the Git repository at:
-
-  https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git tags/wireless-next-2026-05-21
-
-for you to fetch changes up to 1d174fec87850e1005db9b106f84bbbb19cb59b9:
-
-  ARM: dts: omap2: add stlc4560 spi-wireless node (2026-05-20 12:05:04 +0200)
-
-----------------------------------------------------------------
-Not much going on here right now:
- - mac80211/hwsim:
-   - some NAN related things
-   - MCS/NSS rate issues with S1G
- - p54: port SPI version to device-tree
- - (a few other random things)
-
-----------------------------------------------------------------
-Arnd Bergmann (3):
-      dt-bindings: net: add st,stlc4560/p54spi binding
-      p54spi: convert to devicetree
-      ARM: dts: omap2: add stlc4560 spi-wireless node
-
-Daniel Gabay (1):
-      wifi: mac80211: allow cipher change on NAN_DATA interfaces
-
-Deepanshu Kartikey (1):
-      wifi: mac80211_hwsim: reject NAN on multi-radio wiphys
-
-Ilan Peer (2):
-      wifi: mac80211: Allow per station GTK for NAN Data interfaces
-      wifi: mac80211_hwsim: Do not declare NAN support for Extended Key ID
-
-Johannes Berg (3):
-      wifi: mac80211: check stations are removed before MLD change
-      wifi: mac80211_hwsim: advertise NPCA capability
-      wifi: cfg80211: add a function to parse UHR DBE
-
-Lachlan Hodges (2):
-      wifi: mac80211: skip NSS and BW init for S1G sta
-      wifi: mac80211: don't recalc min def for S1G chan ctx
-
-Miri Korenblit (1):
-      wifi: mac80211: don't call ieee80211_handle_reconfig_failure when not needed
-
-Rosen Penev (2):
-      wifi: rt2x00: allocate anchor with rt2x00dev
-      wifi: plfxlc: use module_usb_driver() macro
-
- .../bindings/net/wireless/st,stlc4560.yaml         |  61 +++++++
- MAINTAINERS                                        |   1 +
- arch/arm/boot/dts/ti/omap/omap2.dtsi               |   4 +
- .../arm/boot/dts/ti/omap/omap2420-n8x0-common.dtsi |  12 ++
- arch/arm/mach-omap2/board-n8x0.c                   |  18 --
- drivers/net/wireless/intersil/p54/p54spi.c         |  67 +++----
- drivers/net/wireless/intersil/p54/p54spi.h         |   3 +
- drivers/net/wireless/purelifi/plfxlc/usb.c         |  25 +--
- drivers/net/wireless/ralink/rt2x00/rt2x00.h        |   3 +-
- drivers/net/wireless/ralink/rt2x00/rt2x00usb.c     |  11 +-
- drivers/net/wireless/virtual/mac80211_hwsim_main.c |  31 +++-
- include/net/cfg80211.h                             |  10 ++
- net/mac80211/chan.c                                |  10 +-
- net/mac80211/key.c                                 |  22 ++-
- net/mac80211/link.c                                |   5 +-
- net/mac80211/sta_info.c                            |  17 ++
- net/mac80211/util.c                                |   6 +-
- net/wireless/chan.c                                | 130 ++++++++++++++
- net/wireless/tests/chan.c                          | 192 ++++++++++++++++++++-
- 19 files changed, 508 insertions(+), 120 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/net/wireless/st,stlc4560.yaml
+So I advocate an incremental approach, starting with this
+patchset in it's current form.
