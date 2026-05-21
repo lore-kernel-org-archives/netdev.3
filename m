@@ -1,60 +1,60 @@
-Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
+Received: from mail-dl1-f49.google.com (mail-dl1-f49.google.com [74.125.82.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 200F532B105
-	for <netdev@vger.kernel.org>; Thu, 21 May 2026 16:33:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE9ED377034
+	for <netdev@vger.kernel.org>; Thu, 21 May 2026 16:33:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779381187; cv=none; b=qPWnnrOPMqzYHhNeBeJKM7j9yBlsEGb3KTikTMx9I5T48zgu8SyVeIJ4FlV9HR/mppSwAfCufxt8wKikqiMskhErp3HjS0zi70hve58YJJP7cLDbnTiLzXwu//ay7/dgxMm7GkyUXgk0ShRZ3mniZAZAQw4AO6O3eyhdJMkSVtg=
+	t=1779381211; cv=none; b=ELE55lNfeu1ojQnMPgOF8WMqjzzWOiybkZ0NvcVhRay8TlncwnKppKSKA6cfP5WgvMUA1dlxZOQw115AsvbxxH0Zwana7PSkomyQ3kAqQK0HHuS5GwnBmsbCFmcrHlAeJ42aqZY+1WE+7IfOuTmNuruC3LKLeo4O9qUjM+6fTCw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779381187; c=relaxed/simple;
-	bh=wzqew7g6CT9dlDsf+TrWejqdUCW50+VVAcpXKutM9V8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Kap0s7dZ9OMdNA8o2ltjVv8+5hzvgW/YEWKUyq+ruQhmaXznbbDdL8j8NUIbYFOuDBAKtwRsMteHu2oP/2jj2CIq+jqsIFtCrU0k1cm15K5OFVpZDDsoGVMDOPNIcrsKj+sAbk6VoVLSaLhJTT93Ul4VBXUATs6guxMkkWv9Ip0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ipsbWf5E; arc=none smtp.client-ip=74.125.82.170
+	s=arc-20240116; t=1779381211; c=relaxed/simple;
+	bh=9M3xO3sTTq8LHfcKIc5hA0ERvkIIJW2Gka+8g8Vit+Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sj26LfwgFmhIr+ssHtjb1E+Ubn/hlgesP9lsfX7cyknFddxLyLFlwcnbSOA/qn4NjLdQFttO5aOy/8Kx4tZL+0hu663i+ZPgK5sTkuQOwv8Qaa6ou0FYa1medkPGV6ea/sAFvdFFtCZ4Y7zOfAZRQ/PJg0WoouTIDgayFhvg//U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QcW034gf; arc=none smtp.client-ip=74.125.82.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ipsbWf5E"
-Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-2f00a567cfaso3826566eec.0
-        for <netdev@vger.kernel.org>; Thu, 21 May 2026 09:33:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QcW034gf"
+Received: by mail-dl1-f49.google.com with SMTP id a92af1059eb24-1334825de43so5780856c88.0
+        for <netdev@vger.kernel.org>; Thu, 21 May 2026 09:33:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779381185; x=1779985985; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1779381209; x=1779986009; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=5R98YEASOuZ8Uxpfr/WLsgAsOAjnGS8bXv+DgQs1RHY=;
-        b=ipsbWf5EwJgJ2zEPKqfDA3X4GbhGgl3PNhpdCMzSc+dfjXKLbkJlPQu+nHEdmf9d/9
-         F7KHGjN6ubSqxQ/uawRM8bgf1ht5ur5HlS2mreyrpT01d5oU1cvv+5+/QoNwI6JlHTUj
-         2DjSdpkmxAlyN1dQRG5i3ADuD20c13gRFIPgQkF0aADBwLUg3clecZP1l+/1MuITAjE9
-         o0oWE/7IKoPtA4P5iyg2t+ePRP7AZ096IdpfMNyGufYFeuI9pT1d8nUg+OdhYmh28/Qn
-         2OxuvhItqMXys4v22cax9d4whdB1V2ZUEBHOr83qbZbj2LsFAMZjqF6YHXQcDS+LlMlp
-         AA7A==
+        bh=z53ipK5w5yDvUUyH2xnve7gzJfjRxn1dpppTCEhJQdQ=;
+        b=QcW034gfAMhINbdpmO1xvKKNvuRNrouot4zd8bvVxs/ZxjorM49m/UkXfNp0lvEapK
+         5PkXPwcrQwwHW/sNLF7XCTkOTC95jUZClmcbz4Xwi4LPVaF7h4OhIk1NCHcsP1cL0mYV
+         ypgf+juni8u50XorI7TGKzIshQo7ZJD7xQ7o/eh0D/lPcZw7ZjD2ey55m8UAV65VgBpH
+         6JZgiyFpEE2s1VQxhgio7q5tl4VCyM1aTnK19DPykgmhiUZpyy94VYtoCKWrgOWoyDUp
+         k0jr3f4fGcpgX9XAERz0fk3G9KZXA9Q7mHmlPoBsk8Gp/dp6PljfI8ZlmktCCxtsR1bD
+         IXag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779381185; x=1779985985;
+        d=1e100.net; s=20251104; t=1779381209; x=1779986009;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=5R98YEASOuZ8Uxpfr/WLsgAsOAjnGS8bXv+DgQs1RHY=;
-        b=M5mfI4I88aAwiomIbhSxNwzWOh1YaMpZyuLOOnpe3T3lc1Fcv+eBPMS72HhDskfoB/
-         /sCBkRp9HpjUfRHnvJZoZfTBziflC5gEmnVBVeJXuX5Rq7EfJqk6VEBXYDg7kuI87tEk
-         mfc9077wMLMFOkjn6FgWr5TggQpCtDn34eL861mhpry1BwuaT5r2ApwyLrKyUe1MLIM5
-         EBo51W0dPU0Smf7bkX1k+DsYTZL7oI4iixu6XfKmISuMViL6cOAmWInAwjw64SUoelk2
-         Xxi0dS7sqL+rjgvfgbNvnbk7v3wQSIt5hW7pz5DOIvkFPdDoO3FcF9XXJb9krxGXZf8K
-         jZgg==
-X-Gm-Message-State: AOJu0YwvP4p3Z3l8cSWV6P8hZijb0dtoaXS7MRIdDwSE+zfEUWFrOroo
-	+UvYnOVjG3gNCfQNsmsQLUaPd8DknmxiI9ZY8G2fz77rDFz4qFi2OLw2EKHIFtp0UT0=
-X-Gm-Gg: Acq92OGXJsJgxUbL8918zTtR5x0PRQ1DSc+XjFsLMKjTLRj0MtFaN3oBqKhdLkFS4Hq
-	BpSsd98HyswfxfNcRcIsqFu/ewi4MvRT22sZN2XYN0AcDMdas1vRdwm9ty1+XD0k+HOtupCElrT
-	8a5hCqag+QlLZid0HhYBEZrYch3KdBhlDMuuhyy7Ww70syA7KNxWY8+BqkE2S3rU0+OCyp0Y40j
-	inexVdwJbiWNOYzY8LS6g+OV1x0BnzHJkh/CFtBxfQ26scgDw+1p2XwoatgJsaMfpmPB3z83qJU
-	RZ0TLOPQo3AaDGaJwHJQtb1GMHG+f6GmK2SZ1YmTFVa0f/OyAALDANQP2PbrN9f8L9cXYnbFbC+
-	4VJN2P3aetZxlVWSR67awU2bXoC87KdT7zQn+zOGE0EQd0lRhQ1RzebTIcqanWhD42I1fQQfZCz
-	IFJNk9NMUFMV/tURNCO/lo/2SEQ3/TcMgmytQ2ONBwG8AsKJbiRc/DAhsY8nB1XohYY6Mo
-X-Received: by 2002:a05:7300:7c16:b0:2d3:9c91:6c45 with SMTP id 5a478bee46e88-3043203edeamr1945367eec.6.1779381184998;
-        Thu, 21 May 2026 09:33:04 -0700 (PDT)
+        bh=z53ipK5w5yDvUUyH2xnve7gzJfjRxn1dpppTCEhJQdQ=;
+        b=CpGv4xW4RLpFaVaew2DZdyReKDMiiulgpCsUeHxBbXPgt16h6yrNLZNbEsBa7YnrgM
+         oAcGMe4eKoGXv1s7hKUOx9bTe06+s3nx9X7urQRUbw5qSR6ZxqZwV7Q4M3hm6koJe4ow
+         1qJQWcTHMW3km3idDGHVWKW5WzTX3UdQzY2i8Fv17yTshfsBnPYba3a5XOnYtDij6Gej
+         D9u+EPSY4HjPyJacjM6kO/GDQF5fblNbU6XOX27KdsZiNYTvPLoBv6ngodX2Z6Xncv0t
+         nlkFRnYRxK6A3DmYfwzDNGNsQVk+0vlg5ylTsohm0MOIjm1dDZd94y7DhkUqavpc/7Ai
+         zTfQ==
+X-Gm-Message-State: AOJu0Yxl43NwGSA6ViqIFvtOn9f8NoJYNW0Z0xjcmCp/GtKp4hpK+wmq
+	Kn44KxfyVw+TOMfRjshIZ49YgXHfN30wmJB9vuPlI+jv9763WX2WWEnerOSvUqR8avw=
+X-Gm-Gg: Acq92OHIeefN4k3q8hzE1PV+y9Prjm6dFDPDtIR20DRHRcnsC7jlGErrRqNR3SDu5sy
+	Z7FQV7HWPtHgwf53i3Yg1VgiATNhwmYq5Vq8M3G8W71SOohphrfLXwO50tLrOX3v9ySUo3FGTvR
+	jrNe4ruM3f0tjsqYcZTSs2D36iZKGL48EXol3KDtt5MepBbmB/H0Lq2SYUBuyDRPWhc6PW1xIFL
+	AYPQgJjGvB8CauyTdmF0dI7QYDoxgANgnmZYD2ceNeOolSoKJmtzNcb1cgD3XK1B2SYHtZGoUQm
+	4gIipkDWS7Z/3IXxa0p3rWW0UvukBpSFVjFnYHgE88wG9494eJAR+PHFdk2znEwfU+919JOejXG
+	V4O0FVH+4FUA1ZrqGw3iRt3e1oZFElE6+Pi7/17IoeoV18dRzNjeyM7C2M5K3RAG6HyqqSt23vp
+	FZgaRCAh7EQlneCK30COQx8R4wTLCyW3f/DbCERrMFLxGi4bXGQBuhQ9MhajY32b/NDBSS
+X-Received: by 2002:a05:7022:1282:b0:136:4514:d913 with SMTP id a92af1059eb24-1364514d988mr1044457c88.26.1779381208956;
+        Thu, 21 May 2026 09:33:28 -0700 (PDT)
 Received: from fx.tailc0aff1.ts.net ([206.206.192.132])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3044330cd9csm834851eec.11.2026.05.21.09.33.03
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13652ac2f39sm502917c88.15.2026.05.21.09.33.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 May 2026 09:33:04 -0700 (PDT)
+        Thu, 21 May 2026 09:33:28 -0700 (PDT)
 From: Weiming Shi <bestswngs@gmail.com>
 To: netdev@vger.kernel.org
 Cc: willemdebruijn.kernel@gmail.com,
@@ -66,9 +66,9 @@ Cc: willemdebruijn.kernel@gmail.com,
 	xmei5@asu.edu,
 	linux-kernel@vger.kernel.org,
 	Weiming Shi <bestswngs@gmail.com>
-Subject: [PATCH net] tap: free page on error paths in tap_get_user_xdp()
-Date: Thu, 21 May 2026 09:32:31 -0700
-Message-ID: <20260521163230.1478627-2-bestswngs@gmail.com>
+Subject: [PATCH net] tun: free page on build_skb failure in tun_xdp_one()
+Date: Thu, 21 May 2026 09:33:13 -0700
+Message-ID: <20260521163312.1479805-2-bestswngs@gmail.com>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -78,44 +78,36 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-tap_get_user_xdp() rejects a frame shorter than ETH_HLEN with -EINVAL,
-and returns -ENOMEM when build_skb() fails. Both paths jump to the err
-label without freeing the page that vhost_net_build_xdp() allocated for
-the frame. tap_sendmsg() discards the per-buffer return value and always
-returns 0, so vhost_tx_batch() takes the success path and never frees
-the page; each rejected frame in a batch leaks one page-frag chunk.
+When build_skb() fails in tun_xdp_one(), the function sets ret to
+-ENOMEM and jumps to the out label, which returns without freeing the
+page that vhost_net_build_xdp() allocated for the frame. As with the
+short-frame rejection path, tun_sendmsg() discards the per-buffer error
+and still returns total_len, so vhost_tx_batch() takes the success path
+and never frees the page. Each build_skb() failure in a batch leaks one
+page-frag chunk.
 
-Free the page on both error paths, before the skb is built. This is the
-tap counterpart of the same leak in tun_xdp_one().
+Free the page before taking the error path, matching the put_page() the
+other error exits of tun_xdp_one() already perform.
 
-Fixes: 0efac27791ee ("tap: accept an array of XDP buffs through sendmsg()")
-Fixes: ed7f2afdd0e0 ("tap: add missing verification for short frame")
+Fixes: 043d222f93ab ("tuntap: accept an array of XDP buffs through sendmsg()")
 Reported-by: Xiang Mei <xmei5@asu.edu>
 Assisted-by: Claude:claude-opus-4-7
 Signed-off-by: Weiming Shi <bestswngs@gmail.com>
 ---
- drivers/net/tap.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/tun.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/tap.c b/drivers/net/tap.c
-index b8240737dc51..2e75846d1072 100644
---- a/drivers/net/tap.c
-+++ b/drivers/net/tap.c
-@@ -1052,6 +1052,7 @@ static int tap_get_user_xdp(struct tap_queue *q, struct xdp_buff *xdp)
- 	int err, depth;
- 
- 	if (unlikely(xdp->data_end - xdp->data < ETH_HLEN)) {
-+		put_page(virt_to_head_page(xdp->data));
- 		err = -EINVAL;
- 		goto err;
- 	}
-@@ -1061,6 +1062,7 @@ static int tap_get_user_xdp(struct tap_queue *q, struct xdp_buff *xdp)
- 
+diff --git a/drivers/net/tun.c b/drivers/net/tun.c
+index b183189f1853..39e9f3390c91 100644
+--- a/drivers/net/tun.c
++++ b/drivers/net/tun.c
+@@ -2437,6 +2437,7 @@ static int tun_xdp_one(struct tun_struct *tun,
+ build:
  	skb = build_skb(xdp->data_hard_start, buflen);
  	if (!skb) {
 +		put_page(virt_to_head_page(xdp->data));
- 		err = -ENOMEM;
- 		goto err;
+ 		ret = -ENOMEM;
+ 		goto out;
  	}
 -- 
 2.43.0
