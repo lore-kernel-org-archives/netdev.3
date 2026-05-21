@@ -1,163 +1,173 @@
-Received: from mailout1n.rrzn.uni-hannover.de (mailout1n.rrzn.uni-hannover.de [130.75.2.107])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D812283CB5;
-	Thu, 21 May 2026 09:37:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=130.75.2.107
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AC35376A10;
+	Thu, 21 May 2026 09:38:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.11.138.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779356273; cv=none; b=b6HeJ3q11h63d4XLOdU6vz3kyt5IiYPihPREj9hcQtGkKt0ZXq69sp/cs8WZxzdthh1GJobM74s0lYUoDXgA5RWcXFFfPxgRef2+7+bAlLZtG0nL3PD0mqF0KYEYZttHhF4jnLlSkOsM4EBCspuAVNZEsjDH/IsyjSpZkPRrztk=
+	t=1779356329; cv=none; b=MfZj7393sxePZLF46o74pxuI+etB9G+ZLIlImEnprP51KLfYraJPD6WO5Oo1b7sC7FhHoZUqPfx/gJY/kHJm1J4Epe8ci6dkmtr9Q/tDB7Dr2QBmVJc0fmzLfPJcyAvO+8oADzKJQ3VSkVsEhBxj6PEvgljPH2dmUWCX5kGTlaE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779356273; c=relaxed/simple;
-	bh=Wl/rN+uimoOVAIOMUx6li+N/fOPzSh9uL0WigNYNw6o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VqUKGjeO/ymdv/5l3YM7/LuzRHdVvjTYQJR6u8whfvVwf8Wsnfaeo43+zaQX1LfTJI14mSzBqOnmt41Vz1bKjoHI31FFarNCi/fF1T2ZPPSBhU5I00mfGHQxXcvOWvDBkEmTF/QAIW4c0H4agyH0gbvjRXd3KwLQARe8QE51tnM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ikt.uni-hannover.de; spf=pass smtp.mailfrom=ikt.uni-hannover.de; dkim=pass (2048-bit key) header.d=uni-hannover.de header.i=@uni-hannover.de header.b=bXiOjmMW; arc=none smtp.client-ip=130.75.2.107
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ikt.uni-hannover.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ikt.uni-hannover.de
+	s=arc-20240116; t=1779356329; c=relaxed/simple;
+	bh=KfGfTyFVL31vdUdOn+76p0c9asI51Kz6rpZ61Tm62g8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=cEw3imQRhQn+KYwmqNMyGexNEwoS8UClVayeQ8FU6aYTc7vLw9cT0dHrvKadL0dWY25OaH6PiqmNjUujhbbyKHKqXHs1P/3GlDl/SRcOlfRY07DLXei3h5gEVSetrHh29J6PMt5hF86TC/vlW30M+D2Y0rnR84Z8UH+hZf9cdL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=sntech.de; spf=pass smtp.mailfrom=sntech.de; dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b=0I4tMOaq; arc=none smtp.client-ip=185.11.138.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=sntech.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sntech.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=uni-hannover.de header.i=@uni-hannover.de header.b="bXiOjmMW"
-Received: from [172.23.180.109] (gateway.ikt.uni-hannover.de [130.75.73.1])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mailout1n.rrzn.uni-hannover.de (Postfix) with ESMTPSA id 132AF1BC;
-	Thu, 21 May 2026 11:32:27 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=uni-hannover.de;
-	s=2024all; t=1779355949;
-	bh=Wl/rN+uimoOVAIOMUx6li+N/fOPzSh9uL0WigNYNw6o=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=bXiOjmMW9x7e2V8CUqs7T2almVyY8ncb6gdAnjM8vAfbNnnoplKFZQAYo6AKsKwWj
-	 TRcYQtcgkZ8fxDsunQ55QNzmfGMG6YejZi8fsAxcOExMgjFquwnPS8V95qy1gswdp4
-	 a6soBUF8ZaIlO9uCxzgLYIbdQLG02iB7vrjWb0ZaU93LQhqjhNbrcJ0JWRXNnCv4OI
-	 i4p92gv5VNMC34dJNXNrrS07cqkKmGNcDEZhsdnNauGbnunKgV8M4v89Aya8FvvcYS
-	 euzkM5/dw/WfnX4Ib72LZ31Z9c3xjDbp6RhzSpSo7aWCSmzAh7UoaITPc5D77nGInt
-	 kMM/i6Ch+8qmQ==
-Message-ID: <9a7a764d-afb0-43d6-a96e-dc4652db5fff@ikt.uni-hannover.de>
-Date: Thu, 21 May 2026 11:32:26 +0200
+	dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b="0I4tMOaq"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=sntech.de;
+	s=gloria202408; h=Content-Transfer-Encoding:Content-Type:MIME-Version:
+	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Reply-To;
+	bh=82qSLImWzSWwJwDL4P56RDhSxB/3/+bLg3x1B6/8Vyo=; b=0I4tMOaqwxFvPcLAyXC1tGPrfE
+	HXHaVV7+wYwVP4UGjSNoFDd1VfRVRwKpSUpdi+/cM0lBIFBOtW57RPkKHZJ6gSZa57lZaOJNQszdB
+	j5MhP9nNF2ZBC5XTLEZLefqvWnNibulepEtkV4okP/kU2AAENM/x1cT5yntunk8HjnN93yJVk0KhD
+	4BGKyKzwZYIhS+icC3RQoCP/xlaXk2zQuPvKHmUwXbld7xPg620UPcbli2n9Nu98+Jo3ggiseSwXX
+	f5u71NtNcCGIkISy1Bu3AzX1ANpj9jp2f9+W1J8qexkOfVBSIDSPhC21GfXXPezuckw1Oq9h13vk1
+	Ke/2S4sA==;
+From: Heiko Stuebner <heiko@sntech.de>
+To: linux-phy@lists.infradead.org,
+	Vladimir Oltean <vladimir.oltean@nxp.com>
+Cc: Heiko Stuebner <heiko@sntech.de>,
+	Vinod Koul <vkoul@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	dri-devel@lists.freedesktop.org,
+	freedreno@lists.freedesktop.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-arm-msm@vger.kernel.org,
+	linux-can@vger.kernel.org,
+	linux-gpio@vger.kernel.org,
+	linux-ide@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-media@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	linux-rockchip@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org,
+	linux-scsi@vger.kernel.org,
+	linux-sunxi@lists.linux.dev,
+	linux-tegra@vger.kernel.org,
+	linux-usb@vger.kernel.org,
+	netdev@vger.kernel.org,
+	spacemit@lists.linux.dev,
+	UNGLinuxDriver@microchip.com,
+	Abhinav Kumar <abhinav.kumar@linux.dev>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
+	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Andrzej Hajda <andrzej.hajda@intel.com>,
+	Andy Yan <andy.yan@rock-chips.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Can Guo <quic_cang@quicinc.com>,
+	Chanho Park <chanho61.park@samsung.com>,
+	Chen-Yu Tsai <wens@kernel.org>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Daniel Machon <daniel.machon@microchip.com>,
+	David Airlie <airlied@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Dmitry Baryshkov <lumag@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Inki Dae <inki.dae@samsung.com>,
+	Jagan Teki <jagan@amarulasolutions.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+	JC Kuo <jckuo@nvidia.com>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Jessica Zhang <jesszhan0024@gmail.com>,
+	Joe Perches <joe@perches.com>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Kevin Xie <kevin.xie@starfivetech.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+	Linus Walleij <linusw@kernel.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Marijn Suijten <marijn.suijten@somainline.org>,
+	Markus Schneider-Pargmann <msp@baylibre.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Mathias Nyman <mathias.nyman@intel.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Maxime Ripard <mripard@kernel.org>,
+	Michael Dege <michael.dege@renesas.com>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Niklas Cassel <cassel@kernel.org>,
+	Nitin Rawat <quic_nitirawa@quicinc.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Peter Chen <peter.chen@kernel.org>,
+	Peter Griffin <peter.griffin@linaro.org>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Robert Foss <rfoss@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Samuel Holland <samuel@sholland.org>,
+	Sandy Huang <hjc@rock-chips.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Sean Paul <sean@poorly.run>,
+	Sebastian Reichel <sre@kernel.org>,
+	Shawn Guo <shawn.guo@linaro.org>,
+	Shawn Lin <shawn.lin@rock-chips.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Steen Hegelund <Steen.Hegelund@microchip.com>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Tudor Ambarus <tudor.ambarus@linaro.org>,
+	Vincent Mailhol <mailhol@kernel.org>,
+	Xu Yang <xu.yang_2@nxp.com>,
+	Yixun Lan <dlan@kernel.org>,
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Subject: Re: (subset) [PATCH v8 phy-next 00/31] Split Generic PHY consumer and provider API
+Date: Thu, 21 May 2026 11:38:18 +0200
+Message-ID: <177935628872.1653123.15514691751947313571.b4-ty@sntech.de>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260505100523.1922388-1-vladimir.oltean@nxp.com>
+References: <20260505100523.1922388-1-vladimir.oltean@nxp.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Re: [PATCHv2 net-next] tcp: Add TCP ROCCET congestion control
- module.
-To: Jakub Kicinski <kuba@kernel.org>, t.fuechsel@gmx.de
-Cc: davem@davemloft.net, dsahern@kernel.org, edumazet@google.com,
- pabeni@redhat.com, horms@kernel.org, ncardwell@google.com,
- kuniyu@google.com, linux-kernel@vger.kernel.org, netdev@vger.kernel.org
-References: <agMMMUotXaG_Ypqz@volt-roccet-vm>
- <20260516011212.1859280-1-kuba@kernel.org>
-Content-Language: de-DE
-From: Lukas Prause <lukas.prause@ikt.uni-hannover.de>
-In-Reply-To: <20260516011212.1859280-1-kuba@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: clamav-milter 0.103.9 at mailout1n
-X-Virus-Status: Clean
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
 
-Thanks for the review.
+On Tue, 05 May 2026 13:04:52 +0300, Vladimir Oltean wrote:
+> The biggest problem requiring this split is the fact that consumer
+> drivers poke around in struct phy, accessing fields which shouldn't be
+> visible to them. Follow the example of mux, gpio, iio, spi offload,
+> pwrsec, pinctrl and regulator, which each expose separate headers for
+> consumers and providers.
+> 
+> Some off-list discussions were had with Vinod Koul regarding the 3 PHY
+> providers outside the drivers/phy/ subsystem. It was agreed that it is
+> desirable to relocate them to drivers/phy/, rather than to publish
+> phy-provider.h to include/linux/phy/ for liberal use. Only phy.h and
+> (new) phy-props.h - consumer-facing headers - stay there.
+> 
+> [...]
 
-On 5/16/26 03:12, Jakub Kicinski wrote:
-> Can the srRTT calculation cause a catastrophic integer underflow?
-> If a socket has not yet received a valid RTT sample, curr_rtt
-> remains 0. When roccettcp_cong_avoid() executes, it calls
-> update_min_rtt(), which computes curr_min_rtt as max(0, 1),
-> resulting in 1. Then update_srrtt()calculates curr_rtt -
-> curr_min_rtt (0 - 1). Since both are unsigned 32-bit integers, does
-> this underflow to 0xFFFFFFFF? Multiplying this by 100yields
-> 0xFFFFFF9C, which gets integrated into the curr_srrtt EWMA. Would
-> this resulting massive value instantly exceed the threshold and
-> falselytrigger a severe bufferbloat response that permanently
-> cripples the congestion window?
-Yes, this is a problem. We will add a check if curr_rtt < min_rtt
+Applied, thanks!
 
-> Are the congestion control state variables curr_rtt and curr_srrtt
-> properly initialized? In roccettcp_reset(), memset zeroes the
-> statestruct only up to the curr_rtt field, leaving curr_rtt and
-> curr_srrtt uninitialized. If a user dynamically switches an active
-> socket's congestion control to ROCCET via setsockopt, could the
-> icsk_ca_priv area contain leftover memory from the previous
-> algorithm? Might these garbage values be fed into the core RTT
-> logic, causing unpredictable bufferbloatdetection and spurious
-> throughput drops?
-We will initially initialize the whole struct to 0 using sizeof instead
-of offsetof.
+[15/31] drm/rockchip: dw_hdmi: avoid direct dereference of phy->dev.of_node
+        commit: 9392e7340bffb406a705de755adfb44eab547d40
 
-> Is it safe to expose internal TCP congestion control callbacks as
-> BPF kfuncs? The module natively hooks into the TCP stack, but it
-> annotates its static internal functions with __bpf_kfunc and exports
-> them via register_btf_kfunc_id_set(BPF_PROG_TYPE_STRUCT_OPS). Does
-> this allow arbitrary BPF struct_ops programs to call these native
-> state-modifyingfunctions directly? Could a BPF program invoke these
-> functions on a socket using a different congestion control
-> algorithm, blindly casting sk->icsk_ca_priv to struct roccettcp and
-> corrupting the socket's internal state?
-Not sure which functions are meant.
-In my understanding, all exposed functions are the ones that
-algorithms like CUBIC, BBR, or dctcp also expose...
-The same problem (reinterpreting the memory layout of the private sk
-data as a roccet struct applies to the bbr struct in tcp_bbr.c. So I am
-unsure if we should just not expose the callbacks as kfuncs or leave
-them in)
-
-> Could the 16-bit ACK rate counter wrap around on high-speed links?
-> The ack_rate.cnt field is defined as a u16, accumulating the number
-> of acknowledged segments over a 100ms interval. On modern fast
-> links, more than 83,000 segments can be acknowledged in a single
-> 100ms window. Will this silently overflow multiple times per
-> interval, recording an artificially low, randomized rate and
-> breaking the slow start exit conditions?
-That could well happen here. We will change the type to u32.
-
-> Does the interval boundary logic discard acknowledged packets? In
-> update_ack_rate(), when the 100ms interval rolls over, the interval
-> state rotates and ack_rate.cnt is reset to 0. This happens inside
-> an if/else block where the else branch contains the counter
-> increment. Because the else branch is bypassed during a rollover,
-> are any segments acknowledged by the specific ACK packet that
-> triggered the boundary cross permanently discarded, causing a
-> persistent undercounting of the throughput?
-Yes, should probably reset the counter to acked instead of back to 0.
-
-> Can a timestamp wraparound freeze ACK rate tracking for idle
-> connections? The update_ack_rate() function evaluates elapsed time
-> via an explicit signed cast of a 32-bit microsecond timestamp delta.
-> Since this timestamp wraps around roughly every 71 minutes, if a
-> socketremains idle for more than about 35 minutes, the unsigned
-> delta exceeds 0x7FFFFFFF. Would the signed cast convert this into
-> a large negative number, rendering the interval condition false,
-> freezing the interval logic, and causing the counter to accumulate
-> indefinitely without rotation?
-Yes, but usage of the after() function should resolve this. We will add
-this.
-
-> Are ECN marks being ignored and cached, leading to spurious later
-> drops? In roccet_in_ack_event(), receiving an ECE flag sets
-> ece_received to true. However, in roccettcp_cong_avoid(), this flag
-> is only evaluated and cleared if curr_srrtt exceeds roccet_xj. If
-> an ECN mark arrives while the RTT is low, is it ignored, leaving
-> ece_received stuck at true? Could this stale flag falsely trigger a
-> severe congestion window reduction hours later if the RTT naturally
-> spikes above the threshold?
-We will change this. ECN should always be handled.
-
-> Is there a division by zero vulnerability during module
-> initialization? The variables beta and bic_scale are configurable
-> module parameters. In roccettcp_register(), bic_scale is used
-> directly in a do_div() call, and beta is used in a denominator.
-> If the module isloaded with bic_scale set to 0 or beta set to 1024,
-> will this instantly cause a division-by-zero kernel panic?
-This is CUBIC's code. Should we add a check there?
-
-> Does the implementation match its stated ACK rate bufferbloat
-> detection mechanism? The commit message states that the rate is
-> sampled over 5 RTT intervals, and slow start exits if the rate stays
-> on the same level. However, the code uses a hardcoded 100ms
-> interval, and the exit condition only triggers if the new rate drops
-> by 10 or more segments. If the rate genuinely stays on the same
-> level, the difference is 0. Does this completely fail the check?
-The evaluation of the ack rate diff is faulty. In fact, it would
-evaluate false if it were true. We will change this.
+Best regards,
+-- 
+Heiko Stuebner <heiko@sntech.de>
