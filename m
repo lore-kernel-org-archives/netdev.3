@@ -1,353 +1,237 @@
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C2813EA942
-	for <netdev@vger.kernel.org>; Thu, 21 May 2026 13:37:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 104CD3FD130;
+	Thu, 21 May 2026 13:41:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779370648; cv=none; b=r6oohuLtZZpE6W/GJ3bVgMASJxcuNFxZJTCrBXvzke7e+0BpuCdJO/szlrczlvYNuJtF4y8Fx7w4XwwcU5ZqukIoOv67xhqJ1HqVIPzBtXovO8z7RJ4eBpQmYvrtltg/pH7nWhlKHtqVFFO6fE8oMlBjLXmWpcY7a61ZUQWkQis=
+	t=1779370874; cv=none; b=KhoAE8N4zv+9Y9RK17uhXlXTEvAwY6F9ZwC0BNKPSY49srNik+0NVr09j4IGZ/8HQf+4r+5Akrwdhs6uuBoYKNoKoZImqClaLeWSeIA1CyWbc9c9Mt0lenkC1y4LG3UUl/FeZHi+RFtXurapvUpaGd5agmOcG+iXkeNoyvurkgY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779370648; c=relaxed/simple;
-	bh=P51n2b/oFOVHnt949lfmT4I5HHmggRmwYe9UnF0MG5c=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fVaOYlMZPh2G7QoCGdIO2PuTqtO9H1CdQwT3Y2NQCzQZay8DOiSz9JJNCh8Dp7bHTwmzMQJnOGzEnv00+R3luPDAFZlv9Tkj3wDcS8Z6KOSJmutHJA6rd4LHhzESUyLLX1CSIFUhBBJeq7s2a/gtcAARvKbbkEX5OvWnXKXkeYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NV5P6n/d; arc=none smtp.client-ip=209.85.214.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1779370874; c=relaxed/simple;
+	bh=YvDliQ300mLow/Wuc7hrWY/877pqDGX0o1cX95+MLA0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pxHQMCfhguwIz2s5Mm3iSyx8Oo/oIY8JNgqJZtORcaPpImBBvvaifMqFjxO1noOyd9OdELxAvWBuHp+eD9HgQxvLc5hYnmUfipzP+AJu6cdcq4g21670+G8T0AnAcU643IGa4R40GMHnVvvIJIpuDKrCk/zEfnBMBtY/Dxb+Wj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=CPhEAPPX; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=QhDyIrrB; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NV5P6n/d"
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2ba3e3c4f87so62145805ad.3
-        for <netdev@vger.kernel.org>; Thu, 21 May 2026 06:37:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779370646; x=1779975446; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=d7ug8LaXoNWnHgEv+PMJRrHpbPnUV9xOZWAilo2/lYQ=;
-        b=NV5P6n/dQztEwkLd3dZXRGD0cdBUbj+wQQUBaWXBe5il/ouWgiEDpRA3cUwuSDoRf8
-         otKROzlkWUT8tMHRddZVBkY0zFwX0ErTMwDV9DEbSi4nbDQub4IqOeMdEHrQTnlMr/ZE
-         pvrBH4PfjJiUc40GF1rHrsG5z7I5aJJMc5f+riFpMLJ43fEOjKN9ttpO1g9VRzrfwHoB
-         wx8JG5DanA7NMu+CcW2rtsFSW/db/5hNKNZzoAhoiDyJB1rDICQgRK2TTcmOukJxu/vc
-         W7gcS8LxVlVWEBd3fL/t87WTGivCzzzfsN+Tbl+BoX1mUl9A/vtr2LsSCml/7dbOddI0
-         QfWA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779370646; x=1779975446;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=d7ug8LaXoNWnHgEv+PMJRrHpbPnUV9xOZWAilo2/lYQ=;
-        b=atR/Bq3b+xQ7MYk2RiB9ZqAw8pEyznVbJ44+hs+RSSTGs+LK+kq80VuE/++bpUC+DL
-         Odg5gTlBtJ52K8inc31m0jD3CAOkfvl7HBIdKW0VNEe58Tk9xiVwZSrmB7dSvcjdEvWT
-         0Ko5Li9/iPqIfScucodqtS9kb25B+rbfzdTv7AzZsvuEUNbEDwH7/quPwjK5gRYnSY6u
-         0B93dRVRgXqnwtHAeLeCdZdKlgWl4i9BrtQjCcIUr4OLBwzZpnLZf8JJpA72FOHnxSdY
-         OfVPV8JEoS/6v0QQolwcawByEmz1ror9+T2jmfYUJXphE8ySkZ/XFZxeUWILUA+n2NCF
-         Ea3w==
-X-Forwarded-Encrypted: i=1; AFNElJ9M+VVU2OZ8sQ8qSdVbAAjb1BO9PGu9LU1IamQ9Tp/y4C059p82KUu/WnDzZoHznjs3kMnnv9Q=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxASh+jMiOnalwQr85ITATnHmZRrZdda1HXRIhoxLdY72sUEQ9+
-	lLBft98eNBrkH90ukxm85l/7QWKDMbAYxBI1WSNJuy69j+34Cj1FzZWI
-X-Gm-Gg: Acq92OGwT3Q9ifChSCN1xSs+JEfSffk0RemOt1mEWM6lyOWon6RKrFUPlLJHq+bCH7I
-	p5ek38ofZgjBFiHwlIBrahOOQiKUi+njvVg5q60nMgMonVag3JW8AH1IYxRbYdKi3QrVRXfiGO6
-	vk8oId34QncTMtoDUJPr2jrpbVuXiaVk/wd14OcXM53EUc6BIHfN0Q4HAYAz5HUrksyWzuIvs/p
-	9Nr1P6HqB0iazoQRsbZT7G3FsJoKArdhWB3nQOn1DSBUqGcysKz0SyCPX0W91tfD2Ypd38B5jaF
-	wK0ERn7JvEnHbzdsyy8D09V6lI6oMH2nWMgPQd5nw7TZzt4GhcokqRce8vxI674Y0/J0O4JatRs
-	8hoZwtjhzWkGj6gU9COdNyXvC5Z+frGs0Cqf/AufeDGEfbgNKOchKOUkfTLuCcryZIj5Xi/10/y
-	AGFl8oih1xkSVMg4SySpT41i0wJtZLkQiJgOVMP0V7G8e0V5mwsNCzVAEE5cwFZdk=
-X-Received: by 2002:a17:903:1aeb:b0:2bc:8beb:525b with SMTP id d9443c01a7336-2bea3344109mr34103615ad.18.1779370645828;
-        Thu, 21 May 2026 06:37:25 -0700 (PDT)
-Received: from localhost.localdomain ([2409:891f:1d81:e6e8:5473:a79:5c76:810d])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2bea9a2ab27sm10781445ad.72.2026.05.21.06.37.21
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 21 May 2026 06:37:25 -0700 (PDT)
-From: Chuang Wang <nashuiliang@gmail.com>
-To: 
-Cc: Chuang Wang <nashuiliang@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Krishna Kumar <krikku@gmail.com>,
-	Neal Cardwell <ncardwell@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v4] net: reduce RFS/ARFS flow updates by checking LLC affinity
-Date: Thu, 21 May 2026 21:37:01 +0800
-Message-ID: <20260521133711.20725-1-nashuiliang@gmail.com>
-X-Mailer: git-send-email 2.50.1
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="CPhEAPPX";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="QhDyIrrB"
+Date: Thu, 21 May 2026 15:41:05 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1779370870;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PaJqwkq2eOlywRq+nMAB2iAIu1V2LuK/QcmpmRhp1zk=;
+	b=CPhEAPPXZGUZ1qcYt2wG/ANRYkqmNyJi/5IW6LpahCKvgTnsDb2mldkDVYaduhKcu/4FZp
+	LAeXDB3cU1ji29bjjvSQQCyEMF6JIOEhzvUAW0hpsS0uyLMOyNwMLPLdLHc4iLl3qLJSup
+	QVkHGZMUffrPhRYaxcYUQGbO8L439tfkQ8Cr8hKKTmWE9grigqSt9qCt+lW5t6MPHQPNog
+	/sK5eIb34C2qIsnwRBK4VaR4eJ2mq3Zw9vfysRFzSfSB/1vYk72RuujP0RGws9JGM5REM0
+	O5uAylJa3yq9SyGUcua19yabIwaNXcmy43yAjcwDIvLATXriPhlxTOQwsYW1Iw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1779370870;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PaJqwkq2eOlywRq+nMAB2iAIu1V2LuK/QcmpmRhp1zk=;
+	b=QhDyIrrBgjfjdLlpFMho35sdaF10Coi0xwiddy+lFVyBRkFvVMfCMQok5DQ6VzdPu5UeWu
+	AfyMwCwJ+1TpF5BQ==
+From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+To: Mark Bloch <mbloch@nvidia.com>
+Cc: Tariq Toukan <tariqt@nvidia.com>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Thomas Gleixner <tglx@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Jiri Pirko <jiri@resnulli.us>, Simon Horman <horms@kernel.org>, 
+	Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>, 
+	"Borislav Petkov (AMD)" <bp@alien8.de>, Andrew Morton <akpm@linux-foundation.org>, 
+	Randy Dunlap <rdunlap@infradead.org>, Petr Mladek <pmladek@suse.com>, 
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>, Tejun Heo <tj@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Feng Tang <feng.tang@linux.alibaba.com>, Christian Brauner <brauner@kernel.org>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Dapeng Mi <dapeng1.mi@linux.intel.com>, 
+	Kees Cook <kees@kernel.org>, Marco Elver <elver@google.com>, 
+	Li RongQing <lirongqing@baidu.com>, Eric Biggers <ebiggers@kernel.org>, 
+	"Paul E. McKenney" <paulmck@kernel.org>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	netdev@vger.kernel.org, linux-rdma@vger.kernel.org, Gal Pressman <gal@nvidia.com>, 
+	Dragos Tatulea <dtatulea@nvidia.com>, Jiri Pirko <jiri@nvidia.com>, Shay Drori <shayd@nvidia.com>, 
+	Moshe Shemesh <moshe@nvidia.com>
+Subject: Re: [PATCH net-next 3/3] net/mlx5: Apply devlink default eswitch
+ mode during init
+Message-ID: <20260521152845-11899163-df79-435c-b8c9-d3003403c6c9@linutronix.de>
+References: <20260521072434.362624-1-tariqt@nvidia.com>
+ <20260521072434.362624-4-tariqt@nvidia.com>
+ <3bbcf456-322c-46f9-b238-88fb8ad227b2@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <3bbcf456-322c-46f9-b238-88fb8ad227b2@nvidia.com>
 
-The current implementation of rps_record_sock_flow() updates the flow
-table every time a socket is processed on a different CPU. In high-load
-scenarios, especially with Accelerated RFS (ARFS), this triggers
-frequent flow steering updates via ndo_rx_flow_steer.
+On Thu, May 21, 2026 at 04:16:28PM +0300, Mark Bloch wrote:
+(...)
 
-For drivers like mlx5 that implement hardware flow steering, these
-constant updates lead to significant contention on internal driver locks
-(e.g., arfs_lock). This contention often becomes a performance
-bottleneck that outweighs the steering benefits.
+> NIPA flagged this patch with a build_allmodconfig_warn failure:
+> https://netdev-ctrl.bots.linux.dev/logs/build/1098506/14585935/build_allm=
+odconfig_warn/
+>=20
+> I do not see how this mlx5 patch is related to the reported issue,
+> but I looked into it anyway.
+>=20
+> After the kernel has been built once, the issue can be reproduced by reru=
+nning sparse
+> only on version.o, which filters out the unrelated noise. I had an older =
+sparse installed,
+> so I used a local copy:
+>=20
+> rm -f arch/x86/boot/version.o
+> make V=3D1 C=3D1 CHECK=3D/labhome/mbloch/bin/sparse arch/x86/boot/version=
+=2Eo
+>=20
+> This gives the same error reported by NIPA:
+>=20
+> ...
+> ...
+> make -f ./scripts/Makefile.vmlinux
+> make -f ./scripts/Makefile.build obj=3Darch/x86/boot arch/x86/boot/bzImage
+> make -f ./scripts/Makefile.build obj=3Darch/x86/boot/compressed arch/x86/=
+boot/compressed/vmlinux
+> # CC      arch/x86/boot/version.o
+>   gcc -Wp,-MMD,arch/x86/boot/.version.o.d -nostdinc -I./arch/x86/include =
+-I./arch/x86/include/generated -I./include -I./include -I./arch/x86/include=
+/uapi -I./arch/x86/include/generated/uapi -I./include/uapi -I./include/gene=
+rated/uapi -include ./include/linux/compiler-version.h -include ./include/l=
+inux/kconfig.h -include ./include/linux/compiler_types.h -D__KERNEL__ -std=
+=3Dgnu11 -fms-extensions -m16 -g -Os -DDISABLE_BRANCH_PROFILING -D__DISABLE=
+_EXPORTS -Wall -Wstrict-prototypes -march=3Di386 -mregparm=3D3 -fno-strict-=
+aliasing -fomit-frame-pointer -fno-pic -mno-mmx -mno-sse -fcf-protection=3D=
+none -ffreestanding -fno-stack-protector -Wno-address-of-packed-member -mpr=
+eferred-stack-boundary=3D2 -D_SETUP -fno-asynchronous-unwind-tables -Wimpli=
+cit-fallthrough=3D5     -DKBUILD_MODFILE=3D'"arch/x86/boot/version"' -DKBUI=
+LD_BASENAME=3D'"version"' -DKBUILD_MODNAME=3D'"version"' -D__KBUILD_MODNAME=
+=3Dversion -c -o arch/x86/boot/version.o arch/x86/boot/version.c
+> # CHECK   arch/x86/boot/version.c
+>   /labhome/mbloch/bin/sparse -D__linux__ -Dlinux -D__STDC__ -Dunix -D__un=
+ix__ -Wbitwise -Wno-return-void -Wno-unknown-attribute  -D__x86_64__ --arch=
+=3Dx86 -mlittle-endian -m64 -Wp,-MMD,arch/x86/boot/.version.o.d -nostdinc -=
+I./arch/x86/include -I./arch/x86/include/generated -I./include -I./include =
+-I./arch/x86/include/uapi -I./arch/x86/include/generated/uapi -I./include/u=
+api -I./include/generated/uapi -include ./include/linux/compiler-version.h =
+-include ./include/linux/kconfig.h -include ./include/linux/compiler_types.=
+h -D__KERNEL__ -std=3Dgnu11 -fms-extensions -m16 -g -Os -DDISABLE_BRANCH_PR=
+OFILING -D__DISABLE_EXPORTS -Wall -Wstrict-prototypes -march=3Di386 -mregpa=
+rm=3D3 -fno-strict-aliasing -fomit-frame-pointer -fno-pic -mno-mmx -mno-sse=
+ -fcf-protection=3Dnone -ffreestanding -fno-stack-protector -Wno-address-of=
+-packed-member -mpreferred-stack-boundary=3D2 -D_SETUP -fno-asynchronous-un=
+wind-tables -Wimplicit-fallthrough=3D5     -DKBUILD_MODFILE=3D'"arch/x86/bo=
+ot/version"' -DKBUILD_BASENAME=3D'"version"' -DKBUILD_MODNAME=3D'"version"'=
+ -D__KBUILD_MODNAME=3Dversion arch/x86/boot/version.c
+> arch/x86/boot/version.c: note: in included file (through arch/x86/include=
+/uapi/asm/bitsperlong.h, include/uapi/asm-generic/int-ll64.h, include/asm-g=
+eneric/int-ll64.h, include/uapi/asm-generic/types.h, ...):
+> ./include/asm-generic/bitsperlong.h:23:2: error: Inconsistent word size. =
+Check asm/bitsperlong.h
+> ./include/asm-generic/bitsperlong.h:27:33: error: static assertion failed=
+: "Inconsistent word size. Check asm/bitsperlong.h"
+> # cmd_gen_symversions_c arch/x86/boot/version.o
+>   if nm arch/x86/boot/version.o 2>/dev/null | grep -q ' __export_symbol_'=
+; then gcc -E -D__GENKSYMS__ -Wp,-MMD,arch/x86/boot/.version.o.d -nostdinc =
+-I./arch/x86/include -I./arch/x86/include/generated -I./include -I./include=
+ -I./arch/x86/include/uapi -I./arch/x86/include/generated/uapi -I./include/=
+uapi -I./include/generated/uapi -include ./include/linux/compiler-version.h=
+ -include ./include/linux/kconfig.h -include ./include/linux/compiler_types=
+=2Eh -D__KERNEL__ -std=3Dgnu11 -fms-extensions -m16 -g -Os -DDISABLE_BRANCH=
+_PROFILING -D__DISABLE_EXPORTS -Wall -Wstrict-prototypes -march=3Di386 -mre=
+gparm=3D3 -fno-strict-aliasing -fomit-frame-pointer -fno-pic -mno-mmx -mno-=
+sse -fcf-protection=3Dnone -ffreestanding -fno-stack-protector -Wno-address=
+-of-packed-member -mpreferred-stack-boundary=3D2 -D_SETUP -fno-asynchronous=
+-unwind-tables -Wimplicit-fallthrough=3D5     -DKBUILD_MODFILE=3D'"arch/x86=
+/boot/version"' -DKBUILD_BASENAME=3D'"version"' -DKBUILD_MODNAME=3D'"versio=
+n"' -D__KBUILD_MODNAME=3Dversion arch/x86/boot/version.c | ./scripts/genksy=
+ms/genksyms    >> arch/x86/boot/.version.o.cmd; fi
+> # LD      arch/x86/boot/setup.elf
+>   ld -m elf_x86_64 -z noexecstack  -m elf_i386 -z noexecstack -T arch/x86=
+/boot/setup.ld arch/x86/boot/a20.o arch/x86/boot/bioscall.o arch/x86/boot/c=
+mdline.o arch/x86/boot/copy.o arch/x86/boot/cpu.o arch/x86/boot/cpuflags.o =
+arch/x86/boot/cpucheck.o arch/x86/boot/early_serial_console.o arch/x86/boot=
+/edd.o arch/x86/boot/header.o arch/x86/boot/main.o arch/x86/boot/memory.o a=
+rch/x86/boot/pm.o arch/x86/boot/pmjump.o arch/x86/boot/printf.o arch/x86/bo=
+ot/regs.o arch/x86/boot/string.o arch/x86/boot/tty.o arch/x86/boot/video.o =
+arch/x86/boot/video-mode.o arch/x86/boot/version.o arch/x86/boot/video-vga.=
+o arch/x86/boot/video-vesa.o arch/x86/boot/video-bios.o -o arch/x86/boot/se=
+tup.elf
+> # OBJCOPY arch/x86/boot/setup.bin
+>   objcopy  -O binary arch/x86/boot/setup.elf arch/x86/boot/setup.bin
+> # BUILD   arch/x86/boot/bzImage
+>   (dd if=3Darch/x86/boot/setup.bin bs=3D4k conv=3Dsync status=3Dnone; cat=
+ arch/x86/boot/vmlinux.bin) >arch/x86/boot/bzImage
+> mkdir -p ./arch/x86_64/boot
+> ln -fsn ../../x86/boot/bzImage ./arch/x86_64/boot/bzImage
+>=20
+> To me this looks like sparse is getting a conflicting set of flags.
+> The command line contains both "-D__x86_64__ -m64" and "-m16 -march=3Di38=
+6 -D_SETUP".
+>=20
+> I confirmed that the following patch "fixes" the issue, but I do not know=
+ whether
+> this is the right fix. This area is outside my comfort zone, so it would =
+be
+> helpful if someone more familiar with the x86 build/sparse flow could tak=
+e a
+> look:
+>=20
+> diff --git a/arch/x86/boot/Makefile b/arch/x86/boot/Makefile
+> index 3f9fb3698d66..80923864f6f9 100644
+> --- a/arch/x86/boot/Makefile
+> +++ b/arch/x86/boot/Makefile
+> @@ -71,6 +71,10 @@ $(obj)/vmlinux.bin: $(obj)/compressed/vmlinux FORCE
+>=20
+>  SETUP_OBJS =3D $(addprefix $(obj)/,$(setup-y))
+>=20
+> +realmode-checkflags-$(CONFIG_X86_64) :=3D -m32 -U__x86_64__ -D__i386__
+> +REALMODE_CHECKFLAGS :=3D $(filter-out -m64 -D__x86_64__,$(CHECKFLAGS)) $=
+(realmode-checkflags-y)
+> +$(SETUP_OBJS): CHECKFLAGS :=3D $(REALMODE_CHECKFLAGS)
+> +
+>  sed-zoffset :=3D -e 's/^\([0-9a-fA-F]*\) [a-zA-Z] \(startup_32\|efi.._st=
+ub_entry\|efi\(32\)\?_pe_entry\|input_data\|kernel_info\|_end\|_ehead\|_tex=
+t\|_e\?data\|_e\?sbat\|z_.*\)$$/\#define ZO_\2 0x\1/p'
+>=20
+>  quiet_cmd_zoffset =3D ZOFFSET $@
+> diff --git a/arch/x86/realmode/rm/Makefile b/arch/x86/realmode/rm/Makefile
+> index a0fb39abc5c8..341b0ff20c3d 100644
+> --- a/arch/x86/realmode/rm/Makefile
+> +++ b/arch/x86/realmode/rm/Makefile
+> @@ -29,6 +29,10 @@ targets      +=3D $(realmode-y)
+>=20
+>  REALMODE_OBJS =3D $(addprefix $(obj)/,$(realmode-y))
+>=20
+> +realmode-checkflags-$(CONFIG_X86_64) :=3D -m32 -U__x86_64__ -D__i386__
+> +REALMODE_CHECKFLAGS :=3D $(filter-out -m64 -D__x86_64__,$(CHECKFLAGS)) $=
+(realmode-checkflags-y)
+> +$(REALMODE_OBJS): CHECKFLAGS :=3D $(REALMODE_CHECKFLAGS)
+> +
 
-This patch introduces a cache-aware update strategy: the flow record is
-only updated if the flow migrates across Last Level Cache (LLC)
-boundaries. This minimizes expensive hardware reconfigurations while
-preserving cache locality for the application. A new sysctl,
-net.core.rps_feat_llc_affinity, is added to toggle this feature.
+The idea looks good, we do something similar for the 32-bit vDSO:
 
-Additionally, export sock_rps_record_flow_hash(). This resolves a symbol
-visibility compilation error triggered by 'tun' using
-sock_rps_record_flow_hash() in tun_flow_update() when CONFIG_TUN is
-built as a module.
+arch/x86/entry/vdso/vdso32/Makefile
 
-Performance Test Results:
-The patch was tested in a K8s environment (AMD CPU 128*2, 16-core Pod
-with CPU pinning, mlx5 NIC) using brpc[1] echo_server and rpc_press.
+CHECKFLAGS :=3D $(subst -m64,-m32,$(CHECKFLAGS))
+CHECKFLAGS :=3D $(subst -D__x86_64__,-D__i386__,$(CHECKFLAGS))
 
-rpc_press Commands:
+It seems the same kind of substitution would work here.
+We can add a helper function to arch/x86/Makefile and
+use that also for the compat vDSO.
 
-  for i in {1..8}; do
-    ./rpc_press -proto=./echo.proto -method=example.EchoService.Echo
-    -server=<IP>:8000 -input='{"message":"hello"}'
-    -qps=0 -thread_num=512 -connection_type=pooled &
-  done
+I am wondering why this didn't show up before.
+Are you going to send a patch or should I?
 
-Monitor mlx5e_rx_flow_steer frequency:
 
-  /usr/share/bcc/tools/funccount -i 1 mlx5e_rx_flow_steer
-
-Frequency of mlx5e_rx_flow_steer (via funccount[2]):
-
-  Before: ~335,000 counts/sec
-  After:   ~23,000 counts/sec (reduced by ~93%)
-
-System Metrics (after enabling rps_feat_llc_affinity):
-
-  CPU Utilization: 38% -> 32%
-  CPU PSI (Pressure Stall Information): 20% -> 10%
-
-These results demonstrate that filtering updates by LLC affinity
-significantly reduces driver lock contention and improves overall
-CPU efficiency under heavy network load.
-
-[1] https://github.com/apache/brpc/
-[2] https://github.com/iovisor/bcc/blob/master/tools/funccount.py
-
-Signed-off-by: Chuang Wang <nashuiliang@gmail.com>
----
-v3 -> v4: add rps_llc_check by Eric Dumazet
-v2 -> v3: patch net -> net-next by Jakub Kicinski
-v1 -> v2: add rps_feat_llc_affinity; add brpc tests
-
- include/net/rps.h          | 17 ++++------
- net/core/dev.c             | 65 ++++++++++++++++++++++++++++++++++++++
- net/core/sysctl_net_core.c | 35 ++++++++++++++++++++
- 3 files changed, 107 insertions(+), 10 deletions(-)
-
-diff --git a/include/net/rps.h b/include/net/rps.h
-index e33c6a2fa8bb..65543354f6e6 100644
---- a/include/net/rps.h
-+++ b/include/net/rps.h
-@@ -12,6 +12,7 @@
- 
- extern struct static_key_false rps_needed;
- extern struct static_key_false rfs_needed;
-+extern struct static_key_false rps_feat_llc_affinity;
- 
- /*
-  * This structure holds an RPS map which can be of variable length.  The
-@@ -55,11 +56,14 @@ struct rps_sock_flow_table {
- 
- #define RPS_NO_CPU 0xffff
- 
-+bool rps_llc_check(u32 old_val, u32 new_val);
-+
- static inline void rps_record_sock_flow(rps_tag_ptr tag_ptr, u32 hash)
- {
- 	unsigned int index = hash & rps_tag_to_mask(tag_ptr);
- 	u32 val = hash & ~net_hotdata.rps_cpu_mask;
- 	struct rps_sock_flow_table *table;
-+	u32 old_val;
- 
- 	/* We only give a hint, preemption can change CPU under us */
- 	val |= raw_smp_processor_id();
-@@ -68,7 +72,8 @@ static inline void rps_record_sock_flow(rps_tag_ptr tag_ptr, u32 hash)
- 	/* The following WRITE_ONCE() is paired with the READ_ONCE()
- 	 * here, and another one in get_rps_cpu().
- 	 */
--	if (READ_ONCE(table[index].ent) != val)
-+	old_val = READ_ONCE(table[index].ent);
-+	if (old_val != val && rps_llc_check(old_val, val))
- 		WRITE_ONCE(table[index].ent, val);
- }
- 
-@@ -136,15 +141,7 @@ static inline bool rfs_is_needed(void)
- #endif
- }
- 
--static inline void sock_rps_record_flow_hash(__u32 hash)
--{
--#ifdef CONFIG_RPS
--	if (!rfs_is_needed())
--		return;
--
--	_sock_rps_record_flow_hash(hash);
--#endif
--}
-+void sock_rps_record_flow_hash(__u32 hash);
- 
- static inline void sock_rps_record_flow(const struct sock *sk)
- {
-diff --git a/net/core/dev.c b/net/core/dev.c
-index 26ac8eb9b259..df8d328447bd 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -4997,6 +4997,8 @@ struct static_key_false rps_needed __read_mostly;
- EXPORT_SYMBOL(rps_needed);
- struct static_key_false rfs_needed __read_mostly;
- EXPORT_SYMBOL(rfs_needed);
-+struct static_key_false rps_feat_llc_affinity __read_mostly;
-+EXPORT_SYMBOL(rps_feat_llc_affinity);
- 
- static u32 rfs_slot(u32 hash, rps_tag_ptr tag_ptr)
- {
-@@ -5208,6 +5210,58 @@ static int get_rps_cpu(struct net_device *dev, struct sk_buff *skb,
- 	return cpu;
- }
- 
-+/**
-+ * rps_llc_check - Determine if RPS flow table should be updated
-+ * @old_val: Previous flow record value
-+ * @new_val: Target flow record value
-+ *
-+ * Returns true if the record needs an update.
-+ */
-+bool rps_llc_check(u32 old_val, u32 new_val)
-+{
-+	u32 old_cpu = old_val & ~net_hotdata.rps_cpu_mask;
-+	u32 new_cpu = new_val & ~net_hotdata.rps_cpu_mask;
-+
-+	if (old_val == new_val)
-+		return false;
-+
-+	/*
-+	 * RPS LLC Affinity Feature:
-+	 * Reduce RFS/ARFS flow updates by checking LLC affinity.
-+	 *
-+	 * Frequent flow table updates can trigger constant hardware steering
-+	 * reconfigurations (e.g., ndo_rx_flow_steer), leading to significant
-+	 * contention on driver internal locks (like mlx5's arfs_lock).
-+	 *
-+	 * This strategy only updates the flow record if it migrates across LLC
-+	 * boundaries. This minimizes expensive hardware updates while preserving
-+	 * cache locality for the application.
-+	 */
-+	if (static_branch_unlikely(&rps_feat_llc_affinity)) {
-+		/* Force update if the recorded CPU is invalid or has gone offline */
-+		if (old_cpu >= nr_cpu_ids || !cpu_active(old_cpu))
-+			return true;
-+
-+		/*
-+		 * Force an update if the current task is no longer permitted
-+		 * to run on the old_cpu.
-+		 */
-+		if (!cpumask_test_cpu(old_cpu, current->cpus_ptr))
-+			return true;
-+
-+		/*
-+		 * If CPUs do not share a cache, allow the update to prevent
-+		 * expensive remote memory accesses and cache misses.
-+		 */
-+		if (!cpus_share_cache(old_cpu, new_cpu))
-+			return true;
-+
-+		return false;
-+	}
-+
-+	return true;
-+}
-+
- #ifdef CONFIG_RFS_ACCEL
- 
- /**
-@@ -5249,6 +5303,17 @@ bool rps_may_expire_flow(struct net_device *dev, u16 rxq_index,
- }
- EXPORT_SYMBOL(rps_may_expire_flow);
- 
-+void sock_rps_record_flow_hash(__u32 hash)
-+{
-+#ifdef CONFIG_RPS
-+	if (!rfs_is_needed())
-+		return;
-+
-+	_sock_rps_record_flow_hash(hash);
-+#endif
-+}
-+EXPORT_SYMBOL(sock_rps_record_flow_hash);
-+
- #endif /* CONFIG_RFS_ACCEL */
- 
- /* Called from hardirq (IPI) context */
-diff --git a/net/core/sysctl_net_core.c b/net/core/sysctl_net_core.c
-index b508618bfc12..b6d4ebcbb6a6 100644
---- a/net/core/sysctl_net_core.c
-+++ b/net/core/sysctl_net_core.c
-@@ -210,6 +210,33 @@ static int rps_sock_flow_sysctl(const struct ctl_table *table, int write,
- 	kvfree_rcu_mightsleep(tofree);
- 	return ret;
- }
-+
-+static int rps_feat_llc_affinity_sysctl(const struct ctl_table *table, int write,
-+					void *buffer, size_t *lenp, loff_t *ppos)
-+{
-+	u8 curr_state;
-+	int ret;
-+	const struct ctl_table tmp = {
-+		.data = &curr_state,
-+		.maxlen = sizeof(curr_state),
-+		.mode = table->mode,
-+		.extra1 = table->extra1,
-+		.extra2 = table->extra2
-+	};
-+
-+	curr_state = static_branch_unlikely(&rps_feat_llc_affinity) ? 1 : 0;
-+
-+	ret = proc_dou8vec_minmax(&tmp, write, buffer, lenp, ppos);
-+	if (write && ret == 0) {
-+		if (curr_state && !static_branch_unlikely(&rps_feat_llc_affinity))
-+			static_branch_enable(&rps_feat_llc_affinity);
-+		else if (!curr_state && static_branch_unlikely(&rps_feat_llc_affinity))
-+			static_branch_disable(&rps_feat_llc_affinity);
-+	}
-+
-+	return ret;
-+}
-+
- #endif /* CONFIG_RPS */
- 
- #ifdef CONFIG_NET_FLOW_LIMIT
-@@ -554,6 +581,14 @@ static struct ctl_table net_core_table[] = {
- 		.mode		= 0644,
- 		.proc_handler	= rps_sock_flow_sysctl
- 	},
-+	{
-+		.procname   = "rps_feat_llc_affinity",
-+		.maxlen     = sizeof(u8),
-+		.mode       = 0644,
-+		.proc_handler   = rps_feat_llc_affinity_sysctl,
-+		.extra1     = SYSCTL_ZERO,
-+		.extra2     = SYSCTL_ONE
-+	},
- #endif
- #ifdef CONFIG_NET_FLOW_LIMIT
- 	{
--- 
-2.47.3
-
+Thomas
