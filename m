@@ -1,140 +1,210 @@
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83F373C3C14
-	for <netdev@vger.kernel.org>; Thu, 21 May 2026 08:37:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 544603C7693
+	for <netdev@vger.kernel.org>; Thu, 21 May 2026 08:38:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779352684; cv=none; b=Op6AuSd/Td6aUCRAPbUShRALsTdPRHhoWuiH+MXiGkn/ZJQNeSLdTfSt/KIBhgQSyUC4rYvn0BOazPv4FK2UtFSDThbs1aBLWXBdEXtQ0wLxRy/03h8VlnO9V+dE7SYs/AqVoTi2ZzbDn9NTP79cydJswj1hwId9LJ5t5vEie+Y=
+	t=1779352691; cv=none; b=eiCpC/2/77h4FdV6FyY/zwmHLHyUOP8XEff+1U4UoBuVygejUmZyGWjM90PQ81+pnamnl64QsNSP/YInMt8dO0Q416iVt1w7+RdVCUrsqreOUhr+qvEQuILBI9Ud5SPYad6Hxi9zUE8UZOytXD9OkmbjD1y+0V9N0xXlNIz0H2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779352684; c=relaxed/simple;
-	bh=uClwDwQ9aMBOn1j7vC5jSbaTUBkTAZEZk5MPWjNbpow=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LtTntQWbn9vZwhmOk8U3iA2mdOTtt3lddjV/xqxLCFC5WON5bkqrdh+b2T6WaURaKJORoa4qj7VZMiNjS8E7H4xExhxvP1YmA9EKt/AaLMy+/Vv9bzkWaOJVc+Ze3RFxntUmNXpad4UmGiaK42qaJsvEJZDHHfygMwgOlX4b6jc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JDso3xmV; arc=none smtp.client-ip=209.85.216.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1779352691; c=relaxed/simple;
+	bh=+Q36/R3+axSk26qNg0RKgcggtmrfBcF0QjetixEKu48=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=nrs3/t/feuD0+PKSeM/YmNyQCQR4pWP7mYMkIYQ93jFAcN6tqRFYp6ofCdLRFrO77TsNcRaLK6E4YmWAqfjUI134t7WD8gbqN2QI/RV7j7iXfNR7KYjmOR3wG82R1kEqrshFtdsPo90dhOGgydRA09c77qKJVxYAmJ66mAtYjXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=SWGFOeBT; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=PyqTELfq; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JDso3xmV"
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-368ea877adbso796942a91.3
-        for <netdev@vger.kernel.org>; Thu, 21 May 2026 01:37:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="SWGFOeBT";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="PyqTELfq"
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64L6fgRs2158102
+	for <netdev@vger.kernel.org>; Thu, 21 May 2026 08:37:59 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	EbIXrTuuG3XY7IQyzDipBNefbhJbG5vwiEUXw5AorV0=; b=SWGFOeBToZLVCsfU
+	AclGf01G3MMPajCTFPa2NbUKgtwHkcfo05wNMqK4mTngoJ19FiVJSJIsdmlsLRnF
+	UTS5hflujNJKf+GLZUpXTmOIOODszeTUyzkDYH5lRyVCjrv8biyMBvDqKnyA6cUR
+	B1MwZVtqtJ6ZQ5C8cKyWqtOFfriRbCIjY8sk/YdMjRplzi0eIV02XDAf9o+Mk7wt
+	ypK1ptckarndPVVFRuQSzrpXfrh5JQ33mIO7EOBPTfQ409d6ZU+TxnRun3zbhUrI
+	SbkBDVuhVva/nx4/w3KeLBtmaXLN1johEvs4uv4afYTH0Umf4ApQvWJmlzn0q0gL
+	Clt9eQ==
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com [209.85.160.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4e9ma42910-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Thu, 21 May 2026 08:37:58 +0000 (GMT)
+Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-50edf01172bso30727411cf.2
+        for <netdev@vger.kernel.org>; Thu, 21 May 2026 01:37:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779352675; x=1779957475; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=sC1dlVSEJRn8MI2VFuxLlRNe963Fh6GRPhQWJKMRLww=;
-        b=JDso3xmVZrl0P9qvnwAaH02BRgcD6UwMXoMED+ER7opASli1xVwWalfIBxsp7I3yg6
-         oeaLxe7mhIOn+Pq4KO3S83nVDTgMWWMAAao3DwTtuX7Vj0vCFYk/6eOpkGZo9pKS2Ybc
-         bAV56+l5wxX9b7gyAOFjEIaYSy/8hg4MbYZMjxmPWKbQEcabHdYojJKGEe/UJrVoiOby
-         wQjhCTo9XaY8NiSuchnEAVbrwYcbInsH54xVOGhksvV5t8ZHFIZwmieIBS375TXLQ6Zd
-         87xMQnJ1VrpqotuhIdNPEY4yp0a0jIWTcaoyj73EFLTjbUPUvMRxDKJxHdyC+4nvL2/e
-         HyXw==
+        d=oss.qualcomm.com; s=google; t=1779352678; x=1779957478; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=EbIXrTuuG3XY7IQyzDipBNefbhJbG5vwiEUXw5AorV0=;
+        b=PyqTELfqkrAJRm9epzE2vKNYjdbsjg1+CfEM/HHQSqD4QkjL1vr0tXM+12a+pg3UuE
+         7lT76ds6fIvByMCPd6fi4E9iPgiOmMhFVSUrqPtm2bky/d7cP7xyLfyaUQ6XdPNzZTZY
+         SO/wLhJIqJLgW6nn5IOKsauBAte9CYFCDQd/6f6WI6sHQb0F104ax/JH74nSWIKIyVCE
+         /JxRdro0RWT3+/mr9Wv4XjQVJ+xmcLEkS2dZ7Ppe2GvdBANFOQ7wkYVqf0Kgn5Mux/4z
+         UbVGL7nEbXNV/NfgVmqXpWh5Z0gCUQdjSqhU3Ft328J7BtWEu/CCg1nYL0FIeoZxGv9t
+         Hf/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779352675; x=1779957475;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sC1dlVSEJRn8MI2VFuxLlRNe963Fh6GRPhQWJKMRLww=;
-        b=Ma+WKY7qb/YBsORWxqZN74Uhl70E4jWoCID++fmG3MeiB8f2arvqOVrJ/njsQMvVpY
-         oHqBQY5he2Urajj+IMorakgxBf7Ubinp3Jh6MfpNjprg45uyIQuaEIewBdfnaxXzg5ON
-         6A2rPJ0fFakyv5kuhNzU/I99aL2yc18UNBfUPqr/57TTpZPoLw/mpG7JVF8EOwSEbWOk
-         OxnmZ0ZZngQiZWwWFXXgbIsY627BmD4qI9aFMvBKgX21XKuyGRXaztS2G6uR8hni1Um/
-         mjUJj2uhAV5ZKqsBkuiDcOnbHQezESO62BBL8NGV+WQ3nOY1hPHVcLw4DudBdMY+1ok/
-         UhZw==
-X-Forwarded-Encrypted: i=1; AFNElJ/yhhkkrbqubdvuKDd/fVwVy8+kgzPprcscpuCKszAFEblb4JPDCg69oXjl8/bRhj6/86/X9xU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzABnw8keCDEL4sNHsVWjSne1vZZ+4nMjXJ1ESuCJP83WLYOOWj
-	qdeti8fmwRNKmEFxz6anHEjoGFQYyvIX8JMBmLtmpuiu1Eap/1IfGtEn
-X-Gm-Gg: Acq92OEssiL/IvkuvMjWgDLvM+EQMqWqWOWWHthVtQV9x+Dx1o7Unj8K7jWRPBGm5jX
-	aJV3oalRuhY0qhn22RDH5GyqNpWTj1Tbjzg4D+2+IurpG9xGJIa37b3MOK+KZHjikNvx2cVTDf+
-	cjE8Eo0SgTJ7yl2BIUudAzNdcx007uPkz/rsIS190rU1CO1CYm4u90xEsebCpk2HaNgYTftNvMZ
-	FwAgLjt3fRnUIZxJB/vKC508GRw9uXsPVb8B0WT7datuXA1nWiAGKtJx/2+XFskBSz6XUfdXLY5
-	2+zhAL8daSyB8Hhc976/JW3mk41JsI0U+FlmzdSyUT7eT8iFFcr+EZUhVEQnn/pft10y+snF2bx
-	rkDuydcv89ZxWJ3ejP2J1SnYDIBkg3iOzrnyqPIQRLk/FtHQStgHFn9OLPDB8zRY+LEzElvrmw5
-	pkX31rsA4US3RPHCJsu/6R3C8WE0qy
-X-Received: by 2002:a17:90b:2551:b0:369:224d:8beb with SMTP id 98e67ed59e1d1-36a45c526d0mr1156488a91.7.1779352674862;
-        Thu, 21 May 2026 01:37:54 -0700 (PDT)
-Received: from kali ([2402:e280:3d7c:a2:536a:b505:93f5:9d5d])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c82bb0626b2sm28046326a12.6.2026.05.21.01.37.51
+        d=1e100.net; s=20251104; t=1779352678; x=1779957478;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=EbIXrTuuG3XY7IQyzDipBNefbhJbG5vwiEUXw5AorV0=;
+        b=HSrXECVrwllZ5cTttfqlXJVF88v2cFPtKw1/XpYp7oajSjSMszjLPCHVE7AZfWkXLa
+         RHCPQR1HskEl7sZ/+ju8QE2Xsa5XBIYiTjr97qjvDULPQ+vnHjI1aeFcO+fjFeychqWw
+         Su5roMX03IcqWTIXl/0oHyQ6xwwpQrKZdHG4saxh1W1jETq4GogOrZf6j+C+zRLj8ah3
+         KF9MgKBR/w/1T0ZwhfJqBki8RTjqipqrlySHt0zk28OUGyvbQucCpxb9faM50SUVw5Vf
+         IyJwtYUwDlZ3IZ8L0K/I4ir3SFj8XEtCkOkec1VjKciGRuLg390LV1meM2OzPR8x+To1
+         S9JA==
+X-Forwarded-Encrypted: i=1; AFNElJ+p4db5RZZJQE9htiJb4ra2dJNAY4zuEybH+QHEK3CFLpwn7hy9we69VbOlsTkbUwuNxVJJpNo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw2onopK95puSFwzr+HfgFHXyxZun8lKGmwknuIwidJkw+w26Qv
+	mAlPP31gDrj2zzX8Mh9cs9vGyA12lfIStR3XYCZwdDMr25jZr3hVOJJf3ZVjtKN/Us4ah4+WgeC
+	Tfn9eLE7FHglNkiMW9/GCb8kWoTOyNgFynSg4DG98GIbNCAr72YTShfGuOn8=
+X-Gm-Gg: Acq92OH7o0Bd9G1fADQbIYOgXpqxuuec30hw3hZ1uW2hUYW4qUnG3bNKHMmqI/2ySaB
+	VdrOsYHZOE+3miUsuPv51CwTo3m50kMNdNl3zHF1msiwBB8gq4EIAE8VOwopwezp1h9R4XlGX+z
+	QM6X5GX8pV+5+uXiTAMe9O5CZ9nsXSWPbl1nm3qc3YxKrn4OdMAxu3jc9f8HMHZNYcnznOdr1zK
+	FHiK6qCUl+CDC7q/dOvy4fCqHbRsGuGcnmqVEt3jOCZxJ2utyid86AWdWucNgXWATmdkIU+2rAI
+	lIjmn7B41g1gyqKOwleXpBdGfjlArBLo6rnen5HdKmHYxoljaBm6xPO2vA/bPMARzSQZw1eaagn
+	nH5C2Ph8wWLNvM/hL5M9Xl898ck2cY09RcFZH7+vzIJ7PspfC76k=
+X-Received: by 2002:a05:622a:95:b0:513:103d:3808 with SMTP id d75a77b69052e-516c545476dmr26297491cf.22.1779352677958;
+        Thu, 21 May 2026 01:37:57 -0700 (PDT)
+X-Received: by 2002:a05:622a:95:b0:513:103d:3808 with SMTP id d75a77b69052e-516c545476dmr26296871cf.22.1779352677380;
+        Thu, 21 May 2026 01:37:57 -0700 (PDT)
+Received: from brgl-qcom.local ([2a01:cb1d:dc:7e00:bb10:ae82:b7c3:d15a])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4903caede9fsm10502405e9.14.2026.05.21.01.37.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 May 2026 01:37:54 -0700 (PDT)
-From: Pavitra Jha <jhapavitra98@gmail.com>
-To: antonio@openvpn.net
-Cc: sd@queasysnail.net,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Pavitra Jha <jhapavitra98@gmail.com>
-Subject: [PATCH] ovpn: fix peer refcount leak in TCP error paths
-Date: Thu, 21 May 2026 04:37:39 -0400
-Message-ID: <20260521083739.65061-1-jhapavitra98@gmail.com>
-X-Mailer: git-send-email 2.53.0
+        Thu, 21 May 2026 01:37:56 -0700 (PDT)
+From: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Date: Thu, 21 May 2026 10:36:40 +0200
+Subject: [PATCH 17/23] net: mv643xx: use platform_device_set_of_node()
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260521-pdev-fwnode-ref-v1-17-88c324a1b8d2@oss.qualcomm.com>
+References: <20260521-pdev-fwnode-ref-v1-0-88c324a1b8d2@oss.qualcomm.com>
+In-Reply-To: <20260521-pdev-fwnode-ref-v1-0-88c324a1b8d2@oss.qualcomm.com>
+To: Lee Jones <lee@kernel.org>,
+        Mark Brown <broonie@opensource.wolfsonmicro.com>,
+        Thierry Reding <thierry.reding@avionic-design.de>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Srinivas Kandagatla <srini@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Vinod Koul <vkoul@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+        Danilo Krummrich <dakr@kernel.org>, Rob Herring <robh@kernel.org>,
+        Saravana Kannan <saravanak@kernel.org>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+        Andi Shyti <andi.shyti@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+        Robin Murphy <robin.murphy@arm.com>, Doug Berger <opendmb@gmail.com>,
+        Florian Fainelli <florian.fainelli@broadcom.com>,
+        Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+        Ulf Hansson <ulfh@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        Matthew Brost <matthew.brost@intel.com>,
+        =?utf-8?q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+        Peter Chen <peter.chen@kernel.org>,
+        Paul Cercueil <paul@crapouillou.net>, Bin Liu <b-liu@ti.com>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Maximilian Luz <luzmaximilian@gmail.com>,
+        Hans de Goede <hansg@kernel.org>,
+        =?utf-8?q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: brgl@kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, linux-sound@vger.kernel.org,
+        driver-core@lists.linux.dev, devicetree@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-i2c@vger.kernel.org,
+        iommu@lists.linux.dev, linux-pm@vger.kernel.org, imx@lists.linux.dev,
+        linux-arm-kernel@lists.infradead.org, intel-xe@lists.freedesktop.org,
+        dri-devel@lists.freedesktop.org, linux-usb@vger.kernel.org,
+        linux-mips@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1009;
+ i=bartosz.golaszewski@oss.qualcomm.com; h=from:subject:message-id;
+ bh=+Q36/R3+axSk26qNg0RKgcggtmrfBcF0QjetixEKu48=;
+ b=owEBbQKS/ZANAwAKAQWdLsv/NoTDAcsmYgBqDsQr7v0D29hL0tmocOaZkm4AyCQrEw14ql7mO
+ 8tYfriVLeyJAjMEAAEKAB0WIQSR5RMt5bVGHXuiZfwFnS7L/zaEwwUCag7EKwAKCRAFnS7L/zaE
+ w366D/4v5c+pUzv6avtkL6q+xKqdBL9umLghKhBQ5kt5mjMgzYly3eyiiCgjeCEwSWWdfTYN6t8
+ MDk5oxdf4dZTDqe/p0EFtWy4qVPnsfckF5Mgtv2EfrFY/JmTxCrEMhvKl6MDM4OJriNxylX3tbW
+ pqSlkS5Mjcx2c79ZfHLJ4QNgy63fKtrYEP8jXkM/bO+zd0VvWHV6OJgGTp1uNfEKKD7Zv6W9jXs
+ I7NhKYZRcZud8P5CCUTX8ofTjAVM6BslN8K1m+1TLzAyAQoFdnTaP33aW6oTG8rsJsFtPqJ3QUy
+ wl7xZWHSGDbNFObyxHawwwedXKh8ziJ5AlEss80+ejJ7Cuj4qI5W8oSo8Wwb4/vbNVIzFAn+uyH
+ zmH7uZ29ujLcnvmBxqZIGFKjQiaMTKwjmXQIqwL9bFwKLahbDsLpo0+FNGfYHYmkqwz6KIUrLh/
+ 4dRzbuYGCsoGuw0Oql6O23EQLf/YjisobOJzrHLLyRC6qvueCdjZm4rjiIfBL/l3WA9rNztpXgA
+ 591GvrhcF2BWHdz40g9Fm376D5h1+nFi/hxT753Yk4qZ5tHoInYYJt67skgbVjixR21R4P3G1VO
+ BNHf9MuUxDhXR8xWiil5e2yLVNEpIh/547GqRXAJOq2vGoV9XerYZFXgnsgia4YoruDBFHM9Hcc
+ iFPMjG1LS8Y1p9w==
+X-Developer-Key: i=bartosz.golaszewski@oss.qualcomm.com; a=openpgp;
+ fpr=169DEB6C0BC3C46013D2C79F11A72EA01471D772
+X-Authority-Analysis: v=2.4 cv=K9kS2SWI c=1 sm=1 tr=0 ts=6a0ec466 cx=c_pps
+ a=EVbN6Ke/fEF3bsl7X48z0g==:117 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+ a=NGcC8JguVDcA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=u7WPNUs3qKkmUXheDGA7:22 a=DJpcGTmdVt4CTyJn9g5Z:22 a=EUspDBNiAAAA:8
+ a=deS-VIKRvcGxR6069T0A:9 a=QEXdDO2ut3YA:10 a=a_PwQJl-kcHnX1M80qC6:22
+X-Proofpoint-GUID: 5d1CwjZZLjEsvxInqC-QRJzVzS4vPU2V
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTIxMDA4MyBTYWx0ZWRfXyIvkqoOKK+nd
+ 178zHFg5az7POkDjk9f7evVMd3Lf/WdJQz/nDl51xDaBH8fDms7XpLcbdD2Csv90reP5pTXqhhI
+ WSIKZ0bE/PkSa9fkYa0CqSsPn1GiisRJrKElYseHHaDunYot5Y0NxqWYOnZHvygCZAjUjJwLyQu
+ 8NClc31q8fpLxDqfJHqrKePPKv2bdZdPbAYR4mwgbG9nIE7FlqRj5uhsmz3wXXFqAOjTr6WtMDT
+ i4/dRUFaJVkc5T1FU5rOpWGrJFRqmh+3olUarX2npuuCGaOWmJWChzqSosob9fkHuVFDoxGHEF8
+ EiXN37EVz4T9jevmHfvehafG38g76bgnKN0Qr8h59phGeoFdtBpXHEu1ixEZGAp8el2WQ0POxl9
+ sgS9efVNGnL2cQ4SOtCW1CEhGo1U24LDaOlj9MVFeruEy2MVkD9zNETHxMMJ+IIM3ovQlTjk22P
+ lliz6M8mEDi4fJNSYQQ==
+X-Proofpoint-ORIG-GUID: 5d1CwjZZLjEsvxInqC-QRJzVzS4vPU2V
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-21_01,2026-05-18_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 phishscore=0 bulkscore=0 adultscore=0 priorityscore=1501
+ impostorscore=0 malwarescore=0 spamscore=0 clxscore=1015 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2605130000 definitions=main-2605210083
 
-When either the TCP RX or TX error path calls ovpn_peer_hold() followed
-by schedule_work(&peer->tcp.defer_del_work), and the work item is already
-pending from the other path, schedule_work() returns false and the work
-runs only once. Since ovpn_tcp_peer_del_work() calls ovpn_peer_put()
-exactly once, the extra reference taken by the losing path is never
-dropped, leaking the peer object.
+Ahead of reworking the reference counting logic for platform devices,
+encapsulate the assignment of the OF node for dynamically allocated
+platform devices with the provided helper.
 
-The race window:
-
-  CPU0 (strparser/RX error):       CPU1 (tcp_tx_work/TX error):
-  ovpn_peer_hold()   <- refcnt+1   ovpn_peer_hold()   <- refcnt+2
-  schedule_work()    <- queued      schedule_work()    <- NO-OP
-                                    (work already pending)
-  ovpn_tcp_peer_del_work runs:
-    ovpn_peer_del()
-    ovpn_peer_put()  <- refcnt+1
-                                   <- peer never freed
-
-Fix by checking the return value of schedule_work() in both paths and
-calling ovpn_peer_put() to drop the extra reference if the work was
-already pending.
-
-Fixes: a6a5e87b3ee4 ("ovpn: avoid sleep in atomic context in TCP RX error path")
-Cc: stable@vger.kernel.org
-Signed-off-by: Pavitra Jha <jhapavitra98@gmail.com>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 ---
- drivers/net/ovpn/tcp.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/marvell/mv643xx_eth.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ovpn/tcp.c b/drivers/net/ovpn/tcp.c
-index 5499c1572..d651ce85c 100644
---- a/drivers/net/ovpn/tcp.c
-+++ b/drivers/net/ovpn/tcp.c
-@@ -151,7 +151,8 @@ static void ovpn_tcp_rcv(struct strparser *strp, struct sk_buff *skb)
- 	/* take reference for deferred peer deletion. should never fail */
- 	if (WARN_ON(!ovpn_peer_hold(peer)))
- 		goto err_nopeer;
--	schedule_work(&peer->tcp.defer_del_work);
-+	if (!schedule_work(&peer->tcp.defer_del_work))
-+		ovpn_peer_put(peer);
- 	dev_dstats_rx_dropped(peer->ovpn->dev);
- err_nopeer:
- 	kfree_skb(skb);
-@@ -282,8 +283,9 @@ static void ovpn_tcp_send_sock(struct ovpn_peer *peer, struct sock *sk)
- 			/* in case of TCP error we can't recover the VPN
- 			 * stream therefore we abort the connection
- 			 */
--			ovpn_peer_hold(peer);
--			schedule_work(&peer->tcp.defer_del_work);
-+			if (ovpn_peer_hold(peer))
-+				if (!schedule_work(&peer->tcp.defer_del_work))
-+					ovpn_peer_put(peer);
+diff --git a/drivers/net/ethernet/marvell/mv643xx_eth.c b/drivers/net/ethernet/marvell/mv643xx_eth.c
+index 1881583be5ce2e972fceb14c2b8348280c49ad1d..9caa1e47c174c9d7a161b7f2e2ee12a829b813d4 100644
+--- a/drivers/net/ethernet/marvell/mv643xx_eth.c
++++ b/drivers/net/ethernet/marvell/mv643xx_eth.c
+@@ -2780,7 +2780,7 @@ static int mv643xx_eth_shared_of_add_port(struct platform_device *pdev,
+ 		goto put_err;
+ 	}
+ 	ppdev->dev.coherent_dma_mask = DMA_BIT_MASK(32);
+-	ppdev->dev.of_node = of_node_get(pnp);
++	platform_device_set_of_node(ppdev, pnp);
  
- 			/* we bail out immediately and keep tx_in_progress set
- 			 * to true. This way we prevent more TX attempts
+ 	ret = platform_device_add_resources(ppdev, &res, 1);
+ 	if (ret)
+
 -- 
-2.53.0
+2.47.3
 
