@@ -1,64 +1,64 @@
-Received: from mail-dl1-f68.google.com (mail-dl1-f68.google.com [74.125.82.68])
+Received: from mail-dy1-f195.google.com (mail-dy1-f195.google.com [74.125.82.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE5C021CC51
-	for <netdev@vger.kernel.org>; Thu, 21 May 2026 00:17:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.68
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECEE01E5B88
+	for <netdev@vger.kernel.org>; Thu, 21 May 2026 00:17:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779322647; cv=none; b=QgN/wayTN4j0ncZc4dv1P7FE5UgBoiJ5JJpysf85RMrjvH3mfhHKNJC0yxY8T83q7SacZVg5G/HOIrmF7NgOxvhp3MlmSkkk5g0huELhH0ChXW7/Rgb1mX2+ItvL/IDVBMxwjf493C0H7MqhBceRcBV61IAL5Fh9hxRbM2X8cDk=
+	t=1779322664; cv=none; b=ZjSfpLaKuYYDVlFT9dT85uujTNdv0hT7HYUlfdl49WuDfAzjqwVbTZnnhESEHoWz2Bhjj6qGHflPIBqxVFVAepqQpE3KvW9Zg28kihJNq/GJO+7lRMThRPFxto5j/0KwIUyjVRTdhReofiyc53jaGxcC/DVE6qViDzk2mORf7q8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779322647; c=relaxed/simple;
-	bh=TOFT+GtrMRJZx4HNyidmMAJZlZ/MBpkuAo+8r3ytcIs=;
+	s=arc-20240116; t=1779322664; c=relaxed/simple;
+	bh=EGbaGXm1KEh7bRVRYdO+IOFneWGsvqaUFKX8qeLpD3Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a4hiUDeYeMM/FFblrJ+n0mZkG/CxrGqOH6VDXufJufliQEMynZoq5JLMAMF+ARH9sLWorCQLFMzddhP9P3I3Gq8vY9iOPxyrChDupdBljcfZHs5BlT9sPng9STDsWYRuLWmj9vPkkb98MYzCTf/hIh0vqw83jcKxr+bK2+c5Wx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rfYvOpVA; arc=none smtp.client-ip=74.125.82.68
+	 MIME-Version; b=L2EJLCSIGnsf1himSJnOgr0KOSDd5EN2ZdOGFurwV2rwm6BCx7NfddErvaa1xTBJ+EbwYtQJ4AQg9jUAIVkUiPCvRbAZZSF8NsQFsygaLB7UQ+bAZKuXVh2+ImcKG86XOYoHAwKUlnxH1YvE3dIe28/LLndiZ4or0V4W7Jgvnb8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VH3eK+J4; arc=none smtp.client-ip=74.125.82.195
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="rfYvOpVA"
-Received: by mail-dl1-f68.google.com with SMTP id a92af1059eb24-135e88b8e55so5391440c88.0
-        for <netdev@vger.kernel.org>; Wed, 20 May 2026 17:17:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VH3eK+J4"
+Received: by mail-dy1-f195.google.com with SMTP id 5a478bee46e88-2f7020a928eso7946971eec.1
+        for <netdev@vger.kernel.org>; Wed, 20 May 2026 17:17:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779322645; x=1779927445; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1779322662; x=1779927462; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=JB8hLxgPFXR6TxheosPkUZdcss+SaUcFoZO7z76syt0=;
-        b=rfYvOpVA7LiEWCvi3NigVLkDt+h+zeUOaA0ri6gKONqLnom+R7f1+2B+7f+VGxTN/D
-         zKCP1KZsFGT/7J4V6TVgf2OFKIec1o4QjwaPWS14XjnkwEfs0OOwkWSi0bls2jQH2NiR
-         cXOiKpHhplIq7rZcOnsxaAMkszK0yWghPEgVszbQxMIdqXrgAV0/VD9Cv4eVQjEkXD5l
-         yHJsqKXbuOQPg3UZaTdEFIW7uQCM6fKwaex6eG3HtBhJGDIevqo+Pl4SjQK3/zFCspXH
-         wt7/FFSyjphzJlsnRxcEidhmdocrPmgZvT9Z3Hiunpn2i0h/LSZYZwPKO4whF2Bht1FW
-         mCqQ==
+        bh=tAKq7HDrzn6e0Uev+H/X2iXbpfpwJvQ1xxnMc0EwXS4=;
+        b=VH3eK+J45/s32uKgXkLx4OvtoqcE+BKe+a9Py1wEnd6jTnegNAJ4oT+jt+4KVhp8IX
+         bIS6A2SrFOeI7c7Pea/XgVqa9qP8F/HU2ZQYiYcx9tSRncYW1B+/T3sy3mJ2PnMwOv1u
+         jw8/aop++veR39imSc+fGiDgbGYIAQ3F6ZR8n/fgDarXdnayIqi2q6Bz1jZDBYKBaAjU
+         +5DW7oep2i4vhdAlUI5mfQpTVf5h4oZ3xAKvutzNhE4bhJSq4TAallQ1DtffEKSopRrZ
+         2Z/YJkxlv9HiFr7ZHsx0qt7UC6lusfGL4R9BPxhzHDDwSMmQvuSY8+3ANaGYwiTaio9U
+         teMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779322645; x=1779927445;
+        d=1e100.net; s=20251104; t=1779322662; x=1779927462;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=JB8hLxgPFXR6TxheosPkUZdcss+SaUcFoZO7z76syt0=;
-        b=SXccTgGMLSJlodQtsvn+Leq1ezBXSPO4jXWq5GrGNs5KoOczwv5EDk7+9obQfefqfN
-         CsIZF1aa/uEaoPn/d3dMzyjnF6/TeO5vyqzSlZyeGCDSlyy6mHVKaot4iofzaHCLwG5q
-         p+heG4IQulXpupCBh2NdJA8ju/rBcCwVdHnfPLH3xJzU9H57XR94FTaa9T4uv9qDxzia
-         bmA8uSmTFnBKbEvs1nzuZnQtSlU+f8vcIG3MiXxPsTAMEy8yvEP7F0JugGmv/wmJn73m
-         0ChsFyDIW67pliss9LWBkORnPlRdRw2Ex8VbzRNW0xwtaLNjrpInI+urGc1GXcLg/Cv+
-         QZxA==
-X-Gm-Message-State: AOJu0YzLpD7dNh5c4OsWFNcQrcNCD/0dacMVIiKUyLrM5aINgq4/IXaI
-	gMFf4TCflJ8eq03xvgvgF9bT2v3OMpSeo6cLsR4/euTvp/RDCF+K9mPCspivC8omluc=
-X-Gm-Gg: Acq92OHtZOO2E6fckvabub7xWtIb+4zYV3/BMTE0tpz9oAzXZnYsMbH488CfEQTummk
-	QxYc6nXEq+fuirmtI/9ICaKamVplCL9Uo1mja7Ub7Ntx0VMhtYUp6znRuYolnySrH2/HEJK1mh4
-	hutHBfoN8IFYCSg9zS78jV8Q42r5zZ/azurqBs0KFX74L1NfDhjVLjs83Svq9u04+TLrDbMOabo
-	2+70/tyLIM7F6y5oje8UkeTPc+40YFQEd6SDzlDHI/VJu0En+vPEb1f9qbdRyfzlxjV+Cp0iuw9
-	HfSUZrOJ7bus3oIvb5v5IK4grjFi9F8AmuzGp28elYGCghdDs/cTI7NdAA+N2ST1Wr6DSZsEo5I
-	OQOeGPjPf9Um1SoO7DEo6ZgQMwFEhXg+RmXpcRolZiol8xf7p4G+ElQiWEEItPbWhIlMk1Zd3qu
-	pmFZtJEFYUs5qpclpHSoRcJeECzNjl09pWPlECSJg4jJk9nKotPx5fcSviqNrcuJLnIC463tm1x
-	LV/kqH4MsxwV/ApOnm1/o8VVWnRd1Mwn9rKqFdDGWUPOLbdPlXpQ1KhhQu6XujB22/1RBoz6LX7
-	taH4hsy30b5fEOjNeQ==
-X-Received: by 2002:a05:701b:2612:b0:12a:b3c4:c3b6 with SMTP id a92af1059eb24-13632e44d5fmr243724c88.21.1779322645008;
-        Wed, 20 May 2026 17:17:25 -0700 (PDT)
+        bh=tAKq7HDrzn6e0Uev+H/X2iXbpfpwJvQ1xxnMc0EwXS4=;
+        b=MZuFrX1TymPImoqnf7L8RNHeY/JSjl91xoUzU2wcC55DyhpY6R4SEnVeJgPK4c84co
+         vWtcQah4MZkh0J+47cCQTUocU5ybI0KMukzSIAUWJSu+oKOHbxACYdNYHGNIQuy0jBwV
+         FgySPOFkNALLGqxHZ7HoQtZanMB1sMM8W4GEnC/OjEMk5DyEZc+9WmiEznRJZoPBqHvD
+         tY8MsxFArRCDr1STatHFRsiYy/esmMaspa1uTZ4EzP7Nt4K9mgjnO8hKxU5nSKjeGr/n
+         rRfh1bO41/Lmw+us/AoCtBMjI4MRhPOj5THgjbTZt2Uu49mriQP8EoKKfswsDxg3N1yz
+         zong==
+X-Gm-Message-State: AOJu0YyffbwZEaOk8wbMbPsQKcx9KUMRUTMPcyjXo+PnrE1icfIuqtZo
+	h6vnipRNAjPc5NTpXVK6Z45vOAhWCuJUVTaolSBiNt5FNX6/vIhK40o7EgaCyUdVpa4=
+X-Gm-Gg: Acq92OHNqYc0cqt+PuNi5zvvNufgMhhQyD7yNbGX+0yPfo/zh7gH/ghZeAqmx+ola5B
+	9Tsf+rAQpwB2qvfV1Ul1U3v9DwrMEYUva7R8TvsnCu75Ncudz62g6H/kfNUn9jRud5HZHb3GK0Q
+	xeyh6kyyOuRFRx1ew2C+RnOS8Q64N0CzOqr3MhFXPcrr714/KHnclMBvcBLeYG8HmV0DkXfZwWm
+	7udy8McJdymer//5HOrIyMIDSB1+vxTM2yCc8hcP6m+yUXcVrzYu6QNzTQISyFWLMXxV8+lzTkX
+	aC93LTNbt+MVYQ7Ce4WZOJNctGO5h53H4cyLuwmJCTv/KzzYybCXBRtTSOfWfJ2AC4qqU75VIwC
+	QU/moGujsaLwCmw/6j/qzZSCnETxEMTtdmDbJ5TNPA0gWwsztzRv2wdHZ5ls2qU8JeEQEWjQ55M
+	JQyAl2nlsHOVpGklsBhn0syG566uilqXw3g6Zl/mO2TV/rhlskcm0yIw/9E9GEWUJ7lf+zwlvid
+	4FctO4f2IapC+GpmpQq6KbYgX8cqxwOQYUhWkiDxXHmjsp7yCufIQbFNdQ878bnZyXOVud4rxxT
+	4AaoBh0bg7IXFl0cQw==
+X-Received: by 2002:a05:7300:e787:b0:2de:cc07:e8b with SMTP id 5a478bee46e88-3042f476cb5mr480574eec.1.1779322662061;
+        Wed, 20 May 2026 17:17:42 -0700 (PDT)
 Received: from ethan-latitude5420.. (host-127-24.cafrjco.fresno.ca.us.clients.pavlovmedia.net. [68.180.127.24])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-134cbcb9ed3sm28444410c88.1.2026.05.20.17.17.24
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-134cbcb9ed3sm28444410c88.1.2026.05.20.17.17.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 May 2026 17:17:24 -0700 (PDT)
+        Wed, 20 May 2026 17:17:41 -0700 (PDT)
 From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
 To: netdev@vger.kernel.org
 Cc: Michael Grzeschik <m.grzeschik@pengutronix.de>,
@@ -68,9 +68,9 @@ Cc: Michael Grzeschik <m.grzeschik@pengutronix.de>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Ethan Nelson-Moore <enelsonmoore@gmail.com>
-Subject: [PATCH v2 2/7] net: arcnet: fix typos in comments
-Date: Wed, 20 May 2026 17:16:14 -0700
-Message-ID: <20260521001631.45434-3-enelsonmoore@gmail.com>
+Subject: [PATCH v2 4/7] net: arcnet: remove code depending on nonexistent config option
+Date: Wed, 20 May 2026 17:16:16 -0700
+Message-ID: <20260521001631.45434-5-enelsonmoore@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260521001631.45434-1-enelsonmoore@gmail.com>
 References: <20260521001631.45434-1-enelsonmoore@gmail.com>
@@ -82,91 +82,50 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The ARCnet code contains quite a few typos in comments. Fix them.
-Initially noticed by inspection, then augmented using codespell.
+The CONFIG_SA1100_CT6001 option has never existed in the kernel. Remove
+code in arcdevice.h referring to it. This allows the
+arcnet_(in|out)(s|)b macros to be simplified by removing the BUS_ALIGN
+macro.
 
 Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
 ---
- drivers/net/arcnet/arc-rimi.c  |  2 +-
- drivers/net/arcnet/arcdevice.h | 10 +++++-----
- drivers/net/arcnet/rfc1201.c   |  2 +-
- 3 files changed, 7 insertions(+), 7 deletions(-)
+ drivers/net/arcnet/arcdevice.h | 18 +++++-------------
+ 1 file changed, 5 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/net/arcnet/arc-rimi.c b/drivers/net/arcnet/arc-rimi.c
-index 53d10a04d1bd..fb3d3565aa9a 100644
---- a/drivers/net/arcnet/arc-rimi.c
-+++ b/drivers/net/arcnet/arc-rimi.c
-@@ -185,7 +185,7 @@ static int __init arcrimi_found(struct net_device *dev)
- 	lp->hw.copy_to_card = arcrimi_copy_to_card;
- 	lp->hw.copy_from_card = arcrimi_copy_from_card;
- 
--	/* re-reserve the memory region - arcrimi_probe() alloced this reqion
-+	/* re-reserve the memory region - arcrimi_probe() allocated this reqion
- 	 * but didn't know the real size.  Free that region and then re-get
- 	 * with the correct size.  There is a VERY slim chance this could
- 	 * fail.
 diff --git a/drivers/net/arcnet/arcdevice.h b/drivers/net/arcnet/arcdevice.h
-index bee60b377d7c..f1947342d67f 100644
+index f1947342d67f..c870b8e21d44 100644
 --- a/drivers/net/arcnet/arcdevice.h
 +++ b/drivers/net/arcnet/arcdevice.h
-@@ -137,7 +137,7 @@ do {									\
- #define TXACKflag       0x02	/* transmitted msg. ackd */
- #define RECONflag       0x04	/* network reconfigured */
- #define TESTflag        0x08	/* test flag */
--#define EXCNAKflag      0x08    /* excesive nak flag */
-+#define EXCNAKflag      0x08    /* excessive nak flag */
- #define RESETflag       0x10	/* power-on-reset */
- #define RES1flag        0x20	/* reserved - usually set by jumper */
- #define RES2flag        0x40	/* reserved - usually set by jumper */
-@@ -166,7 +166,7 @@ do {									\
- #define RESETclear      0x08	/* power-on-reset */
- #define CONFIGclear     0x10	/* system reconfigured */
+@@ -374,24 +374,16 @@ static inline void arcnet_set_addr(struct net_device *dev, u8 addr)
  
--#define EXCNAKclear     0x0E    /* Clear and acknowledge the excive nak bit */
-+#define EXCNAKclear     0x0E    /* Clear and acknowledge the excessive nak bit */
+ /* I/O equivalents */
  
- /* flags for "load test flags" command */
- #define TESTload        0x08	/* test flag (diagnostic) */
-@@ -194,7 +194,7 @@ do {									\
- struct ArcProto {
- 	char suffix;		/* a for RFC1201, e for ether-encap, etc. */
- 	int mtu;		/* largest possible packet */
--	int is_ip;              /* This is a ip plugin - not a raw thing */
-+	int is_ip;              /* This is an ip plugin - not a raw thing */
+-#ifdef CONFIG_SA1100_CT6001
+-#define BUS_ALIGN  2  /* 8 bit device on a 16 bit bus - needs padding */
+-#else
+-#define BUS_ALIGN  1
+-#endif
+-
+-/* addr and offset allow register like names to define the actual IO  address.
+- * A configuration option multiplies the offset for alignment.
+- */
++/* addr and offset allow register like names to define the actual IO address */
+ #define arcnet_inb(addr, offset)					\
+-	inb((addr) + BUS_ALIGN * (offset))
++	inb((addr) + (offset))
+ #define arcnet_outb(value, addr, offset)				\
+-	outb(value, (addr) + BUS_ALIGN * (offset))
++	outb(value, (addr) + (offset))
  
- 	void (*rx)(struct net_device *dev, int bufnum,
- 		   struct archdr *pkthdr, int length);
-@@ -257,7 +257,7 @@ struct arcnet_local {
- 	char *card_name;	/* card ident string */
- 	int card_flags;		/* special card features */
+ #define arcnet_insb(addr, offset, buffer, count)			\
+-	insb((addr) + BUS_ALIGN * (offset), buffer, count)
++	insb((addr) + (offset), buffer, count)
+ #define arcnet_outsb(addr, offset, buffer, count)			\
+-	outsb((addr) + BUS_ALIGN * (offset), buffer, count)
++	outsb((addr) + (offset), buffer, count)
  
--	/* On preemtive and SMB a lock is needed */
-+	/* On preemptive and SMP a lock is needed */
- 	spinlock_t lock;
- 
- 	struct led_trigger *tx_led_trig;
-@@ -299,7 +299,7 @@ struct arcnet_local {
- 	int num_recons;		/* number of RECONs between first and last. */
- 	int network_down;	/* do we think the network is down? */
- 
--	int excnak_pending;    /* We just got an excesive nak interrupt */
-+	int excnak_pending;    /* We just got an excessive nak interrupt */
- 
- 	/* RESET flag handling */
- 	int reset_in_progress;
-diff --git a/drivers/net/arcnet/rfc1201.c b/drivers/net/arcnet/rfc1201.c
-index 0edf35d971c5..f2ec58d06fc3 100644
---- a/drivers/net/arcnet/rfc1201.c
-+++ b/drivers/net/arcnet/rfc1201.c
-@@ -235,7 +235,7 @@ static void rx(struct net_device *dev, int bufnum,
- 		skb->protocol = type_trans(skb, dev);
- 		netif_rx(skb);
- 	} else {		/* split packet */
--		/* NOTE: MSDOS ARP packet correction should only need to
-+		/* NOTE: MS-DOS ARP packet correction should only need to
- 		 * apply to unsplit packets, since ARP packets are so short.
- 		 *
- 		 * My interpretation of the RFC1201 document is that if a
+ #define arcnet_readb(addr, offset)					\
+ 	readb((addr) + (offset))
 -- 
 2.43.0
 
