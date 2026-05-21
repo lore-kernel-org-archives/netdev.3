@@ -1,128 +1,92 @@
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from linode.cmadams.net (linode.cmadams.net [45.33.75.86])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E925A23392D
-	for <netdev@vger.kernel.org>; Thu, 21 May 2026 13:53:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 164EB3DB62E
+	for <netdev@vger.kernel.org>; Thu, 21 May 2026 13:53:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.33.75.86
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779371587; cv=none; b=claYKG1fNlJ4ncgx4762e0luaBk5yF203WYCtLzCFXpKvQJmZNsfWIfQ3QdYKXnWRhQzwRce+reJpeLCTybOSFbjqwMwHEoBHuAN/mhIX/5DKoHEnDdfcwZB83b7H+JI5KulAVc34q81tX/O4ZlXYvLrOzYwbJN4unPuTx/a9Og=
+	t=1779371598; cv=none; b=AqrZbFck5v4JoXypMc6JY3KWqAFXqimQ/aaQHTvqDiRT10GjD9w4eQwnA64F/IrBe+Rkqw9q+KSEvOId/qQZ7Pg57+HK+MKRgU33MVfa49svxEhT/7wLEqEiKA16sjs3OekGRdLqOn8RlJnra2N2HlUYGWPOiFG4PWOVzuUOo94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779371587; c=relaxed/simple;
-	bh=flOQwo6EthhGJKrTIzWxVqgufMZk42XG9Rnl/m4cozM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Yrc+/k2ywshnWTkabBo+5tKNLIVb1izSshATb0x0RWRqx7pzbfEGNFbzEKg/c6dQKVjopHDxj6PYuq7fY4bGXOwuf+W2WNBgMjgnlMWgB+G929Xmb1WvcJfWY+6R7MkVnVFJCvFuEYJqnYYzWlzTFsL/qUKxE5kG1n1YnBKKsJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=D2YmLf3G; arc=none smtp.client-ip=209.85.216.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1779371598; c=relaxed/simple;
+	bh=vTuWy5m4Stt6ukJzKt6PfNvI8u3+uksEa6chojF9C5M=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=YXbZr2puES2+s6fMJ8zop0fm/8nt4LpZqIPpslBe+1q8oSu+MPhOYBzRhlJJ+Lpjk6aLZccC82fVYLQUXB87ZH5/FTsA+kfoHm8HuovjTL1dQc0U1bSsV7j5Mf57dn4r3JWS/2dzwkwETehkomf13FYUIaM9fAoQ5Hj35xm4rAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmadams.net; spf=pass smtp.mailfrom=cmadams.net; dkim=pass (2048-bit key) header.d=cmadams.net header.i=@cmadams.net header.b=oAkSOZ2N; arc=none smtp.client-ip=45.33.75.86
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmadams.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmadams.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="D2YmLf3G"
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-365eecc5885so5588212a91.0
-        for <netdev@vger.kernel.org>; Thu, 21 May 2026 06:53:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779371585; x=1779976385; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=9scMsI1aLsfr1bm8JnebjnjIPyM0AlPvA53k1dCeHGc=;
-        b=D2YmLf3GfWcJQDPXAPg9dQWYIa++kCoqha2XzdsXMU18T7PskUB5FWIfEWZNYW3srk
-         YjWL8LQT0lTYgGnfejh0XUCB5MUtA3LDB2IAspr2veLtriq4b9eq+MtzCN6v2q2rvQcS
-         3Vk3CpMpR7+A0f9qWclyJYduxbAF8yUfRCSlRa5ngweAhnTQDZgXlKZU/16Jomb6+o3W
-         9jucCTwKxxoUPbXkdrQqUn4fqyWh0QsvAOzTYsAIJ2bLlJUd06CsQ4gO1HSlfMmyk+f0
-         k/QIOJpv8MdGdMYeYlzHPZuHrDVgMxypMCXXbGn8L1ILj8xONBAZEWpxNb9QZjizDn+U
-         q3mg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779371585; x=1779976385;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9scMsI1aLsfr1bm8JnebjnjIPyM0AlPvA53k1dCeHGc=;
-        b=d9Pxc2Z9TOsj6AkqkTxdCuqFRxoZFRnQ28c2fy2u+EONUQm2oDu8WJ93cJ4hCFZCnh
-         3qUxe6CWv9/NrKGssMVG5dGsMGWUtDTWUNC+X7BJ4wSIFpoRxgaVErsEuxP5RU1bJ5IU
-         O80ljIVqZc8Yil6FIu0NxWPzzwRBo3Y8cW8ogFNhqP4QNAvYfZ+p5hFOuzc5huPLs6HV
-         dvk6E/oH+ZhKqaz9FGwUmY6O5bWkr2rTDko6s26ZHxurkkq4eIIMuwDvbVZFcQ7udVJe
-         LWYwrU9Crv29GloGAGkviVpCLd/wIGsMA+gWp9TKqUEyn1z7NOcbjYUY69S9AEOXSNEi
-         OTmA==
-X-Gm-Message-State: AOJu0Yycn643gZJByl0BDnyfPRgsENfXDrO8hzkXwcqMlp1xDPND1wdJ
-	lXLQyOV5EkJkTPs9SLPB9pfmQixQgNxmmTsmG6I7kAJoBY9w2GaSBtjR
-X-Gm-Gg: Acq92OGqKCJfHS7ctXfMEwHDkJLgkiipv/aDOFVnkpEmFJpduyuqhfYvLuXBc2nkVea
-	OrW1Z3MMf2uiV/s1l50gZ7X6Cbmp1ENbj1n0JNKxQZDVZ9r3fibJL1eeguIZALn2v5ZhT/WCx43
-	/6lO6U1xQYNojfkQnHvow0Ez+ybpmzSglPMGfeXIn8tIFJ3bA07rQ1pmAEInE60hHKyFR7JgNsf
-	g9Hoz9Sy5R/Tji3PJDc5ooxmY5G3QGwSxpEWjm3JlSKFBmC49ugyuN1uM4FLIze+1RvAWrGH0K0
-	b8x4iHqMNfxjBA38hpcrLnqXAHl8rriWV6XtN5ksfDTGbF5z3JbUbBUTJuDPwwiIzdKO8lw8ghp
-	LFRyoRoHNrsbAdLzImGlq3iBfqaOpS91FxtO3xrGq5UqqhICzOMzIQzvCKaGnU+69ngVLV6jo1a
-	5+xcPgPGr1kUmhV0vfXld6J2+5bVndDTrjFrIoblGxju0K9qwfCN4/Rsh/0Kl4p3cOYEc3UUd78
-	03hnAjUMtuUMRoYsjNSPzOeEqYsOjg=
-X-Received: by 2002:a17:902:f70a:b0:2b2:81aa:f6c3 with SMTP id d9443c01a7336-2bea3385eaemr31636605ad.29.1779371585209;
-        Thu, 21 May 2026 06:53:05 -0700 (PDT)
-Received: from KERNELXING-MC1.tencent.com ([2408:8207:1923:2c20:2035:4b1f:d540:7ffb])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2bea98fcb09sm12957365ad.56.2026.05.21.06.52.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 May 2026 06:53:04 -0700 (PDT)
-From: Jason Xing <kerneljasonxing@gmail.com>
-To: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	willemb@google.com,
-	kuniyu@google.com,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	andrii@kernel.org,
-	martin.lau@linux.dev,
-	eddyz87@gmail.com,
-	memxor@gmail.com,
-	song@kernel.org,
-	yonghong.song@linux.dev,
-	jolsa@kernel.org,
-	john.fastabend@gmail.com,
-	sdf@fomichev.me
-Cc: netdev@vger.kernel.org,
-	bpf@vger.kernel.org,
-	Jason Xing <kernelxing@tencent.com>
-Subject: [PATCH net-next v2 0/6] bpf-timestamp: support rx side
-Date: Thu, 21 May 2026 21:52:38 +0800
-Message-Id: <20260521135244.40869-1-kerneljasonxing@gmail.com>
-X-Mailer: git-send-email 2.33.0
+	dkim=pass (2048-bit key) header.d=cmadams.net header.i=@cmadams.net header.b="oAkSOZ2N"
+Received: from localhost (localhost [127.0.0.1])
+	by linode.cmadams.net (Postfix) with ESMTP id 4gLqcQ5VTMz75N4
+	for <netdev@vger.kernel.org>; Thu, 21 May 2026 08:53:10 -0500 (CDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=cmadams.net; h=
+	user-agent:content-disposition:content-type:content-type
+	:mime-version:message-id:subject:subject:from:from:date:date
+	:received:received; s=20220404; t=1779371590; x=1780235591; bh=v
+	TuWy5m4Stt6ukJzKt6PfNvI8u3+uksEa6chojF9C5M=; b=oAkSOZ2N03uoOGEol
+	GsaveZwBMTezsRHaCjCx9Gq0/iNAlwABTCMLO1E2ylaIgCEDwccPDrHCTxKjnWXc
+	fyLRmgcCI1WF9yhDHWMlfQaYwwJdRnHZZTDSvCI/r9yaT24aUI2BIRy2gR02SREg
+	9OCFpUHNEj2dofmfpRNUk84NgEoO3LousOrm9aesUdEF2J+gONnn4lJwL4nwG+O3
+	D24SbCHm1gB6Ifw2EFuNI25cb/he02wRmIH3F7X4yv4IBciAMkx5dFJw69QEyZ69
+	Cha166CBkk5rrSD+pVyAX80b1oRlD/daJ07cMTm7T+8OVOinN00rDA737IsO7X1g
+	WHm9Q==
+X-Virus-Scanned: amavisd-new at cmadams.net
+Received: from linode.cmadams.net ([127.0.0.1])
+ by localhost (linode.cmadams.net [127.0.0.1]) (amavisd-new, port 10031)
+ with ESMTP id vPH6qdibi4Lr for <netdev@vger.kernel.org>;
+ Thu, 21 May 2026 08:53:10 -0500 (CDT)
+Received: from cmadams.net (localhost [127.0.0.1])
+	by linode.cmadams.net (Postfix) with ESMTP id 4gLqcQ1TbMz6wvd
+	for <netdev@vger.kernel.org>; Thu, 21 May 2026 08:53:10 -0500 (CDT)
+Date: Thu, 21 May 2026 08:53:10 -0500
+From: Chris Adams <linux@cmadams.net>
+To: netdev@vger.kernel.org
+Subject: Problem with IPv6 privacy addresses in 7.0
+Message-ID: <20260521135310.GC977@cmadams.net>
+Mail-Followup-To: netdev@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.21 (2010-09-15)
 
-From: Jason Xing <kernelxing@tencent.com>
+My normal use of my desktop system (Fedora 43) is to suspend at night
+and wake in the morning, and then immediately SSH to my remote server,
+where I stay logged in.  I use NetworkManager and have ipv6.ip6-privacy
+set to prefer-temp-addr, and SSH configured to use SSH keepalives.
 
-Previously the series[1] has already supported tx side for BPF
-timestamping, now it's time to support rx side.
+When I upgraded to kernel 7.0, I started having an issue with this - my
+SSH session gets dropped, usually several times, in the first hour or
+so, then I usually don't have any problem the rest of the day.  If I run
+an IPv4 session at the same time, that seems to be fine, so I don't
+think it's a network issue (I know that dual-stack doesn't always take
+the same path).
 
-[1]: https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next.git/commit/?id=68b92ac494eb
+What seems to be happening is that privacy addresses are removed while
+the SSH session is still using them, before the timeout even.  I wrote a
+script to watch public v6 addresses being added and removed, and this is
+what I've seen so far today (the number at the end is the valid_lft
+seconds), with the public prefix masked:
 
----
-v2
-Link: https://lore.kernel.org/all/20260518082344.96647-1-kerneljasonxing@gmail.com/
-1. support tcp rx zc case (Stan)
-2. add if-statements for ASSERT_TRUE (sashiko)
+2026-05-21 07:39:17 removed xx::f4f/128 4673
+2026-05-21 07:39:20 added xx::f4f/128 5400
+2026-05-21 07:41:20 removed xx:3e8c:f8ff:fe60:1d5a/64 4922
+2026-05-21 07:41:20 removed xx:7cb1:c518:1be0:d81d/64 4922
+2026-05-21 07:41:23 added xx:3e8c:f8ff:fe60:1d5a/64 5398
+2026-05-21 07:41:23 added xx:596a:f6f5:67b2:1d8f/64 5398
+2026-05-21 08:14:43 added xx:fac3:61f6:ad18:d712/64 4987
+2026-05-21 08:14:43 removed xx:596a:f6f5:67b2:1d8f/64 4991
+2026-05-21 08:30:26 added xx:84b4:244e:bb14:94fd/64 5398
+2026-05-21 08:30:26 removed xx:fac3:61f6:ad18:d712/64 5120
 
-
-Jason Xing (6):
-  bpf: Add bpf_ktime_get_real_ns() kfunc
-  net: export sock_disable_timestamp() declaration
-  bpf: support bpf_setsockopt for bpf timestamping rx feature
-  bpf: add BPF_SOCK_OPS_TSTAMP_RCV_CB callback
-  bpf: enable bpf timestamping rx in TCP layer
-  selftests/bpf: Add RX latency tests for bpf timestamping
-
- include/net/sock.h                            | 12 +++-
- include/uapi/linux/bpf.h                      | 10 ++-
- kernel/bpf/helpers.c                          |  6 ++
- net/core/filter.c                             |  8 +++
- net/core/sock.c                               | 20 +++++-
- net/ipv4/tcp.c                                | 10 +++
- tools/include/uapi/linux/bpf.h                |  5 ++
- .../bpf/prog_tests/net_timestamping.c         | 71 ++++++++++++++++++-
- .../selftests/bpf/progs/net_timestamping.c    | 35 +++++++++
- 9 files changed, 172 insertions(+), 5 deletions(-)
+I woke the system at 07:39:08 and SSHed at 07:39:39, which used the d81d
+source address.  That dropped in 2 minutes and I reconnected, which used
+the 1d8f address.  That dropped at 08:14:43, I didn't notice right away,
+I reconnected at 08:31:28 which used the 94fd address.
 
 -- 
-2.43.7
-
+Chris Adams <linux@cmadams.net>
