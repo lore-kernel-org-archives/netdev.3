@@ -1,73 +1,50 @@
-Received: from mail-vs1-f41.google.com (mail-vs1-f41.google.com [209.85.217.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7484D23BCEE
-	for <netdev@vger.kernel.org>; Thu, 21 May 2026 15:08:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6E9123BCEE;
+	Thu, 21 May 2026 15:08:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779376103; cv=none; b=FEfjNhABxxCegy3CjR/yzsdv5vUe38XrjoaOLjQqOlAwE1YzkNu7D/VQtC2tjocunYMGcBJHj110ARTgIfj8gDUv2EqzbPzrw0unoepL/LCa89Q+b0KpG41JNkrizS0xuS/zNuafcoLE4hM3a6JA5RZ5XUn1TgPg6FMF79tsyvU=
+	t=1779376111; cv=none; b=WEXtWcWOcabrQUcqv95QsyvI4gs3nyc3DwLkds+DwhzK+czxOKHy5xQuPEXGs7oo4W/91cmVGs3YOrvCDkbLD4VIHRIYO7j3+Udr7IkBkRGMuFCUVSRbfaiw9OVSFhZqt4Rg7TIoCsdiLRCHS2luV/XWWHtFg8S85+NXZI+lvH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779376103; c=relaxed/simple;
-	bh=OEPQOe7VPkCYeUN0fMBjKD0J61bU7391RwDg/hXAE7I=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MO6WGNPrAx4yvm0vUdhWVfXSNSK9Y6js1Oy4DxWhnshRDCE9rBR2WwEtRij5r00WJaB/JD1sGO8ZzqhFqfolFySfIvmOkfIAEIOaUuLjCvpL4Ri7xpwULUzStAyYXJhFaC2MtLXsUpao9nhmtdqBncrVAbNlMHoQA5lG+aBOk8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (2048-bit key) header.d=mojatatu-com.20251104.gappssmtp.com header.i=@mojatatu-com.20251104.gappssmtp.com header.b=LbcwQu88; arc=none smtp.client-ip=209.85.217.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	s=arc-20240116; t=1779376111; c=relaxed/simple;
+	bh=jb34L8VcwgEauQgJyCRvP26vEIKsWar8YNnCNAzos48=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=XmU7iYQZ1FTYqj0pUjgFoh3zdsCJRqb6Ut3rpN6jRENob90buoeMGFaJo6B7+40CT0XAkmIgNv+OU/nePiUIccqeWitFkbegssTXk6m39CZZA5SktgWchxHBP7ZSHctFnd2e5pC4QAqjVO4PnlWrS6FhUr/0emwtEfSQ9gKJ/FY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YoALMLLa; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mojatatu-com.20251104.gappssmtp.com header.i=@mojatatu-com.20251104.gappssmtp.com header.b="LbcwQu88"
-Received: by mail-vs1-f41.google.com with SMTP id ada2fe7eead31-6314d2e31d6so2128964137.0
-        for <netdev@vger.kernel.org>; Thu, 21 May 2026 08:08:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu-com.20251104.gappssmtp.com; s=20251104; t=1779376100; x=1779980900; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=dufChQmfBmIYymq91soBr9mxGxyqJ2a2wQN8zGScCUQ=;
-        b=LbcwQu884TNrVbIGtWYnkZcMwvgpLfO7xYRf+jt0BpUmky4s4V/WWx9fmVWliwXyIO
-         282m1Bso/Y+GCMAY7+iEhhD4mKFQ9Fv99YlwsILxJEwYsY2+JPQuTyINGdM44+xc9+We
-         z+6Eu/T6RTGrvWzNgO8IkOS92LoEM80Knuhnr4qVrj6yXpEMlBmf9ZzJSPRVhlPhsGiQ
-         gT834RAffoAFcWgx2RxDHEQ+Ya+5cO7H7w5Lx5PqzjULf6+fjOhAQeygwz6TyM7sE2ws
-         4PDF7Tfcy03jKlX+3nL4CC2e41hF+mtQ2p9Oz5NAsW4VHb6U6Z1bCZyj6GgMRqxT7UWP
-         r+6w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779376100; x=1779980900;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dufChQmfBmIYymq91soBr9mxGxyqJ2a2wQN8zGScCUQ=;
-        b=Ie87/q9kHMAdek3ynr9NhinA5mq8PChZNctPjzsl7bYHeEhAVdgfyVd5YHWpNFJpop
-         b0YF5rh8BKzPbOAf7cVERWHlieZ1qjvTnGN8rT0ILldDwPi/PizYA1W4z0QcjtDedXjb
-         iRwmLiwuwa0CR5HDbcJGkNGfwvQ6hNhdThEa8T8RtW/UnRI2yQhposZ6IKmSFXu0RFrf
-         KoIEEbb1iRJLzpKqM6O/xGQjOB+GDqQpEZY/7MXj4IAMlG18fY/zWJA0wjvtCjMMNpzW
-         3HaMQhpb0+biC5Hj4teMvgrSdRnE770DhcZKZHmb9O1ITYcHdx6JQ1hG7/21C1u7HvYe
-         VmXw==
-X-Gm-Message-State: AOJu0YzbklLpE0mXeqo+QdrzrebhFGen6XgbM4/ARNdvGC91ikDnnkX8
-	v0xRumF9V7g4amaJKx1rgQgdCipngtiZys3DfzSZ0t9bM8iK5jP/8FSDGQ18+I9nNg==
-X-Gm-Gg: Acq92OEI6q/ZzlVAZwg8DBPO2D6M6kH9pDajk0NfguPmDBQTqRLb8nY3BtcAwUBh0Ql
-	rFboZFXJOKBVpSzYY2mpTXPZ+uv/AM5LoQkG2dN9aKKdHL6rcza96DvBQjWDqBW7WYA5ls3IH6h
-	wF0sg5fQmQovUjEVvPS0a7XWTqsL3OG+rOZGbo8Xh6vLEE5cywq6JNbpaq59sK/73zDMkmy9GBp
-	rR6lNWrkunoLCnbzz4k9Nnf4GdCyH7+oeQNEm+a/LmInRmRaTH0NvXVIqbsMCT3iR8d+oov8T5r
-	idJCVmz82pL8G4WTsTPQTSZQt6FUgKl8LwBGyadJbIrPlHQgLRfgMOsECRo8lW5J8i5zuPDAk60
-	JMVqdr9Ip2sA793pkTT2nehYpgFSwsCr/xzkTdaMppJpeLkgwYijCsqzxn7zGXHFTB8FR1dR1qC
-	ch4xNv4IluP+fzxOoR7/oXtvTVkk7S+yepUhifaS6c2HjCCg==
-X-Received: by 2002:a67:e7cc:0:b0:62f:357a:3297 with SMTP id ada2fe7eead31-6738d46402dmr1986197137.5.1779376100139;
-        Thu, 21 May 2026 08:08:20 -0700 (PDT)
-Received: from exu-caveira.tail33bf8.ts.net ([2804:14d:5c54:4d67:f17:d82a:d5b8:20a])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-679fa70c8d7sm881114137.11.2026.05.21.08.08.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 May 2026 08:08:18 -0700 (PDT)
-From: Victor Nogueira <victor@mojatatu.com>
-To: davem@davemloft.net,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YoALMLLa"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B7D31F000E9;
+	Thu, 21 May 2026 15:08:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779376109;
+	bh=wsI2JSu5ZVhkCKTuqMWxdeMbkee5Xrcr6HitnmGytsQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=YoALMLLayXF0ALUJvhkhFGoFdVzju9pBQKZMMfkOBY48EHv/+PMq+wOzBeBqkMvC0
+	 jEGDLzN8o0T7QQ3GUJMV4ikUHeahRD4XwiXH92JXVwOjph81ijCfSWUwgcg3cvsKyK
+	 Y2geeg1mQ6qS6kum/uKa3560VFHIx7G0blOOAX7SK1NowOLYgaVbTZyrjRF2k7PzkW
+	 B7EypWUyjFPpZt78Ef8xaKU+2f/XK+YqCeThLk6NoFXjUIFakoLvcIkSssGZL67w5W
+	 ix6zomjqCftYvNKIywzx+6rQbCy+KEhxLYNot1coSDpeC/lvV+7GqgrU2TE3070n5i
+	 A9qkc1KqCRB7Q==
+From: Jakub Kicinski <kuba@kernel.org>
+To: nihaal@cse.iitm.ac.in
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	loic.poulain@oss.qualcomm.com,
+	ryazanov.s.a@gmail.com,
+	johannes@sipsolutions.net,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
 	edumazet@google.com,
-	kuba@kernel.org,
 	pabeni@redhat.com,
-	jhs@mojatatu.com,
-	jiri@resnulli.us
-Cc: netdev@vger.kernel.org,
-	pctammela@mojatatu.com
-Subject: [PATCH net-next 1/2] selftests/tc-testing: Add support for ifb devices
-Date: Thu, 21 May 2026 12:08:10 -0300
-Message-ID: <20260521150811.1896373-1-victor@mojatatu.com>
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH net] net: wwan: iosm: fix potential use after free in ipc_imem_cleanup()
+Date: Thu, 21 May 2026 08:08:28 -0700
+Message-ID: <20260521150828.851544-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260519064028.60992-1-nihaal@cse.iitm.ac.in>
+References: <20260519064028.60992-1-nihaal@cse.iitm.ac.in>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -76,113 +53,72 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add support for ifb devices in tdc so that tests with the nsPlugin are
-able to use it when necessary.
-
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: Victor Nogueira <victor@mojatatu.com>
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
 ---
- tools/testing/selftests/tc-testing/config                 | 1 +
- tools/testing/selftests/tc-testing/plugin-lib/nsPlugin.py | 7 +++++++
- tools/testing/selftests/tc-testing/tdc.py                 | 3 +++
- tools/testing/selftests/tc-testing/tdc_config.py          | 1 +
- 4 files changed, 12 insertions(+)
+net: wwan: iosm: fix potential use after free in ipc_imem_cleanup()
 
-diff --git a/tools/testing/selftests/tc-testing/config b/tools/testing/selftests/tc-testing/config
-index c20aa16b1d63..0e5618be0335 100644
---- a/tools/testing/selftests/tc-testing/config
-+++ b/tools/testing/selftests/tc-testing/config
-@@ -4,6 +4,7 @@
- 
- CONFIG_DUMMY=y
- CONFIG_VETH=y
-+CONFIG_IFB=y
- 
- #
- # Core Netfilter Configuration
-diff --git a/tools/testing/selftests/tc-testing/plugin-lib/nsPlugin.py b/tools/testing/selftests/tc-testing/plugin-lib/nsPlugin.py
-index bb19b8b76d3b..0bece7c74f07 100644
---- a/tools/testing/selftests/tc-testing/plugin-lib/nsPlugin.py
-+++ b/tools/testing/selftests/tc-testing/plugin-lib/nsPlugin.py
-@@ -120,6 +120,7 @@ class SubPlugin(TdcPlugin):
-         dev0 = self.args.NAMES["DEV0"];
-         dev1 = self.args.NAMES["DEV1"];
-         dummy = self.args.NAMES["DUMMY"];
-+        ifb = self.args.NAMES['IFB']
- 
-         if self.args.verbose:
-             print('{}._nl_ns_create'.format(self.sub_class))
-@@ -129,6 +130,7 @@ class SubPlugin(TdcPlugin):
-         with IPRoute() as ip:
-             ip.link('add', ifname=dev1, kind='veth', peer={'ifname': dev0, 'net_ns_fd':'/proc/1/ns/net'})
-             ip.link('add', ifname=dummy, kind='dummy')
-+            ip.link('add', ifname=ifb, kind='ifb')
-             ticks = 20
-             while True:
-                 if ticks == 0:
-@@ -136,8 +138,10 @@ class SubPlugin(TdcPlugin):
-                 try:
-                     dev1_idx = ip.link_lookup(ifname=dev1)[0]
-                     dummy_idx = ip.link_lookup(ifname=dummy)[0]
-+                    ifb_idx = ip.link_lookup(ifname=ifb)[0]
-                     ip.link('set', index=dev1_idx, state='up')
-                     ip.link('set', index=dummy_idx, state='up')
-+                    ip.link('set', index=ifb_idx, state='up')
-                     break
-                 except:
-                     time.sleep(0.1)
-@@ -169,8 +173,11 @@ class SubPlugin(TdcPlugin):
-         cmds.append(self._replace_keywords('link set $DEV1 netns {}'.format(ns)))
-         cmds.append(self._replace_keywords('link add $DUMMY type dummy'.format(ns)))
-         cmds.append(self._replace_keywords('link set $DUMMY netns {}'.format(ns)))
-+        cmds.append(self._replace_keywords('link add $IFB type ifb'))
-+        cmds.append(self._replace_keywords('link set $IFB netns {}'.format(ns)))
-         cmds.append(self._replace_keywords('netns exec {} $IP link set $DEV1 up'.format(ns)))
-         cmds.append(self._replace_keywords('netns exec {} $IP link set $DUMMY up'.format(ns)))
-+        cmds.append(self._replace_keywords('netns exec {} $IP link set $IFB up'.format(ns)))
-         cmds.append(self._replace_keywords('link set $DEV0 up'.format(ns)))
- 
-         if self.args.device:
-diff --git a/tools/testing/selftests/tc-testing/tdc.py b/tools/testing/selftests/tc-testing/tdc.py
-index 81b4ac3f050c..511d66c36a2a 100755
---- a/tools/testing/selftests/tc-testing/tdc.py
-+++ b/tools/testing/selftests/tc-testing/tdc.py
-@@ -378,6 +378,7 @@ def run_one_test(pm, args, index, tidx):
-     dev0 = NAMES['DEV0']
-     dev1 = NAMES['DEV1']
-     dummy = NAMES['DUMMY']
-+    ifb = NAMES['IFB']
-     result = True
-     tresult = ""
-     tap = ""
-@@ -414,6 +415,7 @@ def run_one_test(pm, args, index, tidx):
-     NAMES['DEV0'] = '{}id{}'.format(NAMES['DEV0'], tidx['id'])
-     NAMES['DEV1'] = '{}id{}'.format(NAMES['DEV1'], tidx['id'])
-     NAMES['DUMMY'] = '{}id{}'.format(NAMES['DUMMY'], tidx['id'])
-+    NAMES['IFB'] = '{}id{}'.format(NAMES['IFB'], tidx['id'])
- 
-     pm.call_pre_case(tidx)
-     prepare_env(tidx, args, pm, 'setup', "-----> prepare stage", tidx["setup"])
-@@ -474,6 +476,7 @@ def run_one_test(pm, args, index, tidx):
-     NAMES['DEV0'] = dev0
-     NAMES['DEV1'] = dev1
-     NAMES['DUMMY'] = dummy
-+    NAMES['IFB'] = ifb
- 
-     return res
- 
-diff --git a/tools/testing/selftests/tc-testing/tdc_config.py b/tools/testing/selftests/tc-testing/tdc_config.py
-index 9488b03cbc2c..cd0bd42f05a5 100644
---- a/tools/testing/selftests/tc-testing/tdc_config.py
-+++ b/tools/testing/selftests/tc-testing/tdc_config.py
-@@ -17,6 +17,7 @@ NAMES = {
-           'DEV1': 'v0p1',
-           'DEV2': '',
-           'DUMMY': 'dummy1',
-+          'IFB': 'ifbtdc0',
-           'ETHTOOL': '/usr/sbin/ethtool',
- 	  'ETH': 'eth0',
-           'BATCH_FILE': './batch.txt',
+This commit reorders ipc_imem_cleanup() so that ipc_task_deinit() runs
+before ipc_protocol_deinit(), so a tasklet observed mid-flight does not
+dereference protocol memory that has already been freed.
+
+> diff --git a/drivers/net/wwan/iosm/iosm_ipc_imem.c b/drivers/net/wwan/iosm/iosm_ipc_imem.c
+> index 1b7bc7d63a2e..a3353af6960c 100644
+> --- a/drivers/net/wwan/iosm/iosm_ipc_imem.c
+> +++ b/drivers/net/wwan/iosm/iosm_ipc_imem.c
+> @@ -1256,8 +1256,8 @@ void ipc_imem_cleanup(struct iosm_imem *ipc_imem)
+>  	ipc_imem_device_ipc_uninit(ipc_imem);
+>  	ipc_imem_channel_reset(ipc_imem);
+>  
+> -	ipc_protocol_deinit(ipc_imem->ipc_protocol);
+>  	ipc_task_deinit(ipc_imem->ipc_task);
+> +	ipc_protocol_deinit(ipc_imem->ipc_protocol);
+
+[High]
+Does this reorder fully close the cleanup race, or only the narrow window
+between the tasklet and ipc_protocol?
+
+The MSI handler ipc_msi_interrupt() remains registered throughout
+ipc_imem_cleanup(); ipc_release_irq() / free_irq() is only invoked later,
+from ipc_pcie_resources_release() after ipc_imem_cleanup() has returned.
+
+Once ipc_task_deinit() returns, ipc_imem->ipc_task->ipc_tasklet has been
+kfree()'d:
+
+void ipc_task_deinit(struct ipc_task *ipc_task)
+{
+	tasklet_kill(ipc_task->ipc_tasklet);
+
+	kfree(ipc_task->ipc_tasklet);
+	...
+}
+
+If the modem fires an MSI in the window between ipc_task_deinit() and
+ipc_release_irq(), can the path
+
+  ipc_msi_interrupt()
+    -> ipc_imem_irq_process()
+      -> ipc_task_queue_send_task()
+        -> ipc_task_queue_add_task()
+
+still dereference ipc_imem->ipc_task->ipc_tasklet (now freed) and call
+tasklet_schedule() on it? Once kfree(ipc_imem->ipc_task) executes, the
+q_lock and queue array are also freed.
+
+The only attempt to quiesce the IRQ producer before this point is
+ipc_imem_device_ipc_uninit(), which is best-effort: it is skipped when
+ipc_pcie_check_data_link_active() returns false, has roughly a 30 ms
+timeout, and does not call synchronize_irq().
+
+This race appears to predate the patch (the freed-tasklet use-after-free
+after ipc_task_deinit() was already reachable from the live IRQ handler),
+so it is not introduced by the reorder. Would it be worth calling
+ipc_release_irq() (or free_irq() / synchronize_irq()) before
+ipc_task_deinit() / ipc_protocol_deinit() so that no MSI can schedule new
+work against freed resources?
+
+>  
+>  	kfree(ipc_imem->ipc_task);
+>  	kfree(ipc_imem->mmio);
 -- 
-2.54.0
-
+pw-bot: cr
