@@ -1,96 +1,101 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f201.google.com (mail-qk1-f201.google.com [209.85.222.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F30833CE092;
-	Thu, 21 May 2026 12:17:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FF013803F2
+	for <netdev@vger.kernel.org>; Thu, 21 May 2026 12:21:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779365838; cv=none; b=ZPT1/GoiqU2LlrOLEYEwFaP2LzX+btQMfDQb6EtXXtMvwYI6slQnNBH9T79HfZi97D3wdrIgo3Po6/6INexv2mPrEZNxhO6+/ThMR/VeMo4V9svHX1llgYoYqscW2nCL3aAgJ/xcLZQDSxm8lhti4tG1RDL/lRJxoLhIZPoyYlk=
+	t=1779366111; cv=none; b=YgUvp4Y96NwKFrECCUnHlukiEZb1QIygUeggTN8vj9lHz+8BsOEb6P+i5sueqGpLxr93geUN5UVgKbhmNBcjBXggviOjZ7+7KRwfwplszyEt6zdQNw9S9CtAeOVfPCZCEeUlKDwtr5p9gUOtmDy0xcQxyNuylDtRXZgoq18Wva4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779365838; c=relaxed/simple;
-	bh=Jk4+rfMKZ8lHig7foj3594eaY2uM2QAv6kp+lRHbTjQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KGmuxxjQiA7LAQwSzEZUiK5Rvh/415osYaxASIzdSM3lauevTD5YmRLA3UAPa/amOqu39li0jGSWx+2evWr6P/Crel/okK90eiexGeMzTqO6U0vmCyqoFBLgTMbeCuYcj+idXlOqYAHoYM6ystAGDF0CS9NDOIyBnfCEGYibUMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=5n04J1WS; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1779366111; c=relaxed/simple;
+	bh=df+czxFJY62wmy0BBv2jp/l705aaRE9bztdDwIaIRjk=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=Gwndq+n03RuQsgEdhUAGSxT1nsWLCwvyXEHkBL5a7KGCI4tOLvowTwdUBScXyRC+hV3j2mRJbzxfXIJrEirPSJOrrGP0COpR1ESbzTtVRgwtfuPFakEYaKxWjDpbUB9tVLCeFADQTbWfv81sbHtUZDoW2o3ijVs4G7fY9CPTmwg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=alP3XDgh; arc=none smtp.client-ip=209.85.222.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="5n04J1WS"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=iB4Yuhl6oOgylFRmPc9Zztfa4P8W39unwT+VZ9BG5f4=; b=5n04J1WSsJpFNg+aZpa3fPCKmy
-	cpnlbpfQQPZU9jtDMlKXJQu28Mf90D4557Mj9BIKZ6SoJxeuAkHsfIuXfFoXA/4NGXrXf5+ZZrx8o
-	6VzFD/2jXDwMDVUZIg7POICh8twp9ARhBmVTyWRCElkHR6nWaiALRg6SkUgQrFkt7s88=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wQ2Kq-0040wQ-NC; Thu, 21 May 2026 14:17:08 +0200
-Date: Thu, 21 May 2026 14:17:08 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: "Maciej W. Rozycki" <macro@orcam.me.uk>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net 0/5] ethernet: 3c509: Bring driver back and make some
- fixes
-Message-ID: <e1c7eab4-b330-49ad-bd39-df7dbc0a9511@lunn.ch>
-References: <alpine.DEB.2.21.2605201115010.1450@angie.orcam.me.uk>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="alP3XDgh"
+Received: by mail-qk1-f201.google.com with SMTP id af79cd13be357-910304978f3so1227032985a.1
+        for <netdev@vger.kernel.org>; Thu, 21 May 2026 05:21:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1779366109; x=1779970909; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=RmzeDLfWAnv7ll84t2xkJqhf2kd2cAoqRZvN2MkbXlA=;
+        b=alP3XDgh9hKsx25YqfEczObIRzovupavMHFeRf9efeal4X0joylHArBKaw47sIKq8X
+         U7XGWmCzWoggTfD0NniISInwWeFX9a61mqg0qL/WIHeNgFNmccEdWkxwGkBtBdpul2ph
+         rlS8/3u0BrYsfiXDTIU1sjZn+NJZKsAhZ2yMR8PzjkzHzbh0GyxrhaFFRMGMtBUsZiNh
+         3d7pQpjaGlQrUtVB1jVQwZTL+8+u+saCo6ynCZ5XUlRrhoIoiUrl85oiTccHxJFcv/Cx
+         0OALX3QxJtKiEYwU73SgGT9BQgnH4+radcrxGZ7Z7gtN4OrSBaDOzscw8hp+nzd7U0lZ
+         btaw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779366109; x=1779970909;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=RmzeDLfWAnv7ll84t2xkJqhf2kd2cAoqRZvN2MkbXlA=;
+        b=Psucx+kzPFkdHDjVS/Y6lOhUZHQxSdiXM/Zy1KFgrWUFtfmSpAlxnR7Oty189lCie+
+         vdSSpnamWfg7XuR9ykNsJebNRYOqWtONl7pYIpw5VinImvC2Xb+oC0QalyYd2pebbXdX
+         TOAgDGljt2FPrFjpIVciSJAW+YeS+AH1IfPCOtqAQNFVjf6OKiuLKWkf+LFpxhDZ1mtJ
+         xJlklTXcSMDf4OLBx5clKrRrTXgo5SHsCM0IpT/QpAQNV6GQdpO3ydCJNbEx3HZTP95s
+         p5YblWZGpRpg3YU6gRNYZibK8NjmO9eSMxFRU61SqetY1XfUSgd+coVsYWoLmS+9igJr
+         usnw==
+X-Forwarded-Encrypted: i=1; AFNElJ9LwtyEqIaVe1S8o0q/KnLKZlibCcm6P2zY1stRsZQsZiKMVkHOXPICCy2R9uZkF5kyXPsjAGk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw+BBfJkyPM2EEdPVwgUJvSS44paV/CpOstUXIBVFkzBCgIq8Rl
+	M/tEAY0JgABTjH5uEXbsMUn5jac25ei7ZBpVgQ1XBJUHv7+sFFhGNOWA0H4so9VK1XO1sCvyId6
+	DratmoTvQ5oTXeg==
+X-Received: from qknqc4.prod.google.com ([2002:a05:620a:6544:b0:910:350a:6468])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:620a:404b:b0:8f8:d17c:9f9 with SMTP id af79cd13be357-914a272c301mr299429085a.16.1779366108655;
+ Thu, 21 May 2026 05:21:48 -0700 (PDT)
+Date: Thu, 21 May 2026 12:21:47 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <alpine.DEB.2.21.2605201115010.1450@angie.orcam.me.uk>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.54.0.669.g59709faab0-goog
+Message-ID: <20260521122147.3584624-1-edumazet@google.com>
+Subject: [PATCH net] ipv4: free net->ipv4.sysctl_local_reserved_ports after unregister_net_sysctl_table()
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
+	Ido Schimmel <idosch@nvidia.com>, David Ahern <dsahern@kernel.org>, eric.dumazet@gmail.com, 
+	Eric Dumazet <edumazet@google.com>, "Ji'an Zhou" <eilaimemedsnaimel@gmail.com>, 
+	Cong Wang <xiyou.wangcong@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, May 20, 2026 at 12:18:44PM +0100, Maciej W. Rozycki wrote:
-> Hi,
-> 
->  As per the previous discussions[1][2] this patch series brings the 3c509 
-> driver back.  Picking up net rather than net-next as I consider it a fix 
-> to accidental removal and so that any downstream users do not suffer from 
-> disruption when using released kernels.
-> 
->  In the course of making the coding style changes requested I have come 
-> across an actual bug in transceiver type selection code, where the old 
-> setting is not masked out before ORing in the new one, causing no change 
-> to be actually made in a requested transition from BNC to AUI.  I guess 
-> this code must have been executed exceedingly rarely, as it's always been 
-> wrong ever since it was added in 2.5.42 back in 2002.
-> 
->  Therefore I find it not worth backporting to stable branches, however for 
-> the sake of appropriateness, in case someone downstream does want to have 
-> the fix, I chose to apply it second in the series, right after the actual 
-> revert and before code clean-ups.
-> 
->  The remaining patches of the series should be obvious; see the respective 
-> commit descriptions for details.
+ipv4_sysctl_exit_net() is currently freeing net->ipv4.sysctl_local_reserved_ports
+too soon.
 
-You need to split this up. Patches to net are likely to get back
-ported, even if they don't have Fixes tags. So please add the driver
-back in net, but fixup the issues you have found in net-next.
+Only after unregister_net_sysctl_table() we can be sure no threads can possibly
+use the sysctls, including /proc/sys/net/ipv4/ip_local_reserved_ports.
 
-There is also an question of if we want the coding style patch or not.
+Fixes: 122ff243f5f1 ("ipv4: make ip_local_reserved_ports per netns")
+Reported-by: Ji'an Zhou <eilaimemedsnaimel@gmail.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Cong Wang <xiyou.wangcong@gmail.com>
+---
+ net/ipv4/sysctl_net_ipv4.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-https://www.kernel.org/doc/html/latest/process/maintainer-netdev.html
+diff --git a/net/ipv4/sysctl_net_ipv4.c b/net/ipv4/sysctl_net_ipv4.c
+index d8bdb1bdbff17ab52fe969b93ce13673e88c05a4..c0e85cc171aec099fd5d4897b1a623dd27eaee08 100644
+--- a/net/ipv4/sysctl_net_ipv4.c
++++ b/net/ipv4/sysctl_net_ipv4.c
+@@ -1705,10 +1705,10 @@ static __net_exit void ipv4_sysctl_exit_net(struct net *net)
+ {
+ 	const struct ctl_table *table;
+ 
+-	kfree(net->ipv4.sysctl_local_reserved_ports);
+ 	table = net->ipv4.ipv4_hdr->ctl_table_arg;
+ 	unregister_net_sysctl_table(net->ipv4.ipv4_hdr);
+ 	kfree(table);
++	kfree(net->ipv4.sysctl_local_reserved_ports);
+ }
+ 
+ static __net_initdata struct pernet_operations ipv4_sysctl_ops = {
+-- 
+2.54.0.669.g59709faab0-goog
 
-  1.7.4. Clean-up patches
-
-  Netdev discourages patches which perform simple clean-ups, which are
-  not in the context of other work. For example:
-
-  * Addressing checkpatch.pl, and other trivial coding style warnings
-
-The problem with these sorts of patches is that they often break
-stuff. This driver has been stable for a long time. Do we care about
-coding style issues enough that we are happy to possibly break it? Do
-we want to spend time on debugging it? Probably more time than it took
-to fix the checkpatch issues?
-
-       Andrew
