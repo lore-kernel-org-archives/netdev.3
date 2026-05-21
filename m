@@ -1,131 +1,187 @@
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5CE83D9DB3
-	for <netdev@vger.kernel.org>; Thu, 21 May 2026 12:49:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 330193CCFBD
+	for <netdev@vger.kernel.org>; Thu, 21 May 2026 12:50:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779367784; cv=none; b=ZJ0lFNiKWrCW8xNmKEj+oq4TtZDrCtXRLDKQEW6u93CDnHC7k+DoiU0qprzpakVMqmCguqikzW4SQPof8sGOzXyffQMFxu811TLUAPefQnZfiLS5Hv8KrxlUPms6993DS97lF+QBz7oB5nw8zXOcS3+ugSI3mCzKc/SVGnEvX3g=
+	t=1779367821; cv=none; b=PGXPNWP0PhURJ61j1eTEMSzdeIadZRMn07GJ5JAVImVzAX0/hMn1SxyZ95bbz0J15p4tkpYm6xRbKgBRJNQsKX88RYu5bqVqxBOvkcPzYz1HzyxfOKXCz62v33L3VZWjPQWRlQmyrBuSmUO3wYlxgw8BB0wmpoltVBsvQOQ4cYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779367784; c=relaxed/simple;
-	bh=wigWFtjyEa+VCBZgvrGiZjEW95od0zj93AXCLLanc/A=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=Z+rOw3vbRD3CAPLNtdbptZvV4aNmWlgWAbwr8xJHLdvcLRPyf5YflM4V6TtMwoMZ3bYfL2X8/d35vhQC6Wz0ze+tyZV/KYaR8K5fdlsTH4i2xDOPZzoLlkhxiwV5/nGD2rmBGWEceLG2L2syFQrOo7RVjJczudfqjubdTt4Xow8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VaykBOUh; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1779367821; c=relaxed/simple;
+	bh=lx1WvBKn0pMi/OHOQ28saLK4HRekU/jnGv6Qhpo1Trg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=P3fGus8uP+CAfj70cxIwN2MMJK9Qp9ynUoPwWNSpOhghg3w1k7jhUvHXzuoo6ZClAMf9kE7HQO4CdlIvr+g/C4y7kTOvLpTPiOnxVWNGb/N8m+bTZFbyHwPsBVwxbZEtU1D1ZZd/VB1SFhTNxbSFMXYmAjGWogXHWeUChG+TyTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KDRF1Z1l; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VaykBOUh"
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-48fde648a71so43859795e9.0
-        for <netdev@vger.kernel.org>; Thu, 21 May 2026 05:49:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779367780; x=1779972580; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=3FOLDoUTVhvtMvpFRrgXFdt2ND7UZm3SuSUfzhbpzKo=;
-        b=VaykBOUhtlW88xUww3Jn5n8ZoH/J009CQrx1v1vDaCNrv3+YyuH/fRW2keFMJzUlVX
-         VdEGp0dnCqEdkx9wl+a8j7+8Q9/SERvqCcnXg9ZwfrjRvDe4w3DhYB6NEjbNDwXh61HL
-         hfEX2fBsGwsUFq4yYoD6BddM+16lBOR/yXgto2fZGDJb0wZOAW8ffS0D60mRhTrvNMiq
-         IXruIKVEmjHzAX4Tu0UmfNMrzBNcRGOOplb2hDcgIL/NPdS/2ECYJO4oO9fNAwCyEFPf
-         +xHyv4zHnCaI93HCTE3MIyZKLtrDrclTvN+KszVa/Ojru1dZc7NIwFl6EikzLxvSgP9y
-         q4fw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779367780; x=1779972580;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=3FOLDoUTVhvtMvpFRrgXFdt2ND7UZm3SuSUfzhbpzKo=;
-        b=jUSvAWqDVDZs5JmaTSDxyRhMUb0FoJFleWIToK/kTmOpS/67qFr0lech1bNc5N3fc4
-         jRXiUi+xk9yJnDVBKU9+pcXp3VhFhPndKpD6n3UpwQVPo+z2OBID8rXHhi0OC5ndMLoh
-         c6E9qwjj2x7R4nBZKSb5b5qnQTPI512CRagBl7eHBGpTI98l0G+fjhA2bfmX85J4to98
-         hy/7PSsbg2noD0n7JphQJ/jJB5LYgv8Z9/SBb1kuRrwBXzrVbcZ535NothwxA0Vlg8cB
-         4z85FAMJMhXO8jZStslqNemDW6H33Fy5kiNZzb/RTOe9ZNW4hVJ6/HlXx7bmskD4llc0
-         ke/g==
-X-Forwarded-Encrypted: i=1; AFNElJ899+nbLRwBgYMca/ERNRhmVbKTemCYazTD27KhVUq//tCE7PxHYNmdwQALn4LvUmJbQyd0r04=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzEV63uRCgrZWqOlMb5jRRDWYDq8kMNd3Ap4XCY3ZBMX9IVq1Ln
-	6PFaz+5nLooBMHfzYUcWqeYY6+bM9nB4FOaAFAdleETSv+qqAMGGRWWJ
-X-Gm-Gg: Acq92OHqMXIcyydIKrg2z2HanOK1IR4Yz2WXElUIrFM4B2sTU1nn7XdOTPLqpnrA4kS
-	fkHhbJjjLVp87EJIVS8Fj0fm/3gM4N3wGicEYPtv7Vv52PUc+b5q8OzNiMk4c3CAEIkMqqZUd9F
-	2/IQ+o49Zf0nGKbvwslDmOl4D6hR8bGtzfCLKCQOCCqd1CFlxvt4XqaS30Mod/WLxntdtRt4v4P
-	eyvBc8rMEEqW13XNCCO9C/zcOCTe4wUvI9IazHvyxwmZPqzfhMOUP37+g+O3QQomhEYz4NM1jLx
-	3aNyuyGdCPUHUC9OfjBhLp+bg6VfR7/rxzZ/AbTk4dvEENicI7IA3VUNYF72i6r5dwGeBDNiGt0
-	Vn7Ak3IXqZM9DR0DRiu/OaF9Y52m3ujIwGwu06oo0FKS8bvh5QVLQpFV28nZF8TuXvibkrYKB+L
-	3vWU2vwrWT67UO8+QYoftrxbs=
-X-Received: by 2002:a05:600c:8286:b0:489:32b:ac0b with SMTP id 5b1f17b1804b1-4903606a0bdmr35037485e9.6.1779367780083;
-        Thu, 21 May 2026 05:49:40 -0700 (PDT)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49035c219a0sm16144605e9.5.2026.05.21.05.49.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 May 2026 05:49:39 -0700 (PDT)
-Date: Thu, 21 May 2026 15:49:36 +0300
-From: Dan Carpenter <error27@gmail.com>
-To: David Carlier <devnexen@gmail.com>,
-	Horatiu Vultur <horatiu.vultur@microchip.com>
-Cc: UNGLinuxDriver@microchip.com, Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	kernel-janitors@vger.kernel.org
-Subject: [PATCH net-next] net: lan966x: cleanup error handling in
- lan966x_fdma_rx_alloc_page_pool()
-Message-ID: <ag7_YBWRpRmY9MGT@stanley.mountain>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KDRF1Z1l"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1779367821; x=1810903821;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=lx1WvBKn0pMi/OHOQ28saLK4HRekU/jnGv6Qhpo1Trg=;
+  b=KDRF1Z1lOjXfqbj8XRhloOOaXc5ZPkcGdxQSzNGeXhxPeNSB7Viqyz/M
+   SQhS61gXUG7zqC+yJuMR65Snsim4LJRFX09wDk5gb3YsPCw/U8VdgydSe
+   K2N3pJMpf2/uKfnomNOrmYciWkcU2tv5QvYFN1f9P/XSKKnrskeP1TMVN
+   bydhxnrz1X+Hja+m0wXk4jZGs9/WadX4bixgdiEOcKJkJZQm0/zgfVWvL
+   XeXkOGQWVLkFtBBCw0NADHwEIE2RptSUYw2ec0d0WsUwW0Fg0wpHmzIRh
+   EI1L9cKu1WpHN0pZ0dGDv3qQQmEko3SEEuU+zojIVPNsrKHi9Dlcw6evh
+   Q==;
+X-CSE-ConnectionGUID: 8PI+SWDQQ1eBAjTrY1g2uw==
+X-CSE-MsgGUID: o03FP8taTwS6gVcy4+MEsA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11792"; a="80013481"
+X-IronPort-AV: E=Sophos;i="6.23,246,1770624000"; 
+   d="scan'208";a="80013481"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2026 05:50:20 -0700
+X-CSE-ConnectionGUID: nwvutBB2SFuey6Wo/wMcEQ==
+X-CSE-MsgGUID: 9q6wDjMLSwqWue1JRiil6g==
+X-ExtLoop1: 1
+Received: from irvmail002.ir.intel.com ([10.43.11.120])
+  by fmviesa003.fm.intel.com with ESMTP; 21 May 2026 05:50:18 -0700
+Received: from gond.igk.intel.com (gond.igk.intel.com [10.123.220.52])
+	by irvmail002.ir.intel.com (Postfix) with ESMTP id 0705328779;
+	Thu, 21 May 2026 13:50:16 +0100 (IST)
+From: Marcin Szycik <marcin.szycik@linux.intel.com>
+To: intel-wired-lan@lists.osuosl.org
+Cc: netdev@vger.kernel.org,
+	sandeep.penigalapati@intel.com,
+	ananth.s@intel.com,
+	alexander.duyck@gmail.com,
+	Marcin Szycik <marcin.szycik@linux.intel.com>
+Subject: [PATCH iwl-next v4 00/10] Add ACL support
+Date: Thu, 21 May 2026 13:49:50 +0200
+Message-ID: <20260521115000.4637-1-marcin.szycik@linux.intel.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
+Content-Transfer-Encoding: 8bit
 
-This code works, but there are a few things to tidy up:
-1. No need to an unlikely() because IS_ERR() already has an unlikely()
-   built in.
-2. No need to use PTR_ERR_OR_ZERO() because it's not an error pointer.
-3. Use the returned error code directly instead of using groveling in
-   rx->page_pool to find it.
+E8xx hardware provides a Ternary Classifier block for implementing
+functions such as ACL (Access Control List). In this series it's simply
+referred to as "ACL".
 
-Signed-off-by: Dan Carpenter <error27@gmail.com>
----
- drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+Implement ACL filtering. This expands support of network flow classification
+rules for the ethtool ntuple command. ACL filtering allows for an ip or port
+field's optional mask to be specified.
 
-diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c b/drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c
-index f8ce735a7fc0..2d1c38289bb4 100644
---- a/drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c
-+++ b/drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c
-@@ -91,7 +91,7 @@ static int lan966x_fdma_rx_alloc_page_pool(struct lan966x_rx *rx)
- 		pp_params.dma_dir = DMA_BIDIRECTIONAL;
- 
- 	rx->page_pool = page_pool_create(&pp_params);
--	if (unlikely(IS_ERR(rx->page_pool)))
-+	if (IS_ERR(rx->page_pool))
- 		return PTR_ERR(rx->page_pool);
- 
- 	for (int i = 0; i < lan966x->num_phys_ports; ++i) {
-@@ -106,7 +106,7 @@ static int lan966x_fdma_rx_alloc_page_pool(struct lan966x_rx *rx)
- 					   rx->page_pool);
- 	}
- 
--	return PTR_ERR_OR_ZERO(rx->page_pool);
-+	return 0;
- }
- 
- static int lan966x_fdma_rx_alloc(struct lan966x_rx *rx)
-@@ -115,8 +115,9 @@ static int lan966x_fdma_rx_alloc(struct lan966x_rx *rx)
- 	struct fdma *fdma = &rx->fdma;
- 	int err;
- 
--	if (lan966x_fdma_rx_alloc_page_pool(rx))
--		return PTR_ERR(rx->page_pool);
-+	err = lan966x_fdma_rx_alloc_page_pool(rx);
-+	if (err)
-+		return err;
- 
- 	err = fdma_alloc_coherent(lan966x->dev, fdma);
- 	if (err) {
+Example filters:
+  ethtool -N eth0 flow-type tcp4 dst-port 8880 m 0x00ff action 10
+  ethtool -N eth0 flow-type tcp4 src-ip 192.168.0.55 m 0.0.0.255 action -1
+
+This is a resurrection of an old series from 2020 [1] with several
+improvements, but the fundamental logic unchanged. v1 was almost pulled
+in, but ultimately it was decided to drop it [2] because of unresolved
+issues. One issue was too many defensive NULL checks. Second issue is
+about inconsistency when using multiple input sets. Both are addressed
+in this patchset.
+
+More about the second issue:
+
+From [3]:
+>I would argue that you need to have some sort of logic that basically
+>checks to see if you are going to hit the input set issue and falls
+>back and applies the ACL rules. Otherwise you are significantly
+>hampering the usefulness of this filter type. It doesn't make sense
+>that dropping a field will cause a rule to fail to be added, but
+>masking a single bit in some field will make it valid. It would make
+>it a nightmare to use from the user point of view as the rules come
+>across as arbitrary.
+
+Flow Director (FD) has a hardware limitation where all filters for the same
+packet type must use identical input sets. Previously, attempting to add the
+second filter would fail.
+
+Patch 10 adds automatic fallback to ACL block when FD cannot accommodate a
+filter due to input set conflicts, which resolves this inconsistency.
+
+v4:
+* Fix a bug where filters with different flow types would use the same
+  profile, leading to strange behaviour. See patch 4 for details
+* Clean up confusing code using struct ice_fd_hw_prof for ACL. This
+  struct has many members that are not relevant to ACL. Also remove some
+  code that dealt with those extra members (it was redundant). See
+  patches 3, 4, 7, 8
+* Resend for sashiko. v3 failed to be applied and therefore was not
+  analyzed
+v3:
+* Various minor fixes, mostly reported by sashiko [4] - check individual
+  changelogs. Not all comments were addressed (some were irrelevant)
+v2:
+* Rebase. Notable conflicts were the removal of ice_status and the addition of
+  libie (which affected AdminQ communication)
+* Reduce the number of defensive NULL checks
+* Use = {} instead of memset for definitions
+* Use kzalloc_obj() instead of plain kzalloc()
+* Move from devm_ to plain allocation for objects that don't require it
+* Move iterator declaration to loop start
+* Move some defines out of structs
+* Fix kdoc (except untouched ice_ethtool_fdir.c functions)
+* Adjust style (err for return variable, spacing, rewrite some comments,
+* commit messages)
+* Remove overly verbose comments
+* Add patches 5, 6, 9 and 10
+* More changes listed in patches (if applicable)
+
+[1] https://lore.kernel.org/intel-wired-lan/20200914153720.48498-1-anthony.l.nguyen@intel.com
+[2] https://lore.kernel.org/netdev/7192efe4d27c93148b3205e65f37203c89170316.camel@intel.com/#t
+[3] https://lore.kernel.org/netdev/CAKgT0Ucxd5-gvEwWAdbL04ER2o++RX_oekUV3E0rYquEgFKj1w@mail.gmail.com
+[4] https://sashiko.dev/#/patchset/20260409120003.2719-1-marcin.szycik%40linux.intel.com
+
+Lukasz Czapnik (1):
+  ice: use ACL for ntuple rules that conflict with FDir
+
+Marcin Szycik (3):
+  Revert "ice: remove unused ice_flow_entry fields"
+  ice: use plain alloc/dealloc for ice_ntuple_fltr
+  ice: re-introduce ice_dealloc_flow_entry() helper
+
+Real Valiquette (5):
+  ice: initialize ACL table
+  ice: initialize ACL scenario
+  ice: create flow profile
+  ice: create ACL entry
+  ice: program ACL entry
+
+Tony Nguyen (1):
+  ice: rename shared Flow Director functions and structs
+
+ drivers/net/ethernet/intel/ice/Makefile       |    5 +-
+ drivers/net/ethernet/intel/ice/ice.h          |   21 +-
+ drivers/net/ethernet/intel/ice/ice_acl.h      |  170 +++
+ drivers/net/ethernet/intel/ice/ice_acl_main.h |    9 +
+ .../net/ethernet/intel/ice/ice_adminq_cmd.h   |  393 +++++-
+ drivers/net/ethernet/intel/ice/ice_arfs.h     |    2 +-
+ drivers/net/ethernet/intel/ice/ice_fdir.h     |   18 +-
+ .../net/ethernet/intel/ice/ice_flex_pipe.h    |    2 +
+ drivers/net/ethernet/intel/ice/ice_flow.h     |   39 +-
+ .../net/ethernet/intel/ice/ice_lan_tx_rx.h    |    3 +
+ drivers/net/ethernet/intel/ice/ice_type.h     |   10 +
+ drivers/net/ethernet/intel/ice/ice_acl.c      |  486 +++++++
+ drivers/net/ethernet/intel/ice/ice_acl_ctrl.c | 1127 +++++++++++++++
+ drivers/net/ethernet/intel/ice/ice_acl_main.c |  295 ++++
+ drivers/net/ethernet/intel/ice/ice_arfs.c     |    8 +-
+ drivers/net/ethernet/intel/ice/ice_ethtool.c  |    8 +-
+ ...ce_ethtool_fdir.c => ice_ethtool_ntuple.c} |  678 ++++++---
+ drivers/net/ethernet/intel/ice/ice_fdir.c     |   32 +-
+ .../net/ethernet/intel/ice/ice_flex_pipe.c    |   11 +-
+ drivers/net/ethernet/intel/ice/ice_flow.c     | 1234 ++++++++++++++++-
+ drivers/net/ethernet/intel/ice/ice_lib.c      |   10 +-
+ drivers/net/ethernet/intel/ice/ice_main.c     |   94 +-
+ drivers/net/ethernet/intel/ice/virt/fdir.c    |   32 +-
+ 23 files changed, 4433 insertions(+), 254 deletions(-)
+ create mode 100644 drivers/net/ethernet/intel/ice/ice_acl.h
+ create mode 100644 drivers/net/ethernet/intel/ice/ice_acl_main.h
+ create mode 100644 drivers/net/ethernet/intel/ice/ice_acl.c
+ create mode 100644 drivers/net/ethernet/intel/ice/ice_acl_ctrl.c
+ create mode 100644 drivers/net/ethernet/intel/ice/ice_acl_main.c
+ rename drivers/net/ethernet/intel/ice/{ice_ethtool_fdir.c => ice_ethtool_ntuple.c} (78%)
+
 -- 
-2.53.0
+2.49.0
 
