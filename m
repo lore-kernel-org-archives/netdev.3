@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37D873672A0;
-	Thu, 21 May 2026 14:50:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E54E136A34C
+	for <netdev@vger.kernel.org>; Thu, 21 May 2026 14:50:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779375010; cv=none; b=spNtOfrozq/p/PIB+shlpkMTHAJk8XR9TXYQxoiTJihfOPi6aiRwNd/74CvD5+e7Ur/eyQRRdXdVNhjYEf0vLx3WD0TtKLygZRT9vKnPkjKfnwqCgd4SMv9ZYAIYcX5OoprabDwU3jSbaF4cFiToXKUcTteOcW8lRcg9SaLCpHY=
+	t=1779375012; cv=none; b=GK7zNbHjoR6YPfY3iYfXvmlXFosxo5p4226zTppMb6e0gtOpajtahpPt/3zfji21sVjpVNBgAMM0pfa93UT2ZPI1iMJMsNiBE9FY8GkMnX0pyjeyYOf02Aqmng2mTWC4mlSObR6sps3Yjb1r1ztvK1E4vTNNnNGGRaiO5mhrOno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779375010; c=relaxed/simple;
-	bh=tUtxi5DlEmbVARemvyZLQDWA8Nsa3EvQzxQUHSKuRXQ=;
+	s=arc-20240116; t=1779375012; c=relaxed/simple;
+	bh=J7sSUOQ5jVAGXYEFYbIGASkzgsFfErIhH3tj4wfyPro=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=VmCFS/GJjmhSbdqpjHCBfnnWVA6g4AfeHkR0vZyzJ/w1J+j0s2eFIRbgmZ2iGQE+0+xv9noKPwyIuw3fzCY5we1F6QsGPUzAfGHb0sR3o9FBXjfDediarv1iNyC9WXOLMh/Adj2oTc0OcNrLYcuTPrsOCSn9JoW2KYJh7Srt7Ag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fLGnbwh6; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=f9Tl6PGpKsT5iWySBD0d+NzcwU+n8Bm0QTatUpgh3yLRpUynnuSRzHV3jC+V/jAHYVOfqXJFTTz5MIKtJaLCSCb+/0WXg/Uf9iCtQpLyXb5MUnx1WuVFNqdUyR7dJsL3VyC99ba1RaBbga/X9r1kGjw1dbsQaNEy5+y8g3YXnYk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FMB7bH7U; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fLGnbwh6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DED1A1F00A3B;
-	Thu, 21 May 2026 14:50:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FMB7bH7U"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AED21F000E9;
+	Thu, 21 May 2026 14:50:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779375008;
-	bh=9kAzeAobd1QwVu+ZPC4IJRv2fFhtnZ43FHryBfTepSc=;
+	s=k20260515; t=1779375010;
+	bh=A/uqv7fWn2b6IIbw615o4WV6MrOHRwgo4SQSpIBmpkQ=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=fLGnbwh683QQ/PbkbOuOXMOtebS2D2Ndl7KaL/0qVEPkfbHb6q9Zc19i2jzQOf5O6
-	 cWRYEO09hQLZtq3CI6ll3DSnheCr+/mz+I7kpqKQEX3hAt6pr5AmBkUELxFzIqKV3t
-	 haTAvoxD4UZPBzliak8pbgT9D32Y/yiuD7Bie//c98dq8xECrvHTNVdDX3mJrRfw1n
-	 sAMcCfcPk+0ty5H8fWlkQ0nFwAo3jp9AJW7TYwq4YVAOC41eQwnqxurGQc7NloM5k7
-	 hCE75Vwg2lUpU08YD7Wmv3irKjbK/tQj6xtr2so9tt2z+tD4CVeqKJu1VMrPQlElSI
-	 Pk617Q2eN6RiQ==
+	b=FMB7bH7UyNvBeQuR8ylZQ29Ot060jfK4G2uXx8QxsRgnb1eqHjhSPqdQSeZou3HzX
+	 5IvPJoe/n8yq7YI4dYosCOdCEW1xZymeSBLmesIGnRTx/edaN0sMgIoX3zte2bxucw
+	 GVrzypwHDOo0qL+60pO0PnC8lFXSsKythgqLXdoSVueRHCz6uPXc8/cqXytVQTrNxU
+	 /8yD/tY+7gcanu1yiSHm4ZZMyH4sYeZHDGgqEluq6Dqg7SfLdGgIliUTphoXStemAL
+	 gXSSpHf/6i72ap0h4aC4Fur2xcHeI3zv//F44/uJboxskv7k9JYcrmorR28eg4Oo3q
+	 jHChV6nQ+OPsQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 00DEA3930DF1;
-	Thu, 21 May 2026 14:50:20 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 938453930DF1;
+	Thu, 21 May 2026 14:50:21 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,37 +37,36 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH RESEND] MAINTAINERS: Update address for Michael Grzeschik
+Subject: Re: [PATCH net] MAINTAINERS: add missing entry for Bluetooth include
+ files
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <177937501889.361786.10254072888498836799.git-patchwork-notify@kernel.org>
-Date: Thu, 21 May 2026 14:50:18 +0000
-References: <20260521-maintainer-v1-1-29b5e106682d@kernel.org>
-In-Reply-To: <20260521-maintainer-v1-1-29b5e106682d@kernel.org>
-To: Michael Grzeschik <mgr@kernel.org>
-Cc: kuba@kernel.org, mail@markussp.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
+ <177937502022.361786.2944807789509694535.git-patchwork-notify@kernel.org>
+Date: Thu, 21 May 2026 14:50:20 +0000
+References: <20260521004151.625049-1-kuba@kernel.org>
+In-Reply-To: <20260521004151.625049-1-kuba@kernel.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+ pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Thu, 21 May 2026 15:49:29 +0200 you wrote:
-> Since I am moving from Pengutronix update my email address for the
-> ARCNET subsystems to point to my kernel.org address.
+On Wed, 20 May 2026 17:41:51 -0700 you wrote:
+> We X-out net/bluetooth/ from "NETWORKING [GENERAL]" so that only
+> the dedicated list is CCed on patches, and networking gets them
+> once already processed by Luiz. We missed include/net/bluetooth.
 > 
-> Also update .mailmap.
-> 
-> Signed-off-by: Michael Grzeschik <mgr@kernel.org>
-> Acked-by: Jakub Kicinski <kuba@kernel.org>
-> Acked-by: Markus Schneider-Pargmann <mail@markussp.com>
-> 
-> [...]
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> ---
+>  MAINTAINERS | 1 +
+>  1 file changed, 1 insertion(+)
 
 Here is the summary with links:
-  - [RESEND] MAINTAINERS: Update address for Michael Grzeschik
-    https://git.kernel.org/netdev/net/c/85fac50b58ca
+  - [net] MAINTAINERS: add missing entry for Bluetooth include files
+    https://git.kernel.org/netdev/net/c/099258bde1c9
 
 You are awesome, thank you!
 -- 
