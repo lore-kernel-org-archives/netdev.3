@@ -1,212 +1,190 @@
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1AA1383996
-	for <netdev@vger.kernel.org>; Thu, 21 May 2026 16:46:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD5CA384CED
+	for <netdev@vger.kernel.org>; Thu, 21 May 2026 16:54:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779382001; cv=none; b=j0aZ0ahAnXeouPuL7ogRGbUyVlOKXnxjtv9yPSr4mcmfbxN+enBpERkUYL89EI7R/HxMv1v/k2+7v1q699lY8z+LibGx2+wdE19Hp+xOGknNhtdWKpR3Ke7CFrWyfM9bWgpzoPY+K99kwuVM8+VSVHUjKi3tzOTz+QFDFuSxmyc=
+	t=1779382448; cv=none; b=SUnoZaz3dh9toANiVpiiWCyWjePTXLAEk3VKqsu9KLVXpInEaL1l5h9n5gK5lNzyR+RpFo/Z3mffxHrOqnHymDx4GOfNU2LX+8sDuCBIeja56655oIZ/CMVmU5KSqjoTf6rD2qBpNFQdF65mQngqnM3mzaMcpW6K6BewOM2zHMk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779382001; c=relaxed/simple;
-	bh=55HpdrZ1XWqM3uwC+a47+vakAvshOA/Toys7NpGVJzc=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AQ5boxQNhk6nyKjYyoWQaa3Cajk4dhqc3/wkUklbDEz+FP/s3xBaBp3WAeV+enVc+aetzfJ8FSCoSLmjg8Brim+01UC0AULrczsP+zepCNbKuEjVPc8Vr+vEiNQlOexMd+cgnW/Bwb0+42uUU0T/R8ma4LUZKBbOHXBeSBz5Afc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hAiFXflX; arc=none smtp.client-ip=209.85.128.42
+	s=arc-20240116; t=1779382448; c=relaxed/simple;
+	bh=jepHYHDTa1oN1HMbzfjCFYecBgYw0CAbnE+uP9SC7wQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=dvBme7Q7Prh4dQhCFM5VSUOJ0VjvdhzYKW1MK/Vxio5Cbxj7jWgRK6RWG9UQAkKUM5UIPFAKHhBUUyKYwmyDBCbLKE1N65uZw1wyk+Ca7t01CEHNtEZm2hIF0CAqQPdvPQpE8QUGEOFzUtmzeeJFlKbW5EszftkJ3PREPc2N0P4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FAaxIeCY; arc=none smtp.client-ip=209.85.216.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hAiFXflX"
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-48e8132c6d0so41746895e9.1
-        for <netdev@vger.kernel.org>; Thu, 21 May 2026 09:46:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FAaxIeCY"
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-3684a6f3b0bso3220618a91.1
+        for <netdev@vger.kernel.org>; Thu, 21 May 2026 09:54:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779381995; x=1779986795; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1779382446; x=1779987246; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=NA/nM16UoxaTsk3A7SWQL7q3HkgK647mNtY2rDcRyyc=;
-        b=hAiFXflXTEbRl6U5Air/vBGryJ1P7DUwv5y5hFcBfrvyOOjvwLAPWk6boHEMfrP+03
-         djrSF/MmhRRc4oKAARffcHojm9lrMfH/yxDwEmaCsT4BFCL3flmfjoZXGq6TFSC3TeHl
-         JsiTufiR6et1mz+pI8XV2U+9x+ymMfxMCAW0bX+y+95+67AVxLZvt8B0iLXkU9d/aiqe
-         9TLZTYgekPiyf54s88p+J1C3j1Lc4MyofWrYIv5jQC1MQsWTxKDTJulTH9sW3bkKM6Er
-         8ENfEnS8Rye+RBlr7U5dk7H7qISkWK2Sz6IRcVfJFcdljcS2gaAHhL/dDTECxI2slWnI
-         yang==
+        bh=TZ3hB279QEnpQbR0KFTvz97dZDE5pAQRU4AviwCKwk8=;
+        b=FAaxIeCYupyrzk95ZLGtkoFnGrKNyKkU1ZQj52wFlciQ6rMgrso8dHO/vMrxEV6fk/
+         /eW3wwQTMrUtydKY2SVHIX2P6vyu55gKCLbBpjW+oR/c5+nBWJhwN0/gqamRZhUNG/Ad
+         +P+XvVKd8XcT44tLDId5tDl1JMmiSK3uANkqyTXNRzJ39yPila5ilxbs+h+2SmHcfz21
+         cC1pcTZ93dgzE/cxzPGAE6syC9dl2+x6ly1/X8NEm1a8FNDwKpf2S2B12lu3QeZBldUI
+         MlA9QNUhk+cgJllTSwzXYdMNlsf3Spcg3QKgStf5WI3+uXqCckozyGgZQ54t+xgEwRmm
+         mbEQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779381995; x=1779986795;
+        d=1e100.net; s=20251104; t=1779382446; x=1779987246;
         h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=NA/nM16UoxaTsk3A7SWQL7q3HkgK647mNtY2rDcRyyc=;
-        b=S9aNS5cLK+xOQtphWDN9WN/yjgBvhq4A/XSvM3aA9NfAJYZX8W/l4UzL7AGzspQDbV
-         uh+nGQaTMx+HClzYZ/qZUPGhd9zJ1G1if8bLFS5tc9DpZuna4lwy2lWym41eZYCerMT4
-         zA2oiOGLRUKfeZfoFwhmUn2W3ZSkOsJUOeh2g9W7O88oxikm1MxZqw2pkDWgSA8ZRz8t
-         /h9a1/Jfmr4F3M5nDHOaE054twDiB9W725ElZT7MJZXqGGMfokgo9Fo+RdHBdgINBQ0h
-         FLklS0WtPEOvHVtC9u3+FXAfHxzmbPuazxZjpvmbBiojVtxCvW0dbw0+gb057KYk5lLW
-         dRqQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8JOEoRM4ZIVc8dZBgwoxECAxrxvWe9ioYaBm9vL1sa47Ca50tWdYqddY3UatZaAt1U8gSwOr8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxV1wDLBl5hPloofRYwWM0ppi9lmUt7iN3aBdHFU5qyUTiXVeBT
-	UzGymEh413DWgJ12XcMRriZds22I5GTQ88BeVpQV3uFJ2Ygh6iQeEvPB
-X-Gm-Gg: Acq92OHay9h+eRHVER0qSzaV+hOpDnOBB0Bym9x2Q4ahKb2v6CqL/wbdovdVtQhHdnn
-	A0QdkZy7LwmL55nfnXUBfee0zzNw5ye1RKkFkdDp8i/S+1QUMoqYD1el1sY2EBcSbFhySNWbghC
-	Dhy2KTWfSwL2qEjaYMFzzSNM91ipzYlbIHSTIo6nYXWHqwIqNwfnXw0dvHeScdnzzuYTQ34Y522
-	F2qP/ELWYor8dyZsoHoxXRNWIh/1cVNc+bDCZFmiUOridKcoollJMiyc3JQJ3EU+p7AiJ0Kq25e
-	NNLzIpp4d0fSF3SkIdd+WilldLGlRXq/U2nQ2X5/+Sy2Mvzr2wWnCRfW2seIaO8h/vsuU0uwaWy
-	WEyTR8Yz1/oFi+fRYl86MwiWhAjasxtLPEtHlJwoWjipe73sXhxf181GZkueRAyMrrkWi2ai5XV
-	8K6Hkc9KuXY1rNDRRtuCB4qnCSIjZwLPdFKAfrXuxIKy+74gvVhyTscKw7+uz6gGSo
-X-Received: by 2002:a05:600c:45c6:b0:488:ac01:72de with SMTP id 5b1f17b1804b1-49036033502mr53623425e9.5.1779381994891;
-        Thu, 21 May 2026 09:46:34 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49035ecac15sm31613075e9.6.2026.05.21.09.46.33
+        bh=TZ3hB279QEnpQbR0KFTvz97dZDE5pAQRU4AviwCKwk8=;
+        b=ETTeXkBe23rxHFbRya5rUvuIjkE60qO51jGgvf7SHP18bXKr5zSwLmZctX+ENx+8RU
+         wlhocW1irSh0nmj7u4dWTvOOCH0Nd8JJQbnAwPX0ZEHxrU1wRWcZMiymPaXTGNm8jFKV
+         YvtEEB46rVKz8jtI70XH7lCY9ngM1o5LY1QKhHM6zU2GUM91ZkHzhYrOhBFWRPwyJmGg
+         K83ghHTyExpsdX4It+6mfxLrGvgjKVaWsGaEH8dbYhO/vRZZFVQoJJHJK4NfrNBgL+EH
+         42uHQluvKDNjc4JEbz1mZ98Ggh5Mgi92RXXOGAhw9U5x4AFIwwCw7NPc79bb9D4EH8OZ
+         PQyw==
+X-Gm-Message-State: AOJu0Ywu0EJzxiFO7BcKoarylZKOWOPPGGkRg+67OQ0ziqsbLWV9yvVZ
+	72pEGhiiTowwYGsD+JNRO1eyGyEzukkT37HkSIP6VLT6QgmkLUJNjaOy7bXN/Gij
+X-Gm-Gg: Acq92OFCrR07gyhCwqRZJ0k/cDoke6EO0CUYhl9IO15lc/8cJffNiF6ntPbK6t0QwAZ
+	A8nVua3AeBO1ySBwqOnWKDBc8esfyAXSc4dd/pm53WaFGvZ0vzovd97CZ5ewXDgHN2+sjfwyxv6
+	Z2q74o9nZSTeHvJG5gD8In+r7iHrrHIQSU60YCAAHW3DhBFE7kWsvqrRLXQFe2OEOPpcuPITZki
+	SHpQt2u+fvMnGY7jr7LqliivZ4EO3YFHPzrzCu9cQoqpb/OJEaY74+BJ5IOuNJEFSl6h7RcTgcU
+	IMqIKTUdPnyFNABJiAAfMkRqK1QNL1QXKDIU+RdbMsbvKHw1djoPHrBt5EqCiHlT5aMJOGN9mqn
+	ZIigYwJ4L3YjVyjGPKOZFe0e3lyB9T7oc5k6o4w6SBFpvYP/SIOZuL5RCpJnu4uL8UxJvgyAGNw
+	y4XS3IqvYKwpO3dumM/6ANIcow
+X-Received: by 2002:a17:90b:2fc6:b0:35b:d795:cf5d with SMTP id 98e67ed59e1d1-36a49029ebamr2766601a91.5.1779382446154;
+        Thu, 21 May 2026 09:54:06 -0700 (PDT)
+Received: from paeyz.Davolink ([49.172.60.165])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36a3d2079bbsm2955723a91.15.2026.05.21.09.54.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 May 2026 09:46:34 -0700 (PDT)
-Date: Thu, 21 May 2026 17:46:31 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Kees Cook <kees@kernel.org>
-Cc: Luis Chamberlain <mcgrof@kernel.org>, Pengpeng Hou
- <pengpeng@iscas.ac.cn>, stable@vger.kernel.org, Petr Pavlu
- <petr.pavlu@suse.com>, Richard Weinberger <richard@nod.at>, Anton Ivanov
- <anton.ivanov@cambridgegreys.com>, Johannes Berg
- <johannes@sipsolutions.net>, "Rafael J. Wysocki" <rafael@kernel.org>, Len
- Brown <lenb@kernel.org>, Corey Minyard <corey@minyard.net>, Gabriel Somlo
- <somlo@cmu.edu>, "Michael S. Tsirkin" <mst@redhat.com>, Jani Nikula
- <jani.nikula@linux.intel.com>, Joonas Lahtinen
- <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>,
- Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Bart Van Assche <bvanassche@acm.org>,
- Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, Laurent
- Pinchart <laurent.pinchart@ideasonboard.com>, Hans de Goede
- <hansg@kernel.org>, Mauro Carvalho Chehab <mchehab@kernel.org>, Bjorn
- Helgaas <bhelgaas@google.com>, Hannes Reinecke <hare@suse.de>, "James E.J.
- Bottomley" <James.Bottomley@HansenPartnership.com>, "Martin K. Petersen"
- <martin.petersen@oracle.com>, Daniel Lezcano <daniel.lezcano@kernel.org>,
- Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri Slaby
- <jirislaby@kernel.org>, Alan Stern <stern@rowland.harvard.edu>, Jason Wang
- <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eugenio
- =?UTF-8?B?UMOpcmV6?= <eperezma@redhat.com>, Jason Baron
- <jbaron@akamai.com>, Jim Cromie <jim.cromie@gmail.com>, Tiwei Bie
- <tiwei.btw@antgroup.com>, Benjamin Berg <benjamin.berg@intel.com>, Ilpo
- =?UTF-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>, "David E. Box"
- <david.e.box@linux.intel.com>, "Maciej W. Rozycki" <macro@orcam.me.uk>,
- Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Peter Zijlstra
- <peterz@infradead.org>, Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik
- <gor@linux.ibm.com>, Sean Christopherson <seanjc@google.com>, Paolo Bonzini
- <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar
- <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
- <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin"
- <hpa@zytor.com>, Vinod Koul <vkoul@kernel.org>, Frank Li
- <Frank.Li@kernel.org>, Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen
- <samitolvanen@google.com>, Aaron Tomlin <atomlin@atomlin.com>, Alexander
- Potapenko <glider@google.com>, Marco Elver <elver@google.com>, Dmitry
- Vyukov <dvyukov@google.com>, Andrew Morton <akpm@linux-foundation.org>,
- John Johansen <john.johansen@canonical.com>, Paul Moore
- <paul@paul-moore.com>, James Morris <jmorris@namei.org>, "Serge E. Hallyn"
- <serge@hallyn.com>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Georgia Garcia <georgia.garcia@canonical.com>, kvm@vger.kernel.org,
- dmaengine@vger.kernel.org, linux-modules@vger.kernel.org,
- kasan-dev@googlegroups.com, linux-mm@kvack.org, apparmor@lists.ubuntu.com,
- linux-security-module@vger.kernel.org, linux-um@lists.infradead.org,
- linux-acpi@vger.kernel.org, openipmi-developer@lists.sourceforge.net,
- qemu-devel@nongnu.org, intel-gfx@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org, linux-rdma@vger.kernel.org,
- linux-media@vger.kernel.org, linux-pci@vger.kernel.org,
- linux-scsi@vger.kernel.org, linux-pm@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-serial@vger.kernel.org,
- linux-usb@vger.kernel.org, usb-storage@lists.one-eyed-alien.net,
- virtualization@lists.linux.dev, linux-kernel@vger.kernel.org,
- linux-arch@vger.kernel.org, netdev@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-hardening@vger.kernel.org
-Subject: Re: [PATCH 01/11] params: bound array element output to the
- caller's page buffer
-Message-ID: <20260521174631.71a06440@pumpkin>
-In-Reply-To: <20260521133326.2465264-1-kees@kernel.org>
-References: <20260521133315.work.845-kees@kernel.org>
-	<20260521133326.2465264-1-kees@kernel.org>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+        Thu, 21 May 2026 09:54:05 -0700 (PDT)
+From: Yeonju Bae <iwasbaeyz@gmail.com>
+To: netdev@vger.kernel.org
+Cc: gregkh@linuxfoundation.org,
+	security@kernel.org,
+	john.fastabend@gmail.com,
+	kuba@kernel.org,
+	sd@queasysnail.net,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	linux-kernel@vger.kernel.org,
+	Yeonju Bae <iwasbaeyz@gmail.com>
+Subject: [PATCH net] tls: avoid zc receive for file-backed pages
+Date: Fri, 22 May 2026 01:53:28 +0900
+Message-ID: <20260521165328.16112-1-iwasbaeyz@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <2026052150-stylus-germicide-780e@gregkh>
+References: <2026052150-stylus-germicide-780e@gregkh>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Thu, 21 May 2026 06:33:14 -0700
-Kees Cook <kees@kernel.org> wrote:
+kTLS RX zc decrypt writes unauthenticated AEAD output directly into
+pages pinned from the recvmsg iterator via tls_setup_from_iter().
+For MAP_SHARED, PROT_WRITE file-backed destinations, those pages are
+live page-cache pages rather than anonymous copies: MAP_SHARED does not
+trigger copy-on-write, so FOLL_WRITE returns the actual page-cache page.
 
-> From: Pengpeng Hou <pengpeng@iscas.ac.cn>
-> 
-> param_array_get() appends each element's string representation into the
-> shared sysfs page buffer by passing buffer + off to the element getter.
-> 
-> That works for getters that only write a small bounded string, but
-> param_get_charp() and similar helpers format against PAGE_SIZE from the
-> pointer they receive. Once off is non-zero, an element getter can
-> therefore write past the end of the original sysfs page buffer.
-> 
-> Collect each element into a temporary PAGE_SIZE buffer first and then
-> copy only the remaining space into the caller's page buffer.
+crypto_aead_decrypt() writes CTR-mode decryption output into the
+scatter-gather list before the authentication tag is verified.  If the
+tag check fails (-EBADMSG), the plaintext-like output is already
+resident in the page-cache page.  exit_free_pages() calls put_page()
+without any content cleanup, so the modification persists through the
+backing file.  An independent open(O_RDONLY)/read() of the same file
+returns different content and its SHA-256 changes.  MAP_PRIVATE is safe
+via COW; PROT_READ-only destinations fail at iov_iter_get_pages2()
+before any decryption occurs.
 
-Should this be using a 4k buffer on all architectures?
-Initially perhaps just using a different name for the constant until
-all the associated PAGE_SIZE limits have been removed.
+Avoid zc receive for file-backed destination pages.  In
+tls_setup_from_iter(), after iov_iter_get_pages2() pins pages, check
+each page with folio_mapping(page_folio(page)).  If any pinned page is
+file-backed (mapping != NULL), release the pinned pages and return
+-EOPNOTSUPP.  Handle -EOPNOTSUPP in tls_decrypt_sw() by clearing
+darg->zc and retrying, which causes tls_decrypt_sg() to allocate a
+kernel bounce buffer instead.  Decryption output never reaches the
+file-backed page; on tag failure the bounce buffer is discarded.
 
--- David
+This follows the existing opportunistic zc retry pattern already used
+for TLS 1.3 record type mismatches in tls_decrypt_sw().
 
-> 
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Petr Pavlu <petr.pavlu@suse.com>
-> Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
-> Signed-off-by: Kees Cook <kees@kernel.org>
-> ---
->  kernel/params.c | 26 ++++++++++++++++++++------
->  1 file changed, 20 insertions(+), 6 deletions(-)
-> 
-> diff --git a/kernel/params.c b/kernel/params.c
-> index 74d620bc2521..752721922a15 100644
-> --- a/kernel/params.c
-> +++ b/kernel/params.c
-> @@ -475,22 +475,36 @@ static int param_array_set(const char *val, const struct kernel_param *kp)
->  static int param_array_get(char *buffer, const struct kernel_param *kp)
->  {
->  	int i, off, ret;
-> +	char *elem_buf;
->  	const struct kparam_array *arr = kp->arr;
->  	struct kernel_param p = *kp;
->  
-> +	elem_buf = kmalloc(PAGE_SIZE, GFP_KERNEL);
-> +	if (!elem_buf)
-> +		return -ENOMEM;
-> +
->  	for (i = off = 0; i < (arr->num ? *arr->num : arr->max); i++) {
-> -		/* Replace \n with comma */
-> -		if (i)
-> -			buffer[off - 1] = ',';
->  		p.arg = arr->elem + arr->elemsize * i;
->  		check_kparam_locked(p.mod);
-> -		ret = arr->ops->get(buffer + off, &p);
-> +		ret = arr->ops->get(elem_buf, &p);
->  		if (ret < 0)
-> -			return ret;
-> +			goto out;
-> +		ret = min(ret, (int)(PAGE_SIZE - 1 - off));
-> +		if (!ret)
-> +			break;
-> +		/* Replace the previous element's trailing newline with a comma. */
-> +		if (i)
-> +			buffer[off - 1] = ',';
-> +		memcpy(buffer + off, elem_buf, ret);
->  		off += ret;
-> +		if (off == PAGE_SIZE - 1)
-> +			break;
->  	}
->  	buffer[off] = '\0';
-> -	return off;
-> +	ret = off;
-> +out:
-> +	kfree(elem_buf);
-> +	return ret;
->  }
->  
->  static void param_array_free(void *arg)
+Verified on linux-7.0-rc3 QEMU (x86-64), four destination types:
+  MAP_SHARED+RW:   file_changed=0  (was 4077/4096 bytes before patch)
+  MAP_PRIVATE+RW:  file_changed=0  (COW isolation; unchanged)
+  anonymous heap:  no file backing  (unchanged)
+  PROT_READ only:  file_changed=0  (EFAULT before decrypt; unchanged)
+
+Signed-off-by: Yeonju Bae <iwasbaeyz@gmail.com>
+---
+ net/tls/tls_sw.c | 37 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 37 insertions(+)
+
+diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
+index a977b0434..c312a83b4 100644
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -36,6 +36,7 @@
+  */
+ 
+ #include <linux/bug.h>
++#include <linux/pagemap.h>
+ #include <linux/sched/signal.h>
+ #include <linux/module.h>
+ #include <linux/kernel.h>
+@@ -1443,6 +1444,34 @@ static int tls_setup_from_iter(struct iov_iter *from,
+ 
+ 		length -= copied;
+ 		size += copied;
++		/* Reject file-backed destination pages.  Writing unauthenticated
++		 * AEAD output into a page-cache page before tag verification
++		 * leaves the backing file modified even when recvmsg() returns
++		 * -EBADMSG.  Return -EOPNOTSUPP so the caller retries via the
++		 * non-ZC bounce-buffer path.
++		 */
++		{
++			ssize_t remain = copied;
++			size_t  off    = offset;
++			int     np = 0, j;
++
++			while (remain > 0) {
++				remain -= min_t(ssize_t, remain,
++						(ssize_t)(PAGE_SIZE - off));
++				off = 0;
++				np++;
++			}
++			for (j = 0; j < np; j++) {
++				if (folio_mapping(page_folio(pages[j]))) {
++					int k;
++
++					for (k = 0; k < np; k++)
++						put_page(pages[k]);
++					rc = -EOPNOTSUPP;
++					goto out;
++				}
++			}
++		}
+ 		while (copied) {
+ 			use = min_t(int, copied, PAGE_SIZE - offset);
+ 
+@@ -1699,6 +1728,14 @@ tls_decrypt_sw(struct sock *sk, struct tls_context *tls_ctx,
+ 	if (err < 0) {
+ 		if (err == -EBADMSG)
+ 			TLS_INC_STATS(sock_net(sk), LINUX_MIB_TLSDECRYPTERROR);
++		if (err == -EOPNOTSUPP && darg->zc) {
++			/* tls_setup_from_iter detected file-backed destination
++			 * pages; retry without ZC via the bounce-buffer path.
++			 */
++			darg->zc = false;
++			TLS_INC_STATS(sock_net(sk), LINUX_MIB_TLSDECRYPTRETRY);
++			return tls_decrypt_sw(sk, tls_ctx, msg, darg);
++		}
+ 		return err;
+ 	}
+ 	/* keep going even for ->async, the code below is TLS 1.3 */
+-- 
+2.43.0
 
