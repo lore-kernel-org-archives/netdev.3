@@ -1,40 +1,57 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F19F23C37AA
-	for <netdev@vger.kernel.org>; Thu, 21 May 2026 11:44:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C6AE360EDA;
+	Thu, 21 May 2026 11:59:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779363883; cv=none; b=vCoVcCoXAp/4dCp35Q8+l7UjiEEUY//78LwceYFiIIDcyEVGyZBSwKFRYi5qSUfxhoIwDSvlH66/p3OxbsaiJGcRY/oYJiP+N2W9GCgr/zY3/ij7XnPbvpQPWx+NBzWCEkyzaAojtudA06E5fmowGxw9BevUJTA7lQyZgbIuqe0=
+	t=1779364777; cv=none; b=oPiVmd/iZ1WLoZB+jQ666inbmV1M0OyfmUq6irKwOqZ9cm4P4tpVZicWjlnNblvxbJ8G26LwVVuMeY3avaizeBLpAxX1B1eqkYjHc+wlzlLqhoV79Y1rOzg23kXDEtcZBKSx1yCr5zNey++0Zdkau90RaycV5oi76dBt03o76UA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779363883; c=relaxed/simple;
-	bh=SSqTKybdilJla6LSsbey+ec5pEya8aICrXNtQEI5akE=;
+	s=arc-20240116; t=1779364777; c=relaxed/simple;
+	bh=tWqJjXHaQ2um6gVHUwxHaGyo9BPmk6JvIVRMoRl3spM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AjP8wOLnPU2Atj0o3MXvG3sYh+FUdyw+aq959U0D1D6AnDMO9Y5qwffhZQvEHo5IvYgUWmhpYf7fYufoUmh1SWHpqfu1sLUko9MFyFJVJjURn0BMt+t4yM6eo4bD/1WL/9YQl/v2pPTOVt8108hBmLvGOJGAm92oMp/X6zTTIVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oB87bd3F; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=Hr7cEeipB+telp8UwoAI7xG4hPcfyKn1HPq5HjWQs3yf3G8JIHf5CeT1zj18tn5sMg0H3E00dxUryGGp7JLhvkh9o9ex482/PWQwdG5yupqby29T9LAArFNH0XcTzpE3nMJXtrbI8eJE6INyOtoB6CqVOZhc1wQthucejDIYgrU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=QhdckEer; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oB87bd3F"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 601E61F000E9;
-	Thu, 21 May 2026 11:44:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779363882;
-	bh=iNnbfmHcW0NGw442nS2PoBdygOAsR81qw2FLANfMcw0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=oB87bd3FrVyGHG1FvoPIaplTVUD0KiT7JNCyKbXKCLK2vTlz/ihHKzxOM9mbbYTfm
-	 0WLP/u1QMEFP10NPXnKWdnxeK5f+rlfTQt30rp24wnKJFKY/374651ypMQkXwPYEkl
-	 SEn+lB/CnsiIvctF8CIrzoz6Sy+z6hMckJTQBla3gdzpZVS8GczProzYBMPCuOC38c
-	 v+QXnA5N/fs0dnC8cWJkoioAWmWFn9PstLu1KFobKmhsqxk++uc41z4YLbCZS0XJfe
-	 hEF4N0YGzzPbNuDNxzr/o91WnzCvBYgJpEx29eJSGV4GNtyJbgvRe7s4PukWddTfBJ
-	 JlAO6J/A3uOVg==
-Date: Thu, 21 May 2026 12:44:38 +0100
-From: Simon Horman <horms@kernel.org>
-To: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
-Cc: intel-wired-lan@lists.osuosl.org, anthony.l.nguyen@intel.com,
-	netdev@vger.kernel.org,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Subject: Re: [PATCH iwl-next v1] ixgbe: LinkSec deprecated macros cleanup
-Message-ID: <20260521114438.GD1506108@horms.kernel.org>
-References: <20260518123611.2252139-1-jedrzej.jagielski@intel.com>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="QhdckEer"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=I9Ukt0AQCmtJKH+wFgifFpDPG6vypcS0Mpig6HmuFc4=; b=QhdckEerrwKwBFvo2YLuROrin9
+	EqsDkvBC8Jo9Zxw0SmLEZv35UHE0rFQvuOMRMU30rkVQ3P+nfd8QcfRScJsmDYeErNGmQgPzMnH+b
+	+/NBdlo7Al+mw/vN/UXys7157VMZqb/82bFnPJ8dcjuqNKI741iTj5dkwZTAteZn5ojk=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wQ23L-0040gt-P9; Thu, 21 May 2026 13:59:03 +0200
+Date: Thu, 21 May 2026 13:59:03 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Lee Jones <lee@kernel.org>
+Cc: mike.marciniszyn@gmail.com, Pavel Machek <pavel@kernel.org>,
+	Alexander Duyck <alexanderduyck@fb.com>,
+	Jakub Kicinski <kuba@kernel.org>, kernel-team@meta.com,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Daniel Golle <daniel@makrotopia.org>, Kees Cook <kees@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Dimitri Daskalakis <dimitri.daskalakis1@gmail.com>,
+	Jacob Keller <jacob.e.keller@intel.com>, Lee Trager <lee@trager.us>,
+	Mohsin Bashir <mohsin.bashr@gmail.com>,
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Chengfeng Ye <dg573847474@gmail.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	linux-kernel@vger.kernel.org, linux-leds@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH net-next 0/3] dd LED support for fbnic
+Message-ID: <d87c9ad1-f180-45c8-a525-40c1b39c4265@lunn.ch>
+References: <20260520200337.204431-1-mike.marciniszyn@gmail.com>
+ <48c64757-dc3c-4d05-a269-fa4f50c299c3@lunn.ch>
+ <20260521110324.GB2921053@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -43,13 +60,28 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260518123611.2252139-1-jedrzej.jagielski@intel.com>
+In-Reply-To: <20260521110324.GB2921053@google.com>
 
-On Mon, May 18, 2026 at 02:36:11PM +0200, Jedrzej Jagielski wrote:
-> There are some unused LinkSec macros. Get rid of them.
+On Thu, May 21, 2026 at 12:03:24PM +0100, Lee Jones wrote:
+> On Wed, 20 May 2026, Andrew Lunn wrote:
 > 
-> Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-> Signed-off-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
+> > On Wed, May 20, 2026 at 04:03:34PM -0400, mike.marciniszyn@gmail.com wrote:
+> > > From: "Mike Marciniszyn (Meta)" <mike.marciniszyn@gmail.com>
+> > 
+> > The Subject: of this email has an off 'dd' in it.
+> > 
+> > > The second patch stors the max speed from the firmware dialog
+> > 
+> > stores
+> 
+> It's also just a cover-letter.
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+It depends on the Maintainers workflow, but for netdev, a patch series
+is imported into a branch, and the cover letter is used for the text
+of the merge commit into net-next.
 
+A well written cover letter contains the big picture, what does this
+set of patches do, so it has useful information in it, so we want to
+have it in the git history.
+
+	Andrew
