@@ -1,92 +1,147 @@
-Received: from linode.cmadams.net (linode.cmadams.net [45.33.75.86])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 164EB3DB62E
-	for <netdev@vger.kernel.org>; Thu, 21 May 2026 13:53:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.33.75.86
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAB5F3E0245
+	for <netdev@vger.kernel.org>; Thu, 21 May 2026 13:53:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779371598; cv=none; b=AqrZbFck5v4JoXypMc6JY3KWqAFXqimQ/aaQHTvqDiRT10GjD9w4eQwnA64F/IrBe+Rkqw9q+KSEvOId/qQZ7Pg57+HK+MKRgU33MVfa49svxEhT/7wLEqEiKA16sjs3OekGRdLqOn8RlJnra2N2HlUYGWPOiFG4PWOVzuUOo94=
+	t=1779371598; cv=none; b=C7TcF72LJj3CWCn1zcqCehpH2WjaGXEICoqhMqgjQ3tklK/vOWSajQNwEM5sHlzo8HSYvpuAnn2PFygO5yb4S5Kq39gMEbEfY5DSIULeEbtGGsqY1CR1c519pNrTLqkQ1CPwgOTAGdpr96OniawEfRkn83s6CeXkwTOsMpkJ1pI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1779371598; c=relaxed/simple;
-	bh=vTuWy5m4Stt6ukJzKt6PfNvI8u3+uksEa6chojF9C5M=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=YXbZr2puES2+s6fMJ8zop0fm/8nt4LpZqIPpslBe+1q8oSu+MPhOYBzRhlJJ+Lpjk6aLZccC82fVYLQUXB87ZH5/FTsA+kfoHm8HuovjTL1dQc0U1bSsV7j5Mf57dn4r3JWS/2dzwkwETehkomf13FYUIaM9fAoQ5Hj35xm4rAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmadams.net; spf=pass smtp.mailfrom=cmadams.net; dkim=pass (2048-bit key) header.d=cmadams.net header.i=@cmadams.net header.b=oAkSOZ2N; arc=none smtp.client-ip=45.33.75.86
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmadams.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmadams.net
+	bh=DOfWH6hLKc3o9vRvYL5MSuCO1dG989HvIXld9/XiNFU=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=pA1bHC+hg+VgM31UD+NU+puCmf4qgI1TCcV8sdjZf2PagHJ07u8S684/B2lxdpR7HC4hh8hOPGst1K7Fz5jMacry4KKgGRkv2nj8/khzITr47EZcAeimHtP4eC7iWp+jqDhZBmhLcWBH91aJ0ABuJ0kZwXvHl0ILlGne91FpWyA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z+6brNlC; arc=none smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cmadams.net header.i=@cmadams.net header.b="oAkSOZ2N"
-Received: from localhost (localhost [127.0.0.1])
-	by linode.cmadams.net (Postfix) with ESMTP id 4gLqcQ5VTMz75N4
-	for <netdev@vger.kernel.org>; Thu, 21 May 2026 08:53:10 -0500 (CDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=cmadams.net; h=
-	user-agent:content-disposition:content-type:content-type
-	:mime-version:message-id:subject:subject:from:from:date:date
-	:received:received; s=20220404; t=1779371590; x=1780235591; bh=v
-	TuWy5m4Stt6ukJzKt6PfNvI8u3+uksEa6chojF9C5M=; b=oAkSOZ2N03uoOGEol
-	GsaveZwBMTezsRHaCjCx9Gq0/iNAlwABTCMLO1E2ylaIgCEDwccPDrHCTxKjnWXc
-	fyLRmgcCI1WF9yhDHWMlfQaYwwJdRnHZZTDSvCI/r9yaT24aUI2BIRy2gR02SREg
-	9OCFpUHNEj2dofmfpRNUk84NgEoO3LousOrm9aesUdEF2J+gONnn4lJwL4nwG+O3
-	D24SbCHm1gB6Ifw2EFuNI25cb/he02wRmIH3F7X4yv4IBciAMkx5dFJw69QEyZ69
-	Cha166CBkk5rrSD+pVyAX80b1oRlD/daJ07cMTm7T+8OVOinN00rDA737IsO7X1g
-	WHm9Q==
-X-Virus-Scanned: amavisd-new at cmadams.net
-Received: from linode.cmadams.net ([127.0.0.1])
- by localhost (linode.cmadams.net [127.0.0.1]) (amavisd-new, port 10031)
- with ESMTP id vPH6qdibi4Lr for <netdev@vger.kernel.org>;
- Thu, 21 May 2026 08:53:10 -0500 (CDT)
-Received: from cmadams.net (localhost [127.0.0.1])
-	by linode.cmadams.net (Postfix) with ESMTP id 4gLqcQ1TbMz6wvd
-	for <netdev@vger.kernel.org>; Thu, 21 May 2026 08:53:10 -0500 (CDT)
-Date: Thu, 21 May 2026 08:53:10 -0500
-From: Chris Adams <linux@cmadams.net>
-To: netdev@vger.kernel.org
-Subject: Problem with IPv6 privacy addresses in 7.0
-Message-ID: <20260521135310.GC977@cmadams.net>
-Mail-Followup-To: netdev@vger.kernel.org
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z+6brNlC"
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2b941cd869cso39113385ad.1
+        for <netdev@vger.kernel.org>; Thu, 21 May 2026 06:53:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779371597; x=1779976397; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=A4/cZz+D5VB55BisYY3cQwNyjxNuoDjRYz6rglyNSPk=;
+        b=Z+6brNlCk8rg9zkj6XMWn5GlJ9sjPv+cecp+klRYajWObFN9dCivmMefFXbsAe94DB
+         2nNtlL1jhbbzenp/yZLuK0D6E97BIy3KV2pFO4eG9iFF7f3sm2QggLq8wSSz+Zse11wx
+         NteAC5HVtgq+amX3HdvGLB9a7nUddfNg7YABXFQlUzvu8Ajhz7g3Fv4dKbYzDKKHnR+z
+         aI5FVbzigvxocHsXxhtK8sfGtXaGNszG72fIE/TP4XRbQDQO6IgNFDnb9bHNjQaP1kiT
+         6dmFmlx3NAitTg2uYRotVofLZR2GUbfsv6ofB0zjOJS4qrFe5VCPqKy78UUmR5y3ik0C
+         fH4Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779371597; x=1779976397;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=A4/cZz+D5VB55BisYY3cQwNyjxNuoDjRYz6rglyNSPk=;
+        b=N4Cb4qxn1VlJhtwKOoU6N4Ue3mnaz4j3wpvfNoR0/pjEm1wsntZr1gP3fVAbcV8qQh
+         9b7m8L2x9OYbHy8cFIP0flWz9mQjpK8LaFnWMcI+YSFGLwuRRicmUXihLGzeICjG7CIF
+         UDibhGesQJ8SQ4riwwMmfD+FqQLjVErzQh2H2axxPP1h9d2LghiXDmY2lx3jmkM/dlJb
+         Rdjm0TDNxlzoM12Ute37El+7dA1vOuckk+kwCJMaXvVwKigbXtjPp57wIDsCIl5MaT4d
+         nn6/X/FjMMA0bwrAzWxa4lIpiUPZ4j/rkXZb/DNqjjIRfddsOfcMe3g691j7iRg3wpkl
+         hSqA==
+X-Gm-Message-State: AOJu0YxCGlCPqiRme7w4eJktZH8eVbBYwsPPsUct4RhDN4qa6mA3wEAO
+	GSGlKH7ciXRglmkA8G4DENegVtW9JPszYxWbrIpwgqn4lFNUBSYsxXpk
+X-Gm-Gg: Acq92OHgbt5t6FTSXW2VbbErHH8deJJLFpxEM0R8NQruTOFHz0IQihfhij+8eGyPx1A
+	95OyrxHgGQMxzHSf7/bachi0QhucXQKL3kUD/TMso+480I+X/kjTmqBSPoqOmuA+/45QGl/vESr
+	XU8SnvJ4FBervVarAnmFIYisaotDCmd3r9+IF/jgmOKK7f2LejPr2NkEpKk/cbzsGhDH4oeuJro
+	NmC18OSte0K+L9K5/MbADgS4qYFgS1G5KQvLzBtB7giDk4iF/tNdEJvkSDx0vKzb60JKUGgkUbV
+	UK15Q/5cvjrWOE9gma7HmYbLZNyjM4xuKT+AyPE4tZVbTwlJJkVrXXWywkxpCjiMrKUYkaOLW7p
+	bYIKtAVwuiM0E/4r2q0s31kJeGr49t4GhBDUo00BAxoIQb+DoPl3AxvJVpl9bjRK/yN1fKQ382+
+	ubxx3xWUHZdyx0AnGTU9FaAy1q5PWIZQYeYdpOzvRvBgprV2F7+hFXfNQy6LfxNFfu2Kg6VJoJZ
+	hnxOEs2ioxzcEn571iBwX1t1ChooZQ=
+X-Received: by 2002:a17:902:db07:b0:2bd:e01d:eb25 with SMTP id d9443c01a7336-2bea308aab8mr32286875ad.32.1779371596913;
+        Thu, 21 May 2026 06:53:16 -0700 (PDT)
+Received: from KERNELXING-MC1.tencent.com ([2408:8207:1923:2c20:2035:4b1f:d540:7ffb])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2bea98fcb09sm12957365ad.56.2026.05.21.06.53.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 21 May 2026 06:53:16 -0700 (PDT)
+From: Jason Xing <kerneljasonxing@gmail.com>
+To: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	willemb@google.com,
+	kuniyu@google.com,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	andrii@kernel.org,
+	martin.lau@linux.dev,
+	eddyz87@gmail.com,
+	memxor@gmail.com,
+	song@kernel.org,
+	yonghong.song@linux.dev,
+	jolsa@kernel.org,
+	john.fastabend@gmail.com,
+	sdf@fomichev.me
+Cc: netdev@vger.kernel.org,
+	bpf@vger.kernel.org,
+	Jason Xing <kernelxing@tencent.com>
+Subject: [PATCH net-next v2 1/6] bpf: Add bpf_ktime_get_real_ns() kfunc
+Date: Thu, 21 May 2026 21:52:39 +0800
+Message-Id: <20260521135244.40869-2-kerneljasonxing@gmail.com>
+X-Mailer: git-send-email 2.33.0
+In-Reply-To: <20260521135244.40869-1-kerneljasonxing@gmail.com>
+References: <20260521135244.40869-1-kerneljasonxing@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.21 (2010-09-15)
+Content-Transfer-Encoding: 8bit
 
-My normal use of my desktop system (Fedora 43) is to suspend at night
-and wake in the morning, and then immediately SSH to my remote server,
-where I stay logged in.  I use NetworkManager and have ipv6.ip6-privacy
-set to prefer-temp-addr, and SSH configured to use SSH keepalives.
+From: Jason Xing <kernelxing@tencent.com>
 
-When I upgraded to kernel 7.0, I started having an issue with this - my
-SSH session gets dropped, usually several times, in the first hour or
-so, then I usually don't have any problem the rest of the day.  If I run
-an IPv4 session at the same time, that seems to be fine, so I don't
-think it's a network issue (I know that dual-stack doesn't always take
-the same path).
+Currently BPF programs can obtain timestamps via bpf_ktime_get_ns(),
+which returns CLOCK_MONOTONIC time. However, the skb->tstamp field
+populated by the network stack uses ktime_get_real() which is in the
+CLOCK_REALTIME domain.
 
-What seems to be happening is that privacy addresses are removed while
-the SSH session is still using them, before the timeout even.  I wrote a
-script to watch public v6 addresses being added and removed, and this is
-what I've seen so far today (the number at the end is the valid_lft
-seconds), with the public prefix masked:
+In the series, kernel reports the software/hardware timestamps through
+sockopt and then userspace bpf application gets them and calculate the
+delta only through an unified time unit.
 
-2026-05-21 07:39:17 removed xx::f4f/128 4673
-2026-05-21 07:39:20 added xx::f4f/128 5400
-2026-05-21 07:41:20 removed xx:3e8c:f8ff:fe60:1d5a/64 4922
-2026-05-21 07:41:20 removed xx:7cb1:c518:1be0:d81d/64 4922
-2026-05-21 07:41:23 added xx:3e8c:f8ff:fe60:1d5a/64 5398
-2026-05-21 07:41:23 added xx:596a:f6f5:67b2:1d8f/64 5398
-2026-05-21 08:14:43 added xx:fac3:61f6:ad18:d712/64 4987
-2026-05-21 08:14:43 removed xx:596a:f6f5:67b2:1d8f/64 4991
-2026-05-21 08:30:26 added xx:84b4:244e:bb14:94fd/64 5398
-2026-05-21 08:30:26 removed xx:fac3:61f6:ad18:d712/64 5120
+However, prior to this, when a BPF program tries to measure RX packet
+delay by comparing skb->tstamp with bpf_ktime_get_ns(), the result
+is incorrect because the two clocks have different epochs.
 
-I woke the system at 07:39:08 and SSHed at 07:39:39, which used the d81d
-source address.  That dropped in 2 minutes and I reconnected, which used
-the 1d8f address.  That dropped at 08:14:43, I didn't notice right away,
-I reconnected at 08:31:28 which used the 94fd address.
+Introduce a new BPF kfunc bpf_ktime_get_real_ns() that returns the
+current CLOCK_REALTIME time. This allows BPF programs to perform
+accurate delay calculations without clock domain mismatch issue.
 
+Signed-off-by: Jason Xing <kernelxing@tencent.com>
+---
+ kernel/bpf/helpers.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
+index 2bb60200c266..863645d096ef 100644
+--- a/kernel/bpf/helpers.c
++++ b/kernel/bpf/helpers.c
+@@ -2317,6 +2317,11 @@ void bpf_rb_root_free(const struct btf_field *field, void *rb_root,
+ 
+ __bpf_kfunc_start_defs();
+ 
++__bpf_kfunc u64 bpf_ktime_get_real_ns(void)
++{
++	return ktime_get_real_fast_ns();
++}
++
+ /**
+  * bpf_obj_new() - allocate an object described by program BTF
+  * @local_type_id__k: type ID in program BTF
+@@ -4859,6 +4864,7 @@ BTF_ID_FLAGS(func, bpf_task_work_schedule_resume, KF_IMPLICIT_ARGS)
+ BTF_ID_FLAGS(func, bpf_dynptr_from_file)
+ BTF_ID_FLAGS(func, bpf_dynptr_file_discard)
+ BTF_ID_FLAGS(func, bpf_timer_cancel_async)
++BTF_ID_FLAGS(func, bpf_ktime_get_real_ns)
+ BTF_KFUNCS_END(common_btf_ids)
+ 
+ static const struct btf_kfunc_id_set common_kfunc_set = {
 -- 
-Chris Adams <linux@cmadams.net>
+2.43.7
+
