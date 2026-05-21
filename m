@@ -1,311 +1,138 @@
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B278C2E1EE0
-	for <netdev@vger.kernel.org>; Thu, 21 May 2026 13:53:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7912D3DB314
+	for <netdev@vger.kernel.org>; Thu, 21 May 2026 13:54:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779371636; cv=none; b=Spzwj0e98pPJ2rCPTPU3gL96XVSXiE7cGVxbBM7xjUhqjWfxsWDcFSLaXBnwitfDIw5PXSv7LomOCJL3TD/QqWPuRLsKoF7XOPAN0Pcfb0iRHIIGyAJl2onSI84gJIlwtKmMxfTYkfNTxwnlpsqoh+cYLYvuA/9H3AbpM+jiY8c=
+	t=1779371660; cv=none; b=VxWFCk/G9Jc/tJnjQMeHV5FrrPEdScyVJoq1I3ngpy8Rb+OluD1snUaAKmnXmtfeJDYeBP9703XImCBNzEcUEu3ZKkqhKsUQbHxvQXS2NzQqBVrvuK8pTpPfFIZQQVeeEUN7sE7Y4rYBybGg7yhEKkputFdceASkU/8zuQoYQmk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779371636; c=relaxed/simple;
-	bh=4bFsDAM12mrZKSw4R78Ox7JfFMnkz8xQoZAOT6nLvY0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Cpt+fJV/ipgzojKXjpMmnkKx+Ck9k9mkIW65Yv8iL8B8g8/xFS9wldBxYxmaH2NEupwbWPDPttt+SPF7ykc+cpx7TsHGo6V9j2YJ2n0ipMjFitZOXhhKsSC7jAe3YIH/fK3MpLdHeSe+fyhI/suDJF4Lmfc9E51GF1JNTXAjZl4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Sr7fPMui; arc=none smtp.client-ip=209.85.214.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1779371660; c=relaxed/simple;
+	bh=Tzbrlyk6EvI6Gpf6kF7mrLIY403hGtobLCVySFasVjE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=CuO98jbBX9O3JBcs6OFE7hNYGjXuLgo/DkFgf/j/AMOxMcJXVLr8tEULV6e+1PON5eFl7Jj28wYcRLlYiRTOP9sfSuVKHrG2gvr8zlmfqHGgNJZSVpWtRdHH1NyFWeBowQYA9KoGAx2Kvw5GlezDGNpJ6vfM/8cW/MlL4z0r0gc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=haL/Vvtz; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=bR9ZRlfU; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Sr7fPMui"
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2b9ea536877so37624385ad.1
-        for <netdev@vger.kernel.org>; Thu, 21 May 2026 06:53:54 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="haL/Vvtz";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="bR9ZRlfU"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1779371658;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kBLWXev3FccdzkJq5D0J1DCSF7WEsoh1qu9aui1pYpE=;
+	b=haL/VvtzW13t09yLHtDXLxI9HAztdYlKDs9/j3Xic3nHP/kxJ60Y0IUF7RPP7SME6DU3ve
+	EBExp1jU3tvzp2AATtNUgZ+DtSN0dudJ9sbpjUJwBGokxGdzSgXvRxBPOxnp0KO8yC/CrM
+	SMzDYfA3sh0xmFWCaSZPT1yvQ+nG6pI=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-433-QK0R_SGJOEOWMdiFYuTyFA-1; Thu, 21 May 2026 09:54:10 -0400
+X-MC-Unique: QK0R_SGJOEOWMdiFYuTyFA-1
+X-Mimecast-MFC-AGG-ID: QK0R_SGJOEOWMdiFYuTyFA_1779371649
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-44d83e45febso4905547f8f.0
+        for <netdev@vger.kernel.org>; Thu, 21 May 2026 06:54:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779371634; x=1779976434; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xk22UbcVBp7SP3bZskwyIN7wzI3P1oiov9XU2EHkG+k=;
-        b=Sr7fPMui6mDuQ9xTCToHl0N9L9VeGd+oraTmVm0+AISY9hix7q8MVLngEtpvFUiZEK
-         wZjS3a+kG2oN4opwAEzmwUkDOMw+mVGtfZ1lh0MSUNw4lNpPJfobVax8T2ZL+45MbhrI
-         CkXRSrJ8Kzzl0SxMni3T6XFnuhxh+QPlgo/2vNWhcUrRAOOi1sn2sngNyNyFFNVWxUTN
-         tZ1NyvQn/GHtjTJQzSNJ5FevHCLwP2YuvjEET+7K4CxLfQGUVp2R8qM9rbVlmy+qzMZR
-         ISuPzT/iJu8yBE5dS37ZRo/Pc2sH4FtfTzJ0Ih9dZhicPNHW08f7cjA2YgBuDO4LoYGi
-         QJeQ==
+        d=redhat.com; s=google; t=1779371649; x=1779976449; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=kBLWXev3FccdzkJq5D0J1DCSF7WEsoh1qu9aui1pYpE=;
+        b=bR9ZRlfUe1pW3N2KObt5+BR00cXyfXzhC4zBJrMWZWsjghDCMIBCxmcQsQGOJ/jhER
+         xh5+Ou8xzU/IEjombfa8tpg4Z6SXrgdAntDvOootjm15AIayriCP7J3+d14XYtR2xlsC
+         OQCj++1zQse+kRC50OwZeoGElYMePSwm9b9LGaOFEXTd/xSn6IWmC596Tb8ofsedpyRs
+         8V0S3Vdc3xJsvfY0RqrC7KNH/6ZBsVAJcxsWsyP7YrrZ8MI120wEneSZEsFBrkLL0sVN
+         HakWubZMogwrMUvOmgLmyv9I1msMriRZw9/MQ2ncqPOx+ITOJjZ4mAZjuRHo91/kkLqi
+         loaw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779371634; x=1779976434;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=xk22UbcVBp7SP3bZskwyIN7wzI3P1oiov9XU2EHkG+k=;
-        b=jigbN3gdw8N26GxO85yJHK7GHI7iKETLgS6/nIn/NzHCQAzsNlHsIrssYJ6LuuYbel
-         qkf+GB565QcYBvOsVWgxdrn9vUMNCoh4QP+AXCSOexdPponRgk7DwSU/JxuqK28wqQ89
-         b7chPB6gZORm2ByMsD0VliB8aqDafApIFWdK4WU7yYoQRZ/MI8tLi001twzd/0NuBnVI
-         vJ6GogEPHqVSyzaE6rEnyzTnoXgly45sprvEmE1RVtxWqr70DJsT4wLcZgf7s1lGToxl
-         C7uIE4bG/7Sv7BsfKSXFufSg2Tz4OlodIKD3KXQ789TURZj2Snv0UXE+NnOAhnNxPxfZ
-         W2qw==
-X-Gm-Message-State: AOJu0Yzf0QMNgYPIgzHJs3zMmmqhDH13IHCiHc2FTg5gGJzCLmMUZj6a
-	PRgBae/zzSvfE+K7MxHF3f7+vVZe4VbVUF1jhPvM4R7K+dVivZeGgfcF
-X-Gm-Gg: Acq92OFP4aWp/3H1en8q0JyWJm4e9Z6T7MH8wqDSFNkK4+veCl6AyeJfGxj8i8NtRF9
-	cQy+PcY36wyVX70VDukZhg82RfT/3QesmVF6n8FlBTo3oYTQWDh+OeLi1FGNnbrfQIW41rP/TJO
-	vICQVC1T0pramf5yAQuds39v+KudydndX7qpz/NjYDUwDHoIfv4JTpgAZXW1KoijdFRtGfVO5Vv
-	EFeltcCOhURLSXJLP57aS2MPG0hp6QrXXEh1Bwokqqss/STQSvIk+evJ2OJpXBETaCEKKWLY5jL
-	rfj8OvHLg5NAM4sdpMfitwGyw3MqEyNb+CV0+XCmkLFyl+lZJSWs7A/gHhPbO2lYcUsljzh8jK6
-	qjnhQb+Qr6knMZa0RKmqrxbHVSGfwgv8/o4NW2DqWK3qCJA8+HJq+osx/EhBruNxZsusd2YgKBb
-	aCUGOOH+hO1+brO2iQL09HFIXM3RBZzBMf77ewtnlqi9QC61aHPOSypO3GOVR7YMu94x8rQfpZi
-	H5jucNiiOo8n83ue4Bk+nw+TeBSREs=
-X-Received: by 2002:a17:902:da48:b0:2b2:4bbc:14b0 with SMTP id d9443c01a7336-2bea22b759amr28559035ad.20.1779371633985;
-        Thu, 21 May 2026 06:53:53 -0700 (PDT)
-Received: from KERNELXING-MC1.tencent.com ([2408:8207:1923:2c20:2035:4b1f:d540:7ffb])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2bea98fcb09sm12957365ad.56.2026.05.21.06.53.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 May 2026 06:53:53 -0700 (PDT)
-From: Jason Xing <kerneljasonxing@gmail.com>
-To: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	willemb@google.com,
-	kuniyu@google.com,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	andrii@kernel.org,
-	martin.lau@linux.dev,
-	eddyz87@gmail.com,
-	memxor@gmail.com,
-	song@kernel.org,
-	yonghong.song@linux.dev,
-	jolsa@kernel.org,
-	john.fastabend@gmail.com,
-	sdf@fomichev.me
-Cc: netdev@vger.kernel.org,
-	bpf@vger.kernel.org,
-	Jason Xing <kernelxing@tencent.com>
-Subject: [PATCH net-next v2 6/6] selftests/bpf: Add RX latency tests for bpf timestamping
-Date: Thu, 21 May 2026 21:52:44 +0800
-Message-Id: <20260521135244.40869-7-kerneljasonxing@gmail.com>
-X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20260521135244.40869-1-kerneljasonxing@gmail.com>
-References: <20260521135244.40869-1-kerneljasonxing@gmail.com>
+        d=1e100.net; s=20251104; t=1779371649; x=1779976449;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=kBLWXev3FccdzkJq5D0J1DCSF7WEsoh1qu9aui1pYpE=;
+        b=L35KEdko7AJYFJR85ZeRuKiJ7aKQ1/8AE+n05l4/rmztj4b2hjY/S8MDi9gZUcgsbR
+         GP+0CVZxLR6Qv5YQCDJ9khd1GHYJAOMFAF3h2q4xU460Qzd1ZW6ClZLhUjvsEMPG7Uk/
+         9yk8DSw6j5hd8A71J6unwwaSsF+dA4hlXNCp9pA2PzJbj/KAq640mNE2BPmUbGyci5Ys
+         ckHTMMkOXpa7Mj124JWVJjK3KtHn7KhYI7MZK2oymNsOhxUVobqw2jUAb7RWbAn+cQ+v
+         bPbcVGGLKcJn+TqrXYrwNYCVpNNnDYFH8+xuamfYBv6qe7u8muR8/o3QHgvabBuBCaBR
+         4BzA==
+X-Forwarded-Encrypted: i=1; AFNElJ/hTzpAvvkxaYYao7yJusk5h1lrMn7yFo98wVlFUYudRXqv1nf/79xnkzQN+3rgNktpGuIjCHY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyv8V4+G3rThOJKWr4NTIBVPNap+qxqizjyoObkTFsTGvUYSWsK
+	244eoUgGPFLQJc0vpXrgEhSZVqsCxR+j7D3PL5WDuGSw2rqy1VRimcXR079ycDcjOc2VT8sQEao
+	z6EkYRMc359xr51hYGF7XbSrs3W9ih9K5Hm2GvTNxxRlqByVghnojNiURqw==
+X-Gm-Gg: Acq92OGbhQJV5e7+JHizZktpraE/85brjELHdJdKGL/2sjmzuxULHkquVqvBpdeMpQX
+	z2RDmPiiB6qXvQs+gJlfzfLKMCLBLXpYAGqKEaKbKeOdaxuhQmNIIdUwD2l/J/lVpfFDSYiGeMY
+	q0EK8GV0gHDsWSYAI3F+WXY8XPQcRQQkLWql67gScBRCazRshw4dlQOZiGkndPQcB41+BwirY62
+	Fndaw9Gon+yRiAlXSN2i7jP0UMClQ/ydlK73ANw63kH2wUDVqncCfTq4uMhnKL3QnLkVsuhjXWA
+	0zKyih1hW6lunZQz5ZFwRB4K22672tRZO1hLaj+oFyRE1EC5GxbP8au5qKNI1JPHEioT7Wt4evc
+	S5aFFRoWX32Z2qLC2eFmI4TkLrE/bWx2u5uh55VQaB0R4cQztZHl0JDNAaQ==
+X-Received: by 2002:a05:6000:184f:b0:43d:78ae:b785 with SMTP id ffacd0b85a97d-45ea37bdeaemr4397701f8f.21.1779371649272;
+        Thu, 21 May 2026 06:54:09 -0700 (PDT)
+X-Received: by 2002:a05:6000:184f:b0:43d:78ae:b785 with SMTP id ffacd0b85a97d-45ea37bdeaemr4397644f8f.21.1779371648776;
+        Thu, 21 May 2026 06:54:08 -0700 (PDT)
+Received: from [192.168.88.32] ([169.155.232.242])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45eaa9358d0sm2825864f8f.26.2026.05.21.06.54.07
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 21 May 2026 06:54:08 -0700 (PDT)
+Message-ID: <545dd8a4-662b-49de-a5cf-793d20989571@redhat.com>
+Date: Thu, 21 May 2026 15:54:06 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V2 net 1/2] net: hibmcge: disable Relaxed Ordering to fix
+ RX packet corruption
+To: Jijie Shao <shaojijie@huawei.com>, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, andrew+netdev@lunn.ch, horms@kernel.org
+Cc: shenjian15@huawei.com, liuyonglong@huawei.com, chenhao418@huawei.com,
+ huangdonghua3@h-partners.com, yangshuaisong@h-partners.com,
+ shiyongbang@huawei.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260518144253.1568118-1-shaojijie@huawei.com>
+ <20260518144253.1568118-2-shaojijie@huawei.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20260518144253.1568118-2-shaojijie@huawei.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Jason Xing <kernelxing@tencent.com>
+On 5/18/26 4:42 PM, Jijie Shao wrote:
+> When SMMU is disabled, the hibmcge driver may receive corrupted packets.
+> The hardware writes packet data and descriptors to the same page, but
+> with Relaxed Ordering enabled, PCI write transactions may not be
+> strictly ordered. This can cause the driver to observe a valid
+> descriptor before the corresponding packet data is fully written.
+> 
+> Fix this by clearing PCI_EXP_DEVCTL_RELAX_EN in the PCI bridge control
+> register to ensure strict write ordering between packet data and
+> descriptors.
+> 
+> Fixes: f72e25594061 ("net: hibmcge: Implement rx_poll function to receive packets")
+> Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+> ---
+>  drivers/net/ethernet/hisilicon/hibmcge/hbg_main.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_main.c b/drivers/net/ethernet/hisilicon/hibmcge/hbg_main.c
+> index 068da2fd1fea..319551caf047 100644
+> --- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_main.c
+> +++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_main.c
+> @@ -420,6 +420,8 @@ static int hbg_pci_init(struct pci_dev *pdev)
+>  		return -ENOMEM;
+>  
+>  	pci_set_master(pdev);
+> +	pcie_capability_clear_word(pdev, PCI_EXP_DEVCTL,
+> +				   PCI_EXP_DEVCTL_RELAX_EN);
 
-The client sends data, and the server reads it via read(), which
-triggers tcp_recvmsg() internally. And then the computation is done
-in the BPF_SOCK_OPS_TSTAMP_RCV_CB callback. Extend test_tcp() to cover
-the new BPF RX timestamping path.
+Sashiko noted this will not survive a device reset - that performs
+pci_restore_state - and you should likelly call pci_save_state(pdev)
+afterwards.
 
-One more crucial thing is to add usleep to allow the delay of workqueue
-turning on global time record of each skb in recv path, or else the test
-might fail due to no timestamp in the skb.
-
-Verify that SO_TIMESTAMPING RX (software) and BPF RX timestamping can
-work simultaneously on the same socket without conflict. When
-enable_socket_timestamping is set, enable SOF_TIMESTAMPING_SOFTWARE |
-SOF_TIMESTAMPING_RX_SOFTWARE on afd and use recvmsg() to verify the
-SCM_TIMESTAMPING cmsg contains a valid software RX timestamp.
-
-This exercises the mixed mode where all 4 timestamping paths (SO TX on
-cfd, SO RX on afd, BPF TX on cfd, BPF RX on afd) run together. The
-standalone mode (enable_socket_timestamping=false) keeps only BPF TX
-and BPF RX active using read().
-
-Signed-off-by: Jason Xing <kernelxing@tencent.com>
----
- .../bpf/prog_tests/net_timestamping.c         | 71 ++++++++++++++++++-
- .../selftests/bpf/progs/net_timestamping.c    | 35 +++++++++
- 2 files changed, 105 insertions(+), 1 deletion(-)
-
-diff --git a/tools/testing/selftests/bpf/prog_tests/net_timestamping.c b/tools/testing/selftests/bpf/prog_tests/net_timestamping.c
-index dbfd87499b6b..e3fe850e4cc7 100644
---- a/tools/testing/selftests/bpf/prog_tests/net_timestamping.c
-+++ b/tools/testing/selftests/bpf/prog_tests/net_timestamping.c
-@@ -143,11 +143,47 @@ static void test_socket_timestamping(int fd)
- 	SK_TS_ACK = 0;
- }
- 
-+static bool recv_verify_rx_timestamp(int fd, char *buf, int len)
-+{
-+	struct scm_timestamping *tss = NULL;
-+	char ctrl[1024];
-+	struct msghdr msg = {};
-+	struct iovec iov;
-+	struct cmsghdr *cm;
-+	int ret;
-+
-+	iov.iov_base = buf;
-+	iov.iov_len = len;
-+	msg.msg_iov = &iov;
-+	msg.msg_iovlen = 1;
-+	msg.msg_control = ctrl;
-+	msg.msg_controllen = sizeof(ctrl);
-+
-+	ret = recvmsg(fd, &msg, 0);
-+	if (!ASSERT_EQ(ret, len, "recvmsg from client"))
-+		return false;
-+
-+	for (cm = CMSG_FIRSTHDR(&msg); cm; cm = CMSG_NXTHDR(&msg, cm)) {
-+		if (cm->cmsg_level == SOL_SOCKET &&
-+		    cm->cmsg_type == SCM_TIMESTAMPING) {
-+			tss = (void *)CMSG_DATA(cm);
-+			break;
-+		}
-+	}
-+
-+	if (!ASSERT_TRUE(tss != NULL, "SCM_TIMESTAMPING cmsg present") ||
-+	    !ASSERT_TRUE(tss->ts[0].tv_sec || tss->ts[0].tv_nsec, "rx sw
-+			 timestamp non-zero"))
-+		return false;
-+
-+	return true;
-+}
-+
- static void test_tcp(int family, bool enable_socket_timestamping)
- {
- 	struct net_timestamping__bss *bss;
- 	char buf[cfg_payload_len];
--	int sfd = -1, cfd = -1;
-+	int sfd = -1, cfd = -1, afd = -1;
- 	unsigned int sock_opt;
- 	struct netns_obj *ns;
- 	int cg_fd;
-@@ -187,7 +223,27 @@ static void test_tcp(int family, bool enable_socket_timestamping)
- 	if (!ASSERT_OK_FD(cfd, "connect_to_fd_server"))
- 		goto out;
- 
-+	afd = accept(sfd, NULL, NULL);
-+	if (!ASSERT_OK_FD(afd, "accept"))
-+		goto out;
-+
-+	/* net_enable_timestamp() defers the static key update via
-+	 * schedule_work() when CONFIG_JUMP_LABEL is set. Give the
-+	 * workqueue a chance to run so that netstamp_needed_key is
-+	 * active and skb->tstamp gets populated in the receive path.
-+	 */
-+	usleep(10000);
-+
- 	if (enable_socket_timestamping) {
-+		unsigned int rx_opt;
-+
-+		rx_opt = SOF_TIMESTAMPING_SOFTWARE |
-+			 SOF_TIMESTAMPING_RX_SOFTWARE;
-+		ret = setsockopt(afd, SOL_SOCKET, SO_TIMESTAMPING,
-+				 (char *)&rx_opt, sizeof(rx_opt));
-+		if (!ASSERT_OK(ret, "setsockopt SO_TIMESTAMPING RX on afd"))
-+			goto out;
-+
- 		sock_opt = SOF_TIMESTAMPING_SOFTWARE |
- 			   SOF_TIMESTAMPING_OPT_ID |
- 			   SOF_TIMESTAMPING_TX_SCHED |
-@@ -207,6 +263,15 @@ static void test_tcp(int family, bool enable_socket_timestamping)
- 	if (!ASSERT_EQ(ret, sizeof(buf), "send to server"))
- 		goto out;
- 
-+	if (enable_socket_timestamping) {
-+		if (!recv_verify_rx_timestamp(afd, buf, sizeof(buf)))
-+			goto out;
-+	} else {
-+		ret = read(afd, buf, sizeof(buf));
-+		if (!ASSERT_EQ(ret, sizeof(buf), "recv from client"))
-+			goto out;
-+	}
-+
- 	if (enable_socket_timestamping)
- 		test_socket_timestamping(cfd);
- 
-@@ -215,8 +280,12 @@ static void test_tcp(int family, bool enable_socket_timestamping)
- 	ASSERT_EQ(bss->nr_sched, 1, "nr_sched");
- 	ASSERT_EQ(bss->nr_txsw, 1, "nr_txsw");
- 	ASSERT_EQ(bss->nr_ack, 1, "nr_ack");
-+	ASSERT_EQ(bss->nr_passive, 1, "nr_passive");
-+	ASSERT_GE(bss->nr_rcv, 1, "nr_rcv");
- 
- out:
-+	if (afd >= 0)
-+		close(afd);
- 	if (sfd >= 0)
- 		close(sfd);
- 	if (cfd >= 0)
-diff --git a/tools/testing/selftests/bpf/progs/net_timestamping.c b/tools/testing/selftests/bpf/progs/net_timestamping.c
-index b4c2f0f2be11..4bbff09db55c 100644
---- a/tools/testing/selftests/bpf/progs/net_timestamping.c
-+++ b/tools/testing/selftests/bpf/progs/net_timestamping.c
-@@ -6,6 +6,8 @@
- #include "bpf_kfuncs.h"
- #include <errno.h>
- 
-+extern u64 bpf_ktime_get_real_ns(void) __ksym;
-+
- __u32 monitored_pid = 0;
- 
- int nr_active;
-@@ -14,6 +16,7 @@ int nr_passive;
- int nr_sched;
- int nr_txsw;
- int nr_ack;
-+int nr_rcv;
- 
- struct sk_stg {
- 	__u64 sendmsg_ns;	/* record ts when sendmsg is called */
-@@ -65,6 +68,22 @@ static int bpf_test_sockopt(void *ctx, const struct sock *sk, int expected)
- 	return 0;
- }
- 
-+static int bpf_test_rx_sockopt(void *ctx, const struct sock *sk, int expected)
-+{
-+	int tmp, new = SK_BPF_CB_RX_TIMESTAMPING;
-+	int opt = SK_BPF_CB_FLAGS;
-+	int level = SOL_SOCKET;
-+
-+	if (bpf_setsockopt(ctx, level, opt, &new, sizeof(new)) != expected)
-+		return 1;
-+
-+	if (bpf_getsockopt(ctx, level, opt, &tmp, sizeof(tmp)) != expected ||
-+	    (!expected && tmp != new))
-+		return 1;
-+
-+	return 0;
-+}
-+
- static bool bpf_test_access_sockopt(void *ctx, const struct sock *sk)
- {
- 	if (bpf_test_sockopt(ctx, sk, -EOPNOTSUPP))
-@@ -224,6 +243,9 @@ int skops_sockopt(struct bpf_sock_ops *skops)
- 	case BPF_SOCK_OPS_ACTIVE_ESTABLISHED_CB:
- 		nr_active += !bpf_test_sockopt(skops, sk, 0);
- 		break;
-+	case BPF_SOCK_OPS_PASSIVE_ESTABLISHED_CB:
-+		nr_passive += !bpf_test_rx_sockopt(skops, sk, 0);
-+		break;
- 	case BPF_SOCK_OPS_TSTAMP_SENDMSG_CB:
- 		if (bpf_test_delay(skops, sk))
- 			nr_snd += 1;
-@@ -240,6 +262,19 @@ int skops_sockopt(struct bpf_sock_ops *skops)
- 		if (bpf_test_delay(skops, sk))
- 			nr_ack += 1;
- 		break;
-+	case BPF_SOCK_OPS_TSTAMP_RCV_CB: {
-+		u64 sw_tstamp, now, delay;
-+
-+		sw_tstamp = (u64)skops->args[0] | ((u64)skops->args[1] << 32);
-+		if (!sw_tstamp)
-+			break;
-+
-+		now = bpf_ktime_get_real_ns();
-+		delay = now - sw_tstamp;
-+		if (delay < delay_tolerance_nsec)
-+			nr_rcv += 1;
-+		break;
-+	}
- 	}
- 
- 	return 1;
--- 
-2.43.7
+/P
 
