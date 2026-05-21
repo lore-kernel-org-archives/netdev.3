@@ -1,42 +1,42 @@
 Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9A42392C5F
-	for <netdev@vger.kernel.org>; Thu, 21 May 2026 06:12:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29A553939B3
+	for <netdev@vger.kernel.org>; Thu, 21 May 2026 06:13:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779343981; cv=none; b=GWodz6P6+cKAJPpunWFqGte74kK51aLtBVbstX7brh4g+49vYCYHebpp0WX5YeF0L21HLaloMOMfm7yyPKbaVaOnrbqwCRiIL0jBc51AQjUbHd0hixdLGv0gie3RDwBYygdwjgsNgMxXyV7kgwN8GGdTlzGLWs/8Pp37dmKdlYs=
+	t=1779343986; cv=none; b=tycPyu60JQ6FqXCcVgIak2FC2yL3fCmh+fLpZzmruGca7YAnhq49DmMOvQYpk394LRXH6WkRS/AY4XUTnarmFbHgKqhzNgdWz+Sx532Hg6afu5O31RHiYiAbzZtnI9ctJlJRa12T/bJUi9qVzym1K/yafpm9jZqVa1P8o6qB2CY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779343981; c=relaxed/simple;
-	bh=jrCjh6Gf7mvqfUCo/Z+WojGkoMK+qVYNKi2MK19UZDw=;
+	s=arc-20240116; t=1779343986; c=relaxed/simple;
+	bh=Md0wzikNPCf+TPpnxuNFjBHTLVmKpSKpRaxCBqmFBfw=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=e1qgizXncw2TxZS1bImNOIBLOpKmhOH203IrEp8nmL3XOgs9zqiqoK1t4v1+mDQ+GEUQLltTz07rw36NnNtnZ5OFAvtgzhAPOGdIBjd614PvGfIOOBZPX4ynh2UybQbUlPCt0iFAYk9vCetC9/EpYK3bUK946sSSJidip1G2PBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=U9o+ZvT0; arc=none smtp.client-ip=185.246.85.4
+	 In-Reply-To:To:Cc; b=RguIJlHMMHKsk+W0NHHCW7FJxcYQlzj7MSTRr8mYlmtSpGJW3e0vy+GcvzWa7qiGth1niJTBsLITPR/TYkPjwmpmXu0Vdlhxuvrsu7WS5mw0pq+Ep2omDtJMZCsQOV/8KSO7PwBIaXSZMZzOC4IwwePPT8lVWYdUBYHb0gPquGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=tvbVXjAW; arc=none smtp.client-ip=185.246.85.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="U9o+ZvT0"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="tvbVXjAW"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 933A54E42D17;
-	Thu, 21 May 2026 06:12:55 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id E04CF4E42D1C;
+	Thu, 21 May 2026 06:12:59 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 6767D60718;
-	Thu, 21 May 2026 06:12:55 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9DD57107EA6B7;
-	Thu, 21 May 2026 08:12:51 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id B4DDE60718;
+	Thu, 21 May 2026 06:12:59 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id CACFB107EA6B9;
+	Thu, 21 May 2026 08:12:56 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1779343973; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1779343978; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=AqtCy147yU/f+Lx+VwPk3eev5t8Y0ZJDO+q3HAMz+74=;
-	b=U9o+ZvT0YszLH84e5C+wWY1yo02d5kSWKPg4rwlpoPzX/W6I83Am2THvUlKcsy6z10SnhA
-	vL/N02oD7A6N8fEoNL/KenDEiG0mXYc7myIvMV6QRBGghR0Yn6ahMOiF00XoXSDMX/XYGs
-	sh/GLVN2lAJ6NMUMIF/YN8AtIbOAVNVCPQt1XfGwoJxcarViSJOrhV8QK0UOvqLlSAlaFH
-	W42zsK7n0oeeywFwu+goqk5YFCSNB1Bbvk2KH3wm4a92/0MdI/SU0WTVP/WDCsZGu1Li0v
-	0i/ZdHosWsWbKxsgsBFs1g9LRtWkqKVaP/dE9JVX2T/BaNjy+iSFuawa0AKipQ==
-From: Bastien Curutchet <bastien.curutchet@bootlin.com>
-Date: Thu, 21 May 2026 08:12:39 +0200
-Subject: [PATCH net-next v3 4/8] net: dsa: microchip: bypass
- dev_ops->setup() and teardown() for ksz8
+	bh=A28nketZzT1FJfwd+v8JB6DlzVc1Dye+qMWrkC+5QO4=;
+	b=tvbVXjAW8mi9YTkHFjC1Aw3N8IzgkECm7iM1ap/Rj9Q8K3aslKZ61cTpbxDKcFyMCO//pm
+	fWlqquQ7YD0e2gr0UxgjBHlTLkNwuGJ5igGQ4iNz1mZeEaTagLSXvoepv/b4/d4vWSNjDZ
+	6XSQ73FGQDsbFYbTT0/iuU8qHawM7GY8xnE9SuXuBcoJvtWoNwGJaW2zyKTe/0KwE82ZGX
+	pFi+rlgfV7r5MHKI2y9fGpaXyEdpCXgsHn/Boi73ARaA2skjGxMb1g3/wgkOenHU+S+Amd
+	WVv4fgosnykECbndAORa3JKYMs5wCtxYVZAu66eCyCzsEXZpIbcXKsbSL3gkTQ==
+From: "Bastien Curutchet (Schneider Electric)" <bastien.curutchet@bootlin.com>
+Date: Thu, 21 May 2026 08:12:41 +0200
+Subject: [PATCH net-next v3 6/8] net: dsa: microchip: bypass dev_ops for
+ port_setup()
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -45,7 +45,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260521-clean-ksz-2nd-series-v3-4-75c38971c19a@bootlin.com>
+Message-Id: <20260521-clean-ksz-2nd-series-v3-6-75c38971c19a@bootlin.com>
 References: <20260521-clean-ksz-2nd-series-v3-0-75c38971c19a@bootlin.com>
 In-Reply-To: <20260521-clean-ksz-2nd-series-v3-0-75c38971c19a@bootlin.com>
 To: Woojung Huh <woojung.huh@microchip.com>, UNGLinuxDriver@microchip.com, 
@@ -59,251 +59,265 @@ Cc: Pascal Eberhard <pascal.eberhard@se.com>,
  Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
  Tristram Ha <tristram.ha@microchip.com>, netdev@vger.kernel.org, 
  linux-kernel@vger.kernel.org, 
- "Bastien Curutchet (Schneider Electric)" <bastien.curutchet@bootlin.com>, 
- Vladimir Oltean <vladimir.oltean@nxp.com>
+ "Bastien Curutchet (Schneider Electric)" <bastien.curutchet@bootlin.com>
 X-Mailer: b4 0.14.3
 X-Last-TLS-Session-Version: TLSv1.3
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+port_setup() is handled through a common function that redirects
+the treatment to ksz_dev_ops callbacks. This layer of indirection
+isn't needed since we now have a dsa_switch_ops for each switch family
 
-The KSZ switch families are sufficiently different that a common
-ds->ops->setup() - ksz_setup() with micro-managed dev_ops->reset(),
-dev_ops->pcs_create(), dev_ops->config_cpu_port(),
-dev_ops->enable_stp_addr(), dev_ops->setup() seems to be too convoluted.
+Remove one indirection layer for KSZ switches, by connecting the
+ksz_dev_ops :: port_setup() operations directly to dsa_switch_ops.
+Make ksz9477_set_default_prio_queue_mapping() non-static since it's used
+by ksz_common for tc operations and by ksz9477.c for this port_setup().
+Remove the now unused port_setup() callback from ksz_dev_ops.
 
-I am proposing to make each KSZ switch family part ways for
-dsa_switch_ops :: setup() and teardown(), to allow them greater
-flexibility. This here is the implementation for ksz8, which is
-nothing other than a copy of ksz_setup() with the dev_ops function
-pointers replaced with direct function calls.
-
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
 Signed-off-by: Bastien Curutchet (Schneider Electric) <bastien.curutchet@bootlin.com>
 ---
- drivers/net/dsa/microchip/ksz8.c | 139 +++++++++++++++++++++++++++++++++------
- 1 file changed, 119 insertions(+), 20 deletions(-)
+ drivers/net/dsa/microchip/ksz8.c         | 20 ++++++++++++++------
+ drivers/net/dsa/microchip/ksz9477.c      | 20 ++++++++++++++++++--
+ drivers/net/dsa/microchip/ksz_common.c   | 27 +--------------------------
+ drivers/net/dsa/microchip/ksz_common.h   |  3 +--
+ drivers/net/dsa/microchip/lan937x_main.c | 20 ++++++++++++++++++--
+ 5 files changed, 52 insertions(+), 38 deletions(-)
 
 diff --git a/drivers/net/dsa/microchip/ksz8.c b/drivers/net/dsa/microchip/ksz8.c
-index ccbc3480717f..acc898c68f98 100644
+index acc898c68f98..09968aec6506 100644
 --- a/drivers/net/dsa/microchip/ksz8.c
 +++ b/drivers/net/dsa/microchip/ksz8.c
-@@ -1935,9 +1935,52 @@ static int ksz8_enable_stp_addr(struct ksz_device *dev)
- static int ksz8_setup(struct dsa_switch *ds)
- {
- 	struct ksz_device *dev = ds->priv;
--	const u16 *regs = dev->info->regs;
--	int i, ret = 0;
-+	u16 storm_mask, storm_rate;
-+	struct dsa_port *dp;
-+	struct ksz_port *p;
-+	const u16 *regs;
-+	int i, ret;
-+
-+	regs = dev->info->regs;
-+
-+	dev->vlan_cache = devm_kcalloc(dev->dev, sizeof(struct vlan_table),
-+				       dev->info->num_vlans, GFP_KERNEL);
-+	if (!dev->vlan_cache)
-+		return -ENOMEM;
-+
-+	ret = ksz8_reset_switch(dev);
-+	if (ret) {
-+		dev_err(ds->dev, "failed to reset switch\n");
-+		return ret;
-+	}
-+
-+	ret = ksz_parse_drive_strength(dev);
-+	if (ret)
-+		return ret;
-+
-+	/* set broadcast storm protection 10% rate */
-+	storm_mask = BROADCAST_STORM_RATE;
-+	storm_rate = (BROADCAST_STORM_VALUE * BROADCAST_STORM_PROT_RATE) / 100;
-+	if (ksz_is_ksz8463(dev)) {
-+		storm_mask = swab16(storm_mask);
-+		storm_rate = swab16(storm_rate);
-+	}
-+	regmap_update_bits(ksz_regmap_16(dev), regs[S_BROADCAST_CTRL],
-+			   storm_mask, storm_rate);
-+
-+	ksz8_config_cpu_port(ds);
-+
-+	ksz8_enable_stp_addr(dev);
-+
-+	ds->num_tx_queues = dev->info->num_tx_queues;
-+
-+	regmap_update_bits(ksz_regmap_8(dev), regs[S_MULTICAST_CTRL],
-+			   MULTICAST_STORM_DISABLE, MULTICAST_STORM_DISABLE);
-+
-+	ksz_init_mib_timer(dev);
- 
-+	ds->configure_vlan_while_not_filtering = false;
-+	ds->dscp_prio_mapping_is_global = true;
- 	ds->mtu_enforcement_ingress = true;
- 
- 	/* We rely on software untagging on the CPU port, so that we
-@@ -1987,12 +2030,80 @@ static int ksz8_setup(struct dsa_switch *ds)
- 		ret = ksz8_pme_write8(dev, regs[REG_SW_PME_CTRL], 0);
- 		if (!ret)
- 			ret = ksz_rmw8(dev, REG_INT_ENABLE, INT_PME, 0);
-+		if (ret)
-+			return ret;
- 	}
- 
--	if (!ret)
--		return ksz8_handle_global_errata(ds);
--	else
-+	ret = ksz8_handle_global_errata(ds);
-+	if (ret)
- 		return ret;
-+
-+	/* Start with learning disabled on standalone user ports, and enabled
-+	 * on the CPU port. In lack of other finer mechanisms, learning on the
-+	 * CPU port will avoid flooding bridge local addresses on the network
-+	 * in some cases.
-+	 */
-+	p = &dev->ports[dev->cpu_port];
-+	p->learning = true;
-+
-+	if (dev->irq > 0) {
-+		ret = ksz_girq_setup(dev);
-+		if (ret)
-+			return ret;
-+
-+		dsa_switch_for_each_user_port(dp, dev->ds) {
-+			ret = ksz_pirq_setup(dev, dp->index);
-+			if (ret)
-+				goto port_release;
-+
-+			if (dev->info->ptp_capable) {
-+				ret = ksz_ptp_irq_setup(ds, dp->index);
-+				if (ret)
-+					goto pirq_release;
-+			}
-+		}
-+	}
-+
-+	if (dev->info->ptp_capable) {
-+		ret = ksz_ptp_clock_register(ds);
-+		if (ret) {
-+			dev_err(dev->dev, "Failed to register PTP clock: %d\n",
-+				ret);
-+			goto port_release;
-+		}
-+	}
-+
-+	ret = ksz_mdio_register(dev);
-+	if (ret < 0) {
-+		dev_err(dev->dev, "failed to register the mdio");
-+		goto out_ptp_clock_unregister;
-+	}
-+
-+	ret = ksz_dcb_init(dev);
-+	if (ret)
-+		goto out_ptp_clock_unregister;
-+
-+	/* start switch */
-+	regmap_update_bits(ksz_regmap_8(dev), regs[S_START_CTRL],
-+			   SW_START, SW_START);
-+
-+	return 0;
-+
-+out_ptp_clock_unregister:
-+	if (dev->info->ptp_capable)
-+		ksz_ptp_clock_unregister(ds);
-+port_release:
-+	if (dev->irq > 0) {
-+		dsa_switch_for_each_user_port_continue_reverse(dp, dev->ds) {
-+			if (dev->info->ptp_capable)
-+				ksz_ptp_irq_free(ds, dp->index);
-+pirq_release:
-+			ksz_irq_free(&dev->ports[dp->index].pirq);
-+		}
-+		ksz_irq_free(&dev->girq);
-+	}
-+
-+	return ret;
+@@ -1692,6 +1692,17 @@ static void ksz8_port_setup(struct ksz_device *dev, int port, bool cpu_port)
+ 		ksz8_pme_pwrite8(dev, port, regs[REG_PORT_PME_CTRL], 0);
  }
  
- static void ksz8_phylink_get_caps(struct dsa_switch *ds, int port,
-@@ -2206,7 +2317,6 @@ const struct phylink_mac_ops ksz8_phylink_mac_ops = {
- };
- 
++static int ksz8_dsa_port_setup(struct dsa_switch *ds, int port)
++{
++	struct ksz_device *dev = ds->priv;
++
++	if (!dsa_is_user_port(ds, port))
++		return 0;
++
++	ksz8_port_setup(dev, port, false);
++	return ksz_dcb_init_port(dev, port);
++}
++
+ static void ksz88x3_config_rmii_clk(struct ksz_device *dev)
+ {
+ 	struct dsa_port *cpu_dp = dsa_to_port(dev->ds, dev->cpu_port);
+@@ -2319,7 +2330,6 @@ const struct phylink_mac_ops ksz8_phylink_mac_ops = {
  const struct ksz_dev_ops ksz8463_dev_ops = {
--	.setup = ksz8_setup,
  	.get_port_addr = ksz8463_get_port_addr,
  	.cfg_port_member = ksz8_cfg_port_member,
- 	.port_setup = ksz8_port_setup,
-@@ -2217,14 +2327,10 @@ const struct ksz_dev_ops ksz8463_dev_ops = {
- 	.r_mib_stat64 = ksz88xx_r_mib_stats64,
- 	.freeze_mib = ksz8_freeze_mib,
- 	.port_init_cnt = ksz8_port_init_cnt,
--	.config_cpu_port = ksz8_config_cpu_port,
--	.enable_stp_addr = ksz8_enable_stp_addr,
--	.reset = ksz8_reset_switch,
- 	.init = ksz8_switch_init,
- };
- 
+-	.port_setup = ksz8_port_setup,
+ 	.r_phy = ksz8463_r_phy,
+ 	.w_phy = ksz8463_w_phy,
+ 	.r_mib_cnt = ksz8_r_mib_cnt,
+@@ -2333,7 +2343,6 @@ const struct ksz_dev_ops ksz8463_dev_ops = {
  const struct ksz_dev_ops ksz87xx_dev_ops = {
--	.setup = ksz8_setup,
  	.get_port_addr = ksz8_get_port_addr,
  	.cfg_port_member = ksz8_cfg_port_member,
- 	.port_setup = ksz8_port_setup,
-@@ -2235,9 +2341,6 @@ const struct ksz_dev_ops ksz87xx_dev_ops = {
- 	.r_mib_stat64 = ksz_r_mib_stats64,
- 	.freeze_mib = ksz8_freeze_mib,
- 	.port_init_cnt = ksz8_port_init_cnt,
--	.config_cpu_port = ksz8_config_cpu_port,
--	.enable_stp_addr = ksz8_enable_stp_addr,
--	.reset = ksz8_reset_switch,
- 	.init = ksz8_switch_init,
- 	.pme_write8 = ksz8_pme_write8,
- 	.pme_pread8 = ksz8_pme_pread8,
-@@ -2245,7 +2348,6 @@ const struct ksz_dev_ops ksz87xx_dev_ops = {
- };
- 
+-	.port_setup = ksz8_port_setup,
+ 	.r_phy = ksz8_r_phy,
+ 	.w_phy = ksz8_w_phy,
+ 	.r_mib_cnt = ksz8_r_mib_cnt,
+@@ -2350,7 +2359,6 @@ const struct ksz_dev_ops ksz87xx_dev_ops = {
  const struct ksz_dev_ops ksz88xx_dev_ops = {
--	.setup = ksz8_setup,
  	.get_port_addr = ksz8_get_port_addr,
  	.cfg_port_member = ksz8_cfg_port_member,
- 	.port_setup = ksz8_port_setup,
-@@ -2256,9 +2358,6 @@ const struct ksz_dev_ops ksz88xx_dev_ops = {
- 	.r_mib_stat64 = ksz88xx_r_mib_stats64,
- 	.freeze_mib = ksz8_freeze_mib,
- 	.port_init_cnt = ksz8_port_init_cnt,
--	.config_cpu_port = ksz8_config_cpu_port,
--	.enable_stp_addr = ksz8_enable_stp_addr,
--	.reset = ksz8_reset_switch,
- 	.init = ksz8_switch_init,
- 	.pme_write8 = ksz8_pme_write8,
- 	.pme_pread8 = ksz8_pme_pread8,
-@@ -2269,7 +2368,7 @@ const struct dsa_switch_ops ksz8463_switch_ops = {
- 	.get_tag_protocol	= ksz8463_get_tag_protocol,
- 	.connect_tag_protocol   = ksz8463_connect_tag_protocol,
- 	.get_phy_flags		= ksz_get_phy_flags,
--	.setup			= ksz_setup,
-+	.setup			= ksz8_setup,
- 	.teardown		= ksz_teardown,
+-	.port_setup = ksz8_port_setup,
+ 	.r_phy = ksz8_r_phy,
+ 	.w_phy = ksz8_w_phy,
+ 	.r_mib_cnt = ksz8_r_mib_cnt,
+@@ -2373,7 +2381,7 @@ const struct dsa_switch_ops ksz8463_switch_ops = {
  	.phy_read		= ksz_phy_read16,
  	.phy_write		= ksz_phy_write16,
-@@ -2329,7 +2428,7 @@ const struct dsa_switch_ops ksz87xx_switch_ops = {
- 	.get_tag_protocol	= ksz87xx_get_tag_protocol,
- 	.connect_tag_protocol   = ksz87xx_connect_tag_protocol,
- 	.get_phy_flags		= ksz_get_phy_flags,
--	.setup			= ksz_setup,
-+	.setup			= ksz8_setup,
- 	.teardown		= ksz_teardown,
+ 	.phylink_get_caps	= ksz8_phylink_get_caps,
+-	.port_setup		= ksz_port_setup,
++	.port_setup		= ksz8_dsa_port_setup,
+ 	.get_strings		= ksz_get_strings,
+ 	.get_ethtool_stats	= ksz_get_ethtool_stats,
+ 	.get_sset_count		= ksz_sset_count,
+@@ -2433,7 +2441,7 @@ const struct dsa_switch_ops ksz87xx_switch_ops = {
  	.phy_read		= ksz_phy_read16,
  	.phy_write		= ksz_phy_write16,
-@@ -2389,7 +2488,7 @@ const struct dsa_switch_ops ksz88xx_switch_ops = {
- 	.get_tag_protocol	= ksz88xx_get_tag_protocol,
- 	.connect_tag_protocol   = ksz88xx_connect_tag_protocol,
- 	.get_phy_flags		= ksz_get_phy_flags,
--	.setup			= ksz_setup,
-+	.setup			= ksz8_setup,
- 	.teardown		= ksz_teardown,
+ 	.phylink_get_caps	= ksz8_phylink_get_caps,
+-	.port_setup		= ksz_port_setup,
++	.port_setup		= ksz8_dsa_port_setup,
+ 	.get_strings		= ksz_get_strings,
+ 	.get_ethtool_stats	= ksz_get_ethtool_stats,
+ 	.get_sset_count		= ksz_sset_count,
+@@ -2493,7 +2501,7 @@ const struct dsa_switch_ops ksz88xx_switch_ops = {
  	.phy_read		= ksz_phy_read16,
  	.phy_write		= ksz_phy_write16,
+ 	.phylink_get_caps	= ksz8_phylink_get_caps,
+-	.port_setup		= ksz_port_setup,
++	.port_setup		= ksz8_dsa_port_setup,
+ 	.get_strings		= ksz_get_strings,
+ 	.get_ethtool_stats	= ksz_get_ethtool_stats,
+ 	.get_sset_count		= ksz_sset_count,
+diff --git a/drivers/net/dsa/microchip/ksz9477.c b/drivers/net/dsa/microchip/ksz9477.c
+index 7385aa4e788a..aac7fc478eda 100644
+--- a/drivers/net/dsa/microchip/ksz9477.c
++++ b/drivers/net/dsa/microchip/ksz9477.c
+@@ -1309,6 +1309,23 @@ static void ksz9477_port_setup(struct ksz_device *dev, int port, bool cpu_port)
+ 	ksz_pwrite8(dev, port, regs[REG_PORT_PME_CTRL], 0);
+ }
+ 
++static int ksz9477_dsa_port_setup(struct dsa_switch *ds, int port)
++{
++	struct ksz_device *dev = ds->priv;
++	int ret;
++
++	if (!dsa_is_user_port(ds, port))
++		return 0;
++
++	ksz9477_port_setup(dev, port, false);
++
++	ret = ksz9477_set_default_prio_queue_mapping(dev, port);
++	if (ret)
++		return ret;
++
++	return ksz_dcb_init_port(dev, port);
++}
++
+ static void ksz9477_config_cpu_port(struct dsa_switch *ds)
+ {
+ 	struct ksz_device *dev = ds->priv;
+@@ -1895,7 +1912,6 @@ const struct phylink_mac_ops ksz9477_phylink_mac_ops = {
+ const struct ksz_dev_ops ksz9477_dev_ops = {
+ 	.get_port_addr = ksz9477_get_port_addr,
+ 	.cfg_port_member = ksz9477_cfg_port_member,
+-	.port_setup = ksz9477_port_setup,
+ 	.r_phy = ksz9477_r_phy,
+ 	.w_phy = ksz9477_w_phy,
+ 	.r_mib_cnt = ksz9477_r_mib_cnt,
+@@ -1919,7 +1935,7 @@ const struct dsa_switch_ops ksz9477_switch_ops = {
+ 	.phy_read		= ksz_phy_read16,
+ 	.phy_write		= ksz_phy_write16,
+ 	.phylink_get_caps	= ksz9477_phylink_get_caps,
+-	.port_setup		= ksz_port_setup,
++	.port_setup		= ksz9477_dsa_port_setup,
+ 	.set_ageing_time	= ksz9477_set_ageing_time,
+ 	.get_strings		= ksz_get_strings,
+ 	.get_ethtool_stats	= ksz_get_ethtool_stats,
+diff --git a/drivers/net/dsa/microchip/ksz_common.c b/drivers/net/dsa/microchip/ksz_common.c
+index 103f79179446..e3f481c32e09 100644
+--- a/drivers/net/dsa/microchip/ksz_common.c
++++ b/drivers/net/dsa/microchip/ksz_common.c
+@@ -2947,8 +2947,7 @@ void ksz_port_bridge_leave(struct dsa_switch *ds, int port,
+ 	 */
+ }
+ 
+-static int ksz9477_set_default_prio_queue_mapping(struct ksz_device *dev,
+-						  int port)
++int ksz9477_set_default_prio_queue_mapping(struct ksz_device *dev, int port)
+ {
+ 	u32 queue_map = 0;
+ 	int ipm;
+@@ -2970,30 +2969,6 @@ static int ksz9477_set_default_prio_queue_mapping(struct ksz_device *dev,
+ 	return ksz_pwrite32(dev, port, KSZ9477_PORT_MRI_TC_MAP__4, queue_map);
+ }
+ 
+-int ksz_port_setup(struct dsa_switch *ds, int port)
+-{
+-	struct ksz_device *dev = ds->priv;
+-	int ret;
+-
+-	if (!dsa_is_user_port(ds, port))
+-		return 0;
+-
+-	/* setup user port */
+-	dev->dev_ops->port_setup(dev, port, false);
+-
+-	if (!is_ksz8(dev)) {
+-		ret = ksz9477_set_default_prio_queue_mapping(dev, port);
+-		if (ret)
+-			return ret;
+-	}
+-
+-	/* port_stp_state_set() will be called after to enable the port so
+-	 * there is no need to do anything.
+-	 */
+-
+-	return ksz_dcb_init_port(dev, port);
+-}
+-
+ void ksz_port_stp_state_set(struct dsa_switch *ds, int port, u8 state)
+ {
+ 	struct ksz_device *dev = ds->priv;
+diff --git a/drivers/net/dsa/microchip/ksz_common.h b/drivers/net/dsa/microchip/ksz_common.h
+index f80034488cd1..c66d75347c6c 100644
+--- a/drivers/net/dsa/microchip/ksz_common.h
++++ b/drivers/net/dsa/microchip/ksz_common.h
+@@ -361,7 +361,6 @@ struct alu_struct {
+ struct ksz_dev_ops {
+ 	u32 (*get_port_addr)(int port, int offset);
+ 	void (*cfg_port_member)(struct ksz_device *dev, int port, u8 member);
+-	void (*port_setup)(struct ksz_device *dev, int port, bool cpu_port);
+ 
+ 	/**
+ 	 * @mdio_bus_preinit: Function pointer to pre-initialize the MDIO bus
+@@ -427,7 +426,6 @@ int ksz_switch_suspend(struct device *dev);
+ int ksz_switch_resume(struct device *dev);
+ 
+ void ksz_teardown(struct dsa_switch *ds);
+-int ksz_port_setup(struct dsa_switch *ds, int port);
+ void ksz_port_teardown(struct dsa_switch *ds, int port);
+ 
+ void ksz_init_mib_timer(struct ksz_device *dev);
+@@ -515,6 +513,7 @@ int ksz_pirq_setup(struct ksz_device *dev, u8 p);
+ int ksz_girq_setup(struct ksz_device *dev);
+ void ksz_irq_free(struct ksz_irq *kirq);
+ int ksz_parse_drive_strength(struct ksz_device *dev);
++int ksz9477_set_default_prio_queue_mapping(struct ksz_device *dev, int port);
+ 
+ /* Common register access functions */
+ static inline struct regmap *ksz_regmap_8(struct ksz_device *dev)
+diff --git a/drivers/net/dsa/microchip/lan937x_main.c b/drivers/net/dsa/microchip/lan937x_main.c
+index ecb072cd9981..690f99da0bfe 100644
+--- a/drivers/net/dsa/microchip/lan937x_main.c
++++ b/drivers/net/dsa/microchip/lan937x_main.c
+@@ -411,6 +411,23 @@ static void lan937x_port_setup(struct ksz_device *dev, int port, bool cpu_port)
+ 	dev->dev_ops->cfg_port_member(dev, port, member);
+ }
+ 
++static int lan937x_dsa_port_setup(struct dsa_switch *ds, int port)
++{
++	struct ksz_device *dev = ds->priv;
++	int ret;
++
++	if (!dsa_is_user_port(ds, port))
++		return 0;
++
++	lan937x_port_setup(dev, port, false);
++
++	ret = ksz9477_set_default_prio_queue_mapping(dev, port);
++	if (ret)
++		return ret;
++
++	return ksz_dcb_init_port(dev, port);
++}
++
+ static void lan937x_config_cpu_port(struct dsa_switch *ds)
+ {
+ 	struct ksz_device *dev = ds->priv;
+@@ -799,7 +816,6 @@ const struct phylink_mac_ops lan937x_phylink_mac_ops = {
+ const struct ksz_dev_ops lan937x_dev_ops = {
+ 	.get_port_addr = ksz9477_get_port_addr,
+ 	.cfg_port_member = ksz9477_cfg_port_member,
+-	.port_setup = lan937x_port_setup,
+ 	.mdio_bus_preinit = lan937x_mdio_bus_preinit,
+ 	.create_phy_addr_map = lan937x_create_phy_addr_map,
+ 	.r_phy = lan937x_r_phy,
+@@ -823,7 +839,7 @@ const struct dsa_switch_ops lan937x_switch_ops = {
+ 	.phy_read		= ksz_phy_read16,
+ 	.phy_write		= ksz_phy_write16,
+ 	.phylink_get_caps	= lan937x_phylink_get_caps,
+-	.port_setup		= ksz_port_setup,
++	.port_setup		= lan937x_dsa_port_setup,
+ 	.set_ageing_time	= lan937x_set_ageing_time,
+ 	.get_strings		= ksz_get_strings,
+ 	.get_ethtool_stats	= ksz_get_ethtool_stats,
 
 -- 
 2.54.0
