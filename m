@@ -1,172 +1,157 @@
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp-bc0b.mail.infomaniak.ch (smtp-bc0b.mail.infomaniak.ch [45.157.188.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 368D930EF90
-	for <netdev@vger.kernel.org>; Fri, 22 May 2026 21:24:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9358C385D81
+	for <netdev@vger.kernel.org>; Fri, 22 May 2026 21:26:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.157.188.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779485064; cv=none; b=cbesFunpWhch9xscuZZqfs5GSh9+l5xTOVp4GOkZDm/hLEUWLtTVHORj/dixRIBetqgqqcH8hnyvDXHYHvrw1xeA73ORksAgOVi3lv3sfC6ESNhM+rw7ZX+q9FJUmG9ayAHOTfwJEP4+gCTbxXZpYU5TUiuJG/HMp51PI2fPBvE=
+	t=1779485213; cv=none; b=Q/GCKvYyLZKmnCfR0oM6j/Z/lvTyLkGwNvY6cqul2wmxCr+2SluhzJYUoKJ0Bs38CS/U03Vs9PmHutC2hbdJHBsEwORz9w9h9EMy8Z+W3N+ERQfsAp/6kicQ4uOmEWZrcGfgtHgs10cwA+SUxHMZaIw6Xt8aThTgfpmvAIrIi/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779485064; c=relaxed/simple;
-	bh=4X6wzxH9CRi7D5/xqnYw5mUklSE4bIzW4b0U7UOUrWU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VaWF5QO72FCD63RUY99fBb1LnascIHt2lA1P6F+tjEqjtIiFN/PCl/A0d/nL/tq/9iO3y9r3zdMT2abqe1kDC0OiD/B0o387zIc+f/01jJVMU/HBwsCwMVNEm7RBulqxA4dQvjPnHEXHjBF7LZOeO3GZvle/vhSXqdLeTKeTvCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Mvr2ojTI; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1779485213; c=relaxed/simple;
+	bh=JhZwWnLCTdg3yCiw3MMzwoZqkff9bBtvXJVizO7ydCw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AZhUmqU87V9zFK2G3A61urwe0RXom7iq8OCMyPgy/QfvP8TT4HIeKboW+/rQSW4sDhVDbry5rXTnfYb/M4g07rptiV+7SOxdehzf+uc0EwqVUMsl0LdCKgE7pVabZb/g723HTCtxjzxJEPcbrlKvwvzsNemRKTW2tEw1WPIkzqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net; spf=pass smtp.mailfrom=digikod.net; dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b=whFcw4t9; arc=none smtp.client-ip=45.157.188.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=digikod.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Mvr2ojTI"
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4891e5b9c1fso68045055e9.2
-        for <netdev@vger.kernel.org>; Fri, 22 May 2026 14:24:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779485062; x=1780089862; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=H1dYQAJtuPMBNLTKwJZ/6YxJZAmjypXguzETEzIyllw=;
-        b=Mvr2ojTIBVe2o3ED+VIKXcZQr0Oy2EYAJBgUjy5/t+zQWSGShwYEHO2jg8NGot9yPk
-         tZ0rYKSA/kn9FdjqoDmMYPsPGZKGTMn6IvMWWhB8Lnchpwmgz8MrhG69zcbmpe4RCuBG
-         71nq0YdRF8nZ68xT1H+s2DfhSEUIospWShlrl/FYDqHkRK4Q4MVRpsZBbyETvjef3VyS
-         JvBkNgLxEiOnvBOZ3Ni7zszj6HtUcqTzYb7bBJlZAzyVZcacYBghvV2WLWjMgBoCtUr0
-         IoCbR0hrWIsfHv7fpJ7GQ1f7wew6zRtdYyfysDZLjw0xb5fMzhaxJlAATcI5/AievCs5
-         XuxA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779485062; x=1780089862;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=H1dYQAJtuPMBNLTKwJZ/6YxJZAmjypXguzETEzIyllw=;
-        b=h14F93lq7AT/IDajTdsL1pq+x1F/OhcLXspAepxDKNtwvpYDRycijZd7A+llN75bN+
-         XtWrXlCBauxQuGp4p794UCaCh2cmfBDO2c9Di4RZ+nCcVx9r5iq5D931eVFAFebD+tiW
-         Bl8pdtX4uE+DuY7gs/E1ltv6yGuVIABJed6rxYyaPSkg8bLtQLBudRYavfXD3SBrtjQr
-         Nh065sosFqWdS5aYF4jPxajyYxENQ/mgiWzcVBoA7q6UFK0MS3fOvflJeb0fq6H8jLqI
-         o1+V4GXqmMontwZbC3KatpcuYZLrkpfkcuoKy8cCYS8g9omrY/xaUHXPCCSTegZzDkxn
-         wAoQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8IilWxNJn3Et5hnZrv4yBXpHNY/mwyPJSDmLpSQe+X8vHOrXl/gJnHzlWPPPd9kYN2WfFzyPU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyCGbaT7mGYABkB5gg6ZjEbjESDmrJC6mQmDeDBgOgYK1SjcN7N
-	ajQaq7hBpCXip/3ZYx7x3IJWkTUnqp4PxR4wtHmLgmfOhO1V56DVRHlq
-X-Gm-Gg: Acq92OFyt7+VimCL82IeYSfXnYmLWlKoLpGseHIA82aGsjjFsVn4vpwiD5MaXRZrvdf
-	ZIUzjHcuRroeR0UOoiSgUfjb/RuInBYQAJ2fiqTu3ePKt8eUdoFNoSrhgze1/Vi862VoH71LN8U
-	5XBc0mx45fqSRxkiuCuoC8pYXTaSNvd2YV2zQ1b+GwhYVqcwLvMEuGyW1KF6R5FidyJ+HGgNp48
-	3peQq/NNtrorxZUwurZcbLuMEOgqH4JMMh64J4mJcm8KKSLEeX3qqqgn9NHDSlcyilQsrVtcNj3
-	Wh7XH2+X4qx7L4NLbx3NOvdrSK4CKkMT/BqcG2YbD9QDwkZLfS7nashXCrmJ6/xKKFKP1TJiERI
-	t7vVOI14kwgOThS0aUw5A4p3x7q7qVCvkV6hR891RTvszegVluWvdmqXxTgaZSE0kL6VThqoMsg
-	QB+96hczUkr3Lb1ypBZywrzFU6lLe/o7uO9+VacrO7dWT+F6zYbqDhVT1DKPK36pDwkI5MC1f7Y
-	I8lAyUyQqf+RUVW1Wp7pqMx4KmIKBSumPnM7NPOKFvWUc4=
-X-Received: by 2002:a05:600c:6217:b0:490:44d0:11b6 with SMTP id 5b1f17b1804b1-49044d01257mr74805245e9.12.1779485061409;
-        Fri, 22 May 2026 14:24:21 -0700 (PDT)
-Received: from ?IPV6:2001:9e8:f11f:2b01:59e8:aae0:c8be:3081? ([2001:9e8:f11f:2b01:59e8:aae0:c8be:3081])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45eb6ccd211sm8562544f8f.10.2026.05.22.14.24.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 22 May 2026 14:24:20 -0700 (PDT)
-Message-ID: <afbd1b31-ef30-4e5e-97dd-54cceafdf2d3@gmail.com>
-Date: Fri, 22 May 2026 23:24:20 +0200
+	dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b="whFcw4t9"
+Received: from smtp-4-0001.mail.infomaniak.ch (unknown [IPv6:2001:1600:7:10::a6c])
+	by smtp-4-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4gMdCy3RLjzhHj;
+	Fri, 22 May 2026 23:08:14 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=digikod.net;
+	s=20191114; t=1779484094;
+	bh=pJedgZBhIKgsTYK6NMF6GB4drKbNP5Xm+N//26L//zs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=whFcw4t9c1xIX1SEPczFSQ3pWa2NTEKoPFkOBbpCaWqa+fEnvNMdSEDSNg9HVKWYT
+	 zFZouUgPashqOaGgMTxlogZOyvqIt/MMna0VBfwpCHQuYI2yhGP1vWWTQI4Of/U1F5
+	 Bx4pCSkq+N+unh5NE0vC28ZoYAWY+Rieqny/giY4=
+Received: from unknown by smtp-4-0001.mail.infomaniak.ch (Postfix) with ESMTPA id 4gMdCx5DBnzsgy;
+	Fri, 22 May 2026 23:08:13 +0200 (CEST)
+Date: Fri, 22 May 2026 23:08:05 +0200
+From: =?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>
+To: Matthieu Buffet <matthieu@buffet.re>
+Cc: =?utf-8?Q?G=C3=BCnther?= Noack <gnoack@google.com>, 
+	linux-security-module@vger.kernel.org, Mikhail Ivanov <ivanov.mikhail1@huawei-partners.com>, 
+	konstantin.meskhidze@huawei.com, Tingmao Wang <m@maowtm.org>, netdev@vger.kernel.org
+Subject: Re: [PATCH v4 0/7] landlock: Add UDP access control support
+Message-ID: <20260522.saibiuZ5ailo@digikod.net>
+References: <20260502124306.3975990-1-matthieu@buffet.re>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v8 2/2] net: sfp: extend SMBus support
-Content-Language: en-US
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: linux@armlinux.org.uk, andrew@lunn.ch, hkallweit1@gmail.com,
- davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
- maxime.chevallier@bootlin.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, bjorn@mork.no, horms@kernel.org
-References: <20260516135442.2234729-3-jelonek.jonas@gmail.com>
- <20260520234208.565366-1-kuba@kernel.org>
-From: Jonas Jelonek <jelonek.jonas@gmail.com>
-In-Reply-To: <20260520234208.565366-1-kuba@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260502124306.3975990-1-matthieu@buffet.re>
+X-Infomaniak-Routing: alpha
 
-Hi,
+Thanks again, I only spotted some minor issues.
 
-On 21.05.26 01:42, Jakub Kicinski wrote:
-> This is an AI-generated review of your patch. The human sending this
-> email has considered the AI review valid, or at least plausible.
-> ---
-> net: sfp: extend SMBus support
->
-> Extend SFP SMBus read/write helpers to use SMBus word access and I2C block
-> access when advertised by the adapter, picking the largest supported transfer
-> per chunk.
->
->> diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
->> --- a/drivers/net/phy/sfp.c
->> +++ b/drivers/net/phy/sfp.c
->> @@ -756,50 +757,110 @@ static int sfp_i2c_write(struct sfp *sfp, bool a2, u8 dev_addr, void *buf,
->> [ ... ]
->> -static int sfp_smbus_byte_read(struct sfp *sfp, bool a2, u8 dev_addr,
->> -			       void *buf, size_t len)
->> +static int sfp_smbus_read(struct sfp *sfp, bool a2, u8 dev_addr, void *buf,
->> +			  size_t len)
->>  {
->> -	union i2c_smbus_data smbus_data;
->> +	union i2c_smbus_data smbus_data = {0};
->>  	u8 bus_addr = a2 ? 0x51 : 0x50;
->> +	size_t this_len, transferred;
->> +	u32 functionality;
->>  	u8 *data = buf;
->>  	int ret;
->>  
->> -	while (len) {
->> -		ret = i2c_smbus_xfer(sfp->i2c, bus_addr, 0,
->> -				     I2C_SMBUS_READ, dev_addr,
->> -				     I2C_SMBUS_BYTE_DATA, &smbus_data);
->> -		if (ret < 0)
->> -			return ret;
->> +	functionality = i2c_get_functionality(sfp->i2c);
->>  
->> -		*data = smbus_data.byte;
->> +	while (len) {
->> +		this_len = min(len, sfp->i2c_block_size);
->> +
-> Does this introduce an -EINVAL regression for ethtool -m during the initial
-> 300ms module insertion window?
->
-> When an SFP module is inserted, sfp_check_state() sets the SFP_F_PRESENT
-> flag and schedules sfp_sm_mod_probe() to run after a 300ms delay.
-> Because sfp->i2c_block_size isn't initialized until sfp_sm_mod_probe()
-> runs, it remains 0 during this window.
->
-> If ethtool -m is run during this 300ms window, sfp_module_eeprom() proceeds
-> because SFP_F_PRESENT is set. This means this_len will evaluate to 0.
-> For adapters supporting I2C_FUNC_SMBUS_READ_I2C_BLOCK, the code attempts
-> a 0-length I2C block read, which the I2C subsystem core explicitly rejects
-> with -EINVAL.
->
-> Prior to this patch, sfp_smbus_byte_read() bypassed the block size entirely
-> and safely executed 1-byte transfers during the 300ms window.
->
-> This also seems to expose a pre-existing deadlock in the pure I2C path.
-> For pure I2C controllers, sfp_i2c_read() is used. If this_len evaluates
-> to 0, i2c_transfer() is called with a 0-length read message. If the I2C
-> adapter returns success, the loop variables remain unchanged, causing an
-> infinite loop while holding rtnl_lock, which deadlocks the networking stack.
->
-> Is there a way to prevent reads before sfp->i2c_block_size is properly
-> initialized, or fall back to 1-byte reads when the block size is 0?
+On Sat, May 02, 2026 at 02:42:59PM +0200, Matthieu Buffet wrote:
+> Hi,
+> 
+> This is V4 of UDP access control in Landlock. Thanks to the round of
+> review of v3, access rights have changed to something that seems easier
+> to use and understand. It adds only two access rights, to restrict
+> configuring local and remote addresses on UDP sockets. The one that
+> restricts setting a remote address also controls sending datagrams to
+> explicit remote addresses -ignoring any remote address preset on the
+> socket-. The one that restricts binding to a local port also applies
+> when the kernel auto-binds an ephemeral port.
+> v1:
+> Link: https://lore.kernel.org/all/20240916122230.114800-1-matthieu@buffet.re/
+> v2:
+> Link: https://lore.kernel.org/all/20241214184540.3835222-1-matthieu@buffet.re/
+> v3:
+> Link: https://lore.kernel.org/all/20251212163704.142301-1-matthieu@buffet.re/
+> 
+> The limitation around allowing a process to send but not receive is
+> still there, and could warrant another patch if there is a real user
+> need.
+> I'm just not super happy about the clarity of logs generated for denied
+> autobinds ("domain=xxxxxx blockers=net.bind_udp"), due to the fact that
+> addresses and ports are currently only logged if they are non-0. A later
+> (coordinated LSM-wide) patch could improve readability by replacing != 0
+> checks with new booleans in struct lsm_network_audit.
 
-Valid finding. I would fix this by setting sfp->i2c_block_size in
-sfp_i2c_configure to the known adapter maximum size at that point.
-This way, it is filled non-zero and the issue cannot come up.
+Do you plan to send such patch after this series?  I guess we could add
+has_{port,addr} fields to lsm_network_audit and handle AF_UNSPEC too?
 
-If there's another suggestion, please raise your hand.
+> I'm also not
+> exactly happy with the integration in existing TCP selftests, but
+> refactoring them has already been discussed earlier.
 
->> +		if (functionality & I2C_FUNC_SMBUS_READ_I2C_BLOCK) {
->> +			smbus_data.block[0] = this_len;
->> +			ret = i2c_smbus_xfer(sfp->i2c, bus_addr, 0,
->> +					     I2C_SMBUS_READ, dev_addr,
->> +					     I2C_SMBUS_I2C_BLOCK_DATA, &smbus_data);
->> +			if (ret < 0)
->> +				return ret;
->> +
->> +			memcpy(data, &smbus_data.block[1], this_len);
->> +			transferred = this_len;
+Can you remind us what was your concern and the potential fix?
 
-Regards,
-Jonas
+> 
+> Changes v1->v2
+> ==============
+> - recvmsg hook is gone and sendmsg hook doesn't apply when sending to a
+>   remote address pre-set on socket, to improve performance
+> - don't add a get_addr_port() helper function, which required a weird
+>   "am I in IPv4 or IPv6 context"
+> - reorder hook prologue for consistency: check domain, then type and
+>   family
+> 
+> Changes v2->v3
+> ==============
+> - removed support for sending datagrams with explicit destination
+>   address of family AF_UNSPEC, which allowed to bypass restrictions with
+>   a race condition
+> - rebased on linux-mic/next => add support for auditing
+> - fixed mistake in selftests when using unspec_srv variables, which were
+>   implicitly of type SOCK_STREAM and did not actually test UDP code
+> - add tests for IPPROTO_IP
+> - improved docs, split off TCP-related refactoring
+> 
+> Changes v3->v4
+> ==============
+> - merge LANDLOCK_ACCESS_NET_CONNECT_UDP and
+>   LANDLOCK_ACCESS_NET_SENDTO_UDP into
+>   LANDLOCK_ACCESS_NET_CONNECT_SEND_UDP (everything that might set the
+>   destination of a datagram)
+> - make LANDLOCK_ACCESS_NET_BIND_UDP apply when kernel is about to
+>   auto-bind an ephemeral port for the caller. Block it if policy would
+>   not allow an explicit call to bind(0)
+> - only deny sending AF_UNSPEC datagrams on IPv6 sockets, where there is
+>   a risk of the address family changing midway
+> 
+> Patch is based on https://git.kernel.org/pub/scm/linux/kernel/git/mic/linux.git
+> 3457a5ccacd3 ("landlock: Document fallocate(2) as another truncation corner case")
+> All lines added are covered with selftests, except the "default: return
+> 0" in current_check_autobind_udp_socket() which is not currently
+> reachable (net.c goes from 92.9%->94.6% line coverage).
+> 
+> Let me know what you think!
+> 
+> Closes: https://github.com/landlock-lsm/linux/issues/10
+> 
+> Matthieu Buffet (7):
+>   landlock: Add UDP bind() access control
+>   landlock: Add UDP connect() access control
+>   landlock: Add UDP send access control
+>   selftests/landlock: Add UDP bind/connect tests
+>   selftests/landlock: Add tests for sendmsg()
+>   samples/landlock: Add sandboxer UDP access control
+>   landlock: Add documentation for UDP support
+> 
+>  Documentation/userspace-api/landlock.rst     |   89 +-
+>  include/uapi/linux/landlock.h                |   35 +-
+>  samples/landlock/sandboxer.c                 |   40 +-
+>  security/landlock/audit.c                    |    3 +
+>  security/landlock/limits.h                   |    2 +-
+>  security/landlock/net.c                      |  161 ++-
+>  security/landlock/syscalls.c                 |    2 +-
+>  tools/testing/selftests/landlock/base_test.c |    4 +-
+>  tools/testing/selftests/landlock/net_test.c  | 1146 ++++++++++++++++--
+>  9 files changed, 1341 insertions(+), 141 deletions(-)
+> 
+> 
+> base-commit: 3457a5ccacd34fdd5ebd3a4745e721b5a1239690
+> -- 
+> 2.39.5
+> 
+> 
