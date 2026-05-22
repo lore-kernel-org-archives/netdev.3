@@ -1,27 +1,28 @@
-Received: from OS0P286CU010.outbound.protection.outlook.com (mail-japanwestazon11011009.outbound.protection.outlook.com [40.107.74.9])
+Received: from TY3P286CU002.outbound.protection.outlook.com (mail-japaneastazon11010024.outbound.protection.outlook.com [52.101.229.24])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92C591DE2AD;
-	Fri, 22 May 2026 12:12:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.74.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFE7537998A;
+	Fri, 22 May 2026 12:13:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.229.24
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779451981; cv=fail; b=hP4aoX5Ut9SZXNMe8eZqU8ZCTvoqqCkzTnd5tEbBNjVNBc7FENnOMC+qE+G2hW3W/lvLPhjeBdA2bEGUfuvc9wbYAGRTfISxYw6v+EXIfMCJjylN1d2m4q5EO4yPB5KN6Zd1wuG2ccvX8x3R+EIQSYzAtJh9tP2YglhCGrfm5uk=
+	t=1779451983; cv=fail; b=Vq6gHM7xI1BEypdvN6ZiiddTCgcqhIeDLmwjM19R0hdzUXgp6DmtKWvjfpvX0Z52dw5qhSLAe6JoSsR2w7AkyKgoet6OUoj2R2mqanvegrHSB3TShRbOHq3alRl7xVqIoQLfGeo0K0uq5MaTDMfDuKd0+Aex8xfWQ6dALvIch2U=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779451981; c=relaxed/simple;
-	bh=bXbo8ys9oItkPxxpMGA/GMnS6qXYebxQIaiaGmbSsXM=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=miH28h4TBMgt7VyDoDdSC65qGQSXWE64/Ty+tF/bhOjL6EZdKwIHSeqA7xW4cNZPZH5roM3cg/Kb+YGjGLajmYCqVGTMF9np4zOinT9SWJnCyBLAcQsbtOXi5uoeCxl0R1W9KAUSRpzkMczlkkSSOCM6lhCIxKh4M6BglnFUfqM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b=GMfPkNhz; arc=fail smtp.client-ip=40.107.74.9
+	s=arc-20240116; t=1779451983; c=relaxed/simple;
+	bh=DdAHW5pFFp1rmLCOsdWwuX7F5XW8TbDbM8r2gJx/0iw=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=LRETHlQXPlcS/NOgo+GOi8m44klZDqEoPraewSzZyNR12Sxa/50m/ix2p9o+AEN8E+bhs2qU4xDmERTk7iCNhXg8WiZtxROpVwwl4BgOBV6oD02A/84aDuApV+iW/JNH2IABRjTHt8Vkaxb30Lm76ckX7PU2uFAdDxzVCxBtvlw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b=MW/zQ/cu; arc=fail smtp.client-ip=52.101.229.24
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b="GMfPkNhz"
+	dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b="MW/zQ/cu"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GRVOnLTmNeab2a3xltrsA+pMzpp9leDlKaeQgQGmQdTS/Zj8YeRR1N2x+UJ3pPWtvGS5fDMxAluDQdyKFWvy9kOzWYh1irNx/M+C9+1Rjj9yYYj01WGJJqy2tgIXr38tbpxEud1WVtl7KyjLYRXG3qo839qov8U8rvwsb6IyF6PGPopDVTNeqLXoPSqvjtP3QOCYxPs07KdL3/7dFiKDaNgXGy3vxXCbD0hLlC64Gntyafr91VVo9UvL5C6hRi5AcjNiLgxRpBDg/5mNDP9Q2gNhnw8yApSwMp0lRMHWkPkYI9vIxU2WBB2Epfin/7pMqB1OaHWZaGNXsyJtVSdV8A==
+ b=HDbJqcibUmaGJ1p4C5sEd+3lVyonf1lrgps25nDaElHakNNTHox2J0XVqQ/DWXE/bCzjMxou6mZb+34/ZOmR0D3PYcbVIm6LCcd9oA3r1g/SpvGnzF8veNKGh2QndAwaobU+eo+xfMZaj7ZbHI/QYK1wTl974SZzSKzgr/tB3f2T8QoQPfG19vnxx9IYMElTVqxqFwyWtFTqe47Uz9pbn4Ml1iv6Lo0+9qDMFAfTkGxXGsVNRmSJiGYR2Q0IX6RQNY0pWa+oRiNDNl2wu1IB9Cv2d639ne8WyTKTFRYPhIHslbrHIOBiFu/JzqgozD7mR1lT5tZV21DP9ySWovGzgg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Ir8zaXjF+6r3Dm9663T/MmekhVKC1KojEeKnFe07bvo=;
- b=PVLotgq4GZ9etm2lBxouaf1vo8MIujkjr11EIugxGjc6RKFfjtpcJU8DPFlB/iw+O8yuOGN5/+GJkOwk/TY7xS7uGAkYb3/mFghhrnOIRu4xYoc7q69LoX5GICEUnxh4qHUF0joRtw/jXqT1yGAxOUpgYEU14FoqScqNk5f4RAuWOzeL+/4t7h6GkNfTMlJtU4uG8EuSo5E0z/lubrEZM8Ah7QLA+eWd8AvLVvxmmuK1McNN+MWyRIqPF43FOz6Oou6kjdjvLC1iV63xnsGFm1wlZy1awcwIUeWEXGcDZqmAk5JjGBKmR+REfjGcBC/eR7BQ6cWuU1GWYXwFLW5OXw==
+ bh=hjMlhTz+HHkSBlhW0rshtSHaQXq64oGKji5WI81unJU=;
+ b=M6lb5Mo7adCOcu6zmLUaLnpuaB3OEHLaKiKWxpdGddCGcGO5i1dDzDNcKviyk3yu2QKax4cvRarTs5WfizbSuC2BQlpHfJhDH/7fJ3HtO02pZ6D3YPwBgXSGVsbBpHQd+mX+FTkntLBU5mDT/vWCJfeOBiix8d5Dmf32ZQBkAPW68j87DS/vaW2Qi3c2bU/MzBPt+/FID3IIwxhf+sI+DCdPpiJJSGVYxWn1CrjupEjPOaVbO76aRnqXUWMXE+/14YX1kij9XmvKiVcuYmFEfqsofjQQA2YZQE7yzFFQDBOsjoiKoEb4Y129Fcm2ZqGqjPAOZlZTh4LlZWiJfo3qpQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  8.62.32.50) smtp.rcpttodomain=davemloft.net smtp.mailfrom=renesas.com;
  dmarc=pass (p=none sp=none pct=100) action=none header.from=renesas.com;
@@ -29,18 +30,18 @@ ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=renesas.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Ir8zaXjF+6r3Dm9663T/MmekhVKC1KojEeKnFe07bvo=;
- b=GMfPkNhzQLlV4XDGnyUDTzNlmwqztHg8wtBsLJsBELh781kBsa+CzNCOZnEhUqJShSzOvDC1PISyFR9onPrT3LE0Epf9tgO98MaZLaGY+JZeomrcZcGjOPXc1xvqOJS5l9un8nHgzDrfiX87/qXUhxV1/TWuWMQ5LoxOGQQ8kuY=
-Received: from TYCP286CA0353.JPNP286.PROD.OUTLOOK.COM (2603:1096:405:7c::10)
- by OSCPR01MB14314.jpnprd01.prod.outlook.com (2603:1096:604:3a7::5) with
+ bh=hjMlhTz+HHkSBlhW0rshtSHaQXq64oGKji5WI81unJU=;
+ b=MW/zQ/cuMR7D5OhyCGNyOKVHW4cdum9gyDiIWwQk3DUWAsAJOd2C0lhqk74FGDh63IYd+ttau8L+gYHyH1vdm4ledr1bjSTB7xHy6WMGcbcoLAlHb2u4RRESf1cx5EWdv/5RG9WaPx71D5huLn918wA9TFxsojr2rYDG6gVB5yQ=
+Received: from TYCPR01CA0066.jpnprd01.prod.outlook.com (2603:1096:405:2::30)
+ by TYWPR01MB10660.jpnprd01.prod.outlook.com (2603:1096:400:2a1::5) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.48.14; Fri, 22 May
- 2026 12:12:48 +0000
-Received: from TYO1EPF0000501F.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:405:7c:cafe::b4) by TYCP286CA0353.outlook.office365.com
- (2603:1096:405:7c::10) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.48.17; Fri, 22 May
+ 2026 12:12:56 +0000
+Received: from TYO1EPF00005026.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:405:2:cafe::9) by TYCPR01CA0066.outlook.office365.com
+ (2603:1096:405:2::30) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.21.48.17 via Frontend Transport; Fri, 22
- May 2026 12:12:48 +0000
+ May 2026 12:12:56 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 8.62.32.50)
  smtp.mailfrom=renesas.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=renesas.com;
@@ -48,17 +49,16 @@ Received-SPF: Pass (protection.outlook.com: domain of renesas.com designates
  8.62.32.50 as permitted sender) receiver=protection.outlook.com;
  client-ip=8.62.32.50; helo=ejcrelay004p.adwin.renesas.com; pr=E
 Received: from ejcrelay004p.adwin.renesas.com (8.62.32.50) by
- TYO1EPF0000501F.mail.protection.outlook.com (10.167.240.4) with Microsoft
+ TYO1EPF00005026.mail.protection.outlook.com (10.167.240.23) with Microsoft
  SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.21.71.7 via
- Frontend Transport; Fri, 22 May 2026 12:12:47 +0000
+ Frontend Transport; Fri, 22 May 2026 12:12:54 +0000
 Received: from [127.0.1.1] (unknown [10.226.78.135])
-	by ejcrelay004p.adwin.renesas.com (Postfix) with ESMTP id 2D33E3000458;
-	Fri, 22 May 2026 21:12:43 +0900 (JST)
+	by ejcrelay004p.adwin.renesas.com (Postfix) with ESMTP id 9426F3000466;
+	Fri, 22 May 2026 21:12:51 +0900 (JST)
 From: Michael Dege <michael.dege@renesas.com>
-Subject: [net-next PATCH v5 00/14] net: renesas: rswitch: R-Car S4 add VLAN
- aware switching
-Date: Fri, 22 May 2026 14:12:29 +0200
-Message-Id: <20260522-rswitch_add_vlans-v5-0-53589d944a9f@renesas.com>
+Date: Fri, 22 May 2026 14:12:31 +0200
+Subject: [PATCH net-next v5 02/14] net: renesas: rswitch: use device
+ instead of net_device
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -67,12 +67,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAC1IEGoC/23N3YrCMBCG4VuRHBvJTJq2euR9iMg0P9vA2koiU
- ZHeu6MerIs9fD+YZ+4i+xR9FpvFXSRfYo7jwGGWC2F7Gn68jI5boMJaASqZ8iWebX8g5w7ll4Y
- s9bpq2y50uK6t4LtT8iFeX+Zuz93HfB7T7fWiwHN9axqaGa2AVFKTabpAKqCDbfKDz5RXdjyKp
- 1fww8BZA9lwTai0aS1T9G3oD0PDnKHZsJoR6MAaU38b1Z9hYNao2CBDiCa0gcj/N6ZpegDtry9
- ygAEAAA==
-X-Change-ID: 20260120-rswitch_add_vlans-39488bfb296c
+Message-Id: <20260522-rswitch_add_vlans-v5-2-53589d944a9f@renesas.com>
+References: <20260522-rswitch_add_vlans-v5-0-53589d944a9f@renesas.com>
+In-Reply-To: <20260522-rswitch_add_vlans-v5-0-53589d944a9f@renesas.com>
 To: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>, 
  Andrew Lunn <andrew+netdev@lunn.ch>, 
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
@@ -82,164 +79,224 @@ To: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
 Cc: netdev@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
  linux-kernel@vger.kernel.org, Michael Dege <michael.dege@renesas.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1779451963; l=5190;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1779451963; l=6734;
  i=michael.dege@renesas.com; s=20251023; h=from:subject:message-id;
- bh=bXbo8ys9oItkPxxpMGA/GMnS6qXYebxQIaiaGmbSsXM=;
- b=Fv96i3RNZ8+mz30W2IVcuqTnoBMwl7ApFsmow4LYg7vDXWUJ7x+7kmC1FNxnOWxHnI8IiozVz
- T2svGPU9rTbApu+GCWG7TDLa4Grt6CD+V4Jl7HUn/l38M7W/N40LZgI
+ bh=DdAHW5pFFp1rmLCOsdWwuX7F5XW8TbDbM8r2gJx/0iw=;
+ b=wPhUoF2sxqoIuzVSyz/3GbeuZeCgh+H6sUBc5cFhi396h5+rc+jjbP2PW2aiR1zOO3MQLY36l
+ IOf2wCbeUjvCaN8vd19o5DUVH0/Jc8OzN/ws8qdFq/XFbgqyv+hPLFw
 X-Developer-Key: i=michael.dege@renesas.com; a=ed25519;
  pk=gu1rwIcCrAxNMv2I8fIfiQvt51xzZwnQy4Ua/DscQt8=
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: TYO1EPF0000501F:EE_|OSCPR01MB14314:EE_
-X-MS-Office365-Filtering-Correlation-Id: f75198e3-0ad9-4254-ca4b-08deb7fb6fef
+X-MS-TrafficTypeDiagnostic: TYO1EPF00005026:EE_|TYWPR01MB10660:EE_
+X-MS-Office365-Filtering-Correlation-Id: 817719ef-7a78-458d-6fdc-08deb7fb745b
 X-LD-Processed: 53d82571-da19-47e4-9cb4-625a166a4a2a,ExtAddr
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|82310400026|1800799024|36860700016|13003099007|56012099003|18002099003|6133799003|11063799006;
+	BCL:0;ARA:13230040|1800799024|36860700016|82310400026|376014|7416014|18002099003|56012099003|22082099003|11063799006;
 X-Microsoft-Antispam-Message-Info:
-	3icwNf0xs0YbCHt2Ib7brXk10hzJ19LZ2X8wofbxZ3vK40+RsUfEWItp4e94cR4VuxSDKoH5VNCRxYEBbIjVhrA9aRuQymVbKvaPRb4tGb4kBw56zpXej375Jw/fDpeJ7TWvnFGquVLp9WFRWaNYw6nr7YRmCyqfn2IP5pbCyWNg1Hv9cf95GgH2he41Lk0rN63wJegVkm5BKASYMfElVIhk7XYhrDh7kbfFFTztdHCpp9vggWhQLqVBuGCi4JGLrQ7cMh9HYI1dltlhVIcWFbfxxW7yfSb7gykCQ+lf33uVIxLeodcFkSE3DfghwPZkghpA6yE3jqfesJbrZs+5FCZb7gY4HMUP/9D8wnDTsBs6rFpoui+2xAejEKJBjHVgdueJfzeTPm9B28eHYBp5aaIsf/ncnoJtneuvXiCAnwdUQOhVmYAwcQvX3SLeOALxv5JuKA1opLWbNqMYCPbBlqZhcVm5AEaY5LgW0GvNaI05yrPYLnc1N8YLT+2FkE2uCvI6XbVmWOO2ZChi59dA4Ji2GWkGYIsDkEtqxQsFiejH1UDRdv9nFYapakwixBWxoXBB9/9iZdVazfPFffrpEHeWU3NZy5O08x5uCgsWsM8ToA8KJJmIXCDcf75jksEy3mR0X69UpleTbR4287tecyCVXxAfmYKDpCoJpBjGIBABgFe6RIemqhYKnwcw396LQOqhR7N4gZdkEWte1Kqjgs+pX8/2VrxabI/ULlTVEQw=
+	9GxRoL9xXOb21IvbaGbLssNk+Wi5ZLNPTnaGLRGZNPQ7UNZvH0qycVar11oOcBEnZLN8D9T/3MORb+7ca4Bgkke+paSxtPAAcnWa1af8obXiYWQAXERiIefRiMjH/GxIfsGUUxtBNNlUBMLrMfbjM9JwJlZCi2T3gDQfuMSlhwWoM5iCYVxDcBdyYZtLCIab1yuF4TmJGDQonwWCvvoD3+qO0Mva8LS1saoCI23gC0tQlCYJi68k6qR13C+OBUyxOVUqmYaBWH4JZDbstonjZXhadi/ZTnb9qlwuvqIWhiMj33+nPof6vtJmx1jWfZ0y7GebMvDwROtLTBt1b2XEuPthqI4oQXkB8Mxjq/AWrHruZ1Wz/dOKqxrxm4P+JrR2aTnD1aBEVpjQKc8C44N+H4oLv3kLRy363diC4gkYMt1WCBvzHjqCd665WkxVdYs0NvZsbhDTp2hqfbRRKOU+HZi1BPRYFzonngy0fbfX261vwnl/I+qZxqc3hh1L7pqDT8ZaAsLW09NRdyCd/C/Xh4pHcgIg363Phiz51GyjCP4Y5gaRpmrnUwsmmFT+9+sMikCSymyfWAnlwRbwav/n91Iv28mIHIosfJNrHUT7qUaitqIbd80AsLBaSt8Uh5uRB+agrJYvftSdLgOPdXWjmHLMCTB/PfEF9inHSCTX2V1rh7C+aTXFA9auDG0m2DN0hhYtM6jAj4sOVYF8eOXNWPln9DVH2B/+pN4ZUrU3QpE=
 X-Forefront-Antispam-Report:
-	CIP:8.62.32.50;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:ejcrelay004p.adwin.renesas.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(7416014)(376014)(82310400026)(1800799024)(36860700016)(13003099007)(56012099003)(18002099003)(6133799003)(11063799006);DIR:OUT;SFP:1101;
+	CIP:8.62.32.50;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:ejcrelay004p.adwin.renesas.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(36860700016)(82310400026)(376014)(7416014)(18002099003)(56012099003)(22082099003)(11063799006);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	QRdA6glR842FgiJ2l9B2ZOVkZedKGMveoYmCWNwREn974S/2bMHkiS9MRdwuJihagL6LSloisCLOD6frgAT8MKoFjiaAnSdVnLXbwzjmeKdD9ZDT/HEAQ6A8/rxk7hmSUniDo/WagHvTPQ8fncyXM0WuVxTdXxwP7HYCiMluIxCkO98Ffy70f5NuewSBobW6Eai34KO5Huv3GMdWjtcB8Wydu3ijV5AEp/iyXLBs3CeOYGSWZGGTan8JD2eRuyT8x2TTwwqLgR0qTG4Fb2UqL2Q6mTGanfXnwTg61yPPHT+xqy7IdtRY5ba56tTzD2veJKzxhcX317kv+rhRO1trbvwxU/DPfIPFBW/RxQFSWCb8X7Se5sZyRkEkzOy6v/RQVZAon16QbwgS7AjB8AAEFamii5S7DgHoI9TVXhJ5gwbLQMi5LGdOgNCjwe2fLRzj
+	MMzIiyOI5nlg96cBibIu9x79GWt7i67/IH7usElv3zVlLaIYsVP100dIQWrFCB9dvomZQv9GBiOg/VU18/1Wot0XpVqPz8metONF30Y9X7isQjX9pwABR1+NTQ0zSNo4eOoe11QjptEqGhRoIZKfEDESs5Vl9Zr2uw+EbFRabnHadQsT6nNP1CIx1HY4bpFYgxHdBB9ebhCXORXy6RVEaZpP1PcKlkTk8ckDm3jZWj4/J7SLVMtyL0bFbc7F/q5LVxqEznS3PlsDxl54hbuS2SgpOsZO7hKSjk3iYywGZuZND086fngC0uIocMEfH6gDSuEP9Ivxe7+ypvv2GvXW2M4aSYFgHcotOoQYZjUcaR9CMJHXt3GbLvdn5WXpklpeQig3b3VhjQvY9lBDvN2ctzUzyzQ6ON+1FCZ9FGEkF5GfkXeAjV7hs27S1jMsdp/F
 X-OriginatorOrg: renesas.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 May 2026 12:12:47.5328
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 May 2026 12:12:54.9501
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: f75198e3-0ad9-4254-ca4b-08deb7fb6fef
+X-MS-Exchange-CrossTenant-Network-Message-Id: 817719ef-7a78-458d-6fdc-08deb7fb745b
 X-MS-Exchange-CrossTenant-Id: 53d82571-da19-47e4-9cb4-625a166a4a2a
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=53d82571-da19-47e4-9cb4-625a166a4a2a;Ip=[8.62.32.50];Helo=[ejcrelay004p.adwin.renesas.com]
-X-MS-Exchange-CrossTenant-AuthSource: TYO1EPF0000501F.JPNP286.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthSource: TYO1EPF00005026.JPNP286.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: OSCPR01MB14314
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYWPR01MB10660
 
-Hello!
-
-The current R-Car S4 rswitch driver only supports basic HW offloading
-for L2 switching/bridgeing. This patchset extends the driver with
-support for VLAN aware switching.
-
-1. For every port mode change from configuration to operation and
-   vice-versa you need to change to disabled mode first. The
-   functions rswitch_<port>_change_mode now take care of this. 
-
-2. In upcomming changes for adding vlan support struct net_device
-   will not be available in all cases, therefore use struct device
-   instead.
-
-3. Fix typo in register define macro and remove duplicate macro.
-
-4. Add register definitions needed fo vlan support.
-
-5. Add exception path for packets with unknown destitination MAC
-   addresses.
-
-6. Make the helper functions rswitch_reg_wait(),
-   rswitch_etha_change_mode() and rswitch_etha_change_mode()
-   available to the whole driver.
-
-7. Add locking to protect CREC and RCDC clock register from concurent
-   accesses.
-   
-8. Add basic start-up time initialization needed to support VLANs.
-
-9. Update ETHA and GWCA port HW initializations.
-
-10. Clean up is_rdev() rswitch_device checking.
-
-11. Provide struct rswitch_private to notifiers.
-
-12. Add handler for FDB notifications to configure bridge MAC address
-    to GWCA registers and update static MAC table entry.
-
-13. Add vlan support to L2 HW bridge.
-
-Configuration example:
-ip link add name br0 type bridge vlan_filtering 1
-ip link set dev tsn0 master br0
-ip link set dev tsn1 master br0
-ip link set dev br0 up
-ip link set dev tsn0 up
-ip link set dev tsn1 up
-bridge vlan add dev tsn0 vid 4
-bridge vlan add dev tsn1 vid 4
-bridge vlan add dev br0 vid 4 self
-ip a a 192.168.1.20/24 dev br0
-ip l a link br0 name br0.1 type vlan id 1
-ip l a link br0 name br0.4 type vlan id 4
-ip a a 192.168.2.20/24 dev br0.1
-ip a a 192.168.4.20/24 dev br0.4
-ip link set dev br0.1 up
-ip link set dev br0.4 up
+In upcomming changes for adding vlan support struct net_device
+will not be available in all cases, therefore use struct device
+instead.
 
 Signed-off-by: Michael Dege <michael.dege@renesas.com>
 ---
-Changes in v5:
-- Added NULL checking for calls to skb_free_frag() and revoked hw ownership
-  by clearing desc.die_dt.
-- Added locking for queue swapping in the rx interrupt and bounds checking
-  for spn reading.
-- Added locking for clock registers.
-- Fixed initialization of GWVCC.
-- Fixed return codes of rswitch_switchdev_blocking_event().
-- Added clean-up should rswitch_register_notifiers() fail.
-- Reworked reference tracking.
-- Added flushing of work from system_long_wq.
-- Link to v4: https://lore.kernel.org/r/20260511-rswitch_add_vlans-v4-0-a5a225f8faae@renesas.com
+ drivers/net/ethernet/renesas/rswitch_main.c | 56 +++++++++++++++--------------
+ 1 file changed, 30 insertions(+), 26 deletions(-)
 
-Changes in v4:
-- fixed error checking in rswitch_gwca_change_mode() and rswitch_etha_change_mode().
-- fixed typo in use of GENMASK macro.
-- fixed comments from // to /* */.
-- fixed shared queue ussage in rx interrupt.
-- fixed assingment of fwpc2_clr in false branch.
-- moved PORT_ATR_SET to rswitch_switchdev_blocking_event() to remove dead code.
-- changed from dev_put/dev_hold to netdev_put/netdev_hold.
-- reordered code to make sure the correct type is accessed with info->obj->id in
-  rswitch_port_obj_add()/rswitch_port_obj_del().
-- Link to v3: https://lore.kernel.org/r/20260331-rswitch_add_vlans-v3-0-c37f41b1c556@renesas.com
+diff --git a/drivers/net/ethernet/renesas/rswitch_main.c b/drivers/net/ethernet/renesas/rswitch_main.c
+index 9b739594cc02..74d441ae1976 100644
+--- a/drivers/net/ethernet/renesas/rswitch_main.c
++++ b/drivers/net/ethernet/renesas/rswitch_main.c
+@@ -304,26 +304,30 @@ static int rswitch_gwca_queue_alloc_rx_buf(struct rswitch_gwca_queue *gq,
+ 	return -ENOMEM;
+ }
+ 
+-static void rswitch_gwca_queue_free(struct net_device *ndev,
++static void rswitch_gwca_queue_free(struct device *dev,
+ 				    struct rswitch_gwca_queue *gq)
+ {
+ 	unsigned int i;
+ 
+ 	if (!gq->dir_tx) {
+-		dma_free_coherent(ndev->dev.parent,
+-				  sizeof(struct rswitch_ext_ts_desc) *
+-				  (gq->ring_size + 1), gq->rx_ring, gq->ring_dma);
+-		gq->rx_ring = NULL;
+-
++		if (gq->rx_ring) {
++			dma_free_coherent(dev,
++					  sizeof(struct rswitch_ext_ts_desc) *
++					  (gq->ring_size + 1), gq->rx_ring, gq->ring_dma);
++			gq->rx_ring = NULL;
++		}
+ 		for (i = 0; i < gq->ring_size; i++)
+-			skb_free_frag(gq->rx_bufs[i]);
++			if (gq->rx_bufs[i])
++				skb_free_frag(gq->rx_bufs[i]);
+ 		kfree(gq->rx_bufs);
+ 		gq->rx_bufs = NULL;
+ 	} else {
+-		dma_free_coherent(ndev->dev.parent,
+-				  sizeof(struct rswitch_ext_desc) *
+-				  (gq->ring_size + 1), gq->tx_ring, gq->ring_dma);
+-		gq->tx_ring = NULL;
++		if (gq->tx_ring) {
++			dma_free_coherent(dev,
++					  sizeof(struct rswitch_ext_desc) *
++					  (gq->ring_size + 1), gq->tx_ring, gq->ring_dma);
++			gq->tx_ring = NULL;
++		}
+ 		kfree(gq->skbs);
+ 		gq->skbs = NULL;
+ 		kfree(gq->unmap_addrs);
+@@ -359,7 +363,7 @@ static int rswitch_gwca_queue_alloc(struct net_device *ndev,
+ 		if (rswitch_gwca_queue_alloc_rx_buf(gq, 0, gq->ring_size) < 0)
+ 			goto out;
+ 
+-		gq->rx_ring = dma_alloc_coherent(ndev->dev.parent,
++		gq->rx_ring = dma_alloc_coherent(&priv->pdev->dev,
+ 						 sizeof(struct rswitch_ext_ts_desc) *
+ 						 (gq->ring_size + 1), &gq->ring_dma, GFP_KERNEL);
+ 	} else {
+@@ -369,7 +373,7 @@ static int rswitch_gwca_queue_alloc(struct net_device *ndev,
+ 		gq->unmap_addrs = kzalloc_objs(*gq->unmap_addrs, gq->ring_size);
+ 		if (!gq->unmap_addrs)
+ 			goto out;
+-		gq->tx_ring = dma_alloc_coherent(ndev->dev.parent,
++		gq->tx_ring = dma_alloc_coherent(&priv->pdev->dev,
+ 						 sizeof(struct rswitch_ext_desc) *
+ 						 (gq->ring_size + 1), &gq->ring_dma, GFP_KERNEL);
+ 	}
+@@ -387,7 +391,7 @@ static int rswitch_gwca_queue_alloc(struct net_device *ndev,
+ 	return 0;
+ 
+ out:
+-	rswitch_gwca_queue_free(ndev, gq);
++	rswitch_gwca_queue_free(&priv->pdev->dev, gq);
+ 
+ 	return -ENOMEM;
+ }
+@@ -469,12 +473,11 @@ static void rswitch_gwca_ts_queue_fill(struct rswitch_private *priv,
+ 	}
+ }
+ 
+-static int rswitch_gwca_queue_ext_ts_fill(struct net_device *ndev,
++static int rswitch_gwca_queue_ext_ts_fill(struct device *dev,
+ 					  struct rswitch_gwca_queue *gq,
+ 					  unsigned int start_index,
+ 					  unsigned int num)
+ {
+-	struct rswitch_device *rdev = netdev_priv(ndev);
+ 	struct rswitch_ext_ts_desc *desc;
+ 	unsigned int i, index;
+ 	dma_addr_t dma_addr;
+@@ -483,18 +486,17 @@ static int rswitch_gwca_queue_ext_ts_fill(struct net_device *ndev,
+ 		index = (i + start_index) % gq->ring_size;
+ 		desc = &gq->rx_ring[index];
+ 		if (!gq->dir_tx) {
+-			dma_addr = dma_map_single(ndev->dev.parent,
++			dma_addr = dma_map_single(dev,
+ 						  gq->rx_bufs[index] + RSWITCH_HEADROOM,
+ 						  RSWITCH_MAP_BUF_SIZE,
+ 						  DMA_FROM_DEVICE);
+-			if (dma_mapping_error(ndev->dev.parent, dma_addr))
++			if (dma_mapping_error(dev, dma_addr))
+ 				goto err;
+ 
+ 			desc->desc.info_ds = cpu_to_le16(RSWITCH_DESC_BUF_SIZE);
+ 			rswitch_desc_set_dptr(&desc->desc, dma_addr);
+ 			dma_wmb();
+ 			desc->desc.die_dt = DT_FEMPTY | DIE;
+-			desc->info1 = cpu_to_le64(INFO1_SPN(rdev->etha->index));
+ 		} else {
+ 			desc->desc.die_dt = DT_EEMPTY | DIE;
+ 		}
+@@ -507,8 +509,10 @@ static int rswitch_gwca_queue_ext_ts_fill(struct net_device *ndev,
+ 		for (; i-- > 0; ) {
+ 			index = (i + start_index) % gq->ring_size;
+ 			desc = &gq->rx_ring[index];
++			desc->desc.die_dt = 0x00;
++			dma_wmb();
+ 			dma_addr = rswitch_desc_get_dptr(&desc->desc);
+-			dma_unmap_single(ndev->dev.parent, dma_addr,
++			dma_unmap_single(dev, dma_addr,
+ 					 RSWITCH_MAP_BUF_SIZE, DMA_FROM_DEVICE);
+ 		}
+ 	}
+@@ -516,7 +520,7 @@ static int rswitch_gwca_queue_ext_ts_fill(struct net_device *ndev,
+ 	return -ENOMEM;
+ }
+ 
+-static int rswitch_gwca_queue_ext_ts_format(struct net_device *ndev,
++static int rswitch_gwca_queue_ext_ts_format(struct device *dev,
+ 					    struct rswitch_private *priv,
+ 					    struct rswitch_gwca_queue *gq)
+ {
+@@ -526,7 +530,7 @@ static int rswitch_gwca_queue_ext_ts_format(struct net_device *ndev,
+ 	int err;
+ 
+ 	memset(gq->rx_ring, 0, ring_size);
+-	err = rswitch_gwca_queue_ext_ts_fill(ndev, gq, 0, gq->ring_size);
++	err = rswitch_gwca_queue_ext_ts_fill(dev, gq, 0, gq->ring_size);
+ 	if (err < 0)
+ 		return err;
+ 
+@@ -638,7 +642,7 @@ static void rswitch_txdmac_free(struct net_device *ndev)
+ {
+ 	struct rswitch_device *rdev = netdev_priv(ndev);
+ 
+-	rswitch_gwca_queue_free(ndev, rdev->tx_queue);
++	rswitch_gwca_queue_free(ndev->dev.parent, rdev->tx_queue);
+ 	rswitch_gwca_put(rdev->priv, rdev->tx_queue);
+ }
+ 
+@@ -672,7 +676,7 @@ static void rswitch_rxdmac_free(struct net_device *ndev)
+ {
+ 	struct rswitch_device *rdev = netdev_priv(ndev);
+ 
+-	rswitch_gwca_queue_free(ndev, rdev->rx_queue);
++	rswitch_gwca_queue_free(ndev->dev.parent, rdev->rx_queue);
+ 	rswitch_gwca_put(rdev->priv, rdev->rx_queue);
+ }
+ 
+@@ -681,7 +685,7 @@ static int rswitch_rxdmac_init(struct rswitch_private *priv, unsigned int index)
+ 	struct rswitch_device *rdev = priv->rdev[index];
+ 	struct net_device *ndev = rdev->ndev;
+ 
+-	return rswitch_gwca_queue_ext_ts_format(ndev, priv, rdev->rx_queue);
++	return rswitch_gwca_queue_ext_ts_format(ndev->dev.parent, priv, rdev->rx_queue);
+ }
+ 
+ static int rswitch_gwca_hw_init(struct rswitch_private *priv)
+@@ -872,7 +876,7 @@ static bool rswitch_rx(struct net_device *ndev, int *quota)
+ 	ret = rswitch_gwca_queue_alloc_rx_buf(gq, gq->dirty, num);
+ 	if (ret < 0)
+ 		goto err;
+-	ret = rswitch_gwca_queue_ext_ts_fill(ndev, gq, gq->dirty, num);
++	ret = rswitch_gwca_queue_ext_ts_fill(ndev->dev.parent, gq, gq->dirty, num);
+ 	if (ret < 0)
+ 		goto err;
+ 	gq->dirty = rswitch_next_queue_index(gq, false, num);
 
-Changes in v3:
-- Fixed findings made by coccicheck
-- Fixed missing 'depends on BRIDGE' in Kconfig found by test robot.
-- Link to v2: https://lore.kernel.org/r/20260327-rswitch_add_vlans-v2-0-d7f4358ca57a@renesas.com
-
-Changes in v2:
-- Reworked reswitch_update_l2_hw_forwarding_gwca() as suggested.
-- Fixed missing initialization found by test robot.
-- Link to v1: https://lore.kernel.org/r/20260317-rswitch_add_vlans-v1-0-3a57bfa0f2d1@renesas.com
-
----
-Michael Dege (14):
-      net: renesas: rswitch: improve port change mode functions
-      net: renesas: rswitch: use device instead of net_device
-      net: renesas: rswitch: fix FWPC2 register access macros
-      net: renesas: rswitch: add register definitions for vlan support
-      net: renesas: rswitch: add exception path for packets with unknown dst MAC
-      net: renesas: rswitch: add forwarding rules for gwca
-      net: renesas: rswitch: make helper functions available to whole driver
-      net: renesas: rswitch: add locking for agent clock control
-      net: renesas: rswitch: add basic vlan init to rswitch_fwd_init
-      net: renesas: rswitch: update port HW init
-      net: renesas: rswitch: clean up is_rdev rswitch_device checking
-      net: renesas: rswitch: add passing of rswitch_private into notifiers
-      net: renesas: rswitch: add handler for FDB notification
-      net: renesas: rswitch: add vlan aware switching
-
- drivers/net/ethernet/renesas/Kconfig        |   1 +
- drivers/net/ethernet/renesas/rswitch.h      | 187 +++++++-
- drivers/net/ethernet/renesas/rswitch_l2.c   | 649 ++++++++++++++++++++++++----
- drivers/net/ethernet/renesas/rswitch_l2.h   |   6 +-
- drivers/net/ethernet/renesas/rswitch_main.c | 320 ++++++++++----
- 5 files changed, 975 insertions(+), 188 deletions(-)
----
-base-commit: c26d7040520c4341b719063378d0bb6d7bc2d67f
-change-id: 20260120-rswitch_add_vlans-39488bfb296c
-
-Best regards,
 -- 
-Michael Dege <michael.dege@renesas.com>
+2.43.0
 
