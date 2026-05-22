@@ -1,235 +1,133 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 395E73D3D0B;
-	Fri, 22 May 2026 10:56:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779447399; cv=none; b=ZwffUqvrBh+/3e5Ivh8S3/rMmupCstIcsoUmImME7G5MVtiL8fwipud2miFVV1G1nCth4U2KHrL1CGh6K10sKFhWfSSHq/lHPgMfGBJOImPEhMLNQ3WJvure8RLRGod6rg2+Dyjwks2K6+5r/rTguDwmONBOJvAcOR6HdbaHgCc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779447399; c=relaxed/simple;
-	bh=qvZkhlsuEcZSEcwblgQKPCcuS85u2WzNyPhtl+l61pM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=G3TGnIyz5hofbFoecg+i48vFqtWbojMnYpJlNDBkpXvTjHrfbK6ZC7NalOhv57nzY/Kep2FT2bqbGBKn7y/c2wTWlBuWCE4hhxBVtn0SzDJfvM7W21qmMDOBSzkV+blBDgQxw5sKIj1+4Zb/1hA307bU5+AVr/F80pEDZTCElxU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eTzmN3Bv; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8107360ED1
+	for <netdev@vger.kernel.org>; Fri, 22 May 2026 11:01:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.52
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779447696; cv=pass; b=lUtkIOuPplldaRQ04tHo/DZv3+vCZ3PO0yqYQA2y3hD35rUBkLZtQcEeJ+HOUVKkUO6usOVoXIicqm7nGViU+Ea5rjgPLrQdljyUxuVbZmQYc8Ohh+/zkf3yo84nFfekLP6MtY9t4BB1EBc6Oj2fccaD72dH00ujXj1v+n/GsVI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779447696; c=relaxed/simple;
+	bh=0RyR3TKKWIpuE5do03Aczoxc8RftN/xDiBn9xSJHGIs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qISum5eZ/WRwy6dcgILXaucplcLvEGB5VQd4Vxpdmo+WBFFtRVRkHaNEK4VggcEpZZ/2JhY5gp0toShqut1BQJKD4thyaucPYuwB37OmOobIEU2b9P0JG1Ui2wsYtsSiGNuXq7rE5dY+8Prh80vTn21ypKCU3AmImlLLTX4G/3k=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G2ama/YN; arc=pass smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eTzmN3Bv"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id E42C0C2BCB8;
-	Fri, 22 May 2026 10:56:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779447399;
-	bh=qvZkhlsuEcZSEcwblgQKPCcuS85u2WzNyPhtl+l61pM=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=eTzmN3BvNAZpQt6KH+mOS+9uSpdKo/MRgdlg8hsRnB9NEf+08TvlfMg0TALMxKl/v
-	 9Iujx/QEqWE198amR3dZ0SP/ji/S50HPK/XCsvamHiiEACvZLHZwbCWTX+jbUEfc2t
-	 EJliJGnMlL8RoIYHzDLfuXekSjA8Mz2rJYC1zLY7VsDqZEvoqGZ1h8vOM8asE2iBkK
-	 Gp4tzNFti2DWTbaM8XLp0V3UDdJnXAp6m8DPel51XNOpDWFdv5AiTv8IfzuTx1QgeX
-	 Zw3588dBF22sYjTR8UjGtgnSRqqunRdPmUyBayiSGgq+5OmEwRUNiZ95QgN7bn5c8L
-	 J9JJ+b/jd+2Pw==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CEB76CD5BB0;
-	Fri, 22 May 2026 10:56:38 +0000 (UTC)
-From: Cedric Jehasse via B4 Relay <devnull+cedric.jehasse.luminex.be@kernel.org>
-Date: Fri, 22 May 2026 12:56:22 +0200
-Subject: [PATCH net-next 1/2] net: dsa: mv88e6xxx: use the hw tx queues
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G2ama/YN"
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-49042aeeb75so9771445e9.1
+        for <netdev@vger.kernel.org>; Fri, 22 May 2026 04:01:33 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779447692; cv=none;
+        d=google.com; s=arc-20240605;
+        b=GxveYv8wK4OiPtMNZsW/lCmbegN2FlWDgY3Iyk9J3t8F6Hz9ZdoYENbP030svCKLQD
+         IQ55l6ZW3vVjafY5aICwB44BaXo0aRq+6n/lVVCqvF8EbssArnEg1C0eXMHgg60CW7jz
+         EaxdPqQnWJl7ie2wRDdxeLvEGf8congHQiaBF69k6l4fmgivUuvojJ/5v8Ob31tBd7Oh
+         LbuEwVZZwWqg8wMd80w/4YOvVyHW3j8VEfM3KydKWDNMwnz7bcwqcHItG7xRb/slF0gM
+         BFf2puhujfrZQcB07AFWSKxT+quuLZykm7p3ouYrHzM6BPZzISzItgJS9r5zE4QCjpa7
+         hSRw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=0RyR3TKKWIpuE5do03Aczoxc8RftN/xDiBn9xSJHGIs=;
+        fh=EtQo1lCvEJNcIY8JJ/8I2igx/hL+Vigb7sx7Lj0TNSQ=;
+        b=DzUpQ9gn7vInN8MtXvfqbgChJ23nj5SdWP+AZ1mgsuGQq81RGhidYtR+X1PQtJrgHK
+         xp2Ci7zFppvlr2xWSODmiuuwds9VRFInKWwDd/B+X7i+nAI16Jch1oyV9gWCeQJdGRKr
+         yg3hmmjQ0zmojAnrW2AbthXoYaICf/ODCZ9DEYM+TvVoKKvlO2hI7DABZ5ai6YUvhPUF
+         6rrItV6VPL6DNho0Ts+xBpOdh+2ERpSt0mWyIeVe88pLQoaiyxkKz/EaT3oSC5ZKIFZc
+         J42ISHSp8D2D5uW4ASU2S/qXCjkNP+11MBMtAPnXBcw2neiEdrf/tj9OxvdlOwnsV2rm
+         gq6Q==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779447692; x=1780052492; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=0RyR3TKKWIpuE5do03Aczoxc8RftN/xDiBn9xSJHGIs=;
+        b=G2ama/YN6BqHHD92rLtnUgboNyaSdbPx5JeuIYG9tWEucIiPkW/3VQ6S+P7jX/pk+c
+         +WrIPSFm54dy4POtO1vQgh+uIieWMcMrMFm+5wdEQVcla167KBsu4sx6m58FFGX40lOF
+         LEnlpO9mbUafc5Pa2hDlLpjLdlNIxsOB034HCBmADKlDUkbXDwgBr4ibBdHuGQaVfs4E
+         hjiB9p7W/L5qvoc9aVqvHKFb4pwSmRkQWq5y1Zzd+oaGiZPcq0kWkwsyh8/3dhMGj9Ln
+         nNnVTZqHsa6/ypQG9cvLKVfx/MFdATO0ooBFJuaPiU1TDj9EGBkGuyd0+SATSThc4S5z
+         ZDNQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779447692; x=1780052492;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0RyR3TKKWIpuE5do03Aczoxc8RftN/xDiBn9xSJHGIs=;
+        b=O6Q+g4WbIpglMsLLDVDE8A9lo+9ExnBMruPEZdCnC+y5HZ4JiyW6R8O8tlWCAmDC9w
+         Tuc8pAu3o9k/jFzQwRAq6lkzY1OIoe1EObWwTpb1LMSkZ0VhUKVIBiNjBI8+c4T3t6+U
+         MOxh7QwysbAq9LxVJarY6r0cBynbCdtwdDEBESLmZEz3cVofDbAe3aJAVyPJEU8blAT4
+         CHBCUTmXrFnOWKwG48iJFPj1vKTgS5N09wut9OaqER146DPcmAoYgIlMHmc0f7k1DCi7
+         Rn9ck8rpaEoovOoOIdG/I9wf113RHWvETp8I6ayX7Alo9aMz8o+tFOzGZLX6Qses2rcB
+         DVdg==
+X-Forwarded-Encrypted: i=1; AFNElJ+R7FYjuvZGRG0mIvI4W4RVBqeuhv/AO3hNEOqchHWXKxHGWp59PNG4Zh2skISb09ST1Wh4xO8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxd9514SHdnXaWSbpnOldJFZYI83qjVamdHD4lDGzaIW48jtlP3
+	ldXI/W65tyNUUS6ykz9tX6KLucrRiTXLp6OhtqFe2fNX6DZ2WzCMdQvRwldKWP6N2tPgo5tNjgm
+	ckkORTwaI7OzI7I3NC3SNVICdkf89JkE=
+X-Gm-Gg: Acq92OFo3+evVkolW2K4YkTx9CGqZ9y5sGoITSTEWnzsciIciDMwpiALPJtrgEZTCjh
+	Z0HCO3zfhu3xcs6zjXHDq/u4Eniw85tsAGxIMBncWIjhJFgeM6Ai13JiRcv3PDL7b58w//wInn9
+	4TdAbYQKUkFCirGGBWpnCX33n/x9VEm42ZhkG9opTfTUA+0jNNkvaW10mz7VN2QLgFc/5Yjgesb
+	721puGjv4TArTF2Oj2XhUNp7GjQTpXv0wbQfVhqbmnPkorcu/QBJLjSTxC4NjEdSKOYMoH1gSfT
+	NrxywvFn
+X-Received: by 2002:a05:600d:6409:20b0:489:1a3a:9e45 with SMTP id
+ 5b1f17b1804b1-490426d4292mr30314705e9.26.1779447691467; Fri, 22 May 2026
+ 04:01:31 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260522-net-next-mv88e6xxx-cbs-v1-1-c87a8e6bcc0c@luminex.be>
-References: <20260522-net-next-mv88e6xxx-cbs-v1-0-c87a8e6bcc0c@luminex.be>
-In-Reply-To: <20260522-net-next-mv88e6xxx-cbs-v1-0-c87a8e6bcc0c@luminex.be>
-To: Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, Russell King <linux@armlinux.org.uk>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Cedric Jehasse <cedric.jehasse@luminex.be>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1779447397; l=5690;
- i=cedric.jehasse@luminex.be; s=20260213; h=from:subject:message-id;
- bh=weJ0Zyvyvl6ZsDGuiTxfE/omgcZa+1TFkl/4LE6ZKXM=;
- b=hlErBP1KeucV7W1+3Qh82MJaPO2KntUuYh7DGJKqdz6c4hRZoGqLjfR4C0lvOUwvUHv9IGBPE
- KKsvsV/MoH6C8/jOq2UMgbtcvKH+bosc+DMqRrOAH66uvlNDQleArRl
-X-Developer-Key: i=cedric.jehasse@luminex.be; a=ed25519;
- pk=DL2RaHc2bc7tTDTMJdugm42BtJk4Ip+7V41Gkj+Avjk=
-X-Endpoint-Received: by B4 Relay for cedric.jehasse@luminex.be/20260213
- with auth_id=638
-X-Original-From: Cedric Jehasse <cedric.jehasse@luminex.be>
-Reply-To: cedric.jehasse@luminex.be
+References: <20260519123547.2055911-1-maoyixie.tju@gmail.com>
+ <20260519123547.2055911-3-maoyixie.tju@gmail.com> <CABAhCOSEP1voA-g16sHK+C+84rcQZvX9CWJs1hNaSk-ygbbD1A@mail.gmail.com>
+ <CAHPEe=GX7wsLetw7rnOpeSkc05Jgi3h5y56e0RGYa4dszK1E4Q@mail.gmail.com> <CABAhCOSzP1vaThGV35_VnsRCb=87_CPjPVsTHbq905k8A+BuUg@mail.gmail.com>
+In-Reply-To: <CABAhCOSzP1vaThGV35_VnsRCb=87_CPjPVsTHbq905k8A+BuUg@mail.gmail.com>
+From: Maoyi Xie <maoyixie.tju@gmail.com>
+Date: Fri, 22 May 2026 19:01:20 +0800
+X-Gm-Features: AVHnY4I0Fvyme3rhgKLHLJz5BAKgNMgi22LPqHMxJDUysTWcY-y0ZIQ1DE4YnIE
+Message-ID: <CAHPEe=GQpn75GcRM9C_Y+EOSQWhER9DM6o0E3NG_hgobBB0dLQ@mail.gmail.com>
+Subject: Re: [PATCH net v3 2/2] ip6: vti: Use ip6_tnl.net in vti6_siocdevprivate().
+To: Xiao Liang <shaw.leon@gmail.com>
+Cc: Jakub Kicinski <kuba@kernel.org>, "David S . Miller" <davem@davemloft.net>, 
+	Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>, 
+	David Ahern <dsahern@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	Steffen Klassert <steffen.klassert@secunet.com>, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-From: Cedric Jehasse <cedric.jehasse@luminex.be>
+Hi Xiao,
 
-From the datasheets i've looked at these switches have 4 or 8 transmit
-queues per port.
-There's a PRI field in the dsa tag used to indicate which egress queue
-the frame is to be sent to.
-This isn't done for vlan tagged frames because this would overwrite the
-PCP value in the vlan tag (The PRI field in the dsa
-tag is used as the PCP value in the vlan tag).
+You are right. I wrote a PoC and confirmed it on v4.
 
-Signed-off-by: Cedric Jehasse <cedric.jehasse@luminex.be>
----
- drivers/net/dsa/mv88e6xxx/chip.c | 14 ++++++++++++++
- drivers/net/dsa/mv88e6xxx/chip.h |  1 +
- net/dsa/tag_dsa.c                |  3 ++-
- 3 files changed, 17 insertions(+), 1 deletion(-)
+I used the same setup as the v4 test, just swapped the
+SIOCCHGTUNNEL ioctl for `ip link set <name> type vti6 remote X
+local Y` from inside the migrated netns. The ip command sends
+RTM_NEWLINK with IFLA_INFO_DATA and no IFLA_LINK_NETNSID, so
+rtnl_newlink() only checks the attacker's own user_ns. The
+message lands in vti6_changelink(), vti6_update() inserts the
+device into init_net's hash, and a SIOCGETTUNNEL in init_net for
+the new params resolves to the migrated device. The primitive is
+the same one v4 2/2 closes for the ioctl path. Only the entry
+point differs.
 
-diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
-index 8ca5fd40df92..277efe24edf4 100644
---- a/drivers/net/dsa/mv88e6xxx/chip.c
-+++ b/drivers/net/dsa/mv88e6xxx/chip.c
-@@ -3979,6 +3979,7 @@ static int mv88e6xxx_setup(struct dsa_switch *ds)
- 
- 	chip->ds = ds;
- 	ds->user_mii_bus = mv88e6xxx_default_mdio_bus(chip);
-+	ds->num_tx_queues = chip->info->num_tx_queues;
- 
- 	/* Since virtual bridges are mapped in the PVT, the number we support
- 	 * depends on the physical switch topology. We need to let DSA figure
-@@ -6051,6 +6052,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
- 		.num_ports = 11,	/* 10 + Z80 */
- 		.num_internal_phys = 9,
- 		.num_gpio = 16,
-+		.num_tx_queues = 8,
- 		.max_vid = 8191,
- 		.max_sid = 63,
- 		.port_base_addr = 0x0,
-@@ -6076,6 +6078,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
- 		.num_ports = 11,	/* 10 + Z80 */
- 		.num_internal_phys = 9,
- 		.num_gpio = 16,
-+		.num_tx_queues = 8,
- 		.max_vid = 8191,
- 		.max_sid = 63,
- 		.port_base_addr = 0x0,
-@@ -6125,6 +6128,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
- 		.num_ports = 11,	/* 10 + Z80 */
- 		.num_internal_phys = 8,
- 		.internal_phys_offset = 1,
-+		.num_tx_queues = 8,
- 		.max_vid = 8191,
- 		.max_sid = 63,
- 		.port_base_addr = 0x0,
-@@ -6151,6 +6155,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
- 		.num_internal_phys = 8,
- 		.num_tcam_entries = 256,
- 		.internal_phys_offset = 1,
-+		.num_tx_queues = 8,
- 		.max_vid = 8191,
- 		.max_sid = 63,
- 		.port_base_addr = 0x0,
-@@ -6181,6 +6186,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
- 		.num_ports = 7,
- 		.num_internal_phys = 2,
- 		.invalid_port_mask = BIT(2) | BIT(3) | BIT(4),
-+		.num_tx_queues = 4,
- 		.max_vid = 4095,
- 		.port_base_addr = 0x08,
- 		.phy_base_addr = 0x00,
-@@ -6205,6 +6211,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
- 		.num_ports = 7,
- 		.num_internal_phys = 5,
- 		.num_gpio = 15,
-+		.num_tx_queues = 4,
- 		.max_vid = 4095,
- 		.max_sid = 63,
- 		.port_base_addr = 0x10,
-@@ -6230,6 +6237,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
- 		.num_databases = 64,
- 		.num_ports = 7,
- 		.num_internal_phys = 5,
-+		.num_tx_queues = 4,
- 		.max_vid = 4095,
- 		.port_base_addr = 0x08,
- 		.phy_base_addr = 0x00,
-@@ -6282,6 +6290,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
- 		.num_internal_phys = 2,
- 		.internal_phys_offset = 3,
- 		.num_gpio = 15,
-+		.num_tx_queues = 4,
- 		.max_vid = 4095,
- 		.max_sid = 63,
- 		.port_base_addr = 0x10,
-@@ -6310,6 +6319,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
- 		.num_internal_phys = 2,
- 		.internal_phys_offset = 3,
- 		.num_gpio = 15,
-+		.num_tx_queues = 4,
- 		.max_vid = 4095,
- 		.max_sid = 63,
- 		.port_base_addr = 0x10,
-@@ -6414,6 +6424,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
- 		.num_ports = 7,
- 		.num_internal_phys = 5,
- 		.num_gpio = 15,
-+		.num_tx_queues = 4,
- 		.max_vid = 4095,
- 		.max_sid = 63,
- 		.port_base_addr = 0x10,
-@@ -6468,6 +6479,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
- 		.num_internal_phys = 9,
- 		.num_gpio = 16,
- 		.num_tcam_entries = 256,
-+		.num_tx_queues = 8,
- 		.max_vid = 8191,
- 		.max_sid = 63,
- 		.port_base_addr = 0x0,
-@@ -6495,6 +6507,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
- 		.num_ports = 11,	/* 10 + Z80 */
- 		.num_internal_phys = 9,
- 		.num_gpio = 16,
-+		.num_tx_queues = 8,
- 		.max_vid = 8191,
- 		.max_sid = 63,
- 		.port_base_addr = 0x0,
-@@ -6521,6 +6534,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
- 		.num_ports = 11,	/* 10 + Z80 */
- 		.num_internal_phys = 8,
- 		.num_tcam_entries = 256,
-+		.num_tx_queues = 8,
- 		.internal_phys_offset = 1,
- 		.max_vid = 8191,
- 		.max_sid = 63,
-diff --git a/drivers/net/dsa/mv88e6xxx/chip.h b/drivers/net/dsa/mv88e6xxx/chip.h
-index cde71828e9d9..19d8eda19b78 100644
---- a/drivers/net/dsa/mv88e6xxx/chip.h
-+++ b/drivers/net/dsa/mv88e6xxx/chip.h
-@@ -136,6 +136,7 @@ struct mv88e6xxx_info {
- 	unsigned int num_internal_phys;
- 	unsigned int num_gpio;
- 	unsigned int num_tcam_entries;
-+	unsigned int num_tx_queues;
- 	unsigned int max_vid;
- 	unsigned int max_sid;
- 	unsigned int port_base_addr;
-diff --git a/net/dsa/tag_dsa.c b/net/dsa/tag_dsa.c
-index 2a2c4fb61a65..96c8fbedbd3b 100644
---- a/net/dsa/tag_dsa.c
-+++ b/net/dsa/tag_dsa.c
-@@ -179,6 +179,7 @@ static struct sk_buff *dsa_xmit_ll(struct sk_buff *skb, struct net_device *dev,
- 			dsa_header[2] &= ~0x10;
- 		}
- 	} else {
-+		u16 queue = skb_get_queue_mapping(skb) & 0x7;
- 		u16 vid;
- 
- 		vid = br_dev ? MV88E6XXX_VID_BRIDGED : MV88E6XXX_VID_STANDALONE;
-@@ -191,7 +192,7 @@ static struct sk_buff *dsa_xmit_ll(struct sk_buff *skb, struct net_device *dev,
- 
- 		dsa_header[0] = (cmd << 6) | tag_dev;
- 		dsa_header[1] = tag_port << 3;
--		dsa_header[2] = vid >> 8;
-+		dsa_header[2] = (queue << 5) | vid >> 8;
- 		dsa_header[3] = vid & 0xff;
- 	}
- 
+For a fix I tried a small hunk in __rtnl_newlink(), before the
+rtnl_changelink() dispatch. The hunk derives the link netns
+through dev->rtnl_link_ops->get_link_net() when that callback
+exists. If the link netns differs from tgt_net, it requires
+netlink_ns_capable() against link_net->user_ns. I put it there
+instead of in vti6_changelink() because the same gap applies to
+other link_types with get_link_net (ipip, gre, sit, ip6_tnl),
+and one site covers them all. link_types without get_link_net
+would see no behaviour change.
 
--- 
-2.43.0
+I re-ran the PoC on v4 with that hunk applied. It returns
+"Operation not permitted" and init_net's hash is unchanged.
 
+I'd like to send this as a follow-up after v4 lands, since the
+fix lives in net/core/rtnetlink.c rather than in vti6. v4 would
+stay scoped to the ioctl path. Would that work for you?
 
+Thanks again,
+Maoyi
