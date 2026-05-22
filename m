@@ -1,172 +1,233 @@
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from TYVP286CU001.outbound.protection.outlook.com (mail-japaneastazon11011024.outbound.protection.outlook.com [52.101.125.24])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23021346E7D
-	for <netdev@vger.kernel.org>; Fri, 22 May 2026 11:50:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4831B3CEBBD;
+	Fri, 22 May 2026 11:51:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.125.24
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779450612; cv=pass; b=r5ragjRzauvKquM9uL4g1TLXdNQJb10yAJEvLIXo00hpFF081YRC8Gs1i4R2LcBTub3cBKlgRtFA5i7vXbi3/+bIObEUOezTBoZlmOHMP2JopHzk4c+hg1AEA+Uhqy1H1keAbKodJJpc2f69aIY9pJTqaMG7B0g6t4rNNE74C0k=
+	t=1779450702; cv=fail; b=rMn5oYRxXZ2YII2zMZu7JjcW4huD7Y+M3Emqx+aEbkpW2yMdMPOiTW6OoQI+Iq+xwz5m0VG4Kaf8aQ1pYR/gdDEZjkkOQIyxYpLxf00m7e3CZHzZaIE+aOslDs3Cb6VIquyeHSraBiFjJgx7D7XqbjxU8n4ALBGxlTwGcwStJt0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779450612; c=relaxed/simple;
-	bh=R6xTu9ITn3BiEaEnWcaMUebDRNvzwlGb/ld2546sUSI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gF+6YuMg4ASPhs+SqFhdOJvj1DrkvLZcWYo1QzcncxNVvPIOHk2j6EIeSPZeLDr8As3e7brJzaxRdGooUYfrXZKeG6XuCZM8uJXZ8veceJ0H7tEzPiV5k57UnEZ0HBkr5qRSvLEnB8vs9lwNBI5+US9v5utjZI2VrXPT3V8tC3s=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (2048-bit key) header.d=mojatatu-com.20251104.gappssmtp.com header.i=@mojatatu-com.20251104.gappssmtp.com header.b=HkLjccJC; arc=pass smtp.client-ip=209.85.210.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	s=arc-20240116; t=1779450702; c=relaxed/simple;
+	bh=bPUHYVFj8OKnVV70lUCTN1OkjqsroMGLb8GmK3cAWi8=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=NHCrhkA9Jb5laieeTNFyC0VJw1X9aJj11CA1Qmc4ggc9PKiFwSe+QCc7dDp251GePq4p9SeRxe8bNw2awb0MW5hY4fUqyf+t3MN55navr9kovonKytQFCV/td+CGxnmuxPdWkMOJc51LliHp5tWuMxE2OtV5oxJF4x5AEPQdOlk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b=Idar7jpz; arc=fail smtp.client-ip=52.101.125.24
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mojatatu-com.20251104.gappssmtp.com header.i=@mojatatu-com.20251104.gappssmtp.com header.b="HkLjccJC"
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-82f9fdfc965so3375379b3a.1
-        for <netdev@vger.kernel.org>; Fri, 22 May 2026 04:50:10 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779450610; cv=none;
-        d=google.com; s=arc-20240605;
-        b=KCaLLrnR0S7X8XmoZoWqY/ixGhHTzMGX23BbCZP9xCihTKn3KxTDyp3BstdaIirTtg
-         GOHGshN72ViuDdIaOy8xw7gutJdwp0RvHsi9iq4dEk6u5tCM7h7rQkSFBw0xhkiIzBbq
-         d42tqRp+4IF12jyC41ih3aKQWakPplzSiKgRthxwoSdg4AUkbLigMx4n25D7SPwMrSc4
-         cQ6z+XZHGaWor+zh73Oos/0JsfMT8VEa6nZUn130B8yUOsDzvcU+kdTf8gG41/qgOPS0
-         FhveVNh6/yKAK0d6bQHEtGmJcvFY7gvp1hPBVaa5c2DioXO0HRGPcPVfRwtnfyvsOUv5
-         47Yw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=yPnkZIW9sqaFI/evQzG9duCQF+9dbPV4XzLdJR5es9c=;
-        fh=MIDAyHMXMpR2leVayTRHcdjLZpoR8TvD6MY4fctXEeA=;
-        b=jsgYICZv7pwUfxguzAklw7NKHbZDA23h9OcJCtCfd94dq1HFKYlzyipTs48MzoALye
-         B5A2IGIUssObO4r8Tg6p6FcVFQ8JU0DCQdfUu8dgVnnVwMTT8LaeutnyZnln51+J3sM6
-         D+yvUcQz3vCqsFB1ij/1vnF+iC3JLNdMHmFOdB6wNxaWyURu7cox9HeTnLqPSVOdMzTQ
-         dl/K8Mu570p618EFFUOJzg6MF5EQP1xJI2tv1qp67dSILDFog9zJRc2yHPb8+nXnlDhp
-         mn4z0+uE67lMBlQjo0LaqAld9oGvzgnMf6JllYkpFFeA4nqJuiYRoXTaxeLUo8FPwf+R
-         vuZw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu-com.20251104.gappssmtp.com; s=20251104; t=1779450610; x=1780055410; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yPnkZIW9sqaFI/evQzG9duCQF+9dbPV4XzLdJR5es9c=;
-        b=HkLjccJCvpgmg0xj5pvTf8ZvkH1gDOXIngTuMKd7YhsPU9xKzdudZLKOutZft92Ui0
-         fGDUABCl5wpXmUugCQyghNI7TulXxz50dhxQHLuXlKKh7LgYTd/aI1703GBvRxvWw8Tu
-         EwtA1th0nLX3XfjOEfnk2a7O2cwMDSbNCyMpN4Rp9pYP/zolTcl6a869N7RSJyXSLi+G
-         ntaNxucmKXNcyYaKRxfluloaj2p59wDzYj0kTKeKuWbCZv4yJlU1SMg2F2nKUsCGRSqO
-         N939VLuy9dLhUZ9X/5Eyl01zLBH9MWf/r+iUH8ZIj8UAYl+Q/GoZPN76Cak191JdunU2
-         ElQQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779450610; x=1780055410;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=yPnkZIW9sqaFI/evQzG9duCQF+9dbPV4XzLdJR5es9c=;
-        b=NgTjhoDyQE0jWZq0weSPDAfANnYNx5tn6Q7KNWJb00BfwxiMf3f464sIbFmlStPjlU
-         Q9bt7pEckFzrDWilvn6LEBET5Ns4EpgiEaKkNQEg3tmGad+5OY5HnucxrJmqm4KNjzoC
-         +7ibBGGRjXAE6uEv+/Su/GruuILHHRu6RAeEbUx99WIvHX5O8EtSJZ6ib9DXxFCodgW6
-         maGDY+vH3ttg+drcDdl2bGYted3fEqgabff0Qq9hxFRq3TpkkKOLDEcjmsehE4/PdzPh
-         Fz0ptOL5fsSvhXjjf6t7T/U3+oQlCY1cNjx6u3xtwGHIl5jjnUFRs/KSaPzMV2b7OZGn
-         ntYQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+vwYcW0FKTe6vfcoRHUspnqL5ER10K/wgHgF2fKPrRb3mABbG3PiDUQjDJXSFbzyYLJ8+Pgv4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyOlZJTKFr1I1UlNDJQWv/mCzAu84x4XqlXz390J9ToSOcyWnbA
-	eDhBlq7p1mkXSk4tAwKCD06UrBliCxtf+dvLfi/fvPeSWsS0cpiZtgOfg5CFqUzY5uFYBUKekCB
-	Jts91+xuhyjB1aqaFKP2aip4W/mNSzRBpF1R5oeoa
-X-Gm-Gg: Acq92OFkTxXLkfTURLsoOAnbLMA7zli1aoW2WzH3FP8Vb9Ooz3IslRKxMau+5iGKhyZ
-	1Jd473Jyp1dztiBjq1oJOmFxNGQ463jfI1fvbtdocXYLpyUC3sixCc5ykqSvgNO+y1h0c7Np1cC
-	i/vrQAqdBdzjPEN1ZnvtWVVhM1gLeYe605VjypJtPBUxCcPgJA0BGenU/rLKgjdcHPBPCY7SxNy
-	O1IS5qqP1zAkAi/9cIrkD9EnI7cY2rDvdiLOLqDMkgslj9+OpEKNaaSeXnvLGUhqwJ1ezEhtDlT
-	EqcpZqXRxRNjRYCJFLE=
-X-Received: by 2002:a05:6a21:7483:b0:3a2:d436:acb6 with SMTP id
- adf61e73a8af0-3b328f966f1mr3438659637.37.1779450610232; Fri, 22 May 2026
- 04:50:10 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b="Idar7jpz"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=LwSUBC0gJX0YLJWZOLrL1W8Jf594co6TUlly4xfoqdPACPIK80W5jIFxcMbSgXdGlL7lv6hV9uNCndPLGHZuV9XYDVURqwLIfZNaoT7YKIOTA7HX/pVVAlmZ7A2Rc1hggMhMSA9tQqNpsnaET7exEsMoiLGks6Rki1//FFfUpl/E5tU2W7Pa1+/A9BPYCLsPQmImviLqJjwHNrlztyy4Q5hrSAH6/Ajrisp97a6ZWWxo9iXPKwYHnkwIxtBPdPrjPLYDoz+EoAXjN0bi316+KQIEoUIFPTTUT9yM9pG1vcKoDa1F2BAoOfLi4LLCofxkNjHG2mSu2YLi8jwL6kFAaw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=jt74t+MrEaOC318Bt/DeNAfDO3WNWqteZcqngfR7QEY=;
+ b=G6pih4cCCzrXeyMUGqGugyer3BgZTXVZmpuvSDAs16aYcwjSE7cBobYxL6quB0jXMI3w4t7A7pTf9bKQJPBsADr1ZROxAZ1eMvJsyi5b3Br9NdQTp6dztH1/4v/FUxBStNCBI260MAaMmAZBllWfbs5VmZcgT/Ng29F7vi9rlxnr44t7+F2bx4c9L+I7hszc5NAx5Y3IamIRuEhlCgkIjsdCHgW5i3Y1dNvX9WIwlzd6PtQZT63o4St/yKk+NaAwql6qSBrIWWBnYhT5xO5jO3m+JhcyL6WZfDkMvtTbqKGh6rgR7ecEUDgkXIEMPs+LXpjo+AaRBzA84VTNQgobZg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=renesas.com; dmarc=pass action=none header.from=renesas.com;
+ dkim=pass header.d=renesas.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=renesas.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=jt74t+MrEaOC318Bt/DeNAfDO3WNWqteZcqngfR7QEY=;
+ b=Idar7jpzTJWDJXzFaEmDc/7JGW0s73dkcJHusL+PxZk8AKzsZx093bT6QTA9x7J0AaOcHZv3c6psW+3bWBS+AX3WO97K6lsBa9BSguoBHcwScXanw8vaCXcflI5hknoQNFYvjQeUn4n6q5sGlDi4a/jL55ghEvx9/SvPWHUbloQ=
+Received: from TY4PR01MB14282.jpnprd01.prod.outlook.com (2603:1096:405:20d::9)
+ by OS7PR01MB17321.jpnprd01.prod.outlook.com (2603:1096:604:439::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.48.17; Fri, 22 May
+ 2026 11:51:34 +0000
+Received: from TY4PR01MB14282.jpnprd01.prod.outlook.com
+ ([fe80::655d:9c47:4499:eb3a]) by TY4PR01MB14282.jpnprd01.prod.outlook.com
+ ([fe80::655d:9c47:4499:eb3a%5]) with mapi id 15.21.0048.016; Fri, 22 May 2026
+ 11:51:34 +0000
+From: Michael Dege <michael.dege@renesas.com>
+To: Jakub Kicinski <kuba@kernel.org>
+CC: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net"
+	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
+	"pabeni@redhat.com" <pabeni@redhat.com>, niklas.soderlund
+	<niklas.soderlund@ragnatech.se>, "paul@pbarker.dev" <paul@pbarker.dev>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-renesas-soc@vger.kernel.org" <linux-renesas-soc@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH net-next v4 09/13] net: renesas: rswitch: update port HW
+ init
+Thread-Topic: [PATCH net-next v4 09/13] net: renesas: rswitch: update port HW
+ init
+Thread-Index: AQHc4SOTyxkxJl6S90iKmAgIzx1d3rYLL2YAgA7HpDA=
+Date: Fri, 22 May 2026 11:51:34 +0000
+Message-ID:
+ <TY4PR01MB14282B14FFFBD96B1897E8374820F2@TY4PR01MB14282.jpnprd01.prod.outlook.com>
+References: <20260511-rswitch_add_vlans-v4-9-a5a225f8faae@renesas.com>
+ <20260513013554.1408426-1-kuba@kernel.org>
+In-Reply-To: <20260513013554.1408426-1-kuba@kernel.org>
+Accept-Language: en-US, en-GB
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=renesas.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: TY4PR01MB14282:EE_|OS7PR01MB17321:EE_
+x-ms-office365-filtering-correlation-id: dec38194-091b-4b52-eb31-08deb7f8790d
+x-ld-processed: 53d82571-da19-47e4-9cb4-625a166a4a2a,ExtAddr
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|1800799024|7416014|376014|366016|38070700021|11063799006|6133799003|5023799004|4143699003|22082099003|18002099003|56012099003;
+x-microsoft-antispam-message-info:
+ 7SQsqrGpcKEVecyuCpxBa+gYpGmENKu4F37snWL7NWe/BMhsCTUAnyWQQDwGgMD9cWW3T70cqezCNw9XoZD0Bbf2PKubYlJNhTP15lJxqlNyorVYW45judp5prMFiQC5oozNMxhE1+uIudzURREvpw7USkIlsyIfR/AhKdul1sWKetqqtoQYFkahw3NPux4QH5Dphvd0jV6ZHXLnQAZNgsw4AwmOfeDqAQZwmWKbmRoLIw+tp/Bvw/DFfwpBUylXezDfoEccY2ag+D8LK664EPs+uhko15lLgWZmoEHQTJ09Vv+w4ZGPuVie8GYFuDT6AnHaMPrFJvZwTO1hEWpTAnZ4VQqAAJsNdzzZGMSNhfDPREC16gRMsgbkY5QcOZryhNn87H8s9kPH7EC/7yRcojVv/FivoR0iLcOxNyLsje9ZQn7AhZKHI+YFHnYi4WBTGxpD2nBrykPKBxGdS06sBjvG1lRYXOFFNBVOpgW5PnLIUhpETVxj+gCxf88akb+v3AEE3+fOOM8jyiq+sNawOQz2CEd//tCWAQzmNB+fitdrTrC3AVBmj36V7I8f7f2Hxv+sljY3QzEZbCrsCCbOtI2UIOMnXAMDPDj2R2uIR+DletbyaA9BrhAQ4u0PivTRKigH/7zlIJf5JeGk8euVi8gi/ivoFwlkVzlnYDyHlZQgIJ8VCGeh+I0KUl+DqAgVqz3vMo7rFOZh5RL9UVOoVN+98ZZlxVQfhPxm5YYMSat+jyxE1JVEPNPFVxowXtrt
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY4PR01MB14282.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016)(38070700021)(11063799006)(6133799003)(5023799004)(4143699003)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?1rbfZWtCdE1aTnv1KGpW1JDB9vaW+p/kRK39IyigDLrdPSnYdtbNDrfTKHph?=
+ =?us-ascii?Q?MZLEUQ5mGbJNoWyC5Oq+i/AKoDL0Esz0blKgRPB57CvJvXxMzVulc1/KUvXz?=
+ =?us-ascii?Q?QsyesQYPablOEsllIEe9jgY7JUR6WnI/ICn7lJD3PgGpVtjbVjcWMEhT/It1?=
+ =?us-ascii?Q?tN30v398d344vYfiUt8q1fy151F6OIRG8jlxSEM0Hb7fprz5fvteBKpFpXHP?=
+ =?us-ascii?Q?CAFGaI/o8lpgH5Ok42qsHaY1Lf0kYyY1B5ANDhntFDKsWicJXjyAYI3WWF41?=
+ =?us-ascii?Q?814ULj/6qUEr0aUJhD6cuOiHXQX1PzbvOKbDoWG8W7/nC76H3egZJ5r2qxVC?=
+ =?us-ascii?Q?GjV+NFftQiMIVdih/keMVUa9S1hdwMyL9IQVx6EWqqIARqa6fJHqoWWMvdoO?=
+ =?us-ascii?Q?lnhZ3j625E2xoEzMIitYrsfLPHov+RCWiCzEyQD+cF40OlJa6RtOzFsuygtS?=
+ =?us-ascii?Q?iLeYn9IntIVh2VADbio2luc0S0rHrivXh5afcVZpZ7Fs0xUoj/6J31u82YMZ?=
+ =?us-ascii?Q?26KSByY/Ye3zAhz5qJeCVOW3vT1GAucIinnFLPZvx9WiG910rS5umAHP0iIw?=
+ =?us-ascii?Q?VrW8utGX7bHd/fM4t2Fybd/zW4jE3LROA1jUqL/KfXDfLKyb5jPrhu8fsnna?=
+ =?us-ascii?Q?78uVhpCNaUKKA+L+G7Nl/awlppWI0lp5PJzxtsQh+GgYAFdxaTF9+Aa7jxTq?=
+ =?us-ascii?Q?tnmWFsz1HHOHB97nWb/ba8T4rVlfTj/WBz0JRFSY/pzByFcxCSx1WWcfUHzW?=
+ =?us-ascii?Q?AK69pqVp838VNEsPDVz6OVkV1xyP5PPwIZDih3c2bAMcY+zbaljkx58offtY?=
+ =?us-ascii?Q?3snYJUF4b4ACyGk4mUSfdqTpoNoqns+AyCOmNNovSQ5LhbteXUATnVtLmpYK?=
+ =?us-ascii?Q?pG1QO4G/eRSb7aLs8uNL8THH8vqIm5VwunKvSlrl4mJl1d9rqqHL/yPrV+vA?=
+ =?us-ascii?Q?GjXO4oCzvUtXTKWdj+SGyXQxO77LkOkpSZeCpa/gX9O9P6RqbEljL/SfpaY7?=
+ =?us-ascii?Q?pWAlKBrRcna/j6m83eo1B6xUCmSgBkRsPNrkTN3xnbywpC8NGTFj6OC9XWV/?=
+ =?us-ascii?Q?kyUIoLwTETvz7akeJ7zO3eRUnMha5kI4CzX6/UuyqvN+MAWaFamtHd5Q9Xfk?=
+ =?us-ascii?Q?IvvA5uWAXIHs+Qcq+MRBofMXPpUBXU6QSkQx/HdYzQREIc/1oazr9TDh95Xj?=
+ =?us-ascii?Q?d72j97AxSEkbmIBI+aM1W2uDj3P1djhXgWOq2UCv/8LFHR7kPLrwhgxW2xFm?=
+ =?us-ascii?Q?pSIlmKZY7rpA5ps46t9YBH9EhzqfRgqbx7Kr97CDOiF095XeYliASYGXZo9b?=
+ =?us-ascii?Q?WoeDYGcf3sB/s6WXeQMQJ0hBg6acHBXhqjzCd5qaDkfZQ0PF1spEDDGlkQqU?=
+ =?us-ascii?Q?guDOWw9QvRx8stcsmxoytO484RI4B+RbuAWfU/+2R4+n9QzbUw+ZHhPIKiVn?=
+ =?us-ascii?Q?md3MZfmRN+gxxNB0QZXV7cpggsS9QjkiauP8Vr1XRTelF3A6GxWGjLrOqSjP?=
+ =?us-ascii?Q?JPrCMC4IF5VPfUlTUZhQK/rUb+FkrmPpnOrkcUyKDZYt3wqaj14AgQP1bgUq?=
+ =?us-ascii?Q?QRUj/TK0cS6yCxtoQgA5ilXSHP1/vUVHvJS3y+MzVIYCSi8qv5YXcNIgOPmN?=
+ =?us-ascii?Q?NGbgB/6oKyuC2Jl57GzVi4OeTEg1TxaCl2wLh70vScmtNhlXVpvHhwuecrLQ?=
+ =?us-ascii?Q?n+14I3JTJIjXmiuy+9csJtIRPmg0vaIQIHH9bmfHLX94VS/UCPh1bUevxjNC?=
+ =?us-ascii?Q?lUuKz7+B6g=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAM0EoMkUPYSXKr2=+mR8YMq2a0TFdYPdzwPGob-UyU1fUWP9Ww@mail.gmail.com>
- <20260519033950.2037-1-rajat.gupta@oss.qualcomm.com> <CAM0EoMmj-9uDpKBN4vjJqzaLQL=OZ-sdFO_pHPFp6kL6hSVeRA@mail.gmail.com>
- <CAM0EoMkDwdmP94yeoX7W-DOY3Emcq84jGcPf73vtRTpDf1N3-w@mail.gmail.com>
- <CAM0EoMn-O7KU1R=b8jzb=DmMtRCuoEVmAH9hEsKehrdbmODAjA@mail.gmail.com>
- <CAM0EoM=sCnT69uPzB+HjOdRP9eQXVA+AcvPsBA80=dtQHi5sLQ@mail.gmail.com>
- <20260521073526.793d30c3@kernel.org> <CAKa-r6soz=iMBiYG0Grhhc12yhdw9vMNV+XjjEPCmtgKK6+rhA@mail.gmail.com>
-In-Reply-To: <CAKa-r6soz=iMBiYG0Grhhc12yhdw9vMNV+XjjEPCmtgKK6+rhA@mail.gmail.com>
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-Date: Fri, 22 May 2026 07:49:59 -0400
-X-Gm-Features: AVHnY4KKjMaG7qwe7IkEx8pZnbov3bHtaqNJRboQBiScLGo86m-6YpVAstdDVqU
-Message-ID: <CAM0EoMkANSFw7AxAX3opcnJhzd_qchosW8nFVfWV8wEkdL9R9Q@mail.gmail.com>
-Subject: Re: [PATCH net] net/sched: fix pedit partial COW leading to page
- cache corruption
-To: Davide Caratti <dcaratti@redhat.com>
-Cc: Jakub Kicinski <kuba@kernel.org>, Rajat Gupta <rajat.gupta@oss.qualcomm.com>, 
-	netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com, 
-	pabeni@redhat.com, horms@kernel.org, jiri@resnulli.us, 
-	yimingqian591@gmail.com, keenanat2000@gmail.com, 2045gemini@gmail.com, 
-	rollkingzzc@gmail.com, =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@toke.dk>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-OriginatorOrg: renesas.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: TY4PR01MB14282.jpnprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: dec38194-091b-4b52-eb31-08deb7f8790d
+X-MS-Exchange-CrossTenant-originalarrivaltime: 22 May 2026 11:51:34.3632
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 53d82571-da19-47e4-9cb4-625a166a4a2a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Ncp0zBbmv5FsorMf29dbC4OVzWqiFBAqcAMEEK/vjoI77PPKkG7Ijy0NRC+zKsh/+T+k8xeInNes2BYSfUjZk7r2VEOgOr7AhcgjpAVcOzI=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: OS7PR01MB17321
 
-On Thu, May 21, 2026 at 11:51=E2=80=AFAM Davide Caratti <dcaratti@redhat.co=
-m> wrote:
->
-> On Thu, May 21, 2026 at 4:59=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> =
-wrote:
+Hello Jakub,
+
+Thank you for reviewing my patches.
+
+> -----Original Message-----
+> From: Jakub Kicinski <kuba@kernel.org>
+> Sent: Wednesday, May 13, 2026 3:36 AM
+> To: Michael Dege <michael.dege@renesas.com>
+> Cc: Jakub Kicinski <kuba@kernel.org>; Yoshihiro Shimoda <yoshihiro.shimod=
+a.uh@renesas.com>;
+> andrew+netdev@lunn.ch; davem@davemloft.net; edumazet@google.com; pabeni@r=
+edhat.com; niklas.soderlund
+> <niklas.soderlund@ragnatech.se>; paul@pbarker.dev; netdev@vger.kernel.org=
+; linux-renesas-
+> soc@vger.kernel.org; linux-kernel@vger.kernel.org
+> Subject: Re: [PATCH net-next v4 09/13] net: renesas: rswitch: update port=
+ HW init
+>=20
+> This is an AI-generated review of your patch. The human sending this emai=
+l has considered the AI
+> review valid, or at least plausible.
+> ---
+> net: renesas: rswitch: update port HW init
+>=20
+> Certain Ethernet and cpu port settings need to be updated to prepare for =
+vlan support.
+>=20
+> > diff --git a/drivers/net/ethernet/renesas/rswitch_main.c
+> > b/drivers/net/ethernet/renesas/rswitch_main.c
+> > index 90c44dcfd1691..d00af333fcce5 100644
+> > --- a/drivers/net/ethernet/renesas/rswitch_main.c
+> > +++ b/drivers/net/ethernet/renesas/rswitch_main.c
+> > @@ -737,8 +737,11 @@ static int rswitch_gwca_hw_init(struct rswitch_pri=
+vate *priv)
+> >  	if (err < 0)
+> >  		return err;
 > >
-> > On Thu, 21 May 2026 06:15:17 -0400 Jamal Hadi Salim wrote:
-> > > > This is the same claim as sashiko1 but sashiko2 gave a much more
-> > > > convincing description ;->
-> > > > skb_has_shared_frag() is only true if the frags are flagged as
-> > > > SKBFL_SHARED_FRAG (which is what the repro did); however, if we get
-> > > > frags from eg a driver on ingress and that skb gets cloned with fra=
-gs
-> > > > we won't catch it.
-> > > > One approach is to do an if (skb_has_any_shared_frags(skb)) and the=
-n
-> > > > do a skb_linearize_cow() but that sounds like overkill.
-> > >
-> > > Yeah, this would be overkill - imagine running tcpdump 100% will be c=
-loned
-> > >
-> > > > Another which will make the patch even uglier (but less expensive) =
-is
-> > > > to add an extra check insde the patch's "if (write_offset < 0)"
-> > > > to do:  if (write_offset + (int)sizeof(hdata) > 0) { skb_ensure_wri=
-table()}
-> > > >
-> > >
-> > > To be precise, something like attached (untested, uncompiled)
->
-> hi Jamal,
->
-> I tested Rajat's patch with your latest addition; it compiles and passes =
-with the same subset of tests ran earlier by Toke.
-> Agree some follow-ups can be done (e.g. removing the hint, and maybe anot=
-her smaller thing not yet detected by Sashiko) but AFAICT you can add my Re=
-viewed-by: when sending v2.
->
+> > -	iowrite32(GWVCC_VEM_SC_TAG, priv->addr + GWVCC);
+> > -	iowrite32(0, priv->addr + GWTTFC);
+> > +	iowrite32(0, priv->addr + GWIRC);
+>=20
+> Is it safe to completely remove the initialization of GWVCC here rather t=
+han explicitly clearing it
+> with iowrite32(0, priv->addr + GWVCC)?
+>=20
+> If a bootloader, firmware, or a prior kernel (e.g., across a kexec warm
+> reboot) previously configured the switch to use Switch Control Tags, this=
+ register might retain a
+> stale VEM_SC_TAG value.
 
-Thanks Davide. And a Tested-by as well? I guess the same goes for Toke.
+I have added setting GWVCC to 0. I any case the correct value will be writt=
+en in case VLANs are=20
+Enabled in the HW. Otherwise, this setting is ignored.
 
-Rajat, please send a v2 with all the feedback once we hear from Jakub
-what he thinks of keeping the shared frags check.
+>=20
+> > +	iowrite32(FIELD_PREP(DQD, DES_RAM_DP), priv->addr + GWRDQDC0);
+> > +	/* Drop frames with unknown tags */
+> > +	iowrite32(UT, priv->addr + GWTTFC);
+> > +
+> >  	iowrite32(lower_32_bits(priv->gwca.linkfix_table_dma), priv->addr +
+> > GWDCBAC1);
+>=20
+> [ ... ]
+>=20
+> > @@ -1284,7 +1288,12 @@ static int rswitch_etha_hw_init(struct rswitch_e=
+tha *etha, const u8 *mac)
+> >  	if (err < 0)
+> >  		return err;
+> >
+> > -	iowrite32(EAVCC_VEM_SC_TAG, etha->addr + EAVCC);
+> > +	iowrite32(0, etha->addr + EAIRC);
+>=20
+> Similarly, should EAVCC be explicitly cleared to 0 here?
+>=20
+> Other registers like EAIRC and GWIRC are being explicitly set to 0 in thi=
+s patch, which suggests the
+> driver cannot always rely on the hardware reset state to zero out configu=
+rations.
+>=20
+> If a stale value is retained in EAVCC, could it cause issues for subseque=
+nt checks that might rely on
+> reading EAVCC to determine if a default VLAN is already set?
 
-cheers,
-jamal
+It is not possible to clear EAVCC in the init function since this is also c=
+alled when the interface=20
+state is updated. None the less the register is written when VLANs are conf=
+igured and the setting
+is ignored when VLANs are disabled.
 
+>=20
+> > +	iowrite32(FIELD_PREP(DQD, DES_RAM_DP), etha->addr + EATDQDC0);
+> > +
+> > +	/* Drop frames with unknown tags */
+> > +	iowrite32(UT, etha->addr + EARTFC);
+> > +
+> >  	rswitch_rmac_setting(etha, mac);
 
+Best regards,
 
-> >  Do you know of anyone modifying payloads with pedit?
->
-> hi Jakub,
-> yes: MPTCP kselftest does that on purpose, to mimic a middlebox and trigg=
-er DSS checksum failures [1]
->
-> [1]  https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git/commi=
-t/?id=3Db6e074e171bc5cc83eb91b03c2558c2d9fccf26e
->
-> thanks!
-> --
-> davide
->
->
->
->
->
->
+Michael
