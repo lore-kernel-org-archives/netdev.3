@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 342093911C1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5C64388E75
 	for <netdev@vger.kernel.org>; Fri, 22 May 2026 23:07:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779491226; cv=none; b=AYj0rE0XrbMXdjcVatiQUPQ/9yCmQy265nUtUosYnPwDGWOR0ZXsCbcmJKj5rSnncDNiyZ45aM7DNykXnmlAyZBHqX5t0mvaw2xayb40zmKyXMp0knTViYhQM84XQ96QkVGlFnIqrya71Y11mh1hlSheRpZ9EpGgUKbgkzwEji4=
+	t=1779491226; cv=none; b=LeEyWHUmtH7Vvq5hRS+4URzQAax2/3qle9TqO4ZROzSHCAXdckktHVnG47sn5Nw7DS19MVG5Eil8OHmZRbsW8/MuD/xTai9aU8O3naCZ47reUlGsuyq4oUIUzNXK7acDxc0I4Ku/o89I+46BhrbYGybPykzeGRFHKqLko+18bWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1779491226; c=relaxed/simple;
-	bh=BXlgqMIUolT+a7vib3gWgC0zfOx2bJecoWQoguF3u80=;
+	bh=XWeepmNHNv9olbISOQNu5gErs4FYFYMayNTVOTidpaE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GQ/QHF3eL2d6lgocVVgTJfFH8j8PuWKC5mj4ovCz5eDM/ZZPFJHxLNKS0029IUEBehgZTudfuguW8ex2Y7+hGXic2tryAxdXU3jcxyHBVJiSzaGNFy4cCl9ty5Q6YO1T0N3zqrHLpxIJ7t2JGPYY+Ss8uhFwEADLZFezqdddZpE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kLNyU7cn; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=WPCdwruTjp3PZa9aXmb3ntNevT3vbB8p6hns8028ZJkioBOgw3ZNx6BjV2Dos6cKT/T7BxPsgoKFbvjsQjnW7H/owZxdERxhiyncOFIxxJoei9LkIPaIBbPfz8aeRt4yYu2klsA5b4gCdHFqMGsp/aJ7l1H6akylVoVSniCKrng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j74q4E+b; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kLNyU7cn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B42791F000E9;
-	Fri, 22 May 2026 23:07:04 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j74q4E+b"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45B421F00A3D;
+	Fri, 22 May 2026 23:07:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1779491225;
-	bh=IHfRhcQiOezImEGlGJhiejVmYV4bFdp6iF0hrcDHuRo=;
+	bh=wXPff/cE86Ot6X5zocdNw/63RCf4dJ8mh7T0RCtEgfs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=kLNyU7cnSFWJD2M9TF4TMocsWz/Hhi+qO8+avMq2BTOPcc1GLnUJjwb4FGoxFto6V
-	 V5XWQlQ5E2e1RHhlqU1stUxgIxXwGnErObkAmjRTf12FY5IaaRTW0vCd30c7f5HCF7
-	 aE8d7As5NxKKYmA36pxSyE6S2hU0lfFzxHEeF8iquInElBNpK4vMVIq8JFUWzddsRt
-	 Rr+0Gn1jT7iI5LorSCJXxTj68DfyhOYgR74W4+QCKAEPMxFosRjRZQHih4FILyRuIw
-	 +AC6pZuThoU+GQ4vWMHIb91XtkJBalhjEEvLK0Z4wS/bsUWdipL2W6h2n3PDKmf39q
-	 EWJwIiDRzLyCw==
+	b=j74q4E+b8PABAf+PliPr/md5V84CXn5ECXNu9EvXzV68dK6txcZA0zyFdkUMnGbUn
+	 gRCuIIOPrXD1Dz+xgsJuykS+lQ6Adh4+6S/AxdyxmbE++FVnqPWCpDL17BbdV8ZtyJ
+	 EYF1V3OiZSVUO2XNqrzDmVH6QTwWwHG5IRW9YdpTMYFZc72KaqwbyS0bdNgH0AjEiT
+	 wClQ0j7QihHMwY0QUDBEL0cnYkTNXaElDNYmPn7ahCDYIbgZNeTjpQbZ9ARTvp8wnm
+	 u5bnIKI7OIv3kO/JKZfjTxUV6GXcNtBUSMS5XmhsRxYq+rAv4ubSbNvbTmqaT9k9kL
+	 HfU/4AxAwDqow==
 From: Jakub Kicinski <kuba@kernel.org>
 To: davem@davemloft.net
 Cc: netdev@vger.kernel.org,
@@ -35,11 +35,10 @@ Cc: netdev@vger.kernel.org,
 	horms@kernel.org,
 	gal@nvidia.com,
 	Jakub Kicinski <kuba@kernel.org>,
-	andrew@lunn.ch,
-	sudheer.mogilappagari@intel.com
-Subject: [PATCH net 5/6] ethtool: rss: fix hkey leak when indir_size is 0
-Date: Fri, 22 May 2026 16:06:46 -0700
-Message-ID: <20260522230647.1705600-6-kuba@kernel.org>
+	andrew@lunn.ch
+Subject: [PATCH net 6/6] ethtool: rss: avoid device context leak on reply-build failure
+Date: Fri, 22 May 2026 16:06:47 -0700
+Message-ID: <20260522230647.1705600-7-kuba@kernel.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260522230647.1705600-1-kuba@kernel.org>
 References: <20260522230647.1705600-1-kuba@kernel.org>
@@ -51,43 +50,50 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-rss_get_data_alloc() allocates a single buffer that backs both the
-indirection table and the hash key, but only assigned data->indir_table
-when indir_size was nonzero. The expectation was that no driver
-implements RSS without supporting indirection table but apparently
-enic does just that (it's the only such in-tree driver).
-enic has get_rxfh_key_size but no get_rxfh_indir_size.
-data->indir_table stays as NULL, hkey gets set but rss_get_data_free()
-kfree(data->indir_table) is a nop and the allocation leaks.
+We wait with filling the reply for new RSS context creation
+until after the driver ->create_rxfh_context call. The driver
+needs to fill some of the defaults in the context. The failure
+of rss_fill_reply() is somewhat theoretical, but doesn't take
+much effort to handle it properly. Call ->remove_rxfh_context().
 
-Always store the allocation base in data->indir_table so the free path
-is unambiguous. No caller treats indir_table as a sentinel; everything
-keys off indir_size.
+If the driver's remove callback fails (some implementations like sfc
+can return real command errors from firmware RPCs) - skip the xa_erase
+and kfree, leaving the context in the xarray. This matches how
+ethnl_rss_delete_doit() behaves.
 
-Fixes: 7112a04664bf ("ethtool: add netlink based get rss support")
+Fixes: a166ab7816c5 ("ethtool: rss: support creating contexts via Netlink")
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 ---
 CC: andrew@lunn.ch
 CC: gal@nvidia.com
-CC: sudheer.mogilappagari@intel.com
 ---
- net/ethtool/rss.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ net/ethtool/rss.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
 diff --git a/net/ethtool/rss.c b/net/ethtool/rss.c
-index 9fb675d29232..f5cf214f8f85 100644
+index f5cf214f8f85..53792f53f922 100644
 --- a/net/ethtool/rss.c
 +++ b/net/ethtool/rss.c
-@@ -134,8 +134,7 @@ rss_get_data_alloc(struct net_device *dev, struct rss_reply_data *data)
- 	if (!rss_config)
- 		return -ENOMEM;
+@@ -1106,7 +1106,7 @@ int ethnl_rss_create_doit(struct sk_buff *skb, struct genl_info *info)
+ 	ntf_fail |= rss_fill_reply(rsp, &req.base, &data.base);
+ 	if (WARN_ON(!hdr || ntf_fail)) {
+ 		ret = -EMSGSIZE;
+-		goto exit_unlock;
++		goto err_remove_ctx;
+ 	}
  
--	if (data->indir_size)
--		data->indir_table = (u32 *)rss_config;
-+	data->indir_table = (u32 *)rss_config;
- 	if (data->hkey_size)
- 		data->hkey = rss_config + indir_bytes;
+ 	genlmsg_end(rsp, hdr);
+@@ -1134,6 +1134,10 @@ int ethnl_rss_create_doit(struct sk_buff *skb, struct genl_info *info)
+ 	nlmsg_free(rsp);
+ 	return ret;
  
++err_remove_ctx:
++	if (ops->remove_rxfh_context(dev, ctx, req.rss_context, NULL))
++		/* leave the context on failure, like ethnl_rss_delete_doit() */
++		goto exit_unlock;
+ err_ctx_id_free:
+ 	xa_erase(&dev->ethtool->rss_ctx, req.rss_context);
+ err_unlock_free_ctx:
 -- 
 2.54.0
 
