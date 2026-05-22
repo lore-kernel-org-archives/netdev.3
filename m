@@ -1,230 +1,119 @@
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A36CF72621
-	for <netdev@vger.kernel.org>; Fri, 22 May 2026 07:50:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42BD137F726
+	for <netdev@vger.kernel.org>; Fri, 22 May 2026 08:08:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.177
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779436215; cv=pass; b=XOMAaWZUMpmZKR17Yag8N9XsIQ1477eSvR5RBR/DmHuQ1r+yqQDfgDMI7gc12yfNCFnxeHNuPVG5lYOBBi4egZXKf66WeD42gRVXaINFqIrpoREESJj+J1iiiaLF+wrZrGE45Se4noPYF84ceP5VjmLdqCpa34d6/SCs1Nx0Vr8=
+	t=1779437328; cv=pass; b=r+DROmTVg+x1yn8q7kJcV9YihzJz/NI3J2bxM6mR6z6WzErVn0zUq07Cl+PXXSQN9PD3BOTbCL6xUaIDUtb08EzS4Q7tNT+e73Rrf+OG7/ahR2Q5mcB5NauiYXaYmmq3/Sou0tLcKOO2fdHatlyZb46Ob9pkcR3rA+9gO9dd29k=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779436215; c=relaxed/simple;
-	bh=sBKPbvVh8rZyxB1CUqLTVxA3LKQYZlHsH0ye97vd7Tg=;
+	s=arc-20240116; t=1779437328; c=relaxed/simple;
+	bh=DElLwKPPbPOncuE8+T6lNKNRkDQ4AmTvj/LhG2kQibU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qLzCvbn3oYPV6IxMS9PC9csLYV010uED4kKwbCTb7BgfI3T/Z6WVnbT7oa/WB1wZSO/DaaXH+Edh3p8kX9VXK1jx8ocPYsN2C1LoB4oeGa/keTZYlENsCjoF506lbjjjr0Cm7ObAfA+765AyvTiAYB+0wsxDwKNvRxqlPS6WSpw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SsuiBQI4; arc=pass smtp.client-ip=209.85.208.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=rHwkAuJYsv2X46QCkr1k6ygMy5ElWopSdW+x1kY/fyPX7jErb+Vy7S8ggk/hWrdfHVx2Xkw/JlKZe+v6bJQc2ZsS6pUZloNJCR5hjXB91IqS/CeVSWWBx/x+kxHHU0I0kUT4SU0tvlEYRNB6VliXE0+WpIeopYrKnkfv/BDI1Es=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cCwjejsK; arc=pass smtp.client-ip=209.85.222.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SsuiBQI4"
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-6877c719cb0so3715537a12.2
-        for <netdev@vger.kernel.org>; Fri, 22 May 2026 00:50:13 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779436212; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cCwjejsK"
+Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-90d1f03238bso757009085a.1
+        for <netdev@vger.kernel.org>; Fri, 22 May 2026 01:08:47 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779437326; cv=none;
         d=google.com; s=arc-20240605;
-        b=aVoYqTmEaDT0WTKxcUgxzUrfM2SYNUri/r2zyYgJCuvWfS4py/irgf46skLTtL/MEq
-         MEPlQXoO5vK/4ld/uBOJ4RwStjSsfjo2jZPL2ZNUHJN4bK2aoF9R0X/lvUaG4CQwSjlN
-         hloQmHPUoJaH0MVR4XHMFO5pE6YLW/ZOG2sUY//B+pzlRWTsnj0/oII+0iJqC0Oew3sC
-         lqXjvVU755v6q/hRKuQWDeal9vfzf+iyUGxbWJ8bVpheUVgJTs5Zs4Ag/otFqkadYGbP
-         vmdA6sVcYpS0puVltbdSxq7Zrer/8cpXL36mRoK19X28iNIOz35RO8UjEIKYZoQJond7
-         Fbmw==
+        b=WM2Qtehj8kXVdN4uxIU4amT0CdWpn6jM2y2OMRj1mZbQxXpcspr1xnkYnFCCWwUdkG
+         0b2K0CNUsbMDDMTKNlgRc1b4IqEEnJzKMcuck+psgnOnDYdoIn/aeC6D/QixGcXlVBu/
+         caAzECH2ez1T31LCQvIw6jdMGfhCWtIVBzLIUNA1wBV3ecKWrsVdKKUVjRodu1paBPdb
+         7BFV43W4pFqE4y8/Tflo68pNd+Kawo9CeXVouQq7VCHaUo3p5YLE6SfeSjDe7ksMNmlJ
+         Us6XLowhMZNRLSWmz6k2Su/IbJ3X2CBrwVY0rmSIZ8Y2OYC0cQ6PR1qQKfb21D4y9U19
+         hswg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=pgG1Vz5eRRJtL8VkMuX6m6NiZAhSKljIsOoLMSCZ26o=;
-        fh=+mi+/wgop+WvyLxhkWlLCMdA4/w/PzZYmEJxaw7j/Ks=;
-        b=B+UZRKDFaUxYozc+6Ws4Arc5vPzDLlybSagRtB1X50cxOT8ubWJlnO4FrI4EyASWSd
-         mbDggQ6rJxkAeeCe2oGjq8NQVZaOGXp/wfa4aI6RvX3gi/CZ/c85Q/ZQxQ4F2DWG4qVG
-         OBDgp7L16TndA5ljWjhOTOt73MEvQTxtUTmd/IhKSfvr/K6P88m4OBTSYZaO0WmLbfCw
-         rrBF8e8CzSmwBW67aC9Ff2qvvda/ekrwT04IJQ/AMwJb3Sjkue5EGq19axnqkuQNeAoF
-         P0z9/z4q9wekM1gDW8joBlaf57NOJMMtSBGdFROJcLYvSsdhlyYQet1a6IHcwX5T4Gdi
-         yndw==;
+        bh=DElLwKPPbPOncuE8+T6lNKNRkDQ4AmTvj/LhG2kQibU=;
+        fh=WdoVpZewMziVdsKtD7BiXLx6LbuoGSUrauu+mGOQW7g=;
+        b=arCJ5G4y58dHCtfamTdU2esRM3o9rxQrMjYHn1D1boEoBrJlFiYpDtFCEWOkcXIt8W
+         NrT7XH2Tb2jojOdW6qcVSxgZG5WvLEAvor83B34rZgYFgHrw62q84CB3T/b2aj8PvAjr
+         RBiCkRCzxlG8IpZn26jt7l21w/6CtCMu/OoyCXwMHyTSFOdSTrkJamCTOe3L6bEjku5S
+         nCzj5GhmJqBu9X5Divby/dPqu8tgdGd2lh/r09ZkuDcZvQTXnKW9GwOzgDZyPnEce6SH
+         V3zJcyEZeKsCSmCmLPj/OKcBci9GaKgIsdCmIZuJFvQNtkaau1YnQL4O12QetZJyisJN
+         IlzQ==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779436212; x=1780041012; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1779437326; x=1780042126; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=pgG1Vz5eRRJtL8VkMuX6m6NiZAhSKljIsOoLMSCZ26o=;
-        b=SsuiBQI4UIyRA2ydYLgvu5oBRPQVsUBh0Uzin2p9uKOwEOjoFQ/Oa4/CAPu87MxYLg
-         cPXjTUEzhpXuyycd5VxPNGRUjDB9Ws4yZOKvKspPlzLhIgMS+rd6bz69dNZSa4kdM1ng
-         BXE3tC2m4RV+NcY3IRFLyw+KBBI8QZt3BDnUpUdnEPfrpBhhpv7lslTiFJtR+KPxURl4
-         Q++QeoPrGr9baoSLBp6cmKJlyZrWEw4ciVp9YjYyL8ufF6sDuAAzlQ1wnainWM84Rsb/
-         S0rli8niM2xBbtdHAxy9pAUOezVVFoTsHxxDjBfJBImo5ZijanVIGbwyTRlzvWxKW7oU
-         1lwQ==
+        bh=DElLwKPPbPOncuE8+T6lNKNRkDQ4AmTvj/LhG2kQibU=;
+        b=cCwjejsKBVsIY9/w4kdb1wo6bsTGYd51OGp8Ne6r4CcmT5aqCP7UmdEWR/Zvq46ooS
+         geLWbKzea6UNiTn4kGg58CN4RheFBs0tGWG+BImN4T27UiKPtvvtJnwR2s+8gzC4N16D
+         1Et7zcnq1B8VkEbHaZP3T1BS7M41oy9xm50LZbIHx/F8Qer1SW4jQ9u7suH90OUUm6aV
+         ScMwrDzE+O2Fai9Jt6TpWU/htSAxW+mh6Pm4lS+grlw31GDy9j9BMrYpjhuk0/ayjO52
+         /E4ZtwjYXo7pQmbw6jJtpIBS9iHHuggUGYnZ+Na5KTy2vwoKIplGUKjMoRzxqcuVv5Gj
+         Vw9Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779436212; x=1780041012;
+        d=1e100.net; s=20251104; t=1779437326; x=1780042126;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=pgG1Vz5eRRJtL8VkMuX6m6NiZAhSKljIsOoLMSCZ26o=;
-        b=F3EfuU2ET+uSFT8XK6Y3nQ9WXXOWGOQY6p4V9i4i/bH73Qu7Uy1t9Txmy1ZVsf+LPr
-         JUaIm8OL55CWHm2e9Z/QO51aYGMQxvtbT0aMqPAbbXgCJvnxmHF15bVQmuUTt0kEf3UO
-         vtQVkiF6Ea++OPjEg90aIXRto6nhq0RAYenx7OhUfTUU+CnWRpneOq3qLnAIHTsGj2+3
-         tx5VJ+mU3DlrEo5j80Hy7eT4it1a1NQgMqbghIkuJraADeXcdqMlD16iBH4Ihl0Sf9sJ
-         afxvybG6sJYZLhQPuRqF6Z7/zkdblUs8kb1ln0KNj27t653yc6UR7qTrDi4381/J6idG
-         QYaA==
-X-Forwarded-Encrypted: i=1; AFNElJ/UQagIm6DmRIZU3ppZv4qzVNpPBE+thyTC4PR5AATSVO76unITS9ZNkUNdNr4oVi+DAL36nL4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzOuGHx8PvR3x0HAQK1xf53TKaMuQQzd5uP71jQAX2t0zWXK1vB
-	MWYS2eQWRoZGJDSFz5irZLFDwQn/ZrW5WrKsX84h9jaOlpJWTBM5Wy6uTACvw8Vvm5GQn5t5cvQ
-	PDlW/IaTeE59UILirnNenzJu1LrVi3KM=
-X-Gm-Gg: Acq92OEPL5cnRKAeR38Z3tnSVoF1535U9k8mdTSR7NRFy2fGPvvWbsB45WaaOz3kZ96
-	3zZp2ZKb5fCLtqEnoLS8pK8JzxCDQPI5vzdHxi/4a+C/f7ZoKq7AvmYcZE5AzSQfFoKJADJMzLR
-	gD26/Aqcbu0p6JBXNnOMPW9hc950XWpnST6GEIR+fp/aMOuXkuhefI/1rXafUGqCKrDwoehePHz
-	UVLbAp+LnHvxFbqdI++EAgGSFI6SO9nvgwqQm+i22WcmLO1NsOPyrS6yWcS32lNmexkwPT4X53b
-	DvS5kE0=
-X-Received: by 2002:a05:6402:d08:b0:678:a507:e837 with SMTP id
- 4fb4d7f45d1cf-6889c4080a8mr1138238a12.1.1779436210240; Fri, 22 May 2026
- 00:50:10 -0700 (PDT)
+        bh=DElLwKPPbPOncuE8+T6lNKNRkDQ4AmTvj/LhG2kQibU=;
+        b=WNd3sCNJQTSgqOeeV1Ccv5S2bsp8T2BMHG3wz8G+7trKBlL0gUYAX9/w948VwgIRxy
+         NsB02upNr/yIorAX86nx9+qsQlZx7DHhMv0COmDbgSrXarg7PK3dwjKwIve6/9dpZ141
+         dZOIGniCE7R/tKyhvJHWsEKlK4HMGprbNgyA/Zbm3C75dlnU0TpaEJ1+1nUzoFdHZwK4
+         jKjj7tOO+EMP0qdnuxZ0wcqrnqbRUnI8K7YJkpv8/Q5vCg7x/T4xiaKzecSNhz4XEhXG
+         cclu2KFN7S3uLPVWn4FjnxkrFFTxVk532dwKnVMBBqojYmCW1ne1d1nHKBxTSUm9s5gw
+         UjtQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+7h56QIiObK62U+sqDb3gr2IQXbNwW5YSrLPifcEUTNNhXoYL+yCjhF2sLXIljoOsEtw47Uqg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw0sihkn9wZm2s3KJCvOsNGV8XcJa8pMkJcBP/gNGNhYz+lxwTA
+	ftk9mSfdyVYXxxNWzPb+ZQl3a0Ev0m3GVI2tMhX3FdWPV0C2paNfhZvN9iJkS2FIMVDQfVfRNkz
+	Ty2n5xN/r9qUn1RPq0bg8RwW4UmKbTb9XP8uhUetu
+X-Gm-Gg: Acq92OHs6fjfZ1wRASJZIyv3l76dIxspzuC58OFOlIxfk71QnZEq/cGl+/Fa3OYZdme
+	hOD8tftBTKWGcXT/5BjFn9EQbaTaMrJUSzFsQCRPnhiIWmUAnu3c/ibODweF4qBonel5NavOu9z
+	3anlfCQIeQC6CRa7jD58TbzAA8IJbvbVE8LEFyo3xrxjNzTWtFREK8O0ZzSXMuXA6CMv5XqjwOn
+	KBOXTrek3+/8R59mVHiDA5r0GJt3xpAYwEYwe/hIBJZhFLov8D6LNXeKD1+4ynd7drb9/O28l5N
+	sUzutFUWNDn+5j2p7mHxKaZjkon5go6l6fcCs0h4r/p8AvCfv5LAu+Mxm9RZ/x8fJB/rwy08Ntu
+	K/EVk3+IpfTr4OhgSaJLXRyWcm8QgaqePoDVE8vweDJL/4PyAXDzionUfO4+MAgnH
+X-Received: by 2002:a05:620a:710d:b0:90c:d467:24a6 with SMTP id
+ af79cd13be357-914a240e563mr853458685a.41.1779437325714; Fri, 22 May 2026
+ 01:08:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAM0EoMkUPYSXKr2=+mR8YMq2a0TFdYPdzwPGob-UyU1fUWP9Ww@mail.gmail.com>
- <20260519033950.2037-1-rajat.gupta@oss.qualcomm.com> <CAM0EoMmj-9uDpKBN4vjJqzaLQL=OZ-sdFO_pHPFp6kL6hSVeRA@mail.gmail.com>
- <CAM0EoMkDwdmP94yeoX7W-DOY3Emcq84jGcPf73vtRTpDf1N3-w@mail.gmail.com>
- <CAM0EoMn-O7KU1R=b8jzb=DmMtRCuoEVmAH9hEsKehrdbmODAjA@mail.gmail.com> <CAM0EoM=sCnT69uPzB+HjOdRP9eQXVA+AcvPsBA80=dtQHi5sLQ@mail.gmail.com>
-In-Reply-To: <CAM0EoM=sCnT69uPzB+HjOdRP9eQXVA+AcvPsBA80=dtQHi5sLQ@mail.gmail.com>
-From: Han Guidong <2045gemini@gmail.com>
-Date: Fri, 22 May 2026 15:49:36 +0800
-X-Gm-Features: AVHnY4L1T7nyhwpCILNAhG4jRMfZlxsYUZ5nOkdJVts-lY9fkvq5TVfZla7rcwE
-Message-ID: <CAOPYjvaiZ73U-zpUv_A-Kco-BgA58k4ntxeGobXQfFBdiSqjvA@mail.gmail.com>
-Subject: Re: [PATCH net] net/sched: fix pedit partial COW leading to page
- cache corruption
-To: Jamal Hadi Salim <jhs@mojatatu.com>
-Cc: Rajat Gupta <rajat.gupta@oss.qualcomm.com>, netdev@vger.kernel.org, 
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	horms@kernel.org, jiri@resnulli.us, yimingqian591@gmail.com, 
-	keenanat2000@gmail.com, rollkingzzc@gmail.com
+References: <20260521150811.1896373-1-victor@mojatatu.com> <20260521150811.1896373-2-victor@mojatatu.com>
+In-Reply-To: <20260521150811.1896373-2-victor@mojatatu.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Fri, 22 May 2026 01:08:34 -0700
+X-Gm-Features: AVHnY4K4q6rdDKaLkaZ_lLbXXtuUvVp6z5A22tWr94b7Tm4aymjGx3LEaiDrGKI
+Message-ID: <CANn89iKS7Oc1CLc9O4CLe9BF=bPjfMfgiqg30B17mS_i9qm75g@mail.gmail.com>
+Subject: Re: [PATCH net-next 2/2] selftests/tc-testing: Adapt idempotent qdisc
+ notify callback tests to recent fq_codel changes
+To: Victor Nogueira <victor@mojatatu.com>
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, jhs@mojatatu.com, 
+	jiri@resnulli.us, netdev@vger.kernel.org, pctammela@mojatatu.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, May 21, 2026 at 6:15=E2=80=AFPM Jamal Hadi Salim <jhs@mojatatu.com>=
- wrote:
->
-> On Thu, May 21, 2026 at 5:53=E2=80=AFAM Jamal Hadi Salim <jhs@mojatatu.co=
+On Thu, May 21, 2026 at 8:08=E2=80=AFAM Victor Nogueira <victor@mojatatu.co=
 m> wrote:
-> >
-> > ::
-> >
-> > On Wed, May 20, 2026 at 4:00=E2=80=AFPM Jamal Hadi Salim <jhs@mojatatu.=
-com> wrote:
-> > >
-> > > On Wed, May 20, 2026 at 5:23=E2=80=AFAM Jamal Hadi Salim <jhs@mojatat=
-u.com> wrote:
-> > > >
-> > > > On Mon, May 18, 2026 at 11:42=E2=80=AFPM Rajat Gupta
-> > > > <rajat.gupta@oss.qualcomm.com> wrote:
-> > > > >
-> > > > > tcf_pedit_act() computes the COW range for skb_ensure_writable()
-> > > > > once before the key loop using tcfp_off_max_hint, but the hint do=
-es
-> > > > > not account for the runtime header offset added by typed keys. Th=
-is
-> > > > > can leave part of the write region un-COW'd.
-> > > > >
-> > > > > Fix by moving skb_ensure_writable() inside the per-key loop where
-> > > > > the actual write offset is known, and add overflow checking on th=
-e
-> > > > > offset arithmetic. For negative offsets (e.g. Ethernet header edi=
-ts
-> > > > > at ingress), use skb_cow() to COW the headroom instead. Guard
-> > > > > offset_valid() against INT_MIN, where negation is undefined.
-> > > > >
-> > > > > Additionally, linearize skbs with shared frags upfront to prevent
-> > > > > silent data corruption when pedit operates on zero-copy pages
-> > > > > (e.g. from sendfile).
-> > > > >
-> > > >
-> > > > Sashiko makes the claim that:
-> > > > "
-> > > > ....
-> > > > .....
-> > > > If the payload part extending past offset 0 resides in a shared
-> > > > fragment for a cloned skb, wouldn't skb_store_bits() write the
-> > > > positive offset  portion directly into the shared page, causing a d=
-ata
-> > > > corruption regression?
-> > > > "
-> > > >
-> > > > It missed the earlier code (before the quoted code is hit) which is
-> > > > very well documented!
-> > > > /*
-> > > >  * If the skb has shared frags the user is likely using zero-copy
-> > > >  * (e.g. sendfile).  Those page frags may point to page-cache pages=
-;
-> > > >  * writing into them would silently corrupt the page cache.
-> > > >  * Linearize so pedit operates on a private copy.
-> > > >  * TL;DR: if you want zero-copy, don't use pedit.
-> > > >  */
-> > > >  if (skb_has_shared_frag(skb)) {
-> > > >         if (__skb_linearize(skb))
-> > > >              goto bad;
-> > > >  }
-> > > >
-> > > > TLDR:
-> > > > If the  skb  has shared frags, it is linearized upfront using
-> > > > __skb_linearize() which means any risk of modifying a shared fragme=
-nt
-> > > > is non-existent.
-> > >
-> > > It seems there's a second sashiko ive been made aware of - these
-> > > things are just multiplying ;->
-> > > https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260519033950.20=
-37-1-rajat.gupta%40oss.qualcomm.com
-> > >
-> > > Both points it makes are valid. Dont have time right now.
-> > > And infact looking at the second point sashiko 2 made I realize I was
-> > > only paying attention to externally shared fragments which the poc
-> > > used.
-> > > So probably the sashiko1 had a point as well. Anyways i dont have tim=
-e
-> > > - will respond by am tommorow.
-> > >
-> >
-> > Sashiko2, claim 1 (rephrased for brevity):
-> > "With the pre-loop skb_ensure_writable() removed, tcfp_off_max_hint
-> > and related use is no longer needed.
-> >
-> > I was going to say "separate patch" but since the cause is this patch
-> > that removed the use, at the expense of a much bigger patch we should
-> > remove it (delete it from include/net/tc_act/tc_pedit.h::struct
-> > tcf_pedit_parms and net/sched/act_pedit.c - as described in sashiko2
-> > claim.
-> >
-> > Sashiko2, claim 2 (summarized):
-> > "..skb_store_bits() will memcpy() the tail bytes of that 4-byte write
-> > onto frag pages that are still referenced by the original clone, so a
-> > clone held by a tap, AF_PACKET listener, or mirroring path would see
-> > the modified bytes on its shared pages."
-> >
-> > This is the same claim as sashiko1 but sashiko2 gave a much more
-> > convincing description ;->
-> > skb_has_shared_frag() is only true if the frags are flagged as
-> > SKBFL_SHARED_FRAG (which is what the repro did); however, if we get
-> > frags from eg a driver on ingress and that skb gets cloned with frags
-> > we won't catch it.
-> > One approach is to do an if (skb_has_any_shared_frags(skb)) and then
-> > do a skb_linearize_cow() but that sounds like overkill.
 >
-> Yeah, this would be overkill - imagine running tcpdump 100% will be clone=
-d
+> Commit 150061a20651 ("net/sched: fq_codel: local packets no longer count =
+against memory limit")
+> made fq_codel not account for local packets in the
+> memory limit. Since tests a4bb, a4be, a4bf, a4c0, a4c1 were relying on
+> these packets being accounted so that parent's qlen notify callback was
+> executed, they broke.
 >
-> > Another which will make the patch even uglier (but less expensive) is
-> > to add an extra check insde the patch's "if (write_offset < 0)"
-> > to do:  if (write_offset + (int)sizeof(hdata) > 0) { skb_ensure_writabl=
-e()}
-> >
+> Fix the tests by adding the qdiscs to ifb instead and making it see
+> mirred packets that came from scapy. That way the packets are accounted
+> in the memory limit and the parent's qlen notify callback is still
+> executed.
 >
-> To be precise, something like attached (untested, uncompiled)
+> Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+> Signed-off-by: Victor Nogueira <victor@mojatatu.com>
 
-Tested this and it looks correct.
+Thanks a lot Victor and Jamal for taking care of this.
 
-I used a small kernel module to inject a cloned skb through the real
-tc ingress path with a crafted layout: crafted skb_mac_offset(),
-tiny/no linear head after skb->data, and the rest in a clone-shared
-frag tail. With Rajat's patch alone, the peer clone could still be
-changed. With this added hunk, the peer clone stayed unchanged.
-
-Thanks.
+Acked-by: Eric Dumazet <edumazet@google.com>
