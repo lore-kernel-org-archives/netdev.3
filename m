@@ -1,76 +1,81 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D21384218AC
-	for <netdev@vger.kernel.org>; Fri, 22 May 2026 15:46:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 981E832860F;
+	Fri, 22 May 2026 15:55:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779464774; cv=none; b=N1AXmBAQGomhcgE5drF4QXESIzOVJQCzvoYsFH3t0ZSQcEEuGHuxyOiEoj3yxVPDTxUJEL5EUoZyvtoyzJvT5CV85hrRMA6/Ab/3blBV9YWBB1m48kO9hBUO8xL2zrpOY4g+m+yadzwknHwV1VWElGHAlGYvzz74yw/Y7i6XXsw=
+	t=1779465313; cv=none; b=M+dBq83F2e+bN6gqSdhnmcXztrSDjGdwxqRJf/kgKh0w+zEUzrbzJSwF/dA8yTuowc0kjqxAaKPgn8qDkcfWRIUeseq9yShIPdzqrinzaTJPAWW1+XgAQau5P1YAaOQZQg36Dn0vWNWD72IYjeoj5PrcNpCBHFY+a5qxUCUlzVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779464774; c=relaxed/simple;
-	bh=hx2KDFWu0T/vqnbDAwu9mZ1KWA/Wdq2y9iB7XC+O4c4=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Afy/HdmC5FbO0xBvaGMq1YBrB5ZuvSMNOsTZITSSM15A2iQEn+kCbIe8uzrmKciltCpTasXSfSIcjPc3GzjHEHquYZbamRitfNgnPkYwpFYDhGjXIHp2rmFSldzF2/eusjiTC22gnqliLr/16xoTPEViRDnptIJcrcmV6TVbq6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fO4s5PrI; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779465313; c=relaxed/simple;
+	bh=2vUOQX28fcWPAdZyJSyPy5BiasfePVXr0r8Ywc70B/g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SKy+2JzMxnvbc/7UOPpyhI7BoIf/8VxVwS+BRkGecK97Mpq4tLspiwaq5yEQk2u9pg9nBk3W8vmbrFb1FrwPc2DZU+TQfR0kLuU6p9cp9jrH6y+0+ICFMbn//piBr3+ThEFqu+jVbQheYiJaRWU3qfk59FPQuh5tZsnjzqUjGNw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=XcwX1EPY; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fO4s5PrI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11F9C1F00A3E;
-	Fri, 22 May 2026 15:46:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779464772;
-	bh=sOA1bW+w9MFq40muaJz92VaTBGym/9qUKl3E7aZi2vs=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=fO4s5PrIuu1B74LiOhMZnIqwvIShhm8LFSoajTvJevhDx3hBgp81giYsQkFCIpIgt
-	 bj7yW0wWAh12CRHE322qHnkidzvhfQ//ioljVdiAPtX93yzfNYWZM+maJEX3VF6qe/
-	 wGzSEIthm6nnk3JYDJO3A1nbYd50/bTgD/YwsCs5/srsyEnE3MjcL8nYyGFGo45HMB
-	 9j4HWkAeIM86gcokctXFazJBT5Mqucx17Qk5I33X16CaLVbl2GNv7IbADmdlCflOMl
-	 rvTQ5YXhMFe5CYvv9ppByeW6q2Dbae8Lf/ovlVFxKx7mqfM3AH5rpVwQj5XNmqaDc2
-	 GrhrrYBDlz7dw==
-Date: Fri, 22 May 2026 08:46:11 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Jamal Hadi Salim <jhs@mojatatu.com>
-Cc: Rajat Gupta <rajat.gupta@oss.qualcomm.com>, netdev@vger.kernel.org,
- davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
- horms@kernel.org, jiri@resnulli.us, yimingqian591@gmail.com,
- keenanat2000@gmail.com, 2045gemini@gmail.com, rollkingzzc@gmail.com
-Subject: Re: [PATCH net] net/sched: fix pedit partial COW leading to page
- cache corruption
-Message-ID: <20260522084611.390fd0a6@kernel.org>
-In-Reply-To: <CAM0EoMmNWYzryfc5=4R0SkW+wfVhBxO3tAH+KeoMP3sPr6yrFA@mail.gmail.com>
-References: <CAM0EoMkUPYSXKr2=+mR8YMq2a0TFdYPdzwPGob-UyU1fUWP9Ww@mail.gmail.com>
-	<20260519033950.2037-1-rajat.gupta@oss.qualcomm.com>
-	<CAM0EoMmj-9uDpKBN4vjJqzaLQL=OZ-sdFO_pHPFp6kL6hSVeRA@mail.gmail.com>
-	<CAM0EoMkDwdmP94yeoX7W-DOY3Emcq84jGcPf73vtRTpDf1N3-w@mail.gmail.com>
-	<CAM0EoMn-O7KU1R=b8jzb=DmMtRCuoEVmAH9hEsKehrdbmODAjA@mail.gmail.com>
-	<CAM0EoM=sCnT69uPzB+HjOdRP9eQXVA+AcvPsBA80=dtQHi5sLQ@mail.gmail.com>
-	<20260521073526.793d30c3@kernel.org>
-	<CAM0EoMnvrAxGC=bty=ZUXG6XDN_hTNZiy9LSZhNicEdbe8DghQ@mail.gmail.com>
-	<20260521084640.683c1ee6@kernel.org>
-	<CAM0EoMmNWYzryfc5=4R0SkW+wfVhBxO3tAH+KeoMP3sPr6yrFA@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="XcwX1EPY"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+	Reply-To:Content-ID:Content-Description;
+	bh=FhSkrdaLm6vSv+HMGEdqTeJFHr/z5Gin43///DqwEX8=; b=XcwX1EPYmTlkZZ0lzOl6z8rpM5
+	ls2yZCQAO3dIJ13HGmAEe0MFe2+j3L2xIc61NPHjKxNMIC5L9XvvZ47BIx3GOa3pugcgpLOc4Xy7N
+	cNZ7pzONQd13hLeNjmAZhMtd1Ob6QlqUuQOFtDhsfb/ISwQuFfmlb2Vmg8Yzas9hXhF9beQSUe3t9
+	iJ3wy6tUhgR8e1JLsHsM00GLpdtoGETGTYhzjE/orfOLR50Q38Zm20Ko5NjpSBhPmH2e3uAjzTGFH
+	4atV4KqRnwkSarxB3iJco5Sb4/VPZ8QIPuYq8APEgP0CMXprw0gIFZhHa1cQ6g9542CjR5XGpV8V+
+	X36Vs+wQ==;
+Received: from authenticated user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wQSDH-004lxA-0X;
+	Fri, 22 May 2026 15:55:03 +0000
+Date: Fri, 22 May 2026 08:54:57 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Uwe =?utf-8?Q?Kleine-K=C3=B6nig_=28The_Capable_Hub=29?= <u.kleine-koenig@baylibre.com>
+Cc: Alexandra Winter <wintera@linux.ibm.com>, 
+	Aswin Karuvally <aswin@linux.ibm.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
+	Sven Schnelle <svens@linux.ibm.com>, linux-s390@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1 net-next] s390/ism: Drop superflous zeros in
+ pci_device_id array
+Message-ID: <ahB7_10zHxM2HQWG@gmail.com>
+References: <20260522153010.777081-2-u.kleine-koenig@baylibre.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260522153010.777081-2-u.kleine-koenig@baylibre.com>
+X-Debian-User: leitao
 
-On Fri, 22 May 2026 07:47:32 -0400 Jamal Hadi Salim wrote:
-> > > All these issues stem from the shared frags point, but the patchlet i
-> > > showed is unrelated to SKBFL_SHARED_FRAG, it is more related to
-> > > cloned+frags.  
-> >
-> > Right, right. Just pointing it out cause Rajat's patch adds another
-> > skb_has_shared_frag(). Which we'll then have to delete in net-next :\
+On Fri, May 22, 2026 at 05:30:09PM +0200, Uwe Kleine-König (The Capable Hub) wrote:
+> Subject: [PATCH v1 net-next] s390/ism: Drop superflous zeros in pci_device_id array
+
+Nit: s/superflous/superfluous/ ?
+
+> The .driver_data member of the struct pci_device_id array were
+> initialized by a list expressions to zero without making use of that
+> value. In this case it's better to not specify a value at all and let
+> the compiler fill in the zeros. Same for the list terminator that can
+> better be completely empty.
 > 
-> With a note that the exploits currently take advantage of that
-> specific cache issue. How about we allow it for net now and then
-> schedule a follow-up phase to remove it when you get rid of "shared
-> frags"?
+> This patch doesn't introduce changes to the compiled array.
 
-I must be missing something. What's the problem with changing the patch
-to pull headers instead? I mean - if we agree that this is where we'll
-end up - we should just do it now. It's the long standing kernel policy
-to "fix things right" instead of creating temporary fixes which then
-have to be reworked in -next
+True. For a `static const` aggregate, omitted members are
+zero-initialized per C99 6.7.8, so dropping the trailing `, 0` and
+collapsing `{ 0, }` to `{ }` is a no-op at the object level.
+
+> Signed-off-by: Uwe Kleine-König (The Capable Hub) <u.kleine-koenig@baylibre.com>
+
+Reviewed-by: Breno Leitao <leitao@debian.org>
