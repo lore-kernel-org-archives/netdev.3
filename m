@@ -1,240 +1,292 @@
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010059.outbound.protection.outlook.com [52.101.69.59])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A30113C8C75;
-	Fri, 22 May 2026 09:22:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.59
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 635093C1996
+	for <netdev@vger.kernel.org>; Fri, 22 May 2026 09:22:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.43
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779441767; cv=fail; b=t35Luc2OhFE28XP1PY3+iS/XKk/rrQQ/Zb6x9kYwhB1hWH28B1LASb2bhQUaTsRMROA3drcRnOw0R8JPwBPpNdutvKllYHs1DsH4tWXkd9wUwCEmzVRW8McZh9Mjm+oC+dG89sFmG1Yhwj+JW8F0XG1I0nFjAdmEbajlVkqPvGQ=
+	t=1779441769; cv=pass; b=oXXb6v5OmIy7V81Jve5BqXbXdeMyiIzERUPh3frExisIiXRdu615N0TvuoM9lCmFzgZMt5t7GRHmD8OxC7kziDXZjUcJxU3H/b0KzDM2yvBNUKMiBkI19OtSXKfBsyPixW10a680xtHkQ+E2Y8Okxq8RI/q94HeK6o6Zb/j1Iqs=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779441767; c=relaxed/simple;
-	bh=TczaNhjQEDtF5RWbyLBtBMViADyzYv0LlQ6nJtxXpXQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=knUXbSLeaUVT8rwWJiaZPDXlKA7592l3gtevyxk7gH3rqLyDE3LguCknjAcoDRfzvr1rF+c+pvxNZeyHSDnMt/jF9xo80TcKGE63EsOZG/Wcaprs2NkGmU69PJVubFjsF5o8W9qmwj5IeMDFVahkzn6dTS2bPyJVB13nb89fMns=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=CxeIXYzk; arc=fail smtp.client-ip=52.101.69.59
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	s=arc-20240116; t=1779441769; c=relaxed/simple;
+	bh=9HTYdj36OP19ar/Z2o1Nflr6TtOAK0uthrZE/uqdMNI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=SXcOhxPxxKmVfDaprP6dWx85VcSj0+oq8iitWKBYoFRSZhLem9jXf3/muNDhvJGXXb3sw4dSxNT0vsbQocavD3xvf1IzUj6uSm5fz6yYzE2NSudRT69p6eimTMjhvM5yujzUtSNSIgW2KqpFIv8O1z3WjtB8D2Zn1BIzY+XeG70=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i/tVPBOW; arc=pass smtp.client-ip=209.85.167.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="CxeIXYzk"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=TLDFq3TfYJnfDK6Oor/A+Y37cK7fQSU4bbGtNX6IHAJzNlHb4lfaBbZsTP84/ng+al7tAuzSVUBi7mEhfTgV0dhMUqWkbYw2kDuCVBc5AHsdSpQgFn2HxC10yJ6Xh7ZGJuTSgmLAiqLpPR0yvNVU/w+7nC0LAHYIaDOquq2IiefwwhvvMqulv7+nC7T718y/NiW12l0qPaxHx/qDH+qwiKa8b+6QARDogrd+RMVBnFmiUgVR4/EOOrBYkxPkaFuzPs15K+E+OdEwkgrjSW2XWYg9NHic/ZocBinZd49RKFxadMymsUnRz1nxslPSpVdYkibbjQGZsySuFrIaOHB+bw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=WdEmCcYFpKqSiMJBZv2+JDQ4MvPuWiZkuA3gazvrtFg=;
- b=EzsrJMxOXcNmZsIRiW7WLDTmYSGZA3ggppXzuZuatxx23NrFwmhp0oTWpfU5b0/zySctn6baUts3rrBi+ZQYQ+SMddoXNC1B5y3GqmTI/utLdt2entUZyPTWnhnoaTQ+a4pD5jT+FobnYzz/QmQ+RbrfDoRCs/1gn8GejlGrOnawDx6YCl+e77rgBupCp3ALDyd79DSvrZBekgO5NQlbVq4fw/QpnNKso4boNsIerjkg65IqyP+XEN35YkZnk1vu2N9sf6CNI5QN6o3lb5Stmn7Mr2QjAtfgFaQ3/YzXWEmOtwcmgm52EzlaUZRWPSF6AFdXOlsn32XzlShUn6rJwg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=WdEmCcYFpKqSiMJBZv2+JDQ4MvPuWiZkuA3gazvrtFg=;
- b=CxeIXYzkrEtJUPtvmOKqGFdsUteHOW8bGhdJq6nhrkQknsGnAyY9fH5HjkEcGK4YNAMdKaOOb/HVTxUs+EYuzNZGKiW2oQp9xh7s/B/5cFyyyxEDSad/1QNNPazPhwb0FiM9rGXNghj7CRPAeaOFJJUjNBnrn5B4D3u15wAh0e7g38BZGi9G8CpLf9Riv8Hmiu0ixiuZH+uPmwCEkO5Mz2lqlVO8+pUVtssflr2Ja5oPLQ+3KuPdyXJqYNGQF+5cNSQngjDPqnkokAuvQbm60rGhAIJjrsNRl4VcgffGrSvQBjcr3KDVwFPUK5suS8wpdl0xVkcbeoyClIAV2g4Dfg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DBBPR04MB7500.eurprd04.prod.outlook.com (2603:10a6:10:1f4::16)
- by DUZPR04MB9746.eurprd04.prod.outlook.com (2603:10a6:10:4b1::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.48.17; Fri, 22 May
- 2026 09:22:41 +0000
-Received: from DBBPR04MB7500.eurprd04.prod.outlook.com
- ([fe80::c291:543b:4bde:cee7]) by DBBPR04MB7500.eurprd04.prod.outlook.com
- ([fe80::c291:543b:4bde:cee7%6]) with mapi id 15.21.0048.016; Fri, 22 May 2026
- 09:22:41 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: claudiu.manoil@nxp.com,
-	vladimir.oltean@nxp.com,
-	xiaoning.wang@nxp.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: imx@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 net-next 10/12] net: enetc: add generic helper to initialize SR-IOV resources
-Date: Fri, 22 May 2026 17:24:36 +0800
-Message-Id: <20260522092438.1264020-11-wei.fang@nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260522092438.1264020-1-wei.fang@nxp.com>
-References: <20260522092438.1264020-1-wei.fang@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: MA5PR01CA0195.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:1b2::6) To DBBPR04MB7500.eurprd04.prod.outlook.com
- (2603:10a6:10:1f4::16)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i/tVPBOW"
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-5a742b8b72eso8307504e87.1
+        for <netdev@vger.kernel.org>; Fri, 22 May 2026 02:22:47 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779441766; cv=none;
+        d=google.com; s=arc-20240605;
+        b=SJCK5pLivrHKaNGjkKlbYSSEyRD10JjGHZmQWGlqV4ChkenOBMBrLIbxAu7fZSYW+k
+         fziic008HRXGRtZLlKSORLoXQy03N+ehl8/tHRUOAXkarsyUEReEzf/VkJV4U4Zauw7I
+         C0hKAhAiZYo/d7mfJ6soxRYn6nK7PJR+rCenElHoHVsTd4ijVVBQO6opJz/Nc3VQGb3i
+         xodnoKbFzN+EPHKRx3xgfFDJdQgamyvZL0oCgL0bX2ZKBBe6QTGBjtc3Mj1LSZrWSows
+         43yaFDiCXO60EEosqUkQaW32CO0mcL9tEMLvTM6RHKAgT93lF2XDs72BvSO3TKhichTl
+         EKqg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=CLKzwkXsCEt56sWNeFNYAOv+OWTqrZnI1zQs1+4PXdM=;
+        fh=tRwUbl3Xie1yIprOz4/G+swn3XAwkFT0Cu46lLu+rvQ=;
+        b=CGvIzIji60C7Wf9L7Pu7VU63pitArXHzkxmBibOOW9lW6kGn6/yajIfb1dXKkh4BiG
+         0CfwGTN5WbsJldxROSflGDsFKjyc65z75oqVp/ybNFfLK5WucHhUTR0dNUnUG9Lh5FyC
+         W6EKIkfviuWY4G9a51IDrscKhoEXls2Ib3rkyjgokqgExk+nKoHz/N+yEu0uwulYc1Hg
+         9DAsH4v6WtURSG1gAcvGDZ9bNIDRd24KzMXS1qrdEfjG3fzuULGdGHXi6PqV9e0rvH4r
+         PNQH4HWmAwjX1b65ZOfS4ecr2QDd5rOCVWZlv0zPbwUhR2ZzrGXRhD3heCNvJkhnbhZX
+         B8Bg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779441766; x=1780046566; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=CLKzwkXsCEt56sWNeFNYAOv+OWTqrZnI1zQs1+4PXdM=;
+        b=i/tVPBOWKwQKTMJHexmn9jgbS8/fi5U3qcvSgUrpdlhE5PVkJKTN20++If+w7MmD5z
+         i4Cr4cifRYNkprGvVWx2vvoP685y5DwJt7fBQyPavTcq3Bwhl+NJ1C2YnFd87GL3wYhw
+         pMv5MJkZtyIKdrlr9UWs1XIXG8QDg1gSUzLLqSApOZNEPI2l0ibyW6ChqM9oaz/FXLej
+         rGXBowq5WNOkjBNMapNTUs11/bvX69kAEPgt29/TrLor1NNNk3132hLo8JHhrtnCyguX
+         WlmjZw/IkTsShtdZ9anYsxIEZldFI9ykOt+3DpQcdrUGZS4Dyn6ruYluBioIHCmM6uLN
+         C6aw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779441766; x=1780046566;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=CLKzwkXsCEt56sWNeFNYAOv+OWTqrZnI1zQs1+4PXdM=;
+        b=pNQbhMZHK9wgM98+LQWqgSq+NORtQ/PMxqdlFaE8ii/PY4CddT/1KtFmPieL5aT5F4
+         kH6RjSiObXTyp6NqCkylyuDfBmRor5bcEUSHkestvNNNTor+xdfIS9g6tyV1YgqzkdLm
+         89lPQd/EZ9q3ni+Xf0lywcItEnCvz+tKMCaXok1bY58stVRb07cPqg+1cJ30EZmEF+61
+         KJ0Dbg03NuLy2K87BXO7+15Ns1UMypcVBLYEmgnFFtQ62Ywi7oUkfPu9I0lC4LnKPH5D
+         VQ7TsmuKjwGJHi8SkTh0dPL+51X1jQg9Zf/2pohAi9JP3KFy63NFc84LWaASQRiSNa7z
+         3VLA==
+X-Forwarded-Encrypted: i=1; AFNElJ+5gkP2WxWMUi/qLHsjQskKcrkIEzGvvJ0icnReQCTpAyplLrxnd8t1jqXe/cxB58KzLicfu6M=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyoGRKpjyDpsACedclCBaFt2u0U7F2wCi3C8u3pEyR3bJwqzLlw
+	nsudaksLSq01N+hMcZbpAvfIAJOY4EJ9ZwESYosdGd6KMRCFiOtDvB05p/+W7rdKxY64JDnM4YD
+	+I/Kfu3w5iI9TIePibmMrmFnvN76idEY=
+X-Gm-Gg: Acq92OFyGImRZqH0MS6xD5/3NbGAm4EHIhXDDIup5DmwN+R8z79y+Py1eC1EsRJDZvv
+	r/CQzmJmjsWLT8oWKShPr2HGsHjr2Kbgtdcm0IsiKafDCcZsJgiBQ2wliv1QMTlFk2yHs6k7x/j
+	amKeJkAnxMz1VgNmCjZWM0BUnIqn5Yizjuzou+EPsNrhgrHX8U9hFvjQ/fBkwfdUmP+8w1qjSqd
+	MwZHGmcS514uk1zZElpdtSpT7OOrVWomM1hUCjqVTLvDr2pHowP0rvKnfnFZ5koAtMWn+uNf0UE
+	QOWqfYDGMER48yHIEmQTloNBsRQnxzkMZHk3TY00
+X-Received: by 2002:a05:6512:40cf:20b0:5aa:b6b:93c1 with SMTP id
+ 2adb3069b0e04-5aa323a9376mr569353e87.43.1779441765358; Fri, 22 May 2026
+ 02:22:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DBBPR04MB7500:EE_|DUZPR04MB9746:EE_
-X-MS-Office365-Filtering-Correlation-Id: c6cf4aec-d947-4dd3-6865-08deb7e3ac4e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|52116014|376014|19092799006|366016|11063799006|38350700014|6133799003|22082099003|18002099003|56012099003;
-X-Microsoft-Antispam-Message-Info:
-	xtl2UJvc16K+1BqUkiHW1OQIsGFWISKniDlKH5DjE2w1Zhq1Y91BX1X4ZlIm0oYM8RCgbyZjIN4seZthRIIMMWvbU9Royz3I+/f5S33gUtNpaTpdofZ74Zs9Y5YAOnEOmgfCUFGMNkkzFdsXrFkCbe6K1WFZrVATwmiWeLb3yMDWFoKGnW3zaArUVqHhe0E6wU4Xhav9V29SdpLtbcbTeHMLI/MeX1WNaLDAUXjAFDvye9CWLQbfPxTH7Xl8e2Z+WCveLVVwTap/evCaslAk7e521aldL2OFNPM9lq4haX6m9+TdyyaCHxFTeukI1WTyJ/fqe04ktf/CitRb59WS8g61dknd0L1sOG+FyZ7Tv/DQOsaB1M2y4MfMh18uCkV3CuepcxKTfToSxldcAM1Wxmex1q2wpIi6yIWNB3gOIBDeWuyuVnqOXsbhGUNqD5bALKJRmT1xd+lQanwjA/9ue8IuXrd3PuRdeLnMjgytYf+/JTSslahGYFgdT0zjrP+zLJFPRf5L2M2yrH+Fh/E4ZkvRk69yi5FhyPDufBhi0fj2nyOYmUYwu0J4M6L7iU2BfjlJpfT95x/zfY0pj4qugh2o3p69o2Te3mrlDszjkazWnLwndcM9gOpY5tgynb0wmOVQImHdUThjsKWRJJAc0VtJRws90y869xb3cT2AzLfKPpXaVY4VcJte8QpJ8OMhHyjoce9znVSy/mK5QLBI4YlcLxqEh2UbL8f6b4D3vRsuOVp2Je+7+qqGKn6zAgmy
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DBBPR04MB7500.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(52116014)(376014)(19092799006)(366016)(11063799006)(38350700014)(6133799003)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?XJ2CwD0xCDC1u93C1f/AR+BYwz1eQigWQDBw+MvwotzDdg47U7joHygLVyVK?=
- =?us-ascii?Q?RsvtpGm/OZ1+8q7jCBzm+EVS976xxe8sgvB3NqT0yqImJwKtfyg7npQmNsfI?=
- =?us-ascii?Q?9u33dOKc2+KYflotKwKX3Lfi2siCNHG/oA1Yaz2HoQqjRMHCZyVh67RAgcki?=
- =?us-ascii?Q?Hx5hgqerqch7SeKllEPYRjncvsQGumaGbJhZOxPfOsCBCHP8cwdgPBKBDojO?=
- =?us-ascii?Q?Jw+5qqM04NaykXb8mKpUzgRuqtZK3kGc9S5JHZGSuDfwZbxaVxkQIKQaJoBw?=
- =?us-ascii?Q?LR1l6Cgf7Hg9thLoK+tFHl6nZ0u6F5dcvaoj0fQZzSUdrWrGoIg3HphftYg2?=
- =?us-ascii?Q?nzBbIcb4M+bweqBbTwE5uSdaNHc8qJpy7qoXrXup6BNn0BwQVqkWG+Nz2jhP?=
- =?us-ascii?Q?M3LP4NeqNUYMadXU3dqrII6iOXCWztA+uhajTY4bJ6cmPevMnXCczEpZqKwc?=
- =?us-ascii?Q?/tqMOCMYLeR/zYtZUj6zrlRwaRhcc+zt0wWsYO+a1Sb5r+TKfg8vtj1jTA1S?=
- =?us-ascii?Q?w5d2sbKfu90NSIQNzo+oDkc+uJsHyOO/b7vlqVgo8zKMRcBcp9DkcZTgAzkI?=
- =?us-ascii?Q?vd10MKxoITBYsO6SZQfL1W1YcVPWJsMQIbi6PdM9wZ7+7PduHSgcCghI330Z?=
- =?us-ascii?Q?QWiC41IJQrgXYhrHNeZYfidk6RjD7Cs2aNiquPtysjmpCO3CmZI0/8glr9/O?=
- =?us-ascii?Q?8yzdGlUlPDoyWIrita45gQwBYvpAI3GRdZjEGAHbpdhKIYSgt+w6nFzZSNn3?=
- =?us-ascii?Q?8PuDCTgSd7OaGfdWN/XsOtuwB1NBR2FYrESn3ilSKPu9mF0fQ29cw7pyJ1Fs?=
- =?us-ascii?Q?A7pq4XVyQz3ABaIvg7bcNJ8eLLGfDzoEWraExeUB+w4kvVmZtJ4eRjF7/ySF?=
- =?us-ascii?Q?F/HUHJSwAg1weYu7oIFefRwGmmk5FAJoZgyMylRIGxyqby9KYk6r/3bsxrDm?=
- =?us-ascii?Q?nGricSY2b/GWtORJCe1tURXWYGVkytX5YdYfmVOzb8dEr2Gh3VfayTKPnSaz?=
- =?us-ascii?Q?rCbNTvYahDAeov8WLuGP/1wwAeOFWKZr6SsqrnMDaSThlraN6dn0bc2JsLTa?=
- =?us-ascii?Q?wfrSumMb4fSjJnRHxoNBOU5NUpcLWDiL26MrNF/QcfCoW2bMOzV0N6qVRESz?=
- =?us-ascii?Q?A/SqcersJLuAW3dPECmffBe7wymmqSSjCFWOf8O1s6G3xBJ7hoAzK8qESPSH?=
- =?us-ascii?Q?q/DTGxKD4nzVMeAYSkfXFsPDeirBSdZv0qBHq5NRAB5gqvVwD3HM8sxlQ0jP?=
- =?us-ascii?Q?ufudy7iKrOpfVsJN6k1dhv5H5kenoSG+EQ1vibXkuESlNGLpsz9bXeKVVJ9m?=
- =?us-ascii?Q?Da+YKsASkj5coYVO+y09ruyqyMKBMoETT7n794FpY1zNw4VudwgmzW7XBN3X?=
- =?us-ascii?Q?4q8Er7HA8oTXnkOhx1YmRQjTSD+aD4MNFQV0U/EgE2Gyxi1x+RJfcebdEsQ/?=
- =?us-ascii?Q?4OwnEMM3UyOMIz70Nx6nMLrunpZsZanQ1mxSRkbdV+NVRLY5Nu+zyDUpgUSN?=
- =?us-ascii?Q?+EYLQWGDkj2/5RfgBRrYV19SM7wyK+9eNZMNYuDna+2aEwg7Bvg8kBej2MHE?=
- =?us-ascii?Q?8fElpldU2VsnA9sDiEpXpm5/EO1PZk8tIHTQSmxulsd148BML/A5Xq0IIPp5?=
- =?us-ascii?Q?LFdwuUBN+CR63G++z7AU5RCvnjOS3CiELB456Z03X1EpGCSIPqLFg7k2eL12?=
- =?us-ascii?Q?D/Yjdh0YzoZ+DrEkSbtjJFbb2b+zD87tBpzOuBL+MsuxPK3JTuBj+5frhrBK?=
- =?us-ascii?Q?AyB3f/ZRQA=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c6cf4aec-d947-4dd3-6865-08deb7e3ac4e
-X-MS-Exchange-CrossTenant-AuthSource: DBBPR04MB7500.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 May 2026 09:22:41.2717
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: nqC1/F21I2p+0/Vyl2jz2K+bzIdU2w7EldSsYpBhqWeAwPD2M9HZUViRVBwdYgzuGNuKesyCqjdkciPBKo3f6w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DUZPR04MB9746
+References: <20260520004244.55663-1-kerneljasonxing@gmail.com>
+ <20260520004244.55663-4-kerneljasonxing@gmail.com> <ag3c9/EF4h7DLQu3@boxer>
+ <CAL+tcoAvbEZ7U2oXBWwLAKeuC==gAHi=GXLZcrEPxbb4mQ9sfA@mail.gmail.com>
+ <ag70RrU4nGy0Nlna@boxer> <CAL+tcoAHnVDOFgmUvi1jfTdTHchxdUrRYppenQ6Ubiwyv8jmUg@mail.gmail.com>
+ <CAJ8uoz0bKHSiHjRvNmvVs_z3cWg58U=6wGKKs9_n65yCCcYbEw@mail.gmail.com>
+In-Reply-To: <CAJ8uoz0bKHSiHjRvNmvVs_z3cWg58U=6wGKKs9_n65yCCcYbEw@mail.gmail.com>
+From: Jason Xing <kerneljasonxing@gmail.com>
+Date: Fri, 22 May 2026 17:22:08 +0800
+X-Gm-Features: AVHnY4KPJR2T7YSjs_8Ul5sH3l2nA99WuQMZIMYetyUuNvVQFeSa6E2jFKaCndM
+Message-ID: <CAL+tcoCaOY=YEDM2N0tuWjyQpOrTZMkHSYT4KQsy_fn2757V6g@mail.gmail.com>
+Subject: Re: [PATCH net v4 3/5] xsk: drain continuation descs after overflow
+ in xsk_build_skb()
+To: Magnus Karlsson <magnus.karlsson@gmail.com>
+Cc: Maciej Fijalkowski <maciej.fijalkowski@intel.com>, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, pabeni@redhat.com, bjorn@kernel.org, 
+	magnus.karlsson@intel.com, jonathan.lemon@gmail.com, sdf@fomichev.me, 
+	ast@kernel.org, daniel@iogearbox.net, hawk@kernel.org, 
+	john.fastabend@gmail.com, horms@kernel.org, andrew+netdev@lunn.ch, 
+	bpf@vger.kernel.org, netdev@vger.kernel.org, 
+	Jason Xing <kernelxing@tencent.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The upcoming ENETC v4 PF driver will support SR-IOV, and its logic for
-initializing VF resources is identical to the existing ENETC v1 PF
-implementation. To avoid code duplication across PF drivers, factor out
-the common SR-IOV initialization logic into the enetc-pf-common driver.
+On Fri, May 22, 2026 at 5:06=E2=80=AFPM Magnus Karlsson
+<magnus.karlsson@gmail.com> wrote:
+>
+> On Thu, 21 May 2026 at 15:42, Jason Xing <kerneljasonxing@gmail.com> wrot=
+e:
+> >
+> > On Thu, May 21, 2026 at 8:02=E2=80=AFPM Maciej Fijalkowski
+> > <maciej.fijalkowski@intel.com> wrote:
+> > >
+> > > On Thu, May 21, 2026 at 07:53:27AM +0800, Jason Xing wrote:
+> > > > On Thu, May 21, 2026 at 12:10=E2=80=AFAM Maciej Fijalkowski
+> > > > <maciej.fijalkowski@intel.com> wrote:
+> > > > >
+> > > > > On Wed, May 20, 2026 at 08:42:42AM +0800, Jason Xing wrote:
+> > > > > > From: Jason Xing <kernelxing@tencent.com>
+> > > > > >
+> > > > > > When a multi-buffer packet exceeds MAX_SKB_FRAGS and triggers -=
+EOVERFLOW,
+> > > > > > only the current descriptor is released from the TX ring. The r=
+emaining
+> > > > > > continuation descriptors of the same packet stay in the ring. S=
+ince
+> > > > > > xs->skb is set to NULL after the drop, the TX loop picks up the=
+se
+> > > > > > leftover frags and misinterprets each one as the beginning of a=
+ new
+> > > > > > packet, corrupting the packet stream.
+> > > > > >
+> > > > > > Fix this by adding a drain_cont flag to xdp_sock. When overflow=
+ occurs
+> > > > > > and the dropped descriptor has XDP_PKT_CONTD set, the flag is r=
+aised,
+> > > > > > so we have a chance to examine and handle the potential remaini=
+ng descs
+> > > > > > of this big overflow'ed skb.
+> > > > > >
+> > > > > > When the last fragment (without XDP_PKT_CONTD) is processed, th=
+e flag
+> > > > > > is cleared and the loop continues to process subsequent descrip=
+tors
+> > > > > > with the remaining budget. This behavior follows how previous x=
+mit path
+> > > > > > treats overflow packets.
+> > > > > >
+> > > > > > Closes: https://lore.kernel.org/all/20260425041726.85FB3C2BCB2@=
+smtp.kernel.org/
+> > > > > > Fixes: cf24f5a5feea ("xsk: add support for AF_XDP multi-buffer =
+on Tx path")
+> > > > > > Signed-off-by: Jason Xing <kernelxing@tencent.com>
+> > > > > > ---
+> > > > > >  include/net/xdp_sock.h |  1 +
+> > > > > >  net/xdp/xsk.c          | 19 +++++++++++++++++++
+> > > > > >  2 files changed, 20 insertions(+)
+> > > > > >
+> > > > > > diff --git a/include/net/xdp_sock.h b/include/net/xdp_sock.h
+> > > > > > index ebac60a3d8a1..8b51876efbed 100644
+> > > > > > --- a/include/net/xdp_sock.h
+> > > > > > +++ b/include/net/xdp_sock.h
+> > > > > > @@ -80,6 +80,7 @@ struct xdp_sock {
+> > > > > >        * call of __xsk_generic_xmit().
+> > > > > >        */
+> > > > > >       struct sk_buff *skb;
+> > > > > > +     bool drain_cont;
+> > > > > >
+> > > > > >       struct list_head map_list;
+> > > > > >       /* Protects map_list */
+> > > > > > diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
+> > > > > > index 0a6203c42576..f4add7be8c93 100644
+> > > > > > --- a/net/xdp/xsk.c
+> > > > > > +++ b/net/xdp/xsk.c
+> > > > > > @@ -1062,11 +1062,30 @@ static int __xsk_generic_xmit(struct so=
+ck *sk)
+> > > > > >                       goto out;
+> > > > > >               }
+> > > > > >
+> > > > > > +             if (unlikely(xs->drain_cont)) {
+> > > > >
+> > > > > Hi Jason,
+> > > > >
+> > > > > could we get away from introducing dedicated boolean to xdp_sock =
+for
+> > > > > handling this rare case?
+> > > >
+> > > > I've tried several ways, but they didn't work. Please see the short
+> > > > conversation with Stan:
+> > > > https://lore.kernel.org/all/CAL+tcoA6Cu3P-y2wYjJ_R9cSeRkW2tswY1Lveq=
+H=3Duxd2McuR-w@mail.gmail.com/
+> > > >
+> > > > That means we always rely on a flag (that is either static or like
+> > > > this patch) to recognize how we treat this abnormal descs.
+> > > >
+> > > > >
+> > > > > > +                     unsigned long flags;
+> > > > > > +                     u32 idx;
+> > > > > > +
+> > > > > > +                     spin_lock_irqsave(&xs->pool->cq_prod_lock=
+, flags);
+> > > > > > +                     idx =3D xskq_get_prod(xs->pool->cq);
+> > > > > > +                     xskq_prod_write_addr(xs->pool->cq, idx, d=
+esc.addr);
+> > > > > > +                     xskq_prod_submit_n(xs->pool->cq, 1);
+> > > > > > +                     spin_unlock_irqrestore(&xs->pool->cq_prod=
+_lock, flags);
+> > > > >
+> > > > > It feels a bit off to do this cleanup one-by-one.
+> > > >
+> > > > Actually no, it adheres to the basic send logic in copy mode.
+> > >
+> > > Not really. Here you are producer to cq which we have batched variant=
+s for
+> > > usage.
+> > >
+> > > But after second thoughts I don't think it would be worth to put any
+> > > further effort onto optimizations here. Anyways, even though generic =
+xmit
+> > > is a whole bunch of mess, maybe you could pull this out onto a helper
+> > > function?
+> >
+> > Sure thing. My takeaway is that it will be refactored once as the
+> > batch xmit feature lands in the tree.
+>
+> I agree that the code has become really messy since I get a headache
+> when looking at it ;-). Do you want me to take a stab at simplifying
+> it?
 
-Add enetc_init_sriov_resources() to handle:
-- Querying the total number of VFs supported by the device via
-  pci_sriov_get_totalvfs()
-- Allocating memory for the VF state array (struct enetc_vf_state)
+Thanks for your help. But not now probably. I think we can focus on
+the batch xmit feature[1] where the main xmit path will be rewritten.
+I admit it's still complex to understand :S Could you shed some light
+on the series that I'm going to post?
 
-The implementation uses devm_kcalloc() instead of kzalloc() to simplify
-memory management. This automatically frees VF state memory when the PF
-device is removed, eliminating the need for explicit cleanup in error
-and remove paths.
+[1]: https://lore.kernel.org/all/20260415082654.21026-1-kerneljasonxing@gma=
+il.com/
 
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
----
- .../net/ethernet/freescale/enetc/enetc_pf.c   | 20 ++++--------------
- .../freescale/enetc/enetc_pf_common.c         | 21 +++++++++++++++++++
- .../freescale/enetc/enetc_pf_common.h         |  1 +
- 3 files changed, 26 insertions(+), 16 deletions(-)
+Thanks,
+Jason
 
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc_pf.c b/drivers/net/ethernet/freescale/enetc/enetc_pf.c
-index 7a5dcbfeb693..2d687bb8c3a0 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc_pf.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc_pf.c
-@@ -872,18 +872,9 @@ static int enetc_pf_probe(struct pci_dev *pdev,
- 	pf->si = si;
- 	pf->ops = &enetc_pf_ops;
- 
--	pf->total_vfs = pci_sriov_get_totalvfs(pdev);
--	if (pf->total_vfs) {
--		pf->vf_state = kzalloc_objs(struct enetc_vf_state,
--					    pf->total_vfs);
--		if (!pf->vf_state) {
--			err = -ENOMEM;
--			goto err_alloc_vf_state;
--		}
--
--		for (int i = 0; i < pf->total_vfs; i++)
--			mutex_init(&pf->vf_state[i].lock);
--	}
-+	err = enetc_init_sriov_resources(pf);
-+	if (err)
-+		goto err_init_sriov_resources;
- 
- 	err = enetc_setup_mac_addresses(node, pf);
- 	if (err)
-@@ -961,8 +952,7 @@ static int enetc_pf_probe(struct pci_dev *pdev,
- 	free_netdev(ndev);
- err_alloc_netdev:
- err_setup_mac_addresses:
--	kfree(pf->vf_state);
--err_alloc_vf_state:
-+err_init_sriov_resources:
- 	enetc_psi_destroy(pdev);
- err_psi_create:
- 	return err;
-@@ -989,8 +979,6 @@ static void enetc_pf_remove(struct pci_dev *pdev)
- 	enetc_free_si_resources(priv);
- 
- 	free_netdev(si->ndev);
--	kfree(pf->vf_state);
--
- 	enetc_psi_destroy(pdev);
- }
- 
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc_pf_common.c b/drivers/net/ethernet/freescale/enetc/enetc_pf_common.c
-index c30b5f71efd5..c423eed6bc78 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc_pf_common.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc_pf_common.c
-@@ -435,5 +435,26 @@ int enetc_vlan_rx_del_vid(struct net_device *ndev, __be16 prot, u16 vid)
- }
- EXPORT_SYMBOL_GPL(enetc_vlan_rx_del_vid);
- 
-+int enetc_init_sriov_resources(struct enetc_pf *pf)
-+{
-+	struct device *dev = &pf->si->pdev->dev;
-+
-+	pf->total_vfs = pci_sriov_get_totalvfs(pf->si->pdev);
-+	if (!pf->total_vfs)
-+		return 0;
-+
-+	pf->vf_state = devm_kcalloc(dev, pf->total_vfs,
-+				    sizeof(struct enetc_vf_state),
-+				    GFP_KERNEL);
-+	if (!pf->vf_state)
-+		return -ENOMEM;
-+
-+	for (int i = 0; i < pf->total_vfs; i++)
-+		mutex_init(&pf->vf_state[i].lock);
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(enetc_init_sriov_resources);
-+
- MODULE_DESCRIPTION("NXP ENETC PF common functionality driver");
- MODULE_LICENSE("Dual BSD/GPL");
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc_pf_common.h b/drivers/net/ethernet/freescale/enetc/enetc_pf_common.h
-index c9b3512d4e2f..57d2e0ebd2b0 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc_pf_common.h
-+++ b/drivers/net/ethernet/freescale/enetc/enetc_pf_common.h
-@@ -16,6 +16,7 @@ void enetc_phylink_destroy(struct enetc_ndev_priv *priv);
- void enetc_set_default_rss_key(struct enetc_pf *pf);
- int enetc_vlan_rx_add_vid(struct net_device *ndev, __be16 prot, u16 vid);
- int enetc_vlan_rx_del_vid(struct net_device *ndev, __be16 prot, u16 vid);
-+int enetc_init_sriov_resources(struct enetc_pf *pf);
- 
- static inline u16 enetc_get_ip_revision(struct enetc_hw *hw)
- {
--- 
-2.34.1
-
+> >
+> > >
+> > > >
+> > > > >
+> > > > > I wonder if it could be covered by xsk_drop_skb() where you would=
+ walk the
+> > > > > tx ring and store addrs at xsk_addrs and then use xsk_cq_submit_a=
+ddr_locked() ?
+> > > > >
+> > > > > OTOH, in theory the amount of frags after we hit the overflow cas=
+e could
+> > > > > be well over MAX_SKB_FRAGS again so xsk_addrs wouldn't be able to=
+ cover
+> > > > > them.
+> > > >
+> > > > Right, this is why we now put the logic into the xmit path just lik=
+e
+> > > > other kinds of descriptors. We need to check and send it under a
+> > > > series of protections like the check of cq pressure and budget. I
+> > > > don't think it's an exception to escape the check logic. The whole
+> > > > process should be fast as there is no need to build skb and send it=
+ to
+> > > > the driver as long as this case is recognized.
+> > > >
+> > > > Thanks,
+> > > > Jason
+> > > >
+> > > > >
+> > > > > > +
+> > > > > > +                     xs->tx->invalid_descs++;
+> > > > > > +                     xskq_cons_release(xs->tx);
+> > > > > > +                     if (!xp_mb_desc(&desc))
+> > > > > > +                             xs->drain_cont =3D false;
+> > > > > > +                     continue;
+> > > > > > +             }
+> > > > > > +
+> > > > > >               skb =3D xsk_build_skb(xs, &desc);
+> > > > > >               if (IS_ERR(skb)) {
+> > > > > >                       err =3D PTR_ERR(skb);
+> > > > > >                       if (err !=3D -EOVERFLOW)
+> > > > > >                               goto out;
+> > > > > > +                     if (xp_mb_desc(&desc))
+> > > > > > +                             xs->drain_cont =3D true;
+> > > > > >                       err =3D 0;
+> > > > > >                       continue;
+> > > > > >               }
+> > > > > > --
+> > > > > > 2.43.7
+> > > > > >
+> >
