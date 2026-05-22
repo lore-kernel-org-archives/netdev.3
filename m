@@ -1,385 +1,383 @@
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.130])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCEA83A6F15;
-	Fri, 22 May 2026 08:47:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.126.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8C7921CFEF;
+	Fri, 22 May 2026 08:56:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779439653; cv=none; b=Pq2lcQGQ2UtH0DaV7qjaMNUYZtXYxvIy/t3d9Lw0ygYK9bJu0DFpih/fEm8xaC0XliJIv/LgKe8DnNkuEMjZgOuLScj1F0UDc88PYJzwvA0zn7pIjcmhqFUSM1Pk/jKyLML71tjLJ+Xm9Koiiggj0PQH3NDDwH/+GeAyQfUR0sk=
+	t=1779440193; cv=none; b=e97tg5mAj+KyV8PjWwTzIY7j43wbJbVqAhv4uerxFxBUZgcIOCHKQtt7V4Kiuc9t0dKHTj/9jHWcxBMHTTw0d7o9NgvsWYvNHBSr/gGTxlJcLJe960TSSDeDIeEXyCd52p95IpEk5SWmlScbF9WREiLYj8Jut0vPgmxcFYXDOuY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779439653; c=relaxed/simple;
-	bh=3Z2SRiLRmi9QoHkJJtaarN9nwOLuT96mSOc5HG/JPmE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NjeVv3CNhjRJke5mk15BVSmmSxu6FyUqzDy2RpON7py3n5Dq7+CGsH0r5JwzVYIBNQOLh5HnrvvSrDay6297ojLTWEQEmiZm8aHE4giIUJJS1gzWJJ5SUWTMuK7Pvp8Mdd0ikPEG4XXdlkr3X/I/ANcuifXd1zhj7HWYM9oDe1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=schippers-hamm.de; spf=pass smtp.mailfrom=schippers-hamm.de; dkim=pass (2048-bit key) header.d=schippers-hamm.de header.i=simon@schippers-hamm.de header.b=GnjZ9deX; arc=none smtp.client-ip=212.227.126.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=schippers-hamm.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=schippers-hamm.de
+	s=arc-20240116; t=1779440193; c=relaxed/simple;
+	bh=iMdtUTSphcxgR5mPLnjkJdlXKt10gYyydi0/6WuYMRc=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=fcvY8iQnNzfqA/wqkvPQtr2u6O3cP7C0MCVM+Xd/offorbW/40SRuUGWfGiusdNYjwkQXSCciauzdMk5icbZOIw9tfHtVA32UtdPd+38cPYq9kNALSV4t71wIY8M55r1SlbzyMOY+xWwPInkrPE/d067zcxDlOMDD9cwKK2YlHM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=n/UDjgqG; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=schippers-hamm.de header.i=simon@schippers-hamm.de header.b="GnjZ9deX"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=schippers-hamm.de;
-	s=s1-ionos; t=1779439633; x=1780044433; i=simon@schippers-hamm.de;
-	bh=xOvmaBKTHglqaA3IX338jsMixlAE06VHNb1Wp/6IJqo=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=GnjZ9deXoGTeLDTCFtGJ4NCuIkX0HHJk4Gp9VzB08iVM+R/wA5RRPy8bJkYQDDgB
-	 MraouexUs5YzK0jJ+flSzccdSYWtLkGAyeiI1TWxFoUpecOpR1fyS6PPfGhR1xaVS
-	 el7WjK2pgLQb+5bRaUOipKbkTpNj0DMKCukbQ7p0Eo2tqPP/43PIA/C1dKnUlwTyW
-	 FwI/bdYueLeAqJxGbe+0eixUC5IH0D6TrDyrDWaKJQWrXhJWjTQdpna+IE8bHWRSL
-	 gK1txvqVk6xgTaSnvos1afAhL8zm5UaZLQ/Nac4ARefT/boS+qJLHZZqpHxBI4rlK
-	 AeHPmWlCennxkB7FGw==
-X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
-Received: from client.hidden.invalid by mrelayeu.kundenserver.de (mreue012
- [212.227.17.165]) with ESMTPSA (Nemesis) id 1MpCz1-1x8DyG39B9-00nQMn; Fri, 22
- May 2026 10:41:08 +0200
-Message-ID: <8e8b877b-a7ce-4b2f-9567-64c8dbb48411@schippers-hamm.de>
-Date: Fri, 22 May 2026 10:41:04 +0200
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="n/UDjgqG"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=fGTXx8zDgCTxno519hVyftj+I8teyWEZh+n6fhFE/d4=; b=n/UDjgqGoLxObQKWirnW3pbpNZ
+	Y7+BZJ0SyMdTROd1rlU5uSrUJuHWw5A0kvXLsSDhtpTlD9NvQGd4WsL6RsWiP35SJRzb6Heu7G/ZX
+	1Yc2qy2lCZKeY75gevdojy0z6jMxtayDRA5vRL30IYC9ysDaFhEelsP3Bo+kFKIYojv1kSoesljM9
+	4CJ4j1ueg2EL2GBg0W5fBjMADrlvbfISOoMPFDIm145kK8l+JJ+t3PHtr03B/fFOuFBmYJZPwewAy
+	T9V/Qhqe/doyR6O7uql5P8obGo4KXZqTanlDpb6ypE/NMROphB9O6FPKnOxYX6mNorrYl1LtS8oq/
+	LiSeqfTg==;
+Received: from [172.31.31.148] (helo=u09cd745991455d.lumleys.internal)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wQLg6-00000009qYh-3R6F;
+	Fri, 22 May 2026 08:56:23 +0000
+Message-ID: <0d13721307646d7ca2bf1aaf22926f0137b9de30.camel@infradead.org>
+Subject: Re: [PATCH net-next v8 3/3] gve: implement PTP gettimex64
+From: David Woodhouse <dwmw2@infradead.org>
+To: Thomas Gleixner <tglx@kernel.org>, Harshitha Ramamurthy
+	 <hramamurthy@google.com>, netdev@vger.kernel.org, Arthur Kiyanovski
+	 <akiyano@amazon.com>
+Cc: joshwash@google.com, andrew+netdev@lunn.ch, davem@davemloft.net, 
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ richardcochran@gmail.com,  jstultz@google.com, sboyd@kernel.org,
+ willemb@google.com, nktgrg@google.com,  jfraker@google.com,
+ ziweixiao@google.com, maolson@google.com,  jordanrhee@google.com,
+ thostet@google.com, alok.a.tiwari@oracle.com,  pkaligineedi@google.com,
+ horms@kernel.org, jacob.e.keller@intel.com,  yyd@google.com,
+ jefrogers@google.com, linux-kernel@vger.kernel.org, Naman Gulati
+ <namangulati@google.com>, Thomas =?ISO-8859-1?Q?Wei=DFschuh?=
+ <thomas.weissschuh@linutronix.de>
+Date: Fri, 22 May 2026 09:56:22 +0100
+In-Reply-To: <877bovvq78.ffs@tglx>
+References: <20260514225842.110706-1-hramamurthy@google.com>
+	 <20260514225842.110706-4-hramamurthy@google.com>
+	 <cd5868258edee932fd9b4ed46a48b5a07b4c6da8.camel@infradead.org>
+	 <87tss0vdrj.ffs@tglx>
+	 <63ff978516925951df0f95aecbd4ea5d7bb2956e.camel@infradead.org>
+	 <87bje8v0xl.ffs@tglx>
+	 <38ded3d61878f319ad74869924a55665d8baadb9.camel@infradead.org>
+	 <877bovvq78.ffs@tglx>
+Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
+	boundary="=-PeXr9S2O7mQaPYdbm9/X"
+User-Agent: Evolution 3.52.3-0ubuntu1.1 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v5 3/5] veth: implement Byte Queue Limits (BQL)
- for latency reduction
-To: =?UTF-8?Q?Jonas_K=C3=B6ppeler?= <j.koeppeler@tu-berlin.de>,
- Jesper Dangaard Brouer <hawk@kernel.org>, Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
- kernel-team@cloudflare.com, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- John Fastabend <john.fastabend@gmail.com>,
- Stanislav Fomichev <sdf@fomichev.me>, linux-kernel@vger.kernel.org,
- bpf@vger.kernel.org
-References: <20260505132159.241305-1-hawk@kernel.org>
- <20260505132159.241305-4-hawk@kernel.org>
- <ee275aa6-af27-4dac-9afa-da88abde312b@schippers-hamm.de>
- <8f2f7f2e-6aa2-4e5b-b52d-0025b2525579@redhat.com>
- <e3a91545-13cd-4f87-8375-d707865bdbca@schippers-hamm.de>
- <6a597dbd-70bf-4b14-b495-2f7248fd3220@kernel.org>
- <20260508190626.4285fac0@kernel.org>
- <f459b95c-80d5-4e05-84b2-f574c92724de@kernel.org>
- <20260510085602.57c7a081@kernel.org>
- <daa05c21-dcfc-4cc4-aa22-9e25c7f6c743@kernel.org>
- <41023c34-87a3-4e4f-b3ab-3ed53d171910@schippers-hamm.de>
- <b78f002a-8cb9-4857-bf8f-0137e790f644@kernel.org>
- <873511fa-4316-4411-a76b-ec4c5805abd3@schippers-hamm.de>
- <18855e57-f050-411f-9958-d4babcc81ba3@kernel.org>
- <14348957-d061-4124-9bac-45df9cf6686c@schippers-hamm.de>
- <9a57bb41-114e-492b-9eaa-52237675bb7c@schippers-hamm.de>
- <4ae9400a-8919-4ffc-8db3-0c334e2aa462@tu-berlin.de>
-Content-Language: en-US
-From: Simon Schippers <simon@schippers-hamm.de>
-In-Reply-To: <4ae9400a-8919-4ffc-8db3-0c334e2aa462@tu-berlin.de>
-Content-Type: text/plain; charset=UTF-8
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+
+
+--=-PeXr9S2O7mQaPYdbm9/X
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:epIR/on1LaIhH0l4++wbZZb2c+ERMVxzVL+rXMG4lAj/7imVS90
- tdu615SM+kZw5zJSo5iuSXMmEmJ1Uv9x+JsWYd9JcCPCnd+gw6Bb4xG7nEpocGAj3kxztlN
- IItJONWQKulBrft19k90EIDYgToJfuFmPkUr2YJmIW2PJsPTZJWmRwKYLszy4SOY1vq3Mf9
- 0D/yF0yviQyCLDQVlpzYg==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:sw/tZbvtUuw=;OFoS+QxII15AHYarypobvqG+YCs
- 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
- H+DZlxfsblQmmOAq6UCLGvmOgRWfh2cL
 
-On 5/22/26 09:14, Jonas K=C3=B6ppeler wrote:
-> On 5/19/26 10:51 PM, Simon Schippers wrote:
->> On 5/12/26 23:55, Simon Schippers wrote:
->>> On 5/12/26 15:54, Jesper Dangaard Brouer wrote:
->>>>>> Nope, I'm using a bpftrace program to keep track of the inflight/li=
-mit
->>>>>> in a BPF hashmap.  Reading from /sys will not be accurate.
->>>>> Ah nice.
->>>> Add the option --hist to have both NAPI and BQL histograms printed wh=
-en
->>>> script ends.  This will give you an accurate pattern of how inflight =
-and
->>>> limit evolves.
->>>>
->>>>>> I moved the selftests into a github repo [1] to allow us to collabo=
-rate
->>>>>> and evaluate the changes more easily.  I explicitly kept the new BP=
-F
->>>>>> based BQL tracking as a commit[2] for your benefit.
->>>>>>
->>>>>>    [1]https://github.com/netoptimizer/veth-backpressure-performance=
--testing/tree/main/selftests
->>>>>>
->>>>>>    [2]https://github.com/netoptimizer/veth-backpressure-performance=
--testing/commit/f25c5dc92977
->>>>> Thanks for sharing. After minor issues I was able to set it up
->>>>> (currently I am just using plain v5, will look at the coalescing pat=
-ch
->>>>> when I find the time):
->>>>>
->>>>> Can confirm the latency reduction with the default settings, in my c=
-ase
->>>>> 4.888ms to 0.241ms.
->>>>>
->>>>> With the same script I was also able to see a performance slow down:
->>>>> veth_bql_test_virtme.sh --qdisc fq_codel --nrules 0
->>>>> --> ~510 Kpps
->>>>> Same with --bql-disable
->>>>> --> ~570 Kpps
->>>>> --> 12% faster
->>>>>
->>>> Thanks for running these benchmarks.
->>>>
->>>> Notice that --nrules 0 can easily result in no-queuing (on average),
->>>> because the veth NAPI consumer is faster than the producer.  You will
->>>> likely see BQL inflight=3D1 and sink reported avg latency very low
->>>> (remember it okay that sink get high latency penalty as long at ping
->>>> latency remains low, as that show AQM is working).
->>> I ran the benchmarks with --hist and I see what you mean.
->>> I have very similar results.
->>>
->>> Is Jonas way [1] of modifiying pktgen maybe the best option to ensure
->>> that the producer is faster than the consumer?
->>>
->>> [1] Link:https://lore.kernel.org/netdev/e8cdba04-aa9a-45c6-9807-8274b6=
-2920df@tu-dortmund.de/
->>>
->>>> Hi, so what I found is that pktgen does not respect
->>>> __QUEUE_STATE_STACK_OFF. So the test data above is invalid, since it
->>>> just sent packets even if the BQL "stopped" the queue. So I patched
->>>> pktgen with the following:
->>>>
->>>> -       if (unlikely(netif_xmit_frozen_or_drv_stopped(txq))) {
->>>> +       if (unlikely(netif_xmit_frozen_or_stopped(txq))) {
->>>
->>> After thinking more about the implementation I see possible issues:
->>>
->>> 1. netdev_tx_completed_queue() never reports more than burst=3D64 pack=
-ets:
->>>
->>> BQL only increments the limit if the queue was starved. That means:
->>> "The queue was over-limit in the last interval (the last time completi=
-on
->>> processing ran), and there is no more data in the queue (i.e. it=E2=80=
-=99s
->>> empty)" [2]
->>> But as only 64 packets are reported at max, the queue can only grow wh=
-en
->>> it is <=3D 64 packets. And then it can only stay at a limit >64 until =
+On Fri, 2026-05-22 at 09:49 +0200, Thomas Gleixner wrote:
+> On Fri, May 22 2026 at 01:12, David Woodhouse wrote:
+> > On Fri, 2026-05-22 at 00:43 +0200, Thomas Gleixner wrote:
+> > > > So surely a device can only support this if it *does* have a precis=
+e
+> > > > hardware timestamp, e.g. from ART? And the corresponding sys_realti=
+me
+> > > > and sys_monoraw fields also have to be from the *same* value, surel=
+y?
+> > >=20
+> > > That is correct, but you still fail to explain how this new made up
+> > > att.counter_id/att.counter_value is filled in coherently without the
+> > > driver doing something abysmal?
+> > >=20
+> > > You can't explain it, because the only way to do that correctly is by
+> > > extending the cross time stamp struct and get_device_system_crosststa=
+mp().
+> >=20
+> > Yes. Isn't that what I asked Arthur to do?
+>=20
+> You maybe asked him, but I can't see any evidence of it anywhere. All I
+> can see is a magic struct attr, which conveys CS related data that is
+> supposed to be produced magically at some undefined place.
+
+https://lore.kernel.org/all/8b8a748a2ac6e8e3d970f5e74a2774133e7e7d8c.camel@=
+infradead.org/
+
+> > > > Is that not how it works? If not.... WTF *is* it for?
+> > >=20
+> > > Yes, that's the way it works since get_device_system_crosststamp() go=
+t
+> > > introduced, but that does not give a random driver access to the actu=
+al
+> > > converted (TSC) counter value. The driver can only observe the PTM va=
+lue
+> > > which is ART on x86 and whatever on other architectures. So it does n=
+ot
+> > > know anything about it.
+> >=20
+> > Sure, the driver can only return what it *knows*.
+> >=20
+> > We're certainly missing some infrastructure here... maybe the pci_bus
+> > should have a CSID which corresponds to its PTM domain, which on x86
+> > would be CSID_X86_ART?
+>=20
+> Yes, that's correct. But that does not solve the underlying problem:
+>=20
+> ...
+>
+> Q: How is a driver supposed to fill in attr->cs_cycles coherently?
+>=20
+> A: Not at all.
+>=20
+
+Let me rephrase that to check my full understanding of it in context:
+
+ Q: There are drivers today which operate on the TSC or arch counter,
+    and they're just fine. But how is a future driver which uses PCIe
+    PTM supposed to full in attr->cs_cycles coherently?
+
+ A: Yeah, our PCI and platform code lack the proper arch-agnostic
+    support for interpreting PTM time values; a driver wanting to do
+    that is going to need to do some infrastructure work first to
+    enable a proper conversion. But that's literally what PTM/ART is
+    *for* so that work has to happen at some point anyway.
+
+
+> The consequence of this is that the next driver writer will just go and
+> do:
+>=20
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 attr->cs_id =3D IS_ENABLED(X86) ? CS=
+ID_X86_TSC : CSID_ARM_COUNTER;
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 attr->cs_cycles =3D get_cycles();
+> =C2=A0=C2=A0 or
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 attr->cs_cycles =3D ptm_cycles * pul=
+ledout_of_thin_air_factor +
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 pu=
+lledout_of_thin_air_offset;
+
+Driver authors are crap, sure, but that would just be egregiously wrong
+and hopefully it would be caught in review. It has to be a literally
+*synchronous* capture or it's pointless.
+
+
+> The same applies to the pre/post timestamp mechanism for
+> gettimexattrs64().
+
+There's literally a ptp helper to generate those, which can use
+ktime_get_snapshot().
+
+> These new attr IOCTLs are not restricted to your favorite vmclock PTP
+> toy. They are available for every PTP driver which implements them, but
+> there is no infrastructure to actually provide the required data. That
+> ENA driver implementing gettimexattrs64() is demonstrating it. It at
+> least does not try to make them up, but that's just a matter of time to
+> happen.
+
+The ENA driver demonstrates nothing of the sort. It's *not* filling in
+those fields because it *doesn't* have PTM and it has nothing to fill
+in.
+
+Not *all* driver authors will fill in an optional field with random
+bytes just because they *can*, Thomas.
+
+> I know you don't care because that's outside of your sandpit,=C2=A0
+
+Thomas, I'd like you to stop saying that. It's insulting, and it's wrong.
+
+Of *course* I'm trying to solve things for the general case.
+
+But that doesn't extend to implementing random parts of PCI and
+platform infrastructure to allow for hypothetical future drivers which
+want to use PTM to implement the optional fields we're adding today.
+
+This yak is deep enough already :)
+
+And although we're having this discussion *in* the GVE thread, I've
+barely even *looked* at those patches and I think I'm still calling it
+a 'hypothetical future driver', because obviously if it's trying to use
+PTM then it's going to need that generic support.
+
+> Are you going to monitor drivers/net/ for those instances and make
+> sure they are burned before seeing the light of day?
+>=20
+> Surely not and neither is netdev going to care as demonstrated with
+> this GEV mess.
+
+I think that message has been received loud and clear, Thomas :)
+
+> > Never get_cycles(). Let's perhaps make it *not* need unholy hacks to
+> > interpret a PTM counter value. Otherwise what's the point in ART and
+> > PTM at all?
+>=20
+> Perhaps? There is no perhaps and aside of that I gave you the solution
+> for the problem already in the mail you just replied to, no?
+
+Hm, did you? I'm sorry, I must have missed it. Even rereading it this
+morning, I see a lot of 'is bonkers' and 'unholy hacks' and '_cannot_
+fill them in coherently' but I can't see a concrete constructive
+suggestion. You meant <87bje8v0xl.ffs@tglx>, yes?
+
+Maybe it's lost in the noise. Let's try to simplify.
+
+ =E2=80=A2 Userspace would like to be able to use PTP clocks to discipline =
 the
->>> next decrease of the limit.
->>>
->>>
->>> 2. netdev_tx_completed_queue() is called in irregular intervals:
->>>
->>> If the consumer is slow it is called approx each tx_coal_usecs.
->>> But if the consumer is fast it is called way more frequent, probably
->>> in irregular intervals depending on the scheduling.
->>> However, "BQL depends on periodic completion interrupts" [2].
->>>
->>> --> How about adding something like an interrupt that triggers every
->>>      10us and calls netdev_tx_completed_queue() with n_bql collected f=
-rom
->>>      (multiple) veth_xdp_rcv runs? That could solve 1. and 2.
->> Hi,
->>
->> I worked on a new version (see attachment) that addresses both issues.
->>
->> The major change is that instead of tracking the timestamp and packet
->> count as local variables in veth_xdp_rcv(), they are now stored
->> persistently in veth_rq as struct veth_bql_state. This allows completio=
-ns
->> to accumulate across multiple NAPI poll calls, so
->> netdev_tx_completed_queue() can report more than 64 packets at once
->> (see point 1). To get the time I am using (the fast) sched_clock() with
->> a trick to avoid issues when switching between CPUs.
->>
->> For point 2, the coalescing deadline is now checked both before the
->> receive loop (to flush completions that timed out since the previous
->> poll) and after each consumed packet, making completion intervals more
->> regular. Still the intervals can be smaller than
->> VETH_BQL_COAL_TX_USECS, but I guess this is fine.
->>
->> I also found out that the BQL limit correlates closely with
->> VETH_BQL_COAL_TX_USECS. It essentially reflects the latency we are
->> targeting. I raised the default to 100 =C2=B5s to allow DQL to converge=
- to a
->> higher limit (for reaching 255 in the testing below).
->>
->> With the patched pktgen (respecting __QUEUE_STATE_STACK_XOFF), testing
->> shows:
->> - --nrules 0: DQL limit reaches (up to) ~255
->> - --nrules 10000: DQL limit converges to ~0 (with --gro-disable)
->>
->> These results are what I would expect from a BQL algorithm, but more
->> testing is needed of course.
->>
->> What do you think?
+   actual counter which is directly accessible in userspace and by KVM
+   guests. Do do this, we only really need a system_counterval_t in
+   the pre/post timestamps, and the helpers can add that.
+
+ =E2=80=A2 *Some* drivers can actually provide a system_counterval_t in the
+   device reading itself, either because they're naturally based on
+   the CPU counter or because they have PTM. Drivers should report
+   what=C2=A0they *do* know, in the correct time domain, and not make
+   crap up.
+
+ =E2=80=A2 Any driver which actually wants to do this based on PTM in the
+   future will need to do the infrastructure work to make that work
+   cleanly, and avoid having to make crap up.
+
+And if I'm understanding correctly:
+
+ =E2=80=A2 The GVE driver made crap up? Although they do so orthogonally to=
+ the
+   patch set we're *actually* talking about in this thread, because
+   they did that entirely on their own *without* reference to Arthur's
+   userspace API changes?
+
+
+> I'm glad we agree on "Never get_cycles()" at least. May I ask you then
+> to get a stiff drink ready and run:
 >=20
-> Hi,
->=20
-> This is exactly what I had in mind for implementing the BQL algorithm
-> in this case. I did some testing with pktgen of this patch and also
-> compared it to the v5 version.
->=20
-> You can find an extension of the benchmark script with pktgen here [1],
-> as well as a wrapper script (veth_bql_bench.sh) to run the test script
-> with and without --bql-disable to report the difference. I also
-> configured pktgen to use the qdisc as suggested by Jesper.
+> =C2=A0 # git blame drivers/ptp/ptp_vmclock.c | grep get_cycles
 
-Great, I will use your pktgen solution from now on.
+That's different because it's actually using it for the *device* timestamp.
+But if you see an actual problem there, I'd love to know:
 
-Didn't know about the qdisc option, is there a performance difference
-with/without it? Or is it to have ping working next to pktgen?
+                /*
+                 * When invoked for gettimex64(), fill in the pre/post syst=
+em
+                 * times. The simple case is when system time is based on t=
+he
+                 * same counter as st->cs_id, in which case all three times
+                 * will be derived from the *same* counter value.
+                 *
+                 * If the system isn't using the same counter, then the val=
+ue
+                 * from ktime_get_snapshot() will still be used as pre_ts, =
+and
+                 * ptp_read_system_postts() is called to populate postts af=
+ter
+                 * calling get_cycles().
+                 *
+                 * The conversion to timespec64 happens further down, outsi=
+de
+                 * the seq_count loop.
+                 */
+                if (sts) {
+                        ktime_get_snapshot(&systime_snapshot);
+                        if (systime_snapshot.cs_id =3D=3D st->cs_id) {
+                                cycle =3D systime_snapshot.cycles;
+                        } else {
+                                cycle =3D get_cycles();
+                                ptp_read_system_postts(sts);
+                        }
+                } else {
+                        cycle =3D get_cycles();
+                }
 
-Consider to do a pull request :)
+                delta =3D cycle - le64_to_cpu(st->clk->counter_value);
+                ...
 
->=20
-> Note: bpftrace needs to be disabled, otherwise it becomes the
-> bottleneck (at least on my machine) and pktgen throughput is halved
-> when enabled.
+--=-PeXr9S2O7mQaPYdbm9/X
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
 
-Good to know.
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
+ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
+MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
+a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
+jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
+GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
+aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
+nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
+8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
+HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
+IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
+KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
+BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
+QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
+QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
+ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
+/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
+uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
+xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
+W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
+c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
+VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
+NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
+DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
+sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
+w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
+i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
+kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
+0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
+ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
+blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
+hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
+VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
+HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
+ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
+AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
+cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
+cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
+AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
+aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
+hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
+iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
+8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
+JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
+xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
+EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
+B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
+MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
+KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
+Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
+nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
+WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
+W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
+nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
+g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
+9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
+9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
+sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
+a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
+ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
+AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
+dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
+MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
+YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
+4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
+6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
+QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
+nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
+MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
+VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
+ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI2MDUyMjA4NTYy
+MlowLwYJKoZIhvcNAQkEMSIEIKxvG6o1yb3qy7fMD1MhibvKO4vYiHdl5rFto48yCgRpMGQGCSsG
+AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
+cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
+VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
+cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIAGN0aTw/e56cy
+r1N3CLwfNZkAsKNN4+O1D7dNo7nzAvnYdpmjft+kfeFnYboRV2b8obNm+ZxqoVd3IrY4mmhXGpG8
+04FSvJ6Iw/UY9EXVRQdpmlCs2S2MH6gB0T/aLN8WXX7u9S+QUS7q6T+KaAuFeeMQdPJcjpXbQKTG
+IkkvVLTxjOAgTl9//OCPdDQDAqPG1v1f/mxRLWfsS5AZDkcRtCksTjuG+uJQ62Ixdsu9VbGDUuD9
+YeKUdmkK1qBelTgQzL/BckDB+NxHTg8lrp0J4fNcmTyYidW2ikZ1n2ihJSCseCKscvoo0c/vb+YB
+Ablp4TB/sIaYOAF5LRkpjObtWNxwJgl4IfHN+gSfhapfK/KI/iFOLioEN1q/FjlSrcXv9+xXhzsQ
+VXveN1122xrGGOOGygd4JOD2i//8I9RzaecJOVmPDX068NismBjcXt5gw7tQXrR0glf427rV+zwR
+udZs8Nlm6MDswCKt51Wq1s9N8/x6+soY4AsCcRa2/OdFvOlEN+2sdVP5/gv+oahUDvZjGq+VqNcs
+QFBsxzINhmDRRea1ToVv8gtSwl84y3tnpWcSDZfQW0priAhlO/iTWPt9pHDSKc+fRFFIq/6zrIjz
+MCtUoOniiSzFgwz9C/yiJGFuVkgw1DyMo6Lxr9Fk5BSEBTNddxftGYgJtFRxCbgAAAAAAAA=
 
->=20
-> Here are the results:
->=20
-> v5 (not time-based):
-> --nrules 0 --pktgen --no-bpftrace
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> Results (average over 10 runs):
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->                        BQL on    BQL off
-> ---                    ------    -------
-> Throughput (pps)      1980871    2169898
-> Ping RTT avg (ms)       0.065      0.162
-> Throughput diff         -8.7%   // BQL 8.7% lower throughput
-> RTT diff               -59.9%   // BQL 60% lower latency
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->=20
-> Simon's time-based version:
->=20
-> Test args: --nrules 0 --pktgen --no-bpftrace
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> Results (average over 10 runs):
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->                            BQL on      BQL off
-> ---                        ------      -------
-> Throughput (pps)          2166335      2153398
-> Ping RTT avg (ms)           0.165        0.165
-> Throughput diff              0.6%
-> RTT diff                     0.0%
->=20
-> --pktgen --no-bpftrace --nrules 3500
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> Results (average over 10 runs):
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->                            BQL on      BQL off
-> ---                        ------      -------
-> Throughput (pps)            28569        28696
-> Ping RTT avg (ms)           1.327        8.409
-> Throughput diff             -0.4%
-> RTT diff                   -84.2%
->=20
 
-I think we should run benchmarks against the stock net-next to
-be safe.
-
-> Seems to work now as expected.
-
-Yes, but I think we have to keep these points in mind:
-
-1. Limit/Inflight can be bigger than VETH_RING_SIZE, because
-   packets can be enqueued in the same time as they are read out,
-   so netdev_tx_completed_queue() can theoretically be called with
-   many number of packets.
-   I do not think it is deal-breaking though.
-   I could see such high limits/inflights when looking at the /sys
-   BQL statistics..
-
-2. sched_clock() is only valid on the same CPU. When a different
-   CPU starts executing its sched_clock() can be in the past compared
-   to the sched_clock() value saved by the previous CPU.
-   My trick...
-   min(s->time, sched_clock())
-   ... avoids potentially extremely long intervals between
-   netdev_tx_completed_queue() calls but is not perfect of course.
-   I think CPU hopping happens rarely enough for this to matter..
-   And also we have to keep this in mind [1]:
-   "An architecture may or may not provide an implementation of
-   sched_clock() on its own. If a local implementation is not provided,
-   the system jiffy counter will be used as sched_clock()."
-
-3. Inflight can be stuck at a value>0 for a long time when packet
-   enqueueing stops. Only when packets are enqueued again,
-   (on the next veth_xdp_rcv() call,) netdev_tx_completed_queue() is
-   executed and inflight is set to 0 again.
-   Can also be seen when looking at the /sys BQL statistics.
-
-BTW: Yesterday, I worked on and refactored the code into its own .h
-     file as a library and it also works fine for TUN/TAP (+vhost-net)
-     for me :)
-
-Thanks for your work!
-Simon
-
-[1] Link: https://docs.kernel.org/timers/timekeeping.html
-
->=20
-> [1]https://github.com/jkoeppeler/veth-backpressure-performance-testing/t=
-ree/pktgen-and-benchmark
->=20
-> Thanks,
-> Jonas
->=20
->> Thanks!
->>
->> BTW: I think that this implementation could also work for other
->>       software interfaces.
->>
->>> [2] Link:https://medium.com/@tom_84912/byte-queue-limits-the-unauthori=
-zed-biography-61adc5730b83
->>>
->>>> There is an important gotcha. We actually have micro-burst of queuing
->>>> (likely due to scheduling noise). Reading BQL stats from /sys will sh=
-ow
->>>> BQL inflight=3D1, but when using the option --hist is it visible that
->>>> @inflight have a long tail (see below signature).  The "qdisc" output
->>>> line also shows this happening via requeues increasing (approx 17/sec=
- in
->>>> a test with 567Kpps). (this was with the time-based BQL impl).
->>> I understand..
->>>
+--=-PeXr9S2O7mQaPYdbm9/X--
