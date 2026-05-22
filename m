@@ -1,292 +1,177 @@
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010013.outbound.protection.outlook.com [52.101.69.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 635093C1996
-	for <netdev@vger.kernel.org>; Fri, 22 May 2026 09:22:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CEC03C9440;
+	Fri, 22 May 2026 09:22:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.13
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779441769; cv=pass; b=oXXb6v5OmIy7V81Jve5BqXbXdeMyiIzERUPh3frExisIiXRdu615N0TvuoM9lCmFzgZMt5t7GRHmD8OxC7kziDXZjUcJxU3H/b0KzDM2yvBNUKMiBkI19OtSXKfBsyPixW10a680xtHkQ+E2Y8Okxq8RI/q94HeK6o6Zb/j1Iqs=
+	t=1779441769; cv=fail; b=R2nmbKXzrIArq7TMe38YhcdLKzy++aZJ+qmaUmnE15r+0pd6bQWwONNutsQ7HX3+o/b4ESGaWxf8sMhDfsjArhajG1BC7fGfyLevZ2BGmNaTlkKVeP4PVRHvgavrk2nMGEJD/l7dMDMQcnCM6gVrPDxsb7nEZa+ITeJ5+dhxVXw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1779441769; c=relaxed/simple;
-	bh=9HTYdj36OP19ar/Z2o1Nflr6TtOAK0uthrZE/uqdMNI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SXcOhxPxxKmVfDaprP6dWx85VcSj0+oq8iitWKBYoFRSZhLem9jXf3/muNDhvJGXXb3sw4dSxNT0vsbQocavD3xvf1IzUj6uSm5fz6yYzE2NSudRT69p6eimTMjhvM5yujzUtSNSIgW2KqpFIv8O1z3WjtB8D2Zn1BIzY+XeG70=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i/tVPBOW; arc=pass smtp.client-ip=209.85.167.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	bh=si3DiiFetDX3gsNsNn00udYes6pNbvr2ZrgyMLnQPHU=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=N2l37XDZ8nqRTH/mkXYPZUSn5kKPZHysX6fi8/qwdzx5spOs1Wi/6NneFf4kHkixTbcVakUDw6xPVSg9saItX7Gu8/PO8JrYTfFN29B8zBrFy9F/T/Sa+m7lkSghqsAswCHkNKi+2Jc9I8QWc09vSje9u34hx7E3cuMgFENBB+Q=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=O4cqg5t8; arc=fail smtp.client-ip=52.101.69.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i/tVPBOW"
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-5a742b8b72eso8307504e87.1
-        for <netdev@vger.kernel.org>; Fri, 22 May 2026 02:22:47 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779441766; cv=none;
-        d=google.com; s=arc-20240605;
-        b=SJCK5pLivrHKaNGjkKlbYSSEyRD10JjGHZmQWGlqV4ChkenOBMBrLIbxAu7fZSYW+k
-         fziic008HRXGRtZLlKSORLoXQy03N+ehl8/tHRUOAXkarsyUEReEzf/VkJV4U4Zauw7I
-         C0hKAhAiZYo/d7mfJ6soxRYn6nK7PJR+rCenElHoHVsTd4ijVVBQO6opJz/Nc3VQGb3i
-         xodnoKbFzN+EPHKRx3xgfFDJdQgamyvZL0oCgL0bX2ZKBBe6QTGBjtc3Mj1LSZrWSows
-         43yaFDiCXO60EEosqUkQaW32CO0mcL9tEMLvTM6RHKAgT93lF2XDs72BvSO3TKhichTl
-         EKqg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=CLKzwkXsCEt56sWNeFNYAOv+OWTqrZnI1zQs1+4PXdM=;
-        fh=tRwUbl3Xie1yIprOz4/G+swn3XAwkFT0Cu46lLu+rvQ=;
-        b=CGvIzIji60C7Wf9L7Pu7VU63pitArXHzkxmBibOOW9lW6kGn6/yajIfb1dXKkh4BiG
-         0CfwGTN5WbsJldxROSflGDsFKjyc65z75oqVp/ybNFfLK5WucHhUTR0dNUnUG9Lh5FyC
-         W6EKIkfviuWY4G9a51IDrscKhoEXls2Ib3rkyjgokqgExk+nKoHz/N+yEu0uwulYc1Hg
-         9DAsH4v6WtURSG1gAcvGDZ9bNIDRd24KzMXS1qrdEfjG3fzuULGdGHXi6PqV9e0rvH4r
-         PNQH4HWmAwjX1b65ZOfS4ecr2QDd5rOCVWZlv0zPbwUhR2ZzrGXRhD3heCNvJkhnbhZX
-         B8Bg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779441766; x=1780046566; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CLKzwkXsCEt56sWNeFNYAOv+OWTqrZnI1zQs1+4PXdM=;
-        b=i/tVPBOWKwQKTMJHexmn9jgbS8/fi5U3qcvSgUrpdlhE5PVkJKTN20++If+w7MmD5z
-         i4Cr4cifRYNkprGvVWx2vvoP685y5DwJt7fBQyPavTcq3Bwhl+NJ1C2YnFd87GL3wYhw
-         pMv5MJkZtyIKdrlr9UWs1XIXG8QDg1gSUzLLqSApOZNEPI2l0ibyW6ChqM9oaz/FXLej
-         rGXBowq5WNOkjBNMapNTUs11/bvX69kAEPgt29/TrLor1NNNk3132hLo8JHhrtnCyguX
-         WlmjZw/IkTsShtdZ9anYsxIEZldFI9ykOt+3DpQcdrUGZS4Dyn6ruYluBioIHCmM6uLN
-         C6aw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779441766; x=1780046566;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=CLKzwkXsCEt56sWNeFNYAOv+OWTqrZnI1zQs1+4PXdM=;
-        b=pNQbhMZHK9wgM98+LQWqgSq+NORtQ/PMxqdlFaE8ii/PY4CddT/1KtFmPieL5aT5F4
-         kH6RjSiObXTyp6NqCkylyuDfBmRor5bcEUSHkestvNNNTor+xdfIS9g6tyV1YgqzkdLm
-         89lPQd/EZ9q3ni+Xf0lywcItEnCvz+tKMCaXok1bY58stVRb07cPqg+1cJ30EZmEF+61
-         KJ0Dbg03NuLy2K87BXO7+15Ns1UMypcVBLYEmgnFFtQ62Ywi7oUkfPu9I0lC4LnKPH5D
-         VQ7TsmuKjwGJHi8SkTh0dPL+51X1jQg9Zf/2pohAi9JP3KFy63NFc84LWaASQRiSNa7z
-         3VLA==
-X-Forwarded-Encrypted: i=1; AFNElJ+5gkP2WxWMUi/qLHsjQskKcrkIEzGvvJ0icnReQCTpAyplLrxnd8t1jqXe/cxB58KzLicfu6M=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyoGRKpjyDpsACedclCBaFt2u0U7F2wCi3C8u3pEyR3bJwqzLlw
-	nsudaksLSq01N+hMcZbpAvfIAJOY4EJ9ZwESYosdGd6KMRCFiOtDvB05p/+W7rdKxY64JDnM4YD
-	+I/Kfu3w5iI9TIePibmMrmFnvN76idEY=
-X-Gm-Gg: Acq92OFyGImRZqH0MS6xD5/3NbGAm4EHIhXDDIup5DmwN+R8z79y+Py1eC1EsRJDZvv
-	r/CQzmJmjsWLT8oWKShPr2HGsHjr2Kbgtdcm0IsiKafDCcZsJgiBQ2wliv1QMTlFk2yHs6k7x/j
-	amKeJkAnxMz1VgNmCjZWM0BUnIqn5Yizjuzou+EPsNrhgrHX8U9hFvjQ/fBkwfdUmP+8w1qjSqd
-	MwZHGmcS514uk1zZElpdtSpT7OOrVWomM1hUCjqVTLvDr2pHowP0rvKnfnFZ5koAtMWn+uNf0UE
-	QOWqfYDGMER48yHIEmQTloNBsRQnxzkMZHk3TY00
-X-Received: by 2002:a05:6512:40cf:20b0:5aa:b6b:93c1 with SMTP id
- 2adb3069b0e04-5aa323a9376mr569353e87.43.1779441765358; Fri, 22 May 2026
- 02:22:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="O4cqg5t8"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=WNoa1Z+hLIi055IP8BhTaOuXqpJOMa1gKjUbHChshX2EsLSAM0toCiMXl2JPtjtzb+Yq7U1YVOq7d7guA2EROorfZDUC6IEQ1cQGjS4CE/MDgLEWCs8SysenspBD4ptpKppE3zZ1UOu7zrAfPOnpxEIrK+5otbu17/wMoOxtXT8R7RhLy7NbIWWCobcz+XgR1nq/hFXHr1Xn71Wunc6O4wqr1J2DDucaqAfhVI2jVfiEGkRjFfrddH9bdiZ3EEVKI94/wOUCs4FcdBVkMq3x2UuCMhItg62J0kLTUcj/xMI97NnW1fQlkH7Ar2X36CTyEEno+WXtjDziyK1Vxtyl8w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=U+ViJH1zKOUQ4j31gyJe/bGbwV1iuODCAGNzR0+2lY0=;
+ b=S9iNm0Xm1Wt8XFuLFMkzU3KPlPxArjkkOAWVhrxHyHtNMelqMeGvO7DaOeY2+0Z92AQVaS996lPgf7Xszee/dfgxkLQwu6HBDdNkWOmDszoPr67Nq5/R51n3Tfywfr5yQ7FTLfRgwHhEuB3wqLtZCfU9b9J9blKsS2mNsBi7Uw6k3JjEAjLcsfTCjaLoh82nxxdu/Sa3SRvO5e/twcLtsm8n8WhnBYd5fRslt4smLNIvi2N429oPJ3TapHMib2fJy+PKUqBA0k0xTgNm3ZswLpPKokYq40KopGd8avLqYbYI+yAI+1mJzPHeKAashC5qddkr9C0PZfK7eb57zcAnZg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=U+ViJH1zKOUQ4j31gyJe/bGbwV1iuODCAGNzR0+2lY0=;
+ b=O4cqg5t89msBQfW1fleAFQS90fu4JeEHdkoyIoTQNgm0gsZleYC1M+RjCf2CcFq0eBJic42NJj7AR/GW1YgOpUNT359H/o5uF0pEr3I65n+/jF9lxAHqjkrrCh3hEN3O7tOdCWeB6+8odZtyG44NIdC+0D5e76zsxoNZzzmeILFB0gDAE1frwU44BRDTMtVQp3h+XvdJuLJvjvst2Ur9ibomh59B2XYy5qedoY5pEU05ZIbTFd4wFIOdFoKw5s27aV4yaA9ZOHEm1bDnRBswTzXalh4/H4GyOdG3obXUy8HpiEum18y7Wjv76VOmZsjrfvdDps2uNVljR0QZiPb1XQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from DBBPR04MB7500.eurprd04.prod.outlook.com (2603:10a6:10:1f4::16)
+ by PA4PR04MB7949.eurprd04.prod.outlook.com (2603:10a6:102:cc::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.25.23; Fri, 22 May
+ 2026 09:22:45 +0000
+Received: from DBBPR04MB7500.eurprd04.prod.outlook.com
+ ([fe80::c291:543b:4bde:cee7]) by DBBPR04MB7500.eurprd04.prod.outlook.com
+ ([fe80::c291:543b:4bde:cee7%6]) with mapi id 15.21.0048.016; Fri, 22 May 2026
+ 09:22:45 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: claudiu.manoil@nxp.com,
+	vladimir.oltean@nxp.com,
+	xiaoning.wang@nxp.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: imx@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 net-next 11/12] net: enetc: use MADDR_TYPE for MAC filter array size
+Date: Fri, 22 May 2026 17:24:37 +0800
+Message-Id: <20260522092438.1264020-12-wei.fang@nxp.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260522092438.1264020-1-wei.fang@nxp.com>
+References: <20260522092438.1264020-1-wei.fang@nxp.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: MA5PR01CA0195.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:1b2::6) To DBBPR04MB7500.eurprd04.prod.outlook.com
+ (2603:10a6:10:1f4::16)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260520004244.55663-1-kerneljasonxing@gmail.com>
- <20260520004244.55663-4-kerneljasonxing@gmail.com> <ag3c9/EF4h7DLQu3@boxer>
- <CAL+tcoAvbEZ7U2oXBWwLAKeuC==gAHi=GXLZcrEPxbb4mQ9sfA@mail.gmail.com>
- <ag70RrU4nGy0Nlna@boxer> <CAL+tcoAHnVDOFgmUvi1jfTdTHchxdUrRYppenQ6Ubiwyv8jmUg@mail.gmail.com>
- <CAJ8uoz0bKHSiHjRvNmvVs_z3cWg58U=6wGKKs9_n65yCCcYbEw@mail.gmail.com>
-In-Reply-To: <CAJ8uoz0bKHSiHjRvNmvVs_z3cWg58U=6wGKKs9_n65yCCcYbEw@mail.gmail.com>
-From: Jason Xing <kerneljasonxing@gmail.com>
-Date: Fri, 22 May 2026 17:22:08 +0800
-X-Gm-Features: AVHnY4KPJR2T7YSjs_8Ul5sH3l2nA99WuQMZIMYetyUuNvVQFeSa6E2jFKaCndM
-Message-ID: <CAL+tcoCaOY=YEDM2N0tuWjyQpOrTZMkHSYT4KQsy_fn2757V6g@mail.gmail.com>
-Subject: Re: [PATCH net v4 3/5] xsk: drain continuation descs after overflow
- in xsk_build_skb()
-To: Magnus Karlsson <magnus.karlsson@gmail.com>
-Cc: Maciej Fijalkowski <maciej.fijalkowski@intel.com>, davem@davemloft.net, edumazet@google.com, 
-	kuba@kernel.org, pabeni@redhat.com, bjorn@kernel.org, 
-	magnus.karlsson@intel.com, jonathan.lemon@gmail.com, sdf@fomichev.me, 
-	ast@kernel.org, daniel@iogearbox.net, hawk@kernel.org, 
-	john.fastabend@gmail.com, horms@kernel.org, andrew+netdev@lunn.ch, 
-	bpf@vger.kernel.org, netdev@vger.kernel.org, 
-	Jason Xing <kernelxing@tencent.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DBBPR04MB7500:EE_|PA4PR04MB7949:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9b2a992a-f5e4-4cef-72c3-08deb7e3aeb4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|52116014|366016|376014|1800799024|19092799006|22082099003|56012099003|18002099003|11063799006|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	11Vsr8XEnLacMeSeQ7huMQzcfw5IHGLo0q2qPbk4DjEdURI69OEEh3GEGCOQfCu+OjtCVzDzZBHyCFKKA1F9JuPR0VgXd29P0r3eWgOtLJjJFRA8ggIiWXS3dH73BOwWDuVMzovNxefMmwmLu14f6jt6YB++G02KMzLDiwf9+TvwqDmfXygbGDn0K3E1dNeM1IDDFvRlz38PPlb+xcXN/7W6POGKDZNYriBXI9VQ/LTAYFe1vAN+zejkAJZCVZQJvBr7zlu2iUP43BriQOVJrcmvGyMbxAIfE7mcOsJOt6/7X4w3vXvMI2zGeh6uo3Ufy8hhy/dT+ejfL/VSiVbgP4g3d07Gf+U+wfBddVhigyfQiO1OjNCXVI6618n44UXs/YjP0YnsprpUJKq/zhaq9DWEEkegFaljdhq6q8Hrb01b/BZ1xrNbkFiC8BBWgcWnBILBjrg0fkwLqzT7HK7OuW1NPy6I5FiAwnNJoCs2RjdTPv9xQPb/Hrh7MdIaxmvFPQxrKinpG94wjm9RUDmcpwRwqmkYhIQ6TAGeeGB6jjQh0ywOmMfgASGclJbhFjZaqIIxDJFTNm1HX44VD9JNPxw/+VdrsAX60lSPbjW4l9PwLvRjGmWDPnncaT6ciMs8qXxavz28MPqrmwqpIr1pMaQkwYnVteUXz56gmzWFUmuyrs1z7QHDS25vsTDgi0Pq0TSIpGO5P6agv2oKNWdJ1G2YtR89b17LLY3hCxaPY5eSSou5LeAzNleK6AJSMtaw
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DBBPR04MB7500.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(366016)(376014)(1800799024)(19092799006)(22082099003)(56012099003)(18002099003)(11063799006)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?S5+WJbIgXkTkfMYwefo7qOuE460yGf3D7g+P+QUcjgZc6HcPyroKY0WMbgv4?=
+ =?us-ascii?Q?XTxjuJrel3GZvnQRNhIXpKeuOVmK02p6/NqiDC37V+xdEPpZVeZIWgNdjnKE?=
+ =?us-ascii?Q?65Rg+pcfbx2x5caZI9WJw4K9ZtmqwtBxj+o95l4HJUfWo9KLI+nE/0knw40r?=
+ =?us-ascii?Q?Fn4As7AORJA4tTXfopMdyvP/7Zot0twywFc3iUbihauAwpltUHyHKTE4QMX/?=
+ =?us-ascii?Q?HKC7aT5KpT6rotEllXj+yRQWXUcwqgAN98zRdROAsymnWhcBOHYfq7kfRQOs?=
+ =?us-ascii?Q?v2ataaO2qeqbYtJ6aTprNQMUT8YzsckP6Ccr2yFupr/lB2iPHVI1nzxdow+u?=
+ =?us-ascii?Q?/2PUNHqpxzwxYamemAzy/V23TWho5g0Aayw+h3sN4t4Jv+G1BvY9FLSYTUNd?=
+ =?us-ascii?Q?AGwH3+xxVzshfqDXLOsUuMv4J8kK+d08iNKMY51EWjNlA6alNfkVol/jlbAZ?=
+ =?us-ascii?Q?XfGdgNmsmNMlohracOaYkWe/cxhuKKQL1m/7YHA2IztzfMX4thT4kzNsnT/E?=
+ =?us-ascii?Q?4RvTbPxrR6D5xZ+mD2fKm7o5wKYEcKU4fOrKqiPM9tgeWVP7tf1LJGU/BHc6?=
+ =?us-ascii?Q?u+Y1CyDe6+sghAtP68q7sID987NdyOPCSqbOQYnXTelXY2OlgqmVtNSUuK+2?=
+ =?us-ascii?Q?qp4KBM/g3r9/I9mutJdYkG8EQ5tpzOr5S8MZGx8ig9aqWLjzZjwBeroe/LD4?=
+ =?us-ascii?Q?XZKRh/aV90V6PnhTOL9vQcyUjL9aNK+FcCRoHz8YLQ9OWAdyr8cqdiB9QdXG?=
+ =?us-ascii?Q?0tshJw65VFMq4rnSxSSAn84UjU/K/sDdiv7OV7CBvDf0zs/ZB/w28nTme2aD?=
+ =?us-ascii?Q?QT6xarPe2wtJ4Y+EgP6VRFzILozJ9xL0hNxWQ/B1natA3tUQdkAojS5R9hL/?=
+ =?us-ascii?Q?27SmxqgEerVzJIGeXMO/QAupl7+jfcMHDu7nbRsAnqOooJUeyYxPLzS/lD3r?=
+ =?us-ascii?Q?ejlCA1PlbAGjQFRLswmCF8dEEhBKgHXrzon35N0uJ0KBgwJFOHTzjJu0+CQE?=
+ =?us-ascii?Q?81A585ZWx7yZpuUqSSl3WY/D+cOX3wwRuzVdfaIUzU/ffkJNE7i5gL6thSrK?=
+ =?us-ascii?Q?c2Q7wr69hlHkCrpzZV/rYdsKpF9Hb1V1AtCDWswvTO4NCsN/2rXSPtXwfu7X?=
+ =?us-ascii?Q?bN6W49LLPKlNdWdNAB6/FISUAr4pZVLqM0u3RDv3RpHbdIcVJLol6iMex667?=
+ =?us-ascii?Q?XzuXZl8/i1YHWWi81s58+L+aHZbf17dd2Oti9+5fx0hvHI1fHNua/8L5HGJt?=
+ =?us-ascii?Q?9htcdZQeJqr3kyUv28/tziQn7Ug3eBxpiZyyMb7v3y93bi/dYsuZeUr0cs5L?=
+ =?us-ascii?Q?sfy4JZcJ5DvGURih2iY50WzOp6AmTNflIgDOjfs/eQ1kkLRfv9CmjB3di96v?=
+ =?us-ascii?Q?P4WjZeEISc3wcdr+uTaIa8aOor1jZRy40pDb1uO6LND+zTxNQayuHig9XL5R?=
+ =?us-ascii?Q?LyuzF3g63/+nzQJKzIJPXtu6xbUXSBj4e1T7GXm9T6GrkQVC7Onsy9xiIuAY?=
+ =?us-ascii?Q?Cxoc3UAerDOrQKUn3+QjyHb8S4LouPwia5ancW8G3YBb/CJX/pQE7ain6YoU?=
+ =?us-ascii?Q?ovJRkdG3VV3SXPYXH/qBUi7jQjeA7iqzz/hP4HlkaJ5AuwqX5/jqJuay271b?=
+ =?us-ascii?Q?L2bAmFPE0huGWLJkbjQpjoS8C1/rKbistJEjNQRRFOo7Jy+PdudaOTZ/dcRn?=
+ =?us-ascii?Q?3oaT2uiGlGAbe4cPRisV9gadlJe8kH4fiI73T2zNFqLHR60IF4N7SxYcArQ0?=
+ =?us-ascii?Q?IkeY7OyWUw=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9b2a992a-f5e4-4cef-72c3-08deb7e3aeb4
+X-MS-Exchange-CrossTenant-AuthSource: DBBPR04MB7500.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 May 2026 09:22:45.2492
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: JzTXPk2BBppldB5dVl801BGebAPFuEJl4RY6MGUDm40QNApnxGYpJhrnsmQQ8b/BSbLx2PxCa2b4CUvZUg0X/Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB7949
 
-On Fri, May 22, 2026 at 5:06=E2=80=AFPM Magnus Karlsson
-<magnus.karlsson@gmail.com> wrote:
->
-> On Thu, 21 May 2026 at 15:42, Jason Xing <kerneljasonxing@gmail.com> wrot=
-e:
-> >
-> > On Thu, May 21, 2026 at 8:02=E2=80=AFPM Maciej Fijalkowski
-> > <maciej.fijalkowski@intel.com> wrote:
-> > >
-> > > On Thu, May 21, 2026 at 07:53:27AM +0800, Jason Xing wrote:
-> > > > On Thu, May 21, 2026 at 12:10=E2=80=AFAM Maciej Fijalkowski
-> > > > <maciej.fijalkowski@intel.com> wrote:
-> > > > >
-> > > > > On Wed, May 20, 2026 at 08:42:42AM +0800, Jason Xing wrote:
-> > > > > > From: Jason Xing <kernelxing@tencent.com>
-> > > > > >
-> > > > > > When a multi-buffer packet exceeds MAX_SKB_FRAGS and triggers -=
-EOVERFLOW,
-> > > > > > only the current descriptor is released from the TX ring. The r=
-emaining
-> > > > > > continuation descriptors of the same packet stay in the ring. S=
-ince
-> > > > > > xs->skb is set to NULL after the drop, the TX loop picks up the=
-se
-> > > > > > leftover frags and misinterprets each one as the beginning of a=
- new
-> > > > > > packet, corrupting the packet stream.
-> > > > > >
-> > > > > > Fix this by adding a drain_cont flag to xdp_sock. When overflow=
- occurs
-> > > > > > and the dropped descriptor has XDP_PKT_CONTD set, the flag is r=
-aised,
-> > > > > > so we have a chance to examine and handle the potential remaini=
-ng descs
-> > > > > > of this big overflow'ed skb.
-> > > > > >
-> > > > > > When the last fragment (without XDP_PKT_CONTD) is processed, th=
-e flag
-> > > > > > is cleared and the loop continues to process subsequent descrip=
-tors
-> > > > > > with the remaining budget. This behavior follows how previous x=
-mit path
-> > > > > > treats overflow packets.
-> > > > > >
-> > > > > > Closes: https://lore.kernel.org/all/20260425041726.85FB3C2BCB2@=
-smtp.kernel.org/
-> > > > > > Fixes: cf24f5a5feea ("xsk: add support for AF_XDP multi-buffer =
-on Tx path")
-> > > > > > Signed-off-by: Jason Xing <kernelxing@tencent.com>
-> > > > > > ---
-> > > > > >  include/net/xdp_sock.h |  1 +
-> > > > > >  net/xdp/xsk.c          | 19 +++++++++++++++++++
-> > > > > >  2 files changed, 20 insertions(+)
-> > > > > >
-> > > > > > diff --git a/include/net/xdp_sock.h b/include/net/xdp_sock.h
-> > > > > > index ebac60a3d8a1..8b51876efbed 100644
-> > > > > > --- a/include/net/xdp_sock.h
-> > > > > > +++ b/include/net/xdp_sock.h
-> > > > > > @@ -80,6 +80,7 @@ struct xdp_sock {
-> > > > > >        * call of __xsk_generic_xmit().
-> > > > > >        */
-> > > > > >       struct sk_buff *skb;
-> > > > > > +     bool drain_cont;
-> > > > > >
-> > > > > >       struct list_head map_list;
-> > > > > >       /* Protects map_list */
-> > > > > > diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
-> > > > > > index 0a6203c42576..f4add7be8c93 100644
-> > > > > > --- a/net/xdp/xsk.c
-> > > > > > +++ b/net/xdp/xsk.c
-> > > > > > @@ -1062,11 +1062,30 @@ static int __xsk_generic_xmit(struct so=
-ck *sk)
-> > > > > >                       goto out;
-> > > > > >               }
-> > > > > >
-> > > > > > +             if (unlikely(xs->drain_cont)) {
-> > > > >
-> > > > > Hi Jason,
-> > > > >
-> > > > > could we get away from introducing dedicated boolean to xdp_sock =
-for
-> > > > > handling this rare case?
-> > > >
-> > > > I've tried several ways, but they didn't work. Please see the short
-> > > > conversation with Stan:
-> > > > https://lore.kernel.org/all/CAL+tcoA6Cu3P-y2wYjJ_R9cSeRkW2tswY1Lveq=
-H=3Duxd2McuR-w@mail.gmail.com/
-> > > >
-> > > > That means we always rely on a flag (that is either static or like
-> > > > this patch) to recognize how we treat this abnormal descs.
-> > > >
-> > > > >
-> > > > > > +                     unsigned long flags;
-> > > > > > +                     u32 idx;
-> > > > > > +
-> > > > > > +                     spin_lock_irqsave(&xs->pool->cq_prod_lock=
-, flags);
-> > > > > > +                     idx =3D xskq_get_prod(xs->pool->cq);
-> > > > > > +                     xskq_prod_write_addr(xs->pool->cq, idx, d=
-esc.addr);
-> > > > > > +                     xskq_prod_submit_n(xs->pool->cq, 1);
-> > > > > > +                     spin_unlock_irqrestore(&xs->pool->cq_prod=
-_lock, flags);
-> > > > >
-> > > > > It feels a bit off to do this cleanup one-by-one.
-> > > >
-> > > > Actually no, it adheres to the basic send logic in copy mode.
-> > >
-> > > Not really. Here you are producer to cq which we have batched variant=
-s for
-> > > usage.
-> > >
-> > > But after second thoughts I don't think it would be worth to put any
-> > > further effort onto optimizations here. Anyways, even though generic =
-xmit
-> > > is a whole bunch of mess, maybe you could pull this out onto a helper
-> > > function?
-> >
-> > Sure thing. My takeaway is that it will be refactored once as the
-> > batch xmit feature lands in the tree.
->
-> I agree that the code has become really messy since I get a headache
-> when looking at it ;-). Do you want me to take a stab at simplifying
-> it?
+The mac_filter array in struct enetc_pf is sized as
+ENETC_MAX_NUM_MAC_FLT, defined as (ENETC_MAX_NUM_VFS + 1) * MADDR_TYPE.
+This resulted in an array of 6 elements (for 2 VFs), but only the first
+2 entries are actually used.
 
-Thanks for your help. But not now probably. I think we can focus on
-the batch xmit feature[1] where the main xmit path will be rewritten.
-I admit it's still complex to understand :S Could you shed some light
-on the series that I'm going to post?
+The PF driver maintains MAC filters for unicast (UC) and multicast (MC)
+addresses, indexed by the enum enetc_mac_addr_type (UC=0, MC=1). The
+code only iterates over MADDR_TYPE (2) entries and directly accesses
+mac_filter[UC] and mac_filter[MC]. The extra space allocated for
+(ENETC_MAX_NUM_VFS * MADDR_TYPE) entries is never used because VF MAC
+filtering is not implemented yet.
 
-[1]: https://lore.kernel.org/all/20260415082654.21026-1-kerneljasonxing@gma=
-il.com/
+Remove the ENETC_MAX_NUM_MAC_FLT macro and size the array as
+MADDR_TYPE, reducing the allocation from 6 to 2 entries. This saves 48
+bytes per PF and better reflects the actual usage.
 
-Thanks,
-Jason
+This change has no functional impact. Future VF MAC filtering support
+will move mac_filter into struct enetc_si, allowing each SI (PF or VF)
+to maintain its own independent filter table.
 
-> >
-> > >
-> > > >
-> > > > >
-> > > > > I wonder if it could be covered by xsk_drop_skb() where you would=
- walk the
-> > > > > tx ring and store addrs at xsk_addrs and then use xsk_cq_submit_a=
-ddr_locked() ?
-> > > > >
-> > > > > OTOH, in theory the amount of frags after we hit the overflow cas=
-e could
-> > > > > be well over MAX_SKB_FRAGS again so xsk_addrs wouldn't be able to=
- cover
-> > > > > them.
-> > > >
-> > > > Right, this is why we now put the logic into the xmit path just lik=
-e
-> > > > other kinds of descriptors. We need to check and send it under a
-> > > > series of protections like the check of cq pressure and budget. I
-> > > > don't think it's an exception to escape the check logic. The whole
-> > > > process should be fast as there is no need to build skb and send it=
- to
-> > > > the driver as long as this case is recognized.
-> > > >
-> > > > Thanks,
-> > > > Jason
-> > > >
-> > > > >
-> > > > > > +
-> > > > > > +                     xs->tx->invalid_descs++;
-> > > > > > +                     xskq_cons_release(xs->tx);
-> > > > > > +                     if (!xp_mb_desc(&desc))
-> > > > > > +                             xs->drain_cont =3D false;
-> > > > > > +                     continue;
-> > > > > > +             }
-> > > > > > +
-> > > > > >               skb =3D xsk_build_skb(xs, &desc);
-> > > > > >               if (IS_ERR(skb)) {
-> > > > > >                       err =3D PTR_ERR(skb);
-> > > > > >                       if (err !=3D -EOVERFLOW)
-> > > > > >                               goto out;
-> > > > > > +                     if (xp_mb_desc(&desc))
-> > > > > > +                             xs->drain_cont =3D true;
-> > > > > >                       err =3D 0;
-> > > > > >                       continue;
-> > > > > >               }
-> > > > > > --
-> > > > > > 2.43.7
-> > > > > >
-> >
+Signed-off-by: Wei Fang <wei.fang@nxp.com>
+---
+ drivers/net/ethernet/freescale/enetc/enetc_pf.h | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
+
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc_pf.h b/drivers/net/ethernet/freescale/enetc/enetc_pf.h
+index 5b4094f8d5d4..64e2c738e8e7 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc_pf.h
++++ b/drivers/net/ethernet/freescale/enetc/enetc_pf.h
+@@ -5,8 +5,6 @@
+ #include <linux/phylink.h>
+ 
+ #define ENETC_PF_NUM_RINGS	8
+-#define ENETC_MAX_NUM_MAC_FLT	((ENETC_MAX_NUM_VFS + 1) * MADDR_TYPE)
+-
+ #define ENETC_VLAN_HT_SIZE	64
+ 
+ enum enetc_vf_flags {
+@@ -43,7 +41,7 @@ struct enetc_pf {
+ 	int total_vfs; /* max number of VFs, set for PF at probe */
+ 	struct enetc_vf_state *vf_state;
+ 
+-	struct enetc_mac_filter mac_filter[ENETC_MAX_NUM_MAC_FLT];
++	struct enetc_mac_filter mac_filter[MADDR_TYPE];
+ 
+ 	struct enetc_msg_swbd rxmsg[ENETC_MAX_NUM_VFS];
+ 	struct work_struct msg_task;
+-- 
+2.34.1
+
