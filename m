@@ -1,95 +1,90 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B98D392806
-	for <netdev@vger.kernel.org>; Fri, 22 May 2026 23:13:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDBFA349CE0;
+	Fri, 22 May 2026 23:16:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779491610; cv=none; b=bmThzCgetB8cLn5t0B3R189OBVsxxQgECe6ld8LO9a0FukQdFxl3JwjCvWj8e8Wu7/FwrQ9VGYyttB/a3xPvY/7oKQnlBcfjtjTRednMD7pustPyfJ+GO9cMwq1pouB6RV3Mmwugw/eRVBXc1kQ0SSfIxrfZYj4xiebHReoGv9k=
+	t=1779491806; cv=none; b=ux/hzjsDiLIg8R3ifLHoMUO71ssdDa8cLYI0E1Cj/m7wXupujbduCForTZvku4MhKw1eF5jM8Fep65T1Av9OJiGMKCUPPOGaB0Fso6dYwB7eQBapi4ULD7s4BGi/4/D5yXZ3D4egNsV5pVa4W3jrAcpfQ0e8ak2lC3fUlFmCI2w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779491610; c=relaxed/simple;
-	bh=+dO38vWVnPntzPMa6uWC5oXOE+r4y4zZiPcV234zR58=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dyk3ZL7qhg7/h2tsiQjI8VqK5X50vxLFDOGf/xwjRsxKhdn2uAssi3vkEeLqAmsr+2oAcxrLVw67zhdeM0j+HN+5sAoAGhkbJJMUCy7GrXs2c+8vR6LALqBqMrV4wkd02eZT47fpsZ1Y4kV2UfTysrdejEexC3R1OGJZlgTsRi8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VOi7taJk; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779491806; c=relaxed/simple;
+	bh=StHrlVUUmzb+0tfAA8jqXT51fFPejI83n3WwwobANrk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qB9cO5smyBmbvzQ6FLS+VZ+LUYYZZ/QDmx5HynAMB+hwcsc2jV2o6UH11ntzGah3cF3wjcM7pKdUZ+zz7/s8czmvPL1qp/XtmfHN+LnfHoOh3p9gDCBD4Lfj8PqYPUZNAwcAHaGw5cRHZAkz52V7vs++6UbHuBVROXEbzXm5uIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=cQgaLdXI; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VOi7taJk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC4771F00A3D;
-	Fri, 22 May 2026 23:13:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779491609;
-	bh=FrLOXVycPbX1V8Qou87V+wl/TjWQPo0IAe2l/b5YCBc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=VOi7taJkeV4gT0yx2oTOQRPrkh8gdN8WVjOYSt64+68M+/8OTx3DFHNrjyW14IB3J
-	 nDENDecKfRFkIaOZezgbbo9Tf+ChwbYXJa6F3gRkHHg9YDGZ7q08QrHZalp2O3pBSW
-	 xT8QYlwiiOnDOj0/9eBsXqXbjNlIMJ2pwCx2c8kYVi/59OIm8xo2H4vVQ2fn+rznri
-	 TuQMDBRs/UGLgHFADeuiRarU9MaaDqsw5snqmxhoevztvhmGo1y+hTJqV6/DbmJtI4
-	 Z7fkQNzDs1k73JOIfu6dyKH4WH1VR9SEdjQZ/6iWemKJnX2Y12ImpRZEeff8qTNRTx
-	 4YArulAG+aFzg==
-From: Jakub Kicinski <kuba@kernel.org>
-To: davem@davemloft.net
-Cc: netdev@vger.kernel.org,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	andrew+netdev@lunn.ch,
-	horms@kernel.org,
-	maxime.chevallier@bootlin.com,
-	danieller@nvidia.com,
-	petrm@nvidia.com,
-	o.rempel@pengutronix.de,
-	idosch@nvidia.com,
-	Jakub Kicinski <kuba@kernel.org>,
-	andrew@lunn.ch
-Subject: [PATCH net 9/9] ethtool: cmis: validate fw->size against start_cmd_payload_size
-Date: Fri, 22 May 2026 16:13:12 -0700
-Message-ID: <20260522231312.1710836-10-kuba@kernel.org>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260522231312.1710836-1-kuba@kernel.org>
-References: <20260522231312.1710836-1-kuba@kernel.org>
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="cQgaLdXI"
+Received: by linux.microsoft.com (Postfix, from userid 1204)
+	id 86F2520B7167; Fri, 22 May 2026 16:16:30 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 86F2520B7167
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1779491790;
+	bh=y1lc4L9BFBDBlfLkybR1gQIiJ0WLDpMWxH052ZQxeiM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=cQgaLdXIsOnU/PkHFd4EeXtvQ/avsIF6H39eMhb3kkiGz0w7/GDTmNu97uFcmc8tZ
+	 hQrLZVVYA+PYF9xpwrE/WfG8d0zRXtkaNnbf94K6gjTyDtPftA9JvW5wcsl2ydmNVU
+	 RZ/VAieUBalnH+z+T5riH3i2hexQ63JHzlSBv0kg=
+Date: Fri, 22 May 2026 16:16:30 -0700
+From: Dipayaan Roy <dipayanroy@linux.microsoft.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
+	decui@microsoft.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+	edumazet@google.com, pabeni@redhat.com, leon@kernel.org,
+	longli@microsoft.com, kotaranov@microsoft.com, horms@kernel.org,
+	shradhagupta@linux.microsoft.com, ssengar@linux.microsoft.com,
+	ernis@linux.microsoft.com, shirazsaleem@microsoft.com,
+	linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org,
+	stephen@networkplumber.org, jacob.e.keller@intel.com,
+	dipayanroy@microsoft.com, leitao@debian.org, kees@kernel.org,
+	john.fastabend@gmail.com, hawk@kernel.org, bpf@vger.kernel.org,
+	daniel@iogearbox.net, ast@kernel.org, sdf@fomichev.me,
+	yury.norov@gmail.com
+Subject: Re: [PATCH net 2/2] net: mana: Skip redundant detach in queue reset
+ handler if already detached
+Message-ID: <ahDjzv9gXR2xiRBW@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+References: <20260518194654.735580-1-dipayanroy@linux.microsoft.com>
+ <20260518194654.735580-3-dipayanroy@linux.microsoft.com>
+ <20260520171703.689c5462@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260520171703.689c5462@kernel.org>
 
-cmis_fw_update_start_download() copies start_cmd_payload_size bytes
-from the firmware blob into the CDB LPL vendor_data[] payload without
-validating that the FW has enough data.
+On Wed, May 20, 2026 at 05:17:03PM -0700, Jakub Kicinski wrote:
+> On Mon, 18 May 2026 12:43:51 -0700 Dipayaan Roy wrote:
+> > +	/* If already detached (indicates detach succeeded but attach failed
+> > +	 * previously). Now skip mana detach and just retry mana_attach.
+> > +	 */
+> > +	if (!netif_device_present(ndev))
+> > +		goto attach;
+> > +
+> >  	err = mana_detach(ndev, false);
+> >  	if (err) {
+> >  		netdev_err(ndev, "mana_detach failed: %d\n", err);
+> >  		goto dealloc_pre_rxbufs;
+> >  	}
+> >  
+> > +attach:
+> 
+> goto's are acceptable for error unwinding, not to jump around 
+> a function seemingly to avoid indenting something. Please use
+> normal constructs or perhaps move the netif_device_present()
+> into mana_detach() as an early exit condition? 
+>
 
-Since the start_cmd_payload_size can only be ~120B an image too short
-is most likely corrupted, so reject it.
+Hi Jakub,
 
-Fixes: c4f78134d45c ("ethtool: cmis_fw_update: add a layer for supporting firmware update using CDB")
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
----
-CC: andrew@lunn.ch
-CC: danieller@nvidia.com
-CC: petrm@nvidia.com
----
- net/ethtool/cmis_fw_update.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+Thanks for the suggestions, Moving netif_device_present() into mana_detach
+as an early exit, is a better option and will cover all cases. I will send
+v2 with the suggestion.
 
-diff --git a/net/ethtool/cmis_fw_update.c b/net/ethtool/cmis_fw_update.c
-index 16190c97e1f7..291d04d2776a 100644
---- a/net/ethtool/cmis_fw_update.c
-+++ b/net/ethtool/cmis_fw_update.c
-@@ -130,6 +130,14 @@ cmis_fw_update_start_download(struct ethtool_cmis_cdb *cdb,
- 	u8 lpl_len;
- 	int err;
+Regards
+Dipayaan Roy
  
-+	if (fw_update->fw->size < vendor_data_size) {
-+		ethnl_module_fw_flash_ntf_err(fw_update->dev,
-+					      &fw_update->ntf_params,
-+					      "Firmware image too small for module's start payload",
-+					      NULL);
-+		return -EINVAL;
-+	}
-+
- 	pl.image_size = cpu_to_be32(fw_update->fw->size);
- 	memcpy(pl.vendor_data, fw_update->fw->data, vendor_data_size);
- 
--- 
-2.54.0
-
+> >  	err = mana_attach(ndev);
