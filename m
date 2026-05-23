@@ -1,50 +1,51 @@
-Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from canpmsgout03.his.huawei.com (canpmsgout03.his.huawei.com [113.46.200.218])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A9782DE6FF;
-	Sat, 23 May 2026 10:54:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A26C8346A10;
+	Sat, 23 May 2026 10:55:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779533671; cv=none; b=nZTZAN62N7x5hBPaXmIKljH1iCmAJj7lT5DZ5IQJLaLSozlM/XyGUTZ5w3KbkRfnXhH0oDLkVc3HfBafrhu30E8ZP7CnZZ3kJ0u6GZz/gP9GfSPGoCSsVAMj84WxujNFw3IHnzRDr7LjfPEmb8y84T0pu00UsWR6tJBBN1fZ7Kg=
+	t=1779533721; cv=none; b=gC/a/wNaS+7ktHOWQGcXgjQ796YWpXSnrTTjlMVFNMWM5LfNTDOpnktV/11b/e72eBajb7c7lT5P9KwmcKIGNAF4wDfkLbEo1FjhuX+z3AZXRMzzC0Tb9oS5TAw43S00K211pFQAXB7Mg/b1nQDGaXbtlH5b8LJZq1xPDAwdJt0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779533671; c=relaxed/simple;
-	bh=zTz9Xujk5okwTtSW/xMyTH8S2TiMnq0G+0JeauP3jgg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f62NERpQLIuFNCYCJB4dsnGd+6olX4okDDxt1VuiS9yIHkNZKVPgoId3M8ER+3AP6NOkrkBhbk9ot6+fF/Wy9YI0CpNI/Sew2/iI5eay1R8UBbC32YqBJro3PTjUt1VQJgtrhn+q9j1TKYf8yUL9v2nXU+O5Bb4JH4IUTF/flvU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=BMYCOxLG; arc=none smtp.client-ip=83.149.199.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
+	s=arc-20240116; t=1779533721; c=relaxed/simple;
+	bh=Rb8F1vVwH/kqjO6EcZvw7goIKZHEldO/pKOCUqLSNt8=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=mzIYSHGuxVjG9SKPXmw8Qq/GimVZOF/JRpY+/BxP/xYvsvDWzEjlRWfcRr3hhpjiCbtoGFVcLiMs95woAmglpVwR8C/3QokKWc7782TecAB5xUn7WgS1odNiCsRHtnsc5Bu8kklztF8hq/2OLSjuNvYuJp9vmx/PyR/I0UVwtlg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=k91HxXJb; arc=none smtp.client-ip=113.46.200.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="BMYCOxLG"
-Received: from debian.intra.ispras.ru (unknown [10.10.165.7])
-	by mail.ispras.ru (Postfix) with ESMTPSA id 8FB8445F79A5;
-	Sat, 23 May 2026 10:48:38 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 8FB8445F79A5
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-	s=default; t=1779533318;
-	bh=8I718NLjrOXhp1MUXTCsy+d8AWGiFC7W1rspmjLD5AY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BMYCOxLGrOrud9ScziUNDU1ygAidUlF95YB1j+UDO4VAinUZRe4nufDZYRf3yp+4o
-	 1hAGxGkzEvwngHl3OUm1BOvlL29qN45K90jazRSwbPp6Wd4SNlMlbTAMLCh/5wrqV1
-	 bQ2U1uus6rCn94zb0F3C5OeRiAxt5JMfrTa/FIjU=
-From: Fedor Pchelkin <pchelkin@ispras.ru>
-To: Jose Abreu <Jose.Abreu@synopsys.com>
-Cc: Fedor Pchelkin <pchelkin@ispras.ru>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jie Deng <Jie.Deng1@synopsys.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org
-Subject: [PATCH net 2/2] net: dwc-xlgmac: handle hw initialization failure in xlgmac_start()
-Date: Sat, 23 May 2026 13:45:28 +0300
-Message-ID: <20260523104740.295650-2-pchelkin@ispras.ru>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260523104740.295650-1-pchelkin@ispras.ru>
-References: <20260523104740.295650-1-pchelkin@ispras.ru>
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="k91HxXJb"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=UAdT9DzZISjzzrLRw+Xv2Q6P3doPws7i47j3i2ULYmg=;
+	b=k91HxXJbwJnGBFmHhGvASxJw8WfJK6xCcBigVTpJH0ml6M3SBzlKvnkdsyBETX6cBMInHTPsd
+	wyU7lcy40xDc2wPeKC8yoaQvRDyuvFvEKxUXJCgt4IMSFQKydMzaruG1UW9RUYGCK5dj3pb3d9n
+	kfwtgNZcp0NqdmcizRrJfSE=
+Received: from mail.maildlp.com (unknown [172.19.163.104])
+	by canpmsgout03.his.huawei.com (SkyGuard) with ESMTPS id 4gMzPf0r8mzpSvR;
+	Sat, 23 May 2026 18:47:50 +0800 (CST)
+Received: from kwepemk100013.china.huawei.com (unknown [7.202.194.61])
+	by mail.maildlp.com (Postfix) with ESMTPS id 495BE4048F;
+	Sat, 23 May 2026 18:55:09 +0800 (CST)
+Received: from localhost.huawei.com (10.90.31.46) by
+ kwepemk100013.china.huawei.com (7.202.194.61) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.36; Sat, 23 May 2026 18:55:08 +0800
+From: Jijie Shao <shaojijie@huawei.com>
+To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <horms@kernel.org>
+CC: <shenjian15@huawei.com>, <liuyonglong@huawei.com>,
+	<chenhao418@huawei.com>, <huangdonghua3@h-partners.com>,
+	<yangshuaisong@h-partners.com>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <shaojijie@huawei.com>
+Subject: [PATCH V2 net-next 2/6] net: hns3: improve the unused_tuple parameter setting
+Date: Sat, 23 May 2026 18:54:45 +0800
+Message-ID: <20260523105449.661848-3-shaojijie@huawei.com>
+X-Mailer: git-send-email 2.33.0
+In-Reply-To: <20260523105449.661848-1-shaojijie@huawei.com>
+References: <20260523105449.661848-1-shaojijie@huawei.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -52,78 +53,62 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ kwepemk100013.china.huawei.com (7.202.194.61)
 
-hw_ops->init() can fail, thus leaving uninitialized TX and RX descriptor
-objects.  Later when they are updated in xlgmac_dev_xmit(), there is a
-NULL pointer dereference.
+Currently, when the tc tool is used to set flow table rules, the IP address
+and MAC address can be configured separately, for example, src_xx or dst_xx
+can be configured separately.
 
-general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] PREEMPT SMP KASAN NOPTI
-KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
-CPU: 1 PID: 31 Comm: kworker/1:1 Not tainted 6.1.164+ #122
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.1-0-g3208b098f51a-prebuilt.qemu.org 04/01/2014
-Workqueue: mld mld_ifc_work
-RIP: 0010:xlgmac_dev_xmit+0x62f/0x1260 drivers/net/ethernet/synopsys/dwc-xlgmac-hw.c:827
-Call Trace:
- <TASK>
- xlgmac_xmit+0xa14/0x1196 drivers/net/ethernet/synopsys/dwc-xlgmac-net.c:766
- __netdev_start_xmit include/linux/netdevice.h:4896 [inline]
- netdev_start_xmit include/linux/netdevice.h:4910 [inline]
- xmit_one net/core/dev.c:3683 [inline]
- dev_hard_start_xmit+0x126/0x680 net/core/dev.c:3699
- sch_direct_xmit+0x18a/0x7e0 net/sched/sch_generic.c:345
- __dev_xmit_skb net/core/dev.c:3920 [inline]
- __dev_queue_xmit+0x19ef/0x3da0 net/core/dev.c:4325
- dev_queue_xmit include/linux/netdevice.h:3051 [inline]
- neigh_resolve_output net/core/neighbour.c:1568 [inline]
- neigh_resolve_output+0x563/0x880 net/core/neighbour.c:1548
- neigh_output include/net/neighbour.h:545 [inline]
- ip6_finish_output2+0xb4f/0x2390 net/ipv6/ip6_output.c:138
- __ip6_finish_output+0x48c/0x1300 net/ipv6/ip6_output.c:205
- ip6_finish_output net/ipv6/ip6_output.c:216 [inline]
- NF_HOOK_COND include/linux/netfilter.h:291 [inline]
- ip6_output+0x250/0x910 net/ipv6/ip6_output.c:237
- dst_output include/net/dst.h:453 [inline]
- NF_HOOK.constprop.0+0x111/0x8a0 include/linux/netfilter.h:302
- mld_sendpack+0x67b/0xd40 net/ipv6/mcast.c:1825
- mld_send_cr net/ipv6/mcast.c:2126 [inline]
- mld_ifc_work+0x7a5/0xd80 net/ipv6/mcast.c:2656
- process_one_work+0x97f/0x1470 kernel/workqueue.c:2292
- worker_thread+0x5a1/0x1090 kernel/workqueue.c:2439
- kthread+0x2e1/0x3a0 kernel/kthread.c:376
- ret_from_fork+0x22/0x30 arch/x86/entry/entry_64.S:295
+Therefore, the driver needs to check whether the address is all zero in
+keys, such as FLOW_DISSECTOR_KEY_IPV4_ADDRS, FLOW_DISSECTOR_KEY_IPV6_ADDRS,
+and FLOW_DISSECTOR_KEY_ETH_ADDRS.
+If the address is all zero, the tuple is not configured.
+In this case, the driver adds the tuple to unused_tuple.
 
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-
-Fixes: 65e0ace2c5cd ("net: dwc-xlgmac: Initial driver for DesignWare Enterprise Ethernet")
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
 ---
- drivers/net/ethernet/synopsys/dwc-xlgmac-net.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ .../net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c  | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/drivers/net/ethernet/synopsys/dwc-xlgmac-net.c b/drivers/net/ethernet/synopsys/dwc-xlgmac-net.c
-index 37101dc50d04..1a6906f8fc44 100644
---- a/drivers/net/ethernet/synopsys/dwc-xlgmac-net.c
-+++ b/drivers/net/ethernet/synopsys/dwc-xlgmac-net.c
-@@ -564,7 +564,9 @@ static int xlgmac_start(struct xlgmac_pdata *pdata)
- 	struct net_device *netdev = pdata->netdev;
- 	int ret;
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+index 89fff510befd..6eb4c6e4df4e 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+@@ -7242,6 +7242,10 @@ static void hclge_get_cls_key_mac(const struct flow_rule *flow,
+ 		ether_addr_copy(rule->tuples_mask.dst_mac, match.mask->dst);
+ 		ether_addr_copy(rule->tuples.src_mac, match.key->src);
+ 		ether_addr_copy(rule->tuples_mask.src_mac, match.mask->src);
++		if (is_zero_ether_addr(match.key->dst))
++			rule->unused_tuple |= BIT(INNER_DST_MAC);
++		if (is_zero_ether_addr(match.key->src))
++			rule->unused_tuple |= BIT(INNER_SRC_MAC);
+ 	} else {
+ 		rule->unused_tuple |= BIT(INNER_DST_MAC);
+ 		rule->unused_tuple |= BIT(INNER_SRC_MAC);
+@@ -7290,6 +7294,10 @@ static int hclge_get_cls_key_ip(const struct flow_rule *flow,
+ 		rule->tuples.dst_ip[IPV4_INDEX] = be32_to_cpu(match.key->dst);
+ 		rule->tuples_mask.dst_ip[IPV4_INDEX] =
+ 						be32_to_cpu(match.mask->dst);
++		if (!match.key->src)
++			rule->unused_tuple |= BIT(INNER_SRC_IP);
++		if (!match.key->dst)
++			rule->unused_tuple |= BIT(INNER_DST_IP);
+ 	} else if (addr_type == FLOW_DISSECTOR_KEY_IPV6_ADDRS) {
+ 		struct flow_match_ipv6_addrs match;
  
--	hw_ops->init(pdata);
-+	ret = hw_ops->init(pdata);
-+	if (ret)
-+		goto err_init;
- 	xlgmac_napi_enable(pdata, 1);
- 
- 	ret = xlgmac_request_irqs(pdata);
-@@ -580,7 +582,7 @@ static int xlgmac_start(struct xlgmac_pdata *pdata)
- err_napi:
- 	xlgmac_napi_disable(pdata, 1);
- 	hw_ops->exit(pdata);
--
-+err_init:
- 	return ret;
- }
- 
+@@ -7302,6 +7310,10 @@ static int hclge_get_cls_key_ip(const struct flow_rule *flow,
+ 				      match.key->dst.s6_addr32);
+ 		ipv6_addr_be32_to_cpu(rule->tuples_mask.dst_ip,
+ 				      match.mask->dst.s6_addr32);
++		if (ipv6_addr_any((struct in6_addr *)match.key->src.s6_addr32))
++			rule->unused_tuple |= BIT(INNER_SRC_IP);
++		if (ipv6_addr_any((struct in6_addr *)match.key->dst.s6_addr32))
++			rule->unused_tuple |= BIT(INNER_DST_IP);
+ 	} else {
+ 		rule->unused_tuple |= BIT(INNER_SRC_IP);
+ 		rule->unused_tuple |= BIT(INNER_DST_IP);
 -- 
-2.53.0
+2.33.0
 
