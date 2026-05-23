@@ -1,69 +1,194 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA8DB25B0AA
-	for <netdev@vger.kernel.org>; Sat, 23 May 2026 10:34:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 531B035B62F
+	for <netdev@vger.kernel.org>; Sat, 23 May 2026 10:38:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779532501; cv=none; b=HY7m8V7ewTMqHv++0K+lHBtFBUeGl1kp+MhqJXL8ec3vOcBP73790FHQDPZsj57xoHdp4jlpQngM4n64GL/taXaqhcSZ5MXTcSDNFtg0r09IxkEQ1LB1YAYwZ3GDLDqVcsOuiYTaLjPXfzUEw/IAQ7smPErI19uyXyxjpjdeAWc=
+	t=1779532717; cv=none; b=uyYaVtBpM6K9ul8urvSAPI/6nIPHrlB4sav2ctXPBA0FHtPOJCgrIL7n6YTntNo09B32tsi4AZzr/J7ZgemHivGwjJ3cMtuXw9AEMBmC66FNCutHCuJge7NAjlqYZDRsapf1F9cR1QpwC9NYHr2lVoBJf1MVVPDJrU4mf8qFIAM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779532501; c=relaxed/simple;
-	bh=UhDVeAgs5MM60bf4Z0fUuZTJS8vHpaji8I67tg2mEgM=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=tABnUryC4zpH9GcJUn9OVNZobIGj8SZs0KVf+TK/62xPCA2yy7/Lr9m6QuSOYqAM1bSNu2Kc9NGvCTonmdoatsVGOv6UM/lK5IzWU0f7RrqkadPa5D2SigE7k78wIDOrM5xrkXAlqeXlAZT1LfWKCO7j0zzKQYWOU+vnUEvxXEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=ES/THfEM; arc=none smtp.client-ip=1.95.21.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
+	s=arc-20240116; t=1779532717; c=relaxed/simple;
+	bh=r96JOp9R34HEUV22PZQUHKH7n3Vz+9m3zkZvWSSQcK4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=sZIcVzLBoiDet9OCnwiom2sd4LWrkTGOLwFyVJ6MfhexEjWLFs5OJzQ80OQ+uNeHEEQFshhheGvqIZnvuh8znfC5wjOO1pmY6fwSnH9OEDjdme8KY9aQHmCUqjBu7L6rdETJU7EGz7YV2OAB2NWxIRx33F41LMqOkkEShP3cUk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=xnlGqQUf; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=GRMhNQ1j; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=xnlGqQUf; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=GRMhNQ1j; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="ES/THfEM"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
-	s=s110527; h=Message-ID:Date:MIME-Version:To:Subject:From:
-	Content-Type; bh=oij44dKMQDraqYM66PoX/o84/gh89pogadBAxRYI4WM=;
-	b=ES/THfEMSqwLAi2rX7woOhYft2me3Kw16hy91UQXGF1nW2j0HetWlNAJdre4VL
-	uweQS0mnPSc3vDTa8XP4Gjr6Dl9JLcQe307uxTV37OGDg1DdGgwlESpDDfQyfOQt
-	wa7nkbDnwzy/SVq6/7usC6O8K0axrvrDJZXJ4rHFQIbzY=
-Received: from [100.70.220.18] (unknown [])
-	by gzsmtp2 (Coremail) with UTF8SMTPA id Ms8vCgD3P_a_fxFqYOLFAA--.3661S2;
-	Sat, 23 May 2026 18:21:53 +0800 (CST)
-Message-ID: <a3a9146c-1f46-490a-a5cf-aa81988b312a@yeah.net>
-Date: Sat, 23 May 2026 18:21:56 +0800
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="xnlGqQUf";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="GRMhNQ1j";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="xnlGqQUf";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="GRMhNQ1j"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 121296C4FC;
+	Sat, 23 May 2026 10:38:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1779532709; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=INOb8p2qQ2j6UV7dIOHrRtti/e52Y7oFE/NTKHENeNU=;
+	b=xnlGqQUfb0kpFq1Qrg/oyL5VxlmnRUC9UQhGQz+ghsiycJln1lYN1+K0CuXcS8M5Drhc3+
+	CLXPtE8vQkish/z8OuwOjXN6Jr9GDCsMIWVsmQLEFcAcPOpcsAJwWHid8SMvVi+MT3zoT6
+	Hx3F/fKFSd5osVdCfoV4y90UR2KCT+k=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1779532709;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=INOb8p2qQ2j6UV7dIOHrRtti/e52Y7oFE/NTKHENeNU=;
+	b=GRMhNQ1jM9BRHBOLpmACbJNBwMlBlx0cl15bsERag1V2cKpIv5xe379fSYG7TU8TUBZ40o
+	KrZAhnZkQ/JfoDAg==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1779532709; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=INOb8p2qQ2j6UV7dIOHrRtti/e52Y7oFE/NTKHENeNU=;
+	b=xnlGqQUfb0kpFq1Qrg/oyL5VxlmnRUC9UQhGQz+ghsiycJln1lYN1+K0CuXcS8M5Drhc3+
+	CLXPtE8vQkish/z8OuwOjXN6Jr9GDCsMIWVsmQLEFcAcPOpcsAJwWHid8SMvVi+MT3zoT6
+	Hx3F/fKFSd5osVdCfoV4y90UR2KCT+k=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1779532709;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=INOb8p2qQ2j6UV7dIOHrRtti/e52Y7oFE/NTKHENeNU=;
+	b=GRMhNQ1jM9BRHBOLpmACbJNBwMlBlx0cl15bsERag1V2cKpIv5xe379fSYG7TU8TUBZ40o
+	KrZAhnZkQ/JfoDAg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 69E9E593A8;
+	Sat, 23 May 2026 10:38:28 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id mKNjFqSDEWpGXAAAD6G6ig
+	(envelope-from <fmancera@suse.de>); Sat, 23 May 2026 10:38:28 +0000
+From: Fernando Fernandez Mancera <fmancera@suse.de>
+To: netdev@vger.kernel.org
+Cc: linux-kselftest@vger.kernel.org,
+	horms@kernel.org,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	davem@davemloft.net,
+	idosch@nvidia.com,
+	dsahern@kernel.org,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	=?UTF-8?q?=C5=81ukasz=20Stelmach?= <steelman@post.pl>
+Subject: [PATCH 1/2 net-next v5] ipv6: addrconf: fix temp address generation after prefix deprecation
+Date: Sat, 23 May 2026 12:38:10 +0200
+Message-ID: <20260523103811.3790-1-fmancera@suse.de>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: luizcmpc@gmail.com
-Cc: edumazet@google.com, ncardwell@google.com, netdev@vger.kernel.org,
- pabeni@redhat.com
-References: <CAHx7jf_HP3HOENCWa-nb3tMa4U_RXgXpYL38CsVmuMFqhyUpDw@mail.gmail.com>
-Subject: Re: [PATCH net] tcp: tcp_acceptable_seq select SND.UNA when SND.WND
- is 0
-From: xietangxin <xietangxin@yeah.net>
-In-Reply-To: <CAHx7jf_HP3HOENCWa-nb3tMa4U_RXgXpYL38CsVmuMFqhyUpDw@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:Ms8vCgD3P_a_fxFqYOLFAA--.3661S2
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvj4RJUUUUUUUU
-X-CM-SenderInfo: x0lh3tpqj0x0o61htxgoqh3/1tbiIALuI2oRf8LBDQAA3l
+X-Spam-Score: -3.30
+X-Spam-Level: 
+X-Spamd-Result: default: False [-3.30 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-0.999];
+	MIME_GOOD(-0.10)[text/plain];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	internal_greylist_whitelist(0.00)[10.150.64.97];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:mid]
+X-Spam-Flag: NO
 
-Hi Luiz,
+When a router temporarily deprecates an IPv6 prefix (either by sending a
+Router Advertisement with Preferred Lifetime = 0 or by letting the
+lifetime expire) and later restores it, the kernel permanently loses its
+ability to generate temporary privacy addresses (RFC 8981) for that
+prefix.
 
-I meet a issue that strongly resembles the zero-window stall described in Bug #213827,
-and I found your patch thread.
+This happens because the address worker attempts to generate a
+replacement temporary address when the current one nears expiration. As
+the base prefix is deprecated already, the generation fails after
+marking the temporary address as already having spawned a replacement
+(ifp->regen_count++).
 
-Since it has been a while, I am writing to check if this issue was eventually resolved,
-and what the latest or finalized approach looks like.
+When the router eventually restores the prefix, the temporary address
+becomes active again. However, once it naturally expires, the address
+worker sees this temporary address already tried to generate one and
+skips the regeneration.
 
-If you have a patch， could you please share it with us?
-We have a reproducer/environment ready and would be more than happy to
-backport, test, and help validate your solution.
+Fix the issue by resetting the regen_count check of the latest temp
+address generated for the prefix updated by the incoming RA.
 
-Thanks again for your time and for investigating this tricky corner case!
+Reported-by: Łukasz Stelmach <steelman@post.pl>
+Closes: https://lore.kernel.org/netdev/87340td30q.fsf%25steelman@post.pl/
+Suggested-by: Ido Schimmel <idosch@nvidia.com>
+Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
+---
+v2: adjusted commit message, adjusted the implementation to cover all
+race conditions
+v3: regen now if ipv6_create_tempaddr failed due to timer to avoid an
+infinite loop as we restart the loop and we need to check now against
+prefered_lft again.
+v4: change the proposed fix completely, now we address the problem when
+doing manage_tempaddrs().
+v5: reset regen_count for the most recent temp address when a non
+0-lft RA arrives.
+---
+ net/ipv6/addrconf.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
+diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
+index da0f07e21e3f..d7b03196725f 100644
+--- a/net/ipv6/addrconf.c
++++ b/net/ipv6/addrconf.c
+@@ -1174,6 +1174,7 @@ ipv6_add_addr(struct inet6_dev *idev, struct ifa6_config *cfg,
+ 	ipv6_link_dev_addr(idev, ifa);
+ 
+ 	if (ifa->flags&IFA_F_TEMPORARY) {
++		/* manage_tempaddrs() relies on addresses being added to the head */
+ 		list_add(&ifa->tmp_list, &idev->tempaddr_list);
+ 		in6_ifa_hold(ifa);
+ 	}
+@@ -2602,8 +2603,10 @@ static void manage_tempaddrs(struct inet6_dev *idev,
+ 			     __u32 valid_lft, __u32 prefered_lft,
+ 			     bool create, unsigned long now)
+ {
+-	u32 flags;
++	u32 orig_prefered_lft = prefered_lft;
+ 	struct inet6_ifaddr *ift;
++	bool reset_done = false;
++	u32 flags;
+ 
+ 	read_lock_bh(&idev->lock);
+ 	/* update all temporary addresses in the list */
+@@ -2638,6 +2641,11 @@ static void manage_tempaddrs(struct inet6_dev *idev,
+ 			prefered_lft = max_prefered;
+ 
+ 		spin_lock(&ift->lock);
++		/* the first match is the most recent temp address */
++		if (!reset_done && orig_prefered_lft > 0) {
++			ift->regen_count = 0;
++			reset_done = true;
++		}
+ 		flags = ift->flags;
+ 		ift->valid_lft = valid_lft;
+ 		ift->prefered_lft = prefered_lft;
 -- 
-Best regards,
-Tangxin Xie
+2.53.0
 
