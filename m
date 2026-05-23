@@ -1,59 +1,56 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 219A82F9D89;
-	Sat, 23 May 2026 02:04:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8B502EC086
+	for <netdev@vger.kernel.org>; Sat, 23 May 2026 02:07:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779501872; cv=none; b=A8XuX/4UPh9n3vD4nkEN+dJT7ZqIx2PCnPBp6BT1/v5qqT7OgPe9rZGnLmb/Z2HY7bXFyRR06EKLzd7IP0T7+WeHb0lw57+zjw9PAFR1BUXfKshvamXypGfaVoaXOlqM3pXX5TjzlP5gNEFulUtH9r6+VVyN0qJf44vGpAaj7HY=
+	t=1779502045; cv=none; b=tExC7u6dVkpWg9yBQvf4Wog1PQWlNKV0UtUi8OOmz3opW7RcJD2Llse0Vv0IxVgerKHiktJ/QI2bCbSSzMLd503N3XHYhcxN2C3H8FLbK/W73Nxix4m1Z19jTp1N4ab+5idxiqTE9lxSLswac+b9LnVuL35hLuSNIl2akdl2e2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779501872; c=relaxed/simple;
-	bh=fGi9yGlZ0q5byT9au7IMWauGYrYhzbWbLQITkJV6E7w=;
+	s=arc-20240116; t=1779502045; c=relaxed/simple;
+	bh=fJT2mctPN1ZzPF3J8EVRJFiOYHiF9+itk9KDbhZaLt4=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=txT+OlAL0Sqvg31usy3zZBy7AmcE+VsPCfJFL6zzropTJdgRarz/p0iw+MTwGtd+F21AtpeA//YH4CvmDDrQT2+e8+xTE5lmTYPCkfjFdRM5gtY3pu0A5f9lH2SQBvny3LMTR0JjGSiJLXLJNmwyhv+D5V+fSTG8xbeeGwR1I6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n7t6sf+F; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=utnmbtVvGUn9/uIMvf6Q54poQU20jCjWx595EU0pw+Q4a+vMUUM6mnqyTUW6u4IdpwwDL11KWpbpY0p3eQY+iCgDF1bi7/4U86XiRWqvoI+M1toK/Eq49KvkYYQaKefzVVE/xd6IXge/zZySKf/JKHTfxj3Lw5L02bCF4rdo8/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MG5cAtMF; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n7t6sf+F"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E24E1F000E9;
-	Sat, 23 May 2026 02:04:18 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MG5cAtMF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E78AB1F000E9;
+	Sat, 23 May 2026 02:07:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779501859;
-	bh=fGi9yGlZ0q5byT9au7IMWauGYrYhzbWbLQITkJV6E7w=;
+	s=k20260515; t=1779502044;
+	bh=7iDHBvlMULb3DYNJPbCTUBiDOeAnTyhc1wHdai30hFU=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=n7t6sf+FE3vP8YoQyqI6cQjY5Xwhy43e2uYq3BJAYWWXOGE6+nwl9RpZ4/d11+jg0
-	 oHM7ek+V4xerdzyfgCeYhSONxgfJDY6c/d6pS8re2du9BKaZ5c+mopSUlfUVwqyNoB
-	 DLuutO7wOMbiLEjXQNxt0ANC/droPABZD/gIkqJjCl1l/7XSDXwguZJtPRbboGcmxj
-	 VFWfXARJtbOALWWHl8xNA7D6H6NaCLVCt11VNAnTfTEhOpdilGPDGlR9BlK3umhHSq
-	 3HQHYJfKMaYxfrNEA4OZbSmChQ7x4/Z+dJDHHB+r0iynHRWY4MQn8ghaUJeFZkMNWe
-	 hBrE0HvxITvOA==
-Date: Fri, 22 May 2026 19:04:17 -0700
+	b=MG5cAtMFKQ0p7amTqHYXe04p+t+f7WZIpzZFUmICfasVJF9lNFfVPwGJwliVbRclW
+	 DP4jzXT60/phVG7UAHUMBrlDvMzG1ddxSEGKTSpRLNfr7twFeNHr12PbTtox9iWn7F
+	 53EsN1AB6QONYDuClOUOYEcMswGCcmTsKfOauCuh+mibmWkYJTN9VY4QdYC13t24uy
+	 67w2D69oIW57kf0IAGoKN69VYI1aJ5ak/iOvdCMYGbk9e+Q2iS9xkT0G6yjaIVxwsG
+	 AFyOeakJMn/OLOT2FRxihmBAuXUx0X99hTm/ey0/CeVv79HfRXuukbw3U2tq1PuYne
+	 s/KlcCL3kjb6Q==
+Date: Fri, 22 May 2026 19:07:23 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Jens Emil Schulz =?UTF-8?B?w5hzdGVyZ2FhcmQ=?=
- <jensemil.schulzostergaard@microchip.com>
-Cc: <UNGLinuxDriver@microchip.com>, Andrew Lunn <andrew@lunn.ch>, "Vladimir
- Oltean" <olteanv@gmail.com>, "David S. Miller" <davem@davemloft.net>, "Eric
- Dumazet" <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon
- Horman <horms@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof
- Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Woojung
- Huh <woojung.huh@microchip.com>, Russell King <linux@armlinux.org.uk>,
- Steen Hegelund <Steen.Hegelund@microchip.com>, Daniel Machon
- <daniel.machon@microchip.com>, <linux-kernel@vger.kernel.org>,
- <netdev@vger.kernel.org>, <devicetree@vger.kernel.org>
-Subject: Re: [PATCH net-next v5 0/9] net: dsa: add DSA support for the
- LAN9645x switch chip family
-Message-ID: <20260522190417.53ab9cc4@kernel.org>
-In-Reply-To: <20260518-dsa_lan9645x_switch_driver_base-v5-0-968fbf34ffa3@microchip.com>
-References: <20260518-dsa_lan9645x_switch_driver_base-v5-0-968fbf34ffa3@microchip.com>
+To: Louis Scalbert <louis.scalbert@6wind.com>
+Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, jv@jvosburgh.net,
+ edumazet@google.com, pabeni@redhat.com, fbl@redhat.com, andy@greyhouse.net,
+ shemminger@vyatta.com, maheshb@google.com, jonas.gorski@gmail.com
+Subject: Re: [PATCH net v6 4/4] selftests: bonding: add test for lacp_strict
+ mode
+Message-ID: <20260522190723.609b8dc5@kernel.org>
+In-Reply-To: <20260520112539.798275-5-louis.scalbert@6wind.com>
+References: <20260520112539.798275-1-louis.scalbert@6wind.com>
+	<20260520112539.798275-5-louis.scalbert@6wind.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Mon, 18 May 2026 14:24:55 +0200 Jens Emil Schulz =C3=98stergaard wrote:
-> This series provides the Microchip LAN9645X Switch driver.
+On Wed, 20 May 2026 13:25:39 +0200 Louis Scalbert wrote:
+>  	bond_ipsec_offload.sh \
+> +	bond_lacp_strict.sh \
+>  	bond_lacp_prio.sh \
+>  	bond_macvlan_ipvlan.sh \
 
-Looks like this needs a rebase.
+Please maintain the sort order.
