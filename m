@@ -1,188 +1,97 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+Received: from mail-ot1-f70.google.com (mail-ot1-f70.google.com [209.85.210.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4ED739659A
-	for <netdev@vger.kernel.org>; Sat, 23 May 2026 12:24:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E2D5397B06
+	for <netdev@vger.kernel.org>; Sat, 23 May 2026 12:32:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.70
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779539047; cv=none; b=foUXJC9b//loCfX3FNYO1lWAZ4bEwLXvZ/FnRNq6Aw2/o8dcHaS0/Hbn3V0IkCXJRTyr05jz11+a2419wex50MldXKt+1M+gFB7R679lnFDACUBont7hQLocSVFOBH21ku+I7gZ4b+oWZKV5RTNXd0ZS4ff9jvprZlNHI+hKP4k=
+	t=1779539565; cv=none; b=rl0yg9FT+bgeA+yLcGAdqu5pQ2LaZNsRU4dLPPbzGCCvPG/dRZY+4u/3Ct4A9V2xVlVglCvOwSgFMzTcbenXqRlk2zafPGS2kNU48HrEOIjwzY9phQJIBPZaQMfnN3LYnOW+wz54f4fGhsNbP9V1Jsyo4W+USbc7SQxjJeLC4zw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779539047; c=relaxed/simple;
-	bh=8rJY2Ypo57R1HTvGgB8L4jUKXcQhCUj/+EHwQuN+KV4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lgqPARq0O90scXG9LuGqXTt0LWrclGffoaACCyUWr2iUg9zZ9U/QTWmyFYxIVlr01Rn5wV+f6QoDFdCZOAyWz9dcqyWcjxLaYbRt8AhAVdN9AZL5v6TAiMa21N5tyXDI41OYzTDIE1eNMMogJAluktJfFJHW6qD1Y92VvLA/Hhc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=o74NdlAO; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="o74NdlAO"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2be1dd4af34so68747915ad.1
-        for <netdev@vger.kernel.org>; Sat, 23 May 2026 05:24:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779539045; x=1780143845; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=BUftknpjAzJRHNFFrDtQsWg7bJX0Pe38bqsMwsZfQGk=;
-        b=o74NdlAOj3ICbxFo4EkbTJq2LrnAthPzBqOHmIW0z3gIdN7nRnYN4mOMPttEmGjl9a
-         SUQnbYqNoul5Qy0sYZE+QEFITIXO6EKjb6YiwINqJnkZmUuKna7dDw9aG3ZLop0667Je
-         VBgeqFBTFibjFadTOcgU7RCkT45qowHFtHtYsoDrDtLK9nzxsg3YIt1LtHWsDkr9gLaZ
-         5fgDqzCusqT6GXm+ZQ7vKi8qs1jEk20eMGzULgwREunOpecmeIzulgujkgzfHlOL3bGR
-         LeEn3VsjMKpmIBc1jKlDm5727vWTEEKrscKH19pNw/S/GASyRyj+4IVWuiNqB1oHjzeU
-         PRJw==
+	s=arc-20240116; t=1779539565; c=relaxed/simple;
+	bh=2iMZfBIn5nycdxjdPo0gENzsy2SA4k+QTrMiEs94Li4=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=tGX75pYl9+iJOQ52PCAll3K1HmUeRafQRB+4cJouRi4LL5conoA4BdTU2/1WOcAMpbNZ5CrvdEy/6uATHXKc0GiTrKsTYhXpO5pVvvjFuegxHa2T8KuVlEGyw/Cabyivko0VZWJF1PgM/hkasIjdnGGC1y+rq8XVaJODMMEXi3E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.210.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-ot1-f70.google.com with SMTP id 46e09a7af769-7dce1e67fccso13204158a34.2
+        for <netdev@vger.kernel.org>; Sat, 23 May 2026 05:32:44 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779539045; x=1780143845;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=BUftknpjAzJRHNFFrDtQsWg7bJX0Pe38bqsMwsZfQGk=;
-        b=agicr2lTxmSPsks9hub64bXh7dZkQpi6Tw+ENQxADqigF0lBefwoPiF2zyQn8nPmIW
-         1IhBbMBXbyRD8soTHTm8ss6ZliQ7pr1XdkbALkTOgsW77L2xx72Kdn91p7oMOcMCpA1D
-         1s5TZf6cRsy/cul0M639MVotHyiFiOpw4vZR+1VSQrUMShWIwAyxzOHWkNEvobxK9bB8
-         PVLZJUX40I9ioTSMPgrZuSFAE9oOdFBqhmWp2DZ4q8EqSU9I4jyfOfFo4/i2xBsATXAL
-         rEbKtcukPmZF0TLKRWneUPf4WnBDjQrUB8w6u6Mun9QD605dkw020G1Ako7AnzOmHShh
-         A5WQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9B38aoaRRk7pUFzVcubP+GR2sOHp0+C2GGE9b2KZ0oIuAi4DppvtOQ/tytq605xBvnJe4EN3I=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwFdASXIdwOMIvuH+ZmKBHBfB/JMZ8nW6J0NS3/fuEZi5hOhtep
-	1+1zD4yiY5+gCb6pLzaxPG5MzmNaZDe7Si7o1jtKTK19g/TAo3YWRHvc
-X-Gm-Gg: Acq92OGv3A/ywJvGkJ97a7Ffgr60fQBSpRPh5Egh4LoUCmYn8gHWToijOMBnrqRWco2
-	EujBpIlWV/o4HEf/rC6ZtL7VSux4F8UWYd9g/Ox1n9n8v2JWvgaDP+3cWbtjZM2oc/5PBPKpnkE
-	si72BL0E0Qsq8CFKm2YtZSnV70q9R3aKl8ELQ8Rq6cEtHvlVlEuEqnNiehn6kwv0pebSfHGft2X
-	OjGa+4YkyKFgiBHFjEPLEgAGQSkhT4aDFFhgSMWkJtNEyvmngcNxkGSr+SQU26UwzDtwyAMa9Sk
-	c/nxsy4EpbHFjsK72eS768AWRQebzNOomMqRuDi3+dMvyhXV060aUdvzAFTVSRLgKVNs10ExCqx
-	GIqLogHOSuM6JbQ4lReqw/iGf0nnxpY+vzgpx2b2/etJdFtJ0FivjWyc9rVWNV2e7MmIQp4JG6d
-	wxYiEz0Cvkemow80bkxdW7Y9QbEpc8CBVulQ==
-X-Received: by 2002:a17:903:440f:b0:2b0:67a7:5c4b with SMTP id d9443c01a7336-2beb0603fbemr81368385ad.28.1779539044856;
-        Sat, 23 May 2026 05:24:04 -0700 (PDT)
-Received: from [192.168.89.2] ([125.149.177.227])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2beb58b2ebcsm45002225ad.49.2026.05.23.05.24.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 23 May 2026 05:24:03 -0700 (PDT)
-Message-ID: <5315a2f6-3504-4660-8a64-51f7f6b69a45@gmail.com>
-Date: Sat, 23 May 2026 21:24:00 +0900
+        d=1e100.net; s=20251104; t=1779539564; x=1780144364;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=XjN/8bUJHs0WxGi/8da/u/0LPkmLERNRTOj5hPC2Y1I=;
+        b=Ki8lfkGGn8iXfBP+HPDQqKp5dz8yBb8khFl0tnYDzQ+j+lPFcRv/Rt9B4w+r5+k9cH
+         Q8FLJPwx+uDzNO0GJwHB5C2aKpXkHtxkpsTIGxjCj7vm2yrRY5IlB0IIISQiya+hT31A
+         vehSzGuL0e1/m0Gmyg/zmMH1DEH2XWCsaS5b7EiXEIKG1RPN79YUtReo/wULgZoQBM3I
+         iyekRZHSP6mSJPFbF+6F2knWTvFkJhneB0QRRnuKofCrC20AlTyhaUkeUdG/bO9fXCuW
+         +WOpHr+FFXK2Axnf7nhxnK+F7x5mdkOp1wcogVpDhpa2NRvVODGoIa32yh0ozCJWw7Bs
+         pcjw==
+X-Forwarded-Encrypted: i=1; AFNElJ/1NoLmrvHGFNeMMnVcc8MqKRI7Yd6L76StsxEC5qxarzMB/LSbB7bUJdbp0k26NFO6JjLOmVk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyRrNxBITTZpJJD/GRvOO3yX+TYTmbqUsNVTziCjOOYc6sEd33q
+	ebA6/2BS3ppteU5LvskEeSBubyGez/yUsUDLP+QDoWECYRZSEIYFE19heR3gCp0OWYdNAiX+xYF
+	O6IZ7JklmD8W7B3/ABnK0PJRgPvAbkMJZ7vUMXqrQDsy0ArYKPoQbK4xiUF0=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/3] Add packet-mode ESP offload for Airoha/EIP93
-To: Christian Marangi <ansuelsmth@gmail.com>,
- Antoine Tenart <atenart@kernel.org>, Herbert Xu
- <herbert@gondor.apana.org.au>, "David S . Miller" <davem@davemloft.net>,
- Lorenzo Bianconi <lorenzo@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Steffen Klassert <steffen.klassert@secunet.com>
-Cc: linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
- netdev@vger.kernel.org
-References: <20260523121522.3023992-1-hurryman2212@gmail.com>
-Content-Language: en-US
-From: Jihong Min <hurryman2212@gmail.com>
-In-Reply-To: <20260523121522.3023992-1-hurryman2212@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-Received: by 2002:a05:6820:222a:b0:69b:5696:e63f with SMTP id
+ 006d021491bc7-69d7ebbfcb2mr3321397eaf.24.1779539563773; Sat, 23 May 2026
+ 05:32:43 -0700 (PDT)
+Date: Sat, 23 May 2026 05:32:43 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a119e6b.170a0220.35b2b7.000c.GAE@google.com>
+Subject: [syzbot] Monthly net report (May 2026)
+From: syzbot <syzbot+list4c894a328683bccef30a@syzkaller.appspotmail.com>
+To: linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
+Hello net maintainers/developers,
 
+This is a 31-day syzbot report for the net subsystem.
+All related reports/information can be found at:
+https://syzkaller.appspot.com/upstream/s/net
 
-On 5/23/26 21:15, Jihong Min wrote:
-> This series adds the missing plumbing for ESP offload engines that
-> operate on whole ESP packets instead of only exposing AES/HMAC through
-> the crypto API AEAD interface.
-> 
-> The normal ESP software path can already call into accelerated AEAD
-> algorithms, but packet-mode engines such as EIP93 can also generate and
-> consume ESP packet framing: padding, pad length, next header and ICV.
-> That needs a slightly different XFRM offload contract so the netdev
-> driver can hand the skb to a packet backend rather than trying to make
-> hardware fit the software trailer layout.
-> 
-> Patch 1 extends the ESP offload infrastructure for packet engines while
-> preserving the existing behavior for drivers that do not opt in.
-> Patch 2 exposes an EIP93 ESP packet backend for encapsulation and
-> decapsulation.
-> Patch 3 wires Airoha Ethernet GDM netdevs and DSA user ports to that
-> backend through xfrmdev_ops. ESP GSO and ESP TX checksum offload remain
-> disabled.
-> 
-> Runtime testing was done on a Gemtek W1700K2 running OpenWrt with the
-> same changes applied on top of a 6.18.31-based kernel.
-> 
-> Test parameters:
-> 
->   - Static IPv4 transport-mode XFRM SAs between the AP and host.
->   - ESP transform: auth hmac(sha1), enc cbc(aes) with a 128-bit AES key.
->   - iperf3 TCP test, AP as client and host as server:
->         iperf3 -c <host_ip> -P 4 -t 10
->   - The host always used normal Linux XFRM software processing.
->   - With AP ESP offload disabled, the AP also used the Linux XFRM
->     software path; in this setup, EIP93-backed AEAD crypto was still
->     available to that path.
-> 
-> Network-relevant test setup:
-> 
->   - AP: Gemtek W1700K2, Airoha AN7581/EN7581, 4x Arm Cortex-A53 at
->     1.4 GHz, 2 GiB RAM, airoha_eth wan (GDM2) netdev, 10Gb/s full-duplex,
->     MTU 9200, EIP93 crypto and IPsec packet engine present.
->   - Host: AMD Ryzen 9 9950X3D, 16 cores/32 threads, Open vSwitch,
->     MTU 9978, backed by a ConnectX-6 Dx 10Gb/s full-duplex link.
-> 
-> AP to host iperf3 result:
-> 
->   AP offload      Sender          Receiver        Retransmits
->   on              918.2 Mbit/s    913.6 Mbit/s    0
->   off             782.4 Mbit/s    778.6 Mbit/s    3569
-> 
-> This is a 17.3% receiver-side throughput improvement for the AP TX ESP
-> path in this setup, with retransmits eliminated in the offloaded run.
-> 
-> Jihong Min (3):
->   xfrm: extend ESP offload infrastructure for packet engines
->   crypto: inside-secure: add EIP93 ESP packet backend
->   net: airoha: add EIP93-backed ESP XFRM offload
-> 
->  MAINTAINERS                                   |    1 +
->  drivers/crypto/inside-secure/eip93/Kconfig    |   10 +
->  drivers/crypto/inside-secure/eip93/Makefile   |    1 +
->  .../crypto/inside-secure/eip93/eip93-ipsec.c  | 1413 ++++++++++++++++
->  .../crypto/inside-secure/eip93/eip93-main.c   |   69 +-
->  .../crypto/inside-secure/eip93/eip93-main.h   |   38 +-
->  drivers/net/ethernet/airoha/Kconfig           |   11 +
->  drivers/net/ethernet/airoha/Makefile          |    1 +
->  drivers/net/ethernet/airoha/airoha_eth.c      |   51 +-
->  drivers/net/ethernet/airoha/airoha_eth.h      |   69 +
->  drivers/net/ethernet/airoha/airoha_xfrm.c     | 1474 +++++++++++++++++
->  include/crypto/eip93-ipsec.h                  |  132 ++
->  include/linux/netdevice.h                     |    3 +
->  include/net/xfrm.h                            |    8 +-
->  net/ipv4/esp4.c                               |    6 +-
->  net/ipv4/esp4_offload.c                       |   29 +-
->  net/ipv6/esp6.c                               |    6 +-
->  net/ipv6/esp6_offload.c                       |   29 +-
->  18 files changed, 3324 insertions(+), 27 deletions(-)
->  create mode 100644 drivers/crypto/inside-secure/eip93/eip93-ipsec.c
->  create mode 100644 drivers/net/ethernet/airoha/airoha_xfrm.c
->  create mode 100644 include/crypto/eip93-ipsec.h
-> 
+During the period, 8 new issues were detected and 9 were fixed.
+In total, 76 issues are still open and 1731 have already been fixed.
+There are also 17 low-priority issues.
 
-One note I should have included in the cover letter:
+Some of the still happening issues:
 
-The hardware behavior used by this series was studied from the out-of-tree
-IPsec branch of the mtk-eip93 driver:
+Ref  Crashes Repro Title
+<1>  8628    Yes   KMSAN: uninit-value in eth_type_trans (2)
+                   https://syzkaller.appspot.com/bug?extid=0901d0cc75c3d716a3a3
+<2>  440     Yes   INFO: task hung in nsim_destroy (4)
+                   https://syzkaller.appspot.com/bug?extid=8141dcbd23a8f857798a
+<3>  341     No    possible deadlock in __ipv6_dev_mc_inc
+                   https://syzkaller.appspot.com/bug?extid=afbcf622635e98bf40d2
+<4>  228     Yes   WARNING in inet_sock_destruct (6)
+                   https://syzkaller.appspot.com/bug?extid=5b3b7e51dda1be027b7a
+<5>  21      Yes   INFO: rcu detected stall in rescuer_thread (2)
+                   https://syzkaller.appspot.com/bug?extid=d5f7a5097c24c7c2dbbb
+<6>  4       Yes   WARNING in virtio_transport_send_pkt_info (2)
+                   https://syzkaller.appspot.com/bug?extid=28e5f3d207b14bae122a
+<7>  2       Yes   memory leak in __vsock_create (2)
+                   https://syzkaller.appspot.com/bug?extid=1b2c9c4a0f8708082678
+<8>  2926    Yes   WARNING in rcu_check_gp_start_stall
+                   https://syzkaller.appspot.com/bug?extid=111bc509cd9740d7e4aa
+<9>  2062    Yes   INFO: task hung in del_device_store
+                   https://syzkaller.appspot.com/bug?extid=6d10ecc8a97cc10639f9
+<10> 1704    Yes   INFO: task hung in addrconf_dad_work (5)
+                   https://syzkaller.appspot.com/bug?extid=82ccd564344eeaa5427d
 
-  https://github.com/vschagen/mtk-eip93/tree/ipsec
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-That code was useful for understanding the EIP93 packet-mode ESP descriptor
-programming and SA record values.
+To disable reminders for individual bugs, reply with the following command:
+#syz set <Ref> no-reminders
 
-This series is not a direct import of that driver. The implementation was
-rewritten around the current upstream driver layout and the Linux XFRM
-netdev offload model, with EIP93 exposed as a packet-mode ESP backend used
-by the Airoha netdev driver.
+To change bug's subsystems, reply with:
+#syz set <Ref> subsystems: new-subsystem
 
-
-Sincerely,
-Jihong Min
+You may send multiple commands in a single email message.
