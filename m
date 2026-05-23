@@ -1,40 +1,40 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C8402DA76C
-	for <netdev@vger.kernel.org>; Sat, 23 May 2026 14:38:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C76A43597B
+	for <netdev@vger.kernel.org>; Sat, 23 May 2026 14:40:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779547126; cv=none; b=LspgpR7lRj9rYb4T3435WyoaTpd008EWrb7zPoSZuLSdT/g5Cj2qv3RpbPNFzpdIPWV8Svk6iV5HJFrk+890cD8P+cTaJWPL/WAN0Bm265n3XUATJ/S9pEJy4uh+MPKcf8as8sa7LwNCcTGSx1UMPLs9sueXDI4k+slMFdQBB48=
+	t=1779547242; cv=none; b=fMLAJDBSoJUy9xnjacTz2rhs0mb6as8wO1aeKSPhdKxvr2kHgitenZ/6V47fOYp37Ybm6hlJDSnP0uORp4v1vz+BgCUe1fEjI6Ugw1vkoI0Ess1eOKFLqa9zjrRXOYzKeTqD7eRbEsnUgsJlr5/7CH8N3OGssnW5rYt0d9Fdt+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779547126; c=relaxed/simple;
-	bh=tRrvJBKOEBkdccRzhAjYgkildSCpKTIRySaJUR81nlw=;
+	s=arc-20240116; t=1779547242; c=relaxed/simple;
+	bh=IBOatEi59SMSq5znKgRcHeVn6t8VA+W9H/MEa5KfDDw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PofyGtW/7P4JExRJDLNyLzVtW6A9xOvxpLQcm9vKg6aRNtShMk0/qQhE4wDfMIAQTA5nBm0YRiR6bT+KuIrRH95H6k++AG6+gFgZvxWFZg0uo+CrEWpH8UsqM6+dxAk4jyQLHUYciuGPC1G8xDFhSLKe33GzZsfKDX24deALKSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=QWgADDgv; arc=none smtp.client-ip=185.171.202.116
+	 In-Reply-To:Content-Type; b=cux1Tje/moZSLHnIizmA0vayC+zP/Z+IkmVbim/A25CdOC2Syb6l1T5osKAHHdlp3mfIi9fuwwwHO7TNGutqdfMeJzIpS5F9znaNkg49Q/cxEJOai6Xsezn1vgZhqgPBZbXL7X7nidcxFp1ZIStKrU5nVM5DD6smwKKwdF5RcLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=CLoDOBtP; arc=none smtp.client-ip=185.246.84.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="QWgADDgv"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="CLoDOBtP"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id E69B6C2C663;
-	Sat, 23 May 2026 14:39:36 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 5BD9A1A368B;
+	Sat, 23 May 2026 14:40:39 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id BAC9060733;
-	Sat, 23 May 2026 14:38:41 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2A15010811D8A;
-	Sat, 23 May 2026 16:38:38 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 1463760733;
+	Sat, 23 May 2026 14:40:39 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7F23F10811D8A;
+	Sat, 23 May 2026 16:40:35 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1779547120; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1779547238; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=ddFRcA+O9W2Uto6DriotJyHR7FQDKv1K4PA8XhsjtVk=;
-	b=QWgADDgv4Gv/1hP9IpotoA/W7we728U+dt1fCbE9vbNcV2V66FaGKY/6v0F3LfTFapFPJl
-	dmrdmOA11A4KpEWdWbh8pddqsXciYSCeHYOEP71/FVwVfpGwl7hS0c8sIRqe81/g3PFzob
-	bev6Suvc+bJRfIhzKG9wWvvQY/I4R0jHbBl7pleHpuXm7qLTv3ElBSlwPiaeCyLCTal0tt
-	aGk5C5LLcoxLljBaLACO5jw3/yJBc64TuUcGsaS1ecMQYeZT7UgaY+zClCPdnSfGPC0cks
-	kZRkpoPt+i/xmlmVr5OUwXTaVN37BDfbSU8xsV+m1TZYV1BrIHlZ9T4mDwQdVg==
-Message-ID: <1736d16f-ee77-44b2-94a0-33b8f14c4885@bootlin.com>
-Date: Sat, 23 May 2026 16:38:37 +0200
+	bh=H+wq1nwbkifpms2nuEiAAtFMDh6/XSwnTDwZM5GityE=;
+	b=CLoDOBtPpiUezEO/lEWT5HMwuRA43D6vQMqRUB6ZZVVe5OwnOpfWuJxq4SnB4YF6iRQlLR
+	+Wi0V32PG+mG0AV/Mdws4XUk2mrQVw/hy1oW2+iuD0zjEgDBJDiYD/7kMDbs4hVfa0oIzT
+	QSqh39JfeQdT5vrzVfwaKvH6Jic5Wvbwg2mAvvegVp9y7PlioO2PJhhn2fi3+0BNRuD006
+	DRJPJ5Nmp9kRDzxxyvwzpeAaKJtjxHOccPVH+/1+Qw+c64WDkGVJyneB2G27SiLZ05ma39
+	3+rnb0b2iBGDfxvnYLbRQLGu3wFgIdObAZ6Z/8aJsYBDXr0Hxwi5negSaNf8Jg==
+Message-ID: <7a81d215-20d4-4a5c-a12d-c3593dba832d@bootlin.com>
+Date: Sat, 23 May 2026 16:40:35 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -42,17 +42,17 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 3/9] ethtool: module: avoid racy updates to
- dev->ethtool bitfield
+Subject: Re: [PATCH net 4/9] ethtool: module: check fw_flash_in_progress under
+ rtnl_lock
 To: Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net
 Cc: netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com,
  andrew+netdev@lunn.ch, horms@kernel.org, danieller@nvidia.com,
  petrm@nvidia.com, o.rempel@pengutronix.de, idosch@nvidia.com, andrew@lunn.ch
 References: <20260522231312.1710836-1-kuba@kernel.org>
- <20260522231312.1710836-4-kuba@kernel.org>
+ <20260522231312.1710836-5-kuba@kernel.org>
 Content-Language: en-US
 From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-In-Reply-To: <20260522231312.1710836-4-kuba@kernel.org>
+In-Reply-To: <20260522231312.1710836-5-kuba@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Last-TLS-Session-Version: TLSv1.3
@@ -60,18 +60,9 @@ X-Last-TLS-Session-Version: TLSv1.3
 Hi,
 
 On 5/23/26 01:13, Jakub Kicinski wrote:
-> When reviewing other changes Gemini points out that we currently
-> update module_fw_flash_in_progress without holding any locks.
-> Since module_fw_flash_in_progress is part of a bitfield this
-> is not great, updates to other fields may be lost.
-> 
-> We could use a bool and sprinkle some READ_ONCE/WRITE_ONCE here
-> but seems like the issue is rather than the work is an unusual
-> writer. The other writers already hold the right locks. So just
-> very briefly take these locks when the work completes.
-> 
-> Note that nothing ever cancels the FW update work, so there's
-> no concern with deadlocks vs cancel.
+> ethnl_set_module_validate() inspects module_fw_flash_in_progress
+> but validate is meant for _input_ validation, not state validation.
+> rtnl_lock is not held, yet. Move the check into ethnl_set_module().
 > 
 > Fixes: 32b4c8b53ee7 ("ethtool: Add ability to flash transceiver modules' firmware")
 > Signed-off-by: Jakub Kicinski <kuba@kernel.org>
@@ -85,36 +76,37 @@ Maxime
 > CC: petrm@nvidia.com
 > CC: danieller@nvidia.com
 > ---
->   net/ethtool/module.c | 12 ++++++++++--
->   1 file changed, 10 insertions(+), 2 deletions(-)
+>   net/ethtool/module.c | 12 ++++++------
+>   1 file changed, 6 insertions(+), 6 deletions(-)
 > 
 > diff --git a/net/ethtool/module.c b/net/ethtool/module.c
-> index 392c03935e5e..cdb85e19a23b 100644
+> index cdb85e19a23b..5b49004ddf60 100644
 > --- a/net/ethtool/module.c
 > +++ b/net/ethtool/module.c
-> @@ -221,14 +221,22 @@ static void module_flash_fw_work_list_del(struct list_head *list)
->   static void module_flash_fw_work(struct work_struct *work)
->   {
->   	struct ethtool_module_fw_flash *module_fw;
-> +	struct net_device *dev;
+> @@ -120,12 +120,6 @@ ethnl_set_module_validate(struct ethnl_req_info *req_info,
+>   	if (!tb[ETHTOOL_A_MODULE_POWER_MODE_POLICY])
+>   		return 0;
 >   
->   	module_fw = container_of(work, struct ethtool_module_fw_flash, work);
-> +	dev = module_fw->fw_update.dev;
+> -	if (req_info->dev->ethtool->module_fw_flash_in_progress) {
+> -		NL_SET_ERR_MSG(info->extack,
+> -			       "Module firmware flashing is in progress");
+> -		return -EBUSY;
+> -	}
+> -
+>   	if (!ops->get_module_power_mode || !ops->set_module_power_mode) {
+>   		NL_SET_ERR_MSG_ATTR(info->extack,
+>   				    tb[ETHTOOL_A_MODULE_POWER_MODE_POLICY],
+> @@ -148,6 +142,12 @@ ethnl_set_module(struct ethnl_req_info *req_info, struct genl_info *info)
 >   
->   	ethtool_cmis_fw_update(&module_fw->fw_update);
+>   	ops = dev->ethtool_ops;
 >   
->   	module_flash_fw_work_list_del(&module_fw->list);
-> -	module_fw->fw_update.dev->ethtool->module_fw_flash_in_progress = false;
-> -	netdev_put(module_fw->fw_update.dev, &module_fw->dev_tracker);
+> +	if (dev->ethtool->module_fw_flash_in_progress) {
+> +		NL_SET_ERR_MSG(info->extack,
+> +			       "Module firmware flashing is in progress");
+> +		return -EBUSY;
+> +	}
 > +
-> +	rtnl_lock();
-> +	netdev_lock_ops(dev);
-> +	dev->ethtool->module_fw_flash_in_progress = false;
-> +	netdev_unlock_ops(dev);
-> +	rtnl_unlock();
-> +
-> +	netdev_put(dev, &module_fw->dev_tracker);
->   	release_firmware(module_fw->fw_update.fw);
->   	kfree(module_fw);
->   }
+>   	power_new.policy = nla_get_u8(tb[ETHTOOL_A_MODULE_POWER_MODE_POLICY]);
+>   	ret = ops->get_module_power_mode(dev, &power, info->extack);
+>   	if (ret < 0)
 
