@@ -1,38 +1,38 @@
-Received: from canpmsgout04.his.huawei.com (canpmsgout04.his.huawei.com [113.46.200.219])
+Received: from canpmsgout11.his.huawei.com (canpmsgout11.his.huawei.com [113.46.200.226])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B08EB348445;
-	Sat, 23 May 2026 10:55:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.219
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BBAC385D7A;
+	Sat, 23 May 2026 10:55:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.226
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779533722; cv=none; b=IOEwW55rl69s2wRe+6CC/+sjg2GDpjxh2d/x/VG6RJtSaelqpfN58fVQboMA1mdZOjEaaxjTa9zo8d9zd/Ik2NMQ6eP8HYrJkgKxiOzGZ4QOTZ3apggiTyNwj6L6XxA6ynLYQIT0e0S2BW4wZAHkxFITvpke8h4HbhIjoorkIPQ=
+	t=1779533722; cv=none; b=RNwd6Ykr4CKpQSjNl23MODClQURjNSSaE3V/T9Ib6PC4DF2dNWRnhbcjgsFIHBa/By3nK3cMhzQXCNTe9oL3Ny6/lvMaR3exF16l6WJkQfORB+/FGF22Co3AHqqVllrP7ZA0oHb7hjaQi7itKqzcT+GVX98SksS0oodRsxeDrBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1779533722; c=relaxed/simple;
-	bh=Hqw5CvC2z7dU38SmJMVeKqlDtUvFByskwrV3WYHiF/4=;
+	bh=/vSpW5x+PqiUF05ouVHDLpko8oCaMPtZFq83TAA1dP4=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Qjl6GFMPgEnfgmLNjlPC/mNEsSV6n7XBpdJpsJCN7jVJtvfjWJG4c055tdI7NasjJubYWkJrckWhAypmJ4QsSG6mg8HEbU4ZuLAHDNhAjEysDSlAeDYfkZo64hxyvxtFZPqBdv2uzrEYxfKWBtBJS8aibwBmTVJ9KqPD18s3ACs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=SVComHWC; arc=none smtp.client-ip=113.46.200.219
+	 MIME-Version:Content-Type; b=dmQBuT6klT5mAJ514SguJiargE159ThhDQGH8cip2Sc6tMBEl9zEXCXUf7SnYPSf1o2U0r+P6tNFdndkzaGYDus9Lh6AHS5MPCdposwmaElzclKL+SzVklee5atHVxx9g5V8i06M/yTgQ9T9Un65tHQH/sl83wRKLo0RiT4KPxw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=a23ZDK5H; arc=none smtp.client-ip=113.46.200.226
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="SVComHWC"
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="a23ZDK5H"
 dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
 	c=relaxed/relaxed; q=dns/txt;
 	h=From;
-	bh=e6pgzRbGQ0lkolDRDlDt4jVSgbNxhtvDpWwZ5dGiA9Y=;
-	b=SVComHWCscPmfiXrd6+2sb+NQC3c4SDCcpibpMmddFFiXn07EyKu6TwTk042DDnx8ueQQrhNY
-	bxMCqGk4vN5WU778v0u0CVTbA4lZFXMyzt5DzriBLWNoU1N4Jtb9O6E/uw3MI/yyA1mNnZtt0Sj
-	t6cqX4BpEvbVYNJNwTByXkY=
-Received: from mail.maildlp.com (unknown [172.19.163.104])
-	by canpmsgout04.his.huawei.com (SkyGuard) with ESMTPS id 4gMzP70Fgyz1prKY;
-	Sat, 23 May 2026 18:47:23 +0800 (CST)
+	bh=LXYURXlBwBbn/O39R9VhCMcMdzQOH6D/ipNxyGWteVA=;
+	b=a23ZDK5H+awZFTvQcck4fKjBag5HAQRBNOYhRDlGVrcuAAec59JHVUK4SDdQPZnozMpf8AHm1
+	dXNddZLqbw8jeenKh5eGR+3Wq85TMq5WhOstAAw2LWZXqqSCQ6eIRDV6tN5hN+A6xsS4v7TCqNR
+	8/pmt1fqUhxipfZH5wMDyvk=
+Received: from mail.maildlp.com (unknown [172.19.162.92])
+	by canpmsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4gMzP869LgzKmZn;
+	Sat, 23 May 2026 18:47:24 +0800 (CST)
 Received: from kwepemk100013.china.huawei.com (unknown [7.202.194.61])
-	by mail.maildlp.com (Postfix) with ESMTPS id C2BDB4048F;
-	Sat, 23 May 2026 18:55:08 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 8F35740565;
+	Sat, 23 May 2026 18:55:10 +0800 (CST)
 Received: from localhost.huawei.com (10.90.31.46) by
  kwepemk100013.china.huawei.com (7.202.194.61) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.36; Sat, 23 May 2026 18:55:08 +0800
+ 15.2.1544.36; Sat, 23 May 2026 18:55:09 +0800
 From: Jijie Shao <shaojijie@huawei.com>
 To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
 	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <horms@kernel.org>
@@ -40,9 +40,9 @@ CC: <shenjian15@huawei.com>, <liuyonglong@huawei.com>,
 	<chenhao418@huawei.com>, <huangdonghua3@h-partners.com>,
 	<yangshuaisong@h-partners.com>, <netdev@vger.kernel.org>,
 	<linux-kernel@vger.kernel.org>, <shaojijie@huawei.com>
-Subject: [PATCH V2 net-next 1/6] net: hns3: adjust add_cls_flower() for support more action
-Date: Sat, 23 May 2026 18:54:44 +0800
-Message-ID: <20260523105449.661848-2-shaojijie@huawei.com>
+Subject: [PATCH V2 net-next 5/6] net: hns3: debugfs support for dumping fd rules
+Date: Sat, 23 May 2026 18:54:48 +0800
+Message-ID: <20260523105449.661848-6-shaojijie@huawei.com>
 X-Mailer: git-send-email 2.33.0
 In-Reply-To: <20260523105449.661848-1-shaojijie@huawei.com>
 References: <20260523105449.661848-1-shaojijie@huawei.com>
@@ -57,179 +57,216 @@ Content-Type: text/plain
 X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
  kwepemk100013.china.huawei.com (7.202.194.61)
 
-Currently, the driver supports only HCLGE_FD_ACTION_SELECT_TC configuration
-in hclge_add_cls_flower(). Therefore, the tc parameter is included
-in the function input parameters.
+Currently, the tc tool only supports adding and deleting rules from
+the driver but does not support querying rules from the driver.
 
-The driver plans to extend this function to support
-HCLGE_FD_ACTION_SELECT_QUEUE and HCLGE_FD_ACTION_DROP_PACKET.
-Therefore, the tc parameter needs to be deleted from the input parameters
-of the function to ensure the universality of the function definition.
-
-In addition, this patch moves the check of dissector->used_keys from
-hclge_parse_cls_flower() to hclge_check_cls_flower().
+This patch adds a rule dump file in debugfs to check whether the driver's
+configuration matches the configuration issued by tc flow.
 
 Signed-off-by: Jijie Shao <shaojijie@huawei.com>
 ---
- drivers/net/ethernet/hisilicon/hns3/hnae3.h   |  2 +-
- .../net/ethernet/hisilicon/hns3/hns3_enet.c   |  3 +-
- .../hisilicon/hns3/hns3pf/hclge_main.c        | 68 ++++++++++++-------
- 3 files changed, 45 insertions(+), 28 deletions(-)
+ drivers/net/ethernet/hisilicon/hns3/hnae3.h   |   1 +
+ .../ethernet/hisilicon/hns3/hns3_debugfs.c    |   6 +
+ .../hisilicon/hns3/hns3pf/hclge_debugfs.c     | 150 ++++++++++++++++++
+ 3 files changed, 157 insertions(+)
 
 diff --git a/drivers/net/ethernet/hisilicon/hns3/hnae3.h b/drivers/net/ethernet/hisilicon/hns3/hnae3.h
-index d7c3df1958f3..a724935b655a 100644
+index a724935b655a..a8798eecd9fb 100644
 --- a/drivers/net/ethernet/hisilicon/hns3/hnae3.h
 +++ b/drivers/net/ethernet/hisilicon/hns3/hnae3.h
-@@ -778,7 +778,7 @@ struct hnae3_ae_ops {
- 				 u32 len, u8 *data);
- 	bool (*get_cmdq_stat)(struct hnae3_handle *handle);
- 	int (*add_cls_flower)(struct hnae3_handle *handle,
--			      struct flow_cls_offload *cls_flower, int tc);
-+			      struct flow_cls_offload *cls_flower);
- 	int (*del_cls_flower)(struct hnae3_handle *handle,
- 			      struct flow_cls_offload *cls_flower);
- 	bool (*cls_flower_active)(struct hnae3_handle *handle);
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-index 4c34a144d21c..6ecb32e28e79 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-@@ -2678,13 +2678,12 @@ static int hns3_setup_tc(struct net_device *netdev, void *type_data)
- static int hns3_setup_tc_cls_flower(struct hns3_nic_priv *priv,
- 				    struct flow_cls_offload *flow)
- {
--	int tc = tc_classid_to_hwtc(priv->netdev, flow->classid);
- 	struct hnae3_handle *h = hns3_get_handle(priv->netdev);
- 
- 	switch (flow->command) {
- 	case FLOW_CLS_REPLACE:
- 		if (h->ae_algo->ops->add_cls_flower)
--			return h->ae_algo->ops->add_cls_flower(h, flow, tc);
-+			return h->ae_algo->ops->add_cls_flower(h, flow);
- 		break;
- 	case FLOW_CLS_DESTROY:
- 		if (h->ae_algo->ops->del_cls_flower)
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-index e17b92a411a2..89fff510befd 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-@@ -7328,28 +7328,32 @@ static void hclge_get_cls_key_port(const struct flow_rule *flow,
- 	}
- }
- 
-+static int hclge_get_tc_flower_action(struct hclge_dev *hdev,
-+				      struct flow_cls_offload *cls_flower,
-+				      struct hclge_fd_rule *rule)
-+{
-+	struct hnae3_handle *handle = &hdev->vport[0].nic;
-+	int tc;
-+
-+	tc = tc_classid_to_hwtc(handle->netdev, cls_flower->classid);
-+	if (tc < 0 || tc > hdev->tc_max) {
-+		dev_err(&hdev->pdev->dev, "invalid traffic class: %d\n", tc);
-+		return -EINVAL;
-+	}
-+
-+	rule->action = HCLGE_FD_ACTION_SELECT_TC;
-+	rule->cls_flower.tc = tc;
-+	return 0;
-+}
-+
- static int hclge_parse_cls_flower(struct hclge_dev *hdev,
- 				  struct flow_cls_offload *cls_flower,
- 				  struct hclge_fd_rule *rule)
- {
- 	struct flow_rule *flow = flow_cls_offload_flow_rule(cls_flower);
- 	struct netlink_ext_ack *extack = cls_flower->common.extack;
--	struct flow_dissector *dissector = flow->match.dissector;
- 	int ret;
- 
--	if (dissector->used_keys &
--	    ~(BIT_ULL(FLOW_DISSECTOR_KEY_CONTROL) |
--	      BIT_ULL(FLOW_DISSECTOR_KEY_BASIC) |
--	      BIT_ULL(FLOW_DISSECTOR_KEY_ETH_ADDRS) |
--	      BIT_ULL(FLOW_DISSECTOR_KEY_VLAN) |
--	      BIT_ULL(FLOW_DISSECTOR_KEY_IPV4_ADDRS) |
--	      BIT_ULL(FLOW_DISSECTOR_KEY_IPV6_ADDRS) |
--	      BIT_ULL(FLOW_DISSECTOR_KEY_PORTS))) {
--		dev_err(&hdev->pdev->dev, "unsupported key set: %#llx\n",
--			dissector->used_keys);
--		return -EOPNOTSUPP;
--	}
--
- 	hclge_get_cls_key_basic(flow, rule);
- 	hclge_get_cls_key_mac(flow, rule);
- 	hclge_get_cls_key_vlan(flow, rule);
-@@ -7364,15 +7368,12 @@ static int hclge_parse_cls_flower(struct hclge_dev *hdev,
- }
- 
- static int hclge_check_cls_flower(struct hclge_dev *hdev,
--				  struct flow_cls_offload *cls_flower, int tc)
-+				  struct flow_cls_offload *cls_flower)
- {
-+	struct flow_rule *flow = flow_cls_offload_flow_rule(cls_flower);
-+	struct flow_dissector *dissector = flow->match.dissector;
- 	u32 prio = cls_flower->common.prio;
- 
--	if (tc < 0 || tc > hdev->tc_max) {
--		dev_err(&hdev->pdev->dev, "invalid traffic class\n");
--		return -EINVAL;
--	}
--
- 	if (prio == 0 ||
- 	    prio > hdev->fd_cfg.rule_num[HCLGE_FD_STAGE_1]) {
- 		dev_err(&hdev->pdev->dev,
-@@ -7385,12 +7386,25 @@ static int hclge_check_cls_flower(struct hclge_dev *hdev,
- 		dev_err(&hdev->pdev->dev, "prio %u is already used\n", prio);
- 		return -EINVAL;
- 	}
-+
-+	if (dissector->used_keys &
-+	    ~(BIT_ULL(FLOW_DISSECTOR_KEY_CONTROL) |
-+	      BIT_ULL(FLOW_DISSECTOR_KEY_BASIC) |
-+	      BIT_ULL(FLOW_DISSECTOR_KEY_ETH_ADDRS) |
-+	      BIT_ULL(FLOW_DISSECTOR_KEY_VLAN) |
-+	      BIT_ULL(FLOW_DISSECTOR_KEY_IPV4_ADDRS) |
-+	      BIT_ULL(FLOW_DISSECTOR_KEY_IPV6_ADDRS) |
-+	      BIT_ULL(FLOW_DISSECTOR_KEY_PORTS))) {
-+		dev_err(&hdev->pdev->dev, "unsupported key set: %#llx\n",
-+			dissector->used_keys);
-+		return -EOPNOTSUPP;
-+	}
-+
+@@ -331,6 +331,7 @@ enum hnae3_dbg_cmd {
+ 	HNAE3_DBG_CMD_TX_QUEUE_INFO,
+ 	HNAE3_DBG_CMD_FD_TCAM,
+ 	HNAE3_DBG_CMD_FD_COUNTER,
++	HNAE3_DBG_CMD_FD_RULE,
+ 	HNAE3_DBG_CMD_MAC_TNL_STATUS,
+ 	HNAE3_DBG_CMD_SERV_INFO,
+ 	HNAE3_DBG_CMD_UMV_INFO,
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c b/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c
+index 4cce4f4ba6b0..1347edac7699 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c
+@@ -273,6 +273,12 @@ static struct hns3_dbg_cmd_info hns3_dbg_cmd[] = {
+ 		.dentry = HNS3_DBG_DENTRY_FD,
+ 		.init = hns3_dbg_common_init_t2,
+ 	},
++	{
++		.name = "fd_rule",
++		.cmd = HNAE3_DBG_CMD_FD_RULE,
++		.dentry = HNS3_DBG_DENTRY_FD,
++		.init = hns3_dbg_common_init_t2,
++	},
+ 	{
+ 		.name = "service_task_info",
+ 		.cmd = HNAE3_DBG_CMD_SERV_INFO,
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_debugfs.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_debugfs.c
+index 3dab3a271aa6..5698e1140793 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_debugfs.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_debugfs.c
+@@ -2121,6 +2121,152 @@ static int hclge_dbg_dump_fd_counter(struct seq_file *s, void *data)
  	return 0;
  }
  
- static int hclge_add_cls_flower(struct hnae3_handle *handle,
--				struct flow_cls_offload *cls_flower,
--				int tc)
-+				struct flow_cls_offload *cls_flower)
- {
- 	struct hclge_vport *vport = hclge_get_vport(handle);
- 	struct hclge_dev *hdev = vport->back;
-@@ -7403,7 +7417,7 @@ static int hclge_add_cls_flower(struct hnae3_handle *handle,
- 		return -EOPNOTSUPP;
- 	}
- 
--	ret = hclge_check_cls_flower(hdev, cls_flower, tc);
-+	ret = hclge_check_cls_flower(hdev, cls_flower);
- 	if (ret) {
- 		dev_err(&hdev->pdev->dev,
- 			"failed to check cls flower params, ret = %d\n", ret);
-@@ -7420,8 +7434,12 @@ static int hclge_add_cls_flower(struct hnae3_handle *handle,
- 		return ret;
- 	}
- 
--	rule->action = HCLGE_FD_ACTION_SELECT_TC;
--	rule->cls_flower.tc = tc;
-+	ret = hclge_get_tc_flower_action(hdev, cls_flower, rule);
-+	if (ret) {
-+		kfree(rule);
-+		return ret;
-+	}
++__printf(4, 5)
++static void hclge_fd_dump_item(struct seq_file *s, const char *name,
++			       const char *suffix, const char *fmt, ...)
++{
++	va_list args;
 +
- 	rule->location = cls_flower->common.prio - 1;
- 	rule->vf_id = 0;
- 	rule->cls_flower.cookie = cls_flower->cookie;
++	seq_printf(s, "\t\t%s%s: ", name, suffix);
++
++	va_start(args, fmt);
++	seq_vprintf(s, fmt, args);
++	va_end(args);
++
++	seq_putc(s, '\n');
++}
++
++#define hclge_fd_dump_any(s, rule, type, name, fmt, key, mask)		\
++do {									\
++	typeof(s) _s = (s);						\
++	typeof(name) _name = (name);					\
++	typeof(fmt) _fmt = (fmt);					\
++									\
++	if (!((rule)->unused_tuple & BIT(type))) {			\
++		hclge_fd_dump_item(_s, _name, "", _fmt, key);		\
++		hclge_fd_dump_item(_s, _name, "_mask", _fmt, mask);	\
++	}								\
++} while (0)
++#define hclge_fd_dump_u32  hclge_fd_dump_any
++#define hclge_fd_dump_ptr  hclge_fd_dump_any
++
++#define HCLGE_IS_IPV4(ip) ({ \
++	typeof(ip) _ip = (ip); \
++	(!((_ip)[0]) && !((_ip)[1]) && !((_ip)[2]) && (_ip)[IPV4_INDEX]); })
++
++static void hclge_fd_dump_ip(struct seq_file *s,
++			     struct hclge_fd_rule *rule,
++			     u32 type, const char *name,
++			     const u32 *ip, const u32 *mask)
++{
++	__be32 be_mask[IPV6_ADDR_WORDS];
++	__be32 be_ip[IPV6_ADDR_WORDS];
++
++	if (rule->unused_tuple & BIT(type))
++		return;
++
++	ipv6_addr_cpu_to_be32(be_ip, ip);
++	ipv6_addr_cpu_to_be32(be_mask, mask);
++
++	if (HCLGE_IS_IPV4(ip))
++		hclge_fd_dump_ptr(s, rule, type, name, "%pI4",
++				  &be_ip[IPV4_INDEX], &be_mask[IPV4_INDEX]);
++	else
++		hclge_fd_dump_ptr(s, rule, type, name, "%pI6",
++				  be_ip, be_mask);
++}
++
++static void hclge_dbg_dump_fd_tuples(struct seq_file *s,
++				     struct hclge_fd_rule *rule)
++{
++	seq_puts(s, "\trule tuples:\n");
++
++	hclge_fd_dump_ptr(s, rule, INNER_DST_MAC, "dst_mac", "%pM",
++			  rule->tuples.dst_mac, rule->tuples_mask.dst_mac);
++	hclge_fd_dump_ptr(s, rule, INNER_SRC_MAC, "src_mac", "%pM",
++			  rule->tuples.src_mac, rule->tuples_mask.src_mac);
++	hclge_fd_dump_u32(s, rule, INNER_VLAN_TAG_FST, "vlan_tag", "0x%04x",
++			  rule->tuples.vlan_tag1, rule->tuples_mask.vlan_tag1);
++	hclge_fd_dump_u32(s, rule, INNER_ETH_TYPE, "ether_proto", "0x%04x",
++			  rule->tuples.ether_proto,
++			  rule->tuples_mask.ether_proto);
++	hclge_fd_dump_u32(s, rule, INNER_L2_RSV, "l2_user_def", "0x%04x",
++			  rule->tuples.l2_user_def,
++			  rule->tuples_mask.l2_user_def);
++	hclge_fd_dump_ip(s, rule, INNER_SRC_IP, "src_ip",
++			 rule->tuples.src_ip, rule->tuples_mask.src_ip);
++	hclge_fd_dump_ip(s, rule, INNER_DST_IP, "dst_ip",
++			 rule->tuples.dst_ip, rule->tuples_mask.dst_ip);
++	hclge_fd_dump_u32(s, rule, INNER_IP_TOS, "ip_tos", "0x%02x",
++			  rule->tuples.ip_tos, rule->tuples_mask.ip_tos);
++	hclge_fd_dump_u32(s, rule, INNER_IP_PROTO, "ip_proto", "0x%02x",
++			  rule->tuples.ip_proto, rule->tuples_mask.ip_proto);
++	hclge_fd_dump_u32(s, rule, INNER_L3_RSV, "l3_user_def", "0x%04x",
++			  rule->tuples.l3_user_def,
++			  rule->tuples_mask.l3_user_def);
++	hclge_fd_dump_u32(s, rule, INNER_SRC_PORT, "src_port", "0x%04x",
++			  rule->tuples.src_port, rule->tuples_mask.src_port);
++	hclge_fd_dump_u32(s, rule, INNER_DST_PORT, "dst_port", "0x%04x",
++			  rule->tuples.dst_port, rule->tuples_mask.dst_port);
++	hclge_fd_dump_u32(s, rule, INNER_L4_RSV, "l4_user_def", "0x%08x",
++			  rule->tuples.l4_user_def,
++			  rule->tuples_mask.l4_user_def);
++	hclge_fd_dump_u32(s, rule, OUTER_TUN_VNI, "outer_tun_vni", "0x%06x",
++			  rule->tuples.outer_tun_vni,
++			  rule->tuples_mask.outer_tun_vni);
++}
++
++static void hclge_dbg_dump_fd_action(struct seq_file *s,
++				     struct hclge_fd_rule *rule)
++{
++	static const char * const action_str[] = {
++		[HCLGE_FD_ACTION_SELECT_QUEUE] = "select_queue",
++		[HCLGE_FD_ACTION_DROP_PACKET]  = "drop_packet",
++		[HCLGE_FD_ACTION_SELECT_TC]    = "select_tc",
++	};
++
++	seq_printf(s, "\taction: %s\n", action_str[rule->action]);
++
++	if (rule->action == HCLGE_FD_ACTION_SELECT_QUEUE)
++		seq_printf(s, "\tqueue_id: %u\n", rule->queue_id);
++	else if (rule->action == HCLGE_FD_ACTION_SELECT_TC)
++		seq_printf(s, "\ttc: %u\n", rule->cls_flower.tc);
++}
++
++static void hclge_dbg_dump_fd_type(struct hclge_dev *hdev, struct seq_file *s)
++{
++	static const char *const rule_type_str[] = {
++		[HCLGE_FD_RULE_NONE]        = "none",
++		[HCLGE_FD_ARFS_ACTIVE]      = "arfs",
++		[HCLGE_FD_EP_ACTIVE]        = "ep",
++		[HCLGE_FD_TC_FLOWER_ACTIVE] = "tc_flow"
++	};
++
++	seq_printf(s, "fd type: %s\n", rule_type_str[hdev->fd_active_type]);
++}
++
++static int hclge_dbg_dump_fd_rule(struct seq_file *s, void *data)
++{
++	struct hclge_dev *hdev = hclge_seq_file_to_hdev(s);
++	struct hclge_fd_rule *rule;
++
++	hclge_dbg_dump_fd_type(hdev, s);
++
++	spin_lock_bh(&hdev->fd_rule_lock);
++	hlist_for_each_entry(rule, &hdev->fd_rule_list, rule_node) {
++		if (rule->state != HCLGE_FD_ACTIVE)
++			continue;
++
++		seq_printf(s, "location: %u\n", rule->location);
++		seq_printf(s, "vport_id: %u\n", rule->vf_id);
++		hclge_dbg_dump_fd_action(s, rule);
++		hclge_dbg_dump_fd_tuples(s, rule);
++	}
++	spin_unlock_bh(&hdev->fd_rule_lock);
++
++	return 0;
++}
++
+ static const struct hclge_dbg_status_dfx_info hclge_dbg_rst_info[] = {
+ 	{HCLGE_MISC_VECTOR_REG_BASE, "vector0 interrupt enable status"},
+ 	{HCLGE_MISC_RESET_STS_REG,   "reset interrupt source"},
+@@ -2913,6 +3059,10 @@ static const struct hclge_dbg_func hclge_dbg_cmd_func[] = {
+ 		.cmd = HNAE3_DBG_CMD_FD_TCAM,
+ 		.dbg_read_func = hclge_dbg_dump_fd_tcam,
+ 	},
++	{
++		.cmd = HNAE3_DBG_CMD_FD_RULE,
++		.dbg_read_func = hclge_dbg_dump_fd_rule,
++	},
+ 	{
+ 		.cmd = HNAE3_DBG_CMD_MAC_TNL_STATUS,
+ 		.dbg_read_func = hclge_dbg_dump_mac_tnl_status,
 -- 
 2.33.0
 
