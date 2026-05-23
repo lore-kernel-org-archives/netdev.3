@@ -1,96 +1,68 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA69D2D0C92;
-	Sat, 23 May 2026 02:10:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A851B2D8DC4;
+	Sat, 23 May 2026 02:14:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779502211; cv=none; b=ZSH4XWOA0pe52IdpAwyWhgQH2LpL+eRv7kehL3fc7Ti2/M4JJYzhad9ww3T38PGJ9T+ECMictQE0itLCSC96/pjXNn++isVXqUhPNUMcKc5uy+tmRcZquH2wOVmwpGxt7dqSn7q0sN3eTyqSMEw0lvMReSu6r1tk0CIaaABMhcM=
+	t=1779502467; cv=none; b=Vm4T5kLSekisKSsHrtY7zoxL8k9hN5yzvBM6bq/GwJVcD3nmfQtIbQ8D2w4O3NS4ZnU3VYujXse7cEpDb6z0se0i6scwFolL8ds5MM9eHAeMroB6T++rin4nKHpl7CPrSa+Cmw2r3PKXAlTGh/9kkUL6ZKyVbbe/SDJxoLQ7co4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779502211; c=relaxed/simple;
-	bh=nnVA24FSv+gpIlRFxPmXV8ZoJRHwoLx3Y1IQWa/cCkQ=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=ln85NzO1Np8CAJqF2U7xR/zKzM+jie432kkQm9uFuNbmSdQeMzYaVxvQTwzBVfSV/VuGU1ltw4Znzp3uHMjSjlsStIpAEG0IGPt9EZBDuvKcSzSKF4SmN1yR6AKYKRLHIdf843MRgPFmuqNytjhH/A+HK3OyvqrkQ7Ril217sY4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AGbmrqvZ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779502467; c=relaxed/simple;
+	bh=eifHLiwQHg1aF9I796N6YR/CYPSbbOq0SCt85xsNLyE=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Oh+R+qkXzcJjaXxMD97RsoWdtaQANlZCAqw1MW91PbrPF4PGZhO0fkDsWF39qj6eyNGC2aoR83/CDaZJ/W1jZxPFaTlmcUcsTVgkyhbBWmsPndVIL8Vzph0lkosTf6SxBZNh7b5/Fd23xpdv4zgNZ+QGbpJMPU8MnwHBHCtjbcY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KcJwzuvw; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AGbmrqvZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D3771F000E9;
-	Sat, 23 May 2026 02:10:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KcJwzuvw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B4991F000E9;
+	Sat, 23 May 2026 02:14:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779502210;
-	bh=cwexbUW3atHUuxBiUTlgNTLA4iU2dMsS2Z3tlktdEkw=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=AGbmrqvZq0KQ3s2Ie4j2kB90prZL3N03hQSfe1OoTO22Mf7ZlSbgGv4h0X4vUdEbn
-	 T0ec8aMAYvPgztM5AqSeANeEEc9zjeRvxuXbeoC8IlqBAfJyTqMaupzhruVcTUNFbE
-	 T6ycbfwJEE6j2birU9uBpwHES89adh3U/9TWXMyuKtHNMF1vgh5Ky/V//w/xbEkq5L
-	 LkSZ8uwdIK5xe9gvZ1uMqBkh0yZ5n7QFBKk4AH9kuBvExxxw3XR5AYFeHXMprLWcaG
-	 1PZeFZ3vIfxbFuIh+4Xq8li1fa+2qNVluwtHss/ecDjeIeEvNyGeTiqtSzK/0b4O36
-	 DomDH7DvOVI/g==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 56A123808205;
-	Sat, 23 May 2026 02:10:20 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1779502464;
+	bh=q9HDQpu0SYwrmVMHlU6yKLpIzh2dGvhhVXbCDWhJ6oU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=KcJwzuvwEwP+iOdB5KVCOVzd6iYxXj3kFxzLgDvD1jQOr8bpvP25cI5eRiVbAcLAi
+	 F4HfM9gt9OxTT0RMg4h5rbhKV3HDNZfnGvq/M9QcokEK3x2/xkbR1YgZr8Eo53V7eG
+	 1ynzCEK+RE/hoGyX9nvUfLlb5JEOEDXZwMjFnEy+f4t1XmXWLk1E11xrL5AL73RRp3
+	 gBSRQ99pttcBa619m0/uNfygr7vvplpQr9XpCcWBysOo9aZIJJxjIWIKbNhUyp/+dJ
+	 NZ/ox/pmD7FQ7DFKhD4KykfvP/0kNu6BRVlXXKPoFdbnXO2FXXJ2ED0M7q44VWZxSP
+	 5LqB0AhXor9nQ==
+Date: Fri, 22 May 2026 19:14:23 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Allison Henderson <achender@kernel.org>
+Cc: netdev@vger.kernel.org, pabeni@redhat.com, edumazet@google.com,
+ horms@kernel.org, linux-kselftest@vger.kernel.org, shuah@kernel.org
+Subject: Re: [PATCH net-next v1 0/3] selftests: rds: ROCE support follow ups
+Message-ID: <20260522191423.3ade3031@kernel.org>
+In-Reply-To: <585a18b53dbd2545224185a9f4d9f9c05ddc7e24.camel@kernel.org>
+References: <20260522215430.3748226-1-achender@kernel.org>
+	<20260522174601.3c2c2b46@kernel.org>
+	<585a18b53dbd2545224185a9f4d9f9c05ddc7e24.camel@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v3 0/8] net: dsa: microchip: Remove unnecessary
- ksz_dev_ops callbacks
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177950221889.1443443.5198644261821848371.git-patchwork-notify@kernel.org>
-Date: Sat, 23 May 2026 02:10:18 +0000
-References: <20260521-clean-ksz-2nd-series-v3-0-75c38971c19a@bootlin.com>
-In-Reply-To: <20260521-clean-ksz-2nd-series-v3-0-75c38971c19a@bootlin.com>
-To: Bastien Curutchet (Schneider Electric) <bastien.curutchet@bootlin.com>
-Cc: woojung.huh@microchip.com, UNGLinuxDriver@microchip.com, andrew@lunn.ch,
- olteanv@gmail.com, davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, linux@armlinux.org.uk, richardcochran@gmail.com,
- pascal.eberhard@se.com, miquel.raynal@bootlin.com,
- thomas.petazzoni@bootlin.com, tristram.ha@microchip.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, vladimir.oltean@nxp.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Hello:
+On Fri, 22 May 2026 18:19:35 -0700 Allison Henderson wrote:
+> On Fri, 2026-05-22 at 17:46 -0700, Jakub Kicinski wrote:
+> > On Fri, 22 May 2026 14:54:27 -0700 Allison Henderson wrote: =20
+> > > This is a follow up series to the "Add ROCE support to rds selftests"
+> > > series.  The first patch renames run.sh to rds_run.sh, and also adds
+> > > two wrappers to the TEST_PROGS target to run the same test over the
+> > > rdma and tcp transports.  The wrappers rds_rdma_run.sh and
+> > > rds_tcp_run.sh also provide self-describing names that appear on the
+> > > netdev CI dashboard. =20
+> >=20
+> > Could you make the RDMA test return XFAIL rather than skip when RXE
+> > is not available? We try to use SKIP for cases which are easy to
+> > fix, like a tool missing. We won't be running RDMA tests in netdev.. =20
+>=20
+> Sure, if you want I could also drop the wrappers since rds_run.sh default=
+s to tcp. =C2=A0
+> Then patch 1 would just be a rename.  Let me know what you prefer.
 
-This series was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Thu, 21 May 2026 08:12:35 +0200 you wrote:
-> Hi all,
-> 
-> This series continues the rework of the KSZ driver initiated by a previous
-> series (see [1]), following the discussion we had here [2].
-> 
-> The KSZ driver got way too convoluted over time because it uses a common
-> framework to handle more than 20 switches split in 5 families (see below
-> table)
-> 
-> [...]
-
-Here is the summary with links:
-  - [net-next,v3,1/8] net: dsa: microchip: don't reset on shutdown or driver removal
-    https://git.kernel.org/netdev/net-next/c/5fe0b938bde7
-  - [net-next,v3,2/8] net: dsa: microchip: bypass dev_ops->setup() and teardown() for lan937x
-    https://git.kernel.org/netdev/net-next/c/dfc5c56829b9
-  - [net-next,v3,3/8] net: dsa: microchip: bypass dev_ops->setup() and teardown() for ksz9477
-    https://git.kernel.org/netdev/net-next/c/7c494a10f937
-  - [net-next,v3,4/8] net: dsa: microchip: bypass dev_ops->setup() and teardown() for ksz8
-    https://git.kernel.org/netdev/net-next/c/4c54f910eefd
-  - [net-next,v3,5/8] net: dsa: microchip: remove dev_ops->setup() and teardown()
-    https://git.kernel.org/netdev/net-next/c/df478153cb2d
-  - [net-next,v3,6/8] net: dsa: microchip: bypass dev_ops for port_setup()
-    https://git.kernel.org/netdev/net-next/c/aa6902098914
-  - [net-next,v3,7/8] net: dsa: microchip: call DSA's phy_{read/write} to do mdio {read/write}
-    https://git.kernel.org/netdev/net-next/c/932fc72b9849
-  - [net-next,v3,8/8] net: dsa: microchip: bypass dev_ops for phy_read()/phy_write()
-    https://git.kernel.org/netdev/net-next/c/2b0c672543cd
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Dropping the new wrapper SGTM. But IIRC Matthieu suggested the split,
+we should let him also chime in.
