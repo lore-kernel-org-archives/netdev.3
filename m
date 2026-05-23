@@ -1,167 +1,59 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5965727A47F;
-	Sat, 23 May 2026 02:03:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 219A82F9D89;
+	Sat, 23 May 2026 02:04:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779501799; cv=none; b=Qwy5tHXg6oRR+zgwSYsA/JkrFTCRxgfFN+ew89PpEDfk20tMtyuRzEGKAGmiSShtkjKz0rW9Klfs7faIB9jBoXKmTLibfXlvUXI/RHczSDZPPQ6BzauoNa8TuACcg4SMpNHg6ES6EeQqnubqrwxaGTd9ArYw8C+D9xcVOU8ESyg=
+	t=1779501872; cv=none; b=A8XuX/4UPh9n3vD4nkEN+dJT7ZqIx2PCnPBp6BT1/v5qqT7OgPe9rZGnLmb/Z2HY7bXFyRR06EKLzd7IP0T7+WeHb0lw57+zjw9PAFR1BUXfKshvamXypGfaVoaXOlqM3pXX5TjzlP5gNEFulUtH9r6+VVyN0qJf44vGpAaj7HY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779501799; c=relaxed/simple;
-	bh=UCElUD480IjCnvdnwEUw59+Jfe3MIUvK0ppnG/1p0M4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PsdDu3+lAc3EDwbufP7deQ5u6kA1p+PCkznWWBkF+wS8reeWnehFGgxRPy1H8dty8Q2P3AJzqs5eD+KRpzSw7sKJ61byRhQCssb/jhaeJ5jJf2YNF/3u0ucbuIm8KAnjXb8uVAGuauWt7dDpV1rWqDuu3B5MIdG66Usg7giuS/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: by linux.microsoft.com (Postfix, from userid 1202)
-	id D5E2F20B716C; Fri, 22 May 2026 19:03:06 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com D5E2F20B716C
-From: Long Li <longli@microsoft.com>
-To: Long Li <longli@microsoft.com>,
-	Konstantin Taranov <kotaranov@microsoft.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Leon Romanovsky <leon@kernel.org>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	"K . Y . Srinivasan" <kys@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
-	Dexuan Cui <decui@microsoft.com>,
-	shradhagupta@linux.microsoft.com
-Cc: Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	linux-hyperv@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v11 5/6] net: mana: Allocate interrupt context for each EQ when creating vPort
-Date: Fri, 22 May 2026 19:02:55 -0700
-Message-ID: <20260523020258.1107742-6-longli@microsoft.com>
-X-Mailer: git-send-email 2.43.7
-In-Reply-To: <20260523020258.1107742-1-longli@microsoft.com>
-References: <20260523020258.1107742-1-longli@microsoft.com>
+	s=arc-20240116; t=1779501872; c=relaxed/simple;
+	bh=fGi9yGlZ0q5byT9au7IMWauGYrYhzbWbLQITkJV6E7w=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=txT+OlAL0Sqvg31usy3zZBy7AmcE+VsPCfJFL6zzropTJdgRarz/p0iw+MTwGtd+F21AtpeA//YH4CvmDDrQT2+e8+xTE5lmTYPCkfjFdRM5gtY3pu0A5f9lH2SQBvny3LMTR0JjGSiJLXLJNmwyhv+D5V+fSTG8xbeeGwR1I6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n7t6sf+F; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n7t6sf+F"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E24E1F000E9;
+	Sat, 23 May 2026 02:04:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779501859;
+	bh=fGi9yGlZ0q5byT9au7IMWauGYrYhzbWbLQITkJV6E7w=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=n7t6sf+FE3vP8YoQyqI6cQjY5Xwhy43e2uYq3BJAYWWXOGE6+nwl9RpZ4/d11+jg0
+	 oHM7ek+V4xerdzyfgCeYhSONxgfJDY6c/d6pS8re2du9BKaZ5c+mopSUlfUVwqyNoB
+	 DLuutO7wOMbiLEjXQNxt0ANC/droPABZD/gIkqJjCl1l/7XSDXwguZJtPRbboGcmxj
+	 VFWfXARJtbOALWWHl8xNA7D6H6NaCLVCt11VNAnTfTEhOpdilGPDGlR9BlK3umhHSq
+	 3HQHYJfKMaYxfrNEA4OZbSmChQ7x4/Z+dJDHHB+r0iynHRWY4MQn8ghaUJeFZkMNWe
+	 hBrE0HvxITvOA==
+Date: Fri, 22 May 2026 19:04:17 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Jens Emil Schulz =?UTF-8?B?w5hzdGVyZ2FhcmQ=?=
+ <jensemil.schulzostergaard@microchip.com>
+Cc: <UNGLinuxDriver@microchip.com>, Andrew Lunn <andrew@lunn.ch>, "Vladimir
+ Oltean" <olteanv@gmail.com>, "David S. Miller" <davem@davemloft.net>, "Eric
+ Dumazet" <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon
+ Horman <horms@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Woojung
+ Huh <woojung.huh@microchip.com>, Russell King <linux@armlinux.org.uk>,
+ Steen Hegelund <Steen.Hegelund@microchip.com>, Daniel Machon
+ <daniel.machon@microchip.com>, <linux-kernel@vger.kernel.org>,
+ <netdev@vger.kernel.org>, <devicetree@vger.kernel.org>
+Subject: Re: [PATCH net-next v5 0/9] net: dsa: add DSA support for the
+ LAN9645x switch chip family
+Message-ID: <20260522190417.53ab9cc4@kernel.org>
+In-Reply-To: <20260518-dsa_lan9645x_switch_driver_base-v5-0-968fbf34ffa3@microchip.com>
+References: <20260518-dsa_lan9645x_switch_driver_base-v5-0-968fbf34ffa3@microchip.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Use GIC functions to create a dedicated interrupt context or acquire a
-shared interrupt context for each EQ when setting up a vPort.
+On Mon, 18 May 2026 14:24:55 +0200 Jens Emil Schulz =C3=98stergaard wrote:
+> This series provides the Microchip LAN9645X Switch driver.
 
-The caller now owns the GIC reference across the EQ create/destroy
-lifecycle: mana_create_eq() calls mana_gd_get_gic() before creating
-each EQ and mana_destroy_eq() calls mana_gd_put_gic() after destroying
-it. The msix_index invalidation is moved from mana_gd_deregister_irq()
-to the mana_gd_create_eq() error path so that mana_destroy_eq() can
-read the index before teardown.
-
-Signed-off-by: Long Li <longli@microsoft.com>
----
- .../net/ethernet/microsoft/mana/gdma_main.c    |  2 +-
- drivers/net/ethernet/microsoft/mana/mana_en.c  | 18 +++++++++++++++++-
- include/net/mana/gdma.h                        |  1 +
- 3 files changed, 19 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/ethernet/microsoft/mana/gdma_main.c b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-index fc21c7f57e23..10d394dd9653 100644
---- a/drivers/net/ethernet/microsoft/mana/gdma_main.c
-+++ b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-@@ -912,7 +912,6 @@ static void mana_gd_deregister_irq(struct gdma_queue *queue)
- 	}
- 	spin_unlock_irqrestore(&gic->lock, flags);
- 
--	queue->eq.msix_index = INVALID_PCI_MSIX_INDEX;
- 	synchronize_rcu();
- }
- 
-@@ -1027,6 +1026,7 @@ static int mana_gd_create_eq(struct gdma_dev *gd,
- out:
- 	dev_err(dev, "Failed to create EQ: %d\n", err);
- 	mana_gd_destroy_eq(gc, false, queue);
-+	queue->eq.msix_index = INVALID_PCI_MSIX_INDEX;
- 	return err;
- }
- 
-diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
-index 571648007378..bca381f8bc7b 100644
---- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-@@ -1634,6 +1634,7 @@ void mana_destroy_eq(struct mana_port_context *apc)
- 	struct mana_context *ac = apc->ac;
- 	struct gdma_context *gc = ac->gdma_dev->gdma_context;
- 	struct gdma_queue *eq;
-+	unsigned int msi;
- 	int i;
- 
- 	if (!apc->eqs)
-@@ -1647,7 +1648,9 @@ void mana_destroy_eq(struct mana_port_context *apc)
- 		if (!eq)
- 			continue;
- 
-+		msi = eq->eq.msix_index;
- 		mana_gd_destroy_queue(gc, eq);
-+		mana_gd_put_gic(gc, !gc->msi_sharing, msi);
- 	}
- 
- 	kfree(apc->eqs);
-@@ -1664,6 +1667,7 @@ static void mana_create_eq_debugfs(struct mana_port_context *apc, int i)
- 	eq.mana_eq_debugfs = debugfs_create_dir(eqnum, apc->mana_eqs_debugfs);
- 	debugfs_create_u32("head", 0400, eq.mana_eq_debugfs, &eq.eq->head);
- 	debugfs_create_u32("tail", 0400, eq.mana_eq_debugfs, &eq.eq->tail);
-+	debugfs_create_u32("irq", 0400, eq.mana_eq_debugfs, &eq.eq->eq.irq);
- 	debugfs_create_file("eq_dump", 0400, eq.mana_eq_debugfs, eq.eq, &mana_dbg_q_fops);
- }
- 
-@@ -1672,7 +1676,9 @@ int mana_create_eq(struct mana_port_context *apc)
- 	struct gdma_dev *gd = apc->ac->gdma_dev;
- 	struct gdma_context *gc = gd->gdma_context;
- 	struct gdma_queue_spec spec = {};
-+	struct gdma_irq_context *gic;
- 	int err;
-+	int msi;
- 	int i;
- 
- 	if (WARN_ON(apc->eqs))
-@@ -1692,12 +1698,22 @@ int mana_create_eq(struct mana_port_context *apc)
- 		debugfs_create_dir("EQs", apc->mana_port_debugfs);
- 
- 	for (i = 0; i < apc->num_queues; i++) {
--		spec.eq.msix_index = (i + 1) % gc->num_msix_usable;
-+		msi = (i + 1) % gc->num_msix_usable;
-+
-+		gic = mana_gd_get_gic(gc, !gc->msi_sharing, &msi);
-+		if (IS_ERR(gic)) {
-+			err = PTR_ERR(gic);
-+			goto out;
-+		}
-+		spec.eq.msix_index = msi;
-+
- 		err = mana_gd_create_mana_eq(gd, &spec, &apc->eqs[i].eq);
- 		if (err) {
- 			dev_err(gc->dev, "Failed to create EQ %d : %d\n", i, err);
-+			mana_gd_put_gic(gc, !gc->msi_sharing, msi);
- 			goto out;
- 		}
-+		apc->eqs[i].eq->eq.irq = gic->irq;
- 		mana_create_eq_debugfs(apc, i);
- 	}
- 
-diff --git a/include/net/mana/gdma.h b/include/net/mana/gdma.h
-index e3ee85c614ec..6a65fedae38f 100644
---- a/include/net/mana/gdma.h
-+++ b/include/net/mana/gdma.h
-@@ -342,6 +342,7 @@ struct gdma_queue {
- 			void *context;
- 
- 			unsigned int msix_index;
-+			unsigned int irq;
- 
- 			u32 log2_throttle_limit;
- 		} eq;
--- 
-2.43.0
-
+Looks like this needs a rebase.
