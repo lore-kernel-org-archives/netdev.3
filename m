@@ -1,62 +1,76 @@
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f193.google.com (mail-dy1-f193.google.com [74.125.82.193])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 518FD34F48A;
-	Sat, 23 May 2026 10:55:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.187
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F6F12D1F44
+	for <netdev@vger.kernel.org>; Sat, 23 May 2026 11:04:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.193
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779533734; cv=none; b=rWphNRLSpE/l9Au3LLHK0GZneN6SswRuu0UPdy+9wHm8xT+S935Gfihg9cFqE2jGQNC6BzujYY+/mfYjZoWRPbordPVBMHVXQG/nt1MEpzXRU5DqIAOOkDOcNFQyV0FpbIUXi39dwkH7RY9w46fW1qpCZ1mSjv0Y5Rd0dXQ68yE=
+	t=1779534247; cv=none; b=qkOXuJ0NsEiZwocEiRFb20dT5dvSIbwm+w6EMVuDzOAJIB88Gm1ApYjWizq7+dJSra5RuNGa0d+Ckwc+lV2OXBGsFXoX2vc1bD/X1pQ0Ix5pz+FKzAjP5EYSr2ngJPSw4Erjk5R6ztSjlzUO/xIYYGyYDmbpjPtNJuMI0uA6j1g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779533734; c=relaxed/simple;
-	bh=4IRMK1SH8vkPGzTRoAu/9PzlKVGstmE0gkZLpRNV7SM=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tKYJcLAZGA+W1NqIU87gucvMQ1keEAYEF3qtQf0fsG2PzIzT3EkVZ1vIvqDsCicKL2q58znOxENX7/12TSTMMrgEu2LgUNQVHnMpLhR29vjLJEXuGmcV6RdpjaGklRp79bBpuYUHzi/amxBMeGjrsVjEYyI1AwquhtpS0PYpP1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=LoP0bnHI; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=LoP0bnHI; arc=none smtp.client-ip=45.249.212.187
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	s=arc-20240116; t=1779534247; c=relaxed/simple;
+	bh=Z6sRU9iMcF8zzNfNxCjZZ938y76nz9plm87nRXx0LvA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Tx7nsx2iHO7G4ZSrfi5R4ivV0ttDMIUF1I1MKIxI3NJBPpzgM7Fsa+6UR3Ta8VeRSLvjJLqgIO25R4s2JwSfcNLLYAkdDWCas8cc+zx59o5qCcYL3u8gmxY7ipRWP0IWx8oCkv/IJK1zQgNJdBU2StBHrJPS9HgW2zAzVsNdZCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nr4CMXJj; arc=none smtp.client-ip=74.125.82.193
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="LoP0bnHI";
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="LoP0bnHI"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=9knPvIDKpNZX0ND2NsTb0A/XO0/cA9NffW2E5WLknz0=;
-	b=LoP0bnHI79AILw9+hY4mHJUgmBSbS/FFQ9TybgkDFwNRYbXlwk2UcNNFqvdqwJhtLpZ4pU95t
-	jYpu2WHM7K/79/c3j4AIeoVJuAZDW+7HT4wsnu7uOUZWG1kd44qyHx/OrMmerXi6JaTmquE4xAp
-	pvTg1TaTHcNloFdTyBOitpM=
-Received: from canpmsgout08.his.huawei.com (unknown [172.19.92.156])
-	by szxga01-in.huawei.com (SkyGuard) with ESMTPS id 4gMzYP1pxhz1BGVb;
-	Sat, 23 May 2026 18:54:33 +0800 (CST)
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=9knPvIDKpNZX0ND2NsTb0A/XO0/cA9NffW2E5WLknz0=;
-	b=LoP0bnHI79AILw9+hY4mHJUgmBSbS/FFQ9TybgkDFwNRYbXlwk2UcNNFqvdqwJhtLpZ4pU95t
-	jYpu2WHM7K/79/c3j4AIeoVJuAZDW+7HT4wsnu7uOUZWG1kd44qyHx/OrMmerXi6JaTmquE4xAp
-	pvTg1TaTHcNloFdTyBOitpM=
-Received: from mail.maildlp.com (unknown [172.19.162.92])
-	by canpmsgout08.his.huawei.com (SkyGuard) with ESMTPS id 4gMzP91jTlzmV6Y;
-	Sat, 23 May 2026 18:47:25 +0800 (CST)
-Received: from kwepemk100013.china.huawei.com (unknown [7.202.194.61])
-	by mail.maildlp.com (Postfix) with ESMTPS id ABB3B40565;
-	Sat, 23 May 2026 18:55:09 +0800 (CST)
-Received: from localhost.huawei.com (10.90.31.46) by
- kwepemk100013.china.huawei.com (7.202.194.61) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.36; Sat, 23 May 2026 18:55:09 +0800
-From: Jijie Shao <shaojijie@huawei.com>
-To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <horms@kernel.org>
-CC: <shenjian15@huawei.com>, <liuyonglong@huawei.com>,
-	<chenhao418@huawei.com>, <huangdonghua3@h-partners.com>,
-	<yangshuaisong@h-partners.com>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <shaojijie@huawei.com>
-Subject: [PATCH V2 net-next 3/6] net: hns3: support two more actions for tc flow
-Date: Sat, 23 May 2026 18:54:46 +0800
-Message-ID: <20260523105449.661848-4-shaojijie@huawei.com>
-X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20260523105449.661848-1-shaojijie@huawei.com>
-References: <20260523105449.661848-1-shaojijie@huawei.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nr4CMXJj"
+Received: by mail-dy1-f193.google.com with SMTP id 5a478bee46e88-3025d725a05so19459615eec.1
+        for <netdev@vger.kernel.org>; Sat, 23 May 2026 04:04:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779534245; x=1780139045; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=qv+Kb9SdkLktiClnXVwCIDMjCalpuoRwuQC/kT8PQ9o=;
+        b=nr4CMXJj+NI9V3PUWAR1efgDMJfO9jL41IxoJpYjw6c0DhSwlSJJXgaTtf1aqi8dr8
+         j3HRBLRdNYtYRVK+YwrVDf0qPLubJhVVZeD1Bk5Wl9Q1iQd9K0sWrD3CNoFXIpItpvUA
+         lfXrZ1xZecvIhayanbgW8pGs8FueKsOUB/1vCzAM/qAOO3CoHvZ/C1AD+rwWZ4nrA+Mu
+         QuQ5gXl9mTh7lRdvJ4LJRdvi7con+L5KxlwTgBMF/Mw3kT8mg/NxRSfPUt9YTcpBpgJC
+         ZDLzANw9Q0ldUlBRjLrjJF6Yc8Gt7sbLOSwJGcvtMKoDR3CKblzFcAUi7Xwm8DlLqIhp
+         EixQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779534245; x=1780139045;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qv+Kb9SdkLktiClnXVwCIDMjCalpuoRwuQC/kT8PQ9o=;
+        b=pflmp0ng3Ze5d0JKbf0zMNyzH1gU2Fv1TVVcWvdzeGH3Gn5cn0Fq3rLAtrvUGFsaBX
+         t79xyLcvbZ/VlUppmzwiYSdigiiL+zc61VEndtz2PZgs0uB38EoCzO4GYNlkAmLMXo+M
+         sJ6RJMEOLSMEDOQ2d44aPSvg/YsRPN3RtxR2zcuxTjov4TeOYYAU5ERXjl+FENDpKt/v
+         lC+S+sZJjN/zoWZLtCsFVWTKI4FZuvIOQ40vceTzBmEtdHHyJX9+mrWXJSz39HuPmTmf
+         qRQAH10v3o1Rbj4P0bYmaOYkcK0bIByPxEK0wm4q1SPp6HBcz6danBLnEipqPNnLptfk
+         pfWQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+CFAczXVZQAFYYGmzNFcj+J7Q+rPaSfPnyEkWZCFAFq80Wc4znssg2ErGvKl7YRn3yMLlFP3U=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxWYlVTrpoKYOUeJzV+fJ9m9wt8AYOUNP+OsGMnwfFq5VB2MPCF
+	cMsQArDoeslvfsRIunO+MoabABu/xEVK+0bI0G7LXVtYSaDUtO57YTIXUn7zpepU
+X-Gm-Gg: Acq92OE9/hSw/JxSpONXLsGRO4LVjF8L0xWxDYsQYIurmetGeXyOwlO/SxPBRhxnflz
+	5/oosMtZe3pPOFcst19+DbC7K5CCT0jHGOa0nW/Wl5oY4YFbK4HRl7u9MIPAvMSEdJ6t12shTK7
+	wqe5/f9vFc1C85FP4R84Zp0JeDCB80whQfC2EsUFuFO2zJMNhu6Y5MHiTDqGzoJYP9h7oD3fT4U
+	aBHfWb4ZD0Wsiop0Qka9zgvlQTHEY6+IA4zMLgzP5iImk1ohitlrhthPl1XmKdSpuxztLXhrlqT
+	33LSxHFbdCnAoLLtB3rWCYCsiBYXIGCI/5KIIYYwwQmMu2GOtSZdRSFfj6GoUhhYWQtTEpJN1YC
+	gcvI4vDeTsiq3e7CHvve11DBu0ItiEP/mbpBDkGqwNnJZzIxGFR6qvqhMnT6Dl2vXEZBQPaq9fp
+	LK6b0vSQmIqjQ3wCTFL4Lc+KjSOFN8EsST5D9voM50SEuHYHCaQuP5nHRuTsxfjcn1ig==
+X-Received: by 2002:a05:7301:1f06:b0:304:2c71:3f65 with SMTP id 5a478bee46e88-304491fbcc0mr3959114eec.33.1779534245433;
+        Sat, 23 May 2026 04:04:05 -0700 (PDT)
+Received: from localhost.localdomain ([76.32.119.210])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-30451f20e71sm3139962eec.12.2026.05.23.04.04.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 23 May 2026 04:04:05 -0700 (PDT)
+From: Hungyu Lin <dennylin0707@gmail.com>
+To: subash.a.kasiviswanathan@oss.qualcomm.com,
+	sean.tranchetti@oss.qualcomm.com
+Cc: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Hungyu Lin <dennylin0707@gmail.com>
+Subject: [PATCH] net: qualcomm: rmnet: clarify MAP command ACK behavior
+Date: Sat, 23 May 2026 11:03:46 +0000
+Message-Id: <20260523110346.1672-1-dennylin0707@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -64,108 +78,33 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
- kwepemk100013.china.huawei.com (7.202.194.61)
 
-Currently, the driver supports only one action:HCLGE_FD_ACTION_SELECT_TC.
+rmnet_map_command() only sends ACK responses for supported
+commands. Unsupported commands are dropped without sending
+a response.
 
-This patch adds support for HCLGE_FD_ACTION_SELECT_QUEUE and
-HCLGE_FD_ACTION_DROP_PACKET.
+Update the comment to reflect the current behavior.
 
-A rule can have only one action. Therefore, the driver intercepts rules
-that have multiple actions or no action.
-
-Note: The driver considers cls_flower->classid as an action:
-HCLGE_FD_ACTION_SELECT_TC.
-
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Signed-off-by: Hungyu Lin <dennylin0707@gmail.com>
 ---
- .../hisilicon/hns3/hns3pf/hclge_main.c        | 59 ++++++++++++++++---
- 1 file changed, 52 insertions(+), 7 deletions(-)
+ drivers/net/ethernet/qualcomm/rmnet/rmnet_map_command.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-index 6eb4c6e4df4e..bbbc017a0fb7 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-@@ -7344,18 +7344,45 @@ static int hclge_get_tc_flower_action(struct hclge_dev *hdev,
- 				      struct flow_cls_offload *cls_flower,
- 				      struct hclge_fd_rule *rule)
+diff --git a/drivers/net/ethernet/qualcomm/rmnet/rmnet_map_command.c b/drivers/net/ethernet/qualcomm/rmnet/rmnet_map_command.c
+index add0f5ade2e6..c1c3d4fc7a99 100644
+--- a/drivers/net/ethernet/qualcomm/rmnet/rmnet_map_command.c
++++ b/drivers/net/ethernet/qualcomm/rmnet/rmnet_map_command.c
+@@ -69,8 +69,8 @@ static void rmnet_map_send_ack(struct sk_buff *skb,
+ 	netif_tx_unlock(dev);
+ }
+ 
+-/* Process MAP command frame and send N/ACK message as appropriate. Message cmd
+- * name is decoded here and appropriate handler is called.
++/* Process MAP command frame and send ACK message for supported commands.
++ * Message cmd name is decoded here and the appropriate handler is called.
+  */
+ void rmnet_map_command(struct sk_buff *skb, struct rmnet_port *port)
  {
-+	struct flow_rule *flow = flow_cls_offload_flow_rule(cls_flower);
- 	struct hnae3_handle *handle = &hdev->vport[0].nic;
-+	struct flow_action *action = &flow->action;
-+	struct flow_action_entry *act;
- 	int tc;
- 
--	tc = tc_classid_to_hwtc(handle->netdev, cls_flower->classid);
--	if (tc < 0 || tc > hdev->tc_max) {
--		dev_err(&hdev->pdev->dev, "invalid traffic class: %d\n", tc);
--		return -EINVAL;
-+	if (!flow_action_has_entries(&flow->action)) {
-+		tc = tc_classid_to_hwtc(handle->netdev, cls_flower->classid);
-+		if (tc < 0 || tc > hdev->tc_max) {
-+			dev_err(&hdev->pdev->dev,
-+				"invalid traffic class: %d\n", tc);
-+			return -EINVAL;
-+		}
-+
-+		rule->action = HCLGE_FD_ACTION_SELECT_TC;
-+		rule->cls_flower.tc = tc;
-+		return 0;
- 	}
- 
--	rule->action = HCLGE_FD_ACTION_SELECT_TC;
--	rule->cls_flower.tc = tc;
--	return 0;
-+	act = &action->entries[0];
-+	switch (act->id) {
-+	case FLOW_ACTION_RX_QUEUE_MAPPING:
-+		if (act->rx_queue >= handle->kinfo.num_tqps) {
-+			dev_err(&hdev->pdev->dev,
-+				"queue id (%u) should be less than %u\n",
-+				act->rx_queue, handle->kinfo.num_tqps - 1);
-+			return -EINVAL;
-+		}
-+
-+		rule->queue_id = act->rx_queue;
-+		rule->action = HCLGE_FD_ACTION_SELECT_QUEUE;
-+		return 0;
-+	case FLOW_ACTION_DROP:
-+		rule->action = HCLGE_FD_ACTION_DROP_PACKET;
-+		return 0;
-+	default:
-+		dev_err(&hdev->pdev->dev, "unsupported action(%d)\n", act->id);
-+		return -EOPNOTSUPP;
-+	}
- }
- 
- static int hclge_parse_cls_flower(struct hclge_dev *hdev,
-@@ -7412,6 +7439,24 @@ static int hclge_check_cls_flower(struct hclge_dev *hdev,
- 		return -EOPNOTSUPP;
- 	}
- 
-+	/* driver will parses classid into an action */
-+	if (cls_flower->classid && flow_action_has_entries(&flow->action)) {
-+		dev_err(&hdev->pdev->dev,
-+			"please not set classid and action together\n");
-+		return -EOPNOTSUPP;
-+	}
-+
-+	if (!flow_action_has_entries(&flow->action) && !cls_flower->classid) {
-+		dev_err(&hdev->pdev->dev, "please set action or classid\n");
-+		return -EINVAL;
-+	}
-+
-+	if (flow_action_has_entries(&flow->action) &&
-+	    !flow_offload_has_one_action(&flow->action)) {
-+		dev_err(&hdev->pdev->dev, "unsupported multiple actions\n");
-+		return -EOPNOTSUPP;
-+	}
-+
- 	return 0;
- }
- 
 -- 
-2.33.0
+2.34.1
 
