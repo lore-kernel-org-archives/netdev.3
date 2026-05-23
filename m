@@ -1,38 +1,37 @@
-Received: from canpmsgout03.his.huawei.com (canpmsgout03.his.huawei.com [113.46.200.218])
+Received: from canpmsgout09.his.huawei.com (canpmsgout09.his.huawei.com [113.46.200.224])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A26C8346A10;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3320356775;
 	Sat, 23 May 2026 10:55:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.218
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.224
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779533721; cv=none; b=gC/a/wNaS+7ktHOWQGcXgjQ796YWpXSnrTTjlMVFNMWM5LfNTDOpnktV/11b/e72eBajb7c7lT5P9KwmcKIGNAF4wDfkLbEo1FjhuX+z3AZXRMzzC0Tb9oS5TAw43S00K211pFQAXB7Mg/b1nQDGaXbtlH5b8LJZq1xPDAwdJt0=
+	t=1779533721; cv=none; b=RXOHy9aTZl5/+yLtUbjr7G6cR+1zd++oJjFbqhF/Bt0utXvmHPz/SQaBfpSnnAdNXmoZPhxyCGOS8oJw6RjO1utQMeDuzacAISKuR40ref4vgliZXremrOWOJIS1+naZOU1mItMHXCVWe606BXv59JyBltfWTZYHMNKpRzpqWFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1779533721; c=relaxed/simple;
-	bh=Rb8F1vVwH/kqjO6EcZvw7goIKZHEldO/pKOCUqLSNt8=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mzIYSHGuxVjG9SKPXmw8Qq/GimVZOF/JRpY+/BxP/xYvsvDWzEjlRWfcRr3hhpjiCbtoGFVcLiMs95woAmglpVwR8C/3QokKWc7782TecAB5xUn7WgS1odNiCsRHtnsc5Bu8kklztF8hq/2OLSjuNvYuJp9vmx/PyR/I0UVwtlg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=k91HxXJb; arc=none smtp.client-ip=113.46.200.218
+	bh=Z0XnwtJLwnPUgzcwlDcKDlQypcOn8FH44HNqVCSzORk=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=dNRB71A6Tj6yo8gePgAjO+flXeanwF6QwlUfTakXn+mDahzxmASGMtKUp4vfpXMMR0JPSBCHVf3P8Yz+L3pmmEWx3xYSIvELeUgyR2YFb0GQR1OxqIwd/cXSPpvCAH2pR3Os3ZRIPXhbruOJ6KlE3WqTCnIfQ2rnLW1u3TX/c2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=eemmzHzZ; arc=none smtp.client-ip=113.46.200.224
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="k91HxXJb"
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="eemmzHzZ"
 dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
 	c=relaxed/relaxed; q=dns/txt;
 	h=From;
-	bh=UAdT9DzZISjzzrLRw+Xv2Q6P3doPws7i47j3i2ULYmg=;
-	b=k91HxXJbwJnGBFmHhGvASxJw8WfJK6xCcBigVTpJH0ml6M3SBzlKvnkdsyBETX6cBMInHTPsd
-	wyU7lcy40xDc2wPeKC8yoaQvRDyuvFvEKxUXJCgt4IMSFQKydMzaruG1UW9RUYGCK5dj3pb3d9n
-	kfwtgNZcp0NqdmcizRrJfSE=
-Received: from mail.maildlp.com (unknown [172.19.163.104])
-	by canpmsgout03.his.huawei.com (SkyGuard) with ESMTPS id 4gMzPf0r8mzpSvR;
-	Sat, 23 May 2026 18:47:50 +0800 (CST)
+	bh=sNJlfzD7Z00tXyJTPBX7EjDaUa0gzHTASAG7spOpnZA=;
+	b=eemmzHzZZFTZUNQ22pCreCHH2+V4fmPUhV2pUcdVysDl+at5YKXsDZBR2zefNOY9jUgU++sTt
+	VM2QNv1mYe9jBlTvahv0s83Hzi5+8HhmpwhmXAOBK3uQ8LX4HGr7H49qdVgENTrHMfjwGg4hsF4
+	Sfb/BurKzZhu8VQLmxGh6sA=
+Received: from mail.maildlp.com (unknown [172.19.163.214])
+	by canpmsgout09.his.huawei.com (SkyGuard) with ESMTPS id 4gMzPB2ZWnz1cyQG;
+	Sat, 23 May 2026 18:47:26 +0800 (CST)
 Received: from kwepemk100013.china.huawei.com (unknown [7.202.194.61])
-	by mail.maildlp.com (Postfix) with ESMTPS id 495BE4048F;
-	Sat, 23 May 2026 18:55:09 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 5E40D40561;
+	Sat, 23 May 2026 18:55:08 +0800 (CST)
 Received: from localhost.huawei.com (10.90.31.46) by
  kwepemk100013.china.huawei.com (7.202.194.61) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.36; Sat, 23 May 2026 18:55:08 +0800
+ 15.2.1544.36; Sat, 23 May 2026 18:55:07 +0800
 From: Jijie Shao <shaojijie@huawei.com>
 To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
 	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <horms@kernel.org>
@@ -40,12 +39,10 @@ CC: <shenjian15@huawei.com>, <liuyonglong@huawei.com>,
 	<chenhao418@huawei.com>, <huangdonghua3@h-partners.com>,
 	<yangshuaisong@h-partners.com>, <netdev@vger.kernel.org>,
 	<linux-kernel@vger.kernel.org>, <shaojijie@huawei.com>
-Subject: [PATCH V2 net-next 2/6] net: hns3: improve the unused_tuple parameter setting
-Date: Sat, 23 May 2026 18:54:45 +0800
-Message-ID: <20260523105449.661848-3-shaojijie@huawei.com>
+Subject: [PATCH V2 net-next 0/6] net: hns3: enhance tc flow offload support
+Date: Sat, 23 May 2026 18:54:43 +0800
+Message-ID: <20260523105449.661848-1-shaojijie@huawei.com>
 X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20260523105449.661848-1-shaojijie@huawei.com>
-References: <20260523105449.661848-1-shaojijie@huawei.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -57,58 +54,47 @@ Content-Type: text/plain
 X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
  kwepemk100013.china.huawei.com (7.202.194.61)
 
-Currently, when the tc tool is used to set flow table rules, the IP address
-and MAC address can be configured separately, for example, src_xx or dst_xx
-can be configured separately.
+This patchset enhances the tc flow offload support for hns3 driver:
 
-Therefore, the driver needs to check whether the address is all zero in
-keys, such as FLOW_DISSECTOR_KEY_IPV4_ADDRS, FLOW_DISSECTOR_KEY_IPV6_ADDRS,
-and FLOW_DISSECTOR_KEY_ETH_ADDRS.
-If the address is all zero, the tuple is not configured.
-In this case, the driver adds the tuple to unused_tuple.
+- Patch 1: Refactor hclge_add_cls_flower() to support more actions
+- Patch 2: Improve unused_tuple parameter setting for separate src/dst configuration
+- Patch 3: Add support for HCLGE_FD_ACTION_SELECT_QUEUE and HCLGE_FD_ACTION_DROP_PACKET actions
+- Patch 4: Add support for FLOW_DISSECTOR_KEY_IP and FLOW_DISSECTOR_KEY_ENC_KEYID dissectors
+- Patch 5: Add debugfs support for dumping FD rules
+- Patch 6: Move FD code to a separate file (hclge_fd.c) for better code organization
 
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
 ---
- .../net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c  | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ChangeLog:
+v1 -> v2:
+  - Fixed warnings similar to "warning: restricted __le32 degrades to integer",
+    pointed out by Jakub
+  - Fixed warnings related to
+    "warning: diagnostic behavior may be improved by adding the 'format(printf, 5, 7)'",
+    pointed out by Jakub
+  v1: https://lore.kernel.org/all/20260518093526.1109595-1-shaojijie@huawei.com/
+---
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-index 89fff510befd..6eb4c6e4df4e 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-@@ -7242,6 +7242,10 @@ static void hclge_get_cls_key_mac(const struct flow_rule *flow,
- 		ether_addr_copy(rule->tuples_mask.dst_mac, match.mask->dst);
- 		ether_addr_copy(rule->tuples.src_mac, match.key->src);
- 		ether_addr_copy(rule->tuples_mask.src_mac, match.mask->src);
-+		if (is_zero_ether_addr(match.key->dst))
-+			rule->unused_tuple |= BIT(INNER_DST_MAC);
-+		if (is_zero_ether_addr(match.key->src))
-+			rule->unused_tuple |= BIT(INNER_SRC_MAC);
- 	} else {
- 		rule->unused_tuple |= BIT(INNER_DST_MAC);
- 		rule->unused_tuple |= BIT(INNER_SRC_MAC);
-@@ -7290,6 +7294,10 @@ static int hclge_get_cls_key_ip(const struct flow_rule *flow,
- 		rule->tuples.dst_ip[IPV4_INDEX] = be32_to_cpu(match.key->dst);
- 		rule->tuples_mask.dst_ip[IPV4_INDEX] =
- 						be32_to_cpu(match.mask->dst);
-+		if (!match.key->src)
-+			rule->unused_tuple |= BIT(INNER_SRC_IP);
-+		if (!match.key->dst)
-+			rule->unused_tuple |= BIT(INNER_DST_IP);
- 	} else if (addr_type == FLOW_DISSECTOR_KEY_IPV6_ADDRS) {
- 		struct flow_match_ipv6_addrs match;
- 
-@@ -7302,6 +7310,10 @@ static int hclge_get_cls_key_ip(const struct flow_rule *flow,
- 				      match.key->dst.s6_addr32);
- 		ipv6_addr_be32_to_cpu(rule->tuples_mask.dst_ip,
- 				      match.mask->dst.s6_addr32);
-+		if (ipv6_addr_any((struct in6_addr *)match.key->src.s6_addr32))
-+			rule->unused_tuple |= BIT(INNER_SRC_IP);
-+		if (ipv6_addr_any((struct in6_addr *)match.key->dst.s6_addr32))
-+			rule->unused_tuple |= BIT(INNER_DST_IP);
- 	} else {
- 		rule->unused_tuple |= BIT(INNER_SRC_IP);
- 		rule->unused_tuple |= BIT(INNER_DST_IP);
+Jijie Shao (6):
+  net: hns3: adjust add_cls_flower() for support more action
+  net: hns3: improve the unused_tuple parameter setting
+  net: hns3: support two more actions for tc flow
+  net: hns3: support IP and tunnel VNI dissectors for tc flow
+  net: hns3: debugfs support for dumping fd rules
+  net: hns3: move fd code to a separate file
+
+ drivers/net/ethernet/hisilicon/hns3/Makefile  |    1 +
+ drivers/net/ethernet/hisilicon/hns3/hnae3.h   |    3 +-
+ .../ethernet/hisilicon/hns3/hns3_debugfs.c    |    6 +
+ .../net/ethernet/hisilicon/hns3/hns3_enet.c   |    3 +-
+ .../hisilicon/hns3/hns3pf/hclge_debugfs.c     |  150 +
+ .../ethernet/hisilicon/hns3/hns3pf/hclge_fd.c | 2575 +++++++++++++++++
+ .../ethernet/hisilicon/hns3/hns3pf/hclge_fd.h |   33 +
+ .../hisilicon/hns3/hns3pf/hclge_main.c        | 2514 +---------------
+ .../hisilicon/hns3/hns3pf/hclge_main.h        |    6 +
+ 9 files changed, 2817 insertions(+), 2474 deletions(-)
+ create mode 100644 drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_fd.c
+ create mode 100644 drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_fd.h
+
 -- 
 2.33.0
 
