@@ -1,106 +1,130 @@
-Received: from mail-yx1-f48.google.com (mail-yx1-f48.google.com [74.125.224.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender-pp-o93.zoho.in (sender-pp-o93.zoho.in [103.117.158.93])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F3E92EA171
-	for <netdev@vger.kernel.org>; Sat, 23 May 2026 14:41:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7035E2EF653;
+	Sat, 23 May 2026 14:41:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=103.117.158.93
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779547283; cv=pass; b=XNQwziy6poOhnl6qtBIFEsyWV5iiCNIwokX0LcC9P59T3FhlnqlscncfGn4av6jk/373dYvJ6m0DoeL8rnQaMNMbWPqD0ez9BdhzZIgtY5ieQQK7XmcCs5SvawIF58aVFuiZHTEhPAETFBF2g8eVXOpNkH2dHrhdY10Vb+z5uGE=
+	t=1779547297; cv=pass; b=pEiysSQ608LUHwxxuXMH407MuKntGX3/89r6LIYquWgANF+Lcl8o/4CbsMFnG+xZyaY/HthmAZ5qvFhoBUoWqL2TtSfpbI8bWoG9AKNz9/GzyCEpnxWZaO5xhqqIt+k8dfs39CQMwYNAZaP09y5qrc0N1SZSrYGKPZV8FO01w2s=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779547283; c=relaxed/simple;
-	bh=bZLSF+ScA8q5GWI1Cif0OMmmjOtioPvnhuOch4uXXYE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Vrx5VfNY2Juqb1JEKWadsI1IpAwewmezGgXPVR42dZZQRbNoqEXVLLO8J/h8zQakh1dUQV3tchAryw0Ouv0GcRoIztKnLDzb0o9roQOQ9FU3V4gyRcxizUtX+p66j7oR/x5lS+LrLw1RsOaU95j8Bk1/3CqnZxBdcZibrqgP2SA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (2048-bit key) header.d=mojatatu-com.20251104.gappssmtp.com header.i=@mojatatu-com.20251104.gappssmtp.com header.b=FnwB/+nz; arc=pass smtp.client-ip=74.125.224.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	s=arc-20240116; t=1779547297; c=relaxed/simple;
+	bh=OKfB/CNHhDR2pBvQCOqJYACI8BQaj/tZQdDTuPBaFRw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=k5JSR1juDX61u7gV+zijyr6JYnWHfoQms4hkApIKp9i17gM7oVxPhYvO9DTtrTb4hctztGJiR7TVr/l+WW/calU4JrtwM48jik50YH7b+qU9Rhx+Z8+Aw6zSTM7iOaktaM/5paK+YHjXd/HL2lRVk2w3F7E4LTYoLiZvckhWV9k=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=zohomail.in; spf=pass smtp.mailfrom=zohomail.in; dkim=pass (1024-bit key) header.d=zohomail.in header.i=kshitiz.bartariya@zohomail.in header.b=N4MY6jdK; arc=pass smtp.client-ip=103.117.158.93
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=zohomail.in
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zohomail.in
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mojatatu-com.20251104.gappssmtp.com header.i=@mojatatu-com.20251104.gappssmtp.com header.b="FnwB/+nz"
-Received: by mail-yx1-f48.google.com with SMTP id 956f58d0204a3-65c52bb5dd7so7994865d50.2
-        for <netdev@vger.kernel.org>; Sat, 23 May 2026 07:41:21 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779547281; cv=none;
-        d=google.com; s=arc-20240605;
-        b=g0Ht9eyBLTAFprCZQT+qIEBI97+o+ajgW8welXuANkejtXAhMHDviCjHsiGqFqZ4Wd
-         J6p9JFWA6w7puUKhgDrvtHVizVqrPcrhQKyq1DuA74MJDdVI9LhLQXOU1GF5aed+q36o
-         W0vP5GcLMlPsl+TaSgunerRAncGfExjKpVJEuWQU2+uB+t4bqtyxe4Q8I0h0rw/7UC+I
-         +gVoMlq4LumJ2MeT0oR3C7VmhYdjIOmWkNeKAs0nwBaDQJc8wrWImNMXKY63U4PDWOxM
-         YpvLoGVcnITBabY6t3wM45SOqeCzlcFczP8i/ZtA9myuaQD4ix51jOFB88M8KkV/cEhd
-         tM1A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=bZLSF+ScA8q5GWI1Cif0OMmmjOtioPvnhuOch4uXXYE=;
-        fh=ZkkImlZV6CzROXDJy44ohYU6d6WGlHi/0557IVngsL4=;
-        b=epQuZss+Z3gImDcRa6sxRrfX+mN5JOOx/xx66aCKrcsIIJ+lqKJ6+smlvAreelLQUj
-         o20KBnE7QYLkgNsi83ziTSbgfCqKzk/Wqjz/nJ2aL7UQBUKxaFaEcNRlNo6gl20dIIKq
-         L493mZCKaKnfNZZyRbyzP0haioF71in5LkSZuGhu2RZLvzIdpdbCFvahzZHScaWCinrR
-         SgMsji/OyxqcLJUtSGJAaU2gq0AvZoI79bew8EKZas0ZcqZpiSVkbZEe1iBaBXoozLoG
-         3LM8BQjodBg88P7ZvoHqIoMJitFaQXWE5rRBr8nd3PMwqnXcZ6oZJwdIUzWkBx5HmbKA
-         jkzg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu-com.20251104.gappssmtp.com; s=20251104; t=1779547281; x=1780152081; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bZLSF+ScA8q5GWI1Cif0OMmmjOtioPvnhuOch4uXXYE=;
-        b=FnwB/+nzEoa1YPkktnRpsVB9ipGd+nHsivB6dDJeCn+eWba1J7UHVA4vGkDIlX0/qc
-         8oLtK+RsIsdHW4aX83aq2EeiQstqvUhnldUg0ITflMkOopfWSk/l6GUiHFUnq7mu6OoI
-         62D28xTz4rVqFxpQqKDvvoV/s84w1cOE1cR6ihydhUwC1Ya4/vk79CyuG6APJEWCEmKS
-         33XxnWsv8OwRrkJqnqPZsdAQkgo/MWYT9FX1sntXwwWRiaGdqlfUtggpGrdwKMFJXxwR
-         xzQFIYT2sHOZiWkCChgo+3T02G2wUso2gSVGOspBiAPRAu96gPRLHRgKKHrWYvGS1pOA
-         PtLw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779547281; x=1780152081;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=bZLSF+ScA8q5GWI1Cif0OMmmjOtioPvnhuOch4uXXYE=;
-        b=WZj381lJXy/nWQuVjWDJCPRTCoE+e9IQGworbTV7kQca/IXhYQs4hJEFwbgNaJXAAa
-         iSpW7CyyN6gWWlZ37G4OZJXmuuaEiER94d6jSnrbQLtWi/p5ZLqr941mCqEH+6V4WrWk
-         3VYSI4cR4wH+yNYuAF4q/qasL+/w9awhbEKSJ1dtQhPIICKBa5CYOnTx2A9HqX/UY+Bf
-         OZtbW8TApPNLi1+27Pa5Ndh6w8SoHqVtfN/QCHHROqf1Qr5G5R5xcNyjRlyQf3Xz5DOA
-         /hrCoASJakSjcxYDSipCV9gptldh4+tg6IUklhd3+ctgWBP0PrY94qqFl29Sy7F43Zgj
-         z7rw==
-X-Forwarded-Encrypted: i=1; AFNElJ+WSAiskSX6kSvRcuj1Wc82gs4B8/tF8sBVE7s7zUjZqOoXllz4CY6QlG9fhWFxnow2Njd66FA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyfP4RuqdQtQ3IaWyjhL2NF6KWNWMjzsTKMQOyiqoatlHOxriDS
-	PNRSpWLaOxE31eSk4NNxxewJ+VEUQn2iPyqwRyMNJ7P7+N/30BvUtLaZnR4+sAop1+lTT3l9fgV
-	ZNrC8tR89djvpxo4cWUJBZMZSLIn79Ezy8AUMyoDJFoJz/Co1tVD6fHADHq4=
-X-Gm-Gg: Acq92OFc409AWvE/m8VsB06qjw7p6/uJcXYxJRmwCyWZj/NEcx/3k1TZYvKH+EXeeGT
-	KR52rCrIjeO/I8fW2r+b2y7l6IKo3+KIruoXWZkBL++MGnti855aSpCJpvxTeXJrOKXDxPPsebO
-	XL2A7SX+4A4WoYfUmWlPt84wO3azf7jdHqPGw0wK0IGajqgjt6XSwqo6n6abSVkocne9OGx097n
-	wbvEc6sq5PNx/YeYjzIyvr+Tiem8EwY8HNOybqP++riNl+cpWKOr9nKWTofrvD6toC4a8cvCPee
-	5a6HFw6ssRE9HEDbbTF8F5nXzAWF6d+3qfpBZA==
-X-Received: by 2002:a05:690c:b01:b0:7bd:7c16:170e with SMTP id
- 00721157ae682-7d334ad4e47mr96399357b3.22.1779547281170; Sat, 23 May 2026
- 07:41:21 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=zohomail.in header.i=kshitiz.bartariya@zohomail.in header.b="N4MY6jdK"
+ARC-Seal: i=1; a=rsa-sha256; t=1779547249; cv=none; 
+	d=zohomail.in; s=zohoarc; 
+	b=Vevrvt6UrQSQxrCxjs0I8G9/04QvxyiDso+RpVlsJyqtee5jHgbH5G+0uK/5iKnrCrbGydTCBYpah3o4NwnaGOGz+n7iisNF4QFD5Xn5+grXEsrRMVIvZDP6CjxJKddOCxerPbPQzEuYnndeFE0AgF93v7GMzf4wORP/vVTUmoQ=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.in; s=zohoarc; 
+	t=1779547249; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=kq4gAaal/V6/TQrHczoyukEEROImx0VyXHhPwwFKXEg=; 
+	b=DlURBEk49mjyEjr2C2oA3oTQyPN6X8WmU6XvJEIy5e8ltkYi7sdbTM4z3labNjf6ra4i1vk9z0oqehJdfTlnjfaRwdabcM5daK3S7/VG+UxLq6ZiQTHMlGjQCq0/3WAUpChSQrGSu81/eJMhYdRQf1JykCkZ5pGFop3RtpMa2R8=
+ARC-Authentication-Results: i=1; mx.zohomail.in;
+	dkim=pass  header.i=zohomail.in;
+	spf=pass  smtp.mailfrom=kshitiz.bartariya@zohomail.in;
+	dmarc=pass header.from=<kshitiz.bartariya@zohomail.in>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1779547249;
+	s=zoho; d=zohomail.in; i=kshitiz.bartariya@zohomail.in;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=kq4gAaal/V6/TQrHczoyukEEROImx0VyXHhPwwFKXEg=;
+	b=N4MY6jdKQL2tHq18tG707FhjAEIO4y5cOWkU8PWjL5DxnKkZmgjt16duE57xXfrw
+	65zRRvkS3g1slX69BkFGAjIcVjKfo8WPQyB1qWrJRZC4n8WempIqgJ7nm8nVDaE5hIc
+	oAN/loOYGeaGlvFMkqROXEISqTrW4+3AqDEV78yU=
+Received: by mx.zoho.in with SMTPS id 1779547242609712.7333978020995;
+	Sat, 23 May 2026 20:10:42 +0530 (IST)
+From: Kshitiz Bartariya <kshitiz.bartariya@zohomail.in>
+To: anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: Kshitiz Bartariya <kshitiz.bartariya@zohomail.in>,
+	intel-wired-lan@lists.osuosl.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net] ixgbe: implement get_queue_stats_rx
+Date: Sat, 23 May 2026 20:10:16 +0530
+Message-ID: <20260523144022.36484-1-kshitiz.bartariya@zohomail.in>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260522110356.1403343-1-edumazet@google.com>
-In-Reply-To: <20260522110356.1403343-1-edumazet@google.com>
-From: Victor Nogueira <victor@mojatatu.com>
-Date: Sat, 23 May 2026 11:41:09 -0300
-X-Gm-Features: AVHnY4IDFeGOhsukpSer7jvIMsQqex8TqV18rBQ07zumaZOiEnRBc3P8S3XmxUc
-Message-ID: <CA+NMeC_7OxAHnKno9d02=t72DWeB-oR4z5Swx-T1s=LLvhZP3g@mail.gmail.com>
-Subject: Re: [PATCH net-next] net/sched: sch_ets: make cl->quantum lockless
-To: Eric Dumazet <edumazet@google.com>
-Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Jamal Hadi Salim <jhs@mojatatu.com>, Jiri Pirko <jiri@resnulli.us>, netdev@vger.kernel.org, 
-	eric.dumazet@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-ZohoMailClient: External
 
-On Fri, May 22, 2026 at 8:03=E2=80=AFAM Eric Dumazet <edumazet@google.com> =
-wrote:
->
-> cl->quantum does not need to be protected by RTNL or qdisc spinlock.
->
-> Signed-off-by: Eric Dumazet <edumazet@google.com>
+Hook into the netdev_stat_ops interface to expose per RX queue
+statistics through the netdev generic netlink API.
 
-Reviewed-by: Victor Nogueira <victor@mojatatu.com>
+The following counters are filled:
+
+ - alloc_fail: sum of alloc_rx_page_failed and alloc_rx_buff_failed
+
+ - csum_bad: maps directly to csum_err, which is incremented for both
+   IP header and L4 checksum errors in ixgbe_rx_checksum().
+
+ - hw_gro_packets and hw_gro_wire_packets: filled only when RSC
+   is enabled on the ring
+
+Signed-off-by: Kshitiz Bartariya <kshitiz.bartariya@zohomail.in>
+---
+ drivers/net/ethernet/intel/ixgbe/ixgbe_main.c | 29 +++++++++++++++++++
+ 1 file changed, 29 insertions(+)
+
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
+index 2646ee6f295f..f40309f6c72b 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
+@@ -9740,6 +9740,34 @@ static void ixgbe_get_stats64(struct net_device *netdev,
+ 	stats->rx_missed_errors	= netdev->stats.rx_missed_errors;
+ }
+ 
++static void ixgbe_get_queue_stats_rx(struct net_device *dev, int idx,
++				     struct netdev_queue_stats_rx *stats)
++{
++	struct ixgbe_adapter *adapter = ixgbe_from_netdev(dev);
++	struct ixgbe_ring *ring;
++
++	if (idx >= adapter->num_rx_queues)
++		return;
++
++	ring = adapter->rx_ring[idx];
++	if (!ring)
++		return;
++
++	stats->alloc_fail = ring->rx_stats.alloc_rx_page_failed +
++			    ring->rx_stats.alloc_rx_buff_failed;
++	stats->csum_bad = ring->rx_stats.csum_err;
++
++	if (ring_is_rsc_enabled(ring)) {
++		stats->hw_gro_packets = ring->rx_stats.rsc_flush;
++		stats->hw_gro_wire_packets = ring->rx_stats.rsc_flush +
++					     ring->rx_stats.rsc_count;
++	}
++}
++
++static const struct netdev_stat_ops ixgbe_stat_ops = {
++	.get_queue_stats_rx	= ixgbe_get_queue_stats_rx,
++};
++
+ static int ixgbe_ndo_get_vf_stats(struct net_device *netdev, int vf,
+ 				  struct ifla_vf_stats *vf_stats)
+ {
+@@ -11643,6 +11671,7 @@ static int ixgbe_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	hw->phy.mdio.mdio_write = ixgbe_mdio_write;
+ 
+ 	netdev->netdev_ops = &ixgbe_netdev_ops;
++	netdev->stat_ops   = &ixgbe_stat_ops;
+ 	ixgbe_set_ethtool_ops(netdev);
+ 	netdev->watchdog_timeo = 5 * HZ;
+ 	strscpy(netdev->name, pci_name(pdev), sizeof(netdev->name));
+-- 
+2.50.1 (Apple Git-155)
+
