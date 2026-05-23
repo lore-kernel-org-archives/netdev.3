@@ -1,40 +1,33 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 074F82DCC04
-	for <netdev@vger.kernel.org>; Sat, 23 May 2026 14:32:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABA292D1F44;
+	Sat, 23 May 2026 14:34:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779546778; cv=none; b=nwBGZUM/SaM2knwFe8qlt5FiyHT7ObWNw9myhKKmk+2OqFXUCsPGREnGfzDEDjji5CoU8PuIk6J5JRGnyiaCi/1/1nsqCEaiXLGjWufexWIS1FayysS+Baqye3vJxB3U+OqVANO0NeahdpsKvN2hRtNVC0z8Fdad3wLkM7rprCQ=
+	t=1779546882; cv=none; b=TZ28NaEJ21p2r2wEl0juj4JNAlfa0d8Zk55q3vw7GwSNIYb4ny73SBa8VDce7Sm1gItueIC5iUmZI5I70dVYnGAtWpYdPkKGMTndtCTviXLmlKATldJVWqAq4C2Iw2qGKKBUHi7kbXssbqvUIYEnCNdLMR+kpIS8ImQuwgjcqk4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779546778; c=relaxed/simple;
-	bh=EkQgmsfdGZbdMffx/qvpeZ17fFVdHlkFu4wUhsTrCD0=;
+	s=arc-20240116; t=1779546882; c=relaxed/simple;
+	bh=wRmeeDFW9aLsG7APMHX0/TFOJPnEO5M+u+iIvZF5X3s=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rZ4BegN+pfWTgKrMQhVRDMacAxiv48RNxBijkpIMNB/OEpTNjTQWNsS2ym+0ETbr6tt2u8+qM9RRjiS0R47nWpV9UwOFFBb0LRae1FRomtZVTV5zTGuoDNPIbK2jdDe3pETXLGQ6PGGLghoskATvNgxhV6FIh+hxo6VgyTip+nA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=qMfnV2Om; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	 In-Reply-To:Content-Type; b=UfAoYqkfVo+nb8j2/4qJ/YJ6fCncSjThRH+dMzrhqaA1uu/dFkKeJdPOIlRdKOQk0eaMZtHFXJk2A4GWh6zxI/09flg334G8L8AyjUFYIvpideJGtfSrvL1PfocBhAInOUGCApiQcaUQX+5TTMehfeqSvI7QXvxSNNqbKMkmxEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fRuMNnEn; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="qMfnV2Om"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 8E44C1A368B;
-	Sat, 23 May 2026 14:32:45 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 4D56660733;
-	Sat, 23 May 2026 14:32:45 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0C83C10811D9F;
-	Sat, 23 May 2026 16:32:42 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1779546764; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=ubDFrB9Q4xQe7HWrc+hIZr40Wg4MUcI8hEZo/xRyfU8=;
-	b=qMfnV2OmD8ZRa/dimdnHoAW1UKpKh4ni5xGRAQmI03za2gNnKlculz/z4ueSLyMPhQDdma
-	ed0YKyQNwR7vOU2VlB1Gjc/BEOMJ5HZEgsmpYb6CHQO6zxsTwkYQrB5jv4d1QEhhBS48Gz
-	BZfdVmeu5oDGiR9XxITP41fBbyRwtlaxbs+rMO9qwwV+N1SLkOg4gFBurlbCMWXfaAF5FH
-	RjxWdrXYxQZw36msHwD+oQwo63Kep/ustNFSggMekPFoeihpWE9iGzsbW2bOs5BlOtGHKo
-	gvUbW9UxqrX/+IVD3pAi915MWlMqGtLXre07w6AJUuCPxfKvgm6eQrcRc01pGQ==
-Message-ID: <a43b1c60-4bd3-4070-b474-67e5d8d62eeb@bootlin.com>
-Date: Sat, 23 May 2026 16:32:42 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fRuMNnEn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15A8F1F000E9;
+	Sat, 23 May 2026 14:34:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779546881;
+	bh=m0RMW+vUTF/Kw0EclT9JxUQS8BolCI+Rfe/P5jHnTs0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=fRuMNnEnaU3pUZeCti0/1FjuF1JXjZLBPgmMnv61LrJySZ6X8EFw4h2BCpGe3W364
+	 f+9TH0AgdXEX9X7yLx0+VKbn0qgcbuAO51gJuiY2p1d+A/K6NqWlqTun1KP2N5Qd1u
+	 9/yPoL0gp7BNmbXkMwnk20TdBUFwagzYOSTEaD2Ww0In+zde2qnzcSAcBA5S4vFz/1
+	 i1k+D0fxc9jwqqB0D96e1yuj5vzgO3x0eJY8B8QPTXwXDcHwhvQHiQfJ3SyX3YnzuA
+	 8cpCjfk1Cu/tjjhiI9kllFtuwCkOTVqsyDsk/+ZQ4bT+UY/+1Q+KXZm0s45qWVf0FB
+	 XkiIfM2Ewr0dw==
+Message-ID: <0592b09b-a084-4d9d-bcbf-1b77e45226cf@kernel.org>
+Date: Sat, 23 May 2026 23:34:07 +0900
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -42,66 +35,97 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 2/9] ethtool: module: avoid leaking a netdev ref on
- module flash errors
-To: Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net
-Cc: netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com,
- andrew+netdev@lunn.ch, horms@kernel.org, danieller@nvidia.com,
- petrm@nvidia.com, o.rempel@pengutronix.de, idosch@nvidia.com, andrew@lunn.ch
-References: <20260522231312.1710836-1-kuba@kernel.org>
- <20260522231312.1710836-3-kuba@kernel.org>
+Subject: Re: DEPT (the dependency tracker) as AI review prompt?
+To: Yunseong Kim <ysk@kzalloc.com>
+Cc: Byungchul Park <byungchul@sk.com>, linux-kernel@vger.kernel.org,
+ kernel_team@skhynix.com, torvalds@linux-foundation.org,
+ damien.lemoal@opensource.wdc.com, linux-ide@vger.kernel.org,
+ adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org, mingo@redhat.com,
+ peterz@infradead.org, will@kernel.org, tglx@linutronix.de,
+ rostedt@goodmis.org, joel@joelfernandes.org, sashal@kernel.org,
+ daniel.vetter@ffwll.ch, duyuyang@gmail.com, johannes.berg@intel.com,
+ tj@kernel.org, tytso@mit.edu, willy@infradead.org, david@fromorbit.com,
+ amir73il@gmail.com, gregkh@linuxfoundation.org, kernel-team@lge.com,
+ linux-mm@kvack.org, akpm@linux-foundation.org, mhocko@kernel.org,
+ minchan@kernel.org, hannes@cmpxchg.org, vdavydov.dev@gmail.com,
+ sj@kernel.org, jglisse@redhat.com, dennis@kernel.org, cl@linux.com,
+ penberg@kernel.org, rientjes@google.com, vbabka@suse.cz, ngupta@vflare.org,
+ linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org, jack@suse.cz,
+ jlayton@kernel.org, dan.j.williams@intel.com, hch@infradead.org,
+ djwong@kernel.org, dri-devel@lists.freedesktop.org,
+ rodrigosiqueiramelo@gmail.com, melissa.srw@gmail.com,
+ hamohammed.sa@gmail.com, harry.yoo@oracle.com, chris.p.wilson@intel.com,
+ gwan-gyeong.mun@intel.com, max.byungchul.park@gmail.com,
+ boqun.feng@gmail.com, longman@redhat.com, yunseong.kim@ericsson.com,
+ yeoreum.yun@arm.com, netdev@vger.kernel.org, matthew.brost@intel.com,
+ her0gyugyu@gmail.com, corbet@lwn.net, catalin.marinas@arm.com, bp@alien8.de,
+ x86@kernel.org, hpa@zytor.com, luto@kernel.org, sumit.semwal@linaro.org,
+ gustavo@padovan.org, christian.koenig@amd.com, andi.shyti@kernel.org,
+ arnd@arndb.de, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
+ rppt@kernel.org, surenb@google.com, mcgrof@kernel.org, petr.pavlu@suse.com,
+ da.gomez@kernel.org, samitolvanen@google.com, paulmck@kernel.org,
+ frederic@kernel.org, neeraj.upadhyay@kernel.org, joelagnelf@nvidia.com,
+ josh@joshtriplett.org, urezki@gmail.com, mathieu.desnoyers@efficios.com,
+ jiangshanlai@gmail.com, qiang.zhang@linux.dev, juri.lelli@redhat.com,
+ vincent.guittot@linaro.org, dietmar.eggemann@arm.com, bsegall@google.com,
+ mgorman@suse.de, vschneid@redhat.com, chuck.lever@oracle.com,
+ neil@brown.name, okorniev@redhat.com, Dai.Ngo@oracle.com, tom@talpey.com,
+ trondmy@kernel.org, anna@kernel.org, kees@kernel.org, bigeasy@linutronix.de,
+ clrkwllms@kernel.org, mark.rutland@arm.com, ada.coupriediaz@arm.com,
+ kristina.martsenko@arm.com, wangkefeng.wang@huawei.com, broonie@kernel.org,
+ kevin.brodsky@arm.com, dwmw@amazon.co.uk, shakeel.butt@linux.dev,
+ ast@kernel.org, ziy@nvidia.com, yuzhao@google.com,
+ baolin.wang@linux.alibaba.com, usamaarif642@gmail.com,
+ joel.granados@kernel.org, richard.weiyang@gmail.com,
+ geert+renesas@glider.be, tim.c.chen@linux.intel.com, linux@treblig.org,
+ alexander.shishkin@linux.intel.com, lillian@star-ark.net,
+ chenhuacai@kernel.org, francesco@valla.it, guoweikang.kernel@gmail.com,
+ link@vivo.com, jpoimboe@kernel.org, masahiroy@kernel.org,
+ brauner@kernel.org, thomas.weissschuh@linutronix.de, oleg@redhat.com,
+ mjguzik@gmail.com, andrii@kernel.org, wangfushuai@baidu.com,
+ linux-doc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
+ linux-i2c@vger.kernel.org, linux-arch@vger.kernel.org,
+ linux-modules@vger.kernel.org, rcu@vger.kernel.org,
+ linux-nfs@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+ 2407018371@qq.com, dakr@kernel.org, miguel.ojeda.sandonis@gmail.com,
+ neilb@ownmail.net, bagasdotme@gmail.com, wsa+renesas@sang-engineering.com,
+ dave.hansen@intel.com, geert@linux-m68k.org, ojeda@kernel.org,
+ alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+ lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
+ tmgross@umich.edu, rust-for-linux@vger.kernel.org, Chris Mason
+ <clm@meta.com>, Roman Gushchin <roman.gushchin@linux.dev>,
+ Josef Bacik <josef@toxicpanda.com>, Yunseong Kim <yunseong.kim@est.tech>
+References: <20251205071855.72743-1-byungchul@sk.com>
+ <6b2a816f-eb3b-4e0c-a024-ee2e3743eb04@kernel.org>
+ <CA+7O06GxeDLR9RcKDN2i-Rgc4kgzz6BfF4b0XAH4tFx=A723Nw@mail.gmail.com>
 Content-Language: en-US
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-In-Reply-To: <20260522231312.1710836-3-kuba@kernel.org>
+From: Harry Yoo <harry@kernel.org>
+In-Reply-To: <CA+7O06GxeDLR9RcKDN2i-Rgc4kgzz6BfF4b0XAH4tFx=A723Nw@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
 
-Hi,
 
-On 5/23/26 01:13, Jakub Kicinski wrote:
-> module_flash_fw_schedule() is missing undo for setting
-> the "in_progress" flag and taking the netdev reference.
-> Delay taking these, the device can't disappear while
-> we are holding rtnl_lock.
-> 
-> Fixes: 32b4c8b53ee7 ("ethtool: Add ability to flash transceiver modules' firmware")
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+On 5/23/26 11:00 PM, Yunseong Kim wrote:
+> I've previously experimented with running DEPT alongside syzkaller fuzzing,
+> and many hung tasks missed by lockdep are caught by DEPT, but the resulting
+> high volume of reports makes it easy for issues to get lost in the massive
+> log output. Sorting through that output manually is a huge bottleneck, so
+> leveraging a well-crafted AI prompt to triage the warnings and filter out
+> the false positives would be incredibly valuable.
 
-Maxime
+I mean both 1) detection of deadlock issues AND 2) false positive 
+elimination with AI.
 
-> ---
-> CC: andrew@lunn.ch
-> CC: maxime.chevallier@bootlin.com
-> CC: danieller@nvidia.com
-> CC: petrm@nvidia.com
-> ---
->   net/ethtool/module.c | 5 +++--
->   1 file changed, 3 insertions(+), 2 deletions(-)
-> 
-> diff --git a/net/ethtool/module.c b/net/ethtool/module.c
-> index 741f6fb25d45..392c03935e5e 100644
-> --- a/net/ethtool/module.c
-> +++ b/net/ethtool/module.c
-> @@ -319,8 +319,6 @@ module_flash_fw_schedule(struct net_device *dev, const char *file_name,
->   	if (err < 0)
->   		goto err_release_firmware;
->   
-> -	dev->ethtool->module_fw_flash_in_progress = true;
-> -	netdev_hold(dev, &module_fw->dev_tracker, GFP_KERNEL);
->   	fw_update->dev = dev;
->   	fw_update->ntf_params.portid = info->snd_portid;
->   	fw_update->ntf_params.seq = info->snd_seq;
-> @@ -335,6 +333,9 @@ module_flash_fw_schedule(struct net_device *dev, const char *file_name,
->   	if (err < 0)
->   		goto err_release_firmware;
->   
-> +	dev->ethtool->module_fw_flash_in_progress = true;
-> +	netdev_hold(dev, &module_fw->dev_tracker, GFP_KERNEL);
-> +
->   	schedule_work(&module_fw->work);
->   
->   	return 0;
+If the review prompt is only used to eliminate DEPT's false positives, I 
+think that would be quite hard to get broad use.
+
+Someone would have to build out-of-tree DEPT, collect the reports, and 
+then feed those back into the AI. I don't think building that kind of 
+pipeline would actually work well in practice.
+
+-- 
+Cheers,
+Harry / Hyeonggon
 
