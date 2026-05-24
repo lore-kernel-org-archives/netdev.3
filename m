@@ -1,95 +1,109 @@
 Received: from out-12.smtp.spacemail.com (out-12.smtp.spacemail.com [198.54.127.83])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B3DA2494FE;
-	Sun, 24 May 2026 11:25:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3DBC145FE0;
+	Sun, 24 May 2026 11:53:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.54.127.83
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779621902; cv=none; b=n0pM4ipNTTSYnJ35rB/bq+0uU2t4cf2XRTbzx/N921wi5xqIT+mzeLVoa9wpj6DuzQxsYpwMlfuDiS+mXQNNL+dxMIu+UMmWcE3l5Nj2ZUeI7Mpx/V2xgLpvnHIUtM52YgzfrVHp9lPM4UpkgPoNPm2O69Y9fFVSyNoLoHRcENc=
+	t=1779623592; cv=none; b=Dz+ObL+zYeyL49WJT7NiCKiYOuZTO/JGcKMm0YLH4k8F8y3zM8fOQ7vTgNVtjI41kW/SeaOY6WdKkBRnLB9xXIVZfU7uJuVeeITGZE+Rv3M2W2/S0nSuEKqQs01qMIdEsKgylHNf6cLz/2G9MbxuHfXKSr4UvHY9LWAqeahjBAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779621902; c=relaxed/simple;
-	bh=qenjscNh1f8clKsOgQfQt/PXt7PexEisYMMD+pJ4Pks=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Content-Type:
-	 MIME-Version:Message-Id:Date; b=WP0Taa6JNT5w8LCmEBtnBL/e0bHbgYY/yKYs9Rp2twYVZBX9EE6J/ab9Q82GM47THXafts15IqcKTcoU47ad5G9vLEEb68fZtfuQSPtBPee4vKiJZF5VJG+cFIwBSuOQrGt/pXUi2mtzJmvwNn2k8DUSMnVZzpwRFYeLSQcI4yk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rexion.ai; spf=pass smtp.mailfrom=rexion.ai; dkim=fail (0-bit key) header.d=rexion.ai header.i=@rexion.ai header.b=m2Xnu9iF reason="key not found in DNS"; arc=none smtp.client-ip=198.54.127.83
+	s=arc-20240116; t=1779623592; c=relaxed/simple;
+	bh=jpZM8/zLddTDsq5GlC6TnbfoQOrGlwYCgXANTpOTf3s=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=u11lKiGl90+huAvomVr7CCesqnekinUTCmQle6YiR1Zg5hBXguJ2AmH7/9MoYjtz5qpn9xLk4siVKZrK+rNXbS6pTkVzTqNelnMsPZ46E3HRitVq0LyPCAC1GaQhP5auEd5KU5GoOBYasBQ1LZBUs33jArM2d+BO1JSvhsMS39g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rexion.ai; spf=pass smtp.mailfrom=rexion.ai; dkim=fail (0-bit key) header.d=rexion.ai header.i=@rexion.ai header.b=LQofYPbK reason="key not found in DNS"; arc=none smtp.client-ip=198.54.127.83
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rexion.ai
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rexion.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=rexion.ai header.i=@rexion.ai header.b="m2Xnu9iF"
-Received: from [127.0.1.1] (unknown [49.207.213.66])
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=rexion.ai header.i=@rexion.ai header.b="LQofYPbK"
+Received: from Kyren (unknown [49.207.213.66])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.spacemail.com (Postfix) with ESMTPSA id 4gNbyT3lKNz8sX8;
-	Sun, 24 May 2026 11:14:57 +0000 (UTC)
+	by mail.spacemail.com (Postfix) with ESMTPSA id 4gNcpT51RNz6tkK;
+	Sun, 24 May 2026 11:53:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rexion.ai;
-	s=spacemail; t=1779621301;
-	bh=w5RpyG4/aQvV3ylagbYpeH1Folp9rSlHgTQMQ/w/Dzw=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=m2Xnu9iFTXKWi+s/j6qmwcFOGnR0mEdVal5yRU6++pBz+PkYiLv76kAJ0d4qmcWD+
-	 chDcMD3/EA+b1gcWatGrChUYx7T46JRcYvBLukfSw/904kiKnwcU8/7IJeav1vVhbe
-	 P701kC8xEDe1bCKb7bQDkLES2SftMQJ8bl0hZ8zBBtj2IRWxaFyzym8c1aMAzAXCaQ
-	 yJ1DFZQ8gZygam21sJ7hs7rIyLqTc6OmbI3TY2wXUopdSCa8MZWjx2FUbmV7vh/uES
-	 MWzyfGWRynjcZLUAdaWW2B6MlKISRw+UAaFB4qrTSeB2HRow4Tyslw4W9jTbpv5gSX
-	 ANnJtiF+xPRJQ==
+	s=spacemail; t=1779623588;
+	bh=j7VFnmR8Q2imsbnf/iLbK4SfOgvuJSNYrz/bMqfO1ZA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=LQofYPbKaoyo4c3Cs7rJ41Oma/8rPwklkdBzSB1aJPRVsOH/MFGpUOzY81JdNxMC2
+	 exzk+/KUf5xL5ifCIuxxebcuLO+qZnQ0+gG1Y5TCfoDqHnD1dCD8e6g8b0CtDhtjw5
+	 HsV4QcAyTBnb7nj90s6hUCrqqTviK5jnjeo8ySP8T7PNWbKZjhhwIk1/MqYiARqGr3
+	 Tsj6G2Q9pKchZcFC7ArQWpNT9QuOESqIhn/hiUoMKxsCN2Rmp/l50WaEYyxnu1K420
+	 rpAbkB1Ne3v2JkCna10AGyMZCV/Ggv+nfYN+mlqT9tCPmiqf01A2bd/kwrePrKsK2o
+	 Lnnbv7N+K0Bhg==
 From: Rahul <rc@rexion.ai>
-To: Pablo Neira Ayuso <pablo@netfilter.org>
-Cc: Phil Sutter <phil@nwl.cc>, Florian Westphal <fw@strlen.de>,
- David S. Miller <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, netfilter-devel@vger.kernel.org,
- coreteam@netfilter.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v3 1/4] netfilter: conntrack: add shared port and
- uint parsers for helpers
-In-Reply-To: <afpwLbN-W2Sur5Qu@chamomile>
-References: <afSBzDE-caw3Dsr1@orbyte.nwl.cc>
- <20260503083220.630655-1-rc@rexion.ai>
- <20260503083220.630655-2-rc@rexion.ai> <afpwLbN-W2Sur5Qu@chamomile>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+To: "David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>,
+	Alexander Aring <alex.aring@gmail.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Rahul <rc@rexion.ai>
+Subject: [PATCH net v2] ipv6: rpl: fix hdrlen overflow in ipv6_rpl_srh_decompress()
+Date: Sun, 24 May 2026 17:23:01 +0530
+Message-ID: <20260524115301.905478-1-rc@rexion.ai>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260501164242.419cc17e@kernel.org>
+References: <20260501164242.419cc17e@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <4gNbyT3lKNz8sX8@mail.spacemail.com>
-Date: Sun, 24 May 2026 11:14:57 +0000 (UTC)
+Content-Transfer-Encoding: 8bit
 X-Envelope-From: rc@rexion.ai
 
-On Sun, May 03, 2026, Pablo Neira Ayuso wrote:
-> You will need a "real name" here.
-> In nf.git, there is a new function sip_strtouint() that can possibly
-> be moved to nf_conntrack_helper.c.
+ipv6_rpl_srh_decompress() computes:
 
-Apologies — my name is Rahul. v4 will use "Rahul <rc@rexion.ai>"
-throughout.
+    outhdr->hdrlen = (((n + 1) * sizeof(struct in6_addr)) >> 3);
 
-I looked at 8cf6809cddcb ("netfilter: nf_conntrack_sip: don't use
-simple_strtoul"). Florian's patch adds two local helpers:
+hdrlen is __u8. For n >= 127 the result exceeds 255 and silently
+truncates. With n=127 (cmpri=15, cmpre=15, pad=0, hdrlen=16):
 
- - sip_strtouint(): generic bounded uint parser, used for expires,
-   cseq, clen, code, and port in process_sdp().
- - sip_parse_port(): port-specific wrapper around sip_strtouint(),
-   used in epaddr_len(), ct_sip_parse_request(), and
-   ct_sip_parse_header_uri().
+    (128 * 16) >> 3 = 256, truncated to 0 as __u8
 
-My v3 patch 4 already converts ct_sip_parse_request() and
-ct_sip_parse_header_uri() to use nf_ct_helper_parse_port(), which
-overlaps with what sip_parse_port() does.
+The caller in ipv6_rpl_srh_rcv() then places the compressed header
+at buf + ((ohdr->hdrlen + 1) << 3). With hdrlen=0 this is buf + 8,
+but the decompressed region occupies buf[0..2055] (8-byte header
+plus 128 full addresses). The compressed header overlaps the
+decompressed data, and ipv6_rpl_srh_compress() writes into this
+overlap, corrupting the routing header of the forwarded packet.
 
-Would it make sense to:
+The existing guard at exthdrs.c:546 checks (n + 1) > 255, which
+prevents n+1 from overflowing unsigned char (the segments_left
+field), but does not prevent the computed hdrlen from overflowing
+__u8. n=127 passes because 128 <= 255, yet hdrlen=256 does not
+fit.
 
- 1. Align nf_ct_helper_parse_uint() with sip_strtouint()'s design
-    (same endp-on-error semantics, UINT_MAX cap) and export it.
+Tighten the bound to (n + 1) > 127. This caps n at 126, giving
+hdrlen = (127 * 16) >> 3 = 254, which fits in __u8. The compressed
+header then lands at buf + ((254 + 1) << 3) = buf + 2040, exactly
+past the decompressed region (buf[0..2039]). No overlap. 127
+segments is well beyond any realistic RPL deployment.
 
- 2. In patch 4, drop sip_strtouint() from nf_conntrack_sip.c and
-    replace all its call sites with nf_ct_helper_parse_uint(), and
-    replace sip_parse_port() with nf_ct_helper_parse_port()?
+Fixes: 8610c7c6e3bd ("net: ipv6: add support for rpl sr exthdr")
+Signed-off-by: Rahul <rc@rexion.ai>
+---
+ net/ipv6/exthdrs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-That would consolidate both local helpers into the shared core and
-avoid the overlap. I am happy to send a v4 along those lines if that
-is the direction you prefer.
+diff --git a/net/ipv6/exthdrs.c b/net/ipv6/exthdrs.c
+index 95558fd6f..35a02584f 100644
+--- a/net/ipv6/exthdrs.c
++++ b/net/ipv6/exthdrs.c
+@@ -543,7 +543,7 @@ static int ipv6_rpl_srh_rcv(struct sk_buff *skb)
+ 	 * unsigned char which is segments_left field. Should not be
+ 	 * higher than that.
+ 	 */
+-	if (r || (n + 1) > 255) {
++	if (r || (n + 1) > 127) {
+ 		kfree_skb(skb);
+ 		return -1;
+ 	}
+-- 
+2.54.0
 
-Thanks,
-Rahul
