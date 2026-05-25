@@ -1,241 +1,153 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtp-42a8.mail.infomaniak.ch (smtp-42a8.mail.infomaniak.ch [84.16.66.168])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B968B380FE9;
-	Mon, 25 May 2026 20:41:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4004E385D62
+	for <netdev@vger.kernel.org>; Mon, 25 May 2026 20:46:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=84.16.66.168
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779741685; cv=none; b=OSgmjUkQG4P6oD6pcNo5Oi6TFzAk0Jv2S8m1ibdNHz56valsSSrddNhUAr+rQ5PTVY86q9zXRLxwYCHD8BGrLxtCmrrQAbsvNwxFEvXbbrU8Q6pap38PyFZfjlyt0oqpNxFYsg35pGuP0d+AbjWUS9FK+FsT80Af0pYioMWyjCA=
+	t=1779742000; cv=none; b=u99BfZP7ju11VDm7UUc5WdH+ohbGq8GQJ9y3ZF1ZKMjoe+QAzoXLJh9fq07r48K/foanJQ23JxyuAZTlajAoCR7QD9lunRDrAwaChSM3sqCR5g1+RbSdzYVvOpM+nr8G0jG9P1wI52guCZSstOmdWxp5P5xAUTyD6DkEYZImIqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779741685; c=relaxed/simple;
-	bh=U5+ZuQ65d3tnD/MADat0Me3W1/1R+VsYenecOypJvw4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m2oewrfqrD3TpHvHf70TyXITMprNw/4PDO9epxm00ja69YUwhjDomWq5AszPuxMvgkxnTqT6XJ/c9peTbkYaSCG+PNTjldNh/37n73r7fzvwUJ6gIskQf0OXx0msfanxo4xx0+tMa3F3CUOle2ivi2KE97HNrc2nLRVAQY6sMkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QJTW7o39; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779742000; c=relaxed/simple;
+	bh=LWQjmkUIZAGaQ5nHbnV06UZfCBPRFmb530IuVidr4Zo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cwdw/mdUbrvYrub58hJY+XKYiq5qDnIJ3fxgYn1ylOSm4LR4SSLcnjyWo7lB9DwQ0ohR5aUVsXq5YuZNg8+IgLA9pGwWOBWGNezedKd4PWYjLRdwrT2nyZn6OZz9BbSt4khv7XltSlw3GPx1sVfkjltgxkt88VZfJzSbJaBv5Do=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net; spf=pass smtp.mailfrom=digikod.net; dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b=tHnPJq4N; arc=none smtp.client-ip=84.16.66.168
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=digikod.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QJTW7o39"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 153B41F00A3A;
-	Mon, 25 May 2026 20:41:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779741683;
-	bh=81DhbawtDqBc+BFbY7juQMfdTUE8jBfq49tDkSyVcXo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QJTW7o39apLnP7yq3O9L8Sg7SPeWyHiDmXCSqXqU3iiqoUMngkHoGdkrDn+37NJ9Q
-	 c0hcamU1GX4iNPieJbzhwJIo/GlLg4txieMm2kKVnhZjXzh2eHMwt+eAGiWeh7ui43
-	 VgSYPc1a7R9a6Q3Uc9o5lWlGFE2NyMiMXxPP60rXd8+DV2Q3IsbL4V+JveVBhPl/cw
-	 GiDTwdh/NgKpnRxysd4BLp7oje5OvL9TAb+Cjm7JRLw/s+LT88TbpyBr7ob2xc/RIV
-	 gNFAacJwKTbfm8Fr3RwWGfz4APuUVdNfX+kSSG06q80+X7OhQRSNvXOuf12B99o9jI
-	 /DMXaRPcL7jjw==
-From: Jakub Kicinski <kuba@kernel.org>
-To: michael.dege@renesas.com
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	yoshihiro.shimoda.uh@renesas.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	niklas.soderlund@ragnatech.se,
-	paul@pbarker.dev,
-	richardcochran@gmail.com,
-	netdev@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v5 14/14] net: renesas: rswitch: add vlan aware switching
-Date: Mon, 25 May 2026 13:41:22 -0700
-Message-ID: <20260525204122.2471553-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260522-rswitch_add_vlans-v5-14-53589d944a9f@renesas.com>
-References: <20260522-rswitch_add_vlans-v5-14-53589d944a9f@renesas.com>
+	dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b="tHnPJq4N"
+Received: from smtp-3-0001.mail.infomaniak.ch (unknown [IPv6:2001:1600:4:17::246c])
+	by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4gPSC91wgDzW3m;
+	Mon, 25 May 2026 22:28:53 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=digikod.net;
+	s=20191114; t=1779740933;
+	bh=HpQXEN6tusTN7MN/f+6t2ai9RBkMng9ANiaZvvqfw10=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=tHnPJq4NfFBy7Vvq5SoSgpwKqaHcRTUL7uHBsNV7E6CN644UoxehU0wh14Iwh1D2P
+	 NiYgWJAPmAQhqsih/hLbr7jTO2dOyfsA+d/1Skgg5mnbIdZj9aFuP+t6Ll+1n3+B9O
+	 61gAbJKeAA37aaUQrchA/2Q9trFSY8GwaSrq5QcM=
+Received: from unknown by smtp-3-0001.mail.infomaniak.ch (Postfix) with ESMTPA id 4gPSC81mHCzs7m;
+	Mon, 25 May 2026 22:28:52 +0200 (CEST)
+Date: Mon, 25 May 2026 22:28:46 +0200
+From: =?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>
+To: Matthieu Buffet <matthieu@buffet.re>
+Cc: =?utf-8?Q?G=C3=BCnther?= Noack <gnoack@google.com>, 
+	linux-security-module@vger.kernel.org, Mikhail Ivanov <ivanov.mikhail1@huawei-partners.com>, 
+	konstantin.meskhidze@huawei.com, Tingmao Wang <m@maowtm.org>, netdev@vger.kernel.org
+Subject: Re: [PATCH v4 0/7] landlock: Add UDP access control support
+Message-ID: <20260525.aeng6Xeula5o@digikod.net>
+References: <20260502124306.3975990-1-matthieu@buffet.re>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260502124306.3975990-1-matthieu@buffet.re>
+X-Infomaniak-Routing: alpha
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
----
-Subject: net: renesas: rswitch: add vlan aware switching
+FYI, I pushed this patch series in -next (except the doc patch which
+conflict).
 
-This patch adds VLAN support to the L2 HW bridge for the Renesas switch.
-It implements the standard switchdev callbacks for configuring STP state,
-aging time, and VLAN filtering. The implementation works around hardware
-limitations by keeping all ports in a default VLAN.
+Also, some interesting (and some other not relevant) findings here:
+https://sashiko.dev/#/patchset/20260502124306.3975990-1-matthieu%40buffet.re
 
-> diff --git a/drivers/net/ethernet/renesas/rswitch_l2.c b/drivers/net/ethernet/renesas/rswitch_l2.c
-> --- a/drivers/net/ethernet/renesas/rswitch_l2.c
-> +++ b/drivers/net/ethernet/renesas/rswitch_l2.c
-[ ... ]
-> +static void rswitch_update_vlan_filtering(struct rswitch_private *priv,
-> +					  bool vlan_filtering)
-> +{
-> +	if (vlan_filtering)
-> +		rswitch_modify(priv->addr, FWPC0(AGENT_INDEX_GWCA),
-> +			       0, FWPC0_VLANSA | FWPC0_VLANRU);
-> +	else
-> +		rswitch_modify(priv->addr, FWPC0(AGENT_INDEX_GWCA),
-> +			       FWPC0_VLANSA | FWPC0_VLANRU, 0);
-> +}
-
-[Severity: Medium]
-Does this properly synchronize the VLAN filtering state to the physical
-switch ports? This seems to update the FWPC0 registers only for the CPU
-port (AGENT_INDEX_GWCA) without iterating over the external physical
-ports, which might leave the hardware in an inconsistent state.
-
-[ ... ]
-> +static int rswitch_handle_port_attr_set(struct net_device *ndev,
-> +					struct notifier_block *nb,
-> +					struct switchdev_notifier_port_attr_info *info)
-> +{
-[ ... ]
-> +	switch (attr->id) {
-> +	case SWITCHDEV_ATTR_ID_PORT_STP_STATE:
-> +		err = rswitch_port_update_stp_state(ndev, attr->u.stp_state);
-> +
-> +		break;
-[ ... ]
-> +	default:
-> +		return -EOPNOTSUPP;
-> +	}
-> +
-> +	if (err < 0)
-> +		return err;
-> +
-> +	info->handled = true;
-> +
-> +	return NOTIFY_DONE;
-> +}
-
-[Severity: High]
-Could this block switchdev configurations for other network devices on the
-system? 
-
-The switchdev notifiers are broadcast globally, and without a check
-verifying the target ndev belongs to this driver, the default case here
-returns -EOPNOTSUPP for unrelated devices. When passed to
-notifier_from_errno(), this stops the global notifier chain.
-
-[ ... ]
-> +static int rswitch_gwca_set_vlan_tag(struct rswitch_private *priv,
-> +				     struct switchdev_obj_port_vlan *p_vlan,
-> +				     bool delete)
-> +{
-> +	u32 vem_val;
-> +	int err;
-> +
-> +	err = rswitch_gwca_change_mode(priv, GWMC_OPC_CONFIG);
-
-[Severity: High]
-This isn't a bug introduced by this patch, but there appears to be a self-
-deadlock in rswitch_gwca_change_mode() when trying to enable the agent
-clock:
-
-drivers/net/ethernet/renesas/rswitch_main.c:rswitch_gwca_change_mode() {
-        if (!rswitch_agent_clock_is_enabled(priv->addr, priv->gwca.index)) {
-                spin_lock(&priv->agent_lock);
-                rswitch_agent_clock_ctrl(priv->addr, priv->gwca.index, 1);
-                spin_lock(&priv->agent_lock);
-        }
-...
-}
-
-Will the second spin_lock() cause a deadlock on the same CPU?
-
-> +	if (err < 0)
-> +		return err;
-
-[ ... ]
-> +static int rswitch_port_obj_do_add_gwca(struct net_device *ndev,
-> +					struct rswitch_private *priv,
-> +					struct switchdev_obj_port_vlan *p_vlan)
-> +{
-> +	int err;
-> +
-> +	if (!(p_vlan->flags & BRIDGE_VLAN_INFO_BRENTRY))
-> +		return NOTIFY_DONE;
-> +
-> +	/* Set Rswitch VLAN mode */
-> +	iowrite32(br_vlan_enabled(ndev) ? FIELD_PREP(FWGC_SVM, C_TAG) : 0, priv->addr + FWGC);
-
-[Severity: High]
-Is it safe to pass ndev directly to br_vlan_enabled() here? 
-
-Because the notifier runs globally and routes non-rdev devices into this
-function, ndev might be an unrelated physical port rather than a bridge
-master. This seems like it could lead to out-of-bounds memory reads when
-the function dereferences the foreign driver's private data.
-
-[ ... ]
-> +static int rswitch_port_obj_do_del(struct net_device *ndev,
-> +				   struct switchdev_obj_port_vlan *p_vlan)
-> +{
-> +	struct rswitch_device *rdev = netdev_priv(ndev);
-> +	struct rswitch_private *priv = rdev->priv;
-> +	struct rswitch_etha *etha = rdev->etha;
-> +	int err;
-> +
-> +	err = rswitch_port_set_vlan_tag(etha, p_vlan, true);
-> +	if (err < 0)
-> +		return err;
-> +
-> +	rswitch_modify(priv->addr, FWPC0(etha->index), FWPC0_VLANSA | FWPC0_VLANRU, 0);
-> +	rswitch_modify(priv->addr, FWPC2(AGENT_INDEX_GWCA), 0,
-> +		       FIELD_PREP(FWPC2_LTWFW, BIT(etha->index)));
-> +	rswitch_modify(priv->addr, FWPC2(rdev->port),
-> +		       0, FIELD_PREP(FWPC2_LTWFW, GENMASK(RSWITCH_NUM_AGENTS - 1, 0)));
-
-[Severity: High]
-Does this unconditionally break connectivity for all remaining active VLANs
-on this port? 
-
-When handling a VLAN deletion event, clearing these forwarding masks happens
-regardless of whether the port is still a member of other VLANs.
-
-> +
-> +	return rswitch_erase_vlan_table(priv, p_vlan->vid, etha->index);
-> +}
-
-[ ... ]
->  static int rswitch_switchdev_blocking_event(struct notifier_block *nb,
-> -					    unsigned long event, void *ptr)
-> +					    unsigned long event,
-> +					    void *ptr)
->  {
->  	struct net_device *ndev = switchdev_notifier_info_to_dev(ptr);
-> -	int ret;
->  
->  	switch (event) {
->  	case SWITCHDEV_PORT_OBJ_ADD:
-> -		return -EOPNOTSUPP;
-> +		err = rswitch_handle_port_obj_add(ndev, nb, ptr);
-> +
-> +		return notifier_from_errno(err);
->  	case SWITCHDEV_PORT_OBJ_DEL:
-> -		return -EOPNOTSUPP;
-> +		err = rswitch_handle_port_obj_del(ndev, nb, ptr);
-> +
-> +		return notifier_from_errno(err);
->  	case SWITCHDEV_PORT_ATTR_SET:
-> -		ret = switchdev_handle_port_attr_set(ndev, ptr,
-> -						     is_rdev,
-> -						     rswitch_port_attr_set);
-> -		break;
-> -	default:
-> -		if (is_rdev(ndev))
-> -			return -EOPNOTSUPP;
-> -		return NOTIFY_DONE;
-> +		err = rswitch_handle_port_attr_set(ndev, nb, ptr);
-> +
-> +		return notifier_from_errno(err);
->  	}
-
-[Severity: High]
-Could removing the is_rdev check from the attribute and object handler
-paths cause the driver to wrongly modify its own MMIO registers based on
-events meant for other hardware? 
-
-Since switchdev_handle_port_attr_set previously guarded against unrelated
-devices, removing it exposes the handlers to global broadcast events.
+On Sat, May 02, 2026 at 02:42:59PM +0200, Matthieu Buffet wrote:
+> Hi,
+> 
+> This is V4 of UDP access control in Landlock. Thanks to the round of
+> review of v3, access rights have changed to something that seems easier
+> to use and understand. It adds only two access rights, to restrict
+> configuring local and remote addresses on UDP sockets. The one that
+> restricts setting a remote address also controls sending datagrams to
+> explicit remote addresses -ignoring any remote address preset on the
+> socket-. The one that restricts binding to a local port also applies
+> when the kernel auto-binds an ephemeral port.
+> v1:
+> Link: https://lore.kernel.org/all/20240916122230.114800-1-matthieu@buffet.re/
+> v2:
+> Link: https://lore.kernel.org/all/20241214184540.3835222-1-matthieu@buffet.re/
+> v3:
+> Link: https://lore.kernel.org/all/20251212163704.142301-1-matthieu@buffet.re/
+> 
+> The limitation around allowing a process to send but not receive is
+> still there, and could warrant another patch if there is a real user
+> need.
+> I'm just not super happy about the clarity of logs generated for denied
+> autobinds ("domain=xxxxxx blockers=net.bind_udp"), due to the fact that
+> addresses and ports are currently only logged if they are non-0. A later
+> (coordinated LSM-wide) patch could improve readability by replacing != 0
+> checks with new booleans in struct lsm_network_audit. I'm also not
+> exactly happy with the integration in existing TCP selftests, but
+> refactoring them has already been discussed earlier.
+> 
+> Changes v1->v2
+> ==============
+> - recvmsg hook is gone and sendmsg hook doesn't apply when sending to a
+>   remote address pre-set on socket, to improve performance
+> - don't add a get_addr_port() helper function, which required a weird
+>   "am I in IPv4 or IPv6 context"
+> - reorder hook prologue for consistency: check domain, then type and
+>   family
+> 
+> Changes v2->v3
+> ==============
+> - removed support for sending datagrams with explicit destination
+>   address of family AF_UNSPEC, which allowed to bypass restrictions with
+>   a race condition
+> - rebased on linux-mic/next => add support for auditing
+> - fixed mistake in selftests when using unspec_srv variables, which were
+>   implicitly of type SOCK_STREAM and did not actually test UDP code
+> - add tests for IPPROTO_IP
+> - improved docs, split off TCP-related refactoring
+> 
+> Changes v3->v4
+> ==============
+> - merge LANDLOCK_ACCESS_NET_CONNECT_UDP and
+>   LANDLOCK_ACCESS_NET_SENDTO_UDP into
+>   LANDLOCK_ACCESS_NET_CONNECT_SEND_UDP (everything that might set the
+>   destination of a datagram)
+> - make LANDLOCK_ACCESS_NET_BIND_UDP apply when kernel is about to
+>   auto-bind an ephemeral port for the caller. Block it if policy would
+>   not allow an explicit call to bind(0)
+> - only deny sending AF_UNSPEC datagrams on IPv6 sockets, where there is
+>   a risk of the address family changing midway
+> 
+> Patch is based on https://git.kernel.org/pub/scm/linux/kernel/git/mic/linux.git
+> 3457a5ccacd3 ("landlock: Document fallocate(2) as another truncation corner case")
+> All lines added are covered with selftests, except the "default: return
+> 0" in current_check_autobind_udp_socket() which is not currently
+> reachable (net.c goes from 92.9%->94.6% line coverage).
+> 
+> Let me know what you think!
+> 
+> Closes: https://github.com/landlock-lsm/linux/issues/10
+> 
+> Matthieu Buffet (7):
+>   landlock: Add UDP bind() access control
+>   landlock: Add UDP connect() access control
+>   landlock: Add UDP send access control
+>   selftests/landlock: Add UDP bind/connect tests
+>   selftests/landlock: Add tests for sendmsg()
+>   samples/landlock: Add sandboxer UDP access control
+>   landlock: Add documentation for UDP support
+> 
+>  Documentation/userspace-api/landlock.rst     |   89 +-
+>  include/uapi/linux/landlock.h                |   35 +-
+>  samples/landlock/sandboxer.c                 |   40 +-
+>  security/landlock/audit.c                    |    3 +
+>  security/landlock/limits.h                   |    2 +-
+>  security/landlock/net.c                      |  161 ++-
+>  security/landlock/syscalls.c                 |    2 +-
+>  tools/testing/selftests/landlock/base_test.c |    4 +-
+>  tools/testing/selftests/landlock/net_test.c  | 1146 ++++++++++++++++--
+>  9 files changed, 1341 insertions(+), 141 deletions(-)
+> 
+> 
+> base-commit: 3457a5ccacd34fdd5ebd3a4745e721b5a1239690
+> -- 
+> 2.39.5
+> 
+> 
