@@ -1,149 +1,101 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F2A73E16B9;
-	Mon, 25 May 2026 08:42:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 354C23E4C95
+	for <netdev@vger.kernel.org>; Mon, 25 May 2026 08:58:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779698522; cv=none; b=tpHyglNODZzDzaWbwkN5xMrY3ZOyWFeTJiBlQ9apXAyz/97xz8qebHuqs+2zY1fO2Aocgu83uw7i/hx2kGl1DUDWatPB8v52w0xdCBdf/tjhiiFVdjBWIbF5psNDwIM7fBOqruxyN0iVijwXw1sdlCqH6Dzte7MX4DoN12rmiug=
+	t=1779699484; cv=none; b=peIi2K4/O4Tjni36Juh+enkEXqUJAn8qRiDYArc9ej/m/bKPFq03ghhO20iIQJiW9IL2F+zSW1zXtm3y7GMv/xgvEikcx6vrhEs7DAJBNvJV2xizWBLByNxG4VQ6To9rLXSh8zivpFiGebi3pJzyWf1L5DyaEpKP3FmrLzUJLwM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779698522; c=relaxed/simple;
-	bh=rhZeCAfuClKv/Mu8IFHZ3hmztx6GzmMheK7IXKONEDg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IZm82wG1iLYjBg7F7Ji4nMAxm12qFjUQtO312DE7C11pAdNO0E0I+h2I0BZpq8jb6hl4mn/IwFzEHHPtLdwGZ2xDgV/BgErSru6YtJcZmWvE28C1U6ysKqE7FwIQSKicvHc4gGBtSdTYyp+tEqjBPCg0bKWbO01h2D7Jecj+1BY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=M2SmpWiw; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1779699484; c=relaxed/simple;
+	bh=xXz/GYVV9QSNbeC/HxJ0KuDPx2s68Hc+e5zq10KEVeM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QMM1Rjx0D4SlYAfqWi5W42zxfi39P4zSAMbozWRY7d7J7sRpFG6lKDGyeJMwlGQ5pGaT9ERJ/mWXF9mGLj6GBJgOTcz8penpXAm9/GbUijmTyj3hETSesKcL9Ztg3jT3s5mWAmxmNkbhjKnf+9AmKgOcVoiiLTjyAa39Gf5rYQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PsfSJ9qs; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="M2SmpWiw"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779698521; x=1811234521;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=rhZeCAfuClKv/Mu8IFHZ3hmztx6GzmMheK7IXKONEDg=;
-  b=M2SmpWiwM0cva0+rg4A5dkAa2cbJj3/y/7i8Bp/Zft2MFu1Dgj58ZVPB
-   ZzmXK+BJwKpqKVF8Xdv6oTTdT6PO/czOy54/JfrtCFI6u90NQrCCZXmIf
-   zYLk6JsJFu5gL7D4YVJtJWNI7DA6VlnMHTUptf6cb6rh52WZhAkrlE6Js
-   QVcu0vYCpViR4gJV+qsXNqvL+3sVWgVItGH4oOFzLqURDRtpKwxobUCmD
-   ViP6CA8Y3p1zKSNUcJ3uFWVE2JV9kHTcHvNAEnQW+2Ibn+ATd7xXWbdRR
-   b4q8/mUgysmxuKB2oj3xkLjQ15IhMv/f5hHLqRQxEubsxLltCpnGkw6UR
-   Q==;
-X-CSE-ConnectionGUID: QPFixwk6RUioEcpzYnBNmQ==
-X-CSE-MsgGUID: BWfETJeEQDiq0BhpT3n0Og==
-X-IronPort-AV: E=McAfee;i="6800,10657,11796"; a="80573297"
-X-IronPort-AV: E=Sophos;i="6.24,167,1774335600"; 
-   d="scan'208";a="80573297"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 May 2026 01:42:01 -0700
-X-CSE-ConnectionGUID: kyp2uXDUTJ6ArQirl/1Tzw==
-X-CSE-MsgGUID: V03PED3bTZuB4SL2IOJGfQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,167,1774335600"; 
-   d="scan'208";a="238968451"
-Received: from gklab-003-014.igk.intel.com ([10.91.173.44])
-  by fmviesa008.fm.intel.com with ESMTP; 25 May 2026 01:41:58 -0700
-From: Przemyslaw Korba <przemyslaw.korba@intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: netdev@vger.kernel.org,
-	anthony.l.nguyen@intel.com,
-	przemyslaw.kitszel@intel.com,
-	konstantin.ilichev@intel.com,
-	aleksander.lobakin@intel.com,
-	Przemyslaw Korba <przemyslaw.korba@intel.com>,
-	stable@vger.kernel.org,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Subject: [PATCH iwl-net] idpf: add padding to PTP virtchnl structures
-Date: Mon, 25 May 2026 10:38:03 +0200
-Message-ID: <20260525083835.481974-1-przemyslaw.korba@intel.com>
-X-Mailer: git-send-email 2.47.3
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PsfSJ9qs"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D79E1F01567
+	for <netdev@vger.kernel.org>; Mon, 25 May 2026 08:58:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779699482;
+	bh=xXz/GYVV9QSNbeC/HxJ0KuDPx2s68Hc+e5zq10KEVeM=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=PsfSJ9qsfwUwMwGEQi9C5gkghGo00zi/UHVZXT4fQmDaGE2tbo69FkGJUMDmJx5ZP
+	 ajPVIPljZ4PYnb9NQO2JuaYOFz0uSSzjinXFbifeiuH7Y5hFnmw/pg0AbsywCXU/SD
+	 iPUkHSnbzPHqA1uoorTRRt7DninH/J/mgesmdexSXzDEg3Ao0pEGi/C476ZUYOoNjo
+	 DhVby5WWmAzJI1rJokBGqtXYfB6crSo2ze8eCNS3Z8HpmjitJ5phMuXGeqY8YpS/IE
+	 4iv+mYl92pOnQMXUwDk8yLuuzxK9SKUDmBR1sZXJrfOae8y4hAMWzbqZLbeDzEDzc2
+	 WZ12vmUy0grtA==
+Received: by mail-ot1-f53.google.com with SMTP id 46e09a7af769-7e5fe62fc87so2616277a34.1
+        for <netdev@vger.kernel.org>; Mon, 25 May 2026 01:58:02 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ+ghOILHQztpupDecxbuTxCf0k46i8lQvCpsJZM9LSyVqSgKkTSsy+/d/JPc22VUkPaEREmyFM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw/Z86YOa9UNvMSANxIfn8qAXYo6e8hKVbjK5JUPEf3d51NYa4y
+	iuTFnP7LcNX2ivh4gqlmzMPBipH5ezBQHAmSOIMXvtkKgdWmA1PsBjxho3oeITZYMwnXc8nKbV8
+	0+sY8TRsquEoo77txV8D2fP4IZRMBogU=
+X-Received: by 2002:a05:6830:4985:b0:7d7:fb8c:3c29 with SMTP id
+ 46e09a7af769-7e5feeb63a7mr8912823a34.14.1779699481274; Mon, 25 May 2026
+ 01:58:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260520183815.2510387-1-arnd@kernel.org> <20260520183815.2510387-3-arnd@kernel.org>
+In-Reply-To: <20260520183815.2510387-3-arnd@kernel.org>
+From: Linus Walleij <linusw@kernel.org>
+Date: Mon, 25 May 2026 10:57:44 +0200
+X-Gmail-Original-Message-ID: <CAD++jLnYeh3GfEfNXfCYdcdg_j2RAU63TYewwaTx3tm0tM531w@mail.gmail.com>
+X-Gm-Features: AVHnY4KW10_QvipgU3JqDhFdOUhRtRqnFXdZTNq6fk963CfrOH70VHOW3qgjj1k
+Message-ID: <CAD++jLnYeh3GfEfNXfCYdcdg_j2RAU63TYewwaTx3tm0tM531w@mail.gmail.com>
+Subject: Re: [PATCH 02/10] [v3] input: gpio-keys: make legacy gpiolib optional
+To: Arnd Bergmann <arnd@kernel.org>
+Cc: linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Arnd Bergmann <arnd@arndb.de>, Christian Lamparter <chunkeey@googlemail.com>, 
+	Johannes Berg <johannes@sipsolutions.net>, Aaro Koskinen <aaro.koskinen@iki.fi>, 
+	Andreas Kemnade <andreas@kemnade.info>, Kevin Hilman <khilman@baylibre.com>, 
+	Roger Quadros <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>, 
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Bartosz Golaszewski <brgl@kernel.org>, 
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>, Lee Jones <lee@kernel.org>, 
+	Pavel Machek <pavel@kernel.org>, Matti Vaittinen <mazziesaccount@gmail.com>, 
+	Florian Fainelli <florian.fainelli@broadcom.com>, Jonas Gorski <jonas.gorski@gmail.com>, 
+	Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, linux-wireless@vger.kernel.org, 
+	linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-mips@vger.kernel.org, linux-sh@vger.kernel.org, 
+	linux-input@vger.kernel.org, linux-leds@vger.kernel.org, 
+	netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Add padding to virtchnl2 PTP structures to match the Control Plane
-expected message sizes:
-* virtchnl2_ptp_get_dev_clk_time: 8 -> 16 bytes
-* virtchnl2_ptp_set_dev_clk_time: 8 -> 16 bytes
-* virtchnl2_ptp_get_cross_time: 16 -> 24 bytes
+On Wed, May 20, 2026 at 8:38=E2=80=AFPM Arnd Bergmann <arnd@kernel.org> wro=
+te:
 
-The FW expects the above sizes and PTP negotiation fails due to the
-mismatch. Previously neither the FW nor the driver checked message/reply
-sizes strictly, so the problem appeared only after recent validation
-improvements.
+> From: Arnd Bergmann <arnd@arndb.de>
+>
+> Most users of gpio-keys and gpio-keys-polled use modern gpiolib
+> interfaces, but there are still number of ancient sh, arm32 and x86
+> machines that have never been converted.
+>
+> Add an #ifdef block for the parts of the driver that are only used on
+> those legacy machines.
+>
+> The two Rohm PMIC drivers use a gpio-keys device without an actual GPIO,
+> passing an IRQ number instead. In order to keep this working both with
+> and with CONFIG_GPIOLIB_LEGACY, change the gpio-keys driver to ignore
+> the gpio number if an IRQ is passed.
+>
+> Link: https://lore.kernel.org/all/b3c94552-c104-42e3-be15-7e8362e8039e@gm=
+ail.com/
+> Link: https://lore.kernel.org/all/afJXG4_rtaj3l2Dk@google.com/
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
-reproduction steps:
-ptp4l -i <pf> -m
-Observe: failed to open /dev/ptp0: Permission denied
+Reviewed-by: Linus Walleij <linusw@kernel.org>
 
-Fixes: bf27283ba594 ("virtchnl: add PTP virtchnl definitions")
-Cc: stable@vger.kernel.org
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-Signed-off-by: Przemyslaw Korba <przemyslaw.korba@intel.com>
----
- drivers/net/ethernet/intel/idpf/virtchnl2.h | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/ethernet/intel/idpf/virtchnl2.h b/drivers/net/ethernet/intel/idpf/virtchnl2.h
-index 02ae447cc24a..39fea65c075c 100644
---- a/drivers/net/ethernet/intel/idpf/virtchnl2.h
-+++ b/drivers/net/ethernet/intel/idpf/virtchnl2.h
-@@ -1572,13 +1572,15 @@ VIRTCHNL2_CHECK_STRUCT_LEN(16, virtchnl2_ptp_get_vport_tx_tstamp_latches);
-  * struct virtchnl2_ptp_get_dev_clk_time - Associated with message
-  *					   VIRTCHNL2_OP_PTP_GET_DEV_CLK_TIME.
-  * @dev_time_ns: Device clock time value in nanoseconds
-+ * @pad: Padding for future extensions
-  *
-  * PF/VF sends this message to receive the time from the main timer.
-  */
- struct virtchnl2_ptp_get_dev_clk_time {
- 	__le64 dev_time_ns;
-+	u8 pad[8];
- };
--VIRTCHNL2_CHECK_STRUCT_LEN(8, virtchnl2_ptp_get_dev_clk_time);
-+VIRTCHNL2_CHECK_STRUCT_LEN(16, virtchnl2_ptp_get_dev_clk_time);
- 
- /**
-  * struct virtchnl2_ptp_get_cross_time: Associated with message
-@@ -1586,26 +1588,30 @@ VIRTCHNL2_CHECK_STRUCT_LEN(8, virtchnl2_ptp_get_dev_clk_time);
-  * @sys_time_ns: System counter value expressed in nanoseconds, read
-  *		 synchronously with device time
-  * @dev_time_ns: Device clock time value expressed in nanoseconds
-+ * @pad: Padding for future extensions
-  *
-  * PF/VF sends this message to receive the cross time.
-  */
- struct virtchnl2_ptp_get_cross_time {
- 	__le64 sys_time_ns;
- 	__le64 dev_time_ns;
-+	u8 pad[8];
- };
--VIRTCHNL2_CHECK_STRUCT_LEN(16, virtchnl2_ptp_get_cross_time);
-+VIRTCHNL2_CHECK_STRUCT_LEN(24, virtchnl2_ptp_get_cross_time);
- 
- /**
-  * struct virtchnl2_ptp_set_dev_clk_time: Associated with message
-  *					  VIRTCHNL2_OP_PTP_SET_DEV_CLK_TIME.
-  * @dev_time_ns: Device time value expressed in nanoseconds to set
-+ * @pad: Padding for future extensions
-  *
-  * PF/VF sends this message to set the time of the main timer.
-  */
- struct virtchnl2_ptp_set_dev_clk_time {
- 	__le64 dev_time_ns;
-+	u8 pad[8];
- };
--VIRTCHNL2_CHECK_STRUCT_LEN(8, virtchnl2_ptp_set_dev_clk_time);
-+VIRTCHNL2_CHECK_STRUCT_LEN(16, virtchnl2_ptp_set_dev_clk_time);
- 
- /**
-  * struct virtchnl2_ptp_adj_dev_clk_fine: Associated with message
-
-base-commit: 4548d565aa80aad80274e2f3bff4d7cd914c703e
--- 
-2.47.3
-
+Yours,
+Linus Walleij
