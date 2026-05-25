@@ -1,105 +1,93 @@
-Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mail-qt1-f202.google.com (mail-qt1-f202.google.com [209.85.160.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4991E3D8132;
-	Mon, 25 May 2026 08:26:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45B3A3E2AA8
+	for <netdev@vger.kernel.org>; Mon, 25 May 2026 08:35:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779697599; cv=none; b=nme3xBcW5sVjCUvVKUAXA6QBlcG3QzOYjgtt5284BhPk+i6oGwMO+O+6tk7d25e5rFeghuvwySdz75JEaxmxueZR9HQsqcMput2F09UX8CCTjiI9lV3vETKlyioExi25SKJT9DSBTC7iq6MJHOqRmm/Lt9LRpRccWb/PYkXlHmw=
+	t=1779698146; cv=none; b=LWE3oGTBdQ5qcZobp4rlZkFrwDIpJ1jWxkttiDVqmes4DtHaRookWgah8j0XZ1NmSM2b8tu2YPnlxx2UY6wDc2OOAH4eW8BecD4IrdEUQ7Ldo1eW0LuLkRw3AHmDYCnUUw7v3IQIZ99lYzGwX0JmRs3Fm4K3I5ieGynrFWxj6Ws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779697599; c=relaxed/simple;
-	bh=ks1S0/z1GDCT66ukqI4KGA8S+ogvXH3Pqsh2FmB0PKA=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=dlZ51R4Luj9ZTcsTeQ35s87ts9uXx+GHZpBRBMYZ4610y3ak0WEWvNLomBgckWI35qCziRAeVu1vjMI7CdbFdPk3d5pqWf/BdEIkdJ9s9P8gtt2IuQhvlTaLgBKPLH+wiYWUvh2/rBX1SnVnVZOCvAr922QaY/sPO7Rbjg8qzJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=isrc.iscas.ac.cn; spf=pass smtp.mailfrom=isrc.iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=isrc.iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=isrc.iscas.ac.cn
-Received: from localhost.localdomain (unknown [36.112.3.223])
-	by APP-05 (Coremail) with SMTP id zQCowACX7dCkBxRqxz9mEQ--.6360S2;
-	Mon, 25 May 2026 16:26:12 +0800 (CST)
-From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-To: sgoutham@marvell.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	richardcochran@gmail.com,
-	pombredanne@nexb.com,
-	aleksey.makarov@cavium.com
-Cc: linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] net: thunderx: fix PTP device ref leak in nicvf_probe()
-Date: Mon, 25 May 2026 16:26:11 +0800
-Message-Id: <20260525082611.61817-1-lihaoxiang@isrc.iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1779698146; c=relaxed/simple;
+	bh=Hz/U+w/bfbT0XX2UvjExjjhQtUYaYujBjGBMQayqYno=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=sINUxbD4QC5ZC72Lfuw4uLNqADQ2XdJgcclb37q6pOG+3IFJrm+MwysR7DU1ptLGInSEe+QwaphgrxJVh2YKEm6fPnFjWZQ1o+hCaRmqrHaMtSlry8UNzS6rx7hqqvgvacjrLIZxvhrQ92O2WcSk1GPAjpJqGlo/HoAw0yIcqKE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CTmgKUNw; arc=none smtp.client-ip=209.85.160.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CTmgKUNw"
+Received: by mail-qt1-f202.google.com with SMTP id d75a77b69052e-514cbe73d00so269354361cf.1
+        for <netdev@vger.kernel.org>; Mon, 25 May 2026 01:35:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1779698144; x=1780302944; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=RoV0DDmUWFgT4WUnFmjFVNS46HTfkVA4M94IpXl/et4=;
+        b=CTmgKUNwPUqXIG23CCBXxAGk/j5pCVI2f5lcH/jali7zmY6dmCceKTXpgHCfOMMC4B
+         xe0fmmL0Rg++Oh6Dmqnw1ebo/vPLaxfLAKfRE0ziX0JtUgIAkjNCgKuG1UtrdAr0IqDd
+         MJWxRRlE8OZJbFfNo6uVTmSL+mpYe/2IDNjaGqgkhmEF/5QhQj1LRE+WW6m2gsd26g5o
+         jcasLm+c3Uq0JlLIxpSCo+pmm6dSXWKWojgdWx+HZb8rcncamirXF+C9pLHE00JUXk9i
+         QoebgsQu2u8rHn81PIzKw4GQUzzLRIuXvXP/OGeeqq3hT+PC3cnO86Zy8asXIIJSQk1d
+         ywgA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779698144; x=1780302944;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=RoV0DDmUWFgT4WUnFmjFVNS46HTfkVA4M94IpXl/et4=;
+        b=Q3RlfTPVIPzSsTZONzSp+xiU/vLY0UKFwel1AW1TakcwodSLL5Nj9YmJzDwybHuRQt
+         pmFW7vVE+QHQjrk3w822yYOJiyVlmOCXmr8fbQdTycSlhyYySs2jr40dufMyIyIC6Iy9
+         3+dA5TSlLDtqr4T4gWBuP+MdVwSyLVSzyoVSMvUfQIYPneUOunjc/pS7NBVOni5cXCYo
+         4mIXWPcRJJ6A3frF7i0quTnbVghz9QcO9dhl9rzEbjoqVxH5Iimrj70UUSW8hwzPuIky
+         YjmR6iph1xiOSwbkH/FGUn4NBCXyjDQ+J5y/5Ht18NuVfVT6eCvw1hyy4bLXhr1d4VTg
+         KpOQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9EWQuLDqXjR1vQgzOwaKj8uI2OKhOoeXJ8KRxSkOY4EurScciZXvdxvHUTj1yrRGsWWDf7tsM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyT++QA1fuHhg0wqzopyaG4AtGlUF2Gawg+pEBhupMVkfWFk+5L
+	UtqKqRP52QICsRIy2HPx9XXLwiKvgahR+siAKKMYyiOObD9ScLOyQhdgADBZBg2FbICXzaOKx36
+	0kTkufbrg/VAdSw==
+X-Received: from qtiz3.prod.google.com ([2002:ac8:1003:0:b0:50b:4963:99fa])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:622a:18a4:b0:510:141d:9d03 with SMTP id d75a77b69052e-516d43dbef5mr179283141cf.7.1779698143762;
+ Mon, 25 May 2026 01:35:43 -0700 (PDT)
+Date: Mon, 25 May 2026 08:35:37 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowACX7dCkBxRqxz9mEQ--.6360S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7WrWxCw1fXrWDGFWUAw43Jrb_yoW8XF4rp3
-	yDJFyakryfAFy5W3WDXr18uas5Gay2ya4rCr4kC3WYgwn3ArWktFy8Kr4jvw17XFWxKa43
-	t34Ut348CF4fJaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9014x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_Jr0_Gr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r4j6r
-	4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
-	I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
-	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628v
-	n2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7x
-	kEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E
-	67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCw
-	CI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1x
-	MIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIda
-	VFxhVjvjDU0xZFpf9x0JUd-B_UUUUU=
-X-CM-SenderInfo: 5olkt0x0ld0ww6lv2u4olvutnvoduhdfq/1tbiCQ4SE2oT57CD-AAAsX
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.54.0.746.g67dd491aae-goog
+Message-ID: <20260525083542.1565964-1-edumazet@google.com>
+Subject: [PATCH v5 net-next 0/5] rtnetlink: RTNL avoidance in rtnl_getlink()
+ and rtnl_dump_ifinfo()
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org, 
+	eric.dumazet@gmail.com, Eric Dumazet <edumazet@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-cavium_ptp_get() acquires a reference to the PTP PCI device
-through pci_get_device(). If any initialization step fails
-after cavium_ptp_get(), the PTP PCI device reference is leaked.
-Add a common error path to release the PTP reference before
-returning from probe failures.
+Many shell scripts invoke iproute2 commands specifying a device by
+its name.
 
-Fixes: 4a8755096466 ("net: thunderx: add timestamping support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
----
- drivers/net/ethernet/cavium/thunder/nicvf_main.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+This series improves their performance avoiding RTNL acquisition
+for their (repeated) name->index conversion.
 
-diff --git a/drivers/net/ethernet/cavium/thunder/nicvf_main.c b/drivers/net/ethernet/cavium/thunder/nicvf_main.c
-index 0b6e30a8feb0..d794aec80821 100644
---- a/drivers/net/ethernet/cavium/thunder/nicvf_main.c
-+++ b/drivers/net/ethernet/cavium/thunder/nicvf_main.c
-@@ -2109,8 +2109,10 @@ static int nicvf_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	}
- 
- 	err = pci_enable_device(pdev);
--	if (err)
--		return dev_err_probe(dev, err, "Failed to enable PCI device\n");
-+	if (err) {
-+		err = dev_err_probe(dev, err, "Failed to enable PCI device\n");
-+		goto err_put_ptp;
-+	}
- 
- 	err = pci_request_regions(pdev, DRV_NAME);
- 	if (err) {
-@@ -2264,6 +2266,8 @@ static int nicvf_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	pci_release_regions(pdev);
- err_disable_device:
- 	pci_disable_device(pdev);
-+err_put_ptp:
-+	cavium_ptp_put(ptp_clock);
- 	return err;
- }
- 
+v5: fix rtnl_fill_prop_list() return value.
+v4: Addressed Sashiko's feedback.
+    added 2 patches for rtnl_dump_ifinfo().
+v3: insert patch 2/3 in the series (Jakub reported a KASAN splat)
+
+Eric Dumazet (5):
+  rtnetlink: use nla_nest_end_safe() in rtnl_fill_prop_list()
+  net: defer netdev_name_node_alt_flush() call to netdev_run_todo()
+  rtnetlink: do not acquire RTNL in rtnl_getlink() with
+    RTEXT_FILTER_NAME_ONLY
+  rtnetlink: do not assume RTNL is held in link_master_filtered()
+  rtnetlink: add RTEXT_FILTER_NAME_ONLY support to rtnl_dump_ifinfo()
+
+ net/core/dev.c       |   4 +-
+ net/core/rtnetlink.c | 130 +++++++++++++++++++++++++++++++------------
+ 2 files changed, 95 insertions(+), 39 deletions(-)
+
 -- 
-2.25.1
+2.54.0.746.g67dd491aae-goog
 
