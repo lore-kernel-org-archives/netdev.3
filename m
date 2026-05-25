@@ -1,36 +1,39 @@
-Received: from smtpbgeu2.qq.com (smtpbgeu2.qq.com [18.194.254.142])
+Received: from smtpbguseast3.qq.com (smtpbguseast3.qq.com [54.243.244.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F3D9344025
-	for <netdev@vger.kernel.org>; Mon, 25 May 2026 10:11:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.194.254.142
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A1EE33E367
+	for <netdev@vger.kernel.org>; Mon, 25 May 2026 10:11:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.243.244.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779703901; cv=none; b=pFKxB5I2O9kT5dvKvO23cMDfuglnpoGnxlDj2WOb0gxOS218G0+F/lsoUlZysLy5/1Sdwz9T8/LHaPyvNIkF9irM7ZSBeXE7MRLZXY52HnFsYEl7etGE0NUnZvdc3+93g3EsHMZKhSel0Dd1UMSjbksrVItEwS8p6/qeXzo+B9w=
+	t=1779703903; cv=none; b=SrlSef+64YGkX45+dKGq9G751XyQjRnPbNQvUPd0/RaQZudz4hTgal1E3bT4qdj1t4ro6w2hNhesuoGRF+i9MVvcbv2d5wNDy8zo7XjesbnwL8bpKfjTUM2Uj8CywW0f/UtfKPzG51HdPkd5oDXY28Cyjistle1jK6DSzCxS1mg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779703901; c=relaxed/simple;
-	bh=hvJPHxp7ZU7kAvyKmjcK4nnfv5fauutVxSmY1ipnhv4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=qTZVLIPcEfNErx8poTV5YnQ7piYsNl0hVjiIT7DuTXlGovCalKtqqmOaC/qndJmhf+nbVuGmvUoemg9O9n19mKySzC+xSgXgYtCkRaAWoe62EWtKh4MSTZDZOI5q5xcI6HZBB6GMZy4IteXtt0MK4fpbTO3rSW+E5wbxhWgNpR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com; spf=pass smtp.mailfrom=net-swift.com; arc=none smtp.client-ip=18.194.254.142
+	s=arc-20240116; t=1779703903; c=relaxed/simple;
+	bh=7Rdraww71lHsUS/558Cg9aqGzV/pZDdwGEDP7CtVxkI=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=ROs0J8vI+LAMIBeMSQhrWSteOn16xrCS38IVB1kSzDeQXeGAd+GEeHhBVh/wzoquYTDxh70AjHUY9tqAvWO+qlB44ctwepgDo4DdQGzgP/r3h2pmC9mM7nkfHg4eOAn2xCrPEga31vlMojgnOnZ5W5FS8HYlhzj1jxIclgGFR/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com; spf=pass smtp.mailfrom=net-swift.com; arc=none smtp.client-ip=54.243.244.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=net-swift.com
-X-QQ-mid: zesmtpgz1t1779703890te534ff55
-X-QQ-Originating-IP: eOUvvz+NSP60pu+ER0ozdsvYQdeZ5HSnUfhAH8MIsS4=
+X-QQ-mid: zesmtpgz1t1779703893t9e1a87fe
+X-QQ-Originating-IP: SRZ3UHMdjaPp0bXcOHwtGFQIPFkk1x93j6W540Rjh9k=
 Received: from localhost.localdomain ( [122.231.28.113])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Mon, 25 May 2026 18:11:28 +0800 (CST)
+	id ; Mon, 25 May 2026 18:11:33 +0800 (CST)
 X-QQ-SSF: 0001000000000000000000000000000
 X-QQ-GoodBg: 2
-X-BIZMAIL-ID: 7971813150419393429
+X-BIZMAIL-ID: 10060630519017532682
 EX-QQ-RecipientCnt: 4
 From: Mengyuan Lou <mengyuanlou@net-swift.com>
 To: netdev@vger.kernel.org
 Cc: jiawenwu@trustnetic.com,
 	duanqiangwen@net-swift.com,
 	Mengyuan Lou <mengyuanlou@net-swift.com>
-Subject: [PATCH net-next v2 0/3] net: libwx: improve VF ethtool support
-Date: Mon, 25 May 2026 18:11:12 +0800
-Message-Id: <20260525101115.13151-1-mengyuanlou@net-swift.com>
+Subject: [PATCH net-next v2 2/3] net: libwx: add support for set_coalesce in wx_ethtool_ops_vf
+Date: Mon, 25 May 2026 18:11:14 +0800
+Message-Id: <20260525101115.13151-3-mengyuanlou@net-swift.com>
 X-Mailer: git-send-email 2.30.1
+In-Reply-To: <20260525101115.13151-1-mengyuanlou@net-swift.com>
+References: <20260525101115.13151-1-mengyuanlou@net-swift.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -40,70 +43,67 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
 Feedback-ID: zesmtpgz:net-swift.com:qybglogicsvrgz:qybglogicsvrgz5b-1
-X-QQ-XMAILINFO: NdeXJ8Tyb3Z/kWiJkdQ7/my5AVkkSpPiXGrPknqcKczItV2GgjeleLgB
-	NfsgZ2+/7gp0WtYDBF1H7GSi0WzHVW1agxnWKTHihLmy3Py2Ls54sXlIPcumKzGFQ5/ioVf
-	V4xTGIsnd7QXSoAnruMgRQYNTsNBn2MSWQLhn5gHWmq4PIQUifS7jGGk0favjcH+8x8C23G
-	RPEcywe87j6xasOVXpet3rB126ggdun5IWevIYdG1BqFNPHLpiDR2fQGapdk+TW2jfx4EFw
-	qwB3NzTuYS/WseFQkyhKXQkYlFPaQR81N6DCtuMtJGHsAmYaPhLupynglZZ4NJKxWUrD8As
-	eSl02XqC0PVjzn7RrrdQRAgSWQe+hO5oux5mVw8AWjosf0zKy2sVhqlQ2gYDJWsn0WcB/SB
-	q0/HinXfkZQ/X7pcALsMEDlLaASsw/Ewj8KXFKpCUE68Oaj32CnBPsF4LQEoMvGFH5oiXwa
-	RbS+RD93vJMCdhUiKGEpe3h0MwcOKA0dVRLOiaSF9QXhZ6nWkUkVvKVISkeWxd0qH76TDrP
-	cQ5d2vEdUfeV2Fn+VhQqWDYGroJ+VOoQO089fBEpkdDYSaxZxehT61aL160WEXrHzHvPDUz
-	h6eve7b5tRbbo4X3QoE+f22q6OKcP4UyXobUGphCeRHjtq+FYGi7YTHpAInwI7wjECkrxCW
-	k1OTzYtnpy28ZtvSnkFb6nXabGtXrwD4LrkqCFpYbmq7z9lVUXxbFR+FjSpp8t441hN1exJ
-	QM6FbtPXaaQf5u1IdrIUFety5xwvJj5BzaqibH15k3BG9BSwFDMNnZQpo7SX59egizG5xSa
-	s3hpOb894xijsBF9qD7rCeG7/ZJDraYAnh49OyP5upmmu5V+4QYGAw88ibae2QACpp/+4PS
-	SuJq1r7QozXVDKTR5i7CePMJjvBZFsZU6Eqgn5KlxjodcpiFkICBZy31/gtvGdaDOf38FZ0
-	oIbm9vHSbY7hZrHVd3d3DwwFwN6jNyYS545TZwCTucZauKGauD27L96SiZvQZPRCCc7p3dX
-	1LzS6jmjJfagGKb2ZWlOQTtC2060owsdroi99a9l1YduztV3dpHxaYLRj6i6++ycaRMh0Lf
-	66RTzGR0IZ5MjXHqnARVYhM4Cx3oudkfJVBf8uwdlovYZ6gHTJct71MZCURVtx94pIcKprx
-	U/b2eLy0kJo46nw4+SQFcKNqcw==
+X-QQ-XMAILINFO: Ny7ILAphlqXVGNbkOsD1zMzYnyHwLp/RNcvxwa9Q7NvcTOp9HHuBi2Br
+	PRnrJA+btPahFCyz8BAS4aHnR7BCLbIoVAzTY+xUCYI6Cccg0D87Hssr5a+DPWKcQtyKt8o
+	fNzDGRoJ8S9lSsPi+4i54/RQVsRLfrui+d0h8//Sx6RCeNNLIYB9BegIUGw7lFg6QZseJCK
+	Jx/HyaQE8t+Of30YwJMvujT55v8h1SAricM+yskc0x8KpleZo4Lx+AgNYkXnxvVJJlm7HTQ
+	Iku0FzWn5pdN4G1ooVbJndI5UpogiBwJkGyjnkn+7KpUXTVHa12oBnYdOdDiTj5NgMExZUO
+	yggkmirwZCTsjmU026uei+67BrEKGzV3VkYN1z0+3dViU6CQGRZY2Uhy/3iL1FyyaMgkg5w
+	qX2vOxBB24leYZJuoByn9JVBjpyLx98o50T4xbLk/EjpJ1AE2sPPz7n5bTddUTSNpac4rLr
+	RVASNisrSqok6qJ3D7/xdSjDguebjLGN5xSJgJlheS342V8Ft1hQUK3PbTlixpelLOkuY+5
+	0Eko0aEPv0IfAhoFImIIy6aeKOI9/My2PEwgrnBGO1CaLdN3DUHo4ohB4EMHseybVl7DQYi
+	NqqLiF5n1rS6jQRA1VYpu+oG56vUizKYnZNidb9Y2DQLstEEGpDJA8Gp8uThK9G6DXHvk8e
+	lTEXjRqFH1WkkKbyxTIExrCKj26dDmYmkMLuw0e4Su9ghI2kw6vfIOZGABBk6/LbUoRU6s0
+	rGlC+2/KCRFzobIHusWwjDp+G8yhS1ql/T24t2nXeynsIoWOqT9GRogXu5n5Qq4y3oB7WDu
+	jVlU/MDPdx4jvF1bpXWicJOfHRfTMaLgIkb1+wczCTegMFucdg4URZvzFkmJwAorQBfQtY5
+	0Di1aBq0klMFfzfmgu79VKk48URwdUhDeAfCCw25Eqcr3ZH71bxoJ6Gl7q1WqwwHvS9a5NT
+	FNRX8lOy97piHZ2rwEBZK5Pr1HnA2+6zLz43k4d5H4UFY3UHlkleGjqAJExWLhueen0pb3D
+	aAzpDrfuar3xdBp3kyLZAGgl4KnbCRzUztYVULj+87555il1j+3XwWINeHLGTMCuuagEi7M
+	v7DKAM9BARsPNQg9SaLagv5wxOfTjmQR3Gzn0aQE1OkcEqVLItqn1WsB4QDxGT0/NGfxOC1
+	lpE61ciuXZed/Mk=
 X-QQ-XMRINFO: Mp0Kj//9VHAxzExpfF+O8yhSrljjwrznVg==
 X-QQ-RECHKSPAM: 0
 
-This series improves ethtool support for Wangxun VF drivers
-(ngbevf and txgbevf) in libwx.
+Add support for set_coalesce in wx_ethtool_ops_vf, which
+is used to set interrupt coalescing parameters.
 
-This series extends VF support by enabling:
-ring parameter configuration via ethtool -G
-interrupt coalescing configuration via ethtool -C
-hardware statistics reporting via ethtool -S
+Signed-off-by: Mengyuan Lou <mengyuanlou@net-swift.com>
+---
+ drivers/net/ethernet/wangxun/libwx/wx_ethtool.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-Patch 1 adds support for set_ringparam in wx_ethtool_ops_vf,
-allowing VF users to adjust TX/RX descriptor ring sizes.
-Patch 2 enables set_coalesce support for VF devices and updates
-EITR programming to use the VF-specific register access helper.
-Patch 3 adds VF hardware statistics support so ethtool -S can
-report useful runtime counters for VF interfaces.
-
-Changes log:
-v2:
-- Patch 1:
-  Remove some stats which can be replaced by standard stats defined in
-  include/net/netdev_queues.h.
-- Patch 3:
-  Adding a return value to wx_set_ring to make wx_set_ringparam_vf can
-  be passed back to userspace.
-  Remove freeing and requesting of IRQs. Ring resize only updates descriptor
-  resources and does not change MSI-X vector or interrupt configuration,
-  so IRQs do not need to be reallocated.
-v1: https://lore.kernel.org/all/20260514103405.42175-1-mengyuanlou@net-swift.com
-
-Mengyuan Lou (3):
-  net: libwx: add support for set_ringparam in wx_ethtool_ops_vf
-  net: libwx: add support for set_coalesce in wx_ethtool_ops_vf
-  net: libwx: support vf hardware statistics
-
- .../net/ethernet/wangxun/libwx/wx_ethtool.c   | 98 +++++++++++++++++--
- drivers/net/ethernet/wangxun/libwx/wx_hw.c    | 75 +++++++-------
- drivers/net/ethernet/wangxun/libwx/wx_lib.c   |  9 +-
- drivers/net/ethernet/wangxun/libwx/wx_lib.h   |  4 +-
- .../net/ethernet/wangxun/libwx/wx_vf_common.c | 55 ++++++++++-
- .../net/ethernet/wangxun/libwx/wx_vf_common.h |  3 +
- .../net/ethernet/wangxun/ngbevf/ngbevf_main.c |  1 +
- .../ethernet/wangxun/txgbevf/txgbevf_main.c   |  2 +
- 8 files changed, 195 insertions(+), 52 deletions(-)
-
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c b/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
+index 6d8fcddde6fa..30c6ef6103ac 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
+@@ -10,6 +10,7 @@
+ #include "wx_hw.h"
+ #include "wx_lib.h"
+ #include "wx_vf_common.h"
++#include "wx_vf_lib.h"
+ 
+ struct wx_stats {
+ 	char stat_string[ETH_GSTRING_LEN];
+@@ -488,7 +489,10 @@ int wx_set_coalesce(struct net_device *netdev,
+ 		else
+ 			/* rx only or mixed */
+ 			q_vector->itr = rx_itr_param;
+-		wx_write_eitr(q_vector);
++		if (wx->pdev->is_virtfn)
++			wx_write_eitr_vf(q_vector);
++		else
++			wx_write_eitr(q_vector);
+ 	}
+ 
+ 	wx_update_rsc(wx);
+@@ -844,6 +848,7 @@ static const struct ethtool_ops wx_ethtool_ops_vf = {
+ 	.set_ringparam		= wx_set_ringparam_vf,
+ 	.get_msglevel		= wx_get_msglevel,
+ 	.get_coalesce		= wx_get_coalesce,
++	.set_coalesce		= wx_set_coalesce,
+ 	.get_ts_info		= ethtool_op_get_ts_info,
+ 	.get_link_ksettings	= wx_get_link_ksettings_vf,
+ };
 -- 
 2.30.1
 
