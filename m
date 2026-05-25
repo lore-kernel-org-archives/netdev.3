@@ -1,93 +1,84 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E1C7388E76;
-	Mon, 25 May 2026 14:30:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F14DB34846E
+	for <netdev@vger.kernel.org>; Mon, 25 May 2026 14:31:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779719436; cv=none; b=TpEbb0v3POppYHv/Kyj9wgP/cBVuhq5De7Q/CmXnYrL71+Z/b39w5lMrAyvEE9/aOuWu0vpwxwMcWdU7Z/YO/wX2bJsYgvm1p0WKP6Abht/ECcT6foBUEDYTSaY3t/Sj9xT+cM5bp1cs30ZOdAxJZSGiRDuK69fGfQ3zz0Zd7PI=
+	t=1779719465; cv=none; b=sJND9uqEztBUaP6zwzNsrkqEYRDpVs4y/z6gXG1mzqgpfM2FeOW5bbbfs2nJWrf8yvK2nWoC0ShJiK1qU/vG01asNeF72WSEPWo3ijrPJy8AgRTqzPiKNw/W6W/cf7pWCmp7GHDH/WSc2TFAGDAiY+nofXA8aPxwRJHYlRGPUvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779719436; c=relaxed/simple;
-	bh=c7j3mYtpmyl2MGE0v2vgwj/TkNfEtevu0YmWFfnKhMk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KETIplQ4dsxLMbpjumAXRBLi7PPoIYy8POTyCz98W+zgnkyUWOnWZPfIBt+bOxBLWl+40Xl2TwuzoJIsWlNFXR8bDssqly6/UnfKTpq5BkC9GAZ6Huu2PtccDLizw/DdH+sKE3442wHBHjNUSsOS443oFRMOF8Z/glcCXU0q4Jw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=YvyoTK7Y; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1779719465; c=relaxed/simple;
+	bh=WMTE157dD8g+v5naxxaBeOIvwYVp6WNe8lrymqYZFTI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AWtCVwNsf9HFG+Wu6Qf4cnn/y3Mtg9ju7GGpyOTUOYewaPpVGEBBSyNp2M+hAGnBvSTDWsp8rt+3BT1hPTe2O6dcZzCl1WzOdDNO2GgJDhtwq3OsLCOHt3IEIb2kLQptDZtZDPEXsnkGZLQQMZ6JWa5j7Bnp8Cd1e4mi8NqFLzk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QC43VHLh; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="YvyoTK7Y"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=WWCy27/OL3Xjr6IwZxDw6f5CDkc66vxOiZ83cP4BEoA=; b=YvyoTK7YZFgEF2fvSXpZFsv3/L
-	Daf/5jWHyQvPSviWZcWJrU4SoqLASMF3FLYoK9TnKulJS+aa2/IybS3+VQK78AnHQ9JNni5onjhVl
-	8tP0vt/ZmdnDN0iIwUCxRnE8Uyd5CFQ7YUJbpS0N85+uZkdmO1m3Qs5NwOVijy+VD2IQ=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wRWJz-004TmY-Am; Mon, 25 May 2026 16:30:23 +0200
-Date: Mon, 25 May 2026 16:30:23 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
-Cc: Piergiorgio Beruto <Pier.Beruto@onsemi.com>,
-	"hkallweit1@gmail.com" <hkallweit1@gmail.com>,
-	"linux@armlinux.org.uk" <linux@armlinux.org.uk>,
-	"davem@davemloft.net" <davem@davemloft.net>,
-	"edumazet@google.com" <edumazet@google.com>,
-	"kuba@kernel.org" <kuba@kernel.org>,
-	"pabeni@redhat.com" <pabeni@redhat.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net-next v2 3/9] net: phy: ncn26000: Added PHY loopback
- and read/write MMD callbacks
-Message-ID: <5b25361d-ea72-4653-82c0-af8723873e58@lunn.ch>
-References: <CY8PR02MB9249CDA8F2C560FDD0F662D883382@CY8PR02MB9249.namprd02.prod.outlook.com>
- <774d54e2-235c-4685-a582-f9714132923a@lunn.ch>
- <CY8PR02MB92494894582414C9D8FA1A2E830A2@CY8PR02MB9249.namprd02.prod.outlook.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QC43VHLh"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1779719463; x=1811255463;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=WMTE157dD8g+v5naxxaBeOIvwYVp6WNe8lrymqYZFTI=;
+  b=QC43VHLhvnvl/9g1bPdZo18BZkAfLWRzpdJdED0aG7a2wIT4+pgt5mFP
+   wCoClHNT6Q+ErfHUcDQ5483yoaUsz+kAYu5HtrbFncIaGCB3fRdM6B769
+   wy79ER+DkZVj3fQP4AARxNB9dtbmHoaColcX3VH7bOQdWlQi2jKAIYbnE
+   vAO3jnmqXUlKPDkmpEKGSdZmAu2iY7Q/tTn5xvm/453/1t5vqRb7Bu6Nb
+   EclBhKGkWMj9zKGCC26C9NbKTErTQSB+0fBN9YiFzyFARwz3t8BsP2N/2
+   +1OUlCedBCwPx5g7xQzNEUQUeEVC55lkE3fjALmR2jATdR5TwCiCJckpP
+   Q==;
+X-CSE-ConnectionGUID: nKY0xJu4RG+zZR5zUhfVVg==
+X-CSE-MsgGUID: NPejLbQpRt+8jPmaApHw3w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11797"; a="80596719"
+X-IronPort-AV: E=Sophos;i="6.24,168,1774335600"; 
+   d="scan'208";a="80596719"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 May 2026 07:31:02 -0700
+X-CSE-ConnectionGUID: nvL+cXkzQMGhns8v9KSxZA==
+X-CSE-MsgGUID: kZITJZNgR8CBwnc+tBgYew==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,168,1774335600"; 
+   d="scan'208";a="237189227"
+Received: from gnrd8.igk.intel.com (HELO GNRD8) ([10.123.232.137])
+  by fmviesa006.fm.intel.com with ESMTP; 25 May 2026 07:31:01 -0700
+From: Sergey Temerkhanov <sergey.temerkhanov@intel.com>
+To: intel-wired-lan@lists.osuosl.org
+Cc: netdev@vger.kernel.org
+Subject: [RESEND PATCH iwl-net v2 0/3] Rework ctrl_pf pointer usage in struct ice_adapter
+Date: Mon, 25 May 2026 14:30:57 +0000
+Message-ID: <20260525143100.2758251-1-sergey.temerkhanov@intel.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CY8PR02MB92494894582414C9D8FA1A2E830A2@CY8PR02MB9249.namprd02.prod.outlook.com>
+Content-Transfer-Encoding: 8bit
 
-On Mon, May 25, 2026 at 05:35:55AM +0000, Selvamani Rajagopal wrote:
-> > > diff --git a/drivers/net/phy/ncn26000.c b/drivers/net/phy/ncn26000.c
-> > > index 68b0e4647..d302e04c8 100644
-> > > --- a/drivers/net/phy/ncn26000.c
-> > > +++ b/drivers/net/phy/ncn26000.c
-> > > @@ -162,6 +162,39 @@ static int ncn26000_config_intr(struct phy_device *phydev)
-> > > return 0;
-> > > }
-> > >
-> > > +/* Directly accessing via Clause 45 read avoids the extra
-> > > + * SPI accesses required by indirect access.
-> > > + */
-> > > +static int ncn26000_read_mmd(struct phy_device *phydev, int dev, u16 reg)
-> > > +{
-> > > + struct mii_bus *bus = phydev->mdio.bus;
-> > > + int addr = phydev->mdio.addr;
-> > > +
-> > > + return __mdiobus_c45_read(bus, addr, dev, reg);
-> > > +}
-> > 
-> > This needs more explanation. Maybe you need to look into
-> > phydev->is_c45.
-> 
-> Andew,
-> 
+Rework usage of the control PF pointer in struct ice_adapter, so that
+it is always has a consistent state, since it is global for an adapter.
+Utilize RCU for reading the pointer value and atomic operations for
+changing it. Zero out the ctrl_pf pointer when the control PF is removed.
 
-> I spent some time to understand the is_c45 flag. As far as I can
-> see, this is the only way. See my reasons below, to see if it makes
-> sense.
+Previous version:
+https://lists.osuosl.org/pipermail/intel-wired-lan/Week-of-Mon-20260504/054842.html
 
-O.K. Lets keep with it, but please do some refactoring. We have the
-same code in microchip_t1s.c, for the same reason. Please pull it out
-of that driver, and put it next to genphy_read_mmd_unsupported(),
-along with the explanation of why it is needed.
+v1->v2: Rebase onto the latest dev-queue branch:
+        297c032796ab ("igc: add support for forcing link speed without autonegotiation")
 
-      Andrew
+Sergey Temerkhanov (3):
+  ice: Convert ctrl_pf pointer in struct ice_adapter to RCU
+  ice: Zero out the PTP control PF pointer at ice_adapter cleanup
+  ice: Cache struct ice_hw pointer for split register reads
+
+ drivers/net/ethernet/intel/ice/ice.h         | 10 ++-
+ drivers/net/ethernet/intel/ice/ice_adapter.h |  2 +-
+ drivers/net/ethernet/intel/ice/ice_ptp.c     | 66 +++++++++++++++++---
+ drivers/net/ethernet/intel/ice/ice_ptp_hw.c  | 26 ++++++--
+ 4 files changed, 89 insertions(+), 15 deletions(-)
+
+-- 
+2.53.0
+
