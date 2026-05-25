@@ -1,35 +1,35 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [91.216.245.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BDB33F5BC2
-	for <netdev@vger.kernel.org>; Mon, 25 May 2026 18:30:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7707E3D3CE8;
+	Mon, 25 May 2026 18:30:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.216.245.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779733803; cv=none; b=IDB3e0n5GBv0qMTLetbidE+3SCQHtUW5uNCf10ST6MC+BhG2w/HzPG9pHGQizVa6GbQQFtQV/K5DaK6nteBHhSQrg1Sfx9SA/Im17ocVyJlgRe69vk8Cd+AaSlUM3f6MqSnRWc7eG/EehfWAT9Kpwce9lpqozFTU4SDIvQSlj5g=
+	t=1779733811; cv=none; b=nfmcjVvlfU+Mu1YfZExsjDIhrMrc3fnf/Jl+/uBDYIKuaUufXI4+bL59aHshT4TOF7lOazFjWTCgFpwmVrIrL/B2voEqLiR7UktE0PhWz0HEOFKkHvnXv6+3MoeUOH0iu1jw9pDxr0fPdrtqvHqMAxhLGKi1ZGpFRO78Ch/LBiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779733803; c=relaxed/simple;
-	bh=uhnZRO4wh2Vu25B8wvGzCCn3wriSGnv8ZHHQjcBnQmk=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=Lu2tQ5Q63yaRkejFdnXhsqTKLHw29YQApMwaAZkJOdKtXwqzYJnKCBvFC1cQKFqyB/RRRR0HtDDDZ+07JuX5Ver2Lkx3/ewGMAL7Qd+44Ik4yHDew0K6s662SreKo4RrTXLJ0FS5lXRmd0mj874vlZ2Zm1EjreH4mbFcsEj/fOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nxdnH8hA; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nxdnH8hA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA0641F000E9;
-	Mon, 25 May 2026 18:30:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779733802;
-	bh=lumSUw2Anh13SXjaRZT1TIeabA9y+3Y1e+pgzyUkpbs=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=nxdnH8hAiTk6c9ji55jh/HH9ngRB4o+adlx+xN/5fxCbNuIkqElj236TtjEmjtu1t
-	 j2uDcqJI6uquJtPluRMJwtvlp4MOZzNDgikT40hCsi8uhNVpHavLU2/q5ukckb9YnD
-	 w+Ljj7o7rwqaTxC+yYxNaHjMiUEEXNXeooEJi5jWowJymO0yH6IAcYpdFFOXMERueQ
-	 eJ/+n8/rLdY/w3tcMTsuRdcgIC3tnH/gmgecMcznp7AigycKoVaezRnjnuP5d6As3e
-	 5/lbbQzB3Wjct3gvUAENCQNmHVuTpfMumwlrR1A36QfgLcg+S3AXgypw7hp+iLu2DY
-	 bfw/z83DIHeDQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0E7B380AA75;
-	Mon, 25 May 2026 18:30:09 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1779733811; c=relaxed/simple;
+	bh=KdqwkoQQ1eh/xlnmZYntx1MYhkdIzUUwf6bUJC6dqmk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=NJ5xKI3rtWzOknkrRs1CFjHaqTs5FAXKMWFi2Ud+ro+9QMtAtfP9h92xgJcVxR3JfNTGMtmPPougtPQRWP04xAou+/lh5g0+rFLhPOC2gJWazB12WnZo2ZsIW18usNOZYCmOQMdpCWHZNOd2TgJ+tHC5M3j17Ex+S1o6B9judwg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de; spf=pass smtp.mailfrom=Chamillionaire.breakpoint.cc; arc=none smtp.client-ip=91.216.245.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=Chamillionaire.breakpoint.cc
+Received: by Chamillionaire.breakpoint.cc (Postfix, from userid 1003)
+	id 9F2486068A; Mon, 25 May 2026 20:30:02 +0200 (CEST)
+From: Florian Westphal <fw@strlen.de>
+To: <netdev@vger.kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	<netfilter-devel@vger.kernel.org>,
+	pablo@netfilter.org
+Subject: [PATCH net-next 08/11] netfilter: nf_conntrack_irc: fix parse_dcc() off-by-one OOB read
+Date: Mon, 25 May 2026 20:29:21 +0200
+Message-ID: <20260525182924.28456-9-fw@strlen.de>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260525182924.28456-1-fw@strlen.de>
+References: <20260525182924.28456-1-fw@strlen.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,38 +37,62 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] net/sched: sch_ets: make cl->quantum lockless
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177973380839.3078812.14874980158429995031.git-patchwork-notify@kernel.org>
-Date: Mon, 25 May 2026 18:30:08 +0000
-References: <20260522110356.1403343-1-edumazet@google.com>
-In-Reply-To: <20260522110356.1403343-1-edumazet@google.com>
-To: Eric Dumazet <edumazet@google.com>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- jhs@mojatatu.com, victor@mojatatu.com, jiri@resnulli.us,
- netdev@vger.kernel.org, eric.dumazet@gmail.com
 
-Hello:
+From: Muhammad Bilal <meatuni001@gmail.com>
 
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+parse_dcc() treats data_end as an inclusive end pointer, but its only
+caller passes data_limit = ib_ptr + datalen, which points one past the
+last valid byte.
 
-On Fri, 22 May 2026 11:03:56 +0000 you wrote:
-> cl->quantum does not need to be protected by RTNL or qdisc spinlock.
-> 
-> Signed-off-by: Eric Dumazet <edumazet@google.com>
-> ---
->  net/sched/sch_ets.c | 10 ++++------
->  1 file changed, 4 insertions(+), 6 deletions(-)
+The newline search loop iterates while tmp <= data_end, so when no
+newline is present, *tmp is read at tmp == data_end, one byte beyond
+the region filled by skb_header_pointer().
 
-Here is the summary with links:
-  - [net-next] net/sched: sch_ets: make cl->quantum lockless
-    https://git.kernel.org/netdev/net-next/c/0f700d144b5a
+irc_buffer is kmalloc'd as MAX_SEARCH_SIZE + 1 bytes and datalen is
+capped at MAX_SEARCH_SIZE, so the stray read does not fault.  The byte
+is uninitialized or stale; if it contains an ASCII digit, simple_strtoul
+will consume it and produce a wrong DCC IP or port in the conntrack
+expectation.  The extra allocation byte is also a fragile guard: if the
+cap or allocation size changes, this becomes a real out-of-bounds read.
 
-You are awesome, thank you!
+Change the loop and its post-loop check to use strict less-than,
+consistent with the caller's exclusive-end convention.  Update the
+function comment accordingly.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Muhammad Bilal <meatuni001@gmail.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+---
+ net/netfilter/nf_conntrack_irc.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/net/netfilter/nf_conntrack_irc.c b/net/netfilter/nf_conntrack_irc.c
+index 522183b9a604..9a7b8f6221eb 100644
+--- a/net/netfilter/nf_conntrack_irc.c
++++ b/net/netfilter/nf_conntrack_irc.c
+@@ -59,7 +59,7 @@ static const char *const dccprotos[] = {
+ /* tries to get the ip_addr and port out of a dcc command
+  * return value: -1 on failure, 0 on success
+  *	data		pointer to first byte of DCC command data
+- *	data_end	pointer to last byte of dcc command data
++ *	data_end	one past end of data
+  *	ip		returns parsed ip of dcc command
+  *	port		returns parsed port of dcc command
+  *	ad_beg_p	returns pointer to first byte of addr data
+@@ -77,10 +77,10 @@ static int parse_dcc(char *data, const char *data_end, __be32 *ip,
+ 
+ 	/* Make sure we have a newline character within the packet boundaries
+ 	 * because simple_strtoul parses until the first invalid character. */
+-	for (tmp = data; tmp <= data_end; tmp++)
++	for (tmp = data; tmp < data_end; tmp++)
+ 		if (*tmp == '\n')
+ 			break;
+-	if (tmp > data_end || *tmp != '\n')
++	if (tmp >= data_end || *tmp != '\n')
+ 		return -1;
+ 
+ 	*ad_beg_p = data;
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.53.0
 
