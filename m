@@ -1,35 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5AE22BF3D7;
-	Mon, 25 May 2026 16:51:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D43BB26738D;
+	Mon, 25 May 2026 16:51:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779727893; cv=none; b=nHPkaMRYm/NACq/pHU44zgrlMRM1XBYKrQYq9JHCLQ3KEY/mYHf4jVf2MJ5sTBTm3aq4qAufMDIotiIRlasj6UT3E9hA7zzU8PR8gRHlQxF+BgS2QpihX5LmrpqyACt8D7UJqVVKCAMR0Mr0DYM240bbUZS9Li3j0EtUpUywyco=
+	t=1779727894; cv=none; b=AQhzypN1LK21Igip+3pLogxr2ThnIN30i0DxLrz1dC4IbTQJId6ICp3P9FD/MKA0nRE4XcIcxyaWbQA3O7reMJ4SWYvONARM9ogHI4zW35qlgQsCISSSssGlRQBTil6bSCm+QqpljV1c5RDyj9gW4TqCXq24OjE9f2YaAXRCLLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779727893; c=relaxed/simple;
-	bh=GvTDjam6ruQwEDM6OVKE0WQabQyhk+Y0lXRkOjTpfEw=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=QC6bni2mBVg1eYiBPiLr/qVGyrx5gb2B5WvnlJkPXex6Je0rbglPcLXHVRL6v/m4N2FaF556kB9LHwdSkr0+RKuIYdsVc9IE6NJjl7OyGRq51sROCNsm7iVk/OYGNxiJ7+pRQVtY3gcFpTh0VhrPbbxycVqKuGiBxto1NAj8AKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CS9iD+vq; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779727894; c=relaxed/simple;
+	bh=wF/jomMZ24V11Xkl5msHZrZUvPJCyI921osei6e5UfY=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=s5b7NYLyGoutsJZKajd4i8HLQvmQI5M13wTYL4OhHgf84NHoSe6yZBjCiyUCYB/dSeXB+azaSYfgMEJhQgNy9M2RZZs1DgGvDv+lLKYtdmnYUxfjDy/8w2LFMHku/C2v0vUQF/n1rFvKAu/C7w0cMmP8gsF6f4AnjvG9W2ukVMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ofJP1NgE; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CS9iD+vq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8E641F000E9;
-	Mon, 25 May 2026 16:51:30 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ofJP1NgE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCDEE1F00A3D;
+	Mon, 25 May 2026 16:51:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779727891;
-	bh=FbcGJkRkbagmQAlyIHUAsEmLq39wb78AB89XfL80OeI=;
-	h=From:Subject:Date:To:Cc;
-	b=CS9iD+vqjHrmh4orujpwww76w5tDcVoPNm/1HQCyDFBw+doetdYK4Lsd/SEu9XNQm
-	 9c2EpKY8x/I23kaLV2nUxUeTmKRsJPE+hw/Dlpi0qjGhM2HXCi+txr7IjMYPreRr9p
-	 +5DwH+0u/wURjeeoQ5JicHyopYPPSgcuWyOAiU5PAYO/teWHoPrgUTtDyK3POr8B7k
-	 KhUPhwLMsN/aNQfXSSm/XRI1FgOsK8il1GMqXBk/8wXGhH/gl1Iui33zMTgs6zT+2c
-	 BlJ9IZfSpGklXRaIq1nSJjtjE7JHdCD6wteJlOznhhf7eBEoCD9OUyNXDcP/81PKav
-	 WtLVCCtmKAL9g==
+	s=k20260515; t=1779727892;
+	bh=IxJaGtQoJkPVdTRrPxKYx3Y8U4vPqPnOum4dhkgUAHg=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=ofJP1NgED2ey6e2/TQOlgZckaV6Cnyu+o2VwBw1jI5+GFdXo0+YLVfJ3lhP4GfuCw
+	 imI8w/rpE8Xaw/+URIpMmcVvRxFGfYKiNRmTZgvU0FAwXOlVQneH7ZeIT+OhsexeGZ
+	 6BRbfgpDrJ1SwwhuuJpQRqmf0C/AOU8nVFw6B7WVQfJ0S5RDTjPR3rZVP3yvOQuckV
+	 0Zngh0zLEApfqgsYS2ZkUX+9OGyV0qJLvBgT2Q5PYQBK7TcVYMRVUv67cPUVqqpt+1
+	 Lt2X892G45KiZ3m+k7mhDQQA7kg4T65W2Ofuhdd5VCj1HB8XHsr6u7OHJdX9Uz/hZz
+	 /8HEkxwu466aw==
 From: Chuck Lever <cel@kernel.org>
-Subject: [PATCH net v3 0/8] net/handshake: anchor request lifetime to a
- pinned file reference
-Date: Mon, 25 May 2026 12:51:14 -0400
-Message-Id: <20260525-handshake-file-pin-v3-0-66c616906ead@oracle.com>
+Date: Mon, 25 May 2026 12:51:15 -0400
+Subject: [PATCH net v3 1/8] net/handshake: Use spin_lock_bh for hn_lock
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -38,120 +37,159 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/22OzQ7CIBCEX6XhLAr0V0++h/HAz2JXKxiojcb03
- aXVgyY9zuzMt/MiEQJCJLvsRQIMGNG7JPJVRnQr3QkomqSJYKJiJa9oMk1s5QWoxQ7oDR0VPN8
- yW9q85DlJxVsAi48ZeiAOenL8mPGuzqD7CTfFlIxAVZBOt5OVgpurRDedWoy9D8951cBnzndAs
- zRg4JTRQimtaqiENXLvg9QdrLW/zs8H8cMQfJEhEkNtjTS6qEVTsD/GOI5v3Gw1aisBAAA=
-X-Change-ID: 20260516-handshake-file-pin-21390f5f3513
+Message-Id: <20260525-handshake-file-pin-v3-1-66c616906ead@oracle.com>
+References: <20260525-handshake-file-pin-v3-0-66c616906ead@oracle.com>
+In-Reply-To: <20260525-handshake-file-pin-v3-0-66c616906ead@oracle.com>
 To: "David S. Miller" <davem@davemloft.net>, 
  Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
  Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
 Cc: Chris Mason <clm@meta.com>, Christian Brauner <brauner@kernel.org>, 
  kernel-tls-handshake@lists.linux.dev, linux-nvme@lists.infradead.org, 
- netdev@vger.kernel.org, Chuck Lever <chuck.lever@oracle.com>, 
- Hannes Reinecke <hare@kernel.org>, 
- Alistair Francis <alistair.francis@wdc.com>
+ netdev@vger.kernel.org, Chuck Lever <chuck.lever@oracle.com>
 X-Mailer: b4 0.16-dev-da966
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4296;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4764;
  i=chuck.lever@oracle.com; h=from:subject:message-id;
- bh=GvTDjam6ruQwEDM6OVKE0WQabQyhk+Y0lXRkOjTpfEw=;
- b=owEBbQKS/ZANAwAKATNqszNvZn+XAcsmYgBqFH4K+n3aOBrQb+kVVmywjVPaGmJfJ+56t9uqq
- qExmpm9UeuJAjMEAAEKAB0WIQQosuWwEobfJDzyPv4zarMzb2Z/lwUCahR+CgAKCRAzarMzb2Z/
- l/Y4EACKXt9PB65+GRACXl/7hBSiKwiKZXsV2dktTDJpjJKWaHVLTXFr7ufpXPGoWmJxtacyWdN
- yOraX3Z3C6yfOrQohiCtWarUuHu4Hi38aELwbCZrvZDOzWnEKg5j09SxE8yCSvM4s/v9plLhOb8
- mNxWFxbH7vnK39AtcCvsO+kdMLMkNSDw7z+ZWjtJZFDKN/08ifvnMceCiIfHoKmMDy8gbig7zmr
- pvx6XPqOsKFni5XR8HJ03yh71qGZEHk6j8YAazXpg0eHrfWRYiH6vNeAnXGSnSswQPJhd7lMhtb
- zpNDOulgi6TWTRfaVL9T2Wo1O2tDAQN9gF4MhVUHfjQfy+GvR/NPc/vStFmbjXq2x3vjzuOCM1m
- g02loLQ8BF0dfgXqM502ClX3wn/IhcEbZ22dX+tdmNuBGmSezB5HePqN2qIRWdrNEMOlObLqWMS
- LryOSk+QtRVulXVTxghUqBVaCwrr2q5A6DRCa0Jp4HeZw78mtgpr4grgYavkyXq8zIAut1cPjSP
- jSLq/+gEVNmN5v/Wa1uK1teIllL3TzUS1fp5QUfs8Wp743RGW7AlpK3CJ4C7ivcMe0Lcr84qWAY
- BK8UnI7vgXk3nZGM30WBqFepjLyIopGZ6gfGzi8ssi609J7SzeSf7wMyW4hv0gRVocYsgjD9u+m
- Z+mS3L5KGbraKPA==
+ bh=6A+lqpdwbykiqZeeogOj+ebtUfZ/y8/UTW+7RqvHrqU=;
+ b=owEBbQKS/ZANAwAKATNqszNvZn+XAcsmYgBqFH4RPkLmCr9G4vXTlRtRPquQN4vNWc5Tl9gsM
+ 1G7xEriz26JAjMEAAEKAB0WIQQosuWwEobfJDzyPv4zarMzb2Z/lwUCahR+EQAKCRAzarMzb2Z/
+ lzIGD/442fxMYfTEY5rbtqA6gBoUsmqAW9Qi/SLIJxaoDMC8H/IzWwFXSivPlYPFtgcuRI7X+Sd
+ x5uAKLZKsuqT+f4CW44JvFZw9Qtz3+ZA4yuZ3zq7TRtwHMe6rFkbxoZ6FYp8sS2fJj12qcuG0SN
+ Vaksic4h65BS61mlwWKqp8+2qKd1TiMp+CNNfzZiaA3E0AVUpwIlvlxBdaZkU+lmLSofDYXjQPg
+ EYZNlpcFsAlP8W9iPmxlgz17YEDHQ+WqeBZecio8fRuUeKYPhVwGAEgAOHIEsGVG6QbRyDiKdon
+ +zf0glOSSAhHXbPUxZcOjXbrLvRw2bhLGq9JPQtSLtQcM6Rn2mlpInf3JAxCgGIFpSCwNiNYnmm
+ G5pPCD55U9ITYmK9LnTlc93yAwjFkiQbgwq6d/J/cDN8xfj2aqeCJ1VFw+xwwTpvgQ+DrKSYlGu
+ OHI4Qzd03wjtMpqJtX/4nuNKMuVCGDgtH3BSn8IkFrI4fV86oNx6bbkr6EPLrcrG/z812j6SqDK
+ G4a0tCNnGLzwAr10z/Xza/vOQlBALfikkfeUEoouKNI+EeBM1dnrNLrewrUvgNSrv0lGcA1Ydo7
+ ZuMotosy22ZXx2F+eMKcELSsqX/kLnjLVnFqfzoPpOufVFaCvg8O31QtXiCWqlL4zSA2B0gmUKg
+ c7aDLMcjBUx5Cfg==
 X-Developer-Key: i=chuck.lever@oracle.com; a=openpgp;
  fpr=28B2E5B01286DF243CF23EFE336AB3336F667F97
 
-handshake_nl_accept_doit() has accumulated four follow-on fixes
-since 3b3009ea8abb ("net/handshake: Create a NETLINK service for
-handling handshake requests"): 7ea9c1ec66bc, 7798b59409c3,
-fe67b063f687, and dabac51b8102.  Each was a local refcount or
-NULL-check correction; none moved where the file reference is
-owned, and the same code keeps producing the same class of bug.
-Reworking the ownership is what breaks the pattern.
+From: Chuck Lever <chuck.lever@oracle.com>
 
-For the duration of a request, sock->file has no single owner.
-Submit publishes the request without taking a file reference;
-accept_doit acquires one inside the handler, after the request
-has already left the pending list.  The consumer can drop its
-own reference at any time, including the moment between
-handshake_req_next() popping the request and accept_doit
-reaching get_file().  The submit-side sock_hold() pins only
-struct sock; struct socket and sock->file remain under the
-consumer's control via the file descriptor.
+nvmet_tcp_state_change(), a socket callback that runs in BH context,
+can reach handshake_req_cancel() via nvmet_tcp_schedule_release_queue()
+and tls_handshake_cancel().  handshake_req_cancel() acquires
+hn->hn_lock with plain spin_lock().  If a process-context thread on
+the same CPU holds hn->hn_lock when a softirq invokes the cancel path,
+the lock attempt deadlocks.  This is the only caller that invokes
+tls_handshake_cancel() from BH context; every other consumer calls it
+from process context.
 
-This series places the file reference under unambiguous
-ownership.  handshake_req_submit() pins it on the request and
-completion or cancel drops it (patches 4-5); the submit-side
-sock_hold() then becomes redundant, and dropping it also closes
-a publish-before-pin race the late sock_hold itself opened
-(patch 6).  The handshake_complete() API and its consumers move
-to a uniform negative-errno sign convention (patch 3), with the
-matching sign correction in nvme-tcp (patch 2).  Patch 1
-hardens hn_lock for BH context, the netns-exit drain fix
-builds on the new file-pin infrastructure (patch 8), and new
-KUnit file-count assertions verify the refcount contract
-(patch 7).
+Deferring the cancel to process context in the NVMe target is not
+straightforward: nvmet_tcp_schedule_release_queue() must call
+tls_handshake_cancel() atomically with its state transition to
+DISCONNECTING.  If the cancel were deferred, the handshake completion
+callback could fire in the window before the cancel runs, observe the
+unexpected state, and return without dropping its kref on the queue.
+Reworking that interlock is considerably more invasive than hardening
+the handshake lock.  Convert all hn->hn_lock acquisitions from
+spin_lock/spin_unlock to spin_lock_bh/spin_unlock_bh so the lock is
+never taken with softirqs enabled.
 
-Three things in this restructuring want a careful look.  In
-handshake_complete(), the fput() of the request's file
-reference has to come after hp_done() -- fput() can transitively
-run handshake_sk_destruct() and free the request, so the patch
-stashes hr_file in a local first.  handshake_sk_destruct()
-itself is kept on purpose: it owns rhashtable removal and
-kfree, and remains the backstop if a consumer path bypasses
-handshake_complete() entirely.  Third, handshake_req_next() now
-returns its request with an extra get_file() held under
-hn_lock; accept_doit must consume that reference (FD_PREPARE on
-success, explicit fput on the fdf.err path), and any future
-caller has to honor the same contract.
-
+Fixes: 675b453e0241 ("nvmet-tcp: enable TLS handshake upcall")
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
-Changes in v3:
-- Gate submit error path fput with test_and_set_bit to prevent double fput from concurrent cancel
-- Convert hn->hn_lock to spin_lock_bh (cancel reachable from softirq via nvmet-tcp)
-- Pin file references during netns drain to prevent use-after-free on local list
-- Series re-ordered to improve bisectability
-- Link to v2: https://patch.msgid.link/20260521-handshake-file-pin-v2-0-b9dadc472840@oracle.com
+ net/handshake/netlink.c |  4 ++--
+ net/handshake/request.c | 14 +++++++-------
+ net/handshake/tlshd.c   |  2 ++
+ 3 files changed, 11 insertions(+), 9 deletions(-)
 
-Changes in v2:
-- Patch 3: move HANDSHAKE_A_DONE_STATUS upper bound into netlink policy (Jakub)
-- Link to v1: https://patch.msgid.link/20260518-handshake-file-pin-v1-0-4bbcb7e62fda@oracle.com
+diff --git a/net/handshake/netlink.c b/net/handshake/netlink.c
+index b989456fc4c5..97114ec8027a 100644
+--- a/net/handshake/netlink.c
++++ b/net/handshake/netlink.c
+@@ -202,10 +202,10 @@ static void __net_exit handshake_net_exit(struct net *net)
+ 	 * accepted and are in progress will be destroyed when
+ 	 * the socket is closed.
+ 	 */
+-	spin_lock(&hn->hn_lock);
++	spin_lock_bh(&hn->hn_lock);
+ 	set_bit(HANDSHAKE_F_NET_DRAINING, &hn->hn_flags);
+ 	list_splice_init(&requests, &hn->hn_requests);
+-	spin_unlock(&hn->hn_lock);
++	spin_unlock_bh(&hn->hn_lock);
+ 
+ 	while (!list_empty(&requests)) {
+ 		req = list_first_entry(&requests, struct handshake_req, hr_list);
+diff --git a/net/handshake/request.c b/net/handshake/request.c
+index 2829adbeb149..5d4a17f902d2 100644
+--- a/net/handshake/request.c
++++ b/net/handshake/request.c
+@@ -167,12 +167,12 @@ static bool remove_pending(struct handshake_net *hn, struct handshake_req *req)
+ {
+ 	bool ret = false;
+ 
+-	spin_lock(&hn->hn_lock);
++	spin_lock_bh(&hn->hn_lock);
+ 	if (!list_empty(&req->hr_list)) {
+ 		__remove_pending_locked(hn, req);
+ 		ret = true;
+ 	}
+-	spin_unlock(&hn->hn_lock);
++	spin_unlock_bh(&hn->hn_lock);
+ 
+ 	return ret;
+ }
+@@ -182,7 +182,7 @@ struct handshake_req *handshake_req_next(struct handshake_net *hn, int class)
+ 	struct handshake_req *req, *pos;
+ 
+ 	req = NULL;
+-	spin_lock(&hn->hn_lock);
++	spin_lock_bh(&hn->hn_lock);
+ 	list_for_each_entry(pos, &hn->hn_requests, hr_list) {
+ 		if (pos->hr_proto->hp_handler_class != class)
+ 			continue;
+@@ -190,7 +190,7 @@ struct handshake_req *handshake_req_next(struct handshake_net *hn, int class)
+ 		req = pos;
+ 		break;
+ 	}
+-	spin_unlock(&hn->hn_lock);
++	spin_unlock_bh(&hn->hn_lock);
+ 
+ 	return req;
+ }
+@@ -249,7 +249,7 @@ int handshake_req_submit(struct socket *sock, struct handshake_req *req,
+ 	if (READ_ONCE(hn->hn_pending) >= hn->hn_pending_max)
+ 		goto out_err;
+ 
+-	spin_lock(&hn->hn_lock);
++	spin_lock_bh(&hn->hn_lock);
+ 	ret = -EOPNOTSUPP;
+ 	if (test_bit(HANDSHAKE_F_NET_DRAINING, &hn->hn_flags))
+ 		goto out_unlock;
+@@ -258,7 +258,7 @@ int handshake_req_submit(struct socket *sock, struct handshake_req *req,
+ 		goto out_unlock;
+ 	if (!__add_pending_locked(hn, req))
+ 		goto out_unlock;
+-	spin_unlock(&hn->hn_lock);
++	spin_unlock_bh(&hn->hn_lock);
+ 
+ 	ret = handshake_genl_notify(net, req->hr_proto, flags);
+ 	if (ret) {
+@@ -274,7 +274,7 @@ int handshake_req_submit(struct socket *sock, struct handshake_req *req,
+ 	return 0;
+ 
+ out_unlock:
+-	spin_unlock(&hn->hn_lock);
++	spin_unlock_bh(&hn->hn_lock);
+ out_err:
+ 	/* Restore original destructor so socket teardown still runs on failure */
+ 	req->hr_sk->sk_destruct = req->hr_odestruct;
+diff --git a/net/handshake/tlshd.c b/net/handshake/tlshd.c
+index 8f9532a15f43..af294c6cc717 100644
+--- a/net/handshake/tlshd.c
++++ b/net/handshake/tlshd.c
+@@ -425,6 +425,8 @@ EXPORT_SYMBOL(tls_server_hello_psk);
+  * Request cancellation races with request completion. To determine
+  * who won, callers examine the return value from this function.
+  *
++ * Context: May be called from process or softirq context.
++ *
+  * Return values:
+  *   %true - Uncompleted handshake request was canceled
+  *   %false - Handshake request already completed or not found
 
----
-Chuck Lever (8):
-      net/handshake: Use spin_lock_bh for hn_lock
-      nvme-tcp: store negative errno in queue->tls_err
-      net/handshake: Pass negative errno through handshake_complete()
-      net/handshake: Take a long-lived file reference at submit
-      net/handshake: hand off the pinned file reference to accept_doit
-      net/handshake: Close the submit-side sock_hold race
-      net/handshake: Verify file-reference balance in submit paths
-      net/handshake: Drain pending requests at net namespace exit
-
- Documentation/netlink/specs/handshake.yaml |  8 +++
- drivers/nvme/host/tcp.c                    |  2 +-
- net/handshake/genl.c                       |  3 +-
- net/handshake/genl.h                       |  1 +
- net/handshake/handshake-test.c             | 38 +++++++++++++-
- net/handshake/handshake.h                  |  6 ++-
- net/handshake/netlink.c                    | 29 +++++------
- net/handshake/request.c                    | 81 ++++++++++++++++++++++--------
- net/handshake/tlshd.c                      |  6 ++-
- 9 files changed, 129 insertions(+), 45 deletions(-)
----
-base-commit: 87a1e0fe7776da7ab411be332b4be58ac8840d10
-change-id: 20260516-handshake-file-pin-21390f5f3513
-
-Best regards,
---  
-Chuck Lever <chuck.lever@oracle.com>
+-- 
+2.54.0
 
