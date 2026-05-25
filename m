@@ -1,27 +1,27 @@
-Received: from smtpbgjp3.qq.com (smtpbgjp3.qq.com [54.92.39.34])
+Received: from smtpbguseast3.qq.com (smtpbguseast3.qq.com [54.243.244.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8748C18B0F
-	for <netdev@vger.kernel.org>; Mon, 25 May 2026 10:06:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.92.39.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72DC418B0F
+	for <netdev@vger.kernel.org>; Mon, 25 May 2026 10:07:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.243.244.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779703621; cv=none; b=CV0gipYUd2QGD1cTx6c98pqOuEZ6IRihgjkmYYNGtBwlI1xu55riOub6yhaMfI0ZSH3rAzIH83U/wj/fW1nexWjDODSt9KH8WH0fV1uIMvNMFpt7QWEMeUD2TQvoMmprjGUGBc+QfRCrYUQyMT7hEWWHHh03AAYpjq3wfYRi+4g=
+	t=1779703630; cv=none; b=aLTwZmQv9vArHRyJvMAJEdbnbvpbfJ1adOEkAzNvVKZXwjFF5iev5Q5S2a1zJmEkKvDwaSzmF3UFhoqy8anfyXjgcagdx0fpemw9/L4tASJ5LFGwQKNgSNsU0+kdIzKJ4EFOSbVvKXnw6EPV5Is5qf12fiy9n5v8XCHTDspshHw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779703621; c=relaxed/simple;
-	bh=TA8dPnMNyx8DJ2tuomc5fktwCh7iL/ZqAt0Qho2boDQ=;
+	s=arc-20240116; t=1779703630; c=relaxed/simple;
+	bh=MiwqICj7Rh8TkJ0z1NfrJPtRm4lhuGiAzfXHuHhM7I0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=MOul9qd4aKzRSeHTTD9JHX3VAlOCDjJfOV4pDLFwuOMNzbGDzD0MrX3EokNJ7GV36kL6qtnyJYZpHvYb4gyhw7OJ4PjdtuMGCd1whSbf1eU8JDQvOdgvD3TTA4ZzH/+w+niZkydrb2E8e41TZfu/Cxk0gbZdEM6C0HzqURtteB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.92.39.34
+	 MIME-Version; b=Ans6Q7rpkbSqLMEvHkMmJZKen7IxqJ+VvREefTu1+fAn8QRbcPoVXjdIRhWsOrCHwVjtiG1I7hTiUd00X+QDwXmV0aAM52sKUcD5tzEPpFBjBREBFM8Llkor3Kg9Y3BkbiEyM6oJKSb4264GPCPyX5S1zrAiWIsm3yHw1y5NCdc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.243.244.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid: esmtpgz11t1779703560tc2982445
-X-QQ-Originating-IP: gTcJGyVfsanwjMMXWVUGKt7q3WE13Tojls+Kte3cdho=
+X-QQ-mid: esmtpgz11t1779703554t60c77371
+X-QQ-Originating-IP: XmDGxGWuxIOH8dD7mCsZLhzpAonvfLEJgz1PydRiKms=
 Received: from lap-jiawenwu.trustnetic.com ( [122.231.28.113])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Mon, 25 May 2026 18:05:58 +0800 (CST)
+	id ; Mon, 25 May 2026 18:05:53 +0800 (CST)
 X-QQ-SSF: 0000000000000000000000000000000
 X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 3612791413146679667
+X-BIZMAIL-ID: 10701332685428782613
 EX-QQ-RecipientCnt: 12
 From: Jiawen Wu <jiawenwu@trustnetic.com>
 To: netdev@vger.kernel.org
@@ -36,9 +36,9 @@ Cc: Mengyuan Lou <mengyuanlou@net-swift.com>,
 	Larysa Zaremba <larysa.zaremba@intel.com>,
 	Jacob Keller <jacob.e.keller@intel.com>,
 	Jiawen Wu <jiawenwu@trustnetic.com>
-Subject: [PATCH net-next v2 3/3] net: txgbe: rework service event handling
-Date: Mon, 25 May 2026 18:05:43 +0800
-Message-Id: <20260525100543.27140-4-jiawenwu@trustnetic.com>
+Subject: [PATCH net-next v2 1/3] net: wangxun: introduce WX_STATE_DOWN to serialize device shutdown state
+Date: Mon, 25 May 2026 18:05:41 +0800
+Message-Id: <20260525100543.27140-2-jiawenwu@trustnetic.com>
 X-Mailer: git-send-email 2.21.0.windows.1
 In-Reply-To: <20260525100543.27140-1-jiawenwu@trustnetic.com>
 References: <20260525100543.27140-1-jiawenwu@trustnetic.com>
@@ -51,139 +51,271 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
 Feedback-ID: esmtpgz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: NC4p7XQIBeahMnnXmKR6cp0FIH9IOo0YOI3wSRA1ywZK/9803+J1esiD
-	A4EtOX4YBBNS5T9itqu3SSG0PI++QD/UPukv5zELbyxm+H6f4pdgBXD7tY1y+pOecRURRpd
-	+e1pQFhE7vMUAGEF2Vs6rvi1pcFApWJ09eNisjitzxteXEipfsbOuj4/XxEv90sRFcWg046
-	m/KrYzvBHpQf/knsqQwuynK6RSrODjAPGnpRrSr/a3GHCXyBDeB6dp6fFssufJ345Ct4jib
-	Cv11SKl95fmYFkkCXmtWWXVxSAwh6KxHMUy4LegQX2vOrzZvlKRY0w24FxQ1CLJwfQYuai+
-	r+yxy/J24sZBEtm04yZecKmItBoKTsS5QR5sJyIJKp0WIb6bbM1yIawe37SFXahex8vHDMG
-	u6dp1QMQ2OK5YLVJsqSZTBX0nSl9JjWWerNXFPd94eqQnJ1PABkShwo9Un/mLX5okmsIPzN
-	DlJp2aY97UbVLKad7QUSGtdFIG8xSg9K53ykNaEoDSKXi8SV0wXzdlqyZdEbEhTfW2DnCP5
-	T82y23Nwy4P9MRooG2n1F57t2YUF98SorDpd2ZUz/ywBP5/DExnyoWdpnrBB4mWKBerkwA8
-	RJI1RYNq0grIB0zc/QkQJ+XVchSS50NKdJyEyosDCwsl4HTDXnfjK0d1fsY50C2gYlqEh+6
-	xD6Pv8SO1iIN4tOoj/luNmpnOME4PogjDJrVfXCu6VbRIWv24HuBj6DAfhgjn2Wq3JGzl7M
-	tQOvFk7jC37Yi9vqmo/y0gRoe9ysAEgiht8Us4ADJZbMqckAn/sD1t2DfFA2IAeNDIhY11C
-	1SYXFQiHent+c3b24b3/imm22Yfe8jHm3rtyJIo3rd4eqccLUNx6B8yyFqWBIZ5Ry8Z4l59
-	fiO083rHm0RyzjvtS9NV5MPt7cowp2oDZyFptVZJv9bWfwE5CQhVwou3llWa+3Fmr0geT/7
-	2AdiXrACmIaEWklyB5HKRLlFBCXjkGL4glKNRW+NgsuxdfMxeWiWEzMLEAly2zDgRtU6UBc
-	67AmhAPQ6AjqJhAuhbI03jhWxyacJgEr5fII4rDO1QwqwBQZZKBPagcZRlD9lQ8BTX9glSW
-	GF6fhgsaqXqQb1xtIsyOpi50gHA3pdyrA==
-X-QQ-XMRINFO: OD9hHCdaPRBwH5bRRRw8tsiH4UAatJqXfg==
+X-QQ-XMAILINFO: NUkHSB3spckt4RtdcmMv3H2bcpnNgnwuOrJ1+vKMp103bxwIEQtYWzht
+	8Bvf9rD9TBAvH35ThNs49Fq66grIWYk5YGDmDcwOmyqf+w7C0ionoXXpvOmckTUpNk5zMUL
+	pkYBuoohsaDR4B7NcrjqhrOU+tSSGTbXjE/MWjzHXVFoKxJZ/Sk9/KnO6pqsIllzTcGqtuh
+	Jyjk+t6f0hbVIMDKlPQXEwBMFCKE/NszQWncSS31C7jc18lOa31zgbt9K7ch5Yfz97bsCuw
+	seLHO1duHPL+IqUvG17fYlTx+6oFkBt4LFj5Xb0P9fmCM5Vdme+OnU/E0TVE9+KYN3s7zYD
+	l84soR6B1CWwJpj336Tx5W0x+VgYZrT8Jx4U2sb6VhF1zpFgGYLb0p9HPNyHAisQTG1U+vj
+	5YADrDOxkDe+p2K7dwnmXdqF5c2t5SeHjjDDkasw4MgtgtznoEz+FzQrQ9aoJ0CVU/PEe2d
+	Ed+7RdnQCBgmhqb8VvSjw/5F0h7fXfJcDVlv4VDGLkD/J9Qtp8L2TEf11NcstLiP3HGg5bD
+	ng+jqOqUJfZYYEHCYYUtUUJ0X8HQLWtfNK3AY5hyo3cyu2cHUgKvdf1euVXlpiiCqeDzNb9
+	dW/7cu37Cax4cDZfEMGsaLvvqmqpq//oL5COEhBAQ1XnXu6u61fUFl0Iz0vQHz7Zj4Fc7zA
+	qe2/XKSaStOwWUcNxb3xS6Vd9N6OyojLz7dPNM8DFFTyQ3kFaR0JBDuX4dW3mg0n/sraZ08
+	Wk0ZbhhO/dCynwjG5AXdOAY8Vf+MuqdoZ81aUjr7ef6s5cmKPkoEIJFOcfDWeSzFx/p2KSd
+	W9rEsPXrzDuFi5L10q7jLO+yjvfdIHXoJyBwgLQQG4xLc2I4bBbNFlaOz2fz1I8V4226iXZ
+	is6RIsy0uFiMzBiEbhLL+iXEbUhYqCN3DpIYX+gz4WNBKYkihR0XOH2KTpm6i4YNxEweXBh
+	WQIkXY7YDQbSywxcxo02BQ0Wfh8z1wh6lGHZV+VukFQVK2PvKxEeyEjBeNYKp8eC4JUkrdA
+	aAUFNKUYCmW+0smxSX6g273Gn8n1ziKE8x5aI09joMx4MHaIdoqK+b1MAceMGwCH+5EsLRJ
+	mOycFvyUiKQEDXGgLd+VBs=
+X-QQ-XMRINFO: Mp0Kj//9VHAxzExpfF+O8yhSrljjwrznVg==
 X-QQ-RECHKSPAM: 0
 
-Convert to use test_and_clear_bit() for link event subtasks. Only re-arm
-the WX_FLAG_NEED_MODULE_RESET flag when module is absent. Unsupported or
-invalid modules no longer cause the service task to continuously retry
-module identification.
+Replace various netif_running() checks with an explicit WX_STATE_DOWN
+state bit to track whether the device datapath and interrupt handling
+are operational.
 
-Additionally, explicitly cancel service_task during device teardown to
-ensure no pending asynchronous service work survives after the device
-has entered the DOWN state.
+The previous logic relied on netif_running() to gate interrupt
+reenablement, queue wakeups, statistics updates, and service task
+execution. However, netif_running() only reflects the administrative
+state of the netdevice and does not fully serialize against teardown
+and reset paths. During device shutdown and reset flows, asynchronous
+contexts such as interrupt handlers, NAPI poll, and service work could
+still observe netif_running() as true while device resources were
+already being disabled or freed.
 
 Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
 ---
- .../net/ethernet/wangxun/txgbe/txgbe_aml.c    | 10 +++-------
- .../net/ethernet/wangxun/txgbe/txgbe_aml.h    |  2 +-
- .../net/ethernet/wangxun/txgbe/txgbe_main.c   | 19 ++++++-------------
- 3 files changed, 10 insertions(+), 21 deletions(-)
+ drivers/net/ethernet/wangxun/libwx/wx_hw.c        |  3 ++-
+ drivers/net/ethernet/wangxun/libwx/wx_lib.c       |  9 ++++++---
+ drivers/net/ethernet/wangxun/libwx/wx_sriov.c     |  2 +-
+ drivers/net/ethernet/wangxun/libwx/wx_type.h      |  1 +
+ drivers/net/ethernet/wangxun/libwx/wx_vf_common.c |  8 ++++++--
+ drivers/net/ethernet/wangxun/ngbe/ngbe_main.c     | 12 ++++++++----
+ drivers/net/ethernet/wangxun/txgbe/txgbe_irq.c    |  2 +-
+ drivers/net/ethernet/wangxun/txgbe/txgbe_main.c   |  4 ++++
+ 8 files changed, 29 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c
-index f0514251d4f3..da1d3976ed33 100644
---- a/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c
-+++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c
-@@ -186,19 +186,15 @@ static void txgbe_get_mac_link(struct wx *wx, int *speed)
- 		*speed = SPEED_UNKNOWN;
- }
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_hw.c b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
+index 2451f6b20b11..260e14d5d541 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_hw.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
+@@ -2520,6 +2520,7 @@ int wx_sw_init(struct wx *wx)
+ 	mutex_init(&wx->reset_lock);
+ 	bitmap_zero(wx->state, WX_STATE_NBITS);
+ 	bitmap_zero(wx->flags, WX_PF_FLAGS_NBITS);
++	set_bit(WX_STATE_DOWN, wx->state);
+ 	wx->misc_irq_domain = false;
  
--int txgbe_set_phy_link(struct wx *wx)
-+void txgbe_set_phy_link(struct wx *wx)
- {
- 	int speed, autoneg, duplex, err;
+ 	return 0;
+@@ -2875,7 +2876,7 @@ void wx_update_stats(struct wx *wx)
+ 	u64 restart_queue = 0, tx_busy = 0;
+ 	u32 i;
  
- 	txgbe_get_link_capabilities(wx, &speed, &autoneg, &duplex);
+-	if (!netif_running(wx->netdev) ||
++	if (test_bit(WX_STATE_DOWN, wx->state) ||
+ 	    test_bit(WX_STATE_RESETTING, wx->state))
+ 		return;
  
- 	err = txgbe_set_phy_link_hostif(wx, speed, autoneg, duplex);
--	if (err) {
-+	if (err)
- 		wx_err(wx, "Failed to setup link\n");
--		return err;
--	}
--
--	return 0;
- }
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_lib.c b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
+index 746623fa59b4..d042567b8128 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_lib.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
+@@ -876,7 +876,7 @@ static bool wx_clean_tx_irq(struct wx_q_vector *q_vector,
  
- static int txgbe_sfp_to_linkmodes(struct wx *wx, struct txgbe_sff_id *id)
-@@ -362,7 +358,7 @@ int txgbe_identify_module(struct wx *wx)
- 	    id->identifier != TXGBE_SFF_IDENTIFIER_QSFP_PLUS &&
- 	    id->identifier != TXGBE_SFF_IDENTIFIER_QSFP28) {
- 		wx_err(wx, "Invalid module\n");
--		return -ENODEV;
-+		return -EINVAL;
+ 		if (__netif_subqueue_stopped(tx_ring->netdev,
+ 					     tx_ring->queue_index) &&
+-		    netif_running(tx_ring->netdev)) {
++		    !test_bit(WX_STATE_DOWN, wx->state)) {
+ 			netif_wake_subqueue(tx_ring->netdev,
+ 					    tx_ring->queue_index);
+ 			++tx_ring->tx_stats.restart_queue;
+@@ -964,7 +964,7 @@ static int wx_poll(struct napi_struct *napi, int budget)
+ 	if (likely(napi_complete_done(napi, work_done))) {
+ 		if (wx->adaptive_itr)
+ 			wx_update_dim_sample(q_vector);
+-		if (netif_running(wx->netdev))
++		if (!test_bit(WX_STATE_DOWN, wx->state))
+ 			wx_intr_enable(wx, WX_INTR_Q(q_vector->v_idx));
  	}
  
- 	if (id->transceiver_type == 0xFF)
-diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.h b/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.h
-index 4f6df0ee860b..379c74ad19c6 100644
---- a/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.h
-+++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.h
-@@ -10,7 +10,7 @@ int txgbe_test_hostif(struct wx *wx);
- int txgbe_read_eeprom_hostif(struct wx *wx,
- 			     struct txgbe_hic_i2c_read *buffer,
- 			     u32 length, u8 *data);
--int txgbe_set_phy_link(struct wx *wx);
-+void txgbe_set_phy_link(struct wx *wx);
- int txgbe_identify_module(struct wx *wx);
- void txgbe_setup_link(struct wx *wx);
- int txgbe_phylink_init_aml(struct txgbe *txgbe);
+@@ -2341,6 +2341,8 @@ int wx_init_interrupt_scheme(struct wx *wx)
+ 
+ 	wx_cache_ring_rss(wx);
+ 
++	set_bit(WX_STATE_DOWN, wx->state);
++
+ 	return 0;
+ }
+ EXPORT_SYMBOL(wx_init_interrupt_scheme);
+@@ -3314,7 +3316,8 @@ EXPORT_SYMBOL(wx_set_ring);
+ 
+ void wx_service_event_schedule(struct wx *wx)
+ {
+-	if (!test_and_set_bit(WX_STATE_SERVICE_SCHED, wx->state))
++	if (!test_bit(WX_STATE_DOWN, wx->state) &&
++	    !test_and_set_bit(WX_STATE_SERVICE_SCHED, wx->state))
+ 		queue_work(system_power_efficient_wq, &wx->service_task);
+ }
+ EXPORT_SYMBOL(wx_service_event_schedule);
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_sriov.c b/drivers/net/ethernet/wangxun/libwx/wx_sriov.c
+index a360b06a086a..0152004a2dd3 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_sriov.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_sriov.c
+@@ -898,7 +898,7 @@ static void wx_set_vf_link_state(struct wx *wx, int vf, int state)
+ 	wx->vfinfo[vf].link_state = state;
+ 	switch (state) {
+ 	case IFLA_VF_LINK_STATE_AUTO:
+-		if (netif_running(wx->netdev))
++		if (!test_bit(WX_STATE_DOWN, wx->state))
+ 			wx->vfinfo[vf].link_enable = true;
+ 		else
+ 			wx->vfinfo[vf].link_enable = false;
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_type.h b/drivers/net/ethernet/wangxun/libwx/wx_type.h
+index 0da5565ee4ff..c7befe4cdfe9 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_type.h
++++ b/drivers/net/ethernet/wangxun/libwx/wx_type.h
+@@ -1202,6 +1202,7 @@ struct wx_last_stats {
+ };
+ 
+ enum wx_state {
++	WX_STATE_DOWN,
+ 	WX_STATE_RESETTING,
+ 	WX_STATE_SWFW_BUSY,
+ 	WX_STATE_PTP_RUNNING,
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_vf_common.c b/drivers/net/ethernet/wangxun/libwx/wx_vf_common.c
+index 94ff8f5f0b4c..0d2db8d38cd5 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_vf_common.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_vf_common.c
+@@ -68,7 +68,7 @@ static irqreturn_t wx_msix_misc_vf(int __always_unused irq, void *data)
+ 
+ 	set_bit(WX_FLAG_NEED_UPDATE_LINK, wx->flags);
+ 	/* Clear the interrupt */
+-	if (netif_running(wx->netdev))
++	if (!test_bit(WX_STATE_DOWN, wx->state))
+ 		wr32(wx, WX_VXIMC, wx->eims_other);
+ 
+ 	return IRQ_HANDLED;
+@@ -278,6 +278,7 @@ static void wxvf_up_complete(struct wx *wx)
+ 
+ 	wx_configure_msix_vf(wx);
+ 	smp_mb__before_atomic();
++	clear_bit(WX_STATE_DOWN, wx->state);
+ 	wx_napi_enable_all(wx);
+ 
+ 	/* clear any pending interrupts, may auto mask */
+@@ -327,6 +328,9 @@ static void wxvf_down(struct wx *wx)
+ {
+ 	struct net_device *netdev = wx->netdev;
+ 
++	if (test_and_set_bit(WX_STATE_DOWN, wx->state))
++		return;
++
+ 	timer_delete_sync(&wx->service_timer);
+ 	netif_tx_stop_all_queues(netdev);
+ 	netif_tx_disable(netdev);
+@@ -360,7 +364,7 @@ static void wxvf_reset_subtask(struct wx *wx)
+ 
+ 	rtnl_lock();
+ 	if (test_bit(WX_STATE_RESETTING, wx->state) ||
+-	    !(netif_running(wx->netdev))) {
++	    test_bit(WX_STATE_DOWN, wx->state)) {
+ 		rtnl_unlock();
+ 		return;
+ 	}
+diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
+index d51d8db95a76..f4a2dd6fa493 100644
+--- a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
++++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
+@@ -204,7 +204,7 @@ static irqreturn_t ngbe_intr(int __always_unused irq, void *data)
+ 		/* shared interrupt alert!
+ 		 * the interrupt that we masked before the EICR read.
+ 		 */
+-		if (netif_running(wx->netdev))
++		if (!test_bit(WX_STATE_DOWN, wx->state))
+ 			ngbe_irq_enable(wx, true);
+ 		return IRQ_NONE;        /* Not our interrupt */
+ 	}
+@@ -220,7 +220,7 @@ static irqreturn_t ngbe_intr(int __always_unused irq, void *data)
+ 	/* would disable interrupts here but it is auto disabled */
+ 	napi_schedule_irqoff(&q_vector->napi);
+ 
+-	if (netif_running(wx->netdev))
++	if (!test_bit(WX_STATE_DOWN, wx->state))
+ 		ngbe_irq_enable(wx, false);
+ 
+ 	return IRQ_HANDLED;
+@@ -235,7 +235,7 @@ static irqreturn_t __ngbe_msix_misc(struct wx *wx, u32 eicr)
+ 		wx_ptp_check_pps_event(wx);
+ 
+ 	/* re-enable the original interrupt state, no lsc, no queues */
+-	if (netif_running(wx->netdev))
++	if (!test_bit(WX_STATE_DOWN, wx->state))
+ 		ngbe_irq_enable(wx, false);
+ 
+ 	return IRQ_HANDLED;
+@@ -262,7 +262,7 @@ static irqreturn_t ngbe_misc_and_queue(int __always_unused irq, void *data)
+ 		/* queue */
+ 		q_vector = wx->q_vector[0];
+ 		napi_schedule_irqoff(&q_vector->napi);
+-		if (netif_running(wx->netdev))
++		if (!test_bit(WX_STATE_DOWN, wx->state))
+ 			ngbe_irq_enable(wx, true);
+ 		return IRQ_HANDLED;
+ 	}
+@@ -363,6 +363,9 @@ static void ngbe_disable_device(struct wx *wx)
+ 	struct net_device *netdev = wx->netdev;
+ 	u32 i;
+ 
++	if (test_and_set_bit(WX_STATE_DOWN, wx->state))
++		return;
++
+ 	if (wx->num_vfs) {
+ 		/* Clear EITR Select mapping */
+ 		wr32(wx, WX_PX_ITRSEL, 0);
+@@ -428,6 +431,7 @@ void ngbe_up(struct wx *wx)
+ 
+ 	/* make sure to complete pre-operations */
+ 	smp_mb__before_atomic();
++	clear_bit(WX_STATE_DOWN, wx->state);
+ 	wx_napi_enable_all(wx);
+ 	/* enable transmits */
+ 	netif_tx_start_all_queues(wx->netdev);
+diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_irq.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_irq.c
+index aa14958d439a..8746318ad3bc 100644
+--- a/drivers/net/ethernet/wangxun/txgbe/txgbe_irq.c
++++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_irq.c
+@@ -141,7 +141,7 @@ static irqreturn_t txgbe_misc_irq_handle(int irq, void *data)
+ 		/* shared interrupt alert!
+ 		 * the interrupt that we masked before the ICR read.
+ 		 */
+-		if (netif_running(wx->netdev))
++		if (!test_bit(WX_STATE_DOWN, wx->state))
+ 			txgbe_irq_enable(wx, true);
+ 		return IRQ_NONE;        /* Not our interrupt */
+ 	}
 diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-index 6755464b4637..ce82e13aa8ae 100644
+index 4c549c2644ab..f9cd1caaf0a4 100644
 --- a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
 +++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-@@ -93,31 +93,23 @@ static void txgbe_module_detection_subtask(struct wx *wx)
- {
- 	int err;
+@@ -151,6 +151,7 @@ static void txgbe_up_complete(struct wx *wx)
  
--	if (!test_bit(WX_FLAG_NEED_MODULE_RESET, wx->flags))
-+	if (!test_and_clear_bit(WX_FLAG_NEED_MODULE_RESET, wx->flags))
- 		return;
+ 	/* make sure to complete pre-operations */
+ 	smp_mb__before_atomic();
++	clear_bit(WX_STATE_DOWN, wx->state);
+ 	wx_napi_enable_all(wx);
  
- 	/* wait for SFF module ready */
- 	msleep(200);
+ 	switch (wx->mac.type) {
+@@ -213,6 +214,9 @@ static void txgbe_disable_device(struct wx *wx)
+ 	struct net_device *netdev = wx->netdev;
+ 	u32 i;
  
- 	err = txgbe_identify_module(wx);
--	if (err)
--		return;
--
--	clear_bit(WX_FLAG_NEED_MODULE_RESET, wx->flags);
-+	if (err == -ENODEV)
-+		set_bit(WX_FLAG_NEED_MODULE_RESET, wx->flags);
- }
- 
- static void txgbe_link_config_subtask(struct wx *wx)
- {
--	int err;
--
--	if (!test_bit(WX_FLAG_NEED_LINK_CONFIG, wx->flags))
-+	if (!test_and_clear_bit(WX_FLAG_NEED_LINK_CONFIG, wx->flags))
- 		return;
- 
--	err = txgbe_set_phy_link(wx);
--	if (err)
--		return;
--
--	clear_bit(WX_FLAG_NEED_LINK_CONFIG, wx->flags);
-+	txgbe_set_phy_link(wx);
- }
- 
- /**
-@@ -233,6 +225,7 @@ static void txgbe_disable_device(struct wx *wx)
- 	wx_napi_disable_all(wx);
- 
- 	timer_delete_sync(&wx->service_timer);
-+	cancel_work_sync(&wx->service_task);
- 
- 	if (wx->bus.func < 2)
- 		wr32m(wx, TXGBE_MIS_PRB_CTL, TXGBE_MIS_PRB_CTL_LAN_UP(wx->bus.func), 0);
++	if (test_and_set_bit(WX_STATE_DOWN, wx->state))
++		return;
++
+ 	wx_disable_pcie_master(wx);
+ 	/* disable receives */
+ 	wx_disable_rx(wx);
 -- 
 2.51.0
 
