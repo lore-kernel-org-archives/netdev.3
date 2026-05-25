@@ -1,99 +1,143 @@
-Received: from mxout4.routing.net (mxout4.routing.net [134.0.28.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B2A333F585;
-	Mon, 25 May 2026 10:13:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=134.0.28.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9371E356776
+	for <netdev@vger.kernel.org>; Mon, 25 May 2026 10:22:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779704015; cv=none; b=aCDQtrOuv6TUHawNHiCCZnx3byBU8VVlOMf0lnqO7KNOvZoxT8HzCZeqWlXYDr9zdex62rP3QyRFwDFLoSrb6tiaILlTA3aJfGveeuj+ig3kGOsJwXt6wlabRSLda9MhaeEIWfyLvsa6DXnlpwPVzvrWGFc+Lm3W61mzskPQDhs=
+	t=1779704558; cv=none; b=edvWilMQs2/AQsvqH5JT5EtcIfK3lr48+TwEhWG00P0E3uVFL6etvuudjUvxRKIxnh37+b2/feNvsB6yQELu1BqSNfq60oRorJLo/7fpzF4ebS3oPeVnsf/RqFGH35o/zB0ZZ5u1S47vnJH+PF3VUO84FeTbcyU3dl/+D5jHr/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779704015; c=relaxed/simple;
-	bh=HGO6RWHBCJGuad05UMDXjVd8SiDTPsXFEudcMX0A4XE=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=E7jNw9vQoj9x4MyoSlqtR2Qy+mytkKSOWJI/IT6f5IFjCSOgs38QL3rTF3c+ccdfcHW7cMgZQQIPwTv3cQF9qJAHcrsrwrFBg/oLhBIcIMpZ9tT78NIXrJkbWAXTNSsbYk8+PdCqRLZkdBKYyyWLr2j0dHAs6wqjML4owQWDEaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fw-web.de; spf=pass smtp.mailfrom=fw-web.de; dkim=pass (1024-bit key) header.d=mailerdienst.de header.i=@mailerdienst.de header.b=oqshXILg; arc=none smtp.client-ip=134.0.28.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fw-web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fw-web.de
+	s=arc-20240116; t=1779704558; c=relaxed/simple;
+	bh=pxqVJ6HoP/cT0126zEOaUbTl7MDVVL2VirOs3GO/vr4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Co9c3oJP348Y45pPwbpc3zu0rZZbjhhpdz6azE/JhqXwIi9CDWAfXnW8xyc0xg4D0D5DVjLN/NCI7gkThW3hUh0E+GtAm40PB9S4yOln1cf9eKvXNKYeAfTC/8NlEhJNsXdp95GKPJa1xupbV4sSQJqXqJ1bshYNcMGyqH8N1E0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=bYfRC+Lo; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=duv0jh4+; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=lCaJczez; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=CmsjN3Q5; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mailerdienst.de header.i=@mailerdienst.de header.b="oqshXILg"
-Received: from mxbox3.masterlogin.de (unknown [192.168.10.78])
-	by mxout4.routing.net (Postfix) with ESMTP id 944BC1002AB;
-	Mon, 25 May 2026 10:07:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailerdienst.de;
-	s=routing; t=1779703654;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="bYfRC+Lo";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="duv0jh4+";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="lCaJczez";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="CmsjN3Q5"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id D8FA267AAB;
+	Mon, 25 May 2026 10:22:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1779704555; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=70qsCwf9afpWCUvc1LMjVT/dnIDgU93Yo47dLm8jd6I=;
-	b=oqshXILgxKl5szWS9B8CTaI2deqmSKHQq24N83UF7FKc5BxA4INDd++SCroOx00dF4yL5d
-	8gcFyAZZANuVfVkm7sz2NntRMu4FRyR2z56YYNdpgik3ogAAfGob9zdb+qoJPkU1LXirzg
-	gB5/KhnguFA/vG+6uHZo7ECSfFCRBs8=
-Received: from webmail.hosting.de (unknown [134.0.26.148])
-	by mxbox3.masterlogin.de (Postfix) with ESMTPSA id CD194360055;
-	Mon, 25 May 2026 10:07:33 +0000 (UTC)
+	bh=ThdqGsv2rLMdwzw6UEj5fzyxWAsWZbNlRiJKd7M9gM4=;
+	b=bYfRC+LoGEaDp7Ep+F+7BRV5cTow88OKiGDDmz/ap7KF/iG9ZkkgM6sJ4CvoqHIGS3rK6a
+	KzqPD4TsUo5FvvKLS7bS39Ien1ou78x9peV5PAb4yXZD92EAL7bgzGP8q/R4wmt9wPz5fy
+	rocesAaRtdd0MKzJYeGCHI8V6haytHg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1779704555;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ThdqGsv2rLMdwzw6UEj5fzyxWAsWZbNlRiJKd7M9gM4=;
+	b=duv0jh4+atwYq00sUGbY0uBOJcZ8sZPISHR+EwW31SP28RLZ8KPWf1xe49rTJLYLAmgfji
+	/0YJ0AjGGc5QU5Cw==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=lCaJczez;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=CmsjN3Q5
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1779704554; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ThdqGsv2rLMdwzw6UEj5fzyxWAsWZbNlRiJKd7M9gM4=;
+	b=lCaJczezht7/t13lskI4+u/+rEnK2VY/Ah/kAWLYlC4xAY9aPDi9NuM3fBA7mU/5dJW93n
+	IGgn9UCiJ8KZv66or6XvIC1ulQNPkGNeR2j6zxu6fO7PMQSftmcnI9Zxi+r/26iTyr3T3/
+	NkW8zE9zKJbF4yz6ZY3mGUXn4bvOeUA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1779704554;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ThdqGsv2rLMdwzw6UEj5fzyxWAsWZbNlRiJKd7M9gM4=;
+	b=CmsjN3Q5GBTg+c8LXO6Won5GM54Rqt10WVCNurkdbMSCQG4QhZQjk1FVD8oVnMSjo9Q0OH
+	VdL/kC0B0swSKkDw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4227859BC1;
+	Mon, 25 May 2026 10:22:34 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 6CoZDOoiFGrkPwAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Mon, 25 May 2026 10:22:34 +0000
+Date: Mon, 25 May 2026 11:22:32 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: Takao Sato <takaosato1997@gmail.com>
+Cc: netdev@vger.kernel.org, steffen.klassert@secunet.com, w@1wt.eu, 
+	davem@davemloft.net, herbert@gondor.apana.org.au, chopps@chopps.org, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH net v3] xfrm: iptfs: preserve shared-frag marker in
+ iptfs_consume_frags()
+Message-ID: <ahQiuEhVjnes7gUb@pedro-suse>
+References: <20260522142504.1394864-1-takaosato1997@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Mon, 25 May 2026 12:07:33 +0200
-From: "Frank Wunderlich (linux)" <linux@fw-web.de>
-To: Vladimir Oltean <vladimir.oltean@nxp.com>
-Cc: Alexander Couzens <lynxis@fe80.eu>, Daniel Golle
- <daniel@makrotopia.org>, Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit
- <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
- Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Matthias
- Brugger <matthias.bgg@gmail.com>, AngeloGioacchino Del Regno
- <angelogioacchino.delregno@collabora.com>, Frank Wunderlich
- <frank-w@public-files.de>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-mediatek@lists.infradead.org
-Subject: Re: [RFC net PATCH v1] net: pcs: pcs-mtk-lynxi: fix bpi-r3 serdes
- configuration
-In-Reply-To: <20260409215509.si2dy63seo4iaspa@skbuf>
-References: <20260409133344.129620-1-linux@fw-web.de>
- <20260409215509.si2dy63seo4iaspa@skbuf>
-Message-ID: <64b40fbee19dc108752574419a38bcfc@fw-web.de>
-X-Sender: linux@fw-web.de
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-Mail-ID: 4fca7f48-3824-442d-ac9d-7dba16a0e581
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260522142504.1394864-1-takaosato1997@gmail.com>
+X-Spam-Score: -4.01
+X-Rspamd-Queue-Id: D8FA267AAB
+X-Spam-Level: 
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Spamd-Result: default: False [-4.01 / 50.00];
+	BAYES_HAM(-3.00)[99.99%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	ARC_NA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	RCVD_TLS_ALL(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.de:dkim];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	DKIM_TRACE(0.00)[suse.de:+]
+X-Rspamd-Action: no action
+X-Spam-Flag: NO
 
-Am 2026-04-09 23:55, schrieb Vladimir Oltean:
-> On Thu, Apr 09, 2026 at 03:33:42PM +0200, Frank Wunderlich wrote:
->> From: Frank Wunderlich <frank-w@public-files.de>
->> 
->> Commit 8871389da151 introduces common pcs dts properties which writes
->> rx=normal,tx=normal polarity to register SGMSYS_QPHY_WRAP_CTRL of 
->> switch.
->> This is initialized with tx-bit set and so change inverts polarity
->> compared to before.
->> 
->> It looks like mt7531 has tx polarity inverted in hardware and set 
->> tx-bit
->> by default to restore the normal polarity.
->> 
->> Till this patch the register write was only called when 
->> mediatek,pnswap
->> property was set which cannot be done for switch because the fw-node 
->> param
->> was always NULL from switch driver in the mtk_pcs_lynxi_create call.
->> 
->> Do not configure switch side like it's done before.
->> 
->> Fixes: 8871389da151 ("net: pcs: pcs-mtk-lynxi: deprecate 
->> "mediatek,pnswap"")
->> Signed-off-by: Frank Wunderlich <frank-w@public-files.de>
->> ---
+On Fri, May 22, 2026 at 11:25:04AM -0300, Takao Sato wrote:
+> iptfs_consume_frags() transfers paged fragments from one socket buffer
+> to another but fails to propagate the SKBFL_SHARED_FRAG flag. This is
+> the same class of bug that was fixed in skb_try_coalesce() for
+> CVE-2026-46300: when fragments backed by read-only page-cache pages are
+> merged, the marker indicating their shared nature must be preserved so
+> that ESP can decide correctly whether in-place encryption is safe.
 > 
-> Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+> Apply the same two-line fix used in skb_try_coalesce() to
+> iptfs_consume_frags().
+> 
+> Fixes: b96ba312e21c ("xfrm: iptfs: share page fragments of inner packets")
+> Cc: stable@vger.kernel.org # 6.8+
 
-Hi,
+Why? This code seems to have only been introduced in 6.14, aka the only LTS
+version this applies to is 6.18. Typo?
 
-just a gentle ping as i still not see this in torvalds/master.
-
-regards Frank
+-- 
+Pedro
