@@ -1,71 +1,86 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E0093DC4D0;
-	Mon, 25 May 2026 08:12:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1124D3E16A5
+	for <netdev@vger.kernel.org>; Mon, 25 May 2026 08:21:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779696746; cv=none; b=dc3jEqiWhY6Pz010+rl+X74ySb1p9KC6fiXWMaWTx96KX3lSMJVk27TME+mxTpiRx3uasbOypj7s3JTz98jmVbub04khMdHxnUeH6D9tm3lQfL90CVlHsKl6FiMR/IR/JEOtjKWXrf6D4QB50EB1ffzl/LjYXs5CWVNO3ONci3Q=
+	t=1779697275; cv=none; b=ZBCbb+rYZEj+QH+LTVt/U7fyk8imMmg48AEpcpwG8kP4VylyAc8UbZcCZQRVFl+njCHae2aul47uirf8WqTAM8zYTcZizIvtsTDw/KgojEB/joqb6u8YQhBPMr3N0RwQLKeWdLWggC9tYkqkQNOu9m1dQ2spo3xsEBWhsK0+X+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779696746; c=relaxed/simple;
-	bh=6WkTC/HbSabZ+JULKTVHSv/7mEown2M+txjSQJP/g+4=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u6HHm0E4Vt5P/Y1eyLGjGcBi3QXuyh3QGBRPv1RxbxrrxoNDq0AZrTGv/jgOxUvP7dXmTFlC6JWZGkn/Qxv1GwPAsyid1QPnZD9jFrFczrIfGBv9oTuL2I3Vtuf0C3AkIq6v1OF/KVDPNXEo1Yv9hi/2NZKhgOiBd6YjcZEbUq8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=hmK/apTH; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+	s=arc-20240116; t=1779697275; c=relaxed/simple;
+	bh=cnpeNyrRTMfn71Iw1My7ZiOgcb+W5DMHV+tEtk3Jprw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=j9p0z2NcpVZ0UwqvKl8Z2xTH6Jz7OM3P987aGXBsTqfFGeDLI4n8NI+rubpKTBBUw28E7rYpTuLrKuiSkJfZ7+NrkDoe9WlSLbDVw8hCyR2jMr/GV0zllTBNDJ7vUrsdLRrAPVe77ZBuPFk8ogpLockEcop/5R/nEjRxNKGpanM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MbdoETWZ; arc=none smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="hmK/apTH"
-Received: from linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net (linux.microsoft.com [13.77.154.182])
-	by linux.microsoft.com (Postfix) with ESMTPSA id B383C20B716A;
-	Mon, 25 May 2026 01:12:06 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com B383C20B716A
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1779696726;
-	bh=yUPS4+X1jCtRIosSeKaXW0vT+grEGU2AMILBtNl9IpI=;
-	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=hmK/apTH1yvHX75Q8xyzDXBjsGpewpzVO5hns7qygOg6Apto41dcjcuyrZT9z5moz
-	 bKk0iSKuqoc7fbLGb0zyqHkNCXxTTIb2L90c7O5MyU/pLLBUXRE3d6qmoZSgivRlzw
-	 hWqB92wZVd5Q8ptA7ISAq2U/OApJ89wK+jJpfIb4=
-From: Dipayaan Roy <dipayanroy@linux.microsoft.com>
-To: kys@microsoft.com,
-	haiyangz@microsoft.com,
-	wei.liu@kernel.org,
-	decui@microsoft.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	leon@kernel.org,
-	longli@microsoft.com,
-	kotaranov@microsoft.com,
-	horms@kernel.org,
-	shradhagupta@linux.microsoft.com,
-	ssengar@linux.microsoft.com,
-	ernis@linux.microsoft.com,
-	shirazsaleem@microsoft.com,
-	linux-hyperv@vger.kernel.org,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MbdoETWZ"
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2b941cd869cso59749635ad.1
+        for <netdev@vger.kernel.org>; Mon, 25 May 2026 01:21:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779697272; x=1780302072; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=h73HPPR4b8cE2zhlXM66PdYigBOxMozGSruLRQEyEiQ=;
+        b=MbdoETWZnVu54cAdDYI+IcH7dP3KiMFUYIRxUXnG2Ab/xV7Ss0URUFR6Odm+pBRpqf
+         PekTC9McdvzdVJcyapSELOrilu+qAdhIZMQkgfX3bzBJJlSpBT6lOJBe5RnBY06WK+t2
+         XcXOt6hEq2rJaZMJP1daWYE41gC3xYCUUWXRW9vF3PdL7iu5fQyrjtJypt/BqxaRC2nl
+         ltjyta0KdmPnzj7zUjF65Er4+TvQHtZi3QA19E1SbY1lC9pjbtnhxyP5GQQTFBDbLZcw
+         D0wII5njH1rwFNM3iByK1cDPDckSOx6/yR5JW5IADz2NYgTq+koaLTdKR4mlCbSeRsuj
+         1bJw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779697272; x=1780302072;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=h73HPPR4b8cE2zhlXM66PdYigBOxMozGSruLRQEyEiQ=;
+        b=FFGi6bVwQOURpYVFSFHn4GFvxVKysPT6QMExZXScYqIK36VchH9QCOqqL1KZYDfz7E
+         ich9/OLXRPpurQbmrvBU8KX1/5w0lEZP3ak218mI/8K+jun/thL0WG3HklACW6Azt8HY
+         VNlpossUeP9hfd1r4P8K7czz7zzi/AL7KFoGM9F1fwgClvzQxf7GB3EgN32fL/hPJ6RB
+         6mnCN0aW5+cVReiuXvsa7y9ofejoTAr/uk9Xj1pwL9Ew4RGn+0yhrU4b2asz7I12I0Ou
+         39v4Zd5lozBT13Mzj1LTJ4CkzWdQ1oSad7mW3BuYS/7gtGgQbu6bkyHaP9GSTg4lCFM0
+         ujLw==
+X-Forwarded-Encrypted: i=1; AFNElJ9vr5ezx+8sYFuCm91dsVm7SpkO/Z9lxO2RBhMq9ygA7cL/xPu+J/UuL7GANIR8wxrmEj6h7co=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwCCo644rdatxGhn8AnkIVqOdkA0YliPWd7DnVuhvH9u2tHK5/n
+	27ohjrO8mXpCPumEIhEWab53hkgyrlos7lQkE+xd7vXOuLRYuUU6OT9v
+X-Gm-Gg: Acq92OG4AVZTE3rqtuqZwDYvUVwTGfWR5a4p8Zzv1WqYsSfCDm9SNAN93fVbaWTGAUy
+	9er+SNuqO8tDVmoEvOZC4zEk1bvl2ICspXmR1bJDlIkWjm+YtFvHZfC1uTcFWMqsasHb84rPJKq
+	sEHkTtuYz71839eG01gwnbWISbBBliRI1w2hVfFq6jSWeuHLn9SS4bspsTYZYc5QHztDpgOeRrk
+	yreQbzlrqvSk1qDiMQGAmnhzGOO2jsT8fNIqQH6JdEG5HUZ1YaKGmzVCjPu3g/ok6cZu4Wn8WBq
+	1ZgB9DW+nrzpXC0FTSgIHZ2nLLHW3if9yrOCXhG+Mtoy8RNapMGbJlVkUqtoMSv8EjonLD9d1Cg
+	7kjabC9IQq4LUItqXe0yfsOP3ETZ3GQS51uK+lgNUJi3PsVQbKeeVEYx0BpCZDvS9XdTRXXIGfL
+	6VqfDKWFt5egwrdVdLen9zf6gLBiL3n6NNWPtCNgQm9dtBtds6IxzYzpXbf6LvBV7NkA==
+X-Received: by 2002:a17:902:e74b:b0:2bc:7d09:dcef with SMTP id d9443c01a7336-2beb06bc155mr153249445ad.29.1779697272248;
+        Mon, 25 May 2026 01:21:12 -0700 (PDT)
+Received: from hcdev-d520mt2.. (60-250-196-139.hinet-ip.hinet.net. [60.250.196.139])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2beb58b3bb6sm88798165ad.47.2026.05.25.01.21.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 25 May 2026 01:21:11 -0700 (PDT)
+From: a0282524688@gmail.com
+To: tmyu0@nuvoton.com,
+	linusw@kernel.org,
+	brgl@kernel.org,
+	linux@roeck-us.net,
+	andi.shyti@kernel.org,
+	lee@kernel.org,
+	mkl@pengutronix.de,
+	mailhol@kernel.org,
+	alexandre.belloni@bootlin.com,
+	wim@linux-watchdog.org
+Cc: linux-kernel@vger.kernel.org,
+	linux-gpio@vger.kernel.org,
+	linux-i2c@vger.kernel.org,
+	linux-can@vger.kernel.org,
 	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	stephen@networkplumber.org,
-	jacob.e.keller@intel.com,
-	dipayanroy@microsoft.com,
-	leitao@debian.org,
-	kees@kernel.org,
-	john.fastabend@gmail.com,
-	hawk@kernel.org,
-	bpf@vger.kernel.org,
-	daniel@iogearbox.net,
-	ast@kernel.org,
-	sdf@fomichev.me,
-	yury.norov@gmail.com,
-	pavan.chebbi@broadcom.com
-Subject: [PATCH net v3 2/2] net: mana: Skip redundant detach on already-detached port
-Date: Mon, 25 May 2026 01:08:25 -0700
-Message-ID: <20260525081129.1230035-3-dipayanroy@linux.microsoft.com>
-X-Mailer: git-send-email 2.43.7
-In-Reply-To: <20260525081129.1230035-1-dipayanroy@linux.microsoft.com>
-References: <20260525081129.1230035-1-dipayanroy@linux.microsoft.com>
+	linux-watchdog@vger.kernel.org,
+	linux-hwmon@vger.kernel.org,
+	linux-rtc@vger.kernel.org,
+	linux-usb@vger.kernel.org,
+	Ming Yu <a0282524688@gmail.com>
+Subject: [PATCH v5 0/7] mfd: nct6694: Refactor transport layer and add HIF (eSPI) support
+Date: Mon, 25 May 2026 16:20:49 +0800
+Message-Id: <20260525082049.2906283-1-a0282524688@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -74,42 +89,73 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-When mana_per_port_queue_reset_work_handler() runs after a previous
-detach succeeded but attach failed, the port is left in a detached
-state with apc->tx_qp and apc->rxqs already freed. Calling
-mana_detach() again unconditionally leads to NULL pointer dereferences
-during queue teardown.
+From: Ming Yu <a0282524688@gmail.com>
 
-Add an early exit in mana_detach() when the port is already in
-detached state (!netif_device_present) for non-close callers, making
-it safe to call idempotently. This allows the queue reset handler and
-other recovery paths to simply retry mana_attach() without redundant
-teardown.
+The Nuvoton NCT6694 is a peripheral expander that provides GPIO, I2C,
+CAN-FD, Watchdog, HWMON, PWM, and RTC sub-devices. Currently, the
+driver only supports USB as the host transport interface.
 
-Fixes: 3b194343c250 ("net: mana: Implement ndo_tx_timeout and serialize queue resets per port.")
-Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
-Signed-off-by: Dipayaan Roy <dipayanroy@linux.microsoft.com>
----
- drivers/net/ethernet/microsoft/mana/mana_en.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+This series refactors the NCT6694 MFD core to support multiple transport
+backends and adds a new Host Interface (HIF) transport driver that
+communicates over eSPI using Super-I/O shared memory.
 
-diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
-index 0582803907a8..1e1ad2795c3c 100644
---- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-@@ -3350,6 +3350,12 @@ int mana_detach(struct net_device *ndev, bool from_close)
- 
- 	ASSERT_RTNL();
- 
-+	/* If already detached (indicates detach succeeded but attach failed
-+	 * previously). Now skip mana detach and just retry mana_attach.
-+	 */
-+	if (!from_close && !netif_device_present(ndev))
-+		return 0;
-+
- 	apc->port_st_save = apc->port_is_up;
- 	apc->port_is_up = false;
- 
+Changes since version 4:
+- Split the monolithic refactoring and HIF support patch into a series of
+  smaller, logical commits to improve reviewability and adhere to the
+  single logical change principle.
+- Decoupled USB-specific data into a dedicated 'nct6694_usb_data' 
+  structure.
+- Abstracted device I/O operations by introducing 'read_msg' and 
+  'write_msg' function pointers in the core structure.
+- Renamed the existing driver to 'nct6694-usb.c' to strictly identify its
+  transport boundary, alongside Kconfig/Makefile updates.
+- Extracted transport-agnostic device management (IRQ domain setup, IDA
+  initialization, and MFD cell registration) into a standalone
+  'nct6694-core.c' module.
+- Added the 'nct6694-hif' eSPI transport driver clean on top of the new
+  core abstraction.
+
+Changes since version 3:
+- Remove redundant module type macro definitions from sub-device drivers
+  that are now provided by the shared header <linux/mfd/nct6694.h>,
+  fixing -Wmacro-redefined warnings.
+
+Changes since version 2:
+- Restore per-device IDA and mfd_add_hotplug_devices()/PLATFORM_DEVID_AUTO
+  to avoid child device ID conflicts with multiple NCT6694 chips.
+- Validate irq_find_mapping() return value before dispatching IRQs.
+- Check superio_enter() return value in nct6694_irq_init().
+
+Changes since version 1:
+- Reworked the Super-I/O access helpers.
+
+Ming Yu (7):
+  mfd: nct6694: Move module type macros to shared header
+  mfd: nct6694: Refactor USB-specific data into nct6694_usb_data
+  mfd: nct6694: Introduce transport abstraction with function pointers
+  mfd: nct6694: Rename static I/O functions with _usb_ prefix
+  mfd: nct6694: Rename driver to nct6694-usb and update Kconfig
+  mfd: nct6694: Extract core device management into a separate module
+  mfd: nct6694: Add Host Interface (HIF) eSPI transport driver
+
+ MAINTAINERS                              |   2 +-
+ drivers/gpio/gpio-nct6694.c              |   7 -
+ drivers/hwmon/nct6694-hwmon.c            |  21 -
+ drivers/i2c/busses/i2c-nct6694.c         |   7 -
+ drivers/mfd/Kconfig                      |  38 +-
+ drivers/mfd/Makefile                     |   4 +-
+ drivers/mfd/nct6694-core.c               | 136 ++++++
+ drivers/mfd/nct6694-hif.c                | 529 +++++++++++++++++++++++
+ drivers/mfd/{nct6694.c => nct6694-usb.c} | 185 +++-----
+ drivers/net/can/usb/nct6694_canfd.c      |   6 -
+ drivers/rtc/rtc-nct6694.c                |   7 -
+ drivers/watchdog/nct6694_wdt.c           |   7 -
+ include/linux/mfd/nct6694.h              |  63 ++-
+ 13 files changed, 821 insertions(+), 191 deletions(-)
+ create mode 100644 drivers/mfd/nct6694-core.c
+ create mode 100644 drivers/mfd/nct6694-hif.c
+ rename drivers/mfd/{nct6694.c => nct6694-usb.c} (62%)
+
 -- 
-2.43.0
+2.34.1
 
