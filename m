@@ -1,71 +1,72 @@
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FD3B26E6F3
-	for <netdev@vger.kernel.org>; Mon, 25 May 2026 20:21:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82FB038F232
+	for <netdev@vger.kernel.org>; Mon, 25 May 2026 20:24:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779740496; cv=none; b=pCnh3LS1TdWDkdnwtVWpovSfTTNrlfwCy/AMGQYoZERdbJEeyMvk8LkyRWiD18saccUaQBNdAF5Z068brp2KffLnE8RApVowREQ+5ebXqyPwKft5+5RgTVYnSXm9Ev8WPskGcR3rlEU3Ho4pyIv5IXpIrJRMtoZLRRfHbglHBKQ=
+	t=1779740672; cv=none; b=h9aNXRfhdKH7fg3NVAz7SZV1AtfPtTBONa4a+ERhhhhYuZC3fx95lYAlK4RdWgB7eOwDgLML82oo5/IZZaWtL/1/plNZUYzpZWN0MdguKzZl1NOouSHawEKvboMoShoorXi8E0lp8daXcOnXhagcPowMpTrYgzevmDFjveT/bzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779740496; c=relaxed/simple;
+	s=arc-20240116; t=1779740672; c=relaxed/simple;
 	bh=RyV70KG21x+U9Hjaa0H5yChUF7T9irNeR6mdloxKgHE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Kvosew80k1P8bI6y/FQVt1kK22e9lCT09CXfZGjEXJQJfpi2E//BWxZja2Oc/7IUf5p6GYoS6mP8z92HPieOHub9RuG3DLcI/ygIuj95PsKsQZ4REfFTMtzblMDNcKnk29kN4Bc0HM1OpIZBfqFv3TNbDt13YbhbLl3it4T6X3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0sec.ai; spf=pass smtp.mailfrom=0sec.ai; dkim=temperror (0-bit key) header.d=0sec.ai header.i=@0sec.ai header.b=m0sAet2C; arc=none smtp.client-ip=209.85.128.51
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=InvNvFWmY/LTIp7UTCRSVgro+NF+jWXSzsVs3haW2hiOZAEmQBDww5uIEX3oI8J0j9SZ8AyShuY8DCT7imYtKory0U+MlKjAgsnJA0XlJ0Fo+PCuk/dIRNcpEzu4IApSKNci1W/cQrBsCtnFdxuu6qIoK/MiQrh0n5zBJlETdhc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0sec.ai; spf=pass smtp.mailfrom=0sec.ai; dkim=temperror (0-bit key) header.d=0sec.ai header.i=@0sec.ai header.b=Dr3OyDs7; arc=none smtp.client-ip=209.85.221.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0sec.ai
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=0sec.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=0sec.ai header.i=@0sec.ai header.b="m0sAet2C"
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-49039a8851fso42978475e9.2
-        for <netdev@vger.kernel.org>; Mon, 25 May 2026 13:21:34 -0700 (PDT)
+	dkim=temperror (0-bit key) header.d=0sec.ai header.i=@0sec.ai header.b="Dr3OyDs7"
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-4526a8170ceso4940730f8f.2
+        for <netdev@vger.kernel.org>; Mon, 25 May 2026 13:24:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=0sec.ai; s=google; t=1779740493; x=1780345293; darn=vger.kernel.org;
+        d=0sec.ai; s=google; t=1779740669; x=1780345469; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
         bh=IxYIky8RT6KvZ8TGdaQwxCoSJctGsAxBOVSzD0t66cA=;
-        b=m0sAet2CweukQDHbVjydL9kJIsuvjgNTX8o+cwIDRdiqwROqcNgdD87G3ThPhHFtKT
-         6iM3XR4mqSepN+y1fpK3fpFJC1dymO87sK7PEzd15d+7HuNGM+Qy5oXeqZOPqBP3jYfP
-         FugDrbcG8k/BQeAQWp8acaPKWtgjbKE721hRawdtU6NtamFGiyjEbGgIqctwnvjjLklm
-         oSQsxNqho8++5LcM77mDysy6iUIQjdgWZ4c2XTNrClaFF2hnTnRTnLo+9hezZnc+fl3T
-         TMDjcoXae7Ootety8zBdnF56Itd8Sar/qHja6aJPTJ+hnEkexIt3s8y6/89KWtHr2jBQ
-         AuTQ==
+        b=Dr3OyDs7CSx2TSFFE3ruheKJTtsieXQEAJj1AkYuu1rfrH+7xGM2uyB4ZDOJzq9yoi
+         AehFrLcXpxGlYvSPvoNhNKVoL8FaIcRBshjI6DrC90pbuk5HzD71HVUXMIls+ckJPq17
+         xyBgi+ybEtuFRoRRNatoWkKug82xzLrKQwKKKiXAOoF1m0Cm609MxTmXN2vEerclmb6G
+         C7e+us1vgfzS1Sw+QRkGqm7sPP30Lo6O48+gFbXO3abMl515tKy69HUA3V4yvBN0qrOr
+         0sqL2Bu4lXGplmZ7ohH5aXeGm3jksldHaO/0KO+eCjq46EJihdXQKfeapKosLVNwlPEw
+         QsDw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779740493; x=1780345293;
+        d=1e100.net; s=20251104; t=1779740669; x=1780345469;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
         bh=IxYIky8RT6KvZ8TGdaQwxCoSJctGsAxBOVSzD0t66cA=;
-        b=PUI33JIuluakQJKh+U/KWjQZRRMy9qFsuYC7icaSSEBcpmWi9ABxHw6ogoCSpztI9R
-         coGrSesuBwQQ0o7JG42LvJrdaYl22cJfArGXbEEGc0osV0aY9w4+4dbH3Aywi3cvOKTR
-         93Fu3Uxo9XN9WMv1aTA3crfHzfEFt1XlwBdJdswyom7TYyOyoZGVIMNpDW4kd/6BBWN9
-         VKVskLtdZxJdA8MwrswyyB93zd3fWy5Re4oF9/BTFifceiUMtBpd57Vk7hih7Dot9o06
-         kjH5Zm0xN6r3lJnwOCgftq9HKb/0x96qzp0YrCVNjKMaTofN5LH/OtXRpthgBm6kA3l4
-         Uayw==
-X-Forwarded-Encrypted: i=1; AFNElJ9DjkyjtuJsLnWVnSOaVsVWhwaQv7Z1RBgevkrGwmYW4g2DaKLucxl817CG2OwqPz/lOoVdkAU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwruxSlVW0XwkWTlpWo1tZM9f7VCNbvqt8n96vKgTImlF/fqCxr
-	3ofqC72TlMdktCDf4e9AclANLfEexPoWF4GhY5/DnR7yCCk/Nd9hW6pisy/wGM3EFBoD
-X-Gm-Gg: Acq92OE1Hja7zRL9tyXwMSGUX7WcltR3GZRTUf2yYAf9QbB4kXtmk8zFmKwHzyjbgyt
-	Se5nA7XWyeZRvDgSsdkCoypo+Lrmwdf49kCMbrclHtUFT6zSe6UGWMcjhjQzMDF8mrYMJnhn7Gf
-	oBYh+EPIBlllB6M4wLFHPTf0uuSk8Elwj+kVoykozntUONd52SdXUFDYUj89bR4+riXP8RkY9Wk
-	QxyhieFadOqhaBoId9cvX7ay8njV7hqCSkkjp4hZR3VdFueK0H6xho3b9KtObiJO2NZqhVR1Dg3
-	FHAinHr25rYNqGrjCYMNi4iIQhHoWoaCULnG17ug4JIuJPFsjizsLJOUgOFR/GpqN8ZClUyfTZb
-	48hMNSnB3Vw06psQ/XRJm0i78jJQMxMwg14+zHo/TEB2sdaSMBnUpDnTm+3jBjBcNRZ4h/+K+be
-	+kEm35BZ8icZjBepn3Mkb2IXlQWrfpMOyNw+HkiaddKGrSEYz6DFoc0h5PXKcgdazN3ZEA9RfNr
-	avcHLVj7+6V9t/81IYXtoP+UjPtJSWH21rShQ7ceJC+CnKpCK8mx94=
-X-Received: by 2002:a05:600c:1c21:b0:490:44eb:c1e0 with SMTP id 5b1f17b1804b1-49044ebc29emr262643195e9.21.1779740492936;
-        Mon, 25 May 2026 13:21:32 -0700 (PDT)
+        b=GH7NJqY7hADzrjNfS/YJ7XRtj7x/YNoHMJhxvMvkHuVT384aVm3vBjUQh5b7m+rt2F
+         3mRTqOZpykK5WpI/Jd87IcduB6ZTf3WETtvznemWSnlT2RLACmzpjmjzI2hcmzm5swxW
+         DDMcSkx4BRdokDevbxGHr00Kl+oYGKDY1LYeyoz2+3FI2FnC7AaMnBWgA+FnlXSv60Y6
+         6YeG+Y3k9T0ejU9+UP8Ly4TLvC/uyYlqDxczpZ5lI4CUZd7jap8AYllfeZvf2Qz7lOzZ
+         QOnTg6/0/tsOVSFOQZa0CpOAGPwVOh2hBIcahZhq4RxgpnF8novLovDIwLvEPs9WwG6x
+         J3kA==
+X-Forwarded-Encrypted: i=1; AFNElJ8nhCuceFumIU+Xm+qUDa0SaDpbhL4QYDhdQ8otUWNxEwmg72qgdThXX5V5PC+cqVDTvknxbMg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxZ6Wmvwb0WJV3PrjZml8JLFFrg0N4dx8MJ0ORwTlxh+oP3zbkK
+	qnR5+1r0CeYT1kdS33NZ9SgUjBD6pVwcFT+TUVrSQ3PLTvEv2RioDtaI7wFsfUvMiwrZSLed1py
+	TMnE103mgQE8=
+X-Gm-Gg: Acq92OHm671yH6sFPqQbMTnrdUICbfL3QDImU+vi3Z3d7MgkgeJxYjqCyoroKwGSuaQ
+	+WmyL0D1biF0nKkndsmMUN7D28aho3KwH76s0F8BPdg6TKgEBcWvev7/c3xL/4QI1gu4xmKoqwb
+	l17LC5SQpnqi15zTnXmxCAXPr7zxVZhPCG/m3fPhM6uA5LysB+5ppGATu+SBhtdeDlDtrZ7TV0E
+	iSTg3hTcR8XsK9ISm6lrD7cXQ1ptESIzhZxZfkjfHl8KLGgeQVie3Wq5fHocZ9dnXAPOBwClE9F
+	B9CtdFUY7jrEZdMd294xPNgudKVqNWkK1likBnAAylM0RHD+cNjeGSFlFU1rkCfOT4oNygETqgh
+	lrUgbaGiHq6y8fSMGUnrxg6MltuXoDcAKmkL5qaDV1ZUMxpLWaEPILTm9ewxkSrnjfT4dSzpghW
+	IfYuS9eXBjUSEhsxunyyU5kACBzlwKW6JUvCArcSDLh4Oeqcrxv3u6qARErZg/mBt6zDWn2VpfI
+	RddJjGOxW8zzC4GsfUqj/rcXq8w4gBWZARiqiOGr3Ve
+X-Received: by 2002:a05:6000:2c11:b0:45e:8547:f214 with SMTP id ffacd0b85a97d-45eb38b8b72mr28563604f8f.32.1779740668747;
+        Mon, 25 May 2026 13:24:28 -0700 (PDT)
 Received: from PeakBook-Mini.tail8e484.ts.net ([178.197.223.24])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490452765f5sm281452425e9.5.2026.05.25.13.21.31
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45eb6d4ca0dsm29333426f8f.18.2026.05.25.13.24.27
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 25 May 2026 13:21:32 -0700 (PDT)
+        Mon, 25 May 2026 13:24:28 -0700 (PDT)
 From: Doruk Tan Ozturk <doruk@0sec.ai>
-To: linux-nfc@lists.linux.dev
-Cc: krzysztof.kozlowski@linaro.org,
+To: oe-linux-nfc@lists.linux.dev
+Cc: david+nfc@ixit.cz,
 	security@kernel.org,
 	netdev@vger.kernel.org,
 	Doruk Tan Ozturk <doruk@0sec.ai>
 Subject: [PATCH] nfc: llcp: fix integer underflow and missing bounds checks in TLV parsing
-Date: Mon, 25 May 2026 22:21:30 +0200
-Message-ID: <20260525202130.62671-1-doruk@0sec.ai>
+Date: Mon, 25 May 2026 22:24:27 +0200
+Message-ID: <20260525202427.67768-1-doruk@0sec.ai>
 X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
