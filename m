@@ -1,153 +1,71 @@
-Received: from smtp-42a8.mail.infomaniak.ch (smtp-42a8.mail.infomaniak.ch [84.16.66.168])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4004E385D62
-	for <netdev@vger.kernel.org>; Mon, 25 May 2026 20:46:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=84.16.66.168
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 057DD281532;
+	Mon, 25 May 2026 20:59:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779742000; cv=none; b=u99BfZP7ju11VDm7UUc5WdH+ohbGq8GQJ9y3ZF1ZKMjoe+QAzoXLJh9fq07r48K/foanJQ23JxyuAZTlajAoCR7QD9lunRDrAwaChSM3sqCR5g1+RbSdzYVvOpM+nr8G0jG9P1wI52guCZSstOmdWxp5P5xAUTyD6DkEYZImIqs=
+	t=1779742788; cv=none; b=OdakuffmErCqJ2qvAL11UDpGA2qLnzrs6cALUxrAfKjzR3z8z5BaNp5Z2o8CCUse/KvtsqPF6iZ8fuxkuGguhl5SDfspQ+IKbs1PAs3y/mqFkHTfcJ1hzvoAF8Nys2mzuQ4Y25Nk+XpUlovSGQbYONMKqtWgZYHdk7HpUglA7i8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779742000; c=relaxed/simple;
-	bh=LWQjmkUIZAGaQ5nHbnV06UZfCBPRFmb530IuVidr4Zo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cwdw/mdUbrvYrub58hJY+XKYiq5qDnIJ3fxgYn1ylOSm4LR4SSLcnjyWo7lB9DwQ0ohR5aUVsXq5YuZNg8+IgLA9pGwWOBWGNezedKd4PWYjLRdwrT2nyZn6OZz9BbSt4khv7XltSlw3GPx1sVfkjltgxkt88VZfJzSbJaBv5Do=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net; spf=pass smtp.mailfrom=digikod.net; dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b=tHnPJq4N; arc=none smtp.client-ip=84.16.66.168
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=digikod.net
+	s=arc-20240116; t=1779742788; c=relaxed/simple;
+	bh=mrWLulCeZBG/eZdd3kuW8W3jBb3wHhtur0/JQyQu52c=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=iGQ2NoPj/HVikZxdv54rzKMb87wj6qQM3p7Oqqo8zKZxDOOIaH9eQmpcqupGFaetwjmO9bNyU2+7E2GYSwJYkChRN8+e/zOent77Xnc15twYsUJab6XWuy6hN89exkYMisZsyE1mdLLu/mRQd7H3A0Q4+EqRPIEKEV3JaXGcmbE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j1VaOLBF; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b="tHnPJq4N"
-Received: from smtp-3-0001.mail.infomaniak.ch (unknown [IPv6:2001:1600:4:17::246c])
-	by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4gPSC91wgDzW3m;
-	Mon, 25 May 2026 22:28:53 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=digikod.net;
-	s=20191114; t=1779740933;
-	bh=HpQXEN6tusTN7MN/f+6t2ai9RBkMng9ANiaZvvqfw10=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tHnPJq4NfFBy7Vvq5SoSgpwKqaHcRTUL7uHBsNV7E6CN644UoxehU0wh14Iwh1D2P
-	 NiYgWJAPmAQhqsih/hLbr7jTO2dOyfsA+d/1Skgg5mnbIdZj9aFuP+t6Ll+1n3+B9O
-	 61gAbJKeAA37aaUQrchA/2Q9trFSY8GwaSrq5QcM=
-Received: from unknown by smtp-3-0001.mail.infomaniak.ch (Postfix) with ESMTPA id 4gPSC81mHCzs7m;
-	Mon, 25 May 2026 22:28:52 +0200 (CEST)
-Date: Mon, 25 May 2026 22:28:46 +0200
-From: =?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>
-To: Matthieu Buffet <matthieu@buffet.re>
-Cc: =?utf-8?Q?G=C3=BCnther?= Noack <gnoack@google.com>, 
-	linux-security-module@vger.kernel.org, Mikhail Ivanov <ivanov.mikhail1@huawei-partners.com>, 
-	konstantin.meskhidze@huawei.com, Tingmao Wang <m@maowtm.org>, netdev@vger.kernel.org
-Subject: Re: [PATCH v4 0/7] landlock: Add UDP access control support
-Message-ID: <20260525.aeng6Xeula5o@digikod.net>
-References: <20260502124306.3975990-1-matthieu@buffet.re>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j1VaOLBF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 899281F000E9;
+	Mon, 25 May 2026 20:59:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779742786;
+	bh=yUD6UxnK7HW4Boqv2TCaO67dtaloiSS48KysPRLAf9M=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=j1VaOLBFVGn2NDJ//VY1ZQjV3NXIU2X+5VxxaLOtPGlyPI7VL3M0ixXVCkBlHBzt6
+	 4HzQ+Mr8Oe02dt+4M1YCjHckfhKTUZ3O7J3M9BXFN5a9MJHNNl23CS2TO/v0PEyvjp
+	 YCYAaIcylZ2OHq6jq1AR0GkPXjtOZAWITC8FAQWdUixnSl4n7LZFfCCeDa28L7kYhm
+	 FgtD3BGMAHHbiPs7dX8mYBdY+oBogTJNYD6v9aaUuKjVAglbscxlskGKbyPqCIbEg1
+	 DAmMWzRLrnfx9MKOqEHqP2L5hzzAKox+JYyumVI4Sm/KTyor2aTjUkXPOqwh8mfl8o
+	 X+IaFpH6LSusA==
+Date: Mon, 25 May 2026 13:59:44 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Ratheesh Kannoth <rkannoth@marvell.com>
+Cc: <linux-kernel@vger.kernel.org>, <linux-rdma@vger.kernel.org>,
+ <netdev@vger.kernel.org>, <oss-drivers@corigine.com>, <akiyano@amazon.com>,
+ <andrew+netdev@lunn.ch>, <anthony.l.nguyen@intel.com>,
+ <arkadiusz.kubalewski@intel.com>, <brett.creeley@amd.com>,
+ <darinzon@amazon.com>, <davem@davemloft.net>, <donald.hunter@gmail.com>,
+ <edumazet@google.com>, <horms@kernel.org>, <idosch@nvidia.com>,
+ <ivecera@redhat.com>, <jiri@resnulli.us>, <leon@kernel.org>,
+ <mbloch@nvidia.com>, <michael.chan@broadcom.com>, <pabeni@redhat.com>,
+ <pavan.chebbi@broadcom.com>, <petrm@nvidia.com>,
+ <Prathosh.Satish@microchip.com>, <przemyslaw.kitszel@intel.com>,
+ <saeedm@nvidia.com>, <sgoutham@marvell.com>, <tariqt@nvidia.com>,
+ <vadim.fedorenko@linux.dev>
+Subject: Re: [PATCH v16 net-next 1/9] octeontx2-af: npc: cn20k: debugfs
+ enhancements
+Message-ID: <20260525135944.63d57e95@kernel.org>
+In-Reply-To: <20260521095303.2395584-2-rkannoth@marvell.com>
+References: <20260521095303.2395584-1-rkannoth@marvell.com>
+	<20260521095303.2395584-2-rkannoth@marvell.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260502124306.3975990-1-matthieu@buffet.re>
-X-Infomaniak-Routing: alpha
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-FYI, I pushed this patch series in -next (except the doc patch which
-conflict).
+On Thu, 21 May 2026 15:22:55 +0530 Ratheesh Kannoth wrote:
+> Improve MCAM visibility and field debugging for CN20K NPC.
+> 
+> - Extend "mcam_layout" to show enabled (+) or disabled state per entry
+>   so status can be verified without parsing the full "mcam_entry" dump.
+> - Add "dstats" debugfs entry: reports recently hit MCAM indices with
+>   packet counts; stats are cleared on read so each read shows deltas.
+> - Add "mismatch" debugfs entry: lists MCAM entries that are enabled
+>   but not explicitly allocated, helping diagnose allocation/field issues.
 
-Also, some interesting (and some other not relevant) findings here:
-https://sashiko.dev/#/patchset/20260502124306.3975990-1-matthieu%40buffet.re
-
-On Sat, May 02, 2026 at 02:42:59PM +0200, Matthieu Buffet wrote:
-> Hi,
-> 
-> This is V4 of UDP access control in Landlock. Thanks to the round of
-> review of v3, access rights have changed to something that seems easier
-> to use and understand. It adds only two access rights, to restrict
-> configuring local and remote addresses on UDP sockets. The one that
-> restricts setting a remote address also controls sending datagrams to
-> explicit remote addresses -ignoring any remote address preset on the
-> socket-. The one that restricts binding to a local port also applies
-> when the kernel auto-binds an ephemeral port.
-> v1:
-> Link: https://lore.kernel.org/all/20240916122230.114800-1-matthieu@buffet.re/
-> v2:
-> Link: https://lore.kernel.org/all/20241214184540.3835222-1-matthieu@buffet.re/
-> v3:
-> Link: https://lore.kernel.org/all/20251212163704.142301-1-matthieu@buffet.re/
-> 
-> The limitation around allowing a process to send but not receive is
-> still there, and could warrant another patch if there is a real user
-> need.
-> I'm just not super happy about the clarity of logs generated for denied
-> autobinds ("domain=xxxxxx blockers=net.bind_udp"), due to the fact that
-> addresses and ports are currently only logged if they are non-0. A later
-> (coordinated LSM-wide) patch could improve readability by replacing != 0
-> checks with new booleans in struct lsm_network_audit. I'm also not
-> exactly happy with the integration in existing TCP selftests, but
-> refactoring them has already been discussed earlier.
-> 
-> Changes v1->v2
-> ==============
-> - recvmsg hook is gone and sendmsg hook doesn't apply when sending to a
->   remote address pre-set on socket, to improve performance
-> - don't add a get_addr_port() helper function, which required a weird
->   "am I in IPv4 or IPv6 context"
-> - reorder hook prologue for consistency: check domain, then type and
->   family
-> 
-> Changes v2->v3
-> ==============
-> - removed support for sending datagrams with explicit destination
->   address of family AF_UNSPEC, which allowed to bypass restrictions with
->   a race condition
-> - rebased on linux-mic/next => add support for auditing
-> - fixed mistake in selftests when using unspec_srv variables, which were
->   implicitly of type SOCK_STREAM and did not actually test UDP code
-> - add tests for IPPROTO_IP
-> - improved docs, split off TCP-related refactoring
-> 
-> Changes v3->v4
-> ==============
-> - merge LANDLOCK_ACCESS_NET_CONNECT_UDP and
->   LANDLOCK_ACCESS_NET_SENDTO_UDP into
->   LANDLOCK_ACCESS_NET_CONNECT_SEND_UDP (everything that might set the
->   destination of a datagram)
-> - make LANDLOCK_ACCESS_NET_BIND_UDP apply when kernel is about to
->   auto-bind an ephemeral port for the caller. Block it if policy would
->   not allow an explicit call to bind(0)
-> - only deny sending AF_UNSPEC datagrams on IPv6 sockets, where there is
->   a risk of the address family changing midway
-> 
-> Patch is based on https://git.kernel.org/pub/scm/linux/kernel/git/mic/linux.git
-> 3457a5ccacd3 ("landlock: Document fallocate(2) as another truncation corner case")
-> All lines added are covered with selftests, except the "default: return
-> 0" in current_check_autobind_udp_socket() which is not currently
-> reachable (net.c goes from 92.9%->94.6% line coverage).
-> 
-> Let me know what you think!
-> 
-> Closes: https://github.com/landlock-lsm/linux/issues/10
-> 
-> Matthieu Buffet (7):
->   landlock: Add UDP bind() access control
->   landlock: Add UDP connect() access control
->   landlock: Add UDP send access control
->   selftests/landlock: Add UDP bind/connect tests
->   selftests/landlock: Add tests for sendmsg()
->   samples/landlock: Add sandboxer UDP access control
->   landlock: Add documentation for UDP support
-> 
->  Documentation/userspace-api/landlock.rst     |   89 +-
->  include/uapi/linux/landlock.h                |   35 +-
->  samples/landlock/sandboxer.c                 |   40 +-
->  security/landlock/audit.c                    |    3 +
->  security/landlock/limits.h                   |    2 +-
->  security/landlock/net.c                      |  161 ++-
->  security/landlock/syscalls.c                 |    2 +-
->  tools/testing/selftests/landlock/base_test.c |    4 +-
->  tools/testing/selftests/landlock/net_test.c  | 1146 ++++++++++++++++--
->  9 files changed, 1341 insertions(+), 141 deletions(-)
-> 
-> 
-> base-commit: 3457a5ccacd34fdd5ebd3a4745e721b5a1239690
-> -- 
-> 2.39.5
-> 
-> 
+debugfs file which clears state seems quite odd.
+Does any user need this?
+This looks like a crutch for badly written tests TBH.
