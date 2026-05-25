@@ -1,47 +1,36 @@
-Received: from smtpbgbr2.qq.com (smtpbgbr2.qq.com [54.207.22.56])
+Received: from smtpbgeu2.qq.com (smtpbgeu2.qq.com [18.194.254.142])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC1CC2F7EE7
-	for <netdev@vger.kernel.org>; Mon, 25 May 2026 10:08:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.207.22.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F3D9344025
+	for <netdev@vger.kernel.org>; Mon, 25 May 2026 10:11:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.194.254.142
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779703698; cv=none; b=NU4MTnZ9Jj/FejWVxeNzauQMZEBSoba3pbi1+ipVBjFiFgDA448cSzJ9pnAFupbwxB2mCQ3as8KNCp/l+n6OPLKPdmry7dR85DSTQUClfL0kQepJMlMy9IjDIzQmFeyw3cbdGkD/rQqFCF6xUFsFV+J5YUK1XEiX5ObEZ5w8B+k=
+	t=1779703901; cv=none; b=pFKxB5I2O9kT5dvKvO23cMDfuglnpoGnxlDj2WOb0gxOS218G0+F/lsoUlZysLy5/1Sdwz9T8/LHaPyvNIkF9irM7ZSBeXE7MRLZXY52HnFsYEl7etGE0NUnZvdc3+93g3EsHMZKhSel0Dd1UMSjbksrVItEwS8p6/qeXzo+B9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779703698; c=relaxed/simple;
-	bh=TEb6cmuYJfPTENVrAfCtApqrrcbJHz/gheUSvizeR88=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=aiC1f/LFv8S6No/prDgF18V+E/cK/E1uYojypwSX0xpqzvQ0sh1/ikfJCgs4pHzlA2A/y2dxICjXShzpVd5AfWUDrrgufD7jhmyv4/ciZgXziPdn1hPJFyuVZ7uasvytPpGp4BNvQsinQ3v9TfVmgupqjLw85HTaxvEvLO3VSss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.207.22.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid: esmtpgz11t1779703557ta607b378
-X-QQ-Originating-IP: LiPXhzScXza1pb6rJY7YzYvPcr17Etb5NpO/jieDNdw=
-Received: from lap-jiawenwu.trustnetic.com ( [122.231.28.113])
+	s=arc-20240116; t=1779703901; c=relaxed/simple;
+	bh=hvJPHxp7ZU7kAvyKmjcK4nnfv5fauutVxSmY1ipnhv4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=qTZVLIPcEfNErx8poTV5YnQ7piYsNl0hVjiIT7DuTXlGovCalKtqqmOaC/qndJmhf+nbVuGmvUoemg9O9n19mKySzC+xSgXgYtCkRaAWoe62EWtKh4MSTZDZOI5q5xcI6HZBB6GMZy4IteXtt0MK4fpbTO3rSW+E5wbxhWgNpR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com; spf=pass smtp.mailfrom=net-swift.com; arc=none smtp.client-ip=18.194.254.142
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=net-swift.com
+X-QQ-mid: zesmtpgz1t1779703890te534ff55
+X-QQ-Originating-IP: eOUvvz+NSP60pu+ER0ozdsvYQdeZ5HSnUfhAH8MIsS4=
+Received: from localhost.localdomain ( [122.231.28.113])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Mon, 25 May 2026 18:05:56 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 944353387482229234
-EX-QQ-RecipientCnt: 12
-From: Jiawen Wu <jiawenwu@trustnetic.com>
+	id ; Mon, 25 May 2026 18:11:28 +0800 (CST)
+X-QQ-SSF: 0001000000000000000000000000000
+X-QQ-GoodBg: 2
+X-BIZMAIL-ID: 7971813150419393429
+EX-QQ-RecipientCnt: 4
+From: Mengyuan Lou <mengyuanlou@net-swift.com>
 To: netdev@vger.kernel.org
-Cc: Mengyuan Lou <mengyuanlou@net-swift.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Kees Cook <kees@kernel.org>,
-	Larysa Zaremba <larysa.zaremba@intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jiawen Wu <jiawenwu@trustnetic.com>
-Subject: [PATCH net-next v2 2/3] net: wangxun: avoid statistics updates during device teardown
-Date: Mon, 25 May 2026 18:05:42 +0800
-Message-Id: <20260525100543.27140-3-jiawenwu@trustnetic.com>
-X-Mailer: git-send-email 2.21.0.windows.1
-In-Reply-To: <20260525100543.27140-1-jiawenwu@trustnetic.com>
-References: <20260525100543.27140-1-jiawenwu@trustnetic.com>
+Cc: jiawenwu@trustnetic.com,
+	duanqiangwen@net-swift.com,
+	Mengyuan Lou <mengyuanlou@net-swift.com>
+Subject: [PATCH net-next v2 0/3] net: libwx: improve VF ethtool support
+Date: Mon, 25 May 2026 18:11:12 +0800
+Message-Id: <20260525101115.13151-1-mengyuanlou@net-swift.com>
+X-Mailer: git-send-email 2.30.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -50,67 +39,71 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
-Feedback-ID: esmtpgz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: MABkn+BX1UZ4ovff1MRaRd8Sf+mpvRixVkWMNIlNAqCYarciDxJGb/yR
-	cIvGb3InyZf3uKiqprXns8pitGcm0LwAvp9DGai5kiHOnIjYSzbT8r/ZUhE8xUl6OYnOhPx
-	lLnjiO0pNV3tXxpd36JK7c8QFz91IbhyQwmxwRhkBF/UeqMF0cE+1hXArzINrJTMVFaZHrQ
-	ssG7wvj9LYnsFqL+LNUBWUBiutstV/a6kAAeqq1KM2jXPK34LO35tfAWW36YJD4OjzDBzcK
-	mAC9rVQjRPTQc4ZoouI5MJe/Lz8sU4jN4QpRi2pw/fAmy04myB6TSxmwCpkSz1u3U9ICnFr
-	sQGTXRCXR1wo1emQYV05/3dH/mMQPcHLi30+GB7IvqqvG6oc6tZHljVTtO0yI34XEAJOcRh
-	NlFdG4+zlUNlTLJBFAlq3fAkwsAYPPV2EL4F+N/S7c8ULL07UZ6MgV6ei//MKugtUTO/eCt
-	Ky+OlZpLK5qE99+el5cXK5WoDl8pGc1q9JDSWnYNoVlTKqvixb4JReihle7NuXXHMEKbJ8/
-	q9VT240xDDCGsZGjMhlo0jNvps15pH/py6V09wIU2iVr1mMj3EkQwLgem1veYi+xlHohdZR
-	pjAZFuwU6RaTyNYJyfC2gJAsKfyINLqfyWmie4MviyD8NEAeW2fM8FbxJUvXXb3s3PrqYu0
-	ZIJwONO74Z0lQaB5RPrgOCgoTS5/GoI1Ohp3XkfD9CbzYHw2kEerHWJCoBZhV5cHPhBX2KQ
-	q+FmZPZUNjgQ7KYBvKblDxh6x/EyD3F3J09zTRexe8MSjEFvzeebpaK5AO5E7FxC2oxC0S1
-	bYn156iqRZuksiwFmnfVEBm8q8X1FNgSbEK4nzuuThxsj9xuiCY/fF3rHliQ5KUmH0B8369
-	XHak5XRoZWfoiOehWDPunzktgx6E99zFKrWfUcekPYlBEYixeurderd4weEP2d0j9x/DlHT
-	B+BBUBFoz9U5vI5uZ+SYRMwySwpRzgGbVaIX7w9aaN0IyTtQ/deTPZUBuZB0EZ0+shjJgEl
-	+S0Rjsg8rU9WPwNX260CjfuBFBenEFF4E4D+r1WvlGRU26ER1hXk+qhI0VVt3G230esD1cA
-	Q==
-X-QQ-XMRINFO: Nq+8W0+stu50tPAe92KXseR0ZZmBTk3gLg==
+Feedback-ID: zesmtpgz:net-swift.com:qybglogicsvrgz:qybglogicsvrgz5b-1
+X-QQ-XMAILINFO: NdeXJ8Tyb3Z/kWiJkdQ7/my5AVkkSpPiXGrPknqcKczItV2GgjeleLgB
+	NfsgZ2+/7gp0WtYDBF1H7GSi0WzHVW1agxnWKTHihLmy3Py2Ls54sXlIPcumKzGFQ5/ioVf
+	V4xTGIsnd7QXSoAnruMgRQYNTsNBn2MSWQLhn5gHWmq4PIQUifS7jGGk0favjcH+8x8C23G
+	RPEcywe87j6xasOVXpet3rB126ggdun5IWevIYdG1BqFNPHLpiDR2fQGapdk+TW2jfx4EFw
+	qwB3NzTuYS/WseFQkyhKXQkYlFPaQR81N6DCtuMtJGHsAmYaPhLupynglZZ4NJKxWUrD8As
+	eSl02XqC0PVjzn7RrrdQRAgSWQe+hO5oux5mVw8AWjosf0zKy2sVhqlQ2gYDJWsn0WcB/SB
+	q0/HinXfkZQ/X7pcALsMEDlLaASsw/Ewj8KXFKpCUE68Oaj32CnBPsF4LQEoMvGFH5oiXwa
+	RbS+RD93vJMCdhUiKGEpe3h0MwcOKA0dVRLOiaSF9QXhZ6nWkUkVvKVISkeWxd0qH76TDrP
+	cQ5d2vEdUfeV2Fn+VhQqWDYGroJ+VOoQO089fBEpkdDYSaxZxehT61aL160WEXrHzHvPDUz
+	h6eve7b5tRbbo4X3QoE+f22q6OKcP4UyXobUGphCeRHjtq+FYGi7YTHpAInwI7wjECkrxCW
+	k1OTzYtnpy28ZtvSnkFb6nXabGtXrwD4LrkqCFpYbmq7z9lVUXxbFR+FjSpp8t441hN1exJ
+	QM6FbtPXaaQf5u1IdrIUFety5xwvJj5BzaqibH15k3BG9BSwFDMNnZQpo7SX59egizG5xSa
+	s3hpOb894xijsBF9qD7rCeG7/ZJDraYAnh49OyP5upmmu5V+4QYGAw88ibae2QACpp/+4PS
+	SuJq1r7QozXVDKTR5i7CePMJjvBZFsZU6Eqgn5KlxjodcpiFkICBZy31/gtvGdaDOf38FZ0
+	oIbm9vHSbY7hZrHVd3d3DwwFwN6jNyYS545TZwCTucZauKGauD27L96SiZvQZPRCCc7p3dX
+	1LzS6jmjJfagGKb2ZWlOQTtC2060owsdroi99a9l1YduztV3dpHxaYLRj6i6++ycaRMh0Lf
+	66RTzGR0IZ5MjXHqnARVYhM4Cx3oudkfJVBf8uwdlovYZ6gHTJct71MZCURVtx94pIcKprx
+	U/b2eLy0kJo46nw4+SQFcKNqcw==
+X-QQ-XMRINFO: Mp0Kj//9VHAxzExpfF+O8yhSrljjwrznVg==
 X-QQ-RECHKSPAM: 0
 
-After introducing WX_STATE_DOWN, wx_update_stats() now explicitly skips
-statistics collection while the device is in teardown or reset state.
-Calling wx_update_stats() from the device disable path therefore becomes
-redundant.
+This series improves ethtool support for Wangxun VF drivers
+(ngbevf and txgbevf) in libwx.
 
-Remove wx_update_stats() calls from ngbe_disable_device() and
-txgbe_disable_device().
+This series extends VF support by enabling:
+ring parameter configuration via ethtool -G
+interrupt coalescing configuration via ethtool -C
+hardware statistics reporting via ethtool -S
 
-Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
----
- drivers/net/ethernet/wangxun/ngbe/ngbe_main.c   | 2 --
- drivers/net/ethernet/wangxun/txgbe/txgbe_main.c | 2 --
- 2 files changed, 4 deletions(-)
+Patch 1 adds support for set_ringparam in wx_ethtool_ops_vf,
+allowing VF users to adjust TX/RX descriptor ring sizes.
+Patch 2 enables set_coalesce support for VF devices and updates
+EITR programming to use the VF-specific register access helper.
+Patch 3 adds VF hardware statistics support so ethtool -S can
+report useful runtime counters for VF interfaces.
 
-diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-index f4a2dd6fa493..8678c49b892a 100644
---- a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-+++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-@@ -404,8 +404,6 @@ static void ngbe_disable_device(struct wx *wx)
- 
- 		wr32(wx, WX_PX_TR_CFG(reg_idx), WX_PX_TR_CFG_SWFLSH);
- 	}
--
--	wx_update_stats(wx);
- }
- 
- static void ngbe_reset(struct wx *wx)
-diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-index f9cd1caaf0a4..6755464b4637 100644
---- a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-+++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-@@ -265,8 +265,6 @@ static void txgbe_disable_device(struct wx *wx)
- 
- 	/* Disable the Tx DMA engine */
- 	wr32m(wx, WX_TDM_CTL, WX_TDM_CTL_TE, 0);
--
--	wx_update_stats(wx);
- }
- 
- void txgbe_down(struct wx *wx)
+Changes log:
+v2:
+- Patch 1:
+  Remove some stats which can be replaced by standard stats defined in
+  include/net/netdev_queues.h.
+- Patch 3:
+  Adding a return value to wx_set_ring to make wx_set_ringparam_vf can
+  be passed back to userspace.
+  Remove freeing and requesting of IRQs. Ring resize only updates descriptor
+  resources and does not change MSI-X vector or interrupt configuration,
+  so IRQs do not need to be reallocated.
+v1: https://lore.kernel.org/all/20260514103405.42175-1-mengyuanlou@net-swift.com
+
+Mengyuan Lou (3):
+  net: libwx: add support for set_ringparam in wx_ethtool_ops_vf
+  net: libwx: add support for set_coalesce in wx_ethtool_ops_vf
+  net: libwx: support vf hardware statistics
+
+ .../net/ethernet/wangxun/libwx/wx_ethtool.c   | 98 +++++++++++++++++--
+ drivers/net/ethernet/wangxun/libwx/wx_hw.c    | 75 +++++++-------
+ drivers/net/ethernet/wangxun/libwx/wx_lib.c   |  9 +-
+ drivers/net/ethernet/wangxun/libwx/wx_lib.h   |  4 +-
+ .../net/ethernet/wangxun/libwx/wx_vf_common.c | 55 ++++++++++-
+ .../net/ethernet/wangxun/libwx/wx_vf_common.h |  3 +
+ .../net/ethernet/wangxun/ngbevf/ngbevf_main.c |  1 +
+ .../ethernet/wangxun/txgbevf/txgbevf_main.c   |  2 +
+ 8 files changed, 195 insertions(+), 52 deletions(-)
+
 -- 
-2.51.0
+2.30.1
 
