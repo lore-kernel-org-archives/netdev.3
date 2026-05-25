@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17E9A30C629;
-	Mon, 25 May 2026 20:41:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF42438F232;
+	Mon, 25 May 2026 20:41:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779741673; cv=none; b=DB/Ad760SoSLh535/vUa7bT4BdvmMlwuKeA0jJGbydkxoR2gbXer6HPd6gqXgLwcyqBYvYmqWq3eDvmm8gwRZkSLkAagd8zWtyRA9z9v97aI1WrkBK4PUg/9YMPFCv0eL71fdpNYIqn5mIpB1Ov2y03KexqqsbN2PUo+yulPuOY=
+	t=1779741676; cv=none; b=KagDMA5sBGjjluRCsHpxktho9WJTCaVmYztxFPucF3LQJo9rpd4/eiCaDHfBYW7rm9hiTJro+mSpnzQXXtqEWxRZNSlwM2zTIEMoXJbzcuWJXB2b+I72l9AfILuZ8rpQ0CDafFa7Z4NgBFzkn826GDZyJPVS4RSc6PvPg3d3Qi0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779741673; c=relaxed/simple;
-	bh=6LLszY32X7wyYWvxT/mzgOLnBifaKJ7us2rThevsW+s=;
+	s=arc-20240116; t=1779741676; c=relaxed/simple;
+	bh=Ct9meLMinjOSLvyv0wmvRIMf2Wnu/qzpEIZvQLZLKjk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XnASvXC5IclJcxNtRgBCSvuu9dveiUsC1MxPTBY4vLoeB2l5S2RA1rTIsc9Lc2m0CXJFzZ/dliICokggtZMW0R9yHRj15QemezHkJ7dYR77EtL5kKtRi4Vjh84Rfndy/p4sobxPg12vtUipGYmw1IyP6qzmzveIWg4cIPQgp9jY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G+TPO8/Q; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=nMPnkHiG2JOOguzLC6XXAi49HKu8SRIep/kAsgcPcLdQSFctDfXAzY6JDxIwEqNWzDeAJWFEFs7L7jHUSoy+V+Hym4I54aNSr92ugf/gx7AcjYksFUC4CuLxOX6esmyXQy038MtFpkjo+mBmFL4VOYBXxDfWkWdKlTZOZRUd7X4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jqFc3TUG; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G+TPO8/Q"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 482C61F000E9;
-	Mon, 25 May 2026 20:41:11 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jqFc3TUG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 270E41F000E9;
+	Mon, 25 May 2026 20:41:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779741671;
-	bh=wzZk2w6LpMZqcjWtr+xhVmdSEW/XaL+Ll9ZDIHsLnvw=;
+	s=k20260515; t=1779741674;
+	bh=sJHfpkXeegXyMnh/03SPZhkWR/ywCKHVOhWL2u+jXUI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=G+TPO8/Q8/OBoOW6GoEk8DW36LCN/tI7tF4A3zGo9KvJ8rDPJqWEz0qIccUrYyAfB
-	 I9sBqe6gbz3wbQoNgNB7cxrxUBiThBrDQ+ENF1rdIBJviKwWuwaw24TuKZ4Ab+VcDb
-	 jND5nN3UHjdG2uTEXXxMcsG6jzc7OUNspZq9h0+J5SS2fYqw+rBuzzV34SLEaS01Wn
-	 IKpjQw0bjC57sdQ+emX/MQrxx6F1NO+LsvbCVO3ZHdZIToK9bOEBL25Rpftx4T5i1G
-	 wAs+d5qA90Pe+bG/9NtJeqOmN+RhumyznqVo1vFUr03DTWMD5CE2ZEyK/VwUq020GV
-	 WlP0AiO2rx9Dw==
+	b=jqFc3TUGfTj32MLggbilwoviAUj/ylhPS5cApCKC8bvxAlRfG6IB7iGmxCHJ/cVcq
+	 J5cbv6kGaIGCGmKuE44bmCPB3ibfpiMpomwAUICfHIwgh8GUcSp9fIIhi0R5OspclM
+	 obxXMW8h3CIyf/wEXOJi0yOqNTSbFAEjVAt/+IDXEWCDnHLtKD2V8dWEb24XdsWGdW
+	 1/DIGKXI5ePtCskvpHsQTLFTjYl9/wS4I5eHOtQhlqwekKTaJQrr7A87hWeR2cEeqJ
+	 oOuEwRYMFx+Xfsx7E65jZvchVEtByI1n/A3PYKgsiFNsolbMXCADqPdYE26gw26nhW
+	 bnrapw9n4c4ow==
 From: Jakub Kicinski <kuba@kernel.org>
 To: michael.dege@renesas.com
 Cc: Jakub Kicinski <kuba@kernel.org>,
@@ -40,12 +40,12 @@ Cc: Jakub Kicinski <kuba@kernel.org>,
 	netdev@vger.kernel.org,
 	linux-renesas-soc@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v5 05/14] net: renesas: rswitch: add exception path for packets with unknown dst MAC
-Date: Mon, 25 May 2026 13:41:10 -0700
-Message-ID: <20260525204110.2471291-1-kuba@kernel.org>
+Subject: Re: [PATCH net-next v5 07/14] net: renesas: rswitch: make helper functions available to whole driver
+Date: Mon, 25 May 2026 13:41:13 -0700
+Message-ID: <20260525204113.2471355-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260522-rswitch_add_vlans-v5-5-53589d944a9f@renesas.com>
-References: <20260522-rswitch_add_vlans-v5-5-53589d944a9f@renesas.com>
+In-Reply-To: <20260522-rswitch_add_vlans-v5-7-53589d944a9f@renesas.com>
+References: <20260522-rswitch_add_vlans-v5-7-53589d944a9f@renesas.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -57,164 +57,61 @@ Content-Transfer-Encoding: 8bit
 This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
 ---
-net: renesas: rswitch: add exception path for packets with unknown dst MAC
+net: renesas: rswitch: make helper functions available to whole driver
 
-Packets with unknown MAC address cannot be handled by the HW forwarding.
-Creates an exception path with a shared queue to forward these packets to
-the network driver for MAC learning.
+These functions will be needed in L2 and vlan handling. Remove static
+declaration and add function prototype to rswitch.h.
 
 > diff --git a/drivers/net/ethernet/renesas/rswitch_main.c b/drivers/net/ethernet/renesas/rswitch_main.c
-> index 9510bcdf9e830..1f4ec65f6f9bd 100644
+> index 1f4ec65f6f9bd..20ac8f3b9357f 100644
 > --- a/drivers/net/ethernet/renesas/rswitch_main.c
 > +++ b/drivers/net/ethernet/renesas/rswitch_main.c
 [ ... ]
-> @@ -736,6 +772,8 @@ static int rswitch_gwca_hw_deinit(struct rswitch_private *priv)
->  	if (err < 0)
->  		return err;
->  
-
-[Severity: Medium]
-Will this leak the shared RX queue memory if rswitch_gwca_change_mode() fails
-during teardown and returns early?
-
-> +	rswitch_shared_rx_queue_free(priv);
-> +
->  	return rswitch_gwca_change_mode(priv, GWMC_OPC_DISABLE);
->  }
-[ ... ]
-> @@ -944,10 +982,15 @@ static int rswitch_poll(struct napi_struct *napi, int budget)
->  
->  	if (napi_complete_done(napi, budget - quota)) {
->  		spin_lock_irqsave(&priv->lock, flags);
-> +		if (rdev->rx_old_queue) {
-> +			rdev->rx_queue = rdev->rx_old_queue;
-> +			rdev->rx_old_queue = NULL;
-> +		}
->  		if (test_bit(rdev->port, priv->opened_ports)) {
->  			rswitch_enadis_data_irq(priv, rdev->tx_queue->index, true);
->  			rswitch_enadis_data_irq(priv, rdev->rx_queue->index, true);
->  		}
-> +		rswitch_enadis_data_irq(priv, priv->gwca.l2_shared_rx_queue->index, true);
-
-[Severity: Critical]
-Does unmasking the shared RX queue globally here create a race condition?
-
-If Port A completes NAPI while Port B's NAPI is still actively polling the
-shared queue, couldn't another interrupt fire, scheduling another NAPI and
-resulting in multiple NAPIs running concurrently on the same shared queue?
-
-This might cause lockless concurrent modifications to gq->cur and gq->dirty,
-leading to list corruption.
-
->  		spin_unlock_irqrestore(&priv->lock, flags);
->  	}
->  
-[ ... ]
-> @@ -960,15 +1003,41 @@ static int rswitch_poll(struct napi_struct *napi, int budget)
->  	return 0;
+> @@ -168,14 +168,13 @@ static int rswitch_fwd_init(struct rswitch_private *priv)
 >  }
 >  
-> -static void rswitch_queue_interrupt(struct net_device *ndev)
-> +static void rswitch_queue_interrupt(struct rswitch_private *priv, struct rswitch_gwca_queue *gq)
+>  /* Gateway CPU agent block (GWCA) */
+> -static int rswitch_gwca_change_mode(struct rswitch_private *priv,
+> -				    enum rswitch_gwca_mode mode)
+> +int rswitch_gwca_change_mode(struct rswitch_private *priv,
+> +			     enum rswitch_gwca_mode mode)
 >  {
-> -	struct rswitch_device *rdev = netdev_priv(ndev);
-> +	struct rswitch_ext_ts_desc *desc;
-> +	struct rswitch_device *rdev;
-> +	struct net_device *ndev;
-> +	unsigned long flags;
-> +	u32 spn;
-> +
-> +	/* If we receive a shared queue through the exception path, it will be missing the ndev
-> +	 * pointer. This needs to be added to be able to determine from which port the packet was
-> +	 * received. Then we temporarily exchange the rx_queue pointer in rdev. This will be
-> +	 * restored after the packet has been processed.
-> +	 */
-> +
-> +	if (gq->index == priv->gwca.l2_shared_rx_queue->index) {
-> +		desc = &gq->rx_ring[gq->cur];
-> +		spn = FIELD_GET(SPN, le64_to_cpu(desc->info1));
-
-[Severity: Medium]
-Could this read stale or garbage data from the descriptor?
-
-It appears to read the DMA descriptor without verifying that the hardware
-has handed ownership back to the CPU (e.g., checking DT_FEMPTY) and without
-a dma_rmb() barrier before the read.
-
-[Severity: High]
-Is it possible for the hardware to provide an out-of-bounds SPN value here?
-
-Since spn is used to index priv->rdev[] on the next line, an unexpected or
-corrupted value might cause an out-of-bounds memory access.
-
-> +		ndev = priv->rdev[spn]->ndev;
-> +		rdev = netdev_priv(ndev);
-> +		gq->ndev = ndev;
-
-[Severity: High]
-Since the shared queue collects exception packets from all ports, will this
-assign the entire queue to the NAPI of the first packet's port?
-
-When NAPI polls and drains the queue, it seems subsequent packets might be
-injected into the network stack under the first packet's ndev, even if they
-originated from different physical ports.
-
-> +		/* store original rx_queue */
-> +		spin_lock_irqsave(&priv->lock, flags);
-> +		rdev->rx_old_queue = rdev->rx_queue;
-> +		rdev->rx_queue = gq;
-
-[Severity: High]
-Can rdev->rx_old_queue be permanently overwritten with the shared queue
-pointer here?
-
-If a second shared queue interrupt fires before NAPI completes and restores
-the pointer, the handler will execute this path again and overwrite the
-saved normal queue pointer with gq, leaking the normal RX queue.
-
-> +		spin_unlock_irqrestore(&priv->lock, flags);
-> +	} else {
-> +		rdev = netdev_priv(gq->ndev);
-> +	}
+>  	int ret;
 >  
->  	if (napi_schedule_prep(&rdev->napi)) {
-> -		spin_lock(&rdev->priv->lock);
-> -		rswitch_enadis_data_irq(rdev->priv, rdev->tx_queue->index, false);
-> -		rswitch_enadis_data_irq(rdev->priv, rdev->rx_queue->index, false);
-> -		spin_unlock(&rdev->priv->lock);
-> +		spin_lock(&priv->lock);
-> +		rswitch_enadis_data_irq(priv, rdev->tx_queue->index, false);
-> +		rswitch_enadis_data_irq(priv, rdev->rx_queue->index, false);
-> +		rswitch_enadis_data_irq(priv, priv->gwca.l2_shared_rx_queue->index, false);
-
-[Severity: Critical]
-If napi_schedule_prep() returns false (because the target NAPI is already
-running), hardware interrupts are not disabled. Could this lead to an
-immediate interrupt storm for the shared RX queue?
-
-> +		spin_unlock(&priv->lock);
->  		__napi_schedule(&rdev->napi);
->  	}
->  }
-[ ... ]
-> @@ -1653,6 +1733,11 @@ static int rswitch_stop(struct net_device *ndev)
->  	rswitch_enadis_data_irq(rdev->priv, rdev->tx_queue->index, false);
->  	rswitch_enadis_data_irq(rdev->priv, rdev->rx_queue->index, false);
->  	bitmap_clear(rdev->priv->opened_ports, rdev->port, 1);
-> +	if (bitmap_empty(rdev->priv->opened_ports, 1))
+>  	if (!rswitch_agent_clock_is_enabled(priv->addr, priv->gwca.index))
+>  		rswitch_agent_clock_ctrl(priv->addr, priv->gwca.index, 1);
 
 [Severity: High]
-Does this check use the wrong size argument?
+This isn't a bug introduced by this patch, but does making these mode change
+functions globally available expose an unsynchronized read-modify-write data
+race?
 
-The second argument to bitmap_empty() is nbits. By passing 1, it seems it
-only checks if bit 0 is empty. If port 0 is closed while other ports are
-open, this would evaluate to true and prematurely disable the shared RX
-queue interrupt for the remaining active ports.
+Looking at rswitch_agent_clock_ctrl() being called here, it performs an
+unprotected read-modify-write on the shared RCEC and RCDC hardware registers:
 
-> +		rswitch_enadis_data_irq(rdev->priv,
-> +					rdev->priv->gwca.l2_shared_rx_queue->index,
-> +					false);
-> +
->  	spin_unlock_irqrestore(&rdev->priv->lock, flags);
+static void rswitch_agent_clock_ctrl(...)
+{
+	...
+	if (enable) {
+		val = ioread32(coma_addr + RCEC);
+		iowrite32(val | RCEC_RCE | BIT(port), coma_addr + RCEC);
+	}
+	...
+}
+
+Could concurrent calls from L2 or VLAN paths cause lost clock enable/disable
+commands, leading to silent initialization failures for network ports?
+
+I noticed a subsequent commit in this series ("net: renesas: rswitch: add
+locking for agent clock control") attempts to fix this using agent_lock.
+However, doesn't that fix introduce a hard deadlock by calling
+spin_lock(&priv->agent_lock) twice consecutively in
+rswitch_gwca_change_mode(), while also failing to initialize the spinlock?
+
+Would it be better to address the missing synchronization correctly before
+exporting these functions for broader concurrent use?
+
+> -
+>  	iowrite32(GWMC_OPC_DISABLE, priv->addr + GWMC);
 >  
->  	napi_disable(&rdev->napi);
+>  	ret = rswitch_reg_wait(priv->addr, GWMS, GWMS_OPS_MASK, GWMC_OPC_DISABLE);
