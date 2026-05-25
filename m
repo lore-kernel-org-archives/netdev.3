@@ -1,35 +1,35 @@
-Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [91.216.245.30])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D36D436BCC3;
-	Mon, 25 May 2026 18:29:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.216.245.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07F2D36CDE0;
+	Mon, 25 May 2026 18:30:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779733801; cv=none; b=U9CLh1AHb7LLWKqkGN2jhyvku0P5zgzt5cN/YFNVj3Gi8FghDEXsqJ/9lL+HsYkOM3n/bs+v9v9E2LWXSwPt/Y1dZCT1NIldrTSb5whhOmALLc1oO4swGYwT7nFFOsHkwYIuzwGqKqP4AVr5NzCqts4up0920HlkSkzjsTTr9qc=
+	t=1779733802; cv=none; b=lz0YzhZvIZZ5GQewKUJW2JgnX3YbCaoShsXiR/R110TDVcepZ0vsJkm8OB63mEZPKOgsR8uyjipNJdyD2WfnK/BWYmWE4nwcP0dRPx3ij1bEnhKOP57ladmGbRK20Pau3YNCpu9lKEu5+IXHgN6RYUfYOf+3apPLLhLznSAzbyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779733801; c=relaxed/simple;
-	bh=m93Bf6yGk8DKSAN6/i+glOLBSAeDTI0X6DAftrrQucs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A2a511DxggbQkc0mFtlRykplrhSPx0/vTgguiBxlGMiwpQQH6Ds8kupi4gYiV2mCP5lwmN3LvQiB6myE7DblUHNISP/MSYghSFmhrC2nIZHEk41sqtk4OEmayLVRjVx7Hp7Kp4YvofYSd2Tgmh+hPD4S8Xsut3P1Lskz3lcFrZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de; spf=pass smtp.mailfrom=Chamillionaire.breakpoint.cc; arc=none smtp.client-ip=91.216.245.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=Chamillionaire.breakpoint.cc
-Received: by Chamillionaire.breakpoint.cc (Postfix, from userid 1003)
-	id 5EC7560595; Mon, 25 May 2026 20:29:58 +0200 (CEST)
-From: Florian Westphal <fw@strlen.de>
-To: <netdev@vger.kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	<netfilter-devel@vger.kernel.org>,
-	pablo@netfilter.org
-Subject: [PATCH net-next 07/11] netfilter: nfnl_cthelper: apply per-class values when updating policies
-Date: Mon, 25 May 2026 20:29:20 +0200
-Message-ID: <20260525182924.28456-8-fw@strlen.de>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260525182924.28456-1-fw@strlen.de>
-References: <20260525182924.28456-1-fw@strlen.de>
+	s=arc-20240116; t=1779733802; c=relaxed/simple;
+	bh=tWZPEXeOloAC/PAAVkdh643jIUT4LTdVY3wP6uFBEB0=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=FTgdwVli8vsvY8ZRm5SZuwd5TO8aom3HGVeBiQSYgIaeERlCI1/pXk4L6lqjf98GRybFsKrwCRV8y96TFTg3QahLfitoHI6BTUaSVqj5hnUh8fkYS8DDXnr+CU4Oi2NQ99NV5gyIhAzaBEsJGsp8CFcT6PLq6Y/a7UPh3RsFvj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f772ZbpE; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f772ZbpE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A97A1F00A3A;
+	Mon, 25 May 2026 18:30:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779733800;
+	bh=TgeODEogQk8+t5MEKprT+zUJT/o9G+ngILd/P7yJ9Pk=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=f772ZbpEFiK7kFZ5Yo7uPJCR7XgzeLDYMwN5/kzEX54aJhSs8NJl/6NZ6yTwxI3yi
+	 D8tYz3m+h5ZlNZdjP2KmpzWtbXRI9uLjDBz6meQz2pYIUgj0u5A5HmanJGQS9ReJ9D
+	 G7DHZY0ffyAihPL7MrKBBlUVSGugZT0FUmiBHCstO19vnwxjbbb3PRgAs9O9+G1S0j
+	 avMz7xfiXj8BmgF+O92JWnMmjBHcptPeBcH5bFpYJEbnwB+tAbEfVQ7d9VYvDChDdb
+	 oiiRC9p+RALPxOxi+HXHZYUCdZufRRFKYCJ9aRLg5iliXRnbak7PrQsGPvynOtp5I9
+	 fIXUEnwiF2eVw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 56BE8380AA75;
+	Mon, 25 May 2026 18:30:08 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,47 +37,43 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next v2] ipv4: igmp: annotate data-races around
+ im->users
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177973380690.3078812.5378465604442173917.git-patchwork-notify@kernel.org>
+Date: Mon, 25 May 2026 18:30:06 +0000
+References: <20260522093906.39764-1-sigefriedhyy@gmail.com>
+In-Reply-To: <20260522093906.39764-1-sigefriedhyy@gmail.com>
+To: Yuyang Huang <sigefriedhyy@gmail.com>
+Cc: jiayuan.chen@linux.dev, davem@davemloft.net, dsahern@kernel.org,
+ edumazet@google.com, idosch@nvidia.com, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org
 
-From: David Carlier <devnexen@gmail.com>
+Hello:
 
-When a userspace conntrack helper with multiple expectation classes is
-updated via nfnetlink, every class ends up with the first class's
-max_expected and timeout values.
+This patch was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-nfnl_cthelper_update_policy_all() validates each new policy into the
-corresponding slot of the temporary new_policy array, but the second
-loop that commits the values into the live helper dereferences
-new_policy as a pointer instead of indexing it, so every iteration
-reads new_policy[0] regardless of i.  An update that changes per-class
-values is silently collapsed onto class 0's values with no error
-returned to userspace.
+On Fri, 22 May 2026 18:39:06 +0900 you wrote:
+> /proc/net/igmp walks IPv4 multicast memberships under RCU and
+> prints im->users without holding RTNL, while multicast join and leave
+> paths update the field while holding RTNL. Annotate this intentional
+> lockless snapshot with READ_ONCE() and the matching writers with
+> WRITE_ONCE().
+> 
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Signed-off-by: Yuyang Huang <sigefriedhyy@gmail.com>
+> 
+> [...]
 
-Index the temporary array by i in the commit loop so each class gets
-its own validated values.
+Here is the summary with links:
+  - [net-next,v2] ipv4: igmp: annotate data-races around im->users
+    https://git.kernel.org/netdev/net-next/c/061c0aa740d5
 
-Fixes: 2c422257550f ("netfilter: nfnl_cthelper: fix runtime expectation policy updates")
-Cc: stable@vger.kernel.org
-Signed-off-by: David Carlier <devnexen@gmail.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
----
- net/netfilter/nfnetlink_cthelper.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/net/netfilter/nfnetlink_cthelper.c b/net/netfilter/nfnetlink_cthelper.c
-index 0d16ad82d70c..34af6840803e 100644
---- a/net/netfilter/nfnetlink_cthelper.c
-+++ b/net/netfilter/nfnetlink_cthelper.c
-@@ -346,8 +346,8 @@ static int nfnl_cthelper_update_policy_all(struct nlattr *tb[],
- 	for (i = 0; i < helper->expect_class_max + 1; i++) {
- 		policy = (struct nf_conntrack_expect_policy *)
- 				&helper->expect_policy[i];
--		policy->max_expected = new_policy->max_expected;
--		policy->timeout	= new_policy->timeout;
-+		policy->max_expected = new_policy[i].max_expected;
-+		policy->timeout	= new_policy[i].timeout;
- 	}
- 
- err:
+You are awesome, thank you!
 -- 
-2.53.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
