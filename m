@@ -1,105 +1,107 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2800F413225
-	for <netdev@vger.kernel.org>; Tue, 26 May 2026 17:13:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 377FD413D8F;
+	Tue, 26 May 2026 17:13:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779815635; cv=none; b=t1DToOjgtQjgsJfLUzBnRE/RTnLAdMSHTGnmX8BK+moCUkAz6ZpFuPTtmudmvlaxSbBr2TJjhsT/FOVMkm5EXQH4wXI7W4HdGtXaaauyyWaVtdiST3cZeJr8teSPq68s8EeVDKhI1H9OMG37Huci309H9XGpIUywDD5JDyBmpAQ=
+	t=1779815636; cv=none; b=OvDkU0LOQC01acvHY8uJ/22nYGZXWJQ0mUGzfOGpFTwrHIZ02VFJJqa3pex6aStMQCMJVuT3n91YGBGWHoFFqMDMfD+Prh/iBfD3/7leb1nw1o9ujrS43def3XgNlyM4YSdUETqb+mHpqHtR2Q9hL4vwoInBnMEvY2BLR12gplc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779815635; c=relaxed/simple;
-	bh=WAETMV+93fuc7jRBnUMhC43/BsuKuoKB5qO1saXMzuM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SvKnkEjgEdrQJitr8Caj3S/XjpasMmT8UTpGY8Yst8rDho3wkV7UTHPAakZo2xt4fh0glnI0kkFE6w1IcLMZ2c6tgSJGU1PN1yj14iXNYj8X50KH66zd5Yjksjx6nliSl8JwZzGmGoBgjULCkcOapViyrPpBXqhTdCHQfUp5lUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=EOMZJwMw; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1779815636; c=relaxed/simple;
+	bh=NDw6UHaPI2dJBJJYWyMVcYdnDmDcJDE7NsRFacHuejg=;
+	h=Date:Message-ID:From:To:Cc:Subject:References:MIME-Version:
+	 Content-Type; b=CQ55KekC5e+/fafnOemrpkzPSxqJKxuzyHLHZMtzgB/Ee2+c2om7fhmHQJ+6AoqOpd3cbaoJs8x+TzrDyV+Kr0AQvMCyhc54jEzER+kf3xBsfEcw/seaAYbMeSSlkizdrHmspoYoCrtGbvRDVge91FihqOmLkUYPXU9pafRzX6o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l/7TyMGC; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="EOMZJwMw"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id A1C7CC79ABE;
-	Tue, 26 May 2026 17:13:47 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 365656011D;
-	Tue, 26 May 2026 17:13:48 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 90E5E1088897D;
-	Tue, 26 May 2026 19:13:44 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1779815627; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=3xHFuC8og3ZxbcbR67FIEfNVmxijX0Xd5qe9gz/OvEQ=;
-	b=EOMZJwMwr1a6MSeHihbhNvbRctQnytiPJd0AnDzvqVM4royrn8Jvbej7gREOO3+rm4kclQ
-	IAuy7iO6Xp23uj8NnbMcJ9HIfbbQns3PLIEQjBjyBPpr9042bVWwuVBg5gbmq0DFI3cd+M
-	6LmNCnG6T7atWHTjmyHFK3XAaNOsHiUWf+3sLAw3yeaz1tAM1fYGF9P0D2W01r9x1M8r2p
-	1hDC5PsjxkWQkNlFXDCir3+/iVnoSEAkgSMe53ZU72ERcGLOqhijD6ESsYLZHSsf8UPcTO
-	1bnta5Em90VPh2edNDtYGYx2JZlankS2FM6ec8Px0oQNPhG10WvIdU8q7W4dpQ==
-Message-ID: <e7de9862-9e31-4210-b3e7-80785fb7e553@bootlin.com>
-Date: Tue, 26 May 2026 19:13:43 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l/7TyMGC"
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id CD14D1F00A3F;
+	Tue, 26 May 2026 17:13:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779815631;
+	bh=2J+ciIb2LyPs5xxGSmmcudFc+5BTlYYzzEvJzgHR0zk=;
+	h=Date:From:To:Cc:Subject:References;
+	b=l/7TyMGC5Mv6l3ZKe7c6fhs4o1pwKNEh3volJKRnmz8sUSqATPBUvLA+ZGnqe9hst
+	 vVP8HKu/Cl0PUZTGZjn2j+muR+e0Oeki3r4BWeIJ1CxqJJjBb93+8ttVfm8i80R79Y
+	 sjaRQEJ7kj0nYumOC1QMkKrb2PqakO0Hlg8ejbrehNOWoutJSq8ECnvZf+5j7jVCW4
+	 CqTuAv37DM6DpCC8NVwrBxQyRfUGwVL5kzg/0CScRKGCfpGLh/r7DHu4nKIHM4gGSN
+	 oclVhhVS9gRq3E5suGSWD71huxZhD43uoo5rL9UCiYti5BILHylSUSXdT76eKhwf8K
+	 9rc5+PBk5OsHA==
+Date: Tue, 26 May 2026 19:13:48 +0200
+Message-ID: <20260526171222.995833811@kernel.org>
+User-Agent: quilt/0.68
+From: Thomas Gleixner <tglx@kernel.org>
+To: LKML <linux-kernel@vger.kernel.org>
+Cc: David Woodhouse <dwmw2@infradead.org>,
+ Miroslav Lichvar <mlichvar@redhat.com>,
+ John Stultz <jstultz@google.com>,
+ Stephen Boyd <sboyd@kernel.org>,
+ Anna-Maria Behnsen <anna-maria@linutronix.de>,
+ Frederic Weisbecker <frederic@kernel.org>,
+ thomas.weissschuh@linutronix.de,
+ Arthur Kiyanovski <akiyano@amazon.com>,
+ Rodolfo Giometti <giometti@enneenne.com>,
+ Vincent Donnefort <vdonnefort@google.com>,
+ Marc Zyngier <maz@kernel.org>,
+ Oliver Upton <oliver.upton@linux.dev>,
+ kvmarm@lists.linux.dev,
+ Oliver Upton <oupton@kernel.org>,
+ Richard Cochran <richardcochran@gmail.com>,
+ netdev@vger.kernel.org,
+ Takashi Iwai <tiwai@suse.com>,
+ Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+ Johannes Berg <johannes.berg@intel.com>,
+ Jacob Keller <jacob.e.keller@intel.com>,
+ Tony Nguyen <anthony.l.nguyen@intel.com>,
+ Saeed Mahameed <saeedm@nvidia.com>,
+ Peter Hilber <peter.hilber@oss.qualcomm.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ virtualization@lists.linux.dev,
+ linux-wireless@vger.kernel.org,
+ linux-sound@vger.kernel.org
+Subject: [patch 04/24] pps: Convert to ktime_get_snapshot_id()
+References: <20260526165826.392227559@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 09/10] ethtool: eeprom: add missing ethnl_ops_begin()
- / _complete() during fallback
-To: Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net
-Cc: netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com,
- andrew+netdev@lunn.ch, horms@kernel.org, o.rempel@pengutronix.de,
- kory.maincent@bootlin.com, haiyangz@microsoft.com, andrew@lunn.ch
-References: <20260526153533.2779187-1-kuba@kernel.org>
- <20260526153533.2779187-10-kuba@kernel.org>
-Content-Language: en-US
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-In-Reply-To: <20260526153533.2779187-10-kuba@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=UTF-8
 
-Hi,
+ktime_get_snapshot() resolves to ktime_get_snapshot_id(CLOCK_REALTIME).
 
-On 5/26/26 17:35, Jakub Kicinski wrote:
-> All ethtool driver op calls should be sandwiched between
-> ethnl_ops_begin() / ethnl_ops_complete(). In Netlink eeprom code,
-> if the paged access failed we fall back to old API, but we
-> first call _complete() and the fallback never does its own
-> ethnl_ops_begin(). Move the fallback into the _begin() / _complete()
-> section.
-> 
-> Fixes: 96d971e307cc ("ethtool: Add fallback to get_module_eeprom from netlink command")
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Make it obvious in the code and convert the readout to use the
+snapshot::sys field instead of snapshot::real, which is going away.
 
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Similar to the PPS generators, avoid the more expensive snapshot when
+CONFIG_NTP_PPS is disabled.
 
-Thanks :)
+No functional change intended.
 
-Maxime
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Cc: Rodolfo Giometti <giometti@enneenne.com>
+---
+ include/linux/pps_kernel.h |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-> ---
-> CC: andrew@lunn.ch
-> CC: maxime.chevallier@bootlin.com
-> ---
->   net/ethtool/eeprom.c | 5 ++---
->   1 file changed, 2 insertions(+), 3 deletions(-)
-> 
-> diff --git a/net/ethtool/eeprom.c b/net/ethtool/eeprom.c
-> index a557e3996c85..836316df3092 100644
-> --- a/net/ethtool/eeprom.c
-> +++ b/net/ethtool/eeprom.c
-> @@ -141,12 +141,11 @@ static int eeprom_prepare_data(const struct ethnl_req_info *req_base,
->   	return 0;
->   
->   err_ops:
-> +	if (ret == -EOPNOTSUPP)
-> +		ret = eeprom_fallback(request, reply);
->   	ethnl_ops_complete(dev);
->   err_free:
->   	kfree(page_data.data);
-> -
-> -	if (ret == -EOPNOTSUPP)
-> -		return eeprom_fallback(request, reply);
->   	return ret;
->   }
->   
+--- a/include/linux/pps_kernel.h
++++ b/include/linux/pps_kernel.h
+@@ -99,12 +99,14 @@ static inline void timespec_to_pps_ktime
+ 
+ static inline void pps_get_ts(struct pps_event_time *ts)
+ {
++#ifdef CONFIG_NTP_PPS
+ 	struct system_time_snapshot snap;
+ 
+-	ktime_get_snapshot(&snap);
+-	ts->ts_real = ktime_to_timespec64(snap.real);
+-#ifdef CONFIG_NTP_PPS
++	ktime_get_snapshot_id(&snap, CLOCK_REALTIME);
++	ts->ts_real = ktime_to_timespec64(snap.sys);
+ 	ts->ts_raw = ktime_to_timespec64(snap.raw);
++#else
++	ktime_get_real_ts64(&ts->ts_real);
+ #endif
+ }
+ 
 
