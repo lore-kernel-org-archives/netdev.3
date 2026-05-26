@@ -1,96 +1,103 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50A983563FB
-	for <netdev@vger.kernel.org>; Tue, 26 May 2026 08:58:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA11C3D16F4
+	for <netdev@vger.kernel.org>; Tue, 26 May 2026 09:06:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779785941; cv=none; b=AKoyXVSgmgx0+Rzmm0KD2uazp4Jv1ZnCmI5pvjI0wMptIyLXfk7yB7tnt3iHIGey1tThdlaq2H0kjAfK9uE+cdQizdGHDIpE2Wwf9tufrk+8r715ZtU4o6fSHL0TOqPhJFCfop1eCOjLnNTh03dYGJreTJV8oxMrqeGNmXBgYRk=
+	t=1779786370; cv=none; b=EJA8nt12/IcrpnkY0ilROlmRKbLO06LO5l74ZUmqdIba9U9bK6Rb3ofXuMtrsaIhhmSKRaDBim8VCOxIL3ZfHEKfkusfQZQ12c0P91mLnRjvjZILcieEFeZigpbBRgChvvmefYMe5TBn7+yEZiFjmLW2Rda/VHe/LVfecfCQL/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779785941; c=relaxed/simple;
-	bh=esvc5C0z6NvoYeNbVH5eLtCmoEKd9s8oBDIqxLkZbT0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NniN+Pqu2txWOlJJ0O7iZHWHlG0k9lzNQ/tl9kegn//8ZEXvbcjTD/KJ0PLyd/v2acowR+yisR9ZgmSO77MVaFBx91vRLa1Cnqq9r6+pCbALnYC9ePzAGwUW6T2I4mt6GGI9cwihaPJk3JXqaqibSA/7nKHusuTLhZr0btJV9M8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LLV+owrl; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LLV+owrl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D3E61F00A3C
-	for <netdev@vger.kernel.org>; Tue, 26 May 2026 08:58:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779785937;
-	bh=esvc5C0z6NvoYeNbVH5eLtCmoEKd9s8oBDIqxLkZbT0=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=LLV+owrlzHWD38tnxfC+Q9lGl5VFX+WD2Li3wlLyqr14AaK3dqT8kquzhYPcqtmN7
-	 WUgNXoL/iTpD2C+dGCYisgM89EZxrFOG+V+DvFcnO+YDw9EFgNNikvR8AmF9twPbbA
-	 56Rf+wqssGdo1LsqzA9lwV9uk+bc3/xxUSkLgtEHdm8xsFXwcm/+GpllM1o0v+BOhj
-	 SOBwQoA01FZflE3fljlNOXnthUX1Hibfn0vQWWiiLbwsFW3yUhs2QlndXk2i9/gOG1
-	 /OARADyMFTsevc3hDb9Aqi5nEieQLy97eNKWbXn8T83GM0vg/+6ZkiXhjzVy4Jdfzq
-	 q7I9r31YB7cqw==
-Received: by mail-dl1-f50.google.com with SMTP id a92af1059eb24-135e88b8e55so1676399c88.0
-        for <netdev@vger.kernel.org>; Tue, 26 May 2026 01:58:57 -0700 (PDT)
-X-Gm-Message-State: AOJu0YziOtLn1IIUCsdeXcSuNHFi75nvLpQKlU7qy2S88Mu+yDpum2yK
-	uDDhRSBW53H4OGwGUJWOMeB1agvBE8b7ec/KriHBYu2zX3dk7w0lHGV7kZkaJUytKm5eQmasP3m
-	YAM56VvY+szgl7G5K59+VCT2P6NOslDov1RabEA9PIw==
-X-Received: by 2002:a05:7022:671f:b0:12d:d972:b96e with SMTP id
- a92af1059eb24-1365fb3f882mr5912975c88.20.1779785936938; Tue, 26 May 2026
- 01:58:56 -0700 (PDT)
+	s=arc-20240116; t=1779786370; c=relaxed/simple;
+	bh=McdOLxWIOa6z0o2y9RB4Vo2y8nG+8+e/FGXSNFk1CFo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=dfRRJzSIcbnV0zL7NOc7W3HB3VqPgwbtP9WTc5BX5DziKXfHFlSskwDXJlkeAZR28FyYHve1rdYls3+P3HUCQ5CcgpRYmBwvv5UBnmxmsW/432K8JVp3xiQL8eEX1tSmYMopE18jPGtEsjGog7RpBKw8ehwRB/laWqLpMaPomS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: 1d1cf5ac58e211f1aa26b74ffac11d73-20260526
+X-CTIC-Tags:
+	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
+	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
+	HR_SJ_DIGIT_LEN, HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM
+	HR_SJ_PHRASE, HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT
+	HR_TO_NAME, IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED, SA_TRUSTED
+	SA_EXISTED, SN_TRUSTED, SN_EXISTED, SPF_NOPASS, DKIM_NOPASS
+	DMARC_NOPASS, CIE_BAD, CIE_GOOD, CIE_GOOD_SPF, GTI_FG_BS
+	GTI_RG_INFO, GTI_C_BU, AMN_T1, AMN_GOOD, ABX_MISS_RDNS
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.12,REQID:ed307418-2aa1-4174-a63a-84b66ff8ba8c,IP:10,
+	URL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+	N:release,TS:5
+X-CID-INFO: VERSION:1.3.12,REQID:ed307418-2aa1-4174-a63a-84b66ff8ba8c,IP:10,UR
+	L:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:5
+X-CID-META: VersionHash:e7bac3a,CLOUDID:e63fac8431ffbb483332a5d8861f6cb3,BulkI
+	D:2605261706021OEXDWDI,BulkQuantity:0,Recheck:0,SF:10|38|66|78|102|127|850
+	|865|898,TC:nil,Content:0|15|50,EDM:-3,IP:-2,URL:99|1,File:nil,RT:nil,Bulk
+	:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,
+	BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULS
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 1d1cf5ac58e211f1aa26b74ffac11d73-20260526
+X-User: zhaochenguang@kylinos.cn
+Received: from localhost.localdomain [(223.70.159.239)] by mailgw.kylinos.cn
+	(envelope-from <zhaochenguang@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 134576507; Tue, 26 May 2026 17:05:59 +0800
+From: Chenguang Zhao <zhaochenguang@kylinos.cn>
+To: Jiawen Wu <jiawenwu@trustnetic.com>,
+	Mengyuan Lou <mengyuanlou@net-swift.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>
+Cc: Chenguang Zhao <zhaochenguang@kylinos.cn>,
+	Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org
+Subject: [net v2] net: txgbe: fix phylink leak on AML init failure
+Date: Tue, 26 May 2026 17:05:59 +0800
+Message-Id: <20260526090559.2095680-1-zhaochenguang@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260519-nfc-nxp-nci-i2c-restore-irq-trigger-fallback-v5-1-1a826cfbc128@amd.com>
-In-Reply-To: <20260519-nfc-nxp-nci-i2c-restore-irq-trigger-fallback-v5-1-1a826cfbc128@amd.com>
-From: Bartosz Golaszewski <brgl@kernel.org>
-Date: Tue, 26 May 2026 10:58:39 +0200
-X-Gmail-Original-Message-ID: <CAMRc=McK-AArPcrRc8rmotfoM8tSxyogGVVA3K9AcB0uG1szdQ@mail.gmail.com>
-X-Gm-Features: AVHnY4LZtc64zrZWegKq1EajPJ2Vd0ki5rPVFvKA1TA8kegym2HlKDZUmZuluRc
-Message-ID: <CAMRc=McK-AArPcrRc8rmotfoM8tSxyogGVVA3K9AcB0uG1szdQ@mail.gmail.com>
-Subject: Re: [PATCH v5] nfc: nxp-nci: i2c: use rising-edge IRQ on ACPI systems
-To: carl.lee@amd.com
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org, krzk@kernel.org, peter.shen@amd.com, 
-	colin.huang2@amd.com, kuba@kernel.org, david@ixit.cz, 
-	luca.stefani.ge1@gmail.com, mpearson@squebb.ca, 
-	Mark Pearson <mpearson-lenovo@squebb.ca>, 
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Tue, May 19, 2026 at 11:47=E2=80=AFAM Carl Lee via B4 Relay
-<devnull+carl.lee.amd.com@kernel.org> wrote:
->
-> From: Carl Lee <carl.lee@amd.com>
->
-> Some ACPI-based platforms report incorrect IRQ trigger types (e.g.
-> IRQF_TRIGGER_HIGH), which can lead to interrupt storms.
->
-> Use the historically working rising-edge trigger on ACPI systems to
-> avoid this regression.
->
-> Device Tree-based systems continue to use the firmware-provided
-> trigger type.
->
-> Fixes: 57be33f85e36 ("nfc: nxp-nci: remove interrupt trigger type")
-> Cc: stable@vger.kernel.org
->
-> Tested-by: Luca Stefani <luca.stefani.ge1@gmail.com>
-> Tested-by: Mark Pearson <mpearson-lenovo@squebb.ca>
-> Tested-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-> Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
-> Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-> Signed-off-by: Carl Lee <carl.lee@amd.com>
-> ---
-> Some ACPI-based platforms report incorrect IRQ trigger types,
-> which can lead to interrupt storms.
->
-> Use rising-edge IRQ on ACPI systems to avoid this regression,
-> while keeping firmware-provided trigger types on non-ACPI systems.
-> ---
+Destroy the phylink instance when fixed-link setup fails.
 
-Hi!
+Fixes: 6f8b4c01a8cd ("net: txgbe: Implement PHYLINK for AML 25G/10G devices")
+Signed-off-by: Chenguang Zhao <zhaochenguang@kylinos.cn>
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Reviewed-by: Jiawen Wu <jiawenwu@trustnetic.com>
+---
+v2:
+ - Add the Fixes tag and targeted the net tree as suggested by Maxime. 
+ - Add Reviewed-by tags 
 
-Can this be queued yet? The problem is still present in stable branches.
+v1:
+ https://lore.kernel.org/all/20260522070749.1634542-1-zhaochenguang@kylinos.cn/
+---
+ drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Bart
+diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c
+index f0514251d4f3..8e301e7d1148 100644
+--- a/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c
++++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c
+@@ -521,6 +521,7 @@ int txgbe_phylink_init_aml(struct txgbe *txgbe)
+ 	err = phylink_set_fixed_link(phylink, &state);
+ 	if (err) {
+ 		wx_err(wx, "Failed to set fixed link\n");
++		phylink_destroy(phylink);
+ 		return err;
+ 	}
+ 
+-- 
+2.25.1
+
