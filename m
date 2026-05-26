@@ -1,247 +1,182 @@
-Received: from mail-dl1-f54.google.com (mail-dl1-f54.google.com [74.125.82.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ADF13B4E83
-	for <netdev@vger.kernel.org>; Tue, 26 May 2026 21:51:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779832285; cv=pass; b=UKjZ5RBRc1bKbJMl0LFgcWDj+fC2uN06/hWryd1RMaJ02x6Wb7q6ifCpNC9sPrSqhfM3tNP2hmio1wgOk4QWisVQX7gczq9LVGWsAlUuQ1DYYq4aqAn666/iarDLAcDcoZVFmqCKwGbuKJp6IEkAxGRNCw6GR3oZqWCat0PqYTM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779832285; c=relaxed/simple;
-	bh=AoeM8g6x9IYVveJxQcTNP3LqVXcO3jwkZgfHAxvHIsg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BQADrcznQtnubK4+qlOcktMe8JTzmvtP/cw9Bf6GZaYRwOR3BV0t14zMEHPiS0WksILBDaP7PIfwLcV//Sc7ObeM2jsvzt0zxcp7hwP0amN5S+kAozot1HdJ9ifG/K4HDJn7108wVi3k1qrUurOGQ18MsYU7wVF/zUIdH8gw0jk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bMslIW7Z; arc=pass smtp.client-ip=74.125.82.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 041933B4E83;
+	Tue, 26 May 2026 21:52:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779832340; cv=none; b=dXvQDe4OVOrMMc0Fpelgysce8fbgbcam/rgXqamydbJ2GSOTCyH5+pjOf9XSyBRDrw3GzM5Izir1mDv99LgFbLwEkQP2Mnh1//ahDT0CAi6XeU4b+d2c+DBg3VK1qKplXQTyJLZcGqFqSjpgiC2eLjXutUyn+60l1l+LcJYxtI8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779832340; c=relaxed/simple;
+	bh=qkV3wqiPc1gtpJtbhMXrlyafax8/y9M8/g7Z6MlDhOU=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=uQ5MfiCvV8qdon3gBJezttEMgcd6pZnWhHuzfMaMOZaZ6Aw3My/t+yuG75sOGuEPKYS4IoR8Pz1j2/XoeBgVYQ6lEDaBl93mMoexcjwcfYIGB6BoSJnlKJeDTfq3PBzRIVXU3wNCL2r9LDMtN3EkUT71WsZQjdbUI5fVBFfdgcQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rM1SMVo/; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bMslIW7Z"
-Received: by mail-dl1-f54.google.com with SMTP id a92af1059eb24-136b46c3540so3422262c88.1
-        for <netdev@vger.kernel.org>; Tue, 26 May 2026 14:51:24 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779832283; cv=none;
-        d=google.com; s=arc-20240605;
-        b=EKut/pOKL/GlUXtSC9f28SNZljBP9eBuPXyM0TQFnN81fVJloPfTY4Ylnkj6xbc646
-         4/XJuVO+MrTiPPEFXR3qiQyV82m1+TreMbxRjzSACVFxXczXBlSBvfTa095WV3fM13Qu
-         5dhD/n76T+4e/9L2zDKvJJpn/V5Kk7DYszzHmAteGeqbfc8YXguWD3CvtumNzAmV38Gq
-         ++y2vMswvWLHB2m5sT1ZhO7a30gSxrGA5JhKUEnJ3EuYYz7YQHIR2Zi8I8aN7Rc0gUbq
-         tCSMZAqSvo2fNInkynvd9/OlzeUe3YyAwliRm38Bkg2I0Sp1IYW9V1f3Y/GDTCj1y2P4
-         FsPA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=lQqGVBd+cocCt/UgJ7d/2rWN5gR8Q6QOgQJb5mSWO2g=;
-        fh=kMlyffOMfomQrdVJkJB3pqFaYq14G9rLQqvYByHAmeQ=;
-        b=CqzgrKivyM3Vjt6FNFTFQQ3GyVvIzJfgiUJWgEgN2KmguzQyCw8axz0AD9TtXBcyjG
-         X1Mg6K4YCT/5ax39jADL1L6jh1U7oEENHX6x21w7EKXHVIQHuLuOi25nDmRi8MNu/JkU
-         wL0G6Imx6MtrlzHSs+mwG0uwpDGRuwVL4qzzOKQ4vf2o7+9x+jJsvtK4Oj8E9WgiJUww
-         V3ytfU73/d1hLnIO7y1gBWIXrcgbxhDR+wkJRxIQpExavGf6EaK+BK9+6VQ6J/Kr/7ai
-         EIpNtKXuuwAFor8B5zHOq1rKLGskApYBDL6RPZCMR6j6H67YkjCh8Oo5pKXHS6JIFf9e
-         wbDQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779832283; x=1780437083; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lQqGVBd+cocCt/UgJ7d/2rWN5gR8Q6QOgQJb5mSWO2g=;
-        b=bMslIW7ZZJj2nSeKaadqXJ21FpiidiBHbzcB4uN/zIutrYKYJfyasqi1VO0MuF50hA
-         zg2BvIVI6dnym0WixNMalMBHgiQmvBjaOdgsDehv8z/aBbNBne8nV48DsN0fdSs3gXJu
-         lx7vCtgOEA/hdFKf5TDWg8A73aff3GDTZKZohhanRmVr2l+uUQbw9oTqiwXJf3dilTlH
-         VGPEvp+ecavySCh8c0VDkhdJ1DO/G2F0rlFGwMYZIWxGOWXM76NwBFLHLobkx1JYpTKv
-         vsVmJTKoq7gTNbBIwWfkb3peDRfZCiKmmL1yzjUkpDDO6kfa7tD2+cigI0QEds8jW0Zp
-         Khjw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779832283; x=1780437083;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=lQqGVBd+cocCt/UgJ7d/2rWN5gR8Q6QOgQJb5mSWO2g=;
-        b=SADSG2zjGYSmcwxtRFeM+bPzrtOibwP+8544ljqbbIrBRhxLU2jYAFaRARfjxFIc1i
-         SIA8mZOPMNP+ApXmx7W8ShUQ5TKd2IOAzdre7cSKRaHocslVgye+MviUkq4Rkg3KGLyK
-         bqacqeUafYbK/tnZY7Ng6c5ARTkAxctsFVKsAxojskTPYsy59dOldduynL2G1pmiHQ+E
-         vlCid4LsVY6IeA2wbIxDIoC0rphgfsN0XMo0flHqdWcjufiEKVXqKmo8zeNKML6832VO
-         WEC/uMAoxL2Nw8gL9dJbC2K1RasGOO78kDVlm/V8ZekOREziiX3Bu4mpOPG+FTLPQ6yG
-         LWzA==
-X-Forwarded-Encrypted: i=1; AFNElJ/pdJTf4vCPClbhFpA6ZSJwcb5jM9i7XoEx88hLntZgl0jOq+z30I0MVW6ovLdVaLg7I2wQmqI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxtSgXEH5MrzihjuX0dgs82KmtCj7ZcfWdodgkpxrbvQ+in0Cn7
-	P4cquS76CC6oNQfi1mhDDk9DZeVVQgQVn3Ndz2kysPyjYQf+7xoy0uKQW6qiX9SK5QZAeudabjZ
-	vHd30frMpQ1sQBC0S0yqowtEvQ28MTCTF5SfqI4Xr
-X-Gm-Gg: Acq92OFGgVsQUSCOvhgnia01bPL6FdRD1bu0kHtWkTmD9uLxgtXpEmEqXrFQbl96IwH
-	aYI3xl/7pVlCakbSVpzulRzWnE+OS52PkZrhyhGq337KLKxrTm4wSFa2NIf5YRN1v5AW2owKyyh
-	5JaZ91uh9i1hMqQlUIt8pnTYTgJCRMZzFWV+wFoBBC7iitEGjyHVS10jMGRrySgZPG94URZKZof
-	QMxlHLF4IW4QCGSV112oHTsWzGbJD/OwE0yJ8A5s4ColMyGCdXVLoS3EnPwr9DRC9XV0ZTIXqEa
-	Pm9lmuKeUZx8kCnJ09tclEOcY3Y0Wdla8MwIR4U1Oa0n9pSPP2fhbSplUDJUrwDcbRs9YG52RyW
-	Aut8CphTPHyUy84OQ/RGhS8tFCHD9aL8F33xDPcifLcmgdXYZLNOyo+RxZvhQohpsfgoc8Hk=
-X-Received: by 2002:a05:7022:1a81:b0:132:6877:eea with SMTP id
- a92af1059eb24-1365f819092mr7112298c88.12.1779832282746; Tue, 26 May 2026
- 14:51:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rM1SMVo/"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id A4185C2BCC4;
+	Tue, 26 May 2026 21:52:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1779832339;
+	bh=qkV3wqiPc1gtpJtbhMXrlyafax8/y9M8/g7Z6MlDhOU=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=rM1SMVo/51AfaSXHxHJr3XooO8PODu/tWig6uTWQnAmYQs9ut5QhI+IGrrY2NroPa
+	 pERvg9aVZLl6KZQCmx0QP2cwQ0loIihIWVx5cFwBpbJxP7eLlF7IS9RHa9XkP7ohAk
+	 Ck2LNbTt9gWm6+L6o6/0OQ31KZ1qQDC+eGsovp8m+8OwhEMXtn8Q6bbk2DhwvjCyc6
+	 MaYoFEUdtNj3bkvOc/sW3rChnoV79PlK7iLlX9LKQBpqUL+cCdb2QO4wp4yuk5zQPX
+	 2m1jRfVvf3+FrqCcGg3j48KqeqvVGEHxJizkjKloXtG8PwsR1xn+QQ2BiTB3ljlfoh
+	 HCwHJjX60JT+w==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8CD83CD5BD5;
+	Tue, 26 May 2026 21:52:19 +0000 (UTC)
+From: Ciprian Regus via B4 Relay <devnull+ciprian.regus.analog.com@kernel.org>
+Subject: [PATCH net-next v2 00/10] net: Add ADIN1140 support
+Date: Wed, 27 May 2026 00:51:45 +0300
+Message-Id: <20260527-adin1140-driver-v2-0-37e5c8d4e0a0@analog.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260523083001.2911931-1-kuniyu@google.com> <20260523083001.2911931-11-kuniyu@google.com>
- <202652620435.m7WK.martin.lau@linux.dev> <CAAVpQUCd_eDq2nVz=um3T3iR5x7dSX1Rpi1YVTF0T5j16ok95g@mail.gmail.com>
- <CAMB2axO6PeJOLWCfyGp2pq+2t8D8evEb07HgEyyw8qHG5TFGxA@mail.gmail.com>
-In-Reply-To: <CAMB2axO6PeJOLWCfyGp2pq+2t8D8evEb07HgEyyw8qHG5TFGxA@mail.gmail.com>
-From: Kuniyuki Iwashima <kuniyu@google.com>
-Date: Tue, 26 May 2026 14:51:11 -0700
-X-Gm-Features: AVHnY4J3Rs6sv4H8De29931zUN6J9wyMHkX5s4zEmvSh1A9Ll-gZnC3sgGqG_jM
-Message-ID: <CAAVpQUCSWkMd-_FBqHe6sO1gEmuyS3twv65Rb45wc6-4PsYUEg@mail.gmail.com>
-Subject: Re: [PATCH v3 bpf-next 10/11] bpf: tcp: Add SOCK_OPS rcvlowat hook.
-To: Amery Hung <ameryhung@gmail.com>
-Cc: Martin KaFai Lau <martin.lau@linux.dev>, Alexei Starovoitov <ast@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
-	Eduard Zingerman <eddyz87@gmail.com>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, 
-	Yonghong Song <yonghong.song@linux.dev>, John Fastabend <john.fastabend@gmail.com>, 
-	Stanislav Fomichev <sdf@fomichev.me>, Eric Dumazet <edumazet@google.com>, 
-	Neal Cardwell <ncardwell@google.com>, Willem de Bruijn <willemb@google.com>, 
-	Tenzin Ukyab <ukyab@berkeley.edu>, Kuniyuki Iwashima <kuni1840@gmail.com>, bpf@vger.kernel.org, 
-	netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAPEVFmoC/2WNwQrCMBBEf6Xs2cgmqbV68j+kh9DdtguaSFJCp
+ fTfDbl6m8cwb3ZIHIUT3JsdImdJEnwBc2pgXJyfWQkVBoOmw9bclCPxWreoKErmqG7WMZK9dlb
+ 3UFafyJNs1fgEz6vyvK0wlGaRtIb4rVdZ175aL2j/rFmrkglbOxL1/YQP590rzOcxvGE4juMHU
+ edR9rkAAAA=
+To: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+ Shuah Khan <skhan@linuxfoundation.org>, Andrew Lunn <andrew@lunn.ch>, 
+ Heiner Kallweit <hkallweit1@gmail.com>, 
+ Russell King <linux@armlinux.org.uk>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-doc@vger.kernel.org, devicetree@vger.kernel.org, 
+ Ciprian Regus <ciprian.regus@analog.com>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1779832338; l=5877;
+ i=ciprian.regus@analog.com; s=20260330; h=from:subject:message-id;
+ bh=qkV3wqiPc1gtpJtbhMXrlyafax8/y9M8/g7Z6MlDhOU=;
+ b=cmkxchONzMnbGnAMVlKNZCnrkikd8TFL0iz7in8o2Pl4GaMAePC9zkw2gKZqK1W+CxPvQTd6E
+ LsKRcdEpmTNC8cB99GwnGT8Fdu07W5EuW8Qm1QDIVQetKpkJekSaBYM
+X-Developer-Key: i=ciprian.regus@analog.com; a=ed25519;
+ pk=8WoNhI0kQcQUl8YqJO5ZevROYk9HP8lOIeIgIYgjfbc=
+X-Endpoint-Received: by B4 Relay for ciprian.regus@analog.com/20260330 with
+ auth_id=703
+X-Original-From: Ciprian Regus <ciprian.regus@analog.com>
+Reply-To: ciprian.regus@analog.com
 
-On Tue, May 26, 2026 at 2:38=E2=80=AFPM Amery Hung <ameryhung@gmail.com> wr=
-ote:
->
->  a
->
-> On Tue, May 26, 2026 at 2:07=E2=80=AFPM Kuniyuki Iwashima <kuniyu@google.=
-com> wrote:
-> >
-> > On Tue, May 26, 2026 at 1:47=E2=80=AFPM Martin KaFai Lau <martin.lau@li=
-nux.dev> wrote:
-> > >
-> > > On Sat, May 23, 2026 at 08:29:39AM +0000, Kuniyuki Iwashima wrote:
-> > > > Now, it is time to add the new hooks for BPF_SOCK_OPS_RCVQ_CB.
-> > > >
-> > > > Let's invoke the BPF SOCK_OPS prog when
-> > > >
-> > > >   1. TCP stack enqueues skb to sk->sk_receive_queue
-> > > >      -> tcp_queue_rcv(), tcp_ofo_queue(), and tcp_fastopen_add_skb(=
-)
-> > > >
-> > > >   2. TCP recvmsg() completes
-> > > >      -> __tcp_cleanup_rbuf()
->
-> Not sure if this is just me, but having to differentiating call sites
-> by checking if skb =3D=3D NULL seems a bit less ideal (feels a bit
-> arbitrary and may be restrictive to extend in the future)
+This series introduces support for the ADIN1140 (also called AD3306)
+10BASE-T1S single port MACPHY. The device integrates the MAC and PHY in
+the same package. The communication with the host CPU is done through an
+SPI interface, using the Open Alliance TC6 protocol for control and data
+transactions. As a result, the oa_tc6 framework is used to implement
+the communication with the device (register accesses and Ethernet frame
+RX/TX).
 
-I think Martin shares the feeling :)
+The MAC and PHY are connected internally using an MII and MDIO bus.
 
-I chose the way for two reasons: 1) bpf_skops_established()
-already accepts null skb (for unlikely TCP_REPAIR_ON), and
-2) adding another op just for the case seems redundant (it adds
-more conditionals in the fast path, kfunc) while bpf prog is capable
-of distinguishing a null skb.
+The PHY is a half duplex 10Mbps device, which implements both the PLCA
+RS (IEEE 802.3 clause 148) and CSMA/CD methods of accessing the Ethernet
+medium. The 10BASE-T1S standard allows multiple PHY devices to be
+connected (in parallel) on the same single twisted pair network segment,
+so PLCA can be configured in order to provide a fair access scheme to
+all the nodes and reduce the jitter introduced by the unordered CSMA/CD
+transmits. The PHY's internal register map can be accessed using the
+direct MDIO mode of the OA TC6. The control, status, phy id 1 & 2 C22
+registers are mapped to the 0xFF00 - 0xFF03 range. As for C45
+addressable devices, the PHY has PCS, PMA and PLCA blocks.
+
+The oa_tc6 framework patches are changes that would make the library
+usable by the subsequent ADIN1140 MAC driver.
+
+The protected mode patch is required because the ADIN1140 only allows
+protected mode OA TC6 control transactions, which the oa_tc6 framework
+doesn't currently implement.
+
+The OA_TC6_BROKEN_PHY quirk patch is required in order to allow the MAC
+driver to have a custom implementation for the mii_bus access methods as a
+workaround for hardware issues:
+
+1. The OA TC6 standard defines the direct and indirect access modes for
+   MDIO transactions. The ADIN1140 incorrectly advertises indirect mode
+   only (supported capabilities register - 0x2, bit 9), while actually
+   implementing just the direct mode. We cannot rely on the CAP register
+   to choose an access method (which oa_tc6 does by default, even though
+   it only implements the direct mode), so the driver has to use its
+   own.
+2. The ADIN1140 cannot access the C22 register space of the internal
+   PHY, while the PHY is busy receiving frames. If that happens, the
+   CONFIG0 and CONFIG2 registers of the MAC will get corrupted and the
+   data transfer will stop. Those two registers configure settings for
+   the transfer protocol between the MAC and host, so the value for some
+   of their subfields shouldn't be changed while the netdev is up.
+   Since we know the PHY is internal, the MAC driver can implement a
+   custom mii_bus, which can intercept C22 accesses. Most of the
+   registers mapped in the 0x0 - 0x3 range (the only ones the PHY offers)
+   are read only, and their value can be read from somewhere else (e.g
+   the PHYID 1 & 2 have the same value as 0x1 in the MAC memory map).
+   C45 accesses do not cause this issue, so we can properly implement
+   them.
+
+Even though they have different driver, the MAC one cannot function
+without the PHY driver, since the PHY is not compatible with the generic
+c22 driver. As such CONFIG_ADIN1140 selects CONFIG_ADIN1140_PHY.
+
+Signed-off-by: Ciprian Regus <ciprian.regus@analog.com>
+---
+Changes in v2:
+- Add the OA_TC6_BROKEN_PHY quirk flag to the oa_tc6 framework in order
+  to allow ethernet drivers to manage their own mii_bus struct and PHY.
+- Move the OA TC6 standard register definitions in the oa_tc6.h header
+  so other drivers can use them. Do the same for the C45 access
+  functions
+- Add the genphy_read_mmd_c45 and genphy_write_mmd_c45 functions to
+  genphy, which allow drivers that have been discovered over C22 to make
+  direct C45 operations, without using the 0xD and 0xE register. The
+  change was implemented based on the suggestion in this thread:
+  https://lore.kernel.org/all/CY8PR02MB9249CDA8F2C560FDD0F662D883382@CY8PR02MB9249.namprd02.prod.outlook.com/
+- Link to v1: https://lore.kernel.org/r/20260503-adin1140-driver-v1-0-dd043cdd88f0@analog.com
+
+---
+Ciprian Regus (10):
+      dt-bindings: net: Add ADIN1140
+      net: ethernet: oa_tc6: Handle the OA TC6 SPI protected mode
+      net: ethernet: oa_tc6: add OA_TC6_BROKEN_PHY quirk flag
+      net: ethernet: oa_tc6: Export the C45 access functions
+      net: ethernet: oa_tc6: Export standard defined registers
+      net: ethernet: oa_tc6: Add MMS register formatting macro
+      net: phy: add generic helpers for direct C45 MMD access
+      net: phy: microchip-t1s: use generic C45 MMD access helpers
+      net: phy: Add support for the ADIN1140 PHY
+      net: ethernet: adi: Add a driver for the ADIN1140 MACPHY
+
+ .../devicetree/bindings/net/adi,adin1140.yaml      |  69 ++
+ Documentation/networking/oa-tc6-framework.rst      |   3 +-
+ MAINTAINERS                                        |  15 +
+ drivers/net/ethernet/adi/Kconfig                   |  12 +
+ drivers/net/ethernet/adi/Makefile                  |   1 +
+ drivers/net/ethernet/adi/adin1140.c                | 811 +++++++++++++++++++++
+ drivers/net/ethernet/microchip/lan865x/lan865x.c   |   6 +-
+ drivers/net/ethernet/oa_tc6.c                      | 202 ++---
+ drivers/net/phy/Kconfig                            |   6 +
+ drivers/net/phy/Makefile                           |   1 +
+ drivers/net/phy/adin1140-phy.c                     |  72 ++
+ drivers/net/phy/microchip_t1s.c                    |  32 +-
+ drivers/net/phy/phy_device.c                       |  25 +
+ include/linux/oa_tc6.h                             |  63 +-
+ include/linux/phy.h                                |   3 +
+ 15 files changed, 1203 insertions(+), 118 deletions(-)
+---
+base-commit: b217a5c25fe4a5fdb63f57d028a88da470601f57
+change-id: 20260429-adin1140-driver-93ae0d376318
+
+Best regards,
+-- 
+Ciprian Regus <ciprian.regus@analog.com>
 
 
->
-> If new sockops is going to be built on top of bpf_tcp_ops, it would be
-> more obvious as different call sites will be different struct_ops op.
-> Although arguably tcp_queue_rcv(), tcp_ofo_queue(), and
-> tcp_fastopen_add_skb() may share the same struct_ops op.
-
-Yes, this sounds fascinating.
-
->
-> > > >
-> > > > This will allow the BPF prog to parse each skb and dynamically
-> > > > adjust sk->sk_rcvlowat to suppress unnecessary EPOLLIN wakeups
-> > > > until sufficient data (e.g., a full RPC frame) is available
-> > > > in the receive queue.
-> > > >
-> > > > Note that the direct access to bpf_sock_ops.data is intentionally
-> > > > disabled by passing 0 as end_offset.
-> > > >
-> > > > Instead, the BPF prog is supposed to use bpf_skb_load_bytes()
-> > > > with bpf_sock_ops because payload is not in the linear area
-> > > > with TCP header/data split on and skb may contain a RPC
-> > > > descriptor in skb frag.  This also simplifies the BPF prog.
-> > > >
-> > > > The placement of tcp_bpf_rcvlowat() in tcp_ofo_queue() and
-> > > > tcp_fastopen_add_skb() is chosen to provide the same snapshot
-> > > > with tcp_queue_rcv().
-> > > >
-> > > > For example, if tcp_bpf_rcvlowat() were called before updating
-> > > > TCP_SKB_CB(skb)->seq in tcp_fastopen_add_skb(), BPF prog would
-> > > > need to implement an unlikely if branch to strip SYN.
-> > > >
-> > > > In addition, TCP stack can queue overlapping skb into recvq.
-> > > > Once rcv_nxt is updated with a new skb, BPF prog cannot infer
-> > > > the previous one from skb->len.
-> > > >
-> > > > Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-> > > > ---
-> > > > v2: Add explanation of tcp_bpf_rcvlowat() placement.
-> > > > ---
-> > > >  include/net/tcp.h       | 12 ++++++++++++
-> > > >  net/ipv4/tcp.c          |  2 ++
-> > > >  net/ipv4/tcp_fastopen.c |  2 ++
-> > > >  net/ipv4/tcp_input.c    | 10 ++++++++++
-> > > >  4 files changed, 26 insertions(+)
-> > > >
-> > > > diff --git a/include/net/tcp.h b/include/net/tcp.h
-> > > > index bc95d8e7b62e..a409f2ea710f 100644
-> > > > --- a/include/net/tcp.h
-> > > > +++ b/include/net/tcp.h
-> > > > @@ -2889,12 +2889,24 @@ static inline void bpf_skops_init_skb(struc=
-t bpf_sock_ops_kern *skops,
-> > > >       skops->skb =3D skb;
-> > > >       skops->skb_data_end =3D skb->data + end_offset;
-> > > >  }
-> > > > +
-> > > > +void bpf_skops_rcvlowat(struct sock *sk, struct sk_buff *skb);
-> > > > +
-> > > > +static inline void tcp_bpf_rcvlowat(struct sock *sk, struct sk_buf=
-f *skb)
-> > > > +{
-> > > > +     if (BPF_SOCK_OPS_TEST_FLAG(tcp_sk(sk), BPF_SOCK_OPS_RCVQ_CB_F=
-LAG))
-> > > > +             bpf_skops_rcvlowat(sk, skb);
-> > > > +}
-> > > >  #else
-> > > >  static inline void bpf_skops_init_skb(struct bpf_sock_ops_kern *sk=
-ops,
-> > > >                                     struct sk_buff *skb,
-> > > >                                     unsigned int end_offset)
-> > > >  {
-> > > >  }
-> > > > +
-> > > > +static inline void tcp_bpf_rcvlowat(struct sock *sk, struct sk_buf=
-f *skb)
-> > > > +{
-> > > > +}
-> > > >  #endif
-> > > >
-> > > >  /* Call BPF_SOCK_OPS program that returns an int. If the return va=
-lue
-> > > > diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-> > > > index 3afeb69a547a..f7e32891bb4e 100644
-> > > > --- a/net/ipv4/tcp.c
-> > > > +++ b/net/ipv4/tcp.c
-> > > > @@ -1602,6 +1602,8 @@ void __tcp_cleanup_rbuf(struct sock *sk, int =
-copied)
-> > > >               tcp_mstamp_refresh(tp);
-> > > >               tcp_send_ack(sk);
-> > > >       }
-> > > > +
-> > > > +     tcp_bpf_rcvlowat(sk, NULL);
-> > >
-> > > hmm... so NULL is a way for the bpf prog to tell where it is called?
-> >
-> > Yes.  The selftest fetches bpf_cast_to_kern_ctx(ops)->skb first to
-> > check it since we need to access skb->cb anyway to read
-> > TCP_SKB_CB()->{seq,end_seq} for non-NULL case.
-> >
-> >
-> > >
-> > > With skb NULL, what does the bpf prog usually do?
-> >
-> > In that case, the prog reads tp->copied_seq and some sequence
-> > numbers from sk local storage and calls kfunc to adjust sk->sk_rcvlowat=
-.
-> >
