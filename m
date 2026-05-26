@@ -1,35 +1,46 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C14732F76D
-	for <netdev@vger.kernel.org>; Tue, 26 May 2026 15:30:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E21ED2F7EFC
+	for <netdev@vger.kernel.org>; Tue, 26 May 2026 15:35:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779809415; cv=none; b=nkqN13DbqdKEuwoQLc7vJlEC9ZoiYRwVI2AIMxT3920dun0Y67hZeLoMRDTHpLnOr/Jgt0lny96JEG+4SVOWlrhjiblSG29mlR6TkU5vFaseopN+CseHjILAXBTnTP5Ru8H7OoyloEXMRGIxWGrOQCpyvFkcT+u3JydlAS2PiQI=
+	t=1779809752; cv=none; b=ClGOQJl17qB9QfGwEm84qk5tDmPV7jfNUQmJCy24dA5HIWtKXnoRcIUvWGNRsJN9v12nUFqJnEpUWUEFfiHFoigX9VENRa8nu07SfDTnxpAfcsrIHf3c1P85aBDO0uHo/TxT6Y2ZgdDDpLY+wUJv62ZM7foDiAu7oALtGcVt5yo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779809415; c=relaxed/simple;
-	bh=yzFkK839+/1f4x3jlmMjWl3Vhg1FlnY5SGJqQuQaYi4=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=WI6eo101eT1yZC3FAX3V5Orx1BieElv7YgHVLXQnswfaQm+e+yno/2YKIqRSMZllc7i/6fXWQD2of2jfRx8WGrn6emtWmhsPW+8yEXYGD7Fhb0ceolnYSRNMctQEeg613aC0bae4JE94c0xCu7NUnkUqUr7M8bi6uiyj0mLEf94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g57GTVS7; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779809752; c=relaxed/simple;
+	bh=UoCuzmBB83dK/LER91Ai/anaQOjvm5k84g0yAx4MkjY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=moDB4pAtnwAVok/cTeNdt8qHQcSopR9U4AegGKUGq1VT0Hra1+Mq+SOpOQIyfl/YVnSDWdguUC083KzgkxBUlmLEswKWoX2mMseMuNkg0bXXlzUUWxx9Hw2oybxoa27QSfuhSIFvtSFkoD2MDD4eopl8lS7tGVV4/JhSNLNoTJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KwsGTp8f; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g57GTVS7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D40BD1F000E9;
-	Tue, 26 May 2026 15:30:11 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KwsGTp8f"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C38371F00A3A;
+	Tue, 26 May 2026 15:35:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779809411;
-	bh=6b2qPv1R2bbT1dC5yiUw4GKjS4ZoDEv9VSAYbRRQS7g=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=g57GTVS7vuErYV5Z06m4K8eDhIOllj5QeNkVhTteOGoOrWYBka3SquikFg2NYGsqT
-	 LL4OnwZA6Q8Y8kRBEb0FY0X0z2tOEAE7S+9HJhw2cGr1ODiWu8PLu4zPrf3P/c+rM+
-	 taLb/aIpslJBYpmcHLdw8U+ixr6y13MRj2GmPIbOxRZgAoIt6W0EzCZqmnwLCLsPgr
-	 eqL0MO2I2KJxoknocVULfsPvoxKaJof4KTG1dhYv+sG6XghO6ze2+wnNEIUgxI0s1d
-	 bSBKoGWJQTpbr5u/AfbhNSuVpZSizZJDlBTfnuIMOkyEaTmXFv/iSr/KP6gAn/bnJ+
-	 XeaZXMxW3IpMw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 19811380CEDF;
-	Tue, 26 May 2026 15:30:19 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1779809749;
+	bh=XDuAUppYRkvnLOtZZRx6YQYTHmfPq/arMOwRwzMrESc=;
+	h=From:To:Cc:Subject:Date;
+	b=KwsGTp8fcq5PdXKkhdovg40rHvyQ3DiTu3J9sHEwfYDEwSNohzE8bmUR5H8/oOE+P
+	 3Tms4dsXT+k9OEKsoMwUxI3E7IprrdeEbOhhT3YGq48FSYKSDBupvT91mK4yctV4VV
+	 32smillL8waycBYFctcxR/SqeRX7zeoSW6+dKlWGRxNCmA4D+1E89NFmQMW/Mb2HXS
+	 Pb9la3qlUvfcq6Xx1ekYczk+qz9KHqCtMet8Yw/mM+hMxkg8LZKM3wik22rm8/HSvL
+	 gQFsZlYlMvQ9PaakV7cIvCH8zaMzzL72Sq4aeHJIWR+YaFo2o2ZYEm/V+MdQrge57x
+	 TYFRQphexnFuA==
+From: Jakub Kicinski <kuba@kernel.org>
+To: davem@davemloft.net
+Cc: netdev@vger.kernel.org,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	andrew+netdev@lunn.ch,
+	horms@kernel.org,
+	o.rempel@pengutronix.de,
+	kory.maincent@bootlin.com,
+	maxime.chevallier@bootlin.com,
+	haiyangz@microsoft.com,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH net 00/10] ethtool: more bug fixes
+Date: Tue, 26 May 2026 08:35:23 -0700
+Message-ID: <20260526153533.2779187-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,57 +48,36 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 0/9] ethtool: module: fix a handful of small bugs
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177980941764.3863246.3945329754927899368.git-patchwork-notify@kernel.org>
-Date: Tue, 26 May 2026 15:30:17 +0000
-References: <20260522231312.1710836-1-kuba@kernel.org>
-In-Reply-To: <20260522231312.1710836-1-kuba@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
- pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
- maxime.chevallier@bootlin.com, danieller@nvidia.com, petrm@nvidia.com,
- o.rempel@pengutronix.de, idosch@nvidia.com
 
-Hello:
+Last week I sent two patch sets - one fixing bugs in RSS handling,
+and one fixing CMIS / module handling. This set contains the remaining
+fixes. There's a concentration of fixes around PHY and timestamp config
+handling but not enough to break those out as separate sets.
 
-This series was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Jakub Kicinski (10):
+  ethtool: coalesce: cap profile updates at NET_DIM_PARAMS_NUM_PROFILES
+  ethtool: tsconfig: fix reply error handling
+  ethtool: linkstate: fix unbalanced ethnl_ops_complete() on PHY lookup
+    error
+  ethtool: pse-pd: fix missing ethnl_ops_complete()
+  ethtool: tsconfig: fix missing ethnl_ops_complete()
+  ethtool: tsinfo: fix uninitialized stats on the by-PHC path
+  ethtool: tsinfo: don't pass ERR_PTR to genlmsg_cancel on prepare
+    failure
+  ethtool: strset: fix header attribute index in ethnl_req_get_phydev()
+  ethtool: eeprom: add missing ethnl_ops_begin() / _complete() during
+    fallback
+  ethtool: eeprom: add more safeties to EEPROM Netlink fallback
 
-On Fri, 22 May 2026 16:13:03 -0700 you wrote:
-> I've been poking at the locking in ethtool and it appears
-> that the FW flashing is not currently taking the ops lock.
-> Existing drivers which implement module FW flashing seem
-> to have their own locking, so this series doesn't actually
-> add the ops lock (I'll add it in net-next). But a number
-> of other errors have been surfaced in the process.
-> 
-> [...]
+ net/ethtool/coalesce.c  |  6 ++++++
+ net/ethtool/eeprom.c    | 10 ++++++----
+ net/ethtool/linkstate.c |  6 ++----
+ net/ethtool/pse-pd.c    | 10 +++++-----
+ net/ethtool/strset.c    |  2 +-
+ net/ethtool/tsconfig.c  | 15 +++++++++++----
+ net/ethtool/tsinfo.c    | 19 +++++++++++++++----
+ 7 files changed, 46 insertions(+), 22 deletions(-)
 
-Here is the summary with links:
-  - [net,1/9] ethtool: module: call ethnl_ops_complete() on module flash errors
-    https://git.kernel.org/netdev/net/c/84371fb58423
-  - [net,2/9] ethtool: module: avoid leaking a netdev ref on module flash errors
-    https://git.kernel.org/netdev/net/c/fb7f511d6269
-  - [net,3/9] ethtool: module: avoid racy updates to dev->ethtool bitfield
-    https://git.kernel.org/netdev/net/c/7a84b965ffc1
-  - [net,4/9] ethtool: module: check fw_flash_in_progress under rtnl_lock
-    https://git.kernel.org/netdev/net/c/504eaefa44c8
-  - [net,5/9] ethtool: module: fix cleanup if socket used for flashing multiple devices
-    https://git.kernel.org/netdev/net/c/760d04ebad5c
-  - [net,6/9] ethtool: cmis: require exact CDB reply length
-    https://git.kernel.org/netdev/net/c/6c3f999a9d13
-  - [net,7/9] ethtool: cmis: fix u16-to-u8 truncation of msleep_pre_rpl
-    https://git.kernel.org/netdev/net/c/3e8c3d464c36
-  - [net,8/9] ethtool: cmis: validate start_cmd_payload_size from module
-    https://git.kernel.org/netdev/net/c/12c2496a71f8
-  - [net,9/9] ethtool: cmis: validate fw->size against start_cmd_payload_size
-    https://git.kernel.org/netdev/net/c/d5551f4c1800
-
-You are awesome, thank you!
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.54.0
 
