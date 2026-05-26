@@ -1,79 +1,101 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08D2D3B0AD7;
-	Tue, 26 May 2026 16:40:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E23E38F934
+	for <netdev@vger.kernel.org>; Tue, 26 May 2026 16:41:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779813617; cv=none; b=eQpgmTkxCVkVW55/2ab54buc7Dw9kFKlSXSPwJcXDLkMKHxSgy+F5dnNQ78yP8Rr2rl+7c1wdoY8fQkov5QPgWvU9gEjHcfNtIQ4V6MnkR3qgbIHUEeeWQYXxHqEKonGsSejdhAEAslguj4Q+5xELBHBDGstVhmdGiwUzEYatkA=
+	t=1779813706; cv=none; b=NHgfvSQjG6/wbVP58X4AMZEYhaHx7JpM9TLDewrVOIcyOVXQBMDWEx7lGd8O0mgfCUIa0oQZGMSf+N4oZk5GNZl027oyZub25/mhHRXsZdYxm/3BS3N1g8HQMFn4tmUPHEp1v7KpK3Xkjl8CKNAxp00VmSV6BElBLecLH2MPXks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779813617; c=relaxed/simple;
-	bh=aPTkqXfEch8byIVOLFa1JdqdWURP8numOx+ffNQJYFw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mLCmXr3SiS9vjAmqBIt+dYFkaklJpkrFTfmaWhV/3byjRTK9erll+MO6XxtHl+b82mfo6jdIGJ29qCZzMjOMt8WA0CDnDm1MbSmEZrInkW6zV44yJMUt/8469qwUyxLUwBaOcuDYDh6hlI6k6aa5fKLqIKe4u89JzGvxjALzUyU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=oUSzmAy6; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1779813706; c=relaxed/simple;
+	bh=mG7PBVyeq9eqgY9w0WZ2Aq+R1WotFrAacyI5NUevEPc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=GvRjrUVM3rVUsRqi97uVDmDa2eOo3sPt+oAujA2FX20q0VhAQTTTXMrxKTkSw49lyxgz+lTy0X9+321w7W2TeanJ2KCwQ6rrYopBCN5kE5/byV0fDtQRSNZMznJVc5sMIv1LxqJ/f2TouIyTKCo89kZSqg3094eWzOb0SHuvrvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=YCWUJxSK; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="oUSzmAy6"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=CTye0P8ZXq82Hm2dPRhlCNkqticSJAIJFMEVqokLbwo=; b=oUSzmAy6uQAe9nD+uC4BoGMMoW
-	G05gKW6/VuC0SeyVpqV9tGNWuk/MjLexHSAJYYssrKAoJgRsDIHcoBIKX4hZ2u0oHIIVaU4bzg9cD
-	PsrLzYuTxj49Ih7+vc7+k7nY4uz9FflhZvKh3ksemY0gq7GQ+34LBJRdXVwn4vq6vG8k=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wRup5-004cCX-5K; Tue, 26 May 2026 18:40:07 +0200
-Date: Tue, 26 May 2026 18:40:07 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Thangaraj Samynathan <thangaraj.s@microchip.com>
-Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	bryan.whitehead@microchip.com, UNGLinuxDriver@microchip.com,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v2 1/2] net: lan743x: add RMII strap status
- detection for PCI11x1x
-Message-ID: <8eb1d177-b176-40bf-a77d-434aa2b9189e@lunn.ch>
-References: <20260526154054.19829-1-thangaraj.s@microchip.com>
- <20260526154054.19829-2-thangaraj.s@microchip.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="YCWUJxSK"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id A19E44E42D60;
+	Tue, 26 May 2026 16:41:41 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 5E1A06011D;
+	Tue, 26 May 2026 16:41:41 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D471C10888986;
+	Tue, 26 May 2026 18:41:32 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1779813700; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=x2zp45sO/tKbVz5eCcWvfkcQYoo+j+EyKM6+LW9VNpQ=;
+	b=YCWUJxSKmSFGKbG0oLl5eCKIqS0gLscEoKxxcldBJjGroYFPYWHouQNba4ycM8u10mhKDi
+	V+TG9K+Cmnj5tgPRnPxXX+4eZ+BO3deJwTsWQ4LsyRgrY/YgBo+cE/eJtEBmyVrj0lQ6ql
+	fEiAE30At8orL75DARDClhawzUSItuT5LExIfNJw10lWs4Qg6mkWWpp4pn/I7BnP8ST8V0
+	m3ivbuIERwMZfgIR8YUiQGAUcndoIZYRuAhwc22l2JXDEbeqCg02EdQBRtqkraU2LxjFmB
+	G56pvr8k+zT4NZakHEOTqbU3fXpqYITGgR4CGFJSFQEdDFBKS7WIwL0ipbxrjQ==
+Message-ID: <8983c764-0977-44da-a311-8c558902b478@bootlin.com>
+Date: Tue, 26 May 2026 18:41:32 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260526154054.19829-2-thangaraj.s@microchip.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net 03/10] ethtool: linkstate: fix unbalanced
+ ethnl_ops_complete() on PHY lookup error
+To: Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net
+Cc: netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com,
+ andrew+netdev@lunn.ch, horms@kernel.org, o.rempel@pengutronix.de,
+ kory.maincent@bootlin.com, haiyangz@microsoft.com, andrew@lunn.ch
+References: <20260526153533.2779187-1-kuba@kernel.org>
+ <20260526153533.2779187-4-kuba@kernel.org>
+Content-Language: en-US
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+In-Reply-To: <20260526153533.2779187-4-kuba@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-> +	if (!adapter->is_sgmii_en && strap & STRAP_READ_USE_RMII_EN_) {
-> +		if (strap & STRAP_READ_RMII_EN_)
-> +			adapter->is_rmii_en = true;
-> +	}
+Hi Jakub,
 
-What does it mean when both SGMII and RMII is strapped? What if
-neither is strapped?
+On 5/26/26 17:35, Jakub Kicinski wrote:
+> linkstate_prepare_data() calls ethnl_req_get_phydev() before
+> ethnl_ops_begin(), but routes its error path through "goto out"
+> which calls ethnl_ops_complete().
+> 
+> Fixes: fe55b1d401c6 ("ethtool: linkstate: migrate linkstate functions to support multi-PHY setups")
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
-> +
->  	netif_dbg(adapter, drv, adapter->netdev,
->  		  "SGMII I/F %sable\n", adapter->is_sgmii_en ? "En" : "Dis");
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
 
-Since there is a netif_dbg() for sgmii, maybe add one for rmii, so the
-code is somewhat symmetrical?
+Thanks for fixing this,
 
->  	struct lan743x_rx       rx[LAN743X_USED_RX_CHANNELS];
->  	bool			is_pci11x1x;
->  	bool			is_sgmii_en;
-> +	bool			is_rmii_en;
+Maxime
 
-Are there other strapping bits? Are we going to get is_gmii_en, and
-is_rgmii_en?
+> ---
+> CC: andrew@lunn.ch
+> CC: maxime.chevallier@bootlin.com
+> CC: o.rempel@pengutronix.de
+> ---
+>   net/ethtool/linkstate.c | 6 ++----
+>   1 file changed, 2 insertions(+), 4 deletions(-)
+> 
+> diff --git a/net/ethtool/linkstate.c b/net/ethtool/linkstate.c
+> index 8a5985fd7712..24569e92942c 100644
+> --- a/net/ethtool/linkstate.c
+> +++ b/net/ethtool/linkstate.c
+> @@ -106,10 +106,8 @@ static int linkstate_prepare_data(const struct ethnl_req_info *req_base,
+>   
+>   	phydev = ethnl_req_get_phydev(req_base, tb, ETHTOOL_A_LINKSTATE_HEADER,
+>   				      info->extack);
+> -	if (IS_ERR(phydev)) {
+> -		ret = PTR_ERR(phydev);
+> -		goto out;
+> -	}
+> +	if (IS_ERR(phydev))
+> +		return PTR_ERR(phydev);
+>   
+>   	ret = ethnl_ops_begin(dev);
+>   	if (ret < 0)
 
-Does a collection of bools make sense, when the interface modes are
-typically mutually exclusive at the hardware level? Would an enum be
-better? Or why not phy_interface_t ?
-
-	Andrew
