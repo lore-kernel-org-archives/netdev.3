@@ -1,132 +1,119 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C9F93988FA;
-	Tue, 26 May 2026 08:10:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5399C3B637E;
+	Tue, 26 May 2026 08:11:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779783046; cv=none; b=BS8m1tY4LKPKYbILg6RmzwzOkAR/nfmR2I7FUAazCDcIhvYSxBcUgL/YRmFgBYrlnfvwjpblnQmkbal44HBI73jgDHQypwHzUvCIf500cHIQ11chcV0Dm6/fAZseb97dueF/2uiXvfnWJdB725M0XsJR1f2l+qpT/XzRRQNz3Qs=
+	t=1779783118; cv=none; b=F0j6mftzRw8yAImD2SdocmtkKkTP/h7L/hGoC6BbfpgiGFfXXmmeiKfpxmCBbHjRe2mJF7f+rAv3BnhkYYYXfcCY2AZmjkAzc3MAoBdffufBsrsmkUoYe+kHhoOkFKE8RHlmxMbPqmYuPB5zsyO5O73We+TDRUPLF7DCpParERM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779783046; c=relaxed/simple;
-	bh=7+P21v8PKy6WPQLGNUdKJkj6++b1AoG1GuGVdd3Fi4Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:Cc:
-	 In-Reply-To:Content-Type; b=fpoYI4g3fhsVBVMvTocBmpAlKWkvieN0BrpJQZiQZSgLVTFy6GLFLh3BeOpTUO+Op0uJNYDLERYLp2Zv08tNRF9Yt9Feo3fWliYCY7oiPew2SQ5DGEZbTm9lRnnEWA9krlw91LgI5iYAPgOtAoSv8arleV9jRsU2xuZhJo6DqKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZEVe0GMC; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779783118; c=relaxed/simple;
+	bh=iWb5eAXnxHkdFdqNN7VNdXABCfaHK30yLC14ehF9RNI=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=TS7HaMqaJC9qXYd6EzCWw0z6Mt951JTXTmt4iHCLIiPoSGD7CisocBjywdNrKaefVlGi61PmTHpJ+WerS9ikqcv8KeAeruS2PjiHk4Gz9Hc/oXJegtVxZo/z4zX30k9L/eAg2Ftcb1G3kNUkpqZa1iBpID5ojuT8/9O/goY+caA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn; spf=pass smtp.mailfrom=realsil.com.cn; dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b=D9mFkdSI; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realsil.com.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZEVe0GMC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5C201F000E9;
-	Tue, 26 May 2026 08:10:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779783045;
-	bh=w6w02oI6+o30DuASdm5GqYgfStFcdEWDlbBDI6D2XvI=;
-	h=Date:Subject:To:References:From:Cc:In-Reply-To;
-	b=ZEVe0GMChvryfhCCnLxY1QzloxR6WR5xGz7/TluH+luYNqtxAu21f1T0tLe0Iz7mO
-	 cqdSktEcT8MCwqoUHaeEr90Xz14mlhS4K/5WT22d7S7mMCZ5ak1Zt9sxsQgzPU7UQi
-	 MZc6V8b8roipgFAbteuYChopmfxKcIaMV/jez4ZWQqPpWPUuSPMdEj8H+4m1bS5t/U
-	 iBXfMuxiHs1e/5ucljJ0aAMtRAFMp4BYobcWoy95YlioWuoXVT3BNc1UsMkBHU+gks
-	 ClC3IeYrMJDtsBYLAZOl4V2moENNDgG7tJWk2eo4Z29T9xsedbn/rSCY2uBmaP11eG
-	 pOB8Nt+6C4Ahg==
-Message-ID: <60b50562-3351-49da-ab6b-953270380314@kernel.org>
-Date: Tue, 26 May 2026 18:10:37 +1000
+	dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b="D9mFkdSI"
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 64Q8BLl841615336, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realsil.com.cn;
+	s=dkim; t=1779783082;
+	bh=oYsAzz/U51SyaPg7DUTGOeOQ4Mt/8RK6/X37eHKrR3I=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding:Content-Type;
+	b=D9mFkdSIF3kS6UTmP339I1VG5IxgNTI8+uGslYeD7SUf95cugdHuJeKooj47Bp4ge
+	 jCziUM1Be86976VQOP2GVxVkEP0NwyhG1Y0yQo6sGqb5AJtB1MZ2kaQumDB/XiRBlW
+	 mUR9tmhUTbaeuBWai8T2P/cTGzl5hVkWEI4FqmqKyHgrq0mUhSp7ioT//grm/NvVNp
+	 fltv9DitTEVr62K3PcdkPmU5/2EtJXNqJT+DwKJMB3M1kZgm7XDG5L3YlQL+2T1w3m
+	 wdZWcEYzCskVemH5PtDMsm4hZY7s6bPXoDNydtgHtCcgWAPSc3rre9sYAZ0cBEeiak
+	 2w8/VCMj9TYtQ==
+Received: from RS-EX-MBS4.realsil.com.cn ([172.29.17.104])
+	by rtits2.realtek.com.tw (8.15.2/3.28/5.94) with ESMTPS id 64Q8BLl841615336
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Tue, 26 May 2026 16:11:21 +0800
+Received: from RS-EX-MBS1.realsil.com.cn (172.29.17.101) by
+ RS-EX-MBS4.realsil.com.cn (172.29.17.104) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17; Tue, 26 May 2026 16:11:20 +0800
+Received: from 172.29.37.154 (172.29.37.152) by RS-EX-MBS1.realsil.com.cn
+ (172.29.17.101) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
+ Transport; Tue, 26 May 2026 16:11:20 +0800
+From: javen <javen_xu@realsil.com.cn>
+To: <hkallweit1@gmail.com>, <nic_swsd@realtek.com>, <andrew+netdev@lunn.ch>,
+	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <horms@kernel.org>
+CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Javen Xu
+	<javen_xu@realsil.com.cn>
+Subject: [Patch net-next v6 4/7] r8169: enable new interrupt mapping
+Date: Tue, 26 May 2026 16:11:14 +0800
+Message-ID: <20260526081117.173-5-javen_xu@realsil.com.cn>
+X-Mailer: git-send-email 2.50.1.windows.1
+In-Reply-To: <20260526081117.173-1-javen_xu@realsil.com.cn>
+References: <20260526081117.173-1-javen_xu@realsil.com.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH net-next] selftests: net: add socat syslog for PPPoL2TP
-Content-Language: fr
-To: Qingfang Deng <qingfang.deng@linux.dev>
-References: <20260526014152.532505-1-qingfang.deng@linux.dev>
-From: Matthieu Baerts <matttbe@kernel.org>
-Cc: "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Shuah Khan <shuah@kernel.org>, linux-ppp@vger.kernel.org,
- netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Autocrypt: addr=matttbe@kernel.org; keydata=
- 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
- lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
-Organization: NGI0 Core
-In-Reply-To: <20260526014152.532505-1-qingfang.deng@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-Hi Qingfang,
+From: Javen Xu <javen_xu@realsil.com.cn>
 
-On 26/05/2026 11:41, Qingfang Deng wrote:
-> As done in pppoe.sh, start socat as the syslog listener. In case the
-> test fails, dump its log to see what's going on.
+This patch enables new interrupt mapping for RTL8127.
 
-(...)
+Signed-off-by: Javen Xu <javen_xu@realsil.com.cn>
+---
+Changes in v2:
+ - no changes
 
-> diff --git a/tools/testing/selftests/net/ppp/pppol2tp.sh b/tools/testing/selftests/net/ppp/pppol2tp.sh
-> index 5b592785f1f9..96786267ccc7 100755
-> --- a/tools/testing/selftests/net/ppp/pppol2tp.sh
-> +++ b/tools/testing/selftests/net/ppp/pppol2tp.sh
+Changes in v3:
+ - no changes
 
-(...)
+Changes in v4:
+ - no changes
 
-> +# Dump syslog messages if the test failed
-> +if [ "$RET" -ne 0 ]; then
+Changes in v5:
+ - no changes
 
-This only checks for errors with the first test, not with the second one
-below. Should you create a new helper and call it here and below? Or
-only once at the end, using ${EXIT_STATUS} instead?
+Changes in v6:
+ - no changes
+---
+ drivers/net/ethernet/realtek/r8169_main.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-> +	while read -r _sign _date _time len _from _to
-> +	do      len=${len##*=}
-> +		read -n "$len" -r LINE
-> +		echo "$LINE"
-> +	done < "$PPPOL2TP_LOG"
-> +fi
-> +
->  # Recursion test
->  RET=0
->  # Delete route to LNS IP
-
-Cheers,
-Matt
+diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
+index 951d2046a81b..13d955324037 100644
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -3939,6 +3939,15 @@ DECLARE_RTL_COND(rtl_mac_ocp_e00e_cond)
+ 	return r8168_mac_ocp_read(tp, 0xe00e) & BIT(13);
+ }
+ 
++static void rtl8169_hw_enable_vec_mapping(struct rtl8169_private *tp)
++{
++	u8 tmp;
++
++	tmp = RTL_R8(tp, INT_CFG0_8125);
++	tmp |= INT_CFG0_ENABLE_8125;
++	RTL_W8(tp, INT_CFG0_8125, tmp);
++}
++
+ static void rtl_hw_start_8125_common(struct rtl8169_private *tp)
+ {
+ 	rtl_pcie_state_l2l3_disable(tp);
+@@ -3947,6 +3956,9 @@ static void rtl_hw_start_8125_common(struct rtl8169_private *tp)
+ 	RTL_W32(tp, RSS_CTRL_8125, 0);
+ 	RTL_W16(tp, Q_NUM_CTRL_8125, 0);
+ 
++	if (tp->irq_nvecs > 1)
++		rtl8169_hw_enable_vec_mapping(tp);
++
+ 	/* disable UPS */
+ 	r8168_mac_ocp_modify(tp, 0xd40a, 0x0010, 0x0000);
+ 
+-- 
+2.43.0
 
