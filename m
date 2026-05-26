@@ -1,23 +1,23 @@
-Received: from out28-194.mail.aliyun.com (out28-194.mail.aliyun.com [115.124.28.194])
+Received: from out28-196.mail.aliyun.com (out28-196.mail.aliyun.com [115.124.28.196])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 610B93BAD93;
-	Tue, 26 May 2026 03:55:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13F203B583D;
+	Tue, 26 May 2026 03:55:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.196
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779767717; cv=none; b=LU9DZn0yeMM4yBQbS/ZjfwhWhDlf5KWRjF52/lu57NNG2mTTd27HjNGrL4SfGn6CS04QtTdr2qmUevHn4WON1CSsNkhXUlRYvF/b4SCe3qLcrjdLkZ+q0M5RBLB1IeWF/E81HBoj/JHbroUWLQCfRrXFKA2syRqUxIu6X8uu2xU=
+	t=1779767723; cv=none; b=R4pzcF/ae6PjvdK8I3kNP0xKec1kmdLtumt2Qwefdpimxc2FZ/pUjXhY6/Pq45YV1ddMHpbWUmQ3Qm0wykNfELzblHrHWr11Hm/mixp9vsUXfYfXTvcMOTF+lK4x3Iv6+rr7ALZCr7Wd3XUiThQpXHByUDzBhlhslQbELyVIvTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779767717; c=relaxed/simple;
-	bh=kLNZ75uOvAEZYn0eG5mkENFcZTJRhQXM/aKbx/ddGYU=;
+	s=arc-20240116; t=1779767723; c=relaxed/simple;
+	bh=t1H4f2eZC+Sd40Ss2zh0S0bYVBKrLnbn3dTh6+fPWk4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JI+bexsohPJPKhETnw+H6yb16jXrmt5E76RyYlvcPg/FuZocvDWbGHxIXSwXu2+MR+KvkSVrjA8NTDDFw81L3SOiGFeNFvNumkrdw3GicLGezfPoy1J5zKx2FKuBKIAthhRjNxUiZ/HE0NCZ5jB+eE/vbQYf3xwFAtXr+nAMISA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nebula-matrix.com; spf=pass smtp.mailfrom=nebula-matrix.com; arc=none smtp.client-ip=115.124.28.194
+	 MIME-Version:Content-Type; b=AEo/y4z3A4NKb5zRwbFuCujqQWhxq4H7W/nhiB2MKfhNJnIdjjxJHLa6eh9dZafM8nVV8g5OcWtL5Y2zhQUgVScPelrhz2yw//JRME+hmnPvqUEQMH1FmQXakyvOFnbrLIxWWh859t7+5d6h7XrTzOkxoHYoYFxgTQ0uqbIEW9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nebula-matrix.com; spf=pass smtp.mailfrom=nebula-matrix.com; arc=none smtp.client-ip=115.124.28.196
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nebula-matrix.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebula-matrix.com
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.06712908|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.0642979-0.00079145-0.934911;FP=16651263960309841018|1|1|1|0|-1|-1|-1;HT=maildocker-contentspam033037031241;MF=illusion.wang@nebula-matrix.com;NM=1;PH=DS;RN=18;RT=18;SR=0;TI=SMTPD_---.hgpPbHo_1779767702;
-Received: from localhost.localdomain(mailfrom:illusion.wang@nebula-matrix.com fp:SMTPD_---.hgpPbHo_1779767702 cluster:ay29)
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.06712908|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.0135474-0.0009102-0.985542;FP=12712498727425166907|1|1|1|0|-1|-1|-1;HT=maildocker-contentspam033068016216;MF=illusion.wang@nebula-matrix.com;NM=1;PH=DS;RN=18;RT=18;SR=0;TI=SMTPD_---.hgpPbFI_1779767700;
+Received: from localhost.localdomain(mailfrom:illusion.wang@nebula-matrix.com fp:SMTPD_---.hgpPbFI_1779767700 cluster:ay29)
           by smtp.aliyun-inc.com;
-          Tue, 26 May 2026 11:55:03 +0800
+          Tue, 26 May 2026 11:55:01 +0800
 From: "illusion.wang" <illusion.wang@nebula-matrix.com>
 To: dimon.zhao@nebula-matrix.com,
 	illusion.wang@nebula-matrix.com,
@@ -37,9 +37,9 @@ Cc: andrew+netdev@lunn.ch,
 	skhan@linuxfoundation.org,
 	hkallweit1@gmail.com,
 	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH v16 net-next 05/11] net/nebula-matrix: add channel layer
-Date: Tue, 26 May 2026 11:54:42 +0800
-Message-ID: <20260526035453.2359-6-illusion.wang@nebula-matrix.com>
+Subject: [PATCH v16 net-next 03/11] net/nebula-matrix: add chip related definitions
+Date: Tue, 26 May 2026 11:54:40 +0800
+Message-ID: <20260526035453.2359-4-illusion.wang@nebula-matrix.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260526035453.2359-1-illusion.wang@nebula-matrix.com>
 References: <20260526035453.2359-1-illusion.wang@nebula-matrix.com>
@@ -49,1834 +49,3486 @@ List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-A channel management layer provides a structured approach to handle
-communication between different components and drivers. Here's a summary
-of its key functionalities:
+This patch adds chip-related register definitions for the Leonis
+hardware and introduces nbl_write_all_regs(), which programs a large
+set of P4 configuration tables at chip initialization time.
 
-1. Message Handling Framework
-   Message Registration: Functions (nbl_chan_register_msg) allow dynamic
-   registration of message handlers for specific message types, enabling
-   extensible communication protocols.
-
-   Message Sending/Acknowledgment: Core functions (nbl_chan_send_msg,
-   nbl_chan_send_ack) handle message transmission, including asynchronous
-   operations with acknowledgment (ACK) support. Received ACKs are
-   processed via nbl_chan_recv_ack_msg.
-
-   Hash-Based Handler Lookup: A hash table (`handle_hash_tbl`) stores
-   message handlers for efficient O(1) lookup by message type. The
-   entire table is removed via `nbl_chan_remove_msg_handler` during
-   driver teardown (per-message-type removal is not implemented
-   in this version).
-
-2. Channel Types and Queue Management
-   Mailbox Channel: For direct communication between PF0 and Other PF.
-
-   Queue Initialization: Functions (nbl_chan_init_queue,
-   nbl_chan_init_tx_queue) allocate resources:
-   - TX descriptors: dmam_alloc_coherent()
-   - RX descriptors and metadata: devm_kcalloc()
-
-   Queue Teardown: nbl_chan_teardown_queue() stops queues but does NOT
-   free DMA memory or cancel pending work items.
-
-   IMPORTANT - Resource Lifecycle Design:
-   DMA memory allocated with dmam_alloc_coherent() is intentionally NOT
-   freed in nbl_chan_teardown_queue(). The queues are allocated once
-   during driver probe and freed only during driver remove (when all
-   devm_ resources are released). This assumes queues are NOT dynamically
-   torn down and recreated per-PF during normal operation.
-
-   Queue Configuration: Hardware-specific queue parameters (e.g., buffer
-   sizes, entry counts) are set via nbl_chan_config_queue, with hardware
-   interactions delegated to hw_ops.
-
-3. Hardware Abstraction Layer (HW Ops)
-   Hardware-Specific Operations: The nbl_hw_ops structure abstracts
-   hardware interactions: queue configuration (config_mailbox_txq/rxq),
-   tail pointer updates (update_mailbox_queue_tail_ptr).
+1. nbl_hw.h/nbl_hw_leonis.h
+chip-related reg definitions
+2. nbl_hw_leonis_regs.c
+P4 configuration that will be invoked during chip initialization
+These nbl_sec*_data are used to configure P4-related registers. The
+driver’s functionality depends heavily on these register settings. But
+they can be not marked __initdata. Because it will be called by
+pci_driver.probe.They also should not be moved into firmware files,
+as the software functionality is tightly coupled with these
+configurations.If they were moved to firmware,users could easily end up
+with mismatched versions of the firmware and the kernel driver module,
+leading to functional inconsistencies or system malfunctions.
 
 Signed-off-by: illusion.wang <illusion.wang@nebula-matrix.com>
 ---
- .../net/ethernet/nebula-matrix/nbl/Makefile   |   3 +-
- .../nbl/nbl_channel/nbl_channel.c             | 901 +++++++++++++++++-
- .../nbl/nbl_channel/nbl_channel.h             | 144 +++
- .../nebula-matrix/nbl/nbl_common/nbl_common.c | 180 ++++
- .../nebula-matrix/nbl/nbl_common/nbl_common.h |  33 +
- .../nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c  | 151 +++
- .../nebula-matrix/nbl/nbl_hw/nbl_hw_reg.h     |   1 +
- .../nbl/nbl_include/nbl_def_channel.h         |  84 ++
- .../nbl/nbl_include/nbl_def_common.h          |  26 +
- .../nbl/nbl_include/nbl_def_hw.h              |  28 +
- .../nbl/nbl_include/nbl_include.h             |   6 +
- 11 files changed, 1553 insertions(+), 4 deletions(-)
- create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_common/nbl_common.c
- create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_common/nbl_common.h
+ .../net/ethernet/nebula-matrix/nbl/Makefile   |    1 +
+ .../nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.h  |  519 +++
+ .../nbl_hw/nbl_hw_leonis/nbl_hw_leonis_regs.c | 2887 +++++++++++++++++
+ .../nbl_hw/nbl_hw_leonis/nbl_hw_leonis_regs.h |   11 +
+ 4 files changed, 3418 insertions(+)
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis_regs.c
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis_regs.h
 
 diff --git a/drivers/net/ethernet/nebula-matrix/nbl/Makefile b/drivers/net/ethernet/nebula-matrix/nbl/Makefile
-index 63116d1d7043..c9bc060732e7 100644
+index 271605920396..63116d1d7043 100644
 --- a/drivers/net/ethernet/nebula-matrix/nbl/Makefile
 +++ b/drivers/net/ethernet/nebula-matrix/nbl/Makefile
-@@ -3,7 +3,8 @@
- 
- obj-$(CONFIG_NBL) := nbl.o
- 
--nbl-objs +=       nbl_channel/nbl_channel.o \
-+nbl-objs +=       nbl_common/nbl_common.o \
-+				nbl_channel/nbl_channel.o \
+@@ -6,6 +6,7 @@ obj-$(CONFIG_NBL) := nbl.o
+ nbl-objs +=       nbl_channel/nbl_channel.o \
  				nbl_hw/nbl_hw_leonis/nbl_hw_leonis.o \
  				nbl_hw/nbl_hw_leonis/nbl_resource_leonis.o \
- 				nbl_hw/nbl_hw_leonis/nbl_hw_leonis_regs.o \
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_channel/nbl_channel.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_channel/nbl_channel.c
-index c7689f0e4029..0fe203429b88 100644
---- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_channel/nbl_channel.c
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_channel/nbl_channel.c
-@@ -2,12 +2,878 @@
- /*
-  * Copyright (c) 2025 Nebula Matrix Limited.
-  */
--
-+#include <linux/delay.h>
- #include <linux/device.h>
- #include <linux/pci.h>
-+#include <linux/bits.h>
-+#include <linux/dma-mapping.h>
- #include "nbl_channel.h"
++				nbl_hw/nbl_hw_leonis/nbl_hw_leonis_regs.o \
+ 				nbl_core/nbl_dispatch.o \
+ 				nbl_core/nbl_dev.o \
+ 				nbl_main.o
+diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.h
+index 77c67b67ba31..4f718d5873f4 100644
+--- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.h
++++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.h
+@@ -11,4 +11,523 @@
+ #include "../../nbl_include/nbl_include.h"
+ #include "../nbl_hw_reg.h"
  
-+static int nbl_chan_add_msg_handler(struct nbl_channel_mgt *chan_mgt,
-+				    u16 msg_type, nbl_chan_resp func,
-+				    void *priv)
-+{
-+	struct nbl_chan_msg_node_data handler = { 0 };
-+	int ret;
-+
-+	handler.func = func;
-+	handler.priv = priv;
-+	ret = nbl_common_alloc_hash_node(chan_mgt->handle_hash_tbl, &msg_type,
-+					 &handler, NULL);
-+
-+	return ret;
-+}
-+
-+static int nbl_chan_init_msg_handler(struct nbl_channel_mgt *chan_mgt)
-+{
-+	struct nbl_common_info *common = chan_mgt->common;
-+	struct nbl_hash_tbl_key tbl_key = {0};
-+
-+	tbl_key.dev = common->dev;
-+	tbl_key.key_size = sizeof(u16);
-+	tbl_key.data_size = sizeof(struct nbl_chan_msg_node_data);
-+	tbl_key.bucket_size = NBL_CHAN_HANDLER_TBL_BUCKET_SIZE;
-+
-+	chan_mgt->handle_hash_tbl = nbl_common_init_hash_table(&tbl_key);
-+	if (!chan_mgt->handle_hash_tbl)
-+		return -ENOMEM;
-+
-+	return 0;
-+}
-+
-+static void nbl_chan_remove_msg_handler(struct nbl_channel_mgt *chan_mgt)
-+{
-+	nbl_common_remove_hash_table(chan_mgt->handle_hash_tbl, NULL);
-+
-+	chan_mgt->handle_hash_tbl = NULL;
-+}
-+
-+static void nbl_chan_init_queue_param(struct nbl_chan_info *chan_info,
-+				      u16 num_txq_entries, u16 num_rxq_entries,
-+				      u16 txq_buf_size, u16 rxq_buf_size)
-+{
-+	mutex_init(&chan_info->txq_lock);
-+	mutex_init(&chan_info->rxq_lock);
-+	chan_info->num_txq_entries = num_txq_entries;
-+	chan_info->num_rxq_entries = num_rxq_entries;
-+	chan_info->txq_buf_size = txq_buf_size;
-+	chan_info->rxq_buf_size = rxq_buf_size;
-+}
-+
-+static int nbl_chan_init_tx_queue(struct nbl_common_info *common,
-+				  struct nbl_chan_info *chan_info)
-+{
-+	struct nbl_chan_ring *txq = &chan_info->txq;
-+	struct device *dev = common->dev;
-+	size_t size =
-+		chan_info->num_txq_entries * sizeof(struct nbl_chan_tx_desc);
-+	int i;
-+
-+	txq->desc.tx_desc = dmam_alloc_coherent(dev, size, &txq->dma,
-+						GFP_KERNEL);
-+	if (!txq->desc.tx_desc)
-+		return -ENOMEM;
-+
-+	chan_info->wait = devm_kcalloc(dev, chan_info->num_txq_entries,
-+				       sizeof(*chan_info->wait),
-+				       GFP_KERNEL);
-+	if (!chan_info->wait)
-+		return -ENOMEM;
-+	for (i = 0; i < chan_info->num_txq_entries; i++) {
-+		init_waitqueue_head(&chan_info->wait[i].wait_queue);
-+		atomic_set(&chan_info->wait[i].status, NBL_MBX_STATUS_IDLE);
-+	}
-+
-+	txq->buf = devm_kcalloc(dev, chan_info->num_txq_entries,
-+				sizeof(*txq->buf), GFP_KERNEL);
-+	if (!txq->buf)
-+		return -ENOMEM;
-+
-+	return 0;
-+}
-+
-+static int nbl_chan_init_rx_queue(struct nbl_common_info *common,
-+				  struct nbl_chan_info *chan_info)
-+{
-+	struct nbl_chan_ring *rxq = &chan_info->rxq;
-+	struct device *dev = common->dev;
-+	size_t size =
-+		chan_info->num_rxq_entries * sizeof(struct nbl_chan_rx_desc);
-+
-+	rxq->desc.rx_desc = dmam_alloc_coherent(dev, size, &rxq->dma,
-+						GFP_KERNEL);
-+	if (!rxq->desc.rx_desc) {
-+		dev_err(dev,
-+			"Allocate DMA for chan rx descriptor ring failed\n");
-+		return -ENOMEM;
-+	}
-+
-+	rxq->buf = devm_kcalloc(dev, chan_info->num_rxq_entries,
-+				sizeof(*rxq->buf), GFP_KERNEL);
-+	if (!rxq->buf)
-+		return -ENOMEM;
-+
-+	return 0;
-+}
-+
-+static int nbl_chan_init_queue(struct nbl_common_info *common,
-+			       struct nbl_chan_info *chan_info)
-+{
-+	int err;
-+
-+	err = nbl_chan_init_tx_queue(common, chan_info);
-+	if (err)
-+		return err;
-+
-+	err = nbl_chan_init_rx_queue(common, chan_info);
-+
-+	return err;
-+}
-+
-+static void nbl_chan_config_queue(struct nbl_channel_mgt *chan_mgt,
-+				  struct nbl_chan_info *chan_info, bool tx)
-+{
-+	struct nbl_hw_ops *hw_ops = chan_mgt->hw_ops_tbl->ops;
-+	struct nbl_hw_mgt *p = chan_mgt->hw_ops_tbl->priv;
-+	int size_bwid;
-+	struct nbl_chan_ring *ring;
-+	dma_addr_t dma_addr;
-+
-+	if (tx)
-+		ring = &chan_info->txq;
-+	else
-+		ring = &chan_info->rxq;
-+	dma_addr = ring->dma;
-+	if (tx) {
-+		size_bwid = ilog2(chan_info->num_txq_entries);
-+		hw_ops->config_mailbox_txq(p, dma_addr, size_bwid);
-+	} else {
-+		size_bwid = ilog2(chan_info->num_rxq_entries);
-+		hw_ops->config_mailbox_rxq(p, dma_addr, size_bwid);
-+	}
-+}
-+
-+static int nbl_chan_alloc_all_tx_bufs(struct nbl_channel_mgt *chan_mgt,
-+				      struct nbl_chan_info *chan_info)
-+{
-+	struct nbl_chan_ring *txq = &chan_info->txq;
-+	struct device *dev = chan_mgt->common->dev;
-+	struct nbl_chan_buf *buf;
-+	u16 i;
-+
-+	for (i = 0; i < chan_info->num_txq_entries; i++) {
-+		buf = &txq->buf[i];
-+		buf->va = dmam_alloc_coherent(dev, chan_info->txq_buf_size,
-+					      &buf->pa,
-+					      GFP_KERNEL);
-+		if (!buf->va) {
-+			dev_err(dev,
-+				"Allocate buffer for chan tx queue failed\n");
-+			return -ENOMEM;
-+		}
-+	}
-+
-+	txq->next_to_clean = 0;
-+	txq->next_to_use = 0;
-+	txq->tail_ptr = 0;
-+
-+	return 0;
-+}
-+
-+static void nbl_chan_cfg_qinfo_map_table(struct nbl_channel_mgt *chan_mgt)
-+{
-+	struct nbl_hw_ops *hw_ops = chan_mgt->hw_ops_tbl->ops;
-+	struct nbl_common_info *common = chan_mgt->common;
-+	struct nbl_hw_mgt *p = chan_mgt->hw_ops_tbl->priv;
-+	u8 func_id;
-+	u32 pf_mask;
-+
-+	pf_mask = hw_ops->get_host_pf_mask(p);
-+	for (func_id = 0; func_id < NBL_MAX_PF; func_id++) {
-+		if (!(pf_mask & (1 << func_id)))
-+			hw_ops->cfg_mailbox_qinfo(p, func_id, common->hw_bus,
-+						  common->devid,
-+						  common->function + func_id);
-+	}
-+}
-+
-+#define NBL_UPDATE_QUEUE_TAIL_PTR(chan_info, hw_ops, chan_mgt, tail_ptr, qid)\
-+do {									\
-+	(void)(chan_info);						\
-+	typeof(hw_ops) _hw_ops = (hw_ops);				\
-+	typeof(chan_mgt) _chan_mgt = (chan_mgt);			\
-+	typeof(tail_ptr) _tail_ptr = (tail_ptr);			\
-+	typeof(qid) _qid = (qid);					\
-+	(_hw_ops)->update_mailbox_queue_tail_ptr(			\
-+		_chan_mgt->hw_ops_tbl->priv, _tail_ptr, _qid);	\
-+} while (0)
-+
-+static int nbl_chan_alloc_all_rx_bufs(struct nbl_channel_mgt *chan_mgt,
-+				      struct nbl_chan_info *chan_info)
-+{
-+	struct nbl_hw_ops *hw_ops = chan_mgt->hw_ops_tbl->ops;
-+	struct nbl_chan_ring *rxq = &chan_info->rxq;
-+	struct device *dev = chan_mgt->common->dev;
-+	struct nbl_chan_rx_desc *desc;
-+	struct nbl_chan_buf *buf;
-+	u16 i;
-+
-+	for (i = 0; i < chan_info->num_rxq_entries; i++) {
-+		buf = &rxq->buf[i];
-+		buf->va = dmam_alloc_coherent(dev, chan_info->rxq_buf_size,
-+					      &buf->pa,
-+					      GFP_KERNEL);
-+		if (!buf->va) {
-+			dev_err(dev,
-+				"Allocate buffer for chan rx queue failed\n");
-+			goto err;
-+		}
-+	}
-+
-+	desc = rxq->desc.rx_desc;
-+	for (i = 0; i < chan_info->num_rxq_entries - 1; i++) {
-+		buf = &rxq->buf[i];
-+		desc[i].buf_addr = cpu_to_le64(buf->pa);
-+		desc[i].buf_len = cpu_to_le32(chan_info->rxq_buf_size);
-+		desc[i].flags = cpu_to_le16(BIT(NBL_CHAN_RX_DESC_AVAIL));
-+	}
-+
-+	rxq->next_to_clean = 0;
-+	rxq->next_to_use = chan_info->num_rxq_entries - 1;
-+	rxq->tail_ptr = chan_info->num_rxq_entries - 1;
-+
-+	NBL_UPDATE_QUEUE_TAIL_PTR(chan_info, hw_ops, chan_mgt, rxq->tail_ptr,
-+				  NBL_MB_RX_QID);
-+
-+	return 0;
-+err:
-+	return -ENOMEM;
-+}
-+
-+static int nbl_chan_alloc_all_bufs(struct nbl_channel_mgt *chan_mgt,
-+				   struct nbl_chan_info *chan_info)
-+{
-+	int err;
-+
-+	err = nbl_chan_alloc_all_tx_bufs(chan_mgt, chan_info);
-+	if (err)
-+		return err;
-+	err = nbl_chan_alloc_all_rx_bufs(chan_mgt, chan_info);
-+
-+	return err;
-+}
-+
-+static void nbl_chan_stop_queue(struct nbl_channel_mgt *chan_mgt)
-+{
-+	struct nbl_hw_ops *hw_ops = chan_mgt->hw_ops_tbl->ops;
-+
-+	hw_ops->stop_mailbox_rxq(chan_mgt->hw_ops_tbl->priv);
-+	hw_ops->stop_mailbox_txq(chan_mgt->hw_ops_tbl->priv);
-+}
-+
-+static int nbl_chan_teardown_queue(struct nbl_channel_mgt *chan_mgt,
-+				   u8 chan_type)
-+{
-+	struct nbl_chan_info *chan_info = chan_mgt->chan_info[chan_type];
-+
-+	nbl_chan_stop_queue(chan_mgt);
-+	if (chan_info->clean_task)
-+		cancel_work_sync(chan_info->clean_task);
-+	mutex_destroy(&chan_info->txq_lock);
-+	mutex_destroy(&chan_info->rxq_lock);
-+
-+	return 0;
-+}
-+
-+static int nbl_chan_setup_queue(struct nbl_channel_mgt *chan_mgt, u8 chan_type)
-+{
-+	struct nbl_chan_info *chan_info = chan_mgt->chan_info[chan_type];
-+	struct nbl_common_info *common = chan_mgt->common;
-+	int err;
-+
-+	nbl_chan_init_queue_param(chan_info, NBL_CHAN_QUEUE_LEN,
-+				  NBL_CHAN_QUEUE_LEN, NBL_CHAN_BUF_LEN,
-+				  NBL_CHAN_BUF_LEN);
-+	err = nbl_chan_init_queue(common, chan_info);
-+	if (err)
-+		return err;
-+
-+	nbl_chan_config_queue(chan_mgt, chan_info, true); /* tx */
-+	nbl_chan_config_queue(chan_mgt, chan_info, false); /* rx */
-+
-+	err = nbl_chan_alloc_all_bufs(chan_mgt, chan_info);
-+	if (err)
-+		goto chan_q_setup_fail;
-+
-+	return 0;
-+
-+chan_q_setup_fail:
-+	nbl_chan_teardown_queue(chan_mgt, chan_type);
-+	return err;
-+}
-+
-+static int nbl_chan_update_txqueue(struct nbl_channel_mgt *chan_mgt,
-+				   struct nbl_chan_info *chan_info,
-+				   struct nbl_chan_tx_param *param)
-+{
-+	struct nbl_chan_ring *txq = &chan_info->txq;
-+	struct nbl_chan_tx_desc *tx_desc =
-+		NBL_CHAN_TX_RING_TO_DESC(txq, txq->next_to_use);
-+	struct nbl_chan_buf *tx_buf =
-+		NBL_CHAN_TX_RING_TO_BUF(txq, txq->next_to_use);
-+
-+	if (param->arg_len > NBL_CHAN_BUF_LEN - sizeof(*tx_desc))
-+		return -EINVAL;
-+
-+	tx_desc->dstid = cpu_to_le16(param->dstid);
-+	tx_desc->msg_type = cpu_to_le16(param->msg_type);
-+	tx_desc->msgid = cpu_to_le16(param->msgid);
-+
-+	if (param->arg_len > NBL_CHAN_TX_DESC_EMBEDDED_DATA_LEN) {
-+		memcpy(tx_buf->va, param->arg, param->arg_len);
-+		tx_desc->buf_addr = cpu_to_le64(tx_buf->pa);
-+		tx_desc->buf_len = cpu_to_le16(param->arg_len);
-+		tx_desc->data_len = 0;
-+	} else {
-+		memcpy(tx_desc->data, param->arg, param->arg_len);
-+		tx_desc->buf_len = 0;
-+		tx_desc->data_len = cpu_to_le16(param->arg_len);
-+	}
-+	/* Ensure desc body is visible to DMA before writing AVAIL flag */
-+	dma_wmb();
-+	tx_desc->flags = cpu_to_le16(BIT(NBL_CHAN_TX_DESC_AVAIL));
-+
-+	txq->next_to_use =
-+		NBL_NEXT_ID(txq->next_to_use, chan_info->num_txq_entries - 1);
-+	txq->tail_ptr++;
-+
-+	return 0;
-+}
-+
-+static int nbl_chan_kick_tx_ring(struct nbl_channel_mgt *chan_mgt,
-+				 struct nbl_chan_info *chan_info)
-+{
-+	struct nbl_hw_ops *hw_ops = chan_mgt->hw_ops_tbl->ops;
-+	struct nbl_chan_ring *txq = &chan_info->txq;
-+	struct device *dev = chan_mgt->common->dev;
-+	int max_retries = NBL_CHAN_TX_WAIT_TIMES;
-+	struct nbl_chan_tx_desc *tx_desc;
-+	int retry_count = 0;
-+
-+	NBL_UPDATE_QUEUE_TAIL_PTR(chan_info, hw_ops, chan_mgt, txq->tail_ptr,
-+				  NBL_MB_TX_QID);
-+
-+	tx_desc = NBL_CHAN_TX_RING_TO_DESC(txq, txq->next_to_clean);
-+	while (retry_count < max_retries) {
-+		if (le16_to_cpu(READ_ONCE(tx_desc->flags)) &
-+		    BIT(NBL_CHAN_TX_DESC_USED)) {
-+			dma_rmb();
-+			break;
-+		}
-+
-+		if (!(retry_count % NBL_CHAN_TX_REKICK_WAIT_TIMES))
-+			NBL_UPDATE_QUEUE_TAIL_PTR(chan_info, hw_ops, chan_mgt,
-+						  txq->tail_ptr, NBL_MB_TX_QID);
-+		retry_count++;
-+
-+		usleep_range(NBL_CHAN_TX_WAIT_US, NBL_CHAN_TX_WAIT_US_MAX);
-+	}
-+
-+	txq->next_to_clean = txq->next_to_use;
-+	if (retry_count >= max_retries) {
-+		dev_err(dev, "chan send message type: %d timeout\n",
-+			le16_to_cpu(READ_ONCE(tx_desc->msg_type)));
-+		return -ETIMEDOUT;
-+	}
-+
-+	return 0;
-+}
-+
-+static void nbl_chan_recv_ack_msg(void *priv, u16 srcid, u16 msgid, void *data,
-+				  u32 data_len)
-+{
-+	struct nbl_channel_mgt *chan_mgt = (struct nbl_channel_mgt *)priv;
-+	struct nbl_chan_waitqueue_head *wait_head = NULL;
-+	union nbl_chan_msg_id ack_msgid = { { 0 } };
-+	struct device *dev = chan_mgt->common->dev;
-+	struct nbl_chan_info *chan_info =
-+		chan_mgt->chan_info[NBL_CHAN_TYPE_MAILBOX];
-+	u32 *payload = data;
-+	u32 ack_datalen, ack_msgtype = 0;
-+	u32 copy_len;
-+
-+	if (data_len > NBL_CHAN_BUF_LEN ||
-+	    data_len < NBL_CHAN_ACK_HEAD_LEN * sizeof(u32)) {
-+		dev_err(dev, "Invalid ACK data_len: %u\n", data_len);
-+		return;
-+	}
-+	ack_datalen = data_len - NBL_CHAN_ACK_HEAD_LEN * sizeof(u32);
-+	ack_msgtype = le16_to_cpu(*(__le16 *)(payload + NBL_CHAN_MSG_TYPE_POS));
-+	ack_msgid.id = le16_to_cpu(*(__le16 *)(payload + NBL_CHAN_MSG_ID_POS));
-+	if (ack_msgid.info.loc >= NBL_CHAN_QUEUE_LEN) {
-+		dev_err(dev, "chan recv msg loc: %d err\n", ack_msgid.info.loc);
-+		return;
-+	}
-+	wait_head = &chan_info->wait[ack_msgid.info.loc];
-+	preempt_disable();
-+	if (wait_head->msg_type != ack_msgtype) {
-+		preempt_enable();
-+		dev_err(dev, "Skip ack msg type donot match, wait_head msgtype:%u msg_index:%u status:%d ack_data_len:%d, ack msgtype:%u msgid:%u datalen:%d\n",
-+			wait_head->msg_type, wait_head->msg_index,
-+			atomic_read(&wait_head->status),
-+			wait_head->ack_data_len, ack_msgtype,
-+			ack_msgid.id, ack_datalen);
-+		return;
-+	}
-+	if (ack_msgid.info.index != wait_head->msg_index) {
-+		preempt_enable();
-+		dev_err(dev, "Stale ACK: expected index=%u, got %u for loc=%u\n",
-+			wait_head->msg_index, ack_msgid.info.index,
-+			ack_msgid.info.loc);
-+		return;
-+	}
-+
-+	wait_head->ack_err =
-+		le32_to_cpu(*(__le32 *)(payload + NBL_CHAN_ACK_RET_POS));
-+	preempt_enable();
-+	if (atomic_cmpxchg(&wait_head->status, NBL_MBX_STATUS_WAITING,
-+			   NBL_MBX_STATUS_ACKD) != NBL_MBX_STATUS_WAITING) {
-+		dev_err(dev, "Skip ack with invalid status, wait_head msgtype:%u msg_index:%u status:%d ack_data_len:%d, ack msgtype:%u msgid:%u datalen:%d\n",
-+			wait_head->msg_type, wait_head->msg_index,
-+			atomic_read(&wait_head->status),
-+			wait_head->ack_data_len, ack_msgtype,
-+			ack_msgid.id, ack_datalen);
-+		return;
-+	}
-+
-+	copy_len = min_t(u32, wait_head->ack_data_len, ack_datalen);
-+	if (wait_head->ack_err >= 0 && copy_len > 0) {
-+		if (NBL_CHAN_ACK_HEAD_LEN * sizeof(u32) + copy_len > data_len) {
-+			dev_err(dev, "ACK payload overflow\n");
-+			goto ack_done;
-+			return;
-+		}
-+		memcpy((char *)wait_head->ack_data,
-+		       payload + NBL_CHAN_ACK_HEAD_LEN, copy_len);
-+		wait_head->ack_data_len = (u16)copy_len;
-+	} else {
-+		wait_head->ack_data_len = 0;
-+	}
-+ack_done:
-+	/*
-+	 * Ensure all writes to ack_data and ack_data_len are completed
-+	 * before setting the 'acked' flag. This prevents other threads
-+	 * from observing stale or partially updated data.
-+	 */
-+	wmb();
-+	wait_head->acked = 1;
-+	wait_head->ack_data = NULL;
-+	if (wait_head->need_waked)
-+		wake_up(&wait_head->wait_queue);
-+}
-+
-+static void nbl_chan_recv_msg(struct nbl_channel_mgt *chan_mgt, void *data)
-+{
-+	struct device *dev = chan_mgt->common->dev;
-+	struct nbl_chan_msg_node_data *msg_handler;
-+	u16 msg_type, payload_len, srcid, msgid;
-+	struct nbl_chan_tx_desc *tx_desc;
-+	void *payload;
-+
-+	tx_desc = data;
-+	msg_type = le16_to_cpu(tx_desc->msg_type);
-+	dev_dbg(dev, "recv msg_type: %d\n", msg_type);
-+
-+	srcid = le16_to_cpu(tx_desc->srcid);
-+	msgid = le16_to_cpu(tx_desc->msgid);
-+	/* Only check if the value exceeds the maximum, relying on the hash
-+	 * table to filter invalid message IDs.
-+	 * The gap values are reserved for future protocol extensions.
-+	 */
-+	if (msg_type >= NBL_CHAN_MSG_MAILBOX_MAX)
-+		return;
-+
-+	if (tx_desc->data_len) {
-+		payload_len = le16_to_cpu(tx_desc->data_len);
-+		if (payload_len > NBL_CHAN_TX_DESC_EMBEDDED_DATA_LEN) {
-+			dev_err(dev, "data_len=%u exceeds embedded buffer size=%u\n",
-+				payload_len,
-+				NBL_CHAN_TX_DESC_EMBEDDED_DATA_LEN);
-+			return;
-+		}
-+		payload = tx_desc->data;
-+	} else {
-+		payload_len = le16_to_cpu(tx_desc->buf_len);
-+		if (payload_len > NBL_CHAN_BUF_LEN - sizeof(*tx_desc)) {
-+			dev_err(dev, "buf_len=%u exceeds external buffer size=%zu\n",
-+				payload_len,
-+				NBL_CHAN_BUF_LEN - sizeof(*tx_desc));
-+			return;
-+		}
-+		payload = tx_desc + 1;
-+	}
-+
-+	msg_handler =
-+		nbl_common_get_hash_node(chan_mgt->handle_hash_tbl, &msg_type);
-+	if (!msg_handler || !msg_handler->func) {
-+		dev_err(dev, "No handler for msg_type: %u (srcid=%u, msgid=%u)\n",
-+			msg_type, srcid, msgid);
-+		return;
-+	}
-+	msg_handler->func(msg_handler->priv, srcid, msgid, payload,
-+			  payload_len);
-+}
-+
-+static void nbl_chan_advance_rx_ring(struct nbl_channel_mgt *chan_mgt,
-+				     struct nbl_chan_info *chan_info,
-+				     struct nbl_chan_ring *rxq)
-+{
-+	struct nbl_hw_ops *hw_ops = chan_mgt->hw_ops_tbl->ops;
-+	struct nbl_chan_rx_desc *rx_desc;
-+	struct nbl_chan_buf *rx_buf;
-+	u16 next_to_use;
-+
-+	next_to_use = rxq->next_to_use;
-+	rx_desc = NBL_CHAN_RX_RING_TO_DESC(rxq, next_to_use);
-+	rx_buf = NBL_CHAN_RX_RING_TO_BUF(rxq, next_to_use);
-+
-+	rx_desc->buf_addr = cpu_to_le64(rx_buf->pa);
-+	rx_desc->buf_len = cpu_to_le32(chan_info->rxq_buf_size);
-+
-+	/*
-+	 * DMA Write Memory Barrier:
-+	 * Ensures all previous DMA-mapped writes (buffer address/length)
-+	 * are completed before the descriptor flags are updated.
-+	 * This prevents hardware from seeing a partially updated descriptor
-+	 * where flags are set but buffer info isn't ready yet.
-+	 */
-+	dma_wmb();
-+
-+	rx_desc->flags = cpu_to_le16(BIT(NBL_CHAN_RX_DESC_AVAIL));
-+
-+	/*
-+	 * CPU Write Memory Barrier:
-+	 * Ensures the descriptor flags update is visible to other CPUs
-+	 * before we update the tail pointer. This is important for:
-+	 * 1. Software cleaning threads that might be checking the tail pointer
-+	 * 2. Maintaining proper memory ordering in multi-core systems
-+	 */
-+	wmb();
-+	rxq->next_to_use++;
-+	if (rxq->next_to_use == chan_info->num_rxq_entries)
-+		rxq->next_to_use = 0;
-+	rxq->tail_ptr++;
-+
-+	NBL_UPDATE_QUEUE_TAIL_PTR(chan_info, hw_ops, chan_mgt, rxq->tail_ptr,
-+				  NBL_MB_RX_QID);
-+}
-+
-+static void nbl_chan_clean_queue(struct nbl_channel_mgt *chan_mgt,
-+				 struct nbl_chan_info *chan_info)
-+{
-+	struct nbl_chan_ring *rxq = &chan_info->rxq;
-+	struct device *dev = chan_mgt->common->dev;
-+	struct nbl_chan_rx_desc *rx_desc;
-+	struct nbl_chan_buf *rx_buf;
-+	u16 next_to_clean;
-+	void *va;
-+
-+	mutex_lock(&chan_info->rxq_lock);
-+	next_to_clean = rxq->next_to_clean;
-+	rx_desc = NBL_CHAN_RX_RING_TO_DESC(rxq, next_to_clean);
-+	rx_buf = NBL_CHAN_RX_RING_TO_BUF(rxq, next_to_clean);
-+	while (le16_to_cpu(rx_desc->flags) & BIT(NBL_CHAN_RX_DESC_USED)) {
-+		if (!(le16_to_cpu(rx_desc->flags) &
-+		    BIT(NBL_CHAN_RX_DESC_WRITE)))
-+			dev_dbg(dev,
-+				"mailbox rx flag 0x%x has no NBL_CHAN_RX_DESC_WRITE\n",
-+				le16_to_cpu(rx_desc->flags));
-+
-+		dma_rmb();
-+		va = rx_buf->va;
-+		next_to_clean =
-+			(next_to_clean + 1) % chan_info->num_rxq_entries;
-+		rx_desc = NBL_CHAN_RX_RING_TO_DESC(rxq, next_to_clean);
-+		rx_buf = NBL_CHAN_RX_RING_TO_BUF(rxq, next_to_clean);
-+
-+		mutex_unlock(&chan_info->rxq_lock);
-+
-+		nbl_chan_recv_msg(chan_mgt, va);
-+
-+		mutex_lock(&chan_info->rxq_lock);
-+		rxq->next_to_clean = next_to_clean;
-+		nbl_chan_advance_rx_ring(chan_mgt, chan_info, rxq);
-+	}
-+	mutex_unlock(&chan_info->rxq_lock);
-+}
-+
-+static void nbl_chan_clean_queue_subtask(struct nbl_channel_mgt *chan_mgt,
-+					 u8 chan_type)
-+{
-+	struct nbl_chan_info *chan_info = chan_mgt->chan_info[chan_type];
-+
-+	if (!test_bit(NBL_CHAN_INTERRUPT_READY, chan_info->state) ||
-+	    test_bit(NBL_CHAN_RESETTING, chan_info->state))
-+		return;
-+
-+	nbl_chan_clean_queue(chan_mgt, chan_info);
-+}
-+
-+static int nbl_chan_get_msg_id(struct nbl_chan_info *chan_info,
-+			       union nbl_chan_msg_id *msgid)
-+{
-+	int valid_loc = chan_info->wait_head_index, i;
-+	struct nbl_chan_waitqueue_head *wait = NULL;
-+	int status;
-+
-+	for (i = 0; i < NBL_CHAN_QUEUE_LEN; i++) {
-+		wait = &chan_info->wait[valid_loc];
-+		status = atomic_read(&wait->status);
-+		if (status == NBL_MBX_STATUS_IDLE ||
-+		    status == NBL_MBX_STATUS_TIMEOUT) {
-+			wait->msg_index = NBL_NEXT_ID(wait->msg_index,
-+						      NBL_CHAN_MSG_INDEX_MAX);
-+			msgid->info.index = wait->msg_index;
-+			msgid->info.loc = valid_loc;
-+			valid_loc = NBL_NEXT_ID(valid_loc,
-+						chan_info->num_txq_entries - 1);
-+			chan_info->wait_head_index = valid_loc;
-+			return 0;
-+		}
-+
-+		valid_loc =
-+			NBL_NEXT_ID(valid_loc, chan_info->num_txq_entries - 1);
-+	}
-+
-+	/*
-+	 * the current NBL_CHAN_QUEUE_LEN configuration meets the design
-+	 * requirements and theoretically should not return errors, the
-+	 * following scenarios may still cause the waiting queue to
-+	 * become full:
-+	 * High-concurrency scenarios:
-+	 * If the sender (calling nbl_chan_send_msg()) generates messages
-+	 * at a rate far exceeding the receiver's ability to process
-+	 * acknowledgments (ACKs),the waiting queue may become fully occupied.
-+	 * Delayed or failed ACK handling by the receiver:
-+	 * The receiver may fail to send ACKs in a timely manner due to
-+	 * processing delays, blocking, or faults, causing the sender's
-+	 * waiting queue slots to remain occupied for an extended period.
-+	 */
-+	return -EAGAIN;
-+}
-+
-+static int nbl_chan_send_msg(struct nbl_channel_mgt *chan_mgt,
-+			     struct nbl_chan_send_info *chan_send)
-+{
-+	struct nbl_common_info *common = chan_mgt->common;
-+	struct nbl_chan_waitqueue_head *wait_head;
-+	struct nbl_chan_tx_param tx_param = { 0 };
-+	union nbl_chan_msg_id msgid = { { 0 } };
-+	int i = NBL_CHAN_TX_WAIT_ACK_TIMES, ret;
-+	struct nbl_chan_info *chan_info =
-+		chan_mgt->chan_info[NBL_CHAN_TYPE_MAILBOX];
-+	struct device *dev = common->dev;
-+
-+	if (test_bit(NBL_CHAN_ABNORMAL, chan_info->state))
-+		return -EIO;
-+
-+	mutex_lock(&chan_info->txq_lock);
-+
-+	ret = nbl_chan_get_msg_id(chan_info, &msgid);
-+	if (ret) {
-+		mutex_unlock(&chan_info->txq_lock);
-+		dev_err(dev,
-+			"Channel tx wait head full, send msgtype:%u to dstid:%u failed\n",
-+			chan_send->msg_type, chan_send->dstid);
-+		return ret;
-+	}
-+
-+	tx_param.msg_type = chan_send->msg_type;
-+	tx_param.arg = chan_send->arg;
-+	tx_param.arg_len = chan_send->arg_len;
-+	tx_param.dstid = chan_send->dstid;
-+	tx_param.msgid = msgid.id;
-+
-+	ret = nbl_chan_update_txqueue(chan_mgt, chan_info, &tx_param);
-+	if (ret) {
-+		mutex_unlock(&chan_info->txq_lock);
-+		dev_err(dev,
-+			"Channel tx queue full, send msgtype:%u to dstid:%u failed\n",
-+			chan_send->msg_type, chan_send->dstid);
-+		return ret;
-+	}
-+
-+	wait_head = &chan_info->wait[msgid.info.loc];
-+	wait_head->acked = 0;
-+	wait_head->ack_data = chan_send->resp;
-+	wait_head->ack_data_len = chan_send->resp_len;
-+	wait_head->msg_type = chan_send->msg_type;
-+	wait_head->need_waked = chan_send->ack;
-+	wait_head->msg_index = msgid.info.index;
-+	atomic_set(&wait_head->status, chan_send->ack ? NBL_MBX_STATUS_WAITING :
-+		   NBL_MBX_STATUS_IDLE);
-+
-+	ret = nbl_chan_kick_tx_ring(chan_mgt, chan_info);
-+	mutex_unlock(&chan_info->txq_lock);
-+	if (ret) {
-+		mutex_lock(&chan_info->txq_lock);
-+		atomic_set(&wait_head->status, NBL_MBX_STATUS_TIMEOUT);
-+		mutex_unlock(&chan_info->txq_lock);
-+		return ret;
-+	}
-+
-+	if (!chan_send->ack)
-+		return 0;
-+
-+	if (test_bit(NBL_CHAN_INTERRUPT_READY, chan_info->state)) {
-+wait_again:
-+		ret = wait_event_timeout(wait_head->wait_queue,
-+					 wait_head->acked,
-+					 NBL_CHAN_ACK_WAIT_TIME);
-+		if (!ret) {
-+			if (atomic_cmpxchg(&wait_head->status,
-+					   NBL_MBX_STATUS_WAITING,
-+					   NBL_MBX_STATUS_TIMEOUT)
-+					   != NBL_MBX_STATUS_WAITING)
-+				goto wait_again;
-+
-+			dev_err(dev,
-+				"Channel waiting ack failed, message type: %d, msg id: %u\n",
-+				chan_send->msg_type, msgid.id);
-+			wait_head->acked = 0;
-+			wait_head->ack_data = NULL;
-+			wait_head->ack_data_len = 0;
-+			ret = -ETIMEDOUT;
-+		} else {
-+			/*
-+			 * ensure that after observing 'acked == 1', all
-+			 * subsequent reads (ack_data_len, ack_err) observe
-+			 * the latest values written by the sender
-+			 * (nbl_chan_recv_ack_msg()). This prevents stale reads
-+			 * of ACK data or status.
-+			 */
-+			smp_rmb();
-+			chan_send->ack_len = wait_head->ack_data_len;
-+			wait_head->acked = 0;
-+			atomic_set(&wait_head->status, NBL_MBX_STATUS_IDLE);
-+			ret = READ_ONCE(wait_head->ack_err);
-+		}
-+		return ret;
-+	}
-+
-+	/*polling wait mailbox ack*/
-+
-+	while (i--) {
-+		nbl_chan_clean_queue(chan_mgt, chan_info);
-+
-+		/* Acquire load: ensure we see the latest 'acked' value */
-+		if (smp_load_acquire(&wait_head->acked)) {
-+			/*
-+			 * ensure that after observing 'acked == 1', all
-+			 * subsequent reads (ack_data_len, ack_err) observe
-+			 * the latest values written by the sender
-+			 * (nbl_chan_recv_ack_msg()). This prevents stale reads
-+			 * of ACK data or status.
-+			 */
-+			smp_rmb();
-+			chan_send->ack_len = wait_head->ack_data_len;
-+			wait_head->acked = 0;
-+			atomic_set(&wait_head->status, NBL_MBX_STATUS_IDLE);
-+			ret = READ_ONCE(wait_head->ack_err);
-+			return ret;
-+		}
-+		usleep_range(NBL_CHAN_TX_WAIT_ACK_US_MIN,
-+			     NBL_CHAN_TX_WAIT_ACK_US_MAX);
-+	}
-+	wait_head->acked = 0;
-+	wait_head->ack_data = NULL;
-+	wait_head->ack_data_len = 0;
-+	atomic_set(&wait_head->status, NBL_MBX_STATUS_TIMEOUT);
-+	dev_err(dev,
-+		"Channel polling ack failed, message type: %d msg id: %u\n",
-+		chan_send->msg_type, msgid.id);
-+	return -ETIMEDOUT;
-+}
-+
-+static int nbl_chan_send_ack(struct nbl_channel_mgt *chan_mgt,
-+			     struct nbl_chan_ack_info *chan_ack)
-+{
-+	size_t head_len = NBL_CHAN_ACK_HEAD_LEN * sizeof(u32);
-+	size_t data_len = chan_ack->data_len;
-+	struct nbl_chan_send_info chan_send;
-+	__le32 *tmp;
-+	size_t len;
-+	int ret;
-+
-+	if (data_len > NBL_CHAN_BUF_LEN - head_len)
-+		return -EINVAL;
-+
-+	len = head_len + data_len;
-+	tmp = kzalloc(len, GFP_KERNEL);
-+	if (!tmp)
-+		return -ENOMEM;
-+
-+	*(__le16 *)&tmp[NBL_CHAN_MSG_TYPE_POS] =
-+		cpu_to_le16(chan_ack->msg_type);
-+	*(__le16 *)&tmp[NBL_CHAN_MSG_ID_POS] = cpu_to_le16(chan_ack->msgid);
-+	tmp[NBL_CHAN_ACK_RET_POS] = cpu_to_le32(chan_ack->err);
-+	if (chan_ack->data && chan_ack->data_len)
-+		memcpy(&tmp[NBL_CHAN_ACK_HEAD_LEN], chan_ack->data,
-+		       chan_ack->data_len);
-+
-+	NBL_CHAN_SEND(chan_send, chan_ack->dstid, NBL_CHAN_MSG_ACK, tmp, len,
-+		      NULL, 0, 0);
-+	ret = nbl_chan_send_msg(chan_mgt, &chan_send);
-+	kfree(tmp);
-+
-+	return ret;
-+}
-+
-+static int nbl_chan_register_msg(struct nbl_channel_mgt *chan_mgt, u16 msg_type,
-+				 nbl_chan_resp func, void *callback)
-+{
-+	return nbl_chan_add_msg_handler(chan_mgt, msg_type, func, callback);
-+}
-+
-+static bool nbl_chan_check_queue_exist(struct nbl_channel_mgt *chan_mgt,
-+				       u8 chan_type)
-+{
-+	struct nbl_chan_info *chan_info = chan_mgt->chan_info[chan_type];
-+
-+	return chan_info ? true : false;
-+}
-+
-+static void nbl_chan_register_chan_task(struct nbl_channel_mgt *chan_mgt,
-+					u8 chan_type, struct work_struct *task)
-+{
-+	struct nbl_chan_info *chan_info = chan_mgt->chan_info[chan_type];
-+
-+	chan_info->clean_task = task;
-+}
-+
-+static void nbl_chan_set_queue_state(struct nbl_channel_mgt *chan_mgt,
-+				     enum nbl_chan_state state, u8 chan_type,
-+				     u8 set)
-+{
-+	struct nbl_chan_info *chan_info = chan_mgt->chan_info[chan_type];
-+
-+	if (set)
-+		set_bit(state, chan_info->state);
-+	else
-+		clear_bit(state, chan_info->state);
-+}
-+
- static struct nbl_channel_ops chan_ops = {
-+	.send_msg			= nbl_chan_send_msg,
-+	.send_ack			= nbl_chan_send_ack,
-+	.register_msg			= nbl_chan_register_msg,
-+	.cfg_chan_qinfo_map_table	= nbl_chan_cfg_qinfo_map_table,
-+	.check_queue_exist		= nbl_chan_check_queue_exist,
-+	.setup_queue			= nbl_chan_setup_queue,
-+	.teardown_queue			= nbl_chan_teardown_queue,
-+	.clean_queue_subtask		= nbl_chan_clean_queue_subtask,
-+	.register_chan_task		= nbl_chan_register_chan_task,
-+	.set_queue_state		= nbl_chan_set_queue_state,
- };
- 
- static struct nbl_channel_mgt *
-@@ -18,6 +884,7 @@ nbl_chan_setup_chan_mgt(struct nbl_adapter *adapter)
- 	struct device *dev = &adapter->pdev->dev;
- 	struct nbl_channel_mgt *chan_mgt;
- 	struct nbl_chan_info *mailbox;
-+	int ret;
- 
- 	chan_mgt = devm_kzalloc(dev, sizeof(*chan_mgt), GFP_KERNEL);
- 	if (!chan_mgt)
-@@ -32,6 +899,10 @@ nbl_chan_setup_chan_mgt(struct nbl_adapter *adapter)
- 	mailbox->chan_type = NBL_CHAN_TYPE_MAILBOX;
- 	chan_mgt->chan_info[NBL_CHAN_TYPE_MAILBOX] = mailbox;
- 
-+	ret = nbl_chan_init_msg_handler(chan_mgt);
-+	if (ret)
-+		return ERR_PTR(-ENOMEM);
-+
- 	return chan_mgt;
- }
- 
-@@ -39,6 +910,7 @@ static struct nbl_channel_ops_tbl *
- nbl_chan_setup_ops(struct device *dev, struct nbl_channel_mgt *chan_mgt)
- {
- 	struct nbl_channel_ops_tbl *chan_ops_tbl;
-+	int ret;
- 
- 	chan_ops_tbl = devm_kzalloc(dev, sizeof(*chan_ops_tbl), GFP_KERNEL);
- 	if (!chan_ops_tbl)
-@@ -47,6 +919,11 @@ nbl_chan_setup_ops(struct device *dev, struct nbl_channel_mgt *chan_mgt)
- 	chan_ops_tbl->ops = &chan_ops;
- 	chan_ops_tbl->priv = chan_mgt;
- 
-+	ret = nbl_chan_register_msg(chan_mgt, NBL_CHAN_MSG_ACK,
-+				    nbl_chan_recv_ack_msg, chan_mgt);
-+	if (ret)
-+		return ERR_PTR(-ENOMEM);
-+
- 	return chan_ops_tbl;
- }
- 
-@@ -57,22 +934,40 @@ int nbl_chan_init_common(struct nbl_adapter *adap)
- 	struct nbl_channel_mgt *chan_mgt;
- 	int ret;
- 
-+	BUILD_BUG_ON(sizeof(struct nbl_chan_param_cfg_msix_map) != 8);
-+	BUILD_BUG_ON(sizeof(struct nbl_chan_param_set_mailbox_irq) != 4);
-+	BUILD_BUG_ON(sizeof(struct nbl_chan_param_get_vsi_id) != 4);
-+	BUILD_BUG_ON(sizeof(struct nbl_chan_param_get_eth_id) != 8);
-+	BUILD_BUG_ON(sizeof(struct nbl_board_port_info) != 8);
- 	chan_mgt = nbl_chan_setup_chan_mgt(adap);
- 	if (IS_ERR(chan_mgt)) {
- 		ret = PTR_ERR(chan_mgt);
--		return ret;
-+		goto exit;
- 	}
- 
- 	chan_ops_tbl = nbl_chan_setup_ops(dev, chan_mgt);
- 	if (IS_ERR(chan_ops_tbl)) {
- 		ret = PTR_ERR(chan_ops_tbl);
--		return ret;
-+		goto exit;
- 	}
- 	adap->intf.channel_ops_tbl = chan_ops_tbl;
- 	adap->core.chan_mgt = chan_mgt;
- 	return 0;
-+
-+exit:
-+	if (!IS_ERR(chan_mgt)) {
-+		nbl_chan_remove_msg_handler(chan_mgt);
-+		adap->core.chan_mgt = NULL;
-+	}
-+	return ret;
- }
- 
- void nbl_chan_remove_common(struct nbl_adapter *adap)
- {
-+	struct nbl_channel_mgt *chan_mgt = adap->core.chan_mgt;
-+
-+	if (chan_mgt) {
-+		nbl_chan_remove_msg_handler(chan_mgt);
-+		adap->core.chan_mgt = NULL;
-+	}
- }
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_channel/nbl_channel.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_channel/nbl_channel.h
-index 637912d1e806..e8848fb97e2c 100644
---- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_channel/nbl_channel.h
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_channel/nbl_channel.h
-@@ -15,10 +15,154 @@
- #include "../nbl_include/nbl_def_common.h"
- #include "../nbl_core.h"
- 
-+#define NBL_CHAN_TX_RING_TO_DESC(tx_ring, i) \
-+	(&((((tx_ring)->desc.tx_desc))[i]))
-+#define NBL_CHAN_RX_RING_TO_DESC(rx_ring, i) \
-+	(&((((rx_ring)->desc.rx_desc))[i]))
-+#define NBL_CHAN_TX_RING_TO_BUF(tx_ring, i) (&(((tx_ring)->buf)[i]))
-+#define NBL_CHAN_RX_RING_TO_BUF(rx_ring, i) (&(((rx_ring)->buf)[i]))
-+
-+#define NBL_CHAN_TX_WAIT_US			100
-+#define NBL_CHAN_TX_WAIT_US_MAX			120
-+#define NBL_CHAN_TX_REKICK_WAIT_TIMES		2000
-+#define NBL_CHAN_TX_WAIT_TIMES			30000
-+#define NBL_CHAN_TX_WAIT_ACK_US_MIN		100
-+#define NBL_CHAN_TX_WAIT_ACK_US_MAX		120
-+#define NBL_CHAN_TX_WAIT_ACK_TIMES		50000
-+#define NBL_CHAN_QUEUE_LEN			256
-+#define NBL_CHAN_BUF_LEN			4096
-+#define NBL_CHAN_TX_DESC_EMBEDDED_DATA_LEN	16
-+
-+#define NBL_CHAN_TX_DESC_AVAIL			0
-+#define NBL_CHAN_TX_DESC_USED			1
-+#define NBL_CHAN_RX_DESC_WRITE			1
-+#define NBL_CHAN_RX_DESC_AVAIL			3
-+#define NBL_CHAN_RX_DESC_USED			4
-+
-+#define NBL_CHAN_ACK_HEAD_LEN			3
-+#define NBL_CHAN_ACK_RET_POS			2
-+#define NBL_CHAN_MSG_ID_POS			1
-+#define NBL_CHAN_MSG_TYPE_POS			0
-+
-+#define NBL_CHAN_ACK_WAIT_TIME			(3 * HZ)
-+
-+#define NBL_CHAN_HANDLER_TBL_BUCKET_SIZE	512
-+
-+enum {
-+	NBL_MB_RX_QID = 0,
-+	NBL_MB_TX_QID = 1,
++#define NBL_DRIVER_STATUS_REG			0x1300444
++#define NBL_DRIVER_STATUS_BIT			16
++
++/*  ----------  REG BASE ADDR  ----------  */
++/* Interface modules base addr */
++#define NBL_INTF_HOST_PCOMPLETER_BASE		0x00f08000
++#define NBL_INTF_HOST_PADPT_BASE		0x00f4c000
++#define NBL_INTF_HOST_MAILBOX_BASE		0x00fb0000
++#define NBL_INTF_HOST_PCIE_BASE			0X01504000
++/* DP modules base addr */
++#define NBL_DP_USTORE_BASE			0x00104000
++#define NBL_DP_UQM_BASE				0x00114000
++#define NBL_DP_UPED_BASE			0x0015c000
++#define NBL_DP_UVN_BASE				0x00244000
++#define NBL_DP_DSCH_BASE			0x00404000
++#define NBL_DP_SHAPING_BASE			0x00504000
++#define NBL_DP_DVN_BASE				0x00514000
++#define NBL_DP_DSTORE_BASE			0x00704000
++#define NBL_DP_DQM_BASE				0x00714000
++#define NBL_DP_DPED_BASE			0x0075c000
++#define NBL_DP_DDMUX_BASE			0x00984000
++/*  --------  MAILBOX BAR2 -----  */
++#define NBL_MAILBOX_NOTIFY_ADDR			0x00000000
++#define NBL_MAILBOX_BAR_REG			0x00000000
++#define NBL_MAILBOX_QINFO_CFG_RX_TABLE_ADDR	0x10
++#define NBL_MAILBOX_QINFO_CFG_TX_TABLE_ADDR	0x20
++#define NBL_MAILBOX_QINFO_CFG_DBG_TABLE_ADDR	0x30
++
++/*  --------  MAILBOX  --------  */
++
++/* mailbox BAR qinfo_cfg_table */
++#define MAILBOX_QINFO_CFG_TABLE_DWLEN	4
++union nbl_mailbox_qinfo_cfg_table_u {
++	struct nbl_mailbox_qinfo_cfg_table {
++		u32 queue_base_addr_l;
++		u32 queue_base_addr_h;
++		u32 queue_size_bwind:4;
++		u32 rsv1:28;
++		u32 queue_rst:1;
++		u32 queue_en:1;
++		u32 dif_err:1;
++		u32 ptr_err:1;
++		u32 rsv2:28;
++	} __packed info;
++	u32 data[MAILBOX_QINFO_CFG_TABLE_DWLEN];
 +};
 +
-+enum {
-+	NBL_MBX_STATUS_IDLE = 0,
-+	NBL_MBX_STATUS_WAITING,
-+	NBL_MBX_STATUS_ACKD,
-+	NBL_MBX_STATUS_TIMEOUT,
++/*  --------  MAILBOX BAR0 -----  */
++/* mailbox qinfo_map_table */
++#define NBL_MAILBOX_QINFO_MAP_REG_ARR(func_id) \
++	(NBL_INTF_HOST_MAILBOX_BASE + 0x00001000 + \
++	(func_id) * sizeof(union nbl_mailbox_qinfo_map_table_u))
++
++/* MAILBOX qinfo_map_table */
++union nbl_mailbox_qinfo_map_table_u {
++	struct nbl_mailbox_qinfo_map_table {
++		u32 function:3;
++		u32 devid:5;
++		u32 bus:8;
++		u32 msix_idx:13;
++		u32 msix_idx_valid:1;
++		u32 rsv:2;
++	} __packed info;
++	u32 data;
 +};
 +
-+struct nbl_chan_tx_param {
-+	enum nbl_chan_msg_type msg_type;
-+	void *arg;
-+	size_t arg_len;
-+	u16 dstid;
-+	u16 msgid;
-+};
++/*  --------  HOST_PCIE  --------  */
++#define NBL_PCIE_HOST_K_PF_MASK_REG (NBL_INTF_HOST_PCIE_BASE + 0x00001004)
++#define NBL_PCIE_HOST_TL_CFG_BUSDEV (NBL_INTF_HOST_PCIE_BASE + 0x11040)
 +
-+struct nbl_chan_buf {
-+	void *va;
-+	dma_addr_t pa;
-+	size_t size;
-+};
-+
-+struct nbl_chan_tx_desc {
-+	__le16 flags;
-+	__le16 srcid;
-+	__le16 dstid;
-+	__le16 data_len;
-+	__le16 buf_len;
-+	__le64 buf_addr;
-+	__le16 msg_type;
-+	u8 data[16];
-+	__le16 msgid;
-+	u8 rsv[26];
-+} __packed;
-+
-+struct nbl_chan_rx_desc {
-+	__le16 flags;
-+	__le32 buf_len;
-+	__le16 buf_id;
-+	__le64 buf_addr;
-+} __packed;
-+
-+union nbl_chan_desc_ptr {
-+	struct nbl_chan_tx_desc *tx_desc;
-+	struct nbl_chan_rx_desc *rx_desc;
-+};
-+
-+struct nbl_chan_ring {
-+	union nbl_chan_desc_ptr desc;
-+	struct nbl_chan_buf *buf;
-+	u16 next_to_use;
-+	u16 tail_ptr;
-+	u16 next_to_clean;
-+	dma_addr_t dma;
-+};
-+
-+#define NBL_CHAN_MSG_INDEX_MAX 63
-+
-+union nbl_chan_msg_id {
-+	struct nbl_chan_msg_id_info {
-+		u16 index : 6;
-+		u16 loc : 8;
-+		u16 resv : 2;
++/*  --------  HOST_PADPT  --------  */
++#define NBL_HOST_PADPT_HOST_CFG_FC_PD_DN (NBL_INTF_HOST_PADPT_BASE + 0x00000160)
++#define NBL_HOST_PADPT_HOST_CFG_FC_PH_DN (NBL_INTF_HOST_PADPT_BASE + 0x00000164)
++#define NBL_HOST_PADPT_HOST_CFG_FC_NPH_DN \
++	(NBL_INTF_HOST_PADPT_BASE + 0x0000016C)
++#define NBL_HOST_PADPT_HOST_CFG_FC_CPLH_UP \
++	(NBL_INTF_HOST_PADPT_BASE + 0x00000170)
++/* host_padpt host_msix_info */
++#define NBL_PADPT_HOST_MSIX_INFO_REG_ARR(vector_id) \
++	(NBL_INTF_HOST_PADPT_BASE + 0x00010000 +    \
++	 (vector_id) * sizeof(union nbl_host_msix_info_u))
++#define NBL_HOST_MSIX_INFO_DWLEN	2
++union nbl_host_msix_info_u {
++	struct nbl_host_msix_info {
++		u32 intrl_pnum:16;
++		u32 intrl_rate:16;
++		u32 function:3;
++		u32 devid:5;
++		u32 bus:8;
++		u32 valid:1;
++		u32 msix_mask_en:1;
++		u32 rsv:14;
 +	} info;
-+	u16 id;
++	u32 data[NBL_HOST_MSIX_INFO_DWLEN];
 +};
 +
-+struct nbl_chan_waitqueue_head {
-+	struct wait_queue_head wait_queue;
-+	char *ack_data;
-+	int acked;
-+	int ack_err;
-+	u16 ack_data_len;
-+	u16 need_waked;
-+	u16 msg_type;
-+	atomic_t status;
-+	u8 msg_index;
++/*  --------  HOST_PCOMPLETER  --------  */
++/* pcompleter_host pcompleter_host_virtio_qid_map_table */
++#define NBL_PCOMPLETER_FUNCTION_MSIX_MAP_REG_ARR(i)   \
++	(NBL_INTF_HOST_PCOMPLETER_BASE + 0x00004000 + \
++	 (i) * sizeof(union nbl_function_msix_map_u))
++#define NBL_PCOMPLETER_HOST_MSIX_FID_TABLE(i)         \
++	(NBL_INTF_HOST_PCOMPLETER_BASE + 0x0003a000 + \
++	 (i) * sizeof(union nbl_pcompleter_host_msix_fid_table_u))
++
++union nbl_pcompleter_host_msix_fid_table_u {
++	struct nbl_pcompleter_host_msix_fid_table {
++		u32 fid:10;
++		u32 vld:1;
++		u32 rsv:21;
++	} info;
++	u32 data;
 +};
 +
- struct nbl_chan_info {
-+	struct nbl_chan_ring txq;
-+	struct nbl_chan_ring rxq;
-+	struct nbl_chan_waitqueue_head *wait;
-+	/*
-+	 *Protects access to the TX queue (txq) and related metadata.
-+	 *This mutex ensures exclusive access when updating the TX queue
-+	 */
-+	struct mutex txq_lock;
-+	/*
-+	 * Acquire the RX queue lock to protect against concurrent access.
-+	 * This mutex serializes access to:
-+	 * - The next_to_clean pointer
-+	 * - The ring buffer descriptors and buffers
-+	 * - Any shared state between cleaning and enqueueing operations
-+	 */
-+	struct mutex rxq_lock;
-+	struct work_struct *clean_task;
-+	u16 wait_head_index;
-+	u16 num_txq_entries;
-+	u16 num_rxq_entries;
-+	u16 txq_buf_size;
-+	u16 rxq_buf_size;
-+	DECLARE_BITMAP(state, NBL_CHAN_STATE_NBITS);
- 	u8 chan_type;
- };
- 
-+struct nbl_chan_msg_node_data {
-+	nbl_chan_resp func;
-+	void *priv;
++#define NBL_FUNC_MSIX_MAP_DWLEN		4
++union nbl_function_msix_map_u {
++	struct nbl_function_msix_map {
++		u64 msix_map_base_addr;
++		u32 function:3;
++		u32 devid:5;
++		u32 bus:8;
++		u32 valid:1;
++		u32 rsv0:15;
++		u32 rsv1;
++	} info;
++	u32 data[NBL_FUNC_MSIX_MAP_DWLEN];
 +};
 +
- struct nbl_channel_mgt {
- 	struct nbl_common_info *common;
- 	struct nbl_hw_ops_tbl *hw_ops_tbl;
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_common/nbl_common.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_common/nbl_common.c
++/*  ----------  DPED  ----------  */
++#define NBL_DPED_VLAN_OFFSET		(NBL_DP_DPED_BASE + 0x000003F4)
++#define NBL_DPED_DSCP_OFFSET_0		(NBL_DP_DPED_BASE + 0x000003F8)
++#define NBL_DPED_DSCP_OFFSET_1		(NBL_DP_DPED_BASE + 0x000003FC)
++
++/* DPED hw_edt_prof/ UPED hw_edt_prof */
++union ped_hw_edit_profile_u {
++	struct ped_hw_edit_profile {
++		u32 l4_len:2;
++	#define NBL_PED_L4_LEN_MDY_CMD_0		0
++	#define NBL_PED_L4_LEN_MDY_CMD_1		1
++	#define NBL_PED_L4_LEN_MDY_DISABLE		2
++		u32 l3_len:2;
++	#define NBL_PED_L3_LEN_MDY_CMD_0		0
++	#define NBL_PED_L3_LEN_MDY_CMD_1		1
++	#define NBL_PED_L3_LEN_MDY_DISABLE		2
++		u32 l4_ck:3;
++	#define NBL_PED_L4_CKSUM_CMD_0			0
++	#define NBL_PED_L4_CKSUM_CMD_1			1
++	#define NBL_PED_L4_CKSUM_CMD_2			2
++	#define NBL_PED_L4_CKSUM_CMD_3			3
++	#define NBL_PED_L4_CKSUM_CMD_4			4
++	#define NBL_PED_L4_CKSUM_CMD_5			5
++	#define NBL_PED_L4_CKSUM_CMD_6			6
++	#define NBL_PED_L4_CKSUM_DISABLE		7
++		u32 l3_ck:1;
++	#define NBL_PED_L3_CKSUM_ENABLE			1
++	#define NBL_PED_L3_CKSUM_DISABLE		0
++		u32 l4_ck_zero_free:1;
++	#define NBL_PED_L4_CKSUM_ZERO_FREE_ENABLE	1
++	#define NBL_PED_L4_CKSUM_ZERO_FREE_DISABLE	0
++		u32 rsv:23;
++	} info;
++	u32 data;
++};
++
++/*  ----------  UPED  ----------  */
++/* UPED uped_hw_edt_prof */
++#define NBL_UPED_HW_EDT_PROF_TABLE(i)    \
++	(NBL_DP_UPED_BASE + 0x00001000 + \
++	 (i) * sizeof(union ped_hw_edit_profile_u))
++
++/*  ---------  SHAPING  ---------  */
++#define NBL_SHAPING_NET(i)                  \
++	(NBL_DP_SHAPING_BASE + 0x00001800 + \
++	 (i) * sizeof(struct nbl_shaping_net))
++
++/* cir 1, bandwidth 1kB/s in protol environment */
++/* cir 1, bandwidth 1Mb/s */
++#define NBL_LR_LEONIS_NET_BUCKET_DEPTH		9600
++
++#define NBL_DSTORE_DROP_XOFF_TH			0xC8
++#define NBL_DSTORE_DROP_XON_TH			0x64
++
++#define NBL_DSTORE_DROP_XOFF_TH_100G		0x1F4
++#define NBL_DSTORE_DROP_XON_TH_100G		0x12C
++
++#define NBL_DSTORE_DROP_XOFF_TH_BOND_MAIN	0x180
++#define NBL_DSTORE_DROP_XON_TH_BOND_MAIN	0x180
++
++#define NBL_DSTORE_DROP_XOFF_TH_BOND_OTHER	0x64
++#define NBL_DSTORE_DROP_XON_TH_BOND_OTHER	0x64
++
++#define NBL_DSTORE_DROP_XOFF_TH_100G_BOND_MAIN	0x2D5
++#define NBL_DSTORE_DROP_XON_TH_100G_BOND_MAIN	0x2BC
++
++#define NBL_DSTORE_DROP_XOFF_TH_100G_BOND_OTHER	0x145
++#define NBL_DSTORE_DROP_XON_TH_100G_BOND_OTHER	0x12C
++
++#define NBL_DSTORE_DISC_BP_TH (NBL_DP_DSTORE_BASE + 0x00000630)
++
++union dstore_disc_bp_th_u {
++	struct dstore_disc_bp_th {
++		u32 xoff_th:10;
++		u32 rsv1:6;
++		u32 xon_th:10;
++		u32 rsv:5;
++		u32 en:1;
++	} info;
++	u32 data;
++};
++
++union dsch_psha_en_u {
++	struct dsch_psha_en {
++		u32 en:4;
++		u32 rsv:28;
++	} info;
++	u32 data;
++};
++
++/*  ----------  DSCH  ----------  */
++/* DSCH dsch maxqid */
++#define NBL_DSCH_HOST_QID_MAX (NBL_DP_DSCH_BASE + 0x00000118)
++#define NBL_DSCH_VN_QUANTA_ADDR  (NBL_DP_DSCH_BASE + 0x00000134)
++
++#define NBL_MAX_QUEUE_ID	0x7ff
++#define NBL_HOST_QUANTA		0x8000
++#define NBL_ECPU_QUANTA		0x1000
++
++union dsch_vn_quanta_u {
++	struct dsch_vn_quanta {
++		u32 h_qua:16;
++		u32 e_qua:16;
++	} info;
++	u32 data;
++};
++
++/*  ----------  DVN  ----------  */
++/* DVN dvn_queue_table */
++#define NBL_DVN_ECPU_QUEUE_NUM			(NBL_DP_DVN_BASE + 0x0000041C)
++#define NBL_DVN_DESCREQ_NUM_CFG			(NBL_DP_DVN_BASE + 0x00000430)
++#define NBL_DVN_DESC_WR_MERGE_TIMEOUT		(NBL_DP_DVN_BASE + 0x00000480)
++#define NBL_DVN_DIF_REQ_RD_RO_FLAG		(NBL_DP_DVN_BASE + 0x0000045C)
++
++#define DEFAULT_DVN_DESC_WR_MERGE_TIMEOUT_MAX	0x3FF
++
++union nbl_dvn_descreq_num_cfg_u {
++	struct nbl_dvn_descreq_num_cfg {
++		u32 avring_cfg_num:1; /* spilit ring descreq_num 0:8,1:16 */
++		u32 rsv0:3;
++		/* packet ring descreq_num
++		 * 0:8,1:12,2:16;3:20,4:24,5:26;6:32,7:32
++		 */
++		u32 packed_l1_num:3;
++		u32 rsv1:25;
++	} info;
++	u32 data;
++};
++
++union nbl_dvn_desc_wr_merge_timeout_u {
++	struct nbl_dvn_desc_wr_merge_timeout {
++		u32 cfg_cycle:10;
++		u32 rsv:22;
++	} info;
++	u32 data;
++};
++
++union nbl_dvn_dif_req_rd_ro_flag_u {
++	struct nbl_dvn_dif_req_rd_ro_flag {
++		u32 rd_desc_ro_en:1;
++		u32 rd_data_ro_en:1;
++		u32 rd_avring_ro_en:1;
++		u32 rsv:29;
++	} info;
++	u32 data;
++};
++
++/*  ----------  UVN  ----------  */
++/* UVN uvn_queue_table */
++
++#define NBL_UVN_DESC_RD_WAIT			(NBL_DP_UVN_BASE + 0x0000020C)
++#define NBL_UVN_QUEUE_ERR_MASK			(NBL_DP_UVN_BASE + 0x00000224)
++#define NBL_UVN_ECPU_QUEUE_NUM			(NBL_DP_UVN_BASE + 0x0000023C)
++#define NBL_UVN_DESC_WR_TIMEOUT			(NBL_DP_UVN_BASE + 0x00000214)
++#define NBL_UVN_DIF_REQ_RO_FLAG			(NBL_DP_UVN_BASE + 0x00000250)
++#define NBL_UVN_DESC_PREFETCH_INIT		(NBL_DP_UVN_BASE + 0x00000204)
++#define NBL_UVN_DESC_PREFETCH_NUM		4
++
++union uvn_dif_req_ro_flag_u {
++	struct uvn_dif_req_ro_flag {
++		u32 avail_rd:1;
++		u32 desc_rd:1;
++		u32 pkt_wr:1;
++		u32 desc_wr:1;
++		u32 rsv:28;
++	} info;
++	u32 data;
++};
++
++union uvn_desc_wr_timeout_u {
++	struct uvn_desc_wr_timeout {
++		u32 num:15;
++		u32 mask:1;
++		u32 rsv:16;
++	} info;
++	u32 data;
++};
++
++union uvn_queue_err_mask_u {
++	struct uvn_queue_err_mask {
++		u32 rsv0:1;
++		u32 buffer_len_err:1;
++		u32 next_err:1;
++		u32 indirect_err:1;
++		u32 split_err:1;
++		u32 dif_err:1;
++		u32 rsv1:26;
++	} info;
++	u32 data;
++};
++
++union uvn_desc_prefetch_init_u {
++	struct uvn_desc_prefetch_init {
++		u32 num:8;
++		u32 rsv1:8;
++		u32 sel:1;
++		u32 rsv:15;
++	} info;
++	u32 data;
++};
++
++/*  --------  USTORE  --------  */
++#define NBL_USTORE_PKT_LEN_ADDR (NBL_DP_USTORE_BASE + 0x00000108)
++#define NBL_USTORE_PORT_DROP_TH_REG_ARR(port_id) \
++	(NBL_DP_USTORE_BASE + 0x00000150 +       \
++	 (port_id) * sizeof(union nbl_ustore_port_drop_th_u))
++#define NBL_USTORE_BUF_PORT_DROP_PKT(eth_id) \
++	(NBL_DP_USTORE_BASE + 0x00002500 + (eth_id) * sizeof(u32))
++#define NBL_USTORE_BUF_PORT_TRUN_PKT(eth_id) \
++	(NBL_DP_USTORE_BASE + 0x00002540 + (eth_id) * sizeof(u32))
++
++#define NBL_USTORE_SINGLE_ETH_DROP_TH		0xC80
++#define NBL_USTORE_DUAL_ETH_DROP_TH		0x640
++#define NBL_USTORE_QUAD_ETH_DROP_TH		0x320
++
++/* USTORE pkt_len */
++union ustore_pkt_len_u {
++	struct ustore_pkt_len {
++		u32 min:7;
++		u32 rsv:8;
++		u32 min_chk_en:1;
++		u32 max:14;
++		u32 rsv2:1;
++		u32 max_chk_len:1;
++	} info;
++	u32 data;
++};
++
++/* USTORE port_drop_th */
++union nbl_ustore_port_drop_th_u {
++	struct nbl_ustore_port_drop_th {
++		u32 disc_th:12;
++		u32 rsv:19;
++		u32 en:1;
++	} info;
++	u32 data;
++};
++
++#define NBL_UQM_QUE_TYPE			(NBL_DP_UQM_BASE + 0x0000013c)
++#define NBL_UQM_DROP_PKT_CNT			(NBL_DP_UQM_BASE + 0x000009C0)
++#define NBL_UQM_DROP_PKT_SLICE_CNT		(NBL_DP_UQM_BASE + 0x000009C4)
++#define NBL_UQM_DROP_PKT_LEN_ADD_CNT		(NBL_DP_UQM_BASE + 0x000009C8)
++#define NBL_UQM_DROP_HEAD_PNTR_ADD_CNT		(NBL_DP_UQM_BASE + 0x000009CC)
++#define NBL_UQM_DROP_WEIGHT_ADD_CNT		(NBL_DP_UQM_BASE + 0x000009D0)
++#define NBL_UQM_PORT_DROP_PKT_CNT		(NBL_DP_UQM_BASE + 0x000009D4)
++#define NBL_UQM_PORT_DROP_PKT_SLICE_CNT		(NBL_DP_UQM_BASE + 0x000009F4)
++#define NBL_UQM_PORT_DROP_PKT_LEN_ADD_CNT	(NBL_DP_UQM_BASE + 0x00000A14)
++#define NBL_UQM_PORT_DROP_HEAD_PNTR_ADD_CNT	(NBL_DP_UQM_BASE + 0x00000A34)
++#define NBL_UQM_PORT_DROP_WEIGHT_ADD_CNT	(NBL_DP_UQM_BASE + 0x00000A54)
++#define NBL_UQM_FWD_DROP_CNT			(NBL_DP_UQM_BASE + 0x00000A80)
++#define NBL_UQM_DPORT_DROP_CNT			(NBL_DP_UQM_BASE + 0x00000B74)
++
++#define NBL_UQM_PORT_DROP_DEPTH			6
++#define NBL_UQM_DPORT_DROP_DEPTH		16
++
++union nbl_uqm_que_type_u {
++	struct nbl_uqm_que_type {
++		u32 bp_drop:1;
++		u32 rsv:31;
++	} info;
++	u32 data;
++};
++
++#define NBL_BYTES_IN_REG 4
++#define NBL_SHAPING_DPORT_ADDR 0x504700
++#define NBL_SHAPING_DPORT_DWLEN 4
++#define NBL_SHAPING_DPORT_REG(r) \
++	(NBL_SHAPING_DPORT_ADDR + (NBL_SHAPING_DPORT_DWLEN * 4) * (r))
++#define NBL_SHAPING_DVN_DPORT_ADDR 0x504750
++#define NBL_SHAPING_DVN_DPORT_DWLEN 4
++#define NBL_SHAPING_DVN_DPORT_REG(r) \
++	(NBL_SHAPING_DVN_DPORT_ADDR + (NBL_SHAPING_DVN_DPORT_DWLEN * 4) * (r))
++#define NBL_DSCH_PSHA_EN_ADDR 0x404314
++#define NBL_SHAPING_NET_ADDR 0x505800
++#define NBL_SHAPING_NET_DWLEN 4
++#define NBL_SHAPING_NET_REG(r) \
++	(NBL_SHAPING_NET_ADDR + (NBL_SHAPING_NET_DWLEN * 4) * (r))
++
++#define DPORT_VALID_MASK (0x1ULL << 0)
++#define DPORT_DEPTH_MASK (0x7FFFFULL << 1)	// [19:1]
++#define DPORT_CIR_MASK (0x7FFFFULL << 20)	// [38:20]
++#define DPORT_PIR_MASK (0x7FFFFULL << 39)	// [57:39]
++#define DPORT_CBS_MASK_LOW (0x3FULL << 58)		// [63:58]
++#define DPORT_CBS_MASK_HIGH (0x7FFFULL << (0)) // [78:64] -> high[14:0]
++#define DPORT_PBS_MASK (0x1FFFFFULL << (79 - 64)) // [99:79] -> high[35:15]
++
++/* SHAPING shaping_net */
++union nbl_shaping_net_u {
++	struct nbl_shaping_net {
++		u64 low;
++		u64 high;
++	} info;
++	u32 data[NBL_SHAPING_NET_DWLEN];
++};
++
++union nbl_shaping_dport_u {
++	struct nbl_shaping_dport {
++		u64 low;
++		u64 high;
++	} info;
++	u32 data[NBL_SHAPING_DPORT_DWLEN];
++};
++
++union nbl_shaping_dvn_dport_u {
++	struct nbl_shaping_dvn_dport {
++		u64 low;
++		u64 high;
++	} info;
++	u32 data[NBL_SHAPING_DVN_DPORT_DWLEN];
++};
++
++#define NBL_DPED_L4_CK_CMD_40_ADDR  0x75c338
++#define NBL_DPED_L4_CK_CMD_40_DEPTH 1
++#define NBL_DPED_L4_CK_CMD_40_WIDTH 32
++#define NBL_DPED_L4_CK_CMD_40_DWLEN 1
++union dped_l4_ck_cmd_40_u {
++	struct dped_l4_ck_cmd_40 {
++		u32 value:8;             /* [7:0] Default:0x0 RW */
++		u32 len_in_oft:7;        /* [14:8] Default:0x0 RW */
++		u32 len_phid:2;          /* [16:15] Default:0x0 RW */
++		u32 len_vld:1;           /* [17] Default:0x0 RW */
++		u32 data_vld:1;          /* [18] Default:0x0 RW */
++		u32 in_oft:7;            /* [25:19] Default:0x8 RW */
++		u32 phid:2;              /* [27:26] Default:0x3 RW */
++		u32 flag:1;              /* [28] Default:0x0 RW */
++		u32 mode:1;              /* [29] Default:0x1 RW */
++		u32 rsv:1;               /* [30] Default:0x0 RO */
++		u32 en:1;                /* [31] Default:0x0 RW */
++	} __packed info;
++	u32 data[NBL_DPED_L4_CK_CMD_40_DWLEN];
++} __packed;
++
++#define NBL_DSTORE_D_DPORT_FC_TH_ADDR  0x704600
++#define NBL_DSTORE_D_DPORT_FC_TH_DEPTH 5
++#define NBL_DSTORE_D_DPORT_FC_TH_WIDTH 32
++#define NBL_DSTORE_D_DPORT_FC_TH_DWLEN 1
++union dstore_d_dport_fc_th_u {
++	struct dstore_d_dport_fc_th {
++		u32 xoff_th:11;          /* [10:0] Default:200 RW */
++		u32 rsv1:5;              /* [15:11] Default:0x0 RO */
++		u32 xon_th:11;           /* [26:16] Default:100 RW */
++		u32 rsv:3;               /* [29:27] Default:0x0 RO */
++		u32 fc_set:1;            /* [30:30] Default:0x0 RW */
++		u32 fc_en:1;             /* [31:31] Default:0x0 RW */
++	} __packed info;
++	u32 data[NBL_DSTORE_D_DPORT_FC_TH_DWLEN];
++} __packed;
++#define NBL_DSTORE_D_DPORT_FC_TH_REG(r) (NBL_DSTORE_D_DPORT_FC_TH_ADDR + \
++		(NBL_DSTORE_D_DPORT_FC_TH_DWLEN * 4) * (r))
++#define NBL_DSTORE_PORT_DROP_TH_ADDR  0x704150
++#define NBL_DSTORE_PORT_DROP_TH_DEPTH 6
++#define NBL_DSTORE_PORT_DROP_TH_WIDTH 32
++#define NBL_DSTORE_PORT_DROP_TH_DWLEN 1
++union dstore_port_drop_th_u {
++	struct dstore_port_drop_th {
++		u32 disc_th:10;          /* [9:0] Default:800 RW */
++		u32 rsv:21;              /* [30:10] Default:0x0 RO */
++		u32 en:1;                /* [31] Default:0x1 RW */
++	} __packed info;
++	u32 data[NBL_DSTORE_PORT_DROP_TH_DWLEN];
++} __packed;
++#define NBL_DSTORE_PORT_DROP_TH_REG(r) (NBL_DSTORE_PORT_DROP_TH_ADDR + \
++		(NBL_DSTORE_PORT_DROP_TH_DWLEN * 4) * (r))
++
++#define NBL_FW_BOARD_CONFIG			0x200
++#define NBL_FW_BOARD_DW3_OFFSET			(NBL_FW_BOARD_CONFIG + 12)
++#define NBL_FW_BOARD_DW6_OFFSET			(NBL_FW_BOARD_CONFIG + 24)
++union nbl_fw_board_cfg_dw3 {
++	struct board_cfg_dw3 {
++		u32 port_type:1;
++		u32 port_num:7;
++		u32 port_speed:2;
++		u32 gpio_type:3;
++		u32 p4_version:1; /* 0: low version; 1: high version */
++		u32 rsv:18;
++	} __packed info;
++	u32 data;
++};
++
++union nbl_fw_board_cfg_dw6 {
++	struct board_cfg_dw6 {
++		u8 lane_bitmap;
++		u8 eth_bitmap;
++		u16 rsv;
++	} __packed info;
++	u32 data;
++};
++
++#define NBL_LEONIS_QUIRKS_OFFSET	0x00000140
++#define NBL_LEONIS_ILLEGAL_REG_VALUE	0xDEADBEEF
++
+ #endif
+diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis_regs.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis_regs.c
 new file mode 100644
-index 000000000000..11b1948658d9
+index 000000000000..70e97356ddee
 --- /dev/null
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_common/nbl_common.c
-@@ -0,0 +1,180 @@
++++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis_regs.c
+@@ -0,0 +1,2887 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
 + * Copyright (c) 2025 Nebula Matrix Limited.
 + */
-+
 +#include <linux/device.h>
-+#include "nbl_common.h"
++#include <linux/io.h>
++#include "nbl_hw_leonis.h"
++#include "nbl_hw_leonis_regs.h"
 +
-+u32 nbl_common_pf_id_subtraction_mgtpf_id(struct nbl_common_info *common,
-+					  u32 pf_id)
++#define NBL_SEC_BLOCK_SIZE		0x100
++#define NBL_SEC000_SIZE			1
++#define NBL_SEC000_ADDR			0x114150
++#define NBL_SEC001_SIZE			1
++#define NBL_SEC001_ADDR			0x15c190
++#define NBL_SEC002_SIZE			1
++#define NBL_SEC002_ADDR			0x10417c
++#define NBL_SEC003_SIZE			1
++#define NBL_SEC003_ADDR			0x714154
++#define NBL_SEC004_SIZE			1
++#define NBL_SEC004_ADDR			0x75c190
++#define NBL_SEC005_SIZE			1
++#define NBL_SEC005_ADDR			0x70417c
++#define NBL_SEC006_SIZE			512
++#define NBL_SEC006_ADDR			0x8f000
++#define NBL_SEC006_REGI(i)		(0x8f000 + NBL_BYTES_IN_REG * (i))
++#define NBL_SEC007_SIZE			256
++#define NBL_SEC007_ADDR			0x8f800
++#define NBL_SEC007_REGI(i)		(0x8f800 + NBL_BYTES_IN_REG * (i))
++#define NBL_SEC008_SIZE			1024
++#define NBL_SEC008_ADDR			0x90000
++#define NBL_SEC008_REGI(i)		(0x90000 + NBL_BYTES_IN_REG * (i))
++#define NBL_SEC009_SIZE			2048
++#define NBL_SEC009_ADDR			0x94000
++#define NBL_SEC009_REGI(i)		(0x94000 + NBL_BYTES_IN_REG * (i))
++#define NBL_SEC010_SIZE			256
++#define NBL_SEC010_ADDR			0x96000
++#define NBL_SEC010_REGI(i)		(0x96000 + NBL_BYTES_IN_REG * (i))
++#define NBL_SEC011_SIZE			1024
++#define NBL_SEC011_ADDR			0x91000
++#define NBL_SEC011_REGI(i)		(0x91000 + NBL_BYTES_IN_REG * (i))
++#define NBL_SEC012_SIZE			128
++#define NBL_SEC012_ADDR			0x92000
++#define NBL_SEC012_REGI(i)		(0x92000 + NBL_BYTES_IN_REG * (i))
++#define NBL_SEC013_SIZE			64
++#define NBL_SEC013_ADDR			0x92200
++#define NBL_SEC013_REGI(i)		(0x92200 + NBL_BYTES_IN_REG * (i))
++#define NBL_SEC014_SIZE			64
++#define NBL_SEC014_ADDR			0x92300
++#define NBL_SEC014_REGI(i)		(0x92300 + NBL_BYTES_IN_REG * (i))
++#define NBL_SEC015_SIZE			1
++#define NBL_SEC015_ADDR			0x8c214
++#define NBL_SEC016_SIZE			1
++#define NBL_SEC016_ADDR			0x8c220
++#define NBL_SEC017_SIZE			1
++#define NBL_SEC017_ADDR			0x8c224
++#define NBL_SEC018_SIZE			1
++#define NBL_SEC018_ADDR			0x8c228
++#define NBL_SEC019_SIZE			1
++#define NBL_SEC019_ADDR			0x8c22c
++#define NBL_SEC020_SIZE			1
++#define NBL_SEC020_ADDR			0x8c1f0
++#define NBL_SEC021_SIZE			1
++#define NBL_SEC021_ADDR			0x8c1f8
++/* HW reserved gap after 256 regs */
++#define NBL_SEC022_SIZE			256
++#define NBL_SEC022_ADDR			0x85f000
++#define NBL_SEC022_REGI(i)		(0x85f000 + NBL_BYTES_IN_REG * (i))
++#define NBL_SEC023_SIZE			128
++#define NBL_SEC023_ADDR			0x85f800
++#define NBL_SEC023_REGI(i)		(0x85f800 + NBL_BYTES_IN_REG * (i))
++#define NBL_SEC024_SIZE			512
++#define NBL_SEC024_ADDR			0x860000
++#define NBL_SEC024_REGI(i)		(0x860000 + NBL_BYTES_IN_REG * (i))
++#define NBL_SEC025_SIZE			1024
++#define NBL_SEC025_ADDR			0x864000
++#define NBL_SEC025_REGI(i)		(0x864000 + NBL_BYTES_IN_REG * (i))
++#define NBL_SEC026_SIZE			256
++#define NBL_SEC026_ADDR			0x866000
++#define NBL_SEC026_REGI(i)		(0x866000 + NBL_BYTES_IN_REG * (i))
++#define NBL_SEC027_SIZE			512
++#define NBL_SEC027_ADDR			0x861000
++#define NBL_SEC027_REGI(i)		(0x861000 + NBL_BYTES_IN_REG * (i))
++#define NBL_SEC028_SIZE			64
++#define NBL_SEC028_ADDR			0x862000
++#define NBL_SEC028_REGI(i)		(0x862000 + NBL_BYTES_IN_REG * (i))
++#define NBL_SEC029_SIZE			32
++#define NBL_SEC029_ADDR			0x862200
++#define NBL_SEC029_REGI(i)		(0x862200 + NBL_BYTES_IN_REG * (i))
++#define NBL_SEC030_SIZE			32
++#define NBL_SEC030_ADDR			0x862300
++#define NBL_SEC030_REGI(i)		(0x862300 + NBL_BYTES_IN_REG * (i))
++#define NBL_SEC031_SIZE			1
++#define NBL_SEC031_ADDR			0x85c214
++#define NBL_SEC032_SIZE			1
++#define NBL_SEC032_ADDR			0x85c220
++#define NBL_SEC033_SIZE			1
++#define NBL_SEC033_ADDR			0x85c224
++#define NBL_SEC034_SIZE			1
++#define NBL_SEC034_ADDR			0x85c228
++#define NBL_SEC035_SIZE			1
++#define NBL_SEC035_ADDR			0x85c22c
++#define NBL_SEC036_SIZE			1
++#define NBL_SEC036_ADDR			0xb04200
++#define NBL_SEC037_SIZE			1
++#define NBL_SEC037_ADDR			0xb04230
++#define NBL_SEC038_SIZE			1
++#define NBL_SEC038_ADDR			0xb04234
++#define NBL_SEC039_SIZE			64
++#define NBL_SEC039_ADDR			0xb05800
++#define NBL_SEC039_REGI(i)		(0xb05800 + NBL_BYTES_IN_REG * (i))
++#define NBL_SEC040_SIZE			32
++#define NBL_SEC040_ADDR			0xb05400
++#define NBL_SEC040_REGI(i)		(0xb05400 + NBL_BYTES_IN_REG * (i))
++#define NBL_SEC041_SIZE			16
++#define NBL_SEC041_ADDR			0xb05500
++#define NBL_SEC041_REGI(i)		(0xb05500 + NBL_BYTES_IN_REG * (i))
++#define NBL_SEC042_SIZE			1
++#define NBL_SEC042_ADDR			0xb14148
++#define NBL_SEC043_SIZE			1
++#define NBL_SEC043_ADDR			0xb14104
++#define NBL_SEC044_SIZE			1
++#define NBL_SEC044_ADDR			0xb1414c
++#define NBL_SEC045_SIZE			1
++#define NBL_SEC045_ADDR			0xb14150
++#define NBL_SEC046_SIZE			256
++#define NBL_SEC046_ADDR			0xb15000
++#define NBL_SEC046_REGI(i)		(0xb15000 + NBL_BYTES_IN_REG * (i))
++#define NBL_SEC047_SIZE			32
++#define NBL_SEC047_ADDR			0xb15800
++#define NBL_SEC047_REGI(i)		(0xb15800 + NBL_BYTES_IN_REG * (i))
++#define NBL_SEC048_SIZE			1
++#define NBL_SEC048_ADDR			0xb24148
++#define NBL_SEC049_SIZE			1
++#define NBL_SEC049_ADDR			0xb24104
++#define NBL_SEC050_SIZE			1
++#define NBL_SEC050_ADDR			0xb2414c
++#define NBL_SEC051_SIZE			1
++#define NBL_SEC051_ADDR			0xb24150
++#define NBL_SEC052_SIZE			256
++#define NBL_SEC052_ADDR			0xb25000
++#define NBL_SEC052_REGI(i)		(0xb25000 + NBL_BYTES_IN_REG * (i))
++#define NBL_SEC053_SIZE			32
++#define NBL_SEC053_ADDR			0xb25800
++#define NBL_SEC053_REGI(i)		(0xb25800 + NBL_BYTES_IN_REG * (i))
++#define NBL_SEC054_SIZE			1
++#define NBL_SEC054_ADDR			0xb34148
++#define NBL_SEC055_SIZE			1
++#define NBL_SEC055_ADDR			0xb34104
++#define NBL_SEC056_SIZE			1
++#define NBL_SEC056_ADDR			0xb3414c
++#define NBL_SEC057_SIZE			1
++#define NBL_SEC057_ADDR			0xb34150
++#define NBL_SEC058_SIZE			256
++#define NBL_SEC058_ADDR			0xb35000
++#define NBL_SEC058_REGI(i)		(0xb35000 + NBL_BYTES_IN_REG * (i))
++#define NBL_SEC059_SIZE			32
++#define NBL_SEC059_ADDR			0xb35800
++#define NBL_SEC059_REGI(i)		(0xb35800 + NBL_BYTES_IN_REG * (i))
++#define NBL_SEC060_SIZE			1
++#define NBL_SEC060_ADDR			0xe74630
++#define NBL_SEC061_SIZE			1
++#define NBL_SEC061_ADDR			0xe74634
++#define NBL_SEC062_SIZE			64
++#define NBL_SEC062_ADDR			0xe75000
++#define NBL_SEC062_REGI(i)		(0xe75000 + NBL_BYTES_IN_REG * (i))
++#define NBL_SEC063_SIZE			32
++#define NBL_SEC063_ADDR			0xe75480
++#define NBL_SEC063_REGI(i)		(0xe75480 + NBL_BYTES_IN_REG * (i))
++#define NBL_SEC064_SIZE			16
++#define NBL_SEC064_ADDR			0xe75980
++#define NBL_SEC064_REGI(i)		(0xe75980 + NBL_BYTES_IN_REG * (i))
++#define NBL_SEC065_SIZE			32
++#define NBL_SEC065_ADDR			0x15f000
++#define NBL_SEC065_REGI(i)		(0x15f000 + NBL_BYTES_IN_REG * (i))
++#define NBL_SEC066_SIZE			32
++#define NBL_SEC066_ADDR			0x75f000
++#define NBL_SEC066_REGI(i)		(0x75f000 + NBL_BYTES_IN_REG * (i))
++#define NBL_SEC067_SIZE			1
++#define NBL_SEC067_ADDR			0xb64108
++#define NBL_SEC068_SIZE			1
++#define NBL_SEC068_ADDR			0xb6410c
++#define NBL_SEC069_SIZE			1
++#define NBL_SEC069_ADDR			0xb64140
++#define NBL_SEC070_SIZE			1
++#define NBL_SEC070_ADDR			0xb64144
++#define NBL_SEC071_SIZE			512
++#define NBL_SEC071_ADDR			0xb65000
++#define NBL_SEC071_REGI(i)		(0xb65000 + NBL_BYTES_IN_REG * (i))
++#define NBL_SEC072_SIZE			32
++#define NBL_SEC072_ADDR			0xb65800
++#define NBL_SEC072_REGI(i)		(0xb65800 + NBL_BYTES_IN_REG * (i))
++#define NBL_SEC073_SIZE			1
++#define NBL_SEC073_ADDR			0x8c210
++#define NBL_SEC074_SIZE			1
++#define NBL_SEC074_ADDR			0x85c210
++#define NBL_SEC075_SIZE			4
++#define NBL_SEC075_ADDR			0x8c1b0
++#define NBL_SEC075_REGI(i)		(0x8c1b0 + NBL_BYTES_IN_REG * (i))
++#define NBL_SEC076_SIZE			4
++#define NBL_SEC076_ADDR			0x8c1c0
++#define NBL_SEC076_REGI(i)		(0x8c1c0 + NBL_BYTES_IN_REG * (i))
++#define NBL_SEC077_SIZE			4
++#define NBL_SEC077_ADDR			0x85c1b0
++#define NBL_SEC077_REGI(i)		(0x85c1b0 + NBL_BYTES_IN_REG * (i))
++#define NBL_SEC078_SIZE			1
++#define NBL_SEC078_ADDR			0x85c1ec
++#define NBL_SEC079_SIZE			1
++#define NBL_SEC079_ADDR			0x8c1ec
++#define NBL_SEC080_SIZE			1
++#define NBL_SEC080_ADDR			0xb04440
++#define NBL_SEC081_SIZE			1
++#define NBL_SEC081_ADDR			0xb04448
++#define NBL_SEC082_SIZE			1
++#define NBL_SEC082_ADDR			0xb14450
++#define NBL_SEC083_SIZE			1
++#define NBL_SEC083_ADDR			0xb24450
++#define NBL_SEC084_SIZE			1
++#define NBL_SEC084_ADDR			0xb34450
++#define NBL_SEC085_SIZE			1
++#define NBL_SEC085_ADDR			0xa04188
++#define NBL_SEC086_SIZE			1
++#define NBL_SEC086_ADDR			0xe74218
++#define NBL_SEC087_SIZE			1
++#define NBL_SEC087_ADDR			0xe7421c
++#define NBL_SEC088_SIZE			1
++#define NBL_SEC088_ADDR			0xe74220
++#define NBL_SEC089_SIZE			1
++#define NBL_SEC089_ADDR			0xe74224
++#define NBL_SEC090_SIZE			1
++#define NBL_SEC090_ADDR			0x75c22c
++#define NBL_SEC091_SIZE			1
++#define NBL_SEC091_ADDR			0x75c230
++#define NBL_SEC092_SIZE			1
++#define NBL_SEC092_ADDR			0x75c238
++#define NBL_SEC093_SIZE			1
++#define NBL_SEC093_ADDR			0x75c244
++#define NBL_SEC094_SIZE			1
++#define NBL_SEC094_ADDR			0x75c248
++#define NBL_SEC095_SIZE			1
++#define NBL_SEC095_ADDR			0x75c250
++#define NBL_SEC096_SIZE			1
++#define NBL_SEC096_ADDR			0x15c230
++#define NBL_SEC097_SIZE			1
++#define NBL_SEC097_ADDR			0x15c234
++#define NBL_SEC098_SIZE			1
++#define NBL_SEC098_ADDR			0x15c238
++#define NBL_SEC099_SIZE			1
++#define NBL_SEC099_ADDR			0x15c23c
++#define NBL_SEC100_SIZE			1
++#define NBL_SEC100_ADDR			0x15c244
++#define NBL_SEC101_SIZE			1
++#define NBL_SEC101_ADDR			0x15c248
++#define NBL_SEC102_SIZE			1
++#define NBL_SEC102_ADDR			0xb6432c
++#define NBL_SEC103_SIZE			1
++#define NBL_SEC103_ADDR			0xb64220
++#define NBL_SEC104_SIZE			1
++#define NBL_SEC104_ADDR			0xb44804
++#define NBL_SEC105_SIZE			1
++#define NBL_SEC105_ADDR			0xb44a00
++#define NBL_SEC106_SIZE			1
++#define NBL_SEC106_ADDR			0xe84210
++#define NBL_SEC107_SIZE			1
++#define NBL_SEC107_ADDR			0xe84214
++#define NBL_SEC108_SIZE			1
++#define NBL_SEC108_ADDR			0xe64228
++#define NBL_SEC109_SIZE			1
++#define NBL_SEC109_ADDR			0x65413c
++#define NBL_SEC110_SIZE			1
++#define NBL_SEC110_ADDR			0x984144
++#define NBL_SEC111_SIZE			1
++#define NBL_SEC111_ADDR			0x114130
++#define NBL_SEC112_SIZE			1
++#define NBL_SEC112_ADDR			0x714138
++#define NBL_SEC113_SIZE			1
++#define NBL_SEC113_ADDR			0x114134
++#define NBL_SEC114_SIZE			1
++#define NBL_SEC114_ADDR			0x71413c
++#define NBL_SEC115_SIZE			1
++#define NBL_SEC115_ADDR			0x90437c
++#define NBL_SEC116_SIZE			32
++#define NBL_SEC116_ADDR			0xb05000
++#define NBL_SEC116_REGI(i)		(0xb05000 + NBL_BYTES_IN_REG * (i))
++#define NBL_SEC117_SIZE			1
++#define NBL_SEC117_ADDR			0xb043e0
++#define NBL_SEC118_SIZE			1
++#define NBL_SEC118_ADDR			0xb043f0
++#define NBL_SEC119_SIZE			5
++#define NBL_SEC119_ADDR			0x8c230
++#define NBL_SEC119_REGI(i)		(0x8c230 + NBL_BYTES_IN_REG * (i))
++#define NBL_SEC120_SIZE			1
++#define NBL_SEC120_ADDR			0x8c1f4
++#define NBL_SEC121_SIZE			1
++#define NBL_SEC121_ADDR			0x2046c4
++#define NBL_SEC122_SIZE			1
++#define NBL_SEC122_ADDR			0x85c1f4
++#define NBL_SEC123_SIZE			1
++#define NBL_SEC123_ADDR			0x75c194
++#define NBL_SEC124_SIZE			256
++#define NBL_SEC124_ADDR			0xa05000
++#define NBL_SEC124_REGI(i)		(0xa05000 + NBL_BYTES_IN_REG * (i))
++#define NBL_SEC125_SIZE			256
++#define NBL_SEC125_ADDR			0xa06000
++#define NBL_SEC125_REGI(i)		(0xa06000 + NBL_BYTES_IN_REG * (i))
++#define NBL_SEC126_SIZE			256
++#define NBL_SEC126_ADDR			0xa07000
++#define NBL_SEC126_REGI(i)		(0xa07000 + NBL_BYTES_IN_REG * (i))
++#define NBL_SEC127_SIZE			1
++#define NBL_SEC127_ADDR			0x75c204
++#define NBL_SEC128_SIZE			1
++#define NBL_SEC128_ADDR			0x15c204
++#define NBL_SEC129_SIZE			1
++#define NBL_SEC129_ADDR			0x75c208
++#define NBL_SEC130_SIZE			(1)
++#define NBL_SEC130_ADDR			(0x15c208)
++#define NBL_SEC131_SIZE			1
++#define NBL_SEC131_ADDR			0x75c20c
++#define NBL_SEC132_SIZE			1
++#define NBL_SEC132_ADDR			0x15c20c
++#define NBL_SEC133_SIZE			(1)
++#define NBL_SEC133_ADDR			(0x75c210)
++#define NBL_SEC134_SIZE			1
++#define NBL_SEC134_ADDR			0x15c210
++#define NBL_SEC135_SIZE			1
++#define NBL_SEC135_ADDR			0x75c214
++#define NBL_SEC136_SIZE			1
++#define NBL_SEC136_ADDR			0x15c214
++#define NBL_SEC137_SIZE			32
++#define NBL_SEC137_ADDR			0x15d000
++#define NBL_SEC137_REGI(i)		(0x15d000 + NBL_BYTES_IN_REG * (i))
++#define NBL_SEC138_SIZE			32
++#define NBL_SEC138_ADDR			0x75d000
++#define NBL_SEC138_REGI(i)		(0x75d000 + NBL_BYTES_IN_REG * (i))
++
++static const u32 nbl_sec046_1p_data[] = {
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0xa0000000,
++	0x00077c2b, 0x005c0000, 0x00000000, 0x00008100, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x20000000, 0x00073029, 0x00480000,
++	0x00000000, 0x00008100, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x20000000, 0x00073029, 0x00480000, 0x70000000, 0x00000020,
++	0x24140000, 0x00000020, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0xa0000000,
++	0x00000009, 0x00000000, 0x00000000, 0x00002100, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0xb0000000, 0x00000009, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000100,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000100, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x70000000, 0x00000000, 0x20140000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x70000000, 0x00000000,
++	0x20140000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x38430000, 0x70000006, 0x00000020, 0x24140000, 0x00000020,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x98cb1180, 0x6e36d469, 0x9d8eb91c, 0x87e3ef47, 0xa2931288, 0x08405c5a,
++	0x73865086, 0x00000080, 0x30140000, 0x00000080, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0xb0000000, 0x000b3849, 0x38430000, 0x00000006, 0x0000c100,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0xb0000000,
++	0x00133889, 0x08400000, 0x03865086, 0x4c016100, 0x00000014, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000,
++};
++
++static const u32 nbl_sec071_1p_data[] = {
++	0x00000000, 0x00000000, 0x00113d00, 0x00000000, 0x00000000, 0x00000000,
++	0xe7029b00, 0x00000000, 0x00000000, 0x43000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x51e00000, 0x00000c9c, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00293d00, 0x00000000,
++	0x00000000, 0x00000000, 0x67089b00, 0x00000002, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x80000000, 0x00000000, 0xb1e00000, 0x0000189c,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00213d00, 0x00000000, 0x00000000, 0x00000000, 0xe7069b00, 0x00000001,
++	0x00000000, 0x43000000, 0x014b0c70, 0x00000000, 0x00000000, 0x00000000,
++	0x92600000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00213d00, 0x00000000, 0x00000000, 0x00000000,
++	0xe7069b00, 0x00000001, 0x00000000, 0x43000000, 0x015b0c70, 0x00000000,
++	0x00000000, 0x00000000, 0x92600000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00553d00, 0x00000000,
++	0x00000000, 0x00000000, 0xe6d29a00, 0x000149c4, 0x00000000, 0x4b000000,
++	0x00000004, 0x00000000, 0x80000000, 0x00022200, 0x62600000, 0x00000001,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00553d00, 0x00000000, 0x00000000, 0x00000000, 0xe6d2c000, 0x000149c4,
++	0x00000000, 0x5b000000, 0x00000004, 0x00000000, 0x80000000, 0x00022200,
++	0x62600000, 0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x006d3d00, 0x00000000, 0x00000000, 0x00000000,
++	0x64d49200, 0x5e556945, 0xc666d89a, 0x4b0001a9, 0x00004c84, 0x00000000,
++	0x80000000, 0x00022200, 0xc2600000, 0x00000001, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x006d3d00, 0x00000000,
++	0x00000000, 0x00000000, 0x6ed4ba00, 0x5ef56bc5, 0xc666d8c0, 0x5b0001a9,
++	0x00004dc4, 0x00000000, 0x80000000, 0x00022200, 0xc2600000, 0x00000001,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000002, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00700000, 0x00000000, 0x08028000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000,
++};
++
++static const u32 nbl_sec046_2p_data[] = {
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0xa0000000,
++	0x00077c2b, 0x005c0000, 0x00000000, 0x00008100, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x20000000, 0x00073029, 0x00480000,
++	0x00000000, 0x00008100, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x20000000, 0x00073029, 0x00480000, 0x70000000, 0x00000020,
++	0x04140000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0xa0000000,
++	0x00000009, 0x00000000, 0x00000000, 0x00002100, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0xb0000000, 0x00000009, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000100,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000100, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x70000000, 0x00000000, 0x00140000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x70000000, 0x00000000,
++	0x00140000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x38430000, 0x70000006, 0x00000020, 0x04140000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x98cb1180, 0x6e36d469, 0x9d8eb91c, 0x87e3ef47, 0xa2931288, 0x08405c5a,
++	0x73865086, 0x00000080, 0x10140000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0xb0000000, 0x000b3849, 0x38430000, 0x00000006, 0x0000c100,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0xb0000000,
++	0x00133889, 0x08400000, 0x03865086, 0x4c016100, 0x00000014, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000,
++};
++
++static const u32 nbl_sec071_2p_data[] = {
++	0x00000000, 0x00000000, 0x00113d00, 0x00000000, 0x00000000, 0x00000000,
++	0xe7029b00, 0x00000000, 0x00000000, 0x43000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x51e00000, 0x00000c9c, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00293d00, 0x00000000,
++	0x00000000, 0x00000000, 0x67089b00, 0x00000002, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x80000000, 0x00000000, 0xb1e00000, 0x0000189c,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00213d00, 0x00000000, 0x00000000, 0x00000000, 0xe7069b00, 0x00000001,
++	0x00000000, 0x43000000, 0x014b0c70, 0x00000000, 0x00000000, 0x00000000,
++	0x92600000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00213d00, 0x00000000, 0x00000000, 0x00000000,
++	0xe7069b00, 0x00000001, 0x00000000, 0x43000000, 0x015b0c70, 0x00000000,
++	0x00000000, 0x00000000, 0x92600000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00553d00, 0x00000000,
++	0x00000000, 0x00000000, 0xe6d29a00, 0x000149c4, 0x00000000, 0x4b000000,
++	0x00000004, 0x00000000, 0x80000000, 0x00022200, 0x62600000, 0x00000001,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00553d00, 0x00000000, 0x00000000, 0x00000000, 0xe6d2c000, 0x000149c4,
++	0x00000000, 0x5b000000, 0x00000004, 0x00000000, 0x80000000, 0x00022200,
++	0x62600000, 0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x006d3d00, 0x00000000, 0x00000000, 0x00000000,
++	0x64d49200, 0x5e556945, 0xc666d89a, 0x4b0001a9, 0x00004c84, 0x00000000,
++	0x80000000, 0x00022200, 0xc2600000, 0x00000001, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x006d3d00, 0x00000000,
++	0x00000000, 0x00000000, 0x6ed4ba00, 0x5ef56bc5, 0xc666d8c0, 0x5b0001a9,
++	0x00004dc4, 0x00000000, 0x80000000, 0x00022200, 0xc2600000, 0x00000001,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000002, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00700000, 0x00000000, 0x00028000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000,
++};
++
++static const u32 nbl_sec006_data[] = {
++	0x81008100, 0x00000001, 0x88a88100, 0x00000001, 0x810088a8, 0x00000001,
++	0x88a888a8, 0x00000001, 0x81000000, 0x00000001, 0x88a80000, 0x00000001,
++	0x00000000, 0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x08004000, 0x00000001, 0x86dd6000, 0x00000001,
++	0x81000000, 0x00000001, 0x88a80000, 0x00000001, 0x08060000, 0x00000001,
++	0x80350000, 0x00000001, 0x88080000, 0x00000001, 0x88f70000, 0x00000001,
++	0x88cc0000, 0x00000001, 0x88090000, 0x00000001, 0x89150000, 0x00000001,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000001, 0x11006000, 0x00000001,
++	0x06006000, 0x00000001, 0x02006000, 0x00000001, 0x3a006000, 0x00000001,
++	0x2f006000, 0x00000001, 0x84006000, 0x00000001, 0x32006000, 0x00000001,
++	0x2c006000, 0x00000001, 0x3c006000, 0x00000001, 0x2b006000, 0x00000001,
++	0x00006000, 0x00000001, 0x00004000, 0x00000001, 0x00004000, 0x00000001,
++	0x20004000, 0x00000001, 0x40004000, 0x00000001, 0x00000000, 0x00000001,
++	0x11000000, 0x00000001, 0x06000000, 0x00000001, 0x02000000, 0x00000001,
++	0x3a000000, 0x00000001, 0x2f000000, 0x00000001, 0x84000000, 0x00000001,
++	0x32000000, 0x00000001, 0x2c000000, 0x00000001, 0x2b000000, 0x00000001,
++	0x3c000000, 0x00000001, 0x3b000000, 0x00000001, 0x00000000, 0x00000001,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x11000000, 0x00000001, 0x06000000, 0x00000001,
++	0x02000000, 0x00000001, 0x3a000000, 0x00000001, 0x2f000000, 0x00000001,
++	0x84000000, 0x00000001, 0x32000000, 0x00000001, 0x00000000, 0x00000000,
++	0x2c000000, 0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x2b000000, 0x00000001, 0x3c000000, 0x00000001,
++	0x3b000000, 0x00000001, 0x00000000, 0x00000001, 0x06001072, 0x00000001,
++	0x06000000, 0x00000001, 0x110017c1, 0x00000001, 0x110012b7, 0x00000001,
++	0x110012b5, 0x00000001, 0x01000000, 0x00000001, 0x02000000, 0x00000001,
++	0x3a000000, 0x00000001, 0x11000043, 0x00000001, 0x11000044, 0x00000001,
++	0x11000222, 0x00000001, 0x11000000, 0x00000001, 0x2f006558, 0x00000001,
++	0x32000000, 0x00000001, 0x84000000, 0x00000001, 0x00000000, 0x00000001,
++	0x65582000, 0x00000001, 0x65583000, 0x00000001, 0x6558a000, 0x00000001,
++	0x6558b000, 0x00000001, 0x65580000, 0x00000001, 0x12b50000, 0x00000001,
++	0x02000102, 0x00000001, 0x00000000, 0x00000001, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x65580000, 0x00000001, 0x00000000, 0x00000001,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x81008100, 0x00000001,
++	0x88a88100, 0x00000001, 0x810088a8, 0x00000001, 0x88a888a8, 0x00000001,
++	0x81000000, 0x00000001, 0x88a80000, 0x00000001, 0x00000000, 0x00000001,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x08004000, 0x00000001, 0x86dd6000, 0x00000001, 0x81000000, 0x00000001,
++	0x88a80000, 0x00000001, 0x08060000, 0x00000001, 0x80350000, 0x00000001,
++	0x88080000, 0x00000001, 0x88f70000, 0x00000001, 0x88cc0000, 0x00000001,
++	0x88090000, 0x00000001, 0x89150000, 0x00000001, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000001, 0x11006000, 0x00000001, 0x06006000, 0x00000001,
++	0x02006000, 0x00000001, 0x3a006000, 0x00000001, 0x2f006000, 0x00000001,
++	0x84006000, 0x00000001, 0x32006000, 0x00000001, 0x2c006000, 0x00000001,
++	0x3c006000, 0x00000001, 0x2b006000, 0x00000001, 0x00006000, 0x00000001,
++	0x00004000, 0x00000001, 0x00004000, 0x00000001, 0x20004000, 0x00000001,
++	0x40004000, 0x00000001, 0x00000000, 0x00000001, 0x11000000, 0x00000001,
++	0x06000000, 0x00000001, 0x02000000, 0x00000001, 0x3a000000, 0x00000001,
++	0x2f000000, 0x00000001, 0x84000000, 0x00000001, 0x32000000, 0x00000001,
++	0x2c000000, 0x00000001, 0x2b000000, 0x00000001, 0x3c000000, 0x00000001,
++	0x3b000000, 0x00000001, 0x00000000, 0x00000001, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x11000000, 0x00000001, 0x06000000, 0x00000001, 0x02000000, 0x00000001,
++	0x3a000000, 0x00000001, 0x2f000000, 0x00000001, 0x84000000, 0x00000001,
++	0x32000000, 0x00000001, 0x00000000, 0x00000000, 0x2c000000, 0x00000001,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x2b000000, 0x00000001, 0x3c000000, 0x00000001, 0x3b000000, 0x00000001,
++	0x00000000, 0x00000001, 0x06001072, 0x00000001, 0x06000000, 0x00000001,
++	0x110012b7, 0x00000001, 0x01000000, 0x00000001, 0x02000000, 0x00000001,
++	0x3a000000, 0x00000001, 0x32000000, 0x00000001, 0x84000000, 0x00000001,
++	0x11000043, 0x00000001, 0x11000044, 0x00000001, 0x11000222, 0x00000001,
++	0x11000000, 0x00000001, 0x2f006558, 0x00000001, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000001, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000,
++};
++
++static const u32 nbl_sec007_data[] = {
++	0x10001000, 0x00001000, 0x10000000, 0x00000000, 0x1000ffff, 0x0000ffff,
++	0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff,
++	0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0x00000fff, 0x00000fff,
++	0x1000ffff, 0x0000ffff, 0x0000ffff, 0x0000ffff, 0x0000ffff, 0x0000ffff,
++	0x0000ffff, 0x0000ffff, 0x0000ffff, 0xffffffff, 0xffffffff, 0xffffffff,
++	0xffffffff, 0xffffffff, 0x00ff0fff, 0x00ff0fff, 0x00ff0fff, 0x00ff0fff,
++	0x00ff0fff, 0x00ff0fff, 0x00ff0fff, 0x00ff0fff, 0x00ff0fff, 0x10ff0fff,
++	0xffff0fff, 0x00000fff, 0x1fff0fff, 0x1fff0fff, 0x1fff0fff, 0xffffffff,
++	0x00ffffff, 0x00ffffff, 0x00ffffff, 0x00ffffff, 0x00ffffff, 0x00ffffff,
++	0x00ffffff, 0x00ffffff, 0x00ffffff, 0x00ffffff, 0x00ffffff, 0xffffffff,
++	0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0x00ffffff, 0x00ffffff,
++	0x00ffffff, 0x00ffffff, 0x00ffffff, 0x00ffffff, 0x00ffffff, 0xffffffff,
++	0x00ffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0x00ffffff, 0x00ffffff,
++	0x00ffffff, 0xffffffff, 0x00ff0000, 0x00ffffff, 0x00ff0000, 0x00ff0000,
++	0x00ff0000, 0x00ffffff, 0x00ffffff, 0x00ffffff, 0x00ff0000, 0x00ff0000,
++	0x00ff0001, 0x00ffffff, 0x00ff0000, 0x00ffffff, 0x00ffffff, 0xffffffff,
++	0x00000fff, 0x00000fff, 0x00000fff, 0x00000fff, 0x00000fff, 0x0000ffff,
++	0xc0ff0000, 0xc0ffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff,
++	0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0x0000ffff, 0xffffffff,
++	0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff,
++	0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff,
++	0xffffffff, 0xffffffff, 0x10001000, 0x00001000, 0x10000000, 0x00000000,
++	0x1000ffff, 0x0000ffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff,
++	0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff,
++	0x00000fff, 0x00000fff, 0x1000ffff, 0x0000ffff, 0x0000ffff, 0x0000ffff,
++	0x0000ffff, 0x0000ffff, 0x0000ffff, 0x0000ffff, 0x0000ffff, 0xffffffff,
++	0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0x00ff0fff, 0x00ff0fff,
++	0x00ff0fff, 0x00ff0fff, 0x00ff0fff, 0x00ff0fff, 0x00ff0fff, 0x00ff0fff,
++	0x00ff0fff, 0x10ff0fff, 0xffff0fff, 0x00000fff, 0x1fff0fff, 0x1fff0fff,
++	0x1fff0fff, 0xffffffff, 0x00ffffff, 0x00ffffff, 0x00ffffff, 0x00ffffff,
++	0x00ffffff, 0x00ffffff, 0x00ffffff, 0x00ffffff, 0x00ffffff, 0x00ffffff,
++	0x00ffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff,
++	0x00ffffff, 0x00ffffff, 0x00ffffff, 0x00ffffff, 0x00ffffff, 0x00ffffff,
++	0x00ffffff, 0xffffffff, 0x00ffffff, 0xffffffff, 0xffffffff, 0xffffffff,
++	0x00ffffff, 0x00ffffff, 0x00ffffff, 0xffffffff, 0x00ff0000, 0x00ffffff,
++	0x00ff0000, 0x00ffffff, 0x00ffffff, 0x00ffffff, 0x00ffffff, 0x00ffffff,
++	0x00ff0000, 0x00ff0000, 0x00ff0001, 0x00ffffff, 0x00ff0000, 0xffffffff,
++	0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff,
++	0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff,
++	0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff,
++	0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff,
++	0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff,
++	0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff,
++};
++
++static const u32 nbl_sec008_data[] = {
++	0x00809190, 0x16009496, 0x00000100, 0x00000000, 0x00809190, 0x16009496,
++	0x00000100, 0x00000000, 0x00809190, 0x16009496, 0x00000100, 0x00000000,
++	0x00809190, 0x16009496, 0x00000100, 0x00000000, 0x00800090, 0x12009092,
++	0x00000100, 0x00000000, 0x00800090, 0x12009092, 0x00000100, 0x00000000,
++	0x00800000, 0x0e008c8e, 0x00000100, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x08909581, 0x00008680,
++	0x00000200, 0x00000000, 0x10900082, 0x28008680, 0x00000200, 0x00000000,
++	0x809b0093, 0x00000000, 0x00000100, 0x00000000, 0x809b0093, 0x00000000,
++	0x00000100, 0x00000000, 0x009b008f, 0x00000000, 0x00000100, 0x00000000,
++	0x009b008f, 0x00000000, 0x00000100, 0x00000000, 0x009b008f, 0x00000000,
++	0x00000100, 0x00000000, 0x009b008f, 0x00000000, 0x00000100, 0x00000000,
++	0x009b008f, 0x00000000, 0x00000100, 0x00000000, 0x009b008f, 0x00000000,
++	0x00000100, 0x00000000, 0x009b0000, 0x00000000, 0x00000100, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x009b0000, 0x00000000,
++	0x00000100, 0x00000000, 0x00000000, 0x00000082, 0x00000500, 0x00000000,
++	0x00000000, 0x00000082, 0x00000500, 0x00000000, 0x00000000, 0x00000082,
++	0x00000500, 0x00000000, 0x00000000, 0x00000082, 0x00000500, 0x00000000,
++	0x00000000, 0x00000082, 0x00000500, 0x00000000, 0x00000000, 0x00000082,
++	0x00000500, 0x00000000, 0x00000000, 0x00000082, 0x00000500, 0x00000000,
++	0x00ab0085, 0x08000000, 0x00000200, 0x00000000, 0x00ab0000, 0x00000000,
++	0x00000200, 0x00000000, 0x00ab0000, 0x00000000, 0x00000200, 0x00000000,
++	0x40000000, 0x01c180c2, 0x00000300, 0x00000000, 0x00000000, 0x00a089c2,
++	0x000005f0, 0x00000000, 0x000b0085, 0x00a00000, 0x000002f0, 0x00000000,
++	0x000b0085, 0x00a00000, 0x000002f0, 0x00000000, 0x00000000, 0x00a089c2,
++	0x000005f0, 0x00000000, 0x000b0000, 0x00000000, 0x00000200, 0x00000000,
++	0x00000000, 0x00000082, 0x00000500, 0x00000000, 0x00000000, 0x00000082,
++	0x00000500, 0x00000000, 0x00000000, 0x00000082, 0x00000500, 0x00000000,
++	0x00000000, 0x00000082, 0x00000500, 0x00000000, 0x00000000, 0x00000082,
++	0x00000500, 0x00000000, 0x00000000, 0x00000082, 0x00000500, 0x00000000,
++	0x00000000, 0x00000082, 0x00000500, 0x00000000, 0x00ab0085, 0x08000000,
++	0x00000300, 0x00000000, 0x00ab0000, 0x00000000, 0x00000300, 0x00000000,
++	0x00ab0000, 0x00000000, 0x00000300, 0x00000000, 0x00ab0000, 0x00000000,
++	0x00000300, 0x00000000, 0x40000000, 0x01c180c2, 0x00000400, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000082,
++	0x00000500, 0x00000000, 0x00000000, 0x00000082, 0x00000500, 0x00000000,
++	0x00000000, 0x00000082, 0x00000500, 0x00000000, 0x00000000, 0x00000082,
++	0x00000500, 0x00000000, 0x00000000, 0x00000082, 0x00000500, 0x00000000,
++	0x00000000, 0x00000082, 0x00000500, 0x00000000, 0x00000000, 0x00000082,
++	0x00000500, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00ab0085, 0x08000000, 0x00000400, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00ab0000, 0x00000000,
++	0x00000400, 0x00000000, 0x00ab0000, 0x00000000, 0x00000400, 0x00000000,
++	0x00ab0000, 0x00000000, 0x00000400, 0x00000000, 0x00ab0000, 0x00000000,
++	0x00000400, 0x00000000, 0x01ab0083, 0x0ca00000, 0x0000050f, 0x00000000,
++	0x01ab0083, 0x0ca00000, 0x0000050f, 0x00000000, 0x02a00084, 0x08008890,
++	0x00000600, 0x00000000, 0x02ab848a, 0x08000000, 0x00000500, 0x00000000,
++	0x02a00084, 0x10008200, 0x00000600, 0x00000000, 0x00ab8f8e, 0x04000000,
++	0x00000500, 0x00000000, 0x00ab0000, 0x00000000, 0x00000500, 0x00000000,
++	0x00ab8f8e, 0x04000000, 0x00000500, 0x00000000, 0x02ab848f, 0x08000000,
++	0x00000500, 0x00000000, 0x02ab848f, 0x08000000, 0x00000500, 0x00000000,
++	0x02ab848f, 0x08000000, 0x00000500, 0x00000000, 0x02ab0084, 0x08000000,
++	0x00000500, 0x00000000, 0x00a00000, 0x04008280, 0x00000600, 0x00000000,
++	0x00ab0000, 0x00000000, 0x00000500, 0x00000000, 0x04ab8e84, 0x0c000000,
++	0x00000500, 0x00000000, 0x00ab0000, 0x00000000, 0x00000500, 0x00000000,
++	0x00000000, 0x0400ccd0, 0x00000800, 0x00000000, 0x00000000, 0x0800ccd0,
++	0x00000800, 0x00000000, 0x00000000, 0x0800ccd0, 0x00000800, 0x00000000,
++	0x00000000, 0x0c00ccd0, 0x00000800, 0x00000000, 0x00000000, 0x0000ccd0,
++	0x00000800, 0x00000000, 0x00000000, 0x0000ccd0, 0x00000800, 0x00000000,
++	0x00000000, 0x10008200, 0x00000700, 0x00000000, 0x00000000, 0x08008200,
++	0x00000700, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x0000ccd0,
++	0x00000800, 0x00000000, 0x00000000, 0x0000ccd0, 0x00000800, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00808786, 0x16009496, 0x00000900, 0x00000000,
++	0x00808786, 0x16009496, 0x00000900, 0x00000000, 0x00808786, 0x16009496,
++	0x00000900, 0x00000000, 0x00808786, 0x16009496, 0x00000900, 0x00000000,
++	0x00800086, 0x12009092, 0x00000900, 0x00000000, 0x00800086, 0x12009092,
++	0x00000900, 0x00000000, 0x00800000, 0x0e008c8e, 0x00000900, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x08908192, 0x00008680, 0x00000a00, 0x00000000, 0x10908292, 0x28008680,
++	0x00000a00, 0x00000000, 0x809b9392, 0x00000000, 0x00000900, 0x00000000,
++	0x809b9392, 0x00000000, 0x00000900, 0x00000000, 0x009b8f92, 0x00000000,
++	0x00000900, 0x00000000, 0x009b8f92, 0x00000000, 0x00000900, 0x00000000,
++	0x009b8f92, 0x00000000, 0x00000900, 0x00000000, 0x009b8f92, 0x00000000,
++	0x00000900, 0x00000000, 0x009b8f92, 0x00000000, 0x00000900, 0x00000000,
++	0x009b8f92, 0x00000000, 0x00000900, 0x00000000, 0x009b0092, 0x00000000,
++	0x00000900, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x009b0092, 0x00000000, 0x00000900, 0x00000000, 0x00000000, 0x00000082,
++	0x00000d00, 0x00000000, 0x00000000, 0x00000082, 0x00000d00, 0x00000000,
++	0x00000000, 0x00000082, 0x00000d00, 0x00000000, 0x00000000, 0x00000082,
++	0x00000d00, 0x00000000, 0x00000000, 0x00000082, 0x00000d00, 0x00000000,
++	0x00000000, 0x00000082, 0x00000d00, 0x00000000, 0x00000000, 0x00000082,
++	0x00000d00, 0x00000000, 0x00ab0085, 0x08000000, 0x00000a00, 0x00000000,
++	0x00ab0000, 0x00000000, 0x00000a00, 0x00000000, 0x00ab0000, 0x00000000,
++	0x00000a00, 0x00000000, 0x40000000, 0x01c180c2, 0x00000b00, 0x00000000,
++	0x00000000, 0x00a089c2, 0x00000df0, 0x00000000, 0x000b0085, 0x00a00000,
++	0x00000af0, 0x00000000, 0x000b0085, 0x00a00000, 0x00000af0, 0x00000000,
++	0x00000000, 0x00a089c2, 0x00000df0, 0x00000000, 0x000b0000, 0x00000000,
++	0x00000a00, 0x00000000, 0x00000000, 0x00000082, 0x00000d00, 0x00000000,
++	0x00000000, 0x00000082, 0x00000d00, 0x00000000, 0x00000000, 0x00000082,
++	0x00000d00, 0x00000000, 0x00000000, 0x00000082, 0x00000d00, 0x00000000,
++	0x00000000, 0x00000082, 0x00000d00, 0x00000000, 0x00000000, 0x00000082,
++	0x00000d00, 0x00000000, 0x00000000, 0x00000082, 0x00000d00, 0x00000000,
++	0x00ab0085, 0x08000000, 0x00000b00, 0x00000000, 0x00ab0000, 0x00000000,
++	0x00000b00, 0x00000000, 0x00ab0000, 0x00000000, 0x00000b00, 0x00000000,
++	0x00ab0000, 0x00000000, 0x00000b00, 0x00000000, 0x40000000, 0x01c180c2,
++	0x00000c00, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000082, 0x00000d00, 0x00000000, 0x00000000, 0x00000082,
++	0x00000d00, 0x00000000, 0x00000000, 0x00000082, 0x00000d00, 0x00000000,
++	0x00000000, 0x00000082, 0x00000d00, 0x00000000, 0x00000000, 0x00000082,
++	0x00000d00, 0x00000000, 0x00000000, 0x00000082, 0x00000d00, 0x00000000,
++	0x00000000, 0x00000082, 0x00000d00, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00ab0085, 0x08000000, 0x00000c00, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00ab0000, 0x00000000, 0x00000c00, 0x00000000, 0x00ab0000, 0x00000000,
++	0x00000c00, 0x00000000, 0x00ab0000, 0x00000000, 0x00000c00, 0x00000000,
++	0x00ab0000, 0x00000000, 0x00000c00, 0x00000000, 0x01ab0083, 0x0ca00000,
++	0x00000d0f, 0x00000000, 0x01ab0083, 0x0ca00000, 0x00000d0f, 0x00000000,
++	0x02ab8a84, 0x08000000, 0x00000d00, 0x00000000, 0x00ab8f8e, 0x04000000,
++	0x00000d00, 0x00000000, 0x00ab0000, 0x00000000, 0x00000d00, 0x00000000,
++	0x00ab8f8e, 0x04000000, 0x00000d00, 0x00000000, 0x00ab0000, 0x00000000,
++	0x00000d00, 0x00000000, 0x04ab8e84, 0x0c000000, 0x00000d00, 0x00000000,
++	0x02ab848f, 0x08000000, 0x00000d00, 0x00000000, 0x02ab848f, 0x08000000,
++	0x00000d00, 0x00000000, 0x02ab848f, 0x08000000, 0x00000d00, 0x00000000,
++	0x02ab0084, 0x08000000, 0x00000d00, 0x00000000, 0x00ab0000, 0x04000000,
++	0x00000d00, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00ab0000, 0x00000000,
++	0x00000d00, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000,
++};
++
++static const u32 nbl_sec009_data[] = {
++	0x00000000, 0x00000060, 0x00000000, 0x00000090, 0x00000001, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000050, 0x00000000, 0x000000a0,
++	0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x000000a0,
++	0x00000000, 0x00000050, 0x00000001, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000800, 0x00000000, 0x00000700, 0x00000001, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000900, 0x00000000, 0x00000600,
++	0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00008000,
++	0x00000000, 0x00007000, 0x00000001, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00009000, 0x00000000, 0x00006000, 0x00000001, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x0000a000, 0x00000000, 0x00005000,
++	0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x000c0000,
++	0x00000000, 0x00030000, 0x00000001, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x000d0000, 0x00000000, 0x00020000, 0x00000001, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x000e0000, 0x00000000, 0x00010000,
++	0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000040,
++	0x00000000, 0x000000b0, 0x00000001, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000070, 0x00000000, 0x00000080, 0x00000001, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000090, 0x00000000, 0x00000060,
++	0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000080,
++	0x00000000, 0x00000070, 0x00000001, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000700, 0x00000000, 0x00000800, 0x00000001, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00007000, 0x00000000, 0x00008000,
++	0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00080000,
++	0x00000000, 0x00070000, 0x00000001, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000c00, 0x00000000, 0x00000300, 0x00000001, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000d00, 0x00000000, 0x00000200,
++	0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00600000,
++	0x00000000, 0x00900000, 0x00000001, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00d00000, 0x00000000, 0x00200000, 0x00000001, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00500000, 0x00000000, 0x00a00000,
++	0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00700000,
++	0x00000000, 0x00800000, 0x00000001, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00e00000, 0x00000000, 0x00100000, 0x00000001, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00f00000,
++	0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00f00000, 0x00000001, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00100000, 0x00000000, 0x00e00000, 0x00000001, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00300000, 0x00000000, 0x00c00000,
++	0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00800000,
++	0x00000000, 0x00700000, 0x00000001, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00900000, 0x00000000, 0x00600000, 0x00000001, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00a00000, 0x00000000, 0x00500000,
++	0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00b00000,
++	0x00000000, 0x00400000, 0x00000001, 0x00000000, 0x00000000, 0x00000000,
++	0x00000060, 0x00400000, 0x00000090, 0x00b00000, 0x00000001, 0x00000000,
++	0x00000000, 0x00000000, 0x00000050, 0x00400000, 0x000000a0, 0x00b00000,
++	0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x000000a0, 0x00400000,
++	0x00000050, 0x00b00000, 0x00000001, 0x00000000, 0x00000000, 0x00000000,
++	0x00000800, 0x00400000, 0x00000700, 0x00b00000, 0x00000001, 0x00000000,
++	0x00000000, 0x00000000, 0x00000900, 0x00400000, 0x00000600, 0x00b00000,
++	0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x00008000, 0x00400000,
++	0x00007000, 0x00b00000, 0x00000001, 0x00000000, 0x00000000, 0x00000000,
++	0x00009000, 0x00400000, 0x00006000, 0x00b00000, 0x00000001, 0x00000000,
++	0x00000000, 0x00000000, 0x0000a000, 0x00400000, 0x00005000, 0x00b00000,
++	0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x000c0000, 0x00400000,
++	0x00030000, 0x00b00000, 0x00000001, 0x00000000, 0x00000000, 0x00000000,
++	0x000d0000, 0x00400000, 0x00020000, 0x00b00000, 0x00000001, 0x00000000,
++	0x00000000, 0x00000000, 0x000e0000, 0x00400000, 0x00010000, 0x00b00000,
++	0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x00000070, 0x00400000,
++	0x00000080, 0x00b00000, 0x00000001, 0x00000000, 0x00000000, 0x00000000,
++	0x00000700, 0x00400000, 0x00000800, 0x00b00000, 0x00000001, 0x00000000,
++	0x00000000, 0x00000000, 0x00007000, 0x00400000, 0x00008000, 0x00b00000,
++	0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x00080000, 0x00400000,
++	0x00070000, 0x00b00000, 0x00000001, 0x00000000, 0x00000000, 0x00000000,
++	0x00000c00, 0x00400000, 0x00000300, 0x00b00000, 0x00000001, 0x00000000,
++	0x00000000, 0x00000000, 0x00000d00, 0x00400000, 0x00000200, 0x00b00000,
++	0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x00000040, 0x00400000,
++	0x000000b0, 0x00b00000, 0x00000001, 0x00000000, 0x00000000, 0x00000000,
++	0x00000090, 0x00400000, 0x00000060, 0x00b00000, 0x00000001, 0x00000000,
++	0x00000000, 0x00000000, 0x00000080, 0x00400000, 0x00000070, 0x00b00000,
++	0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x00000060, 0x06000000,
++	0x00000090, 0x09000000, 0x00000001, 0x00000000, 0x00000000, 0x00000000,
++	0x00000060, 0x07000000, 0x00000090, 0x08000000, 0x00000001, 0x00000000,
++	0x00000000, 0x00000000, 0x00000050, 0x06000000, 0x000000a0, 0x09000000,
++	0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x00000050, 0x07000000,
++	0x000000a0, 0x08000000, 0x00000001, 0x00000000, 0x00000000, 0x00000000,
++	0x000000a0, 0x06000000, 0x00000050, 0x09000000, 0x00000001, 0x00000000,
++	0x00000000, 0x00000000, 0x000000a0, 0x07000000, 0x00000050, 0x08000000,
++	0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x00000800, 0x06000000,
++	0x00000700, 0x09000000, 0x00000001, 0x00000000, 0x00000000, 0x00000000,
++	0x00000900, 0x06000000, 0x00000600, 0x09000000, 0x00000001, 0x00000000,
++	0x00000000, 0x00000000, 0x00008000, 0x06000000, 0x00007000, 0x09000000,
++	0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x00009000, 0x06000000,
++	0x00006000, 0x09000000, 0x00000001, 0x00000000, 0x00000000, 0x00000000,
++	0x0000a000, 0x06000000, 0x00005000, 0x09000000, 0x00000001, 0x00000000,
++	0x00000000, 0x00000000, 0x000c0000, 0x06000000, 0x00030000, 0x09000000,
++	0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x000d0000, 0x06000000,
++	0x00020000, 0x09000000, 0x00000001, 0x00000000, 0x00000000, 0x00000000,
++	0x000e0000, 0x06000000, 0x00010000, 0x09000000, 0x00000001, 0x00000000,
++	0x00000000, 0x00000000, 0x00000800, 0x07000000, 0x00000700, 0x08000000,
++	0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x00000900, 0x07000000,
++	0x00000600, 0x08000000, 0x00000001, 0x00000000, 0x00000000, 0x00000000,
++	0x00008000, 0x07000000, 0x00007000, 0x08000000, 0x00000001, 0x00000000,
++	0x00000000, 0x00000000, 0x00009000, 0x07000000, 0x00006000, 0x08000000,
++	0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x0000a000, 0x07000000,
++	0x00005000, 0x08000000, 0x00000001, 0x00000000, 0x00000000, 0x00000000,
++	0x000c0000, 0x07000000, 0x00030000, 0x08000000, 0x00000001, 0x00000000,
++	0x00000000, 0x00000000, 0x000d0000, 0x07000000, 0x00020000, 0x08000000,
++	0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x000e0000, 0x07000000,
++	0x00010000, 0x08000000, 0x00000001, 0x00000000, 0x00000000, 0x00000000,
++	0x00000070, 0x06000000, 0x00000080, 0x09000000, 0x00000001, 0x00000000,
++	0x00000000, 0x00000000, 0x00000070, 0x07000000, 0x00000080, 0x08000000,
++	0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x00000700, 0x06000000,
++	0x00000800, 0x09000000, 0x00000001, 0x00000000, 0x00000000, 0x00000000,
++	0x00007000, 0x06000000, 0x00008000, 0x09000000, 0x00000001, 0x00000000,
++	0x00000000, 0x00000000, 0x00080000, 0x06000000, 0x00070000, 0x09000000,
++	0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x00000c00, 0x06000000,
++	0x00000300, 0x09000000, 0x00000001, 0x00000000, 0x00000000, 0x00000000,
++	0x00000d00, 0x06000000, 0x00000200, 0x09000000, 0x00000001, 0x00000000,
++	0x00000000, 0x00000000, 0x00000700, 0x07000000, 0x00000800, 0x08000000,
++	0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x00007000, 0x07000000,
++	0x00008000, 0x08000000, 0x00000001, 0x00000000, 0x00000000, 0x00000000,
++	0x00080000, 0x07000000, 0x00070000, 0x08000000, 0x00000001, 0x00000000,
++	0x00000000, 0x00000000, 0x00000c00, 0x07000000, 0x00000300, 0x08000000,
++	0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x00000d00, 0x07000000,
++	0x00000200, 0x08000000, 0x00000001, 0x00000000, 0x00000000, 0x00000000,
++	0x00000040, 0x06000000, 0x000000b0, 0x09000000, 0x00000001, 0x00000000,
++	0x00000000, 0x00000000, 0x00000040, 0x07000000, 0x000000b0, 0x08000000,
++	0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x00000090, 0x06000000,
++	0x00000060, 0x09000000, 0x00000001, 0x00000000, 0x00000000, 0x00000000,
++	0x00000090, 0x07000000, 0x00000060, 0x08000000, 0x00000001, 0x00000000,
++	0x00000000, 0x00000000, 0x00000080, 0x06000000, 0x00000070, 0x09000000,
++	0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x00000080, 0x07000000,
++	0x00000070, 0x08000000, 0x00000001, 0x00000000, 0x00000000, 0x00000000,
++	0x00000060, 0x00c00000, 0x00000090, 0x00300000, 0x00000001, 0x00000000,
++	0x00000000, 0x00000000, 0x00000050, 0x00c00000, 0x000000a0, 0x00300000,
++	0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x000000a0, 0x00c00000,
++	0x00000050, 0x00300000, 0x00000001, 0x00000000, 0x00000000, 0x00000000,
++	0x00000800, 0x00c00000, 0x00000700, 0x00300000, 0x00000001, 0x00000000,
++	0x00000000, 0x00000000, 0x00000900, 0x00c00000, 0x00000600, 0x00300000,
++	0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x00008000, 0x00c00000,
++	0x00007000, 0x00300000, 0x00000001, 0x00000000, 0x00000000, 0x00000000,
++	0x00009000, 0x00c00000, 0x00006000, 0x00300000, 0x00000001, 0x00000000,
++	0x00000000, 0x00000000, 0x0000a000, 0x00c00000, 0x00005000, 0x00300000,
++	0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x000c0000, 0x00c00000,
++	0x00030000, 0x00300000, 0x00000001, 0x00000000, 0x00000000, 0x00000000,
++	0x000d0000, 0x00c00000, 0x00020000, 0x00300000, 0x00000001, 0x00000000,
++	0x00000000, 0x00000000, 0x000e0000, 0x00c00000, 0x00010000, 0x00300000,
++	0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x00000070, 0x00c00000,
++	0x00000080, 0x00300000, 0x00000001, 0x00000000, 0x00000000, 0x00000000,
++	0x00000700, 0x00c00000, 0x00000800, 0x00300000, 0x00000001, 0x00000000,
++	0x00000000, 0x00000000, 0x00007000, 0x00c00000, 0x00008000, 0x00300000,
++	0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x00080000, 0x00c00000,
++	0x00070000, 0x00300000, 0x00000001, 0x00000000, 0x00000000, 0x00000000,
++	0x00000c00, 0x00c00000, 0x00000300, 0x00300000, 0x00000001, 0x00000000,
++	0x00000000, 0x00000000, 0x00000d00, 0x00c00000, 0x00000200, 0x00300000,
++	0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x00000040, 0x00c00000,
++	0x000000b0, 0x00300000, 0x00000001, 0x00000000, 0x00000000, 0x00000000,
++	0x00000090, 0x00c00000, 0x00000060, 0x00300000, 0x00000001, 0x00000000,
++	0x00000000, 0x00000000, 0x00000080, 0x00c00000, 0x00000070, 0x00300000,
++	0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x00400000, 0x00400000,
++	0x00b00000, 0x00b00000, 0x00000001, 0x00000000, 0x00000000, 0x00000000,
++	0x00600000, 0x00400000, 0x00900000, 0x00b00000, 0x00000001, 0x00000000,
++	0x00000000, 0x00000000, 0x00300000, 0x00400000, 0x00c00000, 0x00b00000,
++	0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x00500000, 0x00400000,
++	0x00a00000, 0x00b00000, 0x00000001, 0x00000000, 0x00000000, 0x00000000,
++	0x00700000, 0x00400000, 0x00800000, 0x00b00000, 0x00000001, 0x00000000,
++	0x00000000, 0x00000000, 0x00200000, 0x00400000, 0x00d00000, 0x00b00000,
++	0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x00800000, 0x00400000,
++	0x00700000, 0x00b00000, 0x00000001, 0x00000000, 0x00000000, 0x00000000,
++	0x00900000, 0x00400000, 0x00600000, 0x00b00000, 0x00000001, 0x00000000,
++	0x00000000, 0x00000000, 0x00a00000, 0x00400000, 0x00500000, 0x00b00000,
++	0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x00b00000, 0x00400000,
++	0x00400000, 0x00b00000, 0x00000001, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00400000, 0x00f00000, 0x00b00000, 0x00000001, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00400000, 0x00f00000, 0x00b00000,
++	0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x00100000, 0x00400000,
++	0x00e00000, 0x00b00000, 0x00000001, 0x00000000, 0x00000000, 0x00000000,
++	0x00400000, 0x06000000, 0x00b00000, 0x09000000, 0x00000001, 0x00000000,
++	0x00000000, 0x00000000, 0x00400000, 0x07000000, 0x00b00000, 0x08000000,
++	0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x00600000, 0x06000000,
++	0x00900000, 0x09000000, 0x00000001, 0x00000000, 0x00000000, 0x00000000,
++	0x00600000, 0x07000000, 0x00900000, 0x08000000, 0x00000001, 0x00000000,
++	0x00000000, 0x00000000, 0x00300000, 0x06000000, 0x00c00000, 0x09000000,
++	0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x00300000, 0x07000000,
++	0x00c00000, 0x08000000, 0x00000001, 0x00000000, 0x00000000, 0x00000000,
++	0x00500000, 0x06000000, 0x00a00000, 0x09000000, 0x00000001, 0x00000000,
++	0x00000000, 0x00000000, 0x00500000, 0x07000000, 0x00a00000, 0x08000000,
++	0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x00700000, 0x06000000,
++	0x00800000, 0x09000000, 0x00000001, 0x00000000, 0x00000000, 0x00000000,
++	0x00700000, 0x07000000, 0x00800000, 0x08000000, 0x00000001, 0x00000000,
++	0x00000000, 0x00000000, 0x00200000, 0x06000000, 0x00d00000, 0x09000000,
++	0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x00200000, 0x07000000,
++	0x00d00000, 0x08000000, 0x00000001, 0x00000000, 0x00000000, 0x00000000,
++	0x00800000, 0x06000000, 0x00700000, 0x09000000, 0x00000001, 0x00000000,
++	0x00000000, 0x00000000, 0x00900000, 0x06000000, 0x00600000, 0x09000000,
++	0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x00a00000, 0x06000000,
++	0x00500000, 0x09000000, 0x00000001, 0x00000000, 0x00000000, 0x00000000,
++	0x00b00000, 0x06000000, 0x00400000, 0x09000000, 0x00000001, 0x00000000,
++	0x00000000, 0x00000000, 0x00800000, 0x07000000, 0x00700000, 0x08000000,
++	0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x00900000, 0x07000000,
++	0x00600000, 0x08000000, 0x00000001, 0x00000000, 0x00000000, 0x00000000,
++	0x00a00000, 0x07000000, 0x00500000, 0x08000000, 0x00000001, 0x00000000,
++	0x00000000, 0x00000000, 0x00b00000, 0x07000000, 0x00400000, 0x08000000,
++	0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x06000000,
++	0x00f00000, 0x09000000, 0x00000001, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x07000000, 0x00f00000, 0x08000000, 0x00000001, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x06000000, 0x00f00000, 0x09000000,
++	0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x00100000, 0x06000000,
++	0x00e00000, 0x09000000, 0x00000001, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x07000000, 0x00f00000, 0x08000000, 0x00000001, 0x00000000,
++	0x00000000, 0x00000000, 0x00100000, 0x07000000, 0x00e00000, 0x08000000,
++	0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x00400000, 0x00c00000,
++	0x00b00000, 0x00300000, 0x00000001, 0x00000000, 0x00000000, 0x00000000,
++	0x00600000, 0x00c00000, 0x00900000, 0x00300000, 0x00000001, 0x00000000,
++	0x00000000, 0x00000000, 0x00300000, 0x00c00000, 0x00c00000, 0x00300000,
++	0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x00500000, 0x00c00000,
++	0x00a00000, 0x00300000, 0x00000001, 0x00000000, 0x00000000, 0x00000000,
++	0x00700000, 0x00c00000, 0x00800000, 0x00300000, 0x00000001, 0x00000000,
++	0x00000000, 0x00000000, 0x00200000, 0x00c00000, 0x00d00000, 0x00300000,
++	0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x00800000, 0x00c00000,
++	0x00700000, 0x00300000, 0x00000001, 0x00000000, 0x00000000, 0x00000000,
++	0x00900000, 0x00c00000, 0x00600000, 0x00300000, 0x00000001, 0x00000000,
++	0x00000000, 0x00000000, 0x00a00000, 0x00c00000, 0x00500000, 0x00300000,
++	0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x00b00000, 0x00c00000,
++	0x00400000, 0x00300000, 0x00000001, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00c00000, 0x00f00000, 0x00300000, 0x00000001, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00c00000, 0x00f00000, 0x00300000,
++	0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x00100000, 0x00c00000,
++	0x00e00000, 0x00300000, 0x00000001, 0x00000000, 0x00000000, 0x00000000,
++	0x000f0000, 0x00400000, 0x00000000, 0x00b00000, 0x00000001, 0x00000000,
++	0x00000000, 0x00000000, 0x00f00000, 0x00400000, 0x00000000, 0x00b00000,
++	0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x000f0000, 0x06000000,
++	0x00000000, 0x09000000, 0x00000001, 0x00000000, 0x00000000, 0x00000000,
++	0x00f00000, 0x06000000, 0x00000000, 0x09000000, 0x00000001, 0x00000000,
++	0x00000000, 0x00000000, 0x000f0000, 0x07000000, 0x00000000, 0x08000000,
++	0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x00f00000, 0x07000000,
++	0x00000000, 0x08000000, 0x00000001, 0x00000000, 0x00000000, 0x00000000,
++	0x000f0000, 0x00c00000, 0x00000000, 0x00300000, 0x00000001, 0x00000000,
++	0x00000000, 0x00000000, 0x00f00000, 0x00c00000, 0x00000000, 0x00300000,
++	0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x000f0000,
++	0x00000000, 0x00000000, 0x00000001, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00f00000, 0x00000000, 0x00000000, 0x00000001, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000,
++};
++
++static const u32 nbl_sec010_data[] = {
++	0x0000000a, 0x0000000a, 0x0000000a, 0x0000000a, 0x0000000a, 0x0000000a,
++	0x0000000a, 0x0000000a, 0x0000000a, 0x0000000a, 0x0000000a, 0x00000000,
++	0x0000000b, 0x00000008, 0x00000009, 0x0000000f, 0x0000000f, 0x0000000f,
++	0x0000000f, 0x0000000f, 0x0000000c, 0x0000000d, 0x00000001, 0x00000001,
++	0x0000000e, 0x00000005, 0x00000002, 0x00000002, 0x00000004, 0x00000003,
++	0x00000003, 0x00000003, 0x00000003, 0x00000040, 0x00000040, 0x00000040,
++	0x00000040, 0x00000040, 0x00000040, 0x00000040, 0x00000040, 0x00000040,
++	0x00000040, 0x00000040, 0x00000045, 0x00000044, 0x00000044, 0x00000044,
++	0x00000044, 0x00000044, 0x00000041, 0x00000042, 0x00000043, 0x00000046,
++	0x00000046, 0x00000046, 0x00000046, 0x00000046, 0x00000046, 0x00000046,
++	0x00000046, 0x00000046, 0x00000046, 0x00000046, 0x00000046, 0x00000046,
++	0x00000046, 0x00000046, 0x00000046, 0x00000046, 0x00000046, 0x00000046,
++	0x00000046, 0x00000046, 0x00000046, 0x0000004b, 0x0000004b, 0x0000004a,
++	0x0000004a, 0x0000004a, 0x0000004a, 0x0000004a, 0x0000004a, 0x0000004a,
++	0x0000004a, 0x0000004a, 0x0000004a, 0x00000047, 0x00000047, 0x00000048,
++	0x00000048, 0x00000049, 0x00000049, 0x0000004c, 0x0000004c, 0x0000004c,
++	0x0000004c, 0x0000004c, 0x0000004c, 0x0000004c, 0x0000004c, 0x0000004c,
++	0x0000004c, 0x0000004c, 0x00000051, 0x00000050, 0x00000050, 0x00000050,
++	0x00000050, 0x00000050, 0x0000004d, 0x0000004e, 0x0000004f, 0x00000052,
++	0x00000053, 0x00000054, 0x00000054, 0x00000055, 0x00000056, 0x00000057,
++	0x00000057, 0x00000057, 0x00000057, 0x00000058, 0x00000059, 0x00000059,
++	0x0000005a, 0x0000005a, 0x0000005b, 0x0000005b, 0x0000005c, 0x0000005c,
++	0x0000005c, 0x0000005c, 0x0000005d, 0x0000005d, 0x0000005e, 0x0000005e,
++	0x0000005f, 0x0000005f, 0x0000005f, 0x0000005f, 0x0000005f, 0x0000005f,
++	0x0000005f, 0x0000005f, 0x00000060, 0x00000060, 0x00000061, 0x00000061,
++	0x00000061, 0x00000061, 0x00000062, 0x00000063, 0x00000064, 0x00000064,
++	0x00000065, 0x00000066, 0x00000067, 0x00000067, 0x00000067, 0x00000067,
++	0x00000068, 0x00000069, 0x00000069, 0x00000040, 0x00000040, 0x00000046,
++	0x00000046, 0x00000046, 0x00000046, 0x0000004c, 0x0000004c, 0x0000000a,
++	0x0000000a, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000,
++};
++
++static const u32 nbl_sec011_data[] = {
++	0x0008002c, 0x00080234, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00080230, 0x00080332, 0x0008063c, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x0008002c, 0x00080234,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00080230,
++	0x00080332, 0x00080738, 0x0008083c, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x0008002c, 0x00080234, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00080230, 0x00080332, 0x00080738,
++	0x0008093a, 0x00080a3c, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00080020, 0x00080228, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00080224, 0x00080326, 0x00080634, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00080020, 0x00080228,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00080224,
++	0x00080326, 0x00080730, 0x00080834, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00080020, 0x00080228, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00080224, 0x00080326, 0x00080730,
++	0x00080932, 0x00080a34, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00090200, 0x00090304, 0x00090408, 0x0009050c,
++	0x00090610, 0x00090714, 0x00090818, 0x0009121c, 0x0009131e, 0x00000000,
++	0x00000000, 0x00000000, 0x00090644, 0x00000000, 0x000d8045, 0x000d4145,
++	0x0009030c, 0x0009041c, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00090145, 0x00090944, 0x00000000, 0x00000000, 0x0009061c, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x0009033a,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00090200, 0x00090304, 0x00090408, 0x0009050c,
++	0x00090610, 0x00090714, 0x00090818, 0x0009121c, 0x0009131e, 0x00000000,
++	0x00000000, 0x00000000, 0x0009063d, 0x00090740, 0x000d803f, 0x000d413f,
++	0x0009030c, 0x0009041c, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x0009013f, 0x00090840, 0x000dc93d, 0x000d093d, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x000a0324, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x000a003e,
++	0x000a0140, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x000a0324, 0x000a0520, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x000a003e, 0x000a0140, 0x000a0842,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x000a0124, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x000a0224, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x000a003c, 0x000a0037, 0x000ec139, 0x000e0139,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x000a0036, 0x000a0138, 0x000a0742, 0x00000000, 0x00000000,
++	0x000a0d41, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x000a0036,
++	0x000a0138, 0x00000000, 0x00000000, 0x00000000, 0x000a0d3e, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x000a0036, 0x000a0138, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x000a0037, 0x000a0139,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00080020, 0x00080228, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00080224, 0x00080326, 0x00080634,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00080020, 0x00080228, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00080224, 0x00080326, 0x00080730, 0x00080834, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00080020, 0x00080228,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00080224,
++	0x00080326, 0x00080730, 0x00080932, 0x00080a34, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x0009061c, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x0009033a,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00090200, 0x00090304, 0x00090408, 0x0009050c,
++	0x00090610, 0x00090714, 0x00090818, 0x0009121c, 0x0009131e, 0x00000000,
++	0x00000000, 0x00000000, 0x0009063d, 0x00090740, 0x000d803f, 0x000d413f,
++	0x0009030c, 0x0009041c, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x0009013f, 0x00090840, 0x000dc93d, 0x000d093d, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x000a003c, 0x000a0037, 0x000ec139, 0x000e0139, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x000a0036,
++	0x000a0138, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x000a0036, 0x000a0138, 0x000a0742,
++	0x00000000, 0x00000000, 0x000a0d41, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x000a0036, 0x000a0138, 0x00000000, 0x00000000, 0x00000000,
++	0x000a0d3e, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x000a0037, 0x000a0139,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000,
++};
++
++static const u32 nbl_sec012_data[] = {
++	0x00000006, 0x00000001, 0x00000004, 0x00000001, 0x00000006, 0x00000001,
++	0x00000000, 0x00000001, 0x00000004, 0x00000001, 0x00000000, 0x00000001,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000010, 0x00000001,
++	0x00000000, 0x00000001, 0x00000040, 0x00000001, 0x00000010, 0x00000001,
++	0x00000000, 0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x06200000, 0x00000001, 0x00c00000, 0x00000001,
++	0x02c00000, 0x00000001, 0x00200000, 0x00000001, 0x00400000, 0x00000001,
++	0x00700000, 0x00000001, 0x00300000, 0x00000001, 0x00000000, 0x00000001,
++	0x00a00000, 0x00000001, 0x00b00000, 0x00000001, 0x00e00000, 0x00000001,
++	0x00500000, 0x00000001, 0x00800000, 0x00000001, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000004, 0x00000001,
++	0x00000000, 0x00000001, 0x00000000, 0x00000001, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000040, 0x00000001, 0x00000010, 0x00000001,
++	0x00000000, 0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00500000, 0x00000001, 0x00700000, 0x00000001, 0x00a00000, 0x00000001,
++	0x00b00000, 0x00000001, 0x00200000, 0x00000001, 0x00000000, 0x00000001,
++	0x00300000, 0x00000001, 0x00800000, 0x00000001, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000,
++};
++
++static const u32 nbl_sec013_data[] = {
++	0xf7fffff0, 0xf7fffff1, 0xfffffff0, 0xf7fffff3, 0xfffffff1, 0xfffffff3,
++	0xffffffff, 0xffffffff, 0xf7ffff0f, 0xf7ffff0f, 0xffffff0f, 0xffffff0f,
++	0xffffff0f, 0xffffffff, 0xffffffff, 0xffffffff, 0x100fffff, 0xf10fffff,
++	0xf10fffff, 0xf70fffff, 0xf70fffff, 0xff0fffff, 0xff0fffff, 0xff1fffff,
++	0xff0fffff, 0xff0fffff, 0xff0fffff, 0xff0fffff, 0xff1fffff, 0xffffffff,
++	0xffffffff, 0xffffffff, 0xfffffff1, 0xfffffff3, 0xffffffff, 0xffffffff,
++	0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffff0f, 0xffffff0f,
++	0xffffff0f, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff,
++	0xff0fffff, 0xff0fffff, 0xff0fffff, 0xff0fffff, 0xff0fffff, 0xff1fffff,
++	0xff0fffff, 0xff1fffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff,
++	0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff,
++};
++
++static const u32 nbl_sec014_data[] = {
++	0x00000000, 0x00000001, 0x00000003, 0x00000002, 0x00000004, 0x00000005,
++	0x00000000, 0x00000000, 0x00000000, 0x00000001, 0x00000002, 0x00000003,
++	0x00000004, 0x00000000, 0x00000000, 0x00000000, 0x00000001, 0x00000002,
++	0x00000003, 0x00000000, 0x00000000, 0x00000004, 0x00000005, 0x00000006,
++	0x00000000, 0x00000000, 0x00000000, 0x00000001, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000001, 0x00000002, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000001,
++	0x00000002, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000001, 0x00000001, 0x00000001, 0x00000002, 0x00000003,
++	0x00000004, 0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000,
++};
++
++static const u32 nbl_sec022_data[] = {
++	0x81008100, 0x00000001, 0x88a88100, 0x00000001, 0x810088a8, 0x00000001,
++	0x88a888a8, 0x00000001, 0x81000000, 0x00000001, 0x88a80000, 0x00000001,
++	0x00000000, 0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x08004000, 0x00000001, 0x86dd6000, 0x00000001,
++	0x81000000, 0x00000001, 0x88a80000, 0x00000001, 0x08060000, 0x00000001,
++	0x80350000, 0x00000001, 0x88080000, 0x00000001, 0x88f70000, 0x00000001,
++	0x88cc0000, 0x00000001, 0x88090000, 0x00000001, 0x89150000, 0x00000001,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000001, 0x11006000, 0x00000001,
++	0x06006000, 0x00000001, 0x02006000, 0x00000001, 0x3a006000, 0x00000001,
++	0x2f006000, 0x00000001, 0x84006000, 0x00000001, 0x32006000, 0x00000001,
++	0x2c006000, 0x00000001, 0x3c006000, 0x00000001, 0x2b006000, 0x00000001,
++	0x00006000, 0x00000001, 0x00004000, 0x00000001, 0x00004000, 0x00000001,
++	0x20004000, 0x00000001, 0x40004000, 0x00000001, 0x00000000, 0x00000001,
++	0x11000000, 0x00000001, 0x06000000, 0x00000001, 0x02000000, 0x00000001,
++	0x3a000000, 0x00000001, 0x2f000000, 0x00000001, 0x84000000, 0x00000001,
++	0x32000000, 0x00000001, 0x2c000000, 0x00000001, 0x2b000000, 0x00000001,
++	0x3c000000, 0x00000001, 0x3b000000, 0x00000001, 0x00000000, 0x00000001,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x11000000, 0x00000001, 0x06000000, 0x00000001,
++	0x02000000, 0x00000001, 0x3a000000, 0x00000001, 0x2f000000, 0x00000001,
++	0x84000000, 0x00000001, 0x32000000, 0x00000001, 0x00000000, 0x00000000,
++	0x2c000000, 0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x2b000000, 0x00000001, 0x3c000000, 0x00000001,
++	0x3b000000, 0x00000001, 0x00000000, 0x00000001, 0x06001072, 0x00000001,
++	0x06000000, 0x00000001, 0x110012b7, 0x00000001, 0x01000000, 0x00000001,
++	0x02000000, 0x00000001, 0x3a000000, 0x00000001, 0x32000000, 0x00000001,
++	0x84000000, 0x00000001, 0x11000043, 0x00000001, 0x11000044, 0x00000001,
++	0x11000222, 0x00000001, 0x11000000, 0x00000001, 0x2f006558, 0x00000001,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000001,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000,
++};
++
++static const u32 nbl_sec023_data[] = {
++	0x10001000, 0x00001000, 0x10000000, 0x00000000, 0x1000ffff, 0x0000ffff,
++	0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff,
++	0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0x00000fff, 0x00000fff,
++	0x1000ffff, 0x0000ffff, 0x0000ffff, 0x0000ffff, 0x0000ffff, 0x0000ffff,
++	0x0000ffff, 0x0000ffff, 0x0000ffff, 0xffffffff, 0xffffffff, 0xffffffff,
++	0xffffffff, 0xffffffff, 0x00ff0fff, 0x00ff0fff, 0x00ff0fff, 0x00ff0fff,
++	0x00ff0fff, 0x00ff0fff, 0x00ff0fff, 0x00ff0fff, 0x00ff0fff, 0x10ff0fff,
++	0xffff0fff, 0x00000fff, 0x1fff0fff, 0x1fff0fff, 0x1fff0fff, 0xffffffff,
++	0x00ffffff, 0x00ffffff, 0x00ffffff, 0x00ffffff, 0x00ffffff, 0x00ffffff,
++	0x00ffffff, 0x00ffffff, 0x00ffffff, 0x00ffffff, 0x00ffffff, 0xffffffff,
++	0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0x00ffffff, 0x00ffffff,
++	0x00ffffff, 0x00ffffff, 0x00ffffff, 0x00ffffff, 0x00ffffff, 0xffffffff,
++	0x00ffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0x00ffffff, 0x00ffffff,
++	0x00ffffff, 0xffffffff, 0x00ff0000, 0x00ffffff, 0x00ff0000, 0x00ffffff,
++	0x00ffffff, 0x00ffffff, 0x00ffffff, 0x00ffffff, 0x00ff0000, 0x00ff0000,
++	0x00ff0001, 0x00ffffff, 0x00ff0000, 0xffffffff, 0xffffffff, 0xffffffff,
++	0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff,
++	0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff,
++	0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff,
++	0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff,
++	0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff,
++	0xffffffff, 0xffffffff,
++};
++
++static const u32 nbl_sec024_data[] = {
++	0x00809190, 0x16009496, 0x00000100, 0x00000000, 0x00809190, 0x16009496,
++	0x00000100, 0x00000000, 0x00809190, 0x16009496, 0x00000100, 0x00000000,
++	0x00809190, 0x16009496, 0x00000100, 0x00000000, 0x00800090, 0x12009092,
++	0x00000100, 0x00000000, 0x00800090, 0x12009092, 0x00000100, 0x00000000,
++	0x00800000, 0x0e008c8e, 0x00000100, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x08900081, 0x00008680,
++	0x00000200, 0x00000000, 0x10900082, 0x28008680, 0x00000200, 0x00000000,
++	0x809b0093, 0x00000000, 0x00000100, 0x00000000, 0x809b0093, 0x00000000,
++	0x00000100, 0x00000000, 0x009b008f, 0x00000000, 0x00000100, 0x00000000,
++	0x009b008f, 0x00000000, 0x00000100, 0x00000000, 0x009b008f, 0x00000000,
++	0x00000100, 0x00000000, 0x009b008f, 0x00000000, 0x00000100, 0x00000000,
++	0x009b008f, 0x00000000, 0x00000100, 0x00000000, 0x009b008f, 0x00000000,
++	0x00000100, 0x00000000, 0x009b0000, 0x00000000, 0x00000100, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x009b0000, 0x00000000,
++	0x00000100, 0x00000000, 0x00000000, 0x00000082, 0x00000500, 0x00000000,
++	0x00000000, 0x00000082, 0x00000500, 0x00000000, 0x00000000, 0x00000082,
++	0x00000500, 0x00000000, 0x00000000, 0x00000082, 0x00000500, 0x00000000,
++	0x00000000, 0x00000082, 0x00000500, 0x00000000, 0x00000000, 0x00000082,
++	0x00000500, 0x00000000, 0x00000000, 0x00000082, 0x00000500, 0x00000000,
++	0x00ab0085, 0x08000000, 0x00000200, 0x00000000, 0x00ab0000, 0x00000000,
++	0x00000200, 0x00000000, 0x00ab0000, 0x00000000, 0x00000200, 0x00000000,
++	0x40000000, 0x01c180c2, 0x00000300, 0x00000000, 0x00000000, 0x00a089c2,
++	0x000005f0, 0x00000000, 0x000b0085, 0x00a00000, 0x000002f0, 0x00000000,
++	0x000b0085, 0x00a00000, 0x000002f0, 0x00000000, 0x00000000, 0x00a089c2,
++	0x000005f0, 0x00000000, 0x000b0000, 0x00000000, 0x00000200, 0x00000000,
++	0x00000000, 0x00000082, 0x00000500, 0x00000000, 0x00000000, 0x00000082,
++	0x00000500, 0x00000000, 0x00000000, 0x00000082, 0x00000500, 0x00000000,
++	0x00000000, 0x00000082, 0x00000500, 0x00000000, 0x00000000, 0x00000082,
++	0x00000500, 0x00000000, 0x00000000, 0x00000082, 0x00000500, 0x00000000,
++	0x00000000, 0x00000082, 0x00000500, 0x00000000, 0x00ab0085, 0x08000000,
++	0x00000300, 0x00000000, 0x00ab0000, 0x00000000, 0x00000300, 0x00000000,
++	0x00ab0000, 0x00000000, 0x00000300, 0x00000000, 0x00ab0000, 0x00000000,
++	0x00000300, 0x00000000, 0x40000000, 0x01c180c2, 0x00000400, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000082,
++	0x00000500, 0x00000000, 0x00000000, 0x00000082, 0x00000500, 0x00000000,
++	0x00000000, 0x00000082, 0x00000500, 0x00000000, 0x00000000, 0x00000082,
++	0x00000500, 0x00000000, 0x00000000, 0x00000082, 0x00000500, 0x00000000,
++	0x00000000, 0x00000082, 0x00000500, 0x00000000, 0x00000000, 0x00000082,
++	0x00000500, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00ab0085, 0x08000000, 0x00000400, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00ab0000, 0x00000000,
++	0x00000400, 0x00000000, 0x00ab0000, 0x00000000, 0x00000400, 0x00000000,
++	0x00ab0000, 0x00000000, 0x00000400, 0x00000000, 0x00ab0000, 0x00000000,
++	0x00000400, 0x00000000, 0x01ab0083, 0x0ca00000, 0x0000050f, 0x00000000,
++	0x01ab0083, 0x0ca00000, 0x0000050f, 0x00000000, 0x02ab848a, 0x08000000,
++	0x00000500, 0x00000000, 0x00ab8f8e, 0x04000000, 0x00000500, 0x00000000,
++	0x00ab0000, 0x00000000, 0x00000500, 0x00000000, 0x00ab8f8e, 0x04000000,
++	0x00000500, 0x00000000, 0x00ab0000, 0x00000000, 0x00000500, 0x00000000,
++	0x04ab8e84, 0x0c000000, 0x00000500, 0x00000000, 0x02ab848f, 0x08000000,
++	0x00000500, 0x00000000, 0x02ab848f, 0x08000000, 0x00000500, 0x00000000,
++	0x02ab848f, 0x08000000, 0x00000500, 0x00000000, 0x02ab0084, 0x08000000,
++	0x00000500, 0x00000000, 0x00ab0000, 0x04000000, 0x00000500, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00ab0000, 0x00000000, 0x00000500, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000,
++};
++
++static const u32 nbl_sec025_data[] = {
++	0x00000060, 0x00000090, 0x00000001, 0x00000000, 0x00000050, 0x000000a0,
++	0x00000001, 0x00000000, 0x000000a0, 0x00000050, 0x00000001, 0x00000000,
++	0x00000800, 0x00000700, 0x00000001, 0x00000000, 0x00000900, 0x00000600,
++	0x00000001, 0x00000000, 0x00008000, 0x00007000, 0x00000001, 0x00000000,
++	0x00009000, 0x00006000, 0x00000001, 0x00000000, 0x0000a000, 0x00005000,
++	0x00000001, 0x00000000, 0x000c0000, 0x00030000, 0x00000001, 0x00000000,
++	0x000d0000, 0x00020000, 0x00000001, 0x00000000, 0x000e0000, 0x00010000,
++	0x00000001, 0x00000000, 0x00000040, 0x000000b0, 0x00000001, 0x00000000,
++	0x00000070, 0x00000080, 0x00000001, 0x00000000, 0x00000090, 0x00000060,
++	0x00000001, 0x00000000, 0x00000080, 0x00000070, 0x00000001, 0x00000000,
++	0x00000700, 0x00000800, 0x00000001, 0x00000000, 0x00007000, 0x00008000,
++	0x00000001, 0x00000000, 0x00080000, 0x00070000, 0x00000001, 0x00000000,
++	0x00000c00, 0x00000300, 0x00000001, 0x00000000, 0x00000d00, 0x00000200,
++	0x00000001, 0x00000000, 0x00400000, 0x00b00000, 0x00000001, 0x00000000,
++	0x00600000, 0x00900000, 0x00000001, 0x00000000, 0x00300000, 0x00c00000,
++	0x00000001, 0x00000000, 0x00500000, 0x00a00000, 0x00000001, 0x00000000,
++	0x00700000, 0x00800000, 0x00000001, 0x00000000, 0x00000000, 0x00f00000,
++	0x00000001, 0x00000000, 0x00000000, 0x00f00000, 0x00000001, 0x00000000,
++	0x00100000, 0x00e00000, 0x00000001, 0x00000000, 0x00200000, 0x00d00000,
++	0x00000001, 0x00000000, 0x00800000, 0x00700000, 0x00000001, 0x00000000,
++	0x00900000, 0x00600000, 0x00000001, 0x00000000, 0x00a00000, 0x00500000,
++	0x00000001, 0x00000000, 0x00b00000, 0x00400000, 0x00000001, 0x00000000,
++	0x000f0000, 0x00000000, 0x00000001, 0x00000000, 0x00f00000, 0x00000000,
++	0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000,
++};
++
++static const u32 nbl_sec026_data[] = {
++	0x0000000a, 0x0000000a, 0x0000000a, 0x0000000a, 0x0000000a, 0x0000000a,
++	0x0000000a, 0x0000000a, 0x0000000a, 0x0000000a, 0x0000000a, 0x00000000,
++	0x0000000b, 0x00000008, 0x00000009, 0x0000000f, 0x0000000f, 0x0000000f,
++	0x0000000f, 0x0000000f, 0x0000000c, 0x0000000d, 0x00000001, 0x00000001,
++	0x0000000e, 0x00000005, 0x00000002, 0x00000002, 0x00000004, 0x00000003,
++	0x00000003, 0x00000003, 0x00000003, 0x0000000a, 0x0000000a, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000,
++};
++
++static const u32 nbl_sec027_data[] = {
++	0x00080020, 0x00080228, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00080224, 0x00080326, 0x00080634, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00080020, 0x00080228,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00080224,
++	0x00080326, 0x00080730, 0x00080834, 0x0008082e, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00080020, 0x00080228, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00080224, 0x00080326, 0x00080730,
++	0x00080932, 0x00080a34, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x0009061c, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x0009033a, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00090200, 0x00090304, 0x00090408, 0x0009050c, 0x00090610, 0x00090714,
++	0x00090818, 0x0009121c, 0x0009131e, 0x00000000, 0x00000000, 0x00000000,
++	0x0009063d, 0x00090740, 0x000d803f, 0x000d413f, 0x0009030c, 0x0009041c,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x0009013f, 0x00090840,
++	0x000dc93d, 0x000d093d, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x000a003c, 0x000a0037,
++	0x000ec139, 0x000e0139, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x000a0036, 0x000a0138, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x000a0036, 0x000a0138, 0x000a0742, 0x00000000, 0x00000000,
++	0x000a0d41, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x000a0036,
++	0x000a0138, 0x00000000, 0x00000000, 0x00000000, 0x000a0d3e, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x000a0037, 0x000a0139, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000,
++};
++
++static const u32 nbl_sec028_data[] = {
++	0x00000006, 0x00000001, 0x00000004, 0x00000001, 0x00000000, 0x00000001,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000040, 0x00000001,
++	0x00000010, 0x00000001, 0x00000000, 0x00000001, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00500000, 0x00000001, 0x00700000, 0x00000001,
++	0x00a00000, 0x00000001, 0x00b00000, 0x00000001, 0x00200000, 0x00000001,
++	0x00000000, 0x00000001, 0x00300000, 0x00000001, 0x00800000, 0x00000001,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000,
++};
++
++static const u32 nbl_sec029_data[] = {
++	0xfffffff0, 0xfffffff1, 0xfffffff3, 0xffffffff, 0xffffffff, 0xffffffff,
++	0xffffffff, 0xffffffff, 0xffffff0f, 0xffffff0f, 0xffffff0f, 0xffffffff,
++	0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xff0fffff, 0xff0fffff,
++	0xff0fffff, 0xff0fffff, 0xff0fffff, 0xff1fffff, 0xff0fffff, 0xff1fffff,
++	0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff,
++	0xffffffff, 0xffffffff,
++};
++
++static const u32 nbl_sec030_data[] = {
++	0x00000000, 0x00000001, 0x00000002, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000001, 0x00000002, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000001,
++	0x00000001, 0x00000001, 0x00000002, 0x00000003, 0x00000004, 0x00000001,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000,
++};
++
++static const u32 nbl_sec039_data[] = {
++	0xfef80000, 0x00000002, 0x000002e0, 0x00000000, 0xfef8013e, 0x00000002,
++	0x000002e0, 0x00000000, 0x6660013e, 0x726e6802, 0x02224e42, 0x00000000,
++	0x6660013e, 0x726e6802, 0x02224e42, 0x00000000, 0x66600000, 0x726e6802,
++	0x02224e42, 0x00000000, 0x66600000, 0x726e6802, 0x02224e42, 0x00000000,
++	0x66600000, 0x00026802, 0x02224e40, 0x00000000, 0x66627800, 0x00026802,
++	0x02224e40, 0x00000000, 0x66600000, 0x00026a76, 0x02224e40, 0x00000000,
++	0x66600000, 0x00026802, 0x00024e40, 0x00000000, 0x66600000, 0x00026802,
++	0x00024e40, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000,
++};
++
++static const u32 nbl_sec040_data[] = {
++	0x0040fb3f, 0x00000001, 0x0440fb3f, 0x00000001, 0x0502fa00, 0x00000001,
++	0x0602f900, 0x00000001, 0x0903e600, 0x00000001, 0x0a03e500, 0x00000001,
++	0x1101e600, 0x00000001, 0x1201e500, 0x00000001, 0x0000ff00, 0x00000001,
++	0x0008ff07, 0x00000001, 0x00ffff00, 0x00000001, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000,
++};
++
++static const u32 nbl_sec046_4p_data[] = {
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0xa0000000,
++	0x00077c2b, 0x005c0000, 0x00000000, 0x00008100, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x20000000, 0x00073029, 0x00480000,
++	0x00000000, 0x00008100, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x20000000, 0x00073029, 0x00480000, 0x70000000, 0x00000020,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0xa0000000,
++	0x00000009, 0x00000000, 0x00000000, 0x00002100, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0xb0000000, 0x00000009, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000100,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000100, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x70000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x70000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x38430000, 0x70000006, 0x00000020, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x98cb1180, 0x6e36d469, 0x9d8eb91c, 0x87e3ef47, 0xa2931288, 0x08405c5a,
++	0x73865086, 0x00000080, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0xb0000000, 0x000b3849, 0x38430000, 0x00000006, 0x0000c100,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0xb0000000,
++	0x00133889, 0x08400000, 0x03865086, 0x4c016100, 0x00000014, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000,
++};
++
++static const u32 nbl_sec047_data[] = {
++	0x2040dc3f, 0x00000001, 0x2000dcff, 0x00000001, 0x2200dcff, 0x00000001,
++	0x0008dc01, 0x00000001, 0x0001de00, 0x00000001, 0x2900c4ff, 0x00000001,
++	0x3100c4ff, 0x00000001, 0x2b00c4ff, 0x00000001, 0x3300c4ff, 0x00000001,
++	0x2700d8ff, 0x00000001, 0x2300d8ff, 0x00000001, 0x2502d800, 0x00000001,
++	0x2102d800, 0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000,
++};
++
++static const u32 nbl_sec052_data[] = {
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x30000000,
++	0x000b844c, 0xc8580000, 0x00000006, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x20000000, 0xb0d3668b, 0xb0555e12,
++	0x03b055c6, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x20000000, 0xa64b3449, 0x405a3cc1, 0x00000006, 0x3d2d3300,
++	0x00000010, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x20000000,
++	0x26473429, 0x00482cc1, 0x00000000, 0x00ccd300, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000,
++};
++
++static const u32 nbl_sec053_data[] = {
++	0x0840f03f, 0x00000001, 0x0040f03f, 0x00000001, 0x0140fa3f, 0x00000001,
++	0x0100fa0f, 0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000,
++};
++
++static const u32 nbl_sec058_data[] = {
++	0x00000000, 0x00000000, 0x59f89400, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00470000, 0x00000000, 0x3c000000, 0xa2e40006, 0x00000017,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x19fa1400, 0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x28440000,
++	0x038e5186, 0x3c000000, 0xa8e40012, 0x00000047, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x0001f3d0, 0x00000000,
++	0x00000000, 0xb0000000, 0x00133889, 0x38c30000, 0x0000000a, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x0001f3d0, 0x00000000, 0x00000000, 0xb0000000,
++	0x00133889, 0x38c30000, 0x0000000a, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x000113d0, 0x00000000, 0x00000000, 0xb0000000, 0x00073829, 0x00430000,
++	0x00000000, 0x3c000000, 0x0000000a, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x000293d0, 0x00000000,
++	0x00000000, 0xb0000000, 0x00133889, 0x08400000, 0x03865086, 0x3c000000,
++	0x00000016, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000,
++};
++
++static const u32 nbl_sec059_data[] = {
++	0x0200e4ff, 0x00000001, 0x0400e2ff, 0x00000001, 0x1300ecff, 0x00000001,
++	0x1500eaff, 0x00000001, 0x0300e4ff, 0x00000001, 0x0500e2ff, 0x00000001,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000,
++};
++
++static const u32 nbl_sec062_data[] = {
++	0x90939899, 0x88809c9b, 0x0000013d, 0x00000000, 0x90939899, 0x88809c9b,
++	0x0000013d, 0x00000000, 0x90939899, 0x88809c9b, 0x0000013d, 0x00000000,
++	0x90939899, 0x88809c9b, 0x0000013d, 0x00000000, 0x90939899, 0x88809c9b,
++	0x0000013d, 0x00000000, 0x90939899, 0x88809c9b, 0x0000013d, 0x00000000,
++	0x90939899, 0x88809c9b, 0x0000013d, 0x00000000, 0x90939899, 0x88809c9b,
++	0x0000013d, 0x00000000, 0x90939899, 0x88809c9b, 0x0000013d, 0x00000000,
++	0x90939899, 0x88809c9b, 0x0000013d, 0x00000000, 0x90939899, 0x88809c9b,
++	0x0000013d, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000,
++};
++
++static const u32 nbl_sec063_data[] = {
++	0x0500e2ff, 0x00000001, 0x0900e2ff, 0x00000001, 0x1900e2ff, 0x00000001,
++	0x1100e2ff, 0x00000001, 0x0100e2ff, 0x00000001, 0x0600e1ff, 0x00000001,
++	0x0a00e1ff, 0x00000001, 0x1a00e1ff, 0x00000001, 0x1200e1ff, 0x00000001,
++	0x0200e1ff, 0x00000001, 0x0000fcff, 0x00000001, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000,
++};
++
++static const u32 nbl_sec065_data[] = {
++	0x006e120c, 0x006e1210, 0x006e4208, 0x006e4218, 0x00200b02, 0x00200b00,
++	0x000e1900, 0x000e1906, 0x00580208, 0x00580204, 0x004c0208, 0x004c0207,
++	0x0002110c, 0x0002110c, 0x0012010c, 0x00100110, 0x0010010c, 0x000a010c,
++	0x0008010c, 0x00060000, 0x00160000, 0x00140000, 0x001e0000, 0x001e0000,
++	0x001e0000, 0x001e0000, 0x001e0000, 0x001e0000, 0x001e0000, 0x001e0000,
++	0x001e0000, 0x001e0000,
++};
++
++static const u32 nbl_sec066_data[] = {
++	0x006e120c, 0x006e1210, 0x006e4208, 0x006e4218, 0x00200b02, 0x00200b00,
++	0x000e1900, 0x000e1906, 0x00580208, 0x00580204, 0x004c0208, 0x004c0207,
++	0x0002110c, 0x0002110c, 0x0012010c, 0x00100110, 0x0010010c, 0x000a010c,
++	0x0008010c, 0x00060000, 0x00160000, 0x00140000, 0x001e0000, 0x001e0000,
++	0x001e0000, 0x001e0000, 0x001e0000, 0x001e0000, 0x001e0000, 0x001e0000,
++	0x001e0000, 0x001e0000,
++};
++
++static const u32 nbl_sec071_4p_data[] = {
++	0x00000000, 0x00000000, 0x00113d00, 0x00000000, 0x00000000, 0x00000000,
++	0xe7029b00, 0x00000000, 0x00000000, 0x43000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x51e00000, 0x00000c9c, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00293d00, 0x00000000,
++	0x00000000, 0x00000000, 0x67089b00, 0x00000002, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x80000000, 0x00000000, 0xb1e00000, 0x0000189c,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00213d00, 0x00000000, 0x00000000, 0x00000000, 0xe7069b00, 0x00000001,
++	0x00000000, 0x43000000, 0x014b0c70, 0x00000000, 0x00000000, 0x00000000,
++	0x92600000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00213d00, 0x00000000, 0x00000000, 0x00000000,
++	0xe7069b00, 0x00000001, 0x00000000, 0x43000000, 0x015b0c70, 0x00000000,
++	0x00000000, 0x00000000, 0x92600000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00553d00, 0x00000000,
++	0x00000000, 0x00000000, 0xe6d29a00, 0x000149c4, 0x00000000, 0x4b000000,
++	0x00000004, 0x00000000, 0x80000000, 0x00022200, 0x62600000, 0x00000001,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00553d00, 0x00000000, 0x00000000, 0x00000000, 0xe6d2c000, 0x000149c4,
++	0x00000000, 0x5b000000, 0x00000004, 0x00000000, 0x80000000, 0x00022200,
++	0x62600000, 0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x006d3d00, 0x00000000, 0x00000000, 0x00000000,
++	0x64d49200, 0x5e556945, 0xc666d89a, 0x4b0001a9, 0x00004c84, 0x00000000,
++	0x80000000, 0x00022200, 0xc2600000, 0x00000001, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x006d3d00, 0x00000000,
++	0x00000000, 0x00000000, 0x6ed4ba00, 0x5ef56bc5, 0xc666d8c0, 0x5b0001a9,
++	0x00004dc4, 0x00000000, 0x80000000, 0x00022200, 0xc2600000, 0x00000001,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000002, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00700000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000,
++};
++
++static const u32 nbl_sec072_data[] = {
++	0x84006aff, 0x00000001, 0x880066ff, 0x00000001, 0x140040ff, 0x00000001,
++	0x70000cff, 0x00000001, 0x180040ff, 0x00000001, 0x30000cff, 0x00000001,
++	0x10004cff, 0x00000001, 0x30004cff, 0x00000001, 0x0100ecff, 0x00000001,
++	0x0300ecff, 0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000,
++};
++
++static const u32 nbl_sec116_data[] = {
++	0x00000000, 0x00000000, 0x3fff8000, 0x00000007, 0x3fff8000, 0x00000007,
++	0x3fff8000, 0x00000007, 0x3fff8000, 0x00000003, 0x3fff8000, 0x00000003,
++	0x3fff8000, 0x00000007, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000,
++};
++
++static const u32 nbl_sec124_data[] = {
++	0xfffffffc, 0xffffffff, 0x00300000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000500, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0xfffffffc, 0xffffffff,
++	0x00300010, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000500, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0xfffffffc, 0xffffffff, 0x00300010, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000500, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0xfffffffc, 0xffffffff, 0x00300fff, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000580, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0xfffffffc, 0xffffffff,
++	0x00301fff, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000580, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0xfffffffc, 0xffffffff, 0x0030ffff, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000580, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0xfffffffc, 0xffffffff, 0x0030ffff, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000580, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0xfffffffc, 0xffffffff,
++	0x0030ffff, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000580, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0xfffffffc, 0xffffffff, 0x0030ffff, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000580, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0xfffffffc, 0xffffffff, 0x00300000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000500, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x0000fffe, 0x00000000,
++	0x00300000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000480, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0xfffffffc, 0x00ffffff, 0x00300000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000480, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0xfffffffe, 0x0000000f, 0x00300000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000580, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000,
++};
++
++static const u32 nbl_sec125_data[] = {
++	0xfffffffc, 0x01ffffff, 0x00300000, 0x70000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000480, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0xfffffffe, 0x00000001,
++	0x00300000, 0x70000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000540, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0xfffffffe, 0x011003ff, 0x00300000, 0x70000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x000005c0, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0xfffffffc, 0x103fffff, 0x00300001, 0x70000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000480, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000,
++};
++
++static const u32 nbl_sec126_data[] = {
++	0xfffffffc, 0xffffffff, 0x00300001, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000500, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0xfffffffe, 0x000001ff,
++	0x00300000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x000005c0, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00002013, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000400, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00002013, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000400, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0xfffffffc, 0x01ffffff,
++	0x00300000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000480, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0xfffffffe, 0x00000001, 0x00300000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000540, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000,
++};
++
++static const u32 nbl_sec137_data[] = {
++	0x0000017a, 0x000000f2, 0x00000076, 0x0000017a, 0x0000017a, 0x00000080,
++	0x00000024, 0x0000017a, 0x0000017a, 0x00000191, 0x00000035, 0x0000017a,
++	0x0000017a, 0x0000017a, 0x0000017a, 0x0000017a, 0x0000017a, 0x000000d2,
++	0x00000066, 0x0000017a, 0x0000017a, 0x0000017a, 0x0000017a, 0x0000017a,
++	0x0000017a, 0x000000f2, 0x00000076, 0x0000017a, 0x0000017a, 0x0000017a,
++	0x0000017a, 0x0000017a,
++};
++
++static const u32 nbl_sec138_data[] = {
++	0x0000017a, 0x000000f2, 0x00000076, 0x0000017a, 0x0000017a, 0x00000080,
++	0x00000024, 0x0000017a, 0x0000017a, 0x00000191, 0x00000035, 0x0000017a,
++	0x0000017a, 0x0000017a, 0x0000017a, 0x0000017a, 0x0000017a, 0x000000d2,
++	0x00000066, 0x0000017a, 0x0000017a, 0x0000017a, 0x0000017a, 0x0000017a,
++	0x0000017a, 0x000000f2, 0x00000076, 0x0000017a, 0x0000017a, 0x0000017a,
++	0x0000017a, 0x0000017a,
++};
++
++/*
++ * nbl_write_all_regs - Write initial register values during probe
++ *
++ * Context: This function is called ONLY during PCI probe (single-threaded,
++ * before any interrupts or concurrent access are possible). The reg_lock
++ * is intentionally NOT acquired here because:
++ * 1. Probe runs before device is registered to subsystem
++ * 2. No other thread can access this device yet
++ * 3. reg_lock is a spinlock_t (safe in atomic), but acquiring it
++ *    here is redundant since probe is single-threaded before
++ *    device registration
++ * Note: SEC block sizes are multiples of NBL_SEC_BLOCK_SIZE (>= 2x for
++ * multi-block sections). flush_writes() is placed inside the loop at
++ * block boundaries for multi-block sections, and outside for single-block
++ * or sub-block sections.
++ *
++ * The 139 sections are intentionally identified by index rather than by
++ * name. The hardware block layout is fixed and documented internally;
++ * adding string names would increase the binary size without providing
++ * any functional benefit to the driver or to users.
++ */
++int nbl_write_all_regs(struct nbl_hw_mgt *hw_mgt)
 +{
-+	u32 diff = U32_MAX;
-+
-+	if (pf_id >= common->mgt_pf)
-+		diff = pf_id - common->mgt_pf;
-+
-+	return diff;
-+}
-+
-+#define FNV_PRIME_32 0x01000193
-+#define FNV_OFFSET_32 0x811C9DC5
-+static u32 nbl_common_calc_hash_key(void *key, u32 key_size, u32 bucket_size)
-+{
-+	u32 hash = FNV_OFFSET_32;
-+	u8 *p = (u8 *)key;
++	struct nbl_common_info *common = hw_mgt->common;
++	u8 eth_num = common->eth_num;
++	const u32 *nbl_sec046_data;
++	const u32 *nbl_sec071_data;
 +	u32 i;
 +
-+	if (bucket_size == 0 || bucket_size == NBL_HASH_TBL_LIST_BUCKET_SIZE)
-+		return 0;
-+
-+	for (i = 0; i < key_size; i++) {
-+		hash ^= p[i];
-+		hash *= FNV_PRIME_32;
++	switch (eth_num) {
++	case 1:
++		nbl_sec046_data = nbl_sec046_1p_data;
++		nbl_sec071_data = nbl_sec071_1p_data;
++		break;
++	case 2:
++		nbl_sec046_data = nbl_sec046_2p_data;
++		nbl_sec071_data = nbl_sec071_2p_data;
++		break;
++	case 4:
++		nbl_sec046_data = nbl_sec046_4p_data;
++		nbl_sec071_data = nbl_sec071_4p_data;
++		break;
++	default:
++		dev_err(common->dev, "Invalid eth_num %u\n", eth_num);
++		return -EINVAL;
 +	}
-+	/* Use bitmask if bucket_size is a power of 2 */
-+	if ((bucket_size & (bucket_size - 1)) == 0)
-+		return hash & (bucket_size - 1);
-+	else
-+		return hash % bucket_size;
-+}
 +
-+/*
-+ * alloc a hash table
-+ * the table support multi thread
-+ */
-+struct nbl_hash_tbl_mgt *
-+nbl_common_init_hash_table(struct nbl_hash_tbl_key *key)
-+{
-+	struct nbl_hash_tbl_mgt *tbl_mgt;
-+	int bucket_size;
-+	int i;
++	for (i = 0; i < NBL_SEC006_SIZE; i++) {
++		nbl_hw_wr32(hw_mgt, NBL_SEC006_REGI(i), nbl_sec006_data[i]);
++		if ((i + 1) % NBL_SEC_BLOCK_SIZE == 0)
++			nbl_flush_writes(hw_mgt);
++	}
 +
-+	tbl_mgt = devm_kzalloc(key->dev, sizeof(*tbl_mgt), GFP_KERNEL);
-+	if (!tbl_mgt)
-+		return NULL;
++	for (i = 0; i < NBL_SEC007_SIZE; i++)
++		nbl_hw_wr32(hw_mgt, NBL_SEC007_REGI(i), nbl_sec007_data[i]);
++	nbl_flush_writes(hw_mgt);
 +
-+	bucket_size = key->bucket_size;
-+	tbl_mgt->hash = devm_kcalloc(key->dev, bucket_size,
-+				     sizeof(struct hlist_head), GFP_KERNEL);
-+	if (!tbl_mgt->hash)
-+		goto alloc_hash_failed;
++	for (i = 0; i < NBL_SEC008_SIZE; i++) {
++		nbl_hw_wr32(hw_mgt, NBL_SEC008_REGI(i), nbl_sec008_data[i]);
++		if ((i + 1) % NBL_SEC_BLOCK_SIZE == 0)
++			nbl_flush_writes(hw_mgt);
++	}
 +
-+	for (i = 0; i < bucket_size; i++)
-+		INIT_HLIST_HEAD(tbl_mgt->hash + i);
++	for (i = 0; i < NBL_SEC009_SIZE; i++) {
++		nbl_hw_wr32(hw_mgt, NBL_SEC009_REGI(i), nbl_sec009_data[i]);
++		if ((i + 1) % NBL_SEC_BLOCK_SIZE == 0)
++			nbl_flush_writes(hw_mgt);
++	}
 +
-+	memcpy(&tbl_mgt->tbl_key, key, sizeof(struct nbl_hash_tbl_key));
++	for (i = 0; i < NBL_SEC010_SIZE; i++)
++		nbl_hw_wr32(hw_mgt, NBL_SEC010_REGI(i), nbl_sec010_data[i]);
++	nbl_flush_writes(hw_mgt);
 +
-+	return tbl_mgt;
++	for (i = 0; i < NBL_SEC011_SIZE; i++) {
++		nbl_hw_wr32(hw_mgt, NBL_SEC011_REGI(i), nbl_sec011_data[i]);
++		if ((i + 1) % NBL_SEC_BLOCK_SIZE == 0)
++			nbl_flush_writes(hw_mgt);
++	}
 +
-+alloc_hash_failed:
-+	return NULL;
-+}
++	for (i = 0; i < NBL_SEC012_SIZE; i++)
++		nbl_hw_wr32(hw_mgt, NBL_SEC012_REGI(i), nbl_sec012_data[i]);
++	nbl_flush_writes(hw_mgt);
 +
-+/*
-+ * alloc a hash node, and add to hlist_head
-+ * The hash table is only accessed from a single context
-+ * no locking required.
-+ */
-+int nbl_common_alloc_hash_node(struct nbl_hash_tbl_mgt *tbl_mgt, void *key,
-+			       void *data, void **out_data)
-+{
-+	struct nbl_hash_entry_node *hash_node;
-+	u16 data_size;
-+	u32 hash_val;
-+	u16 key_size;
++	for (i = 0; i < NBL_SEC013_SIZE; i++)
++		nbl_hw_wr32(hw_mgt, NBL_SEC013_REGI(i), nbl_sec013_data[i]);
++	nbl_flush_writes(hw_mgt);
 +
-+	hash_node = devm_kzalloc(tbl_mgt->tbl_key.dev, sizeof(*hash_node),
-+				 GFP_KERNEL);
-+	if (!hash_node)
-+		return -ENOMEM;
++	for (i = 0; i < NBL_SEC014_SIZE; i++)
++		nbl_hw_wr32(hw_mgt, NBL_SEC014_REGI(i), nbl_sec014_data[i]);
++	nbl_flush_writes(hw_mgt);
 +
-+	key_size = tbl_mgt->tbl_key.key_size;
-+	hash_node->key =
-+		devm_kzalloc(tbl_mgt->tbl_key.dev, key_size, GFP_KERNEL);
-+	if (!hash_node->key)
-+		goto alloc_key_failed;
++	for (i = 0; i < NBL_SEC022_SIZE; i++)
++		nbl_hw_wr32(hw_mgt, NBL_SEC022_REGI(i), nbl_sec022_data[i]);
++	nbl_flush_writes(hw_mgt);
 +
-+	data_size = tbl_mgt->tbl_key.data_size;
-+	hash_node->data =
-+		devm_kzalloc(tbl_mgt->tbl_key.dev, data_size, GFP_KERNEL);
-+	if (!hash_node->data)
-+		goto alloc_data_failed;
++	for (i = 0; i < NBL_SEC023_SIZE; i++)
++		nbl_hw_wr32(hw_mgt, NBL_SEC023_REGI(i), nbl_sec023_data[i]);
++	nbl_flush_writes(hw_mgt);
 +
-+	memcpy(hash_node->key, key, key_size);
-+	memcpy(hash_node->data, data, data_size);
++	for (i = 0; i < NBL_SEC024_SIZE; i++) {
++		nbl_hw_wr32(hw_mgt, NBL_SEC024_REGI(i), nbl_sec024_data[i]);
++		if ((i + 1) % NBL_SEC_BLOCK_SIZE == 0)
++			nbl_flush_writes(hw_mgt);
++	}
 +
-+	hash_val = nbl_common_calc_hash_key(key, key_size,
-+					    tbl_mgt->tbl_key.bucket_size);
++	for (i = 0; i < NBL_SEC025_SIZE; i++) {
++		nbl_hw_wr32(hw_mgt, NBL_SEC025_REGI(i), nbl_sec025_data[i]);
++		if ((i + 1) % NBL_SEC_BLOCK_SIZE == 0)
++			nbl_flush_writes(hw_mgt);
++	}
 +
-+	hlist_add_head(&hash_node->node, tbl_mgt->hash + hash_val);
-+	tbl_mgt->node_num++;
-+	if (out_data)
-+		*out_data = hash_node->data;
++	for (i = 0; i < NBL_SEC026_SIZE; i++)
++		nbl_hw_wr32(hw_mgt, NBL_SEC026_REGI(i), nbl_sec026_data[i]);
++	nbl_flush_writes(hw_mgt);
++
++	for (i = 0; i < NBL_SEC027_SIZE; i++) {
++		nbl_hw_wr32(hw_mgt, NBL_SEC027_REGI(i), nbl_sec027_data[i]);
++		if ((i + 1) % NBL_SEC_BLOCK_SIZE == 0)
++			nbl_flush_writes(hw_mgt);
++	}
++
++	for (i = 0; i < NBL_SEC028_SIZE; i++)
++		nbl_hw_wr32(hw_mgt, NBL_SEC028_REGI(i), nbl_sec028_data[i]);
++	nbl_flush_writes(hw_mgt);
++
++	for (i = 0; i < NBL_SEC029_SIZE; i++)
++		nbl_hw_wr32(hw_mgt, NBL_SEC029_REGI(i), nbl_sec029_data[i]);
++	nbl_flush_writes(hw_mgt);
++
++	for (i = 0; i < NBL_SEC030_SIZE; i++)
++		nbl_hw_wr32(hw_mgt, NBL_SEC030_REGI(i), nbl_sec030_data[i]);
++	nbl_flush_writes(hw_mgt);
++
++	for (i = 0; i < NBL_SEC039_SIZE; i++)
++		nbl_hw_wr32(hw_mgt, NBL_SEC039_REGI(i), nbl_sec039_data[i]);
++	nbl_flush_writes(hw_mgt);
++
++	for (i = 0; i < NBL_SEC040_SIZE; i++)
++		nbl_hw_wr32(hw_mgt, NBL_SEC040_REGI(i), nbl_sec040_data[i]);
++	nbl_flush_writes(hw_mgt);
++
++	for (i = 0; i < NBL_SEC046_SIZE; i++)
++		nbl_hw_wr32(hw_mgt, NBL_SEC046_REGI(i), nbl_sec046_data[i]);
++	nbl_flush_writes(hw_mgt);
++
++	for (i = 0; i < NBL_SEC047_SIZE; i++)
++		nbl_hw_wr32(hw_mgt, NBL_SEC047_REGI(i), nbl_sec047_data[i]);
++	nbl_flush_writes(hw_mgt);
++
++	for (i = 0; i < NBL_SEC052_SIZE; i++)
++		nbl_hw_wr32(hw_mgt, NBL_SEC052_REGI(i), nbl_sec052_data[i]);
++	nbl_flush_writes(hw_mgt);
++
++	for (i = 0; i < NBL_SEC053_SIZE; i++)
++		nbl_hw_wr32(hw_mgt, NBL_SEC053_REGI(i), nbl_sec053_data[i]);
++	nbl_flush_writes(hw_mgt);
++
++	for (i = 0; i < NBL_SEC058_SIZE; i++)
++		nbl_hw_wr32(hw_mgt, NBL_SEC058_REGI(i), nbl_sec058_data[i]);
++	nbl_flush_writes(hw_mgt);
++
++	for (i = 0; i < NBL_SEC059_SIZE; i++)
++		nbl_hw_wr32(hw_mgt, NBL_SEC059_REGI(i), nbl_sec059_data[i]);
++	nbl_flush_writes(hw_mgt);
++
++	for (i = 0; i < NBL_SEC062_SIZE; i++)
++		nbl_hw_wr32(hw_mgt, NBL_SEC062_REGI(i), nbl_sec062_data[i]);
++	nbl_flush_writes(hw_mgt);
++
++	for (i = 0; i < NBL_SEC063_SIZE; i++)
++		nbl_hw_wr32(hw_mgt, NBL_SEC063_REGI(i), nbl_sec063_data[i]);
++	nbl_flush_writes(hw_mgt);
++
++	for (i = 0; i < NBL_SEC065_SIZE; i++)
++		nbl_hw_wr32(hw_mgt, NBL_SEC065_REGI(i), nbl_sec065_data[i]);
++	nbl_flush_writes(hw_mgt);
++
++	for (i = 0; i < NBL_SEC066_SIZE; i++)
++		nbl_hw_wr32(hw_mgt, NBL_SEC066_REGI(i), nbl_sec066_data[i]);
++	nbl_flush_writes(hw_mgt);
++
++	for (i = 0; i < NBL_SEC071_SIZE; i++) {
++		nbl_hw_wr32(hw_mgt, NBL_SEC071_REGI(i), nbl_sec071_data[i]);
++		if ((i + 1) % NBL_SEC_BLOCK_SIZE == 0)
++			nbl_flush_writes(hw_mgt);
++	}
++
++	for (i = 0; i < NBL_SEC072_SIZE; i++)
++		nbl_hw_wr32(hw_mgt, NBL_SEC072_REGI(i), nbl_sec072_data[i]);
++	nbl_flush_writes(hw_mgt);
++
++	for (i = 0; i < NBL_SEC116_SIZE; i++)
++		nbl_hw_wr32(hw_mgt, NBL_SEC116_REGI(i), nbl_sec116_data[i]);
++	nbl_flush_writes(hw_mgt);
++
++	for (i = 0; i < NBL_SEC124_SIZE; i++)
++		nbl_hw_wr32(hw_mgt, NBL_SEC124_REGI(i), nbl_sec124_data[i]);
++	nbl_flush_writes(hw_mgt);
++
++	for (i = 0; i < NBL_SEC125_SIZE; i++)
++		nbl_hw_wr32(hw_mgt, NBL_SEC125_REGI(i), nbl_sec125_data[i]);
++	nbl_flush_writes(hw_mgt);
++
++	for (i = 0; i < NBL_SEC126_SIZE; i++)
++		nbl_hw_wr32(hw_mgt, NBL_SEC126_REGI(i), nbl_sec126_data[i]);
++	nbl_flush_writes(hw_mgt);
++
++	for (i = 0; i < NBL_SEC137_SIZE; i++)
++		nbl_hw_wr32(hw_mgt, NBL_SEC137_REGI(i), nbl_sec137_data[i]);
++	nbl_flush_writes(hw_mgt);
++
++	for (i = 0; i < NBL_SEC138_SIZE; i++)
++		nbl_hw_wr32(hw_mgt, NBL_SEC138_REGI(i), nbl_sec138_data[i]);
++	nbl_flush_writes(hw_mgt);
++
++	nbl_hw_wr32(hw_mgt, NBL_SEC000_ADDR, 0x00000001);
++	nbl_hw_wr32(hw_mgt, NBL_SEC001_ADDR, 0x00000001);
++	nbl_hw_wr32(hw_mgt, NBL_SEC002_ADDR, 0x00000001);
++	nbl_hw_wr32(hw_mgt, NBL_SEC003_ADDR, 0x00000001);
++	nbl_hw_wr32(hw_mgt, NBL_SEC004_ADDR, 0x00000001);
++	nbl_hw_wr32(hw_mgt, NBL_SEC005_ADDR, 0x00000001);
++	nbl_hw_wr32(hw_mgt, NBL_SEC015_ADDR, 0x000f0908);
++	nbl_hw_wr32(hw_mgt, NBL_SEC016_ADDR, 0x10110607);
++	nbl_hw_wr32(hw_mgt, NBL_SEC017_ADDR, 0x383a3032);
++	nbl_hw_wr32(hw_mgt, NBL_SEC018_ADDR, 0x0201453f);
++	nbl_hw_wr32(hw_mgt, NBL_SEC019_ADDR, 0x00000a41);
++	nbl_hw_wr32(hw_mgt, NBL_SEC020_ADDR, 0x000000c8);
++	nbl_hw_wr32(hw_mgt, NBL_SEC021_ADDR, 0x00000400);
++	nbl_hw_wr32(hw_mgt, NBL_SEC031_ADDR, 0x000f0908);
++	nbl_hw_wr32(hw_mgt, NBL_SEC032_ADDR, 0x00001011);
++	nbl_hw_wr32(hw_mgt, NBL_SEC033_ADDR, 0x00003032);
++	nbl_hw_wr32(hw_mgt, NBL_SEC034_ADDR, 0x0201003f);
++	nbl_hw_wr32(hw_mgt, NBL_SEC035_ADDR, 0x0000000a);
++	nbl_hw_wr32(hw_mgt, NBL_SEC036_ADDR, 0x00001701);
++	nbl_hw_wr32(hw_mgt, NBL_SEC037_ADDR, 0x009238a1);
++	nbl_hw_wr32(hw_mgt, NBL_SEC038_ADDR, 0x0000002e);
++	nbl_hw_wr32(hw_mgt, NBL_SEC041_REGI(0), 0x00000200);
++	nbl_hw_wr32(hw_mgt, NBL_SEC041_REGI(1), 0x00000300);
++	nbl_hw_wr32(hw_mgt, NBL_SEC041_REGI(2), 0x00000105);
++	nbl_hw_wr32(hw_mgt, NBL_SEC041_REGI(3), 0x00000106);
++	nbl_hw_wr32(hw_mgt, NBL_SEC041_REGI(4), 0x00000009);
++	nbl_hw_wr32(hw_mgt, NBL_SEC041_REGI(5), 0x0000000a);
++	nbl_hw_wr32(hw_mgt, NBL_SEC041_REGI(6), 0x00000041);
++	nbl_hw_wr32(hw_mgt, NBL_SEC041_REGI(7), 0x00000082);
++	nbl_hw_wr32(hw_mgt, NBL_SEC041_REGI(8), 0x00000020);
++	nbl_hw_wr32(hw_mgt, NBL_SEC041_REGI(9), 0x00000000);
++	nbl_hw_wr32(hw_mgt, NBL_SEC041_REGI(10), 0x00000000);
++	nbl_hw_wr32(hw_mgt, NBL_SEC041_REGI(11), 0x00000000);
++	nbl_hw_wr32(hw_mgt, NBL_SEC041_REGI(12), 0x00000000);
++	nbl_hw_wr32(hw_mgt, NBL_SEC041_REGI(13), 0x00000000);
++	nbl_hw_wr32(hw_mgt, NBL_SEC041_REGI(14), 0x00000000);
++	nbl_hw_wr32(hw_mgt, NBL_SEC041_REGI(15), 0x00000000);
++	nbl_hw_wr32(hw_mgt, NBL_SEC042_ADDR, 0x00000001);
++	nbl_hw_wr32(hw_mgt, NBL_SEC043_ADDR, 0x00000002);
++	nbl_hw_wr32(hw_mgt, NBL_SEC044_ADDR, 0x28212000);
++	nbl_hw_wr32(hw_mgt, NBL_SEC045_ADDR, 0x00002b29);
++	nbl_hw_wr32(hw_mgt, NBL_SEC048_ADDR, 0x00000001);
++	nbl_hw_wr32(hw_mgt, NBL_SEC049_ADDR, 0x00000002);
++	nbl_hw_wr32(hw_mgt, NBL_SEC050_ADDR, 0x352b2000);
++	nbl_hw_wr32(hw_mgt, NBL_SEC051_ADDR, 0x00000000);
++	nbl_hw_wr32(hw_mgt, NBL_SEC054_ADDR, 0x00000001);
++	nbl_hw_wr32(hw_mgt, NBL_SEC055_ADDR, 0x00000002);
++	nbl_hw_wr32(hw_mgt, NBL_SEC056_ADDR, 0x2b222100);
++	nbl_hw_wr32(hw_mgt, NBL_SEC057_ADDR, 0x00000038);
++	nbl_hw_wr32(hw_mgt, NBL_SEC060_ADDR, 0x24232221);
++	nbl_hw_wr32(hw_mgt, NBL_SEC061_ADDR, 0x0000002e);
++	nbl_hw_wr32(hw_mgt, NBL_SEC064_REGI(0), 0x00000009);
++	nbl_hw_wr32(hw_mgt, NBL_SEC064_REGI(1), 0x00000005);
++	nbl_hw_wr32(hw_mgt, NBL_SEC064_REGI(2), 0x00000011);
++	nbl_hw_wr32(hw_mgt, NBL_SEC064_REGI(3), 0x00000005);
++	nbl_hw_wr32(hw_mgt, NBL_SEC064_REGI(4), 0x00000001);
++	nbl_hw_wr32(hw_mgt, NBL_SEC064_REGI(5), 0x0000000a);
++	nbl_hw_wr32(hw_mgt, NBL_SEC064_REGI(6), 0x00000006);
++	nbl_hw_wr32(hw_mgt, NBL_SEC064_REGI(7), 0x00000012);
++	nbl_hw_wr32(hw_mgt, NBL_SEC064_REGI(8), 0x00000006);
++	nbl_hw_wr32(hw_mgt, NBL_SEC064_REGI(9), 0x00000002);
++	nbl_hw_wr32(hw_mgt, NBL_SEC064_REGI(10), 0x00000000);
++	nbl_hw_wr32(hw_mgt, NBL_SEC064_REGI(11), 0x00000000);
++	nbl_hw_wr32(hw_mgt, NBL_SEC064_REGI(12), 0x00000000);
++	nbl_hw_wr32(hw_mgt, NBL_SEC064_REGI(13), 0x00000000);
++	nbl_hw_wr32(hw_mgt, NBL_SEC064_REGI(14), 0x00000000);
++	nbl_hw_wr32(hw_mgt, NBL_SEC064_REGI(15), 0x00000000);
++	nbl_hw_wr32(hw_mgt, NBL_SEC067_ADDR, 0x00000001);
++	nbl_hw_wr32(hw_mgt, NBL_SEC068_ADDR, 0x00000001);
++	nbl_hw_wr32(hw_mgt, NBL_SEC069_ADDR, 0x22212000);
++	nbl_hw_wr32(hw_mgt, NBL_SEC070_ADDR, 0x3835322b);
++	nbl_hw_wr32(hw_mgt, NBL_SEC073_ADDR, 0x0316a5ff);
++	nbl_hw_wr32(hw_mgt, NBL_SEC074_ADDR, 0x0316a5ff);
++	nbl_hw_wr32(hw_mgt, NBL_SEC075_REGI(0), 0x08802080);
++	nbl_hw_wr32(hw_mgt, NBL_SEC075_REGI(1), 0x12a05080);
++	nbl_hw_wr32(hw_mgt, NBL_SEC075_REGI(2), 0xffffffff);
++	nbl_hw_wr32(hw_mgt, NBL_SEC075_REGI(3), 0xffffffff);
++	nbl_hw_wr32(hw_mgt, NBL_SEC076_REGI(0), 0x08802080);
++	nbl_hw_wr32(hw_mgt, NBL_SEC076_REGI(1), 0x12a05080);
++	nbl_hw_wr32(hw_mgt, NBL_SEC076_REGI(2), 0xffffffff);
++	nbl_hw_wr32(hw_mgt, NBL_SEC076_REGI(3), 0xffffffff);
++	nbl_hw_wr32(hw_mgt, NBL_SEC077_REGI(0), 0x08802080);
++	nbl_hw_wr32(hw_mgt, NBL_SEC077_REGI(1), 0x12a05080);
++	nbl_hw_wr32(hw_mgt, NBL_SEC077_REGI(2), 0xffffffff);
++	nbl_hw_wr32(hw_mgt, NBL_SEC077_REGI(3), 0xffffffff);
++	nbl_hw_wr32(hw_mgt, NBL_SEC078_ADDR, 0x00000009);
++	nbl_hw_wr32(hw_mgt, NBL_SEC079_ADDR, 0x00000009);
++	nbl_hw_wr32(hw_mgt, NBL_SEC080_ADDR, 0x0014a248);
++	nbl_hw_wr32(hw_mgt, NBL_SEC081_ADDR, 0x00000d33);
++	nbl_hw_wr32(hw_mgt, NBL_SEC082_ADDR, 0x00000009);
++	nbl_hw_wr32(hw_mgt, NBL_SEC083_ADDR, 0x00000009);
++	nbl_hw_wr32(hw_mgt, NBL_SEC084_ADDR, 0x00000009);
++	nbl_hw_wr32(hw_mgt, NBL_SEC085_ADDR, 0x000144d2);
++	nbl_hw_wr32(hw_mgt, NBL_SEC086_ADDR, 0x31322e2f);
++	nbl_hw_wr32(hw_mgt, NBL_SEC087_ADDR, 0x0a092d2c);
++	nbl_hw_wr32(hw_mgt, NBL_SEC088_ADDR, 0x33050804);
++	nbl_hw_wr32(hw_mgt, NBL_SEC089_ADDR, 0x14131535);
++	nbl_hw_wr32(hw_mgt, NBL_SEC090_ADDR, 0x0000000a);
++	nbl_hw_wr32(hw_mgt, NBL_SEC091_ADDR, 0x00000009);
++	nbl_hw_wr32(hw_mgt, NBL_SEC092_ADDR, 0x00000008);
++	nbl_hw_wr32(hw_mgt, NBL_SEC093_ADDR, 0x0000000e);
++	nbl_hw_wr32(hw_mgt, NBL_SEC094_ADDR, 0x0000000f);
++	nbl_hw_wr32(hw_mgt, NBL_SEC095_ADDR, 0x00000015);
++	nbl_hw_wr32(hw_mgt, NBL_SEC096_ADDR, 0x00000009);
++	nbl_hw_wr32(hw_mgt, NBL_SEC097_ADDR, 0x0000000a);
++	nbl_hw_wr32(hw_mgt, NBL_SEC098_ADDR, 0x00000008);
++	nbl_hw_wr32(hw_mgt, NBL_SEC099_ADDR, 0x00000011);
++	nbl_hw_wr32(hw_mgt, NBL_SEC100_ADDR, 0x00000013);
++	nbl_hw_wr32(hw_mgt, NBL_SEC101_ADDR, 0x00000014);
++	nbl_hw_wr32(hw_mgt, NBL_SEC102_ADDR, 0x00000010);
++	nbl_hw_wr32(hw_mgt, NBL_SEC103_ADDR, 0x00000009);
++	nbl_hw_wr32(hw_mgt, NBL_SEC104_ADDR, 0x0000004d);
++	nbl_hw_wr32(hw_mgt, NBL_SEC105_ADDR, 0x08020a09);
++	nbl_hw_wr32(hw_mgt, NBL_SEC106_ADDR, 0x00000005);
++	nbl_hw_wr32(hw_mgt, NBL_SEC107_ADDR, 0x00000006);
++	nbl_hw_wr32(hw_mgt, NBL_SEC108_ADDR, 0x00000009);
++	nbl_hw_wr32(hw_mgt, NBL_SEC109_ADDR, 0x00110a09);
++	nbl_hw_wr32(hw_mgt, NBL_SEC110_ADDR, 0x00000009);
++	nbl_hw_wr32(hw_mgt, NBL_SEC111_ADDR, 0x00000009);
++	nbl_hw_wr32(hw_mgt, NBL_SEC112_ADDR, 0x00000009);
++	nbl_hw_wr32(hw_mgt, NBL_SEC113_ADDR, 0x0000000a);
++	nbl_hw_wr32(hw_mgt, NBL_SEC114_ADDR, 0x0000000a);
++	nbl_hw_wr32(hw_mgt, NBL_SEC115_ADDR, 0x00000009);
++	nbl_hw_wr32(hw_mgt, NBL_SEC117_ADDR, 0x0000000a);
++	nbl_hw_wr32(hw_mgt, NBL_SEC118_ADDR, 0x00000001);
++	nbl_hw_wr32(hw_mgt, NBL_SEC119_REGI(0), 0x00000000);
++	nbl_hw_wr32(hw_mgt, NBL_SEC119_REGI(1), 0x00000000);
++	nbl_hw_wr32(hw_mgt, NBL_SEC119_REGI(2), 0x00000000);
++	nbl_hw_wr32(hw_mgt, NBL_SEC119_REGI(3), 0x00000000);
++	nbl_hw_wr32(hw_mgt, NBL_SEC119_REGI(4), 0x00000100);
++	nbl_hw_wr32(hw_mgt, NBL_SEC120_ADDR, 0x0000003c);
++	nbl_hw_wr32(hw_mgt, NBL_SEC121_ADDR, 0x00000003);
++	nbl_hw_wr32(hw_mgt, NBL_SEC122_ADDR, 0x000000bc);
++	nbl_hw_wr32(hw_mgt, NBL_SEC123_ADDR, 0x0000023b);
++	nbl_hw_wr32(hw_mgt, NBL_SEC127_ADDR, 0x00000001);
++	nbl_hw_wr32(hw_mgt, NBL_SEC128_ADDR, 0x00000001);
++	nbl_hw_wr32(hw_mgt, NBL_SEC129_ADDR, 0x00000002);
++	nbl_hw_wr32(hw_mgt, NBL_SEC130_ADDR, 0x00000002);
++	nbl_hw_wr32(hw_mgt, NBL_SEC131_ADDR, 0x00000003);
++	nbl_hw_wr32(hw_mgt, NBL_SEC132_ADDR, 0x00000003);
++	nbl_hw_wr32(hw_mgt, NBL_SEC133_ADDR, 0x00000004);
++	nbl_hw_wr32(hw_mgt, NBL_SEC134_ADDR, 0x00000004);
++	nbl_hw_wr32(hw_mgt, NBL_SEC135_ADDR, 0x0000000e);
++	nbl_hw_wr32(hw_mgt, NBL_SEC136_ADDR, 0x0000000e);
++	nbl_flush_writes(hw_mgt);
 +
 +	return 0;
-+
-+alloc_data_failed:
-+	devm_kfree(tbl_mgt->tbl_key.dev, hash_node->key);
-+alloc_key_failed:
-+	devm_kfree(tbl_mgt->tbl_key.dev, hash_node);
-+	return -ENOMEM;
 +}
-+
-+/*
-+ * get a hash node, return the data if node exist
-+ */
-+void *nbl_common_get_hash_node(struct nbl_hash_tbl_mgt *tbl_mgt, void *key)
-+{
-+	struct nbl_hash_entry_node *hash_node;
-+	struct hlist_head *head;
-+	void *data = NULL;
-+	u32 hash_val;
-+	u16 key_size;
-+
-+	key_size = tbl_mgt->tbl_key.key_size;
-+	hash_val = nbl_common_calc_hash_key(key, key_size,
-+					    tbl_mgt->tbl_key.bucket_size);
-+	head = tbl_mgt->hash + hash_val;
-+
-+	hlist_for_each_entry(hash_node, head, node)
-+		if (!memcmp(hash_node->key, key, key_size)) {
-+			data = hash_node->data;
-+			break;
-+		}
-+
-+	return data;
-+}
-+
-+static void nbl_common_detach_hash_node(struct nbl_hash_tbl_mgt *tbl_mgt,
-+					struct nbl_hash_entry_node *hash_node)
-+{
-+	hlist_del(&hash_node->node);
-+	devm_kfree(tbl_mgt->tbl_key.dev, hash_node->key);
-+	devm_kfree(tbl_mgt->tbl_key.dev, hash_node->data);
-+	devm_kfree(tbl_mgt->tbl_key.dev, hash_node);
-+	tbl_mgt->node_num--;
-+}
-+
-+/*
-+ * free a hash node
-+ */
-+void nbl_common_remove_hash_table(struct nbl_hash_tbl_mgt *tbl_mgt,
-+				  struct nbl_hash_tbl_del_key *key)
-+{
-+	struct nbl_hash_entry_node *hash_node;
-+	struct hlist_node *safe_node;
-+	struct hlist_head *head;
-+	u32 i;
-+
-+	for (i = 0; i < tbl_mgt->tbl_key.bucket_size; i++) {
-+		head = tbl_mgt->hash + i;
-+		hlist_for_each_entry_safe(hash_node, safe_node, head, node) {
-+			if (key && key->action_func)
-+				key->action_func(key->action_priv,
-+						 hash_node->key,
-+						 hash_node->data);
-+			nbl_common_detach_hash_node(tbl_mgt, hash_node);
-+		}
-+	}
-+}
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_common/nbl_common.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_common/nbl_common.h
+diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis_regs.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis_regs.h
 new file mode 100644
-index 000000000000..7a91d4eca105
+index 000000000000..0a534ac596da
 --- /dev/null
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_common/nbl_common.h
-@@ -0,0 +1,33 @@
++++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis_regs.h
+@@ -0,0 +1,11 @@
 +/* SPDX-License-Identifier: GPL-2.0 */
 +/*
 + * Copyright (c) 2025 Nebula Matrix Limited.
 + */
 +
-+#ifndef _NBL_COMMON_H_
-+#define _NBL_COMMON_H_
++#ifndef _NBL_HW_LEONIS_REGS_H_
++#define _NBL_HW_LEONIS_REGS_H_
 +
-+#include <linux/types.h>
-+
-+#include "../nbl_include/nbl_include.h"
-+#include "../nbl_include/nbl_def_common.h"
-+
-+/* list only need one bucket size */
-+#define NBL_HASH_TBL_LIST_BUCKET_SIZE 1
-+
-+struct nbl_common_wq_mgt {
-+	struct workqueue_struct *ctrl_dev_wq;
-+};
-+
-+struct nbl_hash_tbl_mgt {
-+	struct nbl_hash_tbl_key tbl_key;
-+	struct hlist_head *hash;
-+	u16 node_num;
-+};
-+
-+struct nbl_hash_entry_node {
-+	struct hlist_node node;
-+	void *key;
-+	void *data;
-+};
++int nbl_write_all_regs(struct nbl_hw_mgt *hw_mgt);
 +
 +#endif
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c
-index bf4feaea4b4a..9b3c3726e6ea 100644
---- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c
-@@ -9,7 +9,156 @@
- #include <linux/spinlock.h>
- #include "nbl_hw_leonis.h"
- 
-+static void nbl_hw_write_mbx_regs(struct nbl_hw_mgt *hw_mgt, u64 reg,
-+				  const u32 *data, u32 len)
-+{
-+	u32 i;
-+
-+	if (len % 4)
-+		return;
-+
-+	for (i = 0; i < len / 4; i++)
-+		nbl_mbx_wr32(hw_mgt, reg + i * sizeof(u32), data[i]);
-+}
-+
-+static void nbl_hw_rd_regs(struct nbl_hw_mgt *hw_mgt, u64 reg, u32 *data,
-+			   u32 len)
-+{
-+	u32 size = len / 4;
-+	u32 i;
-+
-+	if (len % 4)
-+		return;
-+
-+	spin_lock(&hw_mgt->reg_lock);
-+
-+	for (i = 0; i < size; i++)
-+		data[i] = rd32(hw_mgt->hw_addr, reg + i * sizeof(u32));
-+	spin_unlock(&hw_mgt->reg_lock);
-+}
-+
-+static void nbl_hw_wr_regs(struct nbl_hw_mgt *hw_mgt, u64 reg, const u32 *data,
-+			   u32 len)
-+{
-+	u32 size = len / 4;
-+	u32 i;
-+
-+	if (len % 4)
-+		return;
-+	spin_lock(&hw_mgt->reg_lock);
-+	for (i = 0; i < size; i++)
-+		wr32(hw_mgt->hw_addr, reg + i * sizeof(u32), data[i]);
-+	spin_unlock(&hw_mgt->reg_lock);
-+}
-+
-+static void nbl_hw_update_mailbox_queue_tail_ptr(struct nbl_hw_mgt *hw_mgt,
-+						 u16 tail_ptr, u8 txrx)
-+{
-+	/* local_qid 0 and 1 denote rx and tx queue respectively */
-+	u32 local_qid = txrx;
-+	u32 value = ((u32)tail_ptr << 16) | local_qid;
-+
-+	/* wmb for doorbell */
-+	wmb();
-+	nbl_mbx_wr32(hw_mgt, NBL_MAILBOX_NOTIFY_ADDR, value);
-+}
-+
-+static void nbl_hw_config_mailbox_rxq(struct nbl_hw_mgt *hw_mgt,
-+				      dma_addr_t dma_addr, int size_bwid)
-+{
-+	union nbl_mailbox_qinfo_cfg_table_u qinfo_cfg_rx_tbl;
-+
-+	memset(&qinfo_cfg_rx_tbl, 0, sizeof(qinfo_cfg_rx_tbl));
-+	qinfo_cfg_rx_tbl.info.queue_rst = 1;
-+	nbl_hw_write_mbx_regs(hw_mgt, NBL_MAILBOX_QINFO_CFG_RX_TABLE_ADDR,
-+			      qinfo_cfg_rx_tbl.data,
-+			      sizeof(qinfo_cfg_rx_tbl));
-+
-+	qinfo_cfg_rx_tbl.info.queue_base_addr_l = lower_32_bits(dma_addr);
-+	qinfo_cfg_rx_tbl.info.queue_base_addr_h = upper_32_bits(dma_addr);
-+	qinfo_cfg_rx_tbl.info.queue_size_bwind = (u32)size_bwid;
-+	qinfo_cfg_rx_tbl.info.queue_rst = 0;
-+	qinfo_cfg_rx_tbl.info.queue_en = 1;
-+	nbl_hw_write_mbx_regs(hw_mgt, NBL_MAILBOX_QINFO_CFG_RX_TABLE_ADDR,
-+			      qinfo_cfg_rx_tbl.data,
-+			      sizeof(qinfo_cfg_rx_tbl));
-+}
-+
-+static void nbl_hw_config_mailbox_txq(struct nbl_hw_mgt *hw_mgt,
-+				      dma_addr_t dma_addr, int size_bwid)
-+{
-+	union nbl_mailbox_qinfo_cfg_table_u qinfo_cfg_tx_tbl;
-+
-+	memset(&qinfo_cfg_tx_tbl, 0, sizeof(qinfo_cfg_tx_tbl));
-+	qinfo_cfg_tx_tbl.info.queue_rst = 1;
-+	nbl_hw_write_mbx_regs(hw_mgt, NBL_MAILBOX_QINFO_CFG_TX_TABLE_ADDR,
-+			      qinfo_cfg_tx_tbl.data,
-+			      sizeof(qinfo_cfg_tx_tbl));
-+
-+	qinfo_cfg_tx_tbl.info.queue_base_addr_l = lower_32_bits(dma_addr);
-+	qinfo_cfg_tx_tbl.info.queue_base_addr_h = upper_32_bits(dma_addr);
-+	qinfo_cfg_tx_tbl.info.queue_size_bwind = (u32)size_bwid;
-+	qinfo_cfg_tx_tbl.info.queue_rst = 0;
-+	qinfo_cfg_tx_tbl.info.queue_en = 1;
-+	nbl_hw_write_mbx_regs(hw_mgt, NBL_MAILBOX_QINFO_CFG_TX_TABLE_ADDR,
-+			      qinfo_cfg_tx_tbl.data,
-+			      sizeof(qinfo_cfg_tx_tbl));
-+}
-+
-+static void nbl_hw_stop_mailbox_rxq(struct nbl_hw_mgt *hw_mgt)
-+{
-+	union nbl_mailbox_qinfo_cfg_table_u qinfo_cfg_rx_tbl;
-+
-+	memset(&qinfo_cfg_rx_tbl, 0, sizeof(qinfo_cfg_rx_tbl));
-+	qinfo_cfg_rx_tbl.info.queue_rst = 1;
-+	nbl_hw_write_mbx_regs(hw_mgt, NBL_MAILBOX_QINFO_CFG_RX_TABLE_ADDR,
-+			      qinfo_cfg_rx_tbl.data,
-+			      sizeof(qinfo_cfg_rx_tbl));
-+}
-+
-+static void nbl_hw_stop_mailbox_txq(struct nbl_hw_mgt *hw_mgt)
-+{
-+	union nbl_mailbox_qinfo_cfg_table_u qinfo_cfg_tx_tbl;
-+
-+	memset(&qinfo_cfg_tx_tbl, 0, sizeof(qinfo_cfg_tx_tbl));
-+	qinfo_cfg_tx_tbl.info.queue_rst = 1;
-+	nbl_hw_write_mbx_regs(hw_mgt, NBL_MAILBOX_QINFO_CFG_TX_TABLE_ADDR,
-+			      qinfo_cfg_tx_tbl.data,
-+			      sizeof(qinfo_cfg_tx_tbl));
-+}
-+
-+static u32 nbl_hw_get_host_pf_mask(struct nbl_hw_mgt *hw_mgt)
-+{
-+	u32 data;
-+
-+	nbl_hw_rd_regs(hw_mgt, NBL_PCIE_HOST_K_PF_MASK_REG, &data,
-+		       sizeof(data));
-+	return data;
-+}
-+
-+static void nbl_hw_cfg_mailbox_qinfo(struct nbl_hw_mgt *hw_mgt, u16 func_id,
-+				     u8 bus, u8 devid, u8 function)
-+{
-+	union nbl_mailbox_qinfo_map_table_u mb_qinfo_map;
-+
-+	memset(&mb_qinfo_map, 0, sizeof(mb_qinfo_map));
-+	mb_qinfo_map.info.function = function & 0x7;
-+	mb_qinfo_map.info.devid = devid & 0x1F;
-+	mb_qinfo_map.info.bus = bus & 0xFF;
-+	mb_qinfo_map.info.msix_idx_valid = 0;
-+	nbl_hw_wr_regs(hw_mgt, NBL_MAILBOX_QINFO_MAP_REG_ARR(func_id),
-+		       &mb_qinfo_map.data, sizeof(mb_qinfo_map));
-+}
-+
- static struct nbl_hw_ops hw_ops = {
-+	.update_mailbox_queue_tail_ptr = nbl_hw_update_mailbox_queue_tail_ptr,
-+	.config_mailbox_rxq = nbl_hw_config_mailbox_rxq,
-+	.config_mailbox_txq = nbl_hw_config_mailbox_txq,
-+	.stop_mailbox_rxq = nbl_hw_stop_mailbox_rxq,
-+	.stop_mailbox_txq = nbl_hw_stop_mailbox_txq,
-+	.get_host_pf_mask = nbl_hw_get_host_pf_mask,
-+	.cfg_mailbox_qinfo = nbl_hw_cfg_mailbox_qinfo,
-+
- };
- 
- /* Structure starts here, adding an op should not modify anything below */
-@@ -102,6 +251,8 @@ int nbl_hw_init_leonis(struct nbl_adapter *adapter)
- 		goto mailbox_ioremap_err;
- 	}
- 
-+	spin_lock_init(&hw_mgt->reg_lock);
-+
- 	hw_ops_tbl = nbl_hw_setup_ops(common, hw_mgt);
- 	if (IS_ERR(hw_ops_tbl)) {
- 		ret = PTR_ERR(hw_ops_tbl);
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_reg.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_reg.h
-index fbea8d074064..781b05405963 100644
---- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_reg.h
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_reg.h
-@@ -25,6 +25,7 @@ struct nbl_hw_mgt {
- 	u8 __iomem *mailbox_bar_hw_addr;
- 	u64 notify_offset;
- 	resource_size_t hw_size;
-+	spinlock_t reg_lock; /* Protect reg access */
- };
- 
- static inline u32 rd32(u8 __iomem *addr, u64 reg)
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_channel.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_channel.h
-index 88470f15c619..16d29d2fb7f7 100644
---- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_channel.h
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_channel.h
-@@ -10,6 +10,38 @@
- 
- struct nbl_channel_mgt;
- struct nbl_adapter;
-+#define NBL_CHAN_SEND(chan_send, dst_id, mesg_type, argument, arg_length,\
-+		      response, resp_length, need_ack)			\
-+do {									\
-+	typeof(chan_send)	*__chan_send = &(chan_send);		\
-+	__chan_send->dstid	= (dst_id);				\
-+	__chan_send->msg_type	= (mesg_type);				\
-+	__chan_send->arg	= (argument);				\
-+	__chan_send->arg_len	= (arg_length);				\
-+	__chan_send->resp	= (response);				\
-+	__chan_send->resp_len	= (resp_length);			\
-+	__chan_send->ack	= (need_ack);				\
-+} while (0)
-+
-+#define NBL_CHAN_ACK(chan_ack, dst_id, mesg_type, msg_id, err_code, ack_data, \
-+		     data_length)					\
-+do {									\
-+	typeof(chan_ack)	*__chan_ack = &(chan_ack);		\
-+	__chan_ack->dstid	= (dst_id);				\
-+	__chan_ack->msg_type	= (mesg_type);				\
-+	__chan_ack->msgid	= (msg_id);				\
-+	__chan_ack->err		= (err_code);				\
-+	__chan_ack->data	= (ack_data);				\
-+	__chan_ack->data_len	= (data_length);			\
-+} while (0)
-+
-+typedef void (*nbl_chan_resp)(void *, u16, u16, void *, u32);
-+
-+enum {
-+	NBL_CHAN_RESP_OK,
-+	NBL_CHAN_RESP_ERR,
-+};
-+
- enum nbl_chan_msg_type {
- 	NBL_CHAN_MSG_ACK,
- 	NBL_CHAN_MSG_ADD_MACVLAN,
-@@ -233,6 +265,13 @@ enum nbl_chan_msg_type {
- 	NBL_CHAN_MSG_MAILBOX_MAX,
- };
- 
-+enum nbl_chan_state {
-+	NBL_CHAN_INTERRUPT_READY,
-+	NBL_CHAN_RESETTING,
-+	NBL_CHAN_ABNORMAL,
-+	NBL_CHAN_STATE_NBITS
-+};
-+
- struct nbl_chan_param_cfg_msix_map {
- 	__le16 num_net_msix;
- 	__le16 num_others_msix;
-@@ -259,12 +298,57 @@ struct nbl_chan_param_get_eth_id {
- 	u8 rsvd[3];
- };
- 
-+struct nbl_board_port_info {
-+	u8 eth_num;
-+	u8 eth_speed;
-+	u8 p4_version;
-+	u8 rsv[5];
-+};
-+
-+struct nbl_chan_send_info {
-+	void *arg;
-+	size_t arg_len;
-+	void *resp;
-+	size_t resp_len;
-+	u16 dstid;
-+	u16 msg_type;
-+	u16 ack;
-+	u16 ack_len;
-+};
-+
-+struct nbl_chan_ack_info {
-+	void *data;
-+	int err;
-+	u32 data_len;
-+	u16 dstid;
-+	u16 msg_type;
-+	u16 msgid;
-+};
-+
- enum nbl_channel_type {
- 	NBL_CHAN_TYPE_MAILBOX,
- 	NBL_CHAN_TYPE_MAX
- };
- 
- struct nbl_channel_ops {
-+	int (*send_msg)(struct nbl_channel_mgt *chan_mgt,
-+			struct nbl_chan_send_info *chan_send);
-+	int (*send_ack)(struct nbl_channel_mgt *chan_mgt,
-+			struct nbl_chan_ack_info *chan_ack);
-+	int (*register_msg)(struct nbl_channel_mgt *chan_mgt, u16 msg_type,
-+			    nbl_chan_resp func, void *callback_priv);
-+	void (*cfg_chan_qinfo_map_table)(struct nbl_channel_mgt *chan_mgt);
-+	bool (*check_queue_exist)(struct nbl_channel_mgt *chan_mgt,
-+				  u8 chan_type);
-+	int (*setup_queue)(struct nbl_channel_mgt *chan_mgt, u8 chan_type);
-+	int (*teardown_queue)(struct nbl_channel_mgt *chan_mgt, u8 chan_type);
-+	void (*clean_queue_subtask)(struct nbl_channel_mgt *chan_mgt,
-+				    u8 chan_type);
-+	void (*register_chan_task)(struct nbl_channel_mgt *chan_mgt,
-+				   u8 chan_type, struct work_struct *task);
-+	void (*set_queue_state)(struct nbl_channel_mgt *chan_mgt,
-+				enum nbl_chan_state state, u8 chan_type,
-+				u8 set);
- };
- 
- struct nbl_channel_ops_tbl {
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_common.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_common.h
-index d93da0f22835..176df51f9e6e 100644
---- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_common.h
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_common.h
-@@ -11,6 +11,8 @@
- #include <linux/device.h>
- #include "nbl_include.h"
- 
-+struct nbl_hash_tbl_mgt;
-+
- struct nbl_common_info {
- 	struct pci_dev *pdev;
- 	struct device *dev;
-@@ -32,4 +34,28 @@ struct nbl_common_info {
- 	u8 has_net;
- };
- 
-+struct nbl_hash_tbl_key {
-+	struct device *dev;
-+	u16 key_size;
-+	u16 data_size; /* no include key or node member */
-+	u16 bucket_size;
-+	u16 resv;
-+};
-+
-+struct nbl_hash_tbl_del_key {
-+	void *action_priv;
-+	void (*action_func)(void *priv, void *key, void *data);
-+};
-+
-+u32 nbl_common_pf_id_subtraction_mgtpf_id(struct nbl_common_info *common,
-+					  u32 pf_id);
-+
-+struct nbl_hash_tbl_mgt *
-+nbl_common_init_hash_table(struct nbl_hash_tbl_key *key);
-+void nbl_common_remove_hash_table(struct nbl_hash_tbl_mgt *tbl_mgt,
-+				  struct nbl_hash_tbl_del_key *key);
-+int nbl_common_alloc_hash_node(struct nbl_hash_tbl_mgt *tbl_mgt, void *key,
-+			       void *data, void **out_data);
-+void *nbl_common_get_hash_node(struct nbl_hash_tbl_mgt *tbl_mgt, void *key);
-+
- #endif
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_hw.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_hw.h
-index 168504b30973..3d421bcbc353 100644
---- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_hw.h
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_hw.h
-@@ -6,9 +6,37 @@
- #ifndef _NBL_DEF_HW_H_
- #define _NBL_DEF_HW_H_
- 
-+#include <linux/types.h>
-+
- struct nbl_hw_mgt;
- struct nbl_adapter;
- struct nbl_hw_ops {
-+	void (*configure_msix_map)(struct nbl_hw_mgt *hw_mgt, u16 func_id,
-+				   bool valid, dma_addr_t dma_addr, u8 bus,
-+				   u8 devid, u8 function);
-+	void (*configure_msix_info)(struct nbl_hw_mgt *hw_mgt, u16 func_id,
-+				    bool valid, u16 interrupt_id, u8 bus,
-+				    u8 devid, u8 function,
-+				    bool net_msix_mask_en);
-+	void (*update_mailbox_queue_tail_ptr)(struct nbl_hw_mgt *hw_mgt,
-+					      u16 tail_ptr, u8 txrx);
-+	void (*config_mailbox_rxq)(struct nbl_hw_mgt *hw_mgt,
-+				   dma_addr_t dma_addr, int size_bwid);
-+	void (*config_mailbox_txq)(struct nbl_hw_mgt *hw_mgt,
-+				   dma_addr_t dma_addr, int size_bwid);
-+	void (*stop_mailbox_rxq)(struct nbl_hw_mgt *hw_mgt);
-+	void (*stop_mailbox_txq)(struct nbl_hw_mgt *hw_mgt);
-+	u32 (*get_host_pf_mask)(struct nbl_hw_mgt *hw_mgt);
-+	u8 (*get_real_bus)(struct nbl_hw_mgt *hw_mgt);
-+
-+	void (*cfg_mailbox_qinfo)(struct nbl_hw_mgt *hw_mgt, u16 func_id,
-+				  u8 bus, u8 devid, u8 function);
-+	void (*set_mailbox_irq)(struct nbl_hw_mgt *hw_mgt, u16 func_id,
-+				bool enable_msix, u16 global_vec_id);
-+	u32 (*get_fw_eth_num)(struct nbl_hw_mgt *hw_mgt);
-+	u32 (*get_fw_eth_map)(struct nbl_hw_mgt *hw_mgt);
-+	void (*get_board_info)(struct nbl_hw_mgt *hw_mgt,
-+			       struct nbl_board_port_info *board);
- };
- 
- struct nbl_hw_ops_tbl {
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_include.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_include.h
-index 50f30f756bf3..a01c32f57d84 100644
---- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_include.h
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_include.h
-@@ -10,6 +10,12 @@
- 
- /*  ------  Basic definitions  -------  */
- #define NBL_DRIVER_NAME					"nbl"
-+#define NBL_MAX_PF					8
-+#define NBL_NEXT_ID(id, max)				\
-+	({						\
-+		typeof(id) _id = (id);			\
-+		((_id) == (max) ? 0 : (_id) + 1);	\
-+	})
- 
- enum nbl_product_type {
- 	NBL_LEONIS_TYPE,
 -- 
 2.47.3
 
