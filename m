@@ -1,61 +1,63 @@
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 432AD30C14C
-	for <netdev@vger.kernel.org>; Tue, 26 May 2026 15:37:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 175ED36BCCC
+	for <netdev@vger.kernel.org>; Tue, 26 May 2026 15:37:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779809849; cv=none; b=MR0/h1ubYZHK+lj8dKnXA72C8guxru0vJMJv1N6clWO/sK+dBg9DiGGTgs/eVWwgm3S+khkQ9ASVQ3eKsbw3TDHWkWbq2SjDZ1KJF4N8UMkP7bKQG6EUjUwU7RP5BkVpANgZdth0hJKjmoocbG83qptEe7rfBwQ7fxLaK0LmEho=
+	t=1779809849; cv=none; b=VeWkJcxXm0C0QJIYHq/rVH+U7D18uDSl97QkI6jAa74EcmkQZjC4I5MwOB2EcI1grLueFTVuLT0kHzHNi/6SR5tf1VcURihuNNPvCPoCCKZu4n5um/KfxyCuMjFvgJXW+K8BDYnSV5C5g4Kc7w5vfeYVeRNQ8+A9vKZOzw7OE+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1779809849; c=relaxed/simple;
-	bh=SuNCKboR9/qMnKV199RmrKzsF4XnE5gzMhvdzv4lxUk=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=l8Ge+QgB+2h5R4dz23nkVZKVqo/fu99ILk/Jhqa9bCXq2SmG6RCPyK/FknaYg7ZMq4sH3QVEkVx3ZfXKcIH7xDCZ2bD3XSFE85wQKs0cuakniJqqS/Hu+JDAi3qtdeinjVIL6ZbtJ3ihEWK3RCicbfsfOXmDcPy04f1oEQbv8m0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=THwnRz23; arc=none smtp.client-ip=209.85.128.44
+	bh=ov6+gI2FLpcVjn6o4KEEVsXvNT4PPkAZoGWX5AxLtwA=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=TmqyRwUoSIRH1FL2Xgm7/0hDlnhUGHsihbwiLXBvrzSKgSrD695VMYlrs4BfOFrmLy6iVATevhoE2IR3HJKYFTp1a4m9MAkVeIjPeFmXfkK5rssUdYYbcEGZqBmq923oyThZSsa+fF0PNr1uJHUXrDliP5hpo1Gz07XvKqsLjaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qUzjdB/E; arc=none smtp.client-ip=209.85.128.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="THwnRz23"
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-49042aeeb75so57432915e9.1
-        for <netdev@vger.kernel.org>; Tue, 26 May 2026 08:37:26 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qUzjdB/E"
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4893940bb5eso58118135e9.3
+        for <netdev@vger.kernel.org>; Tue, 26 May 2026 08:37:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779809845; x=1780414645; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=mEu5haSOg9MswhbLQuLwhfuoJ04JYV0iIkWmF1VBvMA=;
-        b=THwnRz23QIb8MlYwi5JtG5bkdDs9Bb1cegJXxDqRk0E6fzuwcgwhOlrRwFvYh8vP4x
-         m97WkxMQRiMvArFFI2hH14L6OaPYPHYacb+EydXMq784G9v0pfvZH877tUizrEz9esGV
-         qtPTHnIGVoIGgpIXnLWG7FXCb4kZCMnXvC4uy1FCx6sB/bg8tUVlxIOWmeBY9/+T/KHi
-         ilKrqekNGIAS/U2m7vIzCIJkkIgl0X8bSlwwkPzd2eh1FFOR8XKHRl1+YV5OexCw/ae1
-         b8H1Nk+oRS/hbNAikxPFY0vKOlzlfx7p24qaUcycR1oxzHn75s0PmYRLcBw+/Dtg6rYp
-         rGkw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779809845; x=1780414645;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1779809846; x=1780414646; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=mEu5haSOg9MswhbLQuLwhfuoJ04JYV0iIkWmF1VBvMA=;
-        b=sxcmVNcttyAJaNs97G/wta3jxvCB3Za7qcMAzUQUdI7KxlPYmfurFs2SBeZKrcWMCD
-         oIewsf4EHLAnzVUWT83rzIhUhwsOFQITgWcbeIv6Td+mtZvSNgmPo01r21PG0STDKsYs
-         L1O2JxhAGXM09olQa4RpyTNS9myTHlnPfUhokiAJAWe1RqVln53kgMblUarj3nntE4jY
-         O8zAR9EcbJ6xsO+AELHUTrjUobJhvN13BFZf94oXlX3pfhdbW1f5lNqOSkTYrQbrha0A
-         uuKouv9JaPLnmwsoWq8VAIdmOhjZvvkosyMmdItfYIJprYG2T7szp3PkZJZcd9ztE70n
-         3wdw==
-X-Forwarded-Encrypted: i=1; AFNElJ9vxEuhBrmq6tv3sgA6pQWtMxnrrORBfIvqTAp5HUhSIXPHBVFIPbWXnel7WKW00aSKyP1ZAW8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxf+AwlV61iwUppoq5iycxiNGKzrDmv/qgUAI2bD5pXm05tpga9
-	9YPir+6fzmWzDcvM6PNQmYe6qxxpWri9Ko9lQL5V7pM83wz5WASoWsbi
-X-Gm-Gg: Acq92OE1FkU+auwIiPUZd7AHlys/RwVU2lgHWHuu1VtSZxoznwfvI/vslT7bVNcWKng
-	/X0Gn20qp5hj2/XTIIM0rroWh/gUa6sjqOdkJRWkpO14tNF1Zsp41rIoLP5odHXGXbW8vwvAyHD
-	/I4EFDWmu4Xh6jlggqFAgDi2HBRVKlWQCNKLmDnlBf1EpoxMBydiMlqVWkBu+h1WMs/zmDvSf0/
-	coXxY3cdJpfJ7XnbESSR/E1iiXVxtn/Yc7moHOHFmG3HevNsT8vs5AJCuBXzW1K9UnP1ga4WIjQ
-	SmBguPq7oGC9UB/cK2gWk7fkkBrvh3FxuAgbPaPl5+9IzBt5Y+pnCYELuzgir7YWP4djafagC6q
-	kZot2UMu2BXugcttZM0YKTvDdp0d1mrQdjN09ti3eNaccoo1lgJ1W5ivVdufjGK176JqRtKIfX/
-	DdzfpWb1NG5/JgRGKU2+0iHNAFs4w=
-X-Received: by 2002:a05:600c:8484:b0:48a:906b:14ca with SMTP id 5b1f17b1804b1-490426cd8c4mr338065445e9.20.1779809844415;
-        Tue, 26 May 2026 08:37:24 -0700 (PDT)
+        bh=yuw5xtr2C0czpVUWTefIMp0AVKJYHgH7hJ3FkPC09qM=;
+        b=qUzjdB/Ekp5/EDPQLZDgXhY22H/264L6qn0ZqQP33EGh8TphndCVBdTfOdeyeS9kcl
+         pkCFr7MH0M9K1WJYn0MceoeynTreZ/19d5SztIk1OeVGLc0cbjCTqfcjPLqeVCS9DgDf
+         B+HJPjodKThi/zDVoZZZxpM5EGqQmQ+/JRE2MLVybmE+tju0gZlBwOrIGu6WHwCv3QI6
+         n2NV3smEbuAzpdsGfbLRLXVNZAvsbGbqn0ZbKDUqIKHUxLnMJFYu+LTxJCJlkz8RVV/Z
+         WIzEPncGHOoN2KSADk+4QeqdTR7mjJUjiKWqGZJosAl9mpV1KpDDoJJiCmjUD9JgqLS+
+         53Xg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779809846; x=1780414646;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=yuw5xtr2C0czpVUWTefIMp0AVKJYHgH7hJ3FkPC09qM=;
+        b=dgNCtxSzM7+oFcm270dvkyqA3cj0/LgmflkV+gq7CtQCNUdaVYitfGRskPuWEKWDJF
+         hmDcsK+ifuSTPioPPL3W1/3JvyjVKJFc7qAlXD6LnekYCF5CPCLTmQlHzVabInQf+h/L
+         2eoBk5cNWbj5qnajkcDE5VrAfTAqTCAILJZ/9/2984O5EeyhdpngyQYAaYQxJb29sTlI
+         p4XVtRjwPWhzA8ScOxCdraMM2vvJxyQSf56Xg0zbnOHnQQx31nHiTGanAxa2EL+G+VFx
+         ulXOk+oF4oy7S/ZX+O8TYdGUjz40RkUoaVTZAjsrWXHw5HHEptoNKlSgastRtlGP3Bge
+         NyAA==
+X-Forwarded-Encrypted: i=1; AFNElJ85eChycIjMeUoNQZ0TpMmto7hRpHehp7cUp94MoUm4Q3Z4+yhC70O/30mCjsOg8R4QsHvFKZs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxOHjaxXFX3OTiV930+skjOihu63PUCkqP9AkKzF/LM6Yy9rd2G
+	qaIvU2q9ywcmDmMst1ytTPxVbyXS3GCUi8N1bmbQeaXTwXSdFtwvQnNI
+X-Gm-Gg: Acq92OFpg1kvyQewb1kcdayqfwTyep1BUTRYwY4GlC7CjoY4H3zPn4AYpgBnqY8nm/R
+	40goaCfYUC2YsEiUw2v1MVWehRAYdTwI2WGUkDNjrhUbkHFfZf79082pyN6Ut23KfAfzbvjsXwM
+	vWRe8DXn6cWA1VVfBdTuX4mZCFczHchwj2aRkUQfJNm5VpsuUmGc95crevwtvh1TjBLKJaBQtxL
+	qjZJUK45JJebM3QMlmP6hD//hspv3c/V5Dwe3IhItKm08JcCubwOkMK+EU8bhnoPKWVYY37mTlY
+	mq+xayjkZnax2bBQtOr1VKBTVl+MNdw8wD9IWozLY9DoIZfODS+MgOd1nbKwzMql87JyoVfvMdS
+	WgBdgYB2s11k/wwFDiadsC/4o1FQBp40Jj9IflOyYtc9qTtcbkltyvFSdZeANOnFy7HHNVEkXFn
+	NxjsYsxExRLaVKCqKWRW9gvHRGzkE=
+X-Received: by 2002:a05:600c:8b86:b0:490:58f4:ba2f with SMTP id 5b1f17b1804b1-49058f4bb2fmr221243485e9.23.1779809846361;
+        Tue, 26 May 2026 08:37:26 -0700 (PDT)
 Received: from mtardy-friendly-lvh-runner.local ([2600:1900:4010:1a8::])
-        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-4907df9edeasm1083655e9.9.2026.05.26.08.37.23
+        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-4907df9edeasm1083655e9.9.2026.05.26.08.37.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 May 2026 08:37:23 -0700 (PDT)
+        Tue, 26 May 2026 08:37:25 -0700 (PDT)
 From: Mahe Tardy <mahe.tardy@gmail.com>
 To: bpf@vger.kernel.org
 Cc: martin.lau@linux.dev,
@@ -71,10 +73,12 @@ Cc: martin.lau@linux.dev,
 	kuba@kernel.org,
 	pabeni@redhat.com,
 	Mahe Tardy <mahe.tardy@gmail.com>
-Subject: [PATCH bpf-next v7 0/7] bpf: add icmp_send kfunc
-Date: Tue, 26 May 2026 15:37:01 +0000
-Message-Id: <20260526153708.279717-1-mahe.tardy@gmail.com>
+Subject: [PATCH bpf-next v7 2/7] net: move netfilter nf_reject6_fill_skb_dst to core ipv6
+Date: Tue, 26 May 2026 15:37:03 +0000
+Message-Id: <20260526153708.279717-3-mahe.tardy@gmail.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260526153708.279717-1-mahe.tardy@gmail.com>
+References: <20260526153708.279717-1-mahe.tardy@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -83,111 +87,98 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hello,
+Move and rename nf_reject6_fill_skb_dst from
+ipv6/netfilter/nf_reject_ipv6 to ip6_route_reply_fill_dst in
+ipv6/route.c so that it can be reused in the following patches by BPF
+kfuncs.
 
-This is v7 of adding the icmp_send kfunc, as suggested during LSF/MM/BPF
-2025[^1]. The goal is to allow cgroup_skb programs to actively reject
-east-west traffic, similarly to what is possible to do with netfilter
-reject target. Applications can receive early feedback that something
-went wrong during the TCP handshake.
+Netfilter uses nf_ip6_route that is almost a transparent wrapper around
+ip6_route_output so this patch inlines it.
 
-The first step to implement this is using ICMP control messages, with
-the ICMP_DEST_UNREACH type with various code ICMP_NET_UNREACH,
-ICMP_HOST_UNREACH, ICMP_PROT_UNREACH, etc. This is easier to implement
-than a TCP RST reply and will already hint the client TCP stack to abort
-the connection and not retry extensively.
+Signed-off-by: Mahe Tardy <mahe.tardy@gmail.com>
+---
+ include/net/ip6_route.h             |  2 ++
+ net/ipv6/netfilter/nf_reject_ipv6.c | 17 +----------------
+ net/ipv6/route.c                    | 18 ++++++++++++++++++
+ 3 files changed, 21 insertions(+), 16 deletions(-)
 
-Note that this is different than the sock_destroy kfunc, that along
-calls tcp_abort and thus sends a reset, destroying the underlying
-socket.
+diff --git a/include/net/ip6_route.h b/include/net/ip6_route.h
+index 09ffe0f13ce7..eb5a60d3babe 100644
+--- a/include/net/ip6_route.h
++++ b/include/net/ip6_route.h
+@@ -100,6 +100,8 @@ static inline struct dst_entry *ip6_route_output(struct net *net,
+ 	return ip6_route_output_flags(net, sk, fl6, 0);
+ }
 
-Caveats of this kfunc design are that a program can call this function N
-times, thus send N ICMP unreach control messages and that the program
-can return from the BPF filter with pass leading to a potential
-confusing situation where the TCP connection was established while the
-client received ICMP_DEST_UNREACH messages.
++int ip6_route_reply_fill_dst(struct sk_buff *skb);
++
+ /* Only conditionally release dst if flags indicates
+  * !RT6_LOOKUP_F_DST_NOREF or dst is in uncached_list.
+  */
+diff --git a/net/ipv6/netfilter/nf_reject_ipv6.c b/net/ipv6/netfilter/nf_reject_ipv6.c
+index ef5b7e85cffa..7d2f577e72b8 100644
+--- a/net/ipv6/netfilter/nf_reject_ipv6.c
++++ b/net/ipv6/netfilter/nf_reject_ipv6.c
+@@ -293,21 +293,6 @@ nf_reject_ip6_tcphdr_put(struct sk_buff *nskb,
+ 						   sizeof(struct tcphdr), 0));
+ }
 
-v2 updates:
-- fix a build error from a missing function call rename;
-- avoid changing return line in bpf_kfunc_init;
-- return SK_DROP from the kfunc (similarly to bpf_redirect);
-- check the return value in the selftest.
+-static int nf_reject6_fill_skb_dst(struct sk_buff *skb_in)
+-{
+-	struct dst_entry *dst = NULL;
+-	struct flowi fl;
+-
+-	memset(&fl, 0, sizeof(struct flowi));
+-	fl.u.ip6.daddr = ipv6_hdr(skb_in)->saddr;
+-	nf_ip6_route(dev_net(skb_in->dev), &dst, &fl, false);
+-	if (!dst)
+-		return -1;
+-
+-	skb_dst_set(skb_in, dst);
+-	return 0;
+-}
+-
+ void nf_send_reset6(struct net *net, struct sock *sk, struct sk_buff *oldskb,
+ 		    int hook)
+ {
+@@ -440,7 +425,7 @@ void nf_send_unreach6(struct net *net, struct sk_buff *skb_in,
+ 	if (hooknum == NF_INET_LOCAL_OUT && skb_in->dev == NULL)
+ 		skb_in->dev = net->loopback_dev;
 
-v3 update:
-- fix an undefined reference build error.
+-	if (!skb_dst(skb_in) && nf_reject6_fill_skb_dst(skb_in) < 0)
++	if (!skb_dst(skb_in) && ip6_route_reply_fill_dst(skb_in) < 0)
+ 		return;
 
-v4 updates:
-- prevent the kfunc to be called recursively and add a test (thanks to
-  Martin).
-- do not fetch dst route when unnecessary (thanks to Martin).
-- extend the test for IPv6 (thanks to Martin).
-- use SK_DROP in examples and use non blocking sockets for testing
-  (thanks to Martin).
-- test when the kfunc returns -EINVAL (thanks to Jordan).
-- add the kfunc to bpf_kfunc_set_skb as suggested by Alexei.
-- guard the IPv4 parts with IS_ENABLED(CONFIG_INET).
-- fix a wrong initial value for client_fd (thanks to Yonghong).
-- add documentation to the kfunc.
-- to Jordan: I couldn't include <linux/icmp.h> because of redefines from
-  <network_helpers.h>.
+ 	icmpv6_send(skb_in, ICMPV6_DEST_UNREACH, code, 0);
+diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+index e3d355d1fbd6..37a7627a94de 100644
+--- a/net/ipv6/route.c
++++ b/net/ipv6/route.c
+@@ -2725,6 +2725,24 @@ struct dst_entry *ip6_route_output_flags(struct net *net,
+ }
+ EXPORT_SYMBOL_GPL(ip6_route_output_flags);
 
-v5 updates:
-- kfunc name is now icmp_send and takes the control message type as
-  parameter for future potential extension (daniel)
-- drop the net patches to route packet since now the kfunc is limited to
-  cgroup_skb and tc progs (daniel & martin)
-- linearize skb headers (sashiko)
-- zero SKB control block (sashiko)
-- bind to port 0 instead of fixed port (sashiko)
-- poll to wait for POLLERR event (sashiko)
-- do not use ASSERT_EQ in CMSG_NXTHDR loop (sashiko)
-- fix comment about byte order (sashiko)
-- fix endianness IP address issue (sashiko)
-- add forgotten cleanup_cgroup_environment (sashiko)
-- let packets pass in recursion test (sashiko)
-- clarify evaluation order for recursion test (sashiko)
-
-v6 updates (all from sashiko):
-- bring back the net patches to route packet since tc ingress needs it.
-- rename the ip_route_reply helpers from fetch to fill.
-- call pskb_network_may_pull on the cloned pkt.
-- check explicitly that we received one and only one ICMP err ctrl msg.
-
-v7 updates:
-- use consume_skb on success path (stanislav)
-- replace recursion protection with CPU_ARRAY by checking the nature of
-  the sk (daniel, offline)
-- use reverse xmas tree in read_icmp_errqueue (jordan)
-- use ASSERT_OK_FD instead of ASSERT_GE whenever possible (jordan)
-- add a test for tc (jordan)
-- better filtering from host cgroup test progs (sashiko)
-
-[^1]: https://lwn.net/Articles/1022034/
-
-Link to v6: https://lore.kernel.org/bpf/20260518122842.218522-1-mahe.tardy@gmail.com/
-
-Mahe Tardy (7):
-  net: move netfilter nf_reject_fill_skb_dst to core ipv4
-  net: move netfilter nf_reject6_fill_skb_dst to core ipv6
-  bpf: add bpf_icmp_send kfunc
-  selftests/bpf: add bpf_icmp_send kfunc cgroup_skb tests
-  selftests/bpf: add bpf_icmp_send kfunc cgroup_skb IPv6 tests
-  selftests/bpf: add bpf_icmp_send kfunc tc tests
-  selftests/bpf: add bpf_icmp_send recursion test
-
- include/net/ip6_route.h                       |   2 +
- include/net/route.h                           |   1 +
- net/core/filter.c                             | 109 ++++++++
- net/ipv4/netfilter/nf_reject_ipv4.c           |  19 +-
- net/ipv4/route.c                              |  15 ++
- net/ipv6/netfilter/nf_reject_ipv6.c           |  17 +-
- net/ipv6/route.c                              |  18 ++
- .../bpf/prog_tests/icmp_send_kfunc.c          | 243 ++++++++++++++++++
- tools/testing/selftests/bpf/progs/icmp_send.c | 172 +++++++++++++
- 9 files changed, 563 insertions(+), 33 deletions(-)
- create mode 100644 tools/testing/selftests/bpf/prog_tests/icmp_send_kfunc.c
- create mode 100644 tools/testing/selftests/bpf/progs/icmp_send.c
-
++int ip6_route_reply_fill_dst(struct sk_buff *skb)
++{
++	struct dst_entry *result;
++	struct flowi6 fl = {
++		.daddr = ipv6_hdr(skb)->saddr
++	};
++	int err;
++
++	result = ip6_route_output(dev_net(skb->dev), NULL, &fl);
++	err = result->error;
++	if (err)
++		dst_release(result);
++	else
++		skb_dst_set(skb, result);
++	return err;
++}
++EXPORT_SYMBOL_GPL(ip6_route_reply_fill_dst);
++
+ struct dst_entry *ip6_blackhole_route(struct net *net, struct dst_entry *dst_orig)
+ {
+ 	struct rt6_info *rt, *ort = dst_rt6_info(dst_orig);
 --
 2.34.1
 
