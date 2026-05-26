@@ -1,90 +1,69 @@
-Received: from mail-pg1-f196.google.com (mail-pg1-f196.google.com [209.85.215.196])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CD2F316199
-	for <netdev@vger.kernel.org>; Tue, 26 May 2026 22:17:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.196
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4293F355F2A
+	for <netdev@vger.kernel.org>; Tue, 26 May 2026 22:17:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779833836; cv=none; b=MGUWxPoFnME3A2GpIWRnLTaQ8rsftToYuJXEWfeFviXypQBvIUhTESSRhUrAhvg90C/XDL+5nMdn1moX/YNjyiZyVhmXaaCu6wZdL4xvwEYbH0mSynOf5z+8qtRyosJIa3WBdLNcOB3T/R6MYvoIi/JwhXdhbK8nitlLzP0xVhE=
+	t=1779833878; cv=none; b=Us6whlI3FRTDIxcWNzCaluIEUeAI78avMvQND0zJr1yaW0JID3Vnmj7I912QsXe1jo9TWdfg+nUb1QsR0xEk+cIFLd/uRCLSQCLJuBIsKxk9BbtBnbyw258GnBhSvAQ1YwicWhFil5Vykcdd8U2XKyzflObQLGxXzXILJzeL8Ro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779833836; c=relaxed/simple;
-	bh=JTIgUv2VftcfYd9l6sEUyQNF6pctIiXtnMj3PVjiB24=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=abDXJDgj30ZCDHQOEZNtrgyDRMWUuiWjiH1TK4oe0N3jflZEeS8szRZP8u7tDdWikFLoPt2gdQHWic8GqmAWpc4Fp0i4Yrr/xXwfIrNp2THwL8hHfMFO5NYWagKc1ZL0TGvruO1wvnNwvMAcCkELk1GqU+T+iZdVpWUre/vWjw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LmdFKtU/; arc=none smtp.client-ip=209.85.215.196
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1779833878; c=relaxed/simple;
+	bh=sO/QfME8yPF5zF10RJ9dek2yuHdzaZbHktvXvp7Rbmo=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=mVXZ3FY7WiFWucZ6OT8g3abD7R761bjbQrd304JyG1Jjs+0/hZG9ic3vkcl9GDO4iWqJZ4kzXUeZwENUwpWjTFkWRN4GWodQihRugmQ9B2bWI4dI9BIFIlgjPtEtSGWBWe/xkxmsXDKYt47CVUesGz2Dn+AJbNj59JzM1ayKgsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aMQ4QJ9P; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LmdFKtU/"
-Received: by mail-pg1-f196.google.com with SMTP id 41be03b00d2f7-c82471904fcso4476990a12.2
-        for <netdev@vger.kernel.org>; Tue, 26 May 2026 15:17:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779833834; x=1780438634; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=gsD4G5vBE2xNc1zGXu5J2WBwni0ku/DrNlLE2mbcMD8=;
-        b=LmdFKtU/y7It8S73tlzil6IJ8HsL2ThFJMljHsnBfYvhXxcGkWsP7akkcILwJTHlXT
-         z0rT+whld2gIa3PIG3prYdc4BzGae9+gKw83sAqSTEJPO7or26cxQg53w/ulqclLQ7jj
-         yutdDIIxSlh48uxQfvPVhSuaJRt4HR+Z6FlgpMiJQfJ9OezB6MfRKfytOL9FyaIQTrDh
-         d7uYXiz7P9pnRT+I0qBqGInHis553U/ovzC6Hime/CuKsqchFL74weLM0lSSGaUr5j9J
-         L3OtBwVnqWE1PBFbW5HvCNKcSxdS0LSpn03BbEzPQgVtt2on9w8jlx6hBANBUZk6KJpA
-         9fvQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779833834; x=1780438634;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=gsD4G5vBE2xNc1zGXu5J2WBwni0ku/DrNlLE2mbcMD8=;
-        b=XtWcmyGDDNJakYDXZ96ITm/z2fRNUswmxjR92fz2phajKrctfBUVRUtlgiyEtcxjr8
-         LJB+ddbt6cqB4DKUbmRhnaBdI4lGp41oC87L5RnHp1lYsC5fDVwWRSkVrY6aHwVT9OhL
-         xQOvMFMuppzv4BbJz7szOiI4MxqB1TId5kC6blffKw4IlYLVBlLKSYpuoMz3WrT/0vFe
-         gdEKFEXUnA8K1HFOXRZbqDo6imagYCKUGQKGG2yrm/qHHoZNvbRHir+P6i0Pt1MQl4cW
-         Aa5Kzd+YEPIO4o1Rc6hii8hDXTctZeAU8GvadOg3owYl33K9AJ8cWOetAecliarBVU9A
-         yCpg==
-X-Forwarded-Encrypted: i=1; AFNElJ+F6x+CMVyfgPyZoUsJ5X4f9ZctkpIKuHuNQGDRdkr6eyUOjna5S74bAMiGOQ0FYsIodmEEWAM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw5vF+eIwmna/jSP/B9I8brnfeJBcbC09eAQ6YkA3vD1SZcw0Nm
-	c7e0UXGn0Cq4zinzCaA7Vf6hISDPxVp794+dnuOgO7KuDKinJ+4DguuR
-X-Gm-Gg: Acq92OEs5GkN3P/RhfC0QeRvyPNCsDYemWq6D2sE4BD3xj5LhjfXl1B/BOQ7je590vO
-	+L+se7cJWGfurCROtDAs1G1hzp6jBxLuUlrpsuK0z3eaYSKxZ7bfNMNQBEjMmXgcsm4Cvrct80j
-	eEKYPt88BvqdonRpv2Yei9RLNl/68GPBaV+ioKtMbzJFloXWu8C0Vbp2WgPAtTGW3CnNq/Y2qbC
-	hyMSKbLDUqbwtd4ZqBkzgPbaebD81P9wov1kqYVNZWNBhvi0FAKtIV20nYt/4LCnlDD7kzHKytX
-	mMXeObYOn6GUBTgKeDJgY6XjYlb0VNRo1nG/W/sEJDa0zDPtHV28khuN8z6OQsqEMWMcseIFmnZ
-	dQ6TN4Jac54nvEAXbJ+17FfeQWTXnQRxFRG+58otNlaYkVv7YSofFXQ8urUjTmyfUBPHR2GBO6v
-	8kGrbYPJJw7zwF+q89
-X-Received: by 2002:a05:6a21:a06:b0:39f:1f92:28e with SMTP id adf61e73a8af0-3b32934098amr20456726637.27.1779833834581;
-        Tue, 26 May 2026 15:17:14 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:4d::])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c85202a789dsm10541738a12.9.2026.05.26.15.17.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 May 2026 15:17:14 -0700 (PDT)
-Date: Tue, 26 May 2026 15:17:13 -0700
-From: Stanislav Fomichev <sdf.kernel@gmail.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com, 
-	pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org, corbet@lwn.net, 
-	vladimir.oltean@nxp.com, willemb@google.com, ecree.xilinx@gmail.com, 
-	jesse.brandeburg@intel.com, linux-doc@vger.kernel.org
-Subject: Re: [PATCH net-next 04/10] docs: net: update devmem code examples
-Message-ID: <ahYbTvIn-DQ4MumJ@devvm7509.cco0.facebook.com>
-References: <20260526160151.2793354-1-kuba@kernel.org>
- <20260526160151.2793354-5-kuba@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aMQ4QJ9P"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 866C61F000E9;
+	Tue, 26 May 2026 22:17:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779833876;
+	bh=IOVvB/1ifL08mB+puOXObPElfVzRmwSi7IMUhhhJwiA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=aMQ4QJ9P4V2Hg1UnkkzqlvCohvGM4Rm7KdLKa+uuwb3IQqAYeUkWv/2Su5Iwo6q0X
+	 oVWuDajNxgzlMeTMDWVQIKrUScx4kNZ+A5qMP370YPxhURZAoa7gfAKHLg6eCda4Vp
+	 hBFLAWTSRIvxCn5YXxQszt1330U60EW0JY1nzq+a1+AKtC29rH05Rj4bG1f/21XuuO
+	 rVjVJ6WGJeXFvgC0WMqE3Ye7DmpBBlAjEAKfv6XsQW0n4bNU2HGIjmoCSuclgjAzui
+	 Ql/f/N0YtbnKSGfhL3FEz3Rrw6hy4ZkX+mZ8dN3uBzKB/FRVE8qB4ULpmZI/DRI/Ma
+	 Kir13gFBw8V0g==
+Date: Tue, 26 May 2026 15:17:55 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Maciek Machnikowski <maciek@machnikowski.net>
+Cc: netdev@vger.kernel.org, richardcochran@gmail.com,
+ milena.olech@intel.com, willemdebruijn.kernel@gmail.com, andrew@lunn.ch,
+ vadim.fedorenko@linux.dev, horms@kernel.org
+Subject: Re: [PATCH v6 net-next 3/3] selftests:net: Implement ptp4l sync
+ test using netdevsim
+Message-ID: <20260526151755.06ba2041@kernel.org>
+In-Reply-To: <f10b3ddd-d403-48d3-ad0c-25b0e2d9d64d@machnikowski.net>
+References: <20260513094520.325693-1-maciek@machnikowski.net>
+	<20260513094520.325693-4-maciek@machnikowski.net>
+	<20260518174209.41e2e039@kernel.org>
+	<f10b3ddd-d403-48d3-ad0c-25b0e2d9d64d@machnikowski.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260526160151.2793354-5-kuba@kernel.org>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On 05/26, Jakub Kicinski wrote:
-> Update the code examples
->  - update the YNL sample with the latest(?) APIs
->  - struct dmabuf_tx_cmsg does not exist, use __u32 directly
+On Tue, 26 May 2026 17:10:46 +0200 Maciek Machnikowski wrote:
+> >> +# By default, it:
+> >> +# - Creates two netdevsim instances in separate namespaces
+> >> +# - Assigns IPv4 addresses and links them together
+> >> +# - Uses those interfaces as leader/follower endpoints for ptp4l
+> >> +# Optional: --leader and --follower override endpoints with existing
+> >> +# interfaces. Each argument can be either "ifname" (initial netns) or
+> >> +# "netns:ifname". Both options must be provided together.  
+> > 
+> > Please use the existing DrvEpEnv infra!?  
 > 
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> It exists in the tools/testing/selftest/drivers/net and this script is
+> in tools/testing/selftest/net. I can either keep  the self-contained
+> test only, or move the script to the drivers/net - which one is preferred?
 
-Acked-by: Stanislav Fomichev <sdf@fomichev.me>
-
-(wondering if a better strategy is to add links to ncdevmem code)
+I assume you are adding the CLI --leader and --follower options to run
+this against a real device, not netdevsim. In this case of course the
+test should live under tools/testing/selftest/drivers/net
