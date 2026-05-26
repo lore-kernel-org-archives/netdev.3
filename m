@@ -1,153 +1,318 @@
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B4CE40313F
-	for <netdev@vger.kernel.org>; Tue, 26 May 2026 15:08:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 864E3346795
+	for <netdev@vger.kernel.org>; Tue, 26 May 2026 15:11:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779808104; cv=none; b=SSTvqwnWLzkOgC89C9H4YD1OuXxdCReV0HFxr9tv4HFZZmVH+x+Hh/f6ggCjJZsaLEPWcrkvKLIXjG0Sod24i5JbesMWIl5vV/jWNjgPlYYqnJWFlcQGGUzD4L5s3WrdQL0op488XQ2qG2ACWG6NN3SHCeQ400q6WVP8FTGJcb4=
+	t=1779808273; cv=none; b=ZC+tQOrlhvDCB+vSV2Fpkw7gpCjnZNSwD0ERtyern4ZTsCjzfC1EA5I+nJ2xXqC33/NK1yBWPS7zdFx/y0NFIm031fZQi/qbgG+nisZljysM1ZpJjmrUDZCbvGTvCMKUYa1tUbArLTaMmZykoDMt74crh7i1gMwnwJcKI7C8xY4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779808104; c=relaxed/simple;
-	bh=yb+0omux6d1zyLgvLzeZABk2GNuWtKQ1yrpCoQCsmR0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Lhio7TheFkBOqErQPmsWHh4KprD0hGj79C5vhmwWxNzfhxYzq/rZKCp0OFG3yD6WF32MGb1f84yfVFNqViYWwOAt7TgLjAneFM3QqFUp4/GhJErsKVYLLpr35Nu78/2qNAwmsMLnt2m9SqEmqvuMZhIXSbHt/ffUnWDX/0On1jc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.218.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+	s=arc-20240116; t=1779808273; c=relaxed/simple;
+	bh=SCARi5umW3d5XBaEPSaPKKrqLS7JfeDlQS62zOijtSA=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=pkOn4ExGUuiQP5XGt6B36IqyZEhcDQ742DQrVXGETjneV94fumIZewcw7+cwWNyb33p00tH5UZ2VFuViPmZ+ZsdGqrf+JuGpnSzeXVrJLV9Mfz4FPcS/r/17VZqqGuPPHbY1cs8TrRHLTomfSLO+kVAy8d2jjxZaB3hBmPbPFS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Dkgd6dgM; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-bcd3c190f71so1734395766b.0
-        for <netdev@vger.kernel.org>; Tue, 26 May 2026 08:08:22 -0700 (PDT)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Dkgd6dgM"
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-49056b9f04aso41018565e9.0
+        for <netdev@vger.kernel.org>; Tue, 26 May 2026 08:11:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779808270; x=1780413070; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gz+rJovCHkSNlsFtO0WXxPTtCZGcHzWc5CByPRL4GyE=;
+        b=Dkgd6dgM5GMVwV0t5O0FRCR1mVrjPouyCg/X9/eCkXVkadRPSJTyIJ0BuM6xbOv+F5
+         1XpsypJn6A7VLC9+lMiZCwOJ2+S8wcGym0CR5+o1tcqb4QP5SsnnF5yFkSsHI8cqpCYH
+         xXdqdnRf56SwdIpyS+CHd0G0zXpyzcco+kHwSvACxT3QqywH4TBupI/1z7oJbHSEbeem
+         dyX/e5WR93ScGttIrIKmy5aFktSQ8Jm+wqfJPVCQl2noLveSkJ4M9ztNnOsYVNWuPAIA
+         IdbKvl/XrR1z56gXw6AEj8wX88pVchoJhkwJ6PL1iyVaySZMwy6eNOmYVsZxZ0aSMuXU
+         F3ig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779808101; x=1780412901;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+        d=1e100.net; s=20251104; t=1779808270; x=1780413070;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=MLTPgXz6PTE+WNmbiors/d1TQS2Sqmrm+U6hNBea8hs=;
-        b=Nu+iUc5ZVKhWfu4an8LgwiWFEryICv38HJkmRiiiQ/aMd07Uu7pv0ulFAqZEY9sSll
-         bqdxnAa0fehqJwNvy0zOnmxscZezll7fOwHNdPxEAua+3S4eWh0eUzyBd6UGymnNHHYk
-         c0QM73KRgXuI8QZW1TOkOMbm9O7xaGgcQnprH1P1hu8sTq47z49A1yj79z0xva5bQOfW
-         95FAl65hT1dlOyxn7WzylPT7Ykt1y3AgwGHNrBBxJLCbC3wZVUWhr4V4TP3PV5imomXB
-         3aRI031pyC9pe9MzStuc9wrQkAp3CY1iWjCmtjyhojBdAsQJcAgAFu39+5dbos9DLwzm
-         U8gA==
-X-Forwarded-Encrypted: i=1; AFNElJ9+kSG/1RALa7BjcLOV0L8EEFo96rj3Nw/XXKuxv/qdZhA/ZIF5jMTeuCE/OldWZuf3AfmpNPo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyQGuEXLIGjJmmNUu0GGK0VXMPzbh/hvk7m0DfvzUdJvnBfsE3i
-	RbAeUu/Xr9tHGoGbLFT3dWuaIGLaYJMg5JtqfkkbRcde/qF8EfrfYbaw1p0ulZCSKZQ=
-X-Gm-Gg: Acq92OHl87iwJhEVY0zKqglzk7DN1+Poau2BK0/aRsKCe8zBZJzcIOqw5UiTdw0nLaT
-	zpbsE+FSMiPE2aygGdq8MvuMJl30Hi2gPvfWx7Hmb/4nucO40fBSoUI5TxdOzCX7lnISXdCcZcC
-	pzLTUVkTS1uedcx0Nr/MacFTmMBEdH+9qIdpM+rdED99xzOwuRHL+UteRz/vNIk1AxJvkzfcMHr
-	om6k6ZTjuT28x0Nls/qy8sIQZsU3mYgWbeZTgXVpf0VuXE+rHVXk4nCQ9hDuxHOeQtEg8gy+gVk
-	/Y6Fi05ipzGe3yS33nP9VsfPGl/V7DrW4mn7/qPKEXjq8ylMYVSxVNT7U1TK0HriHF1UH5td7Nr
-	saFkLt3b7lPWao8UjeyTdr7VYE0/FO998cgvyS1hjrz4qHRc0YRTjWRAUC+/ZMSgXVkxJS0vYmG
-	s/XCo3KGnW03izSEmISZ+RjfjBcGZzHu0fnJr3cBGO49haF+57DlI3sRxJmJ7P
-X-Received: by 2002:a17:907:7703:b0:be2:11d7:8b05 with SMTP id a640c23a62f3a-be211d79063mr315275166b.24.1779808101021;
-        Tue, 26 May 2026 08:08:21 -0700 (PDT)
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com. [209.85.208.51])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bddc62d4ff2sm509146566b.46.2026.05.26.08.08.20
-        for <netdev@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 26 May 2026 08:08:20 -0700 (PDT)
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-67da63ae541so5687647a12.0
-        for <netdev@vger.kernel.org>; Tue, 26 May 2026 08:08:20 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ9eA5iSgFqRQWah5GF1FNuz3Rj9nkRkcYfXMOL1mcpD7/FJZpMU9GW0sjJG+HHK5fUB80vp3qs=@vger.kernel.org
-X-Received: by 2002:a05:6402:360a:b0:674:40c3:f047 with SMTP id
- 4fb4d7f45d1cf-6889ca4520cmr9385916a12.12.1779807721391; Tue, 26 May 2026
- 08:02:01 -0700 (PDT)
+        bh=gz+rJovCHkSNlsFtO0WXxPTtCZGcHzWc5CByPRL4GyE=;
+        b=EON3AO8+IB++rKM75pmS3WewznJ0FJS3IQNkJ7172iSHAELtCuDtObad263wNqNzwD
+         iF80ENM2EWkrNNq6JG6dLfQt10RGV7kJSxknV6Vzkh58/RWyrYW6wt8Pj2ifU19wPuHR
+         /ALrV/wUu4z2anrcL6MteveF4q89RMrHUCSVY8vBierFzYLqtp/ifvu8p1nO0Pf9ppEh
+         M80TyjRlgL+AQQhbtIrxPxD75hplyyfVVkowrXPYo1cgjkzOxqLjtX7YLVbLobjwb+h/
+         +iF4O2rUR7BhIgondT9DukS1kEcJ/0Wr/JA/zJ1/HUakdzAP/e/7Kuxn6fx6oFcRJ9WL
+         24Ow==
+X-Forwarded-Encrypted: i=1; AFNElJ/surwWl6mncoeODF63efLgqjasRgaplzfuvRozX8Df/xK9gMDudXphg2xQi5kFlAmpsprNvVA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyM2NuOPVzQRrHOQLG40owZB3VEse74I7OiLh93NOQcnKywHqZ9
+	KaZbxkeyMVdP4pR/OKTJsg+xmT46r01cGR5jakl5cht7jxHObH51Z1fN
+X-Gm-Gg: Acq92OETXfD0UnDJa/pGK5vz+5JeBY2Yldjyv50QorD0a+qx5LwlPPdBigYxbfVK4cz
+	v26MT3Yjx8+s7+zdePF3c6lo9Xlnt6pljiOiKnbBpP6KuA3f5ja98tv9TA5G8RXOl+vBYAujwwp
+	wQvFycemnLREkPIAPlRGXS549GqPiRKqmkJ8fz06XznuwXtJHUWYc3OfTGyUmo1SBX8LBcn22lY
+	2mkGK4IoKVMRI6tEZXGarsrAf4QBxyoRNLbUCyk4oN3OLz93LSSenKglpSIT2WUmbY/KH1FQAKX
+	Soi4IonK3bqMRFHI5tMbsPLDYTRewlIOmESN8HQftleDx8R02Z2BFoFhMKP9F8AFkUHXfos2FzK
+	AHy6pWwXlIKYso7kEqfuAwmqBhR8tgXv2Pdtbhqz/CSrJC7r9XkpG4o7vBSZSb4aelOBdwxbrDA
+	st6PYb+NCmLDyUnMc/IjJrKy7EgF9dhLjXlQU7hX7ceVi1Re3VBwmcadkO7QiT6qFOkWoWUvXgY
+	jU=
+X-Received: by 2002:a05:600c:1553:b0:490:53b0:9e53 with SMTP id 5b1f17b1804b1-49053b0a086mr252276435e9.1.1779808269542;
+        Tue, 26 May 2026 08:11:09 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490456274ebsm317708235e9.15.2026.05.26.08.11.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 26 May 2026 08:11:09 -0700 (PDT)
+Date: Tue, 26 May 2026 16:11:08 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: Petr Oros <poros@redhat.com>
+Cc: Jacob Keller <jacob.e.keller@intel.com>, John Ousterhout
+ <ouster@cs.stanford.edu>, stable@vger.kernel.org,
+ anthony.l.nguyen@intel.com, intel-wired-lan@lists.osuosl.org,
+ przemyslaw.kitszel@intel.com, netdev@vger.kernel.org
+Subject: Re: [Intel-wired-lan] [PATCH net v3] ice: fix packet corruption due
+ to extraneous page flip
+Message-ID: <20260526161108.645c47a1@pumpkin>
+In-Reply-To: <e1ce1387-ae6b-4b43-b5d8-a1141c4a4f1c@redhat.com>
+References: <20260512181953.1689-1-ouster@cs.stanford.edu>
+	<20260513100732.499e3f49@pumpkin>
+	<CAGXJAmzK+56DHnitD1g263mPSgWg9jZyq2z6R+vd8bV_c4ZbuQ@mail.gmail.com>
+	<20260513214927.17a8dd45@pumpkin>
+	<CAGXJAmx4LaVv=QJ=SanvF6iayJ8+SiLyUqht+jMxouXPX=54-g@mail.gmail.com>
+	<20260514110112.12bdf5ff@pumpkin>
+	<30dc284c-8cc0-4bae-b7b0-99d6d71a66e3@intel.com>
+	<e1ce1387-ae6b-4b43-b5d8-a1141c4a4f1c@redhat.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1779803053.git.u.kleine-koenig@baylibre.com>
-In-Reply-To: <cover.1779803053.git.u.kleine-koenig@baylibre.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Tue, 26 May 2026 17:01:48 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdUVoNg-rSV_hDcvi6KCosmE=SMcxUj2Y8fkoJ=33zMSXw@mail.gmail.com>
-X-Gm-Features: AVHnY4KG1TJnpMipnk7rqdd9LGhhF-uK_MvXjYFynbh1jLKZ-eyBikYr9yO02y4
-Message-ID: <CAMuHMdUVoNg-rSV_hDcvi6KCosmE=SMcxUj2Y8fkoJ=33zMSXw@mail.gmail.com>
-Subject: Re: [PATCH v1 0/8] zorro: Improve handling of pointers in zorro_device_id::driver_data
-To: =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig_=28The_Capable_Hub=29?= <u.kleine-koenig@baylibre.com>
-Cc: Damien Le Moal <dlemoal@kernel.org>, Niklas Cassel <cassel@kernel.org>, 
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
-	"Martin K. Petersen" <martin.petersen@oracle.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@kernel.org>, Max Staudt <max@enpas.org>, Andi Shyti <andi.shyti@kernel.org>, 
-	Helge Deller <deller@gmx.de>, linux-ide@vger.kernel.org, linux-m68k@lists.linux-m68k.org, 
-	linux-kernel@vger.kernel.org, linux-scsi@vger.kernel.org, 
-	netdev@vger.kernel.org, linux-i2c@vger.kernel.org, 
-	linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	"Christian A. Ehrhardt" <christian.ehrhardt@codasip.com>, "Christian A. Ehrhardt" <lk@c--e.de>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-Hi Uwe,
+On Tue, 26 May 2026 14:47:42 +0200
+Petr Oros <poros@redhat.com> wrote:
 
-On Tue, 26 May 2026 at 16:17, Uwe Kleine-K=C3=B6nig (The Capable Hub)
-<u.kleine-koenig@baylibre.com> wrote:
-> this series is about improving the handling of pointers in struct
-> zorro_device_id's driver_data.
->
-> While it's ok on all current Linux platforms to store a pointer in an
-> unsigned long variable, it involves casting that loses type information.
-> This can be nicely seen in patch #7 where after profiting from patch #6
-> the compiler notices a missing const.
->
-> Preparing for that change, all zorro_device_ids are converted to use
-> named initializers, which is also a nice cleanup that could stand for
-> itself, as it improves readability for humans. (That is necessary
-> because an anonymous union can be initialized by name, but not using a
-> list initializer.)
->
-> My motivation for this series is the CHERI hardware extension. With that
-> pointers are bigger than longs and thus you cannot store pointers in
-> zorro_device_id::driver_data. So this series is also about getting
-> support for CHERI into the mainline, but I hope the clean up effects
-> mentioned above are justification enough to accept this series.
+> On 5/14/26 18:43, Jacob Keller wrote:
+> > On 5/14/2026 3:01 AM, David Laight wrote: =20
+> >> On Wed, 13 May 2026 21:47:11 -0700
+> >> John Ousterhout <ouster@cs.stanford.edu> wrote:
+> >> =20
+> >>> On Wed, May 13, 2026 at 1:49=E2=80=AFPM David Laight
+> >>> <david.laight.linux@gmail.com> wrote: =20
+> >>>> On Wed, 13 May 2026 09:28:40 -0700
+> >>>> John Ousterhout <ouster@cs.stanford.edu> wrote:
+> >>>>    =20
+> >>>>> On Wed, May 13, 2026 at 2:07=E2=80=AFAM David Laight
+> >>>>> <david.laight.linux@gmail.com> wrote: =20
+> >>>>>> On Tue, 12 May 2026 11:19:53 -0700
+> >>>>>> John Ousterhout <ouster@cs.stanford.edu> wrote:
+> >>>>>>    =20
+> >>>>>>> Consider the following sequence of events:
+> >>>>>>> * The bottom half of a buffer page is filled with data from
+> >>>>>>>    packet A. The page has a net reference count (reference count
+> >>>>>>>    - bias) of 1. The page is returned to the NIC, flipped to
+> >>>>>>>    use the top half.
+> >>>>>>> * Before the reference on the page is released, the NIC returns
+> >>>>>>>    the page with no data in it ('size' is zero in ice_clean_rx_ir=
+q).
+> >>>>>>>    In this case the bias does not get decremented. The page still
+> >>>>>>>    has a net reference count of 1, so it gets returned to the NIC.
+> >>>>>>>    However, ice_put_rx_mbuf flipped the page so that the bottom
+> >>>>>>>    half is active.
+> >>>>>>> * If the NIC stores another packet in the page before packet A
+> >>>>>>>    has released its reference, the data in packet A will be
+> >>>>>>>    overwritten with data from the new packet.
+> >>>>>>> * Unfortunately zero-length buffers occur frequently: they seem
+> >>>>>>>    to occur whenever a packet uses every available byte in a
+> >>>>>>>    buffer, ending precisely at the end of the buffer. When this
+> >>>>>>>    happens the NIC seems to generate an extra zero-length
+> >>>>>>>    buffer.
+> >>>>>>> The fix is for ice_put_rx_mbuf not to flip pages that have a
+> >>>>>>> size of 0. =20
+> >>>>>> How is this different from packet B (in the top half) being
+> >>>>>> freed before packet A (in the bottom half)? =20
+> >>>>> I'm not sure exactly what you're referring to here. Are you asking
+> >>>>> about a situation where both halves of the page get filled with pac=
+ket
+> >>>>> data and then the second half to be filled is the first to be freed=
+? I
+> >>>>> believe that the ICE driver abandons a page if both halves are ever
+> >>>>> occupied simultaneously; the page will be returned to the system on=
+ce
+> >>>>> both halves have dropped their references. Thus it doesn't matter
+> >>>>> which half is freed first. =20
+> >>>> That is what I was thinking, seems like the logic is over complicate=
+d.
+> >>>>
+> >>>> If you need to put 4k pages into some kind of iommu rather than 2k b=
+uffers
+> >>>> (to contain 1536 byte ethernet packets) then I'd have thought you'd
+> >>>> initially put both halves into adjacent tx ring entries.
+> >>>> If a rx buffer is discarded (eg a zero length fragment or a CRC erro=
+r,
+> >>>> or even 'copy break' for short packets) then, as an optimisation,
+> >>>> you could reuse the buffer for another receive.
+> >>>> The same could be done if the page is freed by an application.
+> >>>>
+> >>>> However it sounds like it doesn't use the 2nd half until the first
+> >>>> completes - otherwise you'd never 'flip' to make the other half
+> >>>> active.
+> >>>>
+> >>>> Thinks...
+> >>>> By only putting half of each 4k 'page' into the rx ring the code
+> >>>> will usually save (expensive) iommu setup in the (probably) normal
+> >>>> case where the buffers are freed 'reasonably quickly'.
+> >>>> But that really requires a 'free/with_nic/busy' state for each half
+> >>>> rather then trying to guess from a reference count.
+> >>>>
+> >>>> But if the low-level code is recycling the rx buffer (for any reason)
+> >>>> it wants to use the same buffer.
+> >>>>
+> >>>> The ethernet driver I wrote (a long time ago, early 90s) allocated
+> >>>> 64k as 128 512byte buffers and did an aligned word-sized copy of
+> >>>> every receive frame - most frames were in contiguous memory.
+> >>>> The simplicity of it made up for the cost of the copy, especially
+> >>>> since that was an iommu system. =20
+> >>> I'm not here to defend the logic (and it has been replaced with
+> >>> something that is probably simpler and more efficient); I'm just
+> >>> suggesting a bug fix for the stable releases that still have this
+> >>> logic. =20
+> > Right. We definitely want a fix for the possible data corruption in
+> > stable. Ideally one as simple as possible.
+> > =20
+> >> You've forced me to look at all of the function :-)
+> >> I've noticed a few things:
+> >> - If ice_add_xdp_frag() fails (because there are too many fragments)
+> >>    then the rest of the fragments are left in the tx ring (instead
+> >>    of being discarded) - so are likely to be treated as a full packet
+> >>    later on.
+> >> - Frames with status errors (crc, framing etc) are discarded after
+> >>    the skb is built - surely that should happen before the xdp 'progra=
+m'
+> >>    is called.
+> >> - If the remote system send a very very long frame (traditionally the =
+PHY's
+> >>    'jabber detect' didn't always work) you can end up with all of the =
+rx
+> >>    ring being full of a single partial packet.
+> >>
+> >> I think you need to avoid calling ice_add_xdp_frag() when 'size =3D=3D=
+ 0'.
+> >> Then in ice_put_rx_mbuf() unconditionally call ice_put_rx_buf() for
+> >> zero length fragments.
+> >> The comment would be 'zero length fragments can always be reused'.
+> >> =20
+> > That seems correct.
+> > =20
+> >> The zero length fragments almost certainly exist because the mac hardw=
+are
+> >> advances the the new buffer expecting more data - but only gets the
+> >> 4 byte CRC. So the zero length buffer contains the receive status.
+> >> =20
+> > That matches my understanding. =20
+> Hi John,
+>=20
+> I have been looking at the same area in the pre-page-pool ice code and
+> I want to ask whether you observed memory growth during your Homa runs
+> that exposed the corruption, because in my testing the same bias mismatch
+> also produces a slow page leak that your v3 does not close.
+>=20
+> Short version of the leak path, in the PASS (!CONSUMED) branch:
+>=20
+>  =C2=A0 1. ice_get_rx_buf(size=3D0) does pagecnt_bias-- unconditionally
+>  =C2=A0 =C2=A0 =C2=A0(added by commit ef68094cb09e ("ice: Fix kernel pani=
+c due to page
+>  =C2=A0 =C2=A0 =C2=A0refcount underflow") as the fix for the matching pan=
+ic).
+>  =C2=A0 2. ice_add_xdp_frag() then returns 0 for size=3D=3D0, so that pag=
+e is
+>  =C2=A0 =C2=A0 =C2=A0never attached to the xdp_buff/SKB. Nobody downstrea=
+m will ever
+>  =C2=A0 =C2=A0 =C2=A0call put_page() to balance the pagecnt_bias-- from s=
+tep 1.
+>  =C2=A0 3. Your v3 in ice_put_rx_mbuf() correctly skips the page flip for
+>  =C2=A0 =C2=A0 =C2=A0size=3D=3D0, which closes the corruption window. But=
+ it does not
+>  =C2=A0 =C2=A0 =C2=A0restore pagecnt_bias for that zero size buffer, so t=
+he page is
+>  =C2=A0 =C2=A0 =C2=A0handed back to ice_reuse_rx_page() with a permanent =
+deficit of 1.
+>  =C2=A0 4. On the next reuse of that page with size > 0, pagecnt_bias dro=
+ps
+>  =C2=A0 =C2=A0 =C2=A0again. ice_can_reuse_rx_page() now sees pgcnt - bias=
+ =3D=3D 2 and
+>  =C2=A0 =C2=A0 =C2=A0drains via __page_frag_cache_drain(page, pagecnt_bia=
+s). Because
+>  =C2=A0 =C2=A0 =C2=A0pagecnt_bias is one too low, the drain undershoots b=
+y 1: page
+>  =C2=A0 =C2=A0 =C2=A0refcount stays at 2 instead of 1.
+>  =C2=A0 5. The SKB eventually releases its reference (refcount -> 1), but
+>  =C2=A0 =C2=A0 =C2=A0nothing ever brings it to 0. The page is leaked.
+>  =C2=A0 =C2=A0 =C2=A0ice_alloc_rx_bufs() just allocates a fresh page to f=
+ill the slot.
+>=20
+> At the zero size frequency you mentioned (thousands per second), this
+> adds up to roughly MB/s of leaked page cache, which Jaroslav Pulchart
+> originally reported against 6.13.y on NUMA nodes and which motivated
+> the libeth/page_pool conversion in mainline. So in stable trees the
+> leak side of this bug is still live.
+>=20
+> Two questions:
+>=20
+>  =C2=A0 - Did you monitor RSS / page allocator stats over the duration of
+>  =C2=A0 =C2=A0 your Homa runs? If you did and did not see growth, I would=
+ like
+>  =C2=A0 =C2=A0 to understand what is different about your setup, because =
+by my
+>  =C2=A0 =C2=A0 reading of the code the leak should fire whenever both hal=
+ves of
+>  =C2=A0 =C2=A0 a page end up in SKBs simultaneously and one of them carri=
+ed a
+>  =C2=A0 =C2=A0 zero size descriptor along the way.
+>=20
+>  =C2=A0 - If your focus was specifically the corruption, would you be open
+>  =C2=A0 =C2=A0 to extending v3 (or replacing it) with a fix that also res=
+tores
+>  =C2=A0 =C2=A0 pagecnt_bias for the size=3D=3D0 case? The minimal extensi=
+on is one
+>  =C2=A0 =C2=A0 extra branch in ice_put_rx_mbuf:
+>=20
+>  =C2=A0 =C2=A0 =C2=A0 =C2=A0 if (verdict !=3D ICE_XDP_CONSUMED && size !=
+=3D 0)
+>  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 ice_rx_buf_adjus=
+t_pg_offset(buf, xdp->frame_sz);
+>  =C2=A0 =C2=A0 =C2=A0 =C2=A0 else
+>  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 buf->pagecnt_bia=
+s++;
+>=20
+>  =C2=A0 =C2=A0 which restores bias on every path where the page is not ac=
+tually
+>  =C2=A0 =C2=A0 going out to an SKB. (I have a slightly different variant =
+that
+>  =C2=A0 =C2=A0 tracks has_data in struct ice_rx_buf to also handle the br=
+oken
+>  =C2=A0 =C2=A0 positional 'i <=3D xdp_frags' counter in the CONSUMED path=
+, where
+>  =C2=A0 =C2=A0 zero size descriptors in the middle of a frame steal bias+=
++ slots
+>  =C2=A0 =C2=A0 from real fragments. Happy to share it if useful.)
 
-Thanks for your series!
+By thought was:
 
-> The dependencies in this series are as follows:
->
->  - Patch #5 depends on #1, #2
+I think you need to avoid calling ice_add_xdp_frag() when 'size =3D=3D 0'.
+Then in ice_put_rx_mbuf() unconditionally call ice_put_rx_buf() for
+zero length fragments (regardless of verdict).
+The comment would be 'zero length fragments can always be reused'.
 
-s/5/6/?
+I think that path always reuses the same half of the page without
+going near the 'bias' code paths (which I didn't manage to grok).
+It is the same path that is used for frames with bad CRC (ignoring
+the broken paths when xdp is enabled).
 
->  - Patches #7 and #8 depend on patch #6.
->
-> So if the ata maintainers agreed to merge their patch #1 via scsi, and
-> Geert agrees to patch #5 and that it's also merged via scsi, patches #1,
+-- David
 
-s/5/6/?
+>=20
+> Regards,
+> Petr
+>=20
+>=20
 
-> #2, #6 and #7 can go in without further coordination.
->
-> Patches #3, #4 and #5 are only about using the same initialization style
-> for all zorro_device_id and can go in without coordination.
->
-> Best regards
-> Uwe
->
-> Uwe Kleine-K=C3=B6nig (The Capable Hub) (8):
->   ata: pata_budda: Use named initializer for zorro_device_id
->   scsi: Use named initializer for zorro_device_id
->   net: Use named initializer for zorro_device_id arrays
->   i2c: icy: Use named initializer for zorro_device_id arrays
->   video: fm2fb: Use named initializer for zorro_device_id array
->   zorro: Simplify storing pointers in device id struct
->   scsi: zorro7xx: Make use of struct zorro_device_id::driver_data_ptr
->   video: cirrusfb: Make use of struct zorro_device_id::driver_data_ptr
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
-
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
-                                -- Linus Torvalds
