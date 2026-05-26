@@ -1,109 +1,126 @@
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC4DB78F29;
-	Tue, 26 May 2026 20:01:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69A183AB490
+	for <netdev@vger.kernel.org>; Tue, 26 May 2026 20:23:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779825702; cv=none; b=hk9HDCAOl3cbVkATHEy7xcPrTeNpF3Rxle9qLwyTb6VoMJd+CNfEgn+d2i4meAYLgk9IWLp5oSazhlkiaxRMjqGH3RBIU7n6VrpBeDeWClKy/mUD/wVffJHSHq2N2RVz9k1nxue+HHsIjFi1nenVo1X5grzIiNgjemAeu46FGR0=
+	t=1779826987; cv=none; b=OLLC1asyZOyrl5DSXn9WwJsmKPI6x78XQD2CnuXphu1FxZUFfCFFPSDv0KWc1pe96KOCM23IvOzuO7hKMlyleAHOTSGqYAm8FI0Y/OnQHAR/F283nKiNv9fUvdT4IpU/qcNSMGTdBzxYORKkWDv1fZ/lNmZdIMJUPXkF8wAVT74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779825702; c=relaxed/simple;
-	bh=EWeYygjlxL6KyEBUVWUn+gT2zvpNxEN5Cn6tnKd6LK0=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=qVynH/ryKmWFGQl7j652aHMcsDq7ld+FR+xKBuPoaXzemE60iZHL8oe1mYmJ/oCwBoOIpBSUTSzUuSHAGmJ4tXzqGlw8DjCCLdPUE/Q4pskq5KW1Ss1ZVWpfe0QXw7FIQqTAR4gVm8hD06Vh2g9YJQrLp58GLbepoXFXVd+KB1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=W8MdF+32; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	s=arc-20240116; t=1779826987; c=relaxed/simple;
+	bh=TRyFeOjEFg9Z4oD9ybe51Hvm1Kn6K0WGSxcwfFiQJCM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=teSHs2BiDhzeIlMt1NxgWKEkgtB+COvwnRQ7P6su8JbH3y2jT0EaqFnJoqfg5V0RSlm5B7BNYzAnXuLJjgIBz2liuGOj6WJ3fOlHD0w/RbeRkmcpfn3xd+4zV8QLOl2HeVjsjT0UDRMBepnRTW+Xl54G2wYKkVCk55jfWebJpF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aT2qID+N; arc=none smtp.client-ip=209.85.216.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="W8MdF+32"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 962A6A4B47;
-	Tue, 26 May 2026 21:59:06 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1779825547; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=jOrchRnk366irtCmn98ATNtNR02m9R8pA0+cw+MMDHM=;
-	b=W8MdF+32/ZiAdVuVekmZdnnvy3s2jbVBCRzwaQiEozI511pqI7dWe+1gLI/CkN7TpCyKlR
-	hXT8qfZYIehSb42VulCr+mlRFBIGR7bfanpxsRhYI4kcobUj7UTof492OdEGVQ1+U9rtrQ
-	2LFuGdcjAK9sdFfQwKPqwFsNFTSe1RQnBWNiZOxEqJFo/Vvnoks9dBGff2vMC2To8Ab3Oc
-	rsUU7diu5wjm8M3VDH5TGLcwjfqK1OoTLTGAvMqylyMajRzz8uohHrZZQ7XatXcMUj4DqP
-	cNTQwgNagAu58SMJio+O9DIzRTco+VojhieYDTN2B/CmQLkRx4VCXpf/8sZCUw==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aT2qID+N"
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-366330b6751so8620109a91.1
+        for <netdev@vger.kernel.org>; Tue, 26 May 2026 13:23:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779826986; x=1780431786; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=M3mXtq2h7QJnUw/yzmR3z22pM1IqybeYG7SOGc1FU/E=;
+        b=aT2qID+NCWvV+KIwCvVS94In0rwK9EOHT02vqhflSyEaGc922A6QKMATwUag/oFGDj
+         FKF37CvsqUSmjsDMaOZocPGO+dWi9hxCB/Dr5uYcQvEr3M52Qigs5nuQjO9biX61sKeM
+         NbB/s2zZOvn3dbmn4BmQj2MvDcPQOqfZbPpqX0BlR/1Tdf92skeRutSMYkjv4is/oPtk
+         kfMo+YX/8Sb1PXJTBxqrW3c1nbp7yQUgOPn9bSKjj/upexg4F3+Dh3qgxqsFKGSVP7h5
+         Fr2ZmGyeI6uvG8k7Qw84Bu/h7pHj1FSriubcjeXBQS700m8EW2IYqzEXOSXTXfI1vSU5
+         dP8g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779826986; x=1780431786;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=M3mXtq2h7QJnUw/yzmR3z22pM1IqybeYG7SOGc1FU/E=;
+        b=epHmzeypRJs51Ss6U+GQyHDCXJWv+9z7CRB2Rv1l27EYeSPXi4SSvg1OB4hCgoJNw/
+         3nLmNBsvGr65AE0uysZO8X4au4i4wfjZisUMW1TK7x03voq9X5sxEz5UfLM4Qdrrh1rD
+         5FHcC0aneiDD8cbR/G9XFKwHtdafJnzaIQzGU9Ic2z7qr1UCc5Ow2lK1RiafxzT/gROo
+         tYW+de6cqNwatlzWWp/OzEdDTd4Lc/OScwoQjEu/OMTTdJp/TNVA9ZpI80kxW5SIM/iw
+         /BOWKsa4A+6f+PS9t0smE/v1laN4rw5iKUu+veqxVu0wQJ+p/8n6iuueIRIiO9Xdx3Xx
+         5E9A==
+X-Gm-Message-State: AOJu0YyH2E51WLBoc/Q6MCHftp8iUv2K+mwI8tvLD3LcguxgWhbciQii
+	gXH29KTw7X844p/nA9OayBw9pQbsK/FFbYyMcIDb+9OfLeiQ1ckkfgNTETPTg697
+X-Gm-Gg: Acq92OFxBud9mzBHd52m7PRTitbHPcempkjc7BldYneUpe0jaywjhOc59Ocj47E7aeS
+	4yZQmbkWpM0VQ4hnHkWeTrA40myHfDLxLezOvbG5ZFtD+BhVcxA7JqFvjT6L6DuuUXFTF9QDKEh
+	vHFylJz67f1apxz5K7iDhl5812W2l/X5jSBcuJtHi+lV0sMfRYKJP26Lnw8VV77MFS+D8pl2n83
+	lOQKFWSKgJPFlaNwz5Uzlmg3L+noUJsY2G1ezox8iNrt1+N9Unp2KMHTL7wcx5nsTXoWgxRPfhp
+	dM2XYAccek2siMZdcFgNpYhRDyaCo3uofAQv4x+Dqq4dCXSvqD/TeOVTUMsmo0nadRHfA6rWHS6
+	qII3NNInlC9tQgs5XOF84CKtJnwnrP7QtJZNTrfjpOlQ5+6VTzRrPo9uwRKZiUpxzZWmHEY7J/z
+	JsY5KhZDdcsoTW/txjklO9uK33T4/1Vq5pZJKXSRfrBohsdpGPN0TyNs6602YMzTDsK72a4YGaS
+	85ZjYZ8vvyrUfbT0u97jih7I2303XwD7o8=
+X-Received: by 2002:a17:90a:fc44:b0:369:bddb:79b5 with SMTP id 98e67ed59e1d1-36a676dc2d0mr21013700a91.2.1779826985725;
+        Tue, 26 May 2026 13:23:05 -0700 (PDT)
+Received: from ryzen ([2601:644:8000:5b5d:7285:c2ff:fe45:8a32])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36a721c7b92sm13280442a91.12.2026.05.26.13.23.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 26 May 2026 13:23:05 -0700 (PDT)
+From: Rosen Penev <rosenp@gmail.com>
+To: netdev@vger.kernel.org
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH net-next] net: ibm: emac: Reserve VLAN header in MJS limit
+Date: Tue, 26 May 2026 13:22:47 -0700
+Message-ID: <20260526202247.13823-1-rosenp@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Tue, 26 May 2026 21:59:06 +0200
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Thangaraj Samynathan <thangaraj.s@microchip.com>,
- netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- bryan.whitehead@microchip.com, UNGLinuxDriver@microchip.com,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v2 2/2] net: lan743x: add support for RMII
- interface
-In-Reply-To: <48510d22-bc14-427a-b12e-17655ca95ad5@lunn.ch>
-References: <20260526154054.19829-1-thangaraj.s@microchip.com>
- <20260526154054.19829-3-thangaraj.s@microchip.com>
- <48510d22-bc14-427a-b12e-17655ca95ad5@lunn.ch>
-Message-ID: <b24c34f91726681ef5797af10b3d1e9a@tipi-net.de>
-X-Sender: nb@tipi-net.de
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
 
-Hi Andrew
+The IBM EMAC programs its Maximum Jumbo Size (MJS) drop
+threshold from ndev->mtu directly. The hardware sizes the threshold
+against the L2 frame minus the ethernet header, but does not
+discount the 802.1Q tag, so a frame carrying a VLAN tag and a full
+1500-byte payload exceeds MJS by exactly 4 bytes and is dropped.
 
-On 26.5.2026 18:49, Andrew Lunn wrote:
-> On Tue, May 26, 2026 at 09:10:54PM +0530, Thangaraj Samynathan wrote:
->> Enable RMII interface in the lan743x driver for PHY and MAC
->> configuration.
->> 
->> - Select RMII interface in lan743x_phy_interface_select().
->> - Update phylink supported_interfaces and MAC capabilities.
->> - Enable RMII via RMII_CTL in lan743x_hardware_init().
->> - Define RMII_CTL register and enable bit in lan743x_main.h.
-> 
->> +	case PHY_INTERFACE_MODE_RMII:
->> +		__set_bit(PHY_INTERFACE_MODE_RMII,
->> +			  adapter->phylink_config.supported_interfaces);
->> +		adapter->phylink_config.lpi_capabilities = 0;
-> 
-> So EEE is not supporting with RMII? This is not mentioned in the
-> commit message.
-> 
-> Humm, is this an 802.3 limitation, or a limitation of this hardware?
+This is normally hidden because JPSM (and therefore the MJS check)
+only engages when the MTU is raised above ETH_DATA_LEN.  With the
+qca8k DSA tagger the conduit MTU is bumped by QCA_HDR_LEN to 1502
+during dsa_conduit_setup(), which is enough to enable JPSM and
+expose the off-by-VLAN-tag in the limit.
 
-I do not think this is specific to the lan743x. Linux drives EEE from
-the MAC side, so mac_enable_tx_lpi() has to signal "assert LPI" to the
-PHY across the xMII. On MII and GMII the MAC signals LPI using TX_ER,
-and AFAICT RMII has a reduced pin set with no TX_ER, so the MAC has no
-standard way to request LPI over RMII. So IMHO EEE does not really
-apply to RMII in general, not only on this controller. Please correct
-me if I am missing something here.
+Pad MJS by VLAN_HLEN so a VLAN-tagged full-MTU frame passes.
 
-Today drivers seem to express this themselves through lpi_interfaces.
-stmmac is the clearest example I found, in stmmac_phy_setup():
+Reported on Meraki MX60 (qca8k switch): tagged VLAN
+traffic drops at 1500-byte payload, while 1496 bytes works
+and untagged 1500 bytes works.
 
-	/* The GMAC 3.74a databook states that EEE is only supported
-	 * in MII, GMII, and RGMII interfaces.
-	 */
-	__set_bit(PHY_INTERFACE_MODE_MII, config->lpi_interfaces);
-	__set_bit(PHY_INTERFACE_MODE_GMII, config->lpi_interfaces);
-	phy_interface_set_rgmii(config->lpi_interfaces);
+Assisted-by: Claude:Opus-4.7
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
+---
+ drivers/net/ethernet/ibm/emac/core.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-It deliberately leaves RMII out, and phylink_activate_lpi() then
-refuses LPI when cur_interface is not in lpi_interfaces.
+diff --git a/drivers/net/ethernet/ibm/emac/core.c b/drivers/net/ethernet/ibm/emac/core.c
+index 11d673a9f119..90471cff37dd 100644
+--- a/drivers/net/ethernet/ibm/emac/core.c
++++ b/drivers/net/ethernet/ibm/emac/core.c
+@@ -30,6 +30,7 @@
+ #include <linux/skbuff.h>
+ #include <linux/crc32.h>
+ #include <linux/ethtool.h>
++#include <linux/if_vlan.h>
+ #include <linux/mii.h>
+ #include <linux/bitops.h>
+ #include <linux/of.h>
+@@ -457,7 +458,7 @@ static inline u32 emac_iff2rmr(struct net_device *ndev)
+ 
+ 	if (emac_has_feature(dev, EMAC_APM821XX_REQ_JUMBO_FRAME_SIZE)) {
+ 		r &= ~EMAC4_RMR_MJS_MASK;
+-		r |= EMAC4_RMR_MJS(ndev->mtu);
++		r |= EMAC4_RMR_MJS(ndev->mtu + VLAN_HLEN);
+ 	}
+ 
+ 	return r;
+-- 
+2.54.0
 
-> If this is 802.3, then this should be in phylink, not drivers.
-
-Since this seems generic, I agree it belongs in phylink rather than
-each driver. I can send a patch excluding RMII (and probably REVRMII)
-from EEE centrally, so drivers do not need to special-case it.
-
-> 
-> 	Andrew
-
-Nicolai
