@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8E3936CDF2
-	for <netdev@vger.kernel.org>; Tue, 26 May 2026 15:35:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05CFC371D17
+	for <netdev@vger.kernel.org>; Tue, 26 May 2026 15:35:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779809758; cv=none; b=SG/vtqe2PYMthJyuCtJ8P0SVbW+Bx2lDT5OydvshyWjZMDguJ2SSq+8G2YdWBJ9/Wnu24l8MQACmW9xrpkmzwIxwsp4B9dEZO6PPuKY3Owf9QtsM1Q5xVNJjEziDZJD5v762jbTMgXmWIt5qwMORGJmPzR2E/wFRATPCzaiNau0=
+	t=1779809762; cv=none; b=LTXSsybyTAjpjTVb0cusb/BTLBJH/GFJ8Lgwu7rIwS1LKz+doHC3hqA0g9Akp+fcw0y7wGDvR/TxZcUUyzBt8mKq2Np/naZPg7IGunB7j4KpNbNPjsaGg2gTVLGCJi2enPlpGK6tZjX6cvsC2iRu2PTwKWMQ1tEBdNy/oEzj46g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779809758; c=relaxed/simple;
-	bh=QB4b3TADVMdyL5zt32T0oiMFwiGSQvDZTkoUJ50khwA=;
+	s=arc-20240116; t=1779809762; c=relaxed/simple;
+	bh=3EhAbhkgcmk5382ypkBUbZ3XSu+54FLZWyI2yLnldWk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FH6nXooJJQZ71YgMGMfhQ1m9AsKAqkLwD4F/pJO9kAtS9ZMGR95bKr5+6aPO8A/5iGFaMD+II4QwbR9rl40MPyh7E6y+Tmf0M3oZMAVn583t/CXDWK+uib7AQkb0N1JI1g27wIF6CzcLggnTSQfn2mqnNK5VSNEoXDU85QeNXBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LaSwnD7J; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=hjebZBzzGLAEGr2/i26v8gqm3GBcsiuetkFjSdLyvMROp0OeLZwABxImLXDYmMwmxxpYx+fki7xl732AjfKQhNQR7ZwQgJOgkZzyiyjxxycBbSAcS8g+H9BGhWavWGzexI2vdSADNlJenKGgiR4NeWQMvqT+OXfs6DyTZUrk1CI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fdzijFiG; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LaSwnD7J"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E0AF1F00A3F;
-	Tue, 26 May 2026 15:35:53 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fdzijFiG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0DAF1F00A3C;
+	Tue, 26 May 2026 15:35:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779809753;
-	bh=evUkhfT4Qsj5+DVaCtgc5IbUK8k2pmbvL0VMLNQmK5E=;
+	s=k20260515; t=1779809755;
+	bh=18iR4P7xryhRqH+56uCBSVcaDxv3nz6Ko9WwPv276vU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=LaSwnD7JLGLc3RzWAE1XmWj/9xBbLZ56Th8icSw+w20JOIhN9GM+wupOIq9zuBWNT
-	 drR5Nq0T5eGayFJGFuhlYumWNY8iZGTIDpYKVCsFnDDXNcFr2eAuTpdCzJh9JDdmBn
-	 MejXMUw83evy4ZMA89FTj/GDM7XIooAxM8z9ChGW/cLrGjx47Uy4C4hMa3Rs52tLz3
-	 p/7OJdxWNu9KWTqQJahPw1IO0DeUVr6NqYprig5gUnI2hgKq371f01QruKNr++rFqk
-	 KI6FxmkNBVklchrHuDMWsWl6mXby9hhkhwMYB0uNOiLNY0vk3cN/tnDsO9vhTPz/zN
-	 KSXticXVoOrdQ==
+	b=fdzijFiGBec2aWAi2RLlyL/ClIJddfi5VllIUe6DhAugLGmUI7OOiAbcm4mexjB7a
+	 rWUEmXqNcbEjFn17Mwff0TX9AbbCa+0TKuTzLBM0lQEKcI5Xuyhdp/Zw7K+jGaqCMa
+	 RdIKqzZVEkubXsFvcWiu14rLEw32WMsLTh+egw/qqJzPAM0CT984sb8x8i1ZSYiXHQ
+	 T9lve4swXB6S3QD7OiN3bl7HZ60NPAHY3sJx3r7idGnRqhHeOTjR5LZOkglMplO4MW
+	 m3z7+gJBM/XZeyv4+kvdKqoAUcR+PK4lTXtzUxWiVm0CUZO6FPAWu1Lekdf/I8R4x5
+	 lcKCWXBIS7WdQ==
 From: Jakub Kicinski <kuba@kernel.org>
 To: davem@davemloft.net
 Cc: netdev@vger.kernel.org,
@@ -39,9 +39,9 @@ Cc: netdev@vger.kernel.org,
 	haiyangz@microsoft.com,
 	Jakub Kicinski <kuba@kernel.org>,
 	andrew@lunn.ch
-Subject: [PATCH net 07/10] ethtool: tsinfo: don't pass ERR_PTR to genlmsg_cancel on prepare failure
-Date: Tue, 26 May 2026 08:35:30 -0700
-Message-ID: <20260526153533.2779187-8-kuba@kernel.org>
+Subject: [PATCH net 09/10] ethtool: eeprom: add missing ethnl_ops_begin() / _complete() during fallback
+Date: Tue, 26 May 2026 08:35:32 -0700
+Message-ID: <20260526153533.2779187-10-kuba@kernel.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260526153533.2779187-1-kuba@kernel.org>
 References: <20260526153533.2779187-1-kuba@kernel.org>
@@ -53,42 +53,41 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The goto err label leads to:
+All ethtool driver op calls should be sandwiched between
+ethnl_ops_begin() / ethnl_ops_complete(). In Netlink eeprom code,
+if the paged access failed we fall back to old API, but we
+first call _complete() and the fallback never does its own
+ethnl_ops_begin(). Move the fallback into the _begin() / _complete()
+section.
 
-	genlmsg_cancel(skb, ehdr);
-	return ret;
-
-If ethnl_tsinfo_prepare_dump() failed, it has not started a genlmsg.
-There's nothing to cancel, and passing an error pointer to
-genlmsg_cancel() would cause a crash.
-
-Fixes: b9e3f7dc9ed9 ("net: ethtool: tsinfo: Enhance tsinfo to support several hwtstamp by net topology")
+Fixes: 96d971e307cc ("ethtool: Add fallback to get_module_eeprom from netlink command")
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 ---
 CC: andrew@lunn.ch
 CC: maxime.chevallier@bootlin.com
-CC: kory.maincent@bootlin.com
 ---
- net/ethtool/tsinfo.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ net/ethtool/eeprom.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/net/ethtool/tsinfo.c b/net/ethtool/tsinfo.c
-index f54fe6b662b2..14bf01e3b55c 100644
---- a/net/ethtool/tsinfo.c
-+++ b/net/ethtool/tsinfo.c
-@@ -407,10 +407,8 @@ static int ethnl_tsinfo_dump_one_netdev(struct sk_buff *skb,
- 			continue;
+diff --git a/net/ethtool/eeprom.c b/net/ethtool/eeprom.c
+index a557e3996c85..836316df3092 100644
+--- a/net/ethtool/eeprom.c
++++ b/net/ethtool/eeprom.c
+@@ -141,12 +141,11 @@ static int eeprom_prepare_data(const struct ethnl_req_info *req_base,
+ 	return 0;
  
- 		ehdr = ethnl_tsinfo_prepare_dump(skb, dev, reply_data, cb);
--		if (IS_ERR(ehdr)) {
--			ret = PTR_ERR(ehdr);
--			goto err;
--		}
-+		if (IS_ERR(ehdr))
-+			return PTR_ERR(ehdr);
+ err_ops:
++	if (ret == -EOPNOTSUPP)
++		ret = eeprom_fallback(request, reply);
+ 	ethnl_ops_complete(dev);
+ err_free:
+ 	kfree(page_data.data);
+-
+-	if (ret == -EOPNOTSUPP)
+-		return eeprom_fallback(request, reply);
+ 	return ret;
+ }
  
- 		reply_data->ts_info.phc_qualifier = ctx->pos_phcqualifier;
- 		ret = ops->get_ts_info(dev, &reply_data->ts_info);
 -- 
 2.54.0
 
