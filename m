@@ -1,372 +1,159 @@
-Received: from mx0a-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 019F23DDDA0;
-	Tue, 26 May 2026 10:48:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31C513D16EA
+	for <netdev@vger.kernel.org>; Tue, 26 May 2026 10:49:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779792493; cv=none; b=etFcW8XZiHgZmJANbKNta67zlsCSQd3z6rC8NfY2jL2fWCWFoi4nvg4sheRG2drvMG+Lr63Dw36UGgMEGedqlfG9WQhwmZ017c88L2q+GtctVH/INBFhLIJXEVFdQDlN8Upt/W6tX78ApOhDXno9TUKLbMv74duu64P+EeN6Z9Q=
+	t=1779792580; cv=none; b=o9YkHyjEIjh5R2Po3T1bNqcdkmQXqlO4FfBBX4IawxG14t3kRxn+SLdRhuEj0MaCTdp0/Vc8DEfETM+1jrucFhLyeLdCuFgY8uaY25bla8o/ZD9DgOWdaVW1mKGvi1inOeBFSA1vSr/4zyLsdOUQhaWcqGktvVUVhbrU8YUr4lo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779792493; c=relaxed/simple;
-	bh=SGCwMQKuLkuX0bmXEV17FwKe8LJLci23vksY/j9WnZs=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EJsixScuthnv7C2nWHccSw0H8te6hwGhDUa5n5DZIekZkQoU80crhjkQPDtuQfhKwTkpf1mGDas2uT+0ktYOLdHuOuP+Q7eD/ZesZN2xMdI5HwIrsZCdDDMyc9omUuAytErYVDZTQRowia7fXZEDkGZ+c+HAM/NV6L2uPB0GIQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=YZlId1mu; arc=none smtp.client-ip=67.231.148.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	s=arc-20240116; t=1779792580; c=relaxed/simple;
+	bh=JQ5BrlLA7NRE52ecTfeDwXHuvHRkEmiz2LzsJBj9lv8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=dGtXRx3W008ihSJzQoRJ6dQixMZykTUSBKKP4A4bFKZT0WlMfYG1EMQjC8rhRSUmlcYFKD7QiNtS/7tA7+mNgN7DHct0V7mlrFH+LfmlxgWHYuqUDcCvwf0A9pVZPmGZLc362c7bbiiBrc2iJ9bszkFQHrCOoqTIoRCMCiopngw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZN0FtFXJ; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=V8pQOHMv; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="YZlId1mu"
-Received: from pps.filterd (m0431384.ppops.net [127.0.0.1])
-	by mx0a-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64Q5cmUT1065235;
-	Tue, 26 May 2026 03:47:51 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pfpt0220; bh=uX6HmDRcmBydKl345jjRdrhps
-	xRDZ6maBJgWdNwBsLg=; b=YZlId1mugG/hj5xsr57iFo672pn38IYraXbSY5PNg
-	SVBMoqDCmqtMgdk7ctqLq8I1nIj8UdPjahaqa8L0KW3GCRcicL4WLaMCEH9XJ7ZU
-	JoUVCN+LnYjmIt6eFdVboPK7xSnp5P3eCJpQS/SFowSC8nfKD+8Td28I+d1Efwkh
-	m6UE/ftZYxEGUMa9Nl3WSH/E4Kmj4LTc3AJblA/Vmw8AixmTZEYNm1ehDXyUVePA
-	5+wXmkYVfbKRPe5Rfvw1WCGIZ5gqhI82U+JeNmWylc1KggOnIDAwIR1RIgGV2mRU
-	UL/70TM2gryMpc0muU2o+A6UhM4iZtUs0ICmohQgZcFUA==
-Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
-	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4ec0g6dpjm-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 26 May 2026 03:47:51 -0700 (PDT)
-Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
- DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Tue, 26 May 2026 03:47:50 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
- (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Tue, 26 May 2026 03:47:50 -0700
-Received: from hyd1358.marvell.com (unknown [10.29.37.11])
-	by maili.marvell.com (Postfix) with ESMTP id 61C1C3F7045;
-	Tue, 26 May 2026 03:47:46 -0700 (PDT)
-From: Subbaraya Sundeep <sbhatta@marvell.com>
-To: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
-        <kuba@kernel.org>, <pabeni@redhat.com>, <sgoutham@marvell.com>,
-        <gakula@marvell.com>, <bbhushan2@marvell.com>
-CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        Linu Cherian
-	<lcherian@marvell.com>,
-        Subbaraya Sundeep <sbhatta@marvell.com>
-Subject: [net-next PATCH v6 4/5] octeontx2-af: npa: cn20k: Add debugfs for Halo
-Date: Tue, 26 May 2026 16:17:26 +0530
-Message-ID: <1779792447-5593-5-git-send-email-sbhatta@marvell.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1779792447-5593-1-git-send-email-sbhatta@marvell.com>
-References: <1779792447-5593-1-git-send-email-sbhatta@marvell.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZN0FtFXJ";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="V8pQOHMv"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1779792578;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8Xb91WiXPazwge7GQc97YpLKCGyGlIds3mAgEY7YBag=;
+	b=ZN0FtFXJ707EpvevpD4F4MVJFq3N1lpJQEJcE14r2LbZWsc+F5m31heDt40GZ2IjFtp5IO
+	5yQ+2iVZ64NOgLssFqRBb8UF5utS1eFgYuFbEkgFJ4+WsHEZt2oxM70atBBfuWIQpHfGuI
+	P9Cyua7zJGNDr1I/nRIQt6IfbrWUbzE=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-222-CD6b-n7NN1yrzEc3Ssi1QA-1; Tue, 26 May 2026 06:49:36 -0400
+X-MC-Unique: CD6b-n7NN1yrzEc3Ssi1QA-1
+X-Mimecast-MFC-AGG-ID: CD6b-n7NN1yrzEc3Ssi1QA_1779792575
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-490479c2911so43953415e9.2
+        for <netdev@vger.kernel.org>; Tue, 26 May 2026 03:49:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1779792575; x=1780397375; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=8Xb91WiXPazwge7GQc97YpLKCGyGlIds3mAgEY7YBag=;
+        b=V8pQOHMvGZvMPjcn8dU1zSLhridApTsW8NLudsCkBKUv4sycjzdiWk8m9ly1Lwq1wh
+         EXr8hh0gwqCTntIy4sFULArqYMbOgEPuMmB9BOWirpgoaDZ1BZtQ0950qIHclUg/A2iH
+         qAYM/8DPTjxaCBzf1FFbkix5yyy3efKVyNsfpUi8WXudTUDDyiOAtxeJBO2t1Y9pB/2X
+         nqO1kI89mi30kK06azQar72rEb4E5u2yAzHmewQpLXWVdhE/IQ3Y8Ukzanr2HeSaLyWL
+         ssOh/kpNmqGjHsP26ph2pDhN67FTYkRLW7N2mI2R/o7/YpfCvPO4YeiqCaZyN4YurQZi
+         iO2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779792575; x=1780397375;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=8Xb91WiXPazwge7GQc97YpLKCGyGlIds3mAgEY7YBag=;
+        b=gSnrhRDMV37RJBxID6ZbqKM0OdERYCed6I7ABV7ldhnRoh2JvxGWtM3rV2PifNZEVM
+         yFtLBPcIjl59PqotqZOY2DCES7Pj0XgQR+VRlFiUCYRNRCu9povQFtPlsEJIQ/0P/wPi
+         V5uC6bCcbZuLWAdK0cCz+7DyoKhKAV0TCMEEBkOQqC2DCu4G30hVVZjoD3PLQJb20l4d
+         OnO6g76Yz5klXFr0aM8k6SaUdPeo3w0pj440bDi9VIH4fEpaRPSlU0MqwJTJ0sbeORQZ
+         lNGyWGiwYJlDsCEDT3XsXdnLnqMx51PITVl/STmEZd0ZPY4S12SpXNr+7p1i/uwehfRi
+         MlVg==
+X-Forwarded-Encrypted: i=1; AFNElJ/M314qpfubkl8xcwX67fle8j4JDOZ6me/Wh5ArDllvvPDKimkBcfr2XM6pey8errKPCnr1t8w=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxaQrrhiyWAbGuHLO/db9rf7y1v1DYqXtEaPcwguZb30wFNkO8q
+	UsYkaXz4iFk0Tp+p/8gav0plgvfwU7vsVW4ee+VzHP2AP7Kvz1oeT7uPLo6UA/79wxRgvmN+fM4
+	G6eAbacAQca+RonXrW/PBlk2jcskYFIj5WVqKv4q4purXoj5SvHx6Y/1sRKRPrJtCkA==
+X-Gm-Gg: Acq92OHYn7uXLqTVS3LilyshlVAq76xrUmB/lMErr+tzDpYjDMGg+qDXjvxf/OLOwGx
+	GqCPp/vHcLYPK5cYUlkk1aeGVXHiQPrjRfNr8JkvSRhcw6RRC9jFaBGfc+O8M6fqUuhMhuWN/UM
+	kusWk5kreqAob7TnOfS9QhrD5GkfPKiJyokQpK8yj0Bk4Fr3E6H0UaFcCgimfv6Hm9lTBPPVu5c
+	jC01LFzYctwCpSvE7DCSqB3qTC4vkNbU6q2jeo/2YGYdioJAtgyaaONsSCJf1me838ZxBpDjShB
+	6G4piTo24f2kanlGisaa7Yl3EXDMLkbrP8fWa4tHmzeBCxLA/yBBFaymXzt5Y0RDLAlm+BYCq1Q
+	I9ZLv6vRhTNu7TklZ5Un/K7WXnwjBxhbHy9Fnw5LzEl3scBxCaUadUsvh1w==
+X-Received: by 2002:a05:600c:8b12:b0:490:5191:6e1a with SMTP id 5b1f17b1804b1-490519170d7mr255826025e9.24.1779792575167;
+        Tue, 26 May 2026 03:49:35 -0700 (PDT)
+X-Received: by 2002:a05:600c:8b12:b0:490:5191:6e1a with SMTP id 5b1f17b1804b1-490519170d7mr255825705e9.24.1779792574774;
+        Tue, 26 May 2026 03:49:34 -0700 (PDT)
+Received: from [192.168.88.32] ([212.105.155.152])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4904174a145sm148632185e9.0.2026.05.26.03.49.33
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 26 May 2026 03:49:34 -0700 (PDT)
+Message-ID: <e86545c6-d647-44c3-be72-5390a211b9d4@redhat.com>
+Date: Tue, 26 May 2026 12:49:32 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Authority-Analysis: v=2.4 cv=BK6DalQG c=1 sm=1 tr=0 ts=6a157a57 cx=c_pps
- a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17
- a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
- a=TtqV-g6YmW1Jfm2GSLaY:22 a=M5GUcnROAAAA:8 a=xE7MTFBHVDZtU5icdfMA:9
- a=OBjm3rFKGHvpk9ecZwUJ:22
-X-Proofpoint-GUID: CvMwmKf-IZRJdLsDuCKyIbXg0hJU3m6w
-X-Proofpoint-ORIG-GUID: CvMwmKf-IZRJdLsDuCKyIbXg0hJU3m6w
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTI2MDA5MyBTYWx0ZWRfX0dYlxheeLhzd
- zTGROsjKwad1JUF/6ttxx7PPdwi1RAe1whs+Ae/mb6DeNM3y2EHSu3ZdNAjSB1n4PL3PLqUi8ep
- wc8fVJwcyN7+QUK15UgGiwWet6jcrR+s7MCJg5Zk+6uDfJOOVIF3lfP+UVnF62AK2tSzAYpEuAK
- 2oHCeoobU+Tjo3CTB5hFdXk25BiJGPd0ab6dr8m5mvqpHQOt4cSaklg/zPRld0w8PgXPlhhUT6j
- bHgXBlLb1G+9w1nYUFCFnIKQlBQCo43jyfDSFfnuOFlW8VkV81bKgDDAgH5GOGOFm1glhvtpAVl
- LGCl98I3Br5qiH46jXQA6WF4i7T5flBBCmYUPSyIibnvZZD9obOoPqU9X+8VqDMmyXbc+Iq0gND
- IUTNzK7z/jeKTlV5e5aNYYBB7i6gYtRS/eKNC/l9ud5TDHG9o+jrRgFxM+oU0euz/BLGKKFKJIL
- inVCT3ioVseu4tXGg6w==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-05-26_02,2026-05-26_01,2025-10-01_01
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] net: stmmac: fix RX DMA leak on TX alloc failure
+To: Abid Ali <dev.taqnialabs@gmail.com>,
+ devnull+dev.taqnialabs.gmail.com@kernel.org
+Cc: alexandre.torgue@foss.st.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ mcoquelin.stm32@gmail.com, netdev@vger.kernel.org
+References: <20260522-stmmac-rx-desc-cleanup-v2-1-76e78eb471e1@gmail.com>
+ <20260523121708.564-1-dev.taqnialabs@gmail.com>
+From: Paolo Abeni <pabeni@redhat.com>
+Content-Language: en-US
+In-Reply-To: <20260523121708.564-1-dev.taqnialabs@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Linu Cherian <lcherian@marvell.com>
+On 5/23/26 2:17 PM, Abid Ali wrote:
+>> 	ret = alloc_dma_tx_desc_resources(priv, dma_conf);
+>> +	if (ret)
+>> +		free_dma_rx_desc_resources(priv, dma_conf);
+>>
+>> 	return ret;
+>> }
+> 
+> The sashiko-gemini analysis [1] flagged two issues.
+> 
+> 1) Double-free via XDP path:
+> 
+> stmmac_xdp_set_prog() ignores the return of stmmac_xdp_open(), so
+> if alloc_dma_tx_desc_resources() fails inside that path,
+> rx_q->buf_pool and rx_q->dma_rx are freed for Rx queues.
+> 
+> The interface stays UP, so a later stmmac_release() calls
+> free_dma_desc_resources() on the same freed pointers.
+> 
+> Without this patch, the same failure path leaks RX resources
+> instead. Either way the root cause seems to be stmmac_xdp_set_prog() not
+> handling errors from stmmac_xdp_open().
+> 
+> The reported issue seems to be valid, but I'm not sure why XDP doesn't handle
+> a possible error in reinit in the first place.
+> 
+> 2) NULL deref on partial queue alloc:
+> 
+> If alloc_dma_rx_desc_resources() fails for queue N,
+> e.g. rx_q->page_pool = page_pool_create() fails, buf_pool is NULL.
+> The cleanup free_dma_rx_desc_resources() iterates through all
+> queues and will hit a NULL pointer deref in:
+> 
+> static void stmmac_free_rx_buffer(struct stmmac_priv *priv,
+> 				  struct stmmac_rx_queue *rx_q,
+> 				  int i)
+> {
+> 	struct stmmac_rx_buffer *buf = &rx_q->buf_pool[i];
+> 
+> The same could happen without the patch, and similar risk exists for
+> rx_q->buf_pool, rx_q->dma_rx, and rx_q->dma_erx which are all freed
+> without guards in __free_dma_rx_desc_resources().
+> 
+> I can add the necessary NULL guards in __free_dma_rx_desc_resources()
+> for V3 if necessary.
+My take is following: even if the sashiko reported issues are
+pre-existing, they are so strictly tied to this code path that it makes
+sense to address all of them together (different patches in the same
+series).
 
-Similar to other hardware contexts add debugfs support for
-unified Halo context.
+Also all of the above looks like 'net' material, deserving fixes tag in
+each patch.
 
-Sample output on cn20k::
-/sys/kernel/debug/cn20k/npa # cat halo_ctx
-======halo : 2=======
-W0: Stack base          ffffff790000
-W1: ena                 1
-W1: nat_align           0
-W1: stack_caching       1
-W1: aura drop ena       0
-W1: aura drop           0
-W1: buf_offset          0
-W1: buf_size            32
-W1: ref_cnt_prof                0
-W2: stack_max_pages     13
-W2: stack_pages         11
-W3: bp_0                0
-W3: bp_1                0
-W3: bp_2                0
-
-snip ..
-
-Signed-off-by: Linu Cherian <lcherian@marvell.com>
-Signed-off-by: Subbaraya Sundeep <sbhatta@marvell.com>
----
- .../marvell/octeontx2/af/cn20k/debugfs.c      | 60 ++++++++++++++++
- .../marvell/octeontx2/af/cn20k/debugfs.h      |  2 +
- .../marvell/octeontx2/af/rvu_debugfs.c        | 71 ++++++++++++++++---
- 3 files changed, 125 insertions(+), 8 deletions(-)
-
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/cn20k/debugfs.c b/drivers/net/ethernet/marvell/octeontx2/af/cn20k/debugfs.c
-index 6f13296303cb..22c2bd32188d 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/cn20k/debugfs.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/cn20k/debugfs.c
-@@ -476,3 +476,63 @@ void print_npa_cn20k_pool_ctx(struct seq_file *m,
- 		   pool->thresh_qint_idx, pool->err_qint_idx);
- 	seq_printf(m, "W8: fc_msh_dst\t\t%d\n", pool->fc_msh_dst);
- }
-+
-+void print_npa_cn20k_halo_ctx(struct seq_file *m, struct npa_aq_enq_rsp *rsp)
-+{
-+	struct npa_cn20k_aq_enq_rsp *cn20k_rsp;
-+	struct npa_cn20k_halo_s *halo;
-+
-+	cn20k_rsp = (struct npa_cn20k_aq_enq_rsp *)rsp;
-+	halo = &cn20k_rsp->halo;
-+
-+	seq_printf(m, "W0: Stack base\t\t%llx\n", halo->stack_base);
-+
-+	seq_printf(m, "W1: ena \t\t%d\nW1: nat_align \t\t%d\n",
-+		   halo->ena, halo->nat_align);
-+	seq_printf(m, "W1: stack_caching\t%d\n",
-+		   halo->stack_caching);
-+	seq_printf(m, "W1: aura drop ena\t%d\n", halo->aura_drop_ena);
-+	seq_printf(m, "W1: aura drop\t\t%d\n", halo->aura_drop);
-+	seq_printf(m, "W1: buf_offset\t\t%d\nW1: buf_size\t\t%d\n",
-+		   halo->buf_offset, halo->buf_size);
-+	seq_printf(m, "W1: ref_cnt_prof\t\t%d\n", halo->ref_cnt_prof);
-+	seq_printf(m, "W2: stack_max_pages \t%d\nW2: stack_pages\t\t%d\n",
-+		   halo->stack_max_pages, halo->stack_pages);
-+	seq_printf(m, "W3: bp_0\t\t%d\nW3: bp_1\t\t%d\nW3: bp_2\t\t%d\n",
-+		   halo->bp_0, halo->bp_1, halo->bp_2);
-+	seq_printf(m, "W3: bp_3\t\t%d\nW3: bp_4\t\t%d\nW3: bp_5\t\t%d\n",
-+		   halo->bp_3, halo->bp_4, halo->bp_5);
-+	seq_printf(m, "W3: bp_6\t\t%d\nW3: bp_7\t\t%d\nW3: bp_ena_0\t\t%d\n",
-+		   halo->bp_6, halo->bp_7, halo->bp_ena_0);
-+	seq_printf(m, "W3: bp_ena_1\t\t%d\nW3: bp_ena_2\t\t%d\n",
-+		   halo->bp_ena_1, halo->bp_ena_2);
-+	seq_printf(m, "W3: bp_ena_3\t\t%d\nW3: bp_ena_4\t\t%d\n",
-+		   halo->bp_ena_3, halo->bp_ena_4);
-+	seq_printf(m, "W3: bp_ena_5\t\t%d\nW3: bp_ena_6\t\t%d\n",
-+		   halo->bp_ena_5, halo->bp_ena_6);
-+	seq_printf(m, "W3: bp_ena_7\t\t%d\n", halo->bp_ena_7);
-+	seq_printf(m, "W4: stack_offset\t%d\nW4: shift\t\t%d\nW4: avg_level\t\t%d\n",
-+		   halo->stack_offset, halo->shift, halo->avg_level);
-+	seq_printf(m, "W4: avg_con \t\t%d\nW4: fc_ena\t\t%d\nW4: fc_stype\t\t%d\n",
-+		   halo->avg_con, halo->fc_ena, halo->fc_stype);
-+	seq_printf(m, "W4: fc_hyst_bits\t%d\nW4: fc_up_crossing\t%d\n",
-+		   halo->fc_hyst_bits, halo->fc_up_crossing);
-+	seq_printf(m, "W4: update_time\t\t%d\n", halo->update_time);
-+	seq_printf(m, "W5: fc_addr\t\t%llx\n", halo->fc_addr);
-+	seq_printf(m, "W6: ptr_start\t\t%llx\n", halo->ptr_start);
-+	seq_printf(m, "W7: ptr_end\t\t%llx\n", halo->ptr_end);
-+	seq_printf(m, "W8: bpid_0\t\t%d\n", halo->bpid_0);
-+	seq_printf(m, "W8: err_int \t\t%d\nW8: err_int_ena\t\t%d\n",
-+		   halo->err_int, halo->err_int_ena);
-+	seq_printf(m, "W8: thresh_int\t\t%d\nW8: thresh_int_ena \t%d\n",
-+		   halo->thresh_int, halo->thresh_int_ena);
-+	seq_printf(m, "W8: thresh_up\t\t%d\nW8: thresh_qint_idx\t%d\n",
-+		   halo->thresh_up, halo->thresh_qint_idx);
-+	seq_printf(m, "W8: err_qint_idx \t%d\n", halo->err_qint_idx);
-+	seq_printf(m, "W9: thresh\t\t%llu\n", (u64)halo->thresh);
-+	seq_printf(m, "W9: fc_msh_dst\t\t%d\n", halo->fc_msh_dst);
-+	seq_printf(m, "W9: op_dpc_ena\t\t%d\nW9: op_dpc_set\t\t%d\n",
-+		   halo->op_dpc_ena, halo->op_dpc_set);
-+	seq_printf(m, "W9: stream_ctx\t\t%d\nW9: unified_ctx\t\t%d\n",
-+		   halo->stream_ctx, halo->unified_ctx);
-+}
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/cn20k/debugfs.h b/drivers/net/ethernet/marvell/octeontx2/af/cn20k/debugfs.h
-index 0c5f05883666..7e00c7499e35 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/cn20k/debugfs.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/cn20k/debugfs.h
-@@ -27,5 +27,7 @@ void print_npa_cn20k_aura_ctx(struct seq_file *m,
- 			      struct npa_cn20k_aq_enq_rsp *rsp);
- void print_npa_cn20k_pool_ctx(struct seq_file *m,
- 			      struct npa_cn20k_aq_enq_rsp *rsp);
-+void print_npa_cn20k_halo_ctx(struct seq_file *m,
-+			      struct npa_aq_enq_rsp *rsp);
- 
- #endif
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c
-index fa461489acdd..0ac59103b4a4 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c
-@@ -968,6 +968,9 @@ static void print_npa_qsize(struct seq_file *m, struct rvu_pfvf *pfvf)
- 		seq_printf(m, "Aura count : %d\n", pfvf->aura_ctx->qsize);
- 		seq_printf(m, "Aura context ena/dis bitmap : %*pb\n",
- 			   pfvf->aura_ctx->qsize, pfvf->aura_bmap);
-+		if (pfvf->halo_bmap)
-+			seq_printf(m, "Halo context ena/dis bitmap : %*pb\n",
-+				   pfvf->aura_ctx->qsize, pfvf->halo_bmap);
- 	}
- 
- 	if (!pfvf->pool_ctx) {
-@@ -1195,6 +1198,20 @@ static void print_npa_pool_ctx(struct seq_file *m, struct npa_aq_enq_rsp *rsp)
- 		seq_printf(m, "W8: fc_msh_dst\t\t%d\n", pool->fc_msh_dst);
- }
- 
-+static const char *npa_ctype_str(int ctype)
-+{
-+	switch (ctype) {
-+	case NPA_AQ_CTYPE_AURA:
-+		return "aura";
-+	case NPA_AQ_CTYPE_HALO:
-+		return "halo";
-+	case NPA_AQ_CTYPE_POOL:
-+		return "pool";
-+	default:
-+		return "unknown";
-+	}
-+}
-+
- /* Reads aura/pool's ctx from admin queue */
- static int rvu_dbg_npa_ctx_display(struct seq_file *m, void *unused, int ctype)
- {
-@@ -1211,6 +1228,7 @@ static int rvu_dbg_npa_ctx_display(struct seq_file *m, void *unused, int ctype)
- 
- 	switch (ctype) {
- 	case NPA_AQ_CTYPE_AURA:
-+	case NPA_AQ_CTYPE_HALO:
- 		npalf = rvu->rvu_dbg.npa_aura_ctx.lf;
- 		id = rvu->rvu_dbg.npa_aura_ctx.id;
- 		all = rvu->rvu_dbg.npa_aura_ctx.all;
-@@ -1235,6 +1253,9 @@ static int rvu_dbg_npa_ctx_display(struct seq_file *m, void *unused, int ctype)
- 	} else if (ctype == NPA_AQ_CTYPE_POOL && !pfvf->pool_ctx) {
- 		seq_puts(m, "Pool context is not initialized\n");
- 		return -EINVAL;
-+	} else if (ctype == NPA_AQ_CTYPE_HALO && !pfvf->aura_ctx) {
-+		seq_puts(m, "Halo context is not initialized\n");
-+		return -EINVAL;
- 	}
- 
- 	memset(&aq_req, 0, sizeof(struct npa_aq_enq_req));
-@@ -1244,6 +1265,9 @@ static int rvu_dbg_npa_ctx_display(struct seq_file *m, void *unused, int ctype)
- 	if (ctype == NPA_AQ_CTYPE_AURA) {
- 		max_id = pfvf->aura_ctx->qsize;
- 		print_npa_ctx = print_npa_aura_ctx;
-+	} else if (ctype == NPA_AQ_CTYPE_HALO) {
-+		max_id = pfvf->aura_ctx->qsize;
-+		print_npa_ctx = print_npa_cn20k_halo_ctx;
- 	} else {
- 		max_id = pfvf->pool_ctx->qsize;
- 		print_npa_ctx = print_npa_pool_ctx;
-@@ -1251,8 +1275,7 @@ static int rvu_dbg_npa_ctx_display(struct seq_file *m, void *unused, int ctype)
- 
- 	if (id < 0 || id >= max_id) {
- 		seq_printf(m, "Invalid %s, valid range is 0-%d\n",
--			   (ctype == NPA_AQ_CTYPE_AURA) ? "aura" : "pool",
--			max_id - 1);
-+			   npa_ctype_str(ctype), max_id - 1);
- 		return -EINVAL;
- 	}
- 
-@@ -1265,12 +1288,19 @@ static int rvu_dbg_npa_ctx_display(struct seq_file *m, void *unused, int ctype)
- 		aq_req.aura_id = aura;
- 
- 		/* Skip if queue is uninitialized */
-+		if (ctype == NPA_AQ_CTYPE_AURA &&
-+		    !test_bit(aura, pfvf->aura_bmap))
-+			continue;
-+
-+		if (ctype == NPA_AQ_CTYPE_HALO &&
-+		    !test_bit(aura, pfvf->halo_bmap))
-+			continue;
-+
- 		if (ctype == NPA_AQ_CTYPE_POOL && !test_bit(aura, pfvf->pool_bmap))
- 			continue;
- 
--		seq_printf(m, "======%s : %d=======\n",
--			   (ctype == NPA_AQ_CTYPE_AURA) ? "AURA" : "POOL",
--			aq_req.aura_id);
-+		seq_printf(m, "======%s : %d=======\n", npa_ctype_str(ctype),
-+			   aq_req.aura_id);
- 		rc = rvu_npa_aq_enq_inst(rvu, &aq_req, &rsp);
- 		if (rc) {
- 			seq_puts(m, "Failed to read context\n");
-@@ -1299,6 +1329,12 @@ static int write_npa_ctx(struct rvu *rvu, bool all,
- 			return -EINVAL;
- 		}
- 		max_id = pfvf->aura_ctx->qsize;
-+	} else if (ctype == NPA_AQ_CTYPE_HALO) {
-+		if (!pfvf->aura_ctx) {
-+			dev_warn(rvu->dev, "Halo context is not initialized\n");
-+			return -EINVAL;
-+		}
-+		max_id = pfvf->aura_ctx->qsize;
- 	} else if (ctype == NPA_AQ_CTYPE_POOL) {
- 		if (!pfvf->pool_ctx) {
- 			dev_warn(rvu->dev, "Pool context is not initialized\n");
-@@ -1309,13 +1345,14 @@ static int write_npa_ctx(struct rvu *rvu, bool all,
- 
- 	if (id < 0 || id >= max_id) {
- 		dev_warn(rvu->dev, "Invalid %s, valid range is 0-%d\n",
--			 (ctype == NPA_AQ_CTYPE_AURA) ? "aura" : "pool",
-+			 npa_ctype_str(ctype),
- 			max_id - 1);
- 		return -EINVAL;
- 	}
- 
- 	switch (ctype) {
- 	case NPA_AQ_CTYPE_AURA:
-+	case NPA_AQ_CTYPE_HALO:
- 		rvu->rvu_dbg.npa_aura_ctx.lf = npalf;
- 		rvu->rvu_dbg.npa_aura_ctx.id = id;
- 		rvu->rvu_dbg.npa_aura_ctx.all = all;
-@@ -1374,12 +1411,12 @@ static ssize_t rvu_dbg_npa_ctx_write(struct file *filp,
- 				     const char __user *buffer,
- 				     size_t count, loff_t *ppos, int ctype)
- {
--	char *cmd_buf, *ctype_string = (ctype == NPA_AQ_CTYPE_AURA) ?
--					"aura" : "pool";
-+	const char *ctype_string = npa_ctype_str(ctype);
- 	struct seq_file *seqfp = filp->private_data;
- 	struct rvu *rvu = seqfp->private;
- 	int npalf, id = 0, ret;
- 	bool all = false;
-+	char *cmd_buf;
- 
- 	if ((*ppos != 0) || !count)
- 		return -EINVAL;
-@@ -1417,6 +1454,21 @@ static int rvu_dbg_npa_aura_ctx_display(struct seq_file *filp, void *unused)
- 
- RVU_DEBUG_SEQ_FOPS(npa_aura_ctx, npa_aura_ctx_display, npa_aura_ctx_write);
- 
-+static ssize_t rvu_dbg_npa_halo_ctx_write(struct file *filp,
-+					  const char __user *buffer,
-+					  size_t count, loff_t *ppos)
-+{
-+	return rvu_dbg_npa_ctx_write(filp, buffer, count, ppos,
-+				     NPA_AQ_CTYPE_HALO);
-+}
-+
-+static int rvu_dbg_npa_halo_ctx_display(struct seq_file *filp, void *unused)
-+{
-+	return rvu_dbg_npa_ctx_display(filp, unused, NPA_AQ_CTYPE_HALO);
-+}
-+
-+RVU_DEBUG_SEQ_FOPS(npa_halo_ctx, npa_halo_ctx_display, npa_halo_ctx_write);
-+
- static ssize_t rvu_dbg_npa_pool_ctx_write(struct file *filp,
- 					  const char __user *buffer,
- 					  size_t count, loff_t *ppos)
-@@ -2798,6 +2850,9 @@ static void rvu_dbg_npa_init(struct rvu *rvu)
- 			    &rvu_dbg_npa_qsize_fops);
- 	debugfs_create_file("aura_ctx", 0600, rvu->rvu_dbg.npa, rvu,
- 			    &rvu_dbg_npa_aura_ctx_fops);
-+	if (is_cn20k(rvu->pdev))
-+		debugfs_create_file("halo_ctx", 0600, rvu->rvu_dbg.npa, rvu,
-+				    &rvu_dbg_npa_halo_ctx_fops);
- 	debugfs_create_file("pool_ctx", 0600, rvu->rvu_dbg.npa, rvu,
- 			    &rvu_dbg_npa_pool_ctx_fops);
- 
--- 
-2.48.1
+/P
 
