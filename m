@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CD663C3795;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 467B83C37B4;
 	Tue, 26 May 2026 21:52:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779832340; cv=none; b=uL6pEfGg0pI5IO/Yvv6L9mSnTUj8kEEBnaTEYmavY2aEnPCWHL/0Xczr22dgL4NiudRTqGFtEjJSvyQaoKcZuFGNQD3sFaQAy4XjkGbtAYNl212YvWoW8duuWlxgxUt+cl26Flet9FaW9h04aSo/m00hS2fcd6VRMK3DQJd1JQI=
+	t=1779832340; cv=none; b=eweDJDZRPppX9ieWe0xt7qaU52/nWrfvCquwpU7XTrpWVfM2l8FvgeWW6IRW3/C4zi/eDMaVqFzinDoBWeRtWMGm8bGq4O2Ix+kGjgSdMOb59kpzwCr3Nql6cB83TGZdvhxjXHf7iLenCcQPyg7m2ndapy3U4eGIolieLNgVEn4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1779832340; c=relaxed/simple;
-	bh=1c9eoilvDt8KsBuPqAsdumfD0Ru05DaX3VNSMpKYIhg=;
+	bh=+q+36NxgtETrUBoFeSMXCRVVSS2rQ61Hb75r4jxKEW8=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=O3WLLxlt1ONZnP7X7EFuUssTtirdHOFb3VZ54ddeYAgLfoKFRvrTSiojh2+5/hFJo0veF6Dfc/BLuTweOsZXuc9LDwl3wBjorumTjWOhbLg4BbV2ZwYR9QxbZFaXnjsGlAyaJ4Q9XkDViS3pzibRKIJ/UO1VnpMGq/Phd79tm0M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dTpWH8+R; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=YJndL0I+H+mSujfUvvCZOKJ9CMH3J/wdySOsJFJZ+8ipSH2m5CcA21lvS96DlHR7ReffbGmO08aXMUvgs/scxGZ+a58nkHL9y4nq3uSVT+EhesUtztFH6E8KBmw1pyOItckKhtFDAngGJO0YxvsYm9F0/StiA18+g8SXGXgU/V8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qW9ary2p; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dTpWH8+R"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id E274EC2BCFF;
-	Tue, 26 May 2026 21:52:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qW9ary2p"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 1AC3CC2BCFB;
+	Tue, 26 May 2026 21:52:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1779832340;
-	bh=1c9eoilvDt8KsBuPqAsdumfD0Ru05DaX3VNSMpKYIhg=;
+	bh=+q+36NxgtETrUBoFeSMXCRVVSS2rQ61Hb75r4jxKEW8=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=dTpWH8+RVe+v1hyJNRb7nqOQ5JG22Oa5lfzDd3lKnm9viR9ny/99xrQvYmMu5qI7X
-	 Sj26rAMWJYqZBLBI91SW5jUsRJxbukbeDHr5rCpBktoXa01/NzGPUOdIgDHORpKGqI
-	 nhTr2gNtwndMXgo9UtXumdXi7qLGZysvNy+AWjTbzwobgZMdpmPDCCrEyABZ0RDO+r
-	 URId+K2dYk32bXTSXmqkiMwiD9YxewWwkao0eCwsoYwNJAzkWMAuTuz31a7MdntamF
-	 zxdbz9xfJPo9zl4pF/4bFJk2f1hN5Up2sWZNDJgP9KuPSwj02r6ATD3GJiA5uaMvvv
-	 Gw7Ea/sswPD8A==
+	b=qW9ary2ppRzddgsH/neVurBcDbZ1eXXaFnUIzhQ5o2yxx9tbGCr/CELiP3b6qYKuK
+	 jPK2PgX28fA8vFuzMJUZtkKZiBFu57V66lANrfJm2me+mVZ5E/VWF+BuzPwFaiB1OR
+	 n9jOc0uE+wIuODf/IY/XAgHdJVKXv7vBN933GUn3TfW3/ytcNBOj9NP7Im5lZk5lns
+	 WIXclLhyTmx2xyaVwzNB68fH9s9jBknfGegGfwM3xn0kAtzPYVAQP8dBVGuQSqidqU
+	 dTvBDcKANG3LdV5tZ2wZhDDH735nBF+T2fkClXw6uhXfqkpc/VKwhphHdrbrJkmLHb
+	 D262wHsxQnxtw==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D7D57CD5BD5;
-	Tue, 26 May 2026 21:52:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 12CF4CD5BD2;
+	Tue, 26 May 2026 21:52:20 +0000 (UTC)
 From: Ciprian Regus via B4 Relay <devnull+ciprian.regus.analog.com@kernel.org>
-Date: Wed, 27 May 2026 00:51:50 +0300
-Subject: [PATCH net-next v2 05/10] net: ethernet: oa_tc6: Export standard
- defined registers
+Date: Wed, 27 May 2026 00:51:52 +0300
+Subject: [PATCH net-next v2 07/10] net: phy: add generic helpers for direct
+ C45 MMD access
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260527-adin1140-driver-v2-5-37e5c8d4e0a0@analog.com>
+Message-Id: <20260527-adin1140-driver-v2-7-37e5c8d4e0a0@analog.com>
 References: <20260527-adin1140-driver-v2-0-37e5c8d4e0a0@analog.com>
 In-Reply-To: <20260527-adin1140-driver-v2-0-37e5c8d4e0a0@analog.com>
 To: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>, 
@@ -58,11 +58,11 @@ Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-doc@vger.kernel.org, devicetree@vger.kernel.org, 
  Ciprian Regus <ciprian.regus@analog.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1779832338; l=8221;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1779832338; l=2612;
  i=ciprian.regus@analog.com; s=20260330; h=from:subject:message-id;
- bh=aV+GHXseVDM4Wf9bOjXPodLR5uFqPEOvaLMDmeSDI7Q=;
- b=gKWWUfnkaFEOFzYCAtZE5IFL012ol8G3ELyBUw1cUNXt2vT3uUCPd3aSJKQHdYJlvUjQVTmFw
- qTrYHkXey+XDM+lZbPKLV2au6sKeX6grm+457rUzn/+O957tvRvAhTS
+ bh=7mroT6JJ6YFYiL9jDdwaD4TEYFyc1gd5zGLfb5xFPLw=;
+ b=WOSYYZ/LEUut3iSGgtDq/bazAuPqPWvCh5EO0TnO4VdZL/I4gLYNqSQAV0BeE8SjJcdAGJOX6
+ gzT62vGD9AODbssnyXUzsiEF2L50sYnDUesiJA054sz+mRNvdYwPGNA
 X-Developer-Key: i=ciprian.regus@analog.com; a=ed25519;
  pk=8WoNhI0kQcQUl8YqJO5ZevROYk9HP8lOIeIgIYgjfbc=
 X-Endpoint-Received: by B4 Relay for ciprian.regus@analog.com/20260330 with
@@ -72,10 +72,14 @@ Reply-To: ciprian.regus@analog.com
 
 From: Ciprian Regus <ciprian.regus@analog.com>
 
-Move defines for standard Open Alliance TC6 register addresses and
-subfields in the oa_tc6's header and add entries for the PHYID and
-CONFIG2. As such, other ethernet drivers that rely on oa_tc6 can use
-them directly.
+Some PHYs support direct C45 register access but not C22 indirect MMD
+access (registers 0xD and 0xE). When discovered via C22, phylib routes
+MMD access through the indirect path, which won't work on these
+devices.
+
+Add genphy_read_mmd_c45() and genphy_write_mmd_c45() as read_mmd/
+write_mmd callbacks that bypass the C22 indirect path and use the bus
+C45 accessors directly.
 
 Signed-off-by: Ciprian Regus <ciprian.regus@analog.com>
 
@@ -83,228 +87,60 @@ Signed-off-by: Ciprian Regus <ciprian.regus@analog.com>
 v2 changelog:
  - New patch
 ---
- drivers/net/ethernet/oa_tc6.c | 74 +++++++++++--------------------------------
- include/linux/oa_tc6.h        | 44 +++++++++++++++++++++++++
- 2 files changed, 62 insertions(+), 56 deletions(-)
+ drivers/net/phy/phy_device.c | 25 +++++++++++++++++++++++++
+ include/linux/phy.h          |  3 +++
+ 2 files changed, 28 insertions(+)
 
-diff --git a/drivers/net/ethernet/oa_tc6.c b/drivers/net/ethernet/oa_tc6.c
-index 4a1fd9fd75ab..904bd790159d 100644
---- a/drivers/net/ethernet/oa_tc6.c
-+++ b/drivers/net/ethernet/oa_tc6.c
-@@ -11,45 +11,6 @@
- #include <linux/phy.h>
- #include <linux/oa_tc6.h>
+diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
+index 3370eb822017..d33d096e700d 100644
+--- a/drivers/net/phy/phy_device.c
++++ b/drivers/net/phy/phy_device.c
+@@ -2764,6 +2764,31 @@ int genphy_read_abilities(struct phy_device *phydev)
+ }
+ EXPORT_SYMBOL(genphy_read_abilities);
  
--/* OPEN Alliance TC6 registers */
--/* Standard Capabilities Register */
--#define OA_TC6_REG_STDCAP			0x0002
--#define STDCAP_DIRECT_PHY_REG_ACCESS		BIT(8)
--
--/* Reset Control and Status Register */
--#define OA_TC6_REG_RESET			0x0003
--#define RESET_SWRESET				BIT(0)	/* Software Reset */
--
--/* Configuration Register #0 */
--#define OA_TC6_REG_CONFIG0			0x0004
--#define CONFIG0_SYNC				BIT(15)
--#define CONFIG0_ZARFE_ENABLE			BIT(12)
--#define CONFIG0_PROTE				BIT(5)
--
--/* Status Register #0 */
--#define OA_TC6_REG_STATUS0			0x0008
--#define STATUS0_RESETC				BIT(6)	/* Reset Complete */
--#define STATUS0_HEADER_ERROR			BIT(5)
--#define STATUS0_LOSS_OF_FRAME_ERROR		BIT(4)
--#define STATUS0_RX_BUFFER_OVERFLOW_ERROR	BIT(3)
--#define STATUS0_TX_PROTOCOL_ERROR		BIT(0)
--
--/* Buffer Status Register */
--#define OA_TC6_REG_BUFFER_STATUS		0x000B
--#define BUFFER_STATUS_TX_CREDITS_AVAILABLE	GENMASK(15, 8)
--#define BUFFER_STATUS_RX_CHUNKS_AVAILABLE	GENMASK(7, 0)
--
--/* Interrupt Mask Register #0 */
--#define OA_TC6_REG_INT_MASK0			0x000C
--#define INT_MASK0_HEADER_ERR_MASK		BIT(5)
--#define INT_MASK0_LOSS_OF_FRAME_ERR_MASK	BIT(4)
--#define INT_MASK0_RX_BUFFER_OVERFLOW_ERR_MASK	BIT(3)
--#define INT_MASK0_TX_PROTOCOL_ERR_MASK		BIT(0)
--
--/* PHY Clause 22 registers base address and mask */
--#define OA_TC6_PHY_STD_REG_ADDR_BASE		0xFF00
--#define OA_TC6_PHY_STD_REG_ADDR_MASK		0x1F
--
- /* Control command header */
- #define OA_TC6_CTRL_HEADER_DATA_NOT_CTRL	BIT(31)
- #define OA_TC6_CTRL_HEADER_WRITE_NOT_READ	BIT(29)
-@@ -445,7 +406,7 @@ static int oa_tc6_check_phy_reg_direct_access_capability(struct oa_tc6 *tc6)
- 	if (ret)
- 		return ret;
- 
--	if (!(regval & STDCAP_DIRECT_PHY_REG_ACCESS))
-+	if (!(regval & OA_TC6_STDCAP_DIRECT_PHY_REG_ACCESS))
- 		return -ENODEV;
- 
- 	return 0;
-@@ -646,7 +607,7 @@ static int oa_tc6_read_status0(struct oa_tc6 *tc6)
- 
- static int oa_tc6_sw_reset_macphy(struct oa_tc6 *tc6)
++/* Some PHYs support direct C45 register access but not C22 indirect
++ * MMD access (registers 13 and 14). When discovered via C22, phylib
++ * routes MMD access through the indirect path, which won't work on
++ * these devices. These helpers bypass indirect access and use the bus
++ * C45 accessors directly.
++ */
++int genphy_read_mmd_c45(struct phy_device *phydev, int devnum, u16 regnum)
++{
++	struct mii_bus *bus = phydev->mdio.bus;
++	int addr = phydev->mdio.addr;
++
++	return __mdiobus_c45_read(bus, addr, devnum, regnum);
++}
++EXPORT_SYMBOL(genphy_read_mmd_c45);
++
++int genphy_write_mmd_c45(struct phy_device *phydev, int devnum, u16 regnum,
++			 u16 val)
++{
++	struct mii_bus *bus = phydev->mdio.bus;
++	int addr = phydev->mdio.addr;
++
++	return __mdiobus_c45_write(bus, addr, devnum, regnum, val);
++}
++EXPORT_SYMBOL(genphy_write_mmd_c45);
++
+ /* This is used for the phy device which doesn't support the MMD extended
+  * register access, but it does have side effect when we are trying to access
+  * the MMD register via indirect method.
+diff --git a/include/linux/phy.h b/include/linux/phy.h
+index 199a7aaa341b..432d44188dbc 100644
+--- a/include/linux/phy.h
++++ b/include/linux/phy.h
+@@ -2297,6 +2297,9 @@ static inline int genphy_no_config_intr(struct phy_device *phydev)
  {
--	u32 regval = RESET_SWRESET;
-+	u32 regval = OA_TC6_RESET_SWRESET;
- 	int ret;
- 
- 	ret = oa_tc6_write_register(tc6, OA_TC6_REG_RESET, regval);
-@@ -655,7 +616,7 @@ static int oa_tc6_sw_reset_macphy(struct oa_tc6 *tc6)
- 
- 	/* Poll for soft reset complete for every 1ms until 1s timeout */
- 	ret = readx_poll_timeout(oa_tc6_read_status0, tc6, regval,
--				 regval & STATUS0_RESETC,
-+				 regval & OA_TC6_STATUS0_RESETC,
- 				 STATUS0_RESETC_POLL_DELAY,
- 				 STATUS0_RESETC_POLL_TIMEOUT);
- 	if (ret)
-@@ -674,10 +635,10 @@ static int oa_tc6_unmask_macphy_error_interrupts(struct oa_tc6 *tc6)
- 	if (ret)
- 		return ret;
- 
--	regval &= ~(INT_MASK0_TX_PROTOCOL_ERR_MASK |
--		    INT_MASK0_RX_BUFFER_OVERFLOW_ERR_MASK |
--		    INT_MASK0_LOSS_OF_FRAME_ERR_MASK |
--		    INT_MASK0_HEADER_ERR_MASK);
-+	regval &= ~(OA_TC6_INT_MASK0_TX_PROTOCOL_ERR_MASK |
-+		    OA_TC6_INT_MASK0_RX_BUFFER_OVERFLOW_ERR_MASK |
-+		    OA_TC6_INT_MASK0_LOSS_OF_FRAME_ERR_MASK |
-+		    OA_TC6_INT_MASK0_HEADER_ERR_MASK);
- 
- 	return oa_tc6_write_register(tc6, OA_TC6_REG_INT_MASK0, regval);
- }
-@@ -692,7 +653,7 @@ static int oa_tc6_enable_data_transfer(struct oa_tc6 *tc6)
- 		return ret;
- 
- 	/* Enable configuration synchronization for data transfer */
--	value |= CONFIG0_SYNC;
-+	value |= OA_TC6_CONFIG0_SYNC;
- 
- 	return oa_tc6_write_register(tc6, OA_TC6_REG_CONFIG0, value);
- }
-@@ -735,25 +696,25 @@ static int oa_tc6_process_extended_status(struct oa_tc6 *tc6)
- 		return ret;
- 	}
- 
--	if (FIELD_GET(STATUS0_RX_BUFFER_OVERFLOW_ERROR, value)) {
-+	if (FIELD_GET(OA_TC6_STATUS0_RX_BUFFER_OVERFLOW_ERROR, value)) {
- 		tc6->rx_buf_overflow = true;
- 		oa_tc6_cleanup_ongoing_rx_skb(tc6);
- 		net_err_ratelimited("%s: Receive buffer overflow error\n",
- 				    tc6->netdev->name);
- 		return -EAGAIN;
- 	}
--	if (FIELD_GET(STATUS0_TX_PROTOCOL_ERROR, value)) {
-+	if (FIELD_GET(OA_TC6_STATUS0_TX_PROTOCOL_ERROR, value)) {
- 		netdev_err(tc6->netdev, "Transmit protocol error\n");
- 		return -ENODEV;
- 	}
- 	/* TODO: Currently loss of frame and header errors are treated as
- 	 * non-recoverable errors. They will be handled in the next version.
- 	 */
--	if (FIELD_GET(STATUS0_LOSS_OF_FRAME_ERROR, value)) {
-+	if (FIELD_GET(OA_TC6_STATUS0_LOSS_OF_FRAME_ERROR, value)) {
- 		netdev_err(tc6->netdev, "Loss of frame error\n");
- 		return -ENODEV;
- 	}
--	if (FIELD_GET(STATUS0_HEADER_ERROR, value)) {
-+	if (FIELD_GET(OA_TC6_STATUS0_HEADER_ERROR, value)) {
- 		netdev_err(tc6->netdev, "Header error\n");
- 		return -ENODEV;
- 	}
-@@ -1189,9 +1150,10 @@ static int oa_tc6_update_buffer_status_from_register(struct oa_tc6 *tc6)
- 	if (ret)
- 		return ret;
- 
--	tc6->tx_credits = FIELD_GET(BUFFER_STATUS_TX_CREDITS_AVAILABLE, value);
--	tc6->rx_chunks_available = FIELD_GET(BUFFER_STATUS_RX_CHUNKS_AVAILABLE,
--					     value);
-+	tc6->tx_credits = FIELD_GET(OA_TC6_BUFFER_STATUS_TX_CREDITS_AVAILABLE,
-+				    value);
-+	tc6->rx_chunks_available =
-+		FIELD_GET(OA_TC6_BUFFER_STATUS_RX_CHUNKS_AVAILABLE, value);
- 
  	return 0;
  }
-@@ -1231,7 +1193,7 @@ int oa_tc6_zero_align_receive_frame_enable(struct oa_tc6 *tc6)
- 		return ret;
- 
- 	/* Set Zero-Align Receive Frame Enable */
--	regval |= CONFIG0_ZARFE_ENABLE;
-+	regval |= OA_TC6_CONFIG0_ZARFE_ENABLE;
- 
- 	return oa_tc6_write_register(tc6, OA_TC6_REG_CONFIG0, regval);
- }
-@@ -1279,7 +1241,7 @@ static int oa_tc6_check_ctrl_protection(struct oa_tc6 *tc6)
- 	if (ret)
- 		return ret;
- 
--	tc6->prot_ctrl = FIELD_GET(CONFIG0_PROTE, regval);
-+	tc6->prot_ctrl = FIELD_GET(OA_TC6_CONFIG0_PROTE, regval);
- 
- 	return 0;
- }
-diff --git a/include/linux/oa_tc6.h b/include/linux/oa_tc6.h
-index 95e041d7d77b..ad6f17218603 100644
---- a/include/linux/oa_tc6.h
-+++ b/include/linux/oa_tc6.h
-@@ -10,6 +10,50 @@
- #include <linux/etherdevice.h>
- #include <linux/spi/spi.h>
- 
-+/* OPEN Alliance TC6 registers */
-+
-+#define OA_TC6_REG_PHYID			0x0001
-+
-+/* Standard Capabilities Register */
-+#define OA_TC6_REG_STDCAP			0x0002
-+#define OA_TC6_STDCAP_DIRECT_PHY_REG_ACCESS	BIT(8)
-+
-+/* Reset Control and Status Register */
-+#define OA_TC6_REG_RESET			0x0003
-+#define OA_TC6_RESET_SWRESET			BIT(0)	/* Software Reset */
-+
-+/* Configuration Register #0 */
-+#define OA_TC6_REG_CONFIG0			0x0004
-+#define OA_TC6_CONFIG0_SYNC			BIT(15)
-+#define OA_TC6_CONFIG0_ZARFE_ENABLE		BIT(12)
-+#define OA_TC6_CONFIG0_PROTE			BIT(5)
-+
-+#define OA_TC6_REG_CONFIG2			0x0006
-+
-+/* Status Register #0 */
-+#define OA_TC6_REG_STATUS0			0x0008
-+#define OA_TC6_STATUS0_RESETC			BIT(6)	/* Reset Complete */
-+#define OA_TC6_STATUS0_HEADER_ERROR		BIT(5)
-+#define OA_TC6_STATUS0_LOSS_OF_FRAME_ERROR	BIT(4)
-+#define OA_TC6_STATUS0_RX_BUFFER_OVERFLOW_ERROR	BIT(3)
-+#define OA_TC6_STATUS0_TX_PROTOCOL_ERROR	BIT(0)
-+
-+/* Buffer Status Register */
-+#define OA_TC6_REG_BUFFER_STATUS			0x000B
-+#define OA_TC6_BUFFER_STATUS_TX_CREDITS_AVAILABLE	GENMASK(15, 8)
-+#define OA_TC6_BUFFER_STATUS_RX_CHUNKS_AVAILABLE	GENMASK(7, 0)
-+
-+/* Interrupt Mask Register #0 */
-+#define OA_TC6_REG_INT_MASK0				0x000C
-+#define OA_TC6_INT_MASK0_HEADER_ERR_MASK		BIT(5)
-+#define OA_TC6_INT_MASK0_LOSS_OF_FRAME_ERR_MASK		BIT(4)
-+#define OA_TC6_INT_MASK0_RX_BUFFER_OVERFLOW_ERR_MASK	BIT(3)
-+#define OA_TC6_INT_MASK0_TX_PROTOCOL_ERR_MASK		BIT(0)
-+
-+/* PHY Clause 22 registers base address and mask */
-+#define OA_TC6_PHY_STD_REG_ADDR_BASE		0xFF00
-+#define OA_TC6_PHY_STD_REG_ADDR_MASK		0x1F
-+
- struct oa_tc6;
- 
- enum oa_tc6_quirk_flag {
++int genphy_read_mmd_c45(struct phy_device *phydev, int devnum, u16 regnum);
++int genphy_write_mmd_c45(struct phy_device *phydev, int devnum, u16 regnum,
++			 u16 val);
+ int genphy_read_mmd_unsupported(struct phy_device *phdev, int devad,
+ 				u16 regnum);
+ int genphy_write_mmd_unsupported(struct phy_device *phdev, int devnum,
 
 -- 
 2.43.0
