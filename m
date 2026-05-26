@@ -1,93 +1,87 @@
-Received: from mail-43166.protonmail.ch (mail-43166.protonmail.ch [185.70.43.166])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08057211A14
-	for <netdev@vger.kernel.org>; Tue, 26 May 2026 23:05:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.166
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF5613C4B86;
+	Tue, 26 May 2026 23:11:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779836712; cv=none; b=X+YBDTd7p1pUX8Ws6UP/usWUyr4p/zbEhUnlEpI5c3oHtlGz5ImK6LRxMzWB6Fru+ZpWXwXuf/aEydYzQmu55WxMPORFDVSVSGOkSeKoIqMIjcZ3jlRXPov9ThVddQsnpD37ffXjFuCjEeQxmdUr+rCm79S3cQjqZScnEOdTEjs=
+	t=1779837063; cv=none; b=hN/VdOcrWbhq0vaNw/jn/AloMr14X1OTbu0EwrNtAO/r9wwpC0x6lxThFJ13Y1gguy3dKt2XcSfMig9UayA6vQtrLqtCOfMz1quZ/ACOkrcKRo6GcXjXHYuHdJ58iq3RvhJou5rYT8JtplMtb5DmwIhnVIo98cMyGqCXNuc50Uc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779836712; c=relaxed/simple;
-	bh=UVNiu7k1ZLaRZ08/CWaUu8pz5M/OH/d8mtcOhbJtVIQ=;
-	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=ILhqJ/jmzVKppOcZhjO46lMhQGrgsc+pATBscg3Hew0dXDH4cTx/txA8rpmpg7uRJ5KKw/VU9i+YsYLCod99BI164zBCqUo+QeaUfr9WgCHmFH7XI+1QQb9VveliVHNQQ0XFM7xJnbe0Vj0RvEBh/Dlft5A5yrUE1RhEiTpu3GA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=qm2rlLWt; arc=none smtp.client-ip=185.70.43.166
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
+	s=arc-20240116; t=1779837063; c=relaxed/simple;
+	bh=bc6+1BBrKtJ+ow8zT5hzg4AJG9zCu5/Qd7LFR0Jmlho=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=YtiKcX4wxnM/JMBQB800wnPlDip0UuTkjIYcw0oEbuoiAqTWN4TOXIiaRPIjRnEKR7VjRESaCgzhrzIegyIFZ1igZawdbJcatfNQ+oXFuhRVVeKO7Ku7dzKSoyoK9Wg55575p4FvkKsM/9g5Xi2Qzbn1XMyp2WpJEYIte4/39no=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PuQyOPGZ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="qm2rlLWt"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-	s=protonmail3; t=1779836703; x=1780095903;
-	bh=XSmAhcXAbOo7ZIzWDZmuQSZ4sxS7qpz2n1lYbEwGnuM=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=qm2rlLWteNwipFntR0bMd/RNT5fAzddyPhleGvQWfNN6cNY46mcrQD3/rEt/odK6e
-	 up9Qb+hM8tXR9Ke5W9p22xmlK5BtJIBXCalYIQkPKmg3Ztr+VfVdTcFIkfv+3tDuTE
-	 kyd7YmJKuvf1R6ZMaNnh5VYD5nSi4wnO/cll3J+PoTwcZagWDEy+2B1qXkhcaLLc8m
-	 K3okcKn5xTZg8Wwq/wo5XI2HoLrkL0o7RWeMsXUEL+tWU8yZf3k5Q4+P+rkHAs++uI
-	 +eOztUrmXdxJfxKZDTDxn6/Xme/4h5HXh6lgLUgrSIBog9IRUyZT75g2/GSRZi2Bke
-	 MuHbrVf2yP7QA==
-Date: Tue, 26 May 2026 23:04:56 +0000
-To: Donald Hunter <donald.hunter@gmail.com>, Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org
-From: "Remy D. Farley" <one-d-wide@protonmail.com>
-Cc: "Remy D. Farley" <one-d-wide@protonmail.com>
-Subject: [PATCH net-next v2] doc/netlink: rt-link: fix binary attributes marked as strings
-Message-ID: <20260526230321.594068-1-one-d-wide@protonmail.com>
-Feedback-ID: 59017272:user:proton
-X-Pm-Message-ID: de6f9c75c8cfe3a4c6d7713ab7a65ed8a32671e9
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PuQyOPGZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D076A1F000E9;
+	Tue, 26 May 2026 23:11:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779837062;
+	bh=AzggQS+B8+GNoAyc/brbiV6G8bezGg+0C+i59qC/4LY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=PuQyOPGZJ5praIkU9vszxj9Wl8ds06s6StGnfA2raglzdxYtU0SV5xSrC91Hrh1Fp
+	 0XSolYs8ROLVWutxEBXi4C0oTjneLrT+zQVbTnl8QEVSf7B5VEHMoTzgzSHkoVYQc4
+	 9r3IsaxrIGGI6HS3+191CSTAU35Dm6m54agmdBQZ7Ev5h2rR4lNzuKwQcfdAIXuKQb
+	 zcs/1GbKpUl4YsKktIlgZ5ftOnohApxhPNxGeksa6cHv74dBGXlECbCOvtsP36IJnR
+	 dvMP6Si0wzzFQA1c3Zv74GrtOr8Qo2P1Fdo7EjncU2uNTjrSiHpqR3Cxbw8ZssCvxF
+	 CaC8sWbps67BA==
+Date: Tue, 26 May 2026 16:11:01 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Jiayuan Chen <jiayuan.chen@linux.dev>
+Cc: Christopher Lusk <clusk@northecho.dev>, John Fastabend
+ <john.fastabend@gmail.com>, Sabrina Dubroca <sd@queasysnail.net>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo
+ Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Alexei
+ Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ netdev@vger.kernel.org, bpf@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH net v3] net: tls: use sync AEAD for sk_msg BPF sockets
+Message-ID: <20260526161101.691d4cb7@kernel.org>
+In-Reply-To: <d92bc603-e345-4dee-9ae9-6ad45e4e6642@linux.dev>
+References: <20260526025154.60607-1-clusk@northecho.dev>
+	<d92bc603-e345-4dee-9ae9-6ad45e4e6642@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-These link-attrs attributes were previously marked as strings:
+On Tue, 26 May 2026 14:44:24 +0800 Jiayuan Chen wrote:
+> If async_capable is set to 1, the zerocopy path in tls_sw_sendmsg() is 
+> skipped.
+> Unfortunately ktls with bpf_msg_pop_data() does not work correctly under 
+> this
+> copy path.
+> 
+> tls_clone_plaintext_msg() aliases msg_pl onto msg_en's plaintext area 
+> (in-place encryption).
+> 
+> BPF runs bpf_msg_pop_data(msg, 0, 2). This shifts msg_pl's SG entry 
+> forward by 2 bytes.
+> The two SGs now point to the same page at different offsets. Physical 
+> memory overlaps but the start of
+> address differ.
 
-- wireless - struct iw_event
-- protinfo - a nest of ifla6-attrs or linkinfo-brport-attrs
-- cost, priority - unused
+Ugh, do you mean that the memcopy path is broken? There are other
+conditions under which we may fall into it than just !async_capable :(
+Small send with MSG_MORE is probably the easiest?
 
-Signed-off-by: Remy D. Farley <one-d-wide@protonmail.com>
----
-v2: Added SoB
+So we need to fix that one way or the other.
 
- Documentation/netlink/specs/rt-link.yaml | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+> I think selecting a sync provider via mask = CRYPTO_ALG_ASYNC is 
+> sufficient to
+> remove the -EINPROGRESS return path.
+> 
+> May be time to remove skmsg from ktls? (disable by default first, 
+> re-enable via a new ktls module_param?)
 
-diff --git a/Documentation/netlink/specs/rt-link.yaml b/Documentation/netli=
-nk/specs/rt-link.yaml
-index 79c89f204..6b8d5af41 100644
---- a/Documentation/netlink/specs/rt-link.yaml
-+++ b/Documentation/netlink/specs/rt-link.yaml
-@@ -880,19 +880,21 @@ attribute-sets:
-         struct: rtnl-link-stats
-       -
-         name: cost
--        type: string
-+        type: binary
-       -
-         name: priority
--        type: string
-+        type: binary
-       -
-         name: master
-         type: u32
-       -
-         name: wireless
--        type: string
-+        type: binary
-+        doc: struct iw_event
-       -
-         name: protinfo
--        type: string
-+        type: binary
-+        doc: A nest of ifla6-attrs or linkinfo-brport-attrs
-       -
-         name: txqlen
-         type: u32
---=20
-2.51.2
+Yes, we asked John F off-list to get his attention and I think there's
+only a vague plan to start using kTLS + sockmap, no current user
+(sorry if I misread / misremembered).
 
-
+module params aren't a great API. If we want to deprecate it let's just
+remove the integration in net-next. You have my vote..
