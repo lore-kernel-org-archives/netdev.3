@@ -1,172 +1,84 @@
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+Received: from mail-qt1-f201.google.com (mail-qt1-f201.google.com [209.85.160.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B053D3B4423
-	for <netdev@vger.kernel.org>; Tue, 26 May 2026 14:50:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F7EA282F03
+	for <netdev@vger.kernel.org>; Tue, 26 May 2026 14:55:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779807057; cv=none; b=QNxR9UR28/L5KMKAb//PITclI/GZhN54V7oDCddCD9WpnglpynZeQUI4RQbPTbqKk4J17/GiNkd8C0DO4UCvuER/ttgj8KDWKj6rJ3uSjJir1qLXTq4JonW0tKUkYfynR+q27GMsInN0fmeBETKrmNNKDCesmgg0cvkgxqrZOCg=
+	t=1779807333; cv=none; b=DdcFYExOnSmR41UayG01UuuZyOyH30pG8JD38vsiTuPFS/WvL4hu6MNhSD2wxdXBL5mbm+0BN/tZzz0QqPzH2tbVWT4tG1OeFxwCryrAYXTBf0nNzwEBDZS1Z7Pos9lhCZxRcSOffnzFEKhB/WaoWbiaJIV/K/9VT7BPF1QFPiU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779807057; c=relaxed/simple;
-	bh=F5YMabiE8O+ywnrU305U0Znz0rgWJB8UF35MQVPj76k=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qsQGxIgoNkEbi9BDbU4h9SFPS8x1VjOF8n5kwcVfD4da9KfRSWsVthNsSicAIm2GS+aHNqkWFPO5L9XvtgbRB5d8MVt8Z0u6Rt4AkTq0ql20Vg1qU28LwoMwYr61UFPHscNDex3Wu+pz38qb/GQZJN/TmUSgFwIleq7nbF3KYEg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=sDxCOmCz; arc=none smtp.client-ip=209.85.208.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1779807333; c=relaxed/simple;
+	bh=v6L/dSrPM0rzhv8bhfzBUPfjayWMBmg4EkzMGqyNdfA=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=mOoZaIsitDRP6yI267R68jrHhZLUBl9+T9eu4/vUY2jNXMgsC5+NCg6PNkGJiwzf6JeFAKSEFOsVPlfEWWs8HuDXe0VkMZhJ/RtrAvSE62EEFPG4IoTNfXqspqbGtS6jkSU3BHoXtPr0P3GNARFAzv2jJV/FKcKgd3n9+ah3cKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BxJopUR4; arc=none smtp.client-ip=209.85.160.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="sDxCOmCz"
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-678a16429c6so1953002a12.1
-        for <netdev@vger.kernel.org>; Tue, 26 May 2026 07:50:55 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BxJopUR4"
+Received: by mail-qt1-f201.google.com with SMTP id d75a77b69052e-516ccfa109dso92701101cf.0
+        for <netdev@vger.kernel.org>; Tue, 26 May 2026 07:55:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779807054; x=1780411854; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=AjQZn0mYVYssmLLf8Ym16szY/Tz1EKrMNloBKoyB+kw=;
-        b=sDxCOmCzfmsYyApJVRTicHNKTJncmplELdx5V2OOUIMNYtSkx29uAHcwJxPe/Viq/z
-         CSAxuit3weSUfGUTy4cdvH4E7+wSj9nKEwyGwp4k5k9FpNMzTvzy42BWN+NDJ2UrT29J
-         JKfik4TN8gJnB7SP1GpHNrKRXujJrubP9QEYXLvkDWhuHj5m9iwfOhrI/KBMR7CqSv2f
-         HO2ND/+Yf0JbPabbju5QDM1RQi0Q/ocCWoSQCrt6NwcOS7X5S6OJc49jdNshfWYnS8OF
-         vwpIR960FbmKFRRqhky+htJSP+BYHJIJfMRYr2/bWxhphbZqywKgUrCr7B4s+CzDaec8
-         7ZSA==
+        d=google.com; s=20251104; t=1779807331; x=1780412131; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=c2EPlHw48rODrmXF+15aHTZZ4V4iHpVYTIEaa0CoSqE=;
+        b=BxJopUR4ngLCABMUhUZmfb/WQAEqgUuNeWUsBNfIpOtlMk3/JJVl+4zM/NaZq2mcM8
+         LvE58s2oC+DG+awSE72dYUhdP0rB+eCVq6TshLnFzLN+IKAmjOqwMWPHJS7gZH5KMBoQ
+         432P2QqNFteZpuz3iEBBHoslQobqSdPbNZIqalOGdlvCMlnyE7CEozCypuYsYlTxQdDc
+         7aJIwzX7fPHHrUMJBdfw7Y3kZ0m9FWVWfQwDXWPdiJechiuiRcD9o25XTSAUUPUnuyRe
+         CGnNzLUDU+Nx3ClN3IGEcisH3kSHXhr4CIkIUNQtoonZ93WyAFF8ft/KXAuhvaCqNihC
+         jmcQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779807054; x=1780411854;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=AjQZn0mYVYssmLLf8Ym16szY/Tz1EKrMNloBKoyB+kw=;
-        b=BVoOevsaSlPE7tON4KIum7J2Zf3POsk+2p+ea7Rx1dr6Hu6KPZPNZU6TlRLuyMMoLD
-         qhFtQLiTr2eJ0VBi/lJAnArb9lyC23kY3Aw6MxlcQguL5t4YlIJNuvFCfWk7vh0dMJXr
-         eQVeiU0rmSW053UQAbm4tr32Uw/FUfdnXTwopdNx/4Cd8IqC1TSk367WIDWGZtgZtGw4
-         n9PBN57FjjyHsoAmMYxgILHEjuIi9DyUjyLxpI3gNSRHT7oCXaHPWly++BiHT3OZrcA+
-         RkaS9FSRfoYHH3cXCsZOkA2JgvjA6ExPf5JR0e/wnwv7XCJhUwxvl/+SwhwTb6a3cmVL
-         TeBA==
-X-Forwarded-Encrypted: i=1; AFNElJ/SqzbzcdOFqlVsRxZhayJhud0KVKGQsq9cwm0KQ/4Wv6q5ZpW20E8AdOIlqqViWxrrbaC/avk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwT09uIntQcNAdpXUp2ZgM7ctId20GpwfY7HD00vz4yl5ftiWFj
-	HJrULJd620rCvJPDiaGujiUW5cul0lEJl74TaoqidoXLspaLICt3ziZhKD4vUg==
-X-Gm-Gg: Acq92OE0aN2L7OHos45UJE6LfzYY2mI/Yl4Q044XdpgfGlXP4W4pWUeA/boUgDYnWvl
-	C97025hVwA9YaeUD0uWIEddh8+9vzyeAvLhQzqgO9yMxrPK2/5HwpDFw44XvJT90xH3MlwujveS
-	VZDHpXIc9tEQ6FYoMTSKS/YTcy/0wYOrMs+HH6LR/uQMOYL776y+EBL5MNGuIDzca3cRbxZFf3b
-	hvpujqHylp+dml0C/B8Kb7Rj7R/lnesC2KAzlElupqZcjzzpJwTybJdNAEOGg8fjcFJFpnL1zzq
-	mmgxT6Wn5/fBLWYjkEfqDk7NpFnvgbiKmUSMBt+bhYPqXlePKZ5gF8CTNATvSpgFeVAiNmCfy8X
-	TGE7i1FJXpAcwkhXEHCDXMe2sk3Thuna2a1McXFUjkoa6NepSEs7E4Uks5tVz5TpRAlCPTXBqWC
-	VzodLtG31cfhwRFgdArWnMp3WJ7Hk1PmHaXWj0YY7G1NtlUwNVY9jIsczvwctCQr37VNyBd0uYE
-	ymUH3LAR4EZ6wmGLZPLE8UBOk5XHdCNYakduojWI9UAg9O0wXNVMf1BtBW2yv0=
-X-Received: by 2002:aa7:d859:0:b0:688:9b94:65e2 with SMTP id 4fb4d7f45d1cf-6889b94691bmr6352673a12.7.1779807053827;
-        Tue, 26 May 2026 07:50:53 -0700 (PDT)
-Received: from [10.109.92.22] (82-132-212-62.dab.02.net. [82.132.212.62])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-688b9b6d287sm5221421a12.6.2026.05.26.07.50.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 26 May 2026 07:50:52 -0700 (PDT)
-Message-ID: <f2026867-c0dd-4260-ba0b-b20a2eb9bce7@gmail.com>
-Date: Tue, 26 May 2026 15:50:47 +0100
+        d=1e100.net; s=20251104; t=1779807331; x=1780412131;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=c2EPlHw48rODrmXF+15aHTZZ4V4iHpVYTIEaa0CoSqE=;
+        b=DffLb7TVoJwc9YpEMrY6ilRJ927pViB5cwWHe2x7IeCYC7zfD4MjwUJDAGd+C8MqJi
+         kzY0DEcM2FpB1n1VTvg4oPfvpBGc9vLiqKUq86rCSN1sWdvnKmiO+p6IE0/Qj8Tp+ELA
+         pKVjKZKcI5r+vjg0q4JfZ5nsg9khwjhCzEaX/quS5ItSUeeE4tCMLCP2ltbW4i04xn/q
+         k73wv6QG6LYkUKTbP7Qgrf+DTrJ8uckHzOk9HtY+lciAHcgDFwIQJvAXWF39YDOOBVaP
+         9j5N875Qtiu9OE/0JDiX1FfG7Ps9+gyjMUiuVa66AfmZr4tyKZtU0UxSZ58PR+dAj7Wo
+         CZww==
+X-Forwarded-Encrypted: i=1; AFNElJ8J6y1E1onFbQJgyrQwwP2Mki9Ui+WpV0+vkD7prYnVc4pxXr4vL+yezf3NoNJ+0FeDNFnZdMU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxN28RWb3V2dTccuXAKywc4AJAoqp4EM9eVfMxizF6sLCPggK38
+	UKMdiPTK7IBVKLD+T+gM9qrWlcpJhLNz0kBPLFAeswdqPv7O/53GFe8+ZCtCdGl+k0M0yzGGMwt
+	ID7K7UtKEgMZRRw==
+X-Received: from qtpc6.prod.google.com ([2002:ac8:6606:0:b0:50f:ccdd:13f3])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:ac8:7c4c:0:b0:50e:631c:c390 with SMTP id d75a77b69052e-516d467ee64mr252253461cf.44.1779807331119;
+ Tue, 26 May 2026 07:55:31 -0700 (PDT)
+Date: Tue, 26 May 2026 14:55:27 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net: skbuff: fix missing zerocopy reference in
- pskb_carve helpers
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
- lazyming <minhnguyen.080505@gmail.com>, netdev@vger.kernel.org
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, w@1wt.eu, security@kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, achender@kernel.org,
- mst@redhat.com, jasowang@redhat.com
-References: <20260521121628.309924-1-minhnguyen.080505@gmail.com>
- <willemdebruijn.kernel.10f46164d2a79@gmail.com>
- <willemdebruijn.kernel.27d7990b24613@gmail.com>
- <willemdebruijn.kernel.1ddcb33fec832@gmail.com>
- <willemdebruijn.kernel.9bf2a08cffd8@gmail.com>
-Content-Language: en-US
-From: Pavel Begunkov <asml.silence@gmail.com>
-In-Reply-To: <willemdebruijn.kernel.9bf2a08cffd8@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.54.0.746.g67dd491aae-goog
+Message-ID: <20260526145529.3587126-1-edumazet@google.com>
+Subject: [PATCH v2 net-next 0/2] ipv6: frags: adopt __in6_dev_stats_get() a
+ bit more
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
+	David Ahern <dsahern@kernel.org>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
+	Eric Dumazet <edumazet@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On 5/25/26 16:31, Willem de Bruijn wrote:
-> Willem de Bruijn wrote:
->> Willem de Bruijn wrote:
->>> Willem de Bruijn wrote:
->>>> lazyming wrote:
->>>>> pskb_carve_inside_header() and pskb_carve_inside_nonlinear() both copy
->>>>> the old skb_shared_info header into a new buffer via memcpy(), which
->>>>> includes the destructor_arg pointer (uarg) for MSG_ZEROCOPY skbs.
->>>>
->>>> These functions are not supposed to maintain zerocopy frags.
->>>>
->>>> Both call skb_orphan_frags.
->>>>
->>>> I think what may need to happen is to invert the order of that call
->>>> and the memcpy. Current code:
->>>>
->>>>          memcpy((struct skb_shared_info *)(data + size),
->>>>                 skb_shinfo(skb), offsetof(struct skb_shared_info, frags[0]));
->>>>          if (skb_orphan_frags(skb, gfp_mask)) {
->>>>                  skb_kfree_head(data);
->>>>                  return -ENOMEM;
->>>>          }
->>>
->>> Never mind. This actually corresponds to the first Sashiko report you
->>> mentioned: if zerocopy skbs are converted, then the memcpy prior to
->>> that call will have stale state.
->>>
->>> For skbs where skb_orphan_frags does not do a deep copy, we do need to
->>> take this extra reference.
->>>
->>> Reviewed-by: Willem de Bruijn <willemb@google.com>
->>
->> Not sure the potential preexisting issue is reachable.
->>
->> Vhost-net and other zerocopy that predates MSG_ZEROCOPY does not
->> refcount ubuf_info. Instead it calls skb_copy_ubufs on skb_clone.
->>
->> So if such an skb reaches pskb_expand_head, it should be guaranteed to
->> not be a clone. Same for the carve methods added later.
->>
->> But, the commit that added zerocopy, commit a6686f2f382b
->> ("skbuff: skb supports zero-copy buffers"), included this
->> pksb_expand_head call to skb_copy_ubufs from the start. That implies
->> that was expected to be reachable. I just don't see how yet.
->>
->> If it is reachable, then all that is needed is to clear shinfo->flags.
->> Or more neatly,
->>
->>      skb_shinfo(skb)->flags &= ~SKBFL_ALL_ZEROCOPY;
-> 
-> Also, I'm not the expert on more recent managed frags
-> (SKBFL_MANAGED_FRAG_REFS).
+First patch addresses Sashiko's feedback about a potential
+NULL dereference in __in6_dev_stats_get().
 
-For that one, pages are guaranteed to be alive as long as the
-ubuf_info is not destroyed, hence we don't hold per shinfo
-refs. IOW, the lifetime of the pages is bound to the ubuf_info.
+Second patch adopts __in6_dev_stats_get() in net/ipv6/reassembly.c.
 
-> That calls skb_zcopy_downgrade_managed in pskb_expand_head, but not in
-> the two other functions with memcpy before skb_copy_ubufs:
-> pskb_carve_inside_header and pskb_carve_inside_nonlinear.
-> 
-> I assume because those shorten the skb, so no risk of getting mixed
-> mode refcounted and non-refcounted frags?
+Eric Dumazet (2):
+  ipv6: guard against possible NULL deref in __in6_dev_stats_get()
+  ipv6: frags: cleanup __IP6_INC_STATS() confusion
 
- From a quick glance, if reachable, they should "downgrade", otherwise
-they leak pages. The new data inherits SKBFL_MANAGED_FRAG_REFS and
-ubuf_info but takes additional references with skb_frag_ref(). I'll
-take a closer look.
-
-> In general zerocopy can be split in refcounted and non-refcounted.
-> 
-> Refcounted zerocopy will not downgrade in these cases, so will not
-> modify shinfo->flags after memcpy.
-> 
-> Non-refcounted should always get converted to copy in skb_clone,
-> so will not enter the skb_cloned() branch here.
-> 
-> If in doubt maybe warrants a rare WARN_ON_ONCE patch.
+ include/net/addrconf.h |  5 ++++-
+ net/ipv6/reassembly.c  | 46 +++++++++++++++++++-----------------------
+ 2 files changed, 25 insertions(+), 26 deletions(-)
 
 -- 
-Pavel Begunkov
+2.54.0.746.g67dd491aae-goog
 
