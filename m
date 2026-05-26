@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9F7F37106E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B895C37104C
 	for <netdev@vger.kernel.org>; Tue, 26 May 2026 15:35:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779809760; cv=none; b=Qc58XLZfxNki53UlNsBz5FIN7DQB/TT2X5Ng4A13eC6LNy8VmBe9EC79LtE1ulScEBEHXTQsfClNYtwCmXwh02XKgXmvXx9v8oo/psckJOWsv/I4V28INR8kbkd9h8oiIxt6xFDmUjNdixToU/TcV9guyVve2tliCuUXVcktkIs=
+	t=1779809759; cv=none; b=sRWiRQ8A1oNVj05imNCue8QtH6gZI7wmvYP5F3EYsbig+/nKYaKtticnXlTggZlg6do2Id8kPzsfWDKKcCoFZSn4RTWI6q/ebN7/mgXC+Jfy0H/FYmXvRi+AQBISfvcbU8rdmwnUO29avFJNgVMLjcFw01X0U9FNxgBp8EW0p00=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779809760; c=relaxed/simple;
-	bh=B6hPYFl40/eyJ3MFPl5GUICMKp0Ryg0OTJcAUc5VR3w=;
+	s=arc-20240116; t=1779809759; c=relaxed/simple;
+	bh=zBrt+NjuVFua6vF6RWs0TRUcpTJsvTpIyvDT1PJjrlw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gqW0/wG4HeRQCZ2ReQYIv8fF+VmNA0iNaM3ci20h1ucn7IjncBwCkla+DNuekU3oZ59eL9y59+xvSsLUls2X6RpIpBXEViiSGClriF9a7S+Da5odJ3W5Pf24w/yxmKICH+kYFlAdKp7i1DCHUaDc4Dt1hb6CHvbkKCeNeegScuc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eUaP4b7z; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=MY45iUZAkgl7dpYQDKopJlXV1S1NxFjoZkxqSdlIumrSIUGRMGhbPlDtp+NJ0tmLmhBZQT7O02UIFPixH4B5JdbWD+h42DdYOlFmnYp5Hwwwwx7/w3jrUlUI0Az6H94YPPF3jd5LR8/2G+sUYYBxldD2Fopd4Z+97E1Ld3M6L7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Sc/lGsRS; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eUaP4b7z"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 543451F00ADE;
-	Tue, 26 May 2026 15:35:55 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Sc/lGsRS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04C521F00A3A;
+	Tue, 26 May 2026 15:35:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779809755;
-	bh=xOiuISXPGiIOAbgR3O8B5UDVVXGCmQiwSwSdvlIsyxs=;
+	s=k20260515; t=1779809754;
+	bh=VhyF1ahid+9l2WIwh+CjhCoYJrWZGCWAmcNR4dZIBhI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=eUaP4b7zqKiIWS9lxorsSMFZwFY0nqdhrwLznkTfcU3o3SRxx0AZa9ThXTz2hT9TL
-	 EFQ9f07SaO8v6k6k+f48VuLNiiiZVJsOyCjacv+nBdz57LOv04GWxiGubj/C+WvKpn
-	 FQQPe1Jm64R2Td63MUHfwZYip5T0GWVANdhdJSyvgj+4DV7A+6WlDzINI020SHAf7C
-	 6mG/UilEYyRYeDxt4ViXlfqnZD117ELkrDWBmrrA3MeTrxdqnpSnyp2OgbQd8qAqWy
-	 PhAjGzWKlHZQaoFliQZPqfmPAzf1h0pTdRzEyLiTysqhAlklF4lsXmBPa7cvuGbMsw
-	 Ku95PdbsqyptQ==
+	b=Sc/lGsRSY4My+gZyMf27T+/KTTsA9BPW7SzNYD296XHUOlAn5/pQ3vr2/hQ4hX9Tn
+	 n8lXA/AtFo2k1aK/NKWEdgb6J4vcFbUL32iEEkGi3htr3CkLPXdFKDFlr+EVCEo6Iv
+	 TtaS4R6W4Iq6rzG5eCyoO1c9jnFMnujtxsDdRVm9ku/CZEmf8hFSZWEXYDNGqYsuIr
+	 gtb9UtzUsV3/3204/xzfWt7BV8pKmr0hlER5Eah+i32g05pzcrw1DcNA1NbQkSC3wi
+	 Jg6zwfMWGVSouVFwZA9k4RUVb9NARpwiEWF6Fpgal/vEl9b8VrCQD5SqTF8ug1thL5
+	 2j6NfsvOiNFfw==
 From: Jakub Kicinski <kuba@kernel.org>
 To: davem@davemloft.net
 Cc: netdev@vger.kernel.org,
@@ -39,10 +39,11 @@ Cc: netdev@vger.kernel.org,
 	haiyangz@microsoft.com,
 	Jakub Kicinski <kuba@kernel.org>,
 	andrew@lunn.ch,
-	vladyslavt@nvidia.com
-Subject: [PATCH net 10/10] ethtool: eeprom: add more safeties to EEPROM Netlink fallback
-Date: Tue, 26 May 2026 08:35:33 -0700
-Message-ID: <20260526153533.2779187-11-kuba@kernel.org>
+	liuhangbin@gmail.com,
+	chleroy@kernel.org
+Subject: [PATCH net 08/10] ethtool: strset: fix header attribute index in ethnl_req_get_phydev()
+Date: Tue, 26 May 2026 08:35:31 -0700
+Message-ID: <20260526153533.2779187-9-kuba@kernel.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260526153533.2779187-1-kuba@kernel.org>
 References: <20260526153533.2779187-1-kuba@kernel.org>
@@ -54,57 +55,38 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The Netlink fallback path for reading module EEPROM
-(fallback_set_params()) validates that offset < eeprom_len,
-but does not check that offset + length stays within eeprom_len.
-The ioctl equivalent (ethtool_get_any_eeprom() in ioctl.c) has
-always enforced both bounds:
+strset_prepare_data() passes ETHTOOL_A_HEADER_FLAGS (3) as the header
+attribute to ethnl_req_get_phydev(). This is incorrect, in the main
+attr space 3 is ETHTOOL_A_STRSET_COUNTS_ONLY, not the request
+header attr. The correct constant is ETHTOOL_A_STRSET_HEADER (1).
 
-  if (eeprom.offset + eeprom.len > total_len)
-      return -EINVAL;
+ethnl_req_get_phydev() only uses this value for the extack,
+so this is not a "functionally visible"(?) bug.
 
-This could lead to surprises in both drivers and device FW.
-Add the missing offset + length validation to fallback_set_params(),
-mirroring the ioctl.
-
-Similarly - ethtool core in general, and ethtool_get_any_eeprom()
-in particular tries to zero-init all buffers passed to the drivers
-to avoid any extra work of zeroing things out. eeprom_fallback()
-uses a plain kmalloc(), change it to zalloc.
-
-Fixes: 96d971e307cc ("ethtool: Add fallback to get_module_eeprom from netlink command")
+Fixes: e96c93aa4be9 ("net: ethtool: strset: Allow querying phy stats by index")
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 ---
 CC: andrew@lunn.ch
 CC: maxime.chevallier@bootlin.com
-CC: vladyslavt@nvidia.com
+CC: liuhangbin@gmail.com
+CC: chleroy@kernel.org
 ---
- net/ethtool/eeprom.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ net/ethtool/strset.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ethtool/eeprom.c b/net/ethtool/eeprom.c
-index 836316df3092..0b8cfeddb014 100644
---- a/net/ethtool/eeprom.c
-+++ b/net/ethtool/eeprom.c
-@@ -44,6 +44,9 @@ static int fallback_set_params(struct eeprom_req_info *request,
- 	if (offset >= modinfo->eeprom_len)
- 		return -EINVAL;
+diff --git a/net/ethtool/strset.c b/net/ethtool/strset.c
+index bb1e829ba099..94c4718d31ae 100644
+--- a/net/ethtool/strset.c
++++ b/net/ethtool/strset.c
+@@ -311,7 +311,7 @@ static int strset_prepare_data(const struct ethnl_req_info *req_base,
+ 		return 0;
+ 	}
  
-+	if (length > modinfo->eeprom_len - offset)
-+		return -EINVAL;
-+
- 	eeprom->cmd = ETHTOOL_GMODULEEEPROM;
- 	eeprom->len = length;
- 	eeprom->offset = offset;
-@@ -69,7 +72,7 @@ static int eeprom_fallback(struct eeprom_req_info *request,
- 	if (err < 0)
- 		return err;
+-	phydev = ethnl_req_get_phydev(req_base, tb, ETHTOOL_A_HEADER_FLAGS,
++	phydev = ethnl_req_get_phydev(req_base, tb, ETHTOOL_A_STRSET_HEADER,
+ 				      info->extack);
  
--	data = kmalloc(eeprom.len, GFP_KERNEL);
-+	data = kzalloc(eeprom.len, GFP_KERNEL);
- 	if (!data)
- 		return -ENOMEM;
- 	err = ethtool_get_module_eeprom_call(dev, &eeprom, data);
+ 	/* phydev can be NULL, check for errors only */
 -- 
 2.54.0
 
