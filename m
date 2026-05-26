@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3714F3C3455;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BDC23C4565;
 	Tue, 26 May 2026 21:52:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779832340; cv=none; b=sp1OPxesGCh2wyELCjVg0NvcRzlbZF4+bZ8v8D6XSnqJLSVEMWSIr6IcFiIAEveT7NzX+sutut7g2hoFFNyD1HqVO6ZdpgNg8U9uq8vZYWHnc2VaOnIIGWVpt/eMrFOZxZapWS6MkGjIunKmzno9CUCur9a8dESAtJTPGukt/as=
+	t=1779832340; cv=none; b=A4JAmutYUGHc/8qcEavP+gWoipfuu96tdHTtJ28Ercs1ph/Ndv3AhJudjMcxplySs8PVrQvN3G9HXWvbnvgBx+ffHVZNdQVrqMuBAlKYXZEqR44A5f1ERgcJNjsUUf5tEEfjJzKuoVJpLusprijHfsURGNIKt9k+2ORLkEMSTNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1779832340; c=relaxed/simple;
-	bh=VXJFwd7+XZM7tBzGTekSDUJDrHYV8J+lvqpkIxEouJE=;
+	bh=A2Uj8QDZUKuoKmqg/79Vc/G1OinkPdUdxMsomCejTNE=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=RBSQs8jlAFT88HiDcegLaKv9jOeZjAiyIs527XCDf750pDaoVnKGF73tbFjfPyh/+yvoOb4mX/PRKroMnZ91+VH8SWtPDwqjDUrFBM8LmSlsKhQ/h1v/maFfp1HUPkfW4cqIwF2sIPTAl4VAI9F5ruM7c/esLh7LymXZ9o7bqd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KewyH6kj; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=Xa/P0WnuxCsfFW/0MfEQ4LjgxbsEuHIBM9+bRe53g0Yv5qhaLqd0WPc/f+lcx9k/qTcby84Qg0qfChx4WAnOK3HapJju2dtI7FA0QqlUqKExx9IFhAgMu4mvZVXfhNxfQR4/Gs+rpOrAL2K0Fa87u1vmYD5PYZf0j5uif2o/tfk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hCYDKd2G; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KewyH6kj"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id EDBF7C32786;
-	Tue, 26 May 2026 21:52:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hCYDKd2G"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 35597C2BCC4;
+	Tue, 26 May 2026 21:52:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1779832340;
-	bh=VXJFwd7+XZM7tBzGTekSDUJDrHYV8J+lvqpkIxEouJE=;
+	bh=A2Uj8QDZUKuoKmqg/79Vc/G1OinkPdUdxMsomCejTNE=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=KewyH6kjdZr6R6iIHvx5vqYMF8l3AXCTwNqZoLWb/LEte7ZpNZZ+hCD2R9A2Iiylo
-	 KJO6Z+h6gMA/rshXzO1LRbZDgauFiO4LbwXqeAEEgpZhLhCNMJwuGw6HUH0gk+OBTq
-	 CxopedjURp+feaX/GBB9GMbCW1QoqADGUhABeWgJ6xHSZgrd7u7b8h4QCWlh8bKg5r
-	 iefe4a8LDsXquepBadEfXSTx4mgg6ejugXirZEjiZ+u1PCwZAh1cZbKtbrjEnR5r3e
-	 RSB8cRz7gPDSo2UGewj050SJ1/31vYCSLeffFnFC7stEX0AFX+50E24rXG7eKTkKbj
-	 Fm8oa94z9FL8g==
+	b=hCYDKd2GOuZHRA9yvZ4jszEYK95PJGGCUYOIM4CN0vQld5siyNPZPu3DE1mP9vNi1
+	 LLW3q9crFYOpQVPLXpyW1WmnS6d/OP9OJkMmgf1igq6qpPuNdReQNLz3ntte54xUgc
+	 qcVCdZV+OxSV5o7iAzlEGWxUaRVxx9CSvzE40P1NwE/U9AxXab5wCFuCKtRDbQq52h
+	 g252LjH1sfFixJj76dwPF/k+UMNhTo2qxshCM+B/FL/Krz2BPeOB/FbU39BP/GIdXh
+	 gL56hhChgbQAijack9qVhOsT18WQV2sblChgQfK6G+M0ZBVVwfUNb0KxePOlvJ3p6L
+	 0FLBVuQNI5qmQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E4DA1CD5BD2;
-	Tue, 26 May 2026 21:52:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2D79BCD5BD5;
+	Tue, 26 May 2026 21:52:20 +0000 (UTC)
 From: Ciprian Regus via B4 Relay <devnull+ciprian.regus.analog.com@kernel.org>
-Date: Wed, 27 May 2026 00:51:51 +0300
-Subject: [PATCH net-next v2 06/10] net: ethernet: oa_tc6: Add MMS register
- formatting macro
+Date: Wed, 27 May 2026 00:51:54 +0300
+Subject: [PATCH net-next v2 09/10] net: phy: Add support for the ADIN1140
+ PHY
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260527-adin1140-driver-v2-6-37e5c8d4e0a0@analog.com>
+Message-Id: <20260527-adin1140-driver-v2-9-37e5c8d4e0a0@analog.com>
 References: <20260527-adin1140-driver-v2-0-37e5c8d4e0a0@analog.com>
 In-Reply-To: <20260527-adin1140-driver-v2-0-37e5c8d4e0a0@analog.com>
 To: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>, 
@@ -58,11 +58,11 @@ Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-doc@vger.kernel.org, devicetree@vger.kernel.org, 
  Ciprian Regus <ciprian.regus@analog.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1779832338; l=1763;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1779832338; l=4959;
  i=ciprian.regus@analog.com; s=20260330; h=from:subject:message-id;
- bh=5HSxO/CCFrO2eIoVbKXw+TUIV7w+rmcLQuB9FhaUalo=;
- b=gAhgj0HuuVyFkkyVsoXiYsNNmhf059JmCkplHxS9/qQNqowACEYivJblAY0FDgN/MPrcOhAZ9
- Tbf0jXL4+GdCa1hPzqVzKEHCOZc5n1eI3gfDMULJqSTAeuYr3FhO9pw
+ bh=Q4PnHqnyimvMStlwH1jthtt1eNnizfbV+xozD0BJvuo=;
+ b=kkvmtdw2dyz8SJo2UZhOwBtOVrFFdZU0wXmK34FiytmotOtwDPMEJohEBh8hnU/8Y6VgN8cAb
+ v07PbES8FNJDrf39yI/nTZ1W0uVQfh9ypD4FAR+uGkcOSN/Fdc+NEGE
 X-Developer-Key: i=ciprian.regus@analog.com; a=ed25519;
  pk=8WoNhI0kQcQUl8YqJO5ZevROYk9HP8lOIeIgIYgjfbc=
 X-Endpoint-Received: by B4 Relay for ciprian.regus@analog.com/20260330 with
@@ -72,57 +72,156 @@ Reply-To: ciprian.regus@analog.com
 
 From: Ciprian Regus <ciprian.regus@analog.com>
 
-The Open Alliance TC6 standard defines multiple memory maps for the
-MAC-PHY's register space. These are used to separate standard, vendor
-and PHY MMD specific registers. Add a macro to make it more clear which
-memory map each register is part of and allow easier definition.
+Add a driver for the ADIN1140's internal 10BASE-T1S PHY. The device
+doesn't implement autonegotiation, so the link is always reported as
+being up.
+
+The device implements both C22 and C45 MDIO access methods, but can only
+be discovered over C22, since the C45 MMD devices lack the MDIO_DEVID1 and
+MDIO_DEVID2 registers. The indirect C45 over C22 feature is not
+supported.
 
 Signed-off-by: Ciprian Regus <ciprian.regus@analog.com>
 
 ---
 v2 changelog:
- - New patch
+ - No longer setting PHY_MAC_INTERRUPT in order to avoid state polling.
+ - Replace the driver specific .read/write_mmd() functions with the ones
+   exported from genphy.
+ - Renamed the file to adin1140-phy.c in order to avoid module name
+   conflicts with the adin1140 ethernet driver.
 ---
- drivers/net/ethernet/oa_tc6.c | 4 ++--
- include/linux/oa_tc6.h        | 3 +++
- 2 files changed, 5 insertions(+), 2 deletions(-)
+ MAINTAINERS                    |  7 ++++
+ drivers/net/phy/Kconfig        |  6 ++++
+ drivers/net/phy/Makefile       |  1 +
+ drivers/net/phy/adin1140-phy.c | 72 ++++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 86 insertions(+)
 
-diff --git a/drivers/net/ethernet/oa_tc6.c b/drivers/net/ethernet/oa_tc6.c
-index 904bd790159d..876891ca9859 100644
---- a/drivers/net/ethernet/oa_tc6.c
-+++ b/drivers/net/ethernet/oa_tc6.c
-@@ -471,7 +471,7 @@ int oa_tc6_mdiobus_read_c45(struct mii_bus *bus, int addr, int devnum,
- 	if (ret < 0)
- 		return ret;
+diff --git a/MAINTAINERS b/MAINTAINERS
+index ca6c7425b45f..eda74f3154dc 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -1857,6 +1857,13 @@ S:	Supported
+ W:	https://ez.analog.com/linux-software-drivers
+ F:	drivers/dma/dma-axi-dmac.c
  
--	ret = oa_tc6_read_register(tc6, (ret << 16) | regnum, &regval);
-+	ret = oa_tc6_read_register(tc6, OA_TC6_MMS_REG(ret, regnum), &regval);
- 	if (ret)
- 		return ret;
- 
-@@ -489,7 +489,7 @@ int oa_tc6_mdiobus_write_c45(struct mii_bus *bus, int addr, int devnum,
- 	if (ret < 0)
- 		return ret;
- 
--	return oa_tc6_write_register(tc6, (ret << 16) | regnum, val);
-+	return oa_tc6_write_register(tc6, OA_TC6_MMS_REG(ret, regnum), val);
- }
- EXPORT_SYMBOL_GPL(oa_tc6_mdiobus_write_c45);
- 
-diff --git a/include/linux/oa_tc6.h b/include/linux/oa_tc6.h
-index ad6f17218603..8b56a132c9e3 100644
---- a/include/linux/oa_tc6.h
-+++ b/include/linux/oa_tc6.h
-@@ -10,6 +10,9 @@
- #include <linux/etherdevice.h>
- #include <linux/spi/spi.h>
- 
-+#define OA_TC6_MMS_REG(mms, reg) \
-+	((((mms) & GENMASK(3, 0)) << 16) | ((reg) & GENMASK(15, 0)))
++ANALOG DEVICES INC ETHERNET PHY DRIVERS
++M:	Ciprian Regus <ciprian.regus@analog.com>
++L:	netdev@vger.kernel.org
++S:	Maintained
++W:	https://ez.analog.com/linux-software-drivers
++F:	drivers/net/phy/adin1140-phy.c
 +
- /* OPEN Alliance TC6 registers */
+ ANALOG DEVICES INC IIO DRIVERS
+ M:	Lars-Peter Clausen <lars@metafoo.de>
+ M:	Michael Hennerich <Michael.Hennerich@analog.com>
+diff --git a/drivers/net/phy/Kconfig b/drivers/net/phy/Kconfig
+index 8b51bdc2e945..bd21a5dad366 100644
+--- a/drivers/net/phy/Kconfig
++++ b/drivers/net/phy/Kconfig
+@@ -124,6 +124,12 @@ config ADIN1100_PHY
+ 	  Currently supports the:
+ 	  - ADIN1100 - Robust,Industrial, Low Power 10BASE-T1L Ethernet PHY
  
- #define OA_TC6_REG_PHYID			0x0001
++config ADIN1140_PHY
++	tristate "Analog Devices ADIN1140 10BASE-T1S PHY"
++	help
++	  Adds support for the Analog Devices, Inc. ADIN1140's internal
++	  10BASE-T1S PHY.
++
+ config AMCC_QT2025_PHY
+ 	tristate "AMCC QT2025 PHY"
+ 	depends on RUST_PHYLIB_ABSTRACTIONS
+diff --git a/drivers/net/phy/Makefile b/drivers/net/phy/Makefile
+index 05e4878af27a..73152845b0b2 100644
+--- a/drivers/net/phy/Makefile
++++ b/drivers/net/phy/Makefile
+@@ -29,6 +29,7 @@ obj-y				+= $(sfp-obj-y) $(sfp-obj-m)
+ 
+ obj-$(CONFIG_ADIN_PHY)		+= adin.o
+ obj-$(CONFIG_ADIN1100_PHY)	+= adin1100.o
++obj-$(CONFIG_ADIN1140_PHY)	+= adin1140-phy.o
+ obj-$(CONFIG_AIR_EN8811H_PHY)   += air_en8811h.o
+ obj-$(CONFIG_AMD_PHY)		+= amd.o
+ obj-$(CONFIG_AMCC_QT2025_PHY)	+= qt2025.o
+diff --git a/drivers/net/phy/adin1140-phy.c b/drivers/net/phy/adin1140-phy.c
+new file mode 100644
+index 000000000000..d35da4ad680d
+--- /dev/null
++++ b/drivers/net/phy/adin1140-phy.c
+@@ -0,0 +1,72 @@
++// SPDX-License-Identifier: GPL-2.0+
++/*
++ * Driver for Analog Devices, Inc. ADIN1140 10BASE-T1S PHY
++ *
++ * Copyright 2026 Analog Devices Inc.
++ */
++
++#include <linux/kernel.h>
++#include <linux/module.h>
++#include <linux/phy.h>
++
++#define ADIN1140_PHY_ID		0x0283be00
++
++#define ADIN1140_PCS_CTRL		0x08f3
++#define ADIN1140_PCS_CTRL_LOOPBACK	BIT(14)
++
++static int adin1140_config_aneg(struct phy_device *phydev)
++{
++	/* phylib tries to clear BIT(12) in MDIO_CTRL1, since AN is disabled.
++	 * However, on the ADIN1140, that field is non-standard, being used
++	 * to control the reset status of the PHY (thus it needs to remain set).
++	 */
++	return 0;
++}
++
++static int adin1140_loopback(struct phy_device *phydev, bool enable, int speed)
++{
++	if (enable && speed)
++		return -EOPNOTSUPP;
++
++	return phy_modify_mmd(phydev, MDIO_MMD_PCS, ADIN1140_PCS_CTRL,
++			      ADIN1140_PCS_CTRL_LOOPBACK,
++			      enable ? ADIN1140_PCS_CTRL_LOOPBACK : 0);
++}
++
++static int adin1140_read_status(struct phy_device *phydev)
++{
++	phydev->link = 1;
++	phydev->duplex = DUPLEX_HALF;
++	phydev->speed = SPEED_10;
++	phydev->autoneg = AUTONEG_DISABLE;
++
++	return 0;
++}
++
++static struct phy_driver adin1140_driver[] = {
++	{
++		PHY_ID_MATCH_EXACT(ADIN1140_PHY_ID),
++		.name = "ADIN1140_PHY",
++		.features = PHY_BASIC_T1S_P2MP_FEATURES,
++		.read_status = adin1140_read_status,
++		.config_aneg = adin1140_config_aneg,
++		.set_loopback = adin1140_loopback,
++		.read_mmd = genphy_read_mmd_c45,
++		.write_mmd = genphy_write_mmd_c45,
++		.get_plca_cfg = genphy_c45_plca_get_cfg,
++		.set_plca_cfg = genphy_c45_plca_set_cfg,
++		.get_plca_status = genphy_c45_plca_get_status,
++	},
++};
++module_phy_driver(adin1140_driver);
++
++static const struct mdio_device_id __maybe_unused adin1140_tbl[] = {
++	{ PHY_ID_MATCH_EXACT(ADIN1140_PHY_ID) },
++	{ }
++};
++
++MODULE_DEVICE_TABLE(mdio, adin1140_tbl);
++
++MODULE_DESCRIPTION("Analog Devices, Inc. ADIN1140 10BASE-T1S PHY");
++MODULE_AUTHOR("Ciprian Regus <ciprian.regus@analog.com>");
++MODULE_LICENSE("GPL");
 
 -- 
 2.43.0
