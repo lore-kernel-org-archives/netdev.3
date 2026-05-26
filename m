@@ -1,56 +1,84 @@
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+Received: from mail-ed1-f99.google.com (mail-ed1-f99.google.com [209.85.208.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8657A3BB9FE;
-	Tue, 26 May 2026 08:11:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E23C43CCA05
+	for <netdev@vger.kernel.org>; Tue, 26 May 2026 08:41:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779783119; cv=none; b=Ttn/Vm8DcGxVQRqgesnBQ457ls+cg3IYks+W9qdfvrjVHS9aSgVRtF1i7K8HqAoGcs0YLoEz1kKshQfU12GGTtts5ZEXLFUwILWay19+NtBQPcEyhQmyaeH4mj0XYZVyIPf64ADWbeVhoE+lUp37O1dKvAOUPWYsGfPn9R+exnQ=
+	t=1779784868; cv=none; b=pjGjfRkpdmIhbKtgTGzDWQc68fi62QT0qDznNLzdpvWV2gnBbe0VymiXBJaAjkrJtUxadlcDuwp6vzgrXzjYC4JKPiDgcVb8QZcphATYSBo6mPgSbTev7sPt2TwJu1b2qLEf72yKPch3QVq6syWUWy+Mwf4Oq/poBDF1GgrQPgQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779783119; c=relaxed/simple;
-	bh=qAZ5aT1ocltZ+d3Hm7SI7Lnkqpb2RtgByp/iix87W6c=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dgJnfpU3nmYDhc+F4zLB0CZKdjsfqd/GZa6GJg/f2BfIsS1mAN/xvfTihSdlypa1ay86VnKjwLG0ImFVOBmU/tYmZA51nq6tRbXOjm7nkm5UtWboP/8f8pZ22upqfO9PY83zhIOGLZnj2m4oLSY8M02r9dnLDpDgu+/tr/Bf2SA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn; spf=pass smtp.mailfrom=realsil.com.cn; dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b=FbzBq1Vz; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realsil.com.cn
+	s=arc-20240116; t=1779784868; c=relaxed/simple;
+	bh=G0FN6kA6Tea78nrlCADVDkW9gVxo/7otmN92WP8pM/k=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=AYEP4ZtvGwZWgeuB/R6LP6biSrshPzDNZOR/1ih6NGy9cZZEKpqq2p9odqXogav/d1kxmM0lz611olCCRQL/tehdMYmwturP7B+XdQjdvYEYcdTzaQhfxOquTlCAZOUzrOwETc2uwOmAT8xg7BzYBlJdhqDC1ocXmyeqQtxTfbY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com; spf=pass smtp.mailfrom=6wind.com; dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b=HlAlxkXk; arc=none smtp.client-ip=209.85.208.99
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=6wind.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b="FbzBq1Vz"
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 64Q8BMl741615336, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realsil.com.cn;
-	s=dkim; t=1779783082;
-	bh=irjK2PyymjVHPL3WPHY5qMJVp17uNXo4K4aBceRjKSY=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=FbzBq1VzHI2eBdN09AmFGdn3wL1dbLUxlgLOw5WcWXqKfUyJS/fmaV7Xa+Xod2c+h
-	 N2CJqUHMp08CzGZs+D+aCeb4zjUQG0ElT3NNBRGIxWjfAT1ZkDkSS7Wj4JMlJ7nJ8k
-	 wEBkKCM7I5vIrT5d4LZ9o6EvB7AF801RfXbOvxtfZ7VtOj3oyxmk8EvI0y6kcLLfef
-	 6wvRMGtBQMRwniuSzWd0xaWQe7j68vhsWc8kQNihlnhEFGeMTqmjgMRSf+L1sNxWQJ
-	 ponHzfZM36KXUZW3O3UPJnExb7x+0wbxlyiHhCWVP/BLHXPvbJ4zLZQJobKMz6hAVo
-	 gCyCcyRWEiIKg==
-Received: from RS-EX-MBS4.realsil.com.cn ([172.29.17.104])
-	by rtits2.realtek.com.tw (8.15.2/3.28/5.94) with ESMTPS id 64Q8BMl741615336
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Tue, 26 May 2026 16:11:22 +0800
-Received: from RS-EX-MBS1.realsil.com.cn (172.29.17.101) by
- RS-EX-MBS4.realsil.com.cn (172.29.17.104) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Tue, 26 May 2026 16:11:21 +0800
-Received: from 172.29.37.154 (172.29.37.152) by RS-EX-MBS1.realsil.com.cn
- (172.29.17.101) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
- Transport; Tue, 26 May 2026 16:11:21 +0800
-From: javen <javen_xu@realsil.com.cn>
-To: <hkallweit1@gmail.com>, <nic_swsd@realtek.com>, <andrew+netdev@lunn.ch>,
-	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <horms@kernel.org>
-CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Javen Xu
-	<javen_xu@realsil.com.cn>
-Subject: [Patch net-next v6 6/7] r8169: move struct ethtool_ops
-Date: Tue, 26 May 2026 16:11:16 +0800
-Message-ID: <20260526081117.173-7-javen_xu@realsil.com.cn>
-X-Mailer: git-send-email 2.50.1.windows.1
-In-Reply-To: <20260526081117.173-1-javen_xu@realsil.com.cn>
-References: <20260526081117.173-1-javen_xu@realsil.com.cn>
+	dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b="HlAlxkXk"
+Received: by mail-ed1-f99.google.com with SMTP id 4fb4d7f45d1cf-6870a365c77so11655527a12.0
+        for <netdev@vger.kernel.org>; Tue, 26 May 2026 01:41:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=6wind.com; s=google; t=1779784865; x=1780389665; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=FBCQDeRY4EmCQ0kla5Ex2x+xLWc/2PXpf9maOMSgAy4=;
+        b=HlAlxkXk11+RmzsSwWzeOP6wHqLu1JXCIRbBeA0ME926Fr4AFZHDYfLQ7Kv+bR2yq/
+         t+AS1Z70PI+2t21ohfzZDMbhXG5NAOgnrqkW1GoosiKgtHLFXgeI8DaGDxf1xUeDu4oZ
+         gwrDRQ/TQZtOuFAp4AG/Q00lqijGW9WHc3b20p0yg8Z76RQj05oWuX2EB4zYPeQjK6v1
+         tzhn6P6Htvd9HjQ2JDKdTXwx+2IHwb7pJ+Xp+HInMhfUBJPhFSQ3BWj/wGBkJvXqU2gy
+         oj6vrsHvcUttAV7mln7i1NCrq515pCgcw1F+XJJgxMksomNr4I4d5Bm8/nb4RLKEDV87
+         o3bg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779784865; x=1780389665;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=FBCQDeRY4EmCQ0kla5Ex2x+xLWc/2PXpf9maOMSgAy4=;
+        b=f9h472z9pv1jgaMR/B6tMoZnt3Ulo6ZdAaLbazKqL35FSYhYnZCRVoa7t3S/5e2hGl
+         QTTJBmU4/U9vwOXmFzI+ld5Ba1FZhHkTty89P+ZzntIgUFkXXJhNbrQVwJdDOKOxgwVm
+         soBRFzQBRaxaTO3RmGVwaqEsDrES4wwQs3ApX7QG7eUTTvgsWrxhAScw5JhFpHNgRdXd
+         ltB5CO5CvWHiwGJTXUUkA3PEaie3bCcQMkoXgeEMHm+Yz3hjCVRVIg8m5PMa2DkhiyUf
+         IZNrWUURLcYDkEErJsoZGK/cwteRSQf+owgGOzIvBxRNNLhxVXN5eUcgkyv3IJ1PU7PY
+         Oc/g==
+X-Gm-Message-State: AOJu0YzcUxYQoOF3VzICti+1TCKBYszG8wjt12eUB+TnnggNTN2jbC/N
+	Fm1NG9QXA85hWkb50wpEXy3jz7Thf3uv5xEn7py6LrVFQoHq/OaxkX6OC0c1qvMHRuO8u3IOhcn
+	KUWDEie2OJmiYg0pKaQ/2LlNXRW5/qdM0QAu6
+X-Gm-Gg: Acq92OHPYHevlYnQ9djKgaXJNGFOiqZXW1QZmMMVxKu/tk5m/Z93bY8EE8dkgz8MXcb
+	epN4bM+TNIcIojE67uANgXZKaTm8c+akCtJPppNsevqDpUjRX+wGiGSLlSoqj6xHqdBxNBBqdx8
+	5miW/woHybJQUQZGNSUQ7SiDWU481sPGs2dqZRh1Ev+SL+RHvLKZWHjumGPv6vjgBcVDrhIcOZX
+	Bu5CU2jvj48zh9kIzLx4p37IM+lJ+Njsgg+3XIHmc56ozVVn2L/OseSu41QIowaLxsEyrlNUzaw
+	Qx1WrwJ/np23H4eEN6fxH3y6LBLwnfuTLWWBhUXDZFFKddwyCLSqwDHc6/Pc0psHmMTYK0Fewoc
+	ZTZbVi5+PJN6ZQuCYetmkrVnpmSag1uZkVpTiRuLTdxfTaJqLEQi4
+X-Received: by 2002:a17:907:1dec:b0:bdc:fafe:bf66 with SMTP id a640c23a62f3a-bdd263c9230mr775348266b.33.1779784865327;
+        Tue, 26 May 2026 01:41:05 -0700 (PDT)
+Received: from smtpservice.6wind.com ([185.13.181.2])
+        by smtp-relay.gmail.com with ESMTP id a640c23a62f3a-bddc274f009sm68250666b.25.2026.05.26.01.41.05;
+        Tue, 26 May 2026 01:41:05 -0700 (PDT)
+X-Relaying-Domain: 6wind.com
+Received: from stryper.dev.6wind.com (stryper.dev.6wind.com [10.17.2.5])
+	by smtpservice.6wind.com (Postfix) with ESMTP id 1E83C124AF;
+	Tue, 26 May 2026 10:41:05 +0200 (CEST)
+From: Louis Scalbert <louis.scalbert@6wind.com>
+To: netdev@vger.kernel.org
+Cc: andrew+netdev@lunn.ch,
+	jv@jvosburgh.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	fbl@redhat.com,
+	andy@greyhouse.net,
+	shemminger@vyatta.com,
+	maheshb@google.com,
+	jonas.gorski@gmail.com,
+	Louis Scalbert <louis.scalbert@6wind.com>
+Subject: [PATCH net v7 2/6] netlink: specs: rt-link: missed broadcast-neigh
+Date: Tue, 26 May 2026 10:40:44 +0200
+Message-Id: <20260526084048.1696544-3-louis.scalbert@6wind.com>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20260526084048.1696544-1-louis.scalbert@6wind.com>
+References: <20260526084048.1696544-1-louis.scalbert@6wind.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -58,109 +86,29 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
 
-From: Javen Xu <javen_xu@realsil.com.cn>
+Add missed broadcast-neigh.
 
-The patch moves the rtl8169_ethtool_ops definition further down in
-r8169_main.c so that subsequent additions of rtl8169_get_channels and
-rtl8169_set_channels can be referenced from the ops struct without
-needing forward declarations.
-
-Signed-off-by: Javen Xu <javen_xu@realsil.com.cn>
+Fixes: 3d98ee52659c ("net: bonding: add broadcast_neighbor netlink option")
+Signed-off-by: Louis Scalbert <louis.scalbert@6wind.com>
 ---
-Changes in v2:
- - no changes
+ Documentation/netlink/specs/rt-link.yaml | 3 +++
+ 1 file changed, 3 insertions(+)
 
-Changes in v3:
- - no changes
-
-Changes in v4:
- - no changes
-
-Changes in v5:
- - no changes
-
-Changes in v6:
- - modify commit message
----
- drivers/net/ethernet/realtek/r8169_main.c | 56 +++++++++++------------
- 1 file changed, 28 insertions(+), 28 deletions(-)
-
-diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
-index a79a8756516d..bf031f09437f 100644
---- a/drivers/net/ethernet/realtek/r8169_main.c
-+++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -2535,34 +2535,6 @@ static int rtl8169_set_link_ksettings(struct net_device *ndev,
- 	return 0;
- }
- 
--static const struct ethtool_ops rtl8169_ethtool_ops = {
--	.supported_coalesce_params = ETHTOOL_COALESCE_USECS |
--				     ETHTOOL_COALESCE_MAX_FRAMES,
--	.get_drvinfo		= rtl8169_get_drvinfo,
--	.get_regs_len		= rtl8169_get_regs_len,
--	.get_link		= ethtool_op_get_link,
--	.get_coalesce		= rtl_get_coalesce,
--	.set_coalesce		= rtl_set_coalesce,
--	.get_regs		= rtl8169_get_regs,
--	.get_wol		= rtl8169_get_wol,
--	.set_wol		= rtl8169_set_wol,
--	.get_strings		= rtl8169_get_strings,
--	.get_sset_count		= rtl8169_get_sset_count,
--	.get_ethtool_stats	= rtl8169_get_ethtool_stats,
--	.get_ts_info		= ethtool_op_get_ts_info,
--	.nway_reset		= phy_ethtool_nway_reset,
--	.get_eee		= rtl8169_get_eee,
--	.set_eee		= rtl8169_set_eee,
--	.get_link_ksettings	= phy_ethtool_get_link_ksettings,
--	.set_link_ksettings	= rtl8169_set_link_ksettings,
--	.get_ringparam		= rtl8169_get_ringparam,
--	.get_pause_stats	= rtl8169_get_pause_stats,
--	.get_pauseparam		= rtl8169_get_pauseparam,
--	.set_pauseparam		= rtl8169_set_pauseparam,
--	.get_eth_mac_stats	= rtl8169_get_eth_mac_stats,
--	.get_eth_ctrl_stats	= rtl8169_get_eth_ctrl_stats,
--};
--
- static const struct rtl_chip_info *rtl8169_get_chip_version(u32 xid, bool gmii)
- {
- 	/* Chips combining a 1Gbps MAC with a 100Mbps PHY */
-@@ -6281,6 +6253,34 @@ static void r8169_init_napi(struct rtl8169_private *tp)
- 	devm_add_action_or_reset(&tp->pci_dev->dev, r8169_del_napi_action, tp);
- }
- 
-+static const struct ethtool_ops rtl8169_ethtool_ops = {
-+	.supported_coalesce_params = ETHTOOL_COALESCE_USECS |
-+				     ETHTOOL_COALESCE_MAX_FRAMES,
-+	.get_drvinfo		= rtl8169_get_drvinfo,
-+	.get_regs_len		= rtl8169_get_regs_len,
-+	.get_link		= ethtool_op_get_link,
-+	.get_coalesce		= rtl_get_coalesce,
-+	.set_coalesce		= rtl_set_coalesce,
-+	.get_regs		= rtl8169_get_regs,
-+	.get_wol		= rtl8169_get_wol,
-+	.set_wol		= rtl8169_set_wol,
-+	.get_strings		= rtl8169_get_strings,
-+	.get_sset_count		= rtl8169_get_sset_count,
-+	.get_ethtool_stats	= rtl8169_get_ethtool_stats,
-+	.get_ts_info		= ethtool_op_get_ts_info,
-+	.nway_reset		= phy_ethtool_nway_reset,
-+	.get_eee		= rtl8169_get_eee,
-+	.set_eee		= rtl8169_set_eee,
-+	.get_link_ksettings	= phy_ethtool_get_link_ksettings,
-+	.set_link_ksettings	= rtl8169_set_link_ksettings,
-+	.get_ringparam		= rtl8169_get_ringparam,
-+	.get_pause_stats	= rtl8169_get_pause_stats,
-+	.get_pauseparam		= rtl8169_get_pauseparam,
-+	.set_pauseparam		= rtl8169_set_pauseparam,
-+	.get_eth_mac_stats	= rtl8169_get_eth_mac_stats,
-+	.get_eth_ctrl_stats	= rtl8169_get_eth_ctrl_stats,
-+};
-+
- static int rtl_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
- {
- 	const struct rtl_chip_info *chip;
+diff --git a/Documentation/netlink/specs/rt-link.yaml b/Documentation/netlink/specs/rt-link.yaml
+index f23aa5f229c5..484e0a97b653 100644
+--- a/Documentation/netlink/specs/rt-link.yaml
++++ b/Documentation/netlink/specs/rt-link.yaml
+@@ -1351,6 +1351,9 @@ attribute-sets:
+       -
+         name: coupled-control
+         type: u8
++      -
++        name: broadcast-neigh
++        type: u8
+   -
+     name: bond-ad-info-attrs
+     name-prefix: ifla-bond-ad-info-
 -- 
-2.43.0
+2.39.2
 
