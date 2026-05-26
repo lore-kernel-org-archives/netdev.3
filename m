@@ -1,175 +1,395 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 862653451A7
-	for <netdev@vger.kernel.org>; Tue, 26 May 2026 11:34:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2BD23E51CA;
+	Tue, 26 May 2026 11:41:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779795295; cv=none; b=Es8TK+HMtk10RpKNKLC6j+M3XmCrnJqhtE1wmDLW0pzj4IaN84Zq96xKFvOWjHb1KBQYErEN1IjJ2FVPBZL7h6UrnKSa6gp8lNeTK1xS7nuNM+Ni8Cs6ObzmbwIzVG/CJj5UvtWdcLKyDrc3SW7lQ8NXlrF/kCeocLuTMtzdo/w=
+	t=1779795681; cv=none; b=spNiE9qkhVIRU4ssYgmo918ANglyaHaBvzDpfiRiJyMx/7RHPbhe6mSz3f6ZKOG/aWHLNAWGOqhf3wUMHIG4+R728QA0zrq/V5OsEfSV2CXO5yS0xmgE1BM/wrmp3J6LSDwjCxEwXhnMuBmrY5vWDGTt1kcYQEqOeb1WvVSS8bM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779795295; c=relaxed/simple;
-	bh=ocxFYI38hxzb1ERZvNMOfcjBpfFa+PxSGRxdLDGrzLA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iegLnLga0OtqECXzxjJidnUVWOV9YzoG372FPlwbm1wYD+YpwMwnVQ7xblc1NzfIjCPXg3vEJVC88v4E+1tFYcXRFp+cesWQkk+Xdg24DKjl4K4CK2im5vzsnlyPgriR0wK6MDb8Tv0en3OeixhJc97ce6OoaQ+zreD9CJpZlrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DdKpm/Ue; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=hfiE5spx; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1779795681; c=relaxed/simple;
+	bh=0fL3XeGJfaA+AeCFu8+QTGSbbY112A6Q0RRB2BrJ3Ks=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=uSL05uxIZ33xblc+N0WoglziEcJqIYrsH3fkG+aG0QpopnnkOS45zP0xt4UgEhI9HWeN524WiVlDcROVr4UZ3Ph76MguGxMw4wyzlEgW19LPsz1BnHTvS7TICw2BYkY51KEBd8GCZ6HSzSJN9DvjRQsrHxNmlItnJH4xe0BVwoA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UBEitvyI; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DdKpm/Ue";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="hfiE5spx"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1779795292;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VD+dmiG81dGo1mjueRmNr772xEYjIurIakGJoB8fU4s=;
-	b=DdKpm/UezA3KpMPxgHlp1Sn9g6Plmp6vyALmeK7Ri6QRFhbU6voF0bN43I6wZnMVl7Ao7l
-	ZpWSCSzFCljR+2N6Y82uwT3cy92SxTEqAS3yrwGihdb10KjsdLlM4TOMJxraQSYviRiAX7
-	1ENHpaEmYJD2guIP3GbZo1J4JdEbI0s=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-410-vperUb-mPpSok0gvv0rtdA-1; Tue, 26 May 2026 07:34:50 -0400
-X-MC-Unique: vperUb-mPpSok0gvv0rtdA-1
-X-Mimecast-MFC-AGG-ID: vperUb-mPpSok0gvv0rtdA_1779795290
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-45e81291d62so8659303f8f.1
-        for <netdev@vger.kernel.org>; Tue, 26 May 2026 04:34:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1779795289; x=1780400089; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=VD+dmiG81dGo1mjueRmNr772xEYjIurIakGJoB8fU4s=;
-        b=hfiE5spxqeYdkg5VjqiRzAdEOmaal3cMZxcwaGdFLiJO9LZ0tFWSvuwEKG8fAi/Acd
-         uLLF29L6irGvrhUSPvpbWfM2v1t2moxU4DkA07TAiZqh1DTa0Ud4VuDlY1bEoc4rVBry
-         5mWqajx+YLcORBTxxnddteBCwgKwE1X+K6YahYn2Q5i0cPckb2ZuuatUfvEMVp7he3SD
-         mbows/h2tdQiQ2jEqq1GJN85C73/Wip+qWWfrd81eOZJMyex3ZApisyzqzXuKT5aFk/3
-         btEhOC9RF2sEQPcI5s2JOduYxlOeC5TMZyyEW/L0mdVs13mIahZb0tUqjkE4nQFvopx+
-         5bNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779795289; x=1780400089;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=VD+dmiG81dGo1mjueRmNr772xEYjIurIakGJoB8fU4s=;
-        b=MtjeMvWKvAZvc2ICLHKkmhpDNF7UoW4eCu4OoIkZy5OArUMI+g8Quy6o981q+SqF8k
-         fc5jZ76UeMvd4cvFbtubQLs5+l7SH/fcMdUH6HhobxG/I9cu8RbXTL1bPe/y42buM0Tn
-         zPYanzy60uEk5sngWxtRoD5K0N6RqorYvjvb7aVx670GXCLFR4oJZoXx6FCE+OlG0EkQ
-         GynUqgWV2n0mw0PDGlGy5i21LOZm5sB1GDHYhh4F8vRVzYv80onvLbhuDErSoER5OddV
-         t1RzKdA6ZGz27FXbj8BJig4H3R50m4ioL4e2ykrILMRkndebiuS+dD8Oeahm/tor4ZS6
-         OgBw==
-X-Forwarded-Encrypted: i=1; AFNElJ/tRLELegfSBMS4NGvsXi5pAFeZiSu4aSG8kT7ve8POFK2JI5DxPvvzg2bczIz/moQWPmXHT0Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz3UNYXHn9zcLZGxZvHpIJTR+BLUc97sK0b9omHf7Iu6qcZDTCQ
-	rHlg7Jnvl4JG6PhWESeU0W9UeGn+myFxiMXIlOUUS523PA1WUBUU/QpX5O8bn8qiJe1PQFkAMmD
-	g87BA2LIpKH1Capu95f4VyfDh4n5s0JVYjt+gyeEInKO4rxm7e41rB8hIRw==
-X-Gm-Gg: Acq92OFM9Yrmc7pRcAkeveTXH9EmnVi1y+RAsTaRp4gDmLLNXxZVCEaA+hIU8OOa28q
-	+oYCIDKYog3e/G1Nm7bXANRQluX0Zwnd4xJKPYkyXO5dUX1Aa9uA3eE0exkj9d8eyCb30ARSoUY
-	ZOqAL8W5GiT3oF7W1646928aqxc/mH9RsTQaYL9UjSoWgMf6OjoD858o/no1DmRholdnwjxxO1c
-	Po2BRBErARIn04cbUvram45KMAUhyesIzJLvUrG3LEK8DQXQ6af/jZbnRfJgwDAW6A8wlU8WDaW
-	TKidBVzQ6X6XibE+EBMb9sezs2SHZamfEJXIR9gaEWPjHnXIv9LFjFoceDKOvByXXfg+dHTkzhx
-	i1jmRoHpDRpQwpOqyJrHhEsBfIs4rxKzEdBljIOT9zBOcxB1dWU85Vj09fA==
-X-Received: by 2002:a05:600c:4ecc:b0:48a:56de:d62a with SMTP id 5b1f17b1804b1-490424b3c7fmr275107375e9.11.1779795289559;
-        Tue, 26 May 2026 04:34:49 -0700 (PDT)
-X-Received: by 2002:a05:600c:4ecc:b0:48a:56de:d62a with SMTP id 5b1f17b1804b1-490424b3c7fmr275106815e9.11.1779795289064;
-        Tue, 26 May 2026 04:34:49 -0700 (PDT)
-Received: from [192.168.88.32] ([212.105.155.152])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4904526c926sm565711385e9.1.2026.05.26.04.34.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 26 May 2026 04:34:48 -0700 (PDT)
-Message-ID: <5a54d307-0b8c-468d-9183-6433f9daba56@redhat.com>
-Date: Tue, 26 May 2026 13:34:46 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UBEitvyI"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id EDDC0C2BCC7;
+	Tue, 26 May 2026 11:41:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1779795679;
+	bh=0fL3XeGJfaA+AeCFu8+QTGSbbY112A6Q0RRB2BrJ3Ks=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=UBEitvyInK9EfyZdszGSzwEovBGsqnzW4SW1NGng6RQpjQ/X8qGE6yumavbhxQ27x
+	 z7QIj30EGb/clMqJClFlGvo5n2FkjvnkcBfwhMAhhuaB8DZkcyNIzphTr0sesAlikM
+	 w/aWlURa9Hcb+kILJ4ULgsTIB1TmMn3zLlXuo7tyWu5TOeyRGRWu2yYrJQzM8HwPOE
+	 IB596qTCr1NIYuy3LPVt/IBBwT/BN1iRTqg99MekdbIGKxAApgThZVFRbgX1WUgS5V
+	 61QaVb2K+MU/0+4FrO4YRH2jeRdchoLssyPya9ph6ajylsRW05kmQbRhT6oPkxsVb8
+	 B2iV0/UpiuM8Q==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D8CF4CD5BD0;
+	Tue, 26 May 2026 11:41:18 +0000 (UTC)
+From: Cedric Jehasse via B4 Relay <devnull+cedric.jehasse.luminex.be@kernel.org>
+Date: Tue, 26 May 2026 13:41:14 +0200
+Subject: [PATCH net-next v2 1/2] net: dsa: mv88e6xxx: use the hw tx queues
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/6] net: mhi_net: Hold runtime PM during active data
- path operations
-To: Loic Poulain <loic.poulain@oss.qualcomm.com>,
- Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
-Cc: Manivannan Sadhasivam <mani@kernel.org>,
- Jeff Hugo <jeff.hugo@oss.qualcomm.com>,
- Carl Vanderlip <carl.vanderlip@oss.qualcomm.com>,
- Oded Gabbay <ogabbay@kernel.org>, Jeff Johnson <jjohnson@kernel.org>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>,
- Sergey Ryazanov <ryazanov.s.a@gmail.com>,
- Johannes Berg <johannes@sipsolutions.net>, mhi@lists.linux.dev,
- linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linux-wireless@vger.kernel.org,
- ath11k@lists.infradead.org, ath12k@lists.infradead.org,
- netdev@vger.kernel.org, mayank.rana@oss.qualcomm.com,
- quic_vbadigan@quicinc.com, vivek.pernamitta@oss.qualcomm.com
-References: <20260522-mhi_runtimepm-v2-0-fbebf41a82bb@oss.qualcomm.com>
- <20260522-mhi_runtimepm-v2-3-fbebf41a82bb@oss.qualcomm.com>
- <CAFEp6-1sdQn11NKom6cfwtJvZX-CnPRpJeVzQ+99Sb4A4L-qaQ@mail.gmail.com>
-From: Paolo Abeni <pabeni@redhat.com>
-Content-Language: en-US
-In-Reply-To: <CAFEp6-1sdQn11NKom6cfwtJvZX-CnPRpJeVzQ+99Sb4A4L-qaQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260526-net-next-mv88e6xxx-cbs-v2-1-13eb49c29b83@luminex.be>
+References: <20260526-net-next-mv88e6xxx-cbs-v2-0-13eb49c29b83@luminex.be>
+In-Reply-To: <20260526-net-next-mv88e6xxx-cbs-v2-0-13eb49c29b83@luminex.be>
+To: Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, Russell King <linux@armlinux.org.uk>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Cedric Jehasse <cedric.jehasse@luminex.be>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1779795677; l=10640;
+ i=cedric.jehasse@luminex.be; s=20260213; h=from:subject:message-id;
+ bh=lMevVxiTSA4b91R+42R/GFqUf5AtPMS5FTRydXgef6g=;
+ b=SaYj9sfMhLjVQYwzEFJHrAjsbfFG+e3gwZjTvU6pbDgHUg3frvkOQFx9QkrtdGd7CaiNBqf2H
+ 6EJrrIX3zkrBuW7mmWT+rTDtKNpUg3ybQiPqHJzheGBJT3AIfI/1jlc
+X-Developer-Key: i=cedric.jehasse@luminex.be; a=ed25519;
+ pk=DL2RaHc2bc7tTDTMJdugm42BtJk4Ip+7V41Gkj+Avjk=
+X-Endpoint-Received: by B4 Relay for cedric.jehasse@luminex.be/20260213
+ with auth_id=638
+X-Original-From: Cedric Jehasse <cedric.jehasse@luminex.be>
+Reply-To: cedric.jehasse@luminex.be
 
-On 5/22/26 10:09 PM, Loic Poulain wrote:
-> On Fri, May 22, 2026 at 12:01 PM Krishna Chaitanya Chundru
-> <krishna.chundru@oss.qualcomm.com> wrote:
->>
->> The mhi_net driver does not coordinate with runtime PM, which allows the
->> underlying MHI controller to be runtime-suspended while transmit, receive,
->> or RX buffer refill operations are in progress. This can lead to stalled
->> transfers or failed queueing once runtime PM is enabled in the MHI core.
->>
->> Add runtime PM reference counting to the mhi_net data path to keep the
->> controller active for the duration of TX, RX, and buffer management
->> operations. Enable runtime PM during probe and take/release references
->> explicitly around these critical paths.
->>
->> Signed-off-by: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
->> ---
->>  drivers/net/mhi_net.c | 39 +++++++++++++++++++++++++++++++++++++++
->>  1 file changed, 39 insertions(+)
->>
->> diff --git a/drivers/net/mhi_net.c b/drivers/net/mhi_net.c
->> index ae169929a9d8..5d7f9ccdb17b 100644
->> --- a/drivers/net/mhi_net.c
->> +++ b/drivers/net/mhi_net.c
->> @@ -9,6 +9,7 @@
->>  #include <linux/mod_devicetable.h>
->>  #include <linux/module.h>
->>  #include <linux/netdevice.h>
->> +#include <linux/pm_runtime.h>
->>  #include <linux/skbuff.h>
->>  #include <linux/u64_stats_sync.h>
->>
->> @@ -76,11 +77,19 @@ static netdev_tx_t mhi_ndo_xmit(struct sk_buff *skb, struct net_device *ndev)
->>         struct mhi_device *mdev = mhi_netdev->mdev;
->>         int err;
->>
->> +       err = pm_runtime_get(&mdev->dev);
->> +       if (err < 0 && err != -EINPROGRESS) {
->> +               dev_err(&mdev->dev, "pm_runtime_get failed %d\n", err);
->> +               pm_runtime_put_noidle(&mdev->dev);
->> +               goto exit_drop;
->> +       }
->> +
-> 
-> I am wondering what the value is in pushing this PM responsibility to
-> each individual MHI client driver and requiring every MHI operation to
-> be bracketed with runtime PM handling.
-> 
-> What does the client driver know here that the MHI core itself cannot
-> handle centrally? It feels like ensuring the controller is
-> runtime-active during transfer could be handled generically in the
-> framework instead of duplicating the same logic in every client.
+From: Cedric Jehasse <cedric.jehasse@luminex.be>
 
-Indeed if *feel* like the MHI core should be able to put together all
-the status needed to correctly track the PM.
+From the datasheets i've looked at these switches have 4 or 8 transmit
+queues per port.
+There's a PRI field in the dsa tag used to indicate which egress queue
+the frame is to be sent to.
+This isn't done for vlan tagged frames because this would overwrite the
+PCP value in the vlan tag (The PRI field in the dsa
+tag is used as the PCP value in the vlan tag).
 
-Adding PM tracking to the NIC driver network data-path looks quite bad.
+Signed-off-by: Cedric Jehasse <cedric.jehasse@luminex.be>
+---
+ drivers/net/dsa/mv88e6xxx/chip.c | 34 ++++++++++++++++++++++++++++++++++
+ drivers/net/dsa/mv88e6xxx/chip.h |  1 +
+ net/dsa/tag_dsa.c                |  3 ++-
+ 3 files changed, 37 insertions(+), 1 deletion(-)
 
-/P
+diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
+index 8ca5fd40df92..70a6d46066e7 100644
+--- a/drivers/net/dsa/mv88e6xxx/chip.c
++++ b/drivers/net/dsa/mv88e6xxx/chip.c
+@@ -3979,6 +3979,7 @@ static int mv88e6xxx_setup(struct dsa_switch *ds)
+ 
+ 	chip->ds = ds;
+ 	ds->user_mii_bus = mv88e6xxx_default_mdio_bus(chip);
++	ds->num_tx_queues = chip->info->num_tx_queues;
+ 
+ 	/* Since virtual bridges are mapped in the PVT, the number we support
+ 	 * depends on the physical switch topology. We need to let DSA figure
+@@ -5689,6 +5690,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		 */
+ 		.num_ports = 7,
+ 		.num_internal_phys = 2,
++		.num_tx_queues = 4,
+ 		.invalid_port_mask = BIT(2) | BIT(3) | BIT(4),
+ 		.max_vid = 4095,
+ 		.port_base_addr = 0x8,
+@@ -5711,6 +5713,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_databases = 64,
+ 		.num_ports = 7,
+ 		.num_internal_phys = 5,
++		.num_tx_queues = 4,
+ 		.max_vid = 4095,
+ 		.port_base_addr = 0x08,
+ 		.phy_base_addr = 0x00,
+@@ -5733,6 +5736,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_macs = 8192,
+ 		.num_ports = 10,
+ 		.num_internal_phys = 5,
++		.num_tx_queues = 4,
+ 		.max_vid = 4095,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x10,
+@@ -5757,6 +5761,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_macs = 8192,
+ 		.num_ports = 11,
+ 		.num_internal_phys = 0,
++		.num_tx_queues = 4,
+ 		.max_vid = 4095,
+ 		.port_base_addr = 0x10,
+ 		.phy_base_addr = 0x0,
+@@ -5778,6 +5783,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_macs = 8192,
+ 		.num_ports = 11,
+ 		.num_internal_phys = 8,
++		.num_tx_queues = 4,
+ 		.max_vid = 4095,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x10,
+@@ -5803,6 +5809,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_macs = 1024,
+ 		.num_ports = 3,
+ 		.num_internal_phys = 5,
++		.num_tx_queues = 4,
+ 		.max_vid = 4095,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x10,
+@@ -5828,6 +5835,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_macs = 8192,
+ 		.num_ports = 8,
+ 		.num_internal_phys = 0,
++		.num_tx_queues = 4,
+ 		.max_vid = 4095,
+ 		.port_base_addr = 0x10,
+ 		.phy_base_addr = 0x0,
+@@ -5850,6 +5858,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_ports = 6,
+ 		.num_internal_phys = 5,
+ 		.num_gpio = 11,
++		.num_tx_queues = 4,
+ 		.max_vid = 4095,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x10,
+@@ -5875,6 +5884,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_macs = 1024,
+ 		.num_ports = 6,
+ 		.num_internal_phys = 5,
++		.num_tx_queues = 4,
+ 		.max_vid = 4095,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x10,
+@@ -5901,6 +5911,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_macs = 8192,
+ 		.num_ports = 6,
+ 		.num_internal_phys = 0,
++		.num_tx_queues = 4,
+ 		.max_vid = 4095,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x10,
+@@ -5926,6 +5937,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_macs = 8192,
+ 		.num_ports = 7,
+ 		.num_internal_phys = 5,
++		.num_tx_queues = 4,
+ 		.max_vid = 4095,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x10,
+@@ -5952,6 +5964,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_ports = 7,
+ 		.num_internal_phys = 5,
+ 		.num_gpio = 15,
++		.num_tx_queues = 4,
+ 		.max_vid = 4095,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x10,
+@@ -5977,6 +5990,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_macs = 8192,
+ 		.num_ports = 7,
+ 		.num_internal_phys = 5,
++		.num_tx_queues = 4,
+ 		.max_vid = 4095,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x10,
+@@ -6003,6 +6017,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_ports = 7,
+ 		.num_internal_phys = 5,
+ 		.num_gpio = 15,
++		.num_tx_queues = 4,
+ 		.max_vid = 4095,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x10,
+@@ -6028,6 +6043,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_macs = 8192,
+ 		.num_ports = 10,
+ 		.num_internal_phys = 0,
++		.num_tx_queues = 4,
+ 		.max_vid = 4095,
+ 		.port_base_addr = 0x10,
+ 		.phy_base_addr = 0x0,
+@@ -6051,6 +6067,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_ports = 11,	/* 10 + Z80 */
+ 		.num_internal_phys = 9,
+ 		.num_gpio = 16,
++		.num_tx_queues = 8,
+ 		.max_vid = 8191,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x0,
+@@ -6076,6 +6093,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_ports = 11,	/* 10 + Z80 */
+ 		.num_internal_phys = 9,
+ 		.num_gpio = 16,
++		.num_tx_queues = 8,
+ 		.max_vid = 8191,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x0,
+@@ -6125,6 +6143,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_ports = 11,	/* 10 + Z80 */
+ 		.num_internal_phys = 8,
+ 		.internal_phys_offset = 1,
++		.num_tx_queues = 8,
+ 		.max_vid = 8191,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x0,
+@@ -6151,6 +6170,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_internal_phys = 8,
+ 		.num_tcam_entries = 256,
+ 		.internal_phys_offset = 1,
++		.num_tx_queues = 8,
+ 		.max_vid = 8191,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x0,
+@@ -6181,6 +6201,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_ports = 7,
+ 		.num_internal_phys = 2,
+ 		.invalid_port_mask = BIT(2) | BIT(3) | BIT(4),
++		.num_tx_queues = 4,
+ 		.max_vid = 4095,
+ 		.port_base_addr = 0x08,
+ 		.phy_base_addr = 0x00,
+@@ -6205,6 +6226,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_ports = 7,
+ 		.num_internal_phys = 5,
+ 		.num_gpio = 15,
++		.num_tx_queues = 4,
+ 		.max_vid = 4095,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x10,
+@@ -6230,6 +6252,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_databases = 64,
+ 		.num_ports = 7,
+ 		.num_internal_phys = 5,
++		.num_tx_queues = 4,
+ 		.max_vid = 4095,
+ 		.port_base_addr = 0x08,
+ 		.phy_base_addr = 0x00,
+@@ -6254,6 +6277,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_internal_phys = 9,
+ 		.num_gpio = 16,
+ 		.num_tcam_entries = 256,
++		.num_tx_queues = 8,
+ 		.max_vid = 8191,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x0,
+@@ -6282,6 +6306,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_internal_phys = 2,
+ 		.internal_phys_offset = 3,
+ 		.num_gpio = 15,
++		.num_tx_queues = 4,
+ 		.max_vid = 4095,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x10,
+@@ -6310,6 +6335,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_internal_phys = 2,
+ 		.internal_phys_offset = 3,
+ 		.num_gpio = 15,
++		.num_tx_queues = 4,
+ 		.max_vid = 4095,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x10,
+@@ -6337,6 +6363,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_internal_phys = 5,
+ 		.num_ports = 6,
+ 		.num_gpio = 11,
++		.num_tx_queues = 4,
+ 		.max_vid = 4095,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x10,
+@@ -6363,6 +6390,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_macs = 8192,
+ 		.num_ports = 7,
+ 		.num_internal_phys = 5,
++		.num_tx_queues = 4,
+ 		.max_vid = 4095,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x10,
+@@ -6388,6 +6416,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_macs = 8192,
+ 		.num_ports = 7,
+ 		.num_internal_phys = 5,
++		.num_tx_queues = 4,
+ 		.max_vid = 4095,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x10,
+@@ -6414,6 +6443,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_ports = 7,
+ 		.num_internal_phys = 5,
+ 		.num_gpio = 15,
++		.num_tx_queues = 4,
+ 		.max_vid = 4095,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x10,
+@@ -6442,6 +6472,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.invalid_port_mask = BIT(1) | BIT(2) | BIT(8),
+ 		.num_internal_phys = 5,
+ 		.internal_phys_offset = 3,
++		.num_tx_queues = 8,
+ 		.max_vid = 8191,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x0,
+@@ -6468,6 +6499,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_internal_phys = 9,
+ 		.num_gpio = 16,
+ 		.num_tcam_entries = 256,
++		.num_tx_queues = 8,
+ 		.max_vid = 8191,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x0,
+@@ -6495,6 +6527,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_ports = 11,	/* 10 + Z80 */
+ 		.num_internal_phys = 9,
+ 		.num_gpio = 16,
++		.num_tx_queues = 8,
+ 		.max_vid = 8191,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x0,
+@@ -6521,6 +6554,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_ports = 11,	/* 10 + Z80 */
+ 		.num_internal_phys = 8,
+ 		.num_tcam_entries = 256,
++		.num_tx_queues = 8,
+ 		.internal_phys_offset = 1,
+ 		.max_vid = 8191,
+ 		.max_sid = 63,
+diff --git a/drivers/net/dsa/mv88e6xxx/chip.h b/drivers/net/dsa/mv88e6xxx/chip.h
+index cde71828e9d9..19d8eda19b78 100644
+--- a/drivers/net/dsa/mv88e6xxx/chip.h
++++ b/drivers/net/dsa/mv88e6xxx/chip.h
+@@ -136,6 +136,7 @@ struct mv88e6xxx_info {
+ 	unsigned int num_internal_phys;
+ 	unsigned int num_gpio;
+ 	unsigned int num_tcam_entries;
++	unsigned int num_tx_queues;
+ 	unsigned int max_vid;
+ 	unsigned int max_sid;
+ 	unsigned int port_base_addr;
+diff --git a/net/dsa/tag_dsa.c b/net/dsa/tag_dsa.c
+index 2a2c4fb61a65..96c8fbedbd3b 100644
+--- a/net/dsa/tag_dsa.c
++++ b/net/dsa/tag_dsa.c
+@@ -179,6 +179,7 @@ static struct sk_buff *dsa_xmit_ll(struct sk_buff *skb, struct net_device *dev,
+ 			dsa_header[2] &= ~0x10;
+ 		}
+ 	} else {
++		u16 queue = skb_get_queue_mapping(skb) & 0x7;
+ 		u16 vid;
+ 
+ 		vid = br_dev ? MV88E6XXX_VID_BRIDGED : MV88E6XXX_VID_STANDALONE;
+@@ -191,7 +192,7 @@ static struct sk_buff *dsa_xmit_ll(struct sk_buff *skb, struct net_device *dev,
+ 
+ 		dsa_header[0] = (cmd << 6) | tag_dev;
+ 		dsa_header[1] = tag_port << 3;
+-		dsa_header[2] = vid >> 8;
++		dsa_header[2] = (queue << 5) | vid >> 8;
+ 		dsa_header[3] = vid & 0xff;
+ 	}
+ 
+
+-- 
+2.43.0
+
 
