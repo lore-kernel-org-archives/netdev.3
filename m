@@ -1,119 +1,210 @@
-Received: from mxout3.routing.net (mxout3.routing.net [134.0.28.8])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FA1A2C0F8C;
-	Tue, 26 May 2026 15:38:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=134.0.28.8
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779809916; cv=none; b=Koh0ZP4/5t+HztgcPw2NP6XmZBQRY8dMEGsRjUGhXe4SOczjHI6/LQtkXSekONELBE75dQeftQJNfwPeAhiY6IlK+tI3gRwZQBFo0Be9WN04WyBgtD2BzH/xedGDOugI6Ln8L74bMY31KPCNpTm6GOT0J78SfDYNV5ZudGnkNNc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779809916; c=relaxed/simple;
-	bh=SoF0+qd7Up8AsaKcAgt3JDCGyWedTZte8EHHCxI8dZw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HWsG5WPvNzvGygaeWi7ex+J0cgdFJ5oAHqsNAMKz54qJVeGkkO6V4z5HhBLamEqxVDcaOl1/x7fRuqRwrnMZ1p4wYv2+kyAzm4DezIdrdYw9ecnO1pKLudsuYLcpjRWNxNqoKDw/kQObYgYUWMCb7aDoBWXfLo1KdNesh8fh4CM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fw-web.de; spf=pass smtp.mailfrom=fw-web.de; dkim=pass (1024-bit key) header.d=mailerdienst.de header.i=@mailerdienst.de header.b=wQ7Oiy7m; arc=none smtp.client-ip=134.0.28.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fw-web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fw-web.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7033637757F;
+	Tue, 26 May 2026 15:40:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779810039; cv=fail; b=P/kjI4M3PHw6QgH3w92kDrZQ7GP3Ydlj7BW2EMeYQu5PCIGSTP5cAJlp1I/S/HVT/40CXR6aXhAbTWXuRNCdqE1EjDUWIOkYgY073X9xVriIYCiSqssEW8knLmvkunkT4kBh2yf6v1jDXWeP+gZh0+yBGHCP61wBQbCaB2vlErw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779810039; c=relaxed/simple;
+	bh=0Ph+5tYYCIxrjQYqbunNE9qSYd8yRuQ/zzOq5EGYxLw=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=ucEhWSx2RQ8GtoEWhfaskpTet9fSdiobqaqDHPu+JXcD1zeLVaLGLI1uhr7vyWtTbN9FlXhSxIxDQj/2h5QOOjqQu5kerJXiXCvCxydjF23HBpQardM+xqIWSziiqUV3hfGOvewPozXWFa3TxssPxYRYNOXGkpje46o4kdQG2RM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AkTYc6DN; arc=fail smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mailerdienst.de header.i=@mailerdienst.de header.b="wQ7Oiy7m"
-Received: from mxbulk.masterlogin.de (unknown [192.168.10.85])
-	by mxout3.routing.net (Postfix) with ESMTP id 79455602E6;
-	Tue, 26 May 2026 15:32:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailerdienst.de;
-	s=routing; t=1779809567;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=GESGTyRKjIQzxSqSfucE0sI1Xh7zcNnZwvp69z7bt8E=;
-	b=wQ7Oiy7mfqRvlFuzhLyK8gMi7Se7vPyXNVzHuCYNJrFLB3grvbo8IGsXqr1GIFdvUvNtdp
-	z2EMZosZPStIixvNBdkcq05+KhFpDClEa73Skw0JB8NcNAP0KsU5IiD2Cad1kYciKegETC
-	4HNMs5SAnyrYNvlq/ftNz6m18xo+UT0=
-Received: from frank-G5-5590 (fttx-pool-217.61.151.155.bambit.de [217.61.151.155])
-	by mxbulk.masterlogin.de (Postfix) with ESMTPSA id 3AC81120056;
-	Tue, 26 May 2026 15:32:47 +0000 (UTC)
-From: Frank Wunderlich <linux@fw-web.de>
-To: Alexander Couzens <lynxis@fe80.eu>,
-	Daniel Golle <daniel@makrotopia.org>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Cc: Frank Wunderlich <frank-w@public-files.de>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org
-Subject: [net v2] net: pcs: pcs-mtk-lynxi: fix bpi-r3 serdes configuration
-Date: Tue, 26 May 2026 17:32:38 +0200
-Message-ID: <20260526153239.30194-1-linux@fw-web.de>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AkTYc6DN"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1779810039; x=1811346039;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=0Ph+5tYYCIxrjQYqbunNE9qSYd8yRuQ/zzOq5EGYxLw=;
+  b=AkTYc6DNNK6VwfoeoYPc4OOyRnmxXO3Kw3oq4f2KmfxfgCE2L5tFglVo
+   uRTTSno1hJtCG+9IhAUjLueiDKPM/yOaAR0qJ/18pnNhJvyrAuyp6IxAu
+   eHL9/Y1IfkNqqH/d2TFJIb9Pm/QmwDLbdqHFOarB8Uf11V0q3yNvQhpUi
+   6n6bJehh/KKlktW0FzCsW86ZDbtIbIwFxDJq2yqVstW3lellBftMkLJhl
+   MuV6/IElLgC6zpAZduXj5zz6DTg7yzmG3vKwIAYAYELsG8hmem3fNd22N
+   Lsv2C8wlx0QIskKdC9e/tqWj9lsGJIs1Hsk4nj8jO3ST+DiXqYap2pdvg
+   Q==;
+X-CSE-ConnectionGUID: KufFatrYRCSOqfzWDdMnXA==
+X-CSE-MsgGUID: keouW0O9QimKLTIeES7FKg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11797"; a="92099540"
+X-IronPort-AV: E=Sophos;i="6.24,170,1774335600"; 
+   d="scan'208";a="92099540"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 May 2026 08:40:38 -0700
+X-CSE-ConnectionGUID: 0UvmZHY2QJWCIpxsQmTInw==
+X-CSE-MsgGUID: twpQgLq3SR6XecCKFLYscA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,170,1774335600"; 
+   d="scan'208";a="265565885"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+  by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 May 2026 08:40:36 -0700
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Tue, 26 May 2026 08:40:36 -0700
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Tue, 26 May 2026 08:40:36 -0700
+Received: from MW6PR02CU001.outbound.protection.outlook.com (52.101.48.1) by
+ edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Tue, 26 May 2026 08:40:36 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=EP2eJLakVJHArHu7yPq3lGPQlfaxNiLjYTQDCZQ61Z/GeVFKuNWGVP+tpzPsycnf0xpB4MpkrGon5ogaQjF9VO/lyP4g4GgnoNh33itpFmU2eISoh8erQkZ5CGyVyTNPprnBvxmwih7U5dxjAr/KIvcs8OeimxsJxSUNVcZEvvsxwX/bpSua2dZRsVeYQQJNknz1jIdlztwIWuIpIDpgY1/obyATkMJhpJ4pmTcCDL5XxQnCjagVVNM+8sLOkvFwfvDjRK4Acrn+rgywp+EKep3laezwDp+oXi546IKb/9rfsBUv/vz4S7DMsxDjYeHEvSiKPAE6XvYIUMkkF1RLyg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=nptmqvQkJifwSGXJSo87xDxCzEjDL0mGd1JgxH/qDl0=;
+ b=T87Fhwq5dNwORxG2C9Cc1EQ7bWUiUfM+pbMurTxCX/uAj28N9QDwC4qWMDfk4x35vwo2gct7pYMFjbX92VE66XnHS+NZmf/GFF1EUJBLyp/t0+IPHyhU3/dYBjQAe9SXAZcS016Px+gxbEaTivchY5+ht899aQ3M8985Tjm11fxk5lPkCOIKjxuQloqePLp2uQVg9wAmhtL0qgxRoAp23HbG4gKmeNWSeJr5OUCecDGCCERb/vhjLLo+hisBD4IMC/+GEWJbOqbTI7yK5/nOgomwt/An6QZybuEdnAoCmXrj83429+i2sNYU1pWqxubKt59Jdlly1BiFA5uURF87MA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DS0PR11MB8718.namprd11.prod.outlook.com (2603:10b6:8:1b9::20)
+ by DS0PR11MB7529.namprd11.prod.outlook.com (2603:10b6:8:141::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.11; Tue, 26 May
+ 2026 15:40:33 +0000
+Received: from DS0PR11MB8718.namprd11.prod.outlook.com
+ ([fe80::6aa:411d:4bfa:619c]) by DS0PR11MB8718.namprd11.prod.outlook.com
+ ([fe80::6aa:411d:4bfa:619c%5]) with mapi id 15.21.0071.011; Tue, 26 May 2026
+ 15:40:32 +0000
+Message-ID: <53216152-cfec-49de-856b-0378c9cb37ee@intel.com>
+Date: Tue, 26 May 2026 17:40:27 +0200
+User-Agent: Mozilla Thunderbird
+Subject: [PATCH] net/ipv6: icmp: fix is_ineligible() to block errors for
+ Redirect packets
+To: Sayooj K Karun <sayooj@aerlync.com>
+CC: <netdev@vger.kernel.org>, <dsahern@kernel.org>, <idosch@nvidia.com>,
+	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <horms@kernel.org>, <linux-kernel@vger.kernel.org>
+References: <20260526101622.38536-1-sayooj@aerlync.com>
+Content-Language: en-US
+From: Alexander Lobakin <aleksander.lobakin@intel.com>
+In-Reply-To: <20260526101622.38536-1-sayooj@aerlync.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: VI1PR08CA0244.eurprd08.prod.outlook.com
+ (2603:10a6:803:dc::17) To DS0PR11MB8718.namprd11.prod.outlook.com
+ (2603:10b6:8:1b9::20)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR11MB8718:EE_|DS0PR11MB7529:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9166795c-dea9-4b8d-b222-08debb3d1f40
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7416014|11063799006|18002099003|56012099003|22082099003;
+X-Microsoft-Antispam-Message-Info: /TkqD1ZNQQm3S5LIWqB0JjdpTzpGhpMRo5AGzveW7/Gt/fdI6ky3rscdb6z2pV/n9F6opA51ZdiheA02MYxLqsbH0zmwBp6mWqs0y1pHns/YPWSSjPBcQKn4eNP2P4Lo7ubFNTOv70vNYDJw0uJ2Y/Ey6Bg8boP+6wiZ4lnLZTBjZe18I0NINM2F98U6mnNd31r2eyJG0Y7B/EU63aXRrMiMY5orL25mZUvcuPoccu3BgHAv60HqV/Zbtodcn73LACeV5DW+tBsCZj7Hf3GXAvGvwYFLI+qhp5Ka1TNOf3bgxiRAsV61brk6tPWiMVwwlvHzs3nemmV1Qs8KEAXnJ2fsJUEJnKkgDakSkQZFFjD7/UXpgXVrGCpiEWytplNQ5VVsTa0H5uFxxImXnc/BcxebN5gk72ORF8Zi2aNyY1DL0aUzYHDoLkoe4xtwyqmP62+ZecUATcdiGCBtLdAV3My/2cTmnv7iJuzIhTM8kdxbwDbX6YAAUXYZTm3Inehfrvwm5B30RJc+P78p/WkuTBBMxW+ST1VsPT0e9oEsulhp2I7yd+IyeLfzgKLIXCjvXWaH/UuRzaA5qlgnH301Ivyg1nj8eiskuiYPGSPjMyGzff5K/fCwCnqdLgwRkpdUcynx9bhNSZMdNU78kda2Zt9cM6hwopVD9tSV8rEaVHPrkIVGH7jge5VaPbRPzBvE
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB8718.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(11063799006)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?MUpXTmhGT0FnenF4TlJJUFd1L1FDL3hOMkhqbEl0MDJYODQzL2RpKzMxZ2Jn?=
+ =?utf-8?B?MXRYbExIenE1ZlFGK21mTllMVTJFYk42TTZFbE90RVc0azhDVWJRL1JJNklM?=
+ =?utf-8?B?dmFlR05peXlvMGxSZE13dWxEM2NhMXR5U3BDNzhmRVJ4Tm9CL3pYaXpIc043?=
+ =?utf-8?B?d0NNRGhQdE5QWHk0ZFVIV1o0L01Idm9TNE5yYmN4aDR2bVROOWRrbUplN0RC?=
+ =?utf-8?B?Wmp0WXJlcmFlUTNndHJsMmphamF6a1o5dUFHRzg3K1R6dDc0M2lZaHhwN1BL?=
+ =?utf-8?B?cG1ncE9tWU53MmtCKzl0NkJMOVZjdFRzUGF1S2hVbzhNWTNEclZuOGVUV2gy?=
+ =?utf-8?B?aGtOQVg3RVNaTGxFNXpHalR1em1iaXpYQlJxREJIYVEwcVZScmpaU0VTVVlq?=
+ =?utf-8?B?Um53UmZaamJxU0hqQzNCNVROLzRqWFdLMGhhQXoraTYvUFBmNEhackVtd3hS?=
+ =?utf-8?B?aFpBczlMeEhQaUxLYUdnSVJQMTZ3U1A4NHB1M0Jhd0UxVEM5Z2VRbkxJaDZC?=
+ =?utf-8?B?Z0g2ZTdoMGFLNFRNU01VeXRGVjRTOTI2YjNOU3JjY3pkMmI5M1Z4ajRJUjhS?=
+ =?utf-8?B?aGxwaFBEcUQwRXArY21RV2FRRHBtYzV6U2N1cU9uSDFoK04rU0hqVk9ZaVMz?=
+ =?utf-8?B?VGxERStVSms2ZjlYWmpUWUJROURmVE1CbVBMY3VjKzhsR3NJZThmR1h0NFJm?=
+ =?utf-8?B?WWRGUFdGTm5TQ0hUZW05Z09kbi9uTlBITnB1N1ljSEJXNEtVdDBsc3FxZzRw?=
+ =?utf-8?B?TDZoa0hVY2VFaEJkQWQzMHRWQnVtaitHUHZNQlptSWpMdUh6QmdTTVNTenBx?=
+ =?utf-8?B?bnYrUTYrY1JDay9EWDk1QUd3b2xZekttdjZMckgvQWJJWWtVQldCaDA5bk44?=
+ =?utf-8?B?WDcxbDhuRmJsalF5eG01YnJMR28rdCtUbVlRN2NKSkRjcmU0Z3ovMlByazNH?=
+ =?utf-8?B?TFlmWHF0UU5hVkNNU1J5OEtHOUszTHprUEdSV29SZWRPS09JS0w1aHpMQlNq?=
+ =?utf-8?B?Q2d6MHNRbXBDcnBlQktmZjJ5WStieW1rQWs2YW1CUUUrUmw4aFhPVFZibkt2?=
+ =?utf-8?B?VUF6QjBaOU90WnRtUVZRS0E2c09EemdqR2FoR0EyM2k4SjBUMm9RU3d2bWkx?=
+ =?utf-8?B?b2QrOWlub0pGZENsM3NDVWVLa081SElGZDZ0WEhaeXgwUDVzSFVrTnBUM3k0?=
+ =?utf-8?B?SEF1ei8yUWh4dWQ2ancyMjNlVUNvRDdoaWU1bkVsWEdjUDVMK3RlZTVvK0hj?=
+ =?utf-8?B?YU5GWTVwTVVYV0NhYUphVlFVUFdWTFZFWlpkNkJiakRBQjg0bDZqMnZDakVv?=
+ =?utf-8?B?aW9oUUY5NEZVNkd4MnVEdDV3b3VzeVlKTUo2SnZMOUFRMkQ1YWhYRUZGOSs2?=
+ =?utf-8?B?TjRXUGxLVXoxK2dBNmFnM2lMZWkzVCtGbFY3UWtpNGhKMFQzY0I3SjdDRS9o?=
+ =?utf-8?B?aUlQMzNWYjluSXJlY25BYW9sZDY3eDA3RTdZbFRSSGlDY1g4MGo1b1BJaTJ5?=
+ =?utf-8?B?cGdWNEdRam1BcXg1R3ZrdXRGY1Vselh4SEU2ZEVUZ0syOUJOR2hTbUNHRkcy?=
+ =?utf-8?B?N0Vmak5GbUZBbXRMYS95ZlZSL0RZQ0N1aUlaY3ByQjVqWHd5QlgrWmF0VTFD?=
+ =?utf-8?B?VllGWE1ZRFpqRWlJSnA5NEE2LzdrYS9XM3k0REhJUnRabzNVN3FJaHl6YTZX?=
+ =?utf-8?B?cG9oR3hHZENFek5LbmRFSGNmelhtZVIyYkZobXV6VjU0OTlUT1ZPOVZ0WnE5?=
+ =?utf-8?B?bDZSRlR6YmVNQy9Jc1ZVM3VSa3l6R3ZLSXhDOE5SdHEyRTlPSWNTeHRCb3NY?=
+ =?utf-8?B?TzJobExjb1huUkVlMUVFTFFqLy9uZGVmZVhIUUxjeFNyc3RpZytoemlFeXI2?=
+ =?utf-8?B?bXdhWFllUkdpVEc4UlJmSFU4V1NZUGlGcCtUbFQwaXhKMy8wNG1DMWlFUVIv?=
+ =?utf-8?B?aHVSY2FpMG9NSi8rRk45Z2dXWUN0VUMwdFlkZnYyRVdYQnlWWVp0elJRZHI5?=
+ =?utf-8?B?bVpqM0pHd2hWQUdKWm5KaW9uMDIwc0NXRG1ObkhhbWg0djhaMFVaNzJaVUd3?=
+ =?utf-8?B?WVd2Qk14SmlWMk9jWjZGaXFLSVZOVzFVSDVVZGh6R3MvZXNjdWFjb3FMOXpC?=
+ =?utf-8?B?SHk0bmo5MWwweHZwSUhxMW05MTJ5RWVYYVNucnA0Q1VPUWxrNmVFbTZ5WjU2?=
+ =?utf-8?B?M3hxZW5sd1FTcWVZSVN2dnNDNnZaVDBZbXFSaU9TQmMxay9ZcitJd2ZWRmR5?=
+ =?utf-8?B?VDNrSVV5Q0VvRXZSUnFadHJXUDNaUE9JRmUxSm5VMk14ZEVqMU0xZy9RTWFn?=
+ =?utf-8?B?VjIvNlB3QWpZN0V3NGpoSDBnd1VaRFQrR2tzQUZ4UER0Nmc3eVFoRUdXc2pV?=
+ =?utf-8?Q?b3Eg6q9fGlLYq3UI=3D?=
+X-Exchange-RoutingPolicyChecked: DH9geS2++KTPUMrnDwRLvDGYY9TxZ8b2huuHrYhWyeR0EKscCvEjdjZCxiPKruhkTCNxlR/LrFzcjUt6jcsT2sIGUcHVcUGp/FVeaSPvgDvW6rYcxLSQy8qOUcACM1BMAuVXuVgZ33AqyX5LoyZWS/MfRfXE/KYULKypEz6SKo8weMydxQylLsDo9C242Ea3z1hVRrUB5Wl3q4PXOV9A9Uy4WJqbwcw2OK4DmxUIzejWARqy/lreKJXop4EujVvC9DyXp5/UiXfTefszfQDzVzZdNUA0Ko+aQVbezz73+ADn6VoM+dw07ynK1rnEFpTisw4kckXPRlH4ucUtFLXNog==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9166795c-dea9-4b8d-b222-08debb3d1f40
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB8718.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 May 2026 15:40:32.8883
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: dq5FXk8SJVMCVa7t8sdCknDaa2qVLyZnrQ7IGFktGWtPQo9SgAwk4eR5ELEYTQlKRNrWWfT+QeQ6Dkuep7ixpFrg9VlBeXghNP0dJgbOS1M=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR11MB7529
+X-OriginatorOrg: intel.com
 
-From: Frank Wunderlich <frank-w@public-files.de>
+From: Sayooj K Karun <sayooj@aerlync.com>
+Date: Tue, 26 May 2026 15:46:22 +0530
 
-Commit 8871389da151 introduces common pcs dts properties which writes
-rx=normal,tx=normal polarity to register SGMSYS_QPHY_WRAP_CTRL of switch.
-This is initialized with tx-bit set and so change inverts polarity
-compared to before.
+> [PATCH] net/ipv6: icmp: fix is_ineligible() to block errors for Redirect packets
 
-It looks like mt7531 has tx polarity inverted in hardware and set tx-bit
-by default to restore the normal polarity.
+Is this a fix or a feature? The subject prefix must contain either
+"net-next" (if targeting the feature tree) or "net" (if targeting the
+fixes tree)
 
-The MT7531 datasheet quite clearly states:
-Register 000050EC QPHY_WRAP_CTRL -- QPHY wrapper control
-Reset value: 0x00000501
+> RFC 4443 section 2.4(e.2) mandates that an ICMPv6 error message MUST NOT
+> be originated in response to an ICMPv6 Redirect message (type 137).
+> 
+> Add check for NDISC_REDIRECT (137) so that redirect packets become
+> ineligible and error packets are not generated for Redirect messages.
 
-BIT 1 RX_BIT_POLARITY -- RX bit polarity control
- 1'b0: normal
- 1'b1: inverted
+...for I didn't understand from the commit message which tree this
+should be taken to and whether this should be considered for backporting.
 
-BIT 0 TX_BIT_POLARITY -- TX bit polarity control (TX default inversed
-in MT7531)
- 1'b0: normal
- 1'b1: inverted
+I'd also like to hear about real life scenarios where this misbehaves
+and what gets affected by this.
 
-Till this patch the register write was only called when mediatek,pnswap
-property was set which cannot be done for switch because the fw-node param
-was always NULL from switch driver in the mtk_pcs_lynxi_create call.
+IOW very poor description to be reviewable.
 
-Do not configure switch side like it's done before.
+> 
+> Signed-off-by: Sayooj K Karun <sayooj@aerlync.com>
+> ---
+>  net/ipv6/icmp.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/net/ipv6/icmp.c b/net/ipv6/icmp.c
+> index efb23807a026..3fdb3a97dd8e 100644
+> --- a/net/ipv6/icmp.c
+> +++ b/net/ipv6/icmp.c
+> @@ -157,7 +157,8 @@ static bool is_ineligible(const struct sk_buff *skb)
+>  		 */
+>  		if (!tp && frag_off != 0)
+>  			return false;
+> -		else if (!tp || !(*tp & ICMPV6_INFOMSG_MASK))
+> +		else if (!tp || !(*tp & ICMPV6_INFOMSG_MASK) ||
+> +			 *tp == NDISC_REDIRECT)
+>  			return true;
+>  	}
+>  	return false;
 
-Fixes: 8871389da151 ("net: pcs: pcs-mtk-lynxi: deprecate "mediatek,pnswap"")
-Signed-off-by: Frank Wunderlich <frank-w@public-files.de>
-Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
----
-v2:
-  - send as non-RFC
-  - add datasheet information from Daniel
----
- drivers/net/pcs/pcs-mtk-lynxi.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/drivers/net/pcs/pcs-mtk-lynxi.c b/drivers/net/pcs/pcs-mtk-lynxi.c
-index c12f8087af9b..a753bd88cbc2 100644
---- a/drivers/net/pcs/pcs-mtk-lynxi.c
-+++ b/drivers/net/pcs/pcs-mtk-lynxi.c
-@@ -129,6 +129,9 @@ static int mtk_pcs_config_polarity(struct mtk_pcs_lynxi *mpcs,
- 	unsigned int val = 0;
- 	int ret;
- 
-+	if (!fwnode)
-+		return 0;
-+
- 	if (fwnode_property_read_bool(fwnode, "mediatek,pnswap"))
- 		default_pol = PHY_POL_INVERT;
- 
--- 
-2.53.0
-
+Thanks,
+Olek
