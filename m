@@ -1,84 +1,57 @@
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mxout3.routing.net (mxout3.routing.net [134.0.28.8])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C164377543
-	for <netdev@vger.kernel.org>; Tue, 26 May 2026 15:37:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FA1A2C0F8C;
+	Tue, 26 May 2026 15:38:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=134.0.28.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779809854; cv=none; b=LEo7wPpfKw/srMtb8bSE3wfVZSqOfOnh+n9sVijUoO8OBFJ9EsAYBWO9JqQZlRokscCnX+erToKOrnfQCY8xiDObRSBeQaTKKV/XmaIapNgqxE87nksJfqrvaHtOYB0tk9DFy5TlTrZguP4yOsP0InNSvWNLMEHBaRH7pM8oEZI=
+	t=1779809916; cv=none; b=Koh0ZP4/5t+HztgcPw2NP6XmZBQRY8dMEGsRjUGhXe4SOczjHI6/LQtkXSekONELBE75dQeftQJNfwPeAhiY6IlK+tI3gRwZQBFo0Be9WN04WyBgtD2BzH/xedGDOugI6Ln8L74bMY31KPCNpTm6GOT0J78SfDYNV5ZudGnkNNc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779809854; c=relaxed/simple;
-	bh=aHiP5iPDgTnfx2MlFNZtRtLLl24SwK+8MfSYE5ZAVhE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=a9ON3HPh8btlnWmnXeViYcrwISiaTpiWfSYvjnR4FWa/dtnJkVyS7dkq56BEqY2nyT99qnCfvjwIEwIBXrcUYbmryk2506YTQtV+C3Tl5nsxMcmmDq/emXmYuReuaolRlgqFmlrLn2+1caNWFPgi+y0TMEXh6Iq5GVWNllkxu9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O4qqI6iA; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1779809916; c=relaxed/simple;
+	bh=SoF0+qd7Up8AsaKcAgt3JDCGyWedTZte8EHHCxI8dZw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HWsG5WPvNzvGygaeWi7ex+J0cgdFJ5oAHqsNAMKz54qJVeGkkO6V4z5HhBLamEqxVDcaOl1/x7fRuqRwrnMZ1p4wYv2+kyAzm4DezIdrdYw9ecnO1pKLudsuYLcpjRWNxNqoKDw/kQObYgYUWMCb7aDoBWXfLo1KdNesh8fh4CM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fw-web.de; spf=pass smtp.mailfrom=fw-web.de; dkim=pass (1024-bit key) header.d=mailerdienst.de header.i=@mailerdienst.de header.b=wQ7Oiy7m; arc=none smtp.client-ip=134.0.28.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fw-web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fw-web.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O4qqI6iA"
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-49040362e4aso51688975e9.0
-        for <netdev@vger.kernel.org>; Tue, 26 May 2026 08:37:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779809851; x=1780414651; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=X9PBIjlRM30LWt9CU8BNuDCg7sgYuhWgWgktG0ZmDLI=;
-        b=O4qqI6iAhdOgkB4aYzm3DT3o7HJiI+uzEE+cr1mN0076ylsVg0bBBftDtX4OBWihpd
-         D4GueLSK62FXwTHox+B0W0jOFf9//4c459AlDHrv15iPy1HoNR0DgSwVtd5kGdNHZa7N
-         56BRqnFL9XSFYsiOtcD4Yv+52kq1gH99gB25F1Ddw+7ksI3UczURRfHAxOBJqNM0274z
-         DixwogMr5ddkngvpVgTkK/sLUtjziu1S9cbs4uB4zjLFarMbhNtw+jRfOZk5tvkTyfQ7
-         Bx2gWBLRn2NLpI46eponPmoQvJF+gLMR/vVRaQiW4JRRFzdg4xaWcOVg/H/NDPWzAyEK
-         UrsA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779809851; x=1780414651;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=X9PBIjlRM30LWt9CU8BNuDCg7sgYuhWgWgktG0ZmDLI=;
-        b=dWUut2xEBOADhH84KyInMF2X7ZXyuN7/WrFgKUqOg9+Z967QoDkVBDZE5G5hqc2IhU
-         mpaqCm+1yIk9MwKsLM8V5sz10gmwLTkiloFEEXQS51mePJcOCXBziafk9IS0DQ0K60sx
-         6jt5bfakBnVwaS539ZDTcvk54gFERFnwlPMyDjWyPa0QESl9Bxxx8yMCkh2N0jUIgtKu
-         O7AIi+q1QC7C2mwzIU1nRh7mqFWtehAgx3SPEHl/hqqM7tzuKcJuAMssEC8FAbYZkvVG
-         xnUbsLmOWtFnHA94y6Z63+SJXsw3fKTWz2NxWNbKS2VRo7OAsm7rE/3B+bOijyW/Zf28
-         kdtg==
-X-Forwarded-Encrypted: i=1; AFNElJ9IISo3fwAn7qZFsFoVT9HVXQ9Tff9nXIlv5NeZnYeIATZAvDm49+H4gGNfPpWS0ZAkPv1oWLU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyEvtFlCInctHB9+60rRDwXNSsNG1ZgxxrolAjlu+ed4DAZW0DF
-	pqo1RmEKv1u4SSah8AXeYqauPfyR9e5s5zsTu4VjCC2s3LY8erT+FyWD
-X-Gm-Gg: Acq92OFmAweqfLxbeK1Kd6s5sZobC4J3DPmGRIL/XMNQXS+n9oYnJPgyIVf6mTVwsAl
-	+UpuFuq+5DaXgDk5sI1SNPbV/ThuMhM5hJj/GWGt2DbgvGANHKaELaqGrxrZWlDL1fHiFN1lKqR
-	LDpLSbqPno1U5pFRBIhG5dGKat7rqgAxIsAwj2dqs4wx3nkCTpJIxOyelzFcM1ctlE/751aOTPN
-	ubZ1MVqK/OXwgCxKySzeISf0AFKhp70t0VVUMDYTlxIrFzL3WIDUY/uXgTRRmlshauNvbO5LkdY
-	/VRTTE7f+ZsHfOYqRA4+mvufO0gywsQCYrG3vOe0p5HSeaSmaOOY4CI2fYurohMEplc4hv43RD9
-	rUqiEPa4J87SCtP33Z+cA/iuGrfFsYgXFqbsZG/DhtvUogbZdaU2XgYliYgbg/zhpslSyWpMthv
-	A8yZE06YVOvdk5l0Ruq188wH6AjHw=
-X-Received: by 2002:a05:600c:1992:b0:48a:9428:5522 with SMTP id 5b1f17b1804b1-490426bc7dcmr316962155e9.16.1779809851296;
-        Tue, 26 May 2026 08:37:31 -0700 (PDT)
-Received: from mtardy-friendly-lvh-runner.local ([2600:1900:4010:1a8::])
-        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-4907df9edeasm1083655e9.9.2026.05.26.08.37.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 May 2026 08:37:30 -0700 (PDT)
-From: Mahe Tardy <mahe.tardy@gmail.com>
-To: bpf@vger.kernel.org
-Cc: martin.lau@linux.dev,
-	daniel@iogearbox.net,
-	john.fastabend@gmail.com,
-	ast@kernel.org,
-	andrii@kernel.org,
-	yonghong.song@linux.dev,
-	jordan@jrife.io,
+	dkim=pass (1024-bit key) header.d=mailerdienst.de header.i=@mailerdienst.de header.b="wQ7Oiy7m"
+Received: from mxbulk.masterlogin.de (unknown [192.168.10.85])
+	by mxout3.routing.net (Postfix) with ESMTP id 79455602E6;
+	Tue, 26 May 2026 15:32:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailerdienst.de;
+	s=routing; t=1779809567;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=GESGTyRKjIQzxSqSfucE0sI1Xh7zcNnZwvp69z7bt8E=;
+	b=wQ7Oiy7mfqRvlFuzhLyK8gMi7Se7vPyXNVzHuCYNJrFLB3grvbo8IGsXqr1GIFdvUvNtdp
+	z2EMZosZPStIixvNBdkcq05+KhFpDClEa73Skw0JB8NcNAP0KsU5IiD2Cad1kYciKegETC
+	4HNMs5SAnyrYNvlq/ftNz6m18xo+UT0=
+Received: from frank-G5-5590 (fttx-pool-217.61.151.155.bambit.de [217.61.151.155])
+	by mxbulk.masterlogin.de (Postfix) with ESMTPSA id 3AC81120056;
+	Tue, 26 May 2026 15:32:47 +0000 (UTC)
+From: Frank Wunderlich <linux@fw-web.de>
+To: Alexander Couzens <lynxis@fe80.eu>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Cc: Frank Wunderlich <frank-w@public-files.de>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
 	netdev@vger.kernel.org,
-	netfilter-devel@vger.kernel.org,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	Mahe Tardy <mahe.tardy@gmail.com>
-Subject: [PATCH bpf-next v7 7/7] selftests/bpf: add bpf_icmp_send recursion test
-Date: Tue, 26 May 2026 15:37:08 +0000
-Message-Id: <20260526153708.279717-8-mahe.tardy@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260526153708.279717-1-mahe.tardy@gmail.com>
-References: <20260526153708.279717-1-mahe.tardy@gmail.com>
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org
+Subject: [net v2] net: pcs: pcs-mtk-lynxi: fix bpi-r3 serdes configuration
+Date: Tue, 26 May 2026 17:32:38 +0200
+Message-ID: <20260526153239.30194-1-linux@fw-web.de>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -87,152 +60,60 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This test is similar to test_icmp_send_unreach_cgroup but checks that,
-in case of recursion, meaning that the BPF program calling the kfunc was
-re-triggered by the icmp_send done by the kfunc, the kfunc will stop
-early and return -EBUSY.
+From: Frank Wunderlich <frank-w@public-files.de>
 
-The test attaches to the root cgroup to ensure the ICMP packet generated
-by the kfunc re-triggers the BPF program. Since it's attached only for
-this recursion test, it should not disrupt the whole network.
+Commit 8871389da151 introduces common pcs dts properties which writes
+rx=normal,tx=normal polarity to register SGMSYS_QPHY_WRAP_CTRL of switch.
+This is initialized with tx-bit set and so change inverts polarity
+compared to before.
 
-Signed-off-by: Mahe Tardy <mahe.tardy@gmail.com>
+It looks like mt7531 has tx polarity inverted in hardware and set tx-bit
+by default to restore the normal polarity.
+
+The MT7531 datasheet quite clearly states:
+Register 000050EC QPHY_WRAP_CTRL -- QPHY wrapper control
+Reset value: 0x00000501
+
+BIT 1 RX_BIT_POLARITY -- RX bit polarity control
+ 1'b0: normal
+ 1'b1: inverted
+
+BIT 0 TX_BIT_POLARITY -- TX bit polarity control (TX default inversed
+in MT7531)
+ 1'b0: normal
+ 1'b1: inverted
+
+Till this patch the register write was only called when mediatek,pnswap
+property was set which cannot be done for switch because the fw-node param
+was always NULL from switch driver in the mtk_pcs_lynxi_create call.
+
+Do not configure switch side like it's done before.
+
+Fixes: 8871389da151 ("net: pcs: pcs-mtk-lynxi: deprecate "mediatek,pnswap"")
+Signed-off-by: Frank Wunderlich <frank-w@public-files.de>
+Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
 ---
- .../bpf/prog_tests/icmp_send_kfunc.c          | 42 +++++++++++++++++-
- tools/testing/selftests/bpf/progs/icmp_send.c | 44 +++++++++++++++++++
- 2 files changed, 85 insertions(+), 1 deletion(-)
+v2:
+  - send as non-RFC
+  - add datasheet information from Daniel
+---
+ drivers/net/pcs/pcs-mtk-lynxi.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/icmp_send_kfunc.c b/tools/testing/selftests/bpf/prog_tests/icmp_send_kfunc.c
-index 51f809ea6896..f48e1d41e3ed 100644
---- a/tools/testing/selftests/bpf/prog_tests/icmp_send_kfunc.c
-+++ b/tools/testing/selftests/bpf/prog_tests/icmp_send_kfunc.c
-@@ -1,6 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0
- #include <test_progs.h>
- #include <network_helpers.h>
-+#include <cgroup_helpers.h>
- #include <linux/errqueue.h>
- #include <poll.h>
- #include "icmp_send.skel.h"
-@@ -10,6 +11,7 @@
- #define ICMP_DEST_UNREACH 3
- #define ICMPV6_DEST_UNREACH 1
-
-+#define ICMP_HOST_UNREACH 1
- #define ICMP_FRAG_NEEDED 4
- #define NR_ICMP_UNREACH 15
- #define ICMPV6_REJECT_ROUTE 6
-@@ -193,7 +195,6 @@ void test_icmp_send_unreach_tc(void)
-
- 	if (test__start_subtest("ipv4"))
- 		run_icmp_test(skel, AF_INET, "127.0.0.1", NR_ICMP_UNREACH);
--
- 	if (test__start_subtest("ipv6"))
- 		run_icmp_test(skel, AF_INET6, "::1", ICMPV6_REJECT_ROUTE);
-
-@@ -201,3 +202,42 @@ void test_icmp_send_unreach_tc(void)
- 	bpf_link__destroy(link);
- 	icmp_send__destroy(skel);
- }
+diff --git a/drivers/net/pcs/pcs-mtk-lynxi.c b/drivers/net/pcs/pcs-mtk-lynxi.c
+index c12f8087af9b..a753bd88cbc2 100644
+--- a/drivers/net/pcs/pcs-mtk-lynxi.c
++++ b/drivers/net/pcs/pcs-mtk-lynxi.c
+@@ -129,6 +129,9 @@ static int mtk_pcs_config_polarity(struct mtk_pcs_lynxi *mpcs,
+ 	unsigned int val = 0;
+ 	int ret;
+ 
++	if (!fwnode)
++		return 0;
 +
-+void test_icmp_send_unreach_recursion(void)
-+{
-+	struct icmp_send *skel;
-+	int cgroup_fd = -1;
-+
-+	skel = icmp_send__open_and_load();
-+	if (!ASSERT_OK_PTR(skel, "skel_open"))
-+		goto cleanup;
-+
-+	if (setup_cgroup_environment()) {
-+		fprintf(stderr, "Failed to setup cgroup environment\n");
-+		goto cleanup;
-+	}
-+
-+	cgroup_fd = get_root_cgroup();
-+	if (!ASSERT_GE(cgroup_fd, 0, "get_root_cgroup"))
-+		goto cleanup;
-+
-+	skel->links.recursion =
-+		bpf_program__attach_cgroup(skel->progs.recursion, cgroup_fd);
-+	if (!ASSERT_OK_PTR(skel->links.recursion, "prog_attach_cgroup"))
-+		goto cleanup;
-+
-+	trigger_prog_read_icmp_errqueue(skel, ICMP_HOST_UNREACH, AF_INET,
-+					"127.0.0.1");
-+
-+	/* Because there's recursion involved, the first call will return at
-+	 * index 1 since it will return the second, and the second call will
-+	 * return at index 0 since it will return the first.
-+	 */
-+	ASSERT_EQ(skel->data->rec_kfunc_rets[0], -EBUSY, "kfunc_rets[0]");
-+	ASSERT_EQ(skel->data->rec_kfunc_rets[1], 0, "kfunc_rets[1]");
-+
-+cleanup:
-+	cleanup_cgroup_environment();
-+	icmp_send__destroy(skel);
-+	close(cgroup_fd);
-+}
-diff --git a/tools/testing/selftests/bpf/progs/icmp_send.c b/tools/testing/selftests/bpf/progs/icmp_send.c
-index 5fa5467bdb70..c899fb7b28d2 100644
---- a/tools/testing/selftests/bpf/progs/icmp_send.c
-+++ b/tools/testing/selftests/bpf/progs/icmp_send.c
-@@ -14,6 +14,9 @@ int unreach_type = 0;
- int unreach_code = 0;
- int kfunc_ret = -1;
-
-+unsigned int rec_count = 0;
-+int rec_kfunc_rets[] = { -1, -1 };
-+
- SEC("cgroup_skb/egress")
- int egress(struct __sk_buff *skb)
- {
-@@ -125,4 +128,45 @@ int tc_egress(struct __sk_buff *skb)
- 	return TCX_DROP;
- }
-
-+SEC("cgroup_skb/egress")
-+int recursion(struct __sk_buff *skb)
-+{
-+	void *data = (void *)(long)skb->data;
-+	void *data_end = (void *)(long)skb->data_end;
-+	struct tcphdr *tcph;
-+	struct iphdr *iph;
-+	int ret;
-+
-+	iph = data;
-+	if ((void *)(iph + 1) > data_end || iph->version != 4)
-+		return SK_PASS;
-+
-+	if (iph->daddr != bpf_htonl(SERVER_IP))
-+		return SK_PASS;
-+
-+	if (iph->protocol == IPPROTO_TCP) {
-+		tcph = (void *)iph + iph->ihl * 4;
-+		if ((void *)(tcph + 1) > data_end ||
-+		    tcph->dest != bpf_htons(server_port))
-+			return SK_PASS;
-+	} else if (iph->protocol != IPPROTO_ICMP) {
-+		return SK_PASS;
-+	}
-+
-+	/* This call will provoke a recursion: the ICMP packet generated by the
-+	 * kfunc will re-trigger this program since we are in the root cgroup in
-+	 * which the kernel ICMP socket belongs. However when re-entering the
-+	 * kfunc, it should return EBUSY.
-+	 */
-+	ret = bpf_icmp_send(skb, unreach_type, unreach_code);
-+	rec_kfunc_rets[rec_count & 1] = ret;
-+	__sync_fetch_and_add(&rec_count, 1);
-+
-+	/* Let the first ICMP error message pass */
-+	if (iph->protocol == IPPROTO_ICMP)
-+		return SK_PASS;
-+
-+	return SK_DROP;
-+}
-+
- char LICENSE[] SEC("license") = "Dual BSD/GPL";
---
-2.34.1
+ 	if (fwnode_property_read_bool(fwnode, "mediatek,pnswap"))
+ 		default_pol = PHY_POL_INVERT;
+ 
+-- 
+2.53.0
 
