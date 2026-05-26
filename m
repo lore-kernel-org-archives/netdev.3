@@ -1,172 +1,78 @@
-Received: from mail-oa1-f44.google.com (mail-oa1-f44.google.com [209.85.160.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16EA43BB661
-	for <netdev@vger.kernel.org>; Tue, 26 May 2026 23:21:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.44
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779837712; cv=pass; b=FchI2/O/Ho2CLnK8j9jjV29A26GCvYaSsCGaucvV+x1qJtiEdN5NCzxMo5N2kSj1Kzy5cTR9Y37SMA8ZQw+Hj3ch/b/waFSbVvfQxi9NwW9VfRkUaHX9DtZ0ipKs7O8XydU/kTUW7WKzuAtS0fkezG+bYTUdCrPsnqrzt4Ntc6Y=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779837712; c=relaxed/simple;
-	bh=u5AZ6lDvJHN6hkOMWJlEHdIYy+BPs1w8b0bOdZZRyJY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=J8P1loUVUomiiqG9jxUxwmMUebwmX8mlQo+8Wpdy0jft0r43JcylwcnNbckyPyjoJFck8OCFktOuizbYdXtThk41HbgyFc4aVq2TynN5Q1N8nv3tM9JIwgnVvn2FjUsLWDOX4WWGLoZnoITs+NEORCwa+iygIRfRq/nriaBScMg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZoF8Uarq; arc=pass smtp.client-ip=209.85.160.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 221A1236A73
+	for <netdev@vger.kernel.org>; Tue, 26 May 2026 23:27:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779838059; cv=none; b=iX7xDPH5c5N5is/x7KI/pwsxWKwNgcgAWbuIF9VQGAf11wskzzT6r6KX2gweFDe7z3gHdCHMC0Vxw8RajlZ4gbcWsSV7SD99h/Alm3WjjqUJbSogtPAp943KOEiufZfmKGhTjYav0LuQ8mGKj3KxfdVtfoaGt2lH/riPNgz3aOQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779838059; c=relaxed/simple;
+	bh=XWKRugdBCbif77kQ32/usUUQ8ogLQokJ6R2uYwHANV8=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=sEW0MQlWZQHHgyQTS/k7SZvo+bRdc96yMccmbhLOc1QGsvE5ZiaVC4H7p4g4QsjJ9EXEFkJhKb6ZH1vM9Eeg4dnyzClGllU7vdvcFPVXFBW03/FFIwVNeSpEuYtfXmRkNTos9g9z8KqhlZZUmVlhfNKMc+zMWRHdLUgw9IoqJvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WAwRHmmj; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZoF8Uarq"
-Received: by mail-oa1-f44.google.com with SMTP id 586e51a60fabf-43bf6230cffso1231950fac.0
-        for <netdev@vger.kernel.org>; Tue, 26 May 2026 16:21:50 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779837710; cv=none;
-        d=google.com; s=arc-20240605;
-        b=bxeHUtN/4y6ENY9HlZ9co6fhXhhM2f2bvWm0KOKHV2ywvjr5JuQIfsC8FvedcCsDAP
-         LCyvZLVS/qTjyjANg4n35in17v30Xq9lJxFpquuz0M1MX/Br/4JNsjGoazSKjdpMubFk
-         pkY58nz5XtgERMl7pLXJEPWmLalq92npcITp7i94MFv1wpw1M2E5PZn/vW8qPb1ZRn7m
-         yu7R0V97j5ExXU6XbePdjjEyKxU1URXR5hoRwqM5PJEH7kTcbe0emJXS3dIclXtO46YM
-         SfmxAR0LyB+E0fRJKMpBOJqcPQ00G5A2owxeyuVRr4cdumTF+nkbNeLvdmUO1vDFV/aW
-         YqrQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=HujuVBuKdWWEfICM8n6u8a8X3rF3iweG2fpAlmRVj68=;
-        fh=XLym8Egy2CGh+uoCatzHlxuZSbhF7HWk8+vDF0CH5r8=;
-        b=L2xlpOb2l1XjhgHhzduXC52Hf9kv4fb8/axdJF8BqWoiaB/IzRy12eMQNY76orB9Zc
-         NZhmQDWbHnOQ9UBGplg2VcgbuFf7tpMPyKbIYHmhb7eB17cpOakijgVjokFd4rufLuIV
-         J5HARzJbXv4Iqq+mjZVqyleS6kwz01CsqXT5xi/3hJ2IqxrnB38J2UwG1KRsna6STLTa
-         ExcfYiuPySHnVjbgAH8RTD2t3LHdDhpEcqVCjMSpuI2vnAjO+Bkm24LlgPoGDjF4nc5P
-         zFdQ6TJ3FG1TQtygNgk4b30VoAxHUUtZfLLg8wJGWSsqHQjKCMUznj70c6MiXjgO+Crq
-         WEuw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779837710; x=1780442510; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=HujuVBuKdWWEfICM8n6u8a8X3rF3iweG2fpAlmRVj68=;
-        b=ZoF8Uarq/TldyaYIzCoGeNZ4a27AC5yVtMW2qA6Tq9NzzWaOekALVchygvW560Li57
-         VEI7YHopZ1NPwR5c4jDdIWBBGBy5szAPuY2g8Sebgwsu6Srwp+6KIZMbFR26UksalAqR
-         /Ar4cOnt3DJDonqFEM5D8vyKYvVSvGsfoInObizwy3IygcHiBMTU9RUkLaauWzZGhZN4
-         sJ8H7IfBEpqPZyeaRUURQi+O8KCm0ESpIrzqou+SbZh7vqjIF77HWQzXdCYKNcE2p5ja
-         XdTYZPCEWLbvOKLLf6BiiK24XjBh+QgJlYovwsMDMFUdvrOkh/ahAXlltSyXVJPE7efq
-         phmQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779837710; x=1780442510;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HujuVBuKdWWEfICM8n6u8a8X3rF3iweG2fpAlmRVj68=;
-        b=dYNYuZiMJpE4Yqgr6TOcuXmvrXESevC+X1WMGJH3v3YHQBSaQ8x3yg3n+kKqYWpq/U
-         VrPpgN1QLBUfctmdCgAXjKV9XVi59gcpCLBFsGGLyxXG1Ju1rFugBMxtKGc0uzxvoiop
-         N9T9dMkiPOr901+jd6FNLRtfOnOl7e8e+0ntM62D9bnO6EeKg5yMncNfTcjEnR/d/1s7
-         V0xzcCz3jp61w9AVhGQ7ERGFqnQTiJwn0aZnOXbh0Xr3CvL/n1iHMJrIZAOBA6B7IUcM
-         OBe6o7XhdV6fBmlLrKF/eYi1uQLMgoZXPeNV9LExr9if/1hDfBM4z2JYZIEjcL+RIipz
-         D2Eg==
-X-Forwarded-Encrypted: i=1; AFNElJ/y51C+MvzTvn+hhB1hUhCIY9rTvKHX/dS9z2EfcRr6A0hlLUuOs2oDrq/ff/fPrG00Zi9+Ku0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyD6+fOqO/vQ89YhGBq3Ya66JjWRZjV2BSzHvnCEp0rGIR2dtd/
-	0uuUmUiP9VFXrqlWUtq9Nep10UAuN2/OL9u+qqxaPRelVMW9axeswX9llcHEXhmAbe49xDD1Cxh
-	7GbK93bemznuFkHUrbjvn58b1exxQGLc=
-X-Gm-Gg: Acq92OELQqMq6SGG3HNgf5ViZCrev7UC6JfjOelrGfV2PKohSbGH+9UcA8HVkLsO/da
-	cAvNbytpHvKKonbrS/p6gIEPT92SscMJjhqyCuPZuMHLgdHFmerg5SfynisMFVSh5O4Fx3Yne4P
-	7vnfD3tCb2ggZoFbWDR2smQf8RsOvUgCU+67JSRNv4sgmQH5l8UDyuDTG8XxXBpKK+smka+EFtH
-	7rH0Acqol3cK5h0exQ7RVq9j4TflwyYZ/T/xgUcZu3FDpHoClDJj+ZS9AxmI/oCQUXLbD75qlNU
-	mWScSZIYF1t94QJV2B61iOrByCE=
-X-Received: by 2002:a4a:e903:0:b0:694:9e2f:cfac with SMTP id
- 006d021491bc7-69d7fcb51b6mr8951696eaf.9.1779837709977; Tue, 26 May 2026
- 16:21:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WAwRHmmj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73BCD1F000E9;
+	Tue, 26 May 2026 23:27:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779838057;
+	bh=a3/WNsXLG/efdLWwGaD+Ah5amorSSkLH88yA5nIIbBU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=WAwRHmmjI17Nfyf0gAQBHmUZ33+5IUC80Ba8gEJKVVHkap3/NJz72Gvfhf1OVnnGd
+	 sr72Jr7LKXbS1+mTIwUTz5T6QsgssH6M0ofKVZ8RqobKX0qM6D9YhOrzoEf0I4XBsw
+	 IIRr88ZXnNrfS/QzeaY328UVWsiieeFJiSNdk16WjB3lTFx+nwuowb/12lNqmaXXHc
+	 2Y1arUYIAPTaRLn1CG/cCPE0jlpFjDmMvHVo4oTf67ckpAIq0/Skp0gA3ZjlCTHcsV
+	 cxE3W+16LliY+FQkooWMNorkC96KXdF/g8VGQHTAiwNiujZlluQFv/ILeOgSXJyHdp
+	 /eglcrpUBslpQ==
+Date: Tue, 26 May 2026 16:27:36 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Alexander Lobakin <aleksander.lobakin@intel.com>
+Cc: Zhao Dongdong <winter91@foxmail.com>, <davem@davemloft.net>,
+ <edumazet@google.com>, <pabeni@redhat.com>, <netdev@vger.kernel.org>, Zhao
+ Dongdong <zhaodongdong@kylinos.cn>
+Subject: Re: [PATCH] net: page_pool: check nla_nest_start() return value in
+ page_pool_nl_stats_fill()
+Message-ID: <20260526162736.5e95b928@kernel.org>
+In-Reply-To: <3a16e1ec-313d-431e-8960-abf55701ac5a@intel.com>
+References: <tencent_A82EBAB365A8B888B66FDCF115A3DCB8880A@qq.com>
+	<3a16e1ec-313d-431e-8960-abf55701ac5a@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260525201116.407338-2-kacper.kokot.44@gmail.com> <202605261807.YY0PWuhX-lkp@intel.com>
-In-Reply-To: <202605261807.YY0PWuhX-lkp@intel.com>
-From: Kacper Kokot <kacper.kokot.44@gmail.com>
-Date: Wed, 27 May 2026 00:21:38 +0100
-X-Gm-Features: AVHnY4IeURuAw-7kug8a-6xqNpmP-8aoIQEcxEzrITr5eMpT52Lzw3oZg7lhaRo
-Message-ID: <CAG-Fur7edB8_4iLnP4QWh+K96bGFBgYyfdoy8H7zvqa8NYdyow@mail.gmail.com>
-Subject: Re: [PATCH] netfilter: TCPMSS: fix dropped packets when MSS option is unaligned
-To: kernel test robot <lkp@intel.com>
-Cc: Pablo Neira Ayuso <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>, Phil Sutter <phil@nwl.cc>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	netfilter-devel@vger.kernel.org, coreteam@netfilter.org, 
-	linux-kernel@vger.kernel.org, llvm@lists.linux.dev, 
-	oe-kbuild-all@lists.linux.dev, netdev@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-> AFAICS, these issues are not present in real environments as MSS option
-> is placed at the beginning of the options block making it aligned by
-> default usually.
+On Tue, 26 May 2026 18:04:44 +0200 Alexander Lobakin wrote:
+> From: Zhao Dongdong <winter91@foxmail.com>
+> Date: Tue, 26 May 2026 14:51:56 +0800
+> 
+> > From: Zhao Dongdong <zhaodongdong@kylinos.cn>
+> > 
+> > nla_nest_start() can return NULL if the skb runs out of space.
+> > page_pool_nl_stats_fill() does not check the return value before
+> > calling nla_nest_end(), which can lead to a NULL pointer dereference.
+> > Add a NULL check after nla_nest_start() and abort the message if it fails.
+> > 
+> > Fixes: d49010adae73 ("net: page_pool: expose page pool stats via netlink")  
+> 
+> A "Cc: stable@vger.kernel.org" candidate?
 
-I agree, I haven't observed it in any real environment and wouldn't expect to.
-I found it by reading the code and had to craft a SYN to reproduce. That said
-the spec permits unaligned options and the kernel shouldn't silently drop legal
-packets just because nobody sends them today. I can note in the v2 commit
-message that this is a theoretical fix.
+Not really, the thinking is that if nla_nest_start() failed then the
+very next nla_put* will also fail (nla_nest_start() is a zero-length
+attr, any attr we put after must be >= in length).
 
-> > I wonder, if we are touching this code, we could use the opportunity
-> > to make it use get_unaligned_be16() instead.
->
-> gcc and clang convert x[0] << 8 | x[1] (etc) to the appropriate single
-> instruction (and maybe byteswap) on cpu that support misaligned accesses.
-> So there is little to gain from doing it any other way.
+IOW the commit message is lying, there's no way for us to reach
+nla_nest_end(). We will jump to nla_nest_cancel() which handles
+nest=NULL just fine.
 
-Happy to go with whichever you prefer for v2.
-
-> and, of course, the code works fine because 0x1 != 0 is 1.
-
-Ha - accidentally correct. I'll add the parens in v2 tomorrow.
-
-Also the reproducer I sent with v1 was clunky. Here's a better
-one with some results below:
-
-  #!/usr/bin/env python3
-  import argparse
-  from scapy.all import *
-
-  parser = argparse.ArgumentParser()
-  parser.add_argument("target_ip")
-  parser.add_argument("target_port", type=int)
-  args = parser.parse_args()
-
-  def gen_mss_syn_options(nops=0):
-      return nops * [("NOP", None)] + [("MSS", 1460)]
-
-  def syn_check(opts):
-      sport = RandShort()
-      ip = IP(dst=args.target_ip)
-      syn = TCP(sport=sport, dport=args.target_port, flags="S",
-seq=1000, options=opts)
-      synack = sr1(ip/syn, timeout=1, verbose=False)
-      send(ip/TCP(sport=sport, dport=args.target_port, flags="R",
-seq=syn.seq+1),
-           verbose=False)
-      return not not (synack and synack.haslayer(TCP) and
-synack[TCP].flags == 0x12)
-
-  for i in range(7):
-      n = 5
-      ok = sum(syn_check(gen_mss_syn_options(i)) for _ in range(n))
-      print(f"{i} nops + mss, {ok}/{n} probes responded")
-
-Before:
-
-  0 nops + mss, 5/5 probes responded
-  1 nops + mss, 0/5 probes responded
-  2 nops + mss, 5/5 probes responded
-  3 nops + mss, 0/5 probes responded
-  4 nops + mss, 5/5 probes responded
-  5 nops + mss, 0/5 probes responded
-  6 nops + mss, 5/5 probes responded
-
-After:
-
-  0 nops + mss, 5/5 probes responded
-  1 nops + mss, 5/5 probes responded
-  2 nops + mss, 5/5 probes responded
-  3 nops + mss, 5/5 probes responded
-  4 nops + mss, 5/5 probes responded
-  5 nops + mss, 5/5 probes responded
-  6 nops + mss, 5/5 probes responded
+Zhao Dongdong please confirm this and respin the patch without a Fixes 
+tag and with an updated commit message. I think we got such a patch
+in the past, so we should merge it to avoid confusing bots. 
+But please make it very clear that this code can't crash..
+-- 
+pw-bot: cr
