@@ -1,98 +1,239 @@
-Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A56E23F075A
-	for <netdev@vger.kernel.org>; Tue, 26 May 2026 11:51:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A600F3F7887
+	for <netdev@vger.kernel.org>; Tue, 26 May 2026 11:52:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779796285; cv=none; b=sp1UjMmfcYEVLBhi/nvKX7Lnxdm6trdSAglQ8SruDvE9dHVu8Xt5iFQg1gkGqyIHiichHk37upmtXwcn9vRALB0ea1zxi9EE5zSdQck1RGmSWCRywxnYUEXrIQt3Gyyt1ElWsO5NnNnqzZXkYzA2k365KHk2UronGTT4ufxVbGQ=
+	t=1779796382; cv=none; b=GFwTqtW3HIw7ltAwwA/5O9RYQiaPY9fe1jD2y2M45WOnbo1i7LALN+xJwxzHDhVSMxMD2oTjHqMC7xh2z3QMxaqBp6zes4JrSlzpbAOtUMuyREK5r8wxyFb3MsN6Um7QwZJY71VxvayPM2yrZAln8qWPShTY1eqnL/bc7DtP/5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779796285; c=relaxed/simple;
-	bh=KeGWwolcFFEH6R7fa5T0IRDv6gq2FEjg9XB7oEUZrJk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nEGDpfqNEDXbGefvzPEVG6UmgRg3VoqUTqUSEvhpwJLjnkNLH+jnPJFt0ZxhJ2PMRbtL5LkleC0YuuLJH2AwTC1hVxTer+F6u74c3tU+DvDoZ6r+eWqf7iU2Zmz7AgAWpdj1vHmKcCY68VyNo3fFLZBumI0lVBLg63MnP8SGipA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=oCmtTKVj; arc=none smtp.client-ip=91.218.175.189
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1779796382; c=relaxed/simple;
+	bh=8j67dEe3OJYfkLf/PSQqW8XTiIg9IpUg9riDOc20xGE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OUQjTq2drNAv/cY5jSr/optJGelZsztMBKBx71BJuqjkgwnDxE5zFQ1MeA9rpGTOzHq1hy0aBzFE9lk808Pr49yqHzNkWQyBKtrEggR9P5UBXc+52s5BLT8HBLDwSEi4P6FIG0c8/Q0cSjqJkmqs0fkgt9aZWtqRBRdmM2zrH8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=E+nm0zio; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="oCmtTKVj"
-Message-ID: <6c51fabe-5524-4857-8f23-b351f5e63e10@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1779796276;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="E+nm0zio"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1779796371;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=seoM7xwshPL+GdQa7xndfUCJxVw7uD12en9S/jPI/GI=;
-	b=oCmtTKVjd5G6szWT7UR5qToOxE5sP4P2xAdpHNVURpzolULiQ1BxKuqrQC90ioLiGxDx0A
-	weJ37QJhm3sjpt+XcY3weljsY+xetVNb0F+NvqeIv5hsDlUB4MfYpResfcaWxkgaAhGnTF
-	ZIOFvr+mOdRP2hXt6JYQ4C/7+LOVl/A=
-Date: Tue, 26 May 2026 12:51:09 +0100
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=r860YEu10I/j6XaU1aczaKpBn6RBqB079yn7D1Hxon4=;
+	b=E+nm0ziobaXm4o0XdSbLcWJ8+LBrtRpGUR9J4EK1wvsBFLd5cP4Zef9SvrAJ0dQe2cjUcB
+	TmDi5O7ZQ1iVGnPHhkUZ9P3ge+/KfhB4OBT+RQ0U4f3jXFLgx4sp6wEbKUbN90k28uCdOd
+	DI2c4yycwnpegefLLlkgmOgIIDL1KoU=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-645-Jj_shR6OO3ucWLOuOhGMZQ-1; Tue,
+ 26 May 2026 07:52:50 -0400
+X-MC-Unique: Jj_shR6OO3ucWLOuOhGMZQ-1
+X-Mimecast-MFC-AGG-ID: Jj_shR6OO3ucWLOuOhGMZQ_1779796369
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 899B418002D7;
+	Tue, 26 May 2026 11:52:49 +0000 (UTC)
+Received: from ShadowPeak.redhat.com (unknown [10.44.33.232])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id A1F8519560A3;
+	Tue, 26 May 2026 11:52:47 +0000 (UTC)
+From: Petr Oros <poros@redhat.com>
+To: netdev@vger.kernel.org,
+	dsahern@kernel.org,
+	stephen@networkplumber.org
+Cc: ivecera@redhat.com,
+	vgrinber@redhat.com,
+	Petr Oros <poros@redhat.com>
+Subject: [PATCH iproute2-next v2] dpll: monitor: add -t/--timestamp and --tshort options
+Date: Tue, 26 May 2026 13:52:45 +0200
+Message-ID: <20260526115245.64824-1-poros@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH] xfrm: move policy_bydst RCU sync from per-netns .exit to
- .pre_exit
-To: Steffen Klassert <steffen.klassert@secunet.com>, stable@vger.kernel.org
-Cc: davem@davemloft.net, edumazet@google.com,
- Herbert Xu <herbert@gondor.apana.org.au>, horms@kernel.org, kuba@kernel.org,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org, pabeni@redhat.com,
- alexanderduyck@fb.com, enewton@meta.com, vlad.wing@gmail.com
-References: <20260521102926.2613544-1-usama.arif@linux.dev>
- <ahV1BxasOuDHX7Zy@secunet.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Usama Arif <usama.arif@linux.dev>
-In-Reply-To: <ahV1BxasOuDHX7Zy@secunet.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
+Bring dpll monitor in line with the rest of iproute2 by allowing each
+received notification to be prefixed with a wall-clock timestamp.
 
+  -t / --timestamp  emit a separate "Timestamp:" line before each event,
+                    using the default text form of print_timestamp()
+                    (matches ip / bridge / tc -t monitor)
+  --tshort          emit a compact ISO 8601 prefix
+                    "[YYYY-MM-DDTHH:MM:SS.uuuuuu]" inline instead
+                    (matches ip -ts monitor)
 
-On 26/05/2026 11:25, Steffen Klassert wrote:
-> On Thu, May 21, 2026 at 03:29:26AM -0700, Usama Arif wrote:
->> The struct pernet_operations docstring in include/net/net_namespace.h
->> explicitly warns against blocking RCU primitives in .exit handlers:
->>
->>     Exit methods using blocking RCU primitives, such as
->>     synchronize_rcu(), should be implemented via exit_batch.
->>     [...]
->>     Please, avoid synchronize_rcu() at all, where it's possible.
->>
->>     Note that a combination of pre_exit() and exit() can
->>     be used, since a synchronize_rcu() is guaranteed between
->>     the calls.
->>
->> xfrm_policy_fini() violates this: it calls synchronize_rcu() before
->> freeing the policy_bydst hash tables (so no RCU reader is mid-
->> traversal at free time), but runs from xfrm_net_ops.exit -- once per
->> namespace -- so a cleanup_net() of N namespaces pays N full RCU
->> grace periods serially.
->>
->> Use the documented pre_exit/exit split. Move the policy flush (and
->> the workqueue drains it depends on) into a new .pre_exit handler;
->> xfrm_policy_fini() then runs in .exit and frees the hash tables
->> after the synchronize_rcu_expedited() that cleanup_net() guarantees
->> between the two phases. Providing O(1) RCU grace periods per batch
->> instead of O(N).
->>
->> Observed on Linux 6.18 with a workload doing unshare(CLONE_NEWNET)
->> at ~13/sec sustained: cleanup_net() and the netns_wq rescuer kthread
->> both stuck in xfrm_policy_fini()'s synchronize_rcu(), >300k struct
->> net accumulated in the cleanup queue, Percpu in /proc/meminfo climbed
->> to 130+ GB on 256-CPU hosts, and memcg OOMs followed. setup_net and
->> __put_net counts were balanced, ruling out a refcount leak.
->>
->> Fixes: 069daad4f2ae ("xfrm: Wait for RCU readers during policy netns exit")
->> Signed-off-by: Usama Arif <usama.arif@linux.dev>
-> 
-> Applied, thanks Usama!
+When combined with -j, the timestamp shows up as a "timestamp" /
+"timestamp_short" field on each notification object, the same way
+ip -j -t mptcp monitor integrates the helper.
 
+The flag is parsed globally but only consulted from the monitor
+callback, so passing -t to non-monitor commands is a no-op.
 
-Thanks! Forgot to cc stable@vger.kernel.org
+--tshort has no short alias, so its long_options entry uses an
+identifier above the ASCII range (OPT_TSHORT = 256) following the
+iproute2 convention used in misc/ss.c, instead of consuming an
+ASCII letter that could later collide with a real short option.
 
-Adding it here 
+Reviewed-by: Ivan Vecera <ivecera@redhat.com>
+Signed-off-by: Petr Oros <poros@redhat.com>
+---
+v2:
+- Rebased on current iproute2-next; the previous 1/2 of the series
+  ("dpll: align help and man notation with actual option parsing")
+  is now upstream as 62d47c2dbc0e, so only this patch is resent.
+- Collected Ivan's Reviewed-by.
+
+v1: https://lore.kernel.org/all/20260512135225.167158-2-poros@redhat.com/
+---
+ bash-completion/dpll |  8 ++++++--
+ dpll/dpll.c          | 21 +++++++++++++++++++--
+ man/man8/dpll.8      | 23 ++++++++++++++++++++++-
+ 3 files changed, 47 insertions(+), 5 deletions(-)
+
+diff --git a/bash-completion/dpll b/bash-completion/dpll
+index 9ff38a46c27968..8b11f8d0c34fad 100644
+--- a/bash-completion/dpll
++++ b/bash-completion/dpll
+@@ -304,7 +304,7 @@ _dpll_monitor()
+ _dpll()
+ {
+     local cur prev words cword
+-    local opt='--Version --json --pretty'
++    local opt='--Version --json --pretty --timestamp --tshort'
+     local objects="device pin monitor"
+ 
+     _init_completion || return
+@@ -331,7 +331,11 @@ _dpll()
+                 return 0
+                 ;;
+             -j|--json)
+-                COMPREPLY=( $( compgen -W "--pretty $objects" -- "$cur" ) )
++                COMPREPLY=( $( compgen -W "--pretty --timestamp --tshort $objects" -- "$cur" ) )
++                return 0
++                ;;
++            -t|--timestamp|--tshort)
++                COMPREPLY=( $( compgen -W "monitor" -- "$cur" ) )
+                 return 0
+                 ;;
+             *)
+diff --git a/dpll/dpll.c b/dpll/dpll.c
+index cf5a69111c56f2..60404e134d0a50 100644
+--- a/dpll/dpll.c
++++ b/dpll/dpll.c
+@@ -29,7 +29,10 @@
+ 
+ #define pr_err(args...) fprintf(stderr, ##args)
+ 
++#define OPT_TSHORT 256
++
+ int json;
++int timestamp;
+ 
+ struct dpll {
+ 	struct mnlu_gen_socket nlg;
+@@ -576,7 +579,8 @@ static void help(void)
+ {
+ 	pr_err("Usage: dpll [ OPTIONS ] OBJECT { COMMAND | help }\n"
+ 	       "where  OBJECT := { device | pin | monitor }\n"
+-	       "       OPTIONS := { -V | --Version | -j | --json | -p | --pretty }\n");
++	       "       OPTIONS := { -V | --Version | -j | --json | -p | --pretty |\n"
++	       "                    -t | --timestamp | --tshort }\n");
+ }
+ 
+ static int cmd_device(struct dpll *dpll);
+@@ -640,9 +644,11 @@ int main(int argc, char **argv)
+ 		{ "Version", no_argument, NULL, 'V' },
+ 		{ "json", no_argument, NULL, 'j' },
+ 		{ "pretty", no_argument, NULL, 'p' },
++		{ "timestamp", no_argument, NULL, 't' },
++		{ "tshort", no_argument, NULL, OPT_TSHORT },
+ 		{ NULL, 0, NULL, 0 }
+ 	};
+-	const char *opt_short = "Vjp";
++	const char *opt_short = "Vjpt";
+ 	struct dpll *dpll;
+ 	int err, opt, ret;
+ 
+@@ -665,6 +671,13 @@ int main(int argc, char **argv)
+ 		case 'p':
+ 			pretty = true;
+ 			break;
++		case 't':
++			timestamp = 1;
++			break;
++		case OPT_TSHORT:
++			timestamp = 1;
++			timestamp_short = 1;
++			break;
+ 		default:
+ 			pr_err("Unknown option.\n");
+ 			help();
+@@ -2370,6 +2383,8 @@ static int cmd_monitor_cb(const struct nlmsghdr *nlh, void *data)
+ 
+ 		new_json_obj_plain(json);
+ 		open_json_object(NULL);
++		if (timestamp)
++			print_timestamp(stdout);
+ 		print_string(PRINT_JSON, "name", NULL, json_name);
+ 		open_json_object("msg");
+ 		print_string(PRINT_FP, NULL, "[%s] ", cmd_name);
+@@ -2399,6 +2414,8 @@ static int cmd_monitor_cb(const struct nlmsghdr *nlh, void *data)
+ 
+ 		new_json_obj_plain(json);
+ 		open_json_object(NULL);
++		if (timestamp)
++			print_timestamp(stdout);
+ 		print_string(PRINT_JSON, "name", NULL, json_name);
+ 		open_json_object("msg");
+ 		print_string(PRINT_FP, NULL, "[%s] ", cmd_name);
+diff --git a/man/man8/dpll.8 b/man/man8/dpll.8
+index 3047aa8f1c9ea8..74f4fdaa94eb46 100644
+--- a/man/man8/dpll.8
++++ b/man/man8/dpll.8
+@@ -29,7 +29,9 @@ dpll \- Digital Phase Locked Loop (DPLL) subsystem management
+ .IR OPTIONS " := { "
+ \fB\-V\fR | \fB\-\-Version\fR |
+ \fB\-j\fR | \fB\-\-json\fR |
+-\fB\-p\fR | \fB\-\-pretty\fR }
++\fB\-p\fR | \fB\-\-pretty\fR |
++\fB\-t\fR | \fB\-\-timestamp\fR |
++\fB\-\-tshort\fR }
+ 
+ .SH DESCRIPTION
+ The
+@@ -58,6 +60,25 @@ Output results in JavaScript Object Notation (JSON).
+ When combined with \-j, generates a pretty JSON output with indentation
+ and newlines for better human readability.
+ 
++.TP
++.BR "\-t" , " \-\-timestamp"
++When used with the
++.B monitor
++object, print a
++.B Timestamp:
++line before each received notification, in the same format used by
++.BR "ip monitor" .
++
++.TP
++.B "\-\-tshort"
++Like
++.BR \-t ,
++but emits a more compact, ISO 8601 inline prefix
++.RB \(lq [ YYYY-MM-DD T HH:MM:SS . uuuuuu ] \(rq
++in front of each notification instead of a separate
++.B Timestamp:
++line.
++
+ .SH DEVICE COMMANDS
+ 
+ .SS dpll device show [ id ID ] [ module-name NAME ] [ clock-id ID ] [ type TYPE ] [ mode MODE ] [ lock-status STATUS ]
+-- 
+2.53.0
+
