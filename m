@@ -1,172 +1,171 @@
-Received: from mail.katalix.com (mail.katalix.com [3.9.82.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D4E23C37AC;
-	Tue, 26 May 2026 06:52:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=3.9.82.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 011EF3C3459
+	for <netdev@vger.kernel.org>; Tue, 26 May 2026 06:53:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779778330; cv=none; b=OektnI777rxA13pGqY9bEBBx6SDTJEMDLqZwIF+mBq/4neFlNhMUUitLrDkynKXqawneTgj36v0+8FEqbtHYdcjrIIkMAMfSmD0eOoI8ot1nZOTEMBARl9CwasryMjgHWRgGMgHhNv5lekoj1oppaeI0j9NgbC0F8i4QuHDeBmo=
+	t=1779778394; cv=none; b=hT9M/VFnwrJETZHxbRX/KjH9ENtFUMdvwEYKMYyP10Us0WyN6xvqFa8/whLO3009OHMWLnyD1TyumwVQwxSx4DgJok+6HIpjHosjM5t8p/o00Cr7IlApoiYbqurSfXXXWnYRcBJx7NsansPegXQMSYG6Ld5tmDcvDRJ6wCvDE7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779778330; c=relaxed/simple;
-	bh=UZRc3kggpT5xBfJ5QCpE42yQBKoEj6SjU+Ar6L61mr8=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:From:Subject:
-	 In-Reply-To:Content-Type; b=BMfQ/bSOvPoFFyUie+65mMy1u9ZAHjVUl4zRe+qVboW96J+J39y+rwh98M1EfQVpAmOqKf1zSpeIWLXjrBjGS0ZoQk9d2JSwAV2QVNgQqe/W6yjk56CBVl1kWJ+C9cdRALFIEgIDRFaXFKiAopKvMXwV7r8q8opFGsnBtac21f0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=katalix.com; spf=pass smtp.mailfrom=katalix.com; dkim=pass (2048-bit key) header.d=katalix.com header.i=@katalix.com header.b=qIFyhMsp; arc=none smtp.client-ip=3.9.82.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=katalix.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=katalix.com
+	s=arc-20240116; t=1779778394; c=relaxed/simple;
+	bh=lI94k3K5Kcc20pekEfGAOaAomJ1QgkYtP6G74MUe9gk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QlMMXgdXAIflrYZOpk0qlh13zPfPAx9zc/J0435IU5r3QSS6GNw82craNubKQNa7dBcIiI12eVgj/1JGk2quup+W+m3aTDDcjTtMCIb6o7jzuXb7HWtQl6edBkVQ7n+znZrSTSZEQKuTEYE+Eo34l+h60yHtwM2RJ0YfQrVkBrs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=TR/s+dSF; arc=none smtp.client-ip=209.85.221.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=katalix.com header.i=@katalix.com header.b="qIFyhMsp"
-Received: from [192.168.2.17] (82-69-108-24.dsl.in-addr.zen.co.uk [82.69.108.24])
-	(Authenticated sender: james)
-	by mail.katalix.com (Postfix) with ESMTPSA id 4D0DB7D4AA;
-	Tue, 26 May 2026 07:44:32 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=katalix.com; s=mail;
-	t=1779777872; bh=UZRc3kggpT5xBfJ5QCpE42yQBKoEj6SjU+Ar6L61mr8=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:From:Subject:
-	 In-Reply-To:From;
-	z=Message-ID:=20<c08da2f1-750f-257a-180e-f1af47451647@katalix.com>|
-	 Date:=20Tue,=2026=20May=202026=2007:44:31=20+0100|MIME-Version:=20
-	 1.0|To:=20Michael=20Bommarito=20<michael.bommarito@gmail.com>,=0D=
-	 0A=20"David=20S=20.=20Miller"=20<davem@davemloft.net>,=20Eric=20Du
-	 mazet=0D=0A=20<edumazet@google.com>,=20Jakub=20Kicinski=20<kuba@ke
-	 rnel.org>,=0D=0A=20Paolo=20Abeni=20<pabeni@redhat.com>|Cc:=20Tom=2
-	 0Parkin=20<tparkin@katalix.com>,=20Guillaume=20Nault=20<gnault@red
-	 hat.com>,=0D=0A=20Simon=20Horman=20<horms@kernel.org>,=0D=0A=20Seb
-	 astian=20Andrzej=20Siewior=20<bigeasy@linutronix.de>,=0D=0A=20Clar
-	 k=20Williams=20<clrkwllms@kernel.org>,=20Steven=20Rostedt=20<roste
-	 dt@goodmis.org>,=0D=0A=20Kees=20Cook=20<kees@kernel.org>,=20netdev
-	 @vger.kernel.org,=0D=0A=20linux-rt-devel@lists.linux.dev,=20linux-
-	 kernel@vger.kernel.org|References:=20<20260523023423.2568972-1-mic
-	 hael.bommarito@gmail.com>|From:=20James=20Chapman=20<jchapman@kata
-	 lix.com>|Subject:=20Re:=20[PATCH=20net]=20l2tp:=20use=20refcount_i
-	 nc_not_zero=20in=0D=0A=20l2tp_session_get_by_ifname|In-Reply-To:=2
-	 0<20260523023423.2568972-1-michael.bommarito@gmail.com>;
-	b=qIFyhMsp37rN+Wj54G2Ha2xelNHnO2G37L3YHpj/VNJTWAxSwZJbx2cVEIMoiG77f
-	 6qmer9QWiZudbszcoERZ87MQuW+zepLi2LSwJFEJL7Me0uAiemzKRKfk53ZJp9p2/L
-	 lzGKS2uqwSS7tlzJ8yv3yY9FDy5xuFSQ87pVzL3eKp44sRvA2uxVUCa3DrlHXPbMh6
-	 hgEuJhWfD4RPpC+Q08qVmy/bbfYtLUEF7IRRa93Z4RWVKIDnqVfW10IUvlOh1dVocK
-	 CmwDOA05OzcpqUEYkpwKKPXrCnaR6Y5ugrLAVBwEFt9bROwGqsKBcCQjY3X4DczASf
-	 9yuW3awYTactA==
-Message-ID: <c08da2f1-750f-257a-180e-f1af47451647@katalix.com>
-Date: Tue, 26 May 2026 07:44:31 +0100
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="TR/s+dSF"
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-459bf19e87bso5943352f8f.1
+        for <netdev@vger.kernel.org>; Mon, 25 May 2026 23:53:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1779778389; x=1780383189; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=yXWASYjT/jE4WzpKhE8nVhHkzGwmPlTITkkcMF0D8BI=;
+        b=TR/s+dSFI2Vk05JY9oKvhTkUPLyGjERphtpAPMGuiQxvuv3fbFSbN1th4lK+bttysm
+         cFb/iWCpkNb08kRUbTcn9WjfJUaB3xcjwa8CXEuHNu8ztYYWGwWQbD8loHo0HuyuciOC
+         0TwcL+CxgU01vXU93n3aCg4f5dmgC1/3cis8o9d493p1B0tb+ArlTCB5LaW6RVOHuZSe
+         xFgNBY2Ddet/gPdHUxjFVULwbZSkZetwjzSKlyv7KFRavsith7RHUAc5uHnKUJqDu/G4
+         H3+i6q7GH893mbCE8FjnHXqiv6/6t+5ocWoYo60XT6575r8A+rywJ8KG4tumaLrCo8Ff
+         W8Eg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779778389; x=1780383189;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=yXWASYjT/jE4WzpKhE8nVhHkzGwmPlTITkkcMF0D8BI=;
+        b=YZXfJbQnepMY/xHras5VsZI+ReiNrTWOpz7SOCjiOuY2mHJ/j5O/gQBpMjsvMfeSg8
+         JB/6WqmfrxePPyHOOuHWMJhH6sKOj8DU/piYcL58rADw5hfc4FZhIE/pOIJAMq70YLEI
+         NHV1q5xZZu3aUvdXeCJNujJam9buU2pBbNsQ9ht60V5O1xbcvWCrroh7yFwxZk4b+qBf
+         uSMjHrlTC2n0P7HqSagVSFSk5ZmYpkeyA6jA2jKkZbhtERP0ZkftcobtUEoVxFalt+lS
+         yHE1XzZIb8oofGHP+CzOmn7wDrBrK4iUlsIDa2V1ch1A0reakR19e85rMrf50QXC/SwU
+         xQ/g==
+X-Forwarded-Encrypted: i=1; AFNElJ/O1UgrHsU28W8tGcaZzVQ8Eo/lCtwEt2f4LMOOPdc4BhMmbaFKsnmHfHqXM0wI2twWCq+1QJU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz/JYeDP0O21nqf9va4M850dyjUnYCGIjg1K/hinOPC5YfHXSUj
+	haflSHeyvPTREzyMVLxVA6dvTWLh9fqYFE/1cSiZ2KrRfPWWKw+l0bfNWIfNhtzHnXQ=
+X-Gm-Gg: Acq92OFow+bwps/ewkL0WXVZuK3tkdTiI+/YAfHzrpydjrjR/K8OMoC9VPzoNudAA91
+	Jak9XkU7AkOqDVVSELsehq0A4Jt1yPS7KBOc4JIil7VE/HxZ3Ctqx1i9DMaCNJ9IA3k2u2pGPLA
+	0szPIg0sYAMdHUQp4+5YEp94ZaXyYy52tr6NEpOBK27fK/JnJyVmt7K77MlqWGxxa/M3edcV4XL
+	GJCQXGG+lL6wRylWuI9vpRgInMvCNvbfAqs1oAaXiqZsaR4cx4LZ+Fvf6nrHzy3Ac0MbyTUBz2m
+	lUbTveUh07dfujZKNWKaBhJU3oLe9tpSh2eYSU7PLEkH4WXZ2qKJfGvIxY9i9edVnTW/8ZnkqNG
+	VIiStZ1FR5na6ZeIIeBcIzqctACm66bIQ+lGgU715uucdAvK5e1zvMcAVPaJYJqMcGq6dnSZSVa
+	HKMiBCgAAcgsYgKBiOFdT+RbubWjY4nF272638HvBJvpy6NhkH/6w9C7Qe0Z12de4tJ8cidcZ/3
+	wVVCduqFAOLy/MRa8GnbY3aaF0rlVAlkgFHgSaep+/sV0dwGdJGhq0Ngb8WvD7LIplQM877B5gE
+	4nal
+X-Received: by 2002:a05:6000:2003:b0:43b:4136:1e6f with SMTP id ffacd0b85a97d-45eb38e4b46mr29516257f8f.38.1779778389230;
+        Mon, 25 May 2026 23:53:09 -0700 (PDT)
+Received: from ?IPV6:2a00:1028:838d:271e:8e3b:4aff:fe4c:a100? (dynamic-2a00-1028-838d-271e-8e3b-4aff-fe4c-a100.ipv6.o2.cz. [2a00:1028:838d:271e:8e3b:4aff:fe4c:a100])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45eb6c9ba2esm33848641f8f.8.2026.05.25.23.53.06
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 25 May 2026 23:53:08 -0700 (PDT)
+Message-ID: <88c5ca1d-eeda-4023-bc7a-397b92780db9@suse.com>
+Date: Tue, 26 May 2026 08:53:06 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 00/11] Convert moduleparams to seq_buf
+To: Kees Cook <kees@kernel.org>
+Cc: Luis Chamberlain <mcgrof@kernel.org>, Pengpeng Hou
+ <pengpeng@iscas.ac.cn>, Richard Weinberger <richard@nod.at>,
+ Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+ Johannes Berg <johannes@sipsolutions.net>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+ Corey Minyard <corey@minyard.net>, Gabriel Somlo <somlo@cmu.edu>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Jani Nikula <jani.nikula@linux.intel.com>,
+ Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
+ <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Bart Van Assche <bvanassche@acm.org>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+ Hans de Goede <hansg@kernel.org>, Mauro Carvalho Chehab
+ <mchehab@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+ Hannes Reinecke <hare@suse.de>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ "Martin K. Petersen" <martin.petersen@oracle.com>,
+ Daniel Lezcano <daniel.lezcano@kernel.org>, Zhang Rui <rui.zhang@intel.com>,
+ Lukasz Luba <lukasz.luba@arm.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Jiri Slaby <jirislaby@kernel.org>, Alan Stern <stern@rowland.harvard.edu>,
+ Jason Wang <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+ =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>,
+ Jason Baron <jbaron@akamai.com>, Jim Cromie <jim.cromie@gmail.com>,
+ Tiwei Bie <tiwei.btw@antgroup.com>, Benjamin Berg <benjamin.berg@intel.com>,
+ =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+ "David E. Box" <david.e.box@linux.intel.com>,
+ "Maciej W. Rozycki" <macro@orcam.me.uk>,
+ Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+ Peter Zijlstra <peterz@infradead.org>, Heiko Carstens <hca@linux.ibm.com>,
+ Vasily Gorbik <gor@linux.ibm.com>, Sean Christopherson <seanjc@google.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Vinod Koul <vkoul@kernel.org>,
+ Frank Li <Frank.Li@kernel.org>, Daniel Gomez <da.gomez@kernel.org>,
+ Sami Tolvanen <samitolvanen@google.com>, Aaron Tomlin <atomlin@atomlin.com>,
+ Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
+ Dmitry Vyukov <dvyukov@google.com>, Andrew Morton
+ <akpm@linux-foundation.org>, John Johansen <john.johansen@canonical.com>,
+ Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
+ "Serge E. Hallyn" <serge@hallyn.com>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Georgia Garcia <georgia.garcia@canonical.com>, kvm@vger.kernel.org,
+ dmaengine@vger.kernel.org, linux-modules@vger.kernel.org,
+ kasan-dev@googlegroups.com, linux-mm@kvack.org, apparmor@lists.ubuntu.com,
+ linux-security-module@vger.kernel.org, linux-um@lists.infradead.org,
+ linux-acpi@vger.kernel.org, openipmi-developer@lists.sourceforge.net,
+ qemu-devel@nongnu.org, intel-gfx@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org, linux-rdma@vger.kernel.org,
+ linux-media@vger.kernel.org, linux-pci@vger.kernel.org,
+ linux-scsi@vger.kernel.org, linux-pm@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-serial@vger.kernel.org,
+ linux-usb@vger.kernel.org, usb-storage@lists.one-eyed-alien.net,
+ virtualization@lists.linux.dev, linux-kernel@vger.kernel.org,
+ linux-arch@vger.kernel.org, netdev@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-hardening@vger.kernel.org
+References: <20260521133315.work.845-kees@kernel.org>
 Content-Language: en-US
-To: Michael Bommarito <michael.bommarito@gmail.com>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>
-Cc: Tom Parkin <tparkin@katalix.com>, Guillaume Nault <gnault@redhat.com>,
- Simon Horman <horms@kernel.org>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
- Kees Cook <kees@kernel.org>, netdev@vger.kernel.org,
- linux-rt-devel@lists.linux.dev, linux-kernel@vger.kernel.org
-References: <20260523023423.2568972-1-michael.bommarito@gmail.com>
-From: James Chapman <jchapman@katalix.com>
-Organization: Katalix Systems Ltd
-Subject: Re: [PATCH net] l2tp: use refcount_inc_not_zero in
- l2tp_session_get_by_ifname
-In-Reply-To: <20260523023423.2568972-1-michael.bommarito@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Petr Pavlu <petr.pavlu@suse.com>
+In-Reply-To: <20260521133315.work.845-kees@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 23/05/2026 03:34, Michael Bommarito wrote:
+On 5/21/26 3:33 PM, Kees Cook wrote:
+> Hi,
+> 
+> I tried to trim the CC list here, but it's still pretty huge...
+> 
+> We've had a long-standing issue with "write to a string pointer" callbacks
+> that don't bounds check the destination (and for which the bounds is
+> also not part of the callback prototype, even if it is "known" to be
+> PAGE_SIZE, which sysfs_emit() depends on). Both moduleparams and sysfs
+> use this pattern. As a first step, and to test the migration method,
+> migrate moduleparams first.
+> 
+> There are 2 "mechanical" treewide patches that are handled by Coccinelle:
+> - treewide: Convert struct kernel_param_ops initializers to DEFINE_KERNEL_PARAM_OPS
+> - treewide: Convert custom kernel_param_ops .get callbacks to seq_buf via cocci
+> 
+> The last treewide patch is manual, and may need to be broken up into
+> per-subsystem patches, though I'd prefer to avoid this, as it would
+> extend the migration from 1 relase to at least 2 releases. (1 to
+> release the migration infrastructure, then 1 release to collect all the
+> subsystem changes, and possibly 1 more release to remove the migration
+> infrastructure.)
+> 
+> Thoughts, questions?
 
-> A reader in l2tp_session_get_by_ifname() can return a pointer to a
-> session whose refcount has reached zero. The getter takes its
-> reference with plain refcount_inc(), but every other session getter
-> in the same file (l2tp_v2_session_get, l2tp_v3_session_get, and the
-> corresponding _get_next variants) uses refcount_inc_not_zero()
-> because the IDR/RCU lookup can race with refcount_dec_and_test() ->
-> l2tp_session_free() -> kfree_rcu(). The ifname getter is the only
-> outlier; the inconsistency was raised on-list after 979c017803c4
-> ("l2tp: use list_del_rcu in l2tp_session_unhash").
->
-> A reader inside rcu_read_lock_bh() that matches session->ifname can
-> be preempted between the strcmp() and the refcount_inc(). If the
-> last reference drops on another CPU in that window, the reader's
-> refcount_inc() runs on a counter that has reached zero. refcount_t
-> catches the addition-on-zero, prints "refcount_t: addition on 0;
-> use-after-free", saturates the counter, and returns the saturated
-> pointer to the caller. Session memory is held live by the in-flight
-> RCU read section, but the kfree_rcu() callback queued from
-> l2tp_session_free() will free it once the grace period closes; a
-> caller that dereferences the returned session past that point hits
-> a slab-use-after-free. On PREEMPT_RT local_bh_disable() is a per-CPU
-> sleeping lock and the preemption window is real; on stock PREEMPT
-> kernels local_bh_disable() is a preempt_count increment that closes
-> the cross-CPU race in practice (see below).
->
-> Use refcount_inc_not_zero() and continue the list walk on failure,
-> matching the other session getters in the file. The ifname getter
-> is the only session getter in net/l2tp/ that still uses the bare
-> refcount_inc() pattern; this change restores file-internal
-> consistency. The success path is unchanged.
->
-> Fixes: abe7a1a7d0b6 ("l2tp: improve tunnel/session refcount helpers")
-> Cc: stable@vger.kernel.org
-> Assisted-by: Claude:claude-opus-4-7
-> Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-> ---
-> Distro reachability:
->
-> l2tp_core and l2tp_netlink autoload via the genl family alias
-> net-pf-16-proto-16-family-l2tp on first AF_NETLINK CTRL_CMD_GETFAMILY
-> lookup; pppol2tp autoloads on demand via net-l2tp-type-7 from
-> L2TP_CMD_SESSION_CREATE with pw_type=L2TP_PWTYPE_PPP. Neither
-> autoload requires CAP_SYS_MODULE. SESSION_GET / SESSION_CREATE /
-> SESSION_DELETE are GENL_UNS_ADMIN_PERM, so CAP_NET_ADMIN in the
-> netns user namespace suffices and is reachable from `unshare -Urn`
-> on Debian 11/12, Ubuntu 22.04 LTS / 23.10+ / 24.04+, Arch, Alpine;
-> RHEL/Fedora blacklist l2tp_netlink by default but on hosts running
-> NetworkManager-l2tp, xl2tpd, or any L2TPv3 endpoint the gate is open
-> there too. PREEMPT_RT ships on Ubuntu Pro Realtime, RHEL 9 RT, SUSE
-> RT, and Yocto-RT.
->
-> Reproduced on x86_64 QEMU/KVM. Under tracefs-kprobe widening at the
-> refcount-inc instruction, a PREEMPT_RT build hits "refcount_t:
-> addition on 0; use-after-free" through l2tp_session_get_by_ifname at
-> 533 s; patched runs 1800 s clean. A stock PREEMPT (non-RT) build
-> with the same widening ran 1800 s without firing: local_bh_disable()
-> on non-RT prevents preemption inside the RCU section so the
-> cross-CPU window does not open at observable rates.
->
->   net/l2tp/l2tp_core.c | 9 +++++----
->   1 file changed, 5 insertions(+), 4 deletions(-)
->
-> diff --git a/net/l2tp/l2tp_core.c b/net/l2tp/l2tp_core.c
-> index 1455f67e01ddb..0000000000000 100644
-> --- a/net/l2tp/l2tp_core.c
-> +++ b/net/l2tp/l2tp_core.c
-> @@ -441,12 +441,13 @@ struct l2tp_session *l2tp_session_get_by_ifname(const struct net *net,
->   	idr_for_each_entry_ul(&pn->l2tp_tunnel_idr, tunnel, tmp, tunnel_id) {
->   		if (tunnel) {
->   			list_for_each_entry_rcu(session, &tunnel->session_list, list) {
-> -				if (!strcmp(session->ifname, ifname)) {
-> -					refcount_inc(&session->ref_count);
-> -					rcu_read_unlock_bh();
-> +				if (strcmp(session->ifname, ifname))
-> +					continue;
-> +				if (!refcount_inc_not_zero(&session->ref_count))
-> +					continue;
-> +				rcu_read_unlock_bh();
->
-> -					return session;
-> -				}
-> +				return session;
->   			}
->   		}
->   	}
-> --
-> 2.46.0
->
-Reviewed-by: James Chapman <jchapman@katalix.com>
+This looks reasonable to me. I added a few minor comments on the patches
+but they already look solid.
 
-
+-- 
+Thanks,
+Petr
