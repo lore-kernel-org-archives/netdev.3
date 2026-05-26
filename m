@@ -1,105 +1,253 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE19E409634
-	for <netdev@vger.kernel.org>; Tue, 26 May 2026 17:15:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC99D41C2FB;
+	Tue, 26 May 2026 17:15:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779815727; cv=none; b=DkJqGsqLdk6kSqv7diGP6/RIg7LQuDq8jOz3WpHVNoUBu45dVvytw5B6gfbVhGH2NfwkEIAtZj09Q2ShGi4AQYqlSlK+VqXI0iyCfGVwu/fYsz+byk0Z3rEEUbLUhLioRTV2ecAQ/7XRHuLivt6PVZOb3+gWDhViSUAdGMTozH4=
+	t=1779815732; cv=none; b=rW1i0n9iGhwgNiqOrhn6CPtjyuwjgXKzZGRnQ0gl+ftxt4VfisWMvV9SmPbQ6FEffN1a9WltDgfkPV+qwCFMPym6/IU/w9+PXzfxOu/+q8zxnmj6t2NNzl2ogSkoXif5FU1pDD8GqCqBM1FaFft+eTa9BPPUoWtLf/ZxjqGY0Cs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779815727; c=relaxed/simple;
-	bh=7qkPLEBV6h4Rty6XVZjsIAuB63LeLGkYWAppzBh78bs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SKbsbiSfzZhZZx+9XgtgBF8Ni4e25ER1TnRWlRlxTv6G13bmyf6XHVkGC42wAkBULLppX203liHCe1wRJARPlmbsF8/0kgQjtIq2vTQESRbnnJR3ZBwuJONh/5i79tvFFL4ZQ/8HVdSitjNoQjxqf5+CPzaL4gJU026KMPouELI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=zoQP3lGB; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1779815732; c=relaxed/simple;
+	bh=x+DEaPvKv7TQz/Zz8vDRySswulFxfroGrLWhxyBmfJM=;
+	h=Date:Message-ID:From:To:Cc:Subject:References:MIME-Version:
+	 Content-Type; b=ZAk6jwz9Q9OLmX3838kFRJhgC1TDpHpJOG8rOJp+fk64zsMgI86LBfKSYYlsEDcKvyEkBilfpizf19BysWfM2G+fFyluOTkQMfHIwSXBf8npwf7aEbLF3Oz29NpEdEP8RSjfWnMNCDz/WZ+l3zJf/vqG7FDSu0M4K78odAKL2ck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ixngS4Sn; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="zoQP3lGB"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id B990AC79ABE;
-	Tue, 26 May 2026 17:15:23 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 4E5FB6011D;
-	Tue, 26 May 2026 17:15:24 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0A9881088897D;
-	Tue, 26 May 2026 19:15:20 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1779815723; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=O4ihxJuw8U/dvO5k6NDCRTW2nILGUxgx0sPV5BB0QZo=;
-	b=zoQP3lGBCHrDZ7fLgIK60F9BFgH3qL17tSnNSuacr23FEL60KM2PC6CLcZ5X4I8h/sW1rN
-	3t/FCqzEFzkRCmyG4lReuYqiqa4W5jf8daf5iFFrBcIdmAWfxQ5qo4raQpv+EfTPpLCokR
-	cvhZ7edkdaga0pFfh43fyeqhMGX5Pfg8X4fUNjDKf4avISTGTaAHaZu3uyy65OGbuT51al
-	TI/cthJ3Z7is4KMZSwTYqmwIWNTUacfNXllLGwrgXPLOAKLmCwzmMOq0FZH4x4zLSA/yrO
-	MKSj5rBXAmKLmSZ1ttTfLpXZgFrzVYoSvUjmxHPcgKOmyCwtJHGDc4rNAsR1dA==
-Message-ID: <c1ef0cd4-746c-41fc-b1bd-d72b5c107e87@bootlin.com>
-Date: Tue, 26 May 2026 19:15:20 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ixngS4Sn"
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id A379E1F000E9;
+	Tue, 26 May 2026 17:15:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779815730;
+	bh=a4FYRpF1UYnCO8X4b7Ms8Ubqb9G1rX4iNVRYaeabgIQ=;
+	h=Date:From:To:Cc:Subject:References;
+	b=ixngS4SnkGLyqGeipEEwuirzm/HHZxpkH7kvwDyAyEK24rrwJT/ZQ101v2Cx4uWVn
+	 JgGTIBZ5UNi2TzcfUlL9RV/Fmon0QpUgY5LCPlPxe0EFOITmBrBDrfZOUwMBlKqcPh
+	 Qtx9WenveUCT9y9lpoQMVFRE5WRX02W6gtVRBQBOCQdxY50L15drAfLSX5puBpeeCf
+	 A+SuRtbTKPyWL3ur4a/SISfMATT1S9BwY2xZM9y/LU2qrzGExLZ05B08iEO58KdJHG
+	 gb3dwQX8Az1X5YalJgJXToi9tu7Gq4cWGAd3OmdRzY4rEuVGAWjQqSF3eUsWnJrf6i
+	 Jcs6AoAq3kAZg==
+Date: Tue, 26 May 2026 19:15:27 +0200
+Message-ID: <20260526171224.499777655@kernel.org>
+User-Agent: quilt/0.68
+From: Thomas Gleixner <tglx@kernel.org>
+To: LKML <linux-kernel@vger.kernel.org>
+Cc: David Woodhouse <dwmw2@infradead.org>,
+ Miroslav Lichvar <mlichvar@redhat.com>,
+ John Stultz <jstultz@google.com>,
+ Stephen Boyd <sboyd@kernel.org>,
+ Anna-Maria Behnsen <anna-maria@linutronix.de>,
+ Frederic Weisbecker <frederic@kernel.org>,
+ thomas.weissschuh@linutronix.de,
+ Arthur Kiyanovski <akiyano@amazon.com>,
+ Rodolfo Giometti <giometti@enneenne.com>,
+ Vincent Donnefort <vdonnefort@google.com>,
+ Marc Zyngier <maz@kernel.org>,
+ Oliver Upton <oliver.upton@linux.dev>,
+ kvmarm@lists.linux.dev,
+ Oliver Upton <oupton@kernel.org>,
+ Richard Cochran <richardcochran@gmail.com>,
+ netdev@vger.kernel.org,
+ Takashi Iwai <tiwai@suse.com>,
+ Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+ Johannes Berg <johannes.berg@intel.com>,
+ Jacob Keller <jacob.e.keller@intel.com>,
+ Tony Nguyen <anthony.l.nguyen@intel.com>,
+ Saeed Mahameed <saeedm@nvidia.com>,
+ Peter Hilber <peter.hilber@oss.qualcomm.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ virtualization@lists.linux.dev,
+ linux-wireless@vger.kernel.org,
+ linux-sound@vger.kernel.org
+Subject: [patch 24/24] ptp: Switch to ktime_get_snapshot_id() for pre/post
+ timestamps
+References: <20260526165826.392227559@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 08/10] ethtool: strset: fix header attribute index in
- ethnl_req_get_phydev()
-To: Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net
-Cc: netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com,
- andrew+netdev@lunn.ch, horms@kernel.org, o.rempel@pengutronix.de,
- kory.maincent@bootlin.com, haiyangz@microsoft.com, andrew@lunn.ch,
- liuhangbin@gmail.com, chleroy@kernel.org
-References: <20260526153533.2779187-1-kuba@kernel.org>
- <20260526153533.2779187-9-kuba@kernel.org>
-Content-Language: en-US
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-In-Reply-To: <20260526153533.2779187-9-kuba@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=UTF-8
 
-Hi,
+To prepare for a new PTP IOCTL, which exposes the raw counter value along
+with the requested system time snapshot, switch the pre/post time stamp
+sampling over to use ktime_get_snapshot_id() and fix up all usage sites.
 
-On 5/26/26 17:35, Jakub Kicinski wrote:
-> strset_prepare_data() passes ETHTOOL_A_HEADER_FLAGS (3) as the header
-> attribute to ethnl_req_get_phydev(). This is incorrect, in the main
-> attr space 3 is ETHTOOL_A_STRSET_COUNTS_ONLY, not the request
-> header attr. The correct constant is ETHTOOL_A_STRSET_HEADER (1).
-> 
-> ethnl_req_get_phydev() only uses this value for the extack,
-> so this is not a "functionally visible"(?) bug.
-> 
-> Fixes: e96c93aa4be9 ("net: ethtool: strset: Allow querying phy stats by index")
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+No functional change intended.
 
-Indeed, my bad :(
+The ptp_vmclock conversion was simplified by David Woodhouse.
 
-Thanks !
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+---
+ drivers/net/dsa/sja1105/sja1105_main.c |    8 ++++----
+ drivers/ptp/ptp_chardev.c              |   14 +++++++++-----
+ drivers/ptp/ptp_ocp.c                  |   11 ++++-------
+ drivers/ptp/ptp_vmclock.c              |   23 +++++++----------------
+ include/linux/ptp_clock_kernel.h       |   15 ++++++++-------
+ 5 files changed, 32 insertions(+), 39 deletions(-)
 
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-
-Maxime
-
-> ---
-> CC: andrew@lunn.ch
-> CC: maxime.chevallier@bootlin.com
-> CC: liuhangbin@gmail.com
-> CC: chleroy@kernel.org
-> ---
->   net/ethtool/strset.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/net/ethtool/strset.c b/net/ethtool/strset.c
-> index bb1e829ba099..94c4718d31ae 100644
-> --- a/net/ethtool/strset.c
-> +++ b/net/ethtool/strset.c
-> @@ -311,7 +311,7 @@ static int strset_prepare_data(const struct ethnl_req_info *req_base,
->   		return 0;
->   	}
->   
-> -	phydev = ethnl_req_get_phydev(req_base, tb, ETHTOOL_A_HEADER_FLAGS,
-> +	phydev = ethnl_req_get_phydev(req_base, tb, ETHTOOL_A_STRSET_HEADER,
->   				      info->extack);
->   
->   	/* phydev can be NULL, check for errors only */
+--- a/drivers/net/dsa/sja1105/sja1105_main.c
++++ b/drivers/net/dsa/sja1105/sja1105_main.c
+@@ -2310,10 +2310,10 @@ int sja1105_static_config_reload(struct
+ 		goto out;
+ 	}
+ 
+-	t1 = timespec64_to_ns(&ptp_sts_before.pre_ts);
+-	t2 = timespec64_to_ns(&ptp_sts_before.post_ts);
+-	t3 = timespec64_to_ns(&ptp_sts_after.pre_ts);
+-	t4 = timespec64_to_ns(&ptp_sts_after.post_ts);
++	t1 = ktime_to_ns(ptp_sts_before.pre_sts.sys);
++	t2 = ktime_to_ns(ptp_sts_before.post_sts.sys);
++	t3 = ktime_to_ns(ptp_sts_after.pre_sts.sys);
++	t4 = ktime_to_ns(ptp_sts_after.post_sts.sys);
+ 	/* Mid point, corresponds to pre-reset PTPCLKVAL */
+ 	t12 = t1 + (t2 - t1) / 2;
+ 	/* Mid point, corresponds to post-reset PTPCLKVAL, aka 0 */
+--- a/drivers/ptp/ptp_chardev.c
++++ b/drivers/ptp/ptp_chardev.c
+@@ -386,15 +386,19 @@ static long ptp_sys_offset_extended(stru
+ 			return err;
+ 
+ 		/* Filter out disabled or unavailable clocks */
+-		if (sts.pre_ts.tv_sec < 0 || sts.post_ts.tv_sec < 0)
++		if (!sts.pre_sts.valid || !sts.post_sts.valid)
+ 			return -EINVAL;
+ 
+-		extoff->ts[i][0].sec = sts.pre_ts.tv_sec;
+-		extoff->ts[i][0].nsec = sts.pre_ts.tv_nsec;
+ 		extoff->ts[i][1].sec = ts.tv_sec;
+ 		extoff->ts[i][1].nsec = ts.tv_nsec;
+-		extoff->ts[i][2].sec = sts.post_ts.tv_sec;
+-		extoff->ts[i][2].nsec = sts.post_ts.tv_nsec;
++
++		ts = ktime_to_timespec64(sts.pre_sts.sys);
++		extoff->ts[i][0].sec = ts.tv_sec;
++		extoff->ts[i][0].nsec = ts.tv_nsec;
++
++		ts = ktime_to_timespec64(sts.post_sts.sys);
++		extoff->ts[i][2].sec = ts.tv_sec;
++		extoff->ts[i][2].nsec = ts.tv_nsec;
+ 	}
+ 
+ 	return copy_to_user(arg, extoff, sizeof(*extoff)) ? -EFAULT : 0;
+--- a/drivers/ptp/ptp_ocp.c
++++ b/drivers/ptp/ptp_ocp.c
+@@ -1491,11 +1491,8 @@ static int
+ 	}
+ 	ptp_read_system_postts(sts);
+ 
+-	if (sts && bp->ts_window_adjust) {
+-		s64 ns = timespec64_to_ns(&sts->post_ts);
+-
+-		sts->post_ts = ns_to_timespec64(ns - bp->ts_window_adjust);
+-	}
++	if (sts && bp->ts_window_adjust)
++		sts->post_ts.sys -= bp->ts_window_adjust;
+ 
+ 	time_ns = ioread32(&bp->reg->time_ns);
+ 	time_sec = ioread32(&bp->reg->time_sec);
+@@ -4595,8 +4592,8 @@ ptp_ocp_summary_show(struct seq_file *s,
+ 		struct timespec64 sys_ts;
+ 		s64 pre_ns, post_ns, ns;
+ 
+-		pre_ns = timespec64_to_ns(&sts.pre_ts);
+-		post_ns = timespec64_to_ns(&sts.post_ts);
++		pre_ns = ktime_to_ns(sts.pre_sts.sys);
++		post_ns = ktime_to_ns(sts.post_sts.sys);
+ 		ns = (pre_ns + post_ns) / 2;
+ 		ns += (s64)bp->utc_tai_offset * NSEC_PER_SEC;
+ 		sys_ts = ns_to_timespec64(ns);
+--- a/drivers/ptp/ptp_vmclock.c
++++ b/drivers/ptp/ptp_vmclock.c
+@@ -101,7 +101,6 @@ static int vmclock_get_crosststamp(struc
+ 				   struct timespec64 *tspec)
+ {
+ 	ktime_t deadline = ktime_add(ktime_get(), VMCLOCK_MAX_WAIT);
+-	struct system_time_snapshot systime_snapshot;
+ 	uint64_t cycle, delta, seq, frac_sec;
+ 
+ #ifdef CONFIG_X86
+@@ -132,17 +131,15 @@ static int vmclock_get_crosststamp(struc
+ 		 * will be derived from the *same* counter value.
+ 		 *
+ 		 * If the system isn't using the same counter, then the value
+-		 * from ktime_get_snapshot_id() will still be used as pre_ts, and
+-		 * ptp_read_system_postts() is called to populate postts after
+-		 * calling get_cycles().
+-		 *
+-		 * The conversion to timespec64 happens further down, outside
+-		 * the seq_count loop.
++		 * from ptp_read_system_prets() will still be used as pre_ts,
++		 * and ptp_read_system_postts() is called to populate postts
++		 * after calling get_cycles().
+ 		 */
+ 		if (sts) {
+-			ktime_get_snapshot_id(&systime_snapshot, CLOCK_REALTIME);
+-			if (systime_snapshot.cs_id == st->cs_id) {
+-				cycle = systime_snapshot.cycles;
++			ptp_read_system_prets(sts);
++			if (sts->pre_sts.cs_id == st->cs_id) {
++				cycle = sts->pre_sts.cycles;
++				sts->post_sts = sts->pre_sts;
+ 			} else {
+ 				cycle = get_cycles();
+ 				ptp_read_system_postts(sts);
+@@ -180,12 +177,6 @@ static int vmclock_get_crosststamp(struc
+ 		system_counter->cs_id = st->cs_id;
+ 	}
+ 
+-	if (sts) {
+-		sts->pre_ts = ktime_to_timespec64(systime_snapshot.sys);
+-		if (systime_snapshot.cs_id == st->cs_id)
+-			sts->post_ts = sts->pre_ts;
+-	}
+-
+ 	return 0;
+ }
+ 
+--- a/include/linux/ptp_clock_kernel.h
++++ b/include/linux/ptp_clock_kernel.h
+@@ -12,6 +12,7 @@
+ #include <linux/pps_kernel.h>
+ #include <linux/ptp_clock.h>
+ #include <linux/timecounter.h>
++#include <linux/timekeeping.h>
+ #include <linux/skbuff.h>
+ 
+ #define PTP_CLOCK_NAME_LEN	32
+@@ -45,13 +46,13 @@ struct system_device_crosststamp;
+ 
+ /**
+  * struct ptp_system_timestamp - system time corresponding to a PHC timestamp
+- * @pre_ts: system timestamp before capturing PHC
+- * @post_ts: system timestamp after capturing PHC
+- * @clockid: clock-base used for capturing the system timestamps
++ * @pre_sts:	system time snapshot before capturing PHC
++ * @post_sts:	system time snapshot after capturing PHC
++ * @clockid:	clock-base used for capturing the system timestamps
+  */
+ struct ptp_system_timestamp {
+-	struct timespec64 pre_ts;
+-	struct timespec64 post_ts;
++	struct system_time_snapshot pre_sts;
++	struct system_time_snapshot post_sts;
+ 	clockid_t clockid;
+ };
+ 
+@@ -510,13 +511,13 @@ static inline ktime_t ptp_convert_timest
+ static inline void ptp_read_system_prets(struct ptp_system_timestamp *sts)
+ {
+ 	if (sts)
+-		ktime_get_clock_ts64(sts->clockid, &sts->pre_ts);
++		ktime_get_snapshot_id(&sts->pre_sts, sts->clockid);
+ }
+ 
+ static inline void ptp_read_system_postts(struct ptp_system_timestamp *sts)
+ {
+ 	if (sts)
+-		ktime_get_clock_ts64(sts->clockid, &sts->post_ts);
++		ktime_get_snapshot_id(&sts->post_sts, sts->clockid);
+ }
+ 
+ #endif
 
