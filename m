@@ -1,117 +1,105 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F8CC409118;
-	Tue, 26 May 2026 17:13:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2800F413225
+	for <netdev@vger.kernel.org>; Tue, 26 May 2026 17:13:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779815633; cv=none; b=X9U888iuUXrde4aHwuqEBacTzcJXsUEugSTOcFsYY69+iFGMtmGibaeKDpxyRKIWRvL945rWyOcKcbpUwtfKCCernyCWWux6EkG+D/9Z9312gzrGrTGykqtIiSi5gufun3+fVXc8vjxsXekfnNZ2SXazTm9gjUirtZd2OHQZ+ns=
+	t=1779815635; cv=none; b=t1DToOjgtQjgsJfLUzBnRE/RTnLAdMSHTGnmX8BK+moCUkAz6ZpFuPTtmudmvlaxSbBr2TJjhsT/FOVMkm5EXQH4wXI7W4HdGtXaaauyyWaVtdiST3cZeJr8teSPq68s8EeVDKhI1H9OMG37Huci309H9XGpIUywDD5JDyBmpAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779815633; c=relaxed/simple;
-	bh=Jo/Au8bQYAno4GeE3KqHD8eiAALVUwsf3qSc631Dg88=;
-	h=Date:Message-ID:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type; b=ZjBEMoopTvEmDPdo8fmix8jDVfNJKp9wOL1FmOJy4QIwbXcRFuATW61AmfJOpWL3cbvC19acXkJCb3z6oMWVlFfxB2dsyPWxAJ0wBgK0J0rqee8AxMf5NTlCb/nQxqWo/WiG/Imu65+9GYuX9MELsUN1ikEmmL3FzGG1jmgtgb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gBaPgM/x; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779815635; c=relaxed/simple;
+	bh=WAETMV+93fuc7jRBnUMhC43/BsuKuoKB5qO1saXMzuM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=SvKnkEjgEdrQJitr8Caj3S/XjpasMmT8UTpGY8Yst8rDho3wkV7UTHPAakZo2xt4fh0glnI0kkFE6w1IcLMZ2c6tgSJGU1PN1yj14iXNYj8X50KH66zd5Yjksjx6nliSl8JwZzGmGoBgjULCkcOapViyrPpBXqhTdCHQfUp5lUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=EOMZJwMw; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gBaPgM/x"
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id CAD001F00A3A;
-	Tue, 26 May 2026 17:13:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779815626;
-	bh=X0scQND1xJm72l+yu4qfzG29LQeAoWdi/2lmLZs8YK4=;
-	h=Date:From:To:Cc:Subject:References;
-	b=gBaPgM/xsCiUVCAw9BPRWT13zmyadEtGDb6uVyJdpOXvhWBk2ulU534ck+xRoQ//k
-	 9sUHIZvMsrUTuJPwaQzLyKyf1L1zY3Lo8ZxJ8SAsmKCTgb/GF9F7HZxiNCsS0Zpg/k
-	 nuU0oRAvZF6Qvj/Q+n5ulI4ai+250J3JNiqk9gnayFDcEntnuAxW2eV1zJi8SFy+nZ
-	 G0Ha02ne6Ck8Pi26tBsHGkCFMA4ybw53o2riJmtasNU+NfZ+pSqIknkIgG4R8byMwb
-	 NDmOd+QhbvSXAOBtuxGyy5RsFc93k/j4gZIgiBn2RM3VKW/510aFVqzMjHXHWgpHXN
-	 Fa0BUCoW+3qcQ==
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="EOMZJwMw"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id A1C7CC79ABE;
+	Tue, 26 May 2026 17:13:47 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 365656011D;
+	Tue, 26 May 2026 17:13:48 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 90E5E1088897D;
+	Tue, 26 May 2026 19:13:44 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1779815627; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=3xHFuC8og3ZxbcbR67FIEfNVmxijX0Xd5qe9gz/OvEQ=;
+	b=EOMZJwMwr1a6MSeHihbhNvbRctQnytiPJd0AnDzvqVM4royrn8Jvbej7gREOO3+rm4kclQ
+	IAuy7iO6Xp23uj8NnbMcJ9HIfbbQns3PLIEQjBjyBPpr9042bVWwuVBg5gbmq0DFI3cd+M
+	6LmNCnG6T7atWHTjmyHFK3XAaNOsHiUWf+3sLAw3yeaz1tAM1fYGF9P0D2W01r9x1M8r2p
+	1hDC5PsjxkWQkNlFXDCir3+/iVnoSEAkgSMe53ZU72ERcGLOqhijD6ESsYLZHSsf8UPcTO
+	1bnta5Em90VPh2edNDtYGYx2JZlankS2FM6ec8Px0oQNPhG10WvIdU8q7W4dpQ==
+Message-ID: <e7de9862-9e31-4210-b3e7-80785fb7e553@bootlin.com>
 Date: Tue, 26 May 2026 19:13:43 +0200
-Message-ID: <20260526171222.920736414@kernel.org>
-User-Agent: quilt/0.68
-From: Thomas Gleixner <tglx@kernel.org>
-To: LKML <linux-kernel@vger.kernel.org>
-Cc: David Woodhouse <dwmw2@infradead.org>,
- Miroslav Lichvar <mlichvar@redhat.com>,
- John Stultz <jstultz@google.com>,
- Stephen Boyd <sboyd@kernel.org>,
- Anna-Maria Behnsen <anna-maria@linutronix.de>,
- Frederic Weisbecker <frederic@kernel.org>,
- thomas.weissschuh@linutronix.de,
- Arthur Kiyanovski <akiyano@amazon.com>,
- Rodolfo Giometti <giometti@enneenne.com>,
- Vincent Donnefort <vdonnefort@google.com>,
- Marc Zyngier <maz@kernel.org>,
- Oliver Upton <oliver.upton@linux.dev>,
- kvmarm@lists.linux.dev,
- Oliver Upton <oupton@kernel.org>,
- Richard Cochran <richardcochran@gmail.com>,
- netdev@vger.kernel.org,
- Takashi Iwai <tiwai@suse.com>,
- Miri Korenblit <miriam.rachel.korenblit@intel.com>,
- Johannes Berg <johannes.berg@intel.com>,
- Jacob Keller <jacob.e.keller@intel.com>,
- Tony Nguyen <anthony.l.nguyen@intel.com>,
- Saeed Mahameed <saeedm@nvidia.com>,
- Peter Hilber <peter.hilber@oss.qualcomm.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- virtualization@lists.linux.dev,
- linux-wireless@vger.kernel.org,
- linux-sound@vger.kernel.org
-Subject: [patch 03/24] pps: generators: Use ktime_get_real_ts64() instead of
- ktime_get_snapshot()
-References: <20260526165826.392227559@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net 09/10] ethtool: eeprom: add missing ethnl_ops_begin()
+ / _complete() during fallback
+To: Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net
+Cc: netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com,
+ andrew+netdev@lunn.ch, horms@kernel.org, o.rempel@pengutronix.de,
+ kory.maincent@bootlin.com, haiyangz@microsoft.com, andrew@lunn.ch
+References: <20260526153533.2779187-1-kuba@kernel.org>
+ <20260526153533.2779187-10-kuba@kernel.org>
+Content-Language: en-US
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+In-Reply-To: <20260526153533.2779187-10-kuba@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-There is no reason to use the more complex ktime_get_snapshot() for
-retrieving CLOCK_REALTIME.
+Hi,
 
-Just use ktime_get_real_ts64(), which avoids the extra timespec64
-conversion as a bonus.
+On 5/26/26 17:35, Jakub Kicinski wrote:
+> All ethtool driver op calls should be sandwiched between
+> ethnl_ops_begin() / ethnl_ops_complete(). In Netlink eeprom code,
+> if the paged access failed we fall back to old API, but we
+> first call _complete() and the fallback never does its own
+> ethnl_ops_begin(). Move the fallback into the _begin() / _complete()
+> section.
+> 
+> Fixes: 96d971e307cc ("ethtool: Add fallback to get_module_eeprom from netlink command")
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
-No functional change intended.
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
 
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Cc: Rodolfo Giometti <giometti@enneenne.com>
----
- drivers/pps/generators/pps_gen-dummy.c |    6 +-----
- drivers/pps/generators/pps_gen_tio.c   |    6 +-----
- 2 files changed, 2 insertions(+), 10 deletions(-)
+Thanks :)
 
---- a/drivers/pps/generators/pps_gen-dummy.c
-+++ b/drivers/pps/generators/pps_gen-dummy.c
-@@ -39,11 +39,7 @@ static void pps_gen_ktimer_event(struct
- static int pps_gen_dummy_get_time(struct pps_gen_device *pps_gen,
- 					struct timespec64 *time)
- {
--	struct system_time_snapshot snap;
--
--	ktime_get_snapshot(&snap);
--	*time = ktime_to_timespec64(snap.real);
--
-+	ktime_get_real_ts64(time);
- 	return 0;
- }
- 
---- a/drivers/pps/generators/pps_gen_tio.c
-+++ b/drivers/pps/generators/pps_gen_tio.c
-@@ -189,11 +189,7 @@ static int pps_tio_gen_enable(struct pps
- static int pps_tio_get_time(struct pps_gen_device *pps_gen,
- 			    struct timespec64 *time)
- {
--	struct system_time_snapshot snap;
--
--	ktime_get_snapshot(&snap);
--	*time = ktime_to_timespec64(snap.real);
--
-+	ktime_get_real_ts64(time);
- 	return 0;
- }
- 
+Maxime
+
+> ---
+> CC: andrew@lunn.ch
+> CC: maxime.chevallier@bootlin.com
+> ---
+>   net/ethtool/eeprom.c | 5 ++---
+>   1 file changed, 2 insertions(+), 3 deletions(-)
+> 
+> diff --git a/net/ethtool/eeprom.c b/net/ethtool/eeprom.c
+> index a557e3996c85..836316df3092 100644
+> --- a/net/ethtool/eeprom.c
+> +++ b/net/ethtool/eeprom.c
+> @@ -141,12 +141,11 @@ static int eeprom_prepare_data(const struct ethnl_req_info *req_base,
+>   	return 0;
+>   
+>   err_ops:
+> +	if (ret == -EOPNOTSUPP)
+> +		ret = eeprom_fallback(request, reply);
+>   	ethnl_ops_complete(dev);
+>   err_free:
+>   	kfree(page_data.data);
+> -
+> -	if (ret == -EOPNOTSUPP)
+> -		return eeprom_fallback(request, reply);
+>   	return ret;
+>   }
+>   
 
