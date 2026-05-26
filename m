@@ -1,129 +1,87 @@
-Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A700F3672B8
-	for <netdev@vger.kernel.org>; Tue, 26 May 2026 02:56:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE9B3382289;
+	Tue, 26 May 2026 03:06:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779764177; cv=none; b=EazlEzvC5O3iOoKvoTYCpJUpFeyXnXRlExiNyZNLWHqJovxZCg1LUD5xlgSuu4gAJvZwkE+2+8cQWmsQdu0+BisjEMz2KuaSQp1ZyAOOXJXJkAt4JHYFtBpmG/goatm/N9OwO7657ZZL0Lh96Ex++MeghvV9eA0TcAesdT+vyPE=
+	t=1779764780; cv=none; b=IBu9ClLN8anDDXEvxFscs6u0LxDySGcOalOmatPbtqbyR7uTiU/efiKdSnZ4HAdrFN/FBxl7+7lABfG6pr9qGzJpP1XNVD/xgXVxzZlcU3xjk3SgWf/jz+Zx7CC0zwOzs0xQYqQ3VIbgqZ4xRt6aoOqdHXeq0SIqe3orW/f3T0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779764177; c=relaxed/simple;
-	bh=Qb34UP3m6VO0wh6Lgjx+hU31ESJhtEJZME2tcN4Tr6w=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=aIbTmnr8mpT155NVgN2Ce+87vhv2I9F1IVjnsgVwsCV619pltmiX6dBo5CM6cTuKhxZ+PC9zXA/r90L5ljDjppGgbciAOr95RaLBZVs85GXRQhURk6U1aJMCZlCGO+GY8MSg/8vh14qv5Jm3k2OZMKSx9yxclnsFxX+gyGB9pBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=iwgOfM1h; arc=none smtp.client-ip=91.218.175.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1779764780; c=relaxed/simple;
+	bh=PLfC3hhP65/R8Ef/PrNCGEFxKULcxSgtxTKT3eRkj68=;
+	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
+	 Subject:From:To:Cc:Date; b=GW23eJtxmJ4fjj/ckfclDhVWKwSobkQH1Wmhrp+abXAW9fZKbQ31r+/N/pK3cEJGtzlnd22kdDPZg1chDAHdMV8+ftmrlT7F2urNTWIUVlVSUb4iF+CkBC+DN+whUHNMCQ2FhHTVd9K7Kk5UouBlOZOU/qyT8xhskiOx/Hceulk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=fail (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OEZUsMWJ reason="signature verification failed"; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="iwgOfM1h"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1779764172;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=X1djAiNq52G6WM13xP8X19UCENtmyTYi9Go8YgiXomE=;
-	b=iwgOfM1hJ5jpeExJVBJzO6lAXYq4AnW3L1FuaahjS+fJkdwHq6bn4ScTw4ysXfP/fyVZm0
-	Ugl9bKZLLVWTDRazYC171U7Xwk11Mb+0ASfcUcDXqyamJ6szsQBVR42zZgpNJI1R5GMkzO
-	NqZUL+zyYPrmbIkIAC+hH/fUoBTVPTQ=
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-To: netdev@vger.kernel.org
-Cc: daniel@iogearbox.net,
-	kuba@kernel.org,
-	ast@kernel.org,
-	martin.lau@linux.dev
-Subject: [PATCH net-next v2] net/sched: cls_bpf: prevent unbounded recursion in offload rollback
-Date: Tue, 26 May 2026 10:55:29 +0800
-Message-ID: <20260526025529.24382-1-jiayuan.chen@linux.dev>
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OEZUsMWJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC6B91F000E9;
+	Tue, 26 May 2026 03:06:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779764778;
+	bh=bD1DxynsoU0auV377W9yW3PuxMlzlNdl+Ii+zM/7Nyw=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date;
+	b=OEZUsMWJZw+E2RPT7SKO+DpKRsUypIy4D1QbA93XYWm2kMCltw5/oEklDClh5LEJy
+	 5lSKehzlacNUJqsYr+GRe7JLbgf1x09YNwO7zMvJGGT1yp3pMjzrZnqF3UqvsX0w2i
+	 UxGVr9958J6eJhwfaq84fQZCCRE0h6gXORUvlP+LILyQh1+uFhtvronjqICIH3k71a
+	 n7BEl4G6kAWOpsfMzLBBAfhFdlbakJ0krQreyQGgADtIIoAUjxAjgJ0Q4FB2f+PuLb
+	 cibao5KCroPmmz4ejin76N8MkSL1Bqy6pdPJ0XD7RvaFjAx5Y2A0QGCBOoERO3y869
+	 iZt6awx6fsXjg==
+Content-Type: multipart/mixed; boundary="===============1607772065207942128=="
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Message-Id: <8739793736cb8eb1ec6e271f59142e97a34af26ccb023469e23e5b47bed2aa61@mail.kernel.org>
+In-Reply-To: <8bfb7027abcc02c21db565cf52d6af78a6ce5b7d.1779760876.git.zhuhui@kylinos.cn>
+References: <8bfb7027abcc02c21db565cf52d6af78a6ce5b7d.1779760876.git.zhuhui@kylinos.cn>
+Subject: Re: [RFC PATCH bpf-next v7 03/11] libbpf: fix return value on memory allocation failure
+From: bot+bpf-ci@kernel.org
+To: hui.zhu@linux.dev,ast@kernel.org,daniel@iogearbox.net,john.fastabend@gmail.com,andrii@kernel.org,martin.lau@linux.dev,eddyz87@gmail.com,memxor@gmail.com,song@kernel.org,yonghong.song@linux.dev,jolsa@kernel.org,hannes@cmpxchg.org,mhocko@kernel.org,roman.gushchin@linux.dev,shakeel.butt@linux.dev,muchun.song@linux.dev,inwardvessel@gmail.com,akpm@linux-foundation.org,shuah@kernel.org,davem@davemloft.net,kuba@kernel.org,hawk@kernel.org,sdf@fomichev.me,kpsingh@kernel.org,chen.dylane@linux.dev,yatsenko@meta.com,leon.hwang@linux.dev,a.s.protopopov@gmail.com,ameryhung@gmail.com,tklauser@distanz.ch,eyal.birger@gmail.com,rongtao@cestc.cn,haoluo@google.com,peterz@infradead.org,ojeda@kernel.org,nathan@kernel.org,kees@kernel.org,tj@kernel.org,jeffxu@chromium.org,mkoutny@suse.com,kernel@jfarr.cc,brauner@kernel.org,rdunlap@infradead.org,brgerst@gmail.com,masahiroy@kernel.org,willemb@google.com,kerneljasonxing@gmail.com,paul.chaignon@gmail.com,chenridong@huaweicloud.com,lance.yang@linux.dev,jiayu
+ an.chen@linux.dev,linux-kernel@vger.kernel.org,bpf@vger.kernel.org,cgroups@vger.kernel.org,linux-mm@kvack.org,netdev@vger.kernel.org,linux-kselftest@vger.kernel.org
+Cc: geliang@kernel.org,baohua@kernel.org,laoar.shao@gmail.com,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
+Date: Tue, 26 May 2026 03:06:17 +0000 (UTC)
 
-Quan Sun reported [1] a stack overflow in cls_bpf_offload_cmd().
+--===============1607772065207942128==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Reproducer on netdevsim: add a skip_sw cls_bpf filter, set the
-bpf_tc_accept debugfs knob to 0, then `tc filter replace`. The replace
-calls tc_setup_cb_replace() which fails. cls_bpf_offload_cmd() then
-swaps prog/oldprog and recursively calls itself to roll back. But
-bpf_tc_accept=0 makes the rollback fail too, which triggers yet another
-rollback frame with the same arguments, and so on until the stack is
-exhausted.
+> diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
+> index ab2071fdd3e8..1e8688975d16 100644
+> --- a/tools/lib/bpf/libbpf.c
+> +++ b/tools/lib/bpf/libbpf.c
+> @@ -13701,7 +13701,7 @@ struct bpf_link *bpf_map__attach_struct_ops(const struct bpf_map *map)
+>
+>  	link = calloc(1, sizeof(*link));
+>  	if (!link)
+> -		return libbpf_err_ptr(-EINVAL);
+> +		return libbpf_err_ptr(-ENOMEM);
+>
+>  	/* kern_vdata should be prepared during the loading phase. */
+>  	err = bpf_map_update_elem(map->fd, &zero, map->st_ops->kern_vdata, 0);
 
-bpf_tc_accept is just a convenient knob for the reproducer. Any driver
-whose tc_setup_cb_replace() fails twice in a row can hit the same loop,
-so this is not a netdevsim-only issue.
+This is a pre-existing issue, but can this dereference a NULL map->st_ops
+pointer?
 
-Two ways to fix it:
+If a user manually changes a map's type to BPF_MAP_TYPE_STRUCT_OPS using
+bpf_map__set_type(), or if a malformed BPF object file defines a map in the
+.maps section with this type, map->st_ops is never allocated.
 
-  1) Have the rollback call tc_setup_cb_add() on oldprog instead of
-     re-entering cls_bpf_offload_cmd().
-  2) Mark the rollback frame with a flag and skip a second-level
-     rollback from inside it.
+The bpf_object_init_struct_ops() function only allocates st_ops for maps
+found in the .struct_ops and .struct_ops.link sections.
 
-Go with (2). It is the smaller change and keeps the original behaviour:
-the rollback still goes through tc_setup_cb_replace(), so the driver
-gets one real chance to restore its state. If that attempt also fails,
-we just return the original error instead of recursing.
+Because bpf_map__is_struct_ops() only checks map->def.type, could a missing
+NULL check on map->st_ops here and in bpf_map__init_kern_struct_ops() lead to
+a crash when privileged daemons parse untrusted BPF ELF files?
 
-[1]: https://lore.kernel.org/bpf/ce5a6005-3c5e-4696-9e05-eba9461dc860@std.uestc.edu.cn/T/#u
+Reviewed-by lore thread: https://lore.kernel.org/bpf/20260526024145.5309F1F000E9@smtp.kernel.org/
 
-Fixes: 102740bd9436 ("cls_bpf: fix offload assumptions after callback conversion")
-Reviewed-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
 
 ---
-v1 -> v2: Target net-next instead of bpf and, plus a few small changes.
-v1: https://lore.kernel.org/bpf/20260522025854.341647-1-jiayuan.chen@linux.dev/
----
- net/sched/cls_bpf.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
 
-diff --git a/net/sched/cls_bpf.c b/net/sched/cls_bpf.c
-index 9a346b6221b35..001d8c4ebfedc 100644
---- a/net/sched/cls_bpf.c
-+++ b/net/sched/cls_bpf.c
-@@ -142,7 +142,8 @@ static bool cls_bpf_is_ebpf(const struct cls_bpf_prog *prog)
- 
- static int cls_bpf_offload_cmd(struct tcf_proto *tp, struct cls_bpf_prog *prog,
- 			       struct cls_bpf_prog *oldprog,
--			       struct netlink_ext_ack *extack)
-+			       struct netlink_ext_ack *extack,
-+			       bool is_rollback)
- {
- 	struct tcf_block *block = tp->chain->block;
- 	struct tc_cls_bpf_offload cls_bpf = {};
-@@ -177,7 +178,8 @@ static int cls_bpf_offload_cmd(struct tcf_proto *tp, struct cls_bpf_prog *prog,
- 					  &oldprog->in_hw_count, true);
- 
- 	if (prog && err) {
--		cls_bpf_offload_cmd(tp, oldprog, prog, extack);
-+		if (!is_rollback)
-+			cls_bpf_offload_cmd(tp, oldprog, prog, extack, true);
- 		return err;
- 	}
- 
-@@ -208,7 +210,7 @@ static int cls_bpf_offload(struct tcf_proto *tp, struct cls_bpf_prog *prog,
- 	if (!prog && !oldprog)
- 		return 0;
- 
--	return cls_bpf_offload_cmd(tp, prog, oldprog, extack);
-+	return cls_bpf_offload_cmd(tp, prog, oldprog, extack, false);
- }
- 
- static void cls_bpf_stop_offload(struct tcf_proto *tp,
-@@ -217,7 +219,7 @@ static void cls_bpf_stop_offload(struct tcf_proto *tp,
- {
- 	int err;
- 
--	err = cls_bpf_offload_cmd(tp, NULL, prog, extack);
-+	err = cls_bpf_offload_cmd(tp, NULL, prog, extack, false);
- 	if (err)
- 		pr_err("Stopping hardware offload failed: %d\n", err);
- }
--- 
-2.43.0
-
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/26429228214
+--===============1607772065207942128==--
