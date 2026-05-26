@@ -1,42 +1,42 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 742543D8917
-	for <netdev@vger.kernel.org>; Tue, 26 May 2026 09:47:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 001CB3B9949;
+	Tue, 26 May 2026 09:47:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779788869; cv=none; b=UmCGP2Klmikp/j0e8SlenU5/E8zB07ZJ4AqeNha1fLQ42vODPM+zUWeRl8CwGf88+Q9Z4BSWL3MxR6v7nHziq5LTort5NdjQXumi8WrgqUGdEEFGcK88gMLpEnAqw6xNac4CLeGYQX+JhxnEou6EDigH4am48CmQ9FqLe+OeK9Q=
+	t=1779788871; cv=none; b=AVb16ing40X3gzOh6lw9L0lqouGMWLIlZWXvKLDmn4YyVC4GSiCi9sCVqGGllIUReg5jkYAna7ViaUfvFjMnoRHKSkxfSyVrPxiOZvG7jGIDme52CY2N5G8UCJKtnMU8pH8wFsrDbHYuZITWsiuJwiY7Dn6MFA6USltG1QQ140I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779788869; c=relaxed/simple;
-	bh=/chFbqe/d9fGsKte/GmNLYtFYgRf7dD52fg9DqrYvzU=;
+	s=arc-20240116; t=1779788871; c=relaxed/simple;
+	bh=vet+8LUw9CMHJCl4uCcWV2+acL0io+HppB8DCWwMYSI=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=gX/5AzDjNn7U9JrxLWr+StuRaxpl5PBHn8QbsFaO3+CEPEIftsm9xcZAz9oaVtRDgK3Lx3gVD9ySA5ydZmf7nn65dh9D1aDJDEy1JOdiTjW47na+cBWz0/6EsMQVwLLXFNxus085BpYpXPuR4oiydj2qHgxpnbKgSQJMpFTWLIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=cFFmFgDO; arc=none smtp.client-ip=185.171.202.116
+	 In-Reply-To:To:Cc; b=YDIV1gOmYVwHk1p63+ZX96MPQQDVzSgabXomeeDQYGnnsvZ30PTSXgTKSiSit+iuUBf8ROvkzvsiCTanOYqAUkLysi3gVzPC2rL4JahcwIEdIUFOd2TfG0oxUveY8LVr5+5I+N7Nqx3QJ5JG+TvnA973sZeAjPqOLBi6rOxMy9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=eUZV8Rb3; arc=none smtp.client-ip=185.246.84.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="cFFmFgDO"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="eUZV8Rb3"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 7F66FC79AB7;
-	Tue, 26 May 2026 09:47:45 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 733BD1A36D4;
+	Tue, 26 May 2026 09:47:42 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 35F3760732;
-	Tue, 26 May 2026 09:47:46 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id AFF4210888589;
-	Tue, 26 May 2026 11:47:43 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 468BA60732;
+	Tue, 26 May 2026 09:47:42 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B97B11088858A;
+	Tue, 26 May 2026 11:47:39 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1779788865; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1779788861; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=vzYaQ5yu63Jc3ORXyaAHobEcTOkRNZZ3zA5L1lbh9OM=;
-	b=cFFmFgDOKknGbxOq4itLQRmbLoUz0AAquKTtfyjuOfHie/7hICNz4tt7TFJ9Ai3cRIXE2j
-	e3Q+EagOrM5VG+s53BVvlN+Z1nAh33teIqd6C2Rxr3TpYv5TSEvds47x9rxr2wDkOh54A1
-	Gg2e151AkqzlG/Ch6wj1hXa27Hao98jAqDdZQcPzu1Y7/yu7NgfmK3WF6EJNfVQAJOZaLv
-	7XTN5eIUGg7jK81vov2aZw3wkZvl+teJFcwxpdyYdNxpIqIj2DxMtt5Udn1xPsD7IbvYBx
-	YHGqErC/6T3yyScdl/d1TaHFE0ZQX0hv7f8Z++Wn8XvW2k4zCsceJiLri08flw==
+	bh=/K9/ZTUYEm7hgptnRygC7Z1Qmu1Q/ZK2rVMEioKNYGM=;
+	b=eUZV8Rb3hYs4R80fck3UyLCiqktJCsoy21b9h4aO0MledhzwuCI8eNlV+LrRZ5PCr6oPhZ
+	didGMf+PU4bpr2W5jO4t5UB/dieDUzDdSMk/8sFnbt9LThAD5qIIgPkOUkxPhfEZ+Bb8Cu
+	5twNtBZ+HTrGRJtS+npHyYgxXHXjMrhkn4EcgIrtkfAGARHH8JXejeP0Ezn0D6ewdgcl4u
+	XQu1E7JJZtwBHMRGIj15SjJwXm89/W3HC6j6Ek5r852nbJV+G2f6maUTDkr96yI4fsFn0K
+	JI/RsOa72ZpB1oF8B8HiRg3C/F/PZ9EH7/0Ki4Xh+zJYQEjY8Ph/OyS9l3ZwwA==
 From: "Bastien Curutchet (Schneider Electric)" <bastien.curutchet@bootlin.com>
-Date: Tue, 26 May 2026 11:47:29 +0200
-Subject: [PATCH net-next 3/9] net: dsa: microchip: implement get_phy_flags
- only if needed
+Date: Tue, 26 May 2026 11:47:27 +0200
+Subject: [PATCH net-next 1/9] net: dsa: microchip: remove useless common
+ cls_flower_{add/del} operations
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -45,7 +45,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260526-clean-ksz-3rd-v1-3-5b63e732149a@bootlin.com>
+Message-Id: <20260526-clean-ksz-3rd-v1-1-5b63e732149a@bootlin.com>
 References: <20260526-clean-ksz-3rd-v1-0-5b63e732149a@bootlin.com>
 In-Reply-To: <20260526-clean-ksz-3rd-v1-0-5b63e732149a@bootlin.com>
 To: Woojung Huh <woojung.huh@microchip.com>, UNGLinuxDriver@microchip.com, 
@@ -62,143 +62,151 @@ Cc: Pascal Eberhard <pascal.eberhard@se.com>,
 X-Mailer: b4 0.14.3
 X-Last-TLS-Session-Version: TLSv1.3
 
-The common ksz_get_phy_flags() is used by all the switches to implement
-the optional .get_phy_flags DSA operation. It always returns 0 except
-for KSZ88X3 switches where an errata has to be handled.
+All the KSZ switches share a common implementation of the
+cls_flower_{add/del} operations. These common implementations return
+ksz9477-specific implementations for the KSZ9477 family and -EOPNOTSUPP
+for the others. -EOPNOTSUPP is already returned by the DSA core when
+the operation isn't implemented.
 
-Make ksz_get_phy_flags() ksz88xx-specific.
-Remove the get_phy_flags implementation for the switches that don't need
-it.
+Remove the common implementations.
+Directly link the ksz9477_cls_flower_{add/del}() to the KSZ9477 callback.
 
 Signed-off-by: Bastien Curutchet (Schneider Electric) <bastien.curutchet@bootlin.com>
 ---
- drivers/net/dsa/microchip/ksz8.c         | 22 +++++++++++++++++++---
- drivers/net/dsa/microchip/ksz9477.c      |  1 -
- drivers/net/dsa/microchip/ksz_common.c   | 18 ------------------
- drivers/net/dsa/microchip/ksz_common.h   |  2 --
- drivers/net/dsa/microchip/lan937x_main.c |  1 -
- 5 files changed, 19 insertions(+), 25 deletions(-)
+ drivers/net/dsa/microchip/ksz8.c         |  6 -----
+ drivers/net/dsa/microchip/ksz9477.c      |  4 +--
+ drivers/net/dsa/microchip/ksz_common.c   | 42 --------------------------------
+ drivers/net/dsa/microchip/ksz_common.h   |  4 ---
+ drivers/net/dsa/microchip/lan937x_main.c |  2 --
+ 5 files changed, 2 insertions(+), 56 deletions(-)
 
 diff --git a/drivers/net/dsa/microchip/ksz8.c b/drivers/net/dsa/microchip/ksz8.c
-index 93e0b3f60448..98cf7239057d 100644
+index 0f84b2e7d25d..db08874eb025 100644
 --- a/drivers/net/dsa/microchip/ksz8.c
 +++ b/drivers/net/dsa/microchip/ksz8.c
-@@ -2272,6 +2272,24 @@ static int ksz8463_phy_write16(struct dsa_switch *ds, int addr, int reg, u16 val
+@@ -2462,8 +2462,6 @@ const struct dsa_switch_ops ksz8463_switch_ops = {
+ 	.port_hwtstamp_set	= ksz_hwtstamp_set,
+ 	.port_txtstamp		= ksz_port_txtstamp,
+ 	.port_rxtstamp		= ksz_port_rxtstamp,
+-	.cls_flower_add		= ksz_cls_flower_add,
+-	.cls_flower_del		= ksz_cls_flower_del,
+ 	.port_setup_tc		= ksz_setup_tc,
+ 	.support_eee		= ksz_support_eee,
+ 	.set_mac_eee		= ksz_set_mac_eee,
+@@ -2522,8 +2520,6 @@ const struct dsa_switch_ops ksz87xx_switch_ops = {
+ 	.port_hwtstamp_set	= ksz_hwtstamp_set,
+ 	.port_txtstamp		= ksz_port_txtstamp,
+ 	.port_rxtstamp		= ksz_port_rxtstamp,
+-	.cls_flower_add		= ksz_cls_flower_add,
+-	.cls_flower_del		= ksz_cls_flower_del,
+ 	.port_setup_tc		= ksz_setup_tc,
+ 	.support_eee		= ksz_support_eee,
+ 	.set_mac_eee		= ksz_set_mac_eee,
+@@ -2582,8 +2578,6 @@ const struct dsa_switch_ops ksz88xx_switch_ops = {
+ 	.port_hwtstamp_set	= ksz_hwtstamp_set,
+ 	.port_txtstamp		= ksz_port_txtstamp,
+ 	.port_rxtstamp		= ksz_port_rxtstamp,
+-	.cls_flower_add		= ksz_cls_flower_add,
+-	.cls_flower_del		= ksz_cls_flower_del,
+ 	.port_setup_tc		= ksz_setup_tc,
+ 	.support_eee		= ksz_support_eee,
+ 	.set_mac_eee		= ksz_set_mac_eee,
+diff --git a/drivers/net/dsa/microchip/ksz9477.c b/drivers/net/dsa/microchip/ksz9477.c
+index c1395322e54b..c18bad08a508 100644
+--- a/drivers/net/dsa/microchip/ksz9477.c
++++ b/drivers/net/dsa/microchip/ksz9477.c
+@@ -1996,8 +1996,8 @@ const struct dsa_switch_ops ksz9477_switch_ops = {
+ 	.port_hwtstamp_set	= ksz_hwtstamp_set,
+ 	.port_txtstamp		= ksz_port_txtstamp,
+ 	.port_rxtstamp		= ksz_port_rxtstamp,
+-	.cls_flower_add		= ksz_cls_flower_add,
+-	.cls_flower_del		= ksz_cls_flower_del,
++	.cls_flower_add		= ksz9477_cls_flower_add,
++	.cls_flower_del		= ksz9477_cls_flower_del,
+ 	.port_setup_tc		= ksz_setup_tc,
+ 	.support_eee		= ksz_support_eee,
+ 	.set_mac_eee		= ksz_set_mac_eee,
+diff --git a/drivers/net/dsa/microchip/ksz_common.c b/drivers/net/dsa/microchip/ksz_common.c
+index 57c8abfe0147..81d3ec88e436 100644
+--- a/drivers/net/dsa/microchip/ksz_common.c
++++ b/drivers/net/dsa/microchip/ksz_common.c
+@@ -3373,48 +3373,6 @@ static int ksz_switch_detect(struct ksz_device *dev)
  	return 0;
  }
  
-+static u32 ksz88xx_get_phy_flags(struct dsa_switch *ds, int port)
-+{
-+	struct ksz_device *dev = ds->priv;
-+
-+	switch (dev->chip_id) {
-+	case KSZ88X3_CHIP_ID:
-+		/* Silicon Errata Sheet (DS80000830A):
-+		 * Port 1 does not work with LinkMD Cable-Testing.
-+		 * Port 1 does not respond to received PAUSE control frames.
-+		 */
-+		if (!port)
-+			return MICREL_KSZ8_P1_ERRATA;
-+		break;
-+	}
-+
-+	return 0;
-+}
-+
- static int ksz8_switch_init(struct ksz_device *dev)
- {
- 	dev->cpu_port = fls(dev->info->cpu_ports) - 1;
-@@ -2419,7 +2437,6 @@ const struct ksz_dev_ops ksz88xx_dev_ops = {
- const struct dsa_switch_ops ksz8463_switch_ops = {
- 	.get_tag_protocol	= ksz8463_get_tag_protocol,
- 	.connect_tag_protocol   = ksz8463_connect_tag_protocol,
--	.get_phy_flags		= ksz_get_phy_flags,
- 	.setup			= ksz8_setup,
- 	.teardown		= ksz_teardown,
- 	.phy_read		= ksz8463_phy_read16,
-@@ -2474,7 +2491,6 @@ const struct dsa_switch_ops ksz8463_switch_ops = {
- const struct dsa_switch_ops ksz87xx_switch_ops = {
- 	.get_tag_protocol	= ksz87xx_get_tag_protocol,
- 	.connect_tag_protocol   = ksz87xx_connect_tag_protocol,
--	.get_phy_flags		= ksz_get_phy_flags,
- 	.setup			= ksz8_setup,
- 	.teardown		= ksz_teardown,
- 	.phy_read		= ksz8_phy_read16,
-@@ -2532,7 +2548,7 @@ const struct dsa_switch_ops ksz87xx_switch_ops = {
- const struct dsa_switch_ops ksz88xx_switch_ops = {
- 	.get_tag_protocol	= ksz88xx_get_tag_protocol,
- 	.connect_tag_protocol   = ksz88xx_connect_tag_protocol,
--	.get_phy_flags		= ksz_get_phy_flags,
-+	.get_phy_flags		= ksz88xx_get_phy_flags,
- 	.setup			= ksz8_setup,
- 	.teardown		= ksz_teardown,
- 	.phy_read		= ksz8_phy_read16,
-diff --git a/drivers/net/dsa/microchip/ksz9477.c b/drivers/net/dsa/microchip/ksz9477.c
-index c18bad08a508..a39541d29ad5 100644
---- a/drivers/net/dsa/microchip/ksz9477.c
-+++ b/drivers/net/dsa/microchip/ksz9477.c
-@@ -1952,7 +1952,6 @@ const struct ksz_dev_ops ksz9477_dev_ops = {
- const struct dsa_switch_ops ksz9477_switch_ops = {
- 	.get_tag_protocol	= ksz9477_get_tag_protocol,
- 	.connect_tag_protocol   = ksz9477_connect_tag_protocol,
--	.get_phy_flags		= ksz_get_phy_flags,
- 	.setup			= ksz9477_setup,
- 	.teardown		= ksz_teardown,
- 	.phy_read		= ksz9477_phy_read16,
-diff --git a/drivers/net/dsa/microchip/ksz_common.c b/drivers/net/dsa/microchip/ksz_common.c
-index 81d3ec88e436..5fb151fbf4f3 100644
---- a/drivers/net/dsa/microchip/ksz_common.c
-+++ b/drivers/net/dsa/microchip/ksz_common.c
-@@ -2838,24 +2838,6 @@ void ksz_init_mib_timer(struct ksz_device *dev)
- 	}
- }
- 
--u32 ksz_get_phy_flags(struct dsa_switch *ds, int port)
+-int ksz_cls_flower_add(struct dsa_switch *ds, int port,
+-		       struct flow_cls_offload *cls, bool ingress)
 -{
 -	struct ksz_device *dev = ds->priv;
 -
 -	switch (dev->chip_id) {
--	case KSZ88X3_CHIP_ID:
--		/* Silicon Errata Sheet (DS80000830A):
--		 * Port 1 does not work with LinkMD Cable-Testing.
--		 * Port 1 does not respond to received PAUSE control frames.
--		 */
--		if (!port)
--			return MICREL_KSZ8_P1_ERRATA;
--		break;
+-	case KSZ8563_CHIP_ID:
+-	case KSZ8567_CHIP_ID:
+-	case KSZ9477_CHIP_ID:
+-	case KSZ9563_CHIP_ID:
+-	case KSZ9567_CHIP_ID:
+-	case KSZ9893_CHIP_ID:
+-	case KSZ9896_CHIP_ID:
+-	case KSZ9897_CHIP_ID:
+-	case LAN9646_CHIP_ID:
+-		return ksz9477_cls_flower_add(ds, port, cls, ingress);
 -	}
 -
--	return 0;
+-	return -EOPNOTSUPP;
 -}
 -
- void ksz_phylink_mac_link_down(struct phylink_config *config,
- 			       unsigned int mode,
- 			       phy_interface_t interface)
+-int ksz_cls_flower_del(struct dsa_switch *ds, int port,
+-		       struct flow_cls_offload *cls, bool ingress)
+-{
+-	struct ksz_device *dev = ds->priv;
+-
+-	switch (dev->chip_id) {
+-	case KSZ8563_CHIP_ID:
+-	case KSZ8567_CHIP_ID:
+-	case KSZ9477_CHIP_ID:
+-	case KSZ9563_CHIP_ID:
+-	case KSZ9567_CHIP_ID:
+-	case KSZ9893_CHIP_ID:
+-	case KSZ9896_CHIP_ID:
+-	case KSZ9897_CHIP_ID:
+-	case LAN9646_CHIP_ID:
+-		return ksz9477_cls_flower_del(ds, port, cls, ingress);
+-	}
+-
+-	return -EOPNOTSUPP;
+-}
+-
+ /* Bandwidth is calculated by idle slope/transmission speed. Then the Bandwidth
+  * is converted to Hex-decimal using the successive multiplication method. On
+  * every step, integer part is taken and decimal part is carry forwarded.
 diff --git a/drivers/net/dsa/microchip/ksz_common.h b/drivers/net/dsa/microchip/ksz_common.h
-index da62c1658aa8..804912fdd2db 100644
+index b67038cf1bd0..da62c1658aa8 100644
 --- a/drivers/net/dsa/microchip/ksz_common.h
 +++ b/drivers/net/dsa/microchip/ksz_common.h
-@@ -440,8 +440,6 @@ void ksz_switch_macaddr_put(struct dsa_switch *ds);
- void ksz_switch_shutdown(struct ksz_device *dev);
- int ksz_handle_wake_reason(struct ksz_device *dev, int port);
+@@ -483,10 +483,6 @@ bool ksz_support_eee(struct dsa_switch *ds, int port);
+ int ksz_set_mac_eee(struct dsa_switch *ds, int port,
+ 		    struct ethtool_keee *e);
  
--u32 ksz_get_phy_flags(struct dsa_switch *ds, int port);
--
- int ksz_sset_count(struct dsa_switch *ds, int port, int sset);
- void ksz_get_ethtool_stats(struct dsa_switch *ds, int port,
- 			   uint64_t *buf);
+-int ksz_cls_flower_add(struct dsa_switch *ds, int port,
+-		       struct flow_cls_offload *cls, bool ingress);
+-int ksz_cls_flower_del(struct dsa_switch *ds, int port,
+-		       struct flow_cls_offload *cls, bool ingress);
+ int ksz_setup_tc(struct dsa_switch *ds, int port,
+ 		 enum tc_setup_type type, void *type_data);
+ 
 diff --git a/drivers/net/dsa/microchip/lan937x_main.c b/drivers/net/dsa/microchip/lan937x_main.c
-index 731737fd58d1..57e289637193 100644
+index 536153886f7b..731737fd58d1 100644
 --- a/drivers/net/dsa/microchip/lan937x_main.c
 +++ b/drivers/net/dsa/microchip/lan937x_main.c
-@@ -846,7 +846,6 @@ const struct ksz_dev_ops lan937x_dev_ops = {
- const struct dsa_switch_ops lan937x_switch_ops = {
- 	.get_tag_protocol	= lan937x_get_tag_protocol,
- 	.connect_tag_protocol   = lan937x_connect_tag_protocol,
--	.get_phy_flags		= ksz_get_phy_flags,
- 	.setup			= lan937x_setup,
- 	.teardown		= ksz_teardown,
- 	.phy_read		= lan937x_phy_read16,
+@@ -890,8 +890,6 @@ const struct dsa_switch_ops lan937x_switch_ops = {
+ 	.port_hwtstamp_set	= ksz_hwtstamp_set,
+ 	.port_txtstamp		= ksz_port_txtstamp,
+ 	.port_rxtstamp		= ksz_port_rxtstamp,
+-	.cls_flower_add		= ksz_cls_flower_add,
+-	.cls_flower_del		= ksz_cls_flower_del,
+ 	.port_setup_tc		= ksz_setup_tc,
+ 	.support_eee		= ksz_support_eee,
+ 	.set_mac_eee		= ksz_set_mac_eee,
 
 -- 
 2.54.0
