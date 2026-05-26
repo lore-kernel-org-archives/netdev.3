@@ -1,257 +1,125 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f175.google.com (mail-vk1-f175.google.com [209.85.221.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EABFC1C01;
-	Tue, 26 May 2026 00:06:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2C782765E2
+	for <netdev@vger.kernel.org>; Tue, 26 May 2026 00:35:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779754006; cv=none; b=ncOtYlgoznFXJbwMtyNKZZaOxwJy7IL09IMyiIL98P/rZ3Te8Rz/TT4tR7gRRG3u+8n2UzN/GU3VBzdWRZYHG0thkib/uNRZenWxDAjQ5IwS+dvD3B7rSiYRjYGyxRIo7fdMPvu6QsywV3KL7iAfWBXaVrI8cjxEGdXzB10PMqs=
+	t=1779755746; cv=none; b=EDmyMPYBCSmBM1Q/d3rKfKxlvakQATk3LAs30iG57NfSPwy/w4UaIJ4kgdb/0kDF4K9864UiyB2ytCR6l7+zmeumudYpXHfrm68kQxNjPILPhf19TX8yN0K2J/Yq7TVgNeI5Sb2KLcLLQ4Aie8LQs4Dilk7Wz4x+3pdFdXJXYEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779754006; c=relaxed/simple;
-	bh=BBx6ZGdBHi3bjVnefKJKonoxnT87uPyqCJPiJQmebQw=;
-	h=MIME-Version:Content-Type:Subject:From:To:Cc:In-Reply-To:
-	 References:Date:Message-Id; b=eoLyyx1q7UB7GnSjDfvGVM8bj2LDddN57IjMYoKTFadPDzm92UTXTgcjffDWA+XZZbGrt6T2FolQdJElOat1LgwtVFxvU5tYyAts6zGXqGk0qFNPcI+zT0vH8/SOorl/KrZI1hawNqZmIQltu3NVi7DdJlLeFAw0+ByxaznrfPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nkpCMEzz; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779755746; c=relaxed/simple;
+	bh=aI73dLAsoMnIz2OoRYSyNZeZBTVcQgWYmXKRdLg8hGw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=nAg9+mC5+rrE+CJwCpvo2McEdB0OaMTafKeD9cTptJuvrVkeGSSy6cwDAW8fsFbqpxaYZDlsS2ciyYkKMYz6Q3jKniWKpZlGpvocwAUQBNhwPQteNhCAgnGsN6A4ab7fitHgfe96xG9zWnVio+93yMIw4Pr10+8VqvZZBErPPHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y9AIeJka; arc=none smtp.client-ip=209.85.221.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nkpCMEzz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC0B81F000E9;
-	Tue, 26 May 2026 00:06:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779754004;
-	bh=aumDcQ91NTlPYKiVDjTe+d5zdzDpOboSbGddL23BwwA=;
-	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=nkpCMEzzr2iapxOKvs/dLoQdw1I8ErBt+eoCMGLZ9zd+m6PhqZcJjpXPnTnsJLe3G
-	 bTnmOo5x5BeHhxUTMNo3O9BvGX19jKLHrClIWuL8eaBc5c0vP1CvJp3qL0IqFDzqCq
-	 mJtxGvO2I6ymeIEJPZjXNTbB6OI8uaBrxUtO0xzhA+Faqwm9/wtI9keFYmi+j4iqq2
-	 WgjGydHiXQKEoiZJDsR+I4L8tByCkcyTESzidSj95jpiNhokG7GJ2RwBcpBT+3aunn
-	 cTgStVd11YXmb1ozSTgriOVrWqCz3dH2RRl2wmm0DfQu3ahJr+FXOKx9rIxNdwxRm3
-	 j1KA5gq9RzWiw==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y9AIeJka"
+Received: by mail-vk1-f175.google.com with SMTP id 71dfb90a1353d-5751a9020faso7539730e0c.1
+        for <netdev@vger.kernel.org>; Mon, 25 May 2026 17:35:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779755743; x=1780360543; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xBgWuooGCwcYgQ+uND+oHD3Fi2ceyxPTaalSlSWEF5A=;
+        b=Y9AIeJkaDSlZBfKPPfNoVDKTiS0PN8NGFY8+O915yNrpd319YFvHQTSn0d3duhIWAD
+         ptcE4C8ks+HFox+IgxdqhuTLWKrhwFZjF4eK+4dKlyEf4PlsYVLuVVItFsxyiMby7bqS
+         XqXbv4QD2BkK6jqTtZLLX2WufPpVJ1OZQXOoNKPIV6hm2ltvD/uY6XiZg74AMfI7i+53
+         mZdUZjTIapI3ULQLxbckjJKfPGVFZ1UE02Fd7s/JJhgew//5PMXJn4DRYdBBjKHHq9tI
+         VdN+JmLb8QyS32zYvnq6SsHZY9BeJTsGUUnRc5FsF+Dlg7IFPhiUyVjwHkHdMUaNPqdR
+         y9jw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779755743; x=1780360543;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=xBgWuooGCwcYgQ+uND+oHD3Fi2ceyxPTaalSlSWEF5A=;
+        b=U0uaMFZCsnkJL9t+bIzoUQWSuJulvaplzANJ0B/L4ZIZO6YgG9DQMxXlwtRdaalHp3
+         9sIq4Jibj5FaQgLARyVuauDzRXcU/eshWieQ7JLHWeYTJf5inoWAi3yL5jStBsde6b2i
+         Ne9c1x7DvrERbdHUNIOpje3H6q1CTv5gPJz5MobHAU+mnCtLerMHu3ziRf+fXm+71ltE
+         SCOrrdgxCs7PdUHUcadEOkmFgUbhKAfMbKfTWd4Xygbz9lbRjq/ZZ6S62IN/SbBekZpk
+         6SZdofhYUwjxC88naBnk9BAPm9gt3IzqABp/CuwvEgxuTYH4cP95DqO6r85Jfy5pWW6t
+         seMw==
+X-Gm-Message-State: AOJu0Yxvi2Zb4xAawN7ubDfcD9pX29//eIcGjGWv/sHdMYHWHJBj1bhu
+	Q6122aqqq4HD61sXQpsBrQj0Vj7JMh8sfoXfm+wCoIGqc2L2rApZ0szNF4sGoqSKwaA=
+X-Gm-Gg: Acq92OGIsCC40S6ddOOqPXYxv202DotyNceDG7yU9Q9DyTVtVVgWetexhHfqfFb0UXc
+	shnEuw7ewbouTCM5Xf0Jb2xg68YW+/MsQ7Ii+za00W9G2kKl23ARyvzTgLl6Y27UNLxhAZlyTdX
+	Yt5CT0rKRMOW7iIHCtL1CpIe1wnRmUCkgl//q6qUFAClwGoHjY8cvIMcaOwEi+DnQDf9MTh7XPv
+	Rj5T/zVboY9mBhFXfqLO+z6kgyh6MDN41okx86i2jwqv9HFe9digTNqv1l83G2ZkVkG0HaXvyou
+	IupbniBbzsI8YgL5OsaGABYodWg6bu1GgTeEDhU+o2j1nEaiBt0R2jKAlbl/L5JUM51JynZUraR
+	OUaD3ElhKMEtEzEVfjY2sPQBujZBd1Uf4Xo9wtQoRK1iB0+vZHXuYmoBfbZAYh+IQ00Zugd4DZG
+	mIhl0obszMPENFrI5OPNLu1R8T34YVdEpQiO572GVYxp6n0ZIEu3mivRnT20uF9oWzlusOfTxUs
+	qDZOiT/5IyE389jFxg3kXepHRXGWtZCA1tL5VXO8MwVG8AG90izOg==
+X-Received: by 2002:a05:6122:e250:b0:56d:2ca7:fbc3 with SMTP id 71dfb90a1353d-5865fc0355cmr8472321e0c.5.1779755743551;
+        Mon, 25 May 2026 17:35:43 -0700 (PDT)
+Received: from sekiura-Standard-PC-i440FX-PIIX-1996.. ([186.122.244.96])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-586f791f719sm13955006e0c.11.2026.05.25.17.35.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 25 May 2026 17:35:43 -0700 (PDT)
+From: Takao Sato <takaosato1997@gmail.com>
+To: netdev@vger.kernel.org
+Cc: steffen.klassert@secunet.com,
+	w@1wt.eu,
+	davem@davemloft.net,
+	herbert@gondor.apana.org.au,
+	chopps@chopps.org,
+	pfalcato@suse.de,
+	stable@vger.kernel.org,
+	Takao Sato <takaosato1997@gmail.com>
+Subject: [PATCH net v4] xfrm: iptfs: preserve shared-frag marker in iptfs_consume_frags()
+Date: Mon, 25 May 2026 21:35:37 -0300
+Message-ID: <20260526003537.998848-1-takaosato1997@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260522142504.1394864-1-takaosato1997@gmail.com>
+References: <20260522142504.1394864-1-takaosato1997@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v7 00/15] firmware: qcom: Add OP-TEE PAS service
- support
-From: bod@kernel.org
-To: Sumit Garg <sumit.garg@kernel.org>
-Cc: andersson@kernel.org, linux-arm-msm@vger.kernel.org, 
- devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org, 
- freedreno@lists.freedesktop.org, linux-media@vger.kernel.org, 
- netdev@vger.kernel.org, linux-wireless@vger.kernel.org, 
- ath12k@lists.infradead.org, linux-remoteproc@vger.kernel.org, 
- konradybcio@kernel.org, robh@kernel.org, krzk+dt@kernel.org, 
- conor+dt@kernel.org, robin.clark@oss.qualcomm.com, sean@poorly.run, 
- akhilpo@oss.qualcomm.com, lumag@kernel.org, abhinav.kumar@linux.dev, 
- jesszhan0024@gmail.com, marijn.suijten@somainline.org, airlied@gmail.com, 
- simona@ffwll.ch, vikash.garodia@oss.qualcomm.com, 
- dikshita.agarwal@oss.qualcomm.com, bod@kernel.org, mchehab@kernel.org, 
- elder@kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net, 
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
- jjohnson@kernel.org, mathieu.poirier@linaro.org, 
- trilokkumar.soni@oss.qualcomm.com, mukesh.ojha@oss.qualcomm.com, 
- pavan.kondeti@oss.qualcomm.com, jorge.ramirez@oss.qualcomm.com, 
- tonyh@qti.qualcomm.com, vignesh.viswanathan@oss.qualcomm.com, 
- srinivas.kandagatla@oss.qualcomm.com, amirreza.zarrabi@oss.qualcomm.com, 
- jens.wiklander@linaro.org, op-tee@lists.trustedfirmware.org, 
- apurupa@qti.qualcomm.com, skare@qti.qualcomm.com, 
- linux-kernel@vger.kernel.org, Sumit Garg <sumit.garg@oss.qualcomm.com>
-In-Reply-To: <20260522115936.201208-1-sumit.garg@kernel.org>
-References: <20260522115936.201208-1-sumit.garg@kernel.org>
-Date: Tue, 26 May 2026 01:06:33 +0100
-Message-Id: <177975399325.14006.12128272008783925649.b4-reply@b4>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=8067; i=bod@kernel.org;
- h=from:subject:message-id; bh=BBx6ZGdBHi3bjVnefKJKonoxnT87uPyqCJPiJQmebQw=;
- b=owEBbQKS/ZANAwAKASJxO7Ohjcg6AcsmYgBqFOQKF61u+nix8KBErtxiaykNtnbP7n9PbP102
- zybULRYkRCJAjMEAAEKAB0WIQTmk/sqq6Nt4Rerb7QicTuzoY3IOgUCahTkCgAKCRAicTuzoY3I
- OpYVEACFNMxta6jtHP0tJrj8PwZVliOSOpu8ZeXF9n0DeXu+WkBVxKnXWoi2oK3ZGxB8m8eXBmU
- 77+KpBxaNEIOjPeDmVM9sXyaqmw8qCUy1Q/L/oauir/L6SqguPgx2OqNgZdVs1vuo5DQmAuQcHy
- PYQexkFHbUe66eedE2OxX3RXAOVHA/WpFxedguhHScFUYEeUm2UcEQ/tON9E3X9S3fR5A8TwNgv
- kCqfcZLmCjSPKCHoLyDgheXhICpYuHUpL2/eY+wLrMU2ufqmo5DAU5vrlOKPcgMkluBI24ZMsGu
- tLUDL4cUAT7dk7z6c5FnfrfYU4EMmkdPJm0m341RO9ncaYksAr+etAI3dFTTTVAQ4W7fAuz3TuF
- GSdNaNJ8WpH43SVVcTwa2ThbST/sa+5bg9rqBWhKL7fbM5+M6nb6fnlp4zfsVnwJQrxs4AiIodd
- d7khYG+sIvCv8/tPfJRzUdY3MyJZZXMVsumnEMvoBKNu7ygoPCWS0hE/1eUiqYrpcHke3OnlGzS
- oMHQxur6QSIR5OJoZ037gQxOzA795e48SSuC4eqsn7U/o2wVHGnWRltMHmYwxO3Mk6UZjy9OuFn
- DqBk6zXkwmDIOCbjgstCWOlB1Hrkpq/5rn3u3SUagsD38xrcTOcHrpObR8fs8+i2FNs3Z6kknHy
- L97sV9IuA7+MokA==
-X-Developer-Key: i=bod@kernel.org; a=openpgp;
- fpr=E693FB2AABA36DE117AB6FB422713BB3A18DC83A
+Content-Transfer-Encoding: 8bit
 
-On 2026-05-22 17:29 +0530, Sumit Garg wrote:
-> From: Sumit Garg <sumit.garg@oss.qualcomm.com>
-> 
-> Qcom platforms has the legacy of using non-standard SCM calls
-> splintered over the various kernel drivers. These SCM calls aren't
-> compliant with the standard SMC calling conventions which is a
-> prerequisite to enable migration to the FF-A specifications from Arm.
-> 
-> OP-TEE as an alternative trusted OS to Qualcomm TEE (QTEE) can't
-> support these non-standard SCM calls. And even for newer architectures
-> using S-EL2 with Hafnium support, QTEE won't be able to support SCM
-> calls either with FF-A requirements coming in. And with both OP-TEE
-> and QTEE drivers well integrated in the TEE subsystem, it makes further
-> sense to reuse the TEE bus client drivers infrastructure.
-> 
-> The added benefit of TEE bus infrastructure is that there is support
-> for discoverable/enumerable services. With that client drivers don't
-> have to manually invoke a special SCM call to know the service status.
-> 
-> So enable the generic Peripheral Authentication Service (PAS) provided
-> by the firmware. It acts as the common layer with different TZ
-> backends plugged in whether it's an SCM implementation or a proper
-> TEE bus based PAS service implementation.
-> 
-> The TEE PAS service ABI is designed to be extensible with additional API
-> as PTA_QCOM_PAS_CAPABILITIES. This allows to accommodate any future
-> extensions of the PAS service needed while still maintaining backwards
-> compatibility.
-> 
-> Currently OP-TEE support is being added to provide the backend PAS
-> service implementation which can be found as part of this PR [1].
-> This implementation has been tested on Kodiak/RB3Gen2 board with lemans
-> EVK board being the next target. In addition to that WIN/IPQ targets
-> planning to use OP-TEE will use this service too. Surely the backwards
-> compatibility is maintained and tested for SCM backend.
-> 
-> Note that kernel PAS service support while running in EL2 is at parity
-> among OP-TEE vs QTEE. Especially the media (venus/iris) support depends
-> on proper IOMMU support being worked out on the PAS client end.
-> 
-> Patch summary:
-> - Patch #1: adds Kodiak EL2 overlay since boot stack with TF-A/OP-TEE
->   only allow UEFI and Linux to boot in EL2.
-> - Patch #2: adds generic PAS service.
-> - Patch #3: migrates SCM backend to generic PAS service.
-> - Patch #4: adds TEE/OP-TEE backend for generic PAS service.
-> - Patch #5-#13: migrates all client drivers to generic PAS service.
-> - Patch #14: drops legacy PAS SCM exported APIs.
-> 
-> The patch-set is based on qcom tree tip [2] and can be found in git tree
-> here [3].
-> 
-> Merge strategy:
-> 
-> It is expected due to APIs dependency, the entire patch-set to go via
-> the Qcom tree. All other subsystem maintainers, it will be great if I
-> can get acks for the corresponding subsystem patches.
-> 
-> [1] https://github.com/OP-TEE/optee_os/pull/7721 (already merged)
-> [2] https://git.kernel.org/pub/scm/linux/kernel/git/qcom/linux.git/log/?h=for-next
-> [3] https://git.kernel.org/pub/scm/linux/kernel/git/sumit.garg/linux.git/log/?h=qcom-pas-v7
-> 
-> ---
-> Changes in v7:
-> - Rebased to qcom tree (for-next branch) tip.
-> - Merged patch #5 and #7 due to build dependency.
-> - Disabled modem for kodiak EL2 as it isn't tested yet.
-> - Fix an issue found out by sashiko-bot for patch #4.
+iptfs_consume_frags() transfers paged fragments from one socket buffer
+to another but fails to propagate the SKBFL_SHARED_FRAG flag. This is
+the same class of bug that was fixed in skb_try_coalesce() for
+CVE-2026-46300: when fragments backed by read-only page-cache pages are
+merged, the marker indicating their shared nature must be preserved so
+that ESP can decide correctly whether in-place encryption is safe.
 
-This whole series needs to be broken up into different parts and sent in
-smaller chunks landing the core changes into the firmware, the drivers and
-finally the dts.
+Apply the same two-line fix used in skb_try_coalesce() to
+iptfs_consume_frags().
 
-For example applying the Iris stuff is impossible until the remoteproc
-stuff lands.
+Fixes: b96ba312e21c ("xfrm: iptfs: share page fragments of inner packets")
+Cc: stable@vger.kernel.org # 6.14+
+Signed-off-by: Takao Sato <takaosato1997@gmail.com>
+---
+Changes since v3:
+- Corrected Cc: stable tag from "# 6.8+" to "# 6.14+". IPTFS was
+  introduced in v6.14, so earlier stable branches do not need this
+  fix. Pointed out by Pedro Falcato.
 
-Instead of sending one giant series which no one maintainer can apply send
-a number of series where one posts a dependency on the other.
+Changes since v2:
+- Removed security impact paragraph from commit message as requested
+  by Steffen Klassert.
 
-Lumping the TEE stuff in with video encoder, wifi, dts is spanning too many
-things and makes merging a NAK.
+ net/xfrm/xfrm_iptfs.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Break this up into logical chunks and sequence a one series on top of the
-other - accpeting that you might, likely will have to keep on top of the
-various series and resend/rebase as things get merged.
-
-> Changes in v6:
-> - Rebased to v7.1-rc4 tag.
-> - Patch #14: fixed ret error print.
-> - Add Kconfig descriptions for PAS symbols such that they are visible
->   in menuconfig to update.
-> 
-> Changes in v5:
-> - Incorporated misc. comments from Mukesh.
-> - Split up patch #11 into 2 to add an independent commit for passing
->   proper PAS ID to set_remote_state API.
-> - Picked up tags.
-> 
-> Changes in v4:
-> - Incorporate misc. comments on patch #4.
-> - Picked up an ack for patch #10.
-> - Clarify in cover letter about state of media support.
-> 
-> Changes in v3:
-> - Incorporated some style and misc. comments for patch #2, #3 and #4.
-> - Add QCOM_PAS Kconfig dependency for various subsystems.
-> - Switch from pseudo TA to proper TA invoke commands.
-> 
-> Changes in v2:
-> - Fixed kernel doc warnings.
-> - Polish commit message and comments for patch #2.
-> - Pass proper PAS ID in set_remote_state API for media firmware drivers.
-> - Added Maintainer entry and dropped MODULE_AUTHOR.
-> 
-> Mukesh Ojha (1):
->   arm64: dts: qcom: kodiak: Add EL2 overlay
-> 
-> Sumit Garg (14):
->   firmware: qcom: Add a generic PAS service
->   firmware: qcom_scm: Migrate to generic PAS service
->   firmware: qcom: Add a PAS TEE service
->   remoteproc: qcom_q6v5_pas: Switch over to generic PAS TZ APIs
->   remoteproc: qcom_q6v5_mss: Switch to generic PAS TZ APIs
->   remoteproc: qcom_wcnss: Switch to generic PAS TZ APIs
->   remoteproc: qcom: Select QCOM_PAS generic service
->   drm/msm: Switch to generic PAS TZ APIs
->   media: qcom: Switch to generic PAS TZ APIs
->   media: qcom: Pass proper PAS ID to set_remote_state API
->   net: ipa: Switch to generic PAS TZ APIs
->   wifi: ath12k: Switch to generic PAS TZ APIs
->   firmware: qcom_scm: Remove SCM PAS wrappers
->   MAINTAINERS: Add maintainer entry for Qualcomm PAS TZ service
-> 
->  MAINTAINERS                                   |   9 +
->  arch/arm64/boot/dts/qcom/Makefile             |   2 +
->  arch/arm64/boot/dts/qcom/kodiak-el2.dtso      |  39 ++
->  drivers/firmware/qcom/Kconfig                 |  21 +-
->  drivers/firmware/qcom/Makefile                |   2 +
->  drivers/firmware/qcom/qcom_pas.c              | 291 +++++++++++
->  drivers/firmware/qcom/qcom_pas.h              |  50 ++
->  drivers/firmware/qcom/qcom_pas_tee.c          | 477 ++++++++++++++++++
->  drivers/firmware/qcom/qcom_scm.c              | 302 ++++-------
->  drivers/gpu/drm/msm/Kconfig                   |   1 +
->  drivers/gpu/drm/msm/adreno/a5xx_gpu.c         |   4 +-
->  drivers/gpu/drm/msm/adreno/adreno_gpu.c       |  11 +-
->  drivers/media/platform/qcom/iris/Kconfig      |  25 +-
->  .../media/platform/qcom/iris/iris_firmware.c  |   9 +-
->  drivers/media/platform/qcom/venus/Kconfig     |   1 +
->  drivers/media/platform/qcom/venus/firmware.c  |  11 +-
->  drivers/net/ipa/Kconfig                       |   2 +-
->  drivers/net/ipa/ipa_main.c                    |  13 +-
->  drivers/net/wireless/ath/ath12k/Kconfig       |   2 +-
->  drivers/net/wireless/ath/ath12k/ahb.c         |  10 +-
->  drivers/remoteproc/Kconfig                    |   4 +-
->  drivers/remoteproc/qcom_q6v5_mss.c            |   5 +-
->  drivers/remoteproc/qcom_q6v5_pas.c            |  51 +-
->  drivers/remoteproc/qcom_wcnss.c               |  12 +-
->  drivers/soc/qcom/mdt_loader.c                 |  12 +-
->  include/linux/firmware/qcom/qcom_pas.h        |  43 ++
->  include/linux/firmware/qcom/qcom_scm.h        |  29 --
->  include/linux/soc/qcom/mdt_loader.h           |   6 +-
->  28 files changed, 1124 insertions(+), 320 deletions(-)
->  create mode 100644 arch/arm64/boot/dts/qcom/kodiak-el2.dtso
->  create mode 100644 drivers/firmware/qcom/qcom_pas.c
->  create mode 100644 drivers/firmware/qcom/qcom_pas.h
->  create mode 100644 drivers/firmware/qcom/qcom_pas_tee.c
->  create mode 100644 include/linux/firmware/qcom/qcom_pas.h
-> 
-> -- 
-> 2.51.0
-> 
-> 
-
-
+diff --git a/net/xfrm/xfrm_iptfs.c b/net/xfrm/xfrm_iptfs.c
+index 97bc979e5..4db85e158 100644
+--- a/net/xfrm/xfrm_iptfs.c
++++ b/net/xfrm/xfrm_iptfs.c
+@@ -2168,6 +2168,8 @@ static void iptfs_consume_frags(struct sk_buff *to, struct sk_buff *from)
+	memcpy(&toi->frags[toi->nr_frags], fromi->frags,
+	       sizeof(fromi->frags[0]) * fromi->nr_frags);
+	toi->nr_frags += fromi->nr_frags;
++	if (fromi->nr_frags)
++		toi->flags |= fromi->flags & SKBFL_SHARED_FRAG;
+	fromi->nr_frags = 0;
+	from->data_len = 0;
+	from->len = 0;
+-- 
+2.43.0
