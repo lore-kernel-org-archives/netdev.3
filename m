@@ -1,92 +1,172 @@
-Received: from out162-62-57-49.mail.qq.com (out162-62-57-49.mail.qq.com [162.62.57.49])
+Received: from mail.katalix.com (mail.katalix.com [3.9.82.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 549713B6C1E
-	for <netdev@vger.kernel.org>; Tue, 26 May 2026 06:52:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.57.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D4E23C37AC;
+	Tue, 26 May 2026 06:52:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=3.9.82.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779778328; cv=none; b=G8t7+5h6OYGOqoTH/mdop23LrqJTsq4Vcgtp8IDj8nMHc9jJoSsv8/CxOH07Mj8nt9fI8RBDdriYxUMDBW6Tg9/XU6XG2DDQJUsVKysP+vuSrAZL5sTvwX0hKw9JLt5obDr6/3GGn6PgKdFpS5lUAHeQdovdCDhJJihY19lnpAs=
+	t=1779778330; cv=none; b=OektnI777rxA13pGqY9bEBBx6SDTJEMDLqZwIF+mBq/4neFlNhMUUitLrDkynKXqawneTgj36v0+8FEqbtHYdcjrIIkMAMfSmD0eOoI8ot1nZOTEMBARl9CwasryMjgHWRgGMgHhNv5lekoj1oppaeI0j9NgbC0F8i4QuHDeBmo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779778328; c=relaxed/simple;
-	bh=oahgMxLJyOHXuKFO9PUC+vLz4Z9d7nU2ufP3IRxjPJw=;
-	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=e118pUWX3rODSKTRk0NnInZeaqq471n6Vh8lyVOh6DGHlIPaN3BMl+nx3j+qbp94kGrZA4o8AIepAYbQdIwd0qjZhb46MuxmIK/2QMETa2xEqIAS54onl9Gr2fJvnb15BqxFcCvWRWTaZbQGg3DMLFGI51cpTVnY2UDpGyRuIqU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=b1g8dqFC; arc=none smtp.client-ip=162.62.57.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
+	s=arc-20240116; t=1779778330; c=relaxed/simple;
+	bh=UZRc3kggpT5xBfJ5QCpE42yQBKoEj6SjU+Ar6L61mr8=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:From:Subject:
+	 In-Reply-To:Content-Type; b=BMfQ/bSOvPoFFyUie+65mMy1u9ZAHjVUl4zRe+qVboW96J+J39y+rwh98M1EfQVpAmOqKf1zSpeIWLXjrBjGS0ZoQk9d2JSwAV2QVNgQqe/W6yjk56CBVl1kWJ+C9cdRALFIEgIDRFaXFKiAopKvMXwV7r8q8opFGsnBtac21f0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=katalix.com; spf=pass smtp.mailfrom=katalix.com; dkim=pass (2048-bit key) header.d=katalix.com header.i=@katalix.com header.b=qIFyhMsp; arc=none smtp.client-ip=3.9.82.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=katalix.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=katalix.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="b1g8dqFC"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-	s=s201512; t=1779778320;
-	bh=g10TuWJdjGYcTTCVtlvAig11+k5fs4K2Y//Gpajvv7k=;
-	h=From:To:Cc:Subject:Date;
-	b=b1g8dqFC6gXQUaFJYjYu9XDq9OKIOfpfJ0Nd0leKjlNj9c9bjiP1oxXTmp4g7EdyG
-	 85iGIsSBu3kMQSJohrEdT/nXEYEMzQa6vockqFsSywv5xfCYGnnuX+L3rLUsY0k+TV
-	 yDXCdILQY3i7d6cM+LeQ/qh7E3ja4FXKL7mtWJ1k=
-Received: from localhost.localdomain ([116.128.244.169])
-	by newxmesmtplogicsvrsza53-0.qq.com (NewEsmtp) with SMTP
-	id CFA19AE1; Tue, 26 May 2026 14:51:58 +0800
-X-QQ-mid: xmsmtpt1779778318t8rznogzx
-Message-ID: <tencent_A82EBAB365A8B888B66FDCF115A3DCB8880A@qq.com>
-X-QQ-XMAILINFO: NGZp1yYNf7Y+yRe93fy6PhxbTwD2zSCgC7TKnb8rFT10ul6sAdBBCG12KfHnZC
-	 maywOZf+09xX3T+8fUypfEZVJLOUC2HgcRuQKLYJtrSSWBEo9w/weoetFJofMZLJ+3QgPfe4TcuC
-	 YgnXmUyJct7krM8O/PX02k/e+XFJtBwJWj6XvbnQdedtPgfhClBQ848G+Wjiyaa0XaMkL6BZ8sDK
-	 axnwc5QYnZQPhOsaNk/cfga9hELI6p7ww7MINFPwUqe/XQlSnDlW70leAVBST5oWyMbN+tQZb63m
-	 CFdbxor3yf2pznPs0UK2hW3A1XZVdyRTiYeIE5QSoLx7eNllZR+vQdLuAlGPo8BPfvLrJiAB8CgD
-	 Jupjr9p3jJSRZXIA4y4CZJxJvGv5nsdtxYhGc//Q8+afGqPg9ajqHfxIHD3Rj3u54SWKuCMYK72b
-	 6YV9rePHlktcccwXBQneopoIPc6pbqwvF9RaX6HqrSWtEIZEuwLwAqBCxQVsHBDZFmTftZzjFII8
-	 COcmBgc2gdyNFsbHR2kF/A4hnTVGq7ylj7QqnVvoltOsm6EtKqwFQ/evrOElhW2nghRVqSbZ/KVu
-	 66SRMO5qEXeq4mvWEIbBWFLPpX8VAn4b2ZbEXjIIS29D0CHdy3l8XgljFoyu9H1H3nhtIY9qWxei
-	 4Gwa/Q+vXxgmKx2cy7xPL2IdEHi3iaUyzVd8dP7JlHYbEKgG56aV6RLeQnd0xwqCwj42JD7Kj6d7
-	 vmya2ajxCbIaj0OIp+Bc7hf0DXsh9ryrsq8TVAgBEWroI8WR6fQr7F9s2NtL2M3xtWEXsunMxkXm
-	 hw0a38JbuDcl6yMcr7qaqbAfM7HfXYK3cnJXT1m+V5i/TzKGKgcLnkumShKo6v4cqKugc8BIo/fU
-	 oxePSq8QU9h8BWTKQ3QNq25E3MVfHfMtSCTydL0TuhZwzLXjvKgq8Lc8KudaBM5f7BAly6bwbjqV
-	 6QK24PE9BzFkJ3AcOJIJGIniJ0U5gbmZlN6DYLN99AkIJ/5OCsKgf65/ssMsSMaKp9BjfK5i4lqH
-	 HjRX8RFuJWuZWTUbDMrYVbeLRrOqtvJVjlEeOEDkpZS2T4zme/KNu2BFDulNE=
-X-QQ-XMRINFO: NyFYKkN4Ny6FuXrnB5Ye7Aabb3ujjtK+gg==
-From: Zhao Dongdong <winter91@foxmail.com>
-To: davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com
-Cc: netdev@vger.kernel.org,
-	Zhao Dongdong <zhaodongdong@kylinos.cn>
-Subject: [PATCH] net: page_pool: check nla_nest_start() return value in page_pool_nl_stats_fill()
-Date: Tue, 26 May 2026 14:51:56 +0800
-X-OQ-MSGID: <20260526065156.349857-1-winter91@foxmail.com>
-X-Mailer: git-send-email 2.25.1
+	dkim=pass (2048-bit key) header.d=katalix.com header.i=@katalix.com header.b="qIFyhMsp"
+Received: from [192.168.2.17] (82-69-108-24.dsl.in-addr.zen.co.uk [82.69.108.24])
+	(Authenticated sender: james)
+	by mail.katalix.com (Postfix) with ESMTPSA id 4D0DB7D4AA;
+	Tue, 26 May 2026 07:44:32 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=katalix.com; s=mail;
+	t=1779777872; bh=UZRc3kggpT5xBfJ5QCpE42yQBKoEj6SjU+Ar6L61mr8=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:From:Subject:
+	 In-Reply-To:From;
+	z=Message-ID:=20<c08da2f1-750f-257a-180e-f1af47451647@katalix.com>|
+	 Date:=20Tue,=2026=20May=202026=2007:44:31=20+0100|MIME-Version:=20
+	 1.0|To:=20Michael=20Bommarito=20<michael.bommarito@gmail.com>,=0D=
+	 0A=20"David=20S=20.=20Miller"=20<davem@davemloft.net>,=20Eric=20Du
+	 mazet=0D=0A=20<edumazet@google.com>,=20Jakub=20Kicinski=20<kuba@ke
+	 rnel.org>,=0D=0A=20Paolo=20Abeni=20<pabeni@redhat.com>|Cc:=20Tom=2
+	 0Parkin=20<tparkin@katalix.com>,=20Guillaume=20Nault=20<gnault@red
+	 hat.com>,=0D=0A=20Simon=20Horman=20<horms@kernel.org>,=0D=0A=20Seb
+	 astian=20Andrzej=20Siewior=20<bigeasy@linutronix.de>,=0D=0A=20Clar
+	 k=20Williams=20<clrkwllms@kernel.org>,=20Steven=20Rostedt=20<roste
+	 dt@goodmis.org>,=0D=0A=20Kees=20Cook=20<kees@kernel.org>,=20netdev
+	 @vger.kernel.org,=0D=0A=20linux-rt-devel@lists.linux.dev,=20linux-
+	 kernel@vger.kernel.org|References:=20<20260523023423.2568972-1-mic
+	 hael.bommarito@gmail.com>|From:=20James=20Chapman=20<jchapman@kata
+	 lix.com>|Subject:=20Re:=20[PATCH=20net]=20l2tp:=20use=20refcount_i
+	 nc_not_zero=20in=0D=0A=20l2tp_session_get_by_ifname|In-Reply-To:=2
+	 0<20260523023423.2568972-1-michael.bommarito@gmail.com>;
+	b=qIFyhMsp37rN+Wj54G2Ha2xelNHnO2G37L3YHpj/VNJTWAxSwZJbx2cVEIMoiG77f
+	 6qmer9QWiZudbszcoERZ87MQuW+zepLi2LSwJFEJL7Me0uAiemzKRKfk53ZJp9p2/L
+	 lzGKS2uqwSS7tlzJ8yv3yY9FDy5xuFSQ87pVzL3eKp44sRvA2uxVUCa3DrlHXPbMh6
+	 hgEuJhWfD4RPpC+Q08qVmy/bbfYtLUEF7IRRa93Z4RWVKIDnqVfW10IUvlOh1dVocK
+	 CmwDOA05OzcpqUEYkpwKKPXrCnaR6Y5ugrLAVBwEFt9bROwGqsKBcCQjY3X4DczASf
+	 9yuW3awYTactA==
+Message-ID: <c08da2f1-750f-257a-180e-f1af47451647@katalix.com>
+Date: Tue, 26 May 2026 07:44:31 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Content-Language: en-US
+To: Michael Bommarito <michael.bommarito@gmail.com>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>
+Cc: Tom Parkin <tparkin@katalix.com>, Guillaume Nault <gnault@redhat.com>,
+ Simon Horman <horms@kernel.org>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
+ Kees Cook <kees@kernel.org>, netdev@vger.kernel.org,
+ linux-rt-devel@lists.linux.dev, linux-kernel@vger.kernel.org
+References: <20260523023423.2568972-1-michael.bommarito@gmail.com>
+From: James Chapman <jchapman@katalix.com>
+Organization: Katalix Systems Ltd
+Subject: Re: [PATCH net] l2tp: use refcount_inc_not_zero in
+ l2tp_session_get_by_ifname
+In-Reply-To: <20260523023423.2568972-1-michael.bommarito@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: Zhao Dongdong <zhaodongdong@kylinos.cn>
+On 23/05/2026 03:34, Michael Bommarito wrote:
 
-nla_nest_start() can return NULL if the skb runs out of space.
-page_pool_nl_stats_fill() does not check the return value before
-calling nla_nest_end(), which can lead to a NULL pointer dereference.
-Add a NULL check after nla_nest_start() and abort the message if it fails.
+> A reader in l2tp_session_get_by_ifname() can return a pointer to a
+> session whose refcount has reached zero. The getter takes its
+> reference with plain refcount_inc(), but every other session getter
+> in the same file (l2tp_v2_session_get, l2tp_v3_session_get, and the
+> corresponding _get_next variants) uses refcount_inc_not_zero()
+> because the IDR/RCU lookup can race with refcount_dec_and_test() ->
+> l2tp_session_free() -> kfree_rcu(). The ifname getter is the only
+> outlier; the inconsistency was raised on-list after 979c017803c4
+> ("l2tp: use list_del_rcu in l2tp_session_unhash").
+>
+> A reader inside rcu_read_lock_bh() that matches session->ifname can
+> be preempted between the strcmp() and the refcount_inc(). If the
+> last reference drops on another CPU in that window, the reader's
+> refcount_inc() runs on a counter that has reached zero. refcount_t
+> catches the addition-on-zero, prints "refcount_t: addition on 0;
+> use-after-free", saturates the counter, and returns the saturated
+> pointer to the caller. Session memory is held live by the in-flight
+> RCU read section, but the kfree_rcu() callback queued from
+> l2tp_session_free() will free it once the grace period closes; a
+> caller that dereferences the returned session past that point hits
+> a slab-use-after-free. On PREEMPT_RT local_bh_disable() is a per-CPU
+> sleeping lock and the preemption window is real; on stock PREEMPT
+> kernels local_bh_disable() is a preempt_count increment that closes
+> the cross-CPU race in practice (see below).
+>
+> Use refcount_inc_not_zero() and continue the list walk on failure,
+> matching the other session getters in the file. The ifname getter
+> is the only session getter in net/l2tp/ that still uses the bare
+> refcount_inc() pattern; this change restores file-internal
+> consistency. The success path is unchanged.
+>
+> Fixes: abe7a1a7d0b6 ("l2tp: improve tunnel/session refcount helpers")
+> Cc: stable@vger.kernel.org
+> Assisted-by: Claude:claude-opus-4-7
+> Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+> ---
+> Distro reachability:
+>
+> l2tp_core and l2tp_netlink autoload via the genl family alias
+> net-pf-16-proto-16-family-l2tp on first AF_NETLINK CTRL_CMD_GETFAMILY
+> lookup; pppol2tp autoloads on demand via net-l2tp-type-7 from
+> L2TP_CMD_SESSION_CREATE with pw_type=L2TP_PWTYPE_PPP. Neither
+> autoload requires CAP_SYS_MODULE. SESSION_GET / SESSION_CREATE /
+> SESSION_DELETE are GENL_UNS_ADMIN_PERM, so CAP_NET_ADMIN in the
+> netns user namespace suffices and is reachable from `unshare -Urn`
+> on Debian 11/12, Ubuntu 22.04 LTS / 23.10+ / 24.04+, Arch, Alpine;
+> RHEL/Fedora blacklist l2tp_netlink by default but on hosts running
+> NetworkManager-l2tp, xl2tpd, or any L2TPv3 endpoint the gate is open
+> there too. PREEMPT_RT ships on Ubuntu Pro Realtime, RHEL 9 RT, SUSE
+> RT, and Yocto-RT.
+>
+> Reproduced on x86_64 QEMU/KVM. Under tracefs-kprobe widening at the
+> refcount-inc instruction, a PREEMPT_RT build hits "refcount_t:
+> addition on 0; use-after-free" through l2tp_session_get_by_ifname at
+> 533 s; patched runs 1800 s clean. A stock PREEMPT (non-RT) build
+> with the same widening ran 1800 s without firing: local_bh_disable()
+> on non-RT prevents preemption inside the RCU section so the
+> cross-CPU window does not open at observable rates.
+>
+>   net/l2tp/l2tp_core.c | 9 +++++----
+>   1 file changed, 5 insertions(+), 4 deletions(-)
+>
+> diff --git a/net/l2tp/l2tp_core.c b/net/l2tp/l2tp_core.c
+> index 1455f67e01ddb..0000000000000 100644
+> --- a/net/l2tp/l2tp_core.c
+> +++ b/net/l2tp/l2tp_core.c
+> @@ -441,12 +441,13 @@ struct l2tp_session *l2tp_session_get_by_ifname(const struct net *net,
+>   	idr_for_each_entry_ul(&pn->l2tp_tunnel_idr, tunnel, tmp, tunnel_id) {
+>   		if (tunnel) {
+>   			list_for_each_entry_rcu(session, &tunnel->session_list, list) {
+> -				if (!strcmp(session->ifname, ifname)) {
+> -					refcount_inc(&session->ref_count);
+> -					rcu_read_unlock_bh();
+> +				if (strcmp(session->ifname, ifname))
+> +					continue;
+> +				if (!refcount_inc_not_zero(&session->ref_count))
+> +					continue;
+> +				rcu_read_unlock_bh();
+>
+> -					return session;
+> -				}
+> +				return session;
+>   			}
+>   		}
+>   	}
+> --
+> 2.46.0
+>
+Reviewed-by: James Chapman <jchapman@katalix.com>
 
-Fixes: d49010adae73 ("net: page_pool: expose page pool stats via netlink")
-Signed-off-by: Zhao Dongdong <zhaodongdong@kylinos.cn>
----
- net/core/page_pool_user.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/net/core/page_pool_user.c b/net/core/page_pool_user.c
-index ee5060d8eec0..2e41691251e1 100644
---- a/net/core/page_pool_user.c
-+++ b/net/core/page_pool_user.c
-@@ -127,6 +127,8 @@ page_pool_nl_stats_fill(struct sk_buff *rsp, const struct page_pool *pool,
- 		return -EMSGSIZE;
- 
- 	nest = nla_nest_start(rsp, NETDEV_A_PAGE_POOL_STATS_INFO);
-+	if (!nest)
-+		goto err_cancel_msg;
- 
- 	if (nla_put_uint(rsp, NETDEV_A_PAGE_POOL_ID, pool->user.id) ||
- 	    (pool->slow.netdev->ifindex != LOOPBACK_IFINDEX &&
--- 
-2.25.1
 
