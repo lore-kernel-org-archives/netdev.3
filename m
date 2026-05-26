@@ -1,174 +1,216 @@
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
+Received: from OS0P286CU010.outbound.protection.outlook.com (mail-japanwestazon11011044.outbound.protection.outlook.com [40.107.74.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 616F1413D8B
-	for <netdev@vger.kernel.org>; Tue, 26 May 2026 17:44:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.22
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779817473; cv=none; b=rZHdxJlyQsRV8W/ucrGSh5JhorCxcG6l4dut4GhjrT0f+PiCsV3/xul1YA+n0AHUUzeNx6njzynQjm+AQZVej1mReO5wezpPUeRp4xv4EiGQZvtz2szhxRNriIgvodEKwmJ1Fu8yl00FrZeswPP++VjdtZMIDK4WfGoi2vrjM2Y=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779817473; c=relaxed/simple;
-	bh=/ZdT3O3e1zQjE9qyso2pTuXkY1kMkiFojOnB4zdIP6c=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NTkITk3dFyuiJspy/lRwP8JzgbRdXZj9QdC9nBubs4EKe57W7/ZuixR5Cq0HpBl1A+Akpv0Bu+A3pK5GX91pw3pVELg4HYCJyXHcL51OjfXpZF3/jiAspLezDEesHmsAbBYAkJ5Ug3Y+soMVgpWJXbe123c4MnrKpXOazztFStM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=markus.stockhausen@gmx.de header.b=K1+5VHdl; arc=none smtp.client-ip=212.227.17.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45CE8403EB2;
+	Tue, 26 May 2026 17:44:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.74.44
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779817487; cv=fail; b=srw7OUkHh6dMBfCAS44zUYYR6YqzBxHsPXh1qmcyFw4zhfpEtDyUtrMUV3IeZPUScdHLRtnRQJ17glH/ROPqlaLaxPnJmsUyH9iKWqxpJlelO3khnaQfbl/XDfZCCsaYmS+ErMn77NsNhWdhn9OjRmTj+kpyx3KZqIRgDZNbVwg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779817487; c=relaxed/simple;
+	bh=AyhSl+ZRCy7K7stpsAHD0+IF84GVPFuA3H1cFeDrlNw=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=A7OwIURyf/A9rjmg6HyKnYBUO6mxvOR0Tahv6ujBsTBHShfeEpGs8vlVFx45jn+gL1bfwylzSN11IQotbWm3ZbUwcvfuRAHMsgGXaVY79DVHoyNv/wWw0QufpsDTPD/VJNxgkgoCJwZ4ipW0TylxdBrujpXKntLfZJFVe1MtqQg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b=aPcZnY0s; arc=fail smtp.client-ip=40.107.74.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=markus.stockhausen@gmx.de header.b="K1+5VHdl"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1779817442; x=1780422242;
-	i=markus.stockhausen@gmx.de;
-	bh=cuPAqG8i7bmQ0P79jZ/PLEes1/KofmhNYjxuAGBLTqc=;
-	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-ID:
-	 MIME-Version:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=K1+5VHdlIql1NHBVu6sXI+prVvYwYjtaSLxLOrgB6BdjcMcGxeq9P3q59HacZF6A
-	 tAkdtaYVI2JY8a81UlJcUyC77eH0pvckD9gumpq/xHfP0NEvN9dyqxztrrBnwvJUi
-	 BR+cFePjCmopZygN+Uzdom/GYqbTJrnBtbjUbEa3nwjgVi6DL/MeVr2uXRniZBKVG
-	 XDEW1h6mcnxIYFXtke7MgY2bD5O4FKRW0JtCErXKrjwgIyxY1l/ab3bYEgT4Huy4M
-	 GGSVT2KAEiFXxS94MIEmItYAKf/66bQoHvyfebIXgLNNo2o2+q/c5lP/Lhd2ocZ14
-	 4dT/54utzBewe22xdA==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from client.hidden.invalid by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MJE27-1wlvNh1ALL-00MowL; Tue, 26
- May 2026 19:44:02 +0200
-From: Markus Stockhausen <markus.stockhausen@gmx.de>
-To: andrew@lunn.ch,
-	hkallweit1@gmail.com,
-	linux@armlinux.org.uk,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org,
-	chris.packham@alliedtelesis.co.nz,
-	daniel@makrotopia.org
-Cc: Markus Stockhausen <markus.stockhausen@gmx.de>
-Subject: [PATCH net-next 0/5] net: mdio: realtek-rtl9300: SoC independent command runner
-Date: Tue, 26 May 2026 19:43:39 +0200
-Message-ID: <20260526174344.1186832-1-markus.stockhausen@gmx.de>
-X-Mailer: git-send-email 2.54.0
+	dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b="aPcZnY0s"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=a5ivpCn5odzaS1rcwxwWe4QOmf7VqSDbEKFgAvDAQyQHHNoE+SMNvFxH+uHCYSddjcfn/+Mi8TYL9ZJd458Oi9sf16Xr3cFzzijo3VBeR0PHRAloYDN4uOeM9JYpfPK2tnccNhVBGwQL4dtDT73LyEmJVn2SfFVFRdMX2dPj3okghtusmhIZGs62mQk7aohgHeXpz9ESqCuwWX05EfuDr61E9fkjSs0++VFKro/FFmLfS1OM/Wgvv1lAyemWWwEvgLNBZJLwW5pRN/sGXFbtCPy8kuBGiJcZsRZR29aGfcKUDVd+i4jKi6611ptA3b07T5UblOk0oZtWR51AUIJPzA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=/YmZVoJEbJoh53NmiXyKtSLHN2sh8bpaD4ie7IOehTE=;
+ b=ZaAzTqw6YQj5H4OA9d+dcT/qnHOgPEmczPopdpV6Bl/4L41lLubtenPgjUSFVSn0dgcOb2Eg8F9b0zZQDGeQp/6+8Qp2UM12L9VreWO0vX/BqcN937a8pQC5Ssio4NKc6cvY6JfY3+Olo0va1DZyD4Yr9nDzJH56+fKak34LNlsxcrchit8gd+iEuezEKJ+BNTjJBjmb1uK5I4EsEDPX6QoZsmbgR2/4eJpqFQMRKCTSxusdp+6EDSYoab+7rL3qV2yl13u77SWHGQ0KQ650DzsCKHcfe82CrJak8LvOWoJKx7YMwfM19NPUgVJ5j2DlGM3+vmiDijE7GvrVPDCo6A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=renesas.com; dmarc=pass action=none header.from=renesas.com;
+ dkim=pass header.d=renesas.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=renesas.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/YmZVoJEbJoh53NmiXyKtSLHN2sh8bpaD4ie7IOehTE=;
+ b=aPcZnY0sZjLpuphVo6aftMlI2sZLthhgcLTr1o+QfogmPgYkUHe9Ro81E6HTBkdALRpb6y6MjR1BML6lvzXtVSGMM8LypzwUdtqZEJ7co5TnghGUOvuDky3GuWfIUgjWoPvRbrXmc2L0pA/yyeMGzT7yHkWYk3D61x99U/7Yl5w=
+Received: from TY4PR01MB14282.jpnprd01.prod.outlook.com (2603:1096:405:20d::9)
+ by OS9PR01MB16891.jpnprd01.prod.outlook.com (2603:1096:604:408::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.12; Tue, 26 May
+ 2026 17:44:42 +0000
+Received: from TY4PR01MB14282.jpnprd01.prod.outlook.com
+ ([fe80::655d:9c47:4499:eb3a]) by TY4PR01MB14282.jpnprd01.prod.outlook.com
+ ([fe80::655d:9c47:4499:eb3a%5]) with mapi id 15.21.0048.019; Tue, 26 May 2026
+ 17:44:40 +0000
+From: Michael Dege <michael.dege@renesas.com>
+To: Jakub Kicinski <kuba@kernel.org>
+CC: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net"
+	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
+	"pabeni@redhat.com" <pabeni@redhat.com>, niklas.soderlund
+	<niklas.soderlund@ragnatech.se>, "paul@pbarker.dev" <paul@pbarker.dev>,
+	"richardcochran@gmail.com" <richardcochran@gmail.com>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-renesas-soc@vger.kernel.org" <linux-renesas-soc@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH net-next v5 08/14] net: renesas: rswitch: add locking for
+ agent clock control
+Thread-Topic: [PATCH net-next v5 08/14] net: renesas: rswitch: add locking for
+ agent clock control
+Thread-Index: AQHc6eRi1pYOqHPL60CPnlV+4dd91rYfOd8AgAFgKQA=
+Date: Tue, 26 May 2026 17:44:40 +0000
+Message-ID:
+ <TY4PR01MB1428279E78F8BF79FF1F40C39820B2@TY4PR01MB14282.jpnprd01.prod.outlook.com>
+References: <20260522-rswitch_add_vlans-v5-8-53589d944a9f@renesas.com>
+ <20260525204114.2471390-1-kuba@kernel.org>
+In-Reply-To: <20260525204114.2471390-1-kuba@kernel.org>
+Accept-Language: en-US, en-GB
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=renesas.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: TY4PR01MB14282:EE_|OS9PR01MB16891:EE_
+x-ms-office365-filtering-correlation-id: 12f1eae0-4557-4255-33c3-08debb4e76ab
+x-ld-processed: 53d82571-da19-47e4-9cb4-625a166a4a2a,ExtAddr
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|376014|366016|1800799024|7416014|18002099003|22082099003|56012099006|38070700021|5023799004|11063799006|6133799003|4143699003;
+x-microsoft-antispam-message-info:
+ QcukeoLI1VJOg5SzCBo0Ysjbhum+vEmfvZywQ5JBBwqtOfk2dp1nV5SGhU2KVhmSUIHDlbcVX5CCXN7PYJplXDSXB42hwLWWEM/SF13ymAJckemzR0UrcY1QMBf8T6DX9CIyOk+I9YzAWYcDyWtaKSjRZNlWnwbkjmvMIh+vXBUWzZ2e1KjGjjyddae2JwXTcIfimS2OdNo29Aix3/06ts/adnLB/WgIy3btYqS/6R160wcxZCfH7aYSguW5yk9ATUy0ZGlTvJMeYbNo/K6riVOw/EXXIQwaZGiX+ENIaBCOfvAyjkCfwcnepqSC0ULUjyBfTnCqYT3Xxzmx69cU5c04drRzL37rQtwU9fcG0dHdoW16BXF5EmW8UroeIwPfN7ZO58Ut8x5T/oU8nPeDOzN9KfbgOAM3P/uxTBJvYTDt4A/KI8IHEGwp9xPgHk1U/5AmEnrDwyfFmH2MkVKwara9i7fpwWSuov+IlS25BNK33abGyeTxME6FsE/gRjR1I8PYAGxr+V/pewe9DtjT7xqx7rpaxPL5uNuIsL62osD02pJjExuSUYIN6fh9kpaNnfIvswhE6bKHtlbOVjeua7GSSi7lXgULpIID0Agl6kZv0xMApADrIBcQWWAl7XnP2ViiZb3a9BEaNQm2Mp7dPbql4KEdgzMorZRErTdh023if59080fOh3FAYpphWGE2gHF0ID6wCcwkWfqE9P1cbvKIxMrrT8BX+wSM2y9rGBoHCUVr1mc9sV5CnRvSILEX
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY4PR01MB14282.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(7416014)(18002099003)(22082099003)(56012099006)(38070700021)(5023799004)(11063799006)(6133799003)(4143699003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?VEhjLXgZ62svhx3/E27nQ8hR6tp5/VS+pFN3mgfS/tooHV+Likz41hdnuJIr?=
+ =?us-ascii?Q?03j6DJgpXtxtlGlNUbt6j9sMEiMUZfVem/fGg4TKhqCc/bhJK5lDRxVIzVU1?=
+ =?us-ascii?Q?enKafly9D8B0pVeBcgVMmT5Op8KM6uaFbj3++r+R6R2qVnD1dhJuZ9wGAAxL?=
+ =?us-ascii?Q?xgp+AEqXK80sgEG701DQVWIpRRAk3lXobF3XXtJPcdvPdYnROjvzK1pganTc?=
+ =?us-ascii?Q?3qgpj2mV/Obya2Jsm6Km3mHvWaqOEJeph1tLnMC3/7euJfNuoGblkgrwvSgn?=
+ =?us-ascii?Q?8E4ebMCg9iZtnQMMFLfw1H+SR5VDEPBEHOmQ4YMKAiIuccyB+PoeahTBlrTR?=
+ =?us-ascii?Q?yNhjydt9Uql+nCmCNRAYh+aY0zcWKfPSbL1aibBEaf7qxd4GOJk1g+ipy9Vi?=
+ =?us-ascii?Q?SlogpLLiUq8/gJE3h9M8+b3CWxqzQxDDoGEyhwNpUjeJqW+eBBmmT1XHw0ll?=
+ =?us-ascii?Q?l/ZXM5uNADHpcVpXhJLKvbLFhrHzmuFFwfV5a0icMUJrr3I645/BtPoEOyeO?=
+ =?us-ascii?Q?8zaXanMO+wXe5JrNL+1usd4k8PE3p+m78cggwTfN6AwuUc0MS5efxt1kupta?=
+ =?us-ascii?Q?ZVrynWfh0cXJP3aD9KdxARwZwM+uEGg/zBl+LMgALwSHXIAR6bufIlki3NKF?=
+ =?us-ascii?Q?OzB6BKqgVKQn4Z51u9NcB6/zna2ph78qVWF6i2MKVrOkw4+V3++XRCbAHHVw?=
+ =?us-ascii?Q?yIAbu4GXx6Vsi7aJw+jbEx+L/9LnRihAYe2GcW5NnvH8gcj4a8ODbfPo0oOC?=
+ =?us-ascii?Q?Iygcgfo62FRq8ycFVlJXH9mupsUDKMLtum7ihRwigDw9jMSbAaS6XLJavnu1?=
+ =?us-ascii?Q?aTPD3NTO9Ex09SwQJG3a9E5uknJ8EDdnPU/ok2u/7Rw8YatGLgbJvJZD1Wok?=
+ =?us-ascii?Q?u/QvHOAFZaUJwhnrWFTCrK9N7Ab5aBHe5CZefPN/kXRnRU91+3GbTXiZovGe?=
+ =?us-ascii?Q?kODMx6dGP/hhj3F+IWRYQylnueho7g1ENPwEh/CONFmV9EtLrcYfrNRH0S0l?=
+ =?us-ascii?Q?C9VjI95egN7vsaK3lZluG9sjyBMT99KZgmF71565EDIdRbhbqKAhzmGcqXpb?=
+ =?us-ascii?Q?bI79a/+jizyMTPOMvBPfnoMpOZPfEC7P2uolwpmBpK/aXlENibYEGMisV+4y?=
+ =?us-ascii?Q?FZv7GkVOQz8ITnMN0AyiGWLmu5t5HJsJ5R/uJFkUSslMRPpnP0PHc4adLp8l?=
+ =?us-ascii?Q?JVcDepEh69vQ2sZLSwtz4v95VofGyHUG/Ax2g0pmYKB4IcrkZL9YuUf7W8ai?=
+ =?us-ascii?Q?vhV1AKLHAKmwbmKaI+TIJvHDEMoo+qnDBnsgR/d6LmNcaC5+At0jZgze7Cwc?=
+ =?us-ascii?Q?REo2W2G9Jj5k0xOSgOYB1xt+34qm9cqAUT0rIUg6zsAcwxmEM9mQLZ8u3z7G?=
+ =?us-ascii?Q?v1yAIDQ4E0y3gsQyLarOR02HtMnr5YGvn1yPHhvJR6BsWUuBdpgDTCUgRtML?=
+ =?us-ascii?Q?CbeqBnxnbuZ2mCZGeoVmOd9+reZkZCgf1S6tfvsstyRf1MhrDAPF3gU5bgNB?=
+ =?us-ascii?Q?G/mGmCnKbJabAf/7Dmt9FheXETHPqH/DxrjRnQEX+skTY9PBJStbLpxGrgNN?=
+ =?us-ascii?Q?K/YYqDuncOBkFuzBLRfS4kQuBl+bDpnpEpSQRJ5sQ1TJUb+n1x00ebDFNEBm?=
+ =?us-ascii?Q?kmAgfF1cPOZD92gvSxZ5DlEX9SbufRIwDZOj1nBNZtZZjwoQ4ltlJOIoDXVu?=
+ =?us-ascii?Q?fzwYjgTr9furYCdYYJtTi5jF4ZHeWEkRikw6zGMGHqY2PT4lI5bLhc/XPtir?=
+ =?us-ascii?Q?otze3Eq0+g=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:+4GIE0wusfrLl0poK9uj8jaKhDLGjeAiiVxOm2aeUQ5qBEGKHUv
- db7C9ceo8se5ildcugu1Y2bHsc7uDVpF6zGvCCk5e31J4V2ZczpSiQGYXhqDzi6VcpLASFC
- UiW96ciNLGJ9xdMRAXNg13mzUzvQYRV24pWtgp4KQ7vI62dcqtAdWojHNlH8LUEtlCltECk
- mOBUw3FN3Wcwx7DenIM8w==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:7UgOW/7atfY=;0yBHo8d+uFmbOJtf9BHbBWr3Kte
- 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
+X-OriginatorOrg: renesas.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: TY4PR01MB14282.jpnprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 12f1eae0-4557-4255-33c3-08debb4e76ab
+X-MS-Exchange-CrossTenant-originalarrivaltime: 26 May 2026 17:44:40.5365
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 53d82571-da19-47e4-9cb4-625a166a4a2a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: LnQqvEY05s33ZTxzVz2gc5Pq4GXVdrjqc2GS3uT02jsVaIfJwc1Czd48llvFO/QvabLFgaoYnsBsTAeaWwftmw37e87o8ikCk7rYh4qysag=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: OS9PR01MB16891
 
-The Realtek Otto switch platform consist of four different series
+Hello Jakub,
 
-- RTL838x aka maple   : 28 port 1G Switches
-- RTL839x aka cypress : 52 port 1G Switches
-- RTL930x aka longan  : 28 port 1G/2.5G/10G Switches
-- RTL931x aka mango   : 56 port 1G/2.5G/10G Switches
+Thank you for your comment.
 
-After establishing basic groundwork for multi device support, this=20
-series harmonizes the command handling of the MDIO driver. This is
-the second step to allow easier integration of the non RTL930x SoCs
-into this driver.
+> -----Original Message-----
+> From: Jakub Kicinski <kuba@kernel.org>
+> Sent: Monday, May 25, 2026 10:41 PM
+> To: Michael Dege <michael.dege@renesas.com>
+> Cc: Jakub Kicinski <kuba@kernel.org>; Yoshihiro Shimoda <yoshihiro.shimod=
+a.uh@renesas.com>;
+> andrew+netdev@lunn.ch; davem@davemloft.net; edumazet@google.com; pabeni@r=
+edhat.com; niklas.soderlund
+> <niklas.soderlund@ragnatech.se>; paul@pbarker.dev; richardcochran@gmail.c=
+om; netdev@vger.kernel.org;
+> linux-renesas-soc@vger.kernel.org; linux-kernel@vger.kernel.org
+> Subject: Re: [PATCH net-next v5 08/14] net: renesas: rswitch: add locking=
+ for agent clock control
+>=20
+> This is an AI-generated review of your patch. The human sending this emai=
+l has considered the AI
+> review valid, or at least plausible.
+> ---
+> net: renesas: rswitch: add locking for agent clock control
+>=20
+> This commit introduces an agent_lock to serialize access to the shared RC=
+EC and RCDC agent clock
+> registers. This aims to prevent potential race conditions between ETHA an=
+d GWCA ports when enabling or
+> disabling clocks.
+>=20
+> > diff --git a/drivers/net/ethernet/renesas/rswitch.h
+> > b/drivers/net/ethernet/renesas/rswitch.h
+> > --- a/drivers/net/ethernet/renesas/rswitch.h
+> > +++ b/drivers/net/ethernet/renesas/rswitch.h
+> [ ... ]
+> > @@ -1207,6 +1208,8 @@ struct rswitch_private {
+> >  	struct list_head port_list;
+> >
+> >  	spinlock_t lock;	/* lock interrupt registers' control */
+> > +	spinlock_t agent_lock;	/* rswitch agent clock control */
+> > +
+>=20
+> [Severity: High]
+> Is this lock initialized anywhere before it is used?
+>=20
+> It looks like agent_lock is added to the structure, but spin_lock_init() =
+is missing from the driver
+> probe path. Depending on kzalloc for zero-initialization is not valid for=
+ spinlocks and can cause
+> issues on architectures or kernel configurations that require explicit in=
+itialization.
+>=20
 
-Signed-off-by: Markus Stockhausen <markus.stockhausen@gmx.de>
+Good point fixed this.
 
-=2D--
+> > diff --git a/drivers/net/ethernet/renesas/rswitch_main.c
+> > b/drivers/net/ethernet/renesas/rswitch_main.c
+> > --- a/drivers/net/ethernet/renesas/rswitch_main.c
+> > +++ b/drivers/net/ethernet/renesas/rswitch_main.c
+> > @@ -173,8 +173,12 @@ int rswitch_gwca_change_mode(struct
+> > rswitch_private *priv,  {
+> >  	int ret;
+> >
+> > -	if (!rswitch_agent_clock_is_enabled(priv->addr, priv->gwca.index))
+> > +	if (!rswitch_agent_clock_is_enabled(priv->addr, priv->gwca.index)) {
+> > +		spin_lock(&priv->agent_lock);
+> >  		rswitch_agent_clock_ctrl(priv->addr, priv->gwca.index, 1);
+> > +		spin_lock(&priv->agent_lock);
+> > +	}
+>=20
+> [Severity: High]
+> Does this code cause an immediate deadlock?
+>=20
+> Because spin_lock() is called twice consecutively without a spin_unlock()=
+, it appears the CPU will
+> spin indefinitely waiting for the lock it already holds.
 
+This is a bug. I also fixed it.
 
+Best regards,
 
-Markus Stockhausen (5):
-  net: mdio: realtek-rtl9300: provide generic command runner
-  net: mdio: realtek-rtl9300: use command runner for write_c22()
-  net: mdio: realtek-rtl9300: Prepare command runner for reads
-  net: mdio: realtek-rtl9300: use command runner for read_c45()
-  net: mdio: realtek-rtl9300: use command runner for read_c22()
-
- drivers/net/mdio/mdio-realtek-rtl9300.c | 319 ++++++++++--------------
- 1 file changed, 132 insertions(+), 187 deletions(-)
-
-=2D-=20
-2.54.0
-
+Michael
