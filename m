@@ -1,124 +1,133 @@
-Received: from mta.al2klimov.de (mta.al2klimov.de [162.55.223.79])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C16A53C0A1B;
-	Tue, 26 May 2026 18:41:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.55.223.79
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 062602DEA7B
+	for <netdev@vger.kernel.org>; Tue, 26 May 2026 18:46:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779820903; cv=none; b=bTAF3fwB8YMiqzQnc2kJOSloGN0MA4dBPbfdETKzjFwJ9wWR88rUyL5czAVFzfgSiJs1AQZn2OB7inaOawIBiUoqq4XMjYlexeGgy5VtMl5G2CLMqvn+BGcqSObIZ1CpEU8pbMyY7cXOdWAswAfTJqbmhAXs+buObmhyqYC9clI=
+	t=1779821184; cv=none; b=Gz0R+JXgnS4+e4XL2WIJjant4jkq80OmFbo52LjNR+uIFE/m59nP8KJxrvO3uEaZ3hcVv3VjZlNt5DvNF1IWTf0CKQpjFNPGaN45tozJ9TkogN9bV400RQvZ3qOkYOPxA3tKvJV8iTZMZPnnfOi0loufJa9pbKXMenHpwX+L2v0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779820903; c=relaxed/simple;
-	bh=Yxu6cLp2nC8sIKWrf8BHCgxZkIkwHCYaYzNUnh2jBvA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b7JEupen3aPckZ23fmSkLjtzfLimXd1kirUjGeSSFAX9nPs0L/dgKCswgAY8Wt7S4FzrjkUIHiX/A2Mma7hPCMjTEaGTrVq9Oh8lXlTReelJ6S6O251Ycy1OvKp/lnrZJmfiMeAbaxYWyVMAq3GdDdH7d6PfxTL0yTjrcxqdCEs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=al2klimov.de; spf=pass smtp.mailfrom=al2klimov.de; dkim=pass (2048-bit key) header.d=al2klimov.de header.i=@al2klimov.de header.b=KgcXZvh7; arc=none smtp.client-ip=162.55.223.79
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=al2klimov.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=al2klimov.de
+	s=arc-20240116; t=1779821184; c=relaxed/simple;
+	bh=XdW9He5EDu8NwLUMQOJO5rBU9vk4TninkbjLV/S6asg=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=FokF+OTyEgeqtjUMNiFoVigedO36clASe0J2HNleblArdjjVC8TdwckiCJEI4h2X77AhpBq+EDdC2uftt+T+ltOHpQujkv6IOjMa98rJN403XnAPhWU1QraeGxKKc/CPd7r0vjErb1T5C14D880F+DWm3rlFeIbVI8NVgxodE/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZzsmxkpU; arc=none smtp.client-ip=209.85.128.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=al2klimov.de header.i=@al2klimov.de header.b="KgcXZvh7"
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; s=default; bh=Yxu6cLp2nC8s
-	IKWrf8BHCgxZkIkwHCYaYzNUnh2jBvA=; h=references:in-reply-to:date:
-	subject:cc:to:from; d=al2klimov.de; b=KgcXZvh75ghDzewMNDjJvGdGkzAqan48
-	aMXSqceQrChAJOeehngZDsB+LZDSdEpCVt4lOi6sfZSuAEyHYFip6AJEGaDn3UpRUV9gjk
-	t+uGViIA8euFxUpxq2003kXWJjKXtuER8C6cCjbBPEcjbAbvcP0cXiafSTUgeL0SHF8Dvb
-	ddxuc7oektBV6A/91Kb3xaVyLvxanCi4BC29WS5tjY3bYuSHrM3aQ/NRgOA5gitwwZ1v8w
-	ZTv33AB8jTDWqX+mu9q7vt9PY6d0efUR1jw7CuT1E1I8NtKHND1EIBbfKe4sOhvkQURfm3
-	rtKZqcC2m/SWN02857nIcWah9VKfKw==
-Received: from cachy-ak (88.215.123.80.dyn.pyur.net [88.215.123.80])
-	by mta.al2klimov.de (OpenSMTPD) with ESMTPSA id cfc4909e (TLSv1.3:TLS_CHACHA20_POLY1305_SHA256:256:NO);
-	Tue, 26 May 2026 18:41:33 +0000 (UTC)
-From: "Alexander A. Klimov" <grandmaster@al2klimov.de>
-To: Haren Myneni <haren@linux.ibm.com>,
-	Rick Lindsley <ricklind@linux.ibm.com>,
-	Nick Child <nnac123@linux.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Thomas Falcon <tlfalcon@linux.vnet.ibm.com>,
-	Desnes Augusto Nunes do Rosario <desnesn@linux.vnet.ibm.com>,
-	netdev@vger.kernel.org (open list:IBM Power SRIOV Virtual NIC Device Driver),
-	linuxppc-dev@lists.ozlabs.org (open list:LINUX FOR POWERPC (32-BIT AND 64-BIT)),
-	linux-kernel@vger.kernel.org (open list)
-Cc: "Alexander A. Klimov" <grandmaster@al2klimov.de>
-Subject: [PATCH] ibmvnic: fix krealloc() memory leak
-Date: Tue, 26 May 2026 20:41:01 +0200
-Message-ID: <20260526184105.18962-6-grandmaster@al2klimov.de>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260526184105.18962-1-grandmaster@al2klimov.de>
-References: <20260526184105.18962-1-grandmaster@al2klimov.de>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZzsmxkpU"
+Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-7c23248f3a3so115576177b3.1
+        for <netdev@vger.kernel.org>; Tue, 26 May 2026 11:46:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779821182; x=1780425982; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=sr3UqMOgY8Q0sOVcNzul/LXQuYjMqGkRarSoqlIbOyM=;
+        b=ZzsmxkpUc05f7wiPWwm7aNDiOKxACVbJl3J/NATKTztPi+CYy3kd/YjhMFmXvvZHBD
+         iz/mcuQkT36erQydBwzaaII8V+uZGugdYhrcZnWRNnwYW2j8SmMSne4kQv3hMz5gfB9l
+         HTdAQEYsPBEYI+MM/JS45lKMR08Spa0FGOfym7gOJ2b+ToI3hE2LprcLxrWTZaeDo1ue
+         RzDHSGyAkOv+TjLuiRvaGFqYdy0S/g0yr7KddA+S3Jh2JB6RDkbSC0cmWIYqQqiU9/3q
+         YdBCSB5/ljq1dSZLMVdfrbSUfuIx0G/jC59N/KLSyFedogwOTPjMZUn3VSVqbHP1QeQW
+         KgMQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779821182; x=1780425982;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=sr3UqMOgY8Q0sOVcNzul/LXQuYjMqGkRarSoqlIbOyM=;
+        b=s30O+Hi4Wx7fCbxJyzH8ge6dDQHWORSIB5jT4TXi6fb2VuozC8BWx2tXGoWmLFCR4w
+         WUpieR8/E/3kxStqMglDAgzys0Tl5pOj+0HGamZ5hMCoAhb5OFopNAznzi5NYXfKTwpk
+         OsWYauaMj7oEbZqYNVkjh2BcNLBivnBzt0Bv0m73JMUmK1GZ5OM8X+DLPOivF0u+ZO5t
+         gZz7quKxa1cGWBhJEyPRmaaTLOUgLNpjrUOZIOC2TengWdFTi7SsISCQWXYObptCwdYz
+         gjnWYs9zV01T5c+gYiqYkBhLpYqBAnUj7dSYoYQXsbI2pSYUO5/O+zkenfG0dtVvE3Df
+         Q/rQ==
+X-Gm-Message-State: AOJu0Yypdeq/CbQvq7gogoGm9yid2Y5qGbmrIV47JLG4rKieOBUvEuPJ
+	NV+Y+pTooDU6e4oqLb6YhiD/IuVpxdCY1UeNgCJm+ywaNINmKqG82ZErqkUHhg==
+X-Gm-Gg: Acq92OHaj3o5Nr8ali1LxveX5uplHIzpAbmezR1t/M0ui9JP1+SMVr0mrToXy6XsJvH
+	bkasxJBwLga6+L+twh5irpM2dWXynMLCjPOqXI7fHFVgRIoUjMqT7ef6TkjiEZEZ1v97YsrFYP6
+	4xaw3pgDrEuakPU8PFmObD1gClCf0QRfA2puAhmDCGkU1MgNq7epAneygbXroa4SC0+LaJtLPXP
+	6pbMzamR+dC7Cgu7mJVim8fQNSwvFhUVtsm4yDkcvhcwPPyPeV+5rEagPZ2l0w7NlWc81Q5MrzT
+	hYZYNUSvqifEdnbuEQZx5Vgg3zdfhSXYytVb+pennwO6l8gvhKhb0qmfl2J8gcHKOcNKgCJ+t1E
+	mWmpQEPz4jqv6dvD3yMT7YFg/9/5NCLLE+llaZt4ezZdTVgEuL+ASZbbL2F+xvKVCgH6ygxXKeQ
+	3RX9kNbJJEi7EvLnxjbUeCfMps/ypnHF/S7tazTAJTwsr0S4s2eVQi3PXxAvFBxaIsHycoj1pf/
+	yQlklHvQFawz6xViw==
+X-Received: by 2002:a05:690c:3388:b0:7bd:9ce7:164c with SMTP id 00721157ae682-7d338682c32mr218938457b3.43.1779821181917;
+        Tue, 26 May 2026 11:46:21 -0700 (PDT)
+Received: from gmail.com (141.139.145.34.bc.googleusercontent.com. [34.145.139.141])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-7d389813ee6sm64269647b3.2.2026.05.26.11.46.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 26 May 2026 11:46:20 -0700 (PDT)
+Date: Tue, 26 May 2026 14:46:20 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Jakub Kicinski <kuba@kernel.org>, 
+ davem@davemloft.net
+Cc: netdev@vger.kernel.org, 
+ edumazet@google.com, 
+ pabeni@redhat.com, 
+ andrew+netdev@lunn.ch, 
+ horms@kernel.org, 
+ Jakub Kicinski <kuba@kernel.org>, 
+ richardcochran@gmail.com, 
+ yangbo.lu@nxp.com, 
+ kuniyu@google.com, 
+ willemb@google.com, 
+ matttbe@kernel.org
+Message-ID: <willemdebruijn.kernel.178a41a53d041@gmail.com>
+In-Reply-To: <20260526153650.2779821-1-kuba@kernel.org>
+References: <20260526153650.2779821-1-kuba@kernel.org>
+Subject: Re: [PATCH net] ethtool: vclock: propagate errors from
+ ptp_get_vclocks_index()
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-Don't just overwrite the original pointer passed to krealloc()
-with its return value without checking latter:
+Jakub Kicinski wrote:
+> ptp_get_vclocks_index() was written with sock_timestamping_bind_phc()
+> in mind. Any return <= 0 will get converted to EINVAL by the virtue
+> of sock_timestamping_bind_phc() not finding a matching vclock.
+> 
+> ethtool's phc_vclocks_prepare_data(), however, should not be silently
+> returning empty messages on allocation errors or when PHC does not
+> exist at all.
+> 
+> Commit c156174a6707 ("ethtool: add a new command for getting PHC virtual
+> clocks") added phc_vclocks_prepare_data(), but let's not treat this
+> as a fix in case some user space app now depends on the failures being
+> silent.
+> 
+> The check in sock_timestamping_bind_phc() is not strickly necessary,
 
-    MEM = krealloc(MEM, SZ, GFP);
+strictly
 
-If krealloc() returns NULL, that erases the pointer
-to the still allocated memory, hence leaks this memory.
-Instead, use a temporary variable, check it's not NULL
-and only then assign it to the original pointer:
+> but include it just for clarity.
+> 
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
-    TMP = krealloc(MEM, SZ, GFP);
-    if (!TMP) return;
-    MEM = TMP;
+Reviewed-by: Willem de Bruijn <willemb@google.com>
 
-Fixes: 4e6759be28e4 ("ibmvnic: Feature implementation of Vital Product Data (VPD) for the ibmvnic driver")
-Signed-off-by: Alexander A. Klimov <grandmaster@al2klimov.de>
----
- drivers/net/ethernet/ibm/ibmvnic.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+>  
+> diff --git a/net/core/sock.c b/net/core/sock.c
+> index b37b664b6eb9..9e33e979a283 100644
+> --- a/net/core/sock.c
+> +++ b/net/core/sock.c
+> @@ -870,6 +870,8 @@ static int sock_timestamping_bind_phc(struct sock *sk, int phc_index)
+>  
+>  	num = ethtool_get_phc_vclocks(dev, &vclock_index);
+>  	dev_put(dev);
+> +	if (num < 0)
+> +		return num;
+>  
+>  	for (i = 0; i < num; i++) {
+>  		if (*(vclock_index + i) == phc_index) {
 
-diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
-index 5a510eed335e..25d1d844ad19 100644
---- a/drivers/net/ethernet/ibm/ibmvnic.c
-+++ b/drivers/net/ethernet/ibm/ibmvnic.c
-@@ -1761,8 +1761,9 @@ static int ibmvnic_get_vpd(struct ibmvnic_adapter *adapter)
- 	union ibmvnic_crq crq;
- 	int len = 0;
- 	int rc;
-+	unsigned char *buff = adapter->vpd->buff;
- 
--	if (adapter->vpd->buff)
-+	if (buff)
- 		len = adapter->vpd->len;
- 
- 	mutex_lock(&adapter->fw_lock);
-@@ -1788,17 +1789,17 @@ static int ibmvnic_get_vpd(struct ibmvnic_adapter *adapter)
- 	if (!adapter->vpd->len)
- 		return -ENODATA;
- 
--	if (!adapter->vpd->buff)
--		adapter->vpd->buff = kzalloc(adapter->vpd->len, GFP_KERNEL);
-+	if (!buff)
-+		buff = kzalloc(adapter->vpd->len, GFP_KERNEL);
- 	else if (adapter->vpd->len != len)
--		adapter->vpd->buff =
--			krealloc(adapter->vpd->buff,
--				 adapter->vpd->len, GFP_KERNEL);
-+		buff = krealloc(buff,
-+				adapter->vpd->len, GFP_KERNEL);
- 
--	if (!adapter->vpd->buff) {
-+	if (!buff) {
- 		dev_err(dev, "Could allocate VPD buffer\n");
- 		return -ENOMEM;
- 	}
-+	adapter->vpd->buff = buff;
- 
- 	adapter->vpd->dma_addr =
- 		dma_map_single(dev, adapter->vpd->buff, adapter->vpd->len,
--- 
-2.54.0
+Not for this patch:
 
+This is called by sk_setsockopt and by MPTCP for every subflow.
+Apparently MPTCP does not check the return value. Should it?
