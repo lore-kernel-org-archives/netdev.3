@@ -1,81 +1,56 @@
-Received: from fhigh-a8-smtp.messagingengine.com (fhigh-a8-smtp.messagingengine.com [103.168.172.159])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04CCA83A14
-	for <netdev@vger.kernel.org>; Wed, 27 May 2026 16:01:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.159
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B211B3803D9;
+	Wed, 27 May 2026 16:02:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779897717; cv=none; b=bIVHjUNMZGME2RkswkGlK7CyjqBR7KWzch71L33XvGZLAUIHLOLDTK/HE/KUYMJOfiytC9IPuH6M/iI7ocJR+/Kh58NsUzoY13f6tEO87TFeQ9HTDddpWuphtuZmag1rgZijj9vqkzkfaYe3SWAgKDf/Af7/RiQT+f+nnHR3Ezc=
+	t=1779897751; cv=none; b=CxF9t9+VhOxSxexiIvqW7mnF5/5cjf7lu76nuti91G69Opmpaex7hj9aZWjC9mS9GtEOqk3ltWpSzgp/dREj18UuXbbwz4p1Gdjkm13JuhCtU8smmof+0WpB7yCIC0cknea17uyx7EjLlu1d4cQlu7RBK039YmGESf8257ogXY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779897717; c=relaxed/simple;
-	bh=UWZmGfX14Wsf3E+sb2AYYiMPkB89DwZq2hYjelGdyg0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MU8a0iwmzpPYMH92A2N0nE7Wz5Nawtqpmvf/gIzZqkesQgbwqUlOcCzlErPklG2NKHuN9iZb8Zes6ROvCbg+1LzIU7d4+1wkaTSZtXlvaiYhgjJnw8WKZa4/ZSQaRkZEWB6lv2rdX3Mxyso3x6yDfoAAUgDscWFBlCCuS5mpV8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=Y5u43nQ/; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=mxnny7d3; arc=none smtp.client-ip=103.168.172.159
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
+	s=arc-20240116; t=1779897751; c=relaxed/simple;
+	bh=StSRKJn8icwOdQYtunCr9S/Hzkzk5f/ZDII2gnQ52Dc=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=lVYYiglsKY/NRuhgG02EC3cxUxIFeS7dQUXjkm/sJj9yvKTwFRyTLivToiczUyqHohD1UHGVdUDx4Iqi+ajQqYVcHOb+G66vtLlRqiWMwcDp+ZwDhwiYdre53vBaIATf1ZaTg42qTmK/v7v+sBEOYpo9advwFbggYhNx6ZrMacc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aQC0iN+D; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="Y5u43nQ/";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="mxnny7d3"
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 0BD9C1400134;
-	Wed, 27 May 2026 12:01:53 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Wed, 27 May 2026 12:01:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1779897713; x=
-	1779984113; bh=EGiiw28n4iAu8SxxDGLlNevoj8r/P+Cnm8rYvxwf2RU=; b=Y
-	5u43nQ/ueB589NXFhmKQH4aQmAFYRCez+zmU6CZb+xIdQfLLcu19juzPqbl9sGIl
-	mowJLPUJPXyCuPrBJHQ+yYk2TivLpS/6p/CA1kmpNbuUABWpUWnx2xIDq+fCWBIL
-	rkrfpuWEm2bER5vhSDGKzMuaTBLnZtPJWgOV0wIUQkrdLpQU2ONOBOc/A+pl8XyZ
-	1zlqigxvJRGxf/rkXNmMaWOwZt/rKrneJe8OMwJyJhN+VLSaK2oI/ozo8dNiI9sZ
-	YFT5bxm1/P9pLd8xdbrWBmwC5Kcxuo2TlQSsH9kaXAylYl6OPY101OX1YQ7IJjvp
-	OSy0ykIjNgj1tGmhuYVnw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1779897713; x=1779984113; bh=EGiiw28n4iAu8SxxDGLlNevoj8r/P+Cnm8r
-	Yvxwf2RU=; b=mxnny7d3sUYufdxjk41a6qz9a3O3sWlg5D65G9Go+m782DWpzsA
-	T2axPgme+78wuIHVyRe9AAdVMglNf1q3EsLWnsdC57LgazhQzf+mK8xznOtUz8li
-	1skSXeI9XBlO0a9TGlz0auIrEUfezYPqpP439TxIQaHEGOaBlEI4rioJYeZ5iBAz
-	XSWRMLRFrNGhnrkYcXMADWNeef2CJ2dJfKCLCqVFmMz+DyKw3EvWEy+ghhp00yiP
-	G+CxlOqoqqSzruiNqMvzIQChFpItWXLlQk5I7T7/wFpBlK9I4gTJbwivNi19m5xJ
-	tqdbmgGK0mzg3N/sO5E2MWw2QITjY/wy16w==
-X-ME-Sender: <xms:bxUXaufUiRpSe6JFTYwpgpyGFqogFse5LxQJhRR2u4XuO7RVUs7Epg>
-    <xme:bxUXahKK57xkkcnK6V_XjBl-AsPyw2D2lfJdISjjUuFW1-YKsFrRbHxiFBmcnY1Uy
-    BMgC9PlYV6MmiJZmFWzZSl_lHkUuPn0W6WuiOUJIWY2uAjh78qFb7Il>
-X-ME-Received: <xmr:bxUXarE9c6_G_lP8iF2Hw6srxnwxO3BZnSXWegBpTbxzMasMPPQGYeE57pTeFOzEfQm3HZu9CMuNFB40G_s8_cQ>
-X-ME-Proxy-Cause: dmFkZTGUohCGPrIb8d/pC/RnJmn1Mu2U/J7Qb4HFyxMjMz3MPyu4OYioPzBZtGMHhBe/g5
-    354lA0t8phvmeq7IEpijNArMEmKmpoKTLJ12o04Un8Wqr8bLskazzMC9Sc1FMhYVb2uXrW
-    HJZQSaHM2Sdwc4VRuv2qCnJP4msjZgKFzQUvSUZd+k2s/71lH7eSQtXS+NSUO7ddGplkVh
-    VnLVNk9Yw6fIgmU/pj+E2K5yYtd1htslzv6+HAHUWUAwrOPGaR3mH2Kg67ZJAS6iyIEPpC
-    UxZN76o9lQGx/Of8NM2Ssre2DA1klgczVY0Bc/L1JxJjx3/cQZIiMFEmGlKOjNOn9X8iO6
-    cswDwOWLmodvJ8/g3p+H5m7jnJG1oVfmlz5fXrPBGseknRVGf4OfouAn89nNiM+qqYAQwh
-    IrsVHfjpd6/bz5CqWYzAZMh0rqidHt9pKVIeRbkH699kQQO2sR4qnr7JZFdTbJDHlV/Vx2
-    M3IiSSgeAWxB02qorCfjrsdVZtmQw98uwti+vjTefjgLJqnEu9ON8cj4Ca7rLMQgn/hxoM
-    MFN7GFZaaAjpgEbzqjZB4f2mIX6qu9hujzGRYiWtMv4zFHldqu7t7ldeTHptiAHF09w+wx
-    s9xT/Jpe2LRP+al9xNplNq3fPIlIeAzFTZ3jRNuh0pVynWE4m/xGjpNqZS+A
-X-ME-Proxy: <xmx:bxUXasCLG5LVTXco6CJMHY3d6vqTadDr6sBHN8shphiy4sM1weKqBQ>
-    <xmx:bxUXam9bDJORtvgO9jtm8OEhTiM9EurF0LOVo06fUZRF3-0Bv4D4QA>
-    <xmx:bxUXagAYqia2biYUdbNfqEBVzP1ZW19wMp3Ne4jG3WGoGQ3OLNzPKQ>
-    <xmx:bxUXajQHcs7Kd6iyKP-pS3agA86oKswA2VsJ7Hyl7vigUuX3AWYtPw>
-    <xmx:cRUXanuczGdyGCoFVCVxldbPrkyLhTFq5dbaOmHazrCwjW4PKkivRnR7>
-Feedback-ID: i934648bf:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 27 May 2026 12:01:51 -0400 (EDT)
-Date: Wed, 27 May 2026 18:01:49 +0200
-From: Sabrina Dubroca <sd@queasysnail.net>
-To: Petr Wozniak <petr.wozniak@gmail.com>
-Cc: netdev@vger.kernel.org, steffen.klassert@secunet.com,
-	herbert@gondor.apana.org.au, davem@davemloft.net
-Subject: Re: [PATCH net-next] xfrm: fix xfrm_dev_offload_ok() returning true
- for software SAs
-Message-ID: <ahcVbeG79PibbM3M@krikkit>
-References: <20260527140948.21162-1-petr.wozniak@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aQC0iN+D"
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 4BA611F000E9;
+	Wed, 27 May 2026 16:02:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779897750;
+	bh=0imBknv/pgewMByeR8YgZ6XE6TXEr/GjmohnuFC14K4=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=aQC0iN+D6vf7IROpsytSNpQF+mRMbTIGjh1sg8CKEM1uD9Q0UNq6a4+IOkoN+Z/qw
+	 zx7cO28vimeYXrc6uitEUYCYaIVsXaKMxoSWOjQFvH751cr88gPR0QJCLqpnveUWB3
+	 xzr0iKzRWrauJ2nUhJ8YynmS+Mkq7/DC2jzI2z0r0w4ehsZMGwZXoNg9EgAnd13Ukd
+	 avCBn40cLRXTucfHFyH5S6sDWfNK/IsI/8IcgwW1IpjwLTWmW6Pyu1LNeCEj54KsXH
+	 tv55WNtlM3+a9A/Wu+vev7lgcXWVeF6QImSUKDSHMn4EyhacPf2o0nT8HRyQh2rMxq
+	 w4y0N+acxpExA==
+From: Thomas Gleixner <tglx@kernel.org>
+To: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+Cc: LKML <linux-kernel@vger.kernel.org>, David Woodhouse
+ <dwmw2@infradead.org>, Miroslav Lichvar <mlichvar@redhat.com>, John Stultz
+ <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, Anna-Maria Behnsen
+ <anna-maria@linutronix.de>, Frederic Weisbecker <frederic@kernel.org>,
+ Arthur Kiyanovski <akiyano@amazon.com>, Rodolfo Giometti
+ <giometti@enneenne.com>, Vincent Donnefort <vdonnefort@google.com>, Marc
+ Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>,
+ kvmarm@lists.linux.dev, Oliver Upton <oupton@kernel.org>, Richard Cochran
+ <richardcochran@gmail.com>, netdev@vger.kernel.org, Takashi Iwai
+ <tiwai@suse.com>, Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+ Johannes Berg <johannes.berg@intel.com>, Jacob Keller
+ <jacob.e.keller@intel.com>, Tony Nguyen <anthony.l.nguyen@intel.com>,
+ Saeed Mahameed <saeedm@nvidia.com>, Peter Hilber
+ <peter.hilber@oss.qualcomm.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ virtualization@lists.linux.dev, linux-wireless@vger.kernel.org,
+ linux-sound@vger.kernel.org
+Subject: Re: [patch 04/24] pps: Convert to ktime_get_snapshot_id()
+In-Reply-To: <20260527090114-359e2553-2c63-4ac2-a15a-776ba08b6eec@linutronix.de>
+References: <20260526165826.392227559@kernel.org>
+ <20260526171222.995833811@kernel.org>
+ <20260527090114-359e2553-2c63-4ac2-a15a-776ba08b6eec@linutronix.de>
+Date: Wed, 27 May 2026 18:02:26 +0200
+Message-ID: <87ik88lu25.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -83,18 +58,15 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260527140948.21162-1-petr.wozniak@gmail.com>
+Content-Transfer-Encoding: quoted-printable
 
-2026-05-27, 16:09:48 +0200, Petr Wozniak wrote:
-> xfrm_dev_offload_ok() reaches the ok: label when the SA has no
-> offload device (dev == NULL, SW SA) because the guard condition
-> "(!dev || dev == xfrm_dst_path(dst)->dev)" evaluates true for
-> dev == NULL.  The explicit "if (!dev) return true" at ok: then
-> incorrectly routes the SW SA onto the GSO offload path.
+On Wed, May 27 2026 at 09:02, Thomas Wei=C3=9Fschuh wrote:
+> On Tue, May 26, 2026 at 07:13:48PM +0200, Thomas Gleixner wrote:
+>>  static inline void pps_get_ts(struct pps_event_time *ts)
+>>  {
+>> +#ifdef CONFIG_NTP_PPS
+>
+> IS_ENABLED()?
 
-Incorrectly? IPsec in SW with GSO is a valid setup. I think you're
-breaking that with your patch.
+ts->ts_raw is #ifdeffed out then, which would make the build fail :(
 
--- 
-Sabrina
