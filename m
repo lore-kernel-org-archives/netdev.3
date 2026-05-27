@@ -1,208 +1,338 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B78BE41B37F
-	for <netdev@vger.kernel.org>; Wed, 27 May 2026 16:35:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779899731; cv=fail; b=S2RnIgfgo+Ai0Wi75/JnagoZDCc45W3MTds0ZHUHyW3tFUD+ZhOKuNwsZLve0W9uMJoSlLuvDcSZrjzjt3Dgb/dQU9C4mmPZFtEEodMznZIcTelWgAtASNs41IzteROPo1Vs41oWACzjADyav9FlGqffmda+yEs6PQpmRDCpPiI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779899731; c=relaxed/simple;
-	bh=fbx7DHsmVw3Uegv9hjAD5LFVaxMMZ6af8DQuKt9oiS0=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=BMqXtxnEP1dnfTjvk2zl6qVWakxNzKABD2oTPoQHpvAy7n54f0LgjdHVdjuR+5kXKCGXGulbWdRSqvCHTk/DVGgzNuwE2Ml4H+qeZdu9hHaupxKLPgSiFbhzG3n1hWwZAz+rtGaF/4ZULIXfrAgY4NHWP8VMXSl3Usf1b0bfTSo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=J2R1o8e2; arc=fail smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D844241B37F
+	for <netdev@vger.kernel.org>; Wed, 27 May 2026 16:35:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.19
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779899737; cv=none; b=ttcao2n5G64niyyGJpaRI8ngbTTrVqp8jqV3Qls/yuoAyE2RGWGB1oSxYsBbrHTeUoSmgy+C2kAAYfydogs+85rKVXkcuyKgeM5uaET6UU7My4ZwCa6bBM8XUz/UAbiDTsDuLG+36vpRAszGpz2ijy0Lo7Zeuujt0B+fMQVipHo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779899737; c=relaxed/simple;
+	bh=Fzc8xN6FmiUIrbJor/BDcOg8cja9xVyUqKoy63GHShA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=YA6i8s/4DzK2iRnnnUMT3K0kzzaBaP+WEs9yK5D3AhvxuLbtn8lnis8+KS9X/vMTS6PvNDYKu19xO6OhnjEYUkGCX/YKICDWu9epo6K1E/5d8ZuyHclQSdfwQ8VJwZ6ftV0K9DPvzeiYXH+lgRWyUHaPWOe9ZiuBbUP4uU+Jw/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=markus.stockhausen@gmx.de header.b=kZjP96bb; arc=none smtp.client-ip=212.227.15.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="J2R1o8e2"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779899728; x=1811435728;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=fbx7DHsmVw3Uegv9hjAD5LFVaxMMZ6af8DQuKt9oiS0=;
-  b=J2R1o8e2CDE9PdCuCW8qUhGWUSUScxQ92KhJyN2eg+ndHyJOjY8c+hXg
-   FG94iys/Ub7oAat16hdLwuBp1frYwcRNkMKQTKI5HUXM/I7RuHpYp009I
-   BJliNo4pIPDOiQyg0MeHxGSkGf1VVJZZcywiXMPazBdlr9lGBBjfnOyAj
-   JLCIo7RgVpk/uR7V791S1fDKdF+rXEWhZsMfACqs34q+Mj2NqTjLtDA1E
-   hvpA+U53TR3GqS7gf0CR3CgGK5ZITo9hLjrT+q/aTuPKNGgDREGK92j/L
-   DoySNJhsydPdTEU38YircwYb/66uLEBw7U0lLwR6tJexv8idg8LhHHsOj
-   A==;
-X-CSE-ConnectionGUID: MLFLgWV1TXemZzjd5Lq7cw==
-X-CSE-MsgGUID: qvGjFz4DREeo5nHGIy9P2w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11799"; a="84595273"
-X-IronPort-AV: E=Sophos;i="6.24,171,1774335600"; 
-   d="scan'208";a="84595273"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2026 09:35:24 -0700
-X-CSE-ConnectionGUID: BIhSqi52SiSjrSJIXnqlbA==
-X-CSE-MsgGUID: 8Ih6f45+TsW5vmYYO0NWdA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,171,1774335600"; 
-   d="scan'208";a="246571824"
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
-  by orviesa004.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2026 09:35:24 -0700
-Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Wed, 27 May 2026 09:35:22 -0700
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Wed, 27 May 2026 09:35:22 -0700
-Received: from CH5PR02CU005.outbound.protection.outlook.com (40.107.200.49) by
- edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Wed, 27 May 2026 09:35:22 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=EcoQ1M0JbzAAqq0IhNM42wi5It/Jcu922nd/s5uMB+YfHu4La0kl8Ogyse/1Pz38QL1/7zXK+6k4bAGrHsFForNjXF72tFMbBoGtL6HZNXjUXE5mts/edzSAjafLmPzMLASMezsIxaTylbZzp5r7ffG8wPugI1e68KMdvJ5sJkHmx94bb3ESnUk/abuYjCnWY1rfHh2ASuAl7Nyg0VUwKZWh2RIJxd2ZP4Nuw2N+LA+2vzN/c+pCVjXj3WI2aG87WLrfZ+rVfEgNa6o2q0t+ZmGOMBW4vfUQ4HDBnQFSevE9IkTHSSSqY3nj5Y61uZAo9Qhcx9U+5pD9LUeLfyauiA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=uHXl+b5ahF4TzSUjtHna/ZfJSPw8uGtrHTakXDdQMVQ=;
- b=QXvx2OQ6+6Rc2iBTd6gfmJhOY1GAAfCkUxVJaKABRGFQcqbwVTvRAUWh2o+ft+Rr7LQb2fC7XsPc1Ralat445ox7oVnvWKfTL66gOl1wfZVQNKlKdExDyZO2rNe38q775EBtNKhcYOTYDCL2DthhmqqVGzgYXcHitRIuw+iCitFdE9GaLNg0LpRehatuLzaks4tS7+H3ZzmTKMebBqpUJjtzERWH4Mo3u91GkA8rHDI+JZ7TlUqKjSSEqjUfR2Wkp4kINBGlH7CHDs6fTMUazZsW2QcByC68YJqwdo0YR3PO8Uo6u6mIBRF5NOCLjsKMKxW/stoF4nO/fV83qqkpJA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from LV1PR11MB8790.namprd11.prod.outlook.com (2603:10b6:408:2b1::16)
- by SN7PR11MB6827.namprd11.prod.outlook.com (2603:10b6:806:2a2::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.13; Wed, 27 May
- 2026 16:35:20 +0000
-Received: from LV1PR11MB8790.namprd11.prod.outlook.com
- ([fe80::27cb:7a60:19bb:584a]) by LV1PR11MB8790.namprd11.prod.outlook.com
- ([fe80::27cb:7a60:19bb:584a%4]) with mapi id 15.21.0071.010; Wed, 27 May 2026
- 16:35:19 +0000
-From: "Nowlin, Alexander" <alexander.nowlin@intel.com>
-To: "Loktionov, Aleksandr" <aleksandr.loktionov@intel.com>,
-	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
-	"Nguyen, Anthony L" <anthony.l.nguyen@intel.com>, "Loktionov, Aleksandr"
-	<aleksandr.loktionov@intel.com>
-CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Subject: RE: [Intel-wired-lan] [PATCH iwl-next v2 2/8] ixgbe: add
- ixgbe_container_is_rx() helper and refine RX adaptive ITR
-Thread-Topic: [Intel-wired-lan] [PATCH iwl-next v2 2/8] ixgbe: add
- ixgbe_container_is_rx() helper and refine RX adaptive ITR
-Thread-Index: AQHcx1locQiDwsCXpEawcbEFPlOXsbYiXqsQ
-Date: Wed, 27 May 2026 16:35:19 +0000
-Message-ID: <LV1PR11MB87909EC81FC6E00E7A6E66B890082@LV1PR11MB8790.namprd11.prod.outlook.com>
-References: <20260408131216.2662245-1-aleksandr.loktionov@intel.com>
- <20260408131216.2662245-3-aleksandr.loktionov@intel.com>
-In-Reply-To: <20260408131216.2662245-3-aleksandr.loktionov@intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: LV1PR11MB8790:EE_|SN7PR11MB6827:EE_
-x-ms-office365-filtering-correlation-id: 494bdf7c-923e-433f-a887-08debc0df11a
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|366016|376014|1800799024|56012099006|11063799006|4143699003|22082099003|18002099003|38070700021;
-x-microsoft-antispam-message-info: lA7J308Q1U3ZkwLewsRPyb/j961cQpY0AhnoT56dIrczg/Uvld+NiIoV1ubKw1RQNiRVhca6DWywc8pyRR1nhhyqCXmUa0n4HRpsjyJdIwFH9QCzt5MymIH6k2oJuLnIr2aOdVGxpKhzUSc7XsH7lSBzEsDxTWgiSdms4t7I1Q6qzs1MkhVZCOv26H02isRrDnBBqvTDWT7PjEY9wM9Q1UgbD9sY/ieIxCySphDvCYMHSjpKCfQtHWvtF8n6srxpRyifwDSGIji9+KT1D1zEPMBPx8THWLKbX5EQ7WDykrdv7tbF/iuKQwGVQOylQGZptnsosLysmu54x4PvMH/c86JSq9HuE8yyVTLvg5vxc9ayQcU94eItSzEwTh+L/KFsCMnvnI7JwMY+vZy6CzE1OkcYGD8mIeIie9v6wPh6B1x+coNypqmNc5am/arcknIUDrpieolB3HfqKf4lNtRK9ctBWJSq3zSj/u0GYmZBaH4cVzNmnU1AdKw42XH63ZHq16pM3zcSJWwGTo8KMutpU5wlMPoGVEjv+/KSc7oXdQ+BxF735c6yglSJEQPWlzRY9rOAQ2aRmk8vTpxUH95g2RWr1SBSWS4nHEgKpfGS6L2rSp5NbUxLoTqlQCPPXldgIVCD2Rnl6jA/JO2Lxgn2EWyCq/wBlJ6ScDM5bg99SCs/v/oslje6FaXjhsOJz7O5uf5eloYGeEjgraugbZJ0TqhRTOANPQtBsj2lSYoduRxTgjHhQukgeEu5qg/eb3dA
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV1PR11MB8790.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(56012099006)(11063799006)(4143699003)(22082099003)(18002099003)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?Xe2OwWI+tQoT7szrQjziDEgQYpxXeVkUHocMWW+him4zFhUFxAwOQE1E6ujt?=
- =?us-ascii?Q?IEYDAau09KRNLH0d/ddJSaQDmRZnFypnvkO52yrI7dYqvU56uUfRE5ExJizf?=
- =?us-ascii?Q?17aWEunAcP/6S7f3O8GTqxeaOYCg1fRv2u65CeqYa9FKOXCGsNaFFKb9e5df?=
- =?us-ascii?Q?5UFChRk9L+MRQv69TY3FpdCJ7qqrv9BvrXS0wlo+8r0VzzkhXMAi3kUzFM/B?=
- =?us-ascii?Q?DqlPdGfw0FMif58KxHXhNBH5SdfOKYen0br6gLV7uVswXU8rMzPNymWKHJzh?=
- =?us-ascii?Q?DOZBF1627hq9Epi4jf4DN87Ff6e7DUMIChuXSiDs++DQUU4rGd6MkYSDvTim?=
- =?us-ascii?Q?sKf+dE9X1oiYQwMDm8zuFM35VZOPJ0mWvmzCd1a0svzco1V2BG/5W1blDrpf?=
- =?us-ascii?Q?j3ulweU1lgj3C00Qp+G0E/O4zFB/JpVchUuer5T/CbJnnRyPhyoTi3xYvxkJ?=
- =?us-ascii?Q?4bogE5u6ZRlZLmLHwFDeQFXlarWQx//hhueGVpIeq3RfgZ8l/RkJ1M6otfmY?=
- =?us-ascii?Q?lrrCdnYjR7xuxiz0iAPp8kMX3Adc08OcotLwo7IIM4dZODAX74jdT/V4QWLF?=
- =?us-ascii?Q?9KIG7WrMcUnn66npbAYxLEre4slGlQAfC0dlfM6E2TGXyZqAyI2YcTBtZ1r3?=
- =?us-ascii?Q?0YST8PQci9Z/Npof3nMhvsiszaiYMrQU5wFN8R4CAjzSZZbvcCQleEMJHfwk?=
- =?us-ascii?Q?11i9U9kds1iPBkHO7NWIh+rY1HuhRoxTPgANjXsI4uHXNsoi13UhPivC2rT0?=
- =?us-ascii?Q?gKemyfEICxj846C56D3PNOWbNj6wVXYthpqy1ooc5So2uJwcpQ6O3a3CpJ5x?=
- =?us-ascii?Q?oQkTjwFEg/DlYvz9tob1Uj48C79GiYWatSqvcwUTRTZPeme2HKdAfpd8WYxc?=
- =?us-ascii?Q?hJXMXO1D5OCU+nQaoaklf3sEUiq0f7s5no+kE/qeueUmRPxrTRsAqwoAfn2f?=
- =?us-ascii?Q?3tbBbijxRJM/3RflXJXAbJcCV+aEy88V/FDHQAMYNRU+JKYKUO+vRraOrVa0?=
- =?us-ascii?Q?j/2+v4w1ztu811GmQ57Y1XUJPWafQ6P7aV3PNZPN6mzgs71k3tUzuER9CXtc?=
- =?us-ascii?Q?qdzrxT4XhQXSNcpjDiiPdE4rJIQvOKnlWZpprT/3gkzQgfbVh97UnvL9brh9?=
- =?us-ascii?Q?5lKvo8R8/E4PGpfitQJrup27ETmWVMW/Vu2bNHxMkDOft8p1yyaZ2Z6I7mGs?=
- =?us-ascii?Q?3rcYJbe+PbYYlHFq/z9KyCc0+eQ7Yu8xRAZxWGR3hXz1glOaKxY/8bed6i26?=
- =?us-ascii?Q?OZQ0KwGxlKkowBGL8XjhIsEQ6ZNOVw6zehWEs3eF/1SzAArqhkePqapttwNT?=
- =?us-ascii?Q?rsZknt+7usShCzbzYzykRg2KR2LdTuMRuYAufEAIKSvDEoNrqcDKbjrUs8u/?=
- =?us-ascii?Q?fS4Ap4AE17bt9eECdpZSieiBlWOF/Jx4OVdwe1SN6RtptwGksrTZ/rK/RetE?=
- =?us-ascii?Q?myAGQLQw5bB4Vke6SBNcllbfnV8nF/AF/tRi+7zwWnYH7NxUg5OCc7iiwhHi?=
- =?us-ascii?Q?w/D5+60tq+Dm9RSjEmT/OML3sVD5maGSbpZXEnbXzTvNh4GiyIgIrqdXUDXO?=
- =?us-ascii?Q?/28xxH28JVWDhDFXu4mZlqfOZnhxTdSRoWAaVdPVjASbtXRhAugXdQEstP/h?=
- =?us-ascii?Q?bVaU5yJoMTl859aqfanVaZ1+QhmeM0Xnr4WJvzS5hkZixidhweWRULIOfe1u?=
- =?us-ascii?Q?Su2xJhhWJiaZXsBQKK+sRR0z98y+5PuNl0wORcxFFalZXBSycYybiDzPKNPO?=
- =?us-ascii?Q?mVxzetkilA=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=markus.stockhausen@gmx.de header.b="kZjP96bb"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1779899708; x=1780504508;
+	i=markus.stockhausen@gmx.de;
+	bh=y6YI3bU2GmzBc+4hvuxlfPwNmIHj67tOowpZ9RHSXWM=;
+	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-ID:In-Reply-To:
+	 References:MIME-Version:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=kZjP96bb3dw67x7R6k9+SrppDEObgLl5txhZBO0LmEoHeYsjt6T+6945tAWE7vRP
+	 U/e2wxT9e306cPOu8mITEPg9kJ2LGl5pjKoW+H9RQTKw4OugiqdNbOVz/LCa3UZ//
+	 kjNytEf+SevVRlAS1YPo0IyTABHDv/FNPoOA8VOuiDuTdcFw+dmPLgBtgoJefNKLp
+	 Zi5d9209kCsCTLqgD0GiX5T6SSsZSHz4zkMp1R9D7A0EkXWJd9j4xoV2f2Y8IkGxI
+	 g8/gLM+eBVgKCnPZbtU22c5kFf1Q9bmlAUvQ8ovrtaRmNSTTNeBIYmorOIoKS8Yyt
+	 imTHmhyQ/lHIvauvng==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from client.hidden.invalid by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MuUj2-1xIjU60GQs-00x6m6; Wed, 27
+ May 2026 18:35:08 +0200
+From: Markus Stockhausen <markus.stockhausen@gmx.de>
+To: andrew@lunn.ch,
+	hkallweit1@gmail.com,
+	linux@armlinux.org.uk,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org,
+	chris.packham@alliedtelesis.co.nz,
+	daniel@makrotopia.org
+Cc: Markus Stockhausen <markus.stockhausen@gmx.de>
+Subject: [PATCH net-next v2 3/4] net: mdio: realtek-rtl9300: use command runner for read_c45()
+Date: Wed, 27 May 2026 18:34:48 +0200
+Message-ID: <20260527163449.1294961-4-markus.stockhausen@gmx.de>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260527163449.1294961-1-markus.stockhausen@gmx.de>
+References: <20260527163449.1294961-1-markus.stockhausen@gmx.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: efpngivDtG9GW0ojJr2E/mMZForElRT1p13wyuaPw+ZfV7crudwQn3qLVtNq5Vy5qPaKTyuQuOOrpEzCsrnM+wwYUb0P7/U0IHsLwlUMWFgOD6dgm8crn46ksfyzxIIFZuPYm9M9WLjmAXGcWbl8NKrlCgYWV3C3Mf+1h3oTvEqKE+1XE40C0pXwGgXFxPVxbTmAYct8u1aLOk/ltux81n0lMNtEwGzOXlilcBl+IrLTiP+rRs27zdLgo0uZpPCQdFgvMGuI4JOtkUud6KmjaqgDre4cN7okI8TGwqky9MlTEXPyufWun9QJ4HYDmDazhO4Xfigx1EIkDcFqqLhM1w==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: LV1PR11MB8790.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 494bdf7c-923e-433f-a887-08debc0df11a
-X-MS-Exchange-CrossTenant-originalarrivaltime: 27 May 2026 16:35:19.8715
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 0zxHOtGqjmjv25a/vdYMvaNTHI9ffvZRtNLdVH7Hvj9MF7o60MqL8eCkSzNUwZ8KeFevJ00gavcKtUmrbLQ3PF5Lmw0JK+/RyuJ0ubFDIwk=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR11MB6827
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:rOjb57iGaSY+AB2MqtkoO9oNeiAMscbE7Ctu8n0WhCv1Wqy5JcA
+ N+Ec9eQf9JEG3yByQqPzNFuEVBy187GaT0MVXrzDHP3YsRiMuWntd8pac98dN8VeeceYqap
+ KcgK2gJaqNc0Whr0CJapn0eshlVZp8sopPi/pjcf13SentVBYXftKz3KIO9ZS7Vl/7f76Zq
+ FLEe4tqw74+pDK2kRr4Ag==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:DPcXXEI+UDQ=;opKXB3RaIkv+b+uEUtWLbDuXFl3
+ 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
+ LL72K/zSB8V4AO31i8=
 
-> -----Original Message-----
-> From: Intel-wired-lan <intel-wired-lan-bounces@osuosl.org> On Behalf Of A=
-leksandr Loktionov
-> Sent: Wednesday, April 8, 2026 6:12 AM
-> To: intel-wired-lan@lists.osuosl.org; Nguyen, Anthony L <anthony.l.nguyen=
-@intel.com>; Loktionov, Aleksandr <aleksandr.loktionov@intel.com>
-> Cc: netdev@vger.kernel.org
-> Subject: [Intel-wired-lan] [PATCH iwl-next v2 2/8] ixgbe: add ixgbe_conta=
-iner_is_rx() helper and refine RX adaptive ITR
->=20
-> From: Alexander Duyck <alexander.h.duyck@intel.com>
->=20
-> Add an ixgbe_container_is_rx() helper to cleanly distinguish RX from TX r=
-ing containers inside ixgbe_update_itr().
->=20
-> Refine the RX-specific latency-detection path:
->=20
->  - Replace the shared "packets < 4 or bytes < 9000" threshold with an
->    RX-specific check of "1..23 packets and bytes < 12112".  When that
->    condition holds, target 8x the observed byte count in the next
->    interval by computing avg_wire_size =3D (bytes + packets * 24) * 2,
->    clamped to [2560, 12800], and jumping directly to the speed-based
->    ITR calculation.  This provides finer-grained control over low-rate
->    RX latency workloads without affecting TX.
->=20
->  - Remove the separate "no packets" special-case block.  When packets
->    is 0 it falls into the "< 48" branch.  The mode-tracking logic in
->    that branch is extended: fewer than 8 packets forces latency mode;
->    8..47 packets preserves the current mode.  This replaces the old
->    unconditional "add LATENCY flag from ring_container->itr" carried
->    over from the removed block.
->=20
->  - Remove the adjust_by_size label and the associated "halve
->    avg_wire_size in latency mode" step.  The Rx latency path now
->    pre-calculates avg_wire_size independently and the bulk path no
->    longer needs the halving to compensate for incorrect thresholds.
->    Rename the jump target to adjust_for_speed to reflect its purpose.
->=20
-> Signed-off-by: Alexander Duyck <alexander.h.duyck@intel.com>
-> Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-> ---
-> v1 -> v2:
->  - Split from monolithic ITR cleanup; adds ixgbe_container_is_rx(),
->    refines RX latency thresholds (24 pkts / 12112 B), and removes the
->    separate no-packet and adjust_by_size code paths.
->=20
->  drivers/net/ethernet/intel/ixgbe/ixgbe_main.c | 72 ++++++++++--------
->  1 file changed, 41 insertions(+), 31 deletions(-)
+Convert the read_c45() path to the new command runner. This needs the
+additional helper otto_emdio_read_cmd() that can issue the command runner
+and process a read operation. It is basically nothing more than
 
-Tested-by: Alexander Nowlin <alexander.nowlin@intel.com>
+- run the command
+- read the command result thorugh the I/O register
+
+With this in place convert the read_c45() like the alread existing write
+C22/C45 implementation.
+
+- bus calls otto_emdio_read_c45()
+- this handed over to SoC specific otto_emdio_9300_read_c45()
+- the registers are filled
+- the otto_emdio_read_cmd() is issued
+- that calls the command runner
+
+Signed-off-by: Markus Stockhausen <markus.stockhausen@gmx.de>
+=2D--
+ drivers/net/mdio/mdio-realtek-rtl9300.c | 100 ++++++++++++------------
+ 1 file changed, 48 insertions(+), 52 deletions(-)
+
+diff --git a/drivers/net/mdio/mdio-realtek-rtl9300.c b/drivers/net/mdio/md=
+io-realtek-rtl9300.c
+index e2685a169952..92d7fe6fa1f3 100644
+=2D-- a/drivers/net/mdio/mdio-realtek-rtl9300.c
++++ b/drivers/net/mdio/mdio-realtek-rtl9300.c
+@@ -91,13 +91,14 @@ struct otto_emdio_cmd_regs {
+=20
+ struct otto_emdio_info {
+ 	u32 cmd_fail;
++	u32 cmd_read;
+ 	u32 cmd_write;
+ 	struct otto_emdio_cmd_regs cmd_regs;
+ 	u8 num_buses;
+ 	u8 num_ports;
+ 	u16 num_pages;
+ 	int (*read_c22)(struct mii_bus *bus, int phy_id, int regnum);
+-	int (*read_c45)(struct mii_bus *bus, int phy_id, int dev_addr, int regnu=
+m);
++	int (*read_c45)(struct mii_bus *bus, int port, int dev_addr, int regnum,=
+ u32 *value);
+ 	int (*write_c22)(struct mii_bus *bus, int port, int regnum, u16 value);
+ 	int (*write_c45)(struct mii_bus *bus, int port, int dev_addr, int regnum=
+, u16 value);
+ };
+@@ -182,6 +183,26 @@ static int otto_emdio_run_cmd(struct mii_bus *bus, u3=
+2 cmd,
+ 	return cmdstate & info->cmd_fail ? -ENXIO : 0;
+ }
+=20
++static int otto_emdio_read_cmd(struct mii_bus *bus, u32 cmd,
++			       struct otto_emdio_cmd_regs *cmd_data, u32 *value)
++{
++	struct otto_emdio_priv *priv =3D otto_emdio_bus_to_priv(bus);
++	int ret;
++
++	lockdep_assert_held(&priv->lock);
++	ret =3D otto_emdio_run_cmd(bus, cmd | priv->info->cmd_read, cmd_data);
++	if (ret)
++		return ret;
++
++	ret =3D regmap_read(priv->regmap, priv->info->cmd_regs.io_data, value);
++	if (ret)
++		return ret;
++
++	*value =3D FIELD_GET(PHY_CTRL_DATA, *value);
++
++	return 0;
++}
++
+ static int otto_emdio_write_cmd(struct mii_bus *bus, u32 cmd,
+ 				struct otto_emdio_cmd_regs *cmd_data)
+ {
+@@ -268,58 +289,16 @@ static int otto_emdio_9300_write_c22(struct mii_bus =
+*bus, int port, int regnum,
+ 	return otto_emdio_write_cmd(bus, PHY_CTRL_TYPE_C22, &cmd_data);
+ }
+=20
+-static int otto_emdio_9300_read_c45(struct mii_bus *bus, int phy_id, int =
+dev_addr, int regnum)
++static int otto_emdio_9300_read_c45(struct mii_bus *bus, int port,
++				    int dev_addr, int regnum, u32 *value)
+ {
+-	struct otto_emdio_chan *chan =3D bus->priv;
+-	struct otto_emdio_priv *priv;
+-	u32 io_reg, cmd_reg, val;
+-	struct regmap *regmap;
+-	int port;
+-	int err;
+-
+-	priv =3D chan->priv;
+-	regmap =3D priv->regmap;
+-	io_reg =3D priv->info->cmd_regs.io_data;
+-	cmd_reg =3D priv->info->cmd_regs.c22_data; /* shared command/C22 registe=
+r */
+-
+-	port =3D otto_emdio_phy_to_port(bus, phy_id);
+-	if (port < 0)
+-		return port;
+-
+-	mutex_lock(&priv->lock);
+-	err =3D otto_emdio_wait_ready(priv);
+-	if (err)
+-		goto out_err;
+-
+-	val =3D FIELD_PREP(PHY_CTRL_INDATA, port);
+-	err =3D regmap_write(regmap, io_reg, val);
+-	if (err)
+-		goto out_err;
+-
+-	val =3D FIELD_PREP(PHY_CTRL_MMD_DEVAD, dev_addr) |
+-	      FIELD_PREP(PHY_CTRL_MMD_REG, regnum);
+-	err =3D regmap_write(regmap, priv->info->cmd_regs.c45_data, val);
+-	if (err)
+-		goto out_err;
+-
+-	err =3D regmap_write(regmap, cmd_reg, PHY_CTRL_READ | PHY_CTRL_TYPE_C45 =
+| PHY_CTRL_CMD);
+-	if (err)
+-		goto out_err;
+-
+-	err =3D otto_emdio_wait_ready(priv);
+-	if (err)
+-		goto out_err;
+-
+-	err =3D regmap_read(regmap, io_reg, &val);
+-	if (err)
+-		goto out_err;
+-
+-	mutex_unlock(&priv->lock);
+-	return FIELD_GET(PHY_CTRL_DATA, val);
++	struct otto_emdio_cmd_regs cmd_data =3D {
++		.c45_data	=3D FIELD_PREP(PHY_CTRL_MMD_DEVAD, dev_addr) |
++				  FIELD_PREP(PHY_CTRL_MMD_REG, regnum),
++		.io_data	=3D FIELD_PREP(PHY_CTRL_INDATA, port),
++	};
+=20
+-out_err:
+-	mutex_unlock(&priv->lock);
+-	return err;
++	return otto_emdio_read_cmd(bus, PHY_CTRL_TYPE_C45, &cmd_data, value);
+ }
+=20
+ static int otto_emdio_9300_write_c45(struct mii_bus *bus, int port,
+@@ -350,6 +329,22 @@ static int otto_emdio_write_c22(struct mii_bus *bus, =
+int phy_id, int regnum, u16
+ 	return ret;
+ }
+=20
++static int otto_emdio_read_c45(struct mii_bus *bus, int phy_id, int dev_a=
+ddr, int regnum)
++{
++	struct otto_emdio_priv *priv =3D otto_emdio_bus_to_priv(bus);
++	int ret, port;
++	u32 value;
++
++	port =3D otto_emdio_phy_to_port(bus, phy_id);
++	if (port < 0)
++		return port;
++
++	scoped_guard(mutex, &priv->lock)
++		ret =3D priv->info->read_c45(bus, port, dev_addr, regnum, &value);
++
++	return ret ? ret : value;
++}
++
+ static int otto_emdio_write_c45(struct mii_bus *bus, int phy_id,
+ 				int dev_addr, int regnum, u16 value)
+ {
+@@ -439,7 +434,7 @@ static int otto_emdio_probe_one(struct device *dev, st=
+ruct otto_emdio_priv *priv
+=20
+ 	bus->name =3D "Realtek Switch MDIO Bus";
+ 	if (priv->smi_bus_is_c45[mdio_bus]) {
+-		bus->read_c45 =3D priv->info->read_c45;
++		bus->read_c45 =3D otto_emdio_read_c45;
+ 		bus->write_c45 =3D otto_emdio_write_c45;
+ 	} else {
+ 		bus->read =3D priv->info->read_c22;
+@@ -561,6 +556,7 @@ static int otto_emdio_probe(struct platform_device *pd=
+ev)
+=20
+ static const struct otto_emdio_info otto_emdio_9300_info =3D {
+ 	.cmd_fail =3D PHY_CTRL_FAIL,
++	.cmd_read =3D PHY_CTRL_READ,
+ 	.cmd_write =3D PHY_CTRL_WRITE,
+ 	.cmd_regs =3D {
+ 		.c22_data =3D RTL9300_SMI_ACCESS_PHY_CTRL_1,
+=2D-=20
+2.54.0
+
