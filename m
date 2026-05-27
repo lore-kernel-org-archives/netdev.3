@@ -1,96 +1,236 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from CHN02-BJS-obe.outbound.protection.partner.outlook.cn (mail-bjschn02on2094.outbound.protection.partner.outlook.cn [139.219.17.94])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1E723976AD;
-	Wed, 27 May 2026 08:55:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779872116; cv=none; b=pev75RuMI4HgxWQxmL9tdK1vY95rxKj8eiMaxP9WB5DdVfQm25bENN41YzpRGU5HI1gEb563Q/wl/sNvLtYDiBZQnmuDx8cgRgEh+ut9ZdgvxR69fVpKNBeK0pVSMDlWQsyuoHHTGAypQsLmBmMWWKWF/1+KX2yfi89rbXOmU7U=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779872116; c=relaxed/simple;
-	bh=Bsl5GPz6DzzO6L/sTRo6b/OLxF3ebkMqr7ka0i4JyGg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QbqfWEQrNUE24PjPjx2SGzd87gBzeakYH/puiPYlT7h/sJuPHduYHIJZJ8niR7iQM+wJrVyNOglI2vst+/rtE9JaQYCWWzPq5Sqb9rHq4EC6hZSh3yFFGeCchIu8yGF7Inv6Pu0mMN7OVyqZmmnrGhB4Zwt2bGyKLCa+cdcPY9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QCzE5UrS; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QCzE5UrS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CF941F000E9;
-	Wed, 27 May 2026 08:55:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779872114;
-	bh=UEDxqNXJ4UEjblIvQoSSL/wcWvyHJ4OXwS35a/CCfUk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=QCzE5UrSjFjQTXU+opr+xyd1FelMofgA1s99UVxSVflKaV5OarwTUQGn4GoEFicTo
-	 QVFz7DekWrJpnwWg7AWEbjVtv4cElgxkTCT0FnYhE3yWyPYlSScUtNOwnLqzQ0yyJ8
-	 ckOlMcf54XZAhpGARxZfEpMG4Iqn+6ObaDezOjhNVFsib6C9FgO57yxdqYl3LW+zZk
-	 3hqxpSDBcS1DTv2T0YYYUv3qh/RHIj1KIkG3zMxEJnLIv79Ube4eL9nQ0D8pkOGSkv
-	 8qz9uPRepoTBfRLNacOwPZu1w3MgXdYEbNoWp3SrMAvMBooZGpbh1+wzZ9ArUVpDqT
-	 SS8eLtfNsuVXQ==
-Date: Wed, 27 May 2026 09:55:10 +0100
-From: Simon Horman <horms@kernel.org>
-To: Qing Ming <a0yami@mailbox.org>
-Cc: Antonio Quartulli <antonio@openvpn.net>,
-	Sabrina Dubroca <sd@queasysnail.net>,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C1E43976AD;
+	Wed, 27 May 2026 08:57:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=139.219.17.94
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779872243; cv=fail; b=fdYA5JmY1uB93HS908dfeYKQZ/2afZ9qSLJnacRLMMup97BEdmoEG9YxqWyrG8PG/oijQ0cpZC+J7aW+odaye1oJtOkTIelD2l5ATcTslbv3MFcjBwDeywH5tH5zYPX2IfKNvF4Ax+6OBcl/0OM94MpJywLUim+tNYs0FELvX1E=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779872243; c=relaxed/simple;
+	bh=1iJd646GxOzoes16DECFJtrhEizDWQVqg9DrnrK8zuY=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=H8sjqKtS3kACg2ZxtQBIEjHdV+rqXYcxoNpLSQPyOsQUolvJTp3oa4tj33ztajkWhpuYZn+6B3AmRouIM7pTExr1+bi2gOsHITk5pDwvEsSO3Dr9K7T/TG/9w5nfCi8UV/go218A2+v0+An3+cxginjL04rhrXy7uacsqoxdQ9s=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com; spf=pass smtp.mailfrom=starfivetech.com; arc=fail smtp.client-ip=139.219.17.94
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=starfivetech.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=VH1YlIdVj7nA0b4iFeaU383GjSiZ82GvHlZXcWAUl5Nqugb44aoL4ouIQImm4/lH7TtuUvdS2iw652I0LmeE8xJTxRAaAGOJrA1X/SUmH4dZ5zxxvbDt0r1wFePDefLcZI/YwlFnzI00z9LQtBzqZoTcjFLEPQcKu3KP/UsqPfKm6akAqVHlrseVJ97I+fy3veTGr/dCRNWomMPAGYQa+qujP0Z1rwGklFBu789IRMUFh2stg6+ncr7Qm9qzypd56sFc0a8qWPxHrMG6BTj1ZocASH9vXn+lNpjav7TUw7phH/Ny7WBZ3E1LwucmuZmBaw/RppFl9o5foXugqNJKow==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=SyUu4EST6HBvepKNZQyws64F0GAJgZBVAEOdg7IuhSU=;
+ b=lqOxt+kFdDOqeMNEDT2yBDW4j+Gkvu/cQebscoVMmgY3Sk7mZM52e69roOuFQmLYqHGCXqzSF9q2eVYPIU4fYBa78osGft6YYSm56pRhcqKfldNdUowWBHylcsHH5T+rYTSfc6hnm6cRKqVOTuWO2uaI6ZZgF1xvzJbUTKR9RS0pJe2lBOvY7skivtbobR8Nuf4agIdQXcIdrNzKxADHyEV854v+4mim8JlZz1fnxfy8EoH02PrW89udXI0PF7aTpoENE0Ll5/azEem33zrQCdxgzKevKZwJ0sWkrcaxqJVxxS0EYkGOO12cM/os9j0Toe++Io6ENwnrVtqeRJBe0w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=starfivetech.com; dmarc=pass action=none
+ header.from=starfivetech.com; dkim=pass header.d=starfivetech.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=starfivetech.com;
+Received: from SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c311:25::15) by SHXPR01MB0829.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c311:26::20) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.25; Wed, 27 May
+ 2026 08:41:17 +0000
+Received: from SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn
+ ([fe80::9b99:12dc:a115:b90f]) by
+ SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn ([fe80::9b99:12dc:a115:b90f%3])
+ with mapi id 15.20.9891.021; Wed, 27 May 2026 08:41:17 +0000
+From: Minda Chen <minda.chen@starfivetech.com>
+To: Alexandre Torgue <alexandre.torgue@foss.st.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
+	"David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] ovpn: avoid putting unrelated P2P peer on socket release
-Message-ID: <20260527085510.GF2256768@horms.kernel.org>
-References: <20260523081543.94507-1-a0yami@mailbox.org>
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Emil Renner Berthing <emil.renner.berthing@canonical.com>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor@kernel.org>,
+	netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	devicetree@vger.kernel.org,
+	Minda Chen <minda.chen@starfivetech.com>
+Subject: [net-next v5 2/4] dt-bindings: net: starfive,jh7110-dwmac: Add jhb100 support
+Date: Wed, 27 May 2026 16:41:06 +0800
+Message-Id: <20260527084108.121416-3-minda.chen@starfivetech.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20260527084108.121416-1-minda.chen@starfivetech.com>
+References: <20260527084108.121416-1-minda.chen@starfivetech.com>
+Content-Type: text/plain
+X-ClientProxiedBy: SH0PR01CA0014.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c311:5::26) To SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c311:25::15)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260523081543.94507-1-a0yami@mailbox.org>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SHXPR01MB0863:EE_|SHXPR01MB0829:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2b7ac6c1-577f-4cb0-9bae-08debbcbb831
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230040|7416014|366016|376014|52116014|1800799024|38350700014|22082099003|921020|56012099006|18002099003;
+X-Microsoft-Antispam-Message-Info:
+ ttKwAEmRZPcLPesrR75AF6TgbpwRDwHSQ19ypgyLSld+EgD1Z3azAggaegI4VWvEcBlzCCdbGF0q6s6CcX6Fi+YoMVo9mPhBCrYuGFTosnegpsJX4MkIaBDgawOao0easWZJ/YoDazJi6UWU8WSYDJKTWidx9GRfIFStv9ZdVy/cFcO0bITBA2iDshapEnxXlUPnSzGw3ww2xVOEfeY7jE1rTwJ2kDXqzFSUCQD82W4n1Bt4lm7MWaA3sJtPhZobvyEezJlKd21VwIjTh2bOopWJvUBw4+Pw84goToTp19ZmoiFfLqsH8LeRDc44a6JrBBLziDJJgzLK2OheD27FP35xmeewB7PHhmC7oswDHtdw7bnkvJ/uXyXnHhwMrtSvB9HyR8BXeVqEnzPByRJjGrR3xdnN9Wr5JXl10YbhEb74Wh02lDgTPkL3MvXq2kEbGS25mbhJymDR3G3cZttxyi4gw3XqFdqljBWc+w4JgjwL/IqwaRoNoH4loKn1KxEv/XsCMSADhw+en3S/SShu+5Tr0QfxjzeTMFi6xPwmKXG9Tiw9mGW04/N1syHJPA5z35Xmak5ckF7jX2ffdvJlUQ==
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:NONE;SFS:(13230040)(7416014)(366016)(376014)(52116014)(1800799024)(38350700014)(22082099003)(921020)(56012099006)(18002099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?us-ascii?Q?KLzAFlcPK3D17Ru2d8/6Ctxy1JCA/hVeFhmqPuiL7Mx5bPSf5e4tL97AY8v1?=
+ =?us-ascii?Q?jC9tg60d/YWn0EwAbEdpcNkjO+7pdD8VjkGr4UpZd+yM5PUIWDvw2azokIQG?=
+ =?us-ascii?Q?BsBsu74wyMzdhPT1czg1JcgM6hGmfjPCc4hDxKdXfX/5z/dZaPBqorV1hB2W?=
+ =?us-ascii?Q?K/ogK4Ez3+1YPenNrMEB4hHg3UvPXEoye41v+fkJsMhz9M4W0g5MdD2Y88E3?=
+ =?us-ascii?Q?YjqCfnjSCRTQA9e+0Vxy4tzLdLimRMsPOw0B201f4GEXUwY/XUIlLGOb2mct?=
+ =?us-ascii?Q?HuPQ1qcsVQrw3m5cN2ZKbPcMOj8kG018L4u7UicQkle8xQF10g/76+icJ+vW?=
+ =?us-ascii?Q?0/lrT+MWIGMZhINyhvmEvOPL8ysEYhZgyFw9sHKAtmgThcYmHGmFO9zoK7ZI?=
+ =?us-ascii?Q?BXcGyJ0hOX8N9Bw7ev7C3rf47F8Ep1NAIUO06mthcuxhjwfju8lR+cqJ3C98?=
+ =?us-ascii?Q?jY4FgsoL8MDfkejGof7m5utFudZVCajGXFlvn7dMRJPRNiYGSOEYm1FDqv7o?=
+ =?us-ascii?Q?KrCBjcfHZL3FrXshO9UY5aIi0M5DfQNPXbN+BkQsReBfEGdyNFOqAt+4FjkE?=
+ =?us-ascii?Q?ob2o/pYeTj3VgF6GlSW4s9AURepcOiVMSicpulkhRaJ3+T80It7xm0vHm6wx?=
+ =?us-ascii?Q?WEojImNfNsvjFh9RvH7uxvdgRhin7Hmpy4heV5xgNc08Cw/zP5h45FM3dSA+?=
+ =?us-ascii?Q?zplQUPBFfxslanoB6BWbRGwqiki/AZn53IxtXwp2twUFbgSjPoDpltixVtAs?=
+ =?us-ascii?Q?OmpO1zphKhrovgpvbn2214vZL5GaCSukJ8o/Uxr+MDjX0LHOzfGTR99XnUze?=
+ =?us-ascii?Q?7sLT7Mg39RXye96qFetE/ufe8g3STyOgBoE1p8GMplxX540BDpKPemeuMb4x?=
+ =?us-ascii?Q?dxefs5TZoQJ07vZImH+YpQAD+PloCrOQQU2CX7axk25t91pRFHynKqlBYlGd?=
+ =?us-ascii?Q?6gtLdUdWSTKXL1OtW7NZ98pLgJIgIpczYqVykd01JZSThad4a1fCkrIXtzdT?=
+ =?us-ascii?Q?Kt3u2iXtN5eYCBKKz3ndAn4KehoDbzeQAZSrm00eK/uf+VTSJ61H0UlXp9Kb?=
+ =?us-ascii?Q?Da/VY4C7gmGqzp8ERI8frixCaxfGICwZsrYAcCWbiZFRc35W0Aq3nQiWGwNM?=
+ =?us-ascii?Q?Krq/8wc3WtTTmIuh34sZBYexba6gkf7taZ+GT7xR114lSyF+Z++lnFTjcD5F?=
+ =?us-ascii?Q?qqoorNxlYtxB7J3fVdLkKM5S/gsIafEGbhnZgzcQBfF+4eHxk8q8xHc3KrnC?=
+ =?us-ascii?Q?QKxwP4FYn5qFo/tkm4Y5fQG0yHK7OcjUqjla7fOo21NnaSsnz+TJZhlegQMg?=
+ =?us-ascii?Q?d1uShFxe8/sAZXJjii0uBkHQCUBpXCBFT5LH/deDFtLzBAZ+apu6/+Q6B3Af?=
+ =?us-ascii?Q?ZqbFymdKgBBpEHoaZr1O+vWfZdw3riBA24AYM3xepP5u2EnVxrTv0jIhaaGg?=
+ =?us-ascii?Q?kNIwPTo50MFao1L/nMe4WuDsVXKMkvsidLo9bomBgRqphqWkqhdlD2PnYa+f?=
+ =?us-ascii?Q?wF+3kRzWbaL6Srq6QfWO7lGw3kUrMiRec3Fyx4LcIeV2q+852lRdqBaDwL4o?=
+ =?us-ascii?Q?xVEm2M6vg9dTrM9wgj9Ya9QjY/6YprYdHlfU3fx+pFg/DAiSd2OLiKoBG2r6?=
+ =?us-ascii?Q?5YzmMRxOYYCmpNJSQQDmCWzoMnclIn6YfVmT0x7e6aSZtv+bP3L/dSmrMlx8?=
+ =?us-ascii?Q?UXX7MSqYq+Yrjc69hsTel/KbJ6mDHB6Cp8sl19vf9cplrTZ8UmpuQhmr2YKM?=
+ =?us-ascii?Q?jTMyKQ+eHNJYb3OLAqILIHWmyvcNbIE=3D?=
+X-OriginatorOrg: starfivetech.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2b7ac6c1-577f-4cb0-9bae-08debbcbb831
+X-MS-Exchange-CrossTenant-AuthSource: SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 May 2026 08:41:17.7152
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 06fe3fa3-1221-43d3-861b-5a4ee687a85c
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: V4HCKn8/i/HZpE49AAEPJFVFNnvX6mzqSX6E9KE8f8J4zyHbgMYfc3B1sLcPuBCGWuXMIAwCAzPtPrRyHJhyHuTO05GuHrLcCr6bgbhJmo8=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SHXPR01MB0829
 
-On Sat, May 23, 2026 at 04:15:43PM +0800, Qing Ming wrote:
-> ovpn_peer_release_p2p() is called when an OVPN UDP socket is being
-> destroyed. It checks the currently published P2P peer and releases it only
-> if that peer still uses the socket being destroyed.
-> 
-> A peer replacement can publish a new peer before the old UDP socket is
-> destroyed. When the old socket destruction path runs afterwards,
-> ovpn_peer_release_p2p() observes the new peer through ovpn->peer. Since the
-> new peer uses a different socket, the function takes the socket mismatch
-> branch.
-> 
-> That branch still calls ovpn_peer_put(peer). At this point, however, peer
-> is the currently published replacement peer, not the peer associated with
-> the socket being destroyed. Dropping its reference can free it while
-> ovpn->peer still points to it, leading to later use-after-free accesses
-> from the peer and socket cleanup paths.
-> 
-> KASAN reports this as a slab-use-after-free on the kmalloc-1k ovpn_peer
-> object. In the reproducer, the object is allocated from ovpn_peer_new() via
-> ovpn_nl_peer_new_doit(), and freed through ovpn_peer_release_rcu() from RCU
-> callback processing. Observed access sites include ovpn_peer_remove(),
-> ovpn_socket_release(), ovpn_nl_peer_del_notify(), and unlock_ovpn().
-> 
-> Fix this by returning from the socket mismatch branch without putting the
-> peer.
-> 
-> Fixes: f6226ae7a0cd ("ovpn: introduce the ovpn_socket object")
-> Signed-off-by: Qing Ming <a0yami@mailbox.org>
+The jhb100 GMAC still using Synopsys designware GMAC core.
+hardware features are similar with jh7100.
 
-It is probably not necessary to resubmit because of this,
-but for future reference bug fixes for code present in the net tree
-should be targeted at that tree like this:
+Add jhb100 GMAC compatible and reset, interrupts features.
+jhb100 dwmac has only one reset signal and one interrupt
+line.
 
-	Subject: [PATCH net] ...
+jhb100 SGMII interface tx/rx mac clock is split and require to
+set clock rate in 10M/100M/1000M speed. So dts need to add a
+new rx clock in code, dts and dt binding doc.
 
-You can see more about the Networking development workflow here:
-https://docs.kernel.org/process/maintainer-netdev.html
+Signed-off-by: Minda Chen <minda.chen@starfivetech.com>
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+---
+ .../bindings/net/starfive,jh7110-dwmac.yaml   | 55 ++++++++++++++-----
+ 1 file changed, 41 insertions(+), 14 deletions(-)
 
+diff --git a/Documentation/devicetree/bindings/net/starfive,jh7110-dwmac.yaml b/Documentation/devicetree/bindings/net/starfive,jh7110-dwmac.yaml
+index 0d1962980f57..fdcc61c65f87 100644
+--- a/Documentation/devicetree/bindings/net/starfive,jh7110-dwmac.yaml
++++ b/Documentation/devicetree/bindings/net/starfive,jh7110-dwmac.yaml
+@@ -30,25 +30,33 @@ properties:
+       - items:
+           - const: starfive,jh7110-dwmac
+           - const: snps,dwmac-5.20
++      - items:
++          - const: starfive,jhb100-dwmac
++          - const: starfive,jh7110-dwmac
++          - const: snps,dwmac-5.20
+ 
+   reg:
+     maxItems: 1
+ 
+   clocks:
++    minItems: 5
+     items:
+       - description: GMAC main clock
+       - description: GMAC AHB clock
+       - description: PTP clock
+       - description: TX clock
+       - description: GTX clock
++      - description: SGMII RX clock
+ 
+   clock-names:
++    minItems: 5
+     items:
+       - const: stmmaceth
+       - const: pclk
+       - const: ptp_ref
+       - const: tx
+       - const: gtx
++      - const: sgmii_rx
+ 
+   starfive,tx-use-rgmii-clk:
+     description:
+@@ -107,20 +115,39 @@ allOf:
+           contains:
+             const: starfive,jh7110-dwmac
+     then:
+-      properties:
+-        interrupts:
+-          minItems: 3
+-          maxItems: 3
+-
+-        interrupt-names:
+-          minItems: 3
+-          maxItems: 3
+-
+-        resets:
+-          minItems: 2
+-
+-        reset-names:
+-          minItems: 2
++      if:
++        properties:
++          compatible:
++            contains:
++              const: starfive,jhb100-dwmac
++      then:
++        properties:
++          interrupts:
++            maxItems: 1
++
++          interrupt-names:
++            const: macirq
++
++          resets:
++            maxItems: 1
++
++          reset-names:
++            const: stmmaceth
++      else:
++        properties:
++          interrupts:
++            minItems: 3
++            maxItems: 3
++
++          interrupt-names:
++            minItems: 3
++            maxItems: 3
++
++          resets:
++            minItems: 2
++
++          reset-names:
++            minItems: 2
+ 
+ unevaluatedProperties: false
+ 
+-- 
+2.17.1
 
-FTR, there is an AI-generated review of this patchset available on
-sashiko.dev. I do not believe it should effect the progress of this patch.
-But, rather, be considered in the context of possible follow-up.
-
-
-Reviewed-by: Simon Horman <horms@kernel.org>
