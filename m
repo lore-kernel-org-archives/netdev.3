@@ -1,140 +1,188 @@
-Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.17.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9473B3E0231
-	for <netdev@vger.kernel.org>; Wed, 27 May 2026 08:42:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F04E377009;
+	Wed, 27 May 2026 08:45:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779871348; cv=none; b=jxb9gMYas7/5OkiAY/Egw1kE8ktC95Cw2+QnZERuFsOVujhNN2GguIrzGHC9EBFqVr56x41yWRFNbkGh7TsDJF+YCjEU+QFPQCF4xCv+A5SLNbqmAdkKBGcK9UyIszvxBAoJVHalaOS6X1cAphxyIX0is2eLZiWoMLcJXbQABlk=
+	t=1779871504; cv=none; b=bUkJFI5/EP/LwIgxdtJmUsAhOlMAlO/VlHmbBxHqaZmlO1wETaqviLG1k1SX50ATz0sExjyzZ54AXxEYWoebCPSWYxRs6ktr3/j+dso/hMjzv30MRAnAdy71bVct7XW0DHiVcpf1lNMFIIK7j3XPFA/ipWBYsoah3yq3Tmuvm04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779871348; c=relaxed/simple;
-	bh=swfBozmA0alSSP1GENQwNFD/Y/TIQJPLpDao0KjY470=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EFim9/osWG7hnTLHrjr3Rb40Q8MryHl5Af9nn952+bGwbwnOm38ZnjiLmJXJgKxO0IP2RXjF09nwzsDc41j/urk8UzC2twEkZ0QHPf099NgBPNNHU99cbMctkNm5Z6aLyBO2WngrInwIaUctH4VB/hRBHzBPsItbxuGd+RoFw8A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=LQrbnJvF; arc=none smtp.client-ip=62.96.220.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
+	s=arc-20240116; t=1779871504; c=relaxed/simple;
+	bh=XX1GbH64x35fuWFNo/SQ2/x+8KQpJKIax2C5VfJhvFM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=mpNUQroVYEKiyyqBKI+/QdzfK9LWZD5Tznzp1G4bJGEBNxSubrMmqug7pWGWZvJfXZxCHY4SmPa9UCNofXdf6CRJnXrSQSlmcaOcRyA61Cy0SFuJjDf5Cmn2GiAPMDYeW/ihnabYOCqbDHtJz9iLMUcWKYUgcmkuk1UhvJUr/j4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=schippers-hamm.de; spf=pass smtp.mailfrom=schippers-hamm.de; dkim=pass (2048-bit key) header.d=schippers-hamm.de header.i=simon@schippers-hamm.de header.b=pNJYof3h; arc=none smtp.client-ip=212.227.17.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=schippers-hamm.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=schippers-hamm.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="LQrbnJvF"
-Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id 06C1A2074F;
-	Wed, 27 May 2026 10:42:14 +0200 (CEST)
-X-Virus-Scanned: by secunet
-Received: from mx1.secunet.com ([127.0.0.1])
- by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id s3tmL5Knbl9l; Wed, 27 May 2026 10:42:13 +0200 (CEST)
-Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id 761BD20758;
-	Wed, 27 May 2026 10:42:12 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 761BD20758
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1779871332;
-	bh=sKIc5lD819+4Y7cRk1WZSWOTev1gabshzrGV/921qC4=;
-	h=From:To:CC:Subject:Date:In-Reply-To:References:From;
-	b=LQrbnJvFWIgDspmkFdV0mTh3WMEG91fGq2koe/ly65pd0Lv4ASbjUoBs8VnIIvVrh
-	 bfdiQqbwC6HTmMWk4ZHpvF+UgYP4x7o0j9p6U/D56WFD3nJhDHou3f80Oeh901Dfql
-	 dbM6REubDKncxAGnZnyAohhrnYbK6v86Vqk0Mqt7RTH/VQr6tPKVcimi2H0oty5DyP
-	 emfYnpwyN9JMwAXYSLYM0YFqvcopoAnFqM/VJqepin0PLE++DeW2iZFyLlQMLWYg1Z
-	 rv1WDs3eZmVTSVmXbxeN9wq2LKKT2Qgqs6l+wQlancmJqFXi8t4jiIM6vRg54rxujf
-	 4NaErFwW+qnBw==
-Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Wed, 27 May
- 2026 10:42:11 +0200
-Received: (nullmailer pid 3494012 invoked by uid 1000);
-	Wed, 27 May 2026 08:42:01 -0000
-From: Steffen Klassert <steffen.klassert@secunet.com>
-To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
-CC: Herbert Xu <herbert@gondor.apana.org.au>, Steffen Klassert
-	<steffen.klassert@secunet.com>, <netdev@vger.kernel.org>
-Subject: [PATCH 9/9] xfrm: input: hold netns during deferred transport reinjection
-Date: Wed, 27 May 2026 10:41:27 +0200
-Message-ID: <20260527084148.3489759-10-steffen.klassert@secunet.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260527084148.3489759-1-steffen.klassert@secunet.com>
-References: <20260527084148.3489759-1-steffen.klassert@secunet.com>
+	dkim=pass (2048-bit key) header.d=schippers-hamm.de header.i=simon@schippers-hamm.de header.b="pNJYof3h"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=schippers-hamm.de;
+	s=s1-ionos; t=1779871496; x=1780476296; i=simon@schippers-hamm.de;
+	bh=6o+Z8qEV5bOs+HS0eW5p+DnEH2JHVvHeYJoKtbo+yk4=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=pNJYof3h16DmZpmP3HmoWfeTUjz9jjaoU/KVQNcmoW4RcG+z6ZvsxXN+jns5u1lg
+	 iNJIGwg7FMsH9TuM7q1bN2a9bHIdlIe1YZiYSW8TzKpkK4bNkBzBAxOk7cBlTunLL
+	 blSPfvspj1kXcI5PWYT29KXqc5huWOMidBM5gVpl+qhqQJZXZNLyGz5v9RhuFJtEN
+	 cwx9JhDOm637wfHD+9GzFqg3ZzUoT9NydN0WkQbs+M2o4TDs0/23S5Uvxz+MSvBMV
+	 5tk1OtjUu0kWlPHB4ewSy1qXMTvE6T7aPMsVV1ftuICaGdR2M/BEOxyWkFSBtcTGJ
+	 FpoZ457WMQNW7uMDnw==
+X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
+Received: from client.hidden.invalid by mrelayeu.kundenserver.de (mreue107
+ [212.227.15.153]) with ESMTPSA (Nemesis) id 1MLQgv-1wjYDM2tQh-00P6ec; Wed, 27
+ May 2026 10:38:55 +0200
+Message-ID: <e55f4be1-334c-4623-b030-43d17a25b250@schippers-hamm.de>
+Date: Wed, 27 May 2026 10:38:54 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EXCH-04.secunet.de (10.32.0.184) To EXCH-01.secunet.de
- (10.32.0.171)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v5 3/5] veth: implement Byte Queue Limits (BQL)
+ for latency reduction
+To: Jesper Dangaard Brouer <hawk@kernel.org>,
+ =?UTF-8?Q?Jonas_K=C3=B6ppeler?= <j.koeppeler@tu-berlin.de>,
+ Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
+ kernel-team@cloudflare.com, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ John Fastabend <john.fastabend@gmail.com>,
+ Stanislav Fomichev <sdf@fomichev.me>, linux-kernel@vger.kernel.org,
+ bpf@vger.kernel.org
+References: <20260505132159.241305-1-hawk@kernel.org>
+ <20260510085602.57c7a081@kernel.org>
+ <daa05c21-dcfc-4cc4-aa22-9e25c7f6c743@kernel.org>
+ <41023c34-87a3-4e4f-b3ab-3ed53d171910@schippers-hamm.de>
+ <b78f002a-8cb9-4857-bf8f-0137e790f644@kernel.org>
+ <873511fa-4316-4411-a76b-ec4c5805abd3@schippers-hamm.de>
+ <18855e57-f050-411f-9958-d4babcc81ba3@kernel.org>
+ <14348957-d061-4124-9bac-45df9cf6686c@schippers-hamm.de>
+ <9a57bb41-114e-492b-9eaa-52237675bb7c@schippers-hamm.de>
+ <4ae9400a-8919-4ffc-8db3-0c334e2aa462@tu-berlin.de>
+ <8e8b877b-a7ce-4b2f-9567-64c8dbb48411@schippers-hamm.de>
+ <463e91cb-6c45-4d91-8737-39779fec5a49@tu-berlin.de>
+ <b1c2d2c1-a70a-4bf4-baff-d0ac2f878722@schippers-hamm.de>
+ <24d10b53-c545-4141-95a5-5c49c35c5d6c@tu-berlin.de>
+ <c5b3a7ef-8ec7-4361-80bb-cf06e910350c@schippers-hamm.de>
+ <d23fd8e0-a0d3-4197-a130-2340d1c28fe0@tu-berlin.de>
+ <e8be86b4-052f-4f4f-9cb9-2fb12d1e8922@schippers-hamm.de>
+ <80dc574b-f2da-4f04-8bc8-1b0793b1f296@kernel.org>
+Content-Language: en-US
+From: Simon Schippers <simon@schippers-hamm.de>
+In-Reply-To: <80dc574b-f2da-4f04-8bc8-1b0793b1f296@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:z28hEpM6RoXsF/wd+cQFLKgP5bi5N/VNjAniYz5iH5qGAb1Qi/O
+ fxSNlRqdkSugaiVwrvBiz1pB5znLiveHkxqNv5IzzGrBakGGo14wWHiH+y77ikKyXOduuiE
+ bdex+wQlo0Xuomw41NVrS+3NTOpMZ9HoY5GOTo4wr4MQ10ZW0mB/tAsI9v2Eg2M047cqtz9
+ 9VrvxgjGdhdOa2eLMCyGQ==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:zd5ERNlsKjI=;PN+waDjd+U4HiArES2JV+renc3y
+ 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
+ kJwGobCIJnGBenf8qAg76MI/Jjq/sX3+
 
-From: Zhengchuan Liang <zcliangcn@gmail.com>
+On 5/27/26 09:38, Jesper Dangaard Brouer wrote:
+>=20
+>=20
+> On 26/05/2026 17.07, Simon Schippers wrote:
+>> On 5/26/26 16:55, Jonas K=C3=B6ppeler wrote:
+>>> On 5/26/26 4:35 PM, Simon Schippers wrote:
+>>>> On 5/26/26 11:54, Jonas K=C3=B6ppeler wrote:
+>>>>> On 5/23/26 6:09 PM, Simon Schippers wrote:
+>>>>>> On 5/22/26 18:26, Jonas K=C3=B6ppeler wrote:
+>>>>>>> On 5/22/26 10:41, Simon Schippers wrote:
+>>>>>>>> On 5/22/26 09:14, Jonas K=C3=B6ppeler wrote:
+>>>>>>>>> On 5/19/26 10:51 PM, Simon Schippers wrote:
+>>>>>>>>>> On 5/12/26 23:55, Simon Schippers wrote:
+>>>>>>>>>>> On 5/12/26 15:54, Jesper Dangaard Brouer wrote:
+>>>>>>>>>>>>>> Nope, I'm using a bpftrace program to keep track of the inf=
+light/limit
+>>>>>>>>>>>>>> in a BPF hashmap.  Reading from /sys will not be accurate.
+>>>>>>>>>>>>> Ah nice.
+>>>>>>>>>>>> Add the option --hist to have both NAPI and BQL histograms pr=
+inted when
+>>>>>>>>>>>> script ends.  This will give you an accurate pattern of how i=
+nflight and
+>>>>>>>>>>>> limit evolves.
+>>>>>>>>>>>>
+>>>>>>>>>>>>>> I moved the selftests into a github repo [1] to allow us to=
+ collaborate
+>>>>>>>>>>>>>> and evaluate the changes more easily.  I explicitly kept th=
+e new BPF
+>>>>>>>>>>>>>> based BQL tracking as a commit[2] for your benefit.
+>>>>>>>>>>>>>>
+>>>>>>>>>>>>>>        [1] https://github.com/netoptimizer/veth-backpressur=
+e-performance-testing/tree/main/selftests
+>=20
+> [... cut ...]
+>=20
+>>>>
+>>>> I will wait for your new measurements, but there is no argument
+>>>> against a default tx-usecs of ~100us for now, right?
+>>> Yes, I think 100us is perfectly fine. I guess most of it was
+>>> just my curiosity why the latency values are as they are =F0=9F=99=82
+>> Which is great, because I was wondering the same =F0=9F=99=82
+>>
+>=20
+> Thank you Jonas and Simon for testing this via[1] on your systems.
+>=20
+> One performance concern from my side is if/when BQL limit goes below 8
+> packets. This will cause cache-line bouncing and many qdisc requeues
+> between the two CPUs.  Notice that 8 packets for the ptr_ring is one
 
-Transport-mode reinjection stores a struct net pointer in skb->cb and
-uses it later from xfrm_trans_reinject(). That pointer must stay valid
-until the deferred callback runs.
+I think the qdisc requeues are an issue of dc82a33297fc ("veth: apply
+qdisc backpressure on full ptr_ring to reduce TX drops").
 
-Take a netns reference when queueing deferred reinjection work and drop
-it after the callback completes. Use maybe_get_net() so the queueing
-path does not revive a namespace that is already being torn down.
+It could be solved by stopping the netdev queue after inserting
+the last element like I did in my tun tap implementation [1].
+I know, you also did this before in a previous implementation, but
+the required re-check used __ptr_ring_empty() which is not allowed as
+producer.
+That is the reason why I introduced the new __ptr_ring_check_produce()
+in [1] which is safe for the producer to call.
 
-This keeps the existing workqueue design and fixes the netns lifetime
-handling in one place for all users of xfrm_trans_queue_net().
+[1] Link: https://lore.kernel.org/netdev/20260510151529.43895-5-simon.schi=
+ppers@tu-dortmund.de/
 
-Fixes: 7b3801927e52 ("xfrm: introduce xfrm_trans_queue_net")
-Cc: stable@kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Co-developed-by: Luxing Yin <tr0jan@lzu.edu.cn>
-Signed-off-by: Luxing Yin <tr0jan@lzu.edu.cn>
-Signed-off-by: Zhengchuan Liang <zcliangcn@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Assisted-by: Codex:gpt-5.4
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
----
- net/xfrm/xfrm_input.c | 16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+> cache-line. This is why I suggested defaulting BQL min_limit to be 8.
+> This would work in combination with the tx-usecs coalesce tuning as a
+> lower bound.
 
-diff --git a/net/xfrm/xfrm_input.c b/net/xfrm/xfrm_input.c
-index f65291eba1f6..e4c2cd24936d 100644
---- a/net/xfrm/xfrm_input.c
-+++ b/net/xfrm/xfrm_input.c
-@@ -797,9 +797,12 @@ static void xfrm_trans_reinject(struct work_struct *work)
- 	spin_unlock_bh(&trans->queue_lock);
- 
- 	local_bh_disable();
--	while ((skb = __skb_dequeue(&queue)))
--		XFRM_TRANS_SKB_CB(skb)->finish(XFRM_TRANS_SKB_CB(skb)->net,
--					       NULL, skb);
-+	while ((skb = __skb_dequeue(&queue))) {
-+		struct net *net = XFRM_TRANS_SKB_CB(skb)->net;
-+
-+		XFRM_TRANS_SKB_CB(skb)->finish(net, NULL, skb);
-+		put_net(net);
-+	}
- 	local_bh_enable();
- }
- 
-@@ -808,6 +811,7 @@ int xfrm_trans_queue_net(struct net *net, struct sk_buff *skb,
- 				       struct sk_buff *))
- {
- 	struct xfrm_trans_tasklet *trans;
-+	struct net *hold_net;
- 
- 	trans = this_cpu_ptr(&xfrm_trans_tasklet);
- 
-@@ -816,8 +820,12 @@ int xfrm_trans_queue_net(struct net *net, struct sk_buff *skb,
- 
- 	BUILD_BUG_ON(sizeof(struct xfrm_trans_cb) > sizeof(skb->cb));
- 
-+	hold_net = maybe_get_net(net);
-+	if (!hold_net)
-+		return -ENODEV;
-+
- 	XFRM_TRANS_SKB_CB(skb)->finish = finish;
--	XFRM_TRANS_SKB_CB(skb)->net = net;
-+	XFRM_TRANS_SKB_CB(skb)->net = hold_net;
- 	spin_lock_bh(&trans->queue_lock);
- 	__skb_queue_tail(&trans->queue, skb);
- 	spin_unlock_bh(&trans->queue_lock);
--- 
-2.43.0
+Yes, it would work but I think it is fine as-is.
+BQL will only choose such a small limit if the consumer is really
+slow anyway.
 
