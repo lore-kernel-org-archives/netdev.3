@@ -1,38 +1,48 @@
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5AE226ED3C;
-	Wed, 27 May 2026 12:20:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.95.11.211
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB3CF3D16E2;
+	Wed, 27 May 2026 12:20:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779884418; cv=none; b=DdtT9P8x000GLIgdHC29ue7B1VrJEwwnlPqIHXF5CBQSHv4NQqSCKeWXRAMhwi4WUSdpsqXBLzYJvGEW1M2f5ANwcXcnGrTB3kEsyXN+/tgsQwLDHQPebuFlDJMw8zLqUh9bPS3csQ0i0BnPsRVo6wvI3viirjp7F37LMd+FmNc=
+	t=1779884446; cv=none; b=f9RucAC0ah1kEORjirgxlpo309z4j9bVtAqHZP9/+tFAWu4v+o3Ps/SCmXWYZ0SI3Vsm+/7RQ/GH5IErp3YkBGNkRuU4hghw6S+qCzdpMWjRZM2ONp8pEXmqku01IWGgPbPyWKaAiWAgkAx+jGmKhv5iLtjR9Q6a0Z7Dab3zET0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779884418; c=relaxed/simple;
-	bh=xTXKX/qTlg5b5HNDHvmaUjULBzl9mUn07rxWI0AlDEE=;
+	s=arc-20240116; t=1779884446; c=relaxed/simple;
+	bh=KEMf/skJbgjZSAPYlFo//0HTlRxvafypzAX5PwhHbYo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JqCsbyvLs+88qk6HVYn7An5rYqQgjI/0W9lA8zb0Pve3hvsR0RB3hN5FF8Q4HcKejUbnujbuRdOsoaKGun+08jixq93Vs65gYRwGVWY6EgKx8WTpiv1DI2LeUNjzLgj3bh+PCaNQp+KI2FiRYCoRJf7yOOCU1rLNVMDujm0x2i8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lst.de; spf=pass smtp.mailfrom=lst.de; arc=none smtp.client-ip=213.95.11.211
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lst.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lst.de
-Received: by verein.lst.de (Postfix, from userid 2407)
-	id F307A68B05; Wed, 27 May 2026 14:20:13 +0200 (CEST)
-Date: Wed, 27 May 2026 14:20:13 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Christoph Hellwig <hch@lst.de>, Harry Yoo <harry@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, io-uring@vger.kernel.org,
-	kasan-dev@googlegroups.com, bpf@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH] mm/slab: improve kmem_cache_alloc_bulk
-Message-ID: <20260527122013.GA6765@lst.de>
-References: <20260527070239.2252948-1-hch@lst.de> <20260527070239.2252948-2-hch@lst.de> <f7f35169-f77d-4678-8797-a2ad00d89e6c@kernel.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=s3AdfnCPGVZgnISb1BqJY/k6V0ZNSycdcp6nQ3F6HFWu7v38ihxzZ/+ynCjpN09uO1aAjLRKUs+A6kzVOocwwc5B0eUw3V2hk2y+Zhb37do8pHH48mTvnHEPzcCra9BA/aIk+4w73voqhhrMpLhWGhkXOT9w9UvLGgB0ycum30k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=2B16mUKX; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="2B16mUKX"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=5GlZSD1cForPgSCYWtl2Hw9qmlkpQrrPlhaZ5lanNWg=; b=2B16mUKX5PGCE4inRuFl//crpZ
+	1r6oyME6aJ2Emp0xuks5+HZWlHu2tOMz4q7fYZnOt5VOdrAMIDbrAB5jY7KniL1VpDXXAp4oYbbPE
+	FMkccRu+mPrZ0iLRb3zKqpBkA7FEXUrN+Lv+AMDLT40M0k+r9xlbh9+XltKt2l4bMnvI=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wSDFU-004kCH-1g; Wed, 27 May 2026 14:20:36 +0200
+Date: Wed, 27 May 2026 14:20:36 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Nicolai Buchwitz <nb@tipi-net.de>
+Cc: Thangaraj Samynathan <thangaraj.s@microchip.com>,
+	netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	bryan.whitehead@microchip.com, UNGLinuxDriver@microchip.com,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v2 2/2] net: lan743x: add support for RMII
+ interface
+Message-ID: <e66d0929-6fa1-415c-80fe-d2635bf74e19@lunn.ch>
+References: <20260526154054.19829-1-thangaraj.s@microchip.com>
+ <20260526154054.19829-3-thangaraj.s@microchip.com>
+ <48510d22-bc14-427a-b12e-17655ca95ad5@lunn.ch>
+ <b24c34f91726681ef5797af10b3d1e9a@tipi-net.de>
+ <10b311c5feef2ab18f1e94a6c935a79b@tipi-net.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -41,25 +51,48 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <f7f35169-f77d-4678-8797-a2ad00d89e6c@kernel.org>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+In-Reply-To: <10b311c5feef2ab18f1e94a6c935a79b@tipi-net.de>
 
-On Wed, May 27, 2026 at 11:38:21AM +0200, Vlastimil Babka (SUSE) wrote:
-> On 5/27/26 09:02, Christoph Hellwig wrote:
-> > The kmem_cache_alloc_bulk return value is weird.  It returns the number
-> > of allocated objects, but that must always be 0 or the requested number
-> > based on the implementations and the handling in the callers, but that
-> > assumption is not actually documented anywhere, which confuses automated
-> > review tools.
-> > 
-> > Fix this by returning a bool if the allocation succeeded and adding a
-> > kerneldoc comment explaining the API.
-> > 
-> > Signed-off-by: Christoph Hellwig <hch@lst.de>
+> I looked into this some more and I don't think it belongs in phylink
+> after all.
 > 
-> Would 0 / -ENOMEM be more like what people would expect? I guess both that
-> and bool are better than the current API.
+> The "no TX_ER, no in-band LPI" bit is generic and holds for any
+> MAC-driven EEE over RMII (IEEE 802.3 22.2.2 / Table 22-1: LPI is
+> asserted via TX_ER, which RMII doesn't have). But EEE still works over
+> RMII when the PHY or switch does LPI autonomously (PHY-managed EEE...
+> yikes), since that needs no in-band signaling.
 
-I find an errno return where the API could not return anything but the
-specific error code a bit odd.  But even that would be a lot better
-than the current version.
+But that is a different thing. The API here is the MAC enumerating to
+phylink what it is capable of. We don't have PHY-managed EEE yet in
+phylink, but the basic idea would be the PHY would also enumerate its
+capabilities, and then phylink would pick which to us.
+
+> ksz_common is exactly that: it puts RMII in lpi_interfaces on purpose
+> and uses a dummy mac_enable_tx_lpi() (the comment there explains the HW
+> handles LPI itself once EEE is negotiated):
+> 
+> 	 /* ksz_phylink_mac_enable_tx_lpi() - Callback to signal LPI support
+> (Dummy)
+> 	 * [...]
+> 	 * the actual EEE / Low Power Idle (LPI) state transitions are managed
+> 	 * autonomously by the hardware based on the auto-negotiation results.
+> 	 * [...]
+> 	 * Therefore, this callback performs no action and serves primarily to
+> 	 * inform phylink of LPI awareness [...]
+> 	 */
+> 	int ksz_phylink_mac_enable_tx_lpi(struct phylink_config *config,
+> 					  u32 timer, bool tx_clock_stop)
+> 	{
+> 		return 0;
+> 	}
+
+and this is a 3rd variant, were you have an MAC/PHY pair which is
+tightly integrated. I doubt that RMII is actually being used, and the
+phy_interface_t should actually by "internal".
+
+> So clearing RMII in phylink would break EEE there.
+
+Agreed. So maybe it is too late to do this in the core, at least not
+without having to change some drivers.
+
+	Andrew
