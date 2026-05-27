@@ -1,164 +1,161 @@
-Received: from fout-a5-smtp.messagingengine.com (fout-a5-smtp.messagingengine.com [103.168.172.148])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 349D73CFF42;
-	Wed, 27 May 2026 07:56:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.148
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D51203CE4A7
+	for <netdev@vger.kernel.org>; Wed, 27 May 2026 07:59:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779868606; cv=none; b=UJYH8hHZ8YwFPcp5L0BUaRfebEDKRPiSaSDjPTFhNaZ7WT9in+edIXhrPvGXRq983D6q+0PMzMDjeg65lEnaA5RjQ8QhREx4GeIUDr6ATqT7ZaOYl0RmFlftH/wxs2Eghewtl1n88vSWOF9RE6ana9SfAftN2bXv2+RUqtpR1IQ=
+	t=1779868773; cv=none; b=XUukGaDE28R0uWGQf0BUpM4d92Rg8RcPTWquIqrjoGxpsXyQJ4GBxJbyTRuksS8BXw4sgnuHBJkr8tAj6FSaI1Dzy4kSg2ohOUFg9VFVKF7SAeL7fCCDFLPLlqnCYZAT5jNZvi6wQ/tT1Ogfhsn1R1o0N1RmlxLAY8MBT6H87mU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779868606; c=relaxed/simple;
-	bh=VkWEmwKD3t9ZTmY389ZKLUMf5VWzc/cC1v5mWbHzJRs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sVWqRfAEoykoUSZnftWndKyL90elSV690lImZaT0HSMk1d2zU4h2APxxq5Rwatpc3SIM+dOtFFTWM/LqiHGnl5zrH1KGCYJs4tuqt6XsoaSuEoWHKbGfeBMadVQT6/dcU/zv1WODByO3zOc11LM0nTFpnI2QuSSAKgl16LCZZ+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=LPEWvyU6; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=KXOWrSH2; arc=none smtp.client-ip=103.168.172.148
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
+	s=arc-20240116; t=1779868773; c=relaxed/simple;
+	bh=oJWJrp+hfd9LJvMDqawW72LsBMSm3eITaNs27jH29x0=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=G1lQwv80pIpdjtS6oG6DiPI8HgENaooWq/3KtmISJNwEoijt8zxAHt7enVH9M6Zuxgv9iDvWkGyqwrD2wPdUPCl/0eYJQbUUOFOIis90RR7NgUob6C+3Wc5k7DM6T/iGkK7u8eUqBHr1czKWIHAVBblT8mrzpJtdrtjHEy7OzZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LawSnM1f; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="LPEWvyU6";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="KXOWrSH2"
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfout.phl.internal (Postfix) with ESMTP id 4A332EC0204;
-	Wed, 27 May 2026 03:56:43 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Wed, 27 May 2026 03:56:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm3; t=1779868603; x=1779955003; bh=S9HgsDpIra
-	Qs6ELmiQhI4YE1ElINdY7ducPtyqsAzJs=; b=LPEWvyU6IKP6HG/y58TZgEdgGX
-	OzvimGQKaFB7zH+4phkALqej/C8T9cWjZtGhLW6tPq6ijaPq0zAscJJEn5RCyfPt
-	WeMn6Q6Gxxiy7mn6sPdL53RYlLrj9o7KRBWOyjiNpCrFkvrZhZLjdN7fugJPTznI
-	LLLanJuiOIZeHNhOWYEfxy6c++TqlpSn/+X6+BdulM8AK6ie57W7Jyx9cF8zaTHd
-	FdUbeM58odwfdR0agh8bmZwU0IWxlzafQSWjf4pQIC5xmppJWFP7+13bf+B5AGLm
-	RTewLRlDqZ6YzvnFFBSCEo7nc64yKD8/yqL5bOkM+9eOKf9xg93jEhdB4TvQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1779868603; x=1779955003; bh=S9HgsDpIraQs6ELmiQhI4YE1ElINdY7ducP
-	tyqsAzJs=; b=KXOWrSH2yu5ueAb2ppIceNM9Sj5yKME131hbl2/NrSFzM1XQZut
-	TRH8F29e3I0px5LEBYF5f9VWNNMgbWVKEuR3oQJhoOjY1A3fvn38fkXOykXuo09k
-	WrvGmHnvq3gPi2f/H5Z/RlNebi4AOHH1D0OH9uBnddnhVCdLLpGTl81CrmvqYKRD
-	s/g9+hLYRn02nRK1I+bAVcJ2Tds9kWUHmkJ4SRSULoi6oofQCrA9m9+gorFiw9mh
-	CmtMF6up/DB1l1sqEBqjIITKbTWHIELSm8peXSM8edwEH/K3uv3heUqDgZc/f7+u
-	jFs7LdRT2WLCWb61S5D+IFf3jRVar9NJPZA==
-X-ME-Sender: <xms:uqMWapfbss6hvv6lH8zIyOlSlqt1MPVMECb9Yhk_3RnuhnMpLPQuqA>
-    <xme:uqMWavLfmxj_JweXWHuO3EBDM47JfBILK0oV7yD5HNzvWjpIXC4M8RYkiArUo-i4q
-    C1_42H2fokez9tynWn1du1ey7SUeMDsauET_pmSgJRO2kzRB4c>
-X-ME-Received: <xmr:uqMWapvPT-oYK8fZjko3ZtTwcKPPIVMm78pdmPh4Bfr8uVVpnB9VIKpgzbY>
-X-ME-Proxy-Cause: dmFkZTEBUmseUL0dgwnrJDASI2CZc8hGzGSmLPBl3Fk6XbncYeNh6E7Dz6gb6SdCwaA/ao
-    QJ0T4+3xQyC+VccLcD4YNamgx+jwUz2vu9HqOlqa1BY6iBwipSSsgV2l6f2mXMEOPOBkhy
-    GwBRDCUU9eS1rf1sSubpKeIJA5NxswayFoYK7fl+18m9MC6/HxxXUFXwY2GYP1/0/6caAq
-    50a94NgXQpO9Idx896x3215WdL7Pwwxhlkw+aB/xAfar5BxKwd3GDy31EAdObtLM1kM2V0
-    vM03yBtuyZzX0BC/f3Ms4twBPvqwP3xOKm86hm3oE8rtdXvBT74Fw1TmWcQJjcXX81vXcl
-    sg2zvC4Ru3VkIHwmwYulmqve8tnwGUzeGmxbMoFF1rR4hMom2XJh6qFS9XdPoFXkAnJtzU
-    pwVXOsgswpBr6D0uCsljp/9flUgMNIb6WF+Qr3GPwWjbZuDKSX482slY/1/OjSGmMYFGRI
-    wUrBe8tfSAPHXqMBWXEgKnYjWMXfADba+Yn+eybsgV8KHL+pEWZ968ptswmqI4Q+TMB6+v
-    JDq7fVwuVHf0tAaPcPK9tMJw83CJFtlReLD7y9/3naBfEBVQihdmSmSIjJ69fadhzgO57x
-    gx5hgQgaiSWd+kIkynUOj2Rn4jNN8mlmHk5b8fbrc7vrawzqs1nHUht/wrVQ
-X-ME-Proxy: <xmx:uqMWapYESFqPNZfoqbcg9mv54GEPYfF3ZByFkw6vW9czv0sgyvX1qw>
-    <xmx:uqMWah0KACXUN3mwlmp9V8KSzvPJbRDrIiyz786J_8vipl01vQ419Q>
-    <xmx:uqMWanWUjGcy1EhN6J4FnT8Rh9w9KOlY8acr60f9pmuc1gy9vJ8peA>
-    <xmx:uqMWaktId9BJe-k6W6wvFfgBEilILOz4T47WfEpGgyNxn6K9BhRXDQ>
-    <xmx:u6MWaqhMgYHk34ZYnEt8gP_Ap_ltbXJ2COL9DfYiHYCq-0Hd8QvydPjf>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 27 May 2026 03:56:42 -0400 (EDT)
-Date: Wed, 27 May 2026 09:55:50 +0200
-From: Greg KH <greg@kroah.com>
-To: Shaoxu Liu <shaoxul@foxmail.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, linux-usb@vger.kernel.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] Add power management op for RNDIS host
-Message-ID: <2026052725-femur-spendable-4ff0@gregkh>
-References: <tencent_513B1F71D30856A55BAA6CBDB22A5E719508@qq.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LawSnM1f"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2b9e9a6802aso49628995ad.3
+        for <netdev@vger.kernel.org>; Wed, 27 May 2026 00:59:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779868771; x=1780473571; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XASDqBX1HWl6sXU3qoflGCtvXLQG0oc8mDyz90ZpDuo=;
+        b=LawSnM1f4MR2FClxmaMPApL+y134am5xo+3k0mA7hDkCSzlQJu6rX6cpC2MVYIXvND
+         Ks0poI/nDvYKYVajwxaFlXbZLMQcMbIF8tVA4A+QBWJ7XSibzGhd2aUn54/cnbe6jSS3
+         1hYHa+5/lV9CEKxP8hZX+dSpLNxqAEAJ5eTo08DXQj1rDfrvFUzAreGvEXEzbGYQu+74
+         eEyTlARUu5dyd5+sytnMdfqOt2W5Zmrm8JzPSxdI/acUCvt+2SCd4U5QgSIxjO2zYsQD
+         6rBVx12/hqDXN5SotOGomOHTNBsFAJPwlvehrOJJDYY0bleelW+t8xwHNHW83EMSZ9pP
+         XcYA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779868771; x=1780473571;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=XASDqBX1HWl6sXU3qoflGCtvXLQG0oc8mDyz90ZpDuo=;
+        b=FuOHsgRru98DeXbhePab/Ti2Wr2ShmBWVGlKlPRrwyWRwCctLM811IXK1seajn35l+
+         1hexgeECrciWAz2/377Fh3lqvIuI5DL2/a/VnjYqDzB0BuViHeo+Fszq/tvdg0TIecgs
+         HMygKjDESW2dvf2ZZjnflmXpubb7CCX77ntvZyDnN++LcHxUCU2qXIpe0cqjWEur6HZg
+         2B41KKddLacRGh6QcvaOBqwlbfZHJ9EoZrjywfbAMFasBAFA1q2OWNSKUv8OIWG7+/Zg
+         DbX0KfrcrSwmYr8ymYpNtcoOkcM2A9vIuzZbtpz8lth1HOW3hdXhEVziHw2a+euK3ErL
+         o7lQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+AX81DBg8yt7+5BEhsNSHdCG3haWAQ1AEi2syxwzAGPcPkclL4hEMpUb+W697ERqjhS4PHqhA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyxzJbtddMAXka9op5gvzhEPSCAC4GvY4acJ8ZX3+/89rMmVDlM
+	hklB00uTXEA670kbnxsDiaOJYo6mdAHF1A7oNtEj5RQmuBZZfgZBvGu1ZBErnA==
+X-Gm-Gg: Acq92OFQJwEsTvczepEH5gNuZp0ariECSpMdobqluOokJqqtZLakNhdtcEZGPSUOQxL
+	FB2p/WWWr9w5mz5w/6WXD633UZjjNjDIDsEi0MIhQxBv1Clc0QhjcKhYFrq0PTm9YYnXQJhvrcQ
+	9W2QZ1zY4OlWEvy7PRHNtZ53Ofi4dARHCo9KzeI3CWHsyBtazNmmGDP8q22IBluiZF+0/d2UPuN
+	zbVUtJkLcQ/3ilCnLYaDNmeOFpRrs11prs1qanThfca10njcf4p3JfkHdCRYodeLBMN11YEf8ti
+	AoMRX8UJ5yt8MupvMNY+DVM73fvyBcfFZV18+cEZERd6IpaFRjgRDwSmoaXmG1fu10MXLNVgLYZ
+	WSwGdvsSEK+15ISZZDTH2NLzheEvMc47+u5rGDNMlr7x8xpzF1hlr2mHlrDP/XBolTQGO1YzPMf
+	kSsvYIzHywVHhc5QOUUbqQ9j1Xn7lpUvafJHNiYjt4X/1jAxvU
+X-Received: by 2002:a17:903:2b0e:b0:2bd:a403:4ab8 with SMTP id d9443c01a7336-2beb06319ffmr244207735ad.25.1779868770897;
+        Wed, 27 May 2026 00:59:30 -0700 (PDT)
+Received: from csl-conti-dell7858.ntu.edu.sg ([155.69.195.57])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2beb5695f54sm149937405ad.10.2026.05.27.00.59.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 27 May 2026 00:59:30 -0700 (PDT)
+From: Maoyi Xie <maoyixie.tju@gmail.com>
+To: "David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>
+Cc: Fernando Fernandez Mancera <fmancera@suse.de>,
+	Jan Vaclav <jvaclav@redhat.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Taehee Yoo <ap420073@gmail.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Maoyi Xie <maoyixie.tju@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH net] hsr: broadcast netlink notifications in the device's net namespace
+Date: Wed, 27 May 2026 15:59:24 +0800
+Message-Id: <20260527075924.2707856-1-maoyixie.tju@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <CAHPEe=GO=2qqWZPwBB4rrXc3mkD0dznp2K78nCsKwF=c-QwxEw@mail.gmail.com>
+References: <CAHPEe=GO=2qqWZPwBB4rrXc3mkD0dznp2K78nCsKwF=c-QwxEw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <tencent_513B1F71D30856A55BAA6CBDB22A5E719508@qq.com>
+Content-Transfer-Encoding: 8bit
 
-On Wed, May 27, 2026 at 03:47:41PM +0800, Shaoxu Liu wrote:
-> RNDIS host does not manage the USB power, and it will
-> cause more power consumption even when no data transferring.
-> 
-> Adding the power management operator will make the USB
-> enter suspend mode when no data transferring.
-> ---
->  drivers/net/usb/rndis_host.c | 16 ++++++++++++++++
->  1 file changed, 16 insertions(+)
-> 
-> diff --git a/drivers/net/usb/rndis_host.c b/drivers/net/usb/rndis_host.c
-> index 7b3739b29..76eb65fd5 100644
-> --- a/drivers/net/usb/rndis_host.c
-> +++ b/drivers/net/usb/rndis_host.c
-> @@ -630,6 +630,17 @@ static const struct driver_info	zte_rndis_info = {
->  	.tx_fixup =	rndis_tx_fixup,
->  };
->  
-> +static const struct driver_info	rndis_info_lowpower = {
-> +	.description =	"RNDIS device",
-> +	.flags =	FLAG_ETHER | FLAG_POINTTOPOINT | FLAG_FRAMING_RN | FLAG_NO_SETINT,
-> +	.bind =		rndis_bind,
-> +	.unbind =	rndis_unbind,
-> +	.status =	rndis_status,
-> +	.rx_fixup =	rndis_rx_fixup,
-> +	.tx_fixup =	rndis_tx_fixup,
-> +	.manage_power =	usbnet_manage_power,
-> +};
-> +
->  /*-------------------------------------------------------------------------*/
->  
->  static const struct usb_device_id	products [] = {
-> @@ -657,6 +668,11 @@ static const struct usb_device_id	products [] = {
->  	/* RNDIS is MSFT's un-official variant of CDC ACM */
->  	USB_INTERFACE_INFO(USB_CLASS_COMM, 2 /* ACM */, 0x0ff),
->  	.driver_info = (unsigned long) &rndis_info,
-> +}, {
-> +	/* RNDIS for Telit Cinterion low power LTE cat1biz modules LE310X1*/
-> +	USB_DEVICE_AND_INTERFACE_INFO(0x1bc7, 0x7030,
-> +				      USB_CLASS_WIRELESS_CONTROLLER, 1, 3),
-> +	.driver_info = (unsigned long)&rndis_info_lowpower,
->  }, {
->  	/* "ActiveSync" is an undocumented variant of RNDIS, used in WM5 */
->  	USB_INTERFACE_INFO(USB_CLASS_MISC, 1, 1),
-> -- 
-> 2.25.1
-> Signed-off-by: Shaoxu Liu <shaoxul@foxmail.com>
-> 
-> 
+The HSR generic netlink family sets .netnsok = true. HSR devices can
+live in network namespaces other than init_net.
 
-Hi,
+Two async notifiers broadcast events with genlmsg_multicast(). They
+are hsr_nl_ringerror() and hsr_nl_nodedown(). That helper delivers
+only on the default genl socket in init_net. So the events always land
+in init_net. The network namespace of the device does not matter.
 
-This is the friendly patch-bot of Greg Kroah-Hartman.  You have sent him
-a patch that has triggered this response.  He used to manually respond
-to these common problems, but in order to save his sanity (he kept
-writing the same thing over and over, yet to different people), I was
-created.  Hopefully you will not take offence and will fix the problem
-in your patch and resubmit it so that it can be accepted into the Linux
-kernel tree.
+This has two effects. A listener in the device's own namespace never
+sees its own ring error and node down events. A privileged listener in
+init_net receives events from HSR devices in other namespaces. The
+payload carries the peer node MAC (HSR_A_NODE_ADDR) and the slave port
+ifindex (HSR_A_IFINDEX). It leaks information across network
+namespaces.
 
-You are receiving this message because of the following common error(s)
-as indicated below:
+Switch both callers to genlmsg_multicast_netns(). Other families with
+.netnsok = true already do this. Examples are gtp, ovpn, team,
+batman-adv, netdev-genl, ethtool and handshake.
 
-- Your patch does not have a Signed-off-by: line.  Please read the
-  kernel file, Documentation/process/submitting-patches.rst and resend
-  it after adding that line.  Note, the line needs to be in the body of
-  the email, before the patch, not at the bottom of the patch or in the
-  email signature.
+hsr_nl_ringerror() already has the slave port. It uses
+dev_net(port->dev). hsr_nl_nodedown() takes the namespace from the
+master port via hsr_port_get_hsr().
 
-If you wish to discuss this problem further, or you have questions about
-how to resolve this issue, please feel free to respond to this email and
-Greg will reply once he has dug out from the pending patches received
-from other developers.
+Fixes: 09e91dbea0aa ("hsr: set .netnsok flag")
+Cc: stable@vger.kernel.org
+Signed-off-by: Maoyi Xie <maoyixie.tju@gmail.com>
+---
+This is the fix for the problem I reported on netdev on 2026-05-18 [1].
+That thread had no reply, so I am sending the patch and adding the HSR
+maintainers to Cc. The proof of concept and the test numbers are in
+that message.
 
-thanks,
+[1] https://lore.kernel.org/netdev/CAHPEe=GO=2qqWZPwBB4rrXc3mkD0dznp2K78nCsKwF=c-QwxEw@mail.gmail.com/
 
-greg k-h's patch email bot
+ net/hsr/hsr_netlink.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
+
+diff --git a/net/hsr/hsr_netlink.c b/net/hsr/hsr_netlink.c
+index db0b0af7a692..067ceaf7304b 100644
+--- a/net/hsr/hsr_netlink.c
++++ b/net/hsr/hsr_netlink.c
+@@ -247,7 +247,8 @@ void hsr_nl_ringerror(struct hsr_priv *hsr, unsigned char addr[ETH_ALEN],
+ 		goto nla_put_failure;
+ 
+ 	genlmsg_end(skb, msg_head);
+-	genlmsg_multicast(&hsr_genl_family, skb, 0, 0, GFP_ATOMIC);
++	genlmsg_multicast_netns(&hsr_genl_family, dev_net(port->dev),
++				skb, 0, 0, GFP_ATOMIC);
+ 
+ 	return;
+ 
+@@ -283,8 +284,17 @@ void hsr_nl_nodedown(struct hsr_priv *hsr, unsigned char addr[ETH_ALEN])
+ 	if (res < 0)
+ 		goto nla_put_failure;
+ 
++	rcu_read_lock();
++	master = hsr_port_get_hsr(hsr, HSR_PT_MASTER);
++	if (!master) {
++		rcu_read_unlock();
++		goto nla_put_failure;
++	}
++
+ 	genlmsg_end(skb, msg_head);
+-	genlmsg_multicast(&hsr_genl_family, skb, 0, 0, GFP_ATOMIC);
++	genlmsg_multicast_netns(&hsr_genl_family, dev_net(master->dev),
++				skb, 0, 0, GFP_ATOMIC);
++	rcu_read_unlock();
+ 
+ 	return;
+ 
+-- 
+2.34.1
+
