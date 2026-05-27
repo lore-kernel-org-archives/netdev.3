@@ -1,85 +1,60 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DB182236EE;
-	Wed, 27 May 2026 01:00:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86B202AE8D;
+	Wed, 27 May 2026 01:02:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779843607; cv=none; b=LNN52i+QiD0iQueOD4Rab/2PS8xnd94ZDmq6FLGWtK7xNSeOK3Tf0yD0r7FR6sXyiMgi9M6S9AUpV9cmoibHDDKmgtx9R8L9KC8YQtFNe0hpMw5GQ3ip+6HkH+bLno3+UeVwSWvveKgdMK9mtZjd2JkMzJHjZ4fA/IrcENVxFLg=
+	t=1779843755; cv=none; b=mx9OhGD9NZWxlPt7M2MIWO8Jq8C2cOUe87xbTwjwh6DbIVJ5Nn42i8rPlhIevzOKCZQhXc4D9W1QKX+UtPSmp/kddGxpJhTkEIZpfLYS6UJZE5+yHe/taRdf6Ct5KI/cyddRtvoCpGP8eD37xFP/s5L147ODMyiTgH5jxyVEi6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779843607; c=relaxed/simple;
-	bh=IajCAsdWcUTnBYLAXYluK77tsdVlBnpWioIaHyv97Eg=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=OOU/gGHQMWhSuf1P80WZTZWgoEPGEg0wsWF+fS8ULNLIMNa+572YFIYD9Zinb220O6P5BXAwzN/QW/WDMEfd/AavqAYZJWhyYiS8JWWsur36qB2ouk3uSncKdiuPeACJkpqa9/3zecFESc2IpwRnf729+pBZUJ/T8wq+C9piWXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BynPil59; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779843755; c=relaxed/simple;
+	bh=Z7A8aH8+gGhTh+ua1E6eHUGTKg/R+gEV89gBLqLZZLo=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=lU2TRnKXx1LBrOd7ZSz88WxT7V8COeN8empWep1G7G8rO+bAozgSrlfprgBQNpjx8UhgrWIV2E83dA33RSgOpaNoZgI6CuVkPkqzhIhKX+9i0+3I+6AF6ukEOQD9seKkSL8lFN8PS6fCheDAgT1JR5iv/yfZu27O9SJz6RiP3cU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CyNzGevL; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BynPil59"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC6351F000E9;
-	Wed, 27 May 2026 01:00:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CyNzGevL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C58FF1F000E9;
+	Wed, 27 May 2026 01:02:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779843605;
-	bh=h8vYUU9HFAKEwBE4J/VFBVxNhPKej+gx8waEeLNwq/Q=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=BynPil59Q0WcSgGF9+uEotIynfgLB4/MJsRtF2iiunG6iZnLFs40UA5NV5AOWLvEN
-	 3Joy5bsWRQZF+cUqI9HjmfR7A4UYgDjV7DakneTvjG8Oh1lKSkuMIIKZ9KyHkjPqVb
-	 ZqlEslIhPVwi1FUXghbzlENAOR0AQo8LXMkmTK3+9ZJ+WprA1aCHlRB0GFCnTw4R/P
-	 N8ZQJ0pLA5Qf8Nt+h412lUNgbJ/5oTgo1XOXVHbZZ8UdQorHHNDz0J81zdTXjv28xE
-	 eTnW45NALhONHsUBuvivTc67JrmP+e6hsKfhuXzSJs38iBczSO3dMxdZIGx7QRnkeX
-	 qUyjJpYQIv89g==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0C74380CEED;
-	Wed, 27 May 2026 01:00:12 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1779843754;
+	bh=Z7A8aH8+gGhTh+ua1E6eHUGTKg/R+gEV89gBLqLZZLo=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=CyNzGevLetjSzKwKqh7PqnYgr1yWTPH61MZmdFMmE0Je4/w2EvR0y29qFr85B/fIR
+	 qxRrxSMZ9Zwe8H61jX4m7MDPAKGAtIZUOUdgDzw9M9x4F3zKrsyc/tkG0/esqm178G
+	 xxfcZM42SieIBNtt9x3OlD6pqZWbh8Y5Cd5RTj9v3WHF6vymofrKAseuESBDEh1RBq
+	 6BDaJdCV6T8R7/n/ZsYc2kkO97+Edrj+Qs39TzZf/1NDSDkJjzCqF/1ssvDMPNy+PF
+	 8f3dVEEYaD/FcMVdKUp2m9rydB41i1PZZb+6exaNJg4KDrqT5S1TPNKw1oI0jawgCQ
+	 w7TCp0T6cirVg==
+Date: Tue, 26 May 2026 18:02:33 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Junrui Luo <moonafterrain@outlook.com>
+Cc: Sunil Goutham <sgoutham@marvell.com>, Linu Cherian
+ <lcherian@marvell.com>, Geetha sowjanya <gakula@marvell.com>, hariprasad
+ <hkelam@marvell.com>, Subbaraya Sundeep <sbhatta@marvell.com>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Yuhao Jiang
+ <danisjiang@gmail.com>, stable@vger.kernel.org
+Subject: Re: [PATCH net] octeontx2-af: cn10k: restrict LMTLINE sharing to
+ same PF
+Message-ID: <20260526180233.4323832d@kernel.org>
+In-Reply-To: <SYBPR01MB7881F8D11D2930BB84215253AF0D2@SYBPR01MB7881.ausprd01.prod.outlook.com>
+References: <SYBPR01MB7881F8D11D2930BB84215253AF0D2@SYBPR01MB7881.ausprd01.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH 1/2 net-next v5] ipv6: addrconf: fix temp address
- generation
- after prefix deprecation
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177984361139.4034294.5875665579147124672.git-patchwork-notify@kernel.org>
-Date: Wed, 27 May 2026 01:00:11 +0000
-References: <20260523103811.3790-1-fmancera@suse.de>
-In-Reply-To: <20260523103811.3790-1-fmancera@suse.de>
-To: Fernando Fernandez Mancera <fmancera@suse.de>
-Cc: netdev@vger.kernel.org, linux-kselftest@vger.kernel.org, horms@kernel.org,
- pabeni@redhat.com, edumazet@google.com, davem@davemloft.net,
- idosch@nvidia.com, dsahern@kernel.org, steelman@post.pl
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
+On Sun, 24 May 2026 15:29:29 +0800 Junrui Luo wrote:
+> Reported-by: Yuhao Jiang <danisjiang@gmail.com>
 
-This series was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Really? I thought I saw this reported in Sashiko..
 
-On Sat, 23 May 2026 12:38:10 +0200 you wrote:
-> When a router temporarily deprecates an IPv6 prefix (either by sending a
-> Router Advertisement with Preferred Lifetime = 0 or by letting the
-> lifetime expire) and later restores it, the kernel permanently loses its
-> ability to generate temporary privacy addresses (RFC 8981) for that
-> prefix.
-> 
-> This happens because the address worker attempts to generate a
-> replacement temporary address when the current one nears expiration. As
-> the base prefix is deprecated already, the generation fails after
-> marking the temporary address as already having spawned a replacement
-> (ifp->regen_count++).
-> 
-> [...]
+https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260520154157.1439319-1-michael.bommarito@gmail.com
 
-Here is the summary with links:
-  - [1/2,net-next,v5] ipv6: addrconf: fix temp address generation after prefix deprecation
-    https://git.kernel.org/netdev/net-next/c/e20d8922aa8f
-  - [2/2,net-next,v5] selftests: fib_tests: add temporary IPv6 address renewal test
-    https://git.kernel.org/netdev/net-next/c/2b9cceb061d6
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Either way, Marvell folks - please review.
