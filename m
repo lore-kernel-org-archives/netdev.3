@@ -1,75 +1,184 @@
-Received: from us.padl.com (us.padl.com [216.154.215.154])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f42.google.com (mail-dl1-f42.google.com [74.125.82.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 779F727E07E;
-	Wed, 27 May 2026 07:16:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.154.215.154
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779866210; cv=none; b=ZPbxMg33X52O4axSlkSAvWILTgHSGCdtbS3I4o5UqtzffyadSDipIDIpLFTOBe33axpCz/SIUv0aj/bEXjZbMvJ2RIeVXj5BgcUG74w4phBXZ5UQGidpkSI2XGn22hDZvNuFCNKx49/hoFWgDErNyWiFk31VeiwLNiJMomEZYB4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779866210; c=relaxed/simple;
-	bh=vIxdAAp8PLpZ7PFhmWuqtC4SuKqVVjfiU2X5PLRSPSU=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=U936HW8xqw2qjsYUbqLDvEfLpnZfg5/VX2GcQOi8qiGcAb8UblzrcebVoe8In9aIya5cDF3iId2H1IfX9hkreZ04gichweV2hCkn0Hm54XTXO7g/XVeGzUGpdDVCSPJCIDzmtGkLFHO534o7/BO24omg7+Aq0hG3ZwS9T/ezP4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=padl.com; spf=pass smtp.mailfrom=padl.com; dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b=fnkplXqq; arc=none smtp.client-ip=216.154.215.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=padl.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=padl.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8CEF3BB13F
+	for <netdev@vger.kernel.org>; Wed, 27 May 2026 07:17:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.42
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779866241; cv=pass; b=iDfNA+e4/b3576KhX3VkDpG93nUEXbyXUU3ambfBZkec0W75VdZUIRMhwl4t61WYbX5tfkQy5H4AcTWvvBQI6HQnVmibhPhQv671ZJoUHIugZZerThVO+nB9MbMB0RMZCNAra2k9erH/rk0QahhESotRXxhPWG21ym+xVB9ULp8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779866241; c=relaxed/simple;
+	bh=h6/4cyU0+iEDqAXcOFF9v4MSTX9KGlsR1mXaiuZLTiA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=R36Vcd/Pkk6M4IbxCKi0T58dV485zA+TuF7j+iIRkUXn35v+FOM9+qTxeeDSWQ6mFY5HGIQNDUYmyzfYFp2jGHn6XeCCJTnckW5YoNbS3hzKTVQ4JOMvnbXsMGEQQsuay6b5OX6Rjk8zgdM54WyBfweShNb1cOrWzKDfMmrM4Cw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vHk83MI4; arc=pass smtp.client-ip=74.125.82.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b="fnkplXqq"
-Received: from auth (localhost [127.0.0.1]) by us.padl.com (8.14.7/8.14.7) with ESMTP id 64R7G6Vl002262
-	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Wed, 27 May 2026 08:16:09 +0100
-DKIM-Filter: OpenDKIM Filter v2.11.0 us.padl.com 64R7G6Vl002262
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=padl.com; s=default;
-	t=1779866179; bh=vIxdAAp8PLpZ7PFhmWuqtC4SuKqVVjfiU2X5PLRSPSU=;
-	h=Subject:From:In-Reply-To:Date:Cc:References:To:From;
-	b=fnkplXqq1W7tBpY10raBDNXPnWh/hy7hSDTEHEITN4r+5gPg6kHeXyIwfh5U/5cnG
-	 Kh/V4PkkvGpI/b7dzqB11kz5oLcJnc5jd/fodJfrK2ms7aZgkQQV3Od9rdfXr1E5X0
-	 0y6Xw5NuAYfdeIKy34rqj9LQ7xiCxnG3HWXk8WX34RvcguyY+XRM8k2drIRm+yGKSF
-	 CnrPdVDNIGKfiFj9dyM6WWzwkUrpEDZxgimUzThWPmVOB8hLyb2tRbMXdLOEUS+m1d
-	 bbKSmYZEHT9xMiqwNqH/ASU9aJmGA8wkPEY8v2t4OQeY6x9tobP2tcSyfELeyyOH4O
-	 /ERegxyFUjGIw==
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vHk83MI4"
+Received: by mail-dl1-f42.google.com with SMTP id a92af1059eb24-1370417c01cso3062264c88.1
+        for <netdev@vger.kernel.org>; Wed, 27 May 2026 00:17:19 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779866239; cv=none;
+        d=google.com; s=arc-20240605;
+        b=N2212qhfUGjwlOtl6i3yNISMuE6X0zG85i3lJmS25+jIAv8mK/d+JUHo31PPbS2Uim
+         RnoFDoJZuxppU1ofYvhDx0oA/75n/2+k+QaGI/i4ufXp9PCuvWGHPuhigeaTlvSP+DYM
+         1uDiFeS88xSYcXBwjS7VXXaNLC/R3cgkXLzAhCL8ZJIs7vTBZVtyL1B4GEh2AcTdBoKy
+         ioQBXbqSJGSHqLuJMSCH308vtqv8Q2SxDcc09PmHtYKauck7jjxnG8K5u1hkUbc9e//l
+         d3g5bfBOtTDvCKFZdQeIlph40dViK9Yp8YE9e1dHn5GTj/xR1Qup050I0VfIm0/9kKK0
+         QOTQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=AFZzotywTi2mLXKZHjn3ab/EXo/jwO28HmrTN0/MGIE=;
+        fh=p4ypDyYcy4lphYzkswodOJ7uPg2+paBfoShnyoxq8sg=;
+        b=c3rU61L6s/ql8pfgek3LDF9BIbvyqsdruMJqUKXglgLhC5VClCeFx4YNxJwqw7XuyI
+         u4zH9nJWmIU+tMSpgZd7LsYSsMIUviQ6cKJ4PYkmoyzQ4GnIlRAgfST4FD7ueCxtLaSR
+         YegdR+oid6AbSpKClfpqR41+Zq6ORkSrE/DUI7oDjx+XQeF7GPBzuwONJ+wmCvwxTmOL
+         ZrJah5e4gFgRUdTpDL6iz1Z535ORE33FvE0gsySXe2SUpwmSEKFTQhXFFsBV8pbkuLjH
+         rTsmKlGo2K8mNjR8rBNLdPRQFCtha4/VOeUxE5XgIPtXzPcRlOEt1CxiHeMP2F+XI2lq
+         T1ag==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1779866239; x=1780471039; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=AFZzotywTi2mLXKZHjn3ab/EXo/jwO28HmrTN0/MGIE=;
+        b=vHk83MI4HeDV1QJX3gfLMHlZr4F6jKwyt/IQHD+d/nlhNPCcjs2jUbr2C91t4XzDPt
+         aObXUoiUDNpCnBjOhRudD8OHTcNnPc1x8q/4BKga+4XhnSNpfoYGOqhtXYBqqUAWBD4i
+         2aEegaDON994LwRhXDB+vF6Yyosyczu4P66Kkw0o0XF50YwXr8IKUpkmvhgR/EhcXDA4
+         YgyzCpyyGB4dccJcoOdzbbUTwLCwVPaV3dfEOCpG0boJuweXsIs3wPr2MfHsKIB2JkE+
+         3ctpIPlIwiNhQFebed7GKXVNTXa+mdF5xcK8SYhfgddwrqvoBUucY6p5bQziGky2qxqn
+         6B0w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779866239; x=1780471039;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=AFZzotywTi2mLXKZHjn3ab/EXo/jwO28HmrTN0/MGIE=;
+        b=MQ1sVIqEOJxYWHQix+oHupW0uLZMl0Ky0bnyD9mDxsNEaAgiI4nMSTgxtrPiCnMX5e
+         k30pYLobC8Ys2u2u1WeS1kQ4bS8HcBiRgAGlI7Swdnhhp39+cn9x2zh5XcOoCeApKv9b
+         zmgRycuRSQcvTCG3nshLKRKZ2MC36QC7m3hET/IlptiPUa4Q1HLSIGP0SSfzRn469kuT
+         wVw/epSSjATFsoWeiABUMolXew6/CtAroRamZl32kkxem650OCyMFBjJQCThX8DW2BTQ
+         YuFjnvBoutElavHIV+h2qHY+kOK5M1muqEHiJRoFL+2dMTGdEPP/SOTMz7rquAs+t+Ef
+         Up1w==
+X-Forwarded-Encrypted: i=1; AFNElJ+Z6wsdb6HWbwMsSzI0MqZcwc/Ok94c6ujUs4lS+MWrcmC7329FkWMya3Hjfo6iI+EAVN/ECY4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwTfNAg17yOYJ8KZLyz8b3NdcgFAZfCDDagUoCfuW6YDVTmZBkA
+	Zk26Ui4BpHW/o3tXq8KzQQNwl8ewMXUFGpMm2mb4qhsQkrd5/RWDBKTPi6l+6QGf7wcuuv+xDGy
+	fC1Sz9js4ixE1TXCCLn0x4V0JveOoq0efpF7xwnkD
+X-Gm-Gg: Acq92OFVAFHMvBYifRbo8BrLeeeJNFqsn2q3eh5ShFc0FRJlEMUVFp3gUlViMhYmVzp
+	18xeEG6pxNNJpFy5spCtlACCeOIew6PCtUzSYvKb/uEJQ4EZsn/o0G63Fp3vF8wlWNsnwh/M36X
+	fsE/RYdYaGqKMaVWvxh4MqlsfqcOWL6zYp9fQ7IHvo2LX1fx65lHcH9m5rkvu52QSWvnCrbGg46
+	VFR3T44heUp9VGV9FZykTSc+0hBBeybM2QkKf1qLU9qppisYH7+2/4bHDPiTOWfxGFa5W5onmK0
+	6Fn3NsKWCDOhrvDyjEtCMpTQ1jOJf0gREhyVmi6GrFRwqWE7ad/XzWlqQSQjUQYEzInEqLRMHoh
+	2J7+sd4r++UkhJ0gsmr3p4XegnDE092W/rCvmI1/O9sLzzHpRe0zjEtU8uCCl0Q==
+X-Received: by 2002:a05:701b:2915:b0:130:6904:8c17 with SMTP id
+ a92af1059eb24-1365f8123fdmr4374499c88.18.1779866238318; Wed, 27 May 2026
+ 00:17:18 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.500.181.1.5\))
-Subject: Re: [PATCH net-next 1/6] net: bridge: mdb: add
- MDB_FLAGS_STREAM_RESERVED flag
-From: Luke Howard <lukeh@padl.com>
-In-Reply-To: <946d52d4-1456-4cf8-9dfa-9bba96121dcb@blackwall.org>
-Date: Wed, 27 May 2026 17:15:54 +1000
-Cc: netdev@vger.kernel.org, Kieran Tyrrell <kieran@sienda.com>,
-        Max Hunter <max@huntershome.org>,
-        Cedric Jehasse <cedric.jehasse@luminex.be>,
-        Jiri Pirko <jiri@resnulli.us>, Ivan Vecera <ivecera@redhat.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-        Andrew Lunn <andrew+netdev@lunn.ch>, Ido Schimmel <idosch@nvidia.com>,
-        linux-kernel@vger.kernel.org, bridge@lists.linux.dev
+MIME-Version: 1.0
+References: <20260527070824.2677331-1-maoyixie.tju@gmail.com>
+In-Reply-To: <20260527070824.2677331-1-maoyixie.tju@gmail.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
+Date: Wed, 27 May 2026 00:17:05 -0700
+X-Gm-Features: AVHnY4LuH0mJ82X9RuVeOnxqRkbFBRS9qGgbhqeLwzp4g8sTUSsMdWiSOgMVGog
+Message-ID: <CAAVpQUBKHhj6h5Rke=N9NyeUOPvVB0RKJSr2=HPkUKgAqQA0Bg@mail.gmail.com>
+Subject: Re: [PATCH net] rtnetlink: Require CAP_NET_ADMIN in link netns for changelink.
+To: Maoyi Xie <maoyixie.tju@gmail.com>
+Cc: Jakub Kicinski <kuba@kernel.org>, "David S . Miller" <davem@davemloft.net>, 
+	Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>, 
+	David Ahern <dsahern@kernel.org>, Xiao Liang <shaw.leon@gmail.com>, 
+	Nikolaos Gkarlis <nickgarlis@gmail.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <4CEA01D0-0C3C-4617-AFEE-6B213C4B731D@padl.com>
-References: <cover.1779841530.git.lukeh@padl.com>
- <45e7cd01f9449c8ef15a5affd587fe7645ecddb7.1779841530.git.lukeh@padl.com>
- <946d52d4-1456-4cf8-9dfa-9bba96121dcb@blackwall.org>
-To: Nikolay Aleksandrov <razor@blackwall.org>
-X-Mailer: Apple Mail (2.3826.500.181.1.5)
 
-Hi Nik,
+On Wed, May 27, 2026 at 12:08=E2=80=AFAM Maoyi Xie <maoyixie.tju@gmail.com>=
+ wrote:
+>
+> Commit 11b326fb0a37 ("ip6: vti: Use ip6_tnl.net in
+> vti6_changelink().") made vti6_changelink() and vti6_update()
+> mutate the vti6 hash of the device's creation netns. The
+> rtnetlink path into changelink never checks CAP_NET_ADMIN
+> against that netns. The only capability check on the link netns,
+> netlink_ns_capable() against link_net->user_ns, runs solely when
+> the RTM_NEWLINK message carries IFLA_LINK_NETNSID. A plain
+> "ip link set <name> type vti6 ..." does not carry it.
+>
+> So an unprivileged user holding a migrated vti6 device can
+> rewrite an entry in the creation netns vti6 hash. They pick the
+> endpoint addresses. Commit 8b484efd5cb4 ("ip6: vti: Use
+> ip6_tnl.net in vti6_siocdevprivate().") already closed the
+> SIOCCHGTUNNEL path. This patch closes the RTM_NEWLINK path.
+>
+> Other link_types are affected too. Any type that publishes
+> get_link_net and whose changelink touches t->net has the same
+> gap: ipip, gre, sit, ip_vti, ip6_tnl, ip6_gre, xfrm_interface.
+>
+> Check netlink_ns_capable(CAP_NET_ADMIN) against the device's
+> link netns before dispatching to rtnl_changelink(). Types
+> without get_link_net are unaffected. The newlink path has long
+> checked capability in the link netns. The changelink path never
+> did.
+>
+> Reported-by: Xiao Liang <shaw.leon@gmail.com>
+> Closes: https://lore.kernel.org/netdev/CABAhCOSzP1vaThGV35_VnsRCb=3D87_CP=
+jPVsTHbq905k8A+BuUg@mail.gmail.com/
+> Fixes: 06615bed60c1 ("net: Verify permission to link_net in newlink")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Maoyi Xie <maoyixie.tju@gmail.com>
+> ---
+>  net/core/rtnetlink.c | 20 +++++++++++++++++++-
+>  1 file changed, 19 insertions(+), 1 deletion(-)
+>
+> diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
+> index df042da422ef..ac7a3bf438d5 100644
+> --- a/net/core/rtnetlink.c
+> +++ b/net/core/rtnetlink.c
+> @@ -3969,8 +3969,26 @@ static int __rtnl_newlink(struct sk_buff *skb, str=
+uct nlmsghdr *nlh,
+>                 dev =3D NULL;
+>         }
+>
+> -       if (dev)
+> +       if (dev) {
+> +               /* changelink may mutate the link's creation netns.
+> +                * rtnl_link_get_net_capable() above only checked
+> +                * tgt_net. When the creation netns differs, also
+> +                * require CAP_NET_ADMIN there. Otherwise a migrated
+> +                * device lets a caller with caps only in its current
+> +                * netns mutate the creation netns.
+> +                */
+> +               if (dev->rtnl_link_ops && dev->rtnl_link_ops->get_link_ne=
+t) {
+> +                       struct net *dev_link_net;
+> +
+> +                       dev_link_net =3D dev->rtnl_link_ops->get_link_net=
+(dev);
+> +                       if (!net_eq(dev_link_net, tgt_net) &&
+> +                           !netlink_ns_capable(skb, dev_link_net->user_n=
+s,
+> +                                               CAP_NET_ADMIN))
+> +                               return -EPERM;
 
-> We don't add hw-only functionality, if you'd like to have this flag
-> you'll have to do a software implementation of this feature first.
-> Also please check the slop(code) that Claude generates before sending
-> it, there are obvious issues in this patch.
+Do all other callers of ->get_link_net(), dev_get_iflink_dev()
+and batadv_getlink_net(), require the same capability check ?
 
-Noted, will review. I do have a software bridge implementation which I =
-shall include in the next revision if it progresses. I didn=E2=80=99t =
-include it as it still needs configuration knobs to associate one or =
-more traffic classes (or priorities) with this flag.
 
-Cheers,
-Luke=
+> +               }
+> +
+>                 return rtnl_changelink(skb, nlh, ops, dev, tgt_net, tbs, =
+data, extack);
+> +       }
+>
+>         if (!(nlh->nlmsg_flags & NLM_F_CREATE)) {
+>                 /* No dev found and NLM_F_CREATE not set. Requested dev d=
+oes not exist,
+> --
+> 2.34.1
+>
