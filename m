@@ -1,72 +1,74 @@
-Received: from mail-pj1-f65.google.com (mail-pj1-f65.google.com [209.85.216.65])
+Received: from mail-pl1-f195.google.com (mail-pl1-f195.google.com [209.85.214.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AD0B30E0F8
-	for <netdev@vger.kernel.org>; Wed, 27 May 2026 01:41:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D3B5233134
+	for <netdev@vger.kernel.org>; Wed, 27 May 2026 01:41:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779846083; cv=none; b=DTpC954V1lxzjKUWeFrOZxVkmCfLgUYWGUR0yi5Q/FHADAvyFlyzyxOqyXxBctHkU1wHBbp0qytlVIdX/QPlbftX3zYTmfmPtjMfpqQD5alqjhblUlN/LysCw5bzYU1XC0LDijzEd+KEQK8XmwceF7pZur8Oh9b/+YS5s4T6TvU=
+	t=1779846083; cv=none; b=OfXi3ghwrcEgu/tjJG3/wJ+WstI30bpg7IuO1YgbyAFxE/uZMPBl1zD2625wkRwWigC0IC1+BTfNB/op91ezD6zRasxWukhdQQMumSapR7Dit3ahNdKkZionr6Qjbu+17Fnq2zI+9wo7ewfbMg9iMbqdfjr41rqp3hNmhkMGfO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1779846083; c=relaxed/simple;
-	bh=AZR3EeLDrEZtxAatl05Bjsny82z0TlVDDZsL3TGEdoQ=;
+	bh=CNWW4remKqeDQitFYlFGmPkKomMCfcQ6+mnDtc+ErHs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lyL7IV8L83ClD7FV8ZHytAZ63nsiVW3pIvp+/PQJvikJdAsj6djUDnvwGr1fP/jbbHsD92qNlRaT1x5gLV9drXgjmMhE/JJYCu8gI/sgWe7LvVZLIibP61kGliS85pioTR65iPqIUdO7wVPpeFnC2MARZciKK+TEQXPYClXYdRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KG5cxA3S; arc=none smtp.client-ip=209.85.216.65
+	 MIME-Version; b=oGS04qoqScZmysIrlPhWJtCHXl5gEXBI5B7ESJLLhtsFSdeccuR9NUS6ajqbbi+VcOEeoiNCmS47VDGVI7LJxhZw0vLkYWz+mcdQ7cTpehX3WKAWp5pC6a4ZqID4rrliYg9M7+qxR8C27MCp1kAvCM4dZxhCxJ4zZmVBKoZH4tc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LqlFi0SP; arc=none smtp.client-ip=209.85.214.195
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KG5cxA3S"
-Received: by mail-pj1-f65.google.com with SMTP id 98e67ed59e1d1-36936dcf19dso5630822a91.0
-        for <netdev@vger.kernel.org>; Tue, 26 May 2026 18:41:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LqlFi0SP"
+Received: by mail-pl1-f195.google.com with SMTP id d9443c01a7336-2bc763e2ba8so56750125ad.3
+        for <netdev@vger.kernel.org>; Tue, 26 May 2026 18:41:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779846080; x=1780450880; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1779846081; x=1780450881; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=EJamYkCIFlcBB4INpoqwc4SmLhK94kHU90KwyUWMLbU=;
-        b=KG5cxA3SRGL8cSNQLcNxiGKZv3wiw7WCIstZHVg2IUm421Ka+i+EWSn2aCzxNMFbZl
-         6fMesGEhLlJWMOs8epRBSKw3NxkkCAPqQ+CYs0+Cb1duAzDI6WcfqG+jrXcmYlk77EfD
-         3pks18q7m4AWZLuCWxwUbjdIBP/rxD6QCyVfVpGXEEyIybkhYW8cp7BUkNktjJ68PIWP
-         CfAP6qi1Q1BOQLCmQhZGpdYKC9FdMPnX6v+TrRBpDi58YKOhwM7WdCKLe3At+hGI0QW/
-         42n0g0e33i2UctuSmOaMvCxXa8XO9CjZIgE2E0y0b8QtT74rfFILc2qtFcN4n092TK0E
-         LfyQ==
+        bh=2xL0f/mOyd/xxbGC1ZakKovT0Q/B0WOE1XCsqCWuALw=;
+        b=LqlFi0SPuqGzjUQWruNCFvrFFrM2Y2YdCXNBBwJ+JRedJtVUO5lagMeB6bQUHiNmjt
+         Rkxn+/pPqwQ74ccDcLa8coctfuWC6Omh8yh/ZyvZ9CvJJvKTC2obUHA/CSa9RDvMqRX3
+         0crqzYyDytdhtMuMR9ZFQijS/Fkm0hmxfVWr5kRWXS4YlBe5pY0xETx8Pysupb0tNa/H
+         EIHCCuHkte+6KCMJfS6opLj8xgHhaSc6hRIBoSTfWfHEphHGlVo7NuHDJk4j1ukZ1QaX
+         DwAZdgPd3VtSySpByEzTnkqjE0nL8habfCVA04jer20xgfQ0CBVspdwVwt8n1xJ5h3+B
+         EOFw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779846080; x=1780450880;
+        d=1e100.net; s=20251104; t=1779846081; x=1780450881;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=EJamYkCIFlcBB4INpoqwc4SmLhK94kHU90KwyUWMLbU=;
-        b=ZwjznAucTLjOFpWJ4qYB/PUTizcdDd62U/wlWYI8QUYVYsOPKTn4bRy7HaD0O7fELK
-         dKL1UZNeY3Jw/FMOjXcPpnmivaipuywqemNKyY7wcLe6QtAnAlrk3+kQ+v1KKSXuXsqa
-         DssmyeMLHPUqQbEn3LROvQRJET69Qqn7vW9hHBiPhMA834XhRXmhUQNPTaukTjT1BX7e
-         BUeCAtdsi7JxwoUltOjbkmm6VTlBZ+kolv6fY7zb6JAD2Qm0N/JU/x8LTgj/OYV/KjUM
-         Uv9mN4eOJ6CKfB5KPIoKEmhHJJC/zGo1NB9DcGgGW3ykkSskAbf6s3flISPX1eYPl2rW
-         SkBQ==
-X-Gm-Message-State: AOJu0YxtSPELoWT4gWlrZGptnHyG38jNXDRj0bDH+rxfyeA5pPDa9gR1
-	Di6HTDCG/7IU65+KrAjs12YLs02hsyr1uuv24ftgFCEAV+I0HeoJdZ2AcrmdNj/a
-X-Gm-Gg: Acq92OFzjWM6Hi8ze06uXckzNrH97654pwkeAMSO+7bobb2gZ0k5Ckw07cvYbEDqOsi
-	ZWS3yxcu6XQQoS6d7GmdvhKK5ap48te4ukkGGR8uFgAWx/f3gg9hj3LEDCK97t6Bya1x7a/uDhx
-	IWNgh0pPek+jELXR6KjL+fEe/SUriUS8wtXSeB0xMugMFwM85bIpCyQYWpYArPGzINLzqBP/5OO
-	we/vkHOmIVNphhNeYZpK9hrg3nr/XJUzogPb/4+JGFRRt0dTYsomnVPLk1Z09ybhFmWqZcS4JFw
-	3PbUHVntkjf8MB8s0QG513RzxT+BW9QF/evr7Co5xRiL5S6kyX+XoYflFaPpBRy1tCSi5HTQmCg
-	LFHYOvsKz5Y8aTwQapEUUbmIlzm21UdXMXm5i8UVMgMH8t9vyxoGQbcZnZ2i6HGGMU9mbLd7rCr
-	q0isZVWm66+HQ/Jok+LpkRmxXuzA==
-X-Received: by 2002:a17:90b:134f:b0:367:b8ad:f0e9 with SMTP id 98e67ed59e1d1-36a677f4b83mr20872430a91.16.1779846079495;
-        Tue, 26 May 2026 18:41:19 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:9::])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36b3afc1c2asm100285a91.0.2026.05.26.18.41.19
+        bh=2xL0f/mOyd/xxbGC1ZakKovT0Q/B0WOE1XCsqCWuALw=;
+        b=oTrpa/OBWIBguvPP2tmfr1ns6I4jG0kVPsbBDgiC3Ad4gdfZmkMOazAcR5E3SMCFgc
+         F5mt1NznWMgkpEE9qTXGO6FhxdKGGGKMAcZv08zgaAtN+ZMkBhwaXOqVSM9r8xSbB1jW
+         za3dPD932LHX/5RLVNgTkcWTFRkhntmHQjmvLBMlGjW3nu36dSJkR88Gti2HcZWt2YzX
+         /WHWcRt+h1mxhYsxjAgN30zoYqJz74LokuOf1QlPOLswIKFCBOlGPNqCTXJJFVKshNRW
+         B1hCs3/PiViCfbtqqFxTxBB8p6ouqLyT+d+BHFBveRIpWA8yt1QU7a2qjZqxaR/WxqZT
+         qzag==
+X-Gm-Message-State: AOJu0YwwavoNGhB63m8ZZx5a5u7oal3ZXFNJkd6X6RaRyQhqfrxj8m2P
+	GdD2Hifo2CsU/+upNGIwIBSAjv4cNeYh7c0WN8yAa3DsBCxqEljlZBaKPKMrxkre
+X-Gm-Gg: Acq92OEAQp5hWAtesrsboIzNd7Uuhuq+rkRsFrL40kbad46kUYsvUFjYcFXC0CIW1QX
+	rwXcaE3zjmzNzt00fhejbIALhh7++nMtcX9EgtvL/y618O8gEI6wFTtCDJJvBPSEHCzz2+n+62h
+	BzlN1rb1VuE3yu9OYAa2t3Ywp2+Alls/WFMJpRsXzdgWA2M0tQrcthXZkFLqz0a57O/0pFuk5rm
+	9GOI8ikHcn2te6iBwLxlJWuvFGbTs/ZCFUdY22jPVTLiE0ZbaOPkplmqbQVtoIDSqco3QZv5148
+	Y26c/k/DyrWzgAUVKyLET1s9vLl2MqsoIqvP6PZ9r96FeWw5kC9Z357l4Y5GFydE/6iE7I4/4yI
+	sSiN9olqdkkUmWIIVUojJWrPStMhE6suaBOLPsrG2GUJA2XE8sRpcfqChzxGn8ueS38yh6wdm7u
+	o8ApVLfbHr/B04vme7
+X-Received: by 2002:a17:902:e542:b0:2bd:b585:55f5 with SMTP id d9443c01a7336-2beb069c13dmr231533365ad.8.1779846081526;
+        Tue, 26 May 2026 18:41:21 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:43::])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2beb58fd888sm141587205ad.73.2026.05.26.18.41.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 May 2026 18:41:19 -0700 (PDT)
+        Tue, 26 May 2026 18:41:21 -0700 (PDT)
 From: Stanislav Fomichev <sdf.kernel@gmail.com>
 X-Google-Original-From: Stanislav Fomichev <sdf@fomichev.me>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
 	edumazet@google.com,
 	kuba@kernel.org,
-	pabeni@redhat.com
-Subject: [PATCH net-next 1/3] net: change ndo_set_rx_mode_async return type to int
-Date: Tue, 26 May 2026 18:41:15 -0700
-Message-ID: <20260527014117.1401809-2-sdf@fomichev.me>
+	pabeni@redhat.com,
+	Michael Chan <michael.chan@broadcom.com>,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>
+Subject: [PATCH net-next 3/3] bnxt: convert to core rx_mode retry mechanism
+Date: Tue, 26 May 2026 18:41:17 -0700
+Message-ID: <20260527014117.1401809-4-sdf@fomichev.me>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260527014117.1401809-1-sdf@fomichev.me>
 References: <20260527014117.1401809-1-sdf@fomichev.me>
@@ -78,258 +80,132 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Change the return type of ndo_set_rx_mode_async from void to int to
-allow drivers to report failures back to the core stack. This is a
-prerequisite for adding retry logic in the core when drivers fail to
-program RX filters (e.g. bnxt VF when PF is unavailable).
+Remove the driver-specific BNXT_STATE_L2_FILTER_RETRY + timer + sp_task
+retry mechanism and rely on the core stack's ndo_set_rx_mode_async retry
+instead.
 
-All existing implementations return 0 for now, maintaining current
-behavior.
+bnxt_cfg_rx_mode() now returns errors (including -ENODEV when the VF
+cannot reach the PF), allowing the core stack to schedule retries with
+exponential backoff.
 
+Call core's netif_rx_mode_schedule_retry during reset to handle
+VF reopen.
+
+Cc: Michael Chan <michael.chan@broadcom.com>
+Cc: Pavan Chebbi <pavan.chebbi@broadcom.com>
 Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
 ---
- drivers/infiniband/ulp/ipoib/ipoib_main.c         |  9 +++++----
- drivers/net/dummy.c                               |  7 ++++---
- drivers/net/ethernet/broadcom/bnxt/bnxt.c         | 10 ++++++----
- drivers/net/ethernet/intel/iavf/iavf_main.c       | 10 +++++++---
- drivers/net/ethernet/mellanox/mlx5/core/en_main.c |  8 +++++---
- drivers/net/ethernet/meta/fbnic/fbnic_netdev.c    |  8 +++++---
- drivers/net/netdevsim/netdev.c                    |  7 ++++---
- drivers/net/netkit.c                              |  7 ++++---
- include/linux/netdevice.h                         | 11 ++++++-----
- 9 files changed, 46 insertions(+), 31 deletions(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 36 ++++++++---------------
+ drivers/net/ethernet/broadcom/bnxt/bnxt.h |  2 --
+ 2 files changed, 12 insertions(+), 26 deletions(-)
 
-diff --git a/drivers/infiniband/ulp/ipoib/ipoib_main.c b/drivers/infiniband/ulp/ipoib/ipoib_main.c
-index 3e1e1e861739..16a015b67206 100644
---- a/drivers/infiniband/ulp/ipoib/ipoib_main.c
-+++ b/drivers/infiniband/ulp/ipoib/ipoib_main.c
-@@ -1297,18 +1297,19 @@ static int ipoib_hard_header(struct sk_buff *skb,
- 	return IPOIB_HARD_LEN;
- }
- 
--static void ipoib_set_rx_mode_async(struct net_device *dev,
--				    struct netdev_hw_addr_list *uc,
--				    struct netdev_hw_addr_list *mc)
-+static int ipoib_set_rx_mode_async(struct net_device *dev,
-+				   struct netdev_hw_addr_list *uc,
-+				   struct netdev_hw_addr_list *mc)
- {
- 	struct ipoib_dev_priv *priv = ipoib_priv(dev);
- 
- 	if (!test_bit(IPOIB_FLAG_OPER_UP, &priv->flags)) {
- 		ipoib_dbg(priv, "IPOIB_FLAG_OPER_UP not set");
--		return;
-+		return 0;
- 	}
- 
- 	queue_work(priv->wq, &priv->restart_task);
-+	return 0;
- }
- 
- static int ipoib_get_iflink(const struct net_device *dev)
-diff --git a/drivers/net/dummy.c b/drivers/net/dummy.c
-index f6732eab5923..36a4e85c6668 100644
---- a/drivers/net/dummy.c
-+++ b/drivers/net/dummy.c
-@@ -47,10 +47,11 @@
- static int numdummies = 1;
- 
- /* fake multicast ability */
--static void set_multicast_list(struct net_device *dev,
--			       struct netdev_hw_addr_list *uc,
--			       struct netdev_hw_addr_list *mc)
-+static int set_multicast_list(struct net_device *dev,
-+			      struct netdev_hw_addr_list *uc,
-+			      struct netdev_hw_addr_list *mc)
- {
-+	return 0;
- }
- 
- static void dummy_get_stats64(struct net_device *dev,
 diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index d4f93e62f583..8459a21cf0a9 100644
+index 8459a21cf0a9..3186fdaa1fd0 100644
 --- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
 +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -13679,9 +13679,9 @@ static bool bnxt_uc_list_updated(struct bnxt *bp,
- 	return false;
- }
- 
--static void bnxt_set_rx_mode(struct net_device *dev,
--			     struct netdev_hw_addr_list *uc,
--			     struct netdev_hw_addr_list *mc)
-+static int bnxt_set_rx_mode(struct net_device *dev,
-+			    struct netdev_hw_addr_list *uc,
-+			    struct netdev_hw_addr_list *mc)
- {
- 	struct bnxt *bp = netdev_priv(dev);
- 	struct bnxt_vnic_info *vnic;
-@@ -13690,7 +13690,7 @@ static void bnxt_set_rx_mode(struct net_device *dev,
- 	u32 mask;
- 
- 	if (!test_bit(BNXT_STATE_OPEN, &bp->state))
--		return;
-+		return 0;
- 
- 	vnic = &bp->vnic_info[BNXT_VNIC_DEFAULT];
- 	mask = vnic->rx_mask;
-@@ -13718,6 +13718,8 @@ static void bnxt_set_rx_mode(struct net_device *dev,
- 
- 		bnxt_cfg_rx_mode(bp, uc, uc_update);
+@@ -11232,8 +11232,14 @@ static int bnxt_init_chip(struct bnxt *bp, bool irq_re_init)
  	}
-+
-+	return 0;
- }
  
- static int bnxt_cfg_rx_mode(struct bnxt *bp, struct netdev_hw_addr_list *uc,
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
-index 8b53ffb75650..29b8403a066b 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_main.c
-+++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
-@@ -1134,10 +1134,12 @@ bool iavf_promiscuous_mode_changed(struct iavf_adapter *adapter)
-  * @netdev: network interface device structure
-  * @uc: snapshot of uc address list
-  * @mc: snapshot of mc address list
-+ *
-+ * Return: 0 on success.
-  **/
--static void iavf_set_rx_mode(struct net_device *netdev,
--			     struct netdev_hw_addr_list *uc,
--			     struct netdev_hw_addr_list *mc)
-+static int iavf_set_rx_mode(struct net_device *netdev,
-+			    struct netdev_hw_addr_list *uc,
-+			    struct netdev_hw_addr_list *mc)
+ 	rc = bnxt_cfg_rx_mode(bp, &bp->dev->uc, true);
+-	if (rc)
+-		goto err_out;
++	if (rc) {
++		if (BNXT_VF(bp) && rc == -ENODEV) {
++			netif_rx_mode_schedule_retry(bp->dev);
++			rc = 0;
++		} else {
++			goto err_out;
++		}
++	}
+ 
+ skip_rx_mask:
+ 	rc = bnxt_hwrm_set_coal(bp);
+@@ -13716,7 +13722,7 @@ static int bnxt_set_rx_mode(struct net_device *dev,
+ 	if (mask != vnic->rx_mask || uc_update || mc_update) {
+ 		vnic->rx_mask = mask;
+ 
+-		bnxt_cfg_rx_mode(bp, uc, uc_update);
++		return bnxt_cfg_rx_mode(bp, uc, uc_update);
+ 	}
+ 
+ 	return 0;
+@@ -13757,21 +13763,14 @@ static int bnxt_cfg_rx_mode(struct bnxt *bp, struct netdev_hw_addr_list *uc,
+ 	for (i = 1, off = 0; i < vnic->uc_filter_count; i++, off += ETH_ALEN) {
+ 		rc = bnxt_hwrm_set_vnic_filter(bp, 0, i, vnic->uc_list + off);
+ 		if (rc) {
+-			if (BNXT_VF(bp) && rc == -ENODEV) {
+-				if (!test_and_set_bit(BNXT_STATE_L2_FILTER_RETRY, &bp->state))
+-					netdev_warn(bp->dev, "Cannot configure L2 filters while PF is unavailable, will retry\n");
+-				else
+-					netdev_dbg(bp->dev, "PF still unavailable while configuring L2 filters.\n");
+-				rc = 0;
+-			} else {
++			if (BNXT_VF(bp) && rc == -ENODEV)
++				netdev_warn(bp->dev, "Cannot configure L2 filters while PF is unavailable, will retry\n");
++			else
+ 				netdev_err(bp->dev, "HWRM vnic filter failure rc: %x\n", rc);
+-			}
+ 			vnic->uc_filter_count = i;
+ 			return rc;
+ 		}
+ 	}
+-	if (test_and_clear_bit(BNXT_STATE_L2_FILTER_RETRY, &bp->state))
+-		netdev_notice(bp->dev, "Retry of L2 filter configuration successful.\n");
+ 
+ skip_uc:
+ 	if ((vnic->rx_mask & CFA_L2_SET_RX_MASK_REQ_MASK_PROMISCUOUS) &&
+@@ -14362,9 +14361,6 @@ static void bnxt_timer(struct timer_list *t)
+ 		}
+ 	}
+ 
+-	if (test_bit(BNXT_STATE_L2_FILTER_RETRY, &bp->state))
+-		bnxt_queue_sp_work(bp, BNXT_RX_MASK_SP_EVENT);
+-
+ 	if ((BNXT_CHIP_P5(bp)) && !bp->chip_rev && netif_carrier_ok(dev))
+ 		bnxt_queue_sp_work(bp, BNXT_RING_COAL_NOW_SP_EVENT);
+ 
+@@ -14712,7 +14708,6 @@ static void bnxt_ulp_restart(struct bnxt *bp)
+ static void bnxt_sp_task(struct work_struct *work)
  {
- 	struct iavf_adapter *adapter = netdev_priv(netdev);
+ 	struct bnxt *bp = container_of(work, struct bnxt, sp_task);
+-	struct net_device *dev = bp->dev;
  
-@@ -1150,6 +1152,8 @@ static void iavf_set_rx_mode(struct net_device *netdev,
- 	if (iavf_promiscuous_mode_changed(adapter))
- 		adapter->aq_required |= IAVF_FLAG_AQ_CONFIGURE_PROMISC_MODE;
- 	spin_unlock_bh(&adapter->current_netdev_promisc_flags_lock);
-+
-+	return 0;
- }
+ 	set_bit(BNXT_STATE_IN_SP_TASK, &bp->state);
+ 	smp_mb__after_atomic();
+@@ -14790,13 +14785,6 @@ static void bnxt_sp_task(struct work_struct *work)
+ 	/* These functions below will clear BNXT_STATE_IN_SP_TASK.  They
+ 	 * must be the last functions to be called before exiting.
+ 	 */
+-	if (test_and_clear_bit(BNXT_RX_MASK_SP_EVENT, &bp->sp_event)) {
+-		bnxt_lock_sp(bp);
+-		if (test_bit(BNXT_STATE_OPEN, &bp->state))
+-			bnxt_cfg_rx_mode(bp, &dev->uc, true);
+-		bnxt_unlock_sp(bp);
+-	}
+-
+ 	if (test_and_clear_bit(BNXT_RESET_TASK_SP_EVENT, &bp->sp_event))
+ 		bnxt_reset(bp, false);
  
- /**
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-index c5d26c6829a0..775f0c6e55c9 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-@@ -4142,13 +4142,15 @@ static void mlx5e_nic_set_rx_mode(struct mlx5e_priv *priv)
- 	queue_work(priv->wq, &priv->set_rx_mode_work);
- }
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.h b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
+index 61c847b36b9f..c089afdb186d 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.h
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
+@@ -2467,7 +2467,6 @@ struct bnxt {
+ #define BNXT_STATE_DRV_REGISTERED	7
+ #define BNXT_STATE_PCI_CHANNEL_IO_FROZEN	8
+ #define BNXT_STATE_NAPI_DISABLED	9
+-#define BNXT_STATE_L2_FILTER_RETRY	10
+ #define BNXT_STATE_FW_ACTIVATE		11
+ #define BNXT_STATE_RECOVER		12
+ #define BNXT_STATE_FW_NON_FATAL_COND	13
+@@ -2622,7 +2621,6 @@ struct bnxt {
  
--static void mlx5e_set_rx_mode(struct net_device *dev,
--			      struct netdev_hw_addr_list *uc,
--			      struct netdev_hw_addr_list *mc)
-+static int mlx5e_set_rx_mode(struct net_device *dev,
-+			     struct netdev_hw_addr_list *uc,
-+			     struct netdev_hw_addr_list *mc)
- {
- 	struct mlx5e_priv *priv = netdev_priv(dev);
- 
- 	mlx5e_fs_set_rx_mode_work(priv->fs, dev, uc, mc);
-+
-+	return 0;
- }
- 
- static int mlx5e_set_mac(struct net_device *netdev, void *addr)
-diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_netdev.c b/drivers/net/ethernet/meta/fbnic/fbnic_netdev.c
-index f99ca551c1ce..dd77ab6052c8 100644
---- a/drivers/net/ethernet/meta/fbnic/fbnic_netdev.c
-+++ b/drivers/net/ethernet/meta/fbnic/fbnic_netdev.c
-@@ -240,9 +240,9 @@ void __fbnic_set_rx_mode(struct fbnic_dev *fbd,
- 	fbnic_write_tce_tcam(fbd);
- }
- 
--static void fbnic_set_rx_mode(struct net_device *netdev,
--			      struct netdev_hw_addr_list *uc,
--			      struct netdev_hw_addr_list *mc)
-+static int fbnic_set_rx_mode(struct net_device *netdev,
-+			     struct netdev_hw_addr_list *uc,
-+			     struct netdev_hw_addr_list *mc)
- {
- 	struct fbnic_net *fbn = netdev_priv(netdev);
- 	struct fbnic_dev *fbd = fbn->fbd;
-@@ -250,6 +250,8 @@ static void fbnic_set_rx_mode(struct net_device *netdev,
- 	/* No need to update the hardware if we are not running */
- 	if (netif_running(netdev))
- 		__fbnic_set_rx_mode(fbd, uc, mc);
-+
-+	return 0;
- }
- 
- static int fbnic_set_mac(struct net_device *netdev, void *p)
-diff --git a/drivers/net/netdevsim/netdev.c b/drivers/net/netdevsim/netdev.c
-index a750768912b5..27e5f109f933 100644
---- a/drivers/net/netdevsim/netdev.c
-+++ b/drivers/net/netdevsim/netdev.c
-@@ -185,10 +185,11 @@ static netdev_tx_t nsim_start_xmit(struct sk_buff *skb, struct net_device *dev)
- 	return NETDEV_TX_OK;
- }
- 
--static void nsim_set_rx_mode(struct net_device *dev,
--			     struct netdev_hw_addr_list *uc,
--			     struct netdev_hw_addr_list *mc)
-+static int nsim_set_rx_mode(struct net_device *dev,
-+			    struct netdev_hw_addr_list *uc,
-+			    struct netdev_hw_addr_list *mc)
- {
-+	return 0;
- }
- 
- static int nsim_change_mtu(struct net_device *dev, int new_mtu)
-diff --git a/drivers/net/netkit.c b/drivers/net/netkit.c
-index 0ad6a806d7d5..a3931cd82132 100644
---- a/drivers/net/netkit.c
-+++ b/drivers/net/netkit.c
-@@ -186,11 +186,12 @@ static int netkit_get_iflink(const struct net_device *dev)
- 	return iflink;
- }
- 
--static void netkit_set_multicast(struct net_device *dev,
--				 struct netdev_hw_addr_list *uc,
--				 struct netdev_hw_addr_list *mc)
-+static int netkit_set_multicast(struct net_device *dev,
-+				struct netdev_hw_addr_list *uc,
-+				struct netdev_hw_addr_list *mc)
- {
- 	/* Nothing to do, we receive whatever gets pushed to us! */
-+	return 0;
- }
- 
- static int netkit_set_macaddr(struct net_device *dev, void *sa)
-diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-index bf3dd9b2c1a7..07356e784282 100644
---- a/include/linux/netdevice.h
-+++ b/include/linux/netdevice.h
-@@ -1122,13 +1122,14 @@ struct netdev_net_notifier {
-  *	Cannot sleep, called with netif_addr_lock_bh held.
-  *	Deprecated in favor of ndo_set_rx_mode_async.
-  *
-- * void (*ndo_set_rx_mode_async)(struct net_device *dev,
-- *				 struct netdev_hw_addr_list *uc,
-- *				 struct netdev_hw_addr_list *mc);
-+ * int (*ndo_set_rx_mode_async)(struct net_device *dev,
-+ *				struct netdev_hw_addr_list *uc,
-+ *				struct netdev_hw_addr_list *mc);
-  *	Async version of ndo_set_rx_mode which runs in process context
-  *	with rtnl_lock and netdev_lock_ops(dev) held. The uc/mc parameters
-  *	are snapshots of the address lists - iterate with
-- *	netdev_hw_addr_list_for_each(ha, uc).
-+ *	netdev_hw_addr_list_for_each(ha, uc). Return 0 on success or a
-+ *	negative errno to request a retry via the core backoff.
-  *
-  * int (*ndo_set_mac_address)(struct net_device *dev, void *addr);
-  *	This function  is called when the Media Access Control address
-@@ -1455,7 +1456,7 @@ struct net_device_ops {
- 	void			(*ndo_change_rx_flags)(struct net_device *dev,
- 						       int flags);
- 	void			(*ndo_set_rx_mode)(struct net_device *dev);
--	void			(*ndo_set_rx_mode_async)(
-+	int			(*ndo_set_rx_mode_async)(
- 					struct net_device *dev,
- 					struct netdev_hw_addr_list *uc,
- 					struct netdev_hw_addr_list *mc);
+ 	struct work_struct	sp_task;
+ 	unsigned long		sp_event;
+-#define BNXT_RX_MASK_SP_EVENT		0
+ #define BNXT_RX_NTP_FLTR_SP_EVENT	1
+ #define BNXT_LINK_CHNG_SP_EVENT		2
+ #define BNXT_HWRM_EXEC_FWD_REQ_SP_EVENT	3
 -- 
 2.53.0-Meta
 
