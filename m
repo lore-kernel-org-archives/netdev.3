@@ -1,51 +1,51 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68D8533557D
-	for <netdev@vger.kernel.org>; Wed, 27 May 2026 14:34:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7901428495
+	for <netdev@vger.kernel.org>; Wed, 27 May 2026 14:35:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779892487; cv=none; b=QUIuM90D8Ufmr+PtOX7v+woY74x1kHImwmd1DjvY2/zzIItPQGzHgTuXbb3g1vg7+BtjZXrBNLPfqGAnTE3DajtRzDJkWiZeiilUdMZmGfD2ybfnQadcOUp193YvsVyPwa7RbfTK4f/iCi4+D/NNptZ0IFHagOqalMY2UpoU+WQ=
+	t=1779892527; cv=none; b=eQ9oMiVWzVan/wbqbhIZfFxZpExUTPK3aWkFbcHFQk32Af46JJohwefizg8C3rYPwZTkS7yDAVQdw2C8appoBLTbkofM/b+EbmxQy/dC+G3wsAujY7mDAe8PGLUbH88lkkIRkyd2K7pgSyWjriTnLFLaVAXKdH37zomocPZTfuQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779892487; c=relaxed/simple;
-	bh=LNjpq5LQPl59zzcpbWaGnUd1c++eWT0GL0wfvz0D2A0=;
+	s=arc-20240116; t=1779892527; c=relaxed/simple;
+	bh=rgKCBbfJd666++7v22Y5yTnU+AjG9R2E5aBjXnjEHjE=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lpq4dvD78ax5ycbZUXjfwkAoUTzocuvaW4s8cAAvU4eO8sdt78D+zppF22ryMTaGcS5cDjVz/TX7DKAIIIxLB/9bfBhJj7pE0jPX3CyrGnGXKt/F8HjG8TTx31S0QGom6wA1xjUzvidSYDE1TYA4CtTdVgxfl5MVb5ArCPfqYs8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=qxuU3iOT; arc=none smtp.client-ip=185.171.202.116
+	 MIME-Version:Content-Type; b=KcYvT76O9FmGZ1/uuenr3qDx/INA4+IRg70a+qq+7+znI+k3wXFE+BC/OPZzvmfUKc1ziYVtjhv9EwKfi0cLO9QTl7LpmHmPqXgc55xFPhcek4rtYe/h99GAbtBgnCzf5O0V2h4sOOdUBK5xYZtiyHX40NPwwNYmS1pmgB5iDRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=RrFcMxpd; arc=none smtp.client-ip=185.246.84.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="qxuU3iOT"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="RrFcMxpd"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 10CD8C2AC00;
-	Wed, 27 May 2026 14:34:38 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id E385F1A36ED;
+	Wed, 27 May 2026 14:35:23 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 11E16601A1;
-	Wed, 27 May 2026 14:34:38 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E0973108884EF;
-	Wed, 27 May 2026 16:34:34 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id B0E9E601A1;
+	Wed, 27 May 2026 14:35:23 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6A96910888388;
+	Wed, 27 May 2026 16:35:21 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1779892477; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1779892523; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=LNjpq5LQPl59zzcpbWaGnUd1c++eWT0GL0wfvz0D2A0=;
-	b=qxuU3iOTEfprd/+Tf2tBGuAFoACdYzIhDsnym1SAq7i85ThLNsJzb7uziw+4H3aDb4ThIf
-	1gTa8SiVmlkCEqleyu8uG73V8qEQDAs8Ygw5d3sf3G5SA1ZsyPU0xW2wSNQt/5ihdISQge
-	S+Obnm0ATU16Od6NDYOAAXNlXkUuiVYHzz60kelTtXN2FKeBIasF2HugJf2Aj687Fg3wic
-	AtZBoCBX9k7yzLBRe2iIvbrtmWBny1lPtbVqfyYXUkJIiavnH+gB9WKdSvTtwx4yDbEcyN
-	waDtmRrM0BzeZkPs/smf/TAJ0sGMBXztmOlf7ahglY3z5oCRherVqbb1mPKbXg==
-Date: Wed, 27 May 2026 16:34:32 +0200
+	bh=tYkKzyNGregBLEq4wyp8zNlt5DiaUq8yGv509hN3xes=;
+	b=RrFcMxpdSQapCOqc5PHQ2JN9f+MasbzNvDNf6/FZoQzXEPSFZ68gs3DhtDtzF3qGCdHNz5
+	nncyNF50JvzPPPX2PSTAiMsOzGndCj1qTd0VMM0N0/2MPOjJgl2cJvcCZM3MS8+AVvtqkr
+	mg+QYBdKEuuqHBJyEyKzFQaU6RQvyRTyNjxTJpGYMef9IGpZ2UaLtMGnl3VJrW08nSgama
+	+7lx/Tko14Ms++bguhzWw3Lu4NeWATncJJObzI0OD2wrqJbjZWKB2lzokcSTde/kAGCkvg
+	UMonnbcT4FYpSi33AkKcLHagfW9gBko5v0Gx/czz3SaRm2z/kcWXU64/8kzVMQ==
+Date: Wed, 27 May 2026 16:35:18 +0200
 From: Kory Maincent <kory.maincent@bootlin.com>
 To: Jakub Kicinski <kuba@kernel.org>
 Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
  pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
  o.rempel@pengutronix.de, maxime.chevallier@bootlin.com,
- haiyangz@microsoft.com, andrew@lunn.ch, vadim.fedorenko@linux.dev
-Subject: Re: [PATCH net 05/10] ethtool: tsconfig: fix missing
- ethnl_ops_complete()
-Message-ID: <20260527163432.72ba1420@kmaincent-XPS-13-7390>
-In-Reply-To: <20260526153533.2779187-6-kuba@kernel.org>
+ haiyangz@microsoft.com, andrew@lunn.ch
+Subject: Re: [PATCH net 07/10] ethtool: tsinfo: don't pass ERR_PTR to
+ genlmsg_cancel on prepare failure
+Message-ID: <20260527163518.00361cda@kmaincent-XPS-13-7390>
+In-Reply-To: <20260526153533.2779187-8-kuba@kernel.org>
 References: <20260526153533.2779187-1-kuba@kernel.org>
-	<20260526153533.2779187-6-kuba@kernel.org>
+	<20260526153533.2779187-8-kuba@kernel.org>
 Organization: bootlin
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
@@ -58,14 +58,21 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 X-Last-TLS-Session-Version: TLSv1.3
 
-On Tue, 26 May 2026 08:35:28 -0700
+On Tue, 26 May 2026 08:35:30 -0700
 Jakub Kicinski <kuba@kernel.org> wrote:
 
-> tsconfig_prepare_data() calls ethnl_ops_begin(), we need to call
-> ethnl_ops_complete() before returning the error.
+> The goto err label leads to:
 >=20
-> Fixes: 6e9e2eed4f39 ("net: ethtool: Add support for tsconfig command to
-> get/set hwtstamp config") Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> 	genlmsg_cancel(skb, ehdr);
+> 	return ret;
+>=20
+> If ethnl_tsinfo_prepare_dump() failed, it has not started a genlmsg.
+> There's nothing to cancel, and passing an error pointer to
+> genlmsg_cancel() would cause a crash.
+>=20
+> Fixes: b9e3f7dc9ed9 ("net: ethtool: tsinfo: Enhance tsinfo to support sev=
+eral
+> hwtstamp by net topology") Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
 Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
 
