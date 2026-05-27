@@ -1,112 +1,216 @@
-Received: from mail-m155101.qiye.163.com (mail-m155101.qiye.163.com [101.71.155.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA0F98F7D;
-	Wed, 27 May 2026 11:07:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=101.71.155.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 721463EF0C8
+	for <netdev@vger.kernel.org>; Wed, 27 May 2026 11:12:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779880044; cv=none; b=GxiGbKxG0ljZ6Z39z3VlJwEWYmJjj3s+IZc3a+y1WIhRo5G3ic2/JK4cq6v6U5sqCV+/avnMwHnTBWfM8459ggG6jdEJDsnKZaBHCA0D2oCJrDnjaUAPEznlzN9k0y8+VvtGqU1qyzxnXkrg0mT+PJizMj7pVPVPhb9YqxK4H2Y=
+	t=1779880323; cv=none; b=YtQ5JIXY2psQ9C0wNE+TWQMHKQdaXATtFVYat8wLiLA58SUmU5fIh162QQUnVMbiWvL5/D3Q/PmF+NVMThalPdHM8FC1TRK8Fs/pWJq46u5swuCN2TpoyF7n60O0q+Z/hYT9xWljFuTi4Zi3qEfkKhur1zzo1c1Oy6E63NuP1bo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779880044; c=relaxed/simple;
-	bh=tR2h7ZPXwFL6Np/Sen8hisfqQuCHkJ00R/Jk5VxMWmg=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=nQi8lu2APquUUWCZVUtcDr4YqeHHYfPGNec8ZNN+jaV8jWlNf1fAFe3OaBAr3j/Rtoc17vORZb/fjvNk1/CK9pv/vLhnlIltP8dcfZqe82fHRJZ0dpu0VpAJJynSTa6nrrLobDZNmyFuJjtPxz3U8PcDFduC8wke7PPKRLBD/UA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=fdcZNoyt; arc=none smtp.client-ip=101.71.155.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
+	s=arc-20240116; t=1779880323; c=relaxed/simple;
+	bh=hmzv3evJWKDG1ijGXshnxk8ZWXXgQAuckoIhRWmecK8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=l4ACcMDDESByB2ysltRVHJMY3ZWOSHINo1LderIK8sEg3klFPYk5T9VoxGXplI2LkBKauY3ANBePod2hARvxpLyR82QQDtky7lIBo3LMzQKDM+sov7aRxXiIceZjdpIOBdoyduZ4IAuMOCmlgcRKKbU7ljQNcDk7K/bB6/wIlO8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=ARrf1Y2Z; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=q37CK1Lv; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=y3XK6YZ2; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=8C3OTFdM; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="fdcZNoyt"
-Received: from DESKTOP-SUEFNF9.taila7e912.ts.net (unknown [221.228.238.82])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 400701e33;
-	Wed, 27 May 2026 19:02:07 +0800 (GMT+08:00)
-From: Dawei Feng <dawei.feng@seu.edu.cn>
-To: anthony.l.nguyen@intel.com
-Cc: przemyslaw.kitszel@intel.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	jesse.brandeburg@intel.com,
-	sln@onemain.com,
-	intel-wired-lan@lists.osuosl.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	jianhao.xu@seu.edu.cn,
-	Dawei Feng <dawei.feng@seu.edu.cn>,
-	stable@vger.kernel.org,
-	Zilin Guan <zilin@seu.edu.cn>
-Subject: [PATCH net] i40e: fix netdev leak in i40e_vsi_setup() error paths
-Date: Wed, 27 May 2026 19:02:05 +0800
-Message-Id: <20260527110205.1780595-1-dawei.feng@seu.edu.cn>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="ARrf1Y2Z";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="q37CK1Lv";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="y3XK6YZ2";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="8C3OTFdM"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 9461F67080;
+	Wed, 27 May 2026 11:11:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1779880319; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qKrQoRgjTDNoQNekm5OnXBHl8URyX2aoygUus9E39fQ=;
+	b=ARrf1Y2ZScI4IgB+flGzixDsexBm78r2tcmGUYq7M2ETGKMicMga+xO3gR20uqdHagRAHR
+	uRqQRT/gE01v7XX2MGLbeY/ptG21xpfTU2MTyau51+8Ss+5igq+s6hvrQV4jtsKqO/j8LX
+	WhCK8iat+seBsWRIWoChUWtJcKpOyyY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1779880319;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qKrQoRgjTDNoQNekm5OnXBHl8URyX2aoygUus9E39fQ=;
+	b=q37CK1LvkmedEp0N2V0sdPbLWfD3q0jlvEoJoi2OFl8sVGGQZd5UpHiE1qcQPFOdhr0UCN
+	tlaF/Z3JXWAGF9Bg==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=y3XK6YZ2;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=8C3OTFdM
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1779880318; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qKrQoRgjTDNoQNekm5OnXBHl8URyX2aoygUus9E39fQ=;
+	b=y3XK6YZ2m519HbtJDw5CZYk/hX+qedlGDlH4Mr/uEyL4TZJtMuokkn+2ujv0QwdSehuNfZ
+	z960UPity/1v++8k6YTfoJWoqivzx287lCU/DyVorUcImMoG8DttRp/yaX2intNznSc/cx
+	n/iQy4WTQqrHO949NEbMmTNKjIluxwE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1779880318;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qKrQoRgjTDNoQNekm5OnXBHl8URyX2aoygUus9E39fQ=;
+	b=8C3OTFdM9Hr58mnI4NnYlXkRoZ1UWJFERiPoqjkceSJmMnvzi/qNL7z1JBOxgah9jUrnxY
+	K/PgYFWrk9Uu9vCA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E0D695A7D3;
+	Wed, 27 May 2026 11:11:57 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id WDDdM33RFmqgGQAAD6G6ig
+	(envelope-from <fmancera@suse.de>); Wed, 27 May 2026 11:11:57 +0000
+Message-ID: <21df0b14-f530-4e9a-931a-21154ec18c78@suse.de>
+Date: Wed, 27 May 2026 13:11:57 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9e6919500903a2kunmc4d7ecc43a9e3
-X-HM-MType: 10
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlCHUNIVk5JQxpOHU9OSElDQlYeHw
-	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlJSUpVSUlDVUlIQ1VDSVlXWRYaDxIVHRRZQVlPS0hVSktJSE
-	5DQ1VKS0tVS1kG
-DKIM-Signature: a=rsa-sha256;
-	b=fdcZNoytiqVTMEEmwEnbmex0Y1AkGfokDoeVK/FAqs8BroYuQVbZIyOOzfT/pJthOVyQUWlIyEEASP8Nmw04wFHf6xUSq7xXW4U962Q3dBcgafEc8V7H2KxzWT+1HIbbJ68BvAt9ys/pEs7Po85jJSNJbEyLPGecLLWlQVQInkc=; c=relaxed/relaxed; s=default; d=seu.edu.cn; v=1;
-	bh=L4JvB8zmfLhyCH5RmecUwJB8gs5HNGzG6nxv4Q9PYZc=;
-	h=date:mime-version:subject:message-id:from;
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] hsr: broadcast netlink notifications in the device's
+ net namespace
+To: Maoyi Xie <maoyixie.tju@gmail.com>, "David S . Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>
+Cc: Jan Vaclav <jvaclav@redhat.com>, Andrew Lunn <andrew@lunn.ch>,
+ Taehee Yoo <ap420073@gmail.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <CAHPEe=GO=2qqWZPwBB4rrXc3mkD0dznp2K78nCsKwF=c-QwxEw@mail.gmail.com>
+ <20260527075924.2707856-1-maoyixie.tju@gmail.com>
+Content-Language: en-US
+From: Fernando Fernandez Mancera <fmancera@suse.de>
+In-Reply-To: <20260527075924.2707856-1-maoyixie.tju@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Level: 
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Queue-Id: 9461F67080
+X-Rspamd-Action: no action
+X-Spamd-Result: default: False [-3.01 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_TO(0.00)[gmail.com,davemloft.net,google.com,kernel.org,redhat.com];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	ARC_NA(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	FREEMAIL_CC(0.00)[redhat.com,lunn.ch,gmail.com,vger.kernel.org];
+	RCVD_COUNT_TWO(0.00)[2];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_TRACE(0.00)[suse.de:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.de:dkim,suse.de:mid]
+X-Spam-Flag: NO
+X-Spam-Score: -3.01
 
-i40e_config_netdev() allocates vsi->netdev for main and VMDQ VSIs. If
-i40e_netif_set_realnum_tx_rx_queues(), i40e_devlink_create_port(), or
-register_netdev() fails, i40e_vsi_setup() goes to err_netdev without
-releasing the netdev. The existing cleanup only frees the netdev after a
-successful register_netdev(), so these error paths leak the allocation.
+On 5/27/26 9:59 AM, Maoyi Xie wrote:
+> The HSR generic netlink family sets .netnsok = true. HSR devices can
+> live in network namespaces other than init_net.
+> 
+> Two async notifiers broadcast events with genlmsg_multicast(). They
+> are hsr_nl_ringerror() and hsr_nl_nodedown(). That helper delivers
+> only on the default genl socket in init_net. So the events always land
+> in init_net. The network namespace of the device does not matter.
+> 
+> This has two effects. A listener in the device's own namespace never
+> sees its own ring error and node down events. A privileged listener in
+> init_net receives events from HSR devices in other namespaces. The
+> payload carries the peer node MAC (HSR_A_NODE_ADDR) and the slave port
+> ifindex (HSR_A_IFINDEX). It leaks information across network
+> namespaces.
+> 
+> Switch both callers to genlmsg_multicast_netns(). Other families with
+> .netnsok = true already do this. Examples are gtp, ovpn, team,
+> batman-adv, netdev-genl, ethtool and handshake.
+> 
+> hsr_nl_ringerror() already has the slave port. It uses
+> dev_net(port->dev). hsr_nl_nodedown() takes the namespace from the
+> master port via hsr_port_get_hsr().
+> 
+> Fixes: 09e91dbea0aa ("hsr: set .netnsok flag")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Maoyi Xie <maoyixie.tju@gmail.com>
+> ---
+> This is the fix for the problem I reported on netdev on 2026-05-18 [1].
+> That thread had no reply, so I am sending the patch and adding the HSR
+> maintainers to Cc. The proof of concept and the test numbers are in
+> that message.
+> 
+> [1] https://lore.kernel.org/netdev/CAHPEe=GO=2qqWZPwBB4rrXc3mkD0dznp2K78nCsKwF=c-QwxEw@mail.gmail.com/
+> 
+>   net/hsr/hsr_netlink.c | 14 ++++++++++++--
+>   1 file changed, 12 insertions(+), 2 deletions(-)
+> 
+> diff --git a/net/hsr/hsr_netlink.c b/net/hsr/hsr_netlink.c
+> index db0b0af7a692..067ceaf7304b 100644
+> --- a/net/hsr/hsr_netlink.c
+> +++ b/net/hsr/hsr_netlink.c
+> @@ -247,7 +247,8 @@ void hsr_nl_ringerror(struct hsr_priv *hsr, unsigned char addr[ETH_ALEN],
+>   		goto nla_put_failure;
+>   
+>   	genlmsg_end(skb, msg_head);
+> -	genlmsg_multicast(&hsr_genl_family, skb, 0, 0, GFP_ATOMIC);
+> +	genlmsg_multicast_netns(&hsr_genl_family, dev_net(port->dev),
+> +				skb, 0, 0, GFP_ATOMIC);
+>   
+>   	return;
+>   
+> @@ -283,8 +284,17 @@ void hsr_nl_nodedown(struct hsr_priv *hsr, unsigned char addr[ETH_ALEN])
+>   	if (res < 0)
+>   		goto nla_put_failure;
+>   
+> +	rcu_read_lock();
+> +	master = hsr_port_get_hsr(hsr, HSR_PT_MASTER);
+> +	if (!master) {
+> +		rcu_read_unlock();
+> +		goto nla_put_failure;
+> +	}
+> +
+>   	genlmsg_end(skb, msg_head);
+> -	genlmsg_multicast(&hsr_genl_family, skb, 0, 0, GFP_ATOMIC);
+> +	genlmsg_multicast_netns(&hsr_genl_family, dev_net(master->dev),
+> +				skb, 0, 0, GFP_ATOMIC);
+> +	rcu_read_unlock();
+>   
 
-Reorder the error paths at err_netdev to ensure proper cleanup of the
-allocated device.
+The patch makes sense to me. Anyway, I think we can reduce the RCU 
+critical section here.
 
-The bug was first flagged by an experimental analysis tool we are
-developing for kernel memory-management bugs while analyzing
-v6.13-rc1. The tool is still under development and is not yet publicly
-available. Manual inspection confirms that the bug is still
-present in v7.1-rc5.
+What about moving rcu_read_unlock() after the if and extract the net 
+before unlocking? The benefit is minimal but I think it is worth it.
 
-An x86_64 allyesconfig build showed no new warnings. As we do not have an
-Intel Ethernet Controller XL710 family adapter to test with, no runtime
-testing was able to be performed.
-
-Fixes: 41c445ff0f48 ("i40e: main driver core")
-Cc: stable@vger.kernel.org
-
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Signed-off-by: Dawei Feng <dawei.feng@seu.edu.cn>
----
- drivers/net/ethernet/intel/i40e/i40e_main.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
-index 6d4f9218dc68..1ced01b0cc09 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_main.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
-@@ -14491,13 +14491,15 @@ struct i40e_vsi *i40e_vsi_setup(struct i40e_pf *pf, u8 type,
- 	if (vsi->netdev_registered) {
- 		vsi->netdev_registered = false;
- 		unregister_netdev(vsi->netdev);
--		free_netdev(vsi->netdev);
--		vsi->netdev = NULL;
- 	}
- err_dl_port:
- 	if (vsi->type == I40E_VSI_MAIN)
- 		i40e_devlink_destroy_port(pf);
- err_netdev:
-+	if (vsi->netdev) {
-+		free_netdev(vsi->netdev);
-+		vsi->netdev = NULL;
-+	}
- 	i40e_aq_delete_element(&pf->hw, vsi->seid, NULL);
- err_vsi:
- 	i40e_vsi_clear(vsi);
--- 
-2.34.1
-
+Thanks,
+Fernando.
