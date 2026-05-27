@@ -1,62 +1,64 @@
-Received: from out203-205-221-153.mail.qq.com (out203-205-221-153.mail.qq.com [203.205.221.153])
+Received: from out203-205-221-205.mail.qq.com (out203-205-221-205.mail.qq.com [203.205.221.205])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E92B27AC4C;
-	Wed, 27 May 2026 07:47:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.153
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2335276049
+	for <netdev@vger.kernel.org>; Wed, 27 May 2026 07:51:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.205
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779868081; cv=none; b=jD9xR2JVRoD6DVHRiNJ8eq/y04dPUwuAJ8Pdga8+dkVsMeUhop+7ukzSPo6BEiHqL7KesRbAd+0okLRp1NsW/agngKvLgwZNesn7602vdj6I86/HDD2QjQuQ/uBNCfLDdp7+QCbFlTzJtAxkRl7gGOMttqyu4hGJaSdLfrCfzdQ=
+	t=1779868315; cv=none; b=JGex9jjYVAMGVmfg9aOwOzAN57jvYPXAQijlxBgBLhNevq0VKM+qsrbrpAWKr6D0zUI+PLvx2xw5YvXJWZQJwHfOEVnAG/Jz+GuGNSEUtOBI2DaxW5Q7pVaPhoUshnaXY8ubA7eBes/zZY97iNz+k+9svLuaH4avDDYL5RzO/O8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779868081; c=relaxed/simple;
-	bh=G/hdT+O03dUuWDzA9+4+fQQufDEpCTrv3vA91IV7mEs=;
-	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=vA5faWlwl+0zvzWCwVU19USPXtap2DLkeAFjR0Dvr8Kq8kfamSS5v8CuH/biKuwZBs2ZrM1T8To7wprcq3xr3LyqWIgNk7PFUCp4l35/el/79l3e4KTpA/d6JmvyGNLdeb/JMh3X4/DOtWnMhLh4co0hhkso9G5O5GH3lYXIaVQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=Y0pYicHg; arc=none smtp.client-ip=203.205.221.153
+	s=arc-20240116; t=1779868315; c=relaxed/simple;
+	bh=NVOHKVXHwnbH81wCzMlzEc+nMaehPnHooU/DuIU4/l0=;
+	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
+	 MIME-Version; b=Vt+9Be9FbHbE+rw3lYulL8TI6FnrhBmkXO5nnlrpeFjCRR9UJbGlZmzy6o9IRO1oBVmvEbKZWfFfhbagv5PWYD7fiVtdpnpKu27nkRmDkClB5FVgTKlx5JPAVGJanBxdY/KFrxzEFwC4RcHfl2l8gKhorQ/Zja+LDkoMMGF/hLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=wkt4FGYk; arc=none smtp.client-ip=203.205.221.205
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="Y0pYicHg"
+	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="wkt4FGYk"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-	s=s201512; t=1779868068;
-	bh=kGb/P9sVP4tFSWde8ZJjt2Kzmw/l/ZEke0ZC5I4sGrA=;
-	h=From:To:Cc:Subject:Date;
-	b=Y0pYicHgzayp1p7yx8VN2PF2+/VY0AXAkm2IaM3dtBKHYm9L2Cqr+rCzPQkhB1bGf
-	 HoNEvQtiKhSSyAP8+NUpN1WgFSeBwImbQt+iVNLTNr/kylOiGO/XHQpC7L/FHXVrhd
-	 T+Ed4kaMoue8m71OVJsftA/od09HWL5kFopjJz/0=
-Received: from localhost.localdomain ([2409:8915:2048:5463:c452:e9ec:29bb:c572])
-	by newxmesmtplogicsvrszb43-0.qq.com (NewEsmtp) with SMTP
-	id BEAB8844; Wed, 27 May 2026 15:47:42 +0800
-X-QQ-mid: xmsmtpt1779868062tkl3m9m0s
-Message-ID: <tencent_513B1F71D30856A55BAA6CBDB22A5E719508@qq.com>
-X-QQ-XMAILINFO: MMwjR1C73eIsZgO8oH9Cx26rDCB1rEun6zB7HmKkAfdNmW7doaNAQw3C5LNB3L
-	 K6UHDp3pf9lm27RzZQIrzf+0csK8lhb8zzquE4WcW3aYq2BkL0em8iSW8kBtrltKPqURa4N3aYNg
-	 /NJdWNc9MxU7bREpA5c2cmOURW4NgtVdN0jsVN4Pwx/ghF3zkOWeI+CtA7HxKbx2gHEQkejHv/Kg
-	 PfDVUdInafI2ljFHVsMZWBHwtB2ARXUbdPVq67IG0C4jcmTlRppBm4oJopTuSSVrOOphgtcAOfH6
-	 HLBlsQzuukp4qvYxhZFSGJu+txL+a5C39ubWF2KHueE0KdEarMGDI4I7CIGjVQPqf6bK3Hl2QTSr
-	 WUv+5VyY3u64p6t/5we6GzXUj+NshdZ/BLbPslJPly3DcFe47cpWNlkMVk5pnwARuwFk+hGw1I8J
-	 ApL6BYUEWzrkEKQQZ9tJmwdKm9PGjpF0N/0wQAfJbMeOOlnVoZtjePv/HffBHhn2QsYpqoVo5eHb
-	 hhcxYoaQlibQjI2Hh+/n//8Hw4Edcsq++FvV0gJWO8n8lXo+L8F2FFTqNGzCyzZ+P/cVLA0C0iHV
-	 FL+M0ui/eKtI2k+3GajrwxiWRzekwPw2zbQQSXEITMd4nxoidQcc+xOzqNCmsWRjLQsFW1LOfxGW
-	 BZBiWM44xA682vBfejfwa2ilwAuDTvUqhLkDVuPtgWj6FDJcz5EHR3rjVHhjnxrCuWpl//3WsbZl
-	 DJpfKx+uY4cf0Y0igk9ccEMub8nQBjGV7iQ0G7zqH6pStKNrM1bD/ER0Uz7Kp6kuW+DODx6bV3Rh
-	 85E7N8lI+gsOAVvViCQXLCVoRb7/u498FMALKHUcjSzI38GkLglpRa8AjKYaW8j30iU8Sk6Wh5zN
-	 fC5qNHNdp1fH6k8AfwBzqj9om5YDTsvuzsfUmQPUoyUx659SFLSnNuTzMhXaIfFPCZtz6jBlZuVa
-	 FDlCp2dzvkCJFyMV1dyLTnDsmMCU4actaIPQW/TBU+T4lGTrP2UmHPPD1Qry6XhucuUafp4q7cea
-	 JlqMSiE3nG5O0fg7Au
-X-QQ-XMRINFO: Nq+8W0+stu50tPAe92KXseR0ZZmBTk3gLg==
-From: Shaoxu Liu <shaoxul@foxmail.com>
-To: andrew+netdev@lunn.ch,
+	s=s201512; t=1779868285;
+	bh=133mS37I6tuEBHBlaWgDxx3zzPdztDDKTlpPqXQOUTg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=wkt4FGYkJn2xg6Z3jREqKIeN13A98dOA/5f2iL7kk4slTtvSKAA7lrK3r+OdF7YMA
+	 NXwsM0EhE8FwEY2lqs6nhs64hgfL8LJ8zodzbLWui80jonhwVkRz7UhC0+/pabUF89
+	 1fdUK6vbL0RQtTDP3f0YTKBKy6VAwqSGNaYyqzj4=
+Received: from localhost.localdomain ([116.128.244.169])
+	by newxmesmtplogicsvrsza73-0.qq.com (NewEsmtp) with SMTP
+	id CD721E22; Wed, 27 May 2026 15:51:23 +0800
+X-QQ-mid: xmsmtpt1779868283tx38d9w72
+Message-ID: <tencent_F2C58937ADA208EE4219632E34ED23772F08@qq.com>
+X-QQ-XMAILINFO: MMwjR1C73eIs9oQgn7O3W+xV3n1wN3smKCFyuVVTcoMkZJ0GLZ3dXnt4n8QaTf
+	 HHb+J4UnO4Wf6oZ2n8jjSnEaYeTjy5Kw9HZqt4gIpVU2RwV7kBhQuOpfoxQUmGZ880RGWSUng4Ko
+	 p6cRky14kGG5J6RXXdZyiPmvfPwd9Tn9mK2YUSlG9PMtL86MCVNUgPjKb07sopwvQ3D5m60Qswoe
+	 BwTjmTS0WMD/xgTKhFWsoMfkxp9Al+VGBgK4pePMKaoYX4S9f+lQ+zLKNf2IQFAiujlANjk5D/7C
+	 a65JtZC9xM4/5UBGDeKBft+CFYGuhCvKM9/NLUWXoQVG9Saitw15bU6pBlrnyArAK9zkhnrWg/34
+	 y4HrQnBhulNZcniLjFcjvmlTrB1VT7hB1l803c/AHayHPg3b9AMJn4HZz67lOTlgWGy5FLrFSTIj
+	 aN2W78gZv4wSqdxDq0GofiHfzWhc8lotaihT2ZnwwLHX8IPjg2WTvZDSdmDFQz+2mU7u/yaMT1JB
+	 liA87/q0TbyFNN0zx9akuEu63sWnOY3KiyHmNiVu4CqjXjLaRH42UueOp4A/hx2CA7OCFehUtAzY
+	 DMdy4A47QrjL1zo9TMoNWe1LHwGxBAEZY/i2N3QI8exZ4NDLENCsyyC8NKOmilD3GFTqX9UJucDY
+	 TYKqagYzhJFjDFEbeun5gcs3i/y13CZCh0IOw435zRlCLiTMGlUAoNihqmzAzCLwaZlhx5QPRfEm
+	 pSoz5p505G+4eltbsxG8rZcYWS3ARXHliEtbvU4iXcuKNAImqKr9gAjKud4587aJVMB1YJhsaOFX
+	 9m8iDBUnif2WcWLPhr2lFcBoi94kN48vpeJ39rQgBByqiLGVjS9xjG64qBabiq+rogBANLD/aZBV
+	 CGgTLS+HXfUE5U4oX1sfdSzfDuQdZmry7QHXsVRBoQjT/WuQWOg7IzM/7DR0G/QCirf+rBb945J1
+	 5L/VAoi1QfxWmZLytrRUjTEPo77Ya8X/EYPBV9UwOcMRm+mVGTRiyvQwTM2xfPbTT6Clbb9A7+mP
+	 Uo0TaRWgdKrQKfqwbvXy3ezSq2Jp30+WqM5MLiMw5DSKve8Z63
+X-QQ-XMRINFO: NS+P29fieYNwqS3WCnRCOn9D1NpZuCnCRA==
+From: Zhao Dongdong <winter91@foxmail.com>
+To: kuba@kernel.org
+Cc: aleksander.lobakin@intel.com,
 	davem@davemloft.net,
 	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: shaoxul@foxmail.com,
-	linux-usb@vger.kernel.org,
 	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] Add power management op for RNDIS host
-Date: Wed, 27 May 2026 15:47:41 +0800
-X-OQ-MSGID: <20260527074741.1745978-1-shaoxul@foxmail.com>
+	pabeni@redhat.com,
+	winter91@foxmail.com,
+	zhaodongdong@kylinos.cn
+Subject: Re: [PATCH] net: page_pool: check nla_nest_start() return value in
+Date: Wed, 27 May 2026 15:51:22 +0800
+X-OQ-MSGID: <20260527075122.316127-1-winter91@foxmail.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20260526162736.5e95b928@kernel.org>
+References: <20260526162736.5e95b928@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -65,50 +67,43 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-RNDIS host does not manage the USB power, and it will
-cause more power consumption even when no data transferring.
+On Tue, 26 May 2026 16:27:36 -0700, Jakub Kicinski <kuba@kernel.org> wrote:
+>
+> On Tue, 26 May 2026 18:04:44 +0200 Alexander Lobakin wrote:
+> > From: Zhao Dongdong <winter91@foxmail.com>
+> > Date: Tue, 26 May 2026 14:51:56 +0800
+> > 
+> > > From: Zhao Dongdong <zhaodongdong@kylinos.cn>
+> > > 
+> > > nla_nest_start() can return NULL if the skb runs out of space.
+> > > page_pool_nl_stats_fill() does not check the return value before
+> > > calling nla_nest_end(), which can lead to a NULL pointer dereference.
+> > > Add a NULL check after nla_nest_start() and abort the message if it fails.
+> > > 
+> > > Fixes: d49010adae73 ("net: page_pool: expose page pool stats via netlink")  
+> > 
+> > A "Cc: stable@vger.kernel.org" candidate?
+>
+> Not really, the thinking is that if nla_nest_start() failed then the
+> very next nla_put* will also fail (nla_nest_start() is a zero-length
+> attr, any attr we put after must be >= in length).
+>
+> IOW the commit message is lying, there's no way for us to reach
+> nla_nest_end(). We will jump to nla_nest_cancel() which handles
+> nest=NULL just fine.
+>
+> Zhao Dongdong please confirm this and respin the patch without a Fixes 
+> tag and with an updated commit message. I think we got such a patch
+> in the past, so we should merge it to avoid confusing bots. 
+> But please make it very clear that this code can't crash..
+> -- 
+> pw-bot: cr
 
-Adding the power management operator will make the USB
-enter suspend mode when no data transferring.
----
- drivers/net/usb/rndis_host.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+Thanks for your review.
+I carefully reviewed the code. Your thinking should be right --I just happened to notice that most call sites of nla_nest_start() include a non-NULL check. Apologies for the noise.
 
-diff --git a/drivers/net/usb/rndis_host.c b/drivers/net/usb/rndis_host.c
-index 7b3739b29..76eb65fd5 100644
---- a/drivers/net/usb/rndis_host.c
-+++ b/drivers/net/usb/rndis_host.c
-@@ -630,6 +630,17 @@ static const struct driver_info	zte_rndis_info = {
- 	.tx_fixup =	rndis_tx_fixup,
- };
- 
-+static const struct driver_info	rndis_info_lowpower = {
-+	.description =	"RNDIS device",
-+	.flags =	FLAG_ETHER | FLAG_POINTTOPOINT | FLAG_FRAMING_RN | FLAG_NO_SETINT,
-+	.bind =		rndis_bind,
-+	.unbind =	rndis_unbind,
-+	.status =	rndis_status,
-+	.rx_fixup =	rndis_rx_fixup,
-+	.tx_fixup =	rndis_tx_fixup,
-+	.manage_power =	usbnet_manage_power,
-+};
-+
- /*-------------------------------------------------------------------------*/
- 
- static const struct usb_device_id	products [] = {
-@@ -657,6 +668,11 @@ static const struct usb_device_id	products [] = {
- 	/* RNDIS is MSFT's un-official variant of CDC ACM */
- 	USB_INTERFACE_INFO(USB_CLASS_COMM, 2 /* ACM */, 0x0ff),
- 	.driver_info = (unsigned long) &rndis_info,
-+}, {
-+	/* RNDIS for Telit Cinterion low power LTE cat1biz modules LE310X1*/
-+	USB_DEVICE_AND_INTERFACE_INFO(0x1bc7, 0x7030,
-+				      USB_CLASS_WIRELESS_CONTROLLER, 1, 3),
-+	.driver_info = (unsigned long)&rndis_info_lowpower,
- }, {
- 	/* "ActiveSync" is an undocumented variant of RNDIS, used in WM5 */
- 	USB_INTERFACE_INFO(USB_CLASS_MISC, 1, 1),
+
 -- 
-2.25.1
-Signed-off-by: Shaoxu Liu <shaoxul@foxmail.com>
+Regards,
+    Zhao Dongdong
 
