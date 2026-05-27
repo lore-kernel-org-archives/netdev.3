@@ -1,131 +1,172 @@
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013032.outbound.protection.outlook.com [40.107.159.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD61830E82B
-	for <netdev@vger.kernel.org>; Wed, 27 May 2026 09:52:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 826C23ED5D9;
+	Wed, 27 May 2026 09:59:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.32
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779875527; cv=pass; b=MxxUh/T8AsfOHnYTmJL3fCwZ4+cpFn2Z0snxn+qOVI4Lb+6Rp5uYEIgSG8/Zb8TpR13zoX1/nqjcJFvmUB0r15Rbf/iKQkc1wWW+cm46xeLiKgA9CaMNQ2PSP3H5WhECFFNH8382i8JNBShGEFOT0Vfgg5UHjShLJA5fTOLKf4s=
+	t=1779875966; cv=fail; b=aMw9a0pR+0j6g8L01iRJUC6VuUxqtz0s0bQdDbSRTBprlMswlXErlgiWGK07ttB50NRL7jd4EenXxE914HqwslLJk2Zs2t2QVSgv74a8vd9//NDVWDnJ+BwrLC/8ZDghkbq1aOAF2pd6cJMg41SMBRF9wvq2GUCYGDYwaTmcju8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779875527; c=relaxed/simple;
-	bh=6yk3OmLcvS9yR1IGEnB8s9mzvV1S/+/IzxWTcA1frBk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JY9XBJPnsQkaAu5iFfr7ZKcRQRqhShv0w2RQMZ+dzQ+0rnCBm7yBBv5Nfwx8/7lE22QhyKaAsU/j7N9OwBqyjmWGMVQivrewG7U03qvmlFQi+k39sDJcTu6sx6HU5hR+WG7fnI7OYwVZty76HAjnXO83X/tmpBB9Tn9P739KCM0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=snu.ac.kr; spf=pass smtp.mailfrom=snu.ac.kr; dkim=pass (1024-bit key) header.d=snu.ac.kr header.i=@snu.ac.kr header.b=wrL32plP; arc=pass smtp.client-ip=209.85.208.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=snu.ac.kr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=snu.ac.kr
+	s=arc-20240116; t=1779875966; c=relaxed/simple;
+	bh=RzdncWhDIT5vuEnShmvGicol+fKqKwLiwppgiUk4+2o=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=X4NrwHk3iPnqp23qieeucGnT/Bu3LsivF67mfVRV3AZGfkYo2to2pnLHpuBWCB4a57YDWvypSI4XuGdTWUbp5wjicMfjbPctrvqkiAB6eH4atVOX49bb/N8K/ffT87aqc4L6J3WRE1NqQ9VqIo4TinDlXUckGMN+0ih22SIxAdI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=bFzNjFgK; arc=fail smtp.client-ip=40.107.159.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=snu.ac.kr header.i=@snu.ac.kr header.b="wrL32plP"
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-6746d0b2b4aso19457016a12.3
-        for <netdev@vger.kernel.org>; Wed, 27 May 2026 02:52:01 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779875520; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Rs3Tz/+mbgh/VCTfQhhbJ5WURlHlczRhsAdi8dMjsKFA8e3f+F6sIS5hm6GXlHW4Z1
-         EcxVHgph1rF0RKXY3VTFiE36Wc9j3vDzpvvWEv4aoax+QwNU38s8w/044n1pUVex+iCC
-         gdw1CUpOhFFspRU4c3rCMASn/yX8hnb6qQmMZI7R4lX0dNWEzD7gXWmk/3IE2jFBTn2g
-         NjP1rog7CRC8rpOsMuLRnlyOPx1eL1XncYQ2chCma7usbanq/KK/Lm56hovEwCMLihpu
-         txFtCPlEVNT3e440QYTYi57QY9mHzlAFMR+69NHSQwD+9qaW/nZyiBT+3YYidxk7csUX
-         9pLg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=2PN98aCoYgmIhUzX6WmjhPxG9QNi1I86AbhbpQXMYRA=;
-        fh=xRzzBlP2eoVoi6WgjhQvYbtbW8KYnL1Vv7ht+WoRbMA=;
-        b=L6vf/vJzYn1qZ2OMaXaaw1J240YlM1fWle79D8Xcnoty1NmYsfA/huHddc43yeq48X
-         80mfF6m+J0T5RRkWyPeLi6ua+Bw33e30uPxJ9U9duraUxKluJQCmW9eb7/T1Nf0xaYfp
-         tYEo4prB03J4RiQnNVh6DBO4zT0uS2vlVn5uYTveCcI+ZtQwJBGfu4AqkE8XYdoBHgNF
-         FjgMxhZNjJ2KuIBQiWiBIhrOCKdCJ8u8jy69BqQD907KUwb02Xplho60fHqjiTPyiep7
-         U1ZAJzQJESZGnOxXirjjxBMKS1+qEU/Wx4aSnRB8pp9kjB60paDMzTS1R2tXCOHdVYPZ
-         8u+g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=snu.ac.kr; s=google; t=1779875520; x=1780480320; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2PN98aCoYgmIhUzX6WmjhPxG9QNi1I86AbhbpQXMYRA=;
-        b=wrL32plPML1fnBykAiFWWCw9zUtGYvbeJpsFtjBb/n3ZtvdfqxS3gF6qrVtK7YLyQf
-         xhEMsujGXS0aTvzj0vbLvU4L4Sh/k5xMj7jeifDkfPKidxDaFsGUhCzgFzFt+Px3h95Q
-         IDr9enygsO8+x/5WRNCRn/WNaypTiB8z0wKv0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779875520; x=1780480320;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=2PN98aCoYgmIhUzX6WmjhPxG9QNi1I86AbhbpQXMYRA=;
-        b=nJ8/ZU3Po8Ozs0e+fibcMozm2rONC571y1TqVmTutFPFt+krevF9iqDUgXcltHMcZR
-         bERObOML2EP154ERznfCBhSUJX3v+CtfgsRFv1s/aPt20dvNVrUh0B3e9fwcHRaYMVnL
-         l8dvWynOd1/4ZCrrp3mc323vKq696PdoUpx2b+T0EZi4Azlo0rw6DLDYe7uCL/EAWBHd
-         pObSKIMoSNGNFu4zYh9RIJL6VHPdotqmQZtqBPSAQUDwMSAYqcNPvWc/s9oFgFGxV6OK
-         VoDAM2/cm20i4kUkyMAb03WeYBXiGJmNx+jHk0OHoFSlfTWK3nJgCkgCjmfvTppzekP4
-         jpkA==
-X-Forwarded-Encrypted: i=1; AFNElJ+MrypC7AEwXXhBynszqrDzd2eS6TOBNvx2R9TSK9IPk3Q7OswOdbXSZYD5z28003jW7dW4yWE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxusLus7GP8jbByTUJuskrdFGtd1JakXcdOIDFJkJ3dSgl7XY7N
-	Zz9MTwtHwPda1pz8aEx8SN9oSSb26umseXrnt8HeIW0Mq0VPsMfghrjl9IMuaoWfc4MkHjS60PE
-	j4G8piYYZgHirU+/u57DumpdJVELPVz1pyfarZDFKKw==
-X-Gm-Gg: Acq92OF7T1MXKjU+PTtOKuTeJOoc0/KLlqi2qEREyGYzZj8FJrIDG5WwWJy9irV905y
-	8sNCHiDg72jLVyNW1mbi88Aco0Di557VGCDITemJQglciHICWIr/DyRnXk9iGIjJfxAjJB3c/fK
-	sVeh6AaJsO1yyQXKRYWvuBwujetezQaZI1O2MO2TF8Wr6LQQNZN0enU7XRddP4VhU32CE69iNxq
-	HstOofkmeYbJ2MrKKBzmlnB7jVKVTvF4L/aWRV6bYjBNsoWOtdAh1dcn0ou4WzyHqYiQJd4BGM9
-	TeCs3fBPS3QgYsRPDUrCTgaenrL9uPqu+WNbwCsr
-X-Received: by 2002:a05:6402:e10:b0:680:ccda:55b9 with SMTP id
- 4fb4d7f45d1cf-6889c47031cmr11449807a12.16.1779875520030; Wed, 27 May 2026
- 02:52:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="bFzNjFgK"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=qDNthRWA2I6xxWDmC7zBgk0SHwIZmNehKID+7fBb0BIBZDKVsrZ+rDXKcG5Sce77k+FgOyk8jg5vz3xpsS3Abwe2HnX+5RahtUG4qgHp1UcJV+xCNmfsnNEHkdYeT+5EVV7l2cHYs3Pin8edV6XJNYeHNL7YJJIAJrBkPhHqZxpOMvYi5N5CVItLZ2jLXn+BA12gLKjfIHoqEg7lj7NBG5cAXq4F2O250sHuKajbHmtCjgqix+BOTTVh03P9z/YNlFifuN3iJrtQCAR+DGp8n6hJwKw0E9kbBUmyPORnsSDYCHG01bqeuSsBHsOgBdxF2y7rcFFGwLoclRbFaY15SQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=mePD1+AFaG79ukMOjTrZIF2pgBU7tXADn8HlkIPSQ/w=;
+ b=upJYYu26HjBfi7RjNjIBO6VGb65p5cfogpK0A12tl1t0KK3vAZk1RhZ4zYjU3dL+lLaeKYvmYEbOUolaT0ZenMCG9AZ0JyeXgcjkj2CFriftPmME8VcG6y0234XhcMqUFRlYOIWGV+CK/SNLnOXZs7XIEuLVvBjHAqfnNpaulnXhU0V0oCyIeJOg+i8IOcMcGV11o1Ovg9we3Yn+IL7wt0KalWPwQspwoUdmM9Ktst1qtYC/Ctjf+JM9iYevD+u/HXlT3BvzjQL1RKgX9q/qIZy3wUb5NH4G0X5WnWxmQhn57+Z56L460kqpFRPF+SOHbp9CgAu6269+ZFSPkdDunw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=mePD1+AFaG79ukMOjTrZIF2pgBU7tXADn8HlkIPSQ/w=;
+ b=bFzNjFgKBx/Tw7rfn505IWYNtngHBVjPiXEkprQfCia0Y6IwRm/ZlT806N6D2nkn2gD+BdvT+i/k0zdoedKk7Q9U1vw+pH9vQex9hBDBz1wThvH9cRtKOjMav67r6ibUi2xFdlodceuj/TaM+TEyD1k0sO11e60HKBsNS+eqMj28/aW6lcd5/v2L1xerWm3MhjLLaduH9d8cYlBd/Lm9jXiOhk3zs8Hsqyf+ZZZS4N0t/bJodEf9HCJn6BFfQSrLI8ALc1fhLtReLYGcZTJEL1emwVYO1589+gnFq2BjGmBDFabOTiP4zL6Dse82YlLFtV5jHFkAXb33XAhfeg4vdQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from VE1PR04MB7216.eurprd04.prod.outlook.com (2603:10a6:800:1b0::22)
+ by AMBPR04MB12205.eurprd04.prod.outlook.com (2603:10a6:20b:758::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.12; Wed, 27 May
+ 2026 09:59:18 +0000
+Received: from VE1PR04MB7216.eurprd04.prod.outlook.com
+ ([fe80::a9a5:cf83:dbe8:1f74]) by VE1PR04MB7216.eurprd04.prod.outlook.com
+ ([fe80::a9a5:cf83:dbe8:1f74%6]) with mapi id 15.21.0048.019; Wed, 27 May 2026
+ 09:59:17 +0000
+From: wei.fang@oss.nxp.com
+To: claudiu.manoil@nxp.com,
+	vladimir.oltean@nxp.com,
+	xiaoning.wang@nxp.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	chleroy@kernel.org,
+	andrew@lunn.ch,
+	olteanv@gmail.com
+Cc: wei.fang@nxp.com,
+	imx@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH net-next 0/9] net: dsa: netc: add bridge mode support
+Date: Wed, 27 May 2026 18:02:08 +0800
+Message-Id: <20260527100217.794987-1-wei.fang@oss.nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SI2PR01CA0044.apcprd01.prod.exchangelabs.com
+ (2603:1096:4:193::8) To VE1PR04MB7216.eurprd04.prod.outlook.com
+ (2603:10a6:800:1b0::22)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260526064835.2233822-1-swan2718@snu.ac.kr> <14018241.uLZWGnKmhe@ripper>
- <CAL3z5EbfEeMn-2_JrvcXRtuKTtruEf+8MX9tCmn-N9edvvrjwA@mail.gmail.com> <10856691.nUPlyArG6x@ripper>
-In-Reply-To: <10856691.nUPlyArG6x@ripper>
-From: =?UTF-8?B?wq3rsJXsiJjsmYQgLyDtlZnsg50gLyDsu7Ttk6jthLDqs7XtlZnrtoA=?= <swan2718@snu.ac.kr>
-Date: Wed, 27 May 2026 18:51:49 +0900
-X-Gm-Features: AVHnY4IeA4ihcvnDzBQR8GLvg4LxRUs2gOTtjT3c6nUk8tNgpf6NhjYMEVU7tkc
-Message-ID: <CAL3z5EZDr3sK5pOuiQmX4agLy4-6sJx3UMw9kDYfApFJ6uYb-w@mail.gmail.com>
-Subject: Re: [PATCH] batman-adv: fix DAT purge use-after-free on teardown
-To: Sven Eckelmann <sven@narfation.org>
-Cc: b.a.t.m.a.n@lists.open-mesh.org, netdev@vger.kernel.org, 
-	marek.lindner@mailbox.org, sw@simonwunderlich.de, antonio@mandelbit.com, 
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	horms@kernel.org, Tejun Heo <tj@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: VE1PR04MB7216:EE_|AMBPR04MB12205:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3aec70bc-12e0-4a34-9f0d-08debbd69da1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|1800799024|366016|19092799006|11063799006|56012099006|18002099003|921020;
+X-Microsoft-Antispam-Message-Info:
+	IIPzlQ+rOFggmP7+K9uOLnvWRg+jjy3E6IX43KpWctlZbBEZGXp17sprr1hyKf7kEbYoc9jsIrRPwPrkMhOOed+2JRxlsaQaUwJxmKPCRLxR6Ym8tNK6yUe+Rt8cvZtFMDpnmdVJXOEGGBEsUGyRnPtNC38zMI4RBli+t8SxN6YquwnTHzLRN8r2IP9Jg2waf9b06n5zDazpTUusY5x24w7HIAdTt/ArRW/Ey6rYhcnCMYmJzepGeNQOdBI4gO2uo/RXfvxzh5TtidnjhMO9w1EtshBeevbynrwSIiQmF8zv3BYEtbIaRt68CRSfVBdSVTNbDcsJVleMoZpbb/bLIZwtdXTFyFRMtp+mCyYXPq77ino0VTwH/2GpBybDr5VB3D6SQGT+LiOReey4ElyFs55COTgjmh0PxYkgF3oiOSA/xbb/B2EqAGy2Z7VtZtDEE/5+j6ATUFtICru1WArzrZbzXrWAWWTyqPWGEMjSEF1OwwiPRYWJoqQpcVy++6FEhe25qGNmnHZb9o3j1rv/RF9zwQdJ+157cc2fpiPulYS0oj8LTqlUX53/qvYTbXt6XB7MXM7ElcqrbgElpkS9yHxdJayiK+3dAogS8R7PaSP8zwDWsR6C2M5aeBQD0ELzl5nBfQx/KeVS575PR/MLlnyQw9kM3WnBcuqr0FKoP3al00XOOGMIlN/mG/rM0lbjcTiYxD0kcmckwWaKJTXJGv0YsgAWSqj235qyiIRMCDI=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VE1PR04MB7216.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(19092799006)(11063799006)(56012099006)(18002099003)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?5EyUTlLosFosInwQN1p3sU9WpMXzwnoYnEV5JzJZX3Std9T10z9BSJH3dAMH?=
+ =?us-ascii?Q?AixM3qv3vdi4eBmen15OKobHOJMfDIexPv1mZLQXSA60+srixYDyXDCEcx/h?=
+ =?us-ascii?Q?W2LHELu/zhUe679E7ba1W3sfbmMOYJueWzHDhOgWWVfmdxW2IeWl1/GoIcGY?=
+ =?us-ascii?Q?+fE7bQ2c/YkhwV7byRVsPjZQWnMAznApAh043dkW9YWnxOKTTYKjpSqV03ds?=
+ =?us-ascii?Q?cV3GglWKP/VziRruNFvna3Y+kMj8SWm+bFLBlFKbyRQk0sVo7j7dCwv4YkQY?=
+ =?us-ascii?Q?KAt+0nX8RLJ7g/aRO8t6tU7D8vuDJd0iGIFT0V/+b5nf7CatTmwIBobZmcyb?=
+ =?us-ascii?Q?aHi1GsuPHwFaq+MAeeaZASRmMoFNmrV9Gr1pRixX4JMzukTJYBYA/tJDD9AB?=
+ =?us-ascii?Q?M654rIYAHlGkMk9fZuPjxOFTWPuwZY79h6BZkxmqLrspZr76xSpPo2Yd2pBu?=
+ =?us-ascii?Q?gU56SvtnL3KQo/aUH3iQLLLrjLST04Y5SKnj2mMeBtJmFG3umJlsbDjbskFv?=
+ =?us-ascii?Q?XeLCTtsHFfxbzoOqB64CeFSAgp7FFPtZm3z6BD0HGg8+ClruGajVLemLlJUj?=
+ =?us-ascii?Q?MyQN2bMYE5Gwc/Tv+j+A3eMIQ4+SkWQorMKicNpXX/MAPptoBrFzUO/IntIJ?=
+ =?us-ascii?Q?zpqzWsz2AbVJZ2Yw6n7eReSQj80jWkSITe0n3tzvQDo7mkQcFeA/cGxZ+SMm?=
+ =?us-ascii?Q?o4O0FO5EnHoFFWDpXBnPf1on+H1K8UnH4Zkj4AGxF8xS3CSaxXYOyqicXgn+?=
+ =?us-ascii?Q?Bq656b8iCsRFmsLX4QvQ2o6868p+P1zXJMc0ztI0bHR85zmtIGVNz9p3Qtya?=
+ =?us-ascii?Q?idauBZjiXdwtoAmppjgQkx4sOEMLv7LzcO64LAASSKGQvUCUInTlYuoXz+FA?=
+ =?us-ascii?Q?4JQPukCZgI51S7VcusO7QiISPAeUTFl4rBO5bYZkXQGN67y+Pa9pAsekxhuI?=
+ =?us-ascii?Q?+9HoR94dbY0HxGuWovo0/GwatouXFHuIcm0gbtwFzrK56IPgYca9neXbdTBT?=
+ =?us-ascii?Q?B3pezlwT41POFDmE8VBVAHo71Ts8EQ7h1Kp1p6RjAln8AOgJsxo+eiKVkyRa?=
+ =?us-ascii?Q?dtFUjX0/J2kskpX2X7UzgAy8FkY0thYWBczesLlV2rh1Jc1aZqTRb1AOLmrb?=
+ =?us-ascii?Q?zB9mIABBAtUHNVNAOP7YxX1fA3uXy3vDIScLjHl7Gw2ND/GFFLVmVmqyLOGh?=
+ =?us-ascii?Q?G5CaH7R0HPOk8t7o8AFW9jHiBZhZ3nq71DhN99fyMr244gho5lA8kGDu5m/T?=
+ =?us-ascii?Q?qPWiP94ql3E4S7lpxS17XeyfQY0re+T+IA0JoMEr2jsyamjE3tijhJENrhfq?=
+ =?us-ascii?Q?8q0jxKRJ0C7OpSGRx3sKV9/qL/riJxYKxfanQPwneO67+21FGYH422mrd0dk?=
+ =?us-ascii?Q?JCSBMwmq1703jCtBcCJAEXw1Nu8izzi5OpR6eYL88dA+fjs67X2pxGzV/P/j?=
+ =?us-ascii?Q?VdHIJ83ooTcIoki+SjjNpTTy7Qnrj9JQWVxL2TzvbmyWKpZmD2y+oyOMN2bk?=
+ =?us-ascii?Q?MOafEJWhn38wKWER8+xBXnHcSEOGAoZ2NizyO/lbkyaaO97PiHgYG8XKvLBz?=
+ =?us-ascii?Q?CmEvhSHtbbYpQglTbKbtD9sRh+YayBZ87fUbaIyKFvYlhVguCMMc5DXHf4OJ?=
+ =?us-ascii?Q?a9YSYnqjPa+yCUTsTAqQhx8iTB5FskxDqTggXc0dwmaf3V3w5w2Cwo9cb7rx?=
+ =?us-ascii?Q?VX0sRTi4wKyfUPCRHSnj2Kj3W6jIEX0S1O6oT4EcrsLYSpMUqMNkCVLCBHyn?=
+ =?us-ascii?Q?y71DWo+TjyiMWnxNL2egVQ0l/4eHRIfnsjt7NPvkJuJ2ksb2Lt74?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3aec70bc-12e0-4a34-9f0d-08debbd69da1
+X-MS-Exchange-CrossTenant-AuthSource: VE1PR04MB7216.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 May 2026 09:59:17.8424
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: xjT+n5a7UolbxnWGP5qjvWwQ0Wik93uf6CugAEf5i458xyBJbsQwnIDMmemoFjxcCZE/kat8bSvwWlCbzsceGOJNQqRh6eNboENRpRjE7HjWXYrSpvBblqfKJ5DF94qI
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AMBPR04MB12205
 
-I was running a modified syzkaller locally and the crash came from
-that setup. I've since lost the original log, and looking back, I may
-have confused an issue in my tooling with a kernel bug. I should have
-verified more carefully before sending this. Sorry for the confusion.
+From: Wei Fang <wei.fang@nxp.com>
 
-Soowan Park
+This series adds bridge mode support to the NETC DSA switch driver,
+covering both VLAN-aware and VLAN-unaware operation.
 
-2026=EB=85=84 5=EC=9B=94 26=EC=9D=BC (=ED=99=94) =EC=98=A4=ED=9B=84 11:18, =
-Sven Eckelmann <sven@narfation.org>=EB=8B=98=EC=9D=B4 =EC=9E=91=EC=84=B1:
->
-> On Tuesday, 26 May 2026 15:56:58 CEST =C2=AD=EB=B0=95=EC=88=98=EC=99=84 /=
- =ED=95=99=EC=83=9D / =EC=BB=B4=ED=93=A8=ED=84=B0=EA=B3=B5=ED=95=99=EB=B6=
-=80 wrote:
-> > Hi Sven,
-> >
-> > You're right. I re-examined __cancel_work_sync() and confirmed that it
-> > internally disables the work before flushing, so the re-queue race I
-> > described does not exist. I'll withdraw this patch.
-> >
-> > Thanks for the review.
->
-> But you said that this was reported by syzkaller. I can't find the report=
- in
-> the official list [1]. I am guessing you have a reproducer in a private
-> instance and tested with it. And if you tested your patch with it, you ha=
-ve
-> found that your patch fixes it, right?
->
-> Can you give us more information about this to let us figure out what is
-> actually going on?
->
-> Regards,
->         Sven
->
-> [1] https://syzkaller.appspot.com/upstream/s/batman
+The NETC switch manages forwarding through a set of hardware tables
+accessed via NTMP: the FDB table (FDBT), VLAN filter table (VFT), egress
+treatment table (ETT), and egress count table (ECT).  The series extends
+the NTMP layer with the operations required for bridging, then builds the
+DSA bridge callbacks on top.
+
+Since all switch ports share the VFT, so only one VLAN-aware bridge is
+supported.
+
+FDB aging is managed in software.  A periodic delayed work sweeps the
+table using the hardware activity element mechanism, with a default aging
+time of 300 seconds matching the IEEE 802.1Q standard.  Per-port entries
+are also flushed immediately on bridge leave and link-down events.
+
+Wei Fang (9):
+  net: enetc: add interfaces to manage FDB entries
+  net: enetc: add "Update" and "Delete" operations to VLAN filter table
+  net: enetc: add interfaces to manage egress treatment table
+  net: enetc: add "Update" operation to the egress count table
+  net: dsa: netc: initialize the group bitmap of ETT and ECT
+  net: enetc: add helpers to set/clear table bitmap
+  net: dsa: netc: add VLAN filter table and egress treatment management
+  net: dsa: netc: add bridge mode support
+  net: dsa: netc: implement dynamic FDB entry aging
+
+ drivers/net/dsa/netc/netc_main.c              | 882 +++++++++++++++++-
+ drivers/net/dsa/netc/netc_switch.h            |  34 +
+ drivers/net/dsa/netc/netc_switch_hw.h         |   6 +
+ drivers/net/ethernet/freescale/enetc/ntmp.c   | 431 +++++++++
+ .../ethernet/freescale/enetc/ntmp_private.h   |  14 +
+ include/linux/fsl/ntmp.h                      |  60 ++
+ 6 files changed, 1413 insertions(+), 14 deletions(-)
+
+-- 
+2.34.1
+
