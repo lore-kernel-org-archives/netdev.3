@@ -1,184 +1,70 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C09633BB12C
-	for <netdev@vger.kernel.org>; Wed, 27 May 2026 21:59:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 017CF3B4EA3;
+	Wed, 27 May 2026 22:00:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779919191; cv=none; b=hjmQvP3csdJPLFc1dhU2lLYPzaXkOe27UxgFkpvGo8Z9MAzP8MqAu1pz6iFO4iSLdbcTQ1IrMgZW/kfzKO+CiEMWvKyQNkpT1o6Hg1M52cj+955OJ07fZyQhdQIsZZlOTL2co8lC1bYLhKMFMjF6XFogTfgdpmxJsuxfTdgzpKM=
+	t=1779919255; cv=none; b=IGmMcUbXxP7zaHJIskUcg0h9Wu5VPJEuKnikRYZnZYFoA8CJOi39AuRryS4CEWr+o2RdxraZrMZoFahCsBDh2hMmxOw0w1WK5zNapp1a68ki4oltvgjZcP85x72bp//Yfy6jObO82+lXqwSjqmKBsPQuPBefZROH1oNYQeBct14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779919191; c=relaxed/simple;
-	bh=ecSmVrDhclSwm98ZZySKbvqSoWbP2dNIrp67vAUJjxQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=cBXTeNqNIsQEKwWSyzhV4tJj2U7sZOpk63Ur2qhGkSWOXMQZUSg2bhEj3tSCEH1cOIwe1liq5Wob0wD132SKlHsJQ98N9MMpdDJoYXy7HM22GbhLaavQMsRC+fK4tOewQzyNWzH1KEqs83hzNS3+6J2D4U8lO6o3tlcGq7oarnM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=ARJ+2sFJ; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=3Ul+WZ01; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=ARJ+2sFJ; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=3Ul+WZ01; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1779919255; c=relaxed/simple;
+	bh=K+2PBOTkglAW3miJSMhH9wApdWPjmdrMRgBpbNA4E1A=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=q3jVmhCQ1bdYLyFyocfm68D/EJJIwZmEkjZ+D7Rl7FXuIE8ENV6lk08dxT3k9tRrs8FSeExRsEFqdZnGjNjIFT0QT+Dn7oxpnIHoO3eqiTf1SXJqnabjg1gLKxJkGRQMAgE5CFzoiVdLaPOtoPD04yH5ylFpLrcggZvfyLkm2Qg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GMynz8ee; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="ARJ+2sFJ";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="3Ul+WZ01";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="ARJ+2sFJ";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="3Ul+WZ01"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 035AB66D10;
-	Wed, 27 May 2026 21:59:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1779919188; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=guc3pYHlDiJY43UZaflDN8nfI6FZFePAvVAZ/9ln4YQ=;
-	b=ARJ+2sFJDd4+qq+IHF06mvn4obOwLt6wvY1jcK4SBepzy1+6RCk8zKvFb58t+46CwyHWyf
-	Wz2VE3QQmLmDYluyL5+BtsBP94TRLoxMxIR8r2hZ8RsSOpZMDRKHOz38xpDA531NSCuV2n
-	CPxmjjndE4n5HmurYiqadQtIUoWK9+Y=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1779919188;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=guc3pYHlDiJY43UZaflDN8nfI6FZFePAvVAZ/9ln4YQ=;
-	b=3Ul+WZ01LtyqbaJOQ9O/sIGLjupePEvKqNTPHcp5G+6sEUsI5+tFt0Wju/9FKjOR3H4E7f
-	Ywi/IgTET0z5viCA==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ARJ+2sFJ;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=3Ul+WZ01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1779919188; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=guc3pYHlDiJY43UZaflDN8nfI6FZFePAvVAZ/9ln4YQ=;
-	b=ARJ+2sFJDd4+qq+IHF06mvn4obOwLt6wvY1jcK4SBepzy1+6RCk8zKvFb58t+46CwyHWyf
-	Wz2VE3QQmLmDYluyL5+BtsBP94TRLoxMxIR8r2hZ8RsSOpZMDRKHOz38xpDA531NSCuV2n
-	CPxmjjndE4n5HmurYiqadQtIUoWK9+Y=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1779919188;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=guc3pYHlDiJY43UZaflDN8nfI6FZFePAvVAZ/9ln4YQ=;
-	b=3Ul+WZ01LtyqbaJOQ9O/sIGLjupePEvKqNTPHcp5G+6sEUsI5+tFt0Wju/9FKjOR3H4E7f
-	Ywi/IgTET0z5viCA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B48235AA46;
-	Wed, 27 May 2026 21:59:47 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id JiUaKVNpF2q9JQAAD6G6ig
-	(envelope-from <fmancera@suse.de>); Wed, 27 May 2026 21:59:47 +0000
-Message-ID: <675083b4-e015-4ff3-836c-798e0a971194@suse.de>
-Date: Wed, 27 May 2026 23:59:47 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GMynz8ee"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B62A1F000E9;
+	Wed, 27 May 2026 22:00:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779919253;
+	bh=x0pxT4HZIhcs1HqpqHxsIDiMExdPoz+EHtFOvLXYu9g=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=GMynz8eeNUxQboU0DGK57X7n0j/Eh1ZhKqhlSmEYcT5h7nyrPvC/o5aNmKRO72cCm
+	 1AJeyDhqFqVssTE81BqEcsvOI3gXCn40UIjXhp1Nq7rN1x5m5rl8bJ3+eoBUVNRdr8
+	 eEElKDA/hsxq50ecSoWtIr11JirnvufB9aJZPErlilcQdocmnnHl2lvWoXel/ew/Ju
+	 G6eOU+DWZp4Bzbd03th51HcvS+lFd2TNBLjKqeDi6pe9a69XnUcOYFA2BueS+7LK5b
+	 DeAP2QDZ4l/jI1wXyi4LNgEoQWstlYSTcMyxhpuJbU7mpoKsi3I5ChP/dMKYbCa+op
+	 URhuv0fOHIBwg==
+Date: Wed, 27 May 2026 15:00:52 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Ricardo Robaina <rrobaina@redhat.com>
+Cc: audit@vger.kernel.org, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org, paul@paul-moore.com, eparis@redhat.com,
+ edumazet@google.com, pabeni@redhat.com, horms@kernel.org, Steve Grubb
+ <sgrubb@redhat.com>
+Subject: Re: [PATCH v3] netlink, audit: prevent false ENOBUFS on timeout
+ expiry
+Message-ID: <20260527150052.68edb415@kernel.org>
+In-Reply-To: <20260527192150.949400-1-rrobaina@redhat.com>
+References: <20260527192150.949400-1-rrobaina@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Problem with IPv6 privacy addresses in 7.0
-To: Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
- Yumei Huang <yuhuang@redhat.com>, Ido Schimmel <idosch@idosch.org>
-References: <20260521135310.GC977@cmadams.net>
- <20260526175743.1f2c3761@kernel.org> <20260527010641.GA21073@cmadams.net>
- <20260526183122.348e44e7@kernel.org> <20260527215135.GB16443@cmadams.net>
-Content-Language: en-US
-From: Fernando Fernandez Mancera <fmancera@suse.de>
-In-Reply-To: <20260527215135.GB16443@cmadams.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Spam-Level: 
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Queue-Id: 035AB66D10
-X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-4.51 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.de:dkim,suse.de:mid];
-	DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	DKIM_TRACE(0.00)[suse.de:+]
-X-Spam-Flag: NO
-X-Spam-Score: -4.51
 
-On 5/27/26 11:51 PM, Chris Adams wrote:
-> Once upon a time, Jakub Kicinski <kuba@kernel.org> said:
->> On Tue, 26 May 2026 20:06:41 -0500 Chris Adams wrote:
->>>> Hi! Adding more people to CC. Do you know if you upgraded from 6.18
->>>> or 6.19?
->>>
->>> It was 6.19 to 7.0.
->>>
->>>> Would you be able to try testing with some commits reverted?
->>>> On a quick look the candidates would be:
->>>>
->>>> cb3de96eea66 ("ipv6: preserve insertion order for same-scope addresses")
->>>
->>> It's this one.
->>
->> Phew, the second one was mine :)
->>
->>> I figured out that it happens after stopping a VM (and I usually
->>> start/stop a VM for a bit in the morning, which is why it happened more
->>> than once).  So I set up a VM with a nested VM, running up-to-date
->>> Fedora 44, and then was able to bisect pretty easily, and it landed on
->>> this commit.
->>>
->>> Fedora is using NetworkManager, and IIRC NM does some part of privacy
->>> address management (right?).  NM didn't change, so maybe this commit is
->>> confusing something in NM?
->>
->> Sounds plausible, pretty sure we knew this commit was risky to begin
->> with, but we had no direct proof that it'd break real life users.
->>
->> Revert is the right course of action here. Would you be willing/able
->> to send the revert with your problem description and a Fixes tag
->> pointing to the reverted commit?
+On Wed, 27 May 2026 16:21:50 -0300 Ricardo Robaina wrote:
+> When auditd is bottlenecked (e.g., by slow disk I/O), kauditd blocks
+> on the netlink socket wait queue (nlk->wait). If the wait timeout
+> fully expires (timeo == 0), netlink mistakenly interprets the zeroed
+> timeout as a non-blocking request on its next retry iteration. It
+> then triggers netlink_overrun that drops the event and poisons the
+> socket with ENOBUFS. This bypasses the audit subsystem's internal
+> retry backlog and falsely returns an error to user-space:
 > 
-> I did want to add a little more test note:
+>  auditd[]: Error receiving audit netlink packet (No buffer space available)
 > 
-> It's definitely an interaction with NetworkManager.  If I stop NM and
-> run my VM start/stop test, nothing unexpected happens after.  If NM is
-> running and I do my VM test, when the next router advertisement is
-> received, NM replaces the privacy addresses.
-> 
+> Unlike standard netlink users, the audit subsystem has a hard
+> requirement to never silently drop security records. It uses a short
+> finite socket timeout (sk_sndtimeo = HZ/10) to escape a stalled
+> auditd and safely requeue the message internally. However, once
+> netlink_overrun() executes, the ENOBUFS state is set on the
+> receiving socket, and the audit subsystem has no mechanism to
+> intercept or clear this from the outside.
 
-As someone that is experienced in NetworkManager, I can confirm it is 
-related. NetworkManager is querying the IPv6 address and when the 
-connection is configured with ipv6.ip6-privacy=2 (prefer-temp-addr), 
-NetworkManager creates a route to make the system use the temporary 
-address for outgoing connections by default.
-
-If the order is messed up, the address picked will likely be too. One 
-could argue that this is partially fault of NetworkManager and that it 
-should check the timestamps or preferred times rather than order.. but 
-well, the rule is "do not break userspace".
-
-I hope this clarifies things.
-
-Thanks,
-Fernando.
+This provides no improvement over v2, let's keep discussion on the v2
+thread.
