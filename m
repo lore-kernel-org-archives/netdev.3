@@ -1,187 +1,101 @@
-Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011054.outbound.protection.outlook.com [52.101.57.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f180.google.com (mail-oi1-f180.google.com [209.85.167.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 613BF3EF650;
-	Wed, 27 May 2026 12:23:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.57.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779884639; cv=fail; b=E2L3UQs+hJ3/0QVK7Zv7RZ62GNcEbgx28cO3IEEGty/acN/dVyKzt4RcipujX1yzgsSSOquL536TmvxTsptDUk0thkFyeN2uY8JU3i4lQ/HjjbsydtIc+ObKZCk6cjQhJDQcm9pOqBi5l8nvyto/hQUocbQYW4o/D4HeVjqheCQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779884639; c=relaxed/simple;
-	bh=/g1BRLN8Wc/onC/28kaqRbxgXMw2qGnu7TDfpVfAegw=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=BQgjx79QtvW2AmMJfKMc4K7eeZNuNSPGRp8TjonHERJX4QxaqQg++vRQxtgARM+bshdT5aC+A5OTaQbGh6yuuGHP7H7PrnuJUa5+fFsABJKC/OUgE3wCXqMX1FYHzNEDJhOsdLOFgeEaoLmUB8dYXzmFyJbEluLZ3Niu1GvBZyo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=PF1sBbjV; arc=fail smtp.client-ip=52.101.57.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C06713F5BC4
+	for <netdev@vger.kernel.org>; Wed, 27 May 2026 12:25:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.180
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779884710; cv=none; b=YNOIJgWFdfHXNJe7XBP4jj8+Wj+7GdcW08LJPMo8aHaU8PkkADdeHXJLR9LFbZuZooFxSeDDko6VaC4wxsjZOVWTsDwEuX13CWHHa4cGwuzT24/agzRbZJ/mk05MtoFoEH/ibXaRW2zlKKh74lCmsxgG/lfv1RNsmgGO6CKzdQg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779884710; c=relaxed/simple;
+	bh=mjwGIZ2kZHJmgR3R62XVlxDdBSkKuWbIdCvpQcxxNzk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=lKATEGYSExb2ziBQvbP7/CVbO3RkqAPozZR0/nQJpZovy75sHdGjlPB3c5YLIDYFmi0S5JHQ56CDsE02CaaOa8M9ElTziZqXRGBrwnAiTqGenziUSXaMn/PCK36jyzGqKQiyjLOCD7K4sCibG5TLnq2uMhYrJb1yr+CJudvnuEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=northecho.dev; spf=none smtp.mailfrom=northecho.dev; dkim=pass (2048-bit key) header.d=northecho-dev.20251104.gappssmtp.com header.i=@northecho-dev.20251104.gappssmtp.com header.b=RqnP3vL/; arc=none smtp.client-ip=209.85.167.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=northecho.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=northecho.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="PF1sBbjV"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=JYKxU8Z4wIrOjcOYRRIKrKGS2PfjM6F63eVhnxvmsuGjDzPsgBSehy2J8c/keGXJ6woRXVjpTaDbK2gTjEcefg4YXN5jfcu9Y8mFCCyDnCsW8lmo7s6b4HAKz948PT/W0FZ4Uy/xvNwZ9SYoDqwAeWyUz8NWItAOV3wZfwRxWjYrlEWymCUj7ppEAgSJ+TWdhx2YPE9bhsv212jYJ4WOzQxOfVjvsXfTMfedILXV/y3178/rZ6twZf6QU9h+GESCw6swfFI4UlL4BkDSb0WQrZI/ItqJw3IkNW9oRHSeoYxlvTjUnBewdLK0honP9lcW5zWW89HUICC8Tk+dDX9Ksg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3LFJ8TI5Xgp4EunNlZxLxAdgx/Pxmn/Au79ZrPFZ5cA=;
- b=WbQyC2f0x2XJhztTM8NaHXfW0k4JgXs69Bztp/I67sQzxVWSqAVz/ao9ZTKB8+vFkuUItjFLK1f0Eo9pSdq5N7f9ePpl1NbPmeJIqjlFrU7HxCkUh8jIR51i8g2TgMsBIXNaKkLZrOkcH6vhCPlG93LkuCdcTHuTJanMP74ddj6u9By6Y6tRW8hR1tszSM/38AYP4aUSpSuynY4dFdHFm7bK/KrWZTCpMPS+9UeRAo/Y7IZ9p5tHaUQKT2Z6lq9WhhqE0ODIk4EfxsxbhRhiLtvsvUKeAc23NSGYVMHDOwPCrxoYKcz17OdjXk7ny3/020QUZ1nAlS/XDwtVKGjm1g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3LFJ8TI5Xgp4EunNlZxLxAdgx/Pxmn/Au79ZrPFZ5cA=;
- b=PF1sBbjVKliOxbWcKsMnk6zV3km8qm1d2KNl7Qdpl5pj4RapYbizQZSFQoFnet3lU1r2U0x12/OowrgZJDjN14WuBAm8I5h7I5efhobDu5yeudmCtYRUKrs/E6eiQ8bmMn1IRrwXhp235qis6SFVCRCCsEApMVz1QQTm8WDi+BI=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
- by CH3PR12MB8458.namprd12.prod.outlook.com (2603:10b6:610:155::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.12; Wed, 27 May
- 2026 12:23:52 +0000
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::ce69:cfae:774d:a65c]) by PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::ce69:cfae:774d:a65c%5]) with mapi id 15.21.0071.011; Wed, 27 May 2026
- 12:23:52 +0000
-Message-ID: <ff247643-73e7-44e2-b3d5-8ac0a8efb871@amd.com>
-Date: Wed, 27 May 2026 14:23:46 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 0/4] vfio/dma-buf: add TPH support for peer-to-peer
- access
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Zhiping Zhang <zhipingz@meta.com>, Alex Williamson <alex@shazbot.org>,
- Leon Romanovsky <leon@kernel.org>, Sumit Semwal <sumit.semwal@linaro.org>,
- Bjorn Helgaas <helgaas@kernel.org>, kvm@vger.kernel.org,
- linux-rdma@vger.kernel.org, linux-pci@vger.kernel.org,
- netdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
- Keith Busch <kbusch@kernel.org>, Yochai Cohen <yochai@nvidia.com>,
- Yishai Hadas <yishaih@nvidia.com>
-References: <20260526144401.1485788-1-zhipingz@meta.com>
- <a8cd01ab-d7aa-465d-bfa3-431f78f33ee1@amd.com>
- <20260527121438.GJ2487554@ziepe.ca>
-Content-Language: en-US
-From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-In-Reply-To: <20260527121438.GJ2487554@ziepe.ca>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: FR4P281CA0024.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:c9::15) To PH7PR12MB5685.namprd12.prod.outlook.com
- (2603:10b6:510:13c::22)
+	dkim=pass (2048-bit key) header.d=northecho-dev.20251104.gappssmtp.com header.i=@northecho-dev.20251104.gappssmtp.com header.b="RqnP3vL/"
+Received: by mail-oi1-f180.google.com with SMTP id 5614622812f47-48584e7bd2bso302668b6e.2
+        for <netdev@vger.kernel.org>; Wed, 27 May 2026 05:25:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=northecho-dev.20251104.gappssmtp.com; s=20251104; t=1779884708; x=1780489508; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=OOs/E8rK/exLB/8Zk3Pk8ZyyhyccLxwjQ0Syjke79QM=;
+        b=RqnP3vL/pYGXLZQpnic5o7jfnMb0U7HkWjm2FQW1jsO01TdtGYcKMy4ZHpcsZb1Ycy
+         jiKy35rI5r2hgx+gAtTC8b3a38Qdaf/JFq1Uof2Yg9qsBjgGVqsouKpZbYNqznCDsc1J
+         jWIrb309XqqfCmy6zcGemXybFEfAdPoiFoKb7D+VsLSKIZ+I1iDwTBKQogpX3pPU88BL
+         Q77sjKCU0oyq4/FXhYplL1k1Qihnnp1VOsBw0ayiIj3imdsDCMlXWVnw/ZDhwL+J1/2l
+         fragFjpF3oxlQYeqPOtB3/jflGJ2qxqQiF4XLSDyAAo+r6KKBVxCtsWnnCt2WJbCGfwl
+         h0pA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779884708; x=1780489508;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=OOs/E8rK/exLB/8Zk3Pk8ZyyhyccLxwjQ0Syjke79QM=;
+        b=pn6nU7VYIrsdRsC53+a1kMT7q3898LNLyswRW2tINxSAoykbpGspTPCKxRx9DQIuvP
+         aXe2lz3coUdKJpitlAnX0ZG9y9vXOicHkAYDownGpDsEu8ugzIRw3WwLkdjptI38oCfF
+         4hNEi4o7KtgBxxcYuaTKZy5kTJjNUq/76THEbxjDrDCLiLEFhSyLFwp1Zdi945x9/2iP
+         J2/8Xn8wb7fuZOdVRmzO4mgfEZR8FF2pFmIMfPwwV0zeyobDLnN9m1gik+430ahgr2dQ
+         X5zed/0gtAD8gOtboZXMEkQX3/o6Jz805+LctXTJsJ4vTqqw2k/RBipPiI1r5J1b3NGn
+         txew==
+X-Forwarded-Encrypted: i=1; AFNElJ96YLSx0QU6Z37tYOUPk0ktc48X0EdPK9IjEQ7a9762ytMyi7j5PwBuVNQpjVDy+SNmdtB5QfY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwuhmLwcQ3++euTFR0ZCGJMo8fGPOdAp6G30iLv1kos5N7SU62q
+	d36wbrOA3be0NRvcKGhSYiKv+QMIC16AbkaaH9UMy0moTUWx+BkX2Gh1re63qYRx9oXT
+X-Gm-Gg: Acq92OEGvfbMzNfT0hKJ+IOTB+CLGksU9N1ygRfiPRrxnGcv0r82LOtsx+ClGGMbNFJ
+	vtf+MFjWRYcGzhKNgLB0PhSvG2VIN2/64UlLdIulXmtm3xfOY/iQIHVzICTd0vuXkHEzU6mvNcz
+	j+xqrc6Ez07Y+8rJhua5pBHLEwspWsjJ4Q78swaTrrB8Mty0YbKp4r3KWWFC6/94vLEIGVLE0ry
+	yFz5WzraUp55TmL6wfJHzRb/nZThZ/dei7ctGVxA9zjOe1zyAP9au0NEN8ge8wh1D2ca0B/d6Hp
+	Ujl3yMCRnVJ4faEQ8+kWvNDcY7NX+rnext9yQ7lmf50gnzXDotzhsVR4V90UocXZ83daWN2D+U7
+	8DeoAeuvIkXet5Gm9Ysq5YKvMk0+yK1WJ74nbGAnPjTKAszaTcdc68Vw0WuQunSZCYiPcFm1rxq
+	2RCsG/MjZxDZELniUnT1qjjpOeRko1/e+lhi/08TvKv0WhERmeaXFE/Afnr/8a0vGdDwX0BsM6Y
+	P0EBypzn+Aj7Tk=
+X-Received: by 2002:a05:6808:1523:b0:479:f928:44dd with SMTP id 5614622812f47-48549ecff8amr7221156b6e.1.1779884707715;
+        Wed, 27 May 2026 05:25:07 -0700 (PDT)
+Received: from kelso.tail8e61da.ts.net (99-10-92-174.lightspeed.rlghnc.sbcglobal.net. [99.10.92.174])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-485b5f0661bsm1475842b6e.13.2026.05.27.05.25.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 27 May 2026 05:25:06 -0700 (PDT)
+From: Christopher Lusk <clusk@northecho.dev>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Jiayuan Chen <jiayuan.chen@linux.dev>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	netdev@vger.kernel.org,
+	bpf@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH net v3] net: tls: use sync AEAD for sk_msg BPF sockets
+Date: Wed, 27 May 2026 08:24:54 -0400
+Message-ID: <20260527122454.66639-1-clusk@northecho.dev>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260526161101.691d4cb7@kernel.org>
+References: <20260526025154.60607-1-clusk@northecho.dev> <d92bc603-e345-4dee-9ae9-6ad45e4e6642@linux.dev> <20260526161101.691d4cb7@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|CH3PR12MB8458:EE_
-X-MS-Office365-Filtering-Correlation-Id: 67ecebcf-9664-4648-bc7e-08debbead045
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|376014|7416014|22082099003|18002099003|56012099006|3023799007|5023799004|11063799006|4143699003;
-X-Microsoft-Antispam-Message-Info:
-	f+kRIcoiug/uMwykUen5Yk7KgfHCjhGVzvco1n8eYT26nBZVToi0PJA/LGs2c+HXxhYUjkKtV2kzECi8vXGSzPTfNYngk8HtTCFyCP79hpVifQDsMvSpWu7FhJJVpETL0Eh1luGHoWi8c7Qpa1pGJOjDn+3ZliuW8vuRZO+WSwv++WprKntm8UDgLZ/8deWasVN4uQVBj1idiCZJc3oG5xZz+3C7ICYozb/DdvlMtK7myoB2k5CgpJrVDEVF1cs5H5brOg7vplADWrXH3SukkrGLuP5UUqdfDSZFDTO6bSavZoLBFZyBdfFcYXFBNhCByg3ICtOMgNYtS4NVk5gloadicZUHCqBBKaZC/yZj/9tzBUlDDsE+qY8vajPD7Xto/A0pa5XRpQd79MtNvwnBT7aJal/33GJCuWq6Qc3UV1W5dxR3XrYwRVu5HlmYNk7JxSKVgCny8shtFsh2IZg+zS7iW9kNNbkDoHI8VnsVvQPCNMaqxk3VTs0gfmSzSqhzleIm/yLL2P30PBoGtn5So6NnerNqBRS3878aolCAhQWvsKDpTc6Hqcib3+mQvdkxIOkCCxlPCtVwJOStQeVuJmv5cu5NppQeU8jAbwnQE/wQs75ZKRmTwqCNN4tp1ok45jPnTvGbibvzxoIGT3LEYXXIUQ0iK5jvwUqQhQ70SeP3lCbMpOjfa74vr3E33C5S
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(22082099003)(18002099003)(56012099006)(3023799007)(5023799004)(11063799006)(4143699003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?bkJmbzJXeEZxTFdISnVidGNxTlJMaGFzU1NMVEpCM1ExeFU5Y0hOZFp1VEox?=
- =?utf-8?B?alhqSEtUMFJzUVRKaTFiVUo2YmY2TFM3ODQ5SElYamRnbDliT04zRkM0eWxy?=
- =?utf-8?B?YmVDTHcvUXl1Sjh5d2lNL3BhL1RZNkNJNk9jRkNjNCtCaXB2NGVMZlhUV3Bo?=
- =?utf-8?B?TXBuVGZmMW9pSllmWlBJT1ZCeG9LcnFHVG9sSHJvWVFPN0hJY1VaV05xYncz?=
- =?utf-8?B?QmhjdUl3WFJiSXhNY21DbWpMeDZqTFBLTkVJbGhNaG9CdTVDVlFtMDVKTUZk?=
- =?utf-8?B?Uk1qUStGV29vNHBSVlBnK28zc29nYWo4NlVYRDlzSkdrb1VTc004clNNZnVx?=
- =?utf-8?B?dk5sRXlaK3crZ3dCV2ZiS1FxQU83VHZqWStIdFQrb0JtU3lyWTZjejNZMStR?=
- =?utf-8?B?WkxXUEFvL080MDFCN2h5ZmordzEvQXVjMDVIaVQvY0NrZE4rOHhOQlZxNWNT?=
- =?utf-8?B?dE16YjVqRWsyMkVaR2dsTC9PT0pBL0gwUnhiMlVLT25GRkh6MGZ5ZE1ubVVh?=
- =?utf-8?B?blIybEM4cXFnd3FlYU9WTU5xQlJPRzZSdGU3bkJNNk1WcUZDQnpneldIWGNo?=
- =?utf-8?B?SVNYdU10ZEIzU2Y4QUY1dHRBdnJtVTRZaWNLSWNFK2poZnJibHJBLzErUlVO?=
- =?utf-8?B?VTgzSW9JUXlreGpBVUpzZDFSTWZFeVNuRkZTRVV3Qmt2ZWxORE8xcXNwa0py?=
- =?utf-8?B?VzVmVzhiRVVYMitUWUhTM29iYWN2UmdTV0FCd3V4Rml3RG5PZVBFeXVPU3Br?=
- =?utf-8?B?ZHdHeUdXUzk1TVpsa3JTL1dHZDJTUlZEZit3ZFpXekJBbDc2WHNaV21nbVov?=
- =?utf-8?B?L0ovV2UvN3RlbElycTA1YmVSLzA4bkFHTFBwSEMyVU92YkI2VXMwbUFRT0dG?=
- =?utf-8?B?YzNtZ2VNM3JCdUlLLzcwdDFMTEgxWWJrNHcwaVZyTExvNUsvUGVLa1ZFUlJy?=
- =?utf-8?B?blhWN2RzL28ydHhkUG5hZHF6ODMxd2YxR2YvTWVWRHBNd1BaeTNsTXI2cU10?=
- =?utf-8?B?TFJxR2JKYXZOUXVmanlEbjJ4c0dYZ0FjT1F6QTlGRE44bkpOazY5SVpSNllY?=
- =?utf-8?B?K2hSb1dXZmtRbk0yQytXaTFvdHE4VkhSWnFZZzFkUXJGL3hTMmlOU0pXQnlZ?=
- =?utf-8?B?V0VPRHVjVjFHSDRHekQydDZhWnJoc2lwdHptUEpaWjBxenYzUERseGhQRVBQ?=
- =?utf-8?B?ayt1TEZZNHhWSHZLa0lNZmM0cnFRcUFzdWVrMUFheUF3QVRCWDk4NjFqdGZX?=
- =?utf-8?B?Y0NZR2lnY0c3cmF5TzVPbnJFS3d5bHFzMk84VlE1MDJvRjF5UGZhb1VnSW9v?=
- =?utf-8?B?L1E4ZmoxQ3dpOFB4azZBTUltWVROMXlCb0J1cW01ZVkySE1TMDlnTnN1emUw?=
- =?utf-8?B?UklKcFMzdERtTDhmTGFNS0N5cWVkSG9wdHkxa1hYVEU3M1AzOWNLOVN1cWV4?=
- =?utf-8?B?TDNUL2dOUzNXYW9HbWpiWkpXNlZtMEpTOWxIUEJhaGdDQkh2akIwcGh5SzAx?=
- =?utf-8?B?QmlWTHJmMGtiRjk0TjFaUVFRSXNjSzZIVXVhMElZbWJTMU1XSjgrbnlVRkZ6?=
- =?utf-8?B?UjRNVTNUN043d05pZ1FrZzdneUdLeTh5aHkrOUxFTlhPMVRUYzl1ekc5ZThY?=
- =?utf-8?B?STgrQkVvMWJzNkZuM044RElKaEFJODByNmN1dHhsLzhLLzJtd2p1UTFKei9S?=
- =?utf-8?B?bUIvVVJrNWpXcTFHdzNtTWtNT3VQRXErQm9kTkJoU0NsOEdhRkMzQ2N2dVhW?=
- =?utf-8?B?NEdDTld4N3Y3SWE2eE16MDdhYWQ5Ykp5cU5qdlQ0eWZlWWVEUjJ2Mk4wZHRI?=
- =?utf-8?B?OTlHT3pnTStCeFhiU29yQ05IM0FOT1JvWXNGVmVpLzIxVmpJbnJGbXdXamJw?=
- =?utf-8?B?VFVHLy9PSFhML2d2MTU2c2VLU1p1N25BSFZPeXJESU84OGdvNWxRMUYwcGtu?=
- =?utf-8?B?emE2L2VUbXE1UGtuYk5leU9WWGppSkNVWVFaT1ltTWJSd0lEUTZIOStPR25H?=
- =?utf-8?B?Z3I2K3Z6TzgyeDZtYjBrMUh2L2RiK2lrbURIYk8zaGhtL2RiMWg3SFJmSHhO?=
- =?utf-8?B?RzFWVnpZZUdibHJFMU0xY1FCZkxneHBsaTlESmNwS25ESWVJZTNKR0N4azNa?=
- =?utf-8?B?RzlwMmdPWHcyN3dyeUliM3M0bTZUd3pzd3BRZm5nOE9Dbyt5a0ZQZkxDL0x1?=
- =?utf-8?B?TzExNk9NZVpQdWhmU29IT2RIOVFlMFcxQm10VmpnTFhsMEJHd0g1bll2NlFi?=
- =?utf-8?B?K1FCQnFNZDFQa1VmK0I3blRLZ1JFbkVZakRPcURIRXdyeWFocEdQcTd0VXJu?=
- =?utf-8?Q?cOo9IXavBe6HtTxegz?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 67ecebcf-9664-4648-bc7e-08debbead045
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 May 2026 12:23:52.5742
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: wzte/Q/iFZROdcV0+MhUNgwzY2XmjqBWcxhJT5b6L/guw/GddtjkKjnH2uYi7TVH
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8458
+Content-Transfer-Encoding: 8bit
 
-On 5/27/26 14:14, Jason Gunthorpe wrote:
-> On Wed, May 27, 2026 at 08:55:49AM +0200, Christian König wrote:
->> On 5/26/26 16:43, Zhiping Zhang wrote:
->>> This series adds TLP Processing Hints (TPH) support to the VFIO dma-buf
->>> export path, allowing importing drivers (e.g. mlx5) to use the
->>> exporter's steering tag when performing peer-to-peer DMA into a
->>> VFIO-owned device.
->>
->> I'm not an expert for TPH, but that sounds very strange to me.
->>
->> As far as I know the TLP Processing Hints allow devices to give a
->> steering tag to the root complex together with memory accesses to
->> give fine grained control about cache usage. In other words it is an
->> extension to the classic snoop bit.
-> 
-> TPHS includes an bit of data on every TLP and the data transits to the
-> eventual completer.
-> 
-> It does not have to be a root port.
->  
->> For P2P that is obviously nonsense because we don't have P2P support
->> for cached accesses.
-> 
-> For P2P the TPH data on the TLP will transit to the P2P completer
-> unchanged.
-> 
-> It is up to the completer do define what it does with the TPH data.
-> 
-> Typically root ports in CPUs will use TPH data for cache placement
-> instructions. But who knows what a P2P device will use it for.
-> 
-> In Linux the driver that owns the completing address space gets to
-> specify how the TPH data works based on its own device specific
-> knowledge.
+On Tue, 26 May 2026 16:11:01 -0700 Jakub Kicinski wrote:
+> module params aren't a great API. If we want to deprecate it let's just
+> remove the integration in net-next. You have my vote..
 
-Yeah that's a good point, I should probably rephrase the question.
+Happy to draft the net-next removal series if that's useful.  Let
+me know the scope you'd like (sk_msg verdict path in tls_sw.c +
+the sockmap-attach side + selftest cleanup; or a wider sweep),
+and whether the stable trees should get a narrower fix as a
+separate backport for the 4.20+ tail.
 
-I'm aware of how TPH works by adding the extra ST to the TLP.
-
-But my question is how is that useful to a PCIe endpoint? What is the effect of the ST here?
-
-I only know about the caching use case for the root complex and that's clearly not the case here.
-
-Regards,
-Christian.
-
-
-> 
-> Jason
-
+Christopher
