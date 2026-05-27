@@ -1,122 +1,196 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79387429825
-	for <netdev@vger.kernel.org>; Wed, 27 May 2026 15:10:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D0681427A;
+	Wed, 27 May 2026 15:11:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779894645; cv=none; b=ROf0MWVIYyCl9Dj0cddbSgqqffoBv7XCMmUoByGuTUubNcNh9JyiQTsn4eaCmVCeF55urOohY6e5mNeu7ODUPpVSsGJVtRE9KlQqxQUIlJ/RQs7P//EUIm5Gyx20BRjFSnSQKfh/8yMj7GVBZ7RJKvJLLZqqTHaQic92MMbZfOQ=
+	t=1779894703; cv=none; b=EiYH3GAIhcg+5YSmq4UJDVej/3epQHIyfWuaLkV6o1xA7lZMonBCtpgtK1I1ovfayDeojswqpk+ZqXQXy3XNqoFwoi8+4DTAt/suX5IbxCm0fWDSw1POuCemmYSHq2Os/Ze5GPOQDVM3sTqESSM9aurN2Yj8YeGwMgsS5AJao1E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779894645; c=relaxed/simple;
-	bh=/Vr8MUDHu7F6px4gQMtOKL2jRf1NKTge6fYFFNck7M4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=a3vU2XV7gwV48sGIE7WwGcIJeqcPjn5dSN1+zd671FDSyE7JjyzDYACX3y7SWWeYW2br1Km18Peyu0312W+Mn7swAobWQ+Ysh0ywvd7KKRX+V+aJ1xYBj347RErcPlaOwHnQ6EN2oi9LlSmGpBEjn0DGI4OaU9/p+41PLQBIPBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=CK3b4fb8; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=vQ5KBl94; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	s=arc-20240116; t=1779894703; c=relaxed/simple;
+	bh=rtfO5ujh7fvtxf8EwxH550DcHIe38LI9ALq52mY17DE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HQkQXkdxLqPvbqAuwuQ5PztQ5662vbqqv4RklRFZAyfpHp112T0pe8hK5CQG3obe7p38/5LTm70uamsf1HAVewXJ6N3U3R14JdClMqlkNhvQOiVwq4DHROR43W++OVqUNEbkIhGw81jTh+z9cOO/3Gqf9Slmdex+VFn5BovSBSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dtlMFHpX; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="CK3b4fb8";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="vQ5KBl94"
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1779894631;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mGm0hYhahD7tucU4+kR0zzN+Asi3TlqSb3PAzu30CHE=;
-	b=CK3b4fb8KpuiIBp1RljYrFcMSQ7a8KAl3QiPogjq06e7l84jvC18KbGxILxtJ9ePV4HTO3
-	Bm1DAQB/kXj1kdZdfpW027948SJ75sLsg8e05k7p6W9R6mj9BQ2qDZ2Tw4n7n5D9zDbqAF
-	P/cXkw1K9703q6ecGeXQ7nZZRIxTBlmrICGEDuD6udpVSr153buQ2wnoFV84jFnjWjEgBQ
-	anO1X7bgMtAV4PZq7Gf36QKgi1uSRM+jG15jcXdsHQMy7hCxZ2p5/WgS4gIbZ9Tc0IMt0y
-	7SSj0Y902ObQ3rYx1tFI6uNP1x8438qhkdeRq30s4yeAw4Ggr/ttcdNdpombsA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1779894631;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mGm0hYhahD7tucU4+kR0zzN+Asi3TlqSb3PAzu30CHE=;
-	b=vQ5KBl94Ki3BlwQzMODsyGdTMTueP5lfCxPBr2s+TcUVkCl4ZVgCz/aAUFulcv6kdsi9Jr
-	rLZFapgOVBasmZAQ==
-To: netdev@vger.kernel.org
-Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dtlMFHpX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D24B1F000E9;
+	Wed, 27 May 2026 15:11:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779894701;
+	bh=YgZzYt5mfaIHlmQ0ek8+Zpuuv3uc5dxQ5CF0QVad7TQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=dtlMFHpXraCXx2iVSn0Rre9CcHTp/4h5x4x/PLuJTASXjPROnaYOWNHvKe7qVzX+n
+	 DIdfdq3TOuQ+ibBvcMR+vEF7CZsoTtjTh+xdnMQ2c3wwT4osUd7OPW27MxmCSoFIOh
+	 iZSgMKJ17c5GNI4eBMz3q6r3Byx5sg1lcqy5+EcG9hEQZgXPOTPgQk2Z2KJbNlDaeA
+	 +XodYw3hrXVlPnVVJ9lxVTvFAQfGAmMATyrv5fTHU8/Qm8atzcCsYXPqFPeAxfw0VK
+	 zkcTar5yyz8H1rajgbqoeeEGs9Fm9pjEmWVNr/7hI08riCOoqvej5cie36oc/F+3OX
+	 0aXvnYcsRC3Rg==
+Date: Wed, 27 May 2026 16:11:36 +0100
+From: Conor Dooley <conor@kernel.org>
+To: ciprian.regus@analog.com
+Cc: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Chintan Vankar <c-vankar@ti.com>,
-	Danish Anwar <danishanwar@ti.com>,
-	Daolin Qiu <d-qiu@ti.com>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Felix Maurer <fmaurer@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Neelima Muralidharan <neelima@ti.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Praneeth Bajjuri <praneeth@ti.com>,
-	Pratheesh Gangadhar TK <pratheesh@ti.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Subject: [PATCH net-next v5 7/8] hsr: Move struct hsr_ethhdr to a global header
-Date: Wed, 27 May 2026 17:08:57 +0200
-Message-ID: <20260527-hsr_ptp-v5-7-158a7633eac0@linutronix.de>
-In-Reply-To: <20260527-hsr_ptp-v5-0-158a7633eac0@linutronix.de>
-References: <20260527-hsr_ptp-v5-0-158a7633eac0@linutronix.de>
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+	devicetree@vger.kernel.org
+Subject: Re: [PATCH net-next v2 01/10] dt-bindings: net: Add ADIN1140
+Message-ID: <20260527-nearness-antacid-9f94a3f43abc@spud>
+References: <20260527-adin1140-driver-v2-0-37e5c8d4e0a0@analog.com>
+ <20260527-adin1140-driver-v2-1-37e5c8d4e0a0@analog.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="6jZPRRWmjMQlxf91"
+Content-Disposition: inline
+In-Reply-To: <20260527-adin1140-driver-v2-1-37e5c8d4e0a0@analog.com>
+
+
+--6jZPRRWmjMQlxf91
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-In the offloading case the network driver needs to inspect the HSR
-header to find out if the encapsulated type is a PTP packet where it
-needs suppress offloading of the packet.
+On Wed, May 27, 2026 at 12:51:46AM +0300, Ciprian Regus via B4 Relay wrote:
+> From: Ciprian Regus <ciprian.regus@analog.com>
+>=20
+> The ADIN1140 is a single port 10BASE-T1S Ethernet controller that
+> includes both the MAC and a PHY in the same package.
+>=20
+> Signed-off-by: Ciprian Regus <ciprian.regus@analog.com>
+>=20
+> ---
+> v2 changelog:
+>  - Reorder the compatible entries in the dt schema (ad3306, adin1140).
+>  - Removed "dt-bindings" from the commit title and message.
+>  - Updated the DT example to use IRQ_TYPE_LEVEL_LOW instead of
+>    IRQ_TYPE_EDGE_FALLING for the interrupt trigger condition.
+>  - "implements" -> "tries to implement" in the description.
+>  - Removed the MAINTAINERS entry, as it will be added in a later patch
+>    in the series.
+>  - Reordered as the first patch of the series
+> ---
+>  .../devicetree/bindings/net/adi,adin1140.yaml      | 69 ++++++++++++++++=
+++++++
+>  1 file changed, 69 insertions(+)
+>=20
+> diff --git a/Documentation/devicetree/bindings/net/adi,adin1140.yaml b/Do=
+cumentation/devicetree/bindings/net/adi,adin1140.yaml
+> new file mode 100644
+> index 000000000000..518ff6b36c46
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/net/adi,adin1140.yaml
+> @@ -0,0 +1,69 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/net/adi,adin1140.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: ADI ADIN1140 10BASE-T1S MAC-PHY
+> +
+> +maintainers:
+> +  - Ciprian Regus <ciprian.regus@analog.com>
+> +
+> +description: |
+> +  The ADIN1140 (also called AD3306) is a low power single port
 
-Move the header so it can be included the driver.
+Can you explain what is going on here please?
+Is "adin1140" (which I can find no information easily online for) the
+exact same device as the ad3306 (which has an entry on your site)?
 
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
----
- include/linux/if_hsr.h | 5 +++++
- net/hsr/hsr_main.h     | 5 -----
- 2 files changed, 5 insertions(+), 5 deletions(-)
+> +  10BASE-T1S MAC-PHY. It integrates an Ethernet PHY with a MAC
+> +  and all the associated analog circuitry.
+> +  The device tries to implement the Open Alliance TC6 10BASE-T1x MAC-PHY
+> +  Serial Interface specification and is compliant with the
+> +  IEEE 802.3cg-2019 Ethernet standard for 10 Mbps single pair
+> +  Ethernet (SPE). The device has a 4-wire SPI interface for
+> +  communication between the MAC and host processor.
+> +
+> +allOf:
+> +  - $ref: /schemas/net/ethernet-controller.yaml#
+> +  - $ref: /schemas/spi/spi-peripheral-props.yaml#
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - adi,ad3306
+> +      - adi,adin1140
 
-diff --git a/include/linux/if_hsr.h b/include/linux/if_hsr.h
-index 1db1bd0fa181d..bdcfe88e023fc 100644
---- a/include/linux/if_hsr.h
-+++ b/include/linux/if_hsr.h
-@@ -49,6 +49,11 @@ struct hsr_tag {
-=20
- #define HSR_HLEN	6
-=20
-+struct hsr_ethhdr {
-+	struct ethhdr	ethhdr;
-+	struct hsr_tag	hsr_tag;
-+} __packed;
-+
- #if IS_ENABLED(CONFIG_HSR)
- extern bool is_hsr_master(struct net_device *dev);
- extern int hsr_get_version(struct net_device *dev, enum hsr_version *ver);
-diff --git a/net/hsr/hsr_main.h b/net/hsr/hsr_main.h
-index 134e4f3fff603..cf0a3c76a217d 100644
---- a/net/hsr/hsr_main.h
-+++ b/net/hsr/hsr_main.h
-@@ -72,11 +72,6 @@ static inline void set_hsr_tag_LSDU_size(struct hsr_tag =
-*ht, u16 LSDU_size)
- 				       0xF000) | (LSDU_size & 0x0FFF));
- }
-=20
--struct hsr_ethhdr {
--	struct ethhdr	ethhdr;
--	struct hsr_tag	hsr_tag;
--} __packed;
--
- struct hsr_vlan_ethhdr {
- 	struct vlan_ethhdr vlanhdr;
- 	struct hsr_tag	hsr_tag;
+Because if they are really two names for the same part, this compatible
+setup makes no sense, as it means they have a different programming
+models.
 
---=20
-2.53.0
+Thanks,
+Conor.
 
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  spi-max-frequency:
+> +    maximum: 25000000
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +    description: Interrupt from the MAC-PHY for receive data available
+> +      and error conditions
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - interrupts
+> +  - spi-max-frequency
+> +
+> +unevaluatedProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +
+> +    spi {
+> +        #address-cells =3D <1>;
+> +        #size-cells =3D <0>;
+> +
+> +        ethernet@0 {
+> +            compatible =3D "adi,adin1140";
+> +            reg =3D <0>;
+> +            spi-max-frequency =3D <23000000>;
+> +
+> +            interrupt-parent =3D <&gpio>;
+> +            interrupts =3D <6 IRQ_TYPE_LEVEL_LOW>;
+> +
+> +            local-mac-address =3D [ 00 11 22 33 44 55 ];
+> +        };
+> +    };
+>=20
+> --=20
+> 2.43.0
+>=20
+>=20
+
+--6jZPRRWmjMQlxf91
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCahcJqAAKCRB4tDGHoIJi
+0qhLAP9kWEWAgNjViEjtK5sUkLrwsi9MX4d99T72d46+d9VWugD9Fmxa80q0mkV7
+cv9vCA4xbSuUSKeY41ZUEuXqMLwztAE=
+=sl5p
+-----END PGP SIGNATURE-----
+
+--6jZPRRWmjMQlxf91--
