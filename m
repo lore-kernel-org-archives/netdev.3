@@ -1,111 +1,85 @@
-Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [207.46.229.174])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37D403A1DB;
-	Wed, 27 May 2026 03:48:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.46.229.174
+Received: from pdx-out-002.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-002.esa.us-west-2.outbound.mail-perimeter.amazon.com [44.246.1.125])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E0D224677B;
+	Wed, 27 May 2026 03:55:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.246.1.125
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779853732; cv=none; b=OyDCfGuWSGgRK/uKRRlCiwuChI1biDFdafhh7Vy1qGW0Duq6CW+NA5UZXnDjg6G5Nb3iFqIxSTx1yiCm+pWkhLuQyA8P++qQkrzMczWZHHTSq490qlER5NS9OlF1v2baFOrzrINZvIyxFdvUSi2qIMe7dRoe1KG+Ez5O07tPVMc=
+	t=1779854156; cv=none; b=fHMcU07eGYGVhDxnsGhPHxMaxUBR4HWXT+imEdbwwt2yY+F+shzRytzav4oC+THNTiLx8PJYpn0iSjQXgwOTSdFqI/9E+M5bzWAJlCciRukCWOVVQ5wII80QTdvuxhCpJprvpqom9v0OVqpuEGBGlsS3pJAZvf3Uj+kCgixGgTI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779853732; c=relaxed/simple;
-	bh=jIVOzjruWC5sObxrOjQ3txOLTX+QOFZ+K2rXuYPQGBE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bHTquhigAi2rrMJLs2jyBDPSHuvZCk1AJCxIsHDL4wXgdW6du35pIMUextEgEygD4GVuGFWwdAaiaUkH6KsN51eSwddajtv0aKOt4pJFbd4ae3JDiia1DlQal4cLsJonUOEvv39MB2nqWGZE2r1mnqREyebc+zBPWr2KnKpU2eY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lzu.edu.cn; spf=pass smtp.mailfrom=lzu.edu.cn; arc=none smtp.client-ip=207.46.229.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lzu.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lzu.edu.cn
-Received: from enjou-Legion-Y7000P-2019.coin-barley.ts.net (unknown [172.23.56.36])
-	by app3 (Coremail) with SMTP id ywmowACXqfyEaRZqJwoLAA--.26213S3;
-	Wed, 27 May 2026 11:48:22 +0800 (CST)
-From: Ren Wei <n05ec@lzu.edu.cn>
-To: bpf@vger.kernel.org,
-	netdev@vger.kernel.org
-Cc: martin.lau@linux.dev,
-	daniel@iogearbox.net,
-	john.fastabend@gmail.com,
-	sdf@fomichev.me,
-	ast@kernel.org,
-	andrii@kernel.org,
-	eddyz87@gmail.com,
-	memxor@gmail.com,
-	song@kernel.org,
-	yonghong.song@linux.dev,
-	jolsa@kernel.org,
-	yuantan098@gmail.com,
-	zcliangcn@gmail.com,
-	bird@lzu.edu.cn,
-	xuyq21@lenovo.com,
-	n05ec@lzu.edu.cn
-Subject: [PATCH net 1/1] bpf: sockmap: fix tail fragment offset in bpf_msg_push_data
-Date: Wed, 27 May 2026 11:48:15 +0800
-Message-ID: <8b129d10566aa3eb43f61a8f9757bcf51707d324.1779636774.git.xuyq21@lenovo.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <cover.1779636774.git.xuyq21@lenovo.com>
-References: <cover.1779636774.git.xuyq21@lenovo.com>
+	s=arc-20240116; t=1779854156; c=relaxed/simple;
+	bh=NSGUt19Oh3I/sxQLPBg67SQ1ekQb3lXS57l7omGjgfM=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=uzNodySuMXpE90ULXeIY71HPZ7TiDNV6sdQscI6Nzw8cRcF09St8ZMHAIZWKyu4GKTHvujGnRLuee1yYC3W30tlD9S0xJ9sgBxaTF+GmpnGGfKIr4/2EWPDLf75fGarupWBTbJKpUeuw6/k2VdhlxFZBvGHvQZz1aopFla9+jbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=FkTn5Aiw; arc=none smtp.client-ip=44.246.1.125
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="FkTn5Aiw"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1779854155; x=1811390155;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=NSGUt19Oh3I/sxQLPBg67SQ1ekQb3lXS57l7omGjgfM=;
+  b=FkTn5AiwAcoHZgroUcQ6omKu/41PX5JHqqC8MSDT7+TAXaNDGnKxJJM+
+   BYPwgmEFT623Le3wMoUsHfaEgKQ254a6QDxounEDRc1hRMvHoXXEH/qYa
+   AoZa/S13QyBC4tihZYW/PIF00soy6bWlMNmf37Gke05HaT5E3q1J8j1/4
+   wVBMutuUXOVSwgNXPtpFFI5k8RejxuI5vw8k4CA9IICPs8iD8Cb5MP+ng
+   bB1pjNikR/yxQr3W/SaG84dAmE82q0rZjBDZOayp5gPHUcOpjSkvTLZGe
+   kN4wD06//J3e/ArLBz54zfFwvNlwzKCUllgbwCEMM7frQrgGGyZg4djDa
+   w==;
+X-CSE-ConnectionGUID: xnxwD3tESyiYSzGXWnie1A==
+X-CSE-MsgGUID: Wb6P6YM4R7qmjQq2/yUlXw==
+X-IronPort-AV: E=Sophos;i="6.24,170,1774310400"; 
+   d="scan'208";a="20533045"
+Received: from ip-10-5-12-219.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.12.219])
+  by internal-pdx-out-002.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2026 03:55:52 +0000
+Received: from EX19MTAUWC001.ant.amazon.com [205.251.233.53:17930]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.62.206:2525] with esmtp (Farcaster)
+ id 138d2833-e4a7-4721-ad89-22efbecfd132; Wed, 27 May 2026 03:55:51 +0000 (UTC)
+X-Farcaster-Flow-ID: 138d2833-e4a7-4721-ad89-22efbecfd132
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
+ Wed, 27 May 2026 03:55:49 +0000
+Received: from dev-dsk-akiyano-1c-2138b29d.eu-west-1.amazon.com (172.19.83.6)
+ by EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
+ Wed, 27 May 2026 03:55:45 +0000
+From: Arthur Kiyanovski <akiyano@amazon.com>
+To: <tglx@kernel.org>
+CC: <akiyano@amazon.com>, <anna-maria@linutronix.de>,
+	<anthony.l.nguyen@intel.com>, <dwmw2@infradead.org>, <frederic@kernel.org>,
+	<giometti@enneenne.com>, <jacob.e.keller@intel.com>,
+	<johannes.berg@intel.com>, <jstultz@google.com>, <kvmarm@lists.linux.dev>,
+	<linux-kernel@vger.kernel.org>, <linux-sound@vger.kernel.org>,
+	<linux-wireless@vger.kernel.org>, <maz@kernel.org>,
+	<miriam.rachel.korenblit@intel.com>, <mlichvar@redhat.com>, <mst@redhat.com>,
+	<netdev@vger.kernel.org>, <oliver.upton@linux.dev>, <oupton@kernel.org>,
+	<peter.hilber@oss.qualcomm.com>, <richardcochran@gmail.com>,
+	<saeedm@nvidia.com>, <sboyd@kernel.org>, <thomas.weissschuh@linutronix.de>,
+	<tiwai@suse.com>, <vdonnefort@google.com>, <virtualization@lists.linux.dev>
+Subject: Re: [PATCH 0/24] timekeeping/ptp: Expand snapshot functionality
+Date: Wed, 27 May 2026 03:55:32 +0000
+Message-ID: <20260527035533.13791-1-akiyano@amazon.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260526165826.392227559@kernel.org>
+References: <20260526165826.392227559@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:ywmowACXqfyEaRZqJwoLAA--.26213S3
-X-Coremail-Antispam: 1UD129KBjvJXoW7KF4kJr1rXFyUuF4DKr1kAFb_yoW8Xr1fpF
-	ZxGr98GFZxGw1UCw4vqFnFvF4UAw4DXF47WFW5KF98XF9Fq3W8Xa4rKrsI93WUArWUurWY
-	yanIqa4Y9FWDA3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUBY1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AE
-	w4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2
-	IY67AKxVW7JVWDJwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8Jr0_Cr1UM28EF7xvwVC2
-	z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s0DM2AIxVAIcxkEcV
-	Aq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j
-	6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64
-	vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0E
-	n4kS14v26r4a6rW5MxkIecxEwVCm-wCF04k20xvY0x0EwIxGrwCF04k20xvE74AGY7Cv6c
-	x26r48MxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCj
-	r7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY6x
-	IIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAI
-	w20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x
-	0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7sRi_HU3UUUUU==
-X-CM-SenderInfo: zqqvvuo6o23hxhgxhubq/1tbiAQ0ACWoVV86BdwAAsV
+X-ClientProxiedBy: EX19D035UWA003.ant.amazon.com (10.13.139.86) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
 
-From: Yuqi Xu <xuyq21@lenovo.com>
+Tested with a locally rebased version of my PTP clock attributes series [1]
+on top — verified ENA PHC and ptp_vmclock attrs ioctls on x86_64.
 
-When bpf_msg_push_data() inserts data in the middle of a scatterlist
-entry, it splits the original entry into a left fragment and a right
-fragment.
+[1] https://lore.kernel.org/netdev/20260515164033.6403-1-akiyano@amazon.com/
 
-The right fragment offset is page-local, but the code advances it with
-`start`, which is the message-global insertion point. For inserts into a
-non-first SG entry, this over-advances the offset and leaves the split
-layout inconsistent.
-
-Advance the right fragment offset by the fragment-local delta,
-`start - offset`, which matches the length removed from the front of the
-original entry.
-
-Fixes: 6fff607e2f14 ("bpf: sk_msg program helper bpf_msg_push_data")
-Cc: stable@kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Zhengchuan Liang <zcliangcn@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Assisted-by: Codex:GPT-5.4
-Signed-off-by: Yuqi Xu <xuyq21@lenovo.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
----
- net/core/filter.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/net/core/filter.c b/net/core/filter.c
-index 80a3b702a2d4..d8e637f35f68 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -2860,7 +2860,7 @@ BPF_CALL_4(bpf_msg_push_data, struct sk_msg *, msg, u32, start,
- 
- 		psge->length = start - offset;
- 		rsge.length -= psge->length;
--		rsge.offset += start;
-+		rsge.offset += start - offset;
- 
- 		sk_msg_iter_var_next(i);
- 		sg_unmark_end(psge);
--- 
-2.54.0
-
+Tested-by: Arthur Kiyanovski <akiyano@amazon.com>
