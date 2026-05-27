@@ -1,236 +1,178 @@
-Received: from CHN02-BJS-obe.outbound.protection.partner.outlook.cn (mail-bjschn02on2094.outbound.protection.partner.outlook.cn [139.219.17.94])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C1E43976AD;
-	Wed, 27 May 2026 08:57:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=139.219.17.94
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779872243; cv=fail; b=fdYA5JmY1uB93HS908dfeYKQZ/2afZ9qSLJnacRLMMup97BEdmoEG9YxqWyrG8PG/oijQ0cpZC+J7aW+odaye1oJtOkTIelD2l5ATcTslbv3MFcjBwDeywH5tH5zYPX2IfKNvF4Ax+6OBcl/0OM94MpJywLUim+tNYs0FELvX1E=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779872243; c=relaxed/simple;
-	bh=1iJd646GxOzoes16DECFJtrhEizDWQVqg9DrnrK8zuY=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=H8sjqKtS3kACg2ZxtQBIEjHdV+rqXYcxoNpLSQPyOsQUolvJTp3oa4tj33ztajkWhpuYZn+6B3AmRouIM7pTExr1+bi2gOsHITk5pDwvEsSO3Dr9K7T/TG/9w5nfCi8UV/go218A2+v0+An3+cxginjL04rhrXy7uacsqoxdQ9s=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com; spf=pass smtp.mailfrom=starfivetech.com; arc=fail smtp.client-ip=139.219.17.94
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=starfivetech.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=VH1YlIdVj7nA0b4iFeaU383GjSiZ82GvHlZXcWAUl5Nqugb44aoL4ouIQImm4/lH7TtuUvdS2iw652I0LmeE8xJTxRAaAGOJrA1X/SUmH4dZ5zxxvbDt0r1wFePDefLcZI/YwlFnzI00z9LQtBzqZoTcjFLEPQcKu3KP/UsqPfKm6akAqVHlrseVJ97I+fy3veTGr/dCRNWomMPAGYQa+qujP0Z1rwGklFBu789IRMUFh2stg6+ncr7Qm9qzypd56sFc0a8qWPxHrMG6BTj1ZocASH9vXn+lNpjav7TUw7phH/Ny7WBZ3E1LwucmuZmBaw/RppFl9o5foXugqNJKow==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=SyUu4EST6HBvepKNZQyws64F0GAJgZBVAEOdg7IuhSU=;
- b=lqOxt+kFdDOqeMNEDT2yBDW4j+Gkvu/cQebscoVMmgY3Sk7mZM52e69roOuFQmLYqHGCXqzSF9q2eVYPIU4fYBa78osGft6YYSm56pRhcqKfldNdUowWBHylcsHH5T+rYTSfc6hnm6cRKqVOTuWO2uaI6ZZgF1xvzJbUTKR9RS0pJe2lBOvY7skivtbobR8Nuf4agIdQXcIdrNzKxADHyEV854v+4mim8JlZz1fnxfy8EoH02PrW89udXI0PF7aTpoENE0Ll5/azEem33zrQCdxgzKevKZwJ0sWkrcaxqJVxxS0EYkGOO12cM/os9j0Toe++Io6ENwnrVtqeRJBe0w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=starfivetech.com; dmarc=pass action=none
- header.from=starfivetech.com; dkim=pass header.d=starfivetech.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=starfivetech.com;
-Received: from SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c311:25::15) by SHXPR01MB0829.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c311:26::20) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.25; Wed, 27 May
- 2026 08:41:17 +0000
-Received: from SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn
- ([fe80::9b99:12dc:a115:b90f]) by
- SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn ([fe80::9b99:12dc:a115:b90f%3])
- with mapi id 15.20.9891.021; Wed, 27 May 2026 08:41:17 +0000
-From: Minda Chen <minda.chen@starfivetech.com>
-To: Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Emil Renner Berthing <emil.renner.berthing@canonical.com>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor@kernel.org>,
-	netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	devicetree@vger.kernel.org,
-	Minda Chen <minda.chen@starfivetech.com>
-Subject: [net-next v5 2/4] dt-bindings: net: starfive,jh7110-dwmac: Add jhb100 support
-Date: Wed, 27 May 2026 16:41:06 +0800
-Message-Id: <20260527084108.121416-3-minda.chen@starfivetech.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20260527084108.121416-1-minda.chen@starfivetech.com>
-References: <20260527084108.121416-1-minda.chen@starfivetech.com>
-Content-Type: text/plain
-X-ClientProxiedBy: SH0PR01CA0014.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c311:5::26) To SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c311:25::15)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CE443E3D86
+	for <netdev@vger.kernel.org>; Wed, 27 May 2026 08:59:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779872350; cv=none; b=s6nNrC+JiQerSyoSkT3LYaWVu8Cc7ykXhp3Ff4izKOQV7DJwuzO19R6y5Wew4LoGPnr5x3n8kTkZsvB5HiCZMKDK+y1lIqh211+RUThlNja7Lh+sXdTBchzK0vPq4avd9oGp6uKKnJR1veuE19240HCpWbKeUlWY7BUB5FgQ2V4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779872350; c=relaxed/simple;
+	bh=9OEdkZej6oJw1Wpgq+qPVogAwNJZPrwBbruo86zGjN0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DLdPrmLGW8NlOP8jRjSkUGCzuQm3Xx9xhAOoQ6uLXWMCu/2MWtaxHlaUJL3TQM6b95HJA2GeyVwxGxPe5WuJFBJQIB1vGXzSkfEMWPrdt00xU0tRz976r7RB6PPZm8g9r+6hCioUnq0VI7ywtkj/DwNH/sv6aY+cpQ/mz07npuM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=gK10SUuT; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=sKdk5VZP; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Ui+HFhQ7; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=4k+N5o3+; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="gK10SUuT";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="sKdk5VZP";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Ui+HFhQ7";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="4k+N5o3+"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 7F6816B349;
+	Wed, 27 May 2026 08:59:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1779872346; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=977a+qSrvpHRQv2EJ+wo7dGtItpSp2s4oX0PjoYBUxE=;
+	b=gK10SUuT6lbqqbS31kyzPsir6baLPihKO+dw2bUO1uW1zCQZF7vlsXNYR5g4w/GHyyi/I2
+	ho82JGHgZVCpWu/rHVy5jrbC8we9l3r87Zlrnq6jg9sZUe5S2t01hwFMCvdf4sNRi9DYCW
+	ZKRw66x3dp37w6nuuo8MgTVD5PGNhdw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1779872346;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=977a+qSrvpHRQv2EJ+wo7dGtItpSp2s4oX0PjoYBUxE=;
+	b=sKdk5VZPACSXDaj7nPx0r8lqAbnQGrrKTcVm+fzQ+e0XHrfRMGhWfEwStUOCl6MzwqFXk/
+	lg8+D4UrFcSe9UDw==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Ui+HFhQ7;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=4k+N5o3+
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1779872345; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=977a+qSrvpHRQv2EJ+wo7dGtItpSp2s4oX0PjoYBUxE=;
+	b=Ui+HFhQ7RkndRReirphQRTOzgaHkLCGYn0GN7oCQBLJrWb29im7ZXaGGpvsAxH4AGWwBqo
+	lFHp3BBBKEYYzzS/gX0HxLq2vqlI0HzkFsPGnDJiOH4s2EnVeb+jI97rWPkNxzT62FGmbD
+	er/Rl+EDiWHOLqa9f/aXzdy4uq/Iplo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1779872345;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=977a+qSrvpHRQv2EJ+wo7dGtItpSp2s4oX0PjoYBUxE=;
+	b=4k+N5o3+5rEunRDnSyrTGVVKA45ZjrfsLhssYJLJN4pvjt0c2gPw0Lm0pJFO0SeLo1g9S1
+	ZpfMZ8Ajv7oX0pBw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 59AED5A74E;
+	Wed, 27 May 2026 08:59:05 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id DNcOFVmyFmpbEgAAD6G6ig
+	(envelope-from <hare@suse.de>); Wed, 27 May 2026 08:59:05 +0000
+Message-ID: <41835be9-ef00-42c7-a5d3-258f092b59eb@suse.de>
+Date: Wed, 27 May 2026 10:59:04 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SHXPR01MB0863:EE_|SHXPR01MB0829:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2b7ac6c1-577f-4cb0-9bae-08debbcbb831
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam:
- BCL:0;ARA:13230040|7416014|366016|376014|52116014|1800799024|38350700014|22082099003|921020|56012099006|18002099003;
-X-Microsoft-Antispam-Message-Info:
- ttKwAEmRZPcLPesrR75AF6TgbpwRDwHSQ19ypgyLSld+EgD1Z3azAggaegI4VWvEcBlzCCdbGF0q6s6CcX6Fi+YoMVo9mPhBCrYuGFTosnegpsJX4MkIaBDgawOao0easWZJ/YoDazJi6UWU8WSYDJKTWidx9GRfIFStv9ZdVy/cFcO0bITBA2iDshapEnxXlUPnSzGw3ww2xVOEfeY7jE1rTwJ2kDXqzFSUCQD82W4n1Bt4lm7MWaA3sJtPhZobvyEezJlKd21VwIjTh2bOopWJvUBw4+Pw84goToTp19ZmoiFfLqsH8LeRDc44a6JrBBLziDJJgzLK2OheD27FP35xmeewB7PHhmC7oswDHtdw7bnkvJ/uXyXnHhwMrtSvB9HyR8BXeVqEnzPByRJjGrR3xdnN9Wr5JXl10YbhEb74Wh02lDgTPkL3MvXq2kEbGS25mbhJymDR3G3cZttxyi4gw3XqFdqljBWc+w4JgjwL/IqwaRoNoH4loKn1KxEv/XsCMSADhw+en3S/SShu+5Tr0QfxjzeTMFi6xPwmKXG9Tiw9mGW04/N1syHJPA5z35Xmak5ckF7jX2ffdvJlUQ==
-X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:NONE;SFS:(13230040)(7416014)(366016)(376014)(52116014)(1800799024)(38350700014)(22082099003)(921020)(56012099006)(18002099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
- =?us-ascii?Q?KLzAFlcPK3D17Ru2d8/6Ctxy1JCA/hVeFhmqPuiL7Mx5bPSf5e4tL97AY8v1?=
- =?us-ascii?Q?jC9tg60d/YWn0EwAbEdpcNkjO+7pdD8VjkGr4UpZd+yM5PUIWDvw2azokIQG?=
- =?us-ascii?Q?BsBsu74wyMzdhPT1czg1JcgM6hGmfjPCc4hDxKdXfX/5z/dZaPBqorV1hB2W?=
- =?us-ascii?Q?K/ogK4Ez3+1YPenNrMEB4hHg3UvPXEoye41v+fkJsMhz9M4W0g5MdD2Y88E3?=
- =?us-ascii?Q?YjqCfnjSCRTQA9e+0Vxy4tzLdLimRMsPOw0B201f4GEXUwY/XUIlLGOb2mct?=
- =?us-ascii?Q?HuPQ1qcsVQrw3m5cN2ZKbPcMOj8kG018L4u7UicQkle8xQF10g/76+icJ+vW?=
- =?us-ascii?Q?0/lrT+MWIGMZhINyhvmEvOPL8ysEYhZgyFw9sHKAtmgThcYmHGmFO9zoK7ZI?=
- =?us-ascii?Q?BXcGyJ0hOX8N9Bw7ev7C3rf47F8Ep1NAIUO06mthcuxhjwfju8lR+cqJ3C98?=
- =?us-ascii?Q?jY4FgsoL8MDfkejGof7m5utFudZVCajGXFlvn7dMRJPRNiYGSOEYm1FDqv7o?=
- =?us-ascii?Q?KrCBjcfHZL3FrXshO9UY5aIi0M5DfQNPXbN+BkQsReBfEGdyNFOqAt+4FjkE?=
- =?us-ascii?Q?ob2o/pYeTj3VgF6GlSW4s9AURepcOiVMSicpulkhRaJ3+T80It7xm0vHm6wx?=
- =?us-ascii?Q?WEojImNfNsvjFh9RvH7uxvdgRhin7Hmpy4heV5xgNc08Cw/zP5h45FM3dSA+?=
- =?us-ascii?Q?zplQUPBFfxslanoB6BWbRGwqiki/AZn53IxtXwp2twUFbgSjPoDpltixVtAs?=
- =?us-ascii?Q?OmpO1zphKhrovgpvbn2214vZL5GaCSukJ8o/Uxr+MDjX0LHOzfGTR99XnUze?=
- =?us-ascii?Q?7sLT7Mg39RXye96qFetE/ufe8g3STyOgBoE1p8GMplxX540BDpKPemeuMb4x?=
- =?us-ascii?Q?dxefs5TZoQJ07vZImH+YpQAD+PloCrOQQU2CX7axk25t91pRFHynKqlBYlGd?=
- =?us-ascii?Q?6gtLdUdWSTKXL1OtW7NZ98pLgJIgIpczYqVykd01JZSThad4a1fCkrIXtzdT?=
- =?us-ascii?Q?Kt3u2iXtN5eYCBKKz3ndAn4KehoDbzeQAZSrm00eK/uf+VTSJ61H0UlXp9Kb?=
- =?us-ascii?Q?Da/VY4C7gmGqzp8ERI8frixCaxfGICwZsrYAcCWbiZFRc35W0Aq3nQiWGwNM?=
- =?us-ascii?Q?Krq/8wc3WtTTmIuh34sZBYexba6gkf7taZ+GT7xR114lSyF+Z++lnFTjcD5F?=
- =?us-ascii?Q?qqoorNxlYtxB7J3fVdLkKM5S/gsIafEGbhnZgzcQBfF+4eHxk8q8xHc3KrnC?=
- =?us-ascii?Q?QKxwP4FYn5qFo/tkm4Y5fQG0yHK7OcjUqjla7fOo21NnaSsnz+TJZhlegQMg?=
- =?us-ascii?Q?d1uShFxe8/sAZXJjii0uBkHQCUBpXCBFT5LH/deDFtLzBAZ+apu6/+Q6B3Af?=
- =?us-ascii?Q?ZqbFymdKgBBpEHoaZr1O+vWfZdw3riBA24AYM3xepP5u2EnVxrTv0jIhaaGg?=
- =?us-ascii?Q?kNIwPTo50MFao1L/nMe4WuDsVXKMkvsidLo9bomBgRqphqWkqhdlD2PnYa+f?=
- =?us-ascii?Q?wF+3kRzWbaL6Srq6QfWO7lGw3kUrMiRec3Fyx4LcIeV2q+852lRdqBaDwL4o?=
- =?us-ascii?Q?xVEm2M6vg9dTrM9wgj9Ya9QjY/6YprYdHlfU3fx+pFg/DAiSd2OLiKoBG2r6?=
- =?us-ascii?Q?5YzmMRxOYYCmpNJSQQDmCWzoMnclIn6YfVmT0x7e6aSZtv+bP3L/dSmrMlx8?=
- =?us-ascii?Q?UXX7MSqYq+Yrjc69hsTel/KbJ6mDHB6Cp8sl19vf9cplrTZ8UmpuQhmr2YKM?=
- =?us-ascii?Q?jTMyKQ+eHNJYb3OLAqILIHWmyvcNbIE=3D?=
-X-OriginatorOrg: starfivetech.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2b7ac6c1-577f-4cb0-9bae-08debbcbb831
-X-MS-Exchange-CrossTenant-AuthSource: SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 May 2026 08:41:17.7152
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 06fe3fa3-1221-43d3-861b-5a4ee687a85c
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: V4HCKn8/i/HZpE49AAEPJFVFNnvX6mzqSX6E9KE8f8J4zyHbgMYfc3B1sLcPuBCGWuXMIAwCAzPtPrRyHJhyHuTO05GuHrLcCr6bgbhJmo8=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SHXPR01MB0829
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v3 1/8] net/handshake: Use spin_lock_bh for hn_lock
+To: Chuck Lever <cel@kernel.org>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
+Cc: Chris Mason <clm@meta.com>, Christian Brauner <brauner@kernel.org>,
+ kernel-tls-handshake@lists.linux.dev, linux-nvme@lists.infradead.org,
+ netdev@vger.kernel.org, Chuck Lever <chuck.lever@oracle.com>
+References: <20260525-handshake-file-pin-v3-0-66c616906ead@oracle.com>
+ <20260525-handshake-file-pin-v3-1-66c616906ead@oracle.com>
+Content-Language: en-US
+From: Hannes Reinecke <hare@suse.de>
+In-Reply-To: <20260525-handshake-file-pin-v3-1-66c616906ead@oracle.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Level: 
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Queue-Id: 7F6816B349
+X-Rspamd-Action: no action
+X-Spamd-Result: default: False [-4.51 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:dkim,suse.de:mid,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,oracle.com:email];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DKIM_TRACE(0.00)[suse.de:+]
+X-Spam-Flag: NO
+X-Spam-Score: -4.51
 
-The jhb100 GMAC still using Synopsys designware GMAC core.
-hardware features are similar with jh7100.
+On 5/25/26 18:51, Chuck Lever wrote:
+> From: Chuck Lever <chuck.lever@oracle.com>
+> 
+> nvmet_tcp_state_change(), a socket callback that runs in BH context,
+> can reach handshake_req_cancel() via nvmet_tcp_schedule_release_queue()
+> and tls_handshake_cancel().  handshake_req_cancel() acquires
+> hn->hn_lock with plain spin_lock().  If a process-context thread on
+> the same CPU holds hn->hn_lock when a softirq invokes the cancel path,
+> the lock attempt deadlocks.  This is the only caller that invokes
+> tls_handshake_cancel() from BH context; every other consumer calls it
+> from process context.
+> 
+> Deferring the cancel to process context in the NVMe target is not
+> straightforward: nvmet_tcp_schedule_release_queue() must call
+> tls_handshake_cancel() atomically with its state transition to
+> DISCONNECTING.  If the cancel were deferred, the handshake completion
+> callback could fire in the window before the cancel runs, observe the
+> unexpected state, and return without dropping its kref on the queue.
+> Reworking that interlock is considerably more invasive than hardening
+> the handshake lock.  Convert all hn->hn_lock acquisitions from
+> spin_lock/spin_unlock to spin_lock_bh/spin_unlock_bh so the lock is
+> never taken with softirqs enabled.
+> 
+> Fixes: 675b453e0241 ("nvmet-tcp: enable TLS handshake upcall")
+> Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+> ---
+>   net/handshake/netlink.c |  4 ++--
+>   net/handshake/request.c | 14 +++++++-------
+>   net/handshake/tlshd.c   |  2 ++
+>   3 files changed, 11 insertions(+), 9 deletions(-)
+> 
+... and there is always the question whather we should be calling
+tls_handshake_cancel() in the first place.
+We already call 'tls_handshake_cancel()' from the handshake timeout
+handler, and this instance of 'tls_handshake_cancel()' is called
+from a socket callback (ie when the soecket is closed or something).
+I would have expected that the handshake code cleans up outstanding
+requests on socket close already; if so, we can delete the cancel
+here.
+Hmm?
 
-Add jhb100 GMAC compatible and reset, interrupts features.
-jhb100 dwmac has only one reset signal and one interrupt
-line.
+Cheers,
 
-jhb100 SGMII interface tx/rx mac clock is split and require to
-set clock rate in 10M/100M/1000M speed. So dts need to add a
-new rx clock in code, dts and dt binding doc.
-
-Signed-off-by: Minda Chen <minda.chen@starfivetech.com>
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
----
- .../bindings/net/starfive,jh7110-dwmac.yaml   | 55 ++++++++++++++-----
- 1 file changed, 41 insertions(+), 14 deletions(-)
-
-diff --git a/Documentation/devicetree/bindings/net/starfive,jh7110-dwmac.yaml b/Documentation/devicetree/bindings/net/starfive,jh7110-dwmac.yaml
-index 0d1962980f57..fdcc61c65f87 100644
---- a/Documentation/devicetree/bindings/net/starfive,jh7110-dwmac.yaml
-+++ b/Documentation/devicetree/bindings/net/starfive,jh7110-dwmac.yaml
-@@ -30,25 +30,33 @@ properties:
-       - items:
-           - const: starfive,jh7110-dwmac
-           - const: snps,dwmac-5.20
-+      - items:
-+          - const: starfive,jhb100-dwmac
-+          - const: starfive,jh7110-dwmac
-+          - const: snps,dwmac-5.20
- 
-   reg:
-     maxItems: 1
- 
-   clocks:
-+    minItems: 5
-     items:
-       - description: GMAC main clock
-       - description: GMAC AHB clock
-       - description: PTP clock
-       - description: TX clock
-       - description: GTX clock
-+      - description: SGMII RX clock
- 
-   clock-names:
-+    minItems: 5
-     items:
-       - const: stmmaceth
-       - const: pclk
-       - const: ptp_ref
-       - const: tx
-       - const: gtx
-+      - const: sgmii_rx
- 
-   starfive,tx-use-rgmii-clk:
-     description:
-@@ -107,20 +115,39 @@ allOf:
-           contains:
-             const: starfive,jh7110-dwmac
-     then:
--      properties:
--        interrupts:
--          minItems: 3
--          maxItems: 3
--
--        interrupt-names:
--          minItems: 3
--          maxItems: 3
--
--        resets:
--          minItems: 2
--
--        reset-names:
--          minItems: 2
-+      if:
-+        properties:
-+          compatible:
-+            contains:
-+              const: starfive,jhb100-dwmac
-+      then:
-+        properties:
-+          interrupts:
-+            maxItems: 1
-+
-+          interrupt-names:
-+            const: macirq
-+
-+          resets:
-+            maxItems: 1
-+
-+          reset-names:
-+            const: stmmaceth
-+      else:
-+        properties:
-+          interrupts:
-+            minItems: 3
-+            maxItems: 3
-+
-+          interrupt-names:
-+            minItems: 3
-+            maxItems: 3
-+
-+          resets:
-+            minItems: 2
-+
-+          reset-names:
-+            minItems: 2
- 
- unevaluatedProperties: false
- 
+Hannes
 -- 
-2.17.1
-
+Dr. Hannes Reinecke                  Kernel Storage Architect
+hare@suse.de                                +49 911 74053 688
+SUSE Software Solutions GmbH, Frankenstr. 146, 90461 Nürnberg
+HRB 36809 (AG Nürnberg), GF: I. Totev, A. McDonald, W. Knoblich
