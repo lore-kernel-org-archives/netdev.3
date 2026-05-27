@@ -1,143 +1,123 @@
-Received: from mail-yx1-f51.google.com (mail-yx1-f51.google.com [74.125.224.51])
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D97B93DDDA9
-	for <netdev@vger.kernel.org>; Wed, 27 May 2026 09:38:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DBE83DC4CB
+	for <netdev@vger.kernel.org>; Wed, 27 May 2026 09:43:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.42
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779874713; cv=pass; b=b3FAGi0jm4v/Rf4yT8HF8dO6/8CHuuV9WIHTOg5q+ujnz2WH3u3w0cyW97RtT0XrIj1qIZGJAOyd28huq05FkBM480PdSQgNNkiK2GXiUVctAmkR+U+muqaqYDdrKJNKjbVor8qW0mvSR8x+fEajYYj1KpyWTz7c6b9VX5j+qw0=
+	t=1779875016; cv=pass; b=T8RxeSa2cyGXl5DuWkCXDUiYJNqIvfgwEatqJ0GwjP5xdUraEWdnE6ivpNww1cpBT/yK7foLd0k+HvbKZ62qRrREgKUBIv6pTQoOKpH7fu3FlZj54RhWelgRGAg63qGRkMu8pcqL+wDn8wWFFWYvvi9rDF5HXbKqybOMB0SdcP4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779874713; c=relaxed/simple;
-	bh=jkoyuLuzOPKsRZGw7+jyt2ItDJGLpRJtlXjG0vmDwCk=;
+	s=arc-20240116; t=1779875016; c=relaxed/simple;
+	bh=Co6EHUesoW6BWBk60jtMfwAVc9623LbALcIYwj02eos=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Uj05ruIEtDmzZvVN4dmoEqgZlO2Yl4wgXx4u0iSDIF/zGA+qJUxjps18fZx4Qb9M4jpq+bIqsvoMX0x259c6kVUD9bdIRkwUlUgyX+EswgCtLlpPai0/P7poFm+OtR/rbDp7KefpcXZyDy29ZagO1eo37bCV7LAl9fNxlLSrye8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cfUGjTI7; arc=pass smtp.client-ip=74.125.224.51
+	 To:Cc:Content-Type; b=uWV1VZpDtrHu9zBtIggfMuUoTWhWKc3ZC48Dk5sjxAAVVlEP6RfEBIUE1TZsBkFX2vnnE6wLPAflwe0Yt0oWfYUlmZxuV0eswSKiZb+eJHruQft/YU97jjgEkNZFUgmdzJvnmJAgCaz5SMabroujTMUB6+yD6FRfU05YhqzrX94=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pbRBo3sk; arc=pass smtp.client-ip=209.85.221.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cfUGjTI7"
-Received: by mail-yx1-f51.google.com with SMTP id 956f58d0204a3-65eb1b25c77so6189530d50.0
-        for <netdev@vger.kernel.org>; Wed, 27 May 2026 02:38:28 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779874707; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pbRBo3sk"
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-44e1ebb3122so7025731f8f.2
+        for <netdev@vger.kernel.org>; Wed, 27 May 2026 02:43:31 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779875009; cv=none;
         d=google.com; s=arc-20240605;
-        b=iKgw8vzXFoUL1wkEyUvxDS30UhD8NIlvIn3BBAxhwv1qLer1S3/aGYpLPQiLNN+lJp
-         QIpgWCXRhCg/a58PvAy9Vi7XZHgyAx+EwO4opV3YZa9JaeT1MyJ95PeO3EfgtbUuZT19
-         pWflXJL9lOjK61okqO1wBPa5qZWsQCxJvb5JJS5LQdhd6nJR6Cwu+g8ehS/KwhONWNEi
-         AA6PMmCttTwAzFpnbUim2QtrISofoR73JSAsqaKRAWiUGfjiobIVZ9cXbLHpWt2839J1
-         7TwHapajrLh3GvMpIAEPLZPUY2QulvbFDXWMrDQ3xCWh4b48YS+PxvqrycQFMGJAGC/1
-         Xfzg==
+        b=jWZi+dklRqduSG9oDbwGCkpaGDQL0QVvtC9IvaaUTHi4puL+Mm5AYJ2MYdufbyJFHi
+         /NXQvwEU2OjXu9OlJv9pMIPTywFheU5X6X+GZyDOmxEQ3jojbiQ1m8gZIK0JgINNP6zM
+         Iz7f0sBvxOLeSc5Fx0jir6HH0vOxKNbUvCkVUph+P19VSBYT/Ug+a8yCZuSvbh5gqN0d
+         WPIM0SlASJTfQpORpb3VS5a2IC/uEo9ijyCdm4R1a9HvAaTvrV6tQsOZkho/X8+KQ7Ek
+         gOo5OWjB81QEI1lN38iCgtGcGjubywT35P2f8L/PxvuG8pkLCd3ziC0MoFj58oQvkhnP
+         Rakg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:dkim-signature;
-        bh=4kn1CXbxr2sTPGEFG5RF06q2o/TEU5uocsd+TQJVadE=;
-        fh=WCnroTeB1+jkLY2QNoOEDTxDRRoQVfo2SDiVkKWhS1w=;
-        b=GmgXQpLTzIRH/uYlgIoKNs6gwvadZS/U/8O9mBAttnKUQghIsSaPX+PUvlzUEIZiNa
-         cpEp3B2RqpKbJTO1odxGn+5wQrHhPl1fXVVNf2kTpsp6iO7Kbcl7NMrWQ1VwKxUdE6TV
-         48Uk6HhwrUc1rNOU4q+NOU4BpLcR3L7Kk6EhmI9VlxtWM9qbnuPZ1AkOrT/8rsW1rQCl
-         iQ89QS/9GDXLkZfpT4gepxZ3dMiJS5B2mQOlOotOCtHjdP+6PeYFXfXbfKBG8ela6ETc
-         sRXIo9UjIKdalednHyeqhScMCSaIGuj9XSYUf+iDcPAACeMFeEGUwNY1jjY3cJkVfH8w
-         6EdA==;
+        bh=Co6EHUesoW6BWBk60jtMfwAVc9623LbALcIYwj02eos=;
+        fh=6cGqeU1U9fwCjL1OPqz4w7fmd/1EKVxM54XZdF8UBLs=;
+        b=CjS5o1Gd7s7x1S1zDIIdX7/bFPdyUZZysInwII9urJ5zvCpIiAyCLCkqgFox/4bySa
+         0LQYz2Zqt6fZOGZlXR7QDOHo2VLy+TGO6MnL8DpcTE3ersoabmdo5J6eLAePQn/M1RDo
+         hySOACCoJ4KEPcRyPon74Q8XcrV0PCtjT8mTCoLLwdHai88qhsul34bpU/NHJOdkLnzy
+         f7mLcgsccM/6VAQ/hkZgd4gNt95eloUgSVCr32zKSBy50Ks1RLcnsQEoeaKnfsHO+tir
+         d9Mmb9AqM32qF45ABefTTaPpvOsJ+Q9VNVTqsz745dX45mSUOhyCDMWnwi95QHWeuikH
+         sSyw==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779874707; x=1780479507; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1779875009; x=1780479809; darn=vger.kernel.org;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=4kn1CXbxr2sTPGEFG5RF06q2o/TEU5uocsd+TQJVadE=;
-        b=cfUGjTI7cBzLfnkwGfvm8P3ZUC/nczaz34F7BBmgKvsrSh0JSXF+SKGIUBLj9rD+pU
-         GTc90AaeDweSgK7J+52SIzatoyFpbjIblFULCdclBsuFgUW0Y5R4sUR3s0PxxxvFEMfj
-         UJ3NJzI394wSBOeDAb4pM65GUcHP95iGxLiXyoQ15l5Hx54uqEEsdwCoJHyQ68hPOMPK
-         PRuM4podrRMmSfIkb7WXykztL8ANF3rymStENHXFFm1KpzgDVFU+rsYFCrLgl8EexX7p
-         GtyoIksZmGZBIoufMqUk8P1rLRL5Glotcd7FKiOnwXg+lkXKUcAv38ocGLFwa0Bo2OGc
-         R4uw==
+        bh=Co6EHUesoW6BWBk60jtMfwAVc9623LbALcIYwj02eos=;
+        b=pbRBo3skRjG30PmujBmapUFdwcbta8xusdv7/j0x3HLrPYqwvR195Bo5cUaKHaWqyu
+         m4vd9uJ3sUI4IJoydPZaCDQDPFagFpXmodO3g2S+iAS2y12Ao2vyplMPKUTDA5WdxScF
+         V/pH7LzmjA5QoJCTeKDJIxeTSgCDjL2xeCXCVqE3dRAeEcMBerR7kGLNHcqcC2NnX4nD
+         H/UGTi8JS7zmM2mEYRFINcG/VV5hxdJ1ACW/u1ayF5N6xtPU/7BtZsQJTbt3NShfwm2r
+         nNe50cVPBoKhSJMzjLs8P8Kg4JS88XxM6tVlG54VeogqRWmTVQ92vvPSqn92hginPWCm
+         dJqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779874707; x=1780479507;
+        d=1e100.net; s=20251104; t=1779875009; x=1780479809;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=4kn1CXbxr2sTPGEFG5RF06q2o/TEU5uocsd+TQJVadE=;
-        b=kGgQoJydZtOvejzEM0Bq5rlsXEMtinn4BQpMlB37D2QboOGDgs24/j295paaylNgM8
-         T/rhfJ1//md7biE0qziFTS0uaRC34a1UAOf51g6fK8q7y3Qq/u8Dh8A0lbc6aTGE+dpd
-         GjYpOQrBO+59As2ZmhBMIU+LZRR6+HEYnRzrKDe7WVXBz03F6DtubiZqZXGezGAFeWqs
-         pq59joznmPTMFl51JubSWSiNmJoZ9eUBBDP4dTB9UIrhJdZchtyBCbU4T5hDXPw9ZAeZ
-         Uy3so7d1GLW1IIFUgiktPThdgguJbhKAsLmIYWWUZrZ1epqgB2CvTwhp+QggipRlRQkb
-         dBdQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8WHnZwBBLArwU+fAqMbxXyzsmYdq+LEZQQSEKXq4RxYx2tvQfHstccb4B5WDg9870rw0LlpSY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwDOiHKXokTQJM7u8pqsDIDIqpEgIkXNEekazAPIJiIc46Kawl9
-	jDKgQDesUxYZVveBzn9/YiqvRUHF9/d087vKAQVVEhT/b0jrRJ6PJUhfpZBI2o2VOZgbm8eS9Hs
-	Y1W4HB5fYl8MsCdu1PjGTUCoMrGIYsow=
-X-Gm-Gg: Acq92OEZtntkb3xlNXr2vQqPnu8H4z87+G7IEGJUEcqJruxyO/1uPNvAqwgANRiE+TA
-	cJApQOIylirG2GgTSuPD0yFCiHQCYnLQgk/iXI1XMdGhYZzDXaD4fL9YCdzdsa4MT+FT3bfLNZY
-	tZIUEm1A8u6BDC4x0nf8uZVYDMOo9GxDfI2pH8zsc3N7/2ASxLdpwwCZKqEf4QzsdCkEWZQAglj
-	Dhe+hG8koPbIet7f1vhuq5Pvf9Nbi0xh8vgbisgZbqxv/gri4u6eRhN9bGwVxs/EEfP/LCIHria
-	VLHmpNV+2Q==
-X-Received: by 2002:a05:690e:140d:b0:65d:7e2c:cbc0 with SMTP id
- 956f58d0204a3-65ec98a9bc5mr21223294d50.37.1779874707487; Wed, 27 May 2026
- 02:38:27 -0700 (PDT)
+        bh=Co6EHUesoW6BWBk60jtMfwAVc9623LbALcIYwj02eos=;
+        b=l4iHnp8WcUuphSFCfcJ9u19cW/Abmui+xMPev89Je5Qfls8ZBVqC3zgWdKTsTp1NjG
+         ejls/OOl1WDfK1Feziqy7SScsxhEUCQ6BO/12d16Q3nMibPBTUyC3wzm69Wv7gl1t/RB
+         fkq3xn5UZ+MJ4/MmYkbb0BuWQnoeHh+vXWudyd4FyhYNDzSZMebAAV8e5J8FmXGXMuWN
+         fRi5IApDQixl1jetm9hbMqDAhER6w476adfSrf8jsg9+0PCALNn/lARmr/lFF7ltcAFV
+         BETXr8qspKmjGWMk4JBH/aAHhDXPC/zXHvLp2y/juFzJPJ7So3WHu1vGVND4Ar4ukObB
+         1P9Q==
+X-Forwarded-Encrypted: i=1; AFNElJ9C3qt1VGCev5uv63XQOOhsfaCmqfUt83tJRuhhYdyaruL4/aX31n41ZKeM3oCYM2v879LDhp4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwuUiwhI69Tr0zybqzzb2deszDaJGKM8waP0RJwDqi91SDB7nFm
+	U0FIBUCAW+sveSNSmZ1bkg8RdHlW1Dvteo1mQuGqFYM0Ctt6mAWJfIaeUhgm4MI65Cd+Lx/RCHp
+	7QeFWyxMsvEp8wm6ZNuEH0Ov4gAp5hao=
+X-Gm-Gg: Acq92OEROYVwrTZ/dLxlFP/1d/P4t49X0eFy4imS4inKElTfN4mJdQc2CBrQMLMWPSp
+	Bx2W1jXxba3ibM27EesV3WAe6VU4RKoDcAqQlwXTmONX9XVzMxqtcMnYNd0s6cQrL951F+S5uT2
+	RHby5GH6KmlAzmJI/QIg25G7imto1pcnUzF36nYzo72yrQ+tu5QcA9HTvKkeZBg9N7drsPCraD9
+	uC8nizKSwN/YwB2rHVfnrtcNiKxPea2FRR9jN5kFmfe01SYKoXeQ7Tzb7XPRvHyBh7+1l0rBXuQ
+	x7ATPn0WjG7uWpyc5BM=
+X-Received: by 2002:a05:6000:4a09:b0:43d:762e:76c6 with SMTP id
+ ffacd0b85a97d-45eb38a7f6fmr39074764f8f.7.1779875008738; Wed, 27 May 2026
+ 02:43:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260526-net-next-mv88e6xxx-cbs-v2-0-13eb49c29b83@luminex.be>
- <20260526-net-next-mv88e6xxx-cbs-v2-2-13eb49c29b83@luminex.be> <4d270516-a8ae-4bed-b316-c28a321c304e@lunn.ch>
-In-Reply-To: <4d270516-a8ae-4bed-b316-c28a321c304e@lunn.ch>
-From: Cedric Jehasse <cedric.jehasse@gmail.com>
-Date: Wed, 27 May 2026 11:38:16 +0200
-X-Gm-Features: AVHnY4I3ZyVe3VtJsQHDwOHpQ331f4RXh0Xm5e3qUI3AdKlZ6oSEbQL6IlmnEnc
-Message-ID: <CABvLYuB-LKk2St_HFVxQvn0P796PK0b8tM+0sCE2n+kR9LOtgA@mail.gmail.com>
-Subject: Re: [PATCH net-next v2 2/2] net: dsa: mv88e6xxx: add support for
- credit based shaper
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: cedric.jehasse@luminex.be, Vladimir Oltean <olteanv@gmail.com>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+References: <20260527070824.2677331-1-maoyixie.tju@gmail.com> <CAAVpQUBKHhj6h5Rke=N9NyeUOPvVB0RKJSr2=HPkUKgAqQA0Bg@mail.gmail.com>
+In-Reply-To: <CAAVpQUBKHhj6h5Rke=N9NyeUOPvVB0RKJSr2=HPkUKgAqQA0Bg@mail.gmail.com>
+From: Maoyi Xie <maoyixie.tju@gmail.com>
+Date: Wed, 27 May 2026 17:43:16 +0800
+X-Gm-Features: AVHnY4LnyhgAhekb1Oe672L5X-bWeTtJyQT5uTBldYwiDLPpoTVojrMYJ7auvMg
+Message-ID: <CAHPEe=H5SFJN-=EFggXdNreN_A_LE2r_KHrpWU4UxJmq+g-bhg@mail.gmail.com>
+Subject: Re: [PATCH net] rtnetlink: Require CAP_NET_ADMIN in link netns for changelink.
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>, "David S . Miller" <davem@davemloft.net>, 
+	Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>, 
+	David Ahern <dsahern@kernel.org>, Xiao Liang <shaw.leon@gmail.com>, 
+	Nikolaos Gkarlis <nickgarlis@gmail.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
->
-> > +     if (!qav || !avb_ops || !avb_ops->port_qav_write ||
-> > +         !ops->port_set_scheduling_mode)
-> > +             return -EOPNOTSUPP;
-> > +
-> > +     if (!dsa_is_user_port(ds, port))
-> > +             return -EOPNOTSUPP;
-> > +
-> > +     if (cbs->queue < 0 || cbs->queue >= chip->info->num_tx_queues)
-> > +             return -EINVAL;
-> > +
-> > +     if (!(qav->queue_mask & BIT(cbs->queue)))
-> > +             return -EOPNOTSUPP;
-> > +
-> > +     queue_bit = BIT(cbs->queue);
-> > +     rate_reg = cbs->queue * 2;
-> > +     hilimit_reg = rate_reg + 1;
-> > +
-> > +     if (cbs->enable) {
-> > +             if (cbs->idleslope <= 0 ||
-> > +                 cbs->idleslope > qav->max_rate ||
-> > +                 cbs->sendslope >= 0 || cbs->hicredit <= 0 ||
-> > +                 cbs->hicredit > qav->hi_limit_mask)
-> > +                     return -ERANGE;
-> > +
-> > +             rate = DIV_ROUND_UP(cbs->idleslope, qav->rate_unit);
->
-> In the commit message, you mentioned 20Mbps, for a 1G link. Does the
-> link speed actually matter? I don't see it here.
->
->         Andrew
->
+Hi Kuniyuki,
 
-According to the cbs manpage: sendslope = idleslope - port_transmit_rate.
-In the commit message i've used the example from the manpage, which would be
-correct for any network interface.
-But the commit message  mentions only idleslope and hicredit can be programmed
-in the switch.
-So for Marvell switches the link speed doesn't matter.
+Thanks for looking.
 
-Sorry if you've received html mails. Something seems to have changed overnight,
-breaking plain text e-mails on my work account.
+> Do all other callers of ->get_link_net(), dev_get_iflink_dev()
+> and batadv_getlink_net(), require the same capability check ?
 
-Cedric
+No. Those are read paths. get_link_net feeds IFLA_LINK_NETNSID, the
+iflink lookup feeds IFLA_LINK, and batadv_getlink_net resolves a hard
+interface's parent netns. None of them mutates state, so none needs a
+capability check.
+
+But your question points at a real problem in my patch. get_link_net
+is the wrong gate. For the ip tunnels and xfrmi it returns t->net, the
+netns changelink mutates, so the check is right there. For peer types
+like netkit and veth it returns the peer netns instead. netkit has a
+changelink, and its peer usually lives in another netns. My patch
+would then require CAP_NET_ADMIN in the peer netns for a plain change
+to a netkit device, which netkit does not require today.
+
+So the check belongs in the changelink path of the types that mutate
+t->net, against t->net->user_ns. That mirrors the ioctl side in
+8b484efd5cb4. I will send a v2 along those lines.
+
+Thanks,
+Maoyi
