@@ -1,57 +1,57 @@
 Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A621D3E0C40
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA4A83E0086
 	for <netdev@vger.kernel.org>; Wed, 27 May 2026 08:42:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779871340; cv=none; b=VYWGrcFf4qew572D69rVbOQ518/c5hPrQuWeXFqb6Nt8LLSAHducIsa6kKm+y6A8PKY39DgkBFV1JQ9+1ESySdYiNxLOVS+y3q+9J1+suWnwLBn7cz0zfHaBIwxWU+yd0t9ny6gB7rAvClO+ukzLjrNT//sS5R05eH9mB+tj2Io=
+	t=1779871345; cv=none; b=NlgWmwrotK3ox6FE3FXtMK8e9iRBsYFoZksirgORKW1DA/LdiLs+uWynroBurRXU+2KsVbDzut51WIPVSZSi/Nk09pyXEQo53sdECR4vjZ1zYWC7q7COrIbuJuoP41Hxz0pdYbYhAzC2wabAbNt6VrEwrDXVHYRux0BitTfIMlg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779871340; c=relaxed/simple;
-	bh=/izszOpthDhootIGGTkKGh55bXtyqI+1GS/KFD76RvE=;
+	s=arc-20240116; t=1779871345; c=relaxed/simple;
+	bh=T6A5ZpOpTm/4dF52Xuk74SuW6krpdilyDUhtEpGPEew=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CV2AXCczIpN+3lwrZ8Gj9b59TcLN4nwMlzw+SIByuxSdHOMFLOYlBwrUKpwNyAFeh1+/JpvKLzU8i9F+x9oWVqy0qF4XV7ldgKTuKlDKIw3YRmANkL02xfEISpwItyq8r1fnlUM0p/fntmnc1Z8TA1K9INJncSTrTwHaLPPDJsQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=UEJfz98T; arc=none smtp.client-ip=62.96.220.36
+	 MIME-Version:Content-Type; b=qPiK0Il5OTUpuUTYO23TnJvLdDK94+/KL/QDW/gl2FDiFvHgyPbV/agyd42JF7F5u+c+cC3BnUx8txyTl8DNJQY38X77VVOorqHqVd1qfeE5Pkgr0On3LjV+eXFIa9d2lweWaOd2Zy6N/Chlwd7zgYngBV3+vzlzyGBL8f9yF2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=YImMVeMi; arc=none smtp.client-ip=62.96.220.36
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="UEJfz98T"
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="YImMVeMi"
 Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id 64DE320764;
-	Wed, 27 May 2026 10:42:10 +0200 (CEST)
+	by mx1.secunet.com (Postfix) with ESMTP id 946FD2069C;
+	Wed, 27 May 2026 10:42:13 +0200 (CEST)
 X-Virus-Scanned: by secunet
 Received: from mx1.secunet.com ([127.0.0.1])
  by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id bMPuj2ByX8KL; Wed, 27 May 2026 10:42:09 +0200 (CEST)
+ with ESMTP id IhZ0z-tMBOmI; Wed, 27 May 2026 10:42:11 +0200 (CEST)
 Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id B53CE2074F;
-	Wed, 27 May 2026 10:42:09 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com B53CE2074F
+	by mx1.secunet.com (Postfix) with ESMTPS id 30DF12074F;
+	Wed, 27 May 2026 10:42:11 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 30DF12074F
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1779871329;
-	bh=Z51YuHhdd9x3+E62LaZCa9un8uZMFr+Y/Iy0U1//+Qw=;
+	s=202301; t=1779871331;
+	bh=1P6PdNJCqe/xzZVKy2Mdn5fV8zN7597TavqYs00A8fU=;
 	h=From:To:CC:Subject:Date:In-Reply-To:References:From;
-	b=UEJfz98THX7DGI9CAlWbfAyKSD4nqavaNlb7rAFoxP1XXKO+STSGf8r+413lrWW+s
-	 FHTOjlWFwaiB35XQxpdUhw1EQMgULGexFdxOifX/2eh4InXEp5MUcxmALh47RF2yrP
-	 r7CHrxEUZg8COTRhsnEnt1fkOVkCZxr5E7nauY2hObMw7WXd/FZBWYIYcJzwJfVDnz
-	 vdyUK3ZabuB7Dsw3z44X8tW2Nr1lqTHtWM82Z4UKHJL0dGeIZnslJfW1lcMCrx+LLB
-	 TbzIAQK1m3Qu3RHWpsCZZ9j5a2y7qRQh6AvwEAWovn6bVhOyAFPS1vU+Ufu0Ve541B
-	 9juX97WHB9HIA==
+	b=YImMVeMiGNprZ94LWLqaAyxKWheCpz17JUdEDnHOBcczz5HXaV3qlmxkqarZUVrOt
+	 1huou9jqqaVfJXjqWGOAwUU27emcvUBL0YdxWP31QUDX9YU6BUICCi75mRLlu4JG35
+	 83rpuRFxOPhl6uP9kDuNvqfmv+15nFuO0XCVIwozNWCQex8re1teGitBjghyQtKP9/
+	 Lq5c+/9z1hVDBjh8aOQhPx6SkvCMoyJNOiZf+Hxo56zJ6AWtE99sCLJeASeO7u5iYZ
+	 pjeRrjJhzjhrKHDxoJzZr3+dC6xodZ+4FuSxQymGdgQ6Yhmpw2aESsutpwL+DvlNDb
+	 Tmee/gAaK/rRg==
 Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Wed, 27 May
- 2026 10:42:09 +0200
-Received: (nullmailer pid 3494006 invoked by uid 1000);
+ 2026 10:42:10 +0200
+Received: (nullmailer pid 3493988 invoked by uid 1000);
 	Wed, 27 May 2026 08:42:01 -0000
 From: Steffen Klassert <steffen.klassert@secunet.com>
 To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
 CC: Herbert Xu <herbert@gondor.apana.org.au>, Steffen Klassert
 	<steffen.klassert@secunet.com>, <netdev@vger.kernel.org>
-Subject: [PATCH 7/9] xfrm: iptfs: reset runtime state when cloning SAs
-Date: Wed, 27 May 2026 10:41:25 +0200
-Message-ID: <20260527084148.3489759-8-steffen.klassert@secunet.com>
+Subject: [PATCH 1/9] xfrm: route MIGRATE notifications to caller's netns
+Date: Wed, 27 May 2026 10:41:19 +0200
+Message-ID: <20260527084148.3489759-2-steffen.klassert@secunet.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260527084148.3489759-1-steffen.klassert@secunet.com>
 References: <20260527084148.3489759-1-steffen.klassert@secunet.com>
@@ -63,94 +63,172 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: EXCH-01.secunet.de (10.32.0.171) To EXCH-01.secunet.de
+X-ClientProxiedBy: EXCH-04.secunet.de (10.32.0.184) To EXCH-01.secunet.de
  (10.32.0.171)
 
-From: Shaomin Chen <eeesssooo020@gmail.com>
+From: Maoyi Xie <maoyixie.tju@gmail.com>
 
-iptfs_clone_state() clones the IPTFS mode data with kmemdup(). This
-copies runtime objects which must not be shared with the original SA,
-including the embedded sk_buff_head, hrtimers, spinlock, and in-flight
-reassembly/reorder state.
+xfrm_send_migrate() in net/xfrm/xfrm_user.c and pfkey_send_migrate()
+in net/key/af_key.c both hardcode &init_net for the multicast that
+announces a successful XFRM_MSG_MIGRATE / SADB_X_MIGRATE.
 
-If xfrm_state_migrate() fails after clone_state() but before the later
-init_state() call has reinitialized those fields, the cloned state can be
-destroyed by xfrm_state_gc_task() with list and timer state copied from the
-original SA. With queued packets this lets the clone splice and free skbs
-owned by the original IPTFS queue, leading to use-after-free and
-double-free reports in iptfs_destroy_state() and skb release paths.
+XFRM_MSG_MIGRATE arrives on a per-netns NETLINK_XFRM socket, and the
+rest of the xfrm/af_key netlink path was made netns-aware in 2008.
+The other 14 multicast paths in xfrm_user.c route their event using
+xs_net(x), xp_net(xp) or sock_net(skb->sk); only the migrate path
+was missed.
 
-Reinitialize the clone's runtime state before publishing it through
-x->mode_data. Because clone_state() now publishes a destroyable mode_data
-object before init_state(), take the mode callback module reference there.
-Avoid taking it again from __iptfs_init_state() for the same object.
+Two consequences of the init_net hardcoding:
 
-Fixes: 0e4fbf013fa5 ("xfrm: iptfs: add user packet (tunnel ingress) handling")
-Cc: stable@vger.kernel.org
-Signed-off-by: Shaomin Chen <eeesssooo020@gmail.com>
+  1. The notification (selector, old/new endpoint addresses, and the
+     km_address) is delivered to listeners on init_net's
+     XFRMNLGRP_MIGRATE / pfkey BROADCAST_ALL groups rather than on
+     the issuing netns. An IKE daemon running in init_net therefore
+     receives migration notifications originating from any other
+     netns on the host.
+
+  2. An IKE daemon running inside a non-init netns and subscribed
+     to its own XFRMNLGRP_MIGRATE / pfkey groups never receives the
+     notification of its own migration. IKEv2 MOBIKE / address-update
+     handling inside a netns is silently broken.
+
+Thread struct net through km_migrate() and the xfrm_mgr.migrate
+function pointer, drop the &init_net override in xfrm_send_migrate()
+and pfkey_send_migrate(), and pass the caller's net (already in
+scope in xfrm_migrate() via sock_net(skb->sk)) all the way down.
+struct xfrm_mgr is in-tree only and not exported as a stable API,
+so the function-pointer signature change is internal.
+
+pfkey_broadcast() is already netns-aware via net_generic(net,
+pfkey_net_id) since the pernet conversion. The five other
+pfkey_broadcast() callers in af_key.c already pass xs_net(x),
+sock_net(sk) or a per-netns net, so this only removes the
+&init_net outlier.
+
+Fixes: 5c79de6e79cd ("[XFRM]: User interface for handling XFRM_MSG_MIGRATE")
+Cc: stable@vger.kernel.org # v5.15+
+Signed-off-by: Maoyi Xie <maoyi.xie@ntu.edu.sg>
 Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 ---
- net/xfrm/xfrm_iptfs.c | 28 +++++++++++++++++++++++-----
- 1 file changed, 23 insertions(+), 5 deletions(-)
+ include/net/xfrm.h     | 3 ++-
+ net/key/af_key.c       | 6 +++---
+ net/xfrm/xfrm_policy.c | 2 +-
+ net/xfrm/xfrm_state.c  | 4 ++--
+ net/xfrm/xfrm_user.c   | 5 ++---
+ 5 files changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/net/xfrm/xfrm_iptfs.c b/net/xfrm/xfrm_iptfs.c
-index 97bc979e55ba..6c6bbc040517 100644
---- a/net/xfrm/xfrm_iptfs.c
-+++ b/net/xfrm/xfrm_iptfs.c
-@@ -2650,7 +2650,8 @@ static void __iptfs_init_state(struct xfrm_state *x,
- 	x->props.enc_hdr_len = sizeof(struct ip_iptfs_hdr);
- 
- 	/* Always keep a module reference when x->mode_data is set */
--	__module_get(x->mode_cbs->owner);
-+	if (x->mode_data != xtfs)
-+		__module_get(x->mode_cbs->owner);
- 
- 	x->mode_data = xtfs;
- 	xtfs->x = x;
-@@ -2658,22 +2659,39 @@ static void __iptfs_init_state(struct xfrm_state *x,
- 
- static int iptfs_clone_state(struct xfrm_state *x, struct xfrm_state *orig)
+diff --git a/include/net/xfrm.h b/include/net/xfrm.h
+index 10d3edde6b2f..874409127e29 100644
+--- a/include/net/xfrm.h
++++ b/include/net/xfrm.h
+@@ -715,6 +715,7 @@ struct xfrm_mgr {
+ 					   const struct xfrm_migrate *m,
+ 					   int num_bundles,
+ 					   const struct xfrm_kmaddress *k,
++					   struct net *net,
+ 					   const struct xfrm_encap_tmpl *encap);
+ 	bool			(*is_alive)(const struct km_event *c);
+ };
+@@ -1891,7 +1892,7 @@ int xfrm_sk_policy_insert(struct sock *sk, int dir, struct xfrm_policy *pol);
+ #ifdef CONFIG_XFRM_MIGRATE
+ int km_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
+ 	       const struct xfrm_migrate *m, int num_bundles,
+-	       const struct xfrm_kmaddress *k,
++	       const struct xfrm_kmaddress *k, struct net *net,
+ 	       const struct xfrm_encap_tmpl *encap);
+ struct xfrm_state *xfrm_migrate_state_find(struct xfrm_migrate *m, struct net *net,
+ 						u32 if_id);
+diff --git a/net/key/af_key.c b/net/key/af_key.c
+index a166a88d8788..9cffeef18cd9 100644
+--- a/net/key/af_key.c
++++ b/net/key/af_key.c
+@@ -3564,7 +3564,7 @@ static int set_ipsecrequest(struct sk_buff *skb,
+ #ifdef CONFIG_NET_KEY_MIGRATE
+ static int pfkey_send_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
+ 			      const struct xfrm_migrate *m, int num_bundles,
+-			      const struct xfrm_kmaddress *k,
++			      const struct xfrm_kmaddress *k, struct net *net,
+ 			      const struct xfrm_encap_tmpl *encap)
  {
-+	struct skb_wseq *w_saved = NULL;
- 	struct xfrm_iptfs_data *xtfs;
- 
- 	xtfs = kmemdup(orig->mode_data, sizeof(*xtfs), GFP_KERNEL);
- 	if (!xtfs)
- 		return -ENOMEM;
- 
--	xtfs->ra_newskb = NULL;
- 	if (xtfs->cfg.reorder_win_size) {
--		xtfs->w_saved = kzalloc_objs(*xtfs->w_saved,
--					     xtfs->cfg.reorder_win_size);
--		if (!xtfs->w_saved) {
-+		w_saved = kzalloc_objs(*w_saved, xtfs->cfg.reorder_win_size);
-+		if (!w_saved) {
- 			kfree_sensitive(xtfs);
- 			return -ENOMEM;
- 		}
+ 	int i;
+@@ -3669,7 +3669,7 @@ static int pfkey_send_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
  	}
-+	xtfs->w_saved = w_saved;
-+
-+	__skb_queue_head_init(&xtfs->queue);
-+	xtfs->queue_size = 0;
-+	hrtimer_setup(&xtfs->iptfs_timer, iptfs_delay_timer, CLOCK_MONOTONIC,
-+		      IPTFS_HRTIMER_MODE);
-+
-+	spin_lock_init(&xtfs->drop_lock);
-+	hrtimer_setup(&xtfs->drop_timer, iptfs_drop_timer, CLOCK_MONOTONIC,
-+		      IPTFS_HRTIMER_MODE);
  
-+	xtfs->w_seq_set = false;
-+	xtfs->w_wantseq = 0;
-+	xtfs->w_savedlen = 0;
-+	xtfs->ra_newskb = NULL;
-+	xtfs->ra_wantseq = 0;
-+	xtfs->ra_runtlen = 0;
-+
-+	__module_get(x->mode_cbs->owner);
- 	x->mode_data = xtfs;
- 	xtfs->x = x;
+ 	/* broadcast migrate message to sockets */
+-	pfkey_broadcast(skb, GFP_ATOMIC, BROADCAST_ALL, NULL, &init_net);
++	pfkey_broadcast(skb, GFP_ATOMIC, BROADCAST_ALL, NULL, net);
  
+ 	return 0;
+ 
+@@ -3680,7 +3680,7 @@ static int pfkey_send_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
+ #else
+ static int pfkey_send_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
+ 			      const struct xfrm_migrate *m, int num_bundles,
+-			      const struct xfrm_kmaddress *k,
++			      const struct xfrm_kmaddress *k, struct net *net,
+ 			      const struct xfrm_encap_tmpl *encap)
+ {
+ 	return -ENOPROTOOPT;
+diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
+index c944327ce66c..59968dcbafe1 100644
+--- a/net/xfrm/xfrm_policy.c
++++ b/net/xfrm/xfrm_policy.c
+@@ -4703,7 +4703,7 @@ int xfrm_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
+ 	}
+ 
+ 	/* Stage 5 - announce */
+-	km_migrate(sel, dir, type, m, num_migrate, k, encap);
++	km_migrate(sel, dir, type, m, num_migrate, k, net, encap);
+ 
+ 	xfrm_pol_put(pol);
+ 
+diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
+index 686014d39429..395d82411a87 100644
+--- a/net/xfrm/xfrm_state.c
++++ b/net/xfrm/xfrm_state.c
+@@ -2837,7 +2837,7 @@ EXPORT_SYMBOL(km_policy_expired);
+ #ifdef CONFIG_XFRM_MIGRATE
+ int km_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
+ 	       const struct xfrm_migrate *m, int num_migrate,
+-	       const struct xfrm_kmaddress *k,
++	       const struct xfrm_kmaddress *k, struct net *net,
+ 	       const struct xfrm_encap_tmpl *encap)
+ {
+ 	int err = -EINVAL;
+@@ -2848,7 +2848,7 @@ int km_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
+ 	list_for_each_entry_rcu(km, &xfrm_km_list, list) {
+ 		if (km->migrate) {
+ 			ret = km->migrate(sel, dir, type, m, num_migrate, k,
+-					  encap);
++					  net, encap);
+ 			if (!ret)
+ 				err = ret;
+ 		}
+diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
+index 38a90e5ee3d9..71a4b7278eba 100644
+--- a/net/xfrm/xfrm_user.c
++++ b/net/xfrm/xfrm_user.c
+@@ -3271,10 +3271,9 @@ static int build_migrate(struct sk_buff *skb, const struct xfrm_migrate *m,
+ 
+ static int xfrm_send_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
+ 			     const struct xfrm_migrate *m, int num_migrate,
+-			     const struct xfrm_kmaddress *k,
++			     const struct xfrm_kmaddress *k, struct net *net,
+ 			     const struct xfrm_encap_tmpl *encap)
+ {
+-	struct net *net = &init_net;
+ 	struct sk_buff *skb;
+ 	int err;
+ 
+@@ -3292,7 +3291,7 @@ static int xfrm_send_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
+ #else
+ static int xfrm_send_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
+ 			     const struct xfrm_migrate *m, int num_migrate,
+-			     const struct xfrm_kmaddress *k,
++			     const struct xfrm_kmaddress *k, struct net *net,
+ 			     const struct xfrm_encap_tmpl *encap)
+ {
+ 	return -ENOPROTOOPT;
 -- 
 2.43.0
 
