@@ -1,134 +1,80 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66F1B2F8EB6
-	for <netdev@vger.kernel.org>; Wed, 27 May 2026 07:18:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 381B13B7B7A;
+	Wed, 27 May 2026 07:18:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779866327; cv=none; b=HlmjAFevUol+hYXUkR2sbCpBY9CZzN/oLyz/rEN2QWUYBfZ4nTVk/O2w1BWPy46RhDdjyfdQgPHLGNb/KPczAL7/l5sdpLozO50NlU5pOKlgwTF02NYo6mfIolKeb09BmDu32RNsx/9nq+slY1QmEto582Xnmw8D2va7YXK5azA=
+	t=1779866335; cv=none; b=E/ozaT8bSpNBMbO0HUnCCyFNi/NW9qSqnG7pu6kWCiOClplr3U9Iqt3xgHDiY+RPXPLXbAI+wbS4TEtEzXi+39SQ8q/dpE2ezCX+D3w+cpP+2cOs37xABzUEztBtWS8+nCQ0EupZ0NvymuxXHBceZWxEDjn1CmMN7aG6NQ58qac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779866327; c=relaxed/simple;
-	bh=+CTprmGPljqoWj5+N2MqzJ1uOGCIXO8wPfOBg98bLsI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sS3M0P2TemchvVHKZCRXWm15ubWayROJNv5LYKdYS4OUlwN/VVYqZSMbuY/eys9TRSeprfCTlRaVJhdxM1UW4MKlLTWFoYqFhCwPHHRFo0bTgjcMn9DR5Hd9tWZKL4eyxj2AQFmlMdYCjica/Z7I8DhNmutcPCJPtD2IbPFzNO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nNrMy7WT; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1779866335; c=relaxed/simple;
+	bh=wCHkiYzaEZ2VQJMSZlE0SCDBVwizZU8XwTiUPxbQd6c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jdZpLaR7toM24SUrbhDnm6vTA2IoQsFknGFV3Qrz2cY9XRYoATLs/db19DpXS/WiNMmDdxqZQvKbILwlaozWQNLL1PVHoBzSShS5We+Rjy0O5BBMRQG75Je5po3SZArsyOhLjsnv/zzFm3jZVuXWffStIHSP9szcWJhUi8Mlhic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=mB7P4YGn; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=6th0MMuw; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nNrMy7WT"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779866326; x=1811402326;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=+CTprmGPljqoWj5+N2MqzJ1uOGCIXO8wPfOBg98bLsI=;
-  b=nNrMy7WTO7HPAlgrNwm1TPIh0SSP6bckl1r6OZxK9/niKMJ8KDORkmIj
-   lEf79snl3E94HrUzT7Yolo9XWKRI6qHczfwlx6CuL6A/wuFkp0U834XM3
-   zTrY+HTHpnmAANnMO+CBJBXOTMscxc+ainpdAzC6FJRNyC/7KR5Yx/Z0T
-   Qg40cOTUQYTG1SiPTVNGnZEuZ42mF6TV+dRyn7/yC/7ekZ6Hv78wpf0Tg
-   cynwjr7tLzjsxn1Bl+5NdBJuvs8GW/jPylwvFxarEvNDEEQAz84efqPWy
-   2+vW7fvVXXFyY3Nunyqkhh/+1040gnalmnonVn/eRHvekniCTpHCXzoUt
-   g==;
-X-CSE-ConnectionGUID: sQYy7GRUTL2i0kpyrWlAMg==
-X-CSE-MsgGUID: QXSeME+hRH6LNm3TJ5DRZQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11798"; a="91260982"
-X-IronPort-AV: E=Sophos;i="6.24,171,1774335600"; 
-   d="scan'208";a="91260982"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2026 00:18:46 -0700
-X-CSE-ConnectionGUID: hsX2BLHZS+S7pY7cPE9tGQ==
-X-CSE-MsgGUID: r6D0S/ffRsqZibQ3aFaLPg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,171,1774335600"; 
-   d="scan'208";a="241992128"
-Received: from amlin-019-225.igk.intel.com ([10.102.19.225])
-  by orviesa008.jf.intel.com with ESMTP; 27 May 2026 00:18:45 -0700
-From: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-To: intel-wired-lan@lists.osuosl.org,
-	anthony.l.nguyen@intel.com,
-	aleksandr.loktionov@intel.com
-Cc: netdev@vger.kernel.org
-Subject: [PATCH net] ice: validate FDIR action queue index against VF VSI queue count
-Date: Wed, 27 May 2026 09:18:42 +0200
-Message-ID: <20260527071842.11478-2-aleksandr.loktionov@intel.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260527071842.11478-1-aleksandr.loktionov@intel.com>
-References: <20260527071842.11478-1-aleksandr.loktionov@intel.com>
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="mB7P4YGn";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="6th0MMuw"
+Date: Wed, 27 May 2026 09:18:52 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1779866332;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8ovgQx3AFB6saAe6xkInVEM2b4dB/Is3QWdliTwZX6I=;
+	b=mB7P4YGnlLJoUJQeRXqbeTC+uZ18fZbm87IGXwh2McxnBynPlakT9gFx++QEAd2raNNNkE
+	I5ZBl3NmrL+A1y986pGYZTXto5BH0FGQ9b0oGfySZuEKtzH4TS6XRH+mIxQoY/RDCEgQIS
+	6nJ0Ai6b5AePV/IS1MA+C/7egRMMMGNYM+/rPsFUFYMfcAm710VA2OCJ5DzMMX2OkoA84d
+	/gjAjoL1BLVCIg6O7WB5SI106/DdE+OE+4uZcHhgzZFhATsTiH11iKOFpnLbuB7lZr6te6
+	zQ5JtSkwIRoXSEvaQ2M4GGe9VhOTD2pjaTR4J+vETMsuW7um22BDNjvHLGWM1g==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1779866332;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8ovgQx3AFB6saAe6xkInVEM2b4dB/Is3QWdliTwZX6I=;
+	b=6th0MMuwDyMvHKsIXfWjRM0+4x36ThhPY40eLVcGMu3VP/nlb1jOqC57RP5nxNO9/sxuq7
+	l/Ctseig23H+AQAg==
+From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+To: Thomas Gleixner <tglx@kernel.org>
+Cc: LKML <linux-kernel@vger.kernel.org>, 
+	David Woodhouse <dwmw2@infradead.org>, Miroslav Lichvar <mlichvar@redhat.com>, 
+	John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, 
+	Anna-Maria Behnsen <anna-maria@linutronix.de>, Frederic Weisbecker <frederic@kernel.org>, 
+	Arthur Kiyanovski <akiyano@amazon.com>, Rodolfo Giometti <giometti@enneenne.com>, 
+	Vincent Donnefort <vdonnefort@google.com>, Marc Zyngier <maz@kernel.org>, 
+	Oliver Upton <oliver.upton@linux.dev>, kvmarm@lists.linux.dev, Oliver Upton <oupton@kernel.org>, 
+	Richard Cochran <richardcochran@gmail.com>, netdev@vger.kernel.org, Takashi Iwai <tiwai@suse.com>, 
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>, Johannes Berg <johannes.berg@intel.com>, 
+	Jacob Keller <jacob.e.keller@intel.com>, Tony Nguyen <anthony.l.nguyen@intel.com>, 
+	Saeed Mahameed <saeedm@nvidia.com>, Peter Hilber <peter.hilber@oss.qualcomm.com>, 
+	"Michael S. Tsirkin" <mst@redhat.com>, virtualization@lists.linux.dev, linux-wireless@vger.kernel.org, 
+	linux-sound@vger.kernel.org
+Subject: Re: [patch 09/24] timekeeping: Add CLOCK_AUX support for
+ ktime_get_snapshot_id()
+Message-ID: <20260527091749-dfc12db1-6b39-4aea-82e7-f1c20f35ddbb@linutronix.de>
+References: <20260526165826.392227559@kernel.org>
+ <20260526171223.374814973@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260526171223.374814973@kernel.org>
 
-ice_vc_fdir_parse_action() stores the VF-supplied
-action->act_conf.queue.index directly into input->q_index for both
-VIRTCHNL_ACTION_QUEUE and VIRTCHNL_ACTION_Q_REGION without checking
-whether the index is within the bounds of the VF's VSI.  The validated
-value is later programmed into the FDIR descriptor's queue index field,
-which means a malicious VF can direct matched traffic to a queue index
-it does not own, potentially reaching queues belonging to another VF or
-the PF.
+On Tue, May 26, 2026 at 07:14:13PM +0200, Thomas Gleixner wrote:
+> Now that all users are converted it's possible to enable snapshotting of
+> CLOCK_AUX time. The underlying clocksource is the same as for all other
+> CLOCK variants.
+> 
+> Signed-off-by: Thomas Gleixner <tglx@kernel.org>
 
-Add a bounds check against vsi->num_rxq for both action types, matching
-the pattern already used elsewhere in the driver.  Also obtain the VF
-VSI pointer locally so the check has access to num_rxq; add the
-expected NULL guard for robustness.
-
-Fixes: 0ce332fd62f6 ("ice: Add FDIR pattern action parser for VF")
-Fixes: 346bf2504397 ("ice: Add new actions support for VF FDIR")
-Cc: stable@vger.kernel.org
-Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
----
- drivers/net/ethernet/intel/ice/virt/fdir.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
-
-diff --git a/drivers/net/ethernet/intel/ice/virt/fdir.c b/drivers/net/ethernet/intel/ice/virt/fdir.c
-index 4f1f344..1bc524f 100644
---- a/drivers/net/ethernet/intel/ice/virt/fdir.c
-+++ b/drivers/net/ethernet/intel/ice/virt/fdir.c
-@@ -1152,6 +1152,7 @@ ice_vc_fdir_parse_action(struct ice_vf *vf, struct virtchnl_fdir_add *fltr,
- 	struct virtchnl_filter_action_set *as = &fltr->rule_cfg.action_set;
- 	struct device *dev = ice_pf_to_dev(vf->pf);
- 	struct ice_fdir_fltr *input = &conf->input;
-+	struct ice_vsi *vsi;
- 	u32 dest_num = 0;
- 	u32 mark_num = 0;
- 	int i;
-@@ -1162,6 +1163,10 @@ ice_vc_fdir_parse_action(struct ice_vf *vf, struct virtchnl_fdir_add *fltr,
- 		return -EINVAL;
- 	}
- 
-+	vsi = ice_get_vf_vsi(vf);
-+	if (!vsi)
-+		return -EINVAL;
-+
- 	for (i = 0; i < as->count; i++) {
- 		struct virtchnl_filter_action *action = &as->actions[i];
- 
-@@ -1176,11 +1181,21 @@ ice_vc_fdir_parse_action(struct ice_vf *vf, struct virtchnl_fdir_add *fltr,
- 			break;
- 		case VIRTCHNL_ACTION_QUEUE:
- 			dest_num++;
-+			if (action->act_conf.queue.index >= vsi->num_rxq) {
-+				dev_dbg(dev, "Invalid queue index %u for VF %d\n",
-+					action->act_conf.queue.index, vf->vf_id);
-+				return -EINVAL;
-+			}
- 			input->dest_ctl = ICE_FLTR_PRGM_DESC_DEST_DIRECT_PKT_QINDEX;
- 			input->q_index = action->act_conf.queue.index;
- 			break;
- 		case VIRTCHNL_ACTION_Q_REGION:
- 			dest_num++;
-+			if (action->act_conf.queue.index >= vsi->num_rxq) {
-+				dev_dbg(dev, "Invalid queue index %u for VF %d\n",
-+					action->act_conf.queue.index, vf->vf_id);
-+				return -EINVAL;
-+			}
- 			input->dest_ctl = ICE_FLTR_PRGM_DESC_DEST_DIRECT_PKT_QGROUP;
- 			input->q_index = action->act_conf.queue.index;
- 			input->q_region = action->act_conf.queue.region;
--- 
-2.52.0
-
+Reviewed-by: Thomas Weiﬂschuh <thomas.weissschuh@linutronix.de>
