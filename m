@@ -1,109 +1,156 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from canpmsgout07.his.huawei.com (canpmsgout07.his.huawei.com [113.46.200.222])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32F5C3CD8AD
-	for <netdev@vger.kernel.org>; Wed, 27 May 2026 07:53:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 295743C872E;
+	Wed, 27 May 2026 07:56:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.222
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779868429; cv=none; b=F58Rh4FKxkbJIoUKd3t9zDFCSvrZNSawiLsmv/KonNNFHET5np+FYskPwg0g+uhEsGYdhbHksHv71eDEBz0cUhZk9C+/fF7xTDONBYbF3aboyG2uWyws8fnAGi+5eBzQ3e1duouyscyryEGT0vEvvA7jpCYLx2R0oR9SBZYUjBg=
+	t=1779868575; cv=none; b=Tg+PCNzIWgF5hHJDpq1sbS0eMFWypaDn4fBUhMMDctDL9rDx7Om/Q8iY3dp5aGrZSP4srLs4D7ymM3/O5nGaXvCHzcIqbb8OgdDKrprkSjtFmhi4D1SUOiNLnFunD5HIlz7PcpmBFJaG4XMSBujisGEfkNgUL8PKE/L4xnxxgFg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779868429; c=relaxed/simple;
-	bh=LFyioZCTW+ZiNuJCpdoWoxUyVV6b0Xecy4cKfm9Z1Oc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=G+NL/sp/t+bI5LwgSuedrZtVdVoxy8ZI0FfVXqc9rAseNQRAmtlQeb6daaQgsWo3aDfBfbdMczfhBH1KDSjsY44PtzlR6FEf9DY1s0LcdnQDIxYl2dF7D2HSifKlmhPJx3alfktmO3y3AJnxByZC0NFA0goyn++Zk0DOQasXKJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=VYVEZxjo; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1779868575; c=relaxed/simple;
+	bh=x8vK8ZWOUhg/tEx5q9P0ai4gwCH4AVza2ffIZnneLCk=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=PcFu+xHZe8rEA+YGdfXkAqv6ZdCS6nPzW6Ong/7ycQkOT45ihkPWbQO/Zzy8ZSI9Ze7MQ6r5UJn79Y+HK4NxV5q70G5idlvd8A96J3Udl+8pvHvY46oPkxmo1BY+Pvubt4x9/3IwLBHFBIr9w9RlizhbGXCJtlCbSqAtjED9fhs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=eUZdS3Dq; arc=none smtp.client-ip=113.46.200.222
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="VYVEZxjo"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 9FBA21A36DC;
-	Wed, 27 May 2026 07:53:45 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 710AE601A1;
-	Wed, 27 May 2026 07:53:45 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id AAD711088805F;
-	Wed, 27 May 2026 09:53:35 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1779868424; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=9YBx2gOkZzjwHTBHcOIgoEuKlLYiwrVY86yq/isaziY=;
-	b=VYVEZxjoHGTF9UHTe0v6QhbyMoScdi4783k3JqBrP8iYBgKPvg8oHXzy9gzxc+ijkZVr46
-	Mnh7v7TstFw4AC5dlbL7+vDH2Gp9EjJcADNPvBpXhETpjmmWUe1OL8xahWEQFaRfd2ZBha
-	eJH2m3thL8N/u94fC2W9KcyaA57hS1uskfmVk0s4tdToCV4ZQ+HXKIYlggvLX0vJkprTel
-	oCBFhBF0ebYabZmJgkfehp74Mx+NTaTMCGB9b/JFcNY3rszCYsvS1/isZd7fSGBo7AFqyd
-	699vnJYTjNDd29K9KuJlkk0o7+z94EcYIZqwOZTt8q2lrvjHyN3WNQoLZjENvQ==
-Message-ID: <7bd6c580-8c0c-4323-ad18-84b93c2b61c7@bootlin.com>
-Date: Wed, 27 May 2026 09:53:34 +0200
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="eUZdS3Dq"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=vXgwY22bMiSZf/BdioBEU4Mj0uV+XIo7IVi56h/mHZk=;
+	b=eUZdS3Dqz7Ium6c+xy/NXqn+KtQ3Y9cC1A88qf+OD13w1mtyFLVUsjmKMPIvs7g+tUEXz2RwU
+	jSWTSIchaWfZdxcSKN2aAnCCA4MYOLaZ2iOccstSZ6RgS2I9wpvBQnBeZ85zE1/duAhlGGmB2of
+	7EnUcctMR/tuB4HktgUNpfk=
+Received: from mail.maildlp.com (unknown [172.19.163.200])
+	by canpmsgout07.his.huawei.com (SkyGuard) with ESMTPS id 4gQMDk2GXBzLlT6;
+	Wed, 27 May 2026 15:48:22 +0800 (CST)
+Received: from kwepemf100013.china.huawei.com (unknown [7.202.181.12])
+	by mail.maildlp.com (Postfix) with ESMTPS id 87F1840563;
+	Wed, 27 May 2026 15:56:07 +0800 (CST)
+Received: from DESKTOP-62GVMTR.china.huawei.com (10.174.189.124) by
+ kwepemf100013.china.huawei.com (7.202.181.12) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.36; Wed, 27 May 2026 15:56:06 +0800
+From: Fan Gong <gongfan1@huawei.com>
+To: Fan Gong <gongfan1@huawei.com>, Zhu Yikai <zhuyikai1@h-partners.com>,
+	<netdev@vger.kernel.org>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Andrew Lunn
+	<andrew+netdev@lunn.ch>, Ioana Ciornei <ioana.ciornei@nxp.com>, Mohsin Bashir
+	<mohsin.bashr@gmail.com>
+CC: <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>, luosifu
+	<luosifu@huawei.com>, Xin Guo <guoxin09@huawei.com>, Zhou Shuai
+	<zhoushuai28@huawei.com>, Wu Like <wulike1@huawei.com>, Shi Jing
+	<shijing34@huawei.com>, Zheng Jiezhen <zhengjiezhen@h-partners.com>, Maxime
+ Chevallier <maxime.chevallier@bootlin.com>
+Subject: [PATCH net-next v06 0/6] net: hinic3: PF initialization
+Date: Wed, 27 May 2026 15:55:55 +0800
+Message-ID: <cover.1779867397.git.zhuyikai1@h-partners.com>
+X-Mailer: git-send-email 2.50.1.windows.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 06/10] docs: net: refresh netdev feature guidance
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
- pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org, corbet@lwn.net,
- vladimir.oltean@nxp.com, willemb@google.com, sdf.kernel@gmail.com,
- ecree.xilinx@gmail.com, jesse.brandeburg@intel.com, linux-doc@vger.kernel.org
-References: <20260526160151.2793354-1-kuba@kernel.org>
- <20260526160151.2793354-7-kuba@kernel.org>
- <422219d6-8377-423c-8ccd-641b2fccaa1a@bootlin.com>
- <20260526153532.7979b43c@kernel.org>
-Content-Language: en-US
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-In-Reply-To: <20260526153532.7979b43c@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ kwepemf100013.china.huawei.com (7.202.181.12)
 
-Hi Jakub
+This is [3/3] part of hinic3 Ethernet driver second submission.
+With this patch hinic3 becomes a complete Ethernet driver with
+pf and vf.
 
-On 5/27/26 00:35, Jakub Kicinski wrote:
-> On Tue, 26 May 2026 20:41:10 +0200 Maxime Chevallier wrote:
->>>    
->>>     1. netdev->hw_features set contains features whose state may possibly
->>>        be changed (enabled or disabled) for a particular device by user's
->>> -    request.  This set should be initialized in ndo_init callback and not
->>> -    changed later.
->>> +    request.  Drivers normally initialize this set before registration or
->>> +    in the ndo_init callback. Changes after registration should be made
->>> +    very carefully as other parts of the code may assume hw_features are
->>> +    static. At the very least changes must be made under rtnl_lock and
->>> +    the netdev instance lock, and followed by netdev_update_features().
->> Feel free to keep this description as-is, but can we get somewhere the
->> actual meaning of "hw" in "hw_features" ? I've seen this cause confusion
->> before as this is sometimes wrongly interpreted as "Hardware features",
->> which isn't correct as the hardware may do stuff without allowing users
->> to change that behaviour.
->>
->> I vaguely recall something along the lines of "Host-Writeable features",
->> but I am not sure at all about that...
-> 
-> Hm. I assumed the hw in hw_features stands for hardware.
-> The magic behavior of host controllable vs hardwired was
-> probably added later without renaming the field.
-> 
-> As you indicate the usual confusion is that it's legal to have
-> a feature in ->features which is not set in ->hw_features which
-> means that features is hardwired "on", it can't be disabled by
-> the user.
-> 
-> The current text does say this: "features whose state may [..]
-> be changed [..] by user's request". But perhaps it's not emphatic
-> enough.
-> 
-> Main question is whether this series should be clarifying
-> this or our criteria is that the series doesn't _add_ confusion,
-> even if it doesn't clarify all the potential confusion points? :)
+Add 20 ethtool ops for information of queue, rss, coalesce and eth data.
+Add MTU size validation
+Config netdev watchdog timeout.
+Remove unneed coalesce parameters.
 
-Frankly I think your series is good as it is, the text is clear
-enough, and we can redirect people to it if we spot an issue
-on that point during review.
+Changes:
 
-Thanks a lot for answering,
+PATCH 03 V01: https://lore.kernel.org/netdev/cover.1773387649.git.zhuyikai1@h-partners.com/
+* Add rmon/pause/phy/mac/ctrl stats (Ioana Ciornei)
 
-Maxime
+PATCH 03 V02: https://lore.kernel.org/netdev/cover.1774684571.git.zhuyikai1@h-partners.com/
+* Modify "return -EINVAL" intension problem (AI review)
+* Use le16_to_cpu for rss_indir pair.out->buf (AI review)
+* Use u32 instead of int in coalesce_limits to avoid overflow (AI review)
+* Remove redundant u64_stats_update_begin/end when reading stats without
+  concurrent reader (AI review)
+* Modify nic_dev->stats.syncp logic (AI review)
+* Complete rxq/txq stats stats fileds in hinic3_rx/txq_get_stats (AI review)
+* Remove statistics values in rtnl_link_stats64 from ethtool statistics
+  values (AI review)
+* Add channel_cfg_lock & channel_res_lock to protect resources access (AI review)
+* Remove OutOfRangeLengthField, FrameToolong and InRangeLengthErrors (Ioana Ciornei)
+* Remove redundant mtu commit (Maxime Chevialler)
+
+PATCH 03 V03: https://lore.kernel.org/netdev/cover.1774940117.git.zhuyikai1@h-partners.com/
+* Change unnedd to unneeded (AI review)
+* Remove packets,bytes,errors and dropped in hinic3_rx/tx_queue_stats (AI review)
+* Remove duplicated entried in hinic3_port_stats[] (AI review)
+* change stats_info.head.status to ps->head.status (AI review)
+
+PATCH 03 V04: https://lore.kernel.org/netdev/cover.1775618797.git.zhuyikai1@h-partners.com/
+* Remove restore_drop_sge in hinic3_rx_queue_stats (AI review)
+* Remove hinic3_nic_stats (AI review)
+* Use old_q_param to store old config and use it in error handling (Mohsin Bashir)
+* Add netdev_info to inform the user that depth is trimmed (Mohsin Bashir)
+* Remove const in hinic3_get_qp_stats_strings parameters (Mohsin Bashir)
+* Change EOPNOTSUPP to ERANGE in is_coalesce_exceed_limit (Mohsin Bashir)
+* Update nic_dev->rss_type after hinic3_set_rss_type (Mohsin Bashir)
+* Modify MGMT_STATUS_CMD_UNSUPPORTED to EOPNOTSUPP for complying with the
+  error code specifications (Mohsin Bashir)
+
+PATCH 03 V05: https://lore.kernel.org/netdev/cover.1775711066.git.zhuyikai1@h-partners.com/
+* Clear HINIC3_CHANGE_RES_INVALID bit in error handling (AI review)
+* Use low >= high to avoid low=high in is_coalesce_legal (AI review)
+* As tx and rx share interrupts, we only use ETHTOOL_COALESCE_RX_USECS for
+user setting to avoid user misunderstanding. So we do not add
+ETHTOOL_COALESCE_TX_USECS. (Mohsin Bashir & AI review)
+
+PATCH 03 V06:
+* Remove redundant rx_jumbo_pending and rx_mini_pending judgement (Jakub Kicinski)
+* Remove redundant max tx_pending judgement when .get_ringparam already got the
+   max value (Jakub Kicinski)
+* Use extack instead of netdev_err/netdev_info/netdev_warning (Jakub Kicinski)
+* Remove HINIC3_CHANNEL_RES_VALID and only use HINIC3_CHANGE_RES_INVALID
+  bit (Jakub Kicinski)
+* Deference freed pointers in hinic3_change_channel_settings error
+  handling (Jakub Kicinski)
+* Modify hinic3_open_channel (Jakub Kicinski)
+
+Fan Gong (6):
+  hinic3: Add ethtool queue ops
+  hinic3: Add ethtool statistic ops
+  hinic3: Add ethtool coalesce ops
+  hinic3: Add ethtool rss ops
+  hinic3: Configure netdev->watchdog_timeo to set nic tx timeout
+  hinic3: Remove unneeded coalesce parameters
+
+ .../ethernet/huawei/hinic3/hinic3_ethtool.c   | 835 +++++++++++++++++-
+ .../ethernet/huawei/hinic3/hinic3_hw_intf.h   |  13 +-
+ .../net/ethernet/huawei/hinic3/hinic3_irq.c   |   9 +-
+ .../net/ethernet/huawei/hinic3/hinic3_main.c  |   7 +
+ .../huawei/hinic3/hinic3_mgmt_interface.h     |  39 +
+ .../huawei/hinic3/hinic3_netdev_ops.c         | 105 ++-
+ .../ethernet/huawei/hinic3/hinic3_nic_cfg.c   |  64 ++
+ .../ethernet/huawei/hinic3/hinic3_nic_cfg.h   | 109 +++
+ .../ethernet/huawei/hinic3/hinic3_nic_dev.h   |   8 +
+ .../ethernet/huawei/hinic3/hinic3_nic_io.c    |   4 +-
+ .../ethernet/huawei/hinic3/hinic3_nic_io.h    |   8 +-
+ .../net/ethernet/huawei/hinic3/hinic3_rss.c   | 487 +++++++++-
+ .../net/ethernet/huawei/hinic3/hinic3_rss.h   |  19 +
+ .../net/ethernet/huawei/hinic3/hinic3_rx.c    |  61 +-
+ .../net/ethernet/huawei/hinic3/hinic3_rx.h    |  18 +-
+ .../net/ethernet/huawei/hinic3/hinic3_tx.c    |  71 +-
+ .../net/ethernet/huawei/hinic3/hinic3_tx.h    |   2 +
+ 17 files changed, 1823 insertions(+), 36 deletions(-)
+
+
+base-commit: aa064a614efcfa4c300609d1f01134e99a12ad10
+-- 
+2.43.0
 
