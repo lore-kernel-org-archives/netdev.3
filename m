@@ -1,70 +1,86 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A52E29898F;
-	Wed, 27 May 2026 13:23:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF9BB2E7F25;
+	Wed, 27 May 2026 13:24:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779888223; cv=none; b=tq1w+aAActtmiEWCttl3AKiKv6SuNoSVu1AjpjKU4V7w5zHMtjS1G5GfCkFgY48RWCNHuckB64FavmbyTKju0SclVus8lW+VdQeEZKG4rdMiyiHDPyhswDr1MsoH3n2lkJPZI8QEkKaNQTEAjWdW+BMba8JyTPw6ruVFI3dh5aQ=
+	t=1779888295; cv=none; b=IyjykZrcz4VEcjoVP+hvfPE1XSS2hRT+fFX7d58zKnpMYj94gGA4TyIMtFWvc/95bRQ8nJxiY4BLx07V9TEiKzx3iFaNfcVwxzgX4+6ZBUtwOtCKojmyox7V2ujUovn0p5X2si4u0uBXkS6Skc09/7fx2iRFLXJTICTM5kiQqlw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779888223; c=relaxed/simple;
-	bh=NlN6jTcVGVQod/T6/pDzvwKHuC9exqNQVAEAnBbEa+c=;
+	s=arc-20240116; t=1779888295; c=relaxed/simple;
+	bh=0HGClSyXBXxyXG26RzRZS7w3G2ipIvuqzIRh1ydQ3W4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fab7tUCZJJoGZbzBDk2JDX8ScCPZe0+57GRN0LsTw2I8TMhUU6XvjdzalR+eV2qeomLl9swEERK2XmhQfLemJzTI9bDMWx0WjwKsz0YrpIEQ+uPC0PH83pGKStxSI8Lcv0oL9QRO62pb+YXPvpykpxzfkxRVriVdn1KldvAqlfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=m2x5AERU; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	 Content-Type:Content-Disposition:In-Reply-To; b=IB2uMv2gsvjtkn1aivfrYhvRBQZ0+LTHHpYNSKF26vPiyBGaWlEvpEuUx9caWiKuJaXNC0aGhwoNuiReHlhoX+ya5sjBdQIV+6ncpKF8MeWIrdmaMZkkNGBMqQhErj42UCG3PDY90FFcWrzKgORo53+xn06G3T9sB7mKid4X9pw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FumuuEQW; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="m2x5AERU"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=H5aprNpB+u2skc8+Um2/wrrPcxGOx+/3mNx0Yo8rNJc=; b=m2x5AERUZNJwUkSZMf6ZhZKxIR
-	WYgKDaRAcJAGkvJ628QXwEnr3pvGdrStV6oi1IwlN5aBSxpkVBBD1ywHsaF/a1ShmOuKetRIediF4
-	uHo19xSDsg5E1l+JU4W+z60TBoBzHxzIVLsyVkawI8gIqFw3FUZsQlW+XBOdyHR+CGvY=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wSEEI-004ket-GT; Wed, 27 May 2026 15:23:26 +0200
-Date: Wed, 27 May 2026 15:23:26 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Thangaraj.S@microchip.com
-Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	Bryan.Whitehead@microchip.com, UNGLinuxDriver@microchip.com,
-	linux@armlinux.org.uk, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 2/5] net: lan743x: read SFP straps from PCI11x1x device
-Message-ID: <af49a018-952a-439a-8beb-2e300a1d266a@lunn.ch>
-References: <20260514105028.42942-1-thangaraj.s@microchip.com>
- <20260514105028.42942-3-thangaraj.s@microchip.com>
- <053eaadf-07f3-431f-a0a4-28980adb8213@lunn.ch>
- <DSWPR11MB971561B42BB157F7C8C436C2EC082@DSWPR11MB9715.namprd11.prod.outlook.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FumuuEQW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 412E91F000E9;
+	Wed, 27 May 2026 13:24:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779888294;
+	bh=0HGClSyXBXxyXG26RzRZS7w3G2ipIvuqzIRh1ydQ3W4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=FumuuEQWtmuF/BJmD55PoeOE/v92cl36iWgBylm0ngcfZoD5L83yq4/kULhaU0p23
+	 u0pQrFsLbF/Qo3blkzBhKeYDfpqLO+j+HnohfXhchKZmk9G2+7zwY07glrG74TllxR
+	 K7+W8KtC6tlm0ZfvXD0s7pFosIfdud18beEfJ1uwj2z4jQrmAYTO84FJxrv2gJMCHC
+	 8eDlQAR8n6LhGolaf4aM8yVD8GXt41OKRHN6XWZyO2EBsJL6cie5HtUKWGhf8YAILm
+	 FvtynKWoSEsAAsI5/00B67ltc/IgmGDRbHFDp47JG/xQZpZ5StB50qGuQ2oNbn/tyN
+	 8EBowBhM5Traw==
+Date: Wed, 27 May 2026 14:24:49 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Cc: Kumar Kartikeya Dwivedi <memxor@gmail.com>, Tejun Heo <tj@kernel.org>,
+	Emil Tsalapatis <emil@etsalapatis.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>, bpf <bpf@vger.kernel.org>,
+	Networking <netdev@vger.kernel.org>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Linux Next Mailing List <linux-next@vger.kernel.org>
+Subject: Re: linux-next: build failure after merge of the bpf-next tree
+Message-ID: <23a429b4-bdf1-4f96-b3af-7ab3186e99d3@sirena.org.uk>
+References: <ahWOVFZZScPjm2Ow@sirena.org.uk>
+ <CAADnVQ+yjm0SJ0UQMeuS82MLDeo1bvZKSMMDh-K8D9-PNu=p8w@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="yBgt/TPiuRRzj/+6"
+Content-Disposition: inline
+In-Reply-To: <CAADnVQ+yjm0SJ0UQMeuS82MLDeo1bvZKSMMDh-K8D9-PNu=p8w@mail.gmail.com>
+X-Cookie: No alcohol, dogs or horses.
+
+
+--yBgt/TPiuRRzj/+6
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <DSWPR11MB971561B42BB157F7C8C436C2EC082@DSWPR11MB9715.namprd11.prod.outlook.com>
 
-> > > Introduce CONFIG_LAN743X_SFP to guard SFP-specific code
-> > 
-> > Why? Does this add a lot of code? Most MAC drivers don't have such a Kconfig
-> > configuration, so i think this needs some justification.
-> [Thangaraj Samynathan]  CONFIG_LAN743X_SFP was introduced based on
->   Jakub's v3 review feedback. There are devices on this LAN743x family
->   of devices (LAN7430, LAN7431, PCI11x1x) that do not support SFP at
->   all. So while the amount of code in the common LAN743x driver itself
->   may not be that much, the dependencies could force an intended
->   minimalistic build of the kernel that wanted to use the lan7430 device
->   (which is rgmii only capable device) to have to include tons of kernel
->   code (sfp, i2c, gpio) it does not need otherwise.
+On Tue, May 26, 2026 at 03:08:06PM -0700, Alexei Starovoitov wrote:
 
-In practice distributions turn on nearly everything. So the code is
-likely to be built. Rather than a Kconfig symbol, can you move the
-code into a module, which only gets loaded for pci11x1x?
+> thoughts on the best way to fix it ?
+> Pls send it to bpf-next. I think it's fine for it to be in one tree only.
 
-	Andrew
+That's fine from a -next point of view since bpf gets merged first,
+you'll also need to ensure that the sched_ext stuff doesn't get sent to
+Linus until the bpf changes have landed or flag the dependency up to
+him.
+
+--yBgt/TPiuRRzj/+6
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmoW8KAACgkQJNaLcl1U
+h9Ax+Af9FshkywdeD8aHR6Ecrc7ZYwpMdLWtt7h+Pz6LHttcHF+i8KOxs0akomXc
+meW86c2er19FNqtrRzSe0+OlQc2fmjWlWN0Ybh1TSvt6n/99pf4JtdT96bp6/zri
+ckZHaTx4R/WSENn+uS5TRrxfWvBFhOrDmtc9QjQtMwRPdgS4Jj6xyBAjekn7k5G3
+RZWFpbz/dP6Ka2Zsq4ZLdMmHlbhm3lY9UcYRWuVHqk+2D+VGZf/WBqEQxWkzlAdj
+MH1Z9KJaQJAga+bVoTA1i34S9FuySv9HjKj7cdGYrT9wqgpqZWUqCQJ5UKAAJ+bd
+5Ot3/uZVMG116Joev//DMYUMLCbSig==
+=gKeV
+-----END PGP SIGNATURE-----
+
+--yBgt/TPiuRRzj/+6--
