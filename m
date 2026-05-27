@@ -1,216 +1,149 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CHN02-BJS-obe.outbound.protection.partner.outlook.cn (mail-bjschn02on2118.outbound.protection.partner.outlook.cn [139.219.17.118])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 721463EF0C8
-	for <netdev@vger.kernel.org>; Wed, 27 May 2026 11:12:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779880323; cv=none; b=YtQ5JIXY2psQ9C0wNE+TWQMHKQdaXATtFVYat8wLiLA58SUmU5fIh162QQUnVMbiWvL5/D3Q/PmF+NVMThalPdHM8FC1TRK8Fs/pWJq46u5swuCN2TpoyF7n60O0q+Z/hYT9xWljFuTi4Zi3qEfkKhur1zzo1c1Oy6E63NuP1bo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779880323; c=relaxed/simple;
-	bh=hmzv3evJWKDG1ijGXshnxk8ZWXXgQAuckoIhRWmecK8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=l4ACcMDDESByB2ysltRVHJMY3ZWOSHINo1LderIK8sEg3klFPYk5T9VoxGXplI2LkBKauY3ANBePod2hARvxpLyR82QQDtky7lIBo3LMzQKDM+sov7aRxXiIceZjdpIOBdoyduZ4IAuMOCmlgcRKKbU7ljQNcDk7K/bB6/wIlO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=ARrf1Y2Z; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=q37CK1Lv; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=y3XK6YZ2; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=8C3OTFdM; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="ARrf1Y2Z";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="q37CK1Lv";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="y3XK6YZ2";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="8C3OTFdM"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 9461F67080;
-	Wed, 27 May 2026 11:11:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1779880319; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qKrQoRgjTDNoQNekm5OnXBHl8URyX2aoygUus9E39fQ=;
-	b=ARrf1Y2ZScI4IgB+flGzixDsexBm78r2tcmGUYq7M2ETGKMicMga+xO3gR20uqdHagRAHR
-	uRqQRT/gE01v7XX2MGLbeY/ptG21xpfTU2MTyau51+8Ss+5igq+s6hvrQV4jtsKqO/j8LX
-	WhCK8iat+seBsWRIWoChUWtJcKpOyyY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1779880319;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qKrQoRgjTDNoQNekm5OnXBHl8URyX2aoygUus9E39fQ=;
-	b=q37CK1LvkmedEp0N2V0sdPbLWfD3q0jlvEoJoi2OFl8sVGGQZd5UpHiE1qcQPFOdhr0UCN
-	tlaF/Z3JXWAGF9Bg==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=y3XK6YZ2;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=8C3OTFdM
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1779880318; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qKrQoRgjTDNoQNekm5OnXBHl8URyX2aoygUus9E39fQ=;
-	b=y3XK6YZ2m519HbtJDw5CZYk/hX+qedlGDlH4Mr/uEyL4TZJtMuokkn+2ujv0QwdSehuNfZ
-	z960UPity/1v++8k6YTfoJWoqivzx287lCU/DyVorUcImMoG8DttRp/yaX2intNznSc/cx
-	n/iQy4WTQqrHO949NEbMmTNKjIluxwE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1779880318;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qKrQoRgjTDNoQNekm5OnXBHl8URyX2aoygUus9E39fQ=;
-	b=8C3OTFdM9Hr58mnI4NnYlXkRoZ1UWJFERiPoqjkceSJmMnvzi/qNL7z1JBOxgah9jUrnxY
-	K/PgYFWrk9Uu9vCA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E0D695A7D3;
-	Wed, 27 May 2026 11:11:57 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id WDDdM33RFmqgGQAAD6G6ig
-	(envelope-from <fmancera@suse.de>); Wed, 27 May 2026 11:11:57 +0000
-Message-ID: <21df0b14-f530-4e9a-931a-21154ec18c78@suse.de>
-Date: Wed, 27 May 2026 13:11:57 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C11B93D79FE;
+	Wed, 27 May 2026 11:14:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=139.219.17.118
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779880475; cv=fail; b=muT2xNnrWGo2w9IcweEh0JPiekJgt/yku3o72OCv9CFdSvYG9swZVbT4usY3qveNV+SWwi6srGgZuR0jkS8qvSq7mE12lZYqlHp86yFQ/EpNTpjeMmBkIpBanm6ojicroWLHG5D5Kb7R8NzFkGi0VMGKW55Io7MMw/Gl+bRHsaE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779880475; c=relaxed/simple;
+	bh=90hz4BNcfKSl0naESe/IvFNxVymxBVDX9agIhlpj0e4=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=T1EXDhqAu33hi8GX0G+SvVnjyCBTvbaJvXh+gw+ay0gYrg7dm/iRY+OrCIUAcmCKECZHIhaoVWekVs23MOyo5RLuRk0/+siIcjKlEv5MOYTqddicWribQaSrL26DHqTKJ1qNdCeSjSXrOOxxJZsi3gcTAstdg2tPnL7N3cu/+Wo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com; spf=pass smtp.mailfrom=starfivetech.com; arc=fail smtp.client-ip=139.219.17.118
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=starfivetech.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=P+nhUiK0J7j9Eubo/Fj8fz+morVz00pkiKnu8sOtBTXq2Sdec8Quj36iIDo+50jyGaA2EuH0LT1kN2CLvYdxtRpmFjAvJ0tlGzJ6WDmy7fYuzO4R2IP7yvIp2vbUeETKf6B6Y1X3z+BX/uvGmsIx/OGyfhBQ5Ijfm0DU1qQzVO8k1Bdnn4aK+53LRThe0DW0sdZAk+U+bVZkb2zV+X6Gatj61yMY15Q3ULtbZCaIiuZiyCV8tw5t4rieCKjt5r5zIPmO56b3h4uJr3VTLr/r7lUfM8MuPjw46Xe81oIoICQ3IpbTWLcsvRLjr2/NkbWU6cIYynmKn8PIZ8tDo97RjQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=qvfzEu8uwAUkb/LGG2KjDhQRE+QjOYrCIOP6wkuiXck=;
+ b=bd/dQE5JDq/0nDAVcU9cWhdCuO701IacokRwmuBXeH4cDpRDAQJQVz+owai7DfRFwPc2aRJMVJ5VnmDeXOFr2hGjub5K84Kfe31k2L2YWcyREoSfA3oFb6fTcwMDumTBtsYTdo9V5CC+hHfIbWX3Z3VPPg2q1agxEAOSFz4PdIVaJVwOuUbpFstj73l/DOBhzH/7OQnHxztUt4oH2iUamFKb4ihM2Og/XI8vfwzQORwkkD0je3M/BM6FQ9dqWVkkx2V293TDqDzJ41bcxPbTubQeNWbq5Gv5h5xVjUbAXBbdhfPkIIQrE7THLhneHPabs9Gjvdt6VJ1W3CeUMk9TkA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=starfivetech.com; dmarc=pass action=none
+ header.from=starfivetech.com; dkim=pass header.d=starfivetech.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=starfivetech.com;
+Received: from SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c311:25::15) by SHXPR01MB0750.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c311:25::16) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.48.22; Wed, 27 May
+ 2026 08:41:19 +0000
+Received: from SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn
+ ([fe80::9b99:12dc:a115:b90f]) by
+ SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn ([fe80::9b99:12dc:a115:b90f%3])
+ with mapi id 15.20.9891.021; Wed, 27 May 2026 08:41:19 +0000
+From: Minda Chen <minda.chen@starfivetech.com>
+To: Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Emil Renner Berthing <emil.renner.berthing@canonical.com>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor@kernel.org>,
+	netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	devicetree@vger.kernel.org,
+	Minda Chen <minda.chen@starfivetech.com>
+Subject: [net-next v5 4/4] net: stmmac: starfive: Add STMMAC_FLAG_SPH_DISABLE flag
+Date: Wed, 27 May 2026 16:41:08 +0800
+Message-Id: <20260527084108.121416-5-minda.chen@starfivetech.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20260527084108.121416-1-minda.chen@starfivetech.com>
+References: <20260527084108.121416-1-minda.chen@starfivetech.com>
+Content-Type: text/plain
+X-ClientProxiedBy: SH0PR01CA0014.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c311:5::26) To SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c311:25::15)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] hsr: broadcast netlink notifications in the device's
- net namespace
-To: Maoyi Xie <maoyixie.tju@gmail.com>, "David S . Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>
-Cc: Jan Vaclav <jvaclav@redhat.com>, Andrew Lunn <andrew@lunn.ch>,
- Taehee Yoo <ap420073@gmail.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <CAHPEe=GO=2qqWZPwBB4rrXc3mkD0dznp2K78nCsKwF=c-QwxEw@mail.gmail.com>
- <20260527075924.2707856-1-maoyixie.tju@gmail.com>
-Content-Language: en-US
-From: Fernando Fernandez Mancera <fmancera@suse.de>
-In-Reply-To: <20260527075924.2707856-1-maoyixie.tju@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Level: 
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Queue-Id: 9461F67080
-X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.01 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[gmail.com,davemloft.net,google.com,kernel.org,redhat.com];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	ARC_NA(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[redhat.com,lunn.ch,gmail.com,vger.kernel.org];
-	RCVD_COUNT_TWO(0.00)[2];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.de:dkim,suse.de:mid]
-X-Spam-Flag: NO
-X-Spam-Score: -3.01
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SHXPR01MB0863:EE_|SHXPR01MB0750:EE_
+X-MS-Office365-Filtering-Correlation-Id: 973cb098-5168-4bf1-b727-08debbcbb906
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|52116014|7416014|1800799024|366016|56012099006|38350700014|921020|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	ZNhA7ABKfeZBoQp/ZwYj8JGpljPxGkc+T1L9e6ztMRksfhkR+1r2j+NhdxAuu2UTmUru6VFwslP0vqzDyno/kav15AoVHyoIbpqXWbj85fCfxy1tOu+QzsIndjiIsdPbuX2frXgkFhyPPPITeoxxo8wlzRvtgwQWIcdk3LEmlB7o1dxHWEG0z4AoJyFn8whrBU84GF++y4hJjIyyMlQA2PueL5s1z9LqoYNnm0JTBXoquKEyrkHAFrL4QnK9HzHOuqQT/50L1kYpI9EQ2bef5R9e73SnB9mnM58ac+7j3mx6MJtYjrsP5KTD3opXXsQQX6A6/ZrsVrcNc1RmuJgY02GpulBa5kMFyBV8l7TV96PRrptYSpW8UYExd357afEqy9Yy/gHWWJ2YZiU4U45u+TsdyO27XpgtH7WB+AbUaGDbvE1pz3gGfrrR/cmi+FKUnJQpwtC0tr8W5NBJeHqrTISNgiYTmojKf/wkke27cepJwHiXc095UVzutxtnVvtmRwypk2zTg7oSDAxC5OPKeR/UNsln/hy/kPEeqvu6q+gTQNvOofF2ZlBPUCW5LaWFFfWPflDAQVXDY4fJf+ZMtg==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:NONE;SFS:(13230040)(376014)(52116014)(7416014)(1800799024)(366016)(56012099006)(38350700014)(921020)(18002099003)(22082099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?OFY0C9+a0wQQdXRVDMp9zNWExdgLzGeJgZLvtVdN3zABDlFaxBpDH10CuY9y?=
+ =?us-ascii?Q?JQSmkSA8C2CtaxKx9YLdSIkQKvLiSYWqRncjmzG2pgGHKDlnM+LgMzrBUG95?=
+ =?us-ascii?Q?kHJsmap9fVDLynbYr65Te/2445wKw0CamW7pj1x0KNhOMDT8Js2HkXaS4Pjm?=
+ =?us-ascii?Q?Ro661SgaBcxmQASNmag1OFAkWkMtnJy6ZXq2WKY6i4rIjOOSysxlmyn6qxf6?=
+ =?us-ascii?Q?Oln/F9cifHLOtcU8oAgCIhVOA0U1z2Zdcl4eRgBmdsaj3zfJaS9106C4tdQk?=
+ =?us-ascii?Q?/P5aUuPC9FQvgDoOAXZoYwsRCAhTtVAaVUXhZkpdJmi7404d+ATo+XgTXneA?=
+ =?us-ascii?Q?yJoKMHGlTGQs+CP8BblzgO7pqfqlRbvDXcWmLCrJ+4h9o8WLyol10BLGHpsq?=
+ =?us-ascii?Q?8AH9dzv/2/QszGukBeY7mTa+8llCRUjpax1YBaFU73qA6rtCKZMQw+NZcCib?=
+ =?us-ascii?Q?Ag3ZnHrPiwSTwcmFBoxfQpMYft5ze9YjD9OlNl/V0V/bQOU1PDoh+x70W7ON?=
+ =?us-ascii?Q?smIEnPvOeNVCSE3ZR4z8DPRKIDBlq4H/HKPkex4XXTHvHPuaLiY8Jtq8l/Ts?=
+ =?us-ascii?Q?d7qEhcp1QKGDUHePUvDwJMDv+SiJhFOVLik17D2liD5mBsWWxCx/9u0cbWZm?=
+ =?us-ascii?Q?wgxKrPJtHpt3L0FXpoZBtFN9Ps75wBsrcbYI8ZLJ/kSQTG9lbv3S6WifGvaO?=
+ =?us-ascii?Q?OWLrloJGY+U5eui3dWSb01qxCF41A8Nwn2SuzHY0ScyBC4VPo4YNg6I5TDPe?=
+ =?us-ascii?Q?9k/mqvFoc7qgmf4uxmrz5YfWbflEQqMKOAhHhFiVOyOiZwW3t49SOCv0yHyt?=
+ =?us-ascii?Q?iWr8fJ4eg6HaaxQikCFVf2OcWiG7NIT9I6SIyO+vO4sU8c2fg9MZDJGyhH54?=
+ =?us-ascii?Q?FPIFR1H/wQgt50CxcSHZqcOCId5Aquvgy1dBJ34a0EwqdQW+1ZYei4u0LDRG?=
+ =?us-ascii?Q?tjl+DpbTr7+uRKxRbcAk4Q34kdXwr3gqlKHFz7Cm5wBtakG34vio+Hqqe51l?=
+ =?us-ascii?Q?1WXteh2Njqs6VT6l3QRCCoNqCzgRw11d6jnFdBj8SkRVCr51m4aCkQyaEBPw?=
+ =?us-ascii?Q?nVDCVoUzEMKuwMmix5sZzTeXamY149jXWyPzER1ksbYxDBHfeJtqVUr3J9Df?=
+ =?us-ascii?Q?sIMHLXLevaZFIA0oSdTQvfMvdexRSD4vlyVxGzb9PCCh/mdZHRy37+A7Z+Ru?=
+ =?us-ascii?Q?kmha++0M1AZHmKeYDNSaVtRgIzFpwzV3oRkjxlAarFvURuIyhfELJyi48L0h?=
+ =?us-ascii?Q?jyenWt9V0bDGCrH4+I0mlMYKkNUKt9Yh37AMBHZOivNpjwWpoNpUR51N/Yho?=
+ =?us-ascii?Q?mteoPuRDNvRDi7IQou8G6+p52bEseheIAM0aoDJOiWtDBd9DmvTBgi+djNBp?=
+ =?us-ascii?Q?OIWo/0aNglmulyr2g3E8CmJX3Ny6SRePkQs6tUYOLgWC5+23/eQ5Aet4KfBZ?=
+ =?us-ascii?Q?IoyXOvM/R8VsdZmOT+CAfm8WugrHvBVOhYEp9a92U7RO/I/e6ltj8CQeatO5?=
+ =?us-ascii?Q?imXvz/So6z+ObmdVWPgf5PJwWZPU/7R/b7n7QibuCazAbUvrTYxOVwrV2YJC?=
+ =?us-ascii?Q?26OW1aVHjSj1eXpIIItEQWcAtID1hZN9BRWPXvN5eYlg4jsxpnG6kdvOUSGR?=
+ =?us-ascii?Q?px6AzXg2aEFsbubt7M89c8mNmlp5kvR0pojr+MIsEMgle6hU0AwpOGR8DrZz?=
+ =?us-ascii?Q?zQUGZKrMMeZEA/gscF8c6Ax2DJL6SXl2p4v1tdzhfJ5iSDwA/KKDWjrw4pat?=
+ =?us-ascii?Q?UnTDq2+lpd6oFDcmx0nXD/fkBDvyIIc=3D?=
+X-OriginatorOrg: starfivetech.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 973cb098-5168-4bf1-b727-08debbcbb906
+X-MS-Exchange-CrossTenant-AuthSource: SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 May 2026 08:41:19.1011
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 06fe3fa3-1221-43d3-861b-5a4ee687a85c
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 18tWXMb9AXOhZiQwEMcBU+fTcuiTdHEg6OuQfn+pupTJeC1F4CoS/spOczFKAr47yq2bva5QhNR7nEUuPJGVbuvpToXrg1D6q2I8w5fdETw=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SHXPR01MB0750
 
-On 5/27/26 9:59 AM, Maoyi Xie wrote:
-> The HSR generic netlink family sets .netnsok = true. HSR devices can
-> live in network namespaces other than init_net.
-> 
-> Two async notifiers broadcast events with genlmsg_multicast(). They
-> are hsr_nl_ringerror() and hsr_nl_nodedown(). That helper delivers
-> only on the default genl socket in init_net. So the events always land
-> in init_net. The network namespace of the device does not matter.
-> 
-> This has two effects. A listener in the device's own namespace never
-> sees its own ring error and node down events. A privileged listener in
-> init_net receives events from HSR devices in other namespaces. The
-> payload carries the peer node MAC (HSR_A_NODE_ADDR) and the slave port
-> ifindex (HSR_A_IFINDEX). It leaks information across network
-> namespaces.
-> 
-> Switch both callers to genlmsg_multicast_netns(). Other families with
-> .netnsok = true already do this. Examples are gtp, ovpn, team,
-> batman-adv, netdev-genl, ethtool and handshake.
-> 
-> hsr_nl_ringerror() already has the slave port. It uses
-> dev_net(port->dev). hsr_nl_nodedown() takes the namespace from the
-> master port via hsr_port_get_hsr().
-> 
-> Fixes: 09e91dbea0aa ("hsr: set .netnsok flag")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Maoyi Xie <maoyixie.tju@gmail.com>
-> ---
-> This is the fix for the problem I reported on netdev on 2026-05-18 [1].
-> That thread had no reply, so I am sending the patch and adding the HSR
-> maintainers to Cc. The proof of concept and the test numbers are in
-> that message.
-> 
-> [1] https://lore.kernel.org/netdev/CAHPEe=GO=2qqWZPwBB4rrXc3mkD0dznp2K78nCsKwF=c-QwxEw@mail.gmail.com/
-> 
->   net/hsr/hsr_netlink.c | 14 ++++++++++++--
->   1 file changed, 12 insertions(+), 2 deletions(-)
-> 
-> diff --git a/net/hsr/hsr_netlink.c b/net/hsr/hsr_netlink.c
-> index db0b0af7a692..067ceaf7304b 100644
-> --- a/net/hsr/hsr_netlink.c
-> +++ b/net/hsr/hsr_netlink.c
-> @@ -247,7 +247,8 @@ void hsr_nl_ringerror(struct hsr_priv *hsr, unsigned char addr[ETH_ALEN],
->   		goto nla_put_failure;
->   
->   	genlmsg_end(skb, msg_head);
-> -	genlmsg_multicast(&hsr_genl_family, skb, 0, 0, GFP_ATOMIC);
-> +	genlmsg_multicast_netns(&hsr_genl_family, dev_net(port->dev),
-> +				skb, 0, 0, GFP_ATOMIC);
->   
->   	return;
->   
-> @@ -283,8 +284,17 @@ void hsr_nl_nodedown(struct hsr_priv *hsr, unsigned char addr[ETH_ALEN])
->   	if (res < 0)
->   		goto nla_put_failure;
->   
-> +	rcu_read_lock();
-> +	master = hsr_port_get_hsr(hsr, HSR_PT_MASTER);
-> +	if (!master) {
-> +		rcu_read_unlock();
-> +		goto nla_put_failure;
-> +	}
-> +
->   	genlmsg_end(skb, msg_head);
-> -	genlmsg_multicast(&hsr_genl_family, skb, 0, 0, GFP_ATOMIC);
-> +	genlmsg_multicast_netns(&hsr_genl_family, dev_net(master->dev),
-> +				skb, 0, 0, GFP_ATOMIC);
-> +	rcu_read_unlock();
->   
+Add default disable split header flag in all the starfive
+soc.
 
-The patch makes sense to me. Anyway, I think we can reduce the RCU 
-critical section here.
+Signed-off-by: Minda Chen <minda.chen@starfivetech.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+---
+ drivers/net/ethernet/stmicro/stmmac/dwmac-starfive.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-What about moving rcu_read_unlock() after the if and extract the net 
-before unlocking? The benefit is minimal but I think it is worth it.
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-starfive.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-starfive.c
+index b1717a6f97f1..b1ea248e3311 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-starfive.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-starfive.c
+@@ -148,7 +148,7 @@ static int starfive_dwmac_probe(struct platform_device *pdev)
+ 			return err;
+ 	}
+ 
+-	plat_dat->flags |= STMMAC_FLAG_EN_TX_LPI_CLK_PHY_CAP;
++	plat_dat->flags |= (STMMAC_FLAG_EN_TX_LPI_CLK_PHY_CAP | STMMAC_FLAG_SPH_DISABLE);
+ 	plat_dat->dma_cfg->dche = true;
+ 
+ 	return stmmac_dvr_probe(&pdev->dev, plat_dat, &stmmac_res);
+-- 
+2.17.1
 
-Thanks,
-Fernando.
