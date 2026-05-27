@@ -1,293 +1,81 @@
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013071.outbound.protection.outlook.com [52.101.83.71])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54AEF3ED131;
-	Wed, 27 May 2026 09:59:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.71
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779875978; cv=fail; b=SaAq08XpMJFmJVfSALduhuvbZeviUZOfzszRuztDHD6E6yjSL1fOtBAX1+5m/yIRVpx4iFA1qqrHfDjv5tj3X7agrSB2uk7nxGcBdVKpg3rnf8L5yBVNTDzyp8ljDU6EDjaJBBHpFnW/Uh9PLCGGriIcOQqJI26hxfuy0B215F0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5490F3EDAC9;
+	Wed, 27 May 2026 09:59:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779875978; cv=none; b=ErBjyeuVub+qaOgZ+nMPJw/69axuqSt3cF4WA2MBs3BkFEIgb5xm8geYsTcKO0a3C0vlYn4IIQvf4V/xt9CXAzUFo8wu2ddyMMIvHX4fOdPW8VaU7D5jpl0EqJnyQNHQId6L52ePIEPanRZT3Y4v7M27zVmoGzZ2lMmPMy0TVoY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1779875978; c=relaxed/simple;
-	bh=RUgCW8dfkNVMdvOboOhmjHgl1zpoLWYY6+/fgBhMlTc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=g3RBsv+D0bxg0bB8jjy6zQyubwXpQl4L8rHsIaGWMa0YmOl/3FQxWUWnCxz7LP8eibC/OOqMnms/hW+fRa2E2N9zJUjvY1QnsSH+v0qLrfKk/9Oz4kdu/qqyRVEPRGw6tSaxxzjTKiARCetpOaJf2BeC1p304nwZ+8WlnLRIOK0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=T2yj8WED; arc=fail smtp.client-ip=52.101.83.71
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	bh=8jcWe1lSXPi8AtoGCRoAZPlzqi44Xs4vGacyQu214wE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dirLzes3CwpfbZGdloCH6Ve+g7tHpYEOfNGKDMr/NKP1QXBQy8T9k4j7RCxmvHJr63B/9vZVknYK+VYKtVmerKh3tTfRLa8SJEPpu4RhkvBo2KCUNS9ZYdNYRWic9BBsnO1luoS0Bewm/ZT731i7AV43kEVvQPyjOpK58nDqxRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=djcDzIaf; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="T2yj8WED"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=qUZJziZtDCf/RQUWLRrh1Hmwd6rrYKVFKpFKpbYcVo8JnjvRLfHuqcoNdhVYvRH6CkuYAsWY5vwa6rrQo1gCMT1lgR8b5HWgHZ1JY7pFAzWp7uC3t65Yhdl3/Y1KAVkvzQQ09/KSnVIRfOJUpgrDpkS43z9+42fGWyQr3tIDznf/9/xLyn/0Tm1b1dtFBW422cl+MQJk1FFl+YAYQ+9X2+2FmCcdPsCFVujzc3GgdB+BalAnsZffigYn3Oth+7KEgKcF1yZMyuTG1nGFuihgkGtBG5KDrJ09NObyNvuCOFAZdQzGjriSLpz1yOyEU4OpDCHsv/At6fJZNwllKMUKXg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wm7uZcoRi2b+y6XgWskw0ORBYgR1sjxcFzUcNDwCcz4=;
- b=p/o4e5O3wGpJVTNwSt8XAuBM6bQdbGds5QImcwr3/lbx0j8ISzpfV7e4s0V5TxM4IytB6JDBcpsZDPZTIPidvbb5vOEOu1F6ZHQEREHYjwWadQYblKK4+ih3Ykoumq9en/6QrtOD3XKIVwQvoOa/zvQGSJhKHot71Ktze6M0uS9GWQOyEquvjhsFvRZ8ibpUYU4u8wftU6Ma6zv0md4pgABFWNtyD7wA/jjY1RXNSbEUS/iM3vxlJe7pLDabNSfdaVqXZ8wGOaIDnUQgKDf7Rqd01PXwb+Tshn0D92bP2NeWOR/pKVKVh3HnzQSgyve2xBksUYd0Nr5EJtbRtWzdoA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wm7uZcoRi2b+y6XgWskw0ORBYgR1sjxcFzUcNDwCcz4=;
- b=T2yj8WED2Hhy7/RsbR+kqa87QBpUzvJ0nf+83qKOLLgo1wyUsY0i8kNpuW2Q5cC+7i5hIELSwOM79ZBYaY6F2WP8TDY8FlzxZVvTRXM+W57kbljioHyxAov0xbkgW/D45egkVjjDta3SsKW2cCrP3+S62+VrI9PISaLgx0cxKSsiIITLZs0/i+OHNiNLx1k+4eUd+MSYRthe9js0q1nPv7V+hU5jSCH7DXMD8aMMBhN+5pwYS8ksYei0yisVlsF3ruSdZeM+hlEY2XVjyE5Kv2rnKETu+q97kkRHPCwd7lPfRQ9K/nuXhe8H9seRsRao3RiArMF1p8AFRoMoePhTBA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from VE1PR04MB7216.eurprd04.prod.outlook.com (2603:10a6:800:1b0::22)
- by AMBPR04MB12205.eurprd04.prod.outlook.com (2603:10a6:20b:758::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.12; Wed, 27 May
- 2026 09:59:28 +0000
-Received: from VE1PR04MB7216.eurprd04.prod.outlook.com
- ([fe80::a9a5:cf83:dbe8:1f74]) by VE1PR04MB7216.eurprd04.prod.outlook.com
- ([fe80::a9a5:cf83:dbe8:1f74%6]) with mapi id 15.21.0048.019; Wed, 27 May 2026
- 09:59:28 +0000
-From: wei.fang@oss.nxp.com
-To: claudiu.manoil@nxp.com,
-	vladimir.oltean@nxp.com,
-	xiaoning.wang@nxp.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	chleroy@kernel.org,
-	andrew@lunn.ch,
-	olteanv@gmail.com
-Cc: wei.fang@nxp.com,
-	imx@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH net-next 2/9] net: enetc: add "Update" and "Delete" operations to VLAN filter table
-Date: Wed, 27 May 2026 18:02:10 +0800
-Message-Id: <20260527100217.794987-3-wei.fang@oss.nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260527100217.794987-1-wei.fang@oss.nxp.com>
-References: <20260527100217.794987-1-wei.fang@oss.nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SI2PR02CA0032.apcprd02.prod.outlook.com
- (2603:1096:4:195::12) To VE1PR04MB7216.eurprd04.prod.outlook.com
- (2603:10a6:800:1b0::22)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="djcDzIaf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 500CF1F00A3C;
+	Wed, 27 May 2026 09:59:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779875974;
+	bh=9dQ75g70aeWaKdWOHbU4z5KAG44IWr2RpHH814ZtOoM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=djcDzIafs26gpX/TSJ06yDTouE7XBvDWcEUEePhQrjXA0c/pu8YJJPdpA8GhKWobZ
+	 5wgo7DX+IscoA2RCDbDprFX+I7zH+J0m50IH3TjR4NxhRdGuVp9EanGxlP/ALRqcct
+	 OvyCBLKuEOJSdM3qV8OJzPCzWBFM/p7a90nlLFFW9eRaw7xM5nhFLJOk0HZ62hgRpZ
+	 f8NwOe6uwfeAYXLoNnOM6Mh4axLwBC4ptT8swT544eXwmdLnN4WXQnjgg1Fy5odPYC
+	 e8Y6wKf/deeDLbyTEtn/PjBBSHD5UZwnJIOX8w+KUT5SISbiY/K8r+zmoeAUEUqvis
+	 xVOxE6ROS+fiA==
+Date: Wed, 27 May 2026 10:59:30 +0100
+From: Simon Horman <horms@kernel.org>
+To: Jijie Shao <shaojijie@huawei.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, andrew+netdev@lunn.ch, shenjian15@huawei.com,
+	liuyonglong@huawei.com, chenhao418@huawei.com,
+	huangdonghua3@h-partners.com, yangshuaisong@h-partners.com,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH V2 net-next 0/6] net: hns3: enhance tc flow offload
+ support
+Message-ID: <20260527095930.GI2256768@horms.kernel.org>
+References: <20260523105449.661848-1-shaojijie@huawei.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: VE1PR04MB7216:EE_|AMBPR04MB12205:EE_
-X-MS-Office365-Filtering-Correlation-Id: a41ebb25-c032-4274-83b0-08debbd6a439
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|1800799024|366016|19092799006|11063799006|56012099006|6133799003|18002099003|22082099003|921020;
-X-Microsoft-Antispam-Message-Info:
-	2Ezv2rec99RFZZNGVcXESzoBmnF55nSjYbR2XvrnKnWFiol24HE2182kRwA7OXDlunGJbkU/OJ+cKMWEF6weq4aFaownho9bZ+BVf5fT16IieVDAz3ug0I/alJHbSpaKUgiRw27nCgtSgtUvc2xzGYttvO2VpdLllVkHm0aZDC/gk/e2vGH4UUMKSvg5ddGc6aiHejZLAfIz/OSndQL1LMvTghOjp+152D+rN6qXmhK03j9L2DbCur7eqfkaR30P4CVz4ZcWNHxcedfZ7TiQSbUlq+atPVBva/70yxGFWbkWDpJMHp3kBGUxvHTadfk4wYzC3NnJiG7NbWmn090ptjpIFmtRv23DcQRB7FHZ0qUA1X0UDBAr7NB5+bMXjz2H3VnzrScUS2TGO727V5qSgMTXVEfj9OWGTF7ku8/CZYk9xyqfYoGaHVTbL5MIGK8h7GZIe09pTGn50wqCkz8uQJs/Vk9WOLS21EP72M/yARTX38ylyPwPIGVX5kmSh6BgMqaXkalgK2enhgy89sP1oRr3Gw2Ms7M4DxNVRA80YYOTOdLzoL/4MgRT6vdQc7AVuhz9oDd9hixh3mBQunog4NbR+9n8GUSGs7raJ85eJRqvc2w0ITpjvSCoZJ5fYS72qr4ijAI0vVD33cBR8bZn9d8/A7c0Ivy+gmsJ9hIYIxjLhxCrVPY5a2kKXiIQ3IaxxnAvxgxAdCkbdeJxfhXKL8egU9QswA2cKXg03sz73Fg=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VE1PR04MB7216.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(19092799006)(11063799006)(56012099006)(6133799003)(18002099003)(22082099003)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?q45e5kNyozO15377UClbafPef5+GFENkfN5vZXnzrIFm3avZczRWesWfvqmu?=
- =?us-ascii?Q?eCsnDiD7hWmJtTLJwuX+EnOFOkZewAL2NvqLqGl9gO/o58eYtoU/6lNg8vnN?=
- =?us-ascii?Q?po9aHpdz1qWSSHYCy3lPmI21cS/azzKQCRH3gMCzS/uxgs62kRMgrJtecxr7?=
- =?us-ascii?Q?MMScCt15pmhvxOEL3WRP/41KqcxYETMx5tpWOOLC5ahcAf5weRWZ8E02Pz0G?=
- =?us-ascii?Q?GFKRNM9I7yIBmiNi3a1pksNe2ai46PuzbJdzbZi8leZ4wCVrAz8WoWQWC9ug?=
- =?us-ascii?Q?7QQrHCRYEyIjo6D6P/bmAwZyg6waHvN9ONyaT6ra5foDPg0lgWqgPnE+xPFp?=
- =?us-ascii?Q?L0znyo5bfzVmYTqITT/PQJ/ucGuWTKC0NdGUkmhOz7mJCJZW/RwRzmiyvshb?=
- =?us-ascii?Q?hqb190eSta0plIBNsS90ibBHnQLUsZFV3G+dNP32KQDGU1+YMCMPTkJzSlIt?=
- =?us-ascii?Q?d9aK4PmOET8RIXpPTvLVQIERd1GZOHGbsd7I0zv3sEaigaEt6P5M6NUwgiu6?=
- =?us-ascii?Q?7WS6qwDBGMbNehpcW50hciPp4zRzOxLsDdVuh6ccalbGVJ+GKSTlL4UmIStg?=
- =?us-ascii?Q?1CgERE3b3R0BwXaJQFxXXAbniDYqPLEhTfwjzY7CAO1WVe91wXqI2fp6K11O?=
- =?us-ascii?Q?FKBqIzFlF3QmDA9t5iy7H1HtNKxz5ApN5HPYXGTeVHZP6Rht0h7erDiqB5Nl?=
- =?us-ascii?Q?tpsSQY/AqIifSbS4e4K+0332ZUlJhXqRtRDs1zM5iEvkaHWqvCy/nAL7R7iR?=
- =?us-ascii?Q?jYdk3T3cj73Kv9bdRMkzT7jmzPsywOpsX4faQl/CjUitNqqUDDzy7gAdx7cf?=
- =?us-ascii?Q?B3eQCehUlc8+FoSe+1FUfhTnhN0XNzL8TVLtUPqd50XAl3TBvjDSDb0WRkCw?=
- =?us-ascii?Q?TZi7yQY7XT5GcCdNJr9hyOtxvATK1WjDxKt7xJkaytgLPfr7R4W4oehILvIl?=
- =?us-ascii?Q?LGWkLbVLVSCJ3qRFx9xuaXJSakUxJ2tORcEGgz/1FTIKk6Befxd6xb5bX3Aw?=
- =?us-ascii?Q?OenVU/9KpQOnS1W9JLWwb9Kq4WH9sk1Ef85+wBkaejFBY7KqjmnvZoGK6/6O?=
- =?us-ascii?Q?PO73EykVRIAXNHWUMuH722sE81jUzTn4sLzh7kpRYpbIxmlNRLnmcUoHQprt?=
- =?us-ascii?Q?rkJAbQfwGm3XDYmb/ULxP3liAcgo0LAxOmcAkA0KESZ75IeuJS4zIv8EWaag?=
- =?us-ascii?Q?M6/lR+JfJszCUK7yrW0K+cMPR64Oc5lmPdkAozXeM5duJkicbeY7Nml+TzvW?=
- =?us-ascii?Q?1LJXGFcC4Tuo6fdOEFg3nIAOIc9VTEjlv8Q1Gd8LjQJqyLwgvu2xQRol2rja?=
- =?us-ascii?Q?b9dRCfrBBcvKmQtnyRpY7dZmGZtvzMVUPXzhMhsWab/XcbLqxcL9rBNp/Y6X?=
- =?us-ascii?Q?2KGOta/wScp8bxwxZbjNP/KYKhJJn5cx2mNlxoh4PAg8wlGmoCOTF/WhKyai?=
- =?us-ascii?Q?+oFFmE4J2HhFDhzylGLQ6p2kbU9u9lTUcPfOgyvs0R0HDwVqD4TBsvFo74om?=
- =?us-ascii?Q?IEipjzAGcuhi6lOJ2c5kqOH+NniBguOeT4OuyJsH8J+XwOo5DqNFLaG9roXo?=
- =?us-ascii?Q?DlMQjDmuqbDwYlqfwRU40yOwCYIneoSzCxCBU8MPTgMu+7iJUMyhte5EPXKN?=
- =?us-ascii?Q?oOKYThxaq8XewCrEA5a9kw2eukWKWgb6UrmO09z9gJtVDshpzTgdpGHBIpu8?=
- =?us-ascii?Q?9wn0BQG5pxylo4NpQEVAEaUXW6fHPegnRa+Nkot2H6LHSspoRUBszoCTPcQX?=
- =?us-ascii?Q?5gKLWDQnmaQPfe2ZKY48cNX5+S3Ho4RCDOfwjx3TW9HYghGU9Hm8?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a41ebb25-c032-4274-83b0-08debbd6a439
-X-MS-Exchange-CrossTenant-AuthSource: VE1PR04MB7216.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 May 2026 09:59:28.7033
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: u1b/Ier23krp+0SMnMPpTrDGAcREbOlIiNiFopK8Dy2wWbAkoPid+DM8t1/GLy0/3YAK2KQNAc2DIgyMu2b8oZMyEV5DxWCYdukIRrsmWVw2ZPfj/O9WB6IOugzFT3RK
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AMBPR04MB12205
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260523105449.661848-1-shaojijie@huawei.com>
 
-From: Wei Fang <wei.fang@nxp.com>
+On Sat, May 23, 2026 at 06:54:43PM +0800, Jijie Shao wrote:
+> This patchset enhances the tc flow offload support for hns3 driver:
+> 
+> - Patch 1: Refactor hclge_add_cls_flower() to support more actions
+> - Patch 2: Improve unused_tuple parameter setting for separate src/dst configuration
+> - Patch 3: Add support for HCLGE_FD_ACTION_SELECT_QUEUE and HCLGE_FD_ACTION_DROP_PACKET actions
+> - Patch 4: Add support for FLOW_DISSECTOR_KEY_IP and FLOW_DISSECTOR_KEY_ENC_KEYID dissectors
+> - Patch 5: Add debugfs support for dumping FD rules
+> - Patch 6: Move FD code to a separate file (hclge_fd.c) for better code organization
+> 
+> ---
+> ChangeLog:
+> v1 -> v2:
+>   - Fixed warnings similar to "warning: restricted __le32 degrades to integer",
+>     pointed out by Jakub
+>   - Fixed warnings related to
+>     "warning: diagnostic behavior may be improved by adding the 'format(printf, 5, 7)'",
+>     pointed out by Jakub
+>   v1: https://lore.kernel.org/all/20260518093526.1109595-1-shaojijie@huawei.com/
 
-Add two interfaces to manage entries in the VLAN filter table:
+Hi Juijie,
 
-ntmp_vft_update_entry(): Update the configuration element data of the
-specified VLAN filter entry based on the given VLAN ID. It uses the
-exact key access method to locate the entry.
+There are AI-generated reviews of this patch-set available at
+https://netdev-ai.bots.linux.dev/ and https://sashiko.dev/
 
-ntmp_vft_delete_entry(): Delete the VLAN filter entry corresponding to
-the specified VLAN ID. It also uses the exact key access method to
-identify the target entry.
+I would appreciate it if you could look over them and address any
+issues that are either introduced by this patch-set, or directly
+impact it.
 
-In addition, introduce struct vft_req_qd to describe the request data
-buffer format for Query and Delete actions of the VLAN filter table,
-which contains a common request data header and a VLAN access key.
-
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
----
- drivers/net/ethernet/freescale/enetc/ntmp.c   | 91 +++++++++++++++++++
- .../ethernet/freescale/enetc/ntmp_private.h   |  6 ++
- include/linux/fsl/ntmp.h                      |  3 +
- 3 files changed, 100 insertions(+)
-
-diff --git a/drivers/net/ethernet/freescale/enetc/ntmp.c b/drivers/net/ethernet/freescale/enetc/ntmp.c
-index 2e79515e1772..85abf9303bac 100644
---- a/drivers/net/ethernet/freescale/enetc/ntmp.c
-+++ b/drivers/net/ethernet/freescale/enetc/ntmp.c
-@@ -1046,6 +1046,97 @@ int ntmp_vft_add_entry(struct ntmp_user *user, u16 vid,
- }
- EXPORT_SYMBOL_GPL(ntmp_vft_add_entry);
- 
-+/**
-+ * ntmp_vft_update_entry - update the configuration element data of the
-+ * specified VLAN filter entry
-+ * @user: target ntmp_user struct
-+ * @vid: VLAN ID
-+ * @cfge: configuration element data
-+ *
-+ * Return: 0 on success, otherwise a negative error code
-+ */
-+int ntmp_vft_update_entry(struct ntmp_user *user, u16 vid,
-+			  const struct vft_cfge_data *cfge)
-+{
-+	struct netc_swcbd swcbd;
-+	struct vft_req_ua *req;
-+	struct netc_cbdr *cbdr;
-+	union netc_cbd cbd;
-+	u32 len;
-+	int err;
-+
-+	swcbd.size = sizeof(*req);
-+	err = ntmp_alloc_data_mem(user->dev, &swcbd, (void **)&req);
-+	if (err)
-+		return err;
-+
-+	/* Request data */
-+	ntmp_fill_crd(&req->crd, user->tbl.vft_ver, 0, NTMP_GEN_UA_CFGEU);
-+	req->ak.exact.vid = cpu_to_le16(vid);
-+	req->cfge = *cfge;
-+
-+	/* Request header */
-+	len = NTMP_LEN(swcbd.size, NTMP_STATUS_RESP_LEN);
-+	ntmp_fill_request_hdr(&cbd, swcbd.dma, len, NTMP_VFT_ID,
-+			      NTMP_CMD_UPDATE, NTMP_AM_EXACT_KEY);
-+
-+	ntmp_select_and_lock_cbdr(user, &cbdr);
-+	err = netc_xmit_ntmp_cmd(cbdr, &cbd, &swcbd);
-+	if (err)
-+		dev_err(user->dev,
-+			"Failed to update %s entry, vid: %u, err: %pe\n",
-+			ntmp_table_name(NTMP_VFT_ID), vid, ERR_PTR(err));
-+
-+	ntmp_unlock_cbdr(cbdr);
-+
-+	return err;
-+}
-+EXPORT_SYMBOL_GPL(ntmp_vft_update_entry);
-+
-+/**
-+ * ntmp_vft_delete_entry - delete the VLAN filter entry based on the
-+ * specified VLAN ID
-+ * @user: target ntmp_user struct
-+ * @vid: VLAN ID
-+ *
-+ * Return: 0 on success, otherwise a negative error code
-+ */
-+int ntmp_vft_delete_entry(struct ntmp_user *user, u16 vid)
-+{
-+	struct netc_swcbd swcbd;
-+	struct vft_req_qd *req;
-+	struct netc_cbdr *cbdr;
-+	union netc_cbd cbd;
-+	u32 len;
-+	int err;
-+
-+	swcbd.size = sizeof(*req);
-+	err = ntmp_alloc_data_mem(user->dev, &swcbd, (void **)&req);
-+	if (err)
-+		return err;
-+
-+	/* Request data */
-+	ntmp_fill_crd(&req->crd, user->tbl.vft_ver, 0, 0);
-+	req->ak.exact.vid = cpu_to_le16(vid);
-+
-+	/* Request header */
-+	len = NTMP_LEN(swcbd.size, NTMP_STATUS_RESP_LEN);
-+	ntmp_fill_request_hdr(&cbd, swcbd.dma, len, NTMP_VFT_ID,
-+			      NTMP_CMD_DELETE, NTMP_AM_EXACT_KEY);
-+
-+	ntmp_select_and_lock_cbdr(user, &cbdr);
-+	err = netc_xmit_ntmp_cmd(cbdr, &cbd, &swcbd);
-+	if (err)
-+		dev_err(user->dev,
-+			"Failed to delete %s entry, vid: %u, err: %pe\n",
-+			ntmp_table_name(NTMP_VFT_ID), vid, ERR_PTR(err));
-+
-+	ntmp_unlock_cbdr(cbdr);
-+
-+	return err;
-+}
-+EXPORT_SYMBOL_GPL(ntmp_vft_delete_entry);
-+
- int ntmp_bpt_update_entry(struct ntmp_user *user, u32 entry_id,
- 			  const struct bpt_cfge_data *cfge)
- {
-diff --git a/drivers/net/ethernet/freescale/enetc/ntmp_private.h b/drivers/net/ethernet/freescale/enetc/ntmp_private.h
-index 0a9b87286105..ec2a1cdb0768 100644
---- a/drivers/net/ethernet/freescale/enetc/ntmp_private.h
-+++ b/drivers/net/ethernet/freescale/enetc/ntmp_private.h
-@@ -211,6 +211,12 @@ struct vft_req_ua {
- 	struct vft_cfge_data cfge;
- };
- 
-+/* VLAN Filter Table Request Data Buffer Format of Query and Delete actions */
-+struct vft_req_qd {
-+	struct ntmp_cmn_req_data crd;
-+	union vft_access_key ak;
-+};
-+
- /* Buffer Pool Table Request Data Buffer Format of Update action */
- struct bpt_req_update {
- 	struct ntmp_req_by_eid rbe;
-diff --git a/include/linux/fsl/ntmp.h b/include/linux/fsl/ntmp.h
-index f18556b072c8..f34151cc160e 100644
---- a/include/linux/fsl/ntmp.h
-+++ b/include/linux/fsl/ntmp.h
-@@ -270,6 +270,9 @@ int ntmp_fdbt_delete_aging_entries(struct ntmp_user *user, u8 act_cnt);
- int ntmp_fdbt_delete_port_dynamic_entries(struct ntmp_user *user, int port);
- int ntmp_vft_add_entry(struct ntmp_user *user, u16 vid,
- 		       const struct vft_cfge_data *cfge);
-+int ntmp_vft_update_entry(struct ntmp_user *user, u16 vid,
-+			  const struct vft_cfge_data *cfge);
-+int ntmp_vft_delete_entry(struct ntmp_user *user, u16 vid);
- int ntmp_bpt_update_entry(struct ntmp_user *user, u32 entry_id,
- 			  const struct bpt_cfge_data *cfge);
- #else
--- 
-2.34.1
-
+I would not suggest expanding this patchset to address any other
+pre-existing issues, but rather address them separately as appropriate.
