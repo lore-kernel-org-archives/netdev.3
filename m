@@ -1,225 +1,127 @@
-Received: from CHN02-BJS-obe.outbound.protection.partner.outlook.cn (mail-bjschn02on2126.outbound.protection.partner.outlook.cn [139.219.17.126])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDDCC28686;
-	Wed, 27 May 2026 12:13:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=139.219.17.126
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779884040; cv=fail; b=IUX+OxhY5lqLJCrhk3HQ4r2FpDjL+N+ZGAE41u6gsruwarZEzDaHP8Mu289+jXxYjw4VwR67T+CIQchGyWo+Lw5h1ng1bftl5iQ3j6rA5zMYWw5To4mAVaua77qkyvef98cEtDJohHptU06la9vG4Ww1WOyAYo77Z74hcaoUaAU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779884040; c=relaxed/simple;
-	bh=YfDtUH8ON0JNehxP5ckz5NWmQPevpRBQ0ODWrolLc50=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=YAH1qWr1sqUTNurT5B2e18Q2zbzQTGu87GsiNHHmwaFPcggPp/9xIcqN5HDCDcwXNr50EX/pMygRM23urUuNNcTIlPgY5ObjCC0x1+n1T2tvh+K8C/xLto1CxX0hhw4U7y2T67TpO7g32f94FFF/q6QcovecWccezdlNszR/oqY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com; spf=pass smtp.mailfrom=starfivetech.com; arc=fail smtp.client-ip=139.219.17.126
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=starfivetech.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Y4pSKyJiQxGrjSryFK1K7p0HEriCME/XHD6wAN0Xx70fvHixFlvfChqqf0erzFM1Gaa+eT7Vkzd1W3EA5zt71O/zqfA7d5lIhnKF8D1nlvSnUY3lSMEekoFcq/Ml9poMwaCzFq0A2M0aAiYF3qcugDTJpeYrJF5v7LA+pqXiog78kVI7FMUknpETRDuops5BDXQc+c0lnXOUcr7E5dhHftFA5FNGpwNwdGiSqUSB6Ho1rrrqsDR93HJnsMGWgwelox7iWS9cYe8XKUoHXa/rGu7ohnqlL7XsN2aDCpQXnzkGxg8RhWs2QmhnR8R0cJZyD4zSO37PScihQ3knaCnrKw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=yFd69cig6Dd2Dt39hE6WC0DYlDVE/Y0qrTKM+Q7q6wQ=;
- b=Q586e76wgz+rqom18f41K0KNI/VfvjW0nJbXfMqXAAjvdzyDIuK3VOEgjQZjLVLmu28dmhyyx6U6aBhqyvLqxwRdH3qXSnjSx4E3A3KLPI0+O4agJxQA8TnDjAiW5lWl6NVxbpgPIJ2bx6UfgoclkDIQtzqNjCib3Evx9ajJET1QFfiCOeF7DHmTFD5WB+9axkiJneRSUi+R7Xo+AcGQYYxKEzVehFRLyxNZA4ZCUIvSjVyrTLYuNhJR9buNTMz2TTCtSzWreq71xvEEZCqWGR0QqYC1Cd/LbgCb9QDEr6b4ITfAg+RPrk1LodZxlLPDUmpdJ1Q/1EPB/ymmk0IHdg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=starfivetech.com; dmarc=pass action=none
- header.from=starfivetech.com; dkim=pass header.d=starfivetech.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=starfivetech.com;
-Received: from SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c311:25::15) by SHXPR01MB0829.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c311:26::20) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.25; Wed, 27 May
- 2026 08:41:18 +0000
-Received: from SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn
- ([fe80::9b99:12dc:a115:b90f]) by
- SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn ([fe80::9b99:12dc:a115:b90f%3])
- with mapi id 15.20.9891.021; Wed, 27 May 2026 08:41:18 +0000
-From: Minda Chen <minda.chen@starfivetech.com>
-To: Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Emil Renner Berthing <emil.renner.berthing@canonical.com>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor@kernel.org>,
-	netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	devicetree@vger.kernel.org,
-	Minda Chen <minda.chen@starfivetech.com>
-Subject: [net-next v5 3/4] net: stmmac: starfive: Add jhb100 SGMII interface
-Date: Wed, 27 May 2026 16:41:07 +0800
-Message-Id: <20260527084108.121416-4-minda.chen@starfivetech.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20260527084108.121416-1-minda.chen@starfivetech.com>
-References: <20260527084108.121416-1-minda.chen@starfivetech.com>
-Content-Type: text/plain
-X-ClientProxiedBy: SH0PR01CA0014.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c311:5::26) To SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c311:25::15)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2B313D16E5
+	for <netdev@vger.kernel.org>; Wed, 27 May 2026 12:14:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.175
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779884082; cv=none; b=YnbmiE8AECVNkdsOeh9tQrul9Ty89QiZGDFCEAcYb4FE0t1ibihgPds/lt+fZHTU7eQGVIGAATmpp0k6IXvU9WdZ+XNliSnxH9kXzPVWACCik/Xjqmju6Qv3Ptlt4f70jDkqlmLSlQ7+ygWZ3Ut7TPeHgDNMOUkMRz/CwExpLyw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779884082; c=relaxed/simple;
+	bh=r4H4etJpbxgvnWsKcOTGgVwJdweQQvXvLKk8S0w3cbs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nMjZ5a5S7dXFKI5gMJog0NTdiYb2Bn1dheTxIFuT9vWs5QDekxK6AjL/CQ7GZBEVlsSDKEmVGW4zzgygYizurkjbfIfnV60xE3cLYqB2TR8zSdm3WWJXoCNufyoxLJmBPYHwJcXgUrwfi0Mah63cAouUG4SGlLNkqp9PL0pNH7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=eextby6a; arc=none smtp.client-ip=209.85.160.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="eextby6a"
+Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-5165195c8b0so127289601cf.0
+        for <netdev@vger.kernel.org>; Wed, 27 May 2026 05:14:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1779884080; x=1780488880; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=zjybRMBUQubASldC260OK8MJUJyjzZlOHF/HoeFPi84=;
+        b=eextby6ajjRyi73ugcPsaBcUGRyCiEHcrXw76GIcT6DqzMhVcYWiRuYzmmZymJL5kt
+         1+DVEbLNgptJKvePXRcfFXDqxThs0EKdBV41MXXGetuT7WYVSf45tsGExGzxd4+PNyeS
+         s8CySgQpiGAy0BBvKWE/+8RwhL9Z1kUH5hiNlwkf6FlLfSuzb5uITtJ1ePhC9r2icohc
+         gQsQUs2pPEES+kZcFIQfejPDIqTq8H88nH7TpLJXKZz2RHRjxIt+0BsubVGcN5Uc7vzo
+         Kk5EjfwzrO+iar6IR8Czp78sN4qOO6nQW0KvinjW+4mtCSbvarN4nojzvZtvidIWxt5w
+         KlvA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779884080; x=1780488880;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=zjybRMBUQubASldC260OK8MJUJyjzZlOHF/HoeFPi84=;
+        b=eAbR3u2zkSszBs2z2YF9VeswyHK/MRsF16DZ6wswdJdvCfl7L02N2IDwM2YqRGTnVg
+         g1gVlCsU29zXl4ykJ/UdITTT3382j7nspXArlloWF+T5ASc+RmdaRZF8ooQxJkNzJJHt
+         xxT7PiXu82hnBmY2LCBEMDlVW+D1C7j17j8TJniNwRMiMlkr7Cjpk+8Nf30Br2BYJhi2
+         ll8o9QJJsXNnLOljmkG4gWa1KpNjySIm4oNxogb2TXk7tNSobCnIlTAYyqbzw/CZTapx
+         UH6tDQvUqWOwG91/phkRiZ0Re4hoGcyYGMCiQ36PhuJ9w6cVSKZI/LWRef7RAoJxYgWZ
+         AlyQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+ni1653aS2tbK+AL5MgttWWfz+us4IOK7O370hstbqReuVMRfP06OTWaz0vLjTmv0zq2kpStU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyAdQA7N/hLcXPmztHmU9DF/2wcRFx5At9yOisO9oln7UsqASpO
+	sAu9I3qjXPjOpyIVZnHL8EVa9MJCy4mhw5ycegHm/1QRppkSvhne8+WQ3XnaFTf3qd4=
+X-Gm-Gg: Acq92OHcg/05hTmks+20ItP94bznIi8zm6bfb7TNZbP4m7i7/HPCfDFVZvnx1w0uPxP
+	yjpO7OhSaWEIKEuZaZWhvHB7HHs4BDyDbLClfZSKRuMvfdmDMXreyasyZgE0Nef7AP+h8hfqAuu
+	4Xw4prlIFyGwzVyycy1XvST+HFLCN3lpmVuLwqOvJdNJjrjCJrY1qqLmADuWZy3q9X6ThBajMy5
+	N7U2UH+EVT1XCcXpnsdLyaCneFj2f0YI+A/G2RuhKokpRvN80rdg+2WJy8kV/QQXAJcES4nti19
+	KWt/pCAawyZE9RMqn4uPDLbuADCGKSmGMlKX89iUurhmvxdPHz0Jy9+23Wi/+5VjLNUN1kmsRCh
+	M19V3mlUDDHoa3Vhh6xOMyZ15cFCsOBxEeLLMiSktWiYJJtIIgoCSn33ZCXWc+nPsRxcvS329W7
+	sOCg2YJiZp6LiA/563pXC4IzBvgMuVpHNHW6pX20GM0xCI1PU84HeFnJD0jg6hVMFKkNeffLTjx
+	oouFi4k770a8ULX
+X-Received: by 2002:ac8:58d4:0:b0:516:d2cc:5160 with SMTP id d75a77b69052e-516d459212fmr302395201cf.32.1779884079723;
+        Wed, 27 May 2026 05:14:39 -0700 (PDT)
+Received: from ziepe.ca (crbknf0213w-47-54-130-67.pppoe-dynamic.high-speed.nl.bellaliant.net. [47.54.130.67])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-51706adc446sm39991901cf.15.2026.05.27.05.14.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 27 May 2026 05:14:38 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1wSD9i-0000000ENnz-0tj0;
+	Wed, 27 May 2026 09:14:38 -0300
+Date: Wed, 27 May 2026 09:14:38 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>
+Cc: Zhiping Zhang <zhipingz@meta.com>, Alex Williamson <alex@shazbot.org>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Bjorn Helgaas <helgaas@kernel.org>, kvm@vger.kernel.org,
+	linux-rdma@vger.kernel.org, linux-pci@vger.kernel.org,
+	netdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	Keith Busch <kbusch@kernel.org>, Yochai Cohen <yochai@nvidia.com>,
+	Yishai Hadas <yishaih@nvidia.com>
+Subject: Re: [PATCH v5 0/4] vfio/dma-buf: add TPH support for peer-to-peer
+ access
+Message-ID: <20260527121438.GJ2487554@ziepe.ca>
+References: <20260526144401.1485788-1-zhipingz@meta.com>
+ <a8cd01ab-d7aa-465d-bfa3-431f78f33ee1@amd.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SHXPR01MB0863:EE_|SHXPR01MB0829:EE_
-X-MS-Office365-Filtering-Correlation-Id: 23918a6e-f0d7-4b3f-b9c9-08debbcbb89d
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam:
- BCL:0;ARA:13230040|7416014|366016|376014|52116014|1800799024|38350700014|22082099003|921020|56012099006|18002099003;
-X-Microsoft-Antispam-Message-Info:
- aoAdKi77FiLVgaJs5BfSTD8VXa7mk66NKi1g8+7EG4Ukt0/F9Qo3BKlX9zN72xxTebr+VNi5piOdzOwyd7VmGEBJnmgUqWb40wQUz6VXwe6ceIDNpPVwxKT5DVG0OGYYUU233V6Lt9EAUsjVCp7ZM26diQDjq453TiFCSue6SnVEC2+xRe/Fva6vJ4itihhvUxUzwVC0rcTTgolueYZhuSbSnugozKAKiknEAVmeU92WRmhxGXp63eC0xgycm5SRs6C93+LVP3zmeOUibkCRW5PbeOsxI2x8fzhWbzLw6khm6JeoWifVAP6fdk00Dnz9J/gK89yvPWT+SaYHD8GvBsaAFvXgdlLZ2BG8dDbiXPg1mUFirKhyVO4/5Bz3QDnopTRPq24aMm+3iIvyKzVbrJhtH6oZbjrbLj1isCfsAMdKw7kzpqUnFlhSdkt5PfNOqnmw6dyuw9Rn7iGC7wxx/J/BPy2d+dOnLspx5QkRYMtQlFTj8EaDIhJRifr1zANJmCMsurxOM5UW3UtPhNjX7Q660pnsrfwIZ56QEGqMBiYA4yi4FYNNYtCrwJgJAdfCCxd2kEP9ZzmGp61iG/Ui+g==
-X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:NONE;SFS:(13230040)(7416014)(366016)(376014)(52116014)(1800799024)(38350700014)(22082099003)(921020)(56012099006)(18002099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
- =?us-ascii?Q?X8oF1iIEGHMWgQuGDLgqVac5lpSG9Fj58aKMQ8ZYemjH0OYbtm+5x6JnMnUR?=
- =?us-ascii?Q?BxdfM4ovRpIH3+ZfAqqtgmDr67nYM7FmZFpHQWXRBFz2H49xNbOWc4T2slA5?=
- =?us-ascii?Q?t83aGK4tejJr62F+oQjkb1I54YJOZLVFyCUivYhAOIF6g89tTXzSE8AV0u4J?=
- =?us-ascii?Q?wnaCqPjfNrJaLHUtwYNvuPynQ7+PoI7KufHeEca2o1jKCeKembFmLflMiiii?=
- =?us-ascii?Q?hV03Oc9a5rU3Ap7wfl1k4SX7xK0D3GEJhB419u/aEpEMYSFTZiECOkCVbmJY?=
- =?us-ascii?Q?uisnqrq6mF8zh/XmAwEDKQYW4YzMSelY409cRIdL8aZVWwwSzfe50o+Cy0lS?=
- =?us-ascii?Q?Uw7oIJnmAI+0HXdF3S6acxmUxFSjVtY/bV5mVu10e3WYpujJ+9e64WluC/40?=
- =?us-ascii?Q?5rjfqWvro0v+SWHXy+ZVSGTnzewi+jK4Mc6NV59UmpzyXRZLo8k4/PY+SDjL?=
- =?us-ascii?Q?+ojN2QE7cGdc06fnzEnUumHz5RsfHrb5lXt7gP7rQ4iTF6g59iho1LsHAlZz?=
- =?us-ascii?Q?lP92X4AXez0f2pd65I83kzWdYXevzF2M6Ym2/xdXwVnd6MmRFF3kmOqL29fi?=
- =?us-ascii?Q?MYyn+MiIIPaiaaGkJyL+9GlWqhOQe43b/5tExIjQavN1Uu8a3YR525I5wfw7?=
- =?us-ascii?Q?rVxPeQP/Vy8Gr/TVWhkdcnZeY+3e6+Fl/aezU+l690DPwYTakWoSHiBVZwn4?=
- =?us-ascii?Q?OcAdmarms36urvZjXjh5XrCLfejN0gS1ERfBThJczkA4kqF6PujGaKJW2xLk?=
- =?us-ascii?Q?ctC026LqZaa45eLfAe130KtZcLn5UvZbTHAhzoGio/4NGKMp7X6Gz9/wBgDx?=
- =?us-ascii?Q?TFamfIvOgOBVHM9NrmS70E+gtLK9Rll+kQ3CH8xqSoHTfS99N//Lg7lZ4YQn?=
- =?us-ascii?Q?YHOpykA/Wral/wmJzxAE5TXVn/zzE2ExdTullmwR5h80VkyX8J9OSm/dFvmg?=
- =?us-ascii?Q?47aP10bmQNCOKez/Ej+i8zps0Mj2EDK7xO6IO4JGye0hilKU70c2z/ikJ8Bk?=
- =?us-ascii?Q?b8CN/qp2mIQ+25Z8gQuOScUbSppB3CojpJj2t79D/6+7xIGsXgFtUCasliLU?=
- =?us-ascii?Q?wYNKni/QJ4Lztdb8Vz4vSz6I7ZWc14zC0wylQUXN7HsIcEggGeV+9l0C+Be6?=
- =?us-ascii?Q?MiqcFa4HdmrA3UGUYVUpA+Y1AmSU39x8fjRTPy2BhfHyKsAZR+FwjiXc3quH?=
- =?us-ascii?Q?8qn2hCl7614SfZHlVpxI9VxgluBQA0uW0J2UP3gyD8wyxZjG7fFl0pbtJOiB?=
- =?us-ascii?Q?AQfC8kCEM4AJn1Z3Sd50ukk8U6ul7bWj1qz8uOQ5t29SGp853R2pCM0kVmYU?=
- =?us-ascii?Q?mHMR4FRCDupo6oYkWd4tafReqswyxEz/6jgYN0hlyeNp5eOdxdRIsGzT9ss8?=
- =?us-ascii?Q?cPjudkLPKMjQtbeBHlXKODz23DaV8OekJWfXcKfKLM01d5edZ9hP0h24IBZi?=
- =?us-ascii?Q?55ufGQh73OuJ2oUiaIPednOjQDTK4PyqHW+kTp5eSiMHf2C2LiHLVzdJviZZ?=
- =?us-ascii?Q?RPCQNLqhFlDZaVGWzvYVJrpp6a4FpXhNBODtzewbMJ/QgqXQn/I4GHu3c7uW?=
- =?us-ascii?Q?NlziOvxEwEaxBhW6PXfXRc57SJohTEnjhXZKNL4gNmX2qC6GXu3D3GI4HnJJ?=
- =?us-ascii?Q?2SfLK+tAE8LCToBwGOXTfutZmHrWFzGAYEF4u7hpKimJpdVsWgx4A70Kzzor?=
- =?us-ascii?Q?6TUmxm/lhxGe1P/M+xRX9RwdDGMqI4vNCs3aP9znvlv0aNdL10L9ObkTFmEW?=
- =?us-ascii?Q?b0G/OlwbGsaxxkzbAJ+c6qp+G9ghqYI=3D?=
-X-OriginatorOrg: starfivetech.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 23918a6e-f0d7-4b3f-b9c9-08debbcbb89d
-X-MS-Exchange-CrossTenant-AuthSource: SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 May 2026 08:41:18.4137
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 06fe3fa3-1221-43d3-861b-5a4ee687a85c
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 1AqSBK+ERetKfgloVYdC4+fllqAEA7snUYAVU/v00miIikQf3hs0pYlCcI5w+nYBLr/I7f/J+oqPm9AxJBbQVt74QSlcjUYPZLyQrN+q+ls=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SHXPR01MB0829
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <a8cd01ab-d7aa-465d-bfa3-431f78f33ee1@amd.com>
 
-Add jhb100 compatible and SGMII support. jhb100 soc contains
-2 SGMII interfaces and integrated with serdes PHY. SGMII with
-split TX/RX MAC clock and need to set 2.5M/25M/125M TX/RX clock
-rate in 10M/100M/1000M speed mode.
+On Wed, May 27, 2026 at 08:55:49AM +0200, Christian König wrote:
+> On 5/26/26 16:43, Zhiping Zhang wrote:
+> > This series adds TLP Processing Hints (TPH) support to the VFIO dma-buf
+> > export path, allowing importing drivers (e.g. mlx5) to use the
+> > exporter's steering tag when performing peer-to-peer DMA into a
+> > VFIO-owned device.
+> 
+> I'm not an expert for TPH, but that sounds very strange to me.
+> 
+> As far as I know the TLP Processing Hints allow devices to give a
+> steering tag to the root complex together with memory accesses to
+> give fine grained control about cache usage. In other words it is an
+> extension to the classic snoop bit.
 
-Signed-off-by: Minda Chen <minda.chen@starfivetech.com>
-Reviewed-by: Sai Krishna <saikrishnag@marvell.com>
----
- .../ethernet/stmicro/stmmac/dwmac-starfive.c  | 59 ++++++++++++++-----
- 1 file changed, 45 insertions(+), 14 deletions(-)
+TPHS includes an bit of data on every TLP and the data transits to the
+eventual completer.
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-starfive.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-starfive.c
-index 16b955a6d77b..b1717a6f97f1 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-starfive.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-starfive.c
-@@ -26,6 +26,7 @@ struct starfive_dwmac_data {
- struct starfive_dwmac {
- 	struct device *dev;
- 	const struct starfive_dwmac_data *data;
-+	struct clk *sgmii_rx;
- };
+It does not have to be a root port.
  
- static int starfive_dwmac_set_mode(struct plat_stmmacenet_data *plat_dat)
-@@ -68,6 +69,25 @@ static int starfive_dwmac_set_mode(struct plat_stmmacenet_data *plat_dat)
- 	return 0;
- }
- 
-+static int stmmac_starfive_sgmii_set_clk_rate(void *bsp_priv, struct clk *clk_tx_i,
-+					      phy_interface_t __maybe_unused interface,
-+					      int speed)
-+{
-+	struct starfive_dwmac *dwmac = bsp_priv;
-+	long rate = rgmii_clock(speed);
-+	int ret;
-+
-+	/* MAC clock rate the same as RGMII */
-+	if (rate < 0)
-+		return -EINVAL;
-+
-+	ret = clk_set_rate(clk_tx_i, rate);
-+	if (ret)
-+		return ret;
-+
-+	return clk_set_rate(dwmac->sgmii_rx, rate);
-+}
-+
- static int starfive_dwmac_probe(struct platform_device *pdev)
- {
- 	struct plat_stmmacenet_data *plat_dat;
-@@ -102,23 +122,34 @@ static int starfive_dwmac_probe(struct platform_device *pdev)
- 		return dev_err_probe(&pdev->dev, PTR_ERR(clk_gtx),
- 				     "error getting gtx clock\n");
- 
--	/* Generally, the rgmii_tx clock is provided by the internal clock,
--	 * which needs to match the corresponding clock frequency according
--	 * to different speeds. If the rgmii_tx clock is provided by the
--	 * external rgmii_rxin, there is no need to configure the clock
--	 * internally, because rgmii_rxin will be adaptively adjusted.
--	 */
--	if (!device_property_read_bool(&pdev->dev, "starfive,tx-use-rgmii-clk"))
--		plat_dat->set_clk_tx_rate = stmmac_set_clk_tx_rate;
--
- 	dwmac->dev = &pdev->dev;
--	plat_dat->flags |= STMMAC_FLAG_EN_TX_LPI_CLK_PHY_CAP;
- 	plat_dat->bsp_priv = dwmac;
--	plat_dat->dma_cfg->dche = true;
-+	/* generic sgmii, 1000_BASEX not support yet */
-+	if (plat_dat->phy_interface == PHY_INTERFACE_MODE_SGMII) {
-+		dwmac->sgmii_rx = devm_clk_get_enabled(&pdev->dev, "sgmii_rx");
-+		if (IS_ERR(dwmac->sgmii_rx))
-+			return dev_err_probe(&pdev->dev,
-+					     PTR_ERR(dwmac->sgmii_rx),
-+					     "error getting sgmii rx clock\n");
-+		plat_dat->set_clk_tx_rate = stmmac_starfive_sgmii_set_clk_rate;
-+	} else {
-+		/*
-+		 * Generally, the rgmii_tx clock is provided by the internal clock,
-+		 * which needs to match the corresponding clock frequency according
-+		 * to different speeds. If the rgmii_tx clock is provided by the
-+		 * external rgmii_rxin, there is no need to configure the clock
-+		 * internally, because rgmii_rxin will be adaptively adjusted.
-+		 */
-+		if (!device_property_read_bool(&pdev->dev, "starfive,tx-use-rgmii-clk"))
-+			plat_dat->set_clk_tx_rate = stmmac_set_clk_tx_rate;
-+
-+		err = starfive_dwmac_set_mode(plat_dat);
-+		if (err)
-+			return err;
-+	}
- 
--	err = starfive_dwmac_set_mode(plat_dat);
--	if (err)
--		return err;
-+	plat_dat->flags |= STMMAC_FLAG_EN_TX_LPI_CLK_PHY_CAP;
-+	plat_dat->dma_cfg->dche = true;
- 
- 	return stmmac_dvr_probe(&pdev->dev, plat_dat, &stmmac_res);
- }
--- 
-2.17.1
+> For P2P that is obviously nonsense because we don't have P2P support
+> for cached accesses.
 
+For P2P the TPH data on the TLP will transit to the P2P completer
+unchanged.
+
+It is up to the completer do define what it does with the TPH data.
+
+Typically root ports in CPUs will use TPH data for cache placement
+instructions. But who knows what a P2P device will use it for.
+
+In Linux the driver that owns the completing address space gets to
+specify how the TPH data works based on its own device specific
+knowledge.
+
+Jason
