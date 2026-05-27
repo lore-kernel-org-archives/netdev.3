@@ -1,45 +1,47 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D9E3219E8
-	for <netdev@vger.kernel.org>; Wed, 27 May 2026 23:07:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BF843C8729;
+	Wed, 27 May 2026 23:18:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779923238; cv=none; b=e7X53ehFuVdhY9qYHwv9lzniquC3TnSn3AYKkyPQ4i7HzKH+D5RL4R7DvGn2tTAlhmBltNnJDx7Mruwm+afoHPN0nnrNbhqhoZRQ+E5tugyH+imzalCHaI+cQv8s4TdZjCoya12eRhstEbyMCyx8vZk1LTMfDdGuiJTIbyICzps=
+	t=1779923932; cv=none; b=tl2zVplBQ9kXJVphdO/N3qozVojYgVAaWwGbgZQDneyUnqF9T5yX4qON1kA6UkC3zxAuvDXGnn5S7dCiQS/Q10wxifhBd3f1h00kaxHoS75LsjkncCHdbi4ANRMrRQd/uY4cWUsIPLYmtr49XRtF7U1E3CvXlppf4F/IRm9sDog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779923238; c=relaxed/simple;
-	bh=W6obAhP6PCYR5rhunNCnMBDk3RscY52AknMeg6sxGyA=;
+	s=arc-20240116; t=1779923932; c=relaxed/simple;
+	bh=XYYLIkMdUjyt8VZh1T4Ts2Zkw0+goRDp5iOhBj3vL88=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UVt8lbQDcT/yLaiG8je/M5JU3vwROTTLPXiDuQgcCLhhOZ8UaLYODUSENCswTpvSAK1L7D7YdVIx4khrFo28i1uUufLWQjyiEnnpeBfK/5zeI+UIivswTeN3i6j4YdrQPtRD620PHTqfFXjN9r3LOwnABOs9WrjPiO8sHey84wk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CgjTHk0S; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=AcO4h739l3xEypM/VjyK4UKjo4ydB/xZeSoRO8W/7igFIhFC9pDTVmM5Sd1Z+9y/oNU4ivU9vlj9dxQN2Qe/sIhGjhnH3VXZS5d8JEDX/HLKn1+UITv8pV8CqwTPP+zm6lUhV3P1qQbUx55+/IgYE9EKecDbjbjg1BEkdTt/Lr4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JJ3XS4BG; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CgjTHk0S"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47D011F000E9;
-	Wed, 27 May 2026 23:07:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JJ3XS4BG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C36F1F000E9;
+	Wed, 27 May 2026 23:18:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779923237;
-	bh=g88PR7qF3idSr7KQdx9j2J5RWimgQFtsq87ECfgIZs8=;
+	s=k20260515; t=1779923930;
+	bh=gY/uWptPNlFRUA8uDIAujD0ayLukvJN5W3pkFRqPqWc=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=CgjTHk0ScNaGILOAqahyeIfWxgB9waARhGzKkarQseznQOGZTJMqoEonV6ZUGkQVC
-	 cSb/C2mKR5IOXVgOBS7+TkyLrQ/wRuJyaUF29AHcY6hoLAwDKHwg5MY7miVdy1M1C9
-	 RcIaHhCSST7zpuhA0LBzH1tqE4Pu2xNdxwhvCeV29I4/Se121dp/JGnS6fvyz0Dro2
-	 CFdaVdfqxImsP4/rmxz4TfYUakK3/FQ2qLnFwr5vvSWPqbQ0qo9r1Fob7geQDlI2ku
-	 e1ua3aQFZ0tmbw2sfxdXagYUIcWIoMOd4nLo1zMDzMcoHPI0ClGWySOPKaDv2TXTYB
-	 X5xR0Il5fv1ZA==
-Date: Wed, 27 May 2026 16:07:16 -0700
+	b=JJ3XS4BGxKlbtH60vsC6yyppzSpldkdBEd9l0v/VrqkC1kAR8gVsM2Sy+ScmVBFS6
+	 GMC5ZKXFQg9vec01JGBXpwBD+a1ZmzlkUX8cSXrGePmqKU3aQVOw4CL5eN+D5mHva3
+	 U/EOe3F8Hl4vPTRMw7U3FxTXi7wd3g8PzQJipiQFV3O/OHXnlUyTcp+XhMQ/+uQ0+0
+	 v05voTtrQJ9BicmTChr35m2XlHfJNVsFESQuKOqTOQDxf1N4nAiA8Kyol6NYpNyyV2
+	 8iEai48aknM0b5WDlcZgqqsOMzHrGF/gheECEfsQBgJOeb+Cu6/kizsi8AlK3gYv+A
+	 tuQ9e8hV5crKw==
+Date: Wed, 27 May 2026 16:18:49 -0700
 From: Jakub Kicinski <kuba@kernel.org>
 To: Fernando Fernandez Mancera <fmancera@suse.de>
-Cc: netdev@vger.kernel.org, Yumei Huang <yuhuang@redhat.com>, Ido Schimmel
- <idosch@idosch.org>
-Subject: Re: Problem with IPv6 privacy addresses in 7.0
-Message-ID: <20260527160716.147e240f@kernel.org>
-In-Reply-To: <675083b4-e015-4ff3-836c-798e0a971194@suse.de>
-References: <20260521135310.GC977@cmadams.net>
-	<20260526175743.1f2c3761@kernel.org>
-	<20260527010641.GA21073@cmadams.net>
-	<20260526183122.348e44e7@kernel.org>
-	<20260527215135.GB16443@cmadams.net>
-	<675083b4-e015-4ff3-836c-798e0a971194@suse.de>
+Cc: Maoyi Xie <maoyixie.tju@gmail.com>, "David S . Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Jan Vaclav
+ <jvaclav@redhat.com>, Andrew Lunn <andrew@lunn.ch>, Taehee Yoo
+ <ap420073@gmail.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH net] hsr: broadcast netlink notifications in the
+ device's net namespace
+Message-ID: <20260527161849.738b7f1f@kernel.org>
+In-Reply-To: <21df0b14-f530-4e9a-931a-21154ec18c78@suse.de>
+References: <CAHPEe=GO=2qqWZPwBB4rrXc3mkD0dznp2K78nCsKwF=c-QwxEw@mail.gmail.com>
+	<20260527075924.2707856-1-maoyixie.tju@gmail.com>
+	<21df0b14-f530-4e9a-931a-21154ec18c78@suse.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -49,39 +51,24 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 27 May 2026 23:59:47 +0200 Fernando Fernandez Mancera wrote:
-> On 5/27/26 11:51 PM, Chris Adams wrote:
-> > Once upon a time, Jakub Kicinski <kuba@kernel.org> said:  
-> >> Sounds plausible, pretty sure we knew this commit was risky to begin
-> >> with, but we had no direct proof that it'd break real life users.
-> >>
-> >> Revert is the right course of action here. Would you be willing/able
-> >> to send the revert with your problem description and a Fixes tag
-> >> pointing to the reverted commit?  
-> > 
-> > I did want to add a little more test note:
-> > 
-> > It's definitely an interaction with NetworkManager.  If I stop NM and
-> > run my VM start/stop test, nothing unexpected happens after.  If NM is
-> > running and I do my VM test, when the next router advertisement is
-> > received, NM replaces the privacy addresses.
-> >   
+On Wed, 27 May 2026 13:11:57 +0200 Fernando Fernandez Mancera wrote:
+> >   	genlmsg_end(skb, msg_head);
+> > -	genlmsg_multicast(&hsr_genl_family, skb, 0, 0, GFP_ATOMIC);
+> > +	genlmsg_multicast_netns(&hsr_genl_family, dev_net(master->dev),
+> > +				skb, 0, 0, GFP_ATOMIC);
+> > +	rcu_read_unlock();
+> >     
 > 
-> As someone that is experienced in NetworkManager, I can confirm it is 
-> related. NetworkManager is querying the IPv6 address and when the 
-> connection is configured with ipv6.ip6-privacy=2 (prefer-temp-addr), 
-> NetworkManager creates a route to make the system use the temporary 
-> address for outgoing connections by default.
+> The patch makes sense to me. Anyway, I think we can reduce the RCU 
+> critical section here.
 > 
-> If the order is messed up, the address picked will likely be too. One 
-> could argue that this is partially fault of NetworkManager and that it 
-> should check the timestamps or preferred times rather than order.. but 
-> well, the rule is "do not break userspace".
+> What about moving rcu_read_unlock() after the if and extract the net 
+> before unlocking? The benefit is minimal but I think it is worth it.
 
-Right, plus the justification for the change wasn't very strong 
-in the first place. My internal compass is still pointing towards
-a revert.
+Not sure TBH, we'd need to take a ref on the netns and allocate 
+a tracker (on DEBUG kernels). One could go either way.
 
-> I hope this clarifies things.
-
-
+I'm replying because I wanted to question whether this is Fixes+stable@ 
+worthy. Sending the notifications to the namespace where the device is
+makes sense. But it's as much a behavior changes as it is a fix.
+The commit in question was merged to 5.6, real users clearly don't care.
