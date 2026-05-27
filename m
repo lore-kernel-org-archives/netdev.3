@@ -1,104 +1,75 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from us.padl.com (us.padl.com [216.154.215.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A94F3BB69E;
-	Wed, 27 May 2026 07:16:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 779F727E07E;
+	Wed, 27 May 2026 07:16:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.154.215.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779866178; cv=none; b=W8UH/4Pvj3nU38OU52Myf1JZjawClUm+SuAyCL3DLtNsMNhbNV8cMrdO5KLAyCKCTXk4i4I/05UDAAnE0A3iF+wym+QH0lnVR4Axq3tNZbpJee0tSROUrFDB6vZ1AJpBU/YyL/IWhTTkSmV8hsyO5V2ReD1nh4Vu5XVvhinJ99o=
+	t=1779866210; cv=none; b=ZPbxMg33X52O4axSlkSAvWILTgHSGCdtbS3I4o5UqtzffyadSDipIDIpLFTOBe33axpCz/SIUv0aj/bEXjZbMvJ2RIeVXj5BgcUG74w4phBXZ5UQGidpkSI2XGn22hDZvNuFCNKx49/hoFWgDErNyWiFk31VeiwLNiJMomEZYB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779866178; c=relaxed/simple;
-	bh=rwbu1JjOlBHSv0oqanc3D6oxYHRDXPMUDaKegJ/YJTo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HJqiLF+NjHnKf7FxHgFr40EjONQmepWlDSTksZM60rmvA2oO+dM8lB215ZIIqd2jY4oCtT4EedRFoS8re1Tpusvp/tp8FephbtQA4dffXyPDgwBXnWYlWUzx7+L1/OKatx+bG5NRRLKPav2ZW0Fu41QfJgS2Tu3ZM6HSHZcRg/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=a+wOgIOt; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=xaiocjhj; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	s=arc-20240116; t=1779866210; c=relaxed/simple;
+	bh=vIxdAAp8PLpZ7PFhmWuqtC4SuKqVVjfiU2X5PLRSPSU=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=U936HW8xqw2qjsYUbqLDvEfLpnZfg5/VX2GcQOi8qiGcAb8UblzrcebVoe8In9aIya5cDF3iId2H1IfX9hkreZ04gichweV2hCkn0Hm54XTXO7g/XVeGzUGpdDVCSPJCIDzmtGkLFHO534o7/BO24omg7+Aq0hG3ZwS9T/ezP4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=padl.com; spf=pass smtp.mailfrom=padl.com; dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b=fnkplXqq; arc=none smtp.client-ip=216.154.215.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=padl.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=padl.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="a+wOgIOt";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="xaiocjhj"
-Date: Wed, 27 May 2026 09:16:14 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1779866175;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=AH5sgHy+bL5b68ae+ELbUNqD19ikq6EFa5yg38AqiQo=;
-	b=a+wOgIOtR8tATMIwSqFnGqUekgnHtXGzBojGqkoEW+M5zOzgcnio5D0PJemM37FPwkL4SY
-	+K2NODKDBWPZxNRc9VwdQpXFqLwAdCYsJ/evS2wagXg7Nt8mWsmsyval3cKz5WqecNZhCs
-	8kXNG//JvraGIOfvUnlcADv+8KgS+YkJVa3tO69Z9wc14ttlw9gqWLmV7eiyhCI+GLVyH4
-	6m6feRTjZfCZa4D/63uN9zK2MRIXRTa1VK6JocYiqDCOdoLIaNo5AMzYjDkD+KyY7ekP7s
-	kjNH4zdJ19zCg2E8jYsfIRiTVRZrBK0sxvaYqN167RG952xpWSX8oq8daRefpQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1779866175;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=AH5sgHy+bL5b68ae+ELbUNqD19ikq6EFa5yg38AqiQo=;
-	b=xaiocjhjSqbBXxEeCWqGysVOh90vzHCbKz2tGHHyqWrRuSWGPZMhAQSRGopAKMHdpb7QlT
-	PQlZH3VDU0OahQAg==
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: Michael Bommarito <michael.bommarito@gmail.com>
-Cc: "David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	James Chapman <jchapman@katalix.com>,
-	Tom Parkin <tparkin@katalix.com>,
-	Guillaume Nault <gnault@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Clark Williams <clrkwllms@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>, Kees Cook <kees@kernel.org>,
-	netdev@vger.kernel.org, linux-rt-devel@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] l2tp: use refcount_inc_not_zero in
- l2tp_session_get_by_ifname
-Message-ID: <20260527071614.MwD6LIK5@linutronix.de>
-References: <20260523023423.2568972-1-michael.bommarito@gmail.com>
+	dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b="fnkplXqq"
+Received: from auth (localhost [127.0.0.1]) by us.padl.com (8.14.7/8.14.7) with ESMTP id 64R7G6Vl002262
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+	Wed, 27 May 2026 08:16:09 +0100
+DKIM-Filter: OpenDKIM Filter v2.11.0 us.padl.com 64R7G6Vl002262
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=padl.com; s=default;
+	t=1779866179; bh=vIxdAAp8PLpZ7PFhmWuqtC4SuKqVVjfiU2X5PLRSPSU=;
+	h=Subject:From:In-Reply-To:Date:Cc:References:To:From;
+	b=fnkplXqq1W7tBpY10raBDNXPnWh/hy7hSDTEHEITN4r+5gPg6kHeXyIwfh5U/5cnG
+	 Kh/V4PkkvGpI/b7dzqB11kz5oLcJnc5jd/fodJfrK2ms7aZgkQQV3Od9rdfXr1E5X0
+	 0y6Xw5NuAYfdeIKy34rqj9LQ7xiCxnG3HWXk8WX34RvcguyY+XRM8k2drIRm+yGKSF
+	 CnrPdVDNIGKfiFj9dyM6WWzwkUrpEDZxgimUzThWPmVOB8hLyb2tRbMXdLOEUS+m1d
+	 bbKSmYZEHT9xMiqwNqH/ASU9aJmGA8wkPEY8v2t4OQeY6x9tobP2tcSyfELeyyOH4O
+	 /ERegxyFUjGIw==
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.500.181.1.5\))
+Subject: Re: [PATCH net-next 1/6] net: bridge: mdb: add
+ MDB_FLAGS_STREAM_RESERVED flag
+From: Luke Howard <lukeh@padl.com>
+In-Reply-To: <946d52d4-1456-4cf8-9dfa-9bba96121dcb@blackwall.org>
+Date: Wed, 27 May 2026 17:15:54 +1000
+Cc: netdev@vger.kernel.org, Kieran Tyrrell <kieran@sienda.com>,
+        Max Hunter <max@huntershome.org>,
+        Cedric Jehasse <cedric.jehasse@luminex.be>,
+        Jiri Pirko <jiri@resnulli.us>, Ivan Vecera <ivecera@redhat.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+        Andrew Lunn <andrew+netdev@lunn.ch>, Ido Schimmel <idosch@nvidia.com>,
+        linux-kernel@vger.kernel.org, bridge@lists.linux.dev
 Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20260523023423.2568972-1-michael.bommarito@gmail.com>
+Message-Id: <4CEA01D0-0C3C-4617-AFEE-6B213C4B731D@padl.com>
+References: <cover.1779841530.git.lukeh@padl.com>
+ <45e7cd01f9449c8ef15a5affd587fe7645ecddb7.1779841530.git.lukeh@padl.com>
+ <946d52d4-1456-4cf8-9dfa-9bba96121dcb@blackwall.org>
+To: Nikolay Aleksandrov <razor@blackwall.org>
+X-Mailer: Apple Mail (2.3826.500.181.1.5)
 
-sorry for being late=E2=80=A6
+Hi Nik,
 
-On 2026-05-22 22:34:23 [-0400], Michael Bommarito wrote:
-=E2=80=A6
-> a slab-use-after-free. On PREEMPT_RT local_bh_disable() is a per-CPU
-> sleeping lock and the preemption window is real;=20
-No, it is not but there is a preemption window, yes.
+> We don't add hw-only functionality, if you'd like to have this flag
+> you'll have to do a software implementation of this feature first.
+> Also please check the slop(code) that Claude generates before sending
+> it, there are obvious issues in this patch.
 
->                                                  on stock PREEMPT
-> kernels local_bh_disable() is a preempt_count increment that closes
-> the cross-CPU race in practice (see below).
+Noted, will review. I do have a software bridge implementation which I =
+shall include in the next revision if it progresses. I didn=E2=80=99t =
+include it as it still needs configuration knobs to associate one or =
+more traffic classes (or priorities) with this flag.
 
-It might be that the window is not wide open. I don't see why it should
-not trigger on SMP.
-
-> Use refcount_inc_not_zero() and continue the list walk on failure,
-> matching the other session getters in the file. The ifname getter
-> is the only session getter in net/l2tp/ that still uses the bare
-> refcount_inc() pattern; this change restores file-internal
-> consistency. The success path is unchanged.
-
-This is the right change.
-
-> Fixes: abe7a1a7d0b6 ("l2tp: improve tunnel/session refcount helpers")
-
-This simply removes the wrapper but the logic is the same. Wouldn't
-commit 2777e2ab5a9cf ("l2tp: take a reference on sessions used in
-genetlink handlers") be where it was introduced?
-
-> Cc: stable@vger.kernel.org
-> Assisted-by: Claude:claude-opus-4-7
-> Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-=E2=80=A6
-
-Sebastian
+Cheers,
+Luke=
