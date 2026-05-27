@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B12A4305698
-	for <netdev@vger.kernel.org>; Wed, 27 May 2026 01:30:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6637131715D
+	for <netdev@vger.kernel.org>; Wed, 27 May 2026 01:30:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779845414; cv=none; b=b+Aj9HOpzQukLLvksDY6gYIsP4oprayRd7JQQemNodD0WCSFTodYyfnXC80PI91mFOE86QKnzLxvv7t6Xbswim/Wj/gmSH3GbSbS7S1NaxWp2OlCdSUjmFPvqYVNMuASp6ajjfFvVe2+9CnKbujYhY+LNqyUd13JmhS2k8+7/qg=
+	t=1779845415; cv=none; b=GTMpchk/HZE1RBEZ3rdjkQdGAmK8VplymSHaVvurjYPGfjSnAlkZG4wV3pcjhmOnDpY5/c2+EWaoqZzXjBupQvoXz793q9gffqL49V5vg6MX+I5QmGCezskiZU8vCOFMNerCSdoS7kNGBF4zsfF5uc3lfTCkU2FB3H0lxlKYf8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779845414; c=relaxed/simple;
-	bh=N5eNtkNTQzRb7p+jtKIBtvOTEH3TqBpZIJybblIP2EY=;
+	s=arc-20240116; t=1779845415; c=relaxed/simple;
+	bh=7vT19sIl3Q9+t3tbRGH26qmkXHgt72j+N6Lv2fIYPdY=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=bJWP3eRnHdLvlPQtO7jyYDS8zAMIRmsMMhoZajBpjUTML3QfWkN4VLM2Ck2U9R+rk1OFWH3XaFY2YJe4QLV3GK0lmcWobaMnYcLR5pVCLAt/nyJy/WmjOalqgTgMwca9wA1dlrL9lahUt/8yjIQXQU0lVUkTwl4EOQz15FVz/7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UGFlEFmL; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=i33Ogf0soYVUNpMQPn0SXhZ0oNgJmaG00/avS6oOf9VziqJZE54vg4XXSMaATfXoOgeWZzA2BMrrBb4Bj5KuJWckG2qHoTg14sUOUtKo1FF/so9rxnrxr+GdBGgUo/1WxKKWFpjC92sh1Q+s54Ger90VuJ9sBMm1+gKIMqQWGxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PrCNXCmh; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UGFlEFmL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 673381F000E9;
-	Wed, 27 May 2026 01:30:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PrCNXCmh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0D821F00A3C;
+	Wed, 27 May 2026 01:30:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779845412;
-	bh=DMN+vY0rWS4BwsDUt8R7zj5eFv1UmhMfbCWzdhk8PQI=;
+	s=k20260515; t=1779845413;
+	bh=0ydQFosR+nLRxDjYae3CHk11toZXFY6axBJHsyfLZqI=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=UGFlEFmL6MbLy2IHJ40xAx0EGzezEfZes6h2RVIPJOzoRRs5/lvRGcq+7S8wgIKQs
-	 2wGTQmEuE/nLBIoV9H/jo1SlHatGoeieQudr/e3kXpTd1ED9ci+R1sXPhrWB4dmnrY
-	 CZAptBsJPwPOC30rcMeLGz06lWOiSIydnngpSCAdrROGuFqyiP2pGZwof49TogUYBs
-	 2VeYnBa5YnIbddgEOaTqI5xd/4yujKAY1N7OZwVixc1LpIKzu1Rik/RiKs7e5s9qz/
-	 aHnwiAUdQ2IyxNK7m9a6q+B/3HxS53gzUNWUvFHAZQqQ+LZABu1C1BvJ9zptFgAkZo
-	 dG5C4xYTtw3Sg==
+	b=PrCNXCmhXXZIwUoOO2qOEbuyZxPMS96lwGYMiZdXEM01TaPuoH6aJAx9sKlg+Q+lR
+	 HSg2ZSXZnh7O1GXCrD/7dRPqk1I19QIEce+u/V07ZzxPmDhrBrqc8LRzN3d9gJLkAZ
+	 c0fvJ5Fm1A1wPMKjRfleweKOw3qMVXBvQ/SdQv0fOgHK/do9BI+ImwgelbVNOyD8xE
+	 tRvcR69ssR9Qj0wNIJq94f/SIoI9IpgLgodWgHN8flL7QxuvYGDb0sPVB8+eVg7nL5
+	 x+aRc/Ga8LCzggqawLoSHynOqsk0HKJ7sWzul/QmCc75DT1f5SO2knjes4UhHVpG5c
+	 tCARGsga3VPIA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 569A0380CEED;
-	Wed, 27 May 2026 01:30:19 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0A37380CEED;
+	Wed, 27 May 2026 01:30:20 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,14 +37,14 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] tunnels: load network headers after skb_cow() in
- iptunnel_pmtud_build_icmp[v6]()
+Subject: Re: [PATCH net] vxlan: do not reuse cached ip_hdr() value after
+ skb_tunnel_check_pmtu()
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <177984541789.4041297.15578320493887338050.git-patchwork-notify@kernel.org>
-Date: Wed, 27 May 2026 01:30:17 +0000
-References: <20260525201335.2361845-1-edumazet@google.com>
-In-Reply-To: <20260525201335.2361845-1-edumazet@google.com>
+ <177984541939.4041297.1723728768792340106.git-patchwork-notify@kernel.org>
+Date: Wed, 27 May 2026 01:30:19 +0000
+References: <20260525203642.2389723-1-edumazet@google.com>
+In-Reply-To: <20260525203642.2389723-1-edumazet@google.com>
 To: Eric Dumazet <edumazet@google.com>
 Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
  idosch@nvidia.com, dsahern@kernel.org, netdev@vger.kernel.org,
@@ -55,19 +55,19 @@ Hello:
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Mon, 25 May 2026 20:13:35 +0000 you wrote:
-> Sashiko found that iptunnel_pmtud_build_icmp() and
-> iptunnel_pmtud_build_icmpv6() were caching ip_hdr() and ipv6_hdr()
-> before an skb_cow() call which can reallocate skb->head.
+On Mon, 25 May 2026 20:36:42 +0000 you wrote:
+> skb_tunnel_check_pmtu() can change skb->head.
 > 
-> Fix this possible UAF by initializing the local variables
-> after the skb_cow() call.
+> Reusing old_iph afer skb_tunnel_check_pmtu() can cause an UAF.
+> 
+> Use instead ip_hdr(skb) as done in drivers/net/bareudp.c
+> and drivers/net/geneve.c.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] tunnels: load network headers after skb_cow() in iptunnel_pmtud_build_icmp[v6]()
-    https://git.kernel.org/netdev/net/c/b4bc94353050
+  - [net] vxlan: do not reuse cached ip_hdr() value after skb_tunnel_check_pmtu()
+    https://git.kernel.org/netdev/net/c/7d9ef0cb2715
 
 You are awesome, thank you!
 -- 
