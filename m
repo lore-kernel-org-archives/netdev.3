@@ -1,44 +1,44 @@
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35E52428859
-	for <netdev@vger.kernel.org>; Wed, 27 May 2026 15:10:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A5B0428487
+	for <netdev@vger.kernel.org>; Wed, 27 May 2026 15:10:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779894643; cv=none; b=RHXorBWHeQmjTb2/MerLZWpp31JVXVhNHEfiBUyuBMc2r5VN4VzZMcBc+nhV+IMIMEel3LGLANofbkzb8g6b/PzydTdIe0yayaRKEA2YiDjaZ10qhaHLlUapolk4J59Cg6Rt4Zb9N6F5pPMP1rxg8DxE8dOla35q2IQ7gLy62Lg=
+	t=1779894643; cv=none; b=ohlyVyqqoCKkC/N/k33PL16EcsCZHh6o7JbOAAMnN2mE6FGpd8EvH1BPPMIFXNzzrTDHWDwgaQnFbsN9+A1O7m8fZVP45Cob6nCcIi6Q3AmYxtKoJYH45abPFTNvHsDx1U8xqR4CE5Ogx6yvRx7NsOZob2J2icvVVrg5rhy8lV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1779894643; c=relaxed/simple;
-	bh=E9VoVsnQsk3P91ocPGnexmGIN5YrGxzGqL/6CfM3hQg=;
+	bh=KmgGr+ylasiqJgCeOxWMVsRM5qQH4MNxPEZKXo8YyHQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ElK1NfA3VmqMCbg/7ntROmiR1+eot61Z4ILcJPQmwo5lPKC1hm9ywkt65G9Ayt3Dd7tB/y7Y8WCjdLCOp6TcICVFYl7/yoUTrekkVDS2rl2xm1QtbxZysROOk8GJuw2HXSnkSyFbLvjfAP1pm6JTxgGa0z+BFAAd4+bPCBHwSWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Ak7NQSiU; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Bzk2iJin; arc=none smtp.client-ip=193.142.43.55
+	 MIME-Version:Content-Type; b=g9UlDRA8fKq0J5CnFYTK/SuERtYIcYitRq1aKYCvwBefv3tRBiPk6kqBMrJM9z5EXpsE1h6+uPICSKGABqnxBW+gSly23EI3PSQNqfw8OZrPGBKe/Mn8XmpptJK6O4+1k7uZPI1JCPZthJBb94UH3k1a7YGnu5EXAya+nJqxMTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=iEYPki9d; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=C2LhLrXv; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Ak7NQSiU";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Bzk2iJin"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="iEYPki9d";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="C2LhLrXv"
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1779894631;
+	s=2020; t=1779894629;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=NSJQoKMh3BWi0QdTO239aay5yh6x1/YlpiCufIz/6L8=;
-	b=Ak7NQSiUEX882JwHu+6k6WIUWUxzRrhwvmH4My5S6NGbcoqj3T7qcbGKqvuXBua6/T1CjI
-	83+hLjkwnInCPXqBluO84nwJe1bIsH7RV9D2p6mFBsg4oP5FWqCaO1eAp2rspiX3GRbLgF
-	HwejxpvQaAp2kiAos/8mEYoz1/VNlmF9CQz7b5hl6VY5xNamzOYYLMgM4PtrOYm0yM6KQO
-	9A49G/B/zYYxymlevwJWPHlwD8QrQLC3Zf/X5xvK1VeIXozYwBqwNP4xvIuaq+v+uBpAUP
-	mLKVbhenRmbzoNOx3oczPMpRoSM3j7nD4w8qoQQ7kN1iBt3w5S+XSOAfJLrl1w==
+	bh=44rL90hQC6iBOkSormC9pHFc+LBmbAvJDgeKiapsfmI=;
+	b=iEYPki9dhuUMlqNyShGNpWMerBg5gl00vTFxe9mcVyuERWIjh7pK+EJNlsBOAxoHdqcRPu
+	Ng1PCDSG08Cocp9sgNEKrNdQluunC35YcCHypwbrgBDXnQVgLrRPPXVmZSXJ6U3h++sl73
+	oyUKt2flcJA/tFP1c6ZnahavFC83w7kNsVe0D5kFvzUwbtZ8L+c2fWgn7xoT4PSRnlaBLY
+	z3ykN5qLmX3Nedhfh5HjlVU3qRn8tFHVYgv3tnhzh9OwA/9GDfZbZ7MYT9J/S5tbqPqMM7
+	q9p8z85d4kWRWApr/+ItdyuT8ghB7pCfFdxCtUSJ54mADPUDGGNmYRHS5SGOrw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1779894631;
+	s=2020e; t=1779894629;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=NSJQoKMh3BWi0QdTO239aay5yh6x1/YlpiCufIz/6L8=;
-	b=Bzk2iJinR+8+/oa6X8RWmmHSKX16G16DKB5yEtFJYYVLS3fMJgzLXZ1eFnVI0mvUm7MS93
-	j5hFhcx4NCRipmAA==
+	bh=44rL90hQC6iBOkSormC9pHFc+LBmbAvJDgeKiapsfmI=;
+	b=C2LhLrXvttE84E6O6BXuNqQze58ydwBKI2eytv+YDL5y7frXnZDJP4RWicdlBiVY05ka/9
+	I9icNLMv1xyDS2Bg==
 To: netdev@vger.kernel.org
 Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
@@ -57,9 +57,9 @@ Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
 	Simon Horman <horms@kernel.org>,
 	Vignesh Raghavendra <vigneshr@ti.com>,
 	Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Subject: [PATCH net-next v5 6/8] hsr: Assign a socket for cloned skbs
-Date: Wed, 27 May 2026 17:08:56 +0200
-Message-ID: <20260527-hsr_ptp-v5-6-158a7633eac0@linutronix.de>
+Subject: [PATCH net-next v5 4/8] hsr: Drop received PTP packets
+Date: Wed, 27 May 2026 17:08:54 +0200
+Message-ID: <20260527-hsr_ptp-v5-4-158a7633eac0@linutronix.de>
 In-Reply-To: <20260527-hsr_ptp-v5-0-158a7633eac0@linutronix.de>
 References: <20260527-hsr_ptp-v5-0-158a7633eac0@linutronix.de>
 Precedence: bulk
@@ -71,50 +71,92 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
-The cloned skb does not have a socket information recorded of
-the original skb. The original skb is never submitted. This means the
-requested timestamp information gets lost.
+Receiving PTP packets via the HSR interface does not make sense. The HSR
+stack will forward one copy to the user and ignore the duplicate from
+the other port. The PTP stack is however interested in both copies since
+they will have different content (due to different processing times
+within the HSR ring) and different timestamp information which is not
+forwarded at all.
 
-Assign the socket of the original skb to the clone so the timestamp is
-forwarded to the user.
+Forwarding a PTP packet by the HSR stack is undesired because the
+forwarding takes time, it is not accounted in the packet and this makes
+the outgoing PTP packet inaccurate and therefore useless.
+
+Drop all received PTP packets. For the PRP configuration it is the
+ether type, for HSR configuration it is the encapsulated protocol, that
+is checked. A PTP stack that is doing PTP over a HSR network needs to
+retrieve the PTP packet on the original slave interface where it was
+received.
 
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 ---
- net/hsr/hsr_forward.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ net/hsr/hsr_slave.c | 33 ++++++++++++++++++++++++++-------
+ 1 file changed, 26 insertions(+), 7 deletions(-)
 
-diff --git a/net/hsr/hsr_forward.c b/net/hsr/hsr_forward.c
-index 95ae1d9dad26b..055e5b97fc72f 100644
---- a/net/hsr/hsr_forward.c
-+++ b/net/hsr/hsr_forward.c
-@@ -12,6 +12,7 @@
- #include <linux/skbuff.h>
- #include <linux/etherdevice.h>
- #include <linux/if_vlan.h>
-+#include <net/sock.h>
- #include "hsr_main.h"
- #include "hsr_framereg.h"
+diff --git a/net/hsr/hsr_slave.c b/net/hsr/hsr_slave.c
+index 0f2cedaffa347..7cc0641dbd137 100644
+--- a/net/hsr/hsr_slave.c
++++ b/net/hsr/hsr_slave.c
+@@ -44,8 +44,7 @@ static rx_handler_result_t hsr_handle_frame(struct sk_buf=
+f **pskb)
 =20
-@@ -348,6 +349,9 @@ struct sk_buff *hsr_create_tagged_frame(struct hsr_fram=
-e_info *frame,
- 	if (!skb)
- 		return NULL;
+ 	if (hsr_addr_is_self(port->hsr, eth_hdr(skb)->h_source)) {
+ 		/* Directly kill frames sent by ourselves */
+-		kfree_skb(skb);
+-		goto finish_consume;
++		goto finish_free_consume;
+ 	}
 =20
-+	if (frame->req_tx_port !=3D HSR_PT_NONE && frame->skb_std->sk)
-+		skb_set_owner_w(skb, frame->skb_std->sk);
+ 	/* For HSR, only tagged frames are expected (unless the device offloads
+@@ -64,10 +63,8 @@ static rx_handler_result_t hsr_handle_frame(struct sk_bu=
+ff **pskb)
+ 	skb_reset_mac_header(skb);
+ 	if ((!hsr->prot_version && protocol =3D=3D htons(ETH_P_PRP)) ||
+ 	    protocol =3D=3D htons(ETH_P_HSR)) {
+-		if (!pskb_may_pull(skb, ETH_HLEN + HSR_HLEN)) {
+-			kfree_skb(skb);
+-			goto finish_consume;
+-		}
++		if (!pskb_may_pull(skb, ETH_HLEN + HSR_HLEN))
++			goto finish_free_consume;
+=20
+ 		skb_set_network_header(skb, ETH_HLEN + HSR_HLEN);
+ 	}
+@@ -81,10 +78,32 @@ static rx_handler_result_t hsr_handle_frame(struct sk_b=
+uff **pskb)
+ 		hsr_forward_skb(skb, port, HSR_PT_NONE, false);
+ 		spin_unlock_bh(&hsr->seqnr_lock);
+ 	} else {
++		struct hsr_ethhdr *hsr_ethhdr;
 +
- 	if (port->dev->features & NETIF_F_HW_HSR_TAG_INS)
- 		return skb;
++		/* PTP packets are not supposed to be forwarded via HSR as-is.
++		 * The latency introduced by forwarding renders the time
++		 * information useless. Userland needs to capture the packet on
++		 * the original interface instead of hsr.
++		 */
++		if ((!hsr->prot_version && protocol =3D=3D htons(ETH_P_PRP)) ||
++		    protocol =3D=3D htons(ETH_P_HSR)) {
++			/* HSR */
++			hsr_ethhdr =3D (struct hsr_ethhdr *)skb_mac_header(skb);
++			if (hsr_ethhdr->hsr_tag.encap_proto =3D=3D htons(ETH_P_1588))
++				goto finish_free_consume;
++		} else {
++			/* PRP */
++			if (protocol =3D=3D htons(ETH_P_1588))
++				goto finish_free_consume;
++		}
++
+ 		hsr_forward_skb(skb, port, HSR_PT_NONE, false);
+ 	}
 =20
-@@ -562,6 +566,8 @@ static void hsr_forward_do(struct hsr_frame_info *frame)
- 		 */
- 		if (frame->has_foreign_header && frame->skb_std) {
- 			skb =3D skb_clone(frame->skb_std, GFP_ATOMIC);
-+			if (skb && frame->skb_std->sk)
-+				skb_set_owner_w(skb, frame->skb_std->sk);
- 			goto inject_into_stack;
- 		}
+-finish_consume:
++	return RX_HANDLER_CONSUMED;
++
++finish_free_consume:
++	kfree_skb(skb);
+ 	return RX_HANDLER_CONSUMED;
 =20
+ finish_pass:
 
 --=20
 2.53.0
