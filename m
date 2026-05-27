@@ -1,44 +1,44 @@
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24C2842848F
-	for <netdev@vger.kernel.org>; Wed, 27 May 2026 15:10:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35E52428859
+	for <netdev@vger.kernel.org>; Wed, 27 May 2026 15:10:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779894641; cv=none; b=mRhgeMj2PdfypwrmXtTIWcJGeo9CVDiBedJQJ2qtw3CHn+0erGFTg4PNkNh84AHtKfz5AM44w6x+WcNvXTKIVtEEpeRvzTRFyntYIs7LKKvM6+1ozSGSgu3nL1Y4GUNTp7yN2tj3T44X267ZBPY+jrI0VB8hxzXfuvN6WujmzhY=
+	t=1779894643; cv=none; b=RHXorBWHeQmjTb2/MerLZWpp31JVXVhNHEfiBUyuBMc2r5VN4VzZMcBc+nhV+IMIMEel3LGLANofbkzb8g6b/PzydTdIe0yayaRKEA2YiDjaZ10qhaHLlUapolk4J59Cg6Rt4Zb9N6F5pPMP1rxg8DxE8dOla35q2IQ7gLy62Lg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779894641; c=relaxed/simple;
-	bh=HUD3gTFCb+4O9ngRXlTc0n+Dntw3F/jfCgWjuzTns9g=;
+	s=arc-20240116; t=1779894643; c=relaxed/simple;
+	bh=E9VoVsnQsk3P91ocPGnexmGIN5YrGxzGqL/6CfM3hQg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cnQT5N/xHWxHKAhwZJY1CvpmW1MZz3gFCRnI1WhcnisTQKRvGdNSPZqwPT5GJY7i+GmS3PaerpfQgJ9fOLEjPqs+XUxj0obcElm7JNy/vLKpKHCtOSwcN+kgrdDIqixPjQuQ83uw8Ec2gtonY3WNq957G/1bFAT11ujmHh2FLXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Uviu/T87; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=jZH8Oiru; arc=none smtp.client-ip=193.142.43.55
+	 MIME-Version:Content-Type; b=ElK1NfA3VmqMCbg/7ntROmiR1+eot61Z4ILcJPQmwo5lPKC1hm9ywkt65G9Ayt3Dd7tB/y7Y8WCjdLCOp6TcICVFYl7/yoUTrekkVDS2rl2xm1QtbxZysROOk8GJuw2HXSnkSyFbLvjfAP1pm6JTxgGa0z+BFAAd4+bPCBHwSWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Ak7NQSiU; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Bzk2iJin; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Uviu/T87";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="jZH8Oiru"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Ak7NQSiU";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Bzk2iJin"
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1779894628;
+	s=2020; t=1779894631;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=sFzpPx7yZQ+Hgeyi2FUsYE0IXDCj6agOUYredmvY5z4=;
-	b=Uviu/T87yNhABMOhrClzQllOeg0R9trGbvmoSIL+0FAS6HUqIPwxG+15KgsaJk3DrjRfnW
-	5hAEkcCC3WPlFXBpRygII7Kx5rn3FksKGk7B8Ohq5XFePiMMbtsNwecx4aBwZy3VsURkZ/
-	n8YR60VXTDhMjSpG0NM/EsQcpmivf5QgwjyNenJWM7HfGNIAb7iwats1ejpepHqy6IMIz0
-	uOJC03C197SKPZdgL3HXFEDAD016oC+plH9D82pi1Ya6f0iaSoAMN8wHAG9rsLmaBVqxPn
-	mgejkQx6ndob7Yj/FRX8VXV1d+fcvWgp1W7W98DJbQL9KMjROPBsPylU5FRkSw==
+	bh=NSJQoKMh3BWi0QdTO239aay5yh6x1/YlpiCufIz/6L8=;
+	b=Ak7NQSiUEX882JwHu+6k6WIUWUxzRrhwvmH4My5S6NGbcoqj3T7qcbGKqvuXBua6/T1CjI
+	83+hLjkwnInCPXqBluO84nwJe1bIsH7RV9D2p6mFBsg4oP5FWqCaO1eAp2rspiX3GRbLgF
+	HwejxpvQaAp2kiAos/8mEYoz1/VNlmF9CQz7b5hl6VY5xNamzOYYLMgM4PtrOYm0yM6KQO
+	9A49G/B/zYYxymlevwJWPHlwD8QrQLC3Zf/X5xvK1VeIXozYwBqwNP4xvIuaq+v+uBpAUP
+	mLKVbhenRmbzoNOx3oczPMpRoSM3j7nD4w8qoQQ7kN1iBt3w5S+XSOAfJLrl1w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1779894628;
+	s=2020e; t=1779894631;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=sFzpPx7yZQ+Hgeyi2FUsYE0IXDCj6agOUYredmvY5z4=;
-	b=jZH8OiruRb+/cnO4n4/9JhKLJ3s8+fXqf5WuwRCuEFBKIW4fQ133Mq5+vQd+vg/yDUU9X/
-	OCh1vjyubUHpJOCg==
+	bh=NSJQoKMh3BWi0QdTO239aay5yh6x1/YlpiCufIz/6L8=;
+	b=Bzk2iJinR+8+/oa6X8RWmmHSKX16G16DKB5yEtFJYYVLS3fMJgzLXZ1eFnVI0mvUm7MS93
+	j5hFhcx4NCRipmAA==
 To: netdev@vger.kernel.org
 Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
@@ -57,9 +57,9 @@ Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
 	Simon Horman <horms@kernel.org>,
 	Vignesh Raghavendra <vigneshr@ti.com>,
 	Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Subject: [PATCH net-next v5 2/8] hsr: Use skb_clone() while adding the HSR header
-Date: Wed, 27 May 2026 17:08:52 +0200
-Message-ID: <20260527-hsr_ptp-v5-2-158a7633eac0@linutronix.de>
+Subject: [PATCH net-next v5 6/8] hsr: Assign a socket for cloned skbs
+Date: Wed, 27 May 2026 17:08:56 +0200
+Message-ID: <20260527-hsr_ptp-v5-6-158a7633eac0@linutronix.de>
 In-Reply-To: <20260527-hsr_ptp-v5-0-158a7633eac0@linutronix.de>
 References: <20260527-hsr_ptp-v5-0-158a7633eac0@linutronix.de>
 Precedence: bulk
@@ -71,79 +71,50 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
-hsr_create_tagged_frame() creates a new skb where the HSR header can be
-prepended via __pskb_copy(). This does not copy the skb_shared_info part
-of the original skb so any timestamp request is lost.
+The cloned skb does not have a socket information recorded of
+the original skb. The original skb is never submitted. This means the
+requested timestamp information gets lost.
 
-An alternative is to use skb_clone() where the skb_shared_info part is
-copied and then skb_cow_head() to make the header part writeable. This
-avoids touching manually the tx_flags and tskey members.
-Using skb_clone() allows also return early (after the clone) in the
-offloaded case so this can be unified a bit.
-
-This is a prepartion for PTP handling where timestatmps are requested.
+Assign the socket of the original skb to the clone so the timestamp is
+forwarded to the user.
 
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 ---
- net/hsr/hsr_forward.c | 23 +++++++++++++++++------
- 1 file changed, 17 insertions(+), 6 deletions(-)
+ net/hsr/hsr_forward.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
 diff --git a/net/hsr/hsr_forward.c b/net/hsr/hsr_forward.c
-index 0aca859c88cbb..632355a6e5faf 100644
+index 95ae1d9dad26b..055e5b97fc72f 100644
 --- a/net/hsr/hsr_forward.c
 +++ b/net/hsr/hsr_forward.c
-@@ -342,16 +342,18 @@ struct sk_buff *hsr_create_tagged_frame(struct hsr_fr=
-ame_info *frame,
- 		/* set the lane id properly */
- 		hsr_set_path_id(frame, hsr_ethhdr, port);
- 		return skb_clone(frame->skb_hsr, GFP_ATOMIC);
--	} else if (port->dev->features & NETIF_F_HW_HSR_TAG_INS) {
--		return skb_clone(frame->skb_std, GFP_ATOMIC);
- 	}
+@@ -12,6 +12,7 @@
+ #include <linux/skbuff.h>
+ #include <linux/etherdevice.h>
+ #include <linux/if_vlan.h>
++#include <net/sock.h>
+ #include "hsr_main.h"
+ #include "hsr_framereg.h"
 =20
--	/* Create the new skb with enough headroom to fit the HSR tag */
--	skb =3D __pskb_copy(frame->skb_std,
--			  skb_headroom(frame->skb_std) + HSR_HLEN, GFP_ATOMIC);
-+	skb =3D skb_clone(frame->skb_std, GFP_ATOMIC);
+@@ -348,6 +349,9 @@ struct sk_buff *hsr_create_tagged_frame(struct hsr_fram=
+e_info *frame,
  	if (!skb)
  		return NULL;
--	skb_reset_mac_header(skb);
+=20
++	if (frame->req_tx_port !=3D HSR_PT_NONE && frame->skb_std->sk)
++		skb_set_owner_w(skb, frame->skb_std->sk);
 +
-+	if (port->dev->features & NETIF_F_HW_HSR_TAG_INS)
-+		return skb;
-+
-+	/* Ensure the cloned skb has enough headroom to fit the HSR tag */
-+	if (skb_cow_head(skb, HSR_HLEN))
-+		goto err;
+ 	if (port->dev->features & NETIF_F_HW_HSR_TAG_INS)
+ 		return skb;
 =20
- 	if (skb->ip_summed =3D=3D CHECKSUM_PARTIAL)
- 		skb->csum_start +=3D HSR_HLEN;
-@@ -360,15 +362,24 @@ struct sk_buff *hsr_create_tagged_frame(struct hsr_fr=
-ame_info *frame,
- 	if (frame->is_vlan)
- 		movelen +=3D VLAN_HLEN;
+@@ -562,6 +566,8 @@ static void hsr_forward_do(struct hsr_frame_info *frame)
+ 		 */
+ 		if (frame->has_foreign_header && frame->skb_std) {
+ 			skb =3D skb_clone(frame->skb_std, GFP_ATOMIC);
++			if (skb && frame->skb_std->sk)
++				skb_set_owner_w(skb, frame->skb_std->sk);
+ 			goto inject_into_stack;
+ 		}
 =20
-+	/* The entire header area needs to be linear */
-+	if (!pskb_may_pull(skb, HSR_HLEN + movelen))
-+		goto err;
-+
- 	src =3D skb_mac_header(skb);
- 	dst =3D skb_push(skb, HSR_HLEN);
- 	memmove(dst, src, movelen);
-+	skb_set_network_header(skb, ETH_HLEN + HSR_HLEN);
- 	skb_reset_mac_header(skb);
-+	skb_reset_mac_len(skb);
-=20
- 	/* skb_put_padto free skb on error and hsr_fill_tag returns NULL in
- 	 * that case
- 	 */
- 	return hsr_fill_tag(skb, frame, port, port->hsr->prot_version);
-+err:
-+	kfree(skb);
-+	return NULL;
- }
-=20
- struct sk_buff *prp_create_tagged_frame(struct hsr_frame_info *frame,
 
 --=20
 2.53.0
