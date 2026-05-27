@@ -1,106 +1,127 @@
-Received: from smtpbgsg1.qq.com (smtpbgsg1.qq.com [54.254.200.92])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10CDB13D53C
-	for <netdev@vger.kernel.org>; Wed, 27 May 2026 08:16:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.254.200.92
+Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [207.46.229.174])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39E603BB10A;
+	Wed, 27 May 2026 08:18:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.46.229.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779869774; cv=none; b=P+L1QAZ6mvAqVhVS+8fGkUBMhhly8PitG6eKaD78BU11U/XuZMCzY5cQEpgK+wuGh4+sTB4YhCQbtFIp5nroEqQxHOEIQppypJFLDv7/QyDEk40+jsiTW90DgA5qx406YM/NuBN4DFw4SxsjQkYKgtwGKpbWGLJm4X7Uye2Z3o4=
+	t=1779869929; cv=none; b=LJcBstPyRqu3Ih0rs0pC7K9RF41Gg1A/61bLyGo8DQkNK9bOroqzS/TNTtjHWU5i7RhFpcGp+td6Nx5ZYzIZRxceVr0Df934rgP7pCGG/58Iqje6jxDS6nqmJempENllrPiGeV/fLYK2Ex61yyPvPdn7LzbTLNIzWcl7sgSAMx0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779869774; c=relaxed/simple;
-	bh=OH27XX4XLcXiU6zpKSFDRIwZCZRUMRWZC/GON4wyJVY=;
-	h=From:Subject:To:Cc:Message-ID:Date:MIME-Version:Content-Type; b=QhoaJuqsWlpxIfxTm3IFkfS2Qejvr05+ZNVdINDUgZNCCbZ+xn/fJc2AtCIT6viipzT3IdDfZZqKX+i2fVDds0YM8CoNA7KQGVCDPp2pM+a8pwium4mKEJ58Gh06Ta6FwBU8q0ikO5DlVw5by+AvEfqKQtC3vW1IjR/3ZTHMCqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shinnytech.com; spf=fail smtp.mailfrom=shinnytech.com; arc=none smtp.client-ip=54.254.200.92
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shinnytech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=shinnytech.com
-X-QQ-mid: zesmtpgz7t1779869754t55650d16
-X-QQ-Originating-IP: i0JvW63Bg5of9qfTT+J4TUpX3p3Zc8PxQF6xHTfhqbE=
-Received: from [192.168.0.218] ( [58.32.25.94])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Wed, 27 May 2026 16:15:46 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 13477922265467916946
-From: Zhi Cheng <chengzhi@shinnytech.com>
-Subject: [PATCH net-next] tcp: fix spurious connection aborts due to
- TCP_USER_TIMEOUT and zero window
-To: Eric Dumazet <edumazet@google.com>, Neal Cardwell <ncardwell@google.com>
-Cc: netdev@vger.kernel.org
-Organization: shinnytech
-Message-ID: <EDFF6E75FB9C46D0+ac77bc6c-2057-dfc5-4541-05679f6a6bce@shinnytech.com>
-Date: Wed, 27 May 2026 16:15:46 +0800
-User-Agent: Mozilla/5.0 (Windows NT 5.1; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
+	s=arc-20240116; t=1779869929; c=relaxed/simple;
+	bh=syfk5959tJHAPWULL5+nOqHgS2Vt+pN5sQcrmx2+q1w=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WHKIT5QSQ2c08rz9FPxOZdEVZkOnSnB4ScZFDswvWX7XaXpiV767hXZTkYkEOhFYPoI718TjP49OJfSGcvwNgLTxD6/xnr5SLT7U91OZ36Ywb4XE42aDZArq4/+D908oJaYY5EvwIHt5GVdGD7qkM75kKeqCrUT9cpXi7vFJC9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn; dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b=QEL+pgSx; arc=none smtp.client-ip=207.46.229.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b="QEL+pgSx"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=mails.tsinghua.edu.cn; s=dkim; h=Received:From:To:Cc:Subject:
+	Date:Message-ID:MIME-Version:Content-Transfer-Encoding; bh=2rub8
+	xVFH79HgKRt47yMxbSOY6mYiviajCZO6Mf7T5k=; b=QEL+pgSxblLp9DWSugux8
+	gguAPIWCC+lsykNdN3bz1BL63x+vsVOwTjA62HksH9jrMuYD54Yj7Mtut3mH1Pqd
+	wxyrG3bG67SiNfygShp1SRDqdUk7cRJgGmjOCwCwszoDMS0jF+AO5IGOXgRhOHay
+	HQeun4ksVS8WI1vq+BcCjI=
+Received: from localhost.localdomain (unknown [211.102.241.99])
+	by web3 (Coremail) with SMTP id ygQGZQA3go_ZqBZqOrztAQ--.39780S2;
+	Wed, 27 May 2026 16:18:33 +0800 (CST)
+From: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+To: netdev@vger.kernel.org
+Cc: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>,
+	Alexander Aring <alex.aring@gmail.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-bluetooth@vger.kernel.org,
+	linux-wpan@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>,
+	Ao Wang <wangao@seu.edu.cn>,
+	Xuewei Feng <fengxw06@126.com>,
+	Qi Li <qli01@tsinghua.edu.cn>,
+	Ke Xu <xuke@tsinghua.edu.cn>
+Subject: [PATCH net] 6lowpan: fix off-by-one in multicast context address compression
+Date: Wed, 27 May 2026 16:18:01 +0800
+Message-ID: <20260527081806.42747-1-zhaoyz24@mails.tsinghua.edu.cn>
+X-Mailer: git-send-email 2.46.2
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpgz:shinnytech.com:qybglogicsvrgz:qybglogicsvrgz5b-1
-X-QQ-XMAILINFO: MhHYuF7Otq+ozz2OOds0bmYRlaFEl354G9nRbwgXDOvWWlH4aUNy0Uj3
-	RoMaLps27VkU60FhzGmOr8uU2jvLeAcPQ3Yyj5No1D4b65766Vsp9q+pWuYGmCgXCNvYhfR
-	GwK8vTozkvXGH8XM2CfwvaUn19FZxmn7+QoY1Lyc1CjxQNz2cquiIQ4mPm27H85LyzMwLMH
-	3DL5SFrvFgmm8E14OHV2CludT4dluTeLLJT24TZgBymulFFpjIGAd5bA4hegth0RF/E9v8J
-	cpuLsum3TyIoP9EHZUh7K2Aahw54xkTvHMshjDjSvu515/2ar9TRi4iZw+GOgRZ7Usqj1zj
-	k7u6pCqFiQFvJSvEgvYnZPJJSz8k19pCDZYzi9Wq9nxEqgUcgppxoM1lKEZ69zoW/pkM4Sf
-	eA67uQYKosSdU8GM3uLUpoiS++Jma9wTOHLVVrBzw6ClnGdSnQ6jjkfSD6ZgcQ4HpoVk93S
-	YBOZwNSFpeGAXlFxJ/6ZJ9R6ZvfCvJEZuCVVNmLI5KvH7tYVSkCfsjQ3NIwjudOyfYQ/xTM
-	jKos0l/rsA0d1jJU4IcHWYcNQYsmIj9k1rfPbQ9iihZl5GLBXD+u6LEx0RhG7IxO+QvdeRG
-	zTPNLxoe8NmyCOG9hJ9kLH5j7IpvRdOkkifP3umWxdfObUxCeMqcYeLkvpgSNCKssEZpYI1
-	kwU79xVBXTo81UnOF5w9TrLp2Nl/ZOMb4/rAR/83A1Ue4eBbmrPZUGeGkCGwT0FesKjrXWO
-	MwANxiJIYA3UbzylJ2TdhRBdfbyg728zBPhUw0GzWT4Lgwai/qscYmrXd1uI8FQYWin3s6R
-	op2KbZIFZEIzxu4Iwbn8Zu7ZZet9IoP5Ri+mbvF/rCUkLRLx3V8/0Ii6Ozh6let8zmgHunw
-	mxOWm9yVEeOqjOL/QtSQ3IR4vMOkzS++uIIr8zGma76A2fNPU8qD62h6sMqW5Qusn+bQXhE
-	PyuBLfwupeUsSMMnpMApcz2kxCyKE/fFDngMve3RslJHFQTEoH3YtU8jVSQFVQm+uwwJK+q
-	Runw949W1wIARC8iUNmpmjFUVri6s=
-X-QQ-XMRINFO: NS+P29fieYNwqS3WCnRCOn9D1NpZuCnCRA==
-X-QQ-RECHKSPAM: 0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:ygQGZQA3go_ZqBZqOrztAQ--.39780S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7tw1rtw18tw45WF4UJr4rAFb_yoW8Zry3pa
+	s7A3s0yF97JrW3u392yw1jvw17uF4kJrWay340ya4YvFn0gF10yr18KFWkJas0yrWYk34j
+	qFWUCrWYyan8GrDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUP014x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
+	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
+	CE3s1lnxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xv
+	F2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r
+	4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I
+	648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFylc2xSY4AK67
+	AK6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAF
+	wI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWrXwCIc4
+	0Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AK
+	xVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr
+	1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUjXTm3UU
+	UUU==
+X-CM-SenderInfo: 52kd05r2suqzpdlo2hxwvl0wxkxdhvlgxou0/1tbiAQEAAWoWnq0YHQAAsL
 
-Under certain conditions, a stale icsk_probes_tstamp can lead to an
-unexpected connection abort during a zero-window state.
+The second memcpy in lowpan_iphc_mcast_ctx_addr_compress() uses
+&data[1] as destination and &ipaddr->s6_addr[11] as source, but
+both should be offset by one: &data[2] and &ipaddr->s6_addr[12]
+respectively.
 
-The exact sequence leading to the timeout is as follows:
-1. A zero window occurs. icsk_probes_tstamp is set.
-2. The window opens slightly. tcp_ack_probe() is called because there
-    are no in-flight packets. However, icsk_probes_tstamp is not cleared
-    because the window is not large enough to fit the tcp_send_head.
-3. Packets been sent, and RTO is armed which overrides the probe timer.
-4. Subsequent ACKs consistently acknowledge packets and the window
-    never fully closes. Because there are now in-flight packets,
-    tcp_ack_probe() is never called again.
-5. As a result, icsk_probes_tstamp is never updated despite the
-    connection no longer in the zero-window state.
-6. Much later, another zero window occurs. When probe timer triggers,
-    tcp_probe_timer() evaluates the extremely old icsk_probes_tstamp and
-    immediately aborts the connection due to TCP_USER_TIMEOUT.
+This off-by-one has two consequences:
+1. data[1] is overwritten with s6_addr[11], corrupting the RIID
+   field in the compressed multicast address
+2. data[5] is never written, so uninitialized kernel stack memory
+   is transmitted over the network via lowpan_push_hc_data(),
+   leaking kernel stack contents
 
-Fix this by explicitly clearing icsk_probes_tstamp in tcp_ack()
-whenever prior_packets is non-zero, ensuring that the probe
-timestamp is reset when exit zero-window state.
+The correct inline data layout must match what the decompression
+function lowpan_uncompress_multicast_ctx_daddr() expects:
+  data[0..1] = s6_addr[1..2]  (flags/scope + RIID)
+  data[2..5] = s6_addr[12..15] (group ID)
 
-Fixes: 9d9b1ee0b2d1 ("tcp: fix TCP_USER_TIMEOUT with zero window")
-Signed-off-by: Zhi Cheng <chengzhi@shinnytech.com>
+Also zero-initialize the data array as a defensive measure against
+similar bugs in the future.
+
+Fixes: 5609c185f24d ("6lowpan: iphc: add support for stateful compression")
+Reported-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+Reported-by: Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>
+Reported-by: Ao Wang <wangao@seu.edu.cn>
+Reported-by: Xuewei Feng <fengxw06@126.com>
+Reported-by: Qi Li <qli01@tsinghua.edu.cn>
+Reported-by: Ke Xu <xuke@tsinghua.edu.cn>
+Assisted-by: GLM:GLM-5.1
+Signed-off-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
 ---
-  net/ipv4/tcp_input.c | 1 +
-  1 file changed, 1 insertion(+)
+diff --git a/net/6lowpan/iphc.c b/net/6lowpan/iphc.c
+index e116d30..37eaff3 100644
+--- a/net/6lowpan/iphc.c
++++ b/net/6lowpan/iphc.c
+@@ -1086,12 +1086,12 @@ static u8 lowpan_iphc_mcast_ctx_addr_compress(u8 **hc_ptr,
+ 					      const struct lowpan_iphc_ctx *ctx,
+ 					      const struct in6_addr *ipaddr)
+ {
+-	u8 data[6];
++	u8 data[6] = {};
+ 
+ 	/* flags/scope, reserved (RIID) */
+ 	memcpy(data, &ipaddr->s6_addr[1], 2);
+ 	/* group ID */
+-	memcpy(&data[1], &ipaddr->s6_addr[11], 4);
++	memcpy(&data[2], &ipaddr->s6_addr[12], 4);
+ 	lowpan_push_hc_data(hc_ptr, data, 6);
+ 
+ 	return LOWPAN_IPHC_DAM_00;
 
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index de9f68a9c0cf..02de64881b76 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -4365,6 +4365,7 @@ static int tcp_ack(struct sock *sk, const struct 
-sk_buff *skb, int flag)
-  	tp->rcv_tstamp = tcp_jiffies32;
-  	if (!prior_packets)
-  		goto no_queue;
-+	icsk->icsk_probes_tstamp = 0;
 
-  	/* See if we can take anything off of the retransmit queue. */
-  	flag |= tcp_clean_rtx_queue(sk, skb, prior_fack, prior_snd_una,
--- 
-2.47.3
+--
+2.43.0
+
