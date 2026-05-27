@@ -1,86 +1,94 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF9BB2E7F25;
-	Wed, 27 May 2026 13:24:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6D62332EAE;
+	Wed, 27 May 2026 13:29:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779888295; cv=none; b=IyjykZrcz4VEcjoVP+hvfPE1XSS2hRT+fFX7d58zKnpMYj94gGA4TyIMtFWvc/95bRQ8nJxiY4BLx07V9TEiKzx3iFaNfcVwxzgX4+6ZBUtwOtCKojmyox7V2ujUovn0p5X2si4u0uBXkS6Skc09/7fx2iRFLXJTICTM5kiQqlw=
+	t=1779888575; cv=none; b=m04lPGR16K0h5PWjac3+LHJwYVljo3GYUah7ae/NhrEPUIMpFsZApPWbMlHON5Rp25mNitMe45FzsBE0TSEeZPuSgfCuC4gO1K3wo0tcb2ALj768sdA4kmQPWeJNDGqTJ5pzHhXFMRK+iuC7J9bUgNKEXixEOkm98yRy3vJ0J6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779888295; c=relaxed/simple;
-	bh=0HGClSyXBXxyXG26RzRZS7w3G2ipIvuqzIRh1ydQ3W4=;
+	s=arc-20240116; t=1779888575; c=relaxed/simple;
+	bh=8cxSrdtf5QsGYAuRco1x3mmJyLM2//dGg+JYRXd/jWA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IB2uMv2gsvjtkn1aivfrYhvRBQZ0+LTHHpYNSKF26vPiyBGaWlEvpEuUx9caWiKuJaXNC0aGhwoNuiReHlhoX+ya5sjBdQIV+6ncpKF8MeWIrdmaMZkkNGBMqQhErj42UCG3PDY90FFcWrzKgORo53+xn06G3T9sB7mKid4X9pw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FumuuEQW; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=cKe91PkbTjsOA96ttiKegDaFgoufultxEg7eExnY9fmKRC26xYLKYZzYHysgOc2y/nBMlkXLupJhWw/RrJhslJ1963DbcTVLSE3gfBJkalq5cDOhVl7+jGJowT9pwp1+BSK9GWqxZBM/VCiiFUz/wFQoetVF3Qd/xyq0egVJjMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=bMc5+Xnj; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FumuuEQW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 412E91F000E9;
-	Wed, 27 May 2026 13:24:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779888294;
-	bh=0HGClSyXBXxyXG26RzRZS7w3G2ipIvuqzIRh1ydQ3W4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=FumuuEQWtmuF/BJmD55PoeOE/v92cl36iWgBylm0ngcfZoD5L83yq4/kULhaU0p23
-	 u0pQrFsLbF/Qo3blkzBhKeYDfpqLO+j+HnohfXhchKZmk9G2+7zwY07glrG74TllxR
-	 K7+W8KtC6tlm0ZfvXD0s7pFosIfdud18beEfJ1uwj2z4jQrmAYTO84FJxrv2gJMCHC
-	 8eDlQAR8n6LhGolaf4aM8yVD8GXt41OKRHN6XWZyO2EBsJL6cie5HtUKWGhf8YAILm
-	 FvtynKWoSEsAAsI5/00B67ltc/IgmGDRbHFDp47JG/xQZpZ5StB50qGuQ2oNbn/tyN
-	 8EBowBhM5Traw==
-Date: Wed, 27 May 2026 14:24:49 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Cc: Kumar Kartikeya Dwivedi <memxor@gmail.com>, Tejun Heo <tj@kernel.org>,
-	Emil Tsalapatis <emil@etsalapatis.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>, bpf <bpf@vger.kernel.org>,
-	Networking <netdev@vger.kernel.org>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Linux Next Mailing List <linux-next@vger.kernel.org>
-Subject: Re: linux-next: build failure after merge of the bpf-next tree
-Message-ID: <23a429b4-bdf1-4f96-b3af-7ab3186e99d3@sirena.org.uk>
-References: <ahWOVFZZScPjm2Ow@sirena.org.uk>
- <CAADnVQ+yjm0SJ0UQMeuS82MLDeo1bvZKSMMDh-K8D9-PNu=p8w@mail.gmail.com>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="bMc5+Xnj"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=VIRZVnUypkX6C/0qJxFEVh0qeAAj+EZsc1OpTr5K4v4=; b=bMc5+XnjBn2mER+bnqgtYbFpqi
+	ER7i7NILhvGLC4nKXbB5btfc2ptF+kXnuAIb+Ea113qiyVb6wcLOJXj1r1RLRVCALVFcrGYQCCbXd
+	wI6EDMari4uLuCm0AjXZjzTj1luWRziMIuBUsMS0A/jPT3xUpySfzNHwdWOr/Lr5tlSc=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wSEK5-004kgf-8v; Wed, 27 May 2026 15:29:25 +0200
+Date: Wed, 27 May 2026 15:29:25 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Thangaraj.S@microchip.com
+Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	Bryan.Whitehead@microchip.com, UNGLinuxDriver@microchip.com,
+	linux@armlinux.org.uk, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 3/5] net: lan743x: Add support to software-nodes for
+ SFP
+Message-ID: <10ada54c-43eb-4129-abc9-aa5b1b94bfb5@lunn.ch>
+References: <20260514105028.42942-1-thangaraj.s@microchip.com>
+ <20260514105028.42942-4-thangaraj.s@microchip.com>
+ <40f567f0-e6eb-434f-9d54-7f226f0f70fb@lunn.ch>
+ <DSWPR11MB97150CCAF4008FFA5193F5FDEC082@DSWPR11MB9715.namprd11.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="yBgt/TPiuRRzj/+6"
-Content-Disposition: inline
-In-Reply-To: <CAADnVQ+yjm0SJ0UQMeuS82MLDeo1bvZKSMMDh-K8D9-PNu=p8w@mail.gmail.com>
-X-Cookie: No alcohol, dogs or horses.
-
-
---yBgt/TPiuRRzj/+6
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <DSWPR11MB97150CCAF4008FFA5193F5FDEC082@DSWPR11MB9715.namprd11.prod.outlook.com>
 
-On Tue, May 26, 2026 at 03:08:06PM -0700, Alexei Starovoitov wrote:
+> > 
+> > > +#define PCI11X1X_TX_FAULT_GPIO               46
+> > > +#define PCI11X1X_TX_DIS_GPIO         47
+> > > +#define PCI11X1X_RATE_SEL0_GPIO              48
+> > > +#define PCI11X1X_LOS_GPIO            49
+> > > +#define PCI11X1X_MOD_DEF0_GPIO               51
+> > 
+> > How do you know these values?
+> > 
+> > Can i buy this device, design my own board, and decide to use a different
+> > mapping of GPIO pins to SFP cage pins? Or does the data sheet say you MUST
+> > use this mapping?
+> > 
+> > Maybe consider drivers/misc/lan966x_pci.dtso.
+> [Thangaraj Samynathan] ]  These values are from the Microchip EVB reference design,
+> not mandated   by the datasheet. A board designer is free to wire SFP signals to
+> different GPIO pins.
+> 
+> However, the PCI11x1x is a PCIe add-in card that can also be used in
+> standard x86 systems. A .dtso overlay has no base DT to attach to on
+> x86, and ACPI _DSD properties require the platform firmware vendor to
+> add them - which is not realistic for a PCIe add-in card in the field.
+> 
+> We propose using the EVB default GPIO values as a fallback when no
+> firmware description is present, and reading from DT/ACPI _DSD when
+> available. Does this approach seem reasonable?
 
-> thoughts on the best way to fix it ?
-> Pls send it to bpf-next. I think it's fine for it to be in one tree only.
+lan966x_pci.dtso can be used with a PCIe add in card. What is
+important is that the PCI vendor/product ID represents the specific
+board, so that the correct dtso file is loaded, which then has the
+correct GPIO mappings.
 
-That's fine from a -next point of view since bpf gets merged first,
-you'll also need to ensure that the sched_ext stuff doesn't get sent to
-Linus until the bpf changes have landed or flag the dependency up to
-him.
+The EVB documentation needs to be clear that the microchip
+vendor/product should only be used when the board is 100% compatible
+to the EVB, otherwise bad things will happen. Each OEM should use
+their own values.
 
---yBgt/TPiuRRzj/+6
-Content-Type: application/pgp-signature; name="signature.asc"
+Or you need to stuff the complete configuration, including the GPIOs,
+into the EEPROM/strapping pins.
 
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmoW8KAACgkQJNaLcl1U
-h9Ax+Af9FshkywdeD8aHR6Ecrc7ZYwpMdLWtt7h+Pz6LHttcHF+i8KOxs0akomXc
-meW86c2er19FNqtrRzSe0+OlQc2fmjWlWN0Ybh1TSvt6n/99pf4JtdT96bp6/zri
-ckZHaTx4R/WSENn+uS5TRrxfWvBFhOrDmtc9QjQtMwRPdgS4Jj6xyBAjekn7k5G3
-RZWFpbz/dP6Ka2Zsq4ZLdMmHlbhm3lY9UcYRWuVHqk+2D+VGZf/WBqEQxWkzlAdj
-MH1Z9KJaQJAga+bVoTA1i34S9FuySv9HjKj7cdGYrT9wqgpqZWUqCQJ5UKAAJ+bd
-5Ot3/uZVMG116Joev//DMYUMLCbSig==
-=gKeV
------END PGP SIGNATURE-----
-
---yBgt/TPiuRRzj/+6--
+      Andrew
