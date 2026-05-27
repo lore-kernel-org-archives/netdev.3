@@ -1,88 +1,109 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F191B236453;
-	Wed, 27 May 2026 16:24:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1365742E004
+	for <netdev@vger.kernel.org>; Wed, 27 May 2026 16:25:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779899060; cv=none; b=rL2aT6R4nTKWi6E7DodbUdtdzeCAAQGcrpMAe/pL0/CNFNw8ddCGaevGHLKLfN+mD3qmdDxOFlKFM8Jnu1VFyEdK14l8Q9l5Vnff0kodYalLjAqDUbZHSsN/6bBHgUNS3xdGFns82kSMeup1oJZkcXmdIvXenUu3I+/WQkyhoWE=
+	t=1779899128; cv=none; b=QN4BMJTWRFKQh1Fhe1xZ+2Vk9rMLanQ5ymmEkXCDxDGmgVuiNk3hrLDWeeLW403OIglQfSuvjRzNF78bXoFDTS+h9D7Og+uoqefjLbyc37kxeOGHcGo6HKaczu804IP1t88kdRnh1lITDuT6y++6dtRUM9SMRCLI3FvLwishAu8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779899060; c=relaxed/simple;
-	bh=TFrgGO/XiuqqZZfDayEw9SkerkHu4wjjlqv+8Q2Tfzw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fNLeGJRdUpBejVfkZmuStP5TuvZCyqpm9Vuk8jy3w64kQpkWFzrGemR7/2j/YEr5brcbgS1BXFEV/dwidaiqy8GzF5FlxSDy3eFEabnw5lhBQc0vOXYySAnuJYp1JHSX84Z7gZPEBIr3kkpM4i+VcILfLeJnzPCIhG3ZLdB365k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=2ke7Gt4i; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1779899128; c=relaxed/simple;
+	bh=pZBbTa3SLjG0RmolAmgUx8HqAFjCV1vGNtpC0muEp5I=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cJaY4tmB2NDjvK8jqPzmi3S72Q7HZgkTNtrAYtM5PXg2Pq0l979AzBxjIoiDQWd+ZcD7oqbE92ztzYQXy0VMtB97/0zAPKJR8t/gD05K2d3T9Ajy31YpHFBYkSvBqx6q/ZxiXPcbCEnoXSRZ0HSmb+bPqAfHVf+7PDXE18DXD3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XPF68SFE; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="2ke7Gt4i"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=UhnV0yrEXFfGpI62KLDZ9bmC/Fur2JQYbbwMnScnudk=; b=2ke7Gt4iErhpJaP9YSMiaJbEyk
-	GSU05eOGoc7qU/1bkRT8rGjaZv5VhSH2hxpt9076iWrsvVenj33cO4WmfX92/VDug9VK9UZlfaHkF
-	J6UmhdvzSyX+GTmd4UkmlDP8I3F2vsHnEOAIJhc62S4WJZG3WGkgZ/TaJnTjE/zAYET8=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wSH30-004mAM-5O; Wed, 27 May 2026 18:23:58 +0200
-Date: Wed, 27 May 2026 18:23:58 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Stefan Wahren <wahrenst@gmx.net>
-Cc: Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] net: phy: dp83822: Add optional external PHY clock
-Message-ID: <48b4b96b-c815-40d0-98ae-0c5fbdde0c9e@lunn.ch>
-References: <20260527153903.216104-1-wahrenst@gmx.net>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XPF68SFE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83D161F000E9;
+	Wed, 27 May 2026 16:25:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779899126;
+	bh=Pq1x5aRy7pcQn6lTgjFJ+mk8MAMG2Y7ozjH6zMVwpS4=;
+	h=From:To:Cc:Subject:Date;
+	b=XPF68SFEEhJgZIpZTfVc3vCp7CliFHmmUByeZ1Cl/vhlW6L3qDq60en9u5PiklhR0
+	 WYYnNPDXz6926oTExCyTA1/ehLFteyz2C+6FrpUMBgc5iIkUB5x37g+O7DcwgX/zE4
+	 1zZCh5w4AcS1lg76/w6TscOY82VKq+DXJ3rR665QmrX0h3Y8fXsPF8/IdSBYJp3/Jx
+	 8IVcFhWeiVavyGwnTRKQro9nO/PPRZVqxVpevY39wZl7jBCfuIbdFPr9FLHoAkVOG0
+	 kv51gr/klaUp5y2V9ABtY0FMw8DE6q3Ad9SmlS4zfUQevC693jSUwoeQQuezqbx/+F
+	 YJMHTyotSrrSw==
+From: Jakub Kicinski <kuba@kernel.org>
+To: davem@davemloft.net
+Cc: netdev@vger.kernel.org,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	andrew+netdev@lunn.ch,
+	horms@kernel.org,
+	Jakub Kicinski <kuba@kernel.org>,
+	andrew@lunn.ch,
+	maxime.chevallier@bootlin.com
+Subject: [PATCH net-next] net: ethtool: don't take rtnl_lock for global string dump
+Date: Wed, 27 May 2026 09:25:22 -0700
+Message-ID: <20260527162522.3344231-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260527153903.216104-1-wahrenst@gmx.net>
+Content-Transfer-Encoding: 8bit
 
-> @@ -203,6 +204,7 @@ struct dp83822_private {
->  	u8 cfg_dac_minus;
->  	u8 cfg_dac_plus;
->  	struct ethtool_wolinfo wol;
-> +	struct clk *clk;
->  	bool set_gpio2_clk_out;
->  	u32 gpio2_clk_out;
->  	bool led_pin_enable[DP83822_MAX_LED_PINS];
-> @@ -984,13 +986,19 @@ static int dp83822_attach_mdi_port(struct phy_device *phydev,
->  
->  static int dp8382x_probe(struct phy_device *phydev)
->  {
-> +	struct device *dev = &phydev->mdio.dev;
->  	struct dp83822_private *dp83822;
->  
-> -	dp83822 = devm_kzalloc(&phydev->mdio.dev, sizeof(*dp83822),
-> +	dp83822 = devm_kzalloc(dev, sizeof(*dp83822),
->  			       GFP_KERNEL);
+ETHTOOL_MSG_STRSET_GET is the only op which sets allow_nodev_do.
+When no device is provided it dumps static tables, there's no
+need to hold rtnl_lock for this.
 
-Logically, these two changes have nothing to do with clocks. So they
-should be in a different patch.
+Not taking rtnl_lock is a minor win in itself so I think this
+patch stands on its own merits. Later on it will be useful
+to do locking only in paths which have access to a netdev,
+so that we can decide which locks to take per-netdev.
 
->  	if (!dp83822)
->  		return -ENOMEM;
->  
-> +	dp83822->clk = devm_clk_get_optional_enabled(dev, NULL);
-> +	if (IS_ERR(dp83822->clk))
-> +		return dev_err_probe(dev, PTR_ERR(dp83822->clk),
-> +				     "Failed to request ref clock\n");
-
-There is no use of dp83822->clk other than here. So there is no need
-to store it in the private structure. You can use a local variable.
-
-    Andrew
-
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 ---
-pw-bot: cr
+CC: andrew@lunn.ch
+CC: maxime.chevallier@bootlin.com
+---
+ net/ethtool/netlink.h |  4 +++-
+ net/ethtool/netlink.c | 10 ++++++----
+ 2 files changed, 9 insertions(+), 5 deletions(-)
+
+diff --git a/net/ethtool/netlink.h b/net/ethtool/netlink.h
+index aaf6f2468768..b31de00fe683 100644
+--- a/net/ethtool/netlink.h
++++ b/net/ethtool/netlink.h
+@@ -333,7 +333,9 @@ int ethnl_sock_priv_set(struct sk_buff *skb, struct net_device *dev, u32 portid,
+  * @hdr_attr:         attribute type for request header
+  * @req_info_size:    size of request info
+  * @reply_data_size:  size of reply data
+- * @allow_nodev_do:   allow non-dump request with no device identification
++ * @allow_nodev_do:
++ *	Allow non-dump request with no device identification.
++ *	Note that locks (rtnl_lock etc.) are only taken if device is set.
+  * @set_ntf_cmd:      notification to generate on changes (SET)
+  * @parse_request:
+  *	Parse request except common header (struct ethnl_req_info). Common
+diff --git a/net/ethtool/netlink.c b/net/ethtool/netlink.c
+index 5046023a30b1..a42bdd5ded51 100644
+--- a/net/ethtool/netlink.c
++++ b/net/ethtool/netlink.c
+@@ -526,13 +526,15 @@ static int ethnl_default_doit(struct sk_buff *skb, struct genl_info *info)
+ 		goto err_free;
+ 	ethnl_init_reply_data(reply_data, ops, req_info->dev);
+ 
+-	rtnl_lock();
+-	if (req_info->dev)
++	if (req_info->dev) {
++		rtnl_lock();
+ 		netdev_lock_ops(req_info->dev);
++	}
+ 	ret = ops->prepare_data(req_info, reply_data, info);
+-	if (req_info->dev)
++	if (req_info->dev) {
+ 		netdev_unlock_ops(req_info->dev);
+-	rtnl_unlock();
++		rtnl_unlock();
++	}
+ 	if (ret < 0)
+ 		goto err_dev;
+ 	ret = ops->reply_size(req_info, reply_data);
+-- 
+2.54.0
+
