@@ -1,57 +1,57 @@
 Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4745F3C81A3
-	for <netdev@vger.kernel.org>; Wed, 27 May 2026 08:42:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 501443CE4A8
+	for <netdev@vger.kernel.org>; Wed, 27 May 2026 08:42:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779871333; cv=none; b=oHrNbbfREK+uwPFclMh3Q5f5G9lgybjcYezqK2F3r+1UaUaakPDUKvvPqQItkRb+TcwT6URB3Nl728cH0PcOCvLhj6o1FB70O5Dh5/aztVfNdrs/ducqSwvBztGHpeCIujXx0Qx+FUEEEhkMYt3c31R6NkhtgoaXIeZ6MvdMB20=
+	t=1779871334; cv=none; b=U8xyeahMt9tUphCHcD7iBfXREi8R5F/LCCM+NiKwtA+reSOoeU+UlGYJEXSQL0fbrvHDFq1hdyr5dSEMPfRdTc8oR3zsSt3I7voN4v1VkhlT/mViXUiCu1v13qQCFUulKw4V2D1CVNfhR5uXr9ulH1ktTgOPKey1LXyorbncrLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779871333; c=relaxed/simple;
-	bh=9dhDMfEROxTjZNrBlGNCsh+iKL0HiWJECPUSQMm8kf8=;
+	s=arc-20240116; t=1779871334; c=relaxed/simple;
+	bh=Tn9Vh6lk4TPwk2plIigFtlOBhE/inXrsEOxnBBemws0=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bW/eAJ3n+c7ZIcBPoHQRkZphAWKpMI76VT4HLaBI0DaAISzIVxx8IA9spNY+ukMkc7VoUDtLoleUSfudRzDGNBz1Ub8sF2T1w3LiPGBROOCuXmCsx51CltcaJJ34RuDUFRsNFVaWMy9euRm6efWQvJ+xbBeD4wRCEupM5BFiiBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=h/SkTlcn; arc=none smtp.client-ip=62.96.220.36
+	 MIME-Version:Content-Type; b=Xmgb0o3CPJU1xkfNlLHH2XsjcgD0iSzNcICfz8oi14mqZ98AhRoXGgJh2n3xONv7iqCq5dqbSNblqB4pa8ToS78XURBo6n0uELEojAicLSVcXvdOa+rc6rcswWMElAM2dqQXbRQFNTv5yMTDxeknbC5Gu9nqwuw13Xsw3t9wtPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=kX1hJaLY; arc=none smtp.client-ip=62.96.220.36
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="h/SkTlcn"
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="kX1hJaLY"
 Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id 18815205F0;
-	Wed, 27 May 2026 10:42:04 +0200 (CEST)
+	by mx1.secunet.com (Postfix) with ESMTP id 80BA020743;
+	Wed, 27 May 2026 10:42:05 +0200 (CEST)
 X-Virus-Scanned: by secunet
 Received: from mx1.secunet.com ([127.0.0.1])
  by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id Nqx05LiqWKCK; Wed, 27 May 2026 10:42:03 +0200 (CEST)
+ with ESMTP id V8FspgDEtfJq; Wed, 27 May 2026 10:42:04 +0200 (CEST)
 Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id 53E6E20520;
-	Wed, 27 May 2026 10:42:03 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 53E6E20520
+	by mx1.secunet.com (Postfix) with ESMTPS id 9D3C020520;
+	Wed, 27 May 2026 10:42:04 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 9D3C020520
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1779871323;
-	bh=RY+ndBRW5bRN4I0j9i4rqRaM+kzkpQoVjhrjBLX+osE=;
+	s=202301; t=1779871324;
+	bh=KB0th1dYDKJrFsi5EBh10y198H1Hzqb/INYAyGXviaQ=;
 	h=From:To:CC:Subject:Date:In-Reply-To:References:From;
-	b=h/SkTlcneBOdJ6pykKLTzEi30NB4HvDcTS1yQ9qMaV0oQf8KMU5jb1voBudCTaSIL
-	 Eu0sTp25VHvbJCdJfMg8/axeuHf6SNMCoGlagwBJb1Qu1VMErdUMHnHZtX6klrfUKo
-	 BqWLGNUrFnzjl/+qss9Rj1QmpWbF+Sr3pCOMe31G86kn0DJrou1aVg3PfO0VrMaYZU
-	 Cko6JFdbQRb2W3c03WpA2uzwCuwhQLihE+5kOYfiScd4+g+RUG7m4ud9lsKckF3/F3
-	 Mza5A2Dh+XTcKmn0UQ4ah7SnzTRqmIqKFnMaMOLcJ9ww5UuQlzgEdDcGKIOxPLB0wG
-	 TQ/SWFGOj5iUw==
+	b=kX1hJaLY+Wl0FCZCI6mdBT9TJymyGiK2X/LEreCzWURTw7ahsjPuKvAMj05yTekh8
+	 JXrfMdqw9fP2SA9sda2L7KDXg/2zNg0X+60muNGcXH9kfybUZ+fnpqokn7U0CrCAdA
+	 nO50nZ2MObn86zEkjh7hKU5OE7bhdFd9JiebpAh9y8gEMQjCi1jzaQFB1IAnvDJG22
+	 yoqs1IIIUnOSWNsMBHtfmuVILraEq4tlsogSbfu3nGeePqvzgeeejj8yM8oZbo40NK
+	 7fpOhvarEzN+3JwZ+eCp4iOx9vwKn8+eGFlRzunttMo1b5cy/FkycaOpjzPP47vIYG
+	 mQkKgrwbuvRew==
 Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Wed, 27 May
- 2026 10:42:02 +0200
-Received: (nullmailer pid 3494009 invoked by uid 1000);
+ 2026 10:42:04 +0200
+Received: (nullmailer pid 3494000 invoked by uid 1000);
 	Wed, 27 May 2026 08:42:01 -0000
 From: Steffen Klassert <steffen.klassert@secunet.com>
 To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
 CC: Herbert Xu <herbert@gondor.apana.org.au>, Steffen Klassert
 	<steffen.klassert@secunet.com>, <netdev@vger.kernel.org>
-Subject: [PATCH 8/9] xfrm: move policy_bydst RCU sync from per-netns .exit to .pre_exit
-Date: Wed, 27 May 2026 10:41:26 +0200
-Message-ID: <20260527084148.3489759-9-steffen.klassert@secunet.com>
+Subject: [PATCH 5/9] esp: fix page frag reference leak on skb_to_sgvec failure
+Date: Wed, 27 May 2026 10:41:23 +0200
+Message-ID: <20260527084148.3489759-6-steffen.klassert@secunet.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260527084148.3489759-1-steffen.klassert@secunet.com>
 References: <20260527084148.3489759-1-steffen.klassert@secunet.com>
@@ -66,88 +66,147 @@ Content-Type: text/plain
 X-ClientProxiedBy: EXCH-03.secunet.de (10.32.0.183) To EXCH-01.secunet.de
  (10.32.0.171)
 
-From: Usama Arif <usama.arif@linux.dev>
+From: e521588 <alessandro.schino@sbb.ch>
 
-The struct pernet_operations docstring in include/net/net_namespace.h
-explicitly warns against blocking RCU primitives in .exit handlers:
+In esp_output_tail(), when esp->inplace is false, the old skb page frags
+are replaced with a new page from the xfrm page_frag cache. The source
+scatterlist (sg) is built from the old frags before the replacement, and
+esp_ssg_unref() is responsible for releasing the old page references
+after the crypto operation completes.
 
-    Exit methods using blocking RCU primitives, such as
-    synchronize_rcu(), should be implemented via exit_batch.
-    [...]
-    Please, avoid synchronize_rcu() at all, where it's possible.
+However, if the second skb_to_sgvec() call (which builds the destination
+scatterlist from the new page) fails, the code jumps to error_free which
+only calls kfree(tmp). The old page frag references captured in the
+source scatterlist are never released:
 
-    Note that a combination of pre_exit() and exit() can
-    be used, since a synchronize_rcu() is guaranteed between
-    the calls.
+  1. sg[] is built from old frags via skb_to_sgvec() (no extra get_page)
+  2. nr_frags is set to 1 and frag[0] is replaced with the new page
+  3. Second skb_to_sgvec() fails -> goto error_free
+  4. kfree(tmp) frees the sg[] memory but old frags are not unref'd
+  5. kfree_skb() only releases frag[0] (the new page), not the old ones
 
-xfrm_policy_fini() violates this: it calls synchronize_rcu() before
-freeing the policy_bydst hash tables (so no RCU reader is mid-
-traversal at free time), but runs from xfrm_net_ops.exit -- once per
-namespace -- so a cleanup_net() of N namespaces pays N full RCU
-grace periods serially.
+Fix this by adding a bool parameter to esp_ssg_unref() that, when true,
+unconditionally unrefs the source scatterlist frags without checking
+req->src and req->dst, since those fields are not yet initialized by
+aead_request_set_crypt() at the point of the error. Existing callers
+pass false to preserve the original behavior.
 
-Use the documented pre_exit/exit split. Move the policy flush (and
-the workqueue drains it depends on) into a new .pre_exit handler;
-xfrm_policy_fini() then runs in .exit and frees the hash tables
-after the synchronize_rcu_expedited() that cleanup_net() guarantees
-between the two phases. Providing O(1) RCU grace periods per batch
-instead of O(N).
+The same issue exists in both esp4 and esp6 as the code is identical.
 
-Observed on Linux 6.18 with a workload doing unshare(CLONE_NEWNET)
-at ~13/sec sustained: cleanup_net() and the netns_wq rescuer kthread
-both stuck in xfrm_policy_fini()'s synchronize_rcu(), >300k struct
-net accumulated in the cleanup queue, Percpu in /proc/meminfo climbed
-to 130+ GB on 256-CPU hosts, and memcg OOMs followed. setup_net and
-__put_net counts were balanced, ruling out a refcount leak.
+Fixes: cac2661c53f3 ("esp4: Avoid skb_cow_data whenever possible")
+Fixes: 03e2a30f6a27 ("esp6: Avoid skb_cow_data whenever possible")
 
-Fixes: 069daad4f2ae ("xfrm: Wait for RCU readers during policy netns exit")
-Signed-off-by: Usama Arif <usama.arif@linux.dev>
+Signed-off-by: Alessandro Schino <7991aleschino@gmail.com>
 Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 ---
- net/xfrm/xfrm_policy.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ net/ipv4/esp4.c | 12 +++++++-----
+ net/ipv6/esp6.c | 12 +++++++-----
+ 2 files changed, 14 insertions(+), 10 deletions(-)
 
-diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
-index 59968dcbafe1..dd09d2063da2 100644
---- a/net/xfrm/xfrm_policy.c
-+++ b/net/xfrm/xfrm_policy.c
-@@ -4276,21 +4276,21 @@ static int __net_init xfrm_policy_init(struct net *net)
- 	return -ENOMEM;
+diff --git a/net/ipv4/esp4.c b/net/ipv4/esp4.c
+index 6a5febbdbee4..8314d7bddcb7 100644
+--- a/net/ipv4/esp4.c
++++ b/net/ipv4/esp4.c
+@@ -96,7 +96,7 @@ static inline struct scatterlist *esp_req_sg(struct crypto_aead *aead,
+ 			     __alignof__(struct scatterlist));
  }
  
--static void xfrm_policy_fini(struct net *net)
-+static void __net_exit xfrm_net_pre_exit(struct net *net)
+-static void esp_ssg_unref(struct xfrm_state *x, void *tmp, struct sk_buff *skb)
++static void esp_ssg_unref(struct xfrm_state *x, void *tmp, struct sk_buff *skb, bool already_unref)
  {
--	struct xfrm_pol_inexact_bin *b, *t;
--	unsigned int sz;
--	int dir;
--
- 	disable_work_sync(&net->xfrm.policy_hthresh.work);
--
- 	flush_work(&net->xfrm.policy_hash_work);
- #ifdef CONFIG_XFRM_SUB_POLICY
- 	xfrm_policy_flush(net, XFRM_POLICY_TYPE_SUB, false);
- #endif
- 	xfrm_policy_flush(net, XFRM_POLICY_TYPE_MAIN, false);
-+}
+ 	struct crypto_aead *aead = x->data;
+ 	int extralen = 0;
+@@ -113,7 +113,7 @@ static void esp_ssg_unref(struct xfrm_state *x, void *tmp, struct sk_buff *skb)
+ 	/* Unref skb_frag_pages in the src scatterlist if necessary.
+ 	 * Skip the first sg which comes from skb->data.
+ 	 */
+-	if (req->src != req->dst)
++	if (already_unref || req->src != req->dst)
+ 		for (sg = sg_next(req->src); sg; sg = sg_next(sg))
+ 			skb_page_unref(page_to_netmem(sg_page(sg)),
+ 				       skb->pp_recycle);
+@@ -220,7 +220,7 @@ static void esp_output_done(void *data, int err)
+ 	}
  
--	synchronize_rcu();
-+static void xfrm_policy_fini(struct net *net)
-+{
-+	struct xfrm_pol_inexact_bin *b, *t;
-+	unsigned int sz;
-+	int dir;
+ 	tmp = ESP_SKB_CB(skb)->tmp;
+-	esp_ssg_unref(x, tmp, skb);
++	esp_ssg_unref(x, tmp, skb, false);
+ 	kfree(tmp);
  
- 	WARN_ON(!list_empty(&net->xfrm.policy_all));
+ 	if (xo && (xo->flags & XFRM_DEV_RESUME)) {
+@@ -569,8 +569,10 @@ int esp_output_tail(struct xfrm_state *x, struct sk_buff *skb, struct esp_info *
+ 		err = skb_to_sgvec(skb, dsg,
+ 			           (unsigned char *)esph - skb->data,
+ 			           assoclen + ivlen + esp->clen + alen);
+-		if (unlikely(err < 0))
++		if (unlikely(err < 0)) {
++			esp_ssg_unref(x, tmp, skb, true);
+ 			goto error_free;
++		}
+ 	}
  
-@@ -4368,6 +4368,7 @@ static void __net_exit xfrm_net_exit(struct net *net)
+ 	if ((x->props.flags & XFRM_STATE_ESN))
+@@ -602,7 +604,7 @@ int esp_output_tail(struct xfrm_state *x, struct sk_buff *skb, struct esp_info *
+ 	}
  
- static struct pernet_operations __net_initdata xfrm_net_ops = {
- 	.init = xfrm_net_init,
-+	.pre_exit = xfrm_net_pre_exit,
- 	.exit = xfrm_net_exit,
- };
+ 	if (sg != dsg)
+-		esp_ssg_unref(x, tmp, skb);
++		esp_ssg_unref(x, tmp, skb, false);
  
+ 	if (!err && x->encap && x->encap->encap_type == TCP_ENCAP_ESPINTCP)
+ 		err = esp_output_tail_tcp(x, skb);
+diff --git a/net/ipv6/esp6.c b/net/ipv6/esp6.c
+index 9c06c5a1419d..9d0c4957ac62 100644
+--- a/net/ipv6/esp6.c
++++ b/net/ipv6/esp6.c
+@@ -113,7 +113,7 @@ static inline struct scatterlist *esp_req_sg(struct crypto_aead *aead,
+ 			     __alignof__(struct scatterlist));
+ }
+ 
+-static void esp_ssg_unref(struct xfrm_state *x, void *tmp, struct sk_buff *skb)
++static void esp_ssg_unref(struct xfrm_state *x, void *tmp, struct sk_buff *skb, bool already_unref)
+ {
+ 	struct crypto_aead *aead = x->data;
+ 	int extralen = 0;
+@@ -130,7 +130,7 @@ static void esp_ssg_unref(struct xfrm_state *x, void *tmp, struct sk_buff *skb)
+ 	/* Unref skb_frag_pages in the src scatterlist if necessary.
+ 	 * Skip the first sg which comes from skb->data.
+ 	 */
+-	if (req->src != req->dst)
++	if (already_unref || req->src != req->dst)
+ 		for (sg = sg_next(req->src); sg; sg = sg_next(sg))
+ 			skb_page_unref(page_to_netmem(sg_page(sg)),
+ 				       skb->pp_recycle);
+@@ -254,7 +254,7 @@ static void esp_output_done(void *data, int err)
+ 	}
+ 
+ 	tmp = ESP_SKB_CB(skb)->tmp;
+-	esp_ssg_unref(x, tmp, skb);
++	esp_ssg_unref(x, tmp, skb, false);
+ 	kfree(tmp);
+ 
+ 	esp_output_encap_csum(skb);
+@@ -600,8 +600,10 @@ int esp6_output_tail(struct xfrm_state *x, struct sk_buff *skb, struct esp_info
+ 		err = skb_to_sgvec(skb, dsg,
+ 			           (unsigned char *)esph - skb->data,
+ 			           assoclen + ivlen + esp->clen + alen);
+-		if (unlikely(err < 0))
++		if (unlikely(err < 0)) {
++			esp_ssg_unref(x, tmp, skb, true);
+ 			goto error_free;
++		}
+ 	}
+ 
+ 	if ((x->props.flags & XFRM_STATE_ESN))
+@@ -634,7 +636,7 @@ int esp6_output_tail(struct xfrm_state *x, struct sk_buff *skb, struct esp_info
+ 	}
+ 
+ 	if (sg != dsg)
+-		esp_ssg_unref(x, tmp, skb);
++		esp_ssg_unref(x, tmp, skb, false);
+ 
+ 	if (!err && x->encap && x->encap->encap_type == TCP_ENCAP_ESPINTCP)
+ 		err = esp_output_tail_tcp(x, skb);
 -- 
 2.43.0
 
