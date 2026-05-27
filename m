@@ -1,57 +1,57 @@
 Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A62C03E0C45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A621D3E0C40
 	for <netdev@vger.kernel.org>; Wed, 27 May 2026 08:42:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779871338; cv=none; b=hhiBcYNnmd73QcZcva2PKmcm8tiSI4HdDxvYOxHtlBRZYWK5wWnQHbuWvA3sTFZL1eg/OJJstPhW1cbmitw434CT9WehHPHr4TkV7HdrVXgl0a93PFCR0XONpW32+PqdMfl4Y7Oms/bGS7qk5s1iiUjb0RKvlCr9tYeP/GDYnBY=
+	t=1779871340; cv=none; b=VYWGrcFf4qew572D69rVbOQ518/c5hPrQuWeXFqb6Nt8LLSAHducIsa6kKm+y6A8PKY39DgkBFV1JQ9+1ESySdYiNxLOVS+y3q+9J1+suWnwLBn7cz0zfHaBIwxWU+yd0t9ny6gB7rAvClO+ukzLjrNT//sS5R05eH9mB+tj2Io=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779871338; c=relaxed/simple;
-	bh=1BH9ex9syB2HdC+b4bdVGobcKsiHCXlnvvtpXdswW/E=;
+	s=arc-20240116; t=1779871340; c=relaxed/simple;
+	bh=/izszOpthDhootIGGTkKGh55bXtyqI+1GS/KFD76RvE=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gefSVJsj70GJAFl9/6cepRpiwONqVE7SBnw+20idH2HcJYwKTDjPZLJKfWmHtRCY+pVsCTkJBGNCz40xRVjc428da9ou1RKGWNL8ta39z5QhIXJPP0Jk8Kbx5OG4VWeGYbAkBRVG5yzle9yFaOzewzAQqpfvJwwlNVnl3arnnnw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=OvDiuJYL; arc=none smtp.client-ip=62.96.220.36
+	 MIME-Version:Content-Type; b=CV2AXCczIpN+3lwrZ8Gj9b59TcLN4nwMlzw+SIByuxSdHOMFLOYlBwrUKpwNyAFeh1+/JpvKLzU8i9F+x9oWVqy0qF4XV7ldgKTuKlDKIw3YRmANkL02xfEISpwItyq8r1fnlUM0p/fntmnc1Z8TA1K9INJncSTrTwHaLPPDJsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=UEJfz98T; arc=none smtp.client-ip=62.96.220.36
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="OvDiuJYL"
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="UEJfz98T"
 Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id 283A620748;
-	Wed, 27 May 2026 10:42:08 +0200 (CEST)
+	by mx1.secunet.com (Postfix) with ESMTP id 64DE320764;
+	Wed, 27 May 2026 10:42:10 +0200 (CEST)
 X-Virus-Scanned: by secunet
 Received: from mx1.secunet.com ([127.0.0.1])
  by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id CpsW8LRZRySw; Wed, 27 May 2026 10:42:07 +0200 (CEST)
+ with ESMTP id bMPuj2ByX8KL; Wed, 27 May 2026 10:42:09 +0200 (CEST)
 Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id 6FFBB2069C;
-	Wed, 27 May 2026 10:42:07 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 6FFBB2069C
+	by mx1.secunet.com (Postfix) with ESMTPS id B53CE2074F;
+	Wed, 27 May 2026 10:42:09 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com B53CE2074F
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1779871327;
-	bh=d3QjTWQjHLogrIkLjBpLCGpaIgakelfnr3OmxyNNkCU=;
+	s=202301; t=1779871329;
+	bh=Z51YuHhdd9x3+E62LaZCa9un8uZMFr+Y/Iy0U1//+Qw=;
 	h=From:To:CC:Subject:Date:In-Reply-To:References:From;
-	b=OvDiuJYLYhUe4/hyTw3iRss6LYWdqv8bEtrTLdmtkfxaQPxN91s3nVbNckFY6eNUf
-	 9REt6A8CLcmX6X6QHjVjUlQorb9mVmo7hQLN0LRex9DFjcdVpW47XLeajP1ppfWR+C
-	 nwMiEOL/0EboWbo+0C9wlRSTwnv6OKJRKJEx9WqFchIxIGkKQi1L/V4VY0zu+2p3N3
-	 1/xhonh02exnVqndUHYPveCNI6wQaAb6tMv6OV+yCLgbBj7dXHMgejdfkW769VJPhG
-	 3uW8Sv3+zOpC7nJJLWqzz4mFpOSxBgfQ3MM2N9s5EsZFrzGAh+1nV6DPqHmJTZc45W
-	 OlSoKqHJZ/VqA==
+	b=UEJfz98THX7DGI9CAlWbfAyKSD4nqavaNlb7rAFoxP1XXKO+STSGf8r+413lrWW+s
+	 FHTOjlWFwaiB35XQxpdUhw1EQMgULGexFdxOifX/2eh4InXEp5MUcxmALh47RF2yrP
+	 r7CHrxEUZg8COTRhsnEnt1fkOVkCZxr5E7nauY2hObMw7WXd/FZBWYIYcJzwJfVDnz
+	 vdyUK3ZabuB7Dsw3z44X8tW2Nr1lqTHtWM82Z4UKHJL0dGeIZnslJfW1lcMCrx+LLB
+	 TbzIAQK1m3Qu3RHWpsCZZ9j5a2y7qRQh6AvwEAWovn6bVhOyAFPS1vU+Ufu0Ve541B
+	 9juX97WHB9HIA==
 Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Wed, 27 May
- 2026 10:42:06 +0200
-Received: (nullmailer pid 3493997 invoked by uid 1000);
+ 2026 10:42:09 +0200
+Received: (nullmailer pid 3494006 invoked by uid 1000);
 	Wed, 27 May 2026 08:42:01 -0000
 From: Steffen Klassert <steffen.klassert@secunet.com>
 To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
 CC: Herbert Xu <herbert@gondor.apana.org.au>, Steffen Klassert
 	<steffen.klassert@secunet.com>, <netdev@vger.kernel.org>
-Subject: [PATCH 4/9] xfrm: ah: use skb_to_full_sk in async output callbacks
-Date: Wed, 27 May 2026 10:41:22 +0200
-Message-ID: <20260527084148.3489759-5-steffen.klassert@secunet.com>
+Subject: [PATCH 7/9] xfrm: iptfs: reset runtime state when cloning SAs
+Date: Wed, 27 May 2026 10:41:25 +0200
+Message-ID: <20260527084148.3489759-8-steffen.klassert@secunet.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260527084148.3489759-1-steffen.klassert@secunet.com>
 References: <20260527084148.3489759-1-steffen.klassert@secunet.com>
@@ -66,88 +66,91 @@ Content-Type: text/plain
 X-ClientProxiedBy: EXCH-01.secunet.de (10.32.0.171) To EXCH-01.secunet.de
  (10.32.0.171)
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Shaomin Chen <eeesssooo020@gmail.com>
 
-When AH output is offloaded to an asynchronous crypto provider
-(hardware accelerators such as AMD CCP, or a forced-async software
-shim used for testing), the digest completion fires
-ah_output_done() / ah6_output_done() on a workqueue.  The egress
-skb at that point may have been originated by a TCP listener
-sending a SYN-ACK, which sets skb->sk to a request_sock via
-skb_set_owner_edemux(); it may also have been originated by an
-inet_timewait_sock retransmit.  Neither is a full struct sock, and
-passing the raw skb->sk to xfrm_output_resume() then forwards a
-non-full socket through the rest of the xfrm output chain.
+iptfs_clone_state() clones the IPTFS mode data with kmemdup(). This
+copies runtime objects which must not be shared with the original SA,
+including the embedded sk_buff_head, hrtimers, spinlock, and in-flight
+reassembly/reorder state.
 
-xfrm_output_resume() and its downstream consumers expect a full
-sk where they dereference at all.  The natural egress path
-through ah_output_done() does not crash today because the
-consumers that read past sock_common are either gated by
-sk_fullsock() or short-circuit on flags that are clear on a fresh
-request_sock; an exhaustive walk of the 50 most plausible
-consumers under sch_fq, dev_queue_xmit, netfilter, tc-egress and
-cgroup-egress BPF found no current unguarded deref.  The bug is
-still a real type confusion that future consumer changes could
-turn into a memory-corruption primitive.
+If xfrm_state_migrate() fails after clone_state() but before the later
+init_state() call has reinitialized those fields, the cloned state can be
+destroyed by xfrm_state_gc_task() with list and timer state copied from the
+original SA. With queued packets this lets the clone splice and free skbs
+owned by the original IPTFS queue, leading to use-after-free and
+double-free reports in iptfs_destroy_state() and skb release paths.
 
-This is the same bug class fixed for ESP in commit 1620c88887b1
-("xfrm: Fix the usage of skb->sk").  Apply the analogous fix to
-AH: convert skb->sk to a full socket pointer (or NULL) via
-skb_to_full_sk() before handing it to xfrm_output_resume().
+Reinitialize the clone's runtime state before publishing it through
+x->mode_data. Because clone_state() now publishes a destroyable mode_data
+object before init_state(), take the mode callback module reference there.
+Avoid taking it again from __iptfs_init_state() for the same object.
 
-The same async AH callbacks were touched recently for an
-independent ESN-related ICV layout bug in commit ec54093e6a8f
-("xfrm: ah: account for ESN high bits in async callbacks"); the
-sk type-confusion addressed here is orthogonal.  This patch is
-part of an ongoing audit of the AH callback paths; an ah_output
-ihl-validation hardening series is also currently under review on
-netdev.
-
-Reproduced under UML + KASAN + lockdep with a forced-async
-hmac(sha1) shim that registers at priority 9999 and wraps the
-sync in-tree hmac-sha1-lib.  With the shim loaded, ah_output_done
-runs on every SYN-ACK egress through a transport-mode AH SA and
-skb->sk arrives as a request_sock (TCP_NEW_SYN_RECV); after this
-patch, xfrm_output_resume() receives the listener (the result of
-sk_to_full_sk()) and consumer derefs land on full-sock fields as
-intended.
-
-Fixes: 9ab1265d5231 ("xfrm: Use actual socket sk instead of skb socket for xfrm_output_resume")
+Fixes: 0e4fbf013fa5 ("xfrm: iptfs: add user packet (tunnel ingress) handling")
 Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-7
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Signed-off-by: Shaomin Chen <eeesssooo020@gmail.com>
 Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 ---
- net/ipv4/ah4.c | 2 +-
- net/ipv6/ah6.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ net/xfrm/xfrm_iptfs.c | 28 +++++++++++++++++++++++-----
+ 1 file changed, 23 insertions(+), 5 deletions(-)
 
-diff --git a/net/ipv4/ah4.c b/net/ipv4/ah4.c
-index 4366cbac3f06..6fd642d2278d 100644
---- a/net/ipv4/ah4.c
-+++ b/net/ipv4/ah4.c
-@@ -143,7 +143,7 @@ static void ah_output_done(void *data, int err)
+diff --git a/net/xfrm/xfrm_iptfs.c b/net/xfrm/xfrm_iptfs.c
+index 97bc979e55ba..6c6bbc040517 100644
+--- a/net/xfrm/xfrm_iptfs.c
++++ b/net/xfrm/xfrm_iptfs.c
+@@ -2650,7 +2650,8 @@ static void __iptfs_init_state(struct xfrm_state *x,
+ 	x->props.enc_hdr_len = sizeof(struct ip_iptfs_hdr);
+ 
+ 	/* Always keep a module reference when x->mode_data is set */
+-	__module_get(x->mode_cbs->owner);
++	if (x->mode_data != xtfs)
++		__module_get(x->mode_cbs->owner);
+ 
+ 	x->mode_data = xtfs;
+ 	xtfs->x = x;
+@@ -2658,22 +2659,39 @@ static void __iptfs_init_state(struct xfrm_state *x,
+ 
+ static int iptfs_clone_state(struct xfrm_state *x, struct xfrm_state *orig)
+ {
++	struct skb_wseq *w_saved = NULL;
+ 	struct xfrm_iptfs_data *xtfs;
+ 
+ 	xtfs = kmemdup(orig->mode_data, sizeof(*xtfs), GFP_KERNEL);
+ 	if (!xtfs)
+ 		return -ENOMEM;
+ 
+-	xtfs->ra_newskb = NULL;
+ 	if (xtfs->cfg.reorder_win_size) {
+-		xtfs->w_saved = kzalloc_objs(*xtfs->w_saved,
+-					     xtfs->cfg.reorder_win_size);
+-		if (!xtfs->w_saved) {
++		w_saved = kzalloc_objs(*w_saved, xtfs->cfg.reorder_win_size);
++		if (!w_saved) {
+ 			kfree_sensitive(xtfs);
+ 			return -ENOMEM;
+ 		}
  	}
++	xtfs->w_saved = w_saved;
++
++	__skb_queue_head_init(&xtfs->queue);
++	xtfs->queue_size = 0;
++	hrtimer_setup(&xtfs->iptfs_timer, iptfs_delay_timer, CLOCK_MONOTONIC,
++		      IPTFS_HRTIMER_MODE);
++
++	spin_lock_init(&xtfs->drop_lock);
++	hrtimer_setup(&xtfs->drop_timer, iptfs_drop_timer, CLOCK_MONOTONIC,
++		      IPTFS_HRTIMER_MODE);
  
- 	kfree(AH_SKB_CB(skb)->tmp);
--	xfrm_output_resume(skb->sk, skb, err);
-+	xfrm_output_resume(skb_to_full_sk(skb), skb, err);
- }
++	xtfs->w_seq_set = false;
++	xtfs->w_wantseq = 0;
++	xtfs->w_savedlen = 0;
++	xtfs->ra_newskb = NULL;
++	xtfs->ra_wantseq = 0;
++	xtfs->ra_runtlen = 0;
++
++	__module_get(x->mode_cbs->owner);
+ 	x->mode_data = xtfs;
+ 	xtfs->x = x;
  
- static int ah_output(struct xfrm_state *x, struct sk_buff *skb)
-diff --git a/net/ipv6/ah6.c b/net/ipv6/ah6.c
-index de1e68199a01..76f7a2de9108 100644
---- a/net/ipv6/ah6.c
-+++ b/net/ipv6/ah6.c
-@@ -337,7 +337,7 @@ static void ah6_output_done(void *data, int err)
- 	ah6_restore_hdrs(top_iph, iph_ext, extlen);
- 
- 	kfree(AH_SKB_CB(skb)->tmp);
--	xfrm_output_resume(skb->sk, skb, err);
-+	xfrm_output_resume(skb_to_full_sk(skb), skb, err);
- }
- 
- static int ah6_output(struct xfrm_state *x, struct sk_buff *skb)
 -- 
 2.43.0
 
