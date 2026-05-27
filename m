@@ -1,178 +1,335 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECB2F3E5599;
-	Tue, 26 May 2026 23:57:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20D6927057D
+	for <netdev@vger.kernel.org>; Wed, 27 May 2026 00:10:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779839857; cv=none; b=e+6NTM1HPxjc3Pa8hw+KDHDYHShY0OTCaPHKvOgS8dDMDL1eF6b4jfifcYQAsVf1Goii7T3WfHg9aFOCGeOoJ2lEfSC9HahY3oLeumhdZfzfLe2jhjEX3rLGT9JE4KhEjQ18Q8GUhxSgU6QhidmHTNesFuzFTL8MDrNHozq/E/s=
+	t=1779840607; cv=none; b=jPDOdeg3n82HdtEQT1eswdQTvZ2A5kapdhgKSQPB7H+E1DxJ1pn3vd/4q1cDbLZFblLepqOmnX7K6G75dT6yxA5BHT7zxsWdq1lG2EGMw+MB6iHgxNP0V7j0EYsyyWCSI1dKNuz9X79brw/MJeAJlUHLSp4un/OF+7PosMIKD0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779839857; c=relaxed/simple;
-	bh=D3niaxECBpizuYfcudfngeckH8mxFiWpVHY/Z0fACOg=;
-	h=Message-ID:Subject:From:To:Cc:Date:in-reply-to:Content-Type:
-	 MIME-Version; b=J1r8XiIc9QDj2HB4wEbhxc+yXW5Th4cnz2S0TnmAe1TNZYfkYHykyidHqGCT6UN3rrk8+HKWV+VfohYDssSlghfeEO81sud2U2wajHo4DTKlymhgNCXe3QW1doLiZVgkRRp0VWnNR/KYv//ICR8t8udCixXgrW09I+lVOmZmhgw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=N0wdwB4l; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
+	s=arc-20240116; t=1779840607; c=relaxed/simple;
+	bh=83HXOB5C+y710z7LBWDFkSqsXErHX9dcdgz6SKoYq+Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=sM59DYd4uDuFNNQrXCjKXqCOHzAM1AHIcwcc06mXrPfozjSgXdQmfmMWzpxaJCCDtnB1dIpVJZ6vRKLtFBM4knM/3hj50viVaHNBt+duE20+rwAkc9ZdSrdZYxsvFRaVopPA6/x5xeEg/ckD8TjGJjXJM3HoQfzw4URhTDbyg6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qUJQfWF4; arc=none smtp.client-ip=209.85.222.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="N0wdwB4l"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:in-reply-to:
-	Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-Transfer-Encoding:
-	Content-ID:Content-Description:References;
-	bh=D3niaxECBpizuYfcudfngeckH8mxFiWpVHY/Z0fACOg=; b=N0wdwB4luBYKaEayF7E23CubgW
-	VOwr4regeJ0XFDiQw2kSfENUK7/mEC3+U3ED59z7oQyDldHlxWmSdQu1IEt5Gjlqhv7rci5greaUm
-	naA9OLDAenYkHjHObiSzycIHCBTKlOLgWbG818fDSEeKWM9kvjTjecY0LKsLIo2HTvDuarQxj7EU/
-	k8+WDUAKYym/sgsyFJRWkFbsvqugUKkLDH9GnWxiSZEaXKhpE5WxoBJiBh2P5FGPdd83PK4xyidzG
-	2/alOtLB3hB5227p+V/LmLtEDAyYHs1xe12eGHE4Vn3bazipaickDEJa0Jqf4HbeSVnX+U3ke0+oZ
-	+zNL9iYg==;
-Received: from 54-240-197-231.amazon.com ([54.240.197.231] helo=u09cd745991455d.ant.amazon.com)
-	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wS1eF-00000001gXC-03Pp;
-	Tue, 26 May 2026 23:57:23 +0000
-Message-ID: <1fcedf9b318e378bf11f619874887cfb261a9f6b.camel@infradead.org>
-Subject: Re: [PATCH 24/24] ptp: Switch to ktime_get_snapshot_id() for
- pre/post timestamps
-From: David Woodhouse <dwmw2@infradead.org>
-To: tglx@kernel.org
-Cc: akiyano@amazon.com, anna-maria@linutronix.de,
- anthony.l.nguyen@intel.com,  dwmw2@infradead.org, frederic@kernel.org,
- giometti@enneenne.com,  jacob.e.keller@intel.com, johannes.berg@intel.com,
- jstultz@google.com,  kvmarm@lists.linux.dev, linux-kernel@vger.kernel.org, 
- linux-sound@vger.kernel.org, linux-wireless@vger.kernel.org,
- maz@kernel.org,  miriam.rachel.korenblit@intel.com, mlichvar@redhat.com,
- mst@redhat.com,  netdev@vger.kernel.org, oliver.upton@linux.dev,
- oupton@kernel.org,  peter.hilber@oss.qualcomm.com,
- richardcochran@gmail.com, saeedm@nvidia.com,  sboyd@kernel.org,
- thomas.weissschuh@linutronix.de, tiwai@suse.com,  vdonnefort@google.com,
- virtualization@lists.linux.dev
-Date: Wed, 27 May 2026 00:57:21 +0100
-in-reply-to: <20260526171224.499777655@kernel.org>
-Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-oDB1VJhacQpLNNqqwoyp"
-User-Agent: Evolution 3.52.3-0ubuntu1.1 
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qUJQfWF4"
+Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-911796e9885so987340385a.0
+        for <netdev@vger.kernel.org>; Tue, 26 May 2026 17:10:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779840602; x=1780445402; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Zp5j/n0cvOeBIVPinOKHA637ZSRit4YvVz4OGICE4DE=;
+        b=qUJQfWF4B0A1cA47kvzsEVltQIc3CmXeKlkSrazpTzug9PIfCRSFux3xxh4zKIXb7O
+         sQiiHVpwYO8cpEz+ct3+KdVW0k7ikEx0OiWqsAtg56fP+1m5oMIGkOvuOsQ+xHUipKFU
+         l6lTLM1Ah4lzDYSS8PbI6R09uH/CeFYeWIB7iOdqxuQZ1azx7jPv2+whknekA26TEiaO
+         Vo/tA6iT1XP6edI1L+6Mfbv25eB9REbbbhmh4wpIv0oP2Q8DqqvOi6Wjo1qQ4Y2kXZHu
+         n1rDWfmqrv08QfHcvhHx/kdobuxGgKum3ULG6NOEI50iXsMOwwt1FVzr3QxZMMsZOKA1
+         5EEw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779840602; x=1780445402;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Zp5j/n0cvOeBIVPinOKHA637ZSRit4YvVz4OGICE4DE=;
+        b=FcPdrgDuxvnj2X7q9GkvxH1nQn+U7b46+zW8mrg7z9sR7Aq3bKtbmBwNIMkWiJenht
+         nXAlGCIojVzeINRtWRSjqPsZWkgSEh2eh6prpK7mFcnzdBsVBF4z5Q1sXLCS5K705l6l
+         mV/s3zMtlWJYPWLhegskW3nWhwBJpzOmBTX6pOYBb+kb5lRmJ8MtGfkl/o31/EWbTZT7
+         jPJgyU6tMW8coShxJaQJfAwhQytmZM9OKrCDl8GsNWDlOM6a06R0wyPG/PzML6Y4HM17
+         YTmNEyUMLPr5F2hfWuXoqUQRcVCmq+d6CrTrEqKibqoLPP6MQxFD6A8T/q44QTkk8XlW
+         wMGw==
+X-Forwarded-Encrypted: i=1; AFNElJ91xMPjhLElmgqaXTC/ePw7Y0hTDLiNJ9GNjsweCfH98uTBY2RzWK2/quI4KUdT4tYffoLX6nU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywgj+gHiGgPcsD0ljl8FtXCmwbSxg0VSQ7rC7KmLfU/+CBO8C6f
+	gCOPgmQCIAgfY4rQBqmyMoXRSR1H13sQWMPYELuHNwKSxNlwY0iWt4Oa
+X-Gm-Gg: Acq92OENN07/VauRitMywP4YPVtPMjOThHVUbcPSzrx92gmGKkO14Pn2iTZdmk0gDkK
+	PFhSP2v5Q7qAxIHDoXjthS3XW/D1oaL4My9UeA5MK3q4djlYmY+O75TX0yNcPfUZB+ZEMRCIZZ6
+	3rPHzDiuzAJfR4eZCHZ/8HAjfvRCjIMg3RbcCjd/9nRzLXe2MDiV+8eXEpq2FP0y7ZVHw/J1AcD
+	gfmdex1juZCeDy96MpDlYAS+uzT6LngFnoZeIxPWcVhgPtcV1VF1Isa+BWxzYfb9XeuYKRJia7X
+	/13VsRFREU5+J63KSC77yBvbthjfRPVpW1h4epBo2hsfUEJI9FusbVaV/zek9O2K1AnJqkiFIOk
+	3+ItP7CyKU84YvvRP3OP++qea+7HLM22KrYVfDH5/3qZLa4UrhpH4YS7oQfSQ4hQ8QZEaoaUzUb
+	bSN+rmStqG+JfLU6hf+WZZA5+NPwZpj2fDmNSX0i5q0+RFFqtuN22/ixDyUIa4SZ/W1ko=
+X-Received: by 2002:a05:620a:3186:b0:8ed:6ac5:bac7 with SMTP id af79cd13be357-914b50457aemr2413458385a.10.1779840601568;
+        Tue, 26 May 2026 17:10:01 -0700 (PDT)
+Received: from PF5YBGDS.localdomain ([163.114.130.4])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-914f87fc449sm363803585a.35.2026.05.26.17.10.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 26 May 2026 17:10:01 -0700 (PDT)
+From: mike.marciniszyn@gmail.com
+To: Alexander Duyck <alexanderduyck@fb.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	kernel-team@meta.com,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jiawen Wu <jiawenwu@trustnetic.com>,
+	Mengyuan Lou <mengyuanlou@net-swift.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Mohsin Bashir <mohsin.bashr@gmail.com>,
+	Kees Cook <kees@kernel.org>,
+	Andrew Lunn <andrew@lunn.ch>
+Cc: mike.marciniszyn@gmail.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v3 1/4] net: pcs: xpcs: Expand mdiodev member as an array
+Date: Tue, 26 May 2026 20:09:55 -0400
+Message-ID: <20260527000958.81108-2-mike.marciniszyn@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260527000958.81108-1-mike.marciniszyn@gmail.com>
+References: <20260527000958.81108-1-mike.marciniszyn@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+Content-Transfer-Encoding: 8bit
 
+From: "Mike Marciniszyn (Meta)" <mike.marciniszyn@gmail.com>
 
---=-oDB1VJhacQpLNNqqwoyp
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+This allows for support of 50GR2 and 100GR2 by extending the
+current singleton mdiodev to an array.
 
-On Tue, 26 May 2026 19:15:27 +0200, Thomas Gleixner wrote:
-> To prepare for a new PTP IOCTL, which exposes the raw counter value along
-> with the requested system time snapshot, switch the pre/post time stamp
-> sampling over to use ktime_get_snapshot_id() and fix up all usage sites.
->
-> No functional change intended.
->
-> The ptp_vmclock conversion was simplified by David Woodhouse.
->
-> Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+DW XPCS can support 25GR1 and 50GR1 using just a single group
+channel.   To operate at 50R2 or 100R2 we need both halves
+of the channel combined into one group channel device.
 
-Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
-Tested-by: David Woodhouse <dwmw@amazon.co.uk>
+Adjust current use of singleton mdiodev to use the 0th element.
 
+Reviewed-by: Alexander Duyck <alexanderduyck@fb.com>
+Signed-off-by: Mike Marciniszyn (Meta) <mike.marciniszyn@gmail.com>
+---
+v3:
+  - new to series
+  - Added DW XPCS details to commit message
+  - change mdiodev to an array in dw_xpcs
+  - adjust singleton use case to use mdiodev[0]
 
---=-oDB1VJhacQpLNNqqwoyp
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
+ drivers/net/pcs/pcs-xpcs-wx.c |  4 ++--
+ drivers/net/pcs/pcs-xpcs.c    | 42 +++++++++++++++++------------------
+ drivers/net/pcs/pcs-xpcs.h    |  5 ++++-
+ 3 files changed, 27 insertions(+), 24 deletions(-)
 
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
-ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
-AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
-BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
-MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
-a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
-jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
-GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
-aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
-nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
-8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
-HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
-IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
-KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
-BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
-QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
-QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
-ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
-/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
-uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
-xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
-W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
-c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
-VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
-NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
-DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
-sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
-w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
-i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
-kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
-0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
-ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
-blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
-hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
-VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
-HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
-ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
-AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
-cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
-cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
-AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
-aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
-hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
-iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
-8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
-JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
-xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
-EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
-B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
-MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
-KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
-Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
-nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
-WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
-W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
-nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
-g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
-9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
-9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
-sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
-a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
-ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
-AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
-dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
-MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
-YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
-4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
-6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
-QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
-nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
-MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
-VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
-ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI2MDUyNjIzNTcy
-MVowLwYJKoZIhvcNAQkEMSIEICEuhOLblQS2lMkGIBBlfbCm3ykgTZxwu1iWCXQwugYJMGQGCSsG
-AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
-cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
-VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
-cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIA2kRr6XJt/wYa
-CGbmhE3byblKCZyx0cPBR6JpkyQ4hfgw96tYJJGwgCy6saGK3HOyBS73XNk8Ql2nvEZFhMtFyoX/
-QjMBLqsPGxbtYErpXSl/PG6ZbSFfzRzEnRa6Ev2puu4DkKRxnsalQsjLgGheuT+Kb1vqyUKtQYO/
-KZ01zHMMqo22wVOnYVuxPlKxxbcECz7ygCYlh0hwznyWGnKnkcMSAz8EQYlyD42nhOFMOPG4gVP+
-tUyB3tnlCU24oWwuqjYwqK4hfB+UxmJJ8x2QCMh/KlCi1PopfCsqRmED+lU96c+JMfk/GCeqW+PH
-3f/H0b1Nw+iYIP9BcE0LTwQGF4cS8Jpgzp7jUWpdQXU/5pMJwdGoX5zWhuN7DVJxNcU8I/Lw4qfA
-kvBJKP0K9UNDmjI54pn0YPMw87f5gKHcZXZ2pIyuRFqprDzRKj/iVUJp1JFV7W3CYvqDBNRFj/ov
-s6Nl6IDo5JZoR/Hs6SLSGcKO6u0Tc9uzGGD64hs/oVosmDwCtVioz/w3zv/Zvr34sgw5v83T4toN
-nnbSrpdrJ1325+//QqN8VR7cWdjU052374ZDGRBXBY+QNn71smCWfMdNcQ2nJBoAQegwzAYAH9qf
-EI6o8LrrfV6Jeyvm/A63RUUomN+VTHYDAm3Vk/wgR1fegKllVzhkiNbtJlt1SFwAAAAAAAA=
+diff --git a/drivers/net/pcs/pcs-xpcs-wx.c b/drivers/net/pcs/pcs-xpcs-wx.c
+index fc52f7aa5f59..38c980f974b4 100644
+--- a/drivers/net/pcs/pcs-xpcs-wx.c
++++ b/drivers/net/pcs/pcs-xpcs-wx.c
+@@ -123,7 +123,7 @@ static int txgbe_pcs_poll_power_up(struct dw_xpcs *xpcs)
+ 				10000, 1000000, false,
+ 				xpcs, DW_VR_XS_PCS_DIG_STS);
+ 	if (ret < 0)
+-		dev_err(&xpcs->mdiodev->dev, "xpcs power-up timeout\n");
++		dev_err(&xpcs->mdiodev[0]->dev, "xpcs power-up timeout\n");
+ 
+ 	return ret;
+ }
+@@ -139,7 +139,7 @@ static int txgbe_pma_init_done(struct dw_xpcs *xpcs)
+ 				100000, 10000000, false,
+ 				xpcs, DW_VR_XS_PCS_DIG_CTRL1);
+ 	if (ret < 0)
+-		dev_err(&xpcs->mdiodev->dev, "xpcs pma initialization timeout\n");
++		dev_err(&xpcs->mdiodev[0]->dev, "xpcs pma initialization timeout\n");
+ 
+ 	return ret;
+ }
+diff --git a/drivers/net/pcs/pcs-xpcs.c b/drivers/net/pcs/pcs-xpcs.c
+index e69fa2f0a0e8..3c11c9552b60 100644
+--- a/drivers/net/pcs/pcs-xpcs.c
++++ b/drivers/net/pcs/pcs-xpcs.c
+@@ -211,23 +211,23 @@ static bool __xpcs_linkmode_supported(const struct dw_xpcs_compat *compat,
+ 
+ int xpcs_read(struct dw_xpcs *xpcs, int dev, u32 reg)
+ {
+-	return mdiodev_c45_read(xpcs->mdiodev, dev, reg);
++	return mdiodev_c45_read(xpcs->mdiodev[0], dev, reg);
+ }
+ 
+ int xpcs_write(struct dw_xpcs *xpcs, int dev, u32 reg, u16 val)
+ {
+-	return mdiodev_c45_write(xpcs->mdiodev, dev, reg, val);
++	return mdiodev_c45_write(xpcs->mdiodev[0], dev, reg, val);
+ }
+ 
+ int xpcs_modify(struct dw_xpcs *xpcs, int dev, u32 reg, u16 mask, u16 set)
+ {
+-	return mdiodev_c45_modify(xpcs->mdiodev, dev, reg, mask, set);
++	return mdiodev_c45_modify(xpcs->mdiodev[0], dev, reg, mask, set);
+ }
+ 
+ static int xpcs_modify_changed(struct dw_xpcs *xpcs, int dev, u32 reg,
+ 			       u16 mask, u16 set)
+ {
+-	return mdiodev_c45_modify_changed(xpcs->mdiodev, dev, reg, mask, set);
++	return mdiodev_c45_modify_changed(xpcs->mdiodev[0], dev, reg, mask, set);
+ }
+ 
+ static int xpcs_read_vendor(struct dw_xpcs *xpcs, int dev, u32 reg)
+@@ -304,7 +304,7 @@ static int xpcs_soft_reset(struct dw_xpcs *xpcs,
+ #define xpcs_warn(__xpcs, __state, __args...) \
+ ({ \
+ 	if ((__state)->link) \
+-		dev_warn(&(__xpcs)->mdiodev->dev, ##__args); \
++		dev_warn(&(__xpcs)->mdiodev[0]->dev, ##__args); \
+ })
+ 
+ static int xpcs_read_fault_c73(struct dw_xpcs *xpcs,
+@@ -400,7 +400,7 @@ static void xpcs_link_up_usxgmii(struct dw_xpcs *xpcs, int speed)
+ 	return;
+ 
+ out:
+-	dev_err(&xpcs->mdiodev->dev, "%s: XPCS access returned %pe\n",
++	dev_err(&xpcs->mdiodev[0]->dev, "%s: XPCS access returned %pe\n",
+ 		__func__, ERR_PTR(ret));
+ }
+ 
+@@ -726,7 +726,7 @@ static void xpcs_pre_config(struct phylink_pcs *pcs, phy_interface_t interface)
+ 
+ 	ret = xpcs_switch_interface_mode(xpcs, interface);
+ 	if (ret)
+-		dev_err(&xpcs->mdiodev->dev, "switch interface failed: %pe\n",
++		dev_err(&xpcs->mdiodev[0]->dev, "switch interface failed: %pe\n",
+ 			ERR_PTR(ret));
+ 
+ 	if (!xpcs->need_reset)
+@@ -734,14 +734,14 @@ static void xpcs_pre_config(struct phylink_pcs *pcs, phy_interface_t interface)
+ 
+ 	compat = xpcs_find_compat(xpcs, interface);
+ 	if (!compat) {
+-		dev_err(&xpcs->mdiodev->dev, "unsupported interface %s\n",
++		dev_err(&xpcs->mdiodev[0]->dev, "unsupported interface %s\n",
+ 			phy_modes(interface));
+ 		return;
+ 	}
+ 
+ 	ret = xpcs_soft_reset(xpcs, compat);
+ 	if (ret)
+-		dev_err(&xpcs->mdiodev->dev, "soft reset failed: %pe\n",
++		dev_err(&xpcs->mdiodev[0]->dev, "soft reset failed: %pe\n",
+ 			ERR_PTR(ret));
+ 
+ 	xpcs->need_reset = false;
+@@ -1189,30 +1189,30 @@ static void xpcs_get_state(struct phylink_pcs *pcs, unsigned int neg_mode,
+ 
+ 	switch (compat->an_mode) {
+ 	case DW_10GBASER:
+-		phylink_mii_c45_pcs_get_state(xpcs->mdiodev, state);
++		phylink_mii_c45_pcs_get_state(xpcs->mdiodev[0], state);
+ 		break;
+ 	case DW_AN_C73:
+ 		ret = xpcs_get_state_c73(xpcs, state, compat);
+ 		if (ret)
+-			dev_err(&xpcs->mdiodev->dev, "%s returned %pe\n",
++			dev_err(&xpcs->mdiodev[0]->dev, "%s returned %pe\n",
+ 				"xpcs_get_state_c73", ERR_PTR(ret));
+ 		break;
+ 	case DW_AN_C37_SGMII:
+ 		ret = xpcs_get_state_c37_sgmii(xpcs, state);
+ 		if (ret)
+-			dev_err(&xpcs->mdiodev->dev, "%s returned %pe\n",
++			dev_err(&xpcs->mdiodev[0]->dev, "%s returned %pe\n",
+ 				"xpcs_get_state_c37_sgmii", ERR_PTR(ret));
+ 		break;
+ 	case DW_AN_C37_1000BASEX:
+ 		ret = xpcs_get_state_c37_1000basex(xpcs, neg_mode, state);
+ 		if (ret)
+-			dev_err(&xpcs->mdiodev->dev, "%s returned %pe\n",
++			dev_err(&xpcs->mdiodev[0]->dev, "%s returned %pe\n",
+ 				"xpcs_get_state_c37_1000basex", ERR_PTR(ret));
+ 		break;
+ 	case DW_2500BASEX:
+ 		ret = xpcs_get_state_2500basex(xpcs, state);
+ 		if (ret)
+-			dev_err(&xpcs->mdiodev->dev, "%s returned %pe\n",
++			dev_err(&xpcs->mdiodev[0]->dev, "%s returned %pe\n",
+ 				"xpcs_get_state_2500basex", ERR_PTR(ret));
+ 		break;
+ 	default:
+@@ -1232,14 +1232,14 @@ static void xpcs_link_up_sgmii_1000basex(struct dw_xpcs *xpcs,
+ 
+ 	if (interface == PHY_INTERFACE_MODE_1000BASEX) {
+ 		if (speed != SPEED_1000) {
+-			dev_err(&xpcs->mdiodev->dev,
++			dev_err(&xpcs->mdiodev[0]->dev,
+ 				"%s: speed %dMbps not supported\n",
+ 				__func__, speed);
+ 			return;
+ 		}
+ 
+ 		if (duplex != DUPLEX_FULL)
+-			dev_err(&xpcs->mdiodev->dev,
++			dev_err(&xpcs->mdiodev[0]->dev,
+ 				"%s: half duplex not supported\n",
+ 				__func__);
+ 	}
+@@ -1247,7 +1247,7 @@ static void xpcs_link_up_sgmii_1000basex(struct dw_xpcs *xpcs,
+ 	ret = xpcs_write(xpcs, MDIO_MMD_VEND2, MII_BMCR,
+ 			 mii_bmcr_encode_fixed(speed, duplex));
+ 	if (ret)
+-		dev_err(&xpcs->mdiodev->dev, "%s: xpcs_write returned %pe\n",
++		dev_err(&xpcs->mdiodev[0]->dev, "%s: xpcs_write returned %pe\n",
+ 			__func__, ERR_PTR(ret));
+ }
+ 
+@@ -1533,7 +1533,7 @@ static struct dw_xpcs *xpcs_create_data(struct mdio_device *mdiodev)
+ 		return ERR_PTR(-ENOMEM);
+ 
+ 	mdio_device_get(mdiodev);
+-	xpcs->mdiodev = mdiodev;
++	xpcs->mdiodev[0] = mdiodev;
+ 	xpcs->pcs.ops = &xpcs_phylink_ops;
+ 	xpcs->pcs.poll = true;
+ 
+@@ -1542,7 +1542,7 @@ static struct dw_xpcs *xpcs_create_data(struct mdio_device *mdiodev)
+ 
+ static void xpcs_free_data(struct dw_xpcs *xpcs)
+ {
+-	mdio_device_put(xpcs->mdiodev);
++	mdio_device_put(xpcs->mdiodev[0]);
+ 	kfree(xpcs);
+ }
+ 
+@@ -1552,7 +1552,7 @@ static int xpcs_init_clks(struct dw_xpcs *xpcs)
+ 		[DW_XPCS_CORE_CLK] = "core",
+ 		[DW_XPCS_PAD_CLK] = "pad",
+ 	};
+-	struct device *dev = &xpcs->mdiodev->dev;
++	struct device *dev = &xpcs->mdiodev[0]->dev;
+ 	int ret, i;
+ 
+ 	for (i = 0; i < DW_XPCS_NUM_CLKS; ++i)
+@@ -1580,7 +1580,7 @@ static int xpcs_init_id(struct dw_xpcs *xpcs)
+ {
+ 	const struct dw_xpcs_info *info;
+ 
+-	info = dev_get_platdata(&xpcs->mdiodev->dev);
++	info = dev_get_platdata(&xpcs->mdiodev[0]->dev);
+ 	if (!info) {
+ 		xpcs->info.pcs = DW_XPCS_ID_NATIVE;
+ 		xpcs->info.pma = DW_XPCS_PMA_ID_NATIVE;
+diff --git a/drivers/net/pcs/pcs-xpcs.h b/drivers/net/pcs/pcs-xpcs.h
+index 929fa238445e..5c804cfd47d3 100644
+--- a/drivers/net/pcs/pcs-xpcs.h
++++ b/drivers/net/pcs/pcs-xpcs.h
+@@ -105,10 +105,13 @@ enum dw_xpcs_clock {
+ 	DW_XPCS_NUM_CLKS,
+ };
+ 
++/* 2 channels per group DW PCS devices */
++#define DW_XPCS_MAX_CHANNELS 2
++
+ struct dw_xpcs {
+ 	struct dw_xpcs_info info;
+ 	const struct dw_xpcs_desc *desc;
+-	struct mdio_device *mdiodev;
++	struct mdio_device *mdiodev[DW_XPCS_MAX_CHANNELS];
+ 	struct clk_bulk_data clks[DW_XPCS_NUM_CLKS];
+ 	struct phylink_pcs pcs;
+ 	phy_interface_t interface;
+-- 
+2.43.0
 
-
---=-oDB1VJhacQpLNNqqwoyp--
