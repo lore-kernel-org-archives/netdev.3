@@ -1,233 +1,106 @@
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.17.24])
+Received: from smtpbgsg1.qq.com (smtpbgsg1.qq.com [54.254.200.92])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBB933D412A;
-	Wed, 27 May 2026 08:15:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.24
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10CDB13D53C
+	for <netdev@vger.kernel.org>; Wed, 27 May 2026 08:16:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.254.200.92
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779869719; cv=none; b=gEakJK5CDoCCySCVjkPg7XYV7MeAvWbpF1/yblhaiMTeUl1ZusCh7VlTmNdw9ppQs2u2fSjDfiG+9yxVLk+XgTyw9/TQL7HhGqKKB89AigrYulVzp05wT1ZLX0xKEHOU739u84ZSCarPtJXen+/D5PJL16FB0AmWkcGFWYAlZw4=
+	t=1779869774; cv=none; b=P+L1QAZ6mvAqVhVS+8fGkUBMhhly8PitG6eKaD78BU11U/XuZMCzY5cQEpgK+wuGh4+sTB4YhCQbtFIp5nroEqQxHOEIQppypJFLDv7/QyDEk40+jsiTW90DgA5qx406YM/NuBN4DFw4SxsjQkYKgtwGKpbWGLJm4X7Uye2Z3o4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779869719; c=relaxed/simple;
-	bh=awyugumM3qo46MIVZx+zXmGVa3RYVUzF2YfyxbAk7kY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AXIdEi7zU/8RxkC9zl48ww3pTf9ridGqtJjHg9AqFKD3K9e9zyVLHU9iISd327Mvpdba2IvVmyt4rTC2Oy/6L/5H8P9HLblOEzpf37SdbtbvFJle2g9V4AHw2IWYt+3hHdhLdLoexYyU5ZjS5iyEyvKgoMv+LYM6Mzpm1/4leM8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=schippers-hamm.de; spf=pass smtp.mailfrom=schippers-hamm.de; dkim=pass (2048-bit key) header.d=schippers-hamm.de header.i=simon@schippers-hamm.de header.b=P0pOriXP; arc=none smtp.client-ip=212.227.17.24
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=schippers-hamm.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=schippers-hamm.de
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=schippers-hamm.de header.i=simon@schippers-hamm.de header.b="P0pOriXP"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=schippers-hamm.de;
-	s=s1-ionos; t=1779869712; x=1780474512; i=simon@schippers-hamm.de;
-	bh=f3Lohq8QkJslkmRARTq1SuDTwuwePjcsabJjeIQHvZM=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=P0pOriXPUIl8XqZW7PJmHjFxAGPiLg5BQRXTX1/REAqj45p8HfEhk60t2smMaWfu
-	 nYWbK2tNyvhGa2sMMeIhQtDpWiQRCoH67uEq05qvOYx7rxWefETTU5G9TMo29bDso
-	 s6aaAkwChL8ZmNKkUs06JHeoxvKNXelDdsp89+4hx5UiCNDNKR+BluGtV69fLuU/X
-	 O6Pqw+B0uOuplCM3vLG7DRSEG31SYaPVyWKqgmEorb7ko5QN+nf0QSG61ywGKBFFU
-	 dNc1xd+v0Ky7LiUIZWoNRSdTuYiT9ytGzMQEjA0T+RBKn6BYTXqO21snoa5yZnjeP
-	 n7YV+tyVJyYT85WgJA==
-X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
-Received: from client.hidden.invalid by mrelayeu.kundenserver.de (mreue107
- [212.227.15.153]) with ESMTPSA (Nemesis) id 1M1ZQT-1wU5G93wHT-005ELU; Wed, 27
- May 2026 10:00:07 +0200
-Message-ID: <ab6f0519-0b87-4b57-9a35-92edf3fd7f5a@schippers-hamm.de>
-Date: Wed, 27 May 2026 09:59:56 +0200
+	s=arc-20240116; t=1779869774; c=relaxed/simple;
+	bh=OH27XX4XLcXiU6zpKSFDRIwZCZRUMRWZC/GON4wyJVY=;
+	h=From:Subject:To:Cc:Message-ID:Date:MIME-Version:Content-Type; b=QhoaJuqsWlpxIfxTm3IFkfS2Qejvr05+ZNVdINDUgZNCCbZ+xn/fJc2AtCIT6viipzT3IdDfZZqKX+i2fVDds0YM8CoNA7KQGVCDPp2pM+a8pwium4mKEJ58Gh06Ta6FwBU8q0ikO5DlVw5by+AvEfqKQtC3vW1IjR/3ZTHMCqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shinnytech.com; spf=fail smtp.mailfrom=shinnytech.com; arc=none smtp.client-ip=54.254.200.92
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shinnytech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=shinnytech.com
+X-QQ-mid: zesmtpgz7t1779869754t55650d16
+X-QQ-Originating-IP: i0JvW63Bg5of9qfTT+J4TUpX3p3Zc8PxQF6xHTfhqbE=
+Received: from [192.168.0.218] ( [58.32.25.94])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Wed, 27 May 2026 16:15:46 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 13477922265467916946
+From: Zhi Cheng <chengzhi@shinnytech.com>
+Subject: [PATCH net-next] tcp: fix spurious connection aborts due to
+ TCP_USER_TIMEOUT and zero window
+To: Eric Dumazet <edumazet@google.com>, Neal Cardwell <ncardwell@google.com>
+Cc: netdev@vger.kernel.org
+Organization: shinnytech
+Message-ID: <EDFF6E75FB9C46D0+ac77bc6c-2057-dfc5-4541-05679f6a6bce@shinnytech.com>
+Date: Wed, 27 May 2026 16:15:46 +0800
+User-Agent: Mozilla/5.0 (Windows NT 5.1; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v5 3/5] veth: implement Byte Queue Limits (BQL)
- for latency reduction
-To: Jesper Dangaard Brouer <hawk@kernel.org>,
- =?UTF-8?Q?Jonas_K=C3=B6ppeler?= <j.koeppeler@tu-berlin.de>,
- Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
- kernel-team@cloudflare.com, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- John Fastabend <john.fastabend@gmail.com>,
- Stanislav Fomichev <sdf@fomichev.me>, linux-kernel@vger.kernel.org,
- bpf@vger.kernel.org
-References: <20260505132159.241305-1-hawk@kernel.org>
- <20260510085602.57c7a081@kernel.org>
- <daa05c21-dcfc-4cc4-aa22-9e25c7f6c743@kernel.org>
- <41023c34-87a3-4e4f-b3ab-3ed53d171910@schippers-hamm.de>
- <b78f002a-8cb9-4857-bf8f-0137e790f644@kernel.org>
- <873511fa-4316-4411-a76b-ec4c5805abd3@schippers-hamm.de>
- <18855e57-f050-411f-9958-d4babcc81ba3@kernel.org>
- <14348957-d061-4124-9bac-45df9cf6686c@schippers-hamm.de>
- <9a57bb41-114e-492b-9eaa-52237675bb7c@schippers-hamm.de>
- <4ae9400a-8919-4ffc-8db3-0c334e2aa462@tu-berlin.de>
- <8e8b877b-a7ce-4b2f-9567-64c8dbb48411@schippers-hamm.de>
- <463e91cb-6c45-4d91-8737-39779fec5a49@tu-berlin.de>
- <b1c2d2c1-a70a-4bf4-baff-d0ac2f878722@schippers-hamm.de>
- <24d10b53-c545-4141-95a5-5c49c35c5d6c@tu-berlin.de>
- <c5b3a7ef-8ec7-4361-80bb-cf06e910350c@schippers-hamm.de>
- <d23fd8e0-a0d3-4197-a130-2340d1c28fe0@tu-berlin.de>
- <e8be86b4-052f-4f4f-9cb9-2fb12d1e8922@schippers-hamm.de>
- <80dc574b-f2da-4f04-8bc8-1b0793b1f296@kernel.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
-From: Simon Schippers <simon@schippers-hamm.de>
-In-Reply-To: <80dc574b-f2da-4f04-8bc8-1b0793b1f296@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:5rcKy/WcrljJurdI9KzFMNJmeY1XyCnPuqniL3I3Wy7nLTefg3Y
- 5NFTTxgwSUMYfrbz+Oc1+wirmx15tK92MNmcYGrvoUFblBsYAe/npGSoUTiZPdAs15edDVR
- wesIU+iHpE1PsaWEBRl9lDJYzSmR1G3SY14HC19QWVZIi42BBOqBCKdxeZPakcbRuyilOLW
- 89dF4ov+DQ17LzbRU7Rtw==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:bWSy5q9ZbcQ=;LhDbvD6KyTDnRg0TM/XlN2A64r0
- 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
- H7Rks3Q/tO9SEeURSW2wbesAJbcbLmfa
+Content-Transfer-Encoding: 7bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpgz:shinnytech.com:qybglogicsvrgz:qybglogicsvrgz5b-1
+X-QQ-XMAILINFO: MhHYuF7Otq+ozz2OOds0bmYRlaFEl354G9nRbwgXDOvWWlH4aUNy0Uj3
+	RoMaLps27VkU60FhzGmOr8uU2jvLeAcPQ3Yyj5No1D4b65766Vsp9q+pWuYGmCgXCNvYhfR
+	GwK8vTozkvXGH8XM2CfwvaUn19FZxmn7+QoY1Lyc1CjxQNz2cquiIQ4mPm27H85LyzMwLMH
+	3DL5SFrvFgmm8E14OHV2CludT4dluTeLLJT24TZgBymulFFpjIGAd5bA4hegth0RF/E9v8J
+	cpuLsum3TyIoP9EHZUh7K2Aahw54xkTvHMshjDjSvu515/2ar9TRi4iZw+GOgRZ7Usqj1zj
+	k7u6pCqFiQFvJSvEgvYnZPJJSz8k19pCDZYzi9Wq9nxEqgUcgppxoM1lKEZ69zoW/pkM4Sf
+	eA67uQYKosSdU8GM3uLUpoiS++Jma9wTOHLVVrBzw6ClnGdSnQ6jjkfSD6ZgcQ4HpoVk93S
+	YBOZwNSFpeGAXlFxJ/6ZJ9R6ZvfCvJEZuCVVNmLI5KvH7tYVSkCfsjQ3NIwjudOyfYQ/xTM
+	jKos0l/rsA0d1jJU4IcHWYcNQYsmIj9k1rfPbQ9iihZl5GLBXD+u6LEx0RhG7IxO+QvdeRG
+	zTPNLxoe8NmyCOG9hJ9kLH5j7IpvRdOkkifP3umWxdfObUxCeMqcYeLkvpgSNCKssEZpYI1
+	kwU79xVBXTo81UnOF5w9TrLp2Nl/ZOMb4/rAR/83A1Ue4eBbmrPZUGeGkCGwT0FesKjrXWO
+	MwANxiJIYA3UbzylJ2TdhRBdfbyg728zBPhUw0GzWT4Lgwai/qscYmrXd1uI8FQYWin3s6R
+	op2KbZIFZEIzxu4Iwbn8Zu7ZZet9IoP5Ri+mbvF/rCUkLRLx3V8/0Ii6Ozh6let8zmgHunw
+	mxOWm9yVEeOqjOL/QtSQ3IR4vMOkzS++uIIr8zGma76A2fNPU8qD62h6sMqW5Qusn+bQXhE
+	PyuBLfwupeUsSMMnpMApcz2kxCyKE/fFDngMve3RslJHFQTEoH3YtU8jVSQFVQm+uwwJK+q
+	Runw949W1wIARC8iUNmpmjFUVri6s=
+X-QQ-XMRINFO: NS+P29fieYNwqS3WCnRCOn9D1NpZuCnCRA==
+X-QQ-RECHKSPAM: 0
 
-On 5/27/26 09:38, Jesper Dangaard Brouer wrote:
->=20
->=20
-> On 26/05/2026 17.07, Simon Schippers wrote:
->> On 5/26/26 16:55, Jonas K=C3=B6ppeler wrote:
->>> On 5/26/26 4:35 PM, Simon Schippers wrote:
->>>> On 5/26/26 11:54, Jonas K=C3=B6ppeler wrote:
->>>>> On 5/23/26 6:09 PM, Simon Schippers wrote:
->>>>>> On 5/22/26 18:26, Jonas K=C3=B6ppeler wrote:
->>>>>>> On 5/22/26 10:41, Simon Schippers wrote:
->>>>>>>> On 5/22/26 09:14, Jonas K=C3=B6ppeler wrote:
->>>>>>>>> On 5/19/26 10:51 PM, Simon Schippers wrote:
->>>>>>>>>> On 5/12/26 23:55, Simon Schippers wrote:
->>>>>>>>>>> On 5/12/26 15:54, Jesper Dangaard Brouer wrote:
->>>>>>>>>>>>>> Nope, I'm using a bpftrace program to keep track of the inf=
-light/limit
->>>>>>>>>>>>>> in a BPF hashmap.  Reading from /sys will not be accurate.
->>>>>>>>>>>>> Ah nice.
->>>>>>>>>>>> Add the option --hist to have both NAPI and BQL histograms pr=
-inted when
->>>>>>>>>>>> script ends.  This will give you an accurate pattern of how i=
-nflight and
->>>>>>>>>>>> limit evolves.
->>>>>>>>>>>>
->>>>>>>>>>>>>> I moved the selftests into a github repo [1] to allow us to=
- collaborate
->>>>>>>>>>>>>> and evaluate the changes more easily.  I explicitly kept th=
-e new BPF
->>>>>>>>>>>>>> based BQL tracking as a commit[2] for your benefit.
->>>>>>>>>>>>>>
->>>>>>>>>>>>>>        [1] https://github.com/netoptimizer/veth-backpressur=
-e-performance-testing/tree/main/selftests
->=20
-> [... cut ...]
->=20
->>>>
->>>> I will wait for your new measurements, but there is no argument
->>>> against a default tx-usecs of ~100us for now, right?
->>> Yes, I think 100us is perfectly fine. I guess most of it was
->>> just my curiosity why the latency values are as they are =F0=9F=99=82
->> Which is great, because I was wondering the same =F0=9F=99=82
->>
->=20
-> Thank you Jonas and Simon for testing this via[1] on your systems.
->=20
-> One performance concern from my side is if/when BQL limit goes below 8
-> packets. This will cause cache-line bouncing and many qdisc requeues
-> between the two CPUs.  Notice that 8 packets for the ptr_ring is one
-> cache-line. This is why I suggested defaulting BQL min_limit to be 8.
-> This would work in combination with the tx-usecs coalesce tuning as a
-> lower bound.
->=20
->=20
->>> But it feels like this will need some documentation, because
->>> as we have seen, some values are a little different
->>> from what you expect from bql. Inflight > veth_ring_size,
->>> tx-usecs not necessarily achieving the configured value,
->>> inflight can get stuck > 0. Wdyt?
->>> But I think it works nicely overall.
->>>
->> Exactly, we should get ready for a v6 soon.
->>
->=20
-> I want to send out a V6 today (and I'm busy rest of week).
-> I'm simply going to include Simon's patch[2]. Then we can iterate on
-> that email thread, making it easier for people to reply inline to the
-> code changes.
->=20
-> [2] https://lore.kernel.org/all/9a57bb41-114e-492b-9eaa-52237675bb7c@sch=
-ippers-hamm.de/
->=20
+Under certain conditions, a stale icsk_probes_tstamp can lead to an
+unexpected connection abort during a zero-window state.
 
-Sure, but please address those 2 nits:
-- replace unlikely(!ring->size) || __ptr_ring_full(ring)
-  with unlikely(__ptr_ring_check_produce(ring))
-- replace ptr_ring_empty() with __ptr_ring_empty()
+The exact sequence leading to the timeout is as follows:
+1. A zero window occurs. icsk_probes_tstamp is set.
+2. The window opens slightly. tcp_ack_probe() is called because there
+    are no in-flight packets. However, icsk_probes_tstamp is not cleared
+    because the window is not large enough to fit the tcp_send_head.
+3. Packets been sent, and RTO is armed which overrides the probe timer.
+4. Subsequent ACKs consistently acknowledge packets and the window
+    never fully closes. Because there are now in-flight packets,
+    tcp_ack_probe() is never called again.
+5. As a result, icsk_probes_tstamp is never updated despite the
+    connection no longer in the zero-window state.
+6. Much later, another zero window occurs. When probe timer triggers,
+    tcp_probe_timer() evaluates the extremely old icsk_probes_tstamp and
+    immediately aborts the connection due to TCP_USER_TIMEOUT.
 
-Apart from that I think the code is fine.
-Just the commit messages need changes but we can adapt them later.
+Fix this by explicitly clearing icsk_probes_tstamp in tcp_ack()
+whenever prior_packets is non-zero, ensuring that the probe
+timestamp is reset when exit zero-window state.
 
->> And I think we should move the BQL logic into a seperate .h file
->> as a library. Then it is also usable for TUN/TAP in the future.
->>
->=20
-> I like the idea, but refactoring into a library seems out-of-scope for
-> this patchset.  As a first step, let us see if this works for veth
-> driver use-case.  I do encourage Simon to refactor when doing the work
-> for TUN/TAP in the future.
+Fixes: 9d9b1ee0b2d1 ("tcp: fix TCP_USER_TIMEOUT with zero window")
+Signed-off-by: Zhi Cheng <chengzhi@shinnytech.com>
+---
+  net/ipv4/tcp_input.c | 1 +
+  1 file changed, 1 insertion(+)
 
-Okay, fair point. I do not have a problem with that.
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index de9f68a9c0cf..02de64881b76 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -4365,6 +4365,7 @@ static int tcp_ack(struct sock *sk, const struct 
+sk_buff *skb, int flag)
+  	tp->rcv_tstamp = tcp_jiffies32;
+  	if (!prior_packets)
+  		goto no_queue;
++	icsk->icsk_probes_tstamp = 0;
 
-I did this split in [1] but we can ignore that for now.
-
-[1] Link: https://github.com/jkoeppeler/veth-backpressure-performance-test=
-ing/pull/1
-
->=20
-> Alternatively netdev maintainers can choose to apply V5 patchset and we
-> can iterate on finding the right ethtool coalesce parameters for veth
-> and create a .h "library" file for this.
->=20
->=20
->> Let's amend the commits. Should we do this on Github?
->=20
-> Kernel development for netdev [3] happens on the mailing list with patch=
-es via email.
-
-Okay :)
-
-Thanks!
-
->=20
-> --Jesper
->=20
-> [3] https://kernel.org/doc/html/latest/process/maintainer-netdev.html
->=20
+  	/* See if we can take anything off of the retransmit queue. */
+  	flag |= tcp_clean_rtx_queue(sk, skb, prior_fack, prior_snd_una,
+-- 
+2.47.3
