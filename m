@@ -1,114 +1,89 @@
-Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [13.75.44.102])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE8C93BB114;
-	Wed, 27 May 2026 08:32:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.75.44.102
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D8DE3DD874
+	for <netdev@vger.kernel.org>; Wed, 27 May 2026 08:32:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779870751; cv=none; b=U5i6w0npK5ciZzqth8nWRwKOD0GWK8kqWcHVgSi1/QhxaCAoPiDFzx/2D/bRkcvYE2OMOvbQHFVhLAuqCh1EKMJloT1VD/B87OEzRcNmPhAiIi7pAqUgcWMXIWyJKJrlh9p5VSMy2R6+OytPngRBH+5XHfnfzXE6SCuxA8LGCxU=
+	t=1779870758; cv=none; b=YevjT/cf6gh0Uw1k0CJPC+NhAC1Eb/iG0O+EhLsMaSDFLN+XoLRbj50rpLAi5ldk2LxDBJU6A5dTKLvtoudE8DFHEQyE0dk340tOBrFSWE5peMJ9mmQOjPUDfxexDU7ti82AGna9jU9PxXBC2QDH9npvDfs9B5nSQCNUcj7YHM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779870751; c=relaxed/simple;
-	bh=1OzluBvLb3n/VSrlrmLReW7l7unbAKPPQBPTnXCYKGo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=aYrVrQ8ApXeAc26clpQPGzrfVmwVVrrGGdKsYqUYA341L455iU5NVWX0wWy38VIpJAIPSDru3ZT4H4/5IhvJsxfThUYJ09JK8hWJRPOsGob/6dk0t2roSutroe0bi5rstI1MCy26/1JYXFcw4a3m97j3yvwmDZAVBkEjQ/3uJgA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn; dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b=KvhLQX5B; arc=none smtp.client-ip=13.75.44.102
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn
+	s=arc-20240116; t=1779870758; c=relaxed/simple;
+	bh=CLAiSUrVd2gqGwAHS9VaY2GKKi5AVjvUsv3x46PJT4U=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Wlwl+2JW74Azr1U7toM0EUX4Be6IL+RO0r2oTMMBcT4S4OWNUnsK2M6STdMhxY0qaSI3tD1SQLqr82AZY/dVsiY1MQQ6Kqt5NmEwF38PXv7lCKWzk7rnTrlIDIky9frJDggofyymGtl5LAcBV1wck0j0Jb3EC2jl/RR/WnT6mm8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Aln71qlp; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b="KvhLQX5B"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=mails.tsinghua.edu.cn; s=dkim; h=Received:From:To:Cc:Subject:
-	Date:Message-ID:MIME-Version:Content-Transfer-Encoding; bh=2MyoV
-	FmX94jcjdhdgzAlw/zcb7d4MYnwe/dY8rWgqC4=; b=KvhLQX5BuE+0pF34THJQk
-	rdv1sDzJCEj+THE8H4h2QBMC8c33++MlGebT6BpyTdPxUlVwI69046xkEhbCb3mP
-	hkZeYgNSRo8ArfL+p6I418lk9SYA98wOn2uoDETT66NRUe2tOaQb9QFzqGk1B3ev
-	cMbGoNLGiyRNgC7CD6Bq+w=
-Received: from localhost.localdomain (unknown [211.102.241.99])
-	by web3 (Coremail) with SMTP id ygQGZQA3g5AJrBZqv8rtAQ--.30987S2;
-	Wed, 27 May 2026 16:32:09 +0800 (CST)
-From: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
-To: netdev@vger.kernel.org
-Cc: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	linux-kernel@vger.kernel.org,
-	Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>,
-	Ao Wang <wangao@seu.edu.cn>,
-	Xuewei Feng <fengxw06@126.com>,
-	Qi Li <qli01@tsinghua.edu.cn>,
-	Ke Xu <xuke@tsinghua.edu.cn>
-Subject: [PATCH net] net: garp: fix unsigned integer underflow in garp_pdu_parse_attr
-Date: Wed, 27 May 2026 16:31:58 +0800
-Message-ID: <20260527083200.42861-1-zhaoyz24@mails.tsinghua.edu.cn>
-X-Mailer: git-send-email 2.46.2
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Aln71qlp"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id EF5D14E42D68;
+	Wed, 27 May 2026 08:32:34 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id B15DA601A1;
+	Wed, 27 May 2026 08:32:34 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1A48910888435;
+	Wed, 27 May 2026 10:32:27 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1779870753; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=CLAiSUrVd2gqGwAHS9VaY2GKKi5AVjvUsv3x46PJT4U=;
+	b=Aln71qlpVMcdGphX67KoMmp+qSif13pKUdBszMxVUi6ItdzWD1sNItYpWhm+uuUELsgQ3J
+	iA8l4If4U0hROlT5J8ZYn1DxtdbGyBB+00Mv+LqFDOAGjr/91V5MIl7yjpYC+P2/Rd2trA
+	rxaMcs0b521U1JGUm/juxEOa3sL+1ormYRxX3Ow1u6yipRQC5ynmbyylPHRDjWrgHC9st9
+	MDx4uLdD7TiavY7e70wBepI0+DTtdMdotkCtIUd+cmrU37omuegNmQ7c+NAs+Ya66G88TD
+	yARvO3IYCcGeAsNsQ2xrBJq0oimPorlqzl/H/jv5B+Zd6t+WzNEdYPcRcn0cAg==
+Date: Wed, 27 May 2026 10:32:25 +0200
+From: Kory Maincent <kory.maincent@bootlin.com>
+To: Carlo Szelinsky <github@szelinsky.de>
+Cc: Jakub Kicinski <kuba@kernel.org>, Oleksij Rempel
+ <o.rempel@pengutronix.de>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S .
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo
+ Abeni <pabeni@redhat.com>, Krzysztof Kozlowski <krzk@kernel.org>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-leds@vger.kernel.org
+Subject: Re: [PATCH net-next v4 1/2] net: pse-pd: add devm_pse_poll_helper()
+Message-ID: <20260527103225.5d408809@kmaincent-XPS-13-7390>
+In-Reply-To: <20260523192027.319105-1-github@szelinsky.de>
+References: <20260414161146.77b70d4d@kmaincent-XPS-13-7390>
+	<20260523192027.319105-1-github@szelinsky.de>
+Organization: bootlin
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:ygQGZQA3g5AJrBZqv8rtAQ--.30987S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7ury5Kry7WFW5tFy7AFyrWFg_yoW8Ww17pa
-	y0k3s0yFW2yry3X392yw429a15GFs3CFyxJryUKFyUZFnxW3WxJFy8KFWaqrWYyFykKF1q
-	ya4Dt3yUGrs8Zr7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUP014x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
-	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
-	CE3s1lnxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xv
-	F2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE14v26r1j6r
-	4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I
-	648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFylc2xSY4AK67
-	AK6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAF
-	wI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc4
-	0Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AK
-	xVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr
-	1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUbasjUUU
-	UUU==
-X-CM-SenderInfo: 52kd05r2suqzpdlo2hxwvl0wxkxdhvlgxou0/1tbiAQEAAWoWnq0fWQAAsI
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Last-TLS-Session-Version: TLSv1.3
 
-The receive-side GARP attribute parser computes dlen with reversed
-operands:
+Hello Carlo,
 
-        dlen = sizeof(*ga) - ga->len;
+On Sat, 23 May 2026 21:20:27 +0200
+Carlo Szelinsky <github@szelinsky.de> wrote:
 
-ga->len is the on-wire attribute length and includes the GARP attribute
-header. For normal attributes with data, ga->len is larger than
-sizeof(*ga), so the subtraction underflows in unsigned arithmetic.
+> Hi Kory,
+>=20
+> Sorry for the late reply. Too many different track and I got lost.
+>=20
+> Just to close the loop on the notifs_mask OOB:
+> v5 1/2 ("net: pse-pd: add devm_pse_poll_helper()", sent Apr 29)
+> extends your bitmap pattern from 5099807f335c to
+> pse_handle_events() and pse_poll_worker(). Storage moved to
+> notifs_mask pointers backed by devm_bitmap_zalloc, with
+> bitmap_zero / bitmap_empty / for_each_set_bit on real pointers.
+>=20
+> So the new code in v5 doesn't reintroduce the OOB.
+>=20
+> Does this make sense?=20
 
-The resulting value is later passed to garp_attr_lookup(), whose length
-argument is u8. After truncation, the parsed data length usually no
-longer matches the length stored for locally registered attributes, so
-received Join/Leave events are ignored. This breaks the GARP receive path
-for common attributes, such as GVRP VLAN registration attributes.
+This does.
+Sorry I didn't have the time to take a look at you v5.
 
-Compute the data length as the attribute length minus the header length.
-
-Fixes: eca9ebac651f ("net: Add GARP applicant-only participant")
-Reported-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
-Reported-by: Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>
-Reported-by: Ao Wang <wangao@seu.edu.cn>
-Reported-by: Xuewei Feng <fengxw06@126.com>
-Reported-by: Qi Li <qli01@tsinghua.edu.cn>
-Reported-by: Ke Xu <xuke@tsinghua.edu.cn>
-Assisted-by: GLM:GLM-5.1
-Signed-off-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
----
-diff --git a/net/802/garp.c b/net/802/garp.c
-index 6f563b6..c7a39f2 100644
---- a/net/802/garp.c
-+++ b/net/802/garp.c
-@@ -453,7 +453,7 @@ static int garp_pdu_parse_attr(struct garp_applicant *app, struct sk_buff *skb,
- 	if (!pskb_may_pull(skb, ga->len))
- 		return -1;
- 	skb_pull(skb, ga->len);
--	dlen = sizeof(*ga) - ga->len;
-+	dlen = ga->len - sizeof(*ga);
- 
- 	if (attrtype > app->app->maxattr)
- 		return 0;
-
-
---
-2.43.0
-
+Regards,
+--=20
+K=C3=B6ry Maincent, Bootlin
+Embedded Linux and kernel engineering
+https://bootlin.com
