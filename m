@@ -1,158 +1,151 @@
-Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D16B423148
-	for <netdev@vger.kernel.org>; Thu, 28 May 2026 16:01:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.176
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779984104; cv=pass; b=JGShSt+ZZHHweSwJ8BfW1vPwfirK5+CeDYcGgWh/duuj9hMidlhcycLE1KSGdqEddYRZkoI5pD0iUYYoHy5oIO28FIzAIDxqQC1oHJM4ylAknwGLUR7wDGC52OcD4HNKUfnkMf05hrHfsIv+lPjvzpmvxH5EZOwxzNSDWJNTQi0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779984104; c=relaxed/simple;
-	bh=HoRv3ITsVYotYbByUgMqXQNPFv0UOt3EzvZpSuUdf5g=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DH/qHQFAgnYSWmAxV7zF/1SOkCDdD/AW2R+JWiVPd/b4/fcpD2KHo6b7yEFmJSOlzJb046tFIgz2L18BUuehx2zaIrlNiDOAnQpo/7w5gBs25hhPnZ7c0j1PIqEk74Mw07TKz8GEO6lILHmksakw219XPwZJuapXP2TTLWIwvgo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=T0L2C5OB; arc=pass smtp.client-ip=209.85.160.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B8B23F0AA0
+	for <netdev@vger.kernel.org>; Thu, 28 May 2026 16:03:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779984204; cv=none; b=KPcRAZebtSqCsyfDRk9/a3x4Amo8f5AaDu6TytEOGYjBQEIbyXM+sfRx+hRT97j+5vjXPsBWXz7jps8yr4SJeerOqlvcJm3XwiHXtfQJZGdbvdZwiH05X15Y68gIdJxSl/d6Szh0bNN020qga4uvHYk1Hm7KZRh/jR7vPUBly0s=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779984204; c=relaxed/simple;
+	bh=yCSOHKbwhBjgp5Eie4MpdqNDhpIdZlR1/oBvIklWoBk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KHaIT/dmKSE0jZE+uCioIbT9LkksvXIuXzHmmNrp7DNxcRna30wMxs3LO6HKvqqP6sP6J6MfHDxL8Mjfo0/+KoPHN4oCqM6y/BXxUpUtbPNJPXrIh6yXxDSH1XPM82iPsGsCHSJ94Mfz8UCQvDILUOaL3/aUu+f6LF/TLlHs0c4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kyEYliIr; arc=none smtp.client-ip=209.85.221.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="T0L2C5OB"
-Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-516d1ddcdf4so13051cf.0
-        for <netdev@vger.kernel.org>; Thu, 28 May 2026 09:01:43 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779984102; cv=none;
-        d=google.com; s=arc-20240605;
-        b=I8mgdn6Mr8uZxLYGvjo5SGTIw3HeOr1RZvnXCw6f13gSYM57YFoV1k1f2YJ1OB+Ar4
-         lo46+19VQLzUsl11sFPdC+JFSGLkO4qYmzVoHpD6ADEpT9VQw+kpYibzSiWcSJ2NIMoz
-         46igeaWElJpPOmEsyO47WQGzkklGm1sURk+a9EYS8o3NUQPwWmS42plIeOtQKe925iwo
-         zruXaakpOrJji8HFzLPTmU3afOBil8NUcF2LIfkJLZNiP2jECyJACArP8kxZOo3EDXL5
-         C8Y/82VYZcvE6yBed+PbqMCxEvlHb1TnLIdODi9Zm5RmdIM32DKl3/WocTzvcgXn83c0
-         +qaA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=BYsaex7hgpDTcxP9G0jUXkwS6mGFhA1uEqhqBMmQ8iA=;
-        fh=WP0OLf7r9DS1CcsXofT/5rfWcibF2WiYhSDWzzqwFk8=;
-        b=Kpji7ck5jr7v7TlmsHCaz9uRPl/HV+xZ/CL5A7D3/S6e0yXvVPYYC07pDkXmtkrr1m
-         ujsXioNHyC29tRIRic5aZHj+tmN9RisvHDurTxAu59WhAKTXGia1Cs+U6YYrW8pB4n1i
-         tmT/KHRxHkD/LXTeSz4CDi6k0Jn4Uw0aRlUSbKbJH2a4ykjpvZKzbC8QWlVhQlwefG2/
-         zP8uN09Iw5XlQ3rvvaErx0khT1N9bLeRXZysnMBM+ZfJPdsTMu5pPi15j7eRN0YONpx+
-         UFeXX56rg5rewJXs8Azdr0x1ENl7blgknalRZ3YN2haD2/90VI4HxR17JQPcNi0UhFIn
-         Pt4Q==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kyEYliIr"
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-45e8a834cc2so7912102f8f.1
+        for <netdev@vger.kernel.org>; Thu, 28 May 2026 09:03:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779984102; x=1780588902; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=BYsaex7hgpDTcxP9G0jUXkwS6mGFhA1uEqhqBMmQ8iA=;
-        b=T0L2C5OB5eyKIPzMHsiPVQNr1viCSihOUZmkYUM5cGPXkhMxoJ6M3OzSgpCKFExWDy
-         szdyZoMpD9zxcItskA+UbPBxYHZTegez2MJySasSWzj6ryqYLVVBCl81AJjBJxO1P++U
-         FtF5D4uKoHrnYsSr5CM9DRAXsFIeVDwgWTITtrt7fuuylaTUZDyK/JH8UvpmtIpQGdlK
-         aYIgu51EvAqaxzk5pXAAJYZHODvlvxsKYeuG1EG5o5/LO5RAwLEQsF+iPzqDwBe1x5C1
-         zEotfoDoz5fHx8B5n808J/IFfRdT7t5Z47BjvXsew4l7v5kLJ0ZNvmwtUDI415N7ev5s
-         n8hA==
+        d=gmail.com; s=20251104; t=1779984201; x=1780589001; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=NGAJl71mxdY5fzmkNELb/2UlcEcGhUpJvQPIR8eDu/I=;
+        b=kyEYliIruWPP449zRETAHnQa60KjVIzByRMRjmRY+MjWEkTcPA3pvbkogW4dNCvYLd
+         8HPxeQoMc22q8AT+hagLkm3lW2DfdYNnkRauRverMVHRnJblyhmx9WMkhgVhM7+gLkfA
+         oAHzujiNo2m/aJMlNE5DxeW7F3xK6dVYcnOoY+42GXRbvhLBBYm63qNbV/4DZVf6THTj
+         7PmANuHKiqGzfyIOIoTz4R+Czg9rbhgu6HuUXxexzKL0+78v8NUXRbDqY8OlNSUPN7Vx
+         ShW3PDERh3ULFDK+hovpY832lvxnLT5DIk9/Nd11vFyILWGREtkUNH7qEj+keRGvv/tB
+         tSAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779984102; x=1780588902;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1779984201; x=1780589001;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=BYsaex7hgpDTcxP9G0jUXkwS6mGFhA1uEqhqBMmQ8iA=;
-        b=FWS8gdq1BK4WRLN8llnEbuitcpqjzFfsD7KglkUiWPC+Itehc+imzusLtfQi/OSmAW
-         GQv7PjSIvzeACZwJdBZnhRWsm5dQxk7eQTa9tHZWkDKjDmBzcEBi73rN+HhPrm/qfHXf
-         OpBUARrB+j++RkaTTF2kfNO227axOPmITutgqGx9NzYJO1AM6nXwlIRi7+wShe4DiD+Q
-         pfeUOVvoBWv/dtEFIW/ithbtRWcVmMMdoL0piY/u5/lDXGOdI6Zodr4F0jM22a9Hkkrk
-         ICrdc/uxXE3BPAgwnhxFJBji9YBEfFmee615w80ue87BCkgCgEzAxMrP5NvSAkUsV/QZ
-         4DbQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8RkgaK2DgW6x0WXlf9NAtCX2QsusyOSYV4XmguXztTCe1wNXX/IhSmjg30L6SUfQuo2pdwIzw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzTK3npDGZvTLyl4hXwfAasQZ1U8yeshGKZ7Sid0A5KSaFc6CgE
-	DuZ9Qkr/Os8nSTmtnhh8+WXr5iXtLQQrix1yPFF9sxK3XaBoEdPf4tOWeTFGm7w5YQwWIfg/1il
-	g/zDaTISTCosUNZz8Ylm/fIqaVq6VuqT6AR56P6aF
-X-Gm-Gg: Acq92OHXhSXOy3VRMCpEII8uwk7LwOQh+De6MNzWwZpQj/6IWCo2pM9YfbkMvR2gr6J
-	y7cyzgAx4xLPznk2DVghSUxoJo1SCtqq6fjyKrUOZCczgzZuhJxuSNlSht85cVSnSuxmnbS1Lv6
-	aowsxWCwXiAwfmKYTHr1kO5yMdKw0f8mmVpQvlP70zglzXSFz/sR7ymYVoyFxGITKlKAwZHVfXm
-	dzxQXYX/31kcLtLMXGZFwlOwFJX7IHneJcJPNGmMJEzZv8ISx+dz7HzTTO1DS6QPdrtp9uoX9t9
-	ksOTcpsohZkVAM0G8Kjolspop4Nl2DJGuB9FJG96o/zqSrj8hi5r6h7lv1Fw7Jod
-X-Received: by 2002:a05:622a:8c02:b0:516:5709:45e5 with SMTP id
- d75a77b69052e-51720af90damr6978311cf.14.1779984101530; Thu, 28 May 2026
- 09:01:41 -0700 (PDT)
+        bh=NGAJl71mxdY5fzmkNELb/2UlcEcGhUpJvQPIR8eDu/I=;
+        b=q6zLcdcRgeLh16OHLy3ev2gZ9jf4cC5kUszPwtmUdX1DjchDCK+Lb+whbzuNyaqi9C
+         LW3a/4ZOhlGIVkU0yv6XgqHKcETV1UIZ6CbmAWHQp/8TWgLO2VVDj7CiEDiQynheqwyD
+         wFnYKony+ObMt9Qv4dpKknsGV5kHtQSDLlyYhxaRdoyBOPFQ2mQTook+E++VhWM1lSK1
+         +Y06Q+TXwo5GwMaG5PsuyKF+kBl5/EXImt2bzqkKHcHCT75jCihzr44m9WcDbv07Qy+U
+         Ak4jHFnokMLoIcUyJBjJXLzUm2eUfvIHMJv+pYvuuYWqpEuFq/AS9QdhgYOHG+sWocQz
+         Lh4A==
+X-Forwarded-Encrypted: i=1; AFNElJ+D4r/kIughPMWOrnT6nO3Ocl0NwN5kwg+cp0SdSEH4RT9t66DnSJiGAjKhp76nYo9QGM8jp0g=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwvnKVG56lwZXzpeKCa4i2rtcudL9Ee7N8GmBhEZnfu9XmxuWzV
+	XYAG1kRuxzLKc1lDH/Nxkh667ZaE6mB0ZFHiqjbNaIgNZONBe0dngaEVwC16
+X-Gm-Gg: Acq92OG76S6KDDb8MzRyRrsiYd0Sen9PQgTAfEm2BmrxTTDrP8OnN1ramq/e3EyY23B
+	gePI2zCfH0d+X7JqBJC1J03SYFNqYg1kgmD5UfE0TZx15NpXAXD2DgBEzucXu/Qzkefvl5vY8Ud
+	kg2r7YtSmfJz4smKkVNfuEGEjfkCTsl1tdOfjQtiydIE7gBRyBMljJQaVSSFQZVYHzfYTwGd6n9
+	CfhJQ+CZubrLti6ECQzlnH0aJrYCS1gmbQYDYNmt/r+Rl5L0RkAFeFUyIrxojSnl4gWYTht5J9S
+	wBDiouDGXiWkPb+kmIpMlz4QBUPsKsRwD/E8WRHwJKsh45mYimxAaiQDRMe4k8ttYMC301dq7Wz
+	LZ4PEWl4uuWLZgCkOcf6wHBZyVup21kXOcSS+syLzLyg8dvtvAPe77vyeligHebZSU+7jV5DNrt
+	QuPUQIRpybmHmngNmS
+X-Received: by 2002:a05:6000:144c:b0:43b:498f:dceb with SMTP id ffacd0b85a97d-45eb3692577mr45679938f8f.9.1779984200272;
+        Thu, 28 May 2026 09:03:20 -0700 (PDT)
+Received: from debian.. ([2001:41d0:303:db6b::])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45eeb36c40asm3739691f8f.13.2026.05.28.09.03.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 28 May 2026 09:03:19 -0700 (PDT)
+From: Tristan Madani <tristmd@gmail.com>
+X-Google-Original-From: Tristan Madani <tristan@talencesecurity.com>
+To: Steffen Klassert <steffen.klassert@secunet.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Cc: Christian Hopps <chopps@labn.net>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	stable@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] xfrm: iptfs: fix ABBA deadlock in iptfs_destroy_state()
+Date: Thu, 28 May 2026 16:03:18 +0000
+Message-ID: <20260528160318.2631699-1-tristan@talencesecurity.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260515071504.2054786-2-yuyanghuang@google.com>
- <2e08eb1ca27a9a2f8ad29e1c24f779b579621b0a648589f7044799d91c5e00f5@mail.kernel.org>
- <CADXeF1GVtFHNZJb8xwFh6aadR=H19S+kja8rF185XB5=fg0D0Q@mail.gmail.com>
- <CAADnVQ+42+Th6OFGq2KawzvyKUAykazb4fXh2_uqss-T+R8VCg@mail.gmail.com>
- <CADXeF1F=7RcxAsW38w_mpFeKCLxTAh5p_XYHd=x2Ru+oajoN3Q@mail.gmail.com>
- <34b18a3e-50c0-4b0c-8ee6-d7a291619231@linux.dev> <CADXeF1HRe=U7aWx2yx6RFZ_uH-mMbdsxMheofr2tMD9wae46oQ@mail.gmail.com>
- <6083831a-dc6d-42e4-a1c8-8b7f6b966650@linux.dev> <CAKD1Yr32VMefwq7Bo6_hmhFrDVsttNFwZJZcaXS4P-ACOwWobw@mail.gmail.com>
-In-Reply-To: <CAKD1Yr32VMefwq7Bo6_hmhFrDVsttNFwZJZcaXS4P-ACOwWobw@mail.gmail.com>
-From: Yuyang Huang <yuyanghuang@google.com>
-Date: Fri, 29 May 2026 00:01:04 +0800
-X-Gm-Features: AVHnY4KYoAqz9rUtz8nGlc7zWjwvk4SuqM2I4D6DnfwQvY05GaYxUOEso4as720
-Message-ID: <CADXeF1EWY0=TyvhFap3iyKdpHNkk5pZuHD-RDnXuqMa5LrNJ2Q@mail.gmail.com>
-Subject: Re: [PATCH bpf-next 1/2] bpf: align syscall writeback behavior with
- caller-declared size
-To: Lorenzo Colitti <lorenzo@google.com>
-Cc: Leon Hwang <leon.hwang@linux.dev>, Alexei Starovoitov <alexei.starovoitov@gmail.com>, 
-	Daniel Borkmann <daniel@iogearbox.net>, bot+bpf-ci@kernel.org, 
-	Alexei Starovoitov <ast@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	Andrii Nakryiko <andrii@kernel.org>, Eduard <eddyz87@gmail.com>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Jiri Olsa <jolsa@kernel.org>, 
-	John Fastabend <john.fastabend@gmail.com>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, 
-	Martin KaFai Lau <martin.lau@linux.dev>, Nikolay Aleksandrov <razor@blackwall.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Shuah Khan <shuah@kernel.org>, Simon Horman <horms@kernel.org>, 
-	Song Liu <song@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>, 
-	Yonghong Song <yonghong.song@linux.dev>, bpf <bpf@vger.kernel.org>, 
-	LKML <linux-kernel@vger.kernel.org>, 
-	"open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>, 
-	Network Development <netdev@vger.kernel.org>, =?UTF-8?Q?Maciej_=C5=BBenczykowski?= <maze@google.com>, 
-	Martin KaFai Lau <martin.lau@kernel.org>, Chris Mason <clm@meta.com>, 
-	Ihor Solodrai <ihor.solodrai@linux.dev>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
->It seems you haven't convinced Alexei in that thread.
->Attached below.
+iptfs_destroy_state() calls hrtimer_cancel() while holding a spinlock
+that the timer callback also acquires, leading to an ABBA deadlock on
+SMP systems.
 
-Thanks for the test program. It proves my hypothesis: you had to
-manually unmap a page boundary to force that `-EFAULT`. The part that
-is still under discussion is whether there is a kernel bug or not. I
-think there is no question about the behavior of when the -EFAULT will
-be triggered.
+For the output timer (iptfs_timer):
+  - iptfs_destroy_state() holds x->lock, calls hrtimer_cancel()
+  - iptfs_delay_timer() callback takes x->lock
 
-> To avoid such stack corruption, you should reserve enough space for the
-> query, e.g., by extracting union bpf_attr from kernel BTF vmlinux.
+For the drop timer (drop_timer):
+  - iptfs_destroy_state() holds drop_lock, calls hrtimer_cancel()
+  - iptfs_drop_timer() callback takes drop_lock
 
-I agree that your suggestion to extract the layout from BTF is good
-practice when writing a new program from scratch. However, our focus
-here is on maintaining backward compatibility for existing binaries.
+Both timers use HRTIMER_MODE_REL_SOFT, so their callbacks run in softirq
+context.  When hrtimer_cancel() is called for a soft timer that is
+currently executing on another CPU, hrtimer_cancel_wait_running() spins
+on softirq_expiry_lock -- the same lock held by the softirq running the
+callback.  If the callback is blocked waiting for the spinlock held by
+the caller of hrtimer_cancel(), a circular dependency forms:
 
-I think the core question is: **is a 40-byte query a valid request or not?**
+  CPU 0: holds lock_A -> waits for softirq_expiry_lock
+  CPU 1: holds softirq_expiry_lock -> waits for lock_A
 
-From my understanding, under the syscall ABI contract, passing a
-40-byte buffer (at least for query BPF_CGROUP_INET_INGRESS which has
-been stable and supported since 2017) is 100% valid and legal. **The
-kernel must never break existing userspace on a kernel upgrade**.
+Fix this by cancelling both timers before acquiring their respective
+locks.  hrtimer_cancel() is safe to call without holding any lock and
+will wait for any in-progress callback to complete.  The locks are still
+acquired afterwards to synchronize with any in-flight packet processing
+before tearing down the state.
 
-One example of a syscall that maintains such backward compatibility is
-openat2. The documentation notes it as follows:
+Found by source code audit.
 
-EINVAL size was smaller than **any known version of struct open_how**.
+Fixes: 4b3faf610cc6 ("xfrm: iptfs: add new iptfs xfrm mode impl")
+Cc: Christian Hopps <chopps@labn.net>
+Cc: Steffen Klassert <steffen.klassert@secunet.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
+---
+ net/xfrm/xfrm_iptfs.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-If this bpf() syscall want to follow the same way to maintain the ABI
-contract, your `mmap` test actually let kernel return -EINVAL to a
-userspace program that passes a 40-byte buffer (declaring `size =
-40`),  because the kernel unconditionally tries to write to offset 56,
-which happens to be unmapped.
+diff --git a/net/xfrm/xfrm_iptfs.c b/net/xfrm/xfrm_iptfs.c
+index 97bc979e55baf..fd25b2b230793 100644
+--- a/net/xfrm/xfrm_iptfs.c
++++ b/net/xfrm/xfrm_iptfs.c
+@@ -2708,8 +2708,9 @@ static void iptfs_destroy_state(struct xfrm_state *x)
+ 	if (!xtfs)
+ 		return;
+ 
+-	spin_lock_bh(&xtfs->x->lock);
+ 	hrtimer_cancel(&xtfs->iptfs_timer);
++
++	spin_lock_bh(&xtfs->x->lock);
+ 	__skb_queue_head_init(&list);
+ 	skb_queue_splice_init(&xtfs->queue, &list);
+ 	spin_unlock_bh(&xtfs->x->lock);
+@@ -2717,8 +2718,9 @@ static void iptfs_destroy_state(struct xfrm_state *x)
+ 	while ((skb = __skb_dequeue(&list)))
+ 		kfree_skb(skb);
+ 
+-	spin_lock_bh(&xtfs->drop_lock);
+ 	hrtimer_cancel(&xtfs->drop_timer);
++
++	spin_lock_bh(&xtfs->drop_lock);
+ 	spin_unlock_bh(&xtfs->drop_lock);
+ 
+ 	if (xtfs->ra_newskb)
+-- 
+2.47.3
 
-Are you arguing that the `bpf()` syscall does not need to follow the
-ABI contract to maintain backward compatibility, and that it is
-expected that newer kernels can break binaries compiled against older
-kernels? If you believe that all binaries must be recompiled or
-dynamically updated against the latest vmlinux BTF upon every kernel
-upgrade, please be explicit about it.
-
-Thanks,
-
-Yuyang
