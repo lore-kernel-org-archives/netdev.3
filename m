@@ -1,40 +1,48 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C05A92EE262;
-	Thu, 28 May 2026 02:24:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF5632E92BA;
+	Thu, 28 May 2026 02:27:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779935072; cv=none; b=rpdpxgiKPLa9xEi6DGPLuaa+k7ImMr2PexAktglELVbROdk46iYBxh65QiQ/Av5yzbhtPwbrqrAhN5eMSBuPT3Xchx/CFU80uHsohZhuvpiB6Q1KL5gSlmsxnyofWSR6By65OaC5065CMGVeQ8qY0aXZxuPICwmboyhnkefH2qY=
+	t=1779935257; cv=none; b=Z2hau5TI43mbrwDcxhMh5xNKPBgkuTOagaGc8fBUBSs5YnbLqY0CmDytiDSrDMVkVFIrjXvbD4pvsY/vsOhNRGv58bUkCVE7moaaxKWrmpqpBg2+R4UaTf+E7SG7gVWLFT4nB5+HXZMoMnjsHC+jKKw7BvyMPOI1GBrGceFoDhc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779935072; c=relaxed/simple;
-	bh=FrW6PftFBAVq3gevUoJO1cg6Pi9ObKSk+65QC3n7FfM=;
+	s=arc-20240116; t=1779935257; c=relaxed/simple;
+	bh=dmb/hy0IbR3i5uy+od9KVGCaLdQwxDjYmUf8Xfw96Zs=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=E3ao7FRwcrNctDHRuwYBCNGVe4T4ib1ksEW+1hZs9SSjD7b7Kw/sxUiMehnhDeEyFLcZED65nnPw16l2ULQz7nyJm3dzNt39949rIfFxYMGVlLUfJCWJbGw5jZTXbrnYhFphB3E/IgShaNzLpjvLKLlwBwLmMqALOroSR7DBhbQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aGi1WKia; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=B/A6bF4nPlwqzlZFiU0LX3YvAW/ocHEsff7EkmeB/Dh2hTD9qLWEI/riYBQqUYjs8EuYOyDte/7ZnlZpg7ajh4copLLwlML/ZSl41VDAdvC5nHIIza5BIDzhp8IG+NnWOYCLAJ9ORW1HH6Lk81EPTjc9W/duKU7s17bEZsnrfwc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FeFqvv5+; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aGi1WKia"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D0091F000E9;
-	Thu, 28 May 2026 02:24:31 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FeFqvv5+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAA541F000E9;
+	Thu, 28 May 2026 02:27:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779935071;
-	bh=71zXM8ehCxjxqijFW0yk7Di/LCroQJafshpfLzrG8Hc=;
+	s=k20260515; t=1779935256;
+	bh=maTG8Js/fanjViCJFnZ1I6Y7ycF/UHkaEKk6SqwCkv8=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=aGi1WKiaihe+TVzOzo94L8e1qsqhBxZXjqjF1q3q+1amlkqSZ1lNI3qz3II7wGUdB
-	 dDwLICoKRIH3LbbgcU6jVcVslIWKSzYnvApQfHxnMd/w3addpxjX48iw368x00QJiA
-	 gcpmc8eHYZFi/4HrlYVCJYOqYs9WJwrjGhlCbDla/y/KfYDWPyIEjSZ2cInMTM5ydS
-	 TmENjv1N+U7U6X3HaIARw3ojE+tIeZRyeW0VzDnjzbshxM2xtMQWJ0fAb6+bklWlEX
-	 IyeNKg1o3dzVlGFOmyswSEMEIs0JfsNRAYxGkey0/3XFevxWR4z1k++34Eeob9B3pF
-	 9LR4npiPe0Glg==
-Date: Wed, 27 May 2026 19:24:30 -0700
+	b=FeFqvv5+1XoZxQyVyDc88Xza5pnNKMwixzq6SzQjVVNQIIDumTBQsdEO916B0+W9B
+	 ICFL7h5BF5TMogrURM/t0Yfm5BXEvFO2kDPw80xDqH0Y4H1TsBig6e323laNRFRZVP
+	 qcAOmNlOWIQdy4bsx0ixMJAElBjn4kmCkC2oKCet025LHNPzOPN5qJXNq7oa6QnEjj
+	 BazThnuN0PmMRatofV/X3tp3I4eSvwtblik9SXDsKN6LXk9qlvoTKci8JChjz3oj4Z
+	 npj4TeS0qCNOJEusyK9i7IyNDInQc0hsMcins814jbCjdoQI34UZuYhBqTqRvMaJi/
+	 3Wg/Futh/nSvQ==
+Date: Wed, 27 May 2026 19:27:35 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Cc: davem@davemloft.net, linux-bluetooth@vger.kernel.org,
- netdev@vger.kernel.org
-Subject: Re: [GIT PULL] bluetooth 2026-05-27
-Message-ID: <20260527192430.1b490571@kernel.org>
-In-Reply-To: <20260527211246.371451-1-luiz.dentz@gmail.com>
-References: <20260527211246.371451-1-luiz.dentz@gmail.com>
+To: Long Li <longli@microsoft.com>
+Cc: Konstantin Taranov <kotaranov@microsoft.com>, "David S . Miller"
+ <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>, Eric Dumazet
+ <edumazet@google.com>, Andrew Lunn <andrew+netdev@lunn.ch>, Jason Gunthorpe
+ <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, Haiyang Zhang
+ <haiyangz@microsoft.com>, "K . Y . Srinivasan" <kys@microsoft.com>, Wei Liu
+ <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
+ shradhagupta@linux.microsoft.com, Simon Horman <horms@kernel.org>,
+ netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
+ linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v11 0/6] net: mana: Per-vPort EQ and MSI-X
+ management
+Message-ID: <20260527192735.34a794cf@kernel.org>
+In-Reply-To: <20260523020258.1107742-1-longli@microsoft.com>
+References: <20260523020258.1107742-1-longli@microsoft.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -44,28 +52,20 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 27 May 2026 17:12:46 -0400 Luiz Augusto von Dentz wrote:
-> The following changes since commit ab1513597c6cf17cd1ad2a21e3b045421b48e022:
+On Fri, 22 May 2026 19:02:50 -0700 Long Li wrote:
+> The following changes since commit 95fab46aea57d6d7b76b319341acbefe8a9293c8:
 > 
->   Bluetooth: fix UAF in l2cap_sock_cleanup_listen() vs l2cap_conn_del() (2026-05-20 16:35:47 -0400)
+>   Merge branch 'net-convert-atm-xdp-af_iucv-l2tp_ppp-rxrpc-tipc-to-getsockopt_iter' (2026-05-22 11:11:12 -0700)
 > 
 > are available in the Git repository at:
 > 
->   git://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth.git tags/for-net-2026-05-27
+>   https://github.com/longlimsft/linux.git tags/mana-eq-msi-v11
 > 
-> for you to fetch changes up to df35e8e0c8c4160c881bb673e3c7ee010824fbd5:
+> for you to fetch changes up to a26d11135abba51e81ae8b9689e288718af95088:
 > 
->   Bluetooth: hci_sync: Reset device counters in hci_dev_close_sync() (2026-05-27 16:44:02 -0400)
+>   RDMA/mana_ib: Allocate interrupt contexts on EQs (2026-05-22 20:35:43 +0000)
 
-Are you still rebasing? Or did Linus convince you not to? :)
-Looks like we are missing your sign-off on:
-
-Commit c3d01980c64a ("Bluetooth: l2cap: clear chan->ident on ECRED reconfiguration success")
-	committer Signed-off-by missing
-	author email:    kipreyyy@gmail.com
-	committer email: luiz.von.dentz@intel.com
-	Signed-off-by: Zhenghang Xiao <kipreyyy@gmail.com>
-
-If you're planning to no longer rebase your tress - don't worry about
-it. It's not a deal breaker. If you are rebasing anyway - could you
-amend?
+The branch is no good, it needs to be your patches applied on top 
+of a commit already in Linus's tree. The current branch is on
+top of net-next, RDMA would have to pull in 100s of networking
+commits together with your changes.
