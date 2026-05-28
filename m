@@ -1,91 +1,128 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73BD223394A;
-	Thu, 28 May 2026 01:58:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D4B22D3A7B;
+	Thu, 28 May 2026 01:59:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779933517; cv=none; b=OOBLMKBlAHV+PxE2Cl1xLmblqhHj/fRC8i8HbLCOuAM4k9hXth/Oz/beSqIWF1AHdL7cOfqmyz3PumjW++Xlc+DHGSpu7+6WNoZjcymzt/rdsCoXc+/Aub7+tyEJ7EXPhVI4fGl8ixnC9wUlgk4cXUNRPjdVJirAZ0QKxamAvbM=
+	t=1779933558; cv=none; b=Tj5W4TUNcKGELpt5/CDWqCov4PCiH1I621b3Pvn4GOdDWOrUHtxDtM2nV6iWUovO/uo6Mw/NwpOSmu81al/8KQFNcVYFhtMWat610VXWtclzt0KCsc+Cpenw0R1dyYKO90CNNCc3fiQfAQT7UXcqyjc4PeqiSdszfxFUlQV6JX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779933517; c=relaxed/simple;
-	bh=rzSTTeVkBA2TWFt9EmYOLCwUcNWt64fJ0EkBsW5tdqQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cF7/PYJAQrYE4hTXM3cE1dc/NYFlClfYJKmrBhCjHYt6i+miFxrYfMGVaI2fjOLyY2Y3+LH8QTTNYMCUYfNV2ZM4qZJtIUmc4vNgCS7WRCadao0MMUm5d4NEH8E1n46YVTVIeOAUWE5YquM4eBGMuROPs58kDuP53yYHrSQMXHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=UJv8Nm5W; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="UJv8Nm5W"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=F5xpMV+AO1CKUrIiHxmrwoh1nrbemlBJIcVD/F1YUvI=; b=UJv8Nm5WktK8TNlR51sdYFfnq4
-	U5X45/lWKA9m5eQxfTd1jDw9F7MY4tI7XFQgWdqBgz/ZBUIJVdIWGGmsS6CtSdhZGYLLD9fEYcGyO
-	D+7758T0EZKkB8iUO+KgIq15euwfq2ei8TlvkBGqAvjp+5P7Wkm4zK0EVXk3LalpOO6s=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wSQ0u-004q8p-CU; Thu, 28 May 2026 03:58:24 +0200
-Date: Thu, 28 May 2026 03:58:24 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: muhammad.nazim.amirul.nazle.asmade@altera.com
-Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
-	rmk+kernel@armlinux.org.uk, maxime.chevallier@bootlin.com,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] net: stmmac: Improve Tx timer arm logic further
-Message-ID: <a0cdbac8-c7b2-4dc2-b08c-7fae99a73e93@lunn.ch>
-References: <20260527023359.18876-1-muhammad.nazim.amirul.nazle.asmade@altera.com>
+	s=arc-20240116; t=1779933558; c=relaxed/simple;
+	bh=We4bb5BqYPJYD/T+DwC2+AFyyBXduUFwhx3N+yQ4W4Q=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=rQtxl+5YuKnZ9D+lPl+v3NJo+P+rPC5Zrgc9rFmJ9yJ501DhEu4LRiFmngzGYaw8sxQddTivWKqrc6eFznqc3ZxryTQ60T1LV0Q3Td9f9mhXbL+7BIDVnYPTSnSqFfYd+6aGmo55RZJOk/iz7LT16CmVoAdUD/WEUh/WI+89kto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: d15136c65a3811f1aa26b74ffac11d73-20260528
+X-CTIC-Tags:
+	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
+	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
+	HR_SJ_DIGIT_LEN, HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM
+	HR_SJ_PHRASE, HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT
+	HR_TO_NAME, IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED, SA_TRUSTED
+	SA_EXISTED, SN_TRUSTED, SN_EXISTED, SPF_NOPASS, DKIM_NOPASS
+	DMARC_NOPASS
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.12,REQID:7c8715f3-45fc-4703-aae6-ebeaed92eee4,IP:20,
+	URL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:20
+X-CID-INFO: VERSION:1.3.12,REQID:7c8715f3-45fc-4703-aae6-ebeaed92eee4,IP:20,UR
+	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
+	elease,TS:20
+X-CID-META: VersionHash:e7bac3a,CLOUDID:1898d4141d1edd792a1bae13b934cb12,BulkI
+	D:260528095913HGMTIMCZ,BulkQuantity:0,Recheck:0,SF:10|38|66|78|102|127|850
+	|865|898|915,TC:nil,Content:0|15|50,EDM:-3,IP:-2,URL:99|1,File:nil,RT:nil,
+	Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BR
+	R:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULS
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: d15136c65a3811f1aa26b74ffac11d73-20260528
+X-User: zhaochenguang@kylinos.cn
+Received: from localhost.localdomain [(223.70.159.239)] by mailgw.kylinos.cn
+	(envelope-from <zhaochenguang@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 1261235197; Thu, 28 May 2026 09:59:10 +0800
+From: Chenguang Zhao <zhaochenguang@kylinos.cn>
+To: Paul Moore <paul@paul-moore.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Chenguang Zhao <zhaochenguang@kylinos.cn>,
+	Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	linux-security-module@vger.kernel.org
+Subject: [PATCH net v2] netlabel: validate unlabeled mask attribute length
+Date: Thu, 28 May 2026 09:59:13 +0800
+Message-Id: <20260528015913.190970-1-zhaochenguang@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260527023359.18876-1-muhammad.nazim.amirul.nazle.asmade@altera.com>
+Content-Transfer-Encoding: 8bit
 
-> pre-patch behaviour. The meaning of tx_coal_timer is unchanged.
+netlbl_unlabel_addrinfo_get() checked the address length
+but allowed shorter mask attributes to pass through to
+fixed-size address reads.
 
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> index 3591755ea30b..35da51c26248 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> @@ -3341,12 +3341,14 @@ static void stmmac_tx_timer_arm(struct stmmac_priv *priv, u32 queue)
->  	 * Try to cancel any timer if napi is scheduled, timer will be armed
->  	 * again in the next scheduled napi.
->  	 */
-> -	if (unlikely(!napi_is_scheduled(napi)))
-> -		hrtimer_start(&tx_q->txtimer,
-> -			      STMMAC_COAL_TIMER(tx_coal_timer),
-> -			      HRTIMER_MODE_REL);
-> -	else
+netlbl_unlabel_addrinfo_get() only rejected a mask
+length mismatch when the address attribute length
+was also invalid.  A crafted Generic Netlink request
+could therefore provide a valid IPv4/IPv6 address
+attribute with a shorter mask attribute.
 
-With this code, the timer is always tx_coal_timer in the future.
+NLA_BINARY policy lengths are maximum lengths,
+not exact lengths, so the short mask can pass
+policy validation.  The mask is later read as
+a full struct in_addr or struct in6_addr.
+Require both address and mask attributes to
+have the exact expected size.
 
+Fixes: 8cc44579d1bd ("NetLabel: Introduce static network labels for unlabeled connections")
+Signed-off-by: Chenguang Zhao <zhaochenguang@kylinos.cn>
+---
+v2:
+ - Adjust commit message 
+ - Add Fixes and 'net' subject prefix.
+v1:
+ https://lore.kernel.org/all/20260522054521.1169755-1-zhaochenguang@kylinos.cn/
+---
+ net/netlabel/netlabel_unlabeled.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-> +	if (unlikely(!napi_is_scheduled(napi))) {
-> +		if (unlikely(!(hrtimer_active(&tx_q->txtimer))))
-> +			hrtimer_start(&tx_q->txtimer,
-> +				      STMMAC_COAL_TIMER(tx_coal_timer),
-> +				      HRTIMER_MODE_REL);
+diff --git a/net/netlabel/netlabel_unlabeled.c b/net/netlabel/netlabel_unlabeled.c
+index ca7a9e2a3de7..c1b7e0061886 100644
+--- a/net/netlabel/netlabel_unlabeled.c
++++ b/net/netlabel/netlabel_unlabeled.c
+@@ -762,8 +762,9 @@ static int netlbl_unlabel_addrinfo_get(struct genl_info *info,
+ 	if (info->attrs[NLBL_UNLABEL_A_IPV4ADDR] &&
+ 	    info->attrs[NLBL_UNLABEL_A_IPV4MASK]) {
+ 		addr_len = nla_len(info->attrs[NLBL_UNLABEL_A_IPV4ADDR]);
+-		if (addr_len != sizeof(struct in_addr) &&
+-		    addr_len != nla_len(info->attrs[NLBL_UNLABEL_A_IPV4MASK]))
++		if (addr_len != sizeof(struct in_addr) ||
++		    nla_len(info->attrs[NLBL_UNLABEL_A_IPV4MASK]) !=
++		    sizeof(struct in_addr))
+ 			return -EINVAL;
+ 		*len = addr_len;
+ 		*addr = nla_data(info->attrs[NLBL_UNLABEL_A_IPV4ADDR]);
+@@ -771,8 +772,9 @@ static int netlbl_unlabel_addrinfo_get(struct genl_info *info,
+ 		return 0;
+ 	} else if (info->attrs[NLBL_UNLABEL_A_IPV6ADDR]) {
+ 		addr_len = nla_len(info->attrs[NLBL_UNLABEL_A_IPV6ADDR]);
+-		if (addr_len != sizeof(struct in6_addr) &&
+-		    addr_len != nla_len(info->attrs[NLBL_UNLABEL_A_IPV6MASK]))
++		if (addr_len != sizeof(struct in6_addr) ||
++		    nla_len(info->attrs[NLBL_UNLABEL_A_IPV6MASK]) !=
++		    sizeof(struct in6_addr))
+ 			return -EINVAL;
+ 		*len = addr_len;
+ 		*addr = nla_data(info->attrs[NLBL_UNLABEL_A_IPV6ADDR]);
+-- 
+2.25.1
 
-If the timer is not active, it is set to tx_coal_timer in the
-future. However, if the timer is active, meaning it is already
-counting down, it is left alone, so is less than tx_coal_timer in the
-future.
-
-Do i have this right?
-
-Doesn't that change the meaning of the timer. It now actually goes off
-sooner?
-
-This is somewhat academic. The point of coalescence is to reduce
-overheads. The increase in performance shows that this change does
-reduce overheads.
-
-	Andrew
