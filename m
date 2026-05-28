@@ -1,53 +1,70 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B22AF223322;
-	Thu, 28 May 2026 02:13:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74EE635949;
+	Thu, 28 May 2026 02:16:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779934421; cv=none; b=Q2fA/Ri5LocARlfCa1yVORCcWis+Lm0WFLnXypv/KxcR+TI7y6fmeJAj7KnrJ9OvJDhWl/z+a7w7hB9xlAJwTdJS6A2IvES58YDfuIedNDQKswRHWYgxSCUn0XCX/G1+Ykdj4g+O4ANANV/d2gd13GRoWG11DHpkwFIaUQSTlvw=
+	t=1779934606; cv=none; b=BonLUeC0aSpz9VHi64TGRGrix0hNzsDo6/QMKMsTrGT/iGaClPQZ87cTfMNmB/5WTahYh1w7ypnhQigtxESQJqUY8OuscY4VbWMp5yjk0X45whgNbUVDGqtFynq/uz9sUefK6HJ2W4QIr0i9/daiG3uFEAxRfbMxtCFZcRMCNNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779934421; c=relaxed/simple;
-	bh=FnIIRhwHVxhf84QYbjG1naW87w4UL3JLS8AFwtzW2cM=;
+	s=arc-20240116; t=1779934606; c=relaxed/simple;
+	bh=IFA4n4NLxQTVJh1fNUypLvf+igLULdkLZrE7pdAGJ6c=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QzmG5wFhK9Kmch7yMH1EFUS9zXzwu9Dzz9CClk+mqAF4ohSnAHPbhDKl32Y2cXPqmTLFWM+xUq/ycxYY0TlRNP6qLS/DHV92nq3lKDV7+y3dhC1DhmxTkrxF3M/ECemWysWmXVMrZqroOst0tHh1x/7zd1ohWoiM3X/GUoQ/7Ps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=dZnTR7Wb; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	 Content-Type:Content-Disposition:In-Reply-To; b=Sa9J0hQYDR4MRD1NPbFenRuJMF+Bo5uVjXda0PAwFINgS3lUrV+5oFyY8z/LBaTbtRyBOgwl0fnoFXMO5gnwZ5xZnf6+2TxUkFE2EokI0JsLMtugulFI7WMrgaUFqjZtRD56313DlGjmCCff8qsvimlRPXEKKRV85hbjOgCGfEg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UZ4S2wMj; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="dZnTR7Wb"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=+6hZhN0fsF8RcPZ8QWhufIy7gHA5Gi1Zrz/J4AEwbxo=; b=dZnTR7WbuolpUN1hRSzyk5dRCB
-	dK0JcdzLhslSJvFq5MyRh82olom/sM6CAlxWWztjGX8LLSc0bcK3qFMTIZ8YAhhlhxJXIk9Ygwj6z
-	cUR21pm56u1t5gGXp10HxrXqc9weQN/VX8+fCALo1OrofkvuOhqo4rr93mI8Yo2QnIAY=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wSQFV-004qFX-UL; Thu, 28 May 2026 04:13:29 +0200
-Date: Thu, 28 May 2026 04:13:29 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: ciprian.regus@analog.com
-Cc: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UZ4S2wMj"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1779934605; x=1811470605;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=IFA4n4NLxQTVJh1fNUypLvf+igLULdkLZrE7pdAGJ6c=;
+  b=UZ4S2wMjp/dpf5zV4G/tsI4cAdAGqFUehw1RC3LuyY4I8f1tQqqg1E5o
+   M23vMu2mKh3Rqg3++DTqDYvH735QA3dos2OSWyiXzJf9RaUJdJO17r+UV
+   ucDgsfhc3L/dxamOfjUh8vplAJkMoEzlqYGwKIDoYtIf9dNbpm9lXV2yk
+   Mr/x5+Ohy7EFeUCgGth8yCB6YiAE1AUPqQAy+VkCDDuIegXVKwiaUUy/C
+   gT5GW9yuBDDdlOI7NL/aV+lReOMVSGh/w/cHP7m8W/EznWoVswvtQExwv
+   CYulyHS048r3H8QDxmufHPiOBM6cLQRYC92q6vR4GE4mmfSRuFQsEvmR0
+   w==;
+X-CSE-ConnectionGUID: +iNkxKFzTUaKF7WExDrHzw==
+X-CSE-MsgGUID: CStnZJhiT1KFBx35Z4Mq6Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11799"; a="68307255"
+X-IronPort-AV: E=Sophos;i="6.24,172,1774335600"; 
+   d="scan'208";a="68307255"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2026 19:16:45 -0700
+X-CSE-ConnectionGUID: lGqoO3zKRL+CcXT5DuOc7Q==
+X-CSE-MsgGUID: zZuSP/VGRJC9qUdm09MiIQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,172,1774335600"; 
+   d="scan'208";a="272749359"
+Received: from lkp-server01.sh.intel.com (HELO f0d55cb201f0) ([10.239.97.150])
+  by orviesa002.jf.intel.com with ESMTP; 27 May 2026 19:16:42 -0700
+Received: from kbuild by f0d55cb201f0 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wSQIY-000000005RC-3NgD;
+	Thu, 28 May 2026 02:16:38 +0000
+Date: Thu, 28 May 2026 10:16:14 +0800
+From: kernel test robot <lkp@intel.com>
+To: Chuang Wang <nashuiliang@gmail.com>
+Cc: oe-kbuild-all@lists.linux.dev, Chuang Wang <nashuiliang@gmail.com>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH net-next v2 04/10] net: ethernet: oa_tc6: Export the C45
- access functions
-Message-ID: <c2463fa3-7a43-4749-946a-e96f337e7d96@lunn.ch>
-References: <20260527-adin1140-driver-v2-0-37e5c8d4e0a0@analog.com>
- <20260527-adin1140-driver-v2-4-37e5c8d4e0a0@analog.com>
+	Simon Horman <horms@kernel.org>,
+	Stanislav Fomichev <sdf.kernel@gmail.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Samiullah Khawaja <skhawaja@google.com>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Neal Cardwell <ncardwell@google.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v5] net: reduce RFS/ARFS flow updates by
+ checking LLC affinity
+Message-ID: <202605281038.YLl0IgeD-lkp@intel.com>
+References: <20260525025854.13982-1-nashuiliang@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -56,16 +73,32 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260527-adin1140-driver-v2-4-37e5c8d4e0a0@analog.com>
+In-Reply-To: <20260525025854.13982-1-nashuiliang@gmail.com>
 
-On Wed, May 27, 2026 at 12:51:49AM +0300, Ciprian Regus via B4 Relay wrote:
-> From: Ciprian Regus <ciprian.regus@analog.com>
-> 
-> The C45 access functions can still be used by some Ethernet drivers
-> which set the OA_TC6_BROKEN_PHY flag. Export them.
-> 
-> Signed-off-by: Ciprian Regus <ciprian.regus@analog.com>
+Hi Chuang,
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+kernel test robot noticed the following build errors:
 
-    Andrew
+[auto build test ERROR on net-next/main]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Chuang-Wang/net-reduce-RFS-ARFS-flow-updates-by-checking-LLC-affinity/20260525-110036
+base:   net-next/main
+patch link:    https://lore.kernel.org/r/20260525025854.13982-1-nashuiliang%40gmail.com
+patch subject: [PATCH net-next v5] net: reduce RFS/ARFS flow updates by checking LLC affinity
+config: nios2-allmodconfig (https://download.01.org/0day-ci/archive/20260528/202605281038.YLl0IgeD-lkp@intel.com/config)
+compiler: nios2-linux-gcc (GCC) 11.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260528/202605281038.YLl0IgeD-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202605281038.YLl0IgeD-lkp@intel.com/
+
+All errors (new ones prefixed by >>, old ones prefixed by <<):
+
+ERROR: modpost: "sock_rps_record_flow_hash" [drivers/net/tun.ko] undefined!
+>> ERROR: modpost: "sock_rps_record_flow" [net/sctp/sctp.ko] undefined!
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
