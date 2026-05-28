@@ -1,90 +1,155 @@
-Received: from us.padl.com (us.padl.com [216.154.215.154])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD07E36B044;
-	Thu, 28 May 2026 23:14:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.154.215.154
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38EC430F924
+	for <netdev@vger.kernel.org>; Thu, 28 May 2026 23:16:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780010058; cv=none; b=ePZeO9EqtBzlc4jMutDHq58WqoQqpp/5rYsM9X5IUPZsFZfqJtkM000W3B9KJWJuUFcI2ltOfaR38tXi4+BOYLsmIb3Unx0ocb0QCstuZC4JKWNGpjWOBBHbZRrWRC5VHXwUA6kqyuLkQR5emq/V88KaaE51nRhmllSNubALC34=
+	t=1780010209; cv=none; b=LNfqoFpkR+ETHtJms12jmsZ1APGgMTzhplilVYb8nKFVPkoJAtnMqAkcGBFfpp1Uw6/VJ+TRVlsINMzRr5olUt7tpkDWxXpsycM/u8yvztX/iTTp5YBogIvY268IPPgsv/dOSPCW9XqwXdZ3bYqMIIoPZ4bavx0zcbe/LZbBnW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780010058; c=relaxed/simple;
-	bh=vEiKRY9wXaA+V7ZqUq9srooGuIVH4yS3XxBz5COIcIU=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=DpirFl8YSXW7noXtDtDu3L63cAQfFJKd9jrgYwzABbNoeGufW6iDoooYZLnJ0mCMHTBcuSUv40VtNpSiSt1nR7xHZQHopJ2bcgS+31hb3Bh/sh1NvDy2ZMoyx5Tg4Zli8+U4IsLyLzAtBuSwElau0zRcdBb13+uxnMCKL7moV3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=padl.com; spf=pass smtp.mailfrom=padl.com; dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b=ABVsfi5C; arc=none smtp.client-ip=216.154.215.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=padl.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=padl.com
+	s=arc-20240116; t=1780010209; c=relaxed/simple;
+	bh=vm9iqCYXRxPK4oodevKfo/7IcLZh38H68RRwdT6OpOQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MNBt4h2D76Mw1GBDczM+TlD2xJ9XbmKqgZYyLj9dynzFIUZPljrUjUP1TGiUKZ/E2bwTi9cTUDeNWEiyuN02b2Dgbkzh2YR/Kw4AEObJotbDOWNiKBEp2vwv7sSyTO68Wr3mx8by0sHm57LqXdvFft0le90VLr1cHA5Yp8SxkQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Un1ABmln; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b="ABVsfi5C"
-Received: from auth (localhost [127.0.0.1]) by us.padl.com (8.14.7/8.14.7) with ESMTP id 64SNDZMg027703
-	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Fri, 29 May 2026 00:13:38 +0100
-DKIM-Filter: OpenDKIM Filter v2.11.0 us.padl.com 64SNDZMg027703
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=padl.com; s=default;
-	t=1780010029; bh=vEiKRY9wXaA+V7ZqUq9srooGuIVH4yS3XxBz5COIcIU=;
-	h=Subject:From:In-Reply-To:Date:Cc:References:To:From;
-	b=ABVsfi5CjLWvd/L6v2qjDWfGG/O6AvsQs/C3ppB+9vG2DlfazQtkgUmhzOMJvqpUT
-	 Lk/EoKyXUHa7j1c9ysLsddX0yr3ErXXZYfvwwi5oinODpGR4KL0ZD5LFAXeFLjTkSl
-	 1t9UkCf4ARcR/9cU/LQmrpZcPB3O5N7j7GK1Qs39eRbrYLbpFV0r8b7F+p1339fo6k
-	 LACem9evDkKuSwX1Lare4XP27LoJ5sX2ksl2j6l35JuKoeI43niyZciNTiZzngY6qK
-	 /Dd78CazCWjrMLDaW1IztaCYVW22DFzAKHMGuLY355fghpjfCNuGKP8kJDwiaEG/nG
-	 a4SZDmp0LZpSQ==
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Un1ABmln"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B1711F000E9;
+	Thu, 28 May 2026 23:16:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780010208;
+	bh=nrmBRjcqOdiI5LVFSKUbl/zVoo7nWhUsfW/6EE533kA=;
+	h=From:To:Cc:Subject:Date;
+	b=Un1ABmln/Gmzmj+XvkFod9K5xw1H5KPspmryns6UAnBI3iqvSNFCEwSvjeZ5XQh9A
+	 BleX8JhRO73Oz5Lz09OlBj32Jmc2m6K0/CqyaaVLTScMa7wE66XjoPyEYKQ6EURyj2
+	 j3h8kXRaBMPzMnzG97hYf3rKeTafYur+G5n3wvrg9o1+XJswTV/KpQiKM8aQiKQ5Fp
+	 dgLTCNxDDcbRn6x3guIppshMQj4KLBJpqhI7CJmxl43R5d5KKUB9W/FfX000EZABLF
+	 qKmgoZnT1mYRb0xPxZcHBNo76S8jFMKjbIuhUokMfGn22KCkR3/VhPBrbDY7xQVI2A
+	 3VcDThavFvBBg==
+From: Jakub Kicinski <kuba@kernel.org>
+To: davem@davemloft.net
+Cc: netdev@vger.kernel.org,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	andrew+netdev@lunn.ch,
+	horms@kernel.org,
+	michael.chan@broadcom.com,
+	joshwash@google.com,
+	tariqt@nvidia.com,
+	haiyangz@microsoft.com,
+	linux@armlinux.org.uk,
+	maxime.chevallier@bootlin.com,
+	willemb@google.com,
+	ernis@linux.microsoft.com,
+	sdf.kernel@gmail.com,
+	kory.maincent@bootlin.com,
+	danieller@nvidia.com,
+	idosch@nvidia.com,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH net-next 00/14] net: ethtool: let ops locked drivers run without rtnl_lock
+Date: Thu, 28 May 2026 16:16:23 -0700
+Message-ID: <20260528231637.251822-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.500.181.1.5\))
-Subject: Re: [PATCH net-next 2/2] net: dsa: mv88e6xxx: add support for credit
- based shaper
-From: Luke Howard <lukeh@padl.com>
-In-Reply-To: <723c23da-69e4-4cdb-8b72-9a3af5f8dba3@lunn.ch>
-Date: Fri, 29 May 2026 09:13:03 +1000
-Cc: Cedric Jehasse <cedric.jehasse@gmail.com>,
-        Cedric Jehasse <cedric.jehasse@luminex.be>,
-        Vladimir Oltean <olteanv@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-        Russell King <linux@armlinux.org.uk>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Kieran Tyrrell <kieran@sienda.com>, Max Hunter <max@huntershome.org>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <1AF97002-3E4B-4492-B086-685E865E1B4E@padl.com>
-References: <20260522-net-next-mv88e6xxx-cbs-v1-0-c87a8e6bcc0c@luminex.be>
- <20260522-net-next-mv88e6xxx-cbs-v1-2-c87a8e6bcc0c@luminex.be>
- <C0F865AD-24CD-4EA7-B0AB-16D91914ABAD@padl.com>
- <PR3P194MB1505960E42BBFB9AD9E8B18DEA0B2@PR3P194MB1505.EURP194.PROD.OUTLOOK.COM>
- <885A5B11-A34A-4F69-9E9F-ABF10159B789@padl.com>
- <CABvLYuA85b1X9wHH073HPX=xv_1uZ2+anhcr+3MMkoVF-3DVcA@mail.gmail.com>
- <2E4F8243-8687-4591-A03D-4402D4FBEC02@padl.com>
- <723c23da-69e4-4cdb-8b72-9a3af5f8dba3@lunn.ch>
-To: Andrew Lunn <andrew@lunn.ch>
-X-Mailer: Apple Mail (2.3826.500.181.1.5)
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
+We have been slowly moving towards removing the rtnl_lock dependency
+in driver ops since the concept of "ops-locked" drivers have been
+introduced last year. Since last year will take the netdev instance
+lock before invoking any ndo or ethtool op of "ops-locked" drivers.
 
-> On 28 May 2026, at 10:46=E2=80=AFpm, Andrew Lunn <andrew@lunn.ch> =
-wrote:
->=20
->> It would be good to support both, particularly for switches with >4
->> queues. Maybe this can be keyed the presence of the DT property (now
->> renamed, marvell,avb-mode).
->=20
-> You need to be careful with DT. It represents hardware. Configuration
-> of that hardware, or policy, should not be in DT.
+We dipped our toes into rtnl_lock-less ops with the queue binding API.
+Queue stats, NAPI, and other netdev-netlink objects are also queried
+without holding rtnl_lock already. It's time to take the next logical
+step and lift the requirement from ethtool ops.
 
-Noted. The tradeoff is I don=E2=80=99t user space to be aware of =
-specific hardware, i.e. a SRP daemon should not care whether it is using =
-HW offload or a software bridge. But it would also be ideal to allow a =
-1:1 mapping of TCs to queues non-AVB uses such as Cedric=E2=80=99s.
+The direct motivation for this patchset is that ethtool ops often
+involve communicating with device FW, and may take a long time
+to complete. Aggressive polling of device state on machines
+with 10+ NICs have been shown to significantly increase rtnl_lock
+pressure.
 
-A similarly sized hammer to DT would be a command-line option. Another =
-option that requires a small user space change would be to add (say) =
-TC_MQPRIO_MODE_CHANNEL_SRP, or to overload TC_MQPRIO_MODE_DCB for AVB.
+There's a handful of areas which still need rtnl_lock (see below).
+I decided to convert everything to rtnl_lock-less by default, and
+add a set of flags which let the drivers request rtnl_lock to still
+be taken. I don't love this, but I'm worried that opt-in would be
+even more confusing.
 
-Thoughts?
+Known issues / exclusions:
+ - qdiscs - qdisc configuration currently assumes rtnl_lock, this
+   is mostly impacting set_channels callback. qdisc config is probably
+   the easiest one of the exclusions to tackle, it's fairly self-contained.
+ - features - even tho feature changes are (correctly) plumbed to
+   the driver thru ndos they are part of ethtool uAPI. ethtool itself
+   calls netdev_features_change() if it spotted device changing features
+   in response to the request. And some drivers call it themselves.
+   Since features have to propagate to upper and lower devices anything
+   that touches features is quite hard to take from under rtnl_lock.
+ - phylink - phylink and SFP depend on rtnl_lock today, I suspect
+   that this is purely for historic reasons. I started poking at
+   it and don't really see a need for a global lock. But accessing
+   the netdev instance lock from the SFP entry points will require
+   some attention from the phylink folks.
+ - phydev - similar to phylink, looks quite doable. But no ops-locked
+   driver currently has a phydev (fbnic only uses phylink) so phydev
+   related paths retain a ASSERT_RTNL() for now.
 
-Luke=
+Tested on mlx5, bnxt and fbnic.
+
+Jakub Kicinski (14):
+  net: ethtool: cmis_cdb: hold instance lock for ops locked devices
+  net: ethtool: make sure __ethtool_get_link_ksettings() is ops-locked
+  net: ethtool: serialize broadcast notification sequence allocation
+  net: ethtool: relax ethnl_req_get_phydev() locking assertion
+  net: ethtool: make dev->hwprov ops-protected
+  net: ethtool: optionally skip rtnl_lock on Netlink path for GET ops
+  net: ethtool: optionally skip rtnl_lock on Netlink path for SET ops
+  net: ethtool: optionally skip rtnl_lock in cable test handlers
+  net: ethtool: optionally skip rtnl_lock in ethnl_tsinfo_dumpit()
+  net: ethtool: optionally skip rtnl_lock in ethnl_act_module_fw_flash()
+  net: ethtool: optionally skip rtnl_lock in RSS context handlers
+  net: ethtool: ioctl: concentrate the locking
+  net: ethtool: optionally skip rtnl_lock on IOCTL path
+  docs: net: ethtool: document ops-locked drivers and op_needs_rtnl
+
+ Documentation/networking/netdev-features.rst  |   7 +
+ Documentation/networking/netdevices.rst       |  17 ++-
+ include/linux/ethtool.h                       |  38 ++++-
+ include/linux/netdevice.h                     |   3 +
+ include/linux/phy_link_topology.h             |   5 +
+ include/net/netdev_lock.h                     |  17 +++
+ net/ethtool/common.h                          |  76 ++++++++++
+ net/ethtool/netlink.h                         |   1 -
+ .../net/ethernet/broadcom/bnxt/bnxt_ethtool.c |   4 +
+ drivers/net/ethernet/google/gve/gve_ethtool.c |   2 +
+ .../ethernet/mellanox/mlx5/core/en_ethtool.c  |   3 +
+ .../net/ethernet/mellanox/mlx5/core/en_rep.c  |   2 +
+ .../mellanox/mlx5/core/ipoib/ethtool.c        |   2 +
+ .../net/ethernet/meta/fbnic/fbnic_ethtool.c   |   5 +
+ .../ethernet/microsoft/mana/mana_ethtool.c    |   2 +
+ drivers/net/netdevsim/ethtool.c               |   1 +
+ drivers/net/phy/phy_device.c                  |   3 +
+ drivers/net/phy/phy_link_topology.c           |  10 ++
+ net/core/dev_ioctl.c                          |   4 +-
+ net/ethtool/cabletest.c                       |  12 +-
+ net/ethtool/cmis_cdb.c                        |   3 +
+ net/ethtool/cmis_fw_update.c                  |   8 +-
+ net/ethtool/ioctl.c                           | 135 ++++++++++++++----
+ net/ethtool/linkinfo.c                        |   4 +-
+ net/ethtool/linkmodes.c                       |   4 +-
+ net/ethtool/mm.c                              |   5 +-
+ net/ethtool/module.c                          |   8 +-
+ net/ethtool/netlink.c                         |  62 +++++---
+ net/ethtool/phy.c                             |   1 -
+ net/ethtool/rss.c                             |  21 +--
+ net/ethtool/tsconfig.c                        |  10 +-
+ net/ethtool/tsinfo.c                          |  32 ++---
+ 32 files changed, 385 insertions(+), 122 deletions(-)
+
+-- 
+2.54.0
+
