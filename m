@@ -1,110 +1,94 @@
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB18B3E5EE1
-	for <netdev@vger.kernel.org>; Thu, 28 May 2026 14:34:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F69C3E5EE1
+	for <netdev@vger.kernel.org>; Thu, 28 May 2026 14:35:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779978884; cv=none; b=hnaeJASLNmvB/kWunX5BL9JM4+By/GTfi6jVW5YjLRHD9XY7+Kg35pjjVsFD3JDCnJDXFeAhuGZH7GdT4b/5Iz/QA7oezB2HUsWb/WdB2OTjBup8Z5J5RlcFzIugFpfcNoFrr+KtlL2/4c4IZgrz59DDIvzkSq+pzYUUyrqWUjc=
+	t=1779978909; cv=none; b=OUP6rp5fxrWcHu/Fc5ruVY5ysJ0lAuxFAxNAyvWikVAaiwPL+V5jwE5u3lx8bRwtL234AwbyiogpcKU9vy4jV3Sd6rx5x919mkqen7qIUOySULdlKucJO/wV633FyiDRnMzeeQtEjj+EQ5ltgYggw/owiaSQyQDbUV21LM3KqHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779978884; c=relaxed/simple;
-	bh=0eE+3wJXB35CTaM3CGN3mJgxdh3wj7AQldYtzQyzVHc=;
+	s=arc-20240116; t=1779978909; c=relaxed/simple;
+	bh=UR2E/C0im6l6T98H8IXvdVRK0YqkWaJLP1h2nNkucBQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=n6XXHJxz26ENxKQEeipNU5ry6ksTdTQlPHKnRkBlaPkQnkpPcA1SWcim4LTAZiIMOZ38XTKYef3fZReZNFFKYfls2cTURJYsH3hcFPVpQkSVZs+IS4yLnZumtkbo174M8Nvt6w7Z8HRP5MsWd1ST7X764no9358JYWmH/PvTGQk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net; spf=pass smtp.mailfrom=openvpn.com; dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b=FzELpMqT; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openvpn.com
+	 MIME-Version; b=Xjtvi4zEUjT3FeyKUckNd0yyOBhoMs1aIRBDe3p7/Bjlse6fIZPZiJn0wi4uyLiubg/gNiSnSBEvuZWWqg3gvoRgIFa52G21sIzpW6tV77HyKOFi5GCLZEaDjll+qEoEhaDfmN7VnASNQRR5iAkAwG7tGguyhy0KCHAuLqTb9T0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=CJfeCqS7; arc=none smtp.client-ip=23.88.38.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b="FzELpMqT"
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4905529b933so45031885e9.0
-        for <netdev@vger.kernel.org>; Thu, 28 May 2026 07:34:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=openvpn.net; s=google; t=1779978881; x=1780583681; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KxZz5a1qRqyA1KpHQgzxfGddHd7PspIS3/Rb7TY1aPc=;
-        b=FzELpMqT8UUxc5OlWmucV7tNS2sD4GtZqzXJPvMfdhhQxxpH+WuWEGDANdVPPYF4gE
-         2ZuwUAVs6iDgcbSLDCMjZItq+eujDnoTLA/5Lu2JEuTkOR7E5T4OACUCHX6WPFdjCB/O
-         k9swhnjpTwcfALS0ACkofwQfnFB9agaNwDUMRv0ibhUEKhlDRjI5kOYiKbwTC0Z860QD
-         eQXXe/TwKVDBYNhqMlHlmk/ZM37DshIiP9ZEPtx6biKjPY7+SBrW4z8hawrTqhvrP7D7
-         3hZ4UgpklOF2b1kd1cyrM61HnqgdsKPiQa+VLqydUI75WU5e81sZMYw4MjmdtW+VBTey
-         MtEA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779978881; x=1780583681;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=KxZz5a1qRqyA1KpHQgzxfGddHd7PspIS3/Rb7TY1aPc=;
-        b=tTcyRysmwH4k5UF9c9e8tTgaS8H35n0OwOFa79zsLonWLimlpnZ4iHk8g82JcLrwQh
-         QfGstkdOhNQ6iUbqLf+5SDhh9eBSjtsB7bI6dohHURwHzKbMRDquz7E22hpZNk74Vsf2
-         X99N2EOM60w9Cjum7+aZhUS85W3i9hlbrA+6RwFusoK3PmH08rbfC0VrjFB3P2/YABVc
-         HawwqKVyceP7XhN34WVa8NWXB2Ser2818cYmU2yClFJ1hZIyeYaWjDrhvv7p/4CUZXVO
-         emZdOC+Nz0EwZXL4YdV+aBtgAo0hD5PqYDTgCHOu+P2AWSytJjvxYqwan9yxNS80aK2Y
-         d86w==
-X-Forwarded-Encrypted: i=1; AFNElJ/rREDRdbnm8KdkvFmS+DZN7ydPt0tCuKzWGUNPylcdG8HO/ngh17yqfzzddW0WDG44EWZyVOQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzdD7bkDrfoeNmRf96aZsQJgK2d45rvuOUC/ywJw0V+PVZt+JYv
-	jqJlEcl6QvLnI7UNBPtHFAZEiJX2TjY1Zjlv44C2Q4k+m7v/5jAEtAwM/I1qTJYGD/Ct5FlbFo3
-	ubAAM5wiALdCT5SNEzS26rCfbS/8LhRf9bFjkPz79+xEUUuWobxQ=
-X-Gm-Gg: Acq92OEnUkfi9T8yK4r9oFMXydtEvSNca5jQkxl6U8hk8mExfabDqO161Vt9LkRwcle
-	Lk/CzQx1nqvR1gWgU1hhF51IYbA1gihP2en4KjIAEPE0P4J50tnTyOhqz8mmXxHGOw9EIvKWj8x
-	ZITeo2XCKi+uLqCXyctw5FHNV1rjYNQbe52Z38KyTkK0gSII1FAFTD/NL9V7sZyl4tlYubOvhAv
-	P0jw1n1jVkMWXQ2W2YoOkRYOhBFn/tNuD/ehuKxCh/0Ch5p9/wRr8wsyu1I+m9dDdi/IE9uOMaW
-	XaJrkYH87Zy2LOsfWYX0LAEKqpR/zlyr27EiCzPJx5ST75H3JAIs4Xp9FKv336CAaoOWL5r1Qfo
-	zGR2496mfLwSVE8G+BaROA+BW6OGtlSP9HclNBC2c6rzkOwXLf9Ljansv8cAgmrrtxkvkPXkrV2
-	QKDHFjwp3o42QJYojujmbUqBDqZwbZkYLlW631du9QYK+hJIDQhyXC+QbSCw==
-X-Received: by 2002:a05:600c:3f0f:b0:490:8470:31f7 with SMTP id 5b1f17b1804b1-49084703202mr95055575e9.20.1779978881288;
-        Thu, 28 May 2026 07:34:41 -0700 (PDT)
-Received: from inifinity.homelan.mandelbit.com ([2001:67c:2fbc:1:4cf9:4344:20b8:5b16])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490923613d0sm71986355e9.3.2026.05.28.07.34.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 May 2026 07:34:40 -0700 (PDT)
-From: Antonio Quartulli <antonio@openvpn.net>
-To: Sabrina Dubroca <sd@queasysnail.net>,
-	netdev@vger.kernel.org,
-	Shuvam Pandey <shuvampandey1@gmail.com>
-Cc: Antonio Quartulli <antonio@openvpn.net>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
+	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="CJfeCqS7"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=simonwunderlich.de;
+	s=09092022; t=1779978568;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=JIEy8VIPaknF5zTeIk9SKJnqfASk5vwCPb0ma2Lo9dw=;
+	b=CJfeCqS7qikt2c3LdpYPYqlxIpfI35QRvdNQbCtRbx3qLRoKQYosfz1XlptkxqR+/hNbmJ
+	OWP4C2GJuKA0O8jF4gOodEZZg7zzlOjtb1c5+IJif0tGhsmyuZdACesJrEnR2PF0OU+qNo
+	pJI1RRUsMbtGnO9qNBypEDQslQM6uKUbYiGraQ80MPlHEdRztpq66TQkRhXXzt3GM3K/NI
+	nNJn/KGK8K1SZBgr1HojXXDPKwhrwo9BMoKg4wi+7S1I3EvB4fezBGPYdRvd6mEhM2IYP4
+	1Qr2IUQn16zYIO1Ypa9kPk1kjmwC66nc2FsnHezoksBSz4whezDA3HzbkkR06A==
+From: Simon Wunderlich <sw@simonwunderlich.de>
+To: netdev@vger.kernel.org
+Cc: "David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net] ovpn: hold peer before scheduling keepalive work
-Date: Thu, 28 May 2026 16:34:38 +0200
-Message-ID: <177997886516.4173782.12454597506201953464.b4-ty@b4>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <177954800752.73238.12097994883239164708@gmail.com>
-References: <177954800752.73238.12097994883239164708@gmail.com>
+	Simon Horman <horms@kernel.org>,
+	b.a.t.m.a.n@lists.open-mesh.org,
+	Sven Eckelmann <sven@narfation.org>,
+	Simon Wunderlich <sw@simonwunderlich.de>
+Subject: [PATCH net-next 03/15] MAINTAINERS: Don't send batman-adv patches to netdev
+Date: Thu, 28 May 2026 16:29:12 +0200
+Message-ID: <20260528142924.329658-4-sw@simonwunderlich.de>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260528142924.329658-1-sw@simonwunderlich.de>
+References: <20260528142924.329658-1-sw@simonwunderlich.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
+From: Sven Eckelmann <sven@narfation.org>
 
-On Sat, 23 May 2026 20:38:27 +0545, Shuvam Pandey wrote:
-> ovpn_peer_keepalive_send() passes its peer reference to
-> ovpn_xmit_special(), which ultimately drops it. The keepalive scheduler
-> currently queues the work first and takes the reference only after
-> schedule_work() reports that the work was queued.
-> 
-> Once schedule_work() queues the item, another CPU may run the worker
-> before the caller gets to ovpn_peer_hold(). In that case the worker can
-> consume a reference that was not acquired for it, corrupting the peer
-> lifetime accounting.
-> 
-> [...]
+Do not send batman-adv patches directly to the networking maintainers or
+the netdev mailing list for initial review. Keeping these patch iterations
+off netdev reduces review load, especially for patchsets that require
+multiple revisions before reaching consensus.
 
-Applied, thanks!
+After the review was finished on the BATMAN ADVANCED mailing list, the
+patches will be queued up and then submitted to netdev as PR, including the
+full patchset in the same thread (for the last review).
 
-[1/1] ovpn: hold peer before scheduling keepalive work
-      commit: c0951d651254b7d7f9a15d3ef149e8d2c9ff6ab6
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+---
+ MAINTAINERS | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Best regards,
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 741fb4166aa2b..75ff01377fc6f 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -18635,6 +18635,7 @@ F:	net/
+ F:	samples/pktgen/
+ F:	tools/net/
+ F:	tools/testing/selftests/net/
++X:	Documentation/networking/batman-adv.rst
+ X:	Documentation/networking/mac80211-injection.rst
+ X:	Documentation/networking/mac80211_hwsim/
+ X:	Documentation/networking/regulatory.rst
+@@ -18645,6 +18646,7 @@ X:	include/net/iw_handler.h
+ X:	include/net/mac80211.h
+ X:	include/net/wext.h
+ X:	net/9p/
++X:	net/batman-adv/
+ X:	net/bluetooth/
+ X:	net/can/
+ X:	net/ceph/
 -- 
-Antonio Quartulli <antonio@openvpn.net>
+2.47.3
+
