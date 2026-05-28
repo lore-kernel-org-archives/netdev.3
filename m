@@ -1,392 +1,155 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 828433FF1A2;
-	Thu, 28 May 2026 15:55:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80E6F408013
+	for <netdev@vger.kernel.org>; Thu, 28 May 2026 16:01:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779983734; cv=none; b=CEgX9aSTkx0iGTqqbsQBl1I6zmNv4CTIVaQt4RcoGiyOcjLFiZT1xQTkWppv/uP4RVVeLZNSdBHo8TJoQ+jcfi3Yah+vsxrHBItar/bQXoWaXRS6IXIkotcXFkOVZhqarNsde6bkBliwrDVJo4z2/gsmznZP2MlZot7NB1y5hB0=
+	t=1779984095; cv=none; b=Ou9qmnx0fu7e+FyEQfROD1Mh/EFbc3psZGcgp+ag1TkSfe/9cJIDAZOMWkGmVlCXA0+1/OJQLpAwsRmgzxXNfG+yEqsjYTLlrc2SArm4w74VGhtcPP/Elc0C2K93cwMA6iVhgol/+fsDzKmHDZL1VyJ9by02uuL7m1Q+7vaSf3E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779983734; c=relaxed/simple;
-	bh=49g/W4nPFGn+vpZROvQnXPRYmRCLYo6lZkJSzpL1b2o=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=VTed9bnMySxzmcFBdhhndtqs1RtscMyKxi/ZmNCAM4HHL26QaavgDzWtqC4gD8Z4YiFQKEK1u/I2G9Vz4q6Yqfg6rRdDJUBzsNoPbfRT7hYkOVG8Bf9vpeCVgPSZamcZ3u9Ja3zdsaCe3XOcvQMWrZtXDMim4jUAonnoMtPDvz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lqmCgD+V; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779984095; c=relaxed/simple;
+	bh=/UWIrCDt0JHQs55xLO8CjfD0M54dmvXpB7PRriNg6Vc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=C06bhObDgeRRDWjXYyM5woN4J30VCIyX7BYeMtk52CnovuZH81ChMlNicSftJgYLKGfCW+keVldj2Oj2Zf4ukdY0qxcI/UIl0240wTN4Zgt4JEaJD4NVsOjkQ5KCLzn3BJU9t9y4C+/++e4SRGopf2FVQ4Y3aE4jZ93dNxO5uYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BLst1YZD; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=sYRS+faM; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lqmCgD+V"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 787981F000E9;
-	Thu, 28 May 2026 15:55:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779983733;
-	bh=+BWIkJYelMwDM/RJ8EOI6yq0aaQUtuHk+/lFKFUusWg=;
-	h=Date:From:To:Cc:Subject;
-	b=lqmCgD+Vc99G1kH6NNNXA/HlOc+oYucOuw5M5dpElI+mQ20RvBkBFr+l7WUC2wKA+
-	 ikNEEjcCrcbPgive+feZXAY9KFc2LxXwc0RK2Y9eWscYJzxNgV1EvuI9Jg1ToPAcdd
-	 /NH2IPAELi076xjJt0DmX+Do9Z3GseS8HLJ0bCapBaX0cMXBz4k60XzZ+fIgldgljH
-	 2xuWhtyqtY0eCM5UGjQSBTmVTQrgpmRvPiilZRmm6HBWADukPKYMfHr5ZmbtX4Ys4J
-	 In1/lnW9Y4L4gasuZWXqjVhKG8XICaf1AACYPdVzu940ajvPJV9SfupRA8X/K/ckdC
-	 BSk59uDWabdrA==
-Date: Thu, 28 May 2026 16:55:28 +0100
-From: Mark Brown <broonie@kernel.org>
-To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Networking <netdev@vger.kernel.org>
-Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Linux Next Mailing List <linux-next@vger.kernel.org>,
-	Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>,
-	Lucien Jheng <lucienzx159@gmail.com>
-Subject: linux-next: manual merge of the net-next tree with the net tree
-Message-ID: <ahhlcK0ufJn0VEzM@sirena.org.uk>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BLst1YZD";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="sYRS+faM"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1779984093;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=cao5gERt16FVWVNp7KK/pfGkUyLMcAKURayz3il4e7o=;
+	b=BLst1YZDbtgGN/ok2f2lBiAwsS6SfM5Awb9N5UYoqH0m2HlRM8bIzasri/uRH3DUo6r3z+
+	a4xn9+qJm1NHxTQXvsLsTfxAGh/fbuN12HIKUPKeitH70J6Fz5ROJ/+D9Hd0eawusrheHt
+	sryOaob5s5EmAM67Zi5m205EPTcH/4g=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-286-pAKCLYI7Nm-LVjDVaoOx8g-1; Thu, 28 May 2026 12:01:32 -0400
+X-MC-Unique: pAKCLYI7Nm-LVjDVaoOx8g-1
+X-Mimecast-MFC-AGG-ID: pAKCLYI7Nm-LVjDVaoOx8g_1779984091
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-48fd3449e61so5632655e9.1
+        for <netdev@vger.kernel.org>; Thu, 28 May 2026 09:01:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1779984090; x=1780588890; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=cao5gERt16FVWVNp7KK/pfGkUyLMcAKURayz3il4e7o=;
+        b=sYRS+faMy8VCJJrdTTWEAQVc72ByxCQSTbr4W0kEOQx4tDoywOy56DE+PiW802aKno
+         92OGwj+fVbQFUQjnVEfn5lITUfbNMhwgIDVByU5yy3EvQOuyFUotaGa1QGBr3bdBJzu+
+         m2fCZHzVSyV8AWlRSznrobru/tqJ9z7KIRoEzjKrekyjFYFVipIVFfJkjsDzA3LmRUzc
+         LB8K5A4dRNvs8al1XQf8/3RzNQMJdDDuWifLXzVaF73lysaWRz1lOZIgRE+ztoLHkysf
+         KE3RED6ldhaZ+JACZMX2nbofuPM+69f9YzFmK1rusH3r6eUkz+rES00yaQGZ1Nuodx4/
+         ZwFg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779984090; x=1780588890;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=cao5gERt16FVWVNp7KK/pfGkUyLMcAKURayz3il4e7o=;
+        b=se9UGXzMRLJmPjadmax8aexDFFwTUs4evBgZJqgBswJadgJOLgihwK36or3YzRDIBs
+         Ug0xdi8jBTq5nF+LTLnFBYkdY+PPqys85r01iIlk/QVOyULehqAeRn97980I3nVFjB9N
+         eA235yP9JtiGubycETDHPp8XMZ5E2vgCJMmbEVE8GVDnywtfzuz0HhxQb6DyriffDC4z
+         NlWsnuuPTH3qaUNi1kCQif5GSDjyviGOzH8uK2WHNaLX3l8kOW3eiWll5SFU4YYZdx0J
+         svGydNTqG7DK3sHnLhpyV/w43JSGlHCVqVKlZJZsJVuTEPPJy6+gGlsuI8X+DxtodRld
+         GGxQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+oF5tK3cgGg2xysv5EVpSZGptA1pTg7RigvvNXfpuZBXYc+hsrKp7qJhvR0mNskvXTUIcmn4k=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyKaXWalwJ4VHwGBHMIFayq4icaWqYvleVvzs0DP9MCbF42EQ6V
+	OkmXB30qeV8EcUnHrfSUMWi0g1KMG3vVvm59XeEafcYcAdd7J1lHuX0CvEDVdh48zWopeHT5y1a
+	1ITFw7lXCyAX1+omgI/OeTxUTxOogFrKwfMNqIfV7mseoS7JulJzDd6q6
+X-Gm-Gg: Acq92OHPS9G40MxjcISWee3kuckaDb8xsLsW+CFhWzG9JWO6peyYEphQ3yLgtFtYUL5
+	o+a2Q4Lxbu7rY+AHzkVxNm3Y/l5QlHpLX/f0daDLnMsP2EwyRXo7yjB1WuxswredO/opEfYrcvT
+	bdq5flkqi/8m1nR6VZ7eeuSyQZgd2G392YXxCQqYzcCfCApO+JVWYykvzrj86XO80dx7BhnB9Gg
+	PTNVa9vXIBOF8xKhHqoZ/K0ZSn+UaYASRraU0iV4GA3NSJb3QHvy8d5o6Uwi0KXX3I+0k8JOvLo
+	9LFEI7G9XK/H2EUkJEd9+IG+twLnFmCiyMWOBRUQzzWHmXdK0SqoDFBImOZ69zobof6ShvAgllP
+	GoRL90jh+RSmQKJvp9R50lQ==
+X-Received: by 2002:a5d:5f56:0:b0:44c:e7f6:3a5c with SMTP id ffacd0b85a97d-45ee51f1528mr2934775f8f.0.1779984090433;
+        Thu, 28 May 2026 09:01:30 -0700 (PDT)
+X-Received: by 2002:a5d:5f56:0:b0:44c:e7f6:3a5c with SMTP id ffacd0b85a97d-45ee51f1528mr2934730f8f.0.1779984089798;
+        Thu, 28 May 2026 09:01:29 -0700 (PDT)
+Received: from tp ([2a02:29e1:404:f800:9fbc:ecd8:5c1a:509c])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45edb5b2bbfsm14995087f8f.32.2026.05.28.09.01.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 28 May 2026 09:01:29 -0700 (PDT)
+Date: Thu, 28 May 2026 18:01:27 +0200
+From: Beniamino Galvani <bgalvani@redhat.com>
+To: =?iso-8859-1?B?zfFpZ28=?= Huguet <ihuguet@redhat.com>
+Cc: Stefano Brivio <sbrivio@redhat.com>,
+	Thorsten Leemhuis <regressions@leemhuis.info>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
+	Yumei Huang <yuhuang@redhat.com>, Ido Schimmel <idosch@idosch.org>,
+	Justin Iurman <justin.iurman@gmail.com>,
+	David Ahern <dsahern@kernel.org>,
+	David Gibson <david@gibson.dropbear.id.au>,
+	Linux kernel regressions list <regressions@lists.linux.dev>
+Subject: Re: Problem with IPv6 privacy addresses in 7.0
+Message-ID: <ahhm1-XfnsWyIWDV@tp>
+References: <675083b4-e015-4ff3-836c-798e0a971194@suse.de>
+ <20260528073849.759da84a@elisabeth>
+ <baba855a-7cc9-409e-9c20-6e50f35d255a@suse.de>
+ <20260528131250.1352ab48@elisabeth>
+ <b21c598b-879c-4f6a-9dc8-27e5c362803b@suse.de>
+ <bd669eaf-64dc-4217-bae0-4a531e473762@leemhuis.info>
+ <20260528153202.14900687@elisabeth>
+ <CACT4ouf5ZqGgb=RO8_7NovLCvYKLKL4vD70dEe6xUODT1UEcSA@mail.gmail.com>
+ <20260528165320.15b90ded@elisabeth>
+ <CACT4oue2EMM9Kfsm9Jii2rG9ooi=D37PK=8886cpLuBkwhrOxw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="soxlRVeWDInW4BKF"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CACT4oue2EMM9Kfsm9Jii2rG9ooi=D37PK=8886cpLuBkwhrOxw@mail.gmail.com>
 
+On Thu, May 28, 2026 at 05:24:28PM +0200, Íñigo Huguet wrote:
+> On Thu, May 28, 2026 at 4:53 PM Stefano Brivio <sbrivio@redhat.com> wrote:
+> > I think what's considered UAPI in this case isn't so clear-cut. I guess
+> > it would have been pretty hard for anybody not familiar with
+> > NetworkManager's codebase to imagine that an application would rely on
+> > IPv6 addresses (and only IPv6) to be returned in the reverse order.
+> 
+> IMHO it's not because an application would rely on the order. It's
+> because the order matters, as the first one is considered the primary.
+> This is not NetworkManager specific. Or I am mistaken? I'm speaking by
+> memory
 
---soxlRVeWDInW4BKF
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Yes, exactly. If you do:
 
-Hi all,
+ ip addr add dev X 3fff::1/64
+ ip addr dev dev X 3fff::2/64
 
-Today's linux-next merge of the net-next tree got a conflict in:
+then the old kernel chooses the address that was added last as source
+address for outgoing communications. With the new kernel it chooses
+the address that was added first.
 
-  drivers/net/phy/air_en8811h.c
+I think that any script or network management tool that cares about
+the source address selection is impacted. Indeed, the commit had
+effects on one of the selftests, which had to be modified to change
+the order of iproute2 invocations.
+ 
+> > > If the fix must be in NetworkManager, we only need to parse them in
+> > > non-reverse order like IPv4, I guess.
+> >
+> > But that would then require some form of detection, and, at least
+> > according to Fernando, isn't the most robust option anyway, as ideally
+> > NetworkManager shouldn't rely on the order at all.
+> 
+> True
 
-between commit:
+Correct, if the new behavior is considered better, there should be a
+way to detect which order must be used. Otherwise userspace tools
+won't be able to maintain the same behavior with different kernels.
 
-  d895767c33781 ("net: phy: air_en8811h: add AN8811HB MCU assert/deassert s=
-upport")
+Beniamino
 
-=66rom the net tree and commits:
-
-  dddfadd75197e ("net: phy: Add Airoha phy library for shared code")
-  5226bb6634cdf ("net: phy: air_phy_lib: Factorize BuckPBus register access=
-ors")
-  e08f0ea6daf2e ("net: phy: Rename Airoha common BuckPBus register accessor=
-s")
-
-=66rom the net-next tree.
-
-I fixed it up (see below) and can carry the fix as necessary. This
-is now fixed as far as linux-next is concerned, but any non trivial
-conflicts should be mentioned to your upstream maintainer when your tree
-is submitted for merging.  You may also want to consider cooperating
-with the maintainer of the conflicting tree to minimise any particularly
-complex conflicts.
-
-diff --cc drivers/net/phy/air_en8811h.c
-index a86129ce693c2,a42898ae41358..0000000000000
---- a/drivers/net/phy/air_en8811h.c
-+++ b/drivers/net/phy/air_en8811h.c
-@@@ -260,218 -229,6 +245,31 @@@ static const unsigned long en8811h_led_
-  					      BIT(TRIGGER_NETDEV_RX)          |
-  					      BIT(TRIGGER_NETDEV_TX);
- =20
-- static int air_phy_read_page(struct phy_device *phydev)
-- {
-- 	return __phy_read(phydev, AIR_EXT_PAGE_ACCESS);
-- }
--=20
-- static int air_phy_write_page(struct phy_device *phydev, int page)
-- {
-- 	return __phy_write(phydev, AIR_EXT_PAGE_ACCESS, page);
-- }
--=20
- +static int __air_pbus_reg_write(struct mdio_device *mdiodev,
- +				u32 pbus_reg, u32 pbus_data)
- +{
- +	int ret;
- +
- +	ret =3D __mdiobus_write(mdiodev->bus, mdiodev->addr, AIR_EXT_PAGE_ACCESS,
- +			      upper_16_bits(pbus_reg));
- +	if (ret < 0)
- +		return ret;
- +
- +	ret =3D __mdiobus_write(mdiodev->bus, mdiodev->addr, AIR_PBUS_ADDR_HIGH,
- +			      FIELD_GET(AIR_PBUS_REG_ADDR_HIGH_MASK, pbus_reg));
- +	if (ret < 0)
- +		return ret;
- +
- +	ret =3D __mdiobus_write(mdiodev->bus, mdiodev->addr,
- +			      FIELD_GET(AIR_PBUS_REG_ADDR_LOW_MASK, pbus_reg),
- +			      lower_16_bits(pbus_data));
- +	if (ret < 0)
- +		return ret;
- +
- +	return __mdiobus_write(mdiodev->bus, mdiodev->addr, AIR_PBUS_DATA_HIGH,
- +			       upper_16_bits(pbus_data));
- +}
- +
-- static int __air_buckpbus_reg_write(struct phy_device *phydev,
-- 				    u32 pbus_address, u32 pbus_data)
-- {
-- 	int ret;
--=20
-- 	ret =3D __phy_write(phydev, AIR_BPBUS_MODE, AIR_BPBUS_MODE_ADDR_FIXED);
-- 	if (ret < 0)
-- 		return ret;
--=20
-- 	ret =3D __phy_write(phydev, AIR_BPBUS_WR_ADDR_HIGH,
-- 			  upper_16_bits(pbus_address));
-- 	if (ret < 0)
-- 		return ret;
--=20
-- 	ret =3D __phy_write(phydev, AIR_BPBUS_WR_ADDR_LOW,
-- 			  lower_16_bits(pbus_address));
-- 	if (ret < 0)
-- 		return ret;
--=20
-- 	ret =3D __phy_write(phydev, AIR_BPBUS_WR_DATA_HIGH,
-- 			  upper_16_bits(pbus_data));
-- 	if (ret < 0)
-- 		return ret;
--=20
-- 	ret =3D __phy_write(phydev, AIR_BPBUS_WR_DATA_LOW,
-- 			  lower_16_bits(pbus_data));
-- 	if (ret < 0)
-- 		return ret;
--=20
-- 	return 0;
-- }
--=20
-- static int air_buckpbus_reg_write(struct phy_device *phydev,
-- 				  u32 pbus_address, u32 pbus_data)
-- {
-- 	int saved_page;
-- 	int ret =3D 0;
--=20
-- 	saved_page =3D phy_select_page(phydev, AIR_PHY_PAGE_EXTENDED_4);
--=20
-- 	if (saved_page >=3D 0) {
-- 		ret =3D __air_buckpbus_reg_write(phydev, pbus_address,
-- 					       pbus_data);
-- 		if (ret < 0)
-- 			phydev_err(phydev, "%s 0x%08x failed: %d\n", __func__,
-- 				   pbus_address, ret);
-- 	}
--=20
-- 	return phy_restore_page(phydev, saved_page, ret);
-- }
--=20
-- static int __air_buckpbus_reg_read(struct phy_device *phydev,
-- 				   u32 pbus_address, u32 *pbus_data)
-- {
-- 	int pbus_data_low, pbus_data_high;
-- 	int ret;
--=20
-- 	ret =3D __phy_write(phydev, AIR_BPBUS_MODE, AIR_BPBUS_MODE_ADDR_FIXED);
-- 	if (ret < 0)
-- 		return ret;
--=20
-- 	ret =3D __phy_write(phydev, AIR_BPBUS_RD_ADDR_HIGH,
-- 			  upper_16_bits(pbus_address));
-- 	if (ret < 0)
-- 		return ret;
--=20
-- 	ret =3D __phy_write(phydev, AIR_BPBUS_RD_ADDR_LOW,
-- 			  lower_16_bits(pbus_address));
-- 	if (ret < 0)
-- 		return ret;
--=20
-- 	pbus_data_high =3D __phy_read(phydev, AIR_BPBUS_RD_DATA_HIGH);
-- 	if (pbus_data_high < 0)
-- 		return pbus_data_high;
--=20
-- 	pbus_data_low =3D __phy_read(phydev, AIR_BPBUS_RD_DATA_LOW);
-- 	if (pbus_data_low < 0)
-- 		return pbus_data_low;
--=20
-- 	*pbus_data =3D pbus_data_low | (pbus_data_high << 16);
-- 	return 0;
-- }
--=20
-- static int air_buckpbus_reg_read(struct phy_device *phydev,
-- 				 u32 pbus_address, u32 *pbus_data)
-- {
-- 	int saved_page;
-- 	int ret =3D 0;
--=20
-- 	saved_page =3D phy_select_page(phydev, AIR_PHY_PAGE_EXTENDED_4);
--=20
-- 	if (saved_page >=3D 0) {
-- 		ret =3D __air_buckpbus_reg_read(phydev, pbus_address, pbus_data);
-- 		if (ret < 0)
-- 			phydev_err(phydev, "%s 0x%08x failed: %d\n", __func__,
-- 				   pbus_address, ret);
-- 	}
--=20
-- 	return phy_restore_page(phydev, saved_page, ret);
-- }
--=20
-- static int __air_buckpbus_reg_modify(struct phy_device *phydev,
-- 				     u32 pbus_address, u32 mask, u32 set)
-- {
-- 	int pbus_data_low, pbus_data_high;
-- 	u32 pbus_data_old, pbus_data_new;
-- 	int ret;
--=20
-- 	ret =3D __phy_write(phydev, AIR_BPBUS_MODE, AIR_BPBUS_MODE_ADDR_FIXED);
-- 	if (ret < 0)
-- 		return ret;
--=20
-- 	ret =3D __phy_write(phydev, AIR_BPBUS_RD_ADDR_HIGH,
-- 			  upper_16_bits(pbus_address));
-- 	if (ret < 0)
-- 		return ret;
--=20
-- 	ret =3D __phy_write(phydev, AIR_BPBUS_RD_ADDR_LOW,
-- 			  lower_16_bits(pbus_address));
-- 	if (ret < 0)
-- 		return ret;
--=20
-- 	pbus_data_high =3D __phy_read(phydev, AIR_BPBUS_RD_DATA_HIGH);
-- 	if (pbus_data_high < 0)
-- 		return pbus_data_high;
--=20
-- 	pbus_data_low =3D __phy_read(phydev, AIR_BPBUS_RD_DATA_LOW);
-- 	if (pbus_data_low < 0)
-- 		return pbus_data_low;
--=20
-- 	pbus_data_old =3D pbus_data_low | (pbus_data_high << 16);
-- 	pbus_data_new =3D (pbus_data_old & ~mask) | set;
-- 	if (pbus_data_new =3D=3D pbus_data_old)
-- 		return 0;
--=20
-- 	ret =3D __phy_write(phydev, AIR_BPBUS_WR_ADDR_HIGH,
-- 			  upper_16_bits(pbus_address));
-- 	if (ret < 0)
-- 		return ret;
--=20
-- 	ret =3D __phy_write(phydev, AIR_BPBUS_WR_ADDR_LOW,
-- 			  lower_16_bits(pbus_address));
-- 	if (ret < 0)
-- 		return ret;
--=20
-- 	ret =3D __phy_write(phydev, AIR_BPBUS_WR_DATA_HIGH,
-- 			  upper_16_bits(pbus_data_new));
-- 	if (ret < 0)
-- 		return ret;
--=20
-- 	ret =3D __phy_write(phydev, AIR_BPBUS_WR_DATA_LOW,
-- 			  lower_16_bits(pbus_data_new));
-- 	if (ret < 0)
-- 		return ret;
--=20
-- 	return 0;
-- }
--=20
-- static int air_buckpbus_reg_modify(struct phy_device *phydev,
-- 				   u32 pbus_address, u32 mask, u32 set)
-- {
-- 	int saved_page;
-- 	int ret =3D 0;
--=20
-- 	saved_page =3D phy_select_page(phydev, AIR_PHY_PAGE_EXTENDED_4);
--=20
-- 	if (saved_page >=3D 0) {
-- 		ret =3D __air_buckpbus_reg_modify(phydev, pbus_address, mask,
-- 						set);
-- 		if (ret < 0)
-- 			phydev_err(phydev, "%s 0x%08x failed: %d\n", __func__,
-- 				   pbus_address, ret);
-- 	}
--=20
-- 	return phy_restore_page(phydev, saved_page, ret);
-- }
--=20
-  static int __air_write_buf(struct phy_device *phydev, u32 address,
-  			   const struct firmware *fw)
-  {
-@@@ -664,16 -373,8 +463,16 @@@ static int an8811hb_load_firmware(struc
-  {
-  	int ret;
- =20
- +	ret =3D an8811hb_mcu_assert(phydev);
- +	if (ret < 0)
- +		return ret;
- +
- +	ret =3D an8811hb_mcu_deassert(phydev);
- +	if (ret < 0)
- +		return ret;
- +
-- 	ret =3D air_buckpbus_reg_write(phydev, EN8811H_FW_CTRL_1,
-- 				     EN8811H_FW_CTRL_1_START);
-+ 	ret =3D air_phy_buckpbus_reg_write(phydev, EN8811H_FW_CTRL_1,
-+ 					 EN8811H_FW_CTRL_1_START);
-  	if (ret < 0)
-  		return ret;
- =20
-@@@ -760,18 -461,8 +559,18 @@@ static int en8811h_restart_mcu(struct p
-  {
-  	int ret;
- =20
- +	if (phy_id_compare_model(phydev->phy_id, AN8811HB_PHY_ID)) {
- +		ret =3D an8811hb_mcu_assert(phydev);
- +		if (ret < 0)
- +			return ret;
- +
- +		ret =3D an8811hb_mcu_deassert(phydev);
- +		if (ret < 0)
- +			return ret;
- +	}
- +
-- 	ret =3D air_buckpbus_reg_write(phydev, EN8811H_FW_CTRL_1,
-- 				     EN8811H_FW_CTRL_1_START);
-+ 	ret =3D air_phy_buckpbus_reg_write(phydev, EN8811H_FW_CTRL_1,
-+ 					 EN8811H_FW_CTRL_1_START);
-  	if (ret < 0)
-  		return ret;
- =20
-@@@ -1324,23 -996,16 +1123,23 @@@ static int an8811hb_probe(struct phy_de
-  	/* Co-Clock Output */
-  	ret =3D an8811hb_clk_provider_setup(&phydev->mdio.dev, &priv->hw);
-  	if (ret)
- -		return ret;
- +		goto err_dev_create;
- =20
-  	/* Configure led gpio pins as output */
-- 	ret =3D air_buckpbus_reg_modify(phydev, AN8811HB_GPIO_OUTPUT,
-- 				      AN8811HB_GPIO_OUTPUT_345,
-- 				      AN8811HB_GPIO_OUTPUT_345);
-+ 	ret =3D air_phy_buckpbus_reg_modify(phydev, AN8811HB_GPIO_OUTPUT,
-+ 					  AN8811HB_GPIO_OUTPUT_345,
-+ 					  AN8811HB_GPIO_OUTPUT_345);
-  	if (ret < 0)
- -		return ret;
- +		goto err_dev_create;
- =20
-  	return 0;
- +
- +err_dev_create:
- +	mdio_device_remove(mdiodev);
- +
- +err_dev_free:
- +	mdio_device_free(mdiodev);
- +	return ret;
-  }
- =20
-  static int en8811h_probe(struct phy_device *phydev)
-
---soxlRVeWDInW4BKF
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmoYZXAACgkQJNaLcl1U
-h9BIPQf9FsVt0wHSY12fYNLGr2wW0yZ0dUWgpbu7VcnG3DoN62kuwcBHvA9PeXLk
-L2g5pfdR1TjNm4g3/FOefDLk7RdfiNIQKJR8OSMdi9tm/eml7PhIeDZpOWRkiMTd
-dNCNqGZofn26mc1Ym7KAf2e7qlSi0sfgPvanZQjS/Jrjz0qRepSvzw8KbY7RD9bq
-CRDugA1D2tSWablPe6QJ4/INddnak7I/qou0Xk5ToIbvlgKPwnsruuZwPey0vxGV
-2S+mf/p/Ukc2FfH2fScds3CfnHx2Zwoy06IHbgGHiCA23xGlco+G0xGPdzMes5N8
-4qNjzJkiUzXpAio0xqs9hovJOxWCkA==
-=qd7/
------END PGP SIGNATURE-----
-
---soxlRVeWDInW4BKF--
