@@ -1,134 +1,118 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+Received: from smtpbgsg1.qq.com (smtpbgsg1.qq.com [54.254.200.92])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DA232F547F;
-	Thu, 28 May 2026 02:28:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 927C62F7F03
+	for <netdev@vger.kernel.org>; Thu, 28 May 2026 02:29:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.254.200.92
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779935292; cv=none; b=XerZIHVEUV0fawLu1A22HcfkHlmY87Llt0s4WeJwtL2mdDNzyDPX1OFM/1t8C1Tc2M9n2HnudUiWlE8KpmojJzI26AofsZRrcl0/uYG4iIB15Qj8nqC74OdOzyK10l95TBRkVjrwqgo4v+wKy5Swj8pcP7mMA0+HMxy/I9a3obg=
+	t=1779935400; cv=none; b=TiR4CI1saH8hUzJBRShUiK1AoRsPgXLhLWkqKzIgpkDTYWRH6Oa97fRdfUv1MBIAPEHjAM89KKPa3J1ZqYEzTmp3Ng+htr+EDyPRDK0sQjkJcgsrug5+UWko/4T5ij+SydZrhIy/komib7rPKDih+zLsAoOp44ULi9I+3BQu8Vg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779935292; c=relaxed/simple;
-	bh=+sI5oBeiA711cTjYazO87vWojX8RwbWyWB48rf5prT4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=m8LT/nfSLH0aOS/4necsIl+DOIrOWbyqI/Ip6X1wiPwilA8icTlwrL0mrEv6ovXJyF8T50+thqoJYSE5WvP9Bl/+xL4fqzINWz+2t0rkhGQ7deRqrsHv/hZ8YhzBswqiGQroXpV5QhbX0TWHYNbdzVAxQb7b00xk2h/GqGcKtYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=HPn8DkKz; arc=none smtp.client-ip=220.197.31.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="HPn8DkKz"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=tt
-	pY4O/HbToeiRyFQMbvoBRJhNWoVXKYO8MSM4OeT2Y=; b=HPn8DkKzzf2lteZECv
-	lYLgNIsSnJuWrdi8V5qM0sW5eOrMCD0k/isPj0eZF/wclzKHC7X98YGtYGxAwyPq
-	9cXyTwIr4S52b6eo2a1rYm2CzaesQUyybY2Wb5RIiqtxAiEEfwVmCBg6XBGkU0VO
-	YugbOecoQMcgheG/u8zBWgHMs=
-Received: from pek-lpg-core5.wrs.com (unknown [])
-	by gzga-smtp-mtada-g0-4 (Coremail) with SMTP id _____wCXd1P6pxdqPtEHAA--.1305S2;
-	Thu, 28 May 2026 10:27:07 +0800 (CST)
-From: Robert Garcia <rob_garcia@163.com>
-To: stable@vger.kernel.org,
-	Jamal Hadi Salim <jhs@mojatatu.com>
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	Manas <ghandatmanas@gmail.com>,
-	Rakshit Awasthi <rakshitawasthi17@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	"David S . Miller" <davem@davemloft.net>,
-	Jarek Poplawski <jarkao2@gmail.com>,
-	Robert Garcia <rob_garcia@163.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 5.15.y] net/sched: sch_red: Replace direct dequeue call with peek and qdisc_dequeue_peeked
-Date: Thu, 28 May 2026 10:27:06 +0800
-Message-Id: <20260528022706.2651270-1-rob_garcia@163.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1779935400; c=relaxed/simple;
+	bh=JF0sTtMh/iXms6hZAHqTCAFqi23P9uzM/Uqn23eXiyY=;
+	h=From:To:Cc:References:In-Reply-To:Subject:Date:Message-ID:
+	 MIME-Version:Content-Type; b=LWxvrIqQhZ415moaK5P2OhXxMwDRtXyRfSuv7g6HA3ndx6g8q0pmmJb5/ntEYlqXLkHAxtoWc+9pcxsbygHBzGWexD/uWM9eEe8e7J8zf0U6UxNLD63VJO67gH/D0UEBhRL6npwlziXoKuOCI+OIcrQtelE2+cdWUJyWFa48/Fk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.254.200.92
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
+X-QQ-mid:Yeas3t1779935309t605t26495
+Received: from 3DB253DBDE8942B29385B9DFB0B7E889 (jiawenwu@trustnetic.com [122.231.28.113])
+X-QQ-SSF:0000000000000000000000000000000
+From: =?utf-8?b?Smlhd2VuIFd1?= <jiawenwu@trustnetic.com>
+X-BIZMAIL-ID: 12221602337143095102
+To: "'Simon Horman'" <horms@kernel.org>
+Cc: <netdev@vger.kernel.org>,
+	"'Mengyuan Lou'" <mengyuanlou@net-swift.com>,
+	"'Andrew Lunn'" <andrew+netdev@lunn.ch>,
+	"'David S. Miller'" <davem@davemloft.net>,
+	"'Eric Dumazet'" <edumazet@google.com>,
+	"'Jakub Kicinski'" <kuba@kernel.org>,
+	"'Paolo Abeni'" <pabeni@redhat.com>,
+	"'Kees Cook'" <kees@kernel.org>,
+	"'Larysa Zaremba'" <larysa.zaremba@intel.com>,
+	"'Jacob Keller'" <jacob.e.keller@intel.com>,
+	<netdev@vger.kernel.org>,
+	"'Mengyuan Lou'" <mengyuanlou@net-swift.com>,
+	"'Andrew Lunn'" <andrew+netdev@lunn.ch>,
+	"'David S. Miller'" <davem@davemloft.net>,
+	"'Eric Dumazet'" <edumazet@google.com>,
+	"'Jakub Kicinski'" <kuba@kernel.org>,
+	"'Paolo Abeni'" <pabeni@redhat.com>,
+	"'Kees Cook'" <kees@kernel.org>,
+	"'Larysa Zaremba'" <larysa.zaremba@intel.com>,
+	"'Jacob Keller'" <jacob.e.keller@intel.com>
+References: <20260525100543.27140-1-jiawenwu@trustnetic.com> <20260527143114.GM2256768@horms.kernel.org>
+In-Reply-To: <20260527143114.GM2256768@horms.kernel.org>
+Subject: RE: [PATCH net-next v2 0/3] wangxun: improve service task synchronization
+Date: Thu, 28 May 2026 10:28:28 +0800
+Message-ID: <065b01dcee49$ab3f2de0$01bd89a0$@trustnetic.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wCXd1P6pxdqPtEHAA--.1305S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxZrWrJw13Kr15XFW7Cw1rJFb_yoWrAr13pr
-	W3tr4DGFW0qr4UJF4UXF18try5CFsxCFn8X3yxWr1xJFWUuF1Yqr15Jw42qF95GrWUAwn3
-	tr1DXw10qr1q9aUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0piY0PDUUUUU=
-X-CM-SenderInfo: 5uresw5dufxti6rwjhhfrp/xtbC5h2J9GoXp-1QOwAA3K
+Content-Type: text/plain;
+	charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Mailer: Microsoft Outlook 16.0
+Content-Language: zh-cn
+Thread-Index: AQLGqosUc2I+RjMA+jgobyDmpqrvcgI1wUn7tD2J9rA=
+X-QQ-SENDSIZE: 520
+Feedback-ID: Yeas:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
+X-QQ-XMAILINFO: MuYE5/Bk7PRmE8RUP+6izm2uEmgzCqcR0E7y5B/aVXVjWFMkGZJ+T4/8
+	mEL+VP5GZ6MxDINe4G9PtLUQKchBq4+uSENq7KHEkqi6/DZOznggGUp+M+PNdoxE2d0qd/A
+	hyvF4Zoix9wetXZ/tCQhC2Qw5Bv5FJ/ZW1XqLkrVtFbkssaUBFodYnb58K2WQ0D5KBjnXPQ
+	9WJq7Jo4WGEN0RJ7Y0hWNyiP5pl1vxsL+nJNNO2nAfja7plI7gZ3SA5+5FByB+U9dxVtCgw
+	64RNkuz2ezrNxwz+UX2bXOYxGvX8vlYgUHKjuIflbuXmVio8jfNGxlCUY6Zax3omWQr/Y0m
+	O5ytmIb5FPDB1FhFGvMHD/ST4LRttoYWzGU/IaUcShBwo9QvBbmlPVRcTa7zrTw8FE5haRl
+	7KT22qgALvJUwGDnFaSegK+M5/JtFtuhYPOWCQ0TK7+jpqlItQbBmFTi+Dx4bqtYpH+rbVJ
+	Lxa4SVeWxAQ45ipwKS7ZYfBCwqvz7fltWDm3fBrQDRWtsclr2yXn3rDZMCO47ULo5QaA3XV
+	TVQMqNkzIWU5fFytf5H4jJ2urqrx2kqZj8HgHw1iyr0FE5UuF2sUGO0LFQ9NkbptcGFs/Jy
+	SwmEuWQ6ZV0/LxVn8kF1GfvxBUrZoy9kk8AAJIoPQrJg+mMHLApnmhzpWld0cLYupyqMje7
+	luI5aD3DssTDbP6mW6UBfI+RTUPr7ZiQa8y+vnCWBk74hDZAPPCQL4hiLDSPO3tszYW3eFK
+	Qh5d191wwD6gaP6a4lxWgOpeJB7UtIkti/G6gTqSFqimxQB5kR6uayc9ErmdE5kCS7NGJZ8
+	GHAZjKBGSD+jmLSBS48KWxBRY/VtUB28brZF2r2O7BXipwcPeua/PZiHCL1EqU/aWiDNZN0
+	+7bHjuz/2r2xtiSYwlG42KRRA6eiWUrwg36WA2joAdZHsyfm34pO7xkvfnCja0n5GXMUkrJ
+	bd8a5kXw6lBu/z/guAMRVCy2BFFXDQBs50af5tf2SZ5S13Klk+pKXpI/NhZm2yyh1oyrIpq
+	REDvZuZSnbS5E/N0cHre48vwzD5G4t8aTZqejWfYUSKSmOnCgVZbgzqCD9BdIBUR/PAPTm5
+	w==
+X-QQ-XMRINFO: NS+P29fieYNwqS3WCnRCOn9D1NpZuCnCRA==
+X-QQ-RECHKSPAM: 0
 
-From: Jamal Hadi Salim <jhs@mojatatu.com>
+On Wed, May 27, 2026 10:31 PM, Simon Horman wrote:
+> On Mon, May 25, 2026 at 06:05:40PM +0800, Jiawen Wu wrote:
+> > This series improves synchronization between asynchronous service work,
+> > device teardown, and module event handling in the Wangxun drivers.
+> >
+> > ---
+> > v2:
+> > - Check WX_STATE_DOWN before setting WX_STATE_SERVICE_SCHED.
+> >
+> > v1: https://lore.kernel.org/all/20260519080048.7448-1-jiawenwu@trustnetic.com
+> 
+> Hi Jiawen,
+> 
+> There are AI-generated reviews of this patch-set available at
+> https://netdev-ai.bots.linux.dev/ and https://sashiko.dev/
+> 
+> I would appreciate it if you could look over them and address any
+> issues that are either introduced by this patch-set, or directly
+> impact it.
+> 
+> I would not suggest expanding this patchset to address any other
+> pre-existing issues, but rather address them separately as appropriate.
 
-[ Upstream commit 458d5615272d3de535748342eb68ca492343048c ]
+Hi,
 
-When red qdisc has children (eg qfq qdisc) whose peek() callback is
-qdisc_peek_dequeued(), we could get a kernel panic. When the parent of such
-qdiscs (eg illustrated in patch #3 as tbf) wants to retrieve an skb from
-its child (red in this case), it will do the following:
- 1a. do a peek() - and when sensing there's an skb the child can offer, then
-     - the child in this case(red) calls its child's (qfq) peek.
-        qfq does the right thing and will return the gso_skb queue packet.
-        Note: if there wasnt a gso_skb entry then qfq will store it there.
- 1b. invoke a dequeue() on the child (red). And herein lies the problem.
-     - red will call the child's dequeue() which will essentially just
-       try to grab something of qfq's queue.
+Looked over AI-generated reviews, there are some issues need to be clarified.
 
-[   78.667668][  T363] KASAN: null-ptr-deref in range [0x0000000000000048-0x000000000000004f]
-[   78.667927][  T363] CPU: 1 UID: 0 PID: 363 Comm: ping Not tainted 7.1.0-rc1-00033-g46f74a3f7d57-dirty #790 PREEMPT(full)
-[   78.668263][  T363] Hardware name: Bochs Bochs, BIOS Bochs 01/01/2011
-[   78.668486][  T363] RIP: 0010:qfq_dequeue+0x446/0xc90 [sch_qfq]
-[   78.668718][  T363] Code: 54 c0 e8 dd 90 00 f1 48 c7 c7 e0 03 54 c0 48 89 de e8 ce 90 00 f1 48 8d 7b 48 b8 ff ff 37 00 48 89 fa 48 c1 e0 2a 48 c1 ea 03 <80> 3c 02 00 74 05 e8 ef a1 e1 f1 48 8b 7b 48 48 8d 54 24 58 48 8d
-[   78.669312][  T363] RSP: 0018:ffff88810de573e0 EFLAGS: 00010216
-[   78.669533][  T363] RAX: dffffc0000000000 RBX: 0000000000000000 RCX: 0000000000000000
-[   78.669790][  T363] RDX: 0000000000000009 RSI: 0000000000000004 RDI: 0000000000000048
-[   78.670044][  T363] RBP: ffff888110dc4000 R08: ffffffffb1b0885a R09: fffffbfff6ba9078
-[   78.670297][  T363] R10: 0000000000000003 R11: ffff888110e31c80 R12: 0000001880000000
-[   78.670560][  T363] R13: ffff888110dc4150 R14: ffff888110dc42b8 R15: 0000000000000200
-[   78.670814][  T363] FS:  00007f66a8f09c40(0000) GS:ffff888163428000(0000) knlGS:0000000000000000
-[   78.671110][  T363] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[   78.671324][  T363] CR2: 000055db4c6a30a8 CR3: 000000010da67000 CR4: 0000000000750ef0
-[   78.671585][  T363] PKRU: 55555554
-[   78.671713][  T363] Call Trace:
-[   78.671843][  T363]  <TASK>
-[   78.671936][  T363]  ? __pfx_qfq_dequeue+0x10/0x10 [sch_qfq]
-[   78.672148][  T363]  ? __pfx__printk+0x10/0x10
-[   78.672322][  T363]  ? srso_alias_return_thunk+0x5/0xfbef5
-[   78.672496][  T363]  ? lockdep_hardirqs_on_prepare+0xa8/0x1a0
-[   78.672706][  T363]  ? srso_alias_return_thunk+0x5/0xfbef5
-[   78.672875][  T363]  ? trace_hardirqs_on+0x19/0x1a0
-[   78.673047][  T363]  red_dequeue+0x65/0x270 [sch_red]
-[   78.673217][  T363]  ? srso_alias_return_thunk+0x5/0xfbef5
-[   78.673385][  T363]  tbf_dequeue.cold+0xb0/0x70c [sch_tbf]
-[   78.673566][  T363]  __qdisc_run+0x169/0x1900
+Sashiko-nipa exposes an existing issue in the wxvf resume flow.  The VF PM
+resume path currently calls wx_init_interrupt_scheme() followed by
+netif_device_attach(), but does not reopen the device when the interface
+was running before suspend. I plan to address this separately by fixing the
+wxvf resume flow.
 
-The right thing to do in #1b is to grab the skb off gso_skb queue.
-This patchset fixes that issue by changing #1b to use qdisc_dequeue_peeked()
-method instead.
+Sashiko-gemini exposes some issues but none of them were introduced by
+this patch set. And one issue I've clarified in the previous version.
 
-Fixes: 77be155cba4e ("pkt_sched: Add peek emulation for non-work-conserving qdiscs.")
-Reported-by: Manas <ghandatmanas@gmail.com>
-Reported-by: Rakshit Awasthi <rakshitawasthi17@gmail.com>
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260430152957.194015-2-jhs@mojatatu.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Robert Garcia <rob_garcia@163.com>
----
- net/sched/sch_red.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/net/sched/sch_red.c b/net/sched/sch_red.c
-index 1b69b7b90d85..063431a5ae1d 100644
---- a/net/sched/sch_red.c
-+++ b/net/sched/sch_red.c
-@@ -153,7 +153,7 @@ static struct sk_buff *red_dequeue(struct Qdisc *sch)
- 	struct red_sched_data *q = qdisc_priv(sch);
- 	struct Qdisc *child = q->qdisc;
- 
--	skb = child->dequeue(child);
-+	skb = qdisc_dequeue_peeked(child);
- 	if (skb) {
- 		qdisc_bstats_update(sch, skb);
- 		qdisc_qstats_backlog_dec(sch, skb);
--- 
-2.34.1
 
