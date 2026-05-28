@@ -1,33 +1,33 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC71E233923;
-	Thu, 28 May 2026 01:29:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47D8A2DB780;
+	Thu, 28 May 2026 01:30:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779931778; cv=none; b=u9diGnlGz43uTfbexJaE7M7YMfGkGObuBDjEg5DToecXmmxQl7dSjK2PR3la8U9Wy9ghT4CM7Wjh0XCKn9k5oPQof5vsL8XHK5pA8/98fO1ls9XCGsV6Vf3aIAziwqfoOEYBfncwsfAoa7ZmGjik7osPhCZeVgpE5Sn3C8ykbwU=
+	t=1779931823; cv=none; b=Awrz2H+RigaM84tnhFogwOAl73imQPeWmpnHc633H8Qj7zSnBfw32X+exFthtLHJHyLmQPbv9a+8SvY9wKRBuL8uloVGirKYjX36GIUjbfuixp5NyDvndhNLwLc+nWAwuhypDq+Y1oDQTa5Rs63hWFXoWy7Ks6N0zcUiolurI8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779931778; c=relaxed/simple;
-	bh=amDpNotis3yqirZEjH7r/atGsV0+bKPKYG2ewZAOu0E=;
+	s=arc-20240116; t=1779931823; c=relaxed/simple;
+	bh=0fCXW8Uhse/1O5r0kcMFw2l418yqOCKo+aeGu3FfdXU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=T2ARR+wXvnz6X2T/nAZTibmGgr5Nqacs3ZbZqV+dae+7xtiQf+XSdAZL2wSy6qxmgCHXhtaRK4m7SqEG5EFo+uuAwmjbL1SL7w/Vcy6qs+lQxinwqown5DPEtG4JEveAva2Oq3FGOriUN4MMeZlkD+DMEEDEuP8xGx+2TWbUNwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=c6HvHKpv; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=I/J/TPUPSKHFAi4VyOQ43sPcZnnRRHBZDB1fkHz2OzGedjy1GtnSjeVXZJYqLq2gGcieIFerdZsXL/pImy48fJNaUolZR0NeAqxHAm9WyIObJ9wVHTdv9rZELTgEgRSslpMvK9V85JgPLpkVJ9p923X+gLGUe1Hh9zNlVK3HjJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=Fcf7ulx4; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="c6HvHKpv"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="Fcf7ulx4"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=FXsePR+h/9s6oQ0vf99Byt+KAKcUxCsDa2eRWuUa1dw=; b=c6HvHKpvDTNVqu8NLCMNHlPf6z
-	/2UD71RSAH/TF8qZepSoEaQxkHa7BMa0kaFk4wvbBxGAPkLNbKdroOb8TQY8RiApWOe4rM+/spa+E
-	0H+Cu2CVaFR0Qxrwoi/Ak82OmFgUaPMb0DY+R0KPNA8ZXWPSPH04VMYQrxosKYdijm3c=;
+	bh=KXlIrUme6nI5TeSJuUb5HUxvaF4DfiOkDvcubgx5iXM=; b=Fcf7ulx49S3634h4bP50kc9wS1
+	UJQ0xQdTbBxYrz3TGVWJuZGZPoSq1NEI7gauP8gur8Qa1xd3PqIBwtw5u5KlVHWNdE6+7/Gue+6oW
+	MNQRknas0osuh1ExdTnGQsHGnP150VnGH5Iac4Sy6PMOYMbasQjkZP1Bt9Xs2Zr9U5L4=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1wSPYm-004pyX-9w; Thu, 28 May 2026 03:29:20 +0200
-Date: Thu, 28 May 2026 03:29:20 +0200
+	id 1wSPZa-004pzq-VK; Thu, 28 May 2026 03:30:10 +0200
+Date: Thu, 28 May 2026 03:30:10 +0200
 From: Andrew Lunn <andrew@lunn.ch>
 To: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
 Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
@@ -44,11 +44,11 @@ Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
 	kernel@collabora.com, netdev@vger.kernel.org,
 	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
 	linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v5 5/6] net: phy: Introduce Airoha AN8801R
- Gigabit Ethernet PHY driver
-Message-ID: <28727381-e56e-4d42-9f54-e7905fb2dff0@lunn.ch>
+Subject: Re: [PATCH net-next v5 6/6] net: phy: air_an8801: ensure maximum
+ available speed link use
+Message-ID: <35d88bd6-49ee-4ad7-848f-3c573c2a7c2d@lunn.ch>
 References: <20260526-add-airoha-an8801-support-v5-0-01aea8dee69b@collabora.com>
- <20260526-add-airoha-an8801-support-v5-5-01aea8dee69b@collabora.com>
+ <20260526-add-airoha-an8801-support-v5-6-01aea8dee69b@collabora.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -57,16 +57,18 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260526-add-airoha-an8801-support-v5-5-01aea8dee69b@collabora.com>
+In-Reply-To: <20260526-add-airoha-an8801-support-v5-6-01aea8dee69b@collabora.com>
 
-On Tue, May 26, 2026 at 04:58:10PM +0200, Louis-Alexis Eyraud wrote:
-> From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+On Tue, May 26, 2026 at 04:58:11PM +0200, Louis-Alexis Eyraud wrote:
+> To ensure that the Airoha AN8801R PHY uses the maximum available link
+> speed, an additional register write is needed to configure the function
+> mode for either 1G or 100M/10M operation after link detection.
 > 
-> Introduce a driver for the Airoha AN8801R Series Gigabit Ethernet
-> PHY; this currently supports setting up PHY LEDs, 10/100M, 1000M
-> speeds, and Wake on LAN and PHY interrupts.
+> So, in air_an8801 driver, implement a custom read_status callback, that
+> after genphy_read_status determines the link speed, sets the bit 0 of
+> the link mode register (REG_LINK_MODE) if the detected speed is 1Gbps,
+> or unsets it otherwise.
 > 
-> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 > Signed-off-by: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
 
 Reviewed-by: Andrew Lunn <andrew@lunn.ch>
