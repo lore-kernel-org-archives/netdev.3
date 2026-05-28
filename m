@@ -1,33 +1,33 @@
 Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B24A3E8343
-	for <netdev@vger.kernel.org>; Thu, 28 May 2026 14:29:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DDED3009E2
+	for <netdev@vger.kernel.org>; Thu, 28 May 2026 14:29:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779978580; cv=none; b=lbTjF/Z9r0BA/9zpc6oQX0TzauKOnALXeWqFAdrofVtnW0mkXBetbmWCCwdN0t2x/cMKwHogQQmdCNqLPayFkyOWET8NOZ2MCLC6kaxRBMm46VEbx/FfH/tA7hxAyrSAiO78H+Rkol+LLjYlxFaARHXArsJdBYVsLX7WK+fmqbU=
+	t=1779978581; cv=none; b=Ka8gjbK43OKplYc0ecHti6e26wn3dzdqoDtExQcTfWrbrJwac47pcLZTRX3XR+xjYssDoCHDk9fiN9ZTSPQaZ8ZhWQ/CuF3sWi0D6pmGd/TXPrnu1KDcHEDfU4TikmS4LNqP7GqfGR6KJPteDYh9K1Ud8S/MRJFjB18FNp2hKmQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779978580; c=relaxed/simple;
-	bh=YhRqEqVa5MTp/VVq/5fPEqPiVlRzxzF4drm+Yqgo4UA=;
+	s=arc-20240116; t=1779978581; c=relaxed/simple;
+	bh=8q5SqZ0i4J2ybFovZP1RDghk8G8AFcw8tfa9TJInM1A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WvsENcfqz/ReCumUQqnNc1opxNTAXB/hbWbT4VYdXCRqSZ7Vk4Ogthpp3pE7etxaaRpawMw7AdYNhtRm37SqmNgi8GhRMTTGMPE0HvGs/SjjAtdOka4SJQu66rRQ4ELon0fGn7hsDoQmJb25/ldXm/+e+O2aSuzySz+gjphr7ts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=q5ZNYbkr; arc=none smtp.client-ip=23.88.38.48
+	 MIME-Version; b=P8wxkVfOCh94D6yYPxc+4EQY6YMlPxoHAQlmjXtfjYUzcaR0PCChdPbjVAwVRe8YmIFL8vAb0Eie6BeZG0e2GXhKIBcK3R734US+6QfK2UhYlp1KjBCHHisk0BHZqGVKSm3GQAax0sbN2MA1PYo0+1Zc1RpYO/1sbVWUv0FzUvM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=zhpAmqRC; arc=none smtp.client-ip=23.88.38.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="q5ZNYbkr"
+	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="zhpAmqRC"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=simonwunderlich.de;
-	s=09092022; t=1779978575;
+	s=09092022; t=1779978574;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=4x7fYtKt6TJrTs4d6ISmPTw7WCMg1rpDK5hrgQIb/fw=;
-	b=q5ZNYbkrONDvLP63+NJIuAzoE7w7Y+6WbS+cLRKdfISEh93dx8CfV4KN7yoSb+1QnDqPds
-	jXQUmXgf/hN/QRXEUCOYaY+TD9DBKQG+NpLUWstLwj022725SYQnkCsygITwjH8PXSSjTe
-	IpfIyUWqSXbsn9kYRcj1HYKmJl2BonHL9KEnG8rYq9OZS8c6mwwJaVjdLvHE9gYskclmDA
-	2EQZM7oOc6u3NIOq21mucWkum/+jj0D9LldwNdhhx42pon1RA0PDgiQxqSNwhZKkqXo01v
-	bB6h3b+FAWQMOVpcjY3YIwdDHDfjRawyj6FYlUd3niSfzzst32HBjc44X2Cjow==
+	bh=aN0IUrUvp8EDXZgryZCRl5jSJ66WGgaIo5sHtV/HS1s=;
+	b=zhpAmqRCJb9aaG5+K884qKiZDrvHjgaKbHwLrYfoIRr5SUorjzpoYbm34vacTyh83uQBwo
+	B2J44j8zcMtUz77B2nTg0W51nJfBzQOpI9A9TCMl5l9T5mggeGNQ+FiGrPigGtzrq95b1f
+	g+jby1LMF1duRn0S+v6GOKn2gLOSYJdyvzw9HPSCIJkbXTMA8zhh1yufdxO7jq0ZR7obTn
+	911Fkl5cKeNLkl9DritqkEO6pOMPnFXNvrQAHvRKbTmlj1GXRmsMMSeKepBj5ILpPIeatu
+	bqJaS2/Dhkfcb2XWvg5STyiOWzvgddP3t1eOWEpfNwW1AB6+UuaRTdrh9FXSTw==
 From: Simon Wunderlich <sw@simonwunderlich.de>
 To: netdev@vger.kernel.org
 Cc: "David S. Miller" <davem@davemloft.net>,
@@ -37,11 +37,10 @@ Cc: "David S. Miller" <davem@davemloft.net>,
 	Simon Horman <horms@kernel.org>,
 	b.a.t.m.a.n@lists.open-mesh.org,
 	Sven Eckelmann <sven@narfation.org>,
-	Antonio Quartulli <antonio@mandelbit.com>,
 	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH net-next 13/15] batman-adv: tt: replace open-coded overflow check with helper
-Date: Thu, 28 May 2026 16:29:22 +0200
-Message-ID: <20260528142924.329658-14-sw@simonwunderlich.de>
+Subject: [PATCH net-next 11/15] batman-adv: replace non-atomic packet_size_max with (READ|WRITE)_ONCE
+Date: Thu, 28 May 2026 16:29:20 +0200
+Message-ID: <20260528142924.329658-12-sw@simonwunderlich.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260528142924.329658-1-sw@simonwunderlich.de>
 References: <20260528142924.329658-1-sw@simonwunderlich.de>
@@ -55,50 +54,98 @@ Content-Transfer-Encoding: 8bit
 
 From: Sven Eckelmann <sven@narfation.org>
 
-The commit 6043a632dd06 ("batman-adv: reject oversized global TT response
-buffers") introduced an open-coded check to ensure that the allocated
-buffer size can be stored in a u16. The check_add_overflow() helper can
-perform the addition and overflow check in one step, so use that instead.
+The maximum packet size of an meshif is only accessed as plain loads/stores
+and does not require full atomic_t semantics. Convert to an native integer
+and replace its users with READ_ONCE()/WRITE_ONCE() to avoid load/store
+tearing.
 
-Acked-by: Antonio Quartulli <antonio@mandelbit.com>
 Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
 ---
- net/batman-adv/translation-table.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ net/batman-adv/hard-interface.c    | 3 +--
+ net/batman-adv/mesh-interface.c    | 2 +-
+ net/batman-adv/translation-table.c | 6 +++---
+ net/batman-adv/types.h             | 2 +-
+ 4 files changed, 6 insertions(+), 7 deletions(-)
 
+diff --git a/net/batman-adv/hard-interface.c b/net/batman-adv/hard-interface.c
+index 85a1f1154bb42..af896b42b0d80 100644
+--- a/net/batman-adv/hard-interface.c
++++ b/net/batman-adv/hard-interface.c
+@@ -7,7 +7,6 @@
+ #include "hard-interface.h"
+ #include "main.h"
+ 
+-#include <linux/atomic.h>
+ #include <linux/bug.h>
+ #include <linux/byteorder/generic.h>
+ #include <linux/compiler.h>
+@@ -629,7 +628,7 @@ int batadv_hardif_min_mtu(struct net_device *mesh_iface)
+ 	 * overhead). For example, this value is used by TT to compute the
+ 	 * maximum local table size
+ 	 */
+-	atomic_set(&bat_priv->packet_size_max, min_mtu);
++	WRITE_ONCE(bat_priv->packet_size_max, min_mtu);
+ 
+ 	/* the real mesh-interface MTU is computed by removing the payload
+ 	 * overhead from the maximum amount of bytes that was just computed.
+diff --git a/net/batman-adv/mesh-interface.c b/net/batman-adv/mesh-interface.c
+index 72a0ec823e3ca..dd01174fa5892 100644
+--- a/net/batman-adv/mesh-interface.c
++++ b/net/batman-adv/mesh-interface.c
+@@ -779,7 +779,7 @@ static int batadv_meshif_init_late(struct net_device *dev)
+ 	WRITE_ONCE(bat_priv->log_level, 0);
+ #endif
+ 	WRITE_ONCE(bat_priv->fragmentation, 1);
+-	atomic_set(&bat_priv->packet_size_max, BATADV_MAX_MTU);
++	WRITE_ONCE(bat_priv->packet_size_max, BATADV_MAX_MTU);
+ 	atomic_set(&bat_priv->bcast_queue_left, BATADV_BCAST_QUEUE_LEN);
+ 	atomic_set(&bat_priv->batman_queue_left, BATADV_BATMAN_QUEUE_LEN);
+ 
 diff --git a/net/batman-adv/translation-table.c b/net/batman-adv/translation-table.c
-index 8903b2f84f512..5e134d08a80fd 100644
+index 515f26ff8c269..e319b0796f7c8 100644
 --- a/net/batman-adv/translation-table.c
 +++ b/net/batman-adv/translation-table.c
-@@ -799,10 +799,10 @@ batadv_tt_prepare_tvlv_global_data(struct batadv_orig_node *orig_node,
+@@ -649,7 +649,7 @@ bool batadv_tt_local_add(struct net_device *mesh_iface, const u8 *addr,
+ 	/* Ignore the client if we cannot send it in a full table response. */
+ 	table_size = batadv_tt_local_table_transmit_size(bat_priv);
+ 	table_size += batadv_tt_len(1);
+-	packet_size_max = atomic_read(&bat_priv->packet_size_max);
++	packet_size_max = READ_ONCE(bat_priv->packet_size_max);
+ 	if (table_size > packet_size_max) {
+ 		net_ratelimited_function(batadv_info, mesh_iface,
+ 					 "Local translation table size (%i) exceeds maximum packet size (%i); Ignoring new local tt entry: %pM\n",
+@@ -3069,7 +3069,7 @@ static bool batadv_send_other_tt_response(struct batadv_priv *bat_priv,
+ 
+ 	/* Don't send the response, if larger than fragmented packet. */
+ 	tt_len = sizeof(struct batadv_unicast_tvlv_packet) + tvlv_len;
+-	if (tt_len > atomic_read(&bat_priv->packet_size_max)) {
++	if (tt_len > READ_ONCE(bat_priv->packet_size_max)) {
+ 		net_ratelimited_function(batadv_info, bat_priv->mesh_iface,
+ 					 "Ignoring TT_REQUEST from %pM; Response size exceeds max packet size.\n",
+ 					 res_dst_orig_node->orig);
+@@ -3932,7 +3932,7 @@ bool batadv_tt_add_temporary_global_entry(struct batadv_priv *bat_priv,
+ void batadv_tt_local_resize_to_mtu(struct net_device *mesh_iface)
  {
- 	u16 num_vlan = 0;
- 	u16 tvlv_len = 0;
--	unsigned int change_offset;
- 	struct batadv_tvlv_tt_vlan_data *tt_vlan;
- 	struct batadv_orig_node_vlan *vlan;
- 	u16 total_entries = 0;
-+	size_t change_offset;
- 	u8 *tt_change_ptr;
- 	int vlan_entries;
- 	u16 sum_entries;
-@@ -826,14 +826,11 @@ batadv_tt_prepare_tvlv_global_data(struct batadv_orig_node *orig_node,
- 	if (*tt_len < 0)
- 		*tt_len = batadv_tt_len(total_entries);
+ 	struct batadv_priv *bat_priv = netdev_priv(mesh_iface);
+-	int packet_size_max = atomic_read(&bat_priv->packet_size_max);
++	int packet_size_max = READ_ONCE(bat_priv->packet_size_max);
+ 	int table_size, timeout = BATADV_TT_LOCAL_TIMEOUT / 2;
+ 	bool reduced = false;
  
--	if (change_offset > U16_MAX || *tt_len > U16_MAX - change_offset) {
-+	if (check_add_overflow(*tt_len, change_offset, &tvlv_len)) {
- 		*tt_len = 0;
- 		goto out;
- 	}
+diff --git a/net/batman-adv/types.h b/net/batman-adv/types.h
+index 58375c0a643b8..51880748bc2f5 100644
+--- a/net/batman-adv/types.h
++++ b/net/batman-adv/types.h
+@@ -1570,7 +1570,7 @@ struct batadv_priv {
+ 	 *  multiple fragmented skbs or a single frame if fragmentation is
+ 	 *  disabled
+ 	 */
+-	atomic_t packet_size_max;
++	u32 packet_size_max;
  
--	tvlv_len = *tt_len;
--	tvlv_len += change_offset;
--
- 	*tt_data = kmalloc(tvlv_len, GFP_ATOMIC);
- 	if (!*tt_data) {
- 		*tt_len = 0;
+ 	/**
+ 	 * @frag_seqno: incremental counter to identify chains of egress
 -- 
 2.47.3
 
