@@ -1,131 +1,135 @@
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2DE72E7364
-	for <netdev@vger.kernel.org>; Thu, 28 May 2026 16:08:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CE62286419
+	for <netdev@vger.kernel.org>; Thu, 28 May 2026 16:09:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779984530; cv=none; b=KVPxwy98imhjDgxlxFljXZR6RuSqOO2B7cpioPEogi3AvG/1nryCAwRXgSxd40UfH70D3GMMP9ZCXFrAzUw/9ZuO1wx31fwx/uGGDLj6rGAlMUHnEovEFbYy91v/SMYlXMW9QofnpMvnZHeiTRtxcnnqpqXy5Yk84ud837SFcM8=
+	t=1779984546; cv=none; b=AwBzD1tBOZ6O6yYZMIVojrLR9wFglQv4P+uCPMc7T5wfzQkyFwf0//t1G9H1+lT1DWTkW/MYmp14rR8b4P14BdlMJU7FsoYMY1cTFIOv3Py/qh0Ggd54w00tbVEHjvQeeWZRdopjBD+dH39lO38Pz3UULLLWaM6mjr28t3dD1kE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779984530; c=relaxed/simple;
-	bh=ArFEvS4iIE1COp0yWeMQ913sIk1iOU6y5FWc4jgQSiY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FmX1rC9jUBPhOcYrDK4glMjvKLbjpg7XdL4FKqpaMVSe6i25cIMlk1wGW85BV3yRSwLsE880k12W64prvZmZcvdmjezayrR8eL8P4dr6kAwp26Ndswb1IJgrD3HNguVQimfWyL0HB7yAHNR7Tep8QpbvX88TURWOZoTzUooqnMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ngt0zBZV; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1779984546; c=relaxed/simple;
+	bh=L6EIme8h3H8IyyRj+yncSw84nDKD54Hbxdp+a/xFmGM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jPOVe4SLHM6bY+7OZwURHCc+gchurDd4flRCVEcOPYj/enBGxQeKXyNZGkYAv/PQI9+1qF6ndmlvYCHOwLl8WO/AfM6+6wCQ2G7Er9wfajMxUJ7AakmuN+b/oJn53+4OoU3J5OF0lVMnN3GiQkveAQavGEE+aQEmZ32usdjNzTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aJmerr5Y; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ngt0zBZV"
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-49041fb8c23so53290725e9.0
-        for <netdev@vger.kernel.org>; Thu, 28 May 2026 09:08:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779984527; x=1780589327; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=vx53jYFxFDkAaLXRXoaHF+KJ6Qv4XL53bOT7CIR8w+k=;
-        b=Ngt0zBZVdrv9VisRHKAKEEYXzwa2DNKEprnFQ/4lSjytKPMaWTWAdd/81jdBsGFHIN
-         fC9zY4DJLTPs4Ndv97boyWNpGKH+JpvHCRE3XTgsFFjVtiLO0HPUvLMA76TWnV08lxc3
-         3w2XbN1ww4l0xZXXr/8KHN4MPdzbDyync+wc9RPixnWJ1AX5UpZXAM1BRukQYfCKLjGR
-         pWkgnR5ksnby8EwqFTNiWoNWDqQmKj9inGdjIViJ7MaRL3aKK9DJxXNyMjSgGVlb+0eX
-         tGsChi+BOajyjx4HemewYkfEupCGxfJ5GM01hZIWFRcX1otZTyA+EBuuadGQvwSPN0yb
-         RWOQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779984527; x=1780589327;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vx53jYFxFDkAaLXRXoaHF+KJ6Qv4XL53bOT7CIR8w+k=;
-        b=kyi4iOOEb6dizA1ntLN9PKFNs0LYo3bJ1Yd92Fr65LRJHqGKV2Tmw5K9PvYlYk4943
-         j9jc+QIWU369q2ABu2LBUyk2Q69VZuMyahMWVO36ES3uvcWgW6SnTXtUCo2+XHduWdRi
-         Sb/MgMiYUwCm4ezTH1mJGjCEd5MAJNii1UcKAJPgk/MDwgS86EIIoqdXq8fuM2EprMk5
-         de/eL2WJa7EAJNl5hWE1IwkyQjENWQ3912+LRoLkeWOB+9nHO6fLrp0t55fheRZxwLc1
-         vhv29xepUJHKX7YI9vHkc6iynlu1XjcVqCKDPy3YWx+CMfP/93Bw9tSfeFr8OvE9eeyd
-         VWqQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+7A23lRAdWlrKYR4B4Tv/mOlitHflvGfkm05Zra+1yg7HoqAM6jvvtJ1klt2XPzLLQQIHeuAo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwkskUnCREwIkSUjgyZisADKP4gwneghStAf/sSOd8TkrjwtDB4
-	E3cHBm6/RrPAStm0+nBQCVoKWE1CyVVN/W0mojbLlWcjqdUCulE3Y4E=
-X-Gm-Gg: Acq92OGuFvzGOOQbH1yczzmO2ZDd9ommKd/EEY6J/dWH4yvPkJcndM9yKUM5MCPW70D
-	1yd0PK5GfXMaBVS6XvGx7MQcteZx/7t6f6zml8HNPFPUC4NAyb2HKRuuIB/DrapPVlGgn8x0Ye/
-	OGP9Mv/K645nqF2Kmt7cUQZtARfnu1AI5z/dKx5nww3OWXXBsYdWa33awOajkw4WAy6ViOo2HHI
-	/iGaOqszXngAFH5ynNGy0i3YBBdmbyHHY+cwmU+qWBmGlI4V0OKFzYp0Y8FPlLKedYQF+IdUVbh
-	D/xJKBVqzmOlowRrwfv56Mn0o3/hffykbjSM/huXlB9MrlXIR8n7/74bb5YvW5A4Ao5kMbkrwoR
-	q0yzFKOAZgGr1unNNtA69JjXosLOh2DOV8N33UkfnPMCRntzoGPMIHYL8SK8n9FOfnzINw1V1ZT
-	TuKU2T+cri6/VaGsvA
-X-Received: by 2002:a05:600c:a012:b0:490:5191:6e26 with SMTP id 5b1f17b1804b1-490519170bamr421905655e9.18.1779984527176;
-        Thu, 28 May 2026 09:08:47 -0700 (PDT)
-Received: from debian.. ([2001:41d0:303:db6b::])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45ee4491d77sm6950094f8f.4.2026.05.28.09.08.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 May 2026 09:08:46 -0700 (PDT)
-From: Tristan Madani <tristmd@gmail.com>
-X-Google-Original-From: Tristan Madani <tristan@talencesecurity.com>
-To: Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aJmerr5Y"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61A811F000E9;
+	Thu, 28 May 2026 16:09:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779984544;
+	bh=h9g24AMvHPC82wp8alB06zIO1bChAGUywmcXHfgLSzg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=aJmerr5Yu9DJXjrB1+R/OUCZIzguGkJ/2WMfRBhgFoxct9tb2XG91s3oB39rcM2m0
+	 YtEKW/mkJqXUq4NRZeuTrt4+3AlJT+iG53E6oRjTiCkkQVDg/LT3NHtoJd77RTeu8K
+	 8AMi1+Kffv391i74QGAdoDZ/h4imuM9BmBk8r4HYv7MIDAJV5A8EJ6QOmvRgUSh+YI
+	 BowZSjMQZLGe2qx3zO74GvLfPJjQywX4Q/Rw16zMj0iJ86Ah6yT8O+u8jZnVymUC2m
+	 jXt4EF4W5+Qhjo7xcjqaM9GJncHXHKaTFyo6sqZu8oz64/dVfKzNIiz9NhvbOmMDuv
+	 18Pqv/t9U1tbg==
+Date: Thu, 28 May 2026 18:09:02 +0200
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+To: Alexander Lobakin <aleksander.lobakin@intel.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] net: shaper: use kfree_rcu() in net_shaper_flush()
-Date: Thu, 28 May 2026 16:08:45 +0000
-Message-ID: <20260528160845.2636043-1-tristan@talencesecurity.com>
-X-Mailer: git-send-email 2.47.3
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org, netdev@vger.kernel.org,
+	Xuegang Lu <xuegang.lu@airoha.com>
+Subject: Re: [PATCH net-next 1/6] net: airoha: Introduce airoha_gdm_dev struct
+Message-ID: <ahhonoI-oJ6gJqZ0@lore-desk>
+References: <20260527-airoha-eth-multi-serdes-preliminary-v1-0-ec6ed73ef7fc@kernel.org>
+ <20260527-airoha-eth-multi-serdes-preliminary-v1-1-ec6ed73ef7fc@kernel.org>
+ <433b9d9a-bd7c-44ad-b387-a789b326488e@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="Nb9J8kMZwq4Zf3k2"
+Content-Disposition: inline
+In-Reply-To: <433b9d9a-bd7c-44ad-b387-a789b326488e@intel.com>
 
-net_shaper_flush() frees shaper objects with plain kfree() after
-xa_erase(), but net_shaper_nl_get_doit() and net_shaper_nl_get_dumpit()
-read shaper objects under rcu_read_lock() via xa_load().  This creates a
-use-after-free window where an RCU reader may still hold a pointer to a
-shaper object that has been freed.
 
-The race is:
+--Nb9J8kMZwq4Zf3k2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-  CPU 0 (reader)                    CPU 1 (flush/unregister)
-  rcu_read_lock()
-  shaper = xa_load(...)             xa_lock()
-  // shaper points to valid obj     __xa_erase(...)
-                                    kfree(shaper)  <- frees immediately
-  net_shaper_fill_one(shaper)       xa_unlock()
-  // use-after-free
-  rcu_read_unlock()
+On May 28, Alexander Lobakin wrote:
+> From: Lorenzo Bianconi <lorenzo@kernel.org>
+> Date: Wed, 27 May 2026 12:21:15 +0200
+>=20
+> > EN7581 and AN7583 SoCs support connecting multiple external SerDes to G=
+DM3
+> > or GDM4 ports via a hw arbiter that manages the traffic in a TDM manner.
+> > As a result multiple net_devices can connect to the same GDM{3,4} port
+> > and there is a theoretical "1:n" relation between GDM port and
+> > net_devices.
+> > Introduce airoha_gdm_dev struct to collect net_device related info (e.g.
+> > net_device and external phy pointer). Please note this is just a
+> > preliminary patch and we are still supporting a single net_device for
+> > each GDM port. Subsequent patches will add support for multiple net_dev=
+ices
+> > connected to the same GDM port.
+> >=20
+> > Tested-by: Xuegang Lu <xuegang.lu@airoha.com>
+> > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+>=20
+> [...]
+>=20
+> > diff --git a/drivers/net/ethernet/airoha/airoha_eth.h b/drivers/net/eth=
+ernet/airoha/airoha_eth.h
+> > index d3781103abb5..c78cabbec753 100644
+> > --- a/drivers/net/ethernet/airoha/airoha_eth.h
+> > +++ b/drivers/net/ethernet/airoha/airoha_eth.h
+> > @@ -535,10 +535,15 @@ struct airoha_qdma {
+> >  	struct airoha_queue q_rx[AIROHA_NUM_RX_RING];
+> >  };
+> > =20
+> > +struct airoha_gdm_dev {
+> > +	struct airoha_gdm_port *port;
+> > +	struct net_device *dev;
+>=20
+> Nit: we now have priv_to_netdev() (I hope I remember its name
+> correctly), so that we no longer need to store a netdev backpointer in
+> netdev_priv structures.
+> Just an option, up to you.
 
-Other code paths in the same file already use kfree_rcu() correctly
-(net_shaper_pre_insert error path, net_shaper_notify_down,
-net_shaper_cap_pair_update, and net_shaper_rollback as of commit
-b8d7519352ba).  The struct net_shaper already contains an rcu_head field.
+I think you mean netdev_from_priv(), right?
+I guess I can fix if I need to repost, otherwise I will fix with with a
+dedicated patch. Agree?
 
-Fix by replacing kfree() with kfree_rcu() in net_shaper_flush() to
-defer freeing until after the RCU grace period.
+Regards,
+Lorenzo
 
-Found by source code audit.
+>=20
+> > +	struct airoha_eth *eth;
+> > +};
+> > +
+> >  struct airoha_gdm_port {
+> >  	struct airoha_qdma *qdma;
+> > -	struct airoha_eth *eth;
+> > -	struct net_device *dev;
+> > +	struct airoha_gdm_dev *dev;
+> >  	int id;
+> >  	int nbq;
+> > =20
+> Thanks,
+> Olek
 
-Fixes: ff7d4deb1f3e ("net-shapers: implement shaper cleanup on queue deletion")
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
----
- net/shaper/shaper.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+--Nb9J8kMZwq4Zf3k2
+Content-Type: application/pgp-signature; name=signature.asc
 
-diff --git a/net/shaper/shaper.c b/net/shaper/shaper.c
-index dea9270f3e57d..92a6939787240 100644
---- a/net/shaper/shaper.c
-+++ b/net/shaper/shaper.c
-@@ -1475,7 +1475,7 @@ static void net_shaper_flush(struct net_shaper_binding *binding)
- 	xa_lock(&hierarchy->shapers);
- 	xa_for_each(&hierarchy->shapers, index, cur) {
- 		__xa_erase(&hierarchy->shapers, index);
--		kfree(cur);
-+		kfree_rcu(cur, rcu);
- 	}
- 	xa_unlock(&hierarchy->shapers);
- 
--- 
-2.47.3
+-----BEGIN PGP SIGNATURE-----
 
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCahhongAKCRA6cBh0uS2t
+rCn3AP9L3HrDZO+dHLvad0WYopiz4hGx0009SRdHy+w2Kx7BBAEAjqX2Bemdw09X
+zNug8X2AKnTJnbKmtQJzquIA+MePbAw=
+=Fj6G
+-----END PGP SIGNATURE-----
+
+--Nb9J8kMZwq4Zf3k2--
