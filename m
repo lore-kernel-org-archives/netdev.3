@@ -1,149 +1,232 @@
-Received: from mta-201a.earthlink-vadesecure.net (mta-201a.earthlink-vadesecure.net [51.81.229.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FE93403E81;
-	Thu, 28 May 2026 18:04:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.81.229.180
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E5E1403E8E;
+	Thu, 28 May 2026 18:08:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779991442; cv=none; b=A3jYDl0SsZwJpIpiPuiGG58e7LQ6rsTJzHFqia16VybDA3APoldwdjFauWGEUtJ5ctAjFmDMLvECLV2+CU2OB0QPR4Nf15GBsox/BEIf2reZ+SNsvECbNtPZ0ETJBDRjo55q7+FSd4/tL6mQxg5YKcHhQbqF3/UorpoGONbwEoM=
+	t=1779991696; cv=none; b=K1LmYdOrQszGT9n6zbpvT+BaOfeBJO2Dg7EF3nlv5VFkt86snGzEmD6wk1gA/aX+E0TabsD3wR5Ihb0i2PMurmty7x9bryZwWr57C/lJio4cWGyy/q6FliebZ//eXlztm6aHVeDU0UsskXqPa4sIQgpj8qj3guVn0XoGOQedvas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779991442; c=relaxed/simple;
-	bh=J7Hoa1o2DODHqzE3OMeeezgCIxEnuRlyXm9GnyWtyAI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iMk3YCUTtUxe/OOjFEPbR2mG/PIU37IfsND4KXZ7r8tdE/usrEwZ0GMDGpazLzo7lW+x1iH92iyHClykRFlmotoA4x25W/W+9b0w/LeclWBzuyoGJkph0EsXwZIQdPj6BumLFzGufvCvfTXzDAE/S0Kj8amhtYR6K/pzIT+LF9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=onemain.com; spf=pass smtp.mailfrom=onemain.com; dkim=pass (2048-bit key) header.d=earthlink.net header.i=@earthlink.net header.b=euPQv9lF; arc=none smtp.client-ip=51.81.229.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=onemain.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onemain.com
+	s=arc-20240116; t=1779991696; c=relaxed/simple;
+	bh=R0170DRurt5KznohmtGzjOoU03o4QnlFYT7pbNh0Mfc=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=U3b3MfSesDmGOU8ydmDIu3e5LWpjlq9BndiMRn9uttdDavK5fpmBJ41WYz740fc0MP+qG3dDKwY3hZ38C9SLGNKrdr8FM+/AUDWheUBc2jFG2wPzTNTl5fgindSvnpHNr6wHqx73ZojEZbAfbSA4TwDXSps1P2KizbyPGJNoZOg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=Ha0wD8K+; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=earthlink.net header.i=@earthlink.net header.b="euPQv9lF"
-DKIM-Signature: v=1; a=rsa-sha256; bh=sREcGobRJlL/jCIYnZKmxSLOCUxI4fpeHElPx2
- Fu/uQ=; c=relaxed/relaxed; d=earthlink.net; h=from:reply-to:subject:
- date:to:cc:resent-date:resent-from:resent-to:resent-cc:in-reply-to:
- references:list-id:list-help:list-unsubscribe:list-unsubscribe-post:
- list-subscribe:list-post:list-owner:list-archive; q=dns/txt;
- s=dk12062016; t=1779991092; x=1780595892; b=euPQv9lFHk+cOGJEqHBymjov7JB
- cVkRNwebRQpcGZ+vGKYwAyO6P8jFuHSFgNaw6MezmNYutYOfLNm0J2adoJhdBgPIKZbw2Oi
- NWm1ClrX4D48eIME2Y2DL1mDLBYQ/bXxnwP8LxK7TsTFXp8hJCquJHw0O0yRnFVFvk7AMeJ
- IW2uSitBmWNObZsEv89XbcaVZtFSoVIyaGR9uTjKl47vAdsgdPDCX/w89TEN+deK9AK/+ki
- EUMsrLThVPhaAykHmOUnApQEXPXWIrdvGeh+KgXjtzNQuModTFwIAK7gCoR4FrXamyZJ6vs
- qUxDBNza4flnywo9NiWV4heooOJs3Pw==
-Received: from [192.168.0.23] ([50.47.159.51])
- by vsel2nmtao01p.internal.vadesecure.com with ngmta
- id 9e62da41-18b3cc741b01b10d; Thu, 28 May 2026 17:58:12 +0000
-Message-ID: <eb74ae1c-3027-42f5-ad5b-a6f2c2cd6a98@onemain.com>
-Date: Thu, 28 May 2026 10:57:55 -0700
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="Ha0wD8K+"
+Received: by linux.microsoft.com (Postfix, from userid 1173)
+	id 4EFC620B7167; Thu, 28 May 2026 11:07:58 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 4EFC620B7167
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1779991678;
+	bh=fmR34n8OOkEcXeaFsrYkS3bWekx70hrvA5+bSqAYTs4=;
+	h=From:To:Subject:Date:From;
+	b=Ha0wD8K+aRcYuKZoK5XXPNQbpCWAMoEP+bVpi8kt3UfiXApEI5reQFcZeg2Xw5WU3
+	 h7OlrgXF3F0/p1BNLPLyr7Q5w8IqqZAgEYSrhDM3p3rEJIUhUNKsmbaD5+7iGF5cZY
+	 BRJ7lhvs9UaRQp0sY76bhYL8aw4QkJA17O0qze98=
+From: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
+To: kys@microsoft.com,
+	haiyangz@microsoft.com,
+	wei.liu@kernel.org,
+	decui@microsoft.com,
+	longli@microsoft.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	kotaranov@microsoft.com,
+	horms@kernel.org,
+	ernis@linux.microsoft.com,
+	dipayanroy@linux.microsoft.com,
+	kees@kernel.org,
+	linux-hyperv@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-rdma@vger.kernel.org
+Subject: [PATCH net-next] net: mana: Cache MANA_QUERY_LINK_CONFIG result to avoid repeated HWC queries
+Date: Thu, 28 May 2026 11:07:51 -0700
+Message-ID: <20260528180757.1536640-1-ernis@linux.microsoft.com>
+X-Mailer: git-send-email 2.43.7
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Intel-wired-lan] [PATCH net] i40e: fix netdev leak in
- i40e_vsi_setup() error paths
-To: "Loktionov, Aleksandr" <aleksandr.loktionov@intel.com>,
- Dawei Feng <dawei.feng@seu.edu.cn>,
- "Nguyen, Anthony L" <anthony.l.nguyen@intel.com>
-Cc: "Kitszel, Przemyslaw" <przemyslaw.kitszel@intel.com>,
- "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
- "davem@davemloft.net" <davem@davemloft.net>,
- "edumazet@google.com" <edumazet@google.com>,
- "kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com"
- <pabeni@redhat.com>, "jesse.brandeburg@intel.com"
- <jesse.brandeburg@intel.com>,
- "intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "jianhao.xu@seu.edu.cn" <jianhao.xu@seu.edu.cn>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>,
- Zilin Guan <zilin@seu.edu.cn>
-References: <20260527110205.1780595-1-dawei.feng@seu.edu.cn>
- <IA3PR11MB89860869ABD5A159C01A5634E5092@IA3PR11MB8986.namprd11.prod.outlook.com>
-Content-Language: en-US
-From: Shannon Nelson <sln@onemain.com>
-In-Reply-To: <IA3PR11MB89860869ABD5A159C01A5634E5092@IA3PR11MB8986.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 5/28/26 01:49, Loktionov, Aleksandr wrote:
->
->> -----Original Message-----
->> From: Intel-wired-lan <intel-wired-lan-bounces@osuosl.org> On Behalf
->> Of Dawei Feng
->> Sent: Wednesday, May 27, 2026 1:02 PM
->> To: Nguyen, Anthony L <anthony.l.nguyen@intel.com>
->> Cc: Kitszel, Przemyslaw <przemyslaw.kitszel@intel.com>;
->> andrew+netdev@lunn.ch; davem@davemloft.net; edumazet@google.com;
->> kuba@kernel.org; pabeni@redhat.com; jesse.brandeburg@intel.com;
->> sln@onemain.com; intel-wired-lan@lists.osuosl.org;
->> netdev@vger.kernel.org; linux-kernel@vger.kernel.org;
->> jianhao.xu@seu.edu.cn; Dawei Feng <dawei.feng@seu.edu.cn>;
->> stable@vger.kernel.org; Zilin Guan <zilin@seu.edu.cn>
->> Subject: [Intel-wired-lan] [PATCH net] i40e: fix netdev leak in
->> i40e_vsi_setup() error paths
->>
->> i40e_config_netdev() allocates vsi->netdev for main and VMDQ VSIs. If
->> i40e_netif_set_realnum_tx_rx_queues(), i40e_devlink_create_port(), or
->> register_netdev() fails, i40e_vsi_setup() goes to err_netdev without
->> releasing the netdev. The existing cleanup only frees the netdev after
->> a successful register_netdev(), so these error paths leak the
->> allocation.
->>
->> Reorder the error paths at err_netdev to ensure proper cleanup of the
->> allocated device.
->>
->> The bug was first flagged by an experimental analysis tool we are
->> developing for kernel memory-management bugs while analyzing v6.13-
->> rc1. The tool is still under development and is not yet publicly
->> available. Manual inspection confirms that the bug is still present in
->> v7.1-rc5.
->>
->> An x86_64 allyesconfig build showed no new warnings. As we do not have
->> an Intel Ethernet Controller XL710 family adapter to test with, no
->> runtime testing was able to be performed.
->>
->> Fixes: 41c445ff0f48 ("i40e: main driver core")
->> Cc: stable@vger.kernel.org
->>
->> Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
->> Signed-off-by: Dawei Feng <dawei.feng@seu.edu.cn>
->> ---
->>   drivers/net/ethernet/intel/i40e/i40e_main.c | 6 ++++--
->>   1 file changed, 4 insertions(+), 2 deletions(-)
->>
->> diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c
->> b/drivers/net/ethernet/intel/i40e/i40e_main.c
->> index 6d4f9218dc68..1ced01b0cc09 100644
->> --- a/drivers/net/ethernet/intel/i40e/i40e_main.c
->> +++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
->> @@ -14491,13 +14491,15 @@ struct i40e_vsi *i40e_vsi_setup(struct
->> i40e_pf *pf, u8 type,
->>   	if (vsi->netdev_registered) {
->>   		vsi->netdev_registered = false;
->>   		unregister_netdev(vsi->netdev);
->> -		free_netdev(vsi->netdev);
->> -		vsi->netdev = NULL;
->>   	}
->>   err_dl_port:
->>   	if (vsi->type == I40E_VSI_MAIN)
->>   		i40e_devlink_destroy_port(pf);
->>   err_netdev:
->> +	if (vsi->netdev) {
->> +		free_netdev(vsi->netdev);
->> +		vsi->netdev = NULL;
->> +	}
->>   	i40e_aq_delete_element(&pf->hw, vsi->seid, NULL);
+mana_query_link_cfg() sends an HWC command to firmware on every call,
+but the link speed and QoS values it returns only change when the
+driver explicitly calls mana_set_bw_clamp(). This function is called
+not only by userspace via ethtool get_link_ksettings, but also
+periodically by hv_netvsc through netvsc_get_link_ksettings and by
+the sysfs speed_show attribute via dev_attr_show, resulting in
+unnecessary HWC traffic every few minutes.
 
-Would it make sense to put these 4 lines into i40e_vsi_clear()? Then you 
-can also clean up i40e_vsi_release() and i40e_vsi_reinit_setup() in a 
-similar way.
+Add a link_cfg_error field to mana_port_context to cache the query
+result. The field uses three states: 1 (not yet queried, initial
+value set during mana_probe_port), 0 (success, speed/max_speed are
+valid), or a negative errno for permanent errors like -EOPNOTSUPP
+when the hardware does not support the command. Transient errors and
+qos_unconfigured responses are not cached so that subsequent calls
+will retry.
 
-sln
+To prevent a concurrent mana_set_bw_clamp() from racing with an
+in-flight query and publishing stale pre-clamp speed/max_speed,
+serialize the firmware transaction and the cache update under a new
+per-port mutex (link_cfg_mutex). The mutex covers both the HWC
+request and the subsequent stores in mana_query_link_cfg(), and the
+HWC request and invalidation in mana_set_bw_clamp(). With this lock
+held, two queries can no longer interleave their speed/max_speed
+stores, and an invalidation can no longer slip in between a query's
+response and its publish.
 
->>   err_vsi:
->>   	i40e_vsi_clear(vsi);
->> --
->> 2.34.1
-> Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
->
+Invalidate the cache inside mana_set_bw_clamp() on success, so all
+current and future callers that change the link configuration
+automatically trigger a fresh query on the next mana_query_link_cfg()
+call. Also reset link_cfg_error during resume in mana_probe() under
+link_cfg_mutex, so that any slow-path query already in flight cannot
+later store 0 and silently overwrite the post-resume invalidation.
+
+Signed-off-by: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
+Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
+---
+ drivers/net/ethernet/microsoft/mana/mana_en.c | 41 +++++++++++++++----
+ include/net/mana/mana.h                       |  4 ++
+ 2 files changed, 36 insertions(+), 9 deletions(-)
+
+diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
+index 82f1461a48e9..43018bc13dc1 100644
+--- a/drivers/net/ethernet/microsoft/mana/mana_en.c
++++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
+@@ -1456,6 +1456,12 @@ int mana_query_link_cfg(struct mana_port_context *apc)
+ 	struct mana_query_link_config_req req = {};
+ 	int err;
+ 
++	mutex_lock(&apc->link_cfg_mutex);
++
++	err = apc->link_cfg_error;
++	if (err <= 0)
++		goto out;
++
+ 	mana_gd_init_req_hdr(&req.hdr, MANA_QUERY_LINK_CONFIG,
+ 			     sizeof(req), sizeof(resp));
+ 
+@@ -1468,10 +1474,11 @@ int mana_query_link_cfg(struct mana_port_context *apc)
+ 	if (err) {
+ 		if (err == -EOPNOTSUPP) {
+ 			netdev_info_once(ndev, "MANA_QUERY_LINK_CONFIG not supported\n");
+-			return err;
++			apc->link_cfg_error = err;
++			goto out;
+ 		}
+ 		netdev_err(ndev, "Failed to query link config: %d\n", err);
+-		return err;
++		goto out;
+ 	}
+ 
+ 	err = mana_verify_resp_hdr(&resp.hdr, MANA_QUERY_LINK_CONFIG,
+@@ -1482,16 +1489,20 @@ int mana_query_link_cfg(struct mana_port_context *apc)
+ 			   resp.hdr.status);
+ 		if (!err)
+ 			err = -EOPNOTSUPP;
+-		return err;
++		goto out;
+ 	}
+ 
+ 	if (resp.qos_unconfigured) {
+ 		err = -EINVAL;
+-		return err;
++		goto out;
+ 	}
+ 	apc->speed = resp.link_speed_mbps;
+ 	apc->max_speed = resp.qos_speed_mbps;
+-	return 0;
++	apc->link_cfg_error = 0;
++	err = 0;
++out:
++	mutex_unlock(&apc->link_cfg_mutex);
++	return err;
+ }
+ 
+ int mana_set_bw_clamp(struct mana_port_context *apc, u32 speed,
+@@ -1508,17 +1519,19 @@ int mana_set_bw_clamp(struct mana_port_context *apc, u32 speed,
+ 	req.link_speed_mbps = speed;
+ 	req.enable_clamping = enable_clamping;
+ 
++	mutex_lock(&apc->link_cfg_mutex);
++
+ 	err = mana_send_request(apc->ac, &req, sizeof(req), &resp,
+ 				sizeof(resp));
+ 
+ 	if (err) {
+ 		if (err == -EOPNOTSUPP) {
+ 			netdev_info_once(ndev, "MANA_SET_BW_CLAMP not supported\n");
+-			return err;
++			goto out;
+ 		}
+ 		netdev_err(ndev, "Failed to set bandwidth clamp for speed %u, err = %d",
+ 			   speed, err);
+-		return err;
++		goto out;
+ 	}
+ 
+ 	err = mana_verify_resp_hdr(&resp.hdr, MANA_SET_BW_CLAMP,
+@@ -1529,13 +1542,18 @@ int mana_set_bw_clamp(struct mana_port_context *apc, u32 speed,
+ 			   resp.hdr.status);
+ 		if (!err)
+ 			err = -EOPNOTSUPP;
+-		return err;
++		goto out;
+ 	}
+ 
+ 	if (resp.qos_unconfigured)
+ 		netdev_info(ndev, "QoS is unconfigured\n");
+ 
+-	return 0;
++	/* Invalidate the cache; next query will re-fetch from firmware. */
++	apc->link_cfg_error = 1;
++	err = 0;
++out:
++	mutex_unlock(&apc->link_cfg_mutex);
++	return err;
+ }
+ 
+ int mana_create_wq_obj(struct mana_port_context *apc,
+@@ -3430,6 +3448,8 @@ static int mana_probe_port(struct mana_context *ac, int port_idx,
+ 	apc->port_handle = INVALID_MANA_HANDLE;
+ 	apc->pf_filter_handle = INVALID_MANA_HANDLE;
+ 	apc->port_idx = port_idx;
++	apc->link_cfg_error = 1;
++	mutex_init(&apc->link_cfg_mutex);
+ 	apc->cqe_coalescing_enable = 0;
+ 
+ 	mutex_init(&apc->vport_mutex);
+@@ -3750,6 +3770,9 @@ int mana_probe(struct gdma_dev *gd, bool resuming)
+ 			rtnl_lock();
+ 			apc = netdev_priv(ac->ports[i]);
+ 			enable_work(&apc->queue_reset_work);
++			mutex_lock(&apc->link_cfg_mutex);
++			apc->link_cfg_error = 1;
++			mutex_unlock(&apc->link_cfg_mutex);
+ 			err = mana_attach(ac->ports[i]);
+ 			rtnl_unlock();
+ 			/* Log the port for which the attach failed, stop
+diff --git a/include/net/mana/mana.h b/include/net/mana/mana.h
+index d9c27310fd04..af772b7297ec 100644
+--- a/include/net/mana/mana.h
++++ b/include/net/mana/mana.h
+@@ -555,6 +555,10 @@ struct mana_port_context {
+ 	u32 speed;
+ 	/* Maximum speed supported by the SKU (mbps) */
+ 	u32 max_speed;
++	/* 1 = not queried, 0 = cached success, negative = permanent error */
++	int link_cfg_error;
++	/* Serializes mana_query_link_cfg() and mana_set_bw_clamp(). */
++	struct mutex link_cfg_mutex;
+ 
+ 	bool port_is_up;
+ 	bool port_st_save; /* Saved port state */
+-- 
+2.34.1
 
