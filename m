@@ -1,86 +1,83 @@
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C9B22475CF
-	for <netdev@vger.kernel.org>; Thu, 28 May 2026 14:29:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E1243EE1EE
+	for <netdev@vger.kernel.org>; Thu, 28 May 2026 14:29:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779978544; cv=none; b=DSzfU253R3jVJZS4UJrIPH38iFwI4Jpgtmc/CW2+4tCkS1horiHaTfeQybK6KFdR6jKAdcX6lTSH6mTDch1I9xrJzzc1PJpxySuNNqsKJ0bYOQtXmvLzrtKgvfbThn35uLW5bDARZiKIIcDL1feTE/TvkQrFBTp3UKXTRy0Hbcc=
+	t=1779978578; cv=none; b=kTryof6wnVFOuWuoGH5t/cS3iLo4h/YyMeVGBtr4wvzaA6ivPe0+iWUL7ednuiwikDkIFJXxWeCaq/n8Ib7+APtUOjXRrPUIn1b0gTS4p90BrpTYcNZMx3E1GFwstE6VYwfdQ0+Q+hYKzZsq63g0o0QVZyjgxDwGgjPpMA78hi0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779978544; c=relaxed/simple;
-	bh=IrefFyAQpAFQqILK1eHAz0Ih9C2ER7OVE5y48RaXZDk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=K9dbACRp7yY2G1LurhmDX1tL0JDi2nebSxmLl4CFrICr5ELsDCZozVI4Atn7muXd08UUS0LohF1UanWO7g4SEFwCvhGZ2VzlnW2sR+yylY1EcJdyeiilGiiPzSwS2erFw+E2C7pFDB4i/6e7wrjABNtJQc/JKeImIGcmeu+x/TU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ryAF6AR9; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1779978578; c=relaxed/simple;
+	bh=+8JwsssR0Q9HklamQ7xVmvfZX8X2spM6Ovw6xi2Bdqc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=mHzVEnhUdDZNpC6s0zR5z4a4eh4WM/VpP+pygCqkNbD7hcnXT5J4L07NEk7kuEDO33Llu2Tb/0kBEKAngu2CZeogDbDroDaDkEtca2yI0S9eJKBk8evcsFXO0TxT7okAMy/dNNp73vcRJiFuM2Jv0NsYjwRAJBGViqWyx0tILgM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=Ej6rbXPT; arc=none smtp.client-ip=23.88.38.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ryAF6AR9"
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-48e8132c6d0so81775215e9.1
-        for <netdev@vger.kernel.org>; Thu, 28 May 2026 07:29:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779978542; x=1780583342; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=VQ0PThY26u3CRD4CW+SITP6QP3S+wGr6qROSdUOWaXc=;
-        b=ryAF6AR9lhvGsa/FBKZUM6tHpamYzfDt23bDcrjb9R1IPWmNkz88EHDo3C2qx65pRQ
-         wYNayVUvO7ZL3NL7Jja6Bfa4LZnJllsUGxOFUXv14NN+3WG5wRMLMPHp/fzmzhDiemkW
-         EGGDKfTE/9ujGiaIqxHBXZL6e3ZMk5KjbFHDMmRW/xiR5jxOeh7rnrELAwyRrRg+Nt/7
-         VlqABa8bFqcw+LydOFy2oMgpCLuHz8TUeq9m9w/3xbwzHIzc3bmRHeTCkn2PDsCEfwR5
-         taLveUss9DsHlbUqUx9kKWJ/TZsWeIEdhpRohAo5OjLGggXi/OflU7zwaPua5DsYoX9N
-         nFHw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779978542; x=1780583342;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=VQ0PThY26u3CRD4CW+SITP6QP3S+wGr6qROSdUOWaXc=;
-        b=s5q/UNhq647nHo+JP1w6YxFgOuxzbn4NL4kK8fYUduURCJMXE4mtW8NiXFIcPtjt77
-         RPAecLv1k5yvA7xwWXUPNtN0WKq29Bu8xSP5Cq9Z9HpQO82nrruoBuOFfrCFsBzaG7IG
-         IDViLR8S6gtMlvv8xHCIsusvhd1yIi90OWfk/wNhJmaP2M6kBJF9n5heYbJ/q23y4HOc
-         nSiubJ7vC+5cwjP1JLQqwohiLiklVIDeL28wSxmDz0uALspINSTOi1Yb00J4Z+1TQHUT
-         dJZH2jMJ3I56eMixAwoySTE5DRCgD+O/N4XMQMHN1shMZxuctbDeESIAEB1CLm5KMPo0
-         ymVQ==
-X-Gm-Message-State: AOJu0YxuNMt4wwH9qS6PKBQOq1z/6lNjJDP918xEUMu0EUzjn3jHronD
-	KM0rYUphLDSrwxdxuep5iRmDGsLN0oLiDSW0XpVRrvyVcTUWrxd0wX0d
-X-Gm-Gg: Acq92OH1yUehQGfdSm10iaY8tf4si8Zw3Gnak4345a7k4xoctKs0OCjcMviQYzl9bV2
-	WcFLS7gzBb0LKeMt0P2vDdpK2t1oJS9b+n6mRzti+kp/dvICKttvJWaxL6lJkyjPDqdq8E9W7Hx
-	i0E9IPMCKxx2LTKk5JxoSQS3QW6q2KqFkt4xIQBE9sS/baRi95hj8GOHwrquhr9C4Sx6+V1wvYl
-	QqWldNfB7KtC4UgfsLyFDhVDmxWkt6GPPmsyjbycmZ/lxp0utw1HebT3IgUgi/4h2EX399FJF5h
-	YW6Od9mvhEBANtc3mu18h/9bKQ5FeoZG0vNoSuLU/AZYszKFwNLiPB8ZBn2Le9XsfVj10RmSSpM
-	phNXFbKUcWrG4uP6XyaCYlLxB+6CSlGSCSWy6OPCYCqWAHmIA57ZRFBFNiFI2B1BTrNKaRne35E
-	Byi1mtK1aS/TEqkKgYJMQ7gI9udqpUiNQ3zI5CnxnRsH9E+A==
-X-Received: by 2002:a05:600c:1d05:b0:490:890a:da46 with SMTP id 5b1f17b1804b1-490890af5b5mr78417835e9.2.1779978541689;
-        Thu, 28 May 2026 07:29:01 -0700 (PDT)
-Received: from localhost.localdomain ([45.128.133.234])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4908eaada7asm21989115e9.8.2026.05.28.07.28.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 May 2026 07:29:00 -0700 (PDT)
-Date: Thu, 28 May 2026 16:28:51 +0200
-From: Oscar Maes <oscmaes92@gmail.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com
-Subject: Re: [PATCH net-next v2 2/2] pcnet32: switch to napi_alloc_skb() and
- napi_gro_receive()
-Message-ID: <20260528142851-oscmaes92@gmail.com>
-References: <20260525125437.4061-1-oscmaes92@gmail.com>
- <20260525125437.4061-3-oscmaes92@gmail.com>
- <20260525084528.547fe263@kernel.org>
+	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="Ej6rbXPT"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=simonwunderlich.de;
+	s=09092022; t=1779978570;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Oh7Iga6kezW1PnsL9zoSfhgAn0KI160ZKJycdSegy3U=;
+	b=Ej6rbXPTxWnk5kZ8kRsr2s/otAH03O+tGZgDwFdEEXyPmQeC7/lewDRKRHLVpmdsK/ldWI
+	J/xxzcfxjqXTb3HQY6Pd4vccesXVG9aAm78aqUKcVZQwJYc5PgcPyRCJ/e728NNsWb0iWR
+	g8zxqALgFkODfPg6P27gCWJfPAMEhjhWEieZ7LYV2azwrQp3J+pP8evfCGzv+jxdO4pfK4
+	0R1jOpjm162ywra6RqZKThOOI0ueQ1qjdOJ+GXUIog7wWzijh3YQ72dJAbS/SItrsVM+NY
+	sLC+qLTIcLdQZao0xfd8LBHvLnWNz1tRf3tkUQkqfAZQ/FK+RouAsc2blm3hzg==
+From: Simon Wunderlich <sw@simonwunderlich.de>
+To: netdev@vger.kernel.org
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	b.a.t.m.a.n@lists.open-mesh.org,
+	Sven Eckelmann <sven@narfation.org>,
+	Simon Wunderlich <sw@simonwunderlich.de>
+Subject: [PATCH net-next 05/15] batman-adv: use atomic_xchg() for gw.reselect check
+Date: Thu, 28 May 2026 16:29:14 +0200
+Message-ID: <20260528142924.329658-6-sw@simonwunderlich.de>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260528142924.329658-1-sw@simonwunderlich.de>
+References: <20260528142924.329658-1-sw@simonwunderlich.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260525084528.547fe263@kernel.org>
+Content-Transfer-Encoding: 8bit
 
-On Mon, May 25, 2026 at 08:45:28AM -0700, Jakub Kicinski wrote:
-> On Mon, 25 May 2026 14:54:37 +0200 Oscar Maes wrote:
-> > In my testing this resulted in up to a 25% RX throughput increase in iperf3
-> > tests in both directions.
-> 
-> On which platform?
+From: Sven Eckelmann <sven@narfation.org>
 
-Intel x86
+batadv_gw_election() only needs to test whether gw.reselect was set and
+clear it afterwards. Replace the batadv_atomic_dec_not_zero()
+[atomic_add_unless(..., -1, 0)] call with atomic_xchg(..., 0) to simplify
+the logic and make the intent more explicit.
+
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+---
+ net/batman-adv/gateway_client.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/net/batman-adv/gateway_client.c b/net/batman-adv/gateway_client.c
+index ec743ce39be47..026627c8ba45b 100644
+--- a/net/batman-adv/gateway_client.c
++++ b/net/batman-adv/gateway_client.c
+@@ -211,7 +211,7 @@ void batadv_gw_election(struct batadv_priv *bat_priv)
+ 
+ 	curr_gw = batadv_gw_get_selected_gw_node(bat_priv);
+ 
+-	if (!batadv_atomic_dec_not_zero(&bat_priv->gw.reselect) && curr_gw)
++	if (atomic_xchg(&bat_priv->gw.reselect, 0) == 0 && curr_gw)
+ 		goto out;
+ 
+ 	/* if gw.reselect is set to 1 it means that a previous call to
+-- 
+2.47.3
+
