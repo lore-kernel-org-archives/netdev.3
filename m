@@ -1,33 +1,33 @@
 Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DDED3009E2
-	for <netdev@vger.kernel.org>; Thu, 28 May 2026 14:29:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B9683F0AB2
+	for <netdev@vger.kernel.org>; Thu, 28 May 2026 14:29:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779978581; cv=none; b=Ka8gjbK43OKplYc0ecHti6e26wn3dzdqoDtExQcTfWrbrJwac47pcLZTRX3XR+xjYssDoCHDk9fiN9ZTSPQaZ8ZhWQ/CuF3sWi0D6pmGd/TXPrnu1KDcHEDfU4TikmS4LNqP7GqfGR6KJPteDYh9K1Ud8S/MRJFjB18FNp2hKmQ=
+	t=1779978581; cv=none; b=sLF97cyy5OnPsl74R407eQnb/a+2mCqK2EYT0xTYSUgvnh8cZq/4Lu/0Frx2lrtk1aRDFFllDSqkI6UergNj3B2agwERKowzL4B4xj4BFGMCHYcriYe8l+0EkR+d5wWQHfaB7pzrkwdIQFTBBJrkKs9uY9JpkcvDHwZiTXmvWbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1779978581; c=relaxed/simple;
-	bh=8q5SqZ0i4J2ybFovZP1RDghk8G8AFcw8tfa9TJInM1A=;
+	bh=ZmalaQCS82x8DIx/xJmtideFEt10o2S2BXubvRxPcN0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P8wxkVfOCh94D6yYPxc+4EQY6YMlPxoHAQlmjXtfjYUzcaR0PCChdPbjVAwVRe8YmIFL8vAb0Eie6BeZG0e2GXhKIBcK3R734US+6QfK2UhYlp1KjBCHHisk0BHZqGVKSm3GQAax0sbN2MA1PYo0+1Zc1RpYO/1sbVWUv0FzUvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=zhpAmqRC; arc=none smtp.client-ip=23.88.38.48
+	 MIME-Version; b=e8W2EluZ2xaxtjMNE0ahdQdkzCrfDgh+9sMs5lZgy2J5IQzj4LcmjxwM2wH9LwPGxkdG2LeALzmVycbl/+7v9UYZ6Wq/eM24pNFm91voyjVQ26kfm22vQC/+Qe2EV6+0cxikosb7lNUJPpHd2ZzdfFYgoSlyQ9+Bs8LsKIo9HI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=PM13G3G+; arc=none smtp.client-ip=23.88.38.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="zhpAmqRC"
+	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="PM13G3G+"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=simonwunderlich.de;
-	s=09092022; t=1779978574;
+	s=09092022; t=1779978576;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=aN0IUrUvp8EDXZgryZCRl5jSJ66WGgaIo5sHtV/HS1s=;
-	b=zhpAmqRCJb9aaG5+K884qKiZDrvHjgaKbHwLrYfoIRr5SUorjzpoYbm34vacTyh83uQBwo
-	B2J44j8zcMtUz77B2nTg0W51nJfBzQOpI9A9TCMl5l9T5mggeGNQ+FiGrPigGtzrq95b1f
-	g+jby1LMF1duRn0S+v6GOKn2gLOSYJdyvzw9HPSCIJkbXTMA8zhh1yufdxO7jq0ZR7obTn
-	911Fkl5cKeNLkl9DritqkEO6pOMPnFXNvrQAHvRKbTmlj1GXRmsMMSeKepBj5ILpPIeatu
-	bqJaS2/Dhkfcb2XWvg5STyiOWzvgddP3t1eOWEpfNwW1AB6+UuaRTdrh9FXSTw==
+	bh=wU8EADN7q21SEHJNlOIBEzAVqEevDfMMQ8wP/p0bpp0=;
+	b=PM13G3G+giU1PJJeHHUZW31dWIsEbYdcRNPxuP8X/4ECXreF7QVEz4ZjaPHHx8VPJ/oaqm
+	/ie2Sm+EAQuu+nkWaYNKJ/8gLmU5zES4hRS6QUFuMVEXK3nqFhCwl11ZS13SyXc5JmJq8J
+	A3iOAJopH9qyPeUlte3uKSeWQRU53VZAlXwE9UqwsyvEoWND7IikXbV0BB6orTTe320kzN
+	LctYcfjqKjfwPhUK1zEw8IcBBSwVcJdArDVPVs2FAq9MGDGsAomHNs0Fx8jhILX7OT4bUO
+	cYAycRaeVsuQEHTGpkRy7s5xjvc2EI8cn7d07aoQV3J197+oXLu/RntD0N60uw==
 From: Simon Wunderlich <sw@simonwunderlich.de>
 To: netdev@vger.kernel.org
 Cc: "David S. Miller" <davem@davemloft.net>,
@@ -38,9 +38,9 @@ Cc: "David S. Miller" <davem@davemloft.net>,
 	b.a.t.m.a.n@lists.open-mesh.org,
 	Sven Eckelmann <sven@narfation.org>,
 	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH net-next 11/15] batman-adv: replace non-atomic packet_size_max with (READ|WRITE)_ONCE
-Date: Thu, 28 May 2026 16:29:20 +0200
-Message-ID: <20260528142924.329658-12-sw@simonwunderlich.de>
+Subject: [PATCH net-next 15/15] batman-adv: use neigh_node's orig_node only as id
+Date: Thu, 28 May 2026 16:29:24 +0200
+Message-ID: <20260528142924.329658-16-sw@simonwunderlich.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260528142924.329658-1-sw@simonwunderlich.de>
 References: <20260528142924.329658-1-sw@simonwunderlich.de>
@@ -54,98 +54,78 @@ Content-Transfer-Encoding: 8bit
 
 From: Sven Eckelmann <sven@narfation.org>
 
-The maximum packet size of an meshif is only accessed as plain loads/stores
-and does not require full atomic_t semantics. Convert to an native integer
-and replace its users with READ_ONCE()/WRITE_ONCE() to avoid load/store
-tearing.
+The orig_node member of struct batadv_neigh_node is no longer used in
+B.A.T.M.A.N. IV. But batadv_neigh_node_create() is still storing it.
+Only batadv_v_ogm_route_update() uses it to check if we route toward
+it - not needing the data stored in the batadv_orig_node object itself,
+but merely a pointer to identify the originator.
+
+The field cannot hold a proper reference because that would create a
+reference cycle, so it must never be dereferenced. Rename it to
+orig_node_id and mark it __private to make any future attempt to
+dereference it immediately noticeable.
 
 Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
 ---
- net/batman-adv/hard-interface.c    | 3 +--
- net/batman-adv/mesh-interface.c    | 2 +-
- net/batman-adv/translation-table.c | 6 +++---
- net/batman-adv/types.h             | 2 +-
- 4 files changed, 6 insertions(+), 7 deletions(-)
+ net/batman-adv/bat_v_ogm.c  |  2 +-
+ net/batman-adv/originator.c |  5 ++++-
+ net/batman-adv/types.h      | 11 +++++++++--
+ 3 files changed, 14 insertions(+), 4 deletions(-)
 
-diff --git a/net/batman-adv/hard-interface.c b/net/batman-adv/hard-interface.c
-index 85a1f1154bb42..af896b42b0d80 100644
---- a/net/batman-adv/hard-interface.c
-+++ b/net/batman-adv/hard-interface.c
-@@ -7,7 +7,6 @@
- #include "hard-interface.h"
- #include "main.h"
- 
--#include <linux/atomic.h>
- #include <linux/bug.h>
- #include <linux/byteorder/generic.h>
- #include <linux/compiler.h>
-@@ -629,7 +628,7 @@ int batadv_hardif_min_mtu(struct net_device *mesh_iface)
- 	 * overhead). For example, this value is used by TT to compute the
- 	 * maximum local table size
+diff --git a/net/batman-adv/bat_v_ogm.c b/net/batman-adv/bat_v_ogm.c
+index 2c4dca639709c..5936d0048be01 100644
+--- a/net/batman-adv/bat_v_ogm.c
++++ b/net/batman-adv/bat_v_ogm.c
+@@ -719,7 +719,7 @@ static bool batadv_v_ogm_route_update(struct batadv_priv *bat_priv,
+ 	 * don't route towards it
  	 */
--	atomic_set(&bat_priv->packet_size_max, min_mtu);
-+	WRITE_ONCE(bat_priv->packet_size_max, min_mtu);
+ 	router = batadv_orig_router_get(orig_node, if_outgoing);
+-	if (router && router->orig_node != orig_node && !orig_neigh_router) {
++	if (router && ACCESS_PRIVATE(router, orig_node_id) != orig_node && !orig_neigh_router) {
+ 		batadv_dbg(BATADV_DBG_BATMAN, bat_priv,
+ 			   "Drop packet: OGM via unknown neighbor!\n");
+ 		goto out;
+diff --git a/net/batman-adv/originator.c b/net/batman-adv/originator.c
+index d05c8240426bd..15d660ca79376 100644
+--- a/net/batman-adv/originator.c
++++ b/net/batman-adv/originator.c
+@@ -693,9 +693,12 @@ batadv_neigh_node_create(struct batadv_orig_node *orig_node,
+ 	kref_get(&hard_iface->refcount);
+ 	ether_addr_copy(neigh_node->addr, neigh_addr);
+ 	neigh_node->if_incoming = hard_iface;
+-	neigh_node->orig_node = orig_node;
+ 	neigh_node->last_seen = jiffies;
  
- 	/* the real mesh-interface MTU is computed by removing the payload
- 	 * overhead from the maximum amount of bytes that was just computed.
-diff --git a/net/batman-adv/mesh-interface.c b/net/batman-adv/mesh-interface.c
-index 72a0ec823e3ca..dd01174fa5892 100644
---- a/net/batman-adv/mesh-interface.c
-+++ b/net/batman-adv/mesh-interface.c
-@@ -779,7 +779,7 @@ static int batadv_meshif_init_late(struct net_device *dev)
- 	WRITE_ONCE(bat_priv->log_level, 0);
- #endif
- 	WRITE_ONCE(bat_priv->fragmentation, 1);
--	atomic_set(&bat_priv->packet_size_max, BATADV_MAX_MTU);
-+	WRITE_ONCE(bat_priv->packet_size_max, BATADV_MAX_MTU);
- 	atomic_set(&bat_priv->bcast_queue_left, BATADV_BCAST_QUEUE_LEN);
- 	atomic_set(&bat_priv->batman_queue_left, BATADV_BATMAN_QUEUE_LEN);
- 
-diff --git a/net/batman-adv/translation-table.c b/net/batman-adv/translation-table.c
-index 515f26ff8c269..e319b0796f7c8 100644
---- a/net/batman-adv/translation-table.c
-+++ b/net/batman-adv/translation-table.c
-@@ -649,7 +649,7 @@ bool batadv_tt_local_add(struct net_device *mesh_iface, const u8 *addr,
- 	/* Ignore the client if we cannot send it in a full table response. */
- 	table_size = batadv_tt_local_table_transmit_size(bat_priv);
- 	table_size += batadv_tt_len(1);
--	packet_size_max = atomic_read(&bat_priv->packet_size_max);
-+	packet_size_max = READ_ONCE(bat_priv->packet_size_max);
- 	if (table_size > packet_size_max) {
- 		net_ratelimited_function(batadv_info, mesh_iface,
- 					 "Local translation table size (%i) exceeds maximum packet size (%i); Ignoring new local tt entry: %pM\n",
-@@ -3069,7 +3069,7 @@ static bool batadv_send_other_tt_response(struct batadv_priv *bat_priv,
- 
- 	/* Don't send the response, if larger than fragmented packet. */
- 	tt_len = sizeof(struct batadv_unicast_tvlv_packet) + tvlv_len;
--	if (tt_len > atomic_read(&bat_priv->packet_size_max)) {
-+	if (tt_len > READ_ONCE(bat_priv->packet_size_max)) {
- 		net_ratelimited_function(batadv_info, bat_priv->mesh_iface,
- 					 "Ignoring TT_REQUEST from %pM; Response size exceeds max packet size.\n",
- 					 res_dst_orig_node->orig);
-@@ -3932,7 +3932,7 @@ bool batadv_tt_add_temporary_global_entry(struct batadv_priv *bat_priv,
- void batadv_tt_local_resize_to_mtu(struct net_device *mesh_iface)
- {
- 	struct batadv_priv *bat_priv = netdev_priv(mesh_iface);
--	int packet_size_max = atomic_read(&bat_priv->packet_size_max);
-+	int packet_size_max = READ_ONCE(bat_priv->packet_size_max);
- 	int table_size, timeout = BATADV_TT_LOCAL_TIMEOUT / 2;
- 	bool reduced = false;
- 
++#ifdef CONFIG_BATMAN_ADV_BATMAN_V
++	ACCESS_PRIVATE(neigh_node, orig_node_id) = orig_node;
++#endif
++
+ 	/* increment unique neighbor refcount */
+ 	kref_get(&hardif_neigh->refcount);
+ 	neigh_node->hardif_neigh = hardif_neigh;
 diff --git a/net/batman-adv/types.h b/net/batman-adv/types.h
-index 58375c0a643b8..51880748bc2f5 100644
+index c3b6af399110b..1fbdd58b59bd9 100644
 --- a/net/batman-adv/types.h
 +++ b/net/batman-adv/types.h
-@@ -1570,7 +1570,7 @@ struct batadv_priv {
- 	 *  multiple fragmented skbs or a single frame if fragmentation is
- 	 *  disabled
- 	 */
--	atomic_t packet_size_max;
-+	u32 packet_size_max;
+@@ -663,8 +663,15 @@ struct batadv_neigh_node {
+ 	/** @list: list node for &batadv_orig_node.neigh_list */
+ 	struct hlist_node list;
  
- 	/**
- 	 * @frag_seqno: incremental counter to identify chains of egress
+-	/** @orig_node: pointer to corresponding orig_node */
+-	struct batadv_orig_node *orig_node;
++#ifdef CONFIG_BATMAN_ADV_BATMAN_V
++	/**
++	 * @orig_node_id: pointer to corresponding orig_node. It must only be used
++	 * to identify the node but must NEVER be dereferenced. The reference counter
++	 * was not increased when this was assigned because it would otherwise create
++	 * a reference cycle.
++	 */
++	struct batadv_orig_node *__private orig_node_id;
++#endif
+ 
+ 	/** @addr: the MAC address of the neighboring interface */
+ 	u8 addr[ETH_ALEN];
 -- 
 2.47.3
 
