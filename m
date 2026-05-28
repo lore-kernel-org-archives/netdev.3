@@ -1,74 +1,93 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 873BF39FCE
-	for <netdev@vger.kernel.org>; Thu, 28 May 2026 00:22:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6D4234389A
+	for <netdev@vger.kernel.org>; Thu, 28 May 2026 00:25:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779927721; cv=none; b=fPv2VA5XAslZMlAHu4aV16h7ADp6gZ9dZaRD3MvpSIbKuULXz6fty27k/0iR15P5CDvIbC0b2kWD5hIFpZl3/PSBfoncBYUYV70c0ZvRvwUDEeQqbGp0YWzGUbZqHIK+fuJMlCKmePyyYYUTQiA1g/lDT2wH2cOg99Xp3VA4x4k=
+	t=1779927919; cv=none; b=gSUut128RqM88hC3yMa7MNxj/fcs2GXq5Qbj/t2/6LNZszISM5NLHddtnLGrRJdl5pLmkjH54v4dFFCSGQcR7sfZ4DsnmG7lnDj8KKvju6noMG6dFGPm32pWeUH7QopSBz9CrLIsJaaZH7LlqgNjisNMPNd5UkwTcQS958XNs3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779927721; c=relaxed/simple;
-	bh=iQwH2KNj5yM0xRv9YI1TPczppswPYdw0kqEd5hU4vNw=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NhgQYteENyuwQBFFdczW3uxdQfjVMaG6WTEbCrslxDQ8iDpepPDyPz7P9LzLxcrCxtYElTVAr3T9Mkdm6iF9E0J4H8nQshKTfChsc3olwaym8gp724ZpRBUyjyASeK++PX8X/g3cLfFTzFdDXaLhndkWWepRs9IgiPQikXzPRTY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MSaD0WMo; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779927919; c=relaxed/simple;
+	bh=nnJN/WTB7RTL1WY4rmdg9pWu8uW2CTb/zmgvfsALoI4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GtF7cstkzhC1SvApm0XpUi/k8b0oh7jsGyJW0BfffcHA4MbxzYm8aQwG+a8767hqa38Z6uw4zfZUHPSY9XDFF2rZ1xDtJIFgvW779BZeixm8p3taCqOSBltb/V8SRfubdzygBNW//VqSCRf/Xgz8DkCSS5RO/oOPKcDWyBuuCdY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=nlDrQDqG; arc=none smtp.client-ip=95.215.58.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MSaD0WMo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9F701F000E9;
-	Thu, 28 May 2026 00:21:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779927720;
-	bh=KEO80zV9s+4z3Or/QLoI2yIzi0UsikLeDkZdq8fPySw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=MSaD0WMomYF4hFkrY3aewJoGXrLqhMEpdYaBT/WcEIyaaKdTfSYdDtD4bxZ0YDwtl
-	 8RyNgu3ytioWzhkx32s4gT2+DOXok7GUpU9ZCmThxSTKTL2wg8qYc4mW37w7WgkeIZ
-	 v40S+tlZVjXr9+zgp2BCxeTRKU5XxmkZUucxI04iXVjZccgZqXAlBAiKJ708aHX8TQ
-	 p2p8qAKG9ihTZfwgrYsjI1aoh3pFQHdu1+wmsnh2hNjJMtdX5B8NiItMHKu0XNbgzz
-	 cYbZeU9aCJhPU+UbssVLsxwbXrypYVEeJsXkwHzSpEn0hfsKxieVQI5/JLVbUKLZIS
-	 EO4u4/bbfdjZA==
-Date: Wed, 27 May 2026 17:21:59 -0700
-From: Jakub Kicinski <kuba@kernel.org>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="nlDrQDqG"
+Date: Wed, 27 May 2026 17:24:56 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1779927905;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=RwJoFpvdeBNTnl2sJg+T3OVD+m+DGzYdPbYTYG/cTL0=;
+	b=nlDrQDqGxxkO73JMN35VIJ6iVNi9WdMPb9ZluX8yi+Dr9Q713AvTWLY3U8oHlRSX+GnKir
+	Zgth49xaxqp18yZz757icA4UG0kcn1NLTkcXWmCfcP30S4qbwQvooFcWa03TG2Tfe19RsV
+	TzJYSALkTqlCWLMmEOdM8/f9VFJzq0Y=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Martin KaFai Lau <martin.lau@linux.dev>
 To: Kuniyuki Iwashima <kuniyu@google.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
- <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, David Ahern
- <dsahern@kernel.org>, Stephen Hemminger <stephen@networkplumber.org>,
- Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
-Subject: Re: [PATCH v3 net-next 5/5] geneve: Introduce IFLA_GENEVE_LOCAL and
- IFLA_GENEVE_LOCAL6.
-Message-ID: <20260527172159.1dfcd042@kernel.org>
-In-Reply-To: <20260526015152.2409183-6-kuniyu@google.com>
-References: <20260526015152.2409183-1-kuniyu@google.com>
-	<20260526015152.2409183-6-kuniyu@google.com>
+Cc: Amery Hung <ameryhung@gmail.com>, 
+	Jason Xing <kerneljasonxing@gmail.com>, Alexei Starovoitov <ast@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
+	Eduard Zingerman <eddyz87@gmail.com>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, 
+	Yonghong Song <yonghong.song@linux.dev>, John Fastabend <john.fastabend@gmail.com>, 
+	Stanislav Fomichev <sdf@fomichev.me>, Eric Dumazet <edumazet@google.com>, 
+	Neal Cardwell <ncardwell@google.com>, Willem de Bruijn <willemb@google.com>, 
+	Tenzin Ukyab <ukyab@berkeley.edu>, Kuniyuki Iwashima <kuni1840@gmail.com>, bpf@vger.kernel.org, 
+	netdev@vger.kernel.org
+Subject: Re: [PATCH v3 bpf-next 03/11] bpf: tcp: Support bpf_skb_load_bytes()
+ for BPF_SOCK_OPS_RCVQ_CB.
+Message-ID: <2026527234056.o8QL.martin.lau@linux.dev>
+References: <20260523083001.2911931-1-kuniyu@google.com>
+ <20260523083001.2911931-4-kuniyu@google.com>
+ <202652620632.prOx.martin.lau@linux.dev>
+ <CAAVpQUA0UNhR8AWfd0WC-krYJeXb0ebNs-V4u9kgweyNw_XHtg@mail.gmail.com>
+ <2026526214538.Vhly.martin.lau@linux.dev>
+ <CAL+tcoCSU9KFZsV33LE2R89iUzb5b3Xm+h6QObs5GOuRYR3sMQ@mail.gmail.com>
+ <2026527192229.olv9.martin.lau@linux.dev>
+ <CAAVpQUCUV=N0dEi8H51Y0oZytnohkJT1=B6zT3gxEKvb_5bukg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAAVpQUCUV=N0dEi8H51Y0oZytnohkJT1=B6zT3gxEKvb_5bukg@mail.gmail.com>
+X-Migadu-Flow: FLOW_OUT
 
-On Tue, 26 May 2026 01:51:17 +0000 Kuniyuki Iwashima wrote:
-> -	if (data[IFLA_GENEVE_REMOTE] && data[IFLA_GENEVE_REMOTE6]) {
-> +	if ((data[IFLA_GENEVE_REMOTE] && data[IFLA_GENEVE_REMOTE6]) ||
-> +	    (data[IFLA_GENEVE_LOCAL] && data[IFLA_GENEVE_LOCAL6]) ||
-> +	    (data[IFLA_GENEVE_REMOTE] && data[IFLA_GENEVE_LOCAL6]) ||
-> +	    (data[IFLA_GENEVE_REMOTE6] && data[IFLA_GENEVE_LOCAL])) {
+On Wed, May 27, 2026 at 02:39:20PM -0700, Kuniyuki Iwashima wrote:
+> > > Could you show me what to do next? Thanks in advance. It sounds like
+> > > the tx side of bpf timestamping should be adjusted accordingly?
+> >
+> > imo, the bpf_tcp_ops can land first. and then add net timestamping
+> > ops (existing tx and the new rx) in bpf_sock_ops.
+> 
+> Sounds good to me.  I'll rebase TCP AutoLOWAT feature on top
+> of the struct_ops series.
 
-nit: Looks like a cartesian product, perhaps:
+Thanks.
 
-	if ((data[IFLA_GENEVE_LOCAL] || data[IFLA_GENEVE_REMOTE]) &&
-	    (data[IFLA_GENEVE_LOCAL6] || data[IFLA_GENEVE_REMOTE6]))
+The ops in bpf_tcp_ops do not have a skb arg yet.
+A few lines similar to bpf_qdisc_is_valid_access() in bpf_qdisc.c
+are needed. I recall it works around btf_ctx_access(). We can
+probably clean it up in the future, which should be generic
+enough for all struct_ops taking a skb.
 
-? at the very least would be good if the last line also had v4 one the
-left.
+I believe the "if (prog->aux->st_ops != &bpf_Qdisc_ops)" check in
+bpf_qdisc_kfunc_filter() may get in the way. bpf_dynptr_from_skb
+kfunc should not be limited to the bpf_qdisc struct_ops. I think
+the net subsystem should allow bpf_dynptr_from_skb as the basic
+kfunc for all struct_ops programs as long as skb is a trusted pointer.
+You should be able to work around it for now by tweaking bpf_qdisc_kfunc_filter.
+The struct_ops program will only have read-only access to the skb
+through bpf_dynptr_*() kfuncs.
 
-But, more importantly - I think the AI reviewers are right,
-please update Documentation/netlink/specs/rt-link.yaml to add these 
-new attrs
-
-If you can think of something meaningful / useful in surfacing
-potential bugs maybe also a selftest?
--- 
-pw-bot: cr
+The struct_ops series will need to address some issues (excluding
+the pre-existing ones in cgroup.c) pointed out by Sashiko.
+Amery is kind enough to help me figure out how to resolve it
+and then respin.
