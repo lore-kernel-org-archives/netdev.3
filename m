@@ -1,33 +1,33 @@
 Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EC133D3CF9
-	for <netdev@vger.kernel.org>; Thu, 28 May 2026 14:29:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BCBD3CE4AD
+	for <netdev@vger.kernel.org>; Thu, 28 May 2026 14:29:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779978579; cv=none; b=lAwiSwXeGF0DulcKy/zuv64eu51REKuw4yumEwB/f2iqNuncl2OWzL14d9Im4awoR12jD6SxM6mXDHVx9X+KTjD0HZgLf2NHra4es/7RBvyWDy9j9BvhKzLeHS4LN+eQzD3L28TWEaIBFxjbk1m4wylh9uRyS5ipp/0sP4BtTPs=
+	t=1779978580; cv=none; b=hVp7j5qjSbzRrnyvNJsy9D/qPdFQLK2hdW1F7AGwsyy7SVoYPkXDE5qMDmqxZw8HDpuVyoA/xBzAsmWBJ9wOGLgZVHpZR84J6MaYn8crhCh5UUaS+4YTeLuTuf0MU5Fhpp7P4KUMBimFjHRmcQuvlaKI8DvrrV3l4lKPG0PAh2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779978579; c=relaxed/simple;
-	bh=ziombrDOAVC/KFNIwmLH1SI93FKnRd0WIiSgRadSNgE=;
+	s=arc-20240116; t=1779978580; c=relaxed/simple;
+	bh=FfidJ0V2esPUP54vLqElYWi8yh2y18YCDzIq+jKEeZE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZeM+E12WLEBUMYPUq/PJAwddjwk55JCsibKZSuVE3rtEl+Pf9TvUoWryRyISyvpru01Jdgdcsj6QYy+DSdE1DtWvQ/GQ8784ixjO0YvLtvCvblBF1x1ykLNu1FrQ/qYeBK3xTcXWDSwjp1Y0PsqnjcxiprbOnspjNHza3qx04po=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=zOi1U/YQ; arc=none smtp.client-ip=23.88.38.48
+	 MIME-Version; b=otVRbokjHvC1s9am/4AzFKSd8cEMe92G2+CJk7NVrrqckfcqetA/pTjfH/2A4XPLsbdYlGzq7/E6E0FH2XAIRBGnH9l1Ak2xmhTEXf31k/OtjlCSwF1M4iXt33PSuv5joI0oTWYmtQYEuCrgwdYRBIsRW6Bv/yLX62wO9KTigu4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=VE0onoMK; arc=none smtp.client-ip=23.88.38.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="zOi1U/YQ"
+	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="VE0onoMK"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=simonwunderlich.de;
-	s=09092022; t=1779978574;
+	s=09092022; t=1779978571;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=tlRW/1o5c5Pn9BcJXzRZfsihaCkWvKRTb1wXQ9KjKv8=;
-	b=zOi1U/YQxRf3sp1ZGgtCjuiwONVc4+wXHvcj6fO/zyzuC0WzgjafdCGZ5P5yrtNJT0rNqX
-	tyy7OgVvULtcJzrnN/IgUAYY8EujTwzF/Ro+R6QLp45nZP9clJJgqBjij7K8a1w+FpMtUp
-	mnJQEuqh8ZyAWX08Jtvs6UNp6vJPZLn0d2wL190XLkto5UR6ANhucnQWHvPRNNtgR7/bWv
-	Os4pdYlQ9t+XzukSJCFXOu5lUReAq3blMyA2L5wLm8aPmhgkqUSPjLVFLtOn9DH1kQy3Su
-	amNzVbg2edcL4m8RSCNb2QJHkFSFk9QVR6Cz8Qo7HvgGt/xC0ZxiR4Eqr8uzRw==
+	bh=tuu4gdCb+WOeG2bFs3z9oMkWXWWHtfKHdjcRZP1ruBc=;
+	b=VE0onoMKNQpEEJa54ahvcras+uhF/8rDQlbmTKRmzGNv6KmLx328uE9Pw3blTXpqVVSsMF
+	4jaj67d3ftaEC8wO4V53BK7NA0o+gAW2ZZFKghou+r7ITKaz82SkU5IbD1rK3liWE27oX6
+	ud4OyA1Pspk1AtnRGgsopxWyn6eBUOwWj371aSR1I7dbWGsZio1qfEtcFEFDmpJPx/vjRh
+	zczVQUoMVBSLVisLuaMfXB504Fi6LvdZKxMXvp1qZpsZylbL18aVVNiwjkiDlg8HCloczO
+	kc9IfD87BnINA4egvyFwzLVds53tQm1had4OdKcy7e9w8MnrQfNu+hgkUnSpIg==
 From: Simon Wunderlich <sw@simonwunderlich.de>
 To: netdev@vger.kernel.org
 Cc: "David S. Miller" <davem@davemloft.net>,
@@ -38,9 +38,9 @@ Cc: "David S. Miller" <davem@davemloft.net>,
 	b.a.t.m.a.n@lists.open-mesh.org,
 	Sven Eckelmann <sven@narfation.org>,
 	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH net-next 12/15] batman-adv: replace non-atomic last_ttvn with (READ|WRITE)_ONCE
-Date: Thu, 28 May 2026 16:29:21 +0200
-Message-ID: <20260528142924.329658-13-sw@simonwunderlich.de>
+Subject: [PATCH net-next 07/15] batman-adv: replace non-atomic meshif config fields with (READ|WRITE)_ONCE
+Date: Thu, 28 May 2026 16:29:16 +0200
+Message-ID: <20260528142924.329658-8-sw@simonwunderlich.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260528142924.329658-1-sw@simonwunderlich.de>
 References: <20260528142924.329658-1-sw@simonwunderlich.de>
@@ -54,158 +54,973 @@ Content-Transfer-Encoding: 8bit
 
 From: Sven Eckelmann <sven@narfation.org>
 
-The last TT version number of an meshif is only accessed as plain
-loads/stores and does not require full atomic_t semantics. Convert to an
-native integer and replace its users with READ_ONCE()/WRITE_ONCE() to avoid
-load/store tearing.
+The meshif configuration values are only accessed as plain loads/stores and
+do not require full atomic_t semantics. Convert these fields to native
+integer types and replace their users with READ_ONCE()/WRITE_ONCE() to
+avoid load/store tearing.
 
 Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
 ---
- net/batman-adv/originator.c        |  2 +-
- net/batman-adv/routing.c           |  4 ++--
- net/batman-adv/send.c              |  2 +-
- net/batman-adv/translation-table.c | 16 ++++++++--------
- net/batman-adv/types.h             |  2 +-
- 5 files changed, 13 insertions(+), 13 deletions(-)
+ net/batman-adv/bat_iv_ogm.c            | 26 +++++++-----
+ net/batman-adv/bat_v.c                 |  5 ++-
+ net/batman-adv/bat_v_ogm.c             |  7 ++--
+ net/batman-adv/bridge_loop_avoidance.c | 14 +++----
+ net/batman-adv/distributed-arp-table.c | 16 ++++----
+ net/batman-adv/gateway_client.c        |  6 +--
+ net/batman-adv/gateway_common.c        | 14 +++----
+ net/batman-adv/hard-interface.c        | 10 ++---
+ net/batman-adv/log.h                   |  2 +-
+ net/batman-adv/mesh-interface.c        | 28 ++++++-------
+ net/batman-adv/multicast.c             |  4 +-
+ net/batman-adv/netlink.c               | 57 +++++++++++++-------------
+ net/batman-adv/originator.c            |  1 -
+ net/batman-adv/routing.c               |  2 +-
+ net/batman-adv/send.c                  |  2 +-
+ net/batman-adv/types.h                 | 54 ++++++++++++------------
+ 16 files changed, 127 insertions(+), 121 deletions(-)
 
-diff --git a/net/batman-adv/originator.c b/net/batman-adv/originator.c
-index 0ce07bfdade59..d05c8240426bd 100644
---- a/net/batman-adv/originator.c
-+++ b/net/batman-adv/originator.c
-@@ -965,7 +965,7 @@ struct batadv_orig_node *batadv_orig_node_new(struct batadv_priv *bat_priv,
- 	orig_node->bat_priv = bat_priv;
- 	ether_addr_copy(orig_node->orig, addr);
- 	batadv_dat_init_orig_node_addr(orig_node);
--	atomic_set(&orig_node->last_ttvn, 0);
-+	WRITE_ONCE(orig_node->last_ttvn, 0);
- 	orig_node->tt_buff = NULL;
- 	orig_node->tt_buff_len = 0;
- 	orig_node->last_seen = jiffies;
-diff --git a/net/batman-adv/routing.c b/net/batman-adv/routing.c
-index 1dd295d934f49..cd4368b846add 100644
---- a/net/batman-adv/routing.c
-+++ b/net/batman-adv/routing.c
-@@ -765,7 +765,7 @@ batadv_reroute_unicast_packet(struct batadv_priv *bat_priv, struct sk_buff *skb,
- 			goto out;
- 
- 		orig_addr = orig_node->orig;
--		orig_ttvn = (u8)atomic_read(&orig_node->last_ttvn);
-+		orig_ttvn = READ_ONCE(orig_node->last_ttvn);
- 	}
- 
- 	/* update the packet header */
-@@ -845,7 +845,7 @@ static bool batadv_check_unicast_ttvn(struct batadv_priv *bat_priv,
- 		if (!orig_node)
- 			return false;
- 
--		curr_ttvn = (u8)atomic_read(&orig_node->last_ttvn);
-+		curr_ttvn = READ_ONCE(orig_node->last_ttvn);
- 		batadv_orig_node_put(orig_node);
- 	}
- 
-diff --git a/net/batman-adv/send.c b/net/batman-adv/send.c
-index c7e86c83242a2..5f9da3606a8f5 100644
---- a/net/batman-adv/send.c
-+++ b/net/batman-adv/send.c
-@@ -222,7 +222,7 @@ batadv_send_skb_push_fill_unicast(struct sk_buff *skb, int hdr_size,
- 				  struct batadv_orig_node *orig_node)
+diff --git a/net/batman-adv/bat_iv_ogm.c b/net/batman-adv/bat_iv_ogm.c
+index b8b1b997960a9..5628017bee511 100644
+--- a/net/batman-adv/bat_iv_ogm.c
++++ b/net/batman-adv/bat_iv_ogm.c
+@@ -13,6 +13,7 @@
+ #include <linux/bug.h>
+ #include <linux/byteorder/generic.h>
+ #include <linux/cache.h>
++#include <linux/compiler.h>
+ #include <linux/container_of.h>
+ #include <linux/errno.h>
+ #include <linux/etherdevice.h>
+@@ -274,7 +275,7 @@ batadv_iv_ogm_emit_send_time(const struct batadv_priv *bat_priv)
  {
- 	struct batadv_unicast_packet *unicast_packet;
--	u8 ttvn = (u8)atomic_read(&orig_node->last_ttvn);
-+	u8 ttvn = READ_ONCE(orig_node->last_ttvn);
+ 	unsigned int msecs;
  
- 	if (batadv_skb_head_push(skb, hdr_size) < 0)
- 		return false;
-diff --git a/net/batman-adv/translation-table.c b/net/batman-adv/translation-table.c
-index e319b0796f7c8..8903b2f84f512 100644
---- a/net/batman-adv/translation-table.c
-+++ b/net/batman-adv/translation-table.c
-@@ -841,7 +841,7 @@ batadv_tt_prepare_tvlv_global_data(struct batadv_orig_node *orig_node,
+-	msecs = atomic_read(&bat_priv->orig_interval) - BATADV_JITTER;
++	msecs = READ_ONCE(bat_priv->orig_interval) - BATADV_JITTER;
+ 	msecs += get_random_u32_below(2 * BATADV_JITTER);
+ 
+ 	return jiffies + msecs_to_jiffies(msecs);
+@@ -289,7 +290,7 @@ static unsigned long batadv_iv_ogm_fwd_send_time(void)
+ /* apply hop penalty for a normal link */
+ static u8 batadv_hop_penalty(u8 tq, const struct batadv_priv *bat_priv)
+ {
+-	int hop_penalty = atomic_read(&bat_priv->hop_penalty);
++	int hop_penalty = READ_ONCE(bat_priv->hop_penalty);
+ 	int new_tq;
+ 
+ 	new_tq = tq * (BATADV_TQ_MAX_VALUE - hop_penalty);
+@@ -555,7 +556,7 @@ static bool batadv_iv_ogm_aggregate_new(const unsigned char *packet_buff,
+ 	unsigned int skb_size;
+ 	atomic_t *queue_left = own_packet ? NULL : &bat_priv->batman_queue_left;
+ 
+-	if (atomic_read(&bat_priv->aggregated_ogms))
++	if (READ_ONCE(bat_priv->aggregated_ogms))
+ 		skb_size = max_t(unsigned int, BATADV_MAX_AGGREGATION_BYTES,
+ 				 packet_len);
+ 	else
+@@ -641,6 +642,7 @@ static bool batadv_iv_ogm_queue_add(struct batadv_priv *bat_priv,
+ 	struct batadv_ogm_packet *batadv_ogm_packet;
+ 	bool direct_link;
+ 	unsigned long max_aggregation_jiffies;
++	bool aggregated_ogms;
+ 
+ 	batadv_ogm_packet = (struct batadv_ogm_packet *)packet_buff;
+ 	direct_link = !!(batadv_ogm_packet->flags & BATADV_DIRECTLINK);
+@@ -648,8 +650,10 @@ static bool batadv_iv_ogm_queue_add(struct batadv_priv *bat_priv,
+ 
+ 	/* find position for the packet in the forward queue */
+ 	spin_lock_bh(&bat_priv->forw_bat_list_lock);
++	aggregated_ogms = READ_ONCE(bat_priv->aggregated_ogms);
++
+ 	/* own packets are not to be aggregated */
+-	if (atomic_read(&bat_priv->aggregated_ogms) && !own_packet) {
++	if (aggregated_ogms && !own_packet) {
+ 		hlist_for_each_entry(forw_packet_pos,
+ 				     &bat_priv->forw_bat_list, list) {
+ 			if (batadv_iv_ogm_can_aggregate(batadv_ogm_packet,
+@@ -675,7 +679,7 @@ static bool batadv_iv_ogm_queue_add(struct batadv_priv *bat_priv,
+ 		 * we hold it back for a while, so that it might be aggregated
+ 		 * later on
+ 		 */
+-		if (!own_packet && atomic_read(&bat_priv->aggregated_ogms))
++		if (!own_packet && aggregated_ogms)
+ 			send_time += max_aggregation_jiffies;
+ 
+ 		return batadv_iv_ogm_aggregate_new(packet_buff, packet_len,
+@@ -888,7 +892,7 @@ static void batadv_iv_ogm_schedule_buff(struct batadv_hard_iface *hard_iface)
+ 		 */
+ 		queue_delayed_work(batadv_event_workqueue,
+ 				   &hard_iface->bat_iv.reschedule_work,
+-				   msecs_to_jiffies(atomic_read(&bat_priv->orig_interval)));
++				   msecs_to_jiffies(READ_ONCE(bat_priv->orig_interval)));
  	}
  
- 	(*tt_data)->flags = BATADV_NO_FLAGS;
--	(*tt_data)->ttvn = atomic_read(&orig_node->last_ttvn);
-+	(*tt_data)->ttvn = READ_ONCE(orig_node->last_ttvn);
- 	(*tt_data)->num_vlan = htons(num_vlan);
+ 	batadv_hardif_put(primary_if);
+@@ -2321,7 +2325,7 @@ static void batadv_iv_iface_enabled(struct batadv_hard_iface *hard_iface)
+ static void batadv_iv_init_sel_class(struct batadv_priv *bat_priv)
+ {
+ 	/* set default TQ difference threshold to 20 */
+-	atomic_set(&bat_priv->gw.sel_class, 20);
++	WRITE_ONCE(bat_priv->gw.sel_class, 20);
+ }
  
- 	tt_vlan = (*tt_data)->vlan_data;
-@@ -1822,7 +1822,7 @@ batadv_tt_global_dump_subentry(struct sk_buff *msg, u32 portid, u32 seq,
- 	if (!hdr)
- 		return -ENOBUFS;
+ static struct batadv_gw_node *
+@@ -2353,7 +2357,7 @@ batadv_iv_gw_get_best_gw_node(struct batadv_priv *bat_priv)
  
--	last_ttvn = atomic_read(&orig->orig_node->last_ttvn);
-+	last_ttvn = READ_ONCE(orig->orig_node->last_ttvn);
+ 		tq_avg = router_ifinfo->bat_iv.tq_avg;
  
- 	if (nla_put(msg, BATADV_ATTR_TT_ADDRESS, ETH_ALEN, common->addr) ||
- 	    nla_put(msg, BATADV_ATTR_ORIG_ADDRESS, ETH_ALEN,
-@@ -3013,7 +3013,7 @@ static bool batadv_send_other_tt_response(struct batadv_priv *bat_priv,
- 	if (!res_dst_orig_node)
+-		switch (atomic_read(&bat_priv->gw.sel_class)) {
++		switch (READ_ONCE(bat_priv->gw.sel_class)) {
+ 		case 1: /* fast connection */
+ 			tmp_gw_factor = tq_avg * tq_avg;
+ 			tmp_gw_factor *= gw_node->bandwidth_down;
+@@ -2407,13 +2411,14 @@ static bool batadv_iv_gw_is_eligible(struct batadv_priv *bat_priv,
+ {
+ 	struct batadv_neigh_ifinfo *router_orig_ifinfo = NULL;
+ 	struct batadv_neigh_ifinfo *router_gw_ifinfo = NULL;
++	u32 sel_class = READ_ONCE(bat_priv->gw.sel_class);
+ 	struct batadv_neigh_node *router_gw = NULL;
+ 	struct batadv_neigh_node *router_orig = NULL;
+ 	u8 gw_tq_avg, orig_tq_avg;
+ 	bool ret = false;
+ 
+ 	/* dynamic re-election is performed only on fast or late switch */
+-	if (atomic_read(&bat_priv->gw.sel_class) <= 2)
++	if (sel_class <= 2)
+ 		return false;
+ 
+ 	router_gw = batadv_orig_router_get(curr_gw_orig, BATADV_IF_DEFAULT);
+@@ -2448,8 +2453,7 @@ static bool batadv_iv_gw_is_eligible(struct batadv_priv *bat_priv,
+ 	/* if the routing class is greater than 3 the value tells us how much
+ 	 * greater the TQ value of the new gateway must be
+ 	 */
+-	if ((atomic_read(&bat_priv->gw.sel_class) > 3) &&
+-	    (orig_tq_avg - gw_tq_avg < atomic_read(&bat_priv->gw.sel_class)))
++	if (sel_class > 3 && orig_tq_avg - gw_tq_avg < sel_class)
  		goto out;
  
--	orig_ttvn = (u8)atomic_read(&req_dst_orig_node->last_ttvn);
-+	orig_ttvn = READ_ONCE(req_dst_orig_node->last_ttvn);
- 	req_ttvn = tt_data->ttvn;
+ 	batadv_dbg(BATADV_DBG_BATMAN, bat_priv,
+diff --git a/net/batman-adv/bat_v.c b/net/batman-adv/bat_v.c
+index de94447142642..492058a87682b 100644
+--- a/net/batman-adv/bat_v.c
++++ b/net/batman-adv/bat_v.c
+@@ -9,6 +9,7 @@
  
- 	/* this node doesn't have the requested data */
-@@ -3300,7 +3300,7 @@ static void batadv_tt_fill_gtable(struct batadv_priv *bat_priv,
- 	orig_node->tt_buff = NULL;
- 	spin_unlock_bh(&orig_node->tt_buff_lock);
- 
--	atomic_set(&orig_node->last_ttvn, ttvn);
-+	WRITE_ONCE(orig_node->last_ttvn, ttvn);
- 
- out:
- 	batadv_orig_node_put(orig_node);
-@@ -3316,7 +3316,7 @@ static void batadv_tt_update_changes(struct batadv_priv *bat_priv,
- 
- 	batadv_tt_save_orig_buffer(bat_priv, orig_node, tt_change,
- 				   batadv_tt_len(tt_num_changes));
--	atomic_set(&orig_node->last_ttvn, ttvn);
-+	WRITE_ONCE(orig_node->last_ttvn, ttvn);
+ #include <linux/atomic.h>
+ #include <linux/cache.h>
++#include <linux/compiler.h>
+ #include <linux/errno.h>
+ #include <linux/if_ether.h>
+ #include <linux/init.h>
+@@ -505,7 +506,7 @@ static bool batadv_v_neigh_is_sob(struct batadv_neigh_node *neigh1,
+ static void batadv_v_init_sel_class(struct batadv_priv *bat_priv)
+ {
+ 	/* set default throughput difference threshold to 5Mbps */
+-	atomic_set(&bat_priv->gw.sel_class, 50);
++	WRITE_ONCE(bat_priv->gw.sel_class, 50);
  }
  
  /**
-@@ -3769,7 +3769,7 @@ static void batadv_tt_update_orig(struct batadv_priv *bat_priv,
- 				  struct batadv_tvlv_tt_change *tt_change,
- 				  u16 tt_num_changes, u8 ttvn)
- {
--	u8 orig_ttvn = (u8)atomic_read(&orig_node->last_ttvn);
-+	u8 orig_ttvn = READ_ONCE(orig_node->last_ttvn);
- 	struct batadv_tvlv_tt_vlan_data *tt_vlan;
- 	bool full_table = true;
- 	bool has_tt_init;
-@@ -3911,7 +3911,7 @@ bool batadv_tt_add_temporary_global_entry(struct batadv_priv *bat_priv,
+@@ -602,7 +603,7 @@ static bool batadv_v_gw_is_eligible(struct batadv_priv *bat_priv,
+ 	u32 gw_throughput, orig_throughput, threshold;
+ 	bool ret = false;
  
- 	if (!batadv_tt_global_add(bat_priv, orig_node, addr, vid,
- 				  BATADV_TT_CLIENT_TEMP,
--				  atomic_read(&orig_node->last_ttvn)))
-+				  READ_ONCE(orig_node->last_ttvn)))
+-	threshold = atomic_read(&bat_priv->gw.sel_class);
++	threshold = READ_ONCE(bat_priv->gw.sel_class);
+ 
+ 	curr_gw = batadv_gw_node_get(bat_priv, curr_gw_orig);
+ 	if (!curr_gw) {
+diff --git a/net/batman-adv/bat_v_ogm.c b/net/batman-adv/bat_v_ogm.c
+index 6436e9bc079b6..28f28b61ad6bc 100644
+--- a/net/batman-adv/bat_v_ogm.c
++++ b/net/batman-adv/bat_v_ogm.c
+@@ -10,6 +10,7 @@
+ #include <linux/atomic.h>
+ #include <linux/bug.h>
+ #include <linux/byteorder/generic.h>
++#include <linux/compiler.h>
+ #include <linux/container_of.h>
+ #include <linux/errno.h>
+ #include <linux/etherdevice.h>
+@@ -106,7 +107,7 @@ static void batadv_v_ogm_start_timer(struct batadv_priv *bat_priv)
+ 	if (delayed_work_pending(&bat_priv->bat_v.ogm_wq))
+ 		return;
+ 
+-	msecs = atomic_read(&bat_priv->orig_interval) - BATADV_JITTER;
++	msecs = READ_ONCE(bat_priv->orig_interval) - BATADV_JITTER;
+ 	msecs += get_random_u32_below(2 * BATADV_JITTER);
+ 	queue_delayed_work(batadv_event_workqueue, &bat_priv->bat_v.ogm_wq,
+ 			   msecs_to_jiffies(msecs));
+@@ -247,7 +248,7 @@ static void batadv_v_ogm_queue_on_if(struct batadv_priv *bat_priv,
+ 		return;
+ 	}
+ 
+-	if (!atomic_read(&bat_priv->aggregated_ogms)) {
++	if (!READ_ONCE(bat_priv->aggregated_ogms)) {
+ 		batadv_v_ogm_send_to_if(bat_priv, skb, hard_iface);
+ 		return;
+ 	}
+@@ -486,7 +487,7 @@ static u32 batadv_v_forward_penalty(struct batadv_priv *bat_priv,
+ 				    u32 throughput)
+ {
+ 	int if_hop_penalty = atomic_read(&if_incoming->hop_penalty);
+-	int hop_penalty = atomic_read(&bat_priv->hop_penalty);
++	int hop_penalty = READ_ONCE(bat_priv->hop_penalty);
+ 	int hop_penalty_max = BATADV_TQ_MAX_VALUE;
+ 
+ 	/* Apply per hardif hop penalty */
+diff --git a/net/batman-adv/bridge_loop_avoidance.c b/net/batman-adv/bridge_loop_avoidance.c
+index f6ca69252ff7c..87d6b11161e4a 100644
+--- a/net/batman-adv/bridge_loop_avoidance.c
++++ b/net/batman-adv/bridge_loop_avoidance.c
+@@ -1380,7 +1380,7 @@ void batadv_bla_update_orig_address(struct batadv_priv *bat_priv,
+ 	bat_priv->bla.claim_dest.group = group;
+ 
+ 	/* purge everything when bridge loop avoidance is turned off */
+-	if (!atomic_read(&bat_priv->bridge_loop_avoidance))
++	if (!READ_ONCE(bat_priv->bridge_loop_avoidance))
+ 		oldif = NULL;
+ 
+ 	if (!oldif) {
+@@ -1484,7 +1484,7 @@ static void batadv_bla_periodic_work(struct work_struct *work)
+ 	batadv_bla_purge_claims(bat_priv, primary_if, 0);
+ 	batadv_bla_purge_backbone_gw(bat_priv, 0);
+ 
+-	if (!atomic_read(&bat_priv->bridge_loop_avoidance))
++	if (!READ_ONCE(bat_priv->bridge_loop_avoidance))
+ 		goto out;
+ 
+ 	if (atomic_dec_and_test(&bat_priv->bla.loopdetect_next)) {
+@@ -1783,7 +1783,7 @@ bool batadv_bla_is_backbone_gw_orig(struct batadv_priv *bat_priv, u8 *orig,
+ 	struct batadv_bla_backbone_gw *backbone_gw;
+ 	int i;
+ 
+-	if (!atomic_read(&bat_priv->bridge_loop_avoidance))
++	if (!READ_ONCE(bat_priv->bridge_loop_avoidance))
  		return false;
  
- 	batadv_dbg(BATADV_DBG_TT, bat_priv,
-@@ -4125,7 +4125,7 @@ static int batadv_roam_tvlv_unicast_handler_v1(struct batadv_priv *bat_priv,
+ 	if (!hash)
+@@ -1821,7 +1821,7 @@ bool batadv_bla_is_backbone_gw(struct sk_buff *skb,
+ 	struct batadv_bla_backbone_gw *backbone_gw;
+ 	unsigned short vid;
  
- 	batadv_tt_global_add(bat_priv, orig_node, roaming_adv->client,
- 			     ntohs(roaming_adv->vid), BATADV_TT_CLIENT_ROAM,
--			     atomic_read(&orig_node->last_ttvn) + 1);
-+			     READ_ONCE(orig_node->last_ttvn) + 1);
+-	if (!atomic_read(&orig_node->bat_priv->bridge_loop_avoidance))
++	if (!READ_ONCE(orig_node->bat_priv->bridge_loop_avoidance))
+ 		return false;
  
- out:
- 	batadv_orig_node_put(orig_node);
+ 	/* first, find out the vid. */
+@@ -1953,7 +1953,7 @@ bool batadv_bla_rx(struct batadv_priv *bat_priv, struct sk_buff *skb,
+ 	if (!primary_if)
+ 		goto handled;
+ 
+-	if (!atomic_read(&bat_priv->bridge_loop_avoidance))
++	if (!READ_ONCE(bat_priv->bridge_loop_avoidance))
+ 		goto allow;
+ 
+ 	if (batadv_bla_loopdetect_check(bat_priv, skb, primary_if, vid))
+@@ -2085,7 +2085,7 @@ bool batadv_bla_tx(struct batadv_priv *bat_priv, struct sk_buff *skb,
+ 	if (!primary_if)
+ 		goto out;
+ 
+-	if (!atomic_read(&bat_priv->bridge_loop_avoidance))
++	if (!READ_ONCE(bat_priv->bridge_loop_avoidance))
+ 		goto allow;
+ 
+ 	if (batadv_bla_process_claim(bat_priv, primary_if, skb))
+@@ -2505,7 +2505,7 @@ bool batadv_bla_check_claim(struct batadv_priv *bat_priv,
+ 	struct batadv_hard_iface *primary_if = NULL;
+ 	bool ret = true;
+ 
+-	if (!atomic_read(&bat_priv->bridge_loop_avoidance))
++	if (!READ_ONCE(bat_priv->bridge_loop_avoidance))
+ 		return ret;
+ 
+ 	primary_if = batadv_primary_if_get_selected(bat_priv);
+diff --git a/net/batman-adv/distributed-arp-table.c b/net/batman-adv/distributed-arp-table.c
+index c6084ae6760c5..0b02018c5b850 100644
+--- a/net/batman-adv/distributed-arp-table.c
++++ b/net/batman-adv/distributed-arp-table.c
+@@ -743,7 +743,7 @@ static void batadv_dat_tvlv_container_update(struct batadv_priv *bat_priv)
+ {
+ 	char dat_mode;
+ 
+-	dat_mode = atomic_read(&bat_priv->distributed_arp_table);
++	dat_mode = READ_ONCE(bat_priv->distributed_arp_table);
+ 
+ 	switch (dat_mode) {
+ 	case 0:
+@@ -1139,7 +1139,7 @@ bool batadv_dat_snoop_outgoing_arp_request(struct batadv_priv *bat_priv,
+ 	int hdr_size = 0;
+ 	unsigned short vid;
+ 
+-	if (!atomic_read(&bat_priv->distributed_arp_table))
++	if (!READ_ONCE(bat_priv->distributed_arp_table))
+ 		goto out;
+ 
+ 	vid = batadv_dat_get_vid(skb, &hdr_size);
+@@ -1234,7 +1234,7 @@ bool batadv_dat_snoop_incoming_arp_request(struct batadv_priv *bat_priv,
+ 	unsigned short vid;
+ 	int err;
+ 
+-	if (!atomic_read(&bat_priv->distributed_arp_table))
++	if (!READ_ONCE(bat_priv->distributed_arp_table))
+ 		goto out;
+ 
+ 	vid = batadv_dat_get_vid(skb, &hdr_size);
+@@ -1296,7 +1296,7 @@ void batadv_dat_snoop_outgoing_arp_reply(struct batadv_priv *bat_priv,
+ 	int hdr_size = 0;
+ 	unsigned short vid;
+ 
+-	if (!atomic_read(&bat_priv->distributed_arp_table))
++	if (!READ_ONCE(bat_priv->distributed_arp_table))
+ 		return;
+ 
+ 	vid = batadv_dat_get_vid(skb, &hdr_size);
+@@ -1344,7 +1344,7 @@ bool batadv_dat_snoop_incoming_arp_reply(struct batadv_priv *bat_priv,
+ 	bool dropped = false;
+ 	unsigned short vid;
+ 
+-	if (!atomic_read(&bat_priv->distributed_arp_table))
++	if (!READ_ONCE(bat_priv->distributed_arp_table))
+ 		goto out;
+ 
+ 	vid = batadv_dat_get_vid(skb, &hdr_size);
+@@ -1714,7 +1714,7 @@ void batadv_dat_snoop_outgoing_dhcp_ack(struct batadv_priv *bat_priv,
+ 	u8 chaddr[BATADV_DHCP_CHADDR_LEN];
+ 	__be32 ip_src, yiaddr;
+ 
+-	if (!atomic_read(&bat_priv->distributed_arp_table))
++	if (!READ_ONCE(bat_priv->distributed_arp_table))
+ 		return;
+ 
+ 	if (!batadv_dat_check_dhcp_ack(skb, proto, &ip_src, chaddr, &yiaddr))
+@@ -1744,7 +1744,7 @@ void batadv_dat_snoop_incoming_dhcp_ack(struct batadv_priv *bat_priv,
+ 	__be16 proto;
+ 	u8 *hw_src;
+ 
+-	if (!atomic_read(&bat_priv->distributed_arp_table))
++	if (!READ_ONCE(bat_priv->distributed_arp_table))
+ 		return;
+ 
+ 	if (unlikely(!pskb_may_pull(skb, hdr_size + ETH_HLEN)))
+@@ -1789,7 +1789,7 @@ bool batadv_dat_drop_broadcast_packet(struct batadv_priv *bat_priv,
+ 	int hdr_size = sizeof(struct batadv_bcast_packet);
+ 	unsigned short vid;
+ 
+-	if (!atomic_read(&bat_priv->distributed_arp_table))
++	if (!READ_ONCE(bat_priv->distributed_arp_table))
+ 		goto out;
+ 
+ 	/* If this packet is an ARP_REQUEST and the node already has the
+diff --git a/net/batman-adv/gateway_client.c b/net/batman-adv/gateway_client.c
+index 026627c8ba45b..305488a74a256 100644
+--- a/net/batman-adv/gateway_client.c
++++ b/net/batman-adv/gateway_client.c
+@@ -171,7 +171,7 @@ void batadv_gw_check_client_stop(struct batadv_priv *bat_priv)
+ {
+ 	struct batadv_gw_node *curr_gw;
+ 
+-	if (atomic_read(&bat_priv->gw.mode) != BATADV_GW_MODE_CLIENT)
++	if (READ_ONCE(bat_priv->gw.mode) != BATADV_GW_MODE_CLIENT)
+ 		return;
+ 
+ 	curr_gw = batadv_gw_get_selected_gw_node(bat_priv);
+@@ -203,7 +203,7 @@ void batadv_gw_election(struct batadv_priv *bat_priv)
+ 	struct batadv_neigh_ifinfo *router_ifinfo = NULL;
+ 	char gw_addr[18] = { '\0' };
+ 
+-	if (atomic_read(&bat_priv->gw.mode) != BATADV_GW_MODE_CLIENT)
++	if (READ_ONCE(bat_priv->gw.mode) != BATADV_GW_MODE_CLIENT)
+ 		goto out;
+ 
+ 	if (!bat_priv->algo_ops->gw.get_best_gw_node)
+@@ -703,7 +703,7 @@ bool batadv_gw_out_of_range(struct batadv_priv *bat_priv,
+ 	if (!gw_node)
+ 		goto out;
+ 
+-	switch (atomic_read(&bat_priv->gw.mode)) {
++	switch (READ_ONCE(bat_priv->gw.mode)) {
+ 	case BATADV_GW_MODE_SERVER:
+ 		/* If we are a GW then we are our best GW. We can artificially
+ 		 * set the tq towards ourself as the maximum value
+diff --git a/net/batman-adv/gateway_common.c b/net/batman-adv/gateway_common.c
+index 315fa90f0c947..675ebf098d4ec 100644
+--- a/net/batman-adv/gateway_common.c
++++ b/net/batman-adv/gateway_common.c
+@@ -7,8 +7,8 @@
+ #include "gateway_common.h"
+ #include "main.h"
+ 
+-#include <linux/atomic.h>
+ #include <linux/byteorder/generic.h>
++#include <linux/compiler.h>
+ #include <linux/stddef.h>
+ #include <linux/types.h>
+ #include <uapi/linux/batadv_packet.h>
+@@ -25,10 +25,10 @@
+ void batadv_gw_tvlv_container_update(struct batadv_priv *bat_priv)
+ {
+ 	struct batadv_tvlv_gateway_data gw;
++	enum batadv_gw_modes gw_mode;
+ 	u32 down, up;
+-	char gw_mode;
+ 
+-	gw_mode = atomic_read(&bat_priv->gw.mode);
++	gw_mode = READ_ONCE(bat_priv->gw.mode);
+ 
+ 	switch (gw_mode) {
+ 	case BATADV_GW_MODE_OFF:
+@@ -36,8 +36,8 @@ void batadv_gw_tvlv_container_update(struct batadv_priv *bat_priv)
+ 		batadv_tvlv_container_unregister(bat_priv, BATADV_TVLV_GW, 1);
+ 		break;
+ 	case BATADV_GW_MODE_SERVER:
+-		down = atomic_read(&bat_priv->gw.bandwidth_down);
+-		up = atomic_read(&bat_priv->gw.bandwidth_up);
++		down = READ_ONCE(bat_priv->gw.bandwidth_down);
++		up = READ_ONCE(bat_priv->gw.bandwidth_up);
+ 		gw.bandwidth_down = htonl(down);
+ 		gw.bandwidth_up = htonl(up);
+ 		batadv_tvlv_container_register(bat_priv, BATADV_TVLV_GW, 1,
+@@ -83,7 +83,7 @@ static void batadv_gw_tvlv_ogm_handler_v1(struct batadv_priv *bat_priv,
+ 
+ 	/* restart gateway selection */
+ 	if (gateway.bandwidth_down != 0 &&
+-	    atomic_read(&bat_priv->gw.mode) == BATADV_GW_MODE_CLIENT)
++	    READ_ONCE(bat_priv->gw.mode) == BATADV_GW_MODE_CLIENT)
+ 		batadv_gw_check_election(bat_priv, orig);
+ }
+ 
+@@ -96,7 +96,7 @@ void batadv_gw_init(struct batadv_priv *bat_priv)
+ 	if (bat_priv->algo_ops->gw.init_sel_class)
+ 		bat_priv->algo_ops->gw.init_sel_class(bat_priv);
+ 	else
+-		atomic_set(&bat_priv->gw.sel_class, 1);
++		WRITE_ONCE(bat_priv->gw.sel_class, 1);
+ 
+ 	batadv_tvlv_handler_register(bat_priv, batadv_gw_tvlv_ogm_handler_v1,
+ 				     NULL, NULL, BATADV_TVLV_GW, 1,
+diff --git a/net/batman-adv/hard-interface.c b/net/batman-adv/hard-interface.c
+index ca9f5c37fb543..f8a2ac1c235e5 100644
+--- a/net/batman-adv/hard-interface.c
++++ b/net/batman-adv/hard-interface.c
+@@ -612,7 +612,7 @@ int batadv_hardif_min_mtu(struct net_device *mesh_iface)
+ 	}
+ 	rcu_read_unlock();
+ 
+-	if (atomic_read(&bat_priv->fragmentation) == 0)
++	if (READ_ONCE(bat_priv->fragmentation) == 0)
+ 		goto out;
+ 
+ 	/* with fragmentation enabled the maximum size of internally generated
+@@ -727,6 +727,7 @@ int batadv_hardif_enable_interface(struct batadv_hard_iface *hard_iface,
+ 	int max_header_len = batadv_max_header_len();
+ 	unsigned int required_mtu;
+ 	unsigned int hardif_mtu;
++	bool fragmentation;
+ 	int ret;
+ 
+ 	hardif_mtu = READ_ONCE(hard_iface->net_dev->mtu);
+@@ -764,15 +765,14 @@ int batadv_hardif_enable_interface(struct batadv_hard_iface *hard_iface,
+ 	batadv_info(hard_iface->mesh_iface, "Adding interface: %s\n",
+ 		    hard_iface->net_dev->name);
+ 
+-	if (atomic_read(&bat_priv->fragmentation) &&
+-	    hardif_mtu < required_mtu)
++	fragmentation = READ_ONCE(bat_priv->fragmentation);
++	if (fragmentation && hardif_mtu < required_mtu)
+ 		batadv_info(hard_iface->mesh_iface,
+ 			    "The MTU of interface %s is too small (%i) to handle the transport of batman-adv packets. Packets going over this interface will be fragmented on layer2 which could impact the performance. Setting the MTU to %i would solve the problem.\n",
+ 			    hard_iface->net_dev->name, hardif_mtu,
+ 			    required_mtu);
+ 
+-	if (!atomic_read(&bat_priv->fragmentation) &&
+-	    hardif_mtu < required_mtu)
++	if (!fragmentation && hardif_mtu < required_mtu)
+ 		batadv_info(hard_iface->mesh_iface,
+ 			    "The MTU of interface %s is too small (%i) to handle the transport of batman-adv packets. If you experience problems getting traffic through try increasing the MTU to %i.\n",
+ 			    hard_iface->net_dev->name, hardif_mtu,
+diff --git a/net/batman-adv/log.h b/net/batman-adv/log.h
+index 225b747a2048e..a0d2b0d64b2b0 100644
+--- a/net/batman-adv/log.h
++++ b/net/batman-adv/log.h
+@@ -76,7 +76,7 @@ __printf(2, 3);
+ #define _batadv_dbg(type, bat_priv, ratelimited, fmt, arg...)		\
+ 	do {								\
+ 		struct batadv_priv *__batpriv = (bat_priv);		\
+-		if (atomic_read(&__batpriv->log_level) & (type) &&	\
++		if (READ_ONCE(__batpriv->log_level) & (type) &&	\
+ 		    (!(ratelimited) || net_ratelimit()))		\
+ 			batadv_debug_log(__batpriv, fmt, ## arg);	\
+ 	}								\
+diff --git a/net/batman-adv/mesh-interface.c b/net/batman-adv/mesh-interface.c
+index 307874069b84e..dadb0784fa3e6 100644
+--- a/net/batman-adv/mesh-interface.c
++++ b/net/batman-adv/mesh-interface.c
+@@ -257,7 +257,7 @@ static netdev_tx_t batadv_interface_tx(struct sk_buff *skb,
+ 	if (batadv_compare_eth(ethhdr->h_dest, ectp_addr))
+ 		goto dropped;
+ 
+-	gw_mode = atomic_read(&bat_priv->gw.mode);
++	gw_mode = READ_ONCE(bat_priv->gw.mode);
+ 	if (is_multicast_ether_addr(ethhdr->h_dest)) {
+ 		/* if gw mode is off, broadcast every packet */
+ 		if (gw_mode == BATADV_GW_MODE_OFF) {
+@@ -754,31 +754,31 @@ static int batadv_meshif_init_late(struct net_device *dev)
+ 	if (!bat_priv->bat_counters)
+ 		return -ENOMEM;
+ 
+-	atomic_set(&bat_priv->aggregated_ogms, 1);
+-	atomic_set(&bat_priv->bonding, 0);
++	WRITE_ONCE(bat_priv->aggregated_ogms, 1);
++	WRITE_ONCE(bat_priv->bonding, 0);
+ #ifdef CONFIG_BATMAN_ADV_BLA
+-	atomic_set(&bat_priv->bridge_loop_avoidance, 1);
++	WRITE_ONCE(bat_priv->bridge_loop_avoidance, 1);
+ #endif
+ #ifdef CONFIG_BATMAN_ADV_DAT
+-	atomic_set(&bat_priv->distributed_arp_table, 1);
++	WRITE_ONCE(bat_priv->distributed_arp_table, 1);
+ #endif
+ #ifdef CONFIG_BATMAN_ADV_MCAST
+-	atomic_set(&bat_priv->multicast_mode, 1);
+-	atomic_set(&bat_priv->multicast_fanout, 16);
++	WRITE_ONCE(bat_priv->multicast_mode, 1);
++	WRITE_ONCE(bat_priv->multicast_fanout, 16);
+ 	atomic_set(&bat_priv->mcast.num_want_all_unsnoopables, 0);
+ 	atomic_set(&bat_priv->mcast.num_want_all_ipv4, 0);
+ 	atomic_set(&bat_priv->mcast.num_want_all_ipv6, 0);
+ 	atomic_set(&bat_priv->mcast.num_no_mc_ptype_capa, 0);
+ #endif
+-	atomic_set(&bat_priv->gw.mode, BATADV_GW_MODE_OFF);
+-	atomic_set(&bat_priv->gw.bandwidth_down, 100);
+-	atomic_set(&bat_priv->gw.bandwidth_up, 20);
+-	atomic_set(&bat_priv->orig_interval, 1000);
+-	atomic_set(&bat_priv->hop_penalty, 30);
++	WRITE_ONCE(bat_priv->gw.mode, BATADV_GW_MODE_OFF);
++	WRITE_ONCE(bat_priv->gw.bandwidth_down, 100);
++	WRITE_ONCE(bat_priv->gw.bandwidth_up, 20);
++	WRITE_ONCE(bat_priv->orig_interval, 1000);
++	WRITE_ONCE(bat_priv->hop_penalty, 30);
+ #ifdef CONFIG_BATMAN_ADV_DEBUG
+-	atomic_set(&bat_priv->log_level, 0);
++	WRITE_ONCE(bat_priv->log_level, 0);
+ #endif
+-	atomic_set(&bat_priv->fragmentation, 1);
++	WRITE_ONCE(bat_priv->fragmentation, 1);
+ 	atomic_set(&bat_priv->packet_size_max, BATADV_MAX_MTU);
+ 	atomic_set(&bat_priv->bcast_queue_left, BATADV_BCAST_QUEUE_LEN);
+ 	atomic_set(&bat_priv->batman_queue_left, BATADV_BATMAN_QUEUE_LEN);
+diff --git a/net/batman-adv/multicast.c b/net/batman-adv/multicast.c
+index a3d3efe22d301..3274e2ac4f4a7 100644
+--- a/net/batman-adv/multicast.c
++++ b/net/batman-adv/multicast.c
+@@ -1099,7 +1099,7 @@ static int batadv_mcast_forw_mode_check(struct batadv_priv *bat_priv,
+ {
+ 	struct ethhdr *ethhdr = eth_hdr(skb);
+ 
+-	if (!atomic_read(&bat_priv->multicast_mode))
++	if (!READ_ONCE(bat_priv->multicast_mode))
+ 		return -EINVAL;
+ 
+ 	switch (ntohs(ethhdr->h_proto)) {
+@@ -1204,7 +1204,7 @@ batadv_mcast_forw_mode_by_count(struct batadv_priv *bat_priv,
+ 	    batadv_mcast_forw_push(bat_priv, skb, vid, is_routable, count))
+ 		return BATADV_FORW_MCAST;
+ 
+-	if (count <= atomic_read(&bat_priv->multicast_fanout))
++	if (count <= READ_ONCE(bat_priv->multicast_fanout))
+ 		return BATADV_FORW_UCASTS;
+ 
+ 	return BATADV_FORW_BCAST;
+diff --git a/net/batman-adv/netlink.c b/net/batman-adv/netlink.c
+index 8db29afeaa40b..92adaa40c8b60 100644
+--- a/net/batman-adv/netlink.c
++++ b/net/batman-adv/netlink.c
+@@ -13,6 +13,7 @@
+ #include <linux/bug.h>
+ #include <linux/byteorder/generic.h>
+ #include <linux/cache.h>
++#include <linux/compiler.h>
+ #include <linux/err.h>
+ #include <linux/errno.h>
+ #include <linux/gfp.h>
+@@ -268,7 +269,7 @@ static int batadv_netlink_mesh_fill(struct sk_buff *msg,
+ 	}
+ 
+ 	if (nla_put_u8(msg, BATADV_ATTR_AGGREGATED_OGMS_ENABLED,
+-		       !!atomic_read(&bat_priv->aggregated_ogms)))
++		       !!READ_ONCE(bat_priv->aggregated_ogms)))
+ 		goto nla_put_failure;
+ 
+ 	if (batadv_netlink_mesh_fill_ap_isolation(msg, bat_priv))
+@@ -283,35 +284,35 @@ static int batadv_netlink_mesh_fill(struct sk_buff *msg,
+ 		goto nla_put_failure;
+ 
+ 	if (nla_put_u8(msg, BATADV_ATTR_BONDING_ENABLED,
+-		       !!atomic_read(&bat_priv->bonding)))
++		       !!READ_ONCE(bat_priv->bonding)))
+ 		goto nla_put_failure;
+ 
+ #ifdef CONFIG_BATMAN_ADV_BLA
+ 	if (nla_put_u8(msg, BATADV_ATTR_BRIDGE_LOOP_AVOIDANCE_ENABLED,
+-		       !!atomic_read(&bat_priv->bridge_loop_avoidance)))
++		       !!READ_ONCE(bat_priv->bridge_loop_avoidance)))
+ 		goto nla_put_failure;
+ #endif /* CONFIG_BATMAN_ADV_BLA */
+ 
+ #ifdef CONFIG_BATMAN_ADV_DAT
+ 	if (nla_put_u8(msg, BATADV_ATTR_DISTRIBUTED_ARP_TABLE_ENABLED,
+-		       !!atomic_read(&bat_priv->distributed_arp_table)))
++		       !!READ_ONCE(bat_priv->distributed_arp_table)))
+ 		goto nla_put_failure;
+ #endif /* CONFIG_BATMAN_ADV_DAT */
+ 
+ 	if (nla_put_u8(msg, BATADV_ATTR_FRAGMENTATION_ENABLED,
+-		       !!atomic_read(&bat_priv->fragmentation)))
++		       !!READ_ONCE(bat_priv->fragmentation)))
+ 		goto nla_put_failure;
+ 
+ 	if (nla_put_u32(msg, BATADV_ATTR_GW_BANDWIDTH_DOWN,
+-			atomic_read(&bat_priv->gw.bandwidth_down)))
++			READ_ONCE(bat_priv->gw.bandwidth_down)))
+ 		goto nla_put_failure;
+ 
+ 	if (nla_put_u32(msg, BATADV_ATTR_GW_BANDWIDTH_UP,
+-			atomic_read(&bat_priv->gw.bandwidth_up)))
++			READ_ONCE(bat_priv->gw.bandwidth_up)))
+ 		goto nla_put_failure;
+ 
+ 	if (nla_put_u8(msg, BATADV_ATTR_GW_MODE,
+-		       atomic_read(&bat_priv->gw.mode)))
++		       READ_ONCE(bat_priv->gw.mode)))
+ 		goto nla_put_failure;
+ 
+ 	if (bat_priv->algo_ops->gw.get_best_gw_node &&
+@@ -320,32 +321,32 @@ static int batadv_netlink_mesh_fill(struct sk_buff *msg,
+ 		 * in use does not implement the GW API
+ 		 */
+ 		if (nla_put_u32(msg, BATADV_ATTR_GW_SEL_CLASS,
+-				atomic_read(&bat_priv->gw.sel_class)))
++				READ_ONCE(bat_priv->gw.sel_class)))
+ 			goto nla_put_failure;
+ 	}
+ 
+ 	if (nla_put_u8(msg, BATADV_ATTR_HOP_PENALTY,
+-		       atomic_read(&bat_priv->hop_penalty)))
++		       READ_ONCE(bat_priv->hop_penalty)))
+ 		goto nla_put_failure;
+ 
+ #ifdef CONFIG_BATMAN_ADV_DEBUG
+ 	if (nla_put_u32(msg, BATADV_ATTR_LOG_LEVEL,
+-			atomic_read(&bat_priv->log_level)))
++			READ_ONCE(bat_priv->log_level)))
+ 		goto nla_put_failure;
+ #endif /* CONFIG_BATMAN_ADV_DEBUG */
+ 
+ #ifdef CONFIG_BATMAN_ADV_MCAST
+ 	if (nla_put_u8(msg, BATADV_ATTR_MULTICAST_FORCEFLOOD_ENABLED,
+-		       !atomic_read(&bat_priv->multicast_mode)))
++		       !READ_ONCE(bat_priv->multicast_mode)))
+ 		goto nla_put_failure;
+ 
+ 	if (nla_put_u32(msg, BATADV_ATTR_MULTICAST_FANOUT,
+-			atomic_read(&bat_priv->multicast_fanout)))
++			READ_ONCE(bat_priv->multicast_fanout)))
+ 		goto nla_put_failure;
+ #endif /* CONFIG_BATMAN_ADV_MCAST */
+ 
+ 	if (nla_put_u32(msg, BATADV_ATTR_ORIG_INTERVAL,
+-			atomic_read(&bat_priv->orig_interval)))
++			READ_ONCE(bat_priv->orig_interval)))
+ 		goto nla_put_failure;
+ 
+ 	batadv_hardif_put(primary_if);
+@@ -433,7 +434,7 @@ static int batadv_netlink_set_mesh(struct sk_buff *skb, struct genl_info *info)
+ 	if (info->attrs[BATADV_ATTR_AGGREGATED_OGMS_ENABLED]) {
+ 		attr = info->attrs[BATADV_ATTR_AGGREGATED_OGMS_ENABLED];
+ 
+-		atomic_set(&bat_priv->aggregated_ogms, !!nla_get_u8(attr));
++		WRITE_ONCE(bat_priv->aggregated_ogms, !!nla_get_u8(attr));
+ 	}
+ 
+ 	if (info->attrs[BATADV_ATTR_AP_ISOLATION_ENABLED]) {
+@@ -457,14 +458,14 @@ static int batadv_netlink_set_mesh(struct sk_buff *skb, struct genl_info *info)
+ 	if (info->attrs[BATADV_ATTR_BONDING_ENABLED]) {
+ 		attr = info->attrs[BATADV_ATTR_BONDING_ENABLED];
+ 
+-		atomic_set(&bat_priv->bonding, !!nla_get_u8(attr));
++		WRITE_ONCE(bat_priv->bonding, !!nla_get_u8(attr));
+ 	}
+ 
+ #ifdef CONFIG_BATMAN_ADV_BLA
+ 	if (info->attrs[BATADV_ATTR_BRIDGE_LOOP_AVOIDANCE_ENABLED]) {
+ 		attr = info->attrs[BATADV_ATTR_BRIDGE_LOOP_AVOIDANCE_ENABLED];
+ 
+-		atomic_set(&bat_priv->bridge_loop_avoidance,
++		WRITE_ONCE(bat_priv->bridge_loop_avoidance,
+ 			   !!nla_get_u8(attr));
+ 		batadv_bla_status_update(bat_priv->mesh_iface);
+ 	}
+@@ -474,7 +475,7 @@ static int batadv_netlink_set_mesh(struct sk_buff *skb, struct genl_info *info)
+ 	if (info->attrs[BATADV_ATTR_DISTRIBUTED_ARP_TABLE_ENABLED]) {
+ 		attr = info->attrs[BATADV_ATTR_DISTRIBUTED_ARP_TABLE_ENABLED];
+ 
+-		atomic_set(&bat_priv->distributed_arp_table,
++		WRITE_ONCE(bat_priv->distributed_arp_table,
+ 			   !!nla_get_u8(attr));
+ 		batadv_dat_status_update(bat_priv->mesh_iface);
+ 	}
+@@ -483,7 +484,7 @@ static int batadv_netlink_set_mesh(struct sk_buff *skb, struct genl_info *info)
+ 	if (info->attrs[BATADV_ATTR_FRAGMENTATION_ENABLED]) {
+ 		attr = info->attrs[BATADV_ATTR_FRAGMENTATION_ENABLED];
+ 
+-		atomic_set(&bat_priv->fragmentation, !!nla_get_u8(attr));
++		WRITE_ONCE(bat_priv->fragmentation, !!nla_get_u8(attr));
+ 
+ 		rtnl_lock();
+ 		batadv_update_min_mtu(bat_priv->mesh_iface);
+@@ -493,14 +494,14 @@ static int batadv_netlink_set_mesh(struct sk_buff *skb, struct genl_info *info)
+ 	if (info->attrs[BATADV_ATTR_GW_BANDWIDTH_DOWN]) {
+ 		attr = info->attrs[BATADV_ATTR_GW_BANDWIDTH_DOWN];
+ 
+-		atomic_set(&bat_priv->gw.bandwidth_down, nla_get_u32(attr));
++		WRITE_ONCE(bat_priv->gw.bandwidth_down, nla_get_u32(attr));
+ 		batadv_gw_tvlv_container_update(bat_priv);
+ 	}
+ 
+ 	if (info->attrs[BATADV_ATTR_GW_BANDWIDTH_UP]) {
+ 		attr = info->attrs[BATADV_ATTR_GW_BANDWIDTH_UP];
+ 
+-		atomic_set(&bat_priv->gw.bandwidth_up, nla_get_u32(attr));
++		WRITE_ONCE(bat_priv->gw.bandwidth_up, nla_get_u32(attr));
+ 		batadv_gw_tvlv_container_update(bat_priv);
+ 	}
+ 
+@@ -528,7 +529,7 @@ static int batadv_netlink_set_mesh(struct sk_buff *skb, struct genl_info *info)
+ 			 * changing the gateway state
+ 			 */
+ 			batadv_gw_check_client_stop(bat_priv);
+-			atomic_set(&bat_priv->gw.mode, gw_mode);
++			WRITE_ONCE(bat_priv->gw.mode, gw_mode);
+ 			batadv_gw_tvlv_container_update(bat_priv);
+ 		}
+ 	}
+@@ -547,7 +548,7 @@ static int batadv_netlink_set_mesh(struct sk_buff *skb, struct genl_info *info)
+ 		sel_class = nla_get_u32(attr);
+ 
+ 		if (sel_class >= 1 && sel_class <= sel_class_max) {
+-			atomic_set(&bat_priv->gw.sel_class, sel_class);
++			WRITE_ONCE(bat_priv->gw.sel_class, sel_class);
+ 			batadv_gw_reselect(bat_priv);
+ 		}
+ 	}
+@@ -555,14 +556,14 @@ static int batadv_netlink_set_mesh(struct sk_buff *skb, struct genl_info *info)
+ 	if (info->attrs[BATADV_ATTR_HOP_PENALTY]) {
+ 		attr = info->attrs[BATADV_ATTR_HOP_PENALTY];
+ 
+-		atomic_set(&bat_priv->hop_penalty, nla_get_u8(attr));
++		WRITE_ONCE(bat_priv->hop_penalty, nla_get_u8(attr));
+ 	}
+ 
+ #ifdef CONFIG_BATMAN_ADV_DEBUG
+ 	if (info->attrs[BATADV_ATTR_LOG_LEVEL]) {
+ 		attr = info->attrs[BATADV_ATTR_LOG_LEVEL];
+ 
+-		atomic_set(&bat_priv->log_level,
++		WRITE_ONCE(bat_priv->log_level,
+ 			   nla_get_u32(attr) & BATADV_DBG_ALL);
+ 	}
+ #endif /* CONFIG_BATMAN_ADV_DEBUG */
+@@ -571,13 +572,13 @@ static int batadv_netlink_set_mesh(struct sk_buff *skb, struct genl_info *info)
+ 	if (info->attrs[BATADV_ATTR_MULTICAST_FORCEFLOOD_ENABLED]) {
+ 		attr = info->attrs[BATADV_ATTR_MULTICAST_FORCEFLOOD_ENABLED];
+ 
+-		atomic_set(&bat_priv->multicast_mode, !nla_get_u8(attr));
++		WRITE_ONCE(bat_priv->multicast_mode, !nla_get_u8(attr));
+ 	}
+ 
+ 	if (info->attrs[BATADV_ATTR_MULTICAST_FANOUT]) {
+ 		attr = info->attrs[BATADV_ATTR_MULTICAST_FANOUT];
+ 
+-		atomic_set(&bat_priv->multicast_fanout, nla_get_u32(attr));
++		WRITE_ONCE(bat_priv->multicast_fanout, nla_get_u32(attr));
+ 	}
+ #endif /* CONFIG_BATMAN_ADV_MCAST */
+ 
+@@ -590,7 +591,7 @@ static int batadv_netlink_set_mesh(struct sk_buff *skb, struct genl_info *info)
+ 		orig_interval = min_t(u32, orig_interval, INT_MAX);
+ 		orig_interval = max_t(u32, orig_interval, 2 * BATADV_JITTER);
+ 
+-		atomic_set(&bat_priv->orig_interval, orig_interval);
++		WRITE_ONCE(bat_priv->orig_interval, orig_interval);
+ 	}
+ 
+ 	batadv_netlink_notify_mesh(bat_priv);
+diff --git a/net/batman-adv/originator.c b/net/batman-adv/originator.c
+index ad4921b659d9d..0ce07bfdade59 100644
+--- a/net/batman-adv/originator.c
++++ b/net/batman-adv/originator.c
+@@ -7,7 +7,6 @@
+ #include "originator.h"
+ #include "main.h"
+ 
+-#include <linux/atomic.h>
+ #include <linux/container_of.h>
+ #include <linux/err.h>
+ #include <linux/errno.h>
+diff --git a/net/batman-adv/routing.c b/net/batman-adv/routing.c
+index 12c16f81cc51d..1dd295d934f49 100644
+--- a/net/batman-adv/routing.c
++++ b/net/batman-adv/routing.c
+@@ -543,7 +543,7 @@ batadv_find_router(struct batadv_priv *bat_priv,
+ 	/* only consider bonding for recv_if == BATADV_IF_DEFAULT (first hop)
+ 	 * and if activated.
+ 	 */
+-	if (!(recv_if == BATADV_IF_DEFAULT && atomic_read(&bat_priv->bonding)))
++	if (!(recv_if == BATADV_IF_DEFAULT && READ_ONCE(bat_priv->bonding)))
+ 		return router;
+ 
+ 	/* bonding: loop through the list of possible routers found
+diff --git a/net/batman-adv/send.c b/net/batman-adv/send.c
+index 60cd67ec9cea1..62ae98eef81e2 100644
+--- a/net/batman-adv/send.c
++++ b/net/batman-adv/send.c
+@@ -185,7 +185,7 @@ int batadv_send_skb_to_orig(struct sk_buff *skb,
+ 	/* Check if the skb is too large to send in one piece and fragment
+ 	 * it if needed.
+ 	 */
+-	if (atomic_read(&bat_priv->fragmentation) &&
++	if (READ_ONCE(bat_priv->fragmentation) &&
+ 	    skb->len > neigh_node->if_incoming->net_dev->mtu) {
+ 		/* Fragment and send packet. */
+ 		ret = batadv_frag_send_packet(skb, orig_node, neigh_node);
 diff --git a/net/batman-adv/types.h b/net/batman-adv/types.h
-index 51880748bc2f5..5d4ad35c19636 100644
+index 16fe843577421..c4845b5e43be0 100644
 --- a/net/batman-adv/types.h
 +++ b/net/batman-adv/types.h
-@@ -464,7 +464,7 @@ struct batadv_orig_node {
- 	unsigned long capa_initialized;
+@@ -1119,21 +1119,21 @@ struct batadv_priv_gw {
+ 	/**
+ 	 * @mode: gateway operation: off, client or server (see batadv_gw_modes)
+ 	 */
+-	atomic_t mode;
++	enum batadv_gw_modes mode;
  
- 	/** @last_ttvn: last seen translation table version number */
--	atomic_t last_ttvn;
-+	u8 last_ttvn;
+ 	/** @sel_class: gateway selection class (applies if gw_mode client) */
+-	atomic_t sel_class;
++	u32 sel_class;
  
- 	/** @tt_buff: last tt changeset this node received from the orig node */
- 	unsigned char *tt_buff;
+ 	/**
+ 	 * @bandwidth_down: advertised uplink download bandwidth (if gw_mode
+ 	 *  server)
+ 	 */
+-	atomic_t bandwidth_down;
++	u32 bandwidth_down;
+ 
+ 	/**
+ 	 * @bandwidth_up: advertised uplink upload bandwidth (if gw_mode server)
+ 	 */
+-	atomic_t bandwidth_up;
++	u32 bandwidth_up;
+ 
+ 	/** @reselect: bool indicating a gateway re-selection is in progress */
+ 	atomic_t reselect;
+@@ -1524,36 +1524,23 @@ struct batadv_priv {
+ 	/**
+ 	 * @aggregated_ogms: bool indicating whether OGM aggregation is enabled
+ 	 */
+-	atomic_t aggregated_ogms;
++	u8 aggregated_ogms;
+ 
+ 	/** @bonding: bool indicating whether traffic bonding is enabled */
+-	atomic_t bonding;
++	u8 bonding;
+ 
+ 	/**
+ 	 * @fragmentation: bool indicating whether traffic fragmentation is
+ 	 *  enabled
+ 	 */
+-	atomic_t fragmentation;
+-
+-	/**
+-	 * @packet_size_max: max packet size that can be transmitted via
+-	 *  multiple fragmented skbs or a single frame if fragmentation is
+-	 *  disabled
+-	 */
+-	atomic_t packet_size_max;
+-
+-	/**
+-	 * @frag_seqno: incremental counter to identify chains of egress
+-	 *  fragments
+-	 */
+-	atomic_t frag_seqno;
++	u8 fragmentation;
+ 
+ #ifdef CONFIG_BATMAN_ADV_BLA
+ 	/**
+ 	 * @bridge_loop_avoidance: bool indicating whether bridge loop
+ 	 *  avoidance is enabled
+ 	 */
+-	atomic_t bridge_loop_avoidance;
++	u8 bridge_loop_avoidance;
+ #endif
+ 
+ #ifdef CONFIG_BATMAN_ADV_DAT
+@@ -1561,7 +1548,7 @@ struct batadv_priv {
+ 	 * @distributed_arp_table: bool indicating whether distributed ARP table
+ 	 *  is enabled
+ 	 */
+-	atomic_t distributed_arp_table;
++	u8 distributed_arp_table;
+ #endif
+ 
+ #ifdef CONFIG_BATMAN_ADV_MCAST
+@@ -1569,27 +1556,40 @@ struct batadv_priv {
+ 	 * @multicast_mode: Enable or disable multicast optimizations on this
+ 	 *  node's sender/originating side
+ 	 */
+-	atomic_t multicast_mode;
++	u8 multicast_mode;
+ 
+ 	/**
+ 	 * @multicast_fanout: Maximum number of packet copies to generate for a
+ 	 *  multicast-to-unicast conversion
+ 	 */
+-	atomic_t multicast_fanout;
++	u32 multicast_fanout;
+ #endif
+ 
++	/**
++	 * @packet_size_max: max packet size that can be transmitted via
++	 *  multiple fragmented skbs or a single frame if fragmentation is
++	 *  disabled
++	 */
++	atomic_t packet_size_max;
++
++	/**
++	 * @frag_seqno: incremental counter to identify chains of egress
++	 *  fragments
++	 */
++	atomic_t frag_seqno;
++
+ 	/** @orig_interval: OGM broadcast interval in milliseconds */
+-	atomic_t orig_interval;
++	u32 orig_interval;
+ 
+ 	/**
+ 	 * @hop_penalty: penalty which will be applied to an OGM's tq-field on
+ 	 *  every hop
+ 	 */
+-	atomic_t hop_penalty;
++	u8 hop_penalty;
+ 
+ #ifdef CONFIG_BATMAN_ADV_DEBUG
+ 	/** @log_level: configured log level (see batadv_dbg_level) */
+-	atomic_t log_level;
++	u32 log_level;
+ #endif
+ 
+ 	/**
 -- 
 2.47.3
 
