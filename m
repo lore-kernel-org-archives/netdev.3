@@ -1,104 +1,77 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74EE635949;
-	Thu, 28 May 2026 02:16:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 073811F5858;
+	Thu, 28 May 2026 02:20:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779934606; cv=none; b=BonLUeC0aSpz9VHi64TGRGrix0hNzsDo6/QMKMsTrGT/iGaClPQZ87cTfMNmB/5WTahYh1w7ypnhQigtxESQJqUY8OuscY4VbWMp5yjk0X45whgNbUVDGqtFynq/uz9sUefK6HJ2W4QIr0i9/daiG3uFEAxRfbMxtCFZcRMCNNw=
+	t=1779934802; cv=none; b=Qd83RXVQBo044MwLkX+9ckfBdI3OwzXhQqU1XKI7mo13ykqvH/SfJinC6c5inr8nju0jD/OlwxCRtyS6NLkREfoLh9ymwUt6gB6bVtJJ7pW1cZZcVvg74eVKzhTLrSoR5ePoC43+OONskOhtBNTFqR5mMTBGEHnXYUd8r8FOgvU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779934606; c=relaxed/simple;
-	bh=IFA4n4NLxQTVJh1fNUypLvf+igLULdkLZrE7pdAGJ6c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Sa9J0hQYDR4MRD1NPbFenRuJMF+Bo5uVjXda0PAwFINgS3lUrV+5oFyY8z/LBaTbtRyBOgwl0fnoFXMO5gnwZ5xZnf6+2TxUkFE2EokI0JsLMtugulFI7WMrgaUFqjZtRD56313DlGjmCCff8qsvimlRPXEKKRV85hbjOgCGfEg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UZ4S2wMj; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1779934802; c=relaxed/simple;
+	bh=HOzg/dvIeG9Ja/PqBbxkp2vf7WFYqBZXngUSeC85kbg=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=gzMEQtiOSu7N7/gPDPtFG2zl3xqJ0Lk/BSyueiRYvd59NCHppgxKfK1AImvK6UpVIU6ylk3csvsWoC64kTSDWm7Y278CXGwj84xX+uUaqqWBhSBfI5VOf7ZwhYNQnXM/FSpQ/gUkYrSsTUQcgLtUczDWyRcYjOAkhpv5DF0NnlI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j7QNWo83; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UZ4S2wMj"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779934605; x=1811470605;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=IFA4n4NLxQTVJh1fNUypLvf+igLULdkLZrE7pdAGJ6c=;
-  b=UZ4S2wMjp/dpf5zV4G/tsI4cAdAGqFUehw1RC3LuyY4I8f1tQqqg1E5o
-   M23vMu2mKh3Rqg3++DTqDYvH735QA3dos2OSWyiXzJf9RaUJdJO17r+UV
-   ucDgsfhc3L/dxamOfjUh8vplAJkMoEzlqYGwKIDoYtIf9dNbpm9lXV2yk
-   Mr/x5+Ohy7EFeUCgGth8yCB6YiAE1AUPqQAy+VkCDDuIegXVKwiaUUy/C
-   gT5GW9yuBDDdlOI7NL/aV+lReOMVSGh/w/cHP7m8W/EznWoVswvtQExwv
-   CYulyHS048r3H8QDxmufHPiOBM6cLQRYC92q6vR4GE4mmfSRuFQsEvmR0
-   w==;
-X-CSE-ConnectionGUID: +iNkxKFzTUaKF7WExDrHzw==
-X-CSE-MsgGUID: CStnZJhiT1KFBx35Z4Mq6Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11799"; a="68307255"
-X-IronPort-AV: E=Sophos;i="6.24,172,1774335600"; 
-   d="scan'208";a="68307255"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2026 19:16:45 -0700
-X-CSE-ConnectionGUID: lGqoO3zKRL+CcXT5DuOc7Q==
-X-CSE-MsgGUID: zZuSP/VGRJC9qUdm09MiIQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,172,1774335600"; 
-   d="scan'208";a="272749359"
-Received: from lkp-server01.sh.intel.com (HELO f0d55cb201f0) ([10.239.97.150])
-  by orviesa002.jf.intel.com with ESMTP; 27 May 2026 19:16:42 -0700
-Received: from kbuild by f0d55cb201f0 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wSQIY-000000005RC-3NgD;
-	Thu, 28 May 2026 02:16:38 +0000
-Date: Thu, 28 May 2026 10:16:14 +0800
-From: kernel test robot <lkp@intel.com>
-To: Chuang Wang <nashuiliang@gmail.com>
-Cc: oe-kbuild-all@lists.linux.dev, Chuang Wang <nashuiliang@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Stanislav Fomichev <sdf.kernel@gmail.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Neal Cardwell <ncardwell@google.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v5] net: reduce RFS/ARFS flow updates by
- checking LLC affinity
-Message-ID: <202605281038.YLl0IgeD-lkp@intel.com>
-References: <20260525025854.13982-1-nashuiliang@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j7QNWo83"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B36641F000E9;
+	Thu, 28 May 2026 02:20:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779934800;
+	bh=yvDJtRypZBbxQi7iTRMpFHJ0Xf2K73yxjqlzagEc4gY=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=j7QNWo83+F3a/ytTipCx7AhNtYhgN25axFQH8Kb5PGnLTWbyvXmQOjhqrSLpWB8sS
+	 LhdVvj1M9vT6kouEktnTnBNeq3gUNKHGvFLpddKv34K6Lv1LbrGU9AZF30a3LqGX+8
+	 91g7DlB6C92ZVNFwkQos08CzyCcm9HaoWkvzWrDuJQlJNTSge6obt1FB6PJ9ZqTdey
+	 SIn3IruzrjfJ4KPAdqJr3Gd2nx2MpAODCKQXaNCN+fE/RMwDh+5GjedmxjLg53jWt/
+	 zXNiKGVDzfXmLolTFdxwvE9SPxrTrxzgsLGoPJhdXYR273ANU/Jm8JwVVFlS9ehcTI
+	 8UNEPbQxeo6IQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0F44380CFF9;
+	Thu, 28 May 2026 02:20:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260525025854.13982-1-nashuiliang@gmail.com>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v2] ipv6: rpl: fix hdrlen overflow in
+ ipv6_rpl_srh_decompress()
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177993480564.718177.17841853640746767104.git-patchwork-notify@kernel.org>
+Date: Thu, 28 May 2026 02:20:05 +0000
+References: <20260525154031.2290876-1-rc@rexion.ai>
+In-Reply-To: <20260525154031.2290876-1-rc@rexion.ai>
+To: Rahul Chandelkar <rc@rexion.ai>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, alex.aring@gmail.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 
-Hi Chuang,
+Hello:
 
-kernel test robot noticed the following build errors:
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-[auto build test ERROR on net-next/main]
+On Mon, 25 May 2026 21:10:31 +0530 you wrote:
+> ipv6_rpl_srh_decompress() computes:
+> 
+>     outhdr->hdrlen = (((n + 1) * sizeof(struct in6_addr)) >> 3);
+> 
+> hdrlen is __u8. For n >= 127 the result exceeds 255 and silently
+> truncates. With n=127 (cmpri=15, cmpre=15, pad=0, hdrlen=16):
+> 
+> [...]
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Chuang-Wang/net-reduce-RFS-ARFS-flow-updates-by-checking-LLC-affinity/20260525-110036
-base:   net-next/main
-patch link:    https://lore.kernel.org/r/20260525025854.13982-1-nashuiliang%40gmail.com
-patch subject: [PATCH net-next v5] net: reduce RFS/ARFS flow updates by checking LLC affinity
-config: nios2-allmodconfig (https://download.01.org/0day-ci/archive/20260528/202605281038.YLl0IgeD-lkp@intel.com/config)
-compiler: nios2-linux-gcc (GCC) 11.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260528/202605281038.YLl0IgeD-lkp@intel.com/reproduce)
+Here is the summary with links:
+  - [net,v2] ipv6: rpl: fix hdrlen overflow in ipv6_rpl_srh_decompress()
+    https://git.kernel.org/netdev/net/c/9d5e7a46a9f6
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202605281038.YLl0IgeD-lkp@intel.com/
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-All errors (new ones prefixed by >>, old ones prefixed by <<):
 
-ERROR: modpost: "sock_rps_record_flow_hash" [drivers/net/tun.ko] undefined!
->> ERROR: modpost: "sock_rps_record_flow" [net/sctp/sctp.ko] undefined!
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
