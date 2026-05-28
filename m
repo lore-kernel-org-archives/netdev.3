@@ -1,45 +1,47 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 029EF2DF6E9;
-	Thu, 28 May 2026 02:02:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67E9A2EBBB9
+	for <netdev@vger.kernel.org>; Thu, 28 May 2026 02:13:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779933772; cv=none; b=BXozoqFa0M3TMT//4SzbwxptLemsYLIFuVSuNpHi3Ez+cVJ2lQcgCL5eFBLaGvKBBGpE4/3g/ZdPU5HhHD8KuQNR9RRWL/cSucx6GtJHop+RaV7sJnqJjist0mTtpPUp6Z06z4qcBfelDY3Dhu4IEQiJWidttp1zh+bgLiU9VpY=
+	t=1779934387; cv=none; b=NwinqrpkjP0UMfc94lDSIudeTY26WZakmFaJLmZybwXIhBLY8MDQ89H/AYBF8bTmrbPDJArHLJIsdlOizh4driokr2qAX4IZVoI1G9lMjRqJx7Sc9+ScM+gNjaDnsQms62hkZpVbG+7Vhsr46iVsj68oo7PDgifp+vZ9OfkgMJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779933772; c=relaxed/simple;
-	bh=sdEM9fHLlBUaq6iWQM9rEm2DqBl0Gym20sdRpF3nBjI=;
+	s=arc-20240116; t=1779934387; c=relaxed/simple;
+	bh=Ciyr1abHwQgdi4uI8R47i06XGyEvBzYVlL6Morgg8Y8=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=d7V6oVSR98ItQzugGBy5zVa2hVdeohzfVbL6Dqdr78ZB2yUEaXnDSzma14H+tf6UJQaGjwXzONntcqyxB9Q/0pMzC/LKL6RJlCNp0nbAzbv8CiBVnqSIsHsvt60Jqz8LRVP87HpNtWyVPeI4A2Ci2HUqMT2IsxKpIYO+Ynby7NQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BQxv4F++; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=Bm2j/5m4HD+VeyAY2EDJ1Wk8kfuh/tWL5hfU+nvpDGuY7JTPQVuIHx59Whm1/a3EDFkJhs9+NTnpeJiz+uS5LlJLL+6ZnKZFRZ5DKovcw3mLEfkdiPDaOfgryYlT+9HrF+faSu0O/F+0rp5WUGarKZJL5jOS7Vh9j3gllszUvdI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a7/FfZHM; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BQxv4F++"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BEF61F000E9;
-	Thu, 28 May 2026 02:02:50 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a7/FfZHM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 037EB1F00A3A;
+	Thu, 28 May 2026 02:13:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779933770;
-	bh=b5aqKBiPoSP1skkwuu26lNOnHKIU/K7yusumXc+fDng=;
+	s=k20260515; t=1779934384;
+	bh=I+Edx5fLpNKrzRvGWRlcpKc4RZpUpuSOPh3zkjaQB58=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=BQxv4F++Y6gqFzjgsTJXKYJZQDE8Ok8L/Lk1tPRcuwRltSwAXUQek7so4YXeQjE1C
-	 sIGfuuieLPcNKxZI+E2ZF4DgaAWoCaq7q6qf2bHRizwEgreUxyinat0FthC/hsZqNU
-	 0Ie1UcnKFdVWV+Dkp+OLSwIYqnm9pmU4RZ4v6DBCYJgsD5V0KBw+FcPnACQKhHBP37
-	 1/U9mBlTidCVvq6VOgTAGYrMN1vqJgnOwzmksyCZOFZ0Pt9AWmB9Jm1yvWtPg14GRm
-	 PbJGEf7oFklNWO7ieEvl7PFuwXuMGEUr7UXmBTMVt9DeF1IbnM77g3F82hcv7YyGh4
-	 JTnnT4zJPE4Ww==
-Date: Wed, 27 May 2026 19:02:49 -0700
+	b=a7/FfZHMxCw7kgQjtuwZPHNcsDZTxajzQBQYbjryga9CAbYFdPw9VQup3n/qgk1cf
+	 YV8aEjAPxye6N0iwRjmjNhq7PKyIAFNTtQwQIu0O6aHGjM0eIbleq28g4nN9ttrhaX
+	 sJd/n2oSPUwy33o7fXQWgKP+O8DSz+D1D3mp5nsTkVuuE+h31ey0f613A62w41ieLD
+	 9lMApAYAwdwiInyAXAepM5bVvAd51+N04R6N3vec3vIHAXgggWpt9dPgj5XHp/cvHs
+	 NPFyKQkL3NmzVlqoIgIe7c70Vb/uUzLqg1tHtjkEfXjWQ1kzbe7xRJ9h2cQRInmDkp
+	 AOQ4Umw99OVfQ==
+Date: Wed, 27 May 2026 19:13:03 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Til Kaiser <mail@tk154.de>
-Cc: netdev@vger.kernel.org, marcin.s.wojtas@gmail.com,
- linux@armlinux.org.uk, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, pabeni@redhat.com, ast@kernel.org,
- daniel@iogearbox.net, hawk@kernel.org, john.fastabend@gmail.com,
- sdf@fomichev.me, mcroce@microsoft.com, sven.auhagen@voleatech.de,
- bpf@vger.kernel.org
-Subject: Re: [PATCH] net: mvpp2: fix skb not reflecting XDP modifications on
- XDP_PASS
-Message-ID: <20260527190249.0eefda22@kernel.org>
-In-Reply-To: <20260524122334.1730451-1-mail@tk154.de>
-References: <20260524122334.1730451-1-mail@tk154.de>
+To: Alice Mikityanska <alice.kernel@fastmail.im>
+Cc: Daniel Borkmann <daniel@iogearbox.net>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>, Xin Long <lucien.xin@gmail.com>, Willem de Bruijn
+ <willemdebruijn.kernel@gmail.com>, Willem de Bruijn <willemb@google.com>,
+ David Ahern <dsahern@kernel.org>, Nikolay Aleksandrov
+ <razor@blackwall.org>, Shuah Khan <shuah@kernel.org>, Stanislav Fomichev
+ <stfomichev@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>, Simon Horman
+ <horms@kernel.org>, Florian Westphal <fw@strlen.de>,
+ netdev@vger.kernel.org, Alice Mikityanska <alice@isovalent.com>
+Subject: Re: [PATCH net-next v5 00/11] BIG TCP for UDP tunnels
+Message-ID: <20260527191303.78dfffde@kernel.org>
+In-Reply-To: <20260526161200.1135899-1-alice.kernel@fastmail.im>
+References: <20260526161200.1135899-1-alice.kernel@fastmail.im>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -49,30 +51,49 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sun, 24 May 2026 14:23:34 +0200 Til Kaiser wrote:
-> When an XDP program uses bpf_xdp_adjust_head() or bpf_xdp_adjust_tail()
-> and then returns XDP_PASS, the driver ignores the updated xdp_buff
-> pointers and builds the skb from hardcoded offsets derived from the
-> original RX descriptor. This means any packet modifications made by the
-> XDP program are silently discarded before the skb reaches the network
-> stack.
+On Tue, 26 May 2026 18:11:49 +0200 Alice Mikityanska wrote:
+> This series is a follow-up to "BIG TCP without HBH in IPv6", and it adds
+> support for BIG TCP IPv4/IPv6 workloads in vxlan and geneve. Now that
+> IPv6 BIG TCP doesn't require stripping the HBH in all various
+> combinations in tunneled traffic, adding BIG TCP becomes feasible.
 > 
-> Fix this by saving the post-XDP data pointer offset and length back into
-> rx_offset and rx_bytes when XDP_PASS is returned, so the subsequent
-> skb_reserve()/skb_put() calls use the actual packet geometry as seen by
-> the XDP program. When no XDP program is loaded the variables retain
-> their original descriptor-derived values and the non-XDP fast path is
-> unaffected.
+> Patches 01-02 are small fixups to some related code that I'm changing in
+> the series.
 > 
-> Fixes: 07dd0a7aae7f ("mvpp2: add basic XDP support")
-> Signed-off-by: Til Kaiser <mail@tk154.de>
+> Patch 03 adds accessors for the length field in the UDP header, as
+> suggested by Paolo in review. The usage of udp_set_len is then added in
+> the following patches that start using length=0 in BIG TCP UDP packets.
+> 
+> Patches 04-06 close the gaps that prevent BIG TCP packets from going
+> through UDP tunnel code.
+> 
+> Patch 07 re-adds proper validation of malformed packets that arrive with
+> length=0 from the wire.
+> 
+> Patch 08 is for proper formatting in tcpdump (set UDP len to 0 rather
+> than a trimmed value on overflow).
+> 
+> Patches 09-10 bump up tso_max_size for VXLAN and GENEVE.
+> 
+> Patch 11 adds selftests.
 
-Other than the checksum complaint Sashiko review looks legit.
-Please respin and try to fix more of this issues in one series.
+Looks like the selftest fails on debug kernel builds:
 
-Could you try to run:
-tools/testing/selftests/drivers/net/xdp.py
-it may surface other common driver bugs.
-See: tools/testing/selftests/drivers/net/README.rst for instructions
--- 
-pw-bot: cr
+# overriding timeout to 7200
+# selftests: net: big_tcp_tunnels.sh
+# 0.50 [+0.50] Setting up VXLAN over IPv4
+# 0.78 [+0.28] Running IPv4 traffic in the tunnel
+# 5.93 [+5.14] Captured BIG TCP GRO packets: 18138
+# 5.93 [+0.00] Captured BIG TCP GSO packets: 17445
+# 6.01 [+0.08] Setting up VXLAN over IPv4
+# 6.29 [+0.29] Running IPv6 traffic in the tunnel
+# 11.40 [+5.11] Captured BIG TCP GRO packets: 17827
+# 11.40 [+0.00] Captured BIG TCP GSO packets: 16964
+# 11.49 [+0.08] Setting up VXLAN over IPv6
+# 11.78 [+0.29] Running IPv4 traffic in the tunnel
+# 16.89 [+5.11] Captured BIG TCP GRO packets: 8951
+# 16.89 [+0.00] Captured BIG TCP GSO packets: 9063
+not ok 1 selftests: net: big_tcp_tunnels.sh # exit=1
+
+https://netdev-ctrl.bots.linux.dev/logs/vmksft/net-dbg/results/665442/153-big-tcp-tunnels-sh/stdout
+https://netdev-ctrl.bots.linux.dev/logs/vmksft/net-dbg/results/665442/153-big-tcp-tunnels-sh-retry/stdout
