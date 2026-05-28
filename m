@@ -1,177 +1,194 @@
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BC7575809
-	for <netdev@vger.kernel.org>; Thu, 28 May 2026 17:53:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88FE53B6362;
+	Thu, 28 May 2026 17:59:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.16
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779990807; cv=pass; b=sedu3W1j1d6AOfLKMWD4kdsluif6eG03g53PBaNeKh93EfqinRp18nxA1XUrNRO/HlVV/O9LsQmdYRSnV+HqUojVrgk3z9YZCtKqVLtJOipadSE5UkLZnWzbZhY3xndy6KgD/t+fF9Qeisi7KxizEBYFtTxYthhRmit7BqHGcno=
+	t=1779991166; cv=fail; b=EoTntHvdPfjXEKYHqbICNdJKIV+dGDC/p0xwH6xLruEi7mpnNQpphTK84kp8aV9GzQXG1mF77OdSYIZbn+tgntmmw+fcidCTg9ryKNXSFSrymtGB/BQurp7rRjwHGSqFzG/XRhoDZLrgLj7T8EGpq3v8GMtGm0m0yBrfsXrdzgQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779990807; c=relaxed/simple;
-	bh=Ojf9hS6tdEKAUY35kGZlNQdhFakKlp3N22FwdlEPo4g=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bA5J5CmQDcMwjx5avLTzFRh2CteiM40fS2vqY+Ife4wCpheFwNElxt8Y5NOecd2xz/TdVcUDagXMvJD2tY/hY8V5vQaZUZUiXUvSwIn5bUb494MXHJsvCGtFcMBf4S5S1J793P5U/IQ/G1DnvkwlbEEmqrl7LeKy39j94rdikfI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (2048-bit key) header.d=mojatatu-com.20251104.gappssmtp.com header.i=@mojatatu-com.20251104.gappssmtp.com header.b=YdJSDbVZ; arc=pass smtp.client-ip=209.85.216.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	s=arc-20240116; t=1779991166; c=relaxed/simple;
+	bh=MoE1zT7Txe10TZGUeB+wG913fTBnb9nCP2hLaXfgWc0=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=Pmf27k/GK5BthpNV6ZDbMbUAC5nHXOrIpIrcY8Awhb9rPxOb+r56ILRrY5bK2m4KLnzFOfX53eP2iH8NgiPUqiYtNaQYRZILDz40rmNo18gr2+uOU3G+Z09UwdI9TmobuE/aqp0Mw5jxnu604s1vHDowpgelphpY2d52KnEw00s=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lhAplzi0; arc=fail smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mojatatu-com.20251104.gappssmtp.com header.i=@mojatatu-com.20251104.gappssmtp.com header.b="YdJSDbVZ"
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-367cbac9c37so7808643a91.2
-        for <netdev@vger.kernel.org>; Thu, 28 May 2026 10:53:26 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779990806; cv=none;
-        d=google.com; s=arc-20240605;
-        b=NyFuHXHR/LXnu+ZIVqc3Gtv3rHKi6TWZwy68tN/LO4uJalzhmsOOJJBhau+sIVhd5C
-         Sm0ny8Q20OFQ39mTsC7QPVPNOMvm2pYXJTWblN/RgJavaEZeOd4yHR3osA7P/auEXmRB
-         diljmEFIYsUsyT1DCfx2VgMV+UqYVd/Dn/QCAtxlDLPRIb9qrx+mIfCaxQgzU3oG+vW6
-         gOFOI4tgOT1N+xLOzMLaHSCGKQtmHR1+cBgXarD3fZSnPpH8uGawQUWzTqHMmy8QSESE
-         QjDNcbt02fAQZYrhxPKuVrFLCDJDyuKYE3/oMeP9TwgOCzSmJ4hqglTT65OZDMgjQUVl
-         JIUQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=FTv35aHvFSD695eca3kEt96+k1nNAuiO2mYdREMdyHk=;
-        fh=CZlqreM5+7+5mMHP6qPd1TfrehY9udzjmsxD3tzPdVA=;
-        b=MKGUnuRswarTpJ9UHCPClJSIzQ0sDciVv3RXBHIO+PbblmIrWG0/e6uwwNznze0hT7
-         DhrYyLOP5dgNbSNv1Ue0rmAiMW0PvHgj4TR965VYQjHuODIIb9iVqhHxcdNtQDLPz0DF
-         8oHPD39Hgv5O2BYRuXYtVDQRhTQVO24n9Knn8LvaAyIwzB7VZBOYsuzr0du8SrLqQFPJ
-         zwMhpEOWbV46colGJsCJnBJblZpJSKyJiyb/x42ybNbcQYkJn+MGi4L0+e/XFV5qQ4Fa
-         VF6jDBrzjhq1sjfaIM25MsEA5GjUdroJxYOVyH1Lgx8XGh/BZ//32QU5e6QBnhKukiRF
-         Ftgw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu-com.20251104.gappssmtp.com; s=20251104; t=1779990806; x=1780595606; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FTv35aHvFSD695eca3kEt96+k1nNAuiO2mYdREMdyHk=;
-        b=YdJSDbVZ4Pc1FMvGX6Ir4WVBnfxPID/lxAVzd7AlN0GaeYDbaciyfFIHDrdbbcQzQ8
-         ImsqqkSoBt+2SAy6zHRutl8PgJcLBKhcd9JPDCb3rvPVMnE2xOtyHmlZcOsXeVLeo5XZ
-         ImowlQdpDzKc5lI3xNwGed6xKVKeSIdokyC21kr8BswhlUOO9PpALzA9xhNHDJRQTBp5
-         rZcooQeftilUXVmueXTZvfHgs4ZsRhi6fPi5gs/KpjC+/MSm7KRZLNRn6/CVDm1CzQIc
-         Se+AijT9zFgXKM21ubQRZVWbXwuvu06n0HLTM9TzyRaJNqNHGKIRHdKzaNe+M/5NVL5+
-         VR/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779990806; x=1780595606;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=FTv35aHvFSD695eca3kEt96+k1nNAuiO2mYdREMdyHk=;
-        b=aGe4OOE8y8Fk0CurdzkJ7I1eSBaaKT/M/FKQm9eDTr5mPCx5aA/JlhvWIaQos1MbTs
-         bnNXwneJ4ppdTJAcz/OD5Kk6kWd3E2jnL2lB7XEWPXfqikdRnjK2wLqaJRVw5aC3gBuw
-         JvdiUd7+hvB392+TG286aVFmuaHGQhXL+lIfv1Y0WNXPOoCQl4p9ZsM2suPAvxJszsQA
-         JcCLPS2d90EY3DLpBq0gJQeVFOR6OmsBecwEzY7bMqXgG6KgjAsC2WCXqCDzCETk/Wnq
-         Y1+/2xhZUJUwBOJtm5lvBBiDwxBrhdorgcBXKz5HmwuJKhLWhC0HUyvC8Pb2ZMvmsYct
-         TH9w==
-X-Gm-Message-State: AOJu0Yxu1EoUIG8H3DiGxkLUbyeQyJQRTHqmKuGs9QZGXQb8Sh+udyFh
-	xyE22FG3Wv1Etmfenr0FTnK2seji7qgTj6oNZ5COU8YtVnmGz0f/8pAQnwKcENh/Z94JdeBSqcK
-	yWTEawPSaGWvrj0qi2AkQ5dYNsY7hKudfaV07hp1n
-X-Gm-Gg: Acq92OHVRoFTLUub0J6aCOg3VSsHTfyA7U+0FL5KItDyPEO9hgi482nIE1l7XkdPMBT
-	hJeBNr5hhaVq50E1ihsmWhhDRk0Z7bfuYhLScBpUAq6v3xu4QzrAsYpnqmUpm4vU1+xJPBuvIw/
-	rnYWqPvP7CKTflMK0bKM9NxqpTURg7OFwJXknY8Z54JFXxdjfa1msV8ABQFZ1JvyLcJsAFHcs/x
-	FkONGZvQ0qmh89rO56hEiNOtytQxEVtOx6uPyDJfZ3EGg5sc4vg9A3zuUQC9/lbFaNYVq2ZMG7M
-	0cY3kX9i7V+cpr+ZG/yl8EieWeeDxQ==
-X-Received: by 2002:a17:90b:1b07:b0:35e:27ec:de0 with SMTP id
- 98e67ed59e1d1-36a67506b93mr27312342a91.13.1779990805905; Thu, 28 May 2026
- 10:53:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lhAplzi0"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1779991165; x=1811527165;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=MoE1zT7Txe10TZGUeB+wG913fTBnb9nCP2hLaXfgWc0=;
+  b=lhAplzi081EpThhvl+U+/79LgflNidwlLZstCEIyFNP7kkwNXQZwBpwk
+   9wIN/0z7p5LGD4frf+hGkIzx79gJsXlCL6C2Ved2mxX9iyahGA0bGDAaf
+   oATldnGkf64xABNgsOrtJlhOMoh1LME9PBn9knVd7zd4QGBI5+SmfJWU5
+   TUEz6Xk++dTBnnQKVM2K+JipIvIsGWcypMdfpSIvVeNuEaBGjxwScHaKS
+   O4XaS9OV3aQvw8VOUgb/0Cx5AOqkDmEUFw8BjNJzT5rQo9ec6rg0s0hvy
+   IxnykBdGrYVJ1/3+IMgKHAOO8+wdrFR+d2gqxWWSChn/ya7W9lyaAUSQa
+   w==;
+X-CSE-ConnectionGUID: m1aX2a01S1yA44Q5wxIGcA==
+X-CSE-MsgGUID: PMYhNl2LQwa6AToMomrH8g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11800"; a="81025313"
+X-IronPort-AV: E=Sophos;i="6.24,173,1774335600"; 
+   d="scan'208";a="81025313"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 May 2026 10:59:25 -0700
+X-CSE-ConnectionGUID: G0eGaZV4RwKc7VB6a+d8Rg==
+X-CSE-MsgGUID: LpB1ZVusRaW5mo5FoN+XLw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,173,1774335600"; 
+   d="scan'208";a="266226452"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+  by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 May 2026 10:59:23 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Thu, 28 May 2026 10:59:23 -0700
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Thu, 28 May 2026 10:59:23 -0700
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (40.93.195.4) by
+ edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Thu, 28 May 2026 10:59:21 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=civfrgrIwfhEWuidhZo/TxRrT/IkidSLOaqIH3o8W23qvHe6S/OBrgYQy6pK+v9hGfQAjYj7fTmMENFRhSq0RjMLz660Zkt8RQONReHfOOGE5ICMtCsALFdyDjt520F5ROXsv9MrkM6k/BCCOOXYJUH5Z04OdhgZpLGwLBjVVJJrkB4IzkyhcPCmndYmZnhS+v8jpa9Wd4wKg+hTfIoWipr0FSbd2pKKAAO16+UBRsnGJUBo3/ZLA0GEnjlkRRrrYhPaoV5g18WhTGYiUlncRzRdA2sW/SuVAK1uLBO50F57vEGWp4OlEq6iVuOm9YSjvsws4eKNNDJw6Hz/P0IOhQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=gl3Sj5XX9LNnJqBjx1/C/iwW0fmxFlhvZhNt1pE0zfk=;
+ b=YuAtWEvu+54/2JKkts/r4SRIL2dK5NLJMwBnjuqw6NHQZCV9d+AzrKHMm5WwrL0a753QW9LbIL5xBmy4BdGiBsU3h5xbjpxve7GrpgkoYajU9hRRgs5ME9oezp9EqnLe2Tut98p/NN1YekjSQsp7Xb+2aVXoJPcXTdE3kSShcY1iWWki9AewUlEzO5Eq3apPQgzHNFeGN0aB4ADbh77+pmje0SGvUilkFVDZhJ2wnQ5Auq8ksfwhB6wzn/A+y5xYy49vwjXVcwUqqTlTrDZk/lQ2tls3v8450RaNglm0bartG4TMKeftAxTNw1uoPB5ViJXkFkx660BxTgakrP+ueQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DS0PR11MB7381.namprd11.prod.outlook.com (2603:10b6:8:134::14)
+ by DS0PR11MB7959.namprd11.prod.outlook.com (2603:10b6:8:fd::7) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.71.14; Thu, 28 May 2026 17:59:18 +0000
+Received: from DS0PR11MB7381.namprd11.prod.outlook.com
+ ([fe80::4c39:dfe6:d6dc:6f58]) by DS0PR11MB7381.namprd11.prod.outlook.com
+ ([fe80::4c39:dfe6:d6dc:6f58%5]) with mapi id 15.21.0071.011; Thu, 28 May 2026
+ 17:59:18 +0000
+Message-ID: <26ce1686-199c-4c60-825c-912a790dc0c6@intel.com>
+Date: Thu, 28 May 2026 10:59:14 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 00/13] net/mlx5: Add switchdev mode support for
+ Socket Direct single netdev, part 1/2
+To: Shay Drori <shayd@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>, "Eric
+ Dumazet" <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+	<davem@davemloft.net>
+CC: Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
+	Mark Bloch <mbloch@nvidia.com>, Nimrod Oren <noren@nvidia.com>, Yael Chemla
+	<ychemla@nvidia.com>, Or Har-Toov <ohartoov@nvidia.com>, Edward Srouji
+	<edwards@nvidia.com>, Maher Sanalla <msanalla@nvidia.com>, Simon Horman
+	<horms@kernel.org>, Parav Pandit <parav@nvidia.com>, Patrisious Haddad
+	<phaddad@nvidia.com>, Kees Cook <kees@kernel.org>, Moshe Shemesh
+	<moshe@nvidia.com>, <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
+	<linux-rdma@vger.kernel.org>, Gal Pressman <gal@nvidia.com>
+References: <20260527125427.385976-1-tariqt@nvidia.com>
+ <0a432449-2409-4e55-b17d-9d2fe1cc4860@intel.com>
+ <a2187226-2385-4aa1-9921-4e10e82400f0@nvidia.com>
+Content-Language: en-US
+From: Jacob Keller <jacob.e.keller@intel.com>
+In-Reply-To: <a2187226-2385-4aa1-9921-4e10e82400f0@nvidia.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: MW4PR03CA0093.namprd03.prod.outlook.com
+ (2603:10b6:303:b7::8) To DS0PR11MB7381.namprd11.prod.outlook.com
+ (2603:10b6:8:134::14)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260527181731.1166373-1-jhs@mojatatu.com> <87ldd33l7r.fsf@toke.dk>
- <CAM0EoMndYr5MBg42AOV+592H1QQwxYW3Dw1Q40YtwYx9MfcELw@mail.gmail.com>
-In-Reply-To: <CAM0EoMndYr5MBg42AOV+592H1QQwxYW3Dw1Q40YtwYx9MfcELw@mail.gmail.com>
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-Date: Thu, 28 May 2026 13:53:14 -0400
-X-Gm-Features: AVHnY4JQeHOuW5r8ZpCe3bb4E42-O-OiupEocinnStuyl2stDlvdkQ8jaIHOhzE
-Message-ID: <CAM0EoMkkr7tXk+dHWDhvwKPPo4zrGCcVBokC=cPE_msshxOpSw@mail.gmail.com>
-Subject: Re: [PATCH net v3 1/1] net/sched: fix pedit partial COW leading to
- page cache corruption
-To: =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@redhat.com>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com, 
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, jiri@resnulli.us, 
-	victor@mojatatu.com, david.laight.linux@gmail.com, yimingqian591@gmail.com, 
-	keenanat2000@gmail.com, 2045gemini@gmail.com, rollkingzzc@gmail.com, 
-	dcaratti@redhat.com, security@kernel.org, linux-kernel@vger.kernel.org, 
-	Rajat Gupta <rajat.gupta@oss.qualcomm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR11MB7381:EE_|DS0PR11MB7959:EE_
+X-MS-Office365-Filtering-Correlation-Id: c9b9ec35-9861-44f5-dc49-08debce2d64c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|7416014|376014|18002099003|22082099003|6133799003|56012099006|4143699003|11063799006;
+X-Microsoft-Antispam-Message-Info: hIv1tc7pyX9xdcsV0ZEi+UxsppP+v5Tz7G0CWfNkrdfOiccm84Qb6aZ6u/QyCUAnTsBP3l18ByAR5KL3D0A6sVShPyk8xYLQ8JKHiXwccQf8l24EiUOVquw8JM5u1texuO6bFA5C/pW/WpYf6hV03PjVSc1VaFy+szNhzilrO3ACuM0JAAwTTjhSWpQS/kUpadkxR49G6SjL+4nkMS31PFLXGSj2Rb+JNWQqVSL8xq1rDQirhvgxi0Wi9EYHLx01jQHwB8PxXsmwHyPCTKT7dGNqbp0M2oWPqICX1/NFHF3ACRPme7PE0xEagQtOvsG8JfHhvrjuZ7Xulz3UT39iPSFfQWauEWax+jHWZX4FD7PO8N+obCKv0Yi8FCdic6c6y9KX+MvSdylwn1ipbBot7LhsvFa8SMp7pe5zGLKhDylBi9cTl4ywtLEjYTMMNOUuaNcyF4ZSIF2xsTgxhTC5jYlMsB9NR7UGTIwWiMYYmebk1nokUYwe2xV3J26ZfIz249wwDSqdcvEkGh2Qxx0zdSk2uopV6tut2Io2vO3z22IFN60MkXVkRwtHw7dYlUa7XvkG0KKxJkPsZnp0FL9nXOspfxy/6vfBKplPK3kgKSB+uILy28FriwOmm7a/MZP/SlFZSLcyY9wrOfm4OxmJ6DxAf1cGytI0BRG1iSVoKhZr/QP64L0kDHdo3U5o4jvU
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB7381.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(18002099003)(22082099003)(6133799003)(56012099006)(4143699003)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ZjV4MENETW55MEZoRUcrS2lkQmgvMitLdUJ4SW5waC9vWmFzR2ZNZEp1dEVR?=
+ =?utf-8?B?WlR2TXZYZGg1L1BnNXBjbHpXYzdZUCttZHlFd3pTK2lMb2tsS2V4aHkxb05D?=
+ =?utf-8?B?U0U2Q3dESmx1YjU5Uk1XRkwvRXVCbVE3YnFxa1lmY2VmVlN3b2VqQkpaeEZq?=
+ =?utf-8?B?TzNsNkZHTGMrU2xWQXN0ZXcxNTU2SFRuNndvcVd6Q3RsUXhtZ080QWtqaTNG?=
+ =?utf-8?B?bHVkUXoxN0szSjF1UFRsYlBpWlBjOXo2c1VnSzAzU1RNNndkTVJwSW1MTWtR?=
+ =?utf-8?B?RjU4cDE4UmxyWTd4eng5MFVVamF2TEt0S1ZCOTB2TFlubkxSSlZLVS9rN05O?=
+ =?utf-8?B?OTBzQU9YVFJQUDZ3WXJSV1RnZ3ViYzBtWWxFV2tCdkhhdzZJYWpVbDlOS2c1?=
+ =?utf-8?B?OTIrMWxDbHhzbXBpQkg0MGF5aGVEY0Q1R3dicTZiQmJ5U3VLRDNxUmFEMXNY?=
+ =?utf-8?B?amNuVnAxREU4N25YS0JGYmY4M3JFTjdmT1RpR2VjNTRMNFpjZE05bk5uYnBY?=
+ =?utf-8?B?cHE4YWJZN3krNWpEaEJxS05IRlVjUS8rdmZ0N1lJK01xa3gzV0dhNUJBb0dv?=
+ =?utf-8?B?N3dRTXdXbkZtalRLWnVBVWJrL2ZkTEJ4NjJnY0hFRitDZlhmMjQzY0xtclJx?=
+ =?utf-8?B?TGZTMnc1TUoxZE1rV3JBSHIyWmNoSEdBTmVmY2Z4TWlTS3FBS21mc2VlSE5J?=
+ =?utf-8?B?S0RzQ1pGL2tHRnhXWHJTUGNIdVpwODQxL0w1ekljN0ZvNGR5aUpFYVFoNERh?=
+ =?utf-8?B?SHhFUDJKTEQzT1doNkdZTk5ZWXRkak16QWRieDVrd2RlN0tJVnRndm1Ob3NC?=
+ =?utf-8?B?Z2tYZ0QvT3ZTV3gwTGk1Q0JxRzVuUTc3M3hMY1hRZWluUWdyY1NmTEdWQkRY?=
+ =?utf-8?B?ZVZyRHpFV0ZEY3pHL1BWRTBTRDBhT1gxSlV3VUUzeEQzbmpxWTlyazZIcUl3?=
+ =?utf-8?B?ZEJIaXN0Tjc2aWMrQkVUaWV6cVBqN0V1NlJzRXBYdjFuOGJqbG9zTlR0VThV?=
+ =?utf-8?B?R2cxSThjZ0wwL1pwTVNYak9adjlLdWFGMlhxUStUQzRrODVvRG1yQ2xLejVk?=
+ =?utf-8?B?bUlHRFlPalB1V0xLSm5uQ1RoZkprbXhPSlNPckExR0lhLzdGWUFsQ29qQVdr?=
+ =?utf-8?B?aEpwRzB3R0tFK1VqcCs0WUZacWtWMGdIM2NoOEhtSk96MVVRVnlyclNoOHQr?=
+ =?utf-8?B?UFVMVWpUZnZqWVUxTkQ1TVlXMXBNSEVtOFJKUU0xVW1pN2JSM0pDOE5hZzNV?=
+ =?utf-8?B?WjdZMFZzNmoxQkpxMFhVUjhPVXE1bkx4Q0VmamQ4L2JTaHpiYm5CSHhqSm1i?=
+ =?utf-8?B?a1FvbkhiNzR3a2lKQTZKS0toRUdJRmZLQlBUSCtid3gvVUxIcHh3WHkrZkE0?=
+ =?utf-8?B?WVRpZlZwell0Mm43N3BmemVWUkRjK2RJRlBZeTFUd1dDZFErOU0zOFJNands?=
+ =?utf-8?B?UFd1MFFLc0hRV2FYbEtMRHVnRndEUUVYRVhKRzZ0bU9YZitYZlJOQm5VL0Nr?=
+ =?utf-8?B?Wnp1WGdIWGVQYVBaYzJCcTkweFo5Qlh6bFBRRHVDSG5mOEFTNzluTFdZTzdm?=
+ =?utf-8?B?a1BsbDZQemdpdjZ1VTk1bTFuSm5YS21xYXFKTk9wcHdRejBib1U2Y3VlbGdH?=
+ =?utf-8?B?NWo0VlNpZHhFYzBjN1JISmxoTUZhWkJJQ2RISkE1QnByTkQ0QkhKSmZPa0Zj?=
+ =?utf-8?B?MnlkamRWcnViWkdKWGdpMlJxVzVQUlZjeFVYNytUMVNMQk13aGxKUVZ5M2g5?=
+ =?utf-8?B?ODdUSDBZd2JKYnV0WG1qa29RNUtFWFhGdFU2Sjl6NlZwK1Q2TW42M1VLRnBK?=
+ =?utf-8?B?cjBxU0tObTVjMFExQ0Q5WnUzeGJjUFhwRHdwcExUK2hKam94UU1hM3NTSUFS?=
+ =?utf-8?B?a1IrS0I1TSszang3OWFTeTlqMnI0d1lQY29VZXJjT0drZjZyOWkyOEJyUXE0?=
+ =?utf-8?B?U21IZCtYYnJLZ3ZBdTd0cTlDN2toTlZXV3N4bWRKUVdkTDZiRTV5WUowOVAw?=
+ =?utf-8?B?TVRTandWQWwrVkVtaUFTeVp6MVFKTTZORmxsdjU5SmxuVVJ5U3J5OHhBeWcx?=
+ =?utf-8?B?V3hkckFUcldzdDhmTTJFQnV0S0dGL3JwS2ROYkNlRkI5N1NQc3FMVUpuN2R6?=
+ =?utf-8?B?WFlZRi9iRHExdm14aW1UWlAvSytGYkZHQityaXJMWEtjMDBUaDBFSWdCMTNp?=
+ =?utf-8?B?eXRTdWp0S3BjOUtNMG8rQlF0RUJEQjZxUmdXbDcybzBHbW92VExSUjZmeW9X?=
+ =?utf-8?B?Q2lXdnFxVFpvZVg4d25qSkwzTERNdWh0b3VqamtUTWQ1RHZXeVc5ckJBaHhz?=
+ =?utf-8?B?WGZpVS9GWWZxMk1jUldiczg1VUwwT3NYWU5YU1N1bnZiaTR0Rk1vZz09?=
+X-Exchange-RoutingPolicyChecked: jeV1xoyf9owNUuPm1hAJMsM8uoPz5PoPF7acOjQkM732b4akDfRSqU4wQ+Ne/jREhc6B6xMc47NkEDHCuBAaIPCD+50OkWTzge4kNkiaoSSabPF883PEbyobxODAYbKJwHiitGsRPb7Jkg9jdSG/XNub7ael92sh2ohhPEs5KPIHOe+dOl0CF6TDFtSW9bugFVcAKCBjPJfiMLRINxkFQPjCgv0IuJqvBFaRCHARtpI519WaTOH1PkxYzk+db0kG/nkck+27muWnzyfif8v4AkK6Sw4OMMJthsa7P0Pm37hHG20fGINeLiGTJsSSydJ9R/w54d7zxWJD9vc42XDcww==
+X-MS-Exchange-CrossTenant-Network-Message-Id: c9b9ec35-9861-44f5-dc49-08debce2d64c
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7381.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 May 2026 17:59:17.9799
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: bNMZa89odE28tdAz0ZyVcqD8jgYb05g5m0ihno5DgrjY6zTEobQ+/e8zwn7P1HVgTM/3GsLNZ6319L03hkg9Btcr5uJr+caOw5n21rwyjJI=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR11MB7959
+X-OriginatorOrg: intel.com
 
-On Thu, May 28, 2026 at 6:26=E2=80=AFAM Jamal Hadi Salim <jhs@mojatatu.com>=
- wrote:
->
-> On Thu, May 28, 2026 at 6:03=E2=80=AFAM Toke H=C3=B8iland-J=C3=B8rgensen =
-<toke@redhat.com> wrote:
-> >
-> > Jamal Hadi Salim <jhs@mojatatu.com> writes:
-> >
-> > > From: Rajat Gupta <rajat.gupta@oss.qualcomm.com>
-> > >
-> > > tcf_pedit_act() computes the COW range for skb_ensure_writable()
-> > > once before the key loop using tcfp_off_max_hint, but the hint does
-> > > not account for the runtime header offset added by typed keys. This
-> > > can leave part of the write region un-COW'd.
-> > >
-> > > Fix by moving skb_ensure_writable() inside the per-key loop where
-> > > the actual write offset is known, and add overflow checking on the
-> > > offset arithmetic. For negative offsets (e.g. Ethernet header edits
-> > > at ingress), use skb_cow() to COW the headroom instead. Guard
-> > > offset_valid() against INT_MIN, where negation is undefined.
-> >
-> > So you did tell us not to nitpick, but...
-> >
->
-> Actually, an opportunity to nitpick has opened up;-> I have to resend.
-> In my rush to send the patch out i accidentally deleted the "Fixes"
-> while adding names and removing obsolete commit log. Probably missed
-> something else.
->
+On 5/28/2026 2:18 AM, Shay Drori wrote:
+> 
+> 
+> On 28/05/2026 1:08, Jacob Keller wrote:
+>> On 5/27/2026 5:54 AM, Tariq Toukan wrote:
+>>
+>> The patch 13 being the "enablement" is a bit confusing to me since I had
+>> trouble understanding how the patch description is "enabling" the socket
+>> direct stuff..  But the description does say "part 1/2" so I am guessing
+>> thats addressed in part 2?
+> 
+> Thanks for the review
+> 
+> the word "enablement" here in the cover letter is a bit confusing... :(
+> This commit prepare RQT layer for SD-over-DPU, which will also be enable
+> by the series.
+> in SD-over-DPU configuration, a device's vhca_id ends up failing the old
+> range-based check.
+> 
 
-Sigh. There's another issue that both sashikos pointed out in v2 but i
-wasnt paying attention.
-https://sashiko.dev/#/patchset/20260526155913.1060694-1-jhs%40mojatatu.com
-https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260526155913.1060694-=
-1-jhs%40mojatatu.com
+That makes sense, and clarifies the misunderstanding for me. Thanks!
 
-I believe this is because we removed
-skb_header_pointer/skb_store_bits() (which ensures you get an error if
-you try to write beyond skb->len)
-
-Toke/David - Would this be ok? It passes the tests - but i am afraid
-it will require another round of reviews/tests
-
-static bool offset_valid(struct sk_buff *skb, int offset, int len)
-{
-        if (offset < -(int)skb_headroom(skb))
-                return false;
-
-        return offset + len <=3D (int)skb->len;
-}
-
-If this is agreable can people test? then i will send the patch
-
-cheers,
-jamal
-
-
-> > > 2) Add more optimal boundary checks (Toke & David L.)
-> >
-> > [..]
-> >
-> > > -     if  (offset < 0 && -offset > skb_headroom(skb))
-> > > +     if (offset < 0 && offset < -(int)skb_headroom(skb))
-> >
-> > Seems that bit of the changelog isn't actually accurate.
-> >
-> > However, I don't think this matters, this version is not actually buggy=
-;
-> > so let's just get this merged, and we can code-golf the offset check on
-> > top :)
-> >
-> > I did re-run the tests on this version, and they look fine, so
-> > re-affirming my tags.
-> >
-> > -Toke
-> >
