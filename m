@@ -1,94 +1,103 @@
-Received: from us.padl.com (us.padl.com [216.154.215.154])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A725338BF62;
-	Thu, 28 May 2026 08:56:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.154.215.154
+Received: from zg8tmtyylji0my4xnjeumjiw.icoremail.net (zg8tmtyylji0my4xnjeumjiw.icoremail.net [162.243.161.220])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D36F37E2F7;
+	Thu, 28 May 2026 08:59:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.243.161.220
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779958595; cv=none; b=nuZm/rUdFiFgA0y/qF6izNX3EbbSYMI9E/KTgHzIvvFac08F5xAVzq96rQ/bGhjldOF8Sn3C3ppydj41HHIR+Kmy8SS/w1Sem/0dUNkhMur97S1P8LjQJNPgXLB3Zw2jNbanYSeco0ri5k+FvskgNFl9tptrON2TGyGr0UQmXGo=
+	t=1779958747; cv=none; b=P8hZJKXIYVJXEMGaE/6R9/AGpD16oW2vSV0kjWUpHiTFVsBSHMMdWPeNmFeoqewIFwiGKguzDsgGxBC3E95OmOT6NtEvdXW3bU+bRE7JQt7RGFwIbEEfRsXvl3FAf0pD5yYMjungplCN9CyyK9V/cwZ/FXaWaG0fdiPgAo3krFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779958595; c=relaxed/simple;
-	bh=SmxFgDcI/v6/xkm9F3YWF305NRN4UmKkSt7RMgLzEi4=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=qWotGFBNM9KAo4NusO7Y8NP5DaAHdRVEFVyFe7o0EFxgyL1Gf5GODOej5zQsTc47jB8JjTFUr8n7SehAEVVWgdS3Y0EgAbs/4CHSZRifBKZGNiDeEOoNaqDwohWxhSfXeWsxoRxh14Ewrr3ia1k+78tuoK2Z73nLvcHi///Tk+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=padl.com; spf=pass smtp.mailfrom=padl.com; dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b=np1WoxzE; arc=none smtp.client-ip=216.154.215.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=padl.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=padl.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b="np1WoxzE"
-Received: from auth (localhost [127.0.0.1]) by us.padl.com (8.14.7/8.14.7) with ESMTP id 64S8u3rR009388
-	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Thu, 28 May 2026 09:56:05 +0100
-DKIM-Filter: OpenDKIM Filter v2.11.0 us.padl.com 64S8u3rR009388
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=padl.com; s=default;
-	t=1779958569; bh=hXtRWVI145ytDHAHC39FCYRxSo5K5Prh7tjOgP4k3XA=;
-	h=Subject:From:In-Reply-To:Date:Cc:References:To:From;
-	b=np1WoxzEvNlLvKrxcNraWzOGPLYGeY0RAelikzs08T6b0qDgxVLnGL43e2l70Umgf
-	 nmMGnE7vazIx1nPVuYegGEggAjSchGLKcY4yxfkwvDJgKN/IML1jUUUKdf9Nsccs/Q
-	 ho84IYnf2+mIU+bpHpkV7KG6edDIFfPRiq4oJTGFqE+bbobJjW2uQ4APB6clwKtzW6
-	 KyhVqdubee2bv/GQ+twQUS/hNqA89imFChHXM5QAQThI+ZIoYPeFyGMPkGJ3LGA/fW
-	 /Cpa0bW/D8Ynnb8VdVf36MujJZb1wvEX52a3jMCn6GXX0BmBwYNpIlXfNpG53nW2G2
-	 1d0pCTtpUI7KA==
-Content-Type: text/plain;
-	charset=utf-8
+	s=arc-20240116; t=1779958747; c=relaxed/simple;
+	bh=s/P5s0Vhyy0BHBsMyMc4XZVfOxWlxmPxjQQFWnMA+do=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=gFrynfgs4FJbYvRb5qeqhgXDOE0b5lsGnoeH3QYwmcmL1dsshINwobvYfdsHFGCvuDLvCFOiQslj8yEOzTCEYFFCqTCszExa0c9o63zDrOLlKuPwIT67tFlvboUCdSP/7cTEsselJgUxGLMfb25/sbREo649+7ashNOwdNMbg2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lzu.edu.cn; spf=pass smtp.mailfrom=lzu.edu.cn; arc=none smtp.client-ip=162.243.161.220
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lzu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lzu.edu.cn
+Received: from enjou-Legion-Y7000P-2019.coin-barley.ts.net (unknown [172.23.56.36])
+	by app1 (Coremail) with SMTP id ygmowACnv7nOAxhqMDw4AA--.22942S3;
+	Thu, 28 May 2026 16:58:57 +0800 (CST)
+From: Ren Wei <n05ec@lzu.edu.cn>
+To: linux-sctp@vger.kernel.org,
+	netdev@vger.kernel.org
+Cc: marcelo.leitner@gmail.com,
+	lucien.xin@gmail.com,
+	davem@davemloft.net,
+	yuantan098@gmail.com,
+	yifanwucs@gmail.com,
+	tomapufckgml@gmail.com,
+	zcliangcn@gmail.com,
+	bird@lzu.edu.cn,
+	xuyq21@lenovo.com,
+	n05ec@lzu.edu.cn
+Subject: [PATCH net 1/1] sctp: stream: clear current stream on stream teardown
+Date: Thu, 28 May 2026 16:58:49 +0800
+Message-ID: <ad9d7027579442c6c9498e7af84f836747a7620e.1779644468.git.xuyq21@lenovo.com>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <cover.1779644468.git.xuyq21@lenovo.com>
+References: <cover.1779644468.git.xuyq21@lenovo.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.500.181.1.5\))
-Subject: Re: [PATCH net-next v3 2/2] net: dsa: mv88e6xxx: add support for
- credit based shaper
-From: Luke Howard <lukeh@padl.com>
-In-Reply-To: <CABvLYuBGAL7zWZhs0L5eqyzVBGqr=zbA-NGs2_ELptND4LiJLA@mail.gmail.com>
-Date: Thu, 28 May 2026 18:56:00 +1000
-Cc: cedric.jehasse@luminex.be, Andrew Lunn <andrew@lunn.ch>,
-        Vladimir Oltean <olteanv@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-        Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        =?utf-8?Q?Marek_Beh=C3=BAn?= <kabel@kernel.org>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <DD0BD62B-C3A5-41D7-A969-72B91D9555AB@padl.com>
-References: <20260527-net-next-mv88e6xxx-cbs-v3-0-2f387eb5ff63@luminex.be>
- <20260527-net-next-mv88e6xxx-cbs-v3-2-2f387eb5ff63@luminex.be>
- <31F2127F-685B-4409-BF0E-21CB378B2CD6@padl.com>
- <CABvLYuBGAL7zWZhs0L5eqyzVBGqr=zbA-NGs2_ELptND4LiJLA@mail.gmail.com>
-To: Cedric Jehasse <cedric.jehasse@gmail.com>
-X-Mailer: Apple Mail (2.3826.500.181.1.5)
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:ygmowACnv7nOAxhqMDw4AA--.22942S3
+X-Coremail-Antispam: 1UD129KBjvJXoW7WrW8AFyrur4rKrW3JryxZrb_yoW8Xr1rpF
+	ZxurWrtr97JF18Grn7Cw1Fqr4fKan7Gw47KFyYkF4DZr4DJF1FqFyvgrWkJr1kCr4F9FWY
+	vrn0vw12vw4UCrDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUB01xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AE
+	w4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2
+	IY67AKxVW7JVWDJwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVWxJVW8Jr1l84ACjcxK6I8E
+	87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE3s1le2I262IYc4CY6c
+	8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_
+	Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwI
+	xGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAa
+	w2AFwI0_Jw0_GFylc2xSY4AK6svPMxAIw28IcxkI7VAKI48JMxAIw28IcVCjz48v1sIEY2
+	0_Gr4l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8G
+	jcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2I
+	x0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK
+	8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I
+	0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUonmRUUUUU
+X-CM-SenderInfo: zqqvvuo6o23hxhgxhubq/1tbiAQABCWoX+s4AogAAsi
 
+From: Yuqi Xu <xuyq21@lenovo.com>
 
+out_curr caches the outbound stream currently being dequeued. When the
+stream table is replaced, the old stream entries and their ext state
+are freed, so keeping out_curr leaves scheduler state pointing at
+released stream storage.
 
-> On 28 May 2026, at 5:55=E2=80=AFpm, Cedric Jehasse =
-<cedric.jehasse@gmail.com> wrote:
->=20
-> On Thu, May 28, 2026 at 8:28=E2=80=AFAM Luke Howard <lukeh@padl.com> =
-wrote:
->>=20
->> Hi Cedric,
->>=20
->> One further comment: the Marvell DSDT reference implementation =
-(GPLv2) also sets an undocumented register on the 6352 family of =
-switches to enable CBS. (This does not apply to the 6390 family.)
->>=20
->> My understanding is that you should call =
-mv88e6xxx_port_qav_read(MV88E6352_PORT_QAV_CFG) and then set or unset =
-MV88E6352_PORT_QAV_CFG_ENABLE accordingly.
->>=20
->> The values are given below:
->>=20
->> #define MV88E6352_PORT_QAV_CFG                    0x08
->> #define MV88E6352_PORT_QAV_CFG_ENABLE             0x8000
->>=20
->=20
-> I'm wondering if this is needed.
-> I can't find this in the UMSD, which is newer than the DSDT. Why was =
-this
-> removed by Marvell? And the register is undocumented.
+Clear out_curr in sctp_stream_free(), where the backing stream entries
+are torn down. This keeps the cached scheduler state aligned with the
+lifetime of the stream table for stream updates and any other full
+stream teardown paths.
 
-That=E2=80=99s a strong argument it is not required. I=E2=80=99ll test =
-tomorrow.
+Fixes: 5bbbbe32a431 ("sctp: introduce stream scheduler foundations")
+Cc: stable@kernel.org
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Zhengchuan Liang <zcliangcn@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Assisted-by: Codex:GPT-5.4
+Signed-off-by: Yuqi Xu <xuyq21@lenovo.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+---
+ net/sctp/stream.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Luke=
+diff --git a/net/sctp/stream.c b/net/sctp/stream.c
+index c2247793c88b..207e0a77f9af 100644
+--- a/net/sctp/stream.c
++++ b/net/sctp/stream.c
+@@ -186,6 +186,7 @@ void sctp_stream_free(struct sctp_stream *stream)
+ 	int i;
+ 
+ 	sched->unsched_all(stream);
++	stream->out_curr = NULL;
+ 	for (i = 0; i < stream->outcnt; i++)
+ 		sctp_stream_free_ext(stream, i);
+ 	genradix_free(&stream->out);
+-- 
+2.54.0
+
