@@ -1,31 +1,33 @@
 Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BD913EFFDF
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8759F3B9937
 	for <netdev@vger.kernel.org>; Thu, 28 May 2026 14:35:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779978909; cv=none; b=KXu9oJtAuXUjAymFFes7g8PDduutb9xJIArfZGOb/rQdZ6GNiWQwDlulw7zvLE+nF4npL/BTZjMfjZ7JL344iBcnfpahg/HrUOKaOWpFWc1Mg1xvKerY03LWlfTwugMRuL/+nbKRDPUvFU8T+3guocple88CbV5w1TCtdimcMBA=
+	t=1779978909; cv=none; b=jtb5cYc3Qbx4ilTjuYAvckRsy5P3DitWDzDkw2VuYwWTpn3dnevPIabvwCCdqz+GTnNJisU4UFYxXRMskf/6rlWb0Ut4LA8iGafm6iGxZEQHRLVQ59MGHlHPLKgmFc2x2dbwbQmshndE0ZO/Wh5T8E/tMRtrAyS1X1DpL/H7NYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1779978909; c=relaxed/simple;
-	bh=6fNjQyfcR7xnkM25tMUoM2RKA8fE8Wzr130hC9GXa+Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sYWanpmlVk6QoZbmej8GVPTO1P2xMwRXj1FYMP7heHIbGCHzNpGdeb9Q5gfq8sp8MmBVxIRZRxpuN7bvSKXkfVbisdkO+cgUxYZkIergzEW+iYUbtftLpbwle4+4CNIwr/ZEX92kgMnfM7Q6afneXzQnHNeWSWTiPzUuBXfxePU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=ZlZVGjQD; arc=none smtp.client-ip=23.88.38.48
+	bh=nvqGCIGUIEaefKZEIbg0wI43GzjABtaVzc7eUEk+6nI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=o3wBW7j/nnIq6lVyiX8RR2UHoteGlonfeO28yvDYx5KYk9hcCPhlPZnDJAcOgHSfOs4tiE0qsEpFz75kDyKAcUvzgEQ+A6KjEOSC5G+ltzG27VH32HCGmBUJhGWfZki+8zr4FXvs1MBoif/J6/MB0VfLEHuI2BngnM1TGtTyOj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=Ki9Qf+Si; arc=none smtp.client-ip=23.88.38.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="ZlZVGjQD"
+	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="Ki9Qf+Si"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=simonwunderlich.de;
-	s=09092022; t=1779978566;
+	s=09092022; t=1779978569;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=X4kan7JCTkyF54L0yh5ItmlcUh6wLoQny/A5S6Qin7A=;
-	b=ZlZVGjQDXauEAjeKc/Nqzqj7ADPCwuAfjLxiA6L9Cs/A0jVrkJQMHRdOCJ0zYiWwRNa0b+
-	XjGbfgM3+ldDKopN0pNBgdbKI8jJ/MmU1DkWCksardACMTCHJvvlrNRQ4ZofSuepoumkaD
-	7JGxPmgps07E1fUrZXeosflYvFWXC4olQA1X6jv5oy4doC0K5rQ12QJmjGVR1Iw78rjshF
-	XoT66Wt1v/UnKWRYzwv9AMuoTr11ynvHBajqsOB02m6rHyOXzFAF+geUiSfZMeXL1Avrzh
-	VJwB++i5K9xdmR4b1xC+sDkd+W0cfLTNmIGt24q4n2MWlfG0NmXnT68JtSQ4Nw==
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8ysH7wHe3OLnfSTa5ddiIJH59REJd0deJHXnL0c1j5c=;
+	b=Ki9Qf+SiCdVf4MckY5U3zqfBhz+nm4Rv4Pfz52+d/5++cX2zuCmZwcCTTIzuIuGImWB6MX
+	fbgwVvCYhjFvTkx7p7j9Qq9CpyaN5sGlMBeoFjj49g030vmy7tfaauiv24fOAK1RffjbJO
+	KYK3pITBJhgK2nft2k0HfKbf9VDVKMwhTVJan4revK0w6bA7puzmujY80xP8LKN7VQyxUE
+	RVrIDYiB4fD37CNRNNghtM4732z/axSfRYG9RL5wtesBIfb6uiTaECvShLs1sh9Jjs1tOM
+	ZC50foLU6KFArrxEHDDF9kRiemds2CfxEIHBs7IEHnd9q61G+9ohtBFBNFH5WQ==
 From: Simon Wunderlich <sw@simonwunderlich.de>
 To: netdev@vger.kernel.org
 Cc: "David S. Miller" <davem@davemloft.net>,
@@ -34,11 +36,14 @@ Cc: "David S. Miller" <davem@davemloft.net>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>,
 	b.a.t.m.a.n@lists.open-mesh.org,
+	Sven Eckelmann <sven@narfation.org>,
 	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH net-next 00/15] pull request for net-next: batman-adv 2026-05-28
-Date: Thu, 28 May 2026 16:29:09 +0200
-Message-ID: <20260528142924.329658-1-sw@simonwunderlich.de>
+Subject: [PATCH net-next 04/15] batman-adv: add missing includes
+Date: Thu, 28 May 2026 16:29:13 +0200
+Message-ID: <20260528142924.329658-5-sw@simonwunderlich.de>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260528142924.329658-1-sw@simonwunderlich.de>
+References: <20260528142924.329658-1-sw@simonwunderlich.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,97 +52,136 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Dear net maintainers,
+From: Sven Eckelmann <sven@narfation.org>
 
-here is a cleanup pull request of batman-adv to go into net-next.
+Some of the recent fixes required features from new header files. There is
+currently no build problem because transitive includes take care of it. But
+the batman-adv source code tries to avoid the dependency to
+transitive/implicite includes because it has no control over them and they
+might get removed at some point.
 
-Please pull or let me know of any problem!
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+---
+ net/batman-adv/bat_v_ogm.c             | 1 +
+ net/batman-adv/bridge_loop_avoidance.c | 1 +
+ net/batman-adv/distributed-arp-table.c | 1 +
+ net/batman-adv/fragmentation.c         | 1 +
+ net/batman-adv/gateway_client.c        | 1 +
+ net/batman-adv/hard-interface.c        | 1 +
+ net/batman-adv/mesh-interface.c        | 1 +
+ net/batman-adv/translation-table.c     | 1 +
+ net/batman-adv/tvlv.c                  | 1 +
+ 9 files changed, 9 insertions(+)
 
-Thank you,
-      Simon
+diff --git a/net/batman-adv/bat_v_ogm.c b/net/batman-adv/bat_v_ogm.c
+index d66ca77b1aaa3..6436e9bc079b6 100644
+--- a/net/batman-adv/bat_v_ogm.c
++++ b/net/batman-adv/bat_v_ogm.c
+@@ -8,6 +8,7 @@
+ #include "main.h"
+ 
+ #include <linux/atomic.h>
++#include <linux/bug.h>
+ #include <linux/byteorder/generic.h>
+ #include <linux/container_of.h>
+ #include <linux/errno.h>
+diff --git a/net/batman-adv/bridge_loop_avoidance.c b/net/batman-adv/bridge_loop_avoidance.c
+index ffe854018bd3a..f6ca69252ff7c 100644
+--- a/net/batman-adv/bridge_loop_avoidance.c
++++ b/net/batman-adv/bridge_loop_avoidance.c
+@@ -8,6 +8,7 @@
+ #include "main.h"
+ 
+ #include <linux/atomic.h>
++#include <linux/bug.h>
+ #include <linux/byteorder/generic.h>
+ #include <linux/compiler.h>
+ #include <linux/container_of.h>
+diff --git a/net/batman-adv/distributed-arp-table.c b/net/batman-adv/distributed-arp-table.c
+index 0a8bd95e2f99e..c6084ae6760c5 100644
+--- a/net/batman-adv/distributed-arp-table.c
++++ b/net/batman-adv/distributed-arp-table.c
+@@ -9,6 +9,7 @@
+ 
+ #include <linux/atomic.h>
+ #include <linux/bitops.h>
++#include <linux/bug.h>
+ #include <linux/byteorder/generic.h>
+ #include <linux/container_of.h>
+ #include <linux/err.h>
+diff --git a/net/batman-adv/fragmentation.c b/net/batman-adv/fragmentation.c
+index e9553db423491..14ccf7811bf62 100644
+--- a/net/batman-adv/fragmentation.c
++++ b/net/batman-adv/fragmentation.c
+@@ -8,6 +8,7 @@
+ #include "main.h"
+ 
+ #include <linux/atomic.h>
++#include <linux/bug.h>
+ #include <linux/byteorder/generic.h>
+ #include <linux/errno.h>
+ #include <linux/etherdevice.h>
+diff --git a/net/batman-adv/gateway_client.c b/net/batman-adv/gateway_client.c
+index a9d0346e8332e..ec743ce39be47 100644
+--- a/net/batman-adv/gateway_client.c
++++ b/net/batman-adv/gateway_client.c
+@@ -8,6 +8,7 @@
+ #include "main.h"
+ 
+ #include <linux/atomic.h>
++#include <linux/bug.h>
+ #include <linux/byteorder/generic.h>
+ #include <linux/container_of.h>
+ #include <linux/err.h>
+diff --git a/net/batman-adv/hard-interface.c b/net/batman-adv/hard-interface.c
+index d6732c34aeafc..4b3804ef70b6f 100644
+--- a/net/batman-adv/hard-interface.c
++++ b/net/batman-adv/hard-interface.c
+@@ -8,6 +8,7 @@
+ #include "main.h"
+ 
+ #include <linux/atomic.h>
++#include <linux/bug.h>
+ #include <linux/byteorder/generic.h>
+ #include <linux/compiler.h>
+ #include <linux/container_of.h>
+diff --git a/net/batman-adv/mesh-interface.c b/net/batman-adv/mesh-interface.c
+index a244f5425406b..307874069b84e 100644
+--- a/net/batman-adv/mesh-interface.c
++++ b/net/batman-adv/mesh-interface.c
+@@ -8,6 +8,7 @@
+ #include "main.h"
+ 
+ #include <linux/atomic.h>
++#include <linux/bug.h>
+ #include <linux/byteorder/generic.h>
+ #include <linux/cache.h>
+ #include <linux/compiler.h>
+diff --git a/net/batman-adv/translation-table.c b/net/batman-adv/translation-table.c
+index 9f6e67771ffa8..28869f65ada09 100644
+--- a/net/batman-adv/translation-table.c
++++ b/net/batman-adv/translation-table.c
+@@ -9,6 +9,7 @@
+ 
+ #include <linux/atomic.h>
+ #include <linux/bitops.h>
++#include <linux/bug.h>
+ #include <linux/build_bug.h>
+ #include <linux/byteorder/generic.h>
+ #include <linux/cache.h>
+diff --git a/net/batman-adv/tvlv.c b/net/batman-adv/tvlv.c
+index cc6ac580c6208..8e8b54e2172ef 100644
+--- a/net/batman-adv/tvlv.c
++++ b/net/batman-adv/tvlv.c
+@@ -6,6 +6,7 @@
+ 
+ #include "main.h"
+ 
++#include <linux/bug.h>
+ #include <linux/byteorder/generic.h>
+ #include <linux/container_of.h>
+ #include <linux/errno.h>
+-- 
+2.47.3
 
-The following changes since commit 68993ced0f618e36cf33388f1e50223e5e6e78cc:
-
-  Merge tag 'net-7.1-rc5' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net (2026-05-21 14:39:12 -0700)
-
-are available in the Git repository at:
-
-  https://git.open-mesh.org/batadv.git tags/batadv-next-pullrequest-20260528
-
-for you to fetch changes up to 5edff65367d064b217f4b692271c61a4db992de3:
-
-  batman-adv: use neigh_node's orig_node only as id (2026-05-22 18:24:20 +0200)
-
-----------------------------------------------------------------
-This batman-adv cleanup patchset includes the following patches, all by
-Sven Eckelmann:
-
- - drop batman-adv specific version
-
- - MAINTAINERS housekeeping for batman-adv (two patches)
-
- - add missing includes
-
- - use atomic_xchg() for gw.reselect check
-
- - extract netdev wifi detection information object
-
- - replace inappropriate atomic access with (READ|WRITE)_ONCE
-   (six patches)
-
- - tt: replace open-coded overflow check with helper
-
- - tvlv: avoid unnecessary OGM buffer reallocations
-
- - use neigh_node's orig_node only as id
-
-----------------------------------------------------------------
-Sven Eckelmann (15):
-      batman-adv: drop batman-adv specific version
-      MAINTAINERS: Rename batman-adv T(ree)
-      MAINTAINERS: Don't send batman-adv patches to netdev
-      batman-adv: add missing includes
-      batman-adv: use atomic_xchg() for gw.reselect check
-      batman-adv: extract netdev wifi detection information object
-      batman-adv: replace non-atomic meshif config fields with (READ|WRITE)_ONCE
-      batman-adv: replace non-atomic hardif config fields with (READ|WRITE)_ONCE
-      batman-adv: replace non-atomic vlan config fields with (READ|WRITE)_ONCE
-      batman-adv: replace non-atomic mesh state with (READ|WRITE)_ONCE
-      batman-adv: replace non-atomic packet_size_max with (READ|WRITE)_ONCE
-      batman-adv: replace non-atomic last_ttvn with (READ|WRITE)_ONCE
-      batman-adv: tt: replace open-coded overflow check with helper
-      batman-adv: tvlv: avoid unnecessary OGM buffer reallocations
-      batman-adv: use neigh_node's orig_node only as id
-
- MAINTAINERS                            |   4 +-
- net/batman-adv/Makefile                |   1 +
- net/batman-adv/bat_iv_ogm.c            |  65 ++++++-----
- net/batman-adv/bat_v.c                 |  10 +-
- net/batman-adv/bat_v_elp.c             |  15 ++-
- net/batman-adv/bat_v_ogm.c             |  46 ++++----
- net/batman-adv/bridge_loop_avoidance.c |  15 +--
- net/batman-adv/distributed-arp-table.c |  17 +--
- net/batman-adv/fragmentation.c         |   1 +
- net/batman-adv/gateway_client.c        |   9 +-
- net/batman-adv/gateway_common.c        |  14 +--
- net/batman-adv/hard-interface.c        | 205 +++++++++++++++++++++++++++++----
- net/batman-adv/hard-interface.h        |  34 +++++-
- net/batman-adv/log.h                   |   2 +-
- net/batman-adv/main.c                  |  42 ++++---
- net/batman-adv/main.h                  |   4 -
- net/batman-adv/mesh-interface.c        |  42 +++----
- net/batman-adv/multicast.c             |   4 +-
- net/batman-adv/netlink.c               |  80 ++++++-------
- net/batman-adv/originator.c            |   8 +-
- net/batman-adv/routing.c               |   6 +-
- net/batman-adv/send.c                  |   6 +-
- net/batman-adv/tp_meter.c              |   6 +-
- net/batman-adv/translation-table.c     |  32 +++--
- net/batman-adv/tvlv.c                  |  57 +++++----
- net/batman-adv/tvlv.h                  |   3 +-
- net/batman-adv/types.h                 | 138 ++++++++++++++--------
- net/batman-adv/version.c               |  18 +++
- net/batman-adv/version.h               |   8 ++
- 29 files changed, 593 insertions(+), 299 deletions(-)
- create mode 100644 net/batman-adv/version.c
- create mode 100644 net/batman-adv/version.h
