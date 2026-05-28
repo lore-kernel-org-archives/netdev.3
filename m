@@ -1,133 +1,104 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F09C330B0E
-	for <netdev@vger.kernel.org>; Thu, 28 May 2026 06:25:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 657BC33121F
+	for <netdev@vger.kernel.org>; Thu, 28 May 2026 06:27:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779949557; cv=none; b=MSQRjbxwo76Om4iY0JXvCcEZQDasRgMVZ2+O1heGvTfoXbRG36GCxXNVWTruZoElW2slucnLfYsnrmTT3bYrVJDDCNpq6e+DULLYkN1RKxIcn0Li5Xj6wN/54/xtmrKYVeaDx+cttVQViHQKDE4o3K9ki+qaj/+Ix2PYGQ6Ipcw=
+	t=1779949667; cv=none; b=gw5Ng3je7qwY+W8o4YjxxMPQ2h20JHbpx6YiRUserI78YjC02DuLJt41EyJPkV6DYwTd2kND6eNQ+QI1vs+fbae5qwlhZMzW82QWE2k7qxodfocD/MWHYpqh/cNuFoUpVnGSIaIF8r/UAwSUHJ4zK3FvvbyFkp6jgS1Gp4WZRpk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779949557; c=relaxed/simple;
-	bh=2ju0gi2msI4LA4jLVYYeoWcL+MgWV/250G5FJn9IDHU=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=PdmB4gpgrK4uRq8VDIbKgcWO0ZrjUcWZWn7alqLciWnRiRB8wyO4pFE2uWNHtxkVt4RJ23AQdQ8kCGVC3EFPJUpUYVs5i87aHZSh6M6qaVKnf1fb5efxfiiUafcgEwmqTGifH8+R7CucKBee4EfJ/3qJ2jKkOyBk3rs0BoZ1nuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hwRmDNyi; arc=none smtp.client-ip=209.85.128.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1779949667; c=relaxed/simple;
+	bh=rrIpuPhtFOkBtiPO8Uyy1YE1r7l+QH3qO4N1e8wuBEg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qZYq9CquTQmmqyJKWGLHIsJ8BUzj8WXgeYdMvhK1dqK8iOy75xIK/y4bN3Cyce3aujgyp8ebKBTRVAkOu9QVaGf7AoS8WIKKHlmZMyoLcHNpidK0Xg114/TRuuvsd3Rx0rgbfCuecTIvqY5obVEBADMJW+tYgKIvGbyBiYiqwrg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=N/22HH52; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=6N+IcKdl; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hwRmDNyi"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-49045243094so83513275e9.2
-        for <netdev@vger.kernel.org>; Wed, 27 May 2026 23:25:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779949549; x=1780554349; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Osc2OSTyPqT4oi0FZ2bdQ3RgEJRcoTvJK8RojzOLg8E=;
-        b=hwRmDNyicPEimEagV4/T1v11KjabZeojN9RkLmv6ynzkg7a7G6v95QUT0HO+iMrOlO
-         pixAaOv7umIRemdjfizZrDPDnwhQyPmxeAEyHzznGxibtq1N3b/8xJ3ZlZTDss7cgHa7
-         TvyrMrlQpNvt8hrMWUWln1weYj4CLBgznB1tIwpVOLlqVs5AwtKpT+iYd8SAGxCoQw4N
-         BO6zbbknXgWwL+YF9oVc4PlxnszQlP/b2VLAujGGbiVFrE+OSfHRvy7oIl0NRnul3OHr
-         df+1yaAwi4cW9SpdeH3M+oSxR8B//xPseDeH1G2LtDWnwJ5aG+ULeI0fgQIjzSOnaSC/
-         qBQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779949549; x=1780554349;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=Osc2OSTyPqT4oi0FZ2bdQ3RgEJRcoTvJK8RojzOLg8E=;
-        b=W3+3C0cv9+Edw/bOyysEjN9ILeSVXuP1SO7xaVVJ9uXryusfcic5hheXyz1Z0SCCjY
-         4tF1jvgdThXf2MinWsP1n8iXtaILyCYRmSLmKkCJm70yMZ5V3SZ6tAoEKbQ5eVVjNLpT
-         5BoDDospqT7wNAbwszDLZxuUtGOLgzamMmIqGawcJNpEc10Fi/VWdfOwERXrEPCCOFn2
-         gpavWTcsar8zis44izkXsP0U+JUgCdYi+At2Z+rIIeHcQ3m61s3bVzOxYhrNEXnzOSSm
-         UsfnXILMck08bVh/mFG6qlr5dkySU8ULHTm4SC2w1TN0LvKrSRymkqchPjS5uGL0wRNu
-         CpmQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9mfG13oxVk0XymMEm9fuCulLrL5+FA5fYstO3SRqd9bflDcTftivi5pn/M8FWEmvEvdk7BjdQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzpUjKuTHn4VBQ1n5pxYKTdjnFSuOpEI801qwWoiL2yMwSoHByb
-	oi1ka7OawaGdF50k6EnDWTdjA7ord6FCnBq+ZfZ9fl/jEyUe3cBaP47h4/qewsq8wCOwyDmYGZ5
-	TxFan3e2OuUaF988R1w==
-X-Received: from wmsl24.prod.google.com ([2002:a05:600c:1d18:b0:487:3739:c5c4])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:5254:b0:490:484b:bf41 with SMTP id 5b1f17b1804b1-490484bbf7amr427484645e9.6.1779949548810;
- Wed, 27 May 2026 23:25:48 -0700 (PDT)
-Date: Thu, 28 May 2026 06:25:48 +0000
-In-Reply-To: <20260527192130.21dabf08@kernel.org>
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="N/22HH52";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="6N+IcKdl"
+Date: Thu, 28 May 2026 08:27:42 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1779949663;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=mwOaY4RNQyDX3FN8D+3gMoORx5Ors6iRbe/5nQOLE0g=;
+	b=N/22HH523c7G3uFErene4NCyMSRk0DIweaYEWlOeL4O2UGBp1qQGRHJGalLXhXFJtmkN87
+	DvqXS4hnozc3RgkAAQXxa3BQVGGoJ4QU/m37I9/Ke/5Z/ld8ibaRNcPJGQt76BmsFXyUUG
+	QxB8FpMmG+RyGeNSH/L2DOPrsNOWAkvpUnbFUkD7lBvHC6/xWxgauIBOQxzStAQ2wgifF/
+	5Sc/yge7ftXdJTpsSqc3FpbS8hBlERaqLqTaPtYYR513BDNaNhOPfbwOVRzLsBnC//kZjA
+	yWf9YGscVLjuA2syvyRESFyhnzuA01MQJPjqP6H9giRNcCT1CEUshwdJGYem9w==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1779949663;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=mwOaY4RNQyDX3FN8D+3gMoORx5Ors6iRbe/5nQOLE0g=;
+	b=6N+IcKdl7y3ZlKSNkTneUwCE0X8A9a3zA79+QpXWtRDin+G0j9kjxIq4qcEQCdYSJF1vPr
+	fv51KpPFqAJ6RMBw==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
+	Chintan Vankar <c-vankar@ti.com>, Danish Anwar <danishanwar@ti.com>,
+	Daolin Qiu <d-qiu@ti.com>, "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Felix Maurer <fmaurer@redhat.com>,
+	Neelima Muralidharan <neelima@ti.com>,
+	Paolo Abeni <pabeni@redhat.com>, Praneeth Bajjuri <praneeth@ti.com>,
+	Pratheesh Gangadhar TK <pratheesh@ti.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Subject: Re: [PATCH net-next v5 8/8] selftests: hsr: Add test for the inline
+ PTP header on HSR
+Message-ID: <20260528062742.453G-OkS@linutronix.de>
+References: <20260527-hsr_ptp-v5-0-158a7633eac0@linutronix.de>
+ <20260527-hsr_ptp-v5-8-158a7633eac0@linutronix.de>
+ <20260527121227.40bf085c@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260525-binder-netlink-v5-0-a90e2923ebeb@google.com>
- <20260525-binder-netlink-v5-1-a90e2923ebeb@google.com> <CANiq72kRC_k1cnJLmG+AUSiUH6kDXVsox3nMJnV-c6HkNXOwBA@mail.gmail.com>
- <ahbAyBD584Hk9Mst@google.com> <20260527192130.21dabf08@kernel.org>
-Message-ID: <ahff7OTzS46Rti5c@google.com>
-Subject: Re: [PATCH v5 1/2] rust: netlink: add raw netlink abstraction
-From: Alice Ryhl <aliceryhl@google.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Donald Hunter <donald.hunter@gmail.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Andrew Lunn <andrew@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Carlos Llamas <cmllamas@google.com>, 
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Matthew Maurer <mmaurer@google.com>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
-	Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Christian Brauner <brauner@kernel.org>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, netdev@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260527121227.40bf085c@kernel.org>
 
-On Wed, May 27, 2026 at 07:21:30PM -0700, Jakub Kicinski wrote:
-> On Wed, 27 May 2026 10:00:40 +0000 Alice Ryhl wrote:
-> > On Tue, May 26, 2026 at 04:29:26PM +0200, Miguel Ojeda wrote:
-> > > On Mon, May 25, 2026 at 3:17=E2=80=AFPM Alice Ryhl <aliceryhl@google.=
-com> wrote: =20
-> > > >
-> > > > This implements a safe and relatively simple API over the netlink A=
-PI,
-> > > > that allows you to add different attributes to a netlink message an=
-d
-> > > > broadcast it. As the first user of this API only makes use of broad=
-cast,
-> > > > only broadcast messages are supported here. =20
-> > >  =20
-> > > >  rust/kernel/netlink.rs          | 336 ++++++++++++++++++++++++++++=
-++++++++++++ =20
-> > >=20
-> > > This should be added to an existing or new `MAINTAINERS` entry, i.e.
-> > > as usual, either inheriting it if the maintainers want, or delegating
-> > > it to a sub- or co-maintainer, etc. depending on what people want. =
-=20
->=20
-> Good call, missed this isn't under rust/kernel/net
->=20
-> > Netdev maintainers, what do you prefer that I put for these files? I'm
-> > of course happy to be on the hook for this code.
->=20
-> Can we put it under rust/kernel/net and rust/helpers/net ?
-> And then add those directories to networking ?
-> Just so that we don't have to keep wondering with every little piece=20
-> of code.
+On 2026-05-27 12:12:27 [-0700], Jakub Kicinski wrote:
+> On Wed, 27 May 2026 17:08:58 +0200 Sebastian Andrzej Siewior wrote:
+> > Requested-by: Felix Maurer <fmaurer@redhat.com>
+> 
+> Please don't invent tags? If you want to say that Felix asked for this
+> just say it in English.
 
-Sure, will do.
+okay.
 
-However, it doesn't look like rust/kernel/net/ is listed under any
-MAINTAINERS entry either.
+> > --- a/tools/testing/selftests/net/hsr/Makefile
+> > +++ b/tools/testing/selftests/net/hsr/Makefile
+> > @@ -7,8 +7,11 @@ TEST_PROGS := \
+> >  	hsr_redbox.sh \
+> >  	link_faults.sh \
+> >  	prp_ping.sh \
+> > +	hsr_ptp.sh \
+> >  # end of TEST_PROGS
+> >  
+> >  TEST_FILES += hsr_common.sh
+> >  
+> > +TEST_GEN_PROGS := hsr_ptp_test
+> 
+> TEST_GET_FILES otherwise kselftest thinks its a test and tries to run
+> it (which of course fails on
+> 
+> +	if (!slaveA || !slaveB || !hsr_dev) {
+> +		fprintf(stderr, "Missing network devices\n");
+> +		exit(EXIT_FAILURE);
+> +	}
+> 
+> given there are no arguments passed in)
 
-> > Of course, it would be useful to have others listed here, as I'm sure I
-> > will have questions about how networking works if there are patches in
-> > this area. Or perhaps the netdev@ list itself is enough for that to
-> > reach the right people?
-> >=20
-> > With regards to actually merging code in this area, then I think for
-> > this particular series it is simpler to let Greg take it through
-> > char-misc with all the other Binder changes. But for any future changes
-> > to netlink.rs, I think it makes sense for them to land through the
-> > netdev tree.
->=20
-> SG, once acked it can go via any tree. Greg's tree make sense.
+Oh. I did replace it with TEST_GEN_FILES.
 
-SG, thanks!
-
-Alice
+Sebastian
