@@ -1,106 +1,126 @@
-Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vs1-f50.google.com (mail-vs1-f50.google.com [209.85.217.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A36B3164B5
-	for <netdev@vger.kernel.org>; Thu, 28 May 2026 08:09:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.183
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779955744; cv=none; b=BejVjArfIIlSCbCFOjmpMXKRAk75Uo0k4+S2AaDaxS0L0qFCfsBJ9ettXH8OtTlWmvHPBzXK6tpB2YyBm/ySpsfgMb3M2GN+lXLi/vsLbIl7SOQhY9Q6m/tzinnbI9Pb7e82PqmYigfaUfSqONPKxFMg37ahknnCMXh0gjzNv5I=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779955744; c=relaxed/simple;
-	bh=ywpSA7iPLGiFlDaipMlZB1GLArQfRZzjT82xD/eSso0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Y5RQg3gMHqLoAwx2PWZKNYlNW2MfnyJAwQZihu9cGYM82OXiNeUFbPPwbFLoq6RyRFtI+FV1gSer7nXfycn0EBS5LF290w0e7J3ARXJ9ZnxWRYyh2sTAY+zQnCHCFwlrmrQjpBPm6Zb74voHTX58vsLLJwdWb0oJGAvJjAvZgyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=dfeszqvy; arc=none smtp.client-ip=95.215.58.183
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1DBC365A11
+	for <netdev@vger.kernel.org>; Thu, 28 May 2026 08:11:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.217.50
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779955905; cv=pass; b=ExAQhHaah4IaPSSVgosKlcnz+RK4Nq2okqxE18tN8XGJwInAQHLbSz+JUDhWGQ05AoZEKYpk3Cfzi+2L0+70j2L0YBojHhNffIdQdwmgWa0GeWQZeK9BVW9P/QN5ppixU1ZcR2Zxhx4IqRJNszXgZvvXbH2UCvW7MKmfXDneJ7Y=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779955905; c=relaxed/simple;
+	bh=oBWuhO449n/7oDW8IQocev0pXxI7H22xX2oL46e2KcA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ENrDv11moVQ1P8U7YJRoqyDsn9SkfN7OC4rmXSTpVZrhilA+yYh3SpgF6NW0sDAnURWKXqUFqSXZ/a/KctAjGjHTXlPQtPqxL3HKib7h9+1740eQocLnhUhJ+cw6HEaKgGns05t4HK7qPTgZKWPi6l0SVhHO+LUlklf5wi1QV/U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TklTzON3; arc=pass smtp.client-ip=209.85.217.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="dfeszqvy"
-Message-ID: <35878e67-d83e-4329-8c20-99caf95bbffc@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1779955730;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6pB5KWAha1i8/yYBgVT9Debw5k/YWw/CMk+cTddISws=;
-	b=dfeszqvyn8pux3MkD92zb9p2j0uhYBuYVSHxNrxhDPxdwxa4f+MBasKwmBA+S6908g8RLo
-	t5pK0M7xreqWGLldwvGuXPPg8r7lIqpkoFPKyCJm3Kz1gLEP9mN37aRgdx4dVdjGXvgIic
-	1WqGt1bBzRHhr1WxFjVCSsQa2WKgbuk=
-Date: Thu, 28 May 2026 16:08:32 +0800
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TklTzON3"
+Received: by mail-vs1-f50.google.com with SMTP id ada2fe7eead31-6312970d9e3so9504186137.2
+        for <netdev@vger.kernel.org>; Thu, 28 May 2026 01:11:43 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779955903; cv=none;
+        d=google.com; s=arc-20240605;
+        b=ZFJ+0F/ChorLWqNXR3LIGgL8dxRYXi20psJs+VPIwYVjgmxuU5oxxeCiBo8LCJ9Prl
+         Kezjn4HFgi9QLfG9bAkmNpdatR+ICwdg+3GUcvXYEgElkD5bCcY48LowapsAK8fAk53/
+         /u+aolXjewnsJKZcwQEcxHcjj1gNsp/wmh34CdJCRdFVoY1MlyutcouYjDwjlASlteJs
+         7N0Q8JHL+rRpnu8Cs406SWkZvorUXFZLJLegKFvzpYbute/GCuWcav+vQPWXqWTzNp5G
+         IspCkUIzpBbM25PTKaJrSeLt8Ki0CASB2jAXc4KTjggZx0XUlli4XfbDwoQCSleVHvQj
+         f6dQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=2fX8PvmFDzJ6+PjWEtBk6E6XYedyqF6i/1jP9zX4zKQ=;
+        fh=YpmF2IbGbYOz3RMWCTE1xTKVBOfLpb0fgwpeUrYLjjA=;
+        b=RqbyAP1JQMaBn1G7kBKn00qDe/z1mQ+cRYk5mkppaZLISOWipnrBQ9b/a0972p/DhH
+         zGnH90jqfKGGiDhEAWGBNeKuEdJZ2YGfI5rYmHq9AVFMUiKk4HnN8FDPU2RQFFZPjMiz
+         SS10dDs7opLbcKn+u8hdh6Z87HKh2uCFmzrtiYR8vtLRVwwQwSSp6ygpqFmK+onHvsyP
+         uXOhi2L9IxmeRf9c0bMxj8yV5WGH+MKTkwhw6wukuM3vbv/k02iNpxB4WRi7m2gc/D8w
+         ypdIjFExnPsyTGK7pW5z1UM+t/UfuUJfwD7ChqFxzqFgbAV+EeJUQTJrkbOrmaYY+Qpe
+         YGTw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779955903; x=1780560703; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2fX8PvmFDzJ6+PjWEtBk6E6XYedyqF6i/1jP9zX4zKQ=;
+        b=TklTzON3BXK+gDuivj/OQgWFz3cf27WL8lDWMX4GmD/oMEg7vRBQKom/PJn83eCrgd
+         u9UhqzIxtGmYe/4UmrPqZwFPLCmEHj5wdrtIKxqvkcUjiWqpN690PPf3+qB4vi5SS4/i
+         53XIwCGJMtbaPaf6+Kd2B6XpCvEH7wk3yyH0RKmZAhzKeUweGWkZuSD0h8P4Iamt8Hdr
+         w22SKrbGvO1U7AhbODXGV5LEMXgS3pym2T8gaFhTSYkjjWXBUT+KOcth1+jVQDoH1BsX
+         QUBqlBrRSrtTtSTDLFMPfm0NAOwGQD0XeoK6nXGXr4v2WOV3dffFv13JVCQdWL5/vSFs
+         gukQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779955903; x=1780560703;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=2fX8PvmFDzJ6+PjWEtBk6E6XYedyqF6i/1jP9zX4zKQ=;
+        b=cQoGQvOVxxehFrE5nW175OWhgtFOZwPJeGqdsKnekY3uIy4+qM3Avgu+d6kl6Q3Sdy
+         BnvhIrovB5qm4Q+wmPgRg8k+P4n36iWeVHNifVFQ8f5LXdYh7d4fU+YRtHtxnJxO0MTJ
+         mM7PICVqgp/Ph3rQeWBP22W8I8KUTTNGYgqPB/w9Y08UtHn6/mXiqlySSFpmyOR81qpl
+         hpvOjdZChhXmZfVCPwRYY/RF8l0xYROQ+CAG+XNMcgl4zJ//QBOmKYgigWBjTpM6l+zA
+         8Qb0blKO6KMjWZ08ZTy2P0+vAgeMoU8ZcKAKCJh8iHXoeYsPhylA2SsveYgMJd6/6DMM
+         i2CQ==
+X-Forwarded-Encrypted: i=1; AFNElJ96RypLvgO2GA78qH5XS7WH5GPLQ2ZaHPQVNNHhyGfXPAC3iFDv0ai0nJhTik2owcUyvjrlCDA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzSSdRd0eQGPxVKQ0nT26ULl+d9i/h5EflS6uGLVzrEn261Pa2n
+	NgT8wPzm9WWtz90puSTPp3VUI8uu63xl9h7M/etCuRHZKn4EYH3lq9qhLAkJzO9XKdSUU8bwDTn
+	sjKuS5CGprFnAfdRJp+1vO2sD5kHAhZA=
+X-Gm-Gg: Acq92OH3WtJZK9UJdC0aChvscDOYhCj7KofWfzB8Iv98WxvNTxswAcFpXRWYk6SyqnT
+	+KrQZC3SwZ175eYIGdv8QG5/XULXFeE6RGsCA2yLgB+IlA8hh+Nm0d2tqv3HsXCnuqjcGG0jpUF
+	FaIh7QAPeMUSge/hEWumfnEStBNhEwvfTU8xx7v15zCPSZXyB61PDLGJZILnd0kxsDuNBdPvcpA
+	mgJoMCfodgVOz0HHLzz9AqgKi8Y9FPAXeq47yS77UCZCK7nbEBZehL80D41EJDBSrZ3xY2k+Hn8
+	D+gtNS5kkAz4KPyG+mJnowJ9aBOsXkdcuF0AG+mFuaKwSJpLTXGb
+X-Received: by 2002:a05:6102:c07:b0:631:23b4:8dce with SMTP id
+ ada2fe7eead31-67c75680787mr14443441137.13.1779955902798; Thu, 28 May 2026
+ 01:11:42 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH] netlink: fix skb refcount leak when dump start fails
-To: Wentao Liang <vulab@iscas.ac.cn>, "David S . Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>,
- Kees Cook <kees@kernel.org>, Feng Yang <yangfeng@kylinos.cn>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260528073614.1169858-1-vulab@iscas.ac.cn>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-In-Reply-To: <20260528073614.1169858-1-vulab@iscas.ac.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+References: <20260522-net-next-mv88e6xxx-cbs-v1-0-c87a8e6bcc0c@luminex.be>
+ <20260522-net-next-mv88e6xxx-cbs-v1-2-c87a8e6bcc0c@luminex.be>
+ <C0F865AD-24CD-4EA7-B0AB-16D91914ABAD@padl.com> <PR3P194MB1505960E42BBFB9AD9E8B18DEA0B2@PR3P194MB1505.EURP194.PROD.OUTLOOK.COM>
+ <885A5B11-A34A-4F69-9E9F-ABF10159B789@padl.com>
+In-Reply-To: <885A5B11-A34A-4F69-9E9F-ABF10159B789@padl.com>
+From: Cedric Jehasse <cedric.jehasse@gmail.com>
+Date: Thu, 28 May 2026 10:11:30 +0200
+X-Gm-Features: AVHnY4LxbTQIEAlETlZseiMWXHdXXQwaXiOewN7yelpX4pMD-BSnkr-KP0A2qW4
+Message-ID: <CABvLYuA85b1X9wHH073HPX=xv_1uZ2+anhcr+3MMkoVF-3DVcA@mail.gmail.com>
+Subject: Re: [PATCH net-next 2/2] net: dsa: mv88e6xxx: add support for credit
+ based shaper
+To: Luke Howard <lukeh@padl.com>
+Cc: Cedric Jehasse <cedric.jehasse@luminex.be>, Andrew Lunn <andrew@lunn.ch>, 
+	Vladimir Oltean <olteanv@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, Russell King <linux@armlinux.org.uk>, 
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Kieran Tyrrell <kieran@sienda.com>, 
+	Max Hunter <max@huntershome.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Thu, May 28, 2026 at 2:17=E2=80=AFAM Luke Howard <lukeh@padl.com> wrote:
 
-On 5/28/26 3:36 PM, Wentao Liang wrote:
-> __netlink_dump_start() takes an extra reference on the received skb
-> via refcount_inc(&skb->users) before storing it in cb->skb for the
-> dump callback to consume. If the subsequent netlink_dump() call fails
-> (line 2440), the dump was never started so the completion callback
-> that would normally release cb->skb will never be invoked.
+> This actually makes more sense also now that you pointed out that AVB mod=
+e is set on the ingress, not egress, port: configuring CBS should stay out =
+of setting any of the AVB mode bits. Are you planning to submit a MQPRIO pa=
+tch? If not, shall I just wait for your CBS patch to land, and then rebase =
+my AVB patch series on top of net-next?
+
+No, I don't have changes to support MQPRIO in the driver.  I use the
+default FPri/Qpri mappings at the moment.
+
 >
-> In this case, the function returns the error directly without calling
-> kfree_skb(skb) to release the extra reference taken at entry.
->
-> Add kfree_skb(skb) before returning when netlink_dump() fails, so the
-> skb reference is properly released.
->
-> Fixes: b44d211e166b ("netlink: handle errors from netlink_dump()")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-> ---
->   net/netlink/af_netlink.c | 4 +++-
->   1 file changed, 3 insertions(+), 1 deletion(-)
->
-> diff --git a/net/netlink/af_netlink.c b/net/netlink/af_netlink.c
-> index 2aeb0680807d..d904c1aad35d 100644
-> --- a/net/netlink/af_netlink.c
-> +++ b/net/netlink/af_netlink.c
-> @@ -2441,8 +2441,10 @@ int __netlink_dump_start(struct sock *ssk, struct sk_buff *skb,
->   
->   	sock_put(sk);
->   
-> -	if (ret)
-> +	if (ret) {
-> +		kfree_skb(skb);
->   		return ret;
-> +	}
->   
->   	/* We successfully started a dump, by returning -EINTR we
->   	 * signal not to send ACK even if it was requested.
+> We have different use cases: yours (as I understand it) is host-initiated=
+ traffic with as many queues as the hardware supports, and mine is hardware=
+ offloaded AVB switching with (essentially) three TCs (one queue per AVB TC=
+). It would be great to find a solution that can support both.
 
-static int netlink_release(struct socket *sock) {
+My use case is both: forwarding AVB traffic by the switch, but also
+sending traffic from the host at a certain priority.
 
-     .......
-
-     /* Terminate any outstanding dump */
-     if (nlk->cb_running) {
-         if (nlk->cb.done)
-             nlk->cb.done(&nlk->cb);
-         module_put(nlk->cb.module);
-         kfree_skb(nlk->cb.skb);  <---- freed here
-         WRITE_ONCE(nlk->cb_running, false);
-     }
-
-     ......
-
-}
-
+Cedric
