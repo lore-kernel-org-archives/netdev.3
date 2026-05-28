@@ -1,78 +1,81 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC30023F417;
-	Thu, 28 May 2026 13:55:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72B96278156
+	for <netdev@vger.kernel.org>; Thu, 28 May 2026 13:56:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779976520; cv=none; b=oxBSZYbUwUFwXxH+xbjOoaxcS9iWXicfGwyIiGtfyw9umi1TnXhNGlCGN1p/5PMKfci6eOi/Vv103GogI3mxICWVp1HEhMXg/Htnatc7NiSdBU1g5mi5eQXDp/8mX3tEnBN2DOw54jqVdciUNNyKhOi5pRMqyiY3knRATtfAAPE=
+	t=1779976567; cv=none; b=igTYYaISesTE8BPyCdJmb4MVI6deTj+aiBaAxdLMxEO2JWAXq5u8XT0ZOdX0QacmFFm/deGoq7JB6hu8rFXAE+T/CxLqmE1G6fm3YKM7GyXpwcg26Ju0nYHuUfXUemrbH+yB85VHlVkw9906WcsoF+v1ZTI30qA9EBppF4CbOc4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779976520; c=relaxed/simple;
-	bh=JHlB1VRiFdijv0FLI9b4i0396zAo+2ZyHpGGII6D6+o=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=pMVFVNXWD+ohy/40scxQSBXkZ78Sa7f+jiDwE95F/hnCN+GN66eVFO3Iznl13qWZdSnxf5odnkV4j1+uvgEaqBj9LU6+S/moe5arE7OAthN3DzRx1sSkTAejpOqyhO/RlE628rhn4g8PP0WWxNUvWFEGT8Z72py1oIVr7rGIC4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kqyPs9Tn; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779976567; c=relaxed/simple;
+	bh=sCSQ5HbhCn8i/fFMjt3uOy73ZrhyU4DAkaXE5rS7JaI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iOxyorjtB12efLWr+tNVMxvKrhjdZOEv6mSOX8awxbJkCvoFc+AcVVnTgrIMQUWHmIjmMjq/A1mRHiyAcuG3mHj4+2uf8ZOEflFpEDmiMbkV4Z3bPcz1aa1Mr3N8rkGIwXI8BGZBAFeVVODGnjfk38qrlN0Sltj29BOIUnwEavw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=eqGqDaLW; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kqyPs9Tn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 157001F000E9;
-	Thu, 28 May 2026 13:55:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779976518;
-	bh=TWrEufAZ8DUslPgMoW8nH/Kc1/FwICNwsgwROWhzNko=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=kqyPs9TnwtA5QQRhEEFdwnM48mCMueLnPbgjtvSlZXef6hvNOujW10shIsgthUfUt
-	 +t5LEfYEt0p+4Kvz+Js1I8qPG2Z6aVyCupMD1HKaIjtsoNejXZWqQU2p1Od0p7V9uR
-	 52aqjzu77SDU4rMz6y2QOWkk5hlfPLckwWHCkYy4CNDAUZNe8zCSfAJIxkA2QB+wEp
-	 RHOoUPJhGv8Y8bncebkPsAnvx436eale+F5k+GHDU+uCx4X06ja8udX6Zg9HXr6LZx
-	 LiD4YRUIlOUMXsVi8P+/R65PhV073jbL0jEgTeWrADmcErO4l7bpZ2JPDt3MB2C9Uy
-	 dAv/dkt0/TfiQ==
-From: Thomas Gleixner <tglx@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: LKML <linux-kernel@vger.kernel.org>, David Woodhouse
- <dwmw2@infradead.org>, Miroslav Lichvar <mlichvar@redhat.com>, John Stultz
- <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, Anna-Maria Behnsen
- <anna-maria@linutronix.de>, Frederic Weisbecker <frederic@kernel.org>,
- thomas.weissschuh@linutronix.de, Arthur Kiyanovski <akiyano@amazon.com>,
- Rodolfo Giometti <giometti@enneenne.com>, Vincent Donnefort
- <vdonnefort@google.com>, Marc Zyngier <maz@kernel.org>, Oliver Upton
- <oliver.upton@linux.dev>, kvmarm@lists.linux.dev, Oliver Upton
- <oupton@kernel.org>, Richard Cochran <richardcochran@gmail.com>,
- netdev@vger.kernel.org, Takashi Iwai <tiwai@suse.com>, Miri Korenblit
- <miriam.rachel.korenblit@intel.com>, Johannes Berg
- <johannes.berg@intel.com>, Jacob Keller <jacob.e.keller@intel.com>, Tony
- Nguyen <anthony.l.nguyen@intel.com>, Saeed Mahameed <saeedm@nvidia.com>,
- Peter Hilber <peter.hilber@oss.qualcomm.com>, "Michael S. Tsirkin"
- <mst@redhat.com>, virtualization@lists.linux.dev,
- linux-wireless@vger.kernel.org, linux-sound@vger.kernel.org
-Subject: Re: [patch 24/24] ptp: Switch to ktime_get_snapshot_id() for
- pre/post timestamps
-In-Reply-To: <20260527165621.0ddad586@kernel.org>
-References: <20260526165826.392227559@kernel.org>
- <20260526171224.499777655@kernel.org> <20260527165621.0ddad586@kernel.org>
-Date: Thu, 28 May 2026 15:55:15 +0200
-Message-ID: <87eciviqpo.ffs@fw13>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="eqGqDaLW"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=52gB7Eae4dUX0sy0L8AsYJIyqGuI1ysRBUwMs+7FmYo=; b=eqGqDaLW3CQR9Gb7eXx2+G4Yr5
+	wbjSpf3XF1+pAV6Cj8WST1HEZmM05BKet/SYeDiPmL6jFTbu+FXzerTkHgli4vS2Rev5501yc881d
+	Mast3Ln24lt9mKcU4h6VrPKBp9/T/F4c1yhXpdNiuLvTAyGXKyCnqt9dKW5J8LslTIrM=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wSbDM-004uIr-Hx; Thu, 28 May 2026 15:56:00 +0200
+Date: Thu, 28 May 2026 15:56:00 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Michael Walle <mwalle@kernel.org>
+Cc: Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org
+Subject: Re: phylink and an unusual PHY/SFP setup
+Message-ID: <a0a33a64-411f-4612-bd9e-1ee8c705ec1a@lunn.ch>
+References: <DITB8QZ1OEQF.327XUI9E0SXQ3@kernel.org>
+ <061815ee-e95e-4723-aa2a-d84bc3ad6233@lunn.ch>
+ <DIU79B74YFW6.1NBOTHFQQ65A5@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DIU79B74YFW6.1NBOTHFQQ65A5@kernel.org>
 
-On Wed, May 27 2026 at 16:56, Jakub Kicinski wrote:
-> On Tue, 26 May 2026 19:15:27 +0200 Thomas Gleixner wrote:
->> -	if (sts && bp->ts_window_adjust) {
->> -		s64 ns = timespec64_to_ns(&sts->post_ts);
->> -
->> -		sts->post_ts = ns_to_timespec64(ns - bp->ts_window_adjust);
->> -	}
->> +	if (sts && bp->ts_window_adjust)
->> +		sts->post_ts.sys -= bp->ts_window_adjust;
+> Thanks for the pointer. It looks like this can be used to support
+> both the Base-T port and the SerDes port of this PHY.
+> 
+> But I'm still trying to wrap my head around the SerDes links and
+> it's configuration. Basically, phylink tries to match both ends of
+> the link and will configure the PCS and the PHY accordingly. But in
+> my case, the link between the MAC/PCS and the PHY is always SGMII
+> (at least that's what the Marvell datasheet says). The line side of
+> the PHY is then either Base-T if using the copper port or 1000Base-X,
+> 100Base-FX or SGMII on the fiber port.
 >
-> FWIW build says:
->
-> drivers/ptp/ptp_ocp.c:1495:8: error: no member named 'post_ts' in 'struct ptp_system_timestamp'
->  1495 |                 sts->post_ts.sys -= bp->ts_window_adjust;
->       |                 ~~~  ^
+> If I add these modes to the possible_interfaces property, the PCS
+> might be configured wrong, that is, in 1000Base-X mode for example.
+> But it really should only be ever in SGMII mode.
 
-Noticed too and fixed locally already.
+You have something like rate adaptation for the PCS-PHY link.
+
+This is something you sometimes see for multigigi PHYs, where the
+MAC-PHY can uses a fixed mode, e.g. 10GBaseR, independent of what the
+media does. Pause frames are then used to slow down the MAC to the
+media speed. So it might be you can abuse rate adaptation to do what
+you need.
+
+What could play a role here is, if the media is running at 100Mbps
+does the MAC need to know to use SGMII at 100Mbps? This is different
+to rate adaptation, where the MAC is fixed. Also, if it is using
+100Base-FX, does it want the SGMII to run a 100Mbps?
+
+So rate adaptation might not help. But the phylink code around rate
+adaption might give you some ideas how you can handle this.
+
+   Andrew
+
