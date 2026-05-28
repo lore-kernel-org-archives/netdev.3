@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8EEF36F8F9
-	for <netdev@vger.kernel.org>; Thu, 28 May 2026 23:16:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91F4936B043
+	for <netdev@vger.kernel.org>; Thu, 28 May 2026 23:16:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780010219; cv=none; b=iFKyKPb7rIdB9FYb0cHSz9WjHoSmNUDBcqlHu7OWJRYb5/H4jhy7BBvD1TIPxHiwziWH7pcFwLdgI/xq0iZ7Ys4QnYXC9u0W8kAOePC1Xn3M3YogaRF1dkXNAoKa6WgDYCWXEkiL88jsc9PjH2eb9xe5yvbk5UGsnoBS+rFQXyw=
+	t=1780010220; cv=none; b=I992PNTD6FrfIymxu/YvOY0KhNvWzSYsKhTjG0fbEpaXTD5Mnv51bwTrUK3QjEZKjRIxFX/K3Px9AYwi+ySv2k92zy3TTp6fBBrg8QnXtLwbxedbiOlkk/Gl8k+XKQC5pyO/65ahc15zD5JaFD8AQ21ZgHSnEzlTRJ8BBZm43Gg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780010219; c=relaxed/simple;
-	bh=v0AHUVjdQ3xnE+kX4akkAvk+cfvNqacdr1IjByuQCUs=;
+	s=arc-20240116; t=1780010220; c=relaxed/simple;
+	bh=RgP7uuD2GYCHhDUWeDvPbUOBJkllkoCX7L09s7tcjwo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rNcosO6gJ6NAycp+h09TAsAVQVGgE7MifeU6Vp6bFM/Cn8q4W8ezZDoPGuoAIl6Jwz5QXlnecEjSnW17F5kH8qMpQLwXQUcIqkLfsd3uXQ43BKZopMJq3sLAfnB0wo0VfZzybYfSYDWyRcSMT7hDc39GAXjtjZuO7tWrrcM7g3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PLrCnfaH; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=kdZBRWaREPJulaD59/5tEPCSHDudINrJYQh7Z4M5FppGX3BSJLAP3ZgVYI1nh67RbBiowKkfnpXbNIE96qIFkOSKmHdmAYxh4WUZU0Y3l7elU5FC83OYk7oKEBa8MqfEEBfRf+ruB0bCZlIo6BHDEP2sCAJnVEJzfoDszG7/ZGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e74JMC/v; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PLrCnfaH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1D141F00A3C;
-	Thu, 28 May 2026 23:16:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e74JMC/v"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA6821F00A3E;
+	Thu, 28 May 2026 23:16:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780010218;
-	bh=Og3Ys3Rb98/rutdlhVH60kIpEyGcQjoMYEplyDyrzIM=;
+	s=k20260515; t=1780010219;
+	bh=KTQp6wn7XnN+tsO6HiISSLdK9Ryr20ZMYyNVcaa+Qwk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=PLrCnfaHz1Q+jS9U0/q+Y2kpp0HqjGMfEgtrQ8wQYbu/PRPdJkNiyAUdQzVCtQiaQ
-	 gzSZ1MgTI6c1JZdfPrj60vDdPsqByjze94t0PB5R8OMoMjGoFZEtr5D4Tciv7Zy03x
-	 hjvTFAxf9B8rVJP6Rv/5Rf+8MqKj86LkjYi3RSn8JF7PeEKwdsi5huTNcQEHDKq83k
-	 B92JYGQs5CteAo35Zu4f5HypaVdFbSvOfTqjuKRDIY5F6P1WgNvZPws29EkSAKV7qD
-	 Ob5pSypI0PFxLwpB/rJ1pCJGvjsyZZOoCIDzdOscrcTDKqSO4LSz2o7tTPruY5xY1S
-	 P6eQSUqoaqV9g==
+	b=e74JMC/vvSk8VRCPs6vs9o5bwirZjdaXQ8sana41gStmuxm28RlkNlY5rmBozIUiI
+	 9qwEth+wYe6Qf+T2cxaYobxX6OBPxDSThWXQRGsDUiTMs2N1E7nL2r3yCHDh/m/ErX
+	 IKDkEegiTE6iZHLcKQyijTArPCnUJTdU9hPV8qhXExDiaMLqgIURmwXKtvyM97dz1x
+	 Gtj4SWUnU3sc/lBcfdk3fpBR/mY5jPSKUIGItuNqCHqTlp9rBnS0rAFzxEs7v9bOSl
+	 /yM5VWdUFUOZqR8WIBS0lA9gCZP6fXkkbzG76tPJI8xwafFQlcvIFvVAIc11SAOde6
+	 H16T0I53b69Sg==
 From: Jakub Kicinski <kuba@kernel.org>
 To: davem@davemloft.net
 Cc: netdev@vger.kernel.org,
@@ -46,9 +46,9 @@ Cc: netdev@vger.kernel.org,
 	danieller@nvidia.com,
 	idosch@nvidia.com,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH net-next 11/14] net: ethtool: optionally skip rtnl_lock in RSS context handlers
-Date: Thu, 28 May 2026 16:16:34 -0700
-Message-ID: <20260528231637.251822-12-kuba@kernel.org>
+Subject: [PATCH net-next 12/14] net: ethtool: ioctl: concentrate the locking
+Date: Thu, 28 May 2026 16:16:35 -0700
+Message-ID: <20260528231637.251822-13-kuba@kernel.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260528231637.251822-1-kuba@kernel.org>
 References: <20260528231637.251822-1-kuba@kernel.org>
@@ -60,94 +60,91 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Skip rtnl_lock in RSS context handlers if device is ops-locked.
-Fairly trivial conversion. bnxt needed rtnl_lock for changing
-the main context but looks like additional contexts are fine
-without it.
-
-Note (for review bots?) that ethnl_ops_begin() checks whether
-the device is still registered.
+Add another layer of helper functions to make upcoming locking
+changes easier. Otherwise we'd need a pretty complex goto
+structure. netdev instance lock is now taken slightly sooner
+but that should not be an issue since rtnl_lock is already held,
+anyway.
 
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 ---
- net/ethtool/rss.c | 20 ++++++--------------
- 1 file changed, 6 insertions(+), 14 deletions(-)
+ net/ethtool/ioctl.c | 35 +++++++++++++++++++++++++----------
+ 1 file changed, 25 insertions(+), 10 deletions(-)
 
-diff --git a/net/ethtool/rss.c b/net/ethtool/rss.c
-index 65bad23d5c59..d8adc78e3775 100644
---- a/net/ethtool/rss.c
-+++ b/net/ethtool/rss.c
-@@ -2,6 +2,7 @@
+diff --git a/net/ethtool/ioctl.c b/net/ethtool/ioctl.c
+index 1d74ee67e77a..6c3a7e8644ae 100644
+--- a/net/ethtool/ioctl.c
++++ b/net/ethtool/ioctl.c
+@@ -3257,18 +3257,14 @@ static int ethtool_set_fecparam(struct net_device *dev, void __user *useraddr)
+ /* The main entry point in this file.  Called from net/core/dev_ioctl.c */
  
- #include <net/netdev_lock.h>
- 
-+#include "../core/dev.h"
- #include "common.h"
- #include "netlink.h"
- 
-@@ -468,21 +469,16 @@ int ethnl_rss_dumpit(struct sk_buff *skb, struct netlink_callback *cb)
+ static int
+-__dev_ethtool(struct net *net, struct ifreq *ifr, void __user *useraddr,
+-	      u32 ethcmd, struct ethtool_devlink_compat *devlink_state)
++dev_ethtool_locked(struct net *net, struct net_device *dev,
++		   void __user *useraddr,
++		   u32 ethcmd, struct ethtool_devlink_compat *devlink_state)
  {
- 	struct rss_nl_dump_ctx *ctx = rss_dump_ctx(cb);
- 	struct net *net = sock_net(skb->sk);
 -	struct net_device *dev;
- 	int ret = 0;
+ 	u32 sub_cmd;
+ 	int rc;
+ 	netdev_features_t old_features;
  
--	rtnl_lock();
--	for_each_netdev_dump(net, dev, ctx->ifindex) {
-+	for_each_netdev_lock_ops_compat_scoped(net, dev, ctx->ifindex) {
- 		if (ctx->match_ifindex && ctx->match_ifindex != ctx->ifindex)
- 			break;
- 
--		netdev_lock_ops(dev);
- 		ret = rss_dump_one_dev(skb, cb, dev);
--		netdev_unlock_ops(dev);
- 		if (ret)
- 			break;
+-	dev = __dev_get_by_name(net, ifr->ifr_name);
+-	if (!dev)
+-		return -ENODEV;
+-
+ 	if (ethcmd == ETHTOOL_PERQUEUE) {
+ 		if (copy_from_user(&sub_cmd, useraddr + sizeof(ethcmd), sizeof(sub_cmd)))
+ 			return -EFAULT;
+@@ -3319,7 +3315,6 @@ __dev_ethtool(struct net *net, struct ifreq *ifr, void __user *useraddr,
+ 			return -EPERM;
  	}
--	rtnl_unlock();
  
- 	return ret;
+-	netdev_lock_ops(dev);
+ 	if (dev->dev.parent)
+ 		pm_runtime_get_sync(dev->dev.parent);
+ 
+@@ -3559,7 +3554,29 @@ __dev_ethtool(struct net *net, struct ifreq *ifr, void __user *useraddr,
+ out:
+ 	if (dev->dev.parent)
+ 		pm_runtime_put(dev->dev.parent);
++
++	return rc;
++}
++
++static int
++__dev_ethtool(struct net *net, struct ifreq *ifr, void __user *useraddr,
++	      u32 ethcmd, struct ethtool_devlink_compat *devlink_state)
++{
++	struct net_device *dev;
++	int rc;
++
++	rtnl_lock();
++	dev = __dev_get_by_name(net, ifr->ifr_name);
++	if (!dev) {
++		rc = -ENODEV;
++		goto exit_rtnl_unlock;
++	}
++
++	netdev_lock_ops(dev);
++	rc = dev_ethtool_locked(net, dev, useraddr, ethcmd, devlink_state);
+ 	netdev_unlock_ops(dev);
++exit_rtnl_unlock:
++	rtnl_unlock();
+ 
+ 	return rc;
  }
-@@ -1037,8 +1033,7 @@ int ethnl_rss_create_doit(struct sk_buff *skb, struct genl_info *info)
- 	if (ret)
- 		goto exit_free_dev;
- 
--	rtnl_lock();
--	netdev_lock_ops(dev);
-+	netdev_lock_ops_compat(dev);
- 
- 	ret = ethnl_ops_begin(dev);
- 	if (ret < 0)
-@@ -1125,8 +1120,7 @@ int ethnl_rss_create_doit(struct sk_buff *skb, struct genl_info *info)
- exit_ops:
- 	ethnl_ops_complete(dev);
- exit_dev_unlock:
--	netdev_unlock_ops(dev);
--	rtnl_unlock();
-+	netdev_unlock_ops_compat(dev);
- exit_free_dev:
- 	ethnl_parse_header_dev_put(&req.base);
- exit_free_rsp:
-@@ -1179,8 +1173,7 @@ int ethnl_rss_delete_doit(struct sk_buff *skb, struct genl_info *info)
- 		goto exit_free_dev;
+@@ -3587,9 +3604,7 @@ int dev_ethtool(struct net *net, struct ifreq *ifr, void __user *useraddr)
+ 		break;
  	}
  
 -	rtnl_lock();
--	netdev_lock_ops(dev);
-+	netdev_lock_ops_compat(dev);
- 
- 	ret = ethnl_ops_begin(dev);
- 	if (ret < 0)
-@@ -1210,8 +1203,7 @@ int ethnl_rss_delete_doit(struct sk_buff *skb, struct genl_info *info)
- 	mutex_unlock(&dev->ethtool->rss_lock);
- 	ethnl_ops_complete(dev);
- exit_dev_unlock:
--	netdev_unlock_ops(dev);
+ 	rc = __dev_ethtool(net, ifr, useraddr, ethcmd, state);
 -	rtnl_unlock();
-+	netdev_unlock_ops_compat(dev);
- exit_free_dev:
- 	ethnl_parse_header_dev_put(&req);
- 	return ret;
+ 	if (rc)
+ 		goto exit_free;
+ 
 -- 
 2.54.0
 
