@@ -1,55 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6915523AB81;
-	Thu, 28 May 2026 15:04:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A4B33F2109
+	for <netdev@vger.kernel.org>; Thu, 28 May 2026 15:07:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779980684; cv=none; b=Lq1yS304nIdvgBWBLWS8vMUh3mW4xBJHpDObeXYh0Qt/71X5YWvjNv5HJZ4E6F2l/0aXV/Aiqccvl0hPpFn7MNQUnCg+16SkB7L8g3+lt08L8KhdPDYQCAXu2OTiIlIm+uTkZugcCAHk7cfIsROlHsO/scFPl+dBzQxQ7LirTMA=
+	t=1779980871; cv=none; b=cIsnL2e0b1qonWDDMXpzNwgQK59zMI5bzE5RRMQDy2ERSaG49RIvrNSpaQogSwWekIKoSd11gbiM5xufwSGW62SY9AkzVpI+lvSbUUBMH0Lhlk1DyzrezxavP65Y5Agk0ihIoN9q3l+PiYLVOljTaOd4ygI1r0mzYoj3RvQuGLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779980684; c=relaxed/simple;
-	bh=3H2ORX3LaMZZJhQNMwEmqR2+s/uI166hUZt76ChWUqA=;
+	s=arc-20240116; t=1779980871; c=relaxed/simple;
+	bh=c6/yQ+aiHcaLwmQo6qcNVLwhfEPpXvDNZdnx8OO+R+k=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oOd0pyJg3XKaofNmxiX5SnqrrZ7j4p+0D9zBd2IOZxwtLXPACSfxeHr5dqwdULieWyJAo+9MCZQxUdY5sSFUYx54Wu+0LC4LNWo/VSbZJ+QsWubVMBE43MwQTPpqjPoKFzz444AkRFuS1GERnuNA3AUk+gq/Lkjz3kMyJS5sv5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wjl2Z4Jt; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=Q6YHzbNB4frDPx8HXulu1Hqn5rNb78Yk5tHELLpb6hYCTKDZ/z7AUAyfpCPlpt7V+EGovLw5FK/1PrgcSkQB4BJYcoFTXpFfopzDll8LcMeigalAYEg4np2/PlR618zkf8WvE32R4uY3BJoV6TugIyfLO/ZD/5GozoeFQnpx/5I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hv1q8UQc; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wjl2Z4Jt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 289A81F000E9;
-	Thu, 28 May 2026 15:04:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hv1q8UQc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59E931F000E9;
+	Thu, 28 May 2026 15:07:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779980683;
-	bh=okVGivR6JMzRY9m1e/jRPmfakZm7inVaYkf/GPCmAhw=;
+	s=k20260515; t=1779980869;
+	bh=7/okIY2wgxnQyhKEZlgiZ4ASlffEMjPQtXrxLlJX61I=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=Wjl2Z4JtMKtSu5lAXWKgaLJS3/SZN7RcBzQE86jhYuZSxHSyW0a3haS4ys3U85rG3
-	 p4xSurbpWfuEPR4F+Ekm5Enl6lgUHYLvo4rtC7bLes/pu+cRoL6jmajJMo/BbxOBIj
-	 62XBJpnuiu5sTWO8EHkLe5C8B/nC7vOMcUDVvh12sEGeJGP/du6PNOQP5b3ibtUbhN
-	 TbZJcMMWQch74a0ZzDxk9cBwsjNujfLqIlU0DAwVTn3MRs1lLmF1sW/pFmu0ozFbqu
-	 O/ICRH0+8+DedJhM+JFiChr2lILsFzHa9vWWPW7CbPPrPD92Oz7H7fraJGjzQgMRPW
-	 QA40qw59IXXfQ==
-Date: Thu, 28 May 2026 08:04:41 -0700
+	b=Hv1q8UQcbuIHv5njwl50dOq05VFFkS5+7efY/D939gwmKQ8Pclfc56I3w9pyyJCNz
+	 1YMiNNQ7re1R5KTqDX68POIR83ME3AdP2cChSwBMVn+V5JFs2RHPSvevX83gYhqwn5
+	 8uprQT3l4x3s9f65KzZn8WFa3feP8eCsCt9eQGU7/Jy+wevUt/D0KtZmZRvmtXyCDj
+	 1KP4fvYKQQjSHvZsi7L2Qacln7sl0JWjr0p94P+/PEg1mz0OETopAzRtSUJu71/aCT
+	 4CBeUtvFDwVDRjL1a7Adazwb3Uktb5/R+UoyagXL11qauT7U2FK4tkluW/eZ2OMRkD
+	 ZhuIiyqwdg5Og==
+Date: Thu, 28 May 2026 08:07:48 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Donald Hunter <donald.hunter@gmail.com>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, Andrew Lunn <andrew@lunn.ch>, "David S.
- Miller" <davem@davemloft.net>, Carlos Llamas <cmllamas@google.com>, Eric
- Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon
- Horman <horms@kernel.org>, Matthew Maurer <mmaurer@google.com>, Miguel
- Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo
- <gary@garyguo.net>, "=?UTF-8?B?QmrDtnJu?= Roy Baron"
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas
- Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, Danilo
- Krummrich <dakr@kernel.org>, Christian Brauner <brauner@kernel.org>,
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
- netdev@vger.kernel.org
-Subject: Re: [PATCH v5 1/2] rust: netlink: add raw netlink abstraction
-Message-ID: <20260528080441.01ab1847@kernel.org>
-In-Reply-To: <ahff7OTzS46Rti5c@google.com>
-References: <20260525-binder-netlink-v5-0-a90e2923ebeb@google.com>
-	<20260525-binder-netlink-v5-1-a90e2923ebeb@google.com>
-	<CANiq72kRC_k1cnJLmG+AUSiUH6kDXVsox3nMJnV-c6HkNXOwBA@mail.gmail.com>
-	<ahbAyBD584Hk9Mst@google.com>
-	<20260527192130.21dabf08@kernel.org>
-	<ahff7OTzS46Rti5c@google.com>
+To: Oscar Maes <oscmaes92@gmail.com>
+Cc: netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com
+Subject: Re: [PATCH net-next v2 2/2] pcnet32: switch to napi_alloc_skb() and
+ napi_gro_receive()
+Message-ID: <20260528080748.3e74355f@kernel.org>
+In-Reply-To: <20260528142851-oscmaes92@gmail.com>
+References: <20260525125437.4061-1-oscmaes92@gmail.com>
+	<20260525125437.4061-3-oscmaes92@gmail.com>
+	<20260525084528.547fe263@kernel.org>
+	<20260528142851-oscmaes92@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -59,20 +47,15 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 28 May 2026 06:25:48 +0000 Alice Ryhl wrote:
-> > > Netdev maintainers, what do you prefer that I put for these files? I'm
-> > > of course happy to be on the hook for this code.  
+On Thu, 28 May 2026 16:28:51 +0200 Oscar Maes wrote:
+> On Mon, May 25, 2026 at 08:45:28AM -0700, Jakub Kicinski wrote:
+> > On Mon, 25 May 2026 14:54:37 +0200 Oscar Maes wrote:  
+> > > In my testing this resulted in up to a 25% RX throughput increase in iperf3
+> > > tests in both directions.  
 > > 
-> > Can we put it under rust/kernel/net and rust/helpers/net ?
-> > And then add those directories to networking ?
-> > Just so that we don't have to keep wondering with every little piece 
-> > of code.  
+> > On which platform?  
 > 
-> Sure, will do.
-> 
-> However, it doesn't look like rust/kernel/net/ is listed under any
-> MAINTAINERS entry either.
+> Intel x86
 
-Which is why I said:
-
-  "And then add those directories to networking ?"
+LOL. Please. Which _hardware_ platform.
+Or to ask more directly - is it QEMU.
