@@ -1,36 +1,37 @@
-Received: from smtpbguseast1.qq.com (smtpbguseast1.qq.com [54.204.34.129])
+Received: from smtpbgeu1.qq.com (smtpbgeu1.qq.com [52.59.177.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E8F917745;
-	Fri, 29 May 2026 05:39:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.204.34.129
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99219373C1D;
+	Fri, 29 May 2026 05:39:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.59.177.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780033187; cv=none; b=QbSaJxhjaoYkM7M3/SQY009l2p9UpGYbPy5y98wKa6Vns1o79Nszh4z+BF+Vfd89oZKAyClWSsQyphYLsUVAklr22jcNrR4uRiDDvkeMfGA5H1sdTZ0UwDIZVkPHkXQddlo6w0L/hp3G6AwbPtV67RwaCzhFqKZWb96EWCPRdIY=
+	t=1780033193; cv=none; b=kM4bjwPu56s5SI5ZEeVbg25fC4Pr4lzGG+VPB6wUHNlm4geFQtw9nKAJ2Xf4zHnNRLcd24WU6KDC3PvTA05h16Um16GQwe6kYBdFr3M3jar/2sbNA3ioti21T/9Z/TkwgAzfQxeHV/NAHziEslrcoDTpJ+RQ1us9Ne3ND3DqZk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780033187; c=relaxed/simple;
-	bh=nO7ogHAKHn9ZRHrqPAt94m4xCkeDU6Fnox760kViPTE=;
+	s=arc-20240116; t=1780033193; c=relaxed/simple;
+	bh=hWRtIJrBbLgsQeXZ7uxzEc76nynyIlE7tVL4MpG7lYs=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=niCckz3Bw2RTTprhXYT9IEA4b2pkGEtOBXKRA+wIOBHylKUbmQh2uVaTqfj2pKpT4XZhtIQB6GhT5RhwiPHZ7j+5pV7v/gcGBj2/D86xneOBnRiEnBqEFuaphCksSvyWfgxQ0eB4ghp1Y1DJfTJKr0knL3h29H5/QMBo6j7ZBjo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=TcZBuL7d; arc=none smtp.client-ip=54.204.34.129
+	 MIME-Version; b=qn7ExqimAb04DpCABbj/AfM5nARDwcrvg0sBekIqDO/PWl4BDsCp9Z/4skluAWyNKo+6L0dbiv/ZMyL0FDZ7syefV8GNikdVmbWFW07gw+Pe0+55fGlz8wzfsLZp4NMedzpKvlKUm2MXiTicDRzVFuByKt5OAvjNW4rFuBOZLUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=bYIDdlP3; arc=none smtp.client-ip=52.59.177.22
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="TcZBuL7d"
+	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="bYIDdlP3"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1780033076;
-	bh=w1ONFpfIdPAWMceFFrpPiIqatePtthElUP6Et+fSb8M=;
+	s=onoh2408; t=1780033098;
+	bh=scjxYyFpRmQYuRgng8VwXwWgC9x8xEgFY8Y2guA6c+c=;
 	h=From:To:Subject:Date:Message-Id:MIME-Version;
-	b=TcZBuL7dMqEXjm0IZB6WsHxjaGZCe3YgisOHFJjUYB4qVwlXhCIzraBGf8JibHJvt
-	 MmS2NH3vy9KiApM/CR6xv8QyQN/+L4LNXq0Gm6JhqF02gKRoXpxkTwIebaUcmAANNJ
-	 FrBcwe0iEIbrEF6RiEyjVsaSjZ3MKwBEhAFiBvL4=
-X-QQ-mid: zesmtpsz5t1780033066t39dd5d5b
-X-QQ-Originating-IP: 2Rf3q/fdA1E7d+O7Srod5LXOW0idSnL6+dciArsfJPg=
+	b=bYIDdlP3OJF2+o3nK2zwXklVHBe4CfOM2F9K6aJSDIl1U8Hyj/Pxr0xADvJEuSpLt
+	 Zz/8bkb5Njx7Ds+9fgBkYVuZeJaS2hMClz1VtmZhFWT6126weJ+uclhudh9i57Ni0u
+	 IGVVqt9I8r3zXspIuigoRk9BS82DpY7fdnqV/ZFE=
+X-QQ-mid: zesmtpsz5t1780033079t1893b861
+X-QQ-Originating-IP: bqlM5PUpKuW9q4mcwmUyQdBpA/ORLNdebwjuAb5O2kU=
 Received: from localhost.localdomain ( [124.126.19.250])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Fri, 29 May 2026 13:37:37 +0800 (CST)
+	id ; Fri, 29 May 2026 13:37:55 +0800 (CST)
 X-QQ-SSF: 0000000000000000000000000000000
 X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 5534762632318884595
+X-BIZMAIL-ID: 6071481676437275183
+EX-QQ-RecipientCnt: 11
 From: ZhaoJinming <zhaojinming@uniontech.com>
 To: Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
@@ -41,44 +42,104 @@ To: Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Paolo Abeni <pabeni@redhat.com>
 Cc: intel-wired-lan@lists.osuosl.org,
 	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v2] ice: dpll: fix memory leak in ice_dpll_init_info error paths 
-Date: Fri, 29 May 2026 13:37:31 +0800
-Message-Id: <20260529053733.764996-1-zhaojinming@uniontech.com>
+	linux-kernel@vger.kernel.org,
+	ZhaoJinming <zhaojinming@uniontech.com>
+Subject: [PATCH net v2 2/2] ice: dpll: fix memory leak in ice_dpll_init_info error paths
+Date: Fri, 29 May 2026 13:37:33 +0800
+Message-Id: <20260529053733.764996-3-zhaojinming@uniontech.com>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20260528171202.2659491-3-horms@kernel.org>
+In-Reply-To: <20260529053733.764996-1-zhaojinming@uniontech.com>
 References: <20260528171202.2659491-3-horms@kernel.org>
+ <20260529053733.764996-1-zhaojinming@uniontech.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
 Feedback-ID: zesmtpsz:uniontech.com:qybglogicsvrsz:qybglogicsvrsz4b-0
-X-QQ-XMAILINFO: NAeO0+xU6W76l6nBX0RxNcnzlyTcEqN/jnKr4LhxGFe8D8Qzb68UGPpC
-	1buF4f3PE8ScC9tbVC/wMB+yDLzRgpeNGbirPJE+yjysYajJM9PvtDhCP0pEQwcNMEmRvmO
-	ENSKivMeasBg7lGwcPQIVHtfdgJya1IInaPWLLvrLs7o2CoBfO5UuQBAzKRKqxCPJKxFlx+
-	rwVy4ur3x5th/6tH9vaF+kDrNB6sOvfkTi8Y0suhufFXlN5GyPtTVdVPpRk4MCCzsXZQ8lM
-	rLX8rbK+UWLw7ikErnyHT7Xag0KJAHj3cAN/3oso59cBoUgWRDEE+/33fUsanjYZpwPE+R/
-	sKVZApyEoOJEvYKCOkxv7Zxui4OD8/30MxTAyequxbh8+j8J623LSPk5sr3QfwItpB40pkY
-	6jr3ZUbaDBVEgQG8QZu6wnz0hd2tuXCtWVJCAE8O2B8e10m+5BWiCR1l+idxJ83JWyMDAze
-	BU5LZXsXLKliLUIvQfIncbZUMGhclXODajLDMx4VQtF1bHtyahfF0/8zmul1G/1/sRNg3Fc
-	e9ucw6PZYVJmlk210lDgvvjitPE9qrHA2zCYVqU4/P/jPsLyZ46YEvJnoKGiDasxUtTOxvd
-	QkJqy1Jue3kA0EPionl2vtd4Mrku92gJCZWTBi7TDhLa7k96MWcMreHy2eIdrAKVyjcRe0/
-	1sPdXUkLjnMTHOenRu9VrXXY1Hf7H33SKzdVZ6R9jFMQpzylr0VvE951lgE20ckiS2vp58f
-	Y5pKf3A4lrHBkGMerhrNeD3pa7k2AhvK3g3PSg3FnuHn7TnCIrHiNJL6z5yfGxLm3xpsOn2
-	WggxrTcgydtrFw4uk1duftxBKwNLwN12MNtOjdveKXe4S4Mv+KXt89CNoqvNfIDgvqtPRwd
-	0NCVtqaD5E2DAIHobUTsq/7QZs2Uit87nmx22MVuKaAHX7xjIx6L8BqbJTrwzFNIXoJCcpr
-	afVdAzqrNX0cnntruxQB+cBfunGMtMnNNpyqGQ15E8mPCzgMhKt+McXs8rWezgS1PZwnKr7
-	0EuzIWvBtETlmZS38W4MFOB4KY2mc=
-X-QQ-XMRINFO: NS+P29fieYNwqS3WCnRCOn9D1NpZuCnCRA==
+X-QQ-XMAILINFO: NT3X+pH9p5L2pZ62hzv13pstuF0ARHVhJdEp033zSDDgVYYJ49wBEZ8O
+	jAnIyrQMtCqCsDWjM6s+o7cnke5W0pmge92VDhcN1lVFz1FpJKrAkZ0vsQyAEXp8DaIMRH1
+	W0uDrE8Y6h/dpf6DPHN3ToMRm/hAHqYBGWIKNwnYbo/j5SwOP+KiUjHk8770cWc9KZTQygX
+	IHXOxj7YNHwBkHmlOEz3+TBt68AMg10Sos+P5xpTYaCPkw9LVSjK5U8yiUL6zBa14QUOkYb
+	CM3IQTMJDs81J25VHSyWsbN8xEBibKSByicxUSQt5OBfdzQAhUr1H+7TtzYzzECwHRWHn8S
+	UT/a+vhGnU60JcULN2bFalA8rlzS8hVXjZ2zpa7JCUIUwqUs+E2ozu/Op9k7GfhDHD7s6aY
+	WaY09qQHa7XGAFhQhU3NxEUVLMVTJNkZ6Fm90J6Azpnr/QSfacoO3irXGIfB6lffXdzvH7V
+	A37m1bZB9GFy4PdY1UcaINE0fGuHEE8B2Fq8A5YDlx7gkU2gM1p96ObNio0aSnMrMi59SAX
+	NP88qInBhm1q/7HQw8eqRVOZkcATpFkkxTAOuKJDxRxm3oVUqTQ5vJMhLKUN60HWiJpZM1Q
+	7pOVh7DVELcLfL61xp+21pgMKHMLYyKmSVuga9e9t1YUizF9ifHkxK0NwDCAtiJrkFqDcGG
+	YR5joZ45bgWPZqXgXgFFSyPjm/VD9Hh3e1YLQHgkfMyEEZJ7ZJcFbdqZdw0reqzCeSPVwHJ
+	8+xHyiBhn0OXDcqOGb5OZRETN3NEJSW8/+e1C+6CN9vA57ZYc+0X9Ith8gzoZv/5PKYmTSs
+	7tKy99CF+8O1lMHcSCooWIfe+9+TLi5egpL8nR3bZxb8iROFU97ut7TbbBNYW/Wd+AwbSKM
+	x2wkdPoHLhwBjcOTsGb2rk1R9GBD+nfresGvxqNG/l3DQwp0ixBiw0a6+ENDpCv+6xDVZA5
+	cu/0PP4kUSnX6VBRJ/1iXqua1ggk1GYxy+XDaj1fplfDiIEGyLfq/KhbL3F89WJTw112cEw
+	tSpkGWDY2bjvvtHzLAyLQY0TvxfRlMQMY2UyqU1d4j7KXWb9V4MymYjKjK5DcbneVgfLX3z
+	EOy0HxNapHA97ZHiI4FTFS52M/Ltsk0IQ==
+X-QQ-XMRINFO: MSVp+SPm3vtSI1QTLgDHQqIV1w2oNKDqfg==
 X-QQ-RECHKSPAM: 0
 
-Add a prerequisite patch that sets the pointer to NULL after calling kfree in the 
-function, eliminating a potential risk.
-Update to v2 version of the patch.
+Several error return paths in ice_dpll_init_info() directly return
+without freeing previously allocated resources, causing memory leaks:
 
+- When de->input_prio allocation fails, d->inputs is leaked
+- When dp->input_prio allocation fails, d->inputs and de->input_prio
+  are leaked
+- When ice_get_cgu_rclk_pin_info() fails, all previously allocated
+  inputs/outputs/input_prio are leaked
+- When ice_dpll_init_pins_info(RCLK_INPUT) fails, same resources
+  are leaked
+
+Fix this by jumping to the deinit_info label which properly calls
+ice_dpll_deinit_info() to free all allocated resources.
+
+Fixes: d7999f5ea64b ("ice: implement dpll interface to control cgu")
+Signed-off-by: ZhaoJinming <zhaojinming@uniontech.com>
+---
+ drivers/net/ethernet/intel/ice/ice_dpll.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/net/ethernet/intel/ice/ice_dpll.c b/drivers/net/ethernet/intel/ice/ice_dpll.c
+index 99bb308255cc..7240152f1655 100644
+--- a/drivers/net/ethernet/intel/ice/ice_dpll.c
++++ b/drivers/net/ethernet/intel/ice/ice_dpll.c
+@@ -4345,12 +4345,16 @@ static int ice_dpll_init_info(struct ice_pf *pf, bool cgu)
+ 
+ 	alloc_size = sizeof(*de->input_prio) * d->num_inputs;
+ 	de->input_prio = kzalloc(alloc_size, GFP_KERNEL);
+-	if (!de->input_prio)
+-		return -ENOMEM;
++	if (!de->input_prio) {
++		ret = -ENOMEM;
++		goto deinit_info;
++	}
+ 
+ 	dp->input_prio = kzalloc(alloc_size, GFP_KERNEL);
+-	if (!dp->input_prio)
+-		return -ENOMEM;
++	if (!dp->input_prio) {
++		ret = -ENOMEM;
++		goto deinit_info;
++	}
+ 
+ 	ret = ice_dpll_init_pins_info(pf, ICE_DPLL_PIN_TYPE_INPUT);
+ 	if (ret)
+@@ -4375,12 +4379,12 @@ static int ice_dpll_init_info(struct ice_pf *pf, bool cgu)
+ 	ret = ice_get_cgu_rclk_pin_info(&pf->hw, &d->base_rclk_idx,
+ 					&pf->dplls.rclk.num_parents);
+ 	if (ret)
+-		return ret;
++		goto deinit_info;
+ 	for (i = 0; i < pf->dplls.rclk.num_parents; i++)
+ 		pf->dplls.rclk.parent_idx[i] = d->base_rclk_idx + i;
+ 	ret = ice_dpll_init_pins_info(pf, ICE_DPLL_PIN_TYPE_RCLK_INPUT);
+ 	if (ret)
+-		return ret;
++		goto deinit_info;
+ 	de->mode = DPLL_MODE_AUTOMATIC;
+ 	dp->mode = DPLL_MODE_AUTOMATIC;
+ 
+-- 
+2.20.1
 
