@@ -1,152 +1,91 @@
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC3963B3887;
-	Fri, 29 May 2026 07:45:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC1AE1C860A;
+	Fri, 29 May 2026 07:46:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780040743; cv=none; b=QAX/jYxN4jWuZawuthsxLOaWDhowxEc3U051RNF8FlCl7ldbG214ym8/cM0ywGuEUuxuWK/KT38G/SsqQs8qDuiH6EG+aGYgjrAbaYiS+o8WgB0OlI2w/21n0WqBO3BXVyfuR33h9FziZLdu1odb4uHhgS+x4oKqU00EJSHuqyQ=
+	t=1780040810; cv=none; b=Gz5e2SET4MiGPr1YbGMmW1wcVflqTdaOhVEGrlSYYRTjMUwWq8vHn2BU4HdXmuei9wX9F1YWsmuDmY2qfyyL9jLuNvg9bMcDo4rkSZRCzfS2AwMKd6OsnMBQwxM92PdRtvu71gU6YKAjYzqeVc8w+dMsCMDcyVaYOscMvFtWles=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780040743; c=relaxed/simple;
-	bh=BSmnAoxqgcRVwz0shbT4icyDfMVFaY5F178kWXIXsdw=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=A4G38CzATF8e/2KrLf5lujnJ4n3i5L+MHr+Fojtmnxm526puyxb9ppCBrDPRmlBgZ1QR4Y/eQmabZTpmylMwv0JA6mhddeInTx4uhcxtuBVcuSftamaK0BTb0Id81EWesKD3esngzFnzhHQN3b2XodeOgIr7GCJ3WylJF+YuwEQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=Nete6hT0; arc=none smtp.client-ip=117.135.210.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1780040810; c=relaxed/simple;
+	bh=HQYKgt8fOz7gmZSQMa2vpCxt+Zpzmx1pngyO8Rnp5w8=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=lfh/bUKdNnjwxqJ1NixyAbocARKIWdz6xwswV227tpNfsseEa9NRHpPsAeFxk9uEvegLjdxFtwcgtRjeeG9g4u5avHNJPNoqsAEAni9ueHQ4G54rDtReEPrHaua0SUyBGLO4GScytZKgSZoXBpHVTesThMttNUehl+qt6qEOoQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=KjmIZrLW; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="Nete6hT0"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version:
-	Content-Type; bh=ib7Ut0SfSUbe54vHfazcErQh/0J2DlD47lgc4LGMbCM=;
-	b=Nete6hT04hIRmZhZBhxZ4uB3g3iLGdJMNAFbsfrlKtX78aTJg9uWmNr30ZboX6
-	nEqxR2S7SCF4pR0ZMcsSWWDeiC/9WLXa5RBXWlYPQo/Quu3Y9RIheNjXdQoRdqid
-	JeuviavYa30MfhSup/GMzinyvBxn1y4iarh4ngePCzMcQ=
-Received: from PC-YLX4CAEK.company.local (unknown [])
-	by gzga-smtp-mtada-g0-1 (Coremail) with SMTP id _____wDHv0t5Qxlqea_vAA--.36333S2;
-	Fri, 29 May 2026 15:42:50 +0800 (CST)
-From: Ding Hui <dinghui1111@163.com>
-To: j.raczynski@samsung.com
-Cc: alexandre.torgue@foss.st.com,
-	andrew+netdev@lunn.ch,
-	andrew@lunn.ch,
-	davem@davemloft.net,
-	dinghui1111@163.com,
-	dinghui@lixiang.com,
-	edumazet@google.com,
-	kuba@kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	liuxuanjun@lixiang.com,
-	maxime.chevallier@bootlin.com,
-	mcoquelin.stm32@gmail.com,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	rmk+kernel@armlinux.org.uk,
-	xiasanbo@lixiang.com,
-	yangchen11@lixiang.com
-Subject: Re:Re: [PATCH v2] net: stmmac: fix fatal bus error on resume by reinitializing RX buffers
-Date: Fri, 29 May 2026 15:42:49 +0800
-Message-Id: <20260529074249.2640274-1-dinghui1111@163.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <ahhX4lIpHwhVekMc@AMDC4622.eu.corp.samsungelectronics.net>
-References: <ahhX4lIpHwhVekMc@AMDC4622.eu.corp.samsungelectronics.net>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="KjmIZrLW"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 1545B1A3718;
+	Fri, 29 May 2026 07:46:47 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id DC731601FA;
+	Fri, 29 May 2026 07:46:46 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A1F4D10888CC3;
+	Fri, 29 May 2026 09:46:41 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1780040806; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=c024gKKjc1BP6uOHzo7JwDhVMobKmBODDZE59zQhr2g=;
+	b=KjmIZrLWYMuBX5Ryi0sbKhJ6S0YIpXtTli22Qoe9K29ZjXJm+VJASuKQN5LUGreAwA3TZY
+	58Q0hGSxsZmfypZBHd6JdJB6RJoUCdtZnZuitD4hGpbWe2+jBLG8LUsyoWnR9oWsedJ8Fa
+	5lATLDUktJL7FNVjtB1eK9zHycaSx/is+nVhZhp/N0CBo6LCH/OIJomqKX88B8JWB7yPe1
+	bmjk95lkXiDl/sTME/LvC9yhlJVIw1rZfdhqtC5vFHJNp1HKhYDO5VBziMEJ4wnPtJ8wRb
+	aWeYjyirFWL5DeA3Kavh8LIBoRXNJjRcOZ2W69/WWZNRItY4xIJRBiPDeUFG4g==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDHv0t5Qxlqea_vAA--.36333S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxGry8Aw1rCFW5ur17Cw1Dtrb_yoWrGF45p3
-	yYkw4DtryDGr18tws5Aw48ZFyYvayrJrW5u34DG342k3y5urnavr4aqw4Yva9rur1v9340
-	qr45Z3y8CFyvvFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0p_nmiJUUUUU=
-X-CM-SenderInfo: pglqwx1xlriiqr6rljoofrz/xtbC0hvP+2oZQ3uJmwAA3k
+Date: Fri, 29 May 2026 09:46:40 +0200
+Message-Id: <DIUZSUI8A5G2.E4D5YUXOWX95@bootlin.com>
+Subject: Re: [PATCH net-next v2 3/3] net: macb: add TX stall watchdog to
+ recover from lost TCOMP interrupts
+Cc: <netdev@vger.kernel.org>, "Nicolas Ferre" <nicolas.ferre@microchip.com>,
+ "Claudiu Beznea" <claudiu.beznea@tuxon.dev>, "Andrew Lunn"
+ <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, "Eric
+ Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>, "Paolo
+ Abeni" <pabeni@redhat.com>, <linux-kernel@vger.kernel.org>,
+ <linux-arm-kernel@lists.infradead.org>,
+ <linux-rpi-kernel@lists.infradead.org>
+To: "Andrea della Porta" <andrea.porta@suse.com>, "Lukasz Raczylo"
+ <lukasz@raczylo.com>
+From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <cover.1777064117.git.lukasz@raczylo.com>
+ <20260514215459.36109-1-lukasz@raczylo.com>
+ <20260514215459.36109-4-lukasz@raczylo.com> <ahhom_0PJtqnXsv5@apocalypse>
+In-Reply-To: <ahhom_0PJtqnXsv5@apocalypse>
+X-Last-TLS-Session-Version: TLSv1.3
 
-At 2026-05-28 22:57:38, "Jakub Raczynski" <j.raczynski@samsung.com> wrote:
->On Tue, May 26, 2026 at 10:26:17AM +0800, Ding Hui wrote:
->> From: Ding Hui <dinghui@lixiang.com>
->> +		} else {
->> +			/* Theoretically unreachable: napi_disable() in
->> +			 * stmmac_suspend() ensures all initialized slots
->> +			 * have a valid page before we get here.
->> +			 * Defensive check only.
->> +			 */
->> +			if (!buf->page)
->> +				continue;
->> +
->> +			stmmac_set_desc_addr(priv, p, buf->addr);
->> +			stmmac_set_desc_sec_addr(priv, p, buf->sec_addr,
->> +						 priv->sph_active &&
->> +						 buf->sec_page);
+On Thu May 28, 2026 at 6:08 PM CEST, Andrea della Porta wrote:
+> Has this patch seen a V3 version? I guess the only thing it's needed
+> is something like this:
 >
->It this generally sufficient?  Or, in fact, isn't that overkill?
->stmmac_rx_refill() generally does a bit more preparation of descriptors.
+> static void macb_tx_timeout(struct net_device *dev, unsigned int txqueue)
+> {
+>         struct macb *bp =3D netdev_priv(dev);
+>         macb_tx_restart(&bp->queues[txqueue]);
+> }
+>
+> and then setting .ndo_tx_timeout =3D macb_tx_timeout in macb_netdev_ops.
 
-You are right that stmmac_rx_refill() does more work — it allocates new
-pages and maps them. The key difference here is that in v2 we intentionally
-keep all RX buffers alive across suspend/resume, so no allocation is needed.
-The only thing that needs to be restored is the buffer address fields in the
-descriptors, which were overwritten by hardware write-back.
+Agreed! (pointed out here, with more details)
+https://lore.kernel.org/netdev/DIK002QFFNBY.31C3KUX2SQC6W@bootlin.com/
 
->The issue seems to be that during suspend there is mismatch,
->caused by writeback format, between rx_dirty and rx_cur pointers and
->there is bad handling of this case, since there is no verification
->of leftover stuff and there will be leftover bad address crashing platform.
->So stmmac needs to refill/reinit descriptors that were consumed but not
->refilled. So isn't going through whole dma_rx_size overkill?
->Wouldn't it be better to iterate over buffer from cur_rx as long as descriptors
->are 0 and only apply refill to those corrupted?
+s/txqueue/q/ to respect the driver's traditions.
 
-Actually, The hardware may have consumed additional descriptors in the window
-between stmmac_disable_all_queues() and stmmac_stop_all_dma(), so cur_rx can lag
-behind the hardware's actual position. So maybe not only the descriptors between
-rx_dirty and rx_cur pointers need to be refilled. 
-You are right that we should only refill the consumed descriptors. But checking the
-OWN bit requires a new lightweight get_rx_owner() helper across all descriptor
-variants (dwmac4, dwxgmac2, norm_desc, enh_desc), adding complexity for marginal gain.
+Sadly at91ether_netdev_ops cannot have macb_tx_timeout because code is
+too different.
 
->Could you paste panic that occurs during this issue?
->You mention "fatal bus error" which I would assume is system panic?
+Thanks,
 
-Apologies for the misleading wording — this does not cause a kernel panic.
-The issue manifests as a Fatal Bus Error interrupt on the DMA controller.
-Taking XGMAC as an example, dwxgmac2_dma_interrupt() detects XGMAC_FBE,
-increments fatal_bus_error_irq, and returns tx_hard_error, which triggers
-stmmac_tx_err() to stop and reset the TX DMA channel. But this has no effect
-for the RX DMA engine (may be we should reset RX DMA here). The practical effect
-is that the RX DMA engine halts after dereferencing the invalid buffer address,
-and the network interface becomes non-functional after resume — no packets can be
-received until the driver is reloaded or the device is re-probed.
-
-To reproduce the issue on my platform:
-  1. Connect the DUT and a PC, configure IP addresses so they can ping
-     each other (e.g. DUT: 192.168.1.1, PC: 192.168.1.100).
-
-  2. On the PC, start an iperf3 server:
-       iperf3 -s
-
-  3. On the DUT, start a high-rate reverse UDP stream to keep the RX DMA
-     busy during suspend:
-       iperf3 -c 192.168.1.100 -u -b 900M -R -t 0
-
-  4. While iperf3 is running, trigger a suspend/resume cycle on the DUT.
-
-  5. After resume, check the fatal_bus_error_irq counter:
-       ethtool -S <iface> | grep fatal_bus_error_irq
-
-     Without this fix the counter increments and the interface stops
-     receiving packets. With this fix the counter stays at zero and
-     normal operation resumes.
-
-I will update the commit message to clarify "fatal bus error causing RX
-DMA to stop".
-
-Thanks for the review.
-
-Ding Hui
+--
+Th=C3=A9o Lebrun, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
