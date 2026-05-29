@@ -1,43 +1,39 @@
-Received: from mail-43167.protonmail.ch (mail-43167.protonmail.ch [185.70.43.167])
+Received: from mail-106103.protonmail.ch (mail-106103.protonmail.ch [79.135.106.103])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ED683C1413
-	for <netdev@vger.kernel.org>; Fri, 29 May 2026 12:10:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.167
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A31933D7A01
+	for <netdev@vger.kernel.org>; Fri, 29 May 2026 12:14:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.103
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780056608; cv=none; b=dQA6uqkiM6DI5lSySRTOhUXK8ZP3wAXQHVWNQ9DBPbd4Q0shCcdSJmLeIuccCZXXYc5v3N18C9LUhzzi8iunnqAPqfIMYy/t9oXfiQq5gAskUb8ihL9+UM73+ZFVXlDDbrMu+TmGodsGiMVCbGVcKL5Q+r1aHuphENgNxYZN8Ec=
+	t=1780056900; cv=none; b=YJUjW8jK28lSNddOKrudn8eWWDY2Vo4jOhgrq5+NRZ5sPysm/tjg8j0v6ngnskVTt+ryva0+TjD+Tv/ItvC1tA0lwvmM8vefG2IX2jIYtMMQZb8occNpWPVdLE84vG+SmhTu5COF4E5XzA3FFevdTYLrOw5gdccKdAPNXwJ7cLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780056608; c=relaxed/simple;
-	bh=3YLhyxuQXmTr+WorJy/HTx2Zqzg40vIRkZOe86U6GfU=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BLBYA9vmiIVdsPPhGaQy00LiI1ZIeM77DWT5I+FiR677sEqrjN1xjQekcbHEa8+J4p7qz9AFnGrFPkunPGE36BUu7lkAQw6xoESOfGBRIlqGrmoCv5GPlM3Z/XVmQMhAkbdyCQcepQtYFje7RR62mL3klhez1pWouXFqHgqmZns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=L7vcY5tq; arc=none smtp.client-ip=185.70.43.167
+	s=arc-20240116; t=1780056900; c=relaxed/simple;
+	bh=rjH0iQ+B3CvgOEq5RvwB5Xi++xE8paRc6J3+du4Nrdo=;
+	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=q01V8i2ndzqVLukjoLIYeBTeHhv6khIN6ZsCODkJrz74n2ZJJM0XLQ+Wp5MUJLF3ED34pGSzpKOO9WCogF9P5tTx2LSpCXioiprNjfqmwfWtML3nJpOMrXB6OHHQQxur/R2+L7M9YS7yxJPJ0l8gQx8oxDJR1Ic40bSLo1XWem0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=fQfdY8ry; arc=none smtp.client-ip=79.135.106.103
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="L7vcY5tq"
+	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="fQfdY8ry"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-	s=protonmail3; t=1780056604; x=1780315804;
-	bh=Rnv85ZuxMtfba21o+Dbot0KoC97dOaoOLejFG58HcJE=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=L7vcY5tqQUjpacSlgRzBDOQmBLFxocQDWPRh5Qj8Z8LrsqIpdqw6mbJstjpg+ZUDC
-	 9zRrcU3awOk8I+fEkndorsMH7LxsgjAkSFQEkTPD4GkvraHD5Opal4MXZ/Voa9zzde
-	 IxIHEM/uHVwddAC5ac7E/DAxNRFmhbV/Sb3k/iVxdfw7sCJNzOhTMdAKWPDb/KMdcO
-	 scodt404EzTvYRsY1re8eTNvEzJPh/VnRJpM5gMlBWET1j93k6EcoZf/Xdgb9SKjOv
-	 mUHax5bteNOYG/eqGNnQkq6EaUHixABCqlnZg8XmFsVOAgDKUCKUDoYThzWMpy/6AC
-	 uBSA9rGAS1MJg==
-Date: Fri, 29 May 2026 12:10:01 +0000
-To: Jakub Kicinski <kuba@kernel.org>
+	s=protonmail3; t=1780056890; x=1780316090;
+	bh=GtYZY6ctEkhlw/clHSGZnPXQm6XBZHAzd/Nny8lRIuE=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=fQfdY8ryGDYiYPGcYR1qvNqpAL6UuVXPfv1dK7cUJMeIYKm3QY91j9h6xh31ePvLi
+	 zvDkYGQJJPKNzKESOsC6qQ66cHGXZDRy+QdqevxG+/TQ08iz/nhOyBzJPOLRZSww+y
+	 AEmQpEg/SIs4nKCyFsvaVz+DD1Y/0BmEgqJCZZZNXjSZB/ImcqCo94UTE1lONxNSQm
+	 x09zderOinULo+8zn9eetmdkgi0ax00S1K1ZD392fypSZnBmqfPhmhW3g3Qp9pG4B5
+	 /+I2/Ba8juqBbCnjOUpyl945IZuukZNL9r5h095XutMzS1Txt3wMgrEEYJ3UoINyOy
+	 SRSPL/ri4bfXw==
+Date: Fri, 29 May 2026 12:14:44 +0000
+To: Donald Hunter <donald.hunter@gmail.com>, Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org
 From: "Remy D. Farley" <one-d-wide@protonmail.com>
-Cc: Donald Hunter <donald.hunter@gmail.com>, netdev@vger.kernel.org
-Subject: Re: [PATCH net-next v2] doc/netlink: rt-link: fix binary attributes marked as strings
-Message-ID: <82W9THErDh2VM03WNf6uSwlZnjw6464YlsKe1DfKeoHgmIwy54P6k6CcI9o4nnCwjQ5msCeno7-tt1qCR_xxN7SzdbOtervSzndYQ4WKp5w=@protonmail.com>
-In-Reply-To: <20260528173435.368d8267@kernel.org>
-References: <20260526230321.594068-1-one-d-wide@protonmail.com> <20260528173435.368d8267@kernel.org>
+Cc: "Remy D. Farley" <one-d-wide@protonmail.com>
+Subject: [PATCH net-next v3] doc/netlink: rt-link: fix binary attributes marked as strings
+Message-ID: <20260529121355.1564817-1-one-d-wide@protonmail.com>
 Feedback-ID: 59017272:user:proton
-X-Pm-Message-ID: 5d26df8262d8a59b887d131fa4ed74f59a414bec
+X-Pm-Message-ID: a5b4cc05216ab9d4745627e4b00981349ed37511
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,38 +43,52 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Friday, May 29th, 2026 at 00:34, Jakub Kicinski <kuba@kernel.org> wrote:
-> On Tue, 26 May 2026 23:04:56 +0000 Remy D. Farley wrote:
-> > These link-attrs attributes were previously marked as strings:
-> >
-> > - wireless - struct iw_event
-> > - protinfo - a nest of ifla6-attrs or linkinfo-brport-attrs
-> > - cost, priority - unused
->=20
-> >        -
-> >          name: cost
-> > -        type: string
-> > +        type: binary
->=20
-> =09type: unused
->=20
-> is a thing, should we use it instead of binary?
+These link-attrs attributes were previously marked as strings:
+
+- wireless - struct iw_event
+- protinfo - a nest of ifla6-attrs or linkinfo-brport-attrs
+- cost, priority - unused
+
+Signed-off-by: Remy D. Farley <one-d-wide@protonmail.com>
+---
+v3: cost, priority marked with "type: unused" instead of binary
+v2: Added SoB
+
+ Documentation/netlink/specs/rt-link.yaml | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
+
+diff --git a/Documentation/netlink/specs/rt-link.yaml b/Documentation/netli=
+nk/specs/rt-link.yaml
+index 79c89f204..a5c029781 100644
+--- a/Documentation/netlink/specs/rt-link.yaml
++++ b/Documentation/netlink/specs/rt-link.yaml
+@@ -880,19 +880,21 @@ attribute-sets:
+         struct: rtnl-link-stats
+       -
+         name: cost
+-        type: string
++        type: unused
+       -
+         name: priority
+-        type: string
++        type: unused
+       -
+         name: master
+         type: u32
+       -
+         name: wireless
+-        type: string
++        type: binary
++        doc: struct iw_event
+       -
+         name: protinfo
+-        type: string
++        type: binary
++        doc: A nest of ifla6-attrs or linkinfo-brport-attrs
+       -
+         name: txqlen
+         type: u32
+--=20
+2.51.2
 
 
-Yeah, this looks more useful. The neighboring rt-route seems to prefer
-"type: binary", but I guess that's just an omission.
-
-|       -
-|         name: mp-algo  # not used
-|         type: binary
-
-
-> IIRC it's expected to never exist in messages but to still output
-> an entry into uAPI, which I think matches the situation here.
-
-
-If_link uapi header isn't generated, so no changes there.
-
-
->=20
-> Sorry, should have looked closer at v1.
