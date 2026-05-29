@@ -1,57 +1,57 @@
 Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67FD33BF69C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA5ED23AB88
 	for <netdev@vger.kernel.org>; Fri, 29 May 2026 09:27:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780046822; cv=none; b=lDiW/K8qxTJeSk+tTeHzfHecMd3U9/swNYhzw31ljMZAxy2IpsoPVIAnspo+JaxXk3wgjPT6qxGN3L5EVwVztozDOpi0AkD1MKG3uMEAN/97xuHVr3qYkqUsHB1ppSj46gPr0ccIiqjKq1m/J4b2fm8N7jd4YgHQKmYk1icrTDY=
+	t=1780046822; cv=none; b=hmJCrSp1UBkWkLcq5ofPW75e+I+ldVtCqbFbonAW1PGkrQbf6awW9upsl4zes1+1VwwoMcvWAsuPUOhpHTZSGDl/D5tZsu/EqwbqKVVAiZsG09TNAA6cxtuow/Ib3nKMFud+TE1vZaW82GnemWJBZR41dLn1gpE4YztdAGRnPY4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1780046822; c=relaxed/simple;
-	bh=T6A5ZpOpTm/4dF52Xuk74SuW6krpdilyDUhtEpGPEew=;
+	bh=OneWzUGXJOXSxx8cKD6+KvUYaua+86LFDnRZRkPYA3U=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=d0A9wm926P9CLME2vknzAKT3Und7+TbqWPKxE1CuEqQF2kK7fG5C1VnLqbn/WZo8bzxRXjUcv4YviBbqVfE07psxEWv545vaz7yyFuvOVNLH+yLANBPZgEltPoHPrNqW2CJkWADaDLpxU3b0tQk6NvSpGDZwIe467McMqIxR2KE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=zDpXDoCQ; arc=none smtp.client-ip=62.96.220.36
+	 MIME-Version:Content-Type; b=OfED730LMTD8CRGeK9at5WsDWix+RIPb1tW9sbs5QzLi7PbuJOGp/nP5hppjzPMz5QbWAOFfW6z6fQgyzPU7ubWI55anZjwARb7CUSBqOGVWBLwafFueAa4nZs7GdYvCfW9Hl+uR/5Yn70Xf44CKV6AOLBrNRCeF/08g4eYd3Q0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=kTmjeng7; arc=none smtp.client-ip=62.96.220.36
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="zDpXDoCQ"
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="kTmjeng7"
 Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id 39B0520754;
+	by mx1.secunet.com (Postfix) with ESMTP id C201B2019D;
 	Fri, 29 May 2026 11:26:59 +0200 (CEST)
 X-Virus-Scanned: by secunet
 Received: from mx1.secunet.com ([127.0.0.1])
  by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id bCU3K2JApnqa; Fri, 29 May 2026 11:26:58 +0200 (CEST)
+ with ESMTP id ihOz_DN-ZAGS; Fri, 29 May 2026 11:26:59 +0200 (CEST)
 Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id F2FD12019D;
-	Fri, 29 May 2026 11:26:57 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com F2FD12019D
+	by mx1.secunet.com (Postfix) with ESMTPS id 1039E206E9;
+	Fri, 29 May 2026 11:26:59 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 1039E206E9
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1780046818;
-	bh=1P6PdNJCqe/xzZVKy2Mdn5fV8zN7597TavqYs00A8fU=;
+	s=202301; t=1780046819;
+	bh=hUhBaH+Tkjie86cuxJ1Puw4FSYGFqVLzTaWYc1c3iU4=;
 	h=From:To:CC:Subject:Date:In-Reply-To:References:From;
-	b=zDpXDoCQcag7trM6kgXvJFwpmgxSxIomNBCee4SC0JoSgaXhSkEOcgd3QQy5Av4WO
-	 mYPtmzCfvfurVoS884ZLVlgLM99/hpGdf9tG7mbAXUeVQK8iK47ri7afeXHxlph2zD
-	 uEoh6dstJfMDcUz1QM/QKYO8CWOzWS5p3yOTI2qz2WHZipWMfFWH7UVhwHmbN/2vSY
-	 toevEId+MF33v7iYOGlGOoz6uueFFfezpXHAoThSER4vVfQnxit/FgZxVF/MDBqi8D
-	 Y3G6E0CSO2VdCJjTmj/gAY6VShA0qG+2U6tK9YkWGJX0EO7ASTZYwA3/bk9PQbU7ZS
-	 gaqOJbEsswsfw==
+	b=kTmjeng7nVbYC7YCirEu6WdAq8bE45gut1MRm86BgfX5gqGTUf2OS9QoMQSeTYTrW
+	 lJwl64yT+WcKjAATxmvx/9uALHVh3JNFEopHJsa8w3EZ4mcG/RLyB5O4p43lcGQSqO
+	 9/mQs1rlctRF2vIeTQIIw2Rwf2dCVnQWIASAgs49wGU0ZKZ4HEC2nM/jjMTU3yqAFY
+	 msAY9ChitdWkWMSPUZPzr/0IHyJR/LF48gAlsL+bkk9XVEWXAm7dMySwED/GOL3tTe
+	 4PD61NvZnr3yX0m6R8Vbw4l8CZDQJovwxTzXxmr3KOyWyC3IOEEKJtd1YRdXuMqQmk
+	 2RTP3bf5Frz0g==
 Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Fri, 29 May
- 2026 11:26:57 +0200
-Received: (nullmailer pid 3879690 invoked by uid 1000);
+ 2026 11:26:58 +0200
+Received: (nullmailer pid 3879717 invoked by uid 1000);
 	Fri, 29 May 2026 09:26:51 -0000
 From: Steffen Klassert <steffen.klassert@secunet.com>
 To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
 CC: Herbert Xu <herbert@gondor.apana.org.au>, Steffen Klassert
 	<steffen.klassert@secunet.com>, <netdev@vger.kernel.org>
-Subject: [PATCH 01/10] xfrm: route MIGRATE notifications to caller's netns
-Date: Fri, 29 May 2026 11:26:03 +0200
-Message-ID: <20260529092648.3878973-2-steffen.klassert@secunet.com>
+Subject: [PATCH 10/10] Revert "esp: fix page frag reference leak on skb_to_sgvec failure"
+Date: Fri, 29 May 2026 11:26:12 +0200
+Message-ID: <20260529092648.3878973-11-steffen.klassert@secunet.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260529092648.3878973-1-steffen.klassert@secunet.com>
 References: <20260529092648.3878973-1-steffen.klassert@secunet.com>
@@ -63,172 +63,124 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: EXCH-03.secunet.de (10.32.0.183) To EXCH-01.secunet.de
+X-ClientProxiedBy: EXCH-01.secunet.de (10.32.0.171) To EXCH-01.secunet.de
  (10.32.0.171)
 
-From: Maoyi Xie <maoyixie.tju@gmail.com>
+This reverts commit 2982e599fff6faa21c8df147d96fc7af6c1a2f24.
 
-xfrm_send_migrate() in net/xfrm/xfrm_user.c and pfkey_send_migrate()
-in net/key/af_key.c both hardcode &init_net for the multicast that
-announces a successful XFRM_MSG_MIGRATE / SADB_X_MIGRATE.
+The patch does not fully fix the issue and the Author does
+not match the 'Signed-off-by:' tag, so revert it for now.
 
-XFRM_MSG_MIGRATE arrives on a per-netns NETLINK_XFRM socket, and the
-rest of the xfrm/af_key netlink path was made netns-aware in 2008.
-The other 14 multicast paths in xfrm_user.c route their event using
-xs_net(x), xp_net(xp) or sock_net(skb->sk); only the migrate path
-was missed.
-
-Two consequences of the init_net hardcoding:
-
-  1. The notification (selector, old/new endpoint addresses, and the
-     km_address) is delivered to listeners on init_net's
-     XFRMNLGRP_MIGRATE / pfkey BROADCAST_ALL groups rather than on
-     the issuing netns. An IKE daemon running in init_net therefore
-     receives migration notifications originating from any other
-     netns on the host.
-
-  2. An IKE daemon running inside a non-init netns and subscribed
-     to its own XFRMNLGRP_MIGRATE / pfkey groups never receives the
-     notification of its own migration. IKEv2 MOBIKE / address-update
-     handling inside a netns is silently broken.
-
-Thread struct net through km_migrate() and the xfrm_mgr.migrate
-function pointer, drop the &init_net override in xfrm_send_migrate()
-and pfkey_send_migrate(), and pass the caller's net (already in
-scope in xfrm_migrate() via sock_net(skb->sk)) all the way down.
-struct xfrm_mgr is in-tree only and not exported as a stable API,
-so the function-pointer signature change is internal.
-
-pfkey_broadcast() is already netns-aware via net_generic(net,
-pfkey_net_id) since the pernet conversion. The five other
-pfkey_broadcast() callers in af_key.c already pass xs_net(x),
-sock_net(sk) or a per-netns net, so this only removes the
-&init_net outlier.
-
-Fixes: 5c79de6e79cd ("[XFRM]: User interface for handling XFRM_MSG_MIGRATE")
-Cc: stable@vger.kernel.org # v5.15+
-Signed-off-by: Maoyi Xie <maoyi.xie@ntu.edu.sg>
 Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 ---
- include/net/xfrm.h     | 3 ++-
- net/key/af_key.c       | 6 +++---
- net/xfrm/xfrm_policy.c | 2 +-
- net/xfrm/xfrm_state.c  | 4 ++--
- net/xfrm/xfrm_user.c   | 5 ++---
- 5 files changed, 10 insertions(+), 10 deletions(-)
+ net/ipv4/esp4.c | 12 +++++-------
+ net/ipv6/esp6.c | 12 +++++-------
+ 2 files changed, 10 insertions(+), 14 deletions(-)
 
-diff --git a/include/net/xfrm.h b/include/net/xfrm.h
-index 10d3edde6b2f..874409127e29 100644
---- a/include/net/xfrm.h
-+++ b/include/net/xfrm.h
-@@ -715,6 +715,7 @@ struct xfrm_mgr {
- 					   const struct xfrm_migrate *m,
- 					   int num_bundles,
- 					   const struct xfrm_kmaddress *k,
-+					   struct net *net,
- 					   const struct xfrm_encap_tmpl *encap);
- 	bool			(*is_alive)(const struct km_event *c);
- };
-@@ -1891,7 +1892,7 @@ int xfrm_sk_policy_insert(struct sock *sk, int dir, struct xfrm_policy *pol);
- #ifdef CONFIG_XFRM_MIGRATE
- int km_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
- 	       const struct xfrm_migrate *m, int num_bundles,
--	       const struct xfrm_kmaddress *k,
-+	       const struct xfrm_kmaddress *k, struct net *net,
- 	       const struct xfrm_encap_tmpl *encap);
- struct xfrm_state *xfrm_migrate_state_find(struct xfrm_migrate *m, struct net *net,
- 						u32 if_id);
-diff --git a/net/key/af_key.c b/net/key/af_key.c
-index a166a88d8788..9cffeef18cd9 100644
---- a/net/key/af_key.c
-+++ b/net/key/af_key.c
-@@ -3564,7 +3564,7 @@ static int set_ipsecrequest(struct sk_buff *skb,
- #ifdef CONFIG_NET_KEY_MIGRATE
- static int pfkey_send_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
- 			      const struct xfrm_migrate *m, int num_bundles,
--			      const struct xfrm_kmaddress *k,
-+			      const struct xfrm_kmaddress *k, struct net *net,
- 			      const struct xfrm_encap_tmpl *encap)
+diff --git a/net/ipv4/esp4.c b/net/ipv4/esp4.c
+index 5d3a8656687e..513c8215c947 100644
+--- a/net/ipv4/esp4.c
++++ b/net/ipv4/esp4.c
+@@ -96,7 +96,7 @@ static inline struct scatterlist *esp_req_sg(struct crypto_aead *aead,
+ 			     __alignof__(struct scatterlist));
+ }
+ 
+-static void esp_ssg_unref(struct xfrm_state *x, void *tmp, struct sk_buff *skb, bool already_unref)
++static void esp_ssg_unref(struct xfrm_state *x, void *tmp, struct sk_buff *skb)
  {
- 	int i;
-@@ -3669,7 +3669,7 @@ static int pfkey_send_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
+ 	struct crypto_aead *aead = x->data;
+ 	int extralen = 0;
+@@ -113,7 +113,7 @@ static void esp_ssg_unref(struct xfrm_state *x, void *tmp, struct sk_buff *skb,
+ 	/* Unref skb_frag_pages in the src scatterlist if necessary.
+ 	 * Skip the first sg which comes from skb->data.
+ 	 */
+-	if (already_unref || req->src != req->dst)
++	if (req->src != req->dst)
+ 		for (sg = sg_next(req->src); sg; sg = sg_next(sg))
+ 			skb_page_unref(page_to_netmem(sg_page(sg)),
+ 				       skb->pp_recycle);
+@@ -220,7 +220,7 @@ static void esp_output_done(void *data, int err)
  	}
  
- 	/* broadcast migrate message to sockets */
--	pfkey_broadcast(skb, GFP_ATOMIC, BROADCAST_ALL, NULL, &init_net);
-+	pfkey_broadcast(skb, GFP_ATOMIC, BROADCAST_ALL, NULL, net);
+ 	tmp = ESP_SKB_CB(skb)->tmp;
+-	esp_ssg_unref(x, tmp, skb, false);
++	esp_ssg_unref(x, tmp, skb);
+ 	kfree(tmp);
  
- 	return 0;
- 
-@@ -3680,7 +3680,7 @@ static int pfkey_send_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
- #else
- static int pfkey_send_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
- 			      const struct xfrm_migrate *m, int num_bundles,
--			      const struct xfrm_kmaddress *k,
-+			      const struct xfrm_kmaddress *k, struct net *net,
- 			      const struct xfrm_encap_tmpl *encap)
- {
- 	return -ENOPROTOOPT;
-diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
-index c944327ce66c..59968dcbafe1 100644
---- a/net/xfrm/xfrm_policy.c
-+++ b/net/xfrm/xfrm_policy.c
-@@ -4703,7 +4703,7 @@ int xfrm_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
+ 	if (xo && (xo->flags & XFRM_DEV_RESUME)) {
+@@ -569,10 +569,8 @@ int esp_output_tail(struct xfrm_state *x, struct sk_buff *skb, struct esp_info *
+ 		err = skb_to_sgvec(skb, dsg,
+ 			           (unsigned char *)esph - skb->data,
+ 			           assoclen + ivlen + esp->clen + alen);
+-		if (unlikely(err < 0)) {
+-			esp_ssg_unref(x, tmp, skb, true);
++		if (unlikely(err < 0))
+ 			goto error_free;
+-		}
  	}
  
- 	/* Stage 5 - announce */
--	km_migrate(sel, dir, type, m, num_migrate, k, encap);
-+	km_migrate(sel, dir, type, m, num_migrate, k, net, encap);
+ 	if ((x->props.flags & XFRM_STATE_ESN))
+@@ -604,7 +602,7 @@ int esp_output_tail(struct xfrm_state *x, struct sk_buff *skb, struct esp_info *
+ 	}
  
- 	xfrm_pol_put(pol);
+ 	if (sg != dsg)
+-		esp_ssg_unref(x, tmp, skb, false);
++		esp_ssg_unref(x, tmp, skb);
  
-diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
-index 686014d39429..395d82411a87 100644
---- a/net/xfrm/xfrm_state.c
-+++ b/net/xfrm/xfrm_state.c
-@@ -2837,7 +2837,7 @@ EXPORT_SYMBOL(km_policy_expired);
- #ifdef CONFIG_XFRM_MIGRATE
- int km_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
- 	       const struct xfrm_migrate *m, int num_migrate,
--	       const struct xfrm_kmaddress *k,
-+	       const struct xfrm_kmaddress *k, struct net *net,
- 	       const struct xfrm_encap_tmpl *encap)
+ 	if (!err && x->encap && x->encap->encap_type == TCP_ENCAP_ESPINTCP)
+ 		err = esp_output_tail_tcp(x, skb);
+diff --git a/net/ipv6/esp6.c b/net/ipv6/esp6.c
+index b963b8e72604..57481e423e59 100644
+--- a/net/ipv6/esp6.c
++++ b/net/ipv6/esp6.c
+@@ -113,7 +113,7 @@ static inline struct scatterlist *esp_req_sg(struct crypto_aead *aead,
+ 			     __alignof__(struct scatterlist));
+ }
+ 
+-static void esp_ssg_unref(struct xfrm_state *x, void *tmp, struct sk_buff *skb, bool already_unref)
++static void esp_ssg_unref(struct xfrm_state *x, void *tmp, struct sk_buff *skb)
  {
- 	int err = -EINVAL;
-@@ -2848,7 +2848,7 @@ int km_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
- 	list_for_each_entry_rcu(km, &xfrm_km_list, list) {
- 		if (km->migrate) {
- 			ret = km->migrate(sel, dir, type, m, num_migrate, k,
--					  encap);
-+					  net, encap);
- 			if (!ret)
- 				err = ret;
- 		}
-diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
-index 38a90e5ee3d9..71a4b7278eba 100644
---- a/net/xfrm/xfrm_user.c
-+++ b/net/xfrm/xfrm_user.c
-@@ -3271,10 +3271,9 @@ static int build_migrate(struct sk_buff *skb, const struct xfrm_migrate *m,
+ 	struct crypto_aead *aead = x->data;
+ 	int extralen = 0;
+@@ -130,7 +130,7 @@ static void esp_ssg_unref(struct xfrm_state *x, void *tmp, struct sk_buff *skb,
+ 	/* Unref skb_frag_pages in the src scatterlist if necessary.
+ 	 * Skip the first sg which comes from skb->data.
+ 	 */
+-	if (already_unref || req->src != req->dst)
++	if (req->src != req->dst)
+ 		for (sg = sg_next(req->src); sg; sg = sg_next(sg))
+ 			skb_page_unref(page_to_netmem(sg_page(sg)),
+ 				       skb->pp_recycle);
+@@ -254,7 +254,7 @@ static void esp_output_done(void *data, int err)
+ 	}
  
- static int xfrm_send_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
- 			     const struct xfrm_migrate *m, int num_migrate,
--			     const struct xfrm_kmaddress *k,
-+			     const struct xfrm_kmaddress *k, struct net *net,
- 			     const struct xfrm_encap_tmpl *encap)
- {
--	struct net *net = &init_net;
- 	struct sk_buff *skb;
- 	int err;
+ 	tmp = ESP_SKB_CB(skb)->tmp;
+-	esp_ssg_unref(x, tmp, skb, false);
++	esp_ssg_unref(x, tmp, skb);
+ 	kfree(tmp);
  
-@@ -3292,7 +3291,7 @@ static int xfrm_send_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
- #else
- static int xfrm_send_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
- 			     const struct xfrm_migrate *m, int num_migrate,
--			     const struct xfrm_kmaddress *k,
-+			     const struct xfrm_kmaddress *k, struct net *net,
- 			     const struct xfrm_encap_tmpl *encap)
- {
- 	return -ENOPROTOOPT;
+ 	esp_output_encap_csum(skb);
+@@ -600,10 +600,8 @@ int esp6_output_tail(struct xfrm_state *x, struct sk_buff *skb, struct esp_info
+ 		err = skb_to_sgvec(skb, dsg,
+ 			           (unsigned char *)esph - skb->data,
+ 			           assoclen + ivlen + esp->clen + alen);
+-		if (unlikely(err < 0)) {
+-			esp_ssg_unref(x, tmp, skb, true);
++		if (unlikely(err < 0))
+ 			goto error_free;
+-		}
+ 	}
+ 
+ 	if ((x->props.flags & XFRM_STATE_ESN))
+@@ -636,7 +634,7 @@ int esp6_output_tail(struct xfrm_state *x, struct sk_buff *skb, struct esp_info
+ 	}
+ 
+ 	if (sg != dsg)
+-		esp_ssg_unref(x, tmp, skb, false);
++		esp_ssg_unref(x, tmp, skb);
+ 
+ 	if (!err && x->encap && x->encap->encap_type == TCP_ENCAP_ESPINTCP)
+ 		err = esp_output_tail_tcp(x, skb);
 -- 
 2.43.0
 
