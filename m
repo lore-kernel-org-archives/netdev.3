@@ -1,37 +1,35 @@
-Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 459D014A8B;
-	Fri, 29 May 2026 01:19:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68580175A62;
+	Fri, 29 May 2026 01:20:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780017602; cv=none; b=CNrC3JUDAgW6gY9pqEdb701EuFT6L1ULkCqlhuC7eArMuVecHBIz3aQic+b2rjg3eIPY1XiYGNZeGOdJjE3D45Jregqhq9XcZ/eqlKyUfdd/EPsn30RBPELfBvIMLe7RykdGQD+I/qvAj8aFsjfceYfyYPXYo3KwK7EuyAQ0qxU=
+	t=1780017602; cv=none; b=WevZ3omDM38mF8bqVtzAeAPY+E+ppwrnXX3xppeh3Uy/CBt1fUVbn3u6HAu0FAzP8hnvJhSTN7RetnKu9FQFR+biiEpVqL3Wr/ORYe2FwczUkJa6IBIKMGWkTHGf+E3Wn9KrLWFEicHtU++ARPf8sFP6SqtV8Z16f7qmrmaXj68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1780017602; c=relaxed/simple;
-	bh=Yx3uJs72nqLatdtBg9//ieBwUgxB6mlJUI6Mn6zZ96U=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Ja0YFkz6UdYqDpS0Zv3riJL3g7eUS2+EyKe20tDqV1zQkyPZNP8Y9l63gWizEpRSnojtmHbaTYghwVUREI35MmcsMXialrm+Du7wNkMWLrIgXwY/IapwOSMFuwOb2vwVFtDmYO8XKSCvxnTLV2r6kxJFXfjjQ6BI2SWeoe3WOsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mails.ucas.ac.cn; spf=pass smtp.mailfrom=mails.ucas.ac.cn; arc=none smtp.client-ip=159.226.251.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mails.ucas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mails.ucas.ac.cn
-Received: from fric.. (unknown [36.110.52.2])
-	by APP-05 (Coremail) with SMTP id zQCowADnU+ex6Rhq+he1EQ--.184S2;
-	Fri, 29 May 2026 09:19:45 +0800 (CST)
-From: Jiakai Xu <xujiakai24@mails.ucas.ac.cn>
-To: pabeni@redhat.com
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	horms@kernel.org,
-	kuba@kernel.org,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	xujiakai24@mails.ucas.ac.cn
-Subject: Re: [PATCH] llc: Fix NULL pointer dereference in llc_conn_state_process() when sk_socket is NULL
-Date: Fri, 29 May 2026 01:19:44 +0000
-Message-Id: <20260529011944.2898974-1-xujiakai24@mails.ucas.ac.cn>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <5783055b-60e9-4e54-a17d-79b5e8f64fb6@redhat.com>
-References: <5783055b-60e9-4e54-a17d-79b5e8f64fb6@redhat.com>
+	bh=KJFh6fYFuF1Qar1uyqryK9OjdpuC4m/DpY9xhQxy+EQ=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=Aj9nSJND4S9lf1hNK+H28yCLWorpxRwTToViur1AIgXPRhLfHTxC8R8C7l/iXdWCF9qsuZP1iEKLv4ks02VT0NSGCU+gKLM3/lUOHRb/H3pxvGTdf2fwuYSrqNxTYxhpFtLAKqWO9F4fj/6E1QE/SzF+il11SPIv8Hc6afiCTCA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pdv+apmy; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pdv+apmy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D5AF1F000E9;
+	Fri, 29 May 2026 01:20:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780017601;
+	bh=lOaKOCR8muSZegpxRQTwrSb3xsHi/hx1Esr98dOCWEg=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=Pdv+apmykyR9FKD9yA0LR52fMkOlE2aYqQBtEe+5OTPwusSkk7Og9EDqgOuc4wTji
+	 OJ9YNb8nmTGNZHLdbcyF9nkhcRcRr19QfloteOjPjn/vV0zYhUlmzuxX8409XgBxil
+	 xInGNVfO8i9QW7VcOdMTJ1S8mDhCvu1HcmRMi5gy0K0PJQ/ShZc1m94JmbvE9V/8Bs
+	 LyM/U8NR0ydSZIrcj4wDGus2fHmnnq3nlG0ZDwIFUmr5s0lnvYTRp5zovbVtwhMkuv
+	 PZuJmIpZX2tGECNTwhZgjxDyw4O8rhe6kNX2qrgHpE0UrNEUSX6QXxz3cJFN0SAo+a
+	 ZtDA7YEKvve7Q==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 568C3392FFFE;
+	Fri, 29 May 2026 01:20:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -39,48 +37,44 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowADnU+ex6Rhq+he1EQ--.184S2
-X-Coremail-Antispam: 1UD129KBjvdXoW7JF4UZw43WF4DWFW5ZF43ZFb_yoWfWrbEk3
-	9rAa4fZwn8G3y3Za98C34UJw45Jr4vga4kWrsxXF1Ygw18trW0gw40grn3C347Gw4xCFy7
-	Ja1F9ayIk3yxujkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbVkFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
-	Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v26F4UJV
-	W0owAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
-	0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr
-	1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IE
-	rcIFxwCY1x0262kKe7AKxVWUAVWUtwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbV
-	WUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF
-	67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42
-	IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF
-	0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2Kf
-	nxnUUI43ZEXa7VUbsYFJUUUUU==
-X-CM-SenderInfo: 50xmxthndljko6pdxz3voxutnvoduhdfq/
+Subject: Re: [net v2] net: pcs: pcs-mtk-lynxi: fix bpi-r3 serdes configuration
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178001760515.1584301.241177425272173045.git-patchwork-notify@kernel.org>
+Date: Fri, 29 May 2026 01:20:05 +0000
+References: <20260526153239.30194-1-linux@fw-web.de>
+In-Reply-To: <20260526153239.30194-1-linux@fw-web.de>
+To: Frank Wunderlich <linux@fw-web.de>
+Cc: lynxis@fe80.eu, daniel@makrotopia.org, andrew@lunn.ch,
+ hkallweit1@gmail.com, linux@armlinux.org.uk, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com,
+ frank-w@public-files.de, vladimir.oltean@nxp.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-mediatek@lists.infradead.org
 
-Thanks for your review!
+Hello:
 
-> > diff --git a/net/llc/llc_conn.c b/net/llc/llc_conn.c
-> > index 5c0ac243b248f..de65c452f6e68 100644
-> > --- a/net/llc/llc_conn.c
-> > +++ b/net/llc/llc_conn.c
-> > @@ -101,7 +101,8 @@ int llc_conn_state_process(struct sock *sk, struct sk_buff *skb)
-> >  	case LLC_DISC_PRIM:
-> >  		sock_hold(sk);
-> >  		if (sk->sk_type == SOCK_STREAM &&
-> > -		    sk->sk_state == TCP_ESTABLISHED) {
-> > +		    sk->sk_state == TCP_ESTABLISHED &&
-> > +		    sk->sk_socket) {
-> >  			sk->sk_shutdown       = SHUTDOWN_MASK;
-> >  			sk->sk_socket->state  = SS_UNCONNECTED;
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Tue, 26 May 2026 17:32:38 +0200 you wrote:
+> From: Frank Wunderlich <frank-w@public-files.de>
 > 
-> sk orphaning happens outside the sk socket lock, and before the timer is
-> cancelled. sk_socket can still be cleared after the previous check and
-> before this access. You probably need to move the sock_orphan() call in
-> lc_sk_free(), after stopping the timers.
+> Commit 8871389da151 introduces common pcs dts properties which writes
+> rx=normal,tx=normal polarity to register SGMSYS_QPHY_WRAP_CTRL of switch.
+> This is initialized with tx-bit set and so change inverts polarity
+> compared to before.
+> 
+> [...]
 
-You are right. I'll send a v2 patch later.
+Here is the summary with links:
+  - [net,v2] net: pcs: pcs-mtk-lynxi: fix bpi-r3 serdes configuration
+    https://git.kernel.org/netdev/net/c/422b5233b607
 
-Regards,
-Jiakai
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
