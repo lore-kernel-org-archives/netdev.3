@@ -1,211 +1,166 @@
-Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
+Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011000.outbound.protection.outlook.com [40.107.130.0])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD00E3A3809
-	for <netdev@vger.kernel.org>; Fri, 29 May 2026 08:32:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780043569; cv=none; b=gNyIttOUJnSNsci5cSgaEK7Q9WcUTSGi4denhmVN2SwlDLYy/PHf75Ih2w/nQYGVpnIoop/Nzd9se5GpmsIqPtRvRpmjIH5yaVAKxqEmIRQ38Z0fApCgOVwN9WYwJGpcsztsu4Sn+tuUUkXPXUgU0CJksCf1Ii03BhNH+QMf/qs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780043569; c=relaxed/simple;
-	bh=I9+U0oeln3wfRg6fgxdb29piHvshQxl/lE3izHy6mP4=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JbwpWqAiiTtiGHAVwL38n9FTidzGXqDJ93fMTyif1N2ImPmVxhXjn+LK6GzfAWKcknlpeQRUUVv0PUIiab4biIHlk4Z1tH9lG/v0rQPZF0AOnmtbekYkPjXZrZ7xXf2cjt3mf6qvFzfhpBcf3VHnXYoy0qq1us0SatjwrCRcfz8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=srWZBAXv; arc=none smtp.client-ip=62.96.220.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED34EDF59;
+	Fri, 29 May 2026 08:37:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.0
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780043864; cv=fail; b=BYFQqvUk/uOSmFEe4dQ6d/4Dy9ru+evdg6oXrjJoWPk3PaArDxssyJdyA/WQHRePgPC3Cn4rsNQZAhr9n9MWhjawYLu9KAuIFFTS8ygsuTj8GMOIY0WHvjliI+W+OHZFx681//NUCT90PsrdeT2hLSdCp4KPMpchQo2MidW5o4A=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780043864; c=relaxed/simple;
+	bh=QG73wwyEjMSQHASIJ+Gb23pofn1X3TxVBS6zl16ZBz4=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=fKBPsObcmK79lGyK+2NbotuKYm2SbxlQc0IJjkfWQI0F6p5DpA6WsK+CBm40rXw77N0pu47EFE7KjnR4b4murpnxU7obMuC2HbU+NfOr+AetSLEBoBYzgJW7AHGiVBsVZgjcuSzswNZq9VQEZWaKnlfSbFkNAZ9zwGi6FT7l6LY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=PSa9/7HJ; arc=fail smtp.client-ip=40.107.130.0
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="srWZBAXv"
-Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id 83DAA205CD;
-	Fri, 29 May 2026 10:27:16 +0200 (CEST)
-X-Virus-Scanned: by secunet
-Received: from mx1.secunet.com ([127.0.0.1])
- by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id IQTt-PCLn6QJ; Fri, 29 May 2026 10:27:15 +0200 (CEST)
-Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id AA11B20561;
-	Fri, 29 May 2026 10:27:15 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com AA11B20561
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1780043235;
-	bh=OEGzZZ8KG8NtzPdhTrPyJlrhNF1SQWHdKpDMahvuodE=;
-	h=Date:From:To:CC:Subject:References:In-Reply-To:From;
-	b=srWZBAXvUJe+JFoCCBS5K8cMKHqrMe8x5oYNyN9qKNpB97+DmoMxXjlWG8UojaVid
-	 kq1cAspE1W3ihikhxeRKOf/C7ivZufnXD/DfU2wsCv/meQ56AGgyXjqWDacxe4UGvJ
-	 DPiAQaYaEsqogz0QCwReN3bSMCvfLwjWe23NKIvE+1+L1pDkc3XVbnX5ncuBA8vra6
-	 +C6qd3jaF11yRATwQ4zrY2UOgHGB+20v8uTS8Mh3WDvjmnKRJSu3jDxcWu7NDEYi5I
-	 jEH+a0PTEMxK264uPMomlZMdnhh3L1tZZwPfbPBn4TDSoLjW2IrgPXi6r63vAm/d2K
-	 bdt05wZftonvg==
-Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Fri, 29 May
- 2026 10:27:15 +0200
-Received: (nullmailer pid 3826857 invoked by uid 1000);
-	Fri, 29 May 2026 08:27:14 -0000
-Date: Fri, 29 May 2026 10:27:14 +0200
-From: Steffen Klassert <steffen.klassert@secunet.com>
-To: Paolo Abeni <pabeni@redhat.com>
-CC: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>, <netdev@vger.kernel.org>,
-	Alessandro Schino <7991aleschino@gmail.com>
-Subject: Re: [PATCH 5/9] esp: fix page frag reference leak on skb_to_sgvec
- failure
-Message-ID: <ahlN4nG1GPi289rX@secunet.com>
-References: <20260527084148.3489759-1-steffen.klassert@secunet.com>
- <20260527084148.3489759-6-steffen.klassert@secunet.com>
- <0902bdb9-2746-45fd-ba4d-8e5b96617b8b@redhat.com>
- <ahkphzYYBeoCcbRI@secunet.com>
- <e7124e98-5633-4982-a850-8787c3949174@redhat.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="PSa9/7HJ"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=p4nIg5P7sj2n9H/klbmIrHhiZVXltI5VeDGB3YYDBugoertaVSMs6rTk1jFL4iDsQIp00bVCTY9hau17ZBR3vTgCZlDttCbr2kfsxiK3NbH9v6jyIhHzmjcOqnOiwvDQBpsZUN6WzYwC9J7rYoZG297zKu7NM+GGqFwLyPthtS7TvkHfzTt0kJkYr1ZR13+coV7pPylQ4O4OtRXor5di5p//GXiYGpT1HmKvciJmg7OEccEBQ2wndkxJ7BlbSerpw5WMlDPqV2rbqXWsgsO19/6aS169xCw+lTIY9FYA/6Znm3ndio1jr1aOvKTDDUc1YhcFC6kewCQzSoYSQdkfNg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ABUZQB7Kom4OfUBJn7kPjF+gjp54m10Y7BHaId5Zb+I=;
+ b=sPAN8g6gUB7Yd295upf8MgIWZvs3M8ZT1xkggXY0oUsBBqtDrnUWhM3RGSKEGEedq5PYzCtcdazH1sgxzGPC2fWW2UFAWWO0jMb+F6JcM59lRypbEd43vPtBYyd+bRpOxHshxaYH7PLqQQDDP/+iE++6rBxTC3z1m0LBSTe0b3O3vB0j2wYOjFggz7slyQvousmkhXPNJ3K9Y8acEPVUA+8MLdCJlBuq3NNvYWIG1R0dK5K3+p9GctXhAnb3OhzHpq2W1HTWNjYOsUu1waosfRFGv3LKLDqjRdVTxFizpeJI34ih211v4i0CdZ04xIQL6VVHNmNQhLrwD/xKY3/tQg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ABUZQB7Kom4OfUBJn7kPjF+gjp54m10Y7BHaId5Zb+I=;
+ b=PSa9/7HJWiHHdPFTJyNLE6XBc2UUyBeXENfMZ12eoMGumTx2KKFWH3wpvqA/tib1nFWAL1X+/2C+vhDMCcqWrBNRKhuSSRifiwZoCdHeQJU8HnyZViaQ1bZU8qyKbDyxPJjs34puVjHF4jUyZuSvdpjE/8owx3KimuBX2MH50ZxeaxzJPTU6Xj+bHU2D6qRhQdBMdiXNldSpYZ9fSm6H0ngiIWa2AWIwUrW3zVqeSpJIQGuRx5orDb7b1rgzxbCuucTqOjtHyKw87spKolzxXfcN+xDM/N2QbDOq0aujUw6gLGXe5wi4S6jGedZU06aP188YtolD9VptrdS9zNiCPA==
+Received: from DBBPR04MB7500.eurprd04.prod.outlook.com (2603:10a6:10:1f4::16)
+ by AS1PR04MB9239.eurprd04.prod.outlook.com (2603:10a6:20b:4c5::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.15; Fri, 29 May
+ 2026 08:37:38 +0000
+Received: from DBBPR04MB7500.eurprd04.prod.outlook.com
+ ([fe80::c291:543b:4bde:cee7]) by DBBPR04MB7500.eurprd04.prod.outlook.com
+ ([fe80::c291:543b:4bde:cee7%6]) with mapi id 15.21.0071.014; Fri, 29 May 2026
+ 08:37:37 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: Tapio Reijonen <tapio.reijonen@vaisala.com>, Frank Li <frank.li@nxp.com>,
+	Shenwei Wang <shenwei.wang@nxp.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Nimrod
+ Andy <B38611@freescale.com>
+CC: "imx@lists.linux.dev" <imx@lists.linux.dev>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH v3] net: fec: fix pinctrl default state restore order on
+ resume
+Thread-Topic: [PATCH v3] net: fec: fix pinctrl default state restore order on
+ resume
+Thread-Index: AQHc7zMS3gJSwsZ+wUi8nDE2rQmTALYkrdrg
+Date: Fri, 29 May 2026 08:37:37 +0000
+Message-ID:
+ <DBBPR04MB750094BCF64765DF8463587188162@DBBPR04MB7500.eurprd04.prod.outlook.com>
+References:
+ <20260529-b4-fec-resume-pinctrl-order-v3-1-6eda0f592fca@vaisala.com>
+In-Reply-To:
+ <20260529-b4-fec-resume-pinctrl-order-v3-1-6eda0f592fca@vaisala.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DBBPR04MB7500:EE_|AS1PR04MB9239:EE_
+x-ms-office365-filtering-correlation-id: 95289759-1d29-4f3a-846a-08debd5d8a02
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|19092799006|376014|1800799024|366016|38070700021|18002099003|22082099003|56012099006|11063799006;
+x-microsoft-antispam-message-info:
+ cgRS+JntTaWhEndGz5zcpf2GP8GJOdwGc1Etw+lBoXgR66kGCv1DBfoU6cJO4abdFtrsewioSPiQvhJKcBp90xYEnYuEE+jNo0u8kDyb3Jw6zGdST1T71MCKUz1VxAxS09YCsbM01WkqNwdhhVwKWYQrWwFdz4z062Avtn4Gp53p4B5WWiM7EXvZC7/ZnkauPpP6VPTc9tT18qWgoguTFeK/9gxkOGL8SUb2jx5Ca0Rthpq0u8pmbiWgcun1L5vKSL4EnvNxpGGzFpSkMszE0h62861HCSznLqA94e63iO+Y/NSvS1pyrOum0mGF4Q1s183AU+CTpSvvSlRwuPWJvVhTOraCjdYDHTSwkeC8IMDH89V6Gm5TNQ8OQxsW9V84Cp5LO9lpJk40PeW9SCu4i3hokDPK7AfhLG3O6XxgxtPFMdO0m7KqxZ0P/5WYOWB+JbnO1RkeQJNM1dNXznmvP8X6+sw3X9vZN/pGuHSlwMUCRIb/R/AJoDS186WnLjNOgonD+Polcv4tC3PL+wixNfjEC9aNJrSgDUMcPMbPSu8Nun/NBRGs3pooAiNTPLV50gDRGjc6TKxSc4mCKTWovsyJJdTZbB5eYGNx0KHpWqdxjRuo8fQR9qvEm7m5Ch9TWQucQOx4H7kA6VJp2WmmUSqvH166buQfGnFyvHI3Bdj5yCvhwFkRczXvaTEAisKamTsvbYabhexwASm/RDjMx+Uj3hd8mD0tQFoikL7/mMeMvc3wU0l8toy0yBugY6Q6
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DBBPR04MB7500.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(376014)(1800799024)(366016)(38070700021)(18002099003)(22082099003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?e8VnjAsucdix7ZdzJibjpGRKZ5oTxP8/DOnlrQpR1SXO6nRAXppwX2JhiaTR?=
+ =?us-ascii?Q?bcjAzfpDNqBozD57bkhg0t4I+yP91Tpp9TySj1zlkheH70IsnPaIltCIvAao?=
+ =?us-ascii?Q?h7MIxEbNs4QeJJAiETBw0mUv6hFzBzVUGR9V8SYHO9LmPpM6V88OniIYRglI?=
+ =?us-ascii?Q?JRkg+B733zteiePocvvi7wkNI8npcL/AnERlvr8A9cw9IiJU5GCC94ihLkuu?=
+ =?us-ascii?Q?jvYfnTU4iBFsgNUE+pRcOCSgnSrSGEafgk7s49kzSr2cG4sMm152KdCXu53e?=
+ =?us-ascii?Q?CB76smbrhxlMqfz5ku9yIx3Qk3S1/kpPu5n4jaFRwbF1PIl6Ra9W0d4n8xSs?=
+ =?us-ascii?Q?7pXA+TWRMbowSDRlehv4Iu8Admq98SDGsDie40yKdmB+famAvo1eRSSFi3rT?=
+ =?us-ascii?Q?h8zJL9fRjUQ8TQwQfPIIjsgbWdWu3ojPCohKY3R30YAhxMHrjL3h20gUOFYV?=
+ =?us-ascii?Q?FAuHhFO+QP4X1vP0JWr42LPMxAyZaP1187dEnZzo1rBw1CA6+ea+pKbNkrqE?=
+ =?us-ascii?Q?8cyX5c8vtfmXQgNxIooC448wCMn2px3e3vL4KAtWtRVhPI9GphEKA3TNn7Et?=
+ =?us-ascii?Q?snvzd+0YbSm+z3unhL5hKKM5pvLpwVpNaN3O3L8xUYlTByn4pIwuRcKckHF2?=
+ =?us-ascii?Q?bqBVt9NftDUJKoJZqsmqDlLQD5gbthgs417i+T5Vy6vutJxi9KOJhtNVgfSF?=
+ =?us-ascii?Q?JTMQ/yvyeWsKIN05VKwgLaCk3ZrEAXWnBqW0IK5iJXwaoDMlMzE91EFl3f3M?=
+ =?us-ascii?Q?1UbUlphl8SD4P1IEqY9S/c22wWsuPLgR0lnj215z+Olw38O40mlQ4BKay0OP?=
+ =?us-ascii?Q?rzLTMq1s8E0w6iahvYTDhZ9MKW30zQfqKDOzidNzJhjE394LHwCsjKjXgE9e?=
+ =?us-ascii?Q?5pQtLYztLDPHwH34m48XHZHuQr7Hg+cPW5L4sAAtdBonVj66XXKFuFzCw+mN?=
+ =?us-ascii?Q?C+kwFsk7IMCwzIFT7GgvNSn8d2EqxfjkhYRqc4qJJ7qFOYVDlzfzMBVeJkPy?=
+ =?us-ascii?Q?cznXePklUY8aFMKGCc9UMKV3wHY/3eQUUJMoFP57ThDGIFKv38HziOwWRrDa?=
+ =?us-ascii?Q?ad+KmCrz30DrCRPiTUWB4noM2LXd9P++GQ2M20yIsZag7atGUWBM6MMUFbns?=
+ =?us-ascii?Q?jm87nDbDs4f4TL5q5RVuUHt8DqKNRqd6RAKAsjLvWgw75OWSXqNaP3wt47i0?=
+ =?us-ascii?Q?NdSlaSJKfJqc8WwhT5/LEmpvgC568rDmnoOrUB8hiy/Zxx5Se2PAQI82DHxz?=
+ =?us-ascii?Q?EWXEgVj62218gO9u+VO9jr4NwqKLj63cIKaFcmUzen7MgefbsAFCyRBIsROz?=
+ =?us-ascii?Q?DFiscDIS2LZt38d5TjFpWdGgPoQXBAR1c87025OQ7S2ACFWLJy5S0VjRssMJ?=
+ =?us-ascii?Q?oWq8E7nAe1h40tFjxqR5FaQrzTqV8YPUWOyooYXk70WCpUPiI52yVBtNL7Ld?=
+ =?us-ascii?Q?FRTtqEsT5eu6eh9D/pVm8vlBCgGjLXAYUEoTtKb1N613SsRvlrcoI+zHSGEa?=
+ =?us-ascii?Q?93QJthqEoZ/BixosLqLGNkPPE3UlXS0HVNkNyexkbo0Tlh03vsZAVIp5XII5?=
+ =?us-ascii?Q?9ZbO1Bh1fH324zCyZsxoUrYNXujD9trxtBQKVrXbEc+b+u2fl2WDUalPj6UL?=
+ =?us-ascii?Q?We1BozrJIdms1mu+J151FkwpupYUl0Xwta8r36EmBJCzpFgJfuIymeKdrJJ1?=
+ =?us-ascii?Q?dKEJnkxxXaZ+c+5kIjHsuRaU80J42ZYYqv0LaY7cZSTiFllM?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <e7124e98-5633-4982-a850-8787c3949174@redhat.com>
-X-ClientProxiedBy: EXCH-02.secunet.de (10.32.0.172) To EXCH-01.secunet.de
- (10.32.0.171)
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DBBPR04MB7500.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 95289759-1d29-4f3a-846a-08debd5d8a02
+X-MS-Exchange-CrossTenant-originalarrivaltime: 29 May 2026 08:37:37.8103
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: UD7OnuUNOSM6yEVoV7XrhemaUk8cHFvGi1+mKRYdpoJjCScbxQET/q1i0glg12eIJw8bQsUFSwjfUby2YTF3tQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS1PR04MB9239
 
-On Fri, May 29, 2026 at 09:14:28AM +0200, Paolo Abeni wrote:
-> On 5/29/26 7:52 AM, Steffen Klassert wrote:
-> > Ccing the author of this patch.
-> > 
-> > On Thu, May 28, 2026 at 03:44:14PM +0200, Paolo Abeni wrote:
-> >> On 5/27/26 10:41 AM, Steffen Klassert wrote:
-> >>> From: e521588 <alessandro.schino@sbb.ch>
-> >>>
-> >>> In esp_output_tail(), when esp->inplace is false, the old skb page frags
-> >>> are replaced with a new page from the xfrm page_frag cache. The source
-> >>> scatterlist (sg) is built from the old frags before the replacement, and
-> >>> esp_ssg_unref() is responsible for releasing the old page references
-> >>> after the crypto operation completes.
-> >>>
-> >>> However, if the second skb_to_sgvec() call (which builds the destination
-> >>> scatterlist from the new page) fails, the code jumps to error_free which
-> >>> only calls kfree(tmp). The old page frag references captured in the
-> >>> source scatterlist are never released:
-> >>>
-> >>>   1. sg[] is built from old frags via skb_to_sgvec() (no extra get_page)
-> >>>   2. nr_frags is set to 1 and frag[0] is replaced with the new page
-> >>>   3. Second skb_to_sgvec() fails -> goto error_free
-> >>>   4. kfree(tmp) frees the sg[] memory but old frags are not unref'd
-> >>>   5. kfree_skb() only releases frag[0] (the new page), not the old ones
-> >>>
-> >>> Fix this by adding a bool parameter to esp_ssg_unref() that, when true,
-> >>> unconditionally unrefs the source scatterlist frags without checking
-> >>> req->src and req->dst, since those fields are not yet initialized by
-> >>> aead_request_set_crypt() at the point of the error. Existing callers
-> >>> pass false to preserve the original behavior.
-> >>>
-> >>> The same issue exists in both esp4 and esp6 as the code is identical.
-> >>>
-> >>> Fixes: cac2661c53f3 ("esp4: Avoid skb_cow_data whenever possible")
-> >>> Fixes: 03e2a30f6a27 ("esp6: Avoid skb_cow_data whenever possible")
-> >>>
-> >>> Signed-off-by: Alessandro Schino <7991aleschino@gmail.com>
-> >>> Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
-> >>> ---
-> >>>  net/ipv4/esp4.c | 12 +++++++-----
-> >>>  net/ipv6/esp6.c | 12 +++++++-----
-> >>>  2 files changed, 14 insertions(+), 10 deletions(-)
-> >>>
-> >>> diff --git a/net/ipv4/esp4.c b/net/ipv4/esp4.c
-> >>> index 6a5febbdbee4..8314d7bddcb7 100644
-> >>> --- a/net/ipv4/esp4.c
-> >>> +++ b/net/ipv4/esp4.c
-> >>> @@ -96,7 +96,7 @@ static inline struct scatterlist *esp_req_sg(struct crypto_aead *aead,
-> >>>  			     __alignof__(struct scatterlist));
-> >>>  }
-> >>>  
-> >>> -static void esp_ssg_unref(struct xfrm_state *x, void *tmp, struct sk_buff *skb)
-> >>> +static void esp_ssg_unref(struct xfrm_state *x, void *tmp, struct sk_buff *skb, bool already_unref)
-> >>>  {
-> >>>  	struct crypto_aead *aead = x->data;
-> >>>  	int extralen = 0;
-> >>> @@ -113,7 +113,7 @@ static void esp_ssg_unref(struct xfrm_state *x, void *tmp, struct sk_buff *skb)
-> >>>  	/* Unref skb_frag_pages in the src scatterlist if necessary.
-> >>>  	 * Skip the first sg which comes from skb->data.
-> >>>  	 */
-> >>> -	if (req->src != req->dst)
-> >>> +	if (already_unref || req->src != req->dst)
-> >>>  		for (sg = sg_next(req->src); sg; sg = sg_next(sg))
-> >>>  			skb_page_unref(page_to_netmem(sg_page(sg)),
-> >>>  				       skb->pp_recycle);
-> >>
-> >> Sashiko points the above is still unsafe:
-> > 
-> > For the original patch submission, sashiko reported 'failed
-> > to apply' because it was targeted to the ipsec tree. Now
-> > with the full pull request it applied and it found issues,
-> > but now it is too late for me to fix this.
-> > 
-> > Would it be possible to integrate subtrees of net and net-next
-> > into the netdev CI? This would avoid such problems in future.
-> > 
-> >> ---
-> >> When the new caller passes already_unref = true, can the loop still be
-> >> reached safely?
-> >> Looking at the allocation and request setup in esp_output_tail():
-> >> 	tmp = esp_alloc_tmp(aead, esp->nfrags + 2, extralen);
-> >> 	...
-> >> 	req = esp_tmp_req(aead, iv);
-> >> 	sg  = esp_req_sg(aead, req);
-> >> esp_alloc_tmp() calls kmalloc(len, GFP_ATOMIC) — the buffer is not
-> >> zeroed.
-> >> esp_tmp_req() only does aead_request_set_tfm(req, aead), which assigns
-> >> req->base.tfm. It does not touch req->src or req->dst.
-> >> The local variable sg is filled in by skb_to_sgvec(skb, sg, ...) but
-> >> nothing copies sg into req->src; that assignment is performed later by
-> >> aead_request_set_crypt(req, sg, dsg, ivlen + esp->clen, iv).
-> >> In the new error path the call sequence is:
-> >> 	err = skb_to_sgvec(skb, dsg, ...);
-> >> 	if (unlikely(err < 0)) {
-> >> 		esp_ssg_unref(x, tmp, skb, true);   /* before set_crypt */
-> >> 		goto error_free;
-> >> 	}
-> >> 	...
-> >> 	aead_request_set_crypt(req, sg, dsg, ivlen + esp->clen, iv);
-> >> Inside esp_ssg_unref() with already_unref = true, the predicate is
-> >> short-circuited but the loop body still dereferences req->src:
-> >> 	if (already_unref || req->src != req->dst)
-> >> 		for (sg = sg_next(req->src); sg; sg = sg_next(sg))
-> >> 			skb_page_unref(page_to_netmem(sg_page(sg)),
-> >> 				       skb->pp_recycle);
-> >> Since req->src has not been initialized at this point (the kmalloc
-> >> buffer holds whatever was there before, and aead_request_set_crypt()
-> >> has not yet run), sg_next(req->src) walks an arbitrary pointer,
-> >> sg_page(sg) reads sg->page_link from arbitrary memory, and
-> >> skb_page_unref(page_to_netmem(...), ...) then drops a refcount on a
-> >> fabricated page.
-> >> The commit message also seems to acknowledge this:
-> >>     Fix this by adding a bool parameter to esp_ssg_unref() that, when true,
-> >>     unconditionally unrefs the source scatterlist frags without checking
-> >>     req->src and req->dst, since those fields are not yet initialized by
-> >>     aead_request_set_crypt() at the point of the error.
-> >> If req->src/req->dst are not yet initialized, how can the loop
-> >> sg = sg_next(req->src) be valid?  Should the helper instead walk the
-> >> local sg returned by esp_req_sg(aead, req) (which was actually
-> >> populated by the first skb_to_sgvec()), or should
-> >> aead_request_set_crypt() be moved before the failure check so that
-> >> req->src/req->dst are well defined?
-> >> The same construct appears in net/ipv6/esp6.c:
-> >> ---
-> >>
-> >> And the SoB is incorrect for this patch. Do you rebase your tree? (I'm
-> >> not suggesting starting that otherwise!!!) If so you could possibly drop
-> >> this patch ?!?
-> > 
-> > No, I never rebased the ipsec tree so far. I could revert it, or you can
-> > do so if you don't accept the patch as is. Rebasing would be the last
-> > resort as this creates problems for everyone who cloned my tree.
-> 
-> Sure, I just could not remember if xfrm tree was usually rebased or not.
-> A revert or an incremental patch are just fine.
+>  drivers/net/ethernet/freescale/fec_main.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+>=20
+> diff --git a/drivers/net/ethernet/freescale/fec_main.c
+> b/drivers/net/ethernet/freescale/fec_main.c
+> index
+> f89aa94ce0202d5f28f37362ce70e0943aa14025..6ebde65d7f1b8728a6c5d28f7
+> 5cc0b0c4d983969 100644
+> --- a/drivers/net/ethernet/freescale/fec_main.c
+> +++ b/drivers/net/ethernet/freescale/fec_main.c
+> @@ -5594,6 +5594,7 @@ static int fec_resume(struct device *dev)
+>  		if (fep->rpm_active)
+>  			pm_runtime_force_resume(dev);
+>=20
+> +		pinctrl_pm_select_default_state(&fep->pdev->dev);
+>  		ret =3D fec_enet_clk_enable(ndev, true);
+>  		if (ret) {
+>  			rtnl_unlock();
+> @@ -5610,8 +5611,6 @@ static int fec_resume(struct device *dev)
+>  			val &=3D ~(FEC_ECR_MAGICEN | FEC_ECR_SLEEP);
+>  			writel(val, fep->hwp + FEC_ECNTRL);
+>  			fep->wol_flag &=3D ~FEC_WOL_FLAG_SLEEP_ON;
+> -		} else {
+> -			pinctrl_pm_select_default_state(&fep->pdev->dev);
+>  		}
+>  		fec_restart(ndev);
+>  		netif_tx_lock_bh(ndev);
+>=20
 
-I'll revert it for now and resend the pull reuest.
+It looks good to me, thanks for fixing this issue.
+
+Reviewed-by: Wei Fang <wei.fang@nxp.com>
+
+By the way, it seems you posted two identical patches, which might
+cause confusion.
+
