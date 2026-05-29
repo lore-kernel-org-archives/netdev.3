@@ -1,153 +1,107 @@
-Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E46263B27E3
-	for <netdev@vger.kernel.org>; Fri, 29 May 2026 09:27:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 058603446DE;
+	Fri, 29 May 2026 09:34:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780046829; cv=none; b=qfD+1oY9kON8nUutosu+fbkXgOR+xqE8gYpvXAqPImBs1cmU5dAGbuB4t/p9i2SV6lscvsw3rTXn62KezwR6H55u3krH5v0KrzwReUkUs1om4LA2piKBVvc/saalqLgC8mcEgg1oL0cNPa5qW74fFJdqYVuZnZ0D8AgV4RHU6qo=
+	t=1780047296; cv=none; b=axF7fLTEn3QKaYSVcpJfvH5fcoLyclG2hXwpSsaL7tm2wDT6o/qyrDJGF/ZHyvM87vM9Rq2VJSf+1IUnf+mYEDe5nqgkk7f5zyRNhQGQnQ3NvmmVQB7lGoPb65eb213O5QCLIuMHsLrWnGwSq9BKPfOa9troBGKpNCIQzYV+OD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780046829; c=relaxed/simple;
-	bh=1BH9ex9syB2HdC+b4bdVGobcKsiHCXlnvvtpXdswW/E=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FbrHmhkxioPx+3zsGDHFoOrzvQZoFY0JE42l1yoJjZ2atAjatOdWZfGMXTW0dggR2QIjDOOPjLt0Tv6aPkIFT9S29D6taQRsiy5rOXET1uSTQfNyOtyBGMC8PZ9rxFXA7J3AwWJIv2zxU5ZaMjM2wxrnsIFCumIU6cIKEFoOYpc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=y4MBtysz; arc=none smtp.client-ip=62.96.220.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
+	s=arc-20240116; t=1780047296; c=relaxed/simple;
+	bh=4fNw6ghQiLfMpseVSQY5c76rnKVPZ/fhYgyKqPsIlyo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=b0QWnhY4hmzfXFObintVBZ9PdX6/fd42Mm39mqSeN6nfDd/gbX23zqteyrzJEKngtzcPBbMw3iQ/ZCbEF2KvMvbzBUAlw2HCSQCJvbW0npQtxwPHi8nT0xV6oDnAcHOho6pngmEN0kS3A8HYrEy/n7nm0fgXpN6hUWUcqiA6qLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AYmxpyPM; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="y4MBtysz"
-Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id B95702019D;
-	Fri, 29 May 2026 11:27:02 +0200 (CEST)
-X-Virus-Scanned: by secunet
-Received: from mx1.secunet.com ([127.0.0.1])
- by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id mEfhS9dDUT8V; Fri, 29 May 2026 11:27:02 +0200 (CEST)
-Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id 0C5772069C;
-	Fri, 29 May 2026 11:27:02 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 0C5772069C
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1780046822;
-	bh=d3QjTWQjHLogrIkLjBpLCGpaIgakelfnr3OmxyNNkCU=;
-	h=From:To:CC:Subject:Date:In-Reply-To:References:From;
-	b=y4MBtyszG1aIasaeIenJQSo/mBeICs/vJg7T+h5QTDVlUS8DaP5TMfWQmCj4JnthW
-	 x7ALBCJBgZNxUXKOOoW7VHfxNMrrUkPvDKLPbyK6DOvZ123o7K9AtWCOQpCit1hsMu
-	 JDA4Arpp3IYK/pz+OPsXDDyyqv8C1DJf1ToifcjqbDGVOQFjHU7fMKTFRGo9c6y3k8
-	 L0GskD5nVes1IA7oZLosRHLIyoU4DOAXomCivLpn5F5Q6maIAXH3mkNRfU9qZDmEXl
-	 fT46yB+B5CLhcde+cCrv+5d9YO7myWsCzmvdTeBRNHRfo1CtTOeJZYrsnFVTVhOFGH
-	 prZfNaASX/9FQ==
-Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Fri, 29 May
- 2026 11:27:01 +0200
-Received: (nullmailer pid 3879699 invoked by uid 1000);
-	Fri, 29 May 2026 09:26:51 -0000
-From: Steffen Klassert <steffen.klassert@secunet.com>
-To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
-CC: Herbert Xu <herbert@gondor.apana.org.au>, Steffen Klassert
-	<steffen.klassert@secunet.com>, <netdev@vger.kernel.org>
-Subject: [PATCH 04/10] xfrm: ah: use skb_to_full_sk in async output callbacks
-Date: Fri, 29 May 2026 11:26:06 +0200
-Message-ID: <20260529092648.3878973-5-steffen.klassert@secunet.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260529092648.3878973-1-steffen.klassert@secunet.com>
-References: <20260529092648.3878973-1-steffen.klassert@secunet.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AYmxpyPM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 143B01F00893;
+	Fri, 29 May 2026 09:34:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780047293;
+	bh=AK8ANNkExqOCITqWBHg+9jotgKMJByIVfhp0S8C+FEE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=AYmxpyPM8hKkZHTLfPs7uwwpSLfKH0JWQUgbZrT0aAn7zzM2SV8xAMv6STs8uuL/2
+	 uDjTW7RJ1YoPLRpSfhcP0P/JGYlmNyrhwbs4U4Y+bSbpjb5KcD+cOyaRcGLeXpRkYN
+	 tjrBU6jLg14yOHU0KMS7cngHQBtrwvbr41pYcoF5tF3uck6gtidjoR8vx0HX78N0NT
+	 viKhX9OerJUouMX3w0CE7Wi8X0PRzsLG1OgwO84oQO5R31hCpqqpN0wBZayLYSZZHX
+	 vWYmO1kY/dLOCg0c+bIbTIxCcYcW2nHWI6Jjiy+Yonin+twrefMV7uCP/1/j2Zae6a
+	 Pwa/ZRtDZxtlg==
+Date: Fri, 29 May 2026 10:34:48 +0100
+From: Simon Horman <horms@kernel.org>
+To: Jijie Shao <shaojijie@huawei.com>
+Cc: Paolo Abeni <pabeni@redhat.com>, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, andrew+netdev@lunn.ch,
+	shenjian15@huawei.com, liuyonglong@huawei.com,
+	chenhao418@huawei.com, huangdonghua3@h-partners.com,
+	yangshuaisong@h-partners.com, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH V2 net-next 0/6] net: hns3: enhance tc flow offload
+ support
+Message-ID: <20260529093448.GV2256768@horms.kernel.org>
+References: <20260523105449.661848-1-shaojijie@huawei.com>
+ <20260527095930.GI2256768@horms.kernel.org>
+ <c6dc79ef-5f6e-4c97-97da-fa50eb1d1370@huawei.com>
+ <b0b0ac82-bcbf-4aef-bf6f-7340f9517fc6@redhat.com>
+ <83f34836-c848-469a-9c1c-7f28bf3035fc@huawei.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EXCH-01.secunet.de (10.32.0.171) To EXCH-01.secunet.de
- (10.32.0.171)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <83f34836-c848-469a-9c1c-7f28bf3035fc@huawei.com>
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+On Thu, May 28, 2026 at 07:24:28PM +0800, Jijie Shao wrote:
+> 
+> on 2026/5/28 17:06, Paolo Abeni wrote:
+> > On 5/27/26 3:12 PM, Jijie Shao wrote:
+> > > on 2026/5/27 17:59, Simon Horman wrote:
+> > > > On Sat, May 23, 2026 at 06:54:43PM +0800, Jijie Shao wrote:
 
-When AH output is offloaded to an asynchronous crypto provider
-(hardware accelerators such as AMD CCP, or a forced-async software
-shim used for testing), the digest completion fires
-ah_output_done() / ah6_output_done() on a workqueue.  The egress
-skb at that point may have been originated by a TCP listener
-sending a SYN-ACK, which sets skb->sk to a request_sock via
-skb_set_owner_edemux(); it may also have been originated by an
-inet_timewait_sock retransmit.  Neither is a full struct sock, and
-passing the raw skb->sk to xfrm_output_resume() then forwards a
-non-full socket through the rest of the xfrm output chain.
+...
 
-xfrm_output_resume() and its downstream consumers expect a full
-sk where they dereference at all.  The natural egress path
-through ah_output_done() does not crash today because the
-consumers that read past sock_common are either gated by
-sk_fullsock() or short-circuit on flags that are clear on a fresh
-request_sock; an exhaustive walk of the 50 most plausible
-consumers under sch_fq, dev_queue_xmit, netfilter, tc-egress and
-cgroup-egress BPF found no current unguarded deref.  The bug is
-still a real type confusion that future consumer changes could
-turn into a memory-corruption primitive.
+> > > > Hi Juijie,
+> > > > 
+> > > > There are AI-generated reviews of this patch-set available at
+> > > > https://netdev-ai.bots.linux.dev/ and https://sashiko.dev/
+> > > Hi,
+> > > 
+> > > I'm sorry, I don't understand how to use https://netdev-ai.bots.linux.dev/, it seems to require an API Token?
+> > > I find it difficult to locate my own patch-set in Recent Reviews.
+> > The nipa sashiko instance has the same web UI as sashiko.dev. The full
+> > URL for the former is:
+> > 
+> > https://netdev-ai.bots.linux.dev/sashiko/
+> > 
+> > You can lookup your series by the cover letter title or you can use the
+> > direct link including the msg id for the cover:
+> > 
+> > https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260523105449.661848-1-shaojijie%40huawei.com
+> 
+> Thanks,
+> 
+> It appears that the two URLs mentioned by Simon Horman are the results of the one AI-generated reviews.
 
-This is the same bug class fixed for ESP in commit 1620c88887b1
-("xfrm: Fix the usage of skb->sk").  Apply the analogous fix to
-AH: convert skb->sk to a full socket pointer (or NULL) via
-skb_to_full_sk() before handing it to xfrm_output_resume().
+Hi,
 
-The same async AH callbacks were touched recently for an
-independent ESN-related ICV layout bug in commit ec54093e6a8f
-("xfrm: ah: account for ESN high bits in async callbacks"); the
-sk type-confusion addressed here is orthogonal.  This patch is
-part of an ongoing audit of the AH callback paths; an ah_output
-ihl-validation hardening series is also currently under review on
-netdev.
+Firstly sorry for truncating the netdev-ai URL, that was not my intention.
+Secondly, let me explain the relationship between the AI-generated review
+on netdev-ai and sashiko.dev.
 
-Reproduced under UML + KASAN + lockdep with a forced-async
-hmac(sha1) shim that registers at priority 9999 and wraps the
-sync in-tree hmac-sha1-lib.  With the shim loaded, ah_output_done
-runs on every SYN-ACK egress through a transport-mode AH SA and
-skb->sk arrives as a request_sock (TCP_NEW_SYN_RECV); after this
-patch, xfrm_output_resume() receives the listener (the result of
-sk_to_full_sk()) and consumer derefs land on full-sock fields as
-intended.
+Both use the same underlying review engine - Sashiko [1].  But they are
+using different AI models to run the review.  And I believe that the
+prompts also differ a little.  Overall, netdev-ai, has been tuned for the
+Netdev review process.  While sashiko.dev is more general.
 
-Fixes: 9ab1265d5231 ("xfrm: Use actual socket sk instead of skb socket for xfrm_output_resume")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-7
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
----
- net/ipv4/ah4.c | 2 +-
- net/ipv6/ah6.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+My observation is that netdev-ai tends to flag things relevant to the
+Netdev development process that may be skipped by sashiko.dev. While
+sashiko.dev has a tendency to report pre-existing issues that are not
+strictly related to the topic of the patch under review.
 
-diff --git a/net/ipv4/ah4.c b/net/ipv4/ah4.c
-index 4366cbac3f06..6fd642d2278d 100644
---- a/net/ipv4/ah4.c
-+++ b/net/ipv4/ah4.c
-@@ -143,7 +143,7 @@ static void ah_output_done(void *data, int err)
- 	}
- 
- 	kfree(AH_SKB_CB(skb)->tmp);
--	xfrm_output_resume(skb->sk, skb, err);
-+	xfrm_output_resume(skb_to_full_sk(skb), skb, err);
- }
- 
- static int ah_output(struct xfrm_state *x, struct sk_buff *skb)
-diff --git a/net/ipv6/ah6.c b/net/ipv6/ah6.c
-index de1e68199a01..76f7a2de9108 100644
---- a/net/ipv6/ah6.c
-+++ b/net/ipv6/ah6.c
-@@ -337,7 +337,7 @@ static void ah6_output_done(void *data, int err)
- 	ah6_restore_hdrs(top_iph, iph_ext, extlen);
- 
- 	kfree(AH_SKB_CB(skb)->tmp);
--	xfrm_output_resume(skb->sk, skb, err);
-+	xfrm_output_resume(skb_to_full_sk(skb), skb, err);
- }
- 
- static int ah6_output(struct xfrm_state *x, struct sk_buff *skb)
--- 
-2.43.0
+But, as the underling engine is the same there is also a lot of overlap in
+the output produced by these two instances. And in some cases both
+instances flag all of the same issues.
 
+[1] https://github.com/sashiko-dev/sashiko
