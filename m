@@ -1,57 +1,57 @@
 Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E45923403E4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E46263B27E3
 	for <netdev@vger.kernel.org>; Fri, 29 May 2026 09:27:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780046828; cv=none; b=do9f3qejXiV17VmZXCN8jxt87pGwbdcUxkmBH4UfEAOOhww4wesFiJA2TFEgU9cD9Vzcc6IaCURbV6wHhXIekLHC7HC19O/5KLy8Mp0psp6mXPQRvLdkvLK3B/C1zO+adchwVY/rjH7Vv269uonmJ0GuPaoauPx5NVK46FuVwgo=
+	t=1780046829; cv=none; b=qfD+1oY9kON8nUutosu+fbkXgOR+xqE8gYpvXAqPImBs1cmU5dAGbuB4t/p9i2SV6lscvsw3rTXn62KezwR6H55u3krH5v0KrzwReUkUs1om4LA2piKBVvc/saalqLgC8mcEgg1oL0cNPa5qW74fFJdqYVuZnZ0D8AgV4RHU6qo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780046828; c=relaxed/simple;
-	bh=9dhDMfEROxTjZNrBlGNCsh+iKL0HiWJECPUSQMm8kf8=;
+	s=arc-20240116; t=1780046829; c=relaxed/simple;
+	bh=1BH9ex9syB2HdC+b4bdVGobcKsiHCXlnvvtpXdswW/E=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Z7XEn+1891vjnsPzRgNzw1iKcBygtktphXSpvepjPRDhe/04TQ8Zy6OANC5wNfIDUdYvR8MKNGSwc2j4ULEAMqD6/fX+JAGMnDc1ZVEkpAzF/lXBrQ0Dv1lkXGDG/P5O7vU05TXRvI+alwQKcw6f+Hryq2+vbLpQKrf2WMEi+pU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=p6WaYcWE; arc=none smtp.client-ip=62.96.220.36
+	 MIME-Version:Content-Type; b=FbrHmhkxioPx+3zsGDHFoOrzvQZoFY0JE42l1yoJjZ2atAjatOdWZfGMXTW0dggR2QIjDOOPjLt0Tv6aPkIFT9S29D6taQRsiy5rOXET1uSTQfNyOtyBGMC8PZ9rxFXA7J3AwWJIv2zxU5ZaMjM2wxrnsIFCumIU6cIKEFoOYpc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=y4MBtysz; arc=none smtp.client-ip=62.96.220.36
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="p6WaYcWE"
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="y4MBtysz"
 Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id 20F16207B0;
+	by mx1.secunet.com (Postfix) with ESMTP id B95702019D;
 	Fri, 29 May 2026 11:27:02 +0200 (CEST)
 X-Virus-Scanned: by secunet
 Received: from mx1.secunet.com ([127.0.0.1])
  by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id Ut5twp2myHfi; Fri, 29 May 2026 11:27:01 +0200 (CEST)
+ with ESMTP id mEfhS9dDUT8V; Fri, 29 May 2026 11:27:02 +0200 (CEST)
 Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id 4F542206D0;
-	Fri, 29 May 2026 11:27:01 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 4F542206D0
+	by mx1.secunet.com (Postfix) with ESMTPS id 0C5772069C;
+	Fri, 29 May 2026 11:27:02 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 0C5772069C
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1780046821;
-	bh=RY+ndBRW5bRN4I0j9i4rqRaM+kzkpQoVjhrjBLX+osE=;
+	s=202301; t=1780046822;
+	bh=d3QjTWQjHLogrIkLjBpLCGpaIgakelfnr3OmxyNNkCU=;
 	h=From:To:CC:Subject:Date:In-Reply-To:References:From;
-	b=p6WaYcWEfiM3n1O8SxmFw0UNgDfnYFOBCnHGLRB9HATs/4GbNDneepqbxiEe70lgd
-	 aNhXLFBRmjVd48GEHz2v0e9/8Dc7JBOh7NKFeQfInall5wfC8hjCLk1xd5kEfTVz7Y
-	 RBt8VYZqNsci6AfSjBtLol7brXEHiUSLz1hOmQ+u/adgfz2x5X9/Fd2eNcW59F2+dq
-	 aqqjf4gG/RFvYp4PUAOi9JpgqeSv2iQ6MUjdZmh0MdVUw+xAV5lnzQVZCnLRntPTf9
-	 ZIPRK9KV2zlJumM81v3zyI5U+vokfjCAYYJXrEyS6e47QhWWdQSnIIodFY8P76ZcBG
-	 MgSYex0P6rPow==
+	b=y4MBtyszG1aIasaeIenJQSo/mBeICs/vJg7T+h5QTDVlUS8DaP5TMfWQmCj4JnthW
+	 x7ALBCJBgZNxUXKOOoW7VHfxNMrrUkPvDKLPbyK6DOvZ123o7K9AtWCOQpCit1hsMu
+	 JDA4Arpp3IYK/pz+OPsXDDyyqv8C1DJf1ToifcjqbDGVOQFjHU7fMKTFRGo9c6y3k8
+	 L0GskD5nVes1IA7oZLosRHLIyoU4DOAXomCivLpn5F5Q6maIAXH3mkNRfU9qZDmEXl
+	 fT46yB+B5CLhcde+cCrv+5d9YO7myWsCzmvdTeBRNHRfo1CtTOeJZYrsnFVTVhOFGH
+	 prZfNaASX/9FQ==
 Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Fri, 29 May
- 2026 11:27:00 +0200
-Received: (nullmailer pid 3879711 invoked by uid 1000);
+ 2026 11:27:01 +0200
+Received: (nullmailer pid 3879699 invoked by uid 1000);
 	Fri, 29 May 2026 09:26:51 -0000
 From: Steffen Klassert <steffen.klassert@secunet.com>
 To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
 CC: Herbert Xu <herbert@gondor.apana.org.au>, Steffen Klassert
 	<steffen.klassert@secunet.com>, <netdev@vger.kernel.org>
-Subject: [PATCH 08/10] xfrm: move policy_bydst RCU sync from per-netns .exit to .pre_exit
-Date: Fri, 29 May 2026 11:26:10 +0200
-Message-ID: <20260529092648.3878973-9-steffen.klassert@secunet.com>
+Subject: [PATCH 04/10] xfrm: ah: use skb_to_full_sk in async output callbacks
+Date: Fri, 29 May 2026 11:26:06 +0200
+Message-ID: <20260529092648.3878973-5-steffen.klassert@secunet.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260529092648.3878973-1-steffen.klassert@secunet.com>
 References: <20260529092648.3878973-1-steffen.klassert@secunet.com>
@@ -63,91 +63,91 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: EXCH-02.secunet.de (10.32.0.172) To EXCH-01.secunet.de
+X-ClientProxiedBy: EXCH-01.secunet.de (10.32.0.171) To EXCH-01.secunet.de
  (10.32.0.171)
 
-From: Usama Arif <usama.arif@linux.dev>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-The struct pernet_operations docstring in include/net/net_namespace.h
-explicitly warns against blocking RCU primitives in .exit handlers:
+When AH output is offloaded to an asynchronous crypto provider
+(hardware accelerators such as AMD CCP, or a forced-async software
+shim used for testing), the digest completion fires
+ah_output_done() / ah6_output_done() on a workqueue.  The egress
+skb at that point may have been originated by a TCP listener
+sending a SYN-ACK, which sets skb->sk to a request_sock via
+skb_set_owner_edemux(); it may also have been originated by an
+inet_timewait_sock retransmit.  Neither is a full struct sock, and
+passing the raw skb->sk to xfrm_output_resume() then forwards a
+non-full socket through the rest of the xfrm output chain.
 
-    Exit methods using blocking RCU primitives, such as
-    synchronize_rcu(), should be implemented via exit_batch.
-    [...]
-    Please, avoid synchronize_rcu() at all, where it's possible.
+xfrm_output_resume() and its downstream consumers expect a full
+sk where they dereference at all.  The natural egress path
+through ah_output_done() does not crash today because the
+consumers that read past sock_common are either gated by
+sk_fullsock() or short-circuit on flags that are clear on a fresh
+request_sock; an exhaustive walk of the 50 most plausible
+consumers under sch_fq, dev_queue_xmit, netfilter, tc-egress and
+cgroup-egress BPF found no current unguarded deref.  The bug is
+still a real type confusion that future consumer changes could
+turn into a memory-corruption primitive.
 
-    Note that a combination of pre_exit() and exit() can
-    be used, since a synchronize_rcu() is guaranteed between
-    the calls.
+This is the same bug class fixed for ESP in commit 1620c88887b1
+("xfrm: Fix the usage of skb->sk").  Apply the analogous fix to
+AH: convert skb->sk to a full socket pointer (or NULL) via
+skb_to_full_sk() before handing it to xfrm_output_resume().
 
-xfrm_policy_fini() violates this: it calls synchronize_rcu() before
-freeing the policy_bydst hash tables (so no RCU reader is mid-
-traversal at free time), but runs from xfrm_net_ops.exit -- once per
-namespace -- so a cleanup_net() of N namespaces pays N full RCU
-grace periods serially.
+The same async AH callbacks were touched recently for an
+independent ESN-related ICV layout bug in commit ec54093e6a8f
+("xfrm: ah: account for ESN high bits in async callbacks"); the
+sk type-confusion addressed here is orthogonal.  This patch is
+part of an ongoing audit of the AH callback paths; an ah_output
+ihl-validation hardening series is also currently under review on
+netdev.
 
-Use the documented pre_exit/exit split. Move the policy flush (and
-the workqueue drains it depends on) into a new .pre_exit handler;
-xfrm_policy_fini() then runs in .exit and frees the hash tables
-after the synchronize_rcu_expedited() that cleanup_net() guarantees
-between the two phases. Providing O(1) RCU grace periods per batch
-instead of O(N).
+Reproduced under UML + KASAN + lockdep with a forced-async
+hmac(sha1) shim that registers at priority 9999 and wraps the
+sync in-tree hmac-sha1-lib.  With the shim loaded, ah_output_done
+runs on every SYN-ACK egress through a transport-mode AH SA and
+skb->sk arrives as a request_sock (TCP_NEW_SYN_RECV); after this
+patch, xfrm_output_resume() receives the listener (the result of
+sk_to_full_sk()) and consumer derefs land on full-sock fields as
+intended.
 
-Observed on Linux 6.18 with a workload doing unshare(CLONE_NEWNET)
-at ~13/sec sustained: cleanup_net() and the netns_wq rescuer kthread
-both stuck in xfrm_policy_fini()'s synchronize_rcu(), >300k struct
-net accumulated in the cleanup queue, Percpu in /proc/meminfo climbed
-to 130+ GB on 256-CPU hosts, and memcg OOMs followed. setup_net and
-__put_net counts were balanced, ruling out a refcount leak.
-
-Fixes: 069daad4f2ae ("xfrm: Wait for RCU readers during policy netns exit")
-Signed-off-by: Usama Arif <usama.arif@linux.dev>
+Fixes: 9ab1265d5231 ("xfrm: Use actual socket sk instead of skb socket for xfrm_output_resume")
+Cc: stable@vger.kernel.org
+Assisted-by: Claude:claude-opus-4-7
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
 Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 ---
- net/xfrm/xfrm_policy.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ net/ipv4/ah4.c | 2 +-
+ net/ipv6/ah6.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
-index 59968dcbafe1..dd09d2063da2 100644
---- a/net/xfrm/xfrm_policy.c
-+++ b/net/xfrm/xfrm_policy.c
-@@ -4276,21 +4276,21 @@ static int __net_init xfrm_policy_init(struct net *net)
- 	return -ENOMEM;
+diff --git a/net/ipv4/ah4.c b/net/ipv4/ah4.c
+index 4366cbac3f06..6fd642d2278d 100644
+--- a/net/ipv4/ah4.c
++++ b/net/ipv4/ah4.c
+@@ -143,7 +143,7 @@ static void ah_output_done(void *data, int err)
+ 	}
+ 
+ 	kfree(AH_SKB_CB(skb)->tmp);
+-	xfrm_output_resume(skb->sk, skb, err);
++	xfrm_output_resume(skb_to_full_sk(skb), skb, err);
  }
  
--static void xfrm_policy_fini(struct net *net)
-+static void __net_exit xfrm_net_pre_exit(struct net *net)
- {
--	struct xfrm_pol_inexact_bin *b, *t;
--	unsigned int sz;
--	int dir;
--
- 	disable_work_sync(&net->xfrm.policy_hthresh.work);
--
- 	flush_work(&net->xfrm.policy_hash_work);
- #ifdef CONFIG_XFRM_SUB_POLICY
- 	xfrm_policy_flush(net, XFRM_POLICY_TYPE_SUB, false);
- #endif
- 	xfrm_policy_flush(net, XFRM_POLICY_TYPE_MAIN, false);
-+}
+ static int ah_output(struct xfrm_state *x, struct sk_buff *skb)
+diff --git a/net/ipv6/ah6.c b/net/ipv6/ah6.c
+index de1e68199a01..76f7a2de9108 100644
+--- a/net/ipv6/ah6.c
++++ b/net/ipv6/ah6.c
+@@ -337,7 +337,7 @@ static void ah6_output_done(void *data, int err)
+ 	ah6_restore_hdrs(top_iph, iph_ext, extlen);
  
--	synchronize_rcu();
-+static void xfrm_policy_fini(struct net *net)
-+{
-+	struct xfrm_pol_inexact_bin *b, *t;
-+	unsigned int sz;
-+	int dir;
+ 	kfree(AH_SKB_CB(skb)->tmp);
+-	xfrm_output_resume(skb->sk, skb, err);
++	xfrm_output_resume(skb_to_full_sk(skb), skb, err);
+ }
  
- 	WARN_ON(!list_empty(&net->xfrm.policy_all));
- 
-@@ -4368,6 +4368,7 @@ static void __net_exit xfrm_net_exit(struct net *net)
- 
- static struct pernet_operations __net_initdata xfrm_net_ops = {
- 	.init = xfrm_net_init,
-+	.pre_exit = xfrm_net_pre_exit,
- 	.exit = xfrm_net_exit,
- };
- 
+ static int ah6_output(struct xfrm_state *x, struct sk_buff *skb)
 -- 
 2.43.0
 
