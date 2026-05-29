@@ -1,159 +1,228 @@
-Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6456310620;
-	Fri, 29 May 2026 01:44:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.241.158
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A1E214A8B
+	for <netdev@vger.kernel.org>; Fri, 29 May 2026 01:49:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780019068; cv=none; b=aWOHVNJ2j1AFX4DgjyMkIh76f+QLiBlv2cHUOMF4MAzE0GcqpcRTbDcRexUsuzv3/89rSPGkN05qbuuM2/D3R62kZYkP5yteNjsoD7HwcUtANqjcU/mTADs28gHL9yXXWKa32wp71tYcTANDu27obRHRse6G16sIFRNDBYx1Zno=
+	t=1780019382; cv=none; b=jsCVNd6bIwRzPI1aTvy/ua/+VWC0fvYXbNWAX5MyWwHsMu2lYgmHvOcF05thfrwxrSI8nzvSpBwiRkGeEMYJJoAxtu2uHYXyU2W6m3HYdGXehVoQU8G4oDbjnq422lAKZ7z8JBY5luXgF5IvUxw0TQ82e8uxDA5uKmNfob5VDIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780019068; c=relaxed/simple;
-	bh=mrHccfsQJdLAxkEx5+Qan6OCSIAIJSXu+uPlh0rzW54=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Mi8ptZh5PvP/cFscCCs9BQAoKNeBDxS+FWxrngPQF09EmHYuATR5mV6pSP+RHKKrSVZCArmoH822rEjcmJWhudJxsJH7Y0otfpUqSklei3oIfEK5YcefZXnRa2iPNtidQlQMxQqntRqQ4aJLWH1Cpz3+MhN8JddXCcwmW22mvPU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=hTAuadhE; arc=none smtp.client-ip=203.29.241.158
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeconstruct.com.au
+	s=arc-20240116; t=1780019382; c=relaxed/simple;
+	bh=fdfsijbBflqFEuAxkZbueumL1yuwDsPXh5sSEJRNQco=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=WBPjT9XB8TKUg+4581UJfxsLVt1kdVZ7q6XzsTgKFFEvOXKgDP1ETp/e+HDcJt4NQx/2Amop628zP8i0yC++kd+0Ah6KkTxpe09ysvS+pK+m6wWvny9lCMP42WCN5blUqJpGW+0/SrnJ1cZzpWbWcYA1XliGRFzI5oCaOXer9fk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FIw9X7Te; arc=none smtp.client-ip=209.85.210.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="hTAuadhE"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FIw9X7Te"
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-8353ca0f1f1so6129058b3a.1
+        for <netdev@vger.kernel.org>; Thu, 28 May 2026 18:49:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=codeconstruct.com.au; s=2022a; t=1780019063;
-	bh=CQK86/u3LLUm7cvQu2/HmsKR9vMG1pdZJ/k5001vO6k=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=hTAuadhE/ui7nE1ZoRvoKWbeSr5vCyE7X2LoGPJxMOVNdZ72tIdEo9h7OKSk2P5nr
-	 nk97umZNwCAaRy/RZC+5PLiQofjvV6eVtUoyFe10EHmSiyWgb6HEKKQhQCLcqZ/54N
-	 bQjokPhuA3bxzakAs/GI2HuvKEIgsJVrPJutgB3eanYVJdH8Aci7hRalE5bxaF1MBD
-	 1ma7mXSxjt01dU7wORRHKdYK9vIIGABw2eE/QO4flkErv+4vk83xh68Seu/N6xkClh
-	 0O/fyXvQZ7GulyyWK9/VxRm3W4zXgLkwaroJnpiKHv6ubgOCUpC5K57J6jDjR9Lalp
-	 YswqMIIEEVk3g==
-Received: from pecola.lan (unknown [159.196.93.152])
-	by mail.codeconstruct.com.au (Postfix) with ESMTPSA id 22A8764798;
-	Fri, 29 May 2026 09:44:22 +0800 (AWST)
-Message-ID: <8c2a9e591ba22a95962c2c5f7dff5971fc5123df.camel@codeconstruct.com.au>
-Subject: Re: [net-next v44] mctp pcc: Implement MCTP over PCC Transport
-From: Jeremy Kerr <jk@codeconstruct.com.au>
-To: Adam Young <admiyo@amperemail.onmicrosoft.com>, Paolo Abeni
-	 <pabeni@redhat.com>, admiyo@os.amperecomputing.com
-Cc: matt@codeconstruct.com.au, andrew+netdev@lunn.ch, davem@davemloft.net, 
-	edumazet@google.com, kuba@kernel.org, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, sudeep.holla@arm.com,
- Jonathan.Cameron@huawei.com, 	lihuisong@huawei.com
-Date: Fri, 29 May 2026 09:44:21 +0800
-In-Reply-To: <63aebaed-2456-457d-be70-5211d2f746df@amperemail.onmicrosoft.com>
-References: <20260522193610.234166-1-admiyo@os.amperecomputing.com>
-	 <20260528084611.133703-1-pabeni@redhat.com>
-	 <63aebaed-2456-457d-be70-5211d2f746df@amperemail.onmicrosoft.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2-0+deb13u1 
+        d=gmail.com; s=20251104; t=1780019381; x=1780624181; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=OFJ8lJ3WZbUM+5dZDblxkoFzvWV/3TNTZFcHmswWkQ4=;
+        b=FIw9X7TeNPA0gr/kRr3iVXaB5ve29yUbEUj7nLYvK7rzXB0b6+mc3UgK8Ctoqu/p7E
+         azNVUIng2Mv+F8mrawR//qN6Sv9cxCnGmF3/+bk4RJPyHXxMZVbmpKiRW5icZb3YH3dv
+         IqT64doWWqp4vcyU7tYP6gMbp1o2u1iUvfzr9hmx1RMyg9kt1QiITnbKXvodl+2juH1F
+         Eg6CpIjorWzBupqpqkLCxlnBaScqTvdnAGHzJ5uBCCTRU8kCiENC76qgV656a0vlYPQ+
+         dm53ItCZh8AebTDcMymw5xmIQBjCe6UHly9CRv93iiItpw/7nL3of0+9mkFiloCeFLul
+         ZWww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780019381; x=1780624181;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=OFJ8lJ3WZbUM+5dZDblxkoFzvWV/3TNTZFcHmswWkQ4=;
+        b=c1whrF50qi3JF0MoG6gtDrt5U7debKwgji926uRBbKNvO46XqSDz4ngVSw05K0Uo/u
+         ZG1JutNDZuCYD8CbgVUho7+1vSCD9FV9ArLeN2Z5vWfzFQZbWKIjecm4GTGdgdrp0tK1
+         BkVVnUOXbDg/wI7gRtWnooXu79ZuMUA6ZcmtyL6yMe7KyRkFvDYKgj67uZnJNSV/REE9
+         MlEPA3SeyIbiB6Wjpjdz40A9Iwck9fXmTGO5s5Hvs4xPDWFYQiTqpOz9WHn+bhvhE1fJ
+         Kos3fnIRbCpm1IDCNM6gJsRxn45EmELR73vIDdQcUV9hstkn/8ZnU+H2WGEXrRoNxt2q
+         zMTA==
+X-Gm-Message-State: AOJu0YzvZh1zC85ZCe9k4adC5sWeqXaCx4prfYfblBdG/9ABUf92NBYz
+	7ZZ9ewOjZ6e1UfhteIZFLyEEtf950EucBPsypEC0DYa8+IME8eWtv0yc
+X-Gm-Gg: Acq92OGHLBsqzIHQxerIE7fWj5hveufOGpnEq8ou3s7NXb8/9n97cAXMAGBQ9UQcoP/
+	kbEs7S7rlY0piIhi0Mv+aHirThCvU1Jns9GX2pe/CXwV/Qzelee5ArukXAWY9xErEExWs6Y2fgZ
+	CLsI68lEqZWKMFOXiRkZl/zVjdC8CJghcpwEDIJUgGhtXS7ElTuLidgnzCDo8RYT7rgGCFhqWm/
+	9jAjU89IC4hEETdpR63p2B9tybECxwdXqCn6QZvQX/RW9k2cChwHjClrQOjNBMR1G12Aonmbfq2
+	+kksrASDxViNd/Lwbqw59dd/gITgRe3LmWY1yK2lizzEZ+utocmQ4+DfFZEUXZo867yBVscInyb
+	Sr0kdlvXLopNhqv5XZnhIY+V2KWvsMYGGk5RMvJarNKg+7qkPuB3EtPPqZ/V7gQ/sbY3uicXRIi
+	gCuVcR00HMYE7kuUJ4y1BqIGAO
+X-Received: by 2002:a05:6a00:2905:b0:838:5145:c1c5 with SMTP id d2e1a72fcca58-84210b3b262mr788348b3a.21.1780019380945;
+        Thu, 28 May 2026 18:49:40 -0700 (PDT)
+Received: from localhost ([2a03:2880:ff:73::])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84214b30d4asm96257b3a.20.2026.05.28.18.49.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 28 May 2026 18:49:40 -0700 (PDT)
+From: Amery Hung <ameryhung@gmail.com>
+To: bpf@vger.kernel.org
+Cc: netdev@vger.kernel.org,
+	alexei.starovoitov@gmail.com,
+	andrii@kernel.org,
+	daniel@iogearbox.net,
+	eddyz87@gmail.com,
+	memxor@gmail.com,
+	martin.lau@kernel.org,
+	mykyta.yatsenko5@gmail.com,
+	ameryhung@gmail.com,
+	kernel-team@meta.com
+Subject: [PATCH bpf-next v6 01/13] bpf: Simplify mark_stack_slot_obj_read() and callers
+Date: Thu, 28 May 2026 18:49:24 -0700
+Message-ID: <20260529014936.2811085-2-ameryhung@gmail.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260529014936.2811085-1-ameryhung@gmail.com>
+References: <20260529014936.2811085-1-ameryhung@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Hi Adam,
+Rename mark_stack_slot_obj_read() as mark_stack_slots_scratched() and
+directly call it from functions processing iter, dynptr and irq_flag.
+Commit 6762e3a0bce5 ("bpf: simplify liveness to use (callsite, depth)
+keyed func_instances") has removed the dynamic liveness component in
+mark_stack_slot_obj_read(). The function effectively only marks stack
+slots as scratched and always succeed. Therefore, return void, drop the
+unused bpf_reg_state argument and rename it to
+mark_stack_slots_scratched() to reflect what it does now.
 
-> > [Low]
-> > The Link tag and the body of the commit message both reference
-> > DSP0292_1.0.0WIP50. Is it intentional to merge an in-tree binding
-> > based on a Work-In-Progress draft of the spec rather than the
-> > published 1.0.0?
+In addition, to prepare for unifying dynptr handling, dynptr_get_spi()
+will be moved out of mark_dynptr_read(). As mark_dynptr_read() would join
+mark_iter_read() as a thin wrapper of mark_stack_slots_scratched(), just
+open code these helpers.
 
-This is probably worth an update to reference the non-WIP spec version.
+Acked-by: Eduard Zingerman <eddyz87@gmail.com>
+Signed-off-by: Amery Hung <ameryhung@gmail.com>
+---
+ kernel/bpf/verifier.c | 69 +++++++++++++------------------------------
+ 1 file changed, 21 insertions(+), 48 deletions(-)
 
-> The ACPICA code used to access the PCC region and registers is imported=
-=20
-> an external project, and it hard codes the values to machine, not=20
-> explicitly little endian.=C2=A0 So making this little-endian only ensures=
-=20
-> that the ordering is correct.=C2=A0 The only machines that are going to=
-=20
-> support MCTP over PCC are little endian and 64 bit, so this is strictly=
-=20
-> speaking correct.
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index c8d980fdd709..cddbdb4f78aa 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -3006,50 +3006,13 @@ static int sort_subprogs_topo(struct bpf_verifier_env *env)
+ 	return ret;
+ }
+ 
+-static int mark_stack_slot_obj_read(struct bpf_verifier_env *env, struct bpf_reg_state *reg,
+-				    int spi, int nr_slots)
++static void mark_stack_slots_scratched(struct bpf_verifier_env *env,
++				       int spi, int nr_slots)
+ {
+ 	int i;
+ 
+ 	for (i = 0; i < nr_slots; i++)
+ 		mark_stack_slot_scratched(env, spi - i);
+-	return 0;
+-}
+-
+-static int mark_dynptr_read(struct bpf_verifier_env *env, struct bpf_reg_state *reg)
+-{
+-	int spi;
+-
+-	/* For CONST_PTR_TO_DYNPTR, it must have already been done by
+-	 * check_reg_arg in check_helper_call and mark_btf_func_reg_size in
+-	 * check_kfunc_call.
+-	 */
+-	if (reg->type == CONST_PTR_TO_DYNPTR)
+-		return 0;
+-	spi = dynptr_get_spi(env, reg);
+-	if (spi < 0)
+-		return spi;
+-	/* Caller ensures dynptr is valid and initialized, which means spi is in
+-	 * bounds and spi is the first dynptr slot. Simply mark stack slot as
+-	 * read.
+-	 */
+-	return mark_stack_slot_obj_read(env, reg, spi, BPF_DYNPTR_NR_SLOTS);
+-}
+-
+-static int mark_iter_read(struct bpf_verifier_env *env, struct bpf_reg_state *reg,
+-			  int spi, int nr_slots)
+-{
+-	return mark_stack_slot_obj_read(env, reg, spi, nr_slots);
+-}
+-
+-static int mark_irq_flag_read(struct bpf_verifier_env *env, struct bpf_reg_state *reg)
+-{
+-	int spi;
+-
+-	spi = irq_flag_get_spi(env, reg);
+-	if (spi < 0)
+-		return spi;
+-	return mark_stack_slot_obj_read(env, reg, spi, 1);
+ }
+ 
+ /* This function is supposed to be used by the following 32-bit optimization
+@@ -7255,7 +7218,7 @@ static int process_kptr_func(struct bpf_verifier_env *env, int regno,
+ static int process_dynptr_func(struct bpf_verifier_env *env, struct bpf_reg_state *reg, argno_t argno, int insn_idx,
+ 			       enum bpf_arg_type arg_type, int clone_ref_obj_id)
+ {
+-	int err;
++	int spi, err = 0;
+ 
+ 	if (reg->type != PTR_TO_STACK && reg->type != CONST_PTR_TO_DYNPTR) {
+ 		verbose(env,
+@@ -7317,7 +7280,17 @@ static int process_dynptr_func(struct bpf_verifier_env *env, struct bpf_reg_stat
+ 			return -EINVAL;
+ 		}
+ 
+-		err = mark_dynptr_read(env, reg);
++		if (reg->type != CONST_PTR_TO_DYNPTR) {
++			spi = dynptr_get_spi(env, reg);
++			if (spi < 0)
++				return spi;
++
++			/*
++			 * For CONST_PTR_TO_DYNPTR, reg is already scratched by check_reg_arg
++			 * in check_helper_call and mark_btf_func_reg_size in check_kfunc_call.
++			 */
++			mark_stack_slots_scratched(env, spi, BPF_DYNPTR_NR_SLOTS);
++		}
+ 	}
+ 	return err;
+ }
+@@ -7427,9 +7400,7 @@ static int process_iter_arg(struct bpf_verifier_env *env, struct bpf_reg_state *
+ 		if (spi < 0)
+ 			return spi;
+ 
+-		err = mark_iter_read(env, reg, spi, nr_slots);
+-		if (err)
+-			return err;
++		mark_stack_slots_scratched(env, spi, nr_slots);
+ 
+ 		/* remember meta->iter info for process_iter_next_call() */
+ 		meta->iter.spi = spi;
+@@ -11393,7 +11364,7 @@ static int process_kf_arg_ptr_to_btf_id(struct bpf_verifier_env *env,
+ static int process_irq_flag(struct bpf_verifier_env *env, struct bpf_reg_state *reg, argno_t argno,
+ 			     struct bpf_kfunc_call_arg_meta *meta)
+ {
+-	int err, kfunc_class = IRQ_NATIVE_KFUNC;
++	int err, spi, kfunc_class = IRQ_NATIVE_KFUNC;
+ 	bool irq_save;
+ 
+ 	if (meta->func_id == special_kfunc_list[KF_bpf_local_irq_save] ||
+@@ -11434,9 +11405,11 @@ static int process_irq_flag(struct bpf_verifier_env *env, struct bpf_reg_state *
+ 			return err;
+ 		}
+ 
+-		err = mark_irq_flag_read(env, reg);
+-		if (err)
+-			return err;
++		spi = irq_flag_get_spi(env, reg);
++		if (spi < 0)
++			return spi;
++
++		mark_stack_slots_scratched(env, spi, 1);
+ 
+ 		err = unmark_stack_slot_irq_flag(env, reg, kfunc_class);
+ 		if (err)
+-- 
+2.53.0-Meta
 
-The configuration is less about "which machines you think might use
-this", but more "what does the implementation require".
-
-The LE condition makes sense, as the driver does not support BE. But
-what is requiring 64-bit?
-
-> > The header comment says DSP0256 but the URL and the commit message
-> > both say DSP0292. DSP0256 is a different DMTF document (PLDM for
-> > Monitoring and Control). Should the comment read DSP0292?
-> >=20
-> > [ ... ]
->=20
-> The DMTF DSP0256 is the MCTP Host Interface Specification. It=20
-> standardizes how Management Component Transport Protocol (MCTP) packets=
-=20
-> and messages are communicated between a system's host software and its=
-=20
-> internal management controllers (like a BMC or satellite controller).
-> DSP0292 IS specific to the binding. Neither are PLDM. THis comment is
-> correct
-
-The comment is:
-
-  Implementation of MCTP over PCC DMTF Specification DSP0256
-
-But DSP0256 is not the "MCTP over PCC" transport binding spec. Either
-mention the host interface specifically, or use the correct number for
-the PCC spec. I think the latter would be best, as the host interface
-spec seems less relevant here.
-
-> > > +static void mctp_pcc_client_rx_callback(struct mbox_client *cl, void=
- *mssg)
-> > > +{
-> > > +	struct acpi_pcct_ext_pcc_shared_memory pcc_header;
-> > > +	struct mctp_pcc_ndev *mctp_pcc_ndev;
-> > > +	struct mctp_pcc_mailbox *inbox;
-> > > +	struct mctp_skb_cb *cb;
-> > > +	struct sk_buff *skb;
-> > > +	int size;
-> > > +
-> > > +	mctp_pcc_ndev =3D container_of(cl, struct mctp_pcc_ndev, inbox.clie=
-nt);
-> > > +	inbox =3D &mctp_pcc_ndev->inbox;
-> > > +	memcpy_fromio(&pcc_header, inbox->chan->shmem, sizeof(pcc_header));
-> > [High]
-> > Can this dereference a NULL shmem during teardown?
-> >=20
-> > Looking at pcc_mbox_free_channel() in drivers/mailbox/pcc.c, the
-> > channel's shmem is iounmapped (and the pointer cleared) before the
-> > shutdown path runs free_irq(). Until free_irq() returns, an inbound
-> > doorbell on another CPU can still fire pcc_mbox_irq, which calls
-> > mbox_chan_received_data(), which calls chan->cl->rx_callback (cl is
-> > still set at that moment) =E2=80=94 landing here.
-> >=20
-> > Existing PCC clients such as drivers/acpi/acpi_pcc.c::pcc_rx_callback
-> > do not touch shmem from their callback, so this driver appears to be
-> > the first one to expose this ordering.
-> >=20
-> > Should the rx_callback bail out when inbox->chan->shmem is NULL, or
-> > should the ordering in pcc_mbox_free_channel() (free_irq before
-> > iounmap) be addressed in the mailbox layer first?
->=20
-> That needs to be fixed in the PCC layer, and is submitted in a different=
-=20
-> patch.=C2=A0 When that patch is accepted, this issue will be fixed.=C2=A0=
- I do not=20
-> want to hold up this driver for that issue.
-
-Understood that there's a fix in development for this, but we can't
-introduce a potential null pointer dereference in the interim.
-
-If you want this merged before the fix, how about a guard for a valid
-shmem pointer?
-
-> Yeah, the Big Endian reference is spurious.=C2=A0 If there is another=20
-> iteration I will pull it.
-
-Sounds good.
-
-Cheers,
-
-
-Jeremy
