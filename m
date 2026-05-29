@@ -1,154 +1,164 @@
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com [209.85.210.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E4373438A8
-	for <netdev@vger.kernel.org>; Fri, 29 May 2026 12:32:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A115175A99
+	for <netdev@vger.kernel.org>; Fri, 29 May 2026 12:46:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780057979; cv=none; b=NVy9HIOZ53NvxQRAIAqcdaTh+YOhtGzO19gUazLBqj88hOwu2oRrPB20A/NNkpvk3PCxVDi5xkVK+foE4mBiZnUmi7sXEEHb33p7Yneqvv8lIlCKxiG/X922Ojvmim1fgm4XdMH1TuGyAFWcsNO0dAz514y96SjhIh1MKXwqtPU=
+	t=1780058765; cv=none; b=gBrspjHH4yZU9BULSqJkZ48BPjbk0HeoOjanVHcY1cT95a/7SXryeUbJSZycRaQ+2kJkx8fJ6s4uhNeh+277Y3hupRaigW/hHHmYnESusRivHAoRtUl+n5cRVKsEEs50s22z8dnn9JrZr24JqwkDOtXF0JYVPRkUYAuxR06zBKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780057979; c=relaxed/simple;
-	bh=cclZf+Epg16CBzhDH3OyvyaSG0H4F39k5XvewEWnxO0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=R5Y2JuWEv8nXuftG3D/0pCYEjjEv3QzW9uqmmoLRje02h60mpBy1BdG++r8kyZDCHE/u4a4Bj1Nrl4rHL9PmgpSxQpDqChe9jNmTHqBigtPO6PDwjISm8dTpflO7yiB4LIUkntH56+IPjVdIkbbsfYav95z8RPraCMKpdrw4mwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T9sgRqid; arc=none smtp.client-ip=209.85.221.54
+	s=arc-20240116; t=1780058765; c=relaxed/simple;
+	bh=NSn5sR6O4Rt7B3/YqbAiK3fq+qyObIB738wGJZL72Vk=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=LRD1TKKIFKy2/7QcLWV3DqCGFinamg1z7fTZcNskddQbdxEP7N2J19unWXwZWG9CdBiwqw1GrVPc/GRdpACcKfyzFo8DYhpThiQkVb+eq6H54UgeEq5aPr+G76Gta0FxHu/cS5cCreWQOLL7hhmH5TCFHn7djWJ9xFyY8Bh4qFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HA/xLD7K; arc=none smtp.client-ip=209.85.210.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T9sgRqid"
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-43d77f6092eso7844188f8f.2
-        for <netdev@vger.kernel.org>; Fri, 29 May 2026 05:32:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HA/xLD7K"
+Received: by mail-ot1-f54.google.com with SMTP id 46e09a7af769-7dd73b7c757so6453407a34.0
+        for <netdev@vger.kernel.org>; Fri, 29 May 2026 05:46:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780057977; x=1780662777; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=EEKZEZxOVC/BS+13k9H03KzhdZwwm7vFIQh8bCvpl2k=;
-        b=T9sgRqidue2n9AQhSc1PBHQFG8pD1jLotZ+GcE3ogjAS5nDsKl1J/MNja6/H/vbew8
-         DW5Akr+/AGfVuNw0CwRQWY0YVswRcF0fjhdFPfPiu052o9KeXghtszJbFH8Y+6dYbo8m
-         dWbDGHva7+MdDJhNOajykDbJbkv5YDbkJh1CfJhrtsmEXHVX1rdRZrH2Rbf9mRAOs5Ux
-         z/MdqlZ6u57t0BkErh/seqTeCOXicL87FOOJzXmiSfZvvJLbu1Gxi+7d5ejPZ8pMtVIc
-         lEhhNNPjV81Y/p9rwJS7703bHSfzn9Rq/bxQcEqVXkGy3wHMQ/VeLeDd3fqGlANGtXTX
-         rUgQ==
+        d=gmail.com; s=20251104; t=1780058763; x=1780663563; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=FOaj7kJy+BccHhWOj/+aUOc8E/TW5v19gnCmqaTZgac=;
+        b=HA/xLD7Kwxrz+AgsGk+FAdm4QhMyYI5zcD0Pm8uvJNUOekol1Je9GOhQvij24ZIZHV
+         nWireIuGELyORTSD5VCx8W6jE2hVHPLi2x3zxD9xP/Yv8Nnhb7Ywsyxb1RGb42xrgOQj
+         AttW5+XFRYMmBAw+oLFQOm7mkMJnwZDTe5jIFd4y+KGi0MrdfBZpQfmXw4YUG4vAgaMU
+         IorllKx5RhgUVMYTMmgLlupKRIWlNDY8Y+o0hzyhRaIwiTF6Uyddb29/AOXBNQtyDkr+
+         nLgjsAdoS4m8BgCfNseudmmuu3VB8GZ9USOX2MR668Bua42WLQRVTVFwbwQx+uU+FEHq
+         5UVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780057977; x=1780662777;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=EEKZEZxOVC/BS+13k9H03KzhdZwwm7vFIQh8bCvpl2k=;
-        b=CWvviYtIxPVmvaHt2x/5sVp6pun7pDshM/g7zES5y3DdsCvseqKFRO+0rW5G3g9V30
-         /iJbpGxQsJbWkozUXYpB4Od+MXVEcCazt9REJz6wkChhQSsN3Dpk5PcBN+RPX5r6GU/8
-         vFx8cKY/kTr9+Hqm2dg0ia4pX92XPtDRSz/TkOXxoMjhUcqycj26wQLQB+Klg2TAfa/G
-         XGUr1I+RCz1HKC4XvouFNmDkDh84xtDJm3BnkeafSTLOEe6z7GjQ1Z8qLjnKhUd5rT6K
-         dJKcCidcdSBo3zTJb3Tp926iwh5sN3e+Kc+eVWrJ9M06D8SoSSAQnpmjrEwajV0+aIjc
-         CJMw==
-X-Forwarded-Encrypted: i=1; AFNElJ8/ftp13ytTNxbO6wjeJB5lBeY6GVtjfkgp4HidZ5N60cvA+brM0ghkyEezEip5Kf2/BHGVmP4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxRaqTLvTzHhDZ8NhRfbM3h1GtdhGqU/VzUkE18B3395/zj8fJZ
-	SJ9uXoVGK9tDc0dQoxIORG+w9ApIoEMgrHbW9BESP2d1dMvZ4wh06zJb
-X-Gm-Gg: Acq92OGcIQINuyR3bE0eWm9ulvOG28IWoHQBecWqfrGLv5WUzq68LyrDJ7mJJqnFurY
-	bku+cPnOftSdAvkPAMtpanfOdET0Sh33CBP9VcwCfeWLxUu9U/X814UfofZINiGmvKgm4ak5Hvq
-	I5jAfGUXS2e0c6TGXgTMK7B7jck9LZrtHKYYgLTQuX9ROMBJlWUX5DnXnYRwuTo42xQvCjOOHvU
-	KDcGIVhazuEI9cbyJCtDkYW4tLvNzQuALd+00fNIBXQxtcEUqDHl0gPU6eSqt+JJNGjM+nuaDRb
-	aOXNlclDZD3truiPaYh3eZ44yH3yb0tQ7hglZEkK/yVrpKVBk14pUEB+RKuhd8dvjjJ0FQFLd0w
-	U99LFIE5RIS+PhvN/WvUq7pXxKL6wrSjePDQ6lqK8BCZ0CN1gb4eEcOlIhCYxQEDETuzqcdwrBm
-	cLm3IOQ1OAAhXEA2J2wDz8zjZTKMjSvdTk3qQUPf6KXhISCieiTMHQkQ==
-X-Received: by 2002:adf:f712:0:b0:45e:f5b6:7bf9 with SMTP id ffacd0b85a97d-45ef5b67d32mr846572f8f.31.1780057976615;
-        Fri, 29 May 2026 05:32:56 -0700 (PDT)
-Received: from cedric-laptop ([195.225.166.186])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45ef357635fsm3165226f8f.33.2026.05.29.05.32.55
+        d=1e100.net; s=20251104; t=1780058763; x=1780663563;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=FOaj7kJy+BccHhWOj/+aUOc8E/TW5v19gnCmqaTZgac=;
+        b=gq25T55aNfLHEToktt5llaFBiURs0G4f+UBBg+hW7O494DXag4VNsqFXwq0DtYc397
+         3h9oOop/SgY5ESoBahqy2zRY8s/0zIsm9a3rXRobtJYdvFGeBMjnUOUSatcGj+nMiEZM
+         V1v5xKhwT1c/HRSnIWjCfBoPRAVlbXBg+95fqVTC1Ce4UbWb/VrDrF319oHX5BFqQRLE
+         jxepv0Pz4OOKlvVZxLt+pOPeyli7jl9ikvJE0ljx6RNF4g0EujrvY0rrzDuYaZflYPls
+         iMARYD0OqDSKmYfGF8Yv1Y3399m5AQZ6AVMZ+y2IAXvQIm/+MXCIQzug/2ktyFgZu8WM
+         CC6Q==
+X-Gm-Message-State: AOJu0YxiYsOli1byKstJ6bqwNa9UWi9e03vPHXFkiN2cWEvfpUsaq2tt
+	21WSx8yra0TceRjSDmsQbfS8TujndBBYQNqvsf/rKFDENbwiU4kcKGUg
+X-Gm-Gg: Acq92OE/azeeCXTHXQUe8d0Uq79Yrrsb5Jp7BENctQP/LZPQdzDyptemE73ggIQ+DT4
+	UFKHWaqsocqbZB1ZwWfV6wDXx2BMK11yCNXD7uXxnpEGYBehYkDyt0lBRAtPkmMYDg3/Z7Tmhhg
+	EObAgq4tyCE+bdTkHwAM52EPSufHUifPZJC++yMpVrN4m5RQ5e5GS2CDndq1Pr0ax+3u5t0WVPQ
+	njpg2OZAVtvOVi25v0KmYudbvUNjnANAee3t/kp7NwumbIHGdfkD4UNRH9YtHspTuKcgFqtmYmN
+	PhhPj2D5p/ehZt1RGrR6NGNJRohzZCqb492KW/z7xvoCD3/wo/RcvY/DkSDnqYK4yHn81stZMaH
+	hickf/LyCKYXDyIz1Eau8PUfMVFu2YXHRXakQHVH4+4z+8+Q2mA1n/VrYWBmI+CcLpvVcJAD+ME
+	SUqAOlvzXdKjCv5e5rW4aHjz6Wvq47lg==
+X-Received: by 2002:a05:6830:438d:b0:7e1:90a:97c2 with SMTP id 46e09a7af769-7e694e4bf8bmr1720403a34.23.1780058762922;
+        Fri, 29 May 2026 05:46:02 -0700 (PDT)
+Received: from localhost ([2a03:2880:10ff:1::])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7e695bd9c9csm1381119a34.11.2026.05.29.05.46.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 29 May 2026 05:32:56 -0700 (PDT)
-Date: Fri, 29 May 2026 14:32:54 +0200
-From: Cedric Jehasse <cedric.jehasse@gmail.com>
-To: Luke Howard <lukeh@padl.com>
-Cc: cedric.jehasse@luminex.be, Andrew Lunn <andrew@lunn.ch>, 
-	Vladimir Oltean <olteanv@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Marek =?utf-8?B?QmVow7pu?= <kabel@kernel.org>
-Subject: Re: [PATCH net-next v4 2/2] net: dsa: mv88e6xxx: add support for
- credit based shaper
-Message-ID: <gigqfzdzvtoegjd6kb73g2xv4j7uq7f5s2lkrwspiosni3c44p@him3vof5vzrm>
-References: <20260528-net-next-mv88e6xxx-cbs-v4-0-8bd13b906457@luminex.be>
- <20260528-net-next-mv88e6xxx-cbs-v4-2-8bd13b906457@luminex.be>
- <DA213B68-5654-498A-B688-B92703923CCE@padl.com>
+        Fri, 29 May 2026 05:46:02 -0700 (PDT)
+From: Daniel Zahka <daniel.zahka@gmail.com>
+Date: Fri, 29 May 2026 05:45:55 -0700
+Subject: [PATCH net-next] selftests: drv-net: tso: add new tests for
+ ip6tnl, ipip, and sit tunnels
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <DA213B68-5654-498A-B688-B92703923CCE@padl.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260529-tso-tunnels-v1-1-3771ee9eaaa9@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAIOKGWoC/x3MSwqAMAwA0atI1gZqRaVeRVz4STUgUZoqgnh3i
+ 8u3mHlAKTAptNkDgS5W3iWhyDOY1kEWQp6TwRpbm8o6jLpjPEVoUyz9UIzOm8Y4B6k4Anm+/1s
+ HQhGF7gj9+37rKQKAZwAAAA==
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Shuah Khan <shuah@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+ linux-kernel@vger.kernel.org
+X-Mailer: b4 0.13.0
 
-On Fri, May 29, 2026 at 09:48:33AM +1000, Luke Howard wrote:
-> > +static int mv88e6xxx_setup_tc_cbs(struct dsa_switch *ds, int port,
-> > +  struct tc_cbs_qopt_offload *cbs)
-> > +{
-> > + const struct mv88e6xxx_avb_ops *avb_ops;
-> > + struct mv88e6xxx_chip *chip = ds->priv;
-> > + const struct mv88e6xxx_qav_info *qav;
-> > + const struct mv88e6xxx_ops *ops;
-> > + int hilimit_reg;
-> > + int rate_reg;
-> > + u8 queue_bit;
-> > + u16 hi_limit;
-> > + u16 rate = 0;
-> > + int err;
-> > +
-> > + ops = chip->info->ops;
-> > + avb_ops = ops->avb_ops;
-> > + qav = chip->info->qav;
-> > +
-> > + if (!qav || !avb_ops || !avb_ops->port_qav_write ||
-> > +    !ops->port_set_scheduling_mode)
-> > + return -EOPNOTSUPP;
-> 
-> Only the first check should be necessary because the wrapper functions return -EOPNOTSUPP in the case of a NULL function pointer.
-> 
-That's not the same logic.
-If one of the two function pointer is NULL, the other can still be executed
-(Maybe not that likely as that's probably a mistake in the driver)
+Add new tunnel test cases for ip6tnl, ipip, and sit. ip6tnl supports
+ipv[46] as inner l3 header, and the other two tunnels only support a
+single inner l3 type.
 
-> > + if (!(chip->ports[port].cbs_active_queues & ~queue_bit)) {
-> > + err = mv88e6xxx_port_set_scheduling_mode(chip, port, 0);
-> > + if (err)
-> > + goto unlock;
-> > + }
-> 
-> Missing a newline here after closing brace.
+Signed-off-by: Daniel Zahka <daniel.zahka@gmail.com>
+---
+Example run:
 
-Is that a personal preference, or a guideline i've missed?
+  # Detected qstat for LSO wire-packets
+  TAP version 13
+  1..18
+  ok 1 tso.ipv4
+  # Testing with mangleid enabled
+  ok 2 tso.vxlan4_ipv4
+  ok 3 tso.vxlan4_ipv6
+  # Testing with mangleid enabled
+  ok 4 tso.vxlan_csum4_ipv4
+  ok 5 tso.vxlan_csum4_ipv6
+  # Testing with mangleid enabled
+  ok 6 tso.gre4_ipv4
+  ok 7 tso.gre4_ipv6
+  ok 8 tso.ip4_ipv6
+  # Testing with mangleid enabled
+  ok 9 tso.ip4_ipv4
+  ok 10 tso.ipv6
+  # Testing with mangleid enabled
+  ok 11 tso.vxlan6_ipv4
+  ok 12 tso.vxlan6_ipv6
+  # Testing with mangleid enabled
+  ok 13 tso.vxlan_csum6_ipv4
+  ok 14 tso.vxlan_csum6_ipv6
+  # Testing with mangleid enabled
+  ok 15 tso.gre6_ipv4
+  ok 16 tso.gre6_ipv6
+  ok 17 tso.ip6_ipv4
+  ok 18 tso.ip6_ipv6
+  # Totals: pass:18 fail:0 xfail:0 xpass:0 skip:0 error:0
+---
+ tools/testing/selftests/drivers/net/hw/config | 3 +++
+ tools/testing/selftests/drivers/net/hw/tso.py | 3 +++
+ 2 files changed, 6 insertions(+)
 
-> 
-> > + chip->ports[port].cbs_active_queues &= ~queue_bit;
-> > + goto unlock;
-> > + }
-> 
-> The control flow might be clearer were goto unlock only taken in case of error. i.e. wrap the CBS enable case in an else block.
-> 
-I don't think it makes that much difference.
-You've mentioned the felix driver before, that has similar flow :) (with a
-return in the disable case isof goto)
+diff --git a/tools/testing/selftests/drivers/net/hw/config b/tools/testing/selftests/drivers/net/hw/config
+index 8c132ace2b8d..b9f406dd7282 100644
+--- a/tools/testing/selftests/drivers/net/hw/config
++++ b/tools/testing/selftests/drivers/net/hw/config
+@@ -10,10 +10,13 @@ CONFIG_INET_ESP_OFFLOAD=y
+ CONFIG_IO_URING=y
+ CONFIG_IPV6=y
+ CONFIG_IPV6_GRE=y
++CONFIG_IPV6_SIT=y
++CONFIG_IPV6_TUNNEL=y
+ CONFIG_NET_CLS_ACT=y
+ CONFIG_NET_CLS_BPF=y
+ CONFIG_NET_IPGRE=y
+ CONFIG_NET_IPGRE_DEMUX=y
++CONFIG_NET_IPIP=y
+ CONFIG_NETKIT=y
+ CONFIG_NET_SCH_INGRESS=y
+ CONFIG_UDMABUF=y
+diff --git a/tools/testing/selftests/drivers/net/hw/tso.py b/tools/testing/selftests/drivers/net/hw/tso.py
+index bb675e3dac88..1b789fea8929 100755
+--- a/tools/testing/selftests/drivers/net/hw/tso.py
++++ b/tools/testing/selftests/drivers/net/hw/tso.py
+@@ -239,6 +239,9 @@ def main() -> None:
+             ("vxlan_csum", "", "tx-udp_tnl-csum-segmentation", ("vxlan", "id 100 dstport 4789 udpcsum", ("4", "6"))),
+             ("gre",        "4", "tx-gre-segmentation",         ("gre",   "", ("4", "6"))),
+             ("gre",        "6", "tx-gre-segmentation",         ("ip6gre","", ("4", "6"))),
++            ("ip",         "6", "tx-ipxip6-segmentation",      ("ip6tnl","mode any", ("4", "6"))),
++            ("ip",         "4", "tx-ipxip4-segmentation",      ("sit","", ("6", ))),
++            ("ip",         "4", "tx-ipxip4-segmentation",      ("ipip","", ("4", ))),
+         )
+ 
+         cases = []
 
-> > +
-> > + hi_limit = cbs->hicredit & qav->hi_limit_mask;
-> > + err = mv88e6xxx_port_qav_write(chip, port, hilimit_reg, hi_limit);
-> > + if (err)
-> > + goto unlock;
-> > +
-> > + err = mv88e6xxx_port_qav_write(chip, port, rate_reg, rate);
-> > + if (err)
-> > + goto unlock;
-> > +
-> > + err = mv88e6xxx_port_set_scheduling_mode(chip, port,
-> > + chip->info->num_tx_queues - 1);
-> 
-> For the 6020 (which you brought to my attention as only supporting CBS on half its four queues), should strict priority be enabled only on the CBS queues or on all queues? (I don’t know the answer, just asking.)
-> 
-I hadn't thought about that. The 6020 has the same strict priority settings
-registers as the other devices, it doesn't need special handling.
+---
+base-commit: 8415598365503ced2e3d019491b0a2756c85c494
+change-id: 20260529-tso-tunnels-3fa1b9f07099
+
+Best regards,
+-- 
+Daniel Zahka <daniel.zahka@gmail.com>
 
