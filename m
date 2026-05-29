@@ -1,126 +1,133 @@
-Received: from mail-dl1-f42.google.com (mail-dl1-f42.google.com [74.125.82.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpbguseast2.qq.com (smtpbguseast2.qq.com [54.204.34.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4102839EF2E
-	for <netdev@vger.kernel.org>; Fri, 29 May 2026 05:37:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10D1A373C1D;
+	Fri, 29 May 2026 05:39:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.204.34.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780033028; cv=none; b=Rt3BrZ9SuE96E5fnNA/EuzT7UHCjViDE0mD1421WQLfLYob1M015qA5FWq9GwAxHN3WmI16eS2fJOFOtBPfUxDqg7+Endy+NDYxkKcWqhlShdB9sZxyJpqxoc3O6EB9FOf3ocm5hitXg6N8qr5H8wR8ux3KycZmrd9i/4u/x3iI=
+	t=1780033173; cv=none; b=hWoI1PQqPBZ5MbIYZscA17JoNiMaMMGfXeXNRRtaR8OdPev0sEJWh7dWb4mrl8sKVYpzyY/dlHTbfir4jXinJxQvzjwbTLjM9QRFpmowzEzfCnaj7Q+PPcWHrXIRV+4+suPWfXFQgvUHdTbwJnQaoI5S9X2QguCUx6tdlJckLQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780033028; c=relaxed/simple;
-	bh=U/u+I7Fjs+lyPrjV5mTGiCw54swil5vB5IqkaePU3UM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=q/IWEnsSoTHVg4yU+MEtsddCI8W38AUkQ38PRoo85yinU+eUfUd6NSum/kDsjmm8ZGtyNCnVVZdWPeCC7ofpRbilX1OEcPpNnaer8E1JeGwRNG48W+naUE1RHsCYxXvwy9PJ2eVu3lXJYWbsNjYp0J0jWsfdfGi/fa8fannHy8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gGrftDdx; arc=none smtp.client-ip=74.125.82.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1780033173; c=relaxed/simple;
+	bh=f1k16q+xbrl6FBSA/KGVSLMPJ+pJezSgZQGhVVq6yhc=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=MMjbFwAgYMe0px0L7Rtw85ryorfYC88iDZm81u17c2pBtdVzKQHxngreadTJBq1RVEboYPlpTBPq4p0WP2N+uGVBPHnRssD4AG9iPpcMtISShlT+pPoXMBapS7oaLbQuA5txJm3nr6dH3TO4du6XYoYG8BmG7U1pxrbb09qxmSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=Rt3pxMow; arc=none smtp.client-ip=54.204.34.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gGrftDdx"
-Received: by mail-dl1-f42.google.com with SMTP id a92af1059eb24-1363e78746eso9885047c88.1
-        for <netdev@vger.kernel.org>; Thu, 28 May 2026 22:37:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780033026; x=1780637826; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=b3mngTSiQ9G4QDQdoy3QdNFGLu5UDTjPqyOy5Rx/Ffg=;
-        b=gGrftDdxpBqeEcytuF5cMQivW8TLP4X3skIaFHpeJvM0bkgwWiUxNyfbJQ6N0n9Nnv
-         23NhooJzbJjpL3HS//soTiF2H1Jz1hokAV61p6wLnyy7muOB5dVjifRy6Q/vJhGGRQsP
-         9od7sc2lJz1LE7pvzI4Cv5Ymik3J5VXURow1bXTxx1meU8D/tMLumKW2voUjQIc58P6B
-         xcn00iQe+BNYjmW7eNBTCIqwcBptl1MSod/KdGsU92p1KzWHrmEy/1se9JrHn9cO7F+O
-         XVzU0QckkcIitEwwHaQdY1TIGeeEBHjW80XpoGehapMt7ZYnXgQACsnmFxuYbTievMKK
-         tNBQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780033026; x=1780637826;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=b3mngTSiQ9G4QDQdoy3QdNFGLu5UDTjPqyOy5Rx/Ffg=;
-        b=iycFdpTzKoDk1VVZbndHHJd0Mrr0GzoBLfdnE3VjuIV9zmwcjKW1aBRGANIeYBg9CH
-         ioILlAkK17TZCE6XvqNTqOSA51pq2BSU+qWJE8aGWwwCSiDIs4nb+4VCGGHUCb5wOHpm
-         /2WY6XA9IwGO2VEq4PSUV6eW0rxsIhC173DVvvafa6b5/fM6rQ6IHOOnwm9MYJCPtEC4
-         2MXfHcFXLn4mWbBj3Or8GHl5zNNXS+Veyv3lV7HuFEDCSgR9udM/5UsBL7r5d6203Y2z
-         NpTrgmIOmIdkke9t8Y2zIiISVYh7/9vFgrJpr03DcD0yebjPnL6LeOwVs5ySk+/EtnP+
-         5OzA==
-X-Forwarded-Encrypted: i=1; AFNElJ/uyPfvysaHEfl1lUl6q/gWl0oiPRjTzuWn+SHMnZo5Z3TMbYQRkTMnqPwVSjidn+ojYXgWPf0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx3doVA0HMGCTYj0zA/zL7516P3A3nZJ6l0pqz3TZcv9wYN232t
-	Q3eIdKfPob3iYLJRAcaoANuhikTCQ8/EjprxhCaHu9s7FnhMy8zfabFB
-X-Gm-Gg: Acq92OE+ZdHD6bxR7oExY8NpfImvFlEhA7kqLtrwPfbn1/0NqKdSjjB6BWug2weCzjx
-	l3D8iknEK2AVakTvK1fBeJrTNaBUBvyaB4qQDMKn+dW/E44Q2Dq6V2ZactQnMB3tIVrugYG5vgm
-	ZL+dusaE2xoq83skHEwUF5cjdS86KDep7He4qo3vu3kxyzi0QCKmI/1qeLBzHsExkUl3FaBeQER
-	BVaaCNJ70/ZRHgvrkMOikYpctaOGsSqX7xZlmvs7vCf0XurMHfrDItRetDmmCtmE2ibrgAVzWs2
-	MZPQ+niDPM4ssS904hwVgr8NGkK+oiLFlJK29QA05n105SrlknbD+9V/yoFy7fVgqaMXunsNmJY
-	FcWyR6rsOu9UgHHUaPVokHMUuVPH89ptor8lbnE7CznTRC+8QkM1ijlnuOQ4kRngWDZ4oIpIJLO
-	d9hDpJZgu9SgxJPijul/xk79Gk7GEO/d3AIHfKWfBhTxGJTTmpveGSeKAIpB3votfk7MsRv3Wn3
-	UE=
-X-Received: by 2002:a05:7022:2223:b0:135:d76a:aedc with SMTP id a92af1059eb24-137aeee5faemr536827c88.33.1780033026219;
-        Thu, 28 May 2026 22:37:06 -0700 (PDT)
-Received: from google.com ([2a00:79e0:2ebe:8:e169:a62b:d3ca:e8c5])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-137b2d04287sm832719c88.0.2026.05.28.22.37.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 May 2026 22:37:05 -0700 (PDT)
-Date: Thu, 28 May 2026 22:37:01 -0700
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To: Linus Walleij <linusw@kernel.org>
-Cc: Arnd Bergmann <arnd@kernel.org>, linux-gpio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, 
-	Christian Lamparter <chunkeey@googlemail.com>, Johannes Berg <johannes@sipsolutions.net>, 
-	Aaro Koskinen <aaro.koskinen@iki.fi>, Andreas Kemnade <andreas@kemnade.info>, 
-	Kevin Hilman <khilman@baylibre.com>, Roger Quadros <rogerq@kernel.org>, 
-	Tony Lindgren <tony@atomide.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
-	Bartosz Golaszewski <brgl@kernel.org>, Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>, 
-	Matti Vaittinen <mazziesaccount@gmail.com>, Florian Fainelli <florian.fainelli@broadcom.com>, 
-	Jonas Gorski <jonas.gorski@gmail.com>, Andrew Lunn <andrew@lunn.ch>, 
-	Vladimir Oltean <olteanv@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, linux-wireless@vger.kernel.org, linux-omap@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org, linux-sh@vger.kernel.org, 
-	linux-input@vger.kernel.org, linux-leds@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH 02/10] [v3] input: gpio-keys: make legacy gpiolib optional
-Message-ID: <ahklyAUMaOxy3Z9X@google.com>
-References: <20260520183815.2510387-1-arnd@kernel.org>
- <20260520183815.2510387-3-arnd@kernel.org>
- <CAD++jLnYeh3GfEfNXfCYdcdg_j2RAU63TYewwaTx3tm0tM531w@mail.gmail.com>
+	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="Rt3pxMow"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1780033092;
+	bh=JRw5xcrSjOiERzxs4QrGB7FXuKGRgXx5pHS4OGkIPuU=;
+	h=From:To:Subject:Date:Message-Id:MIME-Version;
+	b=Rt3pxMowEKiQ/aZwjHjamuJAOKgsBr2Dym1dsg0XnxtqN7KBKwmviByMFrkpWasXJ
+	 kgS3iwluzXDpsOBK41czE09M9+9omSPjQsBKBLBPKKYPEAmW7Jxg744t2AwyCvHeib
+	 wbJWrjd0HAGhuHNctZOpDlLenlhilyTy3jl96gHI=
+X-QQ-mid: zesmtpsz5t1780033072t7ae2a378
+X-QQ-Originating-IP: d7NrgzXasJ3gpHIgPC/KZgg6qQgMWztRLLTXZx+3Lzg=
+Received: from localhost.localdomain ( [124.126.19.250])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Fri, 29 May 2026 13:37:48 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 13989401940268503956
+EX-QQ-RecipientCnt: 11
+From: ZhaoJinming <zhaojinming@uniontech.com>
+To: Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: intel-wired-lan@lists.osuosl.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	ZhaoJinming <zhaojinming@uniontech.com>
+Subject: [PATCH net v2 1/2] ice: dpll: set pointers to NULL after kfree in ice_dpll_deinit_info
+Date: Fri, 29 May 2026 13:37:32 +0800
+Message-Id: <20260529053733.764996-2-zhaojinming@uniontech.com>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20260529053733.764996-1-zhaojinming@uniontech.com>
+References: <20260528171202.2659491-3-horms@kernel.org>
+ <20260529053733.764996-1-zhaojinming@uniontech.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAD++jLnYeh3GfEfNXfCYdcdg_j2RAU63TYewwaTx3tm0tM531w@mail.gmail.com>
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpsz:uniontech.com:qybglogicsvrsz:qybglogicsvrsz4b-0
+X-QQ-XMAILINFO: Od6jZKO+x2euDiO64vibcm/bW3Lls+AQRe+wsjxQnGKkxoK0bb7Jy6KD
+	zkNQcN9cwRVvQKH5a3Cm9YbeaJMWdsh3bZffdynTzs4rOa/gWUu6e1cC7v5d4PUkIXvgLxe
+	/4w/WfrXYiIf01TbjpvwFKPg5z7gJqxY/dPEUH19zG3Bp/9+f4qLL/iPwiYzc151rUvJ2+Z
+	yjfifx33/ToQa3hMyrB12vdLwbXtNUmuCsXe4/9W6Wkl/FaD2saBNhmu9l5fdKZHGFrNJsh
+	k3mEsPigXeJe/36K1RGh33CgwOFQLOv40gLYnX3LMP13Sn0XfVKgbZ1Vt9MkghcumPk4TC3
+	i1hwZseCyvyooxiz/V/BUBfAvLj10e1qrzW0pfMvm4XmtVCoUCu7zn5THilV13fegfzFtmY
+	eBQI27vhAh6yq5BV8u8XwvM+yVHgELIcfW+gPTov/RUa2LY/H48UPMvH37luMEHEHtjN0NW
+	8y+4djVDZDfIRQnBpALCBT+gg1XspcfZBEVYaUukYANKfJFr9bmRnlFh+0Rl1NQsaJYJHze
+	7pCrEfhSnorpcAdWJ6iVjPaZaXYKeVrQMoMpD7ZivD/F007gXYftB6MykWOjNCQaOX3jpBC
+	Ho+eIzgCm+ir1CH8fgJcxOl86QUZqXFjq67je48jHiPmv+Fz/spvuy1s6RqoCx9zSKOrmaM
+	tUTpBOXLpdsJfUZXQzcqLEt89HgDAtC38vVfXWQc0Rkzfzt6cW0bZDr3aes3/oBQhLyVRiv
+	jUMax7UjaTcDciMlbdZdLk62LFTTAgi/wmPG2YSPyQTyDwvh00IG/pgmkZjUeeL4HCq2kuf
+	vgN1Ko5R2613r0y46oGShTGYwa3bMCRfg8kDgDS3rSNH9tFfGxDGviJqhw3Sb2jG7Btcnj7
+	zNUkfiOvCTguwIJc/PBSjJZYzf3lOeTGiojv5LDvhQMaJb56RUQWWFqelFTVURjp6yYm9z+
+	PRMfd5+nx9BdyERPWCrytNv58GSv1t/itFCrIrCSbpdVvleIIcPXys9CGGvellW/cF2lcwu
+	pBDV1Az1IBWuG6NCXtG7rFYlQtFwybp9g3M++n0FPubyaOBxWWJ4jcKINYOy0=
+X-QQ-XMRINFO: OD9hHCdaPRBwH5bRRRw8tsiH4UAatJqXfg==
+X-QQ-RECHKSPAM: 0
 
-On Mon, May 25, 2026 at 10:57:44AM +0200, Linus Walleij wrote:
-> On Wed, May 20, 2026 at 8:38 PM Arnd Bergmann <arnd@kernel.org> wrote:
-> 
-> > From: Arnd Bergmann <arnd@arndb.de>
-> >
-> > Most users of gpio-keys and gpio-keys-polled use modern gpiolib
-> > interfaces, but there are still number of ancient sh, arm32 and x86
-> > machines that have never been converted.
-> >
-> > Add an #ifdef block for the parts of the driver that are only used on
-> > those legacy machines.
-> >
-> > The two Rohm PMIC drivers use a gpio-keys device without an actual GPIO,
-> > passing an IRQ number instead. In order to keep this working both with
-> > and with CONFIG_GPIOLIB_LEGACY, change the gpio-keys driver to ignore
-> > the gpio number if an IRQ is passed.
-> >
-> > Link: https://lore.kernel.org/all/b3c94552-c104-42e3-be15-7e8362e8039e@gmail.com/
-> > Link: https://lore.kernel.org/all/afJXG4_rtaj3l2Dk@google.com/
-> > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> 
-> Reviewed-by: Linus Walleij <linusw@kernel.org>
+ice_dpll_deinit_info() calls kfree() on several pf->dplls fields
+(inputs, outputs, eec.input_prio, pps.input_prio) but does not set
+the pointers to NULL afterward. This leaves dangling pointers in the
+pf->dplls structure.
 
-OK, if Lee Acks MFD changes I can pick this up.
+While not currently exploitable through existing code paths, this is
+unsafe because:
 
-Thanks.
+1. If ice_dpll_init_info() is called again after a deinit (e.g. during
+   driver recovery), and a subsequent allocation within init fails, the
+   error path will jump to deinit_info and call ice_dpll_deinit_info()
+   again. Since some pointers still hold the old freed addresses, this
+   would result in a double-free.
 
+2. Any future code that checks these pointers before use or after free
+   would be unprotected against use-after-free.
+
+Follow the common kernel convention of setting pointers to NULL after
+kfree() so that:
+- kfree(NULL) is a safe no-op, preventing double-free
+- NULL checks on these pointers become meaningful
+
+This is a preparatory fix for a subsequent patch that routes additional
+error paths in ice_dpll_init_info() to the deinit_info label.
+
+Fixes: d7999f5ea64b ("ice: implement dpll interface to control cgu")
+Signed-off-by: ZhaoJinming <zhaojinming@uniontech.com>
+---
+ drivers/net/ethernet/intel/ice/ice_dpll.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/drivers/net/ethernet/intel/ice/ice_dpll.c b/drivers/net/ethernet/intel/ice/ice_dpll.c
+index 892bc7c2e28b..99bb308255cc 100644
+--- a/drivers/net/ethernet/intel/ice/ice_dpll.c
++++ b/drivers/net/ethernet/intel/ice/ice_dpll.c
+@@ -4247,9 +4247,13 @@ ice_dpll_init_pins_info(struct ice_pf *pf, enum ice_dpll_pin_type pin_type)
+ static void ice_dpll_deinit_info(struct ice_pf *pf)
+ {
+ 	kfree(pf->dplls.inputs);
++	pf->dplls.inputs = NULL;
+ 	kfree(pf->dplls.outputs);
++	pf->dplls.outputs = NULL;
+ 	kfree(pf->dplls.eec.input_prio);
++	pf->dplls.eec.input_prio = NULL;
+ 	kfree(pf->dplls.pps.input_prio);
++	pf->dplls.pps.input_prio = NULL;
+ }
+ 
+ /**
 -- 
-Dmitry
+2.20.1
+
