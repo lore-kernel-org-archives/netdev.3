@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D53E23395E;
-	Fri, 29 May 2026 19:50:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1400D3A7F58;
+	Fri, 29 May 2026 19:50:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780084207; cv=none; b=HeE6iKkrhIlJLp/nJifDlvFjV5auqIf1IQQ4A3eb1uvGlRMfRl22/Ueo5J1+u01z821iXGIbAg1N17XJ9MPLfDwQSqxzGi99tQzRcaC+O43n1/2I17Zq1Dwc/u+5mdpHN8QjdbB3jGI0XvcITlgWt94APwbXqLX00iP45t1DADc=
+	t=1780084209; cv=none; b=eTXYoxFwZCvhB3BZ78ATUuwsmf2E14K07LOBVJCorNZNRI5RgutLvbSH6w5GH2j3qpm9Ecilv4vzzNFmBVW+DYI6eOIU7YHwYDyFwjQXN82+kagfsk17rpfP4nUZYIbFui2EiRB8exRzAnXUNXOBKDPbm137iUDqvMJtsr5P/Oc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780084207; c=relaxed/simple;
-	bh=lwOQz5npaazZqEfFJxwrqOkAfZqEhlhgMg4GjWctWjQ=;
+	s=arc-20240116; t=1780084209; c=relaxed/simple;
+	bh=euke7jXEZD9I6mubBAWhgskCH+f9edm0i3hf3mPSRi4=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=NigQFy8Xs0OJeUs1v170+eQr2qn9Vf9AfGq2Ocq/fOTsiL2+ezkL42WVf9XGpITvKPZbKDib/oVEOH3OQkY7Wk/lUPHQSY+9Bm1s7uCPj0n4SS3Pb4x8/LeFNoWgBvLqo4pqUqnIJHL76UQtfOyMnz44xUsPmJhJnS6SeKwfIRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h5MkStyO; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=Ia3BsMPMNljK6WV0gipE6VC9FsC373DAHtIgPm3Mc08S8cHtZPXoOe5cJGKQEJsqe/K8UyefANc6Y3ctcypMA2X+/X3/4abtSyKtHmXo841iU4qdB+XO42VIRXFW2P+olfaaRXlOAtsURvi8m2LG+MbDBust33nbnQXQSK/rybM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=letJnpMO; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h5MkStyO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A54951F00893;
-	Fri, 29 May 2026 19:50:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="letJnpMO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A53A51F00893;
+	Fri, 29 May 2026 19:50:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780084205;
-	bh=cBb6tvuGqHb+omTr1WAM/3f3npyqxSGggbx+zNUsTyw=;
+	s=k20260515; t=1780084207;
+	bh=kUcDXk3OwJjoexyvDLeDcJObN4z/B2xXJqSpJXXgG+s=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=h5MkStyOAbj2fTwilm0XQPzCmdQlWbX/lhU61aAWrCUbKQ4L3IVUEjsxyg7wz/nCt
-	 htMgqxUeXIU0absYumYlzsG+k32yccv3ZJ302T/o0UeSJsDAZq3SQ/Al4+RuzsmioA
-	 z3xzNe8jRzg/nbNeUZ0tFY9jNcLaHs6ipd0bd6wuvlNAKYHN+r7S6GYRZpvDHCMwf8
-	 zTZldNnXxvn0smWh+DUrk6iOizTLTSwSE0bRBflr7n5tVCKKKsixtVKoQk9WMO7Jn2
-	 pWlEVUfSVRlr751SI8RWhzTcfL0tmpwGWIOMxTgdEXgbNjWWBE46onVe5qfqpD5vwW
-	 7OMl4ODr1/NzQ==
+	b=letJnpMOxK3NTwyf+k34eGo1qVmkGY2777tgHWO6YSi/vDCRAQR8sOIzdCLtNHqRC
+	 6o0mP4u++wV0/2gTlRLfd0NMURj0so/uoUISqJm3jhQDI0fyUJTTOR+YwJWXfIFOIR
+	 +f7r7vfTO3EsNNjxryRLlgUclERzBK6mv1QeC/ms4sEWUq/YPEFboJQFRC//v3jlyE
+	 ZyuwVjwS6GDnZ9ivCxLSzWOcOFBuqmdHFZ7MlAuSvC1mg8WWpQDBqLqrjgEAZpPml/
+	 PqsbgbMCe0PGKQWHKZE8yrAkFtxwTu5Cr/WzmJLfu2v0qLQgDmZYQgszudS3Lstryq
+	 gKWzMZAwgFb0Q==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93C9839301A0;
-	Fri, 29 May 2026 19:50:10 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 939BB39301A0;
+	Fri, 29 May 2026 19:50:12 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,43 +37,45 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 1/2] ipv6: fix possible infinite loop in
- rt6_fill_node()
+Subject: Re: [PATCH net 1/1] bpf: sockmap: fix tail fragment offset in
+ bpf_msg_push_data
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178008420915.1939215.14035073478249401045.git-patchwork-notify@kernel.org>
-Date: Fri, 29 May 2026 19:50:09 +0000
-References: <20260527053133.180695-1-jiayuan.chen@linux.dev>
-In-Reply-To: <20260527053133.180695-1-jiayuan.chen@linux.dev>
-To: Jiayuan Chen <jiayuan.chen@linux.dev>
-Cc: netdev@vger.kernel.org, dsahern@kernel.org, idosch@nvidia.com,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- horms@kernel.org, omid.ehtemamhaghighi@menlosecurity.com,
- linux-kernel@vger.kernel.org
+ <178008421113.1939215.5842467464191441713.git-patchwork-notify@kernel.org>
+Date: Fri, 29 May 2026 19:50:11 +0000
+References: 
+ <8b129d10566aa3eb43f61a8f9757bcf51707d324.1779636774.git.xuyq21@lenovo.com>
+In-Reply-To: 
+ <8b129d10566aa3eb43f61a8f9757bcf51707d324.1779636774.git.xuyq21@lenovo.com>
+To: Ren Wei <n05ec@lzu.edu.cn>
+Cc: bpf@vger.kernel.org, netdev@vger.kernel.org, martin.lau@linux.dev,
+ daniel@iogearbox.net, john.fastabend@gmail.com, sdf@fomichev.me,
+ ast@kernel.org, andrii@kernel.org, eddyz87@gmail.com, memxor@gmail.com,
+ song@kernel.org, yonghong.song@linux.dev, jolsa@kernel.org,
+ yuantan098@gmail.com, zcliangcn@gmail.com, bird@lzu.edu.cn, xuyq21@lenovo.com
 
 Hello:
 
-This series was applied to netdev/net.git (main)
+This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Wed, 27 May 2026 13:31:30 +0800 you wrote:
-> Sashiko reported this issue [1]. Apply the same fix as
-> commit f8d8ce1b515a ("ipv6: fix possible infinite loop in fib6_info_uses_dev()").
+On Wed, 27 May 2026 11:48:15 +0800 you wrote:
+> From: Yuqi Xu <xuyq21@lenovo.com>
 > 
-> Writers holding tb6_lock can list_del_rcu(&rt->fib6_siblings)
-> without waiting for RCU readers; rt->fib6_siblings.next then still
-> points into the old ring and this softirq-side walker never reaches
-> &rt->fib6_siblings, causing a CPU stall. fib6_purge_rt() always
-> WRITE_ONCE()s rt->fib6_nsiblings to 0 before list_del_rcu(), so an
-> inside-loop check is a reliable detach signal.
+> When bpf_msg_push_data() inserts data in the middle of a scatterlist
+> entry, it splits the original entry into a left fragment and a right
+> fragment.
+> 
+> The right fragment offset is page-local, but the code advances it with
+> `start`, which is the message-global insertion point. For inserts into a
+> non-first SG entry, this over-advances the offset and leaves the split
+> layout inconsistent.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,1/2] ipv6: fix possible infinite loop in rt6_fill_node()
-    https://git.kernel.org/netdev/net/c/9f72412bcf60
-  - [net,2/2] ipv6: fix possible infinite loop in fib6_select_path()
-    https://git.kernel.org/netdev/net/c/9c7da87c2dc8
+  - [net,1/1] bpf: sockmap: fix tail fragment offset in bpf_msg_push_data
+    https://git.kernel.org/netdev/net/c/f72eed9b84fb
 
 You are awesome, thank you!
 -- 
