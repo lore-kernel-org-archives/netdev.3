@@ -1,77 +1,73 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C1EE32B101;
-	Fri, 29 May 2026 13:24:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 117E41DDA18;
+	Fri, 29 May 2026 13:29:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780061065; cv=none; b=OdYC6oR+uXkDkVs5Jaoi63koLUVl9FEdfaeskfUFoPaV0pEn60zPL8RiQMFMbevzXvPnzneUcgAQGY6daoomkt1BadEl4EIArtz5NHH0cVII/xM7tBfVTaG+33ItjqagqCl4h6N92YXEJrjyG1sGhPVcaEFHAK0GDGFPKXjytoA=
+	t=1780061347; cv=none; b=sRYPuoj6XJ67WbNvpXY8Ev5kC/DOAG02wEqqn00zKfnHeAxGP9zWnmPAJvMzVLO/rwGA65XId65VNO/MLN0m7mGXj6cpgE1VWRlz0JLZlfxOQpPc80zldz26/t89iCnPhMEBi9O+8lP7QnVUmkM2TbW+NIVCRyl5suf6H7spxYY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780061065; c=relaxed/simple;
-	bh=kpqrWy5SJxGkk6gpwUj5xUbEtnt/Vnw6m6pW0CCCkt4=;
+	s=arc-20240116; t=1780061347; c=relaxed/simple;
+	bh=8zCx3xmJGEJVTxfSVvzIHW091hSzk/vkBkAeCMJKMXo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kEjRzuJWWhokHgbUudNgp+prrkg6cdoTNFAL9a98dskvHMZdHh9FTbf6Yxo1uawi0/TPusjpQjPnnO/vRy4P38UtXOI2L9rL8f+Ke/Z6MHicmjs7Uqea73EQS0ajhnT3/v4c0/RLWBRN+4DcR2uYDXTUNjA0idet0540BndQToE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=PP/jxdQl; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=SE8swHhC70/jyIFXKY0yLlkVvgziNSZKntM4nQnQPWdbIn04MO/XH33ip7U9L8w6L41Sw09D23+9vVw0ed+3hqAlU9Hyzp1mD5aPxnkxG+Zfc3m/hHmCGWxZOYhfoHEabhX6lBhe/lorwVCOzddu0jk9owvPPRsfOtfgPvtZXCI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=DEhxgxh8; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="PP/jxdQl"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="DEhxgxh8"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=L71W6lePAyQAQ0UNhTYqMway8i0hVWylqwd07SfHofk=; b=PP/jxdQlobh9WLawMPmB2tmvj+
-	znBkUlplsuLpi4r5BbaqAdoMV+Nu150l9cv6Zc7pg5+sqPYCdnLnUK4zqPbvPc35CE3R5tkvTOUEg
-	L8iBnQTzi5yLiMrmYTY0CPJdGIoNSamfcCUxh/YP0Axf5JekDwQAqeB9j2Z0krXWmGYg=;
+	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
+	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
+	In-Reply-To:References; bh=kpSdIt40pW1yYSiBqzGx/ZOW/QCilCntdnUlwDZm+IQ=; b=DE
+	hxgxh8CL4VsZe23nP6H5ewPpkKh0SGDu/YUNiHUM7Kq5RW1sZXEwaJpEs50EXLcg86RtCz1+N8GV8
+	gEs53+H1aXx0uoJzxgIKYIU+Hw+p3+Ge7YZq6tRUf425S6os7sgQKynddyo+eJRLX7Vb3wTGQDBsx
+	2k+X4yR4PiBjFss=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1wSxCC-0055eJ-H6; Fri, 29 May 2026 15:24:16 +0200
-Date: Fri, 29 May 2026 15:24:16 +0200
+	id 1wSxGi-0055gZ-Ns; Fri, 29 May 2026 15:28:56 +0200
+Date: Fri, 29 May 2026 15:28:56 +0200
 From: Andrew Lunn <andrew@lunn.ch>
-To: Christian Marangi <ansuelsmth@gmail.com>
-Cc: Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
+To: Luke Howard <lukeh@padl.com>
+Cc: Cedric Jehasse <cedric.jehasse@gmail.com>, cedric.jehasse@luminex.be,
+	Vladimir Oltean <olteanv@gmail.com>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next 1/4] net: phy: as21xxx: handle corner case with
- link and autoneg complete
-Message-ID: <4a372acf-f916-4db7-a4d5-949e40e44098@lunn.ch>
-References: <20260528193545.11160-1-ansuelsmth@gmail.com>
- <9d3729f0-8d2a-4b21-ae87-aaade72e388a@lunn.ch>
- <6a193a6c.0c2aff9d.3966d9.f87c@mx.google.com>
+	Simon Horman <horms@kernel.org>,
+	Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Marek =?iso-8859-1?Q?Beh=FAn?= <kabel@kernel.org>
+Subject: Re: [PATCH net-next v4 2/2] net: dsa: mv88e6xxx: add support for
+ credit based shaper
+Message-ID: <6040cfca-0af7-41cf-b7d0-00bd8be837bb@lunn.ch>
+References: <20260528-net-next-mv88e6xxx-cbs-v4-0-8bd13b906457@luminex.be>
+ <20260528-net-next-mv88e6xxx-cbs-v4-2-8bd13b906457@luminex.be>
+ <DA213B68-5654-498A-B688-B92703923CCE@padl.com>
+ <gigqfzdzvtoegjd6kb73g2xv4j7uq7f5s2lkrwspiosni3c44p@him3vof5vzrm>
+ <793226E0-82B1-464E-9A18-969F773B70D4@padl.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <6a193a6c.0c2aff9d.3966d9.f87c@mx.google.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <793226E0-82B1-464E-9A18-969F773B70D4@padl.com>
 
-On Fri, May 29, 2026 at 09:04:10AM +0200, Christian Marangi wrote:
-> On Fri, May 29, 2026 at 02:36:07AM +0200, Andrew Lunn wrote:
-> > On Thu, May 28, 2026 at 09:35:41PM +0200, Christian Marangi wrote:
-> > > Add missing case in custom read_link, when autoneg is started, autoneg
-> > > complete bit is reset but link is still not up.
-> > > 
-> > > Fixes: 830877d89edc ("net: phy: Add support for Aeonsemi AS21xxx PHYs")
-> > 
-> > If this is a fix, it should be based on net, not net-next.
-> > 
-> > Otherwise it looks O.K.
-> >
+> > That's not the same logic.
+> > If one of the two function pointer is NULL, the other can still be executed
+> > (Maybe not that likely as that's probably a mistake in the driver)
 > 
-> Hi Andrew I didn't want to introduce patch conflict with the last patch.
-> Should I split this?
+> True, but agree also that it shouldn’t happen (would be a driver bug).
 
-Yes.
+However, a kernel splat because you have jumped through a NULL pointer
+makes a good bug report. It is much more obvious what is wrong than a
+report that somebody tried to configure TC, but nothing appeared to
+happen.
 
-Post the fixes to net. On Thursdays net get merged to net-next, and
-you can post the remaining patches then, after you solve any
-conflicts.
-
-    Andrew
+	Andrew
