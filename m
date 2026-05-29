@@ -1,145 +1,135 @@
-Received: from smtpbgeu1.qq.com (smtpbgeu1.qq.com [52.59.177.22])
+Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99219373C1D;
-	Fri, 29 May 2026 05:39:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.59.177.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 341033A16AB;
+	Fri, 29 May 2026 05:40:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780033193; cv=none; b=kM4bjwPu56s5SI5ZEeVbg25fC4Pr4lzGG+VPB6wUHNlm4geFQtw9nKAJ2Xf4zHnNRLcd24WU6KDC3PvTA05h16Um16GQwe6kYBdFr3M3jar/2sbNA3ioti21T/9Z/TkwgAzfQxeHV/NAHziEslrcoDTpJ+RQ1us9Ne3ND3DqZk8=
+	t=1780033204; cv=none; b=Z/tJQzinj8MXeT0x5h55CM9bomRxtbsDqsCNs8dkDqMuKzk1WsMEEuZyoChug8N9J2DixTMEQ1EhsPUecc5ikpsDQ1bkw2COIy4apDgZZMhdlN96zSPi5xn7Ho1JSFJJu1jCBqFcNygEhf44RxW0q00Kcjxd2O+hqoFP4nAOtv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780033193; c=relaxed/simple;
-	bh=hWRtIJrBbLgsQeXZ7uxzEc76nynyIlE7tVL4MpG7lYs=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=qn7ExqimAb04DpCABbj/AfM5nARDwcrvg0sBekIqDO/PWl4BDsCp9Z/4skluAWyNKo+6L0dbiv/ZMyL0FDZ7syefV8GNikdVmbWFW07gw+Pe0+55fGlz8wzfsLZp4NMedzpKvlKUm2MXiTicDRzVFuByKt5OAvjNW4rFuBOZLUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=bYIDdlP3; arc=none smtp.client-ip=52.59.177.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="bYIDdlP3"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1780033098;
-	bh=scjxYyFpRmQYuRgng8VwXwWgC9x8xEgFY8Y2guA6c+c=;
-	h=From:To:Subject:Date:Message-Id:MIME-Version;
-	b=bYIDdlP3OJF2+o3nK2zwXklVHBe4CfOM2F9K6aJSDIl1U8Hyj/Pxr0xADvJEuSpLt
-	 Zz/8bkb5Njx7Ds+9fgBkYVuZeJaS2hMClz1VtmZhFWT6126weJ+uclhudh9i57Ni0u
-	 IGVVqt9I8r3zXspIuigoRk9BS82DpY7fdnqV/ZFE=
-X-QQ-mid: zesmtpsz5t1780033079t1893b861
-X-QQ-Originating-IP: bqlM5PUpKuW9q4mcwmUyQdBpA/ORLNdebwjuAb5O2kU=
-Received: from localhost.localdomain ( [124.126.19.250])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Fri, 29 May 2026 13:37:55 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 6071481676437275183
-EX-QQ-RecipientCnt: 11
-From: ZhaoJinming <zhaojinming@uniontech.com>
-To: Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
+	s=arc-20240116; t=1780033204; c=relaxed/simple;
+	bh=u+E5pemDD3VOKY+ED2QU0YCu+rrKByOaaaeqWiUIYIw=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=P5PUuBvDqXK8G//sfdWxJXZE7aZsYTyAIfomWfXUB2UkWxzQ93DP5K5tzOWa3eU48OwQ/oPJvAJrdXh68stfduHcVwD/BpfMtNmj115c8hyAVAkxZM1RINvPcm7/0yapVxeuRO65ogVJzLngxztUSKxK7j/BCWhNGempq6O6N4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
+Received: from local
+	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
+	 (Exim 4.99)
+	(envelope-from <daniel@makrotopia.org>)
+	id 1wSpws-000000004Cm-1Bas;
+	Fri, 29 May 2026 05:39:58 +0000
+Date: Fri, 29 May 2026 06:39:55 +0100
+From: Daniel Golle <daniel@makrotopia.org>
+To: John Crispin <john@phrozen.org>, Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: intel-wired-lan@lists.osuosl.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	ZhaoJinming <zhaojinming@uniontech.com>
-Subject: [PATCH net v2 2/2] ice: dpll: fix memory leak in ice_dpll_init_info error paths
-Date: Fri, 29 May 2026 13:37:33 +0800
-Message-Id: <20260529053733.764996-3-zhaojinming@uniontech.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20260529053733.764996-1-zhaojinming@uniontech.com>
-References: <20260528171202.2659491-3-horms@kernel.org>
- <20260529053733.764996-1-zhaojinming@uniontech.com>
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Russell King <linux@armlinux.org.uk>, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH net-next v4 1/4] net: dsa: mxl862xx: store firmware version
+ for feature gating
+Message-ID: <d4aa5a0116e2b3847d2b24fb42435812c5dfcc7b.1780032869.git.daniel@makrotopia.org>
+References: <cover.1780032869.git.daniel@makrotopia.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpsz:uniontech.com:qybglogicsvrsz:qybglogicsvrsz4b-0
-X-QQ-XMAILINFO: NT3X+pH9p5L2pZ62hzv13pstuF0ARHVhJdEp033zSDDgVYYJ49wBEZ8O
-	jAnIyrQMtCqCsDWjM6s+o7cnke5W0pmge92VDhcN1lVFz1FpJKrAkZ0vsQyAEXp8DaIMRH1
-	W0uDrE8Y6h/dpf6DPHN3ToMRm/hAHqYBGWIKNwnYbo/j5SwOP+KiUjHk8770cWc9KZTQygX
-	IHXOxj7YNHwBkHmlOEz3+TBt68AMg10Sos+P5xpTYaCPkw9LVSjK5U8yiUL6zBa14QUOkYb
-	CM3IQTMJDs81J25VHSyWsbN8xEBibKSByicxUSQt5OBfdzQAhUr1H+7TtzYzzECwHRWHn8S
-	UT/a+vhGnU60JcULN2bFalA8rlzS8hVXjZ2zpa7JCUIUwqUs+E2ozu/Op9k7GfhDHD7s6aY
-	WaY09qQHa7XGAFhQhU3NxEUVLMVTJNkZ6Fm90J6Azpnr/QSfacoO3irXGIfB6lffXdzvH7V
-	A37m1bZB9GFy4PdY1UcaINE0fGuHEE8B2Fq8A5YDlx7gkU2gM1p96ObNio0aSnMrMi59SAX
-	NP88qInBhm1q/7HQw8eqRVOZkcATpFkkxTAOuKJDxRxm3oVUqTQ5vJMhLKUN60HWiJpZM1Q
-	7pOVh7DVELcLfL61xp+21pgMKHMLYyKmSVuga9e9t1YUizF9ifHkxK0NwDCAtiJrkFqDcGG
-	YR5joZ45bgWPZqXgXgFFSyPjm/VD9Hh3e1YLQHgkfMyEEZJ7ZJcFbdqZdw0reqzCeSPVwHJ
-	8+xHyiBhn0OXDcqOGb5OZRETN3NEJSW8/+e1C+6CN9vA57ZYc+0X9Ith8gzoZv/5PKYmTSs
-	7tKy99CF+8O1lMHcSCooWIfe+9+TLi5egpL8nR3bZxb8iROFU97ut7TbbBNYW/Wd+AwbSKM
-	x2wkdPoHLhwBjcOTsGb2rk1R9GBD+nfresGvxqNG/l3DQwp0ixBiw0a6+ENDpCv+6xDVZA5
-	cu/0PP4kUSnX6VBRJ/1iXqua1ggk1GYxy+XDaj1fplfDiIEGyLfq/KhbL3F89WJTw112cEw
-	tSpkGWDY2bjvvtHzLAyLQY0TvxfRlMQMY2UyqU1d4j7KXWb9V4MymYjKjK5DcbneVgfLX3z
-	EOy0HxNapHA97ZHiI4FTFS52M/Ltsk0IQ==
-X-QQ-XMRINFO: MSVp+SPm3vtSI1QTLgDHQqIV1w2oNKDqfg==
-X-QQ-RECHKSPAM: 0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cover.1780032869.git.daniel@makrotopia.org>
 
-Several error return paths in ice_dpll_init_info() directly return
-without freeing previously allocated resources, causing memory leaks:
+Query the firmware version at init (already done in wait_ready),
+cache it in priv->fw_version, and provide MXL862XX_FW_VER_MIN()
+for version-gated code paths throughout the driver.
 
-- When de->input_prio allocation fails, d->inputs is leaked
-- When dp->input_prio allocation fails, d->inputs and de->input_prio
-  are leaked
-- When ice_get_cgu_rclk_pin_info() fails, all previously allocated
-  inputs/outputs/input_prio are leaked
-- When ice_dpll_init_pins_info(RCLK_INPUT) fails, same resources
-  are leaked
+MXL862XX_FW_VER() packs major/minor/revision into a u32 with
+bitwise shifts so that versions compare with natural ordering,
+independent of host endianness.
 
-Fix this by jumping to the deinit_info label which properly calls
-ice_dpll_deinit_info() to free all allocated resources.
-
-Fixes: d7999f5ea64b ("ice: implement dpll interface to control cgu")
-Signed-off-by: ZhaoJinming <zhaojinming@uniontech.com>
+Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 ---
- drivers/net/ethernet/intel/ice/ice_dpll.c | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+v4: no changes
+v3: use bitwise shifts in macro instead of endian-specific union
+v2: no changes
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_dpll.c b/drivers/net/ethernet/intel/ice/ice_dpll.c
-index 99bb308255cc..7240152f1655 100644
---- a/drivers/net/ethernet/intel/ice/ice_dpll.c
-+++ b/drivers/net/ethernet/intel/ice/ice_dpll.c
-@@ -4345,12 +4345,16 @@ static int ice_dpll_init_info(struct ice_pf *pf, bool cgu)
+ drivers/net/dsa/mxl862xx/mxl862xx.c |  3 +++
+ drivers/net/dsa/mxl862xx/mxl862xx.h | 23 +++++++++++++++++++++++
+ 2 files changed, 26 insertions(+)
+
+diff --git a/drivers/net/dsa/mxl862xx/mxl862xx.c b/drivers/net/dsa/mxl862xx/mxl862xx.c
+index b60482d93a85..2f22adedfbf6 100644
+--- a/drivers/net/dsa/mxl862xx/mxl862xx.c
++++ b/drivers/net/dsa/mxl862xx/mxl862xx.c
+@@ -257,6 +257,9 @@ static int mxl862xx_wait_ready(struct dsa_switch *ds)
+ 			 ver.iv_major, ver.iv_minor,
+ 			 le16_to_cpu(ver.iv_revision),
+ 			 le32_to_cpu(ver.iv_build_num));
++		priv->fw_version.major = ver.iv_major;
++		priv->fw_version.minor = ver.iv_minor;
++		priv->fw_version.revision = le16_to_cpu(ver.iv_revision);
+ 		return 0;
  
- 	alloc_size = sizeof(*de->input_prio) * d->num_inputs;
- 	de->input_prio = kzalloc(alloc_size, GFP_KERNEL);
--	if (!de->input_prio)
--		return -ENOMEM;
-+	if (!de->input_prio) {
-+		ret = -ENOMEM;
-+		goto deinit_info;
-+	}
+ not_ready_yet:
+diff --git a/drivers/net/dsa/mxl862xx/mxl862xx.h b/drivers/net/dsa/mxl862xx/mxl862xx.h
+index 80053ab40e4c..e3db3711b245 100644
+--- a/drivers/net/dsa/mxl862xx/mxl862xx.h
++++ b/drivers/net/dsa/mxl862xx/mxl862xx.h
+@@ -3,6 +3,7 @@
+ #ifndef __MXL862XX_H
+ #define __MXL862XX_H
  
- 	dp->input_prio = kzalloc(alloc_size, GFP_KERNEL);
--	if (!dp->input_prio)
--		return -ENOMEM;
-+	if (!dp->input_prio) {
-+		ret = -ENOMEM;
-+		goto deinit_info;
-+	}
++#include <asm/byteorder.h>
+ #include <linux/mdio.h>
+ #include <linux/workqueue.h>
+ #include <net/dsa.h>
+@@ -241,6 +242,25 @@ struct mxl862xx_port {
+ 	spinlock_t stats_lock; /* protects stats accumulators */
+ };
  
- 	ret = ice_dpll_init_pins_info(pf, ICE_DPLL_PIN_TYPE_INPUT);
- 	if (ret)
-@@ -4375,12 +4379,12 @@ static int ice_dpll_init_info(struct ice_pf *pf, bool cgu)
- 	ret = ice_get_cgu_rclk_pin_info(&pf->hw, &d->base_rclk_idx,
- 					&pf->dplls.rclk.num_parents);
- 	if (ret)
--		return ret;
-+		goto deinit_info;
- 	for (i = 0; i < pf->dplls.rclk.num_parents; i++)
- 		pf->dplls.rclk.parent_idx[i] = d->base_rclk_idx + i;
- 	ret = ice_dpll_init_pins_info(pf, ICE_DPLL_PIN_TYPE_RCLK_INPUT);
- 	if (ret)
--		return ret;
-+		goto deinit_info;
- 	de->mode = DPLL_MODE_AUTOMATIC;
- 	dp->mode = DPLL_MODE_AUTOMATIC;
- 
++/**
++ * struct mxl862xx_fw_version - firmware version for comparison and display
++ * @major: firmware major version
++ * @minor: firmware minor version
++ * @revision: firmware revision number
++ */
++struct mxl862xx_fw_version {
++	u8 major;
++	u8 minor;
++	u16 revision;
++};
++
++#define MXL862XX_FW_VER(maj, min, rev) \
++	(((u32)(maj) << 24) | ((u32)(min) << 16) | (rev))
++#define MXL862XX_FW_VER_MIN(priv, maj, min, rev) \
++	(MXL862XX_FW_VER((priv)->fw_version.major, (priv)->fw_version.minor, \
++			 (priv)->fw_version.revision) >= \
++	 MXL862XX_FW_VER(maj, min, rev))
++
+ /* Bit indices for struct mxl862xx_priv::flags */
+ #define MXL862XX_FLAG_CRC_ERR		0
+ #define MXL862XX_FLAG_WORK_STOPPED	1
+@@ -258,6 +278,8 @@ struct mxl862xx_port {
+  * @drop_meter:         index of the single shared zero-rate firmware meter
+  *                      used to unconditionally drop traffic (used to block
+  *                      flooding)
++ * @fw_version:         cached firmware version, populated at probe and
++ *                      compared with MXL862XX_FW_VER_MIN()
+  * @ports:              per-port state, indexed by switch port number
+  * @bridges:            maps DSA bridge number to firmware bridge ID;
+  *                      zero means no firmware bridge allocated for that
+@@ -275,6 +297,7 @@ struct mxl862xx_priv {
+ 	struct work_struct crc_err_work;
+ 	unsigned long flags;
+ 	u16 drop_meter;
++	struct mxl862xx_fw_version fw_version;
+ 	struct mxl862xx_port ports[MXL862XX_MAX_PORTS];
+ 	u16 bridges[MXL862XX_MAX_BRIDGES + 1];
+ 	u16 evlan_ingress_size;
 -- 
-2.20.1
-
+2.54.0
