@@ -1,73 +1,164 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 117E41DDA18;
-	Fri, 29 May 2026 13:29:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A94A6330B30
+	for <netdev@vger.kernel.org>; Fri, 29 May 2026 13:29:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780061347; cv=none; b=sRYPuoj6XJ67WbNvpXY8Ev5kC/DOAG02wEqqn00zKfnHeAxGP9zWnmPAJvMzVLO/rwGA65XId65VNO/MLN0m7mGXj6cpgE1VWRlz0JLZlfxOQpPc80zldz26/t89iCnPhMEBi9O+8lP7QnVUmkM2TbW+NIVCRyl5suf6H7spxYY=
+	t=1780061364; cv=none; b=q24pdXdDmT5Qc7MaRFXgja6rcCjf8Uu384D441352SqzUu41N+zs4IpcJ9vnesxAapdJotdP/eJA7tHSoZnyVMNDJo1dlupFDGLxdnT9ShGV2ldvLgYVaJO4Sr4kCr/akLwG2qCRiDen8ptAvnegRq8iT76R4QXhiUYzDpjbs3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780061347; c=relaxed/simple;
-	bh=8zCx3xmJGEJVTxfSVvzIHW091hSzk/vkBkAeCMJKMXo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SE8swHhC70/jyIFXKY0yLlkVvgziNSZKntM4nQnQPWdbIn04MO/XH33ip7U9L8w6L41Sw09D23+9vVw0ed+3hqAlU9Hyzp1mD5aPxnkxG+Zfc3m/hHmCGWxZOYhfoHEabhX6lBhe/lorwVCOzddu0jk9owvPPRsfOtfgPvtZXCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=DEhxgxh8; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1780061364; c=relaxed/simple;
+	bh=/iJHCtlUB7ZZdvLrVonfY3NnlAeU/QaU7QZAo5L5qNM=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=l2sV9cG/ZcadWOeUNEp73VLfEMkxW6pf1RxmsO83RBh9W9oRrzQmN7nfxuO16a/sufZUuv2P84SReXtytu+OQtNSxoitLt8biQNqhDPMqt7Ae27952Q9801YDTLGwR4gFCqp7EyEgY3NCt+jbhZ4WDSOu8OJwrRXqMqEpk/Nvn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JKo8ncPO; arc=none smtp.client-ip=209.85.221.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="DEhxgxh8"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
-	In-Reply-To:References; bh=kpSdIt40pW1yYSiBqzGx/ZOW/QCilCntdnUlwDZm+IQ=; b=DE
-	hxgxh8CL4VsZe23nP6H5ewPpkKh0SGDu/YUNiHUM7Kq5RW1sZXEwaJpEs50EXLcg86RtCz1+N8GV8
-	gEs53+H1aXx0uoJzxgIKYIU+Hw+p3+Ge7YZq6tRUf425S6os7sgQKynddyo+eJRLX7Vb3wTGQDBsx
-	2k+X4yR4PiBjFss=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wSxGi-0055gZ-Ns; Fri, 29 May 2026 15:28:56 +0200
-Date: Fri, 29 May 2026 15:28:56 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Luke Howard <lukeh@padl.com>
-Cc: Cedric Jehasse <cedric.jehasse@gmail.com>, cedric.jehasse@luminex.be,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Marek =?iso-8859-1?Q?Beh=FAn?= <kabel@kernel.org>
-Subject: Re: [PATCH net-next v4 2/2] net: dsa: mv88e6xxx: add support for
- credit based shaper
-Message-ID: <6040cfca-0af7-41cf-b7d0-00bd8be837bb@lunn.ch>
-References: <20260528-net-next-mv88e6xxx-cbs-v4-0-8bd13b906457@luminex.be>
- <20260528-net-next-mv88e6xxx-cbs-v4-2-8bd13b906457@luminex.be>
- <DA213B68-5654-498A-B688-B92703923CCE@padl.com>
- <gigqfzdzvtoegjd6kb73g2xv4j7uq7f5s2lkrwspiosni3c44p@him3vof5vzrm>
- <793226E0-82B1-464E-9A18-969F773B70D4@padl.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JKo8ncPO"
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-45eee55b597so900173f8f.2
+        for <netdev@vger.kernel.org>; Fri, 29 May 2026 06:29:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1780061361; x=1780666161; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=+CWotcliT6zQIjcAHTd32KhZWmuLac4qETbDggcx32Q=;
+        b=JKo8ncPOdYISSHVBt3FrDJlDugHX4iF5AvypHNimCFydl7YwxihlmUdUTNlCQwA39O
+         NpVf+5r4VkzVZVrfqCIwy35X5KF9fNlCkrpR+4Mi7nqVsjdjVmlpmT/L7yd8DDKFv25w
+         7MGp5Uii3zug3CrckIotp+vdOqkLxGKIfklJyaDPitj4S3+4PvH1lMGl29XNs81Mmmjn
+         oWJEtY74D11tWmk9V/otZJF/FlYbKUoTtVqTunhFOYSgAsULY2H8DtzEo0cxznx7QmKP
+         uZ3fffGCEV/RTpOSdt9JZ9tkmoQcW33wyQRU/JeCorhmeRXmW4DhVXNah8L5IBlvl1eP
+         0lag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780061361; x=1780666161;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=+CWotcliT6zQIjcAHTd32KhZWmuLac4qETbDggcx32Q=;
+        b=gW1iZ00jNV4+r+2q7ZNgYai9OPlpr9SsQFLjUo2qgRx0OB8+1f8eX78yptI69hjG3S
+         38QUDWXsk7u9k453CCK+xLhDniEnOg423nATtsOjJqKu2O+NU3qG7McwuFBn7PdXR0bt
+         0nnx6sdoiRxn+kgb4vOxuyYfFXjY/cx14wZ52qMNyNgCpczdaNPgpyIT9PmCaLhU3j3P
+         8wNqx2MO9G4EywFx1dMrDNLNd8gBtn6QdXKNtIBnBEGOJisafgXgKOohSOI0AUOSNbja
+         Sk5pNU7oi3OOOrsBjgJdUWTNl78EPizbGAhc+djerbO+m1/Ad7OQN241cF9ZeUyYg5j7
+         y0AQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+55YD2my8MXIj7FD4ZHcp1wVYx08jwCAdWqUQIpGmg8nNmI1FszhPRjX6MyYR9H2592iIEqG0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzJLZjNIUB1cQ7TU2lpykNDxKTgcVp2AVazhXf/FqneyJ1Kq8nW
+	FeSkl9rcJHHhIZTfdluNXvU+vrtSNKhRlXuiKcz7I/InSSVqPKJnJzWjI6PT9pyE09s44/TflBM
+	RVePAAq/SMtDz0ixoBg==
+X-Received: from wrbdy6.prod.google.com ([2002:a05:6000:e46:b0:446:d23b:d96b])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:adf:ee8e:0:b0:45e:de0a:1773 with SMTP id ffacd0b85a97d-45ef1463a9amr4136473f8f.33.1780061360817;
+ Fri, 29 May 2026 06:29:20 -0700 (PDT)
+Date: Fri, 29 May 2026 13:28:37 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <793226E0-82B1-464E-9A18-969F773B70D4@padl.com>
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAIaUGWoC/3XNzU7DMBAE4FepfMZovf5p0hPvgXrI2pvUosTgp
+ BGoyrvjlkOKLI4z0jdzFRPnyJM47K4i8xKnmMYS3NNO+FM3DixjKFkgoAMNTlIcA2c58nyO45v
+ 0DSoFhD3tjSjoI3Mfv+6Dr8ffnPnzUnbnrTzFaU75+366qFv77/6iJMjQeSZLvtE9vgwpDWd+9
+ uld3LYW3LyBpvJYvIegcR+UNdpWXj94ZSuvi28McUud08z1v9m8BVN5U7wDRUb5gJZqbx881v+ 2+K4FxhY1E9Mfv67rD+dvlEjCAQAA
+X-Change-Id: 20260306-binder-netlink-c82110b2fb74
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2872; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=/iJHCtlUB7ZZdvLrVonfY3NnlAeU/QaU7QZAo5L5qNM=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBqGZSKRFumD7moMd4a4uIjwu3BirqEdLijHukCI
+ 0usj+HExAeJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCahmUigAKCRAEWL7uWMY5
+ RiA2D/9poDQsb+q/Y0X70eC+zLhq6AhyWHathtKG54Xr76OejbANXjK+fKvB0e/ZTHkSd6Z2mCc
+ RTz8oQS88TOxEeC8UOCDZGGmSDiE4En1vIJX1mCPnR0iuWDu/HCdUndfjXCjXSRQM3h/ys8zlNV
+ zXeUONdbTMa/7u7wQf8bnSxLf1zRhoq7kMS7zJoW3Zp4LS/L1XQBbWQKsh/8eYuKJTgT8UXqbeS
+ M0+W1nyLTHO5by93+/nyBLtbEBM+6CC5O+f2AsFTGy5acapGnAUVp5Js9Hf2Bacy5biSreuyBtD
+ rtdv+vMdhzn/RHM/s7BSnoyi4hiSqOcNIcgT2z97VyJtOxVw7Z+hX0NFWFGCzFvtwq2umHho9sZ
+ u9pWD4wOCJUZPdG/56ggJ0SPMeRxHeEZI+CPgVjOtnP26b11jQCyrXDCMRF90UnTHz2vyHZfa8u
+ wTlIayeO6pA/TkWSy7XOjNKT6TACg7dQmGt/94aSLiMPkMMMQ4oIcuxM25CTGwfylJm0eMt4nis
+ ZfwdY+Nkc1PIIBu7Jh1CAlyX3HqbN3FqJqV/Ph3/26PE4NuCDtwk3DPmF4uBDO+Zrm3DJUOInMC
+ YD7N82psjjfHgGpPBKijuPMAxYK5xee8mtSBS9xzM1Fvm2yLS7RRTwn+H5NbqMOYgJKSsxBu1KD j+9QYQA9dsd2yvg==
+X-Mailer: b4 0.14.3
+Message-ID: <20260529-binder-netlink-v6-0-92dd74b6a32e@google.com>
+Subject: [PATCH v6 0/3] Rust netlink support + use in Rust Binder
+From: Alice Ryhl <aliceryhl@google.com>
+To: Carlos Llamas <cmllamas@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Andrew Lunn <andrew@lunn.ch>, Donald Hunter <donald.hunter@gmail.com>, 
+	Jakub Kicinski <kuba@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Matthew Maurer <mmaurer@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Christian Brauner <brauner@kernel.org>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, netdev@vger.kernel.org, 
+	Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-> > That's not the same logic.
-> > If one of the two function pointer is NULL, the other can still be executed
-> > (Maybe not that likely as that's probably a mistake in the driver)
-> 
-> True, but agree also that it shouldn’t happen (would be a driver bug).
+The C Binder driver exposes messages over netlink when transactions
+fail, so that a userpace daemon can respond to processes with many
+failing transactions.
 
-However, a kernel splat because you have jumped through a NULL pointer
-makes a good bug report. It is much more obvious what is wrong than a
-report that somebody tried to configure TC, but nothing appeared to
-happen.
+This patch series adds netlink support from Rust, then implements an
+equivalent API in Rust Binder.
 
-	Andrew
+As Binder only uses broadcast messages, I did not add support for other
+kinds of messages.
+
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+Changes in v6:
+- Introduce MAINTAINERS entry update for net files.
+- Move netlink.rs to rust/kernel/net/.
+- Tweak info.reply logic in Binder patch.
+- Link to v5: https://lore.kernel.org/r/20260525-binder-netlink-v5-0-a90e2923ebeb@google.com
+
+Changes in v5:
+- Remove patch 2.
+- Squash patches 3 and 4.
+- Link to v4: https://lore.kernel.org/r/20260504-binder-netlink-v4-0-601b41cd25b2@google.com
+
+Changes in v4:
+- Fix typo in 'report netlink transactions' commit message.
+- Document that some methods are for const context only.
+- Rebase and pick up tags.
+- Link to v3: https://lore.kernel.org/r/20260415-binder-netlink-v3-0-84be9ba63ee2@google.com
+
+Changes in v3:
+- Fix spurious 'return' statements in Rust helpers (Patch 1).
+- Sashiko review:
+  - Fix ynl_gen to handle empty multicast groups and correct multicast indexing (Patch 2).
+  - Fix transaction failed reply logic to report via Netlink inside reply_inner() (Patch 4).
+- Link to v2: https://lore.kernel.org/r/20260408-binder-netlink-v2-0-c0d327d15435@google.com
+
+Changes in v2:
+- Make inclusion of to_pid conditional too.
+- Add note about file name in second patch.
+- Make it clear that the sk_buff wrapper is netlink-specific.
+- Better handle bitfield in patch 1.
+- Link to v1: https://lore.kernel.org/r/20260306-binder-netlink-v1-0-daceb5bc83f2@google.com
+
+---
+Alice Ryhl (2):
+      rust: net: add rust/kernel/net to NETWORKING [GENERAL]
+      rust: netlink: add raw netlink abstraction
+
+Carlos Llamas (1):
+      rust_binder: report netlink transactions
+
+ MAINTAINERS                                |   2 +
+ drivers/android/Kconfig                    |   2 +-
+ drivers/android/binder/netlink.rs          | 117 ++++++++++
+ drivers/android/binder/rust_binder_main.rs |   8 +-
+ drivers/android/binder/thread.rs           |  11 +-
+ drivers/android/binder/transaction.rs      |  40 ++++
+ rust/bindings/bindings_helper.h            |   3 +
+ rust/helpers/helpers.c                     |   1 +
+ rust/helpers/net/genetlink.c               |  46 ++++
+ rust/kernel/{net.rs => net/mod.rs}         |   2 +
+ rust/kernel/net/netlink.rs                 | 337 +++++++++++++++++++++++++++++
+ rust/uapi/uapi_helper.h                    |   1 +
+ 12 files changed, 566 insertions(+), 4 deletions(-)
+---
+base-commit: 5ad28496055858166eb2268344c8fda2c26d3561
+change-id: 20260306-binder-netlink-c82110b2fb74
+
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
+
