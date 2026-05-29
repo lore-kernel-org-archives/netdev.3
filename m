@@ -1,44 +1,51 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B0F42E4257;
-	Fri, 29 May 2026 00:39:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACA7F1A6803;
+	Fri, 29 May 2026 00:40:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780015142; cv=none; b=L8aUPvpucWBHmg7KhAHNZiJObLD0s8fB0UiLHdKFe3gBGkaP8yv6ChLsI4d3EdEKy29wSkMydYfm+URRYtzXDuFFis/5lyhw95X4QzTRwiHDrVL8ns1gZqIbPBtZ+xH4Sqk6wW1NqJOv8BTMlGWmxWvmfe/w2WktXtD1wT+9LYw=
+	t=1780015253; cv=none; b=M2pZdqfgPD8oNpIQxQnqOUw3i/uAMQFetyz7b1pDvBpxh7idYPGcw8QObd8KTQz6rZfIVyQy8w6EB4BX1dTX/2yIIv9VrX1O/O8dLDvXCGYXyzRSovWiEZK3gPn/cThAPUUytFZ/LXWQB3g8j1PlA7mrQio3UqsXp+tNwYGrvwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780015142; c=relaxed/simple;
-	bh=wmkqND0RB4BEWyT55XJde4kQAJdn+3ZUYCYnmGfe2KA=;
+	s=arc-20240116; t=1780015253; c=relaxed/simple;
+	bh=THSiL7+uoAJO/+0Yptqolv5/OGwpg5Tw5Un4fZFdJl8=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sczRBowi//vYs2PAU8anqeXx4Wh6eM7CR2u175BXSLhMwiK/eZtxw+o88ds0j/WTDelH06qqikIX4Sq/qXyANXO/dQfAl0/K4/6249I5qvhD1XJ1HJC6mkwmU6GH/CzhaA2+seOULVhhjn09Y8o4Iv82Heh4vcV5XX3F/f9T/g0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Huhxiir7; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=bckL4iTiuTdpRTVqr5lOTbNS1U6xD2ze9qEdj0fFZ+FpLor6R1P9DpQoMilMNr4j6vyDJB/FBPOeibsVyVen3fgs0GxYQEh8t1TWdnB69L1y2pYRvy3ZPbjdtNXi7g3K74YqBnZjBV7A/OOcvALVKGLHWW8p1RsKWCi8MmSjeds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Voo/MuvU; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Huhxiir7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BD0D1F000E9;
-	Fri, 29 May 2026 00:39:00 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Voo/MuvU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A6AA1F000E9;
+	Fri, 29 May 2026 00:40:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780015140;
-	bh=S0LhC+L7ew0JwAUKzb7htSG+8KHzDbUfZ+uer8crve4=;
+	s=k20260515; t=1780015252;
+	bh=+B+TmL+1xk+lcmsV4goQvaHyJorMsCHPBDE/CaQgM2Q=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=Huhxiir74PyJdqHzFCx/VC7sOg9xcgOt2UIExXN4OjrzpRRIxL5udOeZOX5IWMPUY
-	 Gxah3mU8eTdd6Ol+C+nOSSNLD9ABwLtEVZ4A9hEa9lbYQl41i3V2qSu63cZN8/Kb58
-	 HAWSPpVh3Mls+N6dj+q5ESN6LjQ41QfpzqQO3klv4BnE9D6nGOhfyVNHkE2JQfBSV0
-	 dgHApsPOfNZEf8KPP7MAErX+0XEINmBRUirb6nENwokaulWf+L63nzvCI2acrhF9Kt
-	 ofaMYNQl1qgMBVBu7fcuTGVi6PZIAv+geeoUBL6+XWuB9Oh6Weac80vr9IryXGXj5T
-	 a0PFjOxcuTcag==
-Date: Thu, 28 May 2026 17:38:59 -0700
+	b=Voo/MuvU3WcLDKbPxOBlCw1Xm8gk4CyTf5iQGcD81FOTdkCADbcZJFrg9I6XDHLRJ
+	 hhtlKxe7Jcg5wMY+dVE5gnpTaRJ9iS736f8SK0r8uh907sS32YxyEqmvPZy8fVd01N
+	 /PYDRtM1z/HFU0yEwyp3b2HKCZ6/zGomJNb+9uz7Bk/XIC0CxCZP5dd3PkhYAiJYLN
+	 gjV0U2HQBiQyxhe8i4zPpLQmjzYcRAcaVULb6fpIl6bfD4kjxz5fvZNmpp6G5Nehps
+	 KlRJfADfePAqhGrYWdH8AahC6kg17YplUJ4ULzGfzK354oqFr4rVffNRR4lWmIBzg8
+	 Yw23iDTGvXq9w==
+Date: Thu, 28 May 2026 17:40:50 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-Cc: andrew+netdev@lunn.ch, edumazet@google.com, davem@davemloft.net,
- pabeni@redhat.com, Steen.Hegelund@microchip.com,
- daniel.machon@microchip.com, UNGLinuxDriver@microchip.com,
- netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] net: microchip: sparx5: clean up PSFP resources on
- flower setup failure
-Message-ID: <20260528173859.04fd6c27@kernel.org>
-In-Reply-To: <20260527073855.2334001-1-lihaoxiang@isrc.iscas.ac.cn>
-References: <20260527073855.2334001-1-lihaoxiang@isrc.iscas.ac.cn>
+To: Tariq Toukan <tariqt@nvidia.com>
+Cc: Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky
+ <leon@kernel.org>, Mark Bloch <mbloch@nvidia.com>, Nimrod Oren
+ <noren@nvidia.com>, Yael Chemla <ychemla@nvidia.com>, Shay Drory
+ <shayd@nvidia.com>, Or Har-Toov <ohartoov@nvidia.com>, Edward Srouji
+ <edwards@nvidia.com>, Maher Sanalla <msanalla@nvidia.com>, Simon Horman
+ <horms@kernel.org>, Parav Pandit <parav@nvidia.com>, Patrisious Haddad
+ <phaddad@nvidia.com>, Kees Cook <kees@kernel.org>, Moshe Shemesh
+ <moshe@nvidia.com>, <linux-kernel@vger.kernel.org>,
+ <netdev@vger.kernel.org>, <linux-rdma@vger.kernel.org>, Gal Pressman
+ <gal@nvidia.com>
+Subject: Re: [PATCH net-next 00/13] net/mlx5: Add switchdev mode support for
+ Socket Direct single netdev, part 1/2
+Message-ID: <20260528174050.6421e472@kernel.org>
+In-Reply-To: <20260527125427.385976-1-tariqt@nvidia.com>
+References: <20260527125427.385976-1-tariqt@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,12 +55,12 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 27 May 2026 15:38:55 +0800 Haoxiang Li wrote:
-> Add error handling paths to unwind the PSFP resources that have already
-> been allocated before returning the error.
+On Wed, 27 May 2026 15:54:14 +0300 Tariq Toukan wrote:
+> This series enables Socket Direct single netdev to operate in switchdev
+> mode with shared FDB. See detailed feature description by Shay below.
 
-Does not apply, please rebase on
-https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next.git/
-and repost
+kdoc warning in here:
+
+Warning: drivers/net/ethernet/mellanox/mlx5/core/lag/shared_fdb.c:140 No description found for return value of 'mlx5_lag_shared_fdb_create'
 -- 
 pw-bot: cr
