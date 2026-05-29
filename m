@@ -1,117 +1,123 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E9963AA9F4;
-	Fri, 29 May 2026 07:42:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57243328635;
+	Fri, 29 May 2026 07:45:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780040545; cv=none; b=FKpqfeElxGjz33MjQ7aVhfWuwP45lRPE7sWbSxt6pakwMzE/tmnuXYZRjygvquxHTae+8YxNvk80TjLuTIbcT5ni7W6gOF6nEond3t+kTP1mkmmH8AbWVNioNfohAAfaU88/FF8qVt8jUA6k25nqQBkz2nzHYtt6r3rMJijdEf4=
+	t=1780040731; cv=none; b=AhIXY+Rp51IfLDPUWFFb4ebRBuzSOyaq5P2D/CJSzgLlLkKNokK62SnA4TGWr+wJAZ03PxRTk1691IOLfU+ADGlQjMd8KDkqwL8MUgiRDKDZiJRwiLBW0y/VovNMBAmf2+AGccaK+pNWKIteEH8TU2Z6N5/QJKTqNHaPcmjvcVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780040545; c=relaxed/simple;
-	bh=DhCLGMOZL/w8aCkBuXuDq7mP31RtxM9KjJ0TJxr/Dn0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LShVhnqEMmKBrqubD3AvLDdkLtdhWqie0iaRlR1dKrVg8y1DVmj+23IC42hevxE/dVRAEgAJcLlpxbem/+TpHsFPZNUWMfavMWv631s7UpIwEUiaXn7AYhV6SwCTtw8xYLupQMcflhdPq7ZRlSvv0GiK/nUJmw4FgSP6gXLtraI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=t9kFSCYy; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1780040731; c=relaxed/simple;
+	bh=4/rcVikLzFNIHzwXr/tDb8JuW0A5WAxO1YnN5vnYRJ8=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=qREvKycvZEYMYbJ9bb00KqOouiErtkM+DqDFFGwIpb7U7g351p8B9NtLRJGhSUH0z7+69v7a2C2xqw0/MdEHiuUF5J9JvG+56hLoh1lO5/bzOA6KN2vhEaDM5g1hP+jMZNEfNJO9fgW20w8NKFpwoKJU24qwqaIfrR8mZTghkgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=sqUs01N4; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="t9kFSCYy"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 82AF61A372D;
-	Fri, 29 May 2026 07:42:19 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 56946601FA;
-	Fri, 29 May 2026 07:42:19 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 058F310888CBE;
-	Fri, 29 May 2026 09:42:14 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1780040538; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=DZ3lfW7SRE9G4rYU9VyZ9PvQOFu+n80p9zGN3rx2H18=;
-	b=t9kFSCYyYsX7Mpm/43AyGd8fYnebRyCopT4YVv1WlV2yeqIP2xi7Z4lzM/NGEDpKfEflqo
-	COl1/50F/BMd2U8vhv2JtY7i/yUoh2uduIOBevb8aCBASp3YSXaTrXbHHEJB/19pHpLnaH
-	wuAz+Ei6HtEaxLhFX537DXLu6YVHHtGiyvXTuvIHiMQM8cxSNsScAflkJ5qQEfnLQIiXC7
-	n/3x9H1RNTntXn2X0fkVHy/1cR6GS/qtm3cOdKcYM89ZkOOZL4kRAEQnC/bknpD4gb0ljv
-	z+90+AwCWwAm2EBd+1dvFrNzaTpWDqoAgPa3KRqzQ8o3LjME2S0L/hhrb7D4Yw==
-Message-ID: <b84a5fe0-a080-45fc-87d1-790402d423e4@bootlin.com>
-Date: Fri, 29 May 2026 09:42:14 +0200
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="sqUs01N4"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:In-Reply-To:References:
+	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	From:Reply-To:Content-ID:Content-Description;
+	bh=1ZTNUeL1mmdwYNv7ZCEh9fXBBMB8CAmIvFx5V3p+ucI=; b=sqUs01N4kVHhHla4q/ZaVuExLI
+	ZEzaOc2k5JksVh6Re62+iQrdRpVbAQ6Zq7OAa/j4gapgf3AVzhFKqjRdTXKW5tHTffeiuoZHvbiN6
+	zyhysk6SROSavoGHMhMEKKi1VVKYu85HfHUh+gOc1GGfKsQxlC+eK83jnTM1cF1MJcD0WFko0thc8
+	ndJqU4D2R/+D2dqPerwRSICp/3LrZUgqmslJ/XxCXBdKAYghtFgZpg4SAs3DQ/QAnrJoleM3LeTQU
+	KRMaoEk3L3w4qtAXCjU8J9zrWZa4eKQ99P7BdPBEWfYxSq60tKbrMDXHSKiIvOsC5xXjtlw2y9rfD
+	ZKWltt4A==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wSruE-004kM7-2U;
+	Fri, 29 May 2026 07:45:22 +0000
+From: Breno Leitao <leitao@debian.org>
+Date: Fri, 29 May 2026 03:45:13 -0400
+Subject: [PATCH net 3/3] netconsole: take target_cleanup_list_lock in
+ drop_netconsole_target()
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next] Documentation: networking: Add a test plan for
- ethtool pause validation
-To: Jakub Kicinski <kuba@kernel.org>, Andrew Lunn <andrew@lunn.ch>
-Cc: davem@davemloft.net, Eric Dumazet <edumazet@google.com>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Russell King <linux@armlinux.org.uk>, Heiner Kallweit
- <hkallweit1@gmail.com>, Jonathan Corbet <corbet@lwn.net>,
- Shuah Khan <skhan@linuxfoundation.org>,
- Oleksij Rempel <o.rempel@pengutronix.de>,
- Vladimir Oltean <vladimir.oltean@nxp.com>,
- Florian Fainelli <f.fainelli@gmail.com>, thomas.petazzoni@bootlin.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org
-References: <20260522175109.198059-1-maxime.chevallier@bootlin.com>
- <20260526172447.10ca4b9e@kernel.org>
- <5cb8e2b4-8eb6-4446-9b90-1cd4c7964cd9@lunn.ch>
- <20260527162516.0d012503@kernel.org>
-Content-Language: en-US
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-In-Reply-To: <20260527162516.0d012503@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Message-Id: <20260529-netcons_fix_before_move-v1-3-cb2d1426dd75@debian.org>
+References: <20260529-netcons_fix_before_move-v1-0-cb2d1426dd75@debian.org>
+In-Reply-To: <20260529-netcons_fix_before_move-v1-0-cb2d1426dd75@debian.org>
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, Neil Horman <nhorman@tuxdriver.com>, 
+ Cong Wang <xiyou.wangcong@gmail.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Breno Leitao <leitao@debian.org>, kernel-team@meta.com
+X-Mailer: b4 0.16-dev-d5d98
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1956; i=leitao@debian.org;
+ h=from:subject:message-id; bh=4/rcVikLzFNIHzwXr/tDb8JuW0A5WAxO1YnN5vnYRJ8=;
+ b=owEBbQKS/ZANAwAKATWjk5/8eHdtAcsmYgBqGUQMqv6yG5bTKI5irUeICW72HQT7N0xNKAQHW
+ lf1i/R6JO6JAjMEAAEKAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCahlEDAAKCRA1o5Of/Hh3
+ bSzHD/4/0Yu/gfenShs5VNG14I8JjwEwuKf3Djw1DnUanHvNCzpumM3Xpg6UQdkIFv4Gplh7yQC
+ HGN2DMuNRGVnSBY4TUrIOnzEO21Lsx0z1ou/MMbjNeRw00LliPCf6DkwtLJqN0Etnas8nvmGGv3
+ 2WwJ7QUU/17/wkEGgV8OvPYgFzq2Pmu6CBsH1AWmKsvlA6gy+b6wZgCT8IroJSP9SXH7F/U3IiZ
+ ZK1VIddi3g0mPOSmdY6LdCLV9pm/BcRnDMTEpz87afMtjtJr//FrukNhkXt86vFPwB5N1zbG38O
+ Lqal2eXrWADl8rFHdOcg3zKqE6HlW2395PQzDAgMr4p7U2bMBC3GpPejSHPtBSCmRC9HMSZZ3Cp
+ vS4rHeEiXi2zL8c3WmSOoArYaHldI4FWrQ4+c9jbxMePBFOKnJJE7CwNRp3vO2JErbm0kxFuMWq
+ r+bOc9Q2omotWoJc/tgxZt3crzBHWIB4H6X1ebfYNjPBpLXHHGo8Vqq9OkLmXKq87mC1gJs48TB
+ iPmqI49x+lRwe0qsTLSsCsPCjdajwhMjw/QdXNQmq3TV8Bw9NmFjkCjN8mj+QugYrKY/CqzuPI2
+ 2xN0zCilrpDPLa0krtJz/ifh09adPdkI1FFUfNB3c0IBgweiO0r+6k+FBxTfLmiocVK5APLR+YY
+ Qg6r4ImVMNynkAg==
+X-Developer-Key: i=leitao@debian.org; a=openpgp;
+ fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
+X-Debian-User: leitao
 
-Hi
+drop_netconsole_target() unlinks the target while only holding
+target_list_lock. However, when the underlying interface has been
+unregistered, netconsole_netdev_event() moves the target from
+target_list to target_cleanup_list, and netconsole_process_cleanups_core()
+walks that list under target_cleanup_list_lock only.
 
-On 5/28/26 01:25, Jakub Kicinski wrote:
-> On Wed, 27 May 2026 04:47:47 +0200 Andrew Lunn wrote:
->>> It'd be great to hear from others but IMHO in the current form this is
->>> not suitable for Documentation/networking/ We can commit the "knowledge"
->>> part but enumerating the test cases seems odd for Documentation/.
->>
->> Sorry, not looked too deeply at the actual content yet.
->>
->> What i was thinking was a python file, which sphinx can ingest to
->> produce documentation, and place holders were code would be added to
->> implement the actual test during the next phase.
->>
->> This is how i've done testing in the past. I would be the evil one who
->> thought up the tests and described them in detail using sphinx markup
->> in a python test template file. After some review they got passed off
->> to a python developer for implementation. And when they got run and
->> failed, sometimes the feature developer, the test developer and myself
->> got together to figure who made the error.
->>
->> I'm not sure we even need sphinx. What i find important is that the
->> test is documented. What kAPI calls should be made with what
->> parameters. What results we are expected and why? So that when a test
->> fails, a developer has the information they need to fix their
->> code. The Why? is important, and often missing from the kernel tests.
-> 
-> All makes sense. The question is primarily how we fit that into
-> the existing project layout we have in the kernel :(
-> 
-> The python tests can be hacked up to print the test case docstring
-> before the failure.
-> 
-> But I think for human and AI reviewer consumption it may be nice
-> to keep the condensed knowledge / common mistakes in Documentation/
-> If we had the ability to exercise the submissions it'd be a different
-> story test output would be a sufficient signal and/or could be fed into
-> the review. But for AI making a guess at whether the submitted driver is
-> correct purely from the driver source - knowledge is useful.
+If a user removes the configfs target at the same time the cleanup
+worker is iterating target_cleanup_list, list_del() can corrupt the list
+because the two paths take disjoint locks while operating on the same
+list node.
 
-Also for the knowledge part, we had Oleksij's series that documented
-more aspects of flow control (not just the pause part) :
+Acquire target_cleanup_list_lock around the list_del() so the unlink is
+serialised against netconsole_process_cleanups_core() regardless of
+which list the target currently belongs to. The state transition that
+downgrades STATE_DEACTIVATED to STATE_DISABLED is left intact and is
+performed under the same combined locking, preserving the existing
+ordering with resume_target().
 
-https://lore.kernel.org/netdev/20260304094811.2779953-1-o.rempel@pengutronix.de/
+Fixes: 97714695ef90 ("net: netconsole: Defer netpoll cleanup to avoid lock release during list traversal")
+Signed-off-by: Breno Leitao <leitao@debian.org>
+---
+ drivers/net/netconsole.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Oleksij, maybe we can merge some of the information here with your
-doc for the Docuentation/networking part ?
+diff --git a/drivers/net/netconsole.c b/drivers/net/netconsole.c
+index a3dcbe713a0b..9e15d4186436 100644
+--- a/drivers/net/netconsole.c
++++ b/drivers/net/netconsole.c
+@@ -1452,6 +1452,7 @@ static void drop_netconsole_target(struct config_group *group,
+ 
+ 	dynamic_netconsole_mutex_lock();
+ 
++	mutex_lock(&target_cleanup_list_lock);
+ 	spin_lock_irqsave(&target_list_lock, flags);
+ 	/* Disable deactivated target to prevent races between resume attempt
+ 	 * and target removal.
+@@ -1460,6 +1461,7 @@ static void drop_netconsole_target(struct config_group *group,
+ 		nt->state = STATE_DISABLED;
+ 	list_del(&nt->list);
+ 	spin_unlock_irqrestore(&target_list_lock, flags);
++	mutex_unlock(&target_cleanup_list_lock);
+ 
+ 	dynamic_netconsole_mutex_unlock();
+ 
 
-Maxime
+-- 
+2.51.0
+
