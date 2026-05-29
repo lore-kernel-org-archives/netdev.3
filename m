@@ -1,35 +1,40 @@
-Received: from unimail.uni-dortmund.de (mx1.hrz.uni-dortmund.de [129.217.128.51])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88F7536607D;
-	Fri, 29 May 2026 16:15:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.217.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B21A53C3442;
+	Fri, 29 May 2026 16:18:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780071330; cv=none; b=Sa3gVAYJmoxRaJx1L4rTn1HzZ6oLbY9PHtOX1ZzFaswwACXo0aI0LT2Cya8XU+3mrX7PE0H9Lz/FgSoCzFFFj4saeWcoZNsjboVzmhIfD0sxLPJNOI65GPwcX4zj9mb7RsUqUr7GiwDfbcPqMHQqh6jLtUvaWvmax11oGuF3HcM=
+	t=1780071499; cv=none; b=ggSvSC1QjtluW42LG4awOB9/PwlZcDawxEkSgLQ2qye5TJNIDXyv5+1jBDwP4Y0cxLfzn6nHgWMs2qiLqdX6F7rMz7wKyEGtRBoPs+Y3EJLL0GHUrNF6qliyOCbfp63tpykPSlvSC5RQyXpmzUzTvnwFA6HektBiCe+Q3evnHaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780071330; c=relaxed/simple;
-	bh=uL/G0eLfOk3tPLysZ/3wSHOxP3/9s1fHmc95jIWh9Fk=;
+	s=arc-20240116; t=1780071499; c=relaxed/simple;
+	bh=LECw0sDPeJcrBgMMcO8z7qr7lxvWA9UJU0IiPs6eK30=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iHbIdwpbVUuoX6zRbz+Or6rR1AV2p5BRc5YbFeT4wY2lExzYTTcBCtC00d7Q7687RcjXE0eH4tqHqTbwwkN2PSSqGigYco5EhRyfDgkADpYuv8GuwXMj1h5Y4r3E3Tyz+Z5O9Fvm7mvk7C15Z1bLeCxW0leWcxTCV0ePY61U0dE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de; spf=pass smtp.mailfrom=tu-dortmund.de; dkim=pass (1024-bit key) header.d=tu-dortmund.de header.i=@tu-dortmund.de header.b=tFKhuz7u; arc=none smtp.client-ip=129.217.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tu-dortmund.de
+	 In-Reply-To:Content-Type; b=r2KRkxOdydOxt/DumqpfE5G2u+H7mUO6IQypXqxXiweBaqH/kB/qtyAzAKDHNHCMW1xreW9zsMXg6g26qiVUVkpAkGFqVp+5zNWp9VVWQyeWgj5Y9oq2MGK39C32HbaC4CMiSzPvjVbRloG8fSgYqXjYx5U6wLbc9w5zIsk3Wg8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=jzGnlnXW; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=tu-dortmund.de header.i=@tu-dortmund.de header.b="tFKhuz7u"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=tu-dortmund.de;
-	s=unimail; t=1780066303;
-	bh=uL/G0eLfOk3tPLysZ/3wSHOxP3/9s1fHmc95jIWh9Fk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=tFKhuz7u2kk9/OBJF7dXUwCKT5j3ebFa90CpfFcs/ZRH+a9xo0FWeV3Or6WzbqGQv
-	 DzCESRaHuRWtcbpSc2JaXdg0U2Kpi+ZPVsuNZAfIW1EViO8DYBQIFHukyhsYm16J3j
-	 gtQZj/UwCJHnFiG9k/YsEi07l5mCG1QdyyjW4Sww=
-Received: from [129.217.186.252] ([129.217.186.252])
-	(authenticated bits=0)
-	by unimail.uni-dortmund.de (8.19.0.1/8.19.0.1) with ESMTPSA id 64TEpf6Q021874
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Fri, 29 May 2026 16:51:41 +0200 (CEST)
-Message-ID: <c8650d3a-e488-4279-b28f-549d766c23a1@tu-dortmund.de>
-Date: Fri, 29 May 2026 16:51:41 +0200
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="jzGnlnXW"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 303B01A3739;
+	Fri, 29 May 2026 16:18:15 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id E2480601FA;
+	Fri, 29 May 2026 16:18:14 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3925110888CC2;
+	Fri, 29 May 2026 18:18:07 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1780071493; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=gud0LmIIA7BIAO125yPphz5IBoeyc1pFNJtaAjBjvdk=;
+	b=jzGnlnXWwrkOzd4lcqn+HeAYfuAbZ5YSeoMf/s3SWUBFlC1qR3qIAkOFgaPdrjNRV88k9H
+	ebl5OvmMZ+4Ut44lO5H6C9v63aMcl3T1oE1TKVBuv/tVq9na+eTvLnxKBO3cCl9AVhEnpx
+	jkJHHxfV3XOesmfGIbAJSmYUc9c28oiTREJr75PPIfSCSAr4Jtby+rrNWVxTEIb1T34Qn8
+	GcoV+5yFv/f1dounNbU6EhAJu7bo2UvOjL+12xbSB7CpJpku/XM0nw7xQ4cRH/xXpWA+y6
+	i4fMCikrkrYRrWAUmV0v72HzgDBi6p2+9GG1bQL9Oh0xWddcbGFGTsqQZzOz1A==
+Message-ID: <2bf0a2d1-634e-463b-a0bc-a8cbe930d5ad@bootlin.com>
+Date: Fri, 29 May 2026 18:18:07 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,60 +42,88 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v6 5/5] veth: time-based BQL completion
- coalescing via ethtool tx-usecs
-To: hawk@kernel.org, netdev@vger.kernel.org
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller"
- <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        John Fastabend <john.fastabend@gmail.com>,
-        Stanislav Fomichev <sdf@fomichev.me>, linux-kernel@vger.kernel.org,
-        bpf@vger.kernel.org
-References: <20260527135418.1166665-1-hawk@kernel.org>
- <20260527135418.1166665-6-hawk@kernel.org>
+Subject: Re: [PATCH net-next v9 2/3] net: sfp: apply I2C adapter quirks to
+ limit block size
+To: Jonas Jelonek <jelonek.jonas@gmail.com>,
+ Russell King <linux@armlinux.org.uk>, Andrew Lunn <andrew@lunn.ch>,
+ Heiner Kallweit <hkallweit1@gmail.com>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ =?UTF-8?Q?Bj=C3=B8rn_Mork?= <bjorn@mork.no>, Simon Horman <horms@kernel.org>
+References: <20260528205242.971410-1-jelonek.jonas@gmail.com>
+ <20260528205242.971410-3-jelonek.jonas@gmail.com>
 Content-Language: en-US
-From: Simon Schippers <simon.schippers@tu-dortmund.de>
-In-Reply-To: <20260527135418.1166665-6-hawk@kernel.org>
-Content-Type: text/plain; charset=UTF-8
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+In-Reply-To: <20260528205242.971410-3-jelonek.jonas@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On 5/27/26 15:54, hawk@kernel.org wrote:
-> From: Simon Schippers <simon.schippers@tu-dortmund.de>
-> +	/* If the ring is now empty and the peer TX queue is stalled by DQL
-> +	 * backpressure, release completions immediately to unblock it.
-> +	 */
-> +	if (peer_txq && state->n_bql && __ptr_ring_empty(&rq->xdp_ring)) {
-> +		/* Pairs with smp_wmb() in __ptr_ring_produce(); ensure ring
-> +		 * emptiness is observed before reading peer_txq->state.
-> +		 */
-> +		smp_rmb();
-> +		if (test_bit(__QUEUE_STATE_STACK_XOFF, &peer_txq->state))
-> +			veth_bql_complete(state, peer_txq);
-> +	}
+Hi Jonas,
 
-"Does this leave coalesced BQL completions pending indefinitely if the
-receive ring is empty but the peer TX queue isn't stalled by DQL? [...]"
+On 5/28/26 22:52, Jonas Jelonek wrote:
+> The SFP driver assumes all I2C adapters support reading and writing the
+> pre-defined block size SFP_EEPROM_BLOCK_SIZE of 16 bytes. This constant
+> was probably chosen based on good guesses and known limitations of a
+> range of I2C adapters and SFP modules.
+> 
+> However, I2C adapters may even support less and usually need to specify
+> this via I2C quirks. Theoretically, such an adapter may provide full
+> functionality but only support a read and write length of e.g. 8 bytes.
+> Currently, the SFP driver doesn't account for that.
+> 
+> Add handling for I2C quirks in SFP I2C configuration taking the fields
+> max_read_len and max_write_len in struct i2c_adapter_quirks into account
+> to further limit the maximum block size if needed.
+> 
+> Signed-off-by: Jonas Jelonek <jelonek.jonas@gmail.com>
 
-Regarding this by [1]: Yes, this is desired behavior IMO.
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
 
-From my understanding there should not be a BQL stall caused by
-this (needs to be tested though).
+Thanks !
 
-A minor nit is that the observation of the minimum amount of
-slack found over several iterations of the completion processing
-(saved in dql->lowest_slack) is inaccurate and therefore the limit
-might be set to a too low value once (at the next completion call).
-I think it does not matter though.
+Maxime
 
-
-Overall The AI reviews [1] [2] have some valid points.
-
-Apart from that I would consider joining patch 2 and 5.
-
-[1] Link: https://sashiko.dev/#/patchset/20260527135418.1166665-1-hawk%40kernel.org
-[2] Link: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260527135418.1166665-1-hawk%40kernel.org
-
+> ---
+>   drivers/net/phy/sfp.c | 12 ++++++++++--
+>   1 file changed, 10 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
+> index 376f7232f9ee..60f36cba3d83 100644
+> --- a/drivers/net/phy/sfp.c
+> +++ b/drivers/net/phy/sfp.c
+> @@ -809,21 +809,29 @@ static int sfp_smbus_byte_write(struct sfp *sfp, bool a2, u8 dev_addr,
+>   
+>   static int sfp_i2c_configure(struct sfp *sfp, struct i2c_adapter *i2c)
+>   {
+> +	size_t max_block_size;
+> +
+>   	sfp->i2c = i2c;
+>   
+>   	if (i2c_check_functionality(i2c, I2C_FUNC_I2C)) {
+>   		sfp->read = sfp_i2c_read;
+>   		sfp->write = sfp_i2c_write;
+> -		sfp->i2c_max_block_size = SFP_EEPROM_BLOCK_SIZE;
+> +		max_block_size = SFP_EEPROM_BLOCK_SIZE;
+>   	} else if (i2c_check_functionality(i2c, I2C_FUNC_SMBUS_BYTE_DATA)) {
+>   		sfp->read = sfp_smbus_byte_read;
+>   		sfp->write = sfp_smbus_byte_write;
+> -		sfp->i2c_max_block_size = 1;
+> +		max_block_size = 1;
+>   	} else {
+>   		sfp->i2c = NULL;
+>   		return -EINVAL;
+>   	}
+>   
+> +	if (i2c->quirks && i2c->quirks->max_read_len)
+> +		max_block_size = min(max_block_size, i2c->quirks->max_read_len);
+> +	if (i2c->quirks && i2c->quirks->max_write_len)
+> +		max_block_size = min(max_block_size, i2c->quirks->max_write_len);
+> +
+> +	sfp->i2c_max_block_size = max_block_size;
+>   	sfp->i2c_block_size = sfp->i2c_max_block_size;
+>   	return 0;
+>   }
 
