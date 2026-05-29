@@ -1,183 +1,239 @@
-Received: from mail-dl1-f42.google.com (mail-dl1-f42.google.com [74.125.82.42])
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6C3831A045
-	for <netdev@vger.kernel.org>; Fri, 29 May 2026 03:41:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780026083; cv=pass; b=b46NvI/r487927PQCm515ARuJYMkTghtU6g4QAArEG67G5rpT3RF2NMuSf/3lttcolaPOQRK86Obm9RAixn4ZsLDO9cyqiqLYQ1qCaYRCeiaRX/YSWRagWy87Ce5M6o9L6RlmeWpE9MyqIaBXM9zbth6qvcYX2rLqNUHhhkZfpc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780026083; c=relaxed/simple;
-	bh=i6JYTRjm4JXejcRLaJhLR1YR6Ikw12Sv3JIRSgFRLr8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SzPEcSQFgvyfSeIeWc2uQsga/uXMS+KCcnAroT9ufxoRaS/y/2/ZF2JP9UtwAdrQn5i8BJpbmU88rHOaNhsIBL7c4Y1cQ1fhhLWDeEPP+YcVz3Km/yR8XtxTm5kqRKwU5oRwsaO1rOHf9MwBjsevNYFDY84TkzAuTwQwVFRfi6k=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HDeR0rLT; arc=pass smtp.client-ip=74.125.82.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B233367B93
+	for <netdev@vger.kernel.org>; Fri, 29 May 2026 04:30:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.174
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780029025; cv=none; b=MW+yOTcjgFzdFAEdYb3k+ZdeEs+NfAErP/Pj1vWrkZVWt47jUI/7C9tQKxJ8bSCfY/882Z/GQcQEr+IMeG64GAjUxb4O4hkISpmJgr2Vn00ReH+Pgr+WIhNJmJJlATAH6Jf+iu9450NYEPoeYuBBdNC4QSRWaBj2Pi6E4e6vqQA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780029025; c=relaxed/simple;
+	bh=6vvUpEnA3zuZyhkh5L9tx3acH0/PiR28xnODKHfdVgc=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=SueN0YK8WgoFmh4tOkmQfEiAA/PxN53v0d/DmI6DvkRYUW+MBUWVskoh80tMzKKaiOcD5o0L2jBW0DEirvoSW0uAEuQCBrJFQd4CHDj4e9FlAkNwsSzlJH31IJPjzk95aYhcT6u0lIKfQVCgtsAL8c8OUeNK9nWCfNX5vJ/jcGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TAq+xf9J; arc=none smtp.client-ip=209.85.160.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HDeR0rLT"
-Received: by mail-dl1-f42.google.com with SMTP id a92af1059eb24-132d1b2519eso9599364c88.0
-        for <netdev@vger.kernel.org>; Thu, 28 May 2026 20:41:20 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780026080; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Fek88M6A2ulq/jDxQo64KJuJi4pqxYRlcVby4Ju0b8bfBvVeEaXfWtDNCWfG2Fliml
-         G836VkOvydNhcO1xnxEI+UY344xVrROmEvoUAqESTcGmVY2m8ftTjWCEfO1d1lrbxpoO
-         IixvvX5lIb2DrC09BzB0VYzmIgqQY+EBJ16AOm6fz5NU5Zkqw4V7LAImupz4yAOtnIjT
-         Gy7MJ5d9jz2HQjL5Ho5X60ZsuL6rn5ajTJCpmjeM73z+tdC6Uv1z2uXPC3s+9JH72K7A
-         aQcEcRHkW+YeowVUaFJC7s6ABrevW013OOXd7whc3VvhDe89mdu3n9ZCn7y3si3Q9qJ+
-         d5tw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=RNKxgDovCOq+Ul4OFwE0rhhGQh17y9vA7PTe6i4EqtU=;
-        fh=7x/LyHY5pE8qn1lx2Vvk+OlVE01WjBNeKeKrfu5D7J0=;
-        b=ZkVQrsZP2sSMBlawJek2xqc07F7DcQ2pf3tgDgl8owW8SB7vsbTUbjWsm47Znc5Q+m
-         lyEJVjVvfWL5Fq6WSvTMWzJz1aRxvunoQ9mG83i8020G7Ua4qNIXNFoVupWRU0iChojN
-         3s2HBpjfdpY0RY9Bs8kYEy/VXrittV+nycPcRwS6E9lH1iB/Bz0a025m0pCZ8i6PGvri
-         VcKdqY4vV/ziO7GLY0vk40i6ZeODXnPXyilB/H7QMEOMLDk950Kw9pXKEF1MdvsUVveI
-         9BSsRAexrJWbBldURst1QpPpmnfwxWwq9SYkbrT0qxWeJIRha5ADt+aYHqJDhdoYkQM3
-         4z9g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TAq+xf9J"
+Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-516d0db9372so65629601cf.2
+        for <netdev@vger.kernel.org>; Thu, 28 May 2026 21:30:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780026080; x=1780630880; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RNKxgDovCOq+Ul4OFwE0rhhGQh17y9vA7PTe6i4EqtU=;
-        b=HDeR0rLT5Hp13SrFhUv3CEJx5lpUAexbFmv6umr0mab0+91doiV+ApUj2Ng2C97inY
-         sJxxHxaA0jfiVyY3TiIg0e1pJsSaS+OAJXa2wdgsYZDhqzxRtVqknnv40UIe3JBkcAJ4
-         XSSo4cCVBGkbKF32siEUEQod1L+KqgH/8r6rJOqPpccOTBwrTjrapZ9ehExBnzCPgUIB
-         HHwsH84/xwA8DL0Y1/Is9MbuAeI2FbcOuVdbAlYNo9/GVU74pL5Q0lpt41ZNCVfAeyy0
-         QRmbOxYEuCxVbqySeBExNxxjVWh/OC5N4YmaHOr/ZIVZCLr+Up2wvDlk8MfFhATLdNrp
-         PR5g==
+        d=gmail.com; s=20251104; t=1780029023; x=1780633823; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=rgdsNgCTJpv8k0KRcqQg2bYC+LqfZpfIBBy5KwRLQzE=;
+        b=TAq+xf9JiV39zwLD4ZW74QWi/QYU/b5qx+w9hdXs0pPTJukhFeAS4+JY0u+yup/f4r
+         +CyJAXqQ15zS9AayuDCUHHEYwL4SH2bAfkHqpKA49uABrbJIUnoW/gaDqwa6q3JPacs9
+         I5nr0DEdS3MXfESlqwqX2KMZq3dgrBmJ3WC04uPPPzTOI3ckwkGbXUxkBXfQ0YgqcaS4
+         HoVRBH7P+heiq8kw8lw/x0r7128+Tkuj6xQ0fhjzkFXMcFwY0G/CbAX1FHFpZtYTpjVT
+         sEjITljRaImhVvCwqbY/8S2QdU3P26CfVzpA4EKNwvdVrSJU9Ku+pH2rDhgqg5jwA3HM
+         6M0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780026080; x=1780630880;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=RNKxgDovCOq+Ul4OFwE0rhhGQh17y9vA7PTe6i4EqtU=;
-        b=BIyroOP0reIwiHSw+CkdNzGIYC4FM69zDQMTcy7V3/Tr4wsQp+cS5Jteo+5TYDpEfo
-         EvzRjfT+gbhQ5tBbThNIwqW9UTYUeR4bzxhyiQ8HpW3tJURP87GVgzhu59igWSCYhVdi
-         GkD7NkavCRNfwSsOrjT1/h7wmO7E+RJTHzTJx/AA7noEJ/S5rkeGIjxReS5tc47a+L0U
-         O4AzD5dwa0GTlbjs9NXPq8yg7HgAfAs8YXMefyi3gMXjRUbdcEWjVXUS3x8xFOMqlnuO
-         7c8IDpaConnmcelPm96ZmfqcZw8vl5FyKAPeG91OSfHpy0aoV0BZ3WVs3Kw8WL0+rHbx
-         69wg==
-X-Gm-Message-State: AOJu0YwPnDnZlLeiLWG9lt2NS84FbpPEu7FigwfcwDktxs7kXCJ7XMEi
-	6lfHvEfHxkynWz+Uta4p9/3bVvIN4z3GX5ItALZ24G2K49agxb60XjJf7KmC8vMAbzAdw768TAg
-	ZlZaWofrKUxabDaTDHFm5nfC4it1FdEfDEMLtRWqO
-X-Gm-Gg: Acq92OHBXXRvdTgrDBe0qd+FWb/drAtJQ2jItGhqlwWhhU+tFMhY1ppzUt+4ct/f8+X
-	NWSsTk/Sru0K+XIDuDOhSayJ/j+w/uJAzKEIMF7u5+F42I3/SYyC0zyvyWHCTaayatg3ORQgfvT
-	55e1RApjxoByCl8UkXA0Fp++ogMIkJNz5A4Sa2Dxe3R0XjV5l/B5HoEuRw+VcKO2te9ZPUQDIbE
-	GqI8O2owON0okyBuXBn+TF8nS7bC8lXy/foTdWks4TIUM/4GCCIvi+IEnn0xVAWpJIXcTH2TfXN
-	QZWjzaGWaJvGfpsrVognm/UaSKsg+MO47iULIwdndyr2eYASJyK7CjVs7Qa55WseoCg4aRgXuv1
-	4vreLNAGQeV8QbMS1TmukHB9b9e6zuHrtQZpNOMDuSa/ha0XE+YBqKau266b7
-X-Received: by 2002:a05:7022:397:b0:130:aa42:167b with SMTP id
- a92af1059eb24-137af863b19mr444180c88.36.1780026079351; Thu, 28 May 2026
- 20:41:19 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1780029023; x=1780633823;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=rgdsNgCTJpv8k0KRcqQg2bYC+LqfZpfIBBy5KwRLQzE=;
+        b=hLwTDXRHRZFUK3VhWUxJWIIaEFfa4En02tIoilGoGuJqzZhXx6bGI/LudlljBZFsR2
+         zhetBBX7ahx4t8znPYcwRkATtc+o8lBU/WKxRkuEK++3s219SLhYVcn/rL1le27qD2Mf
+         ynLhnTp35Hn6fUzV/XTqy3lXJ0kgJoBa+3QTxWYVRoqVrBldD2Ln4Cx6EQ8P/jbIOif5
+         qekOBXRuoPEdT6pmrKRc6jkUBtG2pEBQHsAZREqnJ5HX4ErxnTFoxOZdiYpZ7h+wL02l
+         UuAH4CrzLzw5iPkcuMGuiAjw15ViW6LpBpQn4y0CfESrXtluJBLu3za5ITob3/wpt9je
+         Ho/Q==
+X-Gm-Message-State: AOJu0YyyIMrNXiKv80yo1Fx5HxTolDYQlm5cZWXPD57cPDiv1emRM662
+	guWMB5Od6J22SXxVFa3E4BOzq6ECPEZPSXBQe9IJ8QjyFBjUStCydZZa
+X-Gm-Gg: Acq92OHkAy7KnqI3cRLcIpiyuK8wth+X5O73Kl8TdSGprC2eIc4TIQ8c2P9bguPj+xt
+	/d1FInpWxLlWY1aHL1CDDVYtJt4+P0OGapmOfmiBMR4zIitnGpLnLbUJMeTcm0cuB/mzDiBjOSu
+	KSoD9nyr0ze2W7YfTalRM4QWTgW1qyLdK/VDp7S0QF+0FNAh9WeX49XoPAXte1OvFHN9Ky2+D8G
+	jPzwQvPSqaSsYYcDbX6o+2VcH2depmz+zyBbX13Lnx/88h6oog7XJXsvIx16w8KAwRC8u5ZgDqf
+	ExToX8QMuxNeMd/cYUcB9BTda4LVscDLvEtToCDdhkwUOjHu0h4KL+fQ9z80Em3Aag0r5uj3XEq
+	CHVQoDrAr8ZNQ7O4InGKFL/DLqaChT7x2+wb9/rzVoHbNo/r/Foe2CnhvkETHXMoADsmjMaUCb4
+	vmoRcEHe7VzASYrqcGVl/Jtr3MzTF4kjFfDhoDcdsuief0kj64sQ==
+X-Received: by 2002:a05:622a:1902:b0:516:e047:2f30 with SMTP id d75a77b69052e-5172dd2511fmr18004991cf.38.1780029023077;
+        Thu, 28 May 2026 21:30:23 -0700 (PDT)
+Received: from tresc054937.tre-sc.gov.br ([187.65.210.13])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5172ebc7d23sm9260991cf.29.2026.05.28.21.30.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 28 May 2026 21:30:22 -0700 (PDT)
+From: Luiz Angelo Daros de Luca <luizluca@gmail.com>
+Date: Fri, 29 May 2026 01:29:46 -0300
+Subject: [net-next PATCH v9 1/8] net: dsa: realtek: rtl8365mb: use ERR_PTR
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260529032026.363856-1-jiayuan.chen@linux.dev>
-In-Reply-To: <20260529032026.363856-1-jiayuan.chen@linux.dev>
-From: Kuniyuki Iwashima <kuniyu@google.com>
-Date: Thu, 28 May 2026 20:41:08 -0700
-X-Gm-Features: AVHnY4LyHWveM15GXyGtNcmp8lh-hR06yFfs4exejVzeulQhKS0sSffUxqsQ-kU
-Message-ID: <CAAVpQUCJxaPTsA8DJ-KzPpWM2_GQr1LBHfdyEo9ziCA4sEqv-w@mail.gmail.com>
-Subject: Re: [PATCH net] ipv6: anycast: insert aca into global hash under idev->lock
-To: Jiayuan Chen <jiayuan.chen@linux.dev>
-Cc: netdev@vger.kernel.org, David Ahern <dsahern@kernel.org>, 
-	Ido Schimmel <idosch@nvidia.com>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260529-realtek_forward-v9-1-e7c61872d923@gmail.com>
+References: <20260529-realtek_forward-v9-0-e7c61872d923@gmail.com>
+In-Reply-To: <20260529-realtek_forward-v9-0-e7c61872d923@gmail.com>
+To: Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, Linus Walleij <linusw@kernel.org>, 
+ =?utf-8?q?Alvin_=C5=A0ipraga?= <alsi@bang-olufsen.dk>, 
+ Yury Norov <yury.norov@gmail.com>, 
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
+ Russell King <linux@armlinux.org.uk>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Mieczyslaw Nalewaj <namiltd@yahoo.com>, 
+ Luiz Angelo Daros de Luca <luizluca@gmail.com>
+X-Mailer: b4 0.15.2
 
-On Thu, May 28, 2026 at 8:20=E2=80=AFPM Jiayuan Chen <jiayuan.chen@linux.de=
-v> wrote:
->
-> syzbot reported a splat [1]: a slab-use-after-free in
-> ipv6_chk_acast_addr(), which walks the global inet6_acaddr_lst[] hash
-> under RCU and dereferences a struct ifacaddr6 that has already been
-> freed while still linked in the hash, so a later reader walks into a
-> dangling node.
->
-> In __ipv6_dev_ac_inc() the aca is allocated with refcount 1, then
-> aca_get() bumps it to 2 to keep it alive across the unlocked region.
-> It is published to idev->ac_list under idev->lock, but
-> ipv6_add_acaddr_hash() runs after write_unlock_bh(). A concurrent
-> teardown (ipv6_ac_destroy_dev() from addrconf_ifdown(), under RTNL)
-> can slip into that window:
->
->   CPU0 __ipv6_dev_ac_inc           CPU1 ipv6_ac_destroy_dev (RTNL)
->   ------------------------------   ------------------------------------
->   aca_alloc()              refcnt 1
->   aca_get()               refcnt 2
->   write_lock_bh(idev->lock)
->     add aca to ac_list
->   write_unlock_bh(idev->lock)
->                                    write_lock_bh(idev->lock)
->                                      pull aca off ac_list
->                                    write_unlock_bh(idev->lock)
->                                    ipv6_del_acaddr_hash(aca)
->                                      hlist_del_init_rcu() is a no-op,
->                                      aca is not in the hash yet
->                                    aca_put()           refcnt 2->1
->   ipv6_add_acaddr_hash(aca)
->     aca now inserted into the hash
->   aca_put()                refcnt 1->0
->     call_rcu(aca_free_rcu) -> kfree(aca)
->
-> The hash removal becomes a no-op because the insertion has not
-> happened yet, so once CPU0 inserts and drops the last reference, the
-> aca is freed while still linked in inet6_acaddr_lst[], and readers
-> dereference freed memory after the slab slot is reused.
->
-> This window opened once RTNL stopped serializing the join path against
-> device teardown. Move ipv6_add_acaddr_hash() inside the idev->lock
-> section so the ac_list and hash insertions are atomic with respect to
-> teardown: a racing remover now either misses the aca entirely or finds
-> it in both lists.
->
-> [1] https://syzkaller.appspot.com/bug?extid=3Da01df04303c131efbf3a
+Convert numeric error codes into human-readable strings by using %pe
+together with ERR_PTR() in dev_err() messages.  Also use dev_err_probe()
+instead of checking for -EPROBE_DEFER.
 
-Closes: and Reported-by ?
+Reviewed-by: Linus Walleij <linusw@kernel.org>
+Reviewed-by: Mieczyslaw Nalewaj <namiltd@yahoo.com>
+Signed-off-by: Luiz Angelo Daros de Luca <luizluca@gmail.com>
+---
+ drivers/net/dsa/realtek/rtl8365mb.c | 51 +++++++++++++++++++++----------------
+ 1 file changed, 29 insertions(+), 22 deletions(-)
 
->
-> Fixes: eb1ac9ff6c4a ("ipv6: anycast: Don't hold RTNL for IPV6_JOIN_ANYCAS=
-T.")
-> Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+diff --git a/drivers/net/dsa/realtek/rtl8365mb.c b/drivers/net/dsa/realtek/rtl8365mb.c
+index 0da048da533a..2637884fe472 100644
+--- a/drivers/net/dsa/realtek/rtl8365mb.c
++++ b/drivers/net/dsa/realtek/rtl8365mb.c
+@@ -803,8 +803,8 @@ static int rtl8365mb_phy_read(struct realtek_priv *priv, int phy, int regnum)
+ 	ret = rtl8365mb_phy_ocp_read(priv, phy, ocp_addr, &val);
+ 	if (ret) {
+ 		dev_err(priv->dev,
+-			"failed to read PHY%d reg %02x @ %04x, ret %d\n", phy,
+-			regnum, ocp_addr, ret);
++			"failed to read PHY%d reg %02x @ %04x, ret %pe\n", phy,
++			regnum, ocp_addr, ERR_PTR(ret));
+ 		return ret;
+ 	}
+ 
+@@ -831,8 +831,8 @@ static int rtl8365mb_phy_write(struct realtek_priv *priv, int phy, int regnum,
+ 	ret = rtl8365mb_phy_ocp_write(priv, phy, ocp_addr, val);
+ 	if (ret) {
+ 		dev_err(priv->dev,
+-			"failed to write PHY%d reg %02x @ %04x, ret %d\n", phy,
+-			regnum, ocp_addr, ret);
++			"failed to write PHY%d reg %02x @ %04x, ret %pe\n", phy,
++			regnum, ocp_addr, ERR_PTR(ret));
+ 		return ret;
+ 	}
+ 
+@@ -1082,8 +1082,8 @@ static void rtl8365mb_phylink_mac_config(struct phylink_config *config,
+ 		ret = rtl8365mb_ext_config_rgmii(priv, port, state->interface);
+ 		if (ret)
+ 			dev_err(priv->dev,
+-				"failed to configure RGMII mode on port %d: %d\n",
+-				port, ret);
++				"failed to configure RGMII mode on port %d: %pe\n",
++				port, ERR_PTR(ret));
+ 		return;
+ 	}
+ 
+@@ -1112,8 +1112,8 @@ static void rtl8365mb_phylink_mac_link_down(struct phylink_config *config,
+ 						     false, false);
+ 		if (ret)
+ 			dev_err(priv->dev,
+-				"failed to reset forced mode on port %d: %d\n",
+-				port, ret);
++				"failed to reset forced mode on port %d: %pe\n",
++				port, ERR_PTR(ret));
+ 
+ 		return;
+ 	}
+@@ -1143,8 +1143,8 @@ static void rtl8365mb_phylink_mac_link_up(struct phylink_config *config,
+ 						     rx_pause);
+ 		if (ret)
+ 			dev_err(priv->dev,
+-				"failed to force mode on port %d: %d\n", port,
+-				ret);
++				"failed to force mode on port %d: %pe\n", port,
++				ERR_PTR(ret));
+ 
+ 		return;
+ 	}
+@@ -1299,8 +1299,8 @@ static void rtl8365mb_get_ethtool_stats(struct dsa_switch *ds, int port, u64 *da
+ 						 mib->length, &data[i]);
+ 		if (ret) {
+ 			dev_err(priv->dev,
+-				"failed to read port %d counters: %d\n", port,
+-				ret);
++				"failed to read port %d counters: %pe\n", port,
++				ERR_PTR(ret));
+ 			break;
+ 		}
+ 	}
+@@ -1652,7 +1652,8 @@ static irqreturn_t rtl8365mb_irq(int irq, void *data)
+ 	return IRQ_HANDLED;
+ 
+ out_error:
+-	dev_err(priv->dev, "failed to read interrupt status: %d\n", ret);
++	dev_err(priv->dev, "failed to read interrupt status: %pe\n",
++		ERR_PTR(ret));
+ 
+ out_none:
+ 	return IRQ_NONE;
+@@ -1725,10 +1726,13 @@ static int rtl8365mb_irq_setup(struct realtek_priv *priv)
+ 	/* rtl8365mb IRQs cascade off this one */
+ 	irq = of_irq_get(intc, 0);
+ 	if (irq <= 0) {
+-		if (irq != -EPROBE_DEFER)
+-			dev_err(priv->dev, "failed to get parent irq: %d\n",
+-				irq);
+-		ret = irq ? irq : -EINVAL;
++		if (!irq) {
++			dev_err(priv->dev, "failed to map IRQ\n");
++			ret = -EINVAL;
++		} else {
++			ret = dev_err_probe(priv->dev, irq,
++					    "failed to get parent irq\n");
++		}
+ 		goto out_put_node;
+ 	}
+ 
+@@ -1790,7 +1794,8 @@ static int rtl8365mb_irq_setup(struct realtek_priv *priv)
+ 	ret = request_threaded_irq(irq, NULL, rtl8365mb_irq, IRQF_ONESHOT,
+ 				   "rtl8365mb", priv);
+ 	if (ret) {
+-		dev_err(priv->dev, "failed to request irq: %d\n", ret);
++		dev_err(priv->dev, "failed to request irq: %pe\n",
++			ERR_PTR(ret));
+ 		goto out_remove_irqdomain;
+ 	}
+ 
+@@ -1966,14 +1971,16 @@ static int rtl8365mb_setup(struct dsa_switch *ds)
+ 
+ 	ret = rtl8365mb_reset_chip(priv);
+ 	if (ret) {
+-		dev_err(priv->dev, "failed to reset chip: %d\n", ret);
++		dev_err(priv->dev, "failed to reset chip: %pe\n",
++			ERR_PTR(ret));
+ 		goto out_error;
+ 	}
+ 
+ 	/* Configure switch to vendor-defined initial state */
+ 	ret = rtl8365mb_switch_init(priv);
+ 	if (ret) {
+-		dev_err(priv->dev, "failed to initialize switch: %d\n", ret);
++		dev_err(priv->dev, "failed to initialize switch: %pe\n",
++			ERR_PTR(ret));
+ 		goto out_error;
+ 	}
+ 
+@@ -2091,8 +2098,8 @@ static int rtl8365mb_detect(struct realtek_priv *priv)
+ 
+ 	ret = rtl8365mb_get_chip_id_and_ver(priv->map, &chip_id, &chip_ver);
+ 	if (ret) {
+-		dev_err(priv->dev, "failed to read chip id and version: %d\n",
+-			ret);
++		dev_err(priv->dev, "failed to read chip id and version: %pe\n",
++			ERR_PTR(ret));
+ 		return ret;
+ 	}
+ 
 
-Change itself looks good, thanks
+-- 
+2.54.0
 
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-
-
-> ---
->  net/ipv6/anycast.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/net/ipv6/anycast.c b/net/ipv6/anycast.c
-> index 67a42e01dfc3..cd8c02a1ad4c 100644
-> --- a/net/ipv6/anycast.c
-> +++ b/net/ipv6/anycast.c
-> @@ -371,10 +371,10 @@ int __ipv6_dev_ac_inc(struct inet6_dev *idev, const=
- struct in6_addr *addr)
->         aca->aca_next =3D idev->ac_list;
->         rcu_assign_pointer(idev->ac_list, aca);
->
-> -       write_unlock_bh(&idev->lock);
-> -
->         ipv6_add_acaddr_hash(net, aca);
->
-> +       write_unlock_bh(&idev->lock);
-> +
->         ip6_ins_rt(net, f6i);
->
->         addrconf_join_solict(idev->dev, &aca->aca_addr);
-> --
-> 2.43.0
->
