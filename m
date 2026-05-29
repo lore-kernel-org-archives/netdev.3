@@ -1,37 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6598C3CB2DA;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 658863CAE83;
 	Fri, 29 May 2026 10:31:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780050708; cv=none; b=GLtTavlGtBpC+3JNYvtTvvEkTSE8ICWyPoUw7TY77HKJDYTjHzvwc6Z2CWuHIQQHMcmLQ8fBmPBjCZ7qww0N87KGrASZWehremVrYECzA30csbqhe5kC87PlFjqeI4nnci0ebXF1iDPstPlKe3RAKU79vyBmYX/s3n6/XgPos6w=
+	t=1780050708; cv=none; b=Y7274+HHWWFAbLdrjiPJHuoQnuMMJ0/5VoMcw9jjf8kEok1khHxX9Lp3B1bjgVq8ImSmedI07z9/KM40HFI+WtUYHcLNCjat2HKTAGwJUrRfUUqia3rTD63pd2qaAjfZChTCImQ/AJUdcrRxdqkNSQd0AVyg6Ex2HtaiIJwPHTQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1780050708; c=relaxed/simple;
-	bh=Uhk5W8Tuq0902LMgAiqFtam6oLO/82rfu4jgFWKW+a4=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Umie5tGPG7EAmLknqq79fLA+mRrJ+SrjPI6QjhRLqK8JZC1wFFFPBdLNV0JUm6F0x/li3D3mClmbFnPDQKWnzCBghPSERb7m9AcLiCkXRPdEchKjNsGTtf8kH7P9BfVsBac8ga+RFjmLjd5gVUZFcw030yWr6KvNYqmWtCf414Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AXfOyCAL; arc=none smtp.client-ip=10.30.226.201
+	bh=i0kY+XePY2pwY14AeOvcQg6Ciu3E77/ceWwmA+lXhD0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=jh6XWPxISvle5/EGs30P73kacHXX8gu5UyY5DYrm9eSMHtno9f7ZW6fL6On0iHoJ+ADkjiBaDkvgSze7LQvv+U5CS5Xj8pcj393JbgiGYg8FVm+6MfuyDTERiK9u+8UvZG2M5rpx8Yi1ZdqBIRxLu2WuY/2eUufVTxeXiLpdmu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d1m1811C; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AXfOyCAL"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id D102AC2BCB3;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d1m1811C"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id ED40AC2BCC6;
 	Fri, 29 May 2026 10:31:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1780050707;
-	bh=Uhk5W8Tuq0902LMgAiqFtam6oLO/82rfu4jgFWKW+a4=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=AXfOyCALX/3nZQm6Tm38XTkxf2nm/oiUxUNbJ5s0BChero7EYc9JeM4yjTHsT7Mtv
-	 u47StDh5RupXr4H4kYa38JCaiZJ/+g/lU5iweO0RAaK8URc2yoPZrtzFiLaQ9P/Gya
-	 31uJORWUuLMlMUgpYeOUvp0vfdVyQSeywTS28Yfl5iZBAWbtbU5iOgQmkxn8CKlTZJ
-	 fAnC42NBPNlIgZz7XQortiE0DPg2xPScuRxwYr7q9sV73ST6fCLuaZTL7rJYgFuNWR
-	 tYSSwLyBkBoywP3MRAXz8gLpcZFKp2W99NKh1S9dYByWclxEUelHBv3taLy0/XuPPo
-	 RLBXkUc8msZSA==
+	s=k20201202; t=1780050708;
+	bh=i0kY+XePY2pwY14AeOvcQg6Ciu3E77/ceWwmA+lXhD0=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=d1m1811CauOm/vRCWcyfA1b+8RAmz2nsbxE3zVV1i6tCJEtoIxTTXEFhec7a0C8Dk
+	 xS87XNW/AaZlT/8QN/71h1Bk+i6obg2N+wxMstxzcNc4waVZOL3AzCqhSunbEIIwh2
+	 3VC+bs+PaXDVj/32NMdlkhhDMSsxJsWnFqH+RcVlxkOLMeZ/z5rKhscXHBXIcAHXhA
+	 8ob7aNFuaNsRP9zmyrCC9IlxT9AziUSe/QSCjY6LnrLoDM1LJd/nYLDFqAGTcOBGAP
+	 +7I+PneysZTL9lylru9ibB1cN7CZPofKAAjimbwLzWOd93cYA6pdVcQFg64/jYQhnx
+	 fFZALkxhiDokQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B5542CD6E4A;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DABF2CD5BD2;
 	Fri, 29 May 2026 10:31:47 +0000 (UTC)
 From: Jack Wu via B4 Relay <devnull+jackbb_wu.compal.com@kernel.org>
-Subject: [PATCH 00/11] net: wwan: t9xx: Add MediaTek T9XX WWAN driver
-Date: Fri, 29 May 2026 18:31:39 +0800
-Message-Id: <20260529-t9xx_driver_v1-v1-0-bdbfe2c01e57@compal.com>
+Date: Fri, 29 May 2026 18:31:41 +0800
+Subject: [PATCH 02/11] net: wwan: t9xx: Add control plane transaction layer
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -40,10 +40,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAtrGWoC/yXMzQ5FMBBA4VeRWWui5eqtVxERP1N3LJApTRPx7
- upafotzTnDIhA6q5ARGT47WJUKmCQy/bplQ0BgNKlNl9lFG7CaEdmTyyK2XQuqisN/Oap0biNH
- GaCn8h3Xz2h39jMP+XOC6bhLEN+pyAAAA
-X-Change-ID: 20260529-t9xx_driver_v1-1744f8af7739
+Message-Id: <20260529-t9xx_driver_v1-v1-2-bdbfe2c01e57@compal.com>
+References: <20260529-t9xx_driver_v1-v1-0-bdbfe2c01e57@compal.com>
+In-Reply-To: <20260529-t9xx_driver_v1-v1-0-bdbfe2c01e57@compal.com>
 To: Loic Poulain <loic.poulain@oss.qualcomm.com>, 
  Sergey Ryazanov <ryazanov.s.a@gmail.com>, 
  Johannes Berg <johannes@sipsolutions.net>, 
@@ -61,11 +60,11 @@ Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
  linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
  linux-doc@vger.kernel.org
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1780050704; l=5835;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1780050704; l=7908;
  i=jackbb_wu@compal.com; s=20260526; h=from:subject:message-id;
- bh=Uhk5W8Tuq0902LMgAiqFtam6oLO/82rfu4jgFWKW+a4=;
- b=iqDg+vLGU+X657DStNqZFEAiE7d5rUDTD53nG4CwrDrNfZblbPjZ6fRCVURu6Td8HZy528uDB
- is4E2j+pLqCCnmsI5MFSEce3CnWGORvwT0Hv25O2YwiwvQQ/YwYYvHj
+ bh=mLIfsfKkyn2fG6Qw+CqDeaQRZ5KuIjQhr1fHf+lulaQ=;
+ b=l3UksZr4oiFC4yYYP+7iHUvA80m8Zq3m3YVh83FNd4FPnPO+Mk9z3olRi67SUo1x4KI8I0pbz
+ Q8SWE6vf+QOBfHZs0ExWJRNlDB/Bu7lVHRDDbNSaIZHebJlHxInYprH
 X-Developer-Key: i=jackbb_wu@compal.com; a=ed25519;
  pk=VH1prTWixNl8OEUPPSfII3p46MzJpQN8J3+ecE1tZXg=
 X-Endpoint-Received: by B4 Relay for jackbb_wu@compal.com/20260526 with
@@ -73,127 +72,290 @@ X-Endpoint-Received: by B4 Relay for jackbb_wu@compal.com/20260526 with
 X-Original-From: Jack Wu <jackbb_wu@compal.com>
 Reply-To: jackbb_wu@compal.com
 
-T9XX is the PCIe host device driver for MediaTek's
-t900 modem. The driver uses the WWAN framework
-infrastructure to create the following control ports
-and network interfaces for data transactions.
-* /dev/wwan0at0 - Interface that supports AT commands.
-* /dev/wwan0mbim0 - Interface conforming to the MBIM
-  protocol.
-* wwan0-X - Primary network interface for IP traffic.
+From: Jack Wu <jackbb_wu@compal.com>
 
-The main blocks in the T9XX driver are:
-* HW layer - Abstracts the hardware bus operations for
-   the device, and provides generic interfaces for the
-   transaction layer to get the device's information and
-   control the device's behavior. It includes:
+The control plane implements TX services that reside in the
+transaction layer. The services receive the packets from the
+port layer and call the corresponding DMA components to
+transmit data to the device. Meanwhile, TX services receive
+and manage the port control commands from the port layer.
 
-   * PCIe - Implements probe, removal and interrupt
-     handling.
-   * MHCCIF (Modem Host Cross-Core Interface) - Provides
-     interrupt channels for bidirectional event
-     notification such as handshake and port enumeration.
+The control plane implements RX services that reside in the
+transaction layer. The services receive the downlink packets
+from the modem and transfer the packets to the corresponding
+port layer interfaces.
 
-* Transaction layer - Implements data transactions for
-   the control plane and the data plane. It includes:
-
-   * DPMAIF (Data Plane Modem AP Interface) - Controls
-     the hardware that provides uplink and downlink
-     queues for the data path. The data exchange takes
-     place using circular buffers to share data buffer
-     addresses and metadata to describe the packets.
-   * CLDMA (Cross Layer DMA) - Manages the hardware
-     used by the port layer to send control messages to
-     the device using MediaTek's CCCI (Cross-Core
-     Communication Interface) protocol.
-   * TX Services - Dispatch packets from the port layer
-     to the device.
-   * RX Services - Dispatch packets to the port layer
-     when receiving packets from the device.
-
-* Port layer - Provides control plane and data plane
-   interfaces to userspace. It includes:
-
-   * Control Plane - Provides device node interfaces
-     for controlling data transactions.
-   * Data Plane - Provides network link interfaces
-     wwanX (0, 1, 2...) for IP data transactions.
-
-* Core logic - Contains the core logic to keep the
-   device working. It includes:
-
-   * FSM (Finite State Machine) - Monitors the state
-     of the device, and notifies each module when the
-     state changes.
-
-The compilation of the T9XX driver is enabled by the
-CONFIG_MTK_T9XX and CONFIG_MTK_T9XX_PCI config option
-which depends on CONFIG_WWAN.
-
+Signed-off-by: Jack Wu <jackbb_wu@compal.com>
 ---
-Jack Wu (11):
-      net: wwan: t9xx: Add PCIe core
-      net: wwan: t9xx: Add control plane transaction layer
-      net: wwan: t9xx: Add control DMA interface
-      net: wwan: t9xx: Add control port
-      net: wwan: t9xx: Add FSM thread
-      net: wwan: t9xx: Add AT & MBIM WWAN ports
-      net: wwan: t9xx: Introduce data plane hardware
-      net: wwan: t9xx: Add data plane transaction layer
-      net: wwan: t9xx: Introduce WWAN interface
-      net: wwan: t9xx: Add power management support
-      net: wwan: t9xx: Add maintainers and documentation
+ drivers/net/wwan/Kconfig                    |  5 ++++
+ drivers/net/wwan/t9xx/Makefile              |  5 ++--
+ drivers/net/wwan/t9xx/mtk_ctrl_plane.c      | 34 ++++++++++++++++++++++
+ drivers/net/wwan/t9xx/mtk_ctrl_plane.h      | 22 +++++++++++++++
+ drivers/net/wwan/t9xx/mtk_dev.c             | 44 +++++++++++++++++++++++++++++
+ drivers/net/wwan/t9xx/mtk_dev.h             |  4 +++
+ drivers/net/wwan/t9xx/pcie/Makefile         | 10 +++++++
+ drivers/net/wwan/t9xx/pcie/mtk_pci.c        |  8 ++----
+ drivers/net/wwan/t9xx/pcie/mtk_trans_ctrl.h | 21 ++++++++++++++
+ 9 files changed, 146 insertions(+), 7 deletions(-)
 
- .../networking/device_drivers/wwan/t9xx.rst        |   48 +
- MAINTAINERS                                        |   10 +
- drivers/net/wwan/Kconfig                           |   17 +
- drivers/net/wwan/Makefile                          |    1 +
- drivers/net/wwan/t9xx/Makefile                     |   16 +
- drivers/net/wwan/t9xx/mtk_ctrl_plane.c             |   95 +
- drivers/net/wwan/t9xx/mtk_ctrl_plane.h             |   88 +
- drivers/net/wwan/t9xx/mtk_data_plane.c             |  104 +
- drivers/net/wwan/t9xx/mtk_data_plane.h             |  105 +
- drivers/net/wwan/t9xx/mtk_dev.c                    |   55 +
- drivers/net/wwan/t9xx/mtk_dev.h                    |  114 +
- drivers/net/wwan/t9xx/mtk_fsm.c                    |  931 +++++++
- drivers/net/wwan/t9xx/mtk_fsm.h                    |  140 +
- drivers/net/wwan/t9xx/mtk_port.c                   |  967 +++++++
- drivers/net/wwan/t9xx/mtk_port.h                   |  176 ++
- drivers/net/wwan/t9xx/mtk_port_io.c                |  576 +++++
- drivers/net/wwan/t9xx/mtk_port_io.h                |   41 +
- drivers/net/wwan/t9xx/mtk_utility.h                |   33 +
- drivers/net/wwan/t9xx/mtk_wwan.c                   |  475 ++++
- drivers/net/wwan/t9xx/mtk_wwan.h                   |   17 +
- drivers/net/wwan/t9xx/pcie/Makefile                |   19 +
- drivers/net/wwan/t9xx/pcie/mtk_cldma.c             | 1527 +++++++++++
- drivers/net/wwan/t9xx/pcie/mtk_cldma.h             |  176 ++
- drivers/net/wwan/t9xx/pcie/mtk_cldma_drv.c         |  373 +++
- drivers/net/wwan/t9xx/pcie/mtk_cldma_drv.h         |  174 ++
- drivers/net/wwan/t9xx/pcie/mtk_cldma_drv_m9xx.c    |  177 ++
- drivers/net/wwan/t9xx/pcie/mtk_cldma_drv_m9xx.h    |  101 +
- drivers/net/wwan/t9xx/pcie/mtk_ctrl_cfg_m9xx.c     |   55 +
- drivers/net/wwan/t9xx/pcie/mtk_dpmaif.c            | 2714 ++++++++++++++++++++
- drivers/net/wwan/t9xx/pcie/mtk_dpmaif.h            |   16 +
- drivers/net/wwan/t9xx/pcie/mtk_dpmaif_drv.c        | 1586 ++++++++++++
- drivers/net/wwan/t9xx/pcie/mtk_dpmaif_drv.h        |  268 ++
- drivers/net/wwan/t9xx/pcie/mtk_dpmaif_drv_m9xx.c   |  687 +++++
- drivers/net/wwan/t9xx/pcie/mtk_dpmaif_reg.h        |  387 +++
- drivers/net/wwan/t9xx/pcie/mtk_dpmaif_reg_m9xx.h   |   37 +
- drivers/net/wwan/t9xx/pcie/mtk_dpmaif_ring.c       |  168 ++
- drivers/net/wwan/t9xx/pcie/mtk_dpmaif_ring.h       |  161 ++
- drivers/net/wwan/t9xx/pcie/mtk_pci.c               | 1067 ++++++++
- drivers/net/wwan/t9xx/pcie/mtk_pci.h               |  219 ++
- drivers/net/wwan/t9xx/pcie/mtk_pci_drv_m9xx.c      |   70 +
- drivers/net/wwan/t9xx/pcie/mtk_pci_reg.h           |   72 +
- drivers/net/wwan/t9xx/pcie/mtk_trans_ctrl.c        |  593 +++++
- drivers/net/wwan/t9xx/pcie/mtk_trans_ctrl.h        |  105 +
- 43 files changed, 14761 insertions(+)
----
-base-commit: eb3f4b7426cfd2b79d65b7d37155480b32259a11
-change-id: 20260529-t9xx_driver_v1-1744f8af7739
+diff --git a/drivers/net/wwan/Kconfig b/drivers/net/wwan/Kconfig
+index 4cee537c739f..d8be12fb988c 100644
+--- a/drivers/net/wwan/Kconfig
++++ b/drivers/net/wwan/Kconfig
+@@ -124,6 +124,7 @@ config MTK_T7XX
+ config MTK_T9XX
+ 	tristate "MediaTek PCIe 5G WWAN modem T9xx device"
+ 	depends on PCI
++	select MTK_T9XX_PCI
+ 	select NET_DEVLINK
+ 	help
+ 	  Enables MediaTek PCIe based 5G WWAN modem (T9xx series) device.
+@@ -133,6 +134,10 @@ config MTK_T9XX
+ 
+ 	  If unsure, say N.
+ 
++config MTK_T9XX_PCI
++	tristate
++	depends on PCI && MTK_T9XX
++
+ endif # WWAN
+ 
+ endmenu
+diff --git a/drivers/net/wwan/t9xx/Makefile b/drivers/net/wwan/t9xx/Makefile
+index 6f2dd3f91454..ae9d6f2344ab 100644
+--- a/drivers/net/wwan/t9xx/Makefile
++++ b/drivers/net/wwan/t9xx/Makefile
+@@ -4,7 +4,8 @@ ccflags-y += -I$(src)/pcie
+ ccflags-y += -I$(src)
+ 
+ obj-$(CONFIG_MTK_T9XX) += mtk_t9xx.o
++obj-$(CONFIG_MTK_T9XX_PCI) += pcie/
+ 
+ mtk_t9xx-y := \
+-	pcie/mtk_pci.o \
+-	pcie/mtk_pci_drv_m9xx.o
++	mtk_dev.o \
++	mtk_ctrl_plane.o
+diff --git a/drivers/net/wwan/t9xx/mtk_ctrl_plane.c b/drivers/net/wwan/t9xx/mtk_ctrl_plane.c
+new file mode 100644
+index 000000000000..ae5e1797b817
+--- /dev/null
++++ b/drivers/net/wwan/t9xx/mtk_ctrl_plane.c
+@@ -0,0 +1,34 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Copyright (c) 2022, MediaTek Inc.
++ * Copyright (c) 2022-2023, Intel Corporation.
++ */
++
++#include <linux/device.h>
++
++#include "mtk_ctrl_plane.h"
++
++int mtk_ctrl_init(struct mtk_md_dev *mdev)
++{
++	struct mtk_ctrl_blk *ctrl_blk;
++
++	ctrl_blk = devm_kzalloc(mdev->dev, sizeof(*ctrl_blk), GFP_KERNEL);
++	if (!ctrl_blk)
++		return -ENOMEM;
++
++	ctrl_blk->mdev = mdev;
++	mdev->ctrl_blk = ctrl_blk;
++
++	return 0;
++}
++EXPORT_SYMBOL(mtk_ctrl_init);
++
++int mtk_ctrl_exit(struct mtk_md_dev *mdev)
++{
++	struct mtk_ctrl_blk *ctrl_blk = mdev->ctrl_blk;
++
++	devm_kfree(mdev->dev, ctrl_blk);
++
++	return 0;
++}
++EXPORT_SYMBOL(mtk_ctrl_exit);
+diff --git a/drivers/net/wwan/t9xx/mtk_ctrl_plane.h b/drivers/net/wwan/t9xx/mtk_ctrl_plane.h
+new file mode 100644
+index 000000000000..8276be19b456
+--- /dev/null
++++ b/drivers/net/wwan/t9xx/mtk_ctrl_plane.h
+@@ -0,0 +1,22 @@
++/* SPDX-License-Identifier: GPL-2.0-only
++ *
++ * Copyright (c) 2022, MediaTek Inc.
++ */
++
++#ifndef __MTK_CTRL_PLANE_H__
++#define __MTK_CTRL_PLANE_H__
++
++#include <linux/kref.h>
++#include <linux/skbuff.h>
++
++#include "mtk_dev.h"
++
++struct mtk_ctrl_blk {
++	struct mtk_md_dev *mdev;
++	struct mtk_ctrl_trans *trans;
++};
++
++int mtk_ctrl_init(struct mtk_md_dev *mdev);
++int mtk_ctrl_exit(struct mtk_md_dev *mdev);
++
++#endif /* __MTK_CTRL_PLANE_H__ */
+diff --git a/drivers/net/wwan/t9xx/mtk_dev.c b/drivers/net/wwan/t9xx/mtk_dev.c
+new file mode 100644
+index 000000000000..f254ca7ed877
+--- /dev/null
++++ b/drivers/net/wwan/t9xx/mtk_dev.c
+@@ -0,0 +1,44 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Copyright (c) 2022, MediaTek Inc.
++ */
++
++#include <linux/module.h>
++
++#include "mtk_dev.h"
++
++struct mtk_md_dev *mtk_dev_alloc(struct device *pdev, const struct mtk_dev_ops *dev_ops)
++{
++	struct mtk_md_dev *mdev;
++
++	mdev = devm_kzalloc(pdev, sizeof(*mdev), GFP_KERNEL);
++	if (!mdev)
++		return NULL;
++
++	mdev->dev_ops = dev_ops;
++	mdev->dev = pdev;
++	return mdev;
++}
++EXPORT_SYMBOL(mtk_dev_alloc);
++
++void mtk_dev_free(struct mtk_md_dev *mdev)
++{
++	struct device *dev = mdev->dev;
++
++	devm_kfree(dev, mdev);
++}
++EXPORT_SYMBOL(mtk_dev_free);
++
++static int __init mtk_common_drv_init(void)
++{
++	return 0;
++}
++module_init(mtk_common_drv_init);
++
++static void __exit mtk_common_drv_exit(void)
++{
++}
++module_exit(mtk_common_drv_exit);
++
++MODULE_DESCRIPTION("MediaTek T9xx PCIe WWAN driver");
++MODULE_LICENSE("GPL");
+diff --git a/drivers/net/wwan/t9xx/mtk_dev.h b/drivers/net/wwan/t9xx/mtk_dev.h
+index 8278a0e2875e..37eec1a358fa 100644
+--- a/drivers/net/wwan/t9xx/mtk_dev.h
++++ b/drivers/net/wwan/t9xx/mtk_dev.h
+@@ -57,6 +57,7 @@ struct mtk_md_dev {
+ 	void *hw_priv;
+ 	u32 hw_ver;
+ 	char dev_str[MTK_DEV_STR_LEN];
++	void *ctrl_blk;
+ };
+ 
+ static inline u32 mtk_dev_get_dev_state(struct mtk_md_dev *mdev)
+@@ -105,4 +106,7 @@ static inline int mtk_dev_send_dev_evt(struct mtk_md_dev *mdev, u32 dev_evt)
+ 	return mdev->dev_ops->send_dev_evt(mdev, dev_evt);
+ }
+ 
++struct mtk_md_dev *mtk_dev_alloc(struct device *pdev, const struct mtk_dev_ops *dev_ops);
++void mtk_dev_free(struct mtk_md_dev *mdev);
++
+ #endif /* __MTK_DEV_H__ */
+diff --git a/drivers/net/wwan/t9xx/pcie/Makefile b/drivers/net/wwan/t9xx/pcie/Makefile
+new file mode 100644
+index 000000000000..7410d1796d27
+--- /dev/null
++++ b/drivers/net/wwan/t9xx/pcie/Makefile
+@@ -0,0 +1,10 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
++ccflags-y += -I$(src)
++ccflags-y += -I$(src)/..
++
++obj-$(CONFIG_MTK_T9XX_PCI) += mtk_t9xx_pcie.o
++
++mtk_t9xx_pcie-y := \
++	mtk_pci_drv_m9xx.o \
++	mtk_pci.o
+diff --git a/drivers/net/wwan/t9xx/pcie/mtk_pci.c b/drivers/net/wwan/t9xx/pcie/mtk_pci.c
+index adec3ccdee08..518c32d55643 100644
+--- a/drivers/net/wwan/t9xx/pcie/mtk_pci.c
++++ b/drivers/net/wwan/t9xx/pcie/mtk_pci.c
+@@ -14,6 +14,7 @@
+ #include <linux/module.h>
+ 
+ #include "mtk_dev.h"
++#include "mtk_trans_ctrl.h"
+ #include "mtk_pci.h"
+ #include "mtk_pci_reg.h"
+ 
+@@ -385,8 +386,7 @@ static u32 mtk_pci_ext_h2d_evt_hw_bits(u32 chs)
+ 
+ 	SET_HW_BITS(hw_bits, chs, MHCCIF_RC2EP_EVT_DEVICE_RESET,
+ 		    DEV_EVT_H2D_DEVICE_RESET);
+-	SET_HW_BITS(hw_bits, chs, MHCCIF_RC2EP_EVT_DRM_DISABLE_AP,
+-		    EXT_EVT_H2D_DRM_DISABLE_AP);
++
+ 	return LE32_TO_U32(cpu_to_le32(hw_bits));
+ }
+ 
+@@ -779,13 +779,11 @@ static int mtk_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	struct mtk_md_dev *mdev;
+ 	int ret;
+ 
+-	mdev = devm_kzalloc(dev, sizeof(*mdev), GFP_KERNEL);
++	mdev = mtk_dev_alloc(dev, &pci_hw_ops);
+ 	if (!mdev) {
+ 		ret = -ENOMEM;
+ 		goto out;
+ 	}
+-	mdev->dev_ops = &pci_hw_ops;
+-	mdev->dev = dev;
+ 
+ 	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
+ 	if (!priv) {
+diff --git a/drivers/net/wwan/t9xx/pcie/mtk_trans_ctrl.h b/drivers/net/wwan/t9xx/pcie/mtk_trans_ctrl.h
+new file mode 100644
+index 000000000000..d6de4c43b529
+--- /dev/null
++++ b/drivers/net/wwan/t9xx/pcie/mtk_trans_ctrl.h
+@@ -0,0 +1,21 @@
++/* SPDX-License-Identifier: GPL-2.0-only
++ *
++ * Copyright (c) 2022, MediaTek Inc.
++ */
++
++#ifndef __MTK_TRANS_CTRL_H__
++#define __MTK_TRANS_CTRL_H__
++
++#include <linux/kref.h>
++#include <linux/list.h>
++#include <linux/skbuff.h>
++#include <linux/types.h>
++
++#include "mtk_dev.h"
++
++struct mtk_ctrl_trans {
++	struct mtk_ctrl_blk *ctrl_blk;
++	struct mtk_md_dev *mdev;
++};
++
++#endif
 
-Best regards,
---  
-Jack Wu <jackbb_wu@compal.com>
+-- 
+2.34.1
 
 
