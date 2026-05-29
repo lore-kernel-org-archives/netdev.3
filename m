@@ -1,176 +1,142 @@
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8202C36C5B3
-	for <netdev@vger.kernel.org>; Fri, 29 May 2026 04:48:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF3F638E113
+	for <netdev@vger.kernel.org>; Fri, 29 May 2026 05:03:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780030137; cv=none; b=Y8dHc70SKIuckRQW95r654ViFQFBNsc7tGKOT+aDi994Ey3RuOOnfW8vxf8eE4rifyjyWg3KziyGvWR0aCereMfFXlCE3L4tmk0A5VOX63FXuFwXhjmOEUE6/2gHlG+wKZ1GtzdXxU51aq8/hpF0lzWEOCC9Vde1b28gWb47PeI=
+	t=1780031012; cv=none; b=quF3oOposGQ6lyscqyHUERMp9HKAXVcKkgyc+yLyUG5WvkgcGB64pJiVLepGWtONSQJP+TgcteF776ZUuR4Q8UX3Vosj0k8KfPxYJ2SOLmEePMg9NzWotOZiSyeqycjtSMK6if92tPAoUF4G5IcUbF+3eY5qjNTR+1/6+SHezMo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780030137; c=relaxed/simple;
-	bh=DTv5cplmBDRk7pRLeksO1jRlcaX+8K9oO/BWaNGE3yM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Kud+80AT7/FGEHKoR8cjTGSlgdQAtxxZYB8Cc48p/si08GF4qjziVpoqGGADle4VHgkPAd0U7QgBUHqbarYgF+CF1LVr5Qg9262UMadH6oCPmYyIaqXI7pDO/h6CbDzOSSmNYnP/lMm7wAMzPEuoVpVPvUU/PMtXhr6VmJwVeTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=T8bvynx2; arc=none smtp.client-ip=150.107.74.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
+	s=arc-20240116; t=1780031012; c=relaxed/simple;
+	bh=oP7cPGEcP1X0WeBLHgDcb+0X8KkMCocTsoyFfzfTx9c=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=F/CjplcjuEofmriDDCGLrGeZjsKtTS7HlRQKfTIuqM2rho4tSCVpEjPKWrVSSc0R80jmcr4Yvwe5GlUwfaM8Sx1Sol+oNu5Bz/cfs45VSRkUWGQByMww9YzqYBBTApLFB+VIE5S/jtyI9suayX5QCLw8/W2VUbFYSZaIkLL+rJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=s3vPjiqy; arc=none smtp.client-ip=95.215.58.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="T8bvynx2"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=gibson.dropbear.id.au; s=202602; t=1780030131;
-	bh=zeW7tmft6pCX3IFbOS6BiTs8HDp9p82gGe5kL0/Yzk4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=T8bvynx2ttL4mbwvpFPr20sEXu3GEFgXkSvj21PL3dYPWrdA+6rRjzCfyTDMTXZrm
-	 nNGtj/q9+cHGldzJFQw59CgmN3GM8yP87qI7jrf+QxKWXknT/IRScUFaE48MKj8Zzs
-	 dKq9ZT6mgg/SnpqDE5rOLgCY5q3hSq4X4xbsEmZJAUC8xuGc/OSdZDhaa3ZcTJ863D
-	 /a6LDSUeLERsYZJMjurgf1mp3EMnWji2UNmc1cVci8C5riHtzyXh0koOXbckuJq62t
-	 49hY9PmuUNl/w5/z1T0v7c3QKhZr9esqTacDAlD2cvnqnh9zc57dJsDEmuA46bwE39
-	 xyzE5QfwlJVhQ==
-Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4gRW8g650xz4wSt; Fri, 29 May 2026 14:48:51 +1000 (AEST)
-Date: Fri, 29 May 2026 14:48:47 +1000
-From: David Gibson <david@gibson.dropbear.id.au>
-To: Stefano Brivio <sbrivio@redhat.com>
-Cc: Andrew Lunn <andrew@lunn.ch>,
-	Thorsten Leemhuis <regressions@leemhuis.info>,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
-	Yumei Huang <yuhuang@redhat.com>, Ido Schimmel <idosch@idosch.org>,
-	Justin Iurman <justin.iurman@gmail.com>,
-	David Ahern <dsahern@kernel.org>, ihuguet@redhat.com,
-	Linux kernel regressions list <regressions@lists.linux.dev>
-Subject: Re: Problem with IPv6 privacy addresses in 7.0
-Message-ID: <ahkar8tE5M6u0_zZ@zatzit>
-References: <20260527215135.GB16443@cmadams.net>
- <675083b4-e015-4ff3-836c-798e0a971194@suse.de>
- <20260528073849.759da84a@elisabeth>
- <baba855a-7cc9-409e-9c20-6e50f35d255a@suse.de>
- <20260528131250.1352ab48@elisabeth>
- <b21c598b-879c-4f6a-9dc8-27e5c362803b@suse.de>
- <bd669eaf-64dc-4217-bae0-4a531e473762@leemhuis.info>
- <20260528153202.14900687@elisabeth>
- <178a1a95-65bd-475b-a035-c4ebdc5ec325@lunn.ch>
- <20260528171710.1a5f6b6b@elisabeth>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="s3vPjiqy"
+Message-ID: <2a64dc4a-ad65-4fbf-a505-f4813886629b@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1780030998;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TRdHeKDtR2mwyafnPfiY2fq+XDoh3loYzmQhXIoPiLQ=;
+	b=s3vPjiqyeyzE3qYl+fZWxK/GHf0I1ZO0rt2+zQpG5bT+Etpn8Az6+KlP3+EQJgF4BMOZJU
+	8boua2LXB6Y4nxUnWJsVhn7A+JzrZjDc1lv52Sm0l6aoQ6K21+yusP5XP5FKrcyI4RiGHK
+	Ae0OLw9TQXHaZ5mA0VLIC1fSpEqut5g=
+Date: Fri, 29 May 2026 13:02:59 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="nt6XStKVw0zhM1KE"
-Content-Disposition: inline
-In-Reply-To: <20260528171710.1a5f6b6b@elisabeth>
+Subject: Re: [PATCH net] ipv6: anycast: insert aca into global hash under
+ idev->lock
+To: Kuniyuki Iwashima <kuniyu@google.com>,
+ Jiayuan Chen <jiayuan.chen@linux.dev>
+Cc: netdev@vger.kernel.org, David Ahern <dsahern@kernel.org>,
+ Ido Schimmel <idosch@nvidia.com>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ linux-kernel@vger.kernel.org
+References: <20260529032026.363856-1-jiayuan.chen@linux.dev>
+ <CAAVpQUCJxaPTsA8DJ-KzPpWM2_GQr1LBHfdyEo9ziCA4sEqv-w@mail.gmail.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+In-Reply-To: <CAAVpQUCJxaPTsA8DJ-KzPpWM2_GQr1LBHfdyEo9ziCA4sEqv-w@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
 
---nt6XStKVw0zhM1KE
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 5/29/26 11:41 AM, Kuniyuki Iwashima wrote:
+> On Thu, May 28, 2026 at 8:20 PM Jiayuan Chen <jiayuan.chen@linux.dev> wrote:
+>> syzbot reported a splat [1]: a slab-use-after-free in
+>> ipv6_chk_acast_addr(), which walks the global inet6_acaddr_lst[] hash
+>> under RCU and dereferences a struct ifacaddr6 that has already been
+>> freed while still linked in the hash, so a later reader walks into a
+>> dangling node.
+>>
+>> In __ipv6_dev_ac_inc() the aca is allocated with refcount 1, then
+>> aca_get() bumps it to 2 to keep it alive across the unlocked region.
+>> It is published to idev->ac_list under idev->lock, but
+>> ipv6_add_acaddr_hash() runs after write_unlock_bh(). A concurrent
+>> teardown (ipv6_ac_destroy_dev() from addrconf_ifdown(), under RTNL)
+>> can slip into that window:
+>>
+>>    CPU0 __ipv6_dev_ac_inc           CPU1 ipv6_ac_destroy_dev (RTNL)
+>>    ------------------------------   ------------------------------------
+>>    aca_alloc()              refcnt 1
+>>    aca_get()               refcnt 2
+>>    write_lock_bh(idev->lock)
+>>      add aca to ac_list
+>>    write_unlock_bh(idev->lock)
+>>                                     write_lock_bh(idev->lock)
+>>                                       pull aca off ac_list
+>>                                     write_unlock_bh(idev->lock)
+>>                                     ipv6_del_acaddr_hash(aca)
+>>                                       hlist_del_init_rcu() is a no-op,
+>>                                       aca is not in the hash yet
+>>                                     aca_put()           refcnt 2->1
+>>    ipv6_add_acaddr_hash(aca)
+>>      aca now inserted into the hash
+>>    aca_put()                refcnt 1->0
+>>      call_rcu(aca_free_rcu) -> kfree(aca)
+>>
+>> The hash removal becomes a no-op because the insertion has not
+>> happened yet, so once CPU0 inserts and drops the last reference, the
+>> aca is freed while still linked in inet6_acaddr_lst[], and readers
+>> dereference freed memory after the slab slot is reused.
+>>
+>> This window opened once RTNL stopped serializing the join path against
+>> device teardown. Move ipv6_add_acaddr_hash() inside the idev->lock
+>> section so the ac_list and hash insertions are atomic with respect to
+>> teardown: a racing remover now either misses the aca entirely or finds
+>> it in both lists.
+>>
+>> [1] https://syzkaller.appspot.com/bug?extid=a01df04303c131efbf3a
+> Closes: and Reported-by ?
 
-On Thu, May 28, 2026 at 05:17:11PM +0200, Stefano Brivio wrote:
-> On Thu, 28 May 2026 16:34:02 +0200
-> Andrew Lunn <andrew@lunn.ch> wrote:
->=20
-> > > Actually, an eventually fixed version of NetworkManager doesn't need =
-to
-> > > know the behaviour of the kernel: it can just order addresses by
-> > > timestamps instead, as Fernando mentioned. =20
-> >=20
-> > Can pasta also use this scheme to order the addresses? Is there a way
-> > pasta can be independent of the order?
->=20
-> pasta itself doesn't even care, it just inserts (copies) addresses one
-> by one as returned. The kernel cares, because it preferentially picks
-> the first one, as stored, within a given scope.
->=20
-> The problem is that they are inserted in the opposite order than one
-> would expect (that is, opposite to what's used by the kernel to select
-> them, and opposite to what's done for IPv4).
->=20
-> This (with an older kernel version) is quite "funny" (pasta by default
-> copies everything it finds to the inner namespace):
 
-Fwiw, a hypothetical tool which copied network configuration from one
-namespace to an independent one - or which saved network configuration
-to restore it later - would likely hit the same issue.
 
-> ---
-> $ pasta -6 -Ix --no-ra
-> # ip a a fd00::1 dev x
-> # ip a a fd43::1 dev x
-> # ip a a 2620::1 dev x
-> # ip link set dev x up
-> # ip a s x
-> 2: x: <BROADCAST,MULTICAST> mtu 1500 qdisc noop state DOWN group default =
-qlen 1000
->     link/ether 86:de:6b:53:5c:05 brd ff:ff:ff:ff:ff:ff
->     inet6 2620::1/128 scope global tentative=20
->        valid_lft forever preferred_lft forever
->     inet6 fd43::1/128 scope global tentative=20
->        valid_lft forever preferred_lft forever
->     inet6 fd00::1/128 scope global tentative=20
->        valid_lft forever preferred_lft forever
-> # pasta -6 --config-net --no-ra
-> # ip a s x scope global
-> 2: x: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 65520 qdisc fq_codel state UN=
-KNOWN group default qlen 1000
->     link/ether 32:d4:5b:f0:fd:50 brd ff:ff:ff:ff:ff:ff
->     inet6 fd00::1/128 scope global nodad=20
->        valid_lft forever preferred_lft forever
->     inet6 fd43::1/128 scope global nodad=20
->        valid_lft forever preferred_lft forever
->     inet6 2620::1/128 scope global nodad=20
->        valid_lft forever preferred_lft forever
-> # pasta -6 --config-net --no-ra
-> # ip a s x scope global
-> 2: x: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 65520 qdisc fq_codel state UN=
-KNOWN group default qlen 1000
->     link/ether 1a:ed:4a:27:f6:9f brd ff:ff:ff:ff:ff:ff
->     inet6 2620::1/128 scope global nodad=20
->        valid_lft forever preferred_lft forever
->     inet6 fd43::1/128 scope global nodad=20
->        valid_lft forever preferred_lft forever
->     inet6 fd00::1/128 scope global nodad=20
->        valid_lft forever preferred_lft forever
-> ---
->=20
-> ...at every level of namespacing, the order is swapped. Note that
-> iproute2 also reports them in the order they're sent over netlink.
->=20
-> > Maybe we should just make the order random, so equally breaking
-> > everybody, and pushing user space to not assume any order :-)
->=20
-> The thing is... the kernel assumes the order. :) But it also has to.
->=20
-> --=20
-> Stefano
->=20
+It has already been closed automatically, so I didn't add a Closes tag.
+As for the Reported-by tag, it should be carried along with the patch.
 
---=20
-David Gibson (he or they)	| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
-				| around.
-http://www.ozlabs.org/~dgibson
 
---nt6XStKVw0zhM1KE
-Content-Type: application/pgp-signature; name=signature.asc
+I'll pay attention next time. :)
 
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmoZGq4ACgkQzQJF27ox
-2GeUzw//Xf5R4KJQHrOaTwsrOX26p9q1sfPSrLIuvFNz/CVFNPk82YhD0AZ/Papb
-GlKq43JUyOrdv88BWFF4Wke2p1gwsL36ATp44Ou5xYZHqwYfBE36OOdEBk5c9w+G
-xXRHaTP0lnL92rKOslgXjWEIzvbRHU9qpQDNTuzon1mGJdV34tTnp8s3FHi30Hre
-Lgro8xvscKUu2ywBPtRGNNl0ERMZO4QQmuEKbbiNKMOk53DC+x64xtkxaqFaPr/z
-LVmiwezWwRI2YSfGMzm8BwG+JbCwmYCmyet83hWjlRTHBPtubJAUAeVtlIho/lKf
-q1z47ZzpMREGJVckbrffOIUUngcpkmxNjSHZxzdmXrIwHk1VjCz1aNwVZMR25j/J
-s0snNyuOUaccP+aVJE3m/ovRGJsAFz517fm98paV00rMRHRHJc2Jf5PUAwfXuGnL
-jTGOo++zjMn3Ny11BnnAamWpAFOhNAZSkSXSFM5pZRav9N/7JrPSeN6D6aSCFb/e
-kOg9vTLEoFWv42Y89BV8pODJohI9tLZ1hrLZZYVBbTXtwmUTm6/V/BYtWb0cy3X4
-/O9PWKrUEZHizaXW1XfU/IGHGq9/kDWdlm1JS4Qf0nFbSs1/X5nqOfrm1pAX/QNq
-7Gr9Y6dudQF/t5AXU7P2kcM6IR6yFMwE64Na/DNFGGguvERi8ZQ=
-=yIsZ
------END PGP SIGNATURE-----
-
---nt6XStKVw0zhM1KE--
+>> Fixes: eb1ac9ff6c4a ("ipv6: anycast: Don't hold RTNL for IPV6_JOIN_ANYCAST.")
+>> Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+> Change itself looks good, thanks
+>
+> Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+>
+>
+>> ---
+>>   net/ipv6/anycast.c | 4 ++--
+>>   1 file changed, 2 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/net/ipv6/anycast.c b/net/ipv6/anycast.c
+>> index 67a42e01dfc3..cd8c02a1ad4c 100644
+>> --- a/net/ipv6/anycast.c
+>> +++ b/net/ipv6/anycast.c
+>> @@ -371,10 +371,10 @@ int __ipv6_dev_ac_inc(struct inet6_dev *idev, const struct in6_addr *addr)
+>>          aca->aca_next = idev->ac_list;
+>>          rcu_assign_pointer(idev->ac_list, aca);
+>>
+>> -       write_unlock_bh(&idev->lock);
+>> -
+>>          ipv6_add_acaddr_hash(net, aca);
+>>
+>> +       write_unlock_bh(&idev->lock);
+>> +
+>>          ip6_ins_rt(net, f6i);
+>>
+>>          addrconf_join_solict(idev->dev, &aca->aca_addr);
+>> --
+>> 2.43.0
+>>
