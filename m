@@ -1,129 +1,112 @@
-Received: from us.padl.com (us.padl.com [216.154.215.154])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34C0D14A4CC;
-	Fri, 29 May 2026 12:46:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.154.215.154
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E6B92C21E8;
+	Fri, 29 May 2026 12:55:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780058773; cv=none; b=FcQWR146YJw/JbUPzs2RpOpX74cH0PVfMMyG45dM7RP2Lby/fSXxcGfKG64hutQro3bSvfmbLEUW0dWw/znXI9o4w1j4R6TxKa13aPcBpdFRfklv7gymFmEaU4Dd3IbKEvZo5wwtyAczSjkngTmOYGlEM2I3Xhg2d/YBZRh8XWo=
+	t=1780059348; cv=none; b=eYuLjFCUiRkTpW9vHJAtjKJH3Orpaf487dqPJFQ1aW3i/ZqN8V87dKqQ5R6FQ++ckPJwvXi0umdBNRRl2xaOdxtrpQNJcsm0Nw5hWTU0lkpvUFxRzv63AmJ5qdA0ErXBoecFzJlSMc8Gx7EPKyKRD7DIj0kHkI1vRKGoGiz7YIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780058773; c=relaxed/simple;
-	bh=O4p7mvGVwnASMXsh0QQJTKpsE+FRewWJk0oiwvK89ZE=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=qA2+/Ha2Zmd4lUH3wDGzEXoNsZg6+AnMfmBF/YRmy/HZTNAcaWXoSDzgBg+3BVLItnBfdYYJgtiDs71cc7B9TuFwdpf0/hvXzvptqjiffgrmbpCjuj7sNDfy7wmh8ECrmMcWLp3LDfnIycXB1cOnmmxQCfo4s+8hxq04rGj4SHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=padl.com; spf=pass smtp.mailfrom=padl.com; dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b=k7rNE3Bf; arc=none smtp.client-ip=216.154.215.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=padl.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=padl.com
+	s=arc-20240116; t=1780059348; c=relaxed/simple;
+	bh=rf9ietTEoUdNUWP+4Xs/on4TPwZiiiKAB2KYgWpPhmg=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=I1kTxr6A2QhFCoXObyPg9oLOdWIYUQlAPs6e8Neo7Rg4OpNdfxcFbZAlB/GatxFAeJlPcOF8wC1ffzy9yQNj/Vtv7C06fMqkJ1qHz9zCwJpX/rrmiKUKbD3whm0IUXYuSU57OdJkErnZjt17CAt9CaL9v6ymsAT+HDoEZpVifQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HKme3PJu; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b="k7rNE3Bf"
-Received: from auth (localhost [127.0.0.1]) by us.padl.com (8.14.7/8.14.7) with ESMTP id 64TCjGZF007373
-	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Fri, 29 May 2026 13:45:18 +0100
-DKIM-Filter: OpenDKIM Filter v2.11.0 us.padl.com 64TCjGZF007373
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=padl.com; s=default;
-	t=1780058723; bh=JaiOyxbCRo/HXXQtwhs+bYauX/I3BXc366uvpnPk3vg=;
-	h=Subject:From:In-Reply-To:Date:Cc:References:To:From;
-	b=k7rNE3BfOdJZgfCyCT4qHTEiFiFPOl+LQoMdVo65g8wfuDHY9LFgICkQJ1Q6HpXKG
-	 /Y51vnvnc5MgGFBWSX4mByVFfgwpAVc9R/H91EIr0ILz4CWwyRm+9eOELJ5RIVIWB4
-	 SaB4yF2zOQslltv+HOz5nlqR28ju5a1ibzw3JWi49IJMdSxY3H52MYC0o1fveWzKzo
-	 vG9Asj+V3nv2/eV6M3kskUVbIePy5Jz1AIfOjOhgofNHkEd8h7jLy4SRPkWkpBr9sG
-	 4vAU/w/VZaxA3DdhzLZF2EQWSx2zxTnLaT45/FTvcdxFx/fQPSm85CBY7pf2gTHzNA
-	 IyhiaBNs08+Ug==
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HKme3PJu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF6271F00893;
+	Fri, 29 May 2026 12:55:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780059346;
+	bh=+6AiMcZa3bd0LPjamkN4r9S9jW+Apu//pCbttaoWdDI=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=HKme3PJuW/g8Xe3fa9pH4ndcExyYxHcd2cNlg9NECKqK4v1asLZhvhZEXzEeGPFwC
+	 krMU26G83m8iPSglCfYKCqgciw6JWvcuzjQUTI3wFtoI62nF0UChddzGFraXimF9pJ
+	 1k54Uu9U94IdLdsnRGH4hwmLSLP/pSSK0uKpJsDzqk30FcWpIwESOtKLiumR4V+6As
+	 unm055hDnQ1A4hKk4u4dzRoTU87SIvLvelBGdBip7ZDoIZon4MXvQ/IpRhuSbyjuUY
+	 udebOV+LpQuBbeFt6sWaU5lZ0itKuFGMHeMAFQa8OxgbyKZLGpVxsvBB1IjU2d1o4J
+	 48Eb2LMB+rd1A==
+From: Srinivas Kandagatla <srini@kernel.org>
+To: Lee Jones <lee@kernel.org>, 
+ Mark Brown <broonie@opensource.wolfsonmicro.com>, 
+ Thierry Reding <thierry.reding@avionic-design.de>, 
+ Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Vinod Koul <vkoul@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+ Danilo Krummrich <dakr@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Saravana Kannan <saravanak@kernel.org>, 
+ Madhavan Srinivasan <maddy@linux.ibm.com>, 
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
+ Andi Shyti <andi.shyti@kernel.org>, 
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+ Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
+ Robin Murphy <robin.murphy@arm.com>, Doug Berger <opendmb@gmail.com>, 
+ Florian Fainelli <florian.fainelli@broadcom.com>, 
+ Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
+ Ulf Hansson <ulfh@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Matthew Brost <matthew.brost@intel.com>, 
+ =?utf-8?q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, 
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, David Airlie <airlied@gmail.com>, 
+ Simona Vetter <simona@ffwll.ch>, Peter Chen <peter.chen@kernel.org>, 
+ Paul Cercueil <paul@crapouillou.net>, Bin Liu <b-liu@ti.com>, 
+ Philipp Zabel <p.zabel@pengutronix.de>, 
+ Maximilian Luz <luzmaximilian@gmail.com>, Hans de Goede <hansg@kernel.org>, 
+ =?utf-8?q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
+ Krzysztof Kozlowski <krzk@kernel.org>, 
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>, 
+ Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Cc: brgl@kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, linux-sound@vger.kernel.org, 
+ driver-core@lists.linux.dev, devicetree@vger.kernel.org, 
+ linuxppc-dev@lists.ozlabs.org, linux-i2c@vger.kernel.org, 
+ iommu@lists.linux.dev, linux-pm@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, intel-xe@lists.freedesktop.org, 
+ dri-devel@lists.freedesktop.org, linux-usb@vger.kernel.org, 
+ linux-mips@vger.kernel.org, platform-driver-x86@vger.kernel.org, 
+ stable@vger.kernel.org
+In-Reply-To: <20260521-pdev-fwnode-ref-v1-0-88c324a1b8d2@oss.qualcomm.com>
+References: <20260521-pdev-fwnode-ref-v1-0-88c324a1b8d2@oss.qualcomm.com>
+Subject: Re: (subset) [PATCH 00/23] driver core: count references of the
+ platform device's fwnode, not OF node
+Message-Id: <178005933352.9337.17178239685242465219.b4-ty@kernel.org>
+Date: Fri, 29 May 2026 13:55:33 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.500.181.1.5\))
-Subject: Re: [PATCH net-next v4 2/2] net: dsa: mv88e6xxx: add support for
- credit based shaper
-From: Luke Howard <lukeh@padl.com>
-In-Reply-To: <gigqfzdzvtoegjd6kb73g2xv4j7uq7f5s2lkrwspiosni3c44p@him3vof5vzrm>
-Date: Fri, 29 May 2026 22:45:02 +1000
-Cc: cedric.jehasse@luminex.be, Andrew Lunn <andrew@lunn.ch>,
-        Vladimir Oltean <olteanv@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-        Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        =?utf-8?Q?Marek_Beh=C3=BAn?= <kabel@kernel.org>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <793226E0-82B1-464E-9A18-969F773B70D4@padl.com>
-References: <20260528-net-next-mv88e6xxx-cbs-v4-0-8bd13b906457@luminex.be>
- <20260528-net-next-mv88e6xxx-cbs-v4-2-8bd13b906457@luminex.be>
- <DA213B68-5654-498A-B688-B92703923CCE@padl.com>
- <gigqfzdzvtoegjd6kb73g2xv4j7uq7f5s2lkrwspiosni3c44p@him3vof5vzrm>
-To: Cedric Jehasse <cedric.jehasse@gmail.com>
-X-Mailer: Apple Mail (2.3826.500.181.1.5)
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.3
 
-Hi Cedric,
 
-> On 29 May 2026, at 10:32=E2=80=AFpm, Cedric Jehasse =
-<cedric.jehasse@gmail.com> wrote:
->=20
-> On Fri, May 29, 2026 at 09:48:33AM +1000, Luke Howard wrote:
->>> +static int mv88e6xxx_setup_tc_cbs(struct dsa_switch *ds, int port,
->>> +  struct tc_cbs_qopt_offload *cbs)
->>> +{
->>> + const struct mv88e6xxx_avb_ops *avb_ops;
->>> + struct mv88e6xxx_chip *chip =3D ds->priv;
->>> + const struct mv88e6xxx_qav_info *qav;
->>> + const struct mv88e6xxx_ops *ops;
->>> + int hilimit_reg;
->>> + int rate_reg;
->>> + u8 queue_bit;
->>> + u16 hi_limit;
->>> + u16 rate =3D 0;
->>> + int err;
->>> +
->>> + ops =3D chip->info->ops;
->>> + avb_ops =3D ops->avb_ops;
->>> + qav =3D chip->info->qav;
+On Thu, 21 May 2026 10:36:23 +0200, Bartosz Golaszewski wrote:
+> I'd like to first apologize for the long, treewide series and an
+> extensive Cc list but I think it's important to show the big picture and
+> the end result of this rework.
+> 
+> Platform device core provides helper interfaces for dealing with
+> dynamically created platform devices. Most users should use
+> platform_device_register_full() which encapsulates most of the
+> operations but some modules will want to use the split approach of
+> calling platform_device_alloc() + platform_device_add() separately for
+> various reasons.
+> 
+> [...]
 
-These could be initialised at the top of the function, might save some =
-lines=E2=80=A6
+Applied, thanks!
 
->>> + if (!qav || !avb_ops || !avb_ops->port_qav_write ||
->>> +    !ops->port_set_scheduling_mode)
->>> + return -EOPNOTSUPP;
->>=20
->> Only the first check should be necessary because the wrapper =
-functions return -EOPNOTSUPP in the case of a NULL function pointer.
->>=20
-> That's not the same logic.
-> If one of the two function pointer is NULL, the other can still be =
-executed
-> (Maybe not that likely as that's probably a mistake in the driver)
+[03/23] slimbus: qcom-ngd-ctrl: fix OF node refcount
+        commit: 0208edaf0b32cae5b922729c4ef52dcd865e2e19
 
-True, but agree also that it shouldn=E2=80=99t happen (would be a driver =
-bug).
+Best regards,
+-- 
+Srinivas Kandagatla <srini@kernel.org>
 
->>> + if (!(chip->ports[port].cbs_active_queues & ~queue_bit)) {
->>> + err =3D mv88e6xxx_port_set_scheduling_mode(chip, port, 0);
->>> + if (err)
->>> + goto unlock;
->>> + }
->>=20
->> Missing a newline here after closing brace.
->=20
-> Is that a personal preference, or a guideline I=E2=80=99ve missed?
-
-You=E2=80=99re right, I had just assumed it was because it=E2=80=99s the =
-case in the rest of the driver (97% adherence according to Claude :))
-
-BTW, I have a (as yet untested) MQPRIO patch rebased on your v4 CBS =
-patch. In DCB mode, TCs represent AVB classes (as my previous patch =
-did). In CHANNEL mode, they represent queues, so you can flexibly map =
-priorities to queues, with the additional advantage that these mappings =
-can be per-port on the 6390.
-
-It=E2=80=99s potentially a questionable overloading of the MQPRIO modes =
-but, it=E2=80=99s a starting point for discussion, and it avoids needing =
-out-of-band configuration (e.g. command line, devlink, etc, although I =
-am now using devlink to set the AVB mode rather than the device tree).
-
-Cheers,
-Luke=
