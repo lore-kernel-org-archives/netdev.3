@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC1F917D6;
-	Fri, 29 May 2026 00:10:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04DE6DF59;
+	Fri, 29 May 2026 00:11:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780013411; cv=none; b=HD4kUFxXoVbtFqOcINXy1DGFrOjG0jbHfMDD2d+R8GQlW3x3oPKDMjFOazowVL2YQKum+y9mWxz1NEBPTwIaPMX99Dni441vSGy7eCXQwxbZAWniadfb1k11TBoTEMS8ck7WCNZiz74b55FMoUlP5/88Bk0OF7sww/5ItU0mTSU=
+	t=1780013518; cv=none; b=p+re4HiFRlPoz/tCREW1BcJNzxri/tduChd7WyiuJ69r8Jof/4KF3WCH6xiIyMExFmn3BLbJ54PHWFFVTe9TQtkavNuzn5Bi+zyLYREU7MI1lAbbGOx5L5itibr/3KNj3p4KEaedIsZry2GNf+YiKvnZtfd8G+EX+HAFkwJgKBU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780013411; c=relaxed/simple;
-	bh=YVXNpvTMQ4pHPjqHlES6U6VBq70HuLFkYtQPJJdF4gk=;
+	s=arc-20240116; t=1780013518; c=relaxed/simple;
+	bh=ceAOd84t3yp9huEL/bSjY33EFu+RYAbJJ0Q68GnEesw=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=pUNd3Fw6Jiq6MzJQ0vJci0qIEzsRmL8PDNnpE5xhq7reGZoo8BS2I8LxSGDG+2EmPAxkR6JqU3LMMzv+7LptGnYNVcgQviZaTw+8bzZu3Mv0p8AdXYdDRzfwZL/uk1YBMwr1i+wBQsYLA4BNnv3La0xDO1AxpQFwmfhmjrs2NCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hLNClGAz; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=ttssrFliwZOBdNIYFXGPRxsmDIrmq60YYzZ8ikbUKHGXhk+UKA2SZ0bpqArN09UDM3DBizb7rYQTG6Eb1yGS8NsCkLqF8vRM22XdzV41cIO1XTtlnzjD/cLYiZvjawq2mTnd6/j3Zjl8G88/Yi7o9QTh91+BOB8WQwPgnDhpFr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TjgtBvlk; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hLNClGAz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A9C51F000E9;
-	Fri, 29 May 2026 00:10:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TjgtBvlk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B72C01F000E9;
+	Fri, 29 May 2026 00:11:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780013410;
-	bh=6dSarYnx7umW7O1HKSVDoVjymXPLhOUzkl9YdCniDlo=;
+	s=k20260515; t=1780013517;
+	bh=bpADtKUVdLn6vRP8SiV7WtMqeN752lhTIWs+k4+ws6w=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=hLNClGAzipJ65KiTfZ1OfaBo15neta7zODjZekR8TCVjXnZQHEKY6YiNVTo93d37u
-	 MgSpJP9YzZrdl0HJMfE0njgtY0h/kwkFDzn3DKCBMblLEuIxYjsNYXQuSZHS5yGNqO
-	 jCpDwrDpm3q1rcye73D0+Vf1AvjAd9eNqztEC54/bMnt72hcD4jmZXFMLKiIKfar7U
-	 nBUmWmvSuqLBJM0zVNKQc/65dwix9Vk4Lsz6If3ubZDQIGrLwFDpXpOXvEhkthyWO5
-	 0tYkXtMXoG0ud1YObTuNPCyG4A8muKLUsaaZrOCPIHbZ7uM/Edxa5A18LNu8E2IOnQ
-	 XSpDWOv6q3Yuw==
+	b=TjgtBvlkzzr9IX/PNUNu3u87zei4GceK7GTAnV44TinXBP7GNmgSh9q8lqdnvbzOz
+	 15yg0KAXD7brGCvZsIqAKKfIId0Ftbrpsd0rBbhtQjdtuFH7YRRB9Fe4QYZPZj/zYz
+	 PLUolQDETdE+HG0LYzAKtzlPQTaP7Wkf6AWUBOzhDjE/yvTpnQYWOVmRX+3MjcBUEm
+	 ucUnqdNhrNqABS44Q0at2PklEVVOQtTTg3Zw7c2kOQgn+Su6iXF0QVARubiCNIbapg
+	 TOn4g+4fKm30GFnIWeLFoVwxGzyz2ri3aOFJxIg5eYzEp5AZjKNBkiqOMQpUPi/rgy
+	 YPJPDEIlaAqjg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0EB13811979;
-	Fri, 29 May 2026 00:10:15 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 198843811979;
+	Fri, 29 May 2026 00:12:03 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,36 +37,35 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [GIT PULL] bluetooth 2026-05-28
+Subject: Re: [GIT PULL] wireless-next-2026-05-28
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178001341465.1565998.16734911486872086462.git-patchwork-notify@kernel.org>
-Date: Fri, 29 May 2026 00:10:14 +0000
-References: <20260528131839.462344-1-luiz.dentz@gmail.com>
-In-Reply-To: <20260528131839.462344-1-luiz.dentz@gmail.com>
-To: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Cc: davem@davemloft.net, kuba@kernel.org, linux-bluetooth@vger.kernel.org,
- netdev@vger.kernel.org
+ <178001352190.1565998.2039430206651171575.git-patchwork-notify@kernel.org>
+Date: Fri, 29 May 2026 00:12:01 +0000
+References: <20260528123911.284536-26-johannes@sipsolutions.net>
+In-Reply-To: <20260528123911.284536-26-johannes@sipsolutions.net>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: netdev@vger.kernel.org, linux-wireless@vger.kernel.org
 
 Hello:
 
-This pull request was applied to netdev/net.git (main)
+This pull request was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Thu, 28 May 2026 09:18:39 -0400 you wrote:
-> The following changes since commit ab1513597c6cf17cd1ad2a21e3b045421b48e022:
+On Thu, 28 May 2026 14:37:26 +0200 you wrote:
+> Hi,
 > 
->   Bluetooth: fix UAF in l2cap_sock_cleanup_listen() vs l2cap_conn_del() (2026-05-20 16:35:47 -0400)
+> Here's a new set of changes, mostly ath and iwlwifi
+> drivers this time.
 > 
-> are available in the Git repository at:
-> 
->   git://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth.git tags/for-net-2026-05-28
+> I have a few more things pending, and I expect a few
+> more drivers will have pull requests later too.
 > 
 > [...]
 
 Here is the summary with links:
-  - [GIT,PULL] bluetooth 2026-05-28
-    https://git.kernel.org/netdev/net/c/2412591cfe66
+  - [GIT,PULL] wireless-next-2026-05-28
+    https://git.kernel.org/netdev/net-next/c/e7d6bd24e883
 
 You are awesome, thank you!
 -- 
