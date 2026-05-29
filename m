@@ -1,148 +1,183 @@
-Received: from CHN02-BJS-obe.outbound.protection.partner.outlook.cn (mail-bjschn02on2098.outbound.protection.partner.outlook.cn [139.219.17.98])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f42.google.com (mail-dl1-f42.google.com [74.125.82.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF9AD2E739C;
-	Fri, 29 May 2026 03:39:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=139.219.17.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6C3831A045
+	for <netdev@vger.kernel.org>; Fri, 29 May 2026 03:41:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.42
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780025947; cv=fail; b=RWKg0vtFynbcYJa3uU3tnzl8BWCtuNlHjapuzzMlJ/qg5IapuManifyHO/f6B2OEW6v2nwpx8GLEIv4AIVd9OOe4H4g+lOSsrw+aYf3f7ZdAJ/i9zyMbykkr0hg/bIiAC6mkKgEi5MI4wduWI4Qw/xpCEEROv90jqmAppmfJr+8=
+	t=1780026083; cv=pass; b=b46NvI/r487927PQCm515ARuJYMkTghtU6g4QAArEG67G5rpT3RF2NMuSf/3lttcolaPOQRK86Obm9RAixn4ZsLDO9cyqiqLYQ1qCaYRCeiaRX/YSWRagWy87Ce5M6o9L6RlmeWpE9MyqIaBXM9zbth6qvcYX2rLqNUHhhkZfpc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780025947; c=relaxed/simple;
-	bh=nMfa9m89MZMavRwsBN3gpjx0vpYcp+MPQZv/QtENsvQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=XR05V8a9O4kheb6qfn39wCLxhay1aBSPrdexvTQ03UWITzrz0Wz2EZFvFxC9RqiODexbPk88HGODnRToeiPDx1UkxF87D6GOJ5jmfPaW6aR9FhwGngt8gzOIoZ0cid0Zv0UxoVzd11qrHUeSQMPqcVskIO80qSuzqgW7xJuFqDk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com; spf=pass smtp.mailfrom=starfivetech.com; arc=fail smtp.client-ip=139.219.17.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=starfivetech.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=fKvBWNf9e3g2dhkojlJIosDWWLTN5i8jYRpiIj91iEfKJvyH+7MYxX6VWfP1bR9ElmHioIGlB5Os9rT7v8Ycf6NjNGZNv+WKOS/fqa8MUS5O270YExoSbjU8FPXvMUiOiMtP7Xa2Kap5aW3NStnv36BGDE3Gann+LZTEfgQEVbThcGQB7yMRJUJH8aGmvSdTKSQZvxrhyblCFF6cVzsIyCgs7iHq5FVV/k4X51xjImVbneOlcFJXTNTCewWmm3bj0I9H7JCVXKi+XdWVOzKLj6746pL2jixF1g7EqlJBWDwnyeEv56Z44BUu5E0+fwo6k4YEfFR4CpDqF9pfCsg1OA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9oqiT8GR2qb0LVTQRB7i7Y2HY41KXitmcrffWHB3Y8M=;
- b=TkUFWIcEJt47sWfdd6E6R4hMWDzH8r+W0Y7lNfXMtJ+rY2POpGTuOJafxDYGOaGw7oOj7LwHTj5szXkdR1Q4xIxNLkm3IhozOozqJ0s7u7gcEsZxohdGomGkbbxCQWBxks2xqwuGe3EKdmMDjQktPAvQeCj5zJh3nP98TR4CtIrNo4wsIQIQrMQJppFmrs59srTjD+ydRy2TE9OBXi4dgAU8pZUIPUzkTP6drCtjUMY8dLyfR7LjTfCiKEDgHXASoboNFBuAPkXMmy/hzp05Hl3aWeBUUVcOx7K0jGuwCk5w1pgvDV/xFYuUNgRzeEOK9LZewyXMYL7eRtv6OEUjwA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=starfivetech.com; dmarc=pass action=none
- header.from=starfivetech.com; dkim=pass header.d=starfivetech.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=starfivetech.com;
-Received: from SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c311:25::15) by SHXPR01MB0862.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c311:27::19) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.15; Fri, 29 May
- 2026 02:05:40 +0000
-Received: from SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn
- ([fe80::9b99:12dc:a115:b90f]) by
- SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn ([fe80::9b99:12dc:a115:b90f%3])
- with mapi id 15.20.9891.021; Fri, 29 May 2026 02:05:40 +0000
-From: Minda Chen <minda.chen@starfivetech.com>
-To: Frank <Frank.Sae@motor-comm.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	Minda Chen <minda.chen@starfivetech.com>
-Subject: [net-next v5 2/3] net: motorcomm: phy: set drive strength in YT8531s RGMII
-Date: Fri, 29 May 2026 10:05:29 +0800
-Message-Id: <20260529020530.16856-3-minda.chen@starfivetech.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20260529020530.16856-1-minda.chen@starfivetech.com>
-References: <20260529020530.16856-1-minda.chen@starfivetech.com>
-Content-Type: text/plain
-X-ClientProxiedBy: NT0PR01CA0017.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c510::6) To SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c311:25::15)
+	s=arc-20240116; t=1780026083; c=relaxed/simple;
+	bh=i6JYTRjm4JXejcRLaJhLR1YR6Ikw12Sv3JIRSgFRLr8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=SzPEcSQFgvyfSeIeWc2uQsga/uXMS+KCcnAroT9ufxoRaS/y/2/ZF2JP9UtwAdrQn5i8BJpbmU88rHOaNhsIBL7c4Y1cQ1fhhLWDeEPP+YcVz3Km/yR8XtxTm5kqRKwU5oRwsaO1rOHf9MwBjsevNYFDY84TkzAuTwQwVFRfi6k=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HDeR0rLT; arc=pass smtp.client-ip=74.125.82.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HDeR0rLT"
+Received: by mail-dl1-f42.google.com with SMTP id a92af1059eb24-132d1b2519eso9599364c88.0
+        for <netdev@vger.kernel.org>; Thu, 28 May 2026 20:41:20 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780026080; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Fek88M6A2ulq/jDxQo64KJuJi4pqxYRlcVby4Ju0b8bfBvVeEaXfWtDNCWfG2Fliml
+         G836VkOvydNhcO1xnxEI+UY344xVrROmEvoUAqESTcGmVY2m8ftTjWCEfO1d1lrbxpoO
+         IixvvX5lIb2DrC09BzB0VYzmIgqQY+EBJ16AOm6fz5NU5Zkqw4V7LAImupz4yAOtnIjT
+         Gy7MJ5d9jz2HQjL5Ho5X60ZsuL6rn5ajTJCpmjeM73z+tdC6Uv1z2uXPC3s+9JH72K7A
+         aQcEcRHkW+YeowVUaFJC7s6ABrevW013OOXd7whc3VvhDe89mdu3n9ZCn7y3si3Q9qJ+
+         d5tw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=RNKxgDovCOq+Ul4OFwE0rhhGQh17y9vA7PTe6i4EqtU=;
+        fh=7x/LyHY5pE8qn1lx2Vvk+OlVE01WjBNeKeKrfu5D7J0=;
+        b=ZkVQrsZP2sSMBlawJek2xqc07F7DcQ2pf3tgDgl8owW8SB7vsbTUbjWsm47Znc5Q+m
+         lyEJVjVvfWL5Fq6WSvTMWzJz1aRxvunoQ9mG83i8020G7Ua4qNIXNFoVupWRU0iChojN
+         3s2HBpjfdpY0RY9Bs8kYEy/VXrittV+nycPcRwS6E9lH1iB/Bz0a025m0pCZ8i6PGvri
+         VcKdqY4vV/ziO7GLY0vk40i6ZeODXnPXyilB/H7QMEOMLDk950Kw9pXKEF1MdvsUVveI
+         9BSsRAexrJWbBldURst1QpPpmnfwxWwq9SYkbrT0qxWeJIRha5ADt+aYHqJDhdoYkQM3
+         4z9g==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1780026080; x=1780630880; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RNKxgDovCOq+Ul4OFwE0rhhGQh17y9vA7PTe6i4EqtU=;
+        b=HDeR0rLT5Hp13SrFhUv3CEJx5lpUAexbFmv6umr0mab0+91doiV+ApUj2Ng2C97inY
+         sJxxHxaA0jfiVyY3TiIg0e1pJsSaS+OAJXa2wdgsYZDhqzxRtVqknnv40UIe3JBkcAJ4
+         XSSo4cCVBGkbKF32siEUEQod1L+KqgH/8r6rJOqPpccOTBwrTjrapZ9ehExBnzCPgUIB
+         HHwsH84/xwA8DL0Y1/Is9MbuAeI2FbcOuVdbAlYNo9/GVU74pL5Q0lpt41ZNCVfAeyy0
+         QRmbOxYEuCxVbqySeBExNxxjVWh/OC5N4YmaHOr/ZIVZCLr+Up2wvDlk8MfFhATLdNrp
+         PR5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780026080; x=1780630880;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=RNKxgDovCOq+Ul4OFwE0rhhGQh17y9vA7PTe6i4EqtU=;
+        b=BIyroOP0reIwiHSw+CkdNzGIYC4FM69zDQMTcy7V3/Tr4wsQp+cS5Jteo+5TYDpEfo
+         EvzRjfT+gbhQ5tBbThNIwqW9UTYUeR4bzxhyiQ8HpW3tJURP87GVgzhu59igWSCYhVdi
+         GkD7NkavCRNfwSsOrjT1/h7wmO7E+RJTHzTJx/AA7noEJ/S5rkeGIjxReS5tc47a+L0U
+         O4AzD5dwa0GTlbjs9NXPq8yg7HgAfAs8YXMefyi3gMXjRUbdcEWjVXUS3x8xFOMqlnuO
+         7c8IDpaConnmcelPm96ZmfqcZw8vl5FyKAPeG91OSfHpy0aoV0BZ3WVs3Kw8WL0+rHbx
+         69wg==
+X-Gm-Message-State: AOJu0YwPnDnZlLeiLWG9lt2NS84FbpPEu7FigwfcwDktxs7kXCJ7XMEi
+	6lfHvEfHxkynWz+Uta4p9/3bVvIN4z3GX5ItALZ24G2K49agxb60XjJf7KmC8vMAbzAdw768TAg
+	ZlZaWofrKUxabDaTDHFm5nfC4it1FdEfDEMLtRWqO
+X-Gm-Gg: Acq92OHBXXRvdTgrDBe0qd+FWb/drAtJQ2jItGhqlwWhhU+tFMhY1ppzUt+4ct/f8+X
+	NWSsTk/Sru0K+XIDuDOhSayJ/j+w/uJAzKEIMF7u5+F42I3/SYyC0zyvyWHCTaayatg3ORQgfvT
+	55e1RApjxoByCl8UkXA0Fp++ogMIkJNz5A4Sa2Dxe3R0XjV5l/B5HoEuRw+VcKO2te9ZPUQDIbE
+	GqI8O2owON0okyBuXBn+TF8nS7bC8lXy/foTdWks4TIUM/4GCCIvi+IEnn0xVAWpJIXcTH2TfXN
+	QZWjzaGWaJvGfpsrVognm/UaSKsg+MO47iULIwdndyr2eYASJyK7CjVs7Qa55WseoCg4aRgXuv1
+	4vreLNAGQeV8QbMS1TmukHB9b9e6zuHrtQZpNOMDuSa/ha0XE+YBqKau266b7
+X-Received: by 2002:a05:7022:397:b0:130:aa42:167b with SMTP id
+ a92af1059eb24-137af863b19mr444180c88.36.1780026079351; Thu, 28 May 2026
+ 20:41:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SHXPR01MB0863:EE_|SHXPR01MB0862:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1ff41792-2fb2-46a7-e199-08debd26c830
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|366016|52116014|376014|38350700014|22082099003|18002099003|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	jWMgsbgKz/0c8shq6S/BoMBz8Qu5WZ7bLMfvx8geMjSCXZe/ATE7BoagRDcFxsQnRce9PgaZjAz9nqcZohcxKdD16t7o2RJB76kJ0YSfr157Q8JLvqJd3/tfEwlPOxOVl46eKd2nPZ/N8x09PNwThQqQj36AAS+KmcfK1lmQbgXUyfQGHsT88zqAwiLntwINVF2NqFimlxkMYb3QmPfC+cuzeGvctYiJJMxuWy8kY8YA58AJ3b8PY6sUth1WY8IOHb/gSbSrzMUMVf1/oSmi9+wvXTgK3K1Q4nLRdZYtCYX4TUNqBe2oHtGHQcgVZejnzc2dDIJau7iplm3Lk6j9Tvfa5mEg7A18tEn+94lDMJ2H+LXp5Fw4uUV0AfdRlaCfkEWJmK1TFtiICfWjN8Fr+vCAe/m04uA+MYe6KSRXOToOwcqGuCJqyTMD+BlUIwO49uttPp/0IuaXgj1VMv8cnCB4cHSHwGXdZ6UCzfkR9CNnQhkQrTcvdwdy4H12slIekwb0ycDURmHsW7qt833EBDGX+csJrP9LMECaYahL+EeUu4CYZ2NefwbXV4gEHeFb
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(366016)(52116014)(376014)(38350700014)(22082099003)(18002099003)(56012099006);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?eqikAAntP/x7dxAA68kxtsO4BAGdMG432TMKjzlWDYrLjyyXewamSBfe/L/A?=
- =?us-ascii?Q?HDQGn8Fq7glp86q5T1h/YGzOJ3mfvntXSKJ2zjsvdW82p67uNvUZun6YkHey?=
- =?us-ascii?Q?/n7j1mwpeEkixHHW8DbWFNXvU4lY89t85whLx4TFMtB0gdcITt5bd6R+OqIB?=
- =?us-ascii?Q?3vYAFXQPxRxDA3Zcgr/6Smh24hPPqlXZf2fzWkvn+E0aiCtp5tdagrp1Z0OS?=
- =?us-ascii?Q?mbnbF2tIJqRvYhW3+TXrC+KFCFYmbsdc4xg6HYXbcbj77/m957tCLSx072bd?=
- =?us-ascii?Q?HwRtA9561FG3pq7B6jxXG4HjlexjSbcOs6g4Ucgg22AzTa6kUgACz6vI+t6z?=
- =?us-ascii?Q?rwxa74+nDQCtZSGJI00+UTqTp2riazR7OQLyY2gvgWAC4w+id67fEdxc6L61?=
- =?us-ascii?Q?gJv97ff1LQKuKPyFHWo9Kd1Temzo4W4PNT+KpnA4OaHSEBCqbeRa/y+kcami?=
- =?us-ascii?Q?MD5YGqyeGd3AE93JWunQQ22c5+O6WqNdwJo/9zrp8ijAAsEtJ7Fzh3hhH3BM?=
- =?us-ascii?Q?29QNp/RkppYGp8dttb0FfTNusABCjS20orkRT8ZEt137Es3sKiXTOB8ONplh?=
- =?us-ascii?Q?PH27kxcOjL63fhbFx+tP6vce3YihdngmYspZE1DOBqMZMB8ii/e4JUuHTcau?=
- =?us-ascii?Q?+kW/+dCCvoL3BLPHOgV9yQf+jXdZOTZshAmod27MxtRScOy6MJ0GbWbJvbqa?=
- =?us-ascii?Q?cgw1zvAA0QZAGp9eXryqcwWIctosFZtLAg3FmiXrGWwOGxm8lGQsC6CDJpec?=
- =?us-ascii?Q?k4+4PAkCn+BXRZyNYQ9mcAiDyBi8K0w3xBitvf5S1kLPu20u3TLlevzhsfRC?=
- =?us-ascii?Q?UYKoR+kXJ9xZX6Q64tW2kTIUUZRpJzGhIOen9RCSXeFUqK+V8M8bVMyWpyGH?=
- =?us-ascii?Q?JdgBFXAPMnzBfZ3On3iL9xYFc0RKQYSsKK+2ll1z+2R/pL+ntMYUKyeygyqH?=
- =?us-ascii?Q?uNx4nAJJa7khK38w8dtTmQpq6ptD4ypSNfPVdp1bYqcdZPz2A+vrjg/gwYEf?=
- =?us-ascii?Q?Emy7Cn276d9QXC6Nlx48y6+aUUnBRtkUv4GfAZYvGA6UyDHKg0Y8EV7m9NPA?=
- =?us-ascii?Q?WiOpFBgdtmmdlDPcmHTDRGY5Tn1CCpOqW5QvEZhLnScJn7e9oByvA3F4faVG?=
- =?us-ascii?Q?d1iOOPlcwPJes+fTHvZLN79ITPCf6pcRUTNpzsMjyPm+IcDiEFLBIUykhYr0?=
- =?us-ascii?Q?bGQGmCdF0c81Pj2/fUggI1fNQnZyAJJGa4qgivmwN76B/NJMkftPOsM++TV8?=
- =?us-ascii?Q?oG3otsrtJfWV87h81ezlNlq7bI2iRw4nGS6xtSFN8c6rygFR8xLwsb/cbHss?=
- =?us-ascii?Q?XJcgigsVLxR5DOKJl6U1YsPxNmtcnoxHa9FUmS2gr6or/TMENqDPdbW+M55I?=
- =?us-ascii?Q?TdbaEZH+GthqhHGmdi3H7PBhBLlyv6jnbs3XFK24w1Y4YXk4TqDrs7q/Fnjk?=
- =?us-ascii?Q?q1jaEPPvsF9uImC4p56j6nABaK9SqBAFb22HTbwRarwrRgCXz6Ea+RRbIhkJ?=
- =?us-ascii?Q?a5p7zZNFs4sJbWlHB/PUjkE3mMj7PoTWBOnRzxMZnDZvL71QWxI4q9JweXo1?=
- =?us-ascii?Q?PjDJ6SH9I5v59jeUFite7ShE3QhvBvQBlxz2sq9E0A8iebwzdvGLH5f79tZ4?=
- =?us-ascii?Q?xTWL9VC640QbrZfoYLmjTnqwK+N2O98kitoZRrDyHXvwAEiFnVT1+pzcORGa?=
- =?us-ascii?Q?EdigAYR2NcoLtVhaRYLDK6789xCBk16tqDbNXxCAGtLKhaP9YXd9uNo4uVUb?=
- =?us-ascii?Q?VFhmRoUCBJq9ukwzP9cQnFHp+n4z8/Y=3D?=
-X-OriginatorOrg: starfivetech.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1ff41792-2fb2-46a7-e199-08debd26c830
-X-MS-Exchange-CrossTenant-AuthSource: SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 May 2026 02:05:39.9125
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 06fe3fa3-1221-43d3-861b-5a4ee687a85c
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: JGH1O8IziqO0BU2CoiMS7AkBHvN6rVOZpygBHw0x1FPYe6jrjMvVDLEbNOXQwFZ5kW0XzKq10TbhAJpK5vb8/gQTnsADkxJGwRR39Yz1m48=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SHXPR01MB0862
+References: <20260529032026.363856-1-jiayuan.chen@linux.dev>
+In-Reply-To: <20260529032026.363856-1-jiayuan.chen@linux.dev>
+From: Kuniyuki Iwashima <kuniyu@google.com>
+Date: Thu, 28 May 2026 20:41:08 -0700
+X-Gm-Features: AVHnY4LyHWveM15GXyGtNcmp8lh-hR06yFfs4exejVzeulQhKS0sSffUxqsQ-kU
+Message-ID: <CAAVpQUCJxaPTsA8DJ-KzPpWM2_GQr1LBHfdyEo9ziCA4sEqv-w@mail.gmail.com>
+Subject: Re: [PATCH net] ipv6: anycast: insert aca into global hash under idev->lock
+To: Jiayuan Chen <jiayuan.chen@linux.dev>
+Cc: netdev@vger.kernel.org, David Ahern <dsahern@kernel.org>, 
+	Ido Schimmel <idosch@nvidia.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Set RXD and RX CLK pin drive strength while in YT8531s connect
-with RGMII. Need to check 8531s PHY ID because 8521 and 8531s
-pin drive strength is different, 8521 can not call
-yt8531_set_ds().
+On Thu, May 28, 2026 at 8:20=E2=80=AFPM Jiayuan Chen <jiayuan.chen@linux.de=
+v> wrote:
+>
+> syzbot reported a splat [1]: a slab-use-after-free in
+> ipv6_chk_acast_addr(), which walks the global inet6_acaddr_lst[] hash
+> under RCU and dereferences a struct ifacaddr6 that has already been
+> freed while still linked in the hash, so a later reader walks into a
+> dangling node.
+>
+> In __ipv6_dev_ac_inc() the aca is allocated with refcount 1, then
+> aca_get() bumps it to 2 to keep it alive across the unlocked region.
+> It is published to idev->ac_list under idev->lock, but
+> ipv6_add_acaddr_hash() runs after write_unlock_bh(). A concurrent
+> teardown (ipv6_ac_destroy_dev() from addrconf_ifdown(), under RTNL)
+> can slip into that window:
+>
+>   CPU0 __ipv6_dev_ac_inc           CPU1 ipv6_ac_destroy_dev (RTNL)
+>   ------------------------------   ------------------------------------
+>   aca_alloc()              refcnt 1
+>   aca_get()               refcnt 2
+>   write_lock_bh(idev->lock)
+>     add aca to ac_list
+>   write_unlock_bh(idev->lock)
+>                                    write_lock_bh(idev->lock)
+>                                      pull aca off ac_list
+>                                    write_unlock_bh(idev->lock)
+>                                    ipv6_del_acaddr_hash(aca)
+>                                      hlist_del_init_rcu() is a no-op,
+>                                      aca is not in the hash yet
+>                                    aca_put()           refcnt 2->1
+>   ipv6_add_acaddr_hash(aca)
+>     aca now inserted into the hash
+>   aca_put()                refcnt 1->0
+>     call_rcu(aca_free_rcu) -> kfree(aca)
+>
+> The hash removal becomes a no-op because the insertion has not
+> happened yet, so once CPU0 inserts and drops the last reference, the
+> aca is freed while still linked in inet6_acaddr_lst[], and readers
+> dereference freed memory after the slab slot is reused.
+>
+> This window opened once RTNL stopped serializing the join path against
+> device teardown. Move ipv6_add_acaddr_hash() inside the idev->lock
+> section so the ac_list and hash insertions are atomic with respect to
+> teardown: a racing remover now either misses the aca entirely or finds
+> it in both lists.
+>
+> [1] https://syzkaller.appspot.com/bug?extid=3Da01df04303c131efbf3a
 
-Signed-off-by: Minda Chen <minda.chen@starfivetech.com>
----
- drivers/net/phy/motorcomm.c | 5 +++++
- 1 file changed, 5 insertions(+)
+Closes: and Reported-by ?
 
-diff --git a/drivers/net/phy/motorcomm.c b/drivers/net/phy/motorcomm.c
-index 688679457ef9..dcba50007451 100644
---- a/drivers/net/phy/motorcomm.c
-+++ b/drivers/net/phy/motorcomm.c
-@@ -1697,6 +1697,11 @@ static int yt8521_config_init(struct phy_device *phydev)
- 		if (ret < 0)
- 			goto err_restore_page;
- 	}
-+
-+	if (phy_interface_is_rgmii(phydev) &&
-+	    phydev_id_compare(phydev, PHY_ID_YT8531S))
-+		ret = yt8531_set_ds(phydev);
-+
- err_restore_page:
- 	return phy_restore_page(phydev, old_page, ret);
- }
--- 
-2.17.1
+>
+> Fixes: eb1ac9ff6c4a ("ipv6: anycast: Don't hold RTNL for IPV6_JOIN_ANYCAS=
+T.")
+> Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
 
+Change itself looks good, thanks
+
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+
+
+> ---
+>  net/ipv6/anycast.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/net/ipv6/anycast.c b/net/ipv6/anycast.c
+> index 67a42e01dfc3..cd8c02a1ad4c 100644
+> --- a/net/ipv6/anycast.c
+> +++ b/net/ipv6/anycast.c
+> @@ -371,10 +371,10 @@ int __ipv6_dev_ac_inc(struct inet6_dev *idev, const=
+ struct in6_addr *addr)
+>         aca->aca_next =3D idev->ac_list;
+>         rcu_assign_pointer(idev->ac_list, aca);
+>
+> -       write_unlock_bh(&idev->lock);
+> -
+>         ipv6_add_acaddr_hash(net, aca);
+>
+> +       write_unlock_bh(&idev->lock);
+> +
+>         ip6_ins_rt(net, f6i);
+>
+>         addrconf_join_solict(idev->dev, &aca->aca_addr);
+> --
+> 2.43.0
+>
