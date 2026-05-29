@@ -1,41 +1,40 @@
 Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 572DA33F5A4;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57405342507;
 	Fri, 29 May 2026 07:45:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780040731; cv=none; b=YJT+9OOyS4K377QAKAFk2eBqp9LhjipP5S4goHrlkWjLslVAkc2ofhJRTOmsG5GnEgvz3bRfjDYSyhkgFSTEhsiqXsx/KaO33bqCkIG17O8AVKzNg9fyq/gjF9dzTu5Hw+PUWqazQmwe8LfwJbeTChDbyOtfBP8CGm44bUUBdWM=
+	t=1780040732; cv=none; b=MJ4sVgn4U5NAIG+J0ZIwHl+ifx3iohpHspNLK7EVCYxuyxg2LZbLR9LOgwkAc7aW6XAkHrQzD3Vc0GhyyloQIJPC9rXE4R9XfO4kmnIyHmM3j/qTj8G3xKotklsKpq12D6O5yLej71e+wfKtT5jt4bamOGLi12jOSk9PYBEoKIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780040731; c=relaxed/simple;
-	bh=mEM95G3WNy6plziLguYpsnPOf7PAIL0711uhgZK4fMw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=cxdRGKQT4O4M62I9yU7V6TayjVHAXlbGitU3Cn1WMPSQSkViu24EiiHBdTfulbC/MwerQ/LTcrqiY2rp9ScMhcVSYXXw1ypYo86sZrLgFOJ5fnHxaZcuKEcmd9SM81nlnX7bORzbytevxR46YM/bXfKPbcKSc5b1Siod4400QKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=F237WIcV; arc=none smtp.client-ip=82.195.75.108
+	s=arc-20240116; t=1780040732; c=relaxed/simple;
+	bh=V+fWrbXEkgJq7sZ8FP4Mw7u/nUWzeu+529+F2WCqw4w=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=HSuQKg6rXcIeCY9dOQQmwS804uyGH2jBBcgorXCm6ye5ulMA4pdNXheKp9ByFyQNnmPHHynNN22iUGIZriygBHPreG342W7owXy19yjrIpIqjgT68svuDt+NjB2J5inICK3vpmjBLBVnoLVeGJ7X82HFkNxkmdzPVy17Oh6txcI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=WOJcZml3; arc=none smtp.client-ip=82.195.75.108
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="F237WIcV"
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="WOJcZml3"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:In-Reply-To:References:
-	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
-	From:Reply-To:Content-ID:Content-Description;
-	bh=Y2P1ayzVY7FwXmEpq+5FJne3BKpnMFMzUXsWtT6mEVY=; b=F237WIcV+KEddYQm8+bL3fQgQm
-	YfiVTG72OVAKiDnUh/A+nhE/5LANGS3glUsyWwktOhew4/SqZ3JiO/KdgxOAcaDGHDHzYSDcoiX7x
-	vyQSR7J8O0U2PHTz0sx4dwCZhKDDLtsrz0ITkTzq1D5d3AgHKB+/trLpnvcYhqjBo2NUGHZSPAh7j
-	maUqdLGkB/O2o6nABbkEb91B3ZVjE8wDZXIumyGcpIwWRzaLpfETy3fEhjKgKPN1UhHU/Ysg5vUSQ
-	JQre4Vq5UGDjLgyONoyVI24szXvquoHsbKBMGyMnWWvIdLHf083Q/iaQYjyfK45TWu5ZPAw4+ez12
-	bdrPnfvA==;
+	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Message-Id:Date:Subject:From:Reply-To:Content-ID:
+	Content-Description:In-Reply-To:References;
+	bh=tuUYV6q8F7uU6pcbL77F3mVfiEjN4CQIbUjssP+vxw4=; b=WOJcZml3HSyUeCYsbfQdtL43Ax
+	aPyxMBDCqDkuR8zgHQd2RwnZw0l2Czqi6qjhoVTaUQacRzm6WrVsRXyK+xy9mHeEpSHbvN+NooN69
+	bsN2ZJSV/0vFpBKdcb65TnES0aaeAoFzKE+oVfnLB1hSv94TwtCFB9mERgqMlhkSQ29obZ06uwjki
+	uEqeESDEfW+LI+Oknby8QfYKHngsqX7wFCIrvuuWkYq0qstc1qnr2idkaH2DHDeKIyIN16cwORpqW
+	uapZDp8Zzbzqo8K83McehA18aWnLHSdxS8QFvPvxUzlQvI+LaJwo9jwfrrQjqW8uD8YIi3u3Ji9Um
+	YWQwd+yw==;
 Received: from authenticated-user
 	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.96)
 	(envelope-from <leitao@debian.org>)
-	id 1wSruD-004kM5-1g;
-	Fri, 29 May 2026 07:45:21 +0000
+	id 1wSruA-004kLy-2r;
+	Fri, 29 May 2026 07:45:19 +0000
 From: Breno Leitao <leitao@debian.org>
-Date: Fri, 29 May 2026 03:45:12 -0400
-Subject: [PATCH net 2/3] netconsole: do not dequeue pooled skbs that cannot
- satisfy len
+Subject: [PATCH net 0/3] netconsole: Fix reported problems
+Date: Fri, 29 May 2026 03:45:10 -0400
+Message-Id: <20260529-netcons_fix_before_move-v1-0-cb2d1426dd75@debian.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -44,9 +43,11 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260529-netcons_fix_before_move-v1-2-cb2d1426dd75@debian.org>
-References: <20260529-netcons_fix_before_move-v1-0-cb2d1426dd75@debian.org>
-In-Reply-To: <20260529-netcons_fix_before_move-v1-0-cb2d1426dd75@debian.org>
+X-B4-Tracking: v=1; b=H4sIAAZEGWoC/12N0QqCMBiFX0X+6wa6nAxfJWTkdlaL2nJTCcR3b
+ 5l00eU5nPN9CyVEh0RtsVDE7JILPofqUJC+nv0FzJmciZe8KQWXzGPUwSdl3Uv1sCFCPcIMpk2
+ jLXQNaQXl9zMiTzbyifKJum+Zpv4GPX6Y+yximLJ33Lc/bVv8S8MdaoOyozA1Kiul5LKdK+rW9
+ Q0tfPoxywAAAA==
+X-Change-ID: 20260528-netcons_fix_before_move-cd6cfec4e8f5
 To: Andrew Lunn <andrew+netdev@lunn.ch>, 
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
@@ -55,143 +56,54 @@ To: Andrew Lunn <andrew+netdev@lunn.ch>,
 Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
  Breno Leitao <leitao@debian.org>, kernel-team@meta.com
 X-Mailer: b4 0.16-dev-d5d98
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4366; i=leitao@debian.org;
- h=from:subject:message-id; bh=mEM95G3WNy6plziLguYpsnPOf7PAIL0711uhgZK4fMw=;
- b=owEBbQKS/ZANAwAKATWjk5/8eHdtAcsmYgBqGUQMSS85VJvrhxKGQlisDTMktYQdRMPcdjnHI
- qZRT0b01mSJAjMEAAEKAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCahlEDAAKCRA1o5Of/Hh3
- bfp1EACPmTE08kNbFONb4I4Gr8l+veHNfFq7Tg4A8uyIaxgk50m5PCVvEAhcYZsWHDAWMcSqGU3
- /Z3IXKbPe1Fr8R0EInMtREyn+snbQJ3a4I4zCodul0AxJq+0ErjzwyKbvildSLxOVwXomwCi/SS
- eNbWklgXxRYnP4eh41g3lUGCcAFO1Qqw8rM0f4epezgSMvrt7xEoYotzRjguG3pqYfHfyrJVEXZ
- ZpYd4XRRZo9FR8h7Iw5LskegTkKFu5u5TfVlR/1EFYYShBkd6yUq12wmiexV0vaZ4CQvauS5ae2
- sHRVEA1SeGPqfGiuPRE7rfVnO1ZPehbL5EJTwGbPKaYgT1uCojziUsnwwRhEtGXUvE3knrZjGA6
- 5ufFsT2/6QTHqXtNGiH1sug+IBq/PjF2kO8vuJUS87THets36/6smIjk8UKa3O3c2yUht8YS2X0
- kQ/naZvCVQvmjoB2VCe0tR115k3KJO8ykzNkWni5u3ZQ1e59ZXF1+E1v42AActj0ltAXqb4+j5O
- C8sdBnKijxUe59xuvMPVCpPbDXHvS02svg3L441o/Q8UgxnRTN5TUMBUJnEhqPtJc7Bs7T1odB2
- dfdJikbcW+KKCiQj2sCKI2m2P7S9HCrPikKj9sBULZ7kWQEsfwb29Msts5FvUDVEFRl1UFHeg6Y
- 24nRM2Hbn34UJNw==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1340; i=leitao@debian.org;
+ h=from:subject:message-id; bh=V+fWrbXEkgJq7sZ8FP4Mw7u/nUWzeu+529+F2WCqw4w=;
+ b=owEBbAKT/ZANAwAKATWjk5/8eHdtAcsmYgBqGUQMhoJssY/wErsXDaSU2Edqpd8qSFwpqX9bW
+ 9MUL5po5syJAjIEAAEKAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCahlEDAAKCRA1o5Of/Hh3
+ bTtpD/i//k+vv7RjEljWHGvEDt+IqYM38wX3v4w+jEOuNmp/seYSqcD3wZ3+ubV1Nt+aEaNuxKZ
+ wWegBIpNHYVDyiPiw6Gzp/Vw8b5h2A8uz6xF7pmk7lROH0Ayuq1Cve0hQ8j/lxB0kIyjJPnrH70
+ 3NzNJgSMWPStMl0zq9/PVl39RgHIjv9QM8VcZO8LrSEkHi6N2a/PTvntH5PqbVT4MVroxUKcdN2
+ XlcWhcbM6DzV07Ay4YSoPpjfN6xXh+Vq2xO9YDi61QBJDGktM3j3zDsBQzvzTEX9/B93PLe6+FE
+ fHziiS1au039BD07AIKsYj8sjTwjQE7nY300IUmqGy8J4PLpPEpGi8efXiFhOnPIvumfuOzcUaY
+ A7E6+6Xht7muz3NjX1vVpb0mwOjLe0fZRTID3qVZBE6fzpFOqJcAM+nduTrIJEvPowhbiFFnxTz
+ k7IfnHFHAgZPA/DfYhIjwZc/oun/7aV4qwkr0GHhUuvjJenXBr9ih3zFlkyeGdaHWLqY+G3LKhC
+ 2uqZEadG0cKPnAwKhT6fI7Pzw2aGChbI6F9wWBi6tsS0AS2Brxt+X4FrR9fnmPMC6I1UE6Uzuke
+ x/8L5g1QIhAxLvzk/+gMP6wbJ5eFr4ca7OUo8sT+LGYhkgwbWObPMkkegk4FC6VRAcRc2ONOj/Q
+ fRl7uWytckDJB
 X-Developer-Key: i=leitao@debian.org; a=openpgp;
  fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
 X-Debian-User: leitao
 
-find_skb() falls back to np->skb_pool when the GFP_ATOMIC alloc_skb()
-fails. The pool is refilled by refill_skbs(), which always allocates
-buffers of MAX_SKB_SIZE (ethhdr + iphdr + udphdr + MAX_UDP_CHUNK ==
-1502 bytes).
+These are some of the issues that LLM reported to netconsole, and they
+are being addressed here before big refactors.
 
-netconsole, however, computes the requested length dynamically as
+I was doing some big refactors, and got some "pre-existent-issues"
+during LLM review of the refactor, that make them hard to guarantee that
+refactor is not introducing any bug, so, let's clean these pre-existent
+bugs first, and then submit the refactor.
 
-        total_len + np->dev->needed_tailroom
+The issues fixed in this patchset were reported during the review of
+https://lore.kernel.org/all/20260524-netconsole_move_more-v1-0-909d1ab398b4@debian.org/
 
-If the egress device declares a non-zero needed_tailroom (e.g. some
-tunnel or hardware accelerator devices), the required length can exceed
-MAX_SKB_SIZE. The pooled skb is then handed back to the caller, which
-immediately performs skb_put(skb, len), trips the tail > end check, and
-triggers skb_over_panic().
+Not all of them got fixed, but, those that were easy to reason about.
 
-Leave the normal alloc_skb(len, GFP_ATOMIC) path untouched -- the slab
-allocator can still satisfy oversized requests when memory is available,
-so senders to devices with non-zero needed_tailroom keep working in the
-common case. Only the pool fallback is gated: when alloc_skb() failed
-and len exceeds the pool buffer size, skip the skb_dequeue() instead of
-burning a pre-allocated skb on a request that would later trip
-skb_over_panic(). Reserving pool entries for requests they can actually
-satisfy also keeps the panic path, which depends on the pool being
-primed, intact.
-
-When that drop happens, emit a rate-limited net_warn() so the user
-notices that netconsole is unable to push messages on the egress device.
-The warn is skipped under in_nmi() for the same reason schedule_work()
-is: printk machinery taken by net_warn_ratelimited() is not NMI-safe and
-would risk recursing into the same nbcon console we are servicing.
-
-MAX_SKB_SIZE / MAX_UDP_CHUNK were private to net/core/netpoll.c. Move
-them to include/linux/netpoll.h so netconsole can reference the same
-definition that refill_skbs() uses, keeping the two in sync by
-construction. The header now pulls in <linux/ip.h> and <linux/udp.h>
-explicitly so MAX_SKB_SIZE remains self-contained for any future user.
-
-Fixes: 954fba027405 ("netpoll: fix netpoll_send_udp() bugs")
 Signed-off-by: Breno Leitao <leitao@debian.org>
 ---
- drivers/net/netconsole.c |  7 ++++++-
+Breno Leitao (3):
+      netconsole: do not schedule skb pool refill from NMI
+      netconsole: do not dequeue pooled skbs that cannot satisfy len
+      netconsole: take target_cleanup_list_lock in drop_netconsole_target()
+
+ drivers/net/netconsole.c | 26 ++++++++++++++++++++++++--
  include/linux/netpoll.h  | 16 ++++++++++++++++
  net/core/netpoll.c       |  7 -------
- 3 files changed, 22 insertions(+), 8 deletions(-)
+ 3 files changed, 40 insertions(+), 9 deletions(-)
+---
+base-commit: e7e28506af98ce4e1059e5ec59334b335c00a246
+change-id: 20260528-netcons_fix_before_move-cd6cfec4e8f5
+prerequisite-change-id: 20260528-netconsole_fixes-35d4e1f88828:v1
 
-diff --git a/drivers/net/netconsole.c b/drivers/net/netconsole.c
-index 699bdfa1fb45..a3dcbe713a0b 100644
---- a/drivers/net/netconsole.c
-+++ b/drivers/net/netconsole.c
-@@ -1680,8 +1680,13 @@ static struct sk_buff *find_skb(struct netpoll *np, int len, int reserve)
- repeat:
- 
- 	skb = alloc_skb(len, GFP_ATOMIC);
--	if (!skb)
-+	if (!skb) {
-+		/* The pool is refilled with MAX_SKB_SIZE buffers */
-+		if (WARN_ON_ONCE(len > MAX_SKB_SIZE))
-+			return NULL;
-+
- 		skb = netcons_skb_pop(np);
-+	}
- 
- 	if (!skb) {
- 		if (++count < 10) {
-diff --git a/include/linux/netpoll.h b/include/linux/netpoll.h
-index e4b8f1f91e54..88f7daa8560e 100644
---- a/include/linux/netpoll.h
-+++ b/include/linux/netpoll.h
-@@ -13,12 +13,28 @@
- #include <linux/rcupdate.h>
- #include <linux/list.h>
- #include <linux/refcount.h>
-+#include <linux/ip.h>
-+#include <linux/udp.h>
- 
- union inet_addr {
- 	__be32		ip;
- 	struct in6_addr	in6;
- };
- 
-+/*
-+ * Maximum payload netpoll's preallocated skb pool can carry. Keep this in
-+ * sync with the buffer size used by refill_skbs() in net/core/netpoll.c;
-+ * callers (e.g. netconsole) use it to detect requests the pool can never
-+ * satisfy and avoid dequeuing a pooled skb that would later trip
-+ * skb_over_panic() in skb_put().
-+ */
-+#define MAX_UDP_CHUNK	1460
-+#define MAX_SKB_SIZE						\
-+	(sizeof(struct ethhdr) +				\
-+	 sizeof(struct iphdr) +					\
-+	 sizeof(struct udphdr) +				\
-+	 MAX_UDP_CHUNK)
-+
- struct netpoll {
- 	struct net_device *dev;
- 	netdevice_tracker dev_tracker;
-diff --git a/net/core/netpoll.c b/net/core/netpoll.c
-index b3fe59445f2d..229dde818ab3 100644
---- a/net/core/netpoll.c
-+++ b/net/core/netpoll.c
-@@ -41,16 +41,9 @@
-  * message gets out even in extreme OOM situations.
-  */
- 
--#define MAX_UDP_CHUNK 1460
- #define MAX_SKBS 32
- #define USEC_PER_POLL	50
- 
--#define MAX_SKB_SIZE							\
--	(sizeof(struct ethhdr) +					\
--	 sizeof(struct iphdr) +						\
--	 sizeof(struct udphdr) +					\
--	 MAX_UDP_CHUNK)
--
- static unsigned int carrier_timeout = 4;
- module_param(carrier_timeout, uint, 0644);
- 
-
--- 
-2.51.0
+Best regards,
+--  
+Breno Leitao <leitao@debian.org>
 
