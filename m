@@ -1,116 +1,125 @@
-Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2804189F43;
-	Fri, 29 May 2026 02:01:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C292733ADA8
+	for <netdev@vger.kernel.org>; Fri, 29 May 2026 02:05:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780020095; cv=none; b=PBZU5rzIVR260EXzRzZQRvvnE1vyVgH2XnRVw7NRjIYZxlh7FDZCrIUpzZt9is5DqqEELyAjgbToR7LFxxDZMkv0HbOU5c0c4QXvJIl18WcuZehD/O/nMoVHJ6Ftvc/nY6MucYKKbVVN9BQLzfKblkdfd1HuqLV+A5XRYVHw9Ho=
+	t=1780020350; cv=none; b=DRGRrPS94TH7WAdDNTM3ecoOGhoT2dR4aUjm3SEEeqXuhpTamispEfpnn+8j6GHk/5ym3iqZetG5O/RNZPmkzphFfVAkwvgVBqSLtdsrPChf9eiB/kj9rQalF45013qeTgGwBBe7iRCbJKPdDIFPYBoe6UwzFoNVraPRH4T3PaI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780020095; c=relaxed/simple;
-	bh=PABjILJp1QVmtSZRNSQ0zmobsIJp6cw3kySkJ/jZmyM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=j0X1jPq/9FUgl7BuUonOleqz0kjnnePbhwqDPKVryL39bpDs62VrEujpCR5Ws21i/xsj6CiLTIWh4k/rr0QGFRN9ZbJtSdaLRFQpAdPJMPEyplChC1GxopjG+6NmXVIHB0OscWGIJa8DGETgJz0j3jBwqjM54iX4Mtw+Ku/YmcQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mails.ucas.ac.cn; spf=pass smtp.mailfrom=mails.ucas.ac.cn; arc=none smtp.client-ip=159.226.251.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mails.ucas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mails.ucas.ac.cn
-Received: from fric.. (unknown [36.110.52.2])
-	by APP-01 (Coremail) with SMTP id qwCowAB3GNFd8xhqkJUWAA--.4625S2;
-	Fri, 29 May 2026 10:01:01 +0800 (CST)
-From: Jiakai Xu <xujiakai24@mails.ucas.ac.cn>
-To: linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org
-Cc: "David S . Miller" <davem@davemloft.net>,
-	Breno Leitao <leitao@debian.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Ernestas Kulik <ernestas.k@iconn-networks.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jiakai Xu <xujiakai24@mails.ucas.ac.cn>,
-	Kees Cook <kees@kernel.org>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>
-Subject: [PATCH v2] llc: Fix race between sock_orphan() and timer callback in llc_sk_free()
-Date: Fri, 29 May 2026 02:00:59 +0000
-Message-Id: <20260529020059.3024038-1-xujiakai24@mails.ucas.ac.cn>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1780020350; c=relaxed/simple;
+	bh=S8jF+5xtE0kvYAge5w4YWFo9HvgjtnuqjnLd+ZoZFRI=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=MD6/SX4eBNLlJuZAVQHEsXRP5NIxjaUvr+Ce5Mbj1pJA5zOSwlGqJ/xjBBx+RYGGEZ7gq+00ocUVZuG+Xlkc83eF15OX48fnRiql22Lk/hfZmk29CienogIZQe3OSZ1/+P+EkRSFI4LF5xSv2/JCIzPRcsNkHe1OMgBLVaC9lZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ENfqz6J8; arc=none smtp.client-ip=209.85.128.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ENfqz6J8"
+Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-7dc67a5e102so12816727b3.1
+        for <netdev@vger.kernel.org>; Thu, 28 May 2026 19:05:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780020348; x=1780625148; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5eKxmPzIBmWYYYQ8Fbz07OQNOOCYYMjRNgpd0FtGS4c=;
+        b=ENfqz6J8Z0gGHbBB42K/spYTQTn51+gnkd8se27bjuFkLJjv02KjkXRDvAX66dyzBm
+         QJIap2FxFrBJURlM+Nd5XoznLi95/Ay7lRMtrHa3j6Jt3w4BPKeKapdBfdbaQvCE4BWS
+         +lDRTG9AfM0w2Qp8ZNduRjLUZI1XIYI0O1Mjy76zcCzu9yY42xg9yrgbLiIIA6rli8Bm
+         Gpr2MCKvdbzhSPsBbjq/vO1FgTI1Q7d3kp7TpBZi6ko6TTCm2Ho04N8653xto6RPAp+f
+         rZVisM0afLsiX97yFNMWxYQ2Wn/n4Q6uCnPY7sZ6mrpORDuPwcgbAvgQbREOs8ckhkYc
+         EUzw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780020348; x=1780625148;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=5eKxmPzIBmWYYYQ8Fbz07OQNOOCYYMjRNgpd0FtGS4c=;
+        b=SHeXOdyJWKpbe7dZl0+cXEOucIiZIC168JAW8JxsmFGXqZEmi4a67O5WS0HOloBKu7
+         fbibLSUQZcaC7CoSuh+P4wZI5PmjcRVlb+Jh+bvIQss265hJhDfSh2obL1nByS+A6VS2
+         nmzmNtkEr6rIZiEKtpQdePd+9Lb/rOJGjQf7CBc161WAMDPNIUjlZsC/Yb1rPMEMAnaQ
+         q85DHlx8oEKjvBUrhsL4ii3X4Vq5NvtQpMObrgLokIHDMVczP1bynADSYaXg031blae6
+         /PUP+ChPgWxN/llAVDoh8O8M3loE2rDag/zDc3ODHTl7tQk5jdq45mJslpYC3NbidB++
+         p71g==
+X-Forwarded-Encrypted: i=1; AFNElJ/SDF/Y+YTIhyedZfLn7qMpTXf+SRJCObVHQWj3y1Q4CumW61EjzDxCZeOJQ4sYcAKCF4oEmUU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx2uro4EcM6LJqh3NOJNnO9KOoNybwj8ngb96npQYmBZcXrCF8N
+	x5RIRkFYxlnRaj8E3jlm53oPuL843BbB9VxbGG56ZBRhM1uHXK0Y5dTm
+X-Gm-Gg: Acq92OEfsxXlXgsfpgRclgw1av32GBHI2Ql0PN0HQvCsPcWFeaOfEa/NZbsregReUxi
+	gLceCZlMwj+H2wwTJeyGuTlhH3exl7c61cFu4HCjO0sucHT6KFh9miAfrRVUlC6ff0gASZxdqSc
+	5EZFri4BHodPAs5jpEhnbkwVwzLRbHz55cY5E0sJGZQ5Q+pshHeiY9ZWHFq5ig1Q9Fu0R3UiCJD
+	FBoV9l2H3BeLv6STWwo1ShdeSymFHQOkOsyQroMbi4O4jqQXijrSdg2AT5GKEZ3Y1Qk3pP8Ej0p
+	M/eobN0u34KHCDCwXfvLvfWBmcFcsXbOu+oVPJ/+nu8rRCdMX0gAzGiw/QfWAELup6uwACuracc
+	5MvwNPKTj8YX1mmZUKIoI6jR9BfS9ZO/q8jx1oacMdR7K2ahwLl4Lh2Pa5k7eTpOE25aDLb8G4I
+	NU2H2bf2OjzZOcpl2+4Z4QreHoQ0f+MIPMCHw3ywR7naZLUwv6/WA1gwjf/ufiQtP4u87nYll2y
+	ns82MaaG84kdmcrYg==
+X-Received: by 2002:a05:690c:3582:b0:7bd:8752:cdbd with SMTP id 00721157ae682-7de4c1ef287mr7045187b3.41.1780020347801;
+        Thu, 28 May 2026 19:05:47 -0700 (PDT)
+Received: from gmail.com (141.139.145.34.bc.googleusercontent.com. [34.145.139.141])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-7de687f1b7dsm1474487b3.17.2026.05.28.19.05.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 28 May 2026 19:05:46 -0700 (PDT)
+Date: Thu, 28 May 2026 22:05:46 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Pavel Begunkov <asml.silence@gmail.com>, 
+ "David S . Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, 
+ netdev@vger.kernel.org
+Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
+ Minh Nguyen <minhnguyen.080505@gmail.com>, 
+ asml.silence@gmail.com
+Message-ID: <willemdebruijn.kernel.1b32eaa32d5ee@gmail.com>
+In-Reply-To: <1e2086aa69217d7f9c8da3d38f5be7160f1b4cd1.1779993185.git.asml.silence@gmail.com>
+References: <1e2086aa69217d7f9c8da3d38f5be7160f1b4cd1.1779993185.git.asml.silence@gmail.com>
+Subject: Re: [PATCH net 1/1] net: skbuff: fix pskb_carve leaking zcopy pages
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowAB3GNFd8xhqkJUWAA--.4625S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7ZFW3WFyfCrWfZrWxZF1DJrb_yoW8Zw4UpF
-	45CFy7KFyqvrZIvFWftF1kGrn3Xan3K3y7CrWDCr4fuwn8Jr15K34rt3yq9Fs0yFs5Cry3
-	Jr4kWr4rCa1kZaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUBI14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26F1j6w1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
-	6r4UJwA2z4x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Cr
-	1j6rxdM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVAC
-	Y4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJV
-	W8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI2
-	0VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS14v26r1q6r43MxAIw28Icx
-	kI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2Iq
-	xVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42
-	IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY
-	6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aV
-	CY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUbQVy7UUUUU==
-X-CM-SenderInfo: 50xmxthndljko6pdxz3voxutnvoduhdfq/
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-In llc_ui_release(), sock_orphan() was called before llc_sk_free()
-stopped all LLC timers. A pending timer callback
-(llc_conn_ack_tmr_cb()->llc_process_tmr_ev()->llc_conn_state_process())
-could fire between these two operations and dereference the
-NULL sk->sk_socket that sock_orphan() sets, causing a kernel
-page fault.
+Pavel Begunkov wrote:
+> When SKBFL_MANAGED_FRAG_REFS is set, frag pages are not refcounted but
+> their lifetime is controlled by the attached ubuf_info. To make a copy
+> of the skb_shared_info, we either should clear the flag and reference
+> the frags, or keep the flag and have frags unreferenced.
+> 
+> pskb_carve_inside_header() and pskb_carve_inside_nonlinear() don't
+> follow the rule and thus can leak page references. Let's clear
+> SKBFL_MANAGED_FRAG_REFS from the original skb to fix it. It's the
+> simplest way to address it, but there are more performant ways to do
+> that if it ever becomes a problem.
+> 
+> Link: https://lore.kernel.org/all/20260523085809.26331-1-nvminh232@clc.fitus.edu.vn/
+> Fixes: 753f1ca4e1e50 ("net: introduce managed frags infrastructure")
+> Reported-by: Minh Nguyen <minhnguyen.080505@gmail.com>
+> Reported-by: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+> Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
 
-Fix the race by moving sock_orphan() into llc_sk_free(), after
-llc_sk_stop_all_timers() has completed. This guarantees that
-all timers are stopped before the socket is orphaned, eliminating
-the window for the race.
+Reviewed-by: Willem de Bruijn <willemb@google.com>
 
-Fixes: aa2b2eb39348 ("llc: call sock_orphan() at release time")
-Signed-off-by: Jiakai Xu <xujiakai24@mails.ucas.ac.cn>
----
-V1 -> V2:
-  - Replaced sk->sk_socket NULL checks with moving sock_orphan()
-    after timer stop, as suggested by Paolo Abeni.
-Link: https://lore.kernel.org/lkml/20260526013541.796307-1-xujiakai24@mails.ucas.ac.cn/T/#u
----
- net/llc/af_llc.c   | 1 -
- net/llc/llc_conn.c | 5 +++++
- 2 files changed, 5 insertions(+), 1 deletion(-)
+> ---
+>  net/core/skbuff.c | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
+> 
+> diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+> index 0d3cc115f2e7..c02f0a507ba8 100644
+> --- a/net/core/skbuff.c
+> +++ b/net/core/skbuff.c
+> @@ -6823,6 +6823,11 @@ static int pskb_carve_inside_header(struct sk_buff *skb, const u32 off,
+>  	skb_copy_from_linear_data_offset(skb, off, data, new_hlen);
+>  	skb->len -= off;
+>  
+> +	/* Remove SKBFL_MANAGED_FRAG_REFS instead of trying to honour it
+> +	 * while refcounting frags below.
+> +	 */
 
-diff --git a/net/llc/af_llc.c b/net/llc/af_llc.c
-index 35278c519a30..92f3576b339a 100644
---- a/net/llc/af_llc.c
-+++ b/net/llc/af_llc.c
-@@ -227,7 +227,6 @@ static int llc_ui_release(struct socket *sock)
- 	}
- 	netdev_put(llc->dev, &llc->dev_tracker);
- 	sock_put(sk);
--	sock_orphan(sk);
- 	sock->sk = NULL;
- 	llc_sk_free(sk);
- out:
-diff --git a/net/llc/llc_conn.c b/net/llc/llc_conn.c
-index 5c0ac243b248..c02285441592 100644
---- a/net/llc/llc_conn.c
-+++ b/net/llc/llc_conn.c
-@@ -977,6 +977,11 @@ void llc_sk_free(struct sock *sk)
- 	llc->state = LLC_CONN_OUT_OF_SVC;
- 	/* Stop all (possibly) running timers */
- 	llc_sk_stop_all_timers(sk, true);
-+	/* Orphan the socket after timers are stopped; otherwise a pending
-+	 * timer callback could dereference the NULL sk->sk_socket that
-+	 * sock_orphan() sets.
-+	 */
-+	sock_orphan(sk);
- #ifdef DEBUG_LLC_CONN_ALLOC
- 	printk(KERN_INFO "%s: unackq=%d, txq=%d\n", __func__,
- 		skb_queue_len(&llc->pdu_unack_q),
--- 
-2.34.1
-
+FWIW the multi-line comments are not really needed. The function of
+skb_zcopy_downgrade_managed is quite clear.
