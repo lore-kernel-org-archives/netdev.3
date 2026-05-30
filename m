@@ -1,124 +1,210 @@
-Received: from sonic316-22.consmr.mail.ne1.yahoo.com (sonic316-22.consmr.mail.ne1.yahoo.com [66.163.187.148])
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE5F3391E7F
-	for <netdev@vger.kernel.org>; Sat, 30 May 2026 09:31:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.187.148
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A028E39FCDC
+	for <netdev@vger.kernel.org>; Sat, 30 May 2026 09:48:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780133473; cv=none; b=bVafnrfWkkTD2iSS5U6TjpN3SffjUzkH3gyW+yoPjJFCyX35TaAjq/ZIpMia1l5UUNldseU4iBl7JJX3qIiqSS9VJnMFK1PwvcxSR6J7FWvIa7B8Dj/b8YDN+601uLzhGi7ERaXh+1lMBSJpD9GSaVo273GJ+OXccI9pZkbzxkA=
+	t=1780134503; cv=none; b=c7m5gcczISu4uDTD1bnC9S+hwEdAWuZG6mhVTaDhPGslU7UDgz6yKnN+JFhxwfeDM3Y3zpErEseZYqSZY8wgjT4yzLutBYGAimJ/m7rDAdB3V5K7QnBqp+rhQhg+Nl267pE/3AuBd49dd6KwydXggWeXHWghI+rh3+oDk6K0m60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780133473; c=relaxed/simple;
-	bh=atD/gSnPmneU4ZxcauOhmKWIZctrbFu4ci1ja844yNI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jDMZB6AXno9uPKeKMCrnbR9cTWj7xU4uRhw1n4VYfF6WP3FELtbbiHqv+Cwl+/4Ls09t+CpYd7CG/YJiVjZd+rTNfDz6wsN5178Z1UzOmpYIrxzv35M/sgIx1ZYFaswhi3722f5t4vO8W4IHl3DIxlKdncopTWroBVfflQ5MsMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=Ygox93rj; arc=none smtp.client-ip=66.163.187.148
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
+	s=arc-20240116; t=1780134503; c=relaxed/simple;
+	bh=udc1SyCF7VSS4+LIxaWs2+kyiLV1/lJ+NobNmCXau3Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JxibdPubU158OMp2T+mA8uPdibymgbmLKQm4Olhfh971XnhlYGKUi3lauOqU7KXnzhi7sGMc7c8mbH4ghNoZBxyeozej/nV7xPcugmy/q6xP4Z9yC6DeJxYrG+l0L2o1/yGbk1+K9iLSf6JG6SwEFlOhqRDzvVDNbNv1Tstaf/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dtn8GRiD; arc=none smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="Ygox93rj"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1780133465; bh=PPe/LxstChGTwVBv8kMEkJepDI6lxZiORRB302pJMuw=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=Ygox93rjM6QGVTxq46gpMyMTjBpo936hXgcdC+BI9Ak0bRohnMJ9mSFBWhfx71hZ7AxpKVHnNGbPHzDROQeNUJlt69jeSRmBUBSKgYrsOMmZTAXJIFO939AXxHU6frF/7zANTTxMsikRfnLCQNB7BG5b5zTpbp62+pidRyiZiDqJGu2Tmrn/ZIkazBiMT/55v1oIDexfO3ZaSa/VQOG5otqOy3Fp60ggKyioGtdweAtJtHTUFzQy7mTW1oz43P7gixtrhoH/xB+xUdyJZHs0jiaYuyJxp9bxOs8ZmWzFAIP5gvlFPA6+L+COSYoN1nGZnJI5Xkrm6WWwk32/FuhDrw==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1780133465; bh=W3W/eTUyJlmrZbA+52uB8Rr94E5hyMkgU9D62HZhski=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=riYtmOSFpn/zt2GQ0GnzJpaWS+3XnZbVpclyJG74yUMcXiQVxix3YxMFruLorm6wJraCpkLNr3v55wGjsFKeLlVzX540TJwI8ea1uJOTjTtoK0UT4VJbmSfPWI6yvT95a0Z2EOo2atzjwtNW+XSXLnpfybILeW1tx4le0D5Av45Nj0h8azRaAftvOCI5PkdFxC0fO8R24JTc9t9JnfWpgOo/6D5+PSkCYzkv2gfIDPJMYi8OECKel0hVXzx77boZd+8NX+nW5wNuacD1hFnWSOKXAFNMfBkfupYoD2dkKsyMF4LNL5U/X741I/0pdKNMhFKlLd7vxGl7Q3Lb5SQ7NQ==
-X-YMail-OSG: Oq2I1MwVM1lHqc7CWcPWT9FbJ7BTa_Be8udq8xa64cwCExjfhZuJzhyNAWoX1nJ
- JiwcUOKrT567SgKJE_8JxDLWS.dVLXWhF..zStplLQpmvKRGH1SodgZYOSS5wVakEdmtXt.fQ_sj
- rwnk27cgfePaK5u5x7ieGmcx4mz95TXPp5anCPLpR9HCNqHSfunMS56L_cp7b75L3t2QnLRfDHOk
- dIHN.MFElADk6T4L3VcAhUSlINUs4FHCvmMO16g9yvkiAeuR9OGDXTZ2Fw8ia3n4f3pkDdN9LdK1
- 0t46fVh6roRh7jchgRxTfs3tKDUTvonSxxB9MLcWzKDPm2VlxXoOaKiFEdGt_NrKEVfVTvcCOaAN
- WBX.XfY9DdpWwJ6m6R0lMIH4TnuYli0XlQ4pH6v1And5tNpXJn5YL7MX5bM53ZERLxAmEh7miMJG
- mH3TeGunai7tJEyWvcTpzqN5T8fv54ZwVgr1tnAyXAxXUvFqlBSyiCbydjEr5uz5xbdhsHCDO9Z_
- ObmI8ctGMu18g5joCqNY.T7tsmV.0WGpLe.RL6kee30rfAwEGFaBnYoHFSqP3jSZ6riq1PSTaGH1
- WfyIXsEr7wTdtcHn0feQwEbWDOiwXDqni03lHmx5duYLVGRE305_4IIq2J4l6ac.uoLay1nr78cO
- 2s_eTOrUpOJq6jHwy1L0eX1B1c1mpGLSBsx8mfpk7CdTf9sauRL0p93Oi9hF3ThKy880nTpmh5lG
- 43tixa9APQ33f2qjW_Hcg1xp38ptFr.cbnb9Zm28p6ocm_QDJVWz6jqpy6PbvqPtuUHai2Q4wKQ5
- RYXWpTZjtCEA94eRf3S8JL6rIqO83rVR4islIhdQpXQpov2RHjviyANq6TgLqa1C9oiYHqKK13Po
- .1o0_7UXJRG9wVfYWRJE7YvkKmv6nKFdDFu_Y3XtIWAfJQz4R8wd1VR.mxXtor2NIngGfJwy8ZXF
- bHIkhxP4TlyQD7RUpsoE1SH6kdze.fdfdyZ2alCxI3PqHE0o1xD3Osp4_zMqlgKrdZcfqHM8ePwX
- CAI5C_7zjDb9Wo6_9ddKvCBmvoxdteHiw860AeFEmyl1p_tu8FWxa70PSKnbgPRPCwEHtjVAxReZ
- t4O_ChZ24X1pR0xCnM7mzTjOqNkfaDmqGzSvOBMLcPSmaudtXcRGM13_b84fVALuyWJyMeiToap3
- CsNEMsvr09gNUz6Rxm9tx7iuMv3F1VgsgqecJHekAJSLLU_tP50SEKROIUTJBl0cFrugH0TlR0T3
- Ix7Shd79479SQR.4XcOtyRUlhr4gUVgbF3WQY10sq5fbj7GtXgOuxCjiaFDMFWFosKagwUSDc1vl
- 3DCe6uv5fdMubX37gk03qCAoAAhnpvV7N3iMRH5XkPu4kV_ZDTWpd7X.0c.SJlsLH1XI2h5PcHoK
- nSfmkh3JkCS2iUnq3d4oq3cJuekyXF.I2KnP5ZssQpnE0Cz6pVOn46r9.ZUMWOgJ33ZAumt3jegM
- bjWtwVHRxDddg7.LHalXmFBuoBs7k6xEuOU_P.4CPcHMez_CeNa9oh9AoUbHaFQnhs1nIG8uRZSE
- JSmObdlrSzPRHI_18s16Lk0byVQ6mzjKyOGISTg5yPVZ.WQuwAHYA5gTo9s6Px.FxhZCRBh0.DoX
- r8cOuj6f2x6dxzFGLrwjdFKVJlurffd4T4dLnGZ7cjNfI8dbEftRHGAfmHsHcqpf.Z30kPAt1QKr
- L4uezrWSr0qI.Bsd2RvVeqbZ9_TlYzddRtOaWsIpaB.Wt4T8N8Hw2S9Wlnv7x4zdoPad.rHs_g3I
- Rxh0YQ0HuiPyFxgXdllUWXG_77Z69F2ErANlIOXpszkm_0Hfh8d6XeTk0M7i77pTny8hNrylI20J
- HvQ6mat1c1hvjOKNmn29ZJmUJ5tB.CH4Rb.mC6oK.9IZyTtcAseBu2IFkMy.zixasdisW.u6WuBs
- xVBQlxamzIvdXW_cL_O4I747c0bfQefVMW557jrJwoeTP3a9UN123s0QubugvAlcSx4MSCKcrr3E
- 8cpJs1vk0xahB32xnSSdqUKQ3z24IwuVoPthlRBPXG8ZslwXzrcb4Ai9.HIKWpkLtsjTW.SgcHRl
- GHQWgQLpI0fJRlVqdp0BJAfSaIkktHD2N_TN7p3J4xIediZmsX0eyQuvNvv9enRcNOFtByLw0rNU
- RDqQAwUU1AUcP_jG9VQl4qDrxWT_FLkrA2amiKw8IbJ3iv9Vbs3zP7HZbrXBsob6Fstll4MNEmR6
- cezcyH6uZ62nd01FK50xYVGDyszDhG1jad8oRSc3V.MfgvwHygeglamCJridwKoQaumCPG3xJycI
- yiX7BNdutlI.2Ch7.CAB3y6fSkJpRVWunonl3BQ--
-X-Sonic-MF: <namiltd@yahoo.com>
-X-Sonic-ID: fd02e599-5545-46de-945d-9fd8f4fe832a
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic316.consmr.mail.ne1.yahoo.com with HTTP; Sat, 30 May 2026 09:31:05 +0000
-Received: by hermes--production-ir2-89844b765-mjl2j (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID f93cc69d1b60df7ec45058898687704b;
-          Sat, 30 May 2026 08:36:15 +0000 (UTC)
-Message-ID: <0c20ceb5-1cf7-4f83-9623-b5f5018f44af@yahoo.com>
-Date: Sat, 30 May 2026 10:36:11 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dtn8GRiD"
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2bd80b3aa13so96588835ad.0
+        for <netdev@vger.kernel.org>; Sat, 30 May 2026 02:48:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780134501; x=1780739301; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=J5P8ezayUktMUJpCuTOw6j295sXtS6RK6x7W/G4VqJg=;
+        b=dtn8GRiDOa5Im12LVdqgWtEzk9ZOwfwegnS8rgLQYVSIVVx6MHTIK6rwGc8twhqxGK
+         sXmqObfrf+QS8woF1U/4g+/Qm1MHgs74OMchssyJbNwGeOQy2Y8ZBpq0poYmmW0rjoIy
+         cBpmPO35Ulk7C2yykt0H25UzmpuLamHKGtIjPvxTi04ppSc5HIkOBzXeGkoq6QxklBUz
+         6jAXSf3iXz5O0BQF5MQ1B7x8XV7HzBIDpWiVc+x1MEyokp6QDg4xjcIf8Dof5N8BFWV7
+         67BOS8rpuKQcleewwHb5S3EQTga+/iKMFrZ1S7rekjPG9hPz4n6UnC/rEWPMAfCVPKT7
+         HuEA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780134501; x=1780739301;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=J5P8ezayUktMUJpCuTOw6j295sXtS6RK6x7W/G4VqJg=;
+        b=hRdIP01pDJ2BOaBA/WfMPHoHKV8TB+DfP/e8gZ1QQPhZF38FDNqAgXoQupZASiPxsJ
+         c3O3/OBiyvxp1BVm1FnxzyXVwlg77KFvl2wudJXd9Z2WWYCELuokovYiVTVBULOgkGNm
+         U6Yeht10LRPTLBh+OUzRTv5y3/d9f70kgow5d3o0xRbTudzVhrVIa7IhZgBPUvVGyjs3
+         atbBTvWIl3Id+uXhuDoAii3IOOMmeUj/O7blpnQOyX7WDmpMBTnU4Ia3D9cPchPU4MuY
+         /7R0RN0lTxBXhlMn+OHQgdzF3r1od+6b/eWdfPYsYddXS5G9Zq/dwsHLIdw+F6iLpctB
+         yP/g==
+X-Gm-Message-State: AOJu0YwC2xNRhDBQjxorXWUiw3St1Z1hkxgf6Hi1CkHD++m9swXMAM6K
+	8IaVfh4JiNRzA4glu0oeWt228lCeZ5p9c6xGvmfy9jHWy2jZUC9+UG8I
+X-Gm-Gg: Acq92OG/vWR3UaGuIR7XQ2IWpTYwQI4TYl+Zu10XGADorkvvw3GznQkPwihjaxE5wsj
+	5Ldt82GOBeB38Ke6dR2fnIH3VePFooqqtmu6CE1QkhW7PuiphXulcwpH/+P2/lcV21vumLVOJnh
+	6HptD1SMyWQEp3BPCGtr9JIp6f257dT4Mpycz7BlSNtWsqqlfFVyqIVegmKIoUr5U6GYvpcKgoq
+	ItIRzd5fm6oNqbg8mNpmIRjETTjd2yeF5h0XCaNKrP2/P87ZSEgzUk6pGKymLW04vc5rakpwOIc
+	0jjldIv3ME+k+7W3eG0UdRMTMr3FZn+7WUIqQUcLKHwXMOgR9vd1UATF320xMQC/SbsM4PQYfwL
+	OifrCutzuNbk/lqXQNbs2aKVaPYfRFosV65IDvE0KMq61izkmAAvtU5M0SfRYtXvoWDOmncSGgZ
+	vlfx+fcsknRlCXvHL0Q7q8NUlMsycyjHl7wYvjeiAwauoTHL1HLTY5IQ==
+X-Received: by 2002:a17:903:986:b0:2bd:2de3:519a with SMTP id d9443c01a7336-2bf367939b7mr37530755ad.7.1780134500813;
+        Sat, 30 May 2026 02:48:20 -0700 (PDT)
+Received: from v4bel ([58.123.110.97])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2bf239e5c6dsm43649965ad.17.2026.05.30.02.48.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 30 May 2026 02:48:20 -0700 (PDT)
+Date: Sat, 30 May 2026 18:48:16 +0900
+From: Hyunwoo Kim <imv4bel@gmail.com>
+To: dsahern@kernel.org, idosch@nvidia.com, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	horms@kernel.org, steffen.klassert@secunet.com,
+	herbert@gondor.apana.org.au
+Cc: netdev@vger.kernel.org, imv4bel@gmail.com
+Subject: Re: [PATCH net] ipv4: protect egress device access in the output
+ path with rcu_read_lock
+Message-ID: <ahqyYBb22QxcyPYN@v4bel>
+References: <ahqIg6vURwYI0LJ5@v4bel>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [net-next PATCH v9 0/8] net: dsa: realtek: rtl8365mb: bridge
- offloading and VLAN support
-To: Luiz Angelo Daros de Luca <luizluca@gmail.com>,
- Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, Linus Walleij <linusw@kernel.org>,
- =?UTF-8?Q?Alvin_=C5=A0ipraga?= <alsi@bang-olufsen.dk>,
- Yury Norov <yury.norov@gmail.com>,
- Rasmus Villemoes <linux@rasmusvillemoes.dk>,
- Russell King <linux@armlinux.org.uk>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- Abdulkader Alrezej <abdulkader.alrezej@gmail.com>,
- Yury Norov <ynorov@nvidia.com>
-References: <20260529-realtek_forward-v9-0-e7c61872d923@gmail.com>
-Content-Language: pl
-From: Mieczyslaw Nalewaj <namiltd@yahoo.com>
-In-Reply-To: <20260529-realtek_forward-v9-0-e7c61872d923@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Mailer: WebService/1.1.25725 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ahqIg6vURwYI0LJ5@v4bel>
 
-On 5/29/2026 6:29 AM, Luiz Angelo Daros de Luca wrote:
-> This series introduces bridge offloading, FDB management, and VLAN support
-> for the Realtek rtl8365mb DSA switch driver. The primary goal is to
-> enable hardware frame forwarding between bridge ports, reducing CPU
-> overhead and providing advanced features like VLAN and FDB isolation.
+On Sat, May 30, 2026 at 03:49:39PM +0900, Hyunwoo Kim wrote:
+> ip_mc_output(), __ip_local_out() and xfrm4_output() read the egress
+> network device from rt->dst.dev / skb_dst_dev(skb) and then pass that
+> pointer as the 'out' device argument of NF_HOOK without holding
+> rcu_read_lock.
 > 
-> Some of these patches are based on original work by Alvin Šipraga,
-> subsequently adapted and updated for the current net-next state.
+> dst->dev is a field protected by RCU. When a device is unregistered its
+> value is replaced with blackhole_netdev, and the previous device is
+> freed after an RCU grace period. A section that reads dst->dev and uses
+> that pointer must therefore hold rcu_read_lock. The three functions
+> above are missing this protection, so when the egress device is
+> unregistered concurrently with transmission, a LOCAL_OUT / POST_ROUTING
+> hook (nft meta oif, selinux_ip_postroute_compat, etc.) can reference a
+> device pointer that is no longer valid.
 > 
+> In all three leaves, wrap the section that reads the device and runs
+> NF_HOOK in rcu_read_lock(), and read the device through the RCU
+> accessors (skb_dst_dev_rcu() / dst_dev_rcu()). As a result, the RCU
+> grace period cannot complete while a transmission is in flight, so the
+> egress device is not freed and the hook always references a valid
+> device.
+> 
+> Fixes: 4a6ce2b6f2ec ("net: introduce a new function dst_dev_put()")
+> Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
 > ---
-> I attempted to reach Alvin for review of the final version but was
-> unable to establish contact. Any regressions in this version are my
-> responsibility.
+>  net/ipv4/ip_output.c    | 27 +++++++++++++++++++--------
+>  net/ipv4/xfrm4_output.c | 13 +++++++++----
+>  2 files changed, 28 insertions(+), 12 deletions(-)
 > 
-> Changes in v9:
-> * Patch 2 (DSA helpers):
->   - Switch to dsa_switch_for_each_port() in the irq_setup error path.
-> * Patch 4 (Table lookup):
->   - Convert kdoc to standard comments.
->   - Fix doc description for L2 write operation return value and
->     data/addr on errors.
->   - Removed misleading comment on RTL8365MB_TABLE_CTRL_PORT_MASK.
-> * Patch 5 (VLAN support):
->   - Do PVID first in port_vlan_add() to avoid reverting vlan4k changes
->     if it fails.
->   - Do not use dsa_switch_for_each_port_continue_reverse() after the
->     loop ends (use-after-iterator).
->   - Simplify PVID helpers to receive VID instead of switchdev vlan.
->   - Avoid redundant writes in the PVID error path.
->   - Convert kdoc to standard comments.
-> * Patch 6 (Bridge Join/Leave):
->   - Do not use dsa_switch_for_each_port_continue_reverse() after the
->     loop ends (use-after-iterator).
-> - Link to v8: https://patch.msgid.link/20260525-realtek_forward-v8-0-5eb80a4675be@gmail.com
+> diff --git a/net/ipv4/ip_output.c b/net/ipv4/ip_output.c
+> index 5bcd73cbdb41..92a70b7e74a6 100644
+> --- a/net/ipv4/ip_output.c
+> +++ b/net/ipv4/ip_output.c
+> @@ -102,6 +102,7 @@ EXPORT_SYMBOL(ip_send_check);
+>  int __ip_local_out(struct net *net, struct sock *sk, struct sk_buff *skb)
+>  {
+>  	struct iphdr *iph = ip_hdr(skb);
+> +	int err;
+>  
+>  	IP_INC_STATS(net, IPSTATS_MIB_OUTREQUESTS);
+>  
+> @@ -117,9 +118,12 @@ int __ip_local_out(struct net *net, struct sock *sk, struct sk_buff *skb)
+>  
+>  	skb->protocol = htons(ETH_P_IP);
+>  
+> -	return nf_hook(NFPROTO_IPV4, NF_INET_LOCAL_OUT,
+> -		       net, sk, skb, NULL, skb_dst_dev(skb),
+> -		       dst_output);
+> +	rcu_read_lock();
+> +	err = nf_hook(NFPROTO_IPV4, NF_INET_LOCAL_OUT,
+> +		      net, sk, skb, NULL, skb_dst_dev_rcu(skb),
+> +		      dst_output);
+> +	rcu_read_unlock();
+> +	return err;
+>  }
+>  
+>  int ip_local_out(struct net *net, struct sock *sk, struct sk_buff *skb)
+> @@ -368,7 +372,11 @@ static int ip_mc_finish_output(struct net *net, struct sock *sk,
+>  int ip_mc_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+>  {
+>  	struct rtable *rt = skb_rtable(skb);
+> -	struct net_device *dev = rt->dst.dev;
+> +	struct net_device *dev;
+> +	int ret;
+> +
+> +	rcu_read_lock();
+> +	dev = dst_dev_rcu(&rt->dst);
+>  
+>  	/*
+>  	 *	If the indicated interface is up and running, send the packet.
+> @@ -407,6 +415,7 @@ int ip_mc_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+>  
+>  		if (ip_hdr(skb)->ttl == 0) {
+>  			kfree_skb(skb);
+> +			rcu_read_unlock();
+>  			return 0;
+>  		}
+>  	}
+> @@ -419,10 +428,12 @@ int ip_mc_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+>  				ip_mc_finish_output);
+>  	}
+>  
+> -	return NF_HOOK_COND(NFPROTO_IPV4, NF_INET_POST_ROUTING,
+> -			    net, sk, skb, NULL, skb->dev,
+> -			    ip_finish_output,
+> -			    !(IPCB(skb)->flags & IPSKB_REROUTED));
+> +	ret = NF_HOOK_COND(NFPROTO_IPV4, NF_INET_POST_ROUTING,
+> +			   net, sk, skb, NULL, skb->dev,
+> +			   ip_finish_output,
+> +			   !(IPCB(skb)->flags & IPSKB_REROUTED));
+> +	rcu_read_unlock();
+> +	return ret;
+>  }
+>  
+>  int ip_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+> diff --git a/net/ipv4/xfrm4_output.c b/net/ipv4/xfrm4_output.c
+> index 0ae67d537499..d5dc084777a3 100644
+> --- a/net/ipv4/xfrm4_output.c
+> +++ b/net/ipv4/xfrm4_output.c
+> @@ -30,10 +30,15 @@ static int __xfrm4_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+>  
+>  int xfrm4_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+>  {
+> -	return NF_HOOK_COND(NFPROTO_IPV4, NF_INET_POST_ROUTING,
+> -			    net, sk, skb, skb->dev, skb_dst_dev(skb),
+> -			    __xfrm4_output,
+> -			    !(IPCB(skb)->flags & IPSKB_REROUTED));
+> +	int ret;
+> +
+> +	rcu_read_lock();
+> +	ret = NF_HOOK_COND(NFPROTO_IPV4, NF_INET_POST_ROUTING,
+> +			   net, sk, skb, skb->dev, skb_dst_dev_rcu(skb),
+> +			   __xfrm4_output,
+> +			   !(IPCB(skb)->flags & IPSKB_REROUTED));
+> +	rcu_read_unlock();
+> +	return ret;
+>  }
+>  
+>  void xfrm4_local_error(struct sk_buff *skb, u32 mtu)
+> -- 
+> 2.43.0
+> 
 
-Sashiko found no issues in the v9 code: https://sashiko.dev/#/patchset/20260529-realtek_forward-v9-0-e7c61872d923%40gmail.com
+Further analysis confirmed that raw_send_hdrinc(), xfrm_output_resume() 
+and vrf_output() are affected by the same issue.
+
+I will post a v2 covering these additional cases after 24 hours.
+
+
+Best regards,
+Hyunwoo Kim
