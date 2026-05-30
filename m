@@ -1,154 +1,193 @@
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64485329C6D
-	for <netdev@vger.kernel.org>; Sat, 30 May 2026 16:15:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.174
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780157753; cv=pass; b=R4jTu6SFpc+C2h2cuSDyzDCtpM3BVReskVlQCfmGGzTXYEOCN4iTsi0kC6PjaZn0/p3kDgQsnvjGXlBC0nju7jlKLU6usuexMi9RJisi7fHEJzZci22pRks/qR1bdzbi2L2IeLaKdIHzrDyOh4wTcfbEJeS0MSVawE0v9oNE+yY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780157753; c=relaxed/simple;
-	bh=hN6BoXr9+AIc7fHq0SkZzHYGZKYDgLsQXDW3Cz+y5VE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Kwe1IqbObPQLprM0ugxIRdbPvoahHWufwJ11xbJlS5qlRGJmMTzUif6gB++sYaCilIrXTE6Mk0YmrLnmHtoJmHZsQif1obGfJL58D3elyLh6TeMAQHHRCsFYWOq261CrjE4jiJbCIN0qd3pLBK21PQ5Ghxua7Za/KmxmFMhZ7Cw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=sMh7xpjV; arc=pass smtp.client-ip=209.85.210.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93300395AEA;
+	Sat, 30 May 2026 17:08:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780160935; cv=none; b=MO0W21eFVSp+cA9ucV4J8BJxZJAXBCBO7H9EZzvW4UZ6kh5E+if8bjSC+GJ8Y9Yzamg3t3+u7piVbX/eGB9vMCbhZej9QWwY9HAmIgcGWFvjMl4FnX1JZlJDJKskg5atLpZdFn0j8Oy7EPstc4NJGj3ed4Fr6KAWwkS3uV+6S5g=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780160935; c=relaxed/simple;
+	bh=3C1hhorlhb13mtLj4IF6TSg3nTQ0aq+YLlOP3lAjpUI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=c+EsLqfhALkUlsT8jk9+AXcrpIuKumAv8UaAOQ1aecNS7xLp1H7ZQRj4oZfBgCrkjUluX7pxRDIXuJMTHEU6YlZxV0RHIp64P+nwVGgSOj4AGLTTypFP3eCcW2Q8Tyi5JNK6agGEmFIcEIWKEOrcNZ8MYw5HuZjvXfYMpPkz5LI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DB5YJL/w; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="sMh7xpjV"
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-842307473b5so342452b3a.2
-        for <netdev@vger.kernel.org>; Sat, 30 May 2026 09:15:50 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780157749; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Ye48EmDdZSSmrhAgbzpkU9gqgTvbYI/JUxXafm2D13Ji34HOYsezdmP7uRS4pxDI0v
-         wq+jdrKdLoFeOVLIj6+ZhdP8AII1ORKZc15EbAzrIURXSX1KfqNrJTAo2tq/vgofbW9I
-         qWLO5UYtnnHK8OhjjVRsIQ/i8VbNwFCae8e4eQgRvyjjqYkT3Ko+4OPkm1b98M0e/GOu
-         dhvNE3R/VsT28yEB0vv/Pi9tuJAxxqmRIVtgOkrwn2PCl+ELB8zOlg3zJ/uwEahIRj4H
-         C1dN5MtB2DGQc5M5ydsr0cbcm5o5oJnMmj3ET2ScwycjhfUzrdWHutd4ZSPrka0cWFRS
-         +qBA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=twXxdlmI8oYfkNFvjOhwFQw43r1vCRyIh2zSKzOodEg=;
-        fh=CZlqreM5+7+5mMHP6qPd1TfrehY9udzjmsxD3tzPdVA=;
-        b=IbJRzooJnCDJW4ekdPIV+9fncXHfvbkXut+f1FNkeytip/x4Xw2eV2nDyq/GTWCrLL
-         f7sXga8sBNOZYoUnhci8IGQeotL9CQcdsRW8v8hXrgbXgL1tCjYMoBUVrxRMRGXg2SsY
-         Ex0P4QRsphNjKhAAFG3TXdaChXhrMhrH8+/ZbmeRxgcHRQjrdaHhoQXdiC5Kf/EZMeRR
-         KUYBaV8I5QLNmp7nlP70R627A5SFhkGahA1/QICdAUvWuTL15yuNMVloV80Ux2siOR3L
-         zokk0jJj+ZBvnjVKtvj0NBai/HWtaiMeyWlTMgMST2AABH9n+9h7I0eGeSKIFaLzO1qm
-         LyNw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1780157749; x=1780762549; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=twXxdlmI8oYfkNFvjOhwFQw43r1vCRyIh2zSKzOodEg=;
-        b=sMh7xpjVRYSAtTC5PBpL7GqzMIYgDHRVbKktMaDzfJ70yv1eryRtKsR9EN1y57deTN
-         wqsYsw0mHeGjLC5udEY3wlWqHtTJi0Gh1sViDlRwt/PtYvMsc3u3htBCvbab6u+Biyf+
-         yV3SKRGeZqS2VbUhXOrAcQNgOGTBmKNIBWJR8=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780157749; x=1780762549;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=twXxdlmI8oYfkNFvjOhwFQw43r1vCRyIh2zSKzOodEg=;
-        b=S+mCNC+B72jHoEjZKhgc6eXi8nhxpnN9BydaGj2kopNhnTb84KCWNhMGj9NzYWGhJq
-         qnCbbl4SO+kDsEh6wEHx7+e33ex6JEjvcpwRMBJ5f5k9Qpg95QgceUqT1JAQcKbmN/Wr
-         Gp55vOL4d2UUwDRvJwKtFdz6NJcYWKZR8nHlxstCHWTKgN++L0erxAG0BL0XviqOZoJG
-         adc1ZvSBthE5x6DrpgAmyYlKKIv5xv5hPl+sTOELDXQxQCkKj8BkaDsFEZ6LhGNZZ+Z+
-         4ziHhPZ44HeuLIzrrbJyIqED437HHdxvnwMnUmyY9aZqM6yXpFCiWREy4XQ9IH8TPcsH
-         eAEw==
-X-Gm-Message-State: AOJu0Yxf83Hm1p1yByPnIjRtEp/QcHbQaBcUJ3spBvuncfh3OmrtfFcJ
-	A56f6LUqZRcQ/LCDas57f3bBcbQtFVLSxHAefiSevV0yQHNkb05UDTbczZSzFe2sYDL5JK5eNnO
-	ZS466mtJsmHkxqNF8RDjUpEO/QZkJfXK4sG86Jr/F
-X-Gm-Gg: Acq92OEpz6NQxGdkco3Nb3+3Wx98xwCLHk9VgI5H/FKU1p/FGH2ns0PoUk86h8J0Mbk
-	/4LKzLXr2BdBdS609smb24f21jaFAI5IYKGTXT56QE4SxU4/qQDp34RqF7z5cj7p+AQXpgg0Lg+
-	YaqkES0EYXE8bpeQMQEJI0k7gqQBn/GJt2bjTrdESRWC9WNw6gdxgqh6xvHgleIAvJ42OThMYMe
-	dZPYA0Cs1QHu7yK0z7sP8mqjYQzXUlkptAd28nDy6w/W1X1m81Dk1+FP7XTrRsOfO1vAEhs11W1
-	A8/CrrycxoG1v8A=
-X-Received: by 2002:a05:6a00:3924:b0:837:db4e:a35d with SMTP id
- d2e1a72fcca58-84225841222mr3647154b3a.23.1780157749352; Sat, 30 May 2026
- 09:15:49 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DB5YJL/w"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAFAC1F00893;
+	Sat, 30 May 2026 17:08:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1780160934;
+	bh=0qSdK7WBQISit5ApePwTYMq9CjqLh8G79AedJ+s050g=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=DB5YJL/wOCwo15HWUH00J0yrHxeUAJc2VOPpLGDPX3/JEURfJ+343PLl9uy+h0LV7
+	 Zqyr1M//LGSDSE+jHsr+3xs7gx/t8vx8JutwHZmvwZuove/EwXz0fG31g+i4aD5AyM
+	 QJUdHg0HeGnm61N/kV85PFgIuuvr1UfV1xmLx1ug=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
+	Andreas Koensgen <ajk@comnets.uni-bremen.de>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-hams@vger.kernel.org,
+	netdev@vger.kernel.org,
+	Jeremy Kerr <jk@codeconstruct.com.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 478/969] 6pack: propagage new tty types
+Date: Sat, 30 May 2026 18:00:02 +0200
+Message-ID: <20260530160313.498423975@linuxfoundation.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260530160300.485627683@linuxfoundation.org>
+References: <20260530160300.485627683@linuxfoundation.org>
+User-Agent: quilt/0.69
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260530080643.1345521-1-jhs@mojatatu.com> <87bjdx2ads.fsf@toke.dk>
-In-Reply-To: <87bjdx2ads.fsf@toke.dk>
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-Date: Sat, 30 May 2026 12:15:38 -0400
-X-Gm-Features: AVHnY4Js4ankQciESp8DObJ4cYwvKVcP8DsXqcMzzIKI8MG0yOy87xiV0vYbTRc
-Message-ID: <CAM0EoMmAs6N3xemJEcsKpG8OJZcxyB=U3nRa3vGwo+kbk8azfQ@mail.gmail.com>
-Subject: Re: [PATCH net v4 1/1] net/sched: fix pedit partial COW leading to
- page cache corruption
-To: =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@redhat.com>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com, 
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, jiri@resnulli.us, 
-	victor@mojatatu.com, david.laight.linux@gmail.com, yimingqian591@gmail.com, 
-	keenanat2000@gmail.com, 2045gemini@gmail.com, rollkingzzc@gmail.com, 
-	dcaratti@redhat.com, security@kernel.org, linux-kernel@vger.kernel.org, 
-	Rajat Gupta <rajat.gupta@oss.qualcomm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Sat, May 30, 2026 at 11:19=E2=80=AFAM Toke H=C3=B8iland-J=C3=B8rgensen <=
-toke@redhat.com> wrote:
->
-> Jamal Hadi Salim <jhs@mojatatu.com> writes:
->
-> > From: Rajat Gupta <rajat.gupta@oss.qualcomm.com>
-> >
-> > tcf_pedit_act() computes the COW range for skb_ensure_writable()
-> > once before the key loop using tcfp_off_max_hint, but the hint does
-> > not account for the runtime header offset added by typed keys. This
-> > can leave part of the write region un-COW'd.
-> >
-> > Fix by moving skb_ensure_writable() inside the per-key loop where
-> > the actual write offset is known, and add overflow checking on the
-> > offset arithmetic. For negative offsets (e.g. Ethernet header edits
-> > at ingress), use skb_cow() to COW the headroom instead. Guard
-> > offset_valid() against INT_MIN, where negation is undefined.
-> >
-> > Fixes: 8b796475fd78 ("net/sched: act_pedit: really ensure the skb is wr=
-itable")
-> > Reported-by: Yiming Qian <yimingqian591@gmail.com>
-> > Reported-by: Keenan Dong <keenanat2000@gmail.com>
-> > Reported-by: Han Guidong <2045gemini@gmail.com>
-> > Reported-by: Zhang Cen <rollkingzzc@gmail.com>
-> > Reviewed-by: Han Guidong <2045gemini@gmail.com>
-> > Tested-by: Han Guidong <2045gemini@gmail.com>
-> > Reviewed-by: Davide Caratti <dcaratti@redhat.com>
-> > Tested-by: Davide Caratti <dcaratti@redhat.com>
-> > Reviewed-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
-> > Tested-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
-> > Reviewed-by: Victor Nogueira <victor@mojatatu.com>
-> > Tested-by: Victor Nogueira <victor@mojatatu.com>
-> > Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-> > Signed-off-by: Rajat Gupta <rajat.gupta@oss.qualcomm.com>
-> > ---
-> > v3->v4
-> > 1) Restore the Fixes tag which was accidentally deleted in v3
-> > 2) Remove tcfp_off_max_hint as pointed by sashiko [1]
-> > 3) Fix a boundary condition identified by sashiko [1]
-> > 4) Add unaligned access support to safely access ptr support to compens=
-ate for
-> >    removal of skb_header_pointer() / skb_store_bits() which handled it =
-fine
-> >
-> > [1]https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260527181731.1=
-166373-1-jhs%40mojatatu.com
->
-> Re-tested and LGTM. Let's hope this is the last one ;)
->
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
-Fingers crossed ;-> Let's see what our new overlords say tomorrow morning.
+------------------
 
-cheers,
-jamal
+From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
 
-> -Toke
->
+[ Upstream commit 1241b384efa53f4b7a95fe2b34d69359bb3ae1b5 ]
+
+In tty, u8 is now used for data, ssize_t for sizes (with possible
+negative error codes). Propagate these types to 6pack.
+
+Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Andreas Koensgen <ajk@comnets.uni-bremen.de>
+Cc: David S. Miller <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: linux-hams@vger.kernel.org
+Cc: netdev@vger.kernel.org
+Reviewed-by: Jeremy Kerr <jk@codeconstruct.com.au>
+Link: https://lore.kernel.org/r/20240808103549.429349-12-jirislaby@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: bf9a38803b26 ("net: hamradio: 6pack: fix uninit-value in sixpack_receive_buf")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/net/hamradio/6pack.c | 32 ++++++++++++++++----------------
+ 1 file changed, 16 insertions(+), 16 deletions(-)
+
+diff --git a/drivers/net/hamradio/6pack.c b/drivers/net/hamradio/6pack.c
+index 1b007dd174794..fe85cffa4f945 100644
+--- a/drivers/net/hamradio/6pack.c
++++ b/drivers/net/hamradio/6pack.c
+@@ -94,8 +94,8 @@ struct sixpack {
+ 	unsigned char		*xhead;         /* next byte to XMIT */
+ 	int			xleft;          /* bytes left in XMIT queue  */
+ 
+-	unsigned char		raw_buf[4];
+-	unsigned char		cooked_buf[400];
++	u8			raw_buf[4];
++	u8			cooked_buf[400];
+ 
+ 	unsigned int		rx_count;
+ 	unsigned int		rx_count_cooked;
+@@ -113,8 +113,8 @@ struct sixpack {
+ 	unsigned char		slottime;
+ 	unsigned char		duplex;
+ 	unsigned char		led_state;
+-	unsigned char		status;
+-	unsigned char		status1;
++	u8			status;
++	u8			status1;
+ 	unsigned char		status2;
+ 	unsigned char		tx_enable;
+ 	unsigned char		tnc_state;
+@@ -126,7 +126,7 @@ struct sixpack {
+ 
+ #define AX25_6PACK_HEADER_LEN 0
+ 
+-static void sixpack_decode(struct sixpack *, const unsigned char[], int);
++static void sixpack_decode(struct sixpack *, const u8 *, size_t);
+ static int encode_sixpack(unsigned char *, unsigned char *, int, unsigned char);
+ 
+ /*
+@@ -331,7 +331,7 @@ static void sp_bump(struct sixpack *sp, char cmd)
+ {
+ 	struct sk_buff *skb;
+ 	int count;
+-	unsigned char *ptr;
++	u8 *ptr;
+ 
+ 	count = sp->rcount + 1;
+ 
+@@ -397,7 +397,7 @@ static void sixpack_receive_buf(struct tty_struct *tty,
+ 	const unsigned char *cp, const char *fp, int count)
+ {
+ 	struct sixpack *sp;
+-	int count1;
++	size_t count1;
+ 
+ 	if (!count)
+ 		return;
+@@ -773,9 +773,9 @@ static int encode_sixpack(unsigned char *tx_buf, unsigned char *tx_buf_raw,
+ 
+ /* decode 4 sixpack-encoded bytes into 3 data bytes */
+ 
+-static void decode_data(struct sixpack *sp, unsigned char inbyte)
++static void decode_data(struct sixpack *sp, u8 inbyte)
+ {
+-	unsigned char *buf;
++	u8 *buf;
+ 
+ 	if (sp->rx_count != 3) {
+ 		sp->raw_buf[sp->rx_count++] = inbyte;
+@@ -801,9 +801,9 @@ static void decode_data(struct sixpack *sp, unsigned char inbyte)
+ 
+ /* identify and execute a 6pack priority command byte */
+ 
+-static void decode_prio_command(struct sixpack *sp, unsigned char cmd)
++static void decode_prio_command(struct sixpack *sp, u8 cmd)
+ {
+-	int actual;
++	ssize_t actual;
+ 
+ 	if ((cmd & SIXP_PRIO_DATA_MASK) != 0) {     /* idle ? */
+ 
+@@ -851,9 +851,9 @@ static void decode_prio_command(struct sixpack *sp, unsigned char cmd)
+ 
+ /* identify and execute a standard 6pack command byte */
+ 
+-static void decode_std_command(struct sixpack *sp, unsigned char cmd)
++static void decode_std_command(struct sixpack *sp, u8 cmd)
+ {
+-	unsigned char checksum = 0, rest = 0;
++	u8 checksum = 0, rest = 0;
+ 	short i;
+ 
+ 	switch (cmd & SIXP_CMD_MASK) {     /* normal command */
+@@ -901,10 +901,10 @@ static void decode_std_command(struct sixpack *sp, unsigned char cmd)
+ /* decode a 6pack packet */
+ 
+ static void
+-sixpack_decode(struct sixpack *sp, const unsigned char *pre_rbuff, int count)
++sixpack_decode(struct sixpack *sp, const u8 *pre_rbuff, size_t count)
+ {
+-	unsigned char inbyte;
+-	int count1;
++	size_t count1;
++	u8 inbyte;
+ 
+ 	for (count1 = 0; count1 < count; count1++) {
+ 		inbyte = pre_rbuff[count1];
+-- 
+2.53.0
+
+
+
