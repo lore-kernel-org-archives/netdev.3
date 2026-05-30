@@ -1,77 +1,51 @@
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF0CC2628D
-	for <netdev@vger.kernel.org>; Sat, 30 May 2026 17:56:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 699D1320CAD;
+	Sat, 30 May 2026 17:59:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780163790; cv=none; b=OvL4yKxqDephYiq8qp8AVHAeYhnTAs+unaztZYvheBKCtU8mrhwlsvbnFfbj7lKj/zg3+UP0Wu+DSq0ZrWBNRJcPrL1TcoTrU2SiQ5Ns7jvn7B0HO90W1u3DH9qsDgvgdw+MNXsM5JMAd5xLdwzxREfcjqWg+Lhf8pjI1XUL6K0=
+	t=1780163971; cv=none; b=q+KHVY0CDU1cYEtnr8KS3uF/5Nd3vz6/Wn8pZ2Cp87DII0P2UoLsYIvajzmxQXmwBTRCOCpFyOL4uTgpt2D9S+Arjs9GPv6y1E7DxThjOrjE8iMWkkxHgI3hTPO2G3aivIqkRq4tvH0fMMRrs63RgZdZtLu7TpZ5PHfCRw+aJ3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780163790; c=relaxed/simple;
-	bh=n3ZSQBD/H2AW1xNyzx0em2UfFE2UePZMJLqt3Gkk5Pw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TQtGl9NyGpU434t0bkns9uws9+gK+mGcrn98M4YOkA0qVVyhOulRQtj9nfLCVALBPy5m/9zvFzMxjNjia27YusL7p65r1Ljx7UUrXG1XTc1evykDM0MnrBE0M3fej4jAA0RLG38mdaFSUcUT/R9eZqF5hE3mYr8OpJpV3R2POOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KA9E5+zA; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1780163971; c=relaxed/simple;
+	bh=hCG+OIRnaalrgvox5qxUnmKarMAoNkiizvztOdxVyOE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Kjs+/3FhQK8fEtFuuZbCoFBmwD/jagO4NEzK0r5X/Ujz6FZsM3S8SzQlDPNoxQD0qhpm7V2q74Jpw050+BMa5AtsC1c5GbHG59kAsfhkm0DQd2T+gYl+mUW1s1UDtzBxTgmeSa9OLBkR8cJzl7olrW/dMqetz7hb1TFJxHSWrHg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aWW9r8K/; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KA9E5+zA"
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2bea7176c72so74175635ad.0
-        for <netdev@vger.kernel.org>; Sat, 30 May 2026 10:56:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780163788; x=1780768588; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=iroh2YBoq0cKDytA5DDegc2gyEIJygN+FydCkVruV/Q=;
-        b=KA9E5+zATcsaTHEgn20ETk0xQ5NEMw3pjQsWCu3Nj/niC5E0+Qdw6wKqjnyFnbhpwa
-         +p80ugpCltyBSd8B5tXDXlAx0gwvgIO5/+gBTLz8X+hAnnmj9BSVXSjpBWMtLczAjY4n
-         ubIHqdzpFbZW7c0i+01EuJyexxYn7/+5eXDIBjqq33BvRixFd+lht5jcC2+pofuczsPh
-         cpFmrtzJ+lNRljDv7LkyahEti1mtEojhCJkd2Ep7Bx5fOMuMf9dLuTbVDaQKnI7LBtXR
-         xAeV5LU4QmC1am2Uy4Gw1IXErkuxU+h7lkhNcslO2NweDwsLzYIPlT3IuL+OD8Q7kjkx
-         IfLg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780163788; x=1780768588;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=iroh2YBoq0cKDytA5DDegc2gyEIJygN+FydCkVruV/Q=;
-        b=F+4TIB9gI9FB15DVL0fWq4cWk+nfIXdTDXrU2+bVp96a/xwOffvZTpdUsgZIcWQ3xA
-         FsIZfKjgjmyD5DGRPM481unX13f8yv3GW4tb77x2rleOcGb5RTpRVhf8AE8n8kNR1tv1
-         o8heUJykpND6EaJrm2fgtKqEnsv3/k0/poZvMkdZhtVMb6Zh5i6N0a0es7gYOUWsuDMX
-         cqLnTfp9vQWzOL/abidOyCa0Mu1//FDsltmzrghuuogpI3FHozxugLVJTTE8v2ecKGSv
-         gwHVY66YM7XUOptJnNJx+PR+xonDeBfa+JkTNLTSTZMO6rDLV2gR67VyNu5kPJeMuOCW
-         oG6Q==
-X-Forwarded-Encrypted: i=1; AFNElJ9nVrjRcxmaN4VANu42cXMAlMlKw+BqQqv9l3BEwCe2wDZTJ3G3zi12R+Rn+OHlGyGx7XOaNDU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy4wlV8fVo3ja94o0aZI0mcfg59H7v2isgViQf5YXs7KP1o3H3P
-	HbPX9tJOyF/YIcIteXBYy9iW0oK9A3w8JIvyIiO8PayvUnNCaKvx5J6i
-X-Gm-Gg: Acq92OFOMoj/675NggiOY699EFrNKke4eHGJouS9b6LLuemEKPH6rhakX/gYjpp2ss9
-	h12xeayum/EnG9TjlDM/xY5mfbxHSGCl+JrivdsN1v1Y3dMTynaz39gssSpXy9+74ktyMNhrb4s
-	her2gbiF4e/R3svQDM8q797D15pM1DroBjEfzBh4tK4rBqAk5rnTJefk7oNTht94T+4YhVYLIT5
-	Bw4B8oIyN2Lujshb6i7kAMSmpPVc2gLGjQP16xNPBE5qqM9i59jUxWAroxiq8XTc17Z4X3R5Mr4
-	oOX8htKylIwfVrkNNBSfs6AnKlMhNNMGDU9EOh0f0y83qeCPdPl7TZq9n2KCXkFYiqVycHtbr+p
-	J3JLd67MBvAf9I3ueIEny7Fg2t89FyeFbfk/0K/bidBzLxVFGERX93gRLHAU7/w8TmUOjwmEg6L
-	jmiGedBXS1vZx5JZWb1pLXf7lJEYC5s3JM0cUIqU2KWQ+ntxXxY1sC5vm6HTknid6bFrkzvJQA6
-	J19
-X-Received: by 2002:a17:902:ea04:b0:2bf:1d01:7b00 with SMTP id d9443c01a7336-2bf3683beb5mr58332515ad.23.1780163787787;
-        Sat, 30 May 2026 10:56:27 -0700 (PDT)
-Received: from Ubuntu.. ([49.37.171.82])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2bf23c580c6sm56791215ad.82.2026.05.30.10.56.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 30 May 2026 10:56:27 -0700 (PDT)
-From: Manish Baing <manishbaing2789@gmail.com>
-To: jk@codeconstruct.com.au,
-	matt@codeconstruct.com.au
-Cc: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aWW9r8K/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FC921F00893;
+	Sat, 30 May 2026 17:59:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1780163970;
+	bh=3yetR+r2N+u+1MYJrfeFDpiLwk3zQ5nbQn/Bif/B7+k=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=aWW9r8K//BPDhf8tMyRuFbEdnAL/eQKwAyI4bFY3i0dEHixifCVPgn3GwJTXrSic0
+	 XrxFo3jYDDuYMkYmc2OYHjTgkJCBtBqsSe1V5wcVoGi2sfThn70kiqf/YPu18weaWM
+	 IJwmNe7hGGPutdNqnIRGgLjQR/TV/kle2IzsQGL0=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
+	Andreas Koensgen <ajk@comnets.uni-bremen.de>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-hams@vger.kernel.org,
 	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	manishbaing2789@gmail.com
-Subject: [PATCH] mctp: serial: replace memset with zero-initialization
-Date: Sat, 30 May 2026 17:56:18 +0000
-Message-ID: <20260530175618.135533-1-manishbaing2789@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	Jeremy Kerr <jk@codeconstruct.com.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 416/776] 6pack: propagage new tty types
+Date: Sat, 30 May 2026 18:02:10 +0200
+Message-ID: <20260530160251.226092026@linuxfoundation.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260530160240.228940103@linuxfoundation.org>
+References: <20260530160240.228940103@linuxfoundation.org>
+User-Agent: quilt/0.69
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -80,34 +54,140 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Use empty brace initialization (= {}) instead of explicit memset()
-to zero-initialize stack memory to simplify the code.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
-No functional change.
+------------------
 
-Signed-off-by: Manish Baing <manishbaing2789@gmail.com>
+From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+
+[ Upstream commit 1241b384efa53f4b7a95fe2b34d69359bb3ae1b5 ]
+
+In tty, u8 is now used for data, ssize_t for sizes (with possible
+negative error codes). Propagate these types to 6pack.
+
+Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Andreas Koensgen <ajk@comnets.uni-bremen.de>
+Cc: David S. Miller <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: linux-hams@vger.kernel.org
+Cc: netdev@vger.kernel.org
+Reviewed-by: Jeremy Kerr <jk@codeconstruct.com.au>
+Link: https://lore.kernel.org/r/20240808103549.429349-12-jirislaby@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: bf9a38803b26 ("net: hamradio: 6pack: fix uninit-value in sixpack_receive_buf")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/mctp/mctp-serial.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/hamradio/6pack.c | 32 ++++++++++++++++----------------
+ 1 file changed, 16 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/net/mctp/mctp-serial.c b/drivers/net/mctp/mctp-serial.c
-index 26c9a33fd636..c97ebd1af356 100644
---- a/drivers/net/mctp/mctp-serial.c
-+++ b/drivers/net/mctp/mctp-serial.c
-@@ -537,12 +537,12 @@ struct test_chunk_tx {
- static void test_next_chunk_len(struct kunit *test)
+diff --git a/drivers/net/hamradio/6pack.c b/drivers/net/hamradio/6pack.c
+index 36a9fbb704029..7ccf56a7f0e0c 100644
+--- a/drivers/net/hamradio/6pack.c
++++ b/drivers/net/hamradio/6pack.c
+@@ -94,8 +94,8 @@ struct sixpack {
+ 	unsigned char		*xhead;         /* next byte to XMIT */
+ 	int			xleft;          /* bytes left in XMIT queue  */
+ 
+-	unsigned char		raw_buf[4];
+-	unsigned char		cooked_buf[400];
++	u8			raw_buf[4];
++	u8			cooked_buf[400];
+ 
+ 	unsigned int		rx_count;
+ 	unsigned int		rx_count_cooked;
+@@ -112,8 +112,8 @@ struct sixpack {
+ 	unsigned char		slottime;
+ 	unsigned char		duplex;
+ 	unsigned char		led_state;
+-	unsigned char		status;
+-	unsigned char		status1;
++	u8			status;
++	u8			status1;
+ 	unsigned char		status2;
+ 	unsigned char		tx_enable;
+ 	unsigned char		tnc_state;
+@@ -127,7 +127,7 @@ struct sixpack {
+ 
+ #define AX25_6PACK_HEADER_LEN 0
+ 
+-static void sixpack_decode(struct sixpack *, const unsigned char[], int);
++static void sixpack_decode(struct sixpack *, const u8 *, size_t);
+ static int encode_sixpack(unsigned char *, unsigned char *, int, unsigned char);
+ 
+ /*
+@@ -332,7 +332,7 @@ static void sp_bump(struct sixpack *sp, char cmd)
  {
- 	struct mctp_serial devx;
-+	struct mctp_serial devx = { };
- 	struct mctp_serial *dev = &devx;
- 	int next;
+ 	struct sk_buff *skb;
+ 	int count;
+-	unsigned char *ptr;
++	u8 *ptr;
  
- 	const struct test_chunk_tx *params = test->param_value;
+ 	count = sp->rcount + 1;
  
--	memset(dev, 0x0, sizeof(*dev));
- 	memcpy(dev->txbuf, params->input, params->input_len);
- 	dev->txlen = params->input_len;
+@@ -430,7 +430,7 @@ static void sixpack_receive_buf(struct tty_struct *tty,
+ 	const unsigned char *cp, const char *fp, int count)
+ {
+ 	struct sixpack *sp;
+-	int count1;
++	size_t count1;
  
+ 	if (!count)
+ 		return;
+@@ -818,9 +818,9 @@ static int encode_sixpack(unsigned char *tx_buf, unsigned char *tx_buf_raw,
+ 
+ /* decode 4 sixpack-encoded bytes into 3 data bytes */
+ 
+-static void decode_data(struct sixpack *sp, unsigned char inbyte)
++static void decode_data(struct sixpack *sp, u8 inbyte)
+ {
+-	unsigned char *buf;
++	u8 *buf;
+ 
+ 	if (sp->rx_count != 3) {
+ 		sp->raw_buf[sp->rx_count++] = inbyte;
+@@ -846,9 +846,9 @@ static void decode_data(struct sixpack *sp, unsigned char inbyte)
+ 
+ /* identify and execute a 6pack priority command byte */
+ 
+-static void decode_prio_command(struct sixpack *sp, unsigned char cmd)
++static void decode_prio_command(struct sixpack *sp, u8 cmd)
+ {
+-	int actual;
++	ssize_t actual;
+ 
+ 	if ((cmd & SIXP_PRIO_DATA_MASK) != 0) {     /* idle ? */
+ 
+@@ -896,9 +896,9 @@ static void decode_prio_command(struct sixpack *sp, unsigned char cmd)
+ 
+ /* identify and execute a standard 6pack command byte */
+ 
+-static void decode_std_command(struct sixpack *sp, unsigned char cmd)
++static void decode_std_command(struct sixpack *sp, u8 cmd)
+ {
+-	unsigned char checksum = 0, rest = 0;
++	u8 checksum = 0, rest = 0;
+ 	short i;
+ 
+ 	switch (cmd & SIXP_CMD_MASK) {     /* normal command */
+@@ -944,10 +944,10 @@ static void decode_std_command(struct sixpack *sp, unsigned char cmd)
+ /* decode a 6pack packet */
+ 
+ static void
+-sixpack_decode(struct sixpack *sp, const unsigned char *pre_rbuff, int count)
++sixpack_decode(struct sixpack *sp, const u8 *pre_rbuff, size_t count)
+ {
+-	unsigned char inbyte;
+-	int count1;
++	size_t count1;
++	u8 inbyte;
+ 
+ 	for (count1 = 0; count1 < count; count1++) {
+ 		inbyte = pre_rbuff[count1];
 -- 
-2.43.0
+2.53.0
+
+
 
