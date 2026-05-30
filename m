@@ -1,85 +1,116 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29950156661;
-	Sat, 30 May 2026 11:18:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47DDB26A0D5;
+	Sat, 30 May 2026 11:32:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780139938; cv=none; b=OEVzBvYWCngIhyzhlLeaVInr3RPUZ66MWjq8pju/M3Ck9Kog9hGDoXs7fR9N9kv3IRM+8n0Vj+ua8JrRK2vVIyemVkSaL8cGOeyY23ZTiEt5pVrcO+Q1lig+GLyGHIcmx0OOTfAcr2X3kyAMxG6XuuLXiOi+Pyiv3V5MUPVyJso=
+	t=1780140757; cv=none; b=EZQzTWyjILFVG2AVw1OkiqusZxdpUukGmCwZRg/s2zwLxosDSSFw0jA7/9OyIjwzCOzdRt+TlJXjuJKnYBQn6mGW50ykf3B6hEi2heaCgwoww9IkRyOvhohRb1rhWw4DOH7M8ALwkMcTU9u0kGLR/mnnltCtlZdbhdE+hKxcG8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780139938; c=relaxed/simple;
-	bh=8v+e2ZGDGrTXFpXKP5t0RjHdeCDeVVmxokNCH29rLHs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=E9BVaEnAEfPv4Y2r+84JYNAzE4KXMG5rjgitO6CJRCTmFfFffwnYw0VK5B7P5pbwU7cokqu3K1n6Fi356oBOZlQY59YX/ItyPYlHKPiBTaJeppRoY9fK5V6RMFkZ0Je5vsr88Ebz61pFuxkpWl5czxQExH9DNjz2U0UPdNxcyT0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WSIvlAk/; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780140757; c=relaxed/simple;
+	bh=iw/iBTqnt/wdfmAetP4wwNxQVpdIqF/qkIZAaqGW+lo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=sySfOGGv07S/vfTubApoeuQ0+kgOl4UuJjxEPK25i9lh/2iQoliX/B61IAkiVDhXegvaxFAJpmBxnCLfXFz4xACqFGiaYeTQ7GasUdU/fYGaOcM3pu0FTooiKZcnc4Iy2ayYLayPAriP08xcvaxhFVyp1dPLx9EdyT/EnWv/6ag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FKrsXYJz; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WSIvlAk/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B3DC1F00893;
-	Sat, 30 May 2026 11:18:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FKrsXYJz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64AC71F00893;
+	Sat, 30 May 2026 11:32:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780139936;
-	bh=Qvc4sHNsIEjfe2ZxRJAsYr7M3r1LFYtT3I1rdHEm+1M=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=WSIvlAk/VnoqVkiFIODjIUTOsx8myoIztBl3WAXLp9zxzchP0zGiP6YGRi8ja3dZv
-	 7rwODwpIH/GFQr9PqNm5GOccQSEgw+DOcNMlm9J7fimTGIEPc77yQUu2xgwZBSMYSp
-	 9Qta2HF7xeFZ60W1RdA1NBLaDWX12RTVXqgPpa8ohttsRgFrD1BrhiBdHloTdlf59F
-	 O6k36RLxATHKJ1a3l2l1Ue102KM28YPhbJB1sPG34cozAyXdnUwrI+pnVHab8D4fW0
-	 2UVrRpidun9a/9RKk0LtwIj2N9F6OkkAxGtrGsxrrCTyCfnlyXdZJrPaoqOXGG42Eb
-	 tAlkQ69sc5urw==
-Date: Sat, 30 May 2026 13:18:54 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: lizhi2@eswincomputing.com
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, 
-	kuba@kernel.org, pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org, 
-	conor+dt@kernel.org, netdev@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, ningyu@eswincomputing.com, linmin@eswincomputing.com, 
-	pinkesh.vaghela@einfochips.com, pritesh.patel@einfochips.com, weishangjuan@eswincomputing.com, 
-	sashiko-bot@kernel.org
-Subject: Re: [PATCH net v1] dt-bindings: ethernet: eswin: fix hsp-sp-csr
- backward compatibility
-Message-ID: <20260530-hysterical-oyster-of-skill-0c93cb@quoll>
-References: <20260525052441.1637-1-lizhi2@eswincomputing.com>
+	s=k20260515; t=1780140755;
+	bh=GI1x8/6OdfVDZl1aPmam21V1ywS/iL4vmoXMEImOod8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=FKrsXYJzfGx7vRT8v6eVr9IGDTaQ32MpvHe+1HCl7z29JtjSiD4+u/UyOOdVjtB65
+	 dZR2FeIu1U1ONgYKNqEXMhL2es6Fl6X+jZUKeXq8TthZ6d0RjL6yIVNi9Gb3vB5YzP
+	 uHUBTQJXkBLcjff9ff5rZvmtYpjyzaungMSdxZktEaM7hNmCCBVbYmF2wRJZ/vMY5b
+	 sNlYceKG6XAHW345/TjYEw6BeaPl3Sd7UDmmtTOBiO61XKPkERfMiRm22MwPjpURz/
+	 arX+38RGoFQnO4wsXLbPnjABXj1Uvcjmv9xWBKQxYe9QaTNHlpDhCBnbFRMzzZkM2f
+	 7Zpjn6pNosRQQ==
+Message-ID: <7221c136-f126-421d-8b2a-8fed17aba6f2@kernel.org>
+Date: Sat, 30 May 2026 13:32:30 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260525052441.1637-1-lizhi2@eswincomputing.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/4] dt-bindings: clock: qcom: Add Qualcomm Shikra SoC
+ Global Clock Controller
+To: Imran Shaik <imran.shaik@oss.qualcomm.com>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
+ <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Richard Cochran <richardcochran@gmail.com>
+Cc: Ajit Pandey <ajit.pandey@oss.qualcomm.com>,
+ Taniya Das <taniya.das@oss.qualcomm.com>,
+ Jagadeesh Kona <jagadeesh.kona@oss.qualcomm.com>,
+ linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org,
+ Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+References: <20260508-shikra-gcc-rpmcc-clks-v2-0-83238ba24060@oss.qualcomm.com>
+ <20260508-shikra-gcc-rpmcc-clks-v2-2-83238ba24060@oss.qualcomm.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <20260508-shikra-gcc-rpmcc-clks-v2-2-83238ba24060@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, May 25, 2026 at 01:24:41PM +0800, lizhi2@eswincomputing.com wrote:
-> From: Zhi Li <lizhi2@eswincomputing.com>
+On 08/05/2026 06:51, Imran Shaik wrote:
+> Add device tree bindings for the global clock controller on Qualcomm
+> Shikra SoC.
 > 
-> The previous change added two optional cells to
-
-What is previous in this context? There is no previous commit here.
-
-> eswin,hsp-sp-csr, but omitted minItems: 4.
-> 
-> As a result, dt-schema implicitly required all 6 cells,
-> breaking backward compatibility with existing 4-cell
-> device trees.
-
-Please wrap commit message according to Linux coding style / submission
-process (neither too early nor over the limit):
-https://elixir.bootlin.com/linux/v6.4-rc1/source/Documentation/process/submitting-patches.rst#L597
-
-> 
-> Add minItems: 4 to preserve backward compatibility.
-> 
-> Fixes: c36069c6f46c ("dt-bindings: ethernet: eswin: add optional TXD and RXD delay register offsets")
-> Reported-by: Sashiko AI <sashiko-bot@kernel.org>
-> Closes: https://lore.kernel.org/all/20260519022334.35742C2BCB7@smtp.kernel.org/
-> Signed-off-by: Zhi Li <lizhi2@eswincomputing.com>
-> ---
+> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+> Signed-off-by: Imran Shaik <imran.shaik@oss.qualcomm.com>
 
 
-With fixed commit msg:
+NAK, turns out incomplete.
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 
 Best regards,
 Krzysztof
-
