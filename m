@@ -1,99 +1,58 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail-43167.protonmail.ch (mail-43167.protonmail.ch [185.70.43.167])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8511A29B78B;
-	Sat, 30 May 2026 18:05:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D9AF25B0B3
+	for <netdev@vger.kernel.org>; Sat, 30 May 2026 18:26:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.167
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780164304; cv=none; b=KIodVAQLP37wZBhajkHc7gxwMF8wW83zQilvlzxn0mEN+bjHlLlf4tpHO2oMzStFviCSKMQ8spIkzRiCTbO94vCLfYnlw2fZqLGf42jroH38Dk7NvvfflEfKyM28ZuZ/XNg3XAgNnV+Ya4SXk9G2+5xl61WNp15S1qwU+wYw/zM=
+	t=1780165582; cv=none; b=HhNwE2dSfYbXoJ2Qw3s74icx0n5f1tWh6MqSghXtnAm0OYDrdxgySOjZHhZBf5WIqXkS/7qca65uD7SzSsnWBibMS0NltuZr/76n4ONTcy1dBzCLKl1HfoXjfmfhVpg90Kw6ZznPccRqLB+PmaXXH4PkZSrwS8g+9Z+ARSa3qCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780164304; c=relaxed/simple;
-	bh=iFoB49l26PQzgAd+2lC7D6V+iOm8XQrDlyTVU4zeqcw=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=fKeIIQFx4I824oTbKRftHDXtJk8Zp/9ouK30oGKFbkAg0XxsGAC/cZxaEO7utoYo6BktMnpc5r3lOAjEALclTj2scAKyNJgnkm+OdzeacGZoQJsRzTMH4I9JR+mk0xNmnAFKWdbTLJ4XqjJBjyM+qi/tvIggvmgf70nr0DkJakY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kW0s6x5q; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780165582; c=relaxed/simple;
+	bh=aUtFp0L0Qs77rAxqrlsG/L0Ka5rgfU2HsbpxrJxfUNc=;
+	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=tbvh+BzSpZUhBREFv+TrRqGKvRw3MISvkzoeqStFflCpxoKVaO+RUdPBhrn2KGNyuz7ipB8MHpuwuxeDVJgf8yqm70VNz2eFsj+HB3yPR5wCEwy3Kyb2HiRC5gHgVIWtgeNwzgUpgGnf6dR5yuIO5XMcMxol/ySBHO6BjgPscVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=FrstgC/p; arc=none smtp.client-ip=185.70.43.167
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kW0s6x5q"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 596E41F00893;
-	Sat, 30 May 2026 18:05:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780164303;
-	bh=fAjDYJv3ZqoP4U3LWt0qIvFrrnx+oJme8aCuzuadrIQ=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=kW0s6x5qXQMvaoQ6ncHzWrw4+BhHDGeSuccj0kmyw6zG16h/oDqKh3KNGVaDRtEXC
-	 MagaRRBGIKnFhoR6nuxiHm+ZpCFKFQduAiTUNHweeZGQ+kZBBIMdyxulurYjF5eVVV
-	 PeaeoEG4oT/WnlkhPru8ayW2owVJCFLt9LRtO4W30lyzvMx1C3TfUxAnjegNqf9OYy
-	 q+8nZMROrh9ix4jV5GUWwoVU+O7XWlsKkNlhRCIx94qCC7ub46PEvreDvLoGA5t6Dg
-	 FFKErcb1SNmt9bzjrkn/AQgRnpZdS8OtADRULOcln+K2c7qasTy6IeW7mP60dAq2yd
-	 bKVUc+6sSWOnQ==
-Message-ID: <d6f47527f97af2ba8fcbd08cf1bcd49f11124eb9.camel@kernel.org>
-Subject: Re: [PATCH net 1/1] net: rds: clear i_sends on setup unwind
-From: Allison Henderson <achender@kernel.org>
-To: Ren Wei <n05ec@lzu.edu.cn>, netdev@vger.kernel.org, 
-	linux-rdma@vger.kernel.org
-Cc: yanjun.zhu@oracle.com, guanglei.li@oracle.com, davem@davemloft.net, 
-	santosh.shilimkar@oracle.com, junxiao.bi@oracle.com, yuantan098@gmail.com, 
-	zcliangcn@gmail.com, bird@lzu.edu.cn, xuyq21@lenovo.com
-Date: Sat, 30 May 2026 11:05:01 -0700
-In-Reply-To: <5a0f7624bb9845a7b67d26166a150b59e7f394ce.1779632468.git.xuyq21@lenovo.com>
-References: <cover.1779632468.git.xuyq21@lenovo.com>
-	 <5a0f7624bb9845a7b67d26166a150b59e7f394ce.1779632468.git.xuyq21@lenovo.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.3-0ubuntu1.1 
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="FrstgC/p"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1780165570; x=1780424770;
+	bh=aUtFp0L0Qs77rAxqrlsG/L0Ka5rgfU2HsbpxrJxfUNc=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=FrstgC/p4rqYvT345FyO30sNVKqAdbzMjkuciJgcadr4DZJ14uVTQBpGIXKfUSvbU
+	 xvgIDdiQ3lTXb8xyyDKl30cRy6KyetaHvQI4Fka3wP9+5/jKZgNPCHTqkq44rm4fBv
+	 inqfIEfsgbm2B24bSrQhgqIbJpOvJk4HDrCK5xOUqFIlwRiSeiZq4J/RWjEj6ABJOA
+	 7gKdrofj8cQMSCl9srPU29U5KDXeCuqnyh+m2zgg7fT/NM+i186nLT+qCmPMo+bmKb
+	 BXdc7RJuonu6aCq6ckUW9lCSEpnBbOfKiJ0rnh1JBo1LJ43yF3h+tM5upDdqAKAzQH
+	 O3dal/hVjE0eQ==
+Date: Sat, 30 May 2026 18:26:07 +0000
+To: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>
+From: Cyber_black <Cyberblackk@proton.me>
+Cc: "security@kernel.org" <security@kernel.org>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>, "david+nfc@ixit.cz" <david+nfc@ixit.cz>, "oe-linux-nfc@lists.linux.dev" <oe-linux-nfc@lists.linux.dev>, "davem@davemloft.net" <davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>, "kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>, "w@1wt.eu" <w@1wt.eu>
+Subject: [SECURITY] net/nfc/llcp_sock.c: unsafe userspace sockaddr handling
+Message-ID: <PYXMRVOSKGaZwZAeXC2PScmTBrZhHXwgdSapPlE030ObXXtRedDcbPD2lx6-3lzLWqr3aB2Kf9eAbDig3HuXn2gw3cSaZhqUA5U9HrSVhC8=@proton.me>
+Feedback-ID: 117998405:user:proton
+X-Pm-Message-ID: fc392576e843686a1536da83690ac91251953ec2
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, 2026-05-29 at 21:01 +0800, Ren Wei wrote:
-> From: Yuqi Xu <xuyq21@lenovo.com>
->=20
-> The RDS IB connection teardown path is written so it can run during
-> partial startup and on repeated shutdown attempts. It uses NULL
-> pointers to distinguish resources that are still owned from resources
-> that have already been released.
->=20
-> When rds_ib_setup_qp() fails after allocating i_sends but before
-> allocating i_recvs, the sends_out path frees i_sends without clearing
-> the pointer. A later shutdown pass can still treat that stale pointer
-> as a live send ring allocation.
->=20
-> Clear i_sends after vfree() in the error unwind path so the existing
-> shutdown logic continues to use the correct ownership state.
->=20
-> Fixes: 3b12f73a5c29 ("rds: ib: add error handle")
-> Cc: stable@kernel.org
-> Reported-by: Yuan Tan <yuantan098@gmail.com>
-> Reported-by: Zhengchuan Liang <zcliangcn@gmail.com>
-> Reported-by: Xin Liu <bird@lzu.edu.cn>
-> Assisted-by: Codex:GPT-5.4
-> Signed-off-by: Yuqi Xu <xuyq21@lenovo.com>
-> Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
 
-Hi Ren Wei,
 
-Looks fine to me. Thanks for the catch!
-Reviewed-by: Allison Henderson <achender@kernel.org>
+Greg, please disregard my previous report.
 
-Allison
-> ---
->  net/rds/ib_cm.c | 1 +
->  1 file changed, 1 insertion(+)
->=20
-> diff --git a/net/rds/ib_cm.c b/net/rds/ib_cm.c
-> index 0c64c504f79d..4001de0c4959 100644
-> --- a/net/rds/ib_cm.c
-> +++ b/net/rds/ib_cm.c
-> @@ -656,6 +656,7 @@ static int rds_ib_setup_qp(struct rds_connection *con=
-n)
-> =20
->  sends_out:
->  	vfree(ic->i_sends);
-> +	ic->i_sends =3D NULL;
-> =20
->  ack_dma_out:
->  	rds_dma_hdr_free(rds_ibdev->dev, ic->i_ack, ic->i_ack_dma,
+After testing with a POC (which returned -EFAULT, no crash) and reviewing t=
+he
+call chain (__sys_bind =E2=86=92 move_addr_to_kernel), I confirm that the s=
+ockaddr
+pointer passed to llcp_sock_bind() already points to kernel memory.
 
+Thus there is no security issue. My apologies for the noise.
+
+Signed-off-by: Eneshan Erdogan Karaca <cyberblackk@proton.me>
