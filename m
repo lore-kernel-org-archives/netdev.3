@@ -1,155 +1,124 @@
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+Received: from sonic316-22.consmr.mail.ne1.yahoo.com (sonic316-22.consmr.mail.ne1.yahoo.com [66.163.187.148])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB5DB3955DC
-	for <netdev@vger.kernel.org>; Sat, 30 May 2026 09:28:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE5F3391E7F
+	for <netdev@vger.kernel.org>; Sat, 30 May 2026 09:31:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.187.148
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780133310; cv=none; b=BezJkAmSzzUtdDtHKImlTmHJiOpSx/GYbY80k4sb3BYJnvStG+Q5vVh1E9QmwSd2clqGhBSGNuUT05IN/9sUB5ydmwo20LFIxq5PJ40q+X2Y5QlW2Kfu5L76u2Y0Mn0Tt2S6MgMK8QdM2JCmZCK434Kx3ZX6NWjYNhrg84Z/c3U=
+	t=1780133473; cv=none; b=bVafnrfWkkTD2iSS5U6TjpN3SffjUzkH3gyW+yoPjJFCyX35TaAjq/ZIpMia1l5UUNldseU4iBl7JJX3qIiqSS9VJnMFK1PwvcxSR6J7FWvIa7B8Dj/b8YDN+601uLzhGi7ERaXh+1lMBSJpD9GSaVo273GJ+OXccI9pZkbzxkA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780133310; c=relaxed/simple;
-	bh=Axu2q9OiQlW7NrUR5/tN+MxVX+YXj5nOsIeGUL7II+w=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tmVBL0F10IKiPY+ecvGQQ9IF9qeiFU2fR2dpcC2OWD3j9+77689EtUToarn9LymQILOhF4YnpjY4gc6X+fjcqXg2bbFJzumj5wcEbGHmhrS73nRSYM3+bUCqeH306IrjylwGt5fzhUuySM1aoiiJqO/kx6l6w5Zle7Yue7TDFxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aEiIiZ8g; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1780133473; c=relaxed/simple;
+	bh=atD/gSnPmneU4ZxcauOhmKWIZctrbFu4ci1ja844yNI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=jDMZB6AXno9uPKeKMCrnbR9cTWj7xU4uRhw1n4VYfF6WP3FELtbbiHqv+Cwl+/4Ls09t+CpYd7CG/YJiVjZd+rTNfDz6wsN5178Z1UzOmpYIrxzv35M/sgIx1ZYFaswhi3722f5t4vO8W4IHl3DIxlKdncopTWroBVfflQ5MsMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=Ygox93rj; arc=none smtp.client-ip=66.163.187.148
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aEiIiZ8g"
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4893940bb5eso79031015e9.3
-        for <netdev@vger.kernel.org>; Sat, 30 May 2026 02:28:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780133307; x=1780738107; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AVGWNyN/0YK3gFgYNwL3zKk91DjUbWVPzRQNZkauQoA=;
-        b=aEiIiZ8g0hy0yB/O+bDn7Qw4lOfN43CRMMIOFofGOKWKSLeutjNpsZecxl1PpF6dGq
-         XUr13spfzUEBtwv04kv+5AwqvczVql4/rFzglnoFDWJiGLSUG9LMAKcVLLAPgsa/kU9t
-         zluLvPFhdhGFedsiuZiYQhWDrDHb6RPbzb+RIt1hN1uaQ4DaUE4c2eOFaiBq+m6UXu62
-         vqjV0taBTZDPRazx4yOVz0wossMHj2fIJMBAmv/mXMjZ1WgM365BRb+3Zxn9aYNcpHXd
-         0Zcst7R72wcLfComJvvpx853k9BfRth+OczB8+jks6+1OILp1F2ltb7V2sIbLEMprH8k
-         Me6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780133307; x=1780738107;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=AVGWNyN/0YK3gFgYNwL3zKk91DjUbWVPzRQNZkauQoA=;
-        b=YZakReJfMxef2qi04zxp7aTOqjPhYePb4pvJ8gY41CwY1yp/bDV+xeVqGVTF1it32M
-         hBCz7tqjAr1YE661Vef9gU1FfhpyPUMvu/4g5ErMBMwuqL97O+DQSBILsPxT/uqTEavZ
-         Nl2JhUR/VPW3qy1kkcg1UL+QDY+JnC/Awak14vYavgjduZf8j4S85fNCBYV1me/CvcZs
-         DCP6zpkQ0LRA/qu/ltzBU79Ql00FNQYac183oJ+gPAvu2bnukjT4+ou+YA7i5UvvGInk
-         maFScAcAV/Np9zMyeKrYPHY/WyG4UJbdNdwZNDvLHJvKDHuiSWw4HlVSNaTEsLt71LXM
-         kiFg==
-X-Forwarded-Encrypted: i=1; AFNElJ9Yj5u4L23vrIsrdMA4aI4/JBKwp3C0jlNiVhgySUWUvvuXhPPZ+UMjedygsMYFmIn2cLADuJw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw+KaXGLyy0UaoN/zmpxChn3BNrCLIow9Q1u1PMmsRDN8/9zYQq
-	4gitt6GGAUzI8VULtPxfwW9w+CZWn03n6Ve5FBO0zKQkEi0l/XflNt+h
-X-Gm-Gg: Acq92OFFVmuR16KOQW6LZDc6OJDB9Rs2d5zyT4+vfG9hYn84kbd8pK86IpO3aXx1ZPo
-	ZGFiPjHLGg0+f0uprMfTTlF/LAh6SmA89Kq2oUa0iq6AWdyDWx0Mk6MA8RNc/+CcYsIFwYI3Xfp
-	5BOwvFcL/RwgLZM3Gnk0RnNAyG1tGjGfneF8JBuQb7+FtHj6cWGKPQ+ytgtPjVOK5FabYPrQE8T
-	HtrBxwcPXgcXOsM7/pmCMjZAQWajGUUBZCrQ96Ki5udZgAwic/5pekpyJiovibOjiynFCFxW4Ze
-	VJ5p9U0L8QM5MvgDmjIItSn0/TPyqx8XM0QGMmJD/8Z7VT0c1nQKMfUNKYTjbYCS62yJTWI6q5M
-	gF7GS/xtMlEXRrEldbigwFTdGIWgBFQIwxmaMurbfIUrO0I83gJIidL0ROzIVJAhmulgQ2d5BLG
-	K4gfyPoz7vA1SWBaNVPffO3FHqdSx/zLFAWg4PIpdc51HOM3HUZ3lBTG39Rogv7tNHYpNaf8c=
-X-Received: by 2002:a05:600c:3147:b0:48f:e230:80a3 with SMTP id 5b1f17b1804b1-490a297304bmr47960185e9.33.1780133306950;
-        Sat, 30 May 2026 02:28:26 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4909c09acd3sm30659185e9.4.2026.05.30.02.28.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 30 May 2026 02:28:26 -0700 (PDT)
-Date: Sat, 30 May 2026 10:28:24 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: David Matlack <dmatlack@google.com>, Alex Williamson <alex@shazbot.org>,
- kvm@vger.kernel.org, Leon Romanovsky <leon@kernel.org>,
- linux-kselftest@vger.kernel.org, linux-rdma@vger.kernel.org, Mark Bloch
- <mbloch@nvidia.com>, netdev@vger.kernel.org, Saeed Mahameed
- <saeedm@nvidia.com>, Shuah Khan <shuah@kernel.org>, Tariq Toukan
- <tariqt@nvidia.com>, patches@lists.linux.dev
-Subject: Re: [PATCH v2 06/11] selftests: Fix arm64 IO barriers to match
- kernel
-Message-ID: <20260530102824.65ceb098@pumpkin>
-In-Reply-To: <20260529224442.11d7320d@pumpkin>
-References: <0-v2-72e9640932fd+2c64-mlx5st_jgg@nvidia.com>
-	<6-v2-72e9640932fd+2c64-mlx5st_jgg@nvidia.com>
-	<ahiFxtmspbETiqWw@google.com>
-	<20260529134947.GA128816@nvidia.com>
-	<20260529175516.06d5788f@pumpkin>
-	<20260529192933.GD3195266@nvidia.com>
-	<20260529224442.11d7320d@pumpkin>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="Ygox93rj"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1780133465; bh=PPe/LxstChGTwVBv8kMEkJepDI6lxZiORRB302pJMuw=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=Ygox93rjM6QGVTxq46gpMyMTjBpo936hXgcdC+BI9Ak0bRohnMJ9mSFBWhfx71hZ7AxpKVHnNGbPHzDROQeNUJlt69jeSRmBUBSKgYrsOMmZTAXJIFO939AXxHU6frF/7zANTTxMsikRfnLCQNB7BG5b5zTpbp62+pidRyiZiDqJGu2Tmrn/ZIkazBiMT/55v1oIDexfO3ZaSa/VQOG5otqOy3Fp60ggKyioGtdweAtJtHTUFzQy7mTW1oz43P7gixtrhoH/xB+xUdyJZHs0jiaYuyJxp9bxOs8ZmWzFAIP5gvlFPA6+L+COSYoN1nGZnJI5Xkrm6WWwk32/FuhDrw==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1780133465; bh=W3W/eTUyJlmrZbA+52uB8Rr94E5hyMkgU9D62HZhski=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=riYtmOSFpn/zt2GQ0GnzJpaWS+3XnZbVpclyJG74yUMcXiQVxix3YxMFruLorm6wJraCpkLNr3v55wGjsFKeLlVzX540TJwI8ea1uJOTjTtoK0UT4VJbmSfPWI6yvT95a0Z2EOo2atzjwtNW+XSXLnpfybILeW1tx4le0D5Av45Nj0h8azRaAftvOCI5PkdFxC0fO8R24JTc9t9JnfWpgOo/6D5+PSkCYzkv2gfIDPJMYi8OECKel0hVXzx77boZd+8NX+nW5wNuacD1hFnWSOKXAFNMfBkfupYoD2dkKsyMF4LNL5U/X741I/0pdKNMhFKlLd7vxGl7Q3Lb5SQ7NQ==
+X-YMail-OSG: Oq2I1MwVM1lHqc7CWcPWT9FbJ7BTa_Be8udq8xa64cwCExjfhZuJzhyNAWoX1nJ
+ JiwcUOKrT567SgKJE_8JxDLWS.dVLXWhF..zStplLQpmvKRGH1SodgZYOSS5wVakEdmtXt.fQ_sj
+ rwnk27cgfePaK5u5x7ieGmcx4mz95TXPp5anCPLpR9HCNqHSfunMS56L_cp7b75L3t2QnLRfDHOk
+ dIHN.MFElADk6T4L3VcAhUSlINUs4FHCvmMO16g9yvkiAeuR9OGDXTZ2Fw8ia3n4f3pkDdN9LdK1
+ 0t46fVh6roRh7jchgRxTfs3tKDUTvonSxxB9MLcWzKDPm2VlxXoOaKiFEdGt_NrKEVfVTvcCOaAN
+ WBX.XfY9DdpWwJ6m6R0lMIH4TnuYli0XlQ4pH6v1And5tNpXJn5YL7MX5bM53ZERLxAmEh7miMJG
+ mH3TeGunai7tJEyWvcTpzqN5T8fv54ZwVgr1tnAyXAxXUvFqlBSyiCbydjEr5uz5xbdhsHCDO9Z_
+ ObmI8ctGMu18g5joCqNY.T7tsmV.0WGpLe.RL6kee30rfAwEGFaBnYoHFSqP3jSZ6riq1PSTaGH1
+ WfyIXsEr7wTdtcHn0feQwEbWDOiwXDqni03lHmx5duYLVGRE305_4IIq2J4l6ac.uoLay1nr78cO
+ 2s_eTOrUpOJq6jHwy1L0eX1B1c1mpGLSBsx8mfpk7CdTf9sauRL0p93Oi9hF3ThKy880nTpmh5lG
+ 43tixa9APQ33f2qjW_Hcg1xp38ptFr.cbnb9Zm28p6ocm_QDJVWz6jqpy6PbvqPtuUHai2Q4wKQ5
+ RYXWpTZjtCEA94eRf3S8JL6rIqO83rVR4islIhdQpXQpov2RHjviyANq6TgLqa1C9oiYHqKK13Po
+ .1o0_7UXJRG9wVfYWRJE7YvkKmv6nKFdDFu_Y3XtIWAfJQz4R8wd1VR.mxXtor2NIngGfJwy8ZXF
+ bHIkhxP4TlyQD7RUpsoE1SH6kdze.fdfdyZ2alCxI3PqHE0o1xD3Osp4_zMqlgKrdZcfqHM8ePwX
+ CAI5C_7zjDb9Wo6_9ddKvCBmvoxdteHiw860AeFEmyl1p_tu8FWxa70PSKnbgPRPCwEHtjVAxReZ
+ t4O_ChZ24X1pR0xCnM7mzTjOqNkfaDmqGzSvOBMLcPSmaudtXcRGM13_b84fVALuyWJyMeiToap3
+ CsNEMsvr09gNUz6Rxm9tx7iuMv3F1VgsgqecJHekAJSLLU_tP50SEKROIUTJBl0cFrugH0TlR0T3
+ Ix7Shd79479SQR.4XcOtyRUlhr4gUVgbF3WQY10sq5fbj7GtXgOuxCjiaFDMFWFosKagwUSDc1vl
+ 3DCe6uv5fdMubX37gk03qCAoAAhnpvV7N3iMRH5XkPu4kV_ZDTWpd7X.0c.SJlsLH1XI2h5PcHoK
+ nSfmkh3JkCS2iUnq3d4oq3cJuekyXF.I2KnP5ZssQpnE0Cz6pVOn46r9.ZUMWOgJ33ZAumt3jegM
+ bjWtwVHRxDddg7.LHalXmFBuoBs7k6xEuOU_P.4CPcHMez_CeNa9oh9AoUbHaFQnhs1nIG8uRZSE
+ JSmObdlrSzPRHI_18s16Lk0byVQ6mzjKyOGISTg5yPVZ.WQuwAHYA5gTo9s6Px.FxhZCRBh0.DoX
+ r8cOuj6f2x6dxzFGLrwjdFKVJlurffd4T4dLnGZ7cjNfI8dbEftRHGAfmHsHcqpf.Z30kPAt1QKr
+ L4uezrWSr0qI.Bsd2RvVeqbZ9_TlYzddRtOaWsIpaB.Wt4T8N8Hw2S9Wlnv7x4zdoPad.rHs_g3I
+ Rxh0YQ0HuiPyFxgXdllUWXG_77Z69F2ErANlIOXpszkm_0Hfh8d6XeTk0M7i77pTny8hNrylI20J
+ HvQ6mat1c1hvjOKNmn29ZJmUJ5tB.CH4Rb.mC6oK.9IZyTtcAseBu2IFkMy.zixasdisW.u6WuBs
+ xVBQlxamzIvdXW_cL_O4I747c0bfQefVMW557jrJwoeTP3a9UN123s0QubugvAlcSx4MSCKcrr3E
+ 8cpJs1vk0xahB32xnSSdqUKQ3z24IwuVoPthlRBPXG8ZslwXzrcb4Ai9.HIKWpkLtsjTW.SgcHRl
+ GHQWgQLpI0fJRlVqdp0BJAfSaIkktHD2N_TN7p3J4xIediZmsX0eyQuvNvv9enRcNOFtByLw0rNU
+ RDqQAwUU1AUcP_jG9VQl4qDrxWT_FLkrA2amiKw8IbJ3iv9Vbs3zP7HZbrXBsob6Fstll4MNEmR6
+ cezcyH6uZ62nd01FK50xYVGDyszDhG1jad8oRSc3V.MfgvwHygeglamCJridwKoQaumCPG3xJycI
+ yiX7BNdutlI.2Ch7.CAB3y6fSkJpRVWunonl3BQ--
+X-Sonic-MF: <namiltd@yahoo.com>
+X-Sonic-ID: fd02e599-5545-46de-945d-9fd8f4fe832a
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic316.consmr.mail.ne1.yahoo.com with HTTP; Sat, 30 May 2026 09:31:05 +0000
+Received: by hermes--production-ir2-89844b765-mjl2j (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID f93cc69d1b60df7ec45058898687704b;
+          Sat, 30 May 2026 08:36:15 +0000 (UTC)
+Message-ID: <0c20ceb5-1cf7-4f83-9623-b5f5018f44af@yahoo.com>
+Date: Sat, 30 May 2026 10:36:11 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [net-next PATCH v9 0/8] net: dsa: realtek: rtl8365mb: bridge
+ offloading and VLAN support
+To: Luiz Angelo Daros de Luca <luizluca@gmail.com>,
+ Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, Linus Walleij <linusw@kernel.org>,
+ =?UTF-8?Q?Alvin_=C5=A0ipraga?= <alsi@bang-olufsen.dk>,
+ Yury Norov <yury.norov@gmail.com>,
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+ Russell King <linux@armlinux.org.uk>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Abdulkader Alrezej <abdulkader.alrezej@gmail.com>,
+ Yury Norov <ynorov@nvidia.com>
+References: <20260529-realtek_forward-v9-0-e7c61872d923@gmail.com>
+Content-Language: pl
+From: Mieczyslaw Nalewaj <namiltd@yahoo.com>
+In-Reply-To: <20260529-realtek_forward-v9-0-e7c61872d923@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Mailer: WebService/1.1.25725 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
 
-On Fri, 29 May 2026 22:44:42 +0100
-David Laight <david.laight.linux@gmail.com> wrote:
+On 5/29/2026 6:29 AM, Luiz Angelo Daros de Luca wrote:
+> This series introduces bridge offloading, FDB management, and VLAN support
+> for the Realtek rtl8365mb DSA switch driver. The primary goal is to
+> enable hardware frame forwarding between bridge ports, reducing CPU
+> overhead and providing advanced features like VLAN and FDB isolation.
+> 
+> Some of these patches are based on original work by Alvin Šipraga,
+> subsequently adapted and updated for the current net-next state.
+> 
+> ---
+> I attempted to reach Alvin for review of the final version but was
+> unable to establish contact. Any regressions in this version are my
+> responsibility.
+> 
+> Changes in v9:
+> * Patch 2 (DSA helpers):
+>   - Switch to dsa_switch_for_each_port() in the irq_setup error path.
+> * Patch 4 (Table lookup):
+>   - Convert kdoc to standard comments.
+>   - Fix doc description for L2 write operation return value and
+>     data/addr on errors.
+>   - Removed misleading comment on RTL8365MB_TABLE_CTRL_PORT_MASK.
+> * Patch 5 (VLAN support):
+>   - Do PVID first in port_vlan_add() to avoid reverting vlan4k changes
+>     if it fails.
+>   - Do not use dsa_switch_for_each_port_continue_reverse() after the
+>     loop ends (use-after-iterator).
+>   - Simplify PVID helpers to receive VID instead of switchdev vlan.
+>   - Avoid redundant writes in the PVID error path.
+>   - Convert kdoc to standard comments.
+> * Patch 6 (Bridge Join/Leave):
+>   - Do not use dsa_switch_for_each_port_continue_reverse() after the
+>     loop ends (use-after-iterator).
+> - Link to v8: https://patch.msgid.link/20260525-realtek_forward-v8-0-5eb80a4675be@gmail.com
 
-> On Fri, 29 May 2026 16:29:34 -0300
-> Jason Gunthorpe <jgg@nvidia.com> wrote:
-> 
-> > On Fri, May 29, 2026 at 05:55:16PM +0100, David Laight wrote:  
-...
-> > I can't say, this is copied from the kernel and Will made it:
-> > 
-> >     arm64: io: Ensure calls to delay routines are ordered against prior readX()
-> >     
-> >     A relatively standard idiom for ensuring that a pair of MMIO writes to a
-> >     device arrive at that device with a specified minimum delay between them
-> >     is as follows:
-> >     
-> >             writel_relaxed(42, dev_base + CTL1);
-> >             readl(dev_base + CTL1);
-> >             udelay(10);
-> >             writel_relaxed(42, dev_base + CTL2);
-> >     
-> >     the intention being that the read-back from the device will push the
-> >     prior write to CTL1, and the udelay will hold up the write to CTL1 until
-> >     at least 10us have elapsed.
-> >     
-> >     Unfortunately, on arm64 where the underlying delay loop is implemented
-> >     as a read of the architected counter, the CPU does not guarantee
-> >     ordering from the readl() to the delay loop and therefore the delay loop
-> >     could in theory be speculated and not provide the desired interval
-> >     between the two writes.
-> >     
-> >     Fix this in a similar manner to PowerPC by introducing a dummy control
-> >     dependency on the output of readX() which, combined with the ISB in the
-> >     read of the architected counter, guarantees that a subsequent delay loop
-> >     can not be executed until the readX() has returned its result.  
-> 
-> Hmmm...
-> 
-> Ok so there is some subtlety with the read of the counter that might
-> make it all work.
-> 
-> It is better to make the delay loop have a data dependency on the result
-> of the readl().
-> Something like:
-> 	u32 z = 0;
-> 	OPTIMIZER_HIDE_VAR(z);
-> 	writel_relaxed(42, dev_base + CTL1);
-> 	udelay(10 + (z & readl(dev_base + CTL1)));
-> 	writel_relaxed(42, dev_base + CTL2);
-> That avoids the potentially mispredicted branch and only adds instructions
-> when a delay follows.
-> That sequence is safe for all cpu and doesn't cost much for cpu (like x86)
-> where it (probably) isn't needed (maybe unless you patch the scale for udelay
-> into the code so there are no memory reads, just code).
-> 
-> Probably best refactored as udelay_depends(10, readl(dev_base + CTL1)).
-> Or maybe udelay_after().
-
-Sleeping on it, all the code can be put in udelay().
-You just need a read memory barrier, followed by a memory read (of anywhere
-'hot') and then use a data dependency (as above) from the second read
-into the delay loop.
-
--- David
-
+Sashiko found no issues in the v9 code: https://sashiko.dev/#/patchset/20260529-realtek_forward-v9-0-e7c61872d923%40gmail.com
