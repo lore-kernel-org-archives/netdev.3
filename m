@@ -1,121 +1,67 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ACBB30E85C;
-	Sat, 30 May 2026 08:23:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6018939903E;
+	Sat, 30 May 2026 09:00:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780129425; cv=none; b=tkH8xb1BvxsOkp2XxFt3VNVHC1lxO9M7ONQtZzHArNH0pdo8cjxPddOLrHlA/sTEGfuTFoYVWHJy7jr6gb+chjTVZ/h+NjMcStWfXfiuzRVCWS7lH+il+5ApVA47yJa/4ZzdTdaXffHJNvJkcq20omgg9PjxqfdBDjFbaq29kp8=
+	t=1780131606; cv=none; b=ljx4nqRh4BzMa/x9LxDE0cDa1SBBeiz+JbJypkwGGcrvAHcdwAhIL6dzzFx16s4YaW5QDS0stdgScns4tLtuYADOsxOcZ+4VfJptxHS5I8buWJRC93hSK8nswueBq1V0sEX20QGnXcHS+OF3yrUWObZj59mwQ9Ik1vEroS2B900=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780129425; c=relaxed/simple;
-	bh=LSkIBo4gDPkYTilY3gyUoXUlIQlHQI9yEaTT1JVX65A=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Yi4U14kjl1QarMdv5TXXEfvYInqyikZK8sx8gqw02OSSPDKcgjxjH9xrWLN0Hgy0OxbR1EU/uPlLD6m19siZzYROcV+yIjdFpHv5XLBFmpRWqBVBb+G3VAXwKdPKjgsyzUalenI8KArCJcJpihOkTShMlqRR1AYbKjt2pd3JcI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=LjFDz3GH; arc=none smtp.client-ip=220.197.31.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1780131606; c=relaxed/simple;
+	bh=MvjbpLL71y4+zQOMwBan4Qo2vQ2xV2sLjWehOAPUvU4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EJ/KuAUsxMn+3Vw+PaEWsip18bKkZkCjc7ELnANiFjBzhfM0h4/cjlF50Snv9MHnaH3EAGDIPSQkg6Ymlf0XA4Spl5UuTTLjqemxKkV42LcjGrlCE6Cn1cZGKzhy72xMpd9sVOE3ogmVqYygGJLh5MhXsy5g9OCYtSVnZQ1sjCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GdU6//Z+; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="LjFDz3GH"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=qZ
-	2Fjwwm5hDmCK5YhIOGAYcFdo/AIR1P2G8gCMd6Et0=; b=LjFDz3GH2vZo9QcaZw
-	3+ZV0QYk8KYu5Lt1hRaPpJSRqcmOOMMnM7EnzTU4nHyNmJjSAvR3mSmCS/pTOV3z
-	lnDlt+JP7o0Xf0WTYIbfDNL8vxXQiOiELvYCaDUdgPvoHXeV5zwp39fVHAu0BtbP
-	K/psW/J31qoNXvQwrNUsDxj0M=
-Received: from 163.com (unknown [])
-	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wBnJtVUnhpqr9W1AQ--.60856S2;
-	Sat, 30 May 2026 16:22:48 +0800 (CST)
-From: w15303746062@163.com
-To: Manivannan Sadhasivam <mani@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>,
-	Luca Weiss <luca@lucaweiss.eu>,
-	Bjorn Andersson <andersson@kernel.org>,
-	linux-arm-msm@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Mingyu Wang <25181214217@stu.xidian.edu.cn>
-Subject: [PATCH] net: qrtr: fix refcount saturation and potential UAF in qrtr_port_remove
-Date: Sat, 30 May 2026 16:22:43 +0800
-Message-Id: <20260530082243.1123402-1-w15303746062@163.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GdU6//Z+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E7211F00893;
+	Sat, 30 May 2026 09:00:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780131605;
+	bh=tCkX3zxuOePO0xgl/G8aJ7qh6MFUTVrX80ZM3bIG+OA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=GdU6//Z+InKdr3nS5pCmM0VXPaeXMoPCJGpasxqDehk4RXaOch2MjM+Oqxm24yL2s
+	 R73IgTCRm3kwkkt4a0Y7Lv1gsJza8WgaSfne+tdu55hBTffBh7h5qH5yLTgv5YThUf
+	 pSrNz/A9Uq5xqRtoxUbCF9vJRn/kWKjViAQHTLjDugd4CX/qN2pCn/KIRPwdEt11WH
+	 k01M2Oe1ivhaL3RPXjTMYr1IrbOJa16MWmo51agXg5nnOAszJ8f3v3YppioITOKSnm
+	 AVNHLVSNcKfXtJ7Nyp8UyHn67/Kk+9BjKm0LsD+CSsR0CG2FmGqelwwUXXysm1YpSq
+	 Fe2clWneEKoBQ==
+Date: Sat, 30 May 2026 11:00:02 +0200
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
+Cc: Piergiorgio Beruto <Pier.Beruto@onsemi.com>, 
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net" <davem@davemloft.net>, 
+	"edumazet@google.com" <edumazet@google.com>, "kuba@kernel.org" <kuba@kernel.org>, 
+	"pabeni@redhat.com" <pabeni@redhat.com>, "robh@kernel.org" <robh@kernel.org>, 
+	"krzk+dt@kernel.org" <krzk+dt@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>, 
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>, "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net-next v3 13/14] dt-bindings: net: add onsemi's S2500
+Message-ID: <20260530-adventurous-venerable-buffalo-edd6d4@quoll>
+References: <CY8PR02MB92494D02A1209BC9BC72EAC883162@CY8PR02MB9249.namprd02.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wBnJtVUnhpqr9W1AQ--.60856S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7ZF48trWrXF13WF4UWr1xXwb_yoW8KFW5pr
-	WFyan0y34kGr1DKF48Aa18Ga48ZFyrJrZ3GFZ3Can5ZFn3AwnrZw10yr1Y9FyUCFs3JrWx
-	ZF1DCFs09FyYyFDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07j5EfOUUUUU=
-X-CM-SenderInfo: jzrvjiatxuliiws6il2tof0z/xtbC4xjewmoanljxjAAA3s
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CY8PR02MB92494D02A1209BC9BC72EAC883162@CY8PR02MB9249.namprd02.prod.outlook.com>
 
-From: Mingyu Wang <25181214217@stu.xidian.edu.cn>
+On Fri, May 29, 2026 at 06:41:35PM +0000, Selvamani Rajagopal wrote:
+> Add YAML device tree binding for the onsemi S2500 IEEE 802.3cg
+> compliant Ethernet transceiver device.
+> 
+> Signed-off-by: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
+> ---
+>  .../devicetree/bindings/net/onnn,s2500.yaml   | 62 +++++++++++++++++++
+>  1 file changed, 62 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/net/onnn,s2500.yaml
 
-In qrtr_port_remove(), the socket reference count is decremented via
-__sock_put() before the port is removed from the qrtr_ports XArray and
-before the RCU grace period elapses.
+Where is the rest of patches? Where is any changelog or cover letter? I
+downloaded entire thread and there is nothing.
 
-This breaks the fundamental RCU update paradigm. It exposes a race
-window where a concurrent RCU reader (such as qrtr_reset_ports() or
-qrtr_port_lookup()) can obtain a pointer to the socket from the XArray,
-and attempt to call sock_hold() on a socket whose reference count has
-already dropped to zero.
-
-This exact race condition was hit during syzkaller fuzzing, leading to
-the following refcount saturation warning and a potential Use-After-Free:
-
-  refcount_t: saturated; leaking memory.
-  WARNING: CPU: 3 PID: 1273 at lib/refcount.c:22 refcount_warn_saturate+0xae/0x1d0
-  Modules linked in: qrtr(+) bochs drm_shmem_helper ...
-  Call Trace:
-   <TASK>
-   qrtr_reset_ports net/qrtr/af_qrtr.c:768 [inline] [qrtr]
-   __qrtr_bind.isra.0+0x48b/0x570 net/qrtr/af_qrtr.c:805 [qrtr]
-   qrtr_bind+0x17d/0x210 net/qrtr/af_qrtr.c:901 [qrtr]
-   kernel_bind+0xe4/0x120 net/socket.c:3592
-   qrtr_ns_init+0x1a6/0x380 net/qrtr/ns.c:715 [qrtr]
-   qrtr_proto_init+0x3b/0xff0 net/qrtr/af_qrtr.c:169 [qrtr]
-   do_one_initcall+0xf5/0x5e0 init/main.c:1283
-   ...
-   </TASK>
-
-Fix this by deferring the reference count decrement until after the
-xa_erase() and the synchronize_rcu() complete. Furthermore, replace
-__sock_put() with sock_put() to ensure that the socket memory is safely
-freed if this happens to be the last reference, preventing memory leaks.
-
-Fixes: a365023a76f2 ("net: qrtr: combine nameservice into main module")
-Signed-off-by: Mingyu Wang <25181214217@stu.xidian.edu.cn>
----
- net/qrtr/af_qrtr.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/net/qrtr/af_qrtr.c b/net/qrtr/af_qrtr.c
-index 7cec6a7859b0..9ddc8657f7db 100644
---- a/net/qrtr/af_qrtr.c
-+++ b/net/qrtr/af_qrtr.c
-@@ -707,13 +707,13 @@ static void qrtr_port_remove(struct qrtr_sock *ipc)
- 	if (port == QRTR_PORT_CTRL)
- 		port = 0;
- 
--	__sock_put(&ipc->sk);
--
- 	xa_erase(&qrtr_ports, port);
- 
- 	/* Ensure that if qrtr_port_lookup() did enter the RCU read section we
- 	 * wait for it to up increment the refcount */
- 	synchronize_rcu();
-+
-+	sock_put(&ipc->sk);
- }
- 
- /* Assign port number to socket.
--- 
-2.34.1
+Best regards,
+Krzysztof
 
