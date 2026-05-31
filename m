@@ -1,76 +1,75 @@
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D20723EAA0
-	for <netdev@vger.kernel.org>; Sat, 30 May 2026 22:46:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0962265606
+	for <netdev@vger.kernel.org>; Sun, 31 May 2026 00:01:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780181217; cv=none; b=qQI8oR1bAuJbHxBAWj1UoCJVRI0ZKZLgmOO4l0to7G7jR6NAYu/NH5ESX3E42xs625kof6BdKk3RbV/uQzboT8KXosA0RQ0425MsjojWdCzmbjypbaer7XQB9ja+l2Akl6uNcyDhIpD+43ku2g62HFThSo0kh8q+YyJqN9pCxqw=
+	t=1780185663; cv=none; b=NbUPbildyl7RZQYrA0D3/COTITtb1JFF2fTZMq9cwBvQxXZi6Tiq4rPnS7ik0ZrKAHrqInNNH1XMpa94DDtAUE75g6QA4R0ScFe1e3UeebDHBihupJ2gncFJ89JEs4UtFUAnz1CFaKEaqAkADLJwQ4fqmG7BmpClYiPp56fXL7U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780181217; c=relaxed/simple;
-	bh=ZQRBfuTpW858XAy4W91USneKqQbvS7ZTIRzYZvR9kCc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TDx0JLCu3QFD2gVvb3utc2TUiFUd4pyarl5bm7xsyD23Ui2DDvsv1ubBYuGnXnQ/1OBhHSM7708ormVweYj7wdjyPZ0H9v96oScBCm0KYY+u01tGfi9WScy4BjoLPBtIWladWA8fyY/Cjw6t3R0YWvSyHtS2NnwRdHngMKvrVE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=K0ADw+Ij; arc=none smtp.client-ip=209.85.216.52
+	s=arc-20240116; t=1780185663; c=relaxed/simple;
+	bh=zh/J5O9cbpUUOMNdVuju+UqlCfC3OlTpS7JetQPYw3U=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BJkYAA0VVsfTqD+4Ekm8DqxmHi4GGi2iW7qSfx3P7tm9ngCusYHaMm1S3moohR3Q8NioCqsnyMYV6V5ROnyjRtCSddssBewZYzJW6V+h8bbTKbpoyp4vzfUL8P8ijkdTyL11lfCKUl9Bg1FXPjQ+TM6YvpB73mJbooGF2Ba9dW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=P/h5ElXC; arc=none smtp.client-ip=209.85.214.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="K0ADw+Ij"
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-36d5b11201aso389715a91.2
-        for <netdev@vger.kernel.org>; Sat, 30 May 2026 15:46:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P/h5ElXC"
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2c0b944f6edso3701745ad.2
+        for <netdev@vger.kernel.org>; Sat, 30 May 2026 17:01:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780181216; x=1780786016; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1780185662; x=1780790462; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=BdCe29b/RCqYoRCAq21CObi9o5BQunwDqEEx86iglz8=;
-        b=K0ADw+IjZ9CtUJWeAXdrqITIMXtT8vOmCZLqEJyGC3StiW0BiZa18jPGGT8f/WWkPI
-         EVXCG4KnWyJBf+sWYk+aRdA0mnH2pEjDPJiLLVDwX6INTUoacYrhwyqbcRmFJnw/Kb4x
-         5cRNruyP6CCWFz1CwmE6w9IaSX4xuFNF/kMQ85AEGkGFmENCrIi519mqluadYgVaI0wg
-         0Ylej1pOW2TY1ppjINrhuvQMVadM/fi+iBv0P63an6KiLR/w+9s1pqcbc3LaSMcVCgXt
-         GT7/aet3KPdG/m3+xHkCB/O8m98KLSleUHbyBTO2/PTtLpmEzcWDv2kQGl82zK/e2xML
-         r6Yg==
+        bh=z9xBFzOHM8JQ7cF0W3FG0+6As5LbaCUbhnxVDSKZaKQ=;
+        b=P/h5ElXCpBAPWTRJHyh/tIMm1+DNHjYywWak53QCoFzv6qmU4cl6B2aunNbPJrVMiU
+         YHLX9sJT+zPjJoEaVSdrShGEr8lVu8UZHdICSehm4DdmNtJv3Jy5SOlc0MZazuQGw+Xd
+         qdgl6DHtxhkgHw3WINLAHMyuLjb3PPHGpriUj1xKxVmO/Y4qJ/eqXstSbChpEPNB/TYa
+         eKFB/tgQHNeOdTArhpfUhETV6H560AVMD1/rxRR09E8nVyCkhnC7qTmgUQXn6Xd+vDZy
+         bK2NaLHOgqw2Y8yVtHQsWYD13h/rNgfOgDsV8Rv99GxrIOQCZtQR7QflEBW4Ztgm6Miy
+         Ol3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780181216; x=1780786016;
+        d=1e100.net; s=20251104; t=1780185662; x=1780790462;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=BdCe29b/RCqYoRCAq21CObi9o5BQunwDqEEx86iglz8=;
-        b=CaTDtXmM1/r8B1ugVRoJ482wAvKIqCiv3DkLVwLzNTAwEUX1F/PT9p21tIL6Wgv8rD
-         QtCRyngp9cUc1FhhnkiPFUkim0kVk9ABfm0X45Fp0P3RJyh1mGFjs1JpUF1dc8NnGKR0
-         cstz7B1BD/PAwRqM51xOmDZlp/8hk6FMRHV7uokdwB+Isc1/zNWuuLbW3k4MqbCSPUHJ
-         FyTVMI/hB4FZd0dt5hn21tVWJbamIep9EqdYC84mHWLIl1eie0nf7qSro7wqfY67030O
-         MXkvkGTUtJMeq66M060w0TARGVc8356F/f5ICLrhbxo9lNnFjbW0lq5Q3XPJZ0ArmMY1
-         2kZA==
-X-Gm-Message-State: AOJu0Yz+PwW8YxlOyl/HWfHP2mCuOZx60UUMnFiPaEZyaYI6DpXEhDnr
-	eW9Cl8NfJ3/T/1zY63nLewrX6OI4FuTkQk/YPrnnTY+UwdHnz7FB6Lkg6RSVBefg
-X-Gm-Gg: Acq92OEmSpVNf4f9jzkxc7W+ySLZDFi/tfYHTdiDFUzcjdNxn1uTVMVR/BaUz2wsaiG
-	msxgjMUJvVdMsqJXDWyzJ44guCaKcKpwgE86xlHzjKNE6w4sVw9WWLGBqrftGBv8I8SMWmuyTi0
-	iryrzxUGLpx1ShjeIlU+z6U4eXsvgjuhX7rRcPFSr8yQCRoq6P7YE2S2dpNZt2vdhzLGI3i4dWa
-	MKW/N0Ik07Qn1WEnVyzyU8mEvb7hEPg+CjLpQvPz3ikUZsG2jpKHJyZPgLDcave8uDq4ttkBc79
-	LscY47ZwlPyfIv2V5ZZNU1+TdGs1X57CeraIbPMmOnx+ESxauJfK6QH3MIlKTMmbozNDAAMbzwn
-	hrGAQ54O+5Vcx3bwZoDhjw+1f9bNp8y0Hdx1NIbbWrCgw8m1UJQHcYdiO/J62DnW+ofLIjnOtxI
-	SppuKPcnQ/ztCONzwdirvLWwyqL7nr5M/vu6cvFQTI/R2xdMiI0IIbJvyZgpDxXIqftC9voIER9
-	SRK6iZGNBog+hI=
-X-Received: by 2002:a17:90a:fc4c:b0:36b:7f69:c152 with SMTP id 98e67ed59e1d1-36c501b813cmr4888574a91.18.1780181215735;
-        Sat, 30 May 2026 15:46:55 -0700 (PDT)
-Received: from Ubuntu.. ([49.37.171.82])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36c689cb2b7sm3332611a91.7.2026.05.30.15.46.52
+        bh=z9xBFzOHM8JQ7cF0W3FG0+6As5LbaCUbhnxVDSKZaKQ=;
+        b=DOrWLUSHArGx5gY7OoCkpLGseUoKpCp5BhtS6sGGZ8DIl5YeMuvnuQ1BvyOj2PIIMb
+         TzISDDsW1jeaHTgvCfQLUyTVat0pQCFz+UImZXCrmtlCUcslAVSot6ezUYDqU088NQkC
+         5s9+29O4EkdosASSKDg20ABf1YIbs2B3mJBY/77W+aDuLSzsxvr6pH2JEXHVT3DU4D2R
+         UVuFgy0vfIA604VBuki80bW+VkpA+CXqXUvAar/9ZmCGaJAEKzvj/NyWEpu23o/6BQcM
+         XKrEO0siTUHyUHKt03CHExdcVlHDBXOaV7NgznmN+RgWfIqc3WgLd5vqb5oUjuAVSu4K
+         KSOA==
+X-Gm-Message-State: AOJu0Yzj6c6R+LZizzSMbmZPG689Z56RR43zXZbezTLBWih29vk7bdbg
+	I9hbm9eBwiPanuTcVbJqKclcjxlXbI+RaWs7JXMRw/PWta41udCl0KWQR/qoMX8a
+X-Gm-Gg: Acq92OGAHSoa348JYdi9EfgviszsnEG37px2AEDdSqN5JgrUIAbziCu1+PM6leirkng
+	4BqkhjDiqB0Fl0MDMhQVdNYCHqX9DyFFySigp7kGKY/gSmrgBuqwtQuAIKdaRurZE+Y5E0hLAcd
+	2Ns0AZWgqmiuWFtDf7RlMKQSsz1uRAhmDZGr7pFoC7Fbabh3GQXA1fhp7dxZJvrRg0Sft0umQbk
+	GVifTx0xzfP0QpsvcwCpG+NCWqnellMLwuU2Vtkk0cvLmObWbEzdm0bUnONZCcwgxvwdyLlfkox
+	wLZ6Kf/WW8kTnU/BKrXa9khfSw1EKTdxMmQTBqVgTlbf1SPHGD2I69ZvpHjE3Z59yr5fJOIfpeB
+	di2bnNm5ZEYxjzgYAtBIhsa2qnOradN+ncQkvL8XkMEZyjERfHy5z2fXnz/BZNAMVNTaUdhrIii
+	KQsHXiJVWS7EWKIwH2OfbbTXzRbOubBD7Vh9BAkXsHE4WEiBcFfe5Vg0unrxhEqHbERK6Iy+nh7
+	P8dujfSn+pul9k9CrzH2qmSuCKZnNqlwzCiaAWZdLmJwQ==
+X-Received: by 2002:a17:902:cf12:b0:2ae:ce35:2686 with SMTP id d9443c01a7336-2bf36779df6mr63872475ad.5.1780185661996;
+        Sat, 30 May 2026 17:01:01 -0700 (PDT)
+Received: from ryzen ([2601:644:8000:5b5d:7285:c2ff:fe45:8a32])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2bf239e71cbsm59106165ad.15.2026.05.30.17.00.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 30 May 2026 15:46:55 -0700 (PDT)
-From: Manish Baing <manishbaing2789@gmail.com>
-To: jk@codeconstruct.com.au,
-	matt@codeconstruct.com.au,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	manishbaing2789@gmail.com
-Subject: [PATCH v2] mctp: serial: replace memset with zero-initialization
-Date: Sat, 30 May 2026 22:46:46 +0000
-Message-ID: <20260530224646.160777-1-manishbaing2789@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        Sat, 30 May 2026 17:01:00 -0700 (PDT)
+From: Rosen Penev <rosenp@gmail.com>
+To: netdev@vger.kernel.org
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Thomas Gleixner <tglx@kernel.org>,
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH net] net: fec_mpc52xx: add missing kernel-doc for @may_sleep
+Date: Sat, 30 May 2026 17:00:42 -0700
+Message-ID: <20260531000042.369043-1-rosenp@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -79,39 +78,28 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Use empty brace initialization (= {}) instead of explicit memset()
-to zero-initialize stack memory to simplify the code.
+Add the missing @may_sleep parameter description to the
+mpc52xx_fec_stop kernel-doc comment.
 
-No functional change.
-
-Signed-off-by: Manish Baing <manishbaing2789@gmail.com>
+Fixes: c35a0824e88b ("net: fec_mpc52xx: Replace in_interrupt() usage")
+Assisted-by: opencode:big-pickle
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
 ---
-Changes in v2:
-- Fixed a compilation error caused by a duplicate variable declaration caught 
-  by the kernel test robot.
+ drivers/net/ethernet/freescale/fec_mpc52xx.c | 1 +
+ 1 file changed, 1 insertion(+)
 
- drivers/net/mctp/mctp-serial.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
-diff --git a/drivers/net/mctp/mctp-serial.c b/drivers/net/mctp/mctp-serial.c
-index 26c9a33fd636..df721ca4e07b 100644
---- a/drivers/net/mctp/mctp-serial.c
-+++ b/drivers/net/mctp/mctp-serial.c
-@@ -536,13 +536,12 @@ struct test_chunk_tx {
- 
- static void test_next_chunk_len(struct kunit *test)
- {
--	struct mctp_serial devx;
-+	struct mctp_serial devx = { };
- 	struct mctp_serial *dev = &devx;
- 	int next;
- 
- 	const struct test_chunk_tx *params = test->param_value;
- 
--	memset(dev, 0x0, sizeof(*dev));
- 	memcpy(dev->txbuf, params->input, params->input_len);
- 	dev->txlen = params->input_len;
- 
+diff --git a/drivers/net/ethernet/freescale/fec_mpc52xx.c b/drivers/net/ethernet/freescale/fec_mpc52xx.c
+index a770e7edb1dc..4f555bc13ddf 100644
+--- a/drivers/net/ethernet/freescale/fec_mpc52xx.c
++++ b/drivers/net/ethernet/freescale/fec_mpc52xx.c
+@@ -692,6 +692,7 @@ static void mpc52xx_fec_start(struct net_device *dev)
+ /**
+  * mpc52xx_fec_stop
+  * @dev: network device
++ * @may_sleep: whether the caller can sleep (e.g., to wait for tx drain)
+  *
+  * stop all activity on fec and empty dma buffers
+  */
 -- 
-2.43.0
+2.54.0
 
