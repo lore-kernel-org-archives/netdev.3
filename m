@@ -1,38 +1,48 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D01493909B9;
-	Sun, 31 May 2026 15:26:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCF273911C5;
+	Sun, 31 May 2026 15:26:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780241171; cv=none; b=YLVm5WXp5fvWYmA5tZxJS95nI+yRRNRTtV5YgfJCIfxketchvoK+DLS2fVSBMff556JbSjdxx7v5x3dyTtpJPEMOKiU9ogODTRG3D+72ottmSMmrsG7n5Tg3Tswll8o/FM6nnGRTaTvjjP/vOumK0UqrzzrxCDb1K162WBCp9ZM=
+	t=1780241195; cv=none; b=dw0R7m5NQpNQ1l84m6BkChaTDzzkZTAly8XPXHvwZJKA2Rwyin4eu6irSZMIOlwT5q5TbB4YzENY6IUIvJpv4tmhb/4b6vyRn8xNb3yHrXV05Vukw4BOHTcQ3K5czDXTfnmwlfCYRo76mzHCzqs4bpY3a7HaCG1JVHwShcCoGhs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780241171; c=relaxed/simple;
-	bh=geeBjAYo+ZS27xmhhVpgu0J99dHFpSPuatjDStqgGJo=;
+	s=arc-20240116; t=1780241195; c=relaxed/simple;
+	bh=tVSVhJ+jtd3KUuQBDtje4A44ZDG/J3xhoMi+m9aE848=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KJb8/IdKR3xOz3EOkHEYHJXeTV704unVTqwwGkE1kA99Dqkqp3beBxUZe/w+mwwLs3s9bNQ+6NdA4a2UdsNntATPYcqH3s6fWk4veqRmq+PZ4CGijeVGjF2spY3hu0hVDAmc05+4o5TvChMf7UX8p+OJ8hnnfZJtlxm/bKQB9is=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0RhIDHWx; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=Xp3oEYHeqfj+7U1gthD7ycdXLb1GDeEprFYCAGMRUNw5HU2WmlN+uonL7HPJboysPR71wIgw1qKrkyHU/GedKjyuPH+mSURS5NXLYY43lJ5FJqewCFn4DEvT6bF21Wbofys2FtNo/fbimc4QpEFABJnk4BhezNFB4+GZ4549ltc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=AVWV9et8; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0RhIDHWx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C017D1F0089B;
-	Sun, 31 May 2026 15:26:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780241165;
-	bh=Di1SkVeensE68rhHjiGO1dahyj2mqu6/cETPjqdLbcc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=0RhIDHWxuR/gBz86SE/3nyKYg0MJEFuMA3eMpwnathr+EzeUBYKT5rmr7fYa/WnCL
-	 1wkwiGHEojoC6HSDJweVD5LefC40OrhWyFm9a8MQ+X1ctNi0NFnpHwC4Z8SFtly1F0
-	 fgxdGtABIe6yY79DUP/keHC7cPsGHOaBXW903sZo=
-Date: Sun, 31 May 2026 17:25:10 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Grewstad <dogestad24@gmail.com>
-Cc: jic23@kernel.org, jacobsfeder@gmail.com, linux-staging@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	hjk@hansjkoch.de, davem@davemloft.net, netdev@vger.kernel.org
-Subject: Re: [RFC] drivers/staging/axis-fifo: TODO file and subsystem
- direction
-Message-ID: <2026053145-bungee-flyover-840a@gregkh>
-References: <CAD03fjaBJGtNATBxaYO-PAxdKC=HxYgE+M7HQ_a0O+3Sp9Mruw@mail.gmail.com>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="AVWV9et8"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=eaw9BFSli01njN1ANjFgshb0jgxlvs3haCECARd8gsg=; b=AVWV9et8EmL6zAlijtpD4jBY9O
+	LNfyy5hIT2pvEE3YcTlkfDWzETEh+BrX1+ns86rxxw0FYc7HaJ4rxsEz3kBZ22bk6Cu6hkKB2+F5W
+	NuX+KVit3h/71Bnqu36mTuvVHkX4eyk5nhoFRT+IwzK6YLqhDZhrJmOZLAGg86uv5Q1I=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wTi3W-005N7Z-Lp; Sun, 31 May 2026 17:26:26 +0200
+Date: Sun, 31 May 2026 17:26:26 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
+Cc: Piergiorgio Beruto <Pier.Beruto@onsemi.com>,
+	"hkallweit1@gmail.com" <hkallweit1@gmail.com>,
+	"linux@armlinux.org.uk" <linux@armlinux.org.uk>,
+	"davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>,
+	"pabeni@redhat.com" <pabeni@redhat.com>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net-next v3 10/14] net: phy: ncn26000: Enable enhanced
+ noise immunity
+Message-ID: <bb0c6ec9-8843-4bf0-9491-f5b5041bafa0@lunn.ch>
+References: <CY8PR02MB9249022FD77BEF360103367283162@CY8PR02MB9249.namprd02.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -41,49 +51,14 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAD03fjaBJGtNATBxaYO-PAxdKC=HxYgE+M7HQ_a0O+3Sp9Mruw@mail.gmail.com>
+In-Reply-To: <CY8PR02MB9249022FD77BEF360103367283162@CY8PR02MB9249.namprd02.prod.outlook.com>
 
-On Sun, May 31, 2026 at 08:20:35PM +0530, Grewstad wrote:
-> Dear Maintainers,
+On Fri, May 29, 2026 at 06:41:11PM +0000, Selvamani Rajagopal wrote:
+> By setting ENI bit, noise immunity is improved and it is
+> specifically meant for PLCA enabled nodes.
 > 
-> I am interested in contributing to the Xilinx AXI-Stream FIFO driver
-> located in drivers/staging/axis-fifo.
-> 
-> While reviewing the driver, I noticed that it does not currently
-> contain a TODO file describing the work required for graduation from
-> staging. I would like to create such a file, but before doing so I
-> would appreciate guidance on the expected long-term direction for the
-> driver.
-> 
-> The driver currently exposes a custom userspace ABI through a
-> miscdevice. While this provides a generic interface to the FIFO, it
-> does not integrate with existing kernel subsystem tooling. One possible
-> incremental improvement in this area could be a transition from
-> miscdevice to a proper character device (cdev) interface, to allow for
-> a more clearly defined and maintainable userspace ABI.
+> Signed-off-by: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
 
-There really is no difference between a miscdevice and a character
-device, the interaction from user/kernel is the same.
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
-> Some possible directions that came to mind are:
-> 
-> - UIO, if the intent is to provide userspace control over a generic
->   AXI-stream FIFO with minimal kernel policy.
-
-UIO provides a mmap of a device to userspace where it is controlled
-directly.  Probably not what you want to do here right?
-
-> - IIO, for data acquisition or SDR-oriented applications that could
->   benefit from existing buffer infrastructure and userspace tooling.
-
-Is that what this device is?
-
-> - Networking, for packet-oriented AXI-stream use cases.
-
-WHat really is this device for?  What is the goal of this hardware and
-how is it used today?  Do you have the hardware to test with it?  Who
-uses it?
-
-thanks,
-
-greg k-h
+    Andrew
