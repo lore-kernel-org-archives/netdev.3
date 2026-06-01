@@ -1,78 +1,224 @@
-Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
+Received: from smtpbguseast1.qq.com (smtpbguseast1.qq.com [54.204.34.129])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAB843314B9;
-	Mon,  1 Jun 2026 07:14:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A996363C6C
+	for <netdev@vger.kernel.org>; Mon,  1 Jun 2026 07:23:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.204.34.129
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780298067; cv=none; b=aDS6lHnQBivSg0cGGKwmoCFyJwxyIZmuNJe2mTCcgzWN2VvOvsA4Q2fp/3uznkuwlYi1kZHJSHMPZHOFj8FIKYtZp0qZI55wicJ0zSSAZTSC9LnbI3Q7IiFAU6o5wpo19IbAcCMizYFjEe+SYb2Jzu8n+iueQ5EI1AvObgWrvrc=
+	t=1780298623; cv=none; b=LyE9dCvmsR/Y1orvxjafF1pmlcMnquAldx0rh12KKDzCT/FSxsRlonaoDicBLGOpIXc2C91c29epkU2gA6zv99gmz2F5ka7Jj7f4c7vCiPd1rNh1+c5eOjGV5fEYTzbkmGOLxnPCbwAPUqkS7hAhQOuauMf8QdH2HlwoP1xch4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780298067; c=relaxed/simple;
-	bh=MQwfcj1z/UtX/NPyQTZ9n9JesGHpwsIUTha+9Ml5HZk=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=L+S+Gi5nqU0dgwdhdSo0YEBjZW70VU1ylb0GmbuLUtCuuJagrSrzBcL914rxyNdql6z5I+Bvn99wk/3PERcpqi5AAdrxLYgeG4MqbFVk6qbn0fZN61oGmKjL5qpXfdSoeNm5MZ5PiBKFkAhcTf4DLcs42zT79kHPs8DnTbXoUTc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=TSigyGnc; arc=none smtp.client-ip=62.96.220.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="TSigyGnc"
-Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id 2C79020704;
-	Mon,  1 Jun 2026 09:14:24 +0200 (CEST)
-X-Virus-Scanned: by secunet
-Received: from mx1.secunet.com ([127.0.0.1])
- by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id TFRZOm4DRHN5; Mon,  1 Jun 2026 09:14:23 +0200 (CEST)
-Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id A4789206B0;
-	Mon,  1 Jun 2026 09:14:23 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com A4789206B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1780298063;
-	bh=KpFZQlGb/16HVTjMY09rig/HHtsjnSRuWOZla/u0Lw8=;
-	h=Date:From:To:CC:Subject:References:In-Reply-To:From;
-	b=TSigyGnc2jtgLJSdPlWiWaG5vVIcDP/NHJrryqS3NTJd5i3u6wNqiwPpFIkeo1z4B
-	 5tuezTNa1Xytai1QJ2WhEIeQdNKGA0coHNWq5myumL8+35Xb5hO3cPTMapXazFq4FL
-	 H1l4892dPHuK0flvIPkWjwwpiNYjW0kH02eZeoE+yeMFXAsP5Matv8yPd2C5i1j8HW
-	 tTcSkRjwssAh++sP/PZYVVTjvNOzcMyry4SMo5wHnlLgqinafPSfDZhkZTUvoLEkhu
-	 r/oPFAnaX0gucaxMe1FlkuyZbKaK4/NsYh07UbUEmDIkvBCyrG8fUhXpSsfP5hBdch
-	 CyaUvje3aIZvw==
-Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Mon, 1 Jun
- 2026 09:14:22 +0200
-Received: (nullmailer pid 3271774 invoked by uid 1000);
-	Mon, 01 Jun 2026 07:14:21 -0000
-Date: Mon, 1 Jun 2026 09:14:21 +0200
-From: Steffen Klassert <steffen.klassert@secunet.com>
-To: Alessandro Schino <7991aleschino@gmail.com>
-CC: <netdev@vger.kernel.org>, <herbert@gondor.apana.org.au>,
-	<davem@davemloft.net>, <pabeni@redhat.com>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH ipsec] esp: fix uninitialised req->src dereference in
- esp_ssg_unref
-Message-ID: <ah0xTcyASTweURna@secunet.com>
-References: <20260529071847.1301-1-7991aleschino@gmail.com>
+	s=arc-20240116; t=1780298623; c=relaxed/simple;
+	bh=fDpm7PDU24WEzS4lis9uxCg/9YKzaE2GEG+73xMrPGQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=Rweuv3y1cgc6wlWYED8Eya9DzkWfpfrNLMECIRVz+s0f3ZN9w5Z2IPB3rwJ4qlNlNhcdkRdoLF6C+v0oJwYfnX9mkclXDMX0yCLSaikkDA/LfdJM89C9iVi9HbyhSS2vxt4qm/xC4GzWVaFKkGT1f5FUD+0rAmUgNV2sAb8oiCA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.204.34.129
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
+X-QQ-mid: esmtpgz14t1780298557t9f9527c4
+X-QQ-Originating-IP: AGRAIEypK124leRonXQ+tG7FABHjwkJJa7Fp1K7djKY=
+Received: from lap-jiawenwu.trustnetic.com ( [183.156.95.204])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Mon, 01 Jun 2026 15:22:35 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 4586124213648096800
+EX-QQ-RecipientCnt: 22
+From: Jiawen Wu <jiawenwu@trustnetic.com>
+To: netdev@vger.kernel.org
+Cc: Mengyuan Lou <mengyuanlou@net-swift.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Kees Cook <kees@kernel.org>,
+	Larysa Zaremba <larysa.zaremba@intel.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Joe Damato <joe@dama.to>,
+	Breno Leitao <leitao@debian.org>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig=20=28The=20Capable=20Hub=29?= <u.kleine-koenig@baylibre.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Fabio Baltieri <fabio.baltieri@gmail.com>,
+	Jiawen Wu <jiawenwu@trustnetic.com>
+Subject: [PATCH net-next v4 3/5] net: wangxun: add reinit parameter to wx->do_reset callback
+Date: Mon,  1 Jun 2026 15:22:19 +0800
+Message-Id: <20260601072221.2952-4-jiawenwu@trustnetic.com>
+X-Mailer: git-send-email 2.21.0.windows.1
+In-Reply-To: <20260601072221.2952-1-jiawenwu@trustnetic.com>
+References: <20260601072221.2952-1-jiawenwu@trustnetic.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20260529071847.1301-1-7991aleschino@gmail.com>
-X-ClientProxiedBy: EXCH-03.secunet.de (10.32.0.183) To EXCH-01.secunet.de
- (10.32.0.171)
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: esmtpgz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
+X-QQ-XMAILINFO: NY3HYYTs4gYSjvitUmV3mxL3jPsvQvXZJaPXqwdT6ryvm/90NA8cRwix
+	5qUTWfICO7BqADUXm9VpJM5Yc9VqbeGaTPdzNlymikm9NQANv6bTwdW5fgFy4bJba1jqJWx
+	JrV2J6WJLb40gFKvwi1vki0sQ1BxFOdd/6ulYsGRhrmIEsS7F7GuD/2/z1sPv87cMp4R5An
+	NIDRT6mrWKFhRNIuJBBYwQ9tkyv/4+mgsSf4Jjk9DylDQWSxXbZIcei6QpmGMZ6OVwsFzaI
+	8JWRASHpy9eEW4iP9DJU/6/zEFPr4mjA2as6Qb8aiNHzGKlyt999EFTBHa7UlhdZD+xSLXT
+	cFSePf3BjCOoICC+/23e+yaCxBAkBb9RR9ADtfa43ot5t+6dnb35EdPgYYhCwfjLa2/Sw3V
+	C0erTAnjFtKqtD0c3t5RrgoKcoEtZrmba+o1dElyMnr5yG1US42RuDgmL2bwzG5P1lsmC3P
+	0GYo1fL9ZDduDJ/vV51DSVo2HwayHQAO+pL3zfgxDpJpt8BlovhxoYjsYEzsxTyeLi92vM6
+	pN3JigXuGd6iQ4GYnW0Sijor1gESyIB9nlbvMWy2wGqZzqi4UmdeJm60D9FbqutNJwVEd9s
+	DI087knJJWnzET3y9nkW6/7wYh3wXSrla3gDs6YQ9ldYzhOG1EbDszKbNHPpO1crUZ4DnyW
+	5gjnNiu8kny0ojeCw/hhMRo7XCG5fy+yUxCSz+lFLVYUsF/GLFiweNV9kP3C6q+Zg9DhRG2
+	tNr1l6vhrZc6TCHxbVpjsKWRsTVZnO5xxMZVfWM4CQ39g+4/fwRmwMBkP0ptU59rduNjKmK
+	8RLrNTCJCctmXPDgYaC1Ztq/EwxK2rJtjyVk801vtl9dxxcM/apm1L+jaxuys7S2tq+iWLO
+	eIAk/6qPV+rJXbJZ2kXsIv+tLPr7dgSLoRuPMolLJCYjF4fJ/WiYGct3ZFrQvOD6CJ6oSxH
+	k+WorzrJtPdNqnDLnvoSmP7Cgs9L0fT7RDPZbhB5+CEipUSfV9i7htcCZLx7rMwpuDS2PbF
+	CvbZGHQQYc0IvWmSfTlusUS5OZW7TvFPvP2WidAe+FAGIxif6rfja3prBztgk/C1Um+DVFL
+	sFZukwLo24kGU0hwgMGhHI=
+X-QQ-XMRINFO: OD9hHCdaPRBwH5bRRRw8tsiH4UAatJqXfg==
+X-QQ-RECHKSPAM: 0
 
-On Fri, May 29, 2026 at 09:18:46AM +0200, Alessandro Schino wrote:
-> When esp_ssg_unref() is called with already_unref=true, req->src has
-> not been initialised yet because aead_request_set_crypt() has not been
-> called at that point. Use esp_req_sg() to obtain the source scatterlist
-> directly from the tmp buffer layout instead.
-> 
-> Fixes: 2982e599fff6 ("esp: fix page frag reference leak on skb_to_sgvec failure")
-> Signed-off-by: Alessandro Schino <7991aleschino@gmail.com>
+To implement a simple hardware reset without tearing down the network
+interface state, introduce a boolean 'reinit' parameter to wx->do_reset
+callback.
 
-Please resend the full fixed patch on top of the ipsec tree.
+Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+---
+ drivers/net/ethernet/wangxun/libwx/wx_err.c     | 2 +-
+ drivers/net/ethernet/wangxun/libwx/wx_ethtool.c | 2 +-
+ drivers/net/ethernet/wangxun/libwx/wx_lib.c     | 4 ++--
+ drivers/net/ethernet/wangxun/libwx/wx_type.h    | 2 +-
+ drivers/net/ethernet/wangxun/ngbe/ngbe_main.c   | 4 ++--
+ drivers/net/ethernet/wangxun/ngbe/ngbe_type.h   | 2 +-
+ drivers/net/ethernet/wangxun/txgbe/txgbe_main.c | 4 ++--
+ drivers/net/ethernet/wangxun/txgbe/txgbe_type.h | 2 +-
+ 8 files changed, 11 insertions(+), 11 deletions(-)
+
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_err.c b/drivers/net/ethernet/wangxun/libwx/wx_err.c
+index 982a438d009e..e249cea874be 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_err.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_err.c
+@@ -16,7 +16,7 @@ static void wx_pf_reset_subtask(struct wx *wx)
+ 
+ 	wx_warn(wx, "Reset adapter.\n");
+ 	if (wx->do_reset)
+-		wx->do_reset(wx->netdev);
++		wx->do_reset(wx->netdev, true);
+ }
+ 
+ static void wx_reset_task(struct work_struct *work)
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c b/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
+index 5df971aca9e3..d1356ff5d69b 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
+@@ -395,7 +395,7 @@ static void wx_update_rsc(struct wx *wx)
+ 
+ 	/* reset the device to apply the new RSC setting */
+ 	if (need_reset && wx->do_reset)
+-		wx->do_reset(netdev);
++		wx->do_reset(netdev, true);
+ }
+ 
+ int wx_set_coalesce(struct net_device *netdev,
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_lib.c b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
+index da4d9e229c9e..e5a45356ba00 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_lib.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
+@@ -3148,7 +3148,7 @@ int wx_set_features(struct net_device *netdev, netdev_features_t features)
+ 	netdev->features = features;
+ 
+ 	if (changed & NETIF_F_HW_VLAN_CTAG_RX && wx->do_reset)
+-		wx->do_reset(netdev);
++		wx->do_reset(netdev, true);
+ 	else if (changed & (NETIF_F_HW_VLAN_CTAG_RX | NETIF_F_HW_VLAN_CTAG_FILTER))
+ 		wx_set_rx_mode(netdev);
+ 
+@@ -3198,7 +3198,7 @@ int wx_set_features(struct net_device *netdev, netdev_features_t features)
+ 
+ out:
+ 	if (need_reset && wx->do_reset)
+-		wx->do_reset(netdev);
++		wx->do_reset(netdev, true);
+ 
+ 	return 0;
+ }
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_type.h b/drivers/net/ethernet/wangxun/libwx/wx_type.h
+index 75d74ca2e259..a8b4e84787f4 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_type.h
++++ b/drivers/net/ethernet/wangxun/libwx/wx_type.h
+@@ -1408,7 +1408,7 @@ struct wx {
+ 	void (*atr)(struct wx_ring *ring, struct wx_tx_buffer *first, u8 ptype);
+ 	void (*configure_fdir)(struct wx *wx);
+ 	int (*setup_tc)(struct net_device *netdev, u8 tc);
+-	void (*do_reset)(struct net_device *netdev);
++	void (*do_reset)(struct net_device *netdev, bool reinit);
+ 	int (*ptp_setup_sdp)(struct wx *wx);
+ 	void (*set_num_queues)(struct wx *wx);
+ 
+diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
+index 9aae0429995d..3dc8342dd3a7 100644
+--- a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
++++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
+@@ -633,11 +633,11 @@ static void ngbe_reinit_locked(struct wx *wx)
+ 	mutex_unlock(&wx->reset_lock);
+ }
+ 
+-void ngbe_do_reset(struct net_device *netdev)
++void ngbe_do_reset(struct net_device *netdev, bool reinit)
+ {
+ 	struct wx *wx = netdev_priv(netdev);
+ 
+-	if (netif_running(netdev))
++	if (netif_running(netdev) && reinit)
+ 		ngbe_reinit_locked(wx);
+ 	else
+ 		ngbe_reset(wx);
+diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_type.h b/drivers/net/ethernet/wangxun/ngbe/ngbe_type.h
+index 4f648f272c08..c9233dc7ae50 100644
+--- a/drivers/net/ethernet/wangxun/ngbe/ngbe_type.h
++++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_type.h
+@@ -125,6 +125,6 @@ extern char ngbe_driver_name[];
+ void ngbe_down(struct wx *wx);
+ void ngbe_up(struct wx *wx);
+ int ngbe_setup_tc(struct net_device *dev, u8 tc);
+-void ngbe_do_reset(struct net_device *netdev);
++void ngbe_do_reset(struct net_device *netdev, bool reinit);
+ 
+ #endif /* _NGBE_TYPE_H_ */
+diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
+index 66b8553cd820..b37c9ed57cf7 100644
+--- a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
++++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
+@@ -610,11 +610,11 @@ static void txgbe_reinit_locked(struct wx *wx)
+ 	mutex_unlock(&wx->reset_lock);
+ }
+ 
+-void txgbe_do_reset(struct net_device *netdev)
++void txgbe_do_reset(struct net_device *netdev, bool reinit)
+ {
+ 	struct wx *wx = netdev_priv(netdev);
+ 
+-	if (netif_running(netdev))
++	if (netif_running(netdev) && reinit)
+ 		txgbe_reinit_locked(wx);
+ 	else
+ 		txgbe_reset(wx);
+diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h b/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
+index 6b05f32b4a01..1e373f7fd9b5 100644
+--- a/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
++++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
+@@ -313,7 +313,7 @@ extern char txgbe_driver_name[];
+ void txgbe_down(struct wx *wx);
+ void txgbe_up(struct wx *wx);
+ int txgbe_setup_tc(struct net_device *dev, u8 tc);
+-void txgbe_do_reset(struct net_device *netdev);
++void txgbe_do_reset(struct net_device *netdev, bool reinit);
+ 
+ #define TXGBE_LINK_SPEED_UNKNOWN        0
+ #define TXGBE_LINK_SPEED_10GB_FULL      4
+-- 
+2.51.0
+
