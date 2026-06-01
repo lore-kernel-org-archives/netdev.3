@@ -1,119 +1,126 @@
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0553C38F239;
-	Mon,  1 Jun 2026 09:34:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CEDD349CD0
+	for <netdev@vger.kernel.org>; Mon,  1 Jun 2026 09:37:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780306447; cv=none; b=sbqxxZMXNn6w3CoOhlxaw8JFQrfoCpeL8rCjngCBI0ziGTTFqAqH34+fWCfsyaDesDO2iBj/IApDJWgFOCruGjtCS1urKqoICpDmYzDalLRxhrKQi6erfzXm6ByLjIrhSaK1dNs4sPmTOt+bh93Tm8DmMr8RVpTxyqpPjzUymdE=
+	t=1780306633; cv=none; b=tIYiU9Q4QvJKNhd6c7aB76ll7qtVn0deCTPi8iqeXfi9UwtdWzC+v32RL2hOB0Ithv4eYEDNB38TdG2J1o3iOkzzQfBAjbsY3fUmP7v9LUcoVdakFguDBzku3+iKcOHVDiEmi1mhWJoDN4iIQtNSnylz2HMvaGIklKyFyHmF0m0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780306447; c=relaxed/simple;
-	bh=SpNU5lkKaoh2T8XyUcCLmJSct3h0bxzkJJOVk9g3AmM=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=D/JC8Xm3FIWkAXfyDvNHGuIX2RFVF71zNWpPJ5ayI8gmsb8n+jHDEUCKgSLtd9/MtJktZK1On3aDYZQnT7/gwOCvlP7PK2+f27CRpDrLHRXHLgoIKOYtlzi14nBKuYcLBYu2NhOkhjjUi3Dvkx/VLQSeqvgZOq0RoQEWk44VeyU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=EjdYs06h; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	s=arc-20240116; t=1780306633; c=relaxed/simple;
+	bh=E887M+7PT0Puyz+jFE2Ef0lCMzJk4CHvC5bqfhSZhQM=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=h14hanhgdzEhPrBQGg7IrDbY7MkZGmqknZ8mNWatt03HxGO5jyloAwzBPBNpWsGvrAtM2hkGtSwgAnnMf92SIX9ls8DqyC3WdpyoIDEBfZP+3KFrst1YFuPTjYSrqdE6GNvlgjSKwaf0tdXxzYEcLN3rbrtZTY6IlxJJs4IRFjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BrtihC/2; arc=none smtp.client-ip=209.85.216.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="EjdYs06h"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E933CA01FB;
-	Mon,  1 Jun 2026 11:34:02 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1780306443; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=n22Kt3rk1jFC5qE9hhtSrtH0b/EPbV+dHVc+6pLORH4=;
-	b=EjdYs06hA2A74uh2nxpt5czJQrJO1mcdpIGaoLyr5iHQZKU3hbiJbROJTonl+1dx9u09QX
-	ZVB7wZRg1wJ5OETVJ2xGJZBSKCqJlVE4guLWUD060FxaZGBdMMdw/e9Fnsit4mIZ+QRDgy
-	K8lkGmnZgwUXmg/Vct7dveVygtjLS/70RtAUMl8Jq/EISdnmDW1rguJ+2zPjGwgqStfy4D
-	tbpH/z2WDBTvoaAq7KhOxyR8fWptIsPwDPFTuF6dq8KRbcmA0ihNZzTqjez3GE1wmV6EXF
-	g0Xcq7dSfZ0pMLNkuJ+cyfegvwEOUCRjXuamfHVx3PmU2gAD4sxz8f9z0bfDXA==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BrtihC/2"
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-36d98c9b596so709472a91.3
+        for <netdev@vger.kernel.org>; Mon, 01 Jun 2026 02:37:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780306631; x=1780911431; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Zp4NhxOeSbWU1mM8p9fVkrdL+x7FYGH77zoCEYu+vNs=;
+        b=BrtihC/2pFl/mFEki8BzvQYtZWFbFhG2YoyPOIiKrSYyra7EOCty3/k1Z8ZG+l2G6G
+         kKAxoFkdvyovFY95tWoOyLowmZJJ6K8amXsTG3XZZ3A9YzFayih809HiO3dxcGHoKIXS
+         qoyvciXK/dZs12zWLCvRTFSKBjT52pukkK9838NAl2BMfiXzZtcnCUKa2sAnhlGE8pZp
+         sXRN3nHmjq9V1Pvs4l1qQxz3uxQETcl0PdhZH5niNebp1eAhYVpeq36Q0zB3UiuqPkMS
+         FaIr5QtRG9wy0m1Q0ZjPhQg99e+p1cvuJyjmYhlAkw9XZTO5mJAP0VrnZoTuTKtYdqT9
+         ICcg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780306631; x=1780911431;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Zp4NhxOeSbWU1mM8p9fVkrdL+x7FYGH77zoCEYu+vNs=;
+        b=jjvkWUx8gW8xYkZcGDsYvRIEvhi0hC4SVyxt2gX5x6gLviwbnwKXr/fMYbJ19owyml
+         l9N4b+Nq07SpEOylWoXp0H8JScwkQ06eF7ZD+8zT0wAeO9r4SOkvgE+DaU1gY6D7T5/D
+         TCGmfN8DP2abrIfiv4ee4Zbadci/+bPUtlIPEFhTiNr1kkzXBeihUFEuWUMz/K3RvWnV
+         IL3EWjXCnBOeZWtuoCLBpdW+ZbOVedsUl7H5SW+pvlpsduDPCyhnrVfObXfrsRS5Gkby
+         NgzzILZtesSF91WBQu1tFk0BBfwMQL1Kd3XEt+XEKtWHMpfERvH3jWvBrCsxr+QYTgjA
+         3Dmg==
+X-Gm-Message-State: AOJu0Yx1oAGRk3dQxSDo44ez9f3575W/9DvMbVUH1+BBQZmlmoLpOf39
+	7X6V+8eoAzA3ba9p3Zv0dkXmFkoGVEtMasRWSa8fEaIh5Yq03JCvxncb
+X-Gm-Gg: Acq92OHS9HW53bRW9heE6aXRkrzwxpwV0T71H0uZM/Vf/+ekxPXYHOyfGde79YO7+He
+	FDm3g4AfW01+g8OJ6+95QU86VKGabcmIDY1yYwhfuo8HuPdfXPHN6V6WlUm4XUfecmmB1legiU9
+	+JK+sIg88iDoPAhBbLqZXPd1hErTgA1iM+PRT5aUaeoOuW2D6hR5U3jxJ8soYEzM4RVI8E3NxhG
+	zWdvj/hWayEPUYo9nmBMDiW+MOyZCPMKIHjPmBmU44eq+KH6p3lsSMs58xLSlFZbZBRsUFopd+t
+	Af+WxEJg41fzW4xvWLn75Bt+xeI6lyJsUKmCzNPqZj53vNDRrxp5TrcCSAk+yFxSRlk51OxYgTu
+	kzuFDX5Vw4Meez7xZkcWxtWCfx3gUa3zpJ94UK9wtSpLo8UlPTOh16yutHxoUFMaOWJQzLrIsAv
+	0NvLG22Ht2KfSFzLkGQle5LAw0h6Y2lj6/ysCRet9h1JcDfnPCDDKd0LvWlxjpJCRB
+X-Received: by 2002:a05:6a20:2d13:b0:3aa:f9cb:d43e with SMTP id adf61e73a8af0-3b427eb2dfdmr11140342637.18.1780306631332;
+        Mon, 01 Jun 2026 02:37:11 -0700 (PDT)
+Received: from v4bel ([58.123.110.97])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8423828159esm5528210b3a.35.2026.06.01.02.37.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 01 Jun 2026 02:37:10 -0700 (PDT)
+Date: Mon, 1 Jun 2026 18:37:07 +0900
+From: Hyunwoo Kim <imv4bel@gmail.com>
+To: dsahern@kernel.org, idosch@nvidia.com, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	horms@kernel.org
+Cc: netdev@vger.kernel.org, imv4bel@gmail.com
+Subject: [PATCH net] inet: frags: fix use-after-free caused by the
+ fqdir_pre_exit() flush
+Message-ID: <ah1Sw2g-I89BRRiT@v4bel>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Mon, 01 Jun 2026 11:34:02 +0200
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: Linus Walleij <linusw@kernel.org>
-Cc: Woojung Huh <woojung.huh@microchip.com>, UNGLinuxDriver@microchip.com,
- Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
- Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Marek Vasut <marex@denx.de>, Simon Horman
- <horms@kernel.org>, Russell King <linux@armlinux.org.uk>,
- netdev@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH net-next v3 1/5] net: dsa: microchip: Add fallback Micrel
- compatibles
-In-Reply-To: <20260526-ks8995-to-ksz8-v3-1-c530f651989f@kernel.org>
-References: <20260526-ks8995-to-ksz8-v3-0-c530f651989f@kernel.org>
- <20260526-ks8995-to-ksz8-v3-1-c530f651989f@kernel.org>
-Message-ID: <1359de47ba80bf8bbef7b5431699663d@tipi-net.de>
-X-Sender: nb@tipi-net.de
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-On 26.5.2026 17:59, Linus Walleij wrote:
-> Because of forking paths when Micrel was acquired by Microchip,
-> two devices also exist with the micrel,* prefix bindings.
-> Add these to the KSZ SPI driver so users can use the more capable
-> driver.
-> 
-> Make the KS8995 driver mutually exclusive with this driver
-> to avoid probe races.
-> 
-> Signed-off-by: Linus Walleij <linusw@kernel.org>
-> ---
->  drivers/net/dsa/Kconfig             |  1 +
->  drivers/net/dsa/microchip/ksz_spi.c | 15 +++++++++++++++
->  2 files changed, 16 insertions(+)
-> 
-> diff --git a/drivers/net/dsa/Kconfig b/drivers/net/dsa/Kconfig
-> index 4ab567c5bbaf..e704ab702c18 100644
-> --- a/drivers/net/dsa/Kconfig
-> +++ b/drivers/net/dsa/Kconfig
-> @@ -100,6 +100,7 @@ config NET_DSA_RZN1_A5PSW
->  config NET_DSA_KS8995
->  	tristate "Micrel KS8995 family 5-ports 10/100 Ethernet switches"
->  	depends on SPI
-> +	depends on !NET_DSA_MICROCHIP_KSZ_SPI
->  	select NET_DSA_TAG_NONE
->  	help
->  	  This driver supports the Micrel KS8995 family of 10/100 Mbit 
-> ethernet
-> diff --git a/drivers/net/dsa/microchip/ksz_spi.c 
-> b/drivers/net/dsa/microchip/ksz_spi.c
-> index 373e9054947c..77aecac32466 100644
-> --- a/drivers/net/dsa/microchip/ksz_spi.c
-> +++ b/drivers/net/dsa/microchip/ksz_spi.c
-> @@ -224,6 +224,21 @@ static void ksz_spi_shutdown(struct spi_device 
-> *spi)
->  }
-> 
->  static const struct of_device_id ksz_dt_ids[] = {
-> +	/*
-> +	 * Legacy Micrel bindings. In 2015 Microchip acquired
-> +	 * Micrel which is the originator of the KSZ series, and
-> +	 * devices branded for Micrel already existed, as well as
-> +	 * some device tree bindings. These two products are identical
-> +	 * to the same Microchip products.
-> +	 */
-> +	{
-> +		.compatible = "micrel,ksz8864",
-> +		.data = &ksz_switch_chips[KSZ8864]
-> +	},
-> +	{
-> +		.compatible = "micrel,ksz8795",
-> +		.data = &ksz_switch_chips[KSZ8795]
-> +	},
->  	{
->  		.compatible = "microchip,ksz8463",
->  		.data = &ksz_switch_chips[KSZ8463]
+On netns teardown, fqdir_pre_exit() walks the fqdir rhashtable and
+flushes every fragment queue that is not yet complete using
+inet_frag_queue_flush(). That helper frees all the skbs queued on the
+fragment queue but does not set INET_FRAG_COMPLETE, and leaves
+q->fragments_tail and q->last_run_head pointing at the freed skbs.
+The queue itself stays in the rhashtable.
 
-Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
+fqdir_pre_exit() first lowers high_thresh to 0 to stop new queue lookups,
+but it cannot stop a fragment that already obtained the queue through
+inet_frag_find() earlier and stalled just before taking the queue lock.
+Once that fragment resumes after the flush and takes the queue lock,
+it passes the INET_FRAG_COMPLETE check and then dereferences the freed
+fragments_tail. inet_frag_queue_insert() reads FRAG_CB() and ->len of
+that pointer and, on the append path, writes ->next_frag, causing a
+slab use-after-free. IPv6, nf_conntrack_reasm6 and 6lowpan reassembly
+share the same flush path and are affected as well.
 
-Thanks
-Nicolai
+Mark the queue complete and reset its remaining pointers under the same
+lock right after the flush. With INET_FRAG_COMPLETE set, the insert in
+each reassembly path bails out at its check as soon as it takes the
+queue lock and no longer accesses the freed fragments_tail.
+
+Fixes: 006a5035b495 ("inet: frags: flush pending skbs in fqdir_pre_exit()")
+Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
+---
+ net/ipv4/inet_fragment.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/net/ipv4/inet_fragment.c b/net/ipv4/inet_fragment.c
+index 393770920abd..d532f6182c8a 100644
+--- a/net/ipv4/inet_fragment.c
++++ b/net/ipv4/inet_fragment.c
+@@ -243,8 +243,13 @@ void fqdir_pre_exit(struct fqdir *fqdir)
+ 			continue;
+ 		}
+ 		spin_lock_bh(&fq->lock);
+-		if (!(fq->flags & INET_FRAG_COMPLETE))
++		if (!(fq->flags & INET_FRAG_COMPLETE)) {
+ 			inet_frag_queue_flush(fq, 0);
++			fq->flags |= INET_FRAG_COMPLETE;
++			fq->rb_fragments = RB_ROOT;
++			fq->fragments_tail = NULL;
++			fq->last_run_head = NULL;
++		}
+ 		spin_unlock_bh(&fq->lock);
+ 	}
+ 
+-- 
+2.43.0
+
