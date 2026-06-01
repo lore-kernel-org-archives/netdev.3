@@ -1,134 +1,102 @@
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB4DF392823
-	for <netdev@vger.kernel.org>; Mon,  1 Jun 2026 10:40:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94127213E9C
+	for <netdev@vger.kernel.org>; Mon,  1 Jun 2026 10:45:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780310444; cv=none; b=tP6QJJ31WXC1mxsoWlHa63F5YywxKhYp6G5aZ5X92vmf7D7cX2LcLW72f/4p9NyXj55mJmdjNmhnqCLSEd1lWV2HrSJRjHJ0Ixby4S2Im93gqfQdWuMl4OnjU11GIFz9vhsUQuJKW/sPcNflQUvu9Tiuhue60iYnaPFrtg/agPU=
+	t=1780310712; cv=none; b=d2NN9AxjkVsEijXj/6lg/+CuvsJUykCWoNsOS44weQr78E2nuo865ly6TRRx5xNj8RbEor5L6GPbefeelu8WQ2pM3+UK0CJastWRspS35K/uJ7QB2tEnWuIinGkVxEIRz3EaZHhlknUoG7EcfkpUz5bFs8ry4vnSY9wy06to/5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780310444; c=relaxed/simple;
-	bh=EkCsVuOS3etedE64cU5lX0jbTdkAp04wTWAI6ZlqVKY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=t8m7hHSokBg+a2Cffqdhu1QPD3WGBWBGPCRimVsFnDnbtEGtSWOVH/P5SsATqDP1/l2P64UF4bFzP1ZlbZaK+W0rJ+PsKw2qwMYUyMzT5yPX4NA/Oxipo+9ndXqxf5rMTo/ZKw9p5hMBvKUk4lqMogFDMfMlJWw6WRRW1GSdZoI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=priaKdKm; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1780310712; c=relaxed/simple;
+	bh=C5labr5TltnbCZFWev2l9J64VPXKI2fHbdqayl0yXt4=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=OEG+1+454S+jfVl4pXrqIrkaGLAq+a4Qyi1TSoAJEh3R8KRf2dIwQ49cg/WJWCt7/tQ5SOqxSog8HfX6BVOiun54Y1nzhdFCKOsFXrqmEzO1wcvVu20K7pnyxfahpZGlmugAzGQSeHKrFG6z4XgybHEvbNgFgCMDHeBlHh05IaM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=atPaxXrF; arc=none smtp.client-ip=209.85.208.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="priaKdKm"
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-490acbb0f89so2932975e9.0
-        for <netdev@vger.kernel.org>; Mon, 01 Jun 2026 03:40:40 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="atPaxXrF"
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-6870ad8072eso13026729a12.0
+        for <netdev@vger.kernel.org>; Mon, 01 Jun 2026 03:45:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780310439; x=1780915239; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=gJiKzGg+XgzIdTa55YrtzezJxfroZkkm8edW9QS1BLY=;
-        b=priaKdKmslSbMiI8n5US3NE/6QDvofetu0jTV1/3oXolLwPqtnHDBoAoc4JUSnDmaS
-         ctfSIGuDSlGV+zkkWjDSIIKlPbrlQ7/I26rjyonk3g40G9UEeG6isKmfLP0hKsmlkBKM
-         O3Xjl3bLxJfRhq5m7p/krWUX0R5ZDw7FBNqrSmKz5wlSwV+FIyba0A18i18z2aT8Yv8R
-         CnKF2p89XUbw7UZKjG9T3u/ShaDPc/WFMRxAMcKapdReEkWfhAENNxn1i4MpK3l3l6cX
-         ihBRfq08V9T7IVCVtvNP/CtxFy/x5OYr7O4SUvKRZAmSb3YBWt3N+6tjOjOS/LTOM7bc
-         yqIw==
+        d=cloudflare.com; s=google09082023; t=1780310708; x=1780915508; darn=vger.kernel.org;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=C5labr5TltnbCZFWev2l9J64VPXKI2fHbdqayl0yXt4=;
+        b=atPaxXrF00+u8w11dIneZFlXxqDi2Iu5BPf7l0ULaEoZcmgJ0xD9Qxgqv6eEolppIm
+         NMotulOPAOg+qTxA8VjvxwvopnEJ0hvbiVE5XuE9Amxy4lS3ZJN4sjF8AtFVtncLWGq1
+         Mt8olpuWpUhzIyDGMiiCsCcys+PE9EFywey3A89MI/YtS7Q+YfBLfTuFAtHVSwHoMt1B
+         Dop7lUKSLDghY7RpgPMTMWY+h+SX/ghBZLAc1kcns25xmPEjJkfKyHKyzwwBLPOpqwYS
+         R/sZyfCM6a2zOlu1Rz5RwkJkxFKzVjofSLBhoySnStkmaxI5P3ny2LyXKP09zZcFG+Vf
+         bptw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780310439; x=1780915239;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20251104; t=1780310708; x=1780915508;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=gJiKzGg+XgzIdTa55YrtzezJxfroZkkm8edW9QS1BLY=;
-        b=ZI+SamraJ4mh0Nyn1yecHEpoogILqbaxSdU9w5NpOkkOpfRG961nP23QOL8mpW+u54
-         qWMvNhS5wl1IU5B+oMVLsrdAhXifzuJMnrLjhXGNgAvI+vHY7CH1oN9PrlAKfd4IuwwQ
-         w4fTGJeeOTjakCmwBg5uLW15gTstUcaq7uOvwLOVVgm8t22x59qMtruyYZxJzrSNr7PG
-         URYR5fvFbLdrSEGNodJoG4AfDRik5oF7MHT6lvy+LVpfhaiONrBux3lgtSeKu0sDXeRV
-         vRD9ieP4LJXTHqJmRviFes3HEB34bFP7Ln8DUHS1uDhJuX8SzdkQfSUiQKyl6ju3FvRc
-         0zgA==
-X-Forwarded-Encrypted: i=1; AFNElJ+2VTmicZCEiLYFjitTHYSgw1AbL2b1aImnLvYv5AljD2rYVMK3IxeEVWqm48bXCUD1N05f5+s=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxNoKRrqesJZ+6S1mhqfPb2zy5sniWi0hBbXp4PBofWK6HnBue6
-	6ynkS1ISFSZSiDjQwyknD4PAe3G+EFUNzUHMYlYJuRRCpprOwIPsJI7b
-X-Gm-Gg: Acq92OFD4DCWjy8vo29gD5BZ4rjO76qJw3Il/9mIhwVxwwN1vMn2jWeIC4gcK9HxX+J
-	Z25f3QocrnB9zAhBwy02hxRrVv4qh6hIPGcwK6MlOvF7LBm+1EB5KHO2B3SuluBHrIl0KVj68P9
-	sr19NGBceSWW8sh+jeG5fhY4+kD4Euw7cN8e3/NubUCkfy8wUmq3iHrKukvfCKeHHMQfyxdc+9C
-	FDKPIfwqq0l/y0KycQB6HVrtbcVg7mQNEPiMnw8CZTyotCDk4lYKR2a8q4JNXxCOQ+RxAWBxIZ+
-	40T9xFz/JycgZLuMWz8bC20Mc59kWEXfs6z79T9VxuNc9hksVhFZm8y142MyNEGLyYu1ydrOpgX
-	EoKpQhQtU819Ywf3JwYN1guxXuBV/OhRMJXVS/cgBU8pE425J0Lrq8w+x2autx7ZSIZf4Dk+9Dx
-	7BMkx+mC4pG7AhTW7Hslowaj9CvK3aUhvKlgvscYYyhsdBS+I23+cDcD3m1P6ZW90bdDH8ynNv0
-	3aNrffffXcyBY5T+pJW
-X-Received: by 2002:a05:600c:35d1:b0:490:af90:f9c2 with SMTP id 5b1f17b1804b1-490af90f9e3mr2266775e9.12.1780310438751;
-        Mon, 01 Jun 2026 03:40:38 -0700 (PDT)
-Received: from [10.1.0.164] (cust-east-par-46-193-119-166.cust.wifirst.net. [46.193.119.166])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4909d68980csm265739915e9.1.2026.06.01.03.40.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 01 Jun 2026 03:40:38 -0700 (PDT)
-Message-ID: <9c28fb8e-da52-40b3-8dd3-c0bd06ac3434@gmail.com>
-Date: Mon, 1 Jun 2026 12:40:37 +0200
+        bh=C5labr5TltnbCZFWev2l9J64VPXKI2fHbdqayl0yXt4=;
+        b=lnMahxncoUCpmY3e6mj9fwfNDAcwk/kk4DJpf+PCAqNr6SkFjwGy16FqHfYXustKtw
+         x0zgHCsBi7HMD3zeXyILmzGR+Wh7g4gMgDQ6bqCXdAMEziDVNqaTgR0z4liUNjqrZZzB
+         mwpRU+RVywdNYod8yJpw+VWykBjmizMzlaR5uYTXIY+4V1UKuSNIybfOqUMgDnLMa5yh
+         RMSwx6fciai1lxzxg2hJ3+JhR1MZbEUyPJSRDmvU+OP8wX4dbI4i/5RyrTfv8xdziiea
+         /pp9cazcNlFqSSajrtjKJh+ZIkkV6b0lTo3fazO8Ddg/TRxqcRIE0n7B2P+FIecyUbck
+         jPhQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9zBUbp05XQ5OANjvEW1Z4gsiqGCJG88nw8mxgR5XIUQ9q6ERD1+PEnD0GyU/aGt6BOUS5V9nU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw/l+NgknXw/rvRDRiTRNRyt6RSB/GqrbTnWdFNrjU2D5LMfM6r
+	6VHc5G2zgWlYaxFRwHqf5mXuZUyNURLCioYIW22ShRCHoh9ulpseFRX+NQ7USXyDUGw=
+X-Gm-Gg: Acq92OEyG/yHF47p2EIB1wn8JJd5VQElsV5lVXbnd99ECrCYarmVMam7GY+qdqGhyei
+	QOynmWopGawTjAfgbyMQj/xoYY0WZDxO0IynxgkxYTeQabxVVGRn9Hvn20RSSljNj6sKPFh6upy
+	6kDrtohzOP9tf2vSFohR5vL3iP+gmBGpUK0fDWXMmgb7PWAyrk4DuubXwgSadxSzAXS0UU/E7RY
+	8LUPTgCwzEWx5Xi9Ei4r8GnmAE13AJcDOS1dGhRmUnrvIlRO0G7yB7Zf3UVIw2KcHdvSYE/5hBU
+	or3MpZunASEluOlVoe79ZLYSCel1sD/+FoQGzotuaZ/u+t2HYtbmYeT7UB70dhkEZl+0E05ICFg
+	uXkEA2nt9XVfH5YUYhkggw61BQqEZxZ8ZW02ouuxLWocUp4HdoKckrlr2XcT6WJsDr1+vnx5DqG
+	p10wXjO6Jyv9G0rE9nDKcTZFjDm+PzdpUPeSwB9LRd3RW821k=
+X-Received: by 2002:a05:6402:a50f:10b0:68d:4284:1821 with SMTP id 4fb4d7f45d1cf-68d42841a88mr1541715a12.4.1780310707721;
+        Mon, 01 Jun 2026 03:45:07 -0700 (PDT)
+Received: from cloudflare.com ([104.28.21.182])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-68ceb79188bsm1814610a12.3.2026.06.01.03.45.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 01 Jun 2026 03:45:07 -0700 (PDT)
+From: Jakub Sitnicki <jakub@cloudflare.com>
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: "David S. Miller" <davem@davemloft.net>,  Eric Dumazet
+ <edumazet@google.com>,  Jakub Kicinski <kuba@kernel.org>,  Paolo Abeni
+ <pabeni@redhat.com>,  Willem de Bruijn <willemb@google.com>,  Simon Horman
+ <horms@kernel.org>,  Lorenz Bauer <lmb@cloudflare.com>,  Kuniyuki Iwashima
+ <kuni1840@gmail.com>,  netdev@vger.kernel.org
+Subject: Re: [PATCH v1 net] net: Annotate sk->sk_write_space() for UDP SOCKMAP.
+In-Reply-To: <20260529193941.3897256-1-kuniyu@google.com> (Kuniyuki Iwashima's
+	message of "Fri, 29 May 2026 19:39:23 +0000")
+References: <20260529193941.3897256-1-kuniyu@google.com>
+Date: Mon, 01 Jun 2026 12:45:05 +0200
+Message-ID: <87cxya5yku.fsf@cloudflare.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v7 1/3] net: dsa: microchip: implement KSZ87xx
- Module 3 low-loss cable errata
-To: Nicolai Buchwitz <nb@tipi-net.de>
-Cc: Woojung Huh <woojung.huh@microchip.com>, UNGLinuxDriver@microchip.com,
- Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Marek Vasut <marex@denx.de>,
- Maxime Chevallier <maxime.chevallier@bootlin.com>,
- Simon Horman <horms@kernel.org>, Heiner Kallweit <hkallweit1@gmail.com>,
- Russell King <linux@armlinux.org.uk>, Tristram Ha
- <Tristram.Ha@microchip.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, Fidelio Lawson <fidelio.lawson@exotec.com>
-References: <20260524-ksz87xx_errata_low_loss_connections-v7-0-1cd49cfa24f0@exotec.com>
- <20260524-ksz87xx_errata_low_loss_connections-v7-1-1cd49cfa24f0@exotec.com>
- <fbb60fec5bbeb5fb83e215adbc2dcbb3@tipi-net.de>
-Content-Language: en-US
-From: Fidelio LAWSON <lawson.fidelio@gmail.com>
-In-Reply-To: <fbb60fec5bbeb5fb83e215adbc2dcbb3@tipi-net.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-Hi Nicolai,
+On Fri, May 29, 2026 at 07:39 PM GMT, Kuniyuki Iwashima wrote:
+> UDP TX skb->destructor() is sock_wfree(), and UDP holds lock_sock()
+> only for UDP_CORK / MSG_MORE sendmsg().
 
-Thanks again for the detailed testing and feedback.
+Nit: lock_sock() serializes map updates via bpf() syscall. We also have
+sockmap iterator programs which can insert UDP sockets into sockmap. On
+this path, sock_map_update_elem, we grab only bh_lock_sock, so the race
+against UDP_CORK / MSG_MORE sendmsg() path also exists.
 
-On 5/28/26 13:43, Nicolai Buchwitz wrote:
-> 
-> The cached state lives on struct ksz_device, but ksz8_r_phy() is
-> invoked per port. Setting the preset on one port is reported back as
-> active on the others:
-> 
->    phytool write swp1/1/0x1a 1
->    phytool read  swp1/2/0x1a -> 0x0001
->    phytool read  swp1/3/0x1a -> 0x0001
-> 
-> The commit message already notes that the erratum applies switch-wide.
-> So writes from non-primary ports could either be rejected or at least 
-> produce
-> a dev_info_once() so userspace can see the setting is shared?
-> 
-
-I will add a dev_info_once() to inform userspace that the configuration 
-is shared across all ports.
-> 
-> dev->eq_init starts at zero from the kzalloc, but the header added by
-> this patch defines KSZ87XX_DSP_EQ_INIT_FACTORY = 0x0F as the hardware
-> default. After a fresh boot on my setup (no writes), the read returns 0:
-> 
->    phytool read swp1/1/0x1c -> 0x0000
-> 
-> Should probe set dev->eq_init = KSZ87XX_DSP_EQ_INIT_FACTORY (and
-> dev->lpf_bw = KSZ87XX_PHY_LPF_90MHZ), or read the indirect registers
-> once on probe, so the cache reflects what the hardware actually holds?
+> Otherwise, sk->sk_write_space() may be read locklessly while SOCKMAP
+> rewrites sk->sk_write_space().
 >
-Good point, I will fix this by setting dev->eq_init = 
-KSZ87XX_DSP_EQ_INIT_FACTORY and dev->lpf_bw = KSZ87XX_PHY_LPF_90MHZ 
-during probe.
+> Let's use WRITE_ONCE() and READ_ONCE() for sk->sk_write_space().
+>
+> Note that the write side is annotated by commit 2ef2b20cf4e0
+> ("net: annotate data-races around sk->sk_{data_ready,write_space}").
+>
+> Fixes: 7b98cd42b049 ("bpf: sockmap: Add UDP support")
+> Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+> ---
 
-Thanks,
-Fidelio
-
-
+Reviewed-by: Jakub Sitnicki <jakub@cloudflare.com>
