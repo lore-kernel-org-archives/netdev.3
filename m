@@ -1,48 +1,49 @@
 Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F08B02264D3;
-	Mon,  1 Jun 2026 11:36:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBAEF369970;
+	Mon,  1 Jun 2026 11:36:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.61.82.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780313819; cv=none; b=o8jzMj1hXk7wbIKjfGnAIGu2ZJhi3va85m6S4OpmUtiSWwGIs/RhWfJHFeBsCtCgojYuEqWjRatufalTkqmCaEXCitsNo2FLJJt7DUD+QRrfpR4MnDb7mwVHsSRs4Bc1dxzbKssyHrAoB3yruTNEV4FBsa7XAbXJcddnEPEzIAw=
+	t=1780313820; cv=none; b=YInf74UNdFTZ8SMDuaM28erjVim6AJUbnLJdgtlho3z7bOa+PPTnE/00Cb93ky3Xb3CMltA5m5lKLDQL7uTsT4jzocoxpcErRufxCE6ZzxiT2cfZ9HRLMIFsaU49BJ+I7v6qfBzDeF5r7QLqy1b/GApjsY/nh84znpVsMvX5f0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780313819; c=relaxed/simple;
-	bh=znJ+HCcdCCJ1GWfD6FnKm0pxoLp3VnESK/ltQa2LJKw=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ebsrMDI2apQK0JZRXA1hrHGWovylgxw1wXtESx4Y9vof6OXA3Rkxsvb6Z3Xy/Drsn3XJvKVFLTu0C+LtQgDCy7MBZhz++5a+OBe5cUY21mqYVvvODkvdLBV/95R92LhrqAVFOLajeFjxyXCZHLGwi9g3EuQEA6w01qTsDsQooaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=Dm2TqH9Q; arc=none smtp.client-ip=210.61.82.184
+	s=arc-20240116; t=1780313820; c=relaxed/simple;
+	bh=j6a4d3zpFuVOFU00p07QqZ5aE+rM4UB+7K0gTRo3nEE=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=SDH4uWFl7QadnKNwLExP+vvgigby9ceagQ6BrR5ubipz/83HyqYSlQGmK+6JfKMesQo9DqsD4i4Lby9pId2b7DVGRVmWYN2VofgWmXkMzz+bJB6YUeTgz9Td9DMODgOG7SCNfr/GE2iVICHeQ5oWA9R62a+CubUDfD3dy0iDFwE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=gVfesZXj; arc=none smtp.client-ip=210.61.82.184
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="Dm2TqH9Q"
-X-UUID: 2f2760e05dae11f18dc8c9802ae25ab1-20260601
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="gVfesZXj"
+X-UUID: 30e130fa5dae11f18dc8c9802ae25ab1-20260601
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=MHZjnI02OfF6YizpdL3PN+VzTcT2/Mb5aOfBNWzWv0U=;
-	b=Dm2TqH9QEzJh8ciVU0mpqBhBppvENDBp/vOMqYw1EtupfSb8TOiaQ7kgLZ9kAdBhGsrKsvFyXTAWJeYg/NTi5SbtvbsyBwdWuwObNXp3BteB4g39srL3oluBePMq+8JCcFSbFNZaPitKBHUuq7XEMWSMoFuYJG7sHlcLn7nxXOI=;
+	h=Content-Type:Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=6xafbRXrQYJcQWI35leRcnL8SW7t3QtBe6w0y/exT90=;
+	b=gVfesZXjsuuiecNsZdi3yt633qkDMQq/HsOZdc49LiOO4rWe/R6x0gEj+1zxqNnO4JQldUQnxGupD+nD9obJ61Rx+5lz1jc7+r+LbFH8GWfdrFSi1BeC3onZCBbwzcJsMbH/B+mn4h2l75ffxMXM4LwlN5TYGMS+aTN7gWNjQo4=;
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.15,REQID:4b3e50e8-61c1-401f-82e9-567f8d4377c6,IP:0,U
+X-CID-O-INFO: VERSION:1.3.15,REQID:d780153d-fe90-4e12-824a-3cf82027b7e9,IP:0,U
 	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
 	release,TS:0
-X-CID-META: VersionHash:e276073,CLOUDID:0f048a30-3aec-4081-ae32-d2e919a47e1d,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102|123|136|836|865|888|898,TC:-5,Co
-	ntent:0|15|50,EDM:-3,IP:nil,URL:99|1,File:130,RT:0,Bulk:nil,QS:nil,BEC:-1,
-	COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-META: VersionHash:e276073,CLOUDID:2e048a30-3aec-4081-ae32-d2e919a47e1d,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:81|82|102|123|836|865|888|898,TC:-5,
+	Content:0|15|50,EDM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS:nil,BEC:-1,C
+	OL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
 X-CID-BVR: 2,SSN|SDN
 X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULS
+X-CID-FACTOR: TF_CID_SPAM_SNR
 X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 2f2760e05dae11f18dc8c9802ae25ab1-20260601
-Received: from mtkmbs10n2.mediatek.inc [(172.21.101.183)] by mailgw02.mediatek.com
+X-UUID: 30e130fa5dae11f18dc8c9802ae25ab1-20260601
+Received: from mtkmbs11n2.mediatek.inc [(172.21.101.187)] by mailgw02.mediatek.com
 	(envelope-from <jianyu.li@mediatek.com>)
 	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 1863607328; Mon, 01 Jun 2026 19:36:52 +0800
+	with ESMTP id 194912427; Mon, 01 Jun 2026 19:36:55 +0800
 Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
- MTKMBS09N2.mediatek.inc (172.21.101.94) with Microsoft SMTP Server
+ mtkmbs13n2.mediatek.inc (172.21.101.108) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Mon, 1 Jun 2026 19:36:51 +0800
+ 15.2.2562.29; Mon, 1 Jun 2026 19:36:53 +0800
 Received: from mtksitap99.mediatek.inc (10.233.130.16) by
  mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.2562.29 via Frontend Transport; Mon, 1 Jun 2026 19:36:51 +0800
+ 15.2.2562.29 via Frontend Transport; Mon, 1 Jun 2026 19:36:53 +0800
 From: <jianyu.li@mediatek.com>
 To: <kuniyu@google.com>, <davem@davemloft.net>, <edumazet@google.com>,
 	<kuba@kernel.org>, <pabeni@redhat.com>, <horms@kernel.org>
@@ -50,10 +51,12 @@ CC: <willemb@google.com>, <netdev@vger.kernel.org>,
 	<linux-kernel@vger.kernel.org>, <linux-mediatek@lists.infradead.org>,
 	<black-ch.chen@mediatek.com>, <ivan.tseng@mediatek.com>,
 	<jianyu.li@mediatek.com>
-Subject: [PATCH net v3 0/2] af_unix: Fix inq_len update issue
-Date: Mon, 1 Jun 2026 19:36:38 +0800
-Message-ID: <20260601113640.231897-1-jianyu.li@mediatek.com>
+Subject: [PATCH net v3 2/2] af_unix: Add test for SCM_INQ on partial read
+Date: Mon, 1 Jun 2026 19:36:40 +0800
+Message-ID: <20260601113640.231897-3-jianyu.li@mediatek.com>
 X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20260601113640.231897-1-jianyu.li@mediatek.com>
+References: <20260601113640.231897-1-jianyu.li@mediatek.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -66,25 +69,101 @@ X-MTK: N
 
 From: Jianyu Li <jianyu.li@mediatek.com>
 
-This series fix the problem that inq_len is inconsistent with
-actual remaining byte count when only part of a skb is consumed.
+Add test to verify that when a skb is partially consumed,
+unix_inq_len() return correct remaining byte count.
 
-Changes:
-  v3:
-    - Patch 2: Align macro definitions
-  v2: https://lore.kernel.org/netdev/20260528110033.3327744-1-jianyu.li@mediatek.com/
-    - Patch 1: Improve lock usage in unix_stream_read_generic()
-    - Patch 2: Follow reverse xmas tree ordering in partial_read test case
-  v1: https://lore.kernel.org/netdev/20260527065342.2463433-1-jianyu.li@mediatek.com/
+Before:
 
-Jianyu Li (2):
-  af_unix: Fix inq_len update problem in partial read
-  af_unix: Add test for SCM_INQ on partial read
+  #  RUN           scm_inq.stream.partial_read ...
+  # scm_inq.c:165:partial_read:Expected remain (512) == *(int *)CMSG_DATA(cmsg) (768)
+  # partial_read: Test terminated by assertion
+  #          FAIL  scm_inq.stream.partial_read
+  not ok 2 scm_inq.stream.partial_read
 
- net/unix/af_unix.c                            | 11 ++--
+After:
+
+  #  RUN           scm_inq.stream.partial_read ...
+  #            OK  scm_inq.stream.partial_read
+  ok 2 scm_inq.stream.partial_read
+
+Signed-off-by: Jianyu Li <jianyu.li@mediatek.com>
+---
+v3: Align macro definitions
+v2: Follow reverse xmas tree ordering in partial_read test case
+---
  tools/testing/selftests/net/af_unix/scm_inq.c | 54 ++++++++++++++++++-
- 2 files changed, 58 insertions(+), 7 deletions(-)
+ 1 file changed, 52 insertions(+), 2 deletions(-)
 
+diff --git a/tools/testing/selftests/net/af_unix/scm_inq.c b/tools/testing/selftests/net/af_unix/scm_inq.c
+index 3a86be9bda..6268b5bf50 100644
+--- a/tools/testing/selftests/net/af_unix/scm_inq.c
++++ b/tools/testing/selftests/net/af_unix/scm_inq.c
+@@ -8,8 +8,9 @@
+ 
+ #include "kselftest_harness.h"
+ 
+-#define NR_CHUNKS	100
+-#define MSG_LEN		256
++#define NR_CHUNKS		100
++#define MSG_LEN			256
++#define NR_PARTIAL_READS	3
+ 
+ FIXTURE(scm_inq)
+ {
+@@ -120,4 +121,53 @@ TEST_F(scm_inq, basic)
+ 	recv_chunks(_metadata, self);
+ }
+ 
++TEST_F(scm_inq, partial_read)
++{
++	char buf[MSG_LEN * NR_PARTIAL_READS] = {};
++	char cmsg_buf[CMSG_SPACE(sizeof(int))];
++	struct msghdr msg = {};
++	struct iovec iov = {};
++	struct cmsghdr *cmsg;
++	int err, inq, ret, i;
++	int remain;
++
++	err = setsockopt(self->fd[1], SOL_SOCKET, SO_INQ, &(int){1}, sizeof(int));
++	if (variant->type != SOCK_STREAM) {
++		ASSERT_EQ(-ENOPROTOOPT, -errno);
++		return;
++	}
++	ASSERT_EQ(0, err);
++
++	ret = send(self->fd[0], buf, sizeof(buf), 0);
++	ASSERT_EQ(sizeof(buf), ret);
++
++	msg.msg_iov = &iov;
++	msg.msg_iovlen = 1;
++	msg.msg_control = cmsg_buf;
++	msg.msg_controllen = sizeof(cmsg_buf);
++
++	iov.iov_base = buf;
++	iov.iov_len = MSG_LEN;
++
++	for (i = 0; i < NR_PARTIAL_READS; i++) {
++		remain = MSG_LEN * (NR_PARTIAL_READS - 1 - i);
++
++		memset(buf, 0, MSG_LEN);
++		memset(cmsg_buf, 0, sizeof(cmsg_buf));
++		ret = recvmsg(self->fd[1], &msg, 0);
++		ASSERT_EQ(MSG_LEN, ret);
++
++		cmsg = CMSG_FIRSTHDR(&msg);
++		ASSERT_NE(NULL, cmsg);
++		ASSERT_EQ(CMSG_LEN(sizeof(int)), cmsg->cmsg_len);
++		ASSERT_EQ(SOL_SOCKET, cmsg->cmsg_level);
++		ASSERT_EQ(SCM_INQ, cmsg->cmsg_type);
++		ASSERT_EQ(remain, *(int *)CMSG_DATA(cmsg));
++
++		ret = ioctl(self->fd[1], SIOCINQ, &inq);
++		ASSERT_EQ(0, ret);
++		ASSERT_EQ(remain, inq);
++	}
++}
++
+ TEST_HARNESS_MAIN
 -- 
 2.45.2
 
