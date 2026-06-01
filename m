@@ -1,96 +1,172 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 696DC311583;
-	Mon,  1 Jun 2026 16:42:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D57AA30F52A
+	for <netdev@vger.kernel.org>; Mon,  1 Jun 2026 16:43:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780332137; cv=none; b=B+U9s0EM+zLNVfRg7s7ffxyoSPJvL5fMJXXK+6/MfsgKi7gTCp/0yl0GYa+DM8kksgoOMFmzKQDilor4+6m0AkIChKwdvgspbSLBszI2b6X7x96XiIBB9I9e3YGlxLuv202b2KfiRM4RTAlrgrQYxmnSJUzSVPxwIwXJ5M7bERo=
+	t=1780332225; cv=none; b=AXYr5txCDtbevLIYa9JZFi/cBNNao8sdjCffp3IjAHgp3shtFw27kH0gx7IWFn+E2XQRhvYQoXax7gs9CvX3mTdMIxNq/e5w/JxHBek6LlcL45sxOnbafi3FXLNa5nRHsyO7qgi6rK8oiQ3hC6i9gimR1VuXsOtlFEaPqESwFyc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780332137; c=relaxed/simple;
-	bh=BgJ9kx1/tXUuldxL8l+n8NO5M2/EWoe/peBIxTf96cA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MkJ5xaSGkZS6brEu3BPd3WjIVIGJSGwldQ6zblOmQgV1VzyHFDGIfvnz2ZinEAzs3AvlaK5HDxv/hdN0HrCviIdSovw9Xy8HdxV49jnlyxsXHYwYJNnlZfee8Awa53Y79Wka8bEoggex7/Clnnme8VOMeWCEG4yJ5yiV4eq7zOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dN2iZrqR; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780332225; c=relaxed/simple;
+	bh=UlXEm+i+k44CyKC5aSYUVFRZQA/jHSrahJnL46L456E=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=clqxq1pgWEW8KThlueK1tm2nwysMpFjFW6JpHv/91lwC+JuDtYkJ3xfI7f34cCMNNmc2p8fNHzJcPGjNHpeLJZwWc7qelxgVWgIOX9u4KVTP0mzPRe0mbzs5kf32D9dqNufvuXB5Y3ZKmguUoJv2Ethw6GZssudfFHSaHyAqmDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=P/vNU1Od; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=PtaSyuwP; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dN2iZrqR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA65A1F00893;
-	Mon,  1 Jun 2026 16:42:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780332134;
-	bh=teSdp9I1t1pRWNp/a7/eGoyDMHv3wjAOGwFHd06Ja2A=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dN2iZrqRzXR4+E4RaAy6YxsO9Bh+RosZzGkVQQ5KpR8qZlhxfn7UjHG+ybsrgORsN
-	 b/LzrLkcE/p4whNsHJV1MbXOOZ/zkgf8WdoYGwawV8FSAwR6H8gBoacmdsOzR8os6G
-	 oDH1IUaauW6QHuorSlKqhMjG2U5jxKn4MhGBWT6SBY61/cMFinnp7GrWrrB0O8ZXm0
-	 Oj2B/kkHRo4IU/gYxVb0nJPCq3V2F5/Ycp0+POLjcf0bLac7tYCKFXZKrMknrJT+gY
-	 E9/TdDDEMRJogiYq811jJR+JlPnFcJLEMKZpjCDGUO55Y5XeBfXqJSK+BqfAYAHAiP
-	 Dc2Lva0V1oi0g==
-From: Christian Brauner <brauner@kernel.org>
-To: Askar Safin <safinaskar@gmail.com>
-Cc: Christian Brauner <brauner@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-api@vger.kernel.org,
-	netdev@vger.kernel.org,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Jens Axboe <axboe@kernel.dk>,
-	Christoph Hellwig <hch@infradead.org>,
-	David Howells <dhowells@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Pedro Falcato <pfalcato@suse.de>,
-	Miklos Szeredi <miklos@szeredi.hu>,
-	patches@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Jan Kara <jack@suse.cz>
-Subject: Re: [PATCH 0/3] vmsplice: make vmsplice a trivial wrapper for preadv2/pwritev2
-Date: Mon,  1 Jun 2026 18:23:24 +0200
-Message-ID: <20260601-enthusiasmus-canceln-anlehnen-0e62317a9784@brauner>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260531010107.1953702-1-safinaskar@gmail.com>
-References: <20260531010107.1953702-1-safinaskar@gmail.com>
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="P/vNU1Od";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="PtaSyuwP"
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 651FND7d145081
+	for <netdev@vger.kernel.org>; Mon, 1 Jun 2026 16:43:44 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	WtiwZwpjkTnh2Sai/6GSgEosRHj71tYSabTEvDWIVr8=; b=P/vNU1OdypBYaTYN
+	7HRGLgW9SNKj/sxjM2AScepTvqf1G9sMBJFqA9DcylgozKTIpn6COWMZdYl/by+L
+	FsiVaQjYCKbg+0LgRKrxX+oN8cvzDegcvZAXDGdszPJDZH12LDWabgh36s+T2Mqs
+	I5IiIIzT7c5E3JhILSMyYFfCgjDz69vdzttYiLpTtKcaKZI22WB9fzAnlDKjRZkB
+	KZsh1wZHMlMR8BinRz9Xe9KsB/culnKLSyP5PQtoJK+MIKeETzbB+tVCZl4p/K63
+	YrjeqgkVMuCEFTQgVYAkpGfxKXGc1RW3iV9L7IBj7gpJ2VQD8ki7JRt4QXHHGA8P
+	B2Ukxg==
+Received: from mail-dy1-f198.google.com (mail-dy1-f198.google.com [74.125.82.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4eh6stsy6u-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Mon, 01 Jun 2026 16:43:44 +0000 (GMT)
+Received: by mail-dy1-f198.google.com with SMTP id 5a478bee46e88-304df51ff3eso4354376eec.0
+        for <netdev@vger.kernel.org>; Mon, 01 Jun 2026 09:43:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1780332223; x=1780937023; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=WtiwZwpjkTnh2Sai/6GSgEosRHj71tYSabTEvDWIVr8=;
+        b=PtaSyuwPZ3XGpE0z+4TBthpSjd5FKN7hsctfL+eGP1kQHpsPUDESzfH9NFwBFFdMNH
+         rWwOdbTkJxPATo0adD0vHAizWdHaZzJBljCbLkz/CRCWxWwklDTSjRTP/RrZAH3FW0ge
+         0kZu9ai4pSbKnINyN1Z/cWLqGZ1U6e3dNl7wM8r6EBNK40oNlh9YnhPqsPyBYVVVR2U/
+         yCEp1za7O7fKK5wHNSNB6Z1n2tTI9LZVTclQXP6PNH4FjfQo+t6PIAP7g232ReB0Q1AK
+         I7WXmQI+bNFBTlubQv5MbC4hmNkXQb86sWPsP9RDBbzvwBHa7O0Q3/VoudjuJ1qAssGK
+         Mh2A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780332223; x=1780937023;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=WtiwZwpjkTnh2Sai/6GSgEosRHj71tYSabTEvDWIVr8=;
+        b=GfWu+qdDEt6o+afddb0KNyHnTQ6kxfF7ptddVp4bfdFCIzskgP3ewE8z+jZA0W98QS
+         Hq0lEs8aMpisuqASUPxGaEew2myF21KjhTzAy7j2D7rKs0k71t90fHZvNzcZ5jZgLlHv
+         qdlsUuxYcuym3odr/03OGYkSi+in8TRYRlYIy6MzC8uALO1I8e2MQFhIVgcQuXqq3dT+
+         mDmOKGrCV7OYi7INHBGQSZg3Jz2Fwzc/B3LwHRfq0et2RYLPa83w7SSkhRI1w/LDO3a5
+         AMcJK5bVMjPxvIlENEuG2FD640UdfKafoFWW6mSF7GB4p6N9WZiFKT/8wV4RSswsHzy3
+         /kHA==
+X-Gm-Message-State: AOJu0YyWwkjn9g2Ha497EdhqAQly1tdHQKRjNR4Q8YSjL+qdvMCrb2zv
+	9pfVOoo2vBKk2c8D/kuudvwFuoBB4U1z1Y6z3UhOZgKPyXjSZ1ETJFkb/1JsA7ufTJYcads0rLA
+	QMLLIogWzu0Av855tfw5SqkztStnYbVsIoyBLEdt8I7t4jOZTHz4tK7yMJs2e63xaQQs=
+X-Gm-Gg: Acq92OGGmWG4c5olfzWgb61k/kzbb3qZh5kUsyqubrUoEIgn2A55M1mz5tGmwbrtwP5
+	dhA2W7tUsIv8dOlV1SRiD+7UKy3rER/78lx8znhMaD3ZqbfFUD/26/X6Nx2ta4e2lWPCiem5COL
+	M9JTFYDWtCU5EDAUvx5HdkZLg+tDYF99p0xL5LMNfhlCRK0sk7dfMRDTCouyDGjkrxdn+rmTqeR
+	AB1qL/TMCpfzri+otC9Z8R3tcnq4AuomzLUFLHjUCqIffj2GNgThl86MwAM0WDJVzkB1auqW2b5
+	AshF6UIE5VbKPQTPysIrG8T4026ZiQgUT2Kz9ZxsMQkPE2M2G4HdOIWyEY/bVw9XkC87+jKtdx9
+	UWtgPY2dsO9qPtn/Q1jXxhJapYnjj9B0WNz2qT1yQGfPpKA0BK+STXoyqOzH0yRmfnOQ4+lkP0y
+	NRZz4CXe9Ym3dzCrc2
+X-Received: by 2002:a05:7300:e58b:b0:2f2:5c68:5074 with SMTP id 5a478bee46e88-304fa5163f7mr5520139eec.13.1780332223355;
+        Mon, 01 Jun 2026 09:43:43 -0700 (PDT)
+X-Received: by 2002:a05:7300:e58b:b0:2f2:5c68:5074 with SMTP id 5a478bee46e88-304fa5163f7mr5520118eec.13.1780332222761;
+        Mon, 01 Jun 2026 09:43:42 -0700 (PDT)
+Received: from [10.227.110.203] (i-global254.qualcomm.com. [199.106.103.254])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-304ed2bdda4sm8487913eec.2.2026.06.01.09.43.42
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 01 Jun 2026 09:43:42 -0700 (PDT)
+Message-ID: <a28df759-d0e9-41c0-97c7-5f89a18d54e2@oss.qualcomm.com>
+Date: Mon, 1 Jun 2026 09:43:41 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1316; i=brauner@kernel.org; h=from:subject:message-id; bh=BgJ9kx1/tXUuldxL8l+n8NO5M2/EWoe/peBIxTf96cA=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWTJbovatvNLlrOz2euq5KJVS68r/ax6FG7+bO79T8tOz 5zmb8r6q6OUhUGMi0FWTJHFod0kXG45T8Vmo0wNmDmsTCBDGLg4BWAiVTGMDC9rZr+8fVpQ+U58 ybRti67u4dKZrbrFpkqzdgmD/nptkwhGhssXZ37z/VPKklHqHGjgG1snrZHsoFtm95j5gujhq9w LeAE=
-X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: net-next 32-bit clang build error in net/netfilter/nf_synproxy_core.o
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: netdev@vger.kernel.org, linux-wireless@vger.kernel.org
+References: <20260528123911.284536-26-johannes@sipsolutions.net>
+ <178001352190.1565998.2039430206651171575.git-patchwork-notify@kernel.org>
+From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Content-Language: en-US
+In-Reply-To: <178001352190.1565998.2039430206651171575.git-patchwork-notify@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjAxMDE2NiBTYWx0ZWRfXwwHpeayyT9gw
+ wnSPkhnryQMU2H/RXem/1Nnc5jF55hGS/lxWEEqzH7jx3Qo7bClx54o7OHgak5NLvN/EKcP2rAZ
+ JSqm1LhrdP+q+FnHohrvagwv/gxYMci6n+hWfHH69FhS/EohtHcWZPcraD18bVS9gagkWqMGDRn
+ WGAYpCAiOxM/oJWYv1ZNhKkl1JYH78Fs8/s+wnPVy2PShHYTHysJ8OHBB3dc36hD/WnsXiwRQ5h
+ rfC0mmuC7yEAk22MByG6lp4kwV4uZJJ3MnQ5XgDOL26Idj/2+dvzSnBygYdDEP4CzvFepVDVyTO
+ MNTywQ+QWBskAJiNHjULxgzCEivFL3OYLTp2wYDGicEuiRv8mY6OmVbtp+RzV56E7agIDhXvPBC
+ wv6IEyNaMZv0FkUb6kkRe/hIB1GvWAPif3JF2nBiDoTwuy+gcHxkewLMogQ5GbVI1wep1mX8I3z
+ s3t5v9VlwJefTo2J07w==
+X-Proofpoint-ORIG-GUID: jWELa985_H9BY1yErKLlu-MViyXmM1SN
+X-Authority-Analysis: v=2.4 cv=HrNG3UTS c=1 sm=1 tr=0 ts=6a1db6c0 cx=c_pps
+ a=wEP8DlPgTf/vqF+yE6f9lg==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
+ a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=DJpcGTmdVt4CTyJn9g5Z:22
+ a=VwQbUJbxAAAA:8 a=KXNP7wE5b9nUYBElON4A:9 a=QEXdDO2ut3YA:10
+ a=bBxd6f-gb0O0v-kibOvt:22
+X-Proofpoint-GUID: jWELa985_H9BY1yErKLlu-MViyXmM1SN
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-01_04,2026-05-28_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 suspectscore=0 lowpriorityscore=0 bulkscore=0
+ clxscore=1015 impostorscore=0 adultscore=0 malwarescore=0 phishscore=0
+ spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.22.0-2605210000
+ definitions=main-2606010166
 
-On Sun, 31 May 2026 01:01:04 +0000, Askar Safin wrote:
-> This patchset is for VFS.
+On 5/28/2026 5:12 PM, patchwork-bot+netdevbpf@kernel.org wrote:
+> Hello:
 > 
-> Recently we got a lot of vulnerabilities in splice/vmsplice.
+> This pull request was applied to netdev/net-next.git (main)
+> by Jakub Kicinski <kuba@kernel.org>:
 > 
-> Also vmsplice already was source of vulnerabilities in the past:
-> CVE-2020-29374 (see https://lwn.net/Articles/849638/ ).
+> On Thu, 28 May 2026 14:37:26 +0200 you wrote:
+>> Hi,
+>>
+>> Here's a new set of changes, mostly ath and iwlwifi
+>> drivers this time.
+>>
+>> I have a few more things pending, and I expect a few
+>> more drivers will have pull requests later too.
+>>
+>> [...]
 > 
-> [...]
+> Here is the summary with links:
+>   - [GIT,PULL] wireless-next-2026-05-28
+>     https://git.kernel.org/netdev/net-next/c/e7d6bd24e883
+> 
+> You are awesome, thank you!
 
-Applied to the vfs-7.2.vmsplice branch of the vfs/vfs.git tree.
-Patches in the vfs-7.2.vmsplice branch should appear in linux-next soon.
+wireless-next/main has fast-forwarded to e7d6bd24e883 and I'm in the process
+of also fast-forwarding ath/ath-next, but I'm seeing a build failure:
 
-Please report any outstanding bugs that were missed during review in a
-new review to the original patch series allowing us to drop it.
+In file included from ../net/netfilter/nf_synproxy_core.c:7:
+In file included from ../include/linux/skbuff.h:26:
+In file included from ../include/net/checksum.h:21:
+In file included from ../arch/x86/include/asm/checksum.h:9:
+../arch/x86/include/asm/checksum_32.h:149:6: error: inline assembly requires more registers than available
+  149 |         asm("addl 0(%1), %0     ;\n"
+      |             ^
+1 error generated.
+make[5]: *** [../scripts/Makefile.build:289: net/netfilter/nf_synproxy_core.o] Error 1
 
-It's encouraged to provide Acked-bys and Reviewed-bys even though the
-patch has now been applied. If possible patch trailers will be updated.
+This is with "ARCH=i386 LLVM=llvm-19.1.7-x86_64/bin/"
 
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. If in doubt, please check the listed branch.
+I use a config made via: make $allmodconfig
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
-branch: vfs-7.2.vmsplice
+A lore search doesn't show any recent instances of this issue.
 
-[1/3] tee: fs/splice.c: remove unused parameter "flags" from "link_pipe"
-      https://git.kernel.org/vfs/vfs/c/a9f7db50ed2f
-[2/3] vmsplice: make vmsplice a trivial wrapper for preadv2/pwritev2
-      https://git.kernel.org/vfs/vfs/c/e2c0b2368081
-[3/3] splice: remove PIPE_BUF_FLAG_GIFT
-      https://git.kernel.org/vfs/vfs/c/7d75aa8edfce
+Rebuilding from scratch shows the same issue.
+
+Any thoughts?
+
