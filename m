@@ -1,97 +1,148 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C388D3AD514;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 714BA175A79;
 	Mon,  1 Jun 2026 14:21:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780323710; cv=none; b=f8SpEfQEQj3yl4VkDHnj7Qmy07y3M5gfHZ2mk1HakV9q4paaPBL3bWNA3fKjfyx20rBITdHkGSTe8A8TvbwJgksh4FOkDIpQIO4igJPR7qv6MsN0v6zWly1DtLFK8EbaFniT7eIamDkmElB/Xw91DCNt4GG1WgteNaHkUIHsesA=
+	t=1780323710; cv=none; b=dvku+MaY8ST1l4DDkEQ7GXG6teL6HnmXSQlCnKoazmQKpllh3+JpD0JItNumPmkGFAUmNnUACL/mrIaeg8xrsshEMupGncapeOLXsuWs35J1OUiNc3/9XmJNl6HVOl5JrJjV+q68PyLq2zFktSieAnS2lLWBVm3FVLvQC646wqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1780323710; c=relaxed/simple;
-	bh=b7XIUnfimfLGNKwoTtR5UhLG0DfGvISBJlLSi/i5SmU=;
+	bh=IOcxPEHICCL51BKS06FyAFs8cw1ni6OLEKerno7YO5o=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QmfdP8S0t3dhXAePlT9VRmFFiLcexo9ECdKq4qaM1/ya2joLTrc2vG++JMb8QD5EmwqItO5eT9stnordaUahSu9t5uMrwjvVYDNZl3EN0eIzbvxPBs9ZIsQ7NMKIc98YOGZspi/AkFnv9sykplbjpNaegEWxzicjcAyJWYtLKMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=usGPnNt8; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	 Content-Type:Content-Disposition:In-Reply-To; b=R9rR5cSqPpbrzNzfGjNlVgLyAj/7gIGvWp5qcItScWM+ykNrYGbaHJ7uZBBwXetbO1d1EH15MQ9QH7XEOUDNPBK8/xLPpaaHqYU8pApVhSSY++uKZ6V3ni75EBu6bBJ/RPeWO+8i1Y+MsIKvlF1ArLQYnql91QlAqm4noF81af0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=sSAUDiDC; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="usGPnNt8"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=78BA/GTDKa+jAZdCM5jkeiqae4h88fyQe91puNaR8Oc=; b=usGPnNt8SnZTMJ1TUaViv5FZdW
-	qR1I70zA6xz8DE5kV83LHyGqoJc0ziPwIiq1QFjqYP/YNgBhpr66R9OCTYky+31+nn/OjlXf08sKL
-	rAMxS9pAv1UeXsaoum9ktCA8QMhpCkJktafdOLSmZzm3tVOsnxcPRwBqIsLAYmIHj4u4=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wU3WM-005WDq-Uq; Mon, 01 Jun 2026 16:21:38 +0200
-Date: Mon, 1 Jun 2026 16:21:38 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: han.junyang@zte.com.cn
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	ran.ming@zte.com.cn, han.chengfei@zte.com.cn,
-	zhang.yanze@zte.com.cn
-Subject: Re: [PATCH net-next v5 1/2] dinghai: add ZTE network driver support
-Message-ID: <2f211c43-575a-4661-b37a-6fe61d24da79@lunn.ch>
-References: <20260601142440024x-1sx0cQucoMxTHjm7ps3@zte.com.cn>
- <20260601143002051rSxzNiN9iKNj5gsdema0a@zte.com.cn>
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="sSAUDiDC"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+	Reply-To:Content-ID:Content-Description;
+	bh=ld8GsU1c1V5Fz4U8E6o0CkhW7dY85l6LqJOFpHNFmks=; b=sSAUDiDCq5NGSHv+nC+l+qz+Vj
+	lC/Gmk8HutkP0z9ZfJbS8rJEh8J7xUVl582c6HkKJVRq4S0o1oJpWTpb9fFhfz6XjIUl2HU1pMVUd
+	pPDiqBOmGN+ctv5derWtH/PoW7qvNXwZEk/b4m7CxwdUB9Tl9tFYWR+pKM2taEn+TDEB7WksASSn2
+	bzXvFegZfjXeVMk4ODi5RwzC5gQR3SiWB8jBNdVjy2W4FEKQUxImN/OC3wfnRXo4ZzghmUf+rg/aj
+	AJy8zonYFpgJYYdUAm7eJgpZJ04D3d15Ejn3Yj2XAIqfzo/OhlX2dBWTtRviXFr6+JbTB4iSyZ5ci
+	VAv81dWQ==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wU3WI-002Eg1-34;
+	Mon, 01 Jun 2026 14:21:35 +0000
+Date: Mon, 1 Jun 2026 07:21:29 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Cc: Marcel Holtmann <marcel@holtmann.org>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Shuah Khan <shuah@kernel.org>, linux-bluetooth@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	netdev@vger.kernel.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH net-next v2 0/6] Bluetooth: convert remaining bluetooth
+ socket families to getsockopt_iter
+Message-ID: <ah2GaClhUehy5ys9@gmail.com>
+References: <20260512-getsock_three-v2-0-30b7b22ef14c@debian.org>
+ <CABBYNZ+nvtMHcU9but5VEG891vyO=K0MF3OAGofANxzdLVmw-g@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260601143002051rSxzNiN9iKNj5gsdema0a@zte.com.cn>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CABBYNZ+nvtMHcU9but5VEG891vyO=K0MF3OAGofANxzdLVmw-g@mail.gmail.com>
+X-Debian-User: leitao
 
-> +static int dh_pf_probe(struct pci_dev *pdev, const struct pci_device_id *id)
-> +{
-> +	struct zxdh_pf_device *pf_dev;
-> +	struct dh_core_dev *dh_dev;
-> +	struct devlink *devlink;
-> +	int ret;
-> +
-> +	dev_info(&pdev->dev, "dh_pf probe start\n");
+Hello Luiz,
 
-Please don't spam the kernel log.
+On Thu, May 14, 2026 at 01:51:16PM -0400, Luiz Augusto von Dentz wrote:
+> On Tue, May 12, 2026 at 7:12 AM Breno Leitao <leitao@debian.org> wrote:
+> >
+> > Continue the conversion to .getsockopt_iter for the Bluetooth socket
+> > families: hci_sock, ISO, RFCOMM, SCO and L2CAP. The first patch is a
+> > small precursor that fixes a long-standing 1-byte put_user write in
+> > hci_sock_getsockopt_old() so the subsequent conversion stays mechanical.
+> >
+> > The riskiest change in this series is the SCO BT_CODEC conversion: it
+> > is the only one that drops an open-coded ptr cursor in favour of
+> > relying on iter_out advancing naturally on every copy_to_iter() call.
+> > Every other socket option is a near-mechanical s/copy_to_user/
+> > copy_to_iter/ rewrite, but BT_CODEC walks a variable-length list of
+> > codecs + capabilities and previously tracked its own write offset by
+> > hand. Getting the cursor semantics wrong here would silently truncate
+> > or misalign user-visible codec data.
+> >
+> > For more context about the motivation for this change, please check
+> > commit 67fab22a7ad ("net: add getsockopt_iter callback to proto_ops")
+> >
+> > Signed-off-by: Breno Leitao <leitao@debian.org>
+> > ---
+> > Changes in v2:
+> > - rebase the tree on top of bluetooth-next.
+> > - Remove the selftest, which was mixing network and bluetooth together.
+> > - Link to v1: https://patch.msgid.link/20260511-getsock_three-v1-0-1461fa8786ab@debian.org
+> >
+> > To: Marcel Holtmann <marcel@holtmann.org>
+> > To: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+> > Cc: linux-bluetooth@vger.kernel.org
+> > Cc: linux-kernel@vger.kernel.org
+> >
+> > ---
+> > Breno Leitao (6):
+> >       Bluetooth: hci_sock: write the full optval for getsockopt
+> >       Bluetooth: hci_sock: convert to getsockopt_iter
+> >       Bluetooth: ISO: convert to getsockopt_iter
+> >       Bluetooth: RFCOMM: convert to getsockopt_iter
+> >       Bluetooth: L2CAP: convert to getsockopt_iter
+> >       Bluetooth: SCO: convert to getsockopt_iter
+> >
+> >  net/bluetooth/hci_sock.c    | 26 +++++++++++--------
+> >  net/bluetooth/iso.c         | 27 ++++++++++----------
+> >  net/bluetooth/l2cap_sock.c  | 61 +++++++++++++++++++++++++++------------------
+> >  net/bluetooth/rfcomm/sock.c | 30 ++++++++++++----------
+> >  net/bluetooth/sco.c         | 59 ++++++++++++++++++++++---------------------
+> >  5 files changed, 114 insertions(+), 89 deletions(-)
+> > ---
+> > base-commit: c2f0079e8c42fd6814c8d6b1491e3ce0a0e3b3fa
+> > change-id: 20260511-getsock_three-d0d7f1b2629e
+> >
+> > Best regards,
+> > --
+> > Breno Leitao <leitao@debian.org>
+>
+> There are some comments from sashiko on this:
+>
+> https://sashiko.dev/#/patchset/20260512-getsock_three-v2-0-30b7b22ef14c%40debian.org
+>
+> Now Im not sure the truncating is actually used by our tools, but that
+> sounds like it could break userspace if we don't check properly, or
+> have you already done this for other socket families and it was
+> considered to be ok?
 
-> +	ret = dh_pf_pci_init(dh_dev);
-> +	if (ret) {
-> +		dev_err(&pdev->dev, "dh_pf_pci_init failed: %d\n", ret);
-> +		goto err_cfg_init;
-> +	}
-> +
-> +	dev_info(&pdev->dev, "dh_pf probe completed\n");
-> +
-> +	return 0;
-> +
-> +err_cfg_init:
-> +	mutex_destroy(&pf_dev->irq_lock);
-> +	mutex_destroy(&dh_dev->lock);
-> +	dh_core_free_priv(dh_dev);
-> +err_pf_dev:
-> +	devlink_free(devlink);
-> +	return -ENOMEM;
+You're right — to clarify, the patch changes behavior when the user
+provides a short optlen, preventing the overflow that existed before:
 
-dh_pf_pci_init() returns an error code. You should use it here. It
-makes the code hard to debug when the higher level is ENOMEM, but the
-lower is saying EINVAL or something.
+ - Old code: put_user(opt, (u32 __user *)optval) unconditionally
+   writes sizeof(*ptr) bytes regardless of optlen, so optlen < 4
+   would overflow the user buffer and return 0.
 
-> +static void dh_pf_remove(struct pci_dev *pdev)
-> +{
-> +	struct dh_core_dev *dh_dev = pci_get_drvdata(pdev);
-> +	struct devlink *devlink = priv_to_devlink(dh_dev);
-> +	struct zxdh_pf_device *pf_dev = dh_dev->priv;
-> +
-> +	dev_info(&pdev->dev, "dh_pf remove start\n");
+ - New code: copy_to_iter() respects the optlen boundary, eliminating
+   the overflow — but now a short buffer fails the strict length check
+   and returns -EFAULT instead of 0.
 
-More log spamming. Drivers mostly use dev_err() for when things have
-gone wrong, and dev_dbg() for debug. Other levels exists, but they are
-not really used. If you do use them, they need to be for good reasons.
+I don't believe any legitimate userspace relies on the old overflow
+behavior, though there's a theoretical risk of breakage. I'm not deeply
+familiar with the Bluetooth ecosystem specifically, but, I would prefer to
+avoid the buffer overflow in such case.
 
-	Andrew
+I've addressed a similar issue in another subsystem recently:
+
+https://lore.kernel.org/all/20260521-fix_llc-v2-1-ab44cc09179c@debian.org/
+
+Anyway, let me know if you need me to change it.
+--breno
+
