@@ -1,204 +1,184 @@
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E96903DA5C0
-	for <netdev@vger.kernel.org>; Mon,  1 Jun 2026 15:25:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780327512; cv=none; b=frNqSV6jorzzvFNdnE1iuTwKzWX9wiEBVwz1eIu8SofATlAULs0fxvm1I1R9In/xyFb4iBwDR5jnPu0cRZU7W1OkO4k/eYAoGE0xszVfHpGIYAW8N/Yu72CIzLfJ+DbrncO4pqMmtKh2VGgxcfeScCBLorLK+btbNbeA4osiThc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780327512; c=relaxed/simple;
-	bh=zjoxIx46y8e3QGMsOJPRBZDqL8SBHdoXyjTLZD2h7K8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Xs9tmNiXxH0mbPAUrqimte93vnGlH4pUQu/cFKK7i28YqwgnIEgXq/W+3OXmG+Ur4KzDKGpJEFVYgRnzO99A2zIS1b6q2xuP3Xnfzzz/EbSIrHaPEedH9ttzeWy7sICpLh7emkt+PhejG0wVNRa6xVjrlJjQthb7wxedtNs0RcU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MaprHK22; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3245F3DBD47
+	for <netdev@vger.kernel.org>; Mon,  1 Jun 2026 15:29:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.169
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780327760; cv=pass; b=hoqE7c8HoU9tQJfEAap3FOyF6Ff+EvcAFx+tg2L16wG2v53ouZL/HuEAaAqSKG6vRjEZd6Q1hpnwtWrDqDdg0BgpLBsD/BteM2V+22cVYxih4SfF+sf6NrFnK51QXBunMDTFmMsuf89FMFsJB73dpckoK+DP50kNC68Uclj/fiM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780327760; c=relaxed/simple;
+	bh=Wj2HjaCmvrNykd7/b89FdO2/xBGB5dAuIyTwzhwlNos=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=HIsPqYB4N0EZ+rHaKByvnnJ/LyxNNNbd4xviObtXNb5mD6m5awI1CoAsOWYgRsIZzDq5kEeBDAxDQjLsP2q8aq95F2CD+wA+MYB6GLk/MQ46FdHNYlmBwyFe4gzjPrQb5HI6fW1cb7Wq7s0RxIMYgYrf+aKS/lPGEIphi/424oQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZAAJYdYZ; arc=pass smtp.client-ip=209.85.160.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MaprHK22"
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-490388fd0dbso105704495e9.0
-        for <netdev@vger.kernel.org>; Mon, 01 Jun 2026 08:25:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZAAJYdYZ"
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-5174a132590so16210571cf.1
+        for <netdev@vger.kernel.org>; Mon, 01 Jun 2026 08:29:11 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780327750; cv=none;
+        d=google.com; s=arc-20240605;
+        b=fMsXcKPZS3Ra8zZUKBEQlBunSDU8jzvF8Rxh+0VkUNutRrLGE6pottfqkLjQOX1sqz
+         I93XYUeVG0eInSfVdHrOXuUSHLAYM6AuS/KNmqUn4RJogUD/JwPZXFvAV4EKfIPRcsJC
+         elfzH9taulrflueNsCiK/sfOBESlaxSZNYYT0W3tNeqs0VvEnu0zKXXa3A7Ojv9T4FmU
+         Z+kWOzEFLS7f4s6Fc2ahHcgFns3YvphIVAO8QNKPJtUOCkpkIsBHA82erDQy1mdVWTJb
+         br1k5PDJ65+TcgoMBcwR8dInxXUIDYHSKvWWU7G5QMn4Bp/tsCcVkbBEv7E6ZjCiHfNv
+         nffg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=7EP5yWJP/oLaBrC33EafyKNZLj+nlCv8r++/P2IFxvE=;
+        fh=/cl10EY+o8t93JMihtLNkU+2heV7ZKumCAsWGJSgKy4=;
+        b=DvdaG9ebZONvX5mo8A17BPZBPswfZUEkkMyd7tkgAgIUChxCpqn8xIx88xprRR34MG
+         r34nAg1MC4jjxyy7dCpEx+tjAu8Uh76GJehe8EQYzvFIp77bLb0zhb3gxzRJ1vDjlkE5
+         gypeZoOP6A7PThPDu1ZOmh51+F+8A8PEt2/BEbVGV/6UV5l+1r9SSDMyxiUBaJGb8J8H
+         Yt0G91xUZKkhRA0Q1eORMto+URKPRxzzxVjpn2WVLIlA7L7li++iUhxYDmjCI0zDjZYp
+         5rTRVMIyXjTp7xE2BRP/MRRjyUjuMi/Mk+8cBCOimtkad7+JUeC6kPYY/knSpHXPbZsX
+         ieeA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780327505; x=1780932305; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=09FJYvxDkOz5j8LvOo37RoLQK56TcPEBDxr1UHNCmLc=;
-        b=MaprHK22gVjFSxN5AIcOs9rzqZez0kYTijqpzaR4A60mDMpI+/e++oG9/FzxJ9UWpf
-         kOXSdpfsl8SmI43Pe6tymS7nA6cijVFwPXFMZLoDk6BDT88HuEG9ZCovWMPmCuDrmcCt
-         DhrSCK24ODk3coqZZm3X9xVSEQLbNOMcrkMhxqHG9HbTtlJ7ZPq6tNZp82M5rW+xgxXW
-         Y7G0xoiGNyGaKzs4kBrYOnXfb/+ql0SdilELaawUBkJhRjCCmEoGxWXSFwi96sa5fwcf
-         pIZwww9PezDMWH+3JFDpbptl92Xz90qA+sYG1xDcGJuIJaoUkp7yYXJFp5MPJXdPbbgY
-         1pZg==
+        d=google.com; s=20251104; t=1780327750; x=1780932550; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7EP5yWJP/oLaBrC33EafyKNZLj+nlCv8r++/P2IFxvE=;
+        b=ZAAJYdYZV/KGWuFFI74dgcE5AjOOyyiRXII2VV93UrZNpHjLmPIDR3f//rcPmuDdAm
+         bZYMZK84P2WA51F/FCWoVDSe80hxKU+FT2kAsJvFTNE1IT3ljY0jkQ5U0vnb3hE249xl
+         oxnXysfShracuKeYpx/z49Xqw55KaDOQnm15831kQ33BbUmEYn+QhuIl95pQ06AaHBUc
+         PVPvmZcXv8T5//LvHnIXUHvVsBDCutUVpeYRhPY3vDaTIaFKZmTuKy9YZfVIeXWAGxYf
+         Ul2B2e9KhGG0XHp5MFmcDz0gPcTr5Oc9CSQObBvmofdPrkKPeCB0A9pw/Cbd08kI/mso
+         MJOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780327505; x=1780932305;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=09FJYvxDkOz5j8LvOo37RoLQK56TcPEBDxr1UHNCmLc=;
-        b=rWwItiP9lXuoeapGsS6xQyM94IeVIYwaH1LJiyvXnsMMDKO+uZiRXBOo8tkcHtzt2R
-         pOwiTavYf3Ibn5xvywe1rRrtBx1B7YExEKRhuGwEhbEcU2LB0RezcBjnNCKmDTpz5oEF
-         umV67Gc9Q7PN6mY0EAT8feJZBlrfVuFzDBzsJDm5XZnHbZds36BRWmQc7ETEJqACNSwB
-         RFHqEuNmHbMiFajHUhmPPN6ryNuwXI9FKivSkP7xGzKu7kgvv6k+lXoXV2b1DVmoKYAq
-         ONzZiTrREKmA/8FknmpjANSJ6ZOQMNOaCAOZpef0kzoxso2zUnFUlMmGBuEJAInZni7w
-         ILxA==
-X-Forwarded-Encrypted: i=1; AFNElJ/mhlT3C6zhQLK2iqyQZ+0NZxwwFS762DnxuRXGiqnw6pEZuY2OLp3pZGbeYeJd6g/t2bMhFFw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw/g+5ynOcYHr3c3Ad2MmV9vyFqeCiR6j415z0XxyhKrQ+JEBTc
-	z2KwSiqU/D4WjpVg/fDAQNjw+9CbUZsweRt2kHJ8+Toy7DDpVQdPuVU6
-X-Gm-Gg: Acq92OHBX2DRbkEoXazKrId0OrB34D3sxBjwz2TEO/MKyPH8JCftwCxHbYv8HXBLFiy
-	6LppojHF8qqF+51bcakWYweb0cWGidVSdJWODveREkDZPeN2LoklYSmtts0KVqebJOtrMpkqfRi
-	6q4ovjL3L8Jl5PExRv/M9GNZ+7kFcRHx6oQJTMArHrXo+4bPBot/hdT0LSthX8W/1RQteQ1qHvD
-	WfUQVhAkugupm/CfqJrE414qvLawgQ2oDSzDGAfe48XobdmDwsFazDrMivWb5HsnWcg/73AX53l
-	DUZdMHAl64B+JLXKwprRuC/fBWVS595l1ep54KtF7bsrVize7VDfSRRPRYYQKB14Hxw2vqKxnPb
-	0Gge+nFzC1s411UvFwYntlOsBBuX6FHq3NstGKSQlrH8HvE9GVJi1BuPBshDs/BttR7jOgh8Z7v
-	9w9Oi7cNRdWFC7tBUwaKkSJ8bEHx2n2es38sl5iJwmk/YEX/8iw0sakrXhXVk5RJ3qWWEj4X5HM
-	h3OBBNHvFlmSPBLkuqd
-X-Received: by 2002:a05:600c:c285:b0:48e:5fb8:f80f with SMTP id 5b1f17b1804b1-490a2966ce7mr127618575e9.24.1780327505077;
-        Mon, 01 Jun 2026 08:25:05 -0700 (PDT)
-Received: from [127.0.1.1] (cust-east-par-46-193-119-166.cust.wifirst.net. [46.193.119.166])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490b0e26050sm26035e9.9.2026.06.01.08.25.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 01 Jun 2026 08:25:03 -0700 (PDT)
-From: Fidelio Lawson <lawson.fidelio@gmail.com>
-X-Google-Original-From: Fidelio Lawson <fidelio.lawson@exotec.com>
-Date: Mon, 01 Jun 2026 17:19:57 +0200
-Subject: [PATCH net-next v9 3/3] net: phy: micrel: expose KSZ87xx low-loss
- cable tunables
+        d=1e100.net; s=20251104; t=1780327750; x=1780932550;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=7EP5yWJP/oLaBrC33EafyKNZLj+nlCv8r++/P2IFxvE=;
+        b=jyCiS7pipKBbqudJyoBxULB9qvtOPAwemVr4yoEEphXP+Jqlb0JCtixMYSADJbHPPZ
+         4fmeyTeIc9ByhaheOEIVphWK1B/RA1vbsTZjbdlm6JN0isDPORR4ODA//cLwCXiakOC6
+         40fi+5hVjk345r9tdexWMgb3Q68Udy7KMzHDWJi9iu0j58n49mQff3SLctCcpcsWPhaU
+         CIPIYTU2EKrvuEaMszgRs0R6jqlRO9+N2a8VnQTPE8jMtd23p83X7xll9pfqW6X1SxdH
+         N4YKmOlowalHN7IBmzXzUr15WEX14BRwjSgwfm3OtOkg9hPacztPAMauVMxsDLzX80VS
+         jioA==
+X-Forwarded-Encrypted: i=1; AFNElJ/MemRwgU+Fr6BLvW+yh4EetyugXFg7dq+9sU17AjxOOhPdkOapx0UcA829+0gph0Y9/3x377w=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywx1BFp8Xx1ibZKqCuMwCMsnK/onfcCD5IWPbaaPlKRN1xEhjY9
+	B0QqOcljAi8dzEwxxQYjtKUaa2UCKjAnqoUONTJj/Epm3G+06aHQwoDYRGFsH/XPZZyPKq0Z5oK
+	f21nwXj/o0i0ep6C9NesUXGMr5Xo8rGaYR9z0mcSc
+X-Gm-Gg: Acq92OEvZrTKOdGDMjQiyGeK9hkwnwt+aEhi36aURD5FTRDxb2hx7Mm1qVzLq8H7b/j
+	QRqYIvSW/zWfmvr8u9kHOeYoFTr9qXPbKG1nk5LrVjzF1fafkIa1jACDbkkwRVvQevOxPPGR+Nw
+	8g42/Ra9VsPc6q8XAKMR/doikw5rDC9daIP8drj1shidIbpWtz6Wa/5K49a87m2Iv0p88mIkzkU
+	1UDrMPCEttlLf/iLNhS4ajtcTZJzDXYE6QwW7nJ0J8qEVWbWKWY8tEbUzEpkqnFxBFGmTanLPIi
+	qAnsS19GHsvBN4kRVyw09KerLOsVGzpXXFLoBjES/mV3Be1MLoccG5z6R+qLxvLiSWVSVeok0a9
+	nI//LZ8J9uoCXjWhnozYhfcIhJqRk
+X-Received: by 2002:ac8:5fd4:0:b0:516:daff:7f7e with SMTP id
+ d75a77b69052e-5173a80ffb6mr163432151cf.48.1780327749316; Mon, 01 Jun 2026
+ 08:29:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260601-ksz87xx_errata_low_loss_connections-v9-3-fdbbb15592cb@exotec.com>
-References: <20260601-ksz87xx_errata_low_loss_connections-v9-0-fdbbb15592cb@exotec.com>
-In-Reply-To: <20260601-ksz87xx_errata_low_loss_connections-v9-0-fdbbb15592cb@exotec.com>
-To: Woojung Huh <woojung.huh@microchip.com>, UNGLinuxDriver@microchip.com, 
- Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Marek Vasut <marex@denx.de>, 
- Maxime Chevallier <maxime.chevallier@bootlin.com>, 
- Simon Horman <horms@kernel.org>, Heiner Kallweit <hkallweit1@gmail.com>, 
- Russell King <linux@armlinux.org.uk>, 
- Tristram Ha <Tristram.Ha@microchip.com>
-Cc: Woojung Huh <Woojung.Huh@microchip.com>, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Nicolai Buchwitz <nb@tipi-net.de>, 
- Fidelio Lawson <fidelio.lawson@exotec.com>, 
- Marek Vasut <marex@nabladev.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1780327500; l=3475;
- i=fidelio.lawson@exotec.com; s=20260326; h=from:subject:message-id;
- bh=zjoxIx46y8e3QGMsOJPRBZDqL8SBHdoXyjTLZD2h7K8=;
- b=PECfV7U8hmgqj7gRKVI6cAaQpYgjEmYIwY0885vRoI//497leFC4zZBFBa7NNk7YSEWw0Ioge
- axsnDEC5TN8Diz8F+OLnP5dqwMoaq+wgNM0G2VLqpGIQC0m7iBghvod
-X-Developer-Key: i=fidelio.lawson@exotec.com; a=ed25519;
- pk=866eH9Bmmpjc+ctgkr5T1uXxBefZzob3tEEuiVWZ6BI=
+References: <20260601150203.20352-1-leon.hwang@linux.dev> <20260601150203.20352-2-leon.hwang@linux.dev>
+In-Reply-To: <20260601150203.20352-2-leon.hwang@linux.dev>
+From: Eric Dumazet <edumazet@google.com>
+Date: Mon, 1 Jun 2026 08:28:58 -0700
+X-Gm-Features: AVHnY4KtmX48lQbX-Wzhm_U2p70Q1h5Y6tSbTyXB_2Lu_Z88IMHeMo5GbIX4esw
+Message-ID: <CANn89iLJgBxx=NaZDHy4s1_U9LKp9dqUDd1v9LR3CQPNo7DxEQ@mail.gmail.com>
+Subject: Re: [PATCH bpf v3 1/2] bpf: Update transport_header when
+ encapsulating UDP tunnel in lwt
+To: Leon Hwang <leon.hwang@linux.dev>
+Cc: bpf@vger.kernel.org, "David S . Miller" <davem@davemloft.net>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
+	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Martin KaFai Lau <martin.lau@linux.dev>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, Song Liu <song@kernel.org>, 
+	Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, 
+	Shuah Khan <shuah@kernel.org>, Guillaume Nault <gnault@redhat.com>, Ido Schimmel <idosch@nvidia.com>, 
+	Fernando Fernandez Mancera <fmancera@suse.de>, Peter Oskolkov <posk@google.com>, linux-kernel@vger.kernel.org, 
+	netdev@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	kernel-patches-bot@fb.com, Leon Hwang <leon.huangfu@shopee.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Add support for the KSZ87xx low-loss cable PHY tunables in the Micrel
-PHY driver by implementing get_tunable and set_tunable callbacks.
+On Mon, Jun 1, 2026 at 8:03=E2=80=AFAM Leon Hwang <leon.hwang@linux.dev> wr=
+ote:
+>
+> Currently, bpf_lwt_push_ip_encap() does not update skb->transport_header.
+> When a driver, e.g. ice, reuses the stale skb->transport_header to
+> offload checksum computation to NIC hardware, VxLAN packets encapsulated
+> by bpf_lwt_push_encap() helper may be dropped due to incorrect checksum.
+>
+> Update skb->transport_header in bpf_lwt_push_ip_encap() whenever the
+> encapsulated packet uses UDP, so checksum offload works correctly.
+>
+> Fixes: 52f278774e79 ("bpf: implement BPF_LWT_ENCAP_IP mode in bpf_lwt_pus=
+h_encap")
+> Cc: Leon Hwang <leon.huangfu@shopee.com>
+> Signed-off-by: Leon Hwang <leon.hwang@linux.dev>
+> ---
+>  net/core/lwt_bpf.c | 11 +++++++++++
+>  1 file changed, 11 insertions(+)
+>
+> diff --git a/net/core/lwt_bpf.c b/net/core/lwt_bpf.c
+> index f71ef82a5f3d..65d1dfbf3312 100644
+> --- a/net/core/lwt_bpf.c
+> +++ b/net/core/lwt_bpf.c
+> @@ -599,6 +599,7 @@ static int handle_gso_encap(struct sk_buff *skb, bool=
+ ipv4, int encap_len)
+>
+>  int bpf_lwt_push_ip_encap(struct sk_buff *skb, void *hdr, u32 len, bool =
+ingress)
+>  {
+> +       bool is_udp_tunnel;
+>         struct iphdr *iph;
+>         bool ipv4;
+>         int err;
+> @@ -612,10 +613,16 @@ int bpf_lwt_push_ip_encap(struct sk_buff *skb, void=
+ *hdr, u32 len, bool ingress)
+>                 ipv4 =3D true;
+>                 if (unlikely(len < iph->ihl * 4))
+>                         return -EINVAL;
+> +               is_udp_tunnel =3D iph->protocol =3D=3D IPPROTO_UDP;
+> +               if (unlikely(is_udp_tunnel && len < iph->ihl * 4 + sizeof=
+(struct udphdr)))
+> +                       return -EINVAL;
+>         } else if (iph->version =3D=3D 6) {
+>                 ipv4 =3D false;
+>                 if (unlikely(len < sizeof(struct ipv6hdr)))
+>                         return -EINVAL;
+> +               is_udp_tunnel =3D ((struct ipv6hdr *)iph)->nexthdr =3D=3D=
+ NEXTHDR_UDP;
+> +               if (unlikely(is_udp_tunnel && len < sizeof(struct ipv6hdr=
+) + sizeof(struct udphdr)))
+> +                       return -EINVAL;
+>         } else {
+>                 return -EINVAL;
+>         }
+> @@ -637,6 +644,10 @@ int bpf_lwt_push_ip_encap(struct sk_buff *skb, void =
+*hdr, u32 len, bool ingress)
+>         if (ingress)
+>                 skb_postpush_rcsum(skb, iph, len);
+>         skb_reset_network_header(skb);
 
-These callbacks expose vendor-specific PHY tunables used to control the
-KSZ87xx embedded PHY receiver behavior when operating with short or
-low-loss Ethernet cables. The tunables provide:
+iph might point to freed memory after skb_cow_head(), leading to UAF in iph=
+->ihl
 
-- a boolean short-cable preset applying known good settings;
-- an integer LPF bandwidth control;
-- an integer DSP EQ initial value control.
+This issue is already there in the skb_postpush_rcsum(skb, iph, len) call a=
+bove.
 
-The Micrel PHY driver forwards these tunables via standard phy_read() /
-phy_write() operations, which are virtualized by the KSZ8 DSA driver and
-translated into the appropriate indirect switch register accesses.
-
-Reviewed-by: Marek Vasut <marex@nabladev.com>
-Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
-Signed-off-by: Fidelio Lawson <fidelio.lawson@exotec.com>
----
- drivers/net/phy/micrel.c | 54 ++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 54 insertions(+)
-
-diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
-index e211a523c258..bb8f3054e257 100644
---- a/drivers/net/phy/micrel.c
-+++ b/drivers/net/phy/micrel.c
-@@ -287,6 +287,12 @@
- /* PHY Control 2 / PHY Control (if no PHY Control 1) */
- #define MII_KSZPHY_CTRL_2			0x1f
- #define MII_KSZPHY_CTRL				MII_KSZPHY_CTRL_2
-+
-+/* Vendor-specific Clause 22 register, virtualized by KSZ87xx embedded PHYs DSA driver */
-+#define MII_KSZ87XX_SHORT_CABLE			0x1a
-+#define MII_KSZ87XX_LPF_BW				0x1b
-+#define MII_KSZ87XX_EQ_INIT				0x1c
-+
- /* bitmap of PHY register to set interrupt mode */
- #define KSZ8081_CTRL2_HP_MDIX			BIT(15)
- #define KSZ8081_CTRL2_MDI_MDI_X_SELECT		BIT(14)
-@@ -940,6 +946,52 @@ static int ksz8795_match_phy_device(struct phy_device *phydev,
- 	return ksz8051_ksz8795_match_phy_device(phydev, false);
- }
- 
-+static int ksz8795_get_tunable(struct phy_device *phydev,
-+			       struct ethtool_tunable *tuna, void *data)
-+{
-+	int ret;
-+
-+	switch (tuna->id) {
-+	case ETHTOOL_PHY_SHORT_CABLE_PRESET:
-+		ret = phy_read(phydev, MII_KSZ87XX_SHORT_CABLE);
-+		if (ret < 0)
-+			return ret;
-+		*(u8 *)data = ret;
-+		return 0;
-+	case ETHTOOL_PHY_LPF_BW:
-+		ret = phy_read(phydev, MII_KSZ87XX_LPF_BW);
-+		if (ret < 0)
-+			return ret;
-+		*(u8 *)data = ret;
-+		return 0;
-+	case ETHTOOL_PHY_DSP_EQ_INIT_VALUE:
-+		ret = phy_read(phydev, MII_KSZ87XX_EQ_INIT);
-+		if (ret < 0)
-+			return ret;
-+		*(u8 *)data = ret;
-+		return 0;
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+}
-+
-+static int ksz8795_set_tunable(struct phy_device *phydev,
-+			       struct ethtool_tunable *tuna, const void *data)
-+{
-+	u8 val = *(const u8 *)data;
-+
-+	switch (tuna->id) {
-+	case ETHTOOL_PHY_SHORT_CABLE_PRESET:
-+		return phy_write(phydev, MII_KSZ87XX_SHORT_CABLE, val);
-+	case ETHTOOL_PHY_LPF_BW:
-+		return phy_write(phydev, MII_KSZ87XX_LPF_BW, val);
-+	case ETHTOOL_PHY_DSP_EQ_INIT_VALUE:
-+		return phy_write(phydev, MII_KSZ87XX_EQ_INIT, val);
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+}
-+
- static int ksz9021_load_values_from_of(struct phy_device *phydev,
- 				       const struct device_node *of_node,
- 				       u16 reg,
-@@ -6961,6 +7013,8 @@ static struct phy_driver ksphy_driver[] = {
- 	/* PHY_BASIC_FEATURES */
- 	.config_init	= kszphy_config_init,
- 	.match_phy_device = ksz8795_match_phy_device,
-+	.get_tunable	= ksz8795_get_tunable,
-+	.set_tunable	= ksz8795_set_tunable,
- 	.suspend	= genphy_suspend,
- 	.resume		= genphy_resume,
- }, {
-
--- 
-2.54.0
-
+> +       if (ipv4 && is_udp_tunnel)
+> +               skb_set_transport_header(skb, skb_network_offset(skb) + i=
+ph->ihl * 4);
+> +       else if (!ipv4 && is_udp_tunnel)
+> +               skb_set_transport_header(skb, skb_network_offset(skb) + s=
+izeof(struct ipv6hdr));
+>         memcpy(skb_network_header(skb), hdr, len);
+>         bpf_compute_data_pointers(skb);
+>         skb_clear_hash(skb);
+> --
+> 2.54.0
+>
