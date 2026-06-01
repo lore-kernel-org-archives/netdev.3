@@ -1,130 +1,116 @@
-Received: from 011.lax.mailroute.net (011.lax.mailroute.net [199.89.1.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C3AC3DA7DD;
-	Mon,  1 Jun 2026 15:52:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1FE83DB62E
+	for <netdev@vger.kernel.org>; Mon,  1 Jun 2026 15:57:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780329144; cv=none; b=theShPrHmmSsmh10KTZOT+N2UE+1jwAPgoJKXzFyutue4zejGaTfa27cMS67Zp6925qV5dr1rheJeEVnTYhTwfk8v+nvL+taLVEWfzUMf4MSTiDhKVGkOUjnTunUd6J6FrkbZaLps//leyxyx2VU9DVPEVT+Uyl2XFeN849ASIg=
+	t=1780329432; cv=none; b=OaXEj/xmQ9bJoPwVgd/bZZF8zbAHKWUbXDXHFmDmuoyb+YniQMgXa8F7LnZcWoPg7S0l16L4it72rgMKgxVvOsfanBsLfXUUsV3mul5GMtHoQSyLfk49/Z3q4JuNB2G+nTWT6/Wk61irp3ss/WACmBAFWbbnbrawLp/42EZvhS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780329144; c=relaxed/simple;
-	bh=kzAfTuy7xHfinPrNExmwQf57GFjM6NfTK+K64JOdG9s=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XRBrPPPzDvJjGsy2V2DISPkSVS7Sav0XAybe0TFX2X+0+Ehz6ekagvLQTdXQPZASz9z5ES5ILPn8Hc1OBG0ev0NJB3u+Yr1PAtWKW8P3FJIwTtgy5arIAoWN5tvpak5VUknbEpSZcBGW96h9z91Fg1ChLYfCezfU8KaHdcO7dEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=K0M9gfpq; arc=none smtp.client-ip=199.89.1.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
+	s=arc-20240116; t=1780329432; c=relaxed/simple;
+	bh=nTXW1aszJ7vJwM4JLdG9/UwnGyXjFaGyj9QAS58OX2Q=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jy4LL8ZqdexbY/yxa/S0+FGx/PcIv5lCWm+V4gYX3fglKen/LF3LuVEky88RgE/2mIci7b0habmsuPsF1nA6Bi6y7GbzN+CPUKd2U7WlGz8/MknTNxTPK/gJUlb0wVNERFDYxd8vFJ7CqegS1IStdFKuDhFjowj+7MwifXZwp1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=UIfVywfJ; arc=none smtp.client-ip=209.85.208.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="K0M9gfpq"
-Received: from localhost (localhost [127.0.0.1])
-	by 011.lax.mailroute.net (Postfix) with ESMTP id 4gTdkt27pcz1XM0nw;
-	Mon,  1 Jun 2026 15:52:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:content-type:content-type:in-reply-to
-	:from:from:content-language:references:subject:subject
-	:user-agent:mime-version:date:date:message-id:received:received;
-	 s=mr01; t=1780329115; x=1782921116; bh=kmrEda0bQxPGtPcIxUwwakVA
-	5hY4aI6ssTkbuwIHRjo=; b=K0M9gfpq3CIN5YDfH5BQ0f3gYo4/sVMeyTKg81B9
-	mLmdrbPK3Tj5TCtTvZoQMvL2DZ3APPzvnShvE8CQXd5OSWuUaYb2SfXChPv+rqQc
-	+Hxhglx9jn3YoSUEqEjbiXM0W/9JmmUvUcnA1XDNmT56eSK6lvjEC/yj0z0ui0I2
-	g6YPc+WVhelP56EuEG3OxRFZC0g/mApe2NhLUaRSPG51BTzvd2MDMKWtMjakcUN1
-	E2zW0GctQn4QgYIpkp5Dqd9kaHGD0GXxJzdokj+yxuK3UFMUO8S3L0XXuJHv7VhY
-	rp7CVNgWS/23k2Zrm0ZHq4a4s/ELf6qJVQ4mU/3KQH+rsw==
-X-Virus-Scanned: by MailRoute
-Received: from 011.lax.mailroute.net ([127.0.0.1])
- by localhost (011.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id cIA1VVg0MIXx; Mon,  1 Jun 2026 15:51:55 +0000 (UTC)
-Received: from [100.119.48.131] (unknown [104.135.180.219])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 011.lax.mailroute.net (Postfix) with ESMTPSA id 4gTdk61Xt2z1XM2FV;
-	Mon,  1 Jun 2026 15:51:41 +0000 (UTC)
-Message-ID: <5d3cac2b-4011-49c5-a142-55c85d38e90f@acm.org>
-Date: Mon, 1 Jun 2026 08:51:40 -0700
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="UIfVywfJ"
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-68c19f1f3ceso4817422a12.2
+        for <netdev@vger.kernel.org>; Mon, 01 Jun 2026 08:57:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1780329429; x=1780934229; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=pJkQdYMeeClMSzcCqfeyFg/QAKx7SzNPdhAZ0oh+sp4=;
+        b=UIfVywfJiXhjNEFbItMwdW1y/GWy0Qh+MQHs/CbK5bk5sCDg1vAVuOjtxuI9FTu3Ng
+         YaHtun4HypTx6/SFDIrOqabyL9AQXs2nMP4VFHfHLbHvuPaRhiIAteMfCnD3FGoT/P6F
+         NG87CzMNH3RtI+rXxlEUVEfJyTFS1mv1STk9w=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780329429; x=1780934229;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pJkQdYMeeClMSzcCqfeyFg/QAKx7SzNPdhAZ0oh+sp4=;
+        b=Cden3DL9xN5W+8NDybUVN6/auuMHlsY/9qtJELg/rmE5Jmtzo6UL4GRIjUUYVSEj+T
+         HE7cKLOhkMbO/2JOaTDNTjPJPQp/401hqB95OELstFnSwmrN81xfuom9sJQSRaP9f74I
+         odhnxKRPwP9SRJUP+O3GIJq0EpRowaSbTK8lDRih9hWf/rARi2d0E55+h7/v4gArg7KM
+         uwnO2RCqsikPL5apnB3J5p4xdptCUekBbCV9hWG285l+ZTg651q7kWl5osEDoIFqjvM0
+         0H/nlJXPomBwbOiWs3QBZdAMwZNFCkAJk1nHBBHF4HHTh3e7nBHliNScQ9z/q5P3I5du
+         7lEQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+IrS2m20uE05at97kHh7lnmu86wCOAN6m7i/G6csOzLxnYkdDAcSLld+rELr9ap0brUOHpWYQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz+2JM5vjxglw7GjVvZsL0xF8ftZSOYMsR4VAAYFmFsyzRPcTVS
+	TPn1xv8Ga0b7hN//UMC5KtLcLp96ins73usAMFffC4VmInKlBm7HZey/bQF/ntR2xFb37xGuMe8
+	9OfshT4k=
+X-Gm-Gg: Acq92OG6tpjnxsP6eVWRqhI+x0iqTMp0+HALVkGmbC36jAW60vLndQlBm28ahvE6PNb
+	VOYkJPWYhpwEAm0rlgW+P4+UjxP6dBWaj6WQtVLyIscrAOgH/dZJqckjxXQFOnYE/tivaN8H/+g
+	2iqrOR5jBCHjoCngVM7FMdKDBGicLPLYWB1rbOlsovglaN8smLDh6RB/QT0r0MaXQ3f9EswA48W
+	BLLYk262a8tc8ytkyR6Ldn4NRK1CszC1h8OqjCeZBHvERFivT2TG4SmU7iVyzUpCf8DpPxmGFes
+	coXDCTDFlOy9fZbCbKAtKydnAfUChFYkAeVcmBtRnnXtTWF3iyEU+N5OM5H4YJ65AXDwFQHtOpD
+	eIXlmY4eG5pSymvfjNEaQIfZKupP2YFTsXlDA5KEAx3Cz2K/sLdLapkigRDnkrB16+rLJuGp71k
+	zTIQEqFiXDEtLw6J0loAQ1PIk4JZaYawWbQWiy0x6Zq8WFdRDK7I+F+892FMuPGrlS4KvkVI5jP
+	wjhpEzxqeg=
+X-Received: by 2002:a17:906:eec8:b0:bd8:1537:d63f with SMTP id a640c23a62f3a-beab1d8a779mr711507866b.37.1780329429115;
+        Mon, 01 Jun 2026 08:57:09 -0700 (PDT)
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com. [209.85.218.51])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-beb4356b901sm238846266b.9.2026.06.01.08.57.08
+        for <netdev@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 01 Jun 2026 08:57:08 -0700 (PDT)
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-bebac79fff8so184364966b.0
+        for <netdev@vger.kernel.org>; Mon, 01 Jun 2026 08:57:08 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ8Yl4JsRmbNm4OqjtbERzx8/rxSAnYTuEkLRR72aB6nqVDBQxGuK3P53nYP1BqEUy9QMt1idy4=@vger.kernel.org
+X-Received: by 2002:a17:906:2929:b0:bec:203f:7466 with SMTP id
+ a640c23a62f3a-bec203f7742mr316403166b.8.1780329017245; Mon, 01 Jun 2026
+ 08:50:17 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH rdma-next v6] RDMA: Change capability fields in
- ib_device_attr from int to u32
-To: Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
- mkalderon@marvell.com, Jason Gunthorpe <jgg@ziepe.ca>,
- Leon Romanovsky <leon@kernel.org>, zyjzyj2000@gmail.com, sagi@grimberg.me,
- mgurtovoy@nvidia.com, haris.iqbal@ionos.com, jinpu.wang@ionos.com,
- kbusch@kernel.org, Jens Axboe <axboe@kernel.dk>,
- Christoph Hellwig <hch@lst.de>, kch@nvidia.com, smfrench@gmail.com,
- linkinjeon@kernel.org, metze@samba.org, tom@talpey.com,
- chuck.lever@oracle.com, jlayton@kernel.org, neil@brown.name,
- okorniev@redhat.com, Dai.Ngo@oracle.com, trondmy@kernel.org,
- anna@kernel.org, achender@kernel.org, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- kees@kernel.org, andriy.shevchenko@linux.intel.com, ebadger@purestorage.com,
- linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
- target-devel@vger.kernel.org, linux-nvme@lists.infradead.org,
- linux-cifs@vger.kernel.org, samba-technical@lists.samba.org,
- linux-nfs@vger.kernel.org, netdev@vger.kernel.org, rds-devel@oss.oracle.com
-Cc: Jason Gunthorpe <jgg@nvidia.com>
-References: <20260601092534.1764560-1-ernis@linux.microsoft.com>
-Content-Language: en-US
-From: Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <20260601092534.1764560-1-ernis@linux.microsoft.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20260531010107.1953702-1-safinaskar@gmail.com>
+ <CALCETrW__=8mSusayfXG7UFCfue5BGbx+vqESj1d9wqOfX4s8w@mail.gmail.com> <ah2nBAdsE5vVJ2PL@casper.infradead.org>
+In-Reply-To: <ah2nBAdsE5vVJ2PL@casper.infradead.org>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Mon, 1 Jun 2026 08:50:00 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wiFuud0Nn3B9YpTWyQja08TeXVk2AB-aAkmVXyigOagbQ@mail.gmail.com>
+X-Gm-Features: AVHnY4JDfRzuLw7CK_4gSBHmXbq5FWvfpfspaVnl7J1jkuJC1SncFOzqHbctZiE
+Message-ID: <CAHk-=wiFuud0Nn3B9YpTWyQja08TeXVk2AB-aAkmVXyigOagbQ@mail.gmail.com>
+Subject: Re: [PATCH 0/3] vmsplice: make vmsplice a trivial wrapper for preadv2/pwritev2
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Andy Lutomirski <luto@amacapital.net>, Askar Safin <safinaskar@gmail.com>, 
+	linux-fsdevel@vger.kernel.org, Christian Brauner <brauner@kernel.org>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-api@vger.kernel.org, netdev@vger.kernel.org, 
+	Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@infradead.org>, David Howells <dhowells@redhat.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Pedro Falcato <pfalcato@suse.de>, Miklos Szeredi <miklos@szeredi.hu>, patches@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-On 6/1/26 2:25 AM, Erni Sri Satya Vennela wrote:
-> diff --git a/drivers/infiniband/ulp/srp/ib_srp.c b/drivers/infiniband/ulp/srp/ib_srp.c
-> index b58868e1cf11..dc30d069ab3d 100644
-> --- a/drivers/infiniband/ulp/srp/ib_srp.c
-> +++ b/drivers/infiniband/ulp/srp/ib_srp.c
-> @@ -557,7 +557,7 @@ static int srp_create_ch_ib(struct srp_rdma_ch *ch)
->   	init_attr->cap.max_send_wr     = m * target->queue_size;
->   	init_attr->cap.max_recv_wr     = target->queue_size + 1;
->   	init_attr->cap.max_recv_sge    = 1;
-> -	init_attr->cap.max_send_sge    = min(SRP_MAX_SGE, attr->max_send_sge);
-> +	init_attr->cap.max_send_sge    = min_t(u32, SRP_MAX_SGE, attr->max_send_sge);
->   	init_attr->sq_sig_type         = IB_SIGNAL_REQ_WR;
->   	init_attr->qp_type             = IB_QPT_RC;
->   	init_attr->send_cq             = send_cq;
-> diff --git a/drivers/infiniband/ulp/srpt/ib_srpt.c b/drivers/infiniband/ulp/srpt/ib_srpt.c
-> index 9aec5d80117f..2ffa4f54cd4e 100644
-> --- a/drivers/infiniband/ulp/srpt/ib_srpt.c
-> +++ b/drivers/infiniband/ulp/srpt/ib_srpt.c
-> @@ -1884,7 +1884,7 @@ static int srpt_create_ch_ib(struct srpt_rdma_ch *ch)
->   	 * both both, as RDMA contexts will also post completions for the
->   	 * RDMA READ case.
->   	 */
-> -	qp_init->cap.max_send_wr = min(sq_size / 2, attrs->max_qp_wr);
-> +	qp_init->cap.max_send_wr = min_t(u32, sq_size / 2, attrs->max_qp_wr);
->   	qp_init->cap.max_rdma_ctxs = sq_size / 2;
->   	qp_init->cap.max_send_sge = attrs->max_send_sge;
->   	qp_init->cap.max_recv_sge = 1;
-> @@ -2298,7 +2298,7 @@ static int srpt_cm_req_recv(struct srpt_device *const sdev,
->   	 * depth to avoid that the initiator driver has to report QUEUE_FULL
->   	 * to the SCSI mid-layer.
->   	 */
-> -	ch->rq_size = min(MAX_SRPT_RQ_SIZE, sdev->device->attrs.max_qp_wr);
-> +	ch->rq_size = min_t(u32, MAX_SRPT_RQ_SIZE, sdev->device->attrs.max_qp_wr);
->   	spin_lock_init(&ch->spinlock);
->   	ch->state = CH_CONNECTING;
->   	INIT_LIST_HEAD(&ch->cmd_wait_list);
-> @@ -3225,7 +3225,7 @@ static int srpt_add_one(struct ib_device *device)
->   
->   	sdev->lkey = sdev->pd->local_dma_lkey;
->   
-> -	sdev->srq_size = min(srpt_srq_size, sdev->device->attrs.max_srq_wr);
-> +	sdev->srq_size = min_t(u32, srpt_srq_size, sdev->device->attrs.max_srq_wr);
->   
->   	srpt_use_srq(sdev, sdev->port[0].port_attrib.use_srq);
+On Mon, 1 Jun 2026 at 08:36, Matthew Wilcox <willy@infradead.org> wrote:
+>
+> Can we review this series properly?
 
-min_t() shouldn't be used if there is an alternative available. For the
-SRP drivers, please make sure that both arguments of min() are unsigned
-instead of using min_t().
+Well, since it pretty much is what I suggested a few years ago, I
+certainly won't NAK it.
 
-Thanks,
+And the patches looked very straightforward to me. Just the final
+diffstat is worth quoting again because that certainly doesn't look
+problematic:
 
-Bart.
+  7 files changed, 33 insertions(+), 204 deletions(-)
+
+and it removes that GIFT flag that was truly disgusting.
+
+So I'm certainly ok with it from a "looking at the patch" standpoint.
+I didn't _test_ it. I don't have any workload that might remotely
+care.
+
+I did a quick scan on debian code search for vmsplice, and after ten
+pages of entries that weren't actually *using* it but had lists of
+system calls, I grew bored. So there are likely users, but I don't
+know what they are and how much they care. It *might* be a big
+performance issue somewhere. Unlikely, but...
+
+         Linus
