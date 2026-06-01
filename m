@@ -1,183 +1,191 @@
-Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013035.outbound.protection.outlook.com [40.107.201.35])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FAFC39F19C
-	for <netdev@vger.kernel.org>; Mon,  1 Jun 2026 09:56:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CE2A39184A;
+	Mon,  1 Jun 2026 10:00:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.35
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780307821; cv=pass; b=CAFgP7twKVXXXdjj1peYCqJbdLJmU5GPeerM9/zBJ8Q70fOERZYAcDTiBQkmDsoTFeIt22hWB27ovHQdv9+sHoON3RnDVpicTEVoe0+kJWq7y687ihTJL1x5d9RZSZKGwg43kgwozRdNXbErPRa6Op+UW0lIFAcyu5c+zee0dC0=
+	t=1780308019; cv=fail; b=qpWmRrVnFJH3lbHTS+f0srf8lgzqo3EIraKNwe7irKnA9Wkbl5C6lqG8hkwH+Z841hfjAfjD4MjLAnPKWibZCJTdnN7HGX/ecJtSsunzFlsh8QeMpkmItFIRZQQ8x2A5VuIqT4N78yjLpFWvtdJ/c+CeEbQcjKoluD4H200gX98=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780307821; c=relaxed/simple;
-	bh=6qMrL5EX4/Xrak0iglb2/UKbPMOkaa9nU0fmroaKenE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uRFD8rDtcVdC/8XHwLgozlFH8zOH+8isqsPByoTeUzzwkP1l1bo26dC/cOr9fyW6njdKN+GCRJa1xEqKhN14BEridbjHRg1fkbXNRvxz8V6mqmrW+sEc9nuOSw/nNiOAqJ5i7qRWcsBoK9cS+ZNbqfrV5/mOGJGLTsKuNlLRLHc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Gk3pH9hc; arc=pass smtp.client-ip=209.85.222.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1780308019; c=relaxed/simple;
+	bh=UNqRHV2SqQeVNnZQGMbc5fkv1C8xbRU0yvKeUgUH1Zw=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=Hwp/ToSvGGxuqvcwB3TRYBb2rLqh6kesg3xj5nfHq2ZsiDLJMHwPBH1rtF5AXbHfnG+01h8iPnmS3e26J2oIieifSIx9PDrT8XCbzFvaOOrvDux3vWy78XzIV9Xw5/OagnMofkuL3iW/+qzLbDTAwf4vXQnNc7VCJuBsCu62KGM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Rr+5CKkJ; arc=fail smtp.client-ip=40.107.201.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Gk3pH9hc"
-Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-914bbfc2464so783691985a.1
-        for <netdev@vger.kernel.org>; Mon, 01 Jun 2026 02:56:50 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780307809; cv=none;
-        d=google.com; s=arc-20240605;
-        b=FsnrJb64gpUHJckGIlYaqKB52pJMruPpK53k1haaDi5IKgDuhBsh7e0snlhM4/zz0q
-         U7kS2zSDu7jgxEYKH9GfLpfHuKp/bfI9Hf68FQrL2854LT+4+LhX5N/h7KF3z19MHVz7
-         mkgO548zyAoZcg5y/ATP1OUaeH780RAwnEMGJsQoeDki4saPNOwhncsVB1I60deOkQyw
-         o6USWuX8wW4P/DQsrAs7DSJ1qCcaLN+Iaqvi898GbwUdgdAJ6MuGYf7fd5Z2vflHQzN5
-         HKb4zmCudOC9AJ7bDBSTgv87cgCxXlRg+dntjJHRU2E15DcAyQa4MyoENbFaA7Yiyazp
-         LQLg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=8WWtkgmjIFBwz49S/NP4aTlcwW1QtM142ocS4oceiSk=;
-        fh=yVrfOl5WXUobyHxB4BMusetll9IPwS0Qi2k3sEJRJTk=;
-        b=gTZnZGJv4mlhXJU9k1Oho7gq25iyZYnHlnIwCQsxdB6ltieq2AbjdcPg9QSxLc4tV4
-         WwqqN1qxqJKJ8yeB7HqLiTptuM9vF/vtSbKQ5at5ia8GzJ1Rya7ApuPuLnB4kM2JoDZu
-         P+dXnXp6Cfcfs4P8S+xT6FMjLmwGyLf9ylEYx7aCR9oYVlvDB0Pfg2BfoLJpQyycUnLC
-         5yN+ejem0Ehw0xwGs83sfxJVZF2L7eFFWl3CeU4jvBfYX3NYuEGzV06xHLps+Zxk1m+0
-         8rPlxzwN+qZQgEKb0sV7NcNLLzebP53PfUjwbyms2I0quPsCyOwVUyV9jIPsO5cJZ8WJ
-         qBcQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780307809; x=1780912609; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8WWtkgmjIFBwz49S/NP4aTlcwW1QtM142ocS4oceiSk=;
-        b=Gk3pH9hcArGEdtOshW8CUOQVjNbevLn+LCLCJXo2eQn8ZnOSswehHpBZ02j5EeoSYN
-         elqmogDHQTHxQOgs+73F6adD+c73W+M3jNJ2tg0bYWiML6L0eGIdGhbwBkRfuk2pgGuS
-         VnHgvkDiGjEhNpUMGTO23XPdtW28CTzdy4tLIxdtPbFAqrIvvMCnlz5Qri9HKZIVZ9wz
-         IZ7YGg/NWmRHmIRVAq4oLvDxXboaurcGpwnRtVIwIPU2VpgVpt36wt66rDeNFgNi4H9P
-         E4t3Nq0rzbeVNU/dHUbxfuLYFWJlR8+qhFY5AVknjRsrMNMXrA/e/J6nyRrB8D13WSJR
-         D5AQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780307809; x=1780912609;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=8WWtkgmjIFBwz49S/NP4aTlcwW1QtM142ocS4oceiSk=;
-        b=fIiXPlkVu7f245z/VArkYM4a+s7ZqzobXuG0ctUjbwEk+tWLWcC5TNJBot62Nv8IEI
-         BQ4ED+U1xYudyY3efgMcgMpOx5xnyZsRZFoVuIko6njl0c0zd0utiUUMXxtbwcQs05GW
-         6xteeBG3Rg2c9Eenv/MTQhaeQ09+ma/B46wmyTIA37cDGwPaQFzQVBqNYMX6YhqZlR8F
-         RLYdAmHvHJZeYn3LtFnP7oO7GL2Obccz4uygwLZvnWvjLnof8P4pn2IeImfFh+9gPbi+
-         aDL7OPN94pjisU6DwKl9bGikS+EPPJ7i3v5zRH5RVJgr+BhMtshMXS2BH/WWSfoqZwSh
-         eBug==
-X-Forwarded-Encrypted: i=1; AFNElJ8nfS9i+l5k70H0dlNnlJEqr/VfQIWxHXonfh6Qv3Vuarejhs6VKrGnFX/D6TwLovstNvziwJg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyervEJXKcR/TjbsXVyPXH8gc6riuIlNMBMzc4+9ir/uBA6KFAw
-	t/Z8YrLjNiCLZ1A+cB5J8rPHoCOY5tsmVcWlUCLQ00DK5I9dkDdjS9jxFgPT/UiQlYnzk0e4+ki
-	zxvhKNGImzafLsMtZ8qKn/rX0YrkwMJVlz407XE14
-X-Gm-Gg: Acq92OHvoh98ghbFhk0/8OS9NILWYc+QMnHsR8M7106ehDxcBd8I/m2O6py6sHaKguO
-	UGuSQqTnXpOTE8TA8D8UFLVLxzgtlwF2Ts4z/eqRSbn558Mak97z+FLF+92g6dl1M/ntzweo+vb
-	787EIlrxGZoYI6SvqlnVPMXqWO4qJMzXBqaRmEyqr3haxXe5wmxDLW9YckM+/or+1bVDMI8lLCw
-	C3xBkFwYnfq0HQFLIg0YhKfI/1ONXDozStQmze6sRmGygDqTEG4xQ23CtAGypwAht8EwNJJgP3Z
-	s//wObea+O6viOwPB0uTJ8EduuqNpN69s1vVKI2dMSeHH+yhftvHsQ8y8wbDNZvm8Itqp2V6J3r
-	cRjHtzNo3Ha7g/BgkSiuNrdynJIge
-X-Received: by 2002:a05:620a:649c:b0:8ee:630e:351a with SMTP id
- af79cd13be357-9153d99648emr1577013385a.27.1780307808535; Mon, 01 Jun 2026
- 02:56:48 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Rr+5CKkJ"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Pcl07eVHrtUfXTC/Nf/r6V5Lev//GvpJaJKsyLQiYKpFDFRMYE+NOBnvhFiTziLw1Z/kAkkOPZ/+SDl5AhuNTDuozJsPvWV8AsfkG3LgrHSV/z6MCXpWAvzBmSc6dDqh2peGyzMiBt01rdVIdlI79RcMKzQq5b9imoU1X+ymDTp+uTYbDIaTADwMZy1NF7uwrLT04NH+5EvOQz6vxcEUj+qziCi3Zc6U99PuNLQutypPDEYBha/EjSIlgzv7Vp7miZOKtFwj3ls3rOQdUy50iDWoZb0bCx9ZR/O/CR0JmWK3nlPTRWMQj+xn+fWjDBW7Dhzam6oP1eC3eiJv9kGLNg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=3l92iOARTwmDkmKu6zg/eRb0411K0MdXD68y5AhOFvA=;
+ b=QEVO0CNh14ptvbJglN4ZBiLpW5ZsFrE434k7HanW5XWbgC+Gt0y1qMm3+srOFZWoYVeveIfwqS2MXNJbeAkN8N136mj8GsnZ4ReiBGmA6xmSYQvJMC6VTu0cfz0ihioGtDH8R7dl5PeFAn9Wl2wyiabnMsr357oHGpJch/BPhV0ovX6RL+ZjaHkCzr5bTx0JswBZgz9Zu6IP0u4RCHdns2cI97ofJjss0l+XGPsR0fm/EJEFBRYb9k8ExPsqN8B4D7X9oaMWRwathXHMJX/QJHP6Z/nq9KUwNxtj2FwpY1KWpaltOkdg9Oa3Vk4UbML9GDgqZeGJDAqfrGaoWnjuQQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=3l92iOARTwmDkmKu6zg/eRb0411K0MdXD68y5AhOFvA=;
+ b=Rr+5CKkJTYA0/we3l1b6UAS1YAz3kCGwiOiGThgUl6VKP84BGLxcBMZ1Niy4hwkpSqrap7o8m2103ONo2IZEUZjiesaH3arl7tDO53gAr3PyUACQRZMOhGHB3sU4byLFZbglKw+48h/itfPdlZC1lxMLpy9aSlhzCeGQMgY2E5Q=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
+ by PH0PR12MB8176.namprd12.prod.outlook.com (2603:10b6:510:290::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.16; Mon, 1 Jun 2026
+ 10:00:03 +0000
+Received: from PH7PR12MB5685.namprd12.prod.outlook.com
+ ([fe80::ce69:cfae:774d:a65c]) by PH7PR12MB5685.namprd12.prod.outlook.com
+ ([fe80::ce69:cfae:774d:a65c%5]) with mapi id 15.21.0071.011; Mon, 1 Jun 2026
+ 10:00:03 +0000
+Message-ID: <190a1eeb-bd70-4b7b-93a4-60e14f0d6c7e@amd.com>
+Date: Mon, 1 Jun 2026 11:59:55 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 0/4] vfio/dma-buf: add TPH support for peer-to-peer
+ access
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Zhiping Zhang <zhipingz@meta.com>, Alex Williamson <alex@shazbot.org>,
+ Leon Romanovsky <leon@kernel.org>, Sumit Semwal <sumit.semwal@linaro.org>,
+ Bjorn Helgaas <helgaas@kernel.org>, kvm@vger.kernel.org,
+ linux-rdma@vger.kernel.org, linux-pci@vger.kernel.org,
+ netdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ Keith Busch <kbusch@kernel.org>, Yochai Cohen <yochai@nvidia.com>,
+ Yishai Hadas <yishaih@nvidia.com>,
+ Linus Torvalds <torvalds@linuxfoundation.org>
+References: <20260526144401.1485788-1-zhipingz@meta.com>
+ <a8cd01ab-d7aa-465d-bfa3-431f78f33ee1@amd.com>
+ <20260527121438.GJ2487554@ziepe.ca>
+ <ff247643-73e7-44e2-b3d5-8ac0a8efb871@amd.com>
+ <20260527123634.GK2487554@ziepe.ca>
+ <a5ff1930-e9fb-43f5-82ab-9875d7a28421@amd.com>
+ <CAH3zFs2KALuHXReLZG_uoqvBBWvBzU6rHKakmt6HBV7PZEsD=w@mail.gmail.com>
+ <71302a7a-6b9f-40da-af81-b1862dbd637a@amd.com>
+ <CAH3zFs036sr93duQKx613pCyOYw4t0_x_TdSza1xBCaEmqijyA@mail.gmail.com>
+ <8d9bb0b7-182d-4930-b683-d5d24da6b2ab@amd.com>
+ <20260529201130.GU2487554@ziepe.ca>
+Content-Language: en-US
+From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
+In-Reply-To: <20260529201130.GU2487554@ziepe.ca>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: FR4P281CA0133.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:b9::14) To PH7PR12MB5685.namprd12.prod.outlook.com
+ (2603:10b6:510:13c::22)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <ah1Sw2g-I89BRRiT@v4bel>
-In-Reply-To: <ah1Sw2g-I89BRRiT@v4bel>
-From: Eric Dumazet <edumazet@google.com>
-Date: Mon, 1 Jun 2026 02:56:37 -0700
-X-Gm-Features: AVHnY4INcjp5rdu6uAwfJd9rymmh8udkVXYJ_7PAsacX57eqTiUgVf5L2fMjV4Q
-Message-ID: <CANn89i+q8uKxsjCCe6Gz-YcHTwGZQsDWRKNO2FP=+0Z4S7uQCg@mail.gmail.com>
-Subject: Re: [PATCH net] inet: frags: fix use-after-free caused by the
- fqdir_pre_exit() flush
-To: Hyunwoo Kim <imv4bel@gmail.com>
-Cc: dsahern@kernel.org, idosch@nvidia.com, davem@davemloft.net, 
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|PH0PR12MB8176:EE_
+X-MS-Office365-Filtering-Correlation-Id: 65f4afc6-e365-4d26-dc67-08debfc48cde
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|1800799024|366016|22082099003|18002099003|56012099006|4143699003|11063799006;
+X-Microsoft-Antispam-Message-Info:
+	FFPJ2aPDT4zhONHf8YV6ZGnTQvWtHmK+pwer8otps/Rq1sRuVjujo2Z4HGMlsW5WaYSAd7rcp7YosUTgJrqIiwh5fiCCRnip7oUTYUCaoe5LSfwrN0qB0q4Fkd4WVSqXLTllo2dgr7U7buUqJNUCRzpxe/9BYBvaMBhSysjkNuZERMNG2b7nmF27ME9e1pjpeXySRHuDqkcIwYA8chyKq4iPTEBqtp4+cqpg4y/qgrDAkXdkD/I92dmn+q2rpEG3q/vpcUw9RP/5dvC9FlvsSHPewvczRO18CL+vjiyYDOohi++qKr8lU9DKHvQWFf9j2CBDyXb6G7V48AoCZ/N78QV/P41Nz3DJBhbenGBFbPnd1iaR9c+h/c9x6fcSISpTkdHXg8LmYBve+L6sShqangM1+pbwfZJ7UWmaQz/6uF71XwfuUFW9M5ZgAeIf8isSyuAxmYSNh/7t+vbb7YUi7/mAuTbmQ+FbSwneL9QTMz9eKu3sKoxuAt01lXtvNfzMplSjm206fxVWHG9rqeR15WAks2JWmfixkQFp6Q6PzWPmmVjPzPpbsiFIYSQLVUnpbUuDfgz1i8OShnoXEOVvVnkJAMBmSaTuWwg7dg46ZnwF+OQBcgrLyj+LwHQqnYkYvo/7JxknWdv2JbQ/NMZpayJuk5CX3VxOXW5hQt7QhOCTvG5wy5t8tfVVBFj522kIQa7/PBbL7HLYqvKran7eCg==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(22082099003)(18002099003)(56012099006)(4143699003)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?TzY4NHpGMzBpaUowREczbjRxWllDNlpjRU9ndWx6MjdHNmFmSEVyS1ZnYm52?=
+ =?utf-8?B?VXBCQk9zb1NwTDFmSDEvVWhUWmtkS1d4cUFWS1U4eW5RY3BYN3VQR0NpUThN?=
+ =?utf-8?B?U2hSblBndHFsdGVPa2l4Y2drZldvSHVvM2greTR2cjJRTGM1VTlMSTZ5NGxZ?=
+ =?utf-8?B?MjV4dkJUZlkwRkJaMHJXS3Q1dFBBanVpNC9CZThSZ1JGUTNyeDlISHVSdnFR?=
+ =?utf-8?B?MG1ibjJkOGdxQzVwYVQxV1NISXBpR1hYRWR5cUhGVnJJeTRBRjNRanZrYjJ0?=
+ =?utf-8?B?TENMMTJkSUhGaXowOVljc2dyK2lNaUc2Z2FHUDE5NXJUMHZqUTRFRjJ4QkJt?=
+ =?utf-8?B?SmRRRmV2RzVCNnE5eHNIa3Y1SHlrb290eXhUZWdlQnYrdTN6RXB3K1dhNGFC?=
+ =?utf-8?B?OS9GMGFrWGRKQVozc3hEb2k1TFZNWWszTS9FU0RSSHlFOERRa0U3S1Z4bXlk?=
+ =?utf-8?B?VkZOMFB3N2VzTFh5N3FQYm9OR09rNmQ1UCs0YTl5SWNkVjdBSnVyQUdoODN1?=
+ =?utf-8?B?V2g0azMrR1lGNHE5cHI1L0k2L0g1OXRDYTZjT0FjSEkxcTdKeURtT2pJV1Rs?=
+ =?utf-8?B?c01aeXpDa2Y1VDRkcG1zSGZZMkRhd0VxVE9Tem5HV2djaVZlY0g3cmk3ZTJr?=
+ =?utf-8?B?MFJSN3ZObXp6aTA5QW0zUG5UNVBUeDFQSzBORHcva1EvZEN1ZmtoYXp6di91?=
+ =?utf-8?B?Y1QyQ0QrWnFleXpIbGk3TEFTRXBIT3ZjSDNwVVE3QlNOUkZOVXdSOEM4YXVO?=
+ =?utf-8?B?RStMdTM5ZEVpY2hXYnlGRHBFRGdMSGlGTlZObXN3VUNjZmNHUUl6cGlRNDRS?=
+ =?utf-8?B?U1RzQjFPdHpmM1lZYzhaZkZSd3FoWVZHcDlPRUZkaHRqUFJxOXRvUjhKeCtG?=
+ =?utf-8?B?aFoveVl2eVRPNDJxTUZ5K1FjdW1aSFJMUHh5RmhWUjR0cXd1dzVQZEtvWm9I?=
+ =?utf-8?B?NVp5UVVLMWh1ZUtwVTQ5YyttNjgzdzlwZVQ2emFOMEJyMjdjNHBFNG44bWxG?=
+ =?utf-8?B?Mzk0Z0I1eTlidlhOd29ram1lbGxYMXNtL3hnbXYyNGVqTS9sRG9UZ1M0eTVE?=
+ =?utf-8?B?ditIWU1UdmFqZ2hDemtDaVRFWGdPSWp6WjlTMXFHbXo2VytEYWJCSHlxL1pu?=
+ =?utf-8?B?SGxtb0VmSTJ2M0dGU0VYdnQ3N09zUXI2b21zMXRwOG5qSUNnWVBuUzdGRW0y?=
+ =?utf-8?B?ZnVJTkc2N3lrZWZSWHBaVFFmOUtzZVFTMFN0VnRsRjJWSHVxVXU0cTJZWUhm?=
+ =?utf-8?B?L2FHaGxsK0FRelgyREphQXl2WjR4dW1zSUExZGhmRVJxSVpSUWdMdHdrS2NL?=
+ =?utf-8?B?Rk15K3ZGamZFcWZvWWxKVUE4a1MreDZzZDI2WEQ2cDdCT2lDeXFIUDJ2SGlH?=
+ =?utf-8?B?LzQ3eVVKZnR6dnpFRmsvRy85R0t5Q3ZVdTd0OW1aMmw2MTdIRnJHWWdiTHlo?=
+ =?utf-8?B?VjM4dXVyL1ZIWDgwOFN4NzR0dGpEakZ5RlpPTjQrNWk5UHVZVFEzV1AySEND?=
+ =?utf-8?B?dGcxd2RMV24xWjRZeTFURC9oSnlKVGRBTmFUOWVOcTA2ZVMzdDg1VkRRTVdN?=
+ =?utf-8?B?c2JDTk55WjU5Zkl6TFNPQzNxUjNFaGdydWQxdkgrZmRIcnV1b0k5Q3dmTDR3?=
+ =?utf-8?B?Y2puc1RUR2wxbHoxSWZzUDJmai9UUnFid2NRUFZXbE8zTExMWFAxS0hhb2Nm?=
+ =?utf-8?B?MURSU013dEw1SGhKalJUSXpnL3cvOWVHbFBFeWpFbGhpbmVwNkpTS1dBbVhD?=
+ =?utf-8?B?WjBwbkFadUw4TmxvanBkUDQ1azhNbktZRkJ4OVRBT1hBbERLZkZSU1VZWGJE?=
+ =?utf-8?B?OWJQQmtQeUdlWUt3Mlovem9vUDdWQjlUczVaYnRWUzVvNFI5Mjh2QU12OHl2?=
+ =?utf-8?B?eEIvUWg5dHVYMGVhbHFuam5lQkZrM0sxTzNMbGoyRkJZUVdLaHVkcGg1cjEv?=
+ =?utf-8?B?ZEE0SjNLWWFWclUrODhMb2ZQdWhFb21pNVpHVkl0TVpWNjE4ZXdIdGR6dTYw?=
+ =?utf-8?B?K21KTUNJRFNMZnhnRnRyeDRueUgvdnE2UzNSenphbzZqYjdsMXhiRGFyUFF5?=
+ =?utf-8?B?WjloNmFzNnJ5aldkdHkwL1RoajRrNFd6N3U3UWtpNDl3ekxVck81TG1FRDR3?=
+ =?utf-8?B?a2NwNTFBa1R1dFFBd3N3M0xxUmhlbmVyQzd0dWRCSi9BbUQzTWdKQTJtRW1a?=
+ =?utf-8?B?UHNEYzVwYjM5cVJxakE0ZzM0NTIyRFRsY0FPaWpHSTh0ZXVIU1JXcTFrZDVv?=
+ =?utf-8?B?ejJCRXJnRzNQZ2JQSUtKZTlvQkxlbFN3aTUwZ0M4ZmZNWlJ2eGtPVDVZV2dQ?=
+ =?utf-8?Q?0GIWqteTHtqfH5+oGd?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 65f4afc6-e365-4d26-dc67-08debfc48cde
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Jun 2026 10:00:03.2668
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: xt99rZFbHzQeTQR1U+GWmYElZXvcW3213FlLGVyjbbo13EQyutZAhcW+SojRpg6g
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB8176
 
-On Mon, Jun 1, 2026 at 2:37=E2=80=AFAM Hyunwoo Kim <imv4bel@gmail.com> wrot=
-e:
->
-> On netns teardown, fqdir_pre_exit() walks the fqdir rhashtable and
-> flushes every fragment queue that is not yet complete using
-> inet_frag_queue_flush(). That helper frees all the skbs queued on the
-> fragment queue but does not set INET_FRAG_COMPLETE, and leaves
-> q->fragments_tail and q->last_run_head pointing at the freed skbs.
-> The queue itself stays in the rhashtable.
->
-> fqdir_pre_exit() first lowers high_thresh to 0 to stop new queue lookups,
-> but it cannot stop a fragment that already obtained the queue through
-> inet_frag_find() earlier and stalled just before taking the queue lock.
-> Once that fragment resumes after the flush and takes the queue lock,
-> it passes the INET_FRAG_COMPLETE check and then dereferences the freed
-> fragments_tail. inet_frag_queue_insert() reads FRAG_CB() and ->len of
-> that pointer and, on the append path, writes ->next_frag, causing a
-> slab use-after-free. IPv6, nf_conntrack_reasm6 and 6lowpan reassembly
-> share the same flush path and are affected as well.
->
-> Mark the queue complete and reset its remaining pointers under the same
-> lock right after the flush. With INET_FRAG_COMPLETE set, the insert in
-> each reassembly path bails out at its check as soon as it takes the
-> queue lock and no longer accesses the freed fragments_tail.
->
-> Fixes: 006a5035b495 ("inet: frags: flush pending skbs in fqdir_pre_exit()=
-")
-> Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
-> ---
->  net/ipv4/inet_fragment.c | 7 ++++++-
->  1 file changed, 6 insertions(+), 1 deletion(-)
->
-> diff --git a/net/ipv4/inet_fragment.c b/net/ipv4/inet_fragment.c
-> index 393770920abd..d532f6182c8a 100644
-> --- a/net/ipv4/inet_fragment.c
-> +++ b/net/ipv4/inet_fragment.c
-> @@ -243,8 +243,13 @@ void fqdir_pre_exit(struct fqdir *fqdir)
->                         continue;
->                 }
->                 spin_lock_bh(&fq->lock);
-> -               if (!(fq->flags & INET_FRAG_COMPLETE))
-> +               if (!(fq->flags & INET_FRAG_COMPLETE)) {
->                         inet_frag_queue_flush(fq, 0);
-> +                       fq->flags |=3D INET_FRAG_COMPLETE;
-> +                       fq->rb_fragments =3D RB_ROOT;
-> +                       fq->fragments_tail =3D NULL;
-> +                       fq->last_run_head =3D NULL;
-> +               }
+On 5/29/26 22:11, Jason Gunthorpe wrote:
+> On Fri, May 29, 2026 at 09:36:00AM +0200, Christian König wrote:
+>> On 5/29/26 08:34, Zhiping Zhang wrote:
+>> ...
+>>> There's no in-tree vendor PF driver
+>>
+>> Well I have to admit it's a bit on the edge but this sentence is a
+>> show stopper.
+> 
+> I think he means the device is not SRIOV. vfio-pci is the in-kernel PF
+> driver.
+> 
+>> DMA-buf is an in kernel interface for buffer sharing between drivers
+>> and any change to it needs an in kernel driver as justification for
+>> the added complexity.
+> 
+> vfio is the in-kernel driver, this series fully shows the in-kernel
+> API using vfio as the exporter and mlx5 as the importer. It certainly
+> meets the standard required to show in-tree users.
+> 
+>> When you have a complete open source driver stack which utilizes
+>> VFIO passthrough as the interface to communicate with the kernel
+>> drivers then we can eventually talk about that.
+> 
+> That decision is not up to dmabuf
 
+Yes it is. This is the DMA-buf API which is added here.
 
-Any reason this is not done from inet_frag_queue_flush() so that we can
-remove the related code from ip_frag_reinit()?
+> - what VFIO subsystem requires to
+> accept a new UAPI is up to the VFIO maintainers.
 
-diff --git a/net/ipv4/inet_fragment.c b/net/ipv4/inet_fragment.c
-index 86b100694659ee51292625216113f9411b98a351..6c5f373e55d3a39a581a6364599=
-d911782469f77
-100644
---- a/net/ipv4/inet_fragment.c
-+++ b/net/ipv4/inet_fragment.c
-@@ -326,6 +326,10 @@ void inet_frag_queue_flush(struct inet_frag_queue *q,
-        reason =3D reason ?: SKB_DROP_REASON_FRAG_REASM_TIMEOUT;
-        sum =3D inet_frag_rbtree_purge(&q->rb_fragments, reason);
-        sub_frag_mem_limit(q->fqdir, sum);
-+       q->flags |=3D INET_FRAG_COMPLETE;
-+       q->rb_fragments =3D RB_ROOT;
-+       q->fragments_tail =3D NULL;
-+       q->last_run_head =3D NULL;
- }
- EXPORT_SYMBOL(inet_frag_queue_flush);
+As far as I can see vfio-pci is used as a stub driver to avoid opening up the real driver.
 
-diff --git a/net/ipv4/ip_fragment.c b/net/ipv4/ip_fragment.c
-index 56b0f738d2f27b6b4c4b55f5ca9368305ce1eb4f..c790d2f494870e1debd7e73b2d6=
-7df017a29f8a8
-100644
---- a/net/ipv4/ip_fragment.c
-+++ b/net/ipv4/ip_fragment.c
-@@ -250,9 +250,6 @@ static int ip_frag_reinit(struct ipq *qp)
-        qp->q.flags =3D 0;
-        qp->q.len =3D 0;
-        qp->q.meat =3D 0;
--       qp->q.rb_fragments =3D RB_ROOT;
--       qp->q.fragments_tail =3D NULL;
--       qp->q.last_run_head =3D NULL;
-        qp->iif =3D 0;
-        qp->ecn =3D 0;
+Upstreaming an API changes only makes sense if others can use it and this here is something completely special to this particular use case, without all components involved nobody else can use it.
+
+So as far as I can see that here is a no-go. But at the end of the day it's Linus who needs to say if that's ok or not, that's why I put him on CC.
+
+Regards,
+Christian.
+
+> DRM and VFIO have very different views on what is required to merge a
+> new uAPI.
+> 
+> Jason
+
