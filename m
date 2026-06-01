@@ -1,104 +1,135 @@
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFF3E335BBB;
-	Mon,  1 Jun 2026 05:40:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780292420; cv=none; b=e8iNBpq2BuWgNKNdnBbUDL0DhigMVzm1QS/rOfKY/xTRpzL+j+S5f73gA9wyGo1ur5FK3kgunixfkq5xZPPeRGbT2r57k0ERepVwPqf1JBVSj2C4yWkjKkt43/tD+OuV06yQbJIfw439UvMEbwm4EDN1cAvRPcfQfLovxjUiH0E=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780292420; c=relaxed/simple;
-	bh=z0JUyRvY3y7yOGwxnG+2D6KVK7y1f5teZZ0NfjjSwkw=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=Bp6+BRAyD/OV4bGonOLYZUis/odCWjQgciAd5HSUY3SB3y6UnUwUU9WTndnKWmIGbbU/A2lT3DpFjm4UlCMkwPsnlWRS0Qd4GOS+hiuOl+zTC0iEIc2LeAlVMWqItjyEiuutos8e30lpKlwdIbkSZ9hwwVNsc6yCTabCfXHZtMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn; spf=pass smtp.mailfrom=realsil.com.cn; dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b=bE8rIVQw; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realsil.com.cn
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDA8033EB1A
+	for <netdev@vger.kernel.org>; Mon,  1 Jun 2026 05:44:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.180
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780292687; cv=pass; b=XeNN7fOFoE+9JLtqImA/h86kVidJh8R7ek4PPodSHWKdtEPbVkAX0aubRh7qFnFy8YBtYzPaWM0HfpfQ3zOXtbFNwYZZRbBcgSM50jrbt6UT1l+Er69Ml0D6syYyYZ2ObcKTo35TH8Lcky8Aj01odiFAE+YQaj1yALICN2LYqtM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780292687; c=relaxed/simple;
+	bh=3SEfUrGpOB+OrS2N/tF2ctbW+WT/uZ3USk5VMcVSXLA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Bx7K7sfJxrEDKmxOhWcynYkvDcJmCr6PdpquYxbQl8kAgq09L8wf118UMxN/kwsNbRCrJZhvXFCawr0MD4qXgU5tACrq4EkJp1+jii5Uq9xxpsaMQ67tB2EvlIymYP8jkwGTTEV9iyHzF2JQyzbvokZPVNCzOSu+eY5KAayiKNM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=eFcOPSmy; arc=pass smtp.client-ip=209.85.160.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b="bE8rIVQw"
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 6515ct8uB1837258, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realsil.com.cn;
-	s=dkim; t=1780292335;
-	bh=z0JUyRvY3y7yOGwxnG+2D6KVK7y1f5teZZ0NfjjSwkw=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=bE8rIVQw4SHGApu4tmXdfdnOWq2E4H34xD+U5BC5PBNwE7jd2tr6p0vPMhE7Vz7XN
-	 lXCcMnqpw4wLt7GN0g98SA6TvPqA3fOfcEiZxv5fWfe2V3Un2VBKWZEuUCLNslzaro
-	 XdIx9jhFf4aI097QXm72eFZCSoWcyZ1Yem41cYtHkLfyeclGVAaSZGZenaaXD94KFj
-	 oIgB5ZDlJbbp+qRO+UP4QxHYJQArX6XgvhfFzZyEZCwaoMoYjwtIgCgeFw9PrdtjAR
-	 LT/60Wanxa0nm914nNu23u1BCVAJ8f/k1X2NFWWFaqCoR0MAZ5235k+mvKlGnwHhv1
-	 rphKria9gBazw==
-Received: from RS-EX-MBS1.realsil.com.cn ([172.29.17.101])
-	by rtits2.realtek.com.tw (8.15.2/3.28/5.94) with ESMTPS id 6515ct8uB1837258
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Mon, 1 Jun 2026 13:38:55 +0800
-Received: from RS-EX-MBS3.realsil.com.cn (172.29.17.103) by
- RS-EX-MBS1.realsil.com.cn (172.29.17.101) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Mon, 1 Jun 2026 13:38:54 +0800
-Received: from RS-EX-MBS3.realsil.com.cn ([172.29.17.103]) by
- RS-EX-MBS3.realsil.com.cn ([172.29.17.103]) with mapi id 15.02.2562.017; Mon,
- 1 Jun 2026 13:38:54 +0800
-From: Javen <javen_xu@realsil.com.cn>
-To: Daniel Golle <daniel@makrotopia.org>
-CC: "andrew@lunn.ch" <andrew@lunn.ch>, "hkallweit1@gmail.com"
-	<hkallweit1@gmail.com>, "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
-	"davem@davemloft.net" <davem@davemloft.net>, "edumazet@google.com"
-	<edumazet@google.com>, "kuba@kernel.org" <kuba@kernel.org>,
-	"pabeni@redhat.com" <pabeni@redhat.com>, =?gb2312?B?ucvP/r78?=
-	<freddy_gu@realsil.com.cn>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "vladimir.oltean@nxp.com"
-	<vladimir.oltean@nxp.com>, =?gb2312?B?QmFsqKJ6cyBUcmlzemth?=
-	<info@balika011.hu>
-Subject: RE: [PATCH net-next v1 2/2] net: phy: realtek: load firmware for
- RTL8261C
-Thread-Topic: [PATCH net-next v1 2/2] net: phy: realtek: load firmware for
- RTL8261C
-Thread-Index: AQHc7ncSbPmCu2IClUOase9yNkjBi7Yi1ZUAgAZdTKA=
-Date: Mon, 1 Jun 2026 05:38:54 +0000
-Message-ID: <ead2cd49c1394c01a404da8e3962ad79@realsil.com.cn>
-References: <20260528075226.1054-1-javen_xu@realsil.com.cn>
- <20260528075226.1054-3-javen_xu@realsil.com.cn>
- <ahgy9Cce9MmY6KLl@makrotopia.org>
-In-Reply-To: <ahgy9Cce9MmY6KLl@makrotopia.org>
-Accept-Language: zh-CN, en-US
-Content-Language: en-US
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="eFcOPSmy"
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-51758478240so1653621cf.2
+        for <netdev@vger.kernel.org>; Sun, 31 May 2026 22:44:45 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780292685; cv=none;
+        d=google.com; s=arc-20240605;
+        b=CAqedALsigfoijxjY8Ntz1Ux/cdIKb+HN/eL8YIpsQaeNc4xSibiSVJMrnzBnQoJuD
+         DQhsEmrx40sCmcXhmX5ijyCHsY1N+6pmlHFl6jPgTxvX9GpmqTFfilrfkAHFzZ6gFOSU
+         VXXGKGIkzdolHIpI3ITgOaly5kJ1yxX7Ce7iF+NvEQfAInlsjtcJSo0rHRkgOEhMJcoh
+         gF0lhvMfU8H7S0/7kcjJ8j2//5vpuC9p9r7KYRqkYwwSRQTcsjW/LZ+2K40nmNnv6HP2
+         o3BLEd+CehC+pb6XcoBGLzJhLEPRQfCeQ7GkNr6bJv/m2VCRWJtJKDLA/1uuleVfSrX+
+         brxw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=CYJ9us5FFWuw1Ubnqm5Mv6Rgk1trKuije/O9oTp1I54=;
+        fh=SyFG66jC/oVt8C2dXvxTXwjVeBYCSYA5AG/WV5Zdb7M=;
+        b=IGLSJSvm/aGkpp3dReWyemI9Bd3+JXz5J24bm0yFR6CYfOwhYmVZqjoulGMJ/y0JRZ
+         SuQZXlCsqcq/ihjXwCjuClaoEUUZL/NCHdx7zBShY41sjvfsqV5jpR50Hzm3e0vmZtqr
+         MWLvolK5XqjFlDQpqstd5/N9yC9uhzcBHQnISgBHaXtJZCYz9oDHyR70HtOVubRsp3oE
+         BuB3LaceoiZDkQ7tb5OtBQ4R1U+Voijt8a094nsGiz1s6Y83SwK20KOGJZc3bXgVH6yF
+         nMH7FDOWEsgx645SZFFT8tDRzXJYdrbMAM+pb2vEgRqf9EU/QhxDdDDhWpJrjuFWr6ah
+         OYIw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1780292685; x=1780897485; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=CYJ9us5FFWuw1Ubnqm5Mv6Rgk1trKuije/O9oTp1I54=;
+        b=eFcOPSmysNRzKMC/dOMYuTqrR/SkhfUf3KOewI+3rMotMkgegMaWjLmmj7N0Iab4Fo
+         cdEoxnqvSeJupxVKd0Wp+ggTpbzz8lIyxUQhcnGTG7dzt8PP3OJGwWzM01wIpCtQt5ST
+         e501O7hVBPRYiHXcLP2oQvVdXNfBD9WZ40IKM+c5s9CFiziKQnO+jzB78bOespbTdyEY
+         ocsHHaigV7i6t7ihlqzMLoUopjgWfqQjAN1ObeV0pzrKAnl30ZqKwBMWHU06EzTl2Cct
+         CBgeGgjAyCfOgLKWbqBhK1CGzunskMda2fgA8yKeRXZkjGz8I0rG7cGJtNIjJQm6xAqY
+         qb9Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780292685; x=1780897485;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=CYJ9us5FFWuw1Ubnqm5Mv6Rgk1trKuije/O9oTp1I54=;
+        b=CwOndl/EmckTfvH/WjgvZFjgz4GVcOhANDHMpKy2BFWLT1/jiHoenujw8hFzAbtcIR
+         JYEdYvVZfaYSQnq6B0QYCqufBkq+h5CBlBy3OMBv1j8DSvE8G/2vBoguoHRp0xUUV32F
+         W7izS8GrD6NN8Bi9ycu2eZe44S/HlN/PDrIGiYeVb9dyHPICq0eCKCi3ElApmJI/+qSI
+         BEuaVxVb8QCSr6CqbkbDI9jp7vKupT0qjFgtv53keKXgH1GBg3m6RLckwt/8QK+efk5W
+         WevOJV7gwV0RYHxH5ML3WCZprQXOhc3xH5wKT52xfZbomyiz/vNBTqtG5ykLp/e54hCT
+         2yeQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+M+48xQDyb7PwIIv8AIwcnBrBz+bXcNjgErqAarNyq4obBsaaAr7qgnjKEGNgBDLE3r5wrA4M=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyIIbgl6TrIdNZwYND/Heae6XTlyYGNwPxEZzl9fMv9XDh/ff8U
+	8dz5FHErJRbb6R8z6MGAQhzYjJzsQuq13+aGoYJwmPSwjEV8FXX7AJG7zbCCW2iniDrtg7VgUrj
+	2JizvVHq09cxwgIYka+wyXPmWFNk8jwW60PnIdzLN
+X-Gm-Gg: Acq92OFYIBqJBFoD7aHmyHFGA5BTug1n3RUZk4loN4r0/5A6GXm4sAiiNuqKnsvkbHk
+	mJ91A2vIWFo2ZDziCAZfeOJhhyK/ilpyEIxldY1odAEaLr7NxjpGz+hIkR0fHrSFXG5NYBjQH61
+	Mne+DHTdoeNpsih7DFxoWPyLse0KtE6ivh8dc7H8AbeM73P9VZ93GTkOeI9iOlQZOCrKL5ceiu/
+	xPncRYRMrOp7RxmhzSvNLrd8ptvdAmUoYpPCfIMkfkY/7uCnWJLxV5mVyNBnp4LChlBa8xtKqFR
+	7GE6noNB2idMSihHA+zaEEJElpag/qyZ7C0l9f/Wudel/oYeKGz7vN6/EiODeyx9ejGFkbOEZg4
+	GqQsXP1zYiJvsM2LZ9yXSQLHLQjs3
+X-Received: by 2002:a05:622a:1106:b0:517:5790:ff7b with SMTP id
+ d75a77b69052e-51757910b7amr22711931cf.57.1780292684284; Sun, 31 May 2026
+ 22:44:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20260601-net-next-mptcp-add-addr6-port-ts-v1-0-4fc25dfef62e@kernel.org>
+ <20260601-net-next-mptcp-add-addr6-port-ts-v1-4-4fc25dfef62e@kernel.org>
+In-Reply-To: <20260601-net-next-mptcp-add-addr6-port-ts-v1-4-4fc25dfef62e@kernel.org>
+From: Eric Dumazet <edumazet@google.com>
+Date: Sun, 31 May 2026 22:44:32 -0700
+X-Gm-Features: AVHnY4IayHyy6cMDi-nQDDjXrYJHGRD4C69UxZMSkBfLGuSFxlZymzrG3JPQpdU
+Message-ID: <CANn89iL=os-60kDKqMDdyiXuPF5CG=eejS0vmthwpDGXz_Bp8A@mail.gmail.com>
+Subject: Re: [PATCH net-next 04/11] mptcp: introduce add_addr_v6_port_drop_ts
+ sysctl knob
+To: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Cc: Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>, 
+	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, mptcp@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Pk9uIFRodSwgTWF5IDI4LCAyMDI2IGF0IDAzOjUyOjI2UE0gKzA4MDAsIGphdmVuIHdyb3RlOg0K
-Pj4gRnJvbTogSmF2ZW4gWHUgPGphdmVuX3h1QHJlYWxzaWwuY29tLmNuPg0KPj4NCj4+IFRoaXMg
-cGF0Y2ggYWRkcyBzdXBwb3J0IGZvciBsb2FkaW5nIGZpcm13YXJlLiBEb3dubG9hZCBzb21lIHBh
-cmFtZXRlcnMNCj4+IGZvciBSVEw4MjYxQy4NCj4NCj5JJ2QgbGlrZSB0byBicmluZyB0byB5b3Vy
-IGF0dGVudGlvbiB0aGF0IHRoZSBPcGVuV3J0IGNvbW11bml0eSBoYXMNCj5pbXBlbWVudGVkIGEg
-bW9yZSBjb21wbGV0ZSBzdXBwb3J0IGZvciBpbml0aWFsIHJlZ2lzdGVyIHBhdGNoaW5nIHVzaW5n
-IGENCj5leHRyZW1lbHkgc2ltaWxhciBmaXJtd2FyZSBmb3JtYXQuDQo+DQo+aHR0cHM6Ly9naXRo
-dWIuY29tL29wZW53cnQvb3BlbndydC9ibG9iL21haW4vdGFyZ2V0L2xpbnV4L2dlbmVyaWMvcGVu
-ZGkNCj5uZy02LjE4Lzc0Mi1uZXQtcGh5LXJlYWx0ZWstYWRkLTVHLWFuZC0xMEctUEhZLXN1cHBv
-cnQucGF0Y2gNCj4NCj5XZSB1c2VkICdSVEtfUEFUQ0hfT1BfKicgd2hpbGUgdGhpcyBzZXJpZXMg
-dXNlcyBvbmx5ICdPUF8qJyBhcyBtYWNybw0KPm5hbWVzIGRlZmluaW5nIHRoZSBpbml0dmFsIHBh
-dGNoaW5nIG9wZXJhdGlvbnMuDQo+DQo+QXMgdGhlIHZlbmRvciBkb3duc3RyZWFtIGRyaXZlciBo
-YWQgdGhlIG9wZXJhdGlvbnMgaGFyZC1jb2RlZCBpbiB0YWJsZXMNCj5vdXIgY29tbXVuaXR5IGNh
-bWUgdXAgd2l0aCBhIHRvb2wgdG8gZ2VuZXJhdGUgdGhlIHBhdGNoaW5nIGJsb2JzIGZyb20gdGhl
-DQo+R1BMLWxpY2Vuc2VkIHZlbmRvciBkcml2ZXI6DQo+DQo+aHR0cHM6Ly9naXRodWIuY29tL2Jh
-bGlrYTAxMS9yZWFsdGVrX3BoeV9maXJtd2FyZQ0KPg0KPkdpdmVuIHRoZSBzaW1pbGFyaXR5IEkg
-d29uZGVyIGlmIHRoaXMgY29kZSBoYXMgYmVlbiB0YWtlbiBmcm9tIEJhbKiienMgVHJpc3prYQ0K
-PndvcmsgKHdoaWNoIGNsZWFybHkgcHJlZGF0ZXMgaXQpIHdpdGhvdXQgZ2l2aW5nIGhpbSB0aGUg
-ZHVlIGNyZWRpdC4NCg0KVGhhbmsgeW91IGZvciBicmluZ2luZyB0aGlzIHRvIG15IGF0dGVudGlv
-biBhbmQgc2hhcmluZyB0aGUgbGlua3MgdG8gdGhlIE9wZW5XcnQgY29tbXVuaXR5J3MgYW5kIEJh
-bKiienMgVHJpc3prYSdzIHdvcmsuDQoNCkkgaGF2ZSByZXZpZXdlZCB0aGUgcmVwb3NpdG9yeSBh
-bmQgdGhlIHBhdGNoIHlvdSBtZW50aW9uZWQuIEkgd2FudCB0byBjbGFyaWZ5IHRoYXQgb3VyIGNv
-ZGUgd2FzIGRldmVsb3BlZCBpbmRlcGVuZGVudGx5LiBTaW5jZSBib3RoIGltcGxlbWVudGF0aW9u
-cyBhcmUgdGFja2xpbmcgdGhlIGV4YWN0IHNhbWUgaGFyZHdhcmUgcmVxdWlyZW1lbnRzIGZvciBS
-ZWFsdGVrIFBIWXMsIHRoZSBmdW5kYW1lbnRhbCBoYXJkd2FyZSBvcGVyYXRpb25zoapzdWNoIGFz
-IHJlYWQsIHdyaXRlLCBtYXNrLCBhbmQgZGVsYXmhqmFyZSBzdHJpY3RseSBkZWZpbmVkIGJ5IHRo
-ZSBoYXJkd2FyZS4gSW4gdGhpcyBwYXRjaCwgd2Ugb25seSBrZXB0IHNvbWUgb2YgdGhlIG9wZXJh
-dGlvbnMgdGhhdCBhcmUgdXNlZCwgc3VjaCBhcyBvcF9wb2xsLg0KDQpJIGhvcGUgdGhpcyBjbGVh
-cnMgdXAgdGhlIG1pc3VuZGVyc3RhbmRpbmcuIA0KDQpCUnMsDQpKYXZlbg0K
+On Sun, May 31, 2026 at 10:24=E2=80=AFPM Matthieu Baerts (NGI0)
+<matttbe@kernel.org> wrote:
+>
+> This sysctl is going to be used in the next commits to drop TCP
+> timestamps option, to be able to send an ADD_ADDR with a v6 IP address
+> and a port number. It is enabled by default.
+>
+> This knob is explicitly disabled in the MPTCP Join selftest, with the
+> "signal addr list progresses after tx drop" subtest, to continue
+> verifying the previous behaviour where the ADD_ADDR is not sent due to a
+> lack of space.
+>
+> While at it, move syn_retrans_before_tcp_fallback down from struct
+> mptcp_pernet, to avoid creating another 3 bytes hole.
+>
+> Reviewed-by: Mat Martineau <martineau@kernel.org>
+> Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+
+...
+
+>  };
+> @@ -94,6 +95,11 @@ const char *mptcp_get_scheduler(const struct net *net)
+>         return mptcp_get_pernet(net)->scheduler;
+>  }
+>
+> +unsigned int mptcp_add_addr_v6_port_drop_ts(const struct net *net)
+> +{
+> +       return mptcp_get_pernet(net)->add_addr_v6_port_drop_ts;
+> +}
+
+Please use READ_ONCE() over sysctls.
+This will avoid future patches from KCSAN bots.
