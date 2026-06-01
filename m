@@ -1,61 +1,68 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [91.216.245.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D9E437B3F7
-	for <netdev@vger.kernel.org>; Mon,  1 Jun 2026 19:10:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5061937EFE3;
+	Mon,  1 Jun 2026 19:14:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.216.245.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780341043; cv=none; b=BaGZzC/4VMZSSqntRzx+kuP5PoWgMlb6fnbxsElo1ryUgptczisev3wJT42C+q1QriktWQKS+6h2QG/rKePTecsWSG6two+T8EXor/Cgy4OL6N3twvUGgPjXC6mV36hzq0nsGeKQtIDadk9M8qXNsvMuPH4ypqbsI1n1BzYvKeQ=
+	t=1780341253; cv=none; b=JQbtiXzzKe7jzbjYh/38M+XGlpfWYhed80lq6/jvPLm+AB3sPieWVkyPNtv0N6IV96LH3YciP64k3P5l337i38USbPO56pzLZGYCzht0AZIRufaE4gpJaYZTEAVea8vyKwDAimjB77q9C24fr8SM1RffblsC/Qua5JLahyI4XnE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780341043; c=relaxed/simple;
-	bh=dQP+Dh7qe6ostkW1LTN8vytGcK3koLa0h3gzAN0ctS4=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MuVDAx2V76EJoXD+FnU9ul6V4p3Pf7ed6t5vs1OrNmymW9tHmK9+liZBNfAa0ihhAtkxH4lz44QHXpDJOmOhqfpl6jGvAkZwdHs/N1bj7psOnyYAMgvmzIPUvve4MkGQlVakROQ1wMa7gJfWtUXQOIi+Dd9Bf0jwug9Dk0oijt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TzrFpWV1; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TzrFpWV1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17B7F1F00893;
-	Mon,  1 Jun 2026 19:10:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780341039;
-	bh=dQP+Dh7qe6ostkW1LTN8vytGcK3koLa0h3gzAN0ctS4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=TzrFpWV1+qE3ZLlr1UrMlJS6KxABz/a5gK1Cb9ekAhldIqIGga32DSgcJ8CXOTS+m
-	 Kw9ALTdT7jvQbf4XYtZ+Twtnyzu4NaZUvlKvBMkkSFAs52yj76nOtrMIoKK3Z9r3r2
-	 H/Ks5Mj34504LkAB81DyTGIGNKDtxTua07KpEcUY1vrdcHpKPktu1gTK+r0oJIaZHQ
-	 a9KPAfTNNHvwn9upDgIMDD/gTWd71pzLyvT3dMIG3xUOmqP7qHkIzRCbwtP7akFCY2
-	 iyYsmr3biQagKhI1i8GAYBL0Ufn8/H3RezD1tIgx+PgQIfwC0L8KMfbNqPXXyFClwF
-	 Gum2K9A4uIJow==
-Date: Mon, 1 Jun 2026 12:10:38 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Stanislav Fomichev <sdf.kernel@gmail.com>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
- pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
- michael.chan@broadcom.com, joshwash@google.com, tariqt@nvidia.com,
- haiyangz@microsoft.com, linux@armlinux.org.uk,
- maxime.chevallier@bootlin.com, willemb@google.com,
- ernis@linux.microsoft.com, kory.maincent@bootlin.com, danieller@nvidia.com,
- idosch@nvidia.com
-Subject: Re: [PATCH net-next 13/14] net: ethtool: optionally skip rtnl_lock
- on IOCTL path
-Message-ID: <20260601121038.3e33a600@kernel.org>
-In-Reply-To: <ah2hvWMz70qAYmsG@devvm7509.cco0.facebook.com>
-References: <20260528231637.251822-1-kuba@kernel.org>
-	<20260528231637.251822-14-kuba@kernel.org>
-	<ah2hvWMz70qAYmsG@devvm7509.cco0.facebook.com>
+	s=arc-20240116; t=1780341253; c=relaxed/simple;
+	bh=2GZdPKnuDFwv9TzCgyR3qloWSbuzRFCFLEo3Yn12uUM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Y5i5HFUI5vMZsqCEbgLIWLpVtxJ2UPSLp3ZBDnwAh4pDSINiO7h14ETOEGyQpxNxJD69hfiKnjPPLLHrJYeGb4KYf/y3uqUsT+Jkq9NT4CmXLAGPgZ5qIJkLB8dEUKJy3XpY08ObYPa/n9qBCS3JxVAI7fk1LWNvr5VXlPDlEhA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de; spf=pass smtp.mailfrom=strlen.de; arc=none smtp.client-ip=91.216.245.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=strlen.de
+Received: by Chamillionaire.breakpoint.cc (Postfix, from userid 1003)
+	id B756460AA2; Mon, 01 Jun 2026 21:14:08 +0200 (CEST)
+Date: Mon, 1 Jun 2026 21:14:08 +0200
+From: Florian Westphal <fw@strlen.de>
+To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Cc: Johannes Berg <johannes@sipsolutions.net>, netdev@vger.kernel.org,
+	linux-wireless@vger.kernel.org
+Subject: Re: net-next 32-bit clang build error in
+ net/netfilter/nf_synproxy_core.o
+Message-ID: <ah3aAO7oFuh7xei5@strlen.de>
+References: <20260528123911.284536-26-johannes@sipsolutions.net>
+ <178001352190.1565998.2039430206651171575.git-patchwork-notify@kernel.org>
+ <a28df759-d0e9-41c0-97c7-5f89a18d54e2@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a28df759-d0e9-41c0-97c7-5f89a18d54e2@oss.qualcomm.com>
 
-On Mon, 1 Jun 2026 08:17:56 -0700 Stanislav Fomichev wrote:
-> GVE's gve_get_ethtool_stats (ETHTOOL_GSTATS) still has ASSERT_RTNL and
-> is now reachable with only ops lock?
+Jeff Johnson <jeff.johnson@oss.qualcomm.com> wrote:
+> wireless-next/main has fast-forwarded to e7d6bd24e883 and I'm in the process
+> of also fast-forwarding ath/ath-next, but I'm seeing a build failure:
+> 
+> In file included from ../net/netfilter/nf_synproxy_core.c:7:
+> In file included from ../include/linux/skbuff.h:26:
+> In file included from ../include/net/checksum.h:21:
+> In file included from ../arch/x86/include/asm/checksum.h:9:
+> ../arch/x86/include/asm/checksum_32.h:149:6: error: inline assembly requires more registers than available
+>   149 |         asm("addl 0(%1), %0     ;\n"
+>       |             ^
+> 1 error generated.
+> make[5]: *** [../scripts/Makefile.build:289: net/netfilter/nf_synproxy_core.o] Error 1
+> 
+> This is with "ARCH=i386 LLVM=llvm-19.1.7-x86_64/bin/"
+> 
+> I use a config made via: make $allmodconfig
+> 
+> A lore search doesn't show any recent instances of this issue.
+> 
+> Rebuilding from scratch shows the same issue.
+> 
+> Any thoughts?
 
-Good catch, thanks! I'll just delete it, we could switch it to
-netdev_assert_locked() but TBH seems like a rather arbitrary
-place to add such an assert in the first place.
+Happens since 403cec8ab6d0 ("netfilter: add option for GCOV
+profiling").  'allmodconfig' sets CONFIG_GCOV_PROFILE_NETFILTER=y
+
+Same problem after revert or plain 7.0 when I set CONFIG_GCOV_PROFILE_ALL=y
+(which depends on !COMPILE_TEST so its off for 'make allmodconfig').
