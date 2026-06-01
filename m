@@ -1,116 +1,246 @@
-Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC21A3DC4DD
-	for <netdev@vger.kernel.org>; Mon,  1 Jun 2026 15:21:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.182
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780327294; cv=pass; b=msbzpazqdcsNe5La7UpO43nEc9C/13TKGp5Bu5j9J+BiIKAZk9QIj9AytZ+8azdTEm3o+LNOzJAtPnqrhIjmgvEnIHSxiziPLU1eIV/9UMSDL/M5kfz0L9A2Z0ioyikcEqvqI5Nj/B4CnENGoHwyBbo9yl/bqSAmp1uYbBajbzA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780327294; c=relaxed/simple;
-	bh=N8UbMuv5XKqhb/axtOv02XGC4/UNNXGUVCoZD7wZ3cM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fFucyEobUEr8ygal8sRSS3lo80dJ6+V90mITbR91TZfPQ0d1BCZ6J3eU/FxyVHplDzfqSOu+TMaTx1+o3kWPYT/wNYHeNCZcMH3OCTseGvVLOtYy4AA7Vj4SjXmhmIY4KlLQJ/5tqs9MJ8sbkr5mtFq9Iif/AL52/RXfe9k8JZM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=oYEkAadI; arc=pass smtp.client-ip=209.85.160.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71EDB3DB30E
+	for <netdev@vger.kernel.org>; Mon,  1 Jun 2026 15:25:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780327508; cv=none; b=N3r5SeEr8nnjrJABvH30mAAu9nDKF0WlP47eZPGykT3EPY8orW8Bo2AYvgpDhPuCJPhH7IHexZieQ+mEcUDJoEcxntMhfvJAwEakdSh+bEBGc+BVC7gORqPyGLR8O1l63hTU9vORUlg8hvpW9P2G95/KmUOvwVYCFV9k7yhxlvE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780327508; c=relaxed/simple;
+	bh=RyWdLidg/XOQcb4wB0R2/8V8/6srcztorIKYiP2JGoc=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=uzqlkiT2+/A/DWMcBWDtquz7uVTT4+Poi9/xOguNcrySBErD8KfKkTQNZD6iEyncqZjCxuosXB2MsGoidurGGrmck6WbRkAT9S1+yILUMEwHneFtkKnc/Ue33f+iqiSUdxLMDgBQiON+L37vzbrfaXbKCguwCwKrR6zJIKkMoJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=keyqpuzp; arc=none smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="oYEkAadI"
-Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-516de78c4dcso94912691cf.2
-        for <netdev@vger.kernel.org>; Mon, 01 Jun 2026 08:21:32 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780327292; cv=none;
-        d=google.com; s=arc-20240605;
-        b=R2gSKE7MaBsc6xvAAfWPDkjoG7FAjRPacbS1tyyiFe73x751UZNL34X2pxbD04Pn2o
-         d3sEv7DptVqtPKuFzcnFiFWHBzNY1I8iW+SurEaTwBV3G+KVOJNEoRUlGvoagC+9A+z1
-         abvbJTESMfiiIglkrVWj3vRKJcr5dXsfuFQi6qQWAGC44bqFXR6pVQN8SLsPfG+ezz9r
-         ptL+dU0xy0oYckXvinHq6+Px3Z+4U5aA7XnGUY3g8HLcv8G5e9NLyL0lB8exjSxD5UWj
-         V1tMv+/s0rHevALn0C+gYHfCHibKXmWI48YRL8leZgc/sBftu0IxdV33NZX6TDNI34ti
-         iE5w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=N8UbMuv5XKqhb/axtOv02XGC4/UNNXGUVCoZD7wZ3cM=;
-        fh=STckHJpoU179ezaKbaZBIOeOQ7o01SB3m6VHSkszw4A=;
-        b=OXD/5cdcACtKKZyo0xB+VIRiFIXjsuuwjefA8goAi0Z1hBLxhvQDjh3Wvpii6/KCmD
-         w/sw0yyD5UNHABZrPAaMHjQHaAW9ESx2UjHymE4U/KHOKFxQfnUt4VmMrK7Q8V7Ojo5g
-         d4OFi0j9bqB62m5FDGwc9+ZeaKIzmHI5UYW8psAtHpYhrBKa0FfMRhC4OHeqSmzBSZhK
-         yavYNP0OjPlik4vqkAbc5ByLJ00faLvNKASkD/skOE/BQ7+sNnbcX+Nr8wSjflT27h36
-         w3oUWuXpJAj7af+J44z2NneRAQIOfw+MsjNN1RGrTt4uSmkW1/C9n8x1qRUiwTuh0/0x
-         VRdg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="keyqpuzp"
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4903997fcb5so105850055e9.2
+        for <netdev@vger.kernel.org>; Mon, 01 Jun 2026 08:25:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780327292; x=1780932092; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=N8UbMuv5XKqhb/axtOv02XGC4/UNNXGUVCoZD7wZ3cM=;
-        b=oYEkAadIk9bRD6YnUpvCZ1JhmbgMvEEhs1UiYFQHUol1R3f6yXRYOjoXco3pGLC9yd
-         bTWNx/3PiIAxeJjziVoxc/4C8v8OxiHSV1sgMKdkb1BdL0vjsvWEIm/nLFUZ5MhL8exx
-         SsfT795JCoFnQT8+GxmDUc3gb3agdqhxeHTDuw5qTlcrCYbH1lyWcnOEI3o557CL3APT
-         d+e5ActV8tdcFSlYRgeNHZH4D8c0f/4l9q14y0LFU7L05iKUqztvBe+De5dKgGV/OeGY
-         8TweiDyE0WT+IxPA+Uvh0QB3eTT6gVKWXVEwILRiwQgwgvuY9wuGPZMCt/oMF4RoXFfG
-         NTNw==
+        d=gmail.com; s=20251104; t=1780327502; x=1780932302; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ogf7Kjz3cOXtVe1gSiUA6j28CQTIVmLtv95/EHOxlXE=;
+        b=keyqpuzprMu9q9Uu+oCTg5GuehBWz8ecspFaIumsCO6IABM1yVeGQwNzwwJIrqgLhr
+         fEmSefmQnv1YIZJVgG4Kjs08fGmS0yHhsEKtUOs15kbjN/lpC2lvh8uGpQbZzrT8rg5C
+         OPnMtvlKoJYEvwOG8JzSbcE1dIbhILp7tq3Aew6ccK8EJvp2xai5tt4xKYRJS2pLi9CB
+         gN4leqqJ3lo/mOhKSQ0nOGiYM3dOHAkQTb/oopklzPyWxXALMkUMXkJbH7P6zhoK5DYE
+         WghIXCC1gk23fntOLUdeSwjXoq80zhLLavFlkSI+o8+d5NONQyWD0/EftnLxscqLjUKZ
+         GsXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780327292; x=1780932092;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=N8UbMuv5XKqhb/axtOv02XGC4/UNNXGUVCoZD7wZ3cM=;
-        b=VZ2uHDwxB0Xz09s9tgD88HS364efaRxUvuzB7RS6vwxaYcgVKOJqOPR0rM1qVqeyIj
-         MQPqO8YVE7p2PUtoOg+TGONIMhy6euL+eZfApEka9VJYGyEcZxsShZ6AU1avllI7FPMH
-         PVCcI3M5eFbwYVq5o7aJieSC4qcb+3sQ5ybTFs+JTr4RM/NYcKAlmZSBGe2t1qriliAa
-         Tz2SzAamfGNYrRQKy/c3hlz9RuN/a7gdchA0fMMKUY9nXjcfjAB4Hi28pYTFCmWdgvd1
-         LJ+xgGVBGsS64ZPfyj00hJ958YUOy37t73e75oaQLeDqFyl+OCd1UixuZ8zgCbGu1i/+
-         EgXA==
-X-Gm-Message-State: AOJu0YycGpom8EwpsfRddKVX2Vbe7cwYK64C6Mi04yaIKjtrLEqrwoxB
-	EUkcPPQIPxuWpFUIsEV+82w4iUbtxzV7pjBxJ2kr2h0Lf2JCKaDe8DRQ/qmV4Spi++SWS5OHZnq
-	BP4NJFmhs844QfvoSm4wMASCkLip9SNMPTX7Kv8+AAZwcRjKQJu73VQd8
-X-Gm-Gg: Acq92OEWUlLYbf98Y7KM5dZe4rD1aD+VQyjQwWEF5oBoNlseAc4G/3zo6E5IJuzDzEX
-	Y0cnVDUT66Ctev/qDD3k82t/PFQ6DRpcncgc5z2TVg8a6Vuy76PtNynlSKaesAyy7EiQE1AC5BW
-	DX9FPI896LXmQgNVnHbYoA93u6lXR+sh8kGJENADtcl6mZziRYMuzrx8yk5sP5c+LNBGfnmmKSC
-	tb1tFr491rJTvUecoLdMEwfkb3vSFMhtjn4IAVQeBYmDdypGGL4IMXQd3w2DVBF7bxga8wCND7O
-	1rmnRrUlFtKbGIKS7yv+00KGrlchnt2XRS9OpH8nrK9z911gqUHKJyOES2KONMPkf0Dpi9hq6jV
-	BXkN0X8d7Buv86zM0Ts9u18GkODsulvKCVc6LPd4=
-X-Received: by 2002:a05:622a:8319:b0:50f:bd79:2643 with SMTP id
- d75a77b69052e-5173a778b13mr132407231cf.34.1780327291129; Mon, 01 Jun 2026
- 08:21:31 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1780327502; x=1780932302;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Ogf7Kjz3cOXtVe1gSiUA6j28CQTIVmLtv95/EHOxlXE=;
+        b=HtOkEGULVsEjWQbpG/H20VWjGP/d6ZxGeceIdSbI/D+WCaOv3K7yqRZ4eSYWGK0B4X
+         TmI1LGwy8oXA6WvEjPK5HoruZ1Gjh6kaR5I38Q36pO+YElsr60GrEF5WGJicf4bDqzPc
+         WnkFhkeDYOKrnXWqKUyqzRjM/zTTqHqkomN/9p7ceux3YVNm5SwlZbvOvWUB1KDzuTlR
+         ebbFfqkMemjUxJI1pdXv0ref+vU5dvUVJ2XkSNpkVc/ilGsTQueGETr9Uw/lfKe4K3gD
+         Fj+qOI7pgg/aBoC68J1ZbBz0gVxKPLOnK3V0xbbrpdVw2/2hcr1eZQFJT5OmjGjm3ftp
+         nrvQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8H3kWjz+0J9hcNPHVPgmm+J9gLcGR7RIllfhAnMrqu3T/5NjxteNXhji6/tNynCZFdsFRrv2c=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyKu3O5hAkTzIun2dmM2VuX4ocofZfmq2LVUDcU7c6uoFBTPfLR
+	Ehxb5YsRXHUEU+Zl/1nFtTKUo39zeSglUe07VIp6EuHyDZqXYM6CxMAHV2zGFBAP
+X-Gm-Gg: Acq92OHe6VTQ90snq610s71hLps/SFdXMwS5q1i1wA4rcFU33HjnE742KGA/Qwtt6dg
+	l6D2+VkiAyfQWl2W57NIaFoR4k2s4ditQry8qroJ+XssGAE4+9EmxLDDzZhvjcVriWaGjxBeqOW
+	EifRO5u0kRA7EJjGlXnz4bm5I1CICzGio2Omt1fDGABRZ5xrPu3k+omjmXQ1fOJXG7hdjq0vaDy
+	OLHWD/5GuKQRRmGQE1ufW+VI5PTJqaaLbaIHSLLrjjFpXuwz9nv2bKRI44PIra/bsGq4apmRV+Y
+	Cg8puYCwfek6Tufo6hED1AJ9FQk0RfqEGUbAf8xv47ve4QjlQ7hlJlKCTxTbAT8YVzFohLJRxLx
+	U9yD5PJ435eGqM8YUWAiG5XnqqYFZLHvp/X3yE1wziJ6m4YMTCUZgj+aJ/whapJ5c2yq7UsbIEP
+	HvfkUDsiK5BSxJdvitSSKlhslkzgtS/7uqqKj8akZqAbOjGJJiPOCb79Lf/pcvqVmzCD1zY2la9
+	PM50RgJh0xqbh/oXSvaxNFEBq8uSuk=
+X-Received: by 2002:a05:600d:6445:20b0:490:4f91:5519 with SMTP id 5b1f17b1804b1-490a2958db9mr155956515e9.18.1780327501467;
+        Mon, 01 Jun 2026 08:25:01 -0700 (PDT)
+Received: from [127.0.1.1] (cust-east-par-46-193-119-166.cust.wifirst.net. [46.193.119.166])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490b0e26050sm26035e9.9.2026.06.01.08.25.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 01 Jun 2026 08:25:00 -0700 (PDT)
+From: Fidelio Lawson <lawson.fidelio@gmail.com>
+X-Google-Original-From: Fidelio Lawson <fidelio.lawson@exotec.com>
+Subject: [PATCH net-next v9 0/3] ksz87xx: add support for low-loss cable
+ equalizer errata
+Date: Mon, 01 Jun 2026 17:19:54 +0200
+Message-Id: <20260601-ksz87xx_errata_low_loss_connections-v9-0-fdbbb15592cb@exotec.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260531160812.68020-1-jhs@mojatatu.com>
-In-Reply-To: <20260531160812.68020-1-jhs@mojatatu.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Mon, 1 Jun 2026 08:21:18 -0700
-X-Gm-Features: AVHnY4JgK3h115mDowJ-DCNS2f0MvGCwYoGulBm_lnlX-w3ZWSwPdHB8y-N52GQ
-Message-ID: <CANn89iLdY3rH49vCw3hNpcfunObY6G3JN+=-Nv-GK-8iYziXwA@mail.gmail.com>
-Subject: Re: [PATCH net v2 1/1] net/sched: act_api: use RCU with deferred
- freeing for action lifecycle
-To: Jamal Hadi Salim <jhs@mojatatu.com>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org, 
-	pabeni@redhat.com, horms@kernel.org, victor@mojatatu.com, kylebot@openai.com, 
-	jiri@resnulli.us, vladbu@nvidia.com, linux-kernel@vger.kernel.org, 
-	security@kernel.org, stable@kernel.org, syzbot@syzkaller.appspotmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIABqjHWoC/43R207EIBAG4FfZcC1mOJSDV76HMQ2lg1sPrSm1V
+ jf77s5Wk63pDRdcTGC+f4ATyzh2mNnd4cRGnLvcDT0V/ubA4jH0T8i7lmomQRpQUvGX/O3sstQ
+ 4jmEK9evwSSvnOg59j3Gi9swbU6E1KBsNipH0PmLqljXlgfU48R6XiT3+7uSP5pkaLyGXs8cuT
+ 8P4tQ40i7XjL9sUZc+CA7c+GO+SVkaae1yGCeNtHN7WyFleUQ2uDJVccB8TKme8sELtULVBhS5
+ DFU0KRCoXg3fR71C9RW0Zqgk10YLWGOn++0mrK1pBVYZWhLZBA8hGiqjlDjUbVEIZagjVKinV6
+ hASpB1qt2jhm1pCRWw1fVaQOsEOdVfUgChDHaHkCZAxGRn/o+fz+Qd6plKlRgMAAA==
+X-Change-ID: 20260323-ksz87xx_errata_low_loss_connections-b65e76e2b403
+To: Woojung Huh <woojung.huh@microchip.com>, UNGLinuxDriver@microchip.com, 
+ Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Marek Vasut <marex@denx.de>, 
+ Maxime Chevallier <maxime.chevallier@bootlin.com>, 
+ Simon Horman <horms@kernel.org>, Heiner Kallweit <hkallweit1@gmail.com>, 
+ Russell King <linux@armlinux.org.uk>, 
+ Tristram Ha <Tristram.Ha@microchip.com>
+Cc: Woojung Huh <Woojung.Huh@microchip.com>, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Nicolai Buchwitz <nb@tipi-net.de>, 
+ Fidelio Lawson <fidelio.lawson@exotec.com>, 
+ Marek Vasut <marex@nabladev.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1780327500; l=6384;
+ i=fidelio.lawson@exotec.com; s=20260326; h=from:subject:message-id;
+ bh=RyWdLidg/XOQcb4wB0R2/8V8/6srcztorIKYiP2JGoc=;
+ b=xsx41x3tjbH3cSnd9aekLHxGhHYBmgFmxvzObJznMQUd3qRtfAohhsrcIuFmhveOGuSwMT+lq
+ YwFMPyQGb0jAi0vbdNIJmNOXx8OEccajaYO6+zhZo8DLAsfIpq5GkdC
+X-Developer-Key: i=fidelio.lawson@exotec.com; a=ed25519;
+ pk=866eH9Bmmpjc+ctgkr5T1uXxBefZzob3tEEuiVWZ6BI=
 
-On Sun, May 31, 2026 at 9:08=E2=80=AFAM Jamal Hadi Salim <jhs@mojatatu.com>=
- wrote:
->
-> When NEWTFILTER and DELFILTER are run concurrently it is possible to crea=
-te a
-> race with an associated action.
-...
->
-> Fixes: d7fb60b9cafb ("net_sched: get rid of tcfa_rcu")
-> Suggested-by: Jakub Kicinski <kuba@kernel.org>
-> Reported-by: Kyle Zeng <kylebot@openai.com>
-> Tested-by: Victor Nogueira <victor@mojatatu.com>
-> Tested-by: syzbot@syzkaller.appspotmail.com
-> Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
-> ---
+Hello,
 
-Reviewed-by: Eric Dumazet <edumazet@google.com>
+This patch implements the KSZ87xx short cable erratum
+described in Microchip document DS80000687C for KSZ87xx switches
+and the following support article:
+
+Link: https://support.microchip.com/s/article/Solution-for-Using-CAT-5E-or-CAT-6-Short-Cable-with-a-Link-Issue-for-the-KSZ8795-Family
+
+According to the erratum, the embedded PHY receiver in KSZ87xx switches is
+tuned by default for long, high-loss Ethernet cables. When operating with
+short or low-loss cables (for example CAT5e or CAT6), the PHY equalizer may
+over-amplify the incoming signal, leading to internal distortion and link
+establishment failures.
+
+Microchip documents two independent mechanisms to mitigate this issue:
+adjusting the receiver low‑pass filter bandwidth and reducing the DSP
+equalizer initial value. These registers are located in the switch’s
+internal LinkMD table and cannot be accessed directly through a
+stand‑alone PHY driver.
+
+To keep the PHY‑facing API clean, this series models the erratum handling
+as vendor‑specific Clause 22 PHY registers, virtualized by the KSZ8 DSA
+driver. Accesses are intercepted by ksz8_r_phy() / ksz8_w_phy() and
+translated into the appropriate indirect LinkMD register writes. The
+erratum affects the shared PHY analog front‑end and therefore applies
+globally to the switch.
+
+Based on review feedback, the user‑visible interface is kept deliberately
+simple and predictable:
+
+- A boolean “short‑cable” PHY tunable applies a documented and
+  conservative preset (LPF bandwidth 62MHz, DSP EQ initial value 0).
+  This is the recommended KISS interface for the common short‑cable
+  scenario.
+
+- Two additional integer PHY tunables allow advanced or experimental
+  tuning of the LPF bandwidth and the DSP EQ initial value. These
+  controls are orthogonal, have no ordering requirements, and simply
+  override the corresponding setting when written.
+
+The tunables act as simple setters with no implicit state machine or
+invalid combinations, avoiding surprises for userspace and not relying
+on extended error reporting or netlink ethtool support.
+
+This series contains:
+
+  1. Support for the KSZ87xx low‑loss cable erratum in the KSZ8 DSA driver,
+     including the short‑cable preset and orthogonal tuning controls.
+
+  2. Addition of vendor‑specific PHY tunable identifiers for the
+     short‑cable preset, LPF bandwidth, and DSP EQ initial value.
+
+  3. Exposure of these tunables through the Micrel PHY driver via
+     get_tunable / set_tunable callbacks.
+
+This version follows the design agreed upon during v3 review and
+reworks the interface accordingly.
+
+This series is based on net-next.
+
+Signed-off-by: Fidelio Lawson <fidelio.lawson@exotec.com>
+---
+Changes in v9:
+- Drop incorrect Fixes tag
+- Fix typo in comment
+- Link to v8: https://patch.msgid.link/20260601-ksz87xx_errata_low_loss_connections-v8-0-cfa102cf62c0@exotec.com
+
+Changes in v8:
+- Clarify LPF/DSP EQ register definitions based on Microchip support article
+- Make short-cable preset reversible by restoring default settings when disabled
+- Link to v7: https://patch.msgid.link/20260524-ksz87xx_errata_low_loss_connections-v7-0-1cd49cfa24f0@exotec.com
+
+Changes in v7:
+- Rebased on net-next/main
+- Link to v6: https://patch.msgid.link/20260520-ksz87xx_errata_low_loss_connections-v6-0-43f33d4aaf0f@exotec.com
+
+Changes in v6:
+- Nitpicks corrections
+- Link to v5: https://patch.msgid.link/20260505-ksz87xx_errata_low_loss_connections-v5-0-da4002b21c42@exotec.com
+
+Changes in v5:
+- Added Fixes tag
+- Added validation to ensure that only the documented bitfields are accepted before writing the registers
+- Link to v4: https://patch.msgid.link/20260417-ksz87xx_errata_low_loss_connections-v4-0-6c7044ec4363@exotec.com
+
+Changes in v4:
+- Reworked the user‑visible API to a boolean short‑cable preset plus
+  orthogonal advanced tunables, following the KISS principle.
+- Dropped the previous mode‑selector semantics in favor of simple
+  setters with no ordering requirements
+- Added persistent tracking of LPF bandwidth and EQ initial value.
+- Clarified defaults and preset values to match Microchip documentation.
+- Link to v3: https://patch.msgid.link/20260414-ksz87xx_errata_low_loss_connections-v3-0-0e3838ca98c9@exotec.com
+
+Changes in v3:
+- Exposed all LPF bandwidth values supported by the hardware.
+- Added phy tunable.
+- Link to v2: https://patch.msgid.link/20260408-ksz87xx_errata_low_loss_connections-v2-1-9cfe38691713@exotec.com
+
+Changes in v2:
+- Dropped the device tree approach based on review feedback
+- Modeled the errata control as a vendor-specific Clause 22 PHY register
+- Added KSZ87xx-specific guards and replaced magic values with named macros
+- Rebased on Linux v7.0-rc1
+- Link to v1: https://patch.msgid.link/20260326-ksz87xx_errata_low_loss_connections-v1-0-79a698f43626@exotec.com
+
+To: Woojung Huh <woojung.huh@microchip.com>
+To: UNGLinuxDriver@microchip.com
+To: Andrew Lunn <andrew@lunn.ch>
+To: Vladimir Oltean <olteanv@gmail.com>
+To: "David S. Miller" <davem@davemloft.net>
+To: Eric Dumazet <edumazet@google.com>
+To: Jakub Kicinski <kuba@kernel.org>
+To: Paolo Abeni <pabeni@redhat.com>
+To: Marek Vasut <marex@denx.de>
+To: Tristram Ha <Tristram.Ha@microchip.com>
+To: Simon Horman <horms@kernel.org>
+To: Heiner Kallweit <hkallweit1@gmail.com>
+To: Russell King <linux@armlinux.org.uk>
+Cc: netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+
+---
+Fidelio Lawson (3):
+      net: dsa: microchip: implement KSZ87xx Module 3 low-loss cable errata
+      net: ethtool: add KSZ87xx low-loss cable PHY tunables
+      net: phy: micrel: expose KSZ87xx low-loss cable tunables
+
+ drivers/net/dsa/microchip/ksz8.c       | 89 ++++++++++++++++++++++++++++++++++
+ drivers/net/dsa/microchip/ksz8_reg.h   | 23 ++++++++-
+ drivers/net/dsa/microchip/ksz_common.h |  4 ++
+ drivers/net/phy/micrel.c               | 54 +++++++++++++++++++++
+ include/uapi/linux/ethtool.h           |  3 ++
+ net/ethtool/common.c                   |  3 ++
+ net/ethtool/ioctl.c                    |  3 ++
+ 7 files changed, 178 insertions(+), 1 deletion(-)
+---
+base-commit: c2c0486c56800ce276e79c40a6e576ffd672f2a9
+change-id: 20260323-ksz87xx_errata_low_loss_connections-b65e76e2b403
+
+Best regards,
+--  
+Fidelio Lawson <fidelio.lawson@exotec.com>
+
