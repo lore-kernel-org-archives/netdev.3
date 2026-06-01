@@ -1,131 +1,78 @@
-Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ABB739C002
-	for <netdev@vger.kernel.org>; Mon,  1 Jun 2026 12:36:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A087137754B;
+	Mon,  1 Jun 2026 12:41:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780317422; cv=none; b=oNGefgdYlvVmJbtcCmFFOrUah4idCzG0AiJG6YHqsbFpXaL0tH0HRPwYKG0FOB60eoM7hq/RoKNzHvg37fvT51a3D7++/kZyfyeuUVIcEA9dip4gYnkKE7nxGwSmK/3Izir2uz8qSTY9cFEYu0fvAAqalZFoQxotuCi0SeDFJ6E=
+	t=1780317697; cv=none; b=WE0slmfeV58YA8V5/oQ6fx0UgP/OXx7JviAP1n1ILSHTlYXEdwDWeQb4FvmVOr5dZaxR9zrmZECaLft/cp07BXatBSCUk3OV4ayqT3fmiDdzPj1YUkpO7vuQroRctmgy9RT57MPKOxOfELtuoqZ/OBZNocZzZocru14vOozS5yA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780317422; c=relaxed/simple;
-	bh=wmrw5wrwe+ggFhpLIcQZFdDRwpA70SQKMkMWdqZa9uQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KE4zT5Rc+Qhk3fUCD0aq7/oQuRxR/jAxSjXA3RAFgrPNaL9xAewqUKUV7t3J+hbB3B/BZ9+ztHlWaWBD4ncIqpWC5XlxfXBPF8l1l8qNd+kV6URvAOLdlVgYi/CeFQWyrai/pnfMwAPPMqroj3ZpmD1J2yvjeWiQlEWYzjIGFmI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=z2EB4Vi4; arc=none smtp.client-ip=23.88.38.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
+	s=arc-20240116; t=1780317697; c=relaxed/simple;
+	bh=u4PiSoSZooAbUd8wQdKaA6ZrLL49kJDCTZG3iOKcX3w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LiMXeD+djpRA1VqECMnqsDqGYBOCgeMmtXuyfAarCwHjYNogM7fgw1uZZxL8QbbWbzYE8QAIXxhnqM7AJL19LkrHuIhKMW75xzZdRSYHpHQNdYYdzZDMaSf38mOOMkeA4qglAboiK141Vv+RNUWtlk6mOHpNb3MNSYKHoZx5O3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=LZI9tNmR; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="z2EB4Vi4"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=simonwunderlich.de;
-	s=09092022; t=1780317414;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TQBjcBdGS/HMX5rRf8oCb7YV3unI9WKR8W60FhxEyKk=;
-	b=z2EB4Vi4I+fwLm3aTC3smysJd0qC3PnY97pJ6yKl5B88M6MtCFudnWWu00O7s+chvMHLsi
-	jgkCXtLvbvQLn6nmsmVLZ6p7VQe3fBiPAZnk3tTfuH4PEiKo7zhQ2UZh/7+8YzJDvrm6D5
-	pH80EzEYlzkmISLv7lkB2L2LUCPwWk/l5LfQuM8qGBkfLee2zh6t+GCZZtqVXiryCcTMLp
-	vvrB/kFlOxYb/9QqTeMET4Jhi/T7GAraEdFIgjCBNTTjFuXNXrSazho8w7/TKga0ElIfQJ
-	0IgnW+eBUC38F/JWaH+JTs41GRQaG3WQufZzJsTsS9nTj6TmKNoexXn80uJbjQ==
-From: Simon Wunderlich <sw@simonwunderlich.de>
-To: netdev@vger.kernel.org
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	b.a.t.m.a.n@lists.open-mesh.org,
-	Sven Eckelmann <sven@narfation.org>,
-	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH net-next 15/15] batman-adv: use neigh_node's orig_node only as id
-Date: Mon,  1 Jun 2026 14:36:29 +0200
-Message-ID: <20260601123629.707089-16-sw@simonwunderlich.de>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260601123629.707089-1-sw@simonwunderlich.de>
-References: <20260601123629.707089-1-sw@simonwunderlich.de>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="LZI9tNmR"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=KsRqxM2R9ENQMMWQg6HVaoMnok6ORhowIPBct5USSBg=; b=LZI9tNmRp5agDatUF4NteFVizk
+	1FazNsOCxMqPiDYqbUWZ5NcQhxIrLGpiHDmdhkWC0eIpTJTO3ZvOrK5EWTYhI1mFs8ykjLsHkMgDH
+	Lc81Umq+BLuScG1sAAg6kix2W8AX3+XPCw/Gf/FHlU6YDNoyu/uD/2ZsY20antJvxiPw=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wU1xM-005VIq-Pg; Mon, 01 Jun 2026 14:41:24 +0200
+Date: Mon, 1 Jun 2026 14:41:24 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Thangaraj.S@microchip.com
+Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	Bryan.Whitehead@microchip.com, UNGLinuxDriver@microchip.com,
+	linux@armlinux.org.uk, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 2/5] net: lan743x: read SFP straps from PCI11x1x device
+Message-ID: <e6ef6386-47e2-4a96-ad89-bcf018d794fe@lunn.ch>
+References: <20260514105028.42942-1-thangaraj.s@microchip.com>
+ <20260514105028.42942-3-thangaraj.s@microchip.com>
+ <053eaadf-07f3-431f-a0a4-28980adb8213@lunn.ch>
+ <DSWPR11MB971561B42BB157F7C8C436C2EC082@DSWPR11MB9715.namprd11.prod.outlook.com>
+ <af49a018-952a-439a-8beb-2e300a1d266a@lunn.ch>
+ <DSWPR11MB97156347E4D54CC898A1CA43EC152@DSWPR11MB9715.namprd11.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DSWPR11MB97156347E4D54CC898A1CA43EC152@DSWPR11MB9715.namprd11.prod.outlook.com>
 
-From: Sven Eckelmann <sven@narfation.org>
+> > In practice distributions turn on nearly everything. So the code is likely to be
+> > built. Rather than a Kconfig symbol, can you move the code into a module,
+> > which only gets loaded for pci11x1x?
+> [Thangaraj Samynathan] Thanks for the suggestion. We agree this is a reasonable direction.
+> For this series, CONFIG_LAN743X_SFP addresses the dependency concern.
+> For distro builds that enable most options, a separate module would
+> typically be built and loaded as well, so the practical result is the
+> same.
 
-The orig_node member of struct batadv_neigh_node is no longer used in
-B.A.T.M.A.N. IV. But batadv_neigh_node_create() is still storing it.
-Only batadv_v_ogm_route_update() uses it to check if we route toward
-it - not needing the data stored in the batadv_orig_node object itself,
-but merely a pointer to identify the originator.
+Not necessarily. You have a strapping pin, which indicates if the
+hardware has been designed for SFP. Use that to load the kernel module
+with all the SFP code.
 
-The field cannot hold a proper reference because that would create a
-reference cycle, so it must never be dereferenced. Rename it to
-orig_node_id and mark it __private to make any future attempt to
-dereference it immediately noticeable.
+Maybe also go talk to Marketing. What has this device been designed
+for and what applications is it marketed towards? You talk about Intel
+drivers. They are used in servers and desktop machines. You generally
+don't worry too much about code size for those targets, there is a lot
+of RAM available. However, if the target market is deeply embedded,
+RAM can be short. However, why would use pick an embedded SoC which
+does not have integrated Ethernet?  Pretty much all embedded SoCs do.
 
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
----
- net/batman-adv/bat_v_ogm.c  |  2 +-
- net/batman-adv/originator.c |  5 ++++-
- net/batman-adv/types.h      | 11 +++++++++--
- 3 files changed, 14 insertions(+), 4 deletions(-)
+Make the architecture fit the use case.
 
-diff --git a/net/batman-adv/bat_v_ogm.c b/net/batman-adv/bat_v_ogm.c
-index 2c4dca639709c..5936d0048be01 100644
---- a/net/batman-adv/bat_v_ogm.c
-+++ b/net/batman-adv/bat_v_ogm.c
-@@ -719,7 +719,7 @@ static bool batadv_v_ogm_route_update(struct batadv_priv *bat_priv,
- 	 * don't route towards it
- 	 */
- 	router = batadv_orig_router_get(orig_node, if_outgoing);
--	if (router && router->orig_node != orig_node && !orig_neigh_router) {
-+	if (router && ACCESS_PRIVATE(router, orig_node_id) != orig_node && !orig_neigh_router) {
- 		batadv_dbg(BATADV_DBG_BATMAN, bat_priv,
- 			   "Drop packet: OGM via unknown neighbor!\n");
- 		goto out;
-diff --git a/net/batman-adv/originator.c b/net/batman-adv/originator.c
-index d05c8240426bd..15d660ca79376 100644
---- a/net/batman-adv/originator.c
-+++ b/net/batman-adv/originator.c
-@@ -693,9 +693,12 @@ batadv_neigh_node_create(struct batadv_orig_node *orig_node,
- 	kref_get(&hard_iface->refcount);
- 	ether_addr_copy(neigh_node->addr, neigh_addr);
- 	neigh_node->if_incoming = hard_iface;
--	neigh_node->orig_node = orig_node;
- 	neigh_node->last_seen = jiffies;
- 
-+#ifdef CONFIG_BATMAN_ADV_BATMAN_V
-+	ACCESS_PRIVATE(neigh_node, orig_node_id) = orig_node;
-+#endif
-+
- 	/* increment unique neighbor refcount */
- 	kref_get(&hardif_neigh->refcount);
- 	neigh_node->hardif_neigh = hardif_neigh;
-diff --git a/net/batman-adv/types.h b/net/batman-adv/types.h
-index 4e25057359b0f..19c7316889b6e 100644
---- a/net/batman-adv/types.h
-+++ b/net/batman-adv/types.h
-@@ -663,8 +663,15 @@ struct batadv_neigh_node {
- 	/** @list: list node for &batadv_orig_node.neigh_list */
- 	struct hlist_node list;
- 
--	/** @orig_node: pointer to corresponding orig_node */
--	struct batadv_orig_node *orig_node;
-+#ifdef CONFIG_BATMAN_ADV_BATMAN_V
-+	/**
-+	 * @orig_node_id: pointer to corresponding orig_node. It must only be used
-+	 * to identify the node but must NEVER be dereferenced. The reference counter
-+	 * was not increased when this was assigned because it would otherwise create
-+	 * a reference cycle.
-+	 */
-+	struct batadv_orig_node *__private orig_node_id;
-+#endif
- 
- 	/** @addr: the MAC address of the neighboring interface */
- 	u8 addr[ETH_ALEN];
--- 
-2.47.3
-
+   Andrew
