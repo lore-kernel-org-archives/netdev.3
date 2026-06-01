@@ -1,116 +1,193 @@
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1FE83DB62E
-	for <netdev@vger.kernel.org>; Mon,  1 Jun 2026 15:57:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EB5A3DB33F
+	for <netdev@vger.kernel.org>; Mon,  1 Jun 2026 15:58:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780329432; cv=none; b=OaXEj/xmQ9bJoPwVgd/bZZF8zbAHKWUbXDXHFmDmuoyb+YniQMgXa8F7LnZcWoPg7S0l16L4it72rgMKgxVvOsfanBsLfXUUsV3mul5GMtHoQSyLfk49/Z3q4JuNB2G+nTWT6/Wk61irp3ss/WACmBAFWbbnbrawLp/42EZvhS8=
+	t=1780329507; cv=none; b=Mew1CMO84rw4FKIpov5wZNMEN0bRPyw25b9aV03LpX8u+uKNzpzEdbzEgFUF4XdWWele08rG4yUdBpUvRzMinJ13ag+8rmQ5Ve8U5DflyI1ZPllKM0IjLnImkdchKtHqfNK1kwpcn9NFIeozqWUcBRjMry8obemII5qJK8qnUmQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780329432; c=relaxed/simple;
-	bh=nTXW1aszJ7vJwM4JLdG9/UwnGyXjFaGyj9QAS58OX2Q=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jy4LL8ZqdexbY/yxa/S0+FGx/PcIv5lCWm+V4gYX3fglKen/LF3LuVEky88RgE/2mIci7b0habmsuPsF1nA6Bi6y7GbzN+CPUKd2U7WlGz8/MknTNxTPK/gJUlb0wVNERFDYxd8vFJ7CqegS1IStdFKuDhFjowj+7MwifXZwp1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=UIfVywfJ; arc=none smtp.client-ip=209.85.208.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+	s=arc-20240116; t=1780329507; c=relaxed/simple;
+	bh=aRhaKae58+1QBvbwOSJcWCuAqsvjo0niW7gM5sWatCg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=V62XkBh9KhdiFbwf4xnpaOiQyMq2K7urETCYqUs4+iYeMWizc4jonrWpt15C+PV+1KRlh3Zp993YixvmSBF6czCdGrzbnqYgAdR6Q6q6e310oSmA0MWxPM1cs4DC19nhtxxyUJyv2ZA7rGopCSyWWaURSWFoy7E2ZxOrV1XtfVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=k/WfevG2; arc=none smtp.client-ip=209.85.221.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="UIfVywfJ"
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-68c19f1f3ceso4817422a12.2
-        for <netdev@vger.kernel.org>; Mon, 01 Jun 2026 08:57:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="k/WfevG2"
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-45ef1629ff4so2529047f8f.0
+        for <netdev@vger.kernel.org>; Mon, 01 Jun 2026 08:58:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1780329429; x=1780934229; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=pJkQdYMeeClMSzcCqfeyFg/QAKx7SzNPdhAZ0oh+sp4=;
-        b=UIfVywfJiXhjNEFbItMwdW1y/GWy0Qh+MQHs/CbK5bk5sCDg1vAVuOjtxuI9FTu3Ng
-         YaHtun4HypTx6/SFDIrOqabyL9AQXs2nMP4VFHfHLbHvuPaRhiIAteMfCnD3FGoT/P6F
-         NG87CzMNH3RtI+rXxlEUVEfJyTFS1mv1STk9w=
+        d=gmail.com; s=20251104; t=1780329504; x=1780934304; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=VlW+vbYF7482TYDjWIvi4SeVFQEvJrBhEHeIE/y06pY=;
+        b=k/WfevG2yeDqDhOHZUk8CeuRcLMi76y5AL0oxYXwNaiMKO78pF/P513rpZWm22STsY
+         4vzx8y7muWz3zlbwW/xvcGsvDo5stVvTk6L5P4tTUuF79w4eyAZalQgB7IVjxyU6kTIf
+         aNJg1kasE5b/NQBzw8Qj0AyivWI6zC6jaiuDPUL/oTCwTRP+H6g8MKRoWSTD2HF4lnbY
+         W5+5YjSEIVZcNfmlvwdP0pFDAabJBAhpa41WV6RBkrtjO1eNmULZaELFTvs8oGgjoXFd
+         VNWticDruWpu57RigQuDYnSvCtFScS26SIuzNI50porUOwzf6iO/JkYMQgrZ8B0pfOAc
+         h/Yg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780329429; x=1780934229;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1780329504; x=1780934304;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=pJkQdYMeeClMSzcCqfeyFg/QAKx7SzNPdhAZ0oh+sp4=;
-        b=Cden3DL9xN5W+8NDybUVN6/auuMHlsY/9qtJELg/rmE5Jmtzo6UL4GRIjUUYVSEj+T
-         HE7cKLOhkMbO/2JOaTDNTjPJPQp/401hqB95OELstFnSwmrN81xfuom9sJQSRaP9f74I
-         odhnxKRPwP9SRJUP+O3GIJq0EpRowaSbTK8lDRih9hWf/rARi2d0E55+h7/v4gArg7KM
-         uwnO2RCqsikPL5apnB3J5p4xdptCUekBbCV9hWG285l+ZTg651q7kWl5osEDoIFqjvM0
-         0H/nlJXPomBwbOiWs3QBZdAMwZNFCkAJk1nHBBHF4HHTh3e7nBHliNScQ9z/q5P3I5du
-         7lEQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+IrS2m20uE05at97kHh7lnmu86wCOAN6m7i/G6csOzLxnYkdDAcSLld+rELr9ap0brUOHpWYQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz+2JM5vjxglw7GjVvZsL0xF8ftZSOYMsR4VAAYFmFsyzRPcTVS
-	TPn1xv8Ga0b7hN//UMC5KtLcLp96ins73usAMFffC4VmInKlBm7HZey/bQF/ntR2xFb37xGuMe8
-	9OfshT4k=
-X-Gm-Gg: Acq92OG6tpjnxsP6eVWRqhI+x0iqTMp0+HALVkGmbC36jAW60vLndQlBm28ahvE6PNb
-	VOYkJPWYhpwEAm0rlgW+P4+UjxP6dBWaj6WQtVLyIscrAOgH/dZJqckjxXQFOnYE/tivaN8H/+g
-	2iqrOR5jBCHjoCngVM7FMdKDBGicLPLYWB1rbOlsovglaN8smLDh6RB/QT0r0MaXQ3f9EswA48W
-	BLLYk262a8tc8ytkyR6Ldn4NRK1CszC1h8OqjCeZBHvERFivT2TG4SmU7iVyzUpCf8DpPxmGFes
-	coXDCTDFlOy9fZbCbKAtKydnAfUChFYkAeVcmBtRnnXtTWF3iyEU+N5OM5H4YJ65AXDwFQHtOpD
-	eIXlmY4eG5pSymvfjNEaQIfZKupP2YFTsXlDA5KEAx3Cz2K/sLdLapkigRDnkrB16+rLJuGp71k
-	zTIQEqFiXDEtLw6J0loAQ1PIk4JZaYawWbQWiy0x6Zq8WFdRDK7I+F+892FMuPGrlS4KvkVI5jP
-	wjhpEzxqeg=
-X-Received: by 2002:a17:906:eec8:b0:bd8:1537:d63f with SMTP id a640c23a62f3a-beab1d8a779mr711507866b.37.1780329429115;
-        Mon, 01 Jun 2026 08:57:09 -0700 (PDT)
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com. [209.85.218.51])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-beb4356b901sm238846266b.9.2026.06.01.08.57.08
-        for <netdev@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 01 Jun 2026 08:57:08 -0700 (PDT)
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-bebac79fff8so184364966b.0
-        for <netdev@vger.kernel.org>; Mon, 01 Jun 2026 08:57:08 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ8Yl4JsRmbNm4OqjtbERzx8/rxSAnYTuEkLRR72aB6nqVDBQxGuK3P53nYP1BqEUy9QMt1idy4=@vger.kernel.org
-X-Received: by 2002:a17:906:2929:b0:bec:203f:7466 with SMTP id
- a640c23a62f3a-bec203f7742mr316403166b.8.1780329017245; Mon, 01 Jun 2026
- 08:50:17 -0700 (PDT)
+        bh=VlW+vbYF7482TYDjWIvi4SeVFQEvJrBhEHeIE/y06pY=;
+        b=miFOPqs9DHskXUHbk1hVtHgntiGSJC8+QKsjx/ZNBC50IOR8XNzry9LviIVRQJGcLd
+         ZH59UVuFYvTRT+t6I2oXrc0GDQ0JvfyJf4BMm9dk5kVdpDTwp4usyagUkN2+R3b+3pcM
+         m35Wi/XOXeMCKg+mbbKCTdmLJibucG6WJdy/OsyZdo5MlbOv39tw3Qaqd0zz9IR+7hJu
+         kn0eYJUH8Ga8A6W1+SlBW6u8bpmIRLeesPkFCUxaMQry2Tuf0lT8F7Euul3EFiPLAjzE
+         aSPmltX5HeKnYmwQlXExWwURkpJ420J1KIDfHwRFYwpgwth5MPRSHi7kEdd19rukbi+j
+         dOQQ==
+X-Gm-Message-State: AOJu0YyrxO8bw6N3DoG9KN2oYIlPR4bqFJmTd1tlNyX8PJGPvn8nXDnn
+	o7KMoPH5KyZH1j+nyr4Cp6u8sipYt2dzIC+ikCU9yF+SYWfXcXhMUAkMDNAGrxL6
+X-Gm-Gg: Acq92OHqRl3RzW7W09VWwpbkBqXYhxEOZXeFcagHGRGnpDJGAGhhfSwRCNNEfVLQuJf
+	0Fq6iggF478SZtH82EdpzsJCyJ6RVBVsLkUqK27ATkV/GM52sTbcbVazRqxwZI3KudG9ElpBhQs
+	9/yPbks0IM8LbJrAav45ZeTAOzsII1wrcSK7mk9yPsxuu4kcG2L1Bvx7/Mmq/4v4OvicVgUT4Hu
+	A8v3gbofrh+qXipJ7W5Ruy4NQdHhbCaElNLzsxpXhFgBdoJkaa5OkGglAQT24r8eCFY7Elg89MZ
+	uLeFi+hA8RbYA6QGZaXP18w9KvqlrgSSvfhbZ3hgYtSvwUjPipJB12CfP1AV/KNjssitIg8t4FA
+	kJLgM7W/jOsyeC+05ASg490X4HbkZ+9NMOAxlQ1CuObuqNt7xqXiJtxcStXbqro5XFNW0lFrpWh
+	9vf85E+fqsKyrULUxXxiyzfdX14G3QLlyJwDQtF8wC+sF60YKTYQFu9hb1/Hepr9X1z+Cyywyjj
+	ZVSx/qg1ULB8O7G7csFHgp1
+X-Received: by 2002:adf:e389:0:b0:45e:f5b6:7bf9 with SMTP id ffacd0b85a97d-45ef6b79a95mr16907141f8f.31.1780329504324;
+        Mon, 01 Jun 2026 08:58:24 -0700 (PDT)
+Received: from ipsec-VMware-Virtual-Platform (ip-89-176-136-191.bb.vodafone.cz. [89.176.136.191])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45ef354bb7asm25549621f8f.20.2026.06.01.08.58.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 01 Jun 2026 08:58:23 -0700 (PDT)
+From: Petr Wozniak <petr.wozniak@gmail.com>
+To: netdev@vger.kernel.org
+Cc: sd@queasysnail.net,
+	steffen.klassert@secunet.com,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	Petr Wozniak <petr.wozniak@gmail.com>
+Subject: [PATCH net v3] xfrm: propagate -EINPROGRESS from validate_xmit_xfrm()
+Date: Mon,  1 Jun 2026 17:58:22 +0200
+Message-ID: <20260601155822.20954-1-petr.wozniak@gmail.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260531010107.1953702-1-safinaskar@gmail.com>
- <CALCETrW__=8mSusayfXG7UFCfue5BGbx+vqESj1d9wqOfX4s8w@mail.gmail.com> <ah2nBAdsE5vVJ2PL@casper.infradead.org>
-In-Reply-To: <ah2nBAdsE5vVJ2PL@casper.infradead.org>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Mon, 1 Jun 2026 08:50:00 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wiFuud0Nn3B9YpTWyQja08TeXVk2AB-aAkmVXyigOagbQ@mail.gmail.com>
-X-Gm-Features: AVHnY4JDfRzuLw7CK_4gSBHmXbq5FWvfpfspaVnl7J1jkuJC1SncFOzqHbctZiE
-Message-ID: <CAHk-=wiFuud0Nn3B9YpTWyQja08TeXVk2AB-aAkmVXyigOagbQ@mail.gmail.com>
-Subject: Re: [PATCH 0/3] vmsplice: make vmsplice a trivial wrapper for preadv2/pwritev2
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Andy Lutomirski <luto@amacapital.net>, Askar Safin <safinaskar@gmail.com>, 
-	linux-fsdevel@vger.kernel.org, Christian Brauner <brauner@kernel.org>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-api@vger.kernel.org, netdev@vger.kernel.org, 
-	Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@infradead.org>, David Howells <dhowells@redhat.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Pedro Falcato <pfalcato@suse.de>, Miklos Szeredi <miklos@szeredi.hu>, patches@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-On Mon, 1 Jun 2026 at 08:36, Matthew Wilcox <willy@infradead.org> wrote:
->
-> Can we review this series properly?
+validate_xmit_xfrm() returns NULL both when a packet is dropped and
+when it is stolen by async crypto (-EINPROGRESS from ->xmit()).
+Callers cannot distinguish the two cases.
 
-Well, since it pretty much is what I suggested a few years ago, I
-certainly won't NAK it.
+f53c723902d1 ("net: Add asynchronous callbacks for xfrm on layer 2.")
+changed the semantics of a NULL return from "dropped" to "stolen or
+dropped", but __dev_queue_xmit() was not updated.  On virtual/bridge
+interfaces (noqueue qdisc) __dev_queue_xmit() initialises rc=-ENOMEM
+and jumps to out: when skb is NULL, returning -ENOMEM to the caller
+even though the packet will be delivered correctly via xfrm_dev_resume().
 
-And the patches looked very straightforward to me. Just the final
-diffstat is worth quoting again because that certainly doesn't look
-problematic:
+Return ERR_PTR(-EINPROGRESS) for the async case so callers can tell
+it apart from a real drop.  Update validate_xmit_skb_list() to track
+skbs stolen by async crypto and return ERR_PTR(-EINPROGRESS) when all
+skbs in the list were taken by async crypto.  Update both
+__dev_queue_xmit() and __dev_direct_xmit() to handle ERR_PTR correctly.
 
-  7 files changed, 33 insertions(+), 204 deletions(-)
+Fixes: f53c723902d1 ("net: Add asynchronous callbacks for xfrm on layer 2.")
+Suggested-by: Sabrina Dubroca <sd@queasysnail.net>
+Signed-off-by: Petr Wozniak <petr.wozniak@gmail.com>
+---
+Changes in v3:
+ - Fix validate_xmit_skb_list(): set stolen=true only for -EINPROGRESS,
+   not for all IS_ERR() cases (Sabrina Dubroca)
+ - Update __dev_direct_xmit() to handle ERR_PTR(-EINPROGRESS) from
+   validate_xmit_skb_list() before kfree_skb_list() which would crash
+   on an ERR_PTR (Sabrina Dubroca / sashiko)
 
-and it removes that GIFT flag that was truly disgusting.
+Changes in v2:
+ - Only reset rc to NET_XMIT_SUCCESS when PTR_ERR(skb) == -EINPROGRESS,
+   not for any IS_ERR() result (Sabrina Dubroca)
+ - Add comment explaining why rc is reset and the async delivery path
+ - Fix validate_xmit_skb_list(): track stolen skbs and return
+   ERR_PTR(-EINPROGRESS) when all skbs in the list were stolen by
+   async crypto, not NULL (Sabrina Dubroca)
 
-So I'm certainly ok with it from a "looking at the patch" standpoint.
-I didn't _test_ it. I don't have any workload that might remotely
-care.
+ net/core/dev.c         | 19 ++++++++++++++++---
+ net/xfrm/xfrm_device.c |  2 +-
+ 2 files changed, 17 insertions(+), 4 deletions(-)
 
-I did a quick scan on debian code search for vmsplice, and after ten
-pages of entries that weren't actually *using* it but had lists of
-system calls, I grew bored. So there are likely users, but I don't
-know what they are and how much they care. It *might* be a big
-performance issue somewhere. Unlikely, but...
+diff --git a/net/core/dev.c b/net/core/dev.c
+index 0c6c270d9..b77364f83 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -4078,6 +4078,7 @@ static struct sk_buff *validate_xmit_skb(struct sk_buff *skb, struct net_device
+ struct sk_buff *validate_xmit_skb_list(struct sk_buff *skb, struct net_device *dev, bool *again)
+ {
+ 	struct sk_buff *next, *head = NULL, *tail;
++	bool stolen = false;
+ 
+ 	for (; skb != NULL; skb = next) {
+ 		next = skb->next;
+@@ -4087,8 +4088,11 @@ struct sk_buff *validate_xmit_skb_list(struct sk_buff *skb, struct net_device *d
+ 		skb->prev = skb;
+ 
+ 		skb = validate_xmit_skb(skb, dev, again);
+-		if (!skb)
++		if (IS_ERR_OR_NULL(skb)) {
++			if (IS_ERR(skb) && PTR_ERR(skb) == -EINPROGRESS)
++				stolen = true;
+ 			continue;
++		}
+ 
+ 		if (!head)
+ 			head = skb;
+@@ -4099,6 +4103,8 @@ struct sk_buff *validate_xmit_skb_list(struct sk_buff *skb, struct net_device *d
+ 		 */
+ 		tail = skb->prev;
+ 	}
++	if (!head && stolen)
++		return ERR_PTR(-EINPROGRESS);
+ 	return head;
+ }
+ EXPORT_SYMBOL_GPL(validate_xmit_skb_list);
+@@ -4858,8 +4864,13 @@ int __dev_queue_xmit(struct sk_buff *skb, struct net_device *sb_dev)
+ 			goto recursion_alert;
+ 
+ 		skb = validate_xmit_skb(skb, dev, &again);
+-		if (!skb)
++		if (IS_ERR_OR_NULL(skb)) {
++			/* -EINPROGRESS: packet stolen by async xfrm crypto,
++			 * delivered via xfrm_dev_resume(). */
++			if (PTR_ERR(skb) == -EINPROGRESS)
++				rc = NET_XMIT_SUCCESS;
+ 			goto out;
++		}
+ 
+ 		HARD_TX_LOCK(dev, txq, cpu);
+ 
+@@ -4920,7 +4931,9 @@ int __dev_direct_xmit(struct sk_buff *skb, u16 queue_id)
+ 		goto drop;
+ 
+ 	skb = validate_xmit_skb_list(skb, dev, &again);
+-	if (skb != orig_skb)
++	if (IS_ERR(skb))
++		return PTR_ERR(skb) == -EINPROGRESS ? NET_XMIT_SUCCESS : NET_XMIT_DROP;
++	if (!skb || skb != orig_skb)
+ 		goto drop;
+ 
+ 	skb_set_queue_mapping(skb, queue_id);
+diff --git a/net/xfrm/xfrm_device.c b/net/xfrm/xfrm_device.c
+index 550457e4c..bb0c0fafa 100644
+--- a/net/xfrm/xfrm_device.c
++++ b/net/xfrm/xfrm_device.c
+@@ -182,7 +182,7 @@ struct sk_buff *validate_xmit_xfrm(struct sk_buff *skb, netdev_features_t featur
+ 		err = x->type_offload->xmit(x, skb, esp_features);
+ 		if (err) {
+ 			if (err == -EINPROGRESS)
+-				return NULL;
++				return ERR_PTR(-EINPROGRESS);
+ 
+ 			XFRM_INC_STATS(xs_net(x), LINUX_MIB_XFRMOUTSTATEPROTOERROR);
+ 			kfree_skb(skb);
+-- 
+2.51.0
 
-         Linus
