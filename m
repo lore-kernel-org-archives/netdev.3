@@ -1,172 +1,171 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from fout-a8-smtp.messagingengine.com (fout-a8-smtp.messagingengine.com [103.168.172.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DF7E194C95
-	for <netdev@vger.kernel.org>; Mon,  1 Jun 2026 14:04:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.133.124
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780322682; cv=pass; b=Nx7Dc5QTf6sdxJzivnzc3+F4FhxQ9di+otcWvc7scVCUr8fneLX2VVTVzKs1zUGQoVEYYmabPtD3Zg4RoI5S/vgIkwgGwHy0TY+bDM3USeuVn3ILxhIMhXOJTrZdqrT0HbsT1r7qe1yLAtjhz518Ut57mBdrk2ifAeae4XfygUM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780322682; c=relaxed/simple;
-	bh=CFrtvGmfhUK+/WMj5uzU2Dr0YEHsNNcF9nrXsbVp3js=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=us5tZvRrK2xiI2Fx0OQsQ06YnsKM3fP+McA2uJ5M0fvcW8UWV0wb2vbjJmPTdqKvOC9KQux/3LM/6y7DkjDLgLJlsZlGFnKJmNRXxdRLO6bkR892QtGCNp+8DVAYuGSWQN2PadDpmHmuL2N4FbXkAV9fwGCHAodbtJQnQaAW4/k=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=TJggPkCW; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=IXvbrNIC; arc=pass smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64E4837CD48
+	for <netdev@vger.kernel.org>; Mon,  1 Jun 2026 14:08:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.151
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780322902; cv=none; b=PRukM/g3cjS/jycRvAfi6Zm7eABqO2qKKnc6uI/ekOFp02scOeETTWqu5y8wOVjsVN2YB5v55sQJR/OPRYkjyn/pt30GbNHHTPyTfv81LkQPLZ7lVRFTf/7Cg83d5rthacV+Yp327M92200rSCVwiJ7A27V4dbXanYVrYZzGG7s=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780322902; c=relaxed/simple;
+	bh=nL8DZCombjhPliRsheRgFy6iQn4eApXFO6BcytBBlcg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Yalh0J/E9F41RQODmvCpT/setaarqwnQyr3t+EM4TM4av2xz6B8pFD95ZT6ZG8ZZak3DRVRjrOfltgVfY5ATVV3f02gebLfNrnSdL1xpuFEWiTGr1fsH6EkSFZlm4e/gS2sfW+9f23LqKXirUQ23m6NLtvVZHERGSkFsJPMsOFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=FO2ZVpsG; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=c/6Lj473; arc=none smtp.client-ip=103.168.172.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="TJggPkCW";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="IXvbrNIC"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1780322680;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CFrtvGmfhUK+/WMj5uzU2Dr0YEHsNNcF9nrXsbVp3js=;
-	b=TJggPkCW0AmFyFueGGNWyYCWvD/DpkFhrDfU91znF6TlIR9X6eGQ2jBUbaU8FB0Fvv3sHc
-	TXAqF8OUXMrKOUFTZPi+BUHh16J8OZB17DCB4Fn1n7Z0xX5ajO8ahq8vmBex6o33FOY2DP
-	2OGcrlr8eL0NT7RpFQDn6ZGOb2rVjp0=
-Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
- [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-676-Bmcq2weuMmuTo58DVQ6A3w-1; Mon, 01 Jun 2026 10:02:13 -0400
-X-MC-Unique: Bmcq2weuMmuTo58DVQ6A3w-1
-X-Mimecast-MFC-AGG-ID: Bmcq2weuMmuTo58DVQ6A3w_1780322532
-Received: by mail-lf1-f69.google.com with SMTP id 2adb3069b0e04-5aa68cf0a4bso770654e87.0
-        for <netdev@vger.kernel.org>; Mon, 01 Jun 2026 07:02:12 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780322531; cv=none;
-        d=google.com; s=arc-20240605;
-        b=P7g8lhHwmT0wnNRjWjZUEB2JGTP1ZAOxCRfzX0ivAZKe7zxH5AYGw4hfYXqSt6o15G
-         P6/hT9hu+itG/+qR0OfKxssTjY/mApoEIDq7l6UmRkjxH853ao+kvA57U0k5K5Yo+Ho/
-         zGxC/fghUPOnvfYuB2kbrPW/VXf0hcim9Bhn5dQXPPXok5Ltu1uVaqDQq3mkpqgVlmGa
-         +5/y5i48qE7N0Troh9Lq1WFFhiSeS/TqjEFcz42VBPQR/xynyXLhHbmOZG3VRsSewXCw
-         zUknV3g0xAFjW5aLrZ+nv+l4ICPlyplzL1hE+9L3cwQ+w8b382Ja/NB9caqmvzgt6odH
-         stzw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=CFrtvGmfhUK+/WMj5uzU2Dr0YEHsNNcF9nrXsbVp3js=;
-        fh=x6IanxjBdrXhgX56brhSs0QtTtG6t7g051SltrsUtuI=;
-        b=EW1ideHJrv37ovfZ/DeesaftLJgZl8LyvaR38leBg9CB5v6A1dugzcycJnH9heIKjN
-         PFwE51LpTNfWQj+I0uDhzUkfubf1mG8gXnJ4Dl3GIEUBesRm3dkEXS2tza4Ww3SDRRi2
-         lB8xnvNrIcXHHxB48dXTq3E814Kirq837Nj57rWWyq/MmGIrQQSEQZ6o3X2u0+/YhKtt
-         +R4MYdjYE26spT7G63o0RTbdRRZT8YOLRePzqTfTASmY/iXUsCUA0BBRfsCGBUfulnvz
-         Dle1T8EteJxlmzCUVImbhYI9avc8VbUr5y5/AoCwWIB+Irn0V32WtJ7sm86Bo62fKavR
-         3ELw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1780322531; x=1780927331; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CFrtvGmfhUK+/WMj5uzU2Dr0YEHsNNcF9nrXsbVp3js=;
-        b=IXvbrNICiIbp2Anjla6gK+ifgs6wRBfa0kT2wA2q3gpLAqNU4633PXOHPhtwBqZIZ9
-         pSY9gV5eny7qhf46BZHGLfADdIoPDBWPESrMptZOsFCwEhtJ1FfmY4SdYy/6U2YdweDn
-         2/VXOHt6EToIxKCoING6ZPfP1+fJ+wfsyjO+gDBheFonggWiMyz/x/F+k3fPD0xFuDTN
-         rgqChNOZQnA+JtyOpufnbjHCEya++CClV938JKdyTQNh71lGc3Tm2me+TvPFlrqq1Sz4
-         ZD4w2R5ga/JqBXb4X6nM47K0NodeY+r0HytdmGewgOWaTcCrbZOZ7hzJdf3I+SQn6/y8
-         8Rpg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780322531; x=1780927331;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=CFrtvGmfhUK+/WMj5uzU2Dr0YEHsNNcF9nrXsbVp3js=;
-        b=sDkF0v1ZpcBzSben9KJR6AkiwGbDJd3pgwAW8svfbR4NVixMISuXLMeEv1xNgZFw0G
-         Dh4WMOokNVNTQpIMfO1wcC1nZNivs9NMkEuys4L8BYloOqb1gPe+w7PVMhGt2UKQexEh
-         BVL8jPqtoMegwC1a/mx6xfhzqnPrN+XksBgDLlvyNKPe5mQ4Jo1YUg4fI+k3uoSmWxbm
-         9ILx4dE2WEfzvGEuNmO2uC/TYfPGzw/oaUdFq7k0w4/ctPQGlkAPf/PZODYRnqhvdYDg
-         gka7MudgomfDG4d5A+Ia9aWYMmYymb7gdP4hK6/JEaEQtRVn/W37LLd+0wggT3/M/M3L
-         /KsQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9seARLyYk1ClEHLnnHL3A8JvM+XpxrtpZqCTUYP+1XQcF7HIDKzNKJsg2UYbDaHcdXxanfOks=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzUoAwH/GQAwcdQIVp9AJMynKKjjTgS5+D04XSzpjTD/DfOcVRQ
-	MJmeFlH/PmLl/ONpJexd/KOFS9HLep04NMzrHzdNwCh4IXbV3tYCghiRkceVBR9MYgVUKCfb6AB
-	OS/Bs7GOvBtkkg55ZBQY7i2gysaOYuY7hlom0d2K5jdFNlUiJvWWD677ieYZIwn0Qd3taa028I6
-	S6L5ykN8ctSu+eSG7bGFA2BIPIRAgNSyGj
-X-Gm-Gg: Acq92OE+ol0iusenAY9GbbGSwJYyPQeZmsJMZyIPlbC+AYyMfQ2ZTE/C7he1hL88mYi
-	acjP8GpZ0SI06W7bBKyH1dtWhlnnNMrpOmyL+h8+lykOpOs8MXfwm/Jk2JKZjbhjBu+QS1U7cEK
-	KVKId6qYW/TpKKZPUw4kORL0inB4gZKEVMxuC/afmiy3IGD10XCTNpyc7XOnlVfbIYtemiXc1lk
-	fDO9MotvPlpgRmK
-X-Received: by 2002:ac2:4bc1:0:b0:5aa:5a97:2458 with SMTP id 2adb3069b0e04-5aa61425f14mr2415823e87.11.1780322531264;
-        Mon, 01 Jun 2026 07:02:11 -0700 (PDT)
-X-Received: by 2002:ac2:4bc1:0:b0:5aa:5a97:2458 with SMTP id
- 2adb3069b0e04-5aa61425f14mr2415792e87.11.1780322530483; Mon, 01 Jun 2026
- 07:02:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="FO2ZVpsG";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="c/6Lj473"
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfout.phl.internal (Postfix) with ESMTP id 79DA8EC00C4;
+	Mon,  1 Jun 2026 10:08:18 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-01.internal (MEProxy); Mon, 01 Jun 2026 10:08:18 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm2; t=1780322898; x=
+	1780409298; bh=UxVpBV78FyUduhPpqlpu94XSUNLZLVVUE4ub/DoSkvc=; b=F
+	O2ZVpsGhVBPCiLXX4R9snsKtsxCvfvK1rXU0CI9ZzUQY6KCPxfSAxq2Lg0N0j+bj
+	x8Vt6Yg0nVJQhwKAEraLIpFQSOlGKjte/+Fa23zt80kNLiqYHxf2m8ugqm0GxiQq
+	LQHMrz7Cbe14SE/jWBb2G8YgaYBqRZgyVxy7JyHvwHphJnAImtrGsH3GMutk1Kd7
+	FMpy/Yjz+VKBH1rr9qEaX37pLe+gh0xO6qza41tAA+3c0BhZ68rlQyRG88RLRz4R
+	QKcoL060aR0ftiUerlqN+9STeEYq+0c0ZJ1apTyg7H6RTTZVvRcaaRtJg2r9I+Yt
+	3Lxd2VqBkAcXRcgrbjAqA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1780322898; x=1780409298; bh=UxVpBV78FyUduhPpqlpu94XSUNLZLVVUE4u
+	b/DoSkvc=; b=c/6Lj473rI52i+latOYcH6qINqjB/LUvS0xbg/TSjjdVemzbcNi
+	R+5WHIgHOmWm8YvhX5gFGOjvgcKiuDKHd9Eke8VIOo7sVE/xCxIsJIroYf/WuWGl
+	f7n061p5+WaM+bFH9imXK/lXSi4F8Q8Iq3kqwxRGDwdhuvwMpzT5xK0z7GooBv7J
+	oLVZ9x8dzmWJmLLAoK+WJPJqGNyZ/Vr2ngh99s2TlagvMMQnUg9iie7iodxr+sIU
+	3C0tDZFZA4vdjUMz+SIUe+qEj8C60xSRoJ6LzRP5m1V79x6NP3WYJvULOkgpYFbY
+	yDtZrFkBWRbtOc68vElAlKvqQFMZxQu2FeQ==
+X-ME-Sender: <xms:UZIdak-y587jnKe6VraoKHdtsY_BxXcFvx55Oc-IHFFXAdgJ2_eUsg>
+    <xme:UZIdajnM2kDDla_egc8BtAq03sjIs95yj919vyfcfZvZzsHdXYcJXArQ8bSMe5gnW
+    8rkAcWajDtIHkIUDDuLVluJXhmoKP_y2D3n2E7ksWAQ_WPOzxjG0Q>
+X-ME-Received: <xmr:UZIdaiW9QobRdsfxEGnbDlQv43iAiWpRu3SVMR7paUskiXsT5_inw-Cmq8jaCuhJFxWfaZhgmABCoORTvHkH4Yo>
+X-ME-Proxy-Cause: dmFkZTEfQR4Vl6mNpFQ5K/t8d4VjlatqF4f/7pDjuAm21VjzLnKw9qTv3DSskSuVuo756y
+    jFpICW9ULybtLFGjn4Y56uEvY4jfd3ipHl3IZ+vKmyE8Y79Mv1TLSCV0kTNDlRJ+FBab28
+    i7Uo23byHA6sf1RAA8vocqa8FiAH03uWxGH3rPucgrQKOlsGIBdwXXyBKL9pani0+ZGiOc
+    NsSEYejvpMsfym9R4/5uiVuTmE4SMmSsijIMgP5OmUo+9QkgMmTvfuyG+FFDdfy4O3gODQ
+    5IPtJQBbktjJ6fwsTh6CMIsPlinh4nIpwks8TUFWexPfofUP3ZOgZpy09I4Vml9UsxGnr0
+    j14OdFc16Byfv7MqtI1kdh952JHRGfk6r88xrSQwVPFj0F4Zi5Kxq8rFUfWqmYoSQv4nxF
+    KP0f1+asAYJUuSpSU+o6bapVMy5E8ic1DCVholcC2OR2+Lo1VWqNTu9/+ykaKzWOfoQ+rh
+    3pEFpiiEsUAINxW33k2/2AKPCMOYd3O/XM1ects/2bWWckEDfi2ZS5ssGBkewvFhyYdDKg
+    khhcpImR+d6LQuQ3p14rO5MOkV73X94Ro5nfohnGiOs3DvZQ+XxWtGo5tgsgMUj+KHMEVG
+    qOHZiJH+YxsUk7JxtLpqgklGDtDVGMDhxug4e/Cedw6LJjOVnbu0YKcmWNBA
+X-ME-Proxy: <xmx:UZIdagHxFhp6Qf6WkoWoVBxnGeWOeW_kZyoIe8b1goCA5wz3ddXsjw>
+    <xmx:UZIdamdATfitpaaawMABbJrs2pVIbCjmtSNnoErG37Ix7tqX85eWYA>
+    <xmx:UZIdapJPsdU3Z3uKpgG-KIfYMXzRG_edGNlofMmdvvkbWJ5Dci6b5g>
+    <xmx:UZIdajFVzZYEM0iakKY982ueQYIhj5VybcoDHIMdS-029Dh-lktpCw>
+    <xmx:UpIdap-LgwMPBxdWhR4G63Nph__uLTSVIIITPsXTer49MwQksFSFUBGK>
+Feedback-ID: i934648bf:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 1 Jun 2026 10:08:17 -0400 (EDT)
+Date: Mon, 1 Jun 2026 16:08:15 +0200
+From: Sabrina Dubroca <sd@queasysnail.net>
+To: Petr Wozniak <petr.wozniak@gmail.com>
+Cc: netdev@vger.kernel.org, steffen.klassert@secunet.com, pabeni@redhat.com,
+	edumazet@google.com
+Subject: Re: [PATCH net v2] xfrm: propagate -EINPROGRESS from
+ validate_xmit_xfrm()
+Message-ID: <ah2STzEhNYfCc-Wm@krikkit>
+References: <20260530061619.2239-1-petr.wozniak@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260529112357.5079-1-fmancera@suse.de> <20260529134045.56330243@elisabeth>
- <5079261a-79e5-421b-bf6a-a511acaaeca4@kernel.org> <20260601153525.546746a8@elisabeth>
-In-Reply-To: <20260601153525.546746a8@elisabeth>
-From: =?UTF-8?B?w43DsWlnbyBIdWd1ZXQ=?= <ihuguet@redhat.com>
-Date: Mon, 1 Jun 2026 16:01:56 +0200
-X-Gm-Features: AVHnY4JxXS-z4a4yH6TIUqvRMklNXbAPyg_Hp4sLwPZCvCtUY9zhA3JOHulUR4Y
-Message-ID: <CACT4oueDv=KRZmJw=1N58EN7eoFz5AqbBBMP8FE4=+rQ99oFEg@mail.gmail.com>
-Subject: Re: [PATCH net v2] Revert "ipv6: preserve insertion order for
- same-scope addresses"
-To: Stefano Brivio <sbrivio@redhat.com>
-Cc: Matthieu Baerts <matttbe@kernel.org>, Fernando Fernandez Mancera <fmancera@suse.de>, netdev@vger.kernel.org, 
-	yuhuang@redhat.com, justin.iurman@gmail.com, horms@kernel.org, 
-	pabeni@redhat.com, kuba@kernel.org, edumazet@google.com, davem@davemloft.net, 
-	idosch@nvidia.com, dsahern@kernel.org, Chris Adams <linux@cmadams.net>, 
-	David Gibson <david@gibson.dropbear.id.au>, Beniamino Galvani <bgalvani@redhat.com>, 
-	Thorsten Leemhuis <regressions@leemhuis.info>, Andrew Lunn <andrew@lunn.ch>, regressions@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260530061619.2239-1-petr.wozniak@gmail.com>
 
-On Mon, Jun 1, 2026 at 3:35=E2=80=AFPM Stefano Brivio <sbrivio@redhat.com> =
-wrote:
-> I was thinking that if we implement a label like NLM_F_INSERT_LAST
-> (David's proposal for the name), we could patch iproute2 to set it on
-> 'ip address restore' at least, other than using it in pasta(1).
+2026-05-30, 08:16:19 +0200, Petr Wozniak wrote:
+> diff --git a/net/core/dev.c b/net/core/dev.c
+> index 804e8ad25..618e6299f 100644
+> --- a/net/core/dev.c
+> +++ b/net/core/dev.c
+> @@ -4079,6 +4079,7 @@ static struct sk_buff *validate_xmit_skb(struct sk_buff *skb, struct net_device
+>  struct sk_buff *validate_xmit_skb_list(struct sk_buff *skb, struct net_device *dev, bool *again)
+>  {
+>  	struct sk_buff *next, *head = NULL, *tail;
+> +	bool stolen = false;
+>  
+>  	for (; skb != NULL; skb = next) {
+>  		next = skb->next;
+> @@ -4088,8 +4089,11 @@ struct sk_buff *validate_xmit_skb_list(struct sk_buff *skb, struct net_device *d
+>  		skb->prev = skb;
+>  
+>  		skb = validate_xmit_skb(skb, dev, again);
+> -		if (!skb)
+> +		if (IS_ERR_OR_NULL(skb)) {
+> +			if (IS_ERR(skb))
+> +				stolen = true;
+>  			continue;
+> +		}
+>  
+>  		if (!head)
+>  			head = skb;
+> @@ -4100,6 +4104,8 @@ struct sk_buff *validate_xmit_skb_list(struct sk_buff *skb, struct net_device *d
+>  		 */
+>  		tail = skb->prev;
+>  	}
+> +	if (!head && stolen)
+> +		return ERR_PTR(-EINPROGRESS);
 
-I'm not sure whether what I'm going to say is a good idea, or just a
-plain stupid proposal:
+Why? You said previously that this path isn't affected (sure, since
+validate_xmit_skb_list ignores intermediate returns).
 
-By reverting the old odd behaviour, UAPI is restored, yes. On the
-other side, userspace programs won't have any incentive to start using
-NLM_F_INSERT_LAST, which is actually the most desirable behaviour. The
-old odd behaviour is very error prone, as we can see with the `ip addr
-restore` bug. That's why programs should adopt the "new" behaviour and
-this will save them from introducing bugs like that one in the future.
-And new programs should get the normal insertion by default, without
-needing to read documentation or kernel headers to find
-NLM_F_INSERT_LAST.
+Also, sashiko complains that if you're going to do this, the callers
+should be updated to handle EINPROGRESS. And from my side, if you want
+to keep this "bool stolen" handling here, stolen should only be true
+only for EINPROGRESS, not all errors that validate_xmit_skb could
+return.
 
-What if we reapply the patch and add a NLM_F_INSERT_FIRST /
-NLM_F_PREPEND option instead? This will break UAPI, which is bad, but
-probably not too bad per the conversations in this and the other
-thread. Userspace programs affected by the change, like
-NetworkManager, will need to be fixed, either by switching to natural
-order insertion, or by passing the NLM_F_INSERT_FIRST flag to restore
-the old behaviour.
+>  	return head;
+>  }
+>  EXPORT_SYMBOL_GPL(validate_xmit_skb_list);
+> @@ -4859,8 +4865,13 @@ int __dev_queue_xmit(struct sk_buff *skb, struct net_device *sb_dev)
+>  			goto recursion_alert;
+>  
+>  		skb = validate_xmit_skb(skb, dev, &again);
+> -		if (!skb)
+> +		if (IS_ERR_OR_NULL(skb)) {
+> +			/* -EINPROGRESS: packet stolen by async xfrm crypto,
+> +			 * delivered via xfrm_dev_resume(). */
+> +			if (PTR_ERR(skb) == -EINPROGRESS)
+> +				rc = NET_XMIT_SUCCESS;
+>  			goto out;
+> +		}
+>  
+>  		HARD_TX_LOCK(dev, txq, cpu);
+>  
+> diff --git a/net/xfrm/xfrm_device.c b/net/xfrm/xfrm_device.c
+> index 5454be0b2..7702cca2b 100644
+> --- a/net/xfrm/xfrm_device.c
+> +++ b/net/xfrm/xfrm_device.c
+> @@ -182,7 +182,7 @@ struct sk_buff *validate_xmit_xfrm(struct sk_buff *skb, netdev_features_t featur
+>  		err = x->type_offload->xmit(x, skb, esp_features);
+>  		if (err) {
+>  			if (err == -EINPROGRESS)
+> -				return NULL;
+> +				return ERR_PTR(-EINPROGRESS);
+>  
+>  			XFRM_INC_STATS(xs_net(x), LINUX_MIB_XFRMOUTSTATEPROTOERROR);
+>  			kfree_skb(skb);
 
-Additionally, a NLM_F_INSERT_FIRST can be implemented for IPv4 too, at
-least for consistency (I don't know whether it may be actually useful
-for something, likely yes?).
+c/p'ing my comment from v1 since you didn't address it (either with a
+change or a reply to explain why it's not a valid concern):
 
-As I said, this solution would break a few programs like
-NetworkManager, but the fix is as easy as `if (ipv6) flags |=3D
-NLM_F_INSERT_FIRST`. Would old kernels ignore this unknown flag?
-Because, in that case, we don't even need a detection mechanism from
-NetworkManager.
+What about the skb_list_walk_safe loop? If ->xmit() returns
+-EINPROGRESS for all the skbs in the chain, we'll end up returning
+NULL even though all the packets were stolen by the async path.
 
->
-> But that wouldn't be enough for your case. At the same time always
-> adding it for RTM_NEWADDR requests in iproute2 could break somebody
-> else's scripts. I guess a reasonable solution could be to add an
-> additional parameter for ip-address... 'insert_last'? 'last'?
->
-> --
-> Stefano
->
-
-
---
-=C3=8D=C3=B1igo Huguet
-
+-- 
+Sabrina
