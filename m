@@ -1,341 +1,108 @@
-Received: from out28-196.mail.aliyun.com (out28-196.mail.aliyun.com [115.124.28.196])
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B57BA39099C;
-	Mon,  1 Jun 2026 09:32:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.196
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA7B2390C90;
+	Mon,  1 Jun 2026 09:32:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780306329; cv=none; b=hJ3ymYhJG8G38J9PHUWz564Rv9b58P5SbODHyz08eGOppqLXkkUq+MI7TSemgYNlA/yLf1UfDt9jfHQal5U6fq7QARwhAq8OpKRdWQN1hu3sbijlWFiVeueF5FRgvV93t9XlfZ32fkz1whGaMTgFQqRiB68jGTLmEAtYfbb0Z6g=
+	t=1780306329; cv=none; b=Zc6uPGO8K915pk5W2vUL6HULnjonLoRfIXbaA+ZiJzsZMgUCd0E2N27zSm1b6bFzss3FDs8IIaSlQm3fDgZqWFObXAiD1kcNB0yb46plpz8DEPO9c0yA6jaX0ej1nsaUJ1hus7GxV0cCueTiEKFusFnSZJmGa5bOruLL8HJkIuQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1780306329; c=relaxed/simple;
-	bh=KlFcn7nyPRrMr+dWTnq2r5njOi+nXXvJYUB+gYZkpiw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=plsNypkRvTYeDk59zCv5FNrXeTluMDaUFnsa2TQqG+EbjB5icbe/bZQXFEhJyi8XEZyaNgrQB9K9ESqD5s3+dDpK9zR3SX3tuTTv+IRxR/KGTopMVDZ6itRXAyMCzkWQami0y6vxZE67iYvQIgBV/nOb83zqZxkhRb4PtCvApr8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nebula-matrix.com; spf=pass smtp.mailfrom=nebula-matrix.com; arc=none smtp.client-ip=115.124.28.196
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nebula-matrix.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebula-matrix.com
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.06712908|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_enroll_verification|0.171681-0.0173666-0.810952;FP=17472118401974928308|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033032023038;MF=illusion.wang@nebula-matrix.com;NM=1;PH=DS;RN=18;RT=18;SR=0;TI=SMTPD_---.hlxxkca_1780306317;
-Received: from localhost.localdomain(mailfrom:illusion.wang@nebula-matrix.com fp:SMTPD_---.hlxxkca_1780306317 cluster:ay29)
-          by smtp.aliyun-inc.com;
-          Mon, 01 Jun 2026 17:31:58 +0800
-From: "illusion.wang" <illusion.wang@nebula-matrix.com>
-To: dimon.zhao@nebula-matrix.com,
-	illusion.wang@nebula-matrix.com,
-	alvin.wang@nebula-matrix.com,
-	sam.chen@nebula-matrix.com,
-	netdev@vger.kernel.org
-Cc: andrew+netdev@lunn.ch,
-	corbet@lwn.net,
-	kuba@kernel.org,
-	horms@kernel.org,
-	linux-doc@vger.kernel.org,
-	pabeni@redhat.com,
-	vadim.fedorenko@linux.dev,
-	lukas.bulwahn@redhat.com,
-	edumazet@google.com,
-	enelsonmoore@gmail.com,
-	skhan@linuxfoundation.org,
-	hkallweit1@gmail.com,
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH v17 net-next 04/11] net/nebula-matrix: channel msg value and msg struct
-Date: Mon,  1 Jun 2026 17:31:37 +0800
-Message-ID: <20260601093149.25905-5-illusion.wang@nebula-matrix.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260601093149.25905-1-illusion.wang@nebula-matrix.com>
-References: <20260601093149.25905-1-illusion.wang@nebula-matrix.com>
+	bh=LqTRlHOp0YHQMBHFAbPqweqf7FuVo4edHss2+mASmZc=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=LlYZo/vFFIy9QkX7gFWjhMclhtR+e7JUkQTEZBH1m4KdLrkkyiuLgsfDP70qxMEklEdnABAGkFsFP5qYFck/N6uUFPo+kArh9VdBMChYFui+/cq/wx/EWSJIlz5w5uscB9/KfN8cYF+fB7DDPKAZvdDSzD6uMucH/eHVkkoM1eo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=ag/zJ4no; arc=none smtp.client-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="ag/zJ4no"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D289DA01FB;
+	Mon,  1 Jun 2026 11:32:05 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1780306326; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=p7m2ZvTWTpUZsSq2QqocuRSjvRDnNfWr7agiHb4ZjBI=;
+	b=ag/zJ4nogUjrZK2L8q75HmD8aaNXznIk/rxYhiKIKB9IQ9KyiydYqi8gw470gMedsn7gAi
+	F6ZniM/Rjpj0fbRwxaDwyPRuXlhvzGiVXAT16z+n+bFqPDt+P/7k0R+5jZ/zHH4VmJab+n
+	3gixl8E090c5PcY5LlALb+HXicBnnbZF/w1dxSIoZcErvcx+vq6awhFvpy+fhtH4+OcwUb
+	pkFfoINQO68bsVyS2vG7zpcbS3HhuTVTg0i/nSfO4UGmfPyteO9g5HBbRY30NPOSLrOXUJ
+	K6u9T6KmtqvDDo/wc3Lyqhe2oFpvIszqz5H8yhsiV0e4e8bBoVghD1KT/MIMwg==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Date: Mon, 01 Jun 2026 11:32:05 +0200
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, Russell King <linux@armlinux.org.uk>, Heiner Kallweit
+ <hkallweit1@gmail.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, thomas.petazzoni@bootlin.com
+Subject: Re: [PATCH net v2 3/3] net: phy: don't try to setup PHY-driven SFP
+ cages when using genphy
+In-Reply-To: <20260601084029.815461-4-maxime.chevallier@bootlin.com>
+References: <20260601084029.815461-1-maxime.chevallier@bootlin.com>
+ <20260601084029.815461-4-maxime.chevallier@bootlin.com>
+Message-ID: <090d7e9be921e62b94812785d1d8f54c@tipi-net.de>
+X-Sender: nb@tipi-net.de
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-This patch introduces the channel message ID enumeration and several
-message parameter structures for the nebula-matrix driver.
+On 1.6.2026 10:40, Maxime Chevallier wrote:
+> We don't have support for PHY-driver SFP cages with the genphy code.
+> 
+> On top of that, it was found by sashiko that running
+> sfp_bus_add_upstream() for genphy deadlocks, as for genphy the PHY
+> probing runs under RTNL, which isn't the case for non-genphy drivers.
+> 
+> This problem was reproduced, and does lead to a deadlock on RTNL.
+> 
+> Before the blamed commit, the phy_sfp_probe() call was made by
+> individual PHY drivers, so there was no way to get to the SFP probing
+> path when using genphy.
+> 
+> Let's therefore only run phy_sfp_probe when not using genphy.
+> 
+> Fixes: bad869b5e41a ("net: phy: Only rely on phy_port for PHY-driven 
+> SFP")
+> Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+> ---
+>  drivers/net/phy/phy_device.c | 11 ++++++++---
+>  1 file changed, 8 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/net/phy/phy_device.c 
+> b/drivers/net/phy/phy_device.c
+> index a171cbe2a74a..8eace58e9f12 100644
+> --- a/drivers/net/phy/phy_device.c
+> +++ b/drivers/net/phy/phy_device.c
+> @@ -3512,9 +3512,14 @@ static int phy_setup_ports(struct phy_device 
+> *phydev)
+>  	if (ret)
+>  		return ret;
+> 
+> -	ret = phy_sfp_probe(phydev);
+> -	if (ret)
+> -		goto out;
+> +	/* We don't support SFP with genphy drivers. Also, genphy driver 
+> binding
+> +	 * occurs with RTNL help, wich will deadlock the 
+> sfp_bus_add_upstream().
+> +	 */
+> +	if (!phydev->is_genphy_driven) {
+> +		ret = phy_sfp_probe(phydev);
+> +		if (ret)
+> +			goto out;
+> +	}
+> 
+>  	if (phydev->n_ports < phydev->max_n_ports) {
+>  		ret = phy_default_setup_single_port(phydev);
 
-To ensure compatibility, the msg ID values are fixed, and fields can
-only be appended to existing structures, not removed. Additionally,
-any newly added fields must be placed on new Data Words (DWs) to
-maintain alignment and compatibility. For array-type fields,
-the length of individual array members cannot be changed once defined.
+Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
 
-When modifying request structures, if a new field is added, the
-corresponding response function must define a new stack variable
-of the updated request message structure. The newly added fields
-should be initialized to invalid values, and a minimal copy of the
-original data should be performed to preserve compatibility with
-existing implementations.
-
-Signed-off-by: illusion.wang <illusion.wang@nebula-matrix.com>
----
- .../nbl/nbl_include/nbl_def_channel.h         | 251 ++++++++++++++++++
- 1 file changed, 251 insertions(+)
-
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_channel.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_channel.h
-index ff03a53b9f5d..f82926e2152c 100644
---- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_channel.h
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_channel.h
-@@ -6,8 +6,259 @@
- #ifndef _NBL_DEF_CHANNEL_H_
- #define _NBL_DEF_CHANNEL_H_
- 
-+#include <linux/types.h>
-+
- struct nbl_channel_mgt;
- struct nbl_adapter;
-+enum nbl_chan_msg_type {
-+	NBL_CHAN_MSG_ACK,
-+	NBL_CHAN_MSG_ADD_MACVLAN,
-+	NBL_CHAN_MSG_DEL_MACVLAN,
-+	NBL_CHAN_MSG_ADD_MULTI_RULE,
-+	NBL_CHAN_MSG_DEL_MULTI_RULE,
-+	NBL_CHAN_MSG_SETUP_MULTI_GROUP,
-+	NBL_CHAN_MSG_REMOVE_MULTI_GROUP,
-+	NBL_CHAN_MSG_REGISTER_NET,
-+	NBL_CHAN_MSG_UNREGISTER_NET,
-+	NBL_CHAN_MSG_ALLOC_TXRX_QUEUES,
-+	NBL_CHAN_MSG_FREE_TXRX_QUEUES,
-+	NBL_CHAN_MSG_SETUP_QUEUE,
-+	NBL_CHAN_MSG_REMOVE_ALL_QUEUES,
-+	NBL_CHAN_MSG_CFG_DSCH,
-+	NBL_CHAN_MSG_SETUP_CQS,
-+	NBL_CHAN_MSG_REMOVE_CQS,
-+	NBL_CHAN_MSG_CFG_QDISC_MQPRIO,
-+	NBL_CHAN_MSG_CONFIGURE_MSIX_MAP,
-+	NBL_CHAN_MSG_DESTROY_MSIX_MAP,
-+	NBL_CHAN_MSG_MAILBOX_SET_IRQ,
-+	NBL_CHAN_MSG_GET_GLOBAL_VECTOR,
-+	NBL_CHAN_MSG_GET_VSI_ID,
-+	NBL_CHAN_MSG_SET_PROMISC_MODE,
-+	NBL_CHAN_MSG_GET_FIRMWARE_VERSION,
-+	NBL_CHAN_MSG_GET_QUEUE_ERR_STATS,
-+	NBL_CHAN_MSG_GET_COALESCE,
-+	NBL_CHAN_MSG_SET_COALESCE,
-+	NBL_CHAN_MSG_SET_SPOOF_CHECK_ADDR,
-+	NBL_CHAN_MSG_SET_VF_SPOOF_CHECK,
-+	NBL_CHAN_MSG_GET_RXFH_INDIR_SIZE,
-+	NBL_CHAN_MSG_GET_RXFH_INDIR,
-+	NBL_CHAN_MSG_GET_RXFH_RSS_KEY,
-+	NBL_CHAN_MSG_GET_RXFH_RSS_ALG_SEL,
-+	NBL_CHAN_MSG_GET_HW_CAPS,
-+	NBL_CHAN_MSG_GET_HW_STATE,
-+	NBL_CHAN_MSG_REGISTER_RDMA,
-+	NBL_CHAN_MSG_UNREGISTER_RDMA,
-+	NBL_CHAN_MSG_GET_REAL_HW_ADDR,
-+	NBL_CHAN_MSG_GET_REAL_BDF,
-+	NBL_CHAN_MSG_GRC_PROCESS,
-+	NBL_CHAN_MSG_SET_SFP_STATE,
-+	NBL_CHAN_MSG_SET_ETH_LOOPBACK,
-+	NBL_CHAN_MSG_CHECK_ACTIVE_VF,
-+	NBL_CHAN_MSG_GET_PRODUCT_FLEX_CAP,
-+	NBL_CHAN_MSG_ALLOC_KTLS_TX_INDEX,
-+	NBL_CHAN_MSG_FREE_KTLS_TX_INDEX,
-+	NBL_CHAN_MSG_CFG_KTLS_TX_KEYMAT,
-+	NBL_CHAN_MSG_ALLOC_KTLS_RX_INDEX,
-+	NBL_CHAN_MSG_FREE_KTLS_RX_INDEX,
-+	NBL_CHAN_MSG_CFG_KTLS_RX_KEYMAT,
-+	NBL_CHAN_MSG_CFG_KTLS_RX_RECORD,
-+	NBL_CHAN_MSG_ADD_KTLS_RX_FLOW,
-+	NBL_CHAN_MSG_DEL_KTLS_RX_FLOW,
-+	NBL_CHAN_MSG_ALLOC_IPSEC_TX_INDEX,
-+	NBL_CHAN_MSG_FREE_IPSEC_TX_INDEX,
-+	NBL_CHAN_MSG_ALLOC_IPSEC_RX_INDEX,
-+	NBL_CHAN_MSG_FREE_IPSEC_RX_INDEX,
-+	NBL_CHAN_MSG_CFG_IPSEC_TX_SAD,
-+	NBL_CHAN_MSG_CFG_IPSEC_RX_SAD,
-+	NBL_CHAN_MSG_ADD_IPSEC_TX_FLOW,
-+	NBL_CHAN_MSG_DEL_IPSEC_TX_FLOW,
-+	NBL_CHAN_MSG_ADD_IPSEC_RX_FLOW,
-+	NBL_CHAN_MSG_DEL_IPSEC_RX_FLOW,
-+	NBL_CHAN_MSG_NOTIFY_IPSEC_HARD_EXPIRE,
-+	NBL_CHAN_MSG_GET_MBX_IRQ_NUM,
-+	NBL_CHAN_MSG_CLEAR_FLOW,
-+	NBL_CHAN_MSG_CLEAR_QUEUE,
-+	NBL_CHAN_MSG_GET_ETH_ID,
-+	NBL_CHAN_MSG_SET_OFFLOAD_STATUS,
-+	NBL_CHAN_MSG_INIT_OFLD,
-+	NBL_CHAN_MSG_INIT_CMDQ,
-+	NBL_CHAN_MSG_DESTROY_CMDQ,
-+	NBL_CHAN_MSG_RESET_CMDQ,
-+	NBL_CHAN_MSG_INIT_FLOW,
-+	NBL_CHAN_MSG_DEINIT_FLOW,
-+	NBL_CHAN_MSG_OFFLOAD_FLOW_RULE,
-+	NBL_CHAN_MSG_GET_ACL_SWITCH,
-+	NBL_CHAN_MSG_GET_VSI_GLOBAL_QUEUE_ID,
-+	NBL_CHAN_MSG_INIT_REP,
-+	NBL_CHAN_MSG_GET_LINE_RATE_INFO,
-+	NBL_CHAN_MSG_REGISTER_NET_REP,
-+	NBL_CHAN_MSG_UNREGISTER_NET_REP,
-+	NBL_CHAN_MSG_REGISTER_ETH_REP,
-+	NBL_CHAN_MSG_UNREGISTER_ETH_REP,
-+	NBL_CHAN_MSG_REGISTER_UPCALL_PORT,
-+	NBL_CHAN_MSG_UNREGISTER_UPCALL_PORT,
-+	NBL_CHAN_MSG_GET_PORT_STATE,
-+	NBL_CHAN_MSG_SET_PORT_ADVERTISING,
-+	NBL_CHAN_MSG_GET_MODULE_INFO,
-+	NBL_CHAN_MSG_GET_MODULE_EEPROM,
-+	NBL_CHAN_MSG_GET_LINK_STATE,
-+	NBL_CHAN_MSG_NOTIFY_LINK_STATE,
-+	NBL_CHAN_MSG_GET_QUEUE_CXT,
-+	NBL_CHAN_MSG_CFG_LOG,
-+	NBL_CHAN_MSG_INIT_VDPAQ,
-+	NBL_CHAN_MSG_DESTROY_VDPAQ,
-+	NBL_CHAN_MSG_GET_UPCALL_PORT,
-+	NBL_CHAN_MSG_NOTIFY_ETH_REP_LINK_STATE,
-+	NBL_CHAN_MSG_SET_ETH_MAC_ADDR,
-+	NBL_CHAN_MSG_GET_FUNCTION_ID,
-+	NBL_CHAN_MSG_GET_CHIP_TEMPERATURE,
-+	NBL_CHAN_MSG_DISABLE_HW_FLOW,
-+	NBL_CHAN_MSG_ENABLE_HW_FLOW,
-+	NBL_CHAN_MSG_SET_UPCALL_RULE,
-+	NBL_CHAN_MSG_UNSET_UPCALL_RULE,
-+	NBL_CHAN_MSG_GET_REG_DUMP,
-+	NBL_CHAN_MSG_GET_REG_DUMP_LEN,
-+	NBL_CHAN_MSG_CFG_LAG_HASH_ALGORITHM,
-+	NBL_CHAN_MSG_CFG_LAG_MEMBER_FWD,
-+	NBL_CHAN_MSG_CFG_LAG_MEMBER_LIST,
-+	NBL_CHAN_MSG_CFG_LAG_MEMBER_UP_ATTR,
-+	NBL_CHAN_MSG_ADD_LAG_FLOW,
-+	NBL_CHAN_MSG_DEL_LAG_FLOW,
-+	NBL_CHAN_MSG_SWITCHDEV_INIT_CMDQ,
-+	NBL_CHAN_MSG_SWITCHDEV_DEINIT_CMDQ,
-+	NBL_CHAN_MSG_SET_TC_FLOW_INFO,
-+	NBL_CHAN_MSG_UNSET_TC_FLOW_INFO,
-+	NBL_CHAN_MSG_INIT_ACL,
-+	NBL_CHAN_MSG_UNINIT_ACL,
-+	NBL_CHAN_MSG_CFG_LAG_MCC,
-+	NBL_CHAN_MSG_REGISTER_VSI2Q,
-+	NBL_CHAN_MSG_SETUP_Q2VSI,
-+	NBL_CHAN_MSG_REMOVE_Q2VSI,
-+	NBL_CHAN_MSG_SETUP_RSS,
-+	NBL_CHAN_MSG_REMOVE_RSS,
-+	NBL_CHAN_MSG_GET_REP_QUEUE_INFO,
-+	NBL_CHAN_MSG_CTRL_PORT_LED,
-+	NBL_CHAN_MSG_NWAY_RESET,
-+	NBL_CHAN_MSG_SET_INTL_SUPPRESS_LEVEL,
-+	NBL_CHAN_MSG_GET_ETH_STATS,
-+	NBL_CHAN_MSG_GET_MODULE_TEMPERATURE,
-+	NBL_CHAN_MSG_GET_BOARD_INFO,
-+	NBL_CHAN_MSG_GET_P4_USED,
-+	NBL_CHAN_MSG_GET_VF_BASE_VSI_ID,
-+	NBL_CHAN_MSG_ADD_LLDP_FLOW,
-+	NBL_CHAN_MSG_DEL_LLDP_FLOW,
-+	NBL_CHAN_MSG_CFG_ETH_BOND_INFO,
-+	NBL_CHAN_MSG_CFG_DUPPKT_MCC,
-+	NBL_CHAN_MSG_ADD_ND_UPCALL_FLOW,
-+	NBL_CHAN_MSG_DEL_ND_UPCALL_FLOW,
-+	NBL_CHAN_MSG_GET_BOARD_ID,
-+	NBL_CHAN_MSG_SET_SHAPING_DPORT_VLD,
-+	NBL_CHAN_MSG_SET_DPORT_FC_TH_VLD,
-+	NBL_CHAN_MSG_REGISTER_RDMA_BOND,
-+	NBL_CHAN_MSG_UNREGISTER_RDMA_BOND,
-+	NBL_CHAN_MSG_RESTORE_NETDEV_QUEUE,
-+	NBL_CHAN_MSG_RESTART_NETDEV_QUEUE,
-+	NBL_CHAN_MSG_RESTORE_HW_QUEUE,
-+	NBL_CHAN_MSG_KEEP_ALIVE,
-+	NBL_CHAN_MSG_GET_BASE_MAC_ADDR,
-+	NBL_CHAN_MSG_CFG_BOND_SHAPING,
-+	NBL_CHAN_MSG_CFG_BGID_BACK_PRESSURE,
-+	NBL_CHAN_MSG_ALLOC_KT_BLOCK,
-+	NBL_CHAN_MSG_FREE_KT_BLOCK,
-+	NBL_CHAN_MSG_GET_USER_QUEUE_INFO,
-+	NBL_CHAN_MSG_GET_ETH_BOND_INFO,
-+	NBL_CHAN_MSG_CLEAR_ACCEL_FLOW,
-+	NBL_CHAN_MSG_SET_BRIDGE_MODE,
-+	NBL_CHAN_MSG_GET_VF_FUNCTION_ID,
-+	NBL_CHAN_MSG_NOTIFY_LINK_FORCED,
-+	NBL_CHAN_MSG_SET_PMD_DEBUG,
-+	NBL_CHAN_MSG_REGISTER_FUNC_MAC,
-+	NBL_CHAN_MSG_SET_TX_RATE,
-+	NBL_CHAN_MSG_REGISTER_FUNC_LINK_FORCED,
-+	NBL_CHAN_MSG_GET_LINK_FORCED,
-+	NBL_CHAN_MSG_REGISTER_FUNC_VLAN,
-+	NBL_CHAN_MSG_GET_FD_FLOW,
-+	NBL_CHAN_MSG_GET_FD_FLOW_CNT,
-+	NBL_CHAN_MSG_GET_FD_FLOW_ALL,
-+	NBL_CHAN_MSG_GET_FD_FLOW_MAX,
-+	NBL_CHAN_MSG_REPLACE_FD_FLOW,
-+	NBL_CHAN_MSG_REMOVE_FD_FLOW,
-+	NBL_CHAN_MSG_CFG_FD_FLOW_STATE,
-+	NBL_CHAN_MSG_REGISTER_FUNC_RATE,
-+	NBL_CHAN_MSG_NOTIFY_VLAN,
-+	NBL_CHAN_MSG_GET_XDP_QUEUE_INFO,
-+	NBL_CHAN_MSG_STOP_ABNORMAL_SW_QUEUE,
-+	NBL_CHAN_MSG_STOP_ABNORMAL_HW_QUEUE,
-+	NBL_CHAN_MSG_NOTIFY_RESET_EVENT,
-+	NBL_CHAN_MSG_ACK_RESET_EVENT,
-+	NBL_CHAN_MSG_GET_VF_VSI_ID,
-+	NBL_CHAN_MSG_CONFIGURE_QOS,
-+	NBL_CHAN_MSG_GET_PFC_BUFFER_SIZE,
-+	NBL_CHAN_MSG_SET_PFC_BUFFER_SIZE,
-+	NBL_CHAN_MSG_GET_VF_STATS,
-+	NBL_CHAN_MSG_REGISTER_FUNC_TRUST,
-+	NBL_CHAN_MSG_NOTIFY_TRUST,
-+	NBL_CHAN_MSG_CHECK_VF_IS_ACTIVE,
-+	NBL_CHAN_MSG_GET_ETH_ABNORMAL_STATS,
-+	NBL_CHAN_MSG_GET_ETH_CTRL_STATS,
-+	NBL_CHAN_MSG_GET_PAUSE_STATS,
-+	NBL_CHAN_MSG_GET_ETH_MAC_STATS,
-+	NBL_CHAN_MSG_GET_FEC_STATS,
-+	NBL_CHAN_MSG_CFG_MULTI_MCAST_RULE,
-+	NBL_CHAN_MSG_GET_LINK_DOWN_COUNT,
-+	NBL_CHAN_MSG_GET_LINK_STATUS_OPCODE,
-+	NBL_CHAN_MSG_GET_RMON_STATS,
-+	NBL_CHAN_MSG_REGISTER_PF_NAME,
-+	NBL_CHAN_MSG_GET_PF_NAME,
-+	NBL_CHAN_MSG_CONFIGURE_RDMA_BW,
-+	NBL_CHAN_MSG_SET_RATE_LIMIT,
-+	NBL_CHAN_MSG_SET_TC_WGT,
-+	NBL_CHAN_MSG_REMOVE_QUEUE,
-+	NBL_CHAN_MSG_GET_MIRROR_TABLE_ID,
-+	NBL_CHAN_MSG_CONFIGURE_MIRROR,
-+	NBL_CHAN_MSG_CONFIGURE_MIRROR_TABLE,
-+	NBL_CHAN_MSG_CLEAR_MIRROR_CFG,
-+	NBL_CHAN_MSG_MIRROR_OUTPUTPORT_NOTIFY,
-+	NBL_CHAN_MSG_CHECK_FLOWTABLE_SPEC,
-+	NBL_CHAN_MSG_CHECK_VF_IS_VDPA,
-+	NBL_CHAN_MSG_GET_VDPA_VF_STATS,
-+	NBL_CHAN_MSG_SET_RX_RATE,
-+	NBL_CHAN_MSG_GET_UVN_PKT_DROP_STATS,
-+	NBL_CHAN_MSG_GET_USTORE_PKT_DROP_STATS,
-+	NBL_CHAN_MSG_GET_USTORE_TOTAL_PKT_DROP_STATS,
-+	NBL_CHAN_MSG_SET_WOL,
-+	NBL_CHAN_MSG_INIT_VF_MSIX_MAP,
-+	NBL_CHAN_MSG_GET_ST_NAME,
-+	/* mailbox msg end */
-+	NBL_CHAN_MSG_MAILBOX_MAX,
-+};
-+
-+struct nbl_chan_param_cfg_msix_map {
-+	__le16 num_net_msix;
-+	__le16 num_others_msix;
-+	__le16 msix_mask_en;
-+	__le16 rsvd;
-+};
-+
-+struct nbl_chan_param_set_mailbox_irq {
-+	__le16 vector_id;
-+	u8 enable_msix;
-+	u8 rsvd;
-+};
-+
-+struct nbl_chan_param_get_vsi_id {
-+	__le16 vsi_id;
-+	__le16 type;
-+};
-+
-+struct nbl_chan_param_get_eth_id {
-+	__le16 vsi_id;
-+	u8 eth_num;
-+	u8 eth_id;
-+	u8 logic_eth_id;
-+	u8 rsvd[3];
-+};
-+
- enum nbl_channel_type {
- 	NBL_CHAN_TYPE_MAILBOX,
- 	NBL_CHAN_TYPE_MAX
--- 
-2.47.3
-
+Thanks
+Nicolai
