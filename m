@@ -1,100 +1,110 @@
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D28082BFC8F
-	for <netdev@vger.kernel.org>; Mon,  1 Jun 2026 16:28:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E8A530146C
+	for <netdev@vger.kernel.org>; Mon,  1 Jun 2026 16:33:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780331340; cv=none; b=CNwTq9tH80DOwR+VIKzOdU/2Qo5pmGW6jaB+lOGvvAspbD0fMmimpBIJ0QvEk0ZlFEeDnHYDgQi8lD8Od+R0MQetciR1ZBmpDdPe7mR2XNGyXBlmgPLuZ63X+aVbfNlb64kHVtzZ0WUjuOdnuW12YvYagMOeZLFTDCR+bQwEt98=
+	t=1780331596; cv=none; b=KWMn+LRoK0g9cVzlazq1CKUtzro/0e5OvRXys9YPh3Z2aE284830jB1Ow+pTy0zQGApAHz4BvzIjxmwy0f1nIkU3mzG2UZUyPmoBjftXZFv1a1/4zXbP/sF4/4sWMKMwgj22dGKs9TyQvrrnkUPohj6TXt+2lLC86nwQblP4Ais=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780331340; c=relaxed/simple;
-	bh=JHA8A2LqDoxqFwpttDeYSscr29A5V44SjxGPurj2m8Q=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NHmkp57XwGcDvpf+Rvh4j2ljJhwN6vfEb8lYOXRF1Dh6KtvCNARI4OMDV1Zk0SElvALXsvs0WIbccFao/CLtlgIJ4c2zqV+5TPyH/TIpdxz0diTHPxk3gVOkaCbiSYoajq7NHYmrs3Mlf1XqflxSpM3WWj0APVrbo1dr8x5k0co=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=CGS8SSs1; arc=none smtp.client-ip=209.85.218.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+	s=arc-20240116; t=1780331596; c=relaxed/simple;
+	bh=MrT8KCpNuJ2beuJ0fBZyYSQeC1y2cht3fAid+dBOeQY=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:MIME-Version:
+	 Content-Type:References; b=JauXrHrhSEI1ehxzEnAn8MqLbDiVjQbuP6LLUuq+RTMYln4B4FE75rDdmQ7w5G+qfK2fNnle1dxlvy8yRBDpueJvfgLhkAQkTDLXPEaz4B5QuLAIIlwikJorNTl7k+9e6NIGdJrKles5iUE8NOvgCdFNQ4gfzK3fKax9O6bN/64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=hbPD9o2i; arc=none smtp.client-ip=210.118.77.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="CGS8SSs1"
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-bebde89cfd3so241013866b.2
-        for <netdev@vger.kernel.org>; Mon, 01 Jun 2026 09:28:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1780331337; x=1780936137; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=K5aZ4vAk82i6DVnbVmOCwCzllylMU3ucK3p4smWm5Ow=;
-        b=CGS8SSs1SYCTto4oOtQFfOzfHm4agUdfSJLvphy+q6X5po7e0EFVRPjdQ9h9bso9QS
-         t4imnCwY9+WCsiVyLSN9gLDiCySZNm8FiX9KhqtcqgEglnJpO5RBTHRMC8t7CkiijgCe
-         wIQwm+EnYRnR+LFFOb2UK7CQQsFGE+HpvDLI8=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780331337; x=1780936137;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=K5aZ4vAk82i6DVnbVmOCwCzllylMU3ucK3p4smWm5Ow=;
-        b=gplyV8ibutHKLEsA0zr1ACRp65V6ppI4gZTLrY4DcAhXVxia/csCvmv7pdNhDfIyKd
-         RvfOogixgloFs/Ie2x3Wo8JmkNsToGq2eB0KBFK+0txWpn/+2A7X+HNt6hOMhoS+juH/
-         QCHHUYY/oIbI8QSaPx+3mFRSwRDOZfxq6VL5TFttioWuVDUzT4Htc6/YXhXkNXzWLTxB
-         s/Mkdt9dNf0yZxvjDa71tKX30CTleB54DzZnEspy+vTQR8840b706zWKAOy03svg9iEe
-         PQ6uLPeAYKwsLZKOTFboc2A29mmgMd0Ezm1jrV/dsVaQ/gQyymg8TPhl8QR9X5He0zvv
-         MLhw==
-X-Forwarded-Encrypted: i=1; AFNElJ/OmZOQc7oFznVmP8kZkbvD35C+992h90Y+E1c7DM0jD5PBO/ipJ/JKqtoQQDK0pwiUKE5D43s=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwqWXRySWXUUgRHX9HkriihLuEcbT/zuF7lNrSmJ1NNoQF7OSfj
-	/qk4KzRgVDFIScXCp2M7KY6V2y0eA6+b0+RFFWVu6zf0xrN0oTqVDM0CbyOkt/k8v5Etteyt7qu
-	HMj62iDA=
-X-Gm-Gg: Acq92OHor4Q7buaYGhPTZErSkVh8ilNMwqkqk2CsswTJUNqFjCATPoFXvJk8WfQbeax
-	1bERasffOijGRgJCUtvNSYyiXYb6aGNzNTEesbajIrbJqH1Ngtse6Lx6ylXaKrNBatMNYwnLEfj
-	2yH+T1MoojLBFVHBsLKKrbM96+bEo9viTnfJRCrkMml7VmNbyFOk8KgX/HluVbsRsMyC/N+ZWC2
-	sYejySoE3dwSKPRl9blnO6z/pEQMu8i+a2hmyaQnax1gZJ7Q9d0J5WIuQUcuzRAyq9gsHQjb+bz
-	fdGXHVeUO1qbHE6pzhAOChP1TW8UPBvgBiMandMCXT592ueQ+m1D1u7ZVffbnjmZQwwaX2LXw4o
-	RGhELYMMB2bbLLtEdvjZDuxpQPVrhNg6+/fUi6Ye87nD1mE/hkfeaklNxplXSupHnYsyfNH3SEd
-	/Cj9r++oG7rSwS14n9DGKob5o36Cod4fkGCUzAehk9YlMMQy3AK3ja2z8zXVhOSIQxBfA3OgM58
-	QNDuJ+xcDA=
-X-Received: by 2002:a17:907:1dc5:b0:bee:4562:3308 with SMTP id a640c23a62f3a-bee456234a1mr154419766b.26.1780331337170;
-        Mon, 01 Jun 2026 09:28:57 -0700 (PDT)
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com. [209.85.218.47])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bec36d91681sm196711266b.45.2026.06.01.09.28.57
-        for <netdev@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 01 Jun 2026 09:28:57 -0700 (PDT)
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-bd8d0e4e341so2395463966b.0
-        for <netdev@vger.kernel.org>; Mon, 01 Jun 2026 09:28:57 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ/jo80O3ZZ1w8kHhdxgeAWksiTLTjkC84t0rzwwZfDduD94xtbKpaUEB23bJXcFj/vUWCrax3o=@vger.kernel.org
-X-Received: by 2002:a17:907:3d45:b0:be3:b3fb:e2 with SMTP id
- a640c23a62f3a-beab207a691mr724400066b.32.1780330992765; Mon, 01 Jun 2026
- 09:23:12 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="hbPD9o2i"
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20260601163313euoutp022c4ba4df8c0588794c5bdc9088481b33~1AibxTn1H0786707867euoutp02V
+	for <netdev@vger.kernel.org>; Mon,  1 Jun 2026 16:33:13 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20260601163313euoutp022c4ba4df8c0588794c5bdc9088481b33~1AibxTn1H0786707867euoutp02V
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1780331594;
+	bh=CwVX9Xlp1GxUSggNQyPTSVCeqeA8PpQKM2TtfU6IUbI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=hbPD9o2i6p7TiY/7esmf9y/wuEKlgwa1qe+M54zJkAJNSgRZ4tOluZqDMSgfzeKB2
+	 2R7e67LlhbssFjY02ghfJ1yk/wOzhBaelRHnCuUyQqh64bWeEiwSL9FdUes0vfhyPV
+	 1bwL8cnvTnRi8CWmCQCDYPohz5gBQjlATpPdDtd0=
+Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
+	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+	20260601163313eucas1p20203ee427dc9d3733a9218835f4f7ed3~1Aia6RTyf0909509095eucas1p28;
+	Mon,  1 Jun 2026 16:33:13 +0000 (GMT)
+Received: from AMDC4843.eu.corp.samsungelectronics.net (unknown
+	[106.120.77.61]) by eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20260601163312eusmtip1876d78af876174606227e42fad1180f3~1AiaSpEkC0917909179eusmtip1m;
+	Mon,  1 Jun 2026 16:33:12 +0000 (GMT)
+From: Jakub Raczynski <j.raczynski@samsung.com>
+To: netdev@vger.kernel.org
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, mcoquelin.stm32@gmail.com,
+	alexandre.torgue@foss.st.com, linux-kernel@vger.kernel.org,
+	k.domagalski@samsung.com, k.tegowski@samsung.com, cs0617.lee@samsung.com,
+	Jakub Raczynski <j.raczynski@samsung.com>
+Subject: [PATCH net-next v2 1/2] net/stmmac: Check for STMMAC_DOWN flag in
+ all XDP paths
+Date: Mon,  1 Jun 2026 18:32:57 +0200
+Message-Id: <20260601163258.554300-2-j.raczynski@samsung.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260601163258.554300-1-j.raczynski@samsung.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260531010107.1953702-1-safinaskar@gmail.com>
- <CALCETrW__=8mSusayfXG7UFCfue5BGbx+vqESj1d9wqOfX4s8w@mail.gmail.com>
- <ah2nBAdsE5vVJ2PL@casper.infradead.org> <CAHk-=wiFuud0Nn3B9YpTWyQja08TeXVk2AB-aAkmVXyigOagbQ@mail.gmail.com>
- <20260601-aufweichen-dissens-ausrechnen-0d9b84728113@brauner>
-In-Reply-To: <20260601-aufweichen-dissens-ausrechnen-0d9b84728113@brauner>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Mon, 1 Jun 2026 09:22:56 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wj1dSKpF=NMJmm9d-7kJY=BEVkchTaxsL1LGL3n89KtBg@mail.gmail.com>
-X-Gm-Features: AVHnY4Kn-EiKMLw7r2InJ00RsvMx_ZNQz4aALUAoaty1wqi8l1c2ToY4hj4PgVo
-Message-ID: <CAHk-=wj1dSKpF=NMJmm9d-7kJY=BEVkchTaxsL1LGL3n89KtBg@mail.gmail.com>
-Subject: Re: [PATCH 0/3] vmsplice: make vmsplice a trivial wrapper for preadv2/pwritev2
-To: Christian Brauner <brauner@kernel.org>
-Cc: Matthew Wilcox <willy@infradead.org>, Andy Lutomirski <luto@amacapital.net>, 
-	Askar Safin <safinaskar@gmail.com>, linux-fsdevel@vger.kernel.org, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-api@vger.kernel.org, netdev@vger.kernel.org, 
-	Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@infradead.org>, David Howells <dhowells@redhat.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Pedro Falcato <pfalcato@suse.de>, Miklos Szeredi <miklos@szeredi.hu>, patches@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-CMS-MailID: 20260601163313eucas1p20203ee427dc9d3733a9218835f4f7ed3
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20260601163313eucas1p20203ee427dc9d3733a9218835f4f7ed3
+X-EPHeader: CA
+X-CMS-RootMailID: 20260601163313eucas1p20203ee427dc9d3733a9218835f4f7ed3
+References: <20260601163258.554300-1-j.raczynski@samsung.com>
+	<CGME20260601163313eucas1p20203ee427dc9d3733a9218835f4f7ed3@eucas1p2.samsung.com>
 
-On Mon, 1 Jun 2026 at 09:17, Christian Brauner <brauner@kernel.org> wrote:
->
-> As usual I would argue to accept it and revert in case we get actual
-> regression reports...
+Currently STMMAC_DOWN flag is only set/cleared by stmmac_reset_subtask(),
+to notify driver to stop processing of TX/RX frames. One of these processing
+paths is for XDP, but it is only ever checked in stmmac_xdp_xmit(), which
+leaves all other XDP paths vulnerable to processing data while interface is
+restarting.
 
-Yes, likely the only way we'd ever find out ..
+Make verification of STMMAC_DOWN flag consistent by applying check to all XDP
+RX paths.
 
-          Linus
+Co-developed-by: Chang-Sub Lee <cs0617.lee@samsung.com>
+Signed-off-by: Chang-Sub Lee <cs0617.lee@samsung.com>
+Signed-off-by: Jakub Raczynski <j.raczynski@samsung.com>
+---
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index 3591755ea30b..3a66f2842527 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -5267,6 +5267,9 @@ static int stmmac_xdp_xmit_back(struct stmmac_priv *priv,
+ 	if (unlikely(!xdpf))
+ 		return STMMAC_XDP_CONSUMED;
+ 
++	if (unlikely(test_bit(STMMAC_DOWN, &priv->state)))
++		return STMMAC_XDP_CONSUMED;
++
+ 	queue = stmmac_xdp_get_tx_queue(priv, cpu);
+ 	nq = netdev_get_tx_queue(priv->dev, queue);
+ 
+@@ -5308,7 +5311,9 @@ static int __stmmac_xdp_run_prog(struct stmmac_priv *priv,
+ 		res = stmmac_xdp_xmit_back(priv, xdp);
+ 		break;
+ 	case XDP_REDIRECT:
+-		if (xdp_do_redirect(priv->dev, xdp, prog) < 0)
++		if (unlikely(test_bit(STMMAC_DOWN, &priv->state)))
++			res = STMMAC_XDP_CONSUMED;
++		else if (xdp_do_redirect(priv->dev, xdp, prog) < 0)
+ 			res = STMMAC_XDP_CONSUMED;
+ 		else
+ 			res = STMMAC_XDP_REDIRECT;
+-- 
+2.34.1
+
