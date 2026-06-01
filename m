@@ -1,79 +1,81 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CBB6361667;
-	Mon,  1 Jun 2026 13:20:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D43F3A5E9E;
+	Mon,  1 Jun 2026 13:20:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780320004; cv=none; b=a4cXtJfLecTTJdNMs6F+p/X+lSwrmEU4cCE/EZv2jWV98qejRl5BeWLRkBu1p4Y75Mpo0GVhpX1xR1hxzi/XToCjPS4SHlPcNwzwkmi84c1bhUa5HWCcIoUgN8cE3s1FWw0ILJeyKXUmuEl7arsu3D+eQk3+leXMki2qo0ZFTCk=
+	t=1780320053; cv=none; b=rfpfj5/Xwoxp9/miocddQ8Ze3ccZKGcg3ji+ogkZXmaqiZ2JMXtBuO/FqoHjQiVRHRz/IWp9kjtJz4YJXTph6xsNYjav6pq0Gi15b/HxCTO0F8EgdjR14yTrj6ShpK3aCYBVDid41fOIvZPcnEGadmkgCbKzyWV1VF9L3ZPTR1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780320004; c=relaxed/simple;
-	bh=9W2NPKEDU1da2jjyWsGK2j1JtSQDRiYaTlXLHKrAK/4=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=mEqNCHlUBXD2cj9nBIYTRI0CJeYysed1KPteLch4luzH8SkcZ8j5ff4nbU/2riF2UQbkdvUJhMIj2PMnGWsNZ2VWElJufr0lRO8KTbwEHnys5OIgEy2F2Adu7tUke6cRsvD1YBurxrCKPh9c84f4/lzGyMEarFzOC3hz9tH3aQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TRnlSyrB; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780320053; c=relaxed/simple;
+	bh=/8WkXXBGMNEjos4GqsQdobIbnS0G82uy0k13iPEouOA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lvFXg0zCBjb9jN2dU0DRMCbEl3AoingiQQ/ydiii0Lw4wsBxQy1O17JsxQvj6vppgWsIdhNsiios95ysDfoLv/DVTn7FiPsdkrg99QkE4SPd3bpgJTHiTCo4yjl+Fp13EsUYJszR8bXwAmMmw++3XAcp0bB5gVCx/aDwl8tQ0lA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=rWZQKSHF; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TRnlSyrB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 234991F00893;
-	Mon,  1 Jun 2026 13:20:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780320003;
-	bh=NwRQuglpCzv2aWAtVxL3KeXU1pHrNihF16osYLcGXpI=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=TRnlSyrB0Nbnkm6pc/WwNlWZPP5pGKJPDQ2Ga214z4/6ciEQy5CqGbQ6df0I1xScU
-	 Ril8Gk+OkCKVY+M4apdWotxLVQ38OkdvbPawA8tA6A8JFjT6fBcrXAkrS35FVXpNrT
-	 EYOyctfx7Y1F1ZH0izS9t3Lu88SlWuRKSdd1wtFUdXH0IbudgpVTPxp3GH0aO9+dHr
-	 sbxbIcehYKbUgkbtiibYOj8GvGwI5RF+/4ipYl+haQP26DrS+JKxJZ7RP8vMxG06Dg
-	 YSTxXtr8PFEte2L7nGXkc5FchJ6WzWivBVReilnj7IoTcN9F4CykSZ/KjaFEHePlIB
-	 fUMQcSnJrAxWQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D396E38119D1;
-	Mon,  1 Jun 2026 13:20:06 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="rWZQKSHF"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=Z6befv/w2S3YI3jUKKvENhs9c0aQYEba8+yvsdx11L8=; b=rWZQKSHFCS1Cq50pVfvYN2moZo
+	ZrzwEhk3BIB7Myu361X+lqjWck8WtANPHxWycXJyQDauLVMW6BALxmIJ56mjb8cfAVAzIerPs01PJ
+	Q+04TqExqq97UarpXfTpmsvad1gghMNBjZ/ojpLIJV6N4vCVMKI3BIwaXTQH4Tc7BI7U=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wU2ZU-005Vnc-FK; Mon, 01 Jun 2026 15:20:48 +0200
+Date: Mon, 1 Jun 2026 15:20:48 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Justin Lai <justinlai0215@realtek.com>
+Cc: kuba@kernel.org, davem@davemloft.net, edumazet@google.com,
+	pabeni@redhat.com, andrew+netdev@lunn.ch,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+	horms@kernel.org, pkshih@realtek.com, larry.chiu@realtek.com
+Subject: Re: [PATCH] rtase: Workaround for IP fragmented UDP packet hardware
+ bug
+Message-ID: <5c095b26-9720-45b0-a8d5-a8495291e45b@lunn.ch>
+References: <20260601062341.63981-1-justinlai0215@realtek.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] net/mlx5: Reorder completion before putting command entry
- in
- cmd_work_handler
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178032000565.3675417.3853659741110676431.git-patchwork-notify@kernel.org>
-Date: Mon, 01 Jun 2026 13:20:05 +0000
-References: <20260526162932.501584-1-kniv@yandex-team.ru>
-In-Reply-To: <20260526162932.501584-1-kniv@yandex-team.ru>
-To: Nikolay Kuratov <kniv@yandex-team.ru>
-Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- linux-rdma@vger.kernel.org, saeedm@nvidia.com, moshe@nvidia.com,
- agoldberger@nvidia.com, tariqt@nvidia.com, stable@vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260601062341.63981-1-justinlai0215@realtek.com>
 
-Hello:
-
-This patch was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
-
-On Tue, 26 May 2026 19:29:32 +0300 you wrote:
-> Assuming callback != NULL && !page_queue, cmd_work_handler takes
-> command entry with refcnt == 1 from mlx5_cmd_invoke.
-> If either semaphore timeout or index allocation error happens,
-> it does final cmd_ent_put(ent). To avoid access to freed memory,
-> notify slotted completion before cmd_ent_put.
+On Mon, Jun 01, 2026 at 02:23:41PM +0800, Justin Lai wrote:
+> The hardware parser incorrectly interprets 319/320 in a short
+> IP fragmented UDP packet payload as standard PTP destination
+> ports and treats the fragment as a PTP packet for further
+> parsing.
 > 
-> This is theoretical issue found by Svace static analyser.
+> If the transport data is smaller than RTASE_MIN_PAD_LEN, the
+> remaining data is insufficient for further parsing and causes
+> hardware TX hang.
+
+Where does RTASE_SHORT_PKT_THRESH come into this?
+
+RTASE_MIN_PAD_LEN is 47, so matches all packets which need padding up
+to 60 bytes, plus FCS. There are not many such packets, so why both
+this all the complexity and just pad all small packets? Do you have
+any performance numbers which show the complexity is worth it?
+
+> Pad these packets so the transport data reaches
+> RTASE_MIN_PAD_LEN before transmitting to avoid triggering the
+> hardware issue.
 > 
-> [...]
+> Signed-off-by: Justin Lai <justinlai0215@realtek.com>
 
-Here is the summary with links:
-  - net/mlx5: Reorder completion before putting command entry in cmd_work_handler
-    https://git.kernel.org/netdev/net/c/02896a7fa4cd
+Is this a Fix? Please add a Fixes: tag. And base it on net.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+https://www.kernel.org/doc/html/latest/process/maintainer-netdev.html
 
+    Andrew
 
+---
+pw-bot: cr
