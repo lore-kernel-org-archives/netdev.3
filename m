@@ -1,154 +1,84 @@
-Received: from unimail.uni-dortmund.de (mx1.hrz.uni-dortmund.de [129.217.128.51])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2A5328C854;
-	Mon,  1 Jun 2026 16:16:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.217.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE4BA28C2A1;
+	Mon,  1 Jun 2026 16:17:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780330621; cv=none; b=fOTw0dt0ObwvY/oe8bD9Wh21kTkykUYTY2nj+5MJHKygh4u+5lA4/n3uEFW+cR09Dvs4/iua3xO+//TDOpuZQzKe/nwQtouldUaobKUbuhiZlPDa/JhNWKpdillb18XNowIJj+vSJikY14xlqYqSLVEgerxxuEZBqtsQAqmY7zA=
+	t=1780330661; cv=none; b=uCXNAPw3/Rb+29/E9gZPM1lVsViGrmdmwcW84GYp/JKRYKBpcj+ZhdlqABv6eOlK26ipeapBtUP70c2s8hMC+L0cGfzAzvDJEvHwj0778e7np7jg4bh4kBE9pegItQYJ6ixMliGywCcZXHXqJ11TImMQS0zBjFWBYgQsHRcRRuQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780330621; c=relaxed/simple;
-	bh=qnX9OBr2YzgB1Y9Syidryj2KKo59v8mKgbHhyAeSTRs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RGg9lysO0TaxG9uxIEi2ZOINTU2iyWHeCgcscNqhNOxNUDZHWrHkwEQKKSzYnwLudUHvDSIbvedy9oN4781+IOM3Kxqz8Wv8nX0dssIUm8X/5EBRMC2hFQz1TyvLhUWbVXOoebsmIAiyWQCITbxAjlLf4+GdrBZ1ksUwyUPGI1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de; spf=pass smtp.mailfrom=tu-dortmund.de; dkim=pass (1024-bit key) header.d=tu-dortmund.de header.i=@tu-dortmund.de header.b=Lj5S6Tii; arc=none smtp.client-ip=129.217.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tu-dortmund.de
+	s=arc-20240116; t=1780330661; c=relaxed/simple;
+	bh=Q/KncJprqoJCnS3aH2kF+5RbWfUXbgZH5dY8f1wE2u8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mahYEJWZfb0cUzaC0snMvoKnfxzDezAwnFGgQSwI8ELRxQcC/mNVf1MWfVL8ZUVjssQaBrJ5Q7q0i0oLosiwFP/4VQD+aWAB0Xgs3nw6de7kmx2CSjg4CcP+TN4JDBh1OsJIrQUDjtSYyA3Di2jhhwnwOXSgU+CEK5AB6+vP9Ys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BifbDx5D; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=tu-dortmund.de header.i=@tu-dortmund.de header.b="Lj5S6Tii"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=tu-dortmund.de;
-	s=unimail; t=1780330595;
-	bh=qnX9OBr2YzgB1Y9Syidryj2KKo59v8mKgbHhyAeSTRs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Lj5S6TiiI99IOcAVRA9upjIAwWX6QWdF36QmgI7MtuPPOAD48NH5gaQCN/m/1oSaA
-	 Y7YyWoAQ7FsS6bS0923vTOGRPpIwoiklKxlQzobgG0+9fQF6sKP+6rFOnhqHSkkdAq
-	 7pU95xJFsPP0Dt2IH03wM9pX0Mwp/PL1/YdHE+i8=
-Received: from [129.217.186.133] ([129.217.186.133])
-	(authenticated bits=0)
-	by unimail.uni-dortmund.de (8.19.0.1/8.19.0.1) with ESMTPSA id 651GGY3o021703
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Mon, 1 Jun 2026 18:16:34 +0200 (CEST)
-Message-ID: <55b23925-9676-4005-8c13-ea7001190abb@tu-dortmund.de>
-Date: Mon, 1 Jun 2026 18:16:34 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BifbDx5D"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67E1C1F00893;
+	Mon,  1 Jun 2026 16:17:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780330660;
+	bh=rNLnkxLxw0b3sBZzOdV8X6NVlh7ujukPI0iIaNRmGIs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=BifbDx5D653jXTMEUYB65fYghTtrNqepjSBzEEPnsZHuvMiKkUOlVvAuDnhiuDt+S
+	 304eftkIVK3rIX5PhVwBL44KNhsA9dJwCSyTFzVTvI30ARJthbxHrK6U7NK9+WK5GY
+	 TC9AesLZFTlE3g6mll/KzrdOMnxuE7tBLKicmwOzeWy73MC+/4AL/ZfXfEjcqljG9V
+	 pBY6dZiayBvckutKYiFU/gdYkCs+GfJfmG1ifRYuW+2TFchPjF+q+XEM/3y/pdWpRJ
+	 eCatAhyfCn+EEyD2fqdkmd2KXIZ26Uz9dsqb3EYg5nVWNFlArRGKYC3M0cqkoD14cB
+	 9u/DYe8gzQbPg==
+Date: Mon, 1 Jun 2026 18:17:34 +0200
+From: Christian Brauner <brauner@kernel.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Matthew Wilcox <willy@infradead.org>, 
+	Andy Lutomirski <luto@amacapital.net>, Askar Safin <safinaskar@gmail.com>, 
+	linux-fsdevel@vger.kernel.org, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Jan Kara <jack@suse.cz>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-api@vger.kernel.org, netdev@vger.kernel.org, Jens Axboe <axboe@kernel.dk>, 
+	Christoph Hellwig <hch@infradead.org>, David Howells <dhowells@redhat.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Pedro Falcato <pfalcato@suse.de>, Miklos Szeredi <miklos@szeredi.hu>, patches@lists.linux.dev
+Subject: Re: [PATCH 0/3] vmsplice: make vmsplice a trivial wrapper for
+ preadv2/pwritev2
+Message-ID: <20260601-aufweichen-dissens-ausrechnen-0d9b84728113@brauner>
+References: <20260531010107.1953702-1-safinaskar@gmail.com>
+ <CALCETrW__=8mSusayfXG7UFCfue5BGbx+vqESj1d9wqOfX4s8w@mail.gmail.com>
+ <ah2nBAdsE5vVJ2PL@casper.infradead.org>
+ <CAHk-=wiFuud0Nn3B9YpTWyQja08TeXVk2AB-aAkmVXyigOagbQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v6 5/5] veth: time-based BQL completion
- coalescing via ethtool tx-usecs
-To: =?UTF-8?Q?Jonas_K=C3=B6ppeler?= <j.koeppeler@tu-berlin.de>,
-        hawk@kernel.org, netdev@vger.kernel.org
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller"
- <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        John Fastabend <john.fastabend@gmail.com>,
-        Stanislav Fomichev <sdf@fomichev.me>, linux-kernel@vger.kernel.org,
-        bpf@vger.kernel.org
-References: <20260527135418.1166665-1-hawk@kernel.org>
- <20260527135418.1166665-6-hawk@kernel.org>
- <2affe9f4-56a7-4482-931f-9d98cfdf09fd@tu-berlin.de>
- <db5b7f7e-135c-40f0-a740-057bc6623e6c@tu-dortmund.de>
- <865f31e5-4e90-4dc0-890f-b5796948b590@tu-berlin.de>
-Content-Language: en-US
-From: Simon Schippers <simon.schippers@tu-dortmund.de>
-In-Reply-To: <865f31e5-4e90-4dc0-890f-b5796948b590@tu-berlin.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAHk-=wiFuud0Nn3B9YpTWyQja08TeXVk2AB-aAkmVXyigOagbQ@mail.gmail.com>
 
-On 6/1/26 16:03, Jonas Köppeler wrote:
-> On 6/1/26 2:00 PM, Simon Schippers wrote:
->> On 5/28/26 09:46, Jonas Köppeler wrote:
->>> On 5/27/26 3:54 PM, hawk@kernel.org wrote:
->>>> From: Simon Schippers <simon.schippers@tu-dortmund.de>
->>>>
->>>> Per-packet BQL completion forces DQL to converge on limit=2, causing
->>>> excessive NAPI scheduling overhead and qdisc requeues.
->>>>
->>>> Accumulate BQL completions and flush them when a configurable time
->>>> threshold is exceeded, letting DQL discover a limit that bounds actual
->>>> queuing delay to the configured interval. Coalescing state persists
->>>> across NAPI polls in struct veth_rq so completions can accumulate
->>>> beyond a single budget=64 cycle.
->>>>
->>>> Add ethtool tx-usecs support for runtime tuning. Default is 100 us;
->>>> setting tx-usecs to 0 disables coalescing and falls back to per-packet
->>>> completion.
->>>>
->>>>     ethtool -C <veth-dev> tx-usecs 500  # 500us coalescing
->>>>     ethtool -C <veth-dev> tx-usecs 0    # per-packet (no coalescing)
->>>>
->>>> Co-developed-by: Jesper Dangaard Brouer <hawk@kernel.org>
->>>> Signed-off-by: Jesper Dangaard Brouer <hawk@kernel.org>
->>>> Signed-off-by: Simon Schippers <simon.schippers@tu-dortmund.de>
->>> Tested-by: Jonas Köppeler<j.koeppeler@tu-berlin.de>
->>>
->> Thanks for your testing!
->>
->> However, I have issues reproducing.
->> I run bare metal (without virtme) with v6 + your pktgen patch
->> and I am on the branch pktgen-and-benchmark, commit
->> "results: add veth-bql measurements":
->>
->> 1. ping fails with 100% packet loss ~20% of the times with --pktgen.
->>     When this happens the avg ping of this run is mistakenly set
->>     to 0.0 ms, which distorts the results.
->>     I fixed it locally by rerunning when this happens.
->>
->> 2. pktgen runs with > 3 Mpps even with --nrules 10000, see log below.
->>     I see that this is because of qdisc drops.
->>     I also tried pfifo and sfq but with the same result.
->>     I spent quite some time on it but I do not know a fix.
->>
->> Do you have an idea?
->> Thanks!
+On Mon, Jun 01, 2026 at 08:50:00AM -0700, Linus Torvalds wrote:
+> On Mon, 1 Jun 2026 at 08:36, Matthew Wilcox <willy@infradead.org> wrote:
+> >
+> > Can we review this series properly?
 > 
-> Hi,
-> yes there are some changes missing in the test script.
-> I have pushed it now, sorry. This should fix 1.
-
-I pulled it and ran...
-
-sudo ./veth_bql_sweep.sh --runs 1 --pktgen --duration 20 --qdisc fq_codel --no-bpftrace
-
-... but still 8/32=1/4 of the pings are zero, I do not see
-a pattern.
-
-
-I grabbed the logs from /tmp and this is what a failing
-ping looks like:
-
-PING 10.99.0.2 (10.99.0.2) 56(84) bytes of data.
-
---- 10.99.0.2 ping statistics ---
-97 packets transmitted, 0 received, 100% packet loss, time 19967ms
-
-
-Feels like a race or something..
-Can you reproduce with the exact command?
-I think you need --runs 1, else it just averages over multiple
-runs.
-
-> Regarding 2.: do not look at the pktgen output, in the
-> new version you will see something like "goodput",
-> which is the number you should look for.
-> Pktgen will report at what speed it enqueued packets in
-> the qdisc.
-
-Exactly. Now it works. Had a single outlier but apart from that
-everything is fine.
-
-Thanks,
-Simon
-
+> Well, since it pretty much is what I suggested a few years ago, I
+> certainly won't NAK it.
 > 
-> Let me know if it worked.
-> Best,
-> Jonas
+> And the patches looked very straightforward to me. Just the final
+> diffstat is worth quoting again because that certainly doesn't look
+> problematic:
 > 
+>   7 files changed, 33 insertions(+), 204 deletions(-)
+> 
+> and it removes that GIFT flag that was truly disgusting.
+> 
+> So I'm certainly ok with it from a "looking at the patch" standpoint.
+> I didn't _test_ it. I don't have any workload that might remotely
+> care.
+> 
+> I did a quick scan on debian code search for vmsplice, and after ten
+> pages of entries that weren't actually *using* it but had lists of
+> system calls, I grew bored. So there are likely users, but I don't
+> know what they are and how much they care. It *might* be a big
+> performance issue somewhere. Unlikely, but...
 
+As usual I would argue to accept it and revert in case we get actual
+regression reports...
