@@ -1,153 +1,136 @@
-Received: from usb-smtp-delivery-120.mimecast.com (usb-smtp-delivery-120.mimecast.com [170.10.153.120])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A26BE3DC860
-	for <netdev@vger.kernel.org>; Mon,  1 Jun 2026 17:06:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.153.120
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11ACA3DD861
+	for <netdev@vger.kernel.org>; Mon,  1 Jun 2026 17:17:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780333569; cv=none; b=Q9DARPF4cll/BhVITWxmMfLMer7vuZDCpJSJD+ojOplN+c05yspkJ3h9j1VfF5/FM3vhYr/XmDbfrNTcs+O4y+5HdEvTCLaWkbwBZo2eVmsWAVEb7eeW3KsuFTyqqemQmLJCajMmfcQmgYifjtR/4d3/hcvWDoTu5xG5akcec3k=
+	t=1780334268; cv=none; b=BIMLrskLctkvZXoNCNaOtOFQP38akGDVFrk/MdHRoyrx/DVZHg2lsLbSL4VlumIhampQHB2k7vh7JIGqubsld66HgY2p8pceWKC9Fu3BMffqjMT2sB/ZdkNfgxD8iOcQMCcWCIHXxFZ9xcSjxpbARAIB6Rf7lM/Rmm4xrR1iaV0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780333569; c=relaxed/simple;
-	bh=d3H8W/kllpgV+tjss4asHKkfKZtuqTxvHGvVxXWAXgs=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 MIME-Version:Content-Type; b=ovAB1q7IT1R1KwhCU/E4He+TqG85kDizvR7/vITBEDzLQ30GSldX7FlCJkEymg4eEUk6+naJuXUd40DH1+cLETEtG1GHny1edtR0gJ06AbRFv06+09lMEyaabEl8GfX0Fg18EOcp0xgMviBxyFnOYtX537LGbsq2wcjha+IYIMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onsemi.com; spf=pass smtp.mailfrom=onsemi.com; dkim=pass (2048-bit key) header.d=onsemi.com header.i=@onsemi.com header.b=YH3Yu4uN; arc=none smtp.client-ip=170.10.153.120
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onsemi.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onsemi.com
+	s=arc-20240116; t=1780334268; c=relaxed/simple;
+	bh=QOF4HTo9NC+sG07UWNWNGhB1bOa8fZKjrboF6NtGYig=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=e3+lrpv5pVWeaw452hSPbE75xmlSja/9RIX6JaBJg+WiN6dMyEa1WqnLTv9K8kVKmz6Py8vb3LU69X4vqk/l3dTyia0ZjTq1Zx+A53l35nLJ1JlYmiOkmiECPQs8e3ZdOukaHQnggJ+M32qeNEHOXiATTPfl7nNYFbZog5+V6B4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=VPtcisMy; arc=none smtp.client-ip=209.85.218.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=onsemi.com header.i=@onsemi.com header.b="YH3Yu4uN"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onsemi.com;
-	s=mimecast20250127; t=1780333561;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=d3H8W/kllpgV+tjss4asHKkfKZtuqTxvHGvVxXWAXgs=;
-	b=YH3Yu4uN82RhKvyw2XSY3lyuSlMisqinEU6q1eYR5ZKAc25Jfn/zeCp4oVSZB6pyx680zU
-	Oeer6imhV991Z8/7SGRUbQR+dVQJDeV1reKoM7cS8+pU6aLPki89hirvKGhD5+ebOZNoDn
-	xXI2JJV3wUxVZ48yxNtLQyDDUk80ZhznzkHChgdJuRvCsBkjWD1lxMDbNzolSCawhkG/3b
-	n4gYK8BjSXUbldSOwPwl+VdLSrk3b3PXFbEB6UI6w+MC0A7imGtxL9Ud7BSHypNtyjdJUM
-	eVI7fMVGRqb7NaATT0kjpoAlXXb1aeKaDN160E78xwR/1a2AsMhkXZDQRwHutg==
-Received: from SN4PR2101CU001.outbound.protection.outlook.com
- (mail-southcentralusazon11012004.outbound.protection.outlook.com
- [40.93.195.4]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- usb-mta-59-K2HO0sA8P72uOfarH5y2Rw-1; Mon, 01 Jun 2026 10:03:52 -0700
-X-MC-Unique: K2HO0sA8P72uOfarH5y2Rw-1
-X-Mimecast-MFC-AGG-ID: K2HO0sA8P72uOfarH5y2Rw_1780333430
-Received: from CY8PR02MB9249.namprd02.prod.outlook.com (2603:10b6:930:9c::17)
- by CH2PR02MB6918.namprd02.prod.outlook.com (2603:10b6:610:89::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.16; Mon, 1 Jun 2026
- 17:03:46 +0000
-Received: from CY8PR02MB9249.namprd02.prod.outlook.com
- ([fe80::e437:4ba8:6506:4cda]) by CY8PR02MB9249.namprd02.prod.outlook.com
- ([fe80::e437:4ba8:6506:4cda%3]) with mapi id 15.21.0071.014; Mon, 1 Jun 2026
- 17:03:46 +0000
-From: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
-To: Andrew Lunn <andrew@lunn.ch>
-CC: Piergiorgio Beruto <Pier.Beruto@onsemi.com>, "hkallweit1@gmail.com"
-	<hkallweit1@gmail.com>, "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
-	"davem@davemloft.net" <davem@davemloft.net>, "edumazet@google.com"
-	<edumazet@google.com>, "kuba@kernel.org" <kuba@kernel.org>,
-	"pabeni@redhat.com" <pabeni@redhat.com>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH net-next v3 11/14] net: phy: ncn26000: Support for
- loopback support
-Thread-Topic: [PATCH net-next v3 11/14] net: phy: ncn26000: Support for
- loopback support
-Thread-Index: AdzvmWh3z2fZMkfqSqmvJbjWwU2cFQBeZp2AADUKyLA=
-Date: Mon, 1 Jun 2026 17:03:46 +0000
-Message-ID: <CY8PR02MB924995564C2FE17062A775DF83152@CY8PR02MB9249.namprd02.prod.outlook.com>
-References: <CY8PR02MB9249BCB1ABC4D1923CE3CAAE83162@CY8PR02MB9249.namprd02.prod.outlook.com>
- <22496ce0-6d50-4059-bbd4-980513ad2612@lunn.ch>
-In-Reply-To: <22496ce0-6d50-4059-bbd4-980513ad2612@lunn.ch>
-Accept-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: CY8PR02MB9249:EE_|CH2PR02MB6918:EE_
-x-ms-office365-filtering-correlation-id: 9bfd37ad-cc9c-42b6-6a2f-08debfffbe92
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|376014|366016|1800799024|38070700021|56012099006|4143699003|11063799006|22082099003|18002099003
-x-microsoft-antispam-message-info: vzHkopfe0AtM/TgCihOdx5w3lfUuPizO3WTaLcKTOxUh6jrbvQcLfq2mabzlaYUxFndwHWMIM96MKJz1efuP0snWX3lq0Hk6+DBCDFScmYgjC+QX9gxrZ9q+fjF90x3gHAzOfRD4H4wOEau0YDxfHaOSH6RC74n4tyfyMO8JfLCtAf3Hr5SfsJ9vXuvDIPwoMJ4t0K1SSTog9EBcU44Me5olA1YjiEgQ55t70PthIN85RRWGXo179sq61Ap0I18eGAWPoWjIikwwbCPY/+2GCVxWEPrw7wXMFDQSxH3jDhjeplAQKH2lvcKF+bPPRBeax4zZSQBYWV9bCqeBGWHR+/AwMiIm3sqn87xE0xvEwQXmbH6J0c8d6PrBeUl1F/sgIitdLAcCVVDvILtwRs30gmbpRaMoMWRenA0LeNzPc8vrK8dLEaByv9/H7fPo0MD/hF8P65EPmUHfB0rOlRTy+oDxtToSkXfgMj5m2v4XpZXZy4MzBADlwUgH9XZ1DfYumbj1lqPVWbS01WIyxXvCmdnnYJYH4cOJp4zSUitULg4CzYLXe4XtqOz5h4jYjv3F+cbJ2l9K3raYlkLDVCEPNThOwxKHQ/3f/EVYNuOGL9fXs4RHeJEFijbOG5OKj6GauISvMxGXuw9vdQ/0zbWdojjYolZphgorUM5kEX5u+dO3n88YarTkhjc6i2QROqjGfGEE/jmJGJPSXRhuFzszKinQN25f5RLjUi5G5qPKvtnBBRuYhO8PEAobXlJMgxdV
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY8PR02MB9249.namprd02.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(38070700021)(56012099006)(4143699003)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?UW5sSmdTOU1JeWxUNGQxeVRZL0RVZXAzSHNRZHVRUy9UdlFndkhEd1BXczdz?=
- =?utf-8?B?Nmswb04xRHYwRHcydWJoYllZUitaR1Y4bGdYOVB1WEU2V0ZwRzNPVzU4VDh3?=
- =?utf-8?B?RlNCWXhiNk5HckhuNm9TWElNOWl1RDIrQ2ZFQ1N1NG5vbXhCZDR3TG1WSTZ6?=
- =?utf-8?B?d2lWdDVQUVdBT1RMVm90VzAzNHIybmNSRlF2bUcxTE8zK1BOem8yN1ViS0JE?=
- =?utf-8?B?eTRrcWR4VnhVcHIxVkxGdDIxeWIrTkczbUo0d2lZZWtQOW05VlhRRnRRcTFl?=
- =?utf-8?B?WmhEeVlSK1IwZW1qazNLdmNpakpZUXppemRDNHF4NzBCV0wyQXpMME9TNjdD?=
- =?utf-8?B?MWRET3VVNGpxOHd3cGxYNmtiYk1mZ1JPTitEckVTQzBINXRDOEhuem5iV0xO?=
- =?utf-8?B?Y3V2d09zV2FvQXhvSnFuY050SW9PTGk2dUtyK0dzWk5jUVlsTXhaRmM5TGpN?=
- =?utf-8?B?dUlOT1p2ZDcwV3FLazUyS1lmeEk3SVhXclVXRGE3emNWUFpkWUp1YkxGQmwx?=
- =?utf-8?B?TEhWdy9kMXRNM0UxODhvenFQNVFDTXY4d3NLdkp3S0hGei90UFRvOVRlbENy?=
- =?utf-8?B?a0F5TmpqWW1zUlBZZFc5NS9kWTNyN0E1MThzTDVOV3Jab294VnVueTJwUVh3?=
- =?utf-8?B?ZDdkZG1ISk45TTVxZk5laGxibkdUMkZuODczeUJjV2tPY2RJWUlJRW0vN1dS?=
- =?utf-8?B?eHlxOU9samdDRWVEYW1Ta0lIMXVpYTI4ZGo3NEYyRVEwQVR6dTkrdTkxLzky?=
- =?utf-8?B?K0UyS01TUGRjd2ZTNk00ZWFVcmFwV2FJNW1MT2JDM1JKSXRtTnRyTktnUVdM?=
- =?utf-8?B?eExXZnJnekR2K2V6Sll3NXJWTU1Kb1JZU2NLKytMSGZ5Mk9OVG1IUno2MTZU?=
- =?utf-8?B?WWpjalZ0UWRCNTQ3MGNtRU9XclQrQ09tWVRzcGxTbVpEOVlVOWg4Yy8zTjRP?=
- =?utf-8?B?RXpEUys1amJvNHVJdXN5UzRDZmZudGErL0RUd2c2RlRZZVZpNkt4ZkxLLy9z?=
- =?utf-8?B?TUl3RU5PWVMvSVhONko0TS9PTUtXOTFBbnliR2QzZ0R1dmllU2pVTHFtNU5I?=
- =?utf-8?B?aUpIdGlXSi9SU1RHQ21FSDhGdk82dTYxcGxFVE5INzgremFzd1gxVEY5c1d1?=
- =?utf-8?B?cGFuNExMQWttdHBoN2JnaUJvZnkzWlVwenl4YXZCUHk1MVJ5TXpVSURGSlEz?=
- =?utf-8?B?MncxYmYxaGo4VjlSOHhOeG50bVk2T2ZqeVpRb3hmaENyY0czWFlNYi9TMDd5?=
- =?utf-8?B?ZkQvWCtnOE9yMWxJM2xGN1cyZmdTZmVqWDZSMkhDTW4yRUJwaXNCNWtpT1dM?=
- =?utf-8?B?WlBza0JEeStSUUNUUzFuakpoQk5mK2JCUjIrNkhlYTNOcjFqZVVMQkFYVnpI?=
- =?utf-8?B?S2czUC8xc0RRdUlYRXFWZGRWRDZzVGlTaVpXNWpMUmVXYmNVT2wrOEd1Tkkx?=
- =?utf-8?B?dGNOVUp4L2t1SThUSmM3c3gwTGxOWWpPYk9Ua3hORW5OWGlkSm94L3E0RHBJ?=
- =?utf-8?B?UlYyOUhlZTNOTHBkMkNHRWdkU0ZLSkRZYlR3M1JNODFqYUNxUXZQN3BWZ214?=
- =?utf-8?B?Mzk4K2I0NHo4LzBtcGFEQjhZdy9kV0hsR3NXeVpRY1diWGw3c0VrVnZYb0gx?=
- =?utf-8?B?VWFqMjN5NGVxd294enZndy9TbXhocDhmMVRUVXFyUEtyMkJoKzltdXAreVRv?=
- =?utf-8?B?aEdiU25PTHcwVkxqRGRHcVp6bkJMSTJubTdPUHZ3K3pvTWd3SFREZHVOYnBw?=
- =?utf-8?B?bkl6eTdXODRKcmNUWXpSb3ZiSW01QXp2Q2IzRXdiajRLUDRCcXZUK2JSOEky?=
- =?utf-8?B?ZkJRbEpTa2tmUFV1TUtxaUNxRVRvTXVoOTNnSEo4Y3FtRjdpcGFobUtCdXo1?=
- =?utf-8?B?dlp2Tmh2MFRlZ3VHdnB2RjZhbzR5ck1nazlnODdqS3RMY2E3WmRUN1ZSRlJi?=
- =?utf-8?B?R2YwMDhhcjVVMis1MjlaZ3R5YXV3SUZGVW9kNmE1WFU1L0NBZzJuSUpSazcv?=
- =?utf-8?B?WndTYkdjZ25qd1UxQTBUR254R2dhN1JjSHB6b0NtOXhzMnoyOVJ3UjA5eDlK?=
- =?utf-8?B?dXcvaW1VbDU1TlhBd1JTQklFMkI5ZGRodldYL1Q1VFIrQ1MrMnhmY0MzSmdt?=
- =?utf-8?B?ZWRKbnJ4NGZoYXdHZnVWTGU2bDk4QkhVUEY1WlN6Q2l6UE4rZHhSZlBJUDEy?=
- =?utf-8?B?M1BmNE1sVlNUbkFadTJRNXMrMGkxWXRzS3ZtWE0ranMxK2lMV3h4TFVyZStF?=
- =?utf-8?B?UllQSFFLMGRZQjJta2pvYVlibk9ydkdlK0FkM3plVzE0cTUzY1hyNm41OXB0?=
- =?utf-8?B?ZGVvNnRNSEtzWFllQlpHVlVMSEhGbVEyeUVZUHBDYWpkOXAwM1JNc2U2cjVG?=
- =?utf-8?Q?D22MMvLRUnA1cXZA=3D?=
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="VPtcisMy"
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-beb2a97cc9aso437349766b.2
+        for <netdev@vger.kernel.org>; Mon, 01 Jun 2026 10:17:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1780334263; x=1780939063; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=8glRJeBkbbvtPfYZZguJlBO/diWKKHW+QvqawLEed2k=;
+        b=VPtcisMyVtMPtLtRjN+qVp9en8QqOm1sevcoPwB5ll5VOlVmsj4DlxJ9BcM0w7v5Qw
+         fysKwa080G28VGidjcLImxS0Z5q42d4ddTdaPHr/EKAJGZb80c6BxTFPdVhvcrnpuJzC
+         AVGsD2RGdaPbXl8AYurf7nfNIpUG4d44mphmA=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780334263; x=1780939063;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8glRJeBkbbvtPfYZZguJlBO/diWKKHW+QvqawLEed2k=;
+        b=o+zqk4DEaEKX2sVRVDd2Phcza0W3gVudVlKAoqt0mVPPX+nnsu0TkO8qdvCEv45Kag
+         o8qjlmqH9eqhY01EBX9Yr0b0p3g7Bl1oXpuiMvoAQMf9OlPxfxfkUg6zWNNKxgKwVlKd
+         hIylG+YebhS1fAWv1uYvDO41GetwLSvkfpgHskZpXHkhvwPF5f8FDQCzqNerItr47nXu
+         ycNiIYnuaqi+qY7fVDwgmUMdwPRNqjqKjPAZXb7xwwXvhlXqkdfzSjgbH6Sr7F6R9Twj
+         2EtYLuk1RRsJbWtsNUHSk9oCFa3fpKj056nVZ1oZpqxx421N597xTqWUxcpKFDpbCOxS
+         IztA==
+X-Forwarded-Encrypted: i=1; AFNElJ+2+RRCeMK8V6rPQv1UVPqESrU5MYvPRyfI02GrwpI3nSHyW82Av8ftaW4yPbeN8kbrj81JLPo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxVHVqiU0cuHOfYNcKEwPzC+2Up1xZNGb9BR+ftxYwiQqk+UMxR
+	JqeAhPA4kpkwfBpIhlSN4dbjLYrGDEG9Ag7yD2/IMURJdCx6aMFUTbP1mw3Ujo9cWniDRBx9bEu
+	0yCr6lwM=
+X-Gm-Gg: Acq92OGocnKSP1xgGMHW0Op1tB/wtzQQX7c+e85KKH+Q/YoRBlXVwTHi1ruiUMabl1G
+	XUKlnLr03W1xpsmBPK0T8w8w5BHdL99M22EEidO70JxuegPWfG3SG5BR4LLm1qQGhjnYhkVOKMo
+	ZhqmFJfO4a/KrOtCV6GNSfg6PmRFnFgEnGqVjROQAQMW1ehQ02NaA++uJUlAiwEkTqZOKt2EDR1
+	iy1vZlBhw328DQ9V5RcYpzYRmRNzrHIfei8IE+yKNfwBwb/qNWCfCGvHtgdE2RUQBf/DTKV8GCj
+	jQHCPOnXfZB8QAy/bBv2d16ivkauQ4Hh2SAWQMdlBBG/OewDNyLkObb+Xemnbka9KRUyLAzFbA2
+	wKgYUVbF775J7L7u+EsVlZHRyGG/D6Zng5UAIEAxOXN16FxfxY+0dP6FBds9k7mlVbvq00P1EJz
+	RvSyXeXP9h1OwRBl0oZFw51xgbKmRW/JAoAqbPOHa6M9ezHfFdS9xpunfRTFZ1JV7nT6/lrdSA/
+	+BRv2/YthM=
+X-Received: by 2002:a17:907:97d5:b0:bdd:3c8:3348 with SMTP id a640c23a62f3a-beab334d1b5mr750052866b.40.1780334261575;
+        Mon, 01 Jun 2026 10:17:41 -0700 (PDT)
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com. [209.85.218.49])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-be9d31dadefsm355465366b.21.2026.06.01.10.17.40
+        for <netdev@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 01 Jun 2026 10:17:40 -0700 (PDT)
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-bec4639953dso264710566b.1
+        for <netdev@vger.kernel.org>; Mon, 01 Jun 2026 10:17:40 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ/ju7FkLwJ0+rkK+tJuzDkWCjg4OA2m622nWhPAc+rrslP96sZ9cfEHbzflAZpuRz92CmTIDXk=@vger.kernel.org
+X-Received: by 2002:a17:906:4583:b0:bef:12f:347e with SMTP id
+ a640c23a62f3a-bef012f3d6fmr16123966b.24.1780334260114; Mon, 01 Jun 2026
+ 10:17:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: jornj6jGXBhB37n+5oiGJBp9Xhaom8TLETtNCBZ22PjOs36zPMkLOdS2s6vnM2Cxo4ewpH40oJDz2SkXha+oKkGvzFTSSQ47OgqQXT4KiqCZjZ7Jo0/II8jk1fXHcSjMrfFesegerUalVNEI+RXWK2dwDGuST97V+WWQY6iBKlzrHzuqq7kbGspOHgZdEvAPfnINYOfAFxa2H9TqswB0PukfOAjO2EHO5I9QCB0926x54R2nC0nL0UgtGRXXLPEbhsi+zc35vnZd8rV5UZo80PpFb5mo3BiHq/nU2G0fsvr/vePekLVDlPNKJ520dRE4iTaY0BqnnGHJ+hxGAnCczg==
-X-OriginatorOrg: onsemi.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CY8PR02MB9249.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9bfd37ad-cc9c-42b6-6a2f-08debfffbe92
-X-MS-Exchange-CrossTenant-originalarrivaltime: 01 Jun 2026 17:03:46.7920
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 04e1674b-7af5-4d13-a082-64fc6e42384c
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: SiTN3/gIF7hDKgUZPWWrYHA5wFwi4MgWNzQczTW7G3/if2cnZy6OeurphuccOEs+JEgM02C5pMpkMn6oZbeQEYbDjSdZB63I2rPdTCtT24U=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR02MB6918
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: iwCBjciyzJ_ST0nCEAiNV_Rnf53lHOeRzUA4tgCpHFE_1780333430
-X-Mimecast-Originator: onsemi.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
+References: <20260531010107.1953702-1-safinaskar@gmail.com> <20260601-enthusiasmus-canceln-anlehnen-0e62317a9784@brauner>
+In-Reply-To: <20260601-enthusiasmus-canceln-anlehnen-0e62317a9784@brauner>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Mon, 1 Jun 2026 10:17:23 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wifX_rrDjRGnDnOqE-usptAukuXKrmuPuVDP5bOCBWzGQ@mail.gmail.com>
+X-Gm-Features: AVHnY4KexWf0o1w3H7pefWBidQ5elZSrUhqo_ATAUmEnAO4iwBaX4DnfDRLKUYk
+Message-ID: <CAHk-=wifX_rrDjRGnDnOqE-usptAukuXKrmuPuVDP5bOCBWzGQ@mail.gmail.com>
+Subject: Re: [PATCH 0/3] vmsplice: make vmsplice a trivial wrapper for preadv2/pwritev2
+To: Christian Brauner <brauner@kernel.org>
+Cc: Askar Safin <safinaskar@gmail.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-api@vger.kernel.org, netdev@vger.kernel.org, 
+	Matthew Wilcox <willy@infradead.org>, Jens Axboe <axboe@kernel.dk>, 
+	Christoph Hellwig <hch@infradead.org>, David Howells <dhowells@redhat.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Pedro Falcato <pfalcato@suse.de>, Miklos Szeredi <miklos@szeredi.hu>, patches@lists.linux.dev, 
+	linux-fsdevel@vger.kernel.org, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Jan Kara <jack@suse.cz>
+Content-Type: text/plain; charset="UTF-8"
 
-PiA+ICtzdGF0aWMgaW50IG5jbjI2MDAwX2xvb3BiYWNrKHN0cnVjdCBwaHlfZGV2aWNlICpwaHlk
-ZXYsIGJvb2wgZW5hYmxlLA0KPiA+ICsgaW50IHNwZWVkKQ0KPiA+ICt7DQo+ID4gKyB1MTYgbWFz
-ayA9IEJNQ1JfTE9PUEJBQ0s7DQo+ID4gKyB1MTYgY3RsID0gMDsNCj4gPiArDQo+ID4gKyBpZiAo
-ZW5hYmxlKQ0KPiA+ICsgY3RsID0gQk1DUl9MT09QQkFDSzsNCj4gPiArIHJldHVybiBwaHlfbW9k
-aWZ5KHBoeWRldiwgTUlJX0JNQ1IsIG1hc2ssIGN0bCk7DQo+ID4gK30NCj4gDQo+IGRwODM4Njdf
-bG9vcGJhY2soKS4NCj4gDQo+IFRoZXJlIGlzIGFscmVhZHkgZ2VucGh5X2xvb3BiYWNrKCksIHNv
-IGl0IHdpbGwgbmVlZCBhIG5hbWUgdG8gaW5kaWNhdGUNCj4gdGhlIHNwZWVkIGRvZXMgbm90IG1h
-dHRlciwgYmVjYXVzZSBvbmx5IG9uZSBzcGVlZCBpcyBzdXBwb3J0ZWQgZXRjLg0KDQpBbmRyZXcs
-DQoNCkhvdyBhYm91dCBnZW5waHlfbG9vcGJhY2tfZml4ZWRfc3BlZWQuIA0KDQoNCj4gDQo+IEFu
-ZHJldw0KDQo=
+On Mon, 1 Jun 2026 at 09:42, Christian Brauner <brauner@kernel.org> wrote:
+>
+> Applied to the vfs-7.2.vmsplice branch of the vfs/vfs.git tree.
 
+Btw, if people want to work further on this - assuming we don't get
+any huge screams of pain from having effectively gotten rid of
+vmsplice() - I don't think it would hurt to look at limiting the
+"regular" splice() too.
+
+We already have the code to just turn it into a pure copy on the
+"splice to pipe" case: copy_splice_read(). In many ways it would be
+*lovely* to just always force that path.
+
+We already do that explicitly for DAX and O_DIRECT, but we made a lot
+of special files do it implicitly too, so quite a lot of the splice
+reading cases already use that "just read() into a kernel space
+buffer" model for splicing.
+
+It would be interesting to hear who would even notice if we just
+always used that copy case, and made "f_op->splice_read" never trigger
+at all.
+
+And it turns out that the only thing that ever uses
+"f_op->splice_write" is splice_to_socket. Which was actually the
+problematic buggy case.
+
+Everybody else pretty much seems to just use iter_file_splice_write(),
+which does the "emulate it with just a write from kernel buffers".
+
+So *if* we get rid of f_op->splice_read, we do leave the case that
+really caused problems, but nobody will ever care. Because once splice
+only deals with private buffers that can't be shared with anything
+else, a f_op->splice_write() that gets things wrong is pretty much a
+non-event.
+
+(We'd have to look at 'tee()' too: I don't think anybody really uses
+it, but it does do the "no copy linking" by just incrementing
+refcounts on the pipe buffers. So to really protect against
+splice_write users messing up, that should do copies too, but as long
+as it's all "private ephemeral buffers" that get their refcounts
+updated, I don't think anybody *really* cares)
+
+TLDR: maybe we could ghet rid of "f_op->splice_read". *That* would be
+a big simplification.
+
+                Linus
