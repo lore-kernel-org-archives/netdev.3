@@ -1,121 +1,212 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D16A36BCDE;
-	Mon,  1 Jun 2026 13:19:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780319953; cv=none; b=YreBlpW9lzi3V6p7HEAZKEnRF3OoKxOpXWM92/B1eDTcmp9c5BAo/tcgw1aFfDgHmSyXhBTapD0opDoXy78R8HXGcAOw2/W73j9nz/qU0tF8JXP632StwxE39T+MzY9f4xPHllgkkeujIiTdNKvSxkKe8D/M2DsZrgD9sR+pNqE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780319953; c=relaxed/simple;
-	bh=97pdXoZiUaNbUg/dCgG8k67el3mw2yrvAWwxG2/xB7E=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=W3oRGk2Y20pDLG9R0V6Iv14dYcFozKFXQ+/IC5gxXlAxFDZ35FRQh/AEmbMsjhusO7bwJqVir2Fj9K38sLSJPghepfdZ5A/FQ29potizMCm1Zff08H00PloETB0MK2yTaPKoqFiCb1XDUJooAgPCUT/WUTxuZXD/44eeKSeS/Xg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rNVnAzal; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EB6437F8C0;
+	Mon,  1 Jun 2026 13:19:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.11
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780319978; cv=fail; b=JnVkM6zGgbqqT45h8EfxSsMbLQksDM3PdRndF7cT9PEuawKnSGVF7ZnISxT/mA0AXHuZk5VHsOIUNRIrXN4+6m/nD1uiei/btZFgL4wgLNF1HeQP23XYsdgo1XSa6XPPk5b+nWNak6wvKKmes5KlqSqq3Jbl0sQyOTMwpy4ZfnY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780319978; c=relaxed/simple;
+	bh=FzrjQTUgHXBCVmGwkkIxHX18y6thZoVejY0+ZpLfUlY=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=S4uA4STUen+KRdiVrn1NsKl+GnmvFw3TxPhDV3Jas+qVfbqV91GiqJQXZchFA99mjx6A2uJKG3LDuHvXeZ/kQ3V+bs9i8y6X2ymcltRgWpXRZOBEL6aMsy0RLwSWovu6UI4T7YFEN44tdX1l7YPg95cZfcElrD8VyWUmRmzcUV8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MgsCYP0t; arc=fail smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rNVnAzal"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id CBD2AC2BCB8;
-	Mon,  1 Jun 2026 13:19:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1780319953;
-	bh=97pdXoZiUaNbUg/dCgG8k67el3mw2yrvAWwxG2/xB7E=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=rNVnAzallyb+NlbQL9+9CQ/jp+KfGxZUiIJa10QmYquSsARgjBOSBXER2nlAPs5Cv
-	 fiQb90KMcorm4qXLRCoX7NmgiIA3k9fbGqX5lINH1waSFegBV9CjhpAQiJ0eUcvjhv
-	 4GNViKxdbuzedwq3bNkhhsUWgFzuVwZhNfHnHVdsjaHuHa/rWVNVj9UwVq01plWJXZ
-	 89T/7JH4av+wWxkX9kx16iNJ4W6mjkciZT12uFa/JgZ6TMuadVZfLJ39UHPcZJqaNM
-	 zor1WdXCcbeB9XH0BzWwgyVUJ7bnzl55Sw+jRrWQWLvqLetY99T906Ry2QVQJ+UEAl
-	 /Ibe3L1qq81Gg==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A8A59CD6E55;
-	Mon,  1 Jun 2026 13:19:12 +0000 (UTC)
-From: George Moussalem via B4 Relay <devnull+george.moussalem.outlook.com@kernel.org>
-Subject: [PATCH 0/3] IPQ5018: Add and enable GEPHY RX and TX clocks
-Date: Mon, 01 Jun 2026 17:19:07 +0400
-Message-Id: <20260601-ipq5018-gephy-clocks-v1-0-2df8287712c3@outlook.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MgsCYP0t"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1780319977; x=1811855977;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=FzrjQTUgHXBCVmGwkkIxHX18y6thZoVejY0+ZpLfUlY=;
+  b=MgsCYP0tauUJzRxV2PVLhuqYN7G1ERY3KQaz+izvCWzshzyxiB9TGzYL
+   GNpF3CkIBj1541cr6R+qVU+HSHLAkJlmcOqzO0gk22jgR9epVr1+qlzyQ
+   WZGVaIqvjQZ1FDtcUXD+Q9HspNkyt4tm2XBhUUQ+7ussvAlsgv1uuWMPv
+   WJKcIXlxz6APoqNNOX2xQ+DLNLmAqP/AozTPFCnGugJnMFfcdqn1hGcya
+   xrs/xd/RfQjaM0MymrgQ7kGe0BqC1qhoBTFavRaZ4P8lkrmKsUFhO65wo
+   cCnK4/RFSTBpm2x8IEEs8cI/JPS6kXSAToJ1QxH17J63dRf6EYZ/9n5BO
+   A==;
+X-CSE-ConnectionGUID: BWLXuKg7SmCTDJAXLUoPvA==
+X-CSE-MsgGUID: t/rrunFmShyTmdeDlUN/FA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11803"; a="91647364"
+X-IronPort-AV: E=Sophos;i="6.24,181,1774335600"; 
+   d="scan'208";a="91647364"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2026 06:19:36 -0700
+X-CSE-ConnectionGUID: SibWgcxWRR+DR/5iEH3cxw==
+X-CSE-MsgGUID: xbr27Z+bRBmxb69X2gAZrg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,181,1774335600"; 
+   d="scan'208";a="247534596"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+  by orviesa003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2026 06:19:36 -0700
+Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Mon, 1 Jun 2026 06:19:35 -0700
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Mon, 1 Jun 2026 06:19:35 -0700
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (40.93.195.24)
+ by edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Mon, 1 Jun 2026 06:19:34 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Ac0Xd1+3hukawnWL7fngs5G/uLs29BRGtEQFIgVzj0vDaq1SmonTvyCtOBTiTJYWveso7X5AJQERlgYI8onsDRV1/aRbwdJVCYBNA2f6bVZtVxMkSWEZ+P7WtnOBakDt3FM3QdSRHh6Pk1k0IuuNlYTj5pRXkC/zRREVrpJoKAxg/Wn/aCqZ4ZK0EY+9HCZcRZloHnpDv8SQufxGbibPx7kWB/tnzJK5gVRWaQUjmf1IJkYNUnvjEbVJBtRLKM8l7jaTsv4OD84oD3w88WnknLEGfrgRU121AvW14kmXuELptoCKLRmdIglH11fI4JVe1OD4bZ5ABwr9kdhAPVW1XQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=8M3HA5NcYGA9oBotAdNjEZXo7E9o+3QEC6o7JRrG4hg=;
+ b=l9T90CFI5bvXBY7ET4GKO8hH/hMwarHzxg5/zcBcBSg1Rdk98FrGiHVLSb+KMaIpwYQNzU6WkjAI5TyJqruEqaRui5mcbLKFUoI7RVcpc2WF0y9SOPnI2+04ecdN55CoYbAEHANDHao0KP+80RCPd+nDuJQWUCpB3lHdjTHt4epTQ6N8aDKBnCyT6u2cQKcVB7kJyvnWJZZf3eKOfNvkqdt77Yqc8ejI/SA3dXi4ibPyWt7+/FejNaBMvjlyEviZjW7Q/Z/04I+RbB+1vt+LJptaPVBZTuu0KGwAIlWRX/dFZodzOe9nuNXK6LjM6NU7+lmPajTH9ZShY3Yt5MgUHg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DS0PR11MB8718.namprd11.prod.outlook.com (2603:10b6:8:1b9::20)
+ by CH3PR11MB8519.namprd11.prod.outlook.com (2603:10b6:610:1ba::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.14; Mon, 1 Jun 2026
+ 13:19:31 +0000
+Received: from DS0PR11MB8718.namprd11.prod.outlook.com
+ ([fe80::6aa:411d:4bfa:619c]) by DS0PR11MB8718.namprd11.prod.outlook.com
+ ([fe80::6aa:411d:4bfa:619c%5]) with mapi id 15.21.0071.014; Mon, 1 Jun 2026
+ 13:19:31 +0000
+Message-ID: <7a5702ba-af01-485d-84fb-f54c9d5269b2@intel.com>
+Date: Mon, 1 Jun 2026 15:19:26 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] rtase: Reset TX subqueue when clearing TX ring
+To: Justin Lai <justinlai0215@realtek.com>
+CC: <kuba@kernel.org>, <davem@davemloft.net>, <edumazet@google.com>,
+	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <linux-kernel@vger.kernel.org>,
+	<netdev@vger.kernel.org>, <horms@kernel.org>, <pkshih@realtek.com>,
+	<larry.chiu@realtek.com>
+References: <20260601062418.64004-1-justinlai0215@realtek.com>
+Content-Language: en-US
+From: Alexander Lobakin <aleksander.lobakin@intel.com>
+In-Reply-To: <20260601062418.64004-1-justinlai0215@realtek.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: DUZPR01CA0019.eurprd01.prod.exchangelabs.com
+ (2603:10a6:10:46b::10) To DS0PR11MB8718.namprd11.prod.outlook.com
+ (2603:10b6:8:1b9::20)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MQQqAIBBA0avErBsYxUq6SrQQm2ooyhSiiO6et
- HyL/x9IHIUTtMUDkU9Jsm8ZqizAz26bGGXIBk26ppoUSjgqUhYnDvONft39kpCt08aQaqwjyGm
- IPMr1b7v+fT8UZsxAZgAAAA==
-X-Change-ID: 20260601-ipq5018-gephy-clocks-e8a2440178a0
-To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
- Russell King <linux@armlinux.org.uk>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Florian Fainelli <f.fainelli@gmail.com>, 
- Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>
-Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
- linux-arm-msm@vger.kernel.org, 
- George Moussalem <george.moussalem@outlook.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1780319950; l=2139;
- i=george.moussalem@outlook.com; s=20250321; h=from:subject:message-id;
- bh=97pdXoZiUaNbUg/dCgG8k67el3mw2yrvAWwxG2/xB7E=;
- b=NlWHkSLpvAxs/YmwWdPWhmxX66Jul+YmsKCW5EBMAYOgKHG7r/f6ZLNRlKX8EBD4I2V2bcMSf
- TyI9Kk35NwFDwxTdmAO3aF8TzLdJz7Jva0N9C9gWzyE6dXUhdTe9Zfj
-X-Developer-Key: i=george.moussalem@outlook.com; a=ed25519;
- pk=/PuRTSI9iYiHwcc6Nrde8qF4ZDhJBlUgpHdhsIjnqIk=
-X-Endpoint-Received: by B4 Relay for george.moussalem@outlook.com/20250321
- with auth_id=364
-X-Original-From: George Moussalem <george.moussalem@outlook.com>
-Reply-To: george.moussalem@outlook.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR11MB8718:EE_|CH3PR11MB8519:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8e1105e8-05e2-4433-84ac-08debfe06a96
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|7416014|1800799024|376014|11063799006|22082099003|56012099006|18002099003;
+X-Microsoft-Antispam-Message-Info: OvuzFW0+b0cW1bdQiL/JmG1MCtqmoXujPBiqf0fiUE/2/RIKTjehN/+mcDH6elN8R+ZBscR6J8sP5kXD8c9T2Suw4Dc8sFj4JOhDGoBfnkJQB0KF19yDVsNa2sltX7A7NPA+gcQz8/7Uxqm90Sr3jTlEIpZZZXqk7sT34L6XrqlWvKah/vbRzwkjBOT5V9CQd/gqy5GKvGtEuc0hyLloXcyDVFPfJsv6cmXn99J6Yk3h5NnlfbpNPs94F3NACn0zhwuAXVMqTFh9qKeVaVSrGFf8Dzsin6TRvNMA/4NchfoOeXV0IZUTUEO7QSy3m1QEgCW1llBC7H2X+YB5NHVb+CcU/WMM1T65wxMwcVyxXQ9kY4KJ6JNZgxFgezWyk2bmjlpz/xcOGpClWhgtY9QaDvme4S6TfWR/gI2z+5tMhk/Gr1RI7GPN3+eMXmbnPb4J2VPpqeyel8kBzgrRnHtqDTaW+qr9vXCuDkv65Qa8S+ln+R0M/dS8x1Hl0Q+KIyJ9WSa1vspMnPBJJg4MRJTAdWHDnv94BN2jI4HTBcvmBJzd5hzsJntfpf62sYj4TPU7rbnpO9zk9nzv1xqwhuGhSMiz9aOz/NqfitTCEoI5mUHrvlq1j9Uih2IgtUXxkT1YEUZRCorDtqaSzcCxSuwv60ZUO9XPDF+EmnrXmbRGdDfYwCZF+2eqfqwUwl+pwYfx
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB8718.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(1800799024)(376014)(11063799006)(22082099003)(56012099006)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Y0RiaEk4L3YzMVlndDE3Mzgxek9MS2ZvMUYvcE5jdXZKRmxwS0JjUk8xM0Js?=
+ =?utf-8?B?c1RlSGZlUzMxbGNJZzhOQ0JLbWJZekh6UXllUTBrRDNWTUZIbGY5Y1R0S01r?=
+ =?utf-8?B?aTlrYWtQYXpqMGJiRmUvcmw2R3gweHBpNlI4L1grZXNzNUNwdGFnQis1V0Js?=
+ =?utf-8?B?WXR1K25aWFMxTmpvUzdEVFhFaUhEQm12YWs1RU9vQlNiL05tSksyOWpNbnNJ?=
+ =?utf-8?B?Vi93RDBVUTBoLzdJcnA5bVdGS0luT1psbDJLeEJqSS9KVTJ0T3VWMHhKRHhy?=
+ =?utf-8?B?WDlxTXNvS1NBM0VxaFRWQlQrcmtVZFpRZzExSzBYempINTdlY014VFY0V09F?=
+ =?utf-8?B?TVZ3Vk45V0JJVGhGN1VPRkZxOWdDMzVWZnNQQXNPZENOeGVOZHMwTkhQSXJU?=
+ =?utf-8?B?YjA1MFdVYWJpUHVTdTZKTktCNGo4WnFseldSWkR6bmd4WTRETWNtdEo2SEhi?=
+ =?utf-8?B?M2hCVENncTVlSUlaTEZQOEJZSnJvd3l2U2p3TVpybUN4enBaQTJyM2R5N2d1?=
+ =?utf-8?B?d0ZOeUo0Ty9rRXE1cG1WTFkzU29aUmNQdEQ2d0NESGVxbWo3QVJFM3NVdFdQ?=
+ =?utf-8?B?MnpiSXBCRzFHRmU0OXphWGY2VVRpMzRJQ3RGdDZEdUpFWVJySUNweko4OGpR?=
+ =?utf-8?B?eU5PUTdjSTFEV2lOK0FOaHAyQzEycEdvTktvTVQzODdrWHhjeGxEWG5ocHBG?=
+ =?utf-8?B?cW5zQlhaQzJ4bC90T0o1cUgwS2dVcGxiV2tXVEd1SEZnOTkvK1ZkZk1pcVIr?=
+ =?utf-8?B?Y24vd0V3WENOMVhQanhaKzQzTmVaL2dHM1NrRU96OEp3RGloQVFWL1JZYlN4?=
+ =?utf-8?B?K0IyV2lSdDlPaEUrOE1qNlJ6SldJRitjdjFNMWpwa1FXVzNjdzAxczgwd0Z3?=
+ =?utf-8?B?ZXJsbnJPZGRhQVF2dThtRVlaUkVabjlaTU9OcWI5RW5zQUFGT1ZJSzFCUGJN?=
+ =?utf-8?B?ZFBva1NmSGJKOUdxa3lJZTJrL013cFU3MHdXOHRMNHVIeXRpWXBlZ0xFMzk2?=
+ =?utf-8?B?enJXYXE3dzN2T3VpN2FhTG9FN1FvbHVtRUdnNlgweGV4SGErQ1hIbFZnQXpV?=
+ =?utf-8?B?STB1cTQ4R2pZM2lwWmswYzRZNDF1bDhRTDdka0JTdGQ3S3QrNmhnU2xqdUUx?=
+ =?utf-8?B?WjNPaWl2THRNcHNaWUVGaTFYYXVjMU9mZVNha2c3ckdDV2IzcG1OeWFHSHRa?=
+ =?utf-8?B?Q3pZWlNCTmpYZEZRTzFndXNpTEhQVVRkaHJLWCtmc0VnMFdrSmdLdVBnN0FG?=
+ =?utf-8?B?blVOWFJKVi9NUDhEbDc2Y0VrdkYyUVAzNmVZSHA4U1Q0UVdBQUtBQ0VXL2s1?=
+ =?utf-8?B?TzA1dlJ0di9uSTJKcDY2M0c1VldrS2NDWDhzZS9kS3V2aXh1ZlhhM1c2dE9X?=
+ =?utf-8?B?aUlJVVJQcWY4QVJQYmpML2I5bWdIZE9tc2kwZmlFeC9nTGpCS2UxaEtjNUVJ?=
+ =?utf-8?B?b1dWeW9heXdIN0V3Vko3VW1YRHg2THJZbjcvLzNTbHJhSk9qYS9DdFlMNEVK?=
+ =?utf-8?B?dmtTNktDNm91OEdwR3F3NWxwWUxpa3Y0RHhWalBXdmZwMFpmT25TT0tkb2Uz?=
+ =?utf-8?B?dkFZa2F6aVZuNFFadEVPZ2hIVUY4Y2toNVRiWUY1aCt0TnFXWkdwaWdvaGRy?=
+ =?utf-8?B?aFlpL0RpM1doNVlUdys5NE9IMEVnRG8wamRqL296QmtMcVY5bjFZWTNiYjVR?=
+ =?utf-8?B?b09pMzBnTjBmOStVK1VNQmpTQlR2UjR3bG9NSGkwdVNMNitxTURPWkpiMjZJ?=
+ =?utf-8?B?dkxVM0RUakE3VlA4T2lCMEl0RzNLUGM2S1h3YSt1MkQ5Y0U3RWRXbnMvME9C?=
+ =?utf-8?B?NEUyNXFMOGJ6WWNZMFg4RVNiNjZBNnNpTnNBaEc5NWk2enNLSW44ZzN4bldH?=
+ =?utf-8?B?bmZYbFd5VXZFeW0yT1oyay9XUzhReE95dnlMVlZYZjdoMWhzclpmYmxFTm1K?=
+ =?utf-8?B?dmt3Z014cUFkeW9iQk1YeEFOcU55WTh0aGJMSklwTnA3cm1ZODJPWS9xQ2Fp?=
+ =?utf-8?B?ZG1haXNURlk1a2NuTHdxd1BTMkJvTEdMSkY3dVNNcWZ6eFJ3UDVTSHk1bUkv?=
+ =?utf-8?B?K1BGQjhxUWE5VHI4SEpxMTVtMkY3QjdjYk1nOWtyWVNOMkdqcmZJTEE2Rzg5?=
+ =?utf-8?B?M3pEbS9XcEt1UXlQVVNPYXJHeUdBTk9Fcm5NUXNFUUQ0bk5jbzkwNGthUkk3?=
+ =?utf-8?B?WVZTN2ZKK3BYbW1jQmkrVEp2STFjeGt4MzYvMjhxVjA2MERiMTVCa2NLbWx5?=
+ =?utf-8?B?Yk9OUUQ5aXovWmpMb3dKMHhBNm9MWjVDLzVBcUNOK3F2Mkh0UnJIcm80THRh?=
+ =?utf-8?B?N0wxUkw1NkNJU29Ia2FyeGJZTDlqNXpLMFhCdXh1N0NKK2xYU3h5NFZSODYz?=
+ =?utf-8?Q?EbmSJRDf7LZr2EgU=3D?=
+X-Exchange-RoutingPolicyChecked: G5LQihXS8QPD61KbPJYmbd0uDYzDkh5pZacswPHLsAapWL9mhbzeXR+GgmEW7Wo4SNTUWV61RTuZNmTsTmGXGufJnledwFoxtQj94eazDFUK3TGUyZBnLWjl+ZvoN67is7eNKIy97JiK3wCw4YiEkznZLGv1xtqXG7y/gs71BtQPL7u404xfhxH86HgkXUilm2zx2A6Gizy302KQLWEzWBf19fF319jC/bD36FJ2qZWW9MNosNy6NM0q/ZuYRVX/8sVUMtDxZbdRTI3PNHzqJx7QDKokPAT9c6ZUVM68InZg2vhu2hW5ZrPyTk4oCOnFpPjxOsUQ+hpOgi0/zS2APg==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8e1105e8-05e2-4433-84ac-08debfe06a96
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB8718.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Jun 2026 13:19:31.7449
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 3t77fpMcDC6LBAx/A4h4z8ukLaMeeoAl6bBWEMPfAk4X6z6qUxAcYFuMVs699MjZivOBCXvWOrERczkSmd+vQ1H5Htumklf+PLeDFYx5kq0=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR11MB8519
+X-OriginatorOrg: intel.com
 
-Greetings,
+From: Justin Lai <justinlai0215@realtek.com>
+Date: Mon, 1 Jun 2026 14:24:18 +0800
 
-This patch series addresses a missing hardware description issue for the
-Qualcomm IPQ5018 Internal Ethernet PHY, where the data paths fail to
-function correctly unless their dedicated RX and TX clocks are
-explicitly enabled.
+> rtase_tx_clear() clears the TX ring and resets the ring indexes.
+> However, the TX queue state and BQL accounting are not reset at
+> the same time.
+> 
+> This may leave __QUEUE_STATE_STACK_XOFF asserted after
+> rtase_sw_reset(), preventing new TX packets from being scheduled.
+> 
+> Reset the TX subqueue when clearing the TX ring so the TX queue
+> state and BQL accounting are restored together.
+> 
+> Signed-off-by: Justin Lai <justinlai0215@realtek.com>
 
-Further testing revealed that leaving these clocks unmanaged by the
-kernel, they were inadvertently left enabled by the bootloader / QSDK
-platform, which masked the issue. Testing a fresh network configuration
-path exposed that the data link fails to work without explicit software
-gating.
+You need to:
 
-To correctly introduce the required multi-clock properties, the IPQ5018
-binding definition must first be split away from the shared
-qca,ar803x.yaml schema. This isolation is required because ar803x
-references the generic ethernet-phy.yaml, which enforces a strict
-single-clock limit constraint. 
+1. Specify the target branch in the subject prefix ([PATCH net]
+   for critical fixes, [PATCH net-next] for features and misc
+   non-critical fixes and improvements).
+2. If this is a fix targeting "net", you need to provide a "Fixes:"
+   tag pointing to the commit which introduced this issue.
+3. If this is a fix and the bug is present in older supported kernels
+   (LTSes etc), you need to add "Cc: stable@vger.kernel.org" right
+   after the "Fixes:" tag.
 
-- Patch 1: Splits the IPQ5018 definitions to its own bindings schema 
-           to accommodate the multi-clock requirement.
-- Patch 2: Appends the missing RX/TX clock definitions into the IPQ5018
-           device tree before driver modification to avoid the driver
-	   failing to probe.
-- Patch 3: Updates the Qualcomm AT803x PHY driver framework to safely
-	   acquire, enable, and gate these clocks upon link state
-	   changes for runtime power optimization.
+> ---
+>  drivers/net/ethernet/realtek/rtase/rtase_main.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/drivers/net/ethernet/realtek/rtase/rtase_main.c b/drivers/net/ethernet/realtek/rtase/rtase_main.c
+> index 43a4aa275b62..11e9d0feea68 100644
+> --- a/drivers/net/ethernet/realtek/rtase/rtase_main.c
+> +++ b/drivers/net/ethernet/realtek/rtase/rtase_main.c
+> @@ -240,6 +240,8 @@ static void rtase_tx_clear(struct rtase_private *tp)
+>  		rtase_tx_clear_range(ring, ring->dirty_idx, RTASE_NUM_DESC);
+>  		ring->cur_idx = 0;
+>  		ring->dirty_idx = 0;
+> +
+> +		netdev_tx_reset_subqueue(tp->dev, i);
 
-Signed-off-by: George Moussalem <george.moussalem@outlook.com>
----
-George Moussalem (3):
-      dt-bindings: net: qca,ipq5018: Split IPQ5018 PHY bindings from ar803x
-      arm64: qcom: ipq5018: Add GEPHY RX and TX clocks
-      net: phy: qca,at803x: add RX and TX clock management for IPQ5018 PHY
+The fix itself looks ok.
 
- .../devicetree/bindings/net/qca,ar803x.yaml        | 43 -------------
- .../devicetree/bindings/net/qca,ipq5018.yaml       | 75 ++++++++++++++++++++++
- arch/arm64/boot/dts/qcom/ipq5018.dtsi              |  3 +
- drivers/net/phy/qcom/at803x.c                      | 23 +++++++
- 4 files changed, 101 insertions(+), 43 deletions(-)
----
-base-commit: 7da7f07112610a520567421dd2ffcb51beaefbcc
-change-id: 20260601-ipq5018-gephy-clocks-e8a2440178a0
+>  	}
+>  }
 
-Best regards,
--- 
-George Moussalem <george.moussalem@outlook.com>
-
-
+Thanks,
+Olek
