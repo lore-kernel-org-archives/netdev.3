@@ -1,53 +1,56 @@
-Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
+Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 797F53A3830;
-	Mon,  1 Jun 2026 11:26:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7607C3A4F33;
+	Mon,  1 Jun 2026 11:26:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780313172; cv=none; b=mm+tGQ9plBqlVOFvTQXTQkRe9TaxMJPANXsvhiMEF2SUWyjfM+EHGiJ8YgeisuTjbupX0jZ72PpPZJ5JyQwVha9JCLuLg7yzg7M03N//t2/lRRL59YfMsjPZkkwsdaxzQUDZ9g6rBmvuPcFE8IRWlwh3JU42t7njKvHoyFKhdyg=
+	t=1780313178; cv=none; b=qqh/zkhQQYZrQ+d/O+A51Obn73tcCO6N6ew23oGka8eJV12ssPqCsJRhe5Iu3bIQA7Wj7k6Z8MVuCRS+S6/W5QVolg84r5oJw5zJKKBRaaZ8VEG91ixizjh8AJoOpBy2Kb/lBQI5KaAh7+HM/t/fiHAEAv3kGpVKz47w3zuj/hE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780313172; c=relaxed/simple;
-	bh=nVIVRPGt5uWJm4la3MM67hCmfY1FqCkzOSe6DQbVGaw=;
+	s=arc-20240116; t=1780313178; c=relaxed/simple;
+	bh=bxqH9AdTyCEszCiklsP2bhpZh7r72M/llZQj4Ce70T0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rSZ3t/yrA2oPcrm5yYtDuMKgTyRMRr+3kw/lTAsreKqZ3J4+5UuEMDoHqHPEu3q0aYcBF0sEgyceVr/i9ic/O+OTdHgA/ufwzKcbXSf0Mjqt79Alh8dClgA/h4Nj/c8Yvp+MRZedZAI9U04OASpnL6GfSGxH0cRFONLgqj7MyvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=K8QV0hrd; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=NqPEsfeH; arc=none smtp.client-ip=80.241.56.171
+	 MIME-Version; b=scOalDKnmy9H+9P1b2s8r6ukvrQol8kKv7yRs57tGmPRdwNpFznziY7X8HA6vRexr3K7GmVqoqSnVGcgYNFuf/HhNr1F5J+IgQjAFBAtA/sEtTgmrMHxKc8i2cgtXpWydICKs+M/xzCDBIYc3M4js7L9H+8meFkcnVpNRYQzE3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=KXRAdaun; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=g7W92kl2; arc=none smtp.client-ip=80.241.56.151
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="K8QV0hrd";
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="NqPEsfeH"
-Received: from smtp102.mailbox.org (smtp102.mailbox.org [10.196.197.102])
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="KXRAdaun";
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="g7W92kl2"
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:b231:465::102])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4gTWqb23Syz9twZ;
-	Mon,  1 Jun 2026 13:26:03 +0200 (CEST)
+	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4gTWqp5shtz9thq;
+	Mon,  1 Jun 2026 13:26:14 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1780313163;
+	t=1780313174;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=qENBf1myW547eMPmHvF7T3fQfLrvCaY8QOLXCvn7nWA=;
-	b=K8QV0hrdQ3jw4EoOhPIrUWTHtJHTHykagkik18uRq7akJDsSrlCxLJzn1stGCcAOx8o9co
-	55EBliFVmUiASVtzvUiHdYLZ2tcl6Hi+jCST23GUZAl/WMhzuUzbj7dETI78COVLUJ6ddi
-	n5BxJzXX+KnZkT3JeZ7WJ9QaINnSZeRJfZ+MN0E1OmcfRBtvHCG4AYG4RtsM31lpUsG/23
-	xSMBR0fBeMXXLUURMjz8Z0uNt7UZ9TsyOTa2SHZ3qfiPT5LDcX3b6Xx125N0UvnQzHzRqv
-	U3BQlb4XiyZkJZs+d+VLewqiYenYv4KbbvdbvFINYMyKEA/ro14ZnlvNiX0sKw==
+	bh=FKA5ewge2HaR8c9oruQp+nhwZO3iGLvBV4mDI9WArDU=;
+	b=KXRAdaunY3JCFY7kVpPLmy9Za9A3ccEHC0g3d9dX0hRPBVpkO+ON7j/xLna+KxNQLkY5yH
+	XGpXVhw1PuT9PhfM64CmoYIe6x+DpoSrHyE5O7d+DR8cb17vq4z28eMEZDbBlk+3KQ+GuE
+	CTfWjIRwQ9J5DlIdukDFkvVBEwUT0fwJzhLyEbM527Ao/NGYtbPKWXaCFoGyYS92DaYkj6
+	FwQ4ynikJ7iy5oQGLrwUhKG7HdxCI+gbo/Btk45A+/hPkGOHVf9zBM9E6K37Ds3JAPFfUT
+	H949xQU/2lTe3f15rNtTnu/UGK2yqWTADU05AfxXnyVC+sM0qcJL36ivLFsjWg==
+Authentication-Results: outgoing_mbo_mout;
+	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=g7W92kl2;
+	spf=pass (outgoing_mbo_mout: domain of lukasz.majewski@mailbox.org designates 2001:67c:2050:b231:465::102 as permitted sender) smtp.mailfrom=lukasz.majewski@mailbox.org
 From: Lukasz Majewski <lukasz.majewski@mailbox.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1780313161;
+	t=1780313173;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=qENBf1myW547eMPmHvF7T3fQfLrvCaY8QOLXCvn7nWA=;
-	b=NqPEsfeHvP7pk0SgeRAbjpXZS2kzz+ewrJXgjpi2Z+ecAo0fgEqZlWPWcuVTPMBJ2Hl+bq
-	WeH8vpzPibCVKstTQeAQO2VGQhg7xdabqDsS+KC6WUOx0ZbgH7Ta2SoYQOJO+M7ooDNbtN
-	G+ooZGc7HvFcaWz5zM0FwvTw5OYQsQssF0k6DWSeEyFLksAAXK95eS9S6jlbdmupiu3YJ8
-	yHYGgUi0LsiOHruptHQ/eJeYriyCyuisgrcXGzbXaRujBq74AGMqE7tD9CB8Ghwm/falp4
-	j77I2SKrf+YKIasc0nmDsmfaRIZiyGwx2DMC92lGG8i9XjN5k/ttpyb2YvwKwA==
+	bh=FKA5ewge2HaR8c9oruQp+nhwZO3iGLvBV4mDI9WArDU=;
+	b=g7W92kl2plFhMQuq2+Z3RmpAJXc/gzKubkYd3+GPfAhWfUqWNzBwOKGWEo3fugxopLCtPt
+	pmt8KD/aBpHooWSAGenOaKk+D9yNq4Rtd6z0ynpOrzctEBjXI/9E9lvBy37eSPZQwRqpkf
+	AWd2cU17JRGRNtP2d/iFIKjE4dohV0pYWF0VqZaKK/ChMob+lLqXj3lTavhgs3FlcTvR/t
+	jYX1l0HZVKQdNRa8ycbl37bI5+k7gw2QeYkLQJLpsu8kSySIZ/6egPtNUeYlYfDfJCfzYP
+	WvfSy1amiyujNR5fvAQqSkECE+pVU7VSgJGGDofoGhlm/7CLdN8pmUurZdNf0g==
 To: Andrew Lunn <andrew+netdev@lunn.ch>,
 	davem@davemloft.net,
 	Eric Dumazet <edumazet@google.com>,
@@ -63,9 +66,9 @@ Cc: Richard Cochran <richardcochran@gmail.com>,
 	linux-arm-kernel@lists.infradead.org,
 	Rob Herring <robh@kernel.org>,
 	Lukasz Majewski <lukasz.majewski@mailbox.org>
-Subject: [net-next v24 4/7] net: mtip: Add net_device_ops functions to the L2 switch driver
-Date: Mon,  1 Jun 2026 13:24:33 +0200
-Message-ID: <20260601112437.2216043-5-lukasz.majewski@mailbox.org>
+Subject: [net-next v24 6/7] net: mtip: Extend the L2 switch driver with management operations
+Date: Mon,  1 Jun 2026 13:24:35 +0200
+Message-ID: <20260601112437.2216043-7-lukasz.majewski@mailbox.org>
 In-Reply-To: <20260601112437.2216043-1-lukasz.majewski@mailbox.org>
 References: <20260601112437.2216043-1-lukasz.majewski@mailbox.org>
 Precedence: bulk
@@ -75,11 +78,11 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-MBO-RS-META: u8pfiaar9rtcthbrn1oqqzugmqbu91na
-X-MBO-RS-ID: 6fc67507de9b99541fe
+X-MBO-RS-ID: b61c134b11940e4bbff
+X-MBO-RS-META: i9jjczj485gcn4jihd8g8gs7gmozntwq
+X-Rspamd-Queue-Id: 4gTWqp5shtz9thq
 
-This patch provides callbacks for struct net_device_ops for MTIP
-L2 switch.
+This patch provides function necessary for managing the L2 switch.
 
 Signed-off-by: Lukasz Majewski <lukasz.majewski@mailbox.org>
 
@@ -88,414 +91,570 @@ Changes for v13:
 - New patch - created by excluding some code from large (i.e. v12 and
   earlier) MTIP driver
 
-Changes for v14:
-- Add read memory barier (rmb) before reading current descriptor
-- Use proper locking primitives
-
-Changes for v15 - v15:
+Changes for v14 - v21:
 - None
 
-Changes for v16:
-- Enable MTIP ports to support bridge offloading
-- Use dev_err_ratelimited() instead of plain dev_err()
-- Move skb storage and tx ring buffer modifications after
-  dma mapping code.
-- Do not increase tx_errors when frames are dropped after
-  failed dma_mapping.
-- Refactor the code for better readability
-- Remove legacy call to netif_trans_update()
-- Remove not needed rmb() - synchronized data read already assured by
-  coherent DMA allocation
-- Replace spin_{un}lock() with _bh variant
-
-Changes for v17:
-- Add missing _bh() variant of spin_unlock
-- Avoid reverse christmas tree in swap_buffer()
-- Print error message after unlock
-- Add DO_ONCE() and a separate function to print state of switch HW
-- Remove dev->stats.tx_errors++
-
-Changes for v18 - v19:
-- None
-
-Changes for v20:
-- Perform data swap on SKB data only when it is copied to a separate
-  buffer.
-- Clean up the comment
-- Stop both network interfaces' TX queues when no resources for
-  transmission available (uDMA0 descriptors)
-- Do not use fep->skb_cur and fep->tx_full
-
-Changes for v21 - v22:
-- None
+Changes for v22:
+- Update 'mode' check in mtip_vlan_input_process(). The comment was
+  misleading, so it has been removed. ESW_VIMSEL accepts "Mode" 1 to 4,
+  but it has allowed values from 0 to 3 (the IM fields' values)
 
 Changes for v23:
-- Move cancel_work_sync(&priv->tx_timeout_work); to where it is handled
-- Remove dev->stats.tx_errors++; as errors are already noted in net stack
+- Update copyright notice
 
 Changes for v24:
-- Add struct mtip_ndev_priv *priv declaration to mtip_ndev_cleanup() - i.e.
-  where it is referenced
-- Add comment regarding the need for switch reset on TX timeout
-- First update switch atable and only when successful update switch configuration
-- Call INIT_WORK before the network device is registered - to avoid race conditions
+- None
 ---
- .../net/ethernet/freescale/mtipsw/mtipl2sw.c  | 296 ++++++++++++++++++
- 1 file changed, 296 insertions(+)
+ .../net/ethernet/freescale/mtipsw/Makefile    |   2 +-
+ .../net/ethernet/freescale/mtipsw/mtipl2sw.c  |  31 ++
+ .../net/ethernet/freescale/mtipsw/mtipl2sw.h  |  23 +
+ .../ethernet/freescale/mtipsw/mtipl2sw_mgnt.c | 442 ++++++++++++++++++
+ 4 files changed, 497 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/net/ethernet/freescale/mtipsw/mtipl2sw_mgnt.c
 
+diff --git a/drivers/net/ethernet/freescale/mtipsw/Makefile b/drivers/net/ethernet/freescale/mtipsw/Makefile
+index bd8ffb30939a..a99aaf6ddfb2 100644
+--- a/drivers/net/ethernet/freescale/mtipsw/Makefile
++++ b/drivers/net/ethernet/freescale/mtipsw/Makefile
+@@ -1,4 +1,4 @@
+ # SPDX-License-Identifier: GPL-2.0
+ 
+ obj-$(CONFIG_FEC_MTIP_L2SW) += nxp-mtipl2sw.o
+-nxp-mtipl2sw-objs := mtipl2sw.o
++nxp-mtipl2sw-objs := mtipl2sw.o mtipl2sw_mgnt.o
 diff --git a/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c b/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c
-index 5b5229ee411d..7dfeda230e3f 100644
+index 212207861e13..76e503e128dd 100644
 --- a/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c
 +++ b/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c
-@@ -43,6 +43,15 @@
+@@ -505,8 +505,35 @@ static void mtip_config_switch(struct switch_enet_private *fep)
  
- #include "mtipl2sw.h"
+ 	writel(0, fep->hwp + ESW_BKLR);
  
-+static void swap_buffer(void *bufaddr, int len)
-+{
-+	unsigned int *buf = bufaddr;
-+	int i;
++	/* Do NOT disable learning */
++	mtip_port_learning_config(fep, 0, 0, 0);
++	mtip_port_learning_config(fep, 1, 0, 0);
++	mtip_port_learning_config(fep, 2, 0, 0);
 +
-+	for (i = 0; i < len; i += 4, buf++)
-+		swab32s(buf);
-+}
++	/* Disable blocking */
++	mtip_port_blocking_config(fep, 0, 0);
++	mtip_port_blocking_config(fep, 1, 0);
++	mtip_port_blocking_config(fep, 2, 0);
 +
- /* Set the last buffer to wrap */
- static void mtip_set_last_buf_to_wrap(struct cbd_t *bdp)
- {
-@@ -463,6 +472,120 @@ static void mtip_config_switch(struct switch_enet_private *fep)
+ 	writel(MCF_ESW_IMR_TXF | MCF_ESW_IMR_RXF,
  	       fep->hwp + ESW_IMR);
++
++	mtip_port_enable_config(fep, 0, 1, 1);
++	mtip_port_enable_config(fep, 1, 1, 1);
++	mtip_port_enable_config(fep, 2, 1, 1);
++
++	mtip_port_broadcast_config(fep, 0, 1);
++	mtip_port_broadcast_config(fep, 1, 1);
++	mtip_port_broadcast_config(fep, 2, 1);
++
++	/* Disable multicast receive on port 0 (MGNT) */
++	mtip_port_multicast_config(fep, 0, 0);
++	mtip_port_multicast_config(fep, 1, 1);
++	mtip_port_multicast_config(fep, 2, 1);
++
++	/* Setup VLANs to provide port separation */
++	if (!fep->br_offload)
++		mtip_switch_en_port_separation(fep);
  }
  
-+static netdev_tx_t mtip_start_xmit_port(struct sk_buff *skb,
-+					struct net_device *dev, int port)
+ static netdev_tx_t mtip_start_xmit_port(struct sk_buff *skb,
+@@ -592,6 +619,10 @@ static netdev_tx_t mtip_start_xmit_port(struct sk_buff *skb,
+ 
+ 	skb_tx_timestamp(skb);
+ 
++	/* For port separation - force sending via specified port */
++	if (!fep->br_offload && port != 0)
++		mtip_forced_forward(fep, port, 1);
++
+ 	dev->stats.tx_bytes += skb->len;
+ 	/* If this was the last BD in the ring,
+ 	 * start at the beginning again.
+diff --git a/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.h b/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.h
+index 7fbad157ff83..72784df6c127 100644
+--- a/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.h
++++ b/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.h
+@@ -618,6 +618,29 @@ static inline int mtip_get_time(void)
+ 
+ #define MTIP_PORT_FORWARDING_INIT 0xFF
+ 
++/* Switch Management functions */
++int mtip_vlan_input_process(struct switch_enet_private *fep,
++			    int port, int mode, unsigned short port_vlanid,
++			    int vlan_verify_en, int vlan_domain_num,
++			    int vlan_domain_port);
++int mtip_set_vlan_verification(struct switch_enet_private *fep, int port,
++			       int vlan_domain_verify_en,
++			       int vlan_discard_unknown_en);
++int mtip_port_multicast_config(struct switch_enet_private *fep, int port,
++			       bool enable);
++int mtip_vlan_output_process(struct switch_enet_private *fep, int port,
++			     int mode);
++void mtip_switch_en_port_separation(struct switch_enet_private *fep);
++void mtip_switch_dis_port_separation(struct switch_enet_private *fep);
++int mtip_port_broadcast_config(struct switch_enet_private *fep,
++			       int port, bool enable);
++int mtip_forced_forward(struct switch_enet_private *fep, int port, bool enable);
++int mtip_port_learning_config(struct switch_enet_private *fep, int port,
++			      bool disable, bool irq_adj);
++int mtip_port_blocking_config(struct switch_enet_private *fep, int port,
++			      bool enable);
+ bool mtip_is_switch_netdev_port(const struct net_device *ndev);
++int mtip_port_enable_config(struct switch_enet_private *fep, int port,
++			    bool tx_en, bool rx_en);
+ void mtip_clear_atable(struct switch_enet_private *fep);
+ #endif /* __MTIP_L2SWITCH_H_ */
+diff --git a/drivers/net/ethernet/freescale/mtipsw/mtipl2sw_mgnt.c b/drivers/net/ethernet/freescale/mtipsw/mtipl2sw_mgnt.c
+new file mode 100644
+index 000000000000..4c07861a6a3e
+--- /dev/null
++++ b/drivers/net/ethernet/freescale/mtipsw/mtipl2sw_mgnt.c
+@@ -0,0 +1,442 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ *  L2 switch Controller driver for MTIP block - switch MGNT
++ *
++ *  Copyright (C) 2026 NABLADEV Software Engineering GmbH
++ *  Lukasz Majewski <lukma@nabladev.com>
++ *
++ *  Based on a previous work by:
++ *
++ *  Copyright 2010-2012 Freescale Semiconductor, Inc.
++ *  Alison Wang (b18965@freescale.com)
++ *  Jason Jin (Jason.jin@freescale.com)
++ *
++ *  Copyright (C) 2010-2013 Freescale Semiconductor, Inc. All Rights Reserved.
++ *  Shrek Wu (B16972@freescale.com)
++ */
++
++#include <linux/etherdevice.h>
++#include <linux/netdevice.h>
++#include <linux/platform_device.h>
++
++#include "mtipl2sw.h"
++
++int mtip_vlan_input_process(struct switch_enet_private *fep,
++			    int port, int mode, unsigned short port_vlanid,
++			    int vlan_verify_en, int vlan_domain_num,
++			    int vlan_domain_port)
 +{
-+	struct mtip_ndev_priv *priv = netdev_priv(dev);
-+	struct switch_enet_private *fep = priv->fep;
-+	unsigned short status;
-+	unsigned int index;
-+	struct cbd_t *bdp;
-+	void *bufaddr;
-+
-+	spin_lock_bh(&fep->hw_lock);
-+
-+	if (!fep->link[0] && !fep->link[1]) {
-+		/* Link is down or autonegotiation is in progress. */
-+		mtip_netif_stop_queues(fep);
-+		spin_unlock_bh(&fep->hw_lock);
-+		return NETDEV_TX_BUSY;
-+	}
-+
-+	/* Fill in a Tx ring entry */
-+	bdp = fep->cur_tx;
-+	status = bdp->cbd_sc;
-+
-+	if (status & BD_ENET_TX_READY) {
-+		/* All transmit buffers are full. Bail out. */
-+		mtip_netif_stop_queues(fep);
-+		spin_unlock_bh(&fep->hw_lock);
-+		dev_err_ratelimited(&fep->pdev->dev, "%s: tx queue full!.\n",
-+				    dev->name);
-+		return NETDEV_TX_BUSY;
-+	}
-+
-+	/* Clear all of the status flags */
-+	status &= ~BD_ENET_TX_STATS;
-+
-+	/* Set buffer length and buffer pointer */
-+	bufaddr = skb->data;
-+	bdp->cbd_datlen = skb->len;
-+
-+	index = bdp - fep->tx_bd_base;
-+	/* On some FEC implementations data must be aligned on
-+	 * 4-byte boundaries. Use bounce buffers to copy data
-+	 * and get it aligned.
-+	 */
-+	if ((unsigned long)bufaddr & MTIP_ALIGNMENT ||
-+	    fep->quirks & FEC_QUIRK_SWAP_FRAME) {
-+		memcpy(fep->tx_bounce[index], skb->data, skb->len);
-+		bufaddr = fep->tx_bounce[index];
-+
-+		if (fep->quirks & FEC_QUIRK_SWAP_FRAME)
-+			swap_buffer(bufaddr, skb->len);
-+	}
-+
-+	/* Push the data cache so the CPM does not get stale memory
-+	 * data.
-+	 */
-+	bdp->cbd_bufaddr = dma_map_single(&fep->pdev->dev, bufaddr,
-+					  MTIP_SWITCH_TX_FRSIZE,
-+					  DMA_TO_DEVICE);
-+	if (unlikely(dma_mapping_error(&fep->pdev->dev, bdp->cbd_bufaddr))) {
++	if (mode < 0 || mode > 3) {
 +		dev_err(&fep->pdev->dev,
-+			"Failed to map descriptor tx buffer\n");
-+		dev->stats.tx_dropped++;
-+		dev_kfree_skb_any(skb);
-+		goto err;
++			"%s: VLAN input processing mode (%d) not supported\n",
++			__func__, mode);
++		return -EINVAL;
 +	}
 +
-+	/* Save skb pointer. */
-+	fep->tx_skbuff[index] = skb;
++	if (port < 0 || port > 2) {
++		dev_err(&fep->pdev->dev, "%s: Port (%d) not supported!\n",
++			__func__, port);
++		return -EINVAL;
++	}
 +
-+	/* Send it on its way.  Tell FEC it's ready, interrupt when done,
-+	 * it's the last BD of the frame, and to put the CRC on the end.
-+	 */
++	if (vlan_verify_en == 1 &&
++	    (vlan_domain_num < 0 || vlan_domain_num > 32)) {
++		dev_err(&fep->pdev->dev, "%s: Domain out of range\n", __func__);
++		return -EINVAL;
++	}
 +
-+	status |= (BD_ENET_TX_READY | BD_ENET_TX_INTR | BD_ENET_TX_LAST |
-+		   BD_ENET_TX_TC);
++	writel(FIELD_PREP(MCF_ESW_PID_VLANID_MASK, port_vlanid),
++	       fep->hwp + ESW_PID(port));
++	if (port == 0) {
++		if (vlan_verify_en == 1)
++			writel(FIELD_PREP(MCF_ESW_VRES_VLANID_MASK,
++					  port_vlanid) | MCF_ESW_VRES_P0,
++			       fep->hwp + ESW_VRES(vlan_domain_num));
 +
-+	/* Synchronize all descriptor writes */
-+	wmb();
-+	bdp->cbd_sc = status;
++		writel(readl(fep->hwp + ESW_VIMEN) | MCF_ESW_VIMEN_EN0,
++		       fep->hwp + ESW_VIMEN);
++		writel(readl(fep->hwp + ESW_VIMSEL) |
++		       FIELD_PREP(MCF_ESW_VIMSEL_IM0_MASK, mode),
++		       fep->hwp + ESW_VIMSEL);
++	} else if (port == 1) {
++		if (vlan_verify_en == 1)
++			writel(FIELD_PREP(MCF_ESW_VRES_VLANID_MASK,
++					  port_vlanid) | MCF_ESW_VRES_P1,
++			       fep->hwp + ESW_VRES(vlan_domain_num));
 +
-+	skb_tx_timestamp(skb);
++		writel(readl(fep->hwp + ESW_VIMEN) | MCF_ESW_VIMEN_EN1,
++		       fep->hwp + ESW_VIMEN);
++		writel(readl(fep->hwp + ESW_VIMSEL) |
++		       FIELD_PREP(MCF_ESW_VIMSEL_IM1_MASK, mode),
++		       fep->hwp + ESW_VIMSEL);
++	} else if (port == 2) {
++		if (vlan_verify_en == 1)
++			writel(FIELD_PREP(MCF_ESW_VRES_VLANID_MASK,
++					  port_vlanid) | MCF_ESW_VRES_P2,
++			       fep->hwp + ESW_VRES(vlan_domain_num));
 +
-+	dev->stats.tx_bytes += skb->len;
-+	/* If this was the last BD in the ring,
-+	 * start at the beginning again.
-+	 */
-+	if (status & BD_ENET_TX_WRAP)
-+		bdp = fep->tx_bd_base;
++		writel(readl(fep->hwp + ESW_VIMEN) | MCF_ESW_VIMEN_EN2,
++		       fep->hwp + ESW_VIMEN);
++		writel(readl(fep->hwp + ESW_VIMSEL) |
++		       FIELD_PREP(MCF_ESW_VIMSEL_IM2_MASK, mode),
++		       fep->hwp + ESW_VIMSEL);
++	}
++
++	return 0;
++}
++
++int mtip_vlan_output_process(struct switch_enet_private *fep, int port,
++			     int mode)
++{
++	if (port < 0 || port > 2) {
++		dev_err(&fep->pdev->dev, "%s: Port (%d) not supported!\n",
++			__func__, port);
++		return -EINVAL;
++	}
++
++	if (port == 0) {
++		writel(readl(fep->hwp + ESW_VOMSEL) |
++		       FIELD_PREP(MCF_ESW_VOMSEL_OM0_MASK, mode),
++		       fep->hwp + ESW_VOMSEL);
++	} else if (port == 1) {
++		writel(readl(fep->hwp + ESW_VOMSEL) |
++		       FIELD_PREP(MCF_ESW_VOMSEL_OM1_MASK, mode),
++		       fep->hwp + ESW_VOMSEL);
++	} else if (port == 2) {
++		writel(readl(fep->hwp + ESW_VOMSEL) |
++		       FIELD_PREP(MCF_ESW_VOMSEL_OM2_MASK, mode),
++		       fep->hwp + ESW_VOMSEL);
++	}
++
++	return 0;
++}
++
++int mtip_set_vlan_verification(struct switch_enet_private *fep, int port,
++			       int vlan_domain_verify_en,
++			       int vlan_discard_unknown_en)
++{
++	if (port < 0 || port > 2) {
++		dev_err(&fep->pdev->dev, "%s: Port (%d) not supported!\n",
++			__func__, port);
++		return -EINVAL;
++	}
++
++	if (vlan_domain_verify_en == 1) {
++		if (port == 0)
++			writel(readl(fep->hwp + ESW_VLANV) | MCF_ESW_VLANV_VV0,
++			       fep->hwp + ESW_VLANV);
++		else if (port == 1)
++			writel(readl(fep->hwp + ESW_VLANV) | MCF_ESW_VLANV_VV1,
++			       fep->hwp + ESW_VLANV);
++		else if (port == 2)
++			writel(readl(fep->hwp + ESW_VLANV) | MCF_ESW_VLANV_VV2,
++			       fep->hwp + ESW_VLANV);
++	} else if (vlan_domain_verify_en == 0) {
++		if (port == 0)
++			writel(readl(fep->hwp + ESW_VLANV) & ~MCF_ESW_VLANV_VV0,
++			       fep->hwp + ESW_VLANV);
++		else if (port == 1)
++			writel(readl(fep->hwp + ESW_VLANV) & ~MCF_ESW_VLANV_VV1,
++			       fep->hwp + ESW_VLANV);
++		else if (port == 2)
++			writel(readl(fep->hwp + ESW_VLANV) & ~MCF_ESW_VLANV_VV2,
++			       fep->hwp + ESW_VLANV);
++	}
++
++	if (vlan_discard_unknown_en == 1) {
++		if (port == 0)
++			writel(readl(fep->hwp + ESW_VLANV) | MCF_ESW_VLANV_DU0,
++			       fep->hwp + ESW_VLANV);
++		else if (port == 1)
++			writel(readl(fep->hwp + ESW_VLANV) | MCF_ESW_VLANV_DU1,
++			       fep->hwp + ESW_VLANV);
++		else if (port == 2)
++			writel(readl(fep->hwp + ESW_VLANV) | MCF_ESW_VLANV_DU2,
++			       fep->hwp + ESW_VLANV);
++	} else if (vlan_discard_unknown_en == 0) {
++		if (port == 0)
++			writel(readl(fep->hwp + ESW_VLANV) & ~MCF_ESW_VLANV_DU0,
++			       fep->hwp + ESW_VLANV);
++		else if (port == 1)
++			writel(readl(fep->hwp + ESW_VLANV) & ~MCF_ESW_VLANV_DU1,
++			       fep->hwp + ESW_VLANV);
++		else if (port == 2)
++			writel(readl(fep->hwp + ESW_VLANV) & ~MCF_ESW_VLANV_DU2,
++			       fep->hwp + ESW_VLANV);
++	}
++
++	dev_dbg(&fep->pdev->dev, "%s: ESW_VLANV %#x\n", __func__,
++		readl(fep->hwp + ESW_VLANV));
++
++	return 0;
++}
++
++int mtip_port_multicast_config(struct switch_enet_private *fep,
++			       int port, bool enable)
++{
++	u32 reg = 0;
++
++	if (port < 0 || port > 2) {
++		dev_err(&fep->pdev->dev, "%s: Port (%d) not supported\n",
++			__func__, port);
++		return -EINVAL;
++	}
++
++	reg = readl(fep->hwp + ESW_DMCR);
++	if (enable) {
++		if (port == 0)
++			reg |= MCF_ESW_DMCR_P0;
++		else if (port == 1)
++			reg |= MCF_ESW_DMCR_P1;
++		else if (port == 2)
++			reg |= MCF_ESW_DMCR_P2;
++	} else {
++		if (port == 0)
++			reg &= ~MCF_ESW_DMCR_P0;
++		else if (port == 1)
++			reg &= ~MCF_ESW_DMCR_P1;
++		else if (port == 2)
++			reg &= ~MCF_ESW_DMCR_P2;
++	}
++
++	writel(reg, fep->hwp + ESW_DMCR);
++	return 0;
++}
++
++/* enable or disable port n tx or rx
++ * tx_en 0 disable port n tx
++ * tx_en 1 enable  port n tx
++ * rx_en 0 disable port n rx
++ * rx_en 1 enable  port n rx
++ */
++int mtip_port_enable_config(struct switch_enet_private *fep, int port,
++			    bool tx_en, bool rx_en)
++{
++	u32 reg = 0;
++
++	if (port < 0 || port > 2) {
++		dev_err(&fep->pdev->dev, "%s: Port (%d) not supported\n",
++			__func__, port);
++		return -EINVAL;
++	}
++
++	reg = readl(fep->hwp + ESW_PER);
++	if (tx_en) {
++		if (port == 0)
++			reg |= MCF_ESW_PER_TE0;
++		else if (port == 1)
++			reg |= MCF_ESW_PER_TE1;
++		else if (port == 2)
++			reg |= MCF_ESW_PER_TE2;
++	} else {
++		if (port == 0)
++			reg &= (~MCF_ESW_PER_TE0);
++		else if (port == 1)
++			reg &= (~MCF_ESW_PER_TE1);
++		else if (port == 2)
++			reg &= (~MCF_ESW_PER_TE2);
++	}
++
++	if (rx_en) {
++		if (port == 0)
++			reg |= MCF_ESW_PER_RE0;
++		else if (port == 1)
++			reg |= MCF_ESW_PER_RE1;
++		else if (port == 2)
++			reg |= MCF_ESW_PER_RE2;
++	} else {
++		if (port == 0)
++			reg &= (~MCF_ESW_PER_RE0);
++		else if (port == 1)
++			reg &= (~MCF_ESW_PER_RE1);
++		else if (port == 2)
++			reg &= (~MCF_ESW_PER_RE2);
++	}
++
++	writel(reg, fep->hwp + ESW_PER);
++	return 0;
++}
++
++void mtip_switch_en_port_separation(struct switch_enet_private *fep)
++{
++	u32 reg;
++
++	mtip_vlan_input_process(fep, 0, 3, 0x10, 1, 0, 0);
++	mtip_vlan_input_process(fep, 1, 3, 0x11, 1, 1, 0);
++	mtip_vlan_input_process(fep, 2, 3, 0x12, 1, 2, 0);
++
++	reg = readl(fep->hwp + ESW_VRES(0));
++	writel(reg | MCF_ESW_VRES_P1 | MCF_ESW_VRES_P2,
++	       fep->hwp + ESW_VRES(0));
++
++	reg = readl(fep->hwp + ESW_VRES(1));
++	writel(reg | MCF_ESW_VRES_P0, fep->hwp + ESW_VRES(1));
++
++	reg = readl(fep->hwp + ESW_VRES(2));
++	writel(reg | MCF_ESW_VRES_P0, fep->hwp + ESW_VRES(2));
++
++	dev_dbg(&fep->pdev->dev, "%s: VRES0: 0x%x\n",
++		__func__, readl(fep->hwp + ESW_VRES(0)));
++	dev_dbg(&fep->pdev->dev, "%s: VRES1: 0x%x\n", __func__,
++		readl(fep->hwp + ESW_VRES(1)));
++	dev_dbg(&fep->pdev->dev, "%s: VRES2: 0x%x\n", __func__,
++		readl(fep->hwp + ESW_VRES(2)));
++
++	mtip_set_vlan_verification(fep, 0, 1, 0);
++	mtip_set_vlan_verification(fep, 1, 1, 0);
++	mtip_set_vlan_verification(fep, 2, 1, 0);
++
++	mtip_vlan_output_process(fep, 0, 2);
++	mtip_vlan_output_process(fep, 1, 2);
++	mtip_vlan_output_process(fep, 2, 2);
++}
++
++void mtip_switch_dis_port_separation(struct switch_enet_private *fep)
++{
++	writel(0, fep->hwp + ESW_PID(0));
++	writel(0, fep->hwp + ESW_PID(1));
++	writel(0, fep->hwp + ESW_PID(2));
++
++	writel(0, fep->hwp + ESW_VRES(0));
++	writel(0, fep->hwp + ESW_VRES(1));
++	writel(0, fep->hwp + ESW_VRES(2));
++
++	writel(0, fep->hwp + ESW_VIMEN);
++	writel(0, fep->hwp + ESW_VIMSEL);
++	writel(0, fep->hwp + ESW_VLANV);
++	writel(0, fep->hwp + ESW_VOMSEL);
++}
++
++int mtip_port_broadcast_config(struct switch_enet_private *fep,
++			       int port, bool enable)
++{
++	u32 reg = 0;
++
++	if (port < 0 || port > 2) {
++		dev_err(&fep->pdev->dev, "%s: Port (%d) not supported\n",
++			__func__, port);
++		return -EINVAL;
++	}
++
++	reg = readl(fep->hwp + ESW_DBCR);
++	if (enable) {
++		if (port == 0)
++			reg |= MCF_ESW_DBCR_P0;
++		else if (port == 1)
++			reg |= MCF_ESW_DBCR_P1;
++		else if (port == 2)
++			reg |= MCF_ESW_DBCR_P2;
++	} else {
++		if (port == 0)
++			reg &= ~MCF_ESW_DBCR_P0;
++		else if (port == 1)
++			reg &= ~MCF_ESW_DBCR_P1;
++		else if (port == 2)
++			reg &= ~MCF_ESW_DBCR_P2;
++	}
++
++	writel(reg, fep->hwp + ESW_DBCR);
++	return 0;
++}
++
++/* The frame is forwarded to the forced destination ports.
++ * It only replace the MAC lookup function,
++ * all other filtering(eg.VLAN verification) act as normal
++ */
++int mtip_forced_forward(struct switch_enet_private *fep, int port, bool enable)
++{
++	u32 reg = 0;
++
++	if (port & ~GENMASK(1, 0)) {
++		dev_err(&fep->pdev->dev,
++			"%s: Forced forward for port(s): 0x%x not supported!\n",
++			__func__, port);
++		return -EINVAL;
++	}
++
++	/* Enable Forced forwarding for port(s) */
++	reg |= FIELD_PREP(MCF_ESW_P0FFEN_FD_MASK, port & GENMASK(1, 0));
++
++	if (enable)
++		reg |= MCF_ESW_P0FFEN_FEN;
 +	else
-+		bdp++;
++		reg &= ~MCF_ESW_P0FFEN_FEN;
 +
-+	fep->cur_tx = bdp;
-+	/* When TX descriptors' ring buffer is full stop both interfaces */
-+	if (fep->cur_tx == fep->dirty_tx)
-+		mtip_netif_stop_queues(fep);
-+
-+	/* Trigger transmission start */
-+	writel(MCF_ESW_TDAR_X_DES_ACTIVE, fep->hwp + ESW_TDAR);
-+
-+ err:
-+	spin_unlock_bh(&fep->hw_lock);
-+
-+	return NETDEV_TX_OK;
++	writel(reg, fep->hwp + ESW_P0FFEN);
++	return 0;
 +}
 +
-+static netdev_tx_t mtip_start_xmit(struct sk_buff *skb,
-+				   struct net_device *dev)
++int mtip_port_learning_config(struct switch_enet_private *fep, int port,
++			      bool disable, bool irq_adj)
 +{
-+	struct mtip_ndev_priv *priv = netdev_priv(dev);
++	u32 reg = 0;
 +
-+	return mtip_start_xmit_port(skb, dev, priv->portnum);
-+}
-+
- static void mtip_configure_enet_mii(struct switch_enet_private *fep, int port)
- {
- 	struct phy_device *phydev = fep->phy_dev[port - 1];
-@@ -617,6 +740,76 @@ static void mtip_switch_restart(struct net_device *dev, int duplex0,
- 	mtip_config_switch(fep);
- }
- 
-+static void mtip_print_hw_state(struct net_device *dev)
-+{
-+	struct mtip_ndev_priv *priv = netdev_priv(dev);
-+	struct switch_enet_private *fep = priv->fep;
-+	struct cbd_t *bdp;
-+	bool tx_full;
-+	int i;
-+
-+	spin_lock_bh(&fep->hw_lock);
-+	tx_full = fep->dirty_tx == fep->cur_tx &&
-+		mtip_netif_queues_stopped(fep);
-+
-+	dev_info(&dev->dev, "%s: transmit timed out.\n", dev->name);
-+	dev_info(&dev->dev,
-+		 "Ring data: cur_tx 0x%p%s, dirty_tx 0x%p cur_rx: 0x%p\n",
-+		 fep->cur_tx, tx_full ? " (full)" : "", fep->dirty_tx,
-+		 fep->cur_rx);
-+
-+	bdp = fep->tx_bd_base;
-+	dev_info(&dev->dev, " tx: %u buffers\n", TX_RING_SIZE);
-+	for (i = 0; i < TX_RING_SIZE; i++) {
-+		dev_info(&dev->dev, "  0x%p: %04x %04x %08x\n",
-+			 bdp, bdp->cbd_sc, bdp->cbd_datlen,
-+			 (int)bdp->cbd_bufaddr);
-+		bdp++;
++	if (port < 0 || port > 2) {
++		dev_err(&fep->pdev->dev, "%s: Port (%d) not supported\n",
++			__func__, port);
++		return -EINVAL;
 +	}
 +
-+	bdp = fep->rx_bd_base;
-+	dev_info(&dev->dev, " rx: %lu buffers\n", RX_RING_SIZE);
-+	for (i = 0 ; i < RX_RING_SIZE; i++) {
-+		dev_info(&dev->dev, "  0x%p: %04x %04x %08x\n",
-+			 bdp, bdp->cbd_sc, bdp->cbd_datlen,
-+			 (int)bdp->cbd_bufaddr);
-+		bdp++;
-+	}
-+	spin_unlock_bh(&fep->hw_lock);
-+}
++	reg = readl(fep->hwp + ESW_BKLR);
++	if (disable) {
++		if (irq_adj)
++			writel(readl(fep->hwp + ESW_IMR) & ~MCF_ESW_IMR_LRN,
++			       fep->hwp + ESW_IMR);
 +
-+static void mtip_timeout(struct net_device *dev, unsigned int txqueue)
-+{
-+	struct mtip_ndev_priv *priv = netdev_priv(dev);
++		if (port == 0)
++			reg |= MCF_ESW_BKLR_LD0;
++		else if (port == 1)
++			reg |= MCF_ESW_BKLR_LD1;
++		else if (port == 2)
++			reg |= MCF_ESW_BKLR_LD2;
++	} else {
++		if (irq_adj)
++			writel(readl(fep->hwp + ESW_IMR) | MCF_ESW_IMR_LRN,
++			       fep->hwp + ESW_IMR);
 +
-+	DO_ONCE(mtip_print_hw_state, dev);
-+
-+	/* Adjust switch registers to handle TX timeout - to be more
-+	 * specific - restart is required.
-+	 */
-+	schedule_work(&priv->tx_timeout_work);
-+}
-+
-+static void mtip_timeout_work(struct work_struct *work)
-+{
-+	struct mtip_ndev_priv *priv =
-+		container_of(work, struct mtip_ndev_priv, tx_timeout_work);
-+	struct switch_enet_private *fep = priv->fep;
-+	struct net_device *dev = priv->dev;
-+
-+	rtnl_lock();
-+	if (netif_device_present(dev) || netif_running(dev)) {
-+		napi_disable(&fep->napi);
-+		netif_tx_lock_bh(dev);
-+		mtip_switch_restart(dev, fep->full_duplex[0],
-+				    fep->full_duplex[1]);
-+		netif_tx_wake_all_queues(dev);
-+		netif_tx_unlock_bh(dev);
-+		napi_enable(&fep->napi);
-+	}
-+	rtnl_unlock();
-+}
-+
- static irqreturn_t mtip_interrupt(int irq, void *ptr_fep)
- {
- 	struct switch_enet_private *fep = ptr_fep;
-@@ -1095,6 +1288,98 @@ static int mtip_close(struct net_device *dev)
- 	return 0;
- }
- 
-+#define FEC_HASH_BITS	6		/* #bits in hash */
-+static void mtip_set_multicast_list(struct net_device *dev)
-+{
-+	struct mtip_ndev_priv *priv = netdev_priv(dev);
-+	unsigned int hash_high = 0, hash_low = 0, crc;
-+	struct switch_enet_private *fep = priv->fep;
-+	void __iomem *enet_addr = fep->enet_addr;
-+	struct netdev_hw_addr *ha;
-+	unsigned char hash;
-+
-+	if (priv->portnum == 2)
-+		enet_addr += MCF_ESW_ENET_PORT_OFFSET;
-+
-+	if (dev->flags & IFF_PROMISC) {
-+		/* Promisc mode is required for switch - it is
-+		 * already enabled during driver's probe.
-+		 */
-+		dev_dbg(&dev->dev, "%s: IFF_PROMISC\n", __func__);
-+		return;
++		if (port == 0)
++			reg &= ~MCF_ESW_BKLR_LD0;
++		else if (port == 1)
++			reg &= ~MCF_ESW_BKLR_LD1;
++		else if (port == 2)
++			reg &= ~MCF_ESW_BKLR_LD2;
 +	}
 +
-+	if (dev->flags & IFF_ALLMULTI) {
-+		dev_dbg(&dev->dev, "%s: IFF_ALLMULTI\n", __func__);
-+
-+		/* Allow all multicast addresses */
-+		writel(0xFFFFFFFF, enet_addr + MCF_FEC_GRP_HASH_TABLE_HIGH);
-+		writel(0xFFFFFFFF, enet_addr + MCF_FEC_GRP_HASH_TABLE_LOW);
-+
-+		return;
-+	}
-+
-+	netdev_for_each_mc_addr(ha, dev) {
-+		/* Calculate crc32 value of mac address */
-+		crc = ether_crc_le(dev->addr_len, ha->addr);
-+
-+		/* Only upper 6 bits (FEC_HASH_BITS) are used
-+		 * which point to specific bit in the hash registers
-+		 */
-+		hash = (crc >> (32 - FEC_HASH_BITS)) & 0x3F;
-+
-+		if (hash > 31)
-+			hash_high |= 1 << (hash - 32);
-+		else
-+			hash_low |= 1 << hash;
-+	}
-+
-+	writel(hash_high, enet_addr + MCF_FEC_GRP_HASH_TABLE_HIGH);
-+	writel(hash_low, enet_addr + MCF_FEC_GRP_HASH_TABLE_LOW);
-+}
-+
-+static int mtip_set_mac_address(struct net_device *dev, void *p)
-+{
-+	struct mtip_ndev_priv *priv = netdev_priv(dev);
-+	struct switch_enet_private *fep = priv->fep;
-+	void __iomem *enet_addr = fep->enet_addr;
-+	struct sockaddr *addr = p;
-+	int ret;
-+
-+	if (!is_valid_ether_addr(addr->sa_data))
-+		return -EADDRNOTAVAIL;
-+
-+	ret = mtip_update_atable_static((unsigned char *)addr->sa_data,
-+					7, 7, fep);
-+	if (ret)
-+		return ret;
-+
-+	eth_hw_addr_set(dev, addr->sa_data);
-+
-+	if (priv->portnum == 2)
-+		enet_addr += MCF_ESW_ENET_PORT_OFFSET;
-+
-+	writel(dev->dev_addr[3] | (dev->dev_addr[2] << 8) |
-+	       (dev->dev_addr[1] << 16) | (dev->dev_addr[0] << 24),
-+	       enet_addr + MCF_FEC_PALR);
-+	writel((dev->dev_addr[5] << 16) | (dev->dev_addr[4] << 24),
-+	       enet_addr + MCF_FEC_PAUR);
++	writel(reg, fep->hwp + ESW_BKLR);
++	dev_dbg(&fep->pdev->dev, "%s ESW_BKLR %#x, ESW_IMR %#x\n", __func__,
++		readl(fep->hwp + ESW_BKLR), readl(fep->hwp + ESW_IMR));
 +
 +	return 0;
 +}
 +
-+static int mtip_get_port_parent_id(struct net_device *ndev,
-+				   struct netdev_phys_item_id *ppid)
++int mtip_port_blocking_config(struct switch_enet_private *fep, int port,
++			      bool enable)
 +{
-+	struct mtip_ndev_priv *priv = netdev_priv(ndev);
-+	struct switch_enet_private *fep = priv->fep;
++	u32 reg = 0;
 +
-+	ppid->id_len = sizeof(fep->mac[0]);
-+	memcpy(&ppid->id, &fep->mac[0], ppid->id_len);
++	if (port < 0 || port > 2) {
++		dev_err(&fep->pdev->dev, "%s: Port (%d) not supported\n",
++			__func__, port);
++		return -EINVAL;
++	}
 +
++	reg = readl(fep->hwp + ESW_BKLR);
++	if (enable) {
++		if (port == 0)
++			reg |= MCF_ESW_BKLR_BE0;
++		else if (port == 1)
++			reg |= MCF_ESW_BKLR_BE1;
++		else if (port == 2)
++			reg |= MCF_ESW_BKLR_BE2;
++	} else {
++		if (port == 0)
++			reg &= ~MCF_ESW_BKLR_BE0;
++		else if (port == 1)
++			reg &= ~MCF_ESW_BKLR_BE1;
++		else if (port == 2)
++			reg &= ~MCF_ESW_BKLR_BE2;
++	}
++
++	writel(reg, fep->hwp + ESW_BKLR);
 +	return 0;
 +}
-+
- static const struct ethtool_ops mtip_ethtool_ops = {
- 	.get_link_ksettings     = phy_ethtool_get_link_ksettings,
- 	.set_link_ksettings     = phy_ethtool_set_link_ksettings,
-@@ -1106,6 +1391,11 @@ static const struct ethtool_ops mtip_ethtool_ops = {
- static const struct net_device_ops mtip_netdev_ops = {
- 	.ndo_open		= mtip_open,
- 	.ndo_stop		= mtip_close,
-+	.ndo_start_xmit	= mtip_start_xmit,
-+	.ndo_set_rx_mode	= mtip_set_multicast_list,
-+	.ndo_tx_timeout	= mtip_timeout,
-+	.ndo_set_mac_address	= mtip_set_mac_address,
-+	.ndo_get_port_parent_id	= mtip_get_port_parent_id,
- };
- 
- bool mtip_is_switch_netdev_port(const struct net_device *ndev)
-@@ -1158,10 +1448,14 @@ static int mtip_switch_dma_init(struct switch_enet_private *fep)
- 
- static void mtip_ndev_cleanup(struct switch_enet_private *fep)
- {
-+	struct mtip_ndev_priv *priv;
- 	int i;
- 
- 	for (i = 0; i < SWITCH_EPORT_NUMBER; i++) {
- 		if (fep->ndev[i]) {
-+			priv = netdev_priv(fep->ndev[i]);
-+			cancel_work_sync(&priv->tx_timeout_work);
-+
- 			unregister_netdev(fep->ndev[i]);
- 			free_netdev(fep->ndev[i]);
- 			fep->ndev[i] = NULL;
-@@ -1196,6 +1490,8 @@ static int mtip_ndev_init(struct switch_enet_private *fep,
- 
- 		mtip_setup_mac(fep->ndev[i]);
- 
-+		INIT_WORK(&priv->tx_timeout_work, mtip_timeout_work);
-+
- 		ret = register_netdev(fep->ndev[i]);
- 		if (ret) {
- 			dev_err(&fep->ndev[i]->dev,
 -- 
 2.39.5
 
