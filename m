@@ -1,104 +1,83 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1C082D3EF2;
-	Mon,  1 Jun 2026 16:07:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14AB51C5F13;
+	Mon,  1 Jun 2026 16:16:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780330056; cv=none; b=dcN2KGhfECEYHm5Y6FLaGX7PgKOJvTW5DujVjEJM48sy73ruZhwaS5STKELWurL6NMfYeH9QFaHtUlDNaH/epOKy0edR6xOG3QKZuuehdWHMvr49Si1q4m3kpBAFun7Yrb4jZEPlfZkER3DpYVPkjkFuXRyaJ2WAFU+qN1EOfNI=
+	t=1780330606; cv=none; b=P8PrGsSkoEifxw8HLgJZME2F2nZyP+95dT903uJ7uidwoUw8H7K1w0V7K4QMK7Tk/COQ0Cc9tByKrnJCgnaPAy1Qa64WFndrFk3pgM37PJlcgQxLrMf1ZCRjhPPTpE4/GxQcfYLfBnY9DW56OCGVExA2tV9ZaIjNFAwMZPUYKz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780330056; c=relaxed/simple;
-	bh=kw2fWl3/kggl+8QoaAiMjksNRBNP+AfA83rL8vln0fk=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=rGJbHylIZ98FW23YEpzQiJ0pUF909DGcG+tc0sGELS7eGTlxaLEqv3bky0q5XEKmmxiX3WAvQD3uKOotvyrpkmX/E3xV+fGJyv5P7g0g8sO/gI3TD3mFBsjD+OQJeHpeZXpDQj01hVbg0uCR/Mc6cFD34sNVkSIYJwSYUi9QjfI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iSdLtCSf; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1780330606; c=relaxed/simple;
+	bh=9PKVWhCQBLY1DnMif+SX6mAvCPztWlKczkmKYCWedA4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=F/CWj9C8ba9i2g7BkeNC1yuM6Now7iCBVut5meij6zm9wQM15IIt1XOB//kauc0xIXVGjYGAWcx24OJIVXGfN/6VpEyfnO3m4SKB+Gec9SrBGVCQZK1WP6Y8fV/hgL3XOLfA7uZ+q2OdMFT273i2ajXA4jsMIQIRBYBwIqPXX/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SC2lQoFO; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iSdLtCSf"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 6E977C2BCF4;
-	Mon,  1 Jun 2026 16:07:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1780330055;
-	bh=kw2fWl3/kggl+8QoaAiMjksNRBNP+AfA83rL8vln0fk=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=iSdLtCSfBr5tFVmC98KsXiPHILpaKlsIUtuNKynwexm+SaQD9jnNN6QpyjlS4mmWL
-	 cq/hlwCyLjoE1wxYGNpu0/5hCdBXvUzG4sunuRHyfyJUsWq8AN0gDg/2NI0YlyxP9I
-	 GVN9I8ekUTgZEcL+h6dBdPS68QO6TjxmijgGH5dy2yFELB2vS8h7HlGrsj6gfbDQE0
-	 +GV59HnocRa2/3EcOiQqdAcAe3j8OrIZK2V1mPolZipp18G3bMPS8cYFcAiEo5kyXe
-	 ICI5tzZF21sIUS6kZBYxeYRPcsQJYD2jQFbFBILv0kSG+pZYtCbSsFxdq34XrNAX6K
-	 QZDG/a1/MGQ7Q==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3AA16CD6E57;
-	Mon,  1 Jun 2026 16:07:35 +0000 (UTC)
-From: Selvamani Rajagopal via B4 Relay <devnull+Selvamani.Rajagopal.onsemi.com@kernel.org>
-Subject: [PATCH net v3 0/2] Resubmitting with cover-letter and threaded
- patch series.
-Date: Mon, 01 Jun 2026 09:07:17 -0700
-Message-Id: <20260601-level-trigger-v3-0-da73e7010532@onsemi.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SC2lQoFO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58ECF1F00893;
+	Mon,  1 Jun 2026 16:16:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780330604;
+	bh=2bpASveTKRhnnK7RqHQ/gb28QgUflHaWAOnJOmldcic=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=SC2lQoFOOIhfLyd8tXQdxDdmqlHh9UsZzkKnvBXZS7YH1EDA3xXwa0KDVHF+d8axL
+	 M5OfrFlp/JDROL+rcPjrEQfZNvvu2lJCW4q4otdgrG5bSTil3DuJHrrXiZ6jMSqh6F
+	 xiM7NvDLMyrWbZjwVrzJHvPYzokqTNRWMq9ZiRTCoyvNfPIGyxNXa8S5LV0bqwbNX3
+	 0UbA0pJw8sUDVj/FpSxjv8EzfPaQBHDnkbeWB2cAypMoH0ecPMwpwP3KS/YcKN7/DD
+	 W+sun6C4ZP+KZgsptnq+BlE4ePLceTcwCoPYnW0thVe15UfLkVST4AEGucAmLSqgJQ
+	 DzaspGX/nifJA==
+Date: Mon, 1 Jun 2026 18:16:37 +0200
+From: Christian Brauner <brauner@kernel.org>
+To: Askar Safin <safinaskar@gmail.com>
+Cc: Pedro Falcato <pfalcato@suse.de>, linux-fsdevel@vger.kernel.org, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-api@vger.kernel.org, netdev@vger.kernel.org, 
+	Linus Torvalds <torvalds@linux-foundation.org>, Matthew Wilcox <willy@infradead.org>, 
+	Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@infradead.org>, 
+	David Howells <dhowells@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Miklos Szeredi <miklos@szeredi.hu>, patches@lists.linux.dev
+Subject: Re: [PATCH 0/3] vmsplice: make vmsplice a trivial wrapper for
+ preadv2/pwritev2
+Message-ID: <20260601-geldentwertung-aufdecken-aussehen-1502bfad440d@brauner>
+References: <20260531010107.1953702-1-safinaskar@gmail.com>
+ <ahv16ogY8Zx3Rtox@pedro-suse.lan>
+ <CAPnZJGD5QR5jrNMAem7FjMRTtw+Ue+jm7Dc2Kp8Lcjj+9TDw_Q@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIADWuHWoC/x3MQQqAIBBG4avErBMsK6SrRAurPxsQizEiiO6et
- PwW7z2UIIxEffGQ4OLEe8wwZUHz5qKH4iWbal13ujWVCrgQ1CnsPUTZeaqcNW7VpqHcHIKV7/8
- 3UMRJ4/t+M1JklWQAAAA=
-To: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: Piergiorgio Beruto <pier.beruto@onsemi.com>, 
- Andrew Lunn <andrew@lunn.ch>, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Conor Dooley <conor.dooley@microchip.com>, 
- devicetree@vger.kernel.org, 
- Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1780330051; l=1287;
- i=Selvamani.Rajagopal@onsemi.com; s=20260531; h=from:subject:message-id;
- bh=kw2fWl3/kggl+8QoaAiMjksNRBNP+AfA83rL8vln0fk=;
- b=SS/YfqGoPg9wOTPHlmfv/m8D1xooz6roiF1ub99TrzArgzjzL5VxnIisRzP3B7LTiInntQGS4
- 2NyLmUlB7iaA3sLOMe7S8Ly4Y0yK93snp81QnuKCJZxIk1bnHf2Ot5i
-X-Developer-Key: i=Selvamani.Rajagopal@onsemi.com; a=ed25519;
- pk=5QRdM0HS/LGWWcUZZ9hVfZ+qbPQGZCumcTXOiN7Fyug=
-X-Endpoint-Received: by B4 Relay for
- Selvamani.Rajagopal@onsemi.com/20260531 with auth_id=803
-X-Original-From: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
-Reply-To: Selvamani.Rajagopal@onsemi.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAPnZJGD5QR5jrNMAem7FjMRTtw+Ue+jm7Dc2Kp8Lcjj+9TDw_Q@mail.gmail.com>
 
-According to OPEN Alliance 10BASE-T1x MAC-PHY Serial Interface
-specification, MAC-PHY interrupt is "active low, level triggered".
-The specification mentions about the conditions in which the IRQ
-is asserted and deasserted.
+On Mon, Jun 01, 2026 at 12:21:06AM +0300, Askar Safin wrote:
+> On Sun, May 31, 2026 at 11:54 AM Pedro Falcato <pfalcato@suse.de> wrote:
+> > So, you took an ongoing discussion with an ongoing RFC patchset, and you
+> > decided to reimplement part of the idea on your own, as a concurrent patchset.
+> 
+> Yes. But I propose an alternative solution to this problem.
 
-Bug is inadvertently introduced by treating the IRQ in the OA TC6
-framework driver and in dt-binding YAML file as edge triggered.
+So I think this is a case where no explicit rules have been broken. But
+if you know that someone has been posting patches and is working on a
+problem just racing them to get your own stuff merged is very likely to
+unnecessarily ruffle feathers. So sync with the person next time.
 
-Changes are done in two files
- - OA TC6 framework Ethernet driver
- - YAML file for the vendor that already uses OA TC6 framework.
+The discussion wasn't at an impasse and Pedro is expected to follow-up.
+It's not very nice to just have someone else's work be for naught.
 
-Maintainer for this driver is already informed and aware of these
-changes. Testing for these changes was done in onsemi's setup and
-found to be working.
+> Brauner said in discussion for your patchset:
+> "So I'm not very likely to pick this up as is".
+> So, I decided to submit another solution.
 
-Signed-off-by: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
----
-Selvamani Rajagopal (2):
-      net: ethernet: oa_tc6: Interrupt is active low, level triggered.
-      dt-bindings: net: updated interrupt type to be active low, level triggered
+This lacks quite some context... I said "in its current form" and the a
+long discussion ensued.
 
- Documentation/devicetree/bindings/net/microchip,lan8650.yaml | 2 +-
- drivers/net/ethernet/oa_tc6.c                                | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
----
-base-commit: 02896a7fa4cd3ec61d60ba30136841e4f04bdeac
-change-id: 20260531-level-trigger-8cb1a83af034
+> If my patchset is applied, then I will try to deal
+> with splice-pagecache-to-pipe somehow,
+> probably by removing it, too. :) I decided first
 
-Best regards,
--- 
-Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
-
-
+So ok, but this is literally what Pedro is working on. This just wastes
+people's time.
