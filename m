@@ -1,556 +1,267 @@
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07BE137F007;
-	Tue,  2 Jun 2026 09:45:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 338843D3D03
+	for <netdev@vger.kernel.org>; Tue,  2 Jun 2026 09:47:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780393523; cv=none; b=oFOmPI0bF+x+3/UfiwRrcJLnPyJYFRbeIVo4L1RPuYQ0Umfp46gj5ZmIEXldczmBQXptAlRGm47xYvdOi6bqO/t91afJKvI8vT6zDdlJLNJOC0DlVdxIitFygalxcwW6RpIeVz6a9DCBFhhlI3sy19ZQHS2yE5sw3jTGtCw2r/Q=
+	t=1780393632; cv=none; b=XdVqGD2YqqfDeHO+uFIfishJWwGOmJ/mS4VBRG4uM1GgGPst3fD8Z7RYbR9VBVkaBAI0sjFj/7P/fyGbF/A7JF1TE9tyslRESMaCtszOw+86BmlPl93u2Wp1LU/KdFqP/ga15rK15OGTDjVL6SyAU6TL5JRNpzp0DDY4W3POrOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780393523; c=relaxed/simple;
-	bh=6076gICBBQ5JrU/wFnejmG0ObYnml34OvyJavVCfM1o=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mzYGDlrkGwqNOfvuaMNuDq9G40bR3Zynp74CGAlxqGxkZ3x1tbpcfFz+ZG1ATrcX+QfN1lSe7pPjiLyXSam7ePa8X2SZih10quB2Jb0vG/2BLzyA4hGnlttKMhs1+IX5XXpvUL+T2oGtFrgR6xYiYG+IW+JDi75IF3VPcFq6uvU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=DHzZ6wan; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	s=arc-20240116; t=1780393632; c=relaxed/simple;
+	bh=GH+I9RsdgTE0OHCyZhbjj1jnDfvIU8wsj/dmNuKaUik=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=EFjwNUcWw4+dyiwZDSwj4HrVKUbErlaGef4+02KIy6Wg/Z853zARd/rlEOmXhCiwtYe6um04+tkJDtfFhy67bWgr2ChyU8nfpfaw2vgt/OSm697L16e5Ka6Ee/ztojea8cPYQ3nRG4K9FqekkwPbOCXkz+yjzaUTP6M45BTFYyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XCPMbLBN; arc=none smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="DHzZ6wan"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id CD8B4A03C2;
-	Tue,  2 Jun 2026 11:45:03 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1780393507; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding; bh=nTeQAIQ2QBgStDqa1p/0yNqfi1++3j0sDc50/43Jor0=;
-	b=DHzZ6wanQFuCrYYJojmgj4XjYBeIvhIlVKKCfxg5mHTVaHNmAFlGpVhsGrTPv9ag/VthmO
-	lMAzrf7YAuyVCK4wcC3EsYlhQaEgQ9Bb4oN02eAoq1dqawKCGMQPR7xIagwhEmcTX2UhgZ
-	JikVl1GxyKurhAxgi5CxhhcW4/AeNxECeIgvYNJs+79F19grb6rfomqVbXKGgiY9edB0lS
-	l1Nx51OfvzK9aCHhvOP/5y68aDZriiog+J2LCdRJxqx8u0tdcmoNUQ/w4ArQVLolyz5Rz6
-	5g2B9SsZQsGwX5qosgSZjCygZsECcohT3SZdfnu0hOL5UDcyJghaqzGxtZAGVw==
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: netdev@vger.kernel.org
-Cc: Justin Chen <justin.chen@broadcom.com>,
-	Nicolai Buchwitz <nb@tipi-net.de>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Doug Berger <opendmb@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Vikas Gupta <vikas.gupta@broadcom.com>,
-	Rajashekar Hudumula <rajashekar.hudumula@broadcom.com>,
-	Bhargava Marreddy <bhargava.marreddy@broadcom.com>,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	=?UTF-8?q?Markus=20Bl=C3=B6chl?= <markus@blochl.de>,
-	Arnd Bergmann <arnd@arndb.de>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next] net: bcmgenet: convert RX path to page_pool
-Date: Tue,  2 Jun 2026 11:42:31 +0200
-Message-ID: <20260602094248.4130712-1-nb@tipi-net.de>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XCPMbLBN"
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-490a7876f8cso22202775e9.3
+        for <netdev@vger.kernel.org>; Tue, 02 Jun 2026 02:47:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780393629; x=1780998429; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kwsVWUXBBycIdE/ihGu428I0auaTKDjLFd3QwYVOS/Y=;
+        b=XCPMbLBN/aiL5UzjeAZ5SxMnzjYDorlpHiZ040eFaOnQewYh3S2sj8+R7hJ9FCBQ63
+         HDYqUPDb08TXuBeU3Fv8s5awpntIaj4W3iD91nwtSbTtSoobPsdmfq3j1Qi14PId6etH
+         BUySj8pjuySeDbu5mDA92ac3baYqpxI420pk2m7RD5gvDN4wzF/tgrpIM61jgFHW3Miu
+         CCk5rwFe148YaKtlGSOx136hT9W3QO8WSHpP/vEmfdAbjGkU9bbldNA0hykPg7fafilN
+         w4smA3ulkSDCFINcTUTCCHVZLqBA3bh6wuLX2BZVj86E+fQrgiBRh9IbZ3THEaAYhiZ4
+         NccA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780393629; x=1780998429;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=kwsVWUXBBycIdE/ihGu428I0auaTKDjLFd3QwYVOS/Y=;
+        b=jZ+3NeMUwioEXeyAiuBMesNQPcQbUysLpwA6hxzxo52g6IKf9QRd5gx8ndqn8z0VQu
+         QLaMZtOWh3GixlDMtyRJL4Ceyn9P9kyLBKgKNZ8Umt1AWA001xvwpZ7sE+8y6iylwWDX
+         8In2w6GeXEsogUg6x7B2n9IfNizkvsXmG4NoPiA84Qzc0HeFoi/YcHUXQnFUrs1hq8nO
+         8J3V4SwRrZcO6UQy2mcXMrBBYpK6UteMGsgtWFbJlBeV5CrmsXrbS/tS6pAgzCsptwhb
+         3sLnGcU5Nw180JJ4zetn4kw7vFwF/Tdi6lTlbu0PYv9/wGntp/X9I3t8aDZDf0A4rD+X
+         OtFQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8QWKQRqFMpdmcIAEBrQI2ObO5R94Iyq7St3/7E1qqGQZ1KsBf+JAZe1AWIlIQtR9Lz2aNaQ3U=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwXkcOz83E7Bncua7/wIJOzN1lHum12RfoEXtHUf/+lhxZUb3Qn
+	ecUDOQlY22dc0fJ6QXj4ZO83MbSwLeWEkDPMZz6uIFATNrUhTRNuHprU
+X-Gm-Gg: Acq92OHqxNk0H0Hq0WEOw/uoO0svZtWXSaY9jAGFkTKQsyElwXfNsqVjkdMbQS7zv2k
+	uk4wRyRnXRSaX+4ctUC4E1JsHbYOn2DXg+7/rE+E8cOwpyX8fXrUfExr3lygrLuHPmqLeLIsBkX
+	kK3QKz17T5ExUjQQ6Y4wPkFw2UjV/OBOIOhh9jdQxIl/UR/fMVOnakRrCTCa4MwshAU4Y78T5wO
+	yj/ov4u9wZ54Fsk5iOt5j0SHyuiBREp06IYYWHd9DH0tMt/J6Yv5ewYXv9gF71DA4teIU3nn/eq
+	9LZ937uImWR/bNxi+XoxphSTYIZvqLAeJrqxqP8V1wFKmschc9RxCHx3ij27zKj6KCYJHKovdzE
+	Fw/SdqTu0OeYvEFTJ35AqxF0FP9VgPxr5q9CvB33stTsfvZY2/IxdaoDuGosH6MtQOPnPvMzv2i
+	EMkk4yuluZ1a3OfOc94l42CgPYdFvR1fTN+2EE5oK0dEbOkabAM0+tuE3862BH6Hpq1Yys1ydXh
+	RFvKt68Zw==
+X-Received: by 2002:a05:600d:8654:10b0:48e:5d91:cfe3 with SMTP id 5b1f17b1804b1-490a29121b8mr207121565e9.1.1780393628119;
+        Tue, 02 Jun 2026 02:47:08 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490b3cff37fsm2620125e9.16.2026.06.02.02.46.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 02 Jun 2026 02:46:59 -0700 (PDT)
+Date: Tue, 2 Jun 2026 10:46:47 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: Eric Dumazet <edumazet@google.com>
+Cc: Kuniyuki Iwashima <kuniyu@google.com>, davem@davemloft.net,
+ dsahern@kernel.org, horms@kernel.org, idosch@nvidia.com,
+ jianhao.xu@seu.edu.cn, kuba@kernel.org, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org, pabeni@redhat.com, runyu.xiao@seu.edu.cn,
+ stable@vger.kernel.org
+Subject: Re: [PATCH net] ipv6: use READ_ONCE() in ipv6_flowlabel_get()
+Message-ID: <20260602104647.51ccadce@pumpkin>
+In-Reply-To: <CANn89iJWcG6UH0ZqLnjRaCr0Ky6WeEYhj-pyeyrPf3oJcHU5KQ@mail.gmail.com>
+References: <20260601223122.63c0d23f@pumpkin>
+	<20260601231546.3407019-1-kuniyu@google.com>
+	<20260602090034.7a5c243e@pumpkin>
+	<CANn89iJWcG6UH0ZqLnjRaCr0Ky6WeEYhj-pyeyrPf3oJcHU5KQ@mail.gmail.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Replace the per-packet __netdev_alloc_skb() + dma_map_single() in the
-RX path with page_pool. SKBs are built from pool pages via
-napi_build_skb() with skb_mark_for_recycle() so the network stack
-returns pages to the pool, and DMA mapping happens once per page
-instead of once per packet.
+On Tue, 2 Jun 2026 01:10:49 -0700
+Eric Dumazet <edumazet@google.com> wrote:
 
-Reject HW-reported lengths smaller than RSB + minimum Ethernet frame
-(+ FCS if crc_fwd_en) so a runt cannot underflow the SKB build path.
+> On Tue, Jun 2, 2026 at 1:00=E2=80=AFAM David Laight
+> <david.laight.linux@gmail.com> wrote:
+> >
+> > On Mon,  1 Jun 2026 23:14:44 +0000
+> > Kuniyuki Iwashima <kuniyu@google.com> wrote:
+> > =20
+> > > From: David Laight <david.laight.linux@gmail.com>
+> > > Date: Mon, 1 Jun 2026 22:31:22 +0100 =20
+> > > > On Mon, 1 Jun 2026 05:36:37 -0700
+> > > > Eric Dumazet <edumazet@google.com> wrote:
+> > > > =20
+> > > > > On Mon, Jun 1, 2026 at 5:22=E2=80=AFAM David Laight
+> > > > > <david.laight.linux@gmail.com> wrote: =20
+> > > > > >
+> > > > > > On Sun, 31 May 2026 23:39:46 +0800
+> > > > > > Runyu Xiao <runyu.xiao@seu.edu.cn> wrote:
+> > > > > > =20
+> > > > > > > ipv6_flowlabel_get() still reads the shared per-net sysctl fi=
+elds
+> > > > > > > flowlabel_consistency and flowlabel_state_ranges with plain l=
+oads,
+> > > > > > > while writers update them through proc_dou8vec_minmax(). Thes=
+e checks
+> > > > > > > run in the live IPV6_FLOWLABEL_MGR path, so lockless plain re=
+ads leave
+> > > > > > > KCSAN-visible data races and can make the policy checks obser=
+ve stale or
+> > > > > > > inconsistent values.
+> > > > > > >
+> > > > > > > The race can be reached on a running system by toggling
+> > > > > > > /proc/sys/net/ipv6/flowlabel_consistency and
+> > > > > > > /proc/sys/net/ipv6/flowlabel_state_ranges while another task =
+repeatedly
+> > > > > > > issues IPV6_FLOWLABEL_MGR requests with IPV6_FL_F_REFLECT or a
+> > > > > > > state-ranges flow label.
+> > > > > > >
+> > > > > > > This issue was first flagged by our static analysis tool whil=
+e scanning
+> > > > > > > lockless IPv6 sysctl readers, then manually audited on Linux =
+v6.18.21.
+> > > > > > > The IPV6_FLOWLABEL_MGR paths were runtime-reproduced with QEM=
+U/KCSAN by
+> > > > > > > concurrently flipping the two sysctls while TCP reflect and U=
+DP
+> > > > > > > state-ranges setsockopt actors exercised ipv6_flowlabel_get()=
+. KCSAN
+> > > > > > > reported races between proc_dou8vec_minmax() and the two plai=
+n-load
+> > > > > > > sites in ipv6_flowlabel_get().
+> > > > > > >
+> > > > > > > A narrower second-round UDPv6 + IPV6_AUTOFLOWLABEL send-side =
+reproducer
+> > > > > > > also hit the inline ip6_make_flowlabel() reader through
+> > > > > > > __ip6_make_skb() / proc_dou8vec_minmax(), but that site is al=
+ready
+> > > > > > > fixed in this tree by commit ded139b59b5d
+> > > > > > > ("ipv6: annotate data-races from ip6_make_flowlabel()"). The =
+remaining
+> > > > > > > plain readers in this tree are both in ipv6_flowlabel_get().
+> > > > > > >
+> > > > > > > Use READ_ONCE() for those remaining sysctl reads so they foll=
+ow the same
+> > > > > > > lockless reader contract already used by other IPv6 sysctl re=
+aders.
+> > > > > > >
+> > > > > > > Build-tested by compiling net/ipv6/ip6_flowlabel.o on x86_64.
+> > > > > > >
+> > > > > > > Representative QEMU/KCSAN reports from the two target reader =
+paths:
+> > > > > > >
+> > > > > > >   BUG: KCSAN: data-race in ipv6_flowlabel_opt / proc_dou8vec_=
+minmax
+> > > > > > >   write: proc_dou8vec_minmax+0x206/0x220
+> > > > > > >   read:  ipv6_flowlabel_opt+0x6d8/0xd20
+> > > > > > >          do_ipv6_setsockopt+0x873/0x2220
+> > > > > > >          tcp_setsockopt+0x72/0xb0
+> > > > > > >
+> > > > > > >   BUG: KCSAN: data-race in ipv6_flowlabel_opt / proc_dou8vec_=
+minmax
+> > > > > > >   write: proc_dou8vec_minmax+0x206/0x220
+> > > > > > >   read:  ipv6_flowlabel_opt+0x129/0xd20
+> > > > > > >          do_ipv6_setsockopt+0x873/0x2220
+> > > > > > >          udpv6_setsockopt+0x21/0x40
+> > > > > > >
+> > > > > > > Fixes: 6444f72b4b74 ("ipv6: add flowlabel_consistency sysctl")
+> > > > > > > Fixes: 82a584b7cd36 ("ipv6: Flow label state ranges")
+> > > > > > > Cc: stable@vger.kernel.org
+> > > > > > > Signed-off-by: Runyu Xiao <runyu.xiao@seu.edu.cn>
+> > > > > > > ---
+> > > > > > >  net/ipv6/ip6_flowlabel.c | 4 ++--
+> > > > > > >  1 file changed, 2 insertions(+), 2 deletions(-)
+> > > > > > >A
+> > > > > > > diff --git a/net/ipv6/ip6_flowlabel.c b/net/ipv6/ip6_flowlabe=
+l.c
+> > > > > > > index b1ccdf0dc646..1ab5ad0dcf24 100644
+> > > > > > > --- a/net/ipv6/ip6_flowlabel.c
+> > > > > > > +++ b/net/ipv6/ip6_flowlabel.c
+> > > > > > > @@ -620,7 +620,7 @@ static int ipv6_flowlabel_get(struct sock=
+ *sk, struct in6_flowlabel_req *freq,
+> > > > > > >       int err;
+> > > > > > >
+> > > > > > >       if (freq->flr_flags & IPV6_FL_F_REFLECT) {
+> > > > > > > -             if (net->ipv6.sysctl.flowlabel_consistency) {
+> > > > > > > +             if (READ_ONCE(net->ipv6.sysctl.flowlabel_consis=
+tency)) { =20
+> > > > > >
+> > > > > > That can't actually fix anything. =20
+> > > > >
+> > > > > It fixes a KCSAN splat.
+> > > > >
+> > > > > If you think you can fix KCSAN instead, please do so. =20
+> >
+> > ipv6.h has:
+> >         u8 flowlabel_consistency;
+> >
+> > KCSAN probably shouldn't care about byte reads. =20
+>=20
+> KCSAN detects more than just load/store tearing. Here is a summary:
+>=20
+> Purpose: KCSAN identifies data races, which are a common source of
+> correctness, stability,
+> and security bugs in concurrent systems like the Linux kernel.
 
-Drop the now-unused priv->rx_buf_len field and the rx_dma_failed soft
-MIB counter (nothing increments it after the conversion).
+Ok, it can pick up CSE type issues as well.
+But this one is still a false positive.
 
-Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
----
-This is the page_pool conversion patch from my bcmgenet XDP series
-[1], pulled out as a standalone submission. The XDP series has had
-several review rounds, and page_pool is the part that has taken the
-most discussion. Getting it in on its own should hopefully make the
-rest of the XDP work easier to review later, and it is also the
-API new RX paths are expected to use anyway.
+-- David
 
-Tested on a Raspberry Pi CM4 (BCM2711, 1 Gbps). Ran the benchmarks
-at the default 1.5 GHz and again with the CPU pinned to 600 MHz to
-push the RX path harder. No regressions either way.
-
-[1] https://lore.kernel.org/netdev/20260506095553.55357-2-nb@tipi-net.de/
-
- drivers/net/ethernet/broadcom/Kconfig         |   1 +
- .../net/ethernet/broadcom/genet/bcmgenet.c    | 229 +++++++++++-------
- .../net/ethernet/broadcom/genet/bcmgenet.h    |   6 +-
- 3 files changed, 150 insertions(+), 86 deletions(-)
-
-diff --git a/drivers/net/ethernet/broadcom/Kconfig b/drivers/net/ethernet/broadcom/Kconfig
-index 4287edc7ddd6..f0bac0dd1439 100644
---- a/drivers/net/ethernet/broadcom/Kconfig
-+++ b/drivers/net/ethernet/broadcom/Kconfig
-@@ -78,6 +78,7 @@ config BCMGENET
- 	select BCM7XXX_PHY
- 	select MDIO_BCM_UNIMAC
- 	select DIMLIB
-+	select PAGE_POOL
- 	select BROADCOM_PHY if ARCH_BCM2835
- 	help
- 	  This driver supports the built-in Ethernet MACs found in the
-diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-index 7c11cf916762..80dbfba9fa88 100644
---- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-+++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-@@ -52,6 +52,12 @@
- #define RX_BUF_LENGTH		2048
- #define SKB_ALIGNMENT		32
- 
-+/* Page pool RX buffer layout:
-+ * RSB(64) + pad(2) | frame data | skb_shared_info
-+ * The HW writes the 64B RSB + 2B alignment padding before the frame.
-+ */
-+#define GENET_RSB_PAD		(sizeof(struct status_64) + 2)
-+
- /* Tx/Rx DMA register offset, skip 256 descriptors */
- #define WORDS_PER_BD(p)		(p->hw_params->words_per_bd)
- #define DMA_DESC_SIZE		(WORDS_PER_BD(priv) * sizeof(u32))
-@@ -1153,7 +1159,6 @@ static const struct bcmgenet_stats bcmgenet_gstrings_stats[] = {
- 			UMAC_RBUF_ERR_CNT_V1),
- 	STAT_GENET_MISC("mdf_err_cnt", mib.mdf_err_cnt, UMAC_MDF_ERR_CNT),
- 	STAT_GENET_SOFT_MIB("alloc_rx_buff_failed", mib.alloc_rx_buff_failed),
--	STAT_GENET_SOFT_MIB("rx_dma_failed", mib.rx_dma_failed),
- 	STAT_GENET_SOFT_MIB("tx_dma_failed", mib.tx_dma_failed),
- 	STAT_GENET_SOFT_MIB("tx_realloc_tsb", mib.tx_realloc_tsb),
- 	STAT_GENET_SOFT_MIB("tx_realloc_tsb_failed",
-@@ -1894,21 +1899,13 @@ static struct sk_buff *bcmgenet_free_tx_cb(struct device *dev,
- }
- 
- /* Simple helper to free a receive control block's resources */
--static struct sk_buff *bcmgenet_free_rx_cb(struct device *dev,
--					   struct enet_cb *cb)
-+static void bcmgenet_free_rx_cb(struct enet_cb *cb,
-+				struct page_pool *pool)
- {
--	struct sk_buff *skb;
--
--	skb = cb->skb;
--	cb->skb = NULL;
--
--	if (dma_unmap_addr(cb, dma_addr)) {
--		dma_unmap_single(dev, dma_unmap_addr(cb, dma_addr),
--				 dma_unmap_len(cb, dma_len), DMA_FROM_DEVICE);
--		dma_unmap_addr_set(cb, dma_addr, 0);
-+	if (cb->rx_page) {
-+		page_pool_put_full_page(pool, cb->rx_page, false);
-+		cb->rx_page = NULL;
- 	}
--
--	return skb;
- }
- 
- /* Unlocked version of the reclaim routine */
-@@ -2249,46 +2246,30 @@ static netdev_tx_t bcmgenet_xmit(struct sk_buff *skb, struct net_device *dev)
- 	goto out;
- }
- 
--static struct sk_buff *bcmgenet_rx_refill(struct bcmgenet_priv *priv,
--					  struct enet_cb *cb)
-+static int bcmgenet_rx_refill(struct bcmgenet_rx_ring *ring,
-+			      struct enet_cb *cb)
- {
--	struct device *kdev = &priv->pdev->dev;
--	struct sk_buff *skb;
--	struct sk_buff *rx_skb;
-+	struct bcmgenet_priv *priv = ring->priv;
- 	dma_addr_t mapping;
-+	struct page *page;
- 
--	/* Allocate a new Rx skb */
--	skb = __netdev_alloc_skb(priv->dev, priv->rx_buf_len + SKB_ALIGNMENT,
--				 GFP_ATOMIC | __GFP_NOWARN);
--	if (!skb) {
-+	page = page_pool_alloc_pages(ring->page_pool,
-+				     GFP_ATOMIC);
-+	if (!page) {
- 		priv->mib.alloc_rx_buff_failed++;
- 		netif_err(priv, rx_err, priv->dev,
--			  "%s: Rx skb allocation failed\n", __func__);
--		return NULL;
--	}
--
--	/* DMA-map the new Rx skb */
--	mapping = dma_map_single(kdev, skb->data, priv->rx_buf_len,
--				 DMA_FROM_DEVICE);
--	if (dma_mapping_error(kdev, mapping)) {
--		priv->mib.rx_dma_failed++;
--		dev_kfree_skb_any(skb);
--		netif_err(priv, rx_err, priv->dev,
--			  "%s: Rx skb DMA mapping failed\n", __func__);
--		return NULL;
-+			  "%s: Rx page allocation failed\n", __func__);
-+		return -ENOMEM;
- 	}
- 
--	/* Grab the current Rx skb from the ring and DMA-unmap it */
--	rx_skb = bcmgenet_free_rx_cb(kdev, cb);
-+	/* page_pool handles DMA mapping via PP_FLAG_DMA_MAP */
-+	mapping = page_pool_get_dma_addr(page);
- 
--	/* Put the new Rx skb on the ring */
--	cb->skb = skb;
--	dma_unmap_addr_set(cb, dma_addr, mapping);
--	dma_unmap_len_set(cb, dma_len, priv->rx_buf_len);
-+	cb->rx_page = page;
-+	cb->rx_page_offset = 0;
- 	dmadesc_set_addr(priv, cb->bd_addr, mapping);
- 
--	/* Return the current Rx skb to caller */
--	return rx_skb;
-+	return 0;
- }
- 
- /* bcmgenet_desc_rx - descriptor based rx process.
-@@ -2304,7 +2285,7 @@ static unsigned int bcmgenet_desc_rx(struct bcmgenet_rx_ring *ring,
- 	struct sk_buff *skb;
- 	u32 dma_length_status;
- 	unsigned long dma_flag;
--	int len;
-+	int len, min_len;
- 	unsigned int rxpktprocessed = 0, rxpkttoprocess;
- 	unsigned int bytes_processed = 0;
- 	unsigned int p_index, mask;
-@@ -2340,25 +2321,31 @@ static unsigned int bcmgenet_desc_rx(struct bcmgenet_rx_ring *ring,
- 	while ((rxpktprocessed < rxpkttoprocess) &&
- 	       (rxpktprocessed < budget)) {
- 		struct status_64 *status;
-+		struct page *rx_page;
-+		unsigned int rx_off;
-+		void *hard_start;
- 		__be16 rx_csum;
- 
- 		cb = &priv->rx_cbs[ring->read_ptr];
--		skb = bcmgenet_rx_refill(priv, cb);
- 
--		if (unlikely(!skb)) {
-+		/* Save the received page before refilling */
-+		rx_page = cb->rx_page;
-+		rx_off = cb->rx_page_offset;
-+
-+		if (bcmgenet_rx_refill(ring, cb)) {
- 			BCMGENET_STATS64_INC(stats, dropped);
- 			goto next;
- 		}
- 
--		status = (struct status_64 *)skb->data;
-+		/* Sync the full buffer; the HW may have written anywhere
-+		 * up to RX_BUF_LENGTH.
-+		 */
-+		page_pool_dma_sync_for_cpu(ring->page_pool, rx_page, 0,
-+					   RX_BUF_LENGTH);
-+
-+		hard_start = page_address(rx_page) + rx_off;
-+		status = (struct status_64 *)hard_start;
- 		dma_length_status = status->length_status;
--		if (dev->features & NETIF_F_RXCSUM) {
--			rx_csum = (__force __be16)(status->rx_csum & 0xffff);
--			if (rx_csum) {
--				skb->csum = (__force __wsum)ntohs(rx_csum);
--				skb->ip_summed = CHECKSUM_COMPLETE;
--			}
--		}
- 
- 		/* DMA flags and length are still valid no matter how
- 		 * we got the Receive Status Vector (64B RSB or register)
-@@ -2371,10 +2358,17 @@ static unsigned int bcmgenet_desc_rx(struct bcmgenet_rx_ring *ring,
- 			  __func__, p_index, ring->c_index,
- 			  ring->read_ptr, dma_length_status);
- 
--		if (unlikely(len > RX_BUF_LENGTH)) {
--			netif_err(priv, rx_status, dev, "oversized packet\n");
-+		/* Reject obviously bogus lengths to keep the SKB build path
-+		 * safe against runt frames.
-+		 */
-+		min_len = GENET_RSB_PAD + ETH_ZLEN +
-+			  (priv->crc_fwd_en ? ETH_FCS_LEN : 0);
-+		if (unlikely(len > RX_BUF_LENGTH || len < min_len)) {
-+			netif_err(priv, rx_status, dev,
-+				  "invalid packet length %d\n", len);
- 			BCMGENET_STATS64_INC(stats, length_errors);
--			dev_kfree_skb_any(skb);
-+			page_pool_put_full_page(ring->page_pool, rx_page,
-+						true);
- 			goto next;
- 		}
- 
-@@ -2382,7 +2376,8 @@ static unsigned int bcmgenet_desc_rx(struct bcmgenet_rx_ring *ring,
- 			netif_err(priv, rx_status, dev,
- 				  "dropping fragmented packet!\n");
- 			BCMGENET_STATS64_INC(stats, fragmented_errors);
--			dev_kfree_skb_any(skb);
-+			page_pool_put_full_page(ring->page_pool, rx_page,
-+						true);
- 			goto next;
- 		}
- 
-@@ -2410,21 +2405,42 @@ static unsigned int bcmgenet_desc_rx(struct bcmgenet_rx_ring *ring,
- 						DMA_RX_RXER)) == DMA_RX_RXER)
- 				u64_stats_inc(&stats->errors);
- 			u64_stats_update_end(&stats->syncp);
--			dev_kfree_skb_any(skb);
-+			page_pool_put_full_page(ring->page_pool, rx_page,
-+						true);
- 			goto next;
- 		} /* error packet */
- 
--		skb_put(skb, len);
-+		/* Build SKB from the page - data starts at hard_start,
-+		 * frame begins after RSB(64) + pad(2) = 66 bytes.
-+		 */
-+		skb = napi_build_skb(hard_start, PAGE_SIZE - rx_off);
-+		if (unlikely(!skb)) {
-+			BCMGENET_STATS64_INC(stats, dropped);
-+			page_pool_put_full_page(ring->page_pool, rx_page,
-+						true);
-+			goto next;
-+		}
-+
-+		skb_mark_for_recycle(skb);
- 
--		/* remove RSB and hardware 2bytes added for IP alignment */
--		skb_pull(skb, 66);
--		len -= 66;
-+		/* Reserve the RSB + pad, then set the data length */
-+		skb_reserve(skb, GENET_RSB_PAD);
-+		__skb_put(skb, len - GENET_RSB_PAD);
- 
- 		if (priv->crc_fwd_en) {
--			skb_trim(skb, len - ETH_FCS_LEN);
--			len -= ETH_FCS_LEN;
-+			skb_trim(skb, skb->len - ETH_FCS_LEN);
- 		}
- 
-+		/* Set up checksum offload */
-+		if (dev->features & NETIF_F_RXCSUM) {
-+			rx_csum = (__force __be16)(status->rx_csum & 0xffff);
-+			if (rx_csum) {
-+				skb->csum = (__force __wsum)ntohs(rx_csum);
-+				skb->ip_summed = CHECKSUM_COMPLETE;
-+			}
-+		}
-+
-+		len = skb->len;
- 		bytes_processed += len;
- 
- 		/*Finish setting up the received SKB and send it to the kernel*/
-@@ -2496,12 +2512,11 @@ static void bcmgenet_dim_work(struct work_struct *work)
- 	dim->state = DIM_START_MEASURE;
- }
- 
--/* Assign skb to RX DMA descriptor. */
-+/* Assign page_pool pages to RX DMA descriptors. */
- static int bcmgenet_alloc_rx_buffers(struct bcmgenet_priv *priv,
- 				     struct bcmgenet_rx_ring *ring)
- {
- 	struct enet_cb *cb;
--	struct sk_buff *skb;
- 	int i;
- 
- 	netif_dbg(priv, hw, priv->dev, "%s\n", __func__);
-@@ -2509,10 +2524,7 @@ static int bcmgenet_alloc_rx_buffers(struct bcmgenet_priv *priv,
- 	/* loop here for each buffer needing assign */
- 	for (i = 0; i < ring->size; i++) {
- 		cb = ring->cbs + i;
--		skb = bcmgenet_rx_refill(priv, cb);
--		if (skb)
--			dev_consume_skb_any(skb);
--		if (!cb->skb)
-+		if (bcmgenet_rx_refill(ring, cb))
- 			return -ENOMEM;
- 	}
- 
-@@ -2521,16 +2533,18 @@ static int bcmgenet_alloc_rx_buffers(struct bcmgenet_priv *priv,
- 
- static void bcmgenet_free_rx_buffers(struct bcmgenet_priv *priv)
- {
--	struct sk_buff *skb;
-+	struct bcmgenet_rx_ring *ring;
- 	struct enet_cb *cb;
--	int i;
--
--	for (i = 0; i < priv->num_rx_bds; i++) {
--		cb = &priv->rx_cbs[i];
-+	int q, i;
- 
--		skb = bcmgenet_free_rx_cb(&priv->pdev->dev, cb);
--		if (skb)
--			dev_consume_skb_any(skb);
-+	for (q = 0; q <= priv->hw_params->rx_queues; q++) {
-+		ring = &priv->rx_rings[q];
-+		if (!ring->page_pool)
-+			continue;
-+		for (i = 0; i < ring->size; i++) {
-+			cb = ring->cbs + i;
-+			bcmgenet_free_rx_cb(cb, ring->page_pool);
-+		}
- 	}
- }
- 
-@@ -2748,6 +2762,30 @@ static void bcmgenet_init_tx_ring(struct bcmgenet_priv *priv,
- 	netif_napi_add_tx(priv->dev, &ring->napi, bcmgenet_tx_poll);
- }
- 
-+static int bcmgenet_rx_ring_create_pool(struct bcmgenet_priv *priv,
-+					struct bcmgenet_rx_ring *ring)
-+{
-+	struct page_pool_params pp_params = {
-+		.order = 0,
-+		.flags = PP_FLAG_DMA_MAP | PP_FLAG_DMA_SYNC_DEV,
-+		.pool_size = ring->size,
-+		.nid = NUMA_NO_NODE,
-+		.dev = &priv->pdev->dev,
-+		.dma_dir = DMA_FROM_DEVICE,
-+		.max_len = RX_BUF_LENGTH,
-+	};
-+	int err;
-+
-+	ring->page_pool = page_pool_create(&pp_params);
-+	if (IS_ERR(ring->page_pool)) {
-+		err = PTR_ERR(ring->page_pool);
-+		ring->page_pool = NULL;
-+		return err;
-+	}
-+
-+	return 0;
-+}
-+
- /* Initialize a RDMA ring */
- static int bcmgenet_init_rx_ring(struct bcmgenet_priv *priv,
- 				 unsigned int index, unsigned int size,
-@@ -2755,7 +2793,7 @@ static int bcmgenet_init_rx_ring(struct bcmgenet_priv *priv,
- {
- 	struct bcmgenet_rx_ring *ring = &priv->rx_rings[index];
- 	u32 words_per_bd = WORDS_PER_BD(priv);
--	int ret;
-+	int ret, i;
- 
- 	ring->priv = priv;
- 	ring->index = index;
-@@ -2766,10 +2804,19 @@ static int bcmgenet_init_rx_ring(struct bcmgenet_priv *priv,
- 	ring->cb_ptr = start_ptr;
- 	ring->end_ptr = end_ptr - 1;
- 
--	ret = bcmgenet_alloc_rx_buffers(priv, ring);
-+	ret = bcmgenet_rx_ring_create_pool(priv, ring);
- 	if (ret)
- 		return ret;
- 
-+	ret = bcmgenet_alloc_rx_buffers(priv, ring);
-+	if (ret) {
-+		for (i = 0; i < ring->size; i++)
-+			bcmgenet_free_rx_cb(ring->cbs + i, ring->page_pool);
-+		page_pool_destroy(ring->page_pool);
-+		ring->page_pool = NULL;
-+		return ret;
-+	}
-+
- 	bcmgenet_init_dim(ring, bcmgenet_dim_work);
- 	bcmgenet_init_rx_coalesce(ring);
- 
-@@ -2962,6 +3009,20 @@ static void bcmgenet_fini_rx_napi(struct bcmgenet_priv *priv)
- 	}
- }
- 
-+static void bcmgenet_destroy_rx_page_pools(struct bcmgenet_priv *priv)
-+{
-+	struct bcmgenet_rx_ring *ring;
-+	unsigned int i;
-+
-+	for (i = 0; i <= priv->hw_params->rx_queues; ++i) {
-+		ring = &priv->rx_rings[i];
-+		if (ring->page_pool) {
-+			page_pool_destroy(ring->page_pool);
-+			ring->page_pool = NULL;
-+		}
-+	}
-+}
-+
- /* Initialize Rx queues
-  *
-  * Queues 0-15 are priority queues. Hardware Filtering Block (HFB) can be
-@@ -3033,6 +3094,7 @@ static void bcmgenet_fini_dma(struct bcmgenet_priv *priv)
- 	}
- 
- 	bcmgenet_free_rx_buffers(priv);
-+	bcmgenet_destroy_rx_page_pools(priv);
- 	kfree(priv->rx_cbs);
- 	kfree(priv->tx_cbs);
- }
-@@ -3109,6 +3171,7 @@ static int bcmgenet_init_dma(struct bcmgenet_priv *priv, bool flush_rx)
- 	if (ret) {
- 		netdev_err(priv->dev, "failed to initialize Rx queues\n");
- 		bcmgenet_free_rx_buffers(priv);
-+		bcmgenet_destroy_rx_page_pools(priv);
- 		kfree(priv->rx_cbs);
- 		kfree(priv->tx_cbs);
- 		return ret;
-@@ -4026,8 +4089,6 @@ static int bcmgenet_probe(struct platform_device *pdev)
- 
- 	/* Mii wait queue */
- 	init_waitqueue_head(&priv->wq);
--	/* Always use RX_BUF_LENGTH (2KB) buffer for all chips */
--	priv->rx_buf_len = RX_BUF_LENGTH;
- 	INIT_WORK(&priv->bcmgenet_irq_work, bcmgenet_irq_task);
- 
- 	priv->clk_wol = devm_clk_get_optional(&priv->pdev->dev, "enet-wol");
-diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.h b/drivers/net/ethernet/broadcom/genet/bcmgenet.h
-index 9e4110c7fdf6..41ceda21c6f3 100644
---- a/drivers/net/ethernet/broadcom/genet/bcmgenet.h
-+++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.h
-@@ -15,6 +15,7 @@
- #include <linux/phy.h>
- #include <linux/dim.h>
- #include <linux/ethtool.h>
-+#include <net/page_pool/helpers.h>
- 
- #include "../unimac.h"
- 
-@@ -149,7 +150,6 @@ struct bcmgenet_mib_counters {
- 	u32	rbuf_err_cnt;
- 	u32	mdf_err_cnt;
- 	u32	alloc_rx_buff_failed;
--	u32	rx_dma_failed;
- 	u32	tx_dma_failed;
- 	u32	tx_realloc_tsb;
- 	u32	tx_realloc_tsb_failed;
-@@ -469,6 +469,8 @@ struct bcmgenet_rx_stats64 {
- 
- struct enet_cb {
- 	struct sk_buff      *skb;
-+	struct page         *rx_page;
-+	unsigned int        rx_page_offset;
- 	void __iomem *bd_addr;
- 	DEFINE_DMA_UNMAP_ADDR(dma_addr);
- 	DEFINE_DMA_UNMAP_LEN(dma_len);
-@@ -575,6 +577,7 @@ struct bcmgenet_rx_ring {
- 	struct bcmgenet_net_dim dim;
- 	u32		rx_max_coalesced_frames;
- 	u32		rx_coalesce_usecs;
-+	struct page_pool *page_pool;
- 	struct bcmgenet_priv *priv;
- };
- 
-@@ -609,7 +612,6 @@ struct bcmgenet_priv {
- 	void __iomem *rx_bds;
- 	struct enet_cb *rx_cbs;
- 	unsigned int num_rx_bds;
--	unsigned int rx_buf_len;
- 	struct bcmgenet_rxnfc_rule rxnfc_rules[MAX_NUM_OF_FS_RULES];
- 	struct list_head rxnfc_list;
- 
--- 
-2.53.0
+>=20
+> Mechanism: It is a compiler-instrumentation-based tool. During
+> compilation, special code is added to monitor memory accesses.
+> At runtime, KCSAN detects when multiple threads access the same memory
+> location without proper synchronization,
+> and at least one of those accesses is a write.
+>=20
+> Operation: KCSAN performs its analysis at runtime, reporting data
+> races that actually occur or nearly occur during code execution.
+> While powerful and scalable across the entire kernel, this
+> instrumentation can significantly slow down kernel execution.
+>=20
+> Impact: KCSAN has been instrumental in finding and fixing numerous
+> concurrency bugs.
+> For example, it has led to the addition of annotations like
+> READ_ONCE() and WRITE_ONCE()
+> in kernel code (e.g., in the TCP/IPv6 stack) to properly handle
+> lockless reads and writes and resolve reported data races.
+>=20
+>=20
+>=20
+>=20
+> > =20
+> > > >
+> > > > It is a false positive. =20
+> > >
+> > > It's not.
+> > >
+> > > =20
+> > > > (Which I think you also said in a different email. =20
+> > >
+> > > I guess you meant this one ?
+> > > https://lore.kernel.org/netdev/20260601074201.1186061-1-runyu.xiao@se=
+u.edu.cn/
+> > >
+> > > This is different because, in addition to Eric's comment, IPv6
+> > > address is 128-bit and data-race is inevitable without locking
+> > > unless CPU supports native 128-bit read/write; we already do
+> > > load/store-tearing of 128bit with u32/u64. =20
+> >
+> > But the code isn't looking at a 128bit value, it is only doing a check
+> > for zero (and READ_ONCE() doesn't support 128bit values).
+> > If there is no locking the value can change just before/after the test.
+> > Even if it were subject to read/write tearing absolutely the worst that
+> > could happen is a zero being detected when the value changes between
+> > two non-zero values.
+> > That isn't relevant here - it is just a boolean. =20
+>=20
+> It is completely relevant. If you disagree, please fix KCSAN.
 
