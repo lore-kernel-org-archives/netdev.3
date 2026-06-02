@@ -1,46 +1,46 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2D933CB90F
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2D003CB8F0
 	for <netdev@vger.kernel.org>; Tue,  2 Jun 2026 22:55:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780440924; cv=none; b=PtD/pdx5GXlMGV7Bbfe6vrb26uWlEfAkvm8r+F65u8QAvGewH41qstoBd4QuaV0tDa0BHukpWpOfGFp687FM7I8b0h93NBIF0wSZhZoqbpshS/eqFlNWcimoPLlemWAsBEVXZRcuvRoRvs+XZqoWusHnn/xpOwxgRxL7GUFRNao=
+	t=1780440925; cv=none; b=pft/FMacATAZToLOFEyRLN97xIJcfzmRQS8qfaVbogEwwoa3+j4/dOuegwSkenRPNbjdR0z0YtGt+WqYdhPQiHpIWXfcNIEeqnU/e4ZnnupDTMZnjHX3fZIaQHCHydlZGyOquhiKW9ATmgeNllXJ281qOMMErOUNqeEaBwY/SIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780440924; c=relaxed/simple;
-	bh=1gPXyX9qlf669pfyosoehTWje1p/dsWF6pUPzY8+Rz8=;
+	s=arc-20240116; t=1780440925; c=relaxed/simple;
+	bh=Ru4IidLwglPuNPr+zL+XSfk1VOshaLc68K+tJfKnWfI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DjnCmDoOPvtjJ1plyiFp1nn/AgQhoRb4WkZtooYmaSy1qE5dZC2l7qdDc9WvVFHvoBWI2SyJpIUzC4dkFzBKz7NDe23JUt64RWfnqR8IfTgXy5CMDioGCRGxCq2ELb26qSEcBrfZkzK4pHLtykAo5g+yiaawGvhuvgfR1wkTWOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=m/q2KqWR; arc=none smtp.client-ip=198.175.65.16
+	 MIME-Version; b=gYXM3QFyeZzcyXijjNkRON14WA0heqFiQHpYk1obKaE/47AxuUNypVgUqOBf79oFaiPJoUnMzemfOvXZLwoLIX9l13D3dDhFFA+o53fXkEK83U/zHxJtxJUM2v/4b1zjrIMPIB42kg9cSb9EHeHdZEpVxbjRPYoYhLrrI7qcCt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PpJAeHav; arc=none smtp.client-ip=198.175.65.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="m/q2KqWR"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PpJAeHav"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1780440924; x=1811976924;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=1gPXyX9qlf669pfyosoehTWje1p/dsWF6pUPzY8+Rz8=;
-  b=m/q2KqWRkATXInt7OHExBD/5nj7JMsC3FMnESVZtIj8htd65CqYQzr6/
-   h3d26/UzkQJUsP9f8HXy7e/mUJ/wqXP31hOcCW8R77Z1xB9hz/bpLxJZe
-   TDxpaLzF2WwHf84wVG//MG7rF4cAvHrYC4uAmY0g6TR6pJUZ8jomLEF8q
-   slX2d6/bmf2Icp9zmFGxY3PlsOZ1OyQjjhtV54NOGNGILbUhl3SyUbDYZ
-   J48s/O1uT9iDipJCDFnQNnYyNQBOJcZ6+l8n0Wa80Y55ygewXMPNBsc3Y
-   UfIxlUAiWLZRqVsVzvYBMYgSf78HTE4dmk0fRa7SXdCrGZtcYv39Mn9bG
-   Q==;
-X-CSE-ConnectionGUID: ApbHdtk0RpSQJGIvXXEmZQ==
-X-CSE-MsgGUID: UTqDVLKzTcuYkIVldAWPxA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11805"; a="81421414"
+  bh=Ru4IidLwglPuNPr+zL+XSfk1VOshaLc68K+tJfKnWfI=;
+  b=PpJAeHav/bEuiB7QL+/xWl9lrkimiKhAbkuyY8HhczFFHBSt5dpXT2XT
+   ApsxcmJc8FyylaTz49+39Z3P2zI9zALUVvw98KnZmz4apx5MK0kZ9y0Sd
+   K+ssv3VQoQXZSJRilBQjp2ByLKgFQiwqUbhP7fKshyYRzZh4zeuES5m4W
+   E9YKccYrof+epDLzlPe3ssLytyW62y5LtqELdJ1MFYtw2LgKp2z43OWe3
+   QoimHJfKuKo5U/QKuMGB22M1z0A0+I7nO32wJOnbk3g2deX7L5j59qsLR
+   VYqo4thQ/+r6J5G8WR/0eygetr8Ui7au4bBbugAPyJYGzHu/oCymu4S+d
+   g==;
+X-CSE-ConnectionGUID: 7MK85ZfZSxSYQMxIiZaLfQ==
+X-CSE-MsgGUID: v6EiISMjRKmmmtqjkx0teg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11805"; a="81421407"
 X-IronPort-AV: E=Sophos;i="6.24,184,1774335600"; 
-   d="scan'208";a="81421414"
+   d="scan'208";a="81421407"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jun 2026 15:55:22 -0700
-X-CSE-ConnectionGUID: 7pp43W8UTmuVClM+lKfmuA==
-X-CSE-MsgGUID: ytb5/fDHRfartmLxNQvA8A==
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jun 2026 15:55:21 -0700
+X-CSE-ConnectionGUID: hPnJ3kpQSwWfzbHuCuVKiQ==
+X-CSE-MsgGUID: GGv72299STSZFvIu0OTlNQ==
 X-ExtLoop1: 1
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
-  by fmviesa003.fm.intel.com with ESMTP; 02 Jun 2026 15:55:21 -0700
+  by fmviesa003.fm.intel.com with ESMTP; 02 Jun 2026 15:55:20 -0700
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
 To: davem@davemloft.net,
 	kuba@kernel.org,
@@ -48,18 +48,17 @@ To: davem@davemloft.net,
 	edumazet@google.com,
 	andrew+netdev@lunn.ch,
 	netdev@vger.kernel.org
-Cc: Alok Tiwari <alok.a.tiwari@oracle.com>,
+Cc: Petr Oros <poros@redhat.com>,
 	anthony.l.nguyen@intel.com,
-	aleksander.lobakin@intel.com,
-	jacob.e.keller@intel.com,
-	richardcochran@gmail.com,
-	willemb@google.com,
+	arkadiusz.kubalewski@intel.com,
+	przemyslaw.kitszel@intel.com,
 	horms@kernel.org,
-	Samuel Salin <Samuel.salin@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Subject: [PATCH net 3/3] idpf: fix mailbox capability for set device clock time
-Date: Tue,  2 Jun 2026 15:55:11 -0700
-Message-ID: <20260602225513.393338-4-anthony.l.nguyen@intel.com>
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Rinitha S <sx.rinitha@intel.com>
+Subject: [PATCH net 2/3] ice: fix missing priority callbacks for U.FL DPLL pins
+Date: Tue,  2 Jun 2026 15:55:10 -0700
+Message-ID: <20260602225513.393338-3-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20260602225513.393338-1-anthony.l.nguyen@intel.com>
 References: <20260602225513.393338-1-anthony.l.nguyen@intel.com>
@@ -71,34 +70,67 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Petr Oros <poros@redhat.com>
 
-The current code incorrectly uses VIRTCHNL2_CAP_PTP_SET_DEVICE_CLK_TIME
-for both direct and mailbox capabilities, causing mailbox-only support
-to be ignored and potentially reporting IDPF_PTP_NONE.
+The U.FL2 input pin advertises DPLL_PIN_CAPABILITIES_PRIORITY_CAN_CHANGE
+in its capability mask, but ice_dpll_pin_ufl_ops does not provide
+.prio_get and .prio_set callbacks. As a result the DPLL subsystem
+cannot report or accept priority for U.FL pins: pin-get omits the prio
+field on U.FL2 and pin-set with prio is rejected as invalid, even
+though the capability is present. This prevents user space from using
+priority to select or disable U.FL2 as a DPLL input source.
 
-Fixes: d5dba8f7206da ("idpf: add PTP clock configuration")
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Tested-by: Samuel Salin <Samuel.salin@intel.com>
+Reproducer with iproute2 (dpll command):
+
+  # dpll pin show board-label U.FL2
+  pin id 16:
+    module-name ice
+    board-label U.FL2
+    type ext
+    capabilities priority-can-change|state-can-change
+    parent-device:
+      id 0 direction input state selectable phase-offset 0
+    /* note: no "prio" between "direction" and "state",
+       even though priority-can-change is advertised */
+
+  # dpll pin set id 16 parent-device 0 prio 5
+  RTNETLINK answers: Operation not supported
+
+After the fix the prio field is reported by pin show and pin set with
+prio is accepted on U.FL2.
+
+Add the missing .prio_get and .prio_set callbacks to
+ice_dpll_pin_ufl_ops, reusing ice_dpll_sw_input_prio_{get,set}. The
+same ops struct is shared by U.FL1 and U.FL2: U.FL2 (input) delegates
+to the backing hardware input pin, while U.FL1 (output) does not
+advertise DPLL_PIN_CAPABILITIES_PRIORITY_CAN_CHANGE so the dpll core
+capability gate never invokes prio_set for it, and prio_get reports
+the OUTPUT sentinel (ICE_DPLL_PIN_PRIO_OUTPUT) on the output side
+exactly like the SMA path does today.
+
+Fixes: 2dd5d03c77e2 ("ice: redesign dpll sma/u.fl pins control")
 Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Signed-off-by: Petr Oros <poros@redhat.com>
+Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
- drivers/net/ethernet/intel/idpf/idpf_ptp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/intel/ice/ice_dpll.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_ptp.c b/drivers/net/ethernet/intel/idpf/idpf_ptp.c
-index 4a51d2727547..71fe8b2a8b4e 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_ptp.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_ptp.c
-@@ -51,7 +51,7 @@ void idpf_ptp_get_features_access(const struct idpf_adapter *adapter)
- 
- 	/* Set the device clock time */
- 	direct = VIRTCHNL2_CAP_PTP_SET_DEVICE_CLK_TIME;
--	mailbox = VIRTCHNL2_CAP_PTP_SET_DEVICE_CLK_TIME;
-+	mailbox = VIRTCHNL2_CAP_PTP_SET_DEVICE_CLK_TIME_MB;
- 	ptp->set_dev_clk_time_access = idpf_ptp_get_access(adapter,
- 							   direct,
- 							   mailbox);
+diff --git a/drivers/net/ethernet/intel/ice/ice_dpll.c b/drivers/net/ethernet/intel/ice/ice_dpll.c
+index 892bc7c2e28b..0704e92ab043 100644
+--- a/drivers/net/ethernet/intel/ice/ice_dpll.c
++++ b/drivers/net/ethernet/intel/ice/ice_dpll.c
+@@ -2633,6 +2633,8 @@ static const struct dpll_pin_ops ice_dpll_pin_ufl_ops = {
+ 	.state_on_dpll_set = ice_dpll_ufl_pin_state_set,
+ 	.state_on_dpll_get = ice_dpll_sw_pin_state_get,
+ 	.direction_get = ice_dpll_pin_sw_direction_get,
++	.prio_get = ice_dpll_sw_input_prio_get,
++	.prio_set = ice_dpll_sw_input_prio_set,
+ 	.frequency_get = ice_dpll_sw_pin_frequency_get,
+ 	.frequency_set = ice_dpll_sw_pin_frequency_set,
+ 	.esync_set = ice_dpll_sw_esync_set,
 -- 
 2.47.1
 
