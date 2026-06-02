@@ -1,169 +1,175 @@
-Received: from smtp9.goneo.de (smtp9.goneo.de [85.220.189.104])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FF82387361;
-	Tue,  2 Jun 2026 16:55:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.220.189.104
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780419310; cv=none; b=AcfXO/WtfK6oGkaMiVnRaYH1OprLz9aWRmbrg6J54y2K5Olwx+Ba3gzPKmNK8Nr724iiiv7FM6Ia/8gSwI/jNLLOnu7YsdDeeDnFTZrnS7Jy2q2HEXE8LMzgc9KHbyCepqtlQfBOHMTmoQfpU3y3oh1K6j10RK00vl1NyKLp03w=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780419310; c=relaxed/simple;
-	bh=L6xVsJW1n3JRrTFitY0+Isft+qNb0qUkFx79wsKhgDY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Uxz17jNbIbLUNd6JwrK/wfXPgAN1RLWF9lX+/BY18Rriy24im3FK8Yjv+m2sP62d4ElzXlGKuVsh1iJaCpQoS+EIUx//aaUrMFwVQLutwd7Ks0Nz2OO7sggH9zgzrl3WkFgDZxGDU9XDxbupn8sU48YnvW2CDR0jTUOsHKcQyaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tk154.de; spf=pass smtp.mailfrom=tk154.de; dkim=pass (2048-bit key) header.d=tk154.de header.i=@tk154.de header.b=TTJOXr6q; arc=none smtp.client-ip=85.220.189.104
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tk154.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tk154.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03E5F35292A
+	for <netdev@vger.kernel.org>; Tue,  2 Jun 2026 17:00:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.170
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780419615; cv=pass; b=sjfK6cRp9nt2hsacZEpVhEGduEjIBEoN/iac7Ds2bfMVxtttWqFafrxq095p/yxceBr5hRVYtgCrK4NL9xs5EuQWQwFG5ktxsCr8mJRxHJ46XUyP6DQJiXBFZMoJcBbn/sdFBdpxD7u24CIkZklvojtmZLRBN0z+tPERtP3embY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780419615; c=relaxed/simple;
+	bh=drNlRluABRnJtprucJzGVievS/w8VYPwS2qqj1Vtf9Y=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=auyYFaq0HwuXdN1gb/c/HrbpnVHbPlMuqw4KtJuocRoQTW2wssU2N/3SYLwC6hnbhf5+gKJ+/ZQ+xxq+Bsa66bXyN/7ql76xTaBS7HQ5XwKzho0ymPoyWJyZKHjF60Zr94dI7LVqmNkFvx0XXfpT7CF1b0AQi7bDRuZ+qXV/nPY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rL0tt7Y4; arc=pass smtp.client-ip=209.85.160.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tk154.de header.i=@tk154.de header.b="TTJOXr6q"
-Received: from hub2.goneo.de (hub2.goneo.de [85.220.129.53])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519)
-	(No client certificate requested)
-	by smtp9.goneo.de (Postfix) with ESMTPS id 3D873240909;
-	Tue, 02 Jun 2026 18:47:13 +0200 (CEST)
-Received: from hub2.goneo.de (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
-	(No client certificate requested)
-	by hub2.goneo.de (Postfix) with ESMTPS id 978A624035A;
-	Tue,  2 Jun 2026 18:47:11 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tk154.de; s=DKIM001;
-	t=1780418831;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7ivvgLLv6gSY8heQ+V/f8H1dO8uNi+l56MbtLBgS+NM=;
-	b=TTJOXr6qq8p2TX83WWICXJ8wJOfguQ9Rj1Y38bIHTcV4whCFCGkKXxqmXuB88kve/VAX55
-	cbTkOusQCsVP8dlr3JuG8bN9ms8Nosrl416J28c0GNojLG1FQY1HGhFprLq+F8RgyJONyp
-	QOknnrJrQkpTwO1QpYsWc061crqSWBgzaTUr7ouvcHSElj4b/4eB0nTb7jbLPTe03Ev0oT
-	Xc0A9fXUiKv5tufKx8az0dEUQmAEB2DeV7oAjRfdPmUhv2joKJHAvxswRljtySHL0V+Atp
-	8eMgreMnz01l4j0eISFIeSzAip/oR1rpHLPvum5GwguIf02D4ZfnFPPw/+Tgxw==
-Received: from Til-Notebook.meshlab (unknown [195.37.88.189])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by hub2.goneo.de (Postfix) with ESMTPSA id 6D9C42400A3;
-	Tue,  2 Jun 2026 18:47:09 +0200 (CEST)
-From: Til Kaiser <mail@tk154.de>
-To: Marcin Wojtas <marcin.s.wojtas@gmail.com>,
-	Russell King <linux@armlinux.org.uk>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Matteo Croce <mcroce@redhat.com>,
-	Sven Auhagen <sven.auhagen@voleatech.de>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	netdev@vger.kernel.org,
-	bpf@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Til Kaiser <mail@tk154.de>
-Subject: [PATCH net v2 3/4] net: mvpp2: do not return retired RX buffers to BM
-Date: Tue,  2 Jun 2026 18:46:34 +0200
-Message-ID: <20260602164635.62517-4-mail@tk154.de>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260602164635.62517-1-mail@tk154.de>
-References: <20260602164635.62517-1-mail@tk154.de>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rL0tt7Y4"
+Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-516d634956fso133509881cf.2
+        for <netdev@vger.kernel.org>; Tue, 02 Jun 2026 10:00:13 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780419613; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Aw9ADNqBoJc0pT2aPoPMmO4V7hM3xXxq232lZqQCaSAFE1EjskfAQlbOY4vT27RAMP
+         8kP7NGVmFxCvkfRBjv6iMiFn9Bharh4uJZ2erWOVhcBIJH1wJUNpTOGaQ8ATGlUsorRP
+         GECS/uuH15WyymMOp8vjedMfGaK82B6SUozYzwEX7AeRgcSELFiV2VgKnMvLw8m6LE8t
+         tTEP5mmUvu06wO0pSghaIdEhlV45ZpB2k7GjJv0vXFzDlif66T44FYXgImTBV7J6QKp4
+         jVRl5j7ecbTIeh9u3gDIXeSPS9q8KjHrILj2AC2rcIXV8dZTpk/nb5C55qWdRVQyOEXL
+         Z20A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=hBhc8/ih69iZXkvQ+oh7MO055cOwe4gcQ9X1rXZHFqw=;
+        fh=0QcKFhKY5v6vWJpPuRtRclJGTbXrHyjRc0LvrQzggco=;
+        b=WNthvCpdCUk3jR8Zs17ymSpMFdYgu++gbmoccDY0Hr94lizBXICMgQU9D/RLu2j41K
+         IxW3zRBj9NSjgVecnO9NH+WY1iIYs2GVW4zEt4IQPeNj0S5G/6MAJOKEEr+JE/M68iOx
+         yWRPKGM4O9jiO4r4JdEDjKg3T72jv0R+OfXchsbxBBV1dEj4iOrWObKU3gdNNmO95ooJ
+         U2jsRrtBv6NNDiHHKexKxPH1Tz6Z6xMf4xZOifK5+s9VZD3c9WBeZu4rlf+abn/4jLtI
+         HQjw4CbBTczQxfp15hr+2hQG8Z6n6lrExK0yw8zkXE07m3CJgF0izi8i9EaZCbl87ZCf
+         v5HQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1780419613; x=1781024413; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hBhc8/ih69iZXkvQ+oh7MO055cOwe4gcQ9X1rXZHFqw=;
+        b=rL0tt7Y4BqoQc+Rp7qJ8672US+Fa6PILit0efVS+0il3lj5vo5sT+/wPNUXA0SUSbg
+         EY1k/Dj2LBR01xKosuY6fUwk7c3S6REfigJ1eTyPWDqJ0IKfqdvkHrhHbAlJs04xo9BD
+         4+7fnUeRjhecxA4UOqRbYY0ZBIfadIfclSMGFqseQWzBC26aDIXiPOss26SX0eUSErF9
+         k/2uYENuF/8kGJo6Dyk3kvo1Vp7oFwZDct0q924sWv/k865DZEQTfZ3BXtLcUzHUDdvX
+         pmj03kCI5FPpIsmZhsYHPvLjyVjdaF+kNkp1cF1dic/DN40VjyNUUNblrAph0HDwf2UA
+         8Qrw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780419613; x=1781024413;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=hBhc8/ih69iZXkvQ+oh7MO055cOwe4gcQ9X1rXZHFqw=;
+        b=ieb//lkEAGgOw24mrSIIF49LJbg5Fb25kNWZIsAJwvZPOLgw7gSVHUMesImhc7Sp7w
+         zLLIM08V82UWv1ItWH3aTE/DVOz9B3mABUCQ5m9vcQlGzZ/JOh/B3eXF0SMf1hLZpI1u
+         zOnCADav9jFO52Weus0vEQVzqCOHTg6Tcal4tfuz7wzjPryeutasyEvqJBtkC/aSHrd3
+         8bo0IZHo1XxXxperwvZ6//WYsT+FXzcMvAICl8Ad/LKBv7MCtAnJr1WQWpY2z1z+jGE4
+         2xj0WOOS+6h3WkV7aQI/LON6HrZyvZReS0dgLpQkJdrkuR5W5L3SaR/Q8tniG3nItN7M
+         HXHw==
+X-Gm-Message-State: AOJu0YwLPWWQ+8fXRMQXXXCkfQrbqmUjW0Raml+6W1EHu9mvfYroDIa6
+	x09sJSnzHQSo5OHiJn/4NbzparFkZaEBE8vtBrxcQoVfnQblbFnyRGW2uAT29jVYN5mLVePsR2q
+	+2rsEVmYGnluQ9eC4wgTgMQpAQ4wU669wa8iu7lll
+X-Gm-Gg: Acq92OFTzi9B0qCznGz7QSc/r89DYUBoCJaATTEntEQecbnAKm3931aMj/ntmx2EJeO
+	O+CEpJFEZ9zxmhXdEMzgWVA+m4v66MdDSzTQXjrbFGOQsFIeXkBrxqLL2I/KYBoJKb/dPokmZqp
+	Z2FQO7gQccUnHX24u8NiG6pdZKfDEoyYxZIS08nFgUpCvTmWd2r3swGKwQmQb1S765fEZotkC4P
+	Ta4wu3En7HaOtSNl7nT1J9weOySXiFoiVpOOwd1k3cL9DJ7c6hKtJxhfvCwCOYjq3OM30j88Hm6
+	sAaf09J19SLU/zSDJ/d4OxSCowFyF9yWuE9NUDOOVEQC2k3mOHeI67KOhEm+RQkC4mAhIVHih23
+	tAOk6wnopAmM3+YcFev4ZAgSQArU1ysRDR3VvNO8=
+X-Received: by 2002:a05:622a:588f:b0:50d:9e8d:9837 with SMTP id
+ d75a77b69052e-517781045e9mr355731cf.11.1780419610615; Tue, 02 Jun 2026
+ 10:00:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-UID: 6d1f2c
-X-Rspamd-UID: 9de3f1
+References: <20260602162727.893863-1-runyu.xiao@seu.edu.cn>
+In-Reply-To: <20260602162727.893863-1-runyu.xiao@seu.edu.cn>
+From: Eric Dumazet <edumazet@google.com>
+Date: Tue, 2 Jun 2026 09:59:59 -0700
+X-Gm-Features: AVHnY4Lh_1oPRlpZANoDxriKJDXUr-c48eEjIKhNsrcPd5qyLhSewz3s74JK6yU
+Message-ID: <CANn89iJYzJ8GDoEeVywvShQsW4FmAM3YCZ8qSZAM-7BZXwT1mg@mail.gmail.com>
+Subject: Re: [PATCH net v2] raw: annotate data-races in raw_v4_match()
+To: Runyu Xiao <runyu.xiao@seu.edu.cn>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org, 
+	pabeni@redhat.com, horms@kernel.org, maze@google.com, kuniyu@google.com, 
+	linux-kernel@vger.kernel.org, jianhao.xu@seu.edu.cn
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The RX refill failure path jumps to err_drop_frame, which returns the
-descriptor buffer to the hardware BM pool. That is only valid while the
-driver still owns the buffer.
+On Tue, Jun 2, 2026 at 9:27=E2=80=AFAM Runyu Xiao <runyu.xiao@seu.edu.cn> w=
+rote:
+>
+> raw_v4_match() is a lockless match helper under sk_for_each_rcu()
+> and still reads inet->inet_num, inet->inet_rcv_saddr and
+> sk->sk_bound_dev_if with plain loads.
+>
+> inet_num and sk_bound_dev_if already have WRITE_ONCE() writers, and
+> raw_bind() should use WRITE_ONCE() for inet_rcv_saddr as well.
+>
+> Add matching READ_ONCE()/WRITE_ONCE() annotations.
+>
+> Signed-off-by: Runyu Xiao <runyu.xiao@seu.edu.cn>
+> ---
+> v2:
+> - Note that inet_num and sk_bound_dev_if already have WRITE_ONCE() writer=
+s
+> - Add WRITE_ONCE() in raw_bind() for inet_rcv_saddr
+> - Previous version: https://lore.kernel.org/r/20260601073937.1137673-1-ru=
+nyu.xiao@seu.edu.cn
+>
+>  net/ipv4/raw.c | 10 +++++++---
+>  1 file changed, 7 insertions(+), 3 deletions(-)
+>
+> diff --git a/net/ipv4/raw.c b/net/ipv4/raw.c
+> index 5aaf9c62c8e1..faa49f3d239a 100644
+> --- a/net/ipv4/raw.c
+> +++ b/net/ipv4/raw.c
+> @@ -120,11 +120,14 @@ bool raw_v4_match(struct net *net, const struct soc=
+k *sk, unsigned short num,
+>                   __be32 raddr, __be32 laddr, int dif, int sdif)
+>  {
+>         const struct inet_sock *inet =3D inet_sk(sk);
+> +       unsigned short match_num =3D READ_ONCE(inet->inet_num);
 
-After a non-PASS XDP verdict, mvpp2_run_xdp() may already have recycled,
-redirected, or queued the page for XDP_TX. After build_skb(), freeing the
-skb on refill failure also retires the data buffer. Returning either of
-those buffers to BM lets hardware DMA into memory that is no longer owned
-by the RX ring.
+I think inet->inet_num is immutable, raw sockets have SOCK_RCU_FREE.
 
-Split the error handling so buffers are returned to BM only while still
-owned by the driver. Once XDP or an skb owns the buffer, only account the
-RX error. Mark page-pool skbs for recycle before they can be freed on the
-refill failure path, and unmap non-page-pool buffers before freeing them.
+> +       __be32 match_rcv_saddr =3D READ_ONCE(inet->inet_rcv_saddr);
+> +       int match_bound_dev_if =3D READ_ONCE(sk->sk_bound_dev_if);
 
-Fixes: 07dd0a7aae7f ("mvpp2: add basic XDP support")
-Fixes: d6526926de73 ("net: mvpp2: fix memory leak in mvpp2_rx")
-Signed-off-by: Til Kaiser <mail@tk154.de>
----
- .../net/ethernet/marvell/mvpp2/mvpp2_main.c   | 20 ++++++++++++-------
- 1 file changed, 13 insertions(+), 7 deletions(-)
+Why do you need a local variable to store sk->sk_bound_dev_if ?
 
-diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-index 3372ed27cc8d..397aa5ca4992 100644
---- a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-+++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-@@ -3991,7 +3991,7 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
- 				err = mvpp2_rx_refill(port, bm_pool, pp, pool);
- 				if (err) {
- 					netdev_err(port->dev, "failed to refill BM pools\n");
--					goto err_drop_frame;
-+					goto err_drop_frame_retired;
- 				}
- 
- 				ps.rx_packets++;
-@@ -4010,6 +4010,8 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
- 			netdev_warn(port->dev, "skb build failed\n");
- 			goto err_drop_frame;
- 		}
-+		if (pp)
-+			skb_mark_for_recycle(skb);
- 
- 		/* If we have RX hardware timestamping enabled, grab the
- 		 * timestamp from the queue and convert.
-@@ -4023,13 +4025,16 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
- 		err = mvpp2_rx_refill(port, bm_pool, pp, pool);
- 		if (err) {
- 			netdev_err(port->dev, "failed to refill BM pools\n");
-+			if (!pp)
-+				dma_unmap_single_attrs(dev->dev.parent, dma_addr,
-+						       bm_pool->buf_size,
-+						       DMA_FROM_DEVICE,
-+						       DMA_ATTR_SKIP_CPU_SYNC);
- 			dev_kfree_skb_any(skb);
--			goto err_drop_frame;
-+			goto err_drop_frame_retired;
- 		}
- 
--		if (pp)
--			skb_mark_for_recycle(skb);
--		else
-+		if (!pp)
- 			dma_unmap_single_attrs(dev->dev.parent, dma_addr,
- 					       bm_pool->buf_size, DMA_FROM_DEVICE,
- 					       DMA_ATTR_SKIP_CPU_SYNC);
-@@ -4048,13 +4053,14 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
- 		continue;
- 
- err_drop_frame:
--		dev->stats.rx_errors++;
--		mvpp2_rx_error(port, rx_desc);
- 		/* Return the buffer to the pool */
- 		if (rx_status & MVPP2_RXD_BUF_HDR)
- 			mvpp2_buff_hdr_pool_put(port, rx_desc, pool, rx_status);
- 		else
- 			mvpp2_bm_pool_put(port, pool, dma_addr, phys_addr);
-+err_drop_frame_retired:
-+		dev->stats.rx_errors++;
-+		mvpp2_rx_error(port, rx_desc);
- 	}
- 
- 	if (xdp_ret & MVPP2_XDP_REDIR)
--- 
-2.54.0
+This forces the compiler to read it (in a register) or store it in a
+temporary variable
+before tests that might short-circuit the read (eg if network
+namespace does not match).
 
+>
+> -       if (net_eq(sock_net(sk), net) && inet->inet_num =3D=3D num  &&
+> +       if (net_eq(sock_net(sk), net) && match_num =3D=3D num &&
+>             !(inet->inet_daddr && inet->inet_daddr !=3D raddr)    &&
+
+Why isn't inet_daddr covered in your patch?
+
+> -           !(inet->inet_rcv_saddr && inet->inet_rcv_saddr !=3D laddr) &&
+> -           raw_sk_bound_dev_eq(net, sk->sk_bound_dev_if, dif, sdif))
+> +           !(match_rcv_saddr && match_rcv_saddr !=3D laddr) &&
+> +           raw_sk_bound_dev_eq(net, match_bound_dev_if, dif, sdif))
+>                 return true;
+>         return false;
+>  }
+> @@ -727,7 +730,8 @@ static int raw_bind(struct sock *sk, struct sockaddr_=
+unsized *uaddr,
+>         if (!inet_addr_valid_or_nonlocal(net, inet, addr->sin_addr.s_addr=
+,
+>                                          chk_addr_ret))
+>                 goto out;
+>
+> -       inet->inet_rcv_saddr =3D inet->inet_saddr =3D addr->sin_addr.s_ad=
+dr;
+> +       inet->inet_saddr =3D addr->sin_addr.s_addr;
+> +       WRITE_ONCE(inet->inet_rcv_saddr, addr->sin_addr.s_addr);
+>         if (chk_addr_ret =3D=3D RTN_MULTICAST || chk_addr_ret =3D=3D RTN_=
+BROADCAST)
+>                 inet->inet_saddr =3D 0;  /* Use device */
+>         sk_dst_reset(sk);
+> --
+> 2.34.1
