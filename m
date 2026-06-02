@@ -1,288 +1,178 @@
-Received: from fhigh-b1-smtp.messagingengine.com (fhigh-b1-smtp.messagingengine.com [202.12.124.152])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1114D3D331D
-	for <netdev@vger.kernel.org>; Tue,  2 Jun 2026 09:41:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.152
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780393279; cv=none; b=ewqeir3UagyJ4BqvzwZM/oMvfjoKcY/X/zYVsSRozTXEQ0kzzVWkAIi81ItDIvWKootMgXAA9JHe4Dfcbxz0PExf5QgfbtguJ9r6Afp8PgIfWvZeA5WceqVLWa6jx50kkS6h8RlrjZfsKGtXcbAK7O4IjCnVIq6Et1ji7889r8k=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780393279; c=relaxed/simple;
-	bh=IcTa34JM6Ln8abElOh1Nk0yxzd+N8+BO21gYVKPFo3M=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AOxAug+beXeELHc9VId5etK09xfTw4PHsDGG2i3V3xvNRDVK/6k4GeiQ5lRfiwxtJyNiYpCVTth00EX3JJZuuyuoDMvIlVwkrPlTrMh8TWtEUf8mT1VFE4Eisns4CvFifFSJL83Dd3FVk40rgEBMM19oUrlRXfRBmnDowC28uWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.im; spf=pass smtp.mailfrom=fastmail.im; dkim=pass (2048-bit key) header.d=fastmail.im header.i=@fastmail.im header.b=Gh7owAnJ; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=K7qvfQmN; arc=none smtp.client-ip=202.12.124.152
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.im
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastmail.im
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADBF41F2380
+	for <netdev@vger.kernel.org>; Tue,  2 Jun 2026 09:43:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.18
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780393387; cv=fail; b=BT4+d3mEOKj4dMXuCU64G9Kn8d9S56fJuosKdD3eZWTadJ6zrIGhSHqXFPC+Ie9i3LHJJeE6bdl4Lw8xZ11Y0wA7tP6vRmW8Hbi/ocR6i0+I5XqjS4IfX2AkMoNL0bHDf2gjE0j3jT2+12yQXCMn6SX6DlqdI5vDOdcAq8gocKE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780393387; c=relaxed/simple;
+	bh=xntQ4fboiD0qL1eJ9GwRBxI6624V1rRuFBlpZQkjL1Y=;
+	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=sb21/klMrtETs4WEMqTnkzRXYxO99dm7g9vEV4zI0275IITweOMfD6rf295XtKNcoBMpkwMCjerpceHc0u6hk/3iDaM4VX46uIlTiF0Qbx46r9hwHOCjfazgu32dp+uG7KSWipBiowCGexq0HO9bUC1Zpjiy8u+5zB5BQEyeFrY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=D7EMcVT/; arc=fail smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fastmail.im header.i=@fastmail.im header.b="Gh7owAnJ";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="K7qvfQmN"
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id EF8BD7A013A;
-	Tue,  2 Jun 2026 05:41:16 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Tue, 02 Jun 2026 05:41:17 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fastmail.im; h=
-	cc:cc:content-transfer-encoding:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1780393276; x=
-	1780479676; bh=YPOlzuigh2xsIb6ykABbPx55nx/illDTqrlxylgdzrc=; b=G
-	h7owAnJ6i/LoGAC4ZyGZFtmqYN00x0RzitbMzvzUlEZOCDEikHy4rQpHl+ZPWRtU
-	NTJXgeRzTenD8SnesTAyfC4L0F3nV9gNEsjIKQXitkmiGSIIl+mKoQzdzO3vzLvq
-	bM85czB73KZ+mi6n6Q0WdHkob4Xoe8BVHJfU9FgzM7zoMz5fmbGJA1L5Hp3jvafo
-	94rJb8pXlXhfhmnZUYdF6jugNC5z2KKFCw+QhRYVUUQOa2DmQQzi6mp2KemZ5Q4x
-	gj3Of2H31anPmTPoNoAxIl24bP2FVpJqITCxSAyrhmy1ZWbfI0bGXN5+XkfiKCDI
-	6LLNIxN8Smq94KIYC9iqA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm1; t=1780393276; x=1780479676; bh=Y
-	POlzuigh2xsIb6ykABbPx55nx/illDTqrlxylgdzrc=; b=K7qvfQmNCsHyUUlkP
-	Vp1YQlf2N+THfozqCM5JzcVJp1EVYksv+zBvpXKDohyum9ztBWL6wqkpcPQclddi
-	R32PDGE1DOWP35Tl5SifuvzuxYPXWnjldSPvxz60iSMXSTbL+MT8y99/Mm44FEzP
-	1IDoCITKLzD7d16WzHcJBeA9WEfuL93IpZXLYnyEr4EnlFrnhfwFc/G5Lu8kFNbd
-	JRW4E+d+oYvU2hA+IGKoYKPaHVD1WYLn8zOoKjKsfpJ/JLUhWg7Vsf/camEvt1ck
-	+j3YRGVkzlIAalOiUICBzUQqtcdGqLSLWDEOPrm+nROjr6amfAu1LhUlK9LQRx5h
-	tLizA==
-X-ME-Sender: <xms:PKUeau14eZ2QyhPJ1XWNWq3DFRnGbrX8731fuJqAPEtxXYeEFYFjOg>
-    <xme:PKUeavmoXw_IteqSEgOSTDXZB-mqxyzxtnN8d2W_gUYSVIXnVxrbR5DUP9UqbmK3X
-    wDIqpJ8hV5ebWPychUFMvNMTwwgcZI9xyPiQMOsgAgeoOdWG7CNGl6h>
-X-ME-Received: <xmr:PKUeatvDEqcs20isuysalDw9eUv9p0zbrB16BoYFOxviKjZ_MyVuZwlto3peGapYCOtgF64QxeQWNRmInHs>
-X-ME-Proxy-Cause: dmFkZTF9LO8Fhxl0/MdIK8BUY2JQgdWC+kkwHzGCIWrHCsyDgpRCDULHq0hEGzyXg7aDpH
-    g3idQFp6N72tYF5QG6bTYSL3eQwKt+GpNR9rRcOTWJ9aKqTbORCHN5RI0R3wf58tsokbGN
-    73Oy3xbuLKf0ntd6qSFQ28IzEhKMpOn7OfJQEFkKh1lsoSzS++LYbp+YX7Ns1szQyPSQjh
-    hCAd3cOuhsD0YiKkxrqbt+hTWsi0LuT8Uc8YC8KjARG9EUDuMmJngbTSfecH7xW9NWHZBH
-    WXsEdIAJ98cxIFXJncDak9wr72KOFdCkyGNyS03qdQ0B7zZZ2h0tltUFvmvWxjCoYF/QNR
-    FGZYzZx4HsYbvTqpvP8rtPsTBGTcUMxKCC6x30uUjbDeO5X7ORZOegwx57d+LQ2A8VsWwB
-    NhFe3ygZLRGk62fk6GwQfdycN3JfV4y+nAy3dBHwyCocG4fAN5QP1eEbgewCsVSdq4e38E
-    AGOIdzEKpUUoP6rtqfTYx5AZ++359TDpJmzZU9MVuwr3rkdgm79x92SyCFIYwWMiJcCxIj
-    n4dNmV+uLO+76T4GZZfzNibASUwTYvrpx6qC+AQ7gqZoBv44M7mEMGQEEUFlAFXYKWMfD5
-    Os67/Vjg/r3AagsnB+DhpOP0DfIs4d7UIXmyl3kpkkitBV76NJojS4NlUvmw
-X-ME-Proxy: <xmx:PKUeav1xPki9jOaTvcsYSRdrrgKUVzn_2UDj9bCmFClQmoYP_NsmbA>
-    <xmx:PKUeapQUOyh3WL_UPdQrD-6TUWcRBSBnu50j_oGy4KGYbwHgcttZ6g>
-    <xmx:PKUeajs5TcL-gIDpumK8z01nmRNoD3sp27J8xv7agpGNX_qakfbwxA>
-    <xmx:PKUeavJlXecGW4j_93dSO4hflfEAGj2SeiqniNdOOUENPQif6oK4pw>
-    <xmx:PKUeavC46EL2Z1MYCVyyK-PjpXk8x91OPi5Az7RJxFl9FN5EEVUQwiyX>
-Feedback-ID: i559e4809:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 2 Jun 2026 05:41:16 -0400 (EDT)
-From: Alice Mikityanska <alice.kernel@fastmail.im>
-To: Daniel Borkmann <daniel@iogearbox.net>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	Willem de Bruijn <willemb@google.com>,
-	David Ahern <dsahern@kernel.org>,
-	Nikolay Aleksandrov <razor@blackwall.org>
-Cc: Shuah Khan <shuah@kernel.org>,
-	Stanislav Fomichev <stfomichev@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Simon Horman <horms@kernel.org>,
-	Florian Westphal <fw@strlen.de>,
-	netdev@vger.kernel.org,
-	Alice Mikityanska <alice@isovalent.com>
-Subject: [PATCH net-next v6 11/11] selftests: net: Add a test for BIG TCP in UDP tunnels
-Date: Tue,  2 Jun 2026 11:39:31 +0200
-Message-ID: <20260602093931.516281-12-alice.kernel@fastmail.im>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260602093931.516281-1-alice.kernel@fastmail.im>
-References: <20260602093931.516281-1-alice.kernel@fastmail.im>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="D7EMcVT/"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1780393385; x=1811929385;
+  h=from:to:subject:date:message-id:references:in-reply-to:
+   content-transfer-encoding:mime-version;
+  bh=xntQ4fboiD0qL1eJ9GwRBxI6624V1rRuFBlpZQkjL1Y=;
+  b=D7EMcVT/Aos5EUTQrynLKEHc6LIsOrmuwYEy5MGrSZpwyRTl7Zi/ofFZ
+   RsAaYMd21toCzsVm7nliZaOxdRd+RmvoZ1aAGDht88n5+ln7wqJXVQiTU
+   mVdmXGwbSb7DJ18UkO3QndtpMbvbN+n2o60OAyajt8laullmHQ8SccSrU
+   542huRf76fg4/LD+GHDZ3eKOszBttut+G9fBKFSUNaMHlKrDiUgInSs5K
+   u9jMt73FVwggip3qbUQToFN/MskcXjTpnEv3DzYuoO0nUdn99J4+d1HaJ
+   t3BtUdKJlUSf6Siqciwk09in1V6FoaiVvakV3FGQKx3PetUuUlV+Mrr+r
+   A==;
+X-CSE-ConnectionGUID: ziqM0HVcQamT/B4UA6hEwg==
+X-CSE-MsgGUID: FlPbArQETN2/Z9InaHXEPw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11804"; a="80318620"
+X-IronPort-AV: E=Sophos;i="6.24,183,1774335600"; 
+   d="scan'208";a="80318620"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jun 2026 02:43:05 -0700
+X-CSE-ConnectionGUID: nghxuN6xRuSi5uwvNkq/5w==
+X-CSE-MsgGUID: erXoWnXiQYilnFv/P1+bhw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,183,1774335600"; 
+   d="scan'208";a="248784911"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jun 2026 02:43:05 -0700
+Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Tue, 2 Jun 2026 02:43:03 -0700
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Tue, 2 Jun 2026 02:43:03 -0700
+Received: from BN8PR05CU002.outbound.protection.outlook.com (52.101.57.19) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Tue, 2 Jun 2026 02:43:00 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=tnvuUe4yx5o7gomoz0fBBdEk5w19oK1dtzvdGdHdfmfZ46P2YqqkoC4Ydv2xxfcM2+FwCfZ3yqTKkb6zCvxQmipAb6hgIf85IKEgiXVP6Otiv66nl3l5wh2W/vEnJYJWPEZ03jf7BqF0EQ9h3QmmbYfbMRSwxzS4IoypLeM8hNYiuI6JtoGxDtxq3uLaA43TGWUNSy+tN0zxg1Jp1kGUv+pDw4BMIuqMlVgOv87lCq5OOFUxA9VVtwjY3onC0weYAmqs5apIU68CO4trcMr4e00xgB4rlARu4GDpx5y1JcHOEVPcUwAw9gV+Ulpn85aeHNyyfucNFMi1yPwHoUJ43A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=xntQ4fboiD0qL1eJ9GwRBxI6624V1rRuFBlpZQkjL1Y=;
+ b=nT2fw5YIOJAp6edVFi3lIgDxnBi/IuPc3O/pkrKapJWL0v4N8aGMDhKaR9x2qZwUcZVP7EzqHv8vqLoifAQwWZjryjhsm9INRIEDp7ZdqL6hJmqdc5d1MJeEO5rkh3eVMcpSqXCabQn3U4jFqYv3ffcUdci89Mi14gZnc0WXMIrpHM5v83rUjbgbxomyPquc99I9/dpYNA/Izx7psQ3ey/coKbNueBcC2Y4p2rjgql8RoOzmuudnbvabLOqtYQnpvT5uJK+7O2QZGq0F+iXwiIwcpYs4DC6vLiAp/lQlxBOVpnAP9/s6j6ipZYB8ugOrJ8D3nqfHTeqxqOZHI0xfHA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from PH0PR11MB5902.namprd11.prod.outlook.com (2603:10b6:510:14d::19)
+ by PH7PR11MB7449.namprd11.prod.outlook.com (2603:10b6:510:27a::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.15; Tue, 2 Jun 2026
+ 09:42:56 +0000
+Received: from PH0PR11MB5902.namprd11.prod.outlook.com
+ ([fe80::f95a:602a:34d3:5d37]) by PH0PR11MB5902.namprd11.prod.outlook.com
+ ([fe80::f95a:602a:34d3:5d37%5]) with mapi id 15.21.0092.006; Tue, 2 Jun 2026
+ 09:42:56 +0000
+From: "Jagielski, Jedrzej" <jedrzej.jagielski@intel.com>
+To: Markus Stockhausen <markus.stockhausen@gmx.de>, "andrew@lunn.ch"
+	<andrew@lunn.ch>, "hkallweit1@gmail.com" <hkallweit1@gmail.com>,
+	"linux@armlinux.org.uk" <linux@armlinux.org.uk>, "davem@davemloft.net"
+	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"chris.packham@alliedtelesis.co.nz" <chris.packham@alliedtelesis.co.nz>,
+	"daniel@makrotopia.org" <daniel@makrotopia.org>, "mensi@mensi.ch"
+	<mensi@mensi.ch>
+Subject: RE: [PATCH net-next 5/8] net: mdio: realtek-rtl9300: adapt spaces for
+ defines
+Thread-Topic: [PATCH net-next 5/8] net: mdio: realtek-rtl9300: adapt spaces
+ for defines
+Thread-Index: AQHc8lEtiU0gXZQI9U+Esf0hzUMyK7YrAxkA
+Date: Tue, 2 Jun 2026 09:42:56 +0000
+Message-ID: <PH0PR11MB5902B7C4C07107C3288500ABF0122@PH0PR11MB5902.namprd11.prod.outlook.com>
+References: <20260602052640.93083-1-markus.stockhausen@gmx.de>
+ <20260602052640.93083-6-markus.stockhausen@gmx.de>
+In-Reply-To: <20260602052640.93083-6-markus.stockhausen@gmx.de>
+Accept-Language: pl-PL, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PH0PR11MB5902:EE_|PH7PR11MB7449:EE_
+x-ms-office365-filtering-correlation-id: a82b4985-85f6-4827-5e47-08dec08b533b
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|7416014|366016|376014|1800799024|38070700021|921020|11063799006|4143699003|56012099006|18002099003|22082099003;
+x-microsoft-antispam-message-info: 2RmMw7+ct0nYSknsTTQG5PL3GwbMNa+PZJdm3OV2LAO1TnbCbUpPOc3hDZzCdfrpVxtYGoDZ++D7EXl2lpEOejkLfAz/TDxlNzJ7v9z5LgykuOGAa0KkiMOksIlO1U4X+aSRZfiwXhFUiIPlZLHbOZ44rUb/ugCmTz019YEKrGqbZiH2A0ii0+dx9NrYZf12QVmcw74aPy4ogx1ewwaAxlIn/kjDEGmfraz8NiAVNhbbr+dHNuOivg5uyx4hdBL+YeTUJJZlbK6O5r6c3+zL8IbBj36wB1SyxPPmkUPeNiH0eHT580O7meocPKIFFOBpZ6kct5S/hHBRafeNBwzWkxRp/F5aIgf3i3SXhM4rf3DqDXQ/V31vyRD+oTlsrxVle5r3I/Qd8wnL0F32/yCRiFUfsk6+Jji7M5VNoP459wWE8K3LcB6MJqA8e1aNb/uaH4btzLb/9weXug50RrQypZPRgfGzD9Hh2xC57/op27auVB1WbO4Y3xpILhJAoH1/9Tecjj0/XEtVbXVoYoKqyAL9ZeeyBzF8DqTe9m9wm1qpSKBUr78CV2BAwHlPX1lCf0w117HxgB5oeKo3aHrs7LKIWVqPkZsFXEPFoD2vSX1Xd+PJI2eAeIbxO20829fzzj0PjDZ9LWlzqm0I3FLCimTHGXEL30nfd1OXo9PSRFrbfIUr5WosmpT5svBgETBvniZd6zq5/WjuLAERrWc+ohrBMFs/OmYsm3aFyTQiglaHvYcXQqc8WL8BjcGgcYBsIRgFwUm1dyHBABmAUB0nJw==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR11MB5902.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(366016)(376014)(1800799024)(38070700021)(921020)(11063799006)(4143699003)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?2XVQhA3PZCPzghGav60GruFCeY2acstIJfyk/0lTH9EhHTh9y+Nr1sDavGgT?=
+ =?us-ascii?Q?lfE+OlpaHmhVtor81dyppPLyK0R0k2hFXaqObyVSBf1gi9FHwa/guUAS9yRZ?=
+ =?us-ascii?Q?oRvGttvjnYuytHuHtZsnONSxzT0fIx8MLt2U6i2WEpRlSWyGfD6wXUyHsdQq?=
+ =?us-ascii?Q?x896aJgQ9sBb8MAFAtaK5wGUE4G9APlkwmnwl2ovjnlCeqS6Af0uSIrAcXiW?=
+ =?us-ascii?Q?+YbLHqzPgtyVBEY0RAqr7bBoGtvsF1piu3CCfGxaDnSzj9zKbDPz5tVbcQPC?=
+ =?us-ascii?Q?Eek0ORVkxQvF2ofqJyVZ0vNQXDpCjqw1vqnpywkTH7lK5vXNrlyweOxOGNpI?=
+ =?us-ascii?Q?SuLfihgMHAWfbYVkoh/GaSfnFj0FCw7PaFRStDg9dyOJUswOrEUjm//QM1uR?=
+ =?us-ascii?Q?5ev4ToavDEP6VnYBAsJEJEizmpCvOy4zJVOs7dDNEJVEr76CX4M59SeHRFEN?=
+ =?us-ascii?Q?rg2Z3GIVtJmwY+8tyxuraCeNV1hTACZOVS+M1RFZjMbFM4L7NNnOXLEFdPru?=
+ =?us-ascii?Q?9yTv74/i6Qmm36qTMrp36x6fU1EN0K1TmQthVlgcQvBLodTxPxLFiYfWwQby?=
+ =?us-ascii?Q?6dMGBAerBr/MUCTl3tjsA27zTXqyfcq0KyNmMGgYO8H/9etPjIHqnRtEDPQa?=
+ =?us-ascii?Q?oKBElY7JEt27t8TD+HFynvMx7uEza3j2Qskw6tKvwsFBL5If9HTyzV4BVOnC?=
+ =?us-ascii?Q?mPaIA4KkWfwkaVL8wXa38jfG6gOlzMC4DtLoNaDeLOBi5iQdQLy2VtqMlnC2?=
+ =?us-ascii?Q?MetEx0QSjwzojIlamj1osJoHu5zjh6zWmofQwjukh5QLkOmNp5ZyVyOdGv65?=
+ =?us-ascii?Q?M0n72iEv4TFPQQpSmbzxZg5rEwglLnYPRH3HrIUY3nH0gbftQJkCDnQ10Zg5?=
+ =?us-ascii?Q?ffHxs6LDd6nQKAeccYSjL1t6Ho/eD474SYZALV/Bv2zsm76hyAbfiWG3Vbf+?=
+ =?us-ascii?Q?nOErXr0wdBIwzWTyInIP9wQPR9pd+gNjnmALatvp+N7LaiT+dVrsAA4m92T0?=
+ =?us-ascii?Q?qcWcbgUd79ojTTExT4if+v5KPnWb0TnJ8pQ2lO7fBRJ9dhxMWUDn03oRYxRf?=
+ =?us-ascii?Q?U6urJ5zZF9pTcxMfZ6j57dfVqsSvXJ7TZNPq0/v55ptL/FniTIviNUgm21JH?=
+ =?us-ascii?Q?ljKTLs1/NvhPknmstOoDWh6c2xg8Gvlfnq3QfnUa40IrbXx2XrKujjscFpNh?=
+ =?us-ascii?Q?uo7HEknnZgoRA5UlsTNlf823hzm/1Mip/9dmBecr7QJKEKS7lZsuQqrKZBs+?=
+ =?us-ascii?Q?Mh2XasrGTsArK+yPByI0L3PFc2MF2O0RCDhxFkrVr9aoKnBaGWo2bgI06l9V?=
+ =?us-ascii?Q?h3ZeduOyZpAf2MLxGlrCy5Dw0smmdJoJt4bLvAVSw9tPJOXzUp9U5Y6p0P+E?=
+ =?us-ascii?Q?5aWil7IxnCD5idJtYQzarfsw+gbjOpQI2dnvbCOYcbETFQ7h+yiJ77ndkB9r?=
+ =?us-ascii?Q?viCQrYIYKyqYwWnT2aleudc270oUssAELBWG8h3tJnTHdDzFQPrW3Nxa7MO8?=
+ =?us-ascii?Q?shRZ60Lk40qXZLytkMwYLS8m/jCkmq+ETrC4qxTIUY9DQvHN2/JfiLb/l7tj?=
+ =?us-ascii?Q?8veuW2Hy1WM72HmS5sHDEn8/QVLV5Ycg0Ii7BKG1NL8W7We/eLC99m3N1vBI?=
+ =?us-ascii?Q?brX4B+rWjs5qMFxRF6z1ZLfVQUdXpiwWWUa+0LxeHSXcsRfJNx7IlzDXlGsl?=
+ =?us-ascii?Q?UDbgSldEDmxAjSH7jf7qU0tTpfksSpQB4B3TPtJk+eSlJjfStu22j5ouYQZB?=
+ =?us-ascii?Q?WQ4NCojikw=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Exchange-RoutingPolicyChecked: euogwW8DAx+6t5qw5JKLPhQneKqHfEnnFZyRO9uJmzFcIkoCAP/IwHgzP8s6vVitvYYYGxw1zEZF1rrp/qxrAKa34S/X2mleLTiO2yUz8Dj/lPD+t6bBxoU/IKRKhPavMy008LBLBcocwSNhkoZhl1tJzty3KKrPEzJBugiEGaPoazLJHIFZAO10rUETwdx4hwnQ0upkNpVVeozM8CNPWBzT/qkxAbnEnNUxJ0EWCmi6g3ChILCVDkRpxBoVaYnIoYqjbbjpBG9nEor2l7yv8jKEyqfsiqWcEL3CsTgiF7xTOa1AjyyL6xrLMI2sv0r5fgrP1YpTbmRYS84cyu6B+w==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR11MB5902.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a82b4985-85f6-4827-5e47-08dec08b533b
+X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Jun 2026 09:42:56.1961
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Rmt+UOjVRSVYuNILcmGdIjStCAun6HOzxy9yGmeiOhAygiSQKAhLA33Uesf+Kwby3ybQWu/Fttuf3hnd7pHsmDW5p1ZaDk3Grx4HohY7N2k=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB7449
+X-OriginatorOrg: intel.com
 
-From: Alice Mikityanska <alice@isovalent.com>
+From: Markus Stockhausen <markus.stockhausen@gmx.de>=20
+Sent: Tuesday, June 2, 2026 7:27 AM
 
-The test sets up VXLAN and GENEVE tunnels over IPv4 and IPv6 and runs
-IPv4 and IPv6 traffic through them with BIG TCP enabled. It checks that
-a non-negligible amount of big aggregated packets are seen in tcpdump.
+>Register and fields will get longer prefixes in the future.
 
-Signed-off-by: Alice Mikityanska <alice@isovalent.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
----
- tools/testing/selftests/net/Makefile          |   1 +
- .../testing/selftests/net/big_tcp_tunnels.sh  | 151 ++++++++++++++++++
- 2 files changed, 152 insertions(+)
- create mode 100755 tools/testing/selftests/net/big_tcp_tunnels.sh
+I don't get the reason for touching it again in the future;
+cannot it be renamed with adding prefix right now?
 
-diff --git a/tools/testing/selftests/net/Makefile b/tools/testing/selftests/net/Makefile
-index 5ca6c557fc3f..f32aa5495751 100644
---- a/tools/testing/selftests/net/Makefile
-+++ b/tools/testing/selftests/net/Makefile
-@@ -13,6 +13,7 @@ TEST_PROGS := \
- 	arp_ndisc_untracked_subnets.sh \
- 	bareudp.sh \
- 	big_tcp.sh \
-+	big_tcp_tunnels.sh \
- 	bind_bhash.sh \
- 	bpf_offload.py \
- 	bridge_stp_mode.sh \
-diff --git a/tools/testing/selftests/net/big_tcp_tunnels.sh b/tools/testing/selftests/net/big_tcp_tunnels.sh
-new file mode 100755
-index 000000000000..792a27fcd56d
---- /dev/null
-+++ b/tools/testing/selftests/net/big_tcp_tunnels.sh
-@@ -0,0 +1,151 @@
-+#!/usr/bin/env bash
-+# SPDX-License-Identifier: GPL-2.0
-+#
-+# Testing for IPv4 and IPv6 BIG TCP over VXLAN and GENEVE tunnels.
-+
-+SERVER_NS=$(mktemp -u server-XXXXXXXX)
-+SERVER_IP4="192.168.1.1"
-+SERVER_IP6="2001:db8::1:1"
-+SERVER_IP4_TUN="192.168.2.1"
-+SERVER_IP6_TUN="2001:db8::2:1"
-+
-+CLIENT_NS=$(mktemp -u client-XXXXXXXX)
-+CLIENT_IP4="192.168.1.2"
-+CLIENT_IP6="2001:db8::1:2"
-+CLIENT_IP4_TUN="192.168.2.2"
-+CLIENT_IP6_TUN="2001:db8::2:2"
-+
-+: "${PACKETS_THRESHOLD:=5000}"
-+
-+# Kselftest framework requirement - SKIP code is 4.
-+ksft_skip=4
-+
-+setup() {
-+	ip netns add "$SERVER_NS"
-+	ip netns add "$CLIENT_NS"
-+	ip -netns "$SERVER_NS" link add link1 type veth peer name link0 netns "$CLIENT_NS"
-+
-+	ip -netns "$CLIENT_NS" link set link0 up
-+	ip -netns "$CLIENT_NS" addr replace "$CLIENT_IP4/24" dev link0
-+	ip -netns "$CLIENT_NS" addr replace "$CLIENT_IP6/112" dev link0 nodad
-+	ip -netns "$CLIENT_NS" link set link0 \
-+		gso_max_size 196608 gso_ipv4_max_size 196608 \
-+		gro_max_size 196608 gro_ipv4_max_size 196608
-+	ip -netns "$SERVER_NS" link set link1 up
-+	ip -netns "$SERVER_NS" addr replace "$SERVER_IP4/24" dev link1
-+	ip -netns "$SERVER_NS" addr replace "$SERVER_IP6/112" dev link1 nodad
-+	ip -netns "$SERVER_NS" link set link1 \
-+		gso_max_size 196608 gso_ipv4_max_size 196608 \
-+		gro_max_size 196608 gro_ipv4_max_size 196608
-+
-+	ip netns exec "$SERVER_NS" netserver >/dev/null
-+}
-+
-+setup_tunnel() {
-+	if [ "$2" = 4 ]; then
-+		SERVER_IP="$SERVER_IP4"
-+		CLIENT_IP="$CLIENT_IP4"
-+		echo "Setting up ${1^^} over IPv4"
-+	else
-+		SERVER_IP="$SERVER_IP6"
-+		CLIENT_IP="$CLIENT_IP6"
-+		echo "Setting up ${1^^} over IPv6"
-+	fi
-+
-+	if [ "$1" = vxlan ]; then
-+		ip -netns "$CLIENT_NS" link add tun0 type vxlan \
-+			id 5001 remote "$SERVER_IP" local "$CLIENT_IP" dev link0 dstport 4789
-+	else
-+		ip -netns "$CLIENT_NS" link add tun0 type geneve \
-+			id 5001 remote "$SERVER_IP"
-+	fi
-+	ip -netns "$CLIENT_NS" link set tun0 up
-+	ip -netns "$CLIENT_NS" addr replace "$CLIENT_IP4_TUN/24" dev tun0
-+	ip -netns "$CLIENT_NS" addr replace "$CLIENT_IP6_TUN/112" dev tun0 nodad
-+	ip -netns "$CLIENT_NS" link set tun0 \
-+		gso_max_size 196608 gso_ipv4_max_size 196608 \
-+		gro_max_size 196608 gro_ipv4_max_size 196608
-+	if [ "$1" = vxlan ]; then
-+		ip -netns "$SERVER_NS" link add tun1 type vxlan \
-+			id 5001 remote "$CLIENT_IP" local "$SERVER_IP" dev link1 dstport 4789
-+	else
-+		ip -netns "$SERVER_NS" link add tun1 type geneve \
-+			id 5001 remote "$CLIENT_IP"
-+	fi
-+	ip -netns "$SERVER_NS" link set tun1 up
-+	ip -netns "$SERVER_NS" addr replace "$SERVER_IP4_TUN/24" dev tun1
-+	ip -netns "$SERVER_NS" addr replace "$SERVER_IP6_TUN/112" dev tun1 nodad
-+	ip -netns "$SERVER_NS" link set tun1 \
-+		gso_max_size 196608 gso_ipv4_max_size 196608 \
-+		gro_max_size 196608 gro_ipv4_max_size 196608
-+}
-+
-+cleanup_tunnel() {
-+	ip -netns "$CLIENT_NS" link del tun0
-+	ip -netns "$SERVER_NS" link del tun1
-+}
-+
-+cleanup() {
-+	ip netns pids "$SERVER_NS" | xargs -r kill
-+	ip netns pids "$CLIENT_NS" | xargs -r kill
-+	ip netns del "$SERVER_NS"
-+	ip netns del "$CLIENT_NS"
-+}
-+
-+do_test() {
-+	exec 3< <(ip netns exec "$SERVER_NS" tcpdump -nn -i link1 greater 65536 2> /dev/null)
-+	TCPDUMP_SERVER_PID="$!"
-+	exec 4< <(wc -l <&3)
-+	exec 5< <(ip netns exec "$CLIENT_NS" tcpdump -nn -i link0 greater 65536 2> /dev/null)
-+	TCPDUMP_CLIENT_PID="$!"
-+	exec 6< <(wc -l <&5)
-+
-+	if [ "$1" = 4 ]; then
-+		SERVER_IP="$SERVER_IP4_TUN"
-+		echo "Running IPv4 traffic in the tunnel"
-+	else
-+		SERVER_IP="$SERVER_IP6_TUN"
-+		echo "Running IPv6 traffic in the tunnel"
-+	fi
-+
-+	ip netns exec "$CLIENT_NS" netperf -t TCP_STREAM -l 5 -H "$SERVER_IP" -- \
-+		-m 80000 > /dev/null
-+	kill "$TCPDUMP_SERVER_PID" "$TCPDUMP_CLIENT_PID"
-+	wait "$TCPDUMP_SERVER_PID" "$TCPDUMP_CLIENT_PID"
-+	PACKETS_SERVER=$(cat <&4)
-+	PACKETS_CLIENT=$(cat <&6)
-+	exec 3>&- 4>&- 5>&- 6>&-
-+
-+	# One line is empty, each packet is two lines (inner and outer).
-+	echo "Captured BIG TCP GRO packets: $(((PACKETS_SERVER - 1) / 2))"
-+	echo "Captured BIG TCP GSO packets: $(((PACKETS_CLIENT - 1) / 2))"
-+	[ "$PACKETS_SERVER" -gt "$(( PACKETS_THRESHOLD * 2 + 1))" ] || return 1
-+	[ "$PACKETS_CLIENT" -gt "$(( PACKETS_THRESHOLD * 2 + 1))" ] || return 1
-+}
-+
-+if ! netperf -V &> /dev/null; then
-+	echo "SKIP: Could not run test without netperf tool"
-+	exit "$ksft_skip"
-+fi
-+
-+if ! tcpdump --version &> /dev/null; then
-+	echo "SKIP: Could not run test without tcpdump tool"
-+	exit "$ksft_skip"
-+fi
-+
-+if ! ip link help 2>&1 | grep gso_ipv4_max_size &> /dev/null; then
-+	echo "SKIP: Could not run test without gso/gro_ipv4_max_size supported in ip-link"
-+	exit "$ksft_skip"
-+fi
-+
-+trap cleanup EXIT
-+setup
-+for tunnel in vxlan geneve; do
-+	for tun_family in 4 6; do
-+		for traffic_family in 4 6; do
-+			setup_tunnel "$tunnel" "$tun_family" || exit "$?"
-+			do_test "$traffic_family" || exit "$?"
-+			cleanup_tunnel
-+		done
-+	done
-+done
--- 
-2.54.0
+>Keep define blocks clean and readable and add another tab.
+>Additionally clean up some multi-space separators with tabs.
+>
+>Just cosmetics, no functional change.
+>
+>Signed-off-by: Markus Stockhausen <markus.stockhausen@gmx.de>
+
 
