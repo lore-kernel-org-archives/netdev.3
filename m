@@ -1,59 +1,57 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail.grapheneos.org (mail.grapheneos.org [91.246.30.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A655932A3E5;
-	Tue,  2 Jun 2026 18:09:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C6BE31987D
+	for <netdev@vger.kernel.org>; Tue,  2 Jun 2026 18:09:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.246.30.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780423751; cv=none; b=Mwiio12Ao5REN0dFo5VQGoSk4Esffy9ElyUZ+Xxe9AvcQOXowGujH2nA4WWgPRHY0KQCYl+Hwmd2BrECta5DdWhTNrfpptwVl9Vnoqsk8ETnDbjz8KXdApQ5rRztatJbbHh+/NUIceak+PO+9EOr/us4+oqqDmoAPTrxn/rKlTI=
+	t=1780423795; cv=none; b=SqM+slNSYC8IPf0QrMjS6x59l7kxrUNLOQd1y/fiueBzbEdvZD2swg1CMsvF/vQJQz1Q5ewpTb8VF7N5rhOYFklWl9e8YQTIPHO5JKE/yswn15DgXw9JyfSDmJno2tPUYQAA66cJ+H/dt9Eg3+aKFDENF482lmAjoo1iZyXAOok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780423751; c=relaxed/simple;
-	bh=gZKBwOhQWFMxK8VXhUcXl8FPrwuuYzOd707FIGARVkg=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HEJr9XINdN7uD0YtA6YB7YA08dixBhLvqS7aLABPemPWixTpzuq0ZFwesMMnHYd1qViVqGpe4oGAyvzFECrH8Xk0V4/WmsztnaJxguxAvHVPnJbMjIVAD16R1aSzcPuggXo9Xibc7EQMX/XndU23n6JBEsVYI3y+BmfugpjNCGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Tn9uTPgf; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780423795; c=relaxed/simple;
+	bh=b+tJMtici/QxQpneg5L/lApe9epO/pWWupxr66xOIKQ=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=L/Uggj/BGAMzylIcaOn5biKohTMA9s0rKD3kEHgE3Na9pj2IuInIJBEPOJSrNmsP0FQcYD8/uBd7kwxX5cNo3V8igndAsVKDWj0vAXUHqvvwZKnGuDoCSFqUEdZPSuGebJ4FwH6qHMKIPUq19xquu/AESyGRdYuv+lyLAa1pblo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=grapheneos.org; spf=pass smtp.mailfrom=grapheneos.org; dkim=pass (2048-bit key) header.d=grapheneos.org header.i=@grapheneos.org header.b=pNvmjepN; arc=none smtp.client-ip=91.246.30.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=grapheneos.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=grapheneos.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Tn9uTPgf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AF731F00A0F;
-	Tue,  2 Jun 2026 18:09:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780423746;
-	bh=gZKBwOhQWFMxK8VXhUcXl8FPrwuuYzOd707FIGARVkg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=Tn9uTPgf4U0NDyRm8U4SHboCRMFqRm7jFx0LY9MGO5GWbeR0+aif5+nFiMOqr8CTm
-	 LXH3nYbN1zV+v6anTWTuvMvSdFCIzgKvOx778RrpBS37glhZt2Z7a3TXdgeSnA3rhQ
-	 yUXRE1fSBOweAwaVw1tfM1BVfww9oHea8cXpME95iSCUcQ6nMv/PjJPy/baWHZtGkP
-	 1AIig1y7AgSBUxzufYwYJ045hJgjFQXUn8PgLtL4MKUFJEldScTNc+gcFfnMvnUkP1
-	 sxa6zSkgeF4TQLpf28LJboIBAHSnAENYknoczC3AdWVj/Wr1x7TOmEIh1GMcpjvrR+
-	 EloD62pryZgKQ==
-Date: Tue, 2 Jun 2026 11:09:04 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Justin Lai <justinlai0215@realtek.com>
-Cc: Alexander Lobakin <aleksander.lobakin@intel.com>, "davem@davemloft.net"
- <davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
- "pabeni@redhat.com" <pabeni@redhat.com>, "andrew+netdev@lunn.ch"
- <andrew+netdev@lunn.ch>, "linux-kernel@vger.kernel.org"
- <linux-kernel@vger.kernel.org>, "netdev@vger.kernel.org"
- <netdev@vger.kernel.org>, "horms@kernel.org" <horms@kernel.org>, Ping-Ke
- Shih <pkshih@realtek.com>, Larry Chiu <larry.chiu@realtek.com>
-Subject: Re: [PATCH] rtase: Avoid sleeping in get_stats64()
-Message-ID: <20260602110904.47b149b6@kernel.org>
-In-Reply-To: <c3ca6a679d694890828ac9e7cc2d6305@realtek.com>
-References: <20260601062447.64027-1-justinlai0215@realtek.com>
-	<f4b96c08-c6f7-422f-aceb-aa48fa2bfef6@intel.com>
-	<c3ca6a679d694890828ac9e7cc2d6305@realtek.com>
+	dkim=pass (2048-bit key) header.d=grapheneos.org header.i=@grapheneos.org header.b="pNvmjepN"
+Received: by mail.grapheneos.org (Postfix) id 997443C08F09E
+	for <netdev@vger.kernel.org>; Tue, 02 Jun 2026 18:00:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=grapheneos.org;
+	s=default; t=1780423236;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type;
+	bh=6fFGdjST3g/P4faIjxC6n1Ki+ytnfZ1JrGtXnuXlvg4=;
+	b=pNvmjepNfLrOBOdvi59bpKAD4B8uYYNSn1xpVxqdccxYoyTxWx1qkBn0JEkNdEMw0hoRhv
+	P7pGnFZQNYhZu5XTvYPLh0j+WmXwqF7KWZUwc6XYIspZsz2IHon0fphPNmRM5zLVf4MU3q
+	R53PICSKC3SD2i2ZOxi7JCwoC46Rs7e5IjyGZJm0OZj2QR/SrFjIRbzhURhw4rZjJb1l8p
+	PL/LQa6UVnROI7xTe5huRlEHSE+lASAGcrie0M941SX1OuwgNoVhIrcdFpeXCSrhzvMgA7
+	XCWzIJtMPHaG15H+ff8ejATSgivRwHST3qtbKofdDTPV7DyjyeKsvrJ4X49cSQ==
+Date: Tue, 2 Jun 2026 14:00:33 -0400
+From: Andrew Fenton <andrew.fenton@grapheneos.org>
+To: netdev@vger.kernel.org
+Subject: [QUESTION] Packet uid for kernel-generated multicast
+Message-ID: <ah8aQWX60nTiHMLQ@acomputer.local>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-On Tue, 2 Jun 2026 10:50:13 +0000 Justin Lai wrote:
-> I'll add the Fixes tag and resend this patch targeting
-> the net tree.
+Certain multicast-related system calls such as setsockopt with options
+IP_ADD_MEMBERSHIP, IPV6_ADD_MEMBERSHIP and MCAST_JOIN_GROUP result in outgoing
+kernel-generated packets that don't have an associated uid.
 
-You can just reply with the Fixes tag here, our tooling collects those
-from the list, like it does review tags. No need to repost.
+Not having the packet uid set to the uid of the system caller makes it
+difficult to use netfilter to ensure a specific uid can't send any traffic out
+a particular interface. It is possible to use network namespaces or system call
+filtering, but neither of these options are feasible for us working on top of 
+Android Open Source Project.
+
+If we submit a patch that adds a kernel configuration for setting the packet uid
+to the uid that made the system call, would this get merged? Or is this not a
+viable approach?
