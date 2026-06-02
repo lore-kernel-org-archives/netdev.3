@@ -1,46 +1,46 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 899B33A5E65
-	for <netdev@vger.kernel.org>; Tue,  2 Jun 2026 22:55:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2D933CB90F
+	for <netdev@vger.kernel.org>; Tue,  2 Jun 2026 22:55:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780440923; cv=none; b=vCV0HnCqVhbWwJNCXTUyahlZ1tCM/KU3aGsp1yTDyiWVJpHClmNi4gwdEA7WI7I+bqfUKNj46e9Vx1pMgUiQUcvOf+vvbX5IFywYexWeajYuNiwWYNtcPnyqVNFfp6TkFzRxXvng0jy2kTRm73/bKcP8OhntPJgyom5+nruUy5w=
+	t=1780440924; cv=none; b=PtD/pdx5GXlMGV7Bbfe6vrb26uWlEfAkvm8r+F65u8QAvGewH41qstoBd4QuaV0tDa0BHukpWpOfGFp687FM7I8b0h93NBIF0wSZhZoqbpshS/eqFlNWcimoPLlemWAsBEVXZRcuvRoRvs+XZqoWusHnn/xpOwxgRxL7GUFRNao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780440923; c=relaxed/simple;
-	bh=bkEE+VGZ6LqII4GpH0PFdNwWjVUXS08t9T65j4x+JVk=;
+	s=arc-20240116; t=1780440924; c=relaxed/simple;
+	bh=1gPXyX9qlf669pfyosoehTWje1p/dsWF6pUPzY8+Rz8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FhSlZaiMHQp1YHoXk9w5IVBagGSV1UO+7kO0Dewa4P9sPABCPos5ExiLQse+hGOHAEYIjvXXd1vtO2kQswB9+3Zcg4b+FuDTjtBi8rkW5S0rH2u27RjEhAZGQ0xHqPdQ9LzfYB7ocKRiB0Ak1LNgWlv/gu+Ut2nkd8w41UoEuvQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YZNB5QZG; arc=none smtp.client-ip=198.175.65.16
+	 MIME-Version; b=DjnCmDoOPvtjJ1plyiFp1nn/AgQhoRb4WkZtooYmaSy1qE5dZC2l7qdDc9WvVFHvoBWI2SyJpIUzC4dkFzBKz7NDe23JUt64RWfnqR8IfTgXy5CMDioGCRGxCq2ELb26qSEcBrfZkzK4pHLtykAo5g+yiaawGvhuvgfR1wkTWOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=m/q2KqWR; arc=none smtp.client-ip=198.175.65.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YZNB5QZG"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="m/q2KqWR"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1780440922; x=1811976922;
+  t=1780440924; x=1811976924;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=bkEE+VGZ6LqII4GpH0PFdNwWjVUXS08t9T65j4x+JVk=;
-  b=YZNB5QZGi8hCXwEMUfL4i6VpC+BVNuEXK7fhg3N3att+nZEJcBmhnN2u
-   ivsSr4Sd/uNyKPQ9bJKXVIXKG9zbCf/RadtSEcBW2MYGsImcQ8HcgNEjo
-   3WdcKz4pIDvQuoXjJvSUgw0jNVYPHyiZoJDm1kRIMD2QWTT1G5Oz0FvYS
-   qZfC6kOb9mX4R2OUXSJl/FGHM0G6BS0t4xRUUXcJtNXy6DOydyt7iWSJw
-   oVmthyufO964IEqVBYkq7/SdfsSiBweAku+ooCNF2+XkGYRWLC/EQuD++
-   Ok7Z3B1iwMJ3s9YGCY4T0Avsnhf2JWx2bdZoYi7EJAmIMrw0D56Qu9M8U
-   g==;
-X-CSE-ConnectionGUID: MqNMqd3ZSJqe0vqN0NEdyg==
-X-CSE-MsgGUID: KlStMk6wSdWYBMTv8NYObA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11805"; a="81421401"
+  bh=1gPXyX9qlf669pfyosoehTWje1p/dsWF6pUPzY8+Rz8=;
+  b=m/q2KqWRkATXInt7OHExBD/5nj7JMsC3FMnESVZtIj8htd65CqYQzr6/
+   h3d26/UzkQJUsP9f8HXy7e/mUJ/wqXP31hOcCW8R77Z1xB9hz/bpLxJZe
+   TDxpaLzF2WwHf84wVG//MG7rF4cAvHrYC4uAmY0g6TR6pJUZ8jomLEF8q
+   slX2d6/bmf2Icp9zmFGxY3PlsOZ1OyQjjhtV54NOGNGILbUhl3SyUbDYZ
+   J48s/O1uT9iDipJCDFnQNnYyNQBOJcZ6+l8n0Wa80Y55ygewXMPNBsc3Y
+   UfIxlUAiWLZRqVsVzvYBMYgSf78HTE4dmk0fRa7SXdCrGZtcYv39Mn9bG
+   Q==;
+X-CSE-ConnectionGUID: ApbHdtk0RpSQJGIvXXEmZQ==
+X-CSE-MsgGUID: UTqDVLKzTcuYkIVldAWPxA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11805"; a="81421414"
 X-IronPort-AV: E=Sophos;i="6.24,184,1774335600"; 
-   d="scan'208";a="81421401"
+   d="scan'208";a="81421414"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jun 2026 15:55:21 -0700
-X-CSE-ConnectionGUID: kOy5ogwPR92foPtpJ8vzog==
-X-CSE-MsgGUID: LFJzcDtORAyqBl/tF/FloQ==
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jun 2026 15:55:22 -0700
+X-CSE-ConnectionGUID: 7pp43W8UTmuVClM+lKfmuA==
+X-CSE-MsgGUID: ytb5/fDHRfartmLxNQvA8A==
 X-ExtLoop1: 1
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
-  by fmviesa003.fm.intel.com with ESMTP; 02 Jun 2026 15:55:20 -0700
+  by fmviesa003.fm.intel.com with ESMTP; 02 Jun 2026 15:55:21 -0700
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
 To: davem@davemloft.net,
 	kuba@kernel.org,
@@ -48,16 +48,18 @@ To: davem@davemloft.net,
 	edumazet@google.com,
 	andrew+netdev@lunn.ch,
 	netdev@vger.kernel.org
-Cc: Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+Cc: Alok Tiwari <alok.a.tiwari@oracle.com>,
 	anthony.l.nguyen@intel.com,
+	aleksander.lobakin@intel.com,
 	jacob.e.keller@intel.com,
-	przemyslaw.kitszel@intel.com,
-	magnus.karlsson@intel.com,
+	richardcochran@gmail.com,
+	willemb@google.com,
 	horms@kernel.org,
-	Sunitha Mekala <sunithax.d.mekala@intel.com>
-Subject: [PATCH net 1/3] i40e: keep q_vectors array in sync with channel count changes
-Date: Tue,  2 Jun 2026 15:55:09 -0700
-Message-ID: <20260602225513.393338-2-anthony.l.nguyen@intel.com>
+	Samuel Salin <Samuel.salin@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Subject: [PATCH net 3/3] idpf: fix mailbox capability for set device clock time
+Date: Tue,  2 Jun 2026 15:55:11 -0700
+Message-ID: <20260602225513.393338-4-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20260602225513.393338-1-anthony.l.nguyen@intel.com>
 References: <20260602225513.393338-1-anthony.l.nguyen@intel.com>
@@ -69,261 +71,34 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-For the main VSI, i40e_set_num_rings_in_vsi() always derives
-num_q_vectors from pf->num_lan_msix. At the same time, ethtool -L stores
-the user requested channel count in vsi->req_queue_pairs and the queue
-setup path uses that value for the effective number of queue pairs.
+The current code incorrectly uses VIRTCHNL2_CAP_PTP_SET_DEVICE_CLK_TIME
+for both direct and mailbox capabilities, causing mailbox-only support
+to be ignored and potentially reporting IDPF_PTP_NONE.
 
-This leaves queue and vector counts out of sync after shrinking channel
-count via ethtool -L. The active queue configuration is reduced, but the
-VSI still keeps the full PF-sized q_vector topology.
-
-That mismatch breaks reconfiguration flows which rely on vector/NAPI
-state matching the effective channel configuration. In particular,
-toggling /sys/class/net/<dev>/threaded after reducing the channel count
-can hang, and later channel-count changes can fail because VSI reinit
-does not rebuild q_vectors to match the new vector count.
-
-Fix this by making the main VSI num_q_vectors follow the effective
-requested channel count, capped by the available MSI-X vectors. Update
-i40e_vsi_reinit_setup() to rebuild q_vectors during VSI reinit so the
-vector topology is refreshed together with the ring arrays when channel
-count changes.
-
-Keep alloc_queue_pairs unchanged and based on pf->num_lan_qps so the VSI
-retains its full queue capacity.
-
-Selftest napi_threaded.py was originally used when Jakub reported hang
-on /sys/class/net/<dev>/threaded toggle. In order to make it pass on
-i40e, use persistent NAPI configuration for q_vector NAPIs so NAPI
-identity and threaded settings survive q_vector reallocation across
-channel-count changes. This is achieved by using netif_napi_add_config()
-when configuring q_vectors.
-
-$ export NETIF=ens259f1np1
-$ sudo -E env PATH="$PATH" ./tools/testing/selftests/drivers/net/napi_threaded.py
-TAP version 13
-1..3
-ok 1 napi_threaded.napi_init
-ok 2 napi_threaded.change_num_queues
-ok 3 napi_threaded.enable_dev_threaded_disable_napi_threaded
-Totals: pass:3 fail:0 xfail:0 xpass:0 skip:0 error:0
-
-Reported-by: Jakub Kicinski <kuba@kernel.org>
-Closes: https://lore.kernel.org/intel-wired-lan/20260316133100.6054a11f@kernel.org/
-Fixes: d2a69fefd756 ("i40e: Fix changing previously set num_queue_pairs for PFs")
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Sunitha Mekala <sunithax.d.mekala@intel.com>
-Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Fixes: d5dba8f7206da ("idpf: add PTP clock configuration")
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Tested-by: Samuel Salin <Samuel.salin@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
- drivers/net/ethernet/intel/i40e/i40e_main.c | 73 +++++++++++++--------
- 1 file changed, 44 insertions(+), 29 deletions(-)
+ drivers/net/ethernet/intel/idpf/idpf_ptp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
-index 6d4f9218dc68..c3fbe14ff2d3 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_main.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
-@@ -11403,10 +11403,14 @@ static void i40e_service_timer(struct timer_list *t)
- static int i40e_set_num_rings_in_vsi(struct i40e_vsi *vsi)
- {
- 	struct i40e_pf *pf = vsi->back;
-+	u16 qps;
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_ptp.c b/drivers/net/ethernet/intel/idpf/idpf_ptp.c
+index 4a51d2727547..71fe8b2a8b4e 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_ptp.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_ptp.c
+@@ -51,7 +51,7 @@ void idpf_ptp_get_features_access(const struct idpf_adapter *adapter)
  
- 	switch (vsi->type) {
- 	case I40E_VSI_MAIN:
- 		vsi->alloc_queue_pairs = pf->num_lan_qps;
-+		qps = vsi->req_queue_pairs ?
-+		      min(vsi->req_queue_pairs, pf->num_lan_qps) :
-+		      pf->num_lan_qps;
- 		if (!vsi->num_tx_desc)
- 			vsi->num_tx_desc = ALIGN(I40E_DEFAULT_NUM_DESCRIPTORS,
- 						 I40E_REQ_DESCRIPTOR_MULTIPLE);
-@@ -11414,7 +11418,7 @@ static int i40e_set_num_rings_in_vsi(struct i40e_vsi *vsi)
- 			vsi->num_rx_desc = ALIGN(I40E_DEFAULT_NUM_DESCRIPTORS,
- 						 I40E_REQ_DESCRIPTOR_MULTIPLE);
- 		if (test_bit(I40E_FLAG_MSIX_ENA, pf->flags))
--			vsi->num_q_vectors = pf->num_lan_msix;
-+			vsi->num_q_vectors = clamp(qps, 1, pf->num_lan_msix);
- 		else
- 			vsi->num_q_vectors = 1;
- 
-@@ -11466,12 +11470,11 @@ static int i40e_set_num_rings_in_vsi(struct i40e_vsi *vsi)
- /**
-  * i40e_vsi_alloc_arrays - Allocate queue and vector pointer arrays for the vsi
-  * @vsi: VSI pointer
-- * @alloc_qvectors: a bool to specify if q_vectors need to be allocated.
-  *
-  * On error: returns error code (negative)
-  * On success: returns 0
-  **/
--static int i40e_vsi_alloc_arrays(struct i40e_vsi *vsi, bool alloc_qvectors)
-+static int i40e_vsi_alloc_arrays(struct i40e_vsi *vsi)
- {
- 	struct i40e_ring **next_rings;
- 	int size;
-@@ -11490,19 +11493,18 @@ static int i40e_vsi_alloc_arrays(struct i40e_vsi *vsi, bool alloc_qvectors)
- 	}
- 	vsi->rx_rings = next_rings;
- 
--	if (alloc_qvectors) {
--		/* allocate memory for q_vector pointers */
--		size = sizeof(struct i40e_q_vector *) * vsi->num_q_vectors;
--		vsi->q_vectors = kzalloc(size, GFP_KERNEL);
--		if (!vsi->q_vectors) {
--			ret = -ENOMEM;
--			goto err_vectors;
--		}
-+	/* allocate memory for q_vector pointers */
-+	size = sizeof(struct i40e_q_vector *) * vsi->num_q_vectors;
-+	vsi->q_vectors = kzalloc(size, GFP_KERNEL);
-+	if (!vsi->q_vectors) {
-+		ret = -ENOMEM;
-+		goto err_vectors;
- 	}
- 	return ret;
- 
- err_vectors:
- 	kfree(vsi->tx_rings);
-+	vsi->tx_rings = NULL;
- 	return ret;
- }
- 
-@@ -11575,7 +11577,7 @@ static int i40e_vsi_mem_alloc(struct i40e_pf *pf, enum i40e_vsi_type type)
- 	if (ret)
- 		goto err_rings;
- 
--	ret = i40e_vsi_alloc_arrays(vsi, true);
-+	ret = i40e_vsi_alloc_arrays(vsi);
- 	if (ret)
- 		goto err_rings;
- 
-@@ -11600,18 +11602,15 @@ static int i40e_vsi_mem_alloc(struct i40e_pf *pf, enum i40e_vsi_type type)
- /**
-  * i40e_vsi_free_arrays - Free queue and vector pointer arrays for the VSI
-  * @vsi: VSI pointer
-- * @free_qvectors: a bool to specify if q_vectors need to be freed.
-  *
-  * On error: returns error code (negative)
-  * On success: returns 0
-  **/
--static void i40e_vsi_free_arrays(struct i40e_vsi *vsi, bool free_qvectors)
-+static void i40e_vsi_free_arrays(struct i40e_vsi *vsi)
- {
- 	/* free the ring and vector containers */
--	if (free_qvectors) {
--		kfree(vsi->q_vectors);
--		vsi->q_vectors = NULL;
--	}
-+	kfree(vsi->q_vectors);
-+	vsi->q_vectors = NULL;
- 	kfree(vsi->tx_rings);
- 	vsi->tx_rings = NULL;
- 	vsi->rx_rings = NULL;
-@@ -11671,7 +11670,7 @@ static int i40e_vsi_clear(struct i40e_vsi *vsi)
- 	i40e_put_lump(pf->irq_pile, vsi->base_vector, vsi->idx);
- 
- 	bitmap_free(vsi->af_xdp_zc_qps);
--	i40e_vsi_free_arrays(vsi, true);
-+	i40e_vsi_free_arrays(vsi);
- 	i40e_clear_rss_config_user(vsi);
- 
- 	pf->vsi[vsi->idx] = NULL;
-@@ -12043,7 +12042,8 @@ static int i40e_vsi_alloc_q_vector(struct i40e_vsi *vsi, int v_idx)
- 	cpumask_copy(&q_vector->affinity_mask, cpu_possible_mask);
- 
- 	if (vsi->netdev)
--		netif_napi_add(vsi->netdev, &q_vector->napi, i40e_napi_poll);
-+		netif_napi_add_config(vsi->netdev, &q_vector->napi,
-+				      i40e_napi_poll, v_idx);
- 
- 	/* tie q_vector and vsi together */
- 	vsi->q_vectors[v_idx] = q_vector;
-@@ -14264,12 +14264,26 @@ static struct i40e_vsi *i40e_vsi_reinit_setup(struct i40e_vsi *vsi)
- 
- 	pf = vsi->back;
- 
-+	if (test_bit(I40E_FLAG_MSIX_ENA, pf->flags)) {
-+		i40e_put_lump(pf->irq_pile, vsi->base_vector, vsi->idx);
-+		vsi->base_vector = 0;
-+	}
-+
- 	i40e_put_lump(pf->qp_pile, vsi->base_queue, vsi->idx);
-+	i40e_vsi_free_q_vectors(vsi);
- 	i40e_vsi_clear_rings(vsi);
-+	i40e_vsi_free_arrays(vsi);
- 
--	i40e_vsi_free_arrays(vsi, false);
- 	i40e_set_num_rings_in_vsi(vsi);
--	ret = i40e_vsi_alloc_arrays(vsi, false);
-+	ret = i40e_vsi_alloc_arrays(vsi);
-+	if (ret)
-+		goto err_vsi;
-+
-+	/* Rebuild q_vectors during VSI reinit because the effective channel
-+	 * count may change num_q_vectors. Keep vector topology aligned with the
-+	 * queue configuration after ethtool's .set_channels() callback.
-+	 */
-+	ret = i40e_vsi_setup_vectors(vsi);
- 	if (ret)
- 		goto err_vsi;
- 
-@@ -14281,7 +14295,7 @@ static struct i40e_vsi *i40e_vsi_reinit_setup(struct i40e_vsi *vsi)
- 		dev_info(&pf->pdev->dev,
- 			 "failed to get tracking for %d queues for VSI %d err %d\n",
- 			 alloc_queue_pairs, vsi->seid, ret);
--		goto err_vsi;
-+		goto err_lump;
- 	}
- 	vsi->base_queue = ret;
- 
-@@ -14305,7 +14319,6 @@ static struct i40e_vsi *i40e_vsi_reinit_setup(struct i40e_vsi *vsi)
- 	return vsi;
- 
- err_rings:
--	i40e_vsi_free_q_vectors(vsi);
- 	if (vsi->netdev_registered) {
- 		vsi->netdev_registered = false;
- 		unregister_netdev(vsi->netdev);
-@@ -14315,6 +14328,8 @@ static struct i40e_vsi *i40e_vsi_reinit_setup(struct i40e_vsi *vsi)
- 	if (vsi->type == I40E_VSI_MAIN)
- 		i40e_devlink_destroy_port(pf);
- 	i40e_aq_delete_element(&pf->hw, vsi->seid, NULL);
-+err_lump:
-+	i40e_vsi_free_q_vectors(vsi);
- err_vsi:
- 	i40e_vsi_clear(vsi);
- 	return NULL;
-@@ -14456,12 +14471,12 @@ struct i40e_vsi *i40e_vsi_setup(struct i40e_pf *pf, u8 type,
- #endif /* CONFIG_I40E_DCB */
- 		fallthrough;
- 	case I40E_VSI_FDIR:
--		/* set up vectors and rings if needed */
--		ret = i40e_vsi_setup_vectors(vsi);
-+		ret = i40e_alloc_rings(vsi);
- 		if (ret)
- 			goto err_msix;
- 
--		ret = i40e_alloc_rings(vsi);
-+		/* set up vectors and rings if needed */
-+		ret = i40e_vsi_setup_vectors(vsi);
- 		if (ret)
- 			goto err_rings;
- 
-@@ -14484,9 +14499,9 @@ struct i40e_vsi *i40e_vsi_setup(struct i40e_pf *pf, u8 type,
- 	return vsi;
- 
- err_config:
--	i40e_vsi_clear_rings(vsi);
--err_rings:
- 	i40e_vsi_free_q_vectors(vsi);
-+err_rings:
-+	i40e_vsi_clear_rings(vsi);
- err_msix:
- 	if (vsi->netdev_registered) {
- 		vsi->netdev_registered = false;
+ 	/* Set the device clock time */
+ 	direct = VIRTCHNL2_CAP_PTP_SET_DEVICE_CLK_TIME;
+-	mailbox = VIRTCHNL2_CAP_PTP_SET_DEVICE_CLK_TIME;
++	mailbox = VIRTCHNL2_CAP_PTP_SET_DEVICE_CLK_TIME_MB;
+ 	ptp->set_dev_clk_time_access = idpf_ptp_get_access(adapter,
+ 							   direct,
+ 							   mailbox);
 -- 
 2.47.1
 
