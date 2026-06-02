@@ -1,78 +1,147 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC973394464
-	for <netdev@vger.kernel.org>; Tue,  2 Jun 2026 18:40:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780425605; cv=none; b=rFqJoZr6JLQsaUGfsKn5sv8aWzoAZ1/A0GsENZbQK3ns3sCL5YdxJ2X+1Z5kWuKg9iQ+d7FdbtXsIyKH6JyWejxVdFciIqPpILYrHy+c9a9Wql/Y9hwuL9gom575SbX4UugSHDcoy+51YvJIjKA+ihhwcFfO32R3r6dHwmQFbGk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780425605; c=relaxed/simple;
-	bh=8M8Q0Li5FIHV/6PSPWoVEoBJpuKvr9z2v901B0jn7Yc=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=std9aUeOLRxmgL7C+gXQwdtaDrL/Njbunlewt3v4zMjQvpQq31Ss+SOI2l+3/Qdu8bsh9Fq1L/u1i5iAWMdm6GiNiY4NaSCLcMp6JfkvK3pXl4MN7HMTHuIJ2dn+eXUa30WALcfW+M5U1QqAU5i9o/7SkN5m6o0enRVZSA3b7gE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wut2fUV3; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1306395AF3
+	for <netdev@vger.kernel.org>; Tue,  2 Jun 2026 18:40:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.173
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780425625; cv=pass; b=LXs6nxjKwjo/VD0oNIdb8QJ81+GRGoPTL8MXHiJi/Z8JGgn5n+hdQbOhWCUSKvWTSns2ZPwC8FywTzRrGamFP+WXUb+isZt6oikvp9WRiygvRG73oVsWbwXx9kdDHn+JtLjGlFSDac2LOKX5IF0MQ9PY55RG4x0hdsUboWwVl4A=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780425625; c=relaxed/simple;
+	bh=WA7l95NuW7yFcNCRtIvefhqHj1bJWeBjBhmpwS0AQds=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=fWC/HKfTRHdIT1Jytb0Q9+e+2gu7FCfzrRjXciddj/LZEg8NQGU69F6p/vkB9raRh/RDlIIU4Kb6lwXniODUeADdX913cIAfkL5LSOXqpcAy8gyTRCqKxPQqELnVJY3Dsv4mrstcZQBPl2GeSv7XQTLlyF/XP5aFAycgAjMbRuw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=EI35RztN; arc=pass smtp.client-ip=209.85.215.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wut2fUV3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76CD71F00893;
-	Tue,  2 Jun 2026 18:40:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780425604;
-	bh=6Ur6CjCoSIvmft0BHxLHcPnMMVlpfcDath+nGhigIvM=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=Wut2fUV3SbQ+WcVbzOg29q/YoLDvYU03POuWr9TgwWlvpc59wjvviku3/NCrQ4fgT
-	 KI4iUozdLa0d5VJmsqyq270nW6Iweb0IGGczOYU/j3PTnv+JiDCljiE2m/PMjvtZMm
-	 XBP2fnGm6uQJAEov6uaQr9+eV5rWqntwvdoUm8OCxSoIUxKILSblPggLP8YkjFFQ0g
-	 z59+QD26mng7wtb8s/9M/cjHAkj3hA2gJgmbsRVphoQPIvsYsAm6XM2ZbHdRzFfx3K
-	 S+9uI2jhnG0yi9MfdjrDtLYVqGfO28Ilv5IsUFF0KKKI77v/JV9wyKAx93RO9mjaTn
-	 GpgrBECiNI78w==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93B123811A6C;
-	Tue,  2 Jun 2026 18:40:07 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="EI35RztN"
+Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-c8583b8fd89so2335021a12.0
+        for <netdev@vger.kernel.org>; Tue, 02 Jun 2026 11:40:24 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780425624; cv=none;
+        d=google.com; s=arc-20240605;
+        b=hMf/mImdo1gU6r7nb/ZrP96UceEy2RtiJj8TMkNxtumfwU8rLduuZWaZatoj/HLvCi
+         4v2UBCV5eKk5X40uSCMv8HXhc9zpb9gy3qPnxDWGeMTD/4i2/lvBJ0J56A2eZE+8OCsM
+         iSUVxH/eH0qit5FBAuzp5ZVw1AwhbGPRSx+H339q7ywJCyew7c78fwoxoUbX9z2Eb7Zh
+         EQ6qT7GyRCtRJtaMQWYDEwlotnZgc0AW5kWqj2SkSF09UIpraHmW2JbC9Ju/MftNBpjo
+         OpLIXs7MPejQThSTi7f0O84FS8qskb8CnmV99GHY1liSygLDLD0xnciMkY+BSmhY+oon
+         psvw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=rfh9WdBs5XOXY44y294ac6EXxBbUnL31MDufdlNqOTg=;
+        fh=nrIAeZQS+l013hup0YRZFQVBAyDaoTFYiTuirUVxJ8Y=;
+        b=jv2eKHTR8TJtE+HnDiCDjLSvDHGTCuvrWTm2LrWjeXHBoM+mLCJHA4BM8CoAU0UuUR
+         nERNRnK2zflIgy0+R2L4gv0cNuPooCwS5eDnVvg2+cEpJCcIL2sHpVq0fsKXsfCp8IZk
+         Hqf050elF0QkFKLwnM80QOc0QhE39Paz9L9Fkomxq31mMtjKnWZDi4RSWRoUGARLaf7a
+         ByHcnVY6ECGxFaUJm+ySLCx9LONRvMXVU2kkXPKEz8ORPXJVGNOKg3/v768PkKavQ6Y9
+         OQr5TRH2ttbrjPp7evrZCd0c+zwwZc1Bum+ChcYQriT8ObhmYJdMNUFUHeofqawzD+Bh
+         C6Yw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=paul-moore.com; s=google; t=1780425624; x=1781030424; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=rfh9WdBs5XOXY44y294ac6EXxBbUnL31MDufdlNqOTg=;
+        b=EI35RztN4TEm5SbgtgQnyT6eGUU5sgcuBmOFp5ybOirSL/arndAPH43Xm/sc/fu1iv
+         G3n1o3yDLVVc8pKP5F5fslIroK0BRZ81N85Dp1X04B7EGWD3JmBzYtDkJiuXSGS9zIUm
+         cY6DJEulR61ALbbn38Gcla+FKtRASkDV5UWFwYwOTlgzQgcFMMG+6ud+VkU/ZdwMg1+9
+         U47H1LMyHS9dh/326FbIGxwEwbCGRU2XJ1SRvwssIkenqXLMUNJ2qBinitWw1j27L/Kx
+         kuaRYp3WmFNptm3BeDwNh/+ylNh6tBM5hsg8glFQdfXe/VmuYa3XIG0pfzAROUCNslHh
+         CQiw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780425624; x=1781030424;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=rfh9WdBs5XOXY44y294ac6EXxBbUnL31MDufdlNqOTg=;
+        b=tXPOXPKtjVknoZzVBwgV/OGgUzu3XMxMA9qZIXNVle1yYqZlVyYo3w+TyNpk1a3uQp
+         1OG2Nl4OQJ2JrIulNFZtvR3zaM7FHAR4GbG+Q0z/4NNuSNz++hi3/NfJo6D+3sU/4XTe
+         KksTx/sSS7aLXhRhW44FQcWngmGCfjridufD2h9hGgayBCZdP6qjr11vzdtT9aSS7IC1
+         y9oj76O9U5b+kPIQo20XJRPytZUwkBydpvv3//BoLZjJRPFkcE0fgXPXNySdE9sgmu04
+         SEs5TJNY7UMYVlz75AxD36Q4QBvj3uQTtVJgI/Vwlyp9t+YsHzP5u7P3Y/udYeEkSY+q
+         +KnQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+8+QqJ2aRc+Z6SJ6QhC/BjRW3rTRUlZl6LI07nCAnwTbeqAG4ny2j3fHXjet8SQ+Akw0qivBA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz9NwapDGokyrbbby/74fjK/XnYI0xgeLbPRMt9K6q7y3aS/+gm
+	8DYCtddxqsp2/xYaTND6dQcMfUSBonbWISAXuRgvvlYLuS0pCEiAjSScGs4b2HDl/onJ6yv9MCd
+	kZxtic1e3uYKPCas3xJKxw8Xr94zfLwmaGJymRu13
+X-Gm-Gg: Acq92OFY510OBKOHrv7O/wzO0wynEvn5aRs36wQ1p9An2QiowESX4uz6UE6V949gRdz
+	/tsiI1RNUvLMAH/zd8b1nVqu12LwRbc2fb8KRVhNQR5RM1/sBycS2dBLJWS4UvIfKX9XK1kXpTX
+	uKkX1Ge6dczbXwDoTi4hxNB76/zG0F7P6as5zcpWEyTAwe72y80rdkwMmexHz14nr5MRRF6W7B1
+	EWdHmUwS5YQBw3vaB/vTnoynCmtwaaWwQs/CLTbzSoS/COVsjTcLR+zqXXiqOWRVQOgm7Z41kom
+	xJJJf8HnBK7c7giYgA==
+X-Received: by 2002:a05:6300:228c:b0:3b4:6a23:6ba with SMTP id
+ adf61e73a8af0-3b4978a0a35mr69451637.26.1780425623852; Tue, 02 Jun 2026
+ 11:40:23 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] pcnet32: stop holding device spin lock during
- napi_complete_done
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178042560607.1000369.13107757515393374597.git-patchwork-notify@kernel.org>
-Date: Tue, 02 Jun 2026 18:40:06 +0000
-References: <20260528140320.5556-1-oscmaes92@gmail.com>
-In-Reply-To: <20260528140320.5556-1-oscmaes92@gmail.com>
-To: Oscar Maes <oscmaes92@gmail.com>
-Cc: netdev@vger.kernel.org, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, andrew@lunn.ch
+References: <ah8BzqSmZO40xYhS@sirena.org.uk> <CAHC9VhRR4mmkOdWwUCLswmA+_KEjB8RCBBTJ2W4JGiLUWKzxyQ@mail.gmail.com>
+In-Reply-To: <CAHC9VhRR4mmkOdWwUCLswmA+_KEjB8RCBBTJ2W4JGiLUWKzxyQ@mail.gmail.com>
+From: Paul Moore <paul@paul-moore.com>
+Date: Tue, 2 Jun 2026 14:40:12 -0400
+X-Gm-Features: AVHnY4LseEdZ3PSnzNXG3ZVT30xvrKptf0DJmetNk04_9qty-3SQmPQjrXm0JY4
+Message-ID: <CAHC9VhRPbkVYAMec0KG55er6GOPdKqMXKdpC8rrHgiAodSv-sw@mail.gmail.com>
+Subject: Re: linux-next: build failure after merge of the security tree
+To: Mark Brown <broonie@kernel.org>
+Cc: Blaise Boscaccy <bboscaccy@linux.microsoft.com>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>, bpf <bpf@vger.kernel.org>, 
+	Networking <netdev@vger.kernel.org>, 
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, 
+	Linux Next Mailing List <linux-next@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello:
+On Tue, Jun 2, 2026 at 12:31=E2=80=AFPM Paul Moore <paul@paul-moore.com> wr=
+ote:
+> On Tue, Jun 2, 2026 at 12:16=E2=80=AFPM Mark Brown <broonie@kernel.org> w=
+rote:
+> >
+> > Hi all,
+> >
+> > After merging the security tree, today's linux-next build (x86_64
+> > allmodconfig) failed like this:
+> >
+> > /tmp/next/build/security/hornet/hornet_lsm.c:212:36: error: too many ar=
+guments to function call, expected 1, have 3
+> >   212 |                         if (map->ops->map_get_hash(map, SHA256_=
+DIGEST_SIZE, hash))
+> >       |                             ~~~~~~~~~~~~~~~~~~~~~~      ^~~~~~~=
+~~~~~~~~~~~~~~~~~
+> > /tmp/next/build/include/crypto/sha2.h:14:33: note: expanded from macro =
+'SHA256_DIGEST_SIZE'
+> >    14 | #define SHA256_DIGEST_SIZE      32
+> >       |                                 ^
+> >
+> >
+> > Caused by commit
+> >
+> >   c62310df81899 (lsm: introduce the Hornet LSM)
+> >
+> > interacting with
+> >
+> >   c48c3a7e7d5be (bpf: Drop redundant hash_buf from map_get_hash operati=
+on)
+> >
+> > from the bpf-next tree.  I have reverted the latter commit, the new LSM
+> > means that the assumption in the changelog that there is only one calle=
+r
+> > isn't true and it seems like the most straightforward approach.
+>
+> Thanks Mark, we're taking a look at it now and should have a
+> fix/answer later today.
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Proposed update to Hornet, assuming this looks okay to Blaise I'll
+merge it into the LSM tree (and either pull in Daniel's patch or base
+off bpf-next so everything builds correctly).
 
-On Thu, 28 May 2026 16:03:20 +0200 you wrote:
-> napi_complete_done may call gro_flush_normal (though not currently, as GRO
-> is unsupported at the moment), which may result in packet TX. This will
-> eventually result in calling pcnet32_start_xmit - resulting in a deadlock
-> while trying to re-acquire the already locked spin lock.
-> 
-> It is safe to split the spinlock block into two, because the hardware
-> registers are still protected from concurrent access, and the two blocks
-> perform unrelated operations that don't need to happen atomically.
-> 
-> [...]
+https://lore.kernel.org/linux-security-module/20260602183658.161744-2-paul@=
+paul-moore.com/
 
-Here is the summary with links:
-  - [net] pcnet32: stop holding device spin lock during napi_complete_done
-    https://git.kernel.org/netdev/net/c/73bf3cca7de6
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+--=20
+paul-moore.com
