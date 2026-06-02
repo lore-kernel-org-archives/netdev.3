@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E43FB367B66;
-	Tue,  2 Jun 2026 21:40:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 652DD3A8753;
+	Tue,  2 Jun 2026 21:40:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780436413; cv=none; b=qwKMzDiuPoCFKIxa4dQcsTjTdqXWBJEMFfHjIQyF1ZFZ16gTg8DbUvNACoFCUeGeKAFN5Qp71joAOWQyEkM5LDqOwl0aufSOBkKuhaQ7Jo4hkkDYe+JaTnTXlHbEnGrz4HmUh22vPUzdjlHUWp+cAVB3/QhALQAjdxAsE44ti0o=
+	t=1780436415; cv=none; b=AgRhtmujFq0cV59f6MDjIvQVs+0YY5W7kR56hpAY0h6nrdOMkgSQ0M61rMpaEtQmqfIKoRLWRQgVifP0PWOwyvFEpgyGlFOosCt1+e8SssUACuuBSHLARoE4+5Idc77E6FUMzVphZyehBihBEiBSmny17Vk47amH8bbH8rn17C8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780436413; c=relaxed/simple;
-	bh=6cKaEOaoo1bEteb2wlOi3/V5XATgUszrwu2Rv7lF7Ok=;
+	s=arc-20240116; t=1780436415; c=relaxed/simple;
+	bh=5HUk6blmTY6B/bShtSvIOr+0Aby3IZOGBHmNvv7wf98=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=X0eadwoPtkHrfNRbC0vMB8y6Yh5B1j0Q8/Dfh1r4yDKYkH8KEql782kLq786Uz2wLOFFwa33g1oVR9V6JpVj/WEe8n+VxK4mKpcHZHCnTpl7ArRD8Yquc2Gz2TKE7ajsno50YH2VehUyXVEb3zsW+SiWV/IlXeAaCNhr/AZ+2SI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RoXqJAii; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=s0vz2nc1uUhaPZoA3TPPhDd7uGz2QUfa478WIqWp9OSDChdZZOmPWa+yALjF0Jdvca5no+g0dQXpssz3ZbN3IEoeY68paIcZIN2l1/G/sL3WAz1/dPNY7Gy1CIyB/W9s56GRsr7vO6SrycXof+kH/MXOsER5KiZx4XwtufCsadU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Crg4Kqu1; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RoXqJAii"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 897B11F00893;
-	Tue,  2 Jun 2026 21:40:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Crg4Kqu1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11BBC1F00893;
+	Tue,  2 Jun 2026 21:40:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780436412;
-	bh=95pCHA2AVt+MKJZiKdXWN6AGeolznLP12Am6KewOb4A=;
+	s=k20260515; t=1780436414;
+	bh=8RgbgMfwdXrAAR3pXWOtWuberCOF0K1N076X/OPErc8=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=RoXqJAiiY040OGICFwjwOhG9gRrZadvwxIskO+Ck4iydkbTfxBj5bbKQ7bGaLZl+8
-	 LlSXADi3IiTswxmcJ7Ok5/sQ42rV+tDgWryKFj0ShP9plUSU7XsnUSsEp4gQIqBc+q
-	 jqOtSM70/Jd36LZO34VMgVSMTtiR5mc8vPvy2pSgbF+I1l3ze+CKjixCf54Wn1ffW6
-	 wYY3h/uNM/1FIWa/Rdc9N62djKMUQpZvi2CXmwg3GGEa6UQkcf41tpRHBJQS2CYDRL
-	 qdf7qx2VZPozGFv62oQ4PR0TxS5/MRoWGaTGb9TooU0M7NqiWpBGLNag/M3EFnwDHI
-	 Ug/D7gDauVaMQ==
+	b=Crg4Kqu1hTcwqNT33LbOBGp/EDpI38uWS2pyOtuMn+AsQGGGNqyjcRYmOJO3gUzFJ
+	 XLd6fra18lbFkYVurR0rAT+pZ29PAszjleZR4TyAFkWZCF3zFjOlOQKsiGW9souyZR
+	 74UZ2RY8iquq22vCfkSBmUHelneH/3Y+3FW2VCM8/7Gkm7O/54/Z/UgiXkQ3Z1hB4u
+	 WX8cVivn35Q3beAI9G665PeWxy6hpi9uDT5lZbaw091svRaMd4d33sLktUE+5gJGgo
+	 T2fRRBSngtQAB+TNeYCkgIKr+D3vmzM/tYxgb9VPErW5xY1PeVOGVurCgwjcS2gMPm
+	 fAftxnZMRQjUQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93A8D3811A76;
-	Tue,  2 Jun 2026 21:40:15 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 1990C3811A76;
+	Tue,  2 Jun 2026 21:40:17 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,45 +37,37 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v5] selftests: openvswitch: add dec_ttl action
- support and test
+Subject: Re: [PATCH net] net: fec_mpc52xx: add missing kernel-doc for
+ @may_sleep
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178043641414.1060922.17896897180668119864.git-patchwork-notify@kernel.org>
-Date: Tue, 02 Jun 2026 21:40:14 +0000
-References: <20260530021443.1734484-1-houminxi@gmail.com>
-In-Reply-To: <20260530021443.1734484-1-houminxi@gmail.com>
-To: Minxi Hou <houminxi@gmail.com>
-Cc: netdev@vger.kernel.org, aconole@redhat.com, davem@davemloft.net,
- echaudro@redhat.com, edumazet@google.com, horms@kernel.org,
- i.maximets@ovn.org, kuba@kernel.org, pabeni@redhat.com, shuah@kernel.org,
- dev@openvswitch.org, linux-kselftest@vger.kernel.org
+ <178043641564.1060922.9321127831202168625.git-patchwork-notify@kernel.org>
+Date: Tue, 02 Jun 2026 21:40:15 +0000
+References: <20260531000042.369043-1-rosenp@gmail.com>
+In-Reply-To: <20260531000042.369043-1-rosenp@gmail.com>
+To: Rosen Penev <rosenp@gmail.com>
+Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ bigeasy@linutronix.de, tglx@kernel.org, linux-kernel@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Sat, 30 May 2026 10:14:43 +0800 you wrote:
-> Add dec_ttl action support to the OVS kernel datapath selftest
-> framework:
+On Sat, 30 May 2026 17:00:42 -0700 you wrote:
+> Add the missing @may_sleep parameter description to the
+> mpc52xx_fec_stop kernel-doc comment.
 > 
->   - Add dec_ttl nested NLA class to ovs-dpctl.py with proper
->     OVS_DEC_TTL_ATTR_ACTION sub-attribute handling
->   - Add parse support for dec_ttl(le_1(<inner_actions>)) action
->     string, consistent with the odp-util.c format where le_1()
->     holds the actions taken when TTL reaches 1
->   - Add dpstr output formatting for dec_ttl actions
->   - Add test_dec_ttl() to openvswitch.sh that verifies:
->     * Normal TTL packets are forwarded after decrement
->     * TTL=1 packets are dropped (TTL expiry)
->     * Graceful skip via ksft_skip if kernel lacks dec_ttl support
+> Fixes: c35a0824e88b ("net: fec_mpc52xx: Replace in_interrupt() usage")
+> Assisted-by: opencode:big-pickle
+> Signed-off-by: Rosen Penev <rosenp@gmail.com>
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next,v5] selftests: openvswitch: add dec_ttl action support and test
-    https://git.kernel.org/netdev/net-next/c/d6f6d7123355
+  - [net] net: fec_mpc52xx: add missing kernel-doc for @may_sleep
+    https://git.kernel.org/netdev/net-next/c/d20687818f46
 
 You are awesome, thank you!
 -- 
