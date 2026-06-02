@@ -1,197 +1,186 @@
-Received: from mx0b-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f44.google.com (mail-ot1-f44.google.com [209.85.210.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2FF836C598;
-	Tue,  2 Jun 2026 04:13:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AD31348C5E
+	for <netdev@vger.kernel.org>; Tue,  2 Jun 2026 04:20:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780373605; cv=none; b=cOfThbu0gjKItBYVCtB314xWaRxaSRnEEo3ZczhRSZG75KuDqEUBscQAZDH9r+09KFDRiv+HOcqCfzrewSYtBCpGmhFOOeJ9V9fTjyHJp6P7Uu8qv2IAH5NaOBcyFDODqoxS8UTum+D6yAJq2ETAeAuCOnthKJ/NueeqdhWB5sE=
+	t=1780374049; cv=none; b=Zf8Uhm8UTX57Y+iz1ZmtuyGiWns7DgOT27EvqD+1LXggND8H0DqnTPo/dLqN/VBwf8dcbVhkiAoJSZQqUkM4jGFcSuIPyOOuuvYt2Bw4gv9V8p3rhGZV0YXLUmzsrvXm4uBW//qDVzsvH+Cp5ItPxxF05lKz0WJeVaIu3hd4IU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780373605; c=relaxed/simple;
-	bh=VyBxYaUXUu3Gm0Pk9td80arq66oQ0Omao9H3p0G7wfU=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=C9eogDBs6U9X6Qu0FtCdgxwDfNxQ0QGs4Uk1uCyxwxPRB6n1VZV2Vl6iecH3Sf2No060n/tpeMjrk0E/VusZ3RR/FAcDsvexzAKP4VoVC2ahPoJMzjG51l+k2pi07GifIxEEWdYbA6Dmbp8PJ+K7mwoyl9jgZyb6fxYJQ17lblY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=hZhY5NKs; arc=none smtp.client-ip=67.231.148.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	s=arc-20240116; t=1780374049; c=relaxed/simple;
+	bh=5Xm8IPwfY0dyellfnNLjdKdpNFj+MktK6q6JKPEvMiU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gZsTsP9Wpf7Whn+vdLSbZOoZ92wQ8dA9UuQpDJRh3ku8iGxz8J1MvFwQ6vLEleLtXEHl9QBOksEE+gCaWRDorG1jIKadhn3S+3+9bysRyvgts0Ge98ePDmsNenVT7+rJhmWCwjJkN0iLYgOJyjxXZ6Q1MYlG4Ug61hT3b1Q6OG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=II2P7NY7; arc=none smtp.client-ip=209.85.210.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="hZhY5NKs"
-Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
-	by mx0a-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6520IfBv2859284;
-	Mon, 1 Jun 2026 21:13:13 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pfpt0220; bh=WA6PZgFBUb+0fck+ztc2wU9u5
-	fohPzyUuEYdJDxOmJY=; b=hZhY5NKsPQMakbM+MH34sbr/5+33f+YZ0qsqwduhP
-	Cf5aNmrMQ2oubl7BZWJJ52OOvW3E05yZBnaJ0LP617MiUB9RA8k/prMzJr2UY1Tc
-	MbrhecILRz4CfRzxxe0DPInBvATTAGvkMDZBZpJA5j9dvzQzZz3dQ5g181eDnz1t
-	oyXQJ+xEP9LB0vpUoaT1+xFuOTSt1YHfyTrLB9CAjS2cClQmA3qxRNMmrKKL9RuP
-	zQjStuZfwrWwmxRjRKPh9y6hfp3223NYw1o/d35r0+JVsXzdDAtpwQr+cak8lI7s
-	d7ClPoZm/SsngluCZc3sbTGAEBTSax8G9aiqYGzT35jGw==
-Received: from dc5-exch05.marvell.com ([199.233.59.128])
-	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4ehbxra76g-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 01 Jun 2026 21:13:13 -0700 (PDT)
-Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
- DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Mon, 1 Jun 2026 21:13:12 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
- (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Mon, 1 Jun 2026 21:13:12 -0700
-Received: from rkannoth-OptiPlex-7090 (unknown [10.28.36.165])
-	by maili.marvell.com (Postfix) with SMTP id 4CEE53F7062;
-	Mon,  1 Jun 2026 21:13:09 -0700 (PDT)
-Date: Tue, 2 Jun 2026 09:43:08 +0530
-From: Ratheesh Kannoth <rkannoth@marvell.com>
-To: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>
-CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <donald.hunter@gmail.com>,
-        <edumazet@google.com>, <horms@kernel.org>, <jiri@resnulli.us>,
-        <kuba@kernel.org>, <pabeni@redhat.com>, <sgoutham@marvell.com>
-Subject: Re: [PATCH v17 net-next 6/8] octeontx2-af: npc: Support for custom
- KPU profile from filesystem
-Message-ID: <ah5YVLE6cWu-tyMd@rkannoth-OptiPlex-7090>
-References: <20260601025844.865865-1-rkannoth@marvell.com>
- <20260601025844.865865-7-rkannoth@marvell.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="II2P7NY7"
+Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-7e6db226e1fso42389a34.0
+        for <netdev@vger.kernel.org>; Mon, 01 Jun 2026 21:20:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780374047; x=1780978847; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=uT7QUUK+LXQxZ5prqCoLyUCjjU+3++St9mdBXfj/SbU=;
+        b=II2P7NY7whDL8gSXkA0nJrCaJP0nMQT94ZDscIeBT9DgwHU/V35pqK7uY6yYRa4op8
+         Pkriu1woUtnmCkf9dRhaKVkxTDJzkiptqF1cP7S7BEL01TOy353DSAjRyC12WQHMHkQZ
+         apk1coIgC8Z70VXwLZzGdVNJQYzrDqFmXnU/GyJDa7TJjr1fnmdXdaVfWID116A2fhDk
+         1K/Hg1foLg5ou1H9wOGFIktUQbWDygnupcRp7jXTPCti15nfqZNv5XQ1nO0QOgJO6Kce
+         T25RXUKAXg1qu4W9ersVT0vZd9lo8oB/vlmke+FRzkDgzA3jUdFHHG7btfiP9iZgcm6t
+         lfuQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780374047; x=1780978847;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=uT7QUUK+LXQxZ5prqCoLyUCjjU+3++St9mdBXfj/SbU=;
+        b=jp9W5zCdPH34AXfne/yQr8mZw63YZeVKA1rKRUZhW5oN6THynKme7utJ0AaXPsFO0w
+         lLZqE/mbXaCc+adwBmwcMKAmoXFb47H6DgacsUMc6QB5LRkZLab2CvP/vzodDb6dP4pG
+         XNM+LHCrAYITaips1g1j6qBAtKl1mr/a5/YSjtaFkJKlJuGspmV2uPMhAGbcCz1YW3A4
+         vcRdLIKrXY7Yod8zkXbndjlkPV/oaDgq5Z6CqXw8SEacCCjaMHag+9K9ZP79SGIMeaqf
+         kpS7G1kTtL6GuRrMaJAB/9h1pCTEq14CQLc7VHboinuohcFrGs87qQi2wcDR+O1EjjKB
+         jkCA==
+X-Forwarded-Encrypted: i=1; AFNElJ/amnBOyorZhTolKZGBRF8hoqQx73VmVFo+y+QQl2iho8ALMBxRXANzBqSctkK1GAl4IF7t8jw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxnChXfSRGpoqHTPWWOzq0PHe2CS0UZuF5+cgzC71rm+dXZqAax
+	/Wn23LGFWJdBZL3LTN4GL+Cz5hgBzZcETiTdpUZi06ig/WT6lt6DQUcn
+X-Gm-Gg: Acq92OH2spnkh0innfyzAMJm6yky4tDqtzL2JjMzygb0TaiXXnXoa8abekTnCZ93CKf
+	/UwIq0hZ33zrEPlw7xVGWtMQ2/b5lJGWGsdjZYfYZ7pOUm29gq4KEMWlKsP6QP8nrlvj6nsnrol
+	ARafDYcPHjaiqgT9Cuk4Y/ZN1+2YTBNauNBKPCl4a78bp58Z5nApVoZTIgao/8M8V6dXqJnST4E
+	hR5Vf1aDc0efVP5Et3r14bhj7sEovFgo+axt0WJoo4ualDRRFbdUr7yHJNGAaEl/4UMIDDW8Wyn
+	puIgKtI4scqZJYcfeBbY4F/fL4FPWwrf5vN22Gm7CQlnQDcAGpDn1b6JlfhRSryQ4U56BUvfP+e
+	F0XOfj337sWDshpV1y7FCeHz50TwcCFwAN5HLAfJA7flMP+1E4VXk7B7+tmtDr4QnBk3ny4QiOp
+	SS2Xh8+AtP9pDoYfH1/+lMxVshngy6RJUDszdlUrb1D9kJLwPIyMEF
+X-Received: by 2002:a05:6830:600d:b0:7d9:ad90:5670 with SMTP id 46e09a7af769-7e6a1db34c7mr10067817a34.18.1780374046933;
+        Mon, 01 Jun 2026 21:20:46 -0700 (PDT)
+Received: from hoboy.vegasvil.org ([2600:1700:2430:6f6f:e2d5:5eff:fea5:802f])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7e695d176dasm9333689a34.16.2026.06.01.21.20.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 01 Jun 2026 21:20:45 -0700 (PDT)
+Date: Mon, 1 Jun 2026 21:20:40 -0700
+From: Richard Cochran <richardcochran@gmail.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: David Woodhouse <dwmw2@infradead.org>, Wen Gu <guwen@linux.alibaba.com>,
+	tglx@kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+	edumazet@google.com, pabeni@redhat.com,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+	jstultz@google.com, anna-maria@linutronix.de, frederic@kernel.org,
+	daniel.lezcano@kernel.org, sboyd@kernel.org,
+	vladimir.oltean@nxp.com, wei.fang@nxp.com, xiaoning.wang@nxp.com,
+	jonathan.lemon@gmail.com, vadim.fedorenko@linux.dev,
+	yangbo.lu@nxp.com, svens@linux.ibm.com, nick.shi@broadcom.com,
+	ajay.kaher@broadcom.com, alexey.makhalov@broadcom.com,
+	bcm-kernel-feedback-list@broadcom.com, linux-fpga@vger.kernel.org,
+	imx@lists.linux.dev, linux-s390@vger.kernel.org,
+	dust.li@linux.alibaba.com, xuanzhuo@linux.alibaba.com,
+	mani@kernel.org, imran.shaik@oss.qualcomm.com,
+	taniya.das@oss.qualcomm.com
+Subject: Re: [PATCH v2 2/2] MAINTAINERS: update PTP maintainer entries after
+ directory split
+Message-ID: <ah5aGMIxA418sxoj@hoboy.vegasvil.org>
+References: <20260412084704.743482ad@kernel.org>
+ <4B889ED5-D1F6-401D-B753-89AE2037F316@infradead.org>
+ <20260412095301.4fe1fe65@kernel.org>
+ <ebf19246-91af-4887-b2aa-d9007921f7b2@linux.alibaba.com>
+ <1088b07d760491deb461d6d01abca631e8f8d86c.camel@infradead.org>
+ <ahzQZg_v4bxFfGdj@hoboy.vegasvil.org>
+ <3908843460c4864eef79cced40d897f793c7ae2a.camel@infradead.org>
+ <ah2jIt2DqI1ZZJx8@hoboy.vegasvil.org>
+ <0e023f951c102fe2ee7070e490c579783b2817d5.camel@infradead.org>
+ <20260601185226.7f43fa75@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20260601025844.865865-7-rkannoth@marvell.com>
-X-Authority-Analysis: v=2.4 cv=RMaD2Yi+ c=1 sm=1 tr=0 ts=6a1e5859 cx=c_pps
- a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
- a=kj9zAlcOel0A:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=l0iWHRpgs5sLHlkKQ1IR:22 a=EAYMVhzMl8SCOHhVQcBL:22 a=M5GUcnROAAAA:8
- a=aGXFfAgDFSogSVCN33EA:9 a=CjuIK1q_8ugA:10 a=OBjm3rFKGHvpk9ecZwUJ:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjAyMDAzNSBTYWx0ZWRfX36++i0FeQ2Mv
- R8WzbuN5wLWT6i5C0+tr0068qIQ6ahaCVImHKNGwqpxZLy+ijNp+unCxuDq4Twhj7IxYhmGDD4D
- BQQdq5D1A8ccd+TGwn9netsf2C8Frw5u9bp/ahnKlXbcS1HiMwdnc9Xs36M8w7p/kLCSLVO1Nnm
- 8767w8PsXkoTBDjphhsk+leeYRuW2VWhg2+XG7LMmEyzve9LkX3pGP5WMBPtIT35yT0/4tT+0B9
- 6ZRCCHu1i7VHwhYz9LISfm05yepw/ImUCdr26df+858otHWf0nZ0ClNZHrSbHqTXH3CDjYDYCw6
- ugAVhVFzG1OUSlIoXdsoAf20KnihjS1tbYFtM8ugcCysRXSxTdR5YEiFv9hML6nHhIPrqArC1ts
- rJZT5ijiNNfSdyBkDRMZb3AA3SQboLdTCG9noMO+HTSy94WXzb5DW6AmpSEbMUYz1r9XI7nLKCp
- Icj90W4DeN4E/sLbjQQ==
-X-Proofpoint-ORIG-GUID: Ix5pn9l773MAT0br6aIfEddv3dbp4VTV
-X-Proofpoint-GUID: Ix5pn9l773MAT0br6aIfEddv3dbp4VTV
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-01_07,2026-05-28_03,2025-10-01_01
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260601185226.7f43fa75@kernel.org>
 
-On 2026-06-01 at 08:28:41, Ratheesh Kannoth (rkannoth@marvell.com) wrote:
-> Flashing updated firmware on deployed devices is cumbersome. Provide a
-> mechanism to load a custom KPU (Key Parse Unit) profile directly from
-> the filesystem at module load time.
 
->> +	struct npc_kpu_profile_adapter *adapter = &rvu->kpu;
->> +	struct npc_kpu_profile *kpu;
->> +
->> +	kpu = &adapter->kpu[kpu_num];
->> +
->> +	kpu->cam2 = devm_kcalloc(rvu->dev, num_entries,
->> +				 sizeof(*kpu->cam2), GFP_KERNEL);
->Is it safe to store devm-allocated pointers into this kpu structure?
->Looking at npc_prepare_default_kpu(), the profile->kpu pointer is
->assigned to npc_kpu_profiles, which is a global static array.
->When memory bounded to a specific device via devm_kcalloc is stored
->in this global array, won't multiple devices race to overwrite these
->pointers? Additionally, if the device unbinds, devres will free the memory,
->leaving dangling pointers in the global array that could cause a
->use-after-free for other devices on the system.
+Sorry for replying to David here via Jakub's message.  Somehow my
+brilliant Gmail doesn't have David's reply...
 
-There is only one AF device per system.
+On Mon, Jun 01, 2026 at 06:52:26PM -0700, Jakub Kicinski wrote:
+> On Mon, 01 Jun 2026 17:53:49 +0100 David Woodhouse wrote:
+> > On Mon, 2026-06-01 at 08:20 -0700, Richard Cochran wrote:
+> > > Sorry, just catching up here, so the idea is to have
+> > > 
+> > >  linux/drivers/ptp/drivers  ?  
+> > 
+> > That is my current suggestion.
 
->> +	struct npc_kpu_profile_cam *cam;
->> +	struct npc_kpu_fwdata *fw_kpu;
->> +	int entries, entry, kpu;
->>
->> -	if (is_cn20k(rvu->pdev))
->> -		return npc_cn20k_apply_custom_kpu(rvu, profile);
->> +	fw = rvu->kpu_fwdata;
->>
->> +	for (kpu = 0; kpu < fw->kpus; kpu++) {
->> +		if (rvu->kpu_fwdata_sz < hdr_sz + offset) {
->This is a pre-existing issue, but does this bounds check guarantee enough
->space to safely read fw_kpu->entries below?
->The check ensures the offset reaches the start of the fw_kpu structure,
->but it doesn't appear to verify there are at least sizeof(*fw_kpu) bytes
->remaining in the buffer. If the firmware image is truncated exactly
->at this boundary, could dereferencing fw_kpu->entries read out of
->bounds?
-Pre existing issue; a seperate bug fix patch will be posted to net tree once this series
-is merged.
+drivers/../drivers seems a bit silly to me
 
->> +		if (fw_kpu->entries > KPU_MAX_CST_ENT)
->> +			dev_warn(rvu->dev,
->> +				 "Too many custom entries on KPU%d: %d > %d\n",
->> +				 kpu, fw_kpu->entries, KPU_MAX_CST_ENT);
->> +		entries = min_t(int, fw_kpu->entries, KPU_MAX_CST_ENT);
->> +		cam = (struct npc_kpu_profile_cam *)fw_kpu->data;
->> +		offset += sizeof(*fw_kpu) + fw_kpu->entries * sizeof(*cam);
->> +		action = (struct npc_kpu_profile_action *)(fw->data + offset);
->> +		offset += fw_kpu->entries * sizeof(*action);
->This is a pre-existing issue, but could the offset calculation overflow
->on 32-bit architectures?
-Pre existing issue; a seperate bug fix patch will be posted to net tree once this series
-is merged.
+> > It stems from Jakub's response in
+> > https://lore.kernel.org/all/20250815113814.5e135318@kernel.org/ that "I
+> > really wish someone stepped up and created a separate subsystem for all
+> > these cloud / vm clocks. They have nothing to do with PTP."
+> > 
+> > There was some further bikeshedding in
+> > https://lore.kernel.org/netdev/0afe19db-9c7f-4228-9fc2-f7b34c4bc227@linux.alibaba.com/
 
->The expression sizeof(*fw_kpu) + fw_kpu->entries * sizeof(*cam)
->evaluates as a 32-bit unsigned size_t. If a maliciously large value is
->provided for fw_kpu->entries, the multiplication could wrap around,
->producing a small offset that passes the bounds check below, leading to
->out-of-bounds memory reads when copying the entries.<F11>
->> +		if (rvu->kpu_fwdata_sz < hdr_sz + offset) {
->> +			dev_warn(rvu->dev,
->> +				 "Profile size mismatch on KPU%i parsing.\n",
->> +				 kpu + 1);
->> +			return -EINVAL;
->> +		}
->> +		for (entry = 0; entry < entries; entry++) {
->> +			profile->kpu[kpu].cam[entry] = cam[entry];
->> +			profile->kpu[kpu].action[entry] = action[entry];
->This is a pre-existing issue, but does this permanently corrupt the default
->built-in profile?
+The idea of categorizing core, NIC-related, vm, and stand alone clock
+devices makes some sense to me.
 
-Pre existing issue; a seperate bug fix patch will be posted to net tree once this series
-is merged.
+> > around how to split 'emulated' from other hardware drivers, but I don't
+> > much like that taxonomy. Some of these "virtual" clocks could just as
+> > easily exist in hardware with PTM too.
 
->> +	/* Binary blob contains ikpu actions entries at start of data[0] */
->> +	profile->ikpu2 = devm_kcalloc(rvu->dev, 1,
->> +				      sizeof(ikpu_action_entries),
->> +				      GFP_KERNEL);
->> +	if (!profile->ikpu2)
->> +		return -ENOMEM;
->> +
->> +	action = (struct npc_kpu_profile_action *)(fw->data + offset);
->> +
->> +	if (rvu->kpu_fwdata_sz < hdr_sz + sizeof(ikpu_action_entries))
->> +		return -EINVAL;
->> +
->> +	/* The firmware layout does dependent on the internal size of
->> +	 * ikpu_action_entries.
->> +	 */
->> +	memcpy((void *)profile->ikpu2, action, sizeof(ikpu_action_entries));
->> +	offset += sizeof(ikpu_action_entries);
->Will tying the firmware binary layout directly to the size of an
->internal kernel compilation constant cause backward compatibility issues?
-We can't change ikpu structure to add another field as it will break backward compatability.
-So we will keep same number of items in ikpu.
+So the whole in-kernel API in ptp_clock_kernel.h with ptp_clock_info,
+etc, was poorly named (by me) back around Linux 3.0.  After all, the
+abbreviation, "PTP", stands for a network protocol.  At the time, Alan
+Cox pointed that out and complained, but somehow the code got merged
+anyhow.
 
->	mkex_extr = rvu->kpu.mcam_kex_prfl.mkex_extr;
->> +	mkex = rvu->kpu.mcam_kex_prfl.mkex;
->> +
->>  	if (is_cn20k(rvu->pdev)) {
->> -		keyx_cfg = mkex_extr->keyx_cfg;
->> +		keyx_cfg = (u64 *)mkex_extr->keyx_cfg;
->>  	} else {
->> -		keyx_cfg = mkex->keyx_cfg;
->> +		keyx_cfg = (u64 *)mkex->keyx_cfg;
->This is a pre-existing issue, but does this cast away the const
->qualifier and modify read-only data? Both mkex_extr and mkex are typed
->as const, and frequently point to the global static npc_mkex_default profile.
+The term PHC is a better one, since PTP Hardware Clock means clock
+device whose purpose is to support network time keeping together with
+a NIC.
 
-Pre existing issue; a seperate bug fix patch will be posted to net tree once this series
-is merged.
+> > My observation is that with the sole exception of ptp_inet.c, *all* of
+> > the actual PHC drivers that live in drivers/ptp instead of drivers/net
+> > are "pure clock" drivers,
+
+No, that is not quite right.  The clockmatrix, idt82p33, ines, and
+qoriq drivers wouldn't be very useful without an attached NIC.
+
+> > so perhaps we split those all out into
+> > drivers/ptp/drivers/ and exclude them from the netdev maintenance?
+
+Originally the idea was that the rate of patches would be low enough
+that netdev would be the place to post and review them, and that no
+separate tree or mailing list were needed. 
+
+Even though the "PTP" naming was an unfortunate choice way back when,
+still I'm not a big fan of moving stuff around "just because".
+
+But moving forward, I would suggest starting a new area for pure
+hardware clock devices.  
+
+   "Clock Devices" ?
+   linux/drivers/cd
+
+Too short!
+
+   "Time Keeping Devices" ?
+   linux/drivers/tkd
+
+Confuses core time keeping!
+
+   "Advanced Clock Devices" ?
+   linux/drivers/acd
+
+Let's come up with a fitting name.
+
+Still, I don't understand why these new (non-network related ) device
+drivers can't be implemented in their own class using posix_clock_register()
+etc.
+
+Any of the useful bits (like sysfs interfaces) can be refactored out
+of ptp_clock.c and shared as a common layer.
+
+Thanks,
+Richard
