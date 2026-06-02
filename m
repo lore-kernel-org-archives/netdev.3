@@ -1,127 +1,123 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDB4927603C;
-	Tue,  2 Jun 2026 21:45:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780436712; cv=none; b=EITuYY/4EdCmvf3UPcIonYa0Yqq3lAYAqKIYlBy6kOPI3HIyPRlVnEygfgy+lovQLu25aUxLs5AXC878wE+fjcNZM4QYkLR2g73RrTYtr3vQ6mXJXgUEIr7WyKRMutXmeH/bQ+sSH/7T/6gP0Bv+wOZU1bMdxdcQ1oyPXmh7zIU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780436712; c=relaxed/simple;
-	bh=9mAoO9H8Y2BWm5p5K9c3oIGIMMxULY9BhMvq3EtYzfM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SEUcttufK/O+c9MBObBIMisJ62RaXYfX5CT8ITIcUgNjE5htLGn2IeZ4P0Sc/BsqjbhEWDGu9z1CsyRZA/cgRattwUWVcS6v68HYkUxXMwLuA79FuUiOJmrem/ZJH805Xci0/Ar9m4u9U1zWWHYLNARJ6zM9WemQ06/6RrDu6XE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VaH44L8M; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7786A3A5E8F
+	for <netdev@vger.kernel.org>; Tue,  2 Jun 2026 21:45:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.171
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780436717; cv=pass; b=SgiSHXi1rpUSGo4Lz0cqoZpwYW28b8Yk5IoKhE8px21vRk82IGga5CJBeylp2UMO978MPV7k9L6erZc5zYAH10ho6f5VIdhBFDaSqC1HCg8CBw67ir8A1tl7+pqd0oR4471ZUihi4BqOGAjmHgroq8+GiVLeWtF+KHL5BxU+3tc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780436717; c=relaxed/simple;
+	bh=KOQdHlqbjdmDreblqF6LDye84bMbw/y63M7JSnQjQwY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=pdVuif+qqL1GCRlXYTginD+g/+I2iMS5oOObZ1qaninLF1VGdtteTLSNlzuwlJWpPfXyYJrUeLDj/9x5cJ4InCTKONe7TQEmliiboPbidfAKSpMKKmq/xUt93DXEWuTfwfYq6D0cXW+tDVAeQqEbxKuU4lq3UqUhTTpLfth0lpI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=GVaOxf6I; arc=pass smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VaH44L8M"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1780436711; x=1811972711;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=9mAoO9H8Y2BWm5p5K9c3oIGIMMxULY9BhMvq3EtYzfM=;
-  b=VaH44L8MNVumZXyEXRK8AfdaQNRXXVbJOIqxBpfPga+NfruxtYz4WPWv
-   iFbOmuZwzUO0a+RHjpn0HZWq3fKiP8CgXIQyMECDulHQqlcn8F4orXntH
-   MCXcwudjW7kQIASkMedK3qtQRGfdtxuoF3HDavTP82HF13Hz+e2UP8DrG
-   xcvomKiruDpx02hN08hls/QIQbNMXX7GJhL8n6FQz+mFkv7C+8wvs3YSk
-   e3ybOfGgXyjEvanK+lFrEq7C0I1qXuKgvRWJi8PN1jnxgLAPA0XTbftLB
-   14VNu04wwUABisJbvro324yTUitnZNnkYKHZ5OAtRfcKG5kH5TjXjrMyx
-   w==;
-X-CSE-ConnectionGUID: 2vpw5QWaQzWX2q5jXLwKKw==
-X-CSE-MsgGUID: WGE6paOaTgOJTRVuq1HpUA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11805"; a="81209909"
-X-IronPort-AV: E=Sophos;i="6.24,183,1774335600"; 
-   d="scan'208";a="81209909"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jun 2026 14:45:10 -0700
-X-CSE-ConnectionGUID: UvnADU78SIC781mCxKiYQg==
-X-CSE-MsgGUID: DRVbexEBQcalNu55EQ4gaw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,183,1774335600"; 
-   d="scan'208";a="237669752"
-Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.244.116])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jun 2026 14:44:57 -0700
-Date: Wed, 3 Jun 2026 00:44:55 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Cc: Lee Jones <lee@kernel.org>,
-	Mark Brown <broonie@opensource.wolfsonmicro.com>,
-	Thierry Reding <thierry.reding@avionic-design.de>,
-	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Srinivas Kandagatla <srini@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Vinod Koul <vkoul@kernel.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Andi Shyti <andi.shyti@kernel.org>, Joerg Roedel <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
-	Doug Berger <opendmb@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Ulf Hansson <ulfh@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Peter Chen <peter.chen@kernel.org>,
-	Paul Cercueil <paul@crapouillou.net>, Bin Liu <b-liu@ti.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Maximilian Luz <luzmaximilian@gmail.com>,
-	Hans de Goede <hansg@kernel.org>,
-	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Benjamin Herrenschmidt <benh@kernel.crashing.org>, brgl@kernel.org,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org, linux-sound@vger.kernel.org,
-	driver-core@lists.linux.dev, devicetree@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, linux-i2c@vger.kernel.org,
-	iommu@lists.linux.dev, linux-pm@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-	linux-usb@vger.kernel.org, linux-mips@vger.kernel.org,
-	platform-driver-x86@vger.kernel.org
-Subject: Re: [PATCH 08/23] driver core: platform: provide
- platform_device_set_of_node_from_dev()
-Message-ID: <ah9O15bMlAYgSlHx@ashevche-desk.local>
-References: <20260521-pdev-fwnode-ref-v1-0-88c324a1b8d2@oss.qualcomm.com>
- <20260521-pdev-fwnode-ref-v1-8-88c324a1b8d2@oss.qualcomm.com>
+	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="GVaOxf6I"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2bf18c30bb2so38904625ad.0
+        for <netdev@vger.kernel.org>; Tue, 02 Jun 2026 14:45:16 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780436716; cv=none;
+        d=google.com; s=arc-20240605;
+        b=NzfBfow7nb3YVgy3CaBky2HdwCHPhBuLHD2GqXcj3474f8FDt3bLq0a+4+Qo8HhRVp
+         W3kzn14ZV1wcgpslfpDr18PbbLg0sdjRvffDuPCrEHkFOYHuQZhF90c+w67lYkXvmr2w
+         4tmRv7xVnnBEqCnbcMr22AkH3Qo/hTUr4Ci6Sy72vDhV7u8+OS6E4DXPr2kTjENwU6Xk
+         8WCtIWdsSRN9ljkoM6xoYTmRcUDwyPD1qyO62Henr+5LUdq+gOa1WIZFWzmvGwCtQJDH
+         BVywCtVekeZ6mmGOsT/L1RE0lRL4TfM5Yiv6VMT2NPNMmAD/adZ+eXjIDk/r0D135LE2
+         dd8Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=KOQdHlqbjdmDreblqF6LDye84bMbw/y63M7JSnQjQwY=;
+        fh=TKbzcgs/0nUHDX0NvhzO8rHIU7ELf1IfEkpFm7OwKhc=;
+        b=Y8vdCXpoBcQPvZLmGqkAA0Nmucd71+vbrn7lzHefscdrDJa1R/0fhWouqJTgwEb++8
+         OBYOF8rzb1HI7RzJ2lutFP2awuvTTY4JDWAVDPZjw1wSjdmQJ8AmgfzODq4TQVEktw/K
+         c0v62oWvZKIRAsopk0MrBxMG/1SpB3o2fIbU7ZMqSawPgjz75JugP0nFn3/3l7hqKUru
+         AgEmgYbz47bO8tVlK8nxNofbQF0GrErqp/rd1lO4C6tr5+55KgRHZ7+JZxwLdwGpogoE
+         GVvaS7TDQKaC6M/g/Nn3hPvpkpPNn4TIsIlc1vCNdvfAb3C5Qj1d9Qn1G3X2e0rJAL5Y
+         qYRA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=paul-moore.com; s=google; t=1780436716; x=1781041516; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KOQdHlqbjdmDreblqF6LDye84bMbw/y63M7JSnQjQwY=;
+        b=GVaOxf6IskshIWFXpyp00GpLCHlAzB56Wpwkv38VLkYLIxUN1669g/OKkBmG6Vt5je
+         XOj71bi9TwMdNZw8tKxI1zvySYg+1HEj1Pobk9BlpGQu2dgBTRnzNMiYUk//SIb1n6rN
+         viH9YJmI+utKN/8HMdNs6uZaqBrlDCrrMwQXwjDmGIZAZ4op+lGXdUH6amVXBRCT0A/D
+         ufidmD3M+YZT147mJvpNI11PYvaCW4vLUZ4VJBGtIfkczCaytcgaimZs2Ph0EuaEStng
+         EarIi/p6I3/hU8rgykTOwtkD2BSGLjDlRYn2apKdjgAaX9g+ML+kUD50pmPZDx/8gGZl
+         7bQw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780436716; x=1781041516;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=KOQdHlqbjdmDreblqF6LDye84bMbw/y63M7JSnQjQwY=;
+        b=FP4keqaRAUTXrPV4OuWD14dA+Cw0y8k0u2KkpeIZE0dJVtKh7ZyetThzDEehFH6T0R
+         cLk8WTDVEGZu33DGWJ9ahLLM1TGcA9M3C0twZxpY9mA33ueDZoUh017dp/eDdZe5u+4G
+         F0C47ojD1Kfves/hoWa3hp6StMgjvc0TlHADcFzKCJ/AQhb5Ck0HdhZL88Tufj0UOIhG
+         rEBv5t5gUJL74prWrcqXEReg4RSK6+AhPGneO7rYaPt0m91l+jocTNl/vYyVrmOZNs7N
+         sgg9IjbmL0wgVsARwi/zfN/XM2NzmqzJ2MSB+oVZY3WO4Uz6Dw+VdDjUrVG7OQNrabUF
+         4H3w==
+X-Forwarded-Encrypted: i=1; AFNElJ8CGoySmCuV1rG3XWGl8+CgHOGOSLGFLaP76lADIc6E95XF5FRyvEf4V7Fd2nTEW9fow/9DzBk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YypafRL9Hhc3OPtbgnkaMJvWHWz5UCCLM8x0yZ/7tcEbek9HrTC
+	j3IvTGkdxof4keZr3HxjsHnB/OJzAomwrXquDrwMFXvWT2ukbpSv8A02GP2C6cOdjcCfOWua2G3
+	TvZQR7UMrk1d7ageL+mWFg+jscF9+cTe+pSACd3Ku
+X-Gm-Gg: Acq92OFtxuW+eADOdTVwMuGDEDu2zBKZfad991Qy+jzoYFTv6dCH/zQow2Zs4AI9Eom
+	leHCre2U9bvqJZRWo67R5NVaQtSYudd1BzjNlwvWMogJtkF5e37nrwaLUaa2iSwSrqAOgwk0TWn
+	GQVqCemqf0XxKeI472jFCgdOQgLJn2eVsxHp0E1zFMvROnHQJImtwkSx6d3C3NB2zHzHOmmlruR
+	IkDtOgAKC0injl8EqzGW1UMxNWiasmTNF484MUZG1xzUQJ7GByGjHzNaVt72spXdOSoYfWw/py0
+	pAMYQHYUgJI1zWwzQw==
+X-Received: by 2002:a17:903:3903:b0:2c0:fa4e:91ed with SMTP id
+ d9443c01a7336-2c163a59a86mr5095515ad.18.1780436715739; Tue, 02 Jun 2026
+ 14:45:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260521-pdev-fwnode-ref-v1-8-88c324a1b8d2@oss.qualcomm.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+References: <ah8BzqSmZO40xYhS@sirena.org.uk> <CAHC9VhRR4mmkOdWwUCLswmA+_KEjB8RCBBTJ2W4JGiLUWKzxyQ@mail.gmail.com>
+ <CAHC9VhRPbkVYAMec0KG55er6GOPdKqMXKdpC8rrHgiAodSv-sw@mail.gmail.com> <9d34218f-abbf-4a23-8b35-b305873ffae3@sirena.org.uk>
+In-Reply-To: <9d34218f-abbf-4a23-8b35-b305873ffae3@sirena.org.uk>
+From: Paul Moore <paul@paul-moore.com>
+Date: Tue, 2 Jun 2026 17:45:04 -0400
+X-Gm-Features: AVHnY4K_GfYnJi1Ham2KVsQorfmtW0kY909SMhxY_6Zb2qHORdTKGwtbORTWZjc
+Message-ID: <CAHC9VhQnBi55hjwTATA_tgKNZ=StFYTKu2Av5R8N4yDJwsFswQ@mail.gmail.com>
+Subject: Re: linux-next: build failure after merge of the security tree
+To: Mark Brown <broonie@kernel.org>
+Cc: Blaise Boscaccy <bboscaccy@linux.microsoft.com>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>, bpf <bpf@vger.kernel.org>, 
+	Networking <netdev@vger.kernel.org>, 
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, 
+	Linux Next Mailing List <linux-next@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, May 21, 2026 at 10:36:31AM +0200, Bartosz Golaszewski wrote:
-> Provide a platform-specific variant of device_set_of_node_from_dev(). In
-> addition to bumping the reference count of the OF node being assigned,
-> it also assigns the fwnode of the platform device.
+On Tue, Jun 2, 2026 at 3:16=E2=80=AFPM Mark Brown <broonie@kernel.org> wrot=
+e:
+> On Tue, Jun 02, 2026 at 02:40:12PM -0400, Paul Moore wrote:
+> > On Tue, Jun 2, 2026 at 12:31=E2=80=AFPM Paul Moore <paul@paul-moore.com=
+> wrote:
+>
+> > > Thanks Mark, we're taking a look at it now and should have a
+> > > fix/answer later today.
+>
+> > Proposed update to Hornet, assuming this looks okay to Blaise I'll
+> > merge it into the LSM tree (and either pull in Daniel's patch or base
+> > off bpf-next so everything builds correctly).
+>
+> > https://lore.kernel.org/linux-security-module/20260602183658.161744-2-p=
+aul@paul-moore.com/
+>
+> Can you ping me when that goes in (or things are otherwise resolved)
+> please so I know to drop the revert from -next?
 
-Can we rather investigate the way how to make that of node reuse thingy
-(which is used solely by pin control) differently and then drop this confusing
-device_set_of_node_from_dev() call altogether?
+You shouldn't see a conflict with lsm/next now, but if you do let me know.
 
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+--=20
+paul-moore.com
