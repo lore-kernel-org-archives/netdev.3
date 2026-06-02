@@ -1,169 +1,191 @@
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E09B73F787E
-	for <netdev@vger.kernel.org>; Tue,  2 Jun 2026 17:16:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780420607; cv=none; b=Ka0bi/PMuzRZZMKK/SMYkHUMBwSgPKSaWshsU46M5pZl9SPtg+WsCv2vbA2ghDDAkCVuQK2y7VTLlfCFGh5EIOG7w0f8YAPWvhZR+q2TGA/jhEFeAsepQtCVL68dmUl+dGdVIRVjkDHPbmUXNWF/9/thK/S1HuvVIxGIkQiugHU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780420607; c=relaxed/simple;
-	bh=aChVinTtW06DYJMgsEjII6deRz2m7lW+ZvBbR/sgFp0=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=b6zLY4S5suhH99rNeWKx/lWdJRo9CNgFLTD6khVtsZ7SDGlOkWAcxr7gpeLaM1XZ/fOIoI9A3r4s9ReXYq+R9H1rmz7iA/T7d+++CL4APHxS7HnXN92+EqTY5sRiaJVLpbf+yEW/tylYQIjEMvFCsX4iiy5A/auvPUxrAnoDy7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=C/g2TYcQ; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EE193B9617
+	for <netdev@vger.kernel.org>; Tue,  2 Jun 2026 17:25:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.44
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780421131; cv=pass; b=VZIBSJSU8XgWHFBiL+FDhGm8ygaxldJ4kauu1smJFFhGpwlDNqNi16heIyVADEdrHJ1KywhvXM1qST5YwKjDRcWKTjocCQtuPf6DfyF3/4fe6EU/jXhEi8D0PgFiuOVBfcDJdPr93FN9NoHwT6fxn0z4osa0Yt77xtQSpQcIKe0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780421131; c=relaxed/simple;
+	bh=iPgtSJPnn2WLSAhBj9utiFu+5JnduVtlglZ5qvPeod0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=WnQvt8wpH9aUTNahSKzjOLVu+5Z/HnHN8ST8U9zjrFr7QxFIxOIic+rUqegZdhjK8q+jOWJNOCDqAhmXfp1dqVOV9RBUr/Ju3N4JDOyc/HWDmd06QKimyzl4VdAeB336lg6lRpEcqGlfwx5+sZFQoUK7fxCUXrt/9a0nKb9G5So=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Pm4nah5x; arc=pass smtp.client-ip=209.85.128.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C/g2TYcQ"
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4904fd4f6aeso98700595e9.2
-        for <netdev@vger.kernel.org>; Tue, 02 Jun 2026 10:16:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Pm4nah5x"
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-490afc47455so9025055e9.2
+        for <netdev@vger.kernel.org>; Tue, 02 Jun 2026 10:25:30 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780421129; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Z8efzwbdGBwTVQMb00FjwqmVqofitAJnzmdEWswzlLw2GRSO9s5C4LlRlaVasIWcrP
+         8jIiwQJ6OMSUUtzCj7/cCYyilSEnZ5bF93mDQrPRsaLcgYfxSni6+cUerUonmgSOI7Gg
+         yjDjrpheOUTEMH7KRkUdPFaaw93kCBboBltQqiG5Sfq2cfdRx0vdhJM1SJdHKydaVUKo
+         Sb21pQAXrYZy6jGlz7cinQBYszTXv3YE+6GunaMJd1LskoVLfr90K+r2Bjqh4oHGIFJ0
+         t4A09qhPv0sw4LUQTNeVYbxp0P0Fg3qj/I8XXN/uhOXngtEdGSGPZG6R+qi3+fVSLz77
+         Z14Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=keziT7iw7tOqjOgD7A8G8bVoF7lb6QaFK2jdA0hJANU=;
+        fh=Ku/lfJ5VhBfcKOVrrNW+tjjv52XcABTTHq8lfGzqhDk=;
+        b=f9yi8qxKeAm+NQK7No7oXBDzETtx94bV8wkZt8VkMsGy2GJc+YiuCHl6A/QKUfOuOH
+         OBoJsnLafIkemJOYWALVS1m1DciNJmkHU4KJgB6BZJfipvHKavR/2Ohhp9LBiNXMLBRr
+         r2ZI9UvCbsREVqtstOqE+u6LCwmkYyYIxaBrMcyrOyATWMT10ZcyV/Sm6uSWVw6xgjyp
+         b8B0cA0/N74sPgECBU/K4sgbCO+4Y+7TsKhOwVbCL3hoKYTV2DMcKrzrT8jt4Ew72u9Q
+         9k21tQGl+WPmeQ+uyFGhC6kcl4hLiQZT0ociqE30ObkYJLbGNEfMBsMzzboAIQ1quXhp
+         xKfQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780420603; x=1781025403; darn=vger.kernel.org;
-        h=mime-version:content-transfer-encoding:references:in-reply-to
-         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Gv92Sloivp2yvi05t2PfMcNMHYPgBL5QlmVi6nWQAxs=;
-        b=C/g2TYcQ7E373WeF2fovbXhoO9+zp8KqKPOaF/ZYOs2ezuMYr0oKzHOC9mxGiJTGlV
-         mfW6hLwOGcIcNirCEGrdtb3VEJT3dOB8wrm3/QOqe88ZwND826HLNoUK/hBAGSPKv4jR
-         FItFrpXXdMz1QJoqI3YPuUKVXuBxbI3prf+dSrBSfttu18o6Lodr6xlG5XulDFTxFfqE
-         4hxn6nBmBm+4BfoAGOuqpbk1hdK+JgeW/PoUKSRpWvQqwj5xV8+volXlqRtK/fYUnA75
-         G1ZMuh87aCdgPf3galDntMv8MLZmIO2HfT+nmTr6iLumafkUiIpx/+E60M/qr/v9O9W7
-         CsSg==
+        d=gmail.com; s=20251104; t=1780421129; x=1781025929; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=keziT7iw7tOqjOgD7A8G8bVoF7lb6QaFK2jdA0hJANU=;
+        b=Pm4nah5xpa3wkF6ZJXN93iQqTajfLaLnk17Wng584ZfLw6yW2f6VU85r0ZzVvoybuZ
+         2dJD4fh1H+b7lHO7w6te7uv3VKo+4FCfqg5bT8+82qF6qrUCEf8Ti4RZ+CMcghcbLJL5
+         BILyClz6yTr+8oG5EEWCO4J43ISN3WJv/FTqYT2ojC0rQCmTStcvzSasC8s9GY41NRAG
+         KqcIPjXkAmUvmMn1FP0v+FjoatKbdQld4fpVRy9AoIKgUqdFLBStTJXcEYU9wQtRK7sw
+         bKztzsF7zm8dy2R9DOg0a8bDQDg2INgwRUiv5rB8zU/F0fXu2zoEL5H5WBcYOgZ05ylf
+         HWiw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780420603; x=1781025403;
-        h=mime-version:content-transfer-encoding:references:in-reply-to
-         :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=Gv92Sloivp2yvi05t2PfMcNMHYPgBL5QlmVi6nWQAxs=;
-        b=ariJIYaMz85exmlQxkTehnmW7fn0lswDZ9wPE12/ZcMPnGgs75WAGdVOUPiSmnXwsr
-         27CUAYQgLEuOEbfVwPf/UIXC0W1sODTFxoCrZt6GIjxXA31VGr7wQKHsRfA23GDBGbyc
-         VCitwSNx9Z/sdFTZ5STcQcaa5eVmuhuot8feE9dlyMnXdR875TrjvFCjwy2eq6oWr8OS
-         dYqAumslDjW5Sk+sUT6jTga3NMhtt+v49XXEUfgsXDGeRmBC6EuAxs+mQZLYPu65I6KT
-         chGOMYsq26HXeq0B+4s5alm/qg8s3MoBlqCfiSVHq6GU4NlaWXJiTIKflXWZjUTaPcjS
-         uKLA==
-X-Forwarded-Encrypted: i=1; AFNElJ+5guQyPvj1vqks8fRfQmOrumdA49kbmfnuPhauV7amOUimijgNzApWMd1Dg81o7cZpiGb7eio=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyKl2j4WF8dbv+6pbJVgMkgm+ZQexWvgH2zyssh/py2UYdqbD+b
-	c0C9AW3jdUI0IUzldXqofd8xdyEG+6jQYInEx5XzI9gqsTulnMRSn6I=
-X-Gm-Gg: Acq92OHX40dxCbS96FiZes2NcUczjkSwgE45RfT1pn70K8ZeEm7oXyIvZXTAHZQP9Lq
-	h0LokHBYrfGNf1M5gjY+NurxfciaXLlC8mij/d4KO2tLDrR9BvrhleGGR2cQkJCwEfe2IzKq0Dt
-	kpDxYmhzd2C4lEbDeBVKYjjjvs0S8gd3kvKQIlDAwto/ZhxYQU84tBOQYdP/MuMLFN0vh4BjivG
-	EWGMFMfWpiM8MIzxReyy001oexRxyyvRnNBTSJY1ncADuxMOF02Ct0Js+t+b1FddKDZlTaFOIQy
-	6AxsDOIFKwOa90pDbIH7B+sQLDLz1ZaxumQGSBKZXyQ2oA0Zcs0pYh6Ct8HW6L9Zce5AsipDVDo
-	SIbmiQKrycwN11/tYWhnN6noREeRknKnGz3VYNLnEznGCS02lvAuUY49w92Yz0WyrWoym3vin0B
-	RQVtwp8K86osL/ZQ==
-X-Received: by 2002:a05:600c:3f0d:b0:490:6e11:c303 with SMTP id 5b1f17b1804b1-490b50800dcmr11794235e9.13.1780420603115;
-        Tue, 02 Jun 2026 10:16:43 -0700 (PDT)
-Received: from debian ([2001:41d0:303:db6b::])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490b575aaa4sm544745e9.3.2026.06.02.10.16.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 Jun 2026 10:16:42 -0700 (PDT)
-From: Tristan Madani <tristmd@gmail.com>
-X-Google-Original-From: Tristan Madani <tristan@talencesecurity.com>
-To: steffen.klassert@secunet.com, herbert@gondor.apana.org.au, chopps@labn.net,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- horms@kernel.org, netdev@vger.kernel.org, stable@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: [PATCH v2] xfrm: iptfs: fix ABBA deadlock in iptfs_destroy_state()
-Date: Tue, 02 Jun 2026 17:16:41 -0000
-Message-ID: <178042060186.32887.17301018074622852112@talencesecurity.com>
-In-Reply-To: <ah6rCd7up8i6173I@secunet.com>
-References: <20260528160318.2631699-1-tristan@talencesecurity.com>
- <ah6rCd7up8i6173I@secunet.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+        d=1e100.net; s=20251104; t=1780421129; x=1781025929;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=keziT7iw7tOqjOgD7A8G8bVoF7lb6QaFK2jdA0hJANU=;
+        b=jh5ef28FP/4i7Nn2OlxGv7x5fyrJDHLr0KYZWReaPipfovulacS2HZF7rQs5r2PBnc
+         dGFkY3K/7lCG82uOFvvGVsdFEsWqgQHn4C04nc69FY2cLkHK1jRwL/IugL3wUOUBxNA6
+         /uuvxU+yr4E4YVZ14IKBGFoPzBtd5aGPI17lQBI2+OOSESPJkDjjzg/J/JlC3+Nd2p/n
+         ZkgqD59ND5fmJswA5LYfbjl22+Hw30iONxc/wZuloGi0TLFWyhkRYPVM2sWRt3Ldy9tX
+         ajaGP+j7rEP8v0GbYrgLISnjsjHYt7LkJqjItYh2aJBsLKoKXcDzhpUoRSWV+RcqW9ne
+         0KCw==
+X-Forwarded-Encrypted: i=1; AFNElJ+GejzgVSbTYvF8Jah8lhcz/BwLG9hic4asLoh9ZJiRuPCXpXYEWtht4K6S7YuX6E808Pd9puM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwmGC7znv9oDDo0HMiUww+YBaImSVdb7dKVwKn/Z5SDGYhW4DB9
+	HGtJejICQElJ56xA2RvpOyUgL7wlyh8xvcN3MQKa3qtIGnRToUM95H96JGQ4p+jN+za0b42OoOT
+	/AOA8ZMah27p35EQpFVu4XIOMLSGeeRw=
+X-Gm-Gg: Acq92OHBx8y50VesveLb91OJ+XLx9uKne8bVmiuZIq4N5mxDl0G8/sEAjLw1THjP0sF
+	GQLI+RAtevI0nZ3Hu+WAhkzui8s8CwVyLdWXYONe/jFVF/OSx8DZie8hpLo0nV2d1BqlBnBH5Kc
+	MneMgGm+efFkRPYq/moEiMVOPYZFw6cbQ8c4w/rdPI/LLPX6ujvfa8pkdJakZl22Ovkt6ZZv7bT
+	uLSZXhFNL8CWWARCsy4GGJrLGr2Y36ivHHVUzRunKD86LadT3KdG/GEHARHMD9/8um2oYYEfpby
+	pgQUuhHbAHPplbVL7cc=
+X-Received: by 2002:a05:600c:5394:b0:490:44eb:c1ea with SMTP id
+ 5b1f17b1804b1-490b50b524cmr11269395e9.24.1780421128348; Tue, 02 Jun 2026
+ 10:25:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20260601180400.1381736-1-jt26wzz@gmail.com> <ah5pf25fhVH9WuU-@u94a>
+ <ah56iBM2P_9hF3_L@u94a> <ah6dLESn8tHAtxS9@u94a>
+In-Reply-To: <ah6dLESn8tHAtxS9@u94a>
+From: Zhenzhong Wu <jt26wzz@gmail.com>
+Date: Wed, 3 Jun 2026 01:25:15 +0800
+X-Gm-Features: AVHnY4Jp20ELFLjNCl5evWNbTrIsnG4ugFKakTtRdkdRYG8va887rnwbiwM2mx4
+Message-ID: <CALgi0X=qjiB756FnrYowor26sybA4z2jNCPrjieGcAA52KJS1w@mail.gmail.com>
+Subject: Re: [RFC PATCH 6.1.y 0/2] bpf: backport scalar not-equal tracking fixes
+To: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Cc: stable@vger.kernel.org, Paul Chaignon <paul.chaignon@gmail.com>, bpf@vger.kernel.org, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, ast@kernel.org, 
+	daniel@iogearbox.net, john.fastabend@gmail.com, andrii@kernel.org, 
+	martin.lau@linux.dev, song@kernel.org, yonghong.song@linux.dev, 
+	kpsingh@kernel.org, haoluo@google.com, jolsa@kernel.org, 
+	menglong8.dong@gmail.com, tamird@kernel.org, eddyz87@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Steffen,
+Hi Shung-Hsi,
 
-You are right - the lock/unlock pair around the drop_timer cancel was
-only needed to serialize with the timer callback, which hrtimer_cancel()
-already handles. Since the xfrm state refcount has reached zero by the
-time the destructor runs, no concurrent iptfs_input() can be accessing
-drop_lock-protected state either. The empty lock/unlock is dead code.
+Thanks, that makes sense.
 
-v2 below removes it entirely.
+I was mixing up two different things here: the BPF docs say not to add
+"Cc: stable@vger.kernel.org" to the patch description as a stable tag, and
+instead ask BPF maintainers to queue stable fixes. Cc'ing stable@ in the
+email headers for awareness is separate. Thanks for pointing this out.
 
----
+Thanks also for pointing out the 6.6.y requirement. I'll make sure v2 takes
+the stable ordering requirement into account before targeting 6.1.y.
 
-From: Tristan Madani <tristan@talencesecurity.com>
-Subject: [PATCH v2] xfrm: iptfs: fix ABBA deadlock in iptfs_destroy_state()
+I ran the suggested checks with the same reproducer, where BAD means the
+program ran and observed the unexpected error, and GOOD means no error was
+observed:
 
-iptfs_destroy_state() calls hrtimer_cancel() while holding a spinlock
-that the timer callback also acquires, leading to an ABBA deadlock on
-SMP systems.
+- latest 6.6.y, v6.6.142 (924b4a879cbb): BAD
+- bpf-next at b93c55b4932d: GOOD
+- bpf-next with the d028f87517d6 JNE refinement reverted: still GOOD
 
-For the output timer (iptfs_timer):
-  - iptfs_destroy_state() holds x->lock, calls hrtimer_cancel()
-  - iptfs_delay_timer() callback takes x->lock
+So the issue still reproduces on the latest 6.6.y, but d028f87517d6 alone
+does not explain why bpf-next passes. I'll do more narrowing and update the
+candidate backport set accordingly.
 
-For the drop timer (drop_timer):
-  - iptfs_destroy_state() holds drop_lock, calls hrtimer_cancel()
-  - iptfs_drop_timer() callback takes drop_lock
+I'm also happy to add a BPF selftest for this. I plan to send a v2 series
+later this week.
 
-Both timers use HRTIMER_MODE_REL_SOFT, so their callbacks run in softirq
-context.  When hrtimer_cancel() is called for a soft timer that is
-currently executing on another CPU, hrtimer_cancel_wait_running() spins
-on softirq_expiry_lock -- the same lock held by the softirq running the
-callback.  If the callback is blocked waiting for the spinlock held by
-the caller of hrtimer_cancel(), a circular dependency forms:
+BR,
+Zhenzhong
 
-  CPU 0: holds lock_A -> waits for softirq_expiry_lock
-  CPU 1: holds softirq_expiry_lock -> waits for lock_A
+Shung-Hsi Yu <shung-hsi.yu@suse.com>=E4=BA=8E2026=E5=B9=B46=E6=9C=882=E6=97=
+=A5 =E5=91=A8=E4=BA=8C17:18=E5=86=99=E9=81=93=EF=BC=9A
 
-Fix by calling hrtimer_cancel() before acquiring the respective locks.
-hrtimer_cancel() is safe to call without holding any lock and will wait
-for any in-progress callback to complete.  For the output timer, the
-lock is still acquired afterwards to drain the packet queue.  For the
-drop timer, the lock/unlock pair is removed entirely since it only
-existed to serialize with the timer callback, which hrtimer_cancel()
-already guarantees.
 
-Found by source code audit.
-
-Fixes: 4b3faf610cc6 ("xfrm: iptfs: add new iptfs xfrm mode impl")
-Cc: Christian Hopps <chopps@labn.net>
-Cc: Steffen Klassert <steffen.klassert@secunet.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
----
-v2: remove the now-useless empty drop_lock/unlock pair (Steffen)
----
- net/xfrm/xfrm_iptfs.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
-
-diff --git a/net/xfrm/xfrm_iptfs.c b/net/xfrm/xfrm_iptfs.c
-index 97bc979e55baf..82c52bbf25e1a 100644
---- a/net/xfrm/xfrm_iptfs.c
-+++ b/net/xfrm/xfrm_iptfs.c
-@@ -2708,8 +2708,9 @@ static void iptfs_destroy_state(struct xfrm_state *x)
- 	if (!xtfs)
- 		return;
- 
--	spin_lock_bh(&xtfs->x->lock);
- 	hrtimer_cancel(&xtfs->iptfs_timer);
-+
-+	spin_lock_bh(&xtfs->x->lock);
- 	__skb_queue_head_init(&list);
- 	skb_queue_splice_init(&xtfs->queue, &list);
- 	spin_unlock_bh(&xtfs->x->lock);
-@@ -2717,9 +2718,7 @@ static void iptfs_destroy_state(struct xfrm_state *x)
- 	while ((skb = __skb_dequeue(&list)))
- 		kfree_skb(skb);
- 
--	spin_lock_bh(&xtfs->drop_lock);
- 	hrtimer_cancel(&xtfs->drop_timer);
--	spin_unlock_bh(&xtfs->drop_lock);
- 
- 	if (xtfs->ra_newskb)
- 		kfree_skb(xtfs->ra_newskb);
--- 
-2.47.3
-
-Best,
-Tristan
+On Tue, Jun 2, 2026 at 5:18=E2=80=AFPM Shung-Hsi Yu <shung-hsi.yu@suse.com>=
+ wrote:
+>
+> On Tue, Jun 02, 2026 at 02:42:35PM +0800, Shung-Hsi Yu wrote:
+> > On Tue, Jun 02, 2026 at 01:47:01PM +0800, Shung-Hsi Yu wrote:
+> > ...
+> > > On Tue, Jun 02, 2026 at 02:03:58AM +0800, Zhenzhong Wu wrote:
+> > > > Hi BPF maintainers,
+> > > >
+> > > > This RFC backports two BPF verifier scalar range-tracking fixes to =
+6.1.y.
+> > > > The series is intended to fix a verifier state-pruning issue where =
+an
+> > > > impossible scalar path can be kept while the real success path is p=
+runed.
+> > > >
+> > > > This is a verifier scalar range-tracking issue, not a helper-specif=
+ic
+> > > > issue.
+> > > > The visible failure is that the verifier can prune the real success
+> > > > continuation, which should not be skipped, and keep only an impossi=
+ble one.
+> > > ...
+> > >
+> > > This sounds somewhat similar to the issue fixed in "backport of itera=
+tor
+> > > and callback handling fixes" for stable 6.6[1] by @Eduard. Could you =
+try
+> > > to test on the latest stable 6.6.y as well at see if you can reproduc=
+e
+> > > the issue there?
+> > ...
+> >
+> > My mistake, the reproducer you had doesn't use iterator or callback, so
+> > probably not fixed in stable 6.6. I'll take a better look at this later
+> > this week.
+>
+> Two more ideas beside testing on latest stable 6.6.
+>
+> 1. Can you try testing on bpf-next, but with commit d028f87517d6 'bpf:
+>    make the verifier tracks the "not equal" for regs' reverted? My
+>    concern is that it is possible that commit d028f87517d6 does not
+>    address the root cause of incorrect state pruning here.
+>
+>    If the reproducer _fails_ to reproduce the issue even with commit
+>    d028f87517d6 reverted, then it is possible that the root cause was
+>    fixed by another commit further down the line.
+>
+> 2. Have you consider adding your reproducer into BPF selftests? Would be
+>    very useful to have in stable (though it needs to first land in
+>    bpf-next first).
+>
+> > > 1: https://lore.kernel.org/stable/20240125001554.25287-1-eddyz87@gmai=
+l.com/
+> > > 2: https://www.kernel.org/doc/html/latest/process/stable-kernel-rules=
+.html
