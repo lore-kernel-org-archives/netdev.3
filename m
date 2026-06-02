@@ -1,53 +1,104 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5736582899;
-	Tue,  2 Jun 2026 21:47:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31CEE27603C;
+	Tue,  2 Jun 2026 21:49:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780436859; cv=none; b=qfkJ/694otR8ZcAVqnQoomUjKRkRl9jP7rhXEufZZwj0qkraMkemDrigt6lIRJERFCgrlfGE8315FRDltNQJXuBdc9DUAaOjaWPyuxrWhAdTM1ehrVY3+zE4uwHC90KuZdyFWvd7re/idQIGWBwLEgnl72yW2xS0sv1GSY/4M9g=
+	t=1780436989; cv=none; b=Wc7NUO0v1ql2CHp6WRn1UXyMBI0knretti15vxtYB6Srj+uIpVOVq7cUG4KXaOXg8LlRA7hChBYdPw6Qw0uxMx8h2HMa6AWemuDI53WTVdXvzqwd0ZsWc+mKwwTGQXpIdAmSgiPGSWZxh471OdMhg/AKHxSdRPVjuFhJbyV/Y/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780436859; c=relaxed/simple;
-	bh=gHc7r4WxfvEJUGHG2lg08uF5bacabWFzr+bp+QTeucg=;
+	s=arc-20240116; t=1780436989; c=relaxed/simple;
+	bh=DboyAh7hWgXk9QBiKXaDmMfe0ehQqRfCBx9xSYKHzj0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fec+X69Mf9EEdKl5ZBWuVD4flSlukUZvNOvEE9IaQl0Mm2nTtyHOBfoXx4cPek8MRp//u+WxPlyEmPq9bSH7xXjgp1Z4KrntC1zkXOX6J6tBKCN5b2mlAOJvgxXjDa4A6bDQqfkWSslqRtb02AAOK2uSttbyVwPWP69BO2oy68s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=t5IGYAS8; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	 Content-Type:Content-Disposition:In-Reply-To; b=mu46Dmj/lYbE6ySm+jf9Py8Lr7XoWGka05MA2pFJsuGHP1H7QO7xASzMcS+zeeb/GxsljKVKJoTqm7ZYT56De9gz0wfT5bRGeDDAJOX8h6e1WZ4ECd1r/DG2+n1M7dK94RxDaG0rAMHHEbHAEbajQhlL9UgtuDTQv37UabTUgEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=A98gT+Fd; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="t5IGYAS8"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=//nNaE6gxeoMML2yK2kEJkCHcj+FCtUumR027IgiKUM=; b=t5IGYAS814Y/2MRHAuAWULTrxz
-	6agzJoQjAaOQlKpKc9xXCSx37I6sJGc2UX+n3C3jNxkBxxpXqNh4dH7vg04wO2zKBOh6wZAF/teQT
-	wH9WUiqNrU2BCsTcPxrOeZKfjwI80ORQcl4dQ3rcRK7T3D5W0AK7KbB1gxjEawUI/fcE=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wUWxH-005lRM-1y; Tue, 02 Jun 2026 23:47:23 +0200
-Date: Tue, 2 Jun 2026 23:47:23 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: David Laight <david.laight.linux@gmail.com>
-Cc: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>,
-	Piergiorgio Beruto <Pier.Beruto@onsemi.com>,
-	"parthiban.veerasooran@microchip.com" <parthiban.veerasooran@microchip.com>,
-	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
-	"davem@davemloft.net" <davem@davemloft.net>,
-	"edumazet@google.com" <edumazet@google.com>,
-	"kuba@kernel.org" <kuba@kernel.org>,
-	"pabeni@redhat.com" <pabeni@redhat.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net-next v3 08/14] net: ethernet: oa_tc6: Remove FCS size
- in RX frame
-Message-ID: <f295db46-3d10-47e9-bc22-582fe3fe7851@lunn.ch>
-References: <CY8PR02MB9249644F900471DB8417134683162@CY8PR02MB9249.namprd02.prod.outlook.com>
- <cf87ad90-6ba4-4132-a1eb-beedd796c168@lunn.ch>
- <20260602150712.5b28d58b@pumpkin>
- <CY8PR02MB9249B26D4B4344064A582A3C83122@CY8PR02MB9249.namprd02.prod.outlook.com>
- <20260602223807.1ac76456@pumpkin>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="A98gT+Fd"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1780436988; x=1811972988;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=DboyAh7hWgXk9QBiKXaDmMfe0ehQqRfCBx9xSYKHzj0=;
+  b=A98gT+FdgcsxWc+7VOB1eDCYA37wBgSJe9naVIVUAnt6+qA8qsvuSdV2
+   hTC9cadVypa8t44i+jxn7MSs9mveCeplHv7RaM4SXM9cEqpDsdTbheczi
+   S83yudQDKcUOn7YTYCHjARNq7f/UzZI7ltHeMnnoAJOwuoJuWpXsEKoUc
+   bTqAyiFFHwCDGKYvKcywtk6rjfFaEpgYfsV8pl5pVUU21DlLqRVh3vbI9
+   6luDduZ5OBI9QfDI908wUeemHyD8we4g0SbE44M6HCRjCPZeUwbXCW2zQ
+   wRid3gohApeNegQJHSL83v6Ro49757tEwf/cYNdq/YDNna+dRVF5ellq7
+   A==;
+X-CSE-ConnectionGUID: Ko/zvC6oSSKsn4Tvlly9+A==
+X-CSE-MsgGUID: rFccy8SuTJmll6SpK2sOHA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11805"; a="91920913"
+X-IronPort-AV: E=Sophos;i="6.24,183,1774335600"; 
+   d="scan'208";a="91920913"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jun 2026 14:49:47 -0700
+X-CSE-ConnectionGUID: Y7ZlRnYdR3W1ACBKWyPdDA==
+X-CSE-MsgGUID: FAoy/eX/QYGVu9RU3sO6Mw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,183,1774335600"; 
+   d="scan'208";a="248950576"
+Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.244.116])
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jun 2026 14:49:33 -0700
+Date: Wed, 3 Jun 2026 00:49:29 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Cc: Lee Jones <lee@kernel.org>,
+	Mark Brown <broonie@opensource.wolfsonmicro.com>,
+	Thierry Reding <thierry.reding@avionic-design.de>,
+	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Srinivas Kandagatla <srini@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Vinod Koul <vkoul@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>, Rob Herring <robh@kernel.org>,
+	Saravana Kannan <saravanak@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Andi Shyti <andi.shyti@kernel.org>, Joerg Roedel <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
+	Doug Berger <opendmb@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Ulf Hansson <ulfh@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Peter Chen <peter.chen@kernel.org>,
+	Paul Cercueil <paul@crapouillou.net>, Bin Liu <b-liu@ti.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Maximilian Luz <luzmaximilian@gmail.com>,
+	Hans de Goede <hansg@kernel.org>,
+	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Benjamin Herrenschmidt <benh@kernel.crashing.org>, brgl@kernel.org,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org, linux-sound@vger.kernel.org,
+	driver-core@lists.linux.dev, devicetree@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, linux-i2c@vger.kernel.org,
+	iommu@lists.linux.dev, linux-pm@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+	linux-usb@vger.kernel.org, linux-mips@vger.kernel.org,
+	platform-driver-x86@vger.kernel.org
+Subject: Re: [PATCH 20/23] usb: chipidea: use
+ platform_device_set_of_node_from_dev()
+Message-ID: <ah9P6Xt9SyKgc2oJ@ashevche-desk.local>
+References: <20260521-pdev-fwnode-ref-v1-0-88c324a1b8d2@oss.qualcomm.com>
+ <20260521-pdev-fwnode-ref-v1-20-88c324a1b8d2@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -56,17 +107,25 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260602223807.1ac76456@pumpkin>
+In-Reply-To: <20260521-pdev-fwnode-ref-v1-20-88c324a1b8d2@oss.qualcomm.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-> The frames are padded to a minimum size so that collision detect works
-> on maximal length 10M coax segments.
-> (Or rather coax+link+coax+link+coax acting as a single collision domain.)
-> The same minimum frame length is used on modern networks which are all
-> physically point-to-point and all 'hubs' are store+forward where a minimum
-> packet length isn't strictly needed.
+On Thu, May 21, 2026 at 10:36:43AM +0200, Bartosz Golaszewski wrote:
+> Ahead of reworking the reference counting logic for platform devices,
+> encapsulate the assignment of the OF node from another device for
+> dynamically allocated platform devices with the provided helper.
 
-You need to be careful here. This is automotive T1 system. They do
-actually have old school CSMA/CD. Did i remember the acronym correct,
-Carrier Sensing, Multiple Access, Collision Detection?
+...
 
-	Andrew
+>  	pdev->dev.parent = dev;
+> -	device_set_of_node_from_dev(&pdev->dev, dev);
+> +	platform_device_set_of_node_from_dev(pdev, dev);
+
+Why do they even do that? Do they have a USB connected pin control?
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
