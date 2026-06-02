@@ -1,227 +1,180 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBF1036DA15
-	for <netdev@vger.kernel.org>; Tue,  2 Jun 2026 03:53:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780372432; cv=none; b=aEY0vJael+egwwyIwBwWki8Xo1esbtT2sHtFXxzivOQ+D+yATvB7dguCfnI/m5tVXqHibeRnHSyTfT/UcNzwcPTHB1U7jerHSunnQN3a+F2KdLOgKOe7MB/VxNHLkkmCQetELUTbphsxywPf0zTh6+uqEu+Aj15FhmiXhFHNvEw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780372432; c=relaxed/simple;
-	bh=piaJGw0Lw/G8i0lLqXKLF7hb5NFogwJnH00dTbpo53U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hBPecMEpK2XTxayV+U6KVXU1BxbtMAg/BP2E1IdrdjGSzOo/fDgA/0HeqVOAIg4hWtoIDPgz0dWs6lwAlnpgIE/nRoHNWOu/WXKDIZD1uFZhBxY4rf5/9dfiUooW91v6WrkXE9oo6iIURe9QzhC3oTyl0smoUjBdYCKRu3WOnIg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Vwuvvhur; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7657537C0FC
+	for <netdev@vger.kernel.org>; Tue,  2 Jun 2026 03:55:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.10
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780372561; cv=fail; b=uGa+gBbgsUlE+fXO7RzSju/RJXcgX+whTD87zzOIFLw36vhBuC6qF3Lywwi1706YzRVzWvssM0EnHQaau5FBuQ+G8/+kags3lqIFODvUznk61NukLj8U2JuuUG0J6b8BWUdl3IiOt48eTf0+OFpbWH7pLOzvowPlwCC3AJQXsE8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780372561; c=relaxed/simple;
+	bh=7TxBP3TDA7RG6bGQmS3LT/pSXEaHTne88Lno75m4BJI=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=MczM9q7vQrd9vjJzR9U2MuUe7k5uploBe27YbWJ6Gvm+fBE0/L+xmJjjMz24JPTWaIQWBxeFo+5v4dV0uAPaFGJag3PWp0yuKJhiA1Cwgvy8MtF0Gwxv0tkd3vT/a46QYUknBz+5hFfAQCXCUSGjda7poCXDa2MJFNIvfLcRELI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bxo80GXF; arc=fail smtp.client-ip=198.175.65.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Vwuvvhur"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bxo80GXF"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1780372430; x=1811908430;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=piaJGw0Lw/G8i0lLqXKLF7hb5NFogwJnH00dTbpo53U=;
-  b=VwuvvhurmpskV07oiPv2PpHOK9xo/w8u+wHuXWWjLIhUezg7BlYHfFpx
-   XiEbwHO/5o1DJssVO6P3Lk0XfKNbEpS+GqAuEVU8Udbg/vZ9uh4zMjAgA
-   R3mpDHm5TKhYs4WWY0E2UXARwDxr6lJ6MzYdHK4amSEFVLNms4zCd+eu2
-   p7A3rcVqCdpZHm7bdjGHgI7IsDrn+mDNaMWjyt1f5pURyMMR2RzWCZYFW
-   P/gAG/mYe+IRLIuBE5fLSKhD2s347tKY2G5FdeKM17iX3g51HZPxjP3Ji
-   tiDD2Obb3U89tOpXx0aDOjYoTLUrvxK1sfcZHhu6Tcx1R0bMlHnYmwhRi
-   Q==;
-X-CSE-ConnectionGUID: +wbMH3ZHRtKJrwaTowbDuw==
-X-CSE-MsgGUID: IBSZfqoyTeCNwl5hcp2qtQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11804"; a="68694251"
+  t=1780372558; x=1811908558;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=7TxBP3TDA7RG6bGQmS3LT/pSXEaHTne88Lno75m4BJI=;
+  b=bxo80GXFZ7YeJQ2kx+QpoS4bsUSBKB+PQocgP4e8zVSHzbw4gJq/BWH0
+   AgRb9GzXe6MtZv5fpoSL8B7eZGSsIVFFegrBTkyMBEv0xX7E1jtFs/LO0
+   SiFCYhON8DYhbZoTVRePa6cr8mRJlidVrznyuXq7UFoGwkNVavjtbNdH7
+   W1IKO0gaOfJ0dG/nbXwn2E4x4LCrp6Pj7hF0OeI0lrShI+atyZIMySp8S
+   aLxzA8AR/8uhJBn/MUptPUPkTdXCqkcJPqWL238yMcOFBiZYsQv4iYuMf
+   ymNKgkG4li2t1Y9clbzBGtn9PXZf9+AfE+fj7hcgS/+LotcR0MZV2a/R4
+   A==;
+X-CSE-ConnectionGUID: MX2JH2JvRdOUB7uquSLsyg==
+X-CSE-MsgGUID: DdstXp8KT8ScYpn4zwJDlw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11804"; a="98568838"
 X-IronPort-AV: E=Sophos;i="6.24,182,1774335600"; 
-   d="scan'208";a="68694251"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2026 20:53:49 -0700
-X-CSE-ConnectionGUID: RWaTPT0jQ7eOk/ol2HExhQ==
-X-CSE-MsgGUID: oW49JsbbT+qFPgLOmMF5cw==
+   d="scan'208";a="98568838"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2026 20:55:57 -0700
+X-CSE-ConnectionGUID: oRMGTuFQQGmb7JUnQMA10w==
+X-CSE-MsgGUID: IxPGLO3kS+SiEai2YyEoIQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.24,182,1774335600"; 
-   d="scan'208";a="237437717"
-Received: from lkp-server01.sh.intel.com (HELO f0d55cb201f0) ([10.239.97.150])
-  by fmviesa009.fm.intel.com with ESMTP; 01 Jun 2026 20:53:45 -0700
-Received: from kbuild by f0d55cb201f0 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wUGCE-00000000BSY-3tPw;
-	Tue, 02 Jun 2026 03:53:42 +0000
-Date: Tue, 2 Jun 2026 11:52:43 +0800
-From: kernel test robot <lkp@intel.com>
-To: Eric Dumazet <edumazet@google.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: oe-kbuild-all@lists.linux.dev, Simon Horman <horms@kernel.org>,
-	Neal Cardwell <ncardwell@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Matthieu Baerts <matttbe@kernel.org>,
-	Mat Martineau <martineau@kernel.org>,
-	Geliang Tang <geliang@kernel.org>, netdev@vger.kernel.org,
-	eric.dumazet@gmail.com, Eric Dumazet <edumazet@google.com>
-Subject: Re: [PATCH net-next] mptcp: change mptcp_established_options() to
- return opt_size
-Message-ID: <202606021113.tfn0OswA-lkp@intel.com>
-References: <20260601091816.444738-1-edumazet@google.com>
+   d="scan'208";a="281896383"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+  by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2026 20:55:57 -0700
+Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Mon, 1 Jun 2026 20:55:56 -0700
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Mon, 1 Jun 2026 20:55:56 -0700
+Received: from BN1PR04CU002.outbound.protection.outlook.com (52.101.56.56) by
+ edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Mon, 1 Jun 2026 20:55:55 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=IJloVASh/HJnvjmxlXIz4q67JA2ez19p/e1MAMMRoBO1uLAjPzGb9abYBgYM9Bclto95Iysk/q5HDmWY/TlxZ8a78EFg/IETIeFxSkW7SYRxUI6jgMNt51mUdL+jr22xUd0RfveF2x8rkOrj1nEtHVId5T1EurxapvS/2rZzi6LozcSLdZ0DgUbujEAeezMKCP20SQ7hwmpZ3zuQFFpgTSdCiZmWZNfMUTKAWFQHMuhzP4vV3e6Iah709DF1JAwgDK47ttaZnm/ioajQLW73FzkJHjxA+70AaOgO5xaKOzUmR32MR9KFPgQ/J8DNrnxwFOVj0vo2musNZdr+MG95NQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=7TxBP3TDA7RG6bGQmS3LT/pSXEaHTne88Lno75m4BJI=;
+ b=EVTvUQ0MhOEK/+IJIRRirC1vFrdzwEIKZQk1ow9xNDm58rci+boYsAX5+++oJ2rPa7rjrOgkE5XND/nz8G+IRGyPhRcPEfpUyKVW0ri6fd4wElWFlUT3Fqvu7xvfRJRqKZk99Mhswf4/XWX3fNDRul6uw9o7btnwPhxKy8A6DKX/5+QRVbQXBiWwi+7LD2h7Wd0UndLru/Snh8na6nsp7cI+Avfynx9zwMEZF3VDqQMnGT5nVGti56zos7UnMynfRzpM9QRE4zaVsSfWw7HqJVBSEDQINqlnFIhSjjwxSJX58tJhLA+roLjt2nBO/szF2kSne5z6PDnzKFVZJwMUQw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from IA1PR11MB6241.namprd11.prod.outlook.com (2603:10b6:208:3e9::5)
+ by PH7PR11MB6332.namprd11.prod.outlook.com (2603:10b6:510:1fc::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.16; Tue, 2 Jun 2026
+ 03:55:49 +0000
+Received: from IA1PR11MB6241.namprd11.prod.outlook.com
+ ([fe80::7ac8:884c:5d56:9919]) by IA1PR11MB6241.namprd11.prod.outlook.com
+ ([fe80::7ac8:884c:5d56:9919%5]) with mapi id 15.21.0071.014; Tue, 2 Jun 2026
+ 03:55:49 +0000
+From: "Rinitha, SX" <sx.rinitha@intel.com>
+To: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>
+CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>, "Loktionov, Aleksandr"
+	<aleksandr.loktionov@intel.com>
+Subject: RE: [Intel-wired-lan] [PATCH iwl-next v2 2/4] i40e: pass the return
+ value of skb_checksum_help()
+Thread-Topic: [Intel-wired-lan] [PATCH iwl-next v2 2/4] i40e: pass the return
+ value of skb_checksum_help()
+Thread-Index: AQHc4fIgd9ineLDvJEK9/TbKyt3hX7YqwxSw
+Date: Tue, 2 Jun 2026 03:55:49 +0000
+Message-ID: <IA1PR11MB62416C926128714C40F8FDC88B122@IA1PR11MB6241.namprd11.prod.outlook.com>
+References: <20260512084729.1338557-1-michal.swiatkowski@linux.intel.com>
+ <20260512084729.1338557-3-michal.swiatkowski@linux.intel.com>
+In-Reply-To: <20260512084729.1338557-3-michal.swiatkowski@linux.intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: IA1PR11MB6241:EE_|PH7PR11MB6332:EE_
+x-ms-office365-filtering-correlation-id: 38b03c53-a425-4d0b-e6eb-08dec05ad5ae
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|366016|376014|18002099003|22082099003|4143699003|11063799006|56012099006|38070700021;
+x-microsoft-antispam-message-info: zi09wljJw22oNjEXmKMtTwROZiKlOC8tp5aTr8ChEY7xJlcOBfxayM8A21duyI9rP/lldzG49bVHR6Jkkz2TCypJTX2nJ/dhIOQs15YPny22/i5OnpGJLbCsBf/x2CspxDDkIG+ZAKeGjL+whoYMPH+GB72OTzY1G3UnEs+CH1oaD9LwkGMXtniFLTju5tbQ7TTyentCTXqlGNaAMeHGMLK6niRoZ31JhyEgkYrIDJRnuRM03VKbnD65S7iiEg4PXlEBx0sLRBALX5X9+rgpIvvhiUbmhvolwUSNl7ghladIDaXj5F9Hs/Y/xJSKo1gjj4XtuBSDxImsm5YlcvKyI+RmfReY4T1jM7Jn+IaU4fZZUg038KjgF0iWL6KsckJ3k6dP568ecpBV+69w//xaPXGLjNah9oUIttlSf7BB1TyrTjyh5TJB3pxjdJmGLDzXYITtqT5PZVUVJASsGw0CEg7kGn/iYDzUFFZi7HKQl8/uiBfEXHlN41EktXsqMVQWw7VndmTVxRwS1SgEtNYbiWrrCqLsQoOdB9vhkmuXXkqbyiuYTQxis3lruYzthjyS+QMKZNWe7b2oG9HShA4fRyFa1dTHMOUDPFrz0nnu2qDgr6/j7QywyAn+BFOJbqQtNU4Lqy1wkQSAvWfKaETOkibXrRR6cA5r6xefrBJHioDdr0vzg3iRidj8aQ2KCpysapRN9uBky9BgQ1yZ+igr1ep/xlBswLkuc6VLFA0Axyw=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA1PR11MB6241.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(18002099003)(22082099003)(4143699003)(11063799006)(56012099006)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?zRyaAv3m7pCFBaKada6f4sPKrNDbQjZzcOxJYEFYDR2MTJg3jRDNkrPbippk?=
+ =?us-ascii?Q?dDLFEsDFTdkN3gYKtqxj5dH4NLnvljO4Hpxs6OweYuIwFHCW2mKjFxlpgL+q?=
+ =?us-ascii?Q?nqgGnQO4bQXgE9EBJN/yk4wx4pw9XUtYFnuJyQd0sPZsrH3LmMAUpgmJfVl1?=
+ =?us-ascii?Q?PPUn9fuxr9SOy616CHZrPhQsAe8JhSrBasVTsr8r1pNOlJDG67BG2AfPD2dx?=
+ =?us-ascii?Q?Mv5L36n6V/xOhK2f2Zc/14l6kC3SFzCQDJhjQHwQ+jST7jIaPUjbwWZmnNUa?=
+ =?us-ascii?Q?IVKe3VU47Grq679ewWJDPbxsmW2M1I3Se1nPlWHAjsWOzUe8UQYWmWCu0MFr?=
+ =?us-ascii?Q?gPxxZy4nYbLhGmQ0AB0bKmhOSLNR++COUtCBXonL7OBTayeX1HXSF3r9DJsK?=
+ =?us-ascii?Q?JV8MUluLFDE2fSo6jkrzwqx+xOWdQAlBXHqauSqMdaZ3GeW8JdVGHhx4QBKU?=
+ =?us-ascii?Q?SIxca2o/poPrck2NwEN5HsYUp5fJziRgfyHbnXCsDhtbVZ6EqV6EWg9x7sfN?=
+ =?us-ascii?Q?pufZpggw3NnSX5XQxASPyPQH0GbDAAOvJ8SrPFazxJASLlL8buRY9WoX2SVF?=
+ =?us-ascii?Q?7cImB4MgWmT7MZI3zP1bGw2oEkZblNz10ojCE5HqSorh5eXtyEDDtNCVLZiA?=
+ =?us-ascii?Q?uodzruWuAwXg9B5hR8Hl/RTmkB3xa4pHREkQ09fuOgymjQLsEUn/+rjOud5x?=
+ =?us-ascii?Q?GgVcwpZEg/vgdf5yiyNkJlk83pJjF7vnCcFsiK9eQne14Ty6V5yzGFyX/BB6?=
+ =?us-ascii?Q?qlpT75MdWLGe2RY23V5d10bQJlM8MuzdZB7vNndRiePkuAlh3DkqEeTBC7Sh?=
+ =?us-ascii?Q?CXlZhoFlowNqqUwGa4Db6UOsLkVB+fqW+g8r+Tx6jZkr6d0mcgMjL9LHq5Ic?=
+ =?us-ascii?Q?80XJt6/pJ2Qf7ScEo8MuJgJCNFfT6fe7Wbc5Y/nWb6UlAcjLGDTBNvYCGsYM?=
+ =?us-ascii?Q?bN3kGv9ORO08DdG41bwh44RyDk8QEU85tyJmu47t/7wfDaE5/NOhaxwF9/Tj?=
+ =?us-ascii?Q?or9WIgTcqnAJ7Z0jYopZZJWg1p6YUuz/7+9uz7CmDcuG4aaG0aztdrUfJz2c?=
+ =?us-ascii?Q?ScgveqiEGJCXUk0VfpdXd8/VzvAhpEaG6MyKF7jE+s2pTiUjO6tntxO9QYOl?=
+ =?us-ascii?Q?Gk6KgshOgExoMbfgZJDBJZnkvmv5gyckn6bVLZ+skxdMKynykWE7pwe/kYF1?=
+ =?us-ascii?Q?W1RA5UU0Wd3WocZZ9LoxBdXib1MWaYGg4nM5BC517RLS8I6Dh5CnspN4yy+E?=
+ =?us-ascii?Q?ArfMW0P2wcv7vQfkR7JYlm12gUWiN0DByJSXVvQiRUPiDgst1W6jFEQ2eO54?=
+ =?us-ascii?Q?/mma9z+Mp7PCCIunp5/wYNeeSUXse5lN+fDA/flsb3RKt+4MnA2u9u5sstnv?=
+ =?us-ascii?Q?N1omAq0jrUOGtNDWLFgxPO7hMqzYMyX71UK6ZQrrmfNTeQnnhJlB/Lgarc2t?=
+ =?us-ascii?Q?Z7HbOFqyi6g3DlToAG6VEmFs6rc9zwTGZjZQQUdA+UDcMMm5e5vkj2OhUA5N?=
+ =?us-ascii?Q?bJVk01wAlQVVmUiYa3wy9/fh/3MvscqTsIMVRQ8hy7Wrdbakb7UT+8kqt1fr?=
+ =?us-ascii?Q?4x+qp/XMuLeUwZ2Ww6HTBb2a6bYH4FVCqS6dlE6H6uBvtnxSJPB6Y/YlMIbv?=
+ =?us-ascii?Q?sYMYSW05oytEvSDP2Xu4Yh9E65G6uFj7lAJ+eY2J0GcJaU/4KT7kc6DImXlw?=
+ =?us-ascii?Q?LSzm1BlrFZ4LHFJJ8iCKMVbUnSLUKuvNsN1Zb5IBNCNcEg2i?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260601091816.444738-1-edumazet@google.com>
+X-Exchange-RoutingPolicyChecked: czyuuep/7EQEKSUXGrUNdkjctWchH+WV64WKUUb2wrAZub8PKC8Ry18I85Lm/DrU/pKjrrpUwvTnAtyIggwZyfMl0MLb2mZxRzhdf8Ty3yEQyM2OTQ2/nHYqtIK+kjisgzmV9GVVkGrwqGoTVrD5xryEYQUkp6b0cUTQWRnq1aUS5IELA9w8I5/7kK42vOcXS7nCyfG38C2a1y+91T23G34I0yZItiAvUkuyN7FXwJaqOZ8Ch3NYMu9lyDiOjj28FuCPeKjy6Sloj+VInUC1OYUl4KDUs5a/R+qGq/v0kDsdN6hn47qeixtd50YdU7HSuOopdQhyBpZaGZ8nP3TI2Q==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: IA1PR11MB6241.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 38b03c53-a425-4d0b-e6eb-08dec05ad5ae
+X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Jun 2026 03:55:49.7338
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: ssaIbOs2KenzUUorK+A/YXeRZExOOXtc2OP2OtgNmE5tpJXP/uCi4iw+I6y8+dGXHVkgn86TLmHM1qboTo1tpg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB6332
+X-OriginatorOrg: intel.com
 
-Hi Eric,
+> -----Original Message-----
+> From: Intel-wired-lan <intel-wired-lan-bounces@osuosl.org> On Behalf Of M=
+ichal Swiatkowski
+> Sent: 12 May 2026 14:17
+> To: intel-wired-lan@lists.osuosl.org
+> Cc: netdev@vger.kernel.org; Michal Swiatkowski <michal.swiatkowski@linux.=
+intel.com>; Loktionov, Aleksandr <aleksandr.loktionov@intel.com>
+> Subject: [Intel-wired-lan] [PATCH iwl-next v2 2/4] i40e: pass the return =
+value of skb_checksum_help()
+>
+> skb_checksum_help() can fail. Pass its return value back to the caller.
+>
+> Commonize this software path in goto.
+>
+> Try calculating in software instead of returning error.
+>
+> Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+> Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+> ---
+> drivers/net/ethernet/intel/i40e/i40e_txrx.c | 18 ++++++++----------
+> 1 file changed, 8 insertions(+), 10 deletions(-)
+>
 
-kernel test robot noticed the following build warnings:
-
-[auto build test WARNING on net-next/main]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Eric-Dumazet/mptcp-change-mptcp_established_options-to-return-opt_size/20260601-174435
-base:   net-next/main
-patch link:    https://lore.kernel.org/r/20260601091816.444738-1-edumazet%40google.com
-patch subject: [PATCH net-next] mptcp: change mptcp_established_options() to return opt_size
-config: nios2-defconfig (https://download.01.org/0day-ci/archive/20260602/202606021113.tfn0OswA-lkp@intel.com/config)
-compiler: nios2-linux-gcc (GCC) 11.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260602/202606021113.tfn0OswA-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202606021113.tfn0OswA-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
-   net/ipv4/tcp_output.c: In function 'tcp_established_options':
->> net/ipv4/tcp_output.c:1186:63: warning: passing argument 3 of 'mptcp_established_options' makes pointer from integer without a cast [-Wint-conversion]
-    1186 |                 opt_size = mptcp_established_options(sk, skb, remaining,
-         |                                                               ^~~~~~~~~
-         |                                                               |
-         |                                                               unsigned int
-   In file included from include/net/tcp.h:44,
-                    from net/ipv4/tcp_output.c:40:
-   include/net/mptcp.h:271:59: note: expected 'unsigned int *' but argument is of type 'unsigned int'
-     271 |                                             unsigned int *size,
-         |                                             ~~~~~~~~~~~~~~^~~~
->> net/ipv4/tcp_output.c:1187:54: warning: passing argument 4 of 'mptcp_established_options' makes integer from pointer without a cast [-Wint-conversion]
-    1187 |                                                      &opts->mptcp);
-         |                                                      ^~~~~~~~~~~~
-         |                                                      |
-         |                                                      struct mptcp_out_options *
-   In file included from include/net/tcp.h:44,
-                    from net/ipv4/tcp_output.c:40:
-   include/net/mptcp.h:272:58: note: expected 'unsigned int' but argument is of type 'struct mptcp_out_options *'
-     272 |                                             unsigned int remaining,
-         |                                             ~~~~~~~~~~~~~^~~~~~~~~
-   net/ipv4/tcp_output.c:1186:28: error: too few arguments to function 'mptcp_established_options'
-    1186 |                 opt_size = mptcp_established_options(sk, skb, remaining,
-         |                            ^~~~~~~~~~~~~~~~~~~~~~~~~
-   In file included from include/net/tcp.h:44,
-                    from net/ipv4/tcp_output.c:40:
-   include/net/mptcp.h:269:19: note: declared here
-     269 | static inline int mptcp_established_options(struct sock *sk,
-         |                   ^~~~~~~~~~~~~~~~~~~~~~~~~
-
-
-vim +/mptcp_established_options +1186 net/ipv4/tcp_output.c
-
-  1145	
-  1146	/* Compute TCP options for ESTABLISHED sockets. This is not the
-  1147	 * final wire format yet.
-  1148	 */
-  1149	static unsigned int tcp_established_options(struct sock *sk, struct sk_buff *skb,
-  1150						struct tcp_out_options *opts,
-  1151						struct tcp_key *key)
-  1152	{
-  1153		struct tcp_sock *tp = tcp_sk(sk);
-  1154		unsigned int size = 0;
-  1155		unsigned int eff_sacks;
-  1156	
-  1157		opts->options = 0;
-  1158	
-  1159		/* Better than switch (key.type) as it has static branches */
-  1160		if (tcp_key_is_md5(key)) {
-  1161			opts->options |= OPTION_MD5;
-  1162			size += TCPOLEN_MD5SIG_ALIGNED;
-  1163		} else if (tcp_key_is_ao(key)) {
-  1164			opts->options |= OPTION_AO;
-  1165			size += tcp_ao_len_aligned(key->ao_key);
-  1166		}
-  1167	
-  1168		if (likely(tp->rx_opt.tstamp_ok)) {
-  1169			opts->options |= OPTION_TS;
-  1170			opts->tsval = skb ? tcp_skb_timestamp_ts(tp->tcp_usec_ts, skb) +
-  1171					tp->tsoffset : 0;
-  1172			opts->tsecr = tp->rx_opt.ts_recent;
-  1173			size += TCPOLEN_TSTAMP_ALIGNED;
-  1174		}
-  1175	
-  1176		/* MPTCP options have precedence over SACK for the limited TCP
-  1177		 * option space because a MPTCP connection would be forced to
-  1178		 * fall back to regular TCP if a required multipath option is
-  1179		 * missing. SACK still gets a chance to use whatever space is
-  1180		 * left.
-  1181		 */
-  1182		if (sk_is_mptcp(sk)) {
-  1183			unsigned int remaining = MAX_TCP_OPTION_SPACE - size;
-  1184			int opt_size;
-  1185	
-> 1186			opt_size = mptcp_established_options(sk, skb, remaining,
-> 1187							     &opts->mptcp);
-  1188			if (opt_size >= 0) {
-  1189				opts->options |= OPTION_MPTCP;
-  1190				size += opt_size;
-  1191			}
-  1192		}
-  1193	
-  1194		eff_sacks = tp->rx_opt.num_sacks + tp->rx_opt.dsack;
-  1195		if (unlikely(eff_sacks)) {
-  1196			const unsigned int remaining = MAX_TCP_OPTION_SPACE - size;
-  1197			if (likely(remaining >= TCPOLEN_SACK_BASE_ALIGNED +
-  1198						TCPOLEN_SACK_PERBLOCK)) {
-  1199				opts->num_sack_blocks =
-  1200					min_t(unsigned int, eff_sacks,
-  1201					      (remaining - TCPOLEN_SACK_BASE_ALIGNED) /
-  1202					      TCPOLEN_SACK_PERBLOCK);
-  1203	
-  1204				size += TCPOLEN_SACK_BASE_ALIGNED +
-  1205					opts->num_sack_blocks * TCPOLEN_SACK_PERBLOCK;
-  1206			} else {
-  1207				opts->num_sack_blocks = 0;
-  1208			}
-  1209		} else {
-  1210			opts->num_sack_blocks = 0;
-  1211		}
-  1212	
-  1213		if (tcp_ecn_mode_accecn(tp)) {
-  1214			int ecn_opt = READ_ONCE(sock_net(sk)->ipv4.sysctl_tcp_ecn_option);
-  1215	
-  1216			if (ecn_opt && tp->saw_accecn_opt &&
-  1217			    (ecn_opt >= TCP_ACCECN_OPTION_PERSIST ||
-  1218			     !tcp_accecn_opt_fail_send(tp)) &&
-  1219			    (ecn_opt >= TCP_ACCECN_OPTION_FULL || tp->accecn_opt_demand ||
-  1220			     tcp_accecn_option_beacon_check(sk))) {
-  1221				opts->use_synack_ecn_bytes = 0;
-  1222				size += tcp_options_fit_accecn(opts, tp->accecn_minlen,
-  1223							       MAX_TCP_OPTION_SPACE - size);
-  1224			}
-  1225		}
-  1226	
-  1227		if (unlikely(BPF_SOCK_OPS_TEST_FLAG(tp,
-  1228						    BPF_SOCK_OPS_WRITE_HDR_OPT_CB_FLAG))) {
-  1229			unsigned int remaining = MAX_TCP_OPTION_SPACE - size;
-  1230	
-  1231			bpf_skops_hdr_opt_len(sk, skb, NULL, NULL, 0, opts, &remaining);
-  1232	
-  1233			size = MAX_TCP_OPTION_SPACE - remaining;
-  1234		}
-  1235	
-  1236		return size;
-  1237	}
-  1238	
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
