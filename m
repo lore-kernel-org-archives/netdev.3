@@ -1,163 +1,85 @@
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A329C39769A
-	for <netdev@vger.kernel.org>; Tue,  2 Jun 2026 21:38:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E812639769A;
+	Tue,  2 Jun 2026 21:40:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780436293; cv=none; b=M/BwQwzcUSWEz7tLE9SM8ZBN4ghXnQa+9y/PA1Vzz80HWeNJYXrNrjWnrv/M3T0RD6CLeKbPBrcYgWsBx/vbm0QvLwFb9s/dmfTxtlHdkse+TzTiAN2vv0oI4pgBsPagr56/8GAyTaJDVy8K1YONQu4IF1icU9yBFf6lkG7zWPE=
+	t=1780436407; cv=none; b=IkpDJQANdEBHDcvP2pV7ZActHKSfriMdBDMZlAL0MweN8i59VdEynP/um+AdLnMVGvuMPKoUZZdcJxyV9Kcxra3R3bnibh6tUlULNMCELA7UrqoYzqbjA0H4e0gN5Iqe/7FFyVZBmMnIK8FHNB+lXTnHQYm6nAGRAJRCWt4QxU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780436293; c=relaxed/simple;
-	bh=hftNYSMbSp1TuP7VpQO7lZ+O/m6etFx9lq2NRS3Ojp8=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SyApyPlyAq8omDz+IvyTRuhNQ0wDeGx8NL1l/r/3sqMkWkXjvsPz0oYgPzU7AFuiDfJziogScdyS46UYyFBh5yC3mKmFatOTg484e+WSCi/dbMxSnAmYawLdH5le4CUuaOxGEqRkVC4wO9PRiirN7DNNjSQ/VD2UfiPdnYnmzIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BVwjolxZ; arc=none smtp.client-ip=209.85.221.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1780436407; c=relaxed/simple;
+	bh=drRcfTEP6v34Qt21HTuSvDh9HgTn/mn5QSJ/Q7XAGiI=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=CnNpspO3oe7k/tVisKD/2R0Ft2iGJPrmNyWUU+PxtnFW8hbW8QLCqWa1HlGEa9durf/+zdm7KFhVaLGjFm/+Z8c/3TBLaJsQYVwKfG8M6T2ATFiQrd8QgZ70lwKHsQuAxDCn4ZC4D9AOgt9qkbe24C7Hy8FC+xmR2bQF8NDa8oY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kNmI7Uw7; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BVwjolxZ"
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-45ee6d32402so3215156f8f.1
-        for <netdev@vger.kernel.org>; Tue, 02 Jun 2026 14:38:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780436290; x=1781041090; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=g/ap9qia9JYLeOpELZTf6TGNRq7FqU62AdQC2ibLAXw=;
-        b=BVwjolxZVO3PX6BW0zSnxud2oCM4P1Dd/OsATphXdpG7ly5mkf1eu3ZG6nOOQwnGh4
-         vSa2It49zTfUXbv1exRMkgCBIgu6vbzFk85aTS4saZpYkpzHCskJyh2amkGMbx7pLkpr
-         WIhxg2FJP/09enWYHow4FvTSaSfNkcmkWhPd/WXCspzLO98psoEngYsKKdH+7OFu/UYr
-         N0WWsUn3lhfzl12C8MuLj8M960Nbw6tpP/4YMmNdvIPYJD7iheDtmXu88VDZa1wTlcSv
-         u5xczpYUMjIzRDJF/LJ4omsVEqxo4TfJvrlyoXl+eB2bWXO0l1ECCxn+uMhjEDy1rA26
-         wlzw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780436290; x=1781041090;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=g/ap9qia9JYLeOpELZTf6TGNRq7FqU62AdQC2ibLAXw=;
-        b=K8nOYgv9CpQU2IEwaRWBNJEpXEv1aYrUJpi9IvCq/im3xOMtxB+PnoHUQ9debt5JCk
-         GmFiYG9ilV3VfzNzDPELeYzjrK0kpLWzmLYu2GMGp1NL+QFFzMGhHrN5QFjAjMm1zNAI
-         R4cTjUqY6aSD7rB0gwLK7XqIs3nk3zXTIWXJArMWTjl/AEfeoTKV6Zbz0TWRv8BI3mwd
-         8SzJP228GRAoxPvK9PcOgakuGWZIXCKkG+rTYyLfmMWo6+g5m+nQieh8dY4HeYB8Sg0B
-         clzz/XHNlAs3JoSb8SEUoNFcRbcm/b2/zJ3S+HgnXbcQRh1Bj8TXkdzMmePV0/SL+i4Q
-         z1gA==
-X-Forwarded-Encrypted: i=1; AFNElJ8vbbiG2vuar4zWU2IwaDLa4incF5TV3gmkZvEmvBRdacZpi57tHc0myI3p6Ny1eP3oUX3OfnU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw+X4nEbbijaUhBYjhH9BXdrrMN3aYf7FMYt02aQL+9uv+bveCt
-	1AmjxRgbAqKKilNETb7Q/miHXxegChpjsceboZut2QPdQRGiU97suyYZ
-X-Gm-Gg: Acq92OHhgg9b0vv0BG+uSAz2fksQF1nEXAzC0Vy/jhv0g75hdoAZrMct+sMAjCKt3gL
-	dvHFayXwJt3DfqUZYP7WS78aPnPmWqsTASfvTXqOgyfvZpgo5qRjIhx3AO9JAGdjtmI0PYI8IXb
-	WAXtnjDtUas9ln3d/h4ep1NoXp8jTywSP/e+owD9ZF+r24a32R/YZ/rc/Uw2vzlugT4b2lyCFIq
-	nXfKNh/sdQtJuLEhVA7hbqf2NCLd1f9v5JxCoxmymq4cjZ6FMKwMRyVJLLyJC4o+5lm3xy8O37a
-	iWauKFlUp7oJahfLzT5G2+zx1oP3Pui73DqeBTSxjLLcf4RnA5bJT8Tvx/2AS1b+umZ27SyPYff
-	QfoHOIGdavk9SWjHM61Emm/AdRmm9LGUyxVb0p1iiBYQ/IqbPVVYO+Ih85Ua3RagYTQdLxKAsUo
-	kxOYtTGwYa/+v1rmxAPsNm3cbdgNFsrUniLLkouMPN3eDDyjwQpfkJ7WtXJuXn416cNXj18Uw=
-X-Received: by 2002:a05:6000:2905:b0:460:ff2:63e5 with SMTP id ffacd0b85a97d-4602181e60fmr331877f8f.18.1780436289783;
-        Tue, 02 Jun 2026 14:38:09 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4601f3529e0sm2333502f8f.28.2026.06.02.14.38.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 Jun 2026 14:38:09 -0700 (PDT)
-Date: Tue, 2 Jun 2026 22:38:07 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, Piergiorgio Beruto
- <Pier.Beruto@onsemi.com>, "parthiban.veerasooran@microchip.com"
- <parthiban.veerasooran@microchip.com>, "andrew+netdev@lunn.ch"
- <andrew+netdev@lunn.ch>, "davem@davemloft.net" <davem@davemloft.net>,
- "edumazet@google.com" <edumazet@google.com>, "kuba@kernel.org"
- <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net-next v3 08/14] net: ethernet: oa_tc6: Remove FCS
- size in RX frame
-Message-ID: <20260602223807.1ac76456@pumpkin>
-In-Reply-To: <CY8PR02MB9249B26D4B4344064A582A3C83122@CY8PR02MB9249.namprd02.prod.outlook.com>
-References: <CY8PR02MB9249644F900471DB8417134683162@CY8PR02MB9249.namprd02.prod.outlook.com>
-	<cf87ad90-6ba4-4132-a1eb-beedd796c168@lunn.ch>
-	<20260602150712.5b28d58b@pumpkin>
-	<CY8PR02MB9249B26D4B4344064A582A3C83122@CY8PR02MB9249.namprd02.prod.outlook.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kNmI7Uw7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 893451F00893;
+	Tue,  2 Jun 2026 21:40:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780436405;
+	bh=2TcMdj3gXVUNUWo+rvBAbp4z/UxTQFpKbJrWyXnZerc=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=kNmI7Uw7rTVEBzCtj32powMLa54ZBpbKQ8SSjgm6Xdu1JxOU9eRk8cd4jxhj7ee+T
+	 59sQHLse0VD13Rx547ZZVMip3mNBaSNflbaHsQBqXttFDb41ucNyj4yUZqZyKV/BJg
+	 Bq7eUWyI3weHXWFoChjKrfQqsRR5/cRRTiFxdLskdfVVJPQDdsAw9TTt7Fmv7MW4pb
+	 XNcigldGy6v4w62xTFrXgUubKWWZIfDvSZ+HJEIZ3bIcnNpGEEd2fyys6hWfooClMj
+	 8mdsqVn1TyI04WzD9W//rkvNncTh0xoRnPAbHcbFzyripMp3HeGJoDKs34KWv60bvS
+	 KUG456hlmd7dg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 938D73811A76;
+	Tue,  2 Jun 2026 21:40:08 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v3] net: fec: fix pinctrl default state restore order on
+ resume
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178043640715.1060922.6991366535769176295.git-patchwork-notify@kernel.org>
+Date: Tue, 02 Jun 2026 21:40:07 +0000
+References: 
+ <20260529-b4-fec-resume-pinctrl-order-v3-1-6eda0f592fca@vaisala.com>
+In-Reply-To: 
+ <20260529-b4-fec-resume-pinctrl-order-v3-1-6eda0f592fca@vaisala.com>
+To: Tapio Reijonen <tapio.reijonen@vaisala.com>
+Cc: wei.fang@nxp.com, frank.li@nxp.com, shenwei.wang@nxp.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, B38611@freescale.com,
+ imx@lists.linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 
-On Tue, 2 Jun 2026 15:37:06 +0000
-Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com> wrote:
+Hello:
 
-> > Subject: Re: [PATCH net-next v3 08/14] net: ethernet: oa_tc6: Remove FCS size in RX
-> > frame
-> > 
-> >   
-> [..]
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Fri, 29 May 2026 06:18:57 +0000 you wrote:
+> In fec_resume(), fec_enet_clk_enable() is called before
+> pinctrl_pm_select_default_state() in the non-WoL path, inverting the
+> ordering used in fec_suspend() which correctly switches to the sleep
+> pinctrl state before disabling clocks.
 > 
->  
-> > 
-> > More of a question is why request the MAC append the FCS at all.
-> > You can use it for error correction - but no one every does.
-> > (A 2k frame has 32-14=18 crc bits for each bit offset which means
-> > you have an 'average chance' of finding an 18bit error burst that
-> > will fix every crc error. If you find an 8bit burst error that matches
-> > the crc error there is a reasonable chance it is what caused the error.
-> > Single error bursts are the most likely errors and easy to locate.)  
+> For PHYs with the PHY_RST_AFTER_CLK_EN flag (e.g. TI DP83848 or
+> SMSC LAN87xx), fec_enet_clk_enable() triggers a hardware reset pulse
+> via the phy-reset GPIO. With the GPIO pin still in sleep pinctrl state
+> at that point, the GPIO write has no physical effect and the PHY never
+> receives the required reset after clock enable, leading to unreliable
+> link establishment after system resume.
 > 
-> My understanding is that in TX side, MAC will pad FCS automatically.
+> [...]
 
-TX pad is separate from the FCS.
-The frames are padded to a minimum size so that collision detect works
-on maximal length 10M coax segments.
-(Or rather coax+link+coax+link+coax acting as a single collision domain.)
-The same minimum frame length is used on modern networks which are all
-physically point-to-point and all 'hubs' are store+forward where a minimum
-packet length isn't strictly needed.
+Here is the summary with links:
+  - [v3] net: fec: fix pinctrl default state restore order on resume
+    https://git.kernel.org/netdev/net/c/b455410146bf
 
-VLAN headers can give unexpected amounts of padding - VLAN didn't exist
-when I was writing ethernet drivers! 
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-> RX side, MAC may or may not strip FCS
-> before passing to the host. I believe our MAC doesn't strip FCS in RX side.
-> 
-> Here is what OPEN Alliance 10BASE-T1x MAC-PHY Serial Interface specification says
-> 
-> 7.3 Data Transaction Protocol for Ethernet Frames 
-> [..]
-> Ethernet frames are typically transferred from the SPI host to the MAC-PHY without any padding or frame 
-> check sequence (FCS). The MAC will automatically pad the Ethernet frame to the minimum frame size of 64 
-> bytes and append a computed FCS
-> [..]
-> Similarly, the MAC-PHY will typically strip the FCS from received Ethernet frames prior to transfer to the SPI 
-> host. However, the Ethernet specification allows the option for the Ethernet frame to be transferred to the 
-> MAC client with the FCS.
-
-Is this an SPI interface to the ethernet MAC?
-You might want to pass the FCS over the SPI link and then verify in software
-before treating the frame as valid, deleting the FCS, and passing the frame to
-the protocol stack.
-This would give extra protection for errors on the SPI link that might not
-otherwise be detected.
-(Although if you distrust the SPI link you'd what to pass the TX FCS as well.)
-
-Unless you are doing IP checksum offload the IP checksum will pick up TCP/UDP errors.
-
-But if you are running ISO transport (which we did 30 years ago) there is
-no other checksum. So if/when you have a VMEbus card that suffers ground
-bounce when, for example, passing a repeated 0xff, 0xff, 0x00 sequence you
-get corrupted files from any files transfer request.
-
--- David
-
-> 
-> 
-> > 
-> > -- David
-> >   
-> > >
-> > > Andrew
-> > >  
-> 
 
