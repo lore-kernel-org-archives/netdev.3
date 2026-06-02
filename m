@@ -1,174 +1,103 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE0903C5DCD
-	for <netdev@vger.kernel.org>; Tue,  2 Jun 2026 22:41:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40DDA3BCD39
+	for <netdev@vger.kernel.org>; Tue,  2 Jun 2026 22:41:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780440106; cv=none; b=VYp6RmHHOUMyi/IPdOWhpYwA1/7yOqqeff60I6BOAL24TW5RKfxN5n3aspAS354PeIKNGjF19Lg08enYjsp4Xk3e101prqbB2OCVRs72FRfn9xDNbvKUoQoNhfxqAfUzNIZwNmQNyOJkhZ2U1WE6hrkFhvlTB5UTr/PWxswcmZ0=
+	t=1780440118; cv=none; b=WZRDFHyBPZAIdIqlhmhJBf8q9kIqDUzlT1BfGVF08GFvfYRvzw2rp1UdU4/ZGFVYP9sEkMkHdlZ61TJ5eIXYtKqY+DmMjHzY/C/kmQJmXsNm9fQ5SwLBvE69BD5vmVmHbuPp8gwGDtrUDPmlihzVaQXY0+SzzodMwuo1zprMXjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780440106; c=relaxed/simple;
-	bh=sbjnbD6ERB+J0p+IG7/cOkT8z0ehA1CaN9y0MYeGsA4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fX4J1RfBLujJaf09OsfejCsHX3KxVHA25hAPMcMuCACkj3k/LJVfNDpse4wix7aAY+CCM58PxPIaVZzkdAmBk+MLpK1HaJyqVLW1JzOv2bLKotuNahdQLZvC0NBKg79yHU/f4Tknj+1Md8Ax4B41dyCaUZlyeplsA2/YHWYk0xI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=kkmq6f9i; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=e8gJMoYO; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=kkmq6f9i; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=e8gJMoYO; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1780440118; c=relaxed/simple;
+	bh=wlvyAn0FFsjuVYzTWjyCFdrg+h7jI7ByrF28sephigI=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=InkDyhyUheryPEqeicG7ZgUBGwgc0gsOlyaRSJCgJ+QUPe0ZYBHJT85xcMRfd7n8y+/U80I61UD2TcGRRrYhh3W75jm3uNAB6GjrUtwNMoWxhVqgzfYOSahfezjYTBrr+wyFhFn9QGlWGXExOi1w7nCygpNkT7nk1vbW07hpCOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jfR0ZFIi; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="kkmq6f9i";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="e8gJMoYO";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="kkmq6f9i";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="e8gJMoYO"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 266236A8A7;
-	Tue,  2 Jun 2026 22:41:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1780440103; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=z4sAf9CWdWRBvdOC/VGUxmfAjIcDMPecq5z6keRuBsA=;
-	b=kkmq6f9ix4swGXyI4aIvlOQLaRMo0MKVHP3WZluLcWY353S0mj+eBxx2i2GLMdV+G2nwUp
-	DWhx+D/Vb5I46792pYDwOAqnjBt2cwOwdzUEhtD4QENdlGwfkfHMCpR0lnDXia84H/lgFG
-	t9VDMQqZX3R5apQ5/iHUPKzmN7eLI90=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1780440103;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=z4sAf9CWdWRBvdOC/VGUxmfAjIcDMPecq5z6keRuBsA=;
-	b=e8gJMoYOEr/U8OOqmLZ51N4lmMQG8SgKb1tCa5m4kViL8ToOpbb/JNnx+hBTISHjRkglpe
-	0Pivw3kxEVYE6kBw==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1780440103; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=z4sAf9CWdWRBvdOC/VGUxmfAjIcDMPecq5z6keRuBsA=;
-	b=kkmq6f9ix4swGXyI4aIvlOQLaRMo0MKVHP3WZluLcWY353S0mj+eBxx2i2GLMdV+G2nwUp
-	DWhx+D/Vb5I46792pYDwOAqnjBt2cwOwdzUEhtD4QENdlGwfkfHMCpR0lnDXia84H/lgFG
-	t9VDMQqZX3R5apQ5/iHUPKzmN7eLI90=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1780440103;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=z4sAf9CWdWRBvdOC/VGUxmfAjIcDMPecq5z6keRuBsA=;
-	b=e8gJMoYOEr/U8OOqmLZ51N4lmMQG8SgKb1tCa5m4kViL8ToOpbb/JNnx+hBTISHjRkglpe
-	0Pivw3kxEVYE6kBw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D8A4C779A7;
-	Tue,  2 Jun 2026 22:41:41 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id Pw7/MCVcH2o1QwAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Tue, 02 Jun 2026 22:41:41 +0000
-Date: Tue, 2 Jun 2026 23:41:40 +0100
-From: Pedro Falcato <pfalcato@suse.de>
-To: Linus Torvalds <torvalds@linux-foundation.org>, 
-	Askar Safin <safinaskar@gmail.com>
-Cc: akpm@linux-foundation.org, axboe@kernel.dk, brauner@kernel.org, 
-	david@kernel.org, dhowells@redhat.com, hch@infradead.org, jack@suse.cz, 
-	linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, miklos@szeredi.hu, netdev@vger.kernel.org, 
-	patches@lists.linux.dev, viro@zeniv.linux.org.uk, willy@infradead.org
-Subject: Re: [PATCH 0/3] vmsplice: make vmsplice a trivial wrapper for
- preadv2/pwritev2
-Message-ID: <ah9Yle5pd6mD9Ugr@pedro-suse.lan>
-References: <ahv16ogY8Zx3Rtox@pedro-suse.lan>
- <20260602211242.13870-1-safinaskar@gmail.com>
- <ah9LaPQayJ6tBE53@pedro-suse.lan>
- <CAHk-=wiAqf0PdZ4AKj_4riUnnEb=g_ZNPkLnXrByA9BBHYiFRg@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jfR0ZFIi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E6751F00893;
+	Tue,  2 Jun 2026 22:41:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780440117;
+	bh=EQ6xFPgJyBVnCO7NVWSGX+1jlV4I7jA0Mtur9xHw6go=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=jfR0ZFIisq9Woxa/pXZmuAZHQHODdJqBttSKN75VjaLiWT5SUJrpOdtUspMYeoAyN
+	 p1KDod8Nyd9vZ+sIxRbtbAoPkkELNYyg+1Aoe0SwUnnrDzY0lLKLhXKwaBKNMnVqOg
+	 PiT2EfYTFsex0Ac2rk6BNF6CZcbSf/Z/gBt0H5gQmn21q/9fyauCeFxS4J2Q6HjSBp
+	 sboPqmjimgkW07zNAhFeOyNNW1aSNJV2+miY4+vLzrK/VjpUE9/hXWSKyboc05DdGL
+	 8ZyiYZk/EiU5nlMFOqSDQ47r9/sfV0kAlXOd/JTegqq80F7NuPdB6E3DaiPx1WcQLA
+	 jpfOc5p/Lk+Pw==
+Date: Tue, 2 Jun 2026 15:41:55 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Jakub Sitnicki <jakub@cloudflare.com>
+Cc: Nicolai Buchwitz <nb@tipi-net.de>, davem@davemloft.net,
+ netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com,
+ andrew+netdev@lunn.ch, horms@kernel.org, michael.chan@broadcom.com,
+ joshwash@google.com, tariqt@nvidia.com, haiyangz@microsoft.com,
+ linux@armlinux.org.uk, maxime.chevallier@bootlin.com, willemb@google.com,
+ ernis@linux.microsoft.com, sdf.kernel@gmail.com, kory.maincent@bootlin.com,
+ danieller@nvidia.com, idosch@nvidia.com
+Subject: Re: [PATCH net-next 02/14] net: ethtool: make sure
+ __ethtool_get_link_ksettings() is ops-locked
+Message-ID: <20260602154155.09eb2658@kernel.org>
+In-Reply-To: <874ijl5g56.fsf@cloudflare.com>
+References: <20260528231637.251822-1-kuba@kernel.org>
+	<20260528231637.251822-3-kuba@kernel.org>
+	<878q8x5mip.fsf@cloudflare.com>
+	<34fad14a092e28c3512f2405f0869133@tipi-net.de>
+	<874ijl5g56.fsf@cloudflare.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAHk-=wiAqf0PdZ4AKj_4riUnnEb=g_ZNPkLnXrByA9BBHYiFRg@mail.gmail.com>
-X-Spam-Flag: NO
-X-Spamd-Result: default: False [-4.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-0.999];
-	MIME_GOOD(-0.10)[text/plain];
-	MISSING_XM_UA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	ARC_NA(0.00)[];
-	FREEMAIL_TO(0.00)[linux-foundation.org,gmail.com];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:email]
-X-Spam-Level: 
-X-Spam-Score: -4.30
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Tue, Jun 02, 2026 at 03:06:07PM -0700, Linus Torvalds wrote:
-> On Tue, 2 Jun 2026 at 14:37, Pedro Falcato <pfalcato@suse.de> wrote:
+On Tue, 02 Jun 2026 13:35:33 +0200 Jakub Sitnicki wrote:
+> On Tue, Jun 02, 2026 at 01:20 PM +02, Nicolai Buchwitz wrote:
+> >> Not sure why we're using the "compat" assertion here, which falls back
+> >> to check if RTNL is held, instead of the newly introduced
+> >> netdev_assert_locked_if_ops().
+> >> The contract here is that all callers are expected to hold the
+> >> netdev lock (if needed), IIUC.
+> >> [...]  
 > >
-> > Well, that's most definitely part of my patch. Also, you cannot outright
-> > remove splice() functionality
+> > AFAIU that's on purpose: the original helper had ASSERT_RTNL(), and
+> > legacy callers still enter with rtnl_lock via the wrapper. _if_ops
+> > would silently pass for them if rtnl ever went missing.  
 > 
-> That isn't what Askar's patch ever did.
+> But the legacy callers continue using __ethtool_get_link_ksettings(),
+> which has an explicit ASSERT_RTNL(), so I still don't get it:
 > 
-> You apparently didn't even read it.
- 
-Well, I was replying to Askar's new idea to remove pagecache-to-pipe splice,
-which is what he suggested. And directly intersects with my sysctl-to-disable-splice
-patch.
+> | +/* Convenience helper for callers that hold only rtnl_lock(). */
+> | +int __ethtool_get_link_ksettings(struct net_device *dev,
+> | +				 struct ethtool_link_ksettings *link_ksettings)
+> | +{
+> | +	int ret;
+> | +
+> | +	ASSERT_RTNL();
+> | +
+> | +	netdev_lock_ops(dev);
+> | +	ret = ethtool_get_link_ksettings_locked(dev, link_ksettings);
+> | +	netdev_unlock_ops(dev);
+> | +	return ret;
+> | +}
+> |  EXPORT_SYMBOL(__ethtool_get_link_ksettings);
+> 
+> Anyway, no sense speculating. Let's wait for Jakub.
 
-> Honestly, I think you are the one out of line here.
-> 
-> Askar did something I suggested years ago, and didn't remove any functionality.
-> 
-> It just changes vmsplice to be a copying model (one of the directions
-> already was). It doesn't change regular splice at all.
-> 
-> And yes, it has the potential to be a visible behavior difference - if
-> some insane user uses vmsplice and then modifies the buffer
-> *afterwards*, then that would be semantically different between a
-> zero-copy and a normal copy.
-> 
-> But that would be insane behavior, and was never really reliable
-> anyway even with zero-copy (ie subsequent writes to user space buffers
-> would potentially do COW breaking based purely on timing and memory
-> pressure etc, so anybody who relied on it being visible wasn't goign
-> to get it realiably anyway)
-> 
-> Perhaps more importantly, it has the potential to change performance -
-> zero-copy *can* be a performance win, although typically it really
-> doesn't tend to be (looking up the page mapping is often slower than
-> copying).
-> 
-> I would expect it to be very clear in trivial benchmarks that aren't
-> actually real loads. And probably not visible anywhere else.
+You're right, I probably didn't use the .._if_ops.. because the
+spelling was kinda unusual. Looking at my local tree now I seem
+to have switched to the _compat helper like you are suggesting
+when renaming things.
 
-Yes, vmsplice() sucks, and we know it. Hopefully no one else will see the
-difference. I don't think we can say the same for splice(), though.
+I also renamed the new helper to netif_get_link_ksettings()
+since that's the naming scheme we followed elsewhere (the netif_ 
+prefix for helpers called with ops lock already held).
 
-> Trying to make it look like Askar is the problem is only making you look worse.
-
-To be clear, I don't think Askar is the (or a) problem. I'm glad he's
-contributing, and getting rid of bad kernel interfaces is always nice. I was
-just a little frustrated with a parallel splice-related-unscrew patch.
-
-(Askar, if I was too hostile, I do sincerely apologize.)
-
--- 
-Pedro
+I've been digging thru the drivers calling
+__ethtool_get_link_ksettings() since yesterday. Turns out I was quite
+optimistic on none of them holding the ops lock :( Hopefully I'm
+getting close to posting the first chunk of v2 (patches 1+2 from here
+plus all the driver adjustments needed).
