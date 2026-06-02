@@ -1,67 +1,89 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2D003CB8F0
-	for <netdev@vger.kernel.org>; Tue,  2 Jun 2026 22:55:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 828D13CA487
+	for <netdev@vger.kernel.org>; Tue,  2 Jun 2026 23:07:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780440925; cv=none; b=pft/FMacATAZToLOFEyRLN97xIJcfzmRQS8qfaVbogEwwoa3+j4/dOuegwSkenRPNbjdR0z0YtGt+WqYdhPQiHpIWXfcNIEeqnU/e4ZnnupDTMZnjHX3fZIaQHCHydlZGyOquhiKW9ATmgeNllXJ281qOMMErOUNqeEaBwY/SIA=
+	t=1780441669; cv=none; b=FHg7hC8vpOxIagIzYAdVpDObVPbOXIM+GuGTnM4KuoljT3eVjJbETk1VqpSno5Xq0ELeZFhwzkXiS1+V2ja+M5izD4HQiXm8AGWWxjkAB0gifbRXmYHspu0KsOiqB2M8B6BA86NzVopRO3LzeGX9+y7Ht+49Daa1JkVM+ej5J7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780440925; c=relaxed/simple;
-	bh=Ru4IidLwglPuNPr+zL+XSfk1VOshaLc68K+tJfKnWfI=;
+	s=arc-20240116; t=1780441669; c=relaxed/simple;
+	bh=5chq1ZYL6r9BXlem4E1EUr+5R5J1k5Q21LCWXDRISUM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gYXM3QFyeZzcyXijjNkRON14WA0heqFiQHpYk1obKaE/47AxuUNypVgUqOBf79oFaiPJoUnMzemfOvXZLwoLIX9l13D3dDhFFA+o53fXkEK83U/zHxJtxJUM2v/4b1zjrIMPIB42kg9cSb9EHeHdZEpVxbjRPYoYhLrrI7qcCt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PpJAeHav; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 MIME-Version; b=qCC1hOjqG+o756LTgjvfhjidXKpoK3F+uHJ0RqRPS/0nNySufaMSxksNj0pBiqwX2hqCn4uTQTQA68xKMP/sMc8hdpMO2ehrkd+PjtJJKhu7ltSe8KwnbL3ldE3Rdk+0rz7MUj5cq04qGsjsPTPM0bwrNtZ/2etcN/uvlTcAmBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=g0Qeljjj; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PpJAeHav"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1780440924; x=1811976924;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=Ru4IidLwglPuNPr+zL+XSfk1VOshaLc68K+tJfKnWfI=;
-  b=PpJAeHav/bEuiB7QL+/xWl9lrkimiKhAbkuyY8HhczFFHBSt5dpXT2XT
-   ApsxcmJc8FyylaTz49+39Z3P2zI9zALUVvw98KnZmz4apx5MK0kZ9y0Sd
-   K+ssv3VQoQXZSJRilBQjp2ByLKgFQiwqUbhP7fKshyYRzZh4zeuES5m4W
-   E9YKccYrof+epDLzlPe3ssLytyW62y5LtqELdJ1MFYtw2LgKp2z43OWe3
-   QoimHJfKuKo5U/QKuMGB22M1z0A0+I7nO32wJOnbk3g2deX7L5j59qsLR
-   VYqo4thQ/+r6J5G8WR/0eygetr8Ui7au4bBbugAPyJYGzHu/oCymu4S+d
-   g==;
-X-CSE-ConnectionGUID: 7MK85ZfZSxSYQMxIiZaLfQ==
-X-CSE-MsgGUID: v6EiISMjRKmmmtqjkx0teg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11805"; a="81421407"
-X-IronPort-AV: E=Sophos;i="6.24,184,1774335600"; 
-   d="scan'208";a="81421407"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jun 2026 15:55:21 -0700
-X-CSE-ConnectionGUID: hPnJ3kpQSwWfzbHuCuVKiQ==
-X-CSE-MsgGUID: GGv72299STSZFvIu0OTlNQ==
-X-ExtLoop1: 1
-Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
-  by fmviesa003.fm.intel.com with ESMTP; 02 Jun 2026 15:55:20 -0700
-From: Tony Nguyen <anthony.l.nguyen@intel.com>
-To: davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	andrew+netdev@lunn.ch,
-	netdev@vger.kernel.org
-Cc: Petr Oros <poros@redhat.com>,
-	anthony.l.nguyen@intel.com,
-	arkadiusz.kubalewski@intel.com,
-	przemyslaw.kitszel@intel.com,
-	horms@kernel.org,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Rinitha S <sx.rinitha@intel.com>
-Subject: [PATCH net 2/3] ice: fix missing priority callbacks for U.FL DPLL pins
-Date: Tue,  2 Jun 2026 15:55:10 -0700
-Message-ID: <20260602225513.393338-3-anthony.l.nguyen@intel.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20260602225513.393338-1-anthony.l.nguyen@intel.com>
-References: <20260602225513.393338-1-anthony.l.nguyen@intel.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="g0Qeljjj"
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-490b12270b3so9716275e9.1
+        for <netdev@vger.kernel.org>; Tue, 02 Jun 2026 16:07:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780441667; x=1781046467; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=IvSaS68IPr55Kp5FHpvrg0n0LohiEL0S8pivrepEpA4=;
+        b=g0QeljjjZVRfch0Tv562TmOzSOJBhL8ujFnNlpdXl0x1fHoxAC80hk5vUbqtI6keb5
+         dN6GvIY+/6KPLAPt+nptAK3fOIQGMUpyiPeAvndNg/+gozsMl1uKdb38DDTdyjz2CKsf
+         P1W6WDQZF1/0B1qBjQ30EqXE7aq0QK9VRgE1FpZeLD09Et0PvqXZGbFjWX/f7K8PBxMZ
+         EIMxvsA1XP0bqYi8v7JJpcE8boyJ7SburJV5nC8F1mvObatl+7o9H2Vgt4QQvh86SU5+
+         7JLkm69aetHtPhoqjFK62BEHOIb1aItevXjVcnkfBNLI1pVeaxZ2ImvNnqLeOl+s6fnr
+         KYBg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780441667; x=1781046467;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=IvSaS68IPr55Kp5FHpvrg0n0LohiEL0S8pivrepEpA4=;
+        b=q+IyU89MokUllRrvLlevhI7SZjAAIQX9NImShKq9SVDcgFgUsl5Ot4Nvt+sunPhz8j
+         cO6km/bwkYz0d3h/4JOC9OghKKj3MbRRSH9XkOPIKZAaEmE3wpZNuXGoOIGhyz1fkpWt
+         ouxxA1u91/NruVithWLsEjrbN4DtRSWFBCsNvfB39pp0EVtJUymK4Yifn1157tIHsnAO
+         wIECTcw8Hrc7IomIh3QqAgKO0OohdZZipow+dv7Tzvli8yBXiI8h+qbxBSqz0OsRvXH5
+         8ZQiycbMla1MClQkNuYNu6qUholfoJdprGSNQ52mmAqmDhupmOPVLKLwd/in/8wZRA43
+         2ABw==
+X-Forwarded-Encrypted: i=1; AFNElJ9hJfb+epOU4OVM3tQsCZiAkWeUZOBOnkf5VwJqueX0k27PmHewnmawb5Bi4Q1NuHrZKF2Dgpo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy1a1ukYxuenztT9N35Nuq6Hkp7bzA2LXbf2tONNpCVa60cWXLz
+	/vPMf6siGcMUvBO/hWlwHsPgzlKS7uxzxk3Hp9eXZ2WxhckJabBo3m1c
+X-Gm-Gg: Acq92OH6x2KoiZViojGqo/dkdGZHSaBA6rTBAQ7nBMQMJNnh4deZYJOaEmcXpsh0jfb
+	3kGlnDqzahpk0Kz3/CyYZ+mjozAK6RQ93MwWluMwaKhggPPdoB9M4VUos2Escn3fYCChoryNHp4
+	4xbSk9/4oV4qw9tyEkN2AmJQDcMVUm4MKBydPlcy3CsVYSkcnA0ZOahIdL4c7I498UOSD8LfH21
+	k8HtJ2Iazd4k1DO7jQ4eUqIubEcxYypmDAtThL2/OysUxOHyC7qkipzqSmVyLWa7BQ8SGyPcCz7
+	MNiZO8x/n1IkHryKcKCrANMQRrmsyNcUC5C/DmkHx0S6xpKKculv+opldUtZFnxy2pu6/U4owrK
+	Gmndq8iAVnPwlnkf/aNSePK+l9PxcOfKLwdD0rubVKDxRnYhTFje/mtXmx+faa3So2m5m+Vkazz
+	+rpKZoYjq/6lAWl3wIXiwfN6BG1gGbaJLku/tjqMLe
+X-Received: by 2002:a05:600c:698c:b0:490:44eb:c1e7 with SMTP id 5b1f17b1804b1-490b60fdd10mr11320095e9.30.1780441666946;
+        Tue, 02 Jun 2026 16:07:46 -0700 (PDT)
+Received: from localhost ([212.73.77.104])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-490b7a71bb7sm357295e9.10.2026.06.02.16.07.45
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 02 Jun 2026 16:07:46 -0700 (PDT)
+From: Askar Safin <safinaskar@gmail.com>
+To: pfalcato@suse.de
+Cc: akpm@linux-foundation.org,
+	axboe@kernel.dk,
+	brauner@kernel.org,
+	david@kernel.org,
+	dhowells@redhat.com,
+	hch@infradead.org,
+	jack@suse.cz,
+	linux-api@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	miklos@szeredi.hu,
+	netdev@vger.kernel.org,
+	patches@lists.linux.dev,
+	safinaskar@gmail.com,
+	torvalds@linux-foundation.org,
+	viro@zeniv.linux.org.uk,
+	willy@infradead.org
+Subject: Re: [PATCH 0/3] vmsplice: make vmsplice a trivial wrapper for preadv2/pwritev2
+Date: Wed,  3 Jun 2026 02:07:30 +0300
+Message-ID: <20260602230730.138904-1-safinaskar@gmail.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <ah9Yle5pd6mD9Ugr@pedro-suse.lan>
+References: <ah9Yle5pd6mD9Ugr@pedro-suse.lan>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -70,67 +92,10 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Petr Oros <poros@redhat.com>
+Pedro Falcato <pfalcato@suse.de>:
+> (Askar, if I was too hostile, I do sincerely apologize.)
 
-The U.FL2 input pin advertises DPLL_PIN_CAPABILITIES_PRIORITY_CAN_CHANGE
-in its capability mask, but ice_dpll_pin_ufl_ops does not provide
-.prio_get and .prio_set callbacks. As a result the DPLL subsystem
-cannot report or accept priority for U.FL pins: pin-get omits the prio
-field on U.FL2 and pin-set with prio is rejected as invalid, even
-though the capability is present. This prevents user space from using
-priority to select or disable U.FL2 as a DPLL input source.
+You did nothing wrong.
 
-Reproducer with iproute2 (dpll command):
-
-  # dpll pin show board-label U.FL2
-  pin id 16:
-    module-name ice
-    board-label U.FL2
-    type ext
-    capabilities priority-can-change|state-can-change
-    parent-device:
-      id 0 direction input state selectable phase-offset 0
-    /* note: no "prio" between "direction" and "state",
-       even though priority-can-change is advertised */
-
-  # dpll pin set id 16 parent-device 0 prio 5
-  RTNETLINK answers: Operation not supported
-
-After the fix the prio field is reported by pin show and pin set with
-prio is accepted on U.FL2.
-
-Add the missing .prio_get and .prio_set callbacks to
-ice_dpll_pin_ufl_ops, reusing ice_dpll_sw_input_prio_{get,set}. The
-same ops struct is shared by U.FL1 and U.FL2: U.FL2 (input) delegates
-to the backing hardware input pin, while U.FL1 (output) does not
-advertise DPLL_PIN_CAPABILITIES_PRIORITY_CAN_CHANGE so the dpll core
-capability gate never invokes prio_set for it, and prio_get reports
-the OUTPUT sentinel (ICE_DPLL_PIN_PRIO_OUTPUT) on the output side
-exactly like the SMA path does today.
-
-Fixes: 2dd5d03c77e2 ("ice: redesign dpll sma/u.fl pins control")
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Signed-off-by: Petr Oros <poros@redhat.com>
-Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
----
- drivers/net/ethernet/intel/ice/ice_dpll.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/net/ethernet/intel/ice/ice_dpll.c b/drivers/net/ethernet/intel/ice/ice_dpll.c
-index 892bc7c2e28b..0704e92ab043 100644
---- a/drivers/net/ethernet/intel/ice/ice_dpll.c
-+++ b/drivers/net/ethernet/intel/ice/ice_dpll.c
-@@ -2633,6 +2633,8 @@ static const struct dpll_pin_ops ice_dpll_pin_ufl_ops = {
- 	.state_on_dpll_set = ice_dpll_ufl_pin_state_set,
- 	.state_on_dpll_get = ice_dpll_sw_pin_state_get,
- 	.direction_get = ice_dpll_pin_sw_direction_get,
-+	.prio_get = ice_dpll_sw_input_prio_get,
-+	.prio_set = ice_dpll_sw_input_prio_set,
- 	.frequency_get = ice_dpll_sw_pin_frequency_get,
- 	.frequency_set = ice_dpll_sw_pin_frequency_set,
- 	.esync_set = ice_dpll_sw_esync_set,
 -- 
-2.47.1
-
+Askar Safin
