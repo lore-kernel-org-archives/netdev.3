@@ -1,182 +1,115 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E69963DFC62;
-	Tue,  2 Jun 2026 12:15:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3EA93E639E;
+	Tue,  2 Jun 2026 12:15:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780402512; cv=none; b=NkU5mQw9/bIA16jSmNsMHSsQIeo+n9TEmyCWffvq94///HL+mj5Pog8dY7D43cpeoAt7FoLOqifE9Yqw7xZg46q+bIMI2wlD1Z1JbW6BYtDLTIhA7D4v5VROIXN5f6pFoISpqknViltJ73IDMXOPGS79e/yopoPvFiwU7TLNGTU=
+	t=1780402516; cv=none; b=kgx7RyWTuDUZTEoHRRxfIiUmnqTWRSG2wANeqCu402qhqYiVIDnBGndblcDR5o7ggi07PrOyIgvJeVoVvhjrxDyAkecnRMxyH3YUseVeHR4tDgyBma4qGMpL9Z71ZpQ3QF8smTpg9wdXquZLbLE0DLJYmIpyuvMnYGz16ShOUZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780402512; c=relaxed/simple;
-	bh=6KF++XzefhueQyLOPn3gJeJCmRPm99sYnZ3vgRDEz5Q=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LjgJRYxlwaSa4Thvs9LEp4CTqQAYIgtBvOWU9yMFWngtOZwXS2R695/TZvvBIAjwGJEq+nZK+7UM/25xxqr7tQmkzAMOfrw07r+3xdG6lD2O6WS+Kw8+cgWoXW6iaDu8AaZ6pufoxnzM+l+7JsPWKU0fcknHJ7yU2RMPfDZwVVw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=o5LXz3FW; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1780402516; c=relaxed/simple;
+	bh=MNwk9kiw5Gw4uouuz+RiKh+UVqshlnpxa58+xHjhdHA=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=f2rvoJDA8IxdRecu3XRNj6cOgA0ZgcagaLiPLcKIJhXzZ2UHh5nOCoVbmplRq1L20eKGw+PhvpGfdsAsAq2FTDVoviLb7F5boVcZIKNS/8mHT+xdYJTScIrXrN0BOBDfvePofAbN/0eYaWAtQEeAD+FplwQA28Dl/DCq9Pe01H4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fEc5ZcBx; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="o5LXz3FW"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 6D9B41A37CD;
-	Tue,  2 Jun 2026 12:15:08 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 375D2603BC;
-	Tue,  2 Jun 2026 12:15:08 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C6F8A10888429;
-	Tue,  2 Jun 2026 14:15:02 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1780402506; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=C5QfWp41cPYkzLFw+jr79Kx6dVzy6kB4KelAVlv/xac=;
-	b=o5LXz3FWEsEm48oeSYmEpLIQA+atNh2jcFF3uKTPayjZvMH48SRTYBzHjlU5Svwx2yqLci
-	VdiSJz4xdLwuQ/QBr6jMUtGNBVYbBaTqkw0U7xHlypI8/CMWAfoj3U8iNGmx4/Z0kqUZMM
-	W89tR30zU1fmx4tLnbzmQ8eD42cwACj2BJEMKPwYtJ3mSdoD1D+AE9l8PbBu9jz6juu1GC
-	1wK7YpEiYa6Yh7jzh/UU2MZM3Y834tnHSI/xilHW2tlmVuke79jy4f1Tzle0bLKoduxtuw
-	GAHPQjkSZxWJBaJjCQ/iVyH/jvjgYPQYSYgl/2Mn6pcTHWSsNCCd0X3QyRAgfQ==
-Message-ID: <be45fc3c-7599-4d07-8268-6e50b554946c@bootlin.com>
-Date: Tue, 2 Jun 2026 14:15:01 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fEc5ZcBx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1B6B1F00899;
+	Tue,  2 Jun 2026 12:15:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780402515;
+	bh=SlNpdZug6zmUodf4JIGKJ0htxXImybIlq2fCzCj5nQM=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=fEc5ZcBx0v3HafHbGntOBW3JgkGPNdxQAdq2caYsdipmxU0O4OgyxNjqSbpFQIfHv
+	 Ugj7/NYCrRevdFfVJbL1Bl+gLlcIKW19bRelmaeKhqDojaHwUDBL3onhRsB8BbkqDF
+	 2GlVn/IK9iRK0ssd9c5SsmngBoRl6buctHl6pZVEz+gbdRxsIhIrWq11QzoFQm3gJW
+	 UguNlLoyujakQCJFp9Cu/s5eq73QxlvLbQehPGYykFJ+/f91wX9opOv02opW86r6oT
+	 Fttq3+aHW6RhKvdBvGK72ZMqfvfU1ZITjiaUcC/5YCIWkI+9SURDmVPCoptaMNMM2k
+	 ntNIKLUxoOmpg==
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Date: Tue, 02 Jun 2026 22:14:14 +1000
+Subject: [PATCH net v2 07/11] mptcp: sockopt: check timestamping ret value
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 4/9] net: dsa: microchip: remove
- setup_rgmii_delay() KSZ operation
-To: Paolo Abeni <pabeni@redhat.com>, Woojung Huh <woojung.huh@microchip.com>,
- UNGLinuxDriver@microchip.com, Andrew Lunn <andrew@lunn.ch>,
- Vladimir Oltean <olteanv@gmail.com>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Russell King <linux@armlinux.org.uk>
-Cc: Pascal Eberhard <pascal.eberhard@se.com>,
- =?UTF-8?Q?Miqu=C3=A8l_Raynal?= <miquel.raynal@bootlin.com>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
- Tristram Ha <tristram.ha@microchip.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260526-clean-ksz-3rd-v1-0-5b63e732149a@bootlin.com>
- <20260526-clean-ksz-3rd-v1-4-5b63e732149a@bootlin.com>
- <27937ce7-ec1c-4aab-9061-cedcf4f89d12@redhat.com>
-Content-Language: en-US
-From: Bastien Curutchet <bastien.curutchet@bootlin.com>
-In-Reply-To: <27937ce7-ec1c-4aab-9061-cedcf4f89d12@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Message-Id: <20260602-net-mptcp-misc-fixes-7-1-rc7-v2-7-856831229976@kernel.org>
+References: <20260602-net-mptcp-misc-fixes-7-1-rc7-v2-0-856831229976@kernel.org>
+In-Reply-To: <20260602-net-mptcp-misc-fixes-7-1-rc7-v2-0-856831229976@kernel.org>
+To: Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, Florian Westphal <fw@strlen.de>
+Cc: netdev@vger.kernel.org, mptcp@lists.linux.dev, 
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+ "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, stable@vger.kernel.org, 
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1470; i=matttbe@kernel.org;
+ h=from:subject:message-id; bh=MNwk9kiw5Gw4uouuz+RiKh+UVqshlnpxa58+xHjhdHA=;
+ b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBqHsks+gEDHD+8KKy8v+m9UoX27Z7RfIR1LIIRX
+ C4zBZ4A0mqJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCah7JLAAKCRD2t4JPQmmg
+ c5fMEAC0OWnt7+b5c3UirNPd60AM/QpcXKzcdhMWwzixF0eUbHPORAAWGPnBgLckVAQNJgmZkfv
+ Y9ioTPjPS+wYMFGH/btWBJA4AxArukcvEdnQsL2e/Ofxtcs0BBudTtTUjddsop3mjImldNWUUwd
+ +xgmOYyISUFk8Ier6lOopSeUj38xJ6zYBTqQ/Yjo66E6hxPae+/KMJMC9l3I9oc0FkmwIQfbvSh
+ 0lV7Pczo4At4Bmqa4kCQMyltXe5w2plPmCs757ZvGlJwxnAABi36tC4Dw1iNc4n8mVs/AH86QND
+ 7rTe6y2R1qPm/v2KyzDfkhvg/ZIyxTo/D8DtZ9d6KFcNHcaEO6hAdso0isjJj4XMGa33ir5IP4g
+ i52xwYb3hT9wpGf8XIT0EGcNVI9ZuFF5kTsDJuJtgInzEyHCqnVGhm4J9eQBisY9tyel2tOOO6a
+ OqLsnNAjOBSSSSDxoN4ojdXLLfu6AX6Ml+5KZTq2mURsgXjenH1lzbZjdIP0WDQMlz2pofMHTwZ
+ sbSKyrW8xJm62dX/CrpUlrjtWTZOuhbJQCGxaAmvLvVbEzGGdXYe0EYlun30YOswOXOD4c+1ot4
+ ydALniXkfnfIamIQIVKIGLPQby90I6c6HKw4Z2sxm89sLh3iK1BdDam22udsi+glJepxvYb3VIQ
+ UvZkg41V6kIXK+g==
+X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
+ fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 
-Hi Paolo,
+sock_set_timestamping() can fail for different reasons. The returned
+value should then be checked.
 
-On 6/1/26 10:49 AM, Paolo Abeni wrote:
-> On 5/26/26 11:47 AM, Bastien Curutchet (Schneider Electric) wrote:
->> setup_rgmii_delay() operation is only used once during the common phylink
->> MAC configuration. Only the lan937x switch implements this
->> setup_rgmii_delay().
->>
->> Remove the setup_rgmii_delay operation from ksz_dev_ops.
->> Implement a lan937x-specific phylink MAC configuration that does this
->> RGMII delay setup.
->> Export ksz_set_xmii since it's needed by the lan937x implementation.
->>
->> Signed-off-by: Bastien Curutchet (Schneider Electric) <bastien.curutchet@bootlin.com>
->> ---
->>   drivers/net/dsa/microchip/ksz_common.c   |  6 +-----
->>   drivers/net/dsa/microchip/ksz_common.h   |  2 +-
->>   drivers/net/dsa/microchip/lan937x_main.c | 29 +++++++++++++++++++++++++++--
->>   3 files changed, 29 insertions(+), 8 deletions(-)
->>
->> diff --git a/drivers/net/dsa/microchip/ksz_common.c b/drivers/net/dsa/microchip/ksz_common.c
->> index 5fb151fbf4f3..d6511fcebcf2 100644
->> --- a/drivers/net/dsa/microchip/ksz_common.c
->> +++ b/drivers/net/dsa/microchip/ksz_common.c
->> @@ -3127,8 +3127,7 @@ int ksz_set_mac_eee(struct dsa_switch *ds, int port,
->>   	return 0;
->>   }
->>   
->> -static void ksz_set_xmii(struct ksz_device *dev, int port,
->> -			 phy_interface_t interface)
->> +void ksz_set_xmii(struct ksz_device *dev, int port, phy_interface_t interface)
->>   {
->>   	const u8 *bitval = dev->info->xmii_ctrl1;
->>   	struct ksz_port *p = &dev->ports[port];
->> @@ -3233,9 +3232,6 @@ void ksz_phylink_mac_config(struct phylink_config *config,
->>   	}
->>   
->>   	ksz_set_xmii(dev, port, state->interface);
->> -
->> -	if (dev->dev_ops->setup_rgmii_delay)
->> -		dev->dev_ops->setup_rgmii_delay(dev, port);
->>   }
->>   
->>   bool ksz_get_gbit(struct ksz_device *dev, int port)
->> diff --git a/drivers/net/dsa/microchip/ksz_common.h b/drivers/net/dsa/microchip/ksz_common.h
->> index 804912fdd2db..ab08c98ed257 100644
->> --- a/drivers/net/dsa/microchip/ksz_common.h
->> +++ b/drivers/net/dsa/microchip/ksz_common.h
->> @@ -410,7 +410,6 @@ struct ksz_dev_ops {
->>   			   u8 data);
->>   	void (*freeze_mib)(struct ksz_device *dev, int port, bool freeze);
->>   	void (*port_init_cnt)(struct ksz_device *dev, int port);
->> -	void (*setup_rgmii_delay)(struct ksz_device *dev, int port);
->>   	int (*tc_cbs_set_cinc)(struct ksz_device *dev, int port, u32 val);
->>   	int (*init)(struct ksz_device *dev);
->>   };
->> @@ -468,6 +467,7 @@ void ksz_phylink_get_caps(struct dsa_switch *ds, int port,
->>   void ksz_phylink_mac_disable_tx_lpi(struct phylink_config *config);
->>   int ksz_phylink_mac_enable_tx_lpi(struct phylink_config *config,
->>   				  u32 timer, bool tx_clock_stop);
->> +void ksz_set_xmii(struct ksz_device *dev, int port, phy_interface_t interface);
->>   void ksz_phylink_mac_config(struct phylink_config *config,
->>   			    unsigned int mode,
->>   			    const struct phylink_link_state *state);
->> diff --git a/drivers/net/dsa/microchip/lan937x_main.c b/drivers/net/dsa/microchip/lan937x_main.c
->> index 57e289637193..f8f220242f7a 100644
->> --- a/drivers/net/dsa/microchip/lan937x_main.c
->> +++ b/drivers/net/dsa/microchip/lan937x_main.c
->> @@ -643,6 +643,32 @@ static void lan937x_setup_rgmii_delay(struct ksz_device *dev, int port)
->>   	}
->>   }
->>   
->> +static void lan937x_phylink_mac_config(struct phylink_config *config,
->> +				       unsigned int mode,
->> +				       const struct phylink_link_state *state)
->> +{
->> +	struct dsa_port *dp = dsa_phylink_to_port(config);
->> +	struct ksz_device *dev = dp->ds->priv;
->> +	int port = dp->index;
->> +
->> +	/* Internal PHYs */
->> +	if (dev->info->internal_phy[port])
->> +		return;
->> +
->> +	/* No need to configure XMII control register when using SGMII. */
->> +	if (ksz_is_sgmii_port(dev, port))
->> +		return;
->> +
->> +	if (phylink_autoneg_inband(mode)) {
->> +		dev_err(dev->dev, "In-band AN not supported!\n");
->> +		return;
->> +	}
->> +
->> +	ksz_set_xmii(dev, port, state->interface);
->> +
->> +	lan937x_setup_rgmii_delay(dev, port);
-> 
-> I think you can avoid some code duplication with something alike the
-> following:
-> 
-> - factor out of ksz_phylink_mac_config() a  __ksz_phylink_mac_config(),
-> helper, with the latter doing all the work and returning true when
-> actually calling ksz_set_xmii()
-> 
-> - implement lan937x_phylink_mac_config() on top of
-> __ksz_phylink_mac_config():
-> 
-> 	if (__ksz_phylink_mac_config())
-> 		lan937x_setup_rgmii_delay(dev, port);
-> 
+If sock_set_timestamping() fails for at least one subflow, the first
+error is now reported to the userspace, similar to what is done with
+other socket options.
 
-Indeed, I'll do it in next iteration, thank you.
+Fixes: 9061f24bf82e ("mptcp: sockopt: propagate timestamp request to subflows")
+Cc: stable@vger.kernel.org
+Reported-by: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Closes: https://lore.kernel.org/willemdebruijn.kernel.178a41a53d041@gmail.com
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+---
+ net/mptcp/sockopt.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
+diff --git a/net/mptcp/sockopt.c b/net/mptcp/sockopt.c
+index 87b5796d0135..91aa57f1d0fd 100644
+--- a/net/mptcp/sockopt.c
++++ b/net/mptcp/sockopt.c
+@@ -241,15 +241,19 @@ static int mptcp_setsockopt_sol_socket_timestamping(struct mptcp_sock *msk,
+ 
+ 	mptcp_for_each_subflow(msk, subflow) {
+ 		struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
++		int err;
+ 
+ 		lock_sock(ssk);
+-		sock_set_timestamping(ssk, optname, timestamping);
++		err = sock_set_timestamping(ssk, optname, timestamping);
+ 		release_sock(ssk);
++
++		if (err < 0 && ret == 0)
++			ret = err;
+ 	}
+ 
+ 	release_sock(sk);
+ 
+-	return 0;
++	return ret;
+ }
+ 
+ static int mptcp_setsockopt_sol_socket_linger(struct mptcp_sock *msk, sockptr_t optval,
 
-Best regards,
-Bastien
+-- 
+2.53.0
+
