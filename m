@@ -1,104 +1,81 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail-m49198.qiye.163.com (mail-m49198.qiye.163.com [45.254.49.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 888873BB57;
-	Tue,  2 Jun 2026 00:28:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58DF22C029D;
+	Tue,  2 Jun 2026 00:29:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780360107; cv=none; b=jGGk+SxMbIBR8BO2H0ngBRSSZq/dcaEGiGqCX2k1ucyPaxuML6ZSlgTGYlakNGjxftEk3qIB4y9ueHdNAM0WSm3o8K7ZcY4C+lJy+RymGjbCb4go0BiwxgZu3MgLh4SVy+I22As55dFuDQZcOw5qozxJUb2RiCp1H6JxWG02uBY=
+	t=1780360196; cv=none; b=B83HSM45exuURUX3RGVSdG7q51HIwhllfC3MwEeCwWMwgL55IkRBqLbk3JfPFVF5d5kQXGB5a+6oXD3fZSxk3QroO5wVsCwHwSs0Pl5cgqZ9p4fRpNMhSQs4bbdTlU3i4G3YZ+rtUdpGnOD0/F4KYt6a3cG6/y3KQz3s5e0tpwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780360107; c=relaxed/simple;
-	bh=+a2ZO95kxdHvWsGSafCiYuXUQ71T5a+8Z3XcVsOahyE=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=BSDYR1px7bQm5kPtmSgwEcsIhR38nyaD6BUYmVGrScKK0x9mExYC6oimaS06hXtavUZ9DhbMOuXFI4GZI2UhrRVnLVU9+Igli1VTiFHuHJPUJtUZowGRt+8SL7qNceyXIT3nnUwNyntzs+nvJPpDrk/oCVzxe915veEaPv0ApSI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=TwGEmlgk; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780360196; c=relaxed/simple;
+	bh=4Uwehhbo7B2anv5JiXyrOzwLm1Of00wQ3PUTHxPrC6E=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=MAEtdckxXzMrf5zeSZsIZddMQLfAFZH35YEBKUaNeZ44dTdNUvgM2GydL325UgLG2IHqUzjf6DB1FuwBpCppLx8WWj283S/VSXmhzp7Xjk8YY8ZKkicrPPb5Gps469yGDTdu5t8YihTnRgs1iXDg1BIFfn+HJW96VZelT7wvVss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=emTMC40q; arc=none smtp.client-ip=45.254.49.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="TwGEmlgk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87A011F00893;
-	Tue,  2 Jun 2026 00:28:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1780360106;
-	bh=Slg9d12DIpflrilD7A2AKj3teZ7pACuCN0yNTcRFtLQ=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=TwGEmlgkOSCqITM58gG6pT8IVelTAcsMweMr/i4OOMCAtucX/zJUxGFLy723fHJ1G
-	 2zlZx5fxbmhgSh+6f1UJERPZ+etSvyv8toosvcWhnhuWo6IZGx2gdxEPCnM2ebBfjO
-	 WPCRazYPlC4PvMA51SubT1XwysVby5d6Cgb2Sz3c=
-Date: Mon, 1 Jun 2026 17:28:25 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Steven Rostedt <rostedt@goodmis.org>
-Cc: Al Viro <viro@zeniv.linux.org.uk>, Linus Torvalds
- <torvalds@linux-foundation.org>, Christian Brauner <brauner@kernel.org>,
- Askar Safin <safinaskar@gmail.com>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, linux-api@vger.kernel.org, netdev@vger.kernel.org,
- Matthew Wilcox <willy@infradead.org>, Jens Axboe <axboe@kernel.dk>,
- Christoph Hellwig <hch@infradead.org>, David Howells <dhowells@redhat.com>,
- David Hildenbrand <david@kernel.org>, Pedro Falcato <pfalcato@suse.de>,
- Miklos Szeredi <miklos@szeredi.hu>, patches@lists.linux.dev,
- linux-fsdevel@vger.kernel.org, Jan Kara <jack@suse.cz>
-Subject: Re: [PATCH 0/3] vmsplice: make vmsplice a trivial wrapper for
- preadv2/pwritev2
-Message-Id: <20260601172825.a51a588ec1c32617a0e12d78@linux-foundation.org>
-In-Reply-To: <20260601160455.2c187574@gandalf.local.home>
-References: <20260531010107.1953702-1-safinaskar@gmail.com>
-	<20260601-enthusiasmus-canceln-anlehnen-0e62317a9784@brauner>
-	<CAHk-=wifX_rrDjRGnDnOqE-usptAukuXKrmuPuVDP5bOCBWzGQ@mail.gmail.com>
-	<20260601173325.GH2636677@ZenIV>
-	<20260601160455.2c187574@gandalf.local.home>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="emTMC40q"
+Received: from PC-202605011814.localdomain (unknown [223.112.146.162])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 40a8c3caf;
+	Tue, 2 Jun 2026 08:24:34 +0800 (GMT+08:00)
+From: Runyu Xiao <runyu.xiao@seu.edu.cn>
+To: davem@davemloft.net,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: dsahern@kernel.org,
+	idosch@nvidia.com,
+	edumazet@google.com,
+	horms@kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	jianhao.xu@seu.edu.cn,
+	runyu.xiao@seu.edu.cn
+Subject: [PATCH net v2] ipv6: use READ_ONCE() for bindv6only default in inet6_create()
+Date: Tue,  2 Jun 2026 08:24:14 +0800
+Message-Id: <20260602002414.1504106-1-runyu.xiao@seu.edu.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0a9e85b7c62103a1kunmbd764a6114f2d5
+X-HM-MType: 10
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlDSk0dVklNHh5MSk1MSR4ZSFYeHw
+	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlJSUhVSkpJVUpPTVVKTUlZV1kWGg8SFR0UWUFZT0tIVUpLSU
+	hOQ0NVSktLVUtZBg++
+DKIM-Signature: a=rsa-sha256;
+	b=emTMC40qEA0HJ8B8Gf8pqKy5PuDI0/P8loulVudkRSvIN7kyK7mr8dCVoQvfSBVgCKjOYBIlreXQpDpMbsrziurXjaUVtqix7JLtkPJb4+8F0NBV54udBHxP9CI/kN+JevSaklSTysFPDPNCi1upE0f/jnM4LfOPucOodyDR0Xk=; c=relaxed/relaxed; s=default; d=seu.edu.cn; v=1;
+	bh=O0lEsgmG7jjp0S0PazzP2vtRhdGSUANPfEdz9qWrOFA=;
+	h=date:mime-version:subject:message-id:from;
 
-On Mon, 1 Jun 2026 16:04:55 -0400 Steven Rostedt <rostedt@goodmis.org> wrote:
+inet6_create() reads net->ipv6.sysctl.bindv6only locklessly.
 
-> On Mon, 1 Jun 2026 18:33:25 +0100
-> Al Viro <viro@zeniv.linux.org.uk> wrote:
-> 
-> > On Mon, Jun 01, 2026 at 10:17:23AM -0700, Linus Torvalds wrote:
-> > 
-> > > TLDR: maybe we could ghet rid of "f_op->splice_read". *That* would be
-> > > a big simplification.  
-> > 
-> > FUSE might be interesting - fuse_dev_splice_read() and its ilk.
-> > Communications between the kernel and fuse server at least used to
-> > seriously want that, so that would be one place to look for unhappy
-> > userland...
-> > 
-> > splice-related logics in fs/fuse/dev.c is interesting; another place
-> > like this is kernel/trace/, but I'm less familiar with that one.
-> > 
-> > rostedt Cc'd (miklos already had been)
-> 
-> Thanks for the Cc. The tracing ring buffer was specifically made to be used
-> by splice and the libtracefs has a lot of code to use it as well. As
-> reading the ring buffer literally swaps out the write portion with a blank
-> read portion, that portion (sub-buffer) is used to be directly fed into
-> splice, providing a zero-copy of the trace data from the write of the event
-> to going into a file.
-> 
-> trace-cmd defaults to using splice to copy the tracing ring buffer directly
-> into files to avoid as much copying during live recordings as possible.
-> 
-> Whatever changes we make, I would like to make sure there's no regressions
-> in performance of trace-cmd record.
+Use READ_ONCE() for this sysctl access.
+Signed-off-by: Runyu Xiao <runyu.xiao@seu.edu.cn>
+---
+v2:
+- Shorten the commit message per review feedback
+- Drop the Fixes and stable CC trailers
 
-Well yes, The patchset seems sensible from a quality POV.  But to make
-a decision we should first have a decent understanding of its downside
-impact.
+ net/ipv6/af_inet6.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-I haven't seen a description of that impact in the discussion thus far.
-And that description is owed, please.
-
-I assume a small number of specialized applications are using
-vmsplice() to great effect?  What are those applications?  What is the
-impact of this change?
-
-Once we are armed with that information, is there some middle ground in
-which we de-feature vmsplice()?  Fall back to pread/pwrite in the
-tricky cases and still permit vmsplicing if the application is
-appropriately restrictive in it usage?
+diff --git a/net/ipv6/af_inet6.c b/net/ipv6/af_inet6.c
+index 0a88b376141d..79fc6ce6ff77 100644
+--- a/net/ipv6/af_inet6.c
++++ b/net/ipv6/af_inet6.c
+@@ -211,7 +211,7 @@ static int inet6_create(struct net *net, struct socket *sock, int protocol,
+ 	np->pmtudisc	= IPV6_PMTUDISC_WANT;
+ 	inet6_assign_bit(REPFLOW, sk, READ_ONCE(net->ipv6.sysctl.flowlabel_reflect) &
+ 				      FLOWLABEL_REFLECT_ESTABLISHED);
+-	sk->sk_ipv6only	= net->ipv6.sysctl.bindv6only;
++	sk->sk_ipv6only	= READ_ONCE(net->ipv6.sysctl.bindv6only);
+ 	sk->sk_txrehash = READ_ONCE(net->core.sysctl_txrehash);
+ 
+ 	/* Init the ipv4 part of the socket since we can have sockets
+-- 
+2.34.1
