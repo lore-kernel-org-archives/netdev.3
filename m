@@ -1,188 +1,124 @@
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C22FD373C0E
-	for <netdev@vger.kernel.org>; Tue,  2 Jun 2026 03:17:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.179
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780370256; cv=pass; b=S2RG41wTQhYpwJngpNSQnxJowDo/b8LY30j0FGIJDhXEKXZZjWK1L9zHxO6C7N41TykTgACqTUBoufpvtw0Fg1wAH2VgKlEuMnxfrhUHUyDZ5B91UBIMBA984N0vaajJRkUwFe/wEj/wBfg7XAekJ6MBFBNoH/4zzGAKv1K5T/o=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DFA5373BE9;
+	Tue,  2 Jun 2026 03:17:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.188
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780370256; cv=none; b=F747bSH2aKHDr3aXQdRT13r7qLsXo8NJjXwZlB3diF79E1zf0yRuqCcCobxTKc+Pdbh2GjHay9wEHfFsL/igxQ6ilAzkkZ1YZsHgobbSa0pdcVD0NDL/h8tvzm3NzDJnPM0fiwxAjE6nvwJ5vKUvWj2PRrj78VylInPuYOqOmkA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1780370256; c=relaxed/simple;
-	bh=NrNtds7Xu9hVrX2Bnojh/FQca01+7oLkxZWeAGFo1N8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MIO2+Vv+KKKD4a6XHubHUyDCl2b9d1mizkIgEej5ot6DLXsK152rXIcobhXM07MEhTG6j+nZje+UM1+D77GN6nBQsy2huF5cxTYNZSeLObl9XX67Vj4zFpScb/PLbCzZ2C0dQmf/5uTAaILmBSBDJra1vixpykXFzxUqvzkSgTE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=Bcf3oh79; arc=pass smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
+	bh=gvgIJo9m/HUHg9gk2qU3NCinlFuIOES/GGZ227Us+6Q=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Mc0h1QgGHMYbDQg47WDkKfU3tRL8xBfDM0msJ+m2S/Jn0kgnL/jDoWBPvjIFSOszhfs8h94zWKztqFkwqi+gjU786gkDxhLG7P7gSMx/Ea1m7NXyKXiy4YVaz6dkghAz3rVLHwfVUX80ToSTUiZBigAo2y7AiqewjyBs92agegg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=WHV8r6eo; arc=none smtp.client-ip=95.215.58.188
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="Bcf3oh79"
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2c0a5354da1so18409015ad.0
-        for <netdev@vger.kernel.org>; Mon, 01 Jun 2026 20:17:34 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780370254; cv=none;
-        d=google.com; s=arc-20240605;
-        b=HXydhpSSkruKQww2UBDcpJjc1d427Ct1rMLBQcr14OCdN6trdNU4IfyJrOTQI4XlVk
-         3X1x/wNGQeWKskFIwpCX/4lLhUoBj/U1MmQ6STahpnn6jOwsP5bGe1z7sObcvtIBm1fH
-         8+2+VfVU0tGFEVo/5LV3F1XfqfkU2+9kYFmjRv0Y9bGGrSzijAp3ZBLvdC21v6xBXrNU
-         JK7MZmXQC5fDR20nbv+rbbHbu0Rsy++hQsKKGGVQ4M5SSJZHA82jrgK8QYBswzbVYj3d
-         pdAeadRviDcjP7UAGQPZk9vGPFeLd1z7gxbJQ3U8ip+4WMuneZq/SkNO3vlkFmR1KDU/
-         DBug==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=yRbGrDPr8/1rgB/5c9BpqqyHTaNQfsdpMIViVvNKLvo=;
-        fh=6pd8mXS/wom7g36fP9lZsveDojeYEEozfNkZBQLKor8=;
-        b=FKudmwWP9juIVT0s1mjTyScMjKntnQ+tmKfOyLYLyYLXbQ5YxWgvu+bj8k5kvl3noT
-         GxFFtG0JtFgko6M4w6GmQjPzbOKfEWUPgaQ1RY7buDn9F3S2o9pBxxSlPr0hIeimFa+O
-         Ks97O3FrbO+V0yFSxxl1ruUx+J1bdHztqfm3Rn8E+u1dAjJK3J0LUhKypvlE5n/DDdrB
-         7+hkI2e0T4KPX1B2rb29K0Krwaxk2b/BRB7QUfD/YnndndG/o2NXdoe8wKvn9/HKsAsx
-         CzuySz3ADRsYDLrEcH45/PPDa+pAI4phptSGqIpsCx/89z1TROfIAhY3QLHeGgAZQCnn
-         XHJg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1780370254; x=1780975054; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yRbGrDPr8/1rgB/5c9BpqqyHTaNQfsdpMIViVvNKLvo=;
-        b=Bcf3oh79gvB1y1h6vk6ljHru9+bI24G7Wt0cxnV3x2oqt4H+GGZ4DFS9ILOrcW4dP6
-         V0p3wzXsBwZszoOzXJhS+v7nMMJIGcjNFtDp9hwFrp90GciKOsTBjMWlmb6QFTBE3kpK
-         ylYebVEOBN9LgI50lyAo2D5aUQv64AsXOr6jnbF3lbFZ3PmYla5HfXVUlQp0N/JGBWGT
-         iKbrbYNcVvp2TZIpzqvNgzxL0S/6nPrzo+BrNRwScJtbnMJRFnnMm3J9JDtUFrpmCKpT
-         UrxKsuk06jXGm9Bs9FINYcVXGGmlp/VBOseRSLqWXEJQK6kEaXUYFVN1Y2Lgs1a1da6Z
-         9TTw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780370254; x=1780975054;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=yRbGrDPr8/1rgB/5c9BpqqyHTaNQfsdpMIViVvNKLvo=;
-        b=C4UGMGeVefLCY4FVolLQVJsQT6suvZJAjz427Rh12g+SfR+6KsCLK2wkcFVIH46KHZ
-         HSDE7/yB7krWutNAoUNv9rqm+0RTweSlDD8UA9cUa0rDhfMJWd8vu+O5ko+Nh89e1PrR
-         dEMtkxGnCMVTgL11w5JwFYmmRjFOEjpAQ2DufohjbDwSu8kd5ZHgt7a0wPH+Co0vN46/
-         r7WXg1p3TZuukQwhozyZeiKcY+bwIROJNblq60UoOgDVP5b6qyok4NfecG6/T/LBt04n
-         PKQcezudvBQgetpsnhC+oldqgqo/8izyZANonye/lAtsTSK0Gg3JRAfP3u1px6rkPpas
-         9W2Q==
-X-Forwarded-Encrypted: i=1; AFNElJ/rX4LYt0gTnZApo8nMh5dGJb17VXIufovBT+bYn3HLWEkVsOImGQmxocRwsggnW4Hp17hOZzY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyUuc8DW9tXppihMIcQ9iBenpXBOyfZB4Avyza9pVgbJlQV3hiA
-	Gwo7cTAzy4mFOkqHWTmp1QHar/B50xs5Lsq0euEoMaM4AM+3OUAUbj9oYdBBRbQ2yVuInDiFqUi
-	UImsgxVDyD7TGo6jz6N/p0Lp6uV0Z8naxr4y9fIXi
-X-Gm-Gg: Acq92OGl/F2EvYtUWCKL9LlHOXtnX9899ix0nvPNYLkBOomFcMlX6OTz9jL/nCQUZgI
-	1BTCkcvD/vBrfeEwvj/Wg54Vchp5Lcdlp+MwPRe7kCA/+dSwjFb+UUk+wbnYpgEizdIty1K2jLh
-	eHt3196TyrAq5lTMnRqhi0+ypd6F6D9vEowiJcUosDNYl64z3zZBpACFEhf6whZGpdclffA0NlD
-	FVB3Opfh906z4LwcztNRLvjR0egYMVekgelh4Y/X7/ILpUoxN51DN46WENjucpi3cLXW96kKy11
-	KfJ8X14OQErEWt+t0w==
-X-Received: by 2002:a17:902:fc8d:b0:2bd:9b0e:b43a with SMTP id
- d9443c01a7336-2c10cc48783mr20042485ad.7.1780370253972; Mon, 01 Jun 2026
- 20:17:33 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="WHV8r6eo"
+Message-ID: <0fecd90a-d218-48dc-86d1-860ab2e7f6d5@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1780370252;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Q31l8Uyd8/waps4/zvDwbRE+yDFblOOOVBggVCClT4g=;
+	b=WHV8r6eoERREXxCCRWjY2eCmtSkAlgARpuzh0h1dndgYom86wLyWawWBQ0ihkvMvPM7O8Y
+	5cVT0y3iBdevFuRq4D8aCpnspn3R8dARNJRC1RJ2IlsEfPrjyK1U0LLqP9omm4Gs+xoJYg
+	ANKtSjCbOfW8avUq3gZ/XtK1pfIwO+A=
+Date: Tue, 2 Jun 2026 11:17:15 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260524041442.2432071-1-tpluszz77@gmail.com> <20260524041442.2432071-5-tpluszz77@gmail.com>
-In-Reply-To: <20260524041442.2432071-5-tpluszz77@gmail.com>
-From: Paul Moore <paul@paul-moore.com>
-Date: Mon, 1 Jun 2026 23:17:22 -0400
-X-Gm-Features: AVHnY4I4W9V-dv4I-l2LKCn8EXbQx2RA0Mt-m8Ql8JMgxlHNkMBkt_pweVb2PlI
-Message-ID: <CAHC9VhQikjqG_CZfXy3vJP3Os0xNw9jjGoMdLmWiy5epU3gxcA@mail.gmail.com>
-Subject: Re: [PATCH net v2 4/4] netlabel: validate CIPSO option against skb
- tail in netlbl_skbuff_getattr
-To: Qi Tang <tpluszz77@gmail.com>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, 
-	edumazet@google.com, netdev@vger.kernel.org, fw@strlen.de, lyutoon@gmail.com, 
-	stable@vger.kernel.org, Simon Horman <horms@kernel.org>, 
-	linux-security-module@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH bpf v3 1/2] bpf: Update transport_header when
+ encapsulating UDP tunnel in lwt
+To: Leon Hwang <leon.hwang@linux.dev>, bpf@vger.kernel.org
+Cc: "David S . Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>,
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ Martin KaFai Lau <martin.lau@linux.dev>,
+ Kumar Kartikeya Dwivedi <memxor@gmail.com>, Song Liu <song@kernel.org>,
+ Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>,
+ Shuah Khan <shuah@kernel.org>, Guillaume Nault <gnault@redhat.com>,
+ Ido Schimmel <idosch@nvidia.com>,
+ Fernando Fernandez Mancera <fmancera@suse.de>,
+ Peter Oskolkov <posk@google.com>, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ kernel-patches-bot@fb.com, Leon Hwang <leon.huangfu@shopee.com>
+References: <20260601150203.20352-1-leon.hwang@linux.dev>
+ <20260601150203.20352-2-leon.hwang@linux.dev>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+In-Reply-To: <20260601150203.20352-2-leon.hwang@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-On Sun, May 24, 2026 at 12:15=E2=80=AFAM Qi Tang <tpluszz77@gmail.com> wrot=
-e:
+
+On 6/1/26 11:02 PM, Leon Hwang wrote:
+> Currently, bpf_lwt_push_ip_encap() does not update skb->transport_header.
+> When a driver, e.g. ice, reuses the stale skb->transport_header to
+> offload checksum computation to NIC hardware, VxLAN packets encapsulated
+> by bpf_lwt_push_encap() helper may be dropped due to incorrect checksum.
 >
-> netlbl_skbuff_getattr() locates the CIPSO option in the IPv4 IP header
-> via cipso_v4_optptr() and hands the bare pointer to cipso_v4_getattr().
-> The consumer re-reads cipso[1] (option length), cipso[6] (tag type),
-> and then cipso_v4_parsetag_*() re-reads further bytes from the skb.
+> Update skb->transport_header in bpf_lwt_push_ip_encap() whenever the
+> encapsulated packet uses UDP, so checksum offload works correctly.
 >
-> __ip_options_compile() validates these bytes only at parse time.  An
-> nftables LOCAL_IN payload write reachable from an unprivileged user
-> namespace can rewrite them after parse and before the SELinux/Smack
-> peer-label consume path (selinux_sock_rcv_skb_compat ->
-> selinux_netlbl_sock_rcv_skb -> netlbl_skbuff_getattr).  This is the
-> IPv4 analogue of the CALIPSO IPv6 trust-after-modification fixed in
-> the previous patch: the tag parsers walk the option using attacker-
-> controlled length bytes, producing slab-out-of-bounds reads whose
-> contents feed into the MLS access decision.
->
-> Validate the option fits within skb_tail_pointer(skb) before invoking
-> cipso_v4_getattr().  The pre-tag-walk guard "ptr + 8 > tail" covers
-> the CIPSO option header (type + length + DOI =3D 6 bytes) plus the
-> first tag header (type + length =3D 2 bytes), which are the bytes
-> cipso_v4_getattr() reads to dispatch on the tag.  When the bounds
-> check fails the packet has been mutated after parse, so return
-> -EINVAL rather than fall through to the unlabeled path.
->
-> Runtime confirmation (Smack peer-label policy + nft LOCAL_IN
-> mutation of tag_len): UdpInDatagrams increments to 1 and recvfrom
-> returns the payload, showing netlbl_skbuff_getattr ->
-> cipso_v4_getattr -> cipso_v4_parsetag_rbm -> netlbl_bitmap_walk runs
-> end-to-end past the option's true bound; with this patch the
-> consume path returns -EINVAL at the bounds check and the counter
-> stays 0.
->
-> Cc: stable@vger.kernel.org
-> Reported-by: Qi Tang <tpluszz77@gmail.com>
-> Reported-by: Tong Liu <lyutoon@gmail.com>
-> Fixes: 04f81f0154e4 ("cipso: don't use IPCB() to locate the CIPSO IP opti=
-on")
-> Signed-off-by: Qi Tang <tpluszz77@gmail.com>
+> Fixes: 52f278774e79 ("bpf: implement BPF_LWT_ENCAP_IP mode in bpf_lwt_push_encap")
+> Cc: Leon Hwang <leon.huangfu@shopee.com>
+> Signed-off-by: Leon Hwang <leon.hwang@linux.dev>
 > ---
->  net/netlabel/netlabel_kapi.c | 17 +++++++++++++++--
->  1 file changed, 15 insertions(+), 2 deletions(-)
+>   net/core/lwt_bpf.c | 11 +++++++++++
+>   1 file changed, 11 insertions(+)
 >
-> diff --git a/net/netlabel/netlabel_kapi.c b/net/netlabel/netlabel_kapi.c
-> index d0d6220b8d59d..c2d3ea751f4e1 100644
-> --- a/net/netlabel/netlabel_kapi.c
-> +++ b/net/netlabel/netlabel_kapi.c
-> @@ -1393,11 +1393,24 @@ int netlbl_skbuff_getattr(const struct sk_buff *s=
-kb,
->         unsigned char *ptr;
->
->         switch (family) {
-> -       case AF_INET:
-> +       case AF_INET: {
-> +               const unsigned char *tail =3D skb_tail_pointer(skb);
-> +               u8 opt_len, tag_len;
-> +
->                 ptr =3D cipso_v4_optptr(skb);
-> -               if (ptr && cipso_v4_getattr(ptr, secattr) =3D=3D 0)
-> +               if (!ptr)
-> +                       break;
-> +               /* CIPSO header (type+len+DOI =3D 6) + first tag header (=
-type+len =3D 2) */
-> +               if (ptr + 8 > tail)
-> +                       return -EINVAL;
-> +               opt_len =3D ptr[1];       /* total CIPSO option length */
-> +               tag_len =3D ptr[7];       /* first tag length */
-> +               if (ptr + opt_len > tail || ptr + 6 + tag_len > tail)
-> +                       return -EINVAL;
-> +               if (cipso_v4_getattr(ptr, secattr) =3D=3D 0)
->                         return 0;
+> diff --git a/net/core/lwt_bpf.c b/net/core/lwt_bpf.c
+> index f71ef82a5f3d..65d1dfbf3312 100644
+> --- a/net/core/lwt_bpf.c
+> +++ b/net/core/lwt_bpf.c
+> @@ -599,6 +599,7 @@ static int handle_gso_encap(struct sk_buff *skb, bool ipv4, int encap_len)
+>   
+>   int bpf_lwt_push_ip_encap(struct sk_buff *skb, void *hdr, u32 len, bool ingress)
+>   {
+> +	bool is_udp_tunnel;
+>   	struct iphdr *iph;
+>   	bool ipv4;
+>   	int err;
+> @@ -612,10 +613,16 @@ int bpf_lwt_push_ip_encap(struct sk_buff *skb, void *hdr, u32 len, bool ingress)
+>   		ipv4 = true;
+>   		if (unlikely(len < iph->ihl * 4))
+>   			return -EINVAL;
+> +		is_udp_tunnel = iph->protocol == IPPROTO_UDP;
+> +		if (unlikely(is_udp_tunnel && len < iph->ihl * 4 + sizeof(struct udphdr)))
+> +			return -EINVAL;
+>   	} else if (iph->version == 6) {
+>   		ipv4 = false;
+>   		if (unlikely(len < sizeof(struct ipv6hdr)))
+>   			return -EINVAL;
+> +		is_udp_tunnel = ((struct ipv6hdr *)iph)->nexthdr == NEXTHDR_UDP;
+> +		if (unlikely(is_udp_tunnel && len < sizeof(struct ipv6hdr) + sizeof(struct udphdr)))
+> +			return -EINVAL;
+>   	} else {
+>   		return -EINVAL;
+>   	}
+> @@ -637,6 +644,10 @@ int bpf_lwt_push_ip_encap(struct sk_buff *skb, void *hdr, u32 len, bool ingress)
+>   	if (ingress)
+>   		skb_postpush_rcsum(skb, iph, len);
+>   	skb_reset_network_header(skb);
+> +	if (ipv4 && is_udp_tunnel)
+> +		skb_set_transport_header(skb, skb_network_offset(skb) + iph->ihl * 4);
+> +	else if (!ipv4 && is_udp_tunnel)
+> +		skb_set_transport_header(skb, skb_network_offset(skb) + sizeof(struct ipv6hdr));
 
-I'd strongly prefer if you moved the tag length check into
-cipso_v4_getattr().  As you've already validated the CIPSO option
-length field it should be a fairly easy check, no need to test it
-against the skb's tail pointer, just ensure the tag length doesn't go
-past the end of the CIPSO option.
 
->                 break;
-> +       }
->  #if IS_ENABLED(CONFIG_IPV6)
->         case AF_INET6: {
->                 const unsigned char *tail =3D skb_tail_pointer(skb);
-> --
-> 2.47.3
+I think GRE is also affected, why not unconditionally set transport 
+header to network_offset + outer_ip_ihl regardless of outer protocol??
 
---=20
-paul-moore.com
+>   	memcpy(skb_network_header(skb), hdr, len);
+>   	bpf_compute_data_pointers(skb);
+>   	skb_clear_hash(skb);
