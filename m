@@ -1,76 +1,58 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90C57369206
-	for <netdev@vger.kernel.org>; Tue,  2 Jun 2026 02:50:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23F8E363C62;
+	Tue,  2 Jun 2026 02:50:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780368616; cv=none; b=eo+1n5y8HNCiPF04jN7YRTWU2iz7nIOIaRE8pjLOuVMmSsYOfoTWFGvkLTmyNs9yQ+UgMWPjDUvX6tGiGjIho/LeZD6C6pH+6ZTlfaa6o2KBCuMWJXXgpSkuRahMI69u0Z5QMPauE9KPq6pJKBEU+izdDzclhUIa55YRhIXJHkg=
+	t=1780368652; cv=none; b=KYyD9Rzw/K8f2pCqCGkSycGt3UsiqROBCj5I3s7ll2qsua3y0NV6lZpLy+0YvLoueHEHIXi4QjkGjzuVzCyK8a3OwnH+vranNYgVbSRCt1ME/7dxnzFtVYTYjxw8DGiZl0U8n0CgXrzoJHrtqqSj4idaqxyy9XJj6vnkx+13l60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780368616; c=relaxed/simple;
-	bh=JB+phtUTb3WzFVRLog49ztcJWE2W4yGxfF+gcew9lrE=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=eqDwtEPAB2zBo2LrMGrwazHSFjtsIQpRDYOUZaoNtDKYUj5eD0DRWeT6WXXoCvXqs1H7CP463r1p0V2/BfY6KyKWK8V8KTTk6YVXajyTowQSmIXe5NRjKvjCLC1q8/JzwplKpzEcSNhcr9BpXwpIH+HEmg+Z+4B9t63zYB3akFo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SYf57x23; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780368652; c=relaxed/simple;
+	bh=aySwtQdVbFX82LTfwEJ0G/aCOZ4z315DkUE8rBkBdQM=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=rVEJB4n4pclDKbQJRz1GdqD6C9xDcn7wu/DplLrzCzkY+hvd3nlgxbkw1iH0ZAFlLwqFHnLymAl2kUiE+fhJe9qHvXfSwx7B8+nFsnIOtasvBZ9aBnjgp7bmFdxoOaP/NGPDO09OTo5awE0MMfSO6lHSTJzY2QGSY5a8exaCyrg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MpTryM1J; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SYf57x23"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B64A1F00893;
-	Tue,  2 Jun 2026 02:50:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MpTryM1J"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A33C1F00893;
+	Tue,  2 Jun 2026 02:50:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780368615;
-	bh=dqd0/8D0VKZfLvDiH3sAfol3DvHhaUTBPG57AlmijKA=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=SYf57x23LcDEVBI01/WZaPsP/pIZO6C7nEHkM+IVctwue9lnnjNl7AivvbHs1zH5k
-	 66/i4xHcZE8J2iRYeyxoHLbtfhx4y+ZSNKS6dV6KAhI657mGCcwYv5ncyIiECDLVuv
-	 dXpHfENOZjYivweAT/8iGMaTGD9u0dDT/UmWz29Z4Aa4o/jCcvvqWFwEbtKSakHSlk
-	 IssagNde/UCiWBldeqHIhHELKtiZVcfOnyIaQLm0V1nk2sZTIgovO62rWHs2eIGzYp
-	 0Ww/oI0axnakqc/E9vJuTjlKROmMHI3kfrjKz/k+Zo3G9Lw4rODEayOJ8a2bQSgDnp
-	 0vimoKt5Mk/yg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 9391238119F9;
-	Tue,  2 Jun 2026 02:50:18 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1780368650;
+	bh=aySwtQdVbFX82LTfwEJ0G/aCOZ4z315DkUE8rBkBdQM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=MpTryM1JRtj4DJaZloYViNdKr2YaX11GT3F6pyDR5ueeVT3aT/n+1J0LdVbmRK8/G
+	 qiDCx0yQHoGX2zalYu2zGyJjIoLUZmVSed1Vcwfr4PL+n4A2nm1rdkFNtm2pLQBaRl
+	 EfSXqOLAbzms5ItihXSQ32dISrS6Zsjd5DF3luaE4AC4Rib92zIlyEgmtl6Ij5CejK
+	 T16Bf1ZX6sFMSzquiQOqKxIwLRnAgfaWAvh9rf5Ir0v32O4fvbvwlI5AlJSV/UFMil
+	 u84zSZ1LcA7Go7+DsXY7UHQrH7I8bfyo2sh6NTgex/up7EDchQxvSdCvUn6ZEjNvqw
+	 I8HY7nkmbm/gw==
+Date: Mon, 1 Jun 2026 19:50:49 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Yury Murashka <yurypm@arista.com>
+Cc: pavan.chebbi@broadcom.com, mchan@broadcom.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v4] net: tg3: guard napi_disable and
+ pci_disable_device calls
+Message-ID: <20260601195049.766544fb@kernel.org>
+In-Reply-To: <20260527115535.1686932-1-yurypm@arista.com>
+References: <20260527115535.1686932-1-yurypm@arista.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v3] net: txgbe: fix phylink leak on AML init failure
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178036861714.217677.1789667062425965646.git-patchwork-notify@kernel.org>
-Date: Tue, 02 Jun 2026 02:50:17 +0000
-References: <20260528013258.129146-1-zhaochenguang@kylinos.cn>
-In-Reply-To: <20260528013258.129146-1-zhaochenguang@kylinos.cn>
-To: Chenguang Zhao <zhaochenguang@kylinos.cn>
-Cc: jiawenwu@trustnetic.com, mengyuanlou@net-swift.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- maxime.chevallier@bootlin.com, horms@kernel.org, netdev@vger.kernel.org
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
+On Wed, 27 May 2026 11:55:35 +0000 Yury Murashka wrote:
+> During PCIe hot-plug events, uncorrectable errors can be reported and
+> AER recovery for the tg3 device is initiated by the AER kernel driver.
+> The tg3_io_error_detected function is the AER error recovery handler.
 
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Thu, 28 May 2026 09:32:58 +0800 you wrote:
-> Destroy the phylink instance when fixed-link setup fails.
-> 
-> Fixes: 6f8b4c01a8cd ("net: txgbe: Implement PHYLINK for AML 25G/10G devices")
-> Signed-off-by: Chenguang Zhao <zhaochenguang@kylinos.cn>
-> Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-> Reviewed-by: Jiawen Wu <jiawenwu@trustnetic.com>
-> 
-> [...]
-
-Here is the summary with links:
-  - [net,v3] net: txgbe: fix phylink leak on AML init failure
-    https://git.kernel.org/netdev/net-next/c/9c89f975e669
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+IDK, I really hate this NAPI specific tracking. Can we add a callback
+to struct pci_error_handlers to let the driver know that things went
+fully belly up and the driver should pack up its toys? Sounds to me
+like the key issue here is that there's a side exit thru the state
+machine.
