@@ -1,95 +1,66 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BD1F35F8D2;
-	Tue,  2 Jun 2026 18:18:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D7693932DF;
+	Tue,  2 Jun 2026 18:21:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780424306; cv=none; b=CDSp+pGw6JUfa7pVI2Z+WrAOR91BsvUFe9zI2fqxb3LyG3yXK7sqVkjPPbfS+rlW4JtksD/DAf6Gv3Cw+F1/bR3p1ccXM8M9lgk32tMGaeQzxTsCOqZ+RypzECZ7bI55WBxPZKkdWvy1zWDvDeTNYRB9UDiT6Cm/ZHiXEc/5NYY=
+	t=1780424512; cv=none; b=lyCsZDl+Zh16/bvrMvN8gM7zcPedlTGt22cxT2lYSD/24PavrwD9hoYaCirnti3bbR/JcJ9futWcTDSCqXmzJKKpIjR5tp4klA4bc37lq/TsIQ4cai/+DIU5HGGbSefP6vy+C3SWWNw6N9E1zjXSJIjPY+3l/Zu8rDg90CZfaSc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780424306; c=relaxed/simple;
-	bh=kaiP5nlmx+o6J5dZn3NEtFmE+/1HE1JUKqGhpXDCNTk=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=f3mSxbpF/6gxs8peUdyKPCRHvNVFdxZZOxgQrTq4JH/aKagjoCsvvRSS8bJdxec9QzaOc9E/mx6WKEc8fG7n1lRImV1Cx87GrSP81SyAOt7QlkWPVZUGfe+b4X+nmKofWkWLQiEcuAUwXVuCxhGclOPs5EoO4wKTgnOMjpz9jtY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nTzLFTrT; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780424512; c=relaxed/simple;
+	bh=TjhMaKmbzFKu0YPMq2ASEiXF2D8wL4JT28AVZJffb5c=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=rhNlxAdlo44CXAg5okscPucar3BjDh6fkBQ6RZE0cf0JJlRPx204IGdKfkBN8aQ0/IY5tRFpCfwiVZt+ji3NaaqMz8z9mXnaZ6loOsh+qVUZp3rgKq2L5oVnAr19FV75+pLYtd/v6ilumi7VaYRZfea4qHZDMHd6+gSWHlVOFJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DegjCoFi; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nTzLFTrT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB3181F00893;
-	Tue,  2 Jun 2026 18:18:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DegjCoFi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 465BF1F00899;
+	Tue,  2 Jun 2026 18:21:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780424305;
-	bh=tDyACb5/KqIGSD/zVzhz+P1a4GYNHCqoT3JaADnFHhQ=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=nTzLFTrTFDNrds9z+BHs394zIpMQnncSZ4LXYu1cjVIecgdX4KfmqViJq75KQHnuK
-	 abGBei3kUWObVS5dyh9mXuz/K5Fam0en2eakjVz/HigNAtrrNMiKcM8y1XZ554HLPF
-	 4Ak4VGu63ZFHb6m3S/mvcQOViokzTcoWHewkWPfmS1QNHvpiHVeomNowhbIFYRWbsv
-	 7KumAtMzFLELe/cAzhLLDVPj6BbSQJSphC1PbbT+HrKjTxlheI12ZAyyZkQi+wyq2C
-	 1c/8QxH7mL4uPjYRAMQqivEvJX3FcdLJ1VD4RbAph4syzrxg2BYhJoMqH/xgNTgjei
-	 lqyacgx2jzZWg==
-Date: Tue, 2 Jun 2026 11:18:23 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Xin Long <lucien.xin@gmail.com>
-Cc: network dev <netdev@vger.kernel.org>, quic@lists.linux.dev,
- davem@davemloft.net, Eric Dumazet <edumazet@google.com>, Paolo Abeni
- <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Stefan Metzmacher
- <metze@samba.org>, Moritz Buhl <mbuhl@openbsd.org>, Tyler Fanelli
- <tfanelli@redhat.com>, Pengtao He <hepengtao@xiaomi.com>, Thomas Dreibholz
- <dreibh@simula.no>, linux-cifs@vger.kernel.org, Steve French
- <smfrench@gmail.com>, Namjae Jeon <linkinjeon@kernel.org>, Tom Talpey
- <tom@talpey.com>, kernel-tls-handshake@lists.linux.dev, Chuck Lever
- <chuck.lever@oracle.com>, Jeff Layton <jlayton@kernel.org>, Steve Dickson
- <steved@redhat.com>, Hannes Reinecke <hare@suse.de>, Alexander Aring
- <aahringo@redhat.com>, David Howells <dhowells@redhat.com>, Matthieu Baerts
- <matttbe@kernel.org>, John Ericson <mail@johnericson.me>, Cong Wang
- <xiyou.wangcong@gmail.com>, "D . Wythe" <alibuda@linux.alibaba.com>, Jason
- Baron <jbaron@akamai.com>, illiliti <illiliti@protonmail.com>, Sabrina
- Dubroca <sd@queasysnail.net>, Marcelo Ricardo Leitner
- <marcelo.leitner@gmail.com>, Daniel Stenberg <daniel@haxx.se>, Andy
- Gospodarek <andrew.gospodarek@broadcom.com>, mef@scarletmail.rutgers.edu,
- paul@jakma.org
-Subject: Re: [PATCH net-next v12 00/15] net: introduce QUIC infrastructure
- and core subcomponents
-Message-ID: <20260602111823.0b1129d6@kernel.org>
-In-Reply-To: <CADvbK_fBbLCwY61HXsNeGCA8MhiBKcbvE0BvSZppohJgtXO+2g@mail.gmail.com>
-References: <cover.1780232930.git.lucien.xin@gmail.com>
-	<CADvbK_fBbLCwY61HXsNeGCA8MhiBKcbvE0BvSZppohJgtXO+2g@mail.gmail.com>
+	s=k20260515; t=1780424506;
+	bh=AwhvWq8jq32F10Q19a4FxceijCZmhX/vQjsozC4t1s4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=DegjCoFiSu9OvXPzaRGFpo3n++/0dm6YgsyPsSyLwCLGAh67cNkP1rH6J61WgSTju
+	 14HFz7mI3ON8zsCh6PmM5xma3B2JvruEb8Wtky8T/YyPBgSEP079giZORTTLcKEXWD
+	 bvlqHIUgJPBigGDX83mwgBoCHI5pJZQ0O2G6BpBdkxTyrDa6ibuyv4vo3KgKV+r7o9
+	 KBXdiIRFP9qNBSi54gHiENUlySEm9kV9Hg4vRvcs1sMBKu7QIfZqHvG+DmNCOrn+H9
+	 VfoXWO5zlrFSYMQ9wpI+ir/GoTthA9g+9Eun490QnxvU+JGYVpbtrZ1NfO2ga7GdAM
+	 02T4axV+shgig==
+From: Sasha Levin <sashal@kernel.org>
+To: Li hongliang <1468888505@139.com>,
+	gregkh@linuxfoundation.org,
+	stable@vger.kernel.org,
+	jk@codeconstruct.com.au
+Cc: Sasha Levin <sashal@kernel.org>,
+	patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	matt@codeconstruct.com.au,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH 6.18.y] net: mctp: ensure our nlmsg responses are initialised
+Date: Tue,  2 Jun 2026 14:21:24 -0400
+Message-ID: <20260602180900.mctp-nlmsg-reply@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260602073428.2865362-1-1468888505@139.com>
+References: <20260602073428.2865362-1-1468888505@139.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Tue, 2 Jun 2026 09:12:30 -0400 Xin Long wrote:
-> Note: I've run Sashiko on this patchset many times locally over the past
-> month and addressed all the real issues it found. I don't see any new real
-> issues being reported on:
+On Tue, Jun 02, 2026 at 03:34:28PM +0800, Li hongliang wrote:
+> [PATCH 6.18.y] net: mctp: ensure our nlmsg responses are initialised
 
-Coccinelle had a report tho:
+Thanks. All five per-branch submissions (backports of upstream
+a6a9bc544b67) are now queued.
 
-The NIPA CI coccicheck run flagged a new Coccinelle warning introduced by
-this patch:
-
-  net/quic/crypto.c:1164:13-20: WARNING opportunity for kmemdup
-
-At line 1164 of the newly introduced net/quic/crypto.c, there is a
-kmalloc() call immediately followed by a memcpy() into the allocated
-buffer.  Coccinelle's memdup checker suggests replacing this two-step
-pattern with a single kmemdup() call, which is the preferred kernel idiom.
-
-The fix is straightforward - replacing:
-
-  p = kmalloc(len, gfp);
-  if (!p)
-      return -ENOMEM;
-  memcpy(p, src, len);
-
-with:
-
-  p = kmemdup(src, len, gfp);
-  if (!p)
-      return -ENOMEM;
-
-Please update the patch to use kmemdup() at that location.
+-- 
+Thanks,
+Sasha
