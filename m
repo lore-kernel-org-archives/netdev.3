@@ -1,48 +1,48 @@
 Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09F853F1664;
-	Tue,  2 Jun 2026 13:56:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91CA03E8C67;
+	Tue,  2 Jun 2026 13:56:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780408566; cv=none; b=Rm1zeEH/kVJRtF8qoimU5RkPnGBTtKRNP96UpNdYK5cMAzALXVyYTvt2jnkQIXEB1KDjba7l8DX5ma7b9rP6HTnrul6E7U5b0bczQVjVQiCIn27/SXhE4zXkswX8Sfhq2fAKOYmyMUc/OQq/UrH9x2eSwuiMk05QCKib2kdKkFo=
+	t=1780408578; cv=none; b=UYmqvbrsyLFIKjxBBDpmLxCxKEWHbo8VnOpUIphbsvx/sPCBKIbZA02eBeaBn2lDka38O+taz1ydJMYNtpogDXfdOhLvJIrBLLkz/yruYMaM6D/ez5lIKRZa1GHNEKRjAfH35KmxYRb69KirF8ePfTWYBvaiTTzxFWqnueZlNBQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780408566; c=relaxed/simple;
-	bh=WgIJfF4VzgzMuhe5np7VaeTq2JXhbWYRdnpTgTNXlfE=;
+	s=arc-20240116; t=1780408578; c=relaxed/simple;
+	bh=T6GZWKC3uW7mNQNk5jBWXHtsXd5yu5Fv/Tvn33AYmP4=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QdgX+ElYIlyDlbF1hPtLQ7Im0CcYsUweLIm/JwUw+pqAUY1TuUeniWDlfiEjzgNUsPwQixZEz4W2j/euPPIKR3b/5dgyGf5Bf/c2jK4IbMg0BnQP8C6CxT+J/84JsFBLLLBI0wth5dFy/L+M/Nij87Mvsw1pman3ygAJzTvQZ8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=M2k7WLsx; arc=none smtp.client-ip=67.231.156.173
+	 MIME-Version:Content-Type; b=rteNhMGCpCE4EK5uT/vw76+X7aIJc+/Df+fL5GxvCmiShHRddiZS9x/NS2j41hWHL8pMYGKuMmhFKGNohDocf1MamQhRRUszulCyCunIXezaheMNpszqefyNXeeqAfxpJucgSZScTDkkoR22od4l4KBhrvxBqktQDEUGPWrXIjI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=PI5AUJx2; arc=none smtp.client-ip=67.231.156.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="M2k7WLsx"
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="PI5AUJx2"
 Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
-	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6527C5gD1222214;
-	Tue, 2 Jun 2026 06:55:48 -0700
+	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65270hOp1231225;
+	Tue, 2 Jun 2026 06:55:58 -0700
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pfpt0220; bh=k
-	U3B9inqHJp1PXKQDC3a3ZwqG7Mcvwr9n6RN79Oh68c=; b=M2k7WLsx1YjUc2KFt
-	WD71Bu4tyUG1sXX/hWL4ke37X3NlX7HUIJb7uih6rblKYMN5pEwWneJwVxXXR0Bz
-	9sn0/Sj2ECaKB/3/yntMT1IclKGn9kTCZwnwxbWyp2XW2rzYVcsUmaraI4C48Jfd
-	lNfc+5pw9zAPLzYK7kv1nh+6mgNcMXjNDP9YhOlJCNZBqqoheFS2yOY8wTwxiZxQ
-	pGSJ9K3UgMP9PtERt+mgI9AgBN64hQtl0lfEVJaim8qlGsRw1ZTpUiBnHVYbR2ER
-	jET8eM/zVE2cz8qXfUmQc9ulcCyQLwx/Sire16Y9mQ5a20FpXz0ZF3Pfo+Gga/Yx
-	PlOew==
-Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
-	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4ega3b8qbk-1
+	:message-id:mime-version:references:subject:to; s=pfpt0220; bh=f
+	uzL5qEzoyKxHbXiSjZ3tCBg/DxI3fe+ztrGaPgzJS8=; b=PI5AUJx2ZcRgCJq0P
+	PZHetT3wLxspjdlrprN0aBaQodnL58YjmiVUkyysv4m1pVS7z7z6mfsW8sYxvWOu
+	O9oE7FfQdm4QRUgut8UYMghtkgxuYXwJG1LJqzPblX3f0gQ98I7ngdt96Kwdp9Uu
+	7MjFZH1riHQxnx8JpGM+2xJ+x2kooQ7k3r9uwa29lpEJzx0Qi65XVD9EtZaX4gFi
+	lO/b72cvjuo5WiDyzttgmvanGw7xf/N5KJEr9r1cOjQdmspMcQXaZLvHHTedN2z7
+	uddwEJACFdVc4H/OTXuvAgKF6ITZZj8udpikhAFx5H+8wb+8ItkSrGD0S7fll8/s
+	OHicQ==
+Received: from dc5-exch05.marvell.com ([199.233.59.128])
+	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4ega3b8qbw-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 02 Jun 2026 06:55:48 -0700 (PDT)
-Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
- DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
+	Tue, 02 Jun 2026 06:55:58 -0700 (PDT)
+Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
+ DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Tue, 2 Jun 2026 06:55:47 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
- (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Tue, 2 Jun 2026 06:55:47 -0700
+ 15.2.1544.25; Tue, 2 Jun 2026 06:55:57 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
+ (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
+ Transport; Tue, 2 Jun 2026 06:55:57 -0700
 Received: from BG-LT92649.marvell.com (unknown [10.193.71.86])
-	by maili.marvell.com (Postfix) with ESMTP id 33F993F7062;
-	Tue,  2 Jun 2026 06:55:42 -0700 (PDT)
+	by maili.marvell.com (Postfix) with ESMTP id 40F573F7062;
+	Tue,  2 Jun 2026 06:55:52 -0700 (PDT)
 From: <sukhdeeps@marvell.com>
 To: <netdev@vger.kernel.org>
 CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
@@ -50,9 +50,9 @@ CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
         <horms@kernel.org>, <vadim.fedorenko@linux.dev>,
         Sukhdeep Singh
 	<sukhdeeps@marvell.com>
-Subject: [PATCH net-next v4 9/12] net: atlantic: extend hw_ops and TX descriptor  for AQC113 PTP
-Date: Tue, 2 Jun 2026 19:24:49 +0530
-Message-ID: <20260602135452.516-10-sukhdeeps@marvell.com>
+Subject: [PATCH net-next v4 11/12] net: atlantic: add AQC113 TX timestamp polling and PTP TX classification
+Date: Tue, 2 Jun 2026 19:24:51 +0530
+Message-ID: <20260602135452.516-12-sukhdeeps@marvell.com>
 X-Mailer: git-send-email 2.52.0.windows.1
 In-Reply-To: <20260602135452.516-1-sukhdeeps@marvell.com>
 References: <20260602135452.516-1-sukhdeeps@marvell.com>
@@ -64,227 +64,185 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjAyMDEzMyBTYWx0ZWRfX3jHFmjfzItif
- PiNuAXSWOmSwNMfKuUoyasTX2CH17J7HsM+ZiSUFIU4mepe00NAdPi58D0REodLZ1EQUhWsdvOl
- fdUGuoRtQsmqgD68ckX4WwWI+Uv7OitWgSQnT8azvDAf08k9LBJPWiUkDUYF/QrDivL90FgFW4C
- o+HdcgnL1u4f72inuN+mH5iRVe17+BfWmIyzCjF+gaqY+8z6k1xWzeZK8XQrGQMkEaz1s5ucogu
- rqxr1cdBA0qpRm7MKipcFb3D7S925cnne4sv5ZsZZF6HyXVsnaEQAJPQldbfJYrHNDBKUlzDdXA
- MIOGfsOlqLHlT4CTbmTZknQD3lat2ZCtc83Rz+Q/QjrDPA1lLkgENHgP/YIUaod1NsNiIitEIPD
- Mhv2Z4aF5QMUHL0YvrdX9835UEMM+SkscNyskVhHU2j3SKg447aLskTrdUyVrXlNAlyMzBtGTVc
- fHA7h53nOrbw6rW9mHg==
-X-Authority-Analysis: v=2.4 cv=cLjQdFeN c=1 sm=1 tr=0 ts=6a1ee0e4 cx=c_pps
- a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjAyMDEzMyBTYWx0ZWRfXy9/wU5PN0p4u
+ Zw42kbRZmn7VBnBCFaxIVRkB1Xbg3gj7Pgrz0pEgCNoeQ4cRYyW3+4hT0vtXW3IbSLotRrbbKeH
+ j1mlXhQ0vPhGXC3neACz45S+ZJ6OSJr9a1cjygWFubzT2xjqDYAu9m/Pb6RiDavK/6cJOSk9bJf
+ NJJs5vxi3ihT4hfM7bZ3IoxMikVwIxVSaIpn7yTM1Mi1tO6ZsS8roVF/NUNJB6VDvRc+eTgYRns
+ iRvnY7LaHQZBkhXMBhtFUF5R9G0u9J2IiMO1r3I0eqeRneZaDGlWIxXeKiSlJrWCgz0BAtSWvvE
+ LjDOlyjnaVpwEn7chU6xQUyGctSe1AmI3kLxQMUlOSqXr7eS7/U3c2lrjvQEeKv11EXeJCneLgf
+ cYWItmfrnMt7m8xIXZeAHQz/FRi/BzDnPksjlLw4IElOD/fNaL9gamSkG0o3LSe00mj3LM8haQJ
+ +e0miHLPZB3DhhnJMvA==
+X-Authority-Analysis: v=2.4 cv=cLjQdFeN c=1 sm=1 tr=0 ts=6a1ee0ee cx=c_pps
+ a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
  a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
- a=QXcCYyLzdtTjyudCfB6f:22 a=M5GUcnROAAAA:8 a=hiUK1oAcT578BJWSq0gA:9
+ a=QXcCYyLzdtTjyudCfB6f:22 a=M5GUcnROAAAA:8 a=N-uMVKWTPtX7_nDEHIcA:9
  a=OBjm3rFKGHvpk9ecZwUJ:22
-X-Proofpoint-ORIG-GUID: Gm_tf3kGcPcMoFlRolhtDPofDxbkFsmj
-X-Proofpoint-GUID: Gm_tf3kGcPcMoFlRolhtDPofDxbkFsmj
+X-Proofpoint-ORIG-GUID: F_2YyOnmfG5vn2ZbhbXZxYZJb6W6_dx1
+X-Proofpoint-GUID: F_2YyOnmfG5vn2ZbhbXZxYZJb6W6_dx1
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
  definitions=2026-06-02_02,2026-05-28_03,2025-10-01_01
 
 From: Sukhdeep Singh <sukhdeeps@marvell.com>
 
-Extend the aq_hw_ops interface with new function pointers required for
-PTP support on AQC113:
-- enable_ptp: enable/disable PTP counter with clock selection
-- hw_ring_tx_ptp_get_ts: read TX timestamp from descriptor writeback
-- hw_tx_ptp_ring_init/hw_rx_ptp_ring_init: per-ring PTP initialization
-- hw_get_clk_sel: query active TSG clock selection
+aq_ring.h / aq_ring.c:
+- Add ptp_ts_deadline field to aq_ring_s to track TX timestamp timeout.
+- In aq_ring_tx_clean(): when hw_ring_tx_ptp_get_ts() returns 0 (HW not
+  yet written back the timestamp), clear buff->is_mapped and buff->pa
+  before breaking to prevent double dma_unmap on retry.  When
+  ptp_ts_deadline expires, clear request_ts and free the skb via
+  dev_kfree_skb_any() to unblock the ring if HW never delivers the
+  timestamp.
 
-Update existing hw_ops signatures to support AQC113 dual-clock
-architecture:
-- hw_gpio_pulse: add clk_sel and hightime parameters
-- hw_extts_gpio_enable: add channel parameter
+aq_main.c:
+- Add IPv6 PTP packet detection in aq_ndev_start_xmit() using
+  ipv6_hdr()->nexthdr for ETH_P_IPV6 frames, steering them through
+  aq_ptp_xmit() alongside the existing IPv4 path.
+- Use PTP_EV_PORT/PTP_GEN_PORT constants instead of magic numbers 319/320.
+- Remove stale aq_ndev_open() PTP call that was moved to aq_nic_start().
 
-Add PTP-related hardware defines:
-- AQ_HW_TXD_CTL_TS_EN/TS_TSG0 for TX descriptor timestamp control
-- AQ2_HW_PTP_COUNTER_HZ for AQC113 TSG clock frequency
-- AQ_HW_PTP_IRQS for PTP interrupt vector accounting
-- PTP enable flags (L2/L4) and TSG clock selection constants
-
-Add request_ts and clk_sel bitfields to aq_ring_buff_s for per-packet
-TX timestamp request tracking.
-
-Update hw_atl_b0.c (AQC107) implementations:
-- Adapt gpio_pulse and extts_gpio_enable to new signatures
-- Add TX descriptor timestamp bits for AQC113 when ANTIGUA chip
-  feature is detected
+aq_nic.c:
+- Move aq_reapply_rxnfc_all_rules() and aq_filters_vlans_update() into
+  aq_nic_start() after hardware init, replacing the duplicate calls that
+  were removed from aq_ndev_open().
 
 Signed-off-by: Sukhdeep Singh <sukhdeeps@marvell.com>
 ---
- .../net/ethernet/aquantia/atlantic/aq_hw.h    | 34 +++++++++++++++++--
- .../net/ethernet/aquantia/atlantic/aq_ptp.c   |  4 +--
- .../net/ethernet/aquantia/atlantic/aq_ring.h  |  4 ++-
- .../aquantia/atlantic/hw_atl/hw_atl_b0.c      | 15 ++++++--
- 4 files changed, 48 insertions(+), 9 deletions(-)
+ .../net/ethernet/aquantia/atlantic/aq_main.c  | 30 ++++++++++---------
+ .../net/ethernet/aquantia/atlantic/aq_nic.c   |  8 +++++
+ .../net/ethernet/aquantia/atlantic/aq_ring.c  | 23 +++++++++++++-
+ .../net/ethernet/aquantia/atlantic/aq_ring.h  |  1 +
+ 4 files changed, 47 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/net/ethernet/aquantia/atlantic/aq_hw.h b/drivers/net/ethernet/aquantia/atlantic/aq_hw.h
-index 57ea59026a2c..0ba29b8f95ab 100644
---- a/drivers/net/ethernet/aquantia/atlantic/aq_hw.h
-+++ b/drivers/net/ethernet/aquantia/atlantic/aq_hw.h
-@@ -19,6 +19,9 @@
- #define AQ_HW_MAC_COUNTER_HZ   312500000ll
- #define AQ_HW_PHY_COUNTER_HZ   160000000ll
+diff --git a/drivers/net/ethernet/aquantia/atlantic/aq_main.c b/drivers/net/ethernet/aquantia/atlantic/aq_main.c
+index 4ef4fe64b8ac..1da14786fe5c 100644
+--- a/drivers/net/ethernet/aquantia/atlantic/aq_main.c
++++ b/drivers/net/ethernet/aquantia/atlantic/aq_main.c
+@@ -19,8 +19,10 @@
+ #include <linux/netdevice.h>
+ #include <linux/module.h>
+ #include <linux/ip.h>
++#include <linux/ipv6.h>
+ #include <linux/udp.h>
+ #include <net/pkt_cls.h>
++#include <linux/ptp_classify.h>
+ #include <net/pkt_sched.h>
+ #include <linux/filter.h>
  
-+#define AQ_HW_TXD_CTL_TS_EN       0x40000000U
-+#define AQ_HW_TXD_CTL_TS_TSG0     0x80000000U
+@@ -68,14 +70,6 @@ int aq_ndev_open(struct net_device *ndev)
+ 	if (err < 0)
+ 		goto err_exit;
+ 
+-	err = aq_reapply_rxnfc_all_rules(aq_nic);
+-	if (err < 0)
+-		goto err_exit;
+-
+-	err = aq_filters_vlans_update(aq_nic);
+-	if (err < 0)
+-		goto err_exit;
+-
+ 	err = aq_nic_start(aq_nic);
+ 	if (err < 0) {
+ 		aq_nic_stop(aq_nic);
+@@ -113,12 +107,20 @@ static netdev_tx_t aq_ndev_start_xmit(struct sk_buff *skb, struct net_device *nd
+ 		 * and hardware PTP design of the chip. Otherwise ptp stream
+ 		 * will fail to sync
+ 		 */
+-		if (unlikely(skb_shinfo(skb)->tx_flags & SKBTX_HW_TSTAMP) ||
+-		    unlikely((ip_hdr(skb)->version == 4) &&
+-			     (ip_hdr(skb)->protocol == IPPROTO_UDP) &&
+-			     ((udp_hdr(skb)->dest == htons(319)) ||
+-			      (udp_hdr(skb)->dest == htons(320)))) ||
+-		    unlikely(eth_hdr(skb)->h_proto == htons(ETH_P_1588)))
++		if (unlikely(skb->protocol == htons(ETH_P_IP) &&
++			     ip_hdr(skb)->protocol == IPPROTO_UDP &&
++			     (udp_hdr(skb)->dest == htons(PTP_EV_PORT) ||
++			      udp_hdr(skb)->dest == htons(PTP_GEN_PORT))))
++			return aq_ptp_xmit(aq_nic, skb);
 +
- enum aq_tc_mode {
- 	AQ_TC_MODE_INVALID = -1,
- 	AQ_TC_MODE_8TCS,
-@@ -38,6 +41,8 @@ enum aq_tc_mode {
- 
- #define AQ_FRAC_PER_NS 0x100000000LL
- 
-+#define AQ2_HW_PTP_COUNTER_HZ   156250000ll
++		/* PTP over IPv6 does not use extension headers */
++		if (unlikely(skb->protocol == htons(ETH_P_IPV6) &&
++			     ipv6_hdr(skb)->nexthdr == IPPROTO_UDP &&
++			     (udp_hdr(skb)->dest == htons(PTP_EV_PORT) ||
++			      udp_hdr(skb)->dest == htons(PTP_GEN_PORT))))
++			return aq_ptp_xmit(aq_nic, skb);
 +
- /* Used for rate to Mbps conversion */
- #define AQ_MBPS_DIVISOR         125000 /* 1000000 / 8 */
++		if (unlikely(eth_hdr(skb)->h_proto == htons(ETH_P_1588)))
+ 			return aq_ptp_xmit(aq_nic, skb);
+ 	}
+ #endif
+diff --git a/drivers/net/ethernet/aquantia/atlantic/aq_nic.c b/drivers/net/ethernet/aquantia/atlantic/aq_nic.c
+index ef9447810071..09c90c969fb1 100644
+--- a/drivers/net/ethernet/aquantia/atlantic/aq_nic.c
++++ b/drivers/net/ethernet/aquantia/atlantic/aq_nic.c
+@@ -496,6 +496,14 @@ int aq_nic_start(struct aq_nic_s *self)
+ 			goto err_exit;
+ 	}
  
-@@ -109,6 +114,7 @@ struct aq_stats_s {
- #define AQ_HW_IRQ_MSIX    3U
- 
- #define AQ_HW_SERVICE_IRQS   1U
-+#define AQ_HW_PTP_IRQS       1U
- 
- #define AQ_HW_POWER_STATE_D0   0U
- #define AQ_HW_POWER_STATE_D3   3U
-@@ -157,6 +163,15 @@ enum aq_priv_flags {
- 	AQ_HW_LOOPBACK_PHYEXT_SYS,
- };
- 
-+enum {
-+	AQ_HW_PTP_DISABLE = 0,
-+	AQ_HW_PTP_L2_ENABLE = BIT(1),
-+	AQ_HW_PTP_L4_ENABLE = BIT(2),
-+};
++	err = aq_reapply_rxnfc_all_rules(self);
++	if (err < 0)
++		goto err_exit;
 +
-+#define ATL_TSG_CLOCK_SEL_0 0
-+#define ATL_TSG_CLOCK_SEL_1 1
++	err = aq_filters_vlans_update(self);
++	if (err < 0)
++		goto err_exit;
 +
- #define AQ_HW_LOOPBACK_MASK	(BIT(AQ_HW_LOOPBACK_DMA_SYS) |\
- 				 BIT(AQ_HW_LOOPBACK_PKT_SYS) |\
- 				 BIT(AQ_HW_LOOPBACK_DMA_NET) |\
-@@ -198,6 +213,7 @@ struct aq_hw_s {
- 	u32 rpc_tid;
- 	struct hw_atl_utils_fw_rpc rpc;
- 	s64 ptp_clk_offset;
-+	s8 clk_select;
- 	u16 phy_id;
- 	void *priv;
- };
-@@ -323,11 +339,15 @@ struct aq_hw_ops {
+ 	err = aq_ptp_ring_start(self);
+ 	if (err < 0)
+ 		goto err_exit;
+diff --git a/drivers/net/ethernet/aquantia/atlantic/aq_ring.c b/drivers/net/ethernet/aquantia/atlantic/aq_ring.c
+index e270327e47fd..dd1af3deb2d1 100644
+--- a/drivers/net/ethernet/aquantia/atlantic/aq_ring.c
++++ b/drivers/net/ethernet/aquantia/atlantic/aq_ring.c
+@@ -311,6 +311,27 @@ bool aq_ring_tx_clean(struct aq_ring_s *self)
+ 		if (likely(!buff->is_eop))
+ 			goto out;
  
- 	int (*hw_ts_to_sys_clock)(struct aq_hw_s *self, u64 ts, u64 *time);
- 
--	int (*hw_gpio_pulse)(struct aq_hw_s *self, u32 index, u64 start,
--			     u32 period);
-+	int (*hw_gpio_pulse)(struct aq_hw_s *self, u32 index,
-+			     u32 clk_sel, u64 start,
-+			     u32 period, u32 hightime);
- 
- 	int (*hw_extts_gpio_enable)(struct aq_hw_s *self, u32 index,
--				    u32 enable);
-+				    u32 channel, int enable);
++		if (unlikely(buff->request_ts) &&
++		    self->aq_nic->aq_hw_ops->hw_ring_tx_ptp_get_ts) {
++			u64 ts = self->aq_nic->aq_hw_ops->hw_ring_tx_ptp_get_ts(self);
 +
-+	void (*enable_ptp)(struct aq_hw_s *self, unsigned int param,
-+			   int enable);
- 
- 	int (*hw_get_sync_ts)(struct aq_hw_s *self, u64 *ts);
- 
-@@ -337,6 +357,14 @@ struct aq_hw_ops {
- 	int (*extract_hwts)(struct aq_hw_s *self, u8 *p, unsigned int len,
- 			    u64 *timestamp);
- 
-+	u64 (*hw_ring_tx_ptp_get_ts)(struct aq_ring_s *ring);
++			if (!ts) {
++				if (time_after(jiffies,
++					       self->ptp_ts_deadline)) {
++					/* Timeout: free skb, unblock ring */
++					buff->request_ts = 0;
++					dev_kfree_skb_any(buff->skb);
++					buff->skb = NULL;
++					goto out;
++				} else {
++					buff->is_mapped = 0;
++					buff->pa = 0U;
++					break;
++				}
++			}
 +
-+	int (*hw_tx_ptp_ring_init)(struct aq_hw_s *self,
-+				   struct aq_ring_s *aq_ring);
-+	int (*hw_rx_ptp_ring_init)(struct aq_hw_s *self,
-+				   struct aq_ring_s *aq_ring);
-+	u32 (*hw_get_clk_sel)(struct aq_hw_s *self);
-+
- 	int (*hw_set_fc)(struct aq_hw_s *self, u32 fc, u32 tc);
++			aq_ptp_tx_hwtstamp(self->aq_nic, ts);
++		}
+ 		if (buff->skb) {
+ 			u64_stats_update_begin(&self->stats.tx.syncp);
+ 			++self->stats.tx.packets;
+@@ -570,7 +591,7 @@ static int __aq_ring_rx_clean(struct aq_ring_s *self, struct napi_struct *napi,
+ 							    self->hw_head);
  
- 	int (*hw_set_loopback)(struct aq_hw_s *self, u32 mode, bool enable);
-diff --git a/drivers/net/ethernet/aquantia/atlantic/aq_ptp.c b/drivers/net/ethernet/aquantia/atlantic/aq_ptp.c
-index 9df8918216f6..7486a28d7ff8 100644
---- a/drivers/net/ethernet/aquantia/atlantic/aq_ptp.c
-+++ b/drivers/net/ethernet/aquantia/atlantic/aq_ptp.c
-@@ -380,7 +380,7 @@ static int aq_ptp_hw_pin_conf(struct aq_nic_s *aq_nic, u32 pin_index, u64 start,
- 	 */
- 	mutex_lock(&aq_nic->fwreq_mutex);
- 	aq_nic->aq_hw_ops->hw_gpio_pulse(aq_nic->aq_hw, pin_index,
--					 start, (u32)period);
-+					 0, start, (u32)period, 0);
- 	mutex_unlock(&aq_nic->fwreq_mutex);
- 
- 	return 0;
-@@ -454,7 +454,7 @@ static void aq_ptp_extts_pin_ctrl(struct aq_ptp_s *aq_ptp)
- 
- 	if (aq_nic->aq_hw_ops->hw_extts_gpio_enable)
- 		aq_nic->aq_hw_ops->hw_extts_gpio_enable(aq_nic->aq_hw, 0,
--							enable);
-+							0, enable);
- }
- 
- static int aq_ptp_extts_pin_configure(struct ptp_clock_info *ptp,
+ 				if (unlikely(!is_rsc_completed) ||
+-						frag_cnt > MAX_SKB_FRAGS) {
++				    frag_cnt > MAX_SKB_FRAGS) {
+ 					err = 0;
+ 					goto err_exit;
+ 				}
 diff --git a/drivers/net/ethernet/aquantia/atlantic/aq_ring.h b/drivers/net/ethernet/aquantia/atlantic/aq_ring.h
-index d627ace850ff..e578fe04d22c 100644
+index e578fe04d22c..a70b880ada67 100644
 --- a/drivers/net/ethernet/aquantia/atlantic/aq_ring.h
 +++ b/drivers/net/ethernet/aquantia/atlantic/aq_ring.h
-@@ -85,7 +85,9 @@ struct __packed aq_ring_buff_s {
- 			u32 is_error:1;
- 			u32 is_vlan:1;
- 			u32 is_lro:1;
--			u32 rsvd3:3;
-+			u32 request_ts:1;
-+			u32 clk_sel:1;
-+			u32 rsvd3:1;
- 			u16 eop_index;
- 			u16 rsvd4;
- 		};
-diff --git a/drivers/net/ethernet/aquantia/atlantic/hw_atl/hw_atl_b0.c b/drivers/net/ethernet/aquantia/atlantic/hw_atl/hw_atl_b0.c
-index c7895bfb2ecf..6c25ad264b19 100644
---- a/drivers/net/ethernet/aquantia/atlantic/hw_atl/hw_atl_b0.c
-+++ b/drivers/net/ethernet/aquantia/atlantic/hw_atl/hw_atl_b0.c
-@@ -736,6 +736,15 @@ int hw_atl_b0_hw_ring_tx_xmit(struct aq_hw_s *self, struct aq_ring_s *ring,
- 				txd->ctl |= HW_ATL_B0_TXD_CTL_CMD_WB;
- 				is_gso = false;
- 				is_vlan = false;
-+
-+				if (ATL_HW_IS_CHIP_FEATURE(self, ANTIGUA) &&
-+				    unlikely(buff->request_ts)) {
-+					txd->ctl |= AQ_HW_TXD_CTL_TS_EN;
-+					if (buff->clk_sel != ATL_TSG_CLOCK_SEL_1)
-+						txd->ctl |= AQ_HW_TXD_CTL_TS_TSG0;
-+					/* The only DD+TS is required */
-+					txd->ctl &= ~HW_ATL_B0_TXD_CTL_CMD_WB;
-+				}
- 			}
- 		}
- 		ring->sw_tail = aq_ring_next_dx(ring, ring->sw_tail);
-@@ -1323,8 +1332,8 @@ static int hw_atl_b0_adj_clock_freq(struct aq_hw_s *self, s32 ppb)
- 	return self->aq_fw_ops->send_fw_request(self, &fwreq, size);
- }
+@@ -154,6 +154,7 @@ struct aq_ring_s {
+ 	struct bpf_prog *xdp_prog;
+ 	enum atl_ring_type ring_type;
+ 	struct xdp_rxq_info xdp_rxq;
++	unsigned long ptp_ts_deadline;
+ };
  
--static int hw_atl_b0_gpio_pulse(struct aq_hw_s *self, u32 index,
--				u64 start, u32 period)
-+static int hw_atl_b0_gpio_pulse(struct aq_hw_s *self, u32 index, u32 clk_sel,
-+				u64 start, u32 period, u32 hightime)
- {
- 	struct hw_fw_request_iface fwreq;
- 	size_t size;
-@@ -1342,7 +1351,7 @@ static int hw_atl_b0_gpio_pulse(struct aq_hw_s *self, u32 index,
- }
- 
- static int hw_atl_b0_extts_gpio_enable(struct aq_hw_s *self, u32 index,
--				       u32 enable)
-+				       u32 channel, int enable)
- {
- 	/* Enable/disable Sync1588 GPIO Timestamping */
- 	aq_phy_write_reg(self, MDIO_MMD_PCS, 0xc611, enable ? 0x71 : 0);
+ struct aq_ring_param_s {
 -- 
 2.43.0
 
