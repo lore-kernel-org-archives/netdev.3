@@ -1,101 +1,144 @@
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 828D13CA487
-	for <netdev@vger.kernel.org>; Tue,  2 Jun 2026 23:07:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00AF83C873B;
+	Tue,  2 Jun 2026 23:10:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780441669; cv=none; b=FHg7hC8vpOxIagIzYAdVpDObVPbOXIM+GuGTnM4KuoljT3eVjJbETk1VqpSno5Xq0ELeZFhwzkXiS1+V2ja+M5izD4HQiXm8AGWWxjkAB0gifbRXmYHspu0KsOiqB2M8B6BA86NzVopRO3LzeGX9+y7Ht+49Daa1JkVM+ej5J7M=
+	t=1780441850; cv=none; b=KmfB+sib6eIXURHvMVSvkssPpM1qPt29fLGDVOzwvIQjScVZhy4U5aij+zsm/+tEd+LLz/FFXSIjsTi5o/qS+rBlEYB9XKltoWC8oHC09UDJ4dHjbSKxADimCUzUIWVq/5FPFPwLpfYKJVu6yxLGOyYyk+2+lSiBCNnUjUiWJAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780441669; c=relaxed/simple;
-	bh=5chq1ZYL6r9BXlem4E1EUr+5R5J1k5Q21LCWXDRISUM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qCC1hOjqG+o756LTgjvfhjidXKpoK3F+uHJ0RqRPS/0nNySufaMSxksNj0pBiqwX2hqCn4uTQTQA68xKMP/sMc8hdpMO2ehrkd+PjtJJKhu7ltSe8KwnbL3ldE3Rdk+0rz7MUj5cq04qGsjsPTPM0bwrNtZ/2etcN/uvlTcAmBc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=g0Qeljjj; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1780441850; c=relaxed/simple;
+	bh=3pzpK0BhcukEjX5uUD46kCcyRMN0l4LQ8gzMxHRxFZA=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=EHIj3xtTkLIu4Kiy04my4lnwn1Cb+XTPQK+Cr5oSn1HoNVoFGcsFLZe19NbOjbxEIJavA95tor/rsHdSjHGP8NMaH0TiNI6znOhV24WUJxepR/PRdiW5vv/B7J5Z8ipIEmBdO07ASNLwII6vq1X0DNsajACeSbZQCYhxAqXPzqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jcmk8jDp; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="g0Qeljjj"
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-490b12270b3so9716275e9.1
-        for <netdev@vger.kernel.org>; Tue, 02 Jun 2026 16:07:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780441667; x=1781046467; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=IvSaS68IPr55Kp5FHpvrg0n0LohiEL0S8pivrepEpA4=;
-        b=g0QeljjjZVRfch0Tv562TmOzSOJBhL8ujFnNlpdXl0x1fHoxAC80hk5vUbqtI6keb5
-         dN6GvIY+/6KPLAPt+nptAK3fOIQGMUpyiPeAvndNg/+gozsMl1uKdb38DDTdyjz2CKsf
-         P1W6WDQZF1/0B1qBjQ30EqXE7aq0QK9VRgE1FpZeLD09Et0PvqXZGbFjWX/f7K8PBxMZ
-         EIMxvsA1XP0bqYi8v7JJpcE8boyJ7SburJV5nC8F1mvObatl+7o9H2Vgt4QQvh86SU5+
-         7JLkm69aetHtPhoqjFK62BEHOIb1aItevXjVcnkfBNLI1pVeaxZ2ImvNnqLeOl+s6fnr
-         KYBg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780441667; x=1781046467;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=IvSaS68IPr55Kp5FHpvrg0n0LohiEL0S8pivrepEpA4=;
-        b=q+IyU89MokUllRrvLlevhI7SZjAAIQX9NImShKq9SVDcgFgUsl5Ot4Nvt+sunPhz8j
-         cO6km/bwkYz0d3h/4JOC9OghKKj3MbRRSH9XkOPIKZAaEmE3wpZNuXGoOIGhyz1fkpWt
-         ouxxA1u91/NruVithWLsEjrbN4DtRSWFBCsNvfB39pp0EVtJUymK4Yifn1157tIHsnAO
-         wIECTcw8Hrc7IomIh3QqAgKO0OohdZZipow+dv7Tzvli8yBXiI8h+qbxBSqz0OsRvXH5
-         8ZQiycbMla1MClQkNuYNu6qUholfoJdprGSNQ52mmAqmDhupmOPVLKLwd/in/8wZRA43
-         2ABw==
-X-Forwarded-Encrypted: i=1; AFNElJ9hJfb+epOU4OVM3tQsCZiAkWeUZOBOnkf5VwJqueX0k27PmHewnmawb5Bi4Q1NuHrZKF2Dgpo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy1a1ukYxuenztT9N35Nuq6Hkp7bzA2LXbf2tONNpCVa60cWXLz
-	/vPMf6siGcMUvBO/hWlwHsPgzlKS7uxzxk3Hp9eXZ2WxhckJabBo3m1c
-X-Gm-Gg: Acq92OH6x2KoiZViojGqo/dkdGZHSaBA6rTBAQ7nBMQMJNnh4deZYJOaEmcXpsh0jfb
-	3kGlnDqzahpk0Kz3/CyYZ+mjozAK6RQ93MwWluMwaKhggPPdoB9M4VUos2Escn3fYCChoryNHp4
-	4xbSk9/4oV4qw9tyEkN2AmJQDcMVUm4MKBydPlcy3CsVYSkcnA0ZOahIdL4c7I498UOSD8LfH21
-	k8HtJ2Iazd4k1DO7jQ4eUqIubEcxYypmDAtThL2/OysUxOHyC7qkipzqSmVyLWa7BQ8SGyPcCz7
-	MNiZO8x/n1IkHryKcKCrANMQRrmsyNcUC5C/DmkHx0S6xpKKculv+opldUtZFnxy2pu6/U4owrK
-	Gmndq8iAVnPwlnkf/aNSePK+l9PxcOfKLwdD0rubVKDxRnYhTFje/mtXmx+faa3So2m5m+Vkazz
-	+rpKZoYjq/6lAWl3wIXiwfN6BG1gGbaJLku/tjqMLe
-X-Received: by 2002:a05:600c:698c:b0:490:44eb:c1e7 with SMTP id 5b1f17b1804b1-490b60fdd10mr11320095e9.30.1780441666946;
-        Tue, 02 Jun 2026 16:07:46 -0700 (PDT)
-Received: from localhost ([212.73.77.104])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-490b7a71bb7sm357295e9.10.2026.06.02.16.07.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 02 Jun 2026 16:07:46 -0700 (PDT)
-From: Askar Safin <safinaskar@gmail.com>
-To: pfalcato@suse.de
-Cc: akpm@linux-foundation.org,
-	axboe@kernel.dk,
-	brauner@kernel.org,
-	david@kernel.org,
-	dhowells@redhat.com,
-	hch@infradead.org,
-	jack@suse.cz,
-	linux-api@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	miklos@szeredi.hu,
-	netdev@vger.kernel.org,
-	patches@lists.linux.dev,
-	safinaskar@gmail.com,
-	torvalds@linux-foundation.org,
-	viro@zeniv.linux.org.uk,
-	willy@infradead.org
-Subject: Re: [PATCH 0/3] vmsplice: make vmsplice a trivial wrapper for preadv2/pwritev2
-Date: Wed,  3 Jun 2026 02:07:30 +0300
-Message-ID: <20260602230730.138904-1-safinaskar@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <ah9Yle5pd6mD9Ugr@pedro-suse.lan>
-References: <ah9Yle5pd6mD9Ugr@pedro-suse.lan>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jcmk8jDp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 970DD1F00893;
+	Tue,  2 Jun 2026 23:10:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780441848;
+	bh=eZla307qi7URVgkXjVPBSU2R4a5offjxZ+vdElW9STI=;
+	h=From:Subject:Date:To:Cc;
+	b=jcmk8jDpAAj7xhKa7MENAp7nul88qPILP22AXaPPLiCereqfD1pcaSrBcL5wkd9MI
+	 +OPsBcb0/tG3Yd3222Nyyljgwh5cnbKXmlqqWLiFtWo7674q+c+9HmiJ0WZde0DlXB
+	 S37mPUtUudjr1NDdGDADcOhneZRRQqaS3t3dEDhuQ7y3IEl9It3mqpPgB7+F7RGS1o
+	 HDNSVULR5OFfUemr9qh0OAaVEkLq1rsPhU7AQLutzhpIerDr80MK/9r7PNFSTJOz84
+	 iW13Vr05JSBCIQfusScQCzgZPhYXaJG7kNcQWbuAB3E0tgHP7edAVDo9MdTCLiNP/x
+	 kTXi+ZxGalPTw==
+From: Linus Walleij <linusw@kernel.org>
+Subject: [PATCH net-next v4 0/5] net: dsa: microchip: Add support for
+ KSZ8995XA/KS8995XA
+Date: Wed, 03 Jun 2026 01:10:39 +0200
+Message-Id: <20260603-ks8995-to-ksz8-v4-0-e15149ef21e7@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/2XNwRKCIBAG4FdxOEcDKCqdeo+mg+GiZAMNkGM5v
+ nuoF8vb7ux+/z8iD06DR6dkRA567bU1cckOCZJtZRrAuo47YoTlhBOBO18KwXGwcfqUmHKVKiF
+ LVlCFIno6UHpYAi/IQMAGhoCu68W/bneQYc6bf1vtg3Xvpbuni1hraP5f01NMcEFqAiqrKq6yc
+ wfOwONoXbOk92zjGdt5Fj0vKJOklgIKvvPp1u/70+glT4nKORWlUD9+mqYvSQrnp0kBAAA=
+X-Change-ID: 20260509-ks8995-to-ksz8-15f3f9c8271f
+To: Woojung Huh <woojung.huh@microchip.com>, UNGLinuxDriver@microchip.com, 
+ Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Marek Vasut <marex@denx.de>, 
+ Simon Horman <horms@kernel.org>, Russell King <linux@armlinux.org.uk>
+Cc: netdev@vger.kernel.org, Woojung Huh <Woojung.Huh@microchip.com>, 
+ devicetree@vger.kernel.org, Linus Walleij <linusw@kernel.org>, 
+ Nicolai Buchwitz <nb@tipi-net.de>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+X-Mailer: b4 0.15.2
 
-Pedro Falcato <pfalcato@suse.de>:
-> (Askar, if I was too hostile, I do sincerely apologize.)
+This series breaks with the dated attempt to polish the old
+KS8995 driver, and instead implement support for the KS8995XA
+in the KSZ driver, and after that delete the old KS8995 driver.
 
-You did nothing wrong.
+The hardware clearly has the same ancestry, the KSZ8995XA is
+just a rebrand of the much older Micrel KX8995XA switch.
 
--- 
-Askar Safin
+The old drivers referce to "KS8995" was actually KS8995XA only,
+it never supported the sibling devices KS8995E or KS8995MA.
+This is reflected in this patch set.
+
+Add new compatibles, add special code paths for the KSZ8995XA
+and add a new tagger for the special front tag found in the
+KSZ8995XA.
+
+The patches were tested with the Actiontec MI424WR rev D (which
+has the KS8995XA) and OpenWrt as userspace.
+
+Signed-off-by: Linus Walleij <linusw@kernel.org>
+---
+Changes in v4:
+- Create a stub symbol for NET_DSA_KS8995 to phase over users to
+  the new driver.
+- Link to v3: https://patch.msgid.link/20260526-ks8995-to-ksz8-v3-0-c530f651989f@kernel.org
+
+Changes in v3:
+- Rebase on net-next again, moving target!
+- Fix a netdev_info() print in the tagger to be netdev_debug()
+- Add net/dsa/tag_ks8995.c to MAINTAINERS
+- Link to v2: https://patch.msgid.link/20260522-ks8995-to-ksz8-v2-0-5712c0dc9e75@kernel.org
+
+Changes in v2:
+- Avoid trying to configure TOS priority settings (DCB) on the KSZ8995XA.
+  It does have some support for this, but let's add that later.
+- Pick up Krzysztof's ACK on the new DT bindings.
+- Reset the KSZ8995XA by disabling and enabling the switch like the old
+  driver does.
+- Move mutually exclusive Kconfig over to the patch introducing the
+  old Micrel compatibles to the Microchip ksz_spi driver.
+  (this complaint from Sashiko.)
+- Use __be16 instead of u16 when casting into the SKB in the tagger
+  (this complaint from Sashiko.)
+- Do not modify the hdr->h_vlan_TCI if no hardware accelerated tag
+  is detected, it would get nullified. Use whatever the Linux network stack
+  assigned to TCI there.
+  (this complaint from Sashiko.)
+- Avoid dereference of NULL in debug prints in the tagger.
+  (this complaint from Sashiko.)
+- Ignored comment: Sashiko complains about ilog2(0) being potentially
+  undefined but that is clearly defined as 0 in the Linux kernel.
+- Link to v1: https://patch.msgid.link/20260516-ks8995-to-ksz8-v1-0-70d0ef4aa5f4@kernel.org
+
+---
+Linus Walleij (5):
+      net: dsa: microchip: Add fallback Micrel compatibles
+      dt-bindings: net: dsa: microchip: Add KSZ8995XA
+      net: dsa: tag_ks8995: Add the KS8995 tag handling
+      net: dsa: microchip: Support Microchip KSZ8995XA / KS8995XA
+      net: dsa: ks8995: Delete surplus driver
+
+ .../devicetree/bindings/net/dsa/microchip,ksz.yaml |   1 +
+ MAINTAINERS                                        |   1 +
+ drivers/net/dsa/Kconfig                            |  11 +-
+ drivers/net/dsa/Makefile                           |   1 -
+ drivers/net/dsa/ks8995.c                           | 857 ---------------------
+ drivers/net/dsa/microchip/Kconfig                  |   1 +
+ drivers/net/dsa/microchip/ksz8.c                   | 170 +++-
+ drivers/net/dsa/microchip/ksz8.h                   |   2 +
+ drivers/net/dsa/microchip/ksz8_reg.h               |   7 +
+ drivers/net/dsa/microchip/ksz_common.c             |  58 +-
+ drivers/net/dsa/microchip/ksz_common.h             |  11 +-
+ drivers/net/dsa/microchip/ksz_spi.c                |  33 +-
+ include/linux/platform_data/microchip-ksz.h        |   1 +
+ include/net/dsa.h                                  |   2 +
+ net/dsa/Kconfig                                    |   6 +
+ net/dsa/Makefile                                   |   1 +
+ net/dsa/tag_ks8995.c                               | 132 ++++
+ 17 files changed, 394 insertions(+), 901 deletions(-)
+---
+base-commit: 18b9f739d3f292925ca7f67ad63f3a4c0bbfad3d
+change-id: 20260509-ks8995-to-ksz8-15f3f9c8271f
+
+Best regards,
+--  
+Linus Walleij <linusw@kernel.org>
+
