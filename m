@@ -1,65 +1,81 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2CEA376A13;
-	Tue,  2 Jun 2026 19:59:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B51E256C61;
+	Tue,  2 Jun 2026 20:00:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780430398; cv=none; b=lNQshrQ8jD36u61JxSZMFdL5XB8fAMByuYnAUSQDiMqoOSuXlnRc4lmKQoVdF7D2ngTSVBS48LmjkJmrx7YDZIu1qNyhzpNo0ulJr/sGbgYuTFye5+57wRjSxE3W+jh+wCaRLSS/tNZuAqLfkPpAw22h13c3EcWbHyTzCaSwk3I=
+	t=1780430412; cv=none; b=a3rXicp1+B9FSe0vwD4cJRBJr5O5eQh5MXy5r/QHmIU6IC+ofQhmOTANj1E2solYTjYgi6V6yjLrJ0GEtChVWUyCzBCZf2xud7gIRxRQ/WoUPP3nfIEEHbSUk0WlbOx3y/TaGQW9hXY60l6SmMvqbxlrsd4biTCL02TpMrXqlNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780430398; c=relaxed/simple;
-	bh=ywSD0fPdkOV3PRi2wNsFq0uZ4W4kD8z3znRDzIGdc34=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lbrYrsWZlU+mzRj+d4KvLj8HlGeF5sS6kFPOFnOeuy5J5UN1MYgLk1+ZWiackx8Jl3dsMRN0qQwfUXFkCfvciCRFHysqxd3DIaHF0yBCmwBAs/hZ+e7FQqaMc4UXMVoyoq7HkX2u3Z4Vt9lvKII4PGpZUUX8SEjxYDmYTFhqKs0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ERsIXOq3; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780430412; c=relaxed/simple;
+	bh=Pbym3ateJqpycCCBrIFVaehkRAs3cpsr0FZ4JnFM4LM=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=fbB9JqtEEdTW3XwH4ZfZ9K4flkr0M6fJeePzz2tT+bO6NhkJBukU9G66vFAAASLCWnRa20glHZs5jfVMpfBsWtstO0jK5phgJaWemlzN2pww3fXTZedpnu+8iG6FNW9iFA7zN1bjiHlofEk7gVkuH5Lp+A3aXv4bqg7+t62mxbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Oj+61BOk; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ERsIXOq3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A7F21F00893;
-	Tue,  2 Jun 2026 19:59:55 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Oj+61BOk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 432631F00898;
+	Tue,  2 Jun 2026 20:00:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780430396;
-	bh=ywSD0fPdkOV3PRi2wNsFq0uZ4W4kD8z3znRDzIGdc34=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=ERsIXOq3+goH1skhNWCqoJdjeeyftXXtO2tXIn0yfN5hvK5dJhQm6YF6SZB1krrLJ
-	 ZTogZGUaJpc9GqmjNLzCBrJErPh/fRCk+gBhV3qj8WWn5AOXYJBgKA93/GjnvGDDY8
-	 aL4GeKKi8NBauFDtK8aoof5dQ8PxuSFQU9TlED2X4NAaW0L9+B5CGv3qzqzZCgplq7
-	 lIGKpdqLP9L7/2upys2x72kOQZK7/xkgjCMC+BJ5s7x0QFR1Wz1zI+GK65AoEfH0pg
-	 aExjWIk1Ryh94RGSOR8yZdudVPl747IeqPHyDkrQXyjS97xsYwO3cjLgBIDmH4wUTu
-	 t2gE+0S9C50ug==
-Date: Tue, 2 Jun 2026 12:59:54 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Carlos Llamas <cmllamas@google.com>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, Andrew Lunn <andrew@lunn.ch>, Donald Hunter
- <donald.hunter@gmail.com>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon
- Horman <horms@kernel.org>, Matthew Maurer <mmaurer@google.com>, Miguel
- Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo
- <gary@garyguo.net>, "=?UTF-8?B?QmrDtnJu?= Roy Baron"
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas
- Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, Danilo
- Krummrich <dakr@kernel.org>, Christian Brauner <brauner@kernel.org>,
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
- netdev@vger.kernel.org
-Subject: Re: [PATCH v6 1/3] rust: net: add rust/kernel/net to NETWORKING
- [GENERAL]
-Message-ID: <20260602125954.2a1b09dc@kernel.org>
-In-Reply-To: <20260529-binder-netlink-v6-1-92dd74b6a32e@google.com>
-References: <20260529-binder-netlink-v6-0-92dd74b6a32e@google.com>
-	<20260529-binder-netlink-v6-1-92dd74b6a32e@google.com>
+	s=k20260515; t=1780430411;
+	bh=194P7vb5HseoyOFDlJNE+Is9+6yMdUnIR94zJqh2Ws4=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=Oj+61BOkW73ykU/7BSdfIfCZfutQUwxT7KrjFmhEG3ohdl6+9qyTHhFtB6eU59Fy8
+	 3iE2ta9HJHmRHNNDure9Dmg0XWyqM0e/mzIrxQ8cUDwzP64T79LmZvz9VY995c/hGp
+	 jHF4rIpQCCGiLL42AET5U7lDiQgHSHGuFeuDmk44YskA+rJ+NLBoxF2aO9P050w74A
+	 QGP6XYR9aPcsv0rIXJ4V0czEXozMlaaDctvWmWZunUFry/s2H/lUin6cdSBuqIqcW3
+	 ddYOILsWijXr9lpTE/bJgh3CR5CcggSNPL9Qccm79K4Nen4EdUT85KZhzU4htbmabj
+	 SF9hGMWZ94AHQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 56BC53811A6E;
+	Tue,  2 Jun 2026 20:00:14 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v2 0/2] netdevsim: psp: fix issues with stats
+ collection
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178043041314.1026900.16247038628366126576.git-patchwork-notify@kernel.org>
+Date: Tue, 02 Jun 2026 20:00:13 +0000
+References: <20260529-fix-psp-stats-v2-0-3a194eacf18e@gmail.com>
+In-Reply-To: <20260529-fix-psp-stats-v2-0-3a194eacf18e@gmail.com>
+To: Daniel Zahka <daniel.zahka@gmail.com>
+Cc: kuba@kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, pabeni@redhat.com, willemb@google.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 
-On Fri, 29 May 2026 13:28:38 +0000 Alice Ryhl wrote:
-> To ensure that networking code can be found in a single shared place,
-> add it to the relevant NETWORKING entry. The net.rs file is moved into
-> the net/ directory so that it's included under the MAINTAINERS entry
-> without needing a separate rust/kernel/net.rs entry.
+Hello:
 
-Acked-by: Jakub Kicinski <kuba@kernel.org>
+This series was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Fri, 29 May 2026 06:15:26 -0700 you wrote:
+> It has come to my attention via a sashiko review of my net-next series
+> for aes-gcm in netdevsim [1] that there were preexisting issues with
+> netdevsim's implementation of psp statistics.
+> 
+> API usage issues:
+> 1. not calling u64_stats_init() on the u64_stats_sync object during
+>    init
+> 2. not serializing usage of the writer side API during stats update
+> 
+> [...]
+
+Here is the summary with links:
+  - [net,v2,1/2] netdevsim: psp: update rx stats on the peer netdevsim
+    https://git.kernel.org/netdev/net-next/c/abaef7e966fd
+  - [net,v2,2/2] netdevsim: psp: use atomic64 for psp stats counters
+    https://git.kernel.org/netdev/net-next/c/163bea8010bd
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
