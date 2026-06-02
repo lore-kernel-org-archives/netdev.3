@@ -1,121 +1,100 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 187C13C3C07
-	for <netdev@vger.kernel.org>; Tue,  2 Jun 2026 08:26:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7C3C3C5DBE;
+	Tue,  2 Jun 2026 08:32:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780388762; cv=none; b=p6pGPq0xTdFgInXLgftYhw13dIHNjPOEmXfTiVflDP9KA8k2S+mmuapZwgBnpA2GMQFKzxr2zZ3+2hpsjzTe1A2tTfdkPg23jx16IGFX6pL3D7CohdAQfQk/6tC66HD5c9AERiMdSF7iRcgDl0ikoN5H6Dvc2TkWZ5Afg2Ev1EA=
+	t=1780389138; cv=none; b=daSuhpqzfpbbBQD7iy7aZuwhcMlutX6YVFpSr2S+N+kXz9fRszWVp7Mh5K/xN+Cyda7Jcr29OD0vS/SDseNP8L4OeE4ef2Z2UuJTyxQSvHDJ8V3F017X9OurMzh4NLvnglThfXwtNX4R+U99qF3PMQ8hl9nEwLZkelaZ+5q6a10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780388762; c=relaxed/simple;
-	bh=ZQkpBhdyPFX8K1AgwsbSqD6e4PBbKm/F+6uEvcBzPyk=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Y4tjEEmvszSqkZQT1/Inwbfb676uuONXvH7g0nF1eQBIrmEw13jxJr0+7MiDyWqNHbKgGdSwTVOX6WnRhheCbZ/nvSoKxNDRnavQAGd9H9eopQIKjooLugLiQwc0pQ5C2deyX/Vs6q4xAyIdXBFC+gOH1t4TNP2QvoJpJT4xcJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <p.zabel@pengutronix.de>)
-	id 1wUKQZ-0001Gf-0T; Tue, 02 Jun 2026 10:24:47 +0200
-Received: from lupine.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::4e] helo=lupine)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <p.zabel@pengutronix.de>)
-	id 1wUKQT-000iZa-13;
-	Tue, 02 Jun 2026 10:24:41 +0200
-Received: from pza by lupine with local (Exim 4.98.2)
-	(envelope-from <p.zabel@pengutronix.de>)
-	id 1wUKQT-000000003ba-0TqR;
-	Tue, 02 Jun 2026 10:24:41 +0200
-Message-ID: <6af284545729f03a60d06479339862a2f08c6b7e.camel@pengutronix.de>
-Subject: Re: [PATCH 22/23] reset: rzg2l: use
- platform_device_set_of_node_from_dev()
-From: Philipp Zabel <p.zabel@pengutronix.de>
-To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>, Lee Jones	
- <lee@kernel.org>, Mark Brown <broonie@opensource.wolfsonmicro.com>, Thierry
- Reding <thierry.reding@avionic-design.de>, Sebastian Hesselbarth	
- <sebastian.hesselbarth@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, Srinivas Kandagatla <srini@kernel.org>, Greg
- Kroah-Hartman	 <gregkh@linuxfoundation.org>, Vinod Koul <vkoul@kernel.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich
- <dakr@kernel.org>, Rob Herring <robh@kernel.org>,  Saravana Kannan
- <saravanak@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, Michael
- Ellerman	 <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Andi Shyti
- <andi.shyti@kernel.org>, Andy Shevchenko	
- <andriy.shevchenko@linux.intel.com>, Joerg Roedel <joro@8bytes.org>, Will
- Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>, Doug Berger
- <opendmb@gmail.com>,  Florian Fainelli <florian.fainelli@broadcom.com>,
- Broadcom internal kernel review list	
- <bcm-kernel-feedback-list@broadcom.com>, Ulf Hansson <ulfh@kernel.org>, 
- Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team	 <kernel@pengutronix.de>, Fabio Estevam
- <festevam@gmail.com>, Matthew Brost	 <matthew.brost@intel.com>, Thomas
- =?ISO-8859-1?Q?Hellstr=F6m?=	 <thomas.hellstrom@linux.intel.com>, Rodrigo
- Vivi <rodrigo.vivi@intel.com>,  David Airlie <airlied@gmail.com>, Simona
- Vetter <simona@ffwll.ch>, Peter Chen <peter.chen@kernel.org>,  Paul
- Cercueil <paul@crapouillou.net>, Bin Liu <b-liu@ti.com>, Maximilian Luz
- <luzmaximilian@gmail.com>, Hans de Goede <hansg@kernel.org>, Ilpo
- =?ISO-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,  Krzysztof
- Kozlowski	 <krzk@kernel.org>, Benjamin Herrenschmidt
- <benh@kernel.crashing.org>
-Cc: brgl@kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, linux-sound@vger.kernel.org, 
-	driver-core@lists.linux.dev, devicetree@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-i2c@vger.kernel.org,
- iommu@lists.linux.dev, 	linux-pm@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, intel-xe@lists.freedesktop.org, 
-	dri-devel@lists.freedesktop.org, linux-usb@vger.kernel.org, 
-	linux-mips@vger.kernel.org, platform-driver-x86@vger.kernel.org
-Date: Tue, 02 Jun 2026 10:24:41 +0200
-In-Reply-To: <20260521-pdev-fwnode-ref-v1-22-88c324a1b8d2@oss.qualcomm.com>
-References: <20260521-pdev-fwnode-ref-v1-0-88c324a1b8d2@oss.qualcomm.com>
-	 <20260521-pdev-fwnode-ref-v1-22-88c324a1b8d2@oss.qualcomm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2-0+deb13u1 
+	s=arc-20240116; t=1780389138; c=relaxed/simple;
+	bh=IsyMWC1ykDaBmgFzN1yazxHHc0d6aG52NplrlIAR01k=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=AJBLwyyLqk3fMHc+C11R84W5YoJnMgJ/mgMi4NPU6o187scXMp/dFa081/KAhb88Ij4Su1zxPTx8NRCTR4vtA5GU6v7k7UK6jEslHZktYjbmj831vdGOjGNNX0AsEWD8Jg5mc7mFyQaW5Zt0NLc+6InTQHnKJYNHQ2E5XECNu8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: 8c18e1ac5e5d11f1aa26b74ffac11d73-20260602
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.12,REQID:f9dc1260-f978-445f-8f76-bf83c48dc470,IP:0,U
+	RL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:-5
+X-CID-META: VersionHash:e7bac3a,CLOUDID:b0d2196e1c3d3982a0b7b15cc78b0136,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:102|850|865|898,TC:nil,Content:0|15|50,E
+	DM:-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA
+	:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 8c18e1ac5e5d11f1aa26b74ffac11d73-20260602
+X-User: zenghongling@kylinos.cn
+Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
+	(envelope-from <zenghongling@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 5209442; Tue, 02 Jun 2026 16:32:10 +0800
+From: Hongling Zeng <zenghongling@kylinos.cn>
+To: chuck.lever@oracle.com,
+	jlayton@kernel.org,
+	neil@brown.name,
+	okorniev@redhat.com,
+	Dai.Ngo@oracle.com,
+	tom@talpey.com,
+	trondmy@kernel.org,
+	anna@kernel.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org
+Cc: linux-nfs@vger.kernel.org,
+	netdev@vger.kernel.org,
+	zhongling0719@126.com,
+	Hongling Zeng <zenghongling@kylinos.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] sunrpc: fix uninitialized xprt_create_args structure
+Date: Tue,  2 Jun 2026 16:32:05 +0800
+Message-Id: <20260602083205.183807-1-zenghongling@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: p.zabel@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: netdev@vger.kernel.org
+Content-Transfer-Encoding: 8bit
 
-On Do, 2026-05-21 at 10:36 +0200, Bartosz Golaszewski wrote:
-> Ahead of reworking the reference counting logic for platform devices,
-> encapsulate the assignment of the OF node from another device for
-> dynamically allocated platform devices with the provided helper.
->=20
-> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-> ---
->  drivers/reset/reset-rzg2l-usbphy-ctrl.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/drivers/reset/reset-rzg2l-usbphy-ctrl.c b/drivers/reset/rese=
-t-rzg2l-usbphy-ctrl.c
-> index fd75d9601a3bfde7b7e3f6db287ec8c5c45a20ab..f003b360629c90bb37ed0ade7=
-a675b5b0f28fa7e 100644
-> --- a/drivers/reset/reset-rzg2l-usbphy-ctrl.c
-> +++ b/drivers/reset/reset-rzg2l-usbphy-ctrl.c
-> @@ -249,7 +249,7 @@ static int rzg2l_usbphy_ctrl_probe(struct platform_de=
-vice *pdev)
->  	vdev->dev.parent =3D dev;
->  	priv->vdev =3D vdev;
-> =20
-> -	device_set_of_node_from_dev(&vdev->dev, dev);
-> +	platform_device_set_of_node_from_dev(vdev, dev);
->  	error =3D platform_device_add(vdev);
->  	if (error)
->  		goto err_device_put;
+The xprt_create_args structure is allocated on the stack without
+initialization in rpc_sysfs_xprt_switch_add_xprt_store(). While some
+fields are manually populated, critical fields like srcaddr, bc_xps,
+and flags contain uninitialized stack garbage.
 
-Acked-by: Philipp Zabel <p.zabel@pengutronix.de>
+This can lead to:
+1. Kernel panic when xs_setup_xprt() dereferences garbage srcaddr
+2. Information leak if srcaddr points to sensitive stack data
+3. Unpredictable behavior if flags has random bits set
 
-regards
-Philipp
+The fix is to zero-initialize the structure to ensure all unused
+fields are NULL/0, preventing the transport setup code from acting
+on garbage data.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Hongling Zeng <zenghongling@kylinos.cn>
+---
+ net/sunrpc/sysfs.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/net/sunrpc/sysfs.c b/net/sunrpc/sysfs.c
+index a90480f80154..0a99d0f1eb4c 100644
+--- a/net/sunrpc/sysfs.c
++++ b/net/sunrpc/sysfs.c
+@@ -333,6 +333,7 @@ static ssize_t rpc_sysfs_xprt_switch_add_xprt_store(struct kobject *kobj,
+ 	if (!xprt_switch)
+ 		return 0;
+ 
++	memset(&xprt_create_args, 0, sizeof(xprt_create_args));
+ 	xprt = rpc_xprt_switch_get_main_xprt(xprt_switch);
+ 	if (!xprt)
+ 		goto out;
+-- 
+2.25.1
+
