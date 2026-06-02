@@ -1,35 +1,63 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA640392C56;
-	Tue,  2 Jun 2026 18:29:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AFB03955F2
+	for <netdev@vger.kernel.org>; Tue,  2 Jun 2026 18:31:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780424977; cv=none; b=rkItlRUmUNZk6LIFJ/JVgmjE5XLhQqsUXDzJyMPYNM0jGtDGOBUGCB7JiRVeyhrMdlWri6R+X/tM/OXskybnDFmAyBFE6UgD4uZrHxE7bswQTBDl1kEWz7yn6YLTZOuASdAIlKv2KPk8IxYS1O0Nf3Cg+bYmqpjEqXAkRmdHU4A=
+	t=1780425105; cv=none; b=kg2ZuiAxmU+H34Aq5OiqK0ko1O6rcdceSnzUUJFzk+S4N7fIjD1Y9/lSQtMuEaTyr1wUcX5rat+pwlRboM2C1cBMU8kVZaXetcTrHwxGtWQUe4ZS5LaxMFQfl0TUHvJ414gAU/RThL7OTPN5tnP41ePRBKmSOOx/flwNIGNmtpU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780424977; c=relaxed/simple;
-	bh=04qWF9Ae8K/4Xapo/ZPvyROw5z7IFlqOWDEYCmfHkZo=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=Q/Crfllb0Kd1DaGQwLLQXa7VNc3g+BVqAq0kUEeLMl2BVyrnlaTKFO+7YUiPi1FtxqldwouiW64Aw+DbKVZzu+9LEAVKzaCqsYoUZtpQWKtSzCU7+2pl+4v2lsCv13h6qezQ9H+zydlOzF/c8e793+C6sqe8TyXmy34EnCMV3ck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ASG++oE8; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ASG++oE8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 789FF1F00893;
-	Tue,  2 Jun 2026 18:29:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780424976;
-	bh=yfIQa9OoA2vvrqJOO4Ql7GOgQj5OEnL0IMlvo7n9zhg=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=ASG++oE8QgoaaG3PBRxRmQniR7xjK7CNwvh6HBSjwtcbzyQkHR9PQFiqnYtrerB2o
-	 mZ775iaoHiRQhQhJlwZZX3NQ6btSSYy5M43L6fOsF5FNmNZMjJy4PARSC+PbWPxhrk
-	 vV8P76OVY9ZDeq7GTvCtaA35H83Hh+VjzYPVStHLye0y3ELzHuaI9i+Z+Z3XSkMvxu
-	 2CYvJ6CQtuF/IyxtUCPw+bLt0PD7Xis2j6hjY20S9xxi9xndEc/cCVhSIkyeSHzixH
-	 wFjET+SBd3cjWAr8w07/tVqk6dC8qb3yUWZl4pgREMIo96eiPqO0/Ds+yrCyH/IeNv
-	 UKAzzBVFBAP7A==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93ABC3811A6C;
-	Tue,  2 Jun 2026 18:29:39 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1780425105; c=relaxed/simple;
+	bh=DgMI9uMzrQhZT6TqqtIX/rBBd9+yVcvwNE78GkdB6cs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=YY1QlJcYIy1WaoHiXRS9eClxIdqyBiMrR7j7qbpC+VVzHNZbgt8NY8ReBJ7wdPV+zki2RSMwVvJgu9GM/iPX3XoYGU0iB4aAm3zhSY/FPyujZVbKFKfr5RQ76EwpzV+lq3Y2iodWACsPeq06j6Z2vQErELDpgxVM3FzyWc+AcPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id BCF2366FF6;
+	Tue,  2 Jun 2026 18:31:42 +0000 (UTC)
+Authentication-Results: smtp-out2.suse.de;
+	none
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 72292779A7;
+	Tue,  2 Jun 2026 18:31:41 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id QFZMGI0hH2owXQAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Tue, 02 Jun 2026 18:31:41 +0000
+From: Pedro Falcato <pfalcato@suse.de>
+To: Vlastimil Babka <vbabka@kernel.org>,
+	Harry Yoo <harry@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: linux-hardening@vger.kernel.org,
+	linux-mm@kvack.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Hao Li <hao.li@linux.dev>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Simon Horman <horms@kernel.org>,
+	Jason Xing <kerneljasonxing@gmail.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Pedro Falcato <pfalcato@suse.de>
+Subject: [PATCH 1/2] mm/slab: add a node-track-caller variant for kmem buckets allocation
+Date: Tue,  2 Jun 2026 19:31:21 +0100
+Message-ID: <20260602183122.747759-2-pfalcato@suse.de>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260602183122.747759-1-pfalcato@suse.de>
+References: <20260602183122.747759-1-pfalcato@suse.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,47 +65,47 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] [v3] [net-next] net: dsa: b53: hide legacy gpiolib usage
- on
- non-mips
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178042497814.988310.3355358130551344893.git-patchwork-notify@kernel.org>
-Date: Tue, 02 Jun 2026 18:29:38 +0000
-References: <20260601165716.648230-1-arnd@kernel.org>
-In-Reply-To: <20260601165716.648230-1-arnd@kernel.org>
-To: Arnd Bergmann <arnd@kernel.org>
-Cc: florian.fainelli@broadcom.com, jonas.gorski@gmail.com, andrew@lunn.ch,
- olteanv@gmail.com, davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, arnd@arndb.de, linusw@kernel.org,
- bartosz.golaszewski@oss.qualcomm.com, brgl@kernel.org, noltari@gmail.com,
- kylehendrydev@gmail.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Rspamd-Queue-Id: BCF2366FF6
+X-Spam-Flag: NO
+X-Spam-Score: -4.00
+X-Spam-Level: 
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Spamd-Result: default: False [-4.00 / 50.00];
+	REPLY(-4.00)[]
 
-Hello:
+This is required by users that want to use kmem buckets, but still
+desire specifying the NUMA node.
 
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Signed-off-by: Pedro Falcato <pfalcato@suse.de>
+---
+ include/linux/slab.h | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-On Mon,  1 Jun 2026 18:56:42 +0200 you wrote:
-> From: Arnd Bergmann <arnd@arndb.de>
-> 
-> The MIPS bcm53xx platform still uses the legacy gpiolib interfaces based
-> on gpio numbers, but other platforms do not.
-> 
-> Hide these interfaces inside of the existing #ifdef block and use the
-> modern interfaces in the common parts of the driver to allow building
-> it when the gpio_set_value() is left out of the kernel.
-> 
-> [...]
-
-Here is the summary with links:
-  - [v3,net-next] net: dsa: b53: hide legacy gpiolib usage on non-mips
-    https://git.kernel.org/netdev/net-next/c/c0b3005e32ce
-
-You are awesome, thank you!
+diff --git a/include/linux/slab.h b/include/linux/slab.h
+index 7b46fa499b08..685a87d8f0c5 100644
+--- a/include/linux/slab.h
++++ b/include/linux/slab.h
+@@ -1153,8 +1153,11 @@ void *kmalloc_nolock(size_t size, gfp_t gfp_flags, int node);
+ #define kmem_buckets_alloc(_b, _size, _flags)	\
+ 	alloc_hooks(__kmalloc_node_noprof(PASS_KMALLOC_PARAMS(_size, _b, __kmalloc_token(_size)), _flags, NUMA_NO_NODE))
+ 
+-#define kmem_buckets_alloc_track_caller(_b, _size, _flags)	\
+-	alloc_hooks(__kmalloc_node_track_caller_noprof(PASS_KMALLOC_PARAMS(_size, _b, __kmalloc_token(_size)), _flags, NUMA_NO_NODE, _RET_IP_))
++#define kmem_buckets_alloc_node_track_caller(_b, _size, _flags, _node)	\
++	alloc_hooks(__kmalloc_node_track_caller_noprof(PASS_KMALLOC_PARAMS(_size, _b, __kmalloc_token(_size)), _flags, _node, _RET_IP_))
++
++#define kmem_buckets_alloc_track_caller(_b, _size, _flags) \
++	kmem_buckets_alloc_node_track_caller(_b, _size, _flags, NUMA_NO_NODE)
+ 
+ static __always_inline __alloc_size(1) void *_kmalloc_node_noprof(size_t size, gfp_t flags, int node, kmalloc_token_t token)
+ {
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.54.0
 
