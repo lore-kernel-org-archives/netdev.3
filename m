@@ -1,54 +1,54 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0712E37F8DA
-	for <netdev@vger.kernel.org>; Tue,  2 Jun 2026 17:09:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 182E73F8ED3
+	for <netdev@vger.kernel.org>; Tue,  2 Jun 2026 17:09:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780420175; cv=none; b=qT6uUy3MlQqkRvcLPG3pgDbkOab65P6JMi225MFTDVD7TXD1DWzGC428EOhYVVY5Vpl763V7ZH00V0wN5n8IDHCN+Rfu55yVhT1uEtl+nG9LXoYIHbwNvOxL7GKlV0FuW/L62rMnHXiN0NhgTNIECakxirX3SSxTQ/F2iBCymis=
+	t=1780420177; cv=none; b=tQyS/gqZ+x6ymJr43MWJBEt2oiMMvTchyk1dVOUhJ+lQP802lA6VRs87xeT9+c67ItLCCXMOyrzyQ8o/v9fgvyAgEsMracBA6fnYdH+P8wIN++sJuR0nJXeXLmhYm75e7N00SYp9LE2Kkksii2Tub3ETg++cgmt6swOLL1bxJXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780420175; c=relaxed/simple;
-	bh=nRj26T7zJ310GnaZVo8UWEecUe0vUxwCVUiciD4hn0w=;
+	s=arc-20240116; t=1780420177; c=relaxed/simple;
+	bh=0hNyd6l4mAlhdLZzhVHbZjXeQ+X9+9CN45W6x7Lxqxo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=bihcffBh3B4R46YNeQHhL0pZ4sUS4g62f2Kc1xYqKFtPt5modnFTqyBG07IHJ53OIPGpkoFmaRKEouUNv7JZdzlT3Ge2HPGLH0yJArWU96/obmGqEDV/E9EYUBGK9Y8FhwYmBiKKRB0BrM72ksETZLbzCWL74O7AXK+2zc/yo8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OJ1cajXJ; arc=none smtp.client-ip=192.198.163.17
+	 MIME-Version; b=dX673233P3zON05TvLE9XhOf4pMiKX6gtwKbWXIJ+pmfqf86jd2DoFKquBqy9thnB+xjZy4mrGs7Gw3TLVrxySIvhz/IIxeTxCrQCOOa2BxOaa2sT5jrkRo+0GIGOs7Ti2732O9DNOdGPIo8/Wp3QihgrLdJKHuXWGpvXyg9INo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TV4gV0R0; arc=none smtp.client-ip=192.198.163.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OJ1cajXJ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TV4gV0R0"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1780420174; x=1811956174;
+  t=1780420175; x=1811956175;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=nRj26T7zJ310GnaZVo8UWEecUe0vUxwCVUiciD4hn0w=;
-  b=OJ1cajXJNmGfM4D15w46GYu8ozGgtCpvtQL4cSmKdq2rkGq7LVbdvN11
-   ozVGZCyrh5SPKKwQpEgTKkgNe70CVsAc8KLy1bNN2Be1rtRXvbZTjNiFQ
-   fmfxAaFeoAGcS8xwrEIsX6ARH/96rkg+cG7jyuqkLw64ftDx8XJ2KE/pp
-   wW8TA3GhmqJ+urt9GsmgwcY6ht80OdWLyI0jjSMW6Uz/Mw2ltgDjEw9Tm
-   y7GXV8KtP3WdP8/YSh+I2mQlCQrqweKl/Zmozev8QBtlqCmAiltkkGc9W
-   +nhjWAZ/pLZN8N3vTn5QEJPa/UFAE/q3psVijrHzKBNvwaDo/JYrguZKw
+  bh=0hNyd6l4mAlhdLZzhVHbZjXeQ+X9+9CN45W6x7Lxqxo=;
+  b=TV4gV0R04BHOolDdk01YTGhY30Ugj0XMqADi/Pkv4C12Pv01nxKGuIhu
+   WbuYDiu1hqMERKd9+FxH+ldbwP+x23oeOWgC4q293OavNvANNMv/Ef8lq
+   sl4ajLW2fS6xZi0h+dLbF2Qk2E3rGs/Gx7RDoQReoLx6jG+MZkf9JvRSk
+   5oKEyoPdI76laFlHLBhb7o24/S7qUsz6KLUXYhMSMyEJ+wBVMzGB4kzJr
+   GxBHxlfkvI9kjlZhhz1J1201bHhqYz0DTuu6hM184WMxy5+C3bBCjHL1z
+   P5Kq6y1xcDbcWDjkDODWh+mNV5Is/Ei6d9aqqjXadzMUYRm2ZMXHwcbsL
    Q==;
-X-CSE-ConnectionGUID: YmqIL4hcS5+NshV5JuveTg==
-X-CSE-MsgGUID: HPMGU3NQQQa4551ztA/tkw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11805"; a="81074148"
+X-CSE-ConnectionGUID: NNZriDGtS6eVaruO6PkqeQ==
+X-CSE-MsgGUID: xQQR1iVZS/WJVOeCXoPmLQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11805"; a="81074150"
 X-IronPort-AV: E=Sophos;i="6.24,183,1774335600"; 
-   d="scan'208";a="81074148"
+   d="scan'208";a="81074150"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jun 2026 10:09:32 -0700
-X-CSE-ConnectionGUID: eIZFWocMSZWcX3NyPrkXJQ==
-X-CSE-MsgGUID: PLvp+a+aQoyM15xObdSinQ==
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jun 2026 10:09:33 -0700
+X-CSE-ConnectionGUID: JVoat2iQTGu0yZBYIzl66Q==
+X-CSE-MsgGUID: pjhSrO6ZSTKcH1fHo0nhUg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.24,183,1774335600"; 
-   d="scan'208";a="241475798"
+   d="scan'208";a="241475801"
 Received: from dcskidmo-m40.jf.intel.com ([10.166.241.14])
   by fmviesa008.fm.intel.com with ESMTP; 02 Jun 2026 10:09:32 -0700
 From: Joshua Hay <joshua.a.hay@intel.com>
 To: intel-wired-lan@lists.osuosl.org
 Cc: netdev@vger.kernel.org
-Subject: [Intel-wired-lan][PATCH net v2 2/3] idpf: fix next_to_clean data races
-Date: Tue,  2 Jun 2026 10:20:23 -0700
-Message-Id: <20260602172024.2285947-3-joshua.a.hay@intel.com>
+Subject: [Intel-wired-lan][PATCH net v2 3/3] idpf: fix skb datapath queue based scheduling crashes and timeouts
+Date: Tue,  2 Jun 2026 10:20:24 -0700
+Message-Id: <20260602172024.2285947-4-joshua.a.hay@intel.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20260602172024.2285947-1-joshua.a.hay@intel.com>
 References: <20260602172024.2285947-1-joshua.a.hay@intel.com>
@@ -60,88 +60,227 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-As reported by Sashiko [1], IDPF_DESC_UNUSED() evaluates
-txq->next_to_clean twice, and next_to_clean can be concurrently updated
-by NAPI.  next_to_clean can change between evaluations, resulting in a
-miscalculated free descriptor count that is larger than the ring
-capacity. Consequently, netif_subqueue_maybe_stop() could incorrectly
-determine there is room in the queue, bypassing the stop mechanism and
-allowing active in-flight descriptors to be overwritten.
+The splitq Tx resource checks were assuming that the queues were using
+flow based scheduling and checking the refillqs for free buffers.
+However, the Tx refillqs are not allocated when using queue based
+scheduling resulting in a NULL ptr dereference. Adjust the Tx resource
+checks to only check available descriptor resources when using queue
+based scheduling. Because queue based scheduling does not have any
+notion of descriptor only completions, there cannot be any packets in
+flight, meaning there is no need to check for pending completions.
 
-This patch is based on commit 9eab46b7cb8d ("e1000: fix data race
-between tx_ring->next_to_clean").
+The driver also only supported 8 byte completion descriptors in the skb
+datapath previously. However, currently the FW only supports 4 byte
+completion descriptors when using queue based scheduling. This meant we
+were skipping over completions, resulting in Tx timeouts.  Add support
+to process both 4 and 8 byte completion descriptors, depending on the
+scheduling mode. Cache the next_to_clean completion descriptor in the
+completion queue struct, and fetch this descriptor before the start of
+each cleaning loop. Access the next descriptor in the loop by
+calculating the index based on raw byte count.
 
-Fixes: 6818c4d5b3c2 ("idpf: add splitq start_xmit")
-Signed-off-by: Joshua Hay <joshua.a.hay@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+As reported by Sashiko [1], add a dma_rmb to read ownership (gen) bit in
+the completion descriptor before any other fields.
+
+Fixes: 0c3f135e840d ("idpf: stop Tx if there are insufficient buffer resources")
+Fixes: 1c325aac10a8 ("idpf: configure resources for TX queues")
 Link: https://sashiko.dev/#/patchset/20260504-jk-iwl-net-2026-05-04-v1-0-a222a88bd962%40intel.com [1]
+Signed-off-by: Joshua Hay <joshua.a.hay@intel.com>
+Reviewed-by: Madhu Chittim <madhu.chittim@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 ---
- drivers/net/ethernet/intel/idpf/idpf_singleq_txrx.c | 3 ++-
- drivers/net/ethernet/intel/idpf/idpf_txrx.c         | 9 ++++++---
- drivers/net/ethernet/intel/idpf/idpf_txrx.h         | 9 ++++++---
- 3 files changed, 14 insertions(+), 7 deletions(-)
+v1->v2: add dma_rmb after completion desc gen bit read
+---
+ drivers/net/ethernet/intel/idpf/idpf_txrx.c | 51 +++++++++++++--------
+ drivers/net/ethernet/intel/idpf/idpf_txrx.h |  6 ++-
+ 2 files changed, 38 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_singleq_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_singleq_txrx.c
-index e3ddf18dcbf5..a0e3de3ed0a9 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_singleq_txrx.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_singleq_txrx.c
-@@ -558,7 +558,8 @@ static bool idpf_tx_singleq_clean(struct idpf_tx_queue *tx_q, int napi_budget,
- 	} while (likely(budget));
- 
- 	ntc += tx_q->desc_count;
--	tx_q->next_to_clean = ntc;
-+	/* Sync with IDPF_DESC_UNUSED called from idpf_tx_singleq_frame. */
-+	smp_store_release(&tx_q->next_to_clean, ntc);
- 
- 	*cleaned += ss.packets;
- 
 diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-index 34fc85cbb3f4..9cc4fbd13313 100644
+index 9cc4fbd13313..54ef86ebf11f 100644
 --- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
 +++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-@@ -2073,8 +2073,10 @@ static void idpf_tx_splitq_clean(struct idpf_tx_queue *tx_q, u16 end,
- 	struct idpf_tx_buf *tx_buf;
+@@ -270,11 +270,9 @@ static int idpf_tx_desc_alloc(const struct idpf_vport *vport,
+ static int idpf_compl_desc_alloc(const struct idpf_vport *vport,
+ 				 struct idpf_compl_queue *complq)
+ {
+-	u32 desc_size;
+-
+-	desc_size = idpf_queue_has(FLOW_SCH_EN, complq) ?
+-		    sizeof(*complq->comp) : sizeof(*complq->comp_4b);
+-	complq->size = array_size(complq->desc_count, desc_size);
++	complq->desc_sz = idpf_queue_has(FLOW_SCH_EN, complq) ?
++			  sizeof(*complq->comp) : sizeof(*complq->comp_4b);
++	complq->size = array_size(complq->desc_count, complq->desc_sz);
  
- 	if (descs_only) {
--		/* Bump ring index to mark as cleaned. */
--		tx_q->next_to_clean = end;
-+		/* Bump ring index to mark as cleaned and sync with
-+		 * IDPF_DESC_UNUSED called from idpf_txq_has_room.
-+		 */
-+		smp_store_release(&tx_q->next_to_clean, end);
- 		return;
+ 	complq->desc_ring = dma_alloc_coherent(complq->netdev->dev.parent,
+ 					       complq->size, &complq->dma,
+@@ -284,6 +282,7 @@ static int idpf_compl_desc_alloc(const struct idpf_vport *vport,
+ 
+ 	complq->next_to_use = 0;
+ 	complq->next_to_clean = 0;
++	complq->ntc_desc = complq->comp;
+ 	idpf_queue_set(GEN_CHK, complq);
+ 
+ 	idpf_xsk_setup_queue(vport, complq,
+@@ -2196,7 +2195,7 @@ static void idpf_tx_handle_rs_completion(struct idpf_tx_queue *txq,
+ static bool idpf_tx_clean_complq(struct idpf_compl_queue *complq, int budget,
+ 				 int *cleaned)
+ {
+-	struct idpf_splitq_tx_compl_desc *tx_desc;
++	struct idpf_splitq_tx_compl_desc *tx_desc = complq->ntc_desc;
+ 	s16 ntc = complq->next_to_clean;
+ 	struct idpf_netdev_priv *np;
+ 	unsigned int complq_budget;
+@@ -2204,7 +2203,6 @@ static bool idpf_tx_clean_complq(struct idpf_compl_queue *complq, int budget,
+ 	int i;
+ 
+ 	complq_budget = complq->clean_budget;
+-	tx_desc = &complq->comp[ntc];
+ 	ntc -= complq->desc_count;
+ 
+ 	do {
+@@ -2221,6 +2219,8 @@ static bool idpf_tx_clean_complq(struct idpf_compl_queue *complq, int budget,
+ 		if (idpf_queue_has(GEN_CHK, complq) != gen)
+ 			break;
+ 
++		dma_rmb();
++
+ 		/* Find necessary info of TX queue to clean buffers */
+ 		rel_tx_qid = le16_get_bits(tx_desc->common.qid_comptype_gen,
+ 					   IDPF_TXD_COMPLQ_QID_M);
+@@ -2260,11 +2260,12 @@ static bool idpf_tx_clean_complq(struct idpf_compl_queue *complq, int budget,
+ 		u64_stats_update_end(&tx_q->stats_sync);
+ 
+ fetch_next_desc:
+-		tx_desc++;
++		tx_desc = (struct idpf_splitq_tx_compl_desc *)
++				((u8 *)tx_desc + complq->desc_sz);
+ 		ntc++;
+ 		if (unlikely(!ntc)) {
+ 			ntc -= complq->desc_count;
+-			tx_desc = &complq->comp[0];
++			tx_desc = complq->comp;
+ 			idpf_queue_change(GEN_CHK, complq);
+ 		}
+ 
+@@ -2274,6 +2275,8 @@ static bool idpf_tx_clean_complq(struct idpf_compl_queue *complq, int budget,
+ 		complq_budget--;
+ 	} while (likely(complq_budget));
+ 
++	complq->ntc_desc = tx_desc;
++
+ 	/* Store the state of the complq to be used later in deciding if a
+ 	 * TXQ can be started again
+ 	 */
+@@ -2440,21 +2443,32 @@ static int idpf_txq_has_room(struct idpf_tx_queue *tx_q, u32 descs_needed,
+  * @tx_q: the queue to be checked
+  * @descs_needed: number of descriptors required for this packet
+  * @bufs_needed: number of buffers needed for this packet
++ * @flow: true if queue uses flow based scheduling, false if queue based scheduling
+  *
+  * Return: 0 if stop is not needed
+  */
+ static int idpf_tx_maybe_stop_splitq(struct idpf_tx_queue *tx_q,
+-				     u32 descs_needed,
+-				     u32 bufs_needed)
++				     u32 descs_needed, u32 bufs_needed,
++				     bool flow)
+ {
+-	/* Since we have multiple resources to check for splitq, our
++	/* Since we have multiple resources to check for flow based splitq, our
+ 	 * start,stop_thrs becomes a boolean check instead of a count
+ 	 * threshold.
+ 	 */
+-	if (netif_subqueue_maybe_stop(tx_q->netdev, tx_q->idx,
+-				      idpf_txq_has_room(tx_q, descs_needed,
+-							bufs_needed),
+-				      1, 1))
++	if (flow && netif_subqueue_maybe_stop(tx_q->netdev, tx_q->idx,
++					      idpf_txq_has_room(tx_q,
++								descs_needed,
++								bufs_needed),
++					      1, 1))
++		return 0;
++
++	/* For queue based splitq, there is no need to check the number of
++	 * pending completions since we cannot reuse descriptors until we get
++	 * completions, so we only need to check for descriptor resources.
++	 */
++	if (!flow && netif_subqueue_maybe_stop(tx_q->netdev, tx_q->idx,
++					       IDPF_DESC_UNUSED(tx_q),
++					       descs_needed, descs_needed))
+ 		return 0;
+ 
+ 	u64_stats_update_begin(&tx_q->stats_sync);
+@@ -3024,6 +3038,7 @@ static bool idpf_tx_splitq_need_re(struct idpf_tx_queue *tx_q)
+ static netdev_tx_t idpf_tx_splitq_frame(struct sk_buff *skb,
+ 					struct idpf_tx_queue *tx_q)
+ {
++	bool flow = idpf_queue_has(FLOW_SCH_EN, tx_q);
+ 	struct idpf_tx_splitq_params tx_params = {
+ 		.prev_ntu = tx_q->next_to_use,
+ 	};
+@@ -3043,7 +3058,7 @@ static netdev_tx_t idpf_tx_splitq_frame(struct sk_buff *skb,
+ 
+ 	/* Check for splitq specific TX resources */
+ 	count += (IDPF_TX_DESCS_PER_CACHE_LINE + tso);
+-	if (idpf_tx_maybe_stop_splitq(tx_q, count, buf_count)) {
++	if (idpf_tx_maybe_stop_splitq(tx_q, count, buf_count, flow)) {
+ 		idpf_tx_buf_hw_update(tx_q, tx_q->next_to_use, false);
+ 
+ 		return NETDEV_TX_BUSY;
+@@ -3075,7 +3090,7 @@ static netdev_tx_t idpf_tx_splitq_frame(struct sk_buff *skb,
+ 		idpf_tx_set_tstamp_desc(ctx_desc, idx);
  	}
  
-@@ -2111,7 +2113,8 @@ static void idpf_tx_splitq_clean(struct idpf_tx_queue *tx_q, u16 end,
- 		idpf_tx_splitq_clean_bump_ntc(tx_q, ntc, tx_desc, tx_buf);
- 	}
+-	if (idpf_queue_has(FLOW_SCH_EN, tx_q)) {
++	if (flow) {
+ 		struct idpf_sw_queue *refillq = tx_q->refillq;
  
--	tx_q->next_to_clean = ntc;
-+	/* Sync with IDPF_DESC_UNUSED called from idpf_txq_has_room. */
-+	smp_store_release(&tx_q->next_to_clean, ntc);
- }
- 
- /**
+ 		/* Save refillq state in case of a packet rollback.  Otherwise,
 diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.h b/drivers/net/ethernet/intel/idpf/idpf_txrx.h
-index 4be5b3b6d3ed..8eadc2682c96 100644
+index 8eadc2682c96..2a03ec586161 100644
 --- a/drivers/net/ethernet/intel/idpf/idpf_txrx.h
 +++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.h
-@@ -119,9 +119,12 @@ do {								\
- #define IDPF_RXD_EOF_SPLITQ		VIRTCHNL2_RX_FLEX_DESC_ADV_STATUS0_EOF_M
- #define IDPF_RXD_EOF_SINGLEQ		VIRTCHNL2_RX_BASE_DESC_STATUS_EOF_M
+@@ -810,11 +810,13 @@ libeth_cacheline_set_assert(struct idpf_buf_queue, 64, 24, 32);
+  * @txq_grp: See struct idpf_txq_group
+  * @flags: See enum idpf_queue_flags_t
+  * @desc_count: Number of descriptors
++ * @desc_sz: Descriptor size in bytes
+  * @clean_budget: queue cleaning budget
+  * @netdev: &net_device corresponding to this queue
+  * @next_to_use: Next descriptor to use. Relevant in both split & single txq
+  *		 and bufq.
+  * @next_to_clean: Next descriptor to clean
++ * @ntc_desc: Pointer to next_to_clean descriptor for next NAPI poll
+  * @num_completions: Only relevant for TX completion queue. It tracks the
+  *		     number of completions received to compare against the
+  *		     number of completions pending, as accumulated by the
+@@ -836,6 +838,7 @@ struct idpf_compl_queue {
  
--#define IDPF_DESC_UNUSED(txq)     \
--	((((txq)->next_to_clean > (txq)->next_to_use) ? 0 : (txq)->desc_count) + \
--	(txq)->next_to_clean - (txq)->next_to_use - 1)
-+#define IDPF_DESC_UNUSED(txq)						\
-+({									\
-+	unsigned int ntc = smp_load_acquire(&(txq)->next_to_clean);	\
-+	unsigned int ntu = READ_ONCE((txq)->next_to_use);		\
-+	(ntc > ntu ? 0 : (txq)->desc_count) + ntc - ntu - 1;		\
-+})
+ 	DECLARE_BITMAP(flags, __IDPF_Q_FLAGS_NBITS);
+ 	u32 desc_count;
++	u32 desc_sz;
  
- #define IDPF_TX_COMPLQ_OVERFLOW_THRESH(txcq)	((txcq)->desc_count >> 1)
- /* Determine the absolute number of completions pending, i.e. the number of
+ 	u32 clean_budget;
+ 	struct net_device *netdev;
+@@ -844,6 +847,7 @@ struct idpf_compl_queue {
+ 	__cacheline_group_begin_aligned(read_write);
+ 	u32 next_to_use;
+ 	u32 next_to_clean;
++	struct idpf_splitq_tx_compl_desc *ntc_desc;
+ 
+ 	aligned_u64 num_completions;
+ 	__cacheline_group_end_aligned(read_write);
+@@ -856,7 +860,7 @@ struct idpf_compl_queue {
+ 	struct idpf_q_vector *q_vector;
+ 	__cacheline_group_end_aligned(cold);
+ };
+-libeth_cacheline_set_assert(struct idpf_compl_queue, 40, 16, 24);
++libeth_cacheline_set_assert(struct idpf_compl_queue, 48, 24, 24);
+ 
+ /**
+  * struct idpf_sw_queue
 -- 
 2.39.2
 
