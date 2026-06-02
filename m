@@ -1,318 +1,89 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EDAF3750DC;
-	Tue,  2 Jun 2026 20:28:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 012C218AE2
+	for <netdev@vger.kernel.org>; Tue,  2 Jun 2026 20:29:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780432118; cv=none; b=frwViwMP81PXYeWdlCt+bBZoIjZ9+p1x7XZCnT9Oy1dx5Ko4clnTEGU/DNOuazkSN3WsfiioNPFHWj1y9BqOV0M2toNpL21v7ivf/nE+ZwuUJN0QS0q3oMxQ4RuuYDSfY8K5tjv9i01d1BuRz9zD++vcDvgAgIdoRwoI9QI05rk=
+	t=1780432198; cv=none; b=Yj89wMfA6ERKtaC5jkQi9Lfm7Feb9t1zRdd5J11MAF79jZ/hESztYfz3pAPjNWnsrjxuHNi1ZM4+QAWS+Kx9ev4/kXDS3Nl1vQHuGOLHiokF7sDifMYw6Wdh6xycBN3PBd1l26bHQgy3xfZUq40jlI17ZAkBamVT5iKpz8vYk7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780432118; c=relaxed/simple;
-	bh=+ATRE6on2A/rmCYQxS41svriKA01KrCcVlKqjdfAbtc=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xcwz5Eztzp8Aqhyu1oIhcGwT1Xy/6Te+z0WFyU3d3WAAPGxqGHVsqOTp//udpBQ2+7R3BrzD9+c2vQocG7UoTY8oi3ygGBnArZ+l5T5PT3UFeZbFwh4zQVfny4syMJnAslqKnf0BPdcmjkKi+Qvm1HKRkrXNz7zZG6/fwlL1iDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=L9mNDAYt; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+	s=arc-20240116; t=1780432198; c=relaxed/simple;
+	bh=gT6JJSFXPntSgSJXnmFexTLz4ByekJ1Wxaa2ubgue4k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IQ6IBdsMx+VPjGKjV2TZ+UQtthp8jqeMnPc7IDi30TVXd+b0fcEsrMsF/alkGXhwN8PowHUVTYk0DNtmAgQhdr1d6kZs/VazAV6uAsVM9hw0EeTns4DXNkFnlVcFgpovEbVt9ntOXsC2Th5ZzC56rtD/t2P8D8rcCRTO7LDRaRM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=GP4gpPxD; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="L9mNDAYt"
-Received: from linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net (linux.microsoft.com [13.77.154.182])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 4CADE20B716B;
-	Tue,  2 Jun 2026 13:28:20 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 4CADE20B716B
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1780432100;
-	bh=qF3ltKCJUgVetyaNfxpNTYux0xrZg9DMEP3x9ug6lbs=;
-	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=L9mNDAYtarRx4zLvjA1FDnHmrhBhN9Mb++Zcx9CO0+DntsLSCvrRGYH2w0FYYAffF
-	 mzhMgFZG2sN0ZBleoifHxnWjn5BauZexpCuWOjQEQWrzTMI9UKAO+/E7hMxXdRcT8X
-	 yq+SjrfHq6Lrtj7T09Xv9hz+GGiNjvRcdP6ZYPdI=
-From: Dipayaan Roy <dipayanroy@linux.microsoft.com>
-To: kys@microsoft.com,
-	haiyangz@microsoft.com,
-	wei.liu@kernel.org,
-	decui@microsoft.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	leon@kernel.org,
-	longli@microsoft.com,
-	kotaranov@microsoft.com,
-	horms@kernel.org,
-	shradhagupta@linux.microsoft.com,
-	ssengar@linux.microsoft.com,
-	ernis@linux.microsoft.com,
-	shirazsaleem@microsoft.com,
-	linux-hyperv@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	stephen@networkplumber.org,
-	jacob.e.keller@intel.com,
-	dipayanroy@microsoft.com,
-	leitao@debian.org,
-	kees@kernel.org,
-	john.fastabend@gmail.com,
-	hawk@kernel.org,
-	bpf@vger.kernel.org,
-	daniel@iogearbox.net,
-	ast@kernel.org,
-	sdf@fomichev.me,
-	yury.norov@gmail.com,
-	pavan.chebbi@broadcom.com
-Subject: [PATCH net-next v10 2/2] net: mana: force full-page RX buffers via ethtool private flag
-Date: Tue,  2 Jun 2026 13:24:39 -0700
-Message-ID: <20260602202801.1873742-3-dipayanroy@linux.microsoft.com>
-X-Mailer: git-send-email 2.43.7
-In-Reply-To: <20260602202801.1873742-1-dipayanroy@linux.microsoft.com>
-References: <20260602202801.1873742-1-dipayanroy@linux.microsoft.com>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="GP4gpPxD"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=oYKgn0Ouv7gB691cAUCksoaQk2dpNxcVBdGF+YONLdY=; b=GP4gpPxD7qFWz8lBrZ9taVqTfQ
+	tk1xxKuyAuQ30UBD3B6Jo69p7oYMVv1SFJ54SdenQQSDglJdt0oWOP8mDePZSKPL8nJtn55GVCXMF
+	QdYr1T5v7iBD2PvWDUgHYu4OaLZp2UsQKqlsvaRAQkgn7sKC/UTvk89Q5zUPAsG+dZtc=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wUVk4-005kep-Nf; Tue, 02 Jun 2026 22:29:40 +0200
+Date: Tue, 2 Jun 2026 22:29:40 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Markus Stockhausen <markus.stockhausen@gmx.de>
+Cc: hkallweit1@gmail.com, linux@armlinux.org.uk, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	netdev@vger.kernel.org, chris.packham@alliedtelesis.co.nz,
+	daniel@makrotopia.org, mensi@mensi.ch
+Subject: Re: [PATCH net-next 6/8] net: mdio: realtek-rtl9300: relocate
+ topology setup
+Message-ID: <1843116c-e84c-47f6-a565-e41bd6918ced@lunn.ch>
+References: <20260602052640.93083-1-markus.stockhausen@gmx.de>
+ <20260602052640.93083-7-markus.stockhausen@gmx.de>
+ <d56efb0d-c288-43d5-b3c4-922a164fd29e@lunn.ch>
+ <02b201dcf28f$e4794470$ad6bcd50$@gmx.de>
+ <6ebe2342-fd11-4588-a17a-fdb057335915@lunn.ch>
+ <00b401dcf2c0$6e2826c0$4a787440$@gmx.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <00b401dcf2c0$6e2826c0$4a787440$@gmx.de>
 
-On some ARM64 platforms with 4K PAGE_SIZE, page_pool fragment
-allocation in the RX refill path can cause 15-20% throughput
-regression under high connection counts (>16 TCP streams).
+> The hardware polling in these devices is very important for the DSA
+> driver. Especially as a port can be either PHY or SerDes driven. Some
+> MAC operations simply do not work if a wrong state is reported.
 
-Add an ethtool private flag "full-page-rx" that allows the user to
-force one RX buffer per page, bypassing the page_pool fragment path.
-This restores line-rate (180+ Gbps) performance on affected platforms.
+And you will get the wrong state if the timing of the poll is in the
+middle of the PHY driver swapping the page to read/write something.
 
-Usage:
-  ethtool --set-priv-flags eth0 full-page-rx on
+I've not looked at what PHYs you plan to support, but code like
 
-There is no behavioral change by default. The flag must be explicitly
-enabled by the user or udev rule.
+https://elixir.bootlin.com/linux/v7.0.10/source/drivers/net/phy/realtek/realtek_main.c#L907
 
-The existing single-buffer-per-page logic for XDP and jumbo frames is
-consolidated into a new helper mana_use_single_rxbuf_per_page() which
-is now the single decision point for both the automatic and
-user-controlled paths.
+could be called every 50ms to blink the LEDs. That changes the page,
+writes a register, and then changes back to the original page. If the
+HW polling happens in the middle of that, it will read from the wrong
+place. If that HW poll actually changes the page, without restoring
+it, the write made in that function could go to the wrong page.
 
-Signed-off-by: Dipayaan Roy <dipayanroy@linux.microsoft.com>
----
- drivers/net/ethernet/microsoft/mana/mana_en.c |  22 +++-
- .../ethernet/microsoft/mana/mana_ethtool.c    | 103 ++++++++++++++++++
- include/net/mana/mana.h                       |   8 ++
- 3 files changed, 131 insertions(+), 2 deletions(-)
+So, in order to be able to use the Linux PHY drivers, you need to
+ensure the Linux PHY drivers has exclusive access to the bus when it
+needs it.
 
-diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
-index db14357d3732..447cecfd3f67 100644
---- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-@@ -744,6 +744,25 @@ static void *mana_get_rxbuf_pre(struct mana_rxq *rxq, dma_addr_t *da)
- 	return va;
- }
- 
-+static bool
-+mana_use_single_rxbuf_per_page(struct mana_port_context *apc, u32 mtu)
-+{
-+	/* On some platforms with 4K PAGE_SIZE, page_pool fragment allocation
-+	 * in the RX refill path (~2kB buffer) can cause significant throughput
-+	 * regression under high connection counts. Allow user to force one RX
-+	 * buffer per page via ethtool private flag to bypass the fragment
-+	 * path.
-+	 */
-+	if (apc->priv_flags & BIT(MANA_PRIV_FLAG_USE_FULL_PAGE_RXBUF))
-+		return true;
-+
-+	/* For xdp and jumbo frames make sure only one packet fits per page. */
-+	if (mtu + MANA_RXBUF_PAD > PAGE_SIZE / 2 || mana_xdp_get(apc))
-+		return true;
-+
-+	return false;
-+}
-+
- /* Get RX buffer's data size, alloc size, XDP headroom based on MTU */
- static void mana_get_rxbuf_cfg(struct mana_port_context *apc,
- 			       int mtu, u32 *datasize, u32 *alloc_size,
-@@ -754,8 +773,7 @@ static void mana_get_rxbuf_cfg(struct mana_port_context *apc,
- 	/* Calculate datasize first (consistent across all cases) */
- 	*datasize = mtu + ETH_HLEN;
- 
--	/* For xdp and jumbo frames make sure only one packet fits per page */
--	if (mtu + MANA_RXBUF_PAD > PAGE_SIZE / 2 || mana_xdp_get(apc)) {
-+	if (mana_use_single_rxbuf_per_page(apc, mtu)) {
- 		if (mana_xdp_get(apc)) {
- 			*headroom = XDP_PACKET_HEADROOM;
- 			*alloc_size = PAGE_SIZE;
-diff --git a/drivers/net/ethernet/microsoft/mana/mana_ethtool.c b/drivers/net/ethernet/microsoft/mana/mana_ethtool.c
-index 7e79681634db..f22bbb325948 100644
---- a/drivers/net/ethernet/microsoft/mana/mana_ethtool.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_ethtool.c
-@@ -133,6 +133,10 @@ static const struct mana_stats_desc mana_phy_stats[] = {
- 	{ "hc_tc7_tx_pause_phy", offsetof(struct mana_ethtool_phy_stats, tx_pause_tc7_phy) },
- };
- 
-+static const char mana_priv_flags[MANA_PRIV_FLAG_MAX][ETH_GSTRING_LEN] = {
-+	[MANA_PRIV_FLAG_USE_FULL_PAGE_RXBUF] = "full-page-rx"
-+};
-+
- static int mana_get_sset_count(struct net_device *ndev, int stringset)
- {
- 	struct mana_port_context *apc = netdev_priv(ndev);
-@@ -144,6 +148,10 @@ static int mana_get_sset_count(struct net_device *ndev, int stringset)
- 		       ARRAY_SIZE(mana_phy_stats) +
- 		       ARRAY_SIZE(mana_hc_stats)  +
- 		       num_queues * (MANA_STATS_RX_COUNT + MANA_STATS_TX_COUNT);
-+
-+	case ETH_SS_PRIV_FLAGS:
-+		return MANA_PRIV_FLAG_MAX;
-+
- 	default:
- 		return -EINVAL;
- 	}
-@@ -192,6 +200,14 @@ static void mana_get_strings_stats(struct mana_port_context *apc, u8 **data)
- 	}
- }
- 
-+static void mana_get_strings_priv_flags(u8 **data)
-+{
-+	int i;
-+
-+	for (i = 0; i < MANA_PRIV_FLAG_MAX; i++)
-+		ethtool_puts(data, mana_priv_flags[i]);
-+}
-+
- static void mana_get_strings(struct net_device *ndev, u32 stringset, u8 *data)
- {
- 	struct mana_port_context *apc = netdev_priv(ndev);
-@@ -200,6 +216,9 @@ static void mana_get_strings(struct net_device *ndev, u32 stringset, u8 *data)
- 	case ETH_SS_STATS:
- 		mana_get_strings_stats(apc, &data);
- 		break;
-+	case ETH_SS_PRIV_FLAGS:
-+		mana_get_strings_priv_flags(&data);
-+		break;
- 	default:
- 		break;
- 	}
-@@ -590,6 +609,88 @@ static int mana_get_link_ksettings(struct net_device *ndev,
- 	return 0;
- }
- 
-+static u32 mana_get_priv_flags(struct net_device *ndev)
-+{
-+	struct mana_port_context *apc = netdev_priv(ndev);
-+
-+	return apc->priv_flags;
-+}
-+
-+static int mana_set_priv_flags(struct net_device *ndev, u32 priv_flags)
-+{
-+	struct mana_port_context *apc = netdev_priv(ndev);
-+	u32 changed = apc->priv_flags ^ priv_flags;
-+	u32 old_priv_flags = apc->priv_flags;
-+	bool schedule_port_reset = false;
-+	int err = 0;
-+
-+	if (!changed)
-+		return 0;
-+
-+	/* Reject unknown bits */
-+	if (priv_flags & ~GENMASK(MANA_PRIV_FLAG_MAX - 1, 0))
-+		return -EINVAL;
-+
-+	if (changed & BIT(MANA_PRIV_FLAG_USE_FULL_PAGE_RXBUF)) {
-+		apc->priv_flags = priv_flags;
-+
-+		if (!apc->port_is_up) {
-+			/* Port is down, flag updated to apply on next up
-+			 * so just return.
-+			 */
-+			return 0;
-+		}
-+
-+		/* Pre-allocate buffers to prevent failure in mana_attach
-+		 * later
-+		 */
-+		err = mana_pre_alloc_rxbufs(apc, ndev->mtu, apc->num_queues);
-+		if (err) {
-+			netdev_err(ndev,
-+				   "Insufficient memory for new allocations\n");
-+			apc->priv_flags = old_priv_flags;
-+			return err;
-+		}
-+
-+		err = mana_detach(ndev, false);
-+		if (err) {
-+			netdev_err(ndev, "mana_detach failed: %d\n", err);
-+			apc->priv_flags = old_priv_flags;
-+
-+			/* Port is in an inconsistent state. Restore
-+			 * 'port_is_up' so that queue reset work handler
-+			 * can properly detach and re-attach.
-+			 */
-+			apc->port_is_up = true;
-+			schedule_port_reset = true;
-+			goto out;
-+		}
-+
-+		err = mana_attach(ndev);
-+		if (err) {
-+			netdev_err(ndev, "mana_attach failed: %d\n", err);
-+			apc->priv_flags = old_priv_flags;
-+
-+			/* Restore 'port_is_up' so the reset work handler
-+			 * can properly detach/attach. Without this,
-+			 * the handler sees port_is_up=false and skips
-+			 * queue allocation, leaving the port dead.
-+			 */
-+			apc->port_is_up = true;
-+			schedule_port_reset = true;
-+		}
-+	}
-+
-+out:
-+	mana_pre_dealloc_rxbufs(apc);
-+
-+	if (schedule_port_reset)
-+		queue_work(apc->ac->per_port_queue_reset_wq,
-+			   &apc->queue_reset_work);
-+
-+	return err;
-+}
-+
- const struct ethtool_ops mana_ethtool_ops = {
- 	.supported_coalesce_params = ETHTOOL_COALESCE_RX_CQE_FRAMES,
- 	.get_ethtool_stats	= mana_get_ethtool_stats,
-@@ -608,4 +709,6 @@ const struct ethtool_ops mana_ethtool_ops = {
- 	.set_ringparam          = mana_set_ringparam,
- 	.get_link_ksettings	= mana_get_link_ksettings,
- 	.get_link		= ethtool_op_get_link,
-+	.get_priv_flags		= mana_get_priv_flags,
-+	.set_priv_flags		= mana_set_priv_flags,
- };
-diff --git a/include/net/mana/mana.h b/include/net/mana/mana.h
-index d9c27310fd04..26fd5e041a47 100644
---- a/include/net/mana/mana.h
-+++ b/include/net/mana/mana.h
-@@ -30,6 +30,12 @@ enum TRI_STATE {
- 	TRI_STATE_TRUE = 1
- };
- 
-+/* MANA ethtool private flag bit positions */
-+enum mana_priv_flag_bits {
-+	MANA_PRIV_FLAG_USE_FULL_PAGE_RXBUF = 0,
-+	MANA_PRIV_FLAG_MAX,
-+};
-+
- /* Number of entries for hardware indirection table must be in power of 2 */
- #define MANA_INDIRECT_TABLE_MAX_SIZE 512
- #define MANA_INDIRECT_TABLE_DEF_SIZE 64
-@@ -531,6 +537,8 @@ struct mana_port_context {
- 	u32 rxbpre_headroom;
- 	u32 rxbpre_frag_count;
- 
-+	u32 priv_flags;
-+
- 	struct bpf_prog *bpf_prog;
- 
- 	/* Create num_queues EQs, SQs, SQ-CQs, RQs and RQ-CQs, respectively. */
--- 
-2.43.0
+All the phy_*_paged() methods call phy_lock_mdio_bus(), do what they
+need to do, and then call phy_unlock_mdio_bus(). You will need to
+extend those calls to disable the HW polling while the bus is locked,
+and re-enable it when the bus is unlocked.
 
+> There is no evidence about any issues in the OpenWrt ecosystem 
+
+Try blinking the LEDs as fast as you can, and see if anything
+breaks. Some PHYs also have hwmon sensors, and statistics. Read them
+as well, as fast as you can, so you create contention on the bus. You
+are then more likely to hit the race conditions.
+
+	Andrew
