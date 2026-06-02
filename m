@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F06BF286D7D
-	for <netdev@vger.kernel.org>; Tue,  2 Jun 2026 19:00:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D7492D0606
+	for <netdev@vger.kernel.org>; Tue,  2 Jun 2026 19:00:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780426806; cv=none; b=iDQwZ0tzzJAVZ033yAwWEv/wUIaJW2ZcmXrEaYQyVFUIVis+u3CPQ1cZF+mmY+DhveGXhvhBU+po/PhuTSQhrcTmR4xZfb1zRg0zI6mY++BLbArjeBky9PQtJsPVCXMME/2PC/lQQNOckzrxYKKJwPyIXayoCUSBDtJ/yB01X40=
+	t=1780426808; cv=none; b=XbZGbNmXH5kpXY6DQQuoDFF4oUr0G0io8oLgSK4YyuEVPc97ElAFQngljB7Xn6BCwiv7JOohqzDlxK4R2wIyBXZLMc/9dSrFVSKcPqBtTDff4HVMn9+ggFMLXpPqoT4cLBhw/GCNSyUfMNZrENxC9qJbl4x6Cpu/K7/l6k0+X10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780426806; c=relaxed/simple;
-	bh=J9JY452fHoT1AdJNB4ASUj3ND+jA3CR1mEUmoJ/+WYQ=;
+	s=arc-20240116; t=1780426808; c=relaxed/simple;
+	bh=qMYyS/LIoLXHKo5dtMlToKYjYIBwcHtvCHj72hZ8kD0=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=so0D4ohLh3t6NU3pdV+pofsITo0B5thl+6Y8jKRP+o80mLj7xBZ5BRBkCkpO2x8jKFLqZ4dx2LTTZYS4MZcbb21rOcveeXcn2j2DD/9uSLy/xljxyteBpigCixFhiBFNjal7qmYEmZ0AzVWZVtOZ/zVC+5Y1aeUm1wfkt63sQ3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PU4BNPQF; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=ML7hpP36gSxwrVJNolTFnJAfJZCoXAvdn3+xg801oL8VYmwuUbhFsWEVcFkVl+et8PcqI+9JSaoiAJCDOHPaX3Dpuk/JLOvhQyWc0v0w6An5r/8LYoWfJq0SstpJvIFUD7SSI6DHm1+QrLXBoiYJk+tMpY8nws3vbWUb0wa2zsk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hkzjSwtb; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PU4BNPQF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6CDA1F00893;
-	Tue,  2 Jun 2026 19:00:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hkzjSwtb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E9011F00893;
+	Tue,  2 Jun 2026 19:00:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780426805;
-	bh=M+Nm8VEBNt2IKyMAuknLaYO7pFn128UMvoXewkzmVtQ=;
+	s=k20260515; t=1780426807;
+	bh=XiY1tufRpmNopS65pLHTuQn4T4B4bPdWy8n09JEVkqw=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=PU4BNPQF1qRx7E93j9NK9eMJniWw98yImkLZLYQtxTVnfFL6H/Enic6Y5m3SSizQg
-	 o9BtHRF2ysNFlvSW8m0rAp5MjeilLXuvxg4uhPD/esL5BNZDGKgxB9UXgw7yOZM6/8
-	 KIJ1spGGArkdJ/0XSQZGOrYiDPWvtMXExzWA9nExc8tMOrGQmnFhjh/6EWqIvk/rEy
-	 6gOj7hQj/QsPBbjgIGF3d8/L4jWkycc1g72/3CGQlc6BVW4MySEJQr+k/eCA+/J9Q7
-	 dGUAQ1uIRW/uKdn/XE19KF1x1fGQ/URJczgJB3mYuLWhpZL25Llt6rCW4pQ9oYPgUD
-	 sGNxT2YHxnLaA==
+	b=hkzjSwtbD51JeWm7IJPjaIjVf6DaajsBfVEu4a+lYScWX10RWAbj6IUjIdULJL/fZ
+	 YJTOHNdyGdiS6O8262geDp0yGSMrlb+8OXIVYFXMGz73ZlPVGkzplH6gsF3WvEaVZ8
+	 hIJ4t+Zzuac6tdrejtBLDflgDovoUBp8L1aKNEcGOOz4qV1fvAy1JAcFlKcvjx/yDo
+	 G/QiVxEuq5m6JbdjQqMqh57gUXAJ+dY0fU0MGZFDzwNSZf+SiPrLXQw4TyMmfPHmVb
+	 IgZdgatTeEBmKjftJW4jGUaPYiEKY9b7Jv/Fu/WHnu2YSfWcAMc1BmhZJ3Z68Lnhmd
+	 ddvCTob6RjXgg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D09E43811A6C;
-	Tue,  2 Jun 2026 19:00:08 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 568BC3811A6C;
+	Tue,  2 Jun 2026 19:00:10 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,41 +37,38 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v2 net] tcp: Add preempt_{disable,enable}_nested() in
- reqsk_queue_hash_req().
+Subject: Re: [PATCH v1 net] net: Annotate sk->sk_write_space() for UDP
+ SOCKMAP.
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178042680740.1007375.14491547621037565757.git-patchwork-notify@kernel.org>
-Date: Tue, 02 Jun 2026 19:00:07 +0000
-References: <20260601182101.3183993-1-kuniyu@google.com>
-In-Reply-To: <20260601182101.3183993-1-kuniyu@google.com>
+ <178042680889.1007375.2504746674609068926.git-patchwork-notify@kernel.org>
+Date: Tue, 02 Jun 2026 19:00:08 +0000
+References: <20260529193941.3897256-1-kuniyu@google.com>
+In-Reply-To: <20260529193941.3897256-1-kuniyu@google.com>
 To: Kuniyuki Iwashima <kuniyu@google.com>
-Cc: edumazet@google.com, ncardwell@google.com, davem@davemloft.net,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, bigeasy@linutronix.de,
- clrkwllms@kernel.org, rostedt@goodmis.org, tglx@kernel.org,
- kuni1840@gmail.com, netdev@vger.kernel.org,
- syzbot+e809069bc15f26300526@syzkaller.appspotmail.com
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, willemb@google.com, horms@kernel.org, lmb@cloudflare.com,
+ kuni1840@gmail.com, netdev@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Mon,  1 Jun 2026 18:20:55 +0000 you wrote:
-> syzbot reported a weird reqsk->rsk_refcnt underflow in
-> __inet_csk_reqsk_queue_drop().
+On Fri, 29 May 2026 19:39:23 +0000 you wrote:
+> UDP TX skb->destructor() is sock_wfree(), and UDP holds lock_sock()
+> only for UDP_CORK / MSG_MORE sendmsg().
 > 
-> The captured reqsk_put() in __inet_csk_reqsk_queue_drop()
-> is called only when it successfully removes reqsk from ehash.
+> Otherwise, sk->sk_write_space() may be read locklessly while SOCKMAP
+> rewrites sk->sk_write_space().
 > 
-> Moreover, reqsk_timer_handler() calls another reqsk_put()
-> after that.
+> Let's use WRITE_ONCE() and READ_ONCE() for sk->sk_write_space().
 > 
 > [...]
 
 Here is the summary with links:
-  - [v2,net] tcp: Add preempt_{disable,enable}_nested() in reqsk_queue_hash_req().
-    https://git.kernel.org/netdev/net/c/e10902df2448
+  - [v1,net] net: Annotate sk->sk_write_space() for UDP SOCKMAP.
+    https://git.kernel.org/netdev/net/c/b748765019fe
 
 You are awesome, thank you!
 -- 
