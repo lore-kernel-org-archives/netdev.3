@@ -1,168 +1,218 @@
-Received: from CHN02-BJS-obe.outbound.protection.partner.outlook.cn (mail-bjschn02on2132.outbound.protection.partner.outlook.cn [139.219.17.132])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04CBD372060;
-	Tue,  2 Jun 2026 07:54:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=139.219.17.132
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780386852; cv=fail; b=DveYm6MFmbIyEIX2rSMR2vhp0y9Cc7B82fsD+M0CXJ4goNCgEIZk/rdKfAhe87sutSVNNo7Adu7muc6pxV95knSn39PgWTCaKQQ/QKq9WljtXu5ZOBPdsfD1dPLOwNIwZAMrKRiFm8tuXAt+CLImI3/mryNI4o4mNioSA/cgQBE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780386852; c=relaxed/simple;
-	bh=JzUzjHRtiz9EtGngGMh09CX5i/kw6pD2E+Gh4eT2wFg=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=CQcEYgTrSss9fEt2Nxve5H7r0UzE02J5bQ9OxlMeLELPw3fqB7u31hyW/5KZOU/p7CAMBfuS9AvppnVSlKVuyJZ4B7hsEPKfW4CYCoNpQvU8fOxNxK3NZ8kuRQiqv7FH5+3yiYDOP93fKRV+tBrL0oAZTZV7y8qZjz295zOoems=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com; spf=pass smtp.mailfrom=starfivetech.com; arc=fail smtp.client-ip=139.219.17.132
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=starfivetech.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Hdxx9fCZmONX/TrRczfHiuPqLI7sp+NuMVM5gEwAp31hsSUEeF1dcXspfmwtyygoDvB9a82fC0sAOJWDazpaeO3KhA+Q/Xba6RyqQsG88nngfPk9D6q4t67TNmzZKQlHKlI51Jov4AE68P30wxrxPZ1HNIM4L1SVlP87wL9G/PSGZtTIjRZ2eq97oDX2CnFU1cdhKchzDancgiRbjxobPM+9lHyJ6gZLeru/ndQwU5M5ygVPSYIaxqSKdIHe1lvYtyMMQXgZaogYxyAaaUI+wkOle8Y3dAkhqaZCPuvBeEV4qX+52bepP15IX1nR8rLhbG0t7eV/2rv567R+H6+1Vw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=V3mevj0wkzdwzydZBh2PncwK5aAQtxo9Ah9Wn1BkkYY=;
- b=QEUv/8mB2gYIb8I+KFMysQXAQdDrErxglL+ekvHy5C/ZUOZndsSZYhiVAye7M+wfA58sN3IB/PZH7PVQ0VMp6XQgBfVlZVhV2/CcoRrFO5l0XdfVFpi4TuxjyhwP9Pn7xS1T1UDyOzFPorunDieZZJdUrUBlxyrqGTZOojhIcQiq011dGacyr7zdw8pwckpqQxXhO0dxJde3hhfAw4kVnU1InL4Mz8f9p+vQMHiNgcf7aZUILBsvUpASnkz/XBeT3mTRDh/bt9+DL6H75mrwp9T25xF/nXexedgyZkLNF43v7GADJ+ablFB748AtcWGL16lvC7sHPOjYSg8TXTPr2Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=starfivetech.com; dmarc=pass action=none
- header.from=starfivetech.com; dkim=pass header.d=starfivetech.com; arc=none
-Received: from SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c311:25::15) by SHXPR01MB0718.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c311:25::23) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.18; Tue, 2 Jun 2026
- 05:19:23 +0000
-Received: from SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn
- ([fe80::9b99:12dc:a115:b90f]) by
- SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn ([fe80::9b99:12dc:a115:b90f%3])
- with mapi id 15.20.9891.021; Tue, 2 Jun 2026 05:19:22 +0000
-From: Minda Chen <minda.chen@starfivetech.com>
-To: Frank <Frank.Sae@motor-comm.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>,
-	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>
-CC: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [net-next v5 3/3] net: phy: motorcomm: Add YT8522 100M RMII PHY
- support
-Thread-Topic: [net-next v5 3/3] net: phy: motorcomm: Add YT8522 100M RMII PHY
- support
-Thread-Index: AQHc7w+mH9U4hq4iQ02b/QTmPjv+rrYqwJ0w
-Date: Tue, 2 Jun 2026 05:19:22 +0000
-Message-ID:
- <SHXPR01MB08633585004218C86DD44D27E6122@SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn>
-References: <20260529020530.16856-1-minda.chen@starfivetech.com>
- <20260529020530.16856-4-minda.chen@starfivetech.com>
-In-Reply-To: <20260529020530.16856-4-minda.chen@starfivetech.com>
-Accept-Language: zh-CN, en-US
-Content-Language: zh-CN
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=starfivetech.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SHXPR01MB0863:EE_|SHXPR01MB0718:EE_
-x-ms-office365-filtering-correlation-id: 7edf5915-43f7-49ec-6818-08dec06681b5
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|1800799024|376014|7416014|38070700021|18002099003|22082099003|4143699003|56012099006;
-x-microsoft-antispam-message-info:
- yyZ4ys9tPuvHGPShNfy9VsotiKa+B/EmKT5LTgSCsjfdo+EmUWM5pnIT0Ql1y4Htvf4dQuRvXi1+Cgcem3UW15D+4e1S1MFkuLdadsrCchuzZTscKmVNI+ez65iJ7GnCCijEjM09V3qQn3vhOKneTkRj65KDVOzS0U3qWsLMh74SA9K/FavzDRRWcwXPv+zBjpaUuqaAJl6YGmKMLIrDNw3jps5lHFq3UK6gRsVDdhFPLWPYWfBbYhyWEU22QB3e2yRYNXlfGtj/Tbx2s/8QVlekYxxumkjfP6liJ+dSZzXY2VYNtDJuV5HgjmeQVH16BN19VyFRoaKh0E5RrC4k6m9Zbv7LlzihQmjAWiNvDje1ANsGyGzviDfhGJK77EbllPZlY02LqZQ5rPclMarbjRWnBLXj+EWeU6CRvlH1JNBOOdtUViGvRNbou3TclnqA7JmfRTq4Y1RKmitDIcNdyv9QS5rlIqTAELYVNFU0VE4XAC/tgt3x1+0NwqxIGh0EQ1b8UrI7yUJyINCNRYxgK8H4otFrtN+wN/5MQJuwf/8=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(38070700021)(18002099003)(22082099003)(4143699003)(56012099006);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?zt3aNP0GW5M/NpvNLhltp8YaWTnwqG2vgY6g3+jLQtLgyR9kMkayPAU1SS3U?=
- =?us-ascii?Q?H6xJSKVL30i74NZBewqVZbtkGL8ZwGFPwmwYWEHN0MRyY0bh4FDhZiPwjxX6?=
- =?us-ascii?Q?PiBTIiOu2WV4ghj57zt/pjF9GqzmAyd3cz6e6j5BpXoWRn6ZmEDOiYqiLBjr?=
- =?us-ascii?Q?SMFuN3bo87TcvMPHza8eGJI3Z7gAJupvhQejri+MWyrou/NkRS6DzLYroQI6?=
- =?us-ascii?Q?PkXRaTLTqr+n6TQQzOcpbaeOzCNQBIK6A/FuiHDI2V2tUEvAvHI+K4UKUZ68?=
- =?us-ascii?Q?G2M+7GWFwjmyWFZN50bL4b6fOTBEETcR7KOrpePGJpsCsLkTB5V9m8ZTqcQT?=
- =?us-ascii?Q?QNcilXbQ+PbsWWuaSIpPav8E+euABowF2dlEd+bcskDyZIWKSChBsC8tkgqg?=
- =?us-ascii?Q?O8IQQ9gfhRxefu3RLG0C/NfGh+TbdnwdjB38GIJdfjYjAwh3e6tWmDI4qm4x?=
- =?us-ascii?Q?M86Uz6J3a01skI+s/W3YDLAslMYHSLOhwk+CQuDVwXIgBQ5XL8dFDK86Lfdk?=
- =?us-ascii?Q?UB8P3M20QjweglTmJafw1F1d2UK5yhtqWae0K7SsYVXFeL5MIaq9vI3ZR0BU?=
- =?us-ascii?Q?vci4qKYX4hxF9rI9EWHG3nwuANLq+gTqg3Slf3prZyTAxvhqwFsYMZabW0qw?=
- =?us-ascii?Q?3zKANJ0xBpbz20oPFWkmTCW+WTWm1o2HAi1TM3DAbvHwlyg97Vbp0fCAarLE?=
- =?us-ascii?Q?LAY0qlF5KgEKr6T5DB8TrBalFNP1S+i3QJeH+UutuVHA4mJ9tZMy86bYABxO?=
- =?us-ascii?Q?mXAt0OnwI+JZphdqJH2UWK8nKni2Q3joiQAgQRQCOe5MxrKKrKic1w6EHFVZ?=
- =?us-ascii?Q?jBfbvVWqvGqv43dwtvpz4+F5jPZDAkteeqNg7BG4YvA9So2Nqh3ILbxqU5ia?=
- =?us-ascii?Q?/O2tClnbHyMbrcZxVQ7LZbuv2PPOGtg1OZOFJv96hqqfREuY2SAr2Q7rplxn?=
- =?us-ascii?Q?FnC087Zg+ZQEFaRUeReZgKCii4popoNfKyMCtxN/xN/hmZB8wDbmZdc79XbK?=
- =?us-ascii?Q?FJ5fP+HXZVKG455SmyaDHxHgYhUKvhLDdo2UNM13tqQW31KOdBW0n3tvj9vL?=
- =?us-ascii?Q?LC69TA0Iqa8NwLB+VhkNdwodk8k++Hp6FHSH/PXqrMhfuHYyPSfBDVwHLslA?=
- =?us-ascii?Q?v6jUv3LsdK/+tsdyI3KFij5EhxUabrkygEz8QPYoo7SKjYSb/yrlhY6dtR4g?=
- =?us-ascii?Q?mqYqEnF45gw0tV5oq9D3yEdG9BgC6L5YMpS9dKQG03wFn6Xaof+8k/aTy1OL?=
- =?us-ascii?Q?i6nSvlH6t9cQHj+qjA8j6QL3nOC2rceUeRdQsAKWfsEFNsBmCZAG0cY2U3oh?=
- =?us-ascii?Q?GXHhTAXZhQISApvKEUF7ti7m2TLIQmvwBhB94tZIMyeavdgaaZuPvv/k1ZS4?=
- =?us-ascii?Q?JwqIT5aelWH/sWDIcPbloBtFpofV5dQvcuvhBmSceNl3nywYYuVCli/xv70F?=
- =?us-ascii?Q?4w3Rzo09lyJlMYi/aAAsVl2w4DqwQtaWPaLk/duTr8XAj+7BZ7GG5G6fQ/BE?=
- =?us-ascii?Q?QhfSAQN6sQ23MBAKlW+/sEOezBpiC2JSh+cLP+wLcye+/Uw9OMJTM9nTvPYx?=
- =?us-ascii?Q?BfOMS+K81nbn/of2L0ZhHbApeTO5YXH5HJJWrvZAynguILGT0Td0LMrlOD5+?=
- =?us-ascii?Q?Tl20YufKbzid+BA5wq33IV3YhuQS/fDQkmApr+g8deGxSALynolFmlCawL7N?=
- =?us-ascii?Q?r1n+xP/cVJt8aWfEnXoY4HlDVugRpQpk5JhbqOIugmjiCZRJPwjwuY7uGzuk?=
- =?us-ascii?Q?vJj9V6VPPQ=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9C923BAD84
+	for <netdev@vger.kernel.org>; Tue,  2 Jun 2026 08:00:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780387240; cv=none; b=auvEQr0AHYkOIQekimIZQr4XWUHrs/TeQWR6IRyD1tlP70YiXQRLfAd30MqJi8LZl3ujwgt81yEY6WHM5yITjP0rULOTYsdxnihZRoLFXNNe5nJzPtO7k5MPgpIJeuHXuAWgO8RHSy6q7oUfJ9UUNgfFNMo4FUkGqCnB3urFhG4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780387240; c=relaxed/simple;
+	bh=ABDmoAvjP05kv7u0OeLlAtHWL2O1SJOEplteGzR9Ptg=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=s/27fqYOyihXtXrFSu79pp2GFo9ncm4WCp1r/lZZpEng0xRsh76/Xk7lgpTLM9yv3AWhWX/LwI5+OyYhNp7K36H5qsA7/ISwdRduCM7fHe9iNwm+a2qn4b1JouXV+CpZtnfQX9x3c29HNFsvjLE2M+OMkUzuJ5PV4ZARJaVkacg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YalpdgoA; arc=none smtp.client-ip=209.85.221.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YalpdgoA"
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-45ee5cdbd28so3138814f8f.1
+        for <netdev@vger.kernel.org>; Tue, 02 Jun 2026 01:00:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780387237; x=1780992037; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0j+2PtZRo6SPy8FA5buPLCnnYrJlwwHwsl8orB3/M8g=;
+        b=YalpdgoAj6SIU0gm2yey+MrsRcVuyFVvqS96ueSafNZnemOKeAZB+f4dhfkRH2PgL5
+         psLEt2OqKmPfgHFsXKKuT8W+yAY3xyUc4P3IOstRPZhVaFmcxw6umEs9DqvqbxYs2uY4
+         SLFeDNP4A5+O6UcrXh4DcDThxIVOe86LUR4XIU82ffHhO1SWuZE2CSMr0ANvy1BQVGnB
+         8ecbWINx/KwPrMw5hfzGF87L3kttMz0kQIoDgwMw5TQzLw6OLLrAf9kXBKa8iUvC5mdP
+         L/brUv0lVGh03DSzethLk0EtmDcGpGGCu2LD7pAgiwT06OckxgflnoCGkCBe0PLk+yA6
+         DL1g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780387237; x=1780992037;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=0j+2PtZRo6SPy8FA5buPLCnnYrJlwwHwsl8orB3/M8g=;
+        b=qIwg7J5EOV0I3RuVg1Rw8jLBW5GvRlpmCo2Oq9e84kDgGhZdCKmUJt29bOiq0RZ/+g
+         9PZXqJMZl7BFqKf40s40010VqfXZUjfyDuZYSLAHmxtTMH8i39Z/eh+M5me0rojH0pMc
+         dDDgH8IF3xjmqiQJi7C3c8TsMkNRG3ecnAyx6JY+JOhEIvdpnkaoG1pH9t9YQuGifB43
+         cYxe9FxUBXpnAg6gDfgiQpujhUzzIaf3ViGfR0TpLH1gjB94q6Pdr0AzripcL7VC0Pou
+         fxV8xkEsvDiN9/fMOcP6cTEjOnpvT0lZp9rST4XnBejtFsWvBUhGZAlOZ8uDW+Xwdtsj
+         KhLA==
+X-Forwarded-Encrypted: i=1; AFNElJ/uR2XF2nNBQxq3oxOeSZo3OR8+eZlSfgVkJXTL73ygkN9Y8Gdo7K4A6ygJ9hVYXRsUb5g0WGc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxWdU9j1lg/f5AJDI1tUJpFBl4qi/i7mqc8+WNM2MR8IF8tTlcG
+	NvsmcQmeJPhTVId3elvo8VO8eShQ4z0O8+/0ChOTo9u1lbWNbV56sREd
+X-Gm-Gg: Acq92OG7fA7yAjYro0dONzwbkCso41vtx3cvf4xC27dT7mjtT6iKhrYs18S9gpZjayy
+	+5irxOy0S6ngXHRk+mQmjSGgKXradJfcDWoP57GcygVzNXmJpXoydF27SbZTh+PAIchkHP9eKna
+	yyymwCDC+YL7DBG+PkfiZol2Sb00h9Hx4n/0ffFYWJAVrVG+m9Hie2Nxc8osj9E9NFdFFzqCwcd
+	MJ43muGdetuH2pdver9/MC1/HGrVO0uouzHCKJcZCQgbRfdQwvHWkL/aAR0dda1aB8DQ7IV4p2S
+	cqs2us8TfZlkwFM+Nn5dTp9DP59I6XkQ4aIEnkzPNI+UfDubHgzIxpqZxDfmPWrx1enkyRfA0xd
+	ep+K6UMCpJ3YbxAIKy3xwwtay9WXMI3xXM0DJn0ice35x7MZ0Om+tPVtaS4rONaA0f8gD2NMNG+
+	/ctUNvu1FXAeFT7kvgXixs7ZPTvNdtfZeTGdZn4AqcnVes9ElwFWu1UgJjeqBOlMC8oCB9RRU=
+X-Received: by 2002:a05:600c:c84:b0:48a:53cb:8604 with SMTP id 5b1f17b1804b1-490b0e9f45cmr39048035e9.14.1780387236616;
+        Tue, 02 Jun 2026 01:00:36 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490b0daefbbsm82684755e9.0.2026.06.02.01.00.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 02 Jun 2026 01:00:36 -0700 (PDT)
+Date: Tue, 2 Jun 2026 09:00:34 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: davem@davemloft.net, dsahern@kernel.org, edumazet@google.com,
+ horms@kernel.org, idosch@nvidia.com, jianhao.xu@seu.edu.cn,
+ kuba@kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ pabeni@redhat.com, runyu.xiao@seu.edu.cn, stable@vger.kernel.org
+Subject: Re: [PATCH net] ipv6: use READ_ONCE() in ipv6_flowlabel_get()
+Message-ID: <20260602090034.7a5c243e@pumpkin>
+In-Reply-To: <20260601231546.3407019-1-kuniyu@google.com>
+References: <20260601223122.63c0d23f@pumpkin>
+	<20260601231546.3407019-1-kuniyu@google.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: starfivetech.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7edf5915-43f7-49ec-6818-08dec06681b5
-X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Jun 2026 05:19:22.8025
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 06fe3fa3-1221-43d3-861b-5a4ee687a85c
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: iWzgaII9kL7kdRiXXsvgfi+c5Dll2ZdzQWk0fs8hTp0rY3CkQmM1ui0pFyMcgakDqlpR+3eH6hSeT/qz117eTas+svIYGaLWLVGSkiOe2BE=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SHXPR01MB0718
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
+On Mon,  1 Jun 2026 23:14:44 +0000
+Kuniyuki Iwashima <kuniyu@google.com> wrote:
 
+> From: David Laight <david.laight.linux@gmail.com>
+> Date: Mon, 1 Jun 2026 22:31:22 +0100
+> > On Mon, 1 Jun 2026 05:36:37 -0700
+> > Eric Dumazet <edumazet@google.com> wrote:
+> >  =20
+> > > On Mon, Jun 1, 2026 at 5:22=E2=80=AFAM David Laight
+> > > <david.laight.linux@gmail.com> wrote: =20
+> > > >
+> > > > On Sun, 31 May 2026 23:39:46 +0800
+> > > > Runyu Xiao <runyu.xiao@seu.edu.cn> wrote:
+> > > >   =20
+> > > > > ipv6_flowlabel_get() still reads the shared per-net sysctl fields
+> > > > > flowlabel_consistency and flowlabel_state_ranges with plain loads,
+> > > > > while writers update them through proc_dou8vec_minmax(). These ch=
+ecks
+> > > > > run in the live IPV6_FLOWLABEL_MGR path, so lockless plain reads =
+leave
+> > > > > KCSAN-visible data races and can make the policy checks observe s=
+tale or
+> > > > > inconsistent values.
+> > > > >
+> > > > > The race can be reached on a running system by toggling
+> > > > > /proc/sys/net/ipv6/flowlabel_consistency and
+> > > > > /proc/sys/net/ipv6/flowlabel_state_ranges while another task repe=
+atedly
+> > > > > issues IPV6_FLOWLABEL_MGR requests with IPV6_FL_F_REFLECT or a
+> > > > > state-ranges flow label.
+> > > > >
+> > > > > This issue was first flagged by our static analysis tool while sc=
+anning
+> > > > > lockless IPv6 sysctl readers, then manually audited on Linux v6.1=
+8.21.
+> > > > > The IPV6_FLOWLABEL_MGR paths were runtime-reproduced with QEMU/KC=
+SAN by
+> > > > > concurrently flipping the two sysctls while TCP reflect and UDP
+> > > > > state-ranges setsockopt actors exercised ipv6_flowlabel_get(). KC=
+SAN
+> > > > > reported races between proc_dou8vec_minmax() and the two plain-lo=
+ad
+> > > > > sites in ipv6_flowlabel_get().
+> > > > >
+> > > > > A narrower second-round UDPv6 + IPV6_AUTOFLOWLABEL send-side repr=
+oducer
+> > > > > also hit the inline ip6_make_flowlabel() reader through
+> > > > > __ip6_make_skb() / proc_dou8vec_minmax(), but that site is already
+> > > > > fixed in this tree by commit ded139b59b5d
+> > > > > ("ipv6: annotate data-races from ip6_make_flowlabel()"). The rema=
+ining
+> > > > > plain readers in this tree are both in ipv6_flowlabel_get().
+> > > > >
+> > > > > Use READ_ONCE() for those remaining sysctl reads so they follow t=
+he same
+> > > > > lockless reader contract already used by other IPv6 sysctl reader=
+s.
+> > > > >
+> > > > > Build-tested by compiling net/ipv6/ip6_flowlabel.o on x86_64.
+> > > > >
+> > > > > Representative QEMU/KCSAN reports from the two target reader path=
+s:
+> > > > >
+> > > > >   BUG: KCSAN: data-race in ipv6_flowlabel_opt / proc_dou8vec_minm=
+ax
+> > > > >   write: proc_dou8vec_minmax+0x206/0x220
+> > > > >   read:  ipv6_flowlabel_opt+0x6d8/0xd20
+> > > > >          do_ipv6_setsockopt+0x873/0x2220
+> > > > >          tcp_setsockopt+0x72/0xb0
+> > > > >
+> > > > >   BUG: KCSAN: data-race in ipv6_flowlabel_opt / proc_dou8vec_minm=
+ax
+> > > > >   write: proc_dou8vec_minmax+0x206/0x220
+> > > > >   read:  ipv6_flowlabel_opt+0x129/0xd20
+> > > > >          do_ipv6_setsockopt+0x873/0x2220
+> > > > >          udpv6_setsockopt+0x21/0x40
+> > > > >
+> > > > > Fixes: 6444f72b4b74 ("ipv6: add flowlabel_consistency sysctl")
+> > > > > Fixes: 82a584b7cd36 ("ipv6: Flow label state ranges")
+> > > > > Cc: stable@vger.kernel.org
+> > > > > Signed-off-by: Runyu Xiao <runyu.xiao@seu.edu.cn>
+> > > > > ---
+> > > > >  net/ipv6/ip6_flowlabel.c | 4 ++--
+> > > > >  1 file changed, 2 insertions(+), 2 deletions(-)
+> > > > >A
+> > > > > diff --git a/net/ipv6/ip6_flowlabel.c b/net/ipv6/ip6_flowlabel.c
+> > > > > index b1ccdf0dc646..1ab5ad0dcf24 100644
+> > > > > --- a/net/ipv6/ip6_flowlabel.c
+> > > > > +++ b/net/ipv6/ip6_flowlabel.c
+> > > > > @@ -620,7 +620,7 @@ static int ipv6_flowlabel_get(struct sock *sk=
+, struct in6_flowlabel_req *freq,
+> > > > >       int err;
+> > > > >
+> > > > >       if (freq->flr_flags & IPV6_FL_F_REFLECT) {
+> > > > > -             if (net->ipv6.sysctl.flowlabel_consistency) {
+> > > > > +             if (READ_ONCE(net->ipv6.sysctl.flowlabel_consistenc=
+y)) {   =20
+> > > >
+> > > > That can't actually fix anything.   =20
+> > >=20
+> > > It fixes a KCSAN splat.
+> > >=20
+> > > If you think you can fix KCSAN instead, please do so.
 
-> Add YT8522 100M RMII ethernet PHY base driver support, including PHY ID a=
-nd
-> base config init function.
+ipv6.h has:
+	u8 flowlabel_consistency;
+
+KCSAN probably shouldn't care about byte reads.
+
+> >=20
+> > It is a false positive. =20
 >=20
-> Signed-off-by: Minda Chen <minda.chen@starfivetech.com>
-> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-> ---
->  drivers/net/phy/motorcomm.c | 49
-> ++++++++++++++++++++++++++++++++++++-
->  1 file changed, 48 insertions(+), 1 deletion(-)
+> It's not.
 >=20
-> diff --git a/drivers/net/phy/motorcomm.c b/drivers/net/phy/motorcomm.c
-> index dcba50007451..a202015d3869 100644
-> --- a/drivers/net/phy/motorcomm.c
-> +++ b/drivers/net/phy/motorcomm.c
-> @@ -1,6 +1,6 @@
->  // SPDX-License-Identifier: GPL-2.0+
->  /*
-> - * Motorcomm 8511/8521/8531/8531S/8821 PHY driver.
-> + * Motorcomm 8511/8521/8522/8531/8531S/8821 PHY driver.
->   *
->   * Author: Peter Geis <pgwipeout@gmail.com>
->   * Author: Frank <Frank.Sae@motor-comm.com> @@ -14,6 +14,7 @@
 >=20
->  #define PHY_ID_YT8511		0x0000010a
->  #define PHY_ID_YT8521		0x0000011a
-> +#define PHY_ID_YT8522		0x4f51e928
->  #define PHY_ID_YT8531		0x4f51e91b
->  #define PHY_ID_YT8531S		0x4f51e91a
->  #define PHY_ID_YT8821		0x4f51ea19
-> @@ -227,6 +228,13 @@
->  #define YT8521_LED_100_ON_EN			BIT(5)
->  #define YT8521_LED_10_ON_EN			BIT(4)
+> > (Which I think you also said in a different email. =20
 >=20
-> +#define YT8522_EXTREG_SLEEP_CONTROL		0x2027
-> +#define YT8522_EN_SLEEP_SW			15
-> +
+> I guess you meant this one ?
+> https://lore.kernel.org/netdev/20260601074201.1186061-1-runyu.xiao@seu.ed=
+u.cn/
+>=20
+> This is different because, in addition to Eric's comment, IPv6
+> address is 128-bit and data-race is inevitable without locking
+> unless CPU supports native 128-bit read/write; we already do
+> load/store-tearing of 128bit with u32/u64.
 
-Thanks for the checking script, This should be BIT(15). I am sorry about th=
-is.
-I will send v6 in next week.=20
+But the code isn't looking at a 128bit value, it is only doing a check
+for zero (and READ_ONCE() doesn't support 128bit values).
+If there is no locking the value can change just before/after the test.
+Even if it were subject to read/write tearing absolutely the worst that
+could happen is a zero being detected when the value changes between
+two non-zero values.
+That isn't relevant here - it is just a boolean.
 
-Hi Andrew
-  Do you have any comment to patch 2?
+-- David
 
