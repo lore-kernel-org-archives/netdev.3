@@ -1,94 +1,78 @@
-Received: from us.padl.com (us.padl.com [216.154.215.154])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BF8F243367;
-	Tue,  2 Jun 2026 21:13:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.154.215.154
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFBCE25B088;
+	Tue,  2 Jun 2026 21:20:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780434800; cv=none; b=oGe748h16tq+v9duntL1oDVFgaQh/gcaERJklKNPQZF/5GYuurUyTv32s4UEj/jXn9H3oWOrJQ/83h0mmxhhXaES+krXlmix8HC272ibbRYxMAjgFH/mYVdppS+cHRrEslYpz8SeImH9UeJ6XPgL3xMScPhpMM3gwlXY4C0MJCM=
+	t=1780435204; cv=none; b=iepA2opNP+sLz9HYFmIY0ZQRgnHJdxp9E2l72d95D03SRyZu4U4p14gPWy45tDmozSfXcWvHSg72kazD9795Qi4J4o234svfso7uKArjJTy0YJf8dB5IPjBbrolkS0AolmZUyCOwu9N6q+5klHHSMSi7T9YnjytZ5XSnXw6SGpQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780434800; c=relaxed/simple;
-	bh=HtE+CUeOQe9K5828UtNu62LtqQ103MigfZnxhbdVnDk=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=MmpGZLsGwUOP0iemaNi9G41XMEHlgYwri7IHo7Mmb5qFT+TE4qmfreqjf49LsUY2vv/hNrRkx+hOZM27laNAF08QZ2l7aI/V6ueDazezf0CBpBUpU5j4Hzf7lqDb3+xRm2TLpDKpf3vBhxtn02vLAgvMQlJ7j1plEwrU7A39PyE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=padl.com; spf=pass smtp.mailfrom=padl.com; dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b=leG9Z8FI; arc=none smtp.client-ip=216.154.215.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=padl.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=padl.com
+	s=arc-20240116; t=1780435204; c=relaxed/simple;
+	bh=jUsIEH70+A2yS7esLvVSDG99NIDaJCY9szZqDiWen9Y=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=E+OHyvu0fpFjwI29qdl8qvyX1nuSG2ZD8ElD4DoZvuqpkR/gB5x5tWkLInT7fO1ET8sUMp+IC/05/31zEGCtYywB9lIr5KneQQXtHj3cmP/z8eHyDw/PBzPJMXViCf7BHmaqkLDc+b0FhD0c/3P3aePSJqhh8YdC6rW/JB4sW3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QMVMhcLw; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b="leG9Z8FI"
-Received: from auth (localhost [127.0.0.1]) by us.padl.com (8.14.7/8.14.7) with ESMTP id 652LCNev015764
-	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Tue, 2 Jun 2026 22:12:25 +0100
-DKIM-Filter: OpenDKIM Filter v2.11.0 us.padl.com 652LCNev015764
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=padl.com; s=default;
-	t=1780434768; bh=HtE+CUeOQe9K5828UtNu62LtqQ103MigfZnxhbdVnDk=;
-	h=Subject:From:In-Reply-To:Date:Cc:References:To:From;
-	b=leG9Z8FIM3pJZ4l6nIiMqriryyD81HF1WcqASUuCAQC8YfQnmGHBXnHR5AcsC0Jrq
-	 gSqqwc7tYZzHhwa2HhW62nORQsr6432wwfL8PK6DaY1cayHxN86pW/bM/HUZO/pK7m
-	 nleseDQe6n0C+CHprDUyKRtdYjFjCVezsm/+DG4MRDHmhD2SLKIjGpH5THZ7Gh8B63
-	 4zU3b21yxROV26YPWKFd85WM4/0H8Oa2DEmZRw8XwDvQqDMZIpD1+gf1JCRvs7KtYj
-	 so1tCNwj9CwPQDYR+Kgjni5Zw1fwzKeSTqUSRYG0mA9lKZYHvTQ6cTINnN0Dz9wpB5
-	 jTOqOPufiACwQ==
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QMVMhcLw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 893CB1F00893;
+	Tue,  2 Jun 2026 21:20:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780435203;
+	bh=dfebTjwExKvQJQi7Hu9+LLd0ZURbyWtmZItEOJJW5mM=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=QMVMhcLwpZgk9ZGqVDmF3d85jcpTUAIYGJ3xomvXHZbe1EQjJJwR7NEEAgEvMrdvE
+	 Iu07hTmqFaL2hk8OgRXkznwye9nqN1m3WcC2MVv0OISClPmO7cRkBjrLqFVBck/Imk
+	 8nwULEI1/C+hyyNCkjZjiXw4q/UHa8NChBWZ/AYGnIgwEOwiRuGyzNDaAni3D8YwLE
+	 N3PsKuNyYCxH3iXLPhYWf6s5IEi1FEHXrzFx8mw5c19q9u1cbJQ0k0AU/ei+sPQJRc
+	 9fK2Cc98dJU0XXK+po7JtZDgs8MbtFF7jT7g9CR6sC/cV5t31jpKxk37oCZQCF00y4
+	 MLCVlvipM+b2w==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93A343811A72;
+	Tue,  2 Jun 2026 21:20:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH net-next v2 5/6] net: dsa: mv88e6xxx: MQPRIO support
-From: Luke Howard <lukeh@padl.com>
-In-Reply-To: <t44kmhk6gqxnwhdvo7svouexwelwsya7zgukpbv3cxpfsmutqa@y3rjoj3tvqce>
-Date: Wed, 3 Jun 2026 07:12:12 +1000
-Cc: Jiri Pirko <jiri@resnulli.us>, Ivan Vecera <ivecera@redhat.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-        Nikolay Aleksandrov <razor@blackwall.org>,
-        Ido Schimmel <idosch@nvidia.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
-        David Ahern <dsahern@kernel.org>, Shuah Khan <shuah@kernel.org>,
-        Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        bridge@lists.linux.dev, linux-kselftest@vger.kernel.org,
-        Max Hunter <max@huntershome.org>, Kieran Tyrrell <kieran@sienda.com>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <A662D3F9-18DD-43C9-A43D-912E5A8A4360@padl.com>
-References: <20260602-mv88e6xxx-8021qat-mqprio-v2-0-72be14522e7c@padl.com>
- <20260602-mv88e6xxx-8021qat-mqprio-v2-5-72be14522e7c@padl.com>
- <t44kmhk6gqxnwhdvo7svouexwelwsya7zgukpbv3cxpfsmutqa@y3rjoj3tvqce>
-To: Cedric Jehasse <cedric.jehasse@gmail.com>
-X-Mailer: Apple Mail (2.3826.700.81)
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v2] net: lan743x: permit VLAN-tagged packets up to
+ configured MTU
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178043520515.1054744.8222539332561002723.git-patchwork-notify@kernel.org>
+Date: Tue, 02 Jun 2026 21:20:05 +0000
+References: <20260529210300.433135-1-davthompson@nvidia.com>
+In-Reply-To: <20260529210300.433135-1-davthompson@nvidia.com>
+To: David Thompson <davthompson@nvidia.com>
+Cc: bryan.whitehead@microchip.com, UNGLinuxDriver@microchip.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
 
-> In case of per port priority mapping, i don't know if this is working =
-as
-> expected, as the IEEE priority mapping is done at ingress.
-> Eg. i think if MQPRIO channel mode is used to configure a pcp to queue =
-mapping
-> on port 1 and a different mapping on port 2. Traffic received on port =
-1 that
-> gets forwarded to port 2 and egresses port 2 will end up in the queue
-> configured by the mapping on port 1. As mqprio is an egress qdisc, i =
-don't
-> think that's expected.
+Hello:
 
-Good point, it=E2=80=99s interesting there is egress mapping on the 6390 =
-but only for FPri to DSCP. The Frame Priority Table set ordinal one =
-would expect for egress QPri mapping is =E2=80=9Creserved for future =
-use=E2=80=9D. (Be nice if it were an undocumented feature.)
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-I will remove the per-port mapping for the 6390 so all ports share the =
-same mapping as they do on the 6352.
+On Fri, 29 May 2026 21:03:00 +0000 you wrote:
+> VLAN-tagged interfaces on lan743x devices were previously unreachable via
+> SSH and failed to respond to large ping packets (e.g. "ping -s 1469" given
+> MTU=1500). In these scenarios, "ethtool -S" reports non-zero "RX Oversize
+> Frame Errors". According to Microchip AN2948, the MAC_RX FSE (VLAN field
+> size enforcement) bit determines whether frames with VLAN tags exceeding
+> the base MTU plus tag length are discarded.
+> 
+> [...]
 
-> I have a patch that hasn't been submitted to the mailing list yet =
-which
-> implements support for the dcb app pcp-prio command. This is also done =
-by
-> configuring the IEEE priority mapping table.
+Here is the summary with links:
+  - [net,v2] net: lan743x: permit VLAN-tagged packets up to configured MTU
+    https://git.kernel.org/netdev/net/c/8173d22b211f
 
-Definitely happy to take a look if and when you submit, but I do plan to =
-continue with this patch series (originally proposed as an RFC in =
-September 2025).
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-Cheers,
-Luke=
+
