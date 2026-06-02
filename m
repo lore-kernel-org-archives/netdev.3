@@ -1,64 +1,64 @@
-Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
+Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 641773E7BAF
-	for <netdev@vger.kernel.org>; Tue,  2 Jun 2026 13:36:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B96873E717B
+	for <netdev@vger.kernel.org>; Tue,  2 Jun 2026 13:36:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780407376; cv=none; b=ATPIwTCUCnL/TvHc4m/lnn8R2GXKy/+90iWmqUPdzon0A2gh7JULlk4RsGwHpBWGg1pdr/D0FcSgWmnBaKbPahC91+jInTlmilJ+hhEjc4OQPDgvOx3MUkRdbTD3fDGw1vXmqwIrEg3tr8A72T5yxPZ/KnNk6r14HEzOQgcZPD0=
+	t=1780407377; cv=none; b=b9WD7engRCIv7VNUj3IirBz7UcUtS7+N5JyYG9gM2CuFKzy8u8+oB93fYuDlhdXen6D3XhlOb8uMwYAiT2LNtyHw+DL/MhmMMr5+eXBk6s/Afx4dkoZ30sxGmWPVbR0nB+iGeidcofyFVbd2/llisVm+sFAqIsLwdrQdWWz+ZPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780407376; c=relaxed/simple;
-	bh=SOLS464sCwsXb68FsuH5c593Tm26C1l/iV/hYt7J9QA=;
+	s=arc-20240116; t=1780407377; c=relaxed/simple;
+	bh=+FB2mNWD+mMTqn+F3bRCt0nRITKgPpAcXTfxbti41GQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lycRUHsnxmW5h5sDlob+R/HDsxdvVdrPEFh0/wo3awLV8LWMcUzKajlkh1wd+ZL9l5IMrIUA+RYfnI9pUWM8L3TA5BsNZu42bLnQ7NWnZ4vyFGscIUcNDl1qXICNXW3CD4fkZszWo6V+Ie5atnBtO0JYHScp6D6kioxf4uLU+k0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d7NlhSDo; arc=none smtp.client-ip=209.85.222.173
+	 MIME-Version; b=e5dxqGXfnMJxlxIk2W+9A/hl5/EbOr8jetJ1ooAVdcE5plUVqBrymZPOys4h/ZCnV1ghgH6Xj9iIbCxQBfs8LBIDfHrbtPsFRpLsiYJRJk7v9V/JwKKECyuJt2y3Gv0sofSS1IFSvfPefZqBGOV+DysYmVPmUde3Dav0lAOZGMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Uc9R733G; arc=none smtp.client-ip=209.85.222.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d7NlhSDo"
-Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-9157b895c57so55206485a.3
-        for <netdev@vger.kernel.org>; Tue, 02 Jun 2026 06:36:12 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Uc9R733G"
+Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-914ae4101b4so1440245485a.2
+        for <netdev@vger.kernel.org>; Tue, 02 Jun 2026 06:36:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780407371; x=1781012171; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1780407373; x=1781012173; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ILH0OeVmQKxRCdX8NaniLAKrB5+vOEdfNb+IKt6Bl+4=;
-        b=d7NlhSDolCE6yiIhwR99pkdmFT4MCbhsmexwSqDzsRIV+UyBD41QlOUcV7zUGz96pe
-         fGgwFErgzkOayrO9j7HfOqllvhs0tDyCO155j8klujjnleiZ03w/VXLX25vxZZCX/aY4
-         7eBE2QPT2SreD2suke0fIjp5O2KiFnpAEqbfrVTiD2lZtMEPB2lRb3Rrqkp8O0UR5cpw
-         2jpCb0S2R6CkMarqppGDY6qOYFreEYi6CZwZPQ2XyPkdrZy3EIwBb4McESvt+GlmEUQ5
-         SBR3EBvfvPrhD8rZ1tNCBEXEnXe7ArJN8/BD7oQWiN/8eG/rNUQyOOUH5pyP26Pf0jDZ
-         v7mg==
+        bh=yRqKUEmLg14tZiwShSZMSTmsfzqKmm+Rz87fQO4vv/I=;
+        b=Uc9R733G+cOXJQmf/GRCdjld2bKOp2SwYWqTcjlPb9gNGuZCZwJHrV/7ffi2hcLqvI
+         GcLC3ucQDgxas4KV51XsJTuuOwAIzRCUoGthgU+nXIgXtxlj/ESHQS7vXw+rkR74Kvyi
+         ThmZLztLToL9OG5mO7itBUBi/XKQuVO80fez9ozxBwgRVyEtOnE+zOixWIOTgSUXhB64
+         ocYQn5tJWyg9BGO5zz0jEyFOhS5QtQEwrS5CechsRc/YdT7CHIUNCxhVFdFM6KR56FVM
+         WHeuuja0Dfq9sfz13J2Z0Kh0TFNSFASDl+tak7Kfj+7ufrA4mAZXrNvt63fGlDs1vCPv
+         J9jA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780407371; x=1781012171;
+        d=1e100.net; s=20251104; t=1780407373; x=1781012173;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=ILH0OeVmQKxRCdX8NaniLAKrB5+vOEdfNb+IKt6Bl+4=;
-        b=RwspD9PgzCG0/MFFtn2PcC2wldCYcHXVXD2AtFlH6naelEtAXgV2iyCSz9ijSFscNv
-         AMwRPjP0fD0ORNQlwv7lEZzpXw3n0gKzHlR8sDIgNWDSaUTH0rkU1Bh58cV5tIk7c1pg
-         5yCTNZRdD/DlHfzv7zYd+6Y0P/8y5xmF2RCTv6vtNRajXv35ANY4TtwaaMi3tjIBts4Z
-         PYEoChk92yOTFx+twi5aRG6N0/z0lgPO3eJxysnEe3gcxkL+QjRExdIjMaajvfp6yV2n
-         EPKW3Jw9SAYTfNBhdcT8JkBbVkRuehVQPEacYf09s2GPMQuDwNq6uMUh3st11y4Fb+de
-         JWIw==
-X-Forwarded-Encrypted: i=1; AFNElJ93SrvpGMsmOn5pWRXIOz9P+4PZPM5RmD1PeTLbt/g6t6bVSfiIIcnteTCQXPU996zZix8bz9M=@vger.kernel.org
-X-Gm-Message-State: AOJu0YytBCb/MTdWXbB79Yiy84nmEnZDC7z5l3MnWKoE3YnjHlr181bJ
-	scWkX6vxnuopNdx9tmsMgO/rJ98QTcDOx19npKCj/gIGfdGzvTq+fs81
-X-Gm-Gg: Acq92OFWFXBLyzifMxFif7kSXsAlnVAfWKnX+5Hx9ied2tqpsSHXm/zi5rIUMLDWZLv
-	jBlvXarPz3NbDeE+xRoHzdYKQj6fmbMbqUObSu//MRcl3x338kD2paMlt/M3SpYVVODhkpDXqYx
-	/3M6ZkMgummb1i/7t7XFWBhcBg+hgn3Nutqshp9A7B+Pq3rQqCKrBGh+xIgv/0/eGs0A3LbVU42
-	piVAr7yQ5niz2yZMiqvtWwnLNoeFjG66/R0oIIiPU/Q0SXveYns9LtZnnMhIE3tGjf8mnd5H2TD
-	oQC7ZZIZuPyscdlfPoMB4rQ+1MLYa7pgbdHsC76jwbNYWaLpshGKfdg27yFidWlZBapwNvP3lBU
-	C8e1k9m+4GXNwOR2qHBhXWVHPN22Qp82NtMWddYEDSmlpm6T/IW43m0Oki0verba+QJim7Wy396
-	5jMZ7Hom2S8eqJbRGqv4WW07vRxMwZXp1Iv02cqHyd7jzcGHRw+gi/KgZFCGYVqqrknuBcIPe3J
-	EapFOBxM8QQflH3T2vdVXM+jfHLzwM=
-X-Received: by 2002:a05:620a:284a:b0:915:673a:617b with SMTP id af79cd13be357-915673a62c9mr1075320485a.24.1780407370960;
-        Tue, 02 Jun 2026 06:36:10 -0700 (PDT)
+        bh=yRqKUEmLg14tZiwShSZMSTmsfzqKmm+Rz87fQO4vv/I=;
+        b=O1Jc3ewgchu2VAWMXCoCuKF/rgt0b+igbhZvmoajwrZ64O9zyjIiAQV8lBEbOla7dJ
+         mBb5roau6zdHYaVegNYyFUdBlWOaRUEZYZm8ZsGmzTnzaLueN3xkT7OZBkO1darEenOZ
+         +AYTZ//ImgxOtYIu/54eAn0whLvhDbqPRURCFlNtlrrnMaMnU/R2QQlR64eMmD/kNV5X
+         3eDUMoNphvRCS3XwHJD18bOUnGAAo1jRYJAe1sKCppB+llE6weB0JmPH5dVjnXk0lZmh
+         1U+GT9eyjxb0Z86xEjVAePULZeVgVVIVdo9euvDBBFn1F5shbGORtdVrlLoH3Q5aEjzK
+         afTw==
+X-Forwarded-Encrypted: i=1; AFNElJ+kIPkuxuWGQctSNwm5VR4PYFZkZxjwQgU3Z0APaLDxj05fOjE974D7tVkOJFZHVAallJ5vAd4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwJeyil4ordtk6hsjBAaJi0pu2/c9K//2WLComCiFj9Yo5jh8PA
+	Qsv8MWivMD6va37LX2lqgP6Qs4qMgpvngZ/Hh8twClLKzL+ew4g/SCoyPLP/TLAw
+X-Gm-Gg: Acq92OGlXmxRh4HxnOfOKPRZSrmdvjT9K9DDDgy9Or1lmwFiFcTuVmjWOwc/FdNRv/U
+	/WoZXL+xqlRcIwYoofOpUDBYmPHZpo7Q+68JioATjYZZQi1tCv2CNsEQKGyIas4JUBeePd9DQ0t
+	dXBLlsjcKbEc30VqbZI8HH3D+jNUlll5TR3EyV+NyB6aI2BBrNT+NMGCEgl2IUbjy3r+EL+BMaH
+	lrUwU2NQFKc6rbT+ZY662PDD24D8TfsMPJY3l7euIewbliRMRqEKrsStu8CTUj1mFaTiGWgbLTz
+	cLZZdVI0qPUdcBrY2IqZU8EzwNjSjwvcZty055nlBlvsG35e5xmMzcRaoTe3ImeiDJwNv6mvExe
+	lJsVUIE/Lm1dYECd4Co/0ArQHv0Fa/n/zwzTPvbMkIcGi4Thm0ZZgAi+XspSidHBTuSzWMOrz4d
+	9V/9MTXUftIakgVoNSCwRmy4hRAm17j9IZF8VILDl39iXCGi4li10E54Mtnm5HYBI0hKP5aKB8w
+	Zm8ZsansGYPn1Nxo9lBsSnVAzxcG4s=
+X-Received: by 2002:a05:620a:4015:b0:915:7b5e:a4c4 with SMTP id af79cd13be357-9157b5eb1fbmr401346585a.45.1780407373453;
+        Tue, 02 Jun 2026 06:36:13 -0700 (PDT)
 Received: from server0 (c-68-48-65-54.hsd1.mi.comcast.net. [68.48.65.54])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-915721f7d75sm346036285a.18.2026.06.02.06.36.09
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-915721f7d75sm346036285a.18.2026.06.02.06.36.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 Jun 2026 06:36:10 -0700 (PDT)
+        Tue, 02 Jun 2026 06:36:12 -0700 (PDT)
 From: Michael Bommarito <michael.bommarito@gmail.com>
 To: Jon Maloy <jmaloy@redhat.com>,
 	"David S . Miller" <davem@davemloft.net>,
@@ -70,9 +70,9 @@ Cc: Simon Horman <horms@kernel.org>,
 	netdev@vger.kernel.org,
 	tipc-discussion@lists.sourceforge.net,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net 1/4] tipc: require net admin for TIPCv2 netlink mutators
-Date: Tue,  2 Jun 2026 09:35:52 -0400
-Message-ID: <20260602133555.769727-2-michael.bommarito@gmail.com>
+Subject: [PATCH net 3/4] tipc: prevent snt_unacked underflow on CONN_ACK
+Date: Tue,  2 Jun 2026 09:35:54 -0400
+Message-ID: <20260602133555.769727-4-michael.bommarito@gmail.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260602133555.769727-1-michael.bommarito@gmail.com>
 References: <20260602133555.769727-1-michael.bommarito@gmail.com>
@@ -84,123 +84,51 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
-TIPCv2 registers mutating generic-netlink operations without admin
-permission flags. Generic netlink only checks CAP_NET_ADMIN when an
-operation sets GENL_ADMIN_PERM or GENL_UNS_ADMIN_PERM, so a local
-unprivileged process can currently change TIPC state through commands
-such as TIPC_NL_NET_SET, TIPC_NL_KEY_SET, TIPC_NL_KEY_FLUSH, and
-bearer enable/disable.
+tipc_sk_conn_proto_rcv() subtracts the peer-supplied connection ack
+count from the unsigned 16-bit send counter snt_unacked without
+checking that it does not exceed the number of messages actually
+outstanding:
 
-The legacy TIPC netlink API already checks netlink_net_capable(...,
-CAP_NET_ADMIN) for administrative commands. Give the TIPCv2 mutators
-the equivalent network-namespace-aware generic-netlink gate by setting
-GENL_UNS_ADMIN_PERM.
+	tsk->snt_unacked -= msg_conn_ack(hdr);
 
-A QEMU/KASAN repro run as uid/gid 65534 with zero effective
-capabilities previously succeeded in changing the network id and node
-identity, setting and flushing key material, and enabling/disabling a
-UDP bearer. With this patch applied the same operations fail with
--EPERM.
+msg_conn_ack() is read straight from a received CONN_MANAGER/CONN_ACK
+message. If the ack count is larger than snt_unacked the subtraction
+wraps to a near-maximum value, leaving tsk_conn_cong() permanently true
+and starving the connection of further transmits.
 
-Fixes: 0655f6a8635b ("tipc: add bearer disable/enable to new netlink api")
-Assisted-by: Codex:gpt-5-5-xhigh
+Cap the ack to the outstanding count before subtracting. A peer (or,
+for a local connection, the connected peer socket) can otherwise wedge
+a TIPC connection's send side by sending an oversized connection ack.
+
+Fixes: 10724cc7bb78 ("tipc: redesign connection-level flow control")
+Assisted-by: Claude:claude-opus-4-7
 Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
 ---
- net/tipc/netlink.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ net/tipc/socket.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/net/tipc/netlink.c b/net/tipc/netlink.c
-index 1a9a5bdaccf4f..8336a9664703f 100644
---- a/net/tipc/netlink.c
-+++ b/net/tipc/netlink.c
-@@ -152,11 +152,13 @@ static const struct genl_ops tipc_genl_v2_ops[] = {
- 	{
- 		.cmd	= TIPC_NL_BEARER_DISABLE,
- 		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
-+		.flags	= GENL_UNS_ADMIN_PERM,
- 		.doit	= tipc_nl_bearer_disable,
- 	},
- 	{
- 		.cmd	= TIPC_NL_BEARER_ENABLE,
- 		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
-+		.flags	= GENL_UNS_ADMIN_PERM,
- 		.doit	= tipc_nl_bearer_enable,
- 	},
- 	{
-@@ -168,11 +170,13 @@ static const struct genl_ops tipc_genl_v2_ops[] = {
- 	{
- 		.cmd	= TIPC_NL_BEARER_ADD,
- 		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
-+		.flags	= GENL_UNS_ADMIN_PERM,
- 		.doit	= tipc_nl_bearer_add,
- 	},
- 	{
- 		.cmd	= TIPC_NL_BEARER_SET,
- 		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
-+		.flags	= GENL_UNS_ADMIN_PERM,
- 		.doit	= tipc_nl_bearer_set,
- 	},
- 	{
-@@ -197,11 +201,13 @@ static const struct genl_ops tipc_genl_v2_ops[] = {
- 	{
- 		.cmd	= TIPC_NL_LINK_SET,
- 		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
-+		.flags	= GENL_UNS_ADMIN_PERM,
- 		.doit	= tipc_nl_node_set_link,
- 	},
- 	{
- 		.cmd	= TIPC_NL_LINK_RESET_STATS,
- 		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
-+		.flags	= GENL_UNS_ADMIN_PERM,
- 		.doit   = tipc_nl_node_reset_link_stats,
- 	},
- 	{
-@@ -213,6 +219,7 @@ static const struct genl_ops tipc_genl_v2_ops[] = {
- 	{
- 		.cmd	= TIPC_NL_MEDIA_SET,
- 		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
-+		.flags	= GENL_UNS_ADMIN_PERM,
- 		.doit	= tipc_nl_media_set,
- 	},
- 	{
-@@ -228,6 +235,7 @@ static const struct genl_ops tipc_genl_v2_ops[] = {
- 	{
- 		.cmd	= TIPC_NL_NET_SET,
- 		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
-+		.flags	= GENL_UNS_ADMIN_PERM,
- 		.doit	= tipc_nl_net_set,
- 	},
- 	{
-@@ -238,6 +246,7 @@ static const struct genl_ops tipc_genl_v2_ops[] = {
- 	{
- 		.cmd	= TIPC_NL_MON_SET,
- 		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
-+		.flags	= GENL_UNS_ADMIN_PERM,
- 		.doit	= tipc_nl_node_set_monitor,
- 	},
- 	{
-@@ -255,6 +264,7 @@ static const struct genl_ops tipc_genl_v2_ops[] = {
- 	{
- 		.cmd	= TIPC_NL_PEER_REMOVE,
- 		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
-+		.flags	= GENL_UNS_ADMIN_PERM,
- 		.doit	= tipc_nl_peer_rm,
- 	},
- #ifdef CONFIG_TIPC_MEDIA_UDP
-@@ -269,11 +279,13 @@ static const struct genl_ops tipc_genl_v2_ops[] = {
- 	{
- 		.cmd	= TIPC_NL_KEY_SET,
- 		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
-+		.flags	= GENL_UNS_ADMIN_PERM,
- 		.doit	= tipc_nl_node_set_key,
- 	},
- 	{
- 		.cmd	= TIPC_NL_KEY_FLUSH,
- 		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
-+		.flags	= GENL_UNS_ADMIN_PERM,
- 		.doit	= tipc_nl_node_flush_key,
- 	},
- #endif
+diff --git a/net/tipc/socket.c b/net/tipc/socket.c
+index 9329919fb07f0..9c739a3cea126 100644
+--- a/net/tipc/socket.c
++++ b/net/tipc/socket.c
+@@ -1362,9 +1362,16 @@ static void tipc_sk_conn_proto_rcv(struct tipc_sock *tsk, struct sk_buff *skb,
+ 			__skb_queue_tail(xmitq, skb);
+ 		return;
+ 	} else if (mtyp == CONN_ACK) {
++		u16 conn_ack = msg_conn_ack(hdr);
++
+ 		was_cong = tsk_conn_cong(tsk);
+ 		tipc_sk_push_backlog(tsk, msg_nagle_ack(hdr));
+-		tsk->snt_unacked -= msg_conn_ack(hdr);
++		/* Cap a peer-supplied ack so a forged value cannot underflow
++		 * the unsigned counter and wedge connection flow control.
++		 */
++		if (conn_ack > tsk->snt_unacked)
++			conn_ack = tsk->snt_unacked;
++		tsk->snt_unacked -= conn_ack;
+ 		if (tsk->peer_caps & TIPC_BLOCK_FLOWCTL)
+ 			tsk->snd_win = msg_adv_win(hdr);
+ 		if (was_cong && !tsk_conn_cong(tsk))
 -- 
 2.53.0
 
