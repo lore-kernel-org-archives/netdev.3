@@ -1,34 +1,34 @@
 Received: from us.padl.com (us.padl.com [216.154.215.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07C043CD8C5;
-	Tue,  2 Jun 2026 23:11:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B84A23B894B;
+	Tue,  2 Jun 2026 23:21:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.154.215.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780441892; cv=none; b=lhHpXzpH1JYRg0sifQPOQ1fLwADUY4ynSY0rZ1Ce8PTq4DUOt2dj8rzXJW9D3HQojTBlBs60YbY6YSN/3D8qJIHQzIT8pUNK3TVzqtivGy/EIg0fLnR8l3MMczWnkZ3jh9+vIthXkWECGJ0+jF4kQy27jR/oeiaV6rbwN9ISJww=
+	t=1780442471; cv=none; b=FYI5FFBUjljsLk9NbWr6VijDmS4hXkz899zjuLzQ9rX3M9frfQh2b6ZEsCA+vaFc4cpR7SPoibDdOcc2p/Vrl8oMHNOsNe2wqCF7fERJRb0jmdPvnk9zmzl24j1K1a9kxHxCXzoP9LyaFYNmYFn+cHuDIa1kScN1nzsRgvovp5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780441892; c=relaxed/simple;
-	bh=wNxQLyr86kdfMlwDkf+HMvpVy9oVxQtDzqrOXbvBLLw=;
+	s=arc-20240116; t=1780442471; c=relaxed/simple;
+	bh=/4wkig+i37D4I6hBlvhPPcOyoK0ca+a8S5VAN8B+d/k=;
 	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=A51id2flhJV1osIywP9d5Q1SxZUAA4q5iwJJig4z8Y0TmAM38Oa53RhPVAM3uD2cputd4h20j7izdDX83aNTHqHir0X07RAtl0HdGpCK2Rl1oFsy3q1QDIb4FRTfqf/HM1Er6uc3tr16Ex2j1l7Xp0uRH1izqmwbVewLYGSzBXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=padl.com; spf=pass smtp.mailfrom=padl.com; dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b=BzxVFRz5; arc=none smtp.client-ip=216.154.215.154
+	 Message-Id:References:To; b=kb3gsyTd/H2lRTxJS7kWxNfYczloB96E2wQMs6GeQLiNDS3QRlDEDojLxbKCSkIT25zv6zpCr/VFPvAZEyK5bDSDYmHVQuQtFZHlTJQHrtstbUg5Tt0TJYSdz8EJVUbLdfA5t9Gxb/I3kjgC23sm8bv8yMFeSG//VFuFFEj767Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=padl.com; spf=pass smtp.mailfrom=padl.com; dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b=q2ki37i2; arc=none smtp.client-ip=216.154.215.154
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=padl.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=padl.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b="BzxVFRz5"
-Received: from auth (localhost [127.0.0.1]) by us.padl.com (8.14.7/8.14.7) with ESMTP id 652NAi19003927
+	dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b="q2ki37i2"
+Received: from auth (localhost [127.0.0.1]) by us.padl.com (8.14.7/8.14.7) with ESMTP id 652NKpdQ005672
 	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Wed, 3 Jun 2026 00:10:49 +0100
-DKIM-Filter: OpenDKIM Filter v2.11.0 us.padl.com 652NAi19003927
+	Wed, 3 Jun 2026 00:20:53 +0100
+DKIM-Filter: OpenDKIM Filter v2.11.0 us.padl.com 652NKpdQ005672
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=padl.com; s=default;
-	t=1780441854; bh=wNxQLyr86kdfMlwDkf+HMvpVy9oVxQtDzqrOXbvBLLw=;
+	t=1780442457; bh=/4wkig+i37D4I6hBlvhPPcOyoK0ca+a8S5VAN8B+d/k=;
 	h=Subject:From:In-Reply-To:Date:Cc:References:To:From;
-	b=BzxVFRz5S8QUAoOolpOI50Hvs88fChvAJcEan6FTsXGQoPh2EyVe6xz9Og020MNA6
-	 dg4hdXc4krjrPchZzqD2G6tVVHJUrB65H8ajF65ndA6PF+mAf3ROqvcswrK/cmhn5S
-	 TYZB/fS3GtiSPKBv2+Nm/Z8GUEaacZULQRZYb4QDJhTLolUdDf9JKhcQB4gOFxtDvQ
-	 B0EnFvGECtTnCGSMiXEObG1K9ZrGH6x2AtFskS0/3amDSOp0iPEscuHYq3avThyRze
-	 89lwkjsJT+Db+ao+fqvGdhl1Oc85bGhn+jgKumRCZBviwipI+Qcm+qXZNrXGfjmikD
-	 +ENdkNcxhx8aA==
+	b=q2ki37i22tHRAdUQooFU1AV7mrlPs5De0+FuiqPeg5oTI/uhNoAsOZoZlsUbtAeFR
+	 nULEy/DX3OTsJbr6Y755B8E60kceNcchXzbQZbt3i6/TPpb68s44B1OsoqGA1rVKpa
+	 scAuBZ1qSrgyFvLaCeWZ0EAw31ElnsL6OQcP1C69vB2ASN713Ms8xqWJp/sxIb/pdY
+	 8aa2f8SFhjZt+pGrzFhulL03M6qPplGVKfnbG+bbP42EioIYZj/vzodloZX2zhQkCU
+	 3VVwJ7H9V3vXTsTACfDmM1Q1AIxmFBDntOszLXaLuEMhGFHCIjnja6TXCnfeoT5Gg4
+	 hIdJxkv6O3ekg==
 Content-Type: text/plain;
 	charset=utf-8
 Precedence: bulk
@@ -36,12 +36,11 @@ X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.500.181.1.5\))
-Subject: Re: [PATCH net-next v5 2/2] net: dsa: mv88e6xxx: add support for
- credit based shaper
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH net-next v5 1/2] net: dsa: mv88e6xxx: use the hw tx queues
 From: Luke Howard <lukeh@padl.com>
-In-Reply-To: <20260602-net-next-mv88e6xxx-cbs-v5-2-1969758d1fa3@luminex.be>
-Date: Wed, 3 Jun 2026 09:10:33 +1000
+In-Reply-To: <20260602-net-next-mv88e6xxx-cbs-v5-1-1969758d1fa3@luminex.be>
+Date: Wed, 3 Jun 2026 09:20:40 +1000
 Cc: Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
         "David S. Miller" <davem@davemloft.net>,
         Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
@@ -51,23 +50,35 @@ Cc: Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
         =?utf-8?Q?Marek_Beh=C3=BAn?= <kabel@kernel.org>,
         Cedric Jehasse <cedric.jehasse@gmail.com>
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <430D20CF-A14A-4692-AE27-D996E90BBF66@padl.com>
+Message-Id: <BD706AF2-256A-44C2-BA96-30BAB98E76C2@padl.com>
 References: <20260602-net-next-mv88e6xxx-cbs-v5-0-1969758d1fa3@luminex.be>
- <20260602-net-next-mv88e6xxx-cbs-v5-2-1969758d1fa3@luminex.be>
+ <20260602-net-next-mv88e6xxx-cbs-v5-1-1969758d1fa3@luminex.be>
 To: cedric.jehasse@luminex.be
-X-Mailer: Apple Mail (2.3826.500.181.1.5)
+X-Mailer: Apple Mail (2.3826.700.81)
 
 
 
 > On 2 Jun 2026, at 7:10=E2=80=AFpm, Cedric Jehasse via B4 Relay =
 <devnull+cedric.jehasse.luminex.be@kernel.org> wrote:
 >=20
-> + int hilimit_reg;
-> + int rate_reg;
-> + u8 queue_bit;
-> + u16 hi_limit;
+> From: Cedric Jehasse <cedric.jehasse@luminex.be>
+>=20
+> When transmitting fill in the PRI field in the dsa tag to select the
+> egress queue is sent to.
+> =46rom the datasheets i've looked at these switches have 4 or 8 =
+transmit
+> queues per port.
+> Note: skbs with skb->fw_offload_fwd_mark set use the DSA_CMD_FORWARD
+> tag. These are processed as normal ingress frames, meaning the queue
+> they end up in can still be altered by other switch config. eg. =
+priority
+> overrides, tcam policies.
+> This isn't done for vlan tagged frames because this would overwrite =
+the
+> PCP value in the vlan tag (The PRI field in the dsa
+> tag is used as the PCP value in the vlan tag).
+>=20
+> Signed-off-by: Cedric Jehasse <cedric.jehasse@luminex.be>
 
-One nitpick is that it might be nice to consistently spell hilimit (vs =
-hi_limit).
+Reviewed-by: Luke Howard <lukeh@padl.com>
 
-Reviewed-by: Luke Howard <lukeh@padl.com>=
