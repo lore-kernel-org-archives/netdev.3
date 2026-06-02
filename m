@@ -1,135 +1,135 @@
-Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [4.193.249.245])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE2493C7DF0;
-	Tue,  2 Jun 2026 08:44:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=4.193.249.245
+Received: from out30-111.freemail.mail.aliyun.com (out30-111.freemail.mail.aliyun.com [115.124.30.111])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D4A237EFEE;
+	Tue,  2 Jun 2026 08:51:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.111
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780389868; cv=none; b=K/jnEJz1Co4tIAgNT6gIF1zVCuYAFKx1RXtU3sdaF1JoGoJ10MTJN9FCRrBME7LVZU2CXkOq9ndyWr6uy2/RPysOuBAm6DZ815UTw+TnuDOHUgtDKBdqVIUABKqd1Ka5fH7EGx/nKqczGFqrvOi8rcJLtclBKx4jysHxYjYPv04=
+	t=1780390313; cv=none; b=Fayl8HJIjbk08wYU9XzRIM/NN/5Y/nkbd/xBJ7Us8u7jXEKTGpZ7yNBkxd8ejCeG7YEz3XZYUCc+vrc5coB9LqdVT/SLCdoCY9acUlIYWf9/SrKiADBsiJTtX3k5bIdHVp5s5k7/eHeV9zSg4CcUdvlbiAxiQFS/hajywB42gR0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780389868; c=relaxed/simple;
-	bh=1kJDBklGR+KwBXJLYlvP0UzDZ3rVkkzOoOR4mP/2wLI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=j1XSUZOaFDuDzFy7YUvX4ifp5+vXUrxR40/TE8G6gU7kdiOP5oVPYo1hNKmQ3U6+1mRpkIB6/t2vF/nkRlPUfO+yV+xhd/f/CUnaSCC4dO70uICPlhlm+bRxTZMcuvfnACm9aCBGwxsOaCmP1HZPNB02oUkKxlNkUojeMghkUsw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lzu.edu.cn; spf=pass smtp.mailfrom=lzu.edu.cn; arc=none smtp.client-ip=4.193.249.245
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lzu.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lzu.edu.cn
-Received: from enjou-Legion-Y7000P-2019 (unknown [172.23.56.36])
-	by app1 (Coremail) with SMTP id ygmowACnycO7lx5q0N1PAA--.44848S2;
-	Tue, 02 Jun 2026 16:43:39 +0800 (CST)
-From: Ren Wei <n05ec@lzu.edu.cn>
-To: netdev@vger.kernel.org,
-	bpf@vger.kernel.org
-Cc: ast@kernel.org,
-	daniel@iogearbox.net,
-	davem@davemloft.net,
-	kuba@kernel.org,
-	hawk@kernel.org,
-	john.fastabend@gmail.com,
-	sdf@fomichev.me,
-	andrii@kernel.org,
-	martin.lau@linux.dev,
-	eddyz87@gmail.com,
-	memxor@gmail.com,
-	song@kernel.org,
-	yonghong.song@linux.dev,
-	jolsa@kernel.org,
-	toke@redhat.com,
-	liuhangbin@gmail.com,
-	yuantan098@gmail.com,
-	zcliangcn@gmail.com,
-	bird@lzu.edu.cn,
-	zzhan461@ucr.edu,
-	n05ec@lzu.edu.cn
-Subject: [PATCH bpf v2] bpf: devmap: reject fragmented frames in clone-based broadcasts
-Date: Tue,  2 Jun 2026 16:43:33 +0800
-Message-ID: <21c2d153dd25603d359069a02bf06779b51f6423.1780385378.git.zzhan461@ucr.edu>
-X-Mailer: git-send-email 2.51.0
+	s=arc-20240116; t=1780390313; c=relaxed/simple;
+	bh=lckzWpKm7tjsN3aBVHxq7DUSFbeMQmN8zXr083i/qFc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=EnV8vVOaQdyMM2Z4OsuouqtVtBdvQ3ORnN8mcnsn6YPtWjwa5i4XEODpyyI+GoNMawXEpxZVXNz2guEMSyCH8aNekv6cUVpMR/LIXfNlQM3QXYDZGl15JCUiLRQQ1OU4FjIyKfuRYISGsTP97B9+3Ny3pYkHStD9b3P6/75ZA8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=w8FyjZln; arc=none smtp.client-ip=115.124.30.111
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="w8FyjZln"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1780390308; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=lMVE6WF7j9WLQW0DFwqLpY1Wg7pA22gZy4norUCwY8w=;
+	b=w8FyjZlnr4tRGFw/MfpTGZkmDtMF5ISgVk9iu5V79zueLwgeV3uTAKEEYKdzuJSsrEr4K0oTiXBR9TSXHMl+bXs3gCgptbqF4Ppl2A71g0PBY/pdyjW6Xt5AmfPTXqLHN/9VjWPxhQagBmv2xboLO1bpSy96e56ZDqmRA21yaWo=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R151e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=guwen@linux.alibaba.com;NM=1;PH=DS;RN=34;SR=0;TI=SMTPD_---0X4423aB_1780390304;
+Received: from 30.221.129.226(mailfrom:guwen@linux.alibaba.com fp:SMTPD_---0X4423aB_1780390304 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 02 Jun 2026 16:51:46 +0800
+Message-ID: <01aef88e-8d0a-4ea4-b8ce-952259ce0bc8@linux.alibaba.com>
+Date: Tue, 2 Jun 2026 16:51:44 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/2] MAINTAINERS: update PTP maintainer entries after
+ directory split
+To: David Woodhouse <dwmw2@infradead.org>,
+ Richard Cochran <richardcochran@gmail.com>
+Cc: Jakub Kicinski <kuba@kernel.org>, tglx@kernel.org, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org, jstultz@google.com,
+ anna-maria@linutronix.de, frederic@kernel.org, daniel.lezcano@kernel.org,
+ sboyd@kernel.org, vladimir.oltean@nxp.com, wei.fang@nxp.com,
+ xiaoning.wang@nxp.com, jonathan.lemon@gmail.com, vadim.fedorenko@linux.dev,
+ yangbo.lu@nxp.com, svens@linux.ibm.com, nick.shi@broadcom.com,
+ ajay.kaher@broadcom.com, alexey.makhalov@broadcom.com,
+ bcm-kernel-feedback-list@broadcom.com, linux-fpga@vger.kernel.org,
+ imx@lists.linux.dev, linux-s390@vger.kernel.org, dust.li@linux.alibaba.com,
+ xuanzhuo@linux.alibaba.com, mani@kernel.org, imran.shaik@oss.qualcomm.com,
+ taniya.das@oss.qualcomm.com
+References: <20260407104802.34429-1-guwen@linux.alibaba.com>
+ <20260407104802.34429-3-guwen@linux.alibaba.com>
+ <20260412084704.743482ad@kernel.org>
+ <4B889ED5-D1F6-401D-B753-89AE2037F316@infradead.org>
+ <20260412095301.4fe1fe65@kernel.org>
+ <ebf19246-91af-4887-b2aa-d9007921f7b2@linux.alibaba.com>
+ <1088b07d760491deb461d6d01abca631e8f8d86c.camel@infradead.org>
+ <ahzQZg_v4bxFfGdj@hoboy.vegasvil.org>
+ <3908843460c4864eef79cced40d897f793c7ae2a.camel@infradead.org>
+ <ah2jIt2DqI1ZZJx8@hoboy.vegasvil.org>
+ <0e023f951c102fe2ee7070e490c579783b2817d5.camel@infradead.org>
+From: Wen Gu <guwen@linux.alibaba.com>
+In-Reply-To: <0e023f951c102fe2ee7070e490c579783b2817d5.camel@infradead.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:ygmowACnycO7lx5q0N1PAA--.44848S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7Aw1kXryrXrWfZr45JFWxCrg_yoW8KrWfpa
-	9F9a4DGrZ8tr47Ca4UZ3WI9rW5KF4kW3y3Kan8K3sxZw1qgr1Iga4SqF13JF1Yyr9YkFWa
-	qr12qrWDG3yUXrDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUBY1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AE
-	w4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2
-	IY67AKxVW7JVWDJwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8Jr0_Cr1UM28EF7xvwVC2
-	z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s0DM2AIxVAIcxkEcV
-	Aq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j
-	6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64
-	vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0E
-	n4kS14v26r4a6rW5MxkIecxEwVCm-wCF04k20xvY0x0EwIxGrwCF04k20xvE74AGY7Cv6c
-	x26r48MxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCj
-	r7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY6x
-	IIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAI
-	w20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x
-	0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7sRi_HU3UUUUU==
-X-CM-SenderInfo: zqqvvuo6o23hxhgxhubq/1tbiAQAGCWodQM8TtwABsT
 
-From: Zhao Zhang <zzhan461@ucr.edu>
 
-Devmap broadcast redirects clone the packet for all but the last
-destination.
 
-For native XDP, that clone path copies only the linear xdp_frame data,
-while fragmented frames keep skb_shared_info in tailroom outside the
-linear area. Cloning such a frame leaves XDP_FLAGS_HAS_FRAGS set but
-without valid frag metadata, and the later free path can interpret
-uninitialized tail data as skb_shared_info, leading to an out-of-bounds
-access during frame return.
+On 2026/6/2 00:53, David Woodhouse wrote:
+> On Mon, 2026-06-01 at 08:20 -0700, Richard Cochran wrote:
+>> On Mon, Jun 01, 2026 at 08:03:26AM +0100, David Woodhouse wrote:
+>>> If we move all the plain non-network PHC drivers (which, as noted,
+>>> is
+>>> basically *all* of them) into a drivers/ subdirectory, then perhaps
+>>> we
+>>
+>> Sorry, just catching up here, so the idea is to have
+>>
+>>   linux/drivers/ptp/drivers  ?
+> 
+> That is my current suggestion.
+> 
+> It stems from Jakub's response in
+> https://lore.kernel.org/all/20250815113814.5e135318@kernel.org/ that "I
+> really wish someone stepped up and created a separate subsystem for all
+> these cloud / vm clocks. They have nothing to do with PTP."
+> 
+> There was some further bikeshedding in
+> https://lore.kernel.org/netdev/0afe19db-9c7f-4228-9fc2-f7b34c4bc227@linux.alibaba.com/
+> around how to split 'emulated' from other hardware drivers, but I don't
+> much like that taxonomy. Some of these "virtual" clocks could just as
+> easily exist in hardware with PTM too.
+> 
+> My observation is that with the sole exception of ptp_inet.c, *all* of
+> the actual PHC drivers that live in drivers/ptp instead of drivers/net
+> are "pure clock" drivers, so perhaps we split those all out into
+> drivers/ptp/drivers/ and exclude them from the netdev maintenance?
+> 
 
-Reject fragmented native XDP frames in dev_map_enqueue_clone().
+I think we don't need to split out all of them. The motivation was
+to find an appropriate home for the PHC drivers that are read-only
+and not disciplined by the host (ptp_vmw, ptp_vmclock, ptp_s390 and
+the newly proposed ptp_cipu); they have little to do with networking.
+The others are adjustable and tied to the network synchronization
+stack (e.g. ptp4l); netdev is the right home for them.
 
-Add the same restriction to the generic XDP clone path in
-dev_map_redirect_clone(). Generic XDP represents fragmented packets as
-nonlinear skbs, and rejecting them here keeps clone-based broadcast
-support aligned between native and generic XDP.
+My view is similar to Jakub's: the dividing line is whether the clock
+provides authoritative time to the host and does not need to be
+disciplined by it.
 
-Fixes: e624d4ed4aa8 ("xdp: Extend xdp_redirect_map with broadcast support")
-Cc: stable@kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Zhengchuan Liang <zcliangcn@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Assisted-by: Codex:GPT-5.4
-Signed-off-by: Zhao Zhang <zzhan461@ucr.edu>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
----
-changes in v2:
-- Add the same fragmented-packet restriction to generic XDP
-  dev_map_redirect_clone() so clone-based broadcast behavior stays
-  aligned with the native XDP path.
-- v1 link: https://lore.kernel.org/all/4b596825bccc64d03e0c2e0db4dceb12c7f5cf47.1780176829.git.zzhan461@ucr.edu/
+   Class A -- stays under netdev:
+   - has its own physical counter/oscillator;
+   - is adjustable (adjfine/adjtime/settime).
 
- kernel/bpf/devmap.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+   Class B -- to be split out:
+   - its time is maintained by an external source (hypervisor, DPU/IPU,
+     or platform/arch);
+   - the host side can only read it, not adjust it.
 
-diff --git a/kernel/bpf/devmap.c b/kernel/bpf/devmap.c
-index cc0a43ebab6b..5b9eac5342a9 100644
---- a/kernel/bpf/devmap.c
-+++ b/kernel/bpf/devmap.c
-@@ -581,6 +581,10 @@ static int dev_map_enqueue_clone(struct bpf_dtab_netdev *obj,
- {
- 	struct xdp_frame *nxdpf;
- 
-+	/* Frags live outside the linear frame and cannot be cloned safely. */
-+	if (unlikely(xdp_frame_has_frags(xdpf)))
-+		return -EOPNOTSUPP;
-+
- 	nxdpf = xdpf_clone(xdpf);
- 	if (!nxdpf)
- 		return -ENOMEM;
-@@ -726,6 +730,9 @@ static int dev_map_redirect_clone(struct bpf_dtab_netdev *dst,
- 	struct sk_buff *nskb;
- 	int err;
- 
-+	if (unlikely(skb_is_nonlinear(skb)))
-+		return -EOPNOTSUPP;
-+
- 	nskb = skb_clone(skb, GFP_ATOMIC);
- 	if (!nskb)
- 		return -ENOMEM;
--- 
-2.47.3
+I will also adjust the relevant wording in the patch set accordingly,
+dropping terms such as "non-NIC", "networking" and "IEEE 1588".
 
+On the category name: the drivers we are splitting out only
+provide time readout and do not support host discipline -- they behave
+like a partial PHC. From that angle I think 'emulated' is defensible,
+but I am also open to a better alternative.
+
+> I'm reluctantly prepared to host and help maintain a drivers tree if
+> it's necessary, but equally as happy to let you own it.
+> 
+> 
+
+Thanks.
