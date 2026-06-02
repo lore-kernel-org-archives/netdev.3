@@ -1,93 +1,63 @@
-Received: from mail-m49198.qiye.163.com (mail-m49198.qiye.163.com [45.254.49.198])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC6592C21C7;
-	Tue,  2 Jun 2026 00:30:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D25262BE65B;
+	Tue,  2 Jun 2026 00:34:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780360229; cv=none; b=JPC76djTKjUpTnWgsS8ZKJArOHbT7Vx1JCkSBNHEM6kzSExa5w5q4IX+fC8PnqbzHHEpGG0L2NiQAeeb4EISMA7PJ6RKiagGQkyq2gheK35Fr1WvFaIzZHzPeOHr4URHbodfbygydqJPhmm/CldGTHf8ps5BKd9cNMWNEHLDuJc=
+	t=1780360444; cv=none; b=ODi3Ky4NomIqnt0jSCKqEt5gW/nS1lmeJ+xjV+WoBaipxl8uCEreMvAXg0OhUFq3iEndP6nS5x5TSTKFeP8QUfPqMOatxILbHSIBehSc5PPM/5JB0jbQ5quqeDgARF/96GOAsUk/mMCsMHa7QrPbMfbqHkxAehV05sgsBp/CzaE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780360229; c=relaxed/simple;
-	bh=MYZMelWdI1c1RUTBJwC+vAruQPtgmq8YDan79uWO1H0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=MPPAU0DQAKd1TpSScBIugslSCfpae9huGdUgksDqklsr6RJeEGxRf7CQUsrk8sYHsi6N/7voec+eCiWpUDxAnm4JPjRJexFaup2f4BUOo9RAqOQhBFDmf72eVcWUtkaZjg3v5WqREzkd3uE87Xq3JmYI59QHK/6ELsgXApSIk3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=GpcpjZWH; arc=none smtp.client-ip=45.254.49.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
+	s=arc-20240116; t=1780360444; c=relaxed/simple;
+	bh=qZ7bCQSddA9GP4Q26qjJGXv0MQXMsd36Q5gss9jKA4g=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=BPVNotyjdRINfDYoPmXa8QlNLfubnh//KhDHZRK3bV3CDkWdt7O6OEb9OAhn6LT/hY+2mksuIjhc8hvsY90+xBwjat4MaoGBoD2pzzVq+zz0PoXX1KWgMk8vjSoCOHcF1hTA13AfMTKJqTRGXtIN1Vei/16v2xIblrMbfzqdrIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LrT4R1Fn; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="GpcpjZWH"
-Received: from PC-202605011814.localdomain (unknown [221.228.238.82])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 40a8c3cb7;
-	Tue, 2 Jun 2026 08:25:15 +0800 (GMT+08:00)
-From: Runyu Xiao <runyu.xiao@seu.edu.cn>
-To: davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: dsahern@kernel.org,
-	idosch@nvidia.com,
-	edumazet@google.com,
-	horms@kernel.org,
-	david.laight.linux@gmail.com,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	jianhao.xu@seu.edu.cn,
-	runyu.xiao@seu.edu.cn
-Subject: [PATCH net v2] ipv6: use READ_ONCE() in ipv6_flowlabel_get()
-Date: Tue,  2 Jun 2026 08:25:06 +0800
-Message-Id: <20260602002506.1519901-1-runyu.xiao@seu.edu.cn>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LrT4R1Fn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A733E1F00893;
+	Tue,  2 Jun 2026 00:34:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780360443;
+	bh=XSv5f2xonG2jwEtIkq1PsvlV+gdAZE4pvna2aJ3ZHYg=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=LrT4R1FnMFeZReAD7nfvr5RIo8JWtky/udCbBY2ZhqtUi+Q76cohHUOPZEQPcXUps
+	 /Wj/tNIkm21gcNkRQqvwgEaMJsPAuURBo/GbsQiq5cFFN0tkEBlVPx7i/uVfJC7tQF
+	 wnAlEDYIXPyXCrf+GobQyRYufJVMTSwCUzIitoFrSEY34U6fvlPL5Ur9kaeBbEkAY+
+	 myNvh3CyNWI90Ti4L4ErSZvJS0Fsr+z07/P7LS6Elm648euQ6BzA/kxhi+gaCFHoVi
+	 so0N9r4ezQYgbcSKF/7yU6B1PE6RMNVv9KDF62FV/0Sr6Y5/FxFfEbECoKmrjnHaDF
+	 TBiI9b+sUDkaA==
+Date: Mon, 1 Jun 2026 17:34:01 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Jack Wu via B4 Relay <devnull+jackbb_wu.compal.com@kernel.org>
+Cc: jackbb_wu@compal.com, Loic Poulain <loic.poulain@oss.qualcomm.com>,
+ Sergey Ryazanov <ryazanov.s.a@gmail.com>, Johannes Berg
+ <johannes@sipsolutions.net>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo
+ Abeni <pabeni@redhat.com>, Wen-Zhi Huang <wen-zhi.huang@mediatek.com>,
+ Shi-Wei Yeh <shi-wei.yeh@mediatek.com>, Minano Tseng
+ <Minano.tseng@mediatek.com>, Matthias Brugger <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Simon
+ Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Shuah Khan
+ <skhan@linuxfoundation.org>, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-mediatek@lists.infradead.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCH 00/11] net: wwan: t9xx: Add MediaTek T9XX WWAN driver
+Message-ID: <20260601173401.2c892526@kernel.org>
+In-Reply-To: <20260529-t9xx_driver_v1-v1-0-bdbfe2c01e57@compal.com>
+References: <20260529-t9xx_driver_v1-v1-0-bdbfe2c01e57@compal.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9e85b8667703a1kunm4cf733bc14f30f
-X-HM-MType: 10
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlCT0hJVk9KHh8dTRpMS0hIGFYeHw
-	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlJSUpVSUlDVUlIQ1VDSVlXWRYaDxIVHRRZQVlPS0hVSktJSE
-	5DQ1VKS0tVS1kG
-DKIM-Signature: a=rsa-sha256;
-	b=GpcpjZWHfeE3blNnugiPvEaJMVJkpOKozboq7MwVaUlj71V/QTF5Joz+ynDDTafRjgqA1SzibH6fwDoHkTM9XazDVwL52+cJ4Rnl0UPq3QtnihCbbLAOtOAzBFfTjN14YQobjkcbcMYSwzJm3G1sv9rdlU/Wxfv6kCQZs040gfI=; c=relaxed/relaxed; s=default; d=seu.edu.cn; v=1;
-	bh=PAs4YotzjN+LG8SuuNUltAd/vJ5Y/sDzOViO5aMsfjk=;
-	h=date:mime-version:subject:message-id:from;
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-ipv6_flowlabel_get() reads flowlabel_consistency and
-flowlabel_state_ranges locklessly.
+On Fri, 29 May 2026 18:31:39 +0800 Jack Wu via B4 Relay wrote:
+>  43 files changed, 14761 insertions(+)
 
-Use READ_ONCE() for these sysctl accesses.
+Please try to cut this down to ~5kLoC for the initial submission.
+Whatever the absolute minimum sensible chunk of code is.
 
-Signed-off-by: Runyu Xiao <runyu.xiao@seu.edu.cn>
----
-v2:
-- Shorten the commit message per review feedback
-- Drop the Fixes and stable CC trailers
-
- net/ipv6/ip6_flowlabel.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/net/ipv6/ip6_flowlabel.c b/net/ipv6/ip6_flowlabel.c
-index b1ccdf0dc646..1ab5ad0dcf24 100644
---- a/net/ipv6/ip6_flowlabel.c
-+++ b/net/ipv6/ip6_flowlabel.c
-@@ -620,7 +620,7 @@ static int ipv6_flowlabel_get(struct sock *sk, struct in6_flowlabel_req *freq,
- 	int err;
- 
- 	if (freq->flr_flags & IPV6_FL_F_REFLECT) {
--		if (net->ipv6.sysctl.flowlabel_consistency) {
-+		if (READ_ONCE(net->ipv6.sysctl.flowlabel_consistency)) {
- 			net_info_ratelimited("Can not set IPV6_FL_F_REFLECT if flowlabel_consistency sysctl is enable\n");
- 			return -EPERM;
- 		}
-@@ -633,7 +633,7 @@ static int ipv6_flowlabel_get(struct sock *sk, struct in6_flowlabel_req *freq,
- 
- 	if (freq->flr_label & ~IPV6_FLOWLABEL_MASK)
- 		return -EINVAL;
--	if (net->ipv6.sysctl.flowlabel_state_ranges &&
-+	if (READ_ONCE(net->ipv6.sysctl.flowlabel_state_ranges) &&
- 	    (freq->flr_label & IPV6_FLOWLABEL_STATELESS_FLAG))
- 		return -ERANGE;
- 
--- 
-2.34.1
+Each patch must build cleanly with W=1
