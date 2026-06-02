@@ -1,286 +1,157 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f196.google.com (mail-dy1-f196.google.com [74.125.82.196])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 182E73F8ED3
-	for <netdev@vger.kernel.org>; Tue,  2 Jun 2026 17:09:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 197983F5BD6
+	for <netdev@vger.kernel.org>; Tue,  2 Jun 2026 17:11:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.196
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780420177; cv=none; b=tQyS/gqZ+x6ymJr43MWJBEt2oiMMvTchyk1dVOUhJ+lQP802lA6VRs87xeT9+c67ItLCCXMOyrzyQ8o/v9fgvyAgEsMracBA6fnYdH+P8wIN++sJuR0nJXeXLmhYm75e7N00SYp9LE2Kkksii2Tub3ETg++cgmt6swOLL1bxJXQ=
+	t=1780420275; cv=none; b=Kz6ziIPsw7smmdVeJgJNSMpm2DRK8Hosadc7ZOg8n9DgDuFwI57lAKZ1l6hegPC66v03ftVm8haDbB5VaaZbFeoeklEEjMUVW4GwqaGvQOO15QuLEG69k19pyLBie9qcCbUpvVwChLcAA5/3IKBJiEkRDWVDhX0ltY6vq+dvQJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780420177; c=relaxed/simple;
-	bh=0hNyd6l4mAlhdLZzhVHbZjXeQ+X9+9CN45W6x7Lxqxo=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=dX673233P3zON05TvLE9XhOf4pMiKX6gtwKbWXIJ+pmfqf86jd2DoFKquBqy9thnB+xjZy4mrGs7Gw3TLVrxySIvhz/IIxeTxCrQCOOa2BxOaa2sT5jrkRo+0GIGOs7Ti2732O9DNOdGPIo8/Wp3QihgrLdJKHuXWGpvXyg9INo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TV4gV0R0; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1780420275; c=relaxed/simple;
+	bh=PNMcwBaq3HWYoO3KsicsKTXAF3/1eGOdICmPWCtyf9A=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
+	 References:In-Reply-To; b=GtemgvWBEFz0WjLNArj1ij4wSaktJXKUN0SIGNeSRJfIjqbwyvE3wMjgZ1MTYX3FGGv2dYy2Z1GU6Qz2zod7Sp2NSfSgptSeU9pOvC4jQ/d42sy0yCTDSiFPFtUn8OXLlTmoCupjOBadheN/xEcdvFUYMtC0YQt+4vGluMsRIE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com; spf=pass smtp.mailfrom=etsalapatis.com; dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b=nd7zPxXG; arc=none smtp.client-ip=74.125.82.196
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=etsalapatis.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TV4gV0R0"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1780420175; x=1811956175;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=0hNyd6l4mAlhdLZzhVHbZjXeQ+X9+9CN45W6x7Lxqxo=;
-  b=TV4gV0R04BHOolDdk01YTGhY30Ugj0XMqADi/Pkv4C12Pv01nxKGuIhu
-   WbuYDiu1hqMERKd9+FxH+ldbwP+x23oeOWgC4q293OavNvANNMv/Ef8lq
-   sl4ajLW2fS6xZi0h+dLbF2Qk2E3rGs/Gx7RDoQReoLx6jG+MZkf9JvRSk
-   5oKEyoPdI76laFlHLBhb7o24/S7qUsz6KLUXYhMSMyEJ+wBVMzGB4kzJr
-   GxBHxlfkvI9kjlZhhz1J1201bHhqYz0DTuu6hM184WMxy5+C3bBCjHL1z
-   P5Kq6y1xcDbcWDjkDODWh+mNV5Is/Ei6d9aqqjXadzMUYRm2ZMXHwcbsL
-   Q==;
-X-CSE-ConnectionGUID: NNZriDGtS6eVaruO6PkqeQ==
-X-CSE-MsgGUID: xQQR1iVZS/WJVOeCXoPmLQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11805"; a="81074150"
-X-IronPort-AV: E=Sophos;i="6.24,183,1774335600"; 
-   d="scan'208";a="81074150"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jun 2026 10:09:33 -0700
-X-CSE-ConnectionGUID: JVoat2iQTGu0yZBYIzl66Q==
-X-CSE-MsgGUID: pjhSrO6ZSTKcH1fHo0nhUg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,183,1774335600"; 
-   d="scan'208";a="241475801"
-Received: from dcskidmo-m40.jf.intel.com ([10.166.241.14])
-  by fmviesa008.fm.intel.com with ESMTP; 02 Jun 2026 10:09:32 -0700
-From: Joshua Hay <joshua.a.hay@intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: netdev@vger.kernel.org
-Subject: [Intel-wired-lan][PATCH net v2 3/3] idpf: fix skb datapath queue based scheduling crashes and timeouts
-Date: Tue,  2 Jun 2026 10:20:24 -0700
-Message-Id: <20260602172024.2285947-4-joshua.a.hay@intel.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20260602172024.2285947-1-joshua.a.hay@intel.com>
-References: <20260602172024.2285947-1-joshua.a.hay@intel.com>
+	dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b="nd7zPxXG"
+Received: by mail-dy1-f196.google.com with SMTP id 5a478bee46e88-304545f5206so15972913eec.0
+        for <netdev@vger.kernel.org>; Tue, 02 Jun 2026 10:11:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=etsalapatis-com.20251104.gappssmtp.com; s=20251104; t=1780420273; x=1781025073; darn=vger.kernel.org;
+        h=in-reply-to:references:from:subject:cc:to:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0j05WBgNKiBOQ3j1mPmoNzDYYpZls9Mm5jzp1fNRRDY=;
+        b=nd7zPxXGdX+bnnaZZKs7yqrvNYLKEKTvox7fHrHIYM538vSdbmNbX4ciXg2nbpBqcY
+         XDAcxVl+EDR0+VnBOfmQU3fvZA2ar9GEoUz+LbH4c15LLEZun0zbiknivHaCql43l2Xj
+         1DdfDMVYFIjpLH52fRUr/iPL824e28Qq2JF53RtJVkoRC7xugt49fpQym9IDLoFSMx4B
+         LNnN0ddmc5LkwOulXvSHUm0PEbPqFvxnxG8l9hNzmaUovz0gVCQiJEDN5QhYHUwUvMZO
+         W3VvcpnDAab/gSSOy2BMFn9w+xYa9ULv5VmUOLDHNKUq9mdBHGZHSAonhufW9TikryyM
+         yh3w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780420273; x=1781025073;
+        h=in-reply-to:references:from:subject:cc:to:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=0j05WBgNKiBOQ3j1mPmoNzDYYpZls9Mm5jzp1fNRRDY=;
+        b=NolbsBbkjqcUPHcGI4Q19Fe6EshMfXyJFGBdbimSNcBIvWsn5Htg37H25lpgSTT+ox
+         yPWkMyvqSOxogJAqqTrfEXtwRiTP4QRb/Ox8lH3MhAcr/dpaLR5n44XUsaafR+IELl7x
+         e/0ESXl/1BzSIot6g32X4haEg5hS5gszO53T9Csz9AcKcYaKj44R1BRTBD5q5PHis4ze
+         6ka8mvtn4YupFRcuL/OxNMMC2MmobElBuUUqXRGDQFJHhroO1t7fSq/p5k5cUdRbONAc
+         r9SQgiwWvF3qT00lEDF7Yt0nenJsOVhpZcv475lpFaji7tDOmNKkoHugF9m5vDBzbVrr
+         gPXA==
+X-Forwarded-Encrypted: i=1; AFNElJ9SC4UKVd8zBj190hNvZw506RSetPvX5GDDX83KI1SDp06OOnVMsp40u/tqn2kKr1M7cJcl+C8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxWon6bVzMhGsTgMm5ZxF+TDcM6/Sdv9Yx2UtXV4YCT/pKsSoQ9
+	BVnMi1t8v3XaSuhkSw77q3I/vinkP7Os5oqCAWD+lIgdudKHGLcJsLWfLo4ujfi+KUI=
+X-Gm-Gg: Acq92OE6W5JJL07bwkATusYednJzk1H6+cdiOuQZSsKA/853ZCWyHXKandn7exh1W82
+	LoNZ7YmKJeI0aYY2hmlYwjUP1/CdkkOsW1onC8UWF7tD+GKizdUjV02ARZWyfCcayKSUghq+ebC
+	CQ/Rne+yRKTQ10E8ln5wwrC+KEKrZAXSCb5CXGirnTCv3j95OTpqjaOCxsCp/FespnzJcX15h7R
+	s8HQY61e3UdXyjNHvflkd7kpdTcJ+7vsP3ca2o9QOz8mUd+A7eb3lhSeqN08cXrHi/DDKmUZH13
+	iFY1Esdz9WhTSz8o/zTWeb+XvEAkneCQ63vfLWQEOJTOwtgs/S3umQTo9Mw9YrpkbWunRonRo+b
+	XCA2NX6ELtHTOoXRjo9SPgJJW3eFeyITyn7ags8zy8K5O4Ig/ToTTdUEbdw+e8PxKB6apCjCQ/I
+	Qt09OrowZ+/lqqtE06q2UI0oDhOPzUpKTzfQ==
+X-Received: by 2002:a05:7300:a44c:b0:2da:a813:a5fd with SMTP id 5a478bee46e88-304fa5a7ac4mr7756107eec.22.1780420273037;
+        Tue, 02 Jun 2026 10:11:13 -0700 (PDT)
+Received: from localhost ([163.114.132.129])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-137f54db05csm241990c88.8.2026.06.02.10.11.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 02 Jun 2026 10:11:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 02 Jun 2026 13:11:08 -0400
+Message-Id: <DIYQB8597KMS.2FSGCPOI9LPCW@etsalapatis.com>
+To: "Ren Wei" <n05ec@lzu.edu.cn>, <netdev@vger.kernel.org>,
+ <bpf@vger.kernel.org>
+Cc: <ast@kernel.org>, <daniel@iogearbox.net>, <davem@davemloft.net>,
+ <kuba@kernel.org>, <hawk@kernel.org>, <john.fastabend@gmail.com>,
+ <sdf@fomichev.me>, <andrii@kernel.org>, <martin.lau@linux.dev>,
+ <eddyz87@gmail.com>, <memxor@gmail.com>, <song@kernel.org>,
+ <yonghong.song@linux.dev>, <jolsa@kernel.org>, <toke@redhat.com>,
+ <liuhangbin@gmail.com>, <yuantan098@gmail.com>, <zcliangcn@gmail.com>,
+ <bird@lzu.edu.cn>, <zzhan461@ucr.edu>
+Subject: Re: [PATCH bpf v2] bpf: devmap: reject fragmented frames in
+ clone-based broadcasts
+From: "Emil Tsalapatis" <emil@etsalapatis.com>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <21c2d153dd25603d359069a02bf06779b51f6423.1780385378.git.zzhan461@ucr.edu>
+In-Reply-To: <21c2d153dd25603d359069a02bf06779b51f6423.1780385378.git.zzhan461@ucr.edu>
 
-The splitq Tx resource checks were assuming that the queues were using
-flow based scheduling and checking the refillqs for free buffers.
-However, the Tx refillqs are not allocated when using queue based
-scheduling resulting in a NULL ptr dereference. Adjust the Tx resource
-checks to only check available descriptor resources when using queue
-based scheduling. Because queue based scheduling does not have any
-notion of descriptor only completions, there cannot be any packets in
-flight, meaning there is no need to check for pending completions.
+On Tue Jun 2, 2026 at 4:43 AM EDT, Ren Wei wrote:
+> From: Zhao Zhang <zzhan461@ucr.edu>
+>
+> Devmap broadcast redirects clone the packet for all but the last
+> destination.
+>
+> For native XDP, that clone path copies only the linear xdp_frame data,
+> while fragmented frames keep skb_shared_info in tailroom outside the
+> linear area. Cloning such a frame leaves XDP_FLAGS_HAS_FRAGS set but
+> without valid frag metadata, and the later free path can interpret
+> uninitialized tail data as skb_shared_info, leading to an out-of-bounds
+> access during frame return.
+>
+> Reject fragmented native XDP frames in dev_map_enqueue_clone().
+>
+> Add the same restriction to the generic XDP clone path in
+> dev_map_redirect_clone(). Generic XDP represents fragmented packets as
+> nonlinear skbs, and rejecting them here keeps clone-based broadcast
+> support aligned between native and generic XDP.
+>
+> Fixes: e624d4ed4aa8 ("xdp: Extend xdp_redirect_map with broadcast support=
+")
+> Cc: stable@kernel.org
+> Reported-by: Yuan Tan <yuantan098@gmail.com>
+> Reported-by: Zhengchuan Liang <zcliangcn@gmail.com>
+> Reported-by: Xin Liu <bird@lzu.edu.cn>
+> Assisted-by: Codex:GPT-5.4
+> Signed-off-by: Zhao Zhang <zzhan461@ucr.edu>
+> Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+> ---
 
-The driver also only supported 8 byte completion descriptors in the skb
-datapath previously. However, currently the FW only supports 4 byte
-completion descriptors when using queue based scheduling. This meant we
-were skipping over completions, resulting in Tx timeouts.  Add support
-to process both 4 and 8 byte completion descriptors, depending on the
-scheduling mode. Cache the next_to_clean completion descriptor in the
-completion queue struct, and fetch this descriptor before the start of
-each cleaning loop. Access the next descriptor in the loop by
-calculating the index based on raw byte count.
+Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
 
-As reported by Sashiko [1], add a dma_rmb to read ownership (gen) bit in
-the completion descriptor before any other fields.
-
-Fixes: 0c3f135e840d ("idpf: stop Tx if there are insufficient buffer resources")
-Fixes: 1c325aac10a8 ("idpf: configure resources for TX queues")
-Link: https://sashiko.dev/#/patchset/20260504-jk-iwl-net-2026-05-04-v1-0-a222a88bd962%40intel.com [1]
-Signed-off-by: Joshua Hay <joshua.a.hay@intel.com>
-Reviewed-by: Madhu Chittim <madhu.chittim@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
----
-v1->v2: add dma_rmb after completion desc gen bit read
----
- drivers/net/ethernet/intel/idpf/idpf_txrx.c | 51 +++++++++++++--------
- drivers/net/ethernet/intel/idpf/idpf_txrx.h |  6 ++-
- 2 files changed, 38 insertions(+), 19 deletions(-)
-
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-index 9cc4fbd13313..54ef86ebf11f 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-@@ -270,11 +270,9 @@ static int idpf_tx_desc_alloc(const struct idpf_vport *vport,
- static int idpf_compl_desc_alloc(const struct idpf_vport *vport,
- 				 struct idpf_compl_queue *complq)
- {
--	u32 desc_size;
--
--	desc_size = idpf_queue_has(FLOW_SCH_EN, complq) ?
--		    sizeof(*complq->comp) : sizeof(*complq->comp_4b);
--	complq->size = array_size(complq->desc_count, desc_size);
-+	complq->desc_sz = idpf_queue_has(FLOW_SCH_EN, complq) ?
-+			  sizeof(*complq->comp) : sizeof(*complq->comp_4b);
-+	complq->size = array_size(complq->desc_count, complq->desc_sz);
- 
- 	complq->desc_ring = dma_alloc_coherent(complq->netdev->dev.parent,
- 					       complq->size, &complq->dma,
-@@ -284,6 +282,7 @@ static int idpf_compl_desc_alloc(const struct idpf_vport *vport,
- 
- 	complq->next_to_use = 0;
- 	complq->next_to_clean = 0;
-+	complq->ntc_desc = complq->comp;
- 	idpf_queue_set(GEN_CHK, complq);
- 
- 	idpf_xsk_setup_queue(vport, complq,
-@@ -2196,7 +2195,7 @@ static void idpf_tx_handle_rs_completion(struct idpf_tx_queue *txq,
- static bool idpf_tx_clean_complq(struct idpf_compl_queue *complq, int budget,
- 				 int *cleaned)
- {
--	struct idpf_splitq_tx_compl_desc *tx_desc;
-+	struct idpf_splitq_tx_compl_desc *tx_desc = complq->ntc_desc;
- 	s16 ntc = complq->next_to_clean;
- 	struct idpf_netdev_priv *np;
- 	unsigned int complq_budget;
-@@ -2204,7 +2203,6 @@ static bool idpf_tx_clean_complq(struct idpf_compl_queue *complq, int budget,
- 	int i;
- 
- 	complq_budget = complq->clean_budget;
--	tx_desc = &complq->comp[ntc];
- 	ntc -= complq->desc_count;
- 
- 	do {
-@@ -2221,6 +2219,8 @@ static bool idpf_tx_clean_complq(struct idpf_compl_queue *complq, int budget,
- 		if (idpf_queue_has(GEN_CHK, complq) != gen)
- 			break;
- 
-+		dma_rmb();
-+
- 		/* Find necessary info of TX queue to clean buffers */
- 		rel_tx_qid = le16_get_bits(tx_desc->common.qid_comptype_gen,
- 					   IDPF_TXD_COMPLQ_QID_M);
-@@ -2260,11 +2260,12 @@ static bool idpf_tx_clean_complq(struct idpf_compl_queue *complq, int budget,
- 		u64_stats_update_end(&tx_q->stats_sync);
- 
- fetch_next_desc:
--		tx_desc++;
-+		tx_desc = (struct idpf_splitq_tx_compl_desc *)
-+				((u8 *)tx_desc + complq->desc_sz);
- 		ntc++;
- 		if (unlikely(!ntc)) {
- 			ntc -= complq->desc_count;
--			tx_desc = &complq->comp[0];
-+			tx_desc = complq->comp;
- 			idpf_queue_change(GEN_CHK, complq);
- 		}
- 
-@@ -2274,6 +2275,8 @@ static bool idpf_tx_clean_complq(struct idpf_compl_queue *complq, int budget,
- 		complq_budget--;
- 	} while (likely(complq_budget));
- 
-+	complq->ntc_desc = tx_desc;
-+
- 	/* Store the state of the complq to be used later in deciding if a
- 	 * TXQ can be started again
- 	 */
-@@ -2440,21 +2443,32 @@ static int idpf_txq_has_room(struct idpf_tx_queue *tx_q, u32 descs_needed,
-  * @tx_q: the queue to be checked
-  * @descs_needed: number of descriptors required for this packet
-  * @bufs_needed: number of buffers needed for this packet
-+ * @flow: true if queue uses flow based scheduling, false if queue based scheduling
-  *
-  * Return: 0 if stop is not needed
-  */
- static int idpf_tx_maybe_stop_splitq(struct idpf_tx_queue *tx_q,
--				     u32 descs_needed,
--				     u32 bufs_needed)
-+				     u32 descs_needed, u32 bufs_needed,
-+				     bool flow)
- {
--	/* Since we have multiple resources to check for splitq, our
-+	/* Since we have multiple resources to check for flow based splitq, our
- 	 * start,stop_thrs becomes a boolean check instead of a count
- 	 * threshold.
- 	 */
--	if (netif_subqueue_maybe_stop(tx_q->netdev, tx_q->idx,
--				      idpf_txq_has_room(tx_q, descs_needed,
--							bufs_needed),
--				      1, 1))
-+	if (flow && netif_subqueue_maybe_stop(tx_q->netdev, tx_q->idx,
-+					      idpf_txq_has_room(tx_q,
-+								descs_needed,
-+								bufs_needed),
-+					      1, 1))
-+		return 0;
-+
-+	/* For queue based splitq, there is no need to check the number of
-+	 * pending completions since we cannot reuse descriptors until we get
-+	 * completions, so we only need to check for descriptor resources.
-+	 */
-+	if (!flow && netif_subqueue_maybe_stop(tx_q->netdev, tx_q->idx,
-+					       IDPF_DESC_UNUSED(tx_q),
-+					       descs_needed, descs_needed))
- 		return 0;
- 
- 	u64_stats_update_begin(&tx_q->stats_sync);
-@@ -3024,6 +3038,7 @@ static bool idpf_tx_splitq_need_re(struct idpf_tx_queue *tx_q)
- static netdev_tx_t idpf_tx_splitq_frame(struct sk_buff *skb,
- 					struct idpf_tx_queue *tx_q)
- {
-+	bool flow = idpf_queue_has(FLOW_SCH_EN, tx_q);
- 	struct idpf_tx_splitq_params tx_params = {
- 		.prev_ntu = tx_q->next_to_use,
- 	};
-@@ -3043,7 +3058,7 @@ static netdev_tx_t idpf_tx_splitq_frame(struct sk_buff *skb,
- 
- 	/* Check for splitq specific TX resources */
- 	count += (IDPF_TX_DESCS_PER_CACHE_LINE + tso);
--	if (idpf_tx_maybe_stop_splitq(tx_q, count, buf_count)) {
-+	if (idpf_tx_maybe_stop_splitq(tx_q, count, buf_count, flow)) {
- 		idpf_tx_buf_hw_update(tx_q, tx_q->next_to_use, false);
- 
- 		return NETDEV_TX_BUSY;
-@@ -3075,7 +3090,7 @@ static netdev_tx_t idpf_tx_splitq_frame(struct sk_buff *skb,
- 		idpf_tx_set_tstamp_desc(ctx_desc, idx);
- 	}
- 
--	if (idpf_queue_has(FLOW_SCH_EN, tx_q)) {
-+	if (flow) {
- 		struct idpf_sw_queue *refillq = tx_q->refillq;
- 
- 		/* Save refillq state in case of a packet rollback.  Otherwise,
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.h b/drivers/net/ethernet/intel/idpf/idpf_txrx.h
-index 8eadc2682c96..2a03ec586161 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_txrx.h
-+++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.h
-@@ -810,11 +810,13 @@ libeth_cacheline_set_assert(struct idpf_buf_queue, 64, 24, 32);
-  * @txq_grp: See struct idpf_txq_group
-  * @flags: See enum idpf_queue_flags_t
-  * @desc_count: Number of descriptors
-+ * @desc_sz: Descriptor size in bytes
-  * @clean_budget: queue cleaning budget
-  * @netdev: &net_device corresponding to this queue
-  * @next_to_use: Next descriptor to use. Relevant in both split & single txq
-  *		 and bufq.
-  * @next_to_clean: Next descriptor to clean
-+ * @ntc_desc: Pointer to next_to_clean descriptor for next NAPI poll
-  * @num_completions: Only relevant for TX completion queue. It tracks the
-  *		     number of completions received to compare against the
-  *		     number of completions pending, as accumulated by the
-@@ -836,6 +838,7 @@ struct idpf_compl_queue {
- 
- 	DECLARE_BITMAP(flags, __IDPF_Q_FLAGS_NBITS);
- 	u32 desc_count;
-+	u32 desc_sz;
- 
- 	u32 clean_budget;
- 	struct net_device *netdev;
-@@ -844,6 +847,7 @@ struct idpf_compl_queue {
- 	__cacheline_group_begin_aligned(read_write);
- 	u32 next_to_use;
- 	u32 next_to_clean;
-+	struct idpf_splitq_tx_compl_desc *ntc_desc;
- 
- 	aligned_u64 num_completions;
- 	__cacheline_group_end_aligned(read_write);
-@@ -856,7 +860,7 @@ struct idpf_compl_queue {
- 	struct idpf_q_vector *q_vector;
- 	__cacheline_group_end_aligned(cold);
- };
--libeth_cacheline_set_assert(struct idpf_compl_queue, 40, 16, 24);
-+libeth_cacheline_set_assert(struct idpf_compl_queue, 48, 24, 24);
- 
- /**
-  * struct idpf_sw_queue
--- 
-2.39.2
+> changes in v2:
+> - Add the same fragmented-packet restriction to generic XDP
+>   dev_map_redirect_clone() so clone-based broadcast behavior stays
+>   aligned with the native XDP path.
+> - v1 link: https://lore.kernel.org/all/4b596825bccc64d03e0c2e0db4dceb12c7=
+f5cf47.1780176829.git.zzhan461@ucr.edu/
+>
+>  kernel/bpf/devmap.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
+>
+> diff --git a/kernel/bpf/devmap.c b/kernel/bpf/devmap.c
+> index cc0a43ebab6b..5b9eac5342a9 100644
+> --- a/kernel/bpf/devmap.c
+> +++ b/kernel/bpf/devmap.c
+> @@ -581,6 +581,10 @@ static int dev_map_enqueue_clone(struct bpf_dtab_net=
+dev *obj,
+>  {
+>  	struct xdp_frame *nxdpf;
+> =20
+> +	/* Frags live outside the linear frame and cannot be cloned safely. */
+> +	if (unlikely(xdp_frame_has_frags(xdpf)))
+> +		return -EOPNOTSUPP;
+> +
+>  	nxdpf =3D xdpf_clone(xdpf);
+>  	if (!nxdpf)
+>  		return -ENOMEM;
+> @@ -726,6 +730,9 @@ static int dev_map_redirect_clone(struct bpf_dtab_net=
+dev *dst,
+>  	struct sk_buff *nskb;
+>  	int err;
+> =20
+> +	if (unlikely(skb_is_nonlinear(skb)))
+> +		return -EOPNOTSUPP;
+> +
+>  	nskb =3D skb_clone(skb, GFP_ATOMIC);
+>  	if (!nskb)
+>  		return -ENOMEM;
 
