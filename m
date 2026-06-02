@@ -1,36 +1,77 @@
-Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [4.193.249.245])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61AF437FF5E
-	for <netdev@vger.kernel.org>; Tue,  2 Jun 2026 16:46:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=4.193.249.245
+Received: from smtp9.goneo.de (smtp9.goneo.de [85.220.189.104])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01116374183;
+	Tue,  2 Jun 2026 16:47:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.220.189.104
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780418812; cv=none; b=P2dBN7Gy9PqqHSCNNZymCMHQ0/uxzCbjuoSEEtvzEWXLh4F7GOq+PsR+5A1mRR14ycQhZE1mdpxmnn81HGVDZBdoGlX4HulsLkF6UKPsi4iD3EXkmvt9FqQ13WbOPs4rnq0iNE7ZMzI4Hh6QdT43KgrVp16VJ/mahyjpGG1k4D4=
+	t=1780418842; cv=none; b=EbfuHslsn/1XatP0Ok8rvaQI3w+b+fcdIFeIj5vlRlEHqlJmj76uQ2eg/nA5nU2fjMxZMf8nbqEXJyH2GFy4mCVFDTgxQtMPug7sJc0Z6vT9XgeDYy0nGmV0dFMTWdF1vqjIx7yhU6TPtg56tbi1ElYneTTOsXdLddX3lNkM4I0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780418812; c=relaxed/simple;
-	bh=HzdCyYXIqOjewQGlLmh9uc9SM9pkThdKvWCFVX6MwpY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QP9SBJkJaYpWrTTEaqlQCgWG5QF4u23wiamgyIJO1iX6EnJXKTMVratlZsaLO373SaFK1iIf93eYA33uQuaYdYg9SdMd1372iv1xrMBoTMxuDlo0NNNtelnd2hGjlpAr/lc3eBR8YYKsfc7qTITuqPI24XfxAuS5uujOVna9a4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lzu.edu.cn; spf=pass smtp.mailfrom=lzu.edu.cn; arc=none smtp.client-ip=4.193.249.245
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lzu.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lzu.edu.cn
-Received: from enjou-Legion-Y7000P-2019 (unknown [172.23.56.36])
-	by app1 (Coremail) with SMTP id ygmowACXusToCB9qoJxRAA--.9883S2;
-	Wed, 03 Jun 2026 00:46:32 +0800 (CST)
-From: Ren Wei <n05ec@lzu.edu.cn>
-To: netdev@vger.kernel.org
-Cc: steffen.klassert@secunet.com,
-	herbert@gondor.apana.org.au,
-	davem@davemloft.net,
-	sd@queasysnail.net,
-	yuantan098@gmail.com,
-	yifanwucs@gmail.com,
-	tomapufckgml@gmail.com,
-	zcliangcn@gmail.com,
-	bird@lzu.edu.cn,
-	bronzed_45_vested@icloud.com,
-	n05ec@lzu.edu.cn
-Subject: [PATCH ipsec v2 1/1] xfrm: espintcp: do not reuse an in-progress partial send
-Date: Wed,  3 Jun 2026 00:46:27 +0800
-Message-ID: <f45b23780569de7e83d695bf5c439815d4ea4e21.1780377940.git.bronzed_45_vested@icloud.com>
-X-Mailer: git-send-email 2.51.0
+	s=arc-20240116; t=1780418842; c=relaxed/simple;
+	bh=ifHszVRjFrIBcanDMdPrRhRVBf0l7st2Cz2vpTvYTfk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=MBjS4Rp0lgQLI9cOWHsnaDCK1zNeudmyT4IbNPH++js2y+muz7t6FbIdOcpiQC78cNoQClEbx9m+s8+ezMrmzAX9VKj+TrjNin+viRA8jBGRVPSikbKf8FvwhmWufVqofjrAR5dfkNJYAXrDhFUrsCOkmltquE0pkR0ulCwL15U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tk154.de; spf=pass smtp.mailfrom=tk154.de; dkim=pass (2048-bit key) header.d=tk154.de header.i=@tk154.de header.b=otSnGF9i; arc=none smtp.client-ip=85.220.189.104
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tk154.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tk154.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=tk154.de header.i=@tk154.de header.b="otSnGF9i"
+Received: from hub2.goneo.de (hub2.goneo.de [85.220.129.53])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519)
+	(No client certificate requested)
+	by smtp9.goneo.de (Postfix) with ESMTPS id 04ECE240952;
+	Tue, 02 Jun 2026 18:47:16 +0200 (CEST)
+Received: from hub2.goneo.de (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
+	(No client certificate requested)
+	by hub2.goneo.de (Postfix) with ESMTPS id 5FB47240182;
+	Tue,  2 Jun 2026 18:47:14 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tk154.de; s=DKIM001;
+	t=1780418834;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=WruLMJA0iJ7S2ar6pJyRzkagUYROHtj8HxN0Iab8eis=;
+	b=otSnGF9i1TeJ4hfhm9JTcyd8qxTgvJiKPLMBhFK/sqKxObqFi4lTB9E0MdARkXrjWhGmAO
+	sf7wsCtx240uNDAb1+RRfnQAKnmS/bT3cCKX0cZDXePBL/UOjeplKbqIErqfJvoh8lUCbf
+	kb5mXeqixawztuH+0iaaWPR0R7pBprveEV/vY7DmXMabsY5M4DG+8TSOM23vB0f7zzmwGP
+	J1hbCljww2BmI+7gJGq6Gl69Zvh1EvIt7FIxzOrc5VvAQmhpAgWy5vqrhT7O6CdA6BecN9
+	gwnkqZA+9kBOk7XqJN3XsztALVTp4DRQrnegc0hqstpckTHSkQVXNY29NGRKBQ==
+Received: from Til-Notebook.meshlab (unknown [195.37.88.189])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by hub2.goneo.de (Postfix) with ESMTPSA id 94051240027;
+	Tue,  2 Jun 2026 18:47:11 +0200 (CEST)
+From: Til Kaiser <mail@tk154.de>
+To: Marcin Wojtas <marcin.s.wojtas@gmail.com>,
+	Russell King <linux@armlinux.org.uk>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Matteo Croce <mcroce@redhat.com>,
+	Sven Auhagen <sven.auhagen@voleatech.de>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	netdev@vger.kernel.org,
+	bpf@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Til Kaiser <mail@tk154.de>
+Subject: [PATCH net v2 4/4] net: mvpp2: build skb from XDP-adjusted data on XDP_PASS
+Date: Tue,  2 Jun 2026 18:46:35 +0200
+Message-ID: <20260602164635.62517-5-mail@tk154.de>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260602164635.62517-1-mail@tk154.de>
+References: <20260602164635.62517-1-mail@tk154.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -38,85 +79,69 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:ygmowACXusToCB9qoJxRAA--.9883S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7tF13uw1fGrW5tFy3ury8Xwb_yoW8Kryxpa
-	yxWrnrKrWUtry2kF1vkF1IvF4UWrs3Wr17try7KF9rXr90qF13ZFnYgrsFvF4DuayxC34F
-	yrsF93W0yw4UA37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUBY1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AE
-	w4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2
-	IY67AKxVW8JVW5JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwA2z4x0Y4vEx4A2
-	jsIE14v26F4j6r4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UM2AIxVAIcxkEcV
-	Aq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j
-	6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64
-	vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0E
-	n4kS14v26r1q6r43MxkIecxEwVCm-wCF04k20xvY0x0EwIxGrwCF04k20xvE74AGY7Cv6c
-	x26r48MxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCj
-	r7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6x
-	IIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAI
-	w20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x
-	0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUbGQ6JUUUUU==
-X-CM-SenderInfo: zqqvvuo6o23hxhgxhubq/1tbiAQAGCWoekk8AYAAGsB
+X-Rspamd-UID: a692a4
+X-Rspamd-UID: f03eed
 
-From: Wyatt Feng <bronzed_45_vested@icloud.com>
+When an XDP program uses bpf_xdp_adjust_head() or bpf_xdp_adjust_tail()
+and then returns XDP_PASS, mvpp2 still builds the skb from fixed offsets
+derived from the original RX descriptor. Packet geometry changes made by
+the XDP program are therefore discarded before the skb reaches the stack.
 
-espintcp keeps a single in-flight transmit in ctx->partial.
-Before building a new sk_msg, espintcp_sendmsg() first tries to flush
-that state through espintcp_push_msgs().
+Update rx_offset and rx_bytes from xdp.data and xdp.data_end for
+XDP_PASS. This makes skb_reserve() and skb_put() reflect the packet seen
+by XDP, and makes RX byte accounting for XDP_PASS follow the length of the
+skb passed to the network stack.
 
-For blocking callers, espintcp_push_msgs() may return success even when
-the previous partial send is still pending. espintcp_sendmsg() would
-then reinitialize emsg->skmsg and reuse ctx->partial while the old
-transfer still owns that state.
+Non-PASS verdicts continue to account the descriptor length because no skb
+is passed up in those cases.
 
-Do not rebuild the send message when ctx->partial is still in progress.
-If espintcp_push_msgs() returns with emsg->len still set, fail the new
-send instead of overwriting the live partial state.
-
-This is a memory-safety fix: reusing the live partial-send state can
-leave a stale offset attached to a new sk_msg and lead to an out-of-
-bounds read in the send path.
-
-tcp_sendmsg_locked() already handles waiting for send buffer memory, so
-the fix here is just to preserve espintcp's one-message-at-a-time
-transmit state.
-
-Fixes: e27cca96cd68 ("xfrm: add espintcp (RFC 8229)")
-Cc: stable@kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Zhengchuan Liang <zcliangcn@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Assisted-by: Codex:GPT-5.4
-Signed-off-by: Wyatt Feng <bronzed_45_vested@icloud.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Fixes: 07dd0a7aae7f ("mvpp2: add basic XDP support")
+Signed-off-by: Til Kaiser <mail@tk154.de>
 ---
-changes in v2:
-  - Drop the new wait loop in espintcp_sendmsg().
-  - Only reject reuse of ctx->partial if espintcp_push_msgs() leaves an
-    in-progress transfer behind.
-  - Reword the subject and changelog to match the narrowed fix.
-  - v1 Link: https://lore.kernel.org/all/b05daae0607621114d3818722a46c543ab6ec6fb.1780040524.git.bronzed_45_vested@icloud.com/
+ drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-
- net/xfrm/espintcp.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/net/xfrm/espintcp.c b/net/xfrm/espintcp.c
-index a2756186e13a..d9035546375e 100644
---- a/net/xfrm/espintcp.c
-+++ b/net/xfrm/espintcp.c
-@@ -346,6 +346,10 @@ static int espintcp_sendmsg(struct sock *sk, struct msghdr *msg, size_t size)
- 			err = -ENOBUFS;
- 		goto unlock;
- 	}
-+	if (emsg->len) {
-+		err = -ENOBUFS;
-+		goto unlock;
-+	}
+diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
+index 397aa5ca4992..844f433975ed 100644
+--- a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
++++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
+@@ -3920,7 +3920,7 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
+ 		unsigned int frag_size;
+ 		dma_addr_t dma_addr;
+ 		phys_addr_t phys_addr;
+-		int pool, rx_bytes, err, ret;
++		int pool, rx_bytes, rx_offset, err, ret;
+ 		struct page *page;
+ 		void *data;
  
- 	sk_msg_init(&emsg->skmsg);
- 	while (1) {
+@@ -3933,6 +3933,7 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
+ 		rx_status = mvpp2_rxdesc_status_get(port, rx_desc);
+ 		rx_bytes = mvpp2_rxdesc_size_get(port, rx_desc);
+ 		rx_bytes -= MVPP2_MH_SIZE;
++		rx_offset = MVPP2_MH_SIZE + MVPP2_SKB_HEADROOM;
+ 		dma_addr = mvpp2_rxdesc_dma_addr_get(port, rx_desc);
+ 
+ 		pool = (rx_status & MVPP2_RXD_BM_POOL_ID_MASK) >>
+@@ -3999,6 +4000,10 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
+ 				continue;
+ 			}
+ 
++			/* Update offset and length to reflect any XDP adjustments. */
++			rx_offset = xdp.data     - data;
++			rx_bytes  = xdp.data_end - xdp.data;
++
+ 			metasize = xdp.data - xdp.data_meta;
+ 		}
+ 
+@@ -4042,7 +4047,7 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
+ 		ps.rx_packets++;
+ 		ps.rx_bytes += rx_bytes;
+ 
+-		skb_reserve(skb, MVPP2_MH_SIZE + MVPP2_SKB_HEADROOM);
++		skb_reserve(skb, rx_offset);
+ 		skb_put(skb, rx_bytes);
+ 		if (metasize)
+ 			skb_metadata_set(skb, metasize);
 -- 
-2.43.7
+2.54.0
 
