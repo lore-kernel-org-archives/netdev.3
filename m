@@ -1,69 +1,112 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3436633D6D5;
-	Tue,  2 Jun 2026 20:30:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A5B235838E
+	for <netdev@vger.kernel.org>; Tue,  2 Jun 2026 20:30:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780432210; cv=none; b=TjAxRP4y0p68YlPRbr3lTmLBG9bDpQtasQjaC8mJIN82HGsf8MY65wGi81kr3XJH3U3rJCBfMbLx3Ih4iX6TbT6lEtfh+HRPhfz1OUQMZtXQ9VfZw2ZcnKQ+sinl+CY3YMkAXhVoXs4rkzWV45VV33Cv2pJUsRFduDodFOcNnaU=
+	t=1780432214; cv=none; b=q9u0K6AFEUSGw6JvonsZxnYyvYw7hHE7gNXJHPSt/VMWnfUSharFKxaj7RCQNdFfmV8jOZNehjnvEXBYstSHTiLmluOguCvQ22xBf4b5Mo1jdjWY3ThuxX3yErdKWE8BRFDpdKdlwOMLPH6NqrQHXiWNAb7EaUgx3jZCy5qe45w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780432210; c=relaxed/simple;
-	bh=63Dgdq0YlzvEZBLTeRuw8lb+q989qXocQQexbTPACP4=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=J3pE6IgX0Xaaa0txoKV7NcT/1ZagH/bbVqUpnNHTUSSs9jcme6ZJuBNkAM5ndXpn1jnML9up6xaPABSqhxh0UVWCmeaxi1tuijFScLKsc6HMf/2hQJnMN3kyDzuAjP06prJNV9hfdN0AJ30CGOqe4b9A70l2U8VtVb8w8j0nIxw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Nf8zsoAS; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780432214; c=relaxed/simple;
+	bh=HjJqMpeHljdTYrToT5sxT92/3e4ZeXSmbeiktWXOx64=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=KqB8C6flulXjk0f4Hgv6KhqEvyfL3gQ5pJGSrfb6b99Om7k9TVbRoUDfBhlhNHiJ58DavSAreuSeb6Bwe0q7KXTnYSt4OIiYebmwx7bPhOWV2EpXcvQQKw+TtXtBlcmp1CyRjeVRLGBPoZuBojGtBvfTILqrH9y1GWjaDxZU+/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TPz3prVe; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Nf8zsoAS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C5301F00893;
-	Tue,  2 Jun 2026 20:30:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TPz3prVe"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45D4A1F00893;
+	Tue,  2 Jun 2026 20:30:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780432208;
-	bh=N2dbyBYbKnrRgkKys8ws2C6hc+8tSeDInqk6T4PyfUU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=Nf8zsoASy3H8XRRFc/kP6g3TxaRQaqa4svhaPO/d+9SOw8f1K2pXIReu5/BIxSvry
-	 0ApP+PcxRGNrV2a9lnNGUpQj5Iqdbs2tWHwgWQ4tWzgW/Q4x8B441qPmncuLssxmrW
-	 4bvQf1aUekl9xxvdktTakP3N+UHe6+bttAWU+0cYTQKhAfW2MFze9HWIEPX7APEFpf
-	 SHAbHJak7Fxnqor3wfo+9gPTIy+git83HESVLgjJelNJt+iQChMUx4I3dzCnSDtqMH
-	 SgkX0PzEAB4QHVHhYUJLCDtZ526zYxhyh7Y7m/07r/zVY6hqzcAcFCVUZceV1nojOP
-	 OKCNM5XERJSpQ==
-Date: Tue, 2 Jun 2026 13:30:02 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Jiakai Xu <xujiakai24@mails.ucas.ac.cn>
-Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org, "David S . Miller"
- <davem@davemloft.net>, Breno Leitao <leitao@debian.org>, Eric Dumazet
- <edumazet@google.com>, Ernestas Kulik <ernestas.k@iconn-networks.com>, Kees
- Cook <kees@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, Paolo Abeni
- <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
-Subject: Re: [PATCH v2] llc: Fix race between sock_orphan() and timer
- callback in llc_sk_free()
-Message-ID: <20260602133002.3ed70fc3@kernel.org>
-In-Reply-To: <20260529020059.3024038-1-xujiakai24@mails.ucas.ac.cn>
-References: <20260529020059.3024038-1-xujiakai24@mails.ucas.ac.cn>
+	s=k20260515; t=1780432213;
+	bh=gjwMGrTESknD5peX+eFGJBM0//MZxOS4/vrUF8k4h4A=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=TPz3prVeOVPs6tmHop7zUrzU2L7EkX1/zBZUQPFQIzu3j1/B+Vt0vZh7knErzYWYY
+	 AWSCvweUNkAe8As9Hy/CMzQOjIKgY7+g7d1NhqjaJSN7DYFOfSjXEOyssLEf0saPHl
+	 lJojBMJE/Hfd0+JEFwwyiE8zYTIspelQhFYuVcoTc+qFlKpc5ynQHVE4JtYuwcG1Vo
+	 Y9raz6xnyT3vo3QlCgIaH+oIOlTh3tyJ77U/5VcZDKBXpOJdBaFSm0g+mK4GbQmOQl
+	 BoCgZhi7/HomqVfUoC7THg/LkS08QvPK1UzHX+LuGgIzx0ulUU4bvGhRWa2PlpLog/
+	 DyRGp1RK/lIiA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 569AD3811A72;
+	Tue,  2 Jun 2026 20:30:16 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next 0/6] net: airoha: Preliminary patches to support
+ multiple net_devices connected to the same GDM port
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178043221514.1036678.2722673754198790557.git-patchwork-notify@kernel.org>
+Date: Tue, 02 Jun 2026 20:30:15 +0000
+References: 
+ <20260527-airoha-eth-multi-serdes-preliminary-v1-0-ec6ed73ef7fc@kernel.org>
+In-Reply-To: 
+ <20260527-airoha-eth-multi-serdes-preliminary-v1-0-ec6ed73ef7fc@kernel.org>
+To: Lorenzo Bianconi <lorenzo@kernel.org>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
+ netdev@vger.kernel.org, xuegang.lu@airoha.com
 
-On Fri, 29 May 2026 02:00:59 +0000 Jiakai Xu wrote:
-> In llc_ui_release(), sock_orphan() was called before llc_sk_free()
-> stopped all LLC timers. A pending timer callback
-> (llc_conn_ack_tmr_cb()->llc_process_tmr_ev()->llc_conn_state_process())
-> could fire between these two operations and dereference the
-> NULL sk->sk_socket that sock_orphan() sets, causing a kernel
-> page fault.
+Hello:
+
+This series was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Wed, 27 May 2026 12:21:14 +0200 you wrote:
+> EN7581 or AN7583 SoCs support connecting multiple external SerDes (e.g.
+> Ethernet or USB SerDes) to GDM3 or GDM4 ports via a hw arbiter that
+> manages the traffic in a TDM manner. As a result multiple net_devices can
+> connect to the same GDM{3,4} port and there is a theoretical "1:n"
+> relation between GDM ports and net_devices.
 > 
-> Fix the race by moving sock_orphan() into llc_sk_free(), after
-> llc_sk_stop_all_timers() has completed. This guarantees that
-> all timers are stopped before the socket is orphaned, eliminating
-> the window for the race.
+>            ┌─────────────────────────────────┐
+>            │                                 │    ┌──────┐
+>            │                         P1 GDM1 ├────►MT7530│
+>            │                                 │    └──────┘
+>            │                                 │      ETH0 (DSA conduit)
+>            │                                 │
+>            │              PSE/FE             │
+>            │                                 │
+>            │                                 │
+>            │                                 │    ┌─────┐
+>            │                         P0 CDM1 ├────►QDMA0│
+>            │  P4                     P9 GDM4 │    └─────┘
+>            └──┬─────────────────────────┬────┘
+>               │                         │
+>            ┌──▼──┐                 ┌────▼────┐
+>            │ PPE │                 │   ARB   │
+>            └─────┘                 └─┬─────┬─┘
+>                                      │     │
+>                                   ┌──▼──┐┌─▼───┐
+>                                   │ ETH ││ USB │
+>                                   └─────┘└─────┘
+>                                    ETH1   ETH2
+> 
+> [...]
 
-Sashiko points out that there's more issues if the timer runs after
-llc_ui_release(). Can you reliably reproduce this? Have you checked
-that this change is sufficient? Sashiko says that llc->dev may
-disappear even tho we don't clear that pointer in _release().
+Here is the summary with links:
+  - [net-next,1/6] net: airoha: Introduce airoha_gdm_dev struct
+    https://git.kernel.org/netdev/net-next/c/ec6c391bcca7
+  - [net-next,2/6] net: airoha: Move airoha_qdma pointer in airoha_gdm_dev struct
+    https://git.kernel.org/netdev/net-next/c/528c5153a557
+  - [net-next,3/6] net: airoha: Rely on airoha_gdm_dev pointer in airoha_is_lan_gdm_port()
+    https://git.kernel.org/netdev/net-next/c/eca4f59b5367
+  - [net-next,4/6] net: airoha: Move qos_sq_bmap in airoha_gdm_dev struct
+    https://git.kernel.org/netdev/net-next/c/069626af6dfa
+  - [net-next,5/6] net: airoha: Move {cpu,fwd}_tx_packets in airoha_gdm_dev struct
+    https://git.kernel.org/netdev/net-next/c/962c17dd2878
+  - [net-next,6/6] net: airoha: Rename airoha_set_gdm2_loopback in airoha_enable_gdm2_loopback
+    https://git.kernel.org/netdev/net-next/c/842a7ee50d68
+
+You are awesome, thank you!
 -- 
-pw-bot: cr
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
