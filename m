@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 139E72594B9;
-	Tue,  2 Jun 2026 20:00:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81EF6258CD0;
+	Tue,  2 Jun 2026 20:00:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780430414; cv=none; b=m4OdUOkuYobErz8+G1WiWrnMk9jMLVYI8s3WA8zFDHxzGyRmfMM/hVZZo9tbfgFoxche4EdolE/ELdkj9QiSHKLsDOBEXzp4fcpv9OWFc1U/U+8KdOAzmC2eUXcOV9m8VhaSTuZxV0NsqrjXWLCKIRCVSx/jemFDG0hF32q9eKE=
+	t=1780430415; cv=none; b=M0OU5dDzWvuv+NeeAPhNXqdoOMWQrYZUA40xp0kh0uEwrlV9KeVZBdJybSBE7+UfYa+4YDwMB0xoP0k6G3Agb4h9RtNtKgbh4oK7BRyPtpef8/4I0JjQm+2xIzLYMH2eFqxFvk40wCnF71hN/2CunI3zy7+YRQE/YygUHxk6OtQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780430414; c=relaxed/simple;
-	bh=ig99uttJ3INywOf9YOGjs0iQmIKkN5pwWs7pa+Sfjls=;
+	s=arc-20240116; t=1780430415; c=relaxed/simple;
+	bh=pp1ACkXvTAv6fQjODUDO944IZztNmwcrFY+RNu+jx+k=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=hZYRAjgOM1NraCpm7nS6qzrsrS0WIa/59ifmzOXJULi2hdkbtpesY87s0zpziyh37c+HREWqEkXfKKM48UDzXljwvWJ/H8zwyrT5/cpiXzYrnz2qHzyu0g0Zs/KHSFCIsD8szfqlpyCLhtUgq77gcvxlS8RF26YYk/lA2Ye8LUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VPUYt6wl; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=TXBM4Nw3HSM7YVU7e8QeB1k7yQoV3PWjxnfHMD7HylOySEQekrqfgQMVLwnr0gtPpmf+FYxt8kPJx2ZoTiZIgzQpMz3dao2Rj1fm3P+pWlePhNZTv5zqqVOoFm2pO2f8NzbbT35RnyCpR4baMRzrTtE8XrobwJnFcPe9b3orxIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AvUyxlfV; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VPUYt6wl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB9531F00893;
-	Tue,  2 Jun 2026 20:00:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AvUyxlfV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4341C1F00893;
+	Tue,  2 Jun 2026 20:00:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780430412;
-	bh=wDmt0+bYW+BiXIeOtAqJVe2jYnfCOGhWCkrws2RCxWo=;
+	s=k20260515; t=1780430414;
+	bh=9vkwn6/HTRIlP9ph5Nq9SfktdmRKpAL4kJ8i3VZyYGM=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=VPUYt6wlsF2YFzggvcxKk6Rk1ZQBa7LTo8m9pPcqVz2hda1Bp4lCP1Xqt3wuv0rvd
-	 fCCLCk2AhcKdyiQQnZizfRsfEwFNmCl8CBW2oVP7e7nLfTMqmjeah+bmHMWpFcznMG
-	 PhpVUjVPc4TngojTPvjdS7Qc3wLLxR57as9VoQz/KEDqIJ+gvJe/hBb/kxnH6mTLo0
-	 9CaNA7JpRsWFBBiCnwvo4k7PdBnhlp4otN5sfU7N9VlQL3itjqKwSW/InnRukVdUgJ
-	 9zt2o+R9iOi2sstKot4dlLLubTmax3POklDYwYXGPbj3Bk31weA0qJF0BurUbSN8T3
-	 yLmYLI/2lUuDg==
+	b=AvUyxlfVAMp1AIyT5fb2HYz7BMlC2uxGpEEH0XRU/3k6Lc8ea/6DNEJM+9dfh6gT6
+	 32tXQ/Dlz+l0ptJxHLYeiUkSA2dFdJE1wHtVQF6+vWT7M+JQfs5mkDw0tCE9j7kto1
+	 Cee5lSC+5s+FBeZqaNkOVUoKo+GoXK5s1oY95wBTDfHFxdwcXUfn8BjEVyvXFBF+3X
+	 WEOjlbWs6AEJNVHEYSEqnyk0+MY6wotba//8z5VUpIm4NMZSLW1PuQtiSktysMv5BI
+	 FZjm5mCv/tK7ICxxNjQomnbpF++Jc5g0/WhIbXBfqmWv7PC+aymyIhofZqSrDQfaW4
+	 YUPqn28cJ6GDg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0B5C3811A6E;
-	Tue,  2 Jun 2026 20:00:15 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 56A8E3811A6E;
+	Tue,  2 Jun 2026 20:00:17 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,38 +37,40 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] selftests: drv-net: tso: add new tests for
- ip6tnl, ipip, and sit tunnels
+Subject: Re: [PATCH net v2] netdevsim: fib: fix use-after-free of FIB data via
+ debugfs
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178043041439.1026900.2229242425685341727.git-patchwork-notify@kernel.org>
-Date: Tue, 02 Jun 2026 20:00:14 +0000
-References: <20260529-tso-tunnels-v1-1-3771ee9eaaa9@gmail.com>
-In-Reply-To: <20260529-tso-tunnels-v1-1-3771ee9eaaa9@gmail.com>
-To: Daniel Zahka <daniel.zahka@gmail.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, shuah@kernel.org, netdev@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+ <178043041589.1026900.5518951073080196283.git-patchwork-notify@kernel.org>
+Date: Tue, 02 Jun 2026 20:00:15 +0000
+References: <20260529135718.1804031-1-yzjaurora@gmail.com>
+In-Reply-To: <20260529135718.1804031-1-yzjaurora@gmail.com>
+To: Zijing yin <yzjaurora@gmail.com>
+Cc: kuba@kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, pabeni@redhat.com, idosch@nvidia.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Fri, 29 May 2026 05:45:55 -0700 you wrote:
-> Add new tunnel test cases for ip6tnl, ipip, and sit. ip6tnl supports
-> ipv[46] as inner l3 header, and the other two tunnels only support a
-> single inner l3 type.
+On Fri, 29 May 2026 06:57:17 -0700 you wrote:
+> netdevsim: fib: fix use-after-free of FIB data via debugfs
 > 
-> Signed-off-by: Daniel Zahka <daniel.zahka@gmail.com>
-> ---
-> Example run:
+> Writing to the netdevsim debugfs file
+> "netdevsim/netdevsimN/fib/nexthop_bucket_activity" enters
+> nsim_nexthop_bucket_activity_write(), which looks up a nexthop in
+> data->nexthop_ht under rtnl_lock(). If a network namespace teardown,
+> devlink reload or device deletion runs concurrently, nsim_fib_destroy()
+> frees that rhashtable (and the surrounding nsim_fib_data) while the
+> write is still in flight, leading to a slab-use-after-free:
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next] selftests: drv-net: tso: add new tests for ip6tnl, ipip, and sit tunnels
-    https://git.kernel.org/netdev/net-next/c/b04015d769cc
+  - [net,v2] netdevsim: fib: fix use-after-free of FIB data via debugfs
+    https://git.kernel.org/netdev/net-next/c/5893cc75a191
 
 You are awesome, thank you!
 -- 
