@@ -1,78 +1,76 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFBCE25B088;
-	Tue,  2 Jun 2026 21:20:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D30F12236E0;
+	Tue,  2 Jun 2026 21:22:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780435204; cv=none; b=iepA2opNP+sLz9HYFmIY0ZQRgnHJdxp9E2l72d95D03SRyZu4U4p14gPWy45tDmozSfXcWvHSg72kazD9795Qi4J4o234svfso7uKArjJTy0YJf8dB5IPjBbrolkS0AolmZUyCOwu9N6q+5klHHSMSi7T9YnjytZ5XSnXw6SGpQ=
+	t=1780435331; cv=none; b=RIgs9fLjSOWHiQ+Tk8uyOl3RRWdKqhrxKKHsv2fbulCadq4uGL0IlBIkxe6DifW6s78VXyAxNP11M6eMRog85mkdtHVl8Q2PkmgnGYguJ8653tt/0LVMCDZcOczvZJRFLXyXFVsG6oghz5w7NyGTBOiG5QiLbDFLkdk8xWYU3+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780435204; c=relaxed/simple;
-	bh=jUsIEH70+A2yS7esLvVSDG99NIDaJCY9szZqDiWen9Y=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=E+OHyvu0fpFjwI29qdl8qvyX1nuSG2ZD8ElD4DoZvuqpkR/gB5x5tWkLInT7fO1ET8sUMp+IC/05/31zEGCtYywB9lIr5KneQQXtHj3cmP/z8eHyDw/PBzPJMXViCf7BHmaqkLDc+b0FhD0c/3P3aePSJqhh8YdC6rW/JB4sW3o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QMVMhcLw; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780435331; c=relaxed/simple;
+	bh=BEuA5TVsQRkieEOHm2NGDgAgddKRdBaSVcvVa2+zFOA=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=UZfOarAfpg18G5E5KiswJTPs97g1s+T2gS6krF7xFFPdYAJSqUb1GO4SGb0+NQxrz8EcYs2RnVoeJv0oe7Pf5FqRLOvf90YlKtbPc/zOqtgu1gRM/RZRwEhSYvG7T2g0wpBp0hlNegHtGOD0qnu4noR6n4EADYi+FVtRJm1GowU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lKsc25/R; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QMVMhcLw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 893CB1F00893;
-	Tue,  2 Jun 2026 21:20:03 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lKsc25/R"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04B971F00893;
+	Tue,  2 Jun 2026 21:22:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780435203;
-	bh=dfebTjwExKvQJQi7Hu9+LLd0ZURbyWtmZItEOJJW5mM=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=QMVMhcLwpZgk9ZGqVDmF3d85jcpTUAIYGJ3xomvXHZbe1EQjJJwR7NEEAgEvMrdvE
-	 Iu07hTmqFaL2hk8OgRXkznwye9nqN1m3WcC2MVv0OISClPmO7cRkBjrLqFVBck/Imk
-	 8nwULEI1/C+hyyNCkjZjiXw4q/UHa8NChBWZ/AYGnIgwEOwiRuGyzNDaAni3D8YwLE
-	 N3PsKuNyYCxH3iXLPhYWf6s5IEi1FEHXrzFx8mw5c19q9u1cbJQ0k0AU/ei+sPQJRc
-	 9fK2Cc98dJU0XXK+po7JtZDgs8MbtFF7jT7g9CR6sC/cV5t31jpKxk37oCZQCF00y4
-	 MLCVlvipM+b2w==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93A343811A72;
-	Tue,  2 Jun 2026 21:20:06 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1780435330;
+	bh=aCZsfO7nwHl/odD49ROvTk9nwYY0CHodLfuX/n44+sI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=lKsc25/RH0gT0qu1WB2Lc+H53FxQ9/r4budShnhYW/beL4AfPrwqelOGRhPYYfNzH
+	 HA2ITRbanp+fTzEB3B46IgY9wZjOyM6sAg6iSbwYlQra1zR/uX73yDFp1NsFS27P9x
+	 2u8wkTDfKvgkgXpZYJYoldIO+5XM0tIoYch15Xplddw8HQviTvbS1lyb5iVbGeTRdm
+	 SJ0uEAyvLKUx+VXd6BKGKtIBqjn7wp0ktB05Epo7ZQXFt7B8YPSbrsIDlHyfyPhfIE
+	 //hhScOHwpNWs+wbTWCHlxb4F6LjUVPR90YgatSGGLwQLY64fDVxZaB3wXCXOG64ED
+	 BAg5y/Zd+hiHw==
+Date: Tue, 2 Jun 2026 14:22:09 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Daniel Golle <daniel@makrotopia.org>
+Cc: John Crispin <john@phrozen.org>, Andrew Lunn <andrew@lunn.ch>, Vladimir
+ Oltean <olteanv@gmail.com>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Russell
+ King <linux@armlinux.org.uk>, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org
+Subject: Re: [PATCH net-next v4 4/4] net: dsa: mxl862xx: add support for
+ SerDes ports
+Message-ID: <20260602142209.740b18d7@kernel.org>
+In-Reply-To: <2b57a3d73519a4be8f45252707c335ecd251b2c1.1780032869.git.daniel@makrotopia.org>
+References: <cover.1780032869.git.daniel@makrotopia.org>
+	<2b57a3d73519a4be8f45252707c335ecd251b2c1.1780032869.git.daniel@makrotopia.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2] net: lan743x: permit VLAN-tagged packets up to
- configured MTU
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178043520515.1054744.8222539332561002723.git-patchwork-notify@kernel.org>
-Date: Tue, 02 Jun 2026 21:20:05 +0000
-References: <20260529210300.433135-1-davthompson@nvidia.com>
-In-Reply-To: <20260529210300.433135-1-davthompson@nvidia.com>
-To: David Thompson <davthompson@nvidia.com>
-Cc: bryan.whitehead@microchip.com, UNGLinuxDriver@microchip.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
+On Fri, 29 May 2026 06:40:17 +0100 Daniel Golle wrote:
+> +struct mxl862xx_xpcs_pcs_cfg {
+> +#ifdef __LITTLE_ENDIAN_BITFIELD
+> +	u8 port_id:2;
+> +	u8 interface:6; /* enum mxl862xx_xpcs_if_mode */
+> +	u8 neg_mode:2; /* enum mxl862xx_xpcs_neg_mode */
+> +	u8 permit_pause:1;
+> +	u8 usx_lane_mode:2; /* enum mxl862xx_xpcs_usx_lane_mode */
+> +	u8 role:1; /* enum mxl862xx_xpcs_role */
+> +	u8 usx_subport:2;
+> +#elif defined(__BIG_ENDIAN_BITFIELD)
+> +	u8 interface:6; /* enum mxl862xx_xpcs_if_mode */
+> +	u8 port_id:2;
+> +	u8 usx_subport:2;
+> +	u8 role:1; /* enum mxl862xx_xpcs_role */
+> +	u8 usx_lane_mode:2; /* enum mxl862xx_xpcs_usx_lane_mode */
+> +	u8 permit_pause:1;
+> +	u8 neg_mode:2; /* enum mxl862xx_xpcs_neg_mode */
+> +#else
+> +#error "Unknown bitfield endianness"
+> +#endif
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Fri, 29 May 2026 21:03:00 +0000 you wrote:
-> VLAN-tagged interfaces on lan743x devices were previously unreachable via
-> SSH and failed to respond to large ping packets (e.g. "ping -s 1469" given
-> MTU=1500). In these scenarios, "ethtool -S" reports non-zero "RX Oversize
-> Frame Errors". According to Microchip AN2948, the MAC_RX FSE (VLAN field
-> size enforcement) bit determines whether frames with VLAN tags exceeding
-> the base MTU plus tag length are discarded.
-> 
-> [...]
-
-Here is the summary with links:
-  - [net,v2] net: lan743x: permit VLAN-tagged packets up to configured MTU
-    https://git.kernel.org/netdev/net/c/8173d22b211f
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+With the bitfields and MACROS for read/write this patch give off vendor
+BSP more than upstream code :( Doesn't look like the driver used
+bitfileds before, please use FIELD_GET / FIELD_PUT
