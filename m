@@ -1,95 +1,136 @@
-Received: from mail-dl1-f54.google.com (mail-dl1-f54.google.com [74.125.82.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B2AA2AEF5
-	for <netdev@vger.kernel.org>; Tue,  2 Jun 2026 20:26:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.54
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3E7033E37C;
+	Tue,  2 Jun 2026 20:28:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780432018; cv=none; b=AY28w4Hfddsqa/kMC3H6dw7NGsvBLDKFukt5fvwgOMuRn7hCg5wnn3BKQvPr062NaX/XgxA3EJCN68j1WFz42wRsqJNAvFtAjhXaGF4Bkmj790ddwd6GlJUIkAHx0mNTwnXJ1j2vaj7odXhg8BgvfOrJ3zRVYH0j47kDdMjv5PQ=
+	t=1780432114; cv=none; b=PoSRUtO6pYGzb3aFeFw6I3peMTEaQJbQcn/lEQ2W8CoEtqgBLXaLFBZwDjOR+1n527UcYR7+0EU76sQw7LRpgNtnTldcZI7ZAV3zEdHQe3vZ4LtMNAEkPFxpYVeFq65PYy1BvOrhi1H1dSUccNUepfZvVo7cqmk3twq4DSZleMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780432018; c=relaxed/simple;
-	bh=0w6gs2HNBOp/IrjGqpt/mp4zPE7HqKXPAgoDwebfZHY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UnK57zD2ElMkCq653jvtUdmcrDND6wUTVovq2Ubz89A2alUNSsRBGjmrClimTGsml9FdBiWqUVzdiVzcedf8y5ZeDEMAvLYh5EA/65zS9zwyPxTQgleei/CNp5Um3y0ZgUxUOptZ5EpixhxCsd3TGQAITkoSyMlSteUdcfiV8aI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org; spf=pass smtp.mailfrom=networkplumber.org; dkim=pass (2048-bit key) header.d=networkplumber-org.20251104.gappssmtp.com header.i=@networkplumber-org.20251104.gappssmtp.com header.b=GzDODlwK; arc=none smtp.client-ip=74.125.82.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
+	s=arc-20240116; t=1780432114; c=relaxed/simple;
+	bh=Plo61R0wVLq4edCT+/7Pun99AajpNZemLOEe4ysWbDk=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=Tc+5E/zwoMwogLXwidSigwm6wDWPf4HT9AlSSFALe60Ps2sBCilVE3EfagUdcoW5xvuiN2GMzH5mvgosUQ4kzorp7pPQOvKlgnAkNCoKh2bueFJuUZs4MM1TlVatn1Z6G8066HvTQdYMt8mg9YwEKUJUQZNs1Q2+xWbRWUjRRKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=COpxiILT; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=networkplumber-org.20251104.gappssmtp.com header.i=@networkplumber-org.20251104.gappssmtp.com header.b="GzDODlwK"
-Received: by mail-dl1-f54.google.com with SMTP id a92af1059eb24-137f18f45dbso854898c88.1
-        for <netdev@vger.kernel.org>; Tue, 02 Jun 2026 13:26:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=networkplumber-org.20251104.gappssmtp.com; s=20251104; t=1780432017; x=1781036817; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9dxEBZLgOlgyTlqorPNmJvb7cVUKP4xbRjIu6n2dxcE=;
-        b=GzDODlwKUxulGL5f8FBZU8/vXtY3AnPtxt/AlVBnuc9W6cXWGBJfGlRzNl4gSi0610
-         Jq6WyK6+22dZ/wbJCW/t3hb/vVC4kNa5Uppfy7Fg6Kuh1aeCnnWO8xujJb2ikiHqgA2z
-         uk2XqYAKk10l7k4WXwFUpWi/9/D1+6kyViMl3snNDL4Yo/9Zhdu0kpF4y1aZHhE5bLg+
-         GUHPMNVNtal/BJ5kuG6ERvRkrrj4UeIURzCwcIsnmBb3sA4JWe6AiSlQ95bHVwEjBdcx
-         i7kAX7VPDEjudMfmxIGZchcRjC13h0vktnaor6Sv0hEF7RaAoLwegHGynXWu2uybUiWE
-         FZmg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780432017; x=1781036817;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=9dxEBZLgOlgyTlqorPNmJvb7cVUKP4xbRjIu6n2dxcE=;
-        b=ecwi8VDjk0VWiJMDT2WPyu0hdGMr68yGAZewGzi9VPz0Kkd9X8J0qs6+ZE9zmESa6b
-         40X5s/kYk3VnTu6ylLFIBTXxAeJz+4jXvdgBVDZGudPE0dv/rfQRh1raYnjx/UVi7U1e
-         QlEIxQGtIxyOCAbaVra6V/QpsIlffATtG0aSls+so2BbqMa/wHInghWYgUf821m8Y6B/
-         tKxiF+28tni9miEQSY17Hlb+yGyp0RSvZVH0QpdiX7eJrRM2amgZm4euzOP/vPMGgbC0
-         WDCb0OvDyigjR/3T50t8tr/HDSllIg7L0GQwsLVMw1EZHPJaIGppvCVtgBeNji0KVip7
-         0nPA==
-X-Forwarded-Encrypted: i=1; AFNElJ+DuUr77ByNaKsQlZBQoouqo9LJp76hgi7ZwV6iN0JMUmnj6Ml0uFS61wD7E17Wa3t5qU5IFsc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YybsWdjgMeljAO5SYFsXfm8R12rxBBqZwB/HCdNlk3VlVxt5e3Q
-	8qmlpOyl+Gr1ZV5qVfvxNtotrb5+kDewkGcFKm5Vlc7quTJt5zwj916/JubNpOW8V4c=
-X-Gm-Gg: Acq92OHe3PLw0GAFiwsnX6emX1HE7BK3wEnkS/B1TTkNzur0sfnIF+mFjKwdqCnvp2W
-	yfz5Wvw0GXeewTVlDcQ/A/pNz4G7e1gqXLVkMbdgcjOtdJ3isjXFxV9iTCcGxtfcl2OsMIiyNUi
-	MEqCI6gAYqxtWQbfibdr1KTtnJ9k4Uemf/Fik5PyrRZx5nlWeJWbVJdCgvHckhzMDHyaRAjLBUV
-	psCWCiKWp9Kg84aAKYQLjMQ37igocPKR9OEDFJSnWHIBowHSmg2jU30KTNZWAvk1VrYPrEcRIYw
-	xPo7xyRR8rzOfBAXbLyX2tOTV/mHaBTvu0GrtU080R+SDu8Rb9S/XnWM4f8PqO/H94sd1t35qCq
-	DNQSL/EPJ/GDmWCzQ/Gh63GZYI+VlsicLb44eLC7BQy1kA+G+9zGq5TOpwla3LU1QT1keZplDpf
-	32FNPy8leDCDOXrVSIYbAZyD1vyBP0Ft0aVMFvHf7m5bcVVsqCjgctc0twIGLqZLRf5IsvfcaAY
-	NU=
-X-Received: by 2002:a05:7301:1010:b0:304:5b65:5971 with SMTP id 5a478bee46e88-3074fb4a05cmr150829eec.20.1780432016536;
-        Tue, 02 Jun 2026 13:26:56 -0700 (PDT)
-Received: from phoenix.local (204-195-96-226.wavecable.com. [204.195.96.226])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3074db85e10sm421603eec.7.2026.06.02.13.26.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 Jun 2026 13:26:56 -0700 (PDT)
-Date: Tue, 2 Jun 2026 13:26:53 -0700
-From: Stephen Hemminger <stephen@networkplumber.org>
-To: Kuniyuki Iwashima <kuniyu@google.com>
-Cc: David Ahern <dsahern@kernel.org>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
- <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
- <horms@kernel.org>, Kuniyuki Iwashima <kuni1840@gmail.com>,
- netdev@vger.kernel.org
-Subject: Re: [PATCH v1 iproute2-next] iplink_geneve: Support
- IFLA_GENEVE_LOCAL and IFLA_GENEVE_LOCAL6.
-Message-ID: <20260602132653.2b2f4f93@phoenix.local>
-In-Reply-To: <CAAVpQUBAL_6A3MPcH8w7+EZyfOG9D0i2X3pu5Vhd+fz8Y0=QBA@mail.gmail.com>
-References: <20260523061102.2762452-1-kuniyu@google.com>
-	<20260602125951.50492267@phoenix.local>
-	<CAAVpQUBAL_6A3MPcH8w7+EZyfOG9D0i2X3pu5Vhd+fz8Y0=QBA@mail.gmail.com>
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="COpxiILT"
+Received: from linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net (linux.microsoft.com [13.77.154.182])
+	by linux.microsoft.com (Postfix) with ESMTPSA id C3A8E20B7168;
+	Tue,  2 Jun 2026 13:28:18 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com C3A8E20B7168
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1780432098;
+	bh=zKPgc7o/cO39Mrr7K8b5Y3O77m9kimvl/mzHX7cGfYA=;
+	h=From:To:Subject:Date:From;
+	b=COpxiILT5h+TBCiMhOibS0mXeMn7NFgVzaVJT4rPFa2sby+YGWZMrFfCf/GudzvZM
+	 IMa4pXslYipGk0MjfLb+zZdgF2FvqI6juh/aZwBUheMc153cxCo+7DyR+MEja9kC1P
+	 EpymxeyDGhw644J5wUWwrPE/CHU6O1l2j22HnmPU=
+From: Dipayaan Roy <dipayanroy@linux.microsoft.com>
+To: kys@microsoft.com,
+	haiyangz@microsoft.com,
+	wei.liu@kernel.org,
+	decui@microsoft.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	leon@kernel.org,
+	longli@microsoft.com,
+	kotaranov@microsoft.com,
+	horms@kernel.org,
+	shradhagupta@linux.microsoft.com,
+	ssengar@linux.microsoft.com,
+	ernis@linux.microsoft.com,
+	shirazsaleem@microsoft.com,
+	linux-hyperv@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	stephen@networkplumber.org,
+	jacob.e.keller@intel.com,
+	dipayanroy@microsoft.com,
+	leitao@debian.org,
+	kees@kernel.org,
+	john.fastabend@gmail.com,
+	hawk@kernel.org,
+	bpf@vger.kernel.org,
+	daniel@iogearbox.net,
+	ast@kernel.org,
+	sdf@fomichev.me,
+	yury.norov@gmail.com,
+	pavan.chebbi@broadcom.com
+Subject: [PATCH net-next v10 0/2] net: mana: add ethtool private flag for full-page RX buffers
+Date: Tue,  2 Jun 2026 13:24:37 -0700
+Message-ID: <20260602202801.1873742-1-dipayanroy@linux.microsoft.com>
+X-Mailer: git-send-email 2.43.7
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Tue, 2 Jun 2026 13:06:33 -0700
-Kuniyuki Iwashima <kuniyu@google.com> wrote:
+On some ARM64 platforms with 4K PAGE_SIZE, utilizing page_pool
+fragments for allocation in the RX refill path (~2kB buffer per fragment)
+causes 15-20% throughput regression under high connection counts
+(>16 TCP streams at 180+ Gbps). Using full-page buffers on these
+platforms shows no regression and restores line-rate performance.
 
-> > No new code can use matches(), it creates problems with conflicting
-> > short arguments.  
-> 
-> TIL, so the recommendation is simply using !strcmp(*argv, "local")
-> or anything else ?
+This behavior is observed on a single platform; other platforms
+perform better with page_pool fragments, indicating this is not a
+page_pool issue but platform-specific.
 
-Yes, that is preferred.
+This series adds an ethtool private flag "full-page-rx" to let the
+user opt in to one RX buffer per page:
+
+  ethtool --set-priv-flags eth0 full-page-rx on
+
+There is no behavioral change by default. The flag can be persisted
+via udev rule for affected platforms.
+
+This series depends on the following fixes now merged in net-next:
+  17bfe0a8c014 ("net: mana: add NULL guards in teardown path to prevent panic")
+  5b05aa36ee24 ("net: mana: skip redundant detach on already-detached port")
+
+Changes in v10:
+  - Rebased on net-next which now includes the prerequisite fixes.
+  - Recovery logic in mana_set_priv_flags() leverages the idempotent
+    mana_detach() from the merged fixes.
+Changes in v9:
+  - Added correct tree.
+Changes in v8:
+  - Fixed queue_reset_work recovery by restoring port_is_up before
+    scheduling reset so the handler can properly re-attach.
+  - Simplified "err && schedule_port_reset" to "schedule_port_reset".
+Changes in v7:
+  - Rebased onto net-next.
+  - Retained private flag approach after David Wei's testing on
+    Grace (ARM64) confirmed that fragment mode outperforms
+    full-page mode on other platforms, validating this is a
+    single-platform workaround rather than a generic issue.
+Changes in v6:
+  - Added missed maintainers.
+Changes in v5:
+  - Split prep refactor into separate patch (patch 1/2)
+Changes in v4:
+  - Dropping the smbios string parsing and add ethtool priv flag
+    to reconfigure the queues with full page rx buffers.
+Changes in v3:
+  - changed u8* to char*
+Changes in v2:
+  - separate reading string index and the string, remove inline.
+
+Dipayaan Roy (2):
+  net: mana: refactor mana_get_strings() and mana_get_sset_count() to
+    use switch
+  net: mana: force full-page RX buffers via ethtool private flag
+
+ drivers/net/ethernet/microsoft/mana/mana_en.c |  22 ++-
+ .../ethernet/microsoft/mana/mana_ethtool.c    | 178 +++++++++++++++---
+ include/net/mana/mana.h                       |   8 +
+ 3 files changed, 177 insertions(+), 31 deletions(-)
+
+-- 
+2.43.0
+
