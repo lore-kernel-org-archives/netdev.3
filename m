@@ -1,100 +1,168 @@
-Received: from mta-64-138.flowmailer.net (mta-64-138.flowmailer.net [185.136.64.138])
+Received: from CHN02-BJS-obe.outbound.protection.partner.outlook.cn (mail-bjschn02on2132.outbound.protection.partner.outlook.cn [139.219.17.132])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1562536AB7C
-	for <netdev@vger.kernel.org>; Tue,  2 Jun 2026 07:53:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.136.64.138
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780386815; cv=none; b=U9GIe4BxOK+4VBq2hEjkjHnAoek7FigB5tGKeudN6HEcUCHlSRCzSn4cW7jMv//p+NAeYFJ07wcbt/oHJrSmpq3r76KuIdR0a8pdloN6ROgH0EbGPOUTVzjITr2T9X9SsALiiEyZ3fAsXyKu5pcFzQ0yXQCT16RcFCu+57MORZw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780386815; c=relaxed/simple;
-	bh=rTMmvdqLn8XGVIbwx6QxILaPnIKuu93HhNdO2BLhr54=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qo/cLhvHTUVVB8uCFm6JWOzSFS6Pr16mcWDChNEQJ+KwY+I7ymi848fULeF9uWmAccvSliqhe32MkQrpgNWH/Zh5vRjnBKDIGxm869PMgGLMtJ4aijNrtc082ke/Z56nZf+NzldEmUC99RxGTs5JzRDFFjA0Cjc5V2YngWeA1Gg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens-energy.com; spf=pass smtp.mailfrom=errorhandling.siemens-energy.com; dkim=pass (1024-bit key) header.d=flowmailer.net header.i=@flowmailer.net header.b=Toge8bLz; dkim=pass (2048-bit key) header.d=siemens-energy.com header.i=schuster.simon@siemens-energy.com header.b=ec+PfJIe; arc=none smtp.client-ip=185.136.64.138
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens-energy.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=errorhandling.siemens-energy.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=flowmailer.net header.i=@flowmailer.net header.b="Toge8bLz";
-	dkim=pass (2048-bit key) header.d=siemens-energy.com header.i=schuster.simon@siemens-energy.com header.b="ec+PfJIe"
-Received: by mta-64-138.flowmailer.net with ESMTPSA id 20260602071314e68f87e00a0019fd01
-        for <netdev@vger.kernel.org>;
-        Tue, 02 Jun 2026 09:13:15 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=s1;
- d=flowmailer.net;
- h=from:from:sender:to:to:cc:cc:subject:subject:content-type:content-type:content-transfer-encoding:References:In-Reply-To:Date:Message-ID:MIME-Version;
- bh=rTMmvdqLn8XGVIbwx6QxILaPnIKuu93HhNdO2BLhr54=;
- b=Toge8bLz2dyLab0qL8rkthmm38M0DIbWMwxIZTkHCglUndNKtXlsEFzupMzU1i/vzCdijc
- miocQZzlL9bzz0ZuwDfASqzdjU/d6NY+xy09C5rIOtPgu1bTsWHtrNYMYexJC33Ow7Pw9BIh
- 4PggmgbDjvYm9EN9UTfgesMkNvRAg=;
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm3;
- d=siemens-energy.com; i=schuster.simon@siemens-energy.com;
- h=from:from:sender:to:to:cc:cc:subject:subject:content-type:content-type:content-transfer-encoding:References:In-Reply-To:Date:Message-ID:MIME-Version;
- bh=rTMmvdqLn8XGVIbwx6QxILaPnIKuu93HhNdO2BLhr54=;
- b=ec+PfJIeqY0XmjF70C+uM3vKHeUzZAh1oTg2/qKJ7kPp6hfzDsi97fQ48IoGRskdwuz7Cu
- BGbuFZJ1Q9hHZckYImkEVD3l7jGDitagbUlrsjtMZGp7BQq6QWHs2rCwJGEOP6xEi685QNoj
- Dhxnc4HYfsbAg8Fm/fRfi0hYIxCejI2QpzVxqaXoytvcWrW15vVIQ9nYgGgotDILZbmKgedc
- b8LJKCIxu/nklS6gM/yKotmExl+J8oVb93bKKA61U9r3GprrFfQDONQGoXo5/evBr8Iz8wW4
- xRQAllgjoeOQIpdd6p46Xuo84qL1JvVLvPqgCUmzpiwzXycLeLiQhrYQ==;
-Date: Tue, 2 Jun 2026 09:13:11 +0200
-From: Simon Schuster <schuster.simon@siemens-energy.com>
-To: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Ethan Nelson-Moore
- <enelsonmoore@gmail.com>, Wolfram Sang <wsa+renesas@sang-engineering.com>,
- Peter Zijlstra <peterz@infradead.org>, Arnd Bergmann <arnd@arndb.de>, Dinh
- Nguyen <dinguyen@kernel.org>, linux-doc@vger.kernel.org,
- devicetree@vger.kernel.org, workflows@vger.kernel.org, Linux-Arch
- <linux-arch@vger.kernel.org>, dmaengine@vger.kernel.org,
- linux-i2c@vger.kernel.org, linux-iio@vger.kernel.org, Netdev
- <netdev@vger.kernel.org>, linux-pci@vger.kernel.org,
- linux-pwm@vger.kernel.org, linux-hardening@vger.kernel.org,
- linux-kbuild@vger.kernel.org, "linux-csky@vger.kernel.org"
- <linux-csky@vger.kernel.org>, Jonathan Corbet <corbet@lwn.net>, Shuah Khan
- <skhan@linuxfoundation.org>, Rob Herring <robh@kernel.org>, Krzysztof
- Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Daniel
- Lezcano <daniel.lezcano@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
- Alex Shi <alexs@kernel.org>, Yanteng Si <si.yanteng@linux.dev>, Dongliang
- Mu <dzm91@hust.edu.cn>, Hu Haowen <2023002089@link.tyut.edu.cn>, Kees Cook
- <kees@kernel.org>, Oleg Nesterov <oleg@redhat.com>, Will Deacon
- <will@kernel.org>, "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Nicholas Piggin
- <npiggin@gmail.com>, Vinod Koul <vkoul@kernel.org>, Frank Li
- <Frank.Li@kernel.org>, Dave Penkler <dpenkler@gmail.com>, Andi Shyti
- <andi.shyti@kernel.org>, Jonathan Cameron <jic23@kernel.org>, David Lechner
- <dlechner@baylibre.com>, =?ISO-8859-1?Q?Nuno_S=E1?= <nuno.sa@analog.com>,
- Andy Shevchenko <andy@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, Lorenzo Pieralisi <lpieralisi@kernel.org>, Krzysztof
- WilczyDski <kwilczynski@kernel.org>, Andreas Oetken
- <andreas.oetken@siemens-energy.com>
-Subject: Re: [PATCH] nios2: remove the architecture
-Message-ID: <20260602071311.gtvif43wcjyulphh@dev-vm-schuster>
-References: <20260518042833.272221-1-enelsonmoore@gmail.com>
- <d40b1e80-37fc-4c88-9d7f-dae6458efe6c@app.fastmail.com>
- <20260518105735.GW3126523@noisy.programming.kicks-ass.net>
- <20260518172444.zyd47mcagrcwu7wt@dev-vm-schuster>
- <CADkSEUjhq6HSdg4ignzbuJiN5uXATsTdxFbRJ3BMxs5=WUWLDg@mail.gmail.com>
- <20260519103012.blot4bssgiqfer6p@dev-vm-schuster>
- <CANiq72=6oYtHf0Q1NaLXZ+25uQyYbej2xnvUhtgpHyvozhP7_Q@mail.gmail.com>
- <ah3TN93e7lRpVihW@ashevche-desk.local>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04CBD372060;
+	Tue,  2 Jun 2026 07:54:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=139.219.17.132
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780386852; cv=fail; b=DveYm6MFmbIyEIX2rSMR2vhp0y9Cc7B82fsD+M0CXJ4goNCgEIZk/rdKfAhe87sutSVNNo7Adu7muc6pxV95knSn39PgWTCaKQQ/QKq9WljtXu5ZOBPdsfD1dPLOwNIwZAMrKRiFm8tuXAt+CLImI3/mryNI4o4mNioSA/cgQBE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780386852; c=relaxed/simple;
+	bh=JzUzjHRtiz9EtGngGMh09CX5i/kw6pD2E+Gh4eT2wFg=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=CQcEYgTrSss9fEt2Nxve5H7r0UzE02J5bQ9OxlMeLELPw3fqB7u31hyW/5KZOU/p7CAMBfuS9AvppnVSlKVuyJZ4B7hsEPKfW4CYCoNpQvU8fOxNxK3NZ8kuRQiqv7FH5+3yiYDOP93fKRV+tBrL0oAZTZV7y8qZjz295zOoems=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com; spf=pass smtp.mailfrom=starfivetech.com; arc=fail smtp.client-ip=139.219.17.132
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=starfivetech.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Hdxx9fCZmONX/TrRczfHiuPqLI7sp+NuMVM5gEwAp31hsSUEeF1dcXspfmwtyygoDvB9a82fC0sAOJWDazpaeO3KhA+Q/Xba6RyqQsG88nngfPk9D6q4t67TNmzZKQlHKlI51Jov4AE68P30wxrxPZ1HNIM4L1SVlP87wL9G/PSGZtTIjRZ2eq97oDX2CnFU1cdhKchzDancgiRbjxobPM+9lHyJ6gZLeru/ndQwU5M5ygVPSYIaxqSKdIHe1lvYtyMMQXgZaogYxyAaaUI+wkOle8Y3dAkhqaZCPuvBeEV4qX+52bepP15IX1nR8rLhbG0t7eV/2rv567R+H6+1Vw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=V3mevj0wkzdwzydZBh2PncwK5aAQtxo9Ah9Wn1BkkYY=;
+ b=QEUv/8mB2gYIb8I+KFMysQXAQdDrErxglL+ekvHy5C/ZUOZndsSZYhiVAye7M+wfA58sN3IB/PZH7PVQ0VMp6XQgBfVlZVhV2/CcoRrFO5l0XdfVFpi4TuxjyhwP9Pn7xS1T1UDyOzFPorunDieZZJdUrUBlxyrqGTZOojhIcQiq011dGacyr7zdw8pwckpqQxXhO0dxJde3hhfAw4kVnU1InL4Mz8f9p+vQMHiNgcf7aZUILBsvUpASnkz/XBeT3mTRDh/bt9+DL6H75mrwp9T25xF/nXexedgyZkLNF43v7GADJ+ablFB748AtcWGL16lvC7sHPOjYSg8TXTPr2Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=starfivetech.com; dmarc=pass action=none
+ header.from=starfivetech.com; dkim=pass header.d=starfivetech.com; arc=none
+Received: from SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c311:25::15) by SHXPR01MB0718.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c311:25::23) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.18; Tue, 2 Jun 2026
+ 05:19:23 +0000
+Received: from SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn
+ ([fe80::9b99:12dc:a115:b90f]) by
+ SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn ([fe80::9b99:12dc:a115:b90f%3])
+ with mapi id 15.20.9891.021; Tue, 2 Jun 2026 05:19:22 +0000
+From: Minda Chen <minda.chen@starfivetech.com>
+To: Frank <Frank.Sae@motor-comm.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>,
+	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>
+CC: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [net-next v5 3/3] net: phy: motorcomm: Add YT8522 100M RMII PHY
+ support
+Thread-Topic: [net-next v5 3/3] net: phy: motorcomm: Add YT8522 100M RMII PHY
+ support
+Thread-Index: AQHc7w+mH9U4hq4iQ02b/QTmPjv+rrYqwJ0w
+Date: Tue, 2 Jun 2026 05:19:22 +0000
+Message-ID:
+ <SHXPR01MB08633585004218C86DD44D27E6122@SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn>
+References: <20260529020530.16856-1-minda.chen@starfivetech.com>
+ <20260529020530.16856-4-minda.chen@starfivetech.com>
+In-Reply-To: <20260529020530.16856-4-minda.chen@starfivetech.com>
+Accept-Language: zh-CN, en-US
+Content-Language: zh-CN
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=starfivetech.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SHXPR01MB0863:EE_|SHXPR01MB0718:EE_
+x-ms-office365-filtering-correlation-id: 7edf5915-43f7-49ec-6818-08dec06681b5
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|366016|1800799024|376014|7416014|38070700021|18002099003|22082099003|4143699003|56012099006;
+x-microsoft-antispam-message-info:
+ yyZ4ys9tPuvHGPShNfy9VsotiKa+B/EmKT5LTgSCsjfdo+EmUWM5pnIT0Ql1y4Htvf4dQuRvXi1+Cgcem3UW15D+4e1S1MFkuLdadsrCchuzZTscKmVNI+ez65iJ7GnCCijEjM09V3qQn3vhOKneTkRj65KDVOzS0U3qWsLMh74SA9K/FavzDRRWcwXPv+zBjpaUuqaAJl6YGmKMLIrDNw3jps5lHFq3UK6gRsVDdhFPLWPYWfBbYhyWEU22QB3e2yRYNXlfGtj/Tbx2s/8QVlekYxxumkjfP6liJ+dSZzXY2VYNtDJuV5HgjmeQVH16BN19VyFRoaKh0E5RrC4k6m9Zbv7LlzihQmjAWiNvDje1ANsGyGzviDfhGJK77EbllPZlY02LqZQ5rPclMarbjRWnBLXj+EWeU6CRvlH1JNBOOdtUViGvRNbou3TclnqA7JmfRTq4Y1RKmitDIcNdyv9QS5rlIqTAELYVNFU0VE4XAC/tgt3x1+0NwqxIGh0EQ1b8UrI7yUJyINCNRYxgK8H4otFrtN+wN/5MQJuwf/8=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(38070700021)(18002099003)(22082099003)(4143699003)(56012099006);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?zt3aNP0GW5M/NpvNLhltp8YaWTnwqG2vgY6g3+jLQtLgyR9kMkayPAU1SS3U?=
+ =?us-ascii?Q?H6xJSKVL30i74NZBewqVZbtkGL8ZwGFPwmwYWEHN0MRyY0bh4FDhZiPwjxX6?=
+ =?us-ascii?Q?PiBTIiOu2WV4ghj57zt/pjF9GqzmAyd3cz6e6j5BpXoWRn6ZmEDOiYqiLBjr?=
+ =?us-ascii?Q?SMFuN3bo87TcvMPHza8eGJI3Z7gAJupvhQejri+MWyrou/NkRS6DzLYroQI6?=
+ =?us-ascii?Q?PkXRaTLTqr+n6TQQzOcpbaeOzCNQBIK6A/FuiHDI2V2tUEvAvHI+K4UKUZ68?=
+ =?us-ascii?Q?G2M+7GWFwjmyWFZN50bL4b6fOTBEETcR7KOrpePGJpsCsLkTB5V9m8ZTqcQT?=
+ =?us-ascii?Q?QNcilXbQ+PbsWWuaSIpPav8E+euABowF2dlEd+bcskDyZIWKSChBsC8tkgqg?=
+ =?us-ascii?Q?O8IQQ9gfhRxefu3RLG0C/NfGh+TbdnwdjB38GIJdfjYjAwh3e6tWmDI4qm4x?=
+ =?us-ascii?Q?M86Uz6J3a01skI+s/W3YDLAslMYHSLOhwk+CQuDVwXIgBQ5XL8dFDK86Lfdk?=
+ =?us-ascii?Q?UB8P3M20QjweglTmJafw1F1d2UK5yhtqWae0K7SsYVXFeL5MIaq9vI3ZR0BU?=
+ =?us-ascii?Q?vci4qKYX4hxF9rI9EWHG3nwuANLq+gTqg3Slf3prZyTAxvhqwFsYMZabW0qw?=
+ =?us-ascii?Q?3zKANJ0xBpbz20oPFWkmTCW+WTWm1o2HAi1TM3DAbvHwlyg97Vbp0fCAarLE?=
+ =?us-ascii?Q?LAY0qlF5KgEKr6T5DB8TrBalFNP1S+i3QJeH+UutuVHA4mJ9tZMy86bYABxO?=
+ =?us-ascii?Q?mXAt0OnwI+JZphdqJH2UWK8nKni2Q3joiQAgQRQCOe5MxrKKrKic1w6EHFVZ?=
+ =?us-ascii?Q?jBfbvVWqvGqv43dwtvpz4+F5jPZDAkteeqNg7BG4YvA9So2Nqh3ILbxqU5ia?=
+ =?us-ascii?Q?/O2tClnbHyMbrcZxVQ7LZbuv2PPOGtg1OZOFJv96hqqfREuY2SAr2Q7rplxn?=
+ =?us-ascii?Q?FnC087Zg+ZQEFaRUeReZgKCii4popoNfKyMCtxN/xN/hmZB8wDbmZdc79XbK?=
+ =?us-ascii?Q?FJ5fP+HXZVKG455SmyaDHxHgYhUKvhLDdo2UNM13tqQW31KOdBW0n3tvj9vL?=
+ =?us-ascii?Q?LC69TA0Iqa8NwLB+VhkNdwodk8k++Hp6FHSH/PXqrMhfuHYyPSfBDVwHLslA?=
+ =?us-ascii?Q?v6jUv3LsdK/+tsdyI3KFij5EhxUabrkygEz8QPYoo7SKjYSb/yrlhY6dtR4g?=
+ =?us-ascii?Q?mqYqEnF45gw0tV5oq9D3yEdG9BgC6L5YMpS9dKQG03wFn6Xaof+8k/aTy1OL?=
+ =?us-ascii?Q?i6nSvlH6t9cQHj+qjA8j6QL3nOC2rceUeRdQsAKWfsEFNsBmCZAG0cY2U3oh?=
+ =?us-ascii?Q?GXHhTAXZhQISApvKEUF7ti7m2TLIQmvwBhB94tZIMyeavdgaaZuPvv/k1ZS4?=
+ =?us-ascii?Q?JwqIT5aelWH/sWDIcPbloBtFpofV5dQvcuvhBmSceNl3nywYYuVCli/xv70F?=
+ =?us-ascii?Q?4w3Rzo09lyJlMYi/aAAsVl2w4DqwQtaWPaLk/duTr8XAj+7BZ7GG5G6fQ/BE?=
+ =?us-ascii?Q?QhfSAQN6sQ23MBAKlW+/sEOezBpiC2JSh+cLP+wLcye+/Uw9OMJTM9nTvPYx?=
+ =?us-ascii?Q?BfOMS+K81nbn/of2L0ZhHbApeTO5YXH5HJJWrvZAynguILGT0Td0LMrlOD5+?=
+ =?us-ascii?Q?Tl20YufKbzid+BA5wq33IV3YhuQS/fDQkmApr+g8deGxSALynolFmlCawL7N?=
+ =?us-ascii?Q?r1n+xP/cVJt8aWfEnXoY4HlDVugRpQpk5JhbqOIugmjiCZRJPwjwuY7uGzuk?=
+ =?us-ascii?Q?vJj9V6VPPQ=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ah3TN93e7lRpVihW@ashevche-desk.local>
+X-OriginatorOrg: starfivetech.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7edf5915-43f7-49ec-6818-08dec06681b5
+X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Jun 2026 05:19:22.8025
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 06fe3fa3-1221-43d3-861b-5a4ee687a85c
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: iWzgaII9kL7kdRiXXsvgfi+c5Dll2ZdzQWk0fs8hTp0rY3CkQmM1ui0pFyMcgakDqlpR+3eH6hSeT/qz117eTas+svIYGaLWLVGSkiOe2BE=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SHXPR01MB0718
 
-Hello Andy,
 
-On Mon, Jun 01, 2026 at 09:45:11PM +0300, Andy Shevchenko wrote:
-> Supported implies that one gets real money for the job. Is this the case here?
 
-Thank you for caring about NIOSII. I'm doing so as part of my
-employment at Siemens Energy; if this is real enough then yes :)
+> Add YT8522 100M RMII ethernet PHY base driver support, including PHY ID a=
+nd
+> base config init function.
+>=20
+> Signed-off-by: Minda Chen <minda.chen@starfivetech.com>
+> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+> ---
+>  drivers/net/phy/motorcomm.c | 49
+> ++++++++++++++++++++++++++++++++++++-
+>  1 file changed, 48 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/net/phy/motorcomm.c b/drivers/net/phy/motorcomm.c
+> index dcba50007451..a202015d3869 100644
+> --- a/drivers/net/phy/motorcomm.c
+> +++ b/drivers/net/phy/motorcomm.c
+> @@ -1,6 +1,6 @@
+>  // SPDX-License-Identifier: GPL-2.0+
+>  /*
+> - * Motorcomm 8511/8521/8531/8531S/8821 PHY driver.
+> + * Motorcomm 8511/8521/8522/8531/8531S/8821 PHY driver.
+>   *
+>   * Author: Peter Geis <pgwipeout@gmail.com>
+>   * Author: Frank <Frank.Sae@motor-comm.com> @@ -14,6 +14,7 @@
+>=20
+>  #define PHY_ID_YT8511		0x0000010a
+>  #define PHY_ID_YT8521		0x0000011a
+> +#define PHY_ID_YT8522		0x4f51e928
+>  #define PHY_ID_YT8531		0x4f51e91b
+>  #define PHY_ID_YT8531S		0x4f51e91a
+>  #define PHY_ID_YT8821		0x4f51ea19
+> @@ -227,6 +228,13 @@
+>  #define YT8521_LED_100_ON_EN			BIT(5)
+>  #define YT8521_LED_10_ON_EN			BIT(4)
+>=20
+> +#define YT8522_EXTREG_SLEEP_CONTROL		0x2027
+> +#define YT8522_EN_SLEEP_SW			15
+> +
 
-Best regards
-Simon
+Thanks for the checking script, This should be BIT(15). I am sorry about th=
+is.
+I will send v6 in next week.=20
+
+Hi Andrew
+  Do you have any comment to patch 2?
+
