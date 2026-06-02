@@ -1,122 +1,100 @@
-Received: from n169-111.mail.139.com (n169-111.mail.139.com [120.232.169.111])
+Received: from mta-64-138.flowmailer.net (mta-64-138.flowmailer.net [185.136.64.138])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C37C73B9D94;
-	Tue,  2 Jun 2026 07:50:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.111
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1562536AB7C
+	for <netdev@vger.kernel.org>; Tue,  2 Jun 2026 07:53:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.136.64.138
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780386620; cv=none; b=a0MZPOnZ7U0b8zFCXTc9IWnko3vZilgkefAA4fPLY+e5Mjbz5Y8d+x1bc6I+EHhdVBZaPdpGjgTTJmMxk15rvmKzFUXXH8II7YraA0hWiOAfYHfxYcnKYFP1nza/jkemb4robv8ZJ+1bSDoQCi7PQGWYE+mOBgPdErOEhNGPOdM=
+	t=1780386815; cv=none; b=U9GIe4BxOK+4VBq2hEjkjHnAoek7FigB5tGKeudN6HEcUCHlSRCzSn4cW7jMv//p+NAeYFJ07wcbt/oHJrSmpq3r76KuIdR0a8pdloN6ROgH0EbGPOUTVzjITr2T9X9SsALiiEyZ3fAsXyKu5pcFzQ0yXQCT16RcFCu+57MORZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780386620; c=relaxed/simple;
-	bh=r8JJSHfKw9Brkkcjw3TDT0i1OPaFOAg7fPAPfVj2Lec=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=RUBUUTLeL/5M+8MUMUzFukB7WZZOxZgrZhwey2nRKqDaIyyvmvrJVclw9tWdcodJqxtSHwkyiiU2iimkybyPhJ+ZYJBt6lIaUu7141BJGLpCCpUA3fPRmsJou+C8eb3VTCa9HuvRXN2FPPik0QHsDfjEhLHk7Y3QKZcrbHQAO5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=d6uX4TgG; arc=none smtp.client-ip=120.232.169.111
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
+	s=arc-20240116; t=1780386815; c=relaxed/simple;
+	bh=rTMmvdqLn8XGVIbwx6QxILaPnIKuu93HhNdO2BLhr54=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qo/cLhvHTUVVB8uCFm6JWOzSFS6Pr16mcWDChNEQJ+KwY+I7ymi848fULeF9uWmAccvSliqhe32MkQrpgNWH/Zh5vRjnBKDIGxm869PMgGLMtJ4aijNrtc082ke/Z56nZf+NzldEmUC99RxGTs5JzRDFFjA0Cjc5V2YngWeA1Gg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens-energy.com; spf=pass smtp.mailfrom=errorhandling.siemens-energy.com; dkim=pass (1024-bit key) header.d=flowmailer.net header.i=@flowmailer.net header.b=Toge8bLz; dkim=pass (2048-bit key) header.d=siemens-energy.com header.i=schuster.simon@siemens-energy.com header.b=ec+PfJIe; arc=none smtp.client-ip=185.136.64.138
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens-energy.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=errorhandling.siemens-energy.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="d6uX4TgG"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=139.com; s=dkim; l=0;
-	h=from:subject:message-id:to:cc:mime-version;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=d6uX4TgGv6yot+IU0+JPwwvDwBJHBzykiSicikOxgodxZpH+fkeYwgHGBUqGq7rzIWMfgJj+lNOow
-	 0ql+JDtHphqTba4Swg3OVsjLXuL/y7JLIMbTFSUGUosh0zC7YnYgo7dZOPdxmbR+tdB56046di2BwJ
-	 uJgb+IeO0p5EHHrI=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM:                                                                                        
-X-RM-SPAM-FLAG:00000000
-Received:from NTT-kernel-dev (unknown[60.247.85.88])
-	by rmsmtp-lg-appmail-12-12001 (RichMail) with SMTP id 2ee16a1e8b375ef-0261c;
-	Tue, 02 Jun 2026 15:50:19 +0800 (CST)
-X-RM-TRANSID:2ee16a1e8b375ef-0261c
-From: Li hongliang <1468888505@139.com>
-To: gregkh@linuxfoundation.org,
-	stable@vger.kernel.org,
-	jk@codeconstruct.com.au
-Cc: patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	matt@codeconstruct.com.au,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH 5.15.y] net: mctp: ensure our nlmsg responses are initialised
-Date: Tue,  2 Jun 2026 15:50:14 +0800
-Message-Id: <20260602075014.3210968-1-1468888505@139.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (1024-bit key) header.d=flowmailer.net header.i=@flowmailer.net header.b="Toge8bLz";
+	dkim=pass (2048-bit key) header.d=siemens-energy.com header.i=schuster.simon@siemens-energy.com header.b="ec+PfJIe"
+Received: by mta-64-138.flowmailer.net with ESMTPSA id 20260602071314e68f87e00a0019fd01
+        for <netdev@vger.kernel.org>;
+        Tue, 02 Jun 2026 09:13:15 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=s1;
+ d=flowmailer.net;
+ h=from:from:sender:to:to:cc:cc:subject:subject:content-type:content-type:content-transfer-encoding:References:In-Reply-To:Date:Message-ID:MIME-Version;
+ bh=rTMmvdqLn8XGVIbwx6QxILaPnIKuu93HhNdO2BLhr54=;
+ b=Toge8bLz2dyLab0qL8rkthmm38M0DIbWMwxIZTkHCglUndNKtXlsEFzupMzU1i/vzCdijc
+ miocQZzlL9bzz0ZuwDfASqzdjU/d6NY+xy09C5rIOtPgu1bTsWHtrNYMYexJC33Ow7Pw9BIh
+ 4PggmgbDjvYm9EN9UTfgesMkNvRAg=;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm3;
+ d=siemens-energy.com; i=schuster.simon@siemens-energy.com;
+ h=from:from:sender:to:to:cc:cc:subject:subject:content-type:content-type:content-transfer-encoding:References:In-Reply-To:Date:Message-ID:MIME-Version;
+ bh=rTMmvdqLn8XGVIbwx6QxILaPnIKuu93HhNdO2BLhr54=;
+ b=ec+PfJIeqY0XmjF70C+uM3vKHeUzZAh1oTg2/qKJ7kPp6hfzDsi97fQ48IoGRskdwuz7Cu
+ BGbuFZJ1Q9hHZckYImkEVD3l7jGDitagbUlrsjtMZGp7BQq6QWHs2rCwJGEOP6xEi685QNoj
+ Dhxnc4HYfsbAg8Fm/fRfi0hYIxCejI2QpzVxqaXoytvcWrW15vVIQ9nYgGgotDILZbmKgedc
+ b8LJKCIxu/nklS6gM/yKotmExl+J8oVb93bKKA61U9r3GprrFfQDONQGoXo5/evBr8Iz8wW4
+ xRQAllgjoeOQIpdd6p46Xuo84qL1JvVLvPqgCUmzpiwzXycLeLiQhrYQ==;
+Date: Tue, 2 Jun 2026 09:13:11 +0200
+From: Simon Schuster <schuster.simon@siemens-energy.com>
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Ethan Nelson-Moore
+ <enelsonmoore@gmail.com>, Wolfram Sang <wsa+renesas@sang-engineering.com>,
+ Peter Zijlstra <peterz@infradead.org>, Arnd Bergmann <arnd@arndb.de>, Dinh
+ Nguyen <dinguyen@kernel.org>, linux-doc@vger.kernel.org,
+ devicetree@vger.kernel.org, workflows@vger.kernel.org, Linux-Arch
+ <linux-arch@vger.kernel.org>, dmaengine@vger.kernel.org,
+ linux-i2c@vger.kernel.org, linux-iio@vger.kernel.org, Netdev
+ <netdev@vger.kernel.org>, linux-pci@vger.kernel.org,
+ linux-pwm@vger.kernel.org, linux-hardening@vger.kernel.org,
+ linux-kbuild@vger.kernel.org, "linux-csky@vger.kernel.org"
+ <linux-csky@vger.kernel.org>, Jonathan Corbet <corbet@lwn.net>, Shuah Khan
+ <skhan@linuxfoundation.org>, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Daniel
+ Lezcano <daniel.lezcano@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
+ Alex Shi <alexs@kernel.org>, Yanteng Si <si.yanteng@linux.dev>, Dongliang
+ Mu <dzm91@hust.edu.cn>, Hu Haowen <2023002089@link.tyut.edu.cn>, Kees Cook
+ <kees@kernel.org>, Oleg Nesterov <oleg@redhat.com>, Will Deacon
+ <will@kernel.org>, "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Nicholas Piggin
+ <npiggin@gmail.com>, Vinod Koul <vkoul@kernel.org>, Frank Li
+ <Frank.Li@kernel.org>, Dave Penkler <dpenkler@gmail.com>, Andi Shyti
+ <andi.shyti@kernel.org>, Jonathan Cameron <jic23@kernel.org>, David Lechner
+ <dlechner@baylibre.com>, =?ISO-8859-1?Q?Nuno_S=E1?= <nuno.sa@analog.com>,
+ Andy Shevchenko <andy@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, Lorenzo Pieralisi <lpieralisi@kernel.org>, Krzysztof
+ WilczyDski <kwilczynski@kernel.org>, Andreas Oetken
+ <andreas.oetken@siemens-energy.com>
+Subject: Re: [PATCH] nios2: remove the architecture
+Message-ID: <20260602071311.gtvif43wcjyulphh@dev-vm-schuster>
+References: <20260518042833.272221-1-enelsonmoore@gmail.com>
+ <d40b1e80-37fc-4c88-9d7f-dae6458efe6c@app.fastmail.com>
+ <20260518105735.GW3126523@noisy.programming.kicks-ass.net>
+ <20260518172444.zyd47mcagrcwu7wt@dev-vm-schuster>
+ <CADkSEUjhq6HSdg4ignzbuJiN5uXATsTdxFbRJ3BMxs5=WUWLDg@mail.gmail.com>
+ <20260519103012.blot4bssgiqfer6p@dev-vm-schuster>
+ <CANiq72=6oYtHf0Q1NaLXZ+25uQyYbej2xnvUhtgpHyvozhP7_Q@mail.gmail.com>
+ <ah3TN93e7lRpVihW@ashevche-desk.local>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ah3TN93e7lRpVihW@ashevche-desk.local>
 
-From: Jeremy Kerr <jk@codeconstruct.com.au>
+Hello Andy,
 
-[ Upstream commit a6a9bc544b675d8b5180f2718ec985ad267b5cbf ]
+On Mon, Jun 01, 2026 at 09:45:11PM +0300, Andy Shevchenko wrote:
+> Supported implies that one gets real money for the job. Is this the case here?
 
-Syed Faraz Abrar (@farazsth98) from Zellic, and Pumpkin (@u1f383) from
-DEVCORE Research Team working with Trend Micro Zero Day Initiative
-report that a RTM_GETNEIGH will return uninitalised data in the pad
-bytes of the ndmsg data.
+Thank you for caring about NIOSII. I'm doing so as part of my
+employment at Siemens Energy; if this is real enough then yes :)
 
-Ensure we're initialising the netlink data to zero, in the link, addr
-and neigh response messages.
-
-Fixes: 831119f88781 ("mctp: Add neighbour netlink interface")
-Fixes: 06d2f4c583a7 ("mctp: Add netlink route management")
-Fixes: 583be982d934 ("mctp: Add device handling and netlink interface")
-Signed-off-by: Jeremy Kerr <jk@codeconstruct.com.au>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260209-dev-mctp-nlmsg-v1-1-f1e30c346a43@codeconstruct.com.au
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Li hongliang <1468888505@139.com>
----
- net/mctp/device.c | 1 +
- net/mctp/neigh.c  | 1 +
- net/mctp/route.c  | 1 +
- 3 files changed, 3 insertions(+)
-
-diff --git a/net/mctp/device.c b/net/mctp/device.c
-index aec7ffad2666..a11d5aca201c 100644
---- a/net/mctp/device.c
-+++ b/net/mctp/device.c
-@@ -55,6 +55,7 @@ static int mctp_fill_addrinfo(struct sk_buff *skb, struct netlink_callback *cb,
- 		return -EMSGSIZE;
- 
- 	hdr = nlmsg_data(nlh);
-+	memset(hdr, 0, sizeof(*hdr));
- 	hdr->ifa_family = AF_MCTP;
- 	hdr->ifa_prefixlen = 0;
- 	hdr->ifa_flags = 0;
-diff --git a/net/mctp/neigh.c b/net/mctp/neigh.c
-index bc75a263719c..18a6be38f172 100644
---- a/net/mctp/neigh.c
-+++ b/net/mctp/neigh.c
-@@ -217,6 +217,7 @@ static int mctp_fill_neigh(struct sk_buff *skb, u32 portid, u32 seq, int event,
- 		return -EMSGSIZE;
- 
- 	hdr = nlmsg_data(nlh);
-+	memset(hdr, 0, sizeof(*hdr));
- 	hdr->ndm_family = AF_MCTP;
- 	hdr->ndm_ifindex = dev->ifindex;
- 	hdr->ndm_state = 0; // TODO other state bits?
-diff --git a/net/mctp/route.c b/net/mctp/route.c
-index 48d32bfd3863..a93796eb0a09 100644
---- a/net/mctp/route.c
-+++ b/net/mctp/route.c
-@@ -1031,6 +1031,7 @@ static int mctp_fill_rtinfo(struct sk_buff *skb, struct mctp_route *rt,
- 		return -EMSGSIZE;
- 
- 	hdr = nlmsg_data(nlh);
-+	memset(hdr, 0, sizeof(*hdr));
- 	hdr->rtm_family = AF_MCTP;
- 
- 	/* we use the _len fields as a number of EIDs, rather than
--- 
-2.34.1
-
-
+Best regards
+Simon
