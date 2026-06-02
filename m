@@ -1,219 +1,129 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8D36366046;
-	Tue,  2 Jun 2026 15:47:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780415265; cv=none; b=M7kfw1vyXIvXieQvIL8YUoxANm44vE/3ssjKSGwgrFcPsjmFpWT010vGjRcNOsFT4NCeReow7pEqAl0Ws15kIAVVnYxMsXZZkN2xDnFfVoiV0YPCH6qzVPM2uODNEq45zaq/s1C74/onzParP+WFWOUXiIrzeG+fYF3YvpOglVY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780415265; c=relaxed/simple;
-	bh=hi12WezZwD1WzYU1hlhwt5AiplPaczFeXs61kDWRjHA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ng/PT+/COvrFXeQJGmAnWBVC29YDt9JLfrkf7IWctA67vuPaVA3UfLm7OUnkdMtZ6+dQ/qWaia0qYl1tHhs7sqAmBCCdyVBZwaH48uy34dq+cpAPET0vr11FoubQKGN4+zWdIyrrUtPeWpsoLpajtzg/hWwGH6Nsz+8bkz6XGek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZQSj2Oh5; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D437A3EDAD8
+	for <netdev@vger.kernel.org>; Tue,  2 Jun 2026 15:50:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.44
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780415414; cv=pass; b=SUCjz6vFBQZ0osxJpX5xFKppebNxXm22PYpZ8O7CKqJCrtYF15s/DvWClysz/EvamWpU454HoYu+r9F+JT583h/YDm6nzOFiqtzJ5/LFEeSl6uFlBMK3gXJB9a9p1YCEC+nCx6AjbIQYiW56EW7S82DqIw6JQ81nuva6OtOSJ+Q=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780415414; c=relaxed/simple;
+	bh=XOnGwjMx91iBauduKCMlw4rFAouak06v92SQM8h7hmI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Yncwot612SOtnBPV5j/Vi6RZwuFEHg/HVbfv0PhtgTPhl6fJAE36TulWXY2+8zBQu4xjH+2606Lz6bcP1dxEBVCiIN+RL9kz90/I8bKVFUuhuR9RHMj8DYQGV1/nx4UwA1r5xrYjbSkKOuL+jAWg1/eGRK1Rrm86vwudqhA0wI8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=e73MyjNE; arc=pass smtp.client-ip=209.85.208.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZQSj2Oh5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 704951F00893;
-	Tue,  2 Jun 2026 15:47:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780415263;
-	bh=wLutiSegTJHA+jOz/grm9866m5nuAjpYHl81oTHKovM=;
-	h=From:To:Cc:Subject:Date;
-	b=ZQSj2Oh5tKjNbhIIGe99RwvQlsqwNkefrPnoo5XygIkfKYK48wxoy33nXLklLeAIW
-	 UjGofUmSx6GSxATbGem0cK3dmcUhmoQiO9Xr0ZloUgpEU3jFCGYnSBaQEQzI00cSGT
-	 ZvNaAWTGVYuJgpkbcRF9b5AekMr4YLY2S2qBYx3cSvvDeokEg+coAq6jMhR3Cy8GPO
-	 M1SgWZP8LE7d9+yaU03bXzQN26BV5EpcJjNrhzA4ahHZcACEVoh+bNSoEjoItF38Cy
-	 vUlThpwtXAbsrzU6CvsEyFTjqSGFMR+reBNle3Kmir8Ko8eRh9mHYWYBKcJxqVwhal
-	 yiGh3U04OiM3Q==
-From: Chuck Lever <cel@kernel.org>
-To: linux-nfs@vger.kernel.org
-Cc: keyrings@vger.kernel.org,
-	kernel-tls-handshake@lists.linux.dev,
-	netdev@vger.kernel.org,
-	Trond Myklebust <trondmy@kernel.org>,
-	Anna Schumaker <anna@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Hannes Reinecke <hare@suse.de>,
-	David Howells <dhowells@redhat.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Sagi Grimberg <sagi@grimberg.me>
-Subject: [RFC] NFS: named client identities for mTLS mounts and a per-namespace .nfs keyring
-Date: Tue,  2 Jun 2026 11:47:37 -0400
-Message-ID: <20260602154740.49861-1-cel@kernel.org>
-X-Mailer: git-send-email 2.54.0
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="e73MyjNE"
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-6896c54a7easo80435a12.3
+        for <netdev@vger.kernel.org>; Tue, 02 Jun 2026 08:50:12 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780415411; cv=none;
+        d=google.com; s=arc-20240605;
+        b=kZJQFJFVyWtMeOrqYTvtRaw/qxwsYnWCsJ0nvn0iV1/UCizRjfS2CzlxW6Zn+j4j7U
+         JRDd4AFI+8hRNPRN2ndTJV4gol5DoWYb9p0mGmDh0CvFjt45D0oRaH6euvK3hdhzY/Aq
+         SDKDllAVItJ1NTiCMRIRdBzKoSGT6xYyQry1rIq7BDMCHd1FvQTfNu9hQnVzrhzwbkXn
+         D4eq8sJ5leFpdB/9+fGVj7D1MMQ43cYtY7mDuGE7uh2c89EzLA+bOq67ZU9JbQO4vHUI
+         obqyt722YNCXkQ2ZSjC945HBkLCVu8eNehTqKh8sQQokVfP2V3RhbMolnGzEoQ4/VDyv
+         nYrQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=MkED1IgZW+Wv3qyfFPo5J1tct5Sxg+vtS8DaiME5OlE=;
+        fh=ISEQjLhWKSsnFfRXMBsarCFMEmsSlc9xQYxlySfjwV0=;
+        b=kPGO0PYykqlYw+uVwFaOgBVoB6mVy+IB6ea56poECVEWYzFczCCDmHkang5SeLsw7W
+         aFlLvSYmLgVakN53Tmt2+MX4EScIwtqrVvjl88QLrUySAn34aasWhxgMcwlL5EEISeHz
+         NX5yHSu5ynMVLWobwMxOLscL5j+/ALgceV37wSypyAIBy0IaooWBgWkI/Z1ZdpgsdBpP
+         ILEjZkKAs20L7Wb8GUphH/uK82uVPVivZMxEnRggqeZSz9VLfsHKABtQsRyUFS6v4JEI
+         Y3lK60TOe23rNaQlzKZsYopX0+K94PoWkWTFkgqi40MbszBdFizCm00Zbuo5TzjW6scr
+         4gAA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780415411; x=1781020211; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=MkED1IgZW+Wv3qyfFPo5J1tct5Sxg+vtS8DaiME5OlE=;
+        b=e73MyjNEdYk54BKLg0K0IX+nblABBntSzCuYv9o/k4d+kVvv+bpeZMorxDwEwebpCB
+         zni5hvC3VtDhIPeklm5Em2rVWm+tY5A99CnFqqkMe2DDxN/INPr8akG8HwTjNhpdZIYN
+         4DBA+8hy7/AmS8cOyX9MUnKwbIuBbToxUq7KFRDdIEFeHrT7VJrWRVUt7F7D8SYN+LqX
+         quFEN5A9VFUWIS5CsFrILVm4dmXQfO/A53AOOpTyFLvyYnyex3NBYkpmcUnBBbgOzxIc
+         YDOpLf6ZTQcsLJn+WUiLy7a9s4B3YFN3S0s8DTSMYzGqrkN823D1jpVtMGFdkTX9wNaT
+         L4hg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780415411; x=1781020211;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=MkED1IgZW+Wv3qyfFPo5J1tct5Sxg+vtS8DaiME5OlE=;
+        b=nl1S06oof0bboBtBXm2HVzGsFXxXFcfSZD0+A5iNn9EFHSQdq2DWo8H5UiPYuOEX2Y
+         vit5rYbiPZOy0xOw2CeGVZ+l6sxzKx7GfZDocEDPHLdLgVdUC/m1E8lesp0i1mb+p7/t
+         JVLViiX7qFOyfGYywpMlG7/4rIPueHdHLbq3AddgB/MJw9uJ0hTo17OY/Tbh+UHkneqw
+         EcgPeBQSgLhNfDtV6/MATYnqzqeI+X2uL+8phkNc+HIMINt//OgEPW2CdHRprBHw+hBn
+         UXswYLZq1T4jPc9jiK9XlZmtoRC58+vwioc8pJeLX+eqBPVnYV7gTr3/re5OhkG8Esob
+         EGqg==
+X-Forwarded-Encrypted: i=1; AFNElJ/HnBctLTDYuVDRqi7it8ZOsMWmBymjDm9ZX1pdt/qNHjUYYYjfGpCWTul9Mg5GyugqxRUcF8A=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzYfPCxsk+n33yFqOb8J6607lPsPNPJomkcrYtsb3R/tjd8xt94
+	t5m8r5XwVMVk3fvg+nmKLIjQqYjDABK7iLkmkJCBwkK/8KFdT8o6ofEOzNLgGP8DAPoDBSNjEeB
+	/ZfWydOstwo4c+6F/EMo7AuwK3jej0s0=
+X-Gm-Gg: Acq92OGEQjBb17cWmJAKn/ZWhv+kQ+qmD7xeIL/u+SyT+Lf93Zvalc+gvE9MgV9F36b
+	EMJxIwRP+IT0OXhQEPzb+Qcdg3O/pFkrY2mQtCWucLa0Nagv45AbXh6XtJCB5zc9FFa0lAuhrDH
+	KSbacP55+WZPdhWFlZt/izRonN7nV2jTPwbQZz3GKjZ4+erbeg4Fpkv1APa7zSwPiauYT2mg7ML
+	wN3nm2dsUXrfOTM2n+uAWAmA1HS3VBgPSDyrRuHujBufsNL7raxsNk8MPBh5hQvflwt0Q8eCE5D
+	dqdi3b4S0XA6UV6z7g==
+X-Received: by 2002:a05:6402:3906:b0:683:edf6:3461 with SMTP id
+ 4fb4d7f45d1cf-68e5db44372mr191815a12.18.1780415410941; Tue, 02 Jun 2026
+ 08:50:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260529052333.1665989-1-dbgh9129@gmail.com> <20260601190237.76d7d47c@kernel.org>
+In-Reply-To: <20260601190237.76d7d47c@kernel.org>
+From: =?UTF-8?B?7LWc7Jyg7Zi4?= <dbgh9129@gmail.com>
+Date: Tue, 2 Jun 2026 11:49:59 -0400
+X-Gm-Features: AVHnY4Ib7chsj52pmDO5UDJKaDJMC8on7TXbAzFt1moon316MTfAxQ0Gbkk1GQA
+Message-ID: <CACrCO_VPYjvM4zMsxez6Uip5REPLqHhTExiUsgOPYXMo=ASTPA@mail.gmail.com>
+Subject: Re: [PATCH v1] octeontx2-af: Fix PCI device reference leaks in debugfs
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Sunil Goutham <sgoutham@marvell.com>, Linu Cherian <lcherian@marvell.com>, 
+	Geetha sowjanya <gakula@marvell.com>, hariprasad <hkelam@marvell.com>, 
+	Subbaraya Sundeep <sbhatta@marvell.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Today, exactly one x.509 certificate and private key pair can be
-used at a time for all NFS mounts. The location of that pair is
-set in /etc/tlshd/config.
+Thanks for your time to review.
 
-We currently have an awkward experimental mechanism for specifying
-an alternative x.509 certificate and private key for an xprtsec=mtls
-NFS mount, but it needs to be completed so it can be documented and
-advertised for use.
+On Mon, 1 Jun 2026 at 22:02, Jakub Kicinski <kuba@kernel.org> wrote:
 
-I asked Claude to write a rough draft of a design document that
-outlines what needs to be done to finish the work. I would like
-input on the kernel-side mechanism in particular for the
-per-network-namespace keyring and the way userspace reaches it.
+> Looks like cgx struct has a pointer to the pci dev.
+> Can we use that instead?
 
+I looked into that. While struct cgx does contain a pdev pointer, it
+points to the CGX/RPM PCI device rather than the RVU AF device.
 
-Problem
-=======
+Its driver data is struct cgx, as cgx_probe() does:
 
-NFS mutual-TLS mounts (xprtsec=mtls) need the client to present an
-x.509 certificate and prove possession of its private key. The
-handshake runs in userspace in tlshd; the kernel hands tlshd the
-credentials by keyring serial number over the handshake genetlink
-upcall.
+    cgx->pdev = pdev;
+    pci_set_drvdata(pdev, cgx);
 
-The only front end today is two undocumented integer mount options:
+The debugfs callbacks here need the RVU AF private data (struct rvu) for
+rvu_cgx_nix_cuml_stats(), cgxlmac_to_pf(), and rvu->fwdat. Therefore
+calling pci_get_drvdata(cgx->pdev) would return struct cgx rather than
+struct rvu.
 
-    mount -o xprtsec=mtls,cert_serial=723847,privkey_serial=723848 \
-          server:/export /mnt
+Unless I'm missing another path to reach the AF device from struct cgx,
+it seems we still need to obtain the RVU AF pdev before calling
+pci_get_drvdata().
 
-The administrator must load the cert and key into the keyring out of
-band, discover the integer serials, and paste them onto the command
-line. Serials are opaque, non-reproducible across boots, and easy to
-transpose. There is also no isolation: nfs_tls_key_verify() does a
-global key_lookup() on the serial, and the .nfs keyring created in
-fs/nfs/inode.c is module-global and never referenced again -- any tlshd
-that learns a serial can read the key.
+> When you repost please add net-next to the subject:
+>
+> [PATCH net-next v2] octeontx2-af: Fix ...
+>
+> and make sure you base the change on the net-next tree
+> For some reason our CI wasn't able to ingest this change.
 
-This RFC proposes a named, per-mount client-identity interface backed
-by a provisioning CLI, and fixes the keyring to isolate credentials per
-network namespace. The kernel handshake ABI (integer serials over
-genetlink) does not change.
-
-
-The cross-subsystem ask: a per-netns .nfs keyring
-=================================================
-
-Network namespace is the correct isolation domain. tlshd is bound to a
-network namespace, not a user namespace: it services sockets passed up
-from the kernel over the per-netns handshake genetlink socket, and one
-tlshd runs per network namespace that needs TLS-protected mounts.
-
-  - Replace the dead module-global .nfs keyring with one keyring per
-    network namespace, held in struct nfs_net (fs/nfs/netns.h) and
-    allocated at nfs_net_init(). The keys subsystem otherwise
-    namespaces on user_namespace, so this is a kernel-held object
-    referenced from nfs_net (like today's global keyring, but one per
-    netns). The DNS resolver's per-netns key scoping (net->key_domain,
-    request_key_net()) is precedent that netns-scoped key handling is
-    acceptable.
-
-  - tlshd attaches at handshake time, not at launch. This matters: the
-    keyring may be empty or freshly created when tlshd starts, so
-    linking it by name at startup is the wrong model. Instead NFS sets
-    ta_keyring to the netns .nfs keyring serial in
-    xs_tls_handshake_sync(), the kernel sends it as
-    HANDSHAKE_A_ACCEPT_KEYRING, and tlshd links that serial into its
-    session keyring per handshake -- the path tlshd already implements.
-    Linking grants tlshd possession of the keyring and, through it, of
-    the possessor-scoped cert and privkey keys.
-
-  - Credential keys are created possessor-readable only (no
-    KEY_USR_READ). That is what makes isolation enforceable rather
-    than advisory: a key provisioned in namespace A is absent from B's
-    keyring and unreadable by B's tlshd even if its serial leaks.
-
-Open question, and where I most want input: userspace -- the
-provisioning CLI and mount.nfs -- needs to name the kernel-held netns
-keyring in order to add and search keys. Candidates, modeled on
-KEYCTL_GET_PERSISTENT (security/keys/persistent.c):
-
-  (a) a new keyctl command that links the caller's netns .nfs keyring
-      into a destination keyring and returns its serial;
-  (b) an NFS-specific request_key key type the module instantiates to
-      point at the netns keyring;
-  (c) a per-netns serial exported via procfs or netlink.
-
-The per-netns keyring decision itself I consider settled; the retrieval
-primitive is the open one. There is also a user_namespace accounting
-nuance: keys added by userspace are quota-charged against a key_user
-keyed by user_namespace even though the keyring lives in nfs_net. I
-would like the keyrings folks to confirm the quota and ownership
-interaction is sane when the user_ns and net_ns boundaries do not
-coincide.
-
-
-Userspace front end
-===================
-
-With the keyring in place the front end is straightforward and follows
-the nvme-cli / cifscreds pattern.
-
-A new nfs-utils tool -- working name nfstlskey, fitting the nfsidmap /
-nfsconf family -- manages x.509 client identities:
-
-    nfstlskey add  <identity> --cert cert.pem --key key.pem
-    nfstlskey list
-    nfstlskey remove <identity>
-
-The add subcommand reads the PEM cert and key, converts each to DER,
-and creates two "user" keys on the netns .nfs keyring ("user" because
-tlshd consumes raw DER via keyctl_read_alloc()), with possessor-only
-read. Description convention:
-
-    nfs:x509:<identity>:cert
-    nfs:x509:<identity>:privkey
-
-The mount command names the identity:
-
-    mount -o xprtsec=mtls,tls_identity=<identity> server:/export /mnt
-
-mount.nfs runs in the caller's namespace, searches the .nfs keyring for
-the two descriptions, and passes the existing cert_serial= and
-privkey_serial= options to the kernel. tls_identity= is purely a
-userspace convenience that resolves a name to the serials the kernel
-already accepts; the raw serial options remain as a documented escape
-hatch. Both get documented in nfs(5), with a new nfstlskey(8) page.
-
-tlshd changes are minimal: confirm the per-handshake link of the passed
-keyring happens before the cert and privkey serials are read, and
-retire the now-unnecessary .nfs entry in the keyrings= startup path.
-
-
-Future work: mTLS-protected NFSROOT
-===================================
-
-NFSROOT mounts run in the kernel at boot, in the initial network
-namespace, before any userspace mount.nfs, nfstlskey, or possibly tlshd
-exists. mTLS for NFSROOT therefore cannot rely on userspace
-provisioning: the kernel must obtain the client cert and key itself --
-the leading candidate is extracting key material from a TPM -- and
-place it on the initial-netns .nfs keyring before the handshake, with a
-tlshd available early (initramfs). The kernel-owned per-netns keyring
-chosen here is a prerequisite: a userspace-created keyring could not be
-populated at NFSROOT time. Out of scope for the initial work, but the
-design must not foreclose it, and the same TPM-resident-key path would
-inform an eventual PKCS#11/TPM identity-naming scheme.
-
-
-Alternatives considered
-=======================
-
-  - request-key upcall keyed by server name (the nfsidmap model): most
-    NFS-native and needs no mount option, but makes selection automatic
-    rather than per-mount explicit. Worth revisiting if per-server
-    auto-selection is ever wanted.
-
-  - File paths in the mount options (strongSwan / wpa_supplicant model):
-    forces mount.nfs to read key files and load the keyring on every
-    mount and offers no reusable provisioned identity.
-
-  - Document the raw serials only: does nothing for namespacing.
-
-
-Comments welcome, particularly on the keyring retrieval primitive and
-whether network namespace is the binding you would expect.
-
---
-Chuck Lever
+Understood. I'll apply this for v2.
