@@ -1,81 +1,47 @@
-Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FFD23E5ED7
-	for <netdev@vger.kernel.org>; Wed,  3 Jun 2026 16:27:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53EEE2EF653;
+	Wed,  3 Jun 2026 16:29:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780504075; cv=none; b=GQmP1hETDSzj2nEQobxf7Jv4ovPD2uWIy8sHREHQzE48oMW9j1Pez+IfnCX6MTLyWYU6Ca0W0Y0ysUrdn6tTLgkI34JgVtTsEi+9ahLq45Yo3mHNFDvf9M98S+B6GFAmmWHOqO/Eij2psH8qhN1+PDp5b5SNY7mbu4VVVrLpQoc=
+	t=1780504195; cv=none; b=of0Tz6oSvTEkVAyYebV//RyJi0W4dTmbLh2pwfxXuTTg5bZc8yaqoSW4lf1xxyArIpFV56wNWRZxeL2oiQjXJewKt/THkqmHv4Y2j5sBjYUkP7HLH+DD4D/RBUB7iNOX6PmHiHOaa5VmOoQMT/gO3HBNYVhxJwKkN31UJ3qIbPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780504075; c=relaxed/simple;
-	bh=bZWAhI/SNWesR7lukDoX5NGLCgeYv7Rk10k9NwhATLA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=THxuDI/c6Xu5bD9wQxuKzFVoCufLjqn1RuychAi030e7EpAyvFsog7Y9d4iW5n4KXYljspRMQ5Zxqxop0JzTMzXnUfrzDj1iCX+YGpPd8ZnIo0bC9UAFEnC0GtvzPcdkH1f0wXQUVZfOjdErV+abyJTdcdqf8MUaUgHCljESB+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lAoOHqiH; arc=none smtp.client-ip=209.85.215.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1780504195; c=relaxed/simple;
+	bh=6uKG0pM6J8L5AeSbQ1InCVY0q5DwTjDEIszIKL4VgQ0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=J0VGbaBKQXq4rvhHePngcqJTr2T6I0061Ku/MGxBIrNfrXEz1B/VxmVDjXUOQZsm0aovjAlPLbMoi6pP1zXlVcYBX81sPZT+Nc6y/hEbNnw+iSxIi/BMFQjIrjeRMqCDbNVJFOdRh4DVAIcYg56hHX6R8KVx8FoVv5F6ukNeuIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cex9yb8L; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lAoOHqiH"
-Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-c85b2139015so1409394a12.2
-        for <netdev@vger.kernel.org>; Wed, 03 Jun 2026 09:27:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780504074; x=1781108874; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Pd5YhtxLNp2KnXGrb45Y+o+N5pgMe2J5d5AaYwVVkHo=;
-        b=lAoOHqiHkGUQKO158ZG8BXYY7dp+xUKGtR0Uqd7YQ3hzvXx8cbmitf8nBbmDHGUO3X
-         WyCHEdkkzlYQ9bm4hhSJ2jgxQyMFzh4egE6wSU4BeeTtf0++tTZHjpjceEYm5nVXzEPq
-         8s5mh9hCc5fC/aqtto6ILqCCRK5A0Hw06w6cT9A5GZvdxVMDtRr3onb1WslsiwKGrLWS
-         SFH58u91/hd5ZmBxXAkOfeSZb9kT2qSxrG3u2f7zL/IueAtb12AJCucNLp5LoaT+0Yr3
-         AcvSJQPYP0upHmUbLwGjP6loiveY6Emstqzo9CEgm+aHFTxckrMN2xzHZBSO+NaalPBl
-         pChA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780504074; x=1781108874;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Pd5YhtxLNp2KnXGrb45Y+o+N5pgMe2J5d5AaYwVVkHo=;
-        b=Ut+unEfr7sMA19CWtAeTW7gHvA4g8QX1MOkwgYT92T5vkr86pXVEHd4Kv6+5Eov7xN
-         JWcHKH11OtJsQX4sFnjR9zZgGNkpB0xhvi9M8z9/8IhJjPeVtaolJK9/cHWP9MSNFAfm
-         6rj0r74RZqnXhA9Xg3fdaJj24iNTQjIdca+fy18OxBiSz6sjxl2RkuaJGSdgMidYv74Z
-         m+JdOthPezEkLTCtKK6yMCuUgoKTdtW+QnfUZW+RRHoGWl3xf9co/FsQyLj4b2vSI+LW
-         znoeLEvlq9DRQ4oIVMYkP6ED9oqDTphIvT1E2ZyDcoGClKWgcI6sPpRBscgHxS6TiOgs
-         5i4g==
-X-Forwarded-Encrypted: i=1; AFNElJ8IPIpa3/n5bpvY2/kT+UhFKGr1DSWzOU3OG8fRtkVaQV5EsVQnXOF6ojTF+7u68Jh3SRNO77M=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyOdmqcJM7VcvWVhKtNGqjhBU9Qj9r0aHpBQ5rtiu95vU5S9Sh1
-	+XLy52gErwUd5+hVZHy6kiVTUiib0bHHeD/NWG0u9+f6yz2w2R/MxcRp
-X-Gm-Gg: Acq92OHDFMdHzkIymivXPPYuedTKaeP891fSsBYVlb2s4sDc42/L7DlVfpEf5z2BrqC
-	08vAtnZd8aWKi/QGFzC4bVO/KBhCG8NTQCCTJ7ih9Q0w0vNyzw0pcak22FxoVKEsHevw9L6bFjt
-	BUAguT25Loj/G8gZWDo9MEROeogVtuwaATZsiRJ9BzFgQ/JX6AlyN5iBDGEv8NtDUUY4r8Dkt83
-	Kc1iLMec/pS7ud00muCe0fyedscwo5qVaR9y1GOg0iyuFYEzw92PiGUlnoY4o+Om7KKsAmXdM2i
-	W8SvULYXrz11W/yS0+AGqaQ/SD4FMIjgaKCb5HeYnRjhZHB6Et6g29GdywQ4kxmr2JfZjOzTkbI
-	o2aPmVWZ1CbN9h+ga1ZDA5mSavLapT8qDj/s6NA5vipOODc6abFz72EFRG+/zogBNxYtlyB4cgy
-	eNQjO9Qu/Q3yH4zzCviWSa/+7N+RIeY3RLOT1fIWb2CSl6uE/K+NSfXScqYmnm4K2pccDsw0a5U
-	InbGYmbYRQ=
-X-Received: by 2002:a05:6300:67ca:b0:3b4:813d:dae with SMTP id adf61e73a8af0-3b4978049femr4892709637.16.1780504073819;
-        Wed, 03 Jun 2026 09:27:53 -0700 (PDT)
-Received: from cps-manycore-1.. ([147.46.174.222])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c85df0a4e59sm2930976a12.16.2026.06.03.09.27.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Jun 2026 09:27:53 -0700 (PDT)
-From: Sechang Lim <rhkrqnwk98@gmail.com>
-To: willemdebruijn.kernel@gmail.com,
-	davem@davemloft.net,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cex9yb8L"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ADE11F00893;
+	Wed,  3 Jun 2026 16:29:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780504194;
+	bh=qWc4Pg9S5Yrbzz6mVTDrVjWosTqWIsAjK4BlyMO77W0=;
+	h=From:To:Cc:Subject:Date;
+	b=cex9yb8LHXPviBXRPHWsU96LYwqt0JeCU3Mh4GxR0LogNLs7p7ViLv6ngz1E5fiMF
+	 HbXo5CBlJy+gEvtNcespaUEYW77W3dcF3xVwWG3r5kbFgsl/p6NDfMhtrmg1PKZ3mO
+	 cQHcmcdgjqsJUJnJ7h1beM/ea21D3DW7/bd9zffU2W9+gxB6qYqXK57/IScyDUDH2S
+	 AKGU61pgESQe4xA2y9D0AhXECsxR8GXfaO02J6KdfOmlfDbwPr/SjIx53+0yEVb3lF
+	 y1lUEw8c9FdJ54mvO6hN0IOfYEkRDTf+Db/lNN7hD9ZEJaZAYFj09KgF3RAL2FaTYK
+	 s61XvwVIrDw4Q==
+From: Jakub Kicinski <kuba@kernel.org>
+To: davem@davemloft.net
+Cc: netdev@vger.kernel.org,
 	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: horms@kernel.org,
-	daniel@iogearbox.net,
-	john.fastabend@gmail.com,
-	jakub@cloudflare.com,
-	aleksander.lobakin@intel.com,
-	netdev@vger.kernel.org,
-	bpf@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH net v2] udp: clear skb->dev before running a sockmap verdict
-Date: Wed,  3 Jun 2026 16:27:33 +0000
-Message-ID: <20260603162737.697215-1-rhkrqnwk98@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	pabeni@redhat.com,
+	andrew+netdev@lunn.ch,
+	horms@kernel.org,
+	johannes@sipsolutions.net,
+	Jakub Kicinski <kuba@kernel.org>,
+	corbet@lwn.net,
+	skhan@linuxfoundation.org,
+	workflows@vger.kernel.org,
+	linux-doc@vger.kernel.org
+Subject: [PATCH net-next] docs: exclude driver and netdevsim bugs
+Date: Wed,  3 Jun 2026 09:29:43 -0700
+Message-ID: <20260603162943.2406080-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -84,86 +50,60 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-On the UDP receive path skb->dev is repurposed as dev_scratch (the
-truesize/state cache set by udp_set_dev_scratch()), through the
-union { struct net_device *dev; unsigned long dev_scratch; } in sk_buff.
+Initial wave of AI-generated fixes was mostly for core and protocols
+we care about. But the number of irrelevant driver fixes is slowly
+increasing. Add a section of explicit exclusions to our maintainer
+profile.
 
-When a UDP socket is in a sockmap, sk_data_ready is
-sk_psock_verdict_data_ready(), which calls udp_read_skb() -> recv_actor()
-(sk_psock_verdict_recv) to run the attached SK_SKB verdict program in softirq.
-If that program calls a socket-lookup helper (bpf_sk_lookup_tcp/udp,
-bpf_skc_lookup_tcp), bpf_skc_lookup() does:
-
-	if (skb->dev)
-		caller_net = dev_net(skb->dev);
-
-skb->dev still holds the dev_scratch value (a non-NULL integer), so dev_net()
-dereferences it as a struct net_device * and the kernel takes a general
-protection fault on a non-canonical address in softirq:
-
-  Oops: general protection fault, probably for non-canonical address 0x1010000800004a0
-  CPU: 1 UID: 0 PID: 1406 Comm: syz.2.19 Not tainted 7.1.0-rc6 #1 PREEMPT(full)
-  RIP: 0010:bpf_skc_lookup net/core/filter.c:7033 [inline]
-  RIP: 0010:bpf_sk_lookup+0x45/0x160 net/core/filter.c:7047
-  Call Trace:
-   <IRQ>
-   bpf_prog_4675cb904b7071f8+0x12e/0x14e
-   bpf_prog_run_pin_on_cpu+0xc6/0x1f0
-   sk_psock_verdict_recv+0x1ba/0x350
-   udp_read_skb+0x31a/0x370
-   sk_psock_verdict_data_ready+0x2e3/0x600
-   __udp_enqueue_schedule_skb+0x4c8/0x650
-   udpv6_queue_rcv_one_skb+0x3ec/0x740
-   udp6_unicast_rcv_skb+0x11d/0x140
-   ip6_protocol_deliver_rcu+0x61e/0x950
-   ip6_input_finish+0xa9/0x150
-   NF_HOOK+0x286/0x2f0
-   ip6_input+0x117/0x220
-   NF_HOOK+0x286/0x2f0
-   __netif_receive_skb+0x85/0x200
-   process_backlog+0x374/0x9a0
-   __napi_poll+0x4f/0x1c0
-   net_rx_action+0x3b0/0x770
-   handle_softirqs+0x15a/0x460
-   do_softirq+0x57/0x80
-   </IRQ>
-
-The rmem charge that dev_scratch accounted for is released by skb_recv_udp() on
-dequeue, just above, so the scratch is dead by the time recv_actor() runs. Clear
-skb->dev so bpf_skc_lookup() falls back to sock_net(skb->sk), which
-skb_set_owner_sk_safe() set just above.
-
-Fixes: 965b57b469a5 ("net: Introduce a new proto_ops ->read_skb()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sechang Lim <rhkrqnwk98@gmail.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 ---
-v2:
- - add blank lines around the added codes (Olek)
- - use generic block comment style (Olek)
- - Cc: stable
+CC: corbet@lwn.net
+CC: skhan@linuxfoundation.org
+CC: workflows@vger.kernel.org
+CC: linux-doc@vger.kernel.org
+---
+ Documentation/process/maintainer-netdev.rst | 28 +++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
- net/ipv4/udp.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
-
-diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
-index 0ac2bf4f8759..70f6cbd4ef73 100644
---- a/net/ipv4/udp.c
-+++ b/net/ipv4/udp.c
-@@ -2011,6 +2011,14 @@ int udp_read_skb(struct sock *sk, skb_read_actor_t recv_actor)
- 	}
+diff --git a/Documentation/process/maintainer-netdev.rst b/Documentation/process/maintainer-netdev.rst
+index ec7b9aa2877f..cc4b5fa3b5c1 100644
+--- a/Documentation/process/maintainer-netdev.rst
++++ b/Documentation/process/maintainer-netdev.rst
+@@ -272,6 +272,34 @@ the case today. Please follow the standard stable rules in
+ :ref:`Documentation/process/stable-kernel-rules.rst <stable_kernel_rules>`,
+ and make sure you include appropriate Fixes tags!
  
- 	WARN_ON_ONCE(!skb_set_owner_sk_safe(skb, sk));
++Bug fixes
++~~~~~~~~~
 +
-+	/*
-+	 * skb->dev still aliases the UDP rx dev_scratch (its charge was freed
-+	 * on dequeue above); a sockmap verdict program may deref it via
-+	 * bpf_sk_lookup_*(), so clear it -> bpf_skc_lookup() uses skb->sk
-+	 */
-+	skb->dev = NULL;
++Unless explicitly excluded all bug fixes should be targeting the ``net``
++tree and contain an appropriate Fixes tag.
 +
- 	return recv_actor(sk, skb);
- }
++Obvious exclusions:
++
++ - fixes for bugs which only exist in ``net-next`` should target ``net-next``
++   (please still include the Fixes tag in the commit message)
++ - bugs which cannot be reached, e.g. in code paths not executed given
++   current in-tree callers
++ - fixes for compiler warnings and typos
++
++Fixes for selftests and selftest-related infrastructure (most notably
++including the ``netdevsim`` driver) are only considered ``net``-worthy
++if they substantially reduce the flakiness of the test.
++
++Additionally, netdev does not consider bugs to be ``net``-worthy
++if they fulfill **all** of the following criteria:
++ - bug is in a hardware device driver;
++ - bug is either a missing error handling or is part of the error handling flow;
++ - bug was discovered by a static analysis / AI tool;
++ - bug was triggered/observed only with kernel changes or fault injection.
++Fixes for such bugs should default to ``net-next`` and should **not** contain
++a Fixes tag. Networking or driver maintainers may redirect such fixes to ``net``
++at their discretion if they consider the condition to be relevant enough.
++
+ Security fixes
+ ~~~~~~~~~~~~~~
  
 -- 
-2.43.0
+2.54.0
 
