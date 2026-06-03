@@ -1,321 +1,94 @@
-Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010043.outbound.protection.outlook.com [52.101.85.43])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C7283D564A;
-	Wed,  3 Jun 2026 10:27:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.43
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780482469; cv=fail; b=nvS8wH0G02/+Sq2ksdS9kmrpogDbRZi7I5SZcJZWTXoTS+TmfSX4yo+v5QCV9+mHgvbZiLSjxAHC5uDgDO6g/5QJvY2HBs+aFkeKKwwRmyvjnyK2Sa3f4r5Ltoe1mymWtT1hbPdf9lEEcP1T3QFCZT2kuN0YmZyNnpjNLOWkVV4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780482469; c=relaxed/simple;
-	bh=W/9/xY+l4VAQcHa5GsTTLq0906D99vB5j70yy7o7DIw=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MymHyvqWSypZx82UpyxMBDZNJR2MkCbXb8o42EGYiu7eny89QxFsbJfLQD+VQcH1//Wk4MiVDzQtB8+b1donpEOA6Hiyc1IGQvA4FgOYAurhXsax3eS6fxuqUmb1MXBYUMBmHaYQuFQYV5WQ92ZYbYa+xUrBdSp4u5lzgbGN57s=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=MWob5gAQ; arc=fail smtp.client-ip=52.101.85.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04C9034D90C
+	for <netdev@vger.kernel.org>; Wed,  3 Jun 2026 10:30:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780482632; cv=none; b=tZG2pF8ozuHWd3/zxnnOykECmdXDQRA4jGFXw4fNY30P/qVXxiXA0VgMcNRmp9FwC9isKZj22d5j6Nq5ft+V5/zy+vPYGzL1qkttYUMOg5rc+CvFWW6Oca546aJW9dQDezfq+LdejgFXxvcN0uf7xJMZ+Bu3msqq1cEB79OvWuA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780482632; c=relaxed/simple;
+	bh=FyeWWxgkQgJd3Wuo71kmP/3P6NEL6bCLEpz6VhRKoz8=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=jr5ZKwDQ0RspNshnL74sGOHeSMrOC92yeG6LSVijPQDBS9zT//ba2Y69Lq07ex1cD3ii7ERfDoejdC13fveOzj+lnNqaqv/b4nu+sJ7ljyQPynAtO/zgsiiaLyOsVNwy1Ykqy6lUHfu97Il5LM8iJw6IKObZ1AAZ2DVp+NTsrLM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Mc92wN7T; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="MWob5gAQ"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Te7T5CtEId2loI2nuQi4WtyJCJsWSVc0/vmSUzLABvePAEN8zwyku8KmPw8islqqPZc+f8mgTuI/MsIbQo6Xvfw1/sf6B1lwENAYwK5Ahii2lGckwhfHGUD20O5nxEiOM/fe4GtAR2390EO2qvD7jxVh/20KNuZissOAOeucnn+NNIoCFNk35/NYXY6U4e8BUwTjpZdQ29MbUOJub1kxJdrPGxZIBFTbVupMj0fU8e4Gslk1vxw0HqKsVVdRSyAdagsC0sgqn9h5RtVfF7Hu8NitOCGb6lSa1XSA8Kg4j53CILb9UTS55LlJ8VpCAjb6yQtlpw0vK/gfwPN3uMBkIQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4xtnRC7N3IgjAiKuwuFW8jFzNniD0lhN2+ojm8D4XJI=;
- b=SAlHNxMQH2S/7lW8LhA9gLXEtpLoHBYrUaqkYTE2LVLQBq75JTpmgwE9P954R94Rx5CGRTTM+GmgsErWr4lWjkpvoM86MqygrW4WoWZ37/iBGnmnSDG90aY3DdO0hTlfzEIv9DThyjPPyihTULuSSrFlkdITAtpDoY69D6evQzU4/KhsInAp16EJdq0yMEiMdYHi/8e2U36TA1VSP1IH+LNyQ0Yqk7qF8KAyK/lEl6ARI9hJLYKd7U7cRw5jgIJFgCzTfIxV1znuRSQEOwRoRaYzhg7WDkbxwOVqfaMiHVUKAyVZajX+kPJH670sxQN+JZs0wEIXowxN9SdoinwjFg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=google.com smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4xtnRC7N3IgjAiKuwuFW8jFzNniD0lhN2+ojm8D4XJI=;
- b=MWob5gAQY5+15TP9TzOBtnyxJcq5F7pL3I7jGaDB3iLOq705pN+4iKhaClF49tYHG3T0LNNRKBfY4Z9fZ54kmS02CQI7CB/725jBjXQ9vFiFU6FwJIcozJ5svbRtBr5MCUtwTfTjIll7uWjgjO9zo06TsbPX/ofiSwOActuXwySp296iI6AhuGUzhBYkZdR6xJT9pdzmC3vHKSqtvv9O172Nwk4cf+XqhMPn6Ekyy/MEWqrntVUNai7YVqtdrO5cuhJGfhJIZXNQB7UETVX6a55cpFpR7oov55zrVdO26tnJ0D1i4Hd+5mhoJPRY/MTun3FJnF5nOd6NeW8uh2kmow==
-Received: from SJ0PR03CA0029.namprd03.prod.outlook.com (2603:10b6:a03:33a::34)
- by SJ2PR12MB7866.namprd12.prod.outlook.com (2603:10b6:a03:4cc::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.7; Wed, 3 Jun 2026
- 10:27:42 +0000
-Received: from MWH0EPF000A672F.namprd04.prod.outlook.com
- (2603:10b6:a03:33a:cafe::5) by SJ0PR03CA0029.outlook.office365.com
- (2603:10b6:a03:33a::34) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.92.7 via Frontend Transport; Wed, 3
- Jun 2026 10:27:41 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- MWH0EPF000A672F.mail.protection.outlook.com (10.167.249.21) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.92.5 via Frontend Transport; Wed, 3 Jun 2026 10:27:41 +0000
-Received: from rnnvmail205.nvidia.com (10.129.68.10) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Wed, 3 Jun
- 2026 03:27:26 -0700
-Received: from rnnvmail203.nvidia.com (10.129.68.9) by rnnvmail205.nvidia.com
- (10.129.68.10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Wed, 3 Jun
- 2026 03:27:25 -0700
-Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com (10.129.68.9)
- with Microsoft SMTP Server id 15.2.2562.20 via Frontend Transport; Wed, 3 Jun
- 2026 03:27:18 -0700
-From: Tariq Toukan <tariqt@nvidia.com>
-To: Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David
- S. Miller" <davem@davemloft.net>
-CC: Jiri Pirko <jiri@resnulli.us>, Simon Horman <horms@kernel.org>, "Jonathan
- Corbet" <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, "Saeed
- Mahameed" <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>, Tariq
- Toukan <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>, Vlad Dumitrescu
-	<vdumitrescu@nvidia.com>, Daniel Zahka <daniel.zahka@gmail.com>, "Aleksandr
- Loktionov" <aleksandr.loktionov@intel.com>, Przemek Kitszel
-	<przemyslaw.kitszel@intel.com>, Arthur Kiyanovski <akiyano@amazon.com>, "Petr
- Machata" <petrm@nvidia.com>, Ratheesh Kannoth <rkannoth@marvell.com>,
-	"Nikolay Aleksandrov" <razor@blackwall.org>, David Ahern
-	<dsahern@kernel.org>, <netdev@vger.kernel.org>, <linux-doc@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-rdma@vger.kernel.org>, Gal Pressman
-	<gal@nvidia.com>, Amery Hung <ameryhung@gmail.com>, Nikolay Aleksandrov
-	<nikolay@nvidia.com>
-Subject: [PATCH net-next V3 2/2] net/mlx5: implement max_sfs parameter
-Date: Wed, 3 Jun 2026 13:26:46 +0300
-Message-ID: <20260603102646.404797-3-tariqt@nvidia.com>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20260603102646.404797-1-tariqt@nvidia.com>
-References: <20260603102646.404797-1-tariqt@nvidia.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Mc92wN7T"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28B2F1F00893;
+	Wed,  3 Jun 2026 10:30:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780482631;
+	bh=mWj9HVq5gBiKHnyrvip7gxwpROvspRY6Q5wfNRCKOgc=;
+	h=From:Date:Subject:To:Cc;
+	b=Mc92wN7TYo0So44/VHoRjYGK/hlL+9mfKrxNyw6jQj0ppRxP9rwN7kagfRE4QcDOj
+	 IaBnZBBjLowUFa66pVaT9Wsbanw5BBUK6FoN0uhQ4U+HTnGSQs09YZPUl0jXvYwM3f
+	 4MRsarKQnSyoFwsd16LD8/JUi5iwYZhKiqJH8iE5c3Nx060wpix+IQjMSL1m6l8s0Z
+	 kxS8JH3vHlIemn5HcSWIpwf9x/rAlaWKjCxTe2T0qjZScQk5nKghlZViTeKR4iAKEE
+	 5yW9GbF4y/sc83zsTiLOfgBN5Qo7GzP/cIcMoX9DR7zVdFRdgK732Uf5UxjmCNMXjX
+	 YbX//Ok4mt42Q==
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+Date: Wed, 03 Jun 2026 12:30:01 +0200
+Subject: [PATCH net-next] net: airoha: Report extack error to the user if
+ airoha_tc_htb_modify_queue() fails
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MWH0EPF000A672F:EE_|SJ2PR12MB7866:EE_
-X-MS-Office365-Filtering-Correlation-Id: fc1e5e8b-bdd2-4206-5067-08dec15abe6e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|36860700016|82310400026|376014|6133799003|18002099003|3023799007|11063799006|22082099003|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	9uiDewN8CyoB4FaxGQu7yHkRzuUW1aIznvp9JJf8vHYPENQKlQHkWJRVqNlPjDdj8KTOq1OeqP4V2CTz3KuNilJIanu0DPverTP1F6hfgkGjU/o9brnz1bBxl1z8/sMHg7LjvkTi0IEdKKP1S9gpN27+EYSOaphaMqM4agKA9TVSrG9w5Ms6j167aR0nDYsX2EmfePY9kjoxHcZrfGHPOH7IJSh3AdUKbSw4nmfOHwyL6KU6J9SVdDUGoqSYXJ8MjQpZ6A2Mr8Mi+Gyf4Iasm1AESrSO1PIMH6eREC8UwNvl5JyUmpdhebG1OOg1P7nJg1jV272yOaaJYuInBgQjIIUZs7WmQ8oODKFJPBipM6As6n+Cp35p/mQdNWlVMGhXe1y9YHrNOCYXp1YkyASDxCHXAKDXqbcYmCoCPw6Ivws6Q8tIDCdNQJZZGbWG3mNI4IfY9Zo5doSZRBbHwM9sWrkApU5Fz6kVhvogsJFHw3nlllx/5rRFFjKhOdHnsCiQ0NQakFpMJqS3E/AubiZKzqE1wVMIPW7OCafj+fTYI26EIAPJYswApNYUinO2et8I8B/IWtCLH1IofbtmlnGWlVd7iTJWKzD+Fes+BJn9m7K4FGAJ50B0dILpxzhIIgzpkC4RQ0pevBt9IIu2A/ognc3tcS0hvrEBU8bzV7KEwWX9S0WXQ6Z0xNx3uiByEkT+wt5X8xt0zGhEZJ7FUYOwmRks9wgsWYBSe04w8LCL9tI=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(36860700016)(82310400026)(376014)(6133799003)(18002099003)(3023799007)(11063799006)(22082099003)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	VD1DdI1S2iCQDEmTJjcC/ghJLAWjclBvYrbvkpetW+JKPMoHC/dv+KaRgfZqmblAyKlmF1PBf4PVZFZEyJONle84ekSXybSXmfloZvO9/UsBvIYGvLnAAEQT0Yfn3T3+y0uI+xwCUR7OONe4N+BSCUlAmwU7v58k6xOiTttDT/HFtGn8r62EvI/moj6DpMlKfIaBpggUwvKTkbrTzwDYvLXISyoTzJHEUfIhTadyks26LTrr+pN+HO7IbPO2Xqi37T4GUFezyd6n04IhAvMBCv0QuVhuX3Kg0QHi1MXYUYUsoeqz+yG20LhXS0ZtXE46N01zDD906ay9HA1ZlAy63Pob2q7gzkZiaLr+8cJdvcKLqeynCPl7xLZNfj6YZ5Yf5ZJcp6rL1NzuX8qmDRVioOT7q+kpBTd1ry/nK3jjX91J8Q8PU4xxO7YRnrAjg9fi
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jun 2026 10:27:41.7855
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: fc1e5e8b-bdd2-4206-5067-08dec15abe6e
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	MWH0EPF000A672F.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB7866
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260603-airoha_tc_htb_modify_queue-err-message-v1-1-33ec3ab997d9@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x2NQQ7CIBQFr9L8tSSIBhOvYgyh9CF/UdAPbWqa3
+ l3ichYzs1OFMCrdh50EK1cuucP5NFBIPr+geOpMRhurrb4oz1KSdy241EY3l4nj130WLFAQUTN
+ q9d2K8DfjownX0VKPvQWRt//oQRlNZWyNnsfxAxKvlPaCAAAA
+X-Change-ID: 20260603-airoha_tc_htb_modify_queue-err-message-fea72af2c4b6
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: linux-arm-kernel@lists.infradead.org, 
+ linux-mediatek@lists.infradead.org, netdev@vger.kernel.org, 
+ Lorenzo Bianconi <lorenzo@kernel.org>
+X-Mailer: b4 0.14.3
 
-From: Nikolay Aleksandrov <nikolay@nvidia.com>
+Report an extack error message in airoha_tc_htb_modify_queue routine if
+airoha_qdma_set_tx_rate_limit() fails.
 
-Implement max_sfs generic parameter to allow users to control the total
-light-weight NIC subfunctions that can be created using devlink instead
-of external vendor tools. A value of 0 will effectively disable creation
-of new subfunction devices. A warning is sent to user-space via extack
-(returning extack without error code is interpreted as a warning by
-user-space tools). The maximum value is capped at U16_MAX.
-
-Signed-off-by: Nikolay Aleksandrov <nikolay@nvidia.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- Documentation/networking/devlink/mlx5.rst     |   7 +-
- .../mellanox/mlx5/core/lib/nv_param.c         | 118 +++++++++++++++++-
- 2 files changed, 121 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/airoha/airoha_eth.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/networking/devlink/mlx5.rst b/Documentation/networking/devlink/mlx5.rst
-index 4bba4d780a4a..f5e2dccafa5a 100644
---- a/Documentation/networking/devlink/mlx5.rst
-+++ b/Documentation/networking/devlink/mlx5.rst
-@@ -45,8 +45,13 @@ Parameters
-      - The range is between 1 and a device-specific max.
-      - Applies to each physical function (PF) independently, if the device
-        supports it. Otherwise, it applies symmetrically to all PFs.
-+   * - ``max_sfs``
-+     - permanent
-+     - The range is between 0 and a device-specific max.
-+     - Applies to each physical function (PF) independently.
- 
--Note: permanent parameters such as ``enable_sriov`` and ``total_vfs`` require FW reset to take effect
-+Note: permanent parameters such as ``enable_sriov``, ``total_vfs`` and ``max_sfs``
-+      require FW reset to take effect
- 
- .. code-block:: bash
- 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/nv_param.c b/drivers/net/ethernet/mellanox/mlx5/core/lib/nv_param.c
-index 4a7275e8b62e..899167a5cd92 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/lib/nv_param.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/nv_param.c
-@@ -68,7 +68,9 @@ struct mlx5_ifc_mnvda_reg_bits {
- 
- struct mlx5_ifc_nv_global_pci_conf_bits {
- 	u8         sriov_valid[0x1];
--	u8         reserved_at_1[0x10];
-+	u8         reserved_at_1[0xa];
-+	u8         per_pf_num_sf[0x1];
-+	u8         reserved_at_c[0x5];
- 	u8         per_pf_total_vf[0x1];
- 	u8         reserved_at_12[0xe];
- 
-@@ -93,9 +95,11 @@ struct mlx5_ifc_nv_global_pci_cap_bits {
- };
- 
- struct mlx5_ifc_nv_pf_pci_conf_bits {
--	u8         reserved_at_0[0x9];
-+	u8         log_sf_bar_size[0x8];
-+	u8         pf_total_sf_en[0x1];
- 	u8         pf_total_vf_en[0x1];
--	u8         reserved_at_a[0x16];
-+	u8         reserved_at_a[0x6];
-+	u8         total_sf[0x10];
- 
- 	u8         reserved_at_20[0x20];
- 
-@@ -158,6 +162,8 @@ struct mlx5_ifc_nv_sw_accelerate_conf_bits {
- #define MLX5_GET_CFG_HDR_LEN(_mnvda_ptr) \
- 	MLX5_GET(mnvda_reg, _mnvda_ptr, configuration_item_header.length)
- 
-+#define MLX5_DEFAULT_LOG_SF_BAR_SIZE 12
-+
- static int mlx5_nv_param_read(struct mlx5_core_dev *dev, void *mnvda,
- 			      size_t len)
+diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
+index 6574901ebd19..d0d13f01e50f 100644
+--- a/drivers/net/ethernet/airoha/airoha_eth.c
++++ b/drivers/net/ethernet/airoha/airoha_eth.c
+@@ -2605,13 +2605,19 @@ static int airoha_tc_htb_modify_queue(struct net_device *dev,
  {
-@@ -755,6 +761,108 @@ static int mlx5_devlink_total_vfs_validate(struct devlink *devlink, u32 id,
- 	return 0;
+ 	u32 channel = TC_H_MIN(opt->classid) % AIROHA_NUM_QOS_CHANNELS;
+ 	u32 rate = div_u64(opt->rate, 1000) << 3; /* kbps */
++	int err;
+ 
+ 	if (opt->parent_classid != TC_HTB_CLASSID_ROOT) {
+ 		NL_SET_ERR_MSG_MOD(opt->extack, "invalid parent classid");
+ 		return -EINVAL;
+ 	}
+ 
+-	return airoha_qdma_set_tx_rate_limit(dev, channel, rate, opt->quantum);
++	err = airoha_qdma_set_tx_rate_limit(dev, channel, rate, opt->quantum);
++	if (err)
++		NL_SET_ERR_MSG_MOD(opt->extack,
++				   "failed configuring htb offload");
++
++	return err;
  }
  
-+static int mlx5_devlink_max_sfs_get(struct devlink *devlink, u32 id,
-+				    struct devlink_param_gset_ctx *ctx,
-+				    struct netlink_ext_ack *extack)
-+{
-+	struct mlx5_core_dev *dev = devlink_priv(devlink);
-+	u32 mnvda[MLX5_ST_SZ_DW(mnvda_reg)] = {};
-+	void *data;
-+	int err;
-+
-+	err = mlx5_nv_param_read_global_pci_conf(dev, mnvda, sizeof(mnvda));
-+	if (err) {
-+		NL_SET_ERR_MSG_MOD(extack,
-+				   "Failed to read global PCI configuration");
-+		return err;
-+	}
-+
-+	data = MLX5_ADDR_OF(mnvda_reg, mnvda, configuration_item_data);
-+	if (!MLX5_GET(nv_global_pci_conf, data, per_pf_num_sf)) {
-+		ctx->val.vu32 = 0;
-+		return 0;
-+	}
-+
-+	memset(mnvda, 0, sizeof(mnvda));
-+	err = mlx5_nv_param_read_per_host_pf_conf(dev, mnvda, sizeof(mnvda));
-+	if (err) {
-+		NL_SET_ERR_MSG_MOD(extack, "Failed to read PF configuration");
-+		return err;
-+	}
-+
-+	data = MLX5_ADDR_OF(mnvda_reg, mnvda, configuration_item_data);
-+	if (MLX5_GET(nv_pf_pci_conf, data, pf_total_sf_en))
-+		ctx->val.vu32 = MLX5_GET(nv_pf_pci_conf, data, total_sf);
-+	else
-+		ctx->val.vu32 = 0;
-+
-+	return 0;
-+}
-+
-+static int mlx5_devlink_max_sfs_validate(struct devlink *devlink, u32 id,
-+					 union devlink_param_value val,
-+					 struct netlink_ext_ack *extack)
-+{
-+	if (val.vu32 > U16_MAX) {
-+		NL_SET_ERR_MSG_FMT_MOD(extack,
-+				       "Max SFs allowed value is %u", U16_MAX);
-+		return -EINVAL;
-+	}
-+
-+	return 0;
-+}
-+
-+static int mlx5_devlink_max_sfs_set(struct devlink *devlink, u32 id,
-+				    struct devlink_param_gset_ctx *ctx,
-+				    struct netlink_ext_ack *extack)
-+{
-+	struct mlx5_core_dev *dev = devlink_priv(devlink);
-+	u32 mnvda[MLX5_ST_SZ_DW(mnvda_reg)] = {};
-+	void *data;
-+	int err;
-+
-+	err = mlx5_nv_param_read_global_pci_conf(dev, mnvda, sizeof(mnvda));
-+	if (err) {
-+		NL_SET_ERR_MSG_MOD(extack,
-+				   "Failed to read global PCI configuration");
-+		return err;
-+	}
-+
-+	data = MLX5_ADDR_OF(mnvda_reg, mnvda, configuration_item_data);
-+	MLX5_SET(nv_global_pci_conf, data, per_pf_num_sf, !!ctx->val.vu32);
-+
-+	err = mlx5_nv_param_write(dev, mnvda, sizeof(mnvda));
-+	if (err) {
-+		NL_SET_ERR_MSG_MOD(extack,
-+				   "Failed to change per_pf_num_sf global PCI configuration");
-+		return err;
-+	}
-+
-+	memset(mnvda, 0, sizeof(mnvda));
-+	err = mlx5_nv_param_read_per_host_pf_conf(dev, mnvda, sizeof(mnvda));
-+	if (err) {
-+		NL_SET_ERR_MSG_MOD(extack, "Failed to read PF configuration");
-+		return err;
-+	}
-+
-+	data = MLX5_ADDR_OF(mnvda_reg, mnvda, configuration_item_data);
-+	MLX5_SET(nv_pf_pci_conf, data, log_sf_bar_size,
-+		 ctx->val.vu32 ? MLX5_DEFAULT_LOG_SF_BAR_SIZE : 0);
-+	MLX5_SET(nv_pf_pci_conf, data, pf_total_sf_en, !!ctx->val.vu32);
-+	MLX5_SET(nv_pf_pci_conf, data, total_sf, ctx->val.vu32);
-+
-+	err = mlx5_nv_param_write(dev, mnvda, sizeof(mnvda));
-+	if (err) {
-+		NL_SET_ERR_MSG_MOD(extack,
-+				   "Failed to change PF PCI configuration");
-+		return err;
-+	}
-+	NL_SET_ERR_MSG(extack,
-+		       "Modifying max_sfs requires a FW reset and PCI bus rescan");
-+
-+	return 0;
-+}
-+
- static const struct devlink_param mlx5_nv_param_devlink_params[] = {
- 	DEVLINK_PARAM_GENERIC(ENABLE_SRIOV, BIT(DEVLINK_PARAM_CMODE_PERMANENT),
- 			      mlx5_devlink_enable_sriov_get,
-@@ -763,6 +871,10 @@ static const struct devlink_param mlx5_nv_param_devlink_params[] = {
- 			      mlx5_devlink_total_vfs_get,
- 			      mlx5_devlink_total_vfs_set,
- 			      mlx5_devlink_total_vfs_validate),
-+	DEVLINK_PARAM_GENERIC(MAX_SFS, BIT(DEVLINK_PARAM_CMODE_PERMANENT),
-+			      mlx5_devlink_max_sfs_get,
-+			      mlx5_devlink_max_sfs_set,
-+			      mlx5_devlink_max_sfs_validate),
- 	DEVLINK_PARAM_DRIVER(MLX5_DEVLINK_PARAM_ID_CQE_COMPRESSION_TYPE,
- 			     "cqe_compress_type", DEVLINK_PARAM_TYPE_STRING,
- 			     BIT(DEVLINK_PARAM_CMODE_PERMANENT),
+ static int airoha_tc_htb_alloc_leaf_queue(struct net_device *netdev,
+
+---
+base-commit: dfcc2ff12925d99e858eaf539eaa4aaaf81fe2a6
+change-id: 20260603-airoha_tc_htb_modify_queue-err-message-fea72af2c4b6
+
+Best regards,
 -- 
-2.44.0
+Lorenzo Bianconi <lorenzo@kernel.org>
 
