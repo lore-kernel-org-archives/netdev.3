@@ -1,219 +1,109 @@
-Received: from mail-dy1-f169.google.com (mail-dy1-f169.google.com [74.125.82.169])
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6768339B486
-	for <netdev@vger.kernel.org>; Wed,  3 Jun 2026 07:39:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC07E3A0EB8
+	for <netdev@vger.kernel.org>; Wed,  3 Jun 2026 07:42:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780472349; cv=none; b=oa3K3+9IGU8/cmP0DDfVcAlFpMmn0WS5ckbDPNND5YKwpen0sF4WFqzsE7r6IppRKl5orygu72JfpdEul2l9QoYdfpdBza0/1SD0KiQ8QBkYkrJIfjMQHrmlMT3ttpPuOcwarnoe3UqQF9+pRmC9XJYfhLOhgcEnnrJomtFSKps=
+	t=1780472535; cv=none; b=gILwk73optgBLYKZhQuq1hh1GpmDoPD3ipuXEf83NtIH+CR9vu5hdoWPsTUUiVSV3hHejjZHx+3du8PFuSS2Rb9yotdlNajv8+ul9EFdZ+CaFeQ1MgojPW+5yCMjb6R7EGXtwukegjzhuuemx6lkaa+1fe7M4CKcVlWNnn9spOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780472349; c=relaxed/simple;
-	bh=XujChRV8mAQ3o04pNBJvnDGEeim/+01kf8fjL88Qhcc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tbi4MKHpKhcPyHftRfeRhBqmg1HMe/KS4oy3iSKtxqin1ioc2y4/a2Gqp8ZcwITTDgpF+9EgKwpo4utkNaQ1CAu3eawkRsbjw3Sf8bm7SGFyPZQ9lb1WHkAdKjMQF5qGaWnbfXRFmzednuiNz7x0RX7gO7duqJSiXtNvWWkT+YU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mMoHmWTw; arc=none smtp.client-ip=74.125.82.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1780472535; c=relaxed/simple;
+	bh=FhGRWE+AGbAUWKmyW1iB09fqat6FEr1KLUfol22Skbs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=IYxpCNX1jGEpRTMlZRhxs0NyTv0rDs/uCdgDtVcI0R+bzvjSiymYajY3BaxgFv0lLTVuRwGcE53GzfdTqHLtETafLGpD8gYnuPI1KWPEyphdDooXO5ZESuwqsitM0ifZD3XuvbVRAqNGInQzg7eHO/9n2hqwjHBZkrM5R1oBX4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=i2cs3JE1; arc=none smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mMoHmWTw"
-Received: by mail-dy1-f169.google.com with SMTP id 5a478bee46e88-304545f5206so16812493eec.0
-        for <netdev@vger.kernel.org>; Wed, 03 Jun 2026 00:39:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="i2cs3JE1"
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-490b64c8311so6488205e9.3
+        for <netdev@vger.kernel.org>; Wed, 03 Jun 2026 00:42:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780472345; x=1781077145; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=03qJ+adv11Q2sSTj1AKdKlt3vl/S6TLS74I5VOZF2oE=;
-        b=mMoHmWTwwTuaVhKPYqFNN0c322IFktkN6m1K5jBwUxl00Bm0BK8fZ9yRtMkmPknA7g
-         IthCD+gv7naEvsOEDShv31lGyDkLG4IvpZc/5JvA1IMS0uGebrw9JK9BEZ8+Oi1qw1Wo
-         z4QkLaRn30Hk8FQDXB6iboVO1GxpM3rkVyk/XctWmdhqp7Vva5GXJwrhHvb7K7FaFXsK
-         vnmKt4tC8ka9+f3NjYnhT4qTLq/DWvXI3FHNH0lEqeFZBs3VzdNLvWB3D58YYFioAW5d
-         v4XxsPUFqea2gMHg8TpcPV9FQPJrlKM+RtMMNakJAA2N6laOG24OW0gOphRsMT7xdolC
-         MvAw==
+        d=blackwall.org; s=google; t=1780472533; x=1781077333; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=iQ/G5AyzRXc5A3Q0LWE67cuFLv2AuQIyFo9jzZD11KQ=;
+        b=i2cs3JE1cZsk+1UfMrDmn7IJYt+f6lvhiXKysAcve6ICsOyncJ/XVLm7DpOHJUJc1x
+         foNb0PsKTqBnPXG3CsSFRiokNMdK6gsKRJlaqAthfBaWTi1YAEI+iIvFBJhatqkGYURg
+         isabYFOzv0ShvYciskXgV/grft5O9EY/JqF6jTu9TW2SIlRmDmKa0ymtfl+nKewqxQrE
+         lSgfOafgxyywxWF2myCmtlJjHsX/qjPyTcodj/FNM9PrqViorWegUwy3R83CsVOwvF2t
+         /HL+4NpclZK+i3Ipwx1jT/Q5DxiKDXTjhrNBlPxBmL36Y6bn0S4Lnt4cwBj6n8LqgU/C
+         N2kA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780472345; x=1781077145;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=03qJ+adv11Q2sSTj1AKdKlt3vl/S6TLS74I5VOZF2oE=;
-        b=o+sD+kn6p0T2NsVcuEzbgQAaFuj02Uaqp7zNrTqOdhQI4leZtkbf5DPaQo7R5zKUCI
-         rZ8j7XBYRG6bvm58XXDAzUZYGRE28UPbwPkZhg9Kg8Yp12H9wJmkXp0ZKJcNYathgYcY
-         dpqhNAleiSC0XSHGmX2BbBeiNgUOTANdUSJOnfpVk57L2RnpLkWicfWbKIQf6ZX6Qnj1
-         hGNFbSUnmxtgwe3wqSLkQa0mxWhp4DcbSFfK8dfVm44o+sfo3RnwUduRhvPJA9WaOLXG
-         tkhvduZT5T6HMEbDsGXURzYrGb665BNvUEkI7OOt6uKLeBRhMtZLk9K5gNBqfOO/Wp9y
-         oIzg==
-X-Forwarded-Encrypted: i=1; AFNElJ9QnCobloxk3YWc2ZgnEYpt269s78GfuayF1ODd0unk8ShglVj+YxscnXPkQNxCSVpubTuadXo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw4K7jMzOkPhMZreqHKsDmEDJSyxKjNBFDnv3AUwwvmZ9AZATQ5
-	aOX8Z9lP4hL2R9BOAj4CH5yexHT2rH6j85uX4d2V6IPRv1TOCa6sk50i
-X-Gm-Gg: Acq92OErbDPbJi+mQl2knicpQOfkrC6AseIZccskj3GicVeiF/JoA4bLNM6V6fZAIyS
-	A0cy7866a0RqnNqCfZfhfTcjN7I16WmnB/71FF5hrAgKVuEXz805u7gJmpILY0tzDfZK2byNpa1
-	TOg5jdzB0MvevZn6r5VrDIrIL/tU2vk3DDNx91DYqBO3XrimWnE4Hxf8l84udmZhRcnOQkVslIR
-	qd9GCzKUL0qeFUte+q5T+jY0yanZiQAIBcGfZIL4KK6X7QUT5vx5SnJHCPH9jWfHmLR09mD1s2r
-	aiAm2zrLyuwiBtqGe/l5mKcpR5DY6MUo5h0n1ujvD+SADUuyqZ5kyKm+HsYF1uBtSphbjIESUdV
-	T1TMraBbIcVaf/7nrIvWk0Vfm+9z+MqDw/geMHrsBltVHTW9fAjgfYwLwK6NrvBgxtZO4viTRu7
-	K7vGvmo/qg4c86SDeaN763zZhpOHUV0JJNH+eXciWxTPdTc6kqIudoQAK0yy+a8oubyOqyEAfpu
-	QK3HNc=
-X-Received: by 2002:a05:7300:fd09:b0:304:3c33:7ad6 with SMTP id 5a478bee46e88-3074fa6669fmr1180259eec.11.1780472345373;
-        Wed, 03 Jun 2026 00:39:05 -0700 (PDT)
-Received: from fx.tailc0aff1.ts.net ([206.206.192.132])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3074df805d1sm1567896eec.28.2026.06.03.00.39.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Jun 2026 00:39:04 -0700 (PDT)
-From: Weiming Shi <bestswngs@gmail.com>
-To: pablo@netfilter.org
-Cc: fw@strlen.de,
-	phil@nwl.cc,
-	netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	xmei5@asu.edu,
-	Weiming Shi <bestswngs@gmail.com>
-Subject: [PATCH nf] netfilter: nf_conntrack: destroy stale expectfn expectations on unregister
-Date: Wed,  3 Jun 2026 00:38:17 -0700
-Message-ID: <20260603073815.2159603-3-bestswngs@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        d=1e100.net; s=20251104; t=1780472533; x=1781077333;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=iQ/G5AyzRXc5A3Q0LWE67cuFLv2AuQIyFo9jzZD11KQ=;
+        b=NHTOY8Od6xMUHma5pzI90c34KIX4xn5oluqMBl+h5EzO0DS28duIBNvdHYDsonJD23
+         irfHNj28Zpf82L1CfWPgJ7wgDGOqAoPHxuSRnPHRyV4Tv9Xmhyg7LA+CaAWVowjHbSBK
+         +ZE2iVpNCazrDErnOTfscswz56itvbTqHFlmODBaBsSNRVQmItkX5gg32kMOl673JG0e
+         8csj8EGj6YocehU5Oe+0y5HPeCgGZQRazyPOCT649Jvu6pKV7AOcWihSwGvr1kBe9bZV
+         wMqWiqMHqrcxBz2hJzUt2Ys/k9ybbfuPL0Nfu4aDa9gx9xmAGJfgw5KWblnuiGxE4xsq
+         h14Q==
+X-Forwarded-Encrypted: i=1; AFNElJ93qB89EqBlMTfCYVYo7M/OAkDOowJwgs5APA9BWHTr3lNid1ymq4ydhosCiRlPlkQUeMdGcmk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxjLzDYXDX701iqy5vHBXqPUxN1yZ/MgrLcber9yeogIfhr57+1
+	0/HSoLwQFq5oQB5l9tN7XXlDXr1oaFzEj27j7J6B6yrpCGHAAw6shDlKTxJjT0mu0m0=
+X-Gm-Gg: Acq92OF0yGtySC7RCX60a7nXDHP1zfg8ashJf6XbCWmZhop3HsKvj2xptAK2g1ael/I
+	G1QEcp+bI4IU9WcxjBzOWj/hkRFjrg2itxz7GctluiSkf0LHEfdzUjhi7ptcgKapPGms1hASV7F
+	At3EyTbJZA+25P8TKJCuWcatYRZj0LWN1TRDieixNfOwphmmB86/0T9qiOSLKW+REPriuJqx2gn
+	7dolu0Xd5PVploghBJLKDm3S72eb2X5rNSl0WcWGxmt+8c119qcxJsGiEUHosVz790nrq9vtvxB
+	gnH5CIpCOnNT01Cy+v0H5QUXislU+ucPNQKCXPljnz151fC6PZ8HIDJp4weDxEn6dZLaASho8TH
+	kH+RojOmG5YENpGZFTb9AhqxnzPJDaAIEInmpTztCNRWvZEx3hyjaM6XzEioZ2JLdq+VfYkKzam
+	wdCPhv//+cpWUwzVzwSyaHbRBS5jxhHjJ93KXhCC2PEtX9tqi76UrsLbDkv/nzYkVW
+X-Received: by 2002:a05:600c:4e87:b0:490:9d1b:f05c with SMTP id 5b1f17b1804b1-490b60e3f91mr37403445e9.33.1780472532903;
+        Wed, 03 Jun 2026 00:42:12 -0700 (PDT)
+Received: from [192.168.0.161] (78-154-15-182.ip.btc-net.bg. [78.154.15.182])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4601f3529e0sm5614447f8f.28.2026.06.03.00.42.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 03 Jun 2026 00:42:12 -0700 (PDT)
+Message-ID: <74eaaf87-de88-4657-abe5-b69df6fbe53f@blackwall.org>
+Date: Wed, 3 Jun 2026 10:42:11 +0300
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 net-next 01/11] bridge: add a READ_ONCE() in
+ br_timer_value()
+Content-Language: en-US, bg
+To: Eric Dumazet <edumazet@google.com>, "David S . Miller"
+ <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
+ netdev@vger.kernel.org, eric.dumazet@gmail.com
+References: <20260603062043.3911278-1-edumazet@google.com>
+ <20260603062043.3911278-2-edumazet@google.com>
+From: Nikolay Aleksandrov <razor@blackwall.org>
+In-Reply-To: <20260603062043.3911278-2-edumazet@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-NAT helpers such as nf_nat_h323 store a raw pointer to module text in
-exp->expectfn (e.g. ip_nat_q931_expect). nf_ct_helper_expectfn_unregister()
-only unlinks the callback descriptor and never walks the expectation table,
-so an expectation pending at module removal survives with a dangling
-exp->expectfn into freed module text.
+On 03/06/2026 09:20, Eric Dumazet wrote:
+> br_timer_value() can be called locklessly, the expires field
+> could be changed concurrently.
+> 
+> Signed-off-by: Eric Dumazet <edumazet@google.com>
+> Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+> ---
+>   net/bridge/br_stp_timer.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/net/bridge/br_stp_timer.c b/net/bridge/br_stp_timer.c
+> index e5d453305381baa34225a144ac99e98f2a62d810..83cc9c6a3943508eb94d20ddc1b7e737a58d7abb 100644
+> --- a/net/bridge/br_stp_timer.c
+> +++ b/net/bridge/br_stp_timer.c
+> @@ -160,5 +160,5 @@ void br_stp_port_timer_init(struct net_bridge_port *p)
+>   unsigned long br_timer_value(const struct timer_list *timer)
+>   {
+>   	return timer_pending(timer)
+> -		? jiffies_delta_to_clock_t(timer->expires - jiffies) : 0;
+> +		? jiffies_delta_to_clock_t(READ_ONCE(timer->expires) - jiffies) : 0;
+>   }
 
-When the expected connection arrives, init_conntrack() invokes
-exp->expectfn(), now a stale pointer into the unloaded module. Reproduced
-on a KASAN build by loading the H.323 helpers, creating a Q.931
-expectation, unloading nf_nat_h323, then connecting to the expected port:
-
- Oops: int3: 0000 [#1] SMP KASAN NOPTI
- RIP: 0010:0xffffffffa06102d1
-  init_conntrack.isra.0 (net/netfilter/nf_conntrack_core.c:1862)
-  nf_conntrack_in (net/netfilter/nf_conntrack_core.c:2049)
-  ipv4_conntrack_local (net/netfilter/nf_conntrack_proto.c:223)
-  nf_hook_slow (net/netfilter/core.c:619)
-  __ip_local_out (net/ipv4/ip_output.c:120)
-  __tcp_transmit_skb (net/ipv4/tcp_output.c:1715)
-  tcp_connect (net/ipv4/tcp_output.c:4374)
-  tcp_v4_connect (net/ipv4/tcp_ipv4.c:345)
-  __sys_connect (net/socket.c:2167)
- Modules linked in: nf_conntrack_h323 [last unloaded: nf_nat_h323]
-
-Reaching the dangling state requires CAP_SYS_MODULE in the initial user
-namespace to remove a NAT helper that still has live expectations, so this
-is a robustness fix; leaving an expectation pointing at freed text is wrong
-regardless.
-
-Add nf_ct_helper_expectfn_destroy(), which walks the expectation table and
-drops every expectation whose ->expectfn matches the descriptor being torn
-down. Call it from each NAT helper's exit path after the existing RCU grace
-period, so no expectation outlives the code it points at and no extra
-synchronize_rcu() is introduced. With the fix, the same reproducer runs to
-completion without the Oops.
-
-Fixes: f587de0e2feb ("[NETFILTER]: nf_conntrack/nf_nat: add H.323 helper port")
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Assisted-by: Claude:claude-opus-4-8
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
----
- include/net/netfilter/nf_conntrack_helper.h |  1 +
- net/ipv4/netfilter/nf_nat_h323.c            |  2 ++
- net/netfilter/nf_conntrack_helper.c         | 19 +++++++++++++++++++
- net/netfilter/nf_nat_core.c                 |  2 ++
- net/netfilter/nf_nat_sip.c                  |  1 +
- 5 files changed, 25 insertions(+)
-
-diff --git a/include/net/netfilter/nf_conntrack_helper.h b/include/net/netfilter/nf_conntrack_helper.h
-index de2f956abf34..24cf3d2d9745 100644
---- a/include/net/netfilter/nf_conntrack_helper.h
-+++ b/include/net/netfilter/nf_conntrack_helper.h
-@@ -155,6 +155,7 @@ void nf_ct_helper_log(struct sk_buff *skb, const struct nf_conn *ct,
- 
- void nf_ct_helper_expectfn_register(struct nf_ct_helper_expectfn *n);
- void nf_ct_helper_expectfn_unregister(struct nf_ct_helper_expectfn *n);
-+void nf_ct_helper_expectfn_destroy(const struct nf_ct_helper_expectfn *n);
- struct nf_ct_helper_expectfn *
- nf_ct_helper_expectfn_find_by_name(const char *name);
- struct nf_ct_helper_expectfn *
-diff --git a/net/ipv4/netfilter/nf_nat_h323.c b/net/ipv4/netfilter/nf_nat_h323.c
-index faee20af4856..10e1b0837731 100644
---- a/net/ipv4/netfilter/nf_nat_h323.c
-+++ b/net/ipv4/netfilter/nf_nat_h323.c
-@@ -555,6 +555,8 @@ static void __exit nf_nat_h323_fini(void)
- 	nf_ct_helper_expectfn_unregister(&q931_nat);
- 	nf_ct_helper_expectfn_unregister(&callforwarding_nat);
- 	synchronize_rcu();
-+	nf_ct_helper_expectfn_destroy(&q931_nat);
-+	nf_ct_helper_expectfn_destroy(&callforwarding_nat);
- }
- 
- /****************************************************************************/
-diff --git a/net/netfilter/nf_conntrack_helper.c b/net/netfilter/nf_conntrack_helper.c
-index 17e971bd4c74..2c5a71735561 100644
---- a/net/netfilter/nf_conntrack_helper.c
-+++ b/net/netfilter/nf_conntrack_helper.c
-@@ -283,6 +283,25 @@ void nf_ct_helper_expectfn_unregister(struct nf_ct_helper_expectfn *n)
- }
- EXPORT_SYMBOL_GPL(nf_ct_helper_expectfn_unregister);
- 
-+static bool expect_iter_expectfn(struct nf_conntrack_expect *exp, void *data)
-+{
-+	const struct nf_ct_helper_expectfn *n = data;
-+
-+	/* Relies on registered expectfn descriptors having unique ->expectfn
-+	 * pointers, which holds for the in-tree NAT helpers.
-+	 */
-+	return exp->expectfn == n->expectfn;
-+}
-+
-+/* Destroy expectations still pointing at @n->expectfn; call after the
-+ * caller's RCU grace period so none outlives the (often modular) callback.
-+ */
-+void nf_ct_helper_expectfn_destroy(const struct nf_ct_helper_expectfn *n)
-+{
-+	nf_ct_expect_iterate_destroy(expect_iter_expectfn, (void *)n);
-+}
-+EXPORT_SYMBOL_GPL(nf_ct_helper_expectfn_destroy);
-+
- /* Caller should hold the rcu lock */
- struct nf_ct_helper_expectfn *
- nf_ct_helper_expectfn_find_by_name(const char *name)
-diff --git a/net/netfilter/nf_nat_core.c b/net/netfilter/nf_nat_core.c
-index 74ec224ce0d6..2bbf5163c0e2 100644
---- a/net/netfilter/nf_nat_core.c
-+++ b/net/netfilter/nf_nat_core.c
-@@ -1341,6 +1341,7 @@ static int __init nf_nat_init(void)
- 		RCU_INIT_POINTER(nf_nat_hook, NULL);
- 		nf_ct_helper_expectfn_unregister(&follow_master_nat);
- 		synchronize_net();
-+		nf_ct_helper_expectfn_destroy(&follow_master_nat);
- 		unregister_pernet_subsys(&nat_net_ops);
- 		kvfree(nf_nat_bysource);
- 	}
-@@ -1358,6 +1359,7 @@ static void __exit nf_nat_cleanup(void)
- 	RCU_INIT_POINTER(nf_nat_hook, NULL);
- 
- 	synchronize_net();
-+	nf_ct_helper_expectfn_destroy(&follow_master_nat);
- 	kvfree(nf_nat_bysource);
- 	unregister_pernet_subsys(&nat_net_ops);
- }
-diff --git a/net/netfilter/nf_nat_sip.c b/net/netfilter/nf_nat_sip.c
-index 9fbfc6bff0c2..00838c0cc5bb 100644
---- a/net/netfilter/nf_nat_sip.c
-+++ b/net/netfilter/nf_nat_sip.c
-@@ -655,6 +655,7 @@ static void __exit nf_nat_sip_fini(void)
- 	RCU_INIT_POINTER(nf_nat_sip_hooks, NULL);
- 	nf_ct_helper_expectfn_unregister(&sip_nat);
- 	synchronize_rcu();
-+	nf_ct_helper_expectfn_destroy(&sip_nat);
- }
- 
- static const struct nf_nat_sip_hooks sip_hooks = {
--- 
-2.43.0
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
 
