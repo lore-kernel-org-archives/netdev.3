@@ -1,128 +1,103 @@
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D7C930276A;
-	Wed,  3 Jun 2026 20:07:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD5ED39E9BD;
+	Wed,  3 Jun 2026 20:12:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780517226; cv=none; b=IQBhfvJVmNvxkZmtrjfuAFTzYSeRzAMsmI8M4RwVYceRMZK7/l1fBoG9/bh+6f20vUHcae4xLkSi9cOhZT+yrqavihzXv5cRvEPmwRs6o/pycN9gGOFYvx82ZJ8MrZC02PlHlWwvKeiZfc6CPejVfNMyBIPVhI9rsrliyzZnbbA=
+	t=1780517536; cv=none; b=XrMc5ShDPZRIUlAe45adHzuIR0OENPigNyw/1pFyr9byJBdf/vEvVTMpZW1egv3pwdRj+tYvHxjcS4RP2RgDo7VZkpqs14z8AhXBDTKT5Qstgm7f9dHu6cO0Tk23IIXaH4vvP1aHn/FB/y7LSHGiOhBFsuqY6K0Tr949lm1r7ek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780517226; c=relaxed/simple;
-	bh=BA9H6R3Q8M9olF9mGy953/1qfBeeiH1fA14XcTcB7n0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nMGWSuXC/2MnNKAXmU/kwBDMSB0HoxQyYhXYRMIOrxIgya2QPRHnkYrDXP94HGN/lZxey37to1pIRAckBHXZsFCQgvjyPP2qoSgURv969hton2FnTcJS5kZBpWARnY7wstDtsLO2m+0YGYXo6qhEIsJS9KbD57DWJjFRNz1cbss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=pass smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=QiaPGPh3; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1780517536; c=relaxed/simple;
+	bh=2knHxY5vSjk3O5pcSBk0V3WKjnVRps5mVeqti3A9Hi4=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=i7EZmSyOqVyHKLAxJLED/YNC2edNV787M2DGfjVVcH/qJKaJXvlyaAgE2JTQcid2Wovc8N7F7htCasTARYUmCSu176aPfjj+TuQVfJfnE/d/4mFWYrCeO1aKXriEpGGB9AgQ/yA6nAn4DIFg8dCpE7vD/V2XRWuTSaiWTrN+OJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net; spf=none smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=Nfy5H6n0; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="QiaPGPh3"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="Nfy5H6n0"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=1+dWje48khfViclGaERQCi/Gh0wxudHWH/QCF3kZqJw=; b=QiaPGPh3pMGAkZngFffySC7HGP
-	2qLjppS0arPQUFZx+kkx8ahTJa/4Fowj2hWCpElZOIL5uCsUp0pjN+P7GwWuR0KB47yC9tu7568iW
-	EppUWFzcIA4pdBx4BvyM6mLQZGX6nP13YQrGRq7ar3a+fObk+kDX22iYQPlyl7WzFoKjiuOQi0TUL
-	yJf4zsC6L8XHmkFEGt50bcRZ6KjAWobEGLcCgH7JyxC10TUv7OhWl1QGT6sngdHqZbc9yFGDROvOl
-	31B510tKcJ7BWSf/iiGttgsy4bhxfpGDeVHQSfMAekHpFQdna69xAL3rNFpJ/6NuDt84jKVlCMDYC
-	+cg0O5Sw==;
-Received: from [50.53.43.113] (helo=[192.168.254.34])
-	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wUrr2-0000000Fn3z-41XE;
-	Wed, 03 Jun 2026 20:06:21 +0000
-Message-ID: <d276e842-dd8f-40b7-806b-71572503005e@infradead.org>
-Date: Wed, 3 Jun 2026 13:06:18 -0700
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=2knHxY5vSjk3O5pcSBk0V3WKjnVRps5mVeqti3A9Hi4=;
+	t=1780517534; x=1781727134; b=Nfy5H6n0NKix9ffg+A78TOF8rzgdvqCMs6TgS1JWrgZCdZk
+	tMR3Kdwxl/ZWCE21ptwkf7AOuSjYTHGXd1MAYH+Bkmf69V0n7hZ1kKafCehkJ0xYwnMSkpFnbnZJT
+	mBPWz4LgMVrdXnPwRf20wUvhFHifrepqRNZnUB9Ih2zkFBKVneFpiOkgxu3NWGxeOXEVO+Tj24Z5z
+	TMWf4+Zhv3Vc0+4jquDuzMof22hR1f3d8FpOZUkBcpv0sV97nQQCWj3IwkX2bfyy4LQchafviRuXP
+	C7K2kEkjXkdT9dJtVBjq4W56bnTTagR4vGNge5T0q5NBZMM2UqaYXCXsXbRjae4Q==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1wUrwb-0000000HKFJ-2F4b;
+	Wed, 03 Jun 2026 22:12:05 +0200
+Message-ID: <c78c1ff315ec96795461f100064bc42c524a67e3.camel@sipsolutions.net>
+Subject: Re: [PATCH net-next] docs: exclude driver and netdevsim bugs
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net
+Cc: netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com, 
+	andrew+netdev@lunn.ch, horms@kernel.org, corbet@lwn.net,
+ skhan@linuxfoundation.org, 	workflows@vger.kernel.org,
+ linux-doc@vger.kernel.org
+Date: Wed, 03 Jun 2026 22:12:04 +0200
+In-Reply-To: <20260603162943.2406080-1-kuba@kernel.org>
+References: <20260603162943.2406080-1-kuba@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next V2 7/7] devlink: Add eswitch mode boot defaults
-To: Mark Bloch <mbloch@nvidia.com>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>
-Cc: Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Jiri Pirko <jiri@resnulli.us>, Simon Horman <horms@kernel.org>,
- Sunil Goutham <sgoutham@marvell.com>, Linu Cherian <lcherian@marvell.com>,
- Geetha sowjanya <gakula@marvell.com>, hariprasad <hkelam@marvell.com>,
- Subbaraya Sundeep <sbhatta@marvell.com>,
- Bharat Bhushan <bbhushan2@marvell.com>, Saeed Mahameed <saeedm@nvidia.com>,
- Leon Romanovsky <leon@kernel.org>, Tariq Toukan <tariqt@nvidia.com>,
- "Borislav Petkov (AMD)" <bp@alien8.de>,
- Andrew Morton <akpm@linux-foundation.org>,
- "Peter Zijlstra (Intel)" <peterz@infradead.org>,
- Thomas Gleixner <tglx@kernel.org>, Petr Mladek <pmladek@suse.com>,
- Tejun Heo <tj@kernel.org>, Vlastimil Babka <vbabka@kernel.org>,
- Feng Tang <feng.tang@linux.alibaba.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Christian Brauner <brauner@kernel.org>,
- Dapeng Mi <dapeng1.mi@linux.intel.com>, Kees Cook <kees@kernel.org>,
- Marco Elver <elver@google.com>, Eric Biggers <ebiggers@kernel.org>,
- Li RongQing <lirongqing@baidu.com>, "Paul E. McKenney" <paulmck@kernel.org>,
- Ethan Nelson-Moore <enelsonmoore@gmail.com>, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- linux-rdma@vger.kernel.org
-References: <20260603193259.3412464-1-mbloch@nvidia.com>
- <20260603193259.3412464-8-mbloch@nvidia.com>
-Content-Language: en-US
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <20260603193259.3412464-8-mbloch@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-malware-bazaar: not-scanned
 
-Hi.
+On Wed, 2026-06-03 at 09:29 -0700, Jakub Kicinski wrote:
+>=20
+> +Additionally, netdev does not consider bugs to be ``net``-worthy
+> +if they fulfill **all** of the following criteria:
+> + - bug is in a hardware device driver;
+> + - bug is either a missing error handling or is part of the error handli=
+ng flow;
 
-On 6/3/26 12:32 PM, Mark Bloch wrote:
-> diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-> index 063c11ca33e5..7af9f2898d92 100644
-> --- a/Documentation/admin-guide/kernel-parameters.txt
-> +++ b/Documentation/admin-guide/kernel-parameters.txt
-> @@ -1264,6 +1264,31 @@ Kernel parameters
->  	dell_smm_hwmon.fan_max=
->  			[HW] Maximum configurable fan speed.
->  
-> +	devlink_eswitch_mode=
-> +			[NET]
-> +			Format:
-> +			[<selector>]:<mode>
+Do you really want to be this specific?
 
-It appears (please correct me if I am mistaken) that the '[' and ']'
-above don't mean "optional" but instead they are required characters...
+Take this fix for example that I mentioned the other day:
+https://patchwork.kernel.org/project/linux-wireless/patch/20260531145435.70=
+1703-1-runyu.xiao@seu.edu.cn/
 
-> +
-> +			<selector>:
-> +			* | <handle>[,<handle>...]
+It doesn't formally fall under that definition, but I think it should,
+it's a silly thing to send to stable etc.
 
-while here they mean "optional".
+This isn't even a USB device where you could reasonably argue that
+someone might plug in a random one and it could be programmed to look
+like the device in question and misbehave. Sure, you can build PCIe
+hardware too that can do that, technically, and there's technically
+external PCIe via Thunderbolt, but it's still far harder to actually do
+anything with.
 
-That is confusing (inconsistent). Also, if the square brackets are
-always required around the <selector>, what purpose do they serve?
+> + - bug was discovered by a static analysis / AI tool;
 
-> +
-> +			<handle>:
-> +			<bus-name>/<dev-name>
-> +
-> +			Configure default devlink eswitch mode for matching
-> +			devlink instances during device initialization.
-> +
-> +			<mode>:
-> +			legacy | switchdev | switchdev_inactive
-> +
-> +			Examples:
-> +			devlink_eswitch_mode=[*]:switchdev
-> +			devlink_eswitch_mode=[pci/0000:08:00.0]:switchdev
-> +			devlink_eswitch_mode=[pci/0000:08:00.0,pci/0000:09:00.1]:legacy
-> +
-> +			See Documentation/networking/devlink/devlink-defaults.rst
-> +			for the full syntax.
-> +
->  	dfltcc=		[HW,S390]
->  			Format: { on | off | def_only | inf_only | always }
->  			on:       s390 zlib hardware support for compression on
+I'm not (yet?) convinced that this bullet point is right.
 
+It risks getting into an argument about how much the LLM did to discover
+it, or if the actual discovery was a manual process after the LLM
+pointed out issues, or whatever ...
 
--- 
-~Randy
+Maybe more importantly, why should that even change the result?
 
+It's true that today the reason to start spelling this out more clearly
+is AI related, but that's really because of (a) the scale, and (b) many
+of the people running the LLMs not being aware of (and frankly often not
+really caring about) the community norms. I'm not convinced that the
+"silliness" of a change should be measured by how it originated.
+
+> + - bug was triggered/observed only with kernel changes or fault injectio=
+n.
+
+Given this fourth bullet point, we'd still accept fixes for such driver
+problems that people actually run into, while excluding "theoretical"
+things that are discovered by "reading the code".
+
+johannes
