@@ -1,165 +1,146 @@
-Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012058.outbound.protection.outlook.com [52.101.48.58])
+Received: from relay.yourmailgateway.de (relay.yourmailgateway.de [188.68.63.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 327BF33508E
-	for <netdev@vger.kernel.org>; Wed,  3 Jun 2026 10:36:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.58
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780482968; cv=fail; b=V51vz5FE/idGhU/rFet66wXarZine5ADu0Todx1Z7rhfwL7K2RR571fxiaFWUQDUtBPL4ciG+usbYQADOxkKmgT8lKJM8yFsvZIF5qrnmPDvwCWMrSsC1XC6Gl+l2rrowrvUP28C004rrKyX7t9+CBgqgZzUZCia7RG9Dy48W3k=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780482968; c=relaxed/simple;
-	bh=eEeX/FE7qQ12ijMyy9kVDdlQUk3OIZzYvz4Vd88KP4s=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=SX9EMxWAXAzGoEd558KzdVQ1XKXtCADAE3E7RirPXFWCGoh0+ygqyMGcuyW0ALrj0EG4emDqa73xJfpNM8/QP6VNyDsZ/cw439GPW052kWEPpb9PObByM2/ENMkwD4AQB+WU7ZkSe+TNDexAUgPZXW66XTnaGXM6bfGSab8FRFI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=fdfTSi+s; arc=fail smtp.client-ip=52.101.48.58
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4490737F742
+	for <netdev@vger.kernel.org>; Wed,  3 Jun 2026 10:38:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.68.63.98
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780483103; cv=none; b=Egk0IXk0Iday0NJpttjVWS/wHLGnP8o1CKzpGwZ4R/Zsoyb77ioswn0HUoqbuXrcmTLR+jEgOTFlZ1a9iEFV03Gk+uhoWclV2nZJ1gMFJkKQCe5eO12O3ZUeQC/4U600CtbXCmH/rTZlWvnV3sOeNkStyYSnAQJoyCt9kHC/tyw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780483103; c=relaxed/simple;
+	bh=Gzj0QkdwEtprZHRxKJVS3Guel7KlNxme7gyx1LSz1to=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fWDCit0eMJS7sE0ieNoqIHSJ9U5ErKkYHvfWLblIkmk4806foyfL+qL4Vt5/3wppXShJoE24H7L3OdRVz40RUWyaCFPnD06YBnJG2gkESZdnLcIXCUmvWuDy4K+vuZ7ZK9d3EXhrEA6YgNYcvcfTUSfL+C1QpPjCbUxzpTH9nFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=XEa9GDO0; arc=none smtp.client-ip=188.68.63.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="fdfTSi+s"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=hjb26ywpUyQGiQTCDkJYlSqsjbDcym4zgtz5GKnq0A4enS5wq5QcxlIWI1yfzNYDIFeb0cnfSq1T15QQ4bockNBofOm8bRYOoY7+PBodP7k1O3mxINjabrsXwmNqTUPVsoNXbAoB5Rm7uKbv+jjbc5FWRXccMn+AIFnLX0eNFa4CQ/W5852MDLzshXG6Ba9krQYhp1XxT3oU7GcwOnZspGX7RtX/JobBoj11lbZ3wSCxq/BF0DD+RNZFf4p9S+fdBN9625yYoZ4feD1tNynK++2m+VgzsBzLRROkK9/+DXCmOE50NoCP480S8q57z8TLRp4YmxUHNR9Y4M8MgJX0kA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=mm/wEP5oILdWL++Tjwnf1wSK5ACzKbAzu3pj9ieZOOg=;
- b=RkTPYMkUEX6d36HrU+PUUrWfLxjMP93sm/emvYI9Q1zHkmRe3kldg1UPK7Skjb2TLXchArPTLC14o01/nM2JHZoCW3Bo/r0lTFQTDqrlSiXU3t1fPE6ie2o4Jr++CjOF/vFmxRF7wgThHZdZWi1+2bGt9wR/kvV1zUKAiKZFQaeCEClm5wYhEELb9higgcYxajGOnn6PXGkFbEfi4Zwg8SesCLbkl1KZs7tygnIUASE53y4PwDfbuvXw9ktY61XMYIMLKz7RmNAM+DhnV2aBhh8GYOo9q0YEqUZ5/rqNTmIBg3XJgzHLErtHmQ+Vok5nyCYdKWBcx4MT0FnP+oqWaA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=mm/wEP5oILdWL++Tjwnf1wSK5ACzKbAzu3pj9ieZOOg=;
- b=fdfTSi+s/PF6SlXT2JM1sh5hSBAczAp0Y/N/5DZvHzlBFpYGhI8km9njqFMdy1lchPqVsmJ9mvX4Uv9wqjmnIr5rqc2fmRxOiLSM3AUSzUs7WrjO4g7GNhB0hhd/9C+nzfpQp4ATfIVPop9vGmuxSADeqROwuD7AUN4diQHAYsM3aESIhnRqJfm9qeslRWs6AnbnQqyLR1ZvlcTH3TYdBG7SVDj8C4LEg3z3ZIiijJXDgC0D6L8mWNKvoQJ1ElpmGFNYTlRoCV79ZkrKIbeWKAmtABaXyZYJkTgwAuypNlS0UjroKPKywEEMV9/usvWTsyELJPCM8HZmwpVd7HK0sQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from SA3PR12MB7901.namprd12.prod.outlook.com (2603:10b6:806:306::12)
- by CY5PR12MB6575.namprd12.prod.outlook.com (2603:10b6:930:41::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.7; Wed, 3 Jun 2026
- 10:36:03 +0000
-Received: from SA3PR12MB7901.namprd12.prod.outlook.com
- ([fe80::6f7f:5844:f0f7:acc2]) by SA3PR12MB7901.namprd12.prod.outlook.com
- ([fe80::6f7f:5844:f0f7:acc2%6]) with mapi id 15.21.0092.006; Wed, 3 Jun 2026
- 10:36:03 +0000
-From: Ido Schimmel <idosch@nvidia.com>
-To: netdev@vger.kernel.org,
-	bridge@lists.linux-foundation.org
-Cc: davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	razor@blackwall.org,
-	horms@kernel.org,
-	Ido Schimmel <idosch@nvidia.com>
-Subject: [PATCH net-next] bridge: mcast: Synchronously shutdown port multicast timers
-Date: Wed,  3 Jun 2026 13:35:22 +0300
-Message-ID: <20260603103522.622411-1-idosch@nvidia.com>
-X-Mailer: git-send-email 2.54.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: FR2P281CA0103.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:9c::13) To SA3PR12MB7901.namprd12.prod.outlook.com
- (2603:10b6:806:306::12)
+	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="XEa9GDO0"
+Received: from mors-relay-2501.netcup.net (localhost [127.0.0.1])
+	by mors-relay-2501.netcup.net (Postfix) with ESMTPS id 4gVkQy1z4Rz63J2;
+	Wed,  3 Jun 2026 12:27:22 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=leemhuis.info;
+	s=key2; t=1780482442;
+	bh=Gzj0QkdwEtprZHRxKJVS3Guel7KlNxme7gyx1LSz1to=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=XEa9GDO0xF0VTcLKHyqz1JOaBYeXkQ07VLBtIcEoBNzCb7KkNJPyes7ZthBk1yrqR
+	 +b9IsFWBEaarLdoYWA5FlJTBC/yVJz868jLmzqnG5XR5O0GsCSAdW5ZHCI/PEumRNi
+	 UiNyY4da1HapPJjzk8mL8x2Gup0xGUuPCtceHEIwtLSV/iWNTQvb0d8w6z/8zAPer/
+	 hmkVSol7ggOK/nrvsBDCbTMXJgXa9i/jfIR5S4I4k4lyLlxMlvyi5ws084NpjNezS/
+	 l6rmkNy46ZuWx6OsTUC9ciTo7VefhgZoiE5Ot6SlU2MmJ0BA15YubG1qJ1gfKKOCz8
+	 wuncI9Ijgtp2g==
+Received: from policy01-mors.netcup.net (unknown [46.38.225.35])
+	by mors-relay-2501.netcup.net (Postfix) with ESMTPS id 4gVkQy1FD6z4whb;
+	Wed,  3 Jun 2026 12:27:22 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at policy01-mors.netcup.net
+X-Spam-Flag: NO
+X-Spam-Score: -2.901
+X-Spam-Level: 
+Received: from mxe9fb.netcup.net (unknown [10.243.12.53])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by policy01-mors.netcup.net (Postfix) with ESMTPS id 4gVkQx21qPz8tcJ;
+	Wed,  3 Jun 2026 12:27:21 +0200 (CEST)
+Received: from [IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f] (unknown [IPv6:2a02:8108:8984:1d00:a0cf:1912:4be:477f])
+	by mxe9fb.netcup.net (Postfix) with ESMTPSA id 6EEE85F96B;
+	Wed,  3 Jun 2026 12:27:20 +0200 (CEST)
+Authentication-Results: mxe9fb;
+        spf=pass (sender IP is 2a02:8108:8984:1d00:a0cf:1912:4be:477f) smtp.mailfrom=regressions@leemhuis.info smtp.helo=[IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f]
+Received-SPF: pass (mxe9fb: connection is authenticated)
+Message-ID: <59207b24-4fc1-45ec-b34d-359e1d247c54@leemhuis.info>
+Date: Wed, 3 Jun 2026 12:27:19 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA3PR12MB7901:EE_|CY5PR12MB6575:EE_
-X-MS-Office365-Filtering-Correlation-Id: e1421075-fc29-4c7c-83a3-08dec15be934
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|6133799003|56012099006|11063799006|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	PQla1QbhvbqY+1c4ibpV+sljotlwCi5ZI5AIykKw5RbYLoQDIn0SvBzXPOnfPYgJThYSiVwEfeHjEirzxWCFS7d6zmH055hdYi+W7Jrrf4Ynhcia6jEukbQrUe4mQKY0ozEKBAx2k1bwDSuf41yO77m3vnOvZ0yNm8yJOoFFFksgZzhFaivHRm8HQQArPeKHv6T7C55O9lTYSNGpCe8ryjlnK10lAFj0Wd6NSc0jq41l9bTmLSPf/IU9/ugDxn8tSAMBk5n/5n71ZQJE4llultjyiVbvIgpeAptnEGcNE+3ni5Zn7sBYN1JyJ5+2c2Q1PgjcxrIBUerGSVXzek3ayGVy7cXO5dTKbboLySpSv6TVYUnBPfsZY7Dmkq5WSEbnIpuXo+T4RN8a3p1JI8kqFwMLq7fmadjI/zxhhYL1gs8A0GkVpQxoYtopuZRUSYeDlrmFFYuXWbSHfE0EQggdYnxDWp0NmOip9ZJfG1hjridsJu+S6hBX3v71AAfbxTVbWxgIxxO6paSwEVDWjHS2Am5LgREzQElD4TlYSz2eULF90hC70xXy71UdG1BNU08c/4TT4qJefmqox+2KsPaoEoWslSXxuYZmF2Y1GlU+L88q8tPEZt2RzJNiPb9tMQynh12tO+rLHyiDRVD0SN7Fc14hz+BkQXRbMc3UevAgrQfH/teem3vzhzf4/8N+2xPH
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR12MB7901.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(6133799003)(56012099006)(11063799006)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?pOzwI1c53+medtDi7bGfEBA2GuNt7GUH5Q/jXUYARhrU/F1SJSk/u8jXLvee?=
- =?us-ascii?Q?0nM0CeaisPCPCJVopoD2IkCQrFqxNrXKAOXD1vP5ujGmkFQjYohU0O11r3WU?=
- =?us-ascii?Q?blSNTcrS1goTi9b1YdarT1BUZMT/+UXZSzQx/KjneSp4DjLC03vMLGFlUSHh?=
- =?us-ascii?Q?C6LCyicGQ8KIa91F4IqUdJiK/M1LrcYJmzrMaA0fGBu0VR+2oKyUJwIegzFN?=
- =?us-ascii?Q?xVmw9m22VnBRnYBccMNomTy8ODUoZdgReCb8vSH+9/Pbe8v043PuynDCgobv?=
- =?us-ascii?Q?gVzwWGHow9nT0dicynkBEpwTi4EL7if4av8TTu4Cf70EikP3Z05+g13MB7SU?=
- =?us-ascii?Q?CmqMQpxMvXNxPu6XBX9o5vcnwlvxSmcHW+3eawrETLu0CCXXOumFoZZFSIdO?=
- =?us-ascii?Q?Fjh2WbOkJD/A5ejvxF6rEZef6bf2ApRLva7esasDrmmCHHRLOOAfeODvSqTP?=
- =?us-ascii?Q?MIlsffKp5sPoE6NCIO2FBexdtsqcsIECRD5YenCtjVNxnlay/tdY7MBNzCK3?=
- =?us-ascii?Q?0QrVSACXc+hgoXjIUxxGGLZOeDLsmcrfvSVk2zZAo2n8F6sH2tf04c02HfYJ?=
- =?us-ascii?Q?YTHHod+MMnvZ835Hdqr1UvjgOycdm9vlRcZmqEwB/GYbmOhuVsy2XzXpHRVb?=
- =?us-ascii?Q?SuBGshgq9HdDDQpo1NziZWETIB1NsjBUA4KfJ4LF+W+jnx3XMq5K696u6sWj?=
- =?us-ascii?Q?U3rWG2NkoLMrBruDRrTl8Y7NHZxP0dJnQKLIg4Gei/DMV12qyZwkUenWAVPO?=
- =?us-ascii?Q?ienXj44/iHNJ+YNBCguJR9bHXQ/IZtS44/8QfVWM8ich5dstRj7X4Rw5JJO/?=
- =?us-ascii?Q?K5Zzl8CTcoyImi1il6siUrueMlZUsjjL7O3J2LiPeOsP9hIXsGrE8Krq3glm?=
- =?us-ascii?Q?xEvQfzImtBFXc4V58qnjZSw0qfIoHvWIZ25p8zp+78Ymgi+M/kEzIP5b1FYs?=
- =?us-ascii?Q?EWMFj70S68Y6xdtQAjlTq95+2e5kalz5DQnsvJ5zize44j5Y4zQPwzVt3y36?=
- =?us-ascii?Q?KkEZ/oPCWA+n/HNf6bxagyxb+mAyOLeET7nCz5X8d4k1cMBySUhKxmu11JC8?=
- =?us-ascii?Q?lyzfxtyuZsBrXwb0znsexoG58JdzJ/EvRwtzFyRg9L6YLsPGCtXxe5qRL5qV?=
- =?us-ascii?Q?LJdGydE76i+1YcB2YlyQYefvEqxLuR3j2B6WUekUKMbBZc311Os57hvSPJLb?=
- =?us-ascii?Q?963YJVspK0PlFdUpcN/cuuwiNTfE/aM5D9r9zJAbAyzkgx4ZqrWuAspO5aZ+?=
- =?us-ascii?Q?sshjL50CcZIHZIM/XXMRrbs2SyJdqDdUOhDBTxbc7BQ5d3jq7RS6VpF+Kv/d?=
- =?us-ascii?Q?/t9r2krkV4pfggcBKxyLV8QtBuT5bIB9AWLuNWJh+pWTvtzGFNDZWEq9cfpW?=
- =?us-ascii?Q?r1OE2HVPVdtvHH58qvD7KgVk6NcqrGYRwSPLPv2PW9Tdw+Nh+/HC4ehXnBl6?=
- =?us-ascii?Q?Mb937qjsxCVR+HjE+UM1o8OcWnAUgsFJQ0eeK+iZ/+w1ZENa78Du2LEHupFz?=
- =?us-ascii?Q?TF2WrEisB1YHmA6g60e+8uAV5Ka2KKAE5N3dCq0/vOV9pWyBrr+4Qtx3Ur3s?=
- =?us-ascii?Q?/igylKAlkfH+zzM1pdXeB+qXfbMMh/AIVNolW1Wrr5Z1/PGOneoDGZ7OPyq1?=
- =?us-ascii?Q?gJDTBCCTTVqBvmWOMVK8ueA/kRpaor7FWfuUB7j91wZDyuQJDvZsciOqdPD1?=
- =?us-ascii?Q?PzCW0vX8qHkfGROgL7oClXyhmF56Yv9jdldhCdmpWTFUHdZa?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e1421075-fc29-4c7c-83a3-08dec15be934
-X-MS-Exchange-CrossTenant-AuthSource: SA3PR12MB7901.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jun 2026 10:36:03.4106
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: yFaLNZ+47nrlfWWIG+sAH6znZYuuloaa/rZ7kmUChRDFcKL96Fhz+8SCJ0qGSD4aDizBn9tU+6ODdk5JyMcJPQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6575
+User-Agent: Mozilla Thunderbird
+Subject: Re: CL37 autonegotiation not working on amd-xgbe
+To: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+ Jakub Kicinski <kuba@kernel.org>, PrashanthKumar.K.R@amd.com,
+ Madhu.Banavara@amd.com
+Cc: Patrick Oppenlander <patrick.oppenlander@gmail.com>,
+ netdev@vger.kernel.org,
+ Linux kernel regressions list <regressions@lists.linux.dev>
+References: 
+ <CAEg67GmFS0Q4oSZkz8zWdOzckSth9_vBPiOy6a7-d697C2w2Xg@mail.gmail.com>
+ <20260427162839.350135c8@kernel.org>
+ <fa98f520-7539-42c0-a8f4-1858553946fe@amd.com>
+From: Thorsten Leemhuis <regressions@leemhuis.info>
+Content-Language: de-DE, en-US
+X-Enigmail-Draft-Status: N11222
+Autocrypt: addr=linux@leemhuis.info; keydata=
+ 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 MEK4
+In-Reply-To: <fa98f520-7539-42c0-a8f4-1858553946fe@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-PPP-Message-ID: <178048244075.3176975.4222387635817759165@mxe9fb.netcup.net>
+X-NC-CID: PA3D8pYHFeY2MIVhENuKQGGPYslo2rPwJVrRO6DpG1DxwmHMn34=
 
-Currently, while four timers are set up during port multicast context
-initialization, only two are synchronously deleted when the context is
-de-initialized, just before being deleted.
+On 5/6/26 05:55, Shyam Sundar S K wrote:
+> On 4/28/2026 04:58, Jakub Kicinski wrote:
+>> On Thu, 23 Apr 2026 10:18:49 +1000 Patrick Oppenlander wrote:
+>>> A recent change [1]
 
-This is fine because the structure containing the multicast context
-(either a bridge port or a VLAN) is only deleted after an RCU grace
-period and it will not pass as long as the timers are executing. These
-timers are also not supposed to do any work at this stage. They acquire
-the bridge multicast lock, see that the multicast context was disabled
-and exit.
+FWIW, that was 42fd432fe6d320 ("amd-xgbe: align CL37 AN sequence as per
+databook") [v6.16-rc5]
 
-Make the code more explicit and symmetric and synchronously shutdown all
-four timers when the multicast context is de-initialized. Use
-timer_shutdown_sync() to guarantee that the timers will not be re-armed
-given that the containing structure is being deleted.
+>>> stopped CL37 autonegotiation from working on amd-xgbe hardware.
+>>
+>> Hi Raju! Are you looking into this report?
+> 
+> Dropping Raju as he is no longer with AMD.
+> 
+> Thanks for the bug report. Prashanth will maintain this driver going
+> forward.
+> 
+> Prashanth, can you address this bug? Also, please update the
+> MAINTAINERS list by dropping Raju's name.
+Any progress? It looks like nothing happened to fix this regression
+since above mail, but I'm looking at things from the outside and there
+it's easy to miss something, so please tell me if that's the case.
 
-Acked-by: Nikolay Aleksandrov <nikolay@nvidia.com>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
----
- net/bridge/br_multicast.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/net/bridge/br_multicast.c b/net/bridge/br_multicast.c
-index 5d6fdfb43c04..c2c93c740415 100644
---- a/net/bridge/br_multicast.c
-+++ b/net/bridge/br_multicast.c
-@@ -2027,9 +2027,11 @@ void br_multicast_port_ctx_deinit(struct net_bridge_mcast_port *pmctx)
- 	bool del = false;
- 
- #if IS_ENABLED(CONFIG_IPV6)
--	timer_delete_sync(&pmctx->ip6_mc_router_timer);
-+	timer_shutdown_sync(&pmctx->ip6_own_query.timer);
-+	timer_shutdown_sync(&pmctx->ip6_mc_router_timer);
- #endif
--	timer_delete_sync(&pmctx->ip4_mc_router_timer);
-+	timer_shutdown_sync(&pmctx->ip4_own_query.timer);
-+	timer_shutdown_sync(&pmctx->ip4_mc_router_timer);
- 
- 	spin_lock_bh(&br->multicast_lock);
- 	del |= br_ip6_multicast_rport_del(pmctx);
--- 
-2.54.0
-
+Ciao, Thorsten
