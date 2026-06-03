@@ -1,200 +1,349 @@
-Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EBA6400DF2
-	for <netdev@vger.kernel.org>; Wed,  3 Jun 2026 07:25:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82D103A3816;
+	Wed,  3 Jun 2026 07:26:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780471546; cv=none; b=cw78DnJUrRYt8lYF+S662JoCJUkqvc+04FNOhw5kKIIlqhJfH67/FOAUXYEArJc2gk/YZQOrms+FvOGZ154Tp7ZrmFM5hhSrUKXrNJt89klJaNsJYOMfvxCioPkNhA288lgY/E5PrWqrkH411XQvhrznuVN30g5fTBpiygx3/+k=
+	t=1780471570; cv=none; b=mDcYio6oxHxK+fHeW4QU/gSzD+K0H7TvLxd2TLCNjMl0WzmL7cptCUKMckyDjPZUK0YQ8gfJqyy5Rc7Efc9XYFURMV7LRUxoLsCVdfUUGQfLJ2CXa+RTpDlM8D3VALTGfuiWUkhdkbgI8FKoJQdvZZPHOPW1ZWVXNbprsE9BFEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780471546; c=relaxed/simple;
-	bh=8K2iP9LSXQp27nsPUhKWxYl0Bitnf3LmxGh9VjbxmV4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EKeAt74HBtMpInKP1dYf/tU/RdDQmcC9zzrUgxCi0056VEql3r8NsFDePPALDzerJQSfy0+CyqvR55StN3PpfZ07isYzDyelhjjW7Xif8ibNl19TYEOH2GhVOoAbi2gKQ/vfuuvTiftM7NrPg/0Mx8qQg78jKDgI7nfYLN6r6/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=a9j9pyXT; arc=none smtp.client-ip=23.88.38.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
+	s=arc-20240116; t=1780471570; c=relaxed/simple;
+	bh=vGs1JK+3arFRCqTMt75x/to5/KLD2wF2DSj9tkGoa1w=;
+	h=From:Subject:Date:Message-ID:MIME-Version:Content-Type:To:CC; b=HtKZS/XMWjfTA7sz9oIN/wJa04nvZkl/WO8Hey/PCJz+VN4yC9rzyiXud7i1xyFDNT1buJ8gVug60LdKyx46srupl7z5BGmQY182nHw+gXhslbO5d+07VN6Xbkci40V/AUfeUwkroDGUcZDDBSyZmFjHbi6kONMGr4RLLZz3upM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=oee5P87L; arc=none smtp.client-ip=68.232.154.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="a9j9pyXT"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=simonwunderlich.de;
-	s=09092022; t=1780471539;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=he0/n/acgmP1vB/t/w0LP0oXotNGkr4FL/Cuc2RofVQ=;
-	b=a9j9pyXTUKQkbPU7aduarieiA3jnA9aDiRznBp9lT+pmmLPr5t2jc2FCsJyUIupP4aJUqr
-	9kz8k8pPfdKUQCh5hN4AUwTkuDF7ipsk8/P8AajBUgTCsVvERTxKXIsapkcQMm3jYgYUic
-	xl2n/LwOo4u3Yd81eU1TgZRW6YtHBWY+fsNg6VpAlTRziDHmqpSGaO/Sfr4E07CMwPBtS9
-	R//G1kL69lUArE11LSpK7mLuCTpFAV6r3jDTsque/Yv6+HO4P4GLppsWfyzOBuRFG2Ynep
-	HBRApSK7agZK8It4OIGhlP0YTP6r0qtZYd5G73jWTj1el6KBmHj/z/ue/dlIQg==
-From: Simon Wunderlich <sw@simonwunderlich.de>
-To: netdev@vger.kernel.org
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	b.a.t.m.a.n@lists.open-mesh.org,
-	Sven Eckelmann <sven@narfation.org>,
-	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH net-next 15/15] batman-adv: tt: directly retrieve wifi flags of net_device
-Date: Wed,  3 Jun 2026 09:25:26 +0200
-Message-ID: <20260603072527.174487-16-sw@simonwunderlich.de>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260603072527.174487-1-sw@simonwunderlich.de>
-References: <20260603072527.174487-1-sw@simonwunderlich.de>
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="oee5P87L"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1780471568; x=1812007568;
+  h=from:subject:date:message-id:mime-version:
+   content-transfer-encoding:to:cc;
+  bh=vGs1JK+3arFRCqTMt75x/to5/KLD2wF2DSj9tkGoa1w=;
+  b=oee5P87LWR9JHbo2OiTtvpDGHjcfKTo4KnmEnrMcfVya/MHnzORmPaff
+   l/tLcON1h+dGLO7xt/VSPcbVE4MG4X3t3XNbveXHMWlJHzgPSAkBuqRxl
+   y80plRVH5fk7ELhdKo1GwPZZlDOujgu1NlfGI0X6KGrrpuXIhqY7NEW03
+   VYvHb3+JfqUZhOLKWPu+tuMazuqPwCSokHEipwAFCg/+KCjhpOGL+ogeI
+   yz2wbAyDgb4y/b31QSLdb2h2D54YXka+P45wzvvt/w2JDw7Lc4FxWGsIU
+   LBDbWs+7fvgDvHTlrjQ/z16SNsDs71AeF3wYxsQrZ/WhE0F/UGN02dPik
+   A==;
+X-CSE-ConnectionGUID: Oze8iy73Qy27+zArzUH2kg==
+X-CSE-MsgGUID: 8tqwvThxRGmOAr8Wffi3tA==
+X-IronPort-AV: E=Sophos;i="6.24,184,1774335600"; 
+   d="scan'208";a="58925448"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa2.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 03 Jun 2026 00:26:07 -0700
+Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
+ chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.58; Wed, 3 Jun 2026 00:26:07 -0700
+Received: from [127.0.0.1] (10.10.85.11) by chn-vm-ex03.mchp-main.com
+ (10.10.85.151) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
+ Transport; Wed, 3 Jun 2026 00:26:03 -0700
+From: =?utf-8?q?Jens_Emil_Schulz_=C3=98stergaard?=
+	<jensemil.schulzostergaard@microchip.com>
+Subject: [PATCH net-next v7 0/9] net: dsa: add DSA support for the LAN9645x
+ switch chip family
+Date: Wed, 3 Jun 2026 09:25:19 +0200
+Message-ID: <20260603-dsa_lan9645x_switch_driver_base-v7-0-b2f90e676707@microchip.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAN/WH2oC/43QTWrDMBAF4KsErasiaSTZzqr3KMXob2pBYwfJq
+ C7Bd6/qTUIxOMvHg+8NcyM5pBgyOZ9uJIUSc5zGGpqXE3GDGT8Djb5mIpjQTHBGfTb9lxk7LdX
+ S5+84u6H3KZaQemtyoMCFteigCd6SqlxTwLhsC+9kDDMdwzKTj9oMMc9T+tmmC9/6bQUYHK4UT
+ hm1iK0zHDqN6u0SXZrcEK+vbrpsfhEPppDHpqgmNorJAJbplu+ZcDflE98oUE1jvGtVp4Bpv2f
+ KBxOeMOXfndxqxhSa1jZ7prqbirfHpqpmp1u0CBLRwJ6pH0zRHJu6mtJL1pmgJYL7b67r+gsef
+ n+bgAIAAA==
+To: <UNGLinuxDriver@microchip.com>, Andrew Lunn <andrew@lunn.ch>, "Vladimir
+ Oltean" <olteanv@gmail.com>, "David S. Miller" <davem@davemloft.net>, "Eric
+ Dumazet" <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Rob Herring
+	<robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+	<conor+dt@kernel.org>, Woojung Huh <woojung.huh@microchip.com>, Russell King
+	<linux@armlinux.org.uk>, Steen Hegelund <Steen.Hegelund@microchip.com>,
+	Daniel Machon <daniel.machon@microchip.com>
+CC: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
+	<devicetree@vger.kernel.org>, =?utf-8?q?Jens_Emil_Schulz_=C3=98stergaard?=
+	<jensemil.schulzostergaard@microchip.com>
+X-Mailer: b4 0.15-dev
 
-From: Sven Eckelmann <sven@narfation.org>
+This series provides the Microchip LAN9645X Switch driver.
 
-batadv_tt_local_add() tries to retrieve the wifi flags of an interface to
-mark the TT entry as wifi client for the AP isolation feature. In the past,
-it was necessary to look up the batadv_hard_iface because the wifi_flags
-were stored inside this struct. But with the batadv_wifi_net_devices
-rhashtable, it is preferred to directly retrieve the wifi_flags instead of
-the indirect route via batadv_hard_iface - which at the end only provides
-the net_device (which we used to find the batadv_hard_iface).
+The LAN9645x is a family of chips with ethernet switch functionality and
+multiple peripheral functions. The switch delivers up to 9 ethernet
+ports and 12 Gbps switching bandwidth.
 
-This will also be essential when the global batadv_hardif_list is removed
-and each lookup via batadv_hardif_get_by_netdev() will require the RTNL
-lock.
+The switch chip has 5 integrated copper PHYs, support for 2x RGMII
+interfaces, 2x SGMII and one QSGMII interface.
 
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+The switch chip is from the same design architecture family as ocelot
+and lan966x, and the driver reflects this similarity. However, LAN9645x
+does not have an internal CPU in any package, and must be driven
+externally. For register IO it supports interfaces such as SPI, I2C and
+MDIO.
+
+The chip supports a variety of network features such as
+
+* Mactable for MDB/FDB functionality
+* Bridge forwarding offload
+* VLAN-aware bridging
+* IGMP/MLD snooping
+* Link aggregation
+* PTP timestamping
+* FRER (802.1CB)
+* Media Redundancy Protocol
+* Parallel Redundancy and High-Availability Seamless Redundancy
+  (HSR/PRP) in DANH/DANP mode
+* Per stream filtering and policing
+* Shapers such as Credit Based Shaping and Time Aware Shaing
+* Frame preemption
+* A TCAM (VCAP) for line-rate frame processing
+
+The LAN9645x family consists of the following SKUs:
+
+LAN96455F
+LAN96457F
+LAN96459F
+LAN96455S
+LAN96457S
+LAN96459S
+
+The difference between the SKUs is the number of supported ports (5, 7
+or 9) and features supported. The F subfamily supports HSR/PRP and TSN,
+while the S subfamily does not.
+
+The intended way to bind this driver is using a parent MFD driver,
+responsible for the register IO protocol, and distributing regmaps to
+child devices. The goal is to use the same approach as the MFD driver in
+drivers/mfd/ocelot-spi.c.
+
+This driver expects to request named regmaps from a parent device. This
+approach is similar to the DSA driver
+
+drivers/net/dsa/ocelot/ocelot_ext.c
+
+which supports being driven by an external CPU via SPI with parent
+device drivers/mfd/ocelot-spi.c.
+
+The MFD driver will come in a later series, because there are
+requirements on the number of child devices before a driver qualifies as
+a MFD device.
+
+Development is done using the LAN966x as a host CPU, running the lan966x
+swichdev driver, using the EVB-LAN9668 EDS2 board.
+
+The datasheet is available here:
+https://ww1.microchip.com/downloads/aemDocuments/documents/UNG/ProductDocuments/DataSheets/LAN9645xF-Data-Sheet-DS00006065.pdf
+
+This series will deliver the following features:
+
+* Standalone ports
+* Bridge forwarding and FDB offloading
+* VLAN-aware bridge
+* Stats integration
+
+More support will be added at a later stage. Here is a tentative plan of
+future patches for this DSA driver:
+
+* Add LAG support.
+* Add MDB support.
+* Add TC matchall mirror support.
+* Add TC matchall police support.
+* Add DCB/qos support.
+* Add simple TC support: mqprio, cbs, tbf, ebf.
+* Add TC flower filter support.
+* Add HSR/PRP offloading support.
+* Add PTP support.
+* Add TC taprio support.
+
+For completeness I include tentative plan of planned patches for
+LAN9645x peripherals:
+
+* Extend pinctrl-ocelot for LAN9645x:
+  https://lore.kernel.org/linux-gpio/20260119-pinctrl_ocelot_extend_support_for_lan9645x-v1-0-1228155ed0ee@microchip.com/
+* Add driver for internal PHY:
+  https://lore.kernel.org/netdev/20260123-phy_micrel_add_support_for_lan9645x_internal_phy-v1-1-8484b1a5a7fd@microchip.com/
+* MFD driver for managing register IO protocol and child device
+  initialization.
+* Extend pinctrl-microchip-sgpio for LAN9645x support.
+* Extend i2c_designware for LAN9645x support.
+* Add driver for outbound interrupt controller.
+* Add serdes driver for lan9645x.
+
+Signed-off-by: Jens Emil Schulz Østergaard <jensemil.schulzostergaard@microchip.com>
 ---
- net/batman-adv/hard-interface.c    | 25 ++++++++++++++++++-------
- net/batman-adv/hard-interface.h    |  1 +
- net/batman-adv/translation-table.c | 14 ++++++++------
- 3 files changed, 27 insertions(+), 13 deletions(-)
+Changes in v7:
+- Individual patches mention specific v7 changes
+- Do not mark the BPDU range 01:80:C2:00:00:0X as offloaded in the tag driver.
+- Refactor cpu queue based frame classification to use categories default, trap
+  and copy, which mirrors usage instead of being based on frame types.
+- Add registers ANA:COMMON:CPUQ_8021_CFG for bpdu cpu queue configuration.
+- Use cpu queue LAN9645X_CPUQ_TRAP for bpdu frames.
+- Refactor IGMP/MLD/IPMC_CTRL to use new LAN9645X_CPUQ_DEF,
+  LAN9645X_CPUQ_TRAP and LAN9645X_CPUQ_COPY queues.
+- Add __aligned(2) to mac variable in lan9645x_mdb_update_dest.
+- Link to v6: https://lore.kernel.org/r/20260527-dsa_lan9645x_switch_driver_base-v6-0-4d409ae64f3c@microchip.com
 
-diff --git a/net/batman-adv/hard-interface.c b/net/batman-adv/hard-interface.c
-index bb3c31b5f259d..43ebf86e7b368 100644
---- a/net/batman-adv/hard-interface.c
-+++ b/net/batman-adv/hard-interface.c
-@@ -366,22 +366,19 @@ static u32 batadv_wifi_flags_evaluate(struct net_device *net_device)
- }
- 
- /**
-- * batadv_hardif_get_wifi_flags() - retrieve wifi flags for hard_iface
-- * @hard_iface: the device to check
-+ * batadv_netdev_get_wifi_flags() - retrieve wifi flags for net_device
-+ * @net_dev: the device to check
-  *
-  * Return: batadv_hard_iface_wifi_flags flags of the device
-  */
--u32 batadv_hardif_get_wifi_flags(struct batadv_hard_iface *hard_iface)
-+u32 batadv_netdev_get_wifi_flags(struct net_device *net_dev)
- {
- 	struct batadv_wifi_net_device_state *device_state;
- 	u32 wifi_flags = 0;
- 
--	if (!hard_iface)
--		return 0;
--
- 	rcu_read_lock();
- 	device_state = rhashtable_lookup_fast(&batadv_wifi_net_devices,
--					      &hard_iface->net_dev,
-+					      &net_dev,
- 					      batadv_wifi_net_devices_params);
- 	if (device_state)
- 		wifi_flags = READ_ONCE(device_state->wifi_flags);
-@@ -390,6 +387,20 @@ u32 batadv_hardif_get_wifi_flags(struct batadv_hard_iface *hard_iface)
- 	return wifi_flags;
- }
- 
-+/**
-+ * batadv_hardif_get_wifi_flags() - retrieve wifi flags for hard_iface
-+ * @hard_iface: the device to check
-+ *
-+ * Return: batadv_hard_iface_wifi_flags flags of the device
-+ */
-+u32 batadv_hardif_get_wifi_flags(struct batadv_hard_iface *hard_iface)
-+{
-+	if (!hard_iface)
-+		return 0;
-+
-+	return batadv_netdev_get_wifi_flags(hard_iface->net_dev);
-+}
-+
- /**
-  * batadv_is_wifi_hardif() - check if the given hardif is a wifi interface
-  * @hard_iface: the device to check
-diff --git a/net/batman-adv/hard-interface.h b/net/batman-adv/hard-interface.h
-index 089e65c8a4817..822e7e378c4d1 100644
---- a/net/batman-adv/hard-interface.h
-+++ b/net/batman-adv/hard-interface.h
-@@ -70,6 +70,7 @@ extern struct notifier_block batadv_hard_if_notifier;
- 
- struct net_device *__batadv_get_real_netdev(struct net_device *net_device);
- struct net_device *batadv_get_real_netdev(struct net_device *net_device);
-+u32 batadv_netdev_get_wifi_flags(struct net_device *net_dev);
- u32 batadv_hardif_get_wifi_flags(struct batadv_hard_iface *hard_iface);
- bool batadv_is_wifi_hardif(struct batadv_hard_iface *hard_iface);
- struct batadv_hard_iface*
-diff --git a/net/batman-adv/translation-table.c b/net/batman-adv/translation-table.c
-index 44bbaa3bb37d1..c346e43d47b9b 100644
---- a/net/batman-adv/translation-table.c
-+++ b/net/batman-adv/translation-table.c
-@@ -596,20 +596,23 @@ bool batadv_tt_local_add(struct net_device *mesh_iface, const u8 *addr,
- 	struct net *net = dev_net(mesh_iface);
- 	struct batadv_meshif_vlan *vlan;
- 	struct net_device *in_dev = NULL;
--	struct batadv_hard_iface *in_hardif = NULL;
- 	struct hlist_head *head;
- 	struct batadv_tt_orig_list_entry *orig_entry;
- 	int hash_added, table_size, packet_size_max;
- 	bool ret = false;
- 	bool roamed_back = false;
-+	bool iif_is_wifi = false;
- 	u8 remote_flags;
- 	u32 match_mark;
- 
- 	if (ifindex != BATADV_NULL_IFINDEX)
- 		in_dev = dev_get_by_index(net, ifindex);
- 
--	if (in_dev)
--		in_hardif = batadv_hardif_get_by_netdev(in_dev);
-+	if (in_dev) {
-+		u32 wifi_flags = batadv_netdev_get_wifi_flags(in_dev);
-+
-+		iif_is_wifi = batadv_is_wifi(wifi_flags);
-+	}
- 
- 	tt_local = batadv_tt_local_hash_find(bat_priv, addr, vid);
- 
-@@ -684,7 +687,7 @@ bool batadv_tt_local_add(struct net_device *mesh_iface, const u8 *addr,
- 	 */
- 	tt_local->common.flags = BATADV_TT_CLIENT_NEW;
- 	tt_local->common.vid = vid;
--	if (batadv_is_wifi_hardif(in_hardif))
-+	if (iif_is_wifi)
- 		tt_local->common.flags |= BATADV_TT_CLIENT_WIFI;
- 	kref_init(&tt_local->common.refcount);
- 	tt_local->last_seen = jiffies;
-@@ -743,7 +746,7 @@ bool batadv_tt_local_add(struct net_device *mesh_iface, const u8 *addr,
- 	 */
- 	remote_flags = tt_local->common.flags & BATADV_TT_REMOTE_MASK;
- 
--	if (batadv_is_wifi_hardif(in_hardif))
-+	if (iif_is_wifi)
- 		tt_local->common.flags |= BATADV_TT_CLIENT_WIFI;
- 	else
- 		tt_local->common.flags &= ~BATADV_TT_CLIENT_WIFI;
-@@ -767,7 +770,6 @@ bool batadv_tt_local_add(struct net_device *mesh_iface, const u8 *addr,
- 
- 	ret = true;
- out:
--	batadv_hardif_put(in_hardif);
- 	dev_put(in_dev);
- 	batadv_tt_local_entry_put(tt_local);
- 	batadv_tt_global_entry_put(tt_global);
+Changes in v6:
+- Individual patches mention specific v6 changes
+- Rebased on net-next, bumping DSA_TAG_PROTO_LAN9645X_VALUE to 34
+- Link to v5: https://lore.kernel.org/r/20260518-dsa_lan9645x_switch_driver_base-v5-0-968fbf34ffa3@microchip.com
+
+Changes in v5:
+- Individual patches mention specific v5 changes
+- Undo offset fix in postpull_rcsum. The original logic was correct for
+  CHECKSUM_COMPLETE host NICs
+- Use __always_inline in lan9645x_ifh_{get,set}
+- remove double space after = in set_merge_mask
+- remove unused fields dd_dis and tsn_dis, and add SKU supported port validation
+  during setup
+- phylink: remove MAC_2500FD
+- phylink: add comment about empty supported_interfaces for port 5-6.
+- phylink: fix 2:1 rgmii port muxing for port module 4 and 7 to be fully
+  dynamic and validate requested mux settings.
+- phylink: add comment about 2:1 rgmii port muxing for port module 4
+  and 7.
+- rx/tx-internal-delay-ps checked against supported 2ns value
+- init lan9645x->npi = -1 at probe and check port < 0 in npi_deinit
+- use ds->ageing_time_max
+- use packed p->host_flood_req for atomic r/w
+- fix typo in set_ageing_time comment
+- include lan9645x->bridge deref under lock in brige_join
+- switch -EBUSY to -EINVAL for vlan add/del in the reserved range.
+- remove reserved HSR vlan
+- lan9645x_mac_init returns error on table init timeout
+- add comment about skipping LOCKED entries on fdb dump
+- skip igmp/mld redir for npi port
+- make lan9645x_stats_init void
+- add SCNT_TX_BUFDROP to tx_dropped
+- change rmon range {0,64} -> {64, 64}. Runt frames counted elsewhere.
+- remove rx_crc, rx_symbol_err from rx_packets, as they are already
+  counted in SZ_* buckets.
+- add defensive cancel_delayed_work_sync in stats_free
+- Link to v4: https://lore.kernel.org/r/20260430-dsa_lan9645x_switch_driver_base-v4-0-f1b6005fa8b7@microchip.com
+
+Changes in v4:
+- v3 was deferred, but I made some changes based on the Sashiko review
+- Individual patches mention specific v4 changes
+- Fix offset in postpull_rcsum so prefix eth header is cleared, not
+  actual eth header, so tag driver works with CHECKSUM_COMPLETE host
+  NICs
+- Fix untagged rx on vlan aware port with pvid
+- Add comment to QSYS_RES_CFG configuration
+- Phylink_mac_prepare: fix to make sure we can dynamically change rgmii
+  on port 4
+- Move ports allocation to probe
+- tag_npi_setup: reject cascaded setups
+- Skip WARN_ON in lan9645x_to_port
+- set_host_flood changed to per port work to coalesce values and skip
+  atomic allocations
+- Fix clear HOST_PVID vlan membership when a port joins a bridge.
+- Explicit default value write to tag type register for untagged frames
+- Use lan_rmw for ANA_DROP_CFG
+- Add comment for error path in lan9645x_vlan_hw_wr
+- Remove mac_entries list and just do direct IO to mac table from
+  fdb_add/fdb_del.
+- Clean up fresh mdb when hw mac table write fails.
+- Remove rx_uc and tx_uc from ethtool stats list, as they are derivable
+  from the eth-mac group
+- Split stats_init into stats_alloc and stats_init, use alloc in probe
+  and init in dsa_setup
+- Link to v3: https://lore.kernel.org/r/20260410-dsa_lan9645x_switch_driver_base-v3-0-aadc8595306d@microchip.com
+
+Changes in v3:
+- Individual patches mention specific v3 changes.
+- Add guard before vlan_remove_tag on xmit
+- Add pskb_may_pull checks on rx
+- Remove additionalProperties: true in bindings
+- Remove unnecessary | from description in bindings
+- Change top level $ref to dsa.yaml#/$defs/ethernet-ports
+- Use ethernet-ports and ethernet-port
+- Move ethernet-ports under properties instead of patternProperties
+- Move unevaluatedProperties: false after $ref
+- Update bindings example to use ethernet-ports and ethernet-port
+- Move DEV_MAC_TAGS_CFG to port setup, instead of vlan config, so vlan
+  overhead is always included in port frame maxlen calculation.
+- Remove code disabling ipv6 on conduit
+- Use of_property_read_u32 for {rx,tx}-internal-delay-ps
+- Use dsa_user_ports(ds) instead of
+  GENMASK(lan9645x->num_phys_ports - 1, 0) as base flood mask.
+- Add comment explaining obey vlan
+- Allow disabling aging with explicit zero parameters.
+- Fix non-forwarding STP states in bridge fwd calculation.
+- Restore host flood state on bridge leave.
+- Avoid mac_entry dealloc when mac table writes fail.
+- Avoid mdb_entry dealloc when mac table writes fail.
+- Dealloc mac_entries on deinit.
+- Dealloc mdb_entries on deinit.
+- Link to v2: https://lore.kernel.org/r/20260324-dsa_lan9645x_switch_driver_base-v2-0-f7504e3b0681@microchip.com
+
+Changes in v2:
+- Individual patches have specific v2 changes.
+- Ran DSA, and std counters, selftests, which prompted several changes.
+  The following selftests pass, except for some expected failures:
+    - bridge_vlan_aware.sh
+    - bridge_vlan_unaware.sh
+    - bridge_vlan_mcast.sh
+    - no_forwarding.sh
+    - bridge_mdb.sh
+    - bridge_mld.sh
+    - test_fdb_stress_test.sh
+    - .../drivers/net/hw/ethtool_rmon.sh
+    - .../drivers/net/hw/ethtool_std_stats.sh (from Ioana's series)
+- Added new patch for MDB management, as this was required for selftests.
+- Added port_set_host_flood to enable unknown traffic to standalone during
+  promisc/ALL_MULTI (selftests).
+- Remove the dubugfs.
+- Link to v1: https://lore.kernel.org/r/20260303-dsa_lan9645x_switch_driver_base-v1-0-bff8ca1396f5@microchip.com
+
+---
+Jens Emil Schulz Østergaard (9):
+      net: dsa: add tag driver for LAN9645X
+      dt-bindings: net: lan9645x: add LAN9645X switch bindings
+      net: dsa: lan9645x: add autogenerated register macros
+      net: dsa: lan9645x: add basic dsa driver for LAN9645X
+      net: dsa: lan9645x: add bridge support
+      net: dsa: lan9645x: add vlan support
+      net: dsa: lan9645x: add mac table integration
+      net: dsa: lan9645x: add mdb management
+      net: dsa: lan9645x: add port statistics
+
+ .../net/dsa/microchip,lan96455s-switch.yaml        |  111 ++
+ MAINTAINERS                                        |   10 +
+ drivers/net/dsa/Kconfig                            |    2 +
+ drivers/net/dsa/microchip/Makefile                 |    1 +
+ drivers/net/dsa/microchip/lan9645x/Kconfig         |   11 +
+ drivers/net/dsa/microchip/lan9645x/Makefile        |   12 +
+ drivers/net/dsa/microchip/lan9645x/lan9645x_mac.c  |  306 ++++
+ drivers/net/dsa/microchip/lan9645x/lan9645x_main.c | 1033 +++++++++++
+ drivers/net/dsa/microchip/lan9645x/lan9645x_main.h |  435 +++++
+ drivers/net/dsa/microchip/lan9645x/lan9645x_mdb.c  |  397 ++++
+ drivers/net/dsa/microchip/lan9645x/lan9645x_npi.c  |   83 +
+ .../net/dsa/microchip/lan9645x/lan9645x_phylink.c  |  409 +++++
+ drivers/net/dsa/microchip/lan9645x/lan9645x_port.c |  224 +++
+ drivers/net/dsa/microchip/lan9645x/lan9645x_regs.h | 1937 ++++++++++++++++++++
+ .../net/dsa/microchip/lan9645x/lan9645x_stats.c    |  929 ++++++++++
+ .../net/dsa/microchip/lan9645x/lan9645x_stats.h    |  279 +++
+ drivers/net/dsa/microchip/lan9645x/lan9645x_vlan.c |  403 ++++
+ include/linux/dsa/lan9645x.h                       |  144 ++
+ include/net/dsa.h                                  |    2 +
+ net/dsa/Kconfig                                    |   11 +
+ net/dsa/Makefile                                   |    1 +
+ net/dsa/tag_lan9645x.c                             |  312 ++++
+ 22 files changed, 7052 insertions(+)
+---
+base-commit: 51e4eca2d360b8610fdc2b71ebfea3c0c4038a70
+change-id: 20260210-dsa_lan9645x_switch_driver_base-312bbfc37edb
+
+Best regards,
 -- 
-2.47.3
+Jens Emil Schulz Østergaard <jensemil.schulzostergaard@microchip.com>
 
