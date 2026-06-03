@@ -1,122 +1,195 @@
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01A7B3AB273
-	for <netdev@vger.kernel.org>; Wed,  3 Jun 2026 14:44:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780497855; cv=pass; b=fen9V2gnN9yQiv926FDQDW4huvcvhOJ+brZ9WDApkDEG4aw6EVE6QCIAE8NlqSl8wa/jWhRIsI7YQhNzRH6BOsOWCg7wruzYkFbQ+NSJLIUTvVfHsM1w1pzucP8YZ3Tx/cLf7A2zcOq+tT9LhPxQKeSWpNGwViQHAeqTUSEl+1A=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780497855; c=relaxed/simple;
-	bh=2OkasJ0ndKZfg6cpcJo7yWgVLndNvCdeEQG7xxbqLK0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SXaF3Ct4y7plxr0Q1a59sXALXNnJHj6vu94X+EcAWWvklYPVqsUYXDXAoiw15h5G+4eXh6mD3fwHesj2zyS9zZ8fAPbKGs70xk9HFtbOuVe7KtgWgEhEaa0p853BFT2bI9VkCHwqqqOZ0Sd7i82Ytq0GZKCiXNNXOwHOqC5e4XU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=K7D5f+wx; arc=pass smtp.client-ip=209.85.216.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5A50223DE7
+	for <netdev@vger.kernel.org>; Wed,  3 Jun 2026 14:52:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780498331; cv=none; b=ktoSUfQobCfpe/cNSsUj9hRTHzR0AH34bLIcU20/xCD6WVb+Sks+78m20zMStQy9tBzRNlzbRJ3wPQAiGf2V2Cq+c/ul2AnHOYvi4JSOzaVhESaBPMMcHMZntMfxPDM8X5rtmNJEoyeOM90jF8Vr3hbOKFjicXBU2/243vseS00=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780498331; c=relaxed/simple;
+	bh=HDcr2YiRSuXkaEuCgWS3hOijsOfF03suIpjODhdREo8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JfNXx+d+A0jJKCZA4ZmhFIhhUZT/2eifY0qPnCAeMg+OIBbpgqHa3qAx8ib+HcOz9BRJW9zgljd9b3TaEMGi0EApZ7o54jJlYkl0WFo1RbzZPyP43wWyKqh+NfrNVDbLDAR7tyZBml31UUY2DxDp1dSwNY4g4icdeOUS/gUyNZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fQrLPt8s; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="K7D5f+wx"
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-36d5fd50d20so3251692a91.1
-        for <netdev@vger.kernel.org>; Wed, 03 Jun 2026 07:44:13 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780497853; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Oj8ZE8SFHnujntcxOE96dAyYjOpsv4qzf7Xni10xRBrS3u7JKCMe6uAGL4+TinRDAP
-         ucVcxp8PeilTwIt1NjV/UiXVEetiA2g/ARJ9UgPCtWvRcV44DWNbAnPX2eJ0HJMqrjE7
-         N86/vjGbU/yiz+9sY0hYnU0X7+mvO3q6AbxsUeBBpQ+heqogG+jgFQUK7KUXIplRkPFm
-         MA0e2mFQ+VHlL9g9Iz1z9aZBjGu2vacQosiWdd/hQsljDap7Log6wEOS0LYiXznW7GPC
-         TtBTgYdaArJFXJ07GYgB36Leu4dNeM+b6PK1nv9e3Jc//8MHISBqoo4dlBNZkGprpZuT
-         yStQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Y5JjMZYEtQz+6ik+uw6aiCOF6sKgKEkR5ogTnZvnVt0=;
-        fh=ngxHM6bP4fsqt9ftBWqHFdaYeTijfKm6O6/8N8rvTyM=;
-        b=CUfMBl3PI7lX6jI/noYLmCPURpQUXTeThsavSAMFi9ig6WfTH4t03pu8P8T5/aHdEp
-         /V/HqxZUy+R6aLc9fmV9u8sfXfo71EppgQ7PtNBVP/mBcjDRWfEd7zcKsSObf8r3q8JM
-         MV+hUWHiXITDcSk1Uio8ZIGWKbSHHCPRsrjDJpCi76pwN6lUmrv5MY+Gh96964/N06x8
-         UGEoQElXceqFLRxotWt0sWr1slKvdfKkycRQK0BOMArij5nIclZahMp2IU1QTlXIHdU3
-         An1WF8poEcRS5YaDuovxj1MZDEzDYISDcm/aUindSIu+LN9muZNKRvkBvDURHQ2Sm6Qc
-         bYlw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1780497853; x=1781102653; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Y5JjMZYEtQz+6ik+uw6aiCOF6sKgKEkR5ogTnZvnVt0=;
-        b=K7D5f+wxF8jERGEb36Ms0OO4m+9Fq0hFqokg0cc/mIe6f0adFu2IYc5qQhRMZtXZbo
-         pYvyvR/AEHzCCdFP2qNPsBqN8HHt0YKQzvy5TLrFSuokRHsD6sYOc8KrthK3gVHRHmLG
-         aJfQ7VIK3oh18o8tj3DvLr9YXhwnBfS+6F/l33cKn7Ux0qcvgzzYqCqEAxEhIG4iX/No
-         66kkJd70ctGAG0yysuDInWJWr7gBdbAJ5QaM5ZPB1rCQz6WWysVhBAWyFeV+VVKr9R9b
-         OECQC8asSoRgfC9w8GuRmhULjIm+omSKKVfyFaM2/3yu3fnr5++/8/i9nD+k+dmevIFs
-         u51w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780497853; x=1781102653;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Y5JjMZYEtQz+6ik+uw6aiCOF6sKgKEkR5ogTnZvnVt0=;
-        b=FG+mSWYeCwMcJfg0XgCZ5Kp5amy2RLVz2qiczBm726xRi87RWYU0BlOfaKY5WdXLg3
-         zvGMeBuWNa6RlTXEZXblcyiFUzBImcpjxaRnEU6fCf1zk+47U7tmRFed6K+kXcmMCH+u
-         eDic6+eNnMEkXt9z41m1hlPYGZds6COaEt4po+ccCP2yc2Ttf7MY4syUuA074Yr1ZhMu
-         yowA6LV0HK1xc0g+xDkFFA41em40I9NA8pRQzrqEdNlfGBwlpVldKZus3EwZiqle/Jor
-         3in4RkYiN49LVFEKs6ct8inCUUcIikVQw3H5lfkixftvNlJJad2q2+o05WH77h1Z5I5G
-         sLyw==
-X-Forwarded-Encrypted: i=1; AFNElJ+EqM8dDtwBXJbKAD09HBW0NXqGe7bzsZ0osFcLSyJmuZ9mc9MInNJJDA2HIIp4zRbOhfFjpxQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyjC4841ZOOtGDaAvu/AWawbbt0vgC5eAN7KqOuN+e4sUWkrSg/
-	4+JOIejQgNwk5H4hj9r8T/XDJnmkdu3Erx4pYcO1dEGuoLZlyawRK9EYeJE9Lz/MSmaAEcwDLSZ
-	Zu/TtnZ7RAeHyw78NFp0Ycw2Kgny+VThdMZl4iLMg
-X-Gm-Gg: Acq92OF9L5tCuPTi3vfsYGN1VYigOpJYf+WGXHN/3knbzznsjo8x0Gmdj1y6AXKEMjm
-	oRIm3ymnnF8jbPxLqgk6U+Fa6tqks0AYGoO6WPwo8dTuWeWu3F7MhRb0I8t2F/376r2B1kaBFIM
-	KKQfTCOmn1p5b1g7fI1YnF63TWplhKTan1U4qhx6P9yGgZlvvEAhDZiDOy+dzzfSW61VjKCPDAU
-	/NlD7PNW3cgH728gyu0GILAwsg0VDcqXUktkeKXGrTNnw1G3yorFe67YP0IkLK7QPP5MT5fg1lR
-	oQDwfvUusz6JrIA6EA==
-X-Received: by 2002:a05:6a20:d4b:b0:3b4:895f:6ac7 with SMTP id
- adf61e73a8af0-3b4978a23d7mr4133938637.22.1780497853207; Wed, 03 Jun 2026
- 07:44:13 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fQrLPt8s"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C69F91F00893;
+	Wed,  3 Jun 2026 14:52:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780498330;
+	bh=gSpeVldNkFT7EjhXUR5POP7i9/BXwA1U1h9g3EK75yg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=fQrLPt8sFkU6kBqoml4VbfiVYYMOVSMeQHhV88bW6Q5TGbCsfdVczqcCQqCzCmlvs
+	 pF3v3fgfRYySiRnfixb6LnUF7OAe0+wfRsf/mHz0V7PSK6reUttIi9yEQ5iHJOwX+Z
+	 crpP0MSVe7T9hVq8R82DBNVSLqg5QAq2+V7E+NtBmOvm0sGx5OMrQgVwj3oHR7SqxK
+	 kxQTeMoIZCLRCCzbmfsrvD9Fxyh/r2wF2eHSfV0qEXuctVAgiDhaym/rwk8mfj4KqG
+	 orpG2oKxR0orP/T1XiLp7SfOJtID1duvyI0OdPIXDtow4uqHk3BErmiYezh37UUE+A
+	 ZcFH9ok6QPpcg==
+Message-ID: <3abb77f3-1484-4e78-a671-321a560b109a@kernel.org>
+Date: Wed, 3 Jun 2026 08:52:08 -0600
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <ah8BzqSmZO40xYhS@sirena.org.uk> <CAHC9VhRR4mmkOdWwUCLswmA+_KEjB8RCBBTJ2W4JGiLUWKzxyQ@mail.gmail.com>
- <CAHC9VhRPbkVYAMec0KG55er6GOPdKqMXKdpC8rrHgiAodSv-sw@mail.gmail.com>
- <9d34218f-abbf-4a23-8b35-b305873ffae3@sirena.org.uk> <CAHC9VhQnBi55hjwTATA_tgKNZ=StFYTKu2Av5R8N4yDJwsFswQ@mail.gmail.com>
- <6565c4a4-3102-4521-9c84-48c7c7f0117f@sirena.org.uk>
-In-Reply-To: <6565c4a4-3102-4521-9c84-48c7c7f0117f@sirena.org.uk>
-From: Paul Moore <paul@paul-moore.com>
-Date: Wed, 3 Jun 2026 10:43:59 -0400
-X-Gm-Features: AVHnY4JIW8gQBYMOr8fggrJDG2mD4293Ofq_rtsFtHA031eqjcjZT-6N6e7Vah8
-Message-ID: <CAHC9VhR9R-wBAj64aO60pSUb7f5Tmfj6gprrHQB3g+=WYF14mA@mail.gmail.com>
-Subject: Re: linux-next: build failure after merge of the security tree
-To: Mark Brown <broonie@kernel.org>
-Cc: Blaise Boscaccy <bboscaccy@linux.microsoft.com>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>, bpf <bpf@vger.kernel.org>, 
-	Networking <netdev@vger.kernel.org>, 
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, 
-	Linux Next Mailing List <linux-next@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v2] net: protect egress device access in the output
+ path with rcu_read_lock
+Content-Language: en-US
+To: Hyunwoo Kim <imv4bel@gmail.com>, idosch@nvidia.com
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, steffen.klassert@secunet.com,
+ herbert@gondor.apana.org.au, andrew+netdev@lunn.ch, kuniyu@google.com,
+ jlayton@kernel.org, netdev@vger.kernel.org
+References: <ahveCu-zzFlpeVut@v4bel> <20260602154523.GA537996@shredder>
+ <ad40bbe0-f79c-4fd9-9670-5dab01a8e57f@kernel.org> <aiAk2Q-yNs6It6g4@v4bel>
+From: David Ahern <dsahern@kernel.org>
+In-Reply-To: <aiAk2Q-yNs6It6g4@v4bel>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Jun 3, 2026 at 8:42=E2=80=AFAM Mark Brown <broonie@kernel.org> wrot=
-e:
-> On Tue, Jun 02, 2026 at 05:45:04PM -0400, Paul Moore wrote:
-> > On Tue, Jun 2, 2026 at 3:16=E2=80=AFPM Mark Brown <broonie@kernel.org> =
-wrote:
->
-> > > Can you ping me when that goes in (or things are otherwise resolved)
-> > > please so I know to drop the revert from -next?
->
-> > You shouldn't see a conflict with lsm/next now, but if you do let me kn=
-ow.
->
-> It's still there today, but seeing Linus' comment about not merging
-> hornet I marked it as BROKEN instead.
+On 6/3/26 6:58 AM, Hyunwoo Kim wrote:
+> On Tue, Jun 02, 2026 at 10:24:09AM -0600, David Ahern wrote:
+>> On 6/2/26 9:45 AM, Ido Schimmel wrote:
+>>> On Sun, May 31, 2026 at 04:06:50PM +0900, Hyunwoo Kim wrote:
+>>>>  drivers/net/vrf.c       | 16 +++++++++++-----
+>>>>  net/ipv4/ip_output.c    | 27 +++++++++++++++++++--------
+>>>>  net/ipv4/raw.c          |  4 +++-
+>>>>  net/ipv4/xfrm4_output.c | 13 +++++++++----
+>>>>  net/xfrm/xfrm_output.c  |  4 +++-
+>>>>  5 files changed, 45 insertions(+), 19 deletions(-)
+>>>>
+>>>> diff --git a/drivers/net/vrf.c b/drivers/net/vrf.c
+>>>> index 46209917ae4d..e9a1dd961805 100644
+>>>> --- a/drivers/net/vrf.c
+>>>> +++ b/drivers/net/vrf.c
+>>>> @@ -833,17 +833,23 @@ static int vrf_finish_output(struct net *net, struct sock *sk, struct sk_buff *s
+>>>>  
+>>>>  static int vrf_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+>>>>  {
+>>>> -	struct net_device *dev = skb_dst(skb)->dev;
+>>>> +	struct net_device *dev;
+>>>> +	int ret;
+>>>> +
+>>>> +	rcu_read_lock();
+>>>> +	dev = skb_dst_dev_rcu(skb);
+>>>>  
+>>>>  	IP_UPD_PO_STATS(net, IPSTATS_MIB_OUT, skb->len);
+>>>>  
+>>>>  	skb->dev = dev;
+>>>>  	skb->protocol = htons(ETH_P_IP);
+>>>>  
+>>>> -	return NF_HOOK_COND(NFPROTO_IPV4, NF_INET_POST_ROUTING,
+>>>> -			    net, sk, skb, NULL, dev,
+>>>> -			    vrf_finish_output,
+>>>> -			    !(IPCB(skb)->flags & IPSKB_REROUTED));
+>>>> +	ret = NF_HOOK_COND(NFPROTO_IPV4, NF_INET_POST_ROUTING,
+>>>> +			   net, sk, skb, NULL, dev,
+>>>> +			   vrf_finish_output,
+>>>> +			   !(IPCB(skb)->flags & IPSKB_REROUTED));
+>>>> +	rcu_read_unlock();
+>>>> +	return ret;
+>>>>  }
+>>>
+>>> Patch LGTM, thanks, but what about the IPv6 counterpart (vrf_output6())
+> 
+> I left ipv6 out because its callers (ip6_send_skb, ip6_xmit, etc.)
+> already hold rcu. Though some niche paths may not. (maybe rxe_send?)
+> 
+>>> and the other similar existing issues that Sashiko is flagging?
+> 
+> I couldn't find Sashiko's review. Could you share a url?
+> 
+>>
+>> Common locking at a higher level than dst->output seems like a better
+>> approach. This function is called under rcu_read_lock for some paths.
+> 
+> Adding rcu to ip_local_out would protect all functions reached via
+> dst_output in one place; raw_send_hdrinc and xfrm_output_resume still
+> need their own patches. What do you think of this diff?
+> 
+> As a follow-up, the rcu in ip_output etc. then becomes redundant and
+> should be removed.
+> 
+> 
+> Best regards,
+> Hyunwoo Kim
+> 
+> ---
+> 
+> diff --git a/net/ipv4/ip_output.c b/net/ipv4/ip_output.c
+> index 5bcd73cbdb41..26b51ef0763f 100644
+> --- a/net/ipv4/ip_output.c
+> +++ b/net/ipv4/ip_output.c
+> @@ -126,9 +126,11 @@ int ip_local_out(struct net *net, struct sock *sk, struct sk_buff *skb)
+>  {
+>  	int err;
+> 
+> +	rcu_read_lock();
+>  	err = __ip_local_out(net, sk, skb);
+>  	if (likely(err == 1))
+>  		err = dst_output(net, sk, skb);
+> +	rcu_read_unlock();
+> 
+>  	return err;
+>  }
+> diff --git a/net/ipv4/raw.c b/net/ipv4/raw.c
+> index 68e88cb3e55c..555e62eacdc6 100644
+> --- a/net/ipv4/raw.c
+> +++ b/net/ipv4/raw.c
+> @@ -410,9 +410,11 @@ static int raw_send_hdrinc(struct sock *sk, struct flowi4 *fl4,
+>  				skb_transport_header(skb))->type);
+>  	}
+> 
+> +	rcu_read_lock();
+>  	err = NF_HOOK(NFPROTO_IPV4, NF_INET_LOCAL_OUT,
+> -		      net, sk, skb, NULL, rt->dst.dev,
+> +		      net, sk, skb, NULL, skb_dst_dev_rcu(skb),
+>  		      dst_output);
+> +	rcu_read_unlock();
+>  	if (err > 0)
+>  		err = net_xmit_errno(err);
+>  	if (err)
+> diff --git a/net/xfrm/xfrm_output.c b/net/xfrm/xfrm_output.c
+> index cc35c2fcbbe0..c5ac360da38d 100644
+> --- a/net/xfrm/xfrm_output.c
+> +++ b/net/xfrm/xfrm_output.c
+> @@ -594,6 +594,7 @@ int xfrm_output_resume(struct sock *sk, struct sk_buff *skb, int err)
+>  {
+>  	struct net *net = xs_net(skb_dst(skb)->xfrm);
+> 
+> +	rcu_read_lock();
+>  	while (likely((err = xfrm_output_one(skb, err)) == 0)) {
+>  		nf_reset_ct(skb);
+> 
+> @@ -601,12 +602,14 @@ int xfrm_output_resume(struct sock *sk, struct sk_buff *skb, int err)
+>  		if (unlikely(err != 1))
+>  			goto out;
+> 
+> -		if (!skb_dst(skb)->xfrm)
+> -			return dst_output(net, sk, skb);
+> +		if (!skb_dst(skb)->xfrm) {
+> +			err = dst_output(net, sk, skb);
+> +			goto out;
+> +		}
+> 
+>  		err = nf_hook(skb_dst(skb)->ops->family,
+>  			      NF_INET_POST_ROUTING, net, sk, skb,
+> -			      NULL, skb_dst(skb)->dev, xfrm_output2);
+> +			      NULL, skb_dst_dev_rcu(skb), xfrm_output2);
+>  		if (unlikely(err != 1))
+>  			goto out;
+>  	}
+> @@ -615,6 +618,7 @@ int xfrm_output_resume(struct sock *sk, struct sk_buff *skb, int err)
+>  		err = 0;
+> 
+>  out:
+> +	rcu_read_unlock();
+>  	return err;
+>  }
+>  EXPORT_SYMBOL_GPL(xfrm_output_resume);
 
-My apologies, I forgot to push my local tree to kernel.org.  It should
-be all set now.
-
---=20
-paul-moore.com
+I prefer this over locking in each of the output functions. IPv6 should
+be updated as well.
