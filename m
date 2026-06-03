@@ -1,69 +1,63 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A871B36EAA4;
-	Wed,  3 Jun 2026 20:13:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9D83402BB6
+	for <netdev@vger.kernel.org>; Wed,  3 Jun 2026 20:14:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780517582; cv=none; b=bi8bkpdIvL5um99v2LZFdOMOO3Nb5hBKvxPKSeYhDdabJABrtjSW5+EoKb9S6f6Y9QpKnf6qUI1DXKOvYBAXVaO6tuednkDwPC3uF2j3vhPpHoA5fVoijbCS4PdEQRU6d0DZpG2JstMxcLeKHqxZxVgBgKc8tOQE5aCWYWdWQng=
+	t=1780517673; cv=none; b=YsOy4aCcyNOGOGnSU3wXI1ba8l7+luHa1zPR5FPfUzktXTmz5s9mt3kcMwPy9i1EXBogKnPis/5G6ah2Xm3yp6etpbIPMLRmc1qJknUZ8KNSR2eUHyx+tHLV9jueJqYscK/HR1p41qWUysCk1eKr7Oa8/KJeUhXAIrUTZYM2nQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780517582; c=relaxed/simple;
-	bh=4+/OU53/6DRgcz/edi9bWr3r3BpBMEf3EXK6HlN6lf0=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gCqVjsEeprfSfrTBD5gnWj6UOn8YhsMWVWsaaMmahwb4i/1FY0l4xIqkGmCjYVPAYdM3nEWKUA0c5hKHLG5sDmFv80/+Em3oK/Bw3drI46aP2724v+zoF1MMNgeIJpElSAPsy+E7AIgl9Ytos4nYN1bTvhYjoTTLRkZv6+PbxiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DrWtfiYX; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780517673; c=relaxed/simple;
+	bh=sU7a+cepX5Yo0+ifY+l6yrlTvgf21pD972JHq2GklJE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UeeJzFI0P7mHhNm0xg7Ys+31fCC3uUW8B6TSOJbETzmzJ9DJxqUTo1kxkq+4I4nA8rbI5uRXaG1k66dchTsUmHxl6WFFD4Dap3hbNg8uNojkR0wPBVxBr/zS9FFA6OdrUCqNHhYwbqNuaaLA71KLmZnYX+7cKtvEZJm4PkGvi9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iIA9+Bcu; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DrWtfiYX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D699E1F00893;
-	Wed,  3 Jun 2026 20:13:00 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iIA9+Bcu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED3A41F00893;
+	Wed,  3 Jun 2026 20:14:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780517581;
-	bh=K+i1Df9kDuRQYRCGNe45rGQ4fhycJKRABdpgHeJsQ3E=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=DrWtfiYXbxD8LvRhGspq1jE5xmfswNcODFItdabPAQsOuopeYhDiwUbPiIbUSzhyi
-	 7O7JNSvll49Gcci/uFJRzSDhivH+ULbC5k2azczF85p9aGZsV07pcJ3jWEitpUXjcc
-	 nzhwMJ9z8XuH3FchXrlj+OURDXaK7MfTEgJIKRyM9ExIkpOrVQzNnk59lkgIp1XThf
-	 +9bQCFoj/6dM+pkOySd2t8sTk1Y8uLa2tSjFFAIBGYZdUUwz68/SqDTbdp9F9QAv2P
-	 4Uw6AS/3NB50p7gEO69MT3gLnIqxtx/nVARnvfuzi2opLVOkJO0pfkBkKShzLom/sU
-	 aWxj/ZjDia3Lg==
-Date: Wed, 3 Jun 2026 13:13:00 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
- pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
- johannes@sipsolutions.net, corbet@lwn.net, skhan@linuxfoundation.org,
- workflows@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: Re: [PATCH net-next] docs: exclude driver and netdevsim bugs
-Message-ID: <20260603131300.42490f65@kernel.org>
-In-Reply-To: <a0f191f4-3c09-4919-bc79-0b716d1ecc6f@lunn.ch>
-References: <20260603162943.2406080-1-kuba@kernel.org>
-	<a0f191f4-3c09-4919-bc79-0b716d1ecc6f@lunn.ch>
+	s=k20260515; t=1780517672;
+	bh=uXXxZ8FqhgPcL5gSEGJG8WHkuHR2HXsCZkOQLVDE8ys=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=iIA9+Bcujh2XJOug029cRJ57fG4IiDUEMcuFERvMchutZIsdI9j87UIa5KC5Sl9AK
+	 AHWihb9Ktf2RkJFOZXiAO+0qq8S4SfT3GBKolSqqKRUkPHIHDIZ80BRrJRjj1gb86k
+	 EGZa60f3LQ+wgM8mCMhvIgYsr1yiranjjdexkOXd5Wc/7TI8yePDDkBmdW8oIJHphX
+	 kfIzwiTav+dWB3KCzpeXLyUEH6WfGv5DDbljKN1YnFXy92acJCeoroTPXb94Qo6Fv1
+	 S61VrIs5mPf16IgblEkmOxxdiSYVoXVFP1j6fi9gP819cAkF0ba244JFBAjJ2NtOFr
+	 gBjlnC8fkTcTg==
+Date: Wed, 3 Jun 2026 21:14:28 +0100
+From: Simon Horman <horms@kernel.org>
+To: Antoine Tenart <atenart@kernel.org>
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+	edumazet@google.com, andrew+netdev@lunn.ch, netdev@vger.kernel.org,
+	Sashiko <sashiko-bot@kernel.org>
+Subject: Re: [PATCH net] geneve: fix length used in GRO hint UDP checksum
+ adjustment
+Message-ID: <20260603201428.GJ3766816@horms.kernel.org>
+References: <20260529144713.780938-1-atenart@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260529144713.780938-1-atenart@kernel.org>
 
-On Wed, 3 Jun 2026 21:25:02 +0200 Andrew Lunn wrote:
-> > +Additionally, netdev does not consider bugs to be ``net``-worthy
-> > +if they fulfill **all** of the following criteria:
-> > + - bug is in a hardware device driver;
-> > + - bug is either a missing error handling or is part of the error handling flow;
-> > + - bug was discovered by a static analysis / AI tool;
-> > + - bug was triggered/observed only with kernel changes or fault injection.
-> > +Fixes for such bugs should default to ``net-next`` and should **not** contain
-> > +a Fixes tag. Networking or driver maintainers may redirect such fixes to ``net``
-> > +at their discretion if they consider the condition to be relevant enough.  
+On Fri, May 29, 2026 at 04:47:00PM +0200, Antoine Tenart wrote:
+> In geneve_post_decap_hint the length used for adjusting the UDP checksum
+> should be 'skb->len - gro_hint->nested_tp_offset' (UDP length) instead
+> of 'skb->len - gro_hint->nested_nh_offset' (IP length).
 > 
-> I would also stress what the stable rules say:
-> 
-> 	It must either fix a real bug that bothers people or ...
-> 
-> Many of the bug fixes we are currently getting don't meet this
-> criteria, so are net-next material.
+> Fixes: fd0dd796576e ("geneve: use GRO hint option in the RX path")
+> Cc: Paolo Abeni <pabeni@redhat.com>
+> Reported-by: Sashiko <sashiko-bot@kernel.org>
+> Closes: https://sashiko.dev/#/patchset/20260521131436.748832-1-jhs%40mojatatu.com
+> Signed-off-by: Antoine Tenart <atenart@kernel.org>
 
-I decided to leave that out in the end because it's a bit too open
-to interpretation for my mind.
+Reviewed-by: Simon Horman <horms@kernel.org>
+
+FTR, an AI-generated review of this patch is available on sashiko.dev.
+I do not believe that needs to be addressed in the context of this patch.
