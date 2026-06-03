@@ -1,126 +1,84 @@
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DA1C3D6462
-	for <netdev@vger.kernel.org>; Wed,  3 Jun 2026 02:37:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADD563822AA;
+	Wed,  3 Jun 2026 02:41:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780454268; cv=none; b=cWFu7xEmqyJXEF+zQmlDxZDSZMSS1gF68/mPc2W/FswJgjVjYc29eaZItGzNS5eamqCXYqzMOJ4438ICFqA9Gpo5VPkigFt7ehhbFmd87vu4i7e+BUU5mFUwQdbTcI27pZhkhWZguzhJlV/pKrz/bMBiV1L+qiHFDT6ut6peKpc=
+	t=1780454491; cv=none; b=D4w1uu6QkJzuc9ZhHJL1nfuSYUHKc32fmsyNi2JVWx95sfxl3AShvfuOWtV2ZxTyNKjRyvDf6xgzzJOBBQhKt64NUmXSHsiU83tFVVzXNG8gLBXnBNIpSTjBHM0erIFhBsmpGc7lQdwOeNzksnqrr7TjEoGogILxXr86pbbJpx0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780454268; c=relaxed/simple;
-	bh=pnrDo8mXOZzS/zu/QPEGKYct1x//5K/eKJErBP8HBFw=;
+	s=arc-20240116; t=1780454491; c=relaxed/simple;
+	bh=SvFxDoSmTme3bag0LC+3wu3y0fsNiyyEDYrRWLDqLMA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kq8VWnGb+y4jnMLnQQnkTEwok2Ig5FPQ3OB4e79gRbf03w9en6Q3R7ovrl5PNzTAobyy2E+zau3lvuJqpdf47RkMSi+i9C3G8q+fv2lrvcN/Mof/4jjVhRBzjLupOog6YhIBtWXfU7jkkkbYsIOrFBUDDb9MvsykRDpwuZqpGLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=G10Nn3zw; arc=none smtp.client-ip=150.107.74.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=hdg6qjk1YQKkM0sxnoAK9jgIktcJ3/fLVgCA45Qlqljgg5eKfeXSOZWS6PQZjCPvE/2tuBDdI71tnDFBW+iw32nrvjH8P+fK2sGXbwJvmmKbz+w2b0nxr1bFSPJsGyUQfMNFi9LBEbwW+LhqSXNOwBnKj9Ve1BmaSCHHbZMd7Os=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=Wi4ymjTG; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="G10Nn3zw"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=gibson.dropbear.id.au; s=202602; t=1780454258;
-	bh=76KrfOR2GHr5zOagipHk9aFNkXiX5JVJYNIbsQrwkP4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=G10Nn3zwwPhZyoW6MfXPsTTwastzc1x13hVwnpQ9UJVVaST4o8snj87pbZxTaAG6z
-	 d8cLr47B+Vz9kLPLpXh5tjvVSJ7+ST3uTh6+e5PilfToFwcvewg/VDMu32uGXy+ZBl
-	 rvFzMSg5nJLvUNaoCmZ1YScBaG/BHFCvEazIBAd16sG1m+4C1s0rY1VaJIYjaOHs5X
-	 frrKaciSigL1xNwGgsOxn/Ev/j0cEGD7oT/MhLGviACJzMevAcMtM8qsrHyabfr4kO
-	 O+WnKHQvwQr1PwW9WsWBo0xa/AczQoa0Sz81pWeOpWp6W+RiYh6XBF4gikEAcjeqpq
-	 EJLKuoSyiFBng==
-Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4gVX0y5SkRz4wSn; Wed, 03 Jun 2026 12:37:38 +1000 (AEST)
-Date: Wed, 3 Jun 2026 11:56:37 +1000
-From: David Gibson <david@gibson.dropbear.id.au>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Stefano Brivio <sbrivio@redhat.com>,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	netdev@vger.kernel.org, yuhuang@redhat.com, justin.iurman@gmail.com,
-	horms@kernel.org, pabeni@redhat.com, kuba@kernel.org,
-	edumazet@google.com, davem@davemloft.net, idosch@nvidia.com,
-	dsahern@kernel.org, Chris Adams <linux@cmadams.net>,
-	Beniamino Galvani <bgalvani@redhat.com>,
-	Thorsten Leemhuis <regressions@leemhuis.info>, ihuguet@redhat.com,
-	regressions@lists.linux.dev
-Subject: Re: IPv6 address insertion order (was Re: [PATCH net v2] Revert
- "ipv6: preserve insertion order for same-scope addresses")
-Message-ID: <ah-J1dXqU_sVAvZa@zatzit>
-References: <20260529112357.5079-1-fmancera@suse.de>
- <20260529134045.56330243@elisabeth>
- <ah57wxGjL7JBORR1@zatzit>
- <da080bf1-fa2b-402a-a249-ee5ac004fb05@lunn.ch>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="Wi4ymjTG"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=D37xiTtxF0fUm4ed9JLFHPGoRO7k+Z17+W07ncHTMTA=; b=Wi4ymjTGgcL6Ix7S3gtL1OKlPx
+	KA4C5pr9335Z6phBWyyaPL+5LzUJIMLp0xmFaSPnX04ukvu2fkHfNjv6jzf2/kqJZ8wNJQBTWsxyL
+	Hna0AAGbu9fJYTdWFbtXtOLTEbOcHSnmQvnudP8Wtu91I9a1jJADImoMs+XhBCaNewvY=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wUbXd-005oLe-LW; Wed, 03 Jun 2026 04:41:13 +0200
+Date: Wed, 3 Jun 2026 04:41:13 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Luke Howard <lukeh@padl.com>
+Cc: Cedric Jehasse <cedric.jehasse@gmail.com>,
+	Jiri Pirko <jiri@resnulli.us>, Ivan Vecera <ivecera@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	David Ahern <dsahern@kernel.org>, Shuah Khan <shuah@kernel.org>,
+	Vladimir Oltean <olteanv@gmail.com>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, bridge@lists.linux.dev,
+	linux-kselftest@vger.kernel.org, Max Hunter <max@huntershome.org>,
+	Kieran Tyrrell <kieran@sienda.com>
+Subject: Re: [PATCH net-next v2 5/6] net: dsa: mv88e6xxx: MQPRIO support
+Message-ID: <72af0cfc-9011-4713-9862-710eea5f1cb0@lunn.ch>
+References: <20260602-mv88e6xxx-8021qat-mqprio-v2-0-72be14522e7c@padl.com>
+ <20260602-mv88e6xxx-8021qat-mqprio-v2-5-72be14522e7c@padl.com>
+ <t44kmhk6gqxnwhdvo7svouexwelwsya7zgukpbv3cxpfsmutqa@y3rjoj3tvqce>
+ <A662D3F9-18DD-43C9-A43D-912E5A8A4360@padl.com>
+ <8C6AD966-2C28-4BEF-95C4-1B2AC3751513@padl.com>
+ <29c09316-c911-456e-acc5-e18402da4bd4@lunn.ch>
+ <0402DFFF-634A-40C4-BC1E-B038F20926FF@padl.com>
+ <89BA4203-110E-4767-895C-A2808602FAF8@padl.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="XvmLXKlCb0w9QB4m"
-Content-Disposition: inline
-In-Reply-To: <da080bf1-fa2b-402a-a249-ee5ac004fb05@lunn.ch>
-
-
---XvmLXKlCb0w9QB4m
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <89BA4203-110E-4767-895C-A2808602FAF8@padl.com>
 
-On Tue, Jun 02, 2026 at 02:46:22PM +0200, Andrew Lunn wrote:
-> On Tue, Jun 02, 2026 at 04:44:19PM +1000, David Gibson wrote:
-> > I get the impression there's a rough consensus that the best we can do
-> > now is revert this change (already done), and make a new patch which
-> > changes the insertion order to the "correct" one conditional on a new
-> > flag.
-> >=20
-> > Stefano has enough other fires to fight, so I'm taking a look at
-> > implementing that.  Some initial thoughts, that I'm soliciting
-> > feedback on:
->=20
-> I've only been partially reading along...
->=20
-> Are we talking about RTM_NEWADDR?
+> We could add (e.g.) bridge_setup_tc to dsa_switch_ops, which (in the
+> mv88e6xxx implementation) could validate the bridge contained all
+> user ports. But it would not be possible to block a port from
+> leaving as port_bridge_leave cannot return an error, and tearing
+> MQPRIO config down silently would be a different sort of bad.
 
-Yes.
+There can be multiple bridges, even as far as one bridge per port.
 
-> I've never worked on the code dealing with addresses. But in general,
-> if you want to add new functionality to a netlink message, you add a
-> new attribute to the message.
->=20
-> https://elixir.bootlin.com/linux/v7.0.10/source/include/uapi/linux/if_add=
-r.h#L26
+For switch wide properties, you basically have to allow the first user
+to configure it, refcount additional users get added and removed, and
+only allow the last user to change it.
 
-Ah, good point, that's another option, and avoids using scarce flags
-bits.  It is a little bit odd, because generally the attributes are,
-well, attributes, _of the new object_ being created (an address in
-this case).  Here we're adjusting where / how it is created, not
-anything about the address itself.
+The alternative is return -EOPNOTSUPP, and let the kernel do it in
+software, if a user wants something different to the global
+setting. The hardware is only there to accelerate what Linux can
+already do in software. That is the model we use.
 
-Stil, definitely a better option that allocating a new flags bit.
-Versus NLM_F_APPEND, I'll reply to Ido Schimmel.
-
---=20
-David Gibson (he or they)	| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
-				| around.
-http://www.ozlabs.org/~dgibson
-
---XvmLXKlCb0w9QB4m
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCgAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmoficQACgkQzQJF27ox
-2GckJRAAp/Rom7Qqxxgv2lJyXU6YnG4KgR/0AZL28Pwlz9AwNjz+xvI7nLXUQz6T
-dRjoeYf+PxCnBTRkq+Qf6Vj3xHunGVETKFe3RDbccntUhycEjIU5YXfv3mwm0rsO
-EJHnD45Uaw40giPBOyirOYQiUGDWunTamtspzBijHMBrusQbav6uSGsIE8B87NaN
-TL7CCnKAd5R1neRgbz7GRQcxyuHv4UZ4CbZ1Ur80iDOu6nx9q2WtKtIJliwi2JVz
-aPro4dsoy5hKdDOjAD9TMFiUVXURbFWfjfdWQiMr7Tx+XBsnjuFigP5RlMN4LDhG
-n62Im1hvUDjO/qWdfvvhEree3Z3a+2NlJmRMKEIV362TRNd+MM77MJ9CL5uveL4R
-gE+goVp3P/mD3mV8lYFmNNsXstV5aCUzExo4U8LpxBX9JLFLtNLsPORFOg4zYNUM
-qE2ClvXIrWGNbO0QjAUGCBj72QBBUAafWwgwJE3jr6pIZF/NBK2d0r052vAdsQJa
-PVjM/9Wn44Rny8B0ZyS9VmYnTyS4YiBPtKEE9Xa5JGgFuU6kSOPHVvwmZ0LkyB6O
-fvQGbIu5GdIg54OL9CeFFAMZANN9AglfRyP1ZqHkRp1qleIAr8snpVyqviWPHx/q
-dVoa/u1FA89R0tn/yn4cKhuDU8m58VmkYucisr8iX8PjfPexAnM=
-=ocnP
------END PGP SIGNATURE-----
-
---XvmLXKlCb0w9QB4m--
+     Andrew
