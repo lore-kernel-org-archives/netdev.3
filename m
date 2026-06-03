@@ -1,62 +1,64 @@
-Received: from mail-lf1-f100.google.com (mail-lf1-f100.google.com [209.85.167.100])
+Received: from mail-lf1-f98.google.com (mail-lf1-f98.google.com [209.85.167.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5B99395ADB
-	for <netdev@vger.kernel.org>; Wed,  3 Jun 2026 15:03:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C7713911C1
+	for <netdev@vger.kernel.org>; Wed,  3 Jun 2026 15:03:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780499016; cv=none; b=VNvRAKAnGXn5usv8FLBKMIjrr1obfPBD/AvlqFhAx+MefbW6lHUEEfYXsFrQR8kbyK3WNUnuvCB3SSsw4+ZFpsFmFO/1MycHfUoJqw+LgWhx++bbPgj6mFhKqQgEzVx9rcgk0Sik9NwSejHto/XTpjkWz5OAzYrkAUdvOfGApjs=
+	t=1780499017; cv=none; b=KBVJv4H7s51NaDPVvqOSRJ2k8pg5+tl9Jb4D/lPTceHeb3oJyk6myxRPJolsvkRrnPw0qH7KFg2YChHe66k3tbSIbN/Qwnd2u1fSnbMerFZM5Z7nONTBPw8lhZurN+SjeMdDYoEkf25K1Y3W6nhCn8wK1UF3rEmJs+RDiZHmfNc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780499016; c=relaxed/simple;
-	bh=v7AlIkE86uMdMywWLQ2PYmpPeTrXeaYw71dO2pMZyj0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=orFyD0dVRd64x1/ouxIBXl41ZMJAhI3WhloX/HcQQ9ccfKnZICgjC22PtPs3XJof/u+H0y1lJUIt9DLHiN9r83FKqLHP/foHFNPahQhnCQMqze9h3lcf1A8uhps6wHABRT/xct8jPBvk+oMurb4DzMqO6001AeOdMilGgWU4kis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com; spf=pass smtp.mailfrom=6wind.com; dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b=Y3HfO5F9; arc=none smtp.client-ip=209.85.167.100
+	s=arc-20240116; t=1780499017; c=relaxed/simple;
+	bh=cBKuZNK42FFNn13NofscQJDfMTcwOf5X/8Ha45GnJZE=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=Zd6AeHLC7UNIZmsYr44R9G3pWYJnPntd2ZovHUV/HCWaOaN4FgmlJPPQvj7xBA8Mmf687BvMl0YtzNAKmwGdFiHrmz9J0PdO8k0lpZ2AU1KJpbpdO9g0RzblNobGETNXyMcIv934i8dkOg0uwC2qJ15QutE/X8mDAn65K2zvjXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com; spf=pass smtp.mailfrom=6wind.com; dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b=gS//dVsU; arc=none smtp.client-ip=209.85.167.98
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=6wind.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b="Y3HfO5F9"
-Received: by mail-lf1-f100.google.com with SMTP id 2adb3069b0e04-5aa5f11deb2so5723531e87.3
+	dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b="gS//dVsU"
+Received: by mail-lf1-f98.google.com with SMTP id 2adb3069b0e04-5aa68cd8dd3so4045844e87.0
         for <netdev@vger.kernel.org>; Wed, 03 Jun 2026 08:03:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=6wind.com; s=google; t=1780499013; x=1781103813; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=sitH+C2YkJHE3T6BdVFHI4tCRKAS8aNYg5Ke501cBds=;
-        b=Y3HfO5F9w14yRCsEsvO/gdMTgPXOJOK1z2mM/J9JKUtVrs6Kj+FjdbcREr9EZuwQ+y
-         uCUmOkSSOV1IZZLKroMmfOctWbTr109ph0v+aYKnqD8fRltsypbJx0uGTWPoycuo/fBd
-         n2oolmfnOJ2NBuFzJmlNnz3C72ug42rnslMHXVwx3LWa2BRrQkUHF45zU/j6tpncJ0q+
-         nGySpR7c32AhxIbwkuddzdG2A+InidQSSKeyaam9Uh7WjOFrL/j1XIiNPIzUyAK0nyu/
-         5L2CzDfbn+l7Gil/dogXdXPicQN16eMrddHgCw4TZcm/6UgIFzpQZGZVAM+PyEJr03eW
-         /+Cw==
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xBVM1Uqs/T5OLz+zY+IyGjR1BoC3xhsK5SaLPAfB8mE=;
+        b=gS//dVsUOJhXy5hOlDlhHMgmQywif4rOq96eAgGPoTrFP9bn435e6ME0Jo36JCC9/H
+         aGDrKP0zHVMmD21vNc9w7g2ShvJMCYGRDmrt4UnAXAW2sTtn8XSooM1xv9I1ev/Cl1cv
+         ODcfdxFMlj5C3nFr5n/W1hADxds2eSR8wxDfCncpyWxckN5VzphMHahEJNBd5h/YqLQx
+         L3l1+vpdu4CTmQ5JVDXLWW8lMc/kr+bIGQmjzomO598CJVewRjMhntYZoFQ3iXp72YyQ
+         p43NTFUc0NlguR3/BNYoxCWpgjRZ3gcfu2P08BzoOLtlSYupusw0x+t0JlMg4vdu+HN/
+         Tg2w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20251104; t=1780499013; x=1781103813;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sitH+C2YkJHE3T6BdVFHI4tCRKAS8aNYg5Ke501cBds=;
-        b=kAa3w4Td100KMIBo4lo6oSZOS6RSwlKgRIUqB8ILv/j3wKIEqork+gv12uIu0txm/A
-         no0lW57zqigYXXjj+RJz4otx6zAYIIQ7yvkyVzPS7vqVv+r5Tb9zZWJ9VltRWZHfkgfx
-         jmIvWjI9M0GKwu7G6V6dTZE8hK9nLrNe99ep9K6NBmNQkDZ+PIsYj6CBsCYsITXXEsbQ
-         Rmb9WV8b2bgVvGSbzFNr1d21hBiV7ayRtnroakKFizkbqjZRVF/yynrlBanMjQ/aS6V6
-         wjwEjHeADEgvGDEpAL9u0pAZJWJzOGysuLTpH/RnwOqSgdluSeLwTWmp3M2r4jzaNHo5
-         zosA==
-X-Gm-Message-State: AOJu0YwsEGp8qdzZqlU7OULZkPMno6D6QEOLlFDDupPGC+ufKZ0mcC0J
-	rF7zlQmMXyoRed0q2W6TohPNDe2ZvcuXkp4GpmJeZcQa0xmeAl8h5+LjYMQomnEWAsUU80ZRA20
-	66veZZxtgpGtKa/5N+VV7Ap71Dugp5hpIHldc
-X-Gm-Gg: Acq92OF4ocnCAxCRr8zEpFmAAeSvwXRKe8xG2k1KmSFS/tazl4hBwX1/GR8Cqlt0fGr
-	dCOOlWwVQoTDt+c/1Bl6Pb81uzIojOUd28F3sVgR1B1sJGy+YD7BZTdNXpNb73b2HlDt5oR0UiO
-	vnJFMB8OHx33gosCwgvf4z7DObvA4zpAS3zSsfSO7Kxwo0JNs7nwkCSwfS16DNSkgbWstTShWVt
-	CjksBmldopkzY1Ti2CuvZVRXpsEKNMi5jrjJ+gEXb8+zuK7Zy2WhJKu9md5Ibv/eFxWbVMjAicx
-	TbBWUZ+80rgBN4GWhkplzVd+Jrzc+IVgP8GhrR+HQdNUwoq3uoPxTm+6DPcRjZ7EVgjcJuF+YW0
-	MhAq0XBhb8UJGgZdVGP2buLn6nNucKDSAaKDwsfslLgnpTLo9wJJCktqQs9tLWuk=
-X-Received: by 2002:a05:6512:3f21:b0:5aa:71fd:de75 with SMTP id 2adb3069b0e04-5aa7c125954mr1471063e87.39.1780499013239;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=xBVM1Uqs/T5OLz+zY+IyGjR1BoC3xhsK5SaLPAfB8mE=;
+        b=WkeNgN3fXnz5lF4DGlXrViR6xtLl3uXyXINBNRhadfF5ElhU+3yzqOlGvGG4IWcBIh
+         Ytl0MxHHaOGDTwqCKbZOSk6iRCJdMXDRiVaUxJPFtxgxmmcRUUOEsRDxi0LDfjotMdw6
+         QLyeBsZlIJlg5mKNNG/8JOfWIsftN7q8z/7oeiw7uCb80C9lMvP4gZZPG7IyfnR8Z5iC
+         QCrUAp7B0uuz7yZIraNkr5DWv0NzWDaVz1UJaWeoX3p/4hzzQvVaMs+Eyj4TERuc4r1S
+         2Fj1ya8lv9maJ+AfAY5oz+6nfEUPK68lzO1aP63sN9LzJsT8RChUG/Q10x1jCV8sBecU
+         Leow==
+X-Gm-Message-State: AOJu0YzTADbrsR7IHblOTN5AsrBXFyocjz4nWWiFpkct2TkI3y9F8UJG
+	gsMGBc/2y1b0umfXNbkaaaJnFn6xVsoiEKqqpN3heIVbilBkDYZsJGiv9HJfQ4BofZA50pLdbA2
+	PGJZmFjXXVCyFUFaFk3IH0mhvSUQTSleBPxo7
+X-Gm-Gg: Acq92OF9/7LrzufozV2g0gzLZIK/uEGb1qaZiu4TbrV/QQOoHEqSigKAHCZek2NI1N9
+	MnBaFlkSzPjr85D6hdnvWlC8ipD5mzuQvOlaCIQ4z44m8CJbqHfQ18Qu1saAPevQxpHUa7XPm5Y
+	m4gWAjM1KP7No0QJvsKwjULnrzaJT4ROImWCnNgaJXe1qDCNcwD7dDIybPWzamSxN9h1iI99X0d
+	d/PQw9s4n3cWqIxHpaUiuUPISB5pplO98k/hoEfvFKjtNCmhQT7cmK6BCwwfRfpz0l1LHFDmtmU
+	omu3i+6oLi3DOeS2EFqeBgxJDa7D/wyYw0DB5AIkh/5EOPX2FFj6oNfj5aMO0vN7LZL7jYHxCfI
+	bba2rXAPk/elmX4Ycld3sN3gUjuRJyGCC9dxL5K6Itrp4FE1l0yL3XTLk9dHuafA=
+X-Received: by 2002:a05:6512:4058:10b0:5aa:7363:8215 with SMTP id 2adb3069b0e04-5aa7c0dcce3mr1068256e87.27.1780499013570;
         Wed, 03 Jun 2026 08:03:33 -0700 (PDT)
 Received: from smtpservice.6wind.com ([185.13.181.2])
-        by smtp-relay.gmail.com with ESMTP id 2adb3069b0e04-5aa7b8888e3sm194024e87.0.2026.06.03.08.03.33;
+        by smtp-relay.gmail.com with ESMTP id 2adb3069b0e04-5aa7b8fc304sm192404e87.16.2026.06.03.08.03.33;
         Wed, 03 Jun 2026 08:03:33 -0700 (PDT)
 X-Relaying-Domain: 6wind.com
 Received: from stryper.dev.6wind.com (stryper.dev.6wind.com [10.17.2.5])
-	by smtpservice.6wind.com (Postfix) with ESMTP id D61B41470F;
+	by smtpservice.6wind.com (Postfix) with ESMTP id F368A14712;
 	Wed,  3 Jun 2026 17:03:32 +0200 (CEST)
 From: Louis Scalbert <louis.scalbert@6wind.com>
 To: netdev@vger.kernel.org
@@ -72,10 +74,12 @@ Cc: andrew+netdev@lunn.ch,
 	jonas.gorski@gmail.com,
 	horms@kernel.org,
 	Louis Scalbert <louis.scalbert@6wind.com>
-Subject: [PATCH net v8 0/6] bonding: 3ad: fix carrier state with no usable slaves
-Date: Wed,  3 Jun 2026 17:03:25 +0200
-Message-Id: <20260603150331.1919611-1-louis.scalbert@6wind.com>
+Subject: [PATCH net v8 3/6] bonding: 3ad: add lacp_strict configuration knob
+Date: Wed,  3 Jun 2026 17:03:28 +0200
+Message-Id: <20260603150331.1919611-4-louis.scalbert@6wind.com>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20260603150331.1919611-1-louis.scalbert@6wind.com>
+References: <20260603150331.1919611-1-louis.scalbert@6wind.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -83,12 +87,6 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-
-Hi everyone,
-
-This series addresses a blackholing issue and a subsequent link-flapping
-issue in the 802.3ad bonding driver when dealing with inactive slaves
-and the `min_links` parameter.
 
 When an 802.3ad (LACP) bonding interface has no slaves in the
 collecting/distributing state, the bonding master still reports
@@ -100,136 +98,242 @@ daemons therefore consider the interface operational, even though
 traffic may be blackholed if the lack of LACP negotiation means
 the partner is not ready to deal with traffic.
 
-This patchset introduces an optional behavior, widely adopted across
-the industry, to address this issue. It consists of bringing the
-bonding master interface down to signal to upper-layer processes
-that it is not usable.
+Introduce a configuration knob to control this behavior. It allows
+the bonding master to assert carrier only when at least 'min_links'
+slaves are in Collecting_Distributing state.
 
-This patchset depends on the following iproute2 change:
-ip/bond: add lacp_strict support
-Link: https://lore.kernel.org/netdev/20260408152409.276358-1-louis.scalbert@6wind.com/
+The default mode preserves the existing behavior. This patch only
+introduces the knob; its behavior is implemented in the subsequent
+commit.
 
-Patch 1 adds the missing IFLA_BOND_BROADCAST_NEIGH in if_link
-UAPI header.
+Fixes: 655f8919d549 ("bonding: add min links parameter to 802.3ad")
+Signed-off-by: Louis Scalbert <louis.scalbert@6wind.com>
+---
+ Documentation/netlink/specs/rt-link.yaml |  3 +++
+ Documentation/networking/bonding.rst     | 23 +++++++++++++++++++++
+ drivers/net/bonding/bond_main.c          |  1 +
+ drivers/net/bonding/bond_netlink.c       | 16 +++++++++++++++
+ drivers/net/bonding/bond_options.c       | 26 ++++++++++++++++++++++++
+ include/net/bond_options.h               |  1 +
+ include/net/bonding.h                    |  1 +
+ include/uapi/linux/if_link.h             |  1 +
+ tools/include/uapi/linux/if_link.h       |  1 +
+ 9 files changed, 73 insertions(+)
 
-Patch 2 adds missing broadcast-neigh to YAML rt-link specs.
-
-Patch 3 introduces the lacp_strict configuration knob, which is
-applied in the subsequent patch. The default (off) mode preserves
-the existing behavior, while the strict mode (on) is intended to force
-the bonding master carrier down in this situation.
-
-Patch 4 addresses the core issue when lacp_strict is set to strict.
-It ensures that carrier is asserted only when at least 'min_links'
-slaves are in the Collecting/Distributing state.
-
-Patch 5 fixes a side effect of the previous patch. Tightening the carrier
-logic exposes a state persistence bug: when a physical link goes down, 
-the LACP collecting/distributing flags remain set. When the link returns, 
-the interface briefly hallucinates that it is ready, bounces the carrier 
-up, and then drops it again once LACP renegotiation starts. Fix by
-resetting Collecting and Distributing state as soon as the link goes
-down.
-
-Patch 6 adds a test for bonding lacp_strict both modes.
-
-
-Changelog:
-
-v7 -> v8
-  - Patch 3: addressed the Sashiko review comments, as requested by Simon
-    Horman. When transitioning to DETACHED Mux state, reset Collecting /
-    Distributing so the bonding carrier state is correctly re-evaluated.
-    Also, re-evaluate the bonding carrier state when moving from
-    Distributing to Collecting Mux state (coupled_control disabled).
-  Link: https://sashiko.dev/#/patchset/20260526084048.1696544-1-louis.scalbert%406wind.com
-  Link: https://lore.kernel.org/netdev/20260526084048.1696544-1-louis.scalbert@6wind.com/
-
-v6 -> v7
-  - Add patch 1: sync missed IFLA_BOND_BROADCAST_NEIGH in if_link
-    UAPI header.
-  - Add patch 2: add missed broadcast-neigh to YAML rt-link specs.
-  - Patch 3 (was patch 1 in v6): add lacp-strict to YAML rt-link specs
-    and IFLA_BOND_LACP_STRICT to if_link UAPI header.
-  - Patch 6 (was patch 4 in v6): move bond_lacp_strict.sh in Makefile
-    to preserve the sort order.
-  Link: https://lore.kernel.org/netdev/20260520112539.798275-1-louis.scalbert@6wind.com/
-
-v5 -> v6
-  - Patch 3: the v5 patch was compliant with 802.1ax-2020, but the target
-    specification is 802.1ax-2014. The fix has been reworked accordingly.
-    Collecting and Distributing were not cleared on port down because the
-    Receive state machine was not clearing the Partner Sync flag.
-  Link: https://lore.kernel.org/netdev/20260506161144.465485-1-louis.scalbert@6wind.com/
-
-v4 -> v5
-  - Patch 4: replace the use of netem, which is not included in the
-    bonding selftests configuration. Instead, use a dedicated netns to
-    forward frames between the partner and DUT. The partner and DUT are
-    bridged within that netns. Since Linux bridges do not forward LACP
-    special frames by default, group_fwd_mask is configured on bridge
-    interfaces to allow them.
-  Link: https://lore.kernel.org/netdev/20260417140505.3860237-1-louis.scalbert@6wind.com/
-
-v3 -> v4
-  - Rename the configuration knob to lacp_strict on/off instead of
-    lacp_fallback legacy/strict.
-  - Patch 1: change the command documentation accordingly and wrap
-    text at approximately 75 columns.
-  - Use "usable" wording instead "valid" for LACP Collecting /
-    Distributing state in code and commit log.
-  - Patch 2: test collecting and distributing state regardless of
-    coupled_control
-  - Patch 3: Reworked because removing the SELECTED flag was not
-    compliant with 802.1AX. Instead, to transition to the WAITING state
-    on port disabled, except when already in the DETACHED state.
-    And remove Collecting and Distributing state in WAITING state.
-  - Patch 4 is removed. It was a fix for patch 3 but it is no more
-    needed since patch 3 was reworked.
-  Link: https://lore.kernel.org/netdev/20260408152353.276204-1-louis.scalbert@6wind.com/
-
-v2 -> v3
-  - Add an initial patch introducing the lacp_fallback configuration
-    knob (no behavior change yet).
-  - Patch 2 (was patch 1 in v2): apply the new behavior only when
-    lacp_fallback is set to strict, and re-evaluate the bonding
-    master carrier when the setting changes.
-  Link: https://lore.kernel.org/netdev/20260325134439.3048615-1-louis.scalbert@6wind.com/
-
-v1 -> v2
-  - Patch 1: split a comment line that exceeded 80 characters.
-  - Move the change from patch 2 in __agg_ports_are_ready() into a third
-    patch, as it is actually a side effect of the fix introduced in
-    patch 2.
-  - Patch 2: Expand the commit message and add a code comment describing
-    the change in ad_port_selection_logic().
-  - Patch 3: Check the READY_N flag only on ports in the WAITING state,
-    rather than on all enabled ports. This more closely matches 802.3ad.
-  Link: https://lore.kernel.org/netdev/20260316131838.3257889-1-louis.scalbert@6wind.com/
-
-Louis Scalbert (6):
-  tools: missed broadcast_neigh if_link uapi header
-  netlink: specs: rt-link: missed broadcast-neigh
-  bonding: 3ad: add lacp_strict configuration knob
-  bonding: 3ad: fix carrier when no usable slaves
-  bonding: 3ad: fix mux port state on oper down
-  selftests: bonding: add test for lacp_strict mode
-
- Documentation/netlink/specs/rt-link.yaml      |   6 +
- Documentation/networking/bonding.rst          |  23 ++
- drivers/net/bonding/bond_3ad.c                |  27 +-
- drivers/net/bonding/bond_main.c               |   1 +
- drivers/net/bonding/bond_netlink.c            |  16 +
- drivers/net/bonding/bond_options.c            |  27 ++
- include/net/bond_options.h                    |   1 +
- include/net/bonding.h                         |   1 +
- include/uapi/linux/if_link.h                  |   1 +
- tools/include/uapi/linux/if_link.h            |   2 +
- .../selftests/drivers/net/bonding/Makefile    |   1 +
- .../drivers/net/bonding/bond_lacp_strict.sh   | 347 ++++++++++++++++++
- 12 files changed, 450 insertions(+), 3 deletions(-)
- create mode 100755 tools/testing/selftests/drivers/net/bonding/bond_lacp_strict.sh
-
+diff --git a/Documentation/netlink/specs/rt-link.yaml b/Documentation/netlink/specs/rt-link.yaml
+index 484e0a97b653..644a8bd7b93c 100644
+--- a/Documentation/netlink/specs/rt-link.yaml
++++ b/Documentation/netlink/specs/rt-link.yaml
+@@ -1354,6 +1354,9 @@ attribute-sets:
+       -
+         name: broadcast-neigh
+         type: u8
++      -
++        name: lacp-strict
++        type: u8
+   -
+     name: bond-ad-info-attrs
+     name-prefix: ifla-bond-ad-info-
+diff --git a/Documentation/networking/bonding.rst b/Documentation/networking/bonding.rst
+index e700bf1d095c..33ca5afafdf6 100644
+--- a/Documentation/networking/bonding.rst
++++ b/Documentation/networking/bonding.rst
+@@ -619,6 +619,29 @@ min_links
+ 	aggregator cannot be active without at least one available link,
+ 	setting this option to 0 or to 1 has the exact same effect.
+ 
++lacp_strict
++
++	Specifies the fallback behavior of a bonding when LACP negotiation
++	fails on all slave links, i.e. when no slave is in the
++	Collecting_Distributing state, while at least `min_links` link still
++	reports carrier up.
++
++	This option is only applicable to 802.3ad mode (mode 4).
++
++	Valid values are:
++
++	off or 0
++		One interface of the bond is selected to be active, in order to
++		facilitate communication with peer devices that do not implement
++		LACP.
++
++	on or 1
++		Interfaces are only permitted to be made active if they have an
++		active LACP partner and have successfully reached
++		Collecting_Distributing state.
++
++	The default value is 0 (off).
++
+ mode
+ 
+ 	Specifies one of the bonding policies. The default is
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index 82e779f7916b..ec25b83309ec 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -6446,6 +6446,7 @@ static int __init bond_check_params(struct bond_params *params)
+ 	params->ad_user_port_key = ad_user_port_key;
+ 	params->coupled_control = 1;
+ 	params->broadcast_neighbor = 0;
++	params->lacp_strict = 0;
+ 	if (packets_per_slave > 0) {
+ 		params->reciprocal_packets_per_slave =
+ 			reciprocal_value(packets_per_slave);
+diff --git a/drivers/net/bonding/bond_netlink.c b/drivers/net/bonding/bond_netlink.c
+index c7d3e0602c83..08d4d0814f67 100644
+--- a/drivers/net/bonding/bond_netlink.c
++++ b/drivers/net/bonding/bond_netlink.c
+@@ -143,6 +143,7 @@ static const struct nla_policy bond_policy[IFLA_BOND_MAX + 1] = {
+ 	[IFLA_BOND_NS_IP6_TARGET]	= { .type = NLA_NESTED },
+ 	[IFLA_BOND_COUPLED_CONTROL]	= { .type = NLA_U8 },
+ 	[IFLA_BOND_BROADCAST_NEIGH]	= { .type = NLA_U8 },
++	[IFLA_BOND_LACP_STRICT]		= { .type = NLA_U8 },
+ };
+ 
+ static const struct nla_policy bond_slave_policy[IFLA_BOND_SLAVE_MAX + 1] = {
+@@ -599,6 +600,16 @@ static int bond_changelink(struct net_device *bond_dev, struct nlattr *tb[],
+ 			return err;
+ 	}
+ 
++	if (data[IFLA_BOND_LACP_STRICT]) {
++		int fallback_mode = nla_get_u8(data[IFLA_BOND_LACP_STRICT]);
++
++		bond_opt_initval(&newval, fallback_mode);
++		err = __bond_opt_set(bond, BOND_OPT_LACP_STRICT, &newval,
++				     data[IFLA_BOND_LACP_STRICT], extack);
++		if (err)
++			return err;
++	}
++
+ 	return 0;
+ }
+ 
+@@ -671,6 +682,7 @@ static size_t bond_get_size(const struct net_device *bond_dev)
+ 		nla_total_size(sizeof(struct in6_addr)) * BOND_MAX_NS_TARGETS +
+ 		nla_total_size(sizeof(u8)) +	/* IFLA_BOND_COUPLED_CONTROL */
+ 		nla_total_size(sizeof(u8)) +	/* IFLA_BOND_BROADCAST_NEIGH */
++		nla_total_size(sizeof(u8)) +	/* IFLA_BOND_LACP_STRICT */
+ 		0;
+ }
+ 
+@@ -838,6 +850,10 @@ static int bond_fill_info(struct sk_buff *skb,
+ 		       bond->params.broadcast_neighbor))
+ 		goto nla_put_failure;
+ 
++	if (nla_put_u8(skb, IFLA_BOND_LACP_STRICT,
++		       bond->params.lacp_strict))
++		goto nla_put_failure;
++
+ 	if (BOND_MODE(bond) == BOND_MODE_8023AD) {
+ 		struct ad_info info;
+ 
+diff --git a/drivers/net/bonding/bond_options.c b/drivers/net/bonding/bond_options.c
+index 7380cc4ee75a..d358b831df77 100644
+--- a/drivers/net/bonding/bond_options.c
++++ b/drivers/net/bonding/bond_options.c
+@@ -68,6 +68,8 @@ static int bond_option_lacp_active_set(struct bonding *bond,
+ 				       const struct bond_opt_value *newval);
+ static int bond_option_lacp_rate_set(struct bonding *bond,
+ 				     const struct bond_opt_value *newval);
++static int bond_option_lacp_strict_set(struct bonding *bond,
++				       const struct bond_opt_value *newval);
+ static int bond_option_ad_select_set(struct bonding *bond,
+ 				     const struct bond_opt_value *newval);
+ static int bond_option_queue_id_set(struct bonding *bond,
+@@ -162,6 +164,12 @@ static const struct bond_opt_value bond_lacp_rate_tbl[] = {
+ 	{ NULL,   -1,           0},
+ };
+ 
++static const struct bond_opt_value bond_lacp_strict_tbl[] = {
++	{ "off", 0, BOND_VALFLAG_DEFAULT},
++	{ "on",  1, 0},
++	{ NULL, -1, 0 }
++};
++
+ static const struct bond_opt_value bond_ad_select_tbl[] = {
+ 	{ "stable",          BOND_AD_STABLE,    BOND_VALFLAG_DEFAULT},
+ 	{ "bandwidth",       BOND_AD_BANDWIDTH, 0},
+@@ -363,6 +371,14 @@ static const struct bond_option bond_opts[BOND_OPT_LAST] = {
+ 		.values = bond_lacp_rate_tbl,
+ 		.set = bond_option_lacp_rate_set
+ 	},
++	[BOND_OPT_LACP_STRICT] = {
++		.id = BOND_OPT_LACP_STRICT,
++		.name = "lacp_strict",
++		.desc = "Define the LACP fallback mode when no slaves have negotiated",
++		.unsuppmodes = BOND_MODE_ALL_EX(BIT(BOND_MODE_8023AD)),
++		.values = bond_lacp_strict_tbl,
++		.set = bond_option_lacp_strict_set
++	},
+ 	[BOND_OPT_MINLINKS] = {
+ 		.id = BOND_OPT_MINLINKS,
+ 		.name = "min_links",
+@@ -1684,6 +1700,16 @@ static int bond_option_lacp_rate_set(struct bonding *bond,
+ 	return 0;
+ }
+ 
++static int bond_option_lacp_strict_set(struct bonding *bond,
++				       const struct bond_opt_value *newval)
++{
++	netdev_dbg(bond->dev, "Setting LACP fallback to %s (%llu)\n",
++		   newval->string, newval->value);
++	bond->params.lacp_strict = newval->value;
++
++	return 0;
++}
++
+ static int bond_option_ad_select_set(struct bonding *bond,
+ 				     const struct bond_opt_value *newval)
+ {
+diff --git a/include/net/bond_options.h b/include/net/bond_options.h
+index e6eedf23aea1..52b966e92793 100644
+--- a/include/net/bond_options.h
++++ b/include/net/bond_options.h
+@@ -79,6 +79,7 @@ enum {
+ 	BOND_OPT_COUPLED_CONTROL,
+ 	BOND_OPT_BROADCAST_NEIGH,
+ 	BOND_OPT_ACTOR_PORT_PRIO,
++	BOND_OPT_LACP_STRICT,
+ 	BOND_OPT_LAST
+ };
+ 
+diff --git a/include/net/bonding.h b/include/net/bonding.h
+index edd1942dcd73..2c54a36a8477 100644
+--- a/include/net/bonding.h
++++ b/include/net/bonding.h
+@@ -129,6 +129,7 @@ struct bond_params {
+ 	int peer_notif_delay;
+ 	int lacp_active;
+ 	int lacp_fast;
++	int lacp_strict;
+ 	unsigned int min_links;
+ 	int ad_select;
+ 	char primary[IFNAMSIZ];
+diff --git a/include/uapi/linux/if_link.h b/include/uapi/linux/if_link.h
+index 79ce4bc24cba..9ef5784e78e8 100644
+--- a/include/uapi/linux/if_link.h
++++ b/include/uapi/linux/if_link.h
+@@ -1584,6 +1584,7 @@ enum {
+ 	IFLA_BOND_NS_IP6_TARGET,
+ 	IFLA_BOND_COUPLED_CONTROL,
+ 	IFLA_BOND_BROADCAST_NEIGH,
++	IFLA_BOND_LACP_STRICT,
+ 	__IFLA_BOND_MAX,
+ };
+ 
+diff --git a/tools/include/uapi/linux/if_link.h b/tools/include/uapi/linux/if_link.h
+index 97a2d4411534..757ce5e9426e 100644
+--- a/tools/include/uapi/linux/if_link.h
++++ b/tools/include/uapi/linux/if_link.h
+@@ -1527,6 +1527,7 @@ enum {
+ 	IFLA_BOND_NS_IP6_TARGET,
+ 	IFLA_BOND_COUPLED_CONTROL,
+ 	IFLA_BOND_BROADCAST_NEIGH,
++	IFLA_BOND_LACP_STRICT,
+ 	__IFLA_BOND_MAX,
+ };
+ 
 -- 
 2.39.2
 
