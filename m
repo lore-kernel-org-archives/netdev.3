@@ -1,33 +1,33 @@
 Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96C023FB7C7
-	for <netdev@vger.kernel.org>; Wed,  3 Jun 2026 07:25:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C8343A0EB8
+	for <netdev@vger.kernel.org>; Wed,  3 Jun 2026 07:25:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780471540; cv=none; b=bxXmVjXVSAc2o5a0enC2uA18tbN6kjtIwQq1VGOfeWR1Wg/nP7d+NuvsuhEf7BDhs8OCyB/XX7xK7j5i4WvawYMypvEq4IkF2W6MXWldfuvizfPBBUOTIJKLQ//tFfg8ajl96SUH7Xd0I72+Q5cN7URODR/D2SPDh9ty15t+pEI=
+	t=1780471540; cv=none; b=PLdQykHGEpHUOuWA1ajBptw3WkuKM8Vhj+qoIyrNt79b7Lgbde6elHnyJwnnB/6q6bvqV4s3ZL8K7sb7TFM6UpwutgLbkp4x3OQ1P+yaAuKIzd6xUBAw4340z7cAepjatdhtMfuL+wE3WU+6QxYchorFCx7NZ1tuh7lp3ZT5C0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1780471540; c=relaxed/simple;
-	bh=I/RNNwwKo6ggcrl9fkF4J1hQWamJUdTKNE6t1NNN74E=;
+	bh=xm9P73WajZ/NeBDnI6OiK22FDHgIsr/xaxZR9fcp97w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sMp2dkNVgfza5vM5C129YS4HJQEoFqRvuTln5mBXXS83dTJ+GJQ0QOinEjINMS0mNIhadQizJXj5f7c/6nlmTjBCGP2iXyikDeudynme9ZtsgZT0vFiKUidmdDQT/bg0eObSR9zexLc2nQAzWZmZxfcdSgTTW+7T86Bp5RZGXKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=OU1RDsRf; arc=none smtp.client-ip=23.88.38.48
+	 MIME-Version; b=odIE2DVMg4e9qGBu4RSbzr3nwEDJt9xjxiXm3Oxb5vfz4WPb3kVX0C3i1mb10erDfGpzTwTMsAyL7ZaLLAm+B4il7u7Sw2BFnsLC3Q1mJfisISKeV/5qHZyadbANsOrwqQomx+tMa3nVSdSVhjhP+ho7LA4CFmvYlMana0Xm8QY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=f6v8iz4m; arc=none smtp.client-ip=23.88.38.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="OU1RDsRf"
+	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="f6v8iz4m"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=simonwunderlich.de;
-	s=09092022; t=1780471529;
+	s=09092022; t=1780471531;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=IEdqjk9qBO080JOKzs+Y4fTvKnJCFmJWaHfWga+n06s=;
-	b=OU1RDsRfY7v4BEHemFMzYU8SeGYRiTLGy/tDBOSAZmnTBdjBKbp3PFxkwN1c0IFebWY/3S
-	t8dvafkFB9Gakod9gWv/Dp9pFtesucfIbx+JQoQlz63leWUopxo/8V3U80enXyTcnf0DkM
-	Bzs84MmhwNRcd01DSojJ84hpJkPXtPIbd0CMpjGB/LoE1/YgCadn8Z6xk/a4CzEViMEou8
-	yVni74n5aRcr9QkVVZgdok1SNBNqdYDfxZ8bc3kHiale29QaHcmlfRKXaqpkD6yvZG4Yrt
-	gJTYt1yP1644i0SFywTtkmMoBaEiTZQlcR+jtlaBuke1uexju60F5CIGD9to1g==
+	bh=e+83fEsbAL69oKWYxDFj7s2qHg00oHFkNjwBFZNJ2Lc=;
+	b=f6v8iz4mYK/t+dIlg5vlY9pW/piwxb51qHhTAc2ZgNTJCjJdWZZDMSUdGt8kbo3JdTHlFJ
+	zEf73MUKltr1UzogMmGVRSVw/sYY8f07ICZF0qGqo58N68qA/bCZ4I7KcZAbR5r3aJKLYS
+	W2AGAf5siXF3gHO7BbM2GMg03z/W4x3qCquSR+jzjWEHAn+z7FGe5lCKbXibn7lLOy7P4Y
+	hm8NEnm+ip+Mo2MlPRIRw54UyekhPCO41utbgtVfmpb4uFwZPV2VRc37dnom8QQ4sMUomF
+	32aZdr3Col04mLuTRVfBS53B5nn1r3cAYa5GwS4ppVVFu76OKiE29jUocQZOSQ==
 From: Simon Wunderlich <sw@simonwunderlich.de>
 To: netdev@vger.kernel.org
 Cc: "David S. Miller" <davem@davemloft.net>,
@@ -39,9 +39,9 @@ Cc: "David S. Miller" <davem@davemloft.net>,
 	Sven Eckelmann <sven@narfation.org>,
 	stable@kernel.org,
 	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH net-next 01/15] batman-adv: tp_meter: keep unacked list in ascending ordered
-Date: Wed,  3 Jun 2026 09:25:12 +0200
-Message-ID: <20260603072527.174487-2-sw@simonwunderlich.de>
+Subject: [PATCH net-next 03/15] batman-adv: tp_meter: initialize dec_cwnd explicitly
+Date: Wed,  3 Jun 2026 09:25:14 +0200
+Message-ID: <20260603072527.174487-4-sw@simonwunderlich.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260603072527.174487-1-sw@simonwunderlich.de>
 References: <20260603072527.174487-1-sw@simonwunderlich.de>
@@ -55,38 +55,34 @@ Content-Transfer-Encoding: 8bit
 
 From: Sven Eckelmann <sven@narfation.org>
 
-When batadv_tp_handle_out_of_order inserts a new entry in the list of
-unacked (out of order) packets, it searches from the entry with the newest
-sequence number towards oldest sequence number. If an entry is found which
-is older than the newly entry, the new entry has to be added after the
-found one to keep the ascending order.
+When batadv_tp_update_cwnd() is called, dec_cwnd is increased. But dec_cwnd
+is only initialixed (to 0) when a duplicate Ack was received or when cwnd
+is below the ss_threshold.
 
-But for this operation list_add_tail() was used. But this function adds an
-entry _before_ another one. As result, the list would contain a lot of
-swapped sequence numbers. The consumer of this list
-(batadv_tp_ack_unordered()) would then fail to correctly ack packets.
+Just initialize the cwnd during the initialization to avoid any potential
+access of uninitialized data.
 
 Cc: stable@kernel.org
 Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
 Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
 ---
- net/batman-adv/tp_meter.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/batman-adv/tp_meter.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/net/batman-adv/tp_meter.c b/net/batman-adv/tp_meter.c
-index aefe757277b20..0e39ea33e5f27 100644
+index 8d7308327a9bf..beabc264a4f16 100644
 --- a/net/batman-adv/tp_meter.c
 +++ b/net/batman-adv/tp_meter.c
-@@ -1325,7 +1325,7 @@ static bool batadv_tp_handle_out_of_order(struct batadv_tp_vars *tp_vars,
- 		 * one is attached _after_ it. In this way the list is kept in
- 		 * ascending order
- 		 */
--		list_add_tail(&new->list, &un->list);
-+		list_add(&new->list, &un->list);
- 		added = true;
- 		break;
- 	}
+@@ -1055,6 +1055,8 @@ void batadv_tp_start(struct batadv_priv *bat_priv, const u8 *dst,
+ 	 * mesh_interface, hence its MTU
+ 	 */
+ 	tp_vars->cwnd = BATADV_TP_PLEN * 3;
++	tp_vars->dec_cwnd = 0;
++
+ 	/* at the beginning initialise the SS threshold to the biggest possible
+ 	 * window size, hence the AWND size
+ 	 */
 -- 
 2.47.3
 
