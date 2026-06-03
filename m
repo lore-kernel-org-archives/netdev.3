@@ -1,159 +1,159 @@
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DAF1405874;
-	Wed,  3 Jun 2026 06:59:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3EB63F8EC3;
+	Wed,  3 Jun 2026 07:03:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780469986; cv=none; b=dD7RqucCmGoJ3mO6URWxtUnog8saCMI9+3PVeBe6QGbunnNuR1hKCwpkS9r+o6svQ7PHQ4kMAbw1QJDr+5e//G6nZwCenXCDq1qlsibmjWTIUEfZ/AN0Jbnh8RQ4Ean2RQcao8wf6lQA+VYeLHYQrDPgj/pJ/sFCEyWUtpcf278=
+	t=1780470206; cv=none; b=pY8t9dR4c7AAMrsWqAKPF/x2mY33NifD10gHwYj6jCpRmuilMebzuhfVasYbWR10gBiI5K0zGf6qzJ5Pf/GzV38i4biuv84LvjCjBvLsT4wBlV1Dafzg1qhRayTWtlHkSlRJHf3+98AOUWf1nr7eC6fBTX7vC9XX1REqhQX6yjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780469986; c=relaxed/simple;
-	bh=FCaxCnHUNBLytx1qTehEeuA0qhUzKqnQxc/0700VcrQ=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=m1rOFnO90A1ksdJnE8QXLe4FMMFv0x7iwdWuVWlsN9VBjD/7+6p7/En98MgKkWhKq5t20kyBJfFcMcb2WlufqlUGh/Bw/AM9f6acxf50peTXfPd+lJ0FmCsnyLGWxq7RLXDl6GHcP6Z1eyUSch9G9UOjjRBNTlnpLdsZ8bhxyuc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn; spf=pass smtp.mailfrom=realsil.com.cn; dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b=dCgbqgfQ; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realsil.com.cn
+	s=arc-20240116; t=1780470206; c=relaxed/simple;
+	bh=SbapfZPKFwbW1/TUMqfSlObqXwF6GDRQ6CGNYkaVaz8=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=q9EkYvN32RLASuasWobX+1bMrJ9tkC5lVPTly1Q1IxlzUj0Mit6gwoiKwPs40qQFu3mHp8d+5mu1e1AB39VA1ivINWvzDdSy1LKDI6kDjb/o4C+XSV34LqYnG3or930cLfJsxdzSmFrv8hMPDXxatqJb0u2Khu5ZPdwveWPj5pw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=dhRuHCqs; arc=none smtp.client-ip=67.231.148.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b="dCgbqgfQ"
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 6536xJ0213643786, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realsil.com.cn;
-	s=dkim; t=1780469959;
-	bh=Yx6ZtT/WPpSKU82LHR5gK89KHZT7iZS78k/qRj3b7n4=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=dCgbqgfQjB7jGMC7YkmsSFc5+kgze3woxRR8JvRzYk+0P5lkeehtbOEn45cqiBaFH
-	 PnUE+4sXIY4Gkbz47dfOrwx6bDcBPv/GMzHpAsIv+v7ZVqZmlcjyVZ/6VuJnZa0YMV
-	 LpBg5K2uSnfvUIYcfvZNU/iLHKnP8qAjL9z/keQB5krC1EmId+0Gi0ItkNa+Yu61zU
-	 E+SalevNg6XIN8KZOvLEnY2DAgoKaxH3Q5Y3Og84Z3PnuQYvJf0YdCYAKB8g4JFIh9
-	 +WUHLbbtaeUeIDuVp4h1PXlxkzRrpZzaYVcNToBs8+4DR8zNwFvRf3x7GrmO025ODM
-	 mxdzDGCeG0jig==
-Received: from RS-EX-MBS2.realsil.com.cn ([172.29.17.102])
-	by rtits2.realtek.com.tw (8.15.2/3.28/5.94) with ESMTPS id 6536xJ0213643786
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Wed, 3 Jun 2026 14:59:19 +0800
-Received: from RS-EX-MBS2.realsil.com.cn (172.29.17.102) by
- RS-EX-MBS2.realsil.com.cn (172.29.17.102) with Microsoft SMTP Server
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="dhRuHCqs"
+Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
+	by mx0a-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 652NTeMq2885820;
+	Wed, 3 Jun 2026 00:03:15 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pfpt0220; bh=aaQhmC+yLhb3C7eAsw456lePu
+	8T4RcxRF6axckIMr5U=; b=dhRuHCqsPxXwN/5IixqzFSaGohZPfrQqHacU9eAGe
+	6SNQDgLYwQ1Jy2p9LdkZMWbb6QZGzfAXDEZPVpny0frKqzvcCs9yqrwf+jyU1QFb
+	R51oC9Un1yEfW+NGVw3DPI4WL7rSz0ryEzuSkO7oR6LsIFDD9Aoyo0hMCzzJqP5E
+	9mJf93zx6kYjqUlc5RG7VNVyOCCShrUnTTcX9B7ocgCZz4aTEKDPD2+B9BhR3Wk8
+	IxqNUijslw5WHXyglj/IKrTBAlTN2WLK0jRy9b2oPw2pSn0e4A+71/fg49LRfrs/
+	djHzzbj/3sk1P1U4tMXH3b66PnFa9X5vG0Rs8jlxroErg==
+Received: from dc5-exch05.marvell.com ([199.233.59.128])
+	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4ej8vf998s-6
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 03 Jun 2026 00:03:14 -0700 (PDT)
+Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
+ DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Wed, 3 Jun 2026 14:59:19 +0800
-Received: from 172.29.37.154 (172.29.37.152) by RS-EX-MBS2.realsil.com.cn
- (172.29.17.102) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
- Transport; Wed, 3 Jun 2026 14:59:19 +0800
-From: javen <javen_xu@realsil.com.cn>
-To: <hkallweit1@gmail.com>, <nic_swsd@realtek.com>, <andrew+netdev@lunn.ch>,
-	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <horms@kernel.org>
-CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Javen Xu
-	<javen_xu@realsil.com.cn>
-Subject: [PATCH net-next v1 1/5] net: phy: realtek: add support for dummy phy
-Date: Wed, 3 Jun 2026 14:59:12 +0800
-Message-ID: <20260603065916.334-2-javen_xu@realsil.com.cn>
-X-Mailer: git-send-email 2.50.1.windows.1
-In-Reply-To: <20260603065916.334-1-javen_xu@realsil.com.cn>
-References: <20260603065916.334-1-javen_xu@realsil.com.cn>
+ 15.2.1544.25; Wed, 3 Jun 2026 00:03:13 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
+ (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
+ Transport; Wed, 3 Jun 2026 00:03:13 -0700
+Received: from rkannoth-OptiPlex-7090 (unknown [10.28.36.165])
+	by maili.marvell.com (Postfix) with SMTP id 7800B3F708D;
+	Wed,  3 Jun 2026 00:03:10 -0700 (PDT)
+Date: Wed, 3 Jun 2026 12:33:09 +0530
+From: Ratheesh Kannoth <rkannoth@marvell.com>
+To: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>
+CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <donald.hunter@gmail.com>,
+        <edumazet@google.com>, <horms@kernel.org>, <jiri@resnulli.us>,
+        <kuba@kernel.org>, <pabeni@redhat.com>, <sgoutham@marvell.com>
+Subject: Re: [PATCH v18 net-next 8/8] octeontx2-af: npc: cn20k: Allocate
+ npc_priv and dstats dynamically.
+Message-ID: <ah_RrQD0rtL4oJiF@rkannoth-OptiPlex-7090>
+References: <20260602060359.1894952-1-rkannoth@marvell.com>
+ <20260602060359.1894952-9-rkannoth@marvell.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20260602060359.1894952-9-rkannoth@marvell.com>
+X-Proofpoint-ORIG-GUID: qBsCTulOurRBTxCnx_6KY_PJCr4I1pNh
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjAzMDA2NiBTYWx0ZWRfXyio2gn/larQm
+ b8BAawAQ8lqGipgxKSqkqAtpVuKI5cMdIZvWUurnxhxeCMXNV4pvO9IqU+PO3jfygo+uFQMmZk1
+ 1h6F7ymy8CtGzjVeJMhc+Y8pK4WxkGEz+2rw3LEpgYuFWFtkAJwtF+PGvbC2vHYmFTLJjdTkIzZ
+ UzyYNtgs4iQT5oazYlckN8G7g/isxE5mlOUaCZc9mblGx+0/yi5wISWwW1m+jMdlLMEhVLls5vg
+ 70Pc7eJk4x12d8lnQhX9OnzME2vLpBEV4XmEWeHnbjTa14MlwjVdHO7MNGnO4KoXT9f2XWCVTHO
+ 8b7hbciLoqtUGzRF2IIv1WTGqYN+RKwHqmOe0OjKRN2VuN3x9X8lWNa/6vA4KRaJJG7IFgDgl+f
+ ku4IffNcuM3IxWfIzqtPYNLKqn1UV+z0vM/qR21xC+eRY+OdyTawTN8p0Mc/ATkNXeQg7Ml6I1t
+ myVy3BXGSlo81nBY/wg==
+X-Authority-Analysis: v=2.4 cv=EtviaycA c=1 sm=1 tr=0 ts=6a1fd1b2 cx=c_pps
+ a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
+ a=kj9zAlcOel0A:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=l0iWHRpgs5sLHlkKQ1IR:22 a=EAYMVhzMl8SCOHhVQcBL:22 a=c92rfblmAAAA:8
+ a=M5GUcnROAAAA:8 a=jXztlOBXjf_iSrI2OZQA:9 a=CjuIK1q_8ugA:10
+ a=GvGzcOZaWPEFPQC_NcjD:22 a=OBjm3rFKGHvpk9ecZwUJ:22
+X-Proofpoint-GUID: qBsCTulOurRBTxCnx_6KY_PJCr4I1pNh
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-03_02,2026-05-28_03,2025-10-01_01
 
-From: Javen Xu <javen_xu@realsil.com.cn>
+On 2026-06-02 at 11:33:59, Ratheesh Kannoth (rkannoth@marvell.com) wrote:
+> Replace the file-scope static npc_priv with a kcalloc'd struct filled
+> from hardware bank/subbank geometry at init (num_banks is no longer a
+> const compile-time constant; drop init_done and use a non-NULL
+> npc_priv pointer for liveness). Thread npc_priv_get() / pointer access
+> through the CN20K NPC code paths, extend teardown to kfree the root
+> struct on failure and in npc_cn20k_deinit, and adjust MCAM section
+> setup to use the discovered subbank count.
+>
+> Allocate MCAM debugfs dstats via devm_kzalloc instead of a static matrix,
+> and use the allocated backing store consistently when computing deltas
+> (including the counter rollover compare).
+>
+> Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
 
-Add support for rtl8116af dummy phy driver, match phy id and read link
-speed from MII_BMCR.
+https://sashiko.dev/#/patchset/20260602060359.1894952-1-rkannoth%40marvell.com says
 
-Signed-off-by: Javen Xu <javen_xu@realsil.com.cn>
----
- drivers/net/phy/realtek/realtek_main.c | 54 ++++++++++++++++++++++++++
- include/net/phy/realtek_phy.h          |  1 +
- 2 files changed, 55 insertions(+)
+>>
+>> +	dstats = devm_kzalloc(rvu->dev, sizeof(*dstats), GFP_KERNEL);
+>> +	if (!dstats)
+>> +		return -ENOMEM;
+>> +
+>Since dstats remains a global static pointer, won't multiple RVU devices
+>probing cause this to be unconditionally overwritten, leaking the previously
+>allocated memory?
+>
+There is only one admin-function PCI device per system. Will post a patch to net-next (after this series is merged)to  reject any additional AF probe
+with -EBUSY so the driver model matches hardware and automated reviewers can rely on a single bound instance.
 
-diff --git a/drivers/net/phy/realtek/realtek_main.c b/drivers/net/phy/realtek/realtek_main.c
-index 27268811f564..9b92828c49d9 100644
---- a/drivers/net/phy/realtek/realtek_main.c
-+++ b/drivers/net/phy/realtek/realtek_main.c
-@@ -2659,6 +2659,47 @@ static int rtlgen_sfp_get_features(struct phy_device *phydev)
- 	return 0;
- }
- 
-+static int rtl8116af_sfp_get_features(struct phy_device *phydev)
-+{
-+	linkmode_set_bit(ETHTOOL_LINK_MODE_1000baseT_Full_BIT,
-+			 phydev->supported);
-+
-+	phydev->speed = SPEED_1000;
-+	phydev->duplex = DUPLEX_FULL;
-+
-+	phydev->port = PORT_FIBRE;
-+
-+	return 0;
-+}
-+
-+static int rtl8116af_sfp_read_status(struct phy_device *phydev)
-+{
-+	int val, err;
-+
-+	err = genphy_update_link(phydev);
-+	if (err)
-+		return err;
-+
-+	if (!phydev->link)
-+		return 0;
-+
-+	val = phy_read(phydev, MII_BMCR);
-+	if (val < 0)
-+		return val;
-+
-+	if (val & BMCR_SPEED1000)
-+		phydev->speed = SPEED_1000;
-+	else if (val & BMCR_SPEED100)
-+		phydev->speed = SPEED_100;
-+
-+	if (val & BMCR_FULLDPLX)
-+		phydev->duplex = DUPLEX_FULL;
-+	else
-+		phydev->duplex = DUPLEX_HALF;
-+
-+	return 0;
-+}
-+
- static int rtlgen_sfp_read_status(struct phy_device *phydev)
- {
- 	int val, err;
-@@ -2947,6 +2988,19 @@ static struct phy_driver realtek_drvs[] = {
- 		.write_page	= rtl821x_write_page,
- 		.read_mmd	= rtl822x_read_mmd,
- 		.write_mmd	= rtl822x_write_mmd,
-+	}, {
-+		PHY_ID_MATCH_EXACT(PHY_ID_RTL8116AF_DUMMY),
-+		.name		= "RTL8116af PHY Mode",
-+		.flags		= PHY_IS_INTERNAL,
-+		.get_features	= rtl8116af_sfp_get_features,
-+		.config_aneg	= rtlgen_sfp_config_aneg,
-+		.read_status	= rtl8116af_sfp_read_status,
-+		.suspend	= genphy_suspend,
-+		.resume		= rtlgen_resume,
-+		.read_page	= rtl821x_read_page,
-+		.write_page	= rtl821x_write_page,
-+		.read_mmd	= rtl822x_read_mmd,
-+		.write_mmd	= rtl822x_write_mmd,
- 	}, {
- 		PHY_ID_MATCH_EXACT(0x001ccad0),
- 		.name		= "RTL8224 2.5Gbps PHY",
-diff --git a/include/net/phy/realtek_phy.h b/include/net/phy/realtek_phy.h
-index d683bc1b0659..cbf91af0ead6 100644
---- a/include/net/phy/realtek_phy.h
-+++ b/include/net/phy/realtek_phy.h
-@@ -3,5 +3,6 @@
- #define _REALTEK_PHY_H
- 
- #define	PHY_ID_RTL_DUMMY_SFP	0x001ccbff
-+#define PHY_ID_RTL8116AF_DUMMY  0x001ccbfe
- 
- #endif /* _REALTEK_PHY_H */
--- 
-2.43.0
+>Additionally, because this uses devm_kzalloc, if a device is unbound, won't
+>devres free the memory while leaving the global pointer dangling? Could this
+>lead to a use-after-free for other active devices that attempt to read from
+>the debugfs file?
 
+There is only one AF device per system, there is no support unbind AF device, so it is already attached.
+
+>> -	bw = bitmap_weight(bmap, npc_priv.subbank_depth);
+>> -	bfree = npc_priv.subbank_depth - bw;
+>> +	bw = bitmap_weight(bmap, npc_priv->subbank_depth);
+>> +	bfree = npc_priv->subbank_depth - bw;
+>>
+>>  	if (!bfree) {
+>>  		dev_dbg(rvu->dev, "%s: subbank is full\n", __func__);
+>This is a pre-existing issue, but does __npc_subbank_alloc() properly verify
+>the bounds of the mcam_idx buffer before writing to it?
+Pre-existing issue, will add bound check as part of hardening series, after the patch series merged.
+
+> -	npc_priv.subbank_depth = subbank_depth;
+>> +	npc_priv = kcalloc(1, sizeof(*npc_priv), GFP_KERNEL);
+>> +	if (!npc_priv)
+>> +		return -ENOMEM;
+>> +
+>Since npc_priv remains a file-scope global pointer, if multiple PCI physical
+>functions probe, won't the second device initialization overwrite this pointer
+>and permanently leak the memory allocated by the first device? Should this
+>state be encapsulated within the per-device private data structure (such as
+>struct rvu) instead?
+
+THere is only one AF device, so only one npc_priv_t instance.
+
+> +	kfree(npc_priv->sb);
+>>  	kfree(subbank_srch_order);
+>> -	bitmap_clear(npc_priv.en_map, 0, MAX_NUM_BANKS * MAX_NUM_SUB_BANKS *
+>> +	bitmap_clear(npc_priv->en_map, 0, MAX_NUM_BANKS * MAX_NUM_SUB_BANKS *
+>>  		     MAX_SUBBANK_DEPTH);
+>> +	npc_defrag_list_clear();
+>> +	kfree(npc_priv);
+>> +	npc_priv = NULL;
+>>  }
+>If one device is torn down and calls npc_cn20k_deinit(), it explicitly frees
+>the global npc_priv pointer and sets it to NULL. Won't this immediately break
+>any other active RVU devices that are concurrently using this shared global
+>pointer, leading to use-after-free or NULL pointer crashes?
+>
+THere is only one AF device, so only one npc_priv_t instance.
