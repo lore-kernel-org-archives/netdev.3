@@ -1,38 +1,53 @@
-Received: from mail-m49218.qiye.163.com (mail-m49218.qiye.163.com [45.254.49.218])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58E20407CEF;
-	Wed,  3 Jun 2026 06:59:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39DB240B6DC;
+	Wed,  3 Jun 2026 06:59:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780469974; cv=none; b=V6J3kzI6pd2H+75TwXGa8mcNcO+LLxJoKHLoAgxCgbxjXr2/xjRsY02JgGBTqQ/o/UOra6ODRklmX3FBB3C3Snb4ARULy+SiPIwqK8QGFLbKccjR0dcsTJUyXOdJRX1LeZk8tlx7BTegU4T7MZ40xQxbtoIvpupiE2bj0WOuiXo=
+	t=1780469985; cv=none; b=Q5mn03sYjCg+LzqGF5Pwkh7tjXA49/K0wzUA0ywqs+j0oIg78FndxbakDSKRsuJrmzfOeNio+uChce2WxCtftZCQMz8Tt51D/HqMXYdvX1ESrv2B+By8NKaHevGpCFiqKnRRt8gM+UkNaAFIvXv16W3KMYRnC/+DwHY2JpZWKRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780469974; c=relaxed/simple;
-	bh=YeDj+vW/ls6yG/Z6ri+CsMKidy6SP4mcnKYTvR1VFiU=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ikjvX76lPXM1cR2GbA8J9M+0g+hoI0UuhhoyI03wkSuNIr3HpilAXElRUS/1r4rPHMdJmL1eSaKJD3eGEN0O7VAEQAP9at9bThtpgtiFc36FS5k8Y8LL3ywcy9nZ6QcSw4TBiVJ4YYmx+ENtZtT+7idKXUwKWWkQCA2icIR367I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ucloud.cn; spf=pass smtp.mailfrom=ucloud.cn; dkim=pass (1024-bit key) header.d=ucloud.cn header.i=@ucloud.cn header.b=aAqjcE9b; arc=none smtp.client-ip=45.254.49.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ucloud.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ucloud.cn
+	s=arc-20240116; t=1780469985; c=relaxed/simple;
+	bh=ImCdehpsW+CSd6wqR798R/oMBtK0Q3OlfSY2u1RHHLk=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=NpaHUBv43EOnMNnDiKC70P2DHawQ3FSD9Rz0id/LmE/Qu5q7aAQR6/p7zb8qRJEwhFP8L9z8GHKEkROJmr6E76v6XXHDib3JlyTJGmRy7D768WHDTcXsFV2v6WhVtkjexN5TH7pbONI8q7YEavHijR9+QHB+zN/fFP52I/cdp3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn; spf=pass smtp.mailfrom=realsil.com.cn; dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b=XRSppAaY; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realsil.com.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ucloud.cn header.i=@ucloud.cn header.b="aAqjcE9b"
-Received: from yuangap.. (unknown [106.75.220.2])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 1af1378a7;
-	Wed, 3 Jun 2026 14:54:13 +0800 (GMT+08:00)
-From: "yuan.gao" <yuan.gao@ucloud.cn>
-To: David Ahern <dsahern@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: "yuan.gao" <yuan.gao@ucloud.cn>
-Subject: [PATCH net] inet: frags: remove redundant assignment in inet_frag_reasm_prepare()
-Date: Wed,  3 Jun 2026 14:53:23 +0800
-Message-Id: <20260603065323.2736839-1-yuan.gao@ucloud.cn>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b="XRSppAaY"
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 6536xI0213643786, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realsil.com.cn;
+	s=dkim; t=1780469959;
+	bh=/KEaKqyxdusPu1ymUfX5D9sP+tOQq7VEKGlj8VLoDxw=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:
+	 Content-Transfer-Encoding:Content-Type;
+	b=XRSppAaYsjsQyT1I1M1LSrZnDZCA2VTapVviFSH8Rh/6rrMPo6TYnBqENvTYl1Ehe
+	 eO3dzI4EImWTSLpQzFMcUjtssdq8cjpBwJSVwoTLXklFUPVi38eF39S/rGhLfZ7n6d
+	 xgAPUA8yCpoc6BFj2gnXStYXidkT+oglIluJJ6ijPazANPloxpj7LIttNtWDXEPaO3
+	 ElfWBNTHhcRUknzUJCDGJQcWTNS3WHpbeir32C0pqZJ1fQSSqj/BCBZL8a/DAohRg4
+	 nhAeygCz01sYWd/S23EA/WLkFR2PdhpKP+BUxg4C0u0OkqiuBb+gHCvLCqcXRlQH8z
+	 Bmgbci9MUBGsg==
+Received: from RS-EX-MBS2.realsil.com.cn ([172.29.17.102])
+	by rtits2.realtek.com.tw (8.15.2/3.28/5.94) with ESMTPS id 6536xI0213643786
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Wed, 3 Jun 2026 14:59:18 +0800
+Received: from RS-EX-MBS2.realsil.com.cn (172.29.17.102) by
+ RS-EX-MBS2.realsil.com.cn (172.29.17.102) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17; Wed, 3 Jun 2026 14:59:18 +0800
+Received: from 172.29.37.154 (172.29.37.152) by RS-EX-MBS2.realsil.com.cn
+ (172.29.17.102) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
+ Transport; Wed, 3 Jun 2026 14:59:18 +0800
+From: javen <javen_xu@realsil.com.cn>
+To: <hkallweit1@gmail.com>, <nic_swsd@realtek.com>, <andrew+netdev@lunn.ch>,
+	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <horms@kernel.org>
+CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Javen Xu
+	<javen_xu@realsil.com.cn>
+Subject: [PATCH net-next v1 0/5] r8169: fix RTL8116AF low power and link readiness issues
+Date: Wed, 3 Jun 2026 14:59:11 +0800
+Message-ID: <20260603065916.334-1-javen_xu@realsil.com.cn>
+X-Mailer: git-send-email 2.50.1.windows.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -40,46 +55,32 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9e8c42dde20229kunmd0e242ac27f6d0
-X-HM-MType: 1
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFJQjdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkZTB1PVk1OGU5LHUNNTk9NTlYVFA
-	kWGhdVGRETFhoSFyQUDg9ZV1kYEgtZQVlKS01VTE5VSUlLVUlZV1kWGg8SFR0UWUFZT0tIVUpLSU
-	9PT0hVSktLVUpCS0tZBg++
-DKIM-Signature: a=rsa-sha256;
-	b=aAqjcE9b2RtgBRYrZeWK7KI+Q0ec+9y3ctph0zJnwT9hpO/bPKrmuHfrqFpA9LVK+KsWRCk+8/Likd5MbUGjhYh/UWh1I1jIbZFrlEAt5mPwpaWRqvRs+6pdMlSK0KiNTQ0pqYz9nkDlcNzw2L8EorMHWYdg0Al/t/b13bJlEwE=; s=default; c=relaxed/relaxed; d=ucloud.cn; v=1;
-	bh=D4L5GolW8rHJvUx3aHc7MJIiUhRzbf8ezE0ovYk9o2I=;
-	h=date:mime-version:subject:message-id:from;
+Content-Type: text/plain
 
-The assignment is redundant because skb_clone() already copies skb->cb.
+From: Javen Xu <javen_xu@realsil.com.cn>
 
-Remove the unnecessary code.
+This series fixes several RTL8116AF issues in r8169.
 
-Signed-off-by: yuan.gao <yuan.gao@ucloud.cn>
----
- net/ipv4/inet_fragment.c | 2 --
- 1 file changed, 2 deletions(-)
+RTL8116af operate in a SFP mode where the standard PHY register path does not
+provide all required information for normal phylib. In this mode, the driver
+needs a dummy PHY ID so that phylib can attach to a dummy Realtek PHY driver,
+while selected standard PHY registers are handled through the SerDes register.
+And RTL8116af is a multi-function card, all the function should be set to d3hot
+and enable aspm to ensure that system can enter C10 and s0ix power saving state,
+including invisble function 2 to 7.
 
-diff --git a/net/ipv4/inet_fragment.c b/net/ipv4/inet_fragment.c
-index 496308c02..6119b660a 100644
---- a/net/ipv4/inet_fragment.c
-+++ b/net/ipv4/inet_fragment.c
-@@ -473,7 +473,6 @@ void *inet_frag_reasm_prepare(struct inet_frag_queue *q, struct sk_buff *skb,
- 			head = skb;
- 			goto out_restore_sk;
- 		}
--		FRAG_CB(fp)->next_frag = FRAG_CB(skb)->next_frag;
- 		if (RB_EMPTY_NODE(&skb->rbnode))
- 			FRAG_CB(parent)->next_frag = fp;
- 		else
-@@ -488,7 +487,6 @@ void *inet_frag_reasm_prepare(struct inet_frag_queue *q, struct sk_buff *skb,
- 			skb->destructor = NULL;
- 		}
- 		skb_morph(skb, head);
--		FRAG_CB(skb)->next_frag = FRAG_CB(head)->next_frag;
- 		rb_replace_node(&head->rbnode, &skb->rbnode,
- 				&q->rb_fragments);
- 		consume_skb(head);
+Javen Xu (5):
+  net: phy: realtek: add support for dummy phy
+  r8169: move funcitons forward
+  r8169: fix RTL8116af readiness bug
+  r8169: add ltr support for RTL8116af
+  r8169: fix RTL8116af can not enter s0idle and c10
+
+ drivers/net/ethernet/realtek/r8169_main.c | 217 ++++++++++++++++------
+ drivers/net/phy/realtek/realtek_main.c    |  54 ++++++
+ include/net/phy/realtek_phy.h             |   1 +
+ 3 files changed, 214 insertions(+), 58 deletions(-)
+
 -- 
-2.32.0
+2.43.0
 
