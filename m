@@ -1,83 +1,91 @@
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A718B3822BF;
-	Wed,  3 Jun 2026 12:38:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E115F2D0625;
+	Wed,  3 Jun 2026 12:42:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780490318; cv=none; b=Ct4tTirO7awiBxWwZJlxrk2m0H9IFIhWJe4F36B3gKaTfPo6Gisy2cNUHONOvmZYH/vIhh+8WG14PdnKVikW54qK0A7+/4BVYtX9pwlnWVVXDuKFXV21P6pDatcrzNL9LR7R3MNEMHi5hAZ1G/Kn2PayHHdcrtIUOUIr9pamPwA=
+	t=1780490561; cv=none; b=iHq1TAVvTztI4C1BGf74LmXepCaBnPFvOSjUWXXn4ym3GD8ss3DdkL9isnlZ0vINWUg4o0AccmJHa0C+q04UVcKmd8GIQvayLM2ExmP1PKzy7aVhNzwUBuhADhfpdPqYHXujqr8nR3NA8GogA38DtdG7nCTDNNZLw4ctsD9O2W8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780490318; c=relaxed/simple;
-	bh=5bHY+YsG81BuUciaVcOihnktaS+mMEov8Z9m1VmG5tM=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=QInKu+7k5yjsVItlNKzRyOTHMFGScL15l66sm7EHvHFkh0bROVY9daI4QEYeA7/wXVSDJSCz155+tCwRZgztVZPB9vQHtvLCBguG+72dPSG/iNu0pOkAbdEjikVPV8pCKbMyVE6cWSIIVhps4HIiFmyI4NcO6hw2LoK0CpFntCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=4TUT6F0o; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	s=arc-20240116; t=1780490561; c=relaxed/simple;
+	bh=BqqbVz39eZcGieDH4S9GcWuFlvyiwFN5lfWUHYEmdEs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bsLKqUCcVWXbPwqDPJokszFdVeHfPHoQEon82SzEf8D6PT43ObwE/RtFr9EYma/q9pwUrQNqTGOC/4ETQXrDyz3jBIKwOvHhxTJGw8AK37DLh1BI60NR11zGIAjXNjmRPwZwFlnxU3weZvLazNsF53f2c+/zCRjbzWwPZj5i5rM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AEBwaoEZ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="4TUT6F0o"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7AD80A4B67;
-	Wed,  3 Jun 2026 14:38:22 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1780490305; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=Tf3KQrOIjUOndWRSBGC/XP+UavWomwz4e/A9aZNsvIw=;
-	b=4TUT6F0oPv45gBoIAMbrgEca6FtGBA1DogkhXKxwFFuVFh6+0u+8PXEZ8we5OQqQEt6vAf
-	nreL11Z58YicFsSi9yQ3ycZVYCKdr6itJPR0irEgk47fbm8Ig5h8MPrYPWMn3V0R6b9dcG
-	CLd41kHNAezfXYjHMgLLhpLSyiwsNXX9PdzJBp+2DQbrp2qU/zUkWGvbOoElEm/9SFvZFV
-	InvaEjX4yNsnM9KGCduJjTJ6yUs0bolqK2TYucs6kM4qnFWBv6H3wpwoY8kVOLO/5fVmsA
-	3FmTOU4X6KcFpS18nX5STz6x02hnDqhlhED9dqzQLUccpQ2FhfLc4FszuG3zyw==
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AEBwaoEZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B45451F00893;
+	Wed,  3 Jun 2026 12:42:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780490560;
+	bh=BqqbVz39eZcGieDH4S9GcWuFlvyiwFN5lfWUHYEmdEs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=AEBwaoEZsTb5MZH1vuW+kAdocIAVYIjbNZgcutswOTN4EcvEClG214+XjFo0q3wa9
+	 WIv4DqL+k/7EmI4Ff5jmIscIFWfCWxKhEImcvlCzdDIJKRwbhMsee9As7truZAqmLg
+	 Qag8mHYP6UCWuwAtoJdTPyZI4UJGPvwP2Eq7w35dx8SKgjQG4zBw1D+BY3tBonzs8w
+	 zzpMTJuC2lY/Tdj5s3Rfr6YFUJtEDBdlnsQPhgwpFZEYyhKTgmrZ/dM58MIhDEzFoa
+	 cm/hookOcu5EH1WuQLIQt98sH91Wv9WHwfCEyR2o7WAPMp9kbl+XxDWmx/iVaIf+jy
+	 AtHAtaLt6yoeg==
+Date: Wed, 3 Jun 2026 13:42:34 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Paul Moore <paul@paul-moore.com>
+Cc: Blaise Boscaccy <bboscaccy@linux.microsoft.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>, bpf <bpf@vger.kernel.org>,
+	Networking <netdev@vger.kernel.org>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Linux Next Mailing List <linux-next@vger.kernel.org>
+Subject: Re: linux-next: build failure after merge of the security tree
+Message-ID: <6565c4a4-3102-4521-9c84-48c7c7f0117f@sirena.org.uk>
+References: <ah8BzqSmZO40xYhS@sirena.org.uk>
+ <CAHC9VhRR4mmkOdWwUCLswmA+_KEjB8RCBBTJ2W4JGiLUWKzxyQ@mail.gmail.com>
+ <CAHC9VhRPbkVYAMec0KG55er6GOPdKqMXKdpC8rrHgiAodSv-sw@mail.gmail.com>
+ <9d34218f-abbf-4a23-8b35-b305873ffae3@sirena.org.uk>
+ <CAHC9VhQnBi55hjwTATA_tgKNZ=StFYTKu2Av5R8N4yDJwsFswQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Wed, 03 Jun 2026 14:38:22 +0200
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Linus Walleij
- <linusw@kernel.org>, =?UTF-8?Q?Alvin_=C5=A0ipraga?= <alsi@bang-olufsen.dk>,
- Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
- Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Subject: Re: [PATCH net-next v1 1/1] net: dsa: realtek: Use %pM format
- specifier for MAC addresses
-In-Reply-To: <20260603112011.230890-1-andriy.shevchenko@linux.intel.com>
-References: <20260603112011.230890-1-andriy.shevchenko@linux.intel.com>
-Message-ID: <db861659b03b355cb3860231e54176d8@tipi-net.de>
-X-Sender: nb@tipi-net.de
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="nGNcFUm9tdwcZ7nJ"
+Content-Disposition: inline
+In-Reply-To: <CAHC9VhQnBi55hjwTATA_tgKNZ=StFYTKu2Av5R8N4yDJwsFswQ@mail.gmail.com>
+X-Cookie: micro:
 
-On 3.6.2026 13:20, Andy Shevchenko wrote:
-> Convert to %pM instead of using custom code.
-> 
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> ---
->  drivers/net/dsa/realtek/rtl8366rb.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/dsa/realtek/rtl8366rb.c 
-> b/drivers/net/dsa/realtek/rtl8366rb.c
-> index d96ae72b0a5c..103039fe3086 100644
-> --- a/drivers/net/dsa/realtek/rtl8366rb.c
-> +++ b/drivers/net/dsa/realtek/rtl8366rb.c
-> @@ -573,8 +573,7 @@ static int rtl8366rb_set_addr(struct realtek_priv 
-> *priv)
-> 
->  	eth_random_addr(addr);
-> 
-> -	dev_info(priv->dev, "set MAC: %02X:%02X:%02X:%02X:%02X:%02X\n",
-> -		 addr[0], addr[1], addr[2], addr[3], addr[4], addr[5]);
-> +	dev_info(priv->dev, "set MAC: %pM\n", addr);
->  	val = addr[0] << 8 | addr[1];
->  	ret = regmap_write(priv->map, RTL8366RB_SMAR0, val);
->  	if (ret)
 
-Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
+--nGNcFUm9tdwcZ7nJ
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Thanks
-Nicolai
+On Tue, Jun 02, 2026 at 05:45:04PM -0400, Paul Moore wrote:
+> On Tue, Jun 2, 2026 at 3:16=E2=80=AFPM Mark Brown <broonie@kernel.org> wr=
+ote:
+
+> > Can you ping me when that goes in (or things are otherwise resolved)
+> > please so I know to drop the revert from -next?
+
+> You shouldn't see a conflict with lsm/next now, but if you do let me know.
+
+It's still there today, but seeing Linus' comment about not merging
+hornet I marked it as BROKEN instead.
+
+--nGNcFUm9tdwcZ7nJ
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmogITkACgkQJNaLcl1U
+h9DVGwf+NVc0XMabqCVzDIqGd1+DP3DzTxEm+ofenacTy8/+If3rEcR2qZtfmzWW
+rcTGpT61iaArHexoWu0FmI9qJ6ValIZwwC9ZCGQJg4VtwKnwSqHejO2zFQbkXR4C
+dRX2j1opZD6otwv5LT6t1ePqr9c+/wXW2U/5DjuQKZyKNG8wfUBIO0zkzTRFbNwp
+vvMCeF7GinBvONyTuqPNun4N1czjHY3n8q4vGvfeA7BR7D5uqRjO9n86aS96Tkb5
+i9olAglQdKrGVOUUc82ibYxYOs2xSP2f2nZR3i7X2ccuf6hmp80Gyd9VYKKlqOao
+LvXaqDQ4Rx2ujXnE8bnyohG8zk8UJQ==
+=AYFE
+-----END PGP SIGNATURE-----
+
+--nGNcFUm9tdwcZ7nJ--
