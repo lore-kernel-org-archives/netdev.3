@@ -1,127 +1,156 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f180.google.com (mail-dy1-f180.google.com [74.125.82.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 784FA47F2E6
-	for <netdev@vger.kernel.org>; Wed,  3 Jun 2026 13:02:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1939480DD2
+	for <netdev@vger.kernel.org>; Wed,  3 Jun 2026 13:06:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780491742; cv=none; b=XQbBaRJ83I5ojqLxuZ8tDdrk66m/Q7j7Q35LeFcALFTAJ55TgxFqXuLFndkQW8zksxgwhn5+dIjI/32pRmkqObx9NBTz73XQ5qhbLxVoAtJLbFRBhuTVl1KMCryX3AIpQv9Pvi9B2OcY2YylV1yxNijw8jwPTqYnZj/GIfVdYnI=
+	t=1780491999; cv=none; b=E+yqc3DOYOuq44n66J0U0sW4X/VnZhFsELFaeKiGvVQSz5iTaenX98Tn9RLyvgKGrW69tafeVpMaTgUoQB8m7VGTUyA7IsNn4N8FPswRll4Kg8xsJPOmpq5guNGd8LW2fRR2YHBpzBB7pusvzNqWt5akvuOKUDeBuJOCHyvMc8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780491742; c=relaxed/simple;
-	bh=bxo9SHrUXJGyZkFMOpAmRk2SB3YPqnmSBwAGKofz5+E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FBh2QR9XpKr3jhgoDJ4cYl3PIJusJaBuO3n/7Nqen/gh4QUKfT0iB6tDFAvfGAGv5aUB0FL/YeMUTdovW9IfcOsPXjfNbcSZRdGMi5vYDxHVkSOQZqSRcgNfaILzNCx7gowvdxD0EaVV0i+ouRbLCH8aogDCu+BrtCrtz+qP3RU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=FGJZjsOe; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1780491999; c=relaxed/simple;
+	bh=ZApW2cI7YETmeg8qoxa0V/CbOF/XgrMKyvubFMRJs4U=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ol5MjEQ5ciJjFekJwtff9u6q6t0lKCMi8i+ms5RrRnkTel+6dpBEoY8aZAJgfLOo4IZa9qdPQ2PEwyIHtMeDKOfTN+U6dJKpGPW0lwQjwMtzpgTpQ6MOk06DFegT0bBR+iYJM3S+AKGJremrWExnWF+uS25hfzvVwhBHITTY8aE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TcEJtQ/c; arc=none smtp.client-ip=74.125.82.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="FGJZjsOe"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=h3aEZcwJGvorZvWFjRBgAcDT0jUMCioc99jyI5R2qXY=; b=FGJZjsOe9LpQgMTvk+L4K5gfPG
-	KFWHQYsgy92q8YFIJZI5z/75F3+sRxwyUDgAeVf05WuwKSlGgsRAfCaSGNLzWntftaLvPD+KkAR/N
-	VCYDs0cN+GC4NP8d1+/ec0TtcDwNdZ9oFrbDDNmlwPSxck2+oQPJLjyq0KsXIcQHupRI=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wUlEf-005sav-TK; Wed, 03 Jun 2026 15:02:17 +0200
-Date: Wed, 3 Jun 2026 15:02:17 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Arthur Kiyanovski <akiyano@amazon.com>
-Cc: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
-	netdev@vger.kernel.org, Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	"Woodhouse, David" <dwmw@amazon.com>,
-	"Machulsky, Zorik" <zorik@amazon.com>,
-	"Matushevsky, Alexander" <matua@amazon.com>,
-	Saeed Bshara <saeedb@amazon.com>, "Wilson, Matt" <msw@amazon.com>,
-	"Liguori, Anthony" <aliguori@amazon.com>,
-	"Bshara, Nafea" <nafea@amazon.com>,
-	"Schmeilin, Evgeny" <evgenys@amazon.com>,
-	"Belgazal, Netanel" <netanel@amazon.com>,
-	"Saidi, Ali" <alisaidi@amazon.com>,
-	"Herrenschmidt, Benjamin" <benh@amazon.com>,
-	"Dagan, Noam" <ndagan@amazon.com>,
-	"Arinzon, David" <darinzon@amazon.com>,
-	"Ostrovsky, Evgeny" <evostrov@amazon.com>,
-	"Tabachnik, Ofir" <ofirt@amazon.com>
-Subject: Re: [PATCH net] net: ena: PHC: Add missing barriers
-Message-ID: <3e241945-b0b4-4426-9863-02c25e6d6ac4@lunn.ch>
-References: <20260603065532.13260-1-akiyano@amazon.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TcEJtQ/c"
+Received: by mail-dy1-f180.google.com with SMTP id 5a478bee46e88-3074adb8fcaso424263eec.0
+        for <netdev@vger.kernel.org>; Wed, 03 Jun 2026 06:06:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780491997; x=1781096797; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=4bwS8I9hjyPMoQIUtgoT/XA9wHOeUpofaMWQ6wzUEIo=;
+        b=TcEJtQ/cu5UMnqZIzWe5NVXZGpV7l1F5GyDaFBg6PjesJZKwSLYSZfZjnjWxbhjbKp
+         iio3aOdXZtnl2KJTKDzeD2YWsHvsu4s5GwQ0YNnGB/P76HZmtvjvR8Yuvjuvfsh+3O0f
+         eDs1UxX0Sao5h9SLil24c3LdhKPveFmAKmMar3WT2nd4pwMyNOY8JX85BohkaOPpjpGC
+         UAAZrt3MMDJjuYtN+ZLjyDUqKeUPFI0zpGNZlUHdyEJCaZXCtuBf/iT+/qzLOGVvawBs
+         IKpyLBV0XdqrS/qRbbZTW8D54K89o4r3jPq9SApNJwtcbHfh6KJ+ORkVYud+6JG4sRVP
+         ZCgQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780491997; x=1781096797;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4bwS8I9hjyPMoQIUtgoT/XA9wHOeUpofaMWQ6wzUEIo=;
+        b=I1I2eWFZcPT3YusofMiHbfrWLzGJSxYv98ltrS409FMxFBY/+57oshD3HUMfr3P061
+         GvaKtB2a7ixE+XOdQ/6DOhYiZb5IDa5VHNx+5K3wq9hUqH/IxnRQSiBUNZLIkNVWhuvn
+         UcshtyrUWOYq9VT5YYFlwOPO8srgfsnHTh13H2rJY2jGvWFbLfXp37gpqn01qsoUO0cS
+         1DTK9SM/Jbu8jEakc67JvzW2y40R4MDrii3XnxZEp8sDhE6pm07YHlgz1pOqzKTwa0cq
+         6BU6hDdIHgwix4He6L/q7jFQq++p7i9jS2GKlNg+N6EHuewouvPVoJBka9WCBs2qtQh5
+         6x6w==
+X-Gm-Message-State: AOJu0Yzj6iBkDek5JLWacE7zAN8MwruvRi20NudHbq8wX6s75kNlaxdS
+	q17/NpanukE17I1roJWUEPXfo+UmZoU7SEZkYYGCMbVegsvNqsgFJeQm0Wo68i+P9a4=
+X-Gm-Gg: Acq92OF3STggtqa4/rhXdODgjkqW2JdrTZy4WIWl3sFDcGb85k7k3bU7ubN4M5HeK6K
+	q3aDbql5aNljRI+g2D3r4K6txM5VXT/f24OPzS0NiI8PAueTlqX1lTmn1yF6qYMEuuObutga4UX
+	rSeDPMB/V8y9NnJz9VtQs2YTFCtUPOUBnt9lFw+037TJ1LTtsgwsHu6ZjwtIzJgO3Oml5A6x86t
+	Do7AZN6yBcpMuo42RXaBYnQ10AAzSV+iO5iDJt9wn2dtQPqLYTVcNJny0OSP0gSh6AtB2o0wtg4
+	sf1OA20/WFSLGaruXstE1OgBZC2AWLzNrhASBvmTHe3BGhbgy0L2Qvwi6MQkGdTCQYHvz5B9tCB
+	mpRShJqe7q9RjvKsgTkuwfLJnHcTKwHMinfEHnVWdbWlricRbCZgw2YuAzx+R/zqTaddP57hChF
+	Z8dHbe3nMFBv/wePdxR3DQUqZ3
+X-Received: by 2002:a05:7300:5726:b0:304:5644:f97a with SMTP id 5a478bee46e88-3074fb7a698mr1767605eec.21.1780491996625;
+        Wed, 03 Jun 2026 06:06:36 -0700 (PDT)
+Received: from houminxi ([38.34.12.160])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3074df75ff6sm2397111eec.26.2026.06.03.06.06.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 03 Jun 2026 06:06:36 -0700 (PDT)
+From: Minxi Hou <houminxi@gmail.com>
+To: netdev@vger.kernel.org
+Cc: aconole@redhat.com,
+	davem@davemloft.net,
+	echaudro@redhat.com,
+	edumazet@google.com,
+	horms@kernel.org,
+	i.maximets@ovn.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	shuah@kernel.org,
+	dev@openvswitch.org,
+	linux-kselftest@vger.kernel.org,
+	Minxi Hou <houminxi@gmail.com>
+Subject: [PATCH v3] selftests/net/openvswitch: guard command substitutions against empty output
+Date: Wed,  3 Jun 2026 21:06:19 +0800
+Message-ID: <20260603130619.1785322-1-houminxi@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260603065532.13260-1-akiyano@amazon.com>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jun 03, 2026 at 06:55:30AM +0000, Arthur Kiyanovski wrote:
-> Add dma_rmb() barriers after both req_id completion checks in
-> ena_com_phc_get_timestamp(). On weakly-ordered architectures,
-> payload fields may be read before req_id is observed as updated.
-> 
-> Fixes: e0ea34158ee8 ("net: ena: Add PHC support in the ENA driver")
-> Closes: https://sashiko.dev/#/patchset/20260430032507.11586-1-akiyano%40amazon.com
-> Signed-off-by: Arthur Kiyanovski <akiyano@amazon.com>
-> ---
->  drivers/net/ethernet/amazon/ena/ena_com.c | 43 +++++++++++++++--------
->  1 file changed, 28 insertions(+), 15 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/amazon/ena/ena_com.c b/drivers/net/ethernet/amazon/ena/ena_com.c
-> index 8c86789d867a..79cfcd87d4bf 100644
-> --- a/drivers/net/ethernet/amazon/ena/ena_com.c
-> +++ b/drivers/net/ethernet/amazon/ena/ena_com.c
-> @@ -1822,23 +1822,31 @@ int ena_com_phc_get_timestamp(struct ena_com_dev *ena_dev, u64 *timestamp)
->  				   "PHC get time request 0x%x failed (device error)\n",
->  				   phc->req_id);
->  			phc->stats.phc_err_dv++;
-> -		} else if (resp->error_flags & ENA_PHC_ERROR_FLAGS) {
-> -			/* Device updated req_id during blocking time but got
-> -			 * a PHC error, this occurs if device:
-> -			 * - exceeded the get time request limit
-> -			 * - received an invalid timestamp
-> -			 */
-> -			netdev_err(ena_dev->net_device,
-> -				   "PHC get time request 0x%x failed (error 0x%x)\n",
-> -				   phc->req_id,
-> -				   resp->error_flags);
-> -			phc->stats.phc_err_ts += !!(resp->error_flags &
-> -				ENA_ADMIN_PHC_ERROR_FLAG_TIMESTAMP);
->  		} else {
-> -			/* Device updated req_id during blocking time
-> -			 * with valid timestamp
-> +			/* Ensure PHC payload is read after req_id update
-> +			 * is observed
->  			 */
-> -			phc->stats.phc_exp++;
-> +			dma_rmb();
-> +
-> +			if (resp->error_flags & ENA_PHC_ERROR_FLAGS) {
-> +				/* Device updated req_id during blocking
-> +				 * time but got a PHC error, this occurs
-> +				 * if device:
-> +				 * - exceeded the get time request limit
-> +				 * - received an invalid timestamp
-> +				 */
-> +				netdev_err(ena_dev->net_device,
-> +					   "PHC get time request 0x%x failed (error 0x%x)\n",
-> +					   phc->req_id,
-> +					   resp->error_flags);
-> +				phc->stats.phc_err_ts += !!(resp->error_flags &
-> +					ENA_ADMIN_PHC_ERROR_FLAG_TIMESTAMP);
-> +			} else {
-> +				/* Device updated req_id during blocking
-> +				 * time with valid timestamp
-> +				 */
-> +				phc->stats.phc_exp++;
-> +			}
+When ip-link output is unavailable, when the upcall daemon log has not
+been written yet, or when pahole does not know the OVS drop subsystem
+ID, the affected command substitutions silently produce empty strings.
+The caller then passes empty sha= or pid= arguments to ovs_add_flow,
+or matches against wrong drop reason codes, all without a diagnostic.
 
-This is a rather big hunk just to add a dma_rmb(). Please could you
-try to minimise the patch.
+Add [ -z ] guards immediately after each assignment. For test_arp_ping,
+also align the MAC extraction to use awk '/link\/ether/' as in
+test_pop_vlan. The drop_reason guard returns ksft_skip because an
+absent subsystem ID is an environment issue, not a test failure.
 
-    Andrew
+Signed-off-by: Minxi Hou <houminxi@gmail.com>
+---
+
+Changes since v2:
+  - Fixed missing 'net/' in subject (selftests/net/openvswitch).
+  - Removed --base flag (prerequisite-patch-id flood in v2).
+
+Changes since v1:
+  - Rebased onto current net-next/main. No code changes.
+
+ .../selftests/net/openvswitch/openvswitch.sh     | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
+
+diff --git a/tools/testing/selftests/net/openvswitch/openvswitch.sh b/tools/testing/selftests/net/openvswitch/openvswitch.sh
+index a415e9dec8cd..82f066a0ceed 100755
+--- a/tools/testing/selftests/net/openvswitch/openvswitch.sh
++++ b/tools/testing/selftests/net/openvswitch/openvswitch.sh
+@@ -360,6 +360,8 @@ test_psample() {
+ 	# sFlow / IPFIX.
+ 	nlpid=$(grep -E "listening on upcall packet handler" \
+             $ovs_dir/s0.out | cut -d ":" -f 2 | tr -d ' ')
++	[ -z "$nlpid" ] && \
++		{ info "failed to get upcall PID"; return 1; }
+ 
+ 	ovs_add_flow "test_psample" psample \
+             "in_port(2),eth(),eth_type(0x0800),ipv4()" \
+@@ -393,6 +395,10 @@ test_drop_reason() {
+ 	ovs_drop_subsys=$(pahole -C skb_drop_reason_subsys |
+ 			      awk '/OPENVSWITCH/ { print $3; }' |
+ 			      tr -d ,)
++	if [ -z "$ovs_drop_subsys" ]; then
++		info "failed to get OVS drop subsys ID"
++		return $ksft_skip
++	fi
+ 
+ 	sbx_add "test_drop_reason" || return $?
+ 
+@@ -491,13 +497,19 @@ test_arp_ping () {
+ 	# Setup client namespace
+ 	ip netns exec client ip addr add 172.31.110.10/24 dev c1
+ 	ip netns exec client ip link set c1 up
+-	HW_CLIENT=`ip netns exec client ip link show dev c1 | grep -E 'link/ether [0-9a-f:]+' | awk '{print $2;}'`
++	HW_CLIENT=$(ip netns exec client ip link show dev c1 \
++		| awk '/link\/ether/ {print $2}')
++	[ -z "$HW_CLIENT" ] && \
++		{ info "failed to get client hwaddr"; return 1; }
+ 	info "Client hwaddr: $HW_CLIENT"
+ 
+ 	# Setup server namespace
+ 	ip netns exec server ip addr add 172.31.110.20/24 dev s1
+ 	ip netns exec server ip link set s1 up
+-	HW_SERVER=`ip netns exec server ip link show dev s1 | grep -E 'link/ether [0-9a-f:]+' | awk '{print $2;}'`
++	HW_SERVER=$(ip netns exec server ip link show dev s1 \
++		| awk '/link\/ether/ {print $2}')
++	[ -z "$HW_SERVER" ] && \
++		{ info "failed to get server hwaddr"; return 1; }
+ 	info "Server hwaddr: $HW_SERVER"
+ 
+ 	ovs_add_flow "test_arp_ping" arpping \
+-- 
+2.54.0
+
