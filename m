@@ -1,76 +1,55 @@
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8253A3D3D05
-	for <netdev@vger.kernel.org>; Wed,  3 Jun 2026 12:58:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 784FA47F2E6
+	for <netdev@vger.kernel.org>; Wed,  3 Jun 2026 13:02:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780491490; cv=none; b=E94NJS97yhQmhokrvZjfjBevqAlNiIYNoTl4PCHtYTJgvMULXd8JnPFxajKLD/HddwDxM88wDhxi6TsI8xNYE8LfPPKfVAUaOxwHSLlWcHIN7uqqjn9zRdhxyj/weKuRnV72Fqvj82+m3tFFhCWU7ysXCuWdwqUb/4KyGIo8EKA=
+	t=1780491742; cv=none; b=XQbBaRJ83I5ojqLxuZ8tDdrk66m/Q7j7Q35LeFcALFTAJ55TgxFqXuLFndkQW8zksxgwhn5+dIjI/32pRmkqObx9NBTz73XQ5qhbLxVoAtJLbFRBhuTVl1KMCryX3AIpQv9Pvi9B2OcY2YylV1yxNijw8jwPTqYnZj/GIfVdYnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780491490; c=relaxed/simple;
-	bh=IjCHpzFMPo3Zup2hVq6+6Sh9BeV/GN6/ak4tKcxbuq4=;
+	s=arc-20240116; t=1780491742; c=relaxed/simple;
+	bh=bxo9SHrUXJGyZkFMOpAmRk2SB3YPqnmSBwAGKofz5+E=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uGDbzFE67msclpv9/qHJoOxOGTkWGpX08MGE87AUwUxVMFa0nlZU4kI1Gj75aQxQXBPZ5DKRVK0Dj3UV/PCMvcGLzLqg8aycQVXu30rLU2miuLmSPjqNh+/GL+8NpWsPXxciB3kQT6BN6NSAffzsbocWQ+pfctQPyLBeUkzbpBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WG5oZTh9; arc=none smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=FBh2QR9XpKr3jhgoDJ4cYl3PIJusJaBuO3n/7Nqen/gh4QUKfT0iB6tDFAvfGAGv5aUB0FL/YeMUTdovW9IfcOsPXjfNbcSZRdGMi5vYDxHVkSOQZqSRcgNfaILzNCx7gowvdxD0EaVV0i+ouRbLCH8aogDCu+BrtCrtz+qP3RU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=FGJZjsOe; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WG5oZTh9"
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2bf30d530bdso52603185ad.3
-        for <netdev@vger.kernel.org>; Wed, 03 Jun 2026 05:58:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780491489; x=1781096289; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=hvvkmvfezi6AGtrygCv68cidJW9SHBnZeWjAxPlqJXs=;
-        b=WG5oZTh9MLLBsQLXi2HW3+LoCzPrAhymVQdslMmSPGndKLv/aD7arPEy6pFn/pwsjp
-         9Dr5zqMyoMD3qO5WFsDKSxVvqxuMzTtK58QVc+vvwmBG8ntOoTIQRbfen/AKWZEW5o2E
-         rbn7Kf/3NuXiM7qtOYlMH7NWi0HPwcuv6E8qqQAe4wmUNiWDdf2CTQK5sRPc0A/LATXA
-         eb/coMiVa6khgEAmvXStyEu++Y9sojmEfAcSstdEzXIvdHAfPMzx0/NYypF3aA8hkEHR
-         I0A2tgFb7u4kj5/PKrVDUR7CZExwUvhqOIlFq6rcbd+ul2iFBQ2ppzTOs767gk9bfWkI
-         yQug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780491489; x=1781096289;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=hvvkmvfezi6AGtrygCv68cidJW9SHBnZeWjAxPlqJXs=;
-        b=ie8CdCR/7QbZQad+H/ZpgUTlSoJfYbn1ljaZfTFEsMnSUd9q35N/or89iWHZ0mSrOJ
-         xBReL1x75WOikmP8DNnYJ2CmtXUGRKtVwh5NmDRgnfYCHEfSnY01/5O3j7TMsF5iIf4h
-         PnVHkmqM9zy9EZH/R2BpCqKVu79jWbDiJ5nQT2djX5/04s53+PbypnFe+LTCC43a4TEK
-         RhkNfmlg20FLOkeB2dyQr3hfq2975sPVnjG6qNNQg48zwLL7vZ5wJvJgZHQ8UTMi0P6Y
-         RWGBS/ngT5Dp2SydlE5JBnHEkfUxK+bdYc96QqewSbKVf4GkOwJLKxFxWzqj2z4ul486
-         mMhA==
-X-Forwarded-Encrypted: i=1; AFNElJ9Ze0GLpf+Fo4cXJsgssU45mt/hVPXw6Wof3OMkq9gUV4yxDEw6PEJ109thRTlYJ1NoLiPlaGc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyvjxrQzBhUd1qvWRN5po28t27JaUbiUkxBohc78UlDhh965mjJ
-	cahxa7pWS/Y4Vsy50ZZG0Jf8lZl43hucw7j/yGVt8K8LhZ+EPpRBph9t
-X-Gm-Gg: Acq92OFGKiuogBpn4cBDmVITYDpuEVXtX3+Chb0tsLaD8ofWFq51YuuFPRoG+Q1TRLI
-	IYQU/z5lf1nM/rJo+yncMosEQpQkjUEyrG3qlUqUuu+Z0OyH67aCCTCHv4QoS6jVxbD/fcum+Iy
-	wG024fOGQfNLbjTZ7PH8j4vmD9Bb542N4V4KQgZbf2Wyt2rsvJwA4sTN6bLqTi8OmvfKe36RFJR
-	BIvZmX0CPyswxaxXOnJrd+y5cCukh503vKFSVd8CfVqyTBggEcRdfsYI7yyUsnYIlgCZGV8fJOm
-	Plt1RtdcUT0+j6q3oO6b0jf9o/l+rPL9cHMase+hnbJx/avvZSpjbcs9k40CdhWvzMuyJDO++9P
-	Lc4RljRz3mdFKNJX17oSNjtaoIL7GRy8xuT3ktH3shFeJpLiXTSfiVS77W9hLZOZq8hYdUVtOk9
-	B4wJ/B9c1d8LDIE+IKz2ZcMHVpqY7t2TFvVsYo+PpKFLZ+jHP6j/Rzrg==
-X-Received: by 2002:a17:902:fc87:b0:2bf:379b:53d2 with SMTP id d9443c01a7336-2c163a59515mr33557685ad.15.1780491488420;
-        Wed, 03 Jun 2026 05:58:08 -0700 (PDT)
-Received: from v4bel ([58.123.110.97])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c16609e61csm25197275ad.43.2026.06.03.05.58.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Jun 2026 05:58:05 -0700 (PDT)
-Date: Wed, 3 Jun 2026 21:58:01 +0900
-From: Hyunwoo Kim <imv4bel@gmail.com>
-To: David Ahern <dsahern@kernel.org>, idosch@nvidia.com
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, horms@kernel.org, steffen.klassert@secunet.com,
-	herbert@gondor.apana.org.au, andrew+netdev@lunn.ch,
-	kuniyu@google.com, jlayton@kernel.org, netdev@vger.kernel.org,
-	imv4bel@gmail.com
-Subject: Re: [PATCH net v2] net: protect egress device access in the output
- path with rcu_read_lock
-Message-ID: <aiAk2Q-yNs6It6g4@v4bel>
-References: <ahveCu-zzFlpeVut@v4bel>
- <20260602154523.GA537996@shredder>
- <ad40bbe0-f79c-4fd9-9670-5dab01a8e57f@kernel.org>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="FGJZjsOe"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=h3aEZcwJGvorZvWFjRBgAcDT0jUMCioc99jyI5R2qXY=; b=FGJZjsOe9LpQgMTvk+L4K5gfPG
+	KFWHQYsgy92q8YFIJZI5z/75F3+sRxwyUDgAeVf05WuwKSlGgsRAfCaSGNLzWntftaLvPD+KkAR/N
+	VCYDs0cN+GC4NP8d1+/ec0TtcDwNdZ9oFrbDDNmlwPSxck2+oQPJLjyq0KsXIcQHupRI=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wUlEf-005sav-TK; Wed, 03 Jun 2026 15:02:17 +0200
+Date: Wed, 3 Jun 2026 15:02:17 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Arthur Kiyanovski <akiyano@amazon.com>
+Cc: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+	netdev@vger.kernel.org, Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	"Woodhouse, David" <dwmw@amazon.com>,
+	"Machulsky, Zorik" <zorik@amazon.com>,
+	"Matushevsky, Alexander" <matua@amazon.com>,
+	Saeed Bshara <saeedb@amazon.com>, "Wilson, Matt" <msw@amazon.com>,
+	"Liguori, Anthony" <aliguori@amazon.com>,
+	"Bshara, Nafea" <nafea@amazon.com>,
+	"Schmeilin, Evgeny" <evgenys@amazon.com>,
+	"Belgazal, Netanel" <netanel@amazon.com>,
+	"Saidi, Ali" <alisaidi@amazon.com>,
+	"Herrenschmidt, Benjamin" <benh@amazon.com>,
+	"Dagan, Noam" <ndagan@amazon.com>,
+	"Arinzon, David" <darinzon@amazon.com>,
+	"Ostrovsky, Evgeny" <evostrov@amazon.com>,
+	"Tabachnik, Ofir" <ofirt@amazon.com>
+Subject: Re: [PATCH net] net: ena: PHC: Add missing barriers
+Message-ID: <3e241945-b0b4-4426-9863-02c25e6d6ac4@lunn.ch>
+References: <20260603065532.13260-1-akiyano@amazon.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -79,144 +58,70 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ad40bbe0-f79c-4fd9-9670-5dab01a8e57f@kernel.org>
+In-Reply-To: <20260603065532.13260-1-akiyano@amazon.com>
 
-On Tue, Jun 02, 2026 at 10:24:09AM -0600, David Ahern wrote:
-> On 6/2/26 9:45 AM, Ido Schimmel wrote:
-> > On Sun, May 31, 2026 at 04:06:50PM +0900, Hyunwoo Kim wrote:
-> >>  drivers/net/vrf.c       | 16 +++++++++++-----
-> >>  net/ipv4/ip_output.c    | 27 +++++++++++++++++++--------
-> >>  net/ipv4/raw.c          |  4 +++-
-> >>  net/ipv4/xfrm4_output.c | 13 +++++++++----
-> >>  net/xfrm/xfrm_output.c  |  4 +++-
-> >>  5 files changed, 45 insertions(+), 19 deletions(-)
-> >>
-> >> diff --git a/drivers/net/vrf.c b/drivers/net/vrf.c
-> >> index 46209917ae4d..e9a1dd961805 100644
-> >> --- a/drivers/net/vrf.c
-> >> +++ b/drivers/net/vrf.c
-> >> @@ -833,17 +833,23 @@ static int vrf_finish_output(struct net *net, struct sock *sk, struct sk_buff *s
-> >>  
-> >>  static int vrf_output(struct net *net, struct sock *sk, struct sk_buff *skb)
-> >>  {
-> >> -	struct net_device *dev = skb_dst(skb)->dev;
-> >> +	struct net_device *dev;
-> >> +	int ret;
-> >> +
-> >> +	rcu_read_lock();
-> >> +	dev = skb_dst_dev_rcu(skb);
-> >>  
-> >>  	IP_UPD_PO_STATS(net, IPSTATS_MIB_OUT, skb->len);
-> >>  
-> >>  	skb->dev = dev;
-> >>  	skb->protocol = htons(ETH_P_IP);
-> >>  
-> >> -	return NF_HOOK_COND(NFPROTO_IPV4, NF_INET_POST_ROUTING,
-> >> -			    net, sk, skb, NULL, dev,
-> >> -			    vrf_finish_output,
-> >> -			    !(IPCB(skb)->flags & IPSKB_REROUTED));
-> >> +	ret = NF_HOOK_COND(NFPROTO_IPV4, NF_INET_POST_ROUTING,
-> >> +			   net, sk, skb, NULL, dev,
-> >> +			   vrf_finish_output,
-> >> +			   !(IPCB(skb)->flags & IPSKB_REROUTED));
-> >> +	rcu_read_unlock();
-> >> +	return ret;
-> >>  }
-> > 
-> > Patch LGTM, thanks, but what about the IPv6 counterpart (vrf_output6())
-
-I left ipv6 out because its callers (ip6_send_skb, ip6_xmit, etc.)
-already hold rcu. Though some niche paths may not. (maybe rxe_send?)
-
-> > and the other similar existing issues that Sashiko is flagging?
-
-I couldn't find Sashiko's review. Could you share a url?
-
+On Wed, Jun 03, 2026 at 06:55:30AM +0000, Arthur Kiyanovski wrote:
+> Add dma_rmb() barriers after both req_id completion checks in
+> ena_com_phc_get_timestamp(). On weakly-ordered architectures,
+> payload fields may be read before req_id is observed as updated.
 > 
-> Common locking at a higher level than dst->output seems like a better
-> approach. This function is called under rcu_read_lock for some paths.
+> Fixes: e0ea34158ee8 ("net: ena: Add PHC support in the ENA driver")
+> Closes: https://sashiko.dev/#/patchset/20260430032507.11586-1-akiyano%40amazon.com
+> Signed-off-by: Arthur Kiyanovski <akiyano@amazon.com>
+> ---
+>  drivers/net/ethernet/amazon/ena/ena_com.c | 43 +++++++++++++++--------
+>  1 file changed, 28 insertions(+), 15 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/amazon/ena/ena_com.c b/drivers/net/ethernet/amazon/ena/ena_com.c
+> index 8c86789d867a..79cfcd87d4bf 100644
+> --- a/drivers/net/ethernet/amazon/ena/ena_com.c
+> +++ b/drivers/net/ethernet/amazon/ena/ena_com.c
+> @@ -1822,23 +1822,31 @@ int ena_com_phc_get_timestamp(struct ena_com_dev *ena_dev, u64 *timestamp)
+>  				   "PHC get time request 0x%x failed (device error)\n",
+>  				   phc->req_id);
+>  			phc->stats.phc_err_dv++;
+> -		} else if (resp->error_flags & ENA_PHC_ERROR_FLAGS) {
+> -			/* Device updated req_id during blocking time but got
+> -			 * a PHC error, this occurs if device:
+> -			 * - exceeded the get time request limit
+> -			 * - received an invalid timestamp
+> -			 */
+> -			netdev_err(ena_dev->net_device,
+> -				   "PHC get time request 0x%x failed (error 0x%x)\n",
+> -				   phc->req_id,
+> -				   resp->error_flags);
+> -			phc->stats.phc_err_ts += !!(resp->error_flags &
+> -				ENA_ADMIN_PHC_ERROR_FLAG_TIMESTAMP);
+>  		} else {
+> -			/* Device updated req_id during blocking time
+> -			 * with valid timestamp
+> +			/* Ensure PHC payload is read after req_id update
+> +			 * is observed
+>  			 */
+> -			phc->stats.phc_exp++;
+> +			dma_rmb();
+> +
+> +			if (resp->error_flags & ENA_PHC_ERROR_FLAGS) {
+> +				/* Device updated req_id during blocking
+> +				 * time but got a PHC error, this occurs
+> +				 * if device:
+> +				 * - exceeded the get time request limit
+> +				 * - received an invalid timestamp
+> +				 */
+> +				netdev_err(ena_dev->net_device,
+> +					   "PHC get time request 0x%x failed (error 0x%x)\n",
+> +					   phc->req_id,
+> +					   resp->error_flags);
+> +				phc->stats.phc_err_ts += !!(resp->error_flags &
+> +					ENA_ADMIN_PHC_ERROR_FLAG_TIMESTAMP);
+> +			} else {
+> +				/* Device updated req_id during blocking
+> +				 * time with valid timestamp
+> +				 */
+> +				phc->stats.phc_exp++;
+> +			}
 
-Adding rcu to ip_local_out would protect all functions reached via
-dst_output in one place; raw_send_hdrinc and xfrm_output_resume still
-need their own patches. What do you think of this diff?
+This is a rather big hunk just to add a dma_rmb(). Please could you
+try to minimise the patch.
 
-As a follow-up, the rcu in ip_output etc. then becomes redundant and
-should be removed.
-
-
-Best regards,
-Hyunwoo Kim
-
----
-
-diff --git a/net/ipv4/ip_output.c b/net/ipv4/ip_output.c
-index 5bcd73cbdb41..26b51ef0763f 100644
---- a/net/ipv4/ip_output.c
-+++ b/net/ipv4/ip_output.c
-@@ -126,9 +126,11 @@ int ip_local_out(struct net *net, struct sock *sk, struct sk_buff *skb)
- {
- 	int err;
-
-+	rcu_read_lock();
- 	err = __ip_local_out(net, sk, skb);
- 	if (likely(err == 1))
- 		err = dst_output(net, sk, skb);
-+	rcu_read_unlock();
-
- 	return err;
- }
-diff --git a/net/ipv4/raw.c b/net/ipv4/raw.c
-index 68e88cb3e55c..555e62eacdc6 100644
---- a/net/ipv4/raw.c
-+++ b/net/ipv4/raw.c
-@@ -410,9 +410,11 @@ static int raw_send_hdrinc(struct sock *sk, struct flowi4 *fl4,
- 				skb_transport_header(skb))->type);
- 	}
-
-+	rcu_read_lock();
- 	err = NF_HOOK(NFPROTO_IPV4, NF_INET_LOCAL_OUT,
--		      net, sk, skb, NULL, rt->dst.dev,
-+		      net, sk, skb, NULL, skb_dst_dev_rcu(skb),
- 		      dst_output);
-+	rcu_read_unlock();
- 	if (err > 0)
- 		err = net_xmit_errno(err);
- 	if (err)
-diff --git a/net/xfrm/xfrm_output.c b/net/xfrm/xfrm_output.c
-index cc35c2fcbbe0..c5ac360da38d 100644
---- a/net/xfrm/xfrm_output.c
-+++ b/net/xfrm/xfrm_output.c
-@@ -594,6 +594,7 @@ int xfrm_output_resume(struct sock *sk, struct sk_buff *skb, int err)
- {
- 	struct net *net = xs_net(skb_dst(skb)->xfrm);
-
-+	rcu_read_lock();
- 	while (likely((err = xfrm_output_one(skb, err)) == 0)) {
- 		nf_reset_ct(skb);
-
-@@ -601,12 +602,14 @@ int xfrm_output_resume(struct sock *sk, struct sk_buff *skb, int err)
- 		if (unlikely(err != 1))
- 			goto out;
-
--		if (!skb_dst(skb)->xfrm)
--			return dst_output(net, sk, skb);
-+		if (!skb_dst(skb)->xfrm) {
-+			err = dst_output(net, sk, skb);
-+			goto out;
-+		}
-
- 		err = nf_hook(skb_dst(skb)->ops->family,
- 			      NF_INET_POST_ROUTING, net, sk, skb,
--			      NULL, skb_dst(skb)->dev, xfrm_output2);
-+			      NULL, skb_dst_dev_rcu(skb), xfrm_output2);
- 		if (unlikely(err != 1))
- 			goto out;
- 	}
-@@ -615,6 +618,7 @@ int xfrm_output_resume(struct sock *sk, struct sk_buff *skb, int err)
- 		err = 0;
-
- out:
-+	rcu_read_unlock();
- 	return err;
- }
- EXPORT_SYMBOL_GPL(xfrm_output_resume);
+    Andrew
