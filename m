@@ -1,170 +1,107 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91CF93FE37C
-	for <netdev@vger.kernel.org>; Wed,  3 Jun 2026 11:43:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FA7146AF02
+	for <netdev@vger.kernel.org>; Wed,  3 Jun 2026 11:45:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780487041; cv=none; b=SzMEukpe+acE2AjsF/KdyHfoFQRx9TnW0YQhnF1nXTuppEjy5kWsWHDW4HQ4IfAr/gE/1jOc6LOUIJSa0NYyYL3N33zWvqg4BVzPZU/kqoNw6PvJpCXmwjBrclh4X5xNMdw9tThSnJWZbrAblQ8d+bPklChB+J94lBlpg9/GZV4=
+	t=1780487138; cv=none; b=eEbeLx276gV4o5PWkiz85YTHItVxnCWFfW4iWor8ARSJG20W0St50B+0njBBJagBd+PWO4qFbkUNPejBT/HaKUuf9o9EvTRwzKJ7jWDujQplYdbrAM3UlOjkFZQbIdh17bp+5BgXZ6eP6HOYPBqHwHtOIMDTf+k+YTtqKiw04i4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780487041; c=relaxed/simple;
-	bh=cB5IzueyNAgldHyPvG5KG9AuTk1cmqYL6BsojGI83KI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=acI/TraWpV+GasguaIjSGoUeaX4WL+yRs64FwUJA7baF+4uSFkmCMSW9KwFMu+78WHdlqX9ibYdoW0EDQBYME5en+i2hAbf+w96cviUglN1t5c+KvOttJ0ZYX7d/Yi7B0lpV+nDTIHvVLkIfDMVsdZdDTkhwvHACCtootTH2S3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=e9TruHKb; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=L+5Da9hO; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=e9TruHKb; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=L+5Da9hO; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1780487138; c=relaxed/simple;
+	bh=1GxrKFudQVwMCsr/oJv4iBqvJYQRpCE0W4FhUIynvj4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=A5Zaj4i+io/zGUh4wwt3/CXdXdFj94GPeNYQQTZC+jhIv+2JZR0/Qa0eprGCGZdTowiWtMFKw1gT9rzdzv2Cl039oeZ6gNN6k8H8DF6fNFv0PvMXf2SYBZqTRvU3GQpbg/IOCeYhq3Gc3n+TX7Spit5ByhlunAioRNl8aoDqmss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=C++OtVbj; arc=none smtp.client-ip=91.218.175.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="e9TruHKb";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="L+5Da9hO";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="e9TruHKb";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="L+5Da9hO"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id A8A7067559;
-	Wed,  3 Jun 2026 11:43:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1780487037; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="C++OtVbj"
+Message-ID: <e750f01e-e161-47ec-9527-8a7a0a999f45@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1780487133;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=W0eCuaAhCxqMdNJLOaVe8WqPBMsrJRRf6/0fkCn++oY=;
-	b=e9TruHKba2Aw8j5znNs7wuEBN6ABAIt9lPHHNKWc10ifZhfTD8lU+Amkj6FyF3IwnwqsOn
-	ZJSB/bau0jk/KeED2ljIJWWGmrp4+0ZNlP/gz4LWSh0lEAZqj2+Lm+WHhG7wDQUsUCBo76
-	tZ2EMza79/ZhFb4kLqIaWpmw8RG6E6c=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1780487037;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=W0eCuaAhCxqMdNJLOaVe8WqPBMsrJRRf6/0fkCn++oY=;
-	b=L+5Da9hOM6Rn3I3fgd338xAE9ha2lU5C4Va8OfuLmzgu2gRs0ZCE33NMTcTqxRbWVALAl9
-	NTF3zlbpIv+RVfCw==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1780487037; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=W0eCuaAhCxqMdNJLOaVe8WqPBMsrJRRf6/0fkCn++oY=;
-	b=e9TruHKba2Aw8j5znNs7wuEBN6ABAIt9lPHHNKWc10ifZhfTD8lU+Amkj6FyF3IwnwqsOn
-	ZJSB/bau0jk/KeED2ljIJWWGmrp4+0ZNlP/gz4LWSh0lEAZqj2+Lm+WHhG7wDQUsUCBo76
-	tZ2EMza79/ZhFb4kLqIaWpmw8RG6E6c=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1780487037;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=W0eCuaAhCxqMdNJLOaVe8WqPBMsrJRRf6/0fkCn++oY=;
-	b=L+5Da9hOM6Rn3I3fgd338xAE9ha2lU5C4Va8OfuLmzgu2gRs0ZCE33NMTcTqxRbWVALAl9
-	NTF3zlbpIv+RVfCw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 84DC4779A7;
-	Wed,  3 Jun 2026 11:43:56 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id GOpGHXwTIGqNXAAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Wed, 03 Jun 2026 11:43:56 +0000
-Date: Wed, 3 Jun 2026 12:43:54 +0100
-From: Pedro Falcato <pfalcato@suse.de>
-To: Andy Lutomirski <luto@amacapital.net>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, 
-	Askar Safin <safinaskar@gmail.com>, akpm@linux-foundation.org, axboe@kernel.dk, brauner@kernel.org, 
-	david@kernel.org, dhowells@redhat.com, hch@infradead.org, jack@suse.cz, 
-	linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, miklos@szeredi.hu, netdev@vger.kernel.org, 
-	patches@lists.linux.dev, viro@zeniv.linux.org.uk, willy@infradead.org
-Subject: Re: [PATCH 0/3] vmsplice: make vmsplice a trivial wrapper for
- preadv2/pwritev2
-Message-ID: <aiAREqlHK1llOw_y@pedro-suse.lan>
-References: <CAHk-=wiAqf0PdZ4AKj_4riUnnEb=g_ZNPkLnXrByA9BBHYiFRg@mail.gmail.com>
- <20260602225426.122258-1-safinaskar@gmail.com>
- <CAHk-=wgKy4dP0oQCNKyMQQf3-uVpaigmDyH6_T0Via76gWST9g@mail.gmail.com>
- <CALCETrWx8-Q5-rK1KnAPCxCbXaWCd=Yfs_Pr8qVMa8k8L6of1w@mail.gmail.com>
+	bh=1GxrKFudQVwMCsr/oJv4iBqvJYQRpCE0W4FhUIynvj4=;
+	b=C++OtVbj99YR79j9NxNhoZPl2eAczcpY0Jgza4k/Chd4j3G1m6vkXFEidj6z3Cb+7tE4XP
+	fTR3G27zSrhxcRZwMsv4Xc12jyYrXbIxRc/xGcm7TrkuxotnMXYWtp0V890azBhOdN4PKh
+	roMbrsgAMxJfkk0gyqNkTiKV2PMAWkk=
+Date: Wed, 3 Jun 2026 19:45:23 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CALCETrWx8-Q5-rK1KnAPCxCbXaWCd=Yfs_Pr8qVMa8k8L6of1w@mail.gmail.com>
-X-Spam-Flag: NO
-X-Spam-Score: -4.30
-X-Spamd-Result: default: False [-4.30 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MISSING_XM_UA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	ARC_NA(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[linux-foundation.org,gmail.com,kernel.dk,kernel.org,redhat.com,infradead.org,suse.cz,vger.kernel.org,kvack.org,szeredi.hu,lists.linux.dev,zeniv.linux.org.uk];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo]
-X-Spam-Level: 
+Subject: Re: [PATCH net] ipv6: mcast: Fix use-after-free when processing MLD
+ queries
+To: Ido Schimmel <idosch@nvidia.com>, netdev@vger.kernel.org
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+ edumazet@google.com, horms@kernel.org, dsahern@kernel.org, leo@depthfirst.com
+References: <20260603101811.612594-1-idosch@nvidia.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+In-Reply-To: <20260603101811.612594-1-idosch@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-On Tue, Jun 02, 2026 at 08:51:03PM -0700, Andy Lutomirski wrote:
-> On Tue, Jun 2, 2026 at 5:12 PM Linus Torvalds
-> <torvalds@linux-foundation.org> wrote:
-> >
-> > On Tue, 2 Jun 2026 at 15:54, Askar Safin <safinaskar@gmail.com> wrote:
-> > >
-> > > Pedro is talking here not about this vmsplice patch, but about
-> > > my future hypothetical patch, which will remove splice-pagecache-to-pipe.
-> >
-> > That absolutely would be my suggested next step.
-> >
-> > Something like the attached - get rid of filemap_splice_read()
-> > entirely, and just replace it with copy_splice_read().
-> 
-> Am I understanding correctly that this will completely break zerocopy
-> sendfile?  sendfile is, internally, splice-to-a-secret-per-task-pipe
-> and then splice to the socket.  How much to people care?  These days,
-> a lot of high-bandwidth network senders are sending encrypted data,
-> which is not zerocopy frompagecache.  But there are surely some users
 
-You can do zerocopy from the page cache, even with TLS on top, by having
-your (fancy) NIC do TLS offloading for you. See https://people.freebsd.org/~gallatin/talks/euro2019-ktls.pdf.
-Linux works similarly. Slide 26 is particularly interesting.
-(No KTLS I assume is using simple sendmsg()'s from user memory, SW TLS
-and NIC KTLS are both sendfile(), per the slides)
+On 6/3/26 6:18 PM, Ido Schimmel wrote:
+> When processing an MLD query, a pointer to the multicast group address
+> is retrieved when initially parsing the packet. This pointer is later
+> dereferenced without being reloaded despite the fact that the skb header
+> might have been reallocated following the pskb_may_pull() calls, leading
+> to a use-after-free [1].
+>
+> Fix by copying the multicast group address when the packet is initially
+> parsed.
+>
+> [1]
+> BUG: KASAN: slab-use-after-free in __mld_query_work (net/ipv6/mcast.c:1512)
+> Read of size 8 at addr ffff8881154b8e90 by task kworker/4:1/118
+>
+> Workqueue: mld mld_query_work
+> Call Trace:
+> <TASK>
+> dump_stack_lvl (lib/dump_stack.c:94 lib/dump_stack.c:120)
+> print_address_description.constprop.0 (mm/kasan/report.c:378)
+> print_report (mm/kasan/report.c:482)
+> kasan_report (mm/kasan/report.c:595)
+> __mld_query_work (net/ipv6/mcast.c:1512)
+> mld_query_work (net/ipv6/mcast.c:1563)
+> process_one_work (kernel/workqueue.c:3314)
+> worker_thread (kernel/workqueue.c:3397 kernel/workqueue.c:3478)
+> kthread (kernel/kthread.c:436)
+> ret_from_fork (arch/x86/kernel/process.c:158)
+> ret_from_fork_asm (arch/x86/entry/entry_64.S:245)
+> </TASK>
+>
+> [...]
+>
+> Freed by task 118:
+> kasan_save_stack (mm/kasan/common.c:57)
+> kasan_save_track (mm/kasan/common.c:78)
+> kasan_save_free_info (mm/kasan/generic.c:584)
+> __kasan_slab_free (mm/kasan/common.c:253 mm/kasan/common.c:285)
+> kfree (./include/linux/kasan.h:235 mm/slub.c:2689 mm/slub.c:6251 mm/slub.c:6566)
+> pskb_expand_head (net/core/skbuff.c:2335)
+> __pskb_pull_tail (net/core/skbuff.c:2878 (discriminator 4))
+> __mld_query_work (net/ipv6/mcast.c:1495 (discriminator 1))
+> mld_query_work (net/ipv6/mcast.c:1563)
+> process_one_work (kernel/workqueue.c:3314)
+> worker_thread (kernel/workqueue.c:3397 kernel/workqueue.c:3478)
+> kthread (kernel/kthread.c:436)
+> ret_from_fork (arch/x86/kernel/process.c:158)
+> ret_from_fork_asm (arch/x86/entry/entry_64.S:245)
+>
+> Fixes: 97300b5fdfe2 ("[MCAST] IPv6: Check packet size when process Multicast")
+> Reported-by: Leo Lin <leo@depthfirst.com>
+> Reviewed-by: David Ahern <dahern@nvidia.com>
+> Signed-off-by: Ido Schimmel <idosch@nvidia.com>
 
-TL;DR I really do think it matters.
 
-> 
-> Now maybe someone cares about a different path?  Splice from socket to
-> pipe to file?  Splice from socket to pipe to other socket?  Does
-> anyone do any of this?  One can, of course, recv() directly to an
-> mmapped file, but then you pay for page faults, so that probably a bad
-> idea in most cases.  At least all of these cases don't have spliced
-> buffers that refer to a potentially read-only file.
-> 
-> 
-> But I'm a little concerned that zerocopy sends from files to network
-> are actually important.
-> 
-> --Andy
+Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
 
--- 
-Pedro
+
