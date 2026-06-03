@@ -1,104 +1,160 @@
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F36FA3F99F6;
-	Wed,  3 Jun 2026 06:28:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8ED0286AC;
+	Wed,  3 Jun 2026 06:38:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780468125; cv=none; b=QXVKQ+TU5ws8QNl/H3nd2gooKlbikg8j3nPt2ATnW6zFdpGZm22N3mdNRcKzLiyzghU0vhZnFebATFz2dT7QlRwLEb3yc4En8xtbf/GjWqMPygQDvw7shPleWbPSJ3Y+EdFfG4+b/OScW+b7Dxs7DVhe0EmYOlHgbpsPP2Y+Hco=
+	t=1780468682; cv=none; b=h8fUp2qa6Idk3eUZzI0AbC5NF2oa9t3MTWexka4RhVbrO9sf0oEEjsFeYWiLelJJJZ42i+2Xubs6g6ZKt9oc74CmZLaF5s/UNTJ+2PR669Hyr9fYEA01XZY7KrtNGvGwVJaFWAA7t7OxzsG+ZWzL6EBtqeI9VUXgQY9ThOUkRkM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780468125; c=relaxed/simple;
-	bh=WAi8U+3sfBWwUpadzsvWjdyiQFBV9pSSkxACkoPzTxs=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=B/1SNagc2WT41tCxnjnZWc+ovJTIXlmF2pviOdmpUPv99KzlEldjjDHmJAHbCzFjq4AMsdqOECGE0QPuZge3LNgdiz4o4aYUQdMSKVpHbI9D/l+GNIG7Bs9S9+Zo0OAQ7hiOWIFh1kPupSvfQBZX69VSF8BIM/OhLPh9X1CUP1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=vt2Jw+Nm; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+	s=arc-20240116; t=1780468682; c=relaxed/simple;
+	bh=TcS8ozdvqYwuaxXS6ik7ii1gXzcBaJYB1U1kLQmazOo=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tyeqbiss17eWOnlAYJVBtSZwqGH1dIXdHKD+bP0bwUVOwln0rmemYWh5IFs7AIeQ56JQz2Z/fDNMLMf0gklGRk0+KmOeSaTDz774exCJo1pTzLrzwesL8+UEZUWIJkfCNZDLgNOIMPnxoJGHFTL055znO7kZ1uKqxtsO6ItZq3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=S9MeyWfr; arc=none smtp.client-ip=67.231.156.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="vt2Jw+Nm"
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 6536IIJ103626622, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1780467498; bh=TWwBiF+NAdoTfoslkDu2INd/Tmlxm1z80iFJEROktwk=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:
-	 Content-Transfer-Encoding:Content-Type;
-	b=vt2Jw+NmqA5BLN8q1OfkiPv9cZZhXr3uvwEpnlxnBWiUTNJXwb9wZ8rbOrTkjNhek
-	 6OQXcAACnP23ZhQsiWq6zurYr7DpMZ8/PQmAmwpCg/z8QHc17brZBmWxuu3mpq8Zrq
-	 7822d9G9U6hwmPHuqc1IS6g1MlWsvbDRsECZwIJa5UluLU5/hMuX3hIF1sPwxtlUR4
-	 +n+cP1rFnyLlOS+vBOrcvxQkDWkGKPiQQQ8y6Ogsgd8Eli5l4JRK/0pZZdlwk+BZJ3
-	 +qCL65jFZ6oJnQYLs0C3Hj/8eUqp9NLjFR4x+7yVDX2dxk9mv+c1hxf61N2kmSC7Z7
-	 Hq1mJGFrWOw3Q==
-Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
-	by rtits2.realtek.com.tw (8.15.2/3.28/5.94) with ESMTPS id 6536IIJ103626622
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Wed, 3 Jun 2026 14:18:18 +0800
-Received: from RTKEXHMBS05.realtek.com.tw (10.21.1.55) by
- RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="S9MeyWfr"
+Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
+	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6532CFtq1194256;
+	Tue, 2 Jun 2026 23:37:41 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pfpt0220; bh=FGokJjgUyTvBTzBtrU9E3YF9B
+	uoWdrBav7kix/H9XlE=; b=S9MeyWfr3eEYeTJclaWg0C9xTOXJKebPi1U37qNXK
+	Mf03J7tcYVUz7m2H6Snb9HOT0A3Fz3eobtX/zopX/n+EpjBifooMDtEQ8UcO21Mn
+	XEKoX2XUS1x5prPQ4MApHIxRF6BESBTjf7Z+CxvYOiDHQ+Vi/BAwF55Fr4wJXj3H
+	pNblud8sC69tWT94Nfz0XsAR1RlDNwQXcesM9eow1mA2jk4hvkS1c4rp4nKTANlH
+	lCsS3v17JQOv5pdWVdnRWDRzzZAG/N/U6LU8QhzvUouXFy/ZgCU6VNUqmDAT0CRD
+	Bv3ljRkLDjx+r5Fe0j3/VOkLs/yIyLcNjIB947mv1GY6A==
+Received: from dc5-exch05.marvell.com ([199.233.59.128])
+	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4ega3bc5tb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 02 Jun 2026 23:37:40 -0700 (PDT)
+Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
+ DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Wed, 3 Jun 2026 14:18:18 +0800
-Received: from RTKEXHMBS05.realtek.com.tw (10.21.1.55) by
- RTKEXHMBS05.realtek.com.tw (10.21.1.55) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Wed, 3 Jun 2026 14:18:18 +0800
-Received: from RTDOMAIN (172.21.42.225) by RTKEXHMBS05.realtek.com.tw
- (10.21.1.55) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
- Transport; Wed, 3 Jun 2026 14:18:18 +0800
-From: Justin Lai <justinlai0215@realtek.com>
-To: <kuba@kernel.org>
-CC: <davem@davemloft.net>, <edumazet@google.com>, <pabeni@redhat.com>,
-	<andrew+netdev@lunn.ch>, <linux-kernel@vger.kernel.org>,
-	<netdev@vger.kernel.org>, <stable@vger.kernel.org>, <horms@kernel.org>,
-	<aleksander.lobakin@intel.com>, <pkshih@realtek.com>,
-	<larry.chiu@realtek.com>, Justin Lai <justinlai0215@realtek.com>
-Subject: [PATCH net v2] rtase: Avoid sleeping in get_stats64()
-Date: Wed, 3 Jun 2026 14:18:16 +0800
-Message-ID: <20260603061816.31356-1-justinlai0215@realtek.com>
-X-Mailer: git-send-email 2.40.1
+ 15.2.1544.25; Tue, 2 Jun 2026 23:37:39 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
+ (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
+ Transport; Tue, 2 Jun 2026 23:37:39 -0700
+Received: from rkannoth-OptiPlex-7090 (unknown [10.28.36.165])
+	by maili.marvell.com (Postfix) with SMTP id 35BF03F708D;
+	Tue,  2 Jun 2026 23:37:35 -0700 (PDT)
+Date: Wed, 3 Jun 2026 12:07:35 +0530
+From: Ratheesh Kannoth <rkannoth@marvell.com>
+To: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>
+CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <donald.hunter@gmail.com>,
+        <edumazet@google.com>, <horms@kernel.org>, <jiri@resnulli.us>,
+        <kuba@kernel.org>, <pabeni@redhat.com>, <sgoutham@marvell.com>
+Subject: Re: [PATCH v18 net-next 5/8] octeontx2: cn20k: Coordinate default
+ rules with NIX LF lifecycle
+Message-ID: <ah_Lrz0aP4jAd9eR@rkannoth-OptiPlex-7090>
+References: <20260602060359.1894952-1-rkannoth@marvell.com>
+ <20260602060359.1894952-6-rkannoth@marvell.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20260602060359.1894952-6-rkannoth@marvell.com>
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjAzMDA2MSBTYWx0ZWRfX5YRr7pXVwnbZ
+ hcP+Px6RnJGQQ4FwA2DnGaqYndiUxy8sLX8W8sppv14Ydz1Ea0IGlul4m3+MzHRArmhw9mlfFvY
+ itLzZXbTsMAJNOVgiR3ZvNWyKV8a0JBfwc/90bnQ1X7oGO4PzklJBqtgNPm50scA3VyNcqxpTic
+ FkrLwLc38eMBzZOYxLLIOjfxrn7+diZpy3I1ze4BojuKywNPByLqzDfZfWlUc71Tfqe5n7k0yp5
+ x84l5LIe9Mmmf+0exQaQK84QnjU5lc+BA8D/6s5ua4G0NFDdiZTmT3SfRk3J/uCt0WTEecI1ZSz
+ CUXGiMsGCqDmxi1G5dGKlod6Az+u2ectx2ZMIeJ49usxJsRYT58ZrOCuV6R/FLZqZ4mRyc051GO
+ 0W/Rr/lo32TXnlknny6AlA0mwVFUbjJFpD8G8eOfDx3Q2v0eLgj7uYbRFe+qaQi0x/q/bZGCvCB
+ OREZD9qPVcrUFANHmXA==
+X-Authority-Analysis: v=2.4 cv=cLjQdFeN c=1 sm=1 tr=0 ts=6a1fcbb4 cx=c_pps
+ a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
+ a=kj9zAlcOel0A:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=l0iWHRpgs5sLHlkKQ1IR:22 a=QXcCYyLzdtTjyudCfB6f:22 a=c92rfblmAAAA:8
+ a=M5GUcnROAAAA:8 a=_4monf2TZ0uLVZycb8gA:9 a=CjuIK1q_8ugA:10
+ a=GvGzcOZaWPEFPQC_NcjD:22 a=OBjm3rFKGHvpk9ecZwUJ:22
+X-Proofpoint-ORIG-GUID: 5ABij7lqwmwIIBK5FfzOjZUjdlmOydo0
+X-Proofpoint-GUID: 5ABij7lqwmwIIBK5FfzOjZUjdlmOydo0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-03_02,2026-05-28_03,2025-10-01_01
 
-The .ndo_get_stats64 callback must not sleep because it can be
-called when reading /proc/net/dev.
+On 2026-06-02 at 11:33:56, Ratheesh Kannoth (rkannoth@marvell.com) wrote:
+> Add NIX_LF_DONT_FREE_DFT_IDXS so the PF can send NIX LF free during hw
+> reinit or teardown without the AF freeing CN20K default NPC rule indexes
+> while the driver still owns that state (otx2_init_hw_resources and
+> otx2_free_hw_resources).
+>
+> On CN20K, allocate default NPC rules from NIX LF alloc before
+> nix_interface_init, roll back with npc_cn20k_dft_rules_free on failure,
+> and free from NIX LF free when the new flag is not set. Tighten
+> rvu_mbox_handler_nix_lf_alloc error handling: use a single rc, propagate
+> qmem_alloc and other errors, and set -ENOMEM only when kcalloc fails
+> (remove the blanket -ENOMEM at the free_mem path).
+>
+> Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
 
-rtase_get_stats64() calls rtase_dump_tally_counter(), which polls
-the tally counter dump bit with read_poll_timeout(). This may
-sleep while waiting for the hardware counter dump to complete.
+https://sashiko.dev/#/patchset/20260602060359.1894952-1-rkannoth%40marvell.com says
 
-Use read_poll_timeout_atomic() instead to avoid sleeping in the
-get_stats64() path.
+>>  	/* Alloc NIX RQ HW context memory and config the base */
+>>  	hwctx_size = 1UL << ((ctx_cfg >> 4) & 0xF);
+>> -	err = qmem_alloc(rvu->dev, &pfvf->rq_ctx, req->rq_cnt, hwctx_size);
+>> -	if (err)
+>> +	rc = qmem_alloc(rvu->dev, &pfvf->rq_ctx, req->rq_cnt, hwctx_size);
+>> +	if (rc)
+>>  		goto free_mem;
+>>
+>>  	pfvf->rq_bmap = kcalloc(req->rq_cnt, sizeof(long), GFP_KERNEL);
+>> -	if (!pfvf->rq_bmap)
+>> +	if (!pfvf->rq_bmap) {
+>> +		rc = -ENOMEM;
+>>  		goto free_mem;
+>> +	}
+>This is a pre-existing issue, but can repeated mailbox messages cause a memory
+>leak here?
+>If an untrusted VF continuously sends MBOX_MSG_NIX_LF_ALLOC messages without
+>sending a corresponding NIX_LF_FREE, it appears qmem_alloc() and kcalloc()
+>will overwrite the pointers in the pfvf structure (like pfvf->rq_ctx and
+>pfvf->rq_bmap) without freeing the previously allocated memory.
+>Could this be used by a guest to cause host DMA or heap memory exhaustion?
+Prexisting issue, not addressing as part of this. May be a hardening series post this series,
+or patch to introduce some limit  can be planned.
 
-Fixes: 079600489960 ("rtase: Implement net_device_ops")
-Cc: stable@vger.kernel.org
-Signed-off-by: Justin Lai <justinlai0215@realtek.com>
----
-v1 -> v2:
-- Target net tree.
-- Add Fixes tag.
-- Add Cc: stable@vger.kernel.org.
----
- drivers/net/ethernet/realtek/rtase/rtase_main.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+>> +	rc = nix_interface_init(rvu, pcifunc, intf, nixlf, rsp,
+>> +				!!(req->flags & NIX_LF_LBK_BLK_SEL));
+>> +	if (rc)
+>> +		goto free_dft;
+>>
+>>  	/* Disable NPC entries as NIXLF's contexts are not initialized yet */
+>>  	rvu_npc_disable_default_entries(rvu, pcifunc, nixlf);
+>> @@ -1699,9 +1712,12 @@ int rvu_mbox_handler_nix_lf_alloc(struct rvu *rvu,
+>>
+>>  	goto exit;
+>>
+>> +free_dft:
+>> +	if (is_cn20k(rvu->pdev))
+>> +		npc_cn20k_dft_rules_free(rvu, pcifunc);
+>Does this rollback path accidentally destroy pre-existing default rules?
+>If the PF preserved the rules using NIX_LF_DONT_FREE_DFT_IDXS during teardown,
+>npc_cn20k_dft_rules_alloc() returns 0 without allocating anything when they
+>are already installed:
+>npc_cn20k_dft_rules_alloc(struct rvu *rvu, u16 pcifunc)
+>{
+>    ...
+>    ret = npc_cn20k_dft_rules_idx_get(rvu, pcifunc, &b, &m, &p, &u);
+>    if (!ret) {
+>        dev_dbg(rvu->dev, "default rules are already installed...");
+>        return 0;
+>    }
+>    ...
+>}
+>If nix_interface_init() subsequently fails, the error handler jumps to free_dft
+>and unconditionally frees the rules.
+Even if it is freed, next successful nix lf alloc, will setup these default rules.
 
-diff --git a/drivers/net/ethernet/realtek/rtase/rtase_main.c b/drivers/net/ethernet/realtek/rtase/rtase_main.c
-index 6ccbefb5acf2..55105d34bc79 100644
---- a/drivers/net/ethernet/realtek/rtase/rtase_main.c
-+++ b/drivers/net/ethernet/realtek/rtase/rtase_main.c
-@@ -1565,8 +1565,9 @@ static void rtase_dump_tally_counter(const struct rtase_private *tp)
- 	rtase_w32(tp, RTASE_DTCCR0, cmd);
- 	rtase_w32(tp, RTASE_DTCCR0, cmd | RTASE_COUNTER_DUMP);
- 
--	err = read_poll_timeout(rtase_r32, val, !(val & RTASE_COUNTER_DUMP),
--				10, 250, false, tp, RTASE_DTCCR0);
-+	err = read_poll_timeout_atomic(rtase_r32, val,
-+				       !(val & RTASE_COUNTER_DUMP),
-+				       10, 250, false, tp, RTASE_DTCCR0);
- 
- 	if (err == -ETIMEDOUT)
- 		netdev_err(tp->dev, "error occurred in dump tally counter\n");
--- 
-2.40.1
-
+We can modify npc_cn20k_dft_rules_alloc() to add one more paremeter (bool &) to indicate whether newly/already
+allocated status. Based on the flag, invoke npc_cn20k_dft_rules_free(). Will take it up as
+hardening series after the series is merged.
