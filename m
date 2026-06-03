@@ -1,54 +1,41 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 318963E16B0;
-	Wed,  3 Jun 2026 16:10:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E69933E3D8C
+	for <netdev@vger.kernel.org>; Wed,  3 Jun 2026 16:10:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780503045; cv=none; b=QQXNr9B/8HgeS1aDNEa/D4KgnPoUpaXaxX+snrja8AwzTqjVBqGDOUp1fvIpCwTJ4EP9e7iP4TS7Zt07xU3Cfvm5K+DfE+wKkonAb891LdJq3gm+hZRJ0wPLXDGDO6vT97I+fzkFWhYMbZRYnJj9CmaxtE7PvVUDBDwohhKdxPA=
+	t=1780503051; cv=none; b=T8O5gp8WWo50wfPvpMxacBx8w3D2tEddG+GB5ZQf0kfb8gyuPsk89U4Uf/xD7/gAkEKiLq8PFnL2R3wbdLjOcayfyLTr0lZJbzgqLzLAVwsuwLSuWfUN7wbF3fBhMcKy8XeFdtw/9pCfslse3Py6UFHZ3c/wP+55Cj7a5amjTjU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780503045; c=relaxed/simple;
-	bh=LmyBxm+sQtwIQ2mXoo+xzE30jg9pR4UPA0NQ+oP1+mg=;
+	s=arc-20240116; t=1780503051; c=relaxed/simple;
+	bh=vcNCBYpMd3GNl+Nv+ZqL1miedUHcnfgEH5HqLFmzhvk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HZsRUSbRn9gs30dsyXSsFcLyRlr/rfLlyZtbPmpv6z4llAA8s/BTsjqTBMweN9VxaYHfY8M1cDx9co9gTrHEkR/NKyg/y9dxDTJA9EuxfVOJVpJI1xdqEq3uSJOpkzP/gy2gUYvm/GnuQCL4K1RV746tYc2U33ZGHJXiWgKX2hw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=rV5Nt2r9; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	 Content-Type:Content-Disposition:In-Reply-To; b=d0CJanw99Y4lby63o0tF6avXprELbM24GjBc+6kJes7ONwj62wD/uhHBt6npoZCfLFPaYIHUo8ToH6lJmuB6eZ7gMyswk26wnz5qNfv9TlJ8lYCeyNzO4hmXBl0aeBZWUNEecckMB+dX+zP76AmVm04AlUsG9SV16PunvaXAU14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BggW1/Di; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="rV5Nt2r9"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=PxtxjKNoYgUPQsMQmTzU6SuGaoU5BES3zxRcOY+fRfc=; b=rV5Nt2r9TkPzhzSTWHKkkLeH2o
-	RVJNVdXyRXIRJfGiAAp4SQwwA7QR0r7lYys/ExD7RA+nhEP4eZ7592JQiDBKZQUoF6/92/0PdQ6c2
-	4KOenNGj3ilJLUEIRRP+4RHzDAVsQRvnDV/FPhyYQy5zYdS0TXSf17vkvNjnl4KzucE0=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wUoAp-005uRJ-Eo; Wed, 03 Jun 2026 18:10:31 +0200
-Date: Wed, 3 Jun 2026 18:10:31 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Guangshuo Li <lgs201920130244@gmail.com>
-Cc: Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Roger Quadros <rogerq@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Kevin Hao <haokexin@gmail.com>,
-	Alexander Sverdlin <alexander.sverdlin@gmail.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Daniel Zahka <daniel.zahka@gmail.com>,
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-	Murali Karicheri <m-karicheri2@ti.com>,
-	Grygorii Strashko <grygorii.strashko@ti.com>,
-	linux-omap@vger.kernel.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] net: cpsw_new: unregister devlink on port registration
- failure
-Message-ID: <b02f66eb-8b5b-461c-b990-30e6a5ceca56@lunn.ch>
-References: <20260603140742.1398659-1-lgs201920130244@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BggW1/Di"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7CD11F00893;
+	Wed,  3 Jun 2026 16:10:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780503049;
+	bh=tMGWl3y2yD1smshZAAFSEzj45qRIcV6N4Z0FpgXqeVE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=BggW1/DifwjC6dcwIpt4g4WGql5WGQ9Ce3bDyU8IdEC/B8QIbPG5n1l/2tXNK2oDG
+	 KTEhpHuSJsz0Lvg5z6ZyrzxOadISXJ0oxIq/ABn5EevUnhMBrnxc7qde1z99L05yV2
+	 HnbVOt76YRxTcSs9XtU4tQI+wtFNaCuIA3UnBbkhRFM7EP50AQmebvAeu8e8L5/L8C
+	 kyyxotw9Svn3Ek7U5JJyYvVN2GgzQU3wmymCsAijGdjkgkV8dbY7p6wTmqPDeWbSm0
+	 5QnVtWUEM8Gwv1xSbVe8mj8CJoZnoJjXPGbfLPcmeqidGXVXbkR7BBN+taEYStZ+xF
+	 94Aicw+upJ5Dw==
+Date: Wed, 3 Jun 2026 17:10:46 +0100
+From: Simon Horman <horms@kernel.org>
+To: mengyuanlou@net-swift.com
+Cc: netdev@vger.kernel.org, jiawenwu@trustnetic.com,
+	duanqiangwen@net-swift.com
+Subject: Re: [PATCH net-next v3 2/3] net: libwx: add support for set_coalesce
+ in wx_ethtool_ops_vf
+Message-ID: <20260603161046.GE3766816@horms.kernel.org>
+References: <20260529075147.88398-3-mengyuanlou@net-swift.com>
+ <20260603152324.3795898-2-horms@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -57,32 +44,15 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260603140742.1398659-1-lgs201920130244@gmail.com>
+In-Reply-To: <20260603152324.3795898-2-horms@kernel.org>
 
-On Wed, Jun 03, 2026 at 10:07:42PM +0800, Guangshuo Li wrote:
-> cpsw_probe() registers devlink before registering the CPSW ports.
+On Wed, Jun 03, 2026 at 04:23:25PM +0100, Simon Horman wrote:
+> From: 'Simon Horman' <horms@kernel.org>
 > 
-> If cpsw_register_ports() fails, the error path only unregisters the
-> notifiers and then releases the lower level resources. It does not undo
-> the successful cpsw_register_devlink() call, leaving the devlink instance
-> and its parameters registered after probe has failed.
-> 
-> Add a devlink cleanup label for the path where devlink registration has
-> already succeeded, and use it when port registration fails.
-> 
-> Fixes: ed3525eda4c4 ("net: ethernet: ti: introduce cpsw switchdev based driver part 1 - dual-emac")
-> Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
+> Full review at: https://sashiko.dev
 
-https://www.kernel.org/doc/html/latest/process/maintainer-netdev.html
+Sorry, I am not doing so well with forwarding these reviews today.
+The URL above should be https://netdev-ai.bots.linux.dev/sashiko/
 
-Please set the subject line correctly.
-
-https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-
-Does this bother people? If not, net-next, and no Fixes tag please.
-
-
-    Andrew
-
----
-pw-bot: cr
