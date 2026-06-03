@@ -1,35 +1,35 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1065F3CE0B0;
-	Wed,  3 Jun 2026 06:01:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4AD53F54CC;
+	Wed,  3 Jun 2026 06:01:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780466465; cv=none; b=rVRxucj/5PYNbOWGetAiOmV5k3/ikKkzeG0AM9Xc3rA2pRG2uEcNVzOJudGaI7bPSGHIPya3+2mI7jsNPp+zhL8yZb1hDMJdPrlv7YegDpWwZgqmhUGP2GASHB8hVhbt1YrsBu1oiOpAV4k61axzqAzvmV39t02JGXke9aSqZok=
+	t=1780466467; cv=none; b=LMtxi47PDywMNx4Hv8AjP+V9NmoaDu1e1Y7i7MFyodUuhkkDu+cCnzGgx/n9k/hdx6IPxWkhASmZp2hpkWTbMamgoUS7IpqczZZPZwXdGFx9xD16zZt2/2WC0b898SxwrDIThdBh1QIdCCCRAd4sajAe4XTJl0CCvRnbiG7X8VU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780466465; c=relaxed/simple;
-	bh=Ao55FmWOwx/Y9r3sNEXJN/Ahfz4UNE+4z30/nsLOMeM=;
+	s=arc-20240116; t=1780466467; c=relaxed/simple;
+	bh=iF9Lxe07CX958qTShZ+aqqxTIfMMIcyELwvLt13GGuw=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Zy2ZH8UDc5eOnrkMASqvlnlC93ejTO8ZOL7VptiNKIMvVJ4ufINm+0GMX4Ob2FCryeAi6s4UUQPtnT6KsVWFSIgwE5HGC4MqwuFiCXTB+lVxzSErnxFB2nmvQQktCPCjMHteIH6+iyQzMsVyOIXTufzCig7ydMKsJIwlsl9c3rY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N2w4vwSU; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=SXmAQDs+XRd0cKP9pQf9LKiIzTv/EapRfnx3N8b5KD/nzkU3ixHVK4I5W42ISIVRoWHQILfhtfV8pU47hFSPfSEF3rFPKzemtdcn5UOsXZkLGkONPIk4ZQ9bpMGyBMdwknL19BMebkYQNknONhD0+cLN1QTgVss7dbfV7ZRYGZ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SzKMMwi1; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N2w4vwSU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 370A11F00893;
-	Wed,  3 Jun 2026 06:01:03 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SzKMMwi1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B95801F00893;
+	Wed,  3 Jun 2026 06:01:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780466463;
-	bh=Q3bsDHY4zT4OOEbFiIvYw60Y+WRRMdHm85pPHhesy2U=;
+	s=k20260515; t=1780466466;
+	bh=iC+uS4ZP82VJD953nLEW4lqTruY47tW/e9JwQJuoejQ=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=N2w4vwSUsct2QPHlmtOhz9IDz3tbqDxeuEzoPRHfBsBO6tKwEjOsVYYfq5P7m2Yih
-	 IqrLeLBSJB786r6YYKABjCA+EgxcGpuATMz3RqCAyPAaY+V+Hps6eQPTjbTPPy+OaV
-	 XTEUvMx3MSj4vn6VlgQ/QuBbQvl3qELkJiYUzTS5db/O8D9yhLxZWqwaUUP0bofrps
-	 iQ79yhSZU5Pwh1He1HAB82I7UbP8F8oUXhY8M0JItXD7ATDrtCyW/JqY7q85KXzzTj
-	 Q0cq5+F+eCb2XmUJgkeU5l0j+CtF8oXfjdFxKqZjuhZoO6wu1d/6bgoSmE9dA7qY68
-	 j33Nest2DSNVA==
+	b=SzKMMwi14DTNZkaCzbC0VIpEZc9yCYa+827mhsdpD2H8f3g6BNaLNqnjEfReb/6Gg
+	 loj9KrSOFWXRyFc3t2D9fKSZbRBV6VfbzjuluX6gko3cRQ+16HosHWqMAm6lEDvdzu
+	 SI6gQ54gYN4zfxpHbdALBwZrvHSBjJ7oG6lSt6nAnXGVZ4PM0vZeDKtfC7QWbNG+Qg
+	 c50n99jJqa97kMkxC+FdDOoB8OPZBUjKzjElfvD5ZP/A9hXUwXt6w7bFdTHTUbPXHr
+	 5VEOrNlQh1JYE65QJ0fA1OY+1z1JkK9dlVEUZcAcxeMomByM6HxE2rEqiw/7tn2Mim
+	 62Y62soBQxq2g==
 From: Lorenzo Bianconi <lorenzo@kernel.org>
-Date: Wed, 03 Jun 2026 08:00:15 +0200
-Subject: [PATCH net-next v9 1/6] dt-bindings: net: airoha: Add GDM port
- ethernet child node
+Date: Wed, 03 Jun 2026 08:00:16 +0200
+Subject: [PATCH net-next v9 2/6] net: airoha: Remove private net_device
+ pointer in airoha_gdm_dev struct
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -38,7 +38,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260603-airoha-eth-multi-serdes-v9-1-5d476bc2f426@kernel.org>
+Message-Id: <20260603-airoha-eth-multi-serdes-v9-2-5d476bc2f426@kernel.org>
 References: <20260603-airoha-eth-multi-serdes-v9-0-5d476bc2f426@kernel.org>
 In-Reply-To: <20260603-airoha-eth-multi-serdes-v9-0-5d476bc2f426@kernel.org>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, 
@@ -52,100 +52,129 @@ Cc: Christian Marangi <ansuelsmth@gmail.com>,
  netdev@vger.kernel.org, devicetree@vger.kernel.org
 X-Mailer: b4 0.14.3
 
-EN7581 and AN7583 SoCs support connecting multiple external SerDes to GDM3
-or GDM4 ports via a hw arbiter that manages the traffic in a TDM manner.
-As a result multiple net_devices can connect to the same GDM{3,4} port
-and there is a theoretical "1:n" relation between GDM ports and
-net_devices.
-Introduce the ethernet node child of a specific GDM port in order to model
-a given net_device that is connected via the external arbiter to the
-GDM{3,4} port. This new ethernet node is defined by the "airoha,eth-port"
-compatible string. Please note GDM1 and GDM2 does not support the
-connection with the external arbiter and they are represented by an
-ethernet node defined by the "airoha,eth-mac" compatible string.
+Remove redundant net_device pointer inside airoha_gdm_dev struct and
+rely on netdev_from_priv routine instead. Please note this patch does
+not introduce any logical change, just code refactoring.
 
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- .../devicetree/bindings/net/airoha,en7581-eth.yaml | 56 +++++++++++++++++++++-
- 1 file changed, 55 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/airoha/airoha_eth.c | 23 ++++++++++++++---------
+ drivers/net/ethernet/airoha/airoha_eth.h |  1 -
+ drivers/net/ethernet/airoha/airoha_ppe.c |  2 +-
+ 3 files changed, 15 insertions(+), 11 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/net/airoha,en7581-eth.yaml b/Documentation/devicetree/bindings/net/airoha,en7581-eth.yaml
-index fbe2ddcdd909..17fe2edf4886 100644
---- a/Documentation/devicetree/bindings/net/airoha,en7581-eth.yaml
-+++ b/Documentation/devicetree/bindings/net/airoha,en7581-eth.yaml
-@@ -130,6 +130,42 @@ patternProperties:
-         maximum: 4
-         description: GMAC port identifier
+diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
+index 6574901ebd19..57a16de0a2ec 100644
+--- a/drivers/net/ethernet/airoha/airoha_eth.c
++++ b/drivers/net/ethernet/airoha/airoha_eth.c
+@@ -629,7 +629,7 @@ static int airoha_qdma_rx_process(struct airoha_queue *q, int budget)
+ 		if (!port->dev)
+ 			goto free_frag;
  
-+    allOf:
-+      - if:
-+          properties:
-+            reg:
-+              contains:
-+                items:
-+                  - enum:
-+                      - 3
-+                      - 4
-+        then:
-+          properties:
-+            '#address-cells':
-+              const: 1
-+
-+            '#size-cells':
-+              const: 0
-+
-+          patternProperties:
-+            "^ethernet@[0-5]$":
-+              type: object
-+              unevaluatedProperties: false
-+              $ref: ethernet-controller.yaml#
-+              description: External ethernet port ID available on the GDM port
-+
-+              properties:
-+                compatible:
-+                  const: airoha,eth-port
-+
-+                reg:
-+                  maximum: 5
-+                  description: External ethernet port identifier
-+
-+              required:
-+                - reg
-+                - compatible
-+
-     required:
-       - reg
-       - compatible
-@@ -191,9 +227,27 @@ examples:
-         #address-cells = <1>;
-         #size-cells = <0>;
+-		netdev = port->dev->dev;
++		netdev = netdev_from_priv(port->dev);
+ 		if (!q->skb) { /* first buffer */
+ 			q->skb = napi_build_skb(e->buf - AIROHA_RX_HEADROOM,
+ 						q->buf_size);
+@@ -853,6 +853,7 @@ static void airoha_qdma_wake_netdev_txqs(struct airoha_queue *q)
+ 	for (i = 0; i < ARRAY_SIZE(eth->ports); i++) {
+ 		struct airoha_gdm_port *port = eth->ports[i];
+ 		struct airoha_gdm_dev *dev;
++		struct net_device *netdev;
+ 		int j;
  
--        mac: ethernet@1 {
-+        ethernet@1 {
-           compatible = "airoha,eth-mac";
-           reg = <1>;
-         };
+ 		if (!port)
+@@ -865,11 +866,12 @@ static void airoha_qdma_wake_netdev_txqs(struct airoha_queue *q)
+ 		if (dev->qdma != qdma)
+ 			continue;
+ 
+-		for (j = 0; j < dev->dev->num_tx_queues; j++) {
++		netdev = netdev_from_priv(dev);
++		for (j = 0; j < netdev->num_tx_queues; j++) {
+ 			if (airoha_qdma_get_txq(qdma, j) != qid)
+ 				continue;
+ 
+-			netif_wake_subqueue(dev->dev, j);
++			netif_wake_subqueue(netdev, j);
+ 		}
+ 	}
+ 	q->txq_stopped = false;
+@@ -1867,7 +1869,7 @@ static int airoha_dev_init(struct net_device *netdev)
+ 
+ 	/* QDMA0 is used for lan ports while QDMA1 is used for WAN ports */
+ 	dev->qdma = &eth->qdma[!airoha_is_lan_gdm_dev(dev)];
+-	dev->dev->irq = dev->qdma->irq_banks[0].irq;
++	netdev->irq = dev->qdma->irq_banks[0].irq;
+ 	airoha_set_macaddr(dev, netdev->dev_addr);
+ 
+ 	switch (port->id) {
+@@ -3038,7 +3040,6 @@ static int airoha_alloc_gdm_device(struct airoha_eth *eth,
+ 	}
+ 
+ 	dev = netdev_priv(netdev);
+-	dev->dev = netdev;
+ 	dev->port = port;
+ 	port->dev = dev;
+ 	dev->eth = eth;
+@@ -3101,7 +3102,7 @@ static int airoha_register_gdm_devices(struct airoha_eth *eth)
+ 		if (!port)
+ 			continue;
+ 
+-		err = register_netdev(port->dev->dev);
++		err = register_netdev(netdev_from_priv(port->dev));
+ 		if (err)
+ 			return err;
+ 	}
+@@ -3216,8 +3217,12 @@ static int airoha_probe(struct platform_device *pdev)
+ 			continue;
+ 
+ 		dev = port->dev;
+-		if (dev && dev->dev->reg_state == NETREG_REGISTERED)
+-			unregister_netdev(dev->dev);
++		if (dev) {
++			struct net_device *netdev = netdev_from_priv(dev);
 +
-+        ethernet@4 {
-+          compatible = "airoha,eth-mac";
-+          reg = <4>;
-+
-+          #address-cells = <1>;
-+          #size-cells = <0>;
-+
-+          ethernet@0 {
-+            compatible = "airoha,eth-port";
-+            reg = <0>;
-+          };
-+
-+          ethernet@1 {
-+            compatible = "airoha,eth-port";
-+            reg = <1>;
-+          };
-+        };
-       };
-     };
++			if (netdev->reg_state == NETREG_REGISTERED)
++				unregister_netdev(netdev);
++		}
+ 		airoha_metadata_dst_free(port);
+ 	}
+ 	airoha_hw_cleanup(eth);
+@@ -3245,7 +3250,7 @@ static void airoha_remove(struct platform_device *pdev)
+ 
+ 		dev = port->dev;
+ 		if (dev)
+-			unregister_netdev(dev->dev);
++			unregister_netdev(netdev_from_priv(dev));
+ 		airoha_metadata_dst_free(port);
+ 	}
+ 	airoha_hw_cleanup(eth);
+diff --git a/drivers/net/ethernet/airoha/airoha_eth.h b/drivers/net/ethernet/airoha/airoha_eth.h
+index fbb50dc73af8..1f162fa1405e 100644
+--- a/drivers/net/ethernet/airoha/airoha_eth.h
++++ b/drivers/net/ethernet/airoha/airoha_eth.h
+@@ -540,7 +540,6 @@ struct airoha_qdma {
+ struct airoha_gdm_dev {
+ 	struct airoha_gdm_port *port;
+ 	struct airoha_qdma *qdma;
+-	struct net_device *dev;
+ 	struct airoha_eth *eth;
+ 
+ 	DECLARE_BITMAP(qos_sq_bmap, AIROHA_NUM_QOS_CHANNELS);
+diff --git a/drivers/net/ethernet/airoha/airoha_ppe.c b/drivers/net/ethernet/airoha/airoha_ppe.c
+index 047141b2d6d8..c9711bb7ef1c 100644
+--- a/drivers/net/ethernet/airoha/airoha_ppe.c
++++ b/drivers/net/ethernet/airoha/airoha_ppe.c
+@@ -1475,8 +1475,8 @@ void airoha_ppe_check_skb(struct airoha_ppe_dev *dev, struct sk_buff *skb,
+ 
+ void airoha_ppe_init_upd_mem(struct airoha_gdm_dev *dev)
+ {
++	struct net_device *netdev = netdev_from_priv(dev);
+ 	struct airoha_gdm_port *port = dev->port;
+-	struct net_device *netdev = dev->dev;
+ 	struct airoha_eth *eth = dev->eth;
+ 	const u8 *addr = netdev->dev_addr;
+ 	u32 val;
 
 -- 
 2.54.0
