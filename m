@@ -1,146 +1,85 @@
-Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FB3537207A
-	for <netdev@vger.kernel.org>; Wed,  3 Jun 2026 19:02:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B499F481248
+	for <netdev@vger.kernel.org>; Wed,  3 Jun 2026 19:22:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780513373; cv=none; b=KxZzvsQenwRwLlvZ32YgI2wKa2y8bvwCr1P+qWZkqW5m8TFchSzbEfSrxdD34mz0MrUHNjo/6AoGDJXGP/7G9f6bPq5nJ5jPFDSoaGw3GYySethiMZUrz7if62QgxNOrSvx+AgIYaaK5Lq8X7O/CfYqlgp37bQDTpxQybe6Mnmg=
+	t=1780514554; cv=none; b=dYSbtkpVPAS8aXoK8IJ5NMYCClNjmzmhprQESyjaZKW62bwApuxILM+qcm5c5IcCmFaGl0/l1Y769Dr1WFFIfPxGUcYcAKZVr8PA/houijaPnscxuUFWhsy3ZpfmgsKlkPE6MvLIlh88Fe+JYJhrW5bjshmPF8qQHSANzFHkyx4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780513373; c=relaxed/simple;
-	bh=KtMgABGlcpTepOluQ1ou8fSMVZFHM4vfpwhadYiKBcI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pfK3rjBxVNVS9C65NUVuwmGXX9uoSq4wda7FEc6fSdHTn6ugVGu/lQNxtjF/y3Je3l0vokOik4SSNc0FNxkSRk5dx5TUTUY0m05SmQN8GjjMnSREIL0Rsp2vn38am/UXmTU31u/xUoXyzqlT9RW6KoicKOmqzllPSHsfPW1TXf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Xgzf5J2v; arc=none smtp.client-ip=209.85.128.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1780514554; c=relaxed/simple;
+	bh=LDFA3pbOm+KSrwgSML1mRQ80y9BoK4sbHsGg8JM9Eeo=;
+	h=In-Reply-To:References:To:Cc:Subject:MIME-Version:Content-Type:
+	 From:Date:Message-ID; b=Uh36iFb83gwNUQkYYVZsCOm97w+gO7kxPzdIJ+fgV80kVj2W9iQljbFHUkHiLjeeao82TVevHF8e15wy04DR4F3UcY1ENUsE3+lk3cCBM+sgrz0KxzVeNJ0CSaWjx3c9JO+XPzjsZaNDY4DQprko3TjCFWqPzqwCjgYdxtwIam4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cZPC8pPr; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Xgzf5J2v"
-Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-7e0aa486af8so7539007b3.1
-        for <netdev@vger.kernel.org>; Wed, 03 Jun 2026 12:02:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780513371; x=1781118171; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=czVnTl00M38M+CvcTn3IvYeN9aQCX6IoD9Yd91fGVis=;
-        b=Xgzf5J2vT4ydOUrNm1G3+3kyQzc1AvwYcmcIFa55A3SSA3dqiXbo9ZduK8WEnyfmt7
-         sjyADD6lJ3yCnqEewTBnPcNXxJKQgy4tpA7MMViBJoAvsv5XHHFyykIKnptoedlPSGxa
-         J6+UciEVgSD8WUsjzPBvT1JBm4rC6q1V3vQ+CC6tOI2azAKANKrOPE6vzjsiA276mHaE
-         n14Plf0r7Ria1zzwZcC4F8Xesy54AMnIaKoR9kh4bgfsSzLK8vDiT7z+sLFroMJYB7Ym
-         fisGhesxqXty824um0IUdMy1vIXjBmXstZMJq+0dz0XOSfGEvQ9xmflp+MMIT2F6YzG8
-         pfZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780513371; x=1781118171;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=czVnTl00M38M+CvcTn3IvYeN9aQCX6IoD9Yd91fGVis=;
-        b=g5D3Oh2OXa1DE1Fh3ooMPUgX3y4gkj21qGLhU4dESLwZjPl+dVM4I3G7ZYqrmGuRwO
-         n1fVYpn9YRBDG+gBactaakwcbI12XVzRoslArIEx7zaZHhyLixB4hotB8XPNUWjYhaoA
-         +is8aCYbC9I4GB6jygS84Wp7QXvgLHT/0JSLtC3wElSEs2lFPme093iQg4GxGWzQk8ud
-         Dk7k2RoU+U500yT0v5Txjg9kF+pWw/lF/G2TpoAEio46b4tWAqGGL/FS39mzOXwZnBnJ
-         6qXpubBKRZewiHmcO9fVtuoc1ujroudAyepuwdM2M7MKeEdLj0Vp0D85zTrMUkrHDx/2
-         +ozg==
-X-Gm-Message-State: AOJu0YxkaeyS3ftm/u2i+o0rdxQwrpfP3EwYgqWn5JOrYYF8aVRlpRKH
-	B8VtKWuMvfCY4bK749yaE87s0Owr5nYTQUclS02CQCUJvZQkj9qRFhL1nmVUJg==
-X-Gm-Gg: Acq92OGy9ZSVsC7WQC8ULi5OwWWkjMYhCnqfHO/2V0iYFYy70V3Z/7GZo1OocbhxFvX
-	hl7fxQGGzsd2bjhXbdWzlTM2S7vrxUrzUrp/zgu58gA0MDxeQQm5bFTqvO1+NWePz7baz5KZ1FL
-	D2dRYjTDf+Z/+5CIxFHr89m6nUb20k0UNHuC5sotO0qimZ7LTmal9e4ecgwj/BITSTWA0CPRLQ0
-	QJctAIiXsxLvwjqVqt/Tpi/8S38w7db9SIFjOnQb4AvvHtgJqILnjhNQuWN8Gj9kHfzkm5Xo2jO
-	xIhXux2mBFDqimzbsvBfnMyIIn/ehObTbtCV/ULcjX85ASPfInIY9D1DTwwJ2FC2CX8mC5NAH3+
-	Vt7t7PA1U/5GYyQmLGCpxIF+XptH/NjYbAKOSdOZ5qftQzjpQJCqBIkSOcKXRAzzrtdwCWr0U2V
-	huIjsgVHgUEkvwltwI753KJ4JyNqp4b3HzTe0tjIaz+Hr4WATFTx58J0ErbBBJMgE8AdJ5T9XPg
-	rynbxIteaFqec9tpUoOjHnDDVVDu8Oaq7QFbeN3
-X-Received: by 2002:a05:690c:a002:b0:7dc:d3cd:838c with SMTP id 00721157ae682-7eb8dd70fb2mr4415557b3.33.1780513371261;
-        Wed, 03 Jun 2026 12:02:51 -0700 (PDT)
-Received: from willemb.c.googlers.com.com (141.139.145.34.bc.googleusercontent.com. [34.145.139.141])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-7ea20ea8186sm22350467b3.4.2026.06.03.12.02.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Jun 2026 12:02:50 -0700 (PDT)
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	kuba@kernel.org,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	Willem de Bruijn <willemb@google.com>
-Subject: [PATCH net-next 3/3] selftests: drv-net: extend so_txtime with FQ with other clocks
-Date: Wed,  3 Jun 2026 15:01:30 -0400
-Message-ID: <20260603190243.2789335-4-willemdebruijn.kernel@gmail.com>
-X-Mailer: git-send-email 2.54.0.1032.g2f8565e1d1-goog
-In-Reply-To: <20260603190243.2789335-1-willemdebruijn.kernel@gmail.com>
-References: <20260603190243.2789335-1-willemdebruijn.kernel@gmail.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cZPC8pPr"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1780514553;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=SzfTa5HCL1jfcKZlB3EuMMBtnPEwh0opU3X/4Q5o0kA=;
+	b=cZPC8pPrBWRyjBVgrQ5TDGrvJGrDEZTljDOw9I2D2PuH5kIBobiPR4DG4JDsYGNgZiIdsv
+	34JEBpEN1FWAwbLDKl26LPDUYYA8bi5GxdHVyOD/4wVVKfdmqE8R4A+G8AlFcv2YyQZX4P
+	QYgnRLLxsC0CMsxNuayn9a38wvX0y6A=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-681-aQ1vVfH5Ndq95wd2x-ZPOw-1; Wed,
+ 03 Jun 2026 15:22:27 -0400
+X-MC-Unique: aQ1vVfH5Ndq95wd2x-ZPOw-1
+X-Mimecast-MFC-AGG-ID: aQ1vVfH5Ndq95wd2x-ZPOw_1780514545
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E63FE1956095;
+	Wed,  3 Jun 2026 19:22:23 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.44.48.52])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 75C3219560AD;
+	Wed,  3 Jun 2026 19:22:16 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+In-Reply-To: <CAHk-=wiEwSjfbjfO74xu=UmkkdHXkJg5QNQ8pP-3iYmunmeV9g@mail.gmail.com>
+References: <CAHk-=wiEwSjfbjfO74xu=UmkkdHXkJg5QNQ8pP-3iYmunmeV9g@mail.gmail.com> <CAHk-=wiAqf0PdZ4AKj_4riUnnEb=g_ZNPkLnXrByA9BBHYiFRg@mail.gmail.com> <20260602225426.122258-1-safinaskar@gmail.com> <CAHk-=wgKy4dP0oQCNKyMQQf3-uVpaigmDyH6_T0Via76gWST9g@mail.gmail.com> <CALCETrWx8-Q5-rK1KnAPCxCbXaWCd=Yfs_Pr8qVMa8k8L6of1w@mail.gmail.com> <CAHk-=wizkDXRut5xLXRF-CVUVYMaZ5AOexxeghOAoXPb4yAvQg@mail.gmail.com> <CALCETrXzxubt4eWue3+wv7Fq9C2m7uu6bWPstqFh6Mo57bPwQQ@mail.gmail.com>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: dhowells@redhat.com, Andy Lutomirski <luto@amacapital.net>,
+    Askar Safin <safinaskar@gmail.com>, akpm@linux-foundation.org,
+    axboe@kernel.dk, brauner@kernel.org, david@kernel.org,
+    hch@infradead.org, jack@suse.cz, linux-api@vger.kernel.org,
+    linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+    linux-mm@kvack.org, miklos@szeredi.hu, netdev@vger.kernel.org,
+    patches@lists.linux.dev, pfalcato@suse.de, viro@zeniv.linux.org.uk,
+    willy@infradead.org
+Subject: Re: [PATCH 0/3] vmsplice: make vmsplice a trivial wrapper for preadv2/pwritev2
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <22677.1780514496.1@warthog.procyon.org.uk>
+From: David Howells <dhowells@redhat.com>
+Date: Wed, 03 Jun 2026 20:22:15 +0100
+Message-ID: <22766.1780514535@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-From: Willem de Bruijn <willemb@google.com>
+Linus Torvalds <torvalds@linux-foundation.org> wrote:
 
-Add a variant of the existing FQ tests, but pass CLOCK_TAI rather than
-the native CLOCK_MONOTONIC clock id.
+> Because if people think splice is complicated, you haven't looked at
+> the skb rules. They are completely arbitrary and complex and spread
+> all over the tree.
 
-FQ used to imply monotonic. This is no longer the case, and the
-inverse need not hold either. Rename $PREFIX_mono to $PREFIX_fq.
+Yeah - I fell foul of the net loopback driver just reflecting the outgoing
+packet back, complete with all the original spliced bufferage.  I was
+wondering if the loopback driver needs to look at the skbuff, see if it has
+zerocopy elements of some sort and, if so, copy it (or drop it if ENOMEM).
 
-Signed-off-by: Willem de Bruijn <willemb@google.com>
----
- .../testing/selftests/drivers/net/so_txtime.py | 18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
-
-diff --git a/tools/testing/selftests/drivers/net/so_txtime.py b/tools/testing/selftests/drivers/net/so_txtime.py
-index 5d4388bfc6dd..b7be4cabbec2 100755
---- a/tools/testing/selftests/drivers/net/so_txtime.py
-+++ b/tools/testing/selftests/drivers/net/so_txtime.py
-@@ -46,7 +46,7 @@ def _qdisc_setup(ifname, qdisc, optargs=""):
-     tc(f"qdisc replace dev {ifname} root {qdisc} {optargs}")
- 
- 
--def _test_variants_mono():
-+def _test_variants_fq():
-     for ipver in ["4", "6"]:
-         for testcase in [
-             ["no_delay", "a,-1", "a,-1"],
-@@ -59,13 +59,20 @@ def _test_variants_mono():
-             yield KsftNamedVariant(name, ipver, testcase[1], testcase[2])
- 
- 
--@ksft_variants(_test_variants_mono())
--def test_so_txtime_mono(cfg, ipver, args_tx, args_rx):
-+@ksft_variants(_test_variants_fq())
-+def test_so_txtime_fq_mono(cfg, ipver, args_tx, args_rx):
-     """Run all variants of monotonic (fq) tests."""
-     _qdisc_setup(cfg.ifname, "fq")
-     test_so_txtime(cfg, "mono", ipver, args_tx, args_rx, True)
- 
- 
-+@ksft_variants(_test_variants_fq())
-+def test_so_txtime_fq_tai(cfg, ipver, args_tx, args_rx):
-+    """Run all variants of fq tests, but pass CLOCK_TAI to test conversion."""
-+    _qdisc_setup(cfg.ifname, "fq")
-+    test_so_txtime(cfg, "tai", ipver, args_tx, args_rx, True)
-+
-+
- def _test_variants_etf():
-     for ipver in ["4", "6"]:
-         for testcase in [
-@@ -95,7 +102,10 @@ def test_so_txtime_etf(cfg, ipver, args_tx, args_rx, expect_fail):
- def main() -> None:
-     """Boilerplate ksft main."""
-     with NetDrvEpEnv(__file__) as cfg:
--        ksft_run([test_so_txtime_mono, test_so_txtime_etf], args=(cfg,))
-+        ksft_run(
-+            [test_so_txtime_fq_mono, test_so_txtime_fq_tai, test_so_txtime_etf],
-+            args=(cfg,),
-+        )
-     ksft_exit()
- 
- 
--- 
-2.54.0.1032.g2f8565e1d1-goog
+David
 
