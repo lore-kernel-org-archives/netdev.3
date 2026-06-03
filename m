@@ -1,94 +1,99 @@
-Received: from mta1.formilux.org (mta1.formilux.org [51.159.59.229])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f194.google.com (mail-pl1-f194.google.com [209.85.214.194])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BEEA3D9678
-	for <netdev@vger.kernel.org>; Wed,  3 Jun 2026 17:03:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.159.59.229
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 697BA3E4C7B
+	for <netdev@vger.kernel.org>; Wed,  3 Jun 2026 17:07:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780506201; cv=none; b=NXX3PxaSM+nT/DUbTk24Wusz0n5hJz/TDVL8e5Z9JbmK6hPDwF9d/2FJlToXcMFCl0CSz2p8NfJTOrrJb6A5XIGuI5auUICvIZ3EaEG199fWRYtfEd1KhdB0E2D7INRFwXGvY1yDSsbZ1EnhFY7tVr3d9jpsIRxrz9PhfxB1pGE=
+	t=1780506441; cv=none; b=Tcpymn+XnDZvtaHyoPjP+w1AA9DmeQOUh/79aldVO9v2SkZV8uZ3wiSkAVCJi78C72ZT/yRfpncQPDSw0GvL0t+uPx+VVx2PjUogMYdReq6/bRbqNR78MMpKKh7lm3Ij4p2DXI2pYKHB0pILIYMX4RGsVnU/tHB0Dlw6jD9ObT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780506201; c=relaxed/simple;
-	bh=QZ8/KA1hAX7PyJ1g+oLKtus6CunG8F0BvLPZu5S97io=;
+	s=arc-20240116; t=1780506441; c=relaxed/simple;
+	bh=VI9XorPSlhfHmOeG230kpRBkPlDvZ777QxVLMeV1TIo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=L4+Fq/xS3xIBDudBMBqbfdUPbU/8lWBlsIInueXNo+MnYxnwyyAEu+EeZVfFufoiwzU+BjFu8qyT1XtzIv1zvfD2qcMaGn/Nu1SGnh41BYNSuezb/w7CN63brBJDGLDYDlh/T9UHxhZw9ZPWW5p83e9e92El0Wzd79bBF0gtYLM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=1wt.eu; spf=pass smtp.mailfrom=1wt.eu; dkim=pass (1024-bit key) header.d=1wt.eu header.i=@1wt.eu header.b=vspKi0oq; arc=none smtp.client-ip=51.159.59.229
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=1wt.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=1wt.eu
+	 Content-Type:Content-Disposition:In-Reply-To; b=iVDGM9eTqHYoUuq6wiuKY+1TU0FFwTsof3MwA4Jn5Iqn2g25OExy9aWDU+yVMEwm68/7R8R3iJoSpwx4rSpxNLHLwJ7Psf89HDhxvjAe57qzmMU/xE/9+h8Pc7DNQBndtVoBIsznfqNW2vropyUaX8+yGWQ0bRxBJyKFkxg2pik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kuu8xEzP; arc=none smtp.client-ip=209.85.214.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=1wt.eu header.i=@1wt.eu header.b="vspKi0oq"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1wt.eu; s=mail;
-	t=1780505726; bh=4rfqiqOyEFqhvnLoLgHUWx8RVt4JanLC9I7DxCRu254=;
-	h=From:Message-ID:From;
-	b=vspKi0oq1T+SKD7OkXFlvk69yzZ9Vm/lLGEst/6DOIkOAlF6brqhhQZkQW7Gg0l/U
-	 OV2Fq5fQG/+Mxw6h/q/LcJW3UF90ClonfB0ZMETM2v+yBDPiZ0Ft1ZSGWSBMhDnW6N
-	 pTZq7z8zrsSu6Hd9/EkvQ36JmyttpTm9I0UN0eR4=
-Received: from 1wt.eu (ded1.1wt.eu [163.172.96.212])
-	by mta1.formilux.org (Postfix) with ESMTP id AD740C0AE5;
-	Wed, 03 Jun 2026 18:55:26 +0200 (CEST)
-Date: Wed, 3 Jun 2026 18:55:26 +0200
-From: Willy Tarreau <w@1wt.eu>
-To: David Laight <david.laight.linux@gmail.com>
-Cc: Doruk Tan Ozturk <doruk@0sec.ai>, oe-linux-nfc@lists.linux.dev,
-        david+nfc@ixit.cz, netdev@vger.kernel.org
-Subject: Re: [PATCH] nfc: llcp: fix integer underflow and missing bounds
- checks in TLV parsing
-Message-ID: <aiBcfsXn0BhBi5ae@1wt.eu>
-References: <20260525202427.67768-1-doruk@0sec.ai>
- <20260602135610.5f79ed10@pumpkin>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kuu8xEzP"
+Received: by mail-pl1-f194.google.com with SMTP id d9443c01a7336-2bea7176c72so101575135ad.0
+        for <netdev@vger.kernel.org>; Wed, 03 Jun 2026 10:07:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780506439; x=1781111239; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=TihK8TLFQ7eWvBfrOf1I2w6CeTT78T3znP19Zg8cOL0=;
+        b=kuu8xEzPGVtYcbUdgLVRDz7jEPpovEu29/xKnSf/GKM0yiEGM8UWbgNu7fsWLxbipW
+         fj9xO0HR8WQ/fbGPJKNwofyZHhK2qetgHoooD57wE40x0Bkj1J8+OsYBbcJB3o4qt5QM
+         2iLcTnDF5R7qYKotQ2CqfwmPenDNmVaLQir8VlpEYBucx4M1TdSLyBOvwnpfV1iJ6UC3
+         UUan5QKGJd988cqop0i/LgFr/ENIC8e654sSJgJpZNXYBVQusgC4hWCLcgpOy8Gs0P+E
+         UMAFqiIGO2P8YK6NsGNb//DD9V1atlGEtoVfr26L684pdzm23Yn/nuE4e1YxtKDW0daV
+         K6uQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780506439; x=1781111239;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=TihK8TLFQ7eWvBfrOf1I2w6CeTT78T3znP19Zg8cOL0=;
+        b=gG8M2b4Cjo8hITQ+myBxsyp1YvtXd5ye004eb53YkBbA0WwdJpfRc4MB1hxVvkrryA
+         ztg2u0Xm2EOVjHydr0EO8DVgZzOSrN1MhvzeSSVlWd1tC6KjV5KqIwSlcdRrRcOH06fq
+         svuE6fS265olrq1x8BIrqY+Hp+mTVWLTiJxwat/WvClnYcd2GfjRQYNtFTafe4qouqdO
+         sh0kWtpGKdaHb20i0PV25rO16TxFy6OsZyC5jB1gSo9ek2/sXwpUHDc0N1IEG744MStj
+         FkbIA8v4Ty0KUBeZ0mGHaIChopxd/OVeLYFoGDYpBaeTTHPeZ/WDll4XQgkDPQvCC+zT
+         K2AA==
+X-Forwarded-Encrypted: i=1; AFNElJ+I2pDMgIyYMRIlMZR9e5v+1N9wKsmBG83Hv3d9gGLNdk8GbYoEdvuJJE1r1Lg4YIrhmsDkgKY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyc6Fvy2V6CTBmYeJQAUwj9oIiK3UQEDftH0xr5YfmnKSidaHTS
+	FhkK/P0ntE/P4SEiFXpOnpyQmO438GWFF50N9SGS8MK00lvWORvo+3Qw
+X-Gm-Gg: Acq92OETmbSCYS7hB/4618xjD0m0e31m1Tglk3aEmz4qC5espMoCzSlZ4Gjd/YopxYF
+	XLhGaxyJjQ43yyM6/J60/D0eLTg+AsE/76Yb+FAHMlTrh2pP4tFTcfGU/62KOsumPHDYTKhCN+z
+	QtUhcO+sdAxzKQziLxYkKacDCOR3rAWk47p/rqXysesL10BbfE/ZygpibE6t9jveXgZJYGGkLxn
+	SlZTygLz9d11ii17oEZr/oT9UYlZLPzc1+riybXuZ7//swHf9S/phhddoiyOkXPt+vCVzglzOtD
+	R7wAUlXnlRSL3FfSykHKn6/mukZ6r0uBscDbxZX2HmuSm/xNeqngAE8hwnM91eWjsbew1iTXyYX
+	dad26/s0skXI6TsMYU+4getyG38wqwbBgJAOBknIIyWclxmws+pdyJ+0sX4V9iDjTHOUYpoPmhN
+	hGwSVCO3YzMXxdHIWUbhSi1iEev24=
+X-Received: by 2002:a17:902:ef44:b0:2be:22cc:e227 with SMTP id d9443c01a7336-2c1639ee5b0mr42224385ad.4.1780506439527;
+        Wed, 03 Jun 2026 10:07:19 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:58::])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c16609e234sm32078445ad.53.2026.06.03.10.07.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 03 Jun 2026 10:07:19 -0700 (PDT)
+Date: Wed, 3 Jun 2026 10:05:45 -0700
+From: Stanislav Fomichev <sdf.kernel@gmail.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com, 
+	pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org, jakub@cloudflare.com, 
+	maxime.chevallier@bootlin.com, nb@tipi-net.de, lee@kernel.org, linux-leds@vger.kernel.org, 
+	pavel@kernel.org, jv@jvosburgh.net, michael.chan@broadcom.com, jhs@mojatatu.com, 
+	vinicius.gomes@intel.com, idosch@nvidia.com, razor@blackwall.org, hare@suse.de, 
+	jhasan@marvell.com, danieller@nvidia.com
+Subject: Re: [PATCH net-next v2 01/11] net: rename netdev_ops_assert_locked()
+Message-ID: <aiBe4-1vnkJJHwHo@devvm7509.cco0.facebook.com>
+References: <20260603012840.2254293-1-kuba@kernel.org>
+ <20260603012840.2254293-2-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260602135610.5f79ed10@pumpkin>
+In-Reply-To: <20260603012840.2254293-2-kuba@kernel.org>
 
-On Tue, Jun 02, 2026 at 01:58:55PM +0100, David Laight wrote:
-> On Mon, 25 May 2026 22:24:27 +0200
-> Doruk Tan Ozturk <doruk@0sec.ai> wrote:
+On 06/02, Jakub Kicinski wrote:
+> Jakub suggests renaming the existing assert to match
+> the netdev_lock_ops_compat() semantics.
 > 
-> > Multiple out-of-bounds read vulnerabilities exist in the NFC LLCP TLV
-> > parsers:
-> > 
-> > 1. In nfc_llcp_recv_snl(), when an SDREQ TLV has length == 0,
-> >    service_name_len = length - 1 underflows to SIZE_MAX (size_t is
-> >    unsigned). The subsequent strncmp() and nfc_llcp_sock_from_sn()
-> >    calls then read unbounded kernel heap memory.
-> > 
-> > 2. All LLCP TLV parsing loops (nfc_llcp_recv_snl, nfc_llcp_connect_sn,
-> >    nfc_llcp_parse_gb_tlv, nfc_llcp_parse_connection_tlv) read tlv[0]
-> >    and tlv[1] without first verifying that at least 2 bytes remain in
-> >    the buffer.
-> > 
-> > A nearby malicious NFC device can trigger these without authentication --
-> > LLCP link activation happens automatically after NFC-DEP.
-> > 
-> > Fix by adding a minimum length check before the subtraction in the
-> > SDREQ case, and adding bounds validation at the top of each TLV loop
-> > iteration.
+> We want netdev_assert_locked_ops() to mean - if the driver
+> is ops locked - check that it's holding the device lock.
 > 
-> Why not fix it properly so that it doesn't read beyond the end of the skb.
-> 1) Change offset and tlv_len to be 32bit - no point trying to do 16bit mathx.
-> 2) Worry about non-linear skb - perhaps just process skb_header_len() bytes.
-> 3) Allow for very short frames.
-> 4) Don't read beyond the end of the skb data.
+> The existing helper check for either ops lock or rtnl_lock,
+> which is the locking behavior of netdev_lock_ops_compat().
 > 
-> Something like:
-> 	tlv = skb->data + LLCP_HEADER_SIZE;
-> 	tlv_end = skb_tail_pointer(skb);
-> 	for (; tlv + 2 < tlv_end; tlv += 2 + length) {
-> 		type = tlv[0];
-> 		length = tlv[1];
-> 		if (tlv + 2 + length > tlv_end)
-> 			break;
+> The reason for naming divergence is likely that
+> netdev_ops_assert_locked() predated the _compat() helpers.
 > 
-> Then as well as the check for length >= 1 in SDREQ (even 1 doesn't make sense),
-> the SDRES path is missing a check for length >= 2.
+> Suggested-by: Jakub Sitnicki <jakub@cloudflare.com>
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
-[ just moved sec@k.o to Bcc since this is public discussion, please
-  don't re-add it ]
-
-Thanks,
-Willy
+Acked-by: Stanislav Fomichev <sdf@fomichev.me>
