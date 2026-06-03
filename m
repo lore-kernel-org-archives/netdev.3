@@ -1,107 +1,119 @@
-Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CD312D0625
-	for <netdev@vger.kernel.org>; Wed,  3 Jun 2026 07:11:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.181
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780470677; cv=pass; b=g9CqrjvjSOw1+gPBWXIb6Oxpxr053k9SZqWibueK23bKcuUM1SkcUDecuTv1o0L/MflMNdOkW/6RQj6xI6LrAvB35+A5OvNSiSwHZfxJoQ4N5pWVvkDXEDNmsUkTafMnNJ8SG19Kk13z6XaH3QyrH6AUFPOdNoUm0wd2wDJLfx4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780470677; c=relaxed/simple;
-	bh=O2DKWrs6lCT2ta1wPdKxbvu+lCVqJw/cinJez9p6ZDA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qSghhYiPTcIv/rIDFdHQjashKsWMkswA/mcZ8PfinpBuUlkvPs1T7YP6QsnEoJvUGk7TzanaG5Oek2Ti53ACzaWQOgV9ahir6QR4kxhs2cTKDlvqeq19h2utFn/c8nm2EUSd+W8sOseBd5BGN3UXcyCmZQC/pb6nEOHp4qCslpY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TkEdKU+q; arc=pass smtp.client-ip=209.85.222.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D40C7399031;
+	Wed,  3 Jun 2026 07:16:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780471012; cv=none; b=b4XDH3XxKu47gYnjqIVu+7bhJIbbkCRu9PRLNkYMMW7CrXRzmV90iU3PLkkZRLFdE8dBVODPHvj1npv7jIngy25YS6uSw/uZotq5twfxf+gRFpPax4MEEunwrOqqzG9Cl/tKG3s6h7TnmgM5xdIzfKbQB8DFtwows2hKx7wfdCA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780471012; c=relaxed/simple;
+	bh=vyz0Xa1//X2cgKiA8x50y0o6xktJFDyDe1/KFcEJfHM=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=VGT7Na5o/UOh4xOAi5MaA0CoNzjqqiGdU4zQZpORbXUORMuy3QZAall8qVlLfTWlLS64eKgpajjn7zOGyYu7CrcR2tpEigvwvyl5w3oniDZo7K1EwgB4tUV7pb6u5Ji+7wfvIx3nqo7XmAj5M6n1Cxy6G4Di2qQZnPETluyl0Rg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=kd8n+8rs; arc=none smtp.client-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TkEdKU+q"
-Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-914bfa75911so43244885a.1
-        for <netdev@vger.kernel.org>; Wed, 03 Jun 2026 00:11:15 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780470675; cv=none;
-        d=google.com; s=arc-20240605;
-        b=DHBJItkMv7ZDg4iShHi4e1Arz5wQnPWqfZfdHVWYKM1Fhpbrb6uQtDaBC5bKhQiqgl
-         mYUPo7f5i2hPqs9JwFEmqNGRu4OogKX9hLmOdqF39QaU9+1CuvVgKOdD1Fr8n5Ygt9tF
-         hWlLC9ClNeMwv5Aj/tD4Vopo6dmP7VwCiXX5tvXrlOblHoir56hB/8MRUm9vIgANEeLF
-         evsyObnEDl3BY9jjvueZk33GxdiQYS2Jh713MTvIuJHEA6Vv7JmqDSztwHb74rnfw6uq
-         aacgysvcgtooidMX79u6baOrFwUWFAqUgR1btd44fadsZMjCZzCdvud/CXSW5gmdqiJD
-         NzWA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=O2DKWrs6lCT2ta1wPdKxbvu+lCVqJw/cinJez9p6ZDA=;
-        fh=5mIYtaljc7DkLS7y7NFzE/SNwLtqQCK/Iw0MdsX8SzU=;
-        b=fqQdByTQR2fMqIphUFlDQicsQxILUnfsSgrHEXnbYEyiIcT5o8O+jgcmAND187c/ki
-         rrcLF5jOBHgiXUG/YcZmSv8AGNa0nfJVGvRl+ZgeXJ1whF3ZLujtjfDDbXHVBaCCIT8L
-         DzqLx901PnyV27V3j+dgQrAEvOhMDWygmspOwGiI4SpwrBm8SjPZnumccopJQQSvsNR5
-         tEhCwYx4qcBpK6a5NtaP/fsTdMVi5sALatqw/gHITPbB+AhjTknBxKIJ1sRkS/KxNI/P
-         8iTYtAZG/LLlvQ5YwKADDKgyryNnkTwXeJWfaMPfmLVNzhW2m0AwjRJmXoKGXR/tP5Il
-         /y9g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780470675; x=1781075475; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=O2DKWrs6lCT2ta1wPdKxbvu+lCVqJw/cinJez9p6ZDA=;
-        b=TkEdKU+q9P3S66nHVfM+pDsE8tcSaia8jmjDL34TE3sF6FhnG2HHVfGhFmwuempGsq
-         D1kR1rJ1gPnU8TfQPHGS0D/DAp8b9mOGgrJ7nBkN3pu6x9S/uGYJOReBQBKdTQZn+ET7
-         4x2WLUeV7nSWp0yMHqixjKdX47St7AU42qWy5AtAjTl3piuDcXsAoxK1yOAUV/xSCFDW
-         F41saPedcdQJIRk8+QbeaXtNDkvSaFIprmOVhvheThXZ42hCelfaWOhNsUzmhmSH3JHP
-         1ocyTDLSHPVKDb+SGUU8sN/poIZMqOTKPtEUQS+vVf9Z1/973/o/jMqsDfwicwLVwZvS
-         mH8w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780470675; x=1781075475;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=O2DKWrs6lCT2ta1wPdKxbvu+lCVqJw/cinJez9p6ZDA=;
-        b=JI2sGNkD6vqc1qn49Qr4jRd13Ao64EUVparRU3bmQlEAPegRInE7FFjNwmsv0+BIe1
-         Zog7n16Pn0lz+AAG+oVzhBOZjo/LDN1wfq+NjRhZ460an/wFAS22EsfTiYF15nl/7Os5
-         /IiURMaJSwdbPji8ig634UvgQDpj2lU3UklWHqwB8Q5JRo0ozccRNGRNfyN34oi20p8i
-         CPa9rErg4WX2+Ds2nRfBSxYr2Bz/Q/8ZXg18lB3aKazrOblFE2F8mjx2AtthETTxH07b
-         +76sVme6YObyo6duXYd+54/lkGC04jWYt7Nn0vBGr1nWWZ38ytTsnbmuOa3rZothQy5e
-         TTIQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8EPYNUgY+G2xpYaBmlALncG5QBrDNkR2zFT3eh+TV28GHfbzbAXaWIDMuQ0MLWkyiCfsjy4AQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxG69F/rhgVMMDCdrDqRDmEMiz8CzRzUmW/DfLxe1WKC3q7JfuT
-	7Dg4yyvygosHyN5P1JmKu8e/72mW7RcdJTEh3LNHYi64j/xXLA3DMLfeut2VmSRcN3NLR8b9duQ
-	kMcdYz0AYLd5/RT13VYzxzvDrKdMtOeJDvZqRmio+
-X-Gm-Gg: Acq92OEo6R7F+Ma7/cV8P7DBuF6bAMdNghpaAVHs0NRo7ZU+lUiQA5hJZl5cQ+5LWBO
-	N2u75gj/+ArzTv+ptdF/n3AKEn4DLD2DwOqyc7XC0tUjz5dNGdYM1dfRbmjKBftG/2yoVNEiOO+
-	L87H/zqTv08D6stpECzVdRzMNjV+HJON0ggEsPul81RQRmC8llx8awQgmp77t9RWWXxH8NHwPdC
-	H+Dy5GqxIu9JENNwlGrhvKR162gJifyXR4O21f5dQleMy/Lu1K/plTKWIFRjfy/ZhB435M1sU/9
-	ykrZImuRIGNuMM/hIM37tWaBBIlpMEQ3Rdnry6ykZ255fJosVvk/L1n0LUa6QrVGlGiJ14OfexQ
-	CFK03a16ZxZZXvxm33XOFVBu0jBTy
-X-Received: by 2002:a05:620a:4728:b0:914:b497:c5f0 with SMTP id
- af79cd13be357-9158b6e1c3amr244238585a.26.1780470674639; Wed, 03 Jun 2026
- 00:11:14 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="kd8n+8rs"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 41481A03C2;
+	Wed,  3 Jun 2026 09:16:39 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1780471004; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=Vg2AJcCFLJnI5vjShorKN1fo6tPDywI2MFm003N7eXg=;
+	b=kd8n+8rsaOLBhSjImTzV783fbvAdIg74RlEsJ0zpTD3S8PbK+0LiFSgREPyaNtf84kDL3q
+	U0nufqHfCsDLjve40u7PUAyjB1sWOLBJ2/HflKjaeHAc7FCiugpbHjoyEwa0vCKjFL7GZb
+	Pr7370v6gAJJF2WZf/eHjd/+5esDiByMyr95VDei2E5GE6b8gldv+wl0fw5/Pf5HNlQp5x
+	+S5WDjqdGP9HrVslMn0ImpqAL2IqQ/HhBzwT26Fv/6Eq/Jn6nF1AZsEGE5RLKqgWiHnxKe
+	1NmalZ3RjJtdumVkip05o0GH8Ant/Czm2rT704AIlrLFOeBliea5zubwqxnqJQ==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260603065323.2736839-1-yuan.gao@ucloud.cn>
-In-Reply-To: <20260603065323.2736839-1-yuan.gao@ucloud.cn>
-From: Eric Dumazet <edumazet@google.com>
-Date: Wed, 3 Jun 2026 00:11:03 -0700
-X-Gm-Features: AVHnY4IUrdN0V9O1ZMgC9U_I2n8gDKGpt0dfgReWYKcHs1lWYXI5SjJcEbq_smc
-Message-ID: <CANn89i+AC6VvQfh8Nyi-rh2PfhdcJZcCiMFRB=yfUeBroaa=Ag@mail.gmail.com>
-Subject: Re: [PATCH net] inet: frags: remove redundant assignment in inet_frag_reasm_prepare()
-To: "yuan.gao" <yuan.gao@ucloud.cn>
-Cc: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
-	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Date: Wed, 03 Jun 2026 09:16:39 +0200
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+ pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
+ jakub@cloudflare.com, maxime.chevallier@bootlin.com, lee@kernel.org,
+ linux-leds@vger.kernel.org, pavel@kernel.org, jv@jvosburgh.net,
+ michael.chan@broadcom.com, jhs@mojatatu.com, vinicius.gomes@intel.com,
+ idosch@nvidia.com, razor@blackwall.org, hare@suse.de, jhasan@marvell.com,
+ danieller@nvidia.com
+Subject: Re: [PATCH net-next v2 07/11] net: bridge: don't recurse on the
+ port's netdev ops lock
+In-Reply-To: <20260603012840.2254293-8-kuba@kernel.org>
+References: <20260603012840.2254293-1-kuba@kernel.org>
+ <20260603012840.2254293-8-kuba@kernel.org>
+Message-ID: <b9a0430bb83cc76096488ce4bf239368@tipi-net.de>
+X-Sender: nb@tipi-net.de
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Tue, Jun 2, 2026 at 11:54=E2=80=AFPM yuan.gao <yuan.gao@ucloud.cn> wrote=
-:
->
-> The assignment is redundant because skb_clone() already copies skb->cb.
->
-> Remove the unnecessary code.
->
+Hi Jakub
 
-This looks like a net-next candidate to me.
+On 3.6.2026 03:28, Jakub Kicinski wrote:
+> port_cost() calls __ethtool_get_link_ksettings() on the port device,
+> which will soon take the port's ops lock. br_port_carrier_check()
+> is reached via the NETDEV_CHANGE notifier from linkwatch, which
+> already holds the port's ops lock, so the call would deadlock.
+> 
+> Make port_cost() expect the port's ops lock held and switch to
+> netif_get_link_ksettings(). The only other caller is new_nbp(),
+> make sure it takes the lock explicitly.
+> 
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> ---
+>  net/bridge/br_if.c | 7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
+> 
+> diff --git a/net/bridge/br_if.c b/net/bridge/br_if.c
+> index d39571e13744..049d1d25bc26 100644
+> --- a/net/bridge/br_if.c
+> +++ b/net/bridge/br_if.c
+> @@ -19,6 +19,7 @@
+>  #include <linux/if_ether.h>
+>  #include <linux/slab.h>
+>  #include <net/dsa.h>
+> +#include <net/netdev_lock.h>
+>  #include <net/sock.h>
+>  #include <linux/if_vlan.h>
+>  #include <net/switchdev.h>
+> @@ -30,13 +31,13 @@
+>   * Determine initial path cost based on speed.
+>   * using recommendations from 802.1d standard
+>   *
+> - * Since driver might sleep need to not be holding any locks.
+> + * Since driver might sleep, we need to not be holding any bridge 
+> spinlocks.
+>   */
+>  static int port_cost(struct net_device *dev)
+>  {
+>  	struct ethtool_link_ksettings ecmd;
+> 
+> -	if (!__ethtool_get_link_ksettings(dev, &ecmd)) {
+> +	if (!netif_get_link_ksettings(dev, &ecmd)) {
+>  		switch (ecmd.base.speed) {
+>  		case SPEED_10000:
+>  			return 2;
+> @@ -436,7 +437,9 @@ static struct net_bridge_port *new_nbp(struct 
+> net_bridge *br,
+>  	p->br = br;
+>  	netdev_hold(dev, &p->dev_tracker, GFP_KERNEL);
+>  	p->dev = dev;
+> +	netdev_lock_ops(dev);
+>  	p->path_cost = port_cost(dev);
+> +	netdev_unlock_ops(dev);
+>  	p->priority = 0x8000 >> BR_PORT_BITS;
+>  	p->port_no = index;
+>  	p->flags = BR_LEARNING | BR_FLOOD | BR_MCAST_FLOOD | BR_BCAST_FLOOD;
+
+Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
+
+Thanks
+Nicolai
