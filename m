@@ -1,167 +1,161 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0356239183B;
-	Wed,  3 Jun 2026 06:48:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780469291; cv=none; b=DjKYiXZNGu18+0YacgLmV+PGOJdfpNkl28THeWZwMN6lmII7ibGaTYzXEk4aeDioQojhMkPfG8LhzYVxLRQmSGwSu72JZc+a/AUyO4KSo7SfX7GulK3HrabmD3J1B6GCXK+qin27Ymg2QfKht7uOMAUcAE7U3mgBQRN/5t8eDAo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780469291; c=relaxed/simple;
-	bh=5paCheaSIkyb1fwEOeKz8a30e/gh8c4VLQGXNz/zPP0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XDaiCPeml1SpjVNsf1c2wuNEo7MoYFctejo9/GP1Bd5UW4H1qhovGi1LpF7xnAFgo604zfYmzr4Afq77Rwu1pPVx5vnsD2EUjEWmvXPSFfcO8kWO9ARwoLowLPlxCB+3hi34fhz9SF1DJpNS24vskvE8rrnHPf5vGhogORd2LhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lYndZ5hB; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D587B320CBE
+	for <netdev@vger.kernel.org>; Wed,  3 Jun 2026 06:53:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.133.124
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780469637; cv=pass; b=HrwnByk/FzElwZD0epuSfbcZeeg/pO75Txjvdn9JdX9OUwRZDXz7U7WCkxODn0pTSjsZNUy2FEsbe8dI3KTcoRmRKgWNOMzo4IUuNsZB0xh6MRfRk0+4AlUeu/TzMklXxfBtdQVn1ffBYHa03KLLEh8A5e1BgfGxKxe8jDamwPs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780469637; c=relaxed/simple;
+	bh=YtoExcp1vKCmmemHMTzqZLSo4dfGSjDVY5YroZRwHyE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Qav8Ua6cg5l/iO384zOEWZObb+z9bh3sje5RkjniFeI9OFZtfi2tqZcjkv0VilaJBQZE+q9wUUfBq8s6GxdBUte6Lww0TZywlXKnKQPxMb5Kd86Nfb6MSh+qM7+yasubjp6lwi6yo8qD5Ll1A6qUW22A/3EI/ZP0sd/QM4q2nqg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=IgmjgGX0; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=GxU70Utq; arc=pass smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lYndZ5hB"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1780469290; x=1812005290;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=5paCheaSIkyb1fwEOeKz8a30e/gh8c4VLQGXNz/zPP0=;
-  b=lYndZ5hBocehYoxQjCkP01bGLX6dG8bZpTrF4QeRY5LbCAXd15CDKAU2
-   nmG4cCaxBktEqIq+jA9ML71ITGAydhauXQCjjgNf1B2p4U4rZk7SlBc2g
-   LxZymfJpMDCuk1zi18ZoVEOW04v4eXQ3UpfmfuI9jMt54HtYQAH5pnhqj
-   7JI1M2ry36YuaoB50sBvBgDZCwMoKNUgotFk7CaOtHVzFl+VGaOkZnUpW
-   dOee8HNMuyIJ0nyL1pYlazwTbWlHEnKPEBFxA+fDbkLd5R0Wy09RxYo2b
-   XoIKVWXCxuvusz7ykPWj6J9ZNv8ncYUw3NeMFjMcvKw0LNepRS7w01pQR
-   A==;
-X-CSE-ConnectionGUID: 2NeFLrjlTdOdGGzyUjRgcg==
-X-CSE-MsgGUID: WpFo4g5lRZeYf4AGM3a1pw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11805"; a="81449149"
-X-IronPort-AV: E=Sophos;i="6.24,184,1774335600"; 
-   d="scan'208";a="81449149"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jun 2026 23:48:10 -0700
-X-CSE-ConnectionGUID: l4C7MOWzTqm35bI0ioW5/A==
-X-CSE-MsgGUID: fbnSrgLZR0CCW9far1B5+A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,184,1774335600"; 
-   d="scan'208";a="237778944"
-Received: from brc05.iind.intel.com (HELO brc05..) ([10.190.162.156])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jun 2026 23:48:06 -0700
-From: Tushar Vyavahare <tushar.vyavahare@intel.com>
-To: netdev@vger.kernel.org,
-	magnus.karlsson@intel.com,
-	maciej.fijalkowski@intel.com,
-	stfomichev@gmail.com,
-	kernelxing@tencent.com,
-	davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	tirthendu.sarkar@intel.com,
-	tushar.vyavahare@intel.com
-Cc: bpf@vger.kernel.org
-Subject: [PATCH net-next v2 4/4] selftests/xsk: Introduce mmap_size in umem struct
-Date: Wed,  3 Jun 2026 11:33:27 +0530
-Message-ID: <20260603060327.298389-5-tushar.vyavahare@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260603060327.298389-1-tushar.vyavahare@intel.com>
-References: <20260603060327.298389-1-tushar.vyavahare@intel.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="IgmjgGX0";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="GxU70Utq"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1780469634;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YtoExcp1vKCmmemHMTzqZLSo4dfGSjDVY5YroZRwHyE=;
+	b=IgmjgGX0dMY34bwtcUNpupqVKMidP/kH1scnyAx+pPeFja82LvjFopqO7rJuhtl3kAWX1q
+	mEEC1ZJC090qzc/OgBYyl3LKZ8DgA2CqoTZvfmUajo0aCSDm+C1LLshAiEmyfSxrAoZ0TL
+	/urmZrKO3E5NoXrPL2J4Z8J77Wsdjtw=
+Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
+ [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-158-ZG4g1D5iMASv1B_VEeyXuw-1; Wed, 03 Jun 2026 02:53:53 -0400
+X-MC-Unique: ZG4g1D5iMASv1B_VEeyXuw-1
+X-Mimecast-MFC-AGG-ID: ZG4g1D5iMASv1B_VEeyXuw_1780469632
+Received: by mail-lj1-f197.google.com with SMTP id 38308e7fff4ca-3967fa2efe3so16813321fa.2
+        for <netdev@vger.kernel.org>; Tue, 02 Jun 2026 23:53:53 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780469632; cv=none;
+        d=google.com; s=arc-20240605;
+        b=KKBcDQSNQmbwcEeZYKK/7i0Ah316XsZYq4x85oBj8CGPJ3GE5SEDxfk74Mu700nwhc
+         1A2sqnligBJ/NWtzB7ynB4UNV1iKJUQ/5zYKuHrXa6CUA95VrPomtD84hdH7SMCqAreD
+         s9uKfO8c3eHNySAOvGKio5sAihmKaBruw9gqSeF6JvuC3eyUS/89q6YzFT1VQtrsunj4
+         xMo4EaC8TNAQV8RyenW+NKu+KcQjj7qRcfvPSXNUhUiTUalE7ltVMG12meUdmrwXr1wL
+         +3mynnOVV+uF1nSD1kgQqRxBrnE22sl3YRHDDDoftOK7y8mvVPtzYScK/KV8Nf8KMXC/
+         wxHw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=YtoExcp1vKCmmemHMTzqZLSo4dfGSjDVY5YroZRwHyE=;
+        fh=Hkl8LAsb6DQtjT6I3THLXQfvOvku3qlvjwvDfM5cF4c=;
+        b=DuYxPcb58Xg2d4ZLlSGDvrzlnHq7MMonKlrPUr6kpaeFj+zWPawKm0uWCxDtg0k7Lf
+         fn2NCXqjpCrkwfZSLiYlifvOV4Hg2Rl6A7gtH8EvU3cx3Xd2ADuXFnWlY7MhTJdKWMLk
+         DWBGfgKhQ5ccxfoe90FbPd53H2B0X819oj9bq1ZT0K1YN1tRL+jSOQxYHCVkDgrC5len
+         5DHiNhS3DFs4Z62kC6X85lQufaSY29Q0ZxSb6GhnoZoa7PyJqnxoZnWX/1CEWiGGrcY6
+         u76XAE9895gzNwE7zSVe9L57RMbGYHecrzQ+XcxkYtU592MorF9V0FBAAp/CeGDjVlUD
+         mtsA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1780469632; x=1781074432; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YtoExcp1vKCmmemHMTzqZLSo4dfGSjDVY5YroZRwHyE=;
+        b=GxU70Utq+gyU3kvFzMuJqoQkILxJ9pPwuGlFlOSLn/r3+2U/haI/8hD5nxbEpKot0m
+         8TCAlcIOzgH3GaBHmJskiOe0Uk53HtXmvFozouK4mrYe28uAvHCWnF29SY2PTG4EdRkw
+         /WPtIAcq6jx4NNcflgAYI0NhjyFLAl9YjCjLAbP5ib6eqxmk/jx4u0Vsk5dXwtFa9hRg
+         UqvC2zkUBwwC9k4MK0vH59YSIOLS5SKN2s9l167EmtzUsr3kAfV+38ZdpYnppIjYkCII
+         IUmqqj1xV/OT03xC76QMzX3zQdi2lX3lh6Cpxb0N3WB7M25Hc3CACXJD3r8JGdNlMZTn
+         soQQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780469632; x=1781074432;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=YtoExcp1vKCmmemHMTzqZLSo4dfGSjDVY5YroZRwHyE=;
+        b=eYqkDluLfiT9rhpzR7a1X0S1gT8kp8mPr4Ysi5KZg4HAI3h9bBidgMJ3z5JtLLccs3
+         1uNnt9rPL8/T5VI6F8xMx0jBZa+d5YHxJkznKO8lLWa29MXgHqWrHZWxBs/H+e/vj+rp
+         Qiz6Vd+xiYPdVC4E4hF+D2DKTlno0p+gsSTBjCnMLrFFi3N3J6MHbBKgrJnh2tVLUXwH
+         LesF26CT2Kh1lvVZcG2B+znZQkXSKhs04Y+m0K5Ya2gLlHJxBfT7K01D+ekgIN59sJa7
+         PhWzosfp6Xp81DsCJXfWCx23PoNBI1Q2NMYTax4zqSvXKfPkpRpWhDnWAkHEKTqff3QL
+         EURA==
+X-Forwarded-Encrypted: i=1; AFNElJ9sQVDXxH7O+HlCVO0SAn+5+jYBhQ972LQCRvlwlSUr6YdW0VSC3DXShPZJmAFJPUDlJfeiuTU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxKeXfY0mcvjlMER6ql58ZZs12lvazNxiB2PsgrcUoFPyqJF+tl
+	ZZJceqYibkxsmHSfDcMBIUdEkxR2e17HyLnKV6VODFZRoC2ha9lWFCtipTZUVQPROsdqMQKqnWz
+	7jo/kgxesEpSjKRVyVBgAsQ3SDou/frTtHVuKhCEQtJQ4NGWgx8Rlyaj/vphQlaBmphv2GOg3Hx
+	2fDDqy6HsfS3EkQV+Qhrg18yyWYNMOm0ER
+X-Gm-Gg: Acq92OESYef6dewJGHAkUvA0y5jV0uHoiEORJTIM6iyTyD7Ymkkz0W+pRHliggkewCb
+	Bz1SV18GqLjl3Jf9cVuvgQtaFibQWW5APKMpwaaOJn90Y9c+6p6WAvvQepuE6+hjcNlJyDLm8mU
+	Td9T2QjmGezrGnr/skSbVAsG4Xk82UTprZayjYO3QTHBigYhP+8sx1W3gCqJIfibDPaKu6HouVe
+	Atu3Qq+oqvWzra8
+X-Received: by 2002:a05:651c:1473:b0:394:184:f7a7 with SMTP id 38308e7fff4ca-396af0640ddmr6172251fa.6.1780469632097;
+        Tue, 02 Jun 2026 23:53:52 -0700 (PDT)
+X-Received: by 2002:a05:651c:1473:b0:394:184:f7a7 with SMTP id
+ 38308e7fff4ca-396af0640ddmr6172051fa.6.1780469631660; Tue, 02 Jun 2026
+ 23:53:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260529112357.5079-1-fmancera@suse.de> <20260529134045.56330243@elisabeth>
+ <5079261a-79e5-421b-bf6a-a511acaaeca4@kernel.org> <20260601153525.546746a8@elisabeth>
+ <CACT4oueDv=KRZmJw=1N58EN7eoFz5AqbBBMP8FE4=+rQ99oFEg@mail.gmail.com> <8e9cbf0a-caff-4575-afb7-fe852df8a51a@kernel.org>
+In-Reply-To: <8e9cbf0a-caff-4575-afb7-fe852df8a51a@kernel.org>
+From: =?UTF-8?B?w43DsWlnbyBIdWd1ZXQ=?= <ihuguet@redhat.com>
+Date: Wed, 3 Jun 2026 08:53:40 +0200
+X-Gm-Features: AVHnY4Izv8ZOfaMVFpzu_XMyUekVJzqWDGlejEBqBpAhhiBHZ-XfProno9wNXz0
+Message-ID: <CACT4oueJ3GsVvnWcZHgYVL-fCjpt5nOw+2=0BTmiz-9xKY4B0w@mail.gmail.com>
+Subject: Re: [PATCH net v2] Revert "ipv6: preserve insertion order for
+ same-scope addresses"
+To: Matthieu Baerts <matttbe@kernel.org>
+Cc: Stefano Brivio <sbrivio@redhat.com>, Fernando Fernandez Mancera <fmancera@suse.de>, netdev@vger.kernel.org, 
+	yuhuang@redhat.com, justin.iurman@gmail.com, horms@kernel.org, 
+	pabeni@redhat.com, kuba@kernel.org, edumazet@google.com, davem@davemloft.net, 
+	idosch@nvidia.com, dsahern@kernel.org, Chris Adams <linux@cmadams.net>, 
+	David Gibson <david@gibson.dropbear.id.au>, Beniamino Galvani <bgalvani@redhat.com>, 
+	Thorsten Leemhuis <regressions@leemhuis.info>, Andrew Lunn <andrew@lunn.ch>, regressions@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-UMEM teardown currently recomputes the munmap() length from frame
-geometry, shared-UMEM adjustment, and hugepage rounding. This duplicates
-setup-time logic in cleanup and relies on re-deriving the mapping size
-instead of using the size originally established for the mapping.
+On Wed, Jun 3, 2026 at 7:46=E2=80=AFAM Matthieu Baerts <matttbe@kernel.org>=
+ wrote:
+> I guess it is safer not to break UAPI and not reapplying the patch,
+> especially when there is no clear way to know which order is taken by
+> the kernel.
+>
+> What about clearly stating that the default order is "random", except
+> when an additional flag is set to sort them chronologically or the opposi=
+te?
 
-Store the final mapping length in xsk_umem_info as mmap_size when the
-UMEM mapping is created, and use that value during teardown.
+Stating that the order is "random" implies that someone will change
+the default insertion order in the future, as the documentation says
+that it's not UAPI. So they'll cause the UAPI breakage that we are
+trying to avoid now. Moreover, if we consider the default order
+"random" and state that userspace programs must not rely on it, why
+can't we change it now?
 
-Also join the RX worker thread before cleanup in the single-thread
-path. This establishes synchronization before reading umem->mmap_size
-in teardown and avoids a potential visibility race.
+As mentioned in the other thread by David, we have programs broken by
+the original "fix" (NetworkManager), and programs that will be broken
+(again) by the revert (pasta). But more importantly, I think that,
+with the revert, there may be programs that are broken but they don't
+know it yet. Again, see how `ip addr restore` will be broken again.
+So, both solutions are bad, but doing the revert is worse, IMO.
 
-This removes duplicated size arithmetic in cleanup and makes munmap()
-use the canonical mapping size recorded at setup time.
+As I'm not much involved in NetworkManager any more, only Beniamino is
+who can truly speak on behalf of the NetworkManager project, but as a
+former NetworkManager maintainer, I think that my proposal earlier in
+this thread is the way to go:
+https://lore.kernel.org/netdev/CACT4oueDv=3DKRZmJw=3D1N58EN7eoFz5AqbBBMP8FE=
+4=3D+rQ99oFEg@mail.gmail.com/.
 
-Signed-off-by: Magnus Karlsson <magnus.karlsson@intel.com>
-Signed-off-by: Tushar Vyavahare <tushar.vyavahare@intel.com>
----
- .../selftests/bpf/prog_tests/test_xsk.c       | 20 +++++++++----------
- .../selftests/bpf/prog_tests/test_xsk.h       |  1 +
- 2 files changed, 10 insertions(+), 11 deletions(-)
+It's slightly controversial because it may be considered an UAPI
+break, but on the other side it may be considered as a fix to a wrong
+implementation of the UAPI, instead, as Stefano pointed out:
+https://lore.kernel.org/netdev/20260528165320.15b90ded@elisabeth/
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/test_xsk.c b/tools/testing/selftests/bpf/prog_tests/test_xsk.c
-index f1730466ffd9..e94c38a1faf4 100644
---- a/tools/testing/selftests/bpf/prog_tests/test_xsk.c
-+++ b/tools/testing/selftests/bpf/prog_tests/test_xsk.c
-@@ -1581,7 +1581,7 @@ static int thread_common_ops(struct test_spec *test, struct ifobject *ifobject)
- 	struct xsk_umem_info *umem = ifobject->xsk->umem;
- 	LIBBPF_OPTS(bpf_xdp_query_opts, opts);
- 	int mmap_flags;
--	u64 umem_sz;
-+	u64 umem_sz, mmap_sz;
- 	void *bufs;
- 	int ret;
- 	u32 i;
-@@ -1595,10 +1595,15 @@ static int thread_common_ops(struct test_spec *test, struct ifobject *ifobject)
- 	if (ifobject->shared_umem)
- 		umem_sz *= 2;
- 
--	bufs = mmap(NULL, umem_sz, PROT_READ | PROT_WRITE, mmap_flags, -1, 0);
-+	mmap_sz = umem->unaligned_mode ?
-+		ceil_u64(umem_sz, HUGEPAGE_SIZE) * HUGEPAGE_SIZE : umem_sz;
-+
-+	bufs = mmap(NULL, mmap_sz, PROT_READ | PROT_WRITE, mmap_flags, -1, 0);
- 	if (bufs == MAP_FAILED)
- 		return -errno;
- 
-+	umem->mmap_size = mmap_sz;
-+
- 	ret = xsk_configure_umem(ifobject, umem, bufs, umem_sz);
- 	if (ret)
- 		return ret;
-@@ -1706,15 +1711,9 @@ void *worker_testapp_validate_rx(void *arg)
- static void testapp_clean_xsk_umem(struct ifobject *ifobj)
- {
- 	struct xsk_umem_info *umem = ifobj->xsk->umem;
--	u64 umem_sz = umem_size(umem);
--
--	if (ifobj->shared_umem)
--		umem_sz *= 2;
--
--	umem_sz = ceil_u64(umem_sz, HUGEPAGE_SIZE) * HUGEPAGE_SIZE;
- 
- 	xsk_umem__delete(umem->umem);
--	munmap(umem->buffer, umem_sz);
-+	munmap(umem->buffer, umem->mmap_size);
- }
- 
- static void handler(int signum)
-@@ -1857,8 +1856,7 @@ static int __testapp_validate_traffic(struct test_spec *test, struct ifobject *i
- 
- 	if (!ifobj2)
- 		pthread_kill(t0, SIGUSR1);
--	else
--		pthread_join(t0, NULL);
-+	pthread_join(t0, NULL);
- 
- 	if (test->total_steps == test->current_step || test->fail) {
- 		clean_sockets(test, ifobj1);
-diff --git a/tools/testing/selftests/bpf/prog_tests/test_xsk.h b/tools/testing/selftests/bpf/prog_tests/test_xsk.h
-index 99003995d7c3..4313d0d87235 100644
---- a/tools/testing/selftests/bpf/prog_tests/test_xsk.h
-+++ b/tools/testing/selftests/bpf/prog_tests/test_xsk.h
-@@ -103,6 +103,7 @@ struct xsk_umem_info {
- 	struct xsk_ring_cons cq;
- 	struct xsk_umem *umem;
- 	u64 next_buffer;
-+	u64 mmap_size;
- 	u32 num_frames;
- 	u32 frame_headroom;
- 	void *buffer;
--- 
-2.43.0
+--
+=C3=8D=C3=B1igo Huguet
 
