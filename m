@@ -1,218 +1,82 @@
-Received: from mail-oi1-f179.google.com (mail-oi1-f179.google.com [209.85.167.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from hr2.samba.org (hr2.samba.org [144.76.82.148])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A75F42B742
-	for <netdev@vger.kernel.org>; Wed,  3 Jun 2026 20:44:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 304F0406290;
+	Wed,  3 Jun 2026 20:57:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.76.82.148
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780519451; cv=none; b=X58LznsC81w2mnJuAWQ7owdoZonnaaTnX92/wDEwhAbb39KrO3NyUnnoZ7nY8HcqwrVwQ6cpUxoGafHNVnyG+he3llIgiqjZGmtBKlTf6EoGhBTiL/QCz189VFHeiFspNBAgv3ClMTCPgMfI11HAjTWEidqem3A9ooiSY4bFE+4=
+	t=1780520233; cv=none; b=YFpF/rleYaIxWX5n11AVfeIm4kRJPLc1aXKvlx6yotQp50Sg+Bb//+mSA8kvduDihhUbHLqTs7dz4p53GpOe3ZoL96rSWwvnRP1rcnO4psdQDyfvErC9ZCpwShP1GNgWiVlAQsIDKhHtVIgsQARdDFDzhTpeivfwJC3iz4n0Dcs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780519451; c=relaxed/simple;
-	bh=amPURw1JjZfEDUE22gJ+bKOK7PktxrSxr1SHV7K3oHg=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=NPr1JiseAqwhPrtn7QneSJtkUVQHMgwBIigSXm9pdKHCT24Njh5NixAbjeKQ6s54hrZuV/BUXAImh4cFy+IbvUP4lnPjs1oP/ORoSAlb8PZPL2lcIBdqsLemqerzlRsam4n7nvuz8FpOSvf0F/mysyLdTu5RKfzBe6uo5H8ORUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I5RL9D5u; arc=none smtp.client-ip=209.85.167.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1780520233; c=relaxed/simple;
+	bh=V2fXSXVzTIh8my+gZteAmchKNpC3cbws67iXcxUG/DU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=NlqqvBqV+FHxJdNB8b9AkKjsEbfR5FaGuM9R+ANsUTiYayY/UJtIF14MgobWoNfSUR6F1xP5WbgBKTdvKediUQR7bL1y9NPFy3Sh4R0qah0TNAf+HDI4U048AOCAxyww+x26E9A98m1OasGQSh7ceSP40dr5rAJVxRCza0qgKlU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=samba.org; spf=pass smtp.mailfrom=samba.org; dkim=pass (3072-bit key) header.d=samba.org header.i=@samba.org header.b=IkdgwTOo; arc=none smtp.client-ip=144.76.82.148
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=samba.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samba.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I5RL9D5u"
-Received: by mail-oi1-f179.google.com with SMTP id 5614622812f47-48650c78e09so823177b6e.2
-        for <netdev@vger.kernel.org>; Wed, 03 Jun 2026 13:44:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780519448; x=1781124248; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=RIMHRKZ1kbgwP55bGp0c0OQ+sOxMVw/a+CoqATe1mLs=;
-        b=I5RL9D5uhEAyzv9tsLU2FeMJxU9b/Bi54IP9i0s25oEq6IkiWt3wMeW96YdViiZypi
-         QMTIfabDlD9IQcSkCES6tGRHJCNrtRBNrjOHnnPlJ/rj5W1jTuO6uLKufTvl4AhxTqo7
-         HHLnF3x5Tc0jfyBsXetMUqdSMKBGyxxWWxaH/0Fxu7TNYRsN8DF5+39ZDetxVDUoj+aj
-         Hrj1Wj5gk+XtMTrUaFqaNvmniHVHDe8VQDaEc6hHWz5RWWMF+HWNYmlCo6upyjKMbdR7
-         ONK99j3x4hqqOrJTg/ylUFHJCtQP3tqpSsAyqCUEWI5aWdqpjnpuxkEjC6/0zfMXyf2i
-         XkBw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780519448; x=1781124248;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=RIMHRKZ1kbgwP55bGp0c0OQ+sOxMVw/a+CoqATe1mLs=;
-        b=F0AcklCnoHTro2QPdR5bhCoPx6+oDAxHZOmS1CzG7v5rci5gwn+UZoiI9+QdRA66xC
-         5/aZv6QoMbsb0mZBe+mHmZT0WAdULv8/i8bQZxFsX5sC0ZsOLfL9Ii/L247vXEC35txQ
-         tmIYHUqGmPF5NgrSOiK6sjz+EYNsYAY/Pdi5QV1XKwzD55JbsqIpTWdTe5xank4t+50Y
-         esIXGWFI7D88KHLhMlGUWsoUUeEJdCZxONGQUw2oDDLD9WjLjPWivDVxrxidEBHxfwe6
-         5mmHneESxNjDl7bN2eSDvYzeJHN1povjcQ/MBL/PbuAziQiYIJLhkhmgR4b0SO5z9C4T
-         pCyg==
-X-Gm-Message-State: AOJu0YxvH/vmj64BxpJQuwNcSFMJf/uwPyzd6ao5Oe7abInX0kkoLyo1
-	7C++xzss9+U+V2xl4LXidMAGHPVcE2KKUBcXu0ITmZSZiDhrVOa+YWUU
-X-Gm-Gg: Acq92OFV6rI5ihtFy/AupAPUQ4HXdHp0Uz3wislH831++vxITY0xv0YUnzja1YUEYKt
-	mdBRCWRN19SmXaDV2f9M9KVW51j2XCTAvsaSW1uXqQXR9yV2wHPvBjfkjOzTUwzKl0FTy9BwYCe
-	JdcEClLrmEsF/Ni/yFQ3hanQRYj+Ax/QAmaPLoLSBNF+kc2yaia0TsvGEJdBA0eo1EHqmOFU0TV
-	M1hSVPxCzv+74nykDiD7cBzJF4BJmRtmLNt+upGhvG1SFDxOBIDBMuAw0ROcfHvqRPOzoepI32P
-	wjsnofH5hlyHakU+KP27MeU787bRdQj8VORRxCJZVcaXH7esMFO+lxQ89ei9Ujo0KJlXMS4gddG
-	1tnE9wUSOOFBYgINScz+IhrqGiRpBkEcQtwU497eCP7J6HaFRf+aL90OuJv+OKgUrzk2ByubolK
-	gaizwePVz/9YE1pb/UrEbEek+aJiqsWyct/ri3DAGzhdco6ds8oA==
-X-Received: by 2002:a05:6808:1783:b0:47b:bd7b:10d0 with SMTP id 5614622812f47-4865aa81a6cmr2841639b6e.13.1780519448489;
-        Wed, 03 Jun 2026 13:44:08 -0700 (PDT)
-Received: from [192.168.1.71] ([2600:1702:56e9:4b40:e3a9:78c5:641e:a58c])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-4865b5a5a64sm2667962b6e.4.2026.06.03.13.44.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Jun 2026 13:44:07 -0700 (PDT)
-From: Akash Sukhavasi <akash.sukhavasi@gmail.com>
-Date: Wed, 03 Jun 2026 15:42:21 -0500
-Subject: [PATCH v2 4/4] dt-bindings: input: remove obsolete
- matrix-keymap.txt
+	dkim=pass (3072-bit key) header.d=samba.org header.i=@samba.org header.b="IkdgwTOo"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=samba.org;
+	s=42; h=From:Cc:To:Date:Message-ID;
+	bh=8BcJ1AYTFKicCZr4Jz0bUiyIXeLFCzsYHFc8JfDuOPI=; b=IkdgwTOofDKPbnSVfFpsvzvLwX
+	eOoOzStETsZ3WEPO0WPXmqBwdzYWHPKtXsWUBnPrhS49AtanwdCw0YdlhOj8U+4uuX/Y+SfTGA994
+	V7ALuQ7pbP0qgnPLvhDKoW4JaBX2kBwD+pPOmvpZsDURTw+GW7K1+NI24niCZg1RzD7JOHoHF0SmP
+	hdcGlnB/fPmeokjhlU+8VVRBpZh+b/J1zE3upcIPtx9c6TbTI3ByJCL102NkFbqcHCTIoTCffGSni
+	xtaEVXw+VwiZSATF2Xkm+AdCErd7J1WdkfDSXvkaDex04ioZI6pz8mSvaUmBgstMGtyOZlp3OjcJW
+	P7D6uZnanayQ1fDHOYYKRvi4YPhXlXQZbFaku9paKoIFPTrOzvfo4fQ6ml8lPxemUdrPhChWMRMLB
+	KbBvwt5/zIz36T+cmighMPqMSn7ZLdhtyimFeX+K5B0RraYwM92HQ/VTyeWryZpwntdJ1Vx0rG0ql
+	oWA+ogV47gyUOm1BondGaIYR;
+Received: from [127.0.0.2] (localhost [127.0.0.1])
+	by hr2.samba.org with esmtpsa (TLS1.3:ECDHE_SECP256R1__ECDSA_SECP256R1_SHA256__CHACHA20_POLY1305:256)
+	(Exim)
+	id 1wUse3-0000000Dpix-3X3G;
+	Wed, 03 Jun 2026 20:56:59 +0000
+Message-ID: <f919874c-065e-48be-ac5b-300c4ab86d4e@samba.org>
+Date: Wed, 3 Jun 2026 22:56:58 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/3] vmsplice: make vmsplice a trivial wrapper for
+ preadv2/pwritev2
+To: Askar Safin <safinaskar@gmail.com>, linux-fsdevel@vger.kernel.org,
+ Christian Brauner <brauner@kernel.org>,
+ Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linux-api@vger.kernel.org, netdev@vger.kernel.org,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Matthew Wilcox <willy@infradead.org>, Jens Axboe <axboe@kernel.dk>,
+ Christoph Hellwig <hch@infradead.org>, David Howells <dhowells@redhat.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Pedro Falcato <pfalcato@suse.de>,
+ Miklos Szeredi <miklos@szeredi.hu>, patches@lists.linux.dev
+References: <20260531010107.1953702-1-safinaskar@gmail.com>
+ <20260531010107.1953702-3-safinaskar@gmail.com>
+Content-Language: en-US
+From: Stefan Metzmacher <metze@samba.org>
+In-Reply-To: <20260531010107.1953702-3-safinaskar@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260603-b4-remove-redirect-stubs-v2-4-c8c19876ab64@gmail.com>
-References: <20260603-b4-remove-redirect-stubs-v2-0-c8c19876ab64@gmail.com>
-In-Reply-To: <20260603-b4-remove-redirect-stubs-v2-0-c8c19876ab64@gmail.com>
-To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
- Russell King <linux@armlinux.org.uk>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Mauro Carvalho Chehab <mchehab@kernel.org>, 
- Vladimir Oltean <olteanv@gmail.com>, Simon Horman <horms@kernel.org>, 
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
- Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
- Thierry Reding <thierry.reding@kernel.org>, 
- Jonathan Hunter <jonathanh@nvidia.com>, Lee Jones <lee@kernel.org>
-Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-media@vger.kernel.org, 
- linux-doc@vger.kernel.org, linux-input@vger.kernel.org, 
- linux-tegra@vger.kernel.org, Akash Sukhavasi <akash.sukhavasi@gmail.com>
-X-Mailer: b4 0.14.3
 
-matrix-keymap.txt has been a single-line redirect to
-matrix-keymap.yaml since commit 639d6eda3b80 ("dt-bindings: input:
-Convert matrix-keymap to json-schema"), which introduced the .yaml
-schema and reduced the .txt to a stub in the same change. The .yaml
-has the same filename in the same directory, making this redirect
-unnecessary for discoverability.
+Hi Askar,
 
-Eight instances across six files still reference matrix-keymap.txt,
-forcing readers through an extra hop to reach the .yaml. The stub has
-not been touched since June 2020. Update all references across input
-and mfd binding documentation to point directly to matrix-keymap.yaml
-and remove the stub.
+> diff --git a/include/linux/syscalls.h b/include/linux/syscalls.h
+> index f5639d5ac331..a86a88207956 100644
+> --- a/include/linux/syscalls.h
+> +++ b/include/linux/syscalls.h
+> @@ -514,8 +514,8 @@ asmlinkage long sys_ppoll_time32(struct pollfd __user *, unsigned int,
+>   			  struct old_timespec32 __user *, const sigset_t __user *,
+>   			  size_t);
+>   asmlinkage long sys_signalfd4(int ufd, sigset_t __user *user_mask, size_t sizemask, int flags);
+> -asmlinkage long sys_vmsplice(int fd, const struct iovec __user *iov,
+> -			     unsigned long nr_segs, unsigned int flags);
+> +asmlinkage long sys_vmsplice(unsigned long fd, const struct iovec __user *vec,
+> +			     unsigned long vlen, unsigned int flags);
 
-Signed-off-by: Akash Sukhavasi <akash.sukhavasi@gmail.com>
----
-v2:
-- Patch 4/4: corrected commit message (eight references in six files,
-  not eight files), Sashiko review.
-  https://sashiko.dev/#/patchset/20260529052246.4934-1-akash.sukhavasi@gmail.com?part=4
+Why is 'int fd' changed to 'unsigned long fd'?
+Should that be its own commit if the change is desired?
 
-v1: https://lore.kernel.org/all/20260529052246.4934-5-akash.sukhavasi@gmail.com/
----
- Documentation/devicetree/bindings/input/brcm,bcm-keypad.txt    | 2 +-
- Documentation/devicetree/bindings/input/clps711x-keypad.txt    | 2 +-
- Documentation/devicetree/bindings/input/matrix-keymap.txt      | 1 -
- Documentation/devicetree/bindings/input/nvidia,tegra20-kbc.txt | 2 +-
- Documentation/devicetree/bindings/input/pxa27x-keypad.txt      | 2 +-
- Documentation/devicetree/bindings/input/st-keyscan.txt         | 2 +-
- Documentation/devicetree/bindings/mfd/tc3589x.txt              | 6 +++---
- 7 files changed, 8 insertions(+), 9 deletions(-)
-
-diff --git a/Documentation/devicetree/bindings/input/brcm,bcm-keypad.txt b/Documentation/devicetree/bindings/input/brcm,bcm-keypad.txt
-index 262deab73588..33514eba0c9c 100644
---- a/Documentation/devicetree/bindings/input/brcm,bcm-keypad.txt
-+++ b/Documentation/devicetree/bindings/input/brcm,bcm-keypad.txt
-@@ -59,7 +59,7 @@ Board Specific Properties:
- 	  subsystem (optional).
- 
- - linux,keymap: The keymap for keys as described in the binding document
--  devicetree/bindings/input/matrix-keymap.txt.
-+  devicetree/bindings/input/matrix-keymap.yaml.
- 
- Example:
- #include "dt-bindings/input/input.h"
-diff --git a/Documentation/devicetree/bindings/input/clps711x-keypad.txt b/Documentation/devicetree/bindings/input/clps711x-keypad.txt
-index 3eed8819d05d..5f4514c0cd5f 100644
---- a/Documentation/devicetree/bindings/input/clps711x-keypad.txt
-+++ b/Documentation/devicetree/bindings/input/clps711x-keypad.txt
-@@ -5,7 +5,7 @@ Required Properties:
- - row-gpios:     List of GPIOs used as row lines.
- - poll-interval: Poll interval time in milliseconds.
- - linux,keymap:  The definition can be found at
--                 bindings/input/matrix-keymap.txt.
-+                 bindings/input/matrix-keymap.yaml.
- 
- Optional Properties:
- - autorepeat:    Enable autorepeat feature.
-diff --git a/Documentation/devicetree/bindings/input/matrix-keymap.txt b/Documentation/devicetree/bindings/input/matrix-keymap.txt
-deleted file mode 100644
-index 79f6d01aecaa..000000000000
---- a/Documentation/devicetree/bindings/input/matrix-keymap.txt
-+++ /dev/null
-@@ -1 +0,0 @@
--This file has been moved to matrix-keymap.yaml
-diff --git a/Documentation/devicetree/bindings/input/nvidia,tegra20-kbc.txt b/Documentation/devicetree/bindings/input/nvidia,tegra20-kbc.txt
-index 1faa7292e21f..460b64d332cd 100644
---- a/Documentation/devicetree/bindings/input/nvidia,tegra20-kbc.txt
-+++ b/Documentation/devicetree/bindings/input/nvidia,tegra20-kbc.txt
-@@ -12,7 +12,7 @@ Required properties:
- - nvidia,kbc-col-pins: The KBC pins which are configured as column. This is an
-   array of pin numbers which is used as column.
- - linux,keymap: The keymap for keys as described in the binding document
--  devicetree/bindings/input/matrix-keymap.txt.
-+  devicetree/bindings/input/matrix-keymap.yaml.
- - clocks: Must contain one entry, for the module clock.
-   See ../clocks/clock-bindings.txt for details.
- - resets: Must contain an entry for each entry in reset-names.
-diff --git a/Documentation/devicetree/bindings/input/pxa27x-keypad.txt b/Documentation/devicetree/bindings/input/pxa27x-keypad.txt
-index f8674f7e5ea5..a727d66eece4 100644
---- a/Documentation/devicetree/bindings/input/pxa27x-keypad.txt
-+++ b/Documentation/devicetree/bindings/input/pxa27x-keypad.txt
-@@ -10,7 +10,7 @@ Required Properties
-   interval for matrix key. The value is in binary number of 2ms
- 
- Optional Properties For Matrix Keyes
--Please refer to matrix-keymap.txt
-+Please refer to matrix-keymap.yaml
- 
- Optional Properties for Direct Keyes
- - marvell,direct-key-count : How many direct keyes are used.
-diff --git a/Documentation/devicetree/bindings/input/st-keyscan.txt b/Documentation/devicetree/bindings/input/st-keyscan.txt
-index 51eb428e5c85..fd88f40faebf 100644
---- a/Documentation/devicetree/bindings/input/st-keyscan.txt
-+++ b/Documentation/devicetree/bindings/input/st-keyscan.txt
-@@ -17,7 +17,7 @@ Required properties:
-   See ../pinctrl/pinctrl-bindings.txt for details.
- 
- - linux,keymap: The keymap for keys as described in the binding document
--  devicetree/bindings/input/matrix-keymap.txt.
-+  devicetree/bindings/input/matrix-keymap.yaml.
- 
- - keypad,num-rows: Number of row lines connected to the keypad controller.
- 
-diff --git a/Documentation/devicetree/bindings/mfd/tc3589x.txt b/Documentation/devicetree/bindings/mfd/tc3589x.txt
-index 4f22b2b07dc5..a6d356e90f42 100644
---- a/Documentation/devicetree/bindings/mfd/tc3589x.txt
-+++ b/Documentation/devicetree/bindings/mfd/tc3589x.txt
-@@ -48,11 +48,11 @@ Optional nodes:
-  - compatible : must be "toshiba,tc3589x-keypad"
-  - debounce-delay-ms : debounce interval in milliseconds
-  - keypad,num-rows : number of rows in the matrix, see
--   bindings/input/matrix-keymap.txt
-+   bindings/input/matrix-keymap.yaml
-  - keypad,num-columns : number of columns in the matrix, see
--   bindings/input/matrix-keymap.txt
-+   bindings/input/matrix-keymap.yaml
-  - linux,keymap: the definition can be found in
--   bindings/input/matrix-keymap.txt
-+   bindings/input/matrix-keymap.yaml
-  - linux,no-autorepeat: do no enable autorepeat feature.
-  - wakeup-source: use any event on keypad as wakeup event.
- 		  (Legacy property supported: "linux,wakeup")
-
--- 
-2.54.0
-
+metze
