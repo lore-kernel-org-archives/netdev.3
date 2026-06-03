@@ -1,105 +1,94 @@
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F03F3655DB
-	for <netdev@vger.kernel.org>; Wed,  3 Jun 2026 11:15:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7E9334404A;
+	Wed,  3 Jun 2026 11:20:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780485314; cv=none; b=u1CSAft1FcqVV/uzG6a5XhRX4h5TX0kv1v319JHj2WqwvHWCqfPpB7vBq0hs3YelQtn1QX/gp5e6DhX0e3gu/FInEISyY0SErPWCiSUC1EuzR3bSeg4xgaMx1OVfFviquXsw7VUHfXIOKpiTdJR26TCl4S/HBIUIDKad8dVQH1Q=
+	t=1780485618; cv=none; b=R2gFyPP/ZLmQHCO0/+bDZT8nnne3FBBUhzo7lGo8RCh83Qn/FsFqNfB7uXxTpjm+PuyEWFRV4ZJmlRrY1notp3nIxZ9zbi42G7nwraJhYXUWLhm7DBKaONmuENfFr3RoZaeVHj2sLNNLTLVFOdZcu7iOzvWNDdyNWyiBqmxMVNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780485314; c=relaxed/simple;
-	bh=IYQ2aNeY+X4nQfJBL0t13iSGFwakR7F2aCt2177FAvo=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=d5GdGo5yTpr25i+aXKCBOR/rMruT7wZev6p2h2QZ3zfoZZ7RAfzDc44aWvfc8FGfmhKGerxjLHouK3S1/GE+FKEBnMUeDwl5JT7wcZFhnqsWFEdbqTF3lixn7Wok1fqpxWQut4FC55xwkyLQ7fMrLx7WZGYFbkZg8icAKfIJZAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=WF05GNAu; arc=none smtp.client-ip=209.85.208.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
+	s=arc-20240116; t=1780485618; c=relaxed/simple;
+	bh=XoROFfvfDRK+UYBhkKFl+wuz2PDGpekeBCa8zlw4ynE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=S/2iUzqUuoYGiRWuQEBsyE14JJWiRazYCr7RrklZzSASV0FfyTLDcmfvhE2mB0i/DaBwQy0JmB/LYQ35gHWiqyVLyIMtlNgpCgd1bG5tHULxEwxpIIa7BhVl9XbB6e8D8oivH5GUvNnGIsrocnNVG0pGTiJTP+IrTfqTQYvI7NM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LIvrw2fd; arc=none smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="WF05GNAu"
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-68c76fb8009so6906434a12.0
-        for <netdev@vger.kernel.org>; Wed, 03 Jun 2026 04:15:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1780485310; x=1781090110; darn=vger.kernel.org;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=hw0XW6MjQE4Q5GmtRBciMOYe8JFJUy2Q42SiJpNGiVM=;
-        b=WF05GNAuQR0KINPBBRORhhKTz6ecvHNw28vGLi+p1FbhvWYUn3EEcezPO97xWtnC8U
-         aKQQ+Bz3oIsDO1hVDV8nTFYKXC5FLWE8D0GdJcXv53M7DdQ067YI2qIKw+xa/Nr+Z+VM
-         e1QhNq7bE7hpUWqev2Z7qVVRJo4wlYMvpalRW0gcRGDBydbdWQPjXpNfYTZLbdMriUlv
-         UxzocdsFIzoWHIne+9XNpMthpjAVxpo6qfJQWu4rJbUq30RxETenina5QOM0Lxgmknp7
-         6G8rKSoNY4/XsaWwGjowJ7PzEIDrSyOLnMJxuAzwLaKYQLuN8HlXHpNjcUdLAFab2qs2
-         Ph8A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780485310; x=1781090110;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=hw0XW6MjQE4Q5GmtRBciMOYe8JFJUy2Q42SiJpNGiVM=;
-        b=kJ60mb3OBIECiw44MRtTus4prDh2O6LSUjY3BVNYTRzILGmUg+RuqmsSHKGPKypxwh
-         7orbQVoTAiDcJdOw57Uj/J0o4G+EKO2u9fhfw2r7wGnkrGEacWYpLvQsURrwraDK2T6y
-         Tzc1vsNk7em64oSWlJ2B8J16D07e9tjKWgYgBq2Z9xXkyyv4FMohz+hK/95NFE7PSde8
-         vSnScoqENSEQ8htSIZUoEKJpTijPTYAm7IxJpi/KvQGR45tDFvdeXlD9IBtHNGWblGbO
-         WS6FQr2CR1PQURuqSc8dNDr0igWTFuefm88oSlp/FceU1T3LfpDleqswwyjf249XVIrS
-         6hWQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9SzDwCSViQ6apyIgIbhvl5demxc8QlW6ptUIfFSVWY5WitmhImd01OWytRwSg6owFw/nIfjJE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyj1SO7J5Eb+kvI6a8Iz8ODo+p5jjI32lnqJmzSBBDJkk/NtI7j
-	P1ZfmbFCRmxEPTd5+Aduaiv4tcX3hVYnEbYhQxRUSTptHdBKDPsoOBgCOj3SgAykUZQ=
-X-Gm-Gg: Acq92OH9A0Yv70qCvyli3fnzvcA4gkRclS3zXoFh/PwZW7KPVTAsQI0qFDg+WrwngI8
-	Ucgyea243FQDoXY2XYXmxRvLmz9j5y4YXa4A+DlZnM7i3JKDTljKHDzWa8wiWg6zBPSlVSUZBDP
-	vXK4wEEwsBOG0ZRPxnGHhP9MlD9Vt/7ssHFH7lIuzDFlJOhpfF2rGHFvAlfI3PFX7bgYGAYY8IF
-	6KafQm1ZRBZf+lpUAtPDEGgC1UsPpWbdxk//gEe5G3Txbn0/yelorSbDwaVAITFsWpaYj8NAkv2
-	UBjpBnqqg1ws60luM3DPwiHA9Af4lFnTU3nncN2ck0Zg3xtSawjiw0UMa7rxyVwVyils/mq20RH
-	oTARER+RGxVCp9LQkjoh1MRcVTSaLo7r0TxztOdIg78Ulws8xcsQsOjXJo1rNh0z6VV+j7KODFe
-	6wXS0Y1+dzPukzOte7H7m7H6KAUMxPDuS8bgwivPz55zEsZDOZC7uzzXOTwnJT3RHawswhD489Q
-	peEXLP87H8=
-X-Received: by 2002:a05:6402:50d0:b0:68b:5418:bee5 with SMTP id 4fb4d7f45d1cf-68e71aa2f01mr1359654a12.25.1780485309927;
-        Wed, 03 Jun 2026 04:15:09 -0700 (PDT)
-Received: from cloudflare.com (79.184.120.122.ipv4.supernova.orange.pl. [79.184.120.122])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-68e65c542c7sm1018281a12.31.2026.06.03.04.15.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Jun 2026 04:15:09 -0700 (PDT)
-From: Jakub Sitnicki <jakub@cloudflare.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net,  netdev@vger.kernel.org,  edumazet@google.com,
-  pabeni@redhat.com,  andrew+netdev@lunn.ch,  horms@kernel.org,
-  maxime.chevallier@bootlin.com,  nb@tipi-net.de,  lee@kernel.org,
-  linux-leds@vger.kernel.org,  pavel@kernel.org,  jv@jvosburgh.net,
-  michael.chan@broadcom.com,  jhs@mojatatu.com,  vinicius.gomes@intel.com,
-  idosch@nvidia.com,  razor@blackwall.org,  hare@suse.de,
-  jhasan@marvell.com,  danieller@nvidia.com
-Subject: Re: [PATCH net-next v2 01/11] net: rename netdev_ops_assert_locked()
-In-Reply-To: <20260603012840.2254293-2-kuba@kernel.org> (Jakub Kicinski's
-	message of "Tue, 2 Jun 2026 18:28:30 -0700")
-References: <20260603012840.2254293-1-kuba@kernel.org>
-	<20260603012840.2254293-2-kuba@kernel.org>
-Date: Wed, 03 Jun 2026 13:15:07 +0200
-Message-ID: <87zf1b50zo.fsf@cloudflare.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LIvrw2fd"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1780485617; x=1812021617;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=XoROFfvfDRK+UYBhkKFl+wuz2PDGpekeBCa8zlw4ynE=;
+  b=LIvrw2fdYB98jenzJZ56LTsjbVf7QxolKfw/gTNevlE5oHN1WOBTWqoc
+   oIWqumsDcpw3GE0CtDUi6mIqfRDCcIr8bCQRujOnri797dSnNKa8JUBEN
+   s4b+X3g9hF63uVkTCHk5StJzSAPdFRm6IdawYtdTlvXuHEGL2N93gJvhZ
+   xOsSssK0o4CAZ54mFcMBNRUAh+SOCBVsxH9DNDXcujn+IQV4H/55dMCH3
+   Tgt1MPvVy0Ol2gk3PsTDqNmGfc4dNVmHUiXnCL/gk+iXVWMSMarp5t6tD
+   bDDxyO/FeeQxusechyYe8L6u85VOFct97pq2p/+sJ/YzchlMZgMf8+p+r
+   w==;
+X-CSE-ConnectionGUID: w1t6fByOSSel4sGaViXzOQ==
+X-CSE-MsgGUID: NaeSTfv6RA+arYw7Yp3P5g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11805"; a="81471359"
+X-IronPort-AV: E=Sophos;i="6.24,185,1774335600"; 
+   d="scan'208";a="81471359"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jun 2026 04:20:16 -0700
+X-CSE-ConnectionGUID: A1nSEGfeR++nOfojIjyS/Q==
+X-CSE-MsgGUID: leoj0jl/SEO6N2qF72x2tw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,185,1774335600"; 
+   d="scan'208";a="248142268"
+Received: from black.igk.intel.com ([10.91.253.5])
+  by orviesa003.jf.intel.com with ESMTP; 03 Jun 2026 04:20:14 -0700
+Received: by black.igk.intel.com (Postfix, from userid 1003)
+	id 4F8FC95; Wed, 03 Jun 2026 13:20:12 +0200 (CEST)
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Linus Walleij <linusw@kernel.org>,
+	=?UTF-8?q?Alvin=20=C5=A0ipraga?= <alsi@bang-olufsen.dk>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH net-next v1 1/1] net: dsa: realtek: Use %pM format specifier for MAC addresses
+Date: Wed,  3 Jun 2026 13:20:11 +0200
+Message-ID: <20260603112011.230890-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jun 02, 2026 at 06:28 PM -07, Jakub Kicinski wrote:
-> Jakub suggests renaming the existing assert to match
-> the netdev_lock_ops_compat() semantics.
->
-> We want netdev_assert_locked_ops() to mean - if the driver
-> is ops locked - check that it's holding the device lock.
->
-> The existing helper check for either ops lock or rtnl_lock,
-> which is the locking behavior of netdev_lock_ops_compat().
->
-> The reason for naming divergence is likely that
-> netdev_ops_assert_locked() predated the _compat() helpers.
->
-> Suggested-by: Jakub Sitnicki <jakub@cloudflare.com>
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> ---
-> v2:
->  - new patch
-> ---
+Convert to %pM instead of using custom code.
 
-Reviewed-by: Jakub Sitnicki <jakub@cloudflare.com>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ drivers/net/dsa/realtek/rtl8366rb.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/drivers/net/dsa/realtek/rtl8366rb.c b/drivers/net/dsa/realtek/rtl8366rb.c
+index d96ae72b0a5c..103039fe3086 100644
+--- a/drivers/net/dsa/realtek/rtl8366rb.c
++++ b/drivers/net/dsa/realtek/rtl8366rb.c
+@@ -573,8 +573,7 @@ static int rtl8366rb_set_addr(struct realtek_priv *priv)
+ 
+ 	eth_random_addr(addr);
+ 
+-	dev_info(priv->dev, "set MAC: %02X:%02X:%02X:%02X:%02X:%02X\n",
+-		 addr[0], addr[1], addr[2], addr[3], addr[4], addr[5]);
++	dev_info(priv->dev, "set MAC: %pM\n", addr);
+ 	val = addr[0] << 8 | addr[1];
+ 	ret = regmap_write(priv->map, RTL8366RB_SMAR0, val);
+ 	if (ret)
+-- 
+2.50.1
+
