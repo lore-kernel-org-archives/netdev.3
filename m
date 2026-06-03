@@ -1,92 +1,137 @@
-Received: from mail-pf1-f195.google.com (mail-pf1-f195.google.com [209.85.210.195])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B259744E027
-	for <netdev@vger.kernel.org>; Wed,  3 Jun 2026 17:07:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F0383DB306;
+	Wed,  3 Jun 2026 17:08:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780506444; cv=none; b=O+lTsCBfOwuUXl9CDEZG9YWf5/nByx1Ps3nyx2leFRcWv10sEoMef3W1lv4Cwa/Lk0Ytcy5LILHeE+mZ/wp10oPQAgM1pSBV97vzo5dvIZMvFAo21UKak3nHDX9//NJjQK560MBtoRmc9US+u9DG/1KTuiUFjwNNRCS6II8WqD0=
+	t=1780506485; cv=none; b=jkziW5NaRgx3gsroYiYBL8uUrKZiha2Ei/IgH4CPzryiNu5/oF0diXhy93TbVoRZDoAhsWSqBptBvSsa7I/DaHIed/9ucuZHAU8xx4ghkhgIGFz+Ak5N9gz+LIbqcp4NLi7W3d9IkTrJ6T4ViefEYN5xKqHbntyCBVQP7+nsDx0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780506444; c=relaxed/simple;
-	bh=LMWL5z0PUBz/1/4zVtrAB3Slt0tJCvRIQSlyKhfG1Q4=;
+	s=arc-20240116; t=1780506485; c=relaxed/simple;
+	bh=f/GuwNGqohtlLxfuVLLktLiOGG+KpgR16OkRRZfJESw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Vx4BYF9OPn2vYacm5QUjT/j5+DdA2SEyI3o9la6iChDfxkSXJPEtTestnS1qh9YTD9fybHSI5xqw0sbqvCHzWs+U+4pi9JRen0xJTG6dU7y6gxs+ZvI8H35Vzo/8ZGEcV6aWKVr8EuVR++uy4vixYzy4yJ/417hcvrnT4lwv9RI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=V3msmcDA; arc=none smtp.client-ip=209.85.210.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=U7/Qk6SxNCDPFyAO9hpS5qlvK+W7YKJBvBIjCIK26Qn698aKRMiXKbGKXlFjRoKIuIMGBcAM631Sa+Qrhku2y3ABfxUmVw14ixwTAlfu3XWSrds0xLbMcNM3W3bWO/gza3xBUJaAhmk06j5LAK2HEicGVaGWzXn5Ctq6sN4lXE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EI//1kYd; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="V3msmcDA"
-Received: by mail-pf1-f195.google.com with SMTP id d2e1a72fcca58-8423efd76c8so2556385b3a.0
-        for <netdev@vger.kernel.org>; Wed, 03 Jun 2026 10:07:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780506443; x=1781111243; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=qnoNQ6TPVeQqZZfaJltcjq9kwZ8+POJQlduiwlUGeUU=;
-        b=V3msmcDAXuY0jk2quY7iEEo4lnBO5cReHTbG6ZvjHEU96mRCZKSWBtTUircFZb3Wsd
-         Di/UCpeHUcIUrAgH299i0KGUS38x4xCdGSW8wMYVe8zl5DYN50WaPnQbbAbAHieTIpI3
-         v3PSBvGYm3ltm9d/8/EAsrIPr8rr3Rkq8m5Spm0c6Ut4MnwVAXyUawolvpDBwTXarU4W
-         jiN02eAUFvFF54jUbUk619C5+GCGpbrQemhvCbHmSqEMLkjyObP6dbwtSn0QjS13QGJN
-         P1TQRYWyVTWdGIJFL7OUJrYCpnvjDzF178uJsA5U8S+kbOgN/LcvMO9qq63urXtPUX7J
-         F+0g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780506443; x=1781111243;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qnoNQ6TPVeQqZZfaJltcjq9kwZ8+POJQlduiwlUGeUU=;
-        b=Jo6AR9A5AsdficxMa1S8Bwk+qnSRZmCCjhm9kyFPQLqHl+cA3C6mtkyYrWQ7bW3c2g
-         6oJd+r2YLSaDEahuJOu1j4eV7dNUs1MIilf+5VJ3QSLJJWgzOf+YfEVj3bSX21A7TX2h
-         r1Xu4vLxNAD7Z/KsrH12ZFsVLIfNVSLk9j8qkc8b8CNhM/zuXTMyHlGGrg4iwY29cCqD
-         N2YLVuyJ5Ai6FMxooPtYPtptzDnI0JjhzVcIELg4vBnp/FCvgrT1lFHBNQR1g+mC1Eb3
-         Oir1/LTBxIdE7ZMwinOR/U1qaeZPY56HnXQk02l8oGMe0gqdx7IsRIrJo4/ouYx4zM6t
-         jd5w==
-X-Forwarded-Encrypted: i=1; AFNElJ9IB3xjyZCNv+MMppm/hfJThsGZ1wBycUNwZfHvynHFsX4rCLhj990kSmn4bm8A2+PjnCj9x4Q=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyZlNP59MbtR3KJWGvTeC1p7tPehy07FquwuHYJwTQ6WZOml8WR
-	iTz2GfS+R3iFFC/vXYilOkw/HyCmuZOVKbqU7T1ByScUzKKTV9bwnYS5
-X-Gm-Gg: Acq92OETVoOzBA541z276okwcasVTI3xd4TG35EdbNqPMz/qnKn4LSiwm0A9BSh25I+
-	Q1AvU4NR4vcaylVngGNQccaZvrhxuUS0ANntx+OTjlbFIa0fiwGX2lteufq3tp00RnXzBX5WdFB
-	IWhJN+XWTW20UKt3QROUdd6Fu+UJx3CrKx+VKep4TsVRI6/N8OaQ4bIz4t2eNlKy2fyT0jSiAoQ
-	j0n6KOuDrh8jxX1tOpqJdDeOH3X8s90V3djOs7JHra1AXIgSlA+IbMFr8Tf5wlOtJ3k9c5YYrV7
-	EixXiiyl6QAsGGkIZeAf8WHSnV70fCbTLXSx/hswmVG7aV3C47FWy0KumFUwM2kvgAFPyY375mg
-	Ox9FLBtZ+2/3FZyCaF9vtjSEfh8q4Cj9LgwZaASP+GfVGeVtVdNo5fMz/8mHF2W9/GQ95XizgvV
-	gxzVLqKiZL6t6KiG8XFO7DtRUHYdJInJl4hs/Q
-X-Received: by 2002:a05:6a00:3317:b0:842:5564:2e2a with SMTP id d2e1a72fcca58-84284d5a532mr4552805b3a.6.1780506443037;
-        Wed, 03 Jun 2026 10:07:23 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:5::])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84282378986sm3777135b3a.22.2026.06.03.10.07.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Jun 2026 10:07:22 -0700 (PDT)
-Date: Wed, 3 Jun 2026 10:06:54 -0700
-From: Stanislav Fomichev <sdf.kernel@gmail.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com, 
-	pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org, jakub@cloudflare.com, 
-	maxime.chevallier@bootlin.com, nb@tipi-net.de, lee@kernel.org, linux-leds@vger.kernel.org, 
-	pavel@kernel.org, jv@jvosburgh.net, michael.chan@broadcom.com, jhs@mojatatu.com, 
-	vinicius.gomes@intel.com, idosch@nvidia.com, razor@blackwall.org, hare@suse.de, 
-	jhasan@marvell.com, danieller@nvidia.com
-Subject: Re: [PATCH net-next v2 11/11] net: ethtool: make sure
- __ethtool_get_link_ksettings() is ops-locked
-Message-ID: <aiBfJ8rbhl_VPiGt@devvm7509.cco0.facebook.com>
-References: <20260603012840.2254293-1-kuba@kernel.org>
- <20260603012840.2254293-12-kuba@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EI//1kYd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C94541F00893;
+	Wed,  3 Jun 2026 17:08:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780506484;
+	bh=huDaivPqv4ZW0PS9fPDbWytOLKxzFql4FZG4RRJto2U=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=EI//1kYdrvDTeWsDTfgbKhQIVGY3A5jz+riYPbGje/YEJKoJqr0Rc3DI3lHZTGWVB
+	 /emBDAzK1v91bICv9dlhg/ywPBn7XRRKyzwN5Oq2FyB3+NHIE71lEZCn/s63RZ9QmM
+	 oMCVkqSFiHzgfp4vTaF/XB5nzT3B6WepXHbdMipMmk6aI6Lba6nkyXgZXZPQWYvAn7
+	 pJDqXa0lgsG9R8v/u0Kho0a5na8RMsvCEiCQicvXKWtgGxvJDHIXKLNOh4JeV+8U2d
+	 Z4Pu0j/j2EZSS4wvqKfYNJthztvwqNRGjeFj0nRKyp0jW6AlyJQnI73JUZazfx+bhv
+	 bTExQs5PcDoKA==
+Date: Wed, 3 Jun 2026 18:07:59 +0100
+From: Simon Horman <horms@kernel.org>
+To: sbhatta@marvell.com
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, sgoutham@marvell.com,
+	gakula@marvell.com, bbhushan2@marvell.com, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] octeontx2-af: Validate NIX maximum LFs correctly
+Message-ID: <20260603170759.GG3766816@horms.kernel.org>
+References: <1780054645-17142-1-git-send-email-sbhatta@marvell.com>
+ <20260603165945.3828939-2-horms@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260603012840.2254293-12-kuba@kernel.org>
+In-Reply-To: <20260603165945.3828939-2-horms@kernel.org>
 
-On 06/02, Jakub Kicinski wrote:
-> All drivers which may call *_get_link_ksettings() on ops-locked
-> devices from paths already holding the ops lock are ready now.
-> Make __ethtool_get_link_ksettings() take the ops lock, and assert
-> that it's held in netif_get_link_ksettings().
+On Wed, Jun 03, 2026 at 05:59:46PM +0100, Simon Horman wrote:
+> From: 'Simon Horman' <horms@kernel.org>
 > 
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
+> Full review at: https://sashiko.dev
 
-Acked-by: Stanislav Fomichev <sdf@fomichev.me>
+Sorry, my tooling isn't helping me much today.
+There was supposed to be some commentary in my previous email.
+Let me add it.
+
+> ---
+> octeontx2-af: Validate NIX maximum LFs correctly
+> 
+> This patch changes the validation condition for setting the maximum
+> number of NIX LFs via devlink. It replaces the check for assigned MCAM
+> entries with a check for assigned NIX LFs to determine if resizing
+> is allowed.
+> 
+> > diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c
+> > index 6494a9ee2f0dd..8ba4b5ba9d2c7 100644
+> > --- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c
+> > +++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c
+> [ ... ]
+> > @@ -1521,11 +1523,18 @@ static int rvu_af_dl_nix_maxlf_validate(struct devlink *devlink, u32 id,
+> >  	/* Do not allow user to modify maximum NIX LFs while mcam entries
+> >  	 * have already been assigned.
+> >  	 */
+> > -	mcam = &rvu->hw->mcam;
+> > -	if (mcam->bmap_fcnt < mcam->bmap_entries) {
+> > -		NL_SET_ERR_MSG_MOD(extack,
+> > -				   "mcam entries have already been assigned, can't resize");
+> > -		return -EPERM;
+> 
+
+The issue below looks like it should be looked at in the context of this
+patch.
+
+> [Severity: High]
+> Does removing the check for MCAM entries allow the devlink parameter
+> set operation to silently destroy active MCAM tracking state?
+> 
+> The .set callback unconditionally calls npc_mcam_rsrcs_deinit() and
+> npc_mcam_rsrcs_init(), which frees and reallocates the mcam->bmap. Since
+> MCAM entries can be allocated independently of NIX LFs (e.g. during
+> rvu_switch_enable() or default switchdev/PTP rules), could this cause
+> resource leaks and use-after-free bugs when untracked rules are later
+> accessed?
+
+> 
+> > +	blkaddr = rvu_get_next_nix_blkaddr(rvu, blkaddr);
+> > +	while (blkaddr) {
+> > +		block = &rvu->hw->block[blkaddr];
+
+While the one below seems like it can be assessed in the context
+of possible follow-up.
+
+> [Severity: High]
+> This is a pre-existing issue, but does this locklessly read the resource
+> states?
+> 
+> It appears that the devlink validate and set callbacks execute without
+> holding the driver's resource locks (rvu->rsrc_lock or mcam->lock).
+> Could a concurrent mailbox request allocate an LF immediately after this
+> lockless validation check succeeds, leading to a race where the .set
+> callback frees structures that are actively being used?
+> 
+> > +
+> > +		free_lfs = rvu_rsrc_free_count(&block->lf);
+> > +		if (free_lfs != block->lf.max) {
+> > +			NL_SET_ERR_MSG_MOD(extack,
+> > +					   "mcam entries have already been assigned, can't resize");
+> 
+
+The one below seems less important. But perhaps it would be good
+to address if there is a v2 of this patch.
+
+> [Severity: Medium]
+> Since the validation logic was updated to evaluate NIX LF allocations,
+> should this error message and the comment above be updated as well? The
+> message still states that "mcam entries have already been assigned", which
+> might confuse users since it's actually evaluating NIX LFs.
+> 
+> > +			return -EPERM;
+> > +		}
+> > +
+> > +		blkaddr = rvu_get_next_nix_blkaddr(rvu, blkaddr);
+> >  	}
