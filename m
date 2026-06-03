@@ -1,162 +1,120 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA4CE3A1E92
-	for <netdev@vger.kernel.org>; Wed,  3 Jun 2026 08:06:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2AE64048A7;
+	Wed,  3 Jun 2026 08:10:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780474010; cv=none; b=dtBHuOqryZJgKC5VeFixK52W/koK4SexYWzhFR1NZcvmDDv+oVa2fB2ZPrLby64xAMQXwsAj6CKNOU1++2Sm7/BPNemviCJiNyemF4W7lSuAHHVOMz2kvVI9mRqM+HVYdT1QerxYAvp/jc7CkK7pyK+UjpP0XqnLAY0IOI64CKo=
+	t=1780474215; cv=none; b=QorpqxUpCgC3GrwCm/GDkXgR6oz9yD92OM3ca8D+4xlSk0Nt3043Cs54HFaWSTh973vY1s8gnCOPcre3mrafMoI6B6VPwkh+BrMX89p/7cf/zu/jFE1fEaTELPWXKXF1xCQ6jE1a/Wv9c5MMt3ucnz/fEX4zQne1tQx3ypEFsgg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780474010; c=relaxed/simple;
-	bh=uNLmpf/k3Ziojy6QPrnaI3HjQUJYLRWSA+Yhe4miGK8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZgXJd3qs8Na3h16TbS1y5qTBOvLMli0FUP7UX6jkonxIxVKkokz98Pi+5d8qhMwCH63FrDZORZ2dzEALtccomwEqu8a2aXkstYY9fxx8UX29VMaL5eWWYhqh/YXvK438zyWYi/ZJLUz+I6puMh8Q9tLorTwUKAUyUjO1bPDSbi8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Z8HEmMBD; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=Ikfok4Ji; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Z8HEmMBD; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=Ikfok4Ji; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1780474215; c=relaxed/simple;
+	bh=n2GvGrihVJDXKwQa7E10PZJnJ+nmRSYVVlvdD3MkgWo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YnLTCE4Dx1cEBbojS+T+cyxvd7OBkKvOzokkPb9GrWxiq0bPE2MrDuyEDQQY5famfXbKpAaCmEaHNgj74co6YkG9xJpX+aGm3YTulLebr6AyqMlZ0DeSxka96QaKYoDt0ZBIWEoBQuhvZV5UiG6z0OdJnb0+1nA4uw/lyQG+mrM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=MMgmxYu3; arc=none smtp.client-ip=217.70.190.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Z8HEmMBD";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="Ikfok4Ji";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Z8HEmMBD";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="Ikfok4Ji"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 1B92B6A85D;
-	Wed,  3 Jun 2026 08:06:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1780474007; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PS7RSJTXsuBLhvU6DXs2m5xgrYaSH9R03tpC93168TM=;
-	b=Z8HEmMBDA58cRYv1o67pfeOIMwKfRVZDDrZYPlVOlMxy53Y0kKa9wbR3rMLHhaqfr6sr80
-	a3w7fQ1SI1bAfKw5sbws87aJPFXoWNXzjWYp8Dksw6V7hU6GYqmENJsxjkkvoFynjSW0Cy
-	msR7/v0t+SollDbWh+IJDVUr+Wdrjo8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1780474007;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PS7RSJTXsuBLhvU6DXs2m5xgrYaSH9R03tpC93168TM=;
-	b=Ikfok4JiZCo0053fk6f6XYUJXYzeT3QS1o1aqwQVSeAfgmpcxfs8fhTXXi+fe+GbicCf0G
-	JbWsdWgdnWY1fUCA==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Z8HEmMBD;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Ikfok4Ji
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1780474007; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PS7RSJTXsuBLhvU6DXs2m5xgrYaSH9R03tpC93168TM=;
-	b=Z8HEmMBDA58cRYv1o67pfeOIMwKfRVZDDrZYPlVOlMxy53Y0kKa9wbR3rMLHhaqfr6sr80
-	a3w7fQ1SI1bAfKw5sbws87aJPFXoWNXzjWYp8Dksw6V7hU6GYqmENJsxjkkvoFynjSW0Cy
-	msR7/v0t+SollDbWh+IJDVUr+Wdrjo8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1780474007;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PS7RSJTXsuBLhvU6DXs2m5xgrYaSH9R03tpC93168TM=;
-	b=Ikfok4JiZCo0053fk6f6XYUJXYzeT3QS1o1aqwQVSeAfgmpcxfs8fhTXXi+fe+GbicCf0G
-	JbWsdWgdnWY1fUCA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id F0A13593AC;
-	Wed,  3 Jun 2026 08:06:45 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id hGPQN5XgH2plCAAAD6G6ig
-	(envelope-from <fmancera@suse.de>); Wed, 03 Jun 2026 08:06:45 +0000
-Message-ID: <30906ad5-43b8-4192-946a-8c2533f976ff@suse.de>
-Date: Wed, 3 Jun 2026 10:06:41 +0200
+	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="MMgmxYu3"
+Received: from netfilter.org (mail-agni [217.70.190.124])
+	by mail.netfilter.org (Postfix) with UTF8SMTPSA id 555816017E;
+	Wed,  3 Jun 2026 10:10:11 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
+	s=2025; t=1780474211;
+	bh=YVuJE2K58TEND6rSTbgtm/yJKORKupBTx+vs8X2Jt0Q=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=MMgmxYu3WjxGgsHKRbLJg2HshWh3OZHtuzUiKbJLbnpJxjsnBeSbwuM9JiXWr2XaF
+	 VJUtxY/FPVtKkSfNGDtKzW5DiswJjd6LOng8xF2MSpvyJzdk2y1yFbZOiWfOKBVuIy
+	 o2AmN5DthaLJzXAfy4Dx+TN+4EcDE/KdwreeVkJxy40njKun8kwSuk9KgKWTGXSygo
+	 W/P0O5X8yJ+ics98HWaeYcaGqIf2MwCo/Dk7R2ce2YjQPz2bljQiVQOM3h/lAMkd2e
+	 AbcLM3KMI57Wg2eAm3p2UVXoJZu50Y3El5unYe016/5LJjNfrdoZR9yscVroMZauz3
+	 q1djAMT3+d+QA==
+Date: Wed, 3 Jun 2026 10:10:08 +0200
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: Sayooj K Karun <sayooj@aerlync.com>
+Cc: aleksander.lobakin@intel.com, davem@davemloft.net, dsahern@kernel.org,
+	edumazet@google.com, fw@strlen.de, horms@kernel.org,
+	idosch@nvidia.com, kuba@kernel.org, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org, pabeni@redhat.com,
+	netfilter-devel@vger.kernel.org
+Subject: Re: [PATCH] net/ipv6: icmp: fix is_ineligible() to block errors for
+ Redirect packets
+Message-ID: <ah_hYJa3byoUyose@chamomile>
+References: <ah1VoxXLbRAZIEC3@chamomile>
+ <20260603060112.10524-1-sayooj@aerlync.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2] Revert "ipv6: preserve insertion order for
- same-scope addresses"
-To: Ido Schimmel <idosch@nvidia.com>
-Cc: Thorsten Leemhuis <regressions@leemhuis.info>,
- =?UTF-8?B?w43DsWlnbyBIdWd1ZXQ=?= <ihuguet@redhat.com>,
- Matthieu Baerts <matttbe@kernel.org>, Stefano Brivio <sbrivio@redhat.com>,
- netdev@vger.kernel.org, yuhuang@redhat.com, justin.iurman@gmail.com,
- horms@kernel.org, pabeni@redhat.com, kuba@kernel.org, edumazet@google.com,
- davem@davemloft.net, dsahern@kernel.org, Chris Adams <linux@cmadams.net>,
- David Gibson <david@gibson.dropbear.id.au>,
- Beniamino Galvani <bgalvani@redhat.com>, Andrew Lunn <andrew@lunn.ch>,
- regressions@lists.linux.dev
-References: <20260529112357.5079-1-fmancera@suse.de>
- <20260529134045.56330243@elisabeth>
- <5079261a-79e5-421b-bf6a-a511acaaeca4@kernel.org>
- <20260601153525.546746a8@elisabeth>
- <CACT4oueDv=KRZmJw=1N58EN7eoFz5AqbBBMP8FE4=+rQ99oFEg@mail.gmail.com>
- <8e9cbf0a-caff-4575-afb7-fe852df8a51a@kernel.org>
- <CACT4oueJ3GsVvnWcZHgYVL-fCjpt5nOw+2=0BTmiz-9xKY4B0w@mail.gmail.com>
- <eba11df5-3ae6-4bc4-bbe7-be358a0d4717@leemhuis.info>
- <ee2b92e5-6d95-4c36-9fa8-6cd2a1572556@suse.de>
- <20260603080023.GA575206@shredder>
-Content-Language: en-US
-From: Fernando Fernandez Mancera <fmancera@suse.de>
-In-Reply-To: <20260603080023.GA575206@shredder>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Flag: NO
-X-Rspamd-Action: no action
-X-Spam-Level: 
-X-Spamd-Result: default: False [-3.01 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	ARC_NA(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	RCVD_TLS_ALL(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[leemhuis.info,redhat.com,kernel.org,vger.kernel.org,gmail.com,google.com,davemloft.net,cmadams.net,gibson.dropbear.id.au,lunn.ch,lists.linux.dev];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	DKIM_TRACE(0.00)[suse.de:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:dkim,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns]
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Queue-Id: 1B92B6A85D
-X-Spam-Score: -3.01
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260603060112.10524-1-sayooj@aerlync.com>
 
-On 6/3/26 10:00 AM, Ido Schimmel wrote:
-> On Wed, Jun 03, 2026 at 09:29:55AM +0200, Fernando Fernandez Mancera wrote:
->> We should document that the order matters, no that it is "random" because it
->> isn't.
+On Wed, Jun 03, 2026 at 11:31:12AM +0530, Sayooj K Karun wrote:
+> You are right that netfilter can be configured to make devices behave in
+> non-RFC-compliant ways, so I will drop the "netfilter policy must obey
+> the RFC" framing from my earlier reply.
 > 
-> Did you consider writing a kernel selftest for this? Unlikely that the
-> order will change again when we are explicitly testing for a certain
-> order.
+> The point I should have made is that is_ineligible() is not a netfilter
+> function. It is the generic gate that icmpv6_send() uses to decide
+> whether the kernel, as an ICMPv6 originator, may emit an error for a
+> given trigger packet, and it is shared by all icmpv6_send() callers. It
+> already enforces RFC 4443 section 2.4(e.1) at exactly this spot, via
+> !(*tp & ICMPV6_INFOMSG_MASK), that is "do not originate an error in
+> response to an ICMPv6 error". My patch adds (e.2) (Redirect) right next
+> to it, the second rule from the same MUST NOT list. So this is not
+> about overriding netfilter policy; it is completing the e.1/e.2 pair at
+> the single point where the kernel decides ICMPv6 error eligibility.
 > 
+> On how it fixes the REJECT case: the two IPv6 reject paths differ in who
+> actually frames the ICMPv6 error. The bridge/netdev path,
+> nf_reject_skb_v6_unreach(), builds the packet by hand: it allocates the
+> skb, writes the IPv6 and ICMPv6 headers, copies in the original packet
+> and computes the checksum. Because it does all that itself, it has to
+> carry its own guard, nf_skb_is_icmp6_unreach(), the IPv6 analogue of the
+> nf_skb_is_icmp_unreach() you mention.
 
-That is a good idea yes, I am adding it to my TO-DO list.
+Yes, because bridge/netdev path cannot assume the IP stack comes into
+play, so it needs a custom function to build the packet to reject the
+traffic.
 
-Thanks,
-Fernando.
+> The L3 path, ip6t_REJECT / nft_reject -> nf_send_unreach6(), never frames
+> a packet of its own. It just calls icmpv6_send() and lets the core
+> ICMPv6 stack build and send the error. is_ineligible() is the gate that
+> core builder consults first, before it allocates or assembles anything,
+> so that is exactly where the e.1 suppression already lives for this path.
+> There is no netfilter-local guard here, and there does not need to be.
+> 
+> So the scenario in my commit message is the L3 path:
+> 
+> 	ip6t_REJECT / nft_reject
+> 	  > nf_send_unreach6()
+> 	    > icmpv6_send() / icmp6_send()
+> 	      > is_ineligible()  // now returns true for NDISC_REDIRECT
+> 	        > goto out, no packet is ever built or transmitted
+> 
+> The patch fixes the REJECT case because the L3 reject hands packet
+> construction to icmp6_send(), and is_ineligible() runs at the top of
+> that builder, before any error skb exists. It is the same spot that
+> already drops e.1 today, so adding e.2 there completes the pair rather
+> than introducing a new override.
+> 
+> I also agree there is a gap to close on the netfilter side. The
+> bridge/netdev path never reaches is_ineligible(), and its
+> nf_skb_is_icmp6_unreach() guard currently checks only
+> ICMPV6_DEST_UNREACH, not Redirect, so it is not covered by this patch. I
+> will send a follow-up to netfilter-devel for nf-next extending that
+> guard to also skip Redirect, so both paths behave consistently.
+
+Yes, nf-next is the target for this for review.
+
+> Does that split sound right? this fix to is_ineligible() for the L3
+> path, plus a separate nf-next patch for the bridge/netdev reject guard?
+
+Maybe, I did not look in depth with details, but posting a patch
+upfront to see how things look like make it easier for us, even if
+more changes are later requested on it.
+
+Thanks.
