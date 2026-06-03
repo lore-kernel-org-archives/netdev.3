@@ -1,105 +1,76 @@
-Received: from us.padl.com (us.padl.com [216.154.215.154])
+Received: from mail-m49197.qiye.163.com (mail-m49197.qiye.163.com [45.254.49.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6E423438BF;
-	Wed,  3 Jun 2026 03:30:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.154.215.154
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A2E23BFAE0;
+	Wed,  3 Jun 2026 03:33:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780457451; cv=none; b=bwqGgUAMOQFXfUjUKb8ExE+aEAeSaGknXjQ5uwsOzUPy734N4WhQTn2Mpx1mwNwaHE0eo16L/3XW7uNU/ZtOlbmz1Ffjr8isOtN5N3vISaVJNEcPWe96EhG9U8zd0E/DHgT/5gBF6gP+AWjlcvSuprB6eJdsNa6qTuKMGxDdyfQ=
+	t=1780457625; cv=none; b=JqHdRnBSF4NBlZQrR7w0Be0aIep5xnocG4+rrzMdaYCZbCWBsC1Yo84WM/uAuo5bDb1y66b67770peCGwmJJMBUtcP7jgU6+hecJQp4gLvsnRY4EXJsAAZT7ajQBxdfPv2lEo31py3mMZ9zTWQmomhyS2JoKQ5ykoQU1rnjSK5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780457451; c=relaxed/simple;
-	bh=gqIbzrXWPAjinn/p8sMbvR/ov2hajbGhcdxtuYxTUTc=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=I8S5e8FufnrphDydsPH1fyyW2W0RmE5KFjqOguF78CxIXW6QCWNU8enmQJ3iMU826y3kV3Dr7r0oyKWntXyB91vRD5sAqKhSqvw7QBG+x/agmTTqjfM3lJnCeLOkhzKHKWnv0aTx60Q6o3z3EdzHynGEa+uUhtnXIUpPmuYdaq8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=padl.com; spf=pass smtp.mailfrom=padl.com; dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b=Foso4T0d; arc=none smtp.client-ip=216.154.215.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=padl.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=padl.com
+	s=arc-20240116; t=1780457625; c=relaxed/simple;
+	bh=Tjmzo/Rh4lCuGvDyzI+1fPtCJ334F/mbAqZS1dUmmUM=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=Q0PXwsCrMwADxGoxJW5GKMBnbyfo4uzNSrngufsfvCozJ2xz4l8fCD5MYJ86Q5Rnup2ArZ+YmOo5WbBZ8mSizNo8u46NBZQdI4uvyULG/xBi9iNjSRGgQh/sse9NGzJCwNGvenZvTp0Pngt7XPkiHEj7EZqq1Ejz2TvosnizlNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=CVqqJ3qg; arc=none smtp.client-ip=45.254.49.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b="Foso4T0d"
-Received: from auth (localhost [127.0.0.1]) by us.padl.com (8.14.7/8.14.7) with ESMTP id 6533U3NK016913
-	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Wed, 3 Jun 2026 04:30:06 +0100
-DKIM-Filter: OpenDKIM Filter v2.11.0 us.padl.com 6533U3NK016913
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=padl.com; s=default;
-	t=1780457425; bh=wx5DCxJt3YBq96RHEuIIDg/BZOK9odKQ5UsrE25SgK4=;
-	h=Subject:From:In-Reply-To:Date:Cc:References:To:From;
-	b=Foso4T0d818lz5Kaxvgkp4h+J28ag6wakQFjxAz3Ob02+thhxQrkElR4PdcvAWwpw
-	 s3eNbvcsWiShMirHBrEEjC0tdJFXZZFS9qQDFYt0aa5xhQjuA0y7TDJHCaCJ8FGoZ0
-	 w4jgrQHVBXhn3bubbpjyXsOSNlQPB4a1arIpesetTFfRHGZuNozyLDueqoYE83xsNG
-	 5F/9mOG9eh7/EDDQVPkIQYtaTC5Pszhm6NC8bXX69D1Pe6M6PkHgMUlD8z+iGYTflx
-	 pffnBX5vf2OQdTv/IR3xR3p/9YRVGjjZCBuOgJgm83M85HA1szU/ELzbJQlouSii6m
-	 A1X3jI7hQGHgg==
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="CVqqJ3qg"
+Received: from DESKTOP-SUEFNF9.taila7e912.ts.net (unknown [221.228.238.82])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 40da5bf7e;
+	Wed, 3 Jun 2026 11:28:23 +0800 (GMT+08:00)
+From: Dawei Feng <dawei.feng@seu.edu.cn>
+To: sln@onemain.com
+Cc: aleksandr.loktionov@intel.com,
+	anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	intel-wired-lan@lists.osuosl.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	jianhao.xu@seu.edu.cn,
+	zilin@seu.edu.cn,
+	dawei.feng@seu.edu.cn
+Subject: Re: [PATCH net] i40e: fix netdev leak in i40e_vsi_setup() error paths
+Date: Wed,  3 Jun 2026 11:28:22 +0800
+Message-Id: <20260603032822.763195-1-dawei.feng@seu.edu.cn>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <eb74ae1c-3027-42f5-ad5b-a6f2c2cd6a98@onemain.com>
+References: <eb74ae1c-3027-42f5-ad5b-a6f2c2cd6a98@onemain.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH net-next v2 5/6] net: dsa: mv88e6xxx: MQPRIO support
-From: Luke Howard <lukeh@padl.com>
-In-Reply-To: <72af0cfc-9011-4713-9862-710eea5f1cb0@lunn.ch>
-Date: Wed, 3 Jun 2026 13:29:53 +1000
-Cc: Cedric Jehasse <cedric.jehasse@gmail.com>, Jiri Pirko <jiri@resnulli.us>,
-        Ivan Vecera <ivecera@redhat.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-        Nikolay Aleksandrov <razor@blackwall.org>,
-        Ido Schimmel <idosch@nvidia.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
-        David Ahern <dsahern@kernel.org>, Shuah Khan <shuah@kernel.org>,
-        Vladimir Oltean <olteanv@gmail.com>, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, bridge@lists.linux.dev,
-        linux-kselftest@vger.kernel.org, Max Hunter <max@huntershome.org>,
-        Kieran Tyrrell <kieran@sienda.com>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <1735AAB7-948A-4634-8920-D4BF9731A28D@padl.com>
-References: <20260602-mv88e6xxx-8021qat-mqprio-v2-0-72be14522e7c@padl.com>
- <20260602-mv88e6xxx-8021qat-mqprio-v2-5-72be14522e7c@padl.com>
- <t44kmhk6gqxnwhdvo7svouexwelwsya7zgukpbv3cxpfsmutqa@y3rjoj3tvqce>
- <A662D3F9-18DD-43C9-A43D-912E5A8A4360@padl.com>
- <8C6AD966-2C28-4BEF-95C4-1B2AC3751513@padl.com>
- <29c09316-c911-456e-acc5-e18402da4bd4@lunn.ch>
- <0402DFFF-634A-40C4-BC1E-B038F20926FF@padl.com>
- <89BA4203-110E-4767-895C-A2808602FAF8@padl.com>
- <72af0cfc-9011-4713-9862-710eea5f1cb0@lunn.ch>
-To: Andrew Lunn <andrew@lunn.ch>
-X-Mailer: Apple Mail (2.3826.700.81)
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0a9e8b866c3c03a2kunm3ab0b4b71d9396
+X-HM-MType: 10
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlDQkgfVk1NSkNLGUIZTB9ISlYeHw
+	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlJSUpVSUlDVUlIQ1VDSVlXWRYaDxIVHRRZQVlPS0hVSktJSE
+	5DQ1VKS0tVS1kG
+DKIM-Signature: a=rsa-sha256;
+	b=CVqqJ3qggwqt7spIFygPCJqsy5Mobw6JPPgnGpJa4dpzyVX4J0T1kwFR1uTmzH9rddA3AJJVCWJzOFIAceb/T2y/Wd1sVCuBN58MlXIZAXadfBQQ8OX90T4hdX+Qqgeoy/RAMQPm03M9Z7GCGSSPYko5yTpk+tSot1omh1VC7Ew=; c=relaxed/relaxed; s=default; d=seu.edu.cn; v=1;
+	bh=Tjmzo/Rh4lCuGvDyzI+1fPtCJ334F/mbAqZS1dUmmUM=;
+	h=date:mime-version:subject:message-id:from;
 
+Hi Shannon,
 
+Thanks for the suggestion. I took a closer look at the cleanup paths, and
+I think the localized v1 fix is safer here.
 
-> On 3 Jun 2026, at 12:41=E2=80=AFpm, Andrew Lunn <andrew@lunn.ch> =
-wrote:
->=20
->> We could add (e.g.) bridge_setup_tc to dsa_switch_ops, which (in the
->> mv88e6xxx implementation) could validate the bridge contained all
->> user ports. But it would not be possible to block a port from
->> leaving as port_bridge_leave cannot return an error, and tearing
->> MQPRIO config down silently would be a different sort of bad.
->=20
-> There can be multiple bridges, even as far as one bridge per port.
+In particular, i40e_vsi_reinit_setup() has early failure paths that can
+reach i40e_vsi_clear() before unregister_netdev() is called. Moving
+free_netdev() into i40e_vsi_clear() could therefore free a
+still-registered netdev.
 
-Right, per the above mv88e6xxx would return -EOPNOTSUPP if the bridge =
-did not contain all DSA user ports. But without a means to block the =
-removal of ports from bridges it would not be possible to maintain this =
-invariant.
+So I plan to keep the current v1 approach for this fix, rather than moving
+free_netdev() into the common VSI teardown path.
 
-> For switch wide properties, you basically have to allow the first user
-> to configure it, refcount additional users get added and removed, and
-> only allow the last user to change it.
-
-Indeed, that=E2=80=99s what this series does. But it comes with the =
-discussed caveat that ports without MQPRIO (whether or not they are part =
-of a bridge) implicitly inherit the global FPri to QPri mapping. I think =
-that is  acceptable given that users should have no expectaitons about =
-the default mapping, but others may disagree.
-
-> The alternative is return -EOPNOTSUPP, and let the kernel do it in
-> software, if a user wants something different to the global
-> setting. The hardware is only there to accelerate what Linux can
-> already do in software. That is the model we use.
-
-Yes, this is how it is implemented.
-
-Luke
+Best regards,
+Dawei
