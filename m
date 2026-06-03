@@ -1,65 +1,65 @@
-Received: from mail-wr1-f97.google.com (mail-wr1-f97.google.com [209.85.221.97])
+Received: from mail-ed1-f98.google.com (mail-ed1-f98.google.com [209.85.208.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACCE43812ED
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3E7A3955D4
 	for <netdev@vger.kernel.org>; Wed,  3 Jun 2026 15:03:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.97
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780499016; cv=none; b=gf3+eZDJQuZAAURrWikDWzShlnRXAru2IZxSJZ1MZn5H5n11I975kkITtXdU7weUJUFDNwIzJ6EViJROHlNtg0AP4S9vO+JG/CxXcf1zU5//m7Zbx4kP1G2yRTFAlwWd23m5XHWSNgwrQOTPUDMxeUVrqNypK46EpGWQ/+cVp08=
+	t=1780499016; cv=none; b=iM9YobY4zgYLGljTmSY1U0zLIu107+Kb7nTt2Cqw0G01PomqpAeuqB51fduk9nFIMi+wYilBCRRFKEvtDy7LQUc74eVJl8zSSCxDdPkxtwVQAm+fWx16mIi30aGLNZ5zuzGKkU8AybM9VQrJPvsz57shoA/lMcp59kuqBmH14FU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1780499016; c=relaxed/simple;
-	bh=As0IIB8SaM9g0iJhsygQfNz95ki/F/8soFisaCB0aVg=;
+	bh=Gy9qg58vggdxk44h8XgCLq+MO3qBQ2hPoOlO3qleE/k=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=agby1lXpJF0hcM8aCUqoJrSqwsCYy5Zfd0P+pSePtA7QLcOFgC+ziyjI6Gp5n9sijhrm401Gvli+QNc8Qvdasuyn/IHwBrrl4ILINmZDIPysahCIM+ttNw69Owk0w/UBrJc7hqV6XVY8t7sWC1bsyNN+53IUeQUrEhnZMaDWVOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com; spf=pass smtp.mailfrom=6wind.com; dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b=ayz9wp5+; arc=none smtp.client-ip=209.85.221.97
+	 MIME-Version; b=d5F13lhwkHIAlufR7xIDEg6uq6Qrfyl24Gz6wBAD14EX/38b9iVz1z4scjFuDVO4zNHZmKmFp8PiN3+7dfH6SYQPc/QYQ0z84sn5rkNfXqLOBJvXsaLP+im6pzfIEX1MYPjch54wreh4rIZFm+C4dxkmoSjrPjSX8l6yCScV5xY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com; spf=pass smtp.mailfrom=6wind.com; dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b=OqIWR1a7; arc=none smtp.client-ip=209.85.208.98
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=6wind.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b="ayz9wp5+"
-Received: by mail-wr1-f97.google.com with SMTP id ffacd0b85a97d-45ee6d32402so3760907f8f.1
+	dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b="OqIWR1a7"
+Received: by mail-ed1-f98.google.com with SMTP id 4fb4d7f45d1cf-68c3421b009so1331110a12.1
         for <netdev@vger.kernel.org>; Wed, 03 Jun 2026 08:03:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=6wind.com; s=google; t=1780499013; x=1781103813; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=+bivjaMuNT9oJ2l/Y7Zh3L+bPRfO/kPb9uY6ej/NrXA=;
-        b=ayz9wp5+Jimqjyzi9GDN7ROlpoqudkTc/KtbNDBVSTcYSEFBESmPDoD2VpzpuYfGuo
-         CjWZRxaGzaGu3VhqpTqk2MbajWakxdRIggH33s+PiNo2iJ+/0dMcbLxVmoLJTNRZRIan
-         jSPwLE1tzXw5AIAsKUM/pE+zBPEFFJ5lAES8chblDPdzcq9BvF8pm7S8Y1RANuy7VhkI
-         h5yEZqAU/TEKH/ldYDdG6y8An4U6t9+9YoPxSaoYi0CY15AMTkTTdiYMxJgixGNqTTAr
-         V6ajw12LN2T3lOCp0xsytG+H3a8vA9HtA0f32z/PHEHYG24TvKsBClHho/cnCXPmGEEo
-         0rCA==
+        bh=4gv5+1r1armjndx3NqTxWVROfN58tPv0t9fyfNxmNLA=;
+        b=OqIWR1a7jS0Gn+ddX8JnC2JknI+ss4sC+4AZm/wVhzSNbz4tNM1JUxcKyYNi8tvoR5
+         6+p+VLjUAVGQ9kT5XVfA+2frpzgI5EC8Ox1OY3L+0wLL0PhfOe1ab02HlsY0buSeNAaG
+         6NGOV8YPMt5cV+fTKGfsG6imSemgUANZhBTt6MUfxmM9Bj2DatVvfwNo8fuR+IqxE391
+         sDaS4MRhM8Z72OiRKfaZOE5hECIsh91BJuL+vjWiGc+arnxvtaovrGs4uKmHRRRBjr33
+         9Ujla6r5tkyyKhqd7UOEnGESSm5hUl0p9wVvXWlDEEzRObovGTPFITD6IV6De00gO5iT
+         dB+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20251104; t=1780499013; x=1781103813;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=+bivjaMuNT9oJ2l/Y7Zh3L+bPRfO/kPb9uY6ej/NrXA=;
-        b=oom17ILCTzc1NYIbHCTkJO5V/syDP8ZtxkHNJttOXphSckzFtzeRXA7/hTPCvTGPG5
-         z4WergItcOpowMEks5N5QtOzTWeQtsT1NbFcA6w9Ii5MTqZVvYgXCYGuUih+TNiW4b4P
-         U+sbs29pXY9wMB2RVmFq7p1W1/MB2QQjjfdKFLjgCm1skYyn/kPVvjXzBipXnIFQlwBY
-         v8AfOiV3dxfevoj4g5E/FNKTRBwJQABQlIPfr3i9K77ljCzLZobaBZIekVS+gC50JfkK
-         DwZc8XSPQolz2MZmBiJl6ezvr0EGdLUO6iguC5BKSAXLV4+EMY12F9Q43M2O9tpC6pcy
-         9IsQ==
-X-Gm-Message-State: AOJu0YxcnvefKX7XhEb9fAD5/DOjY/BECQ2I8ZJWHGSVuQVdfZmmhoLQ
-	WQGSUjYtq46lFwKDEPKq9nwXeKPl4IvhIOeAA/5EZs7X+wTm+xmKvvr/PdAup+9yIranSnPKz8M
-	JHIIvdH3oI5HyuNlPBWYfhNKjkGSHRU9HjWdy
-X-Gm-Gg: Acq92OEc71ZGjmFesJldMOAv7R1RvFUFq8dk0ZM05GyhzLgImFKvwsTzft2MCpF2Feo
-	EIPKb1rYNOZ10rvydBuyYjNl0kaUBsv7jhtBYnb8bTTTM97qYnbowh6X7FXkYwB/kBpKxMl/Z+T
-	vh/KnuIh/8yFHCVex9kZdU92Ml+iP5ZrwaEfYVyejRNkVyMpzifGu22ISUseKGLAcgHqQS4QFQA
-	3/bDh4uy9nL8DBiOCt10cfyopyLZHi2QCgipPc4qmQDnjGMinHaoa6MbTnaUOqV5nQg1zdyYcp8
-	KZZ7VrTWnelCLE3Ya1+fGl6xbruX6r/qe07I/Ld8pRS+llHMjOkQs/9f5DYt15zfmbr/Ll/5Lkp
-	IBcTOuiA4oEpyD+jjqTL+NwtjbMC1hBpC8rd91fX60Ixt3LpxeRtNpbb1yAfQu7M=
-X-Received: by 2002:a5d:4a02:0:b0:44a:2cb3:b633 with SMTP id ffacd0b85a97d-46021794f73mr4301268f8f.12.1780499013061;
+        bh=4gv5+1r1armjndx3NqTxWVROfN58tPv0t9fyfNxmNLA=;
+        b=QuKoVjnWjlffmxg6Wrt+aLLxt8FWv9849lU4ajsP2PxZYF0NvJAx22Y0XbtPPXgHLu
+         dQDfLSHE4eMT4yohGpZ62ILXIarRT9mhmZ0zT8PC2VlzEhXVrllUTw/2L4hEbVYZ+9Or
+         DVmvf8H8KBKe/XoFCAbk1yYoKkmALdgJQhk0/YHoeElJdk6XY3Ev4S61LqsirAJCj7nS
+         gfJtp206kH72Ir0nFGcwiQc0+JBORCtCFLXbnIxSpIaxJm5qGgR6TLTekER4WHmNbB0c
+         btP0L3tzejvUGX6K7eN5rQ60Iod8FTATNGv4u7rQ65Uww4VirAp2EMUEiLnRO/9reVNm
+         GH9g==
+X-Gm-Message-State: AOJu0YxEwfnBKyoJ6jpzDvBGKXD8nVn5tEsU92PkTGaOv1TaL9VY/bQp
+	RmfBdkTS9bcs5nRXbPy7/n9eJuJV5o6uFhLUGb9ou2Q8GNmTEodf1W0g0TYTVN3Ji4zrxXotDBr
+	r9S2e4/hVAk9ViQgn8F+3IN0bQrlPfbGAcw+L
+X-Gm-Gg: Acq92OG6KmSIGQtENo3+A80oztuOCOrlGCzTYTCD/u0QLvQ+D6O1gIRKqiw8zkJCCQ4
+	xPeZcip8q8dFxz7aHxKfX270Fcm0wnXAEU/X/3GUtOVCQwOVdAHaZiwX6H9Yi1gQ4b/A22a/WkW
+	jgXqVpadMOiZxNxhXFSbXXw55qJnVPkon3FbGqXYAsug9CSE0lTMk1mx6AhqS1ViB7S4FiymBBX
+	3C/JrmQSoI5T4jQ1b8aaYB68RkOV1zLNvOXsx9118boJG+zL1rrKEbznumnYx9KHYwsTNeZeuMM
+	vYE5vcN0Qoox1/QefZwpnxdAhUU75zyXzyn522364C9vKJ3lpl2WsJnzBZQ9YuOS0+Fwd/tzlHn
+	s6WPX0anLpA4tequp7B2I6khtZjJtBAUp1o/IhaIKHwzbeKxETpOZFAavR2oEn3U=
+X-Received: by 2002:a17:906:6a13:b0:bc1:d3d2:9348 with SMTP id a640c23a62f3a-bf09ea6587emr184765866b.20.1780499013189;
         Wed, 03 Jun 2026 08:03:33 -0700 (PDT)
 Received: from smtpservice.6wind.com ([185.13.181.2])
-        by smtp-relay.gmail.com with ESMTP id ffacd0b85a97d-4601f35b8d2sm149936f8f.23.2026.06.03.08.03.33;
+        by smtp-relay.gmail.com with ESMTP id a640c23a62f3a-bf0516757c5sm19475766b.7.2026.06.03.08.03.33;
         Wed, 03 Jun 2026 08:03:33 -0700 (PDT)
 X-Relaying-Domain: 6wind.com
 Received: from stryper.dev.6wind.com (stryper.dev.6wind.com [10.17.2.5])
-	by smtpservice.6wind.com (Postfix) with ESMTP id DFC0E14710;
-	Wed,  3 Jun 2026 17:03:32 +0200 (CEST)
+	by smtpservice.6wind.com (Postfix) with ESMTP id 0390B14713;
+	Wed,  3 Jun 2026 17:03:33 +0200 (CEST)
 From: Louis Scalbert <louis.scalbert@6wind.com>
 To: netdev@vger.kernel.org
 Cc: andrew+netdev@lunn.ch,
@@ -74,9 +74,9 @@ Cc: andrew+netdev@lunn.ch,
 	jonas.gorski@gmail.com,
 	horms@kernel.org,
 	Louis Scalbert <louis.scalbert@6wind.com>
-Subject: [PATCH net v8 1/6] tools: missed broadcast_neigh if_link uapi header
-Date: Wed,  3 Jun 2026 17:03:26 +0200
-Message-Id: <20260603150331.1919611-2-louis.scalbert@6wind.com>
+Subject: [PATCH net v8 4/6] bonding: 3ad: fix carrier when no usable slaves
+Date: Wed,  3 Jun 2026 17:03:29 +0200
+Message-Id: <20260603150331.1919611-5-louis.scalbert@6wind.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20260603150331.1919611-1-louis.scalbert@6wind.com>
 References: <20260603150331.1919611-1-louis.scalbert@6wind.com>
@@ -88,26 +88,105 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add missing IFLA_BOND_BROADCAST_NEIGH in if_link uapi header.
+Apply the "lacp_strict" configuration from the previous commit.
 
-Fixes: 3d98ee52659c ("net: bonding: add broadcast_neighbor netlink option")
+"lacp_strict" mode "on" asserts that the bonding master carrier is up
+only when at least 'min_links' slaves are in the Collecting_Distributing
+state.
+
+Fixes: 655f8919d549 ("bonding: add min links parameter to 802.3ad")
 Signed-off-by: Louis Scalbert <louis.scalbert@6wind.com>
 ---
- tools/include/uapi/linux/if_link.h | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/bonding/bond_3ad.c     | 26 +++++++++++++++++++++++---
+ drivers/net/bonding/bond_options.c |  1 +
+ 2 files changed, 24 insertions(+), 3 deletions(-)
 
-diff --git a/tools/include/uapi/linux/if_link.h b/tools/include/uapi/linux/if_link.h
-index 7e46ca4cd31b..97a2d4411534 100644
---- a/tools/include/uapi/linux/if_link.h
-+++ b/tools/include/uapi/linux/if_link.h
-@@ -1526,6 +1526,7 @@ enum {
- 	IFLA_BOND_MISSED_MAX,
- 	IFLA_BOND_NS_IP6_TARGET,
- 	IFLA_BOND_COUPLED_CONTROL,
-+	IFLA_BOND_BROADCAST_NEIGH,
- 	__IFLA_BOND_MAX,
- };
+diff --git a/drivers/net/bonding/bond_3ad.c b/drivers/net/bonding/bond_3ad.c
+index f0aa7d2f2171..98abb2fdd7a6 100644
+--- a/drivers/net/bonding/bond_3ad.c
++++ b/drivers/net/bonding/bond_3ad.c
+@@ -745,6 +745,21 @@ static void __set_agg_ports_ready(struct aggregator *aggregator, int val)
+ 	}
+ }
  
++static int __agg_usable_ports(struct aggregator *agg)
++{
++	struct port *port;
++	int valid = 0;
++
++	for (port = agg->lag_ports; port;
++	     port = port->next_port_in_aggregator) {
++		if (port->actor_oper_port_state & LACP_STATE_COLLECTING &&
++		    port->actor_oper_port_state & LACP_STATE_DISTRIBUTING)
++			valid++;
++	}
++
++	return valid;
++}
++
+ static int __agg_active_ports(struct aggregator *agg)
+ {
+ 	struct port *port;
+@@ -1179,10 +1194,10 @@ static void ad_mux_machine(struct port *port, bool *update_slave_arr)
+ 		switch (port->sm_mux_state) {
+ 		case AD_MUX_DETACHED:
+ 			port->actor_oper_port_state &= ~LACP_STATE_SYNCHRONIZATION;
+-			ad_disable_collecting_distributing(port,
+-							   update_slave_arr);
+ 			port->actor_oper_port_state &= ~LACP_STATE_COLLECTING;
+ 			port->actor_oper_port_state &= ~LACP_STATE_DISTRIBUTING;
++			ad_disable_collecting_distributing(port,
++							   update_slave_arr);
+ 			port->ntt = true;
+ 			break;
+ 		case AD_MUX_WAITING:
+@@ -2105,6 +2120,7 @@ static void ad_disable_distributing(struct port *port, bool *update_slave_arr)
+ 			  port->actor_port_number,
+ 			  aggregator->aggregator_identifier);
+ 		__disable_distributing_port(port);
++		bond_3ad_set_carrier(port->slave->bond);
+ 		/* Slave array needs an update */
+ 		*update_slave_arr = true;
+ 	}
+@@ -2128,6 +2144,7 @@ static void ad_enable_collecting_distributing(struct port *port,
+ 			  port->actor_port_number,
+ 			  aggregator->aggregator_identifier);
+ 		__enable_port(port);
++		bond_3ad_set_carrier(port->slave->bond);
+ 		/* Slave array needs update */
+ 		*update_slave_arr = true;
+ 		/* Should notify peers if possible */
+@@ -2151,6 +2168,7 @@ static void ad_disable_collecting_distributing(struct port *port,
+ 			  port->actor_port_number,
+ 			  aggregator->aggregator_identifier);
+ 		__disable_port(port);
++		bond_3ad_set_carrier(port->slave->bond);
+ 		/* Slave array needs an update */
+ 		*update_slave_arr = true;
+ 	}
+@@ -2830,7 +2848,9 @@ int bond_3ad_set_carrier(struct bonding *bond)
+ 	active = __get_active_agg(&(SLAVE_AD_INFO(first_slave)->aggregator));
+ 	if (active) {
+ 		/* are enough slaves available to consider link up? */
+-		if (__agg_active_ports(active) < bond->params.min_links) {
++		if ((bond->params.lacp_strict ? __agg_usable_ports(active)
++					: __agg_active_ports(active)) <
++		    bond->params.min_links) {
+ 			if (netif_carrier_ok(bond->dev)) {
+ 				netif_carrier_off(bond->dev);
+ 				goto out;
+diff --git a/drivers/net/bonding/bond_options.c b/drivers/net/bonding/bond_options.c
+index d358b831df77..94b7b0851f16 100644
+--- a/drivers/net/bonding/bond_options.c
++++ b/drivers/net/bonding/bond_options.c
+@@ -1706,6 +1706,7 @@ static int bond_option_lacp_strict_set(struct bonding *bond,
+ 	netdev_dbg(bond->dev, "Setting LACP fallback to %s (%llu)\n",
+ 		   newval->string, newval->value);
+ 	bond->params.lacp_strict = newval->value;
++	bond_3ad_set_carrier(bond);
+ 
+ 	return 0;
+ }
 -- 
 2.39.2
 
