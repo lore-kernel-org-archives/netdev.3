@@ -1,33 +1,33 @@
 Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A7433FE652
-	for <netdev@vger.kernel.org>; Wed,  3 Jun 2026 07:25:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ABE63FF881
+	for <netdev@vger.kernel.org>; Wed,  3 Jun 2026 07:25:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780471543; cv=none; b=l0aCIa0hv5pRm5XESu7H0T4hptmPhGP8qcme9zT5HaPkj3MprSJCpMN0lvsWZEPw8IcUVzCMcHabt14THCxX9HjeAbnkT7k2TtR3th3IWUAU6p0tszKpfsQt+EZFYcPxyW8NMKg00V5nmrgDxvfObfia1AF/1ZY2rGcLZPRZlNI=
+	t=1780471544; cv=none; b=pEZxFld4YGmUjCUthLVyEwP9YykIZ+tNxYULCu1mEm8/ANMS0wE3tESk2Yyznzw93ruQ7Lzy5OnuWMtUtDHf2QHi2YOhnbAPIj2A2n0/I9KiWCeVCJSEwlV9v6xq2EE45jcKGk7iw2lqYGXa39AG3qLZ+uEBgcNG5kbrJLWwooY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780471543; c=relaxed/simple;
-	bh=ISNdkYdUezwhHmQOBThmi1k6XVkEYcYAGzZYkQ3toc0=;
+	s=arc-20240116; t=1780471544; c=relaxed/simple;
+	bh=BrXHBr159/wANmrNwtKans3Eli/BghSONnC8pmEoQOM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SvBrVKBbO6gPx/FgNnNAeIbjVPHvw0pMCfQKY6N331smmr6URL/t29v8vFQmH8zCPTbjl9ZxASuuonqevmII5lbMvu/80TjwPGfuBtyh6gTEtWK9B1rbFRuqcNpLg6zvwp5Pw0kPOM1fKiZlMSacwKMcYE19Hum7HaOTO2m9QWo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=PD5sdmC6; arc=none smtp.client-ip=23.88.38.48
+	 MIME-Version; b=gG0nxKPvof4eiDnAr8jXNND/U1ro9m+ieSHpHLLRJHgcBFrmeDGqka+aTmz5c3czSGpnAKJbQ5/XKx47VZRw5qRXMiAXy51BXyUVvHQJwz0VrxxSrOXiloErkcbyDSyTQmIrp34QQJEF5iV68s8P9ka6wTmcOByIIVySPzgzybQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=aYdthSkC; arc=none smtp.client-ip=23.88.38.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="PD5sdmC6"
+	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="aYdthSkC"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=simonwunderlich.de;
-	s=09092022; t=1780471534;
+	s=09092022; t=1780471538;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=g0Tp0PfrS/0DiexyJXMxMBE01WhHk6GsT7Wgf8RrDes=;
-	b=PD5sdmC6O5LiXb4V4i/xtkNkKV3rA9So4wH3qTRei+JBlKm7ZUq1svhFhGNJP9jVglGgQb
-	PsG/X0JSWN9cD2SdocoJQciapvOK69iZIHmaoWaqEs2jaSN9dAM0ueI4tKTJjo29TwzqFH
-	cY3cEpfhQAgN980d6f6l/1xeoK598k/ia0t+V0pvIMDVTJZ3Kb+Atez5OjWo2Gre3Vxved
-	y+ur4F5uNZnevw+PcZLVgLQeOHPTNu6+jyFfR7zS61M8rEYL79NUcn4S53eou9Nt0AX1Jl
-	5eaomsQM5slNvO6peuTNIGcL3urPWgfmiKQrP+ppTKwXiQNgU1kh3dRnGMBvog==
+	bh=p2P6Y0aH38DpvKQoICwjpsy1mIH384HVW9QTFrseBuE=;
+	b=aYdthSkCp8OU051eI2IthHUTCcqmhcBmIZJU0340OdG+cutQ4oVMDcXEiHlWZqfRejOneT
+	Bqi+UkEd5hGr3cPSjDH/jabelUOYVSl6JbfKsXooJJ28esAh4ErUhqX0o/pUO4eXcl14T0
+	pASwngCUyr3MP7selr8P6U9EHZSztuJuA8UlkFUYGOhbSd9eb+ScVqEhoyZ1zTZnkAPea7
+	SPrYRK9LfJ7NCYI1io3WZC3s3Gn0jbBBMbImOSBRok4TqaUlHYBXYB7KbyALOrtgyNiyXc
+	5xxkF+vqjxe2tgbuQWjgPUn3Gegz675EgxZ02Mf73pFjVcvTpYmXtKAeOfNgIA==
 From: Simon Wunderlich <sw@simonwunderlich.de>
 To: netdev@vger.kernel.org
 Cc: "David S. Miller" <davem@davemloft.net>,
@@ -39,9 +39,9 @@ Cc: "David S. Miller" <davem@davemloft.net>,
 	Sven Eckelmann <sven@narfation.org>,
 	stable@kernel.org,
 	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH net-next 08/15] batman-adv: tp_meter: add only finished tp_vars to lists
-Date: Wed,  3 Jun 2026 09:25:19 +0200
-Message-ID: <20260603072527.174487-9-sw@simonwunderlich.de>
+Subject: [PATCH net-next 13/15] batman-adv: prevent ELP transmission interval underflow
+Date: Wed,  3 Jun 2026 09:25:24 +0200
+Message-ID: <20260603072527.174487-14-sw@simonwunderlich.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260603072527.174487-1-sw@simonwunderlich.de>
 References: <20260603072527.174487-1-sw@simonwunderlich.de>
@@ -55,68 +55,45 @@ Content-Transfer-Encoding: 8bit
 
 From: Sven Eckelmann <sven@narfation.org>
 
-When the receiver variables (aka "session") are initialized, then they are
-added to the list of sessions before the timer is set up. A RCU protected
-reader could therefore find the entry and run mod_setup before
-batadv_tp_init_recv() finished the timer initialization.
+batadv_v_elp_start_timer() enqeues a delayed work. The time when it starts
+is randomly chosen between (elp_interval - BATADV_JITTER) and
+(elp_interval + BATADV_JITTER). The configured elp_interval must therefore
+be larger or equal to BATADV_JITTER to avoid that it causes an underflow of
+the unsigned integer. If this would happen, then a "fast" ELP interval
+would turn into a "day long" delay.
 
-The same is true for batadv_tp_start(), which must first initialize the
-finish_work and the test_length to avoid a similar problem.
+At the same time, it must not be larger than the maximum value the variable
+can store.
 
 Cc: stable@kernel.org
-Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
+Fixes: a10800829040 ("batman-adv: Add elp_interval hardif genl configuration")
 Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
 ---
- net/batman-adv/tp_meter.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ net/batman-adv/netlink.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/net/batman-adv/tp_meter.c b/net/batman-adv/tp_meter.c
-index 3d3d06c88e1c9..5498cdc972e98 100644
---- a/net/batman-adv/tp_meter.c
-+++ b/net/batman-adv/tp_meter.c
-@@ -1096,21 +1096,21 @@ void batadv_tp_start(struct batadv_priv *bat_priv, const u8 *dst,
- 	tp_vars->prerandom_offset = 0;
- 	spin_lock_init(&tp_vars->prerandom_lock);
+diff --git a/net/batman-adv/netlink.c b/net/batman-adv/netlink.c
+index e5463003a3bd6..1ba206e402733 100644
+--- a/net/batman-adv/netlink.c
++++ b/net/batman-adv/netlink.c
+@@ -919,9 +919,15 @@ static int batadv_netlink_set_hardif(struct sk_buff *skb,
+ #ifdef CONFIG_BATMAN_ADV_BATMAN_V
  
--	kref_get(&tp_vars->refcount);
--	hlist_add_head_rcu(&tp_vars->list, &bat_priv->tp_list);
--	spin_unlock_bh(&bat_priv->tp_list_lock);
--
- 	tp_vars->test_length = test_length;
- 	if (!tp_vars->test_length)
- 		tp_vars->test_length = BATADV_TP_DEF_TEST_LENGTH;
- 
-+	/* init work item for finished tp tests */
-+	INIT_DELAYED_WORK(&tp_vars->finish_work, batadv_tp_sender_finish);
+ 	if (info->attrs[BATADV_ATTR_ELP_INTERVAL]) {
++		u32 elp_interval;
 +
-+	kref_get(&tp_vars->refcount);
-+	hlist_add_head_rcu(&tp_vars->list, &bat_priv->tp_list);
-+	spin_unlock_bh(&bat_priv->tp_list_lock);
+ 		attr = info->attrs[BATADV_ATTR_ELP_INTERVAL];
++		elp_interval = nla_get_u32(attr);
 +
- 	batadv_dbg(BATADV_DBG_TP_METER, bat_priv,
- 		   "Meter: starting throughput meter towards %pM (length=%ums)\n",
- 		   dst, test_length);
++		elp_interval = min_t(u32, elp_interval, INT_MAX);
++		elp_interval = max_t(u32, elp_interval, BATADV_JITTER);
  
--	/* init work item for finished tp tests */
--	INIT_DELAYED_WORK(&tp_vars->finish_work, batadv_tp_sender_finish);
--
- 	/* start tp kthread. This way the write() call issued from userspace can
- 	 * happily return and avoid to block
- 	 */
-@@ -1430,10 +1430,10 @@ batadv_tp_init_recv(struct batadv_priv *bat_priv,
- 	INIT_LIST_HEAD(&tp_vars->unacked_list);
+-		WRITE_ONCE(hard_iface->bat_v.elp_interval, nla_get_u32(attr));
++		WRITE_ONCE(hard_iface->bat_v.elp_interval, elp_interval);
+ 	}
  
- 	kref_get(&tp_vars->refcount);
--	hlist_add_head_rcu(&tp_vars->list, &bat_priv->tp_list);
-+	timer_setup(&tp_vars->timer, batadv_tp_receiver_shutdown, 0);
- 
- 	kref_get(&tp_vars->refcount);
--	timer_setup(&tp_vars->timer, batadv_tp_receiver_shutdown, 0);
-+	hlist_add_head_rcu(&tp_vars->list, &bat_priv->tp_list);
- 
- 	batadv_tp_reset_receiver_timer(tp_vars);
- 
+ 	if (info->attrs[BATADV_ATTR_THROUGHPUT_OVERRIDE]) {
 -- 
 2.47.3
 
