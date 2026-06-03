@@ -1,33 +1,33 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2648347C7;
-	Wed,  3 Jun 2026 00:06:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 881DA223DE9;
+	Wed,  3 Jun 2026 00:15:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780445210; cv=none; b=rPU0KXB6OhTTG2lM6vCzlJT4ILwIoEqdwx2lFFZWe/1s2yTIdXf5pbgkA1I5rU8LE5rrZ6O9COgvm0IT5jORi45dHTyjlQHolLr0S0LHKA5cS+d2anp3wPtE5K6k868t6L5wM8R+kzdYTUYxL/K1cnD2Ie3r5uDbub0dTx3Hx5c=
+	t=1780445760; cv=none; b=l7nP79C4py7f8PKIrHIgJuqd1L8jzWXLsAxTwkNKHDDLUx3aa8EwpWF0zKkrtqYctf/cIHQMCj9Z9TjsbKaMNIFYZWzd87KRD1QD4BOIYryw2mYQbmJ/y1pynZCwkAATaS0Vipd0Q5pTGFxRKx6vTV+qbSUfPOSJ6sFY5gMhCOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780445210; c=relaxed/simple;
-	bh=LZRtbmZsg6XUZya4eWwAn4B95sUgsuk/qmf+bETbq2Y=;
+	s=arc-20240116; t=1780445760; c=relaxed/simple;
+	bh=9flrw53HNgG8jcIR9SckLbImG0fNZXaaC4jde+qluCY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PjhoWf/CUhJFFQiPIhV3yKYpfcPmiDOdsQRmR3yXLES4jCIYf/PzYZfLc6PSy8jRI38M+qV8KvCLpryP/ZerdKJSKpOsSUSHip+fOrOh4tbNOq09wkJGkSw/PHMDEbM3V0++G7PHMc4fmdxIMVd91/FNK0u2ifZsSfmZLYfHTA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=xoS1dNUO; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=MnqG5CaT0vtgCXftSwwFuPFyjAeIG+ICQDcR9i6c22IH6KberZuhv5ruj+uaGKbwba0w/oslFlVbHOwgW1yF3y45/EJUxOd5hsviE7KEo4We9hcsx+KyZel2w2DmM+QdFYg+jGsuCdk2gPRpga7pXGW9FGkRhMrDMc2SQi4ySfY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=pw4zxjhT; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="xoS1dNUO"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="pw4zxjhT"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=OHVFGVpvJEXkJP+/BGW7oO5sY9qjknMA9bIgh3KIEW4=; b=xoS1dNUOHzePH+ZuaU2TQciOKZ
-	MERT7LBOaBM3T7J9kghLqsvDp1c8IsahKqjrqZA/l6tqXRKVR1+r1X4tpR3zq8/xlGF6xIpgAPOzY
-	6rJGjNvyAKisuOLRN6pggq0MpB9VMypm9EjmlvVhIHDF7p7/O9Oh15W6ie6wFJQ6wdto=;
+	bh=WyLvf9bqb1QFIVpJ/5XsqBvvssIE6x5Mu3bV8kLzoug=; b=pw4zxjhTJ8SZ2lNyPM0MZneYWx
+	3VtctziaWRv91SEyhJlRnF1MaOL5k9INUjIzxj6Gp1M35aODEjpb6XhsF+WtN4dHT7keObBbMLGBh
+	9aaMuCVqq0ENsZerthmjxNJynfzrWnIX4+EZmh8+s1NhBibvXA79fhpzB2/bLcZ8sMxQ=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1wUZ86-005mGD-Ge; Wed, 03 Jun 2026 02:06:42 +0200
-Date: Wed, 3 Jun 2026 02:06:42 +0200
+	id 1wUZH0-005mKN-BC; Wed, 03 Jun 2026 02:15:54 +0200
+Date: Wed, 3 Jun 2026 02:15:54 +0200
 From: Andrew Lunn <andrew@lunn.ch>
 To: Greg Patrick <gregspatrick@hotmail.com>
 Cc: Russell King <linux@armlinux.org.uk>,
@@ -38,7 +38,7 @@ Cc: Russell King <linux@armlinux.org.uk>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
 Subject: Re: [PATCH net-next v1] net: phy: sfp: detect presence via I2C when
  no MOD_DEF0 GPIO
-Message-ID: <dd3c9c23-a9de-4505-8e49-97d4bf18f465@lunn.ch>
+Message-ID: <193b3aba-fc64-45bc-81bb-ea248efa9c3c@lunn.ch>
 References: <20260602235528.2795028-1-gregspatrick@hotmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -50,18 +50,10 @@ Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <20260602235528.2795028-1-gregspatrick@hotmail.com>
 
-> Posting for review per a downstream discussion (OpenWrt PR #23579) on adding
-> the NicGiga S100-0800S-M, an RTL9303 8x SFP+ switch that wires none of the
-> cage sideband signals to a software-visible GPIO.
+> +/* Probe whether a module is physically present by attempting a single-byte
+> + * I2C read of the EEPROM identifier (an empty cage NAKs). Used as the presence
+> + * source on boards that do not wire MOD_DEF0 to a GPIO.
 
-Are they wired to a software invisible GPIO? Or nowhere at all?
-
-> Open design question: this changes behaviour for *all* boards without a
-> MOD_DEF0 GPIO, from "always present" (sff_gpio_get_state) to I2C-probed
-> presence.
-
-You might want to differentiate between an SFF and an SFP, using the
-compatible. An SFF has no need for an MOD_DEF0 GPIO. I did not look,
-maybe the code already does?
+Did you try a 0 byte read? That is what tools like i2cdetect use.
 
 	Andrew
