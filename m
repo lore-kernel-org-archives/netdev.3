@@ -1,169 +1,83 @@
-Received: from smtpbgsg2.qq.com (smtpbgsg2.qq.com [54.254.200.128])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE25F191F98
-	for <netdev@vger.kernel.org>; Wed,  3 Jun 2026 02:52:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.254.200.128
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C4E33DC4CC;
+	Wed,  3 Jun 2026 02:58:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780455144; cv=none; b=Y7kFJCo/VCEFu9bTYmcqyX5FPabrusjBnugLVFH56Dxb6bs4t8F50BQK9pF7kVh6N/OpCsXqce8RQRL2LFOd4wCbob0Nn17IaswuFCWw3KgaTPa26mzHRKoh664hg4k+oqDfZ+6rnVJPxJPcxuzdQf80x8WrXd0zuwHuMbw6YdY=
+	t=1780455484; cv=none; b=dXc3QfKZfw0Irwvwp1zCjtrFknwi8GP/aIxfybZSl1GleTr0tha83ffo2XCuxAFq8F//LmMEPrMJeff71ratidhNcT9Zxkr/XznArd5NJ26zRgEJZbC4yaU6J2MgwuF5ZZaDj5ZAVpZJawmHoXgMuyLRj8x8y7zO9/V3K6k6sYk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780455144; c=relaxed/simple;
-	bh=Q6eR0SAT/uKHN/6h7YuGqZBEURlSyy2gNsq2bj3TXiY=;
-	h=From:To:Cc:References:In-Reply-To:Subject:Date:Message-ID:
-	 MIME-Version:Content-Type; b=kh5s9wC7t9BNOoMkUBFdidrGG3yFC92JBrskoM7oj6AWyDSJf/I+7nvKPh7GYdYutYKCFtOn5kIHBGm4jGanodHZCl8y4LWHAkrzm0FSyWasOZJZeqK/8/7/IXUwm1vCDCzyENGzOaqWBvlJgEn7KxhjPxftnCV3TA2IVXvzjyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.254.200.128
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid:Yeas8t1780455089t594t31214
-Received: from 3DB253DBDE8942B29385B9DFB0B7E889 (jiawenwu@trustnetic.com [36.24.207.111])
-X-QQ-SSF:0000000000000000000000000000000
-From: =?utf-8?b?Smlhd2VuIFd1?= <jiawenwu@trustnetic.com>
-X-BIZMAIL-ID: 486067191020761161
-To: "'Larysa Zaremba'" <larysa.zaremba@intel.com>
-Cc: <netdev@vger.kernel.org>,
-	"'Mengyuan Lou'" <mengyuanlou@net-swift.com>,
-	"'Andrew Lunn'" <andrew+netdev@lunn.ch>,
-	"'David S. Miller'" <davem@davemloft.net>,
-	"'Eric Dumazet'" <edumazet@google.com>,
-	"'Jakub Kicinski'" <kuba@kernel.org>,
-	"'Paolo Abeni'" <pabeni@redhat.com>,
-	"'Richard Cochran'" <richardcochran@gmail.com>,
-	"'Russell King'" <linux@armlinux.org.uk>,
-	"'Jacob Keller'" <jacob.e.keller@intel.com>,
-	"'Michal Swiatkowski'" <michal.swiatkowski@linux.intel.com>,
-	"'Simon Horman'" <horms@kernel.org>,
-	"'Kees Cook'" <kees@kernel.org>,
-	"'Ingo Molnar'" <mingo@kernel.org>,
-	"'Joe Damato'" <joe@dama.to>,
-	"'Breno Leitao'" <leitao@debian.org>,
-	"'Aleksandr Loktionov'" <aleksandr.loktionov@intel.com>,
-	=?iso-8859-1?Q?'Uwe_Kleine-K=F6nig_=28The_Capable_Hub=29'?= <u.kleine-koenig@baylibre.com>,
-	"'Johannes Berg'" <johannes@sipsolutions.net>,
-	"'Fabio Baltieri'" <fabio.baltieri@gmail.com>,
-	<netdev@vger.kernel.org>,
-	"'Mengyuan Lou'" <mengyuanlou@net-swift.com>,
-	"'Andrew Lunn'" <andrew+netdev@lunn.ch>,
-	"'David S. Miller'" <davem@davemloft.net>,
-	"'Eric Dumazet'" <edumazet@google.com>,
-	"'Jakub Kicinski'" <kuba@kernel.org>,
-	"'Paolo Abeni'" <pabeni@redhat.com>,
-	"'Richard Cochran'" <richardcochran@gmail.com>,
-	"'Russell King'" <linux@armlinux.org.uk>,
-	"'Jacob Keller'" <jacob.e.keller@intel.com>,
-	"'Michal Swiatkowski'" <michal.swiatkowski@linux.intel.com>,
-	"'Simon Horman'" <horms@kernel.org>,
-	"'Kees Cook'" <kees@kernel.org>,
-	"'Ingo Molnar'" <mingo@kernel.org>,
-	"'Joe Damato'" <joe@dama.to>,
-	"'Breno Leitao'" <leitao@debian.org>,
-	"'Aleksandr Loktionov'" <aleksandr.loktionov@intel.com>,
-	=?iso-8859-1?Q?'Uwe_Kleine-K=F6nig_=28The_Capable_Hub=29'?= <u.kleine-koenig@baylibre.com>,
-	"'Johannes Berg'" <johannes@sipsolutions.net>,
-	"'Fabio Baltieri'" <fabio.baltieri@gmail.com>
-References: <20260601072221.2952-1-jiawenwu@trustnetic.com> <20260601072221.2952-6-jiawenwu@trustnetic.com> <ah6-x9CJHwxh_3Qt@soc-5CG4396X81.clients.intel.com>
-In-Reply-To: <ah6-x9CJHwxh_3Qt@soc-5CG4396X81.clients.intel.com>
-Subject: RE: [PATCH net-next v4 5/5] net: wangxun: implement pci_error_handlers ops
-Date: Wed, 3 Jun 2026 10:51:28 +0800
-Message-ID: <095a01dcf303$e03d08a0$a0b719e0$@trustnetic.com>
+	s=arc-20240116; t=1780455484; c=relaxed/simple;
+	bh=32S/JeI3COWaV3zz0O0QavmW5XvRTB9WfOfkTWq86JE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nV7YzavWiTbU1qTnsvnm6KtxHMZoq83p5gKDX/+h3mWOSkXYwIplRAahVC03zu0TAHPvjeaxCnZpO+HcKCHcy5BUNkTwZ62xrpAr+xqB0Y5ML87KEYvVspp5WLmcR8g5QvVJzGBZg2p5uagxe++o5d7Fo0Fi2Qj3tlUj1K82y/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=dsaVZKFS; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="dsaVZKFS"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=fZSCPtkOATWB8zuR8SXfWy/LtG2NjTWEQXDI83pfLtE=; b=dsaVZKFSfz+B++OvfPtGKjktHN
+	zMEoef0T50dYZz4Bu0x9XMoAk7Os27/A3YfwK5DhtbonXq7gerjn3PFJf7dXnIFb07I1r2qLsjNx/
+	Tvhrg5LVTKgdHacRHE3oHN4PPjKrO1l46pZhYtGr+6dZjEcRdo3AdQ3tJwmrxSw7RElQ=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wUbnf-005oSp-98; Wed, 03 Jun 2026 04:57:47 +0200
+Date: Wed, 3 Jun 2026 04:57:47 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Javen <javen_xu@realsil.com.cn>
+Cc: "nb@tipi-net.de" <nb@tipi-net.de>,
+	"daniel@makrotopia.org" <daniel@makrotopia.org>,
+	"davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@google.com" <edumazet@google.com>,
+	=?utf-8?B?6aG+5pmT5Yab?= <freddy_gu@realsil.com.cn>,
+	"hkallweit1@gmail.com" <hkallweit1@gmail.com>,
+	"kuba@kernel.org" <kuba@kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux@armlinux.org.uk" <linux@armlinux.org.uk>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"pabeni@redhat.com" <pabeni@redhat.com>,
+	"vladimir.oltean@nxp.com" <vladimir.oltean@nxp.com>
+Subject: Re: [PATCH net-next v1 1/2] net: phy: realtek: add support for
+ RTL8261
+Message-ID: <26c9ecf2-d284-4b4b-b41d-d0a84a31427a@lunn.ch>
+References: <10b6718e8fe84e1895f82ea05c446925@realsil.com.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Mailer: Microsoft Outlook 16.0
-Content-Language: zh-cn
-Thread-Index: AQEmZmPiFxLXVQw6wm5cjAUm9/PfJgEIHjjLAbXhlRG3g0pdsA==
-X-QQ-SENDSIZE: 520
-Feedback-ID: Yeas:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: MKut7GF+UZm9gj21eL6U7wzx7XMwbtj1SL/jq616fwfP5IKufGn3D5l3
-	pse0sxhBzsDeHA+Rg8HJHa7VOKg7K7lVhfq9ipnMwnetTIb5F/G/wypWuPtpuTUv+LW1yFz
-	s62FfErEB4iDbAMWpTWrFFSYBASdJJ3MFJf5kLyL8xvURAGzjaJ5hhLF9grTJk2Z/4GOHci
-	ZlNnEmhQSgTz1G/Ih0DBRUxPH2rRYH6USI/BmpygmjZhCtC+eZUtYF3k/k+QCKm3qqH14Pa
-	Nv5DZmPhpu71MpBPW/XLjH3kC5HakPCPbc6KY29LBqBiDNxINaPLLvrybZI0XilV/4g1onT
-	EyX3y/ZsIbUbHlEJOvBJTFIW0ewAVSpKRBpXWZo4nsUMfPzzfAqp7bGKqOqo4jzGBThWvm4
-	/6mEBLLMC4bABU7o5ug0M7JnxkvYcb/IFScfhAsJXuMHWlEPm0a/Rn3xO9NC7NoAbEVx8zM
-	Pk3WDpAKET20weOu4YQiU8qmtefBPAq7Mim5cYljqXq9QkvznYhrzn7EPGhA+ST87IQ/hYx
-	/jaC7Mp29duKkpvtYcT7jMK001WloKOsZqF+/H/UG52e4R7tHFIyyA4judGbcLphxoGet7w
-	fHIgPSh4AT1wRtCSAaQCMUFbzMB19h0qu1W2ZizYlzeqURaN4w3kjOPywENbdrcLmdM3wgq
-	RF2s4xcmXFYHbVAG+DxIqV3RhJ99aKSo9ycTvXEIbthoPpZNCSHtLjgpGkDkZHqWJNLhB66
-	CNWte4XCPtkGI6RReQLV7COeBzO4a8XbOQGlnsTIwJ/htE5RO5a8W2bk35Cb9ZbZGHzeCPA
-	UC8CmY75sz+mrR3hkTjXwWIgrYuBRxPSMddChFbWCdsNe8OcLpMq84PtLMoYs3SSoga5E9W
-	8nctKyl+t/V/Nk7Df1tXDmiyTDyLHs0yH9xczTuSoyXA146Mm6ySlZzh3uTni2NZTedv5Er
-	Kl17aQmR3hOq/LC+e3FkAsYHs0PoWQnQOmjNTW/Vru71AmCBn8Ja359e+YmzGFAuHOxsgbR
-	DAbn9BRp5zyBRPkb08imnEcN+om/jH+24kw7Is1SYExf1fVTDGQkTWxB9xzMDGFTrjqyrYv
-	MlbcpR0MEqS03znEUvjjueFHlZboMNtDXLuKlxvIEZFpHWJX4NC6/Tv4blE1QC0sA==
-X-QQ-XMRINFO: OD9hHCdaPRBwH5bRRRw8tsiH4UAatJqXfg==
-X-QQ-RECHKSPAM: 0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <10b6718e8fe84e1895f82ea05c446925@realsil.com.cn>
 
-On Tue, Jun 2, 2026 7:30 PM, Larysa Zaremba wrote:
-> On Mon, Jun 01, 2026 at 03:22:21PM +0800, Jiawen Wu wrote:
-> > Support AER driver to handle the PCIe errors.
-> >
-> > Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
-> > ---
-> >  drivers/net/ethernet/wangxun/libwx/wx_err.c   | 111 ++++++++++++++++++
-> >  drivers/net/ethernet/wangxun/libwx/wx_err.h   |   2 +
-> >  drivers/net/ethernet/wangxun/libwx/wx_type.h  |   1 +
-> >  drivers/net/ethernet/wangxun/ngbe/ngbe_main.c |   9 +-
-> >  .../net/ethernet/wangxun/txgbe/txgbe_main.c   |   8 +-
-> >  5 files changed, 127 insertions(+), 4 deletions(-)
-> >
-> > diff --git a/drivers/net/ethernet/wangxun/libwx/wx_err.c b/drivers/net/ethernet/wangxun/libwx/wx_err.c
-> > index e249cea874be..ae5d14071f3d 100644
-> > --- a/drivers/net/ethernet/wangxun/libwx/wx_err.c
-> > +++ b/drivers/net/ethernet/wangxun/libwx/wx_err.c
-> > @@ -4,11 +4,122 @@
-> >
-> >  #include <linux/netdevice.h>
-> >  #include <linux/pci.h>
-> > +#include <linux/aer.h>
-> >
-> >  #include "wx_type.h"
-> >  #include "wx_lib.h"
-> >  #include "wx_err.h"
-> >
-> > +/**
-> > + * wx_io_error_detected - called when PCI error is detected
-> > + * @pdev: Pointer to PCI device
-> > + * @state: The current pci connection state
-> > + *
-> > + * Return: pci_ers_result_t.
-> > + *
-> > + * This function is called after a PCI bus error affecting
-> > + * this device has been detected.
-> > + */
-> > +static pci_ers_result_t wx_io_error_detected(struct pci_dev *pdev,
-> > +					     pci_channel_state_t state)
-> > +{
-> > +	struct wx *wx = pci_get_drvdata(pdev);
-> > +	struct net_device *netdev;
-> > +
-> > +	if (!wx)
-> > +		return PCI_ERS_RESULT_DISCONNECT;
-> > +
-> > +	netdev = wx->netdev;
-> > +	if (!netif_device_present(netdev))
-> > +		return PCI_ERS_RESULT_DISCONNECT;
-> > +
-> > +	if (state == pci_channel_io_perm_failure)
-> > +		return PCI_ERS_RESULT_DISCONNECT;
-> > +
-> > +	rtnl_lock();
-> > +	netif_device_detach(netdev);
+On Wed, Jun 03, 2026 at 02:32:37AM +0000, Javen wrote:
+> Hi, Nicolai
 > 
-> Sashiko says:
+> >> +/* Concatenated 4-bit speed code values (SPD_H << 2 | SPD_L) */
+> >> +#define RTL8261X_SPEED_CODE_500M	0x3	/* H=0, L=3 */
+> >> +#define RTL8261X_SPEED_CODE_1000M	0x7	/* H=1, L=3 */
+> >> +#define RTL8261X_SPEED_CODE_2500M	0x8	/* H=2, L=0 */
+> >> +#define RTL8261X_SPEED_CODE_5000M	0x9	/* H=2, L=1 */
+> >> +#define RTL8261X_SPEED_500		500
+> >
+> > 500 MBit/s isnt a standard rate which also isnt represented in ethtool.
+> > Is this just for documentation or intended to be used? If yes, how?
 > 
->  "Calling netif_device_detach() stops new packets from entering the TX queue but
->   doesn't wait for currently executing ndo_start_xmit operations to complete,
->   which netif_tx_disable() would do."
-> 
-> Device detaching does not grab __netif_tx_lock(), so it does seem like
-> netif_device_detach() leaves some race possibilities.
+> Giga-lite (500M) is a Realtek-proprietary speed: when two Realtek
+> PHYs supporting Giga-lite are connected and the higher speed is
+> disabled or unstable, auto-negotiation may fall back to 500M. Since
+> ethtool has no SPEED_500 definition, the driver reports
+> SPEED_UNKNOWN for this case.  So we add this.
 
-netif_tx_disable() is missed in soft_quiesce(). I'll add it.
- 
+Is it negotiated? What bit does it use in which code word page to
+accomplish this? Is there a register which can be used to control the
+advertisement? Can you see the link partner advertisement for this
+bit?
 
+	Andrew
