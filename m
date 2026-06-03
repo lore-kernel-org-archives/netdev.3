@@ -1,160 +1,190 @@
-Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8ED0286AC;
-	Wed,  3 Jun 2026 06:38:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C23AC2F39C2;
+	Wed,  3 Jun 2026 06:40:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780468682; cv=none; b=h8fUp2qa6Idk3eUZzI0AbC5NF2oa9t3MTWexka4RhVbrO9sf0oEEjsFeYWiLelJJJZ42i+2Xubs6g6ZKt9oc74CmZLaF5s/UNTJ+2PR669Hyr9fYEA01XZY7KrtNGvGwVJaFWAA7t7OxzsG+ZWzL6EBtqeI9VUXgQY9ThOUkRkM=
+	t=1780468821; cv=none; b=Ypj+YjIR0M/RSDP4u4wsHiK0E7ZDayVL3rBhegvQJReppWN5ngH2iKg7GxxscGyam4U0wF8IpO0j8AIDBUg3sVsGBTl6VrQwk+IgjhGGbYO3ZQcJxfLsCMy60XDhOowICPL2BWCx1zXFxY8bhcIS4znq7As0puzpijyj3YR35VY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780468682; c=relaxed/simple;
-	bh=TcS8ozdvqYwuaxXS6ik7ii1gXzcBaJYB1U1kLQmazOo=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tyeqbiss17eWOnlAYJVBtSZwqGH1dIXdHKD+bP0bwUVOwln0rmemYWh5IFs7AIeQ56JQz2Z/fDNMLMf0gklGRk0+KmOeSaTDz774exCJo1pTzLrzwesL8+UEZUWIJkfCNZDLgNOIMPnxoJGHFTL055znO7kZ1uKqxtsO6ItZq3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=S9MeyWfr; arc=none smtp.client-ip=67.231.156.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	s=arc-20240116; t=1780468821; c=relaxed/simple;
+	bh=uZljcAPAOea1XEMilROJ9Ya5qu+VgUXZWUxQSwDwIJM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lfzE6u9e0VzUtjdBE1NXunbAzCLrpNbSv+DO3M4JEkriX2Mxu/RWIGY3saMeNHFQORyVzdF1PTORZbllPCVoHGAOacsrNmerAcIEFRh8qlE01R1ATnwi86X+iEeTNmWJMLlH0peRs7Mtq8TqIYMbsgJSa3leFP9LSPqtJhNfMNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=e8NqizSQ; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="S9MeyWfr"
-Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
-	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6532CFtq1194256;
-	Tue, 2 Jun 2026 23:37:41 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pfpt0220; bh=FGokJjgUyTvBTzBtrU9E3YF9B
-	uoWdrBav7kix/H9XlE=; b=S9MeyWfr3eEYeTJclaWg0C9xTOXJKebPi1U37qNXK
-	Mf03J7tcYVUz7m2H6Snb9HOT0A3Fz3eobtX/zopX/n+EpjBifooMDtEQ8UcO21Mn
-	XEKoX2XUS1x5prPQ4MApHIxRF6BESBTjf7Z+CxvYOiDHQ+Vi/BAwF55Fr4wJXj3H
-	pNblud8sC69tWT94Nfz0XsAR1RlDNwQXcesM9eow1mA2jk4hvkS1c4rp4nKTANlH
-	lCsS3v17JQOv5pdWVdnRWDRzzZAG/N/U6LU8QhzvUouXFy/ZgCU6VNUqmDAT0CRD
-	Bv3ljRkLDjx+r5Fe0j3/VOkLs/yIyLcNjIB947mv1GY6A==
-Received: from dc5-exch05.marvell.com ([199.233.59.128])
-	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4ega3bc5tb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 02 Jun 2026 23:37:40 -0700 (PDT)
-Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
- DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Tue, 2 Jun 2026 23:37:39 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
- (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Tue, 2 Jun 2026 23:37:39 -0700
-Received: from rkannoth-OptiPlex-7090 (unknown [10.28.36.165])
-	by maili.marvell.com (Postfix) with SMTP id 35BF03F708D;
-	Tue,  2 Jun 2026 23:37:35 -0700 (PDT)
-Date: Wed, 3 Jun 2026 12:07:35 +0530
-From: Ratheesh Kannoth <rkannoth@marvell.com>
-To: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>
-CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <donald.hunter@gmail.com>,
-        <edumazet@google.com>, <horms@kernel.org>, <jiri@resnulli.us>,
-        <kuba@kernel.org>, <pabeni@redhat.com>, <sgoutham@marvell.com>
-Subject: Re: [PATCH v18 net-next 5/8] octeontx2: cn20k: Coordinate default
- rules with NIX LF lifecycle
-Message-ID: <ah_Lrz0aP4jAd9eR@rkannoth-OptiPlex-7090>
-References: <20260602060359.1894952-1-rkannoth@marvell.com>
- <20260602060359.1894952-6-rkannoth@marvell.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="e8NqizSQ"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id D0F5E4E42DFB;
+	Wed,  3 Jun 2026 06:40:15 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 80CD760735;
+	Wed,  3 Jun 2026 06:40:15 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 81C4510888CC6;
+	Wed,  3 Jun 2026 08:40:05 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1780468813; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=/qAWv55ZFRDTig1Wl9c6MmbXlkpVxx7ObLOoN+K52AU=;
+	b=e8NqizSQQG+gVnsrUOW1ZVdoDmzjjasgyYYnjqhFK31jvvCkD2jfxrXOYjnmc7y1LGWzLc
+	XIowdnA+qamV6tSn8TELcSkcL9K1bxapL5dSfEewHni/A3J0xn/bSo7Enlm71tBtyD3o9J
+	FkxWWxywERyRotp1e/pZaDpjvFJGtSepp2yISwiHXD1Ksj3Or0z8T1UjEtPR9+0Glx8VAD
+	BkgvdQG6CspvS8WSNP1FR1l0ON/cxNSb5pZ+n96L2+ikY7hIfO2Jqv+KSOzO7GmcZEYFxV
+	IJ6r1LnlqectT9h3qr9H9Cg8y88zbmvhZWkRa+dsYswTFVsnsnfecGL/BxMh1Q==
+Message-ID: <9d1c7085-40d4-4f88-9caa-6c031666db3c@bootlin.com>
+Date: Wed, 3 Jun 2026 08:40:04 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20260602060359.1894952-6-rkannoth@marvell.com>
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjAzMDA2MSBTYWx0ZWRfX5YRr7pXVwnbZ
- hcP+Px6RnJGQQ4FwA2DnGaqYndiUxy8sLX8W8sppv14Ydz1Ea0IGlul4m3+MzHRArmhw9mlfFvY
- itLzZXbTsMAJNOVgiR3ZvNWyKV8a0JBfwc/90bnQ1X7oGO4PzklJBqtgNPm50scA3VyNcqxpTic
- FkrLwLc38eMBzZOYxLLIOjfxrn7+diZpy3I1ze4BojuKywNPByLqzDfZfWlUc71Tfqe5n7k0yp5
- x84l5LIe9Mmmf+0exQaQK84QnjU5lc+BA8D/6s5ua4G0NFDdiZTmT3SfRk3J/uCt0WTEecI1ZSz
- CUXGiMsGCqDmxi1G5dGKlod6Az+u2ectx2ZMIeJ49usxJsRYT58ZrOCuV6R/FLZqZ4mRyc051GO
- 0W/Rr/lo32TXnlknny6AlA0mwVFUbjJFpD8G8eOfDx3Q2v0eLgj7uYbRFe+qaQi0x/q/bZGCvCB
- OREZD9qPVcrUFANHmXA==
-X-Authority-Analysis: v=2.4 cv=cLjQdFeN c=1 sm=1 tr=0 ts=6a1fcbb4 cx=c_pps
- a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
- a=kj9zAlcOel0A:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=l0iWHRpgs5sLHlkKQ1IR:22 a=QXcCYyLzdtTjyudCfB6f:22 a=c92rfblmAAAA:8
- a=M5GUcnROAAAA:8 a=_4monf2TZ0uLVZycb8gA:9 a=CjuIK1q_8ugA:10
- a=GvGzcOZaWPEFPQC_NcjD:22 a=OBjm3rFKGHvpk9ecZwUJ:22
-X-Proofpoint-ORIG-GUID: 5ABij7lqwmwIIBK5FfzOjZUjdlmOydo0
-X-Proofpoint-GUID: 5ABij7lqwmwIIBK5FfzOjZUjdlmOydo0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-03_02,2026-05-28_03,2025-10-01_01
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v2 04/11] net: ethtool: add
+ netif_get_link_ksettings() for correct ops-locked use
+To: Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net
+Cc: netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com,
+ andrew+netdev@lunn.ch, horms@kernel.org, jakub@cloudflare.com,
+ nb@tipi-net.de, lee@kernel.org, linux-leds@vger.kernel.org,
+ pavel@kernel.org, jv@jvosburgh.net, michael.chan@broadcom.com,
+ jhs@mojatatu.com, vinicius.gomes@intel.com, idosch@nvidia.com,
+ razor@blackwall.org, hare@suse.de, jhasan@marvell.com, danieller@nvidia.com
+References: <20260603012840.2254293-1-kuba@kernel.org>
+ <20260603012840.2254293-5-kuba@kernel.org>
+Content-Language: en-US
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+In-Reply-To: <20260603012840.2254293-5-kuba@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On 2026-06-02 at 11:33:56, Ratheesh Kannoth (rkannoth@marvell.com) wrote:
-> Add NIX_LF_DONT_FREE_DFT_IDXS so the PF can send NIX LF free during hw
-> reinit or teardown without the AF freeing CN20K default NPC rule indexes
-> while the driver still owns that state (otx2_init_hw_resources and
-> otx2_free_hw_resources).
->
-> On CN20K, allocate default NPC rules from NIX LF alloc before
-> nix_interface_init, roll back with npc_cn20k_dft_rules_free on failure,
-> and free from NIX LF free when the new flag is not set. Tighten
-> rvu_mbox_handler_nix_lf_alloc error handling: use a single rc, propagate
-> qmem_alloc and other errors, and set -ENOMEM only when kcalloc fails
-> (remove the blanket -ENOMEM at the free_mem path).
->
-> Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
+Hi Jakub
 
-https://sashiko.dev/#/patchset/20260602060359.1894952-1-rkannoth%40marvell.com says
+On 6/3/26 03:28, Jakub Kicinski wrote:
+> __ethtool_get_link_ksettings() is exported and called from sysfs
+> and many drivers. It invokes ethtool_ops->get_link_ksettings
+> so by our own docs it should be holding netdev lock for ops locked
+> devices. Looks like commit 2bcf4772e45a ("net: ethtool:
+> try to protect all callback with netdev instance lock")
+> missed adding the ops lock here.
+> 
+> There's a number of callers we need to fix up so let's add the
+> netif_get_link_ksettings() helper first, without any actual
+> locking changes (this commit is a nop).
+> 
+> Not treating this as a fix because I don't think any driver cares
+> at this point, but if we want to remove the rtnl_lock protection
+> this will become critical.
+> 
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
->>  	/* Alloc NIX RQ HW context memory and config the base */
->>  	hwctx_size = 1UL << ((ctx_cfg >> 4) & 0xF);
->> -	err = qmem_alloc(rvu->dev, &pfvf->rq_ctx, req->rq_cnt, hwctx_size);
->> -	if (err)
->> +	rc = qmem_alloc(rvu->dev, &pfvf->rq_ctx, req->rq_cnt, hwctx_size);
->> +	if (rc)
->>  		goto free_mem;
->>
->>  	pfvf->rq_bmap = kcalloc(req->rq_cnt, sizeof(long), GFP_KERNEL);
->> -	if (!pfvf->rq_bmap)
->> +	if (!pfvf->rq_bmap) {
->> +		rc = -ENOMEM;
->>  		goto free_mem;
->> +	}
->This is a pre-existing issue, but can repeated mailbox messages cause a memory
->leak here?
->If an untrusted VF continuously sends MBOX_MSG_NIX_LF_ALLOC messages without
->sending a corresponding NIX_LF_FREE, it appears qmem_alloc() and kcalloc()
->will overwrite the pointers in the pfvf structure (like pfvf->rq_ctx and
->pfvf->rq_bmap) without freeing the previously allocated memory.
->Could this be used by a guest to cause host DMA or heap memory exhaustion?
-Prexisting issue, not addressing as part of this. May be a hardening series post this series,
-or patch to introduce some limit  can be planned.
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
 
->> +	rc = nix_interface_init(rvu, pcifunc, intf, nixlf, rsp,
->> +				!!(req->flags & NIX_LF_LBK_BLK_SEL));
->> +	if (rc)
->> +		goto free_dft;
->>
->>  	/* Disable NPC entries as NIXLF's contexts are not initialized yet */
->>  	rvu_npc_disable_default_entries(rvu, pcifunc, nixlf);
->> @@ -1699,9 +1712,12 @@ int rvu_mbox_handler_nix_lf_alloc(struct rvu *rvu,
->>
->>  	goto exit;
->>
->> +free_dft:
->> +	if (is_cn20k(rvu->pdev))
->> +		npc_cn20k_dft_rules_free(rvu, pcifunc);
->Does this rollback path accidentally destroy pre-existing default rules?
->If the PF preserved the rules using NIX_LF_DONT_FREE_DFT_IDXS during teardown,
->npc_cn20k_dft_rules_alloc() returns 0 without allocating anything when they
->are already installed:
->npc_cn20k_dft_rules_alloc(struct rvu *rvu, u16 pcifunc)
->{
->    ...
->    ret = npc_cn20k_dft_rules_idx_get(rvu, pcifunc, &b, &m, &p, &u);
->    if (!ret) {
->        dev_dbg(rvu->dev, "default rules are already installed...");
->        return 0;
->    }
->    ...
->}
->If nix_interface_init() subsequently fails, the error handler jumps to free_dft
->and unconditionally frees the rules.
-Even if it is freed, next successful nix lf alloc, will setup these default rules.
+Maxime
 
-We can modify npc_cn20k_dft_rules_alloc() to add one more paremeter (bool &) to indicate whether newly/already
-allocated status. Based on the flag, invoke npc_cn20k_dft_rules_free(). Will take it up as
-hardening series after the series is merged.
+> ---
+> v2:
+>  - split into multiple patches
+> ---
+>  include/linux/ethtool.h |  2 ++
+>  net/ethtool/ioctl.c     | 17 ++++++++++++++---
+>  net/ethtool/linkinfo.c  |  4 ++--
+>  net/ethtool/linkmodes.c |  4 ++--
+>  4 files changed, 20 insertions(+), 7 deletions(-)
+> 
+> diff --git a/include/linux/ethtool.h b/include/linux/ethtool.h
+> index 1cb0740ba331..f51346a6a686 100644
+> --- a/include/linux/ethtool.h
+> +++ b/include/linux/ethtool.h
+> @@ -325,6 +325,8 @@ struct ethtool_link_ksettings {
+>  extern int
+>  __ethtool_get_link_ksettings(struct net_device *dev,
+>  			     struct ethtool_link_ksettings *link_ksettings);
+> +int netif_get_link_ksettings(struct net_device *dev,
+> +			     struct ethtool_link_ksettings *link_ksettings);
+>  
+>  struct ethtool_keee {
+>  	__ETHTOOL_DECLARE_LINK_MODE_MASK(supported);
+> diff --git a/net/ethtool/ioctl.c b/net/ethtool/ioctl.c
+> index bd97f9b9bf18..49da873b673d 100644
+> --- a/net/ethtool/ioctl.c
+> +++ b/net/ethtool/ioctl.c
+> @@ -436,10 +436,10 @@ struct ethtool_link_usettings {
+>  };
+>  
+>  /* Internal kernel helper to query a device ethtool_link_settings. */
+> -int __ethtool_get_link_ksettings(struct net_device *dev,
+> -				 struct ethtool_link_ksettings *link_ksettings)
+> +int netif_get_link_ksettings(struct net_device *dev,
+> +			     struct ethtool_link_ksettings *link_ksettings)
+>  {
+> -	ASSERT_RTNL();
+> +	/* once callers fixed - assert ops locked */
+>  
+>  	if (!dev->ethtool_ops->get_link_ksettings)
+>  		return -EOPNOTSUPP;
+> @@ -450,6 +450,17 @@ int __ethtool_get_link_ksettings(struct net_device *dev,
+>  	memset(link_ksettings, 0, sizeof(*link_ksettings));
+>  	return dev->ethtool_ops->get_link_ksettings(dev, link_ksettings);
+>  }
+> +EXPORT_SYMBOL(netif_get_link_ksettings);
+> +
+> +/* Convenience helper for callers that hold only rtnl_lock(). */
+> +int __ethtool_get_link_ksettings(struct net_device *dev,
+> +				 struct ethtool_link_ksettings *link_ksettings)
+> +{
+> +	ASSERT_RTNL();
+> +
+> +	/* once callers fixed - take the ops lock around this call */
+> +	return netif_get_link_ksettings(dev, link_ksettings);
+> +}
+>  EXPORT_SYMBOL(__ethtool_get_link_ksettings);
+>  
+>  /* convert ethtool_link_usettings in user space to a kernel internal
+> diff --git a/net/ethtool/linkinfo.c b/net/ethtool/linkinfo.c
+> index 244ff92e2ff9..d5b3dbc53c5f 100644
+> --- a/net/ethtool/linkinfo.c
+> +++ b/net/ethtool/linkinfo.c
+> @@ -34,7 +34,7 @@ static int linkinfo_prepare_data(const struct ethnl_req_info *req_base,
+>  	ret = ethnl_ops_begin(dev);
+>  	if (ret < 0)
+>  		return ret;
+> -	ret = __ethtool_get_link_ksettings(dev, &data->ksettings);
+> +	ret = netif_get_link_ksettings(dev, &data->ksettings);
+>  	if (ret < 0)
+>  		GENL_SET_ERR_MSG(info, "failed to retrieve link settings");
+>  	ethnl_ops_complete(dev);
+> @@ -104,7 +104,7 @@ ethnl_set_linkinfo(struct ethnl_req_info *req_info, struct genl_info *info)
+>  	bool mod = false;
+>  	int ret;
+>  
+> -	ret = __ethtool_get_link_ksettings(dev, &ksettings);
+> +	ret = netif_get_link_ksettings(dev, &ksettings);
+>  	if (ret < 0) {
+>  		GENL_SET_ERR_MSG(info, "failed to retrieve link settings");
+>  		return ret;
+> diff --git a/net/ethtool/linkmodes.c b/net/ethtool/linkmodes.c
+> index 30d703531652..a6d32f0d9fcc 100644
+> --- a/net/ethtool/linkmodes.c
+> +++ b/net/ethtool/linkmodes.c
+> @@ -39,7 +39,7 @@ static int linkmodes_prepare_data(const struct ethnl_req_info *req_base,
+>  	if (ret < 0)
+>  		return ret;
+>  
+> -	ret = __ethtool_get_link_ksettings(dev, &data->ksettings);
+> +	ret = netif_get_link_ksettings(dev, &data->ksettings);
+>  	if (ret < 0) {
+>  		GENL_SET_ERR_MSG(info, "failed to retrieve link settings");
+>  		goto out;
+> @@ -324,7 +324,7 @@ ethnl_set_linkmodes(struct ethnl_req_info *req_info, struct genl_info *info)
+>  	bool mod = false;
+>  	int ret;
+>  
+> -	ret = __ethtool_get_link_ksettings(dev, &ksettings);
+> +	ret = netif_get_link_ksettings(dev, &ksettings);
+>  	if (ret < 0) {
+>  		GENL_SET_ERR_MSG(info, "failed to retrieve link settings");
+>  		return ret;
+
