@@ -1,182 +1,186 @@
-Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011000.outbound.protection.outlook.com [52.101.62.0])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFF5D4028C6;
-	Wed,  3 Jun 2026 07:29:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.0
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780471803; cv=fail; b=JK//VTqXaabYENeExdaao+jSjn7TRjZ9NJ4wGdbP9pfriTosG7f6Pid8IBIO3dUFfQX00DI8Eo/ZNSxVwhpQLKu3K6QmUqtZo61uORRe/88w6dxy4ryxL0ufDaKsvOZdBQ2k0/U5+soePuLbfW8cN+6m6FQeqs2oFMPaDKcl4y0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780471803; c=relaxed/simple;
-	bh=JrVliSlbeKptO9eKXjEV84rVZHJHw+RmXy/fQR5J7mY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=nf3aHmKkbmKP9zG9dvAF0sObShLkibEbrLg8QjHnkr+WWFZ0v9nZU9J5UoXdTJge/8HrY2hchEo4gpW1KWXW+QVcMq3gU1qWUggSEkTdywHOb72/p2+Vw6NVzlVi+WT5BykOOMhG7P0OS7neoJ2VG0gwBKjt2Hpt4d2ZxW1KQJ0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=altera.com; spf=pass smtp.mailfrom=altera.com; dkim=pass (2048-bit key) header.d=altera.com header.i=@altera.com header.b=PGPzpYhr; arc=fail smtp.client-ip=52.101.62.0
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=altera.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altera.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2679423A97
+	for <netdev@vger.kernel.org>; Wed,  3 Jun 2026 07:30:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780471810; cv=none; b=TlaOMLXP78bWlzuUuU9mR9R37jfSYjsHDU3ziI+bC2sWSlEvcAR6BFGuCawdAkZMq3SKz8HyLdTNU9hyL+IVfg6FbYJn5Qk80S5veP9wyIOAc/d4GUxwDd1oAdFJuZcCwC3BivCsYBayYZHI9wjPEVUsNHGvR8q3ZgGtiHwJyyY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780471810; c=relaxed/simple;
+	bh=YxzoIVHbPr3oQc1nQVQasy2iwxvsuBJgEY4HXVBZmqU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=jjVxTxH8gbcQla61zeBmqAxo58H5/twBO4HL23qZEgub5wnwCqzJAOqKT35Bru/PZWKHR7fex13BOUThGmgVCxtMVHchCb+FPB6Mho+M9kJ8TAEUISoCDBvUwVaDVmHlaUMFI1N1r9ydDgnZb9HV9ATY4kbF8MkwVb+YjqgIjVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=xSWk3Sjf; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=uGZE9rWZ; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=xSWk3Sjf; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=uGZE9rWZ; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=altera.com header.i=@altera.com header.b="PGPzpYhr"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=jSHS6TCG9qwrxVSFH7LMIZ62NHarS+tqUiLmUBjKbmYohPpXkrubt4VZTDIgfjL3Law/yoSTfqGN30xmDULCfrKuoyqH1tmCTkuAG2FKAtzNOEcqlQ8diS77Wq9Df9lqw8lsBJPsY4+VUnmOYUEZwLL73WbM06ePtoFyghLXDmxAIKi22VuYGaLzTOK9KRVRFh2LH66FMXePeE9SwbvAIVnysMmGc+Zb7s1RSVoTbL4AMF0NcFD5ulyycWmFawkGX7PAM2xT3BvTxSy8dRQvnBtG+9WbwiYXEfNlt+4x946EV3UAdLsL0gd1Qyl8/30k6k3iObuuM5TUzRLLLThQKw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xWeXD5b3Mu0UToFxdMygz4f9aecflESnL2RYK3Wz5FE=;
- b=OkyJD8RcFNOyI6amUBinMQFWp/Ang2SWabeEk5wOFIFxLuTqiMqABjt6tkKc/glZTzCxd/sc8GhIhZS7cvisy6Pr9tAWjo12ZdTezJTU3ctNqN8ugvWOrbEXIFCynhjPb13fOJu8EHCAWPOaX310UFrpOj1W/U49ZueuyNHtrTNZ2cV5rVixDud1tfi0ff+kcCfs+rlynMbVbkC4NqF4nzxIJOjFQpFoG3s5cFBfqNuhfXjLSmbDdrr0VPsXF/ciqOrRli6O2tSK/nR0XcC+ViQ4O4gtm6OOHP2sEmQ6jQpeLjyd4XEXelANHIVQz8w6cq4lbQ6Oaars13jotQvNkA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=altera.com; dmarc=pass action=none header.from=altera.com;
- dkim=pass header.d=altera.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=altera.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=xWeXD5b3Mu0UToFxdMygz4f9aecflESnL2RYK3Wz5FE=;
- b=PGPzpYhr5WjBDngRU2dzvnnUChoCy6F2NSQCoLgB4URT7AU9T+zFX3iTcCrgq8BnDZfwG6Os6e+P2fnSOI2Sp3SRayIxB2iae50XJbmCpj6J7LN2rYVWresGIjbyoAN25v66hODNJGD3jUQHsygojVDbWJZ6UAs74M19/VMaot1uZrV4CbGURWYHUthBdbOPKh69iyUHEwHJXuoDbK3kCHi68rjOOTVqGtSthEjDCRMWyMwo03/i/7axjXCp9o7TJup99nEGQmQsCZ8VU/NLV1EkY57ORE0jxrI6k0tVvo3Af+xrOnq7VYAInDz5DIMSI459x/e/HIHmSCNoTQ+C3A==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=altera.com;
-Received: from SJ0PR03MB6964.namprd03.prod.outlook.com (2603:10b6:a03:432::18)
- by PH0PR03MB5813.namprd03.prod.outlook.com (2603:10b6:510:35::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.15; Wed, 3 Jun 2026
- 07:29:29 +0000
-Received: from SJ0PR03MB6964.namprd03.prod.outlook.com
- ([fe80::b965:bfa8:58fb:e775]) by SJ0PR03MB6964.namprd03.prod.outlook.com
- ([fe80::b965:bfa8:58fb:e775%6]) with mapi id 15.21.0071.011; Wed, 3 Jun 2026
- 07:29:29 +0000
-From: muhammad.nazim.amirul.nazle.asmade@altera.com
-To: netdev@vger.kernel.org
-Cc: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	rmk+kernel@armlinux.org.uk,
-	maxime.chevallier@bootlin.com,
-	Jose.Abreu@synopsys.com,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 4/4] net: stmmac: xgmac: report L3/L4 filter match count in ethtool stats
-Date: Wed,  3 Jun 2026 00:29:25 -0700
-Message-ID: <20260603072925.27890-5-muhammad.nazim.amirul.nazle.asmade@altera.com>
-X-Mailer: git-send-email 2.43.7
-In-Reply-To: <20260603072925.27890-1-muhammad.nazim.amirul.nazle.asmade@altera.com>
-References: <20260603072925.27890-1-muhammad.nazim.amirul.nazle.asmade@altera.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: BY3PR03CA0017.namprd03.prod.outlook.com
- (2603:10b6:a03:39a::22) To SJ0PR03MB6964.namprd03.prod.outlook.com
- (2603:10b6:a03:432::18)
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="xSWk3Sjf";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="uGZE9rWZ";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="xSWk3Sjf";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="uGZE9rWZ"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id D687E6A814;
+	Wed,  3 Jun 2026 07:30:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1780471804; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TpNk53TJJJrI1vhGNmcCweBe5RxuqLMJWxMWBJp5NUs=;
+	b=xSWk3SjfyEUHYnV8RixbV41okdrSBJUTo6bjowgwWEFdhysxlVoiwnQf84p9V+9NCtGJOW
+	11gwNYNBpssT0wX4veHWrgIojW9B2+HHf7kf4N44WbbSx+MtYxbWVrbwUAcq6If88KSvZU
+	eB+tf+HZmxo2UHrjc3bRYRq/j+mMa3c=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1780471804;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TpNk53TJJJrI1vhGNmcCweBe5RxuqLMJWxMWBJp5NUs=;
+	b=uGZE9rWZF4DQreq5id8Rvv6DiS246Lf7vaPhPxHYTVzxPZ9+qUoNKxBKVys+mba9rFAF5T
+	2fP61wqpw5XNIqBA==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=xSWk3Sjf;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=uGZE9rWZ
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1780471804; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TpNk53TJJJrI1vhGNmcCweBe5RxuqLMJWxMWBJp5NUs=;
+	b=xSWk3SjfyEUHYnV8RixbV41okdrSBJUTo6bjowgwWEFdhysxlVoiwnQf84p9V+9NCtGJOW
+	11gwNYNBpssT0wX4veHWrgIojW9B2+HHf7kf4N44WbbSx+MtYxbWVrbwUAcq6If88KSvZU
+	eB+tf+HZmxo2UHrjc3bRYRq/j+mMa3c=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1780471804;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TpNk53TJJJrI1vhGNmcCweBe5RxuqLMJWxMWBJp5NUs=;
+	b=uGZE9rWZF4DQreq5id8Rvv6DiS246Lf7vaPhPxHYTVzxPZ9+qUoNKxBKVys+mba9rFAF5T
+	2fP61wqpw5XNIqBA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E4F52779A7;
+	Wed,  3 Jun 2026 07:30:03 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id piMwNfvXH2pkVQAAD6G6ig
+	(envelope-from <fmancera@suse.de>); Wed, 03 Jun 2026 07:30:03 +0000
+Message-ID: <ee2b92e5-6d95-4c36-9fa8-6cd2a1572556@suse.de>
+Date: Wed, 3 Jun 2026 09:29:55 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ0PR03MB6964:EE_|PH0PR03MB5813:EE_
-X-MS-Office365-Filtering-Correlation-Id: fe6de8ba-5c7e-4c35-665b-08dec141d937
-X-MS-Exchange-AtpMessageProperties: SA
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|7416014|1800799024|18002099003|22082099003|11063799006|56012099006|55112099003;
-X-Microsoft-Antispam-Message-Info:
-	25v0WN5UFaqXqzonHmsWsWXWBTxMkcDRRRSq7wnUJ+iDm7JD5/m4rO5Se8eM6VqrF83f4dBQDINrYirFFvfpLR60xSQsOK7y+dOZg5FLsxAsxduJK/RwUOGUKjg32/fA6RzLd5sAQzvwrw41xwwOcVcceZ/MSId2xjUK/OA4hwpsKuSMYhcTLIORIS97U1dz4p4i67zQoUE4b3Bv2FJgmebwR/VmUa2/4JCaZIt1MGo+EiNSaXD3HuHrWCSk87vlnNfADr5ANWfNCdBlp1NwPb1Izh+fypmhWanZJrL9Gge6l8kpI4vkEHIasczAqw2B59RbydRF3awutflo7KD0ETB71hNnvr1mZufTNJd2hROgAV7E7p7xcwGS4B7+OLXlScNzqdaVhk10oJkwF/vYmtYTQppK8MFA8NbMkJpU8W9c+UtZ0L6AdOirS7LEE8KMX8h3TVjRFK1VbNUOsHmufQJtzR3m41xNizyW6Tb1yCbl9wKpyvnD9YqgNtz9swcSVJlJNi0dGoHJVdaa9kmpY6u+8ZavA2KHdoXQal8n9pfaHT1ZYsmkF7BtjXz0zuiFFMtnokCgsZkw8ud7RLLlvthsZgahdf0sJsk8Ciffkb/JVyWCcOWCc4a/NDOoiIIMfeXrwpUAHOslK68WqOzmG12v9XXsTnVpNWiIt8oQBGH46QbvSlz7uGdY7lZy0wrm
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR03MB6964.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(18002099003)(22082099003)(11063799006)(56012099006)(55112099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?cHKINirxwGs4Ukq/0ZGjx9gqTHMOcnol46f5tsp2YVgNb+9CD5qQeIrNiQqz?=
- =?us-ascii?Q?UVV+F35aspigmfc2lH/RWbxFURLYFiRDdL0EB9eU5XsNSl8BHHj7Q4BA075U?=
- =?us-ascii?Q?q282m83M/qMaQ/IvrNzHdMDGzd2FHKUuR/uFatWsyq0Qmo8vl3s4t+DNdasg?=
- =?us-ascii?Q?vb8a3rkzbsDCIji9oPl35K/W5FXY6okaVOg0/dihjwHDOCtdPxDbOASsKpQP?=
- =?us-ascii?Q?oTlZDXyXDgkVXWZXdDK1qX4kL2Ia3xk8T4/axc32TZTY47rVNbgslUR1ORC8?=
- =?us-ascii?Q?t0KdDbSKssa1I0twA9cWJLvzgKbAz/V0ysgWCOL+VePGvNacYx3VUUGpmDO9?=
- =?us-ascii?Q?PImbZSdc/GaeU5n+9cOMD0BWNPyNhfjgjp/5qxqojxGE4A9HzDOmcrSzHoAg?=
- =?us-ascii?Q?vTUXqVJBlaSIIgY2kmG76DAuaZC04yvkSNIw0kM5WQHY0ieO6tKdCBzn4C+Y?=
- =?us-ascii?Q?OFzKyl4d/1bTGpm/khVu45eg+hoFG0D1yaxv1YKeMToDpjs5o1ragCGGGH3G?=
- =?us-ascii?Q?vi1XTfyq8LnPWF0Ko5ROm7iA2k+lUWX4oxmOaBkteHqLWxRpoftiKv3lrxlZ?=
- =?us-ascii?Q?iPggWd9nWbocOLzp0XOp3RQ44jf37+QS32rxJRTP3p7GNcdB28NYEk7iTqyK?=
- =?us-ascii?Q?x1X2C0hfVIZRdde/zT3a9ponAcO7iV56cG1CaBd4cTX5KO1FEf7iEynTit83?=
- =?us-ascii?Q?wAbIu8dNp8qgP/P3XlsJbeyTVJfjdPZfo+//XlxWMIvu2ktd9teKf1FQpu5t?=
- =?us-ascii?Q?hpQ+z3kfmb/YNka+3Iegm14TdGeBIoxcE74lrDlAqHsCumcciU7ph7uTg7WH?=
- =?us-ascii?Q?NQ6md1QOqoIrUaatP1g18XU+ohHyrMH0mCMNbizmRQflYaMp6AGezHa0vECX?=
- =?us-ascii?Q?VYYq6b++nke30yQdDdhkx1RIkRCgF/0QaqwZlakauUeIWlQ8wC4l6DfvH1EO?=
- =?us-ascii?Q?aIn+35/OOSUTOKpyr3ju7jkpDQPTFrZocC6YwgGf30XDHMVeDecLZ0lcEHuz?=
- =?us-ascii?Q?eK4o6+VFJn6M1gSTiqHcI5d8OB0QbAZXoBVs3sJozXP/ZmJfQT72LhogAFjt?=
- =?us-ascii?Q?8zT1zjnxzfYM1ee/Ip03z0BPXv/tUeIZca+wNecnuqpB6x+y2a/BeJCbbqeG?=
- =?us-ascii?Q?RC2ExWnUgj3xxHm0lsXTBVbWXEfjiBXpfmDkxXzlWttkqBLkqEIYkGhk7Ssh?=
- =?us-ascii?Q?Rpy2tHyS5Z6aLH8LVwUmJ/y+uOmepNPTwiyXoCv9m5kXQOevt4YLKQbRlG9j?=
- =?us-ascii?Q?JS8T9kFoiFhTNEVvW3TJTs9Sti4FwQJTa8qAtKi2v2UpJvjCRyzvF+alWiRS?=
- =?us-ascii?Q?liE+epFzIPKzo2Al/nUMG0H57xzbjP3T3jmmZ/rtFrsQIRFSWobXfpijmEd4?=
- =?us-ascii?Q?Td8FPhf0ei8ZR3Dj2ONDuI7lYmvgWt8pvyUe2V4/UigZuso15xdbUXeK76OC?=
- =?us-ascii?Q?K1Xi3CaqR2xkcje0kxalbo01WZ6Tep1QWyDAz+wlA9/AbWTF5GWlo1zWv6Wb?=
- =?us-ascii?Q?IFv3ccGE9iGUhIjVR1J7UQ0vmVTP73RC2NnuQzzYQBv9tekPANOik7HdE/L4?=
- =?us-ascii?Q?QYubnXoEutijdVB/5wrM52YPM1FDlgsYyHnjE1A4yKpRl5en5M8YeQu1pVRs?=
- =?us-ascii?Q?FLfSf1tc3PqJqEL9bew3xibm7HkiYOAoz2HwEHl2LNYmbgfGWMT+OzzhODhu?=
- =?us-ascii?Q?kgZhVx0raENwUJO9v2x2gAab+j27zzoPRXKcxw30/qQlxRIV+zBwwEsVtcNK?=
- =?us-ascii?Q?Bwk9zPi1iMCcfXfwF6ssbuQAeZh50ffPdmt+MPAwhYLbtaCQe8Ry5jIn7xDT?=
-X-MS-Exchange-AntiSpam-MessageData-1: oHrk1P9ftZMhVg==
-X-OriginatorOrg: altera.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fe6de8ba-5c7e-4c35-665b-08dec141d937
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR03MB6964.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jun 2026 07:29:29.7080
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: fbd72e03-d4a5-4110-adce-614d51f2077a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /RNFQ9ywwTer1ncvWgRIxHnTJh4eYtIitzoEmP+njZZV2vzL4QkZ6NVuZ8lqHideSCsV8qjtMfa0nCDiR2vIcqw3qlBcJIcKhG41KmEtIAIYYlEs2z90MANIYds+YbojhcRBIkrLvzD67LfM58LoDA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR03MB5813
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v2] Revert "ipv6: preserve insertion order for
+ same-scope addresses"
+To: Thorsten Leemhuis <regressions@leemhuis.info>,
+ =?UTF-8?B?w43DsWlnbyBIdWd1ZXQ=?= <ihuguet@redhat.com>,
+ Matthieu Baerts <matttbe@kernel.org>
+Cc: Stefano Brivio <sbrivio@redhat.com>, netdev@vger.kernel.org,
+ yuhuang@redhat.com, justin.iurman@gmail.com, horms@kernel.org,
+ pabeni@redhat.com, kuba@kernel.org, edumazet@google.com,
+ davem@davemloft.net, idosch@nvidia.com, dsahern@kernel.org,
+ Chris Adams <linux@cmadams.net>, David Gibson <david@gibson.dropbear.id.au>,
+ Beniamino Galvani <bgalvani@redhat.com>, Andrew Lunn <andrew@lunn.ch>,
+ regressions@lists.linux.dev
+References: <20260529112357.5079-1-fmancera@suse.de>
+ <20260529134045.56330243@elisabeth>
+ <5079261a-79e5-421b-bf6a-a511acaaeca4@kernel.org>
+ <20260601153525.546746a8@elisabeth>
+ <CACT4oueDv=KRZmJw=1N58EN7eoFz5AqbBBMP8FE4=+rQ99oFEg@mail.gmail.com>
+ <8e9cbf0a-caff-4575-afb7-fe852df8a51a@kernel.org>
+ <CACT4oueJ3GsVvnWcZHgYVL-fCjpt5nOw+2=0BTmiz-9xKY4B0w@mail.gmail.com>
+ <eba11df5-3ae6-4bc4-bbe7-be358a0d4717@leemhuis.info>
+Content-Language: en-US
+From: Fernando Fernandez Mancera <fmancera@suse.de>
+In-Reply-To: <eba11df5-3ae6-4bc4-bbe7-be358a0d4717@leemhuis.info>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Flag: NO
+X-Rspamd-Action: no action
+X-Spam-Level: 
+X-Spamd-Result: default: False [-3.01 / 50.00];
+	BAYES_HAM(-3.00)[99.99%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	ARC_NA(0.00)[];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	RCVD_TLS_ALL(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received,2a07:de40:b281:104:10:150:64:97:from];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[redhat.com,vger.kernel.org,gmail.com,kernel.org,google.com,davemloft.net,nvidia.com,cmadams.net,gibson.dropbear.id.au,lunn.ch,lists.linux.dev];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	DKIM_TRACE(0.00)[suse.de:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.de:mid,suse.de:dkim]
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Queue-Id: D687E6A814
+X-Spam-Score: -3.01
 
-From: Nazim Amirul <muhammad.nazim.amirul.nazle.asmade@altera.com>
+On 6/3/26 9:17 AM, Thorsten Leemhuis wrote:
+> On 6/3/26 08:53, Íñigo Huguet wrote:
+>> Stating that the order is "random" implies that someone will change
+>> the default insertion order in the future, as the documentation says
+>> that it's not UAPI. So they'll cause the UAPI breakage that we are
+>> trying to avoid now. Moreover, if we consider the default order
+>> "random" and state that userspace programs must not rely on it, why
+>> can't we change it now?
+> 
+> Because the UAPI is only indirectly important, as it's "something that
+> used to work doesn't anymore" is what matters; you in fact can break the
+> UAPI all you want, as long as everything continues to work. Or to quote
+> Linus from:
+> 
 
-Read the L3FM and L4FM bits from the RX descriptor status word (RDES2)
-and increment the corresponding ethtool statistics counters. This allows
-users to observe L3/L4 filter hit rates via ethtool -S.
+I agree with Thorsten here. We must not break the UAPI. Is the current 
+order kind of weird? Yes. But software that is running on real systems 
+depends on it.
 
-Signed-off-by: Rohan G Thomas <rohan.g.thomas@altera.com>
-Signed-off-by: Nazim Amirul <muhammad.nazim.amirul.nazle.asmade@altera.com>
----
- drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h       | 2 ++
- drivers/net/ethernet/stmicro/stmmac/dwxgmac2_descs.c | 6 ++++++
- 2 files changed, 8 insertions(+)
+AFAICS, it is not only NetworkManager but systemd-networkd, cloud 
+tooling and any other script that uses netlink. I think we must stick to 
+the rule of not breaking userspace and the argument of consistency with 
+IPv4 is not appealing to me because that isn't a goal of IPv6, plenty is 
+different when you compared both protocols.
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h
-index 51943705a2b0..95fdf3133208 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h
-@@ -429,6 +429,8 @@
- #define XGMAC_TDES3_VLTV		BIT(16)
- #define XGMAC_TDES3_VT			GENMASK(15, 0)
- #define XGMAC_TDES3_FL			GENMASK(14, 0)
-+#define XGMAC_RDES2_L4FM		BIT(28)
-+#define XGMAC_RDES2_L3FM		BIT(27)
- #define XGMAC_RDES2_HL			GENMASK(9, 0)
- #define XGMAC_RDES3_OWN			BIT(31)
- #define XGMAC_RDES3_CTXT		BIT(30)
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_descs.c b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_descs.c
-index b5f200a87484..6719ac6e395b 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_descs.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_descs.c
-@@ -27,6 +27,7 @@ static int dwxgmac2_get_rx_status(struct stmmac_extra_stats *x,
- 				  struct dma_desc *p)
- {
- 	u32 rdes3 = le32_to_cpu(p->des3);
-+	u32 rdes2 = le32_to_cpu(p->des2);
- 
- 	if (unlikely(rdes3 & XGMAC_RDES3_OWN))
- 		return dma_own;
-@@ -37,6 +38,11 @@ static int dwxgmac2_get_rx_status(struct stmmac_extra_stats *x,
- 	if (unlikely((rdes3 & XGMAC_RDES3_ES) && (rdes3 & XGMAC_RDES3_LD)))
- 		return discard_frame;
- 
-+	if (rdes2 & XGMAC_RDES2_L3FM)
-+		x->l3_filter_match++;
-+	if (rdes2 & XGMAC_RDES2_L4FM)
-+		x->l4_filter_match++;
-+
- 	return good_frame;
- }
- 
--- 
-2.43.7
+We should document that the order matters, no that it is "random" 
+because it isn't.
+
+> https://www.kernel.org/doc/html/latest/process/handling-regressions.html#on-what-qualifies-as-userspace-interface-abi-api-documented-interfaces-etc
+> 
+> "I just wanted to point out that the argument about whether it's an ABI
+> change or not is irrelevant. If it turns out that some program - not a
+> test script, but something with relevance to conscious user expectations
+> ~ depended on the old broken behavior, then it needs to be done some
+> other way.""
+> 
+> Yes, he talks about ABIs here, but it's the same for APIs.
+> 
+> Ciao, Thorsten
 
