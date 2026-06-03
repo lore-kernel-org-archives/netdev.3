@@ -1,162 +1,344 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtpbg150.qq.com (smtpbg150.qq.com [18.132.163.193])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A79C43D75C4;
-	Wed,  3 Jun 2026 02:21:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8237B352C54
+	for <netdev@vger.kernel.org>; Wed,  3 Jun 2026 02:23:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.132.163.193
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780453311; cv=none; b=NMdn2pLgk4jq80WLPu7Av8Tr9C/qCixs400qy/cWgXpqzfj0Qn6f4oitkbpDiiYlTcrqFj3Yx6CCWMWOZ8ua/RP6Xmpb5rfOaDozYduuJHrnVbPiMv09o2lNmvcSrwmCeFQo0Tnl2JLlQOvWWPWIuZiCJD9lqqRIUA6aqyliigo=
+	t=1780453439; cv=none; b=c/avUJLfI2PTFGjGt5oIu0U0X1npcbbqHFvTE247AYXZQ8C1oRyVFBNfqWowLdIn+rHUOPCi7U0/Ug2nY6Yfo8yRUjDv5s8Y3oRSyFRGddt4qOCqpfgySMR2AO7kGeZAl8JNkYBAS152rOPcfO8VJx/8xMlnSYIoxybiJ7zgDWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780453311; c=relaxed/simple;
-	bh=NQ+8uBpv2+/0PdKtI70kU1g2Ta82QW2ErIZzI2ukItE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fSr5akUHLB/mVl4WRO5rsh0emAocv+7ZMsvTQrjY/n9Pe5jWXA6ZGMPuOT+Fz7b4T61eMaNTU+wJTbOH0kKJviRTqJZufQVwufr8jkl5ryJxwyrRPCudoNOqXGspLRHvLHCOxtvPPsRKzT/KpcGyZBenxi3HpPTcMDnkBHNfwY4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Gwm9kMJC; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Gwm9kMJC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCD931F00898;
-	Wed,  3 Jun 2026 02:21:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780453310;
-	bh=oRvfGkadThN28A+4nC2mZwKCLc8uSYzi+IwPFo8dqgo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Gwm9kMJCnF3gF3CphivIvgG3mf5yYW/gp5LUYZxwhcl4c+xKOdq7YZ1qRwF+2z9H9
-	 oNPasZsY+xsWSponiJ3KIzpGFAQ268/n7s4YU4E1S5bg9jaKhe23zreY/3nUT5sx1h
-	 OzXauVoWh4yToPAJW241oPZaedVYAkrXenJ7OKKuQztUnPUxSW4QlXkXBb88cHG/f3
-	 lzsWN4Nu+JcFFiVz0bQ/HU+NxB/J2x8AkImK/pwxnUG4GU9NSOxq1AdyqCmfYT2/HN
-	 2n0pX39ccUB3f8jpns2KkcS5JUdz977qvBG1WP0W1UGR6ihgmrAXEj/gj1qzJs2uDX
-	 jj6PDfo0//oFA==
-From: Jakub Kicinski <kuba@kernel.org>
-To: lihaoxiang@isrc.iscas.ac.cn
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	pabeni@redhat.com,
-	Steen.Hegelund@microchip.com,
-	daniel.machon@microchip.com,
-	UNGLinuxDriver@microchip.com,
-	kees@kernel.org,
-	jacob.e.keller@intel.com,
-	netdev@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v2] net: microchip: sparx5: clean up PSFP resources on flower setup failure
-Date: Tue,  2 Jun 2026 19:21:48 -0700
-Message-ID: <20260603022148.2296220-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260529065615.35782-1-lihaoxiang@isrc.iscas.ac.cn>
-References: <20260529065615.35782-1-lihaoxiang@isrc.iscas.ac.cn>
+	s=arc-20240116; t=1780453439; c=relaxed/simple;
+	bh=OSD1MxWLmpm44uwyEirSbR6oylZ9ebZKVjDvor31qmM=;
+	h=From:To:Cc:References:In-Reply-To:Subject:Date:Message-ID:
+	 MIME-Version:Content-Type; b=J404D1X15ORyzVLqQJvTtwvz7dBL7iPKC+eMH11oJ6FEbsVrysyp+D62RH5/e24hroQfV+H6XsZ7qAq4ELTqWIfb5rihkrjt4Ej/urnSr87eactoQrWfNFcIXIsXsvhaB8tTNdufBMJfRFnCRrExMbwUjUsNzbIKJ+avRyAV5nM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=18.132.163.193
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
+X-QQ-mid:Yeas4t1780453348t452t38243
+Received: from 3DB253DBDE8942B29385B9DFB0B7E889 (jiawenwu@trustnetic.com [36.24.207.111])
+X-QQ-SSF:0000000000000000000000000000000
+From: =?utf-8?b?Smlhd2VuIFd1?= <jiawenwu@trustnetic.com>
+X-BIZMAIL-ID: 2004524863220335382
+To: "'Larysa Zaremba'" <larysa.zaremba@intel.com>
+Cc: <netdev@vger.kernel.org>,
+	"'Mengyuan Lou'" <mengyuanlou@net-swift.com>,
+	"'Andrew Lunn'" <andrew+netdev@lunn.ch>,
+	"'David S. Miller'" <davem@davemloft.net>,
+	"'Eric Dumazet'" <edumazet@google.com>,
+	"'Jakub Kicinski'" <kuba@kernel.org>,
+	"'Paolo Abeni'" <pabeni@redhat.com>,
+	"'Richard Cochran'" <richardcochran@gmail.com>,
+	"'Russell King'" <linux@armlinux.org.uk>,
+	"'Jacob Keller'" <jacob.e.keller@intel.com>,
+	"'Michal Swiatkowski'" <michal.swiatkowski@linux.intel.com>,
+	"'Simon Horman'" <horms@kernel.org>,
+	"'Kees Cook'" <kees@kernel.org>,
+	"'Ingo Molnar'" <mingo@kernel.org>,
+	"'Joe Damato'" <joe@dama.to>,
+	"'Breno Leitao'" <leitao@debian.org>,
+	"'Aleksandr Loktionov'" <aleksandr.loktionov@intel.com>,
+	=?iso-8859-1?Q?'Uwe_Kleine-K=F6nig_=28The_Capable_Hub=29'?= <u.kleine-koenig@baylibre.com>,
+	"'Johannes Berg'" <johannes@sipsolutions.net>,
+	"'Fabio Baltieri'" <fabio.baltieri@gmail.com>,
+	<netdev@vger.kernel.org>,
+	"'Mengyuan Lou'" <mengyuanlou@net-swift.com>,
+	"'Andrew Lunn'" <andrew+netdev@lunn.ch>,
+	"'David S. Miller'" <davem@davemloft.net>,
+	"'Eric Dumazet'" <edumazet@google.com>,
+	"'Jakub Kicinski'" <kuba@kernel.org>,
+	"'Paolo Abeni'" <pabeni@redhat.com>,
+	"'Richard Cochran'" <richardcochran@gmail.com>,
+	"'Russell King'" <linux@armlinux.org.uk>,
+	"'Jacob Keller'" <jacob.e.keller@intel.com>,
+	"'Michal Swiatkowski'" <michal.swiatkowski@linux.intel.com>,
+	"'Simon Horman'" <horms@kernel.org>,
+	"'Kees Cook'" <kees@kernel.org>,
+	"'Ingo Molnar'" <mingo@kernel.org>,
+	"'Joe Damato'" <joe@dama.to>,
+	"'Breno Leitao'" <leitao@debian.org>,
+	"'Aleksandr Loktionov'" <aleksandr.loktionov@intel.com>,
+	=?iso-8859-1?Q?'Uwe_Kleine-K=F6nig_=28The_Capable_Hub=29'?= <u.kleine-koenig@baylibre.com>,
+	"'Johannes Berg'" <johannes@sipsolutions.net>,
+	"'Fabio Baltieri'" <fabio.baltieri@gmail.com>
+References: <20260601072221.2952-1-jiawenwu@trustnetic.com> <20260601072221.2952-3-jiawenwu@trustnetic.com> <ah6xJgZjplSbVKvl@soc-5CG4396X81.clients.intel.com>
+In-Reply-To: <ah6xJgZjplSbVKvl@soc-5CG4396X81.clients.intel.com>
+Subject: RE: [PATCH net-next v4 2/5] net: wangxun: add Tx timeout process
+Date: Wed, 3 Jun 2026 10:22:27 +0800
+Message-ID: <093d01dcf2ff$d2792810$776b7830$@trustnetic.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Mailer: Microsoft Outlook 16.0
+Content-Language: zh-cn
+Thread-Index: AQEmZmPiFxLXVQw6wm5cjAUm9/PfJgFDayZNAffErqC3f1cwwA==
+X-QQ-SENDSIZE: 520
+Feedback-ID: Yeas:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
+X-QQ-XMAILINFO: Ndvb6QWuI/gYQ3toBxFaFbRplthyuekS4gLyCUXsoeIxNQ0dxxDOu6BW
+	2sULOZ+S+ygX7zIf2/GWkMFIgPx3ypla0mv7AMgQFMoNv3Tb9pI5fr3G+wC/SNvG2NfWzKB
+	UKbTQPduLrd6YUNXe8r7nPz9Rm29uzb063XQR2QAtRiW103yyQNvutNaFJiBzoz67M2DuoO
+	O1Z4nUk769sB3Uy9kzmZwJCZlfH1P8r7IU4t6Ql5OWHjNotmm8ZkYEynh0T6q1hEaQvQ2oH
+	8AdG8t4Zf9zo69+W8t3FHykwonN+oC/+TZMzu76g3vRTFjrVW20VLv9UMpZi6P4hXS5S7ut
+	Yc43imt4Jya/5M2j9aJSsyP2o+VNTUcDuDd5jcTcJr5xvlAcyE7E7Oo7gYxGsndxUbNs8IF
+	ywY8i4y6buAdHd9TpVkgs5CxZH1U+UtM03mS5a8OYikJgVnzZUYOndDyHLCh+CzQpy2hDG/
+	c+aI0g8pN6qIACM+OWMiNLyhefeT2JVsEa/Y2e8Mr2oXjgM26bZa5zeZgfc3jopht6D3ZP/
+	LrKJZoi73f8w4P4d4FYpCwlZyV96RZ23zeCm3hedmFPGsOuiEmoqGnKP3aRJ10sh2sI/Y1i
+	ZQ7cSr1zUmwO6WVxaUP8Pg8F9Y0wnG4IGCBGCtc4wCLuGoRUpVcJhcjdMAa4zRj60p7G/1A
+	bvwhoaZdykvj30kQ56z5GpwoJ7Ja41eG0PJ8kVW2XGHH8LDMBB4j+He+eEGo1Zg7HBlSN5O
+	xzwPIRcwfy+3aOkqcgGqiZYNYjD0omD/NKXRjTiB9a0XnhXXtW4aYLZmtiJm69SguqNQ97+
+	mPwgsZANdUUCKr+Gaw/FzyJczfUYqGkGvMJBAnAsk4Ep+lxZFWw6D+/+Nqkm3exufL6sKzx
+	dPT0uUw5d826qKwh8oA41rS4tW61Cj/wg2eivVRLtEXk4B6fWEH+QDMygyNKxHaRVRTLGU0
+	AuWWtmgq3BLGbsRUIIDIpBbcW2qumqQurp0gV0HX6IK8TAnHDNphfa8NBFzju/2HUXl1WqZ
+	N7hRzrLwOPOw+Qk6d8JMXtqfeG/r6PyRNQ7s57ttbFpUJqw/Mulc0+yuAUpd9HqDwrNDTM+
+	pUHyPkDmMM0iiGpf0+2pGE3n+1kdZLmk17AtkUitgz4
+X-QQ-XMRINFO: NI4Ajvh11aEjEMj13RCX7UuhPEoou2bs1g==
+X-QQ-RECHKSPAM: 0
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
----
-net: microchip: sparx5: clean up PSFP resources on flower setup failure
+On Tue, Jun 2, 2026 6:32 PM, Larysa Zaremba wrote:
+> On Mon, Jun 01, 2026 at 03:22:18PM +0800, Jiawen Wu wrote:
+> > Implement .ndo_tx_timeout to handle Tx side timeout event. When a Tx
+> > timeout event occur, it will trigger driver into reset process.
+> >
+> > The WX_HANG_CHECK_ARMED bit is set to indicate a potential hang. It will
+> > be cleared if a pause frame is received to avoid false hang detection
+> > caused by pause frames.
+> 
+> In general, logic seems sound, below 1 small nit.
+> There is also a seemingly sensible comment from Sashiko (pasted below), which I
+> agree with. If you not schedule NAPI every time to check for hang, then without
+> Rx you are relying on dev_watchdog anyway, so maybe internal hang detection is
+> not that necessary?
 
-This patch adds error handling paths to sparx5_tc_flower_psfp_setup() so
-that PSFP resources allocated earlier in the function are unwound when a
-later step fails.
+The purpose of WX_TX_DETECT_HANG is to reuse the existing Tx cleanup path and
+detect hangs opportunistically when NAPI is already running due to normal Tx/Rx
+interrupt activity.
 
-> diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_tc_flower.c b/drivers/net/ethernet/microchip/sparx5/sparx5_tc_flower.c
-> index f779a5c00803..a17143953502 100644
-> --- a/drivers/net/ethernet/microchip/sparx5/sparx5_tc_flower.c
-> +++ b/drivers/net/ethernet/microchip/sparx5/sparx5_tc_flower.c
-> @@ -807,7 +807,7 @@ static int sparx5_tc_flower_psfp_setup(struct sparx5 *sparx5,
->  		/* Add new flow-meter */
->  		ret = sparx5_psfp_fm_add(sparx5, pol_idx, fm, &psfp_fmid);
->  		if (ret < 0)
-> -			return ret;
-> +			goto err_sg_del;
->  	}
->  
->  	/* Map stream filter to stream gate */
-> @@ -816,7 +816,7 @@ static int sparx5_tc_flower_psfp_setup(struct sparx5 *sparx5,
->  	/* Add new stream-filter and map it to a steam gate */
->  	ret = sparx5_psfp_sf_add(sparx5, sf, &psfp_sfid);
->  	if (ret < 0)
-> -		return ret;
-> +		goto err_fm_del;
->  
->  	/* Streams are classified by ISDX - map ISDX 1:1 to sfid for now. */
->  	sparx5_isdx_conf_set(sparx5, psfp_sfid, psfp_sfid, psfp_fmid);
-> @@ -824,13 +824,23 @@ static int sparx5_tc_flower_psfp_setup(struct sparx5 *sparx5,
->  	ret = vcap_rule_add_action_bit(vrule, VCAP_AF_ISDX_ADD_REPLACE_SEL,
->  				       VCAP_BIT_1);
->  	if (ret)
-> -		return ret;
-> +		goto err_sf_del;
->  
->  	ret = vcap_rule_add_action_u32(vrule, VCAP_AF_ISDX_VAL, psfp_sfid);
->  	if (ret)
-> -		return ret;
-> +		goto err_sf_del;
->  
->  	return 0;
-> +
-> +err_sf_del:
-> +	sparx5_isdx_conf_set(sparx5, psfp_sfid, 0, 0);
-> +	sparx5_psfp_sf_del(sparx5, psfp_sfid);
-> +err_fm_del:
-> +	if (pol_idx >= 0)
-> +		sparx5_psfp_fm_del(sparx5, psfp_fmid);
+For workloads with active traffic, this allows earlier detection than the
+generic dev_watchdog() timeout and provides driver-specific diagnostics before
+a full reset is triggered.
 
-[High]
-Can the err_fm_del path leak a flow-meter refcount when the flow meter
-was already in use?
+> 
+> >
+> > Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+> > ---
+> >  drivers/net/ethernet/wangxun/libwx/Makefile   |   2 +-
+> >  drivers/net/ethernet/wangxun/libwx/wx_err.c   | 170 ++++++++++++++++++
+> >  drivers/net/ethernet/wangxun/libwx/wx_err.h   |  16 ++
+> >  drivers/net/ethernet/wangxun/libwx/wx_hw.c    |  17 +-
+> >  drivers/net/ethernet/wangxun/libwx/wx_lib.c   |  37 ++++
+> >  drivers/net/ethernet/wangxun/libwx/wx_type.h  |  19 +-
+> >  drivers/net/ethernet/wangxun/ngbe/ngbe_main.c |  14 ++
+> >  .../net/ethernet/wangxun/txgbe/txgbe_main.c   |  14 ++
+> >  8 files changed, 284 insertions(+), 5 deletions(-)
+> >  create mode 100644 drivers/net/ethernet/wangxun/libwx/wx_err.c
+> >  create mode 100644 drivers/net/ethernet/wangxun/libwx/wx_err.h
+> >
+> > diff --git a/drivers/net/ethernet/wangxun/libwx/Makefile b/drivers/net/ethernet/wangxun/libwx/Makefile
+> > index a71b0ad77de3..c8724bb129aa 100644
+> > --- a/drivers/net/ethernet/wangxun/libwx/Makefile
+> > +++ b/drivers/net/ethernet/wangxun/libwx/Makefile
+> > @@ -4,5 +4,5 @@
+> >
+> >  obj-$(CONFIG_LIBWX) += libwx.o
+> >
+> > -libwx-objs := wx_hw.o wx_lib.o wx_ethtool.o wx_ptp.o wx_mbx.o wx_sriov.o
+> > +libwx-objs := wx_hw.o wx_lib.o wx_ethtool.o wx_ptp.o wx_mbx.o wx_sriov.o wx_err.o
+> >  libwx-objs += wx_vf.o wx_vf_lib.o wx_vf_common.o
+> > diff --git a/drivers/net/ethernet/wangxun/libwx/wx_err.c b/drivers/net/ethernet/wangxun/libwx/wx_err.c
+> > new file mode 100644
+> > index 000000000000..982a438d009e
+> > --- /dev/null
+> > +++ b/drivers/net/ethernet/wangxun/libwx/wx_err.c
+> > @@ -0,0 +1,170 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +/* Copyright (c) 2015 - 2026 Beijing WangXun Technology Co., Ltd. */
+> > +/* Copyright (c) 1999 - 2026 Intel Corporation. */
+> > +
+> > +#include <linux/netdevice.h>
+> > +#include <linux/pci.h>
+> > +
+> > +#include "wx_type.h"
+> > +#include "wx_lib.h"
+> > +#include "wx_err.h"
+> > +
+> > +static void wx_pf_reset_subtask(struct wx *wx)
+> > +{
+> > +	if (!test_and_clear_bit(WX_FLAG_NEED_PF_RESET, wx->flags))
+> > +		return;
+> > +
+> > +	wx_warn(wx, "Reset adapter.\n");
+> > +	if (wx->do_reset)
+> > +		wx->do_reset(wx->netdev);
+> > +}
+> > +
+> > +static void wx_reset_task(struct work_struct *work)
+> > +{
+> > +	struct wx *wx = container_of(work, struct wx, reset_task);
+> > +
+> > +	rtnl_lock();
+> > +
+> > +	if (test_bit(WX_STATE_DOWN, wx->state) ||
+> > +	    test_bit(WX_STATE_RESETTING, wx->state))
+> > +		goto out;
+> > +
+> > +	wx_pf_reset_subtask(wx);
+> > +
+> > +out:
+> > +	rtnl_unlock();
+> > +}
+> > +
+> > +void wx_check_err_subtask(struct wx *wx)
+> > +{
+> > +	if (test_bit(WX_FLAG_NEED_PF_RESET, wx->flags))
+> > +		queue_work(wx->reset_wq, &wx->reset_task);
+> > +}
+> > +EXPORT_SYMBOL(wx_check_err_subtask);
+> > +
+> > +int wx_init_err_task(struct wx *wx)
+> > +{
+> > +	wx->reset_wq = alloc_workqueue("wx_reset_wq", WQ_UNBOUND | WQ_HIGHPRI, 1);
+> > +	if (!wx->reset_wq) {
+> > +		pr_err("Failed to create wx_reset_wq workqueue\n");
+> 
+> This driver does not generally use pr_err().
 
-Looking at sparx5_psfp_fm_add():
+I'll change it to wx_err().
 
-	ret = sparx5_psfp_fm_get(sparx5, uidx, &fm->pol.idx);
-	if (ret < 0)
-		return ret;
-	/* Was already in use, no need to reconfigure */
-	if (ret > 1)
-		return 0;
-	...
-	*id = fm->pol.idx;
-	return 0;
+> 
+> > +		return -ENOMEM;
+> > +	}
+> > +
+> > +	INIT_WORK(&wx->reset_task, wx_reset_task);
+> > +	return 0;
+> > +}
+> > +EXPORT_SYMBOL(wx_init_err_task);
+> > +
+> > +static bool wx_ring_tx_pending(struct wx *wx)
+> > +{
+> > +	int i;
+> > +
+> > +	for (i = 0; i < wx->num_tx_queues; i++) {
+> > +		struct wx_ring *tx_ring = wx->tx_ring[i];
+> > +
+> > +		if (tx_ring->next_to_use != tx_ring->next_to_clean)
+> > +			return true;
+> > +	}
+> > +
+> > +	return false;
+> > +}
+> > +
+> > +static bool wx_vf_tx_pending(struct wx *wx)
+> > +{
+> > +	struct wx_ring_feature *vmdq = &wx->ring_feature[RING_F_VMDQ];
+> > +	u32 q_per_pool = __ALIGN_MASK(1, ~vmdq->mask);
+> > +	u32 i, j;
+> > +
+> > +	if (!wx->num_vfs)
+> > +		return false;
+> > +
+> > +	for (i = 0; i < wx->num_vfs; i++) {
+> > +		for (j = 0; j < q_per_pool; j++) {
+> > +			u32 h, t;
+> > +
+> > +			h = rd32(wx, WX_PX_TR_RP_PV(q_per_pool, i, j));
+> > +			t = rd32(wx, WX_PX_TR_WP_PV(q_per_pool, i, j));
+> > +
+> > +			if (h != t)
+> > +				return true;
+> > +		}
+> > +	}
+> > +
+> > +	return false;
+> > +}
+> > +
+> > +static void wx_watchdog_flush_tx(struct wx *wx)
+> > +{
+> > +	if (!netif_running(wx->netdev))
+> > +		return;
+> > +	if (netif_carrier_ok(wx->netdev))
+> > +		return;
+> > +
+> > +	if (wx_ring_tx_pending(wx) || wx_vf_tx_pending(wx)) {
+> > +		/* We've lost link, so the controller stops DMA,
+> > +		 * but we've got queued Tx work that's never going
+> > +		 * to get done, so reset controller to flush Tx.
+> > +		 * (Do the reset outside of interrupt context).
+> > +		 */
+> > +		wx_warn(wx, "initiating reset due to lost link with pending Tx work\n");
+> > +		set_bit(WX_FLAG_NEED_PF_RESET, wx->flags);
+> > +	}
+> > +}
+> > +
+> > +static void wx_check_tx_hang(struct wx *wx)
+> > +{
+> > +	int i;
+> > +
+> > +	/* If we're down or resetting, just bail */
+> > +	if (!netif_running(wx->netdev) ||
+> > +	    test_bit(WX_STATE_RESETTING, wx->state))
+> > +		return;
+> > +
+> > +	/* Force detection of hung controller */
+> > +	if (netif_carrier_ok(wx->netdev)) {
+> > +		for (i = 0; i < wx->num_tx_queues; i++)
+> > +			set_bit(WX_TX_DETECT_HANG, wx->tx_ring[i]->state);
+> 
+> Sashiko says:
+> 
+> If a software interrupt is not triggered, wouldn't the evaluation of this
+> flag in wx_clean_tx_irq() fail to run unless incoming Rx traffic happens
+> to arrive on the same interrupt vector?
+> 
+> > +	}
+> > +}
+> > +
+> > +void wx_check_tx_hang_subtask(struct wx *wx)
+> > +{
+> > +	wx_watchdog_flush_tx(wx);
+> > +	wx_check_tx_hang(wx);
+> > +}
+> > +EXPORT_SYMBOL(wx_check_tx_hang_subtask);
+> > +
+> > +static void wx_tx_timeout_reset(struct wx *wx)
+> > +{
+> > +	if (test_bit(WX_STATE_DOWN, wx->state))
+> > +		return;
+> > +
+> > +	set_bit(WX_FLAG_NEED_PF_RESET, wx->flags);
+> > +	wx_warn(wx, "initiating reset due to tx timeout\n");
+> > +	wx_service_event_schedule(wx);
+> > +}
+> > +
+> > +void wx_tx_timeout(struct net_device *netdev, unsigned int __always_unused txqueue)
+> > +{
+> > +	struct wx *wx = netdev_priv(netdev);
+> > +
+> > +	wx_tx_timeout_reset(wx);
+> > +}
+> > +EXPORT_SYMBOL(wx_tx_timeout);
+> > +
+> > +void wx_handle_tx_hang(struct wx_ring *tx_ring, unsigned int next)
+> > +{
+> > +	struct wx *wx = netdev_priv(tx_ring->netdev);
+> > +
+> > +	wx_warn(wx,
+> > +		"Detected Tx Unit Hang: Queue %d, TDH %x, TDT %x, ntu %x, ntc %x, ntc.time_stamp %lx, jiffies %lx\n",
+> > +		tx_ring->queue_index,
+> > +		rd32(wx, WX_PX_TR_RP(tx_ring->reg_idx)),
+> > +		rd32(wx, WX_PX_TR_WP(tx_ring->reg_idx)),
+> > +		tx_ring->next_to_use, next,
+> > +		tx_ring->tx_buffer_info[next].time_stamp, jiffies);
+> > +
+> > +	netif_stop_subqueue(tx_ring->netdev, tx_ring->queue_index);
+> > +
+> > +	wx_tx_timeout_reset(wx);
+> > +}
+> 
+> [...]
+> 
 
-When the flow meter is already in use, sparx5_psfp_fm_add() returns 0
-without writing back to *id, so the caller's psfp_fmid is left at its
-initialized value of 0.
-
-If sparx5_psfp_sf_add() or one of the vcap_rule_add_action_* calls then
-fails, err_fm_del runs sparx5_psfp_fm_del(sparx5, 0). Pool ids appear to
-be 1-based:
-
-	u32 sparx5_pool_idx_to_id(u32 idx)
-	{
-		return ++idx;
-	}
-
-so id 0 has no valid LBSET, sparx5_sdlb_group_get_by_index() returns
--EINVAL, and sparx5_psfp_fm_del() aborts before reaching its
-sparx5_psfp_fm_put() call:
-
-	ret = sparx5_sdlb_group_get_by_index(sparx5, id, &fm.pol.group);
-	if (ret < 0)
-		return ret;
-
-	ret = sparx5_psfp_fm_put(sparx5, id);
-
-The refcount that sparx5_psfp_fm_get() incremented on the actually-reused
-flow meter would not be decremented.
-
-Would it work to either move the *id = fm->pol.idx; assignment before the
-ret > 1 early return inside sparx5_psfp_fm_add(), or to call
-sparx5_psfp_fm_del(sparx5, fm->pol.idx) at this cleanup site instead?
-
-> +err_sg_del:
-> +	sparx5_psfp_sg_del(sparx5, psfp_sgid);
-> +	return ret;
->  }
->  
->  /* Handle the action trap for a VCAP rule */
--- 
-pw-bot: cr
