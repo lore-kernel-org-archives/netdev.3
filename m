@@ -1,57 +1,42 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EACB26B2CE;
-	Wed,  3 Jun 2026 13:15:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74617313273;
+	Wed,  3 Jun 2026 13:19:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780492520; cv=none; b=c+SkGOOhpbpg573ah1nOwzWQ7CDaFGcC+F8peF83RwOLu8Wo7y+s6RWFkYw0GnLeziatSZ3mR1YIak4qiRUcoOf2ILmsjq8ZuooLXSebqiX7tyUITRGg7Q2kVFvbuJFux8sodWTv3X5JUfFNWIoJSjqxDs3ehzL8LgLZJS8iCVc=
+	t=1780492783; cv=none; b=ayG43/nksdmrroMwnAMIbKfOFWGk0D3zp8648ItEZg4hPj3bl4APeoDH6KTaMm1ZCHSd72tARpA2GSUbLgAGWJeHR+JfX2kJ6ZUpuPucCmXa+1opElFqhSQMgztqF/oIk/u5Bv5o0pBhDlOW6ZB922hI3qxMKEK7+ZXmB5cW5IE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780492520; c=relaxed/simple;
-	bh=lCQJ9mw1FPDJXKsBwdxiyAriVn0m/V3Ql3yqrophdMs=;
+	s=arc-20240116; t=1780492783; c=relaxed/simple;
+	bh=NFa6KQ3vjWeXZnXrSWmWKuTvoErpt/AEQU9kJhkTnuo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=d3BpwE6aJdEaKZ62LaRQX//SwyugcWT3UpdiuJNzQxxFMXsR56606AdyR2mQ1xYUNxZ7rj9YE/TytDeqBIWYFMkZyeIo/p5en50mlJCOx4hydsH8M65e9OYkTlZOS7kwvhCR5ZZOjlIEbyAX+uwUTiupqaRxoag+n59X8Zy2hcM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=cnSUHns3; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=iLwuCoi0ZqYFtDwwV9MAYo4oQR4Iw+724niYXWEb0awV1XW0jMcQaFNRFKHLIQ54X8G9cYA0cl0GMTnRcwAfiknwik287GpFhcIfKzXDVGnv0iZRfouAfJnVsP5GWOoG6Wk6i/Pt68BrVARQseLOPYYAuCBa6OywcccCvZ4mKoo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=rB4Hfr0A; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="cnSUHns3"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="rB4Hfr0A"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=IxX4ef1/ZRvhfLr6R6N2rF9/YUBOj2G4OZm6eMT1GK8=; b=cnSUHns3/yGsojxQQwefiHpNW/
-	kmOw5JuY7xUVfc9lyng5RnSQPvOlCJ9nSc+g7rPMTW9RKetFKxJyjOnDGShx16MCs5oQ8/w3PqLC3
-	nIgRkH/oJYBn0JefTgmd/4a7AGGhiSywZu49xRxZJ+8I8jvofoYT35Ggns8hi2so3pgw=;
+	bh=xDdnXZVSz7c9OiCPekiUjQRgKeTsn6b8bC3uiCv3KQ8=; b=rB4Hfr0Avy20E+sifmGlDGIdFL
+	MO5bBtsgOAtcAK07Nrmerqgu/JDWXsg2VSe8KiyGQfS5EPgFnFgVz1/sxo3MDrYroznINuxexdV2t
+	FZ9TU2VW0esFFPPDB78JsX6GLb9jNaZB7gMuQSlZ89QipppsSup7zHY/lNpSYEgnq3s8=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1wUlR1-005slJ-4Q; Wed, 03 Jun 2026 15:15:03 +0200
-Date: Wed, 3 Jun 2026 15:15:03 +0200
+	id 1wUlVM-005snt-CD; Wed, 03 Jun 2026 15:19:32 +0200
+Date: Wed, 3 Jun 2026 15:19:32 +0200
 From: Andrew Lunn <andrew@lunn.ch>
-To: Javen <javen_xu@realsil.com.cn>
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	"hkallweit1@gmail.com" <hkallweit1@gmail.com>,
-	"nic_swsd@realtek.com" <nic_swsd@realtek.com>,
-	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
-	"davem@davemloft.net" <davem@davemloft.net>,
-	"edumazet@google.com" <edumazet@google.com>,
-	"kuba@kernel.org" <kuba@kernel.org>,
-	"pabeni@redhat.com" <pabeni@redhat.com>,
-	"horms@kernel.org" <horms@kernel.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net-next v1 1/5] net: phy: realtek: add support for dummy
- phy
-Message-ID: <bf3c29cb-334c-4d2c-b9d7-61bf04779fe2@lunn.ch>
-References: <20260603065916.334-1-javen_xu@realsil.com.cn>
- <20260603065916.334-2-javen_xu@realsil.com.cn>
- <7496c873-fee7-4584-ad70-4315d7b94f8f@bootlin.com>
- <f614a60942e34bf39b1d49fb273221ab@realsil.com.cn>
- <0bc2ae0e-316c-447e-9098-f18f4b491328@bootlin.com>
- <7c35fa5bb5f24afdb42e2d45a4e559c3@realsil.com.cn>
- <bac05b34-9c16-4c18-9e6e-a8ccee86f0d3@bootlin.com>
- <c088522c19624f11beb179a71a11d9c1@realsil.com.cn>
+To: muhammad.nazim.amirul.nazle.asmade@altera.com
+Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	rmk+kernel@armlinux.org.uk, maxime.chevallier@bootlin.com,
+	Jose.Abreu@synopsys.com, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/4] net: stmmac: L3/L4 filter fixes and improvements
+Message-ID: <c56e74c1-fc3a-4d76-a17e-8a7d365d1e70@lunn.ch>
+References: <20260603072925.27890-1-muhammad.nazim.amirul.nazle.asmade@altera.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -60,23 +45,42 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <c088522c19624f11beb179a71a11d9c1@realsil.com.cn>
+In-Reply-To: <20260603072925.27890-1-muhammad.nazim.amirul.nazle.asmade@altera.com>
 
-> You are exactly right. The PHY doesn't actually exist; what we have
-> is an internal PCS.
+On Wed, Jun 03, 2026 at 12:29:21AM -0700, muhammad.nazim.amirul.nazle.asmade@altera.com wrote:
+> From: Nazim Amirul <muhammad.nazim.amirul.nazle.asmade@altera.com>
+> 
+> This series addresses several issues in the stmmac L3/L4 TC flower filter
+> implementation for the XGMAC2 core.
+> 
+> Patch 1 fixes a register corruption bug in the L4 filter port configuration.
+> The XGMAC_L4_ADDR register holds both source and destination port match
+> values in a single register. The original code overwrites the entire register
+> when setting either field, silently erasing the other. This is fixed by
+> using a read-modify-write sequence.
+> 
+> Patch 2 fixes the basic flow match parser to properly reject unsupported
+> offload requests with -EOPNOTSUPP instead of silently accepting them.
+> Unsupported cases include partial protocol masks, non-IPv4 network proto,
+> and non-TCP/UDP transport proto.
+> 
+> Patch 3 fixes a stale action bug on filter deletion. When a filter entry
+> with a drop action is deleted, the action field was not reset, causing
+> it to persist and potentially affect subsequent filter configurations.
 
-...
+Please base these on net.
 
-> I actually tried to migrate it to
-> phylink before. However, the current driver codebase is deeply
-> coupled with tp->phydev in many places. Decoupling it may introduce
-> bugs for numerous existing devices. Therefore, I want to try to
-> expose the internal PCS as a dummy PHY device.
+https://www.kernel.org/doc/html/latest/process/maintainer-netdev.html
 
-Architecturally, you are going down a dead end. You really should be
-using phylink.
+> 
+> Patch 4 adds L3/L4 filter match counting to the ethtool statistics by
+> reading the L3FM and L4FM bits from the RX descriptor status word (RDES2),
+> allowing users to observe filter hit rates via ethtool -S.
 
-I don't see anything too scary with tp->phydev in the driver. Are
-there parts you think are going to be a problem with phylink?
+and this one on net-next.
 
-      Andrew
+    Andrew
+
+---
+pw-bot: cr
+	
