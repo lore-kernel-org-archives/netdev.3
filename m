@@ -1,132 +1,109 @@
-Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
+Received: from smtpbgbr1.qq.com (smtpbgbr1.qq.com [54.207.19.206])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81E1D3074A1;
-	Wed,  3 Jun 2026 03:08:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.166.238
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D951D30E84B
+	for <netdev@vger.kernel.org>; Wed,  3 Jun 2026 03:21:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.207.19.206
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780456127; cv=none; b=RK8ifsYMTW/6n3FRhU5M7jc2nUJ6eXGqJOsFqGWTlY4G0xj95h98/zdKnc2le2epgmvidxKCS4nwWLdRzk6+CNKBZtX9zCu855HLrV2g8lm3FKK/4wQLiiVMACKTIlqQXqAmFj1iIUDLdk5DuNKKWzc8uc/8ilFyGJoqkm+yMfo=
+	t=1780456867; cv=none; b=mLR3rZSlvRwvT0GTLscJf2s0KFZRpj1PRXPeHUHYf1/5PDxT8PXTn4NXYgcLM40NuLATv2icf1MAbdQ87rESXoIVvAgTZwW0czJbqJU5IBYhLzPbPiizp+X+eM27eLwGFcHWGsArRbFswQWflh5F3Z2eiVAAKU7wH2cpud3du8w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780456127; c=relaxed/simple;
-	bh=SzGvNxxVvNqRsAunnOeuy2llFZGGgrparxpBYy4hIbY=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=V14I3kCBRJ2cvymbaAXq4EdKACkms1g3Fc6RXjO1qmbzjWZlFKuwt8vvos+5S/un/S+eMewjakANqLmT5XycXIAR7TJhxQc73F30hWlgRcbkhk78lSax+ffs5NvkCUbWT8QKDhdBqn3q+Yep70cFgy40JhOAgJpd0nreHUnoqEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; dkim=pass (2048-bit key) header.d=windriver.com header.i=@windriver.com header.b=W7uphe9o; arc=none smtp.client-ip=205.220.166.238
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=windriver.com header.i=@windriver.com header.b="W7uphe9o"
-Received: from pps.filterd (m0250810.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6531KIiW2960801;
-	Tue, 2 Jun 2026 20:08:14 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=windriver.com;
-	 h=cc:content-transfer-encoding:content-type:date:from
-	:message-id:mime-version:subject:to; s=PPS06212021; bh=+bLnFaOfB
-	7tT4zKBm088mm1PssN84ne2gIUEnFngM10=; b=W7uphe9oqZ0y/mCPpoOIFI/cc
-	uSqBfsa+CVQoAVp3LN8QqJ3iEEvjOdUc4hbiY/xuxZuedNRWaHqYUsrF4pivc9DA
-	OapVG+vAihVVbWjiyg8LCZVnLWOHaK+sq0W59QjydwQlnt8SNZhhUB/4zKy9/wuT
-	kdXtXUQyDpSLaiP2IZGL6CIOhPqwfLjDtGevQRTfKURGTeAwx9y9HL3ParWhTfaq
-	hryUI7v4C5hXJKBgzJ3itDQoOjLQccWSmofwotKY4cgz/zJ5J1loG4eopVM5PAHS
-	d+qrMI014nspTw7/BbkMkTMYbmurOT6sXh9GkFo7tGbnHjuWkHMvRusbzS7ag==
-Received: from ala-exchng01.corp.ad.wrs.com (ala-exchng01.wrs.com [128.224.246.36])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 4efu61wtnf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Tue, 02 Jun 2026 20:08:14 -0700 (PDT)
-Received: from ala-exchng01.corp.ad.wrs.com (10.11.224.121) by
- ala-exchng01.corp.ad.wrs.com (10.11.224.121) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.61; Tue, 2 Jun 2026 20:08:13 -0700
-Received: from pek-yzhou-d3.wrs.com (10.11.232.110) by
- ala-exchng01.corp.ad.wrs.com (10.11.224.121) with Microsoft SMTP Server id
- 15.1.2507.61 via Frontend Transport; Tue, 2 Jun 2026 20:08:11 -0700
-From: Yun Zhou <yun.zhou@windriver.com>
-To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-        <pabeni@redhat.com>, <horms@kernel.org>
-CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <yun.zhou@windriver.com>
-Subject: [PATCH] flow_dissector: fix uninit-value in __skb_flow_dissect() for ETH_ADDRS
-Date: Wed, 3 Jun 2026 11:08:10 +0800
-Message-ID: <20260603030810.3593625-1-yun.zhou@windriver.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1780456867; c=relaxed/simple;
+	bh=udjl9bDiHDQlKRHW+Pxjnahb2P+yYsN7blzZvZHWpEs=;
+	h=From:To:Cc:References:In-Reply-To:Subject:Date:Message-ID:
+	 MIME-Version:Content-Type; b=q3va/ADOIAEjy3raKtdWAPGeoe3mngoWsy7TTbFzvyKI63MKY1TUM5JMvjN+OWe/OK27cLs11VKAxDEa2ZUg2zytNzd69UQL/ZVVVj/j9AOYnhXspU79oME30J6tRYKSiZONjHgwmpnYTGFZpKBp3hQP2xDKZZcgpZMja9Q/7GM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.207.19.206
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
+X-QQ-mid:Yeas5t1780456769t120t00492
+Received: from 3DB253DBDE8942B29385B9DFB0B7E889 (jiawenwu@trustnetic.com [36.24.207.111])
+X-QQ-SSF:0000000000000000000000000000000
+From: =?utf-8?b?Smlhd2VuIFd1?= <jiawenwu@trustnetic.com>
+X-BIZMAIL-ID: 1108301633170802462
+To: "'Andrew Lunn'" <andrew@lunn.ch>
+Cc: <netdev@vger.kernel.org>,
+	"'Mengyuan Lou'" <mengyuanlou@net-swift.com>,
+	"'Andrew Lunn'" <andrew+netdev@lunn.ch>,
+	"'David S. Miller'" <davem@davemloft.net>,
+	"'Eric Dumazet'" <edumazet@google.com>,
+	"'Jakub Kicinski'" <kuba@kernel.org>,
+	"'Paolo Abeni'" <pabeni@redhat.com>,
+	"'Russell King'" <linux@armlinux.org.uk>,
+	"'Simon Horman'" <horms@kernel.org>,
+	<netdev@vger.kernel.org>,
+	"'Mengyuan Lou'" <mengyuanlou@net-swift.com>,
+	"'Andrew Lunn'" <andrew+netdev@lunn.ch>,
+	"'David S. Miller'" <davem@davemloft.net>,
+	"'Eric Dumazet'" <edumazet@google.com>,
+	"'Jakub Kicinski'" <kuba@kernel.org>,
+	"'Paolo Abeni'" <pabeni@redhat.com>,
+	"'Russell King'" <linux@armlinux.org.uk>,
+	"'Simon Horman'" <horms@kernel.org>
+References: <F3DA1ECDCE0A1E9E+20260602025443.332456-1-jiawenwu@trustnetic.com> <9945fe19-815b-4e27-8446-c21cdfaa16d9@lunn.ch>
+In-Reply-To: <9945fe19-815b-4e27-8446-c21cdfaa16d9@lunn.ch>
+Subject: RE: [PATCH net] net: txgbe: fix module identification
+Date: Wed, 3 Jun 2026 11:19:27 +0800
+Message-ID: <095b01dcf307$c8af8920$5a0e9b60$@trustnetic.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-ORIG-GUID: 1ouoIwlypr5Hk4Bk4rp11JibNHgpGr0Y
-X-Authority-Analysis: v=2.4 cv=PLg/P/qC c=1 sm=1 tr=0 ts=6a1f9a9e cx=c_pps
- a=AbJuCvi4Y3V6hpbCNWx0WA==:117 a=AbJuCvi4Y3V6hpbCNWx0WA==:17
- a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=bi6dqmuHe4P4UrxVR6um:22
- a=HK-ge7EqtdluswH-FwHe:22 a=hSkVLCK3AAAA:8 a=t7CeM3EgAAAA:8
- a=ZFV9FTQqrnKTM9pgA68A:9 a=cQPPKAXgyycSBL8etih5:22 a=FdTzh2GWekK77mhwV6Dw:22
-X-Proofpoint-GUID: 1ouoIwlypr5Hk4Bk4rp11JibNHgpGr0Y
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjAzMDAyNiBTYWx0ZWRfX+LsCh2kx6ciO
- 03QdLY/QZOR6ZolXRN+TtU1GFjrGNPZwP4Ezeer8PUWLZZwq2QyXSs0V5oPHZ5s6mErCbt40gQf
- +JEp/6pjx0oOO2QYa+pPQmz1qFragvt0d3oy3nC4reZR5feq4/NjnCylujyvyIVoyhkd4+uDXtK
- wUdE5QWzWVXZlU2KOvC+ncA96o+/5pT1Rz4LMlnNPDNYvaNrNEqkdi+3vq7M4hfoZPtrfxFyg97
- T6Okmu6jwUzx4gVwT1rFHpybDJVLuoVu2GvU/pKwH9ntTiscSPa1qRG4sOY5UhXMake6FRSNe3F
- 87WEFC7AewTGRhIcdFQpR6z8/YcxVLNgtISWFKMC5rxzdGhrJNJw7LTVEg1BZTK8aaqPmcbtQsr
- rtlJxvHLOdPKKjjUxLXI2ywkCjwSe7lMTSWWkigD1BQW/hyMQBXfnZiePArElFrC2tlYUWCwgx+
- R0sB3BXz2AY8Es8mN2Q==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-03_01,2026-05-28_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 bulkscore=0 phishscore=0 impostorscore=0 spamscore=0
- lowpriorityscore=0 priorityscore=1501 malwarescore=0 clxscore=1015
- adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2605210000
- definitions=main-2606030026
+Content-Type: text/plain;
+	charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Mailer: Microsoft Outlook 16.0
+Content-Language: zh-cn
+Thread-Index: AQJEeGsThjjHI0KHzdi2i+gMs9V+4wJaFDfptUpIx1A=
+X-QQ-SENDSIZE: 520
+Feedback-ID: Yeas:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
+X-QQ-XMAILINFO: NTApVg+ltz2MQrluYiP8s9ZFVfv0iIH0RsFqAA1TDXuR1Yux4ig2Sb/4
+	dkwP1QjrsORQvx4m3jkdB83iGFLDmyQuV3HIjfOkxofO2JgJbd7g9fJ4xYe29S6VmYgqxE2
+	nZ1q8Wuk9b2WEAl2oFhpWDz8XqoCfvm+LpEDXhTJKnXFzsvBnhSi1eA7ZpdcRflyboyxgNR
+	YoeQVj05uIDjkehmWuL9US8NmXxJ/Dy6EDGSsJN5hn3VDyra73mFZV9Gv7ePP0TyNEZpDot
+	1TKOfk5qOtPDRF+3Qymeh77KC7HVrsV/Duc8RiNPGJ4DVTQEe97DU9lVbMwu2nRBVIavGVJ
+	IkzS7Pq282m3cPSnxtNAmDokSxah+afMwgpGCPNBtSvuGRa5AWCAVoR1kBu/IbmkWk44b/D
+	UL+Ro6I/S7YqZSaC6Yx9ly6FKIZNb1Iw5kLfSVu357Cd3o7uUTcrJa+IloVLgw/VXYN0bQg
+	oY9lXFPqhpZdvJTAxx332z94BxW3ymydCI2PfKLYrBbNQ1WxKUKX8lEVqtlXUbdH3p2MSPZ
+	4Rp3kAuFdaAROa6IlUCHHXbh/+l0aQJHe/jClknuTPvQedQzDN29zp9uXbXNpLqmlXgfoKR
+	eiDbq1tryjDorRgTDf93Zema0CjAiO9iknOuhA9jmOcXkgddBNryzZJ8JcgqRXPnb73sL2M
+	Xk+UXWjlM6s7+qgXACewrT2Qqz95zB6FY3FHwFghrx4Te+2xGCWfcNqaoAaZgbmduJVSsEG
+	PTtK+epIMDCOOuEdG6c+SytQzG6nLDeiubMM83fvG2A8bryKjetOv/u/iKsgGDVP0ctfWbb
+	ry0UGrznNbC5RTQOPYJ7VdoUSQCxR5snHTh2Q68NKVC/UdjL7X+mdmfgJpVwK61lqVEg9nO
+	GAVYxr3iOkB4416EQ7PBP96vLNvRThY7INqnwS2wnYLhJBRj6LmCX+AKtctNRomURZEWZj+
+	Kx6CxrsreZJVMX39EpmOT+AesYk9Z4aJoJ+hwoJ+iH1HVmZrs+pgl0X4fN1uuHS3cHoowvH
+	Evd0tUjNRu9VSN7XktVqnwKZhj5nZr39yb4vT+Y+r+SJhl0Mjjgud5DrrVOFMjfqJp0D/aA
+	mWGZmGRCpyTfTeD8v7xCynXBvo1KC//iw==
+X-QQ-XMRINFO: Mp0Kj//9VHAxzExpfF+O8yhSrljjwrznVg==
+X-QQ-RECHKSPAM: 0
 
-When dissecting FLOW_DISSECTOR_KEY_ETH_ADDRS, the code unconditionally
-copies sizeof(flow_dissector_key_eth_addrs) (12 bytes) from eth_hdr(skb).
-However, if the packet is too short (e.g., a 1-byte packet sent via
-AF_PACKET on a TUN device), eth_hdr(skb) points to uninitialized skb
-memory beyond the actual packet data.
+On Tue, Jun 2, 2026 9:15 PM, Andrew Lunn wrote:
+> On Tue, Jun 02, 2026 at 10:54:43AM +0800, Jiawen Wu wrote:
+> > For AML devices, there are some issues where the wrong module
+> > indentified then configure PHY failed.
+> >
+> > The module info buffers should be initialized to 0 before the firmware
+> > returns information. And DECLARE_PHY_INTERFACE_MASK() does not guarantee
+> > zeroed contents, so explicitly clear the temporary interface masks before
+> > setting supported interfaces.
+> >
+> > Rework txgbe_identify_module() to validate module identifiers through
+> > explicit type checks instead of relying on transceiver_type heuristics.
+> > When using the SFP module, transceiver_type could be a random value,
+> > because it was read from an invalid register.
+> 
+> This seems like multiple fixes. Please break the patch up.
 
-This causes KMSAN to report uninit-value in __fl_lookup() when the
-uninitialized eth addresses are used as rhashtable lookup key in
-cls_flower.
+OK.
 
-Fix by checking that sufficient data exists from mac_header to skb tail
-before copying. If not enough data, zero the key to ensure deterministic
-behavior (no false matches).
+> The current DECLARE_PHY_INTERFACE_MASK() is not great. It is mostly
+> used by phylink in structures which get allocated and zeroed. But here
+> you have it as a stack variable. Maybe we want a new variant which
+> includes = {} ?
 
-Reported-by: syzbot+fa2f5b1fb06147be5e16@syzkaller.appspotmail.com
-Fixes: 67a900cc0436 ("flow_dissector: introduce support for Ethernet addresses")
-Signed-off-by: Yun Zhou <yun.zhou@windriver.com>
----
- net/core/flow_dissector.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+I'll change it to:
+  unsigned long interfaces[PHY_INTERFACE_MODE_MAX] = {};
 
-diff --git a/net/core/flow_dissector.c b/net/core/flow_dissector.c
-index 2a98f5fa74eb..d5817b800079 100644
---- a/net/core/flow_dissector.c
-+++ b/net/core/flow_dissector.c
-@@ -1173,13 +1173,19 @@ bool __skb_flow_dissect(const struct net *net,
- 
- 	if (dissector_uses_key(flow_dissector,
- 			       FLOW_DISSECTOR_KEY_ETH_ADDRS)) {
--		struct ethhdr *eth = eth_hdr(skb);
- 		struct flow_dissector_key_eth_addrs *key_eth_addrs;
- 
- 		key_eth_addrs = skb_flow_dissector_target(flow_dissector,
- 							  FLOW_DISSECTOR_KEY_ETH_ADDRS,
- 							  target_container);
--		memcpy(key_eth_addrs, eth, sizeof(*key_eth_addrs));
-+		/* Ensure the skb has enough data at mac_header to cover
-+		 * both src and dst Ethernet addresses.
-+		 */
-+		if (skb_mac_header_was_set(skb) &&
-+		    skb_tail_pointer(skb) - skb_mac_header(skb) >= sizeof(*key_eth_addrs))
-+			memcpy(key_eth_addrs, eth_hdr(skb), sizeof(*key_eth_addrs));
-+		else
-+			memset(key_eth_addrs, 0, sizeof(*key_eth_addrs));
- 	}
- 
- 	if (dissector_uses_key(flow_dissector,
--- 
-2.43.0
+If PHYLINK could optimize DECLARE_PHY_INTERFACE_MASK(), it would be better.
+
 
