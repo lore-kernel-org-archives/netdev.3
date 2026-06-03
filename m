@@ -1,126 +1,135 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FA1925A2A2
-	for <netdev@vger.kernel.org>; Wed,  3 Jun 2026 04:10:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1EBA202F71
+	for <netdev@vger.kernel.org>; Wed,  3 Jun 2026 04:20:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780459820; cv=none; b=OxTo03S5HR/r972/oQqphIw1pMkgBDLfPfbTZtx5+UELXbYrH7l15aefeVX8XVfc6fEnvOGLJ67+C5hXXn3f2pYY/iI6QOpZ/TuI4sjMJ4j6vg08CwvN07rCWIJBGzquenT//X3/asPynOOK6ZYZK0rVlC1J+Zh9DoHlaplEnjY=
+	t=1780460436; cv=none; b=bvwdMXFtMHhwU55D239qavWr8koiK85yYbySybkvBbJCWskjGj3XQdum8AJPUDROzyBpj9KHOP7dGgocXiWw9lDq8EYJ5HIwAsx8De1mVp9Dad3CpY/hYZj9k0qOKIwI8JsP6OJ/ne+JOa3GuLQ1JugCYXlFquzGUVJBO+PxgIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780459820; c=relaxed/simple;
-	bh=zfyF5diGMMNlsJAta2dWFZYKQKJcF2R3yOH9gbTS5pc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WI0MnUYsD4lhaJM8FvKBOGJld1G2ezlxShcSudAET4m3oRxGup57UUPh0bFM/5mKmxHjZy6uJUnnh2SIfOqzh1hT9hXkwtXIV+U/5v/j56ekFbkjIIOWbhdmiolUy1DRQnAI42QIZwzAGApKPQp/jgIkgvPQwZg4ZeGgzPinHtM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e/VaiycI; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780460436; c=relaxed/simple;
+	bh=9tQqNP43n5romnaq4BfFL2SfXA5Di4eDVrUHKrBpUCo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=BjUPEUwZlRiXcV45rShJhXwJ9aPRKwNz8dACTn1O+lFYL14ow5lU4HtBELiy4WxyZVTYmpMfpyeC5m2oYt7Cr3J6xJtjSqGoYQcdNNVwxuI1DLmU+10SdwVG6hoEJcfxvuD7kqVV5mPJcQ8OtkHdQQOP3F77tyvMZcue3UR8a38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=h55e6A0o; arc=none smtp.client-ip=209.85.218.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e/VaiycI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 818C41F00893;
-	Wed,  3 Jun 2026 04:10:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780459818;
-	bh=F+nWv4TLAmZ/ZtTQiY2rifmw+1A7vWV6KoUS6LF3KnY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=e/VaiycI1HuXUbe2AMB6iz/nmBLcS5fctFt5irTQBSyZHlLzAV05XiPfvlunLv/gS
-	 QaAedCx7Mj2yVg04i3qddWwWhmUnUDvMoBWHQwMj5Fq83TR/YR6o+3e5o9YpZ7MwUt
-	 0T/tQZI8q9Y96edlL/rhKTSkf8Znr4u63wcH2kwNZGJeKvAWkEoT9qXSUXGsIjpIzi
-	 DjgHSKmvhQPem4UE4L1bIJXUMGmmQ/wmlfzif39uoz1aKTPM/hTmioiw2iLNB5BGih
-	 +m56pZwS36JUflxGSGvpPXtHkaHBU3YsodfGorvPL11gWCrmmv4YoLPVqo4pjtz4CH
-	 DnOkdI6xtBZ7A==
-Message-ID: <14341073-3cbc-45c2-b11b-78134718b9a0@kernel.org>
-Date: Wed, 3 Jun 2026 14:10:12 +1000
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="h55e6A0o"
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-bec429c2bb1so476812366b.1
+        for <netdev@vger.kernel.org>; Tue, 02 Jun 2026 21:20:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1780460433; x=1781065233; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=3SJtr+8Mfjo1TPz3VKjCaH7CMP6KY0W4WXb69Cl5TnE=;
+        b=h55e6A0oYg6YUCrMBZmgsOkgYhJsXyuQoQH33kZOINJstrK4BB0m448Tbp7nXS8ACi
+         ETTjU34DknjIsxchnZ4SVdGW6cW+oo5CjtFBLNz/f9nZORhMoBvV4R0Qf9pTdpJRYUSn
+         lhH5xvkNikF1o+DC5HZhDkA6ON8lYagHQHWbc=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780460433; x=1781065233;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3SJtr+8Mfjo1TPz3VKjCaH7CMP6KY0W4WXb69Cl5TnE=;
+        b=GHUN/5TfqUf+xuFByYO1Si3tHfbY+XcW0f2kH7A68bi1TjkjxYPmaTayvZyTicfUCK
+         IVveOXl3tISLf1HL0QwoHH1Rso84aZticXK8xLPw0zHL9hoHvNTC46ai0wy2pB3xP2Lk
+         UCph7uA1IlvJ9j3fFwK9E3ljqkCRt6JoNM+CFJyvgbCb4dOOWN6YlOEiOhuczqaVsZzl
+         tfbLiYcx+Oyz61N5YysW7ozHfIkLXBVVCJqJsmJ4jrFZdyeIvmmxJ1wtzbBemujOyOD7
+         PFNAcjhgorz42HPbWm8rgUNfULOjqcj5c+RQFypn1m8lKhF3pyRZF4sQlEgm15wwDVNk
+         0GLA==
+X-Forwarded-Encrypted: i=1; AFNElJ+T/Kdx4Wr3WCIbKhWgJ8/e5tHLl1d+xBOpS+mWgZQudtLPjL7WPZO7nwjYx4kBeR3ND3B1Dxg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz56R0eH9IIdlSPhIMRIrrIC0I/godBOo+Lmv5gi/RHLr1aQ0zQ
+	YnvV2EC0dXog+OLl9/LttLD7nwTtqDNaG09qMJvVLR7BCoFyoKbBEfOjCrX8Cn5f/iyjrVRYieB
+	0bH9E0poIdw==
+X-Gm-Gg: Acq92OFxQU9kNrzPpRaw1gJnb7+R+bizdRoF94qBuzIu74/y537egN2YHp2FKw8bePX
+	yLRokVPFUrLLEAGIiJKVoGFy9QOouV+Tx72NpAkTWy8Mrt/uAquJFMK/QZzH3I0DitL5gHyKoai
+	TYVhp568I7Hovy9lu4fovfqiJTp2h2r3NBDHToAfBioIi9nE6TzO/S9+ryy89/bCbt76kdw3CJe
+	YjQ6ouYndvXDTfKMgizlrfXXgZfFqgO41H4EO4QXhKXJZmBwDCqZS0ckGmAGmBLep6fqwLkTewl
+	G+U6SzXVoTpTPhwutZ0DDhPz7P1z3Ehz7PmRI42EYmWdQDUumz3qrvKL5z+hKvlckxDfkFYRyeI
+	4YucGn3v4yHf9LHZGCWotmEV13bIVUMr5bLwdRt93ZFGEia3J3uTp4+4nqD0ogXvOVqMddCLdu/
+	dp8rHDM9KxwsCymxkJOKxgvu/icT7PfLn0oz2ELKRuJrT3Vlj97vx0ThxfTEVg1/h2+g8/i8zkQ
+	UPbpVpVs40=
+X-Received: by 2002:a17:906:4583:b0:bd8:d86d:568a with SMTP id a640c23a62f3a-bf0af800cf4mr38260066b.47.1780460432901;
+        Tue, 02 Jun 2026 21:20:32 -0700 (PDT)
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com. [209.85.218.46])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bf051c8d3f1sm78131066b.17.2026.06.02.21.20.31
+        for <netdev@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 02 Jun 2026 21:20:31 -0700 (PDT)
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-bec49f7e35eso427286966b.2
+        for <netdev@vger.kernel.org>; Tue, 02 Jun 2026 21:20:31 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ+9NmnkdMF4VgNbMY/Qr7jKnFzvwGEIWOE2rkI2/KNnMOFCiUM3+R5Tj0ZI95+qCJ5LI5o9o1A=@vger.kernel.org
+X-Received: by 2002:a17:906:8a48:b0:bea:4a9b:27e3 with SMTP id
+ a640c23a62f3a-bf0ac20eef3mr38881066b.2.1780460431308; Tue, 02 Jun 2026
+ 21:20:31 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH v2 net-next] mptcp: change mptcp_established_options() to
- return opt_size
-Content-Language: fr
-To: Eric Dumazet <edumazet@google.com>
-Cc: Simon Horman <horms@kernel.org>, Neal Cardwell <ncardwell@google.com>,
- Kuniyuki Iwashima <kuniyu@google.com>, Mat Martineau <martineau@kernel.org>,
- Geliang Tang <geliang@kernel.org>, netdev@vger.kernel.org,
- eric.dumazet@gmail.com, "David S . Miller" <davem@davemloft.net>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-References: <20260602125138.2317015-1-edumazet@google.com>
-From: Matthieu Baerts <matttbe@kernel.org>
-Autocrypt: addr=matttbe@kernel.org; keydata=
- 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
- lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
-Organization: NGI0 Core
-In-Reply-To: <20260602125138.2317015-1-edumazet@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <CAHk-=wiAqf0PdZ4AKj_4riUnnEb=g_ZNPkLnXrByA9BBHYiFRg@mail.gmail.com>
+ <20260602225426.122258-1-safinaskar@gmail.com> <CAHk-=wgKy4dP0oQCNKyMQQf3-uVpaigmDyH6_T0Via76gWST9g@mail.gmail.com>
+ <CALCETrWx8-Q5-rK1KnAPCxCbXaWCd=Yfs_Pr8qVMa8k8L6of1w@mail.gmail.com>
+In-Reply-To: <CALCETrWx8-Q5-rK1KnAPCxCbXaWCd=Yfs_Pr8qVMa8k8L6of1w@mail.gmail.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Tue, 2 Jun 2026 21:20:13 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wizkDXRut5xLXRF-CVUVYMaZ5AOexxeghOAoXPb4yAvQg@mail.gmail.com>
+X-Gm-Features: AVHnY4IJxv2Bq-ytG67gbyDgK2Xm9CPUNF4PNLBHu-2R4s_ONl3Jl_5fsF1zxk4
+Message-ID: <CAHk-=wizkDXRut5xLXRF-CVUVYMaZ5AOexxeghOAoXPb4yAvQg@mail.gmail.com>
+Subject: Re: [PATCH 0/3] vmsplice: make vmsplice a trivial wrapper for preadv2/pwritev2
+To: Andy Lutomirski <luto@amacapital.net>
+Cc: Askar Safin <safinaskar@gmail.com>, akpm@linux-foundation.org, axboe@kernel.dk, 
+	brauner@kernel.org, david@kernel.org, dhowells@redhat.com, hch@infradead.org, 
+	jack@suse.cz, linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, miklos@szeredi.hu, 
+	netdev@vger.kernel.org, patches@lists.linux.dev, pfalcato@suse.de, 
+	viro@zeniv.linux.org.uk, willy@infradead.org
+Content-Type: text/plain; charset="UTF-8"
 
-Hi Eric,
+On Tue, 2 Jun 2026 at 20:51, Andy Lutomirski <luto@amacapital.net> wrote:
+>
+> Am I understanding correctly that this will completely break zerocopy
+> sendfile?
 
-On 02/06/2026 22:51, Eric Dumazet wrote:
-> Instead of passing opt_size address to mptcp_established_options(),
-> change this function to return it by value.
-> 
-> This removes the need for an expensive stack canary in
-> tcp_established_options() when CONFIG_STACKPROTECTOR_STRONG=y.
-> 
-> $ scripts/bloat-o-meter -t vmlinux.old vmlinux.new
-> add/remove: 0/0 grow/shrink: 0/3 up/down: 0/-92 (-92)
-> Function                                     old     new   delta
-> tcp_options_write.isra                      1423    1407     -16
-> mptcp_established_options                   2746    2720     -26
-> tcp_established_options                      553     503     -50
-> Total: Before=22110750, After=22110658, chg -0.00%
-> 
-> Signed-off-by: Eric Dumazet <edumazet@google.com>
-> ---
-> v2: fixed the !CONFIG_MPTCP case (Matthieu Baerts and various kbuild bots)
+Very much, yes.
 
-Thank you for the v2, it looks good to me!
+And it's worth making it very very clear that ABSOLUTELY NONE of the
+recent big security bugs were in splice.
 
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+They were all in the networking and crypto code that just didn't deal
+with shared data correctly.
 
-Cheers,
-Matt
--- 
-Sponsored by the NGI0 Core fund.
+So in that sense, it's a bit sad to discuss castrating splice.
 
+But it's probably still the right thing to at least try.
+
+I've seen very impressive benchmark numbers over the years, but
+they've often smelled more like benchmarketing than actual real work.
+
+There's also a real possibility that a lot of the sendfile / splice
+advantage has little to do with zero-copy, and more to do with the
+cost of mapping and maintaining buffers in user space.
+
+If you are sending file data using plain reads and writes, it's not
+just the "copy from user space to socket data structures".
+
+There's also the cost of populating user space in the first place:
+page faults for mmap made *that* historical copy avoidance basically a
+fairy tale.
+
+And not using mmap means that you have the cost of double caching in
+the kernel _and_ user space etc.
+
+So sendfile() as a concept (whether you use combinations of splice()
+system calls or the sendfile system call itsefl) isn't necessarily
+only about the zero-copy, it's really also about avoiding the user
+space memory management.
+
+But yes, there's a very real question of performance.
+
+I just suspect we'll never get real answers without going the "let's
+just see what happens" route...
+
+                Linus
