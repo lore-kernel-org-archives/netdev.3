@@ -1,114 +1,68 @@
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16C05156F45
-	for <netdev@vger.kernel.org>; Wed,  3 Jun 2026 12:21:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.50
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780489266; cv=pass; b=fDEsQxUA7eZRrNNGkcTOQDh6G13LV/Ks+1POoBQ+u2sKHQzCjlgtWUFtenqcGZwEP/KEnZw8M3sf6FlBMuBNEknq9DRgVvqFGUji3UKtB13nI2Bs3oEaRGoDU5Ezxw4c7U/AAL8YYjKrq9EketrX2DNsvHj23Rz81ZaoY+cxTfg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780489266; c=relaxed/simple;
-	bh=qmRDZ7S8LjnhF1IpPciRHs+PG19HyFaf+2lFuloHJ6I=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EfLr9zggBWiOh0pKL4VYDmqBQfJL+8Y2jeeQ2lIHSV/q56yTB+WWmRuKk25m9LIq8lH3zPj8QfrMFcsSrXQCENAdNYRuh98xGbNnV6aO5yLcNq+42xohlR1qQuBnPx6BeTb+0F1aW626e3zQfICp28bZ9lWeeiX+U0TCXD50sXc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SxRq3soy; arc=pass smtp.client-ip=209.85.208.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08B2D1EA84;
+	Wed,  3 Jun 2026 12:23:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780489435; cv=none; b=oZ6f40AqRNz4/m/t59yTM1yyp8NcGxVoDS9Vw27+U8++ZcLcKFv8+h31J49oVR/FWSlaf2h5BoOcbSAxnepy4IhvdrY9055wZ3UnC3p1QBeC9x/u05YEGpUWHnmkgTJX8E68W4xgeBTOiA6Vqc7qtja/ZS1WZeS9Ik3/MKe2sC0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780489435; c=relaxed/simple;
+	bh=0fq6dlmqoFWoUWO6Bv/3PDuoVk+2yOUZaAdedx4hpfM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=coxGs2wMUl6zSmiBEV1VjVKUJ/Ppgk3JYJN1y2o0fyNtArbJUrO46V6dtThE89iVAX7LIKFdtl06tOXQxuwYAJ0nGAEHHW+EgCbTgYFNJrvaSrlif+lmM4xigRuZx3+TW/iUnAoLfZS5vpsMS71qrbARoAik58MzdkLWr7encnc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=RbYOz33H; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SxRq3soy"
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-68bd167797dso306860a12.0
-        for <netdev@vger.kernel.org>; Wed, 03 Jun 2026 05:21:04 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780489263; cv=none;
-        d=google.com; s=arc-20240605;
-        b=ZDSJBuoC5UDYsf+6aLq+75r5k1P8RKmdkhKlaHcgkYpW3SxVVvFflCEltehb2FLZtR
-         B+KMJ0bbbAWUst3SOVO1Mzps7eegpdWt6dPnz1YTXzZEowJ61C7bmkZo83tuGPGN9R7k
-         3b8aNyZZAMHa/2FegvvlHRxTBlqp4w66NCxmlcbKh365KYnenuuNIiXXnst3dsmtD6Ft
-         t9jzeqp+GJWC+pOd5pbjMY3wanXs9i+BRUJdLTzWTZZwUE+H8Fo1I5E0UbsyGw3k2SZ+
-         T7RytF0hhGzriQ9YVGYS86DeGhiyH3D1jQuTAOFlPogYFv+qApmy0AjXwuIHymc0iZmS
-         Sp2A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=qmRDZ7S8LjnhF1IpPciRHs+PG19HyFaf+2lFuloHJ6I=;
-        fh=HezJ+vxHrDCAsS8VIC8t+08QDqiUaCAsF2CW+aC74cA=;
-        b=hb97czQp6jaasfp3WzAGCAySq9bp6hZlNFWaT3lqeTFKPP/gU8af9gtIWXftyomhDJ
-         77NDIP4/EdmJagda2Ec5UvEdq3sHZImNZ689V9ITeOJs2nBhZ/GWnXeYFQ8qF89C5t8A
-         3lKVFbiEcjKXa5l/Yg9W1CqQOmpgad+b+RCjDgHh7cj1+0rkN3OSwwGa1E9X6nEPwl1n
-         OaJ7fMOdBDhbVdPn3yiTVy0xz0ktcYCnVh5QILXp6gtQ/484LStI1CDNVwkpPC1dit6q
-         T2MUTliGhBT6zkmIQKNIxvQJRBn4er3IMhibeYXWkvuXb0zrXiwoCCxQjipvwzT4hou8
-         LGUQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780489263; x=1781094063; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qmRDZ7S8LjnhF1IpPciRHs+PG19HyFaf+2lFuloHJ6I=;
-        b=SxRq3soySbu6rsRPI563Vj/JdYMpzNzyLprQEkXC0uo0Y02qwEjbgIVHk98Dyt8mVX
-         tw3MHM4F5n45yPumrHLq6ItLKG+2I+nc5Az1w2m64o1HWzZYZY9yu0RX7gbOc94IcmZh
-         Gaa9IyMGvo3Mgofbl9EP5VBxNpx/T6OhN9F+JD+lql2WZzj+mSf7Lg37t86D03FBxkF8
-         GQr0eTr8enfRLttAS2N2sk35nAiCtHaNMWrVThVIxzztwbvWdZvqjLswiWofRfk9cjrd
-         mwMhffZtTmmE+FQdfnom8DofIZLU0V/W9DvgfchjSjIITNbQz15I19+SF8eCG2zvS7Fk
-         77nw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780489263; x=1781094063;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=qmRDZ7S8LjnhF1IpPciRHs+PG19HyFaf+2lFuloHJ6I=;
-        b=pVuhZ8gAK6CF9gGXTZVD6xIn/zaMrF7baHTmwwQwfNhh2yoRP8jpN2yxg/8Kd5e+QJ
-         D60XoYksD4rBvHh1SsYXFS3oGaS4Yr4gJZB59chvJMn1QL9yXyovB5aFhjqoI7xd6M2k
-         pIo1CQGxIPXtwcvMkww9C4WZisgtVf+HMHNHeO+ywwoxSymNtHS+vsSBulXYs7v7t0rC
-         0x3r3ruLkIroMat89G7s7tnf9Xk+2hLNFqIgGsHRNMxOR6Uao4qsYi/D22ZyWZwr2fxq
-         By7xGf/k2ga/IbSclO30zleLyUOCIzilhtU9FwxdGKxNwbj2WbItWteFTHkSVM8DsRCS
-         1yeg==
-X-Forwarded-Encrypted: i=1; AFNElJ/iLkhFJhOpcS2r71yH870GbezZGBigDOryiQMMf6rd1gqE0+wdDfX/cseIUicL5z5MCv+C/7A=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwnzIBGAtRpwssdFLSpEBeKBiYcMG6nUJyPiRJZO2OhrWGd8dcw
-	vDwdIhzEY6h0PWJ6UfBxTorLgn4woYqA3VuSb5+GRcAdnUe/Fw373w730DwmMFeUkdvLk4/x4x9
-	NLuVqYVWzb18mm+vYhm1gXU75Ce9Iygk=
-X-Gm-Gg: Acq92OHSA+47HdNHlKD9+AuBIC7WIfzK56ujRblRKKludWTowwlmgyEjU9DOKL7rf2Q
-	2M2dRKAWE0Anqgt00a70Oph2WWiPiaUhmLqDeqPl38Ko7TucvwmpOIwacf1Tf7bwUHxn2VXz6xB
-	IzA2BBru3KCDparuz05tTvmmSBmnRuuvGARKq8djVi3WygNWnD6JZw20Xx/mBA2cfaLkVUebqmk
-	JS+u9/sj4sTcJpwa7tmpWK1zlhXDymShyCSxuR78/dWo6qAJnqbEyUI+7cY5urmpD4MCnk0JlyQ
-	yGZbVmKsgvr+SEsrfnF9bYo6krKayfKVNsBBmopGwFA0B9jcAkFe
-X-Received: by 2002:a17:906:6a16:b0:beb:c3a7:9cd with SMTP id
- a640c23a62f3a-bf0ac508c23mr167267366b.8.1780489263349; Wed, 03 Jun 2026
- 05:21:03 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="RbYOz33H"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=/R3A7M1BaRA7JqvcsTrouVp/JPp/RtHWssFfmUkvdsM=; b=RbYOz33HhdmYfs0pbYAu6ZaRyM
+	wsF7zVyGu7ZN6vUpZK1W5IM/DIreDzLJ4IwHnnQPowgjNy9HXS/DzNfSbOuRMWpvSfqQg/aZ1/SXv
+	aA2ymEA01R05TIxcTerAqYogOU0cKyQj8kcIS37C9YFFdJpkrzuGDgL9+aRHDRlAo/G0=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wUkdJ-005sGH-9j; Wed, 03 Jun 2026 14:23:41 +0200
+Date: Wed, 3 Jun 2026 14:23:41 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Aleksandrova Alyona <aga@itb.spb.ru>
+Cc: Vladimir Oltean <olteanv@gmail.com>,
+	Florian Fainelli <f.fainelli@gmail.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+	lvc-project@linuxtesting.org
+Subject: Re: [PATCH net] net: dsa: sja1105: reject zero pin duration for PTP
+ perout
+Message-ID: <e8b9ca74-add9-4499-b3a1-c7658d985986@lunn.ch>
+References: <20260603110216.5202-1-aga@itb.spb.ru>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260603065532.13260-1-akiyano@amazon.com>
-In-Reply-To: <20260603065532.13260-1-akiyano@amazon.com>
-From: saeed bishara <saeed.bishara.os@gmail.com>
-Date: Wed, 3 Jun 2026 15:20:52 +0300
-X-Gm-Features: AVHnY4IcVD1mWUEnaiL9FQfPRjAmrfXQusROIVUElX4liuPik0zZirGpCDmxGmc
-Message-ID: <CAHfVqdVpvEF6PXCqSu_Of6SkQY+Uv0b2C1K-0xrgV3Cyg-RcqA@mail.gmail.com>
-Subject: Re: [PATCH net] net: ena: PHC: Add missing barriers
-To: Arthur Kiyanovski <akiyano@amazon.com>
-Cc: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org, 
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, 
-	"Woodhouse, David" <dwmw@amazon.com>, "Machulsky, Zorik" <zorik@amazon.com>, 
-	"Matushevsky, Alexander" <matua@amazon.com>, Saeed Bshara <saeedb@amazon.com>, "Wilson, Matt" <msw@amazon.com>, 
-	"Liguori, Anthony" <aliguori@amazon.com>, "Bshara, Nafea" <nafea@amazon.com>, 
-	"Schmeilin, Evgeny" <evgenys@amazon.com>, "Belgazal, Netanel" <netanel@amazon.com>, 
-	"Saidi, Ali" <alisaidi@amazon.com>, "Herrenschmidt, Benjamin" <benh@amazon.com>, "Dagan, Noam" <ndagan@amazon.com>, 
-	"Arinzon, David" <darinzon@amazon.com>, "Ostrovsky, Evgeny" <evostrov@amazon.com>, 
-	"Tabachnik, Ofir" <ofirt@amazon.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260603110216.5202-1-aga@itb.spb.ru>
 
-On Wed, Jun 3, 2026 at 9:58=E2=80=AFAM Arthur Kiyanovski <akiyano@amazon.co=
-m> wrote:
->
-> Add dma_rmb() barriers after both req_id completion checks in
-> ena_com_phc_get_timestamp(). On weakly-ordered architectures,
-> payload fields may be read before req_id is observed as updated.
+On Wed, Jun 03, 2026 at 02:02:16PM +0300, Aleksandrova Alyona wrote:
+> pin_duration is converted from the user-provided period to SJA1105
+> clock ticks and is later passed as the cycle_time argument to
+> future_base_time().
+> 
+> Very small period values may become zero after the conversion,
+> which can lead to a division by zero in future_base_time().
+> 
+> Reject zero pin_duration values and values that exceed the
+> supported range.
 
-sounds good, note ena_com_reg_bar_read32() missing such a barrier,
-probably can be done as a separate patch.
+Which is better, reject, or round up to 1?
 
-saeed
+      Andrew
