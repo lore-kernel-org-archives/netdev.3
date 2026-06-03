@@ -1,147 +1,93 @@
-Received: from mx0b-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f202.google.com (mail-qk1-f202.google.com [209.85.222.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4929937756F;
-	Wed,  3 Jun 2026 06:19:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14AE03F54DF
+	for <netdev@vger.kernel.org>; Wed,  3 Jun 2026 06:20:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780467578; cv=none; b=HUlHLGP38iFzsxSs5uLkQPYDgwjNPHEc5mTir8TQjtDC3staeYFVHzQY0umRK14w8SAXUIfbZqZXYYWlgY2w4B0/4NDXSzw/SVRB2yJd6csuYWCtW/fOXWS6c3v5QriOQ5PxTMiJLWS9/vdXZlr66FioAhaKFz6fFo492pQhqco=
+	t=1780467649; cv=none; b=FWSVs/TshfU+WsKZPPtB9XcbTcrweXQyqXDZhLVhQQdmaX21VfYDp1uFQgRIrBUZfPTzLHrHFHlctxoCfdmVmIai5uV/9IbJL4Yp8iGMbLp1rKyDshXeecXMR4XNfSF6xrXZ9dUbKI0l5GGJiaZ8MftSzfiG9V2BBdW1u0Cblvw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780467578; c=relaxed/simple;
-	bh=Qk6RLPFHb73KkSp4nO9sG4OSxeD6io+baGcGiwQBxRs=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Erh3dHdq6HfpHG4Kn53kxcQStEX4GugnP7dVmdMY//CUNB1v9pnhETqGOLUTf1PxW2Zho15szlZspWOZmTKt1jLyeWIwx9jzD8RZsXW7/T2TQIp1wgBeG4sh8hTT1GkuGQC0VsdOI8cyUBk9cx1YCMc87TUc65cILSC65dnTQAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=USKN3yma; arc=none smtp.client-ip=67.231.148.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	s=arc-20240116; t=1780467649; c=relaxed/simple;
+	bh=J8vNvcBWArS7JzC7JyIJ9uEPZewiwtj91zjNfgpPEpg=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=hpj68TyLb5z0m5igGJLp5YWB3T9CiKN0JA4ZQrX2MTisOaYTFPcLzx7vWwHpFqD1dpfCr0dW6mVbY6FmnSfmeh7aUMg0RbutrRUJFHkYG2Tp/UYcrC+1EVz1taVjrzsSzFq3yDIC+gHpEJmbNvZzAZOpcNz6ppua1SQnc/zbFUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=krIfhK2p; arc=none smtp.client-ip=209.85.222.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="USKN3yma"
-Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
-	by mx0a-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 652NS6nf2882705;
-	Tue, 2 Jun 2026 23:19:26 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pfpt0220; bh=ObBG2Vg7QV5bpDf+q4JGIgKAm
-	JZuaVv0vkY8p5Fqb/o=; b=USKN3yman0CbyKQorkTd2cymBGfZqDTY1BboZm5+D
-	fdee/rnaAOn6xl2N2wUI2nyohueDQVvIjJrb7cjD8vnt9SeBaf4XI6u7VfC5I6xv
-	Fef9ifpjWngTbwSnG85s92n5Bz9+LaA1dPpIgO9DASdk3paaRvc2mm+ourXWJHGK
-	Qjk3gSrDAulbHyZIkDT+F7paL8HVlIxwMPaCqimO4AKopmgGNSV/yt6NOcjhZ/LO
-	7oumxNj7EiYc/nAJH85NT7teA1VxrpozxkXOH7By5JGVsngwFTOasQE1bv8sxbRn
-	Xa6ja5+hcBVOTvTnxk4oH+rsK5sttKlH8Ndsp+rz1F9fA==
-Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
-	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4ej8vf94g4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 02 Jun 2026 23:19:25 -0700 (PDT)
-Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
- DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Tue, 2 Jun 2026 23:19:24 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
- (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Tue, 2 Jun 2026 23:19:24 -0700
-Received: from rkannoth-OptiPlex-7090 (unknown [10.28.36.165])
-	by maili.marvell.com (Postfix) with SMTP id E24F73F708D;
-	Tue,  2 Jun 2026 23:19:20 -0700 (PDT)
-Date: Wed, 3 Jun 2026 11:49:19 +0530
-From: Ratheesh Kannoth <rkannoth@marvell.com>
-To: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>
-CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <donald.hunter@gmail.com>,
-        <edumazet@google.com>, <horms@kernel.org>, <jiri@resnulli.us>,
-        <kuba@kernel.org>, <pabeni@redhat.com>, <sgoutham@marvell.com>
-Subject: Re: [PATCH v18 net-next 1/8] octeontx2-af: npc: cn20k: debugfs
- enhancements
-Message-ID: <ah_HZ56CUNPHO_sa@rkannoth-OptiPlex-7090>
-References: <20260602060359.1894952-1-rkannoth@marvell.com>
- <20260602060359.1894952-2-rkannoth@marvell.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="krIfhK2p"
+Received: by mail-qk1-f202.google.com with SMTP id af79cd13be357-9158e75cbc0so62211485a.2
+        for <netdev@vger.kernel.org>; Tue, 02 Jun 2026 23:20:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1780467647; x=1781072447; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=3CChTIGrI/WBodT/UU6vaSXaXM6dZ4Rv4nA/m2PW0rE=;
+        b=krIfhK2p6HgSnBXj5A5FQC+fJvrYgJEY61+Ew8hM40MR74s+0qI5AcT2EzlshSGpmm
+         eaSLf6aQxgeA+XdkPzFrfWMTmr0xROI94tlfHnIBDlMra6G/ho60o9r3UwFuWn0r4BDM
+         ufr+EWq2msAKkz828Luk+lTkI3XuVFXCC+O/JK8fqRAsu/qYlREaVmqfn7SKD6fbm9Ec
+         Yu1EVI1HsrhwkNcOzdYSX8EL9u0Pue7V9kopOuRyGTzikfxH2pccbIrZj+f1EII0Kj1t
+         tZ5RwZnIaMSoUg5ytanL0ybqVp1v0IRtx3Z+BLVS5fM13FO/kbNJWNQ1dqepRALNSaqZ
+         9G3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780467647; x=1781072447;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=3CChTIGrI/WBodT/UU6vaSXaXM6dZ4Rv4nA/m2PW0rE=;
+        b=io3xcKYNa9T5IxWTS9HHkXuPMFTRElHbNP0o4+eLeie1OkuKQdhtM+bLl3zTRwmkKx
+         72SKhbRBCZ/wnHUiEYd+uIUYkinSwRdHyGrnxdAKOCRcATxF7IoNmm7DxW22Lv/BpWxA
+         yfrcPMT2VRGBGY+KuBhQ8XcfvJAdfBv2XSyXawyWF9yNNvo2VzSVA2KfpagjM3hxGVeO
+         xHYqrD3c7XIQxSYWx+iX/ZvWeMgrukMTEJhNtmmIEMiQSDPdScyRih8tjyxc1Rdht/H9
+         jkWarA5X3V8KFm4T2t/L/fuNvtj7O6GL07DlBFVqfw75GrHPJQVyzGIaqnBYIOIkr1O6
+         UvBA==
+X-Forwarded-Encrypted: i=1; AFNElJ9jOkKhuJHB1g/IjSvqbdALv6RcnGY9qEbukf2u7viygxe7Gx+6xsBRq5aEFM4ndZrD5yU8ZUs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzxqlG6K1Gzw06O4Fjh7C6flqpJPvRGL7tYMG4BG/Ub0h5VC8Cj
+	ktlkLu1DQh1q+4/QaymHmo05VRAwFsBdJB7iRzKqw8uVDy8bLB57Uwl2iY9pU4aBDuPh8Ef8XsC
+	Dkb/ajQl/B5OXiQ==
+X-Received: from qkjz6.prod.google.com ([2002:a05:620a:1006:b0:915:70f2:c7ac])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:620a:8903:b0:8ef:74c9:daa7 with SMTP id af79cd13be357-9158a65654dmr374018785a.8.1780467646994;
+ Tue, 02 Jun 2026 23:20:46 -0700 (PDT)
+Date: Wed,  3 Jun 2026 06:20:33 +0000
+In-Reply-To: <20260603062043.3911278-1-edumazet@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20260602060359.1894952-2-rkannoth@marvell.com>
-X-Proofpoint-ORIG-GUID: zTlUMzSI_Ay1TM1-nuzk5iVcCwN1jc-e
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjAzMDA1OCBTYWx0ZWRfX7vHDgmddQzv9
- EZ2sr3DtDCZXNKIYOzoQ0ZFD0SoFlwAcimpvYOuZ6ho1X6EOG49VIRHdUgaxGWnSwackkn34gbo
- dt2NkX5R8ndk5gkeW1RkU26Phi3t26nVCewiX42LpTwYUROTUGbxnUY4/aR6CHhZ9FHiRWOWwDw
- ULn1s+92715DrUL2nETrYzRUAolFRqVnfFLJY7GbANWzKG8qLNeomXrBerImenWHf/b0+ZCf1D4
- 6RbwzU4lQA9HNeFaykzfmd216THGlecKrd7tfgu2dsHKoiSJqL0l1lUyaf6CmMticTlM3dCLktg
- SD0F/vEJZd1hgOSrVrh7yJ/SN0Qoe/+fyIFha+0tvq76jt7K5vMNH013PYFvH4VXiXdQv5bgHQV
- IVmiv0NQdZrNK4GiIlKLPmzF5vX4rw/By2oQVvgvSBpJkNzNOUMX/ng0QXdqJ1eFvEK8W68QWAv
- OtYDDSkIRtPt//SmPvA==
-X-Authority-Analysis: v=2.4 cv=EtviaycA c=1 sm=1 tr=0 ts=6a1fc76d cx=c_pps
- a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17
- a=kj9zAlcOel0A:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=l0iWHRpgs5sLHlkKQ1IR:22 a=EAYMVhzMl8SCOHhVQcBL:22 a=c92rfblmAAAA:8
- a=M5GUcnROAAAA:8 a=xmsM2g4GQtVOvpkoMKEA:9 a=CjuIK1q_8ugA:10
- a=GvGzcOZaWPEFPQC_NcjD:22 a=OBjm3rFKGHvpk9ecZwUJ:22
-X-Proofpoint-GUID: zTlUMzSI_Ay1TM1-nuzk5iVcCwN1jc-e
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-03_02,2026-05-28_03,2025-10-01_01
+Mime-Version: 1.0
+References: <20260603062043.3911278-1-edumazet@google.com>
+X-Mailer: git-send-email 2.54.0.1013.g208068f2d8-goog
+Message-ID: <20260603062043.3911278-2-edumazet@google.com>
+Subject: [PATCH v2 net-next 01/11] bridge: add a READ_ONCE() in br_timer_value()
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
+	Nikolay Aleksandrov <razor@blackwall.org>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
+	Eric Dumazet <edumazet@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On 2026-06-02 at 11:33:52, Ratheesh Kannoth (rkannoth@marvell.com) wrote:
-> Improve MCAM visibility and field debugging for CN20K NPC.
->
-> - Extend "mcam_layout" to show enabled (+) or disabled state per entry
->   so status can be verified without parsing the full "mcam_entry" dump.
-> - Add "dstats" debugfs entry: for enabled MCAM indices, print hit deltas
->   since the prior read by comparing hardware counters to a per-entry
->   software baseline and advancing that baseline after each read (hardware
->   counters are not cleared).
-> - Add "mismatch" debugfs entry: lists MCAM entries that are enabled
->   but not explicitly allocated, helping diagnose allocation/field issues.
->
-> Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
+br_timer_value() can be called locklessly, the expires field
+could be changed concurrently.
 
-https://sashiko.dev/#/patchset/20260602060359.1894952-1-rkannoth%40marvell.com
-sashiko says
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+---
+ net/bridge/br_stp_timer.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
->> +			pf = 0xFFFF;
->> +			map = xa_load(&npc_priv->xa_idx2pf_map, mcam_idx);
->> +			if (map)
->> +				pf = xa_to_value(map);
->> +
->> +			delta = stats - dstats[bank][idx];
->> +
->> +			snprintf(buff, sizeof(buff), "%u\t%#04x\t%llu\n",
->> +				 mcam_idx, pf, delta);
->> +			seq_puts(s, buff);
->> +
->> +			dstats[bank][idx] = stats;
->Does this code allow an out-of-bounds array access?
-No.
+diff --git a/net/bridge/br_stp_timer.c b/net/bridge/br_stp_timer.c
+index e5d453305381baa34225a144ac99e98f2a62d810..83cc9c6a3943508eb94d20ddc1b7e737a58d7abb 100644
+--- a/net/bridge/br_stp_timer.c
++++ b/net/bridge/br_stp_timer.c
+@@ -160,5 +160,5 @@ void br_stp_port_timer_init(struct net_bridge_port *p)
+ unsigned long br_timer_value(const struct timer_list *timer)
+ {
+ 	return timer_pending(timer)
+-		? jiffies_delta_to_clock_t(timer->expires - jiffies) : 0;
++		? jiffies_delta_to_clock_t(READ_ONCE(timer->expires) - jiffies) : 0;
+ }
+-- 
+2.54.0.1013.g208068f2d8-goog
 
->In npc_priv_init() (shown below), integer division truncation allows
->a hardware-supplied bank_depth to exceed statically allocated array
->dimensions. Because remainders are truncated, a bank_depth value such
->as 8223 (with num_subbanks = 32) yields subbank_depth = 256.
-
-npc_priv_init() do check against max limit for MAX_BANKDEPTH and bail out on
-error.
-
->I noticed this was fixed later in the series in commit "octeontx2-af: npc:
->cn20k: Allocate npc_priv and dstats dynamically.", but this patch
->introduces a concrete buffer overflow.
-
-These checks are in the current patch itself.
-
->+update_en_map:
->> +	if (enable)
->> +		set_bit(index, npc_priv.en_map);
->Can index exceed the bitmap size here?
->Due to the same integer division truncation issue mentioned above, index
->can exceed the expected bounds, causing set_bit() to write beyond the
->statically allocated 16384 bits of npc_priv.en_map.
-No. "en_map" bitmap is defined with MAXimum size possible. Check against these max limits
-are done during probe (in npc_priv_init()) and returns error.
-
->  	subbank_depth =	bank_depth / num_subbanks;
->> +	if (subbank_depth > MAX_SUBBANK_DEPTH) {
->This is a pre-existing issue, but can this integer division evaluate to 0?
->If hardware reports a banksize (which becomes bank_depth) less than
->num_subbanks (e.g., 16 vs 32), the integer division evaluates to 0.
-Pre-existing issue, so not addressing here. We need to check agaist zero, wll post
-as a seperate patch to "net" tree, - or may be a hardening series.
