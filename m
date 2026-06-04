@@ -1,201 +1,114 @@
-Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E49A34DD6E2
-	for <netdev@vger.kernel.org>; Wed,  3 Jun 2026 23:59:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B719184524
+	for <netdev@vger.kernel.org>; Thu,  4 Jun 2026 00:01:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780531202; cv=none; b=UwizDht6FbLdUxZ06/IdW481Z7qZNRVnQlsl+YxQWvZV66kA0Oj2RJ/OsKxJFZ2G34snemcpPPhbnttokHd58NDOA74NLpnjKoX1g+n21x8rZonUBtgibpaM1RPhjcVqlGWeYHcec6RXyQMzh4umz5QIKSjzO3xGC0pLNe7GzV0=
+	t=1780531295; cv=none; b=cNpS0Sj9Snr7Ntz3fKVK5OkmHi04crSSExvRzMw/m6469lhjQn/LvcrWBhG9jkSjBPO9XZbcKS3ChPYhoETVlgFr5VuN0WCalEJyaFlohFTSlDiSCIEFCRKddGvRqGrR80gW7FKg1d2FsqtdAgPh8gL2AboHk6/8LtdPvlWZstM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780531202; c=relaxed/simple;
-	bh=OhJbjIOfQiyqX+VBPGUU4l+97aO08xqz2lZaA2dAuzE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kpRF95SXXpvDszHybC+XnuIp7/zci/hCb4x9AzMaXxw6wDHxblSIXJlbPE+W18wB85dLA0JEAJGv4e4yQbFxa65rlOCJ8LBde60PplLtHDM2v0BOWtYUYfYz2i2zz7Hch+wXQRXxSjNwjQF/8T/Qwf1P730PrKVW8l/9mWXBvgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Uw4h0m/i; arc=none smtp.client-ip=209.85.128.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1780531295; c=relaxed/simple;
+	bh=uQcJ3DbEdxsfH/k24j2l4FHVQEAFZdw9HA2H2VMaFx4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=aj9niFnsBQj5N/6yCySj4qcz9pF3gr8MjsKRiH2OugjrlF4Jw9dotVKTC6nqjPAqHArr7djtWsfhTqcHXcxFZqDzdOEQfQYDG2rM0n8zixtOAuBww9ikDPELRQn4SK7QSElhDPBm6zjaEPdLdkCjOFPpLiG+ILaKFIozfKDOuCE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Q+p3H2Z7; arc=none smtp.client-ip=209.85.210.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Uw4h0m/i"
-Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-7e2cf9bf458so53937b3.3
-        for <netdev@vger.kernel.org>; Wed, 03 Jun 2026 16:59:56 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Q+p3H2Z7"
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-842288702fbso28416b3a.1
+        for <netdev@vger.kernel.org>; Wed, 03 Jun 2026 17:01:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780531196; x=1781135996; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NCIuJUMUKWEw0msVkX0+vxAzDEyP3Mh77zY2zIL+NRU=;
-        b=Uw4h0m/iqv2jlnHlGO4631TwEvorJ+xMGTjK5PeKT8d5o8MOAPhiCTbxH5gyrUklmU
-         I8j4KDjc1YkVEOueHZ+nfV4dMPrLiOq3mxhNfgxXPp6+8Npp6FSppLupvcgKh9rCrwMD
-         VRPwneq6M1viI+/SJ+BunrFZFjaO4jTDhnKxxm5cM9mzZz1yJhSz6S/JTYKYi+aWY9g0
-         CZDNyz6GM1herEZ/UncHCZY1sxg8NAYvF123aVBMMaOvyrvU27uHXHInOtUt8X7uBnRn
-         C1VdiBa+jPiAziLEesBLfCD4wDs+lgGXJB6lKmyV/w9iYsyg2qdZ3WjIMG7UNsNOSuGN
-         gXfA==
+        d=linux-foundation.org; s=google; t=1780531293; x=1781136093; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=fmwtcO9oMtO4r20fiMVX6YvjF6Gi+HYM7qIN8rIiuJU=;
+        b=Q+p3H2Z7ql3lAznVf4UaH2BG0/fD3s6GNPt8duObqYDXjaceJa7Qy3kJ8WXIYZIwsD
+         wa3CNvfZ1Gn2/rVoOIN/7+AbCsEx6pIQ05AqDSzE4klHViu9OWbG1TWDElD1tpgUxrfH
+         66dwMMPXazSLi57iXYm+aa/lc1pIArh9Gt4Fc=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780531196; x=1781135996;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=NCIuJUMUKWEw0msVkX0+vxAzDEyP3Mh77zY2zIL+NRU=;
-        b=OaynCyeBMk+8h7zYaIdmVuh5ByUi0FNMUgAKRrH6tN6cC+xb0pmXeNhD40KI+R0jE0
-         lvuBQ58sssh72taKO67n6uA2jcv312fnaYNjPMm+mtdvD/FWcxRmsQC+4M4/TJA22mFt
-         FYVJzAptyJmt+4si47CsLFpTApF2bqg72BSaCw3TtcTrX4viYevxDivyb07v+fwOVmAW
-         zXzAdtLOQ5cWtMK8a+6WXDOCaNTciqPoejIeK1v2o4Otr2BGr/6jWGwy0By9QDJZ+B0B
-         n13jj/VQHsKSafFcBRXQ28lQAFd38Nc2nONOPOgKbGbnUTBXEUydJTgMb+xJQSya2EnV
-         5PDw==
-X-Gm-Message-State: AOJu0Yw0ksgPlFolyDOl9ioWTNdmMYc+9G8QMxm7oQryFgIZfbDMPdRl
-	jzuLWTGErRjFifcwUtih0jOlufZzVwCO5ZwO4xVNyuf5EoIpVUBYIOVhfNlVpA==
-X-Gm-Gg: Acq92OEGD8NfMaYqmHLESG39Rbmo2z5mN+XW6vaTY9suXOuihl4CtlTnXNhLw9t37ec
-	NX+IzlNbfuH0MaKVKnltC8C0E8lXxXLUETjX/La0fc5HNDiikksod1Q7yWDD6QkKNWwcpwfm/t8
-	87JT9G8fmytaazOTut2BBawmbIKEc58h2HRrbKBTlPOgKNuEiT9d8UmxyCKmMDvyrqzNkzBiPew
-	jI5ci14oKu5Ao1wiJnMH8SJZyX5qny7B6sGdjgEnHEevGmxxSTrGkUziKj2+c5GyXcDuq2ZXdet
-	KGud/aD13bB/oNCvrZycXZ+X8TF+Iabd4J1SFTdOnyNqwjGxPJwx/MP4J1G5mefsNQ14bt7Jtc+
-	5YMZlbaVvI0Ig52GIDsCnpxM09trc7zE/K9dmRWXN0Zvi0CiCcDpcHai6VN6/dWTNzqkBkfFjxs
-	bGp13H3JWqvnCzoxqn3rvN+11mqBdNrf+9sO0=
-X-Received: by 2002:a05:690c:81:b0:7ba:ee87:87e0 with SMTP id 00721157ae682-7ea2fac76b4mr36080777b3.3.1780531196024;
-        Wed, 03 Jun 2026 16:59:56 -0700 (PDT)
-Received: from localhost ([2a03:2880:21ff:4c::])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-7ea2148b168sm25755887b3.14.2026.06.03.16.59.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Jun 2026 16:59:55 -0700 (PDT)
-From: Wei Wang <weibunny.kernel@gmail.com>
-To: netdev@vger.kernel.org,
-	Jakub Kicinski <kuba@kernel.org>,
-	Daniel Zahka <daniel.zahka@gmail.com>,
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	David Wei <dw@davidwei.uk>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>
-Cc: Wei Wang <weibunny@fb.com>
-Subject: [PATCH v15 net-next 06/10] selftests/net: rename _nk_host_ifname to nk_host_ifname
-Date: Wed,  3 Jun 2026 16:59:35 -0700
-Message-ID: <20260603235947.2986110-7-weibunny.kernel@gmail.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260603235947.2986110-1-weibunny.kernel@gmail.com>
-References: <20260603235947.2986110-1-weibunny.kernel@gmail.com>
+        d=1e100.net; s=20251104; t=1780531293; x=1781136093;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fmwtcO9oMtO4r20fiMVX6YvjF6Gi+HYM7qIN8rIiuJU=;
+        b=Ih+Hc1+kT4D87Iueik/TzJCtT96azIJTQDjtWai6TOwVW/MnJ8JxW4z0xkuNmvq4+/
+         S4t68YWNXHzuEoool/G6SNc9SpWDhqWswMXKlXCPVtXs7pagA7dzRDbGPVuwK2E3bjhN
+         HHprGhwsSKJRyMTLXo2Yt2//S+Dh/ovDSc77yPmkriu90/MelXxwMkild5pbsl6gHnof
+         ue/FdUiZMxRBiIEJoMelEB1RimY6xQX0IT8qqG9IebaVHtjUEMPCHgUXOgM+PVfSCtPX
+         f8EoqMHzfqEyWfF1c7XQ0K6VX9LDcLZQ6DkS3bNBqs9KGvAlf6+YvVjr98FsUfATcKe7
+         VdKw==
+X-Forwarded-Encrypted: i=1; AFNElJ+rTi7vgsDN2vVQby7/E8DvuYkUS5nDoKOqqi6VaCmIVwpqUmh+zoD54VcytpbEEvgvBaW1fR4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyYkAfa86grMtRHfMJc0jpa4Tcsj1GRCgfixxKFRuegj8upNgZ1
+	7THlDleEkOn/R54mOsM3rIZ8ZGRKr3Lq92KIJM7M2+pyjLgg/yn+AFPCNLDO0Kw89uVHKE4WFKb
+	Mi7I336aqMQ==
+X-Gm-Gg: Acq92OEd3jrVUF8LSQDLSnIMeA3PHFzwcVOkGc+ntHsnUWyNNalKNwPSKES4MLyotHm
+	CoyfpCdcoBNhuEgjMY6LSvsifbvaIEgD0hXOtllM19fzviZoKoOaCRIocoJU4XsnpSZ7zPpBC2P
+	DucioRzGRLdnAEeDokx4MvilEYqBzwTFb2kV41KfBGN0jqGupqYJgfmF0zaJgPfxbMmdNLaL/mr
+	QFqSD/pnul+2kQuChy43eML+LaNVJqneJrg5J28k20/P0dkLbNdvPgxeMy9pMNQIjJ70Rqtt7Wy
+	kGQVms/NGWGgGjCXk+uGNMhY/wwXnAtN/BBCcDcoeE1m8JSTW+9YfD8WeDDoBFzHFVfvROViT3p
+	A3HvtBNV6AM3gva3fK7uVCt3ZsScUlS+zs2daWRJXIVTWOoI/EmPr1KhzsG9DvfcqT1JJFZ1kL2
+	6sRynkNZ6jZ/3Yx9OT7TbA42UImkYfVflT0Da6NNAIhhIbxgH3dQo+6iKSLgNliNzMiVgH50IYW
+	JhKt5WuIdU=
+X-Received: by 2002:a05:6a00:846:b0:842:7992:bdc5 with SMTP id d2e1a72fcca58-84284f37744mr5430280b3a.41.1780531293343;
+        Wed, 03 Jun 2026 17:01:33 -0700 (PDT)
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com. [209.85.216.51])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-842828d6bd1sm4985571b3a.44.2026.06.03.17.01.31
+        for <netdev@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 03 Jun 2026 17:01:31 -0700 (PDT)
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-36d9794d82aso41380a91.0
+        for <netdev@vger.kernel.org>; Wed, 03 Jun 2026 17:01:31 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ+e6AvY9WDcAKV+v0d1nybtkewclJSz7wolW9hl6RnjfENb2RanHmy3lecTVHGiSUB6FDjOnTs=@vger.kernel.org
+X-Received: by 2002:a17:90b:2811:b0:36d:5dbe:2a0d with SMTP id
+ 98e67ed59e1d1-36e30c23af4mr5607319a91.7.1780531290626; Wed, 03 Jun 2026
+ 17:01:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <CALCETrU94ja56CA5CRtXrm1v_7gBaPUNOHKQzS=JNF9JZ7Fznw@mail.gmail.com>
+ <20260603230122.851517-1-safinaskar@gmail.com>
+In-Reply-To: <20260603230122.851517-1-safinaskar@gmail.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Wed, 3 Jun 2026 17:01:11 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wjARJSHGWvZKJysvZOVEVi7bNL5x9K2X7ifhfLA9YK2sQ@mail.gmail.com>
+X-Gm-Features: AVHnY4J3E2GAiTMiUKCy1DVjF0CiXaoh4gFXUo3phzZ8FQ9ufT44d-VKtd1uRR8
+Message-ID: <CAHk-=wjARJSHGWvZKJysvZOVEVi7bNL5x9K2X7ifhfLA9YK2sQ@mail.gmail.com>
+Subject: Re: [PATCH 0/3] vmsplice: make vmsplice a trivial wrapper for preadv2/pwritev2
+To: Askar Safin <safinaskar@gmail.com>
+Cc: luto@amacapital.net, akpm@linux-foundation.org, axboe@kernel.dk, 
+	brauner@kernel.org, david@kernel.org, dhowells@redhat.com, hch@infradead.org, 
+	jack@suse.cz, linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, miklos@szeredi.hu, 
+	netdev@vger.kernel.org, patches@lists.linux.dev, pfalcato@suse.de, 
+	viro@zeniv.linux.org.uk, willy@infradead.org
+Content-Type: text/plain; charset="UTF-8"
 
-From: Wei Wang <weibunny@fb.com>
+On Wed, 3 Jun 2026 at 16:01, Askar Safin <safinaskar@gmail.com> wrote:
+>
+> So, if we remove tee(2), then we will probably need to remove all
+> non-standard implementations of pipe_buf_operations.
 
-Rename _nk_host_ifname to nk_host_ifname in NetDrvContEnv to make it
-a public attribute, matching the nk_guest_ifname rename. Tests that
-access the host-side netkit interface name (e.g. for cleanup after
-deleting the netkit pair) no longer trigger pylint protected-access
-warnings.
+I don't think tee matters.
 
-Signed-off-by: Wei Wang <weibunny@fb.com>
----
- .../selftests/drivers/net/hw/nk_qlease.py     |  4 +--
- .../selftests/drivers/net/lib/py/env.py       | 26 +++++++++----------
- 2 files changed, 15 insertions(+), 15 deletions(-)
+Sure, it will share pages across pipes.
 
-diff --git a/tools/testing/selftests/drivers/net/hw/nk_qlease.py b/tools/testing/selftests/drivers/net/hw/nk_qlease.py
-index 139a91ebd229..f5fd64775989 100755
---- a/tools/testing/selftests/drivers/net/hw/nk_qlease.py
-+++ b/tools/testing/selftests/drivers/net/hw/nk_qlease.py
-@@ -193,9 +193,9 @@ def test_destroy(cfg) -> None:
-     kill_timer = threading.Timer(1, rx_proc.proc.terminate)
-     kill_timer.start()
- 
--    ip(f"link del dev {cfg._nk_host_ifname}")
-+    ip(f"link del dev {cfg.nk_host_ifname}")
-     kill_timer.join()
--    cfg._nk_host_ifname = None
-+    cfg.nk_host_ifname = None
-     cfg.nk_guest_ifname = None
- 
-     queue_info = netdevnl.queue_get(
-diff --git a/tools/testing/selftests/drivers/net/lib/py/env.py b/tools/testing/selftests/drivers/net/lib/py/env.py
-index 42c0cb777fb6..1d8964538abb 100644
---- a/tools/testing/selftests/drivers/net/lib/py/env.py
-+++ b/tools/testing/selftests/drivers/net/lib/py/env.py
-@@ -339,7 +339,7 @@ class NetDrvContEnv(NetDrvEpEnv):
- 
-     def __init__(self, src_path, rxqueues=1, primary_rx_redirect=False, **kwargs):
-         self.netns = None
--        self._nk_host_ifname = None
-+        self.nk_host_ifname = None
-         self.nk_guest_ifname = None
-         self._tc_clsact_added = False
-         self._tc_attached = False
-@@ -393,7 +393,7 @@ class NetDrvContEnv(NetDrvEpEnv):
-             raise KsftSkipEx("Failed to create netkit pair")
- 
-         netkit_links.sort(key=lambda x: x['ifindex'])
--        self._nk_host_ifname = netkit_links[1]['ifname']
-+        self.nk_host_ifname = netkit_links[1]['ifname']
-         self.nk_guest_ifname = netkit_links[0]['ifname']
-         self.nk_host_ifindex = netkit_links[1]['ifindex']
-         self.nk_guest_ifindex = netkit_links[0]['ifindex']
-@@ -405,11 +405,11 @@ class NetDrvContEnv(NetDrvEpEnv):
- 
-     def __del__(self):
-         if self._primary_rx_redirect_attached:
--            cmd(f"tc filter del dev {self._nk_host_ifname} ingress", fail=False)
-+            cmd(f"tc filter del dev {self.nk_host_ifname} ingress", fail=False)
-             self._primary_rx_redirect_attached = False
- 
-         if self._primary_rx_redirect_clsact_added:
--            cmd(f"tc qdisc del dev {self._nk_host_ifname} clsact", fail=False)
-+            cmd(f"tc qdisc del dev {self.nk_host_ifname} clsact", fail=False)
-             self._primary_rx_redirect_clsact_added = False
- 
-         if self._tc_attached:
-@@ -425,9 +425,9 @@ class NetDrvContEnv(NetDrvEpEnv):
-                 host=self.remote, fail=False)
-             self._remote_route_added = False
- 
--        if self._nk_host_ifname:
--            cmd(f"ip link del dev {self._nk_host_ifname}")
--            self._nk_host_ifname = None
-+        if self.nk_host_ifname:
-+            cmd(f"ip link del dev {self.nk_host_ifname}")
-+            self.nk_host_ifname = None
-             self.nk_guest_ifname = None
- 
-         if self._init_ns_attached:
-@@ -468,9 +468,9 @@ class NetDrvContEnv(NetDrvEpEnv):
-         self._init_ns_attached = True
-         ip("netns set init 0", ns=self.netns)
-         ip(f"link set dev {self.nk_guest_ifname} netns {self.netns.name}")
--        ip(f"link set dev {self._nk_host_ifname} up")
--        ip(f"-6 addr add fe80::1/64 dev {self._nk_host_ifname} nodad")
--        ip(f"-6 route add {self.nk_guest_ipv6}/128 via fe80::2 dev {self._nk_host_ifname}")
-+        ip(f"link set dev {self.nk_host_ifname} up")
-+        ip(f"-6 addr add fe80::1/64 dev {self.nk_host_ifname} nodad")
-+        ip(f"-6 route add {self.nk_guest_ipv6}/128 via fe80::2 dev {self.nk_host_ifname}")
- 
-         ip("link set lo up", ns=self.netns)
-         ip(f"link set dev {self.nk_guest_ifname} up", ns=self.netns)
-@@ -546,9 +546,9 @@ class NetDrvContEnv(NetDrvEpEnv):
-         if not bpf_obj:
-             raise KsftSkipEx("nk_primary_rx_redirect.bpf.o not found")
- 
--        if self._tc_ensure_clsact(self._nk_host_ifname):
-+        if self._tc_ensure_clsact(self.nk_host_ifname):
-             self._primary_rx_redirect_clsact_added = True
--        cmd(f"tc filter add dev {self._nk_host_ifname} ingress"
-+        cmd(f"tc filter add dev {self.nk_host_ifname} ingress"
-             f" bpf obj {bpf_obj} sec tc/ingress direct-action")
-         self._primary_rx_redirect_attached = True
- 
-@@ -557,7 +557,7 @@ class NetDrvContEnv(NetDrvEpEnv):
-         self._remote_route_added = True
- 
-         filters = json.loads(
--            cmd(f"tc -j filter show dev {self._nk_host_ifname} ingress").stdout)
-+            cmd(f"tc -j filter show dev {self.nk_host_ifname} ingress").stdout)
-         redirect_prog_id = None
-         for bpf in filters:
-             if 'options' not in bpf:
--- 
-2.52.0
+But if we make normal "splice to pipe" always copy from the page
+cache, nobody cares.
 
+You can corrupt the resulting pages as much as you want - through
+multiple pipes if you use tee() to copy it - and it's all just
+corrupting your private copy.
+
+And yes, iSCSI and nvme might do their own splice-like thing, but
+again, nobody really cares. When it's all kernel-internal, the attack
+surface has gone away.
+
+So that's why splice() (and vmsplice()) is special - not because it's
+buggy, but because it's the user-facing attack surface to expose bugs
+elsewhere.
+
+             Linus
