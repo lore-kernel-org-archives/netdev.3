@@ -1,133 +1,258 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1ACF374E79
-	for <netdev@vger.kernel.org>; Thu,  4 Jun 2026 04:41:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 128C93BD62C
+	for <netdev@vger.kernel.org>; Thu,  4 Jun 2026 05:09:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780548070; cv=none; b=BvgtT3Fx5K3YfD4OaRw6e6xBFRVEHnY9IthD9+Fr3SLszW+a48tBzBQ1dnTjkcRngdQtoZT+LX3jegrG9TmtAbUw68TCBZHeJQqCxyllA6yM/Oer0rehiHJEeXLN9A8c7wxDSDbuhw1JWoiPsEq3RPeGTY0RAY4Eob6iV2Chjr0=
+	t=1780549758; cv=none; b=l7ngO4odjJqQL1H5XD+U/b2UTeTxKm1AHHLOCKOdBGwqnktNFqotdiFB3H3BIUFC6X5bvsGyGa6RfGvcmvF63pqSaxqZn/oCXoihWf/icXXxHHt57tuHz8P9kQeo3EfnIppuJuzJt6B8Bq9KDM9bK5egzrUHeXAo04c/d6sUWRM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780548070; c=relaxed/simple;
-	bh=0eh0KIQbs1qSSAuQkd0I9L7iFhTklV6ijuBWROey6iE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=eg7mB4VKsd1u6OOM+etUq3ubNCjsT/487anoA3YQATOnHSSNqMxgOTt43KxxN5BG6zgL/LbzNt2FKjtcpZToQNu5iifXgEeBtEKp4CbPuhPK56T+tKamSsOdWlSVI2JLC48LFTPsXwdSz3WT8WpgCEGj6U53agSnRy/I892Prx0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WKkcjl4r; arc=none smtp.client-ip=209.85.214.174
+	s=arc-20240116; t=1780549758; c=relaxed/simple;
+	bh=Av1frBjcGBjlzFynU2Hy7rkXSpmEfO68DCNBSYURblM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FzDx8MU3fBWP3yly/ql/k0srFHGxKL58QR+/i9HihOUJNzss/1WGaQNgKWQzXIaQl/tyYH/l8tX5sy6veG+ysdqiRvzCD+680Cn6ueNOYhKGwcHb6kTQkeJweIvFin/KEqKLcONi31+KQFTmKLHoOc/Ia7gSsKT1BoCTlKhJoCs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Wfj5/olb; arc=none smtp.client-ip=209.85.216.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WKkcjl4r"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2bf3781ca51so2946085ad.0
-        for <netdev@vger.kernel.org>; Wed, 03 Jun 2026 21:41:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Wfj5/olb"
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-36f4773d7abso49615a91.3
+        for <netdev@vger.kernel.org>; Wed, 03 Jun 2026 22:09:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780548067; x=1781152867; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=yYdWhysklbTaMq+vmdQBdY8EoKqbkXlWNN3QS92WACE=;
-        b=WKkcjl4rEo0R/2bVQHQhF+2KrgYUhQxFwDO0nrd5ggTAnbkaYiuhg7oB92ZKBNjevj
-         vfTvgz93bYw0az1N5L1zaR7GkwpSpwBuSS+bkxy+DAowNYnMOXUds9oqW2xS71jtcbJ6
-         L+fTYm+SX4fvoqp6wZNgpOQVt598M0AcP6CiOyfPEXOZLzqk6o0oa8R/q1YVo3A1XMUB
-         k37fufOQ1OnVAG/sDyyQUS/T8GBJ1AWHu9N4jJGpqWv3AwFTKsZ405s9Ig8LejyR9E/O
-         gLrYHXf1qhr2fySrEF2lUZEYGh3UKYDv6cHKE3RxQkEm3n3KJOX/kGUmVuBLiUgswkCZ
-         yh3w==
+        d=gmail.com; s=20251104; t=1780549755; x=1781154555; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=H+vy0QPkbgBGQCp+nbHU8oM3LzLFEBCDA4xt5ygdBfo=;
+        b=Wfj5/olb/9nGiV8QqwNuMpzRQsqb18H9713Cs0ytRcaX6COoKQox8ltM0esz5CKpq4
+         NF25W7Ro5GRSmIa9C6KVDg8W0FZZ+tOKHvf0Zkz5xsglkahxjTJAWqy4zh29M5b3Wtif
+         7StVzLcsrk9eg9/p/oduv0LrOtwVsR5vtiHQpDEoTahE06rjAbTocQQaK1a23kkvo35D
+         Mw3viVXOmuZ7zuIqGKeBMKHAzgKuWoDcfkWyRAFxqmEM9lH33TJbgcBl1iBBa4fgP8vR
+         z57bYXJMxNceX8iMrvqV97EWdlhwRumfKDSa1KoXOEnbE/9rN62yV5I489uZd28iYkRR
+         jbcQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780548067; x=1781152867;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yYdWhysklbTaMq+vmdQBdY8EoKqbkXlWNN3QS92WACE=;
-        b=bdDC95SV06wF/AVv3fSRAODozIoM0iZsWES5E7Ey4yE1hxf45xMdZrHV8v0PWX+HZQ
-         +P9C/YfkVs11yA5udrwMTpm82XBp4vkEA68UsGb8cZq+OzVQjTB9Mu6KDmXC6LNvn8K1
-         FOiHMrEHI3fvm+xEH4K9+usYjIN12VTcQEje9qtaFK1DJjugw4PgAX/wqNHGGNXdGmAj
-         e7zZUutDY6lHXJwrlO2iwSW1WUsHXQHKOQMMqCDI7Q9T4KKnC2k9B5pjC5ZrMHXOFAuE
-         LmMVE8A16TwGihU35ZeP7XvAixoSWiygEv8OusLbs/ZUa+VBWN8GZhufK8vGNDbmDtVI
-         o36A==
-X-Forwarded-Encrypted: i=1; AFNElJ/AVDyyf8IUapXzRRGYZFBrTG7BKE60O/Eh5ZpGbWpUfGQpEi2Ssags8inurnBo1eMJQ4OlzBA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzRHsrxxjotQq6ruqpx6m/J+7avDgZiIWwHhhvGIaEUy0E7LFo9
-	ehRau4fRjBOCnGq7iYSsPiAAbRrg82eu32kvqoFMydmKmX+FDzjkvb8h
-X-Gm-Gg: Acq92OHljr5S2wKYnMtvtGJ650a892tjY+V/n14BU89Gus4XUHbpVcdzcM+AIcUnevO
-	1hkRD1aVK/ABnfyYG/fCyIF8p3l5oErDO2XqDVzilGmJVYECmWzeUcsVJ3wcvX8pS1zLeX7JSsc
-	EX+SbyLkg63Ud/7UO8QDKxrtboe1iDEengyW8pndSBIJKROeSN6UiGSzqTN5WkX9++OoJi2E6SH
-	/6WILaKQr6WRYRtlr68mnbwzjk+8cgv6tsIo/J7Fd5qgqvJN57mcqmVpIQVcF4X0lqhtHHlzQxE
-	vs2ncDnsfiwbkgnhfW8zqXQQl57/m4e4ERoeWOXk0Omth4fbh9ZyTmP1F+rxGtidmtyJoxG0sto
-	5pRMwAS8vkDePY7bXNFfPZo+MPiONN9Ohi0tqn5aBDyX+8k6LUz+y7D848QvsksTKpbLiqMgRBd
-	qNVh4eC79kUkoOUnHS
-X-Received: by 2002:a17:902:d2c2:b0:2bf:21e6:baee with SMTP id d9443c01a7336-2c1641be20dmr70162455ad.28.1780548067020;
-        Wed, 03 Jun 2026 21:41:07 -0700 (PDT)
-Received: from lgs.. ([2001:250:5800:1000::f280])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c16609e096sm42344025ad.44.2026.06.03.21.41.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Jun 2026 21:41:06 -0700 (PDT)
-From: Guangshuo Li <lgs201920130244@gmail.com>
-To: Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Roger Quadros <rogerq@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Alexander Sverdlin <alexander.sverdlin@gmail.com>,
-	Kevin Hao <haokexin@gmail.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Daniel Zahka <daniel.zahka@gmail.com>,
-	Guangshuo Li <lgs201920130244@gmail.com>,
-	linux-omap@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Alexander Sverdlin <alexander.sverdlin@siemens.com>
-Subject: [PATCH net-next v2] net: cpsw_new: unregister devlink on port registration failure
-Date: Thu,  4 Jun 2026 12:31:15 +0800
-Message-ID: <20260604043115.1409134-1-lgs201920130244@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        d=1e100.net; s=20251104; t=1780549755; x=1781154555;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=H+vy0QPkbgBGQCp+nbHU8oM3LzLFEBCDA4xt5ygdBfo=;
+        b=GH/a3GgB3rAqe1DebMImkI3HFd1XQcQD13C0Vkl3oJBYOcpMJIHIuWPIQkO1DRfstU
+         u4LJQdR0vCmNj7WxTntpl4+3STJs6vzll0dGWGGrJy9Cp9yBqCZVJ5qe/1fqqCvr95yD
+         ooeeaWfiaZ/NF6WRvH5/7tDuJk43ea5Cbdoa5JNug+OACFhI8jgMT8NKXNpgbTSvTnMB
+         eioe8QbhIXA6GuXUqGFZdZSQSTes62+j6FQrRGXjPqNDvMjRNh0KDylNYnFiSxRYfdNv
+         dnwSzPKk8mf9EuNpBH779/SjneaiDUQPjhV4Z741j00CJqHtr8O/wsSsmEPgT+tFgJm1
+         RE+A==
+X-Forwarded-Encrypted: i=1; AFNElJ/9hlGa+2FVbDDVSUKNNmJtVVtt3RohlYcwbjnmQiNyZ0Rs37cexUnmJ4/Ang+5SG1NXjb0kks=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywh2NvRiFzGcur1ulzH71CMyoQq4T9XR3NQF1Y30yFUxqAZc716
+	lFyTSOIkW0RGAMWP0PVJkdYr6qE4iBMQbcYRpjZfDXVXsavEfWK3qb7f
+X-Gm-Gg: Acq92OGxcIpUBl6aUVKDmGQy7ETeXfkKwu1g+UYDfXcG8DyCceZW9O1sWNoET2WBo2w
+	yv0RzATQBAAbgP+EXBZ3GvTMPg1LXCKXPn2v5xpwMnEOuKAYSh/LwlRDu7qKufui4Jd72UNYh5/
+	j8/xSAKpMSe/1hINWNoGG32ytMOQ0vVRFVQ1l125OuXIYVVB/f2Ul7XpJsoxH24OX09yVwGFgnX
+	jcUQZm8iz3HV0NdXaK2e4j6CRq2Kxsg25r8ZxHSkOcyupCOAwxzSykQUWL84Za/ZHjT4c3AkcHc
+	RhVk0r5evQ6u4v4PZG1w3WbKyRUAj8NzMQ49w3n6wyticQwEZ0YHnTYLyYCbufD5LKppeZne9SW
+	vu1bRAN6Epi8dtRY+xtznVIPj6Let8bq2s4REplGUqHaXxv3D/azccjMmvFJs6aVyWBMgQ8v1lM
+	UCV9FxEYISPzojCyo8859hMw53RCznm51s1pnLvO5vg6Rv
+X-Received: by 2002:a17:90b:4b85:b0:366:2b56:3ec2 with SMTP id 98e67ed59e1d1-36fbd7cbd0emr692507a91.1.1780549755227;
+        Wed, 03 Jun 2026 22:09:15 -0700 (PDT)
+Received: from [192.168.1.7] ([159.192.166.161])
+        by smtp.googlemail.com with ESMTPSA id 98e67ed59e1d1-36f68bf99dcsm1595578a91.0.2026.06.03.22.09.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 03 Jun 2026 22:09:14 -0700 (PDT)
+Message-ID: <f5fe7d26-4467-4015-be65-f01d7acda213@gmail.com>
+Date: Thu, 4 Jun 2026 12:09:09 +0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/1] bus: mhi: pci_generic: add Rolling Wireless RW135R-GL
+ and RW151 support
+To: zwq2226404116@163.com, mhi@lists.linux.dev,
+ linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org
+Cc: mani@kernel.org, loic.poulain@oss.qualcomm.com, ryazanov.s.a@gmail.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, kuba@kernel.org,
+ Wanquan Zhong <wanquan.zhong@fibocom.com>
+References: <20260603070608.309114-1-zwq2226404116@163.com>
+Content-Language: en-US
+From: Lars Melin <larsm17@gmail.com>
+In-Reply-To: <20260603070608.309114-1-zwq2226404116@163.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-cpsw_probe() registers devlink before registering the CPSW ports.
+On 2026-06-03 14:06, zwq2226404116@163.com wrote:
+> From: Wanquan Zhong <wanquan.zhong@fibocom.com>
+> 
+> bus: mhi: pci_generic: add Rolling Wireless RW135R-GL and RW151 support
+> 
+> Add MHI PCIe device configuration for Rolling Wireless modules:
+> 
+> - RW135R-GL (Qualcomm sdx35): MBIM, DIAG, DUN, NMEA, FIREHOSE, ADB, IP_HW0
+> - RW151 (Qualcomm sdx75): same channel layout with adjusted ring sizes
+> 
+> Register PCI_DEVICE_SUB entries for vendor 0x2099, device 0x1300/1301 on
+> QCOM 0x011a (sdx35) and 0x0309 (sdx75) respectively.
+> 
+> Enable the ADB MHI channel in mhi_wwan_ctrl so userspace can access the
+> WWAN_PORT_ADB port via the wwan subsystem.
+> 
+> Tested-on: Rolling RW135R-GL / RW151 hardware (MHI probe, MBIM, DIAG, ADB)
+> 
+> Signed-off-by: Wanquan Zhong <wanquan.zhong@fibocom.com>
+> ---
+>   drivers/bus/mhi/host/pci_generic.c | 100 +++++++++++++++++++++++++++++
+>   drivers/net/wwan/mhi_wwan_ctrl.c   |   1 +
+>   2 files changed, 101 insertions(+)
+> 
+> diff --git a/drivers/bus/mhi/host/pci_generic.c b/drivers/bus/mhi/host/pci_generic.c
+> index 0884a384b77f..ad166de2d0f3 100644
+> --- a/drivers/bus/mhi/host/pci_generic.c
+> +++ b/drivers/bus/mhi/host/pci_generic.c
+> @@ -902,6 +902,94 @@ static const struct mhi_pci_dev_info mhi_netprisma_fcun69_info = {
+>   	.sideband_wake = true,
+>   };
+>   
+> +static const struct mhi_channel_config mhi_rolling_rw135r_channels[] = {
+> +	MHI_CHANNEL_CONFIG_UL(4, "DIAG", 64, 1),
+> +	MHI_CHANNEL_CONFIG_DL(5, "DIAG", 64, 1),
+> +	MHI_CHANNEL_CONFIG_UL(12, "MBIM", 32, 0),
+> +	MHI_CHANNEL_CONFIG_DL(13, "MBIM", 32, 0),
+> +	MHI_CHANNEL_CONFIG_UL(14, "NMEA", 32, 0),
+> +	MHI_CHANNEL_CONFIG_DL(15, "NMEA", 32, 0),
+> +	MHI_CHANNEL_CONFIG_UL(32, "DUN", 32, 0),
+> +	MHI_CHANNEL_CONFIG_DL(33, "DUN", 32, 0),
+> +	MHI_CHANNEL_CONFIG_UL_FP(34, "FIREHOSE", 32, 0),
+> +	MHI_CHANNEL_CONFIG_DL_FP(35, "FIREHOSE", 32, 0),
+> +	MHI_CHANNEL_CONFIG_UL(36, "ADB", 32, 0),
+> +	MHI_CHANNEL_CONFIG_DL(37, "ADB", 32, 0),
+> +	MHI_CHANNEL_CONFIG_HW_UL(100, "IP_HW0", 128, 2),
+> +	MHI_CHANNEL_CONFIG_HW_DL(101, "IP_HW0", 128, 3),
+> +};
+> +
+> +static struct mhi_event_config mhi_rolling_rw135r_events[] = {
+> +	MHI_EVENT_CONFIG_CTRL(0, 128),
+> +	MHI_EVENT_CONFIG_DATA(1, 128),
+> +	MHI_EVENT_CONFIG_HW_DATA(2, 1024, 100),
+> +	MHI_EVENT_CONFIG_HW_DATA(3, 2048, 101),
+> +};
+> +
+> +static const struct mhi_controller_config modem_rolling_rw135r_config = {
+> +	.max_channels = 128,
+> +	.timeout_ms = 8000,
+> +	.num_channels = ARRAY_SIZE(mhi_rolling_rw135r_channels),
+> +	.ch_cfg = mhi_rolling_rw135r_channels,
+> +	.num_events = ARRAY_SIZE(mhi_rolling_rw135r_events),
+> +	.event_cfg = mhi_rolling_rw135r_events,
+> +};
+> +
+> +static const struct mhi_pci_dev_info mhi_rolling_rw135r_info = {
+> +	.edl = "qcom/sdx35m/prog_firehose_ddr.elf",
+> +	.name = "rolling-rw135r",
+> +	.config = &modem_rolling_rw135r_config,
+> +	.bar_num = MHI_PCI_DEFAULT_BAR_NUM,
+> +	.dma_data_width = 32,
+> +	.sideband_wake = false,
+> +	.mru_default = 32768,
+> +	.edl_trigger = true,
+> +};
+> +
+> +static const struct mhi_channel_config mhi_rolling_rw151_channels[] = {
+> +	MHI_CHANNEL_CONFIG_UL(4, "DIAG", 16, 1),
+> +	MHI_CHANNEL_CONFIG_DL(5, "DIAG", 16, 1),
+> +	MHI_CHANNEL_CONFIG_UL(12, "MBIM", 4, 0),
+> +	MHI_CHANNEL_CONFIG_DL(13, "MBIM", 4, 0),
+> +	MHI_CHANNEL_CONFIG_UL(14, "NMEA", 32, 0),
+> +	MHI_CHANNEL_CONFIG_DL(15, "NMEA", 32, 0),
+> +	MHI_CHANNEL_CONFIG_UL(32, "DUN", 32, 0),
+> +	MHI_CHANNEL_CONFIG_DL(33, "DUN", 32, 0),
+> +	MHI_CHANNEL_CONFIG_UL_FP(34, "FIREHOSE", 32, 0),
+> +	MHI_CHANNEL_CONFIG_DL_FP(35, "FIREHOSE", 32, 0),
+> +	MHI_CHANNEL_CONFIG_UL(36, "ADB", 32, 0),
+> +	MHI_CHANNEL_CONFIG_DL(37, "ADB", 32, 0),
+> +	MHI_CHANNEL_CONFIG_HW_UL(100, "IP_HW0", 128, 2),
+> +	MHI_CHANNEL_CONFIG_HW_DL(101, "IP_HW0", 128, 3),
+> +};
+> +
+> +static struct mhi_event_config mhi_rolling_rw151_events[] = {
+> +	MHI_EVENT_CONFIG_CTRL(0, 128),
+> +	MHI_EVENT_CONFIG_DATA(1, 128),
+> +	MHI_EVENT_CONFIG_HW_DATA(2, 1024, 100),
+> +	MHI_EVENT_CONFIG_HW_DATA(3, 2048, 101),
+> +};
+> +
+> +static const struct mhi_controller_config modem_rolling_rw151_config = {
+> +	.max_channels = 128,
+> +	.timeout_ms = 50000,
+> +	.num_channels = ARRAY_SIZE(mhi_rolling_rw151_channels),
+> +	.ch_cfg = mhi_rolling_rw151_channels,
+> +	.num_events = ARRAY_SIZE(mhi_rolling_rw151_events),
+> +	.event_cfg = mhi_rolling_rw151_events,
+> +};
+> +
+> +static const struct mhi_pci_dev_info mhi_rolling_rw151_info = {
+> +	.edl = "qcom/sdx75m/prog_firehose_lite.elf",
+> +	.name = "rolling-rw151",
+> +	.config = &modem_rolling_rw151_config,
+> +	.bar_num = MHI_PCI_DEFAULT_BAR_NUM,
+> +	.dma_data_width = 32,
+> +	.sideband_wake = false,
+> +	.mru_default = 32768,
+> +	.edl_trigger = true,
+> +};
+> +
+>   /* Keep the list sorted based on the PID. New VID should be added as the last entry */
+>   static const struct pci_device_id mhi_pci_id_table[] = {
+>   	{PCI_DEVICE(PCI_VENDOR_ID_QCOM, 0x0116),
+> @@ -909,6 +997,12 @@ static const struct pci_device_id mhi_pci_id_table[] = {
+>   	/* Telit FN920C04 (sdx35) */
+>   	{PCI_DEVICE_SUB(PCI_VENDOR_ID_QCOM, 0x011a, 0x1c5d, 0x2020),
+>   		.driver_data = (kernel_ulong_t) &mhi_telit_fn920c04_info },
+> +	/* Rolling RW135R-GL (sdx35) */
+> +	{ PCI_DEVICE_SUB(PCI_VENDOR_ID_QCOM, 0x011a, 0x2099, 0x1300),
+> +		.driver_data = (kernel_ulong_t) &mhi_rolling_rw135r_info },
+> +	/* Rolling RW135R-GL (sdx35) */
+> +	{ PCI_DEVICE_SUB(PCI_VENDOR_ID_QCOM, 0x011a, 0x2099, 0x1301),
+> +		.driver_data = (kernel_ulong_t) &mhi_rolling_rw135r_info },
+>   	{ PCI_DEVICE(PCI_VENDOR_ID_QCOM, 0x0304),
+>   		.driver_data = (kernel_ulong_t) &mhi_qcom_sdx24_info },
+>   	{ PCI_DEVICE_SUB(PCI_VENDOR_ID_QCOM, 0x0306, PCI_VENDOR_ID_QCOM, 0x010c),
+> @@ -941,6 +1035,12 @@ static const struct pci_device_id mhi_pci_id_table[] = {
+>   	/* Telit FE990B40 (sdx72) */
+>   	{ PCI_DEVICE_SUB(PCI_VENDOR_ID_QCOM, 0x0309, 0x1c5d, 0x2025),
+>   		.driver_data = (kernel_ulong_t) &mhi_telit_fe990b40_info },
+> +	/* Rolling RW151 (sdx75) */
+> +	{ PCI_DEVICE_SUB(PCI_VENDOR_ID_QCOM, 0x0309, 0x2099, 0x1300),
+> +		.driver_data = (kernel_ulong_t) &mhi_rolling_rw151_info },
+> +	/* Rolling RW151 (sdx75) */
+> +	{ PCI_DEVICE_SUB(PCI_VENDOR_ID_QCOM, 0x0309, 0x2099, 0x1301),
+> +		.driver_data = (kernel_ulong_t) &mhi_rolling_rw151_info },
+>   	{ PCI_DEVICE(PCI_VENDOR_ID_QCOM, 0x0309),
+>   		.driver_data = (kernel_ulong_t) &mhi_qcom_sdx75_info },
+>   	/* QDU100, x100-DU */
+> diff --git a/drivers/net/wwan/mhi_wwan_ctrl.c b/drivers/net/wwan/mhi_wwan_ctrl.c
+> index fa73861db6ad..c0bba94d5c3f 100644
+> --- a/drivers/net/wwan/mhi_wwan_ctrl.c
+> +++ b/drivers/net/wwan/mhi_wwan_ctrl.c
+> @@ -264,6 +264,7 @@ static const struct mhi_device_id mhi_wwan_ctrl_match_table[] = {
+>   	{ .chan = "DIAG", .driver_data = WWAN_PORT_QCDM },
+>   	{ .chan = "FIREHOSE", .driver_data = WWAN_PORT_FIREHOSE },
+>   	{ .chan = "NMEA", .driver_data = WWAN_PORT_NMEA },
+> +	{ .chan = "ADB", .driver_data = WWAN_PORT_ADB },
+>   	{},
+>   };
+>   MODULE_DEVICE_TABLE(mhi, mhi_wwan_ctrl_match_table);
+> 
+> --
+> 2.43.0
+> 
+> 
+Hi,
+does both the sdx35 and the sdx75 device really have the same Rolling 
+PCI Vid:Pid (2099:1300 and 2099:1301)?
 
-If cpsw_register_ports() fails, the error path only unregisters the
-notifiers and then releases the lower level resources. It does not undo
-the successful cpsw_register_devlink() call, leaving the devlink instance
-and its parameters registered after probe has failed.
+thanks
+Lars
 
-Add a devlink cleanup label for the path where devlink registration has
-already succeeded, and use it when port registration fails.
-
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
-Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
----
-v2:
-  - Updated the subject for net-next.
-  - Dropped the Fixes tag.
-
- drivers/net/ethernet/ti/cpsw_new.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/ti/cpsw_new.c b/drivers/net/ethernet/ti/cpsw_new.c
-index 7f42f58a4b03..95b3b58db6e0 100644
---- a/drivers/net/ethernet/ti/cpsw_new.c
-+++ b/drivers/net/ethernet/ti/cpsw_new.c
-@@ -2050,7 +2050,7 @@ static int cpsw_probe(struct platform_device *pdev)
- 
- 	ret = cpsw_register_ports(cpsw);
- 	if (ret)
--		goto clean_unregister_notifiers;
-+		goto clean_unregister_devlink;
- 
- 	dev_notice(dev, "initialized (regs %pa, pool size %d) hw_ver:%08X %d.%d (%d)\n",
- 		   &ss_res->start, descs_pool_size,
-@@ -2062,6 +2062,8 @@ static int cpsw_probe(struct platform_device *pdev)
- 
- 	return 0;
- 
-+clean_unregister_devlink:
-+	cpsw_unregister_devlink(cpsw);
- clean_unregister_notifiers:
- 	cpsw_unregister_notifiers(cpsw);
- clean_cpts:
--- 
-2.43.0
 
