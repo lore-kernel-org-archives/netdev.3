@@ -1,98 +1,116 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.17])
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20C01391E45;
-	Thu,  4 Jun 2026 08:55:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5261F3F23D7;
+	Thu,  4 Jun 2026 08:57:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780563338; cv=none; b=i7FHRck1rVUmA39kZRAarp3SFKJHsfLVaM/0QR8tsdjyodJTqLju0yLivjTdVYIWBCSrCGLLp8YyBFABBmLKlqpEmZTHJVQ7ptbfdb6qjvTaxshYyjpx7XkNmLZVVKEmXDu5gFzuVQ+fn6WNOnxzKGYT54GNgv9XoA1IJdyle2g=
+	t=1780563434; cv=none; b=K2+kfVS2LWM0ejtvwVFfeacs1Zgie+IvD4fc5FEahqAWpJFHVq8fWNrDp6kC2mAjHR1SuCfjtB8H17XN/B6A1/mOZwn6WB09ruQ4PpQCZBtoCQiDxxBWUqxGPMz/CjV2tmEOQeo3R1Zq8Ir86YSY8PkU2r5d+kwyD9nr+kRQ+Lo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780563338; c=relaxed/simple;
-	bh=OZhIrREOk5xqsN7sLFlNvuIz95WyJa1sgb9bIzxf8IA=;
-	h=Message-ID:Date:MIME-Version:To:From:Subject:Cc:Content-Type; b=oSo6+MXN601ReX5dT9OI8LcuIz5ER/fG4AfV7rxcHHrLSO+1v1iDnzW+5y+wza9HfxKl9SLus2ceB1ZyC59qs9HSn0TtL9nKQ2Gsz2xFdJdYPoQ1wcH5GQjhYVQc57Ug7sdi7V9nKT+66+FbFLG4EWXLSDiiYYajYZAVV46iWlc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=iI6n0JY4; arc=none smtp.client-ip=220.197.32.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
+	s=arc-20240116; t=1780563434; c=relaxed/simple;
+	bh=cujquTacYS0SyI/O00lZ117HDJtHKItexeInz5hUx+8=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=eDESNaCkz8ZajVWOD8o2QPCkrvkLdkrtcz0dmYp+RvvL45Il1UC1UuEdcJ+tF5qmCcKlXv0iX5RDiPKKmo9IXxNUrJVRxDgI26QFY1m9XfDQXBIQ7XONUYRTLP7d6s/ISyFq5jHg02vMvUxyytnEkUCq4BSVzv+AoyyRjg1GIaM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=XNTfI1hb; arc=none smtp.client-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="iI6n0JY4"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
-	s=s110527; h=Message-ID:Date:MIME-Version:To:From:Subject:
-	Content-Type; bh=qBFSoMFwX16MwlmUQDGEuGdAFIZgIayoUg2RKgDD4QQ=;
-	b=iI6n0JY4Qg/6r6y9HbsazA5M1egTUqqmzGqEks6nqdNgBDR69EEGMwX2ENOMKN
-	/qNBbEMA0EosY4UWcsNG8pnDJ06069r8FUmNpmJYP6J19o6mjXovvcgNp7MK7959
-	LnIQi7bQbwMjUm7CSIR1YjBwr7GzFJrfopqDhndHWMSa8=
-Received: from [100.70.220.18] (unknown [])
-	by gzsmtp1 (Coremail) with UTF8SMTPA id Mc8vCgDnrbm6NSFq2tqWAQ--.7870S2;
-	Thu, 04 Jun 2026 16:22:19 +0800 (CST)
-Message-ID: <b8a3b4eb-b75d-4cbd-ac1c-9b0a606a932a@yeah.net>
-Date: Thu, 4 Jun 2026 16:22:13 +0800
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="XNTfI1hb"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6EDAAA4BA0;
+	Thu,  4 Jun 2026 10:57:09 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1780563430; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=lTuCvk0QyaGOhkLATuC+pQdtUcUwnJUH6ax50eJJVXg=;
+	b=XNTfI1hb7nPiWWBh5K6F45NKgd530joprylAeTNLo8of2KV8psUcTPJ6/0Dsd9Zsy8MPOt
+	N7d9fwcyBnu0BZSQIjf/juGT4AGvDvfzLs8xT1erEKKvUk0sMR8Y3+qVpAdzlgt7JX5lkr
+	pe1Z3uoVe+SzY9780uXODEJid5+Ip1UsF2E81C6h/uz1Vo9ClaCkpXa/3Hz2cpXZNhl27d
+	zSDUScsyobGur6ahuoBIQZXPtsZW1IWtcnYYu9aVdE0PNx3PFgDa0aN6lL3r88IjE+1Cbj
+	vrhdWDuuvwMT1wkR0/hqRA6fP0RDAip/mxxBCxw0WPoOCULBfRDv3fUTCoH9oA==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: edumazet@google.com, davem@davemloft.net, kuba@kernel.org,
- pabeni@redhat.com
-From: xietangxin <xietangxin@yeah.net>
-Subject: [BUG] TCP connection deadlock under simultaneous bidirectional
- ICSK_ACK_NOMEM (OOM)
-Cc: jmaloy@redhat.com, menglong8.dong@gmail.com, kuniyu@google.com,
- horms@kernel.org, willemb@google.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset=UTF-8
+Date: Thu, 04 Jun 2026 10:57:09 +0200
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: javen <javen_xu@realsil.com.cn>
+Cc: andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, freddy_gu@realsil.com.cn, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, daniel@makrotopia.org, vladimir.oltean@nxp.com
+Subject: Re: [PATCH net-next v2 3/4] net: phy: realtek: add support for
+ RTL8261C_CG
+In-Reply-To: <20260604074209.93-4-javen_xu@realsil.com.cn>
+References: <20260604074209.93-1-javen_xu@realsil.com.cn>
+ <20260604074209.93-4-javen_xu@realsil.com.cn>
+Message-ID: <94d987457c307b11316cdd49ede213b0@tipi-net.de>
+X-Sender: nb@tipi-net.de
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
 Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:Mc8vCgDnrbm6NSFq2tqWAQ--.7870S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7tr18KrWDtF4xJrykJryxXwb_yoW8AF1UpF
-	n3Jry3Crs5t3sayr48tw1xG348Jrs8AFnxJr1qvrWxtw45CFsYgry0q3y09r9FkFyDJryq
-	kF92vF1Dtr1kXaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zRUUUUUUUUU=
-X-CM-SenderInfo: x0lh3tpqj0x0o61htxgoqh3/1tbiIRtekmohNbtCXAAA3t
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hi all,
+Hi Javen
 
-We have observed a TCP connection deadlock on stable 6.6 under heavy stress testing.
+On 4.6.2026 09:42, javen wrote:
+> From: Javen Xu <javen_xu@realsil.com.cn>
+> 
+> This patch adds support for Realtek phy chip RTL8261C_CG. Its PHY ID is
+> 0x001cc898.
+> 
+> Signed-off-by: Javen Xu <javen_xu@realsil.com.cn>
+> ---
+> Changes in v2:
+>  - remove RTL8261D, only support RTL8261C_CG
+>  - remove speed 500, rarely used
+>  - add helper function, genphy_c45_soft_reset() and 
+> genphy_c45_config_master_slave()
+> ---
+>  drivers/net/phy/realtek/realtek_main.c | 178 +++++++++++++++++++++++++
+>  1 file changed, 178 insertions(+)
+> 
+> diff --git a/drivers/net/phy/realtek/realtek_main.c 
+> b/drivers/net/phy/realtek/realtek_main.c
 
-1.Both Peer A and Peer B enter the ICSK_ACK_NOMEM branch in tcp_select_window().
-After commit 8c670bdfa58e ("tcp: correct handling of extreme memory squeeze"),
-Both peers freeze their rcv_nxt and set rcv_wnd = 0.
+> [...]
 
-2.Prior to freezing, both sides had already sent out flight data.
-Since both sides are dropping incoming data packets due to OOM, rcv_nxt stops advancing,
-but the peer's seq of subsequent packets continues to grow.
+> +
+> +#define RTL8261C_CE_MODEL		0x00
+> +#define RTL8261X_GBCR_REG		0xa412
 
-3.When Peer A receives Peer B's Zero Window ACK,
-the packet's seq is far ahead of Peer A's frozen rcv_nxt.
-Both peers drop each other's packet, also no Zero Window Probes are triggered
-because snd_wnd is never updated to 0.
+IMHO this is just RTL822X_VND2_C22_REG(MII_CTRL1000) (= 0xa412), already
+used elsewhere in the file. Drop the define and reuse the macro, as
+Aleksander suggested on v1.
 
+> [...]
 
-Simplified Packet Trace:
+> +struct rtl8261x_priv {
+> +	u8 sub_phy_id;
+> +};
 
-Assume Peer A's rcv_nxt = 1000, and Peer B's rcv_nxt = 5000 initially.
+sub_phy_id is only written, never read. Andrew already asked about the
+unused priv fields on v1. A local in probe() is enough, drop the field?
 
-Time  Dir      Type        Seq   Ack   Win  Len  Status
-------------------------------------------------------------------------
-T1:   B -> A   [PSH, ACK]  1000  5000  3000 100  (A hits OOM, rcv_nxt=1000)
-T2:   B -> A   [ACK]       1100  5000  3000 200  (Dropped due to A's OOM)
-T3:   B -> A   [PSH, ACK]  1300  5000  3000 200  (Dropped due to A's OOM)
+> [...]
 
-T4:   A -> B   [PSH, ACK]  5000  1000  3000 100  (B hits OOM, rcv_nxt=5000)
-T5:   A -> B   [ACK]       5100  1000  3000 200  (Dropped due to B's OOM)
-T6:   A -> B   [PSH, ACK]  5300  1000  3000 200  (Dropped due to B's OOM)
+> +
+> +	if (linkmode_test_bit(ETHTOOL_LINK_MODE_1000baseT_Full_BIT,
+> +			      phydev->advertising))
+> +		adv_1g = ADVERTISE_1000FULL;
+> +
+> +	ret = phy_modify_mmd_changed(phydev, MDIO_MMD_VEND2,
+> +				     RTL8261X_GBCR_REG,
+> +				     ADVERTISE_1000FULL, adv_1g);
 
--- Both sides are now in OOM. B's Seq is 1500; A's Seq is 5500 --
+See above and replace with RTL822X_VND2_C22_REG(MII_CTRL1000).
 
-T7:   B -> A   [ZeroWin]   1500  5000  0    0    (Dropped: Seq 1500 != 1000)
-T8:   A -> B   [ZeroWin]   5500  1000  0    0    (Dropped: Seq 5500 != 5000)
-T9:   A -> B   [WinUpdate] 5500  1000  20   0    (Dropped: Seq 5500 != 5000)
+The aneg-restart handling looks correct now, thanks for picking up the 
+v1
+comment.
 
-Should we relax the sequence check in tcp_sequence() for zero window ACK?
+> [...]
 
-Any feedback or guidance would be greatly appreciated.
-
--- 
-Best regards,
-Tangxin Xie
-
+Thanks,
+Nicolai
