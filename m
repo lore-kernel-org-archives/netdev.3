@@ -1,98 +1,113 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2FD63D6CC4
-	for <netdev@vger.kernel.org>; Thu,  4 Jun 2026 10:14:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A70AF405E7;
+	Thu,  4 Jun 2026 10:18:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780568082; cv=none; b=bOpxoqoDwQv+99sRNZGRdAED9GFH+Jotvsh3Ls14kMBGsZGeX+2VO10cvn0L0MTK4HLCEQylQkPvHNT6Uy6V8C7RcyyBasqyfnr3qwOsHP1xQxdIscvSpadNjd+gSZwJKWZXmPjQ6w9CmTXyhmt2xw7THEtROCOFrn4loi8/FCk=
+	t=1780568284; cv=none; b=c+d/Tc6kWlBYaLOWu3eNLMta70mH1zopgvCIKDR8VKNsthyIOHRQtVbFhEnH4XFpno28C169u5VP4FeXCZ47fCliTcgnsO5EsPPQllTzwuqSbT6lozgoUtOg2iQjk9C40S2IKc/EuLmOlAiu+R/6X8zGnMpGjJM+BT6iOaCFpeg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780568082; c=relaxed/simple;
-	bh=jnjjtyoNqk3fLph1H7cvL8QrFATxoSZEE+evx3Rybnc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=FL+9BZfb+ignCCmsh+dQtGlxlTG63h005yfrtJuwK+9ELC651sN+Jzi5b1swECydn8mdDtXjF5Op1Ts4NziQGmA7CX8XMUvVRZTJpjUx1ASZDTgjgWthpj04vajlHHBTATsNL/vImfznv1iV1w/Y0RWMrA+DnZJm43rctVmk37U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=YxH7E+yX; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1780568284; c=relaxed/simple;
+	bh=fHROndg5THUN4wVkBOJsFujH2BeidORwx6fT/hry+FQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TOZfW+wCvwDtC17WxLoz/bkhE7ANBeN6S9Xyy841DE3IMgkHpZVGyIbqNlvfXjOHw3a8ElyQuYS3dn/bLFp8eP6dg/9Gs9Cg6bwuPai7ApzyTWYGR4Xz2fz+GnzamEe4Q4NZJ9vnwH8WP2cbtINaRx81Hp0yNT3jM7UKShEzyn8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nzq2rcP1; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="YxH7E+yX"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 45F704E40589;
-	Thu,  4 Jun 2026 10:14:39 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 192AE5FEF7;
-	Thu,  4 Jun 2026 10:14:39 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C8923106A18CF;
-	Thu,  4 Jun 2026 12:14:34 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1780568078; h=from:subject:date:message-id:to:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=z5PIo9Jtm3gyRPVQtyYqQOLI/bKP1AnD/5E7TyaKnfo=;
-	b=YxH7E+yXWDOdCKP0i4ylBBAk7HD0nO3sBn8k+7mvRVbgxiN7314J9nqERzVPn92AA9gB7f
-	rPiGfjf6Ekxvu+G/VGUmHKpa3bbUKCvQ8To2SWJZDIaKLoZ7/dc/Q/g7WTOIlRG33h7TEd
-	SUcchFiwNW7BvekFtCowZdPSJzGOXybmt4FyPKvb1Kz2fXF4SQ+udG0DMYhp5BKgAlNgne
-	OH+J9TtucwvsPXq+VGqDCRHOm5cAkzQQKyUK59EduxrQPFc3mRWqLyF/cUXuTFZaoFC0cD
-	H8uWnqrvQ13HMlcqS4MbACco0S0yJUzjm9dNhcFrY6siDSPg2fqmFSzujO/D7g==
-Message-ID: <2e9e7a9d-ef15-4e32-9e2a-b8d2a23b3bec@bootlin.com>
-Date: Thu, 4 Jun 2026 12:14:33 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nzq2rcP1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03F121F00893;
+	Thu,  4 Jun 2026 10:18:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780568283;
+	bh=pUj7m2CDaW3G/ucn/7/SD3wFXRKZCFFvrBjYxGmN+is=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=nzq2rcP1fx+yyhPnOyn2Rq5EpciyRCD4vPctNirtOQoDW5WlfuokxEuH+hpss8sJ8
+	 XuqVFpGttKjbEU/tiRl8K/dZMpaX6+5eqh0RHpkkP0+6OweCCTW8vJI5hcXoeSNaSS
+	 5I9q8T17WkGk5zvMZAOhag9Rwd/GiNIWsuOrSO6LSAT8emfcZOug74ZHaNaJ8TLgly
+	 N3IaWugx+FmOnkk2lBV6OQ0A5qrjkWqoT59ET04IjDxUrL0Oy+fbTieF1K+U3SL+Zy
+	 lnUK0I31pZgbfGpDGDQhfDvnYIUeEbJ68F5XgYweaZAUT8TBY31Tz2H7LedkRIo0Dd
+	 wR3AvuQ9yVpMg==
+Date: Thu, 4 Jun 2026 12:18:01 +0200
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+To: ZhaoJinming <zhaojinming@uniontech.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH net] net: airoha: Add NULL check for
+ of_reserved_mem_lookup() in airoha_qdma_init_hfwd_queues()
+Message-ID: <aiFQ2cQIHGXiRdBx@lore-desk>
+References: <20260604070352.2603077-1-zhaojinming@uniontech.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 1/3] net: phy: as21xxx: handle corner case with link
- and autoneg complete
-To: Christian Marangi <ansuelsmth@gmail.com>, Andrew Lunn <andrew@lunn.ch>,
- Heiner Kallweit <hkallweit1@gmail.com>, Russell King
- <linux@armlinux.org.uk>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260601105342.28865-1-ansuelsmth@gmail.com>
-Content-Language: en-US
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-In-Reply-To: <20260601105342.28865-1-ansuelsmth@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="MHS1sKb/1YHuFP2O"
+Content-Disposition: inline
+In-Reply-To: <20260604070352.2603077-1-zhaojinming@uniontech.com>
 
 
+--MHS1sKb/1YHuFP2O
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On 6/1/26 12:53, Christian Marangi wrote:
-> Add missing case in custom read_link, when autoneg is started, autoneg
-> complete bit is reset but link is still not up.
-> 
-> Fixes: 830877d89edc ("net: phy: Add support for Aeonsemi AS21xxx PHYs")
-> Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+> of_reserved_mem_lookup() may return NULL if the reserved memory region
+> referenced by the "memory-region" phandle is not found in the reserved
+> memory table (e.g. due to a misconfigured DTS or a removed
+> memory-region node).  The current code dereferences the returned
+> pointer without checking for NULL, leading to a kernel NULL pointer
+> dereference at the following lines:
+>=20
+>     dma_addr =3D rmem->base;                          // line 1156
+>     num_desc =3D div_u64(rmem->size, buf_size);       // line 1160
+>=20
+> Add a NULL check after of_reserved_mem_lookup() and return -ENODEV if
+> the lookup fails, which is consistent with the existing error handling
+> for of_parse_phandle() failure in the same code block.
+>=20
+> Fixes: 3a1ce9e3d01b ("net: airoha: Add the capability to allocate hwfd bu=
+ffers via reserved-memory")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: ZhaoJinming<zhaojinming@uniontech.com>
 
-Looks like the same approach as in genphy_update_link()
-
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-
-Maxime
+Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
 
 > ---
->  drivers/net/phy/as21xxx.c | 7 +++++++
->  1 file changed, 7 insertions(+)
-> 
-> diff --git a/drivers/net/phy/as21xxx.c b/drivers/net/phy/as21xxx.c
-> index d5738117eca6..0db82da8dbdf 100644
-> --- a/drivers/net/phy/as21xxx.c
-> +++ b/drivers/net/phy/as21xxx.c
-> @@ -658,6 +658,13 @@ static int as21xxx_read_link(struct phy_device *phydev, int *bmcr)
->  		return status;
->  
->  	phydev->link = !!(status & MDIO_STAT1_LSTATUS);
-> +	phydev->autoneg_complete = !!(status & MDIO_AN_STAT1_COMPLETE);
+>  drivers/net/ethernet/airoha/airoha_eth.c | 3 +++
+>  1 file changed, 3 insertions(+)
+>=20
+> diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ether=
+net/airoha/airoha_eth.c
+> index cecd66251dba..2444d3275a81 100644
+> --- a/drivers/net/ethernet/airoha/airoha_eth.c
+> +++ b/drivers/net/ethernet/airoha/airoha_eth.c
+> @@ -1153,6 +1153,9 @@ static int airoha_qdma_init_hfwd_queues(struct airo=
+ha_qdma *qdma)
+> =20
+>  		rmem =3D of_reserved_mem_lookup(np);
+>  		of_node_put(np);
+> +		if (!rmem)
+> +			return -ENODEV;
 > +
-> +	/* Consider the case that autoneg was started and "aneg complete"
-> +	 * bit has been reset, but "link up" bit not yet.
-> +	 */
-> +	if (phydev->autoneg == AUTONEG_ENABLE && !phydev->autoneg_complete)
-> +		phydev->link = 0;
->  
->  	return 0;
->  }
+>  		dma_addr =3D rmem->base;
+>  		/* Compute the number of hw descriptors according to the
+>  		 * reserved memory size and the payload buffer size
+> --=20
+> 2.25.1
 
+--MHS1sKb/1YHuFP2O
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCaiFQ2QAKCRA6cBh0uS2t
+rGQoAP0Y+U3xaU4dH4A4qEA5eXkvOPfKybpxGlsEg1dZFVcKfgD/fEwzNgGlnKUX
+1JLWfHZ0UTnNgp7WgqnMb40Sm39fpgM=
+=v7Zm
+-----END PGP SIGNATURE-----
+
+--MHS1sKb/1YHuFP2O--
