@@ -1,35 +1,71 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 409F43976AD;
-	Thu,  4 Jun 2026 09:50:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEAAC3AF64E;
+	Thu,  4 Jun 2026 09:58:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780566607; cv=none; b=MtMJksrts0S7eUHVd/5aNQqSLLF3PIbfL2km3i19fLZ1AswUAEh5yI9DWWKqbR8IjvoNkowUzFwV8JYdLqFw+y9ab6KAJcGfd4rbJeA0ywPfQQxfVuxXMDboPvRSHhDSQmhUEEe2Ah4QOFfHC2MDoy2fZ99PubrWkz1cO7C/4sE=
+	t=1780567097; cv=none; b=sb/3VWK1SCU2Az4ydA2KvH1RT1TvHwLSop5lTTctvvarNB40HIbsZPqBlZoo6UbJVyzsWBKESiHg9qhJV5MqGB0l+0UBncLsL9hvGk4IPUolz4H/PGT4BxqSGhoBJkNeHyXnMFPYsx/kD/7SW2QeqlmT/QvFuiE9m2k3pd1ZnYk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780566607; c=relaxed/simple;
-	bh=VjTz8+WeiUzWcBdR1Rs4zqbDM7DUGzeYknM8QM87u7g=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=mk9D2p2Ty/LiBKDR4+g7iqPNEdzYB9t3pR9ZmlUuOd74EYX4L8rOrqgloIfrMZvDDwDeRseJVSjCs6iYmXWCtJy1Fzk34ec1GmlNe69o0H/l+bucNtf48esXcTnjVK/f4kab0X+/wV/ONT/nFCTlM1bfQoNjN26cqRjLV9r9Y+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d6iP0khd; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780567097; c=relaxed/simple;
+	bh=HOpVztT8DOAo7KVM/MAVNPDfMWFbaLZEj1Jd1WUkhMo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=O4ICbtJ7RAfvp/LG8MMrNx1oiOrZFX+yZvgJxa2aidXLco90R5cmS6C7eUZPtthMHq5Kikt5WiOriYWBfXgHwWao6Z92cjMIXn3Evyl6zofcMFUzus4JayNJyzR1dJ3ayNFGASpNZfrRljs1jZgtLdD1s9U7QhFaYXoORvLvAYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=desiato.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=c3PNVjQt; arc=none smtp.client-ip=90.155.92.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d6iP0khd"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3BB01F00893;
-	Thu,  4 Jun 2026 09:50:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780566605;
-	bh=O28jlKo2Rqtk1QypQ4hf3RUWWZ+g2xqi0sDgvdKBjSU=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=d6iP0khdSRO9oJ9jhpsJFigjkK4PxYrrDYsCg1mL8By1f9fJYGeHurMK2aXCWMPFX
-	 gp4273JFIdC3YvcQikPPJxtTzLOBXy9nbo7tev87uFvt5qR3iVBXmz5XYRD+gflaK6
-	 fG2zGXApPazkVr/ThpvCnJj8Qxf/oLbv8z01G59MlmuQL2KtpUITO9udQxpIsmJvW9
-	 DYY0Vhh7LnXkGK7ixtlpGs2Ay7T8iN+pRe2xPJwE19DZFdSMkaN0eNRZYESS/DD1En
-	 B41wVeHqSIUEnkiu7tkXluKxeQXTJeoMNyR0MAK5XUakjh0rCPXStR+BcYFKea8j7g
-	 Q6ArEyLWhNd/Q==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 1987F393090A;
-	Thu,  4 Jun 2026 09:50:08 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="c3PNVjQt"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description;
+	bh=HAwxsEb++hynAZSBM/ZWsQB/kPejZeakWzLcrT4MuRE=; b=c3PNVjQt2UzKlsR7+/YYu1G/zu
+	tifba7YBIOWV2G70UsP9TIMKEwFYCzaOHtKrKQDFWnam17TKSzmfuaM0YbpXFVa/sH0CFYMTPCaI/
+	5Q3XHI+ogRdglNA1WlcQ3WQjAYDz7XwoFTmYoIXOs3kWFE+IoZxJzaTsTBXAyOxwt8+rznp75okRN
+	Y1iyr/f0ib6kePQ4i58xPshOjln+zJ4/eU71q0cJ/EooKaf/ES9qR7l5Ie9YUeR9FA6JNKTo8F3g2
+	x/F86PuxYc/5G38XWoahPBE/G0Q/GJdEUeDeeztAfDHBDc5AbPKfHgKsyKXg1+HQeFOopfM/Q3nha
+	3aeQZtJQ==;
+Received: from i7.infradead.org ([2001:8b0:10b:1:21e:67ff:fecb:7a92])
+	by desiato.infradead.org with esmtpsa (Exim 4.99.2 #2 (Red Hat Linux))
+	id 1wV4pr-0000000EAMb-0wS1;
+	Thu, 04 Jun 2026 09:57:59 +0000
+Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.2 #2 (Red Hat Linux))
+	id 1wV4pq-00000000H0r-32Aw;
+	Thu, 04 Jun 2026 10:57:58 +0100
+From: David Woodhouse <dwmw2@infradead.org>
+To: Thomas Gleixner <tglx@kernel.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	Dexuan Cui <decui@microsoft.com>,
+	Long Li <longli@microsoft.com>,
+	Daniel Lezcano <daniel.lezcano@kernel.org>,
+	David Woodhouse <dwmw2@infradead.org>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-hyperv@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH v2 2/3] x86/kvmclock: Implement read_snapshot() for kvmclock clocksource
+Date: Thu,  4 Jun 2026 10:35:17 +0100
+Message-ID: <20260604095755.64849-3-dwmw2@infradead.org>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260604095755.64849-1-dwmw2@infradead.org>
+References: <20260604095755.64849-1-dwmw2@infradead.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,43 +73,83 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] net: bonding: fix NULL pointer dereference in
- bond_do_ioctl()
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178056660688.2344782.1689826187240652656.git-patchwork-notify@kernel.org>
-Date: Thu, 04 Jun 2026 09:50:06 +0000
-References: <20260601085649.4029067-1-zhaojinming@uniontech.com>
-In-Reply-To: <20260601085649.4029067-1-zhaojinming@uniontech.com>
-To: ZhaoJinming <zhaojinming@uniontech.com>
-Cc: jv@jvosburgh.net, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, jarod@redhat.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Sender: David Woodhouse <dwmw2@infradead.org>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato.infradead.org. See http://www.infradead.org/rpr.html
 
-Hello:
+From: David Woodhouse <dwmw@amazon.co.uk>
 
-This patch was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+Implement the read_snapshot() callback for the kvmclock clocksource.
+This returns the kvmclock nanosecond value (for timekeeping) while
+also providing the raw TSC value that was used to compute it.
 
-On Mon,  1 Jun 2026 16:56:49 +0800 you wrote:
-> In bond_do_ioctl(), slave_dev is obtained via __dev_get_by_name() which
-> can return NULL if the requested interface name does not exist. However,
-> the subsequent slave_dbg() call is placed before the NULL check:
-> 
->     slave_dev = __dev_get_by_name(net, ifr->ifr_slave);
->     slave_dbg(bond_dev, slave_dev, "slave_dev=%p:\n", slave_dev); //here
->     if (!slave_dev)
->         return -ENODEV;
-> 
-> [...]
+The TSC is read inside the pvclock seqlock-protected region, ensuring
+the raw TSC and derived kvmclock value are atomically paired.
 
-Here is the summary with links:
-  - net: bonding: fix NULL pointer dereference in bond_do_ioctl()
-    https://git.kernel.org/netdev/net/c/a764b0e8317a
+This enables ktime_get_snapshot_id() to provide the raw TSC to consumers
+like the vmclock PTP driver, which currently has to do a separate call
+to get_cycles() to obtain a value at *approximately* the same time, to
+feed through the vmclock calculation.
 
-You are awesome, thank you!
+Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+Assisted-by: Kiro:claude-opus-4.6-1m
+---
+ arch/x86/kernel/kvmclock.c | 36 +++++++++++++++++++++++++++++-------
+ 1 file changed, 29 insertions(+), 7 deletions(-)
+
+diff --git a/arch/x86/kernel/kvmclock.c b/arch/x86/kernel/kvmclock.c
+index b5991d53fc0e..cb3d0ca1fa22 100644
+--- a/arch/x86/kernel/kvmclock.c
++++ b/arch/x86/kernel/kvmclock.c
+@@ -87,6 +87,27 @@ static u64 kvm_clock_get_cycles(struct clocksource *cs)
+ 	return kvm_clock_read();
+ }
+ 
++static u64 kvm_clock_get_cycles_snapshot(struct clocksource *cs,
++					 struct clocksource_hw_snapshot *chs)
++{
++	struct pvclock_vcpu_time_info *src;
++	unsigned version;
++	u64 ret, tsc;
++
++	preempt_disable_notrace();
++	src = this_cpu_pvti();
++	do {
++		version = pvclock_read_begin(src);
++		tsc = rdtsc_ordered();
++		ret = __pvclock_read_cycles(src, tsc);
++	} while (pvclock_read_retry(src, version));
++	preempt_enable_notrace();
++
++	chs->hw_cycles = tsc;
++	chs->hw_csid = CSID_X86_TSC;
++	return ret;
++}
++
+ static noinstr u64 kvm_sched_clock_read(void)
+ {
+ 	return pvclock_clocksource_read_nowd(this_cpu_pvti()) - kvm_sched_clock_offset;
+@@ -156,13 +177,14 @@ static int kvm_cs_enable(struct clocksource *cs)
+ }
+ 
+ static struct clocksource kvm_clock = {
+-	.name	= "kvm-clock",
+-	.read	= kvm_clock_get_cycles,
+-	.rating	= 400,
+-	.mask	= CLOCKSOURCE_MASK(64),
+-	.flags	= CLOCK_SOURCE_IS_CONTINUOUS,
+-	.id     = CSID_X86_KVM_CLK,
+-	.enable	= kvm_cs_enable,
++	.name		= "kvm-clock",
++	.read		= kvm_clock_get_cycles,
++	.read_snapshot	= kvm_clock_get_cycles_snapshot,
++	.rating		= 400,
++	.mask		= CLOCKSOURCE_MASK(64),
++	.flags		= CLOCK_SOURCE_IS_CONTINUOUS,
++	.id		= CSID_X86_KVM_CLK,
++	.enable		= kvm_cs_enable,
+ };
+ 
+ static void kvm_register_clock(char *txt)
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.54.0
 
