@@ -1,26 +1,27 @@
-Received: from smtpbgeu1.qq.com (smtpbgeu1.qq.com [52.59.177.22])
+Received: from smtpbgsg2.qq.com (smtpbgsg2.qq.com [54.254.200.128])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD9293EBF20
-	for <netdev@vger.kernel.org>; Thu,  4 Jun 2026 08:57:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.59.177.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA9713F39CD
+	for <netdev@vger.kernel.org>; Thu,  4 Jun 2026 08:57:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.254.200.128
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780563468; cv=none; b=Kh0oALofP6v06suTkfASrk29/K4War+r9joyZy7ukXCqrUqlfIwcHglN3za2IcD1uypLtFVJ0JqY994v4tCT5STQ/AZRNi4Ep8OmA6D4qyWEtS+rntad22sR03ThIOo3rXKx4SFEwR9VAdiFp5Jb2pT7UCT4X9466ADJcrdqiJA=
+	t=1780563471; cv=none; b=M+pxNrRv6AYoil5lL2QqovP9A6gSrMXK1JSgObz2BNsOtXdyE97bFDGupWlmarVuPjHzKmJx9QQN1/FbObPxSSWvmhJgcEO4bmPu5MpGUCNu08NsuPT+YtsPG3kD42P7FI/E3lHT0Cb6JueDjdevX1054Cayfxox3QwtnY7AJzo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780563468; c=relaxed/simple;
-	bh=BcCW6dR/cfd9Fri6Al9ekzmwrYX09hMtmwGFX2Vync4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=oNB1iqLTOA6d7E12yvrUXYhq9M+M0B17up0etHRC5xaU2aq2RZrfNdT0RE101fOJA87MD5yenflJZbgbS5rCwBWPKNws0T0YobCeglz3kJ69heKbJGR1kSvDhF33+0HFWF6U0ddDwPLwsh2IlB0/9ZC5rBoDNR3N+1OiwMFgcEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=52.59.177.22
+	s=arc-20240116; t=1780563471; c=relaxed/simple;
+	bh=uxJcU+JAXVDRC0kijGotmsQ1aOdXYpLxFNojaEXQI4k=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=GjXkRb5LQZuAjWwhQ0YW4bUJzQoShY2QcINI6bA1raqULrX9h5FjcZwid0jTjfnRfAgVQJpbIVwUmMPA7sThkoB3aBaldhuT4y5Gmb9O08myBp6+rs8zo15J+XWeYImjbyJUpcerHMKqpUOqZXMlXsAHHqZtbdRbmVKbwhcGGBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.254.200.128
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid: zesmtpsz9t1780563400tde0dc5af
-X-QQ-Originating-IP: DtcjXhuActEA/HaGVxRzrzhMXgl7mQX7B2pF0Ssi05c=
+X-QQ-mid: zesmtpsz9t1780563412t7b315d3c
+X-QQ-Originating-IP: VPaEnNAMdPW5uH71OpuY99tsBtFKPzMiRTkEaL4cPdE=
 Received: from lap-jiawenwu.trustnetic.com ( [36.24.207.111])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Thu, 04 Jun 2026 16:56:35 +0800 (CST)
+	id ; Thu, 04 Jun 2026 16:56:49 +0800 (CST)
 X-QQ-SSF: 0000000000000000000000000000000
 X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 9348588480966831644
+X-BIZMAIL-ID: 6220180975946228668
 EX-QQ-RecipientCnt: 22
 From: Jiawen Wu <jiawenwu@trustnetic.com>
 To: netdev@vger.kernel.org
@@ -45,10 +46,12 @@ Cc: Mengyuan Lou <mengyuanlou@net-swift.com>,
 	Thomas Gleixner <tglx@kernel.org>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Jiawen Wu <jiawenwu@trustnetic.com>
-Subject: [PATCH net-next v5 0/5] net: wangxun: timeout and error
-Date: Thu,  4 Jun 2026 16:56:26 +0800
-Message-Id: <20260604085631.12720-1-jiawenwu@trustnetic.com>
+Subject: [PATCH net-next v5 3/5] net: wangxun: add reinit parameter to wx->do_reset callback
+Date: Thu,  4 Jun 2026 16:56:29 +0800
+Message-Id: <20260604085631.12720-4-jiawenwu@trustnetic.com>
 X-Mailer: git-send-email 2.21.0.windows.1
+In-Reply-To: <20260604085631.12720-1-jiawenwu@trustnetic.com>
+References: <20260604085631.12720-1-jiawenwu@trustnetic.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -58,99 +61,165 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
 Feedback-ID: zesmtpsz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: OUC5DGN0mB58LQVcoNVdoWsZy1vEmcGJW8Q0dp5WaCPDXU40f2jXeU+Z
-	QcIxaXKPXJlKLftpJDs0laWNqNYB5M5UD9QSAaYhQOFq5Mm79kZxp3EUW6C/DVA7l3QT0I7
-	yDmMc/V0/7QDPEepvOOlGTX5DhhR5LDhhZml5OjIGrwFYAUAMCJEK61uKzwZuGtA4Clg1R9
-	/DPnhlgX+sHGhoFZ12FrveITkpoyUQwh50dDbDIcmhyPf5gHGfUki3OlI6mY9JhlEr/0zsm
-	vgBwri4bdY0DUe9O98gY0FzxM9n/pTb/FMwiI0YB2f3iL04HqxgCS5MX1VRrn1krf0kvgxI
-	ThvToQmxhfuwiZ30wxZ9yuCqQY3Th99Erl4wgiSieEujsJBjsZh2yQmiEOI4TKeWU9J3pnq
-	djq4qOemgSEEGdoe+U0vaxc1xhTil3T8QgSUmUR/jR91amkHJd8SHPZb6tsgyGB+ZQlnHZG
-	raFxrVC8jVmRt1pwandcqtII4z/hNr7dnAox6g7LCeHFvNFNnGtPP9N54n2mUKrS6zUCnyU
-	KVCqjl9DJQD3QYua2+nAVJPGuhL9Sx9Ddudk8hw389mGXIxeptTmpPbAyz8+fgJfwvtdzgz
-	xQ7morKBm9czYx5DDrEHoBv05HOKN5/AKrHWcFIavEfCB/8Ez2q68i3jgVJeDdgkDZFlYNa
-	I5Weobw1Q+UPCQuCSTe6PaXS4lTg/ZcSh2fay0fjLsiDEdLEfF3pG9utSzFh5grHybn9g9E
-	IzMsnhUHn/5BkIfwhH24JkzA2nCiXTPxmSjWvlwrUgoV2vjCK8c0Fxd4fvpaWoIlQ9DBm5G
-	qVtSaPA+y0pOw08J3uXFDqgdcqGXXAl8LJdORQyPct3jPev/mKBmyZNQTDGuhIq/2ssIi+Q
-	M9/AdpzIXV/fjkD/AaYpvPtlFtEcaKZuev3qkxGajwnu16uCnjgw4NeXFsA0+bKfFUnDiws
-	ZD7vLxoSlwIVlXHZi3A8ePW02n/e2MNL8gBtawjfvx3vNbU/V2MIirIeQzkB9lVzsWkwS1l
-	S3ASkMJhUn4Xn548+9lv8kjpXdYyhPREnte2Hqd71F/AC7DAtY08MA7TjY5lFrJO8rsZaJ9
-	ARSP+jWtXEu7v+qM2k1+0ag15Cm9kkKnp8m2X8aRG+b
-X-QQ-XMRINFO: OWPUhxQsoeAVwkVaQIEGSKwwgKCxK/fD5g==
+X-QQ-XMAILINFO: MgQY1K25Ph0mE6VyPexF5X3Lu+xons+qB5izeIpRpVh90wM0bODeUqy9
+	CUP+VxGe+WVL0Mn+uV7dKANfplGkgsSWAElIvdnU6INgVcQZcW2AJfP07Gr76z8L3BBinV9
+	ce5GsLnYgG4vEIi8dHuFoCosojUWEFaVgsmuUvRkMIKjSc/wjoUBrDAx9yPzCsLF930YVPk
+	ZVXynpxPRVba9Npp4Gfo+NkRDBIdoZMHEk2a95fa+uQ0/ZGLaPsAJvVTb/ug3Rq1qIpkvBg
+	Ud5pwbO64HhAywueOD1MCXKJsiF+SEkmW/HTohm4uu1aaIitDDbGxlBoB8M+FbrlTD/eZEc
+	YiGm1Oh+FRVGjvFmVCmONzps8c0ZJglmAX4rN1knmvHzmbpjSeG27mRz8BJ2crP1WiYxNEX
+	N/9LYzFMPAbJtZ/VOWZ07DV/qNglhRet/9fRdEp0vlRH+1yFdvt/+lslqGKNHq4YjnKz3+M
+	sdpxdOAJCt5d1LeVJPGt+VbB6UCuug5lu43cqU1/4XlQxlwmdj2va4SzNo4x/pxcbS10V34
+	6TWLGJqOQeb+bhG862Iw1PutxaUrCam2pu/QAVo2ErUoDuassRw7uFc887fRDeCVNm5H7Ea
+	LUcMbv346jqCbPDoIsYS8sHeuvXiANTtFCe+yIau9uDgFf+OzrAIsopX1rt8i84oF6mXAu7
+	uL2QbnhpDwuKseZXAyKp8qN1vx1u6YE/1grSk6X06R/S6ABawbcAtprjJzNOc0nwgim785w
+	PoJ3cRZCzS51jIpaaZ00iADFkN0RHSJ9kDIztURyobJlbpEapzS1vVfu7y28ari4EcIn7+6
+	8CN7fHuuHpPc8gW2zrNApjNg0upUH95A6rAWvFoERf1OnCKC1OWX5O0o1o+qupfPGHI0bmL
+	9/AD9trp16oprDr7H2cTVfNLRswHZKk59MlR4BOLPGYpZvVuiVR7vc/qL1YjcJvtBurHwQS
+	eToUy8QGvu+HvbclYIt+YtVOb0udHnjMzrtqAgNFLKnvVmVgR4ELBlyGCVYHF0zYQE6/ag/
+	pfbJPvmEIahQlXwpqSTlQzuvnJK/NSnChBhCeEfqysF1A/vB03D6W6MCFu1KU/d6RUPsHSf
+	vn3dp3oSIQyvuXqKBMdtdk=
+X-QQ-XMRINFO: MSVp+SPm3vtSI1QTLgDHQqIV1w2oNKDqfg==
 X-QQ-RECHKSPAM: 0
 
-It is about adding the Tx timeout process and pci_error_handlers.
-When a PCIe error occurs, the txgbe device is able to recover on platform
-that support AER interrupt. And for Tx timeout, the txgbe driver can
-recover the device by reset process.
+To implement a simple hardware reset without tearing down the network
+interface state, introduce a boolean 'reinit' parameter to wx->do_reset
+callback.
 
-For ngbe devices, due to the absence of the current function, it cannot
-br fully recovered once there is a PCIe error or Tx timeout. Its
-function will be completed in the future.
+Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+---
+ drivers/net/ethernet/wangxun/libwx/wx_err.c     | 2 +-
+ drivers/net/ethernet/wangxun/libwx/wx_ethtool.c | 2 +-
+ drivers/net/ethernet/wangxun/libwx/wx_lib.c     | 4 ++--
+ drivers/net/ethernet/wangxun/libwx/wx_type.h    | 2 +-
+ drivers/net/ethernet/wangxun/ngbe/ngbe_main.c   | 4 ++--
+ drivers/net/ethernet/wangxun/ngbe/ngbe_type.h   | 2 +-
+ drivers/net/ethernet/wangxun/txgbe/txgbe_main.c | 4 ++--
+ drivers/net/ethernet/wangxun/txgbe/txgbe_type.h | 2 +-
+ 8 files changed, 11 insertions(+), 11 deletions(-)
 
-Changes log:
-v5:
-- Avoid the same name on two functions.
-- Encode the device identity into the name of reset work queue.
-- Change pr_err() to wx_err().
-- Check WX_STATE_DOWN and WX_STATE_RESETTING at the entry of every work item.
-- Implement wx_ptp_quiesce().
-- Add netif_carrier_off() and netif_tx_disable() in soft_quiesce.
-- Move resource free operations after PCIe recovery.
-- Return error code in down path.
-
-v4: https://lore.kernel.org/all/20260601072221.2952-1-jiawenwu@trustnetic.com
-- Create a separate work queue for the reset task.
-- Gate wx_watchdog_flush_tx() on netif_running().
-- Add rtnl_lock() around wx->do_reset() in wx_io_slot_reset().
-- Change .close_suspend() to .soft_quiesce() to avoid MMIO when PCI
-  channel is frozen.
-
-v3: https://lore.kernel.org/all/20260509100540.32612-1-jiawenwu@trustnetic.com
-- Merge the multiple string line into one in wx_handle_tx_hang().
-- Remove the redundant warn messages.
-- Use test_and_clear_bit() instead of checking the flag bit then clear it.
-- Drop the Tx hang check in tx_timeout.
-- Call wx_update_stats() before wx_check_tx_hang().
-- Add Tx flush when link lost.
-- Move wx_ptp_stop() into wx->close_suspend().
-- Drop V2 patch 5/6 because WOL packets are handled before DMA ring.
-- Check wx NULL pointer in wx_io_error_detected().
-- Check perm failure before hardware teardown.
-
-v2: https://lore.kernel.org/all/20260430082517.19612-1-jiawenwu@trustnetic.com
-- Add the missing rtnl_unlock() at early return in wx_reset_subtask().
-- Replace ngbe_close() with ngbe_close_suspend() in ngbe_dev_shutdown().
-- Add a patch to clear stored DMA addresses.
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_err.c b/drivers/net/ethernet/wangxun/libwx/wx_err.c
+index b6e2d16d4a16..ee27f96735dc 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_err.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_err.c
+@@ -16,7 +16,7 @@ static void wx_pf_reset_subtask(struct wx *wx)
  
-v1: https://lore.kernel.org/r/20260428021156.13564-1-jiawenwu@trustnetic.com
-
-Jiawen Wu (5):
-  net: ngbe: implement libwx reset ops
-  net: wangxun: add Tx timeout process
-  net: wangxun: add reinit parameter to wx->do_reset callback
-  net: wangxun: implement soft quiesce for PCIe error recovery
-  net: wangxun: add pcie error handler
-
- drivers/net/ethernet/wangxun/libwx/Makefile   |   2 +-
- drivers/net/ethernet/wangxun/libwx/wx_err.c   | 289 ++++++++++++++++++
- drivers/net/ethernet/wangxun/libwx/wx_err.h   |  18 ++
- .../net/ethernet/wangxun/libwx/wx_ethtool.c   |   2 +-
- drivers/net/ethernet/wangxun/libwx/wx_hw.c    |  17 +-
- drivers/net/ethernet/wangxun/libwx/wx_lib.c   |  55 +++-
- drivers/net/ethernet/wangxun/libwx/wx_lib.h   |   1 +
- drivers/net/ethernet/wangxun/libwx/wx_ptp.c   |  21 ++
- drivers/net/ethernet/wangxun/libwx/wx_ptp.h   |   1 +
- drivers/net/ethernet/wangxun/libwx/wx_type.h  |  23 +-
- .../net/ethernet/wangxun/ngbe/ngbe_ethtool.c  |   1 -
- drivers/net/ethernet/wangxun/ngbe/ngbe_main.c |  74 ++++-
- drivers/net/ethernet/wangxun/ngbe/ngbe_type.h |   1 +
- .../ethernet/wangxun/txgbe/txgbe_ethtool.c    |   6 +-
- .../net/ethernet/wangxun/txgbe/txgbe_main.c   |  79 ++++-
- .../net/ethernet/wangxun/txgbe/txgbe_type.h   |   4 +-
- 16 files changed, 566 insertions(+), 28 deletions(-)
- create mode 100644 drivers/net/ethernet/wangxun/libwx/wx_err.c
- create mode 100644 drivers/net/ethernet/wangxun/libwx/wx_err.h
-
+ 	wx_warn(wx, "Reset adapter.\n");
+ 	if (wx->do_reset)
+-		wx->do_reset(wx->netdev);
++		wx->do_reset(wx->netdev, true);
+ }
+ 
+ static void wx_reset_task(struct work_struct *work)
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c b/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
+index 5df971aca9e3..d1356ff5d69b 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
+@@ -395,7 +395,7 @@ static void wx_update_rsc(struct wx *wx)
+ 
+ 	/* reset the device to apply the new RSC setting */
+ 	if (need_reset && wx->do_reset)
+-		wx->do_reset(netdev);
++		wx->do_reset(netdev, true);
+ }
+ 
+ int wx_set_coalesce(struct net_device *netdev,
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_lib.c b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
+index da4d9e229c9e..e5a45356ba00 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_lib.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
+@@ -3148,7 +3148,7 @@ int wx_set_features(struct net_device *netdev, netdev_features_t features)
+ 	netdev->features = features;
+ 
+ 	if (changed & NETIF_F_HW_VLAN_CTAG_RX && wx->do_reset)
+-		wx->do_reset(netdev);
++		wx->do_reset(netdev, true);
+ 	else if (changed & (NETIF_F_HW_VLAN_CTAG_RX | NETIF_F_HW_VLAN_CTAG_FILTER))
+ 		wx_set_rx_mode(netdev);
+ 
+@@ -3198,7 +3198,7 @@ int wx_set_features(struct net_device *netdev, netdev_features_t features)
+ 
+ out:
+ 	if (need_reset && wx->do_reset)
+-		wx->do_reset(netdev);
++		wx->do_reset(netdev, true);
+ 
+ 	return 0;
+ }
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_type.h b/drivers/net/ethernet/wangxun/libwx/wx_type.h
+index 75d74ca2e259..a8b4e84787f4 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_type.h
++++ b/drivers/net/ethernet/wangxun/libwx/wx_type.h
+@@ -1408,7 +1408,7 @@ struct wx {
+ 	void (*atr)(struct wx_ring *ring, struct wx_tx_buffer *first, u8 ptype);
+ 	void (*configure_fdir)(struct wx *wx);
+ 	int (*setup_tc)(struct net_device *netdev, u8 tc);
+-	void (*do_reset)(struct net_device *netdev);
++	void (*do_reset)(struct net_device *netdev, bool reinit);
+ 	int (*ptp_setup_sdp)(struct wx *wx);
+ 	void (*set_num_queues)(struct wx *wx);
+ 
+diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
+index 4bcef967e992..7dd3e12d48aa 100644
+--- a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
++++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
+@@ -633,11 +633,11 @@ static void ngbe_reinit_locked(struct wx *wx)
+ 	mutex_unlock(&wx->reset_lock);
+ }
+ 
+-void ngbe_do_reset(struct net_device *netdev)
++void ngbe_do_reset(struct net_device *netdev, bool reinit)
+ {
+ 	struct wx *wx = netdev_priv(netdev);
+ 
+-	if (netif_running(netdev))
++	if (netif_running(netdev) && reinit)
+ 		ngbe_reinit_locked(wx);
+ 	else
+ 		ngbe_reset(wx);
+diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_type.h b/drivers/net/ethernet/wangxun/ngbe/ngbe_type.h
+index 4f648f272c08..c9233dc7ae50 100644
+--- a/drivers/net/ethernet/wangxun/ngbe/ngbe_type.h
++++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_type.h
+@@ -125,6 +125,6 @@ extern char ngbe_driver_name[];
+ void ngbe_down(struct wx *wx);
+ void ngbe_up(struct wx *wx);
+ int ngbe_setup_tc(struct net_device *dev, u8 tc);
+-void ngbe_do_reset(struct net_device *netdev);
++void ngbe_do_reset(struct net_device *netdev, bool reinit);
+ 
+ #endif /* _NGBE_TYPE_H_ */
+diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
+index 689679b315ae..9251e7a1d416 100644
+--- a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
++++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
+@@ -610,11 +610,11 @@ static void txgbe_reinit_locked(struct wx *wx)
+ 	mutex_unlock(&wx->reset_lock);
+ }
+ 
+-void txgbe_do_reset(struct net_device *netdev)
++void txgbe_do_reset(struct net_device *netdev, bool reinit)
+ {
+ 	struct wx *wx = netdev_priv(netdev);
+ 
+-	if (netif_running(netdev))
++	if (netif_running(netdev) && reinit)
+ 		txgbe_reinit_locked(wx);
+ 	else
+ 		txgbe_reset(wx);
+diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h b/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
+index 6b05f32b4a01..1e373f7fd9b5 100644
+--- a/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
++++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
+@@ -313,7 +313,7 @@ extern char txgbe_driver_name[];
+ void txgbe_down(struct wx *wx);
+ void txgbe_up(struct wx *wx);
+ int txgbe_setup_tc(struct net_device *dev, u8 tc);
+-void txgbe_do_reset(struct net_device *netdev);
++void txgbe_do_reset(struct net_device *netdev, bool reinit);
+ 
+ #define TXGBE_LINK_SPEED_UNKNOWN        0
+ #define TXGBE_LINK_SPEED_10GB_FULL      4
 -- 
 2.51.0
 
