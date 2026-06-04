@@ -1,96 +1,290 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA9E74DB561;
-	Thu,  4 Jun 2026 21:39:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780609191; cv=none; b=sv4cX18bbcFzxAW7gWBCGUkvvwsSvugqoFQkgdhQKoPTsfVSoqVOVI1jsE+7i7jsyA373QQFODRjWjDUCPCWDJ33CYI4wEm6RBaK1LDvwk3MNsuzoFPMkgr+k3x+oXRtlu0Kk8wnh0pqTKNDduHAkXvu2FIns6F0vJPMQt6ZjWw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780609191; c=relaxed/simple;
-	bh=v4b4f/wB79/XDJbn6l/Dz0Yses3F8K3aed7k28/X5tg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZTlIPDCf2qePG7c8lM9jOpjQE0JhVWw+tRLxz82JNDVphKu93EM5Pnc6KaJdWudSmKDvB5yguZ7aH/ITBo7UG8Qk5GhJPMaLr7d69jpZZFEsOIQvo3sNygqc4MdaP3bpT/iFl9nA0oQm7414GoTVWNEm9wkuzY7PvD/FNzhmG7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EK0RKrnV; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A73D239E7F
+	for <netdev@vger.kernel.org>; Thu,  4 Jun 2026 21:47:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.16
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780609674; cv=fail; b=sUB4sx0xoAAsPGmXZpmP1lBVPumWuh8uUTj/CWaMY+OmXNBMjrZ8eyqDWztcB4+96/DmZmQ//oVaurgejJ12NDmvxVIdqkzf3JHYZhxxafwJvEy1YqNkIac5bDQ+sg3VbPI6uBhDSM5H5M9BtEf2/Tuzqk5mYJO5TejTIlXSTC8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780609674; c=relaxed/simple;
+	bh=LdV+StyBSwT6fVQ6xvWZxd3mFw9DIeNClHGrRGeaM1U=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=upkAeGX29iVkiBxW+cEzrFUyfm+OpSPXQYunrYVe5Wg9E2rCV7ekJ9mxnERuNsxRQGxcdr0gXttw8IoIB1ALtXmcie0RtovS/2X9imof3tKK0vpTODV1QhriexemQ52ltFpuVO5BtoIkxco3nvKwfBZJhtD6IN+SMt91cihQuNQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nT5f7qiy; arc=fail smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EK0RKrnV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7A911F00893;
-	Thu,  4 Jun 2026 21:39:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780609189;
-	bh=jhsV30bt9Mil1+UFvEiSYEfI3pmcZ8Ymi6Uc7gbVH5I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=EK0RKrnVSXaFae022UPMT29/rWDPJUms+IBYJrhMlY4JK8VSQmgiTMAKxJ8mhRn0W
-	 Iu3cnjwrPmDo7Einz4J1TYTUj0e/SqVvEY47uOdjvfotNTrVajJl1yKEDBh+S0BBH7
-	 BXTKLKUxUb4taeBawhFuQnb83I+N4NSBLs/f6zV6Uz7IZyutmOAO0d123CDEzAbsuO
-	 2uEihZAX9UADhrMpPEg/oMpsAZI2uZcJeBwtjuWUqFsMaqsAoBpCb12/pT5ypZl7SJ
-	 RFIqeCxcn7xpjRcuOW5EDN1ec7WDSiiQIaEL/u+NUSegiBGEVTotI6V+7r/km+dc8L
-	 02FlrDYQwjTmg==
-Date: Thu, 4 Jun 2026 16:39:48 -0500
-From: Rob Herring <robh@kernel.org>
-To: George Moussalem <george.moussalem@outlook.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Florian Fainelli <f.fainelli@gmail.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	linux-arm-msm@vger.kernel.org
-Subject: Re: [PATCH v2 1/4] dt-bindings: net: ethernet-phy: move clocks
- property to invidivual PHY bindings
-Message-ID: <20260604213948.GA1223636-robh@kernel.org>
-References: <20260602-ipq5018-gephy-clocks-v2-0-65a1f1d881f3@outlook.com>
- <20260602-ipq5018-gephy-clocks-v2-1-65a1f1d881f3@outlook.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nT5f7qiy"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1780609673; x=1812145673;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=LdV+StyBSwT6fVQ6xvWZxd3mFw9DIeNClHGrRGeaM1U=;
+  b=nT5f7qiyxQmoQHqo+BCEiEMOdJkOjcPhxtsfcO36aQqxHUNSZ/NfZG4S
+   KM73XwULRIm+ZW7j0cY7ai7O00itp8F15tU0WyH1Xuq5MP2fsICZoXvm2
+   T2vOnT/JN3K9vkXa/zO1h53UgkIIoAZEFiG+uJvuZpVD+wGJ/SU71KJDE
+   7ckRZjX0YJovDUikaPD+mM8zaqvtn4TQRUaOuonNKxz7lg+ek6dIKPmoQ
+   w1uW46CootrOWaYwVatEN8vq7A4/DpePpe57YheCigjloWd5xKSDHEf78
+   QtviG5tvNMTkjCwSOb/dY98hE4BSASnumy13b95JwEtacXFEmFZ2a5hgC
+   g==;
+X-CSE-ConnectionGUID: FWdLydZBTsandkbgQqszbw==
+X-CSE-MsgGUID: JfvvRIBoR5WeGeK1n9vqIg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11807"; a="81629284"
+X-IronPort-AV: E=Sophos;i="6.24,187,1774335600"; 
+   d="scan'208";a="81629284"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jun 2026 14:46:51 -0700
+X-CSE-ConnectionGUID: OpW7oKIjTr+1pO1MOLtX4A==
+X-CSE-MsgGUID: QLWjLeTxS5CnhitW5kWDuA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,187,1774335600"; 
+   d="scan'208";a="248594480"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+  by orviesa003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jun 2026 14:46:51 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Thu, 4 Jun 2026 14:46:49 -0700
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Thu, 4 Jun 2026 14:46:49 -0700
+Received: from CY7PR03CU001.outbound.protection.outlook.com (40.93.198.16) by
+ edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Thu, 4 Jun 2026 14:46:49 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Ydk1QZbr3KqkWIqMywdDXj/7gH52VSypLSIjZd5c2dWFRe6dhlcHTVlXv8rohkzKUvgRvbf59lQJKa5hjfN2bgNsddNIruGmbTaQsEDP8P9BBUwRmOKS8K1xtIvXNsDnx1lX2NmevZF48wHaGsZagwiCckMO+Hw000vocG8DHxWCUGoffOUSyhwANG5GEKJxiwre2z2zAFj1B7tsg+aRH2NAeijOQCHYtGkqcEDA5s88P9+wXrtDJY0rJLmLCfY4M/P6K/3NecGAUaGsT3BIFNujJPEmKtNxEuuvSQB9Zr68ZUmC+ARugVw/UCLFc0Bci+OVmJEYaOnu47wjqlVp8A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=zHv5GSXojnSUp1XeQLdeerBfm4B/q8Lh788jtfoTiFs=;
+ b=FjDo+taOcInqAYFGpvtGkr9sys0G9zpr6QJaaHOB80zaiAafiphCJVfLbjiLpqiJla3HbViE7gr5UF582odAXtNK+bI4b+4AlL42kxH5zN3bHcY7SicPSAQOJjfWlE03F6seJDTQBbdT+LNKH3g0u0RKDxuk9kqu3EJcL/+d2pFOb0X98GusDkdaZ2xzVPEfS/IfhV9EgXmU1628b/yai3EKD7SS5NFhfTj/0hDVCnm8PpxjPBeCcf068THevlg7jM/TEbDGtmUY+phkPlnczZVOyi2yCEBLJAOoueBoK7QhabWa7mOwUdyXEP5FwDLSCJeaTmEsM2KoW06vgMN9Ug==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DS0PR11MB7381.namprd11.prod.outlook.com (2603:10b6:8:134::14)
+ by BL1PR11MB6004.namprd11.prod.outlook.com (2603:10b6:208:390::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.8; Thu, 4 Jun 2026
+ 21:46:47 +0000
+Received: from DS0PR11MB7381.namprd11.prod.outlook.com
+ ([fe80::4c39:dfe6:d6dc:6f58]) by DS0PR11MB7381.namprd11.prod.outlook.com
+ ([fe80::4c39:dfe6:d6dc:6f58%5]) with mapi id 15.21.0092.007; Thu, 4 Jun 2026
+ 21:46:47 +0000
+Message-ID: <3121f020-92e8-42bd-992b-0820303de4c8@intel.com>
+Date: Thu, 4 Jun 2026 14:46:44 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH iwl-net v2] ice: fix E810 low latency timestamp interrupt
+ handling
+To: Intel Wired LAN <intel-wired-lan@lists.osuosl.org>, Grzegorz Nitka
+	<grzegorz.nitka@intel.com>, Arkadiusz Kubalewski
+	<arkadiusz.kubalewski@intel.com>, Przemek Kitszel
+	<przemyslaw.kitszel@intel.com>, Aleksandr Loktionov
+	<aleksandr.loktionov@intel.com>, Przemyslaw Korba
+	<przemyslaw.korba@intel.com>, Anthony Nguyen <anthony.l.nguyen@intel.com>
+CC: <netdev@vger.kernel.org>, Marcin Szycik <marcin.szycik@linux.intel.com>
+References: <20260603-jk-fix-e810-ll-interface-function-v2-1-426a745e78b2@intel.com>
+Content-Language: en-US
+From: Jacob Keller <jacob.e.keller@intel.com>
+In-Reply-To: <20260603-jk-fix-e810-ll-interface-function-v2-1-426a745e78b2@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MW4PR04CA0343.namprd04.prod.outlook.com
+ (2603:10b6:303:8a::18) To DS0PR11MB7381.namprd11.prod.outlook.com
+ (2603:10b6:8:134::14)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260602-ipq5018-gephy-clocks-v2-1-65a1f1d881f3@outlook.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR11MB7381:EE_|BL1PR11MB6004:EE_
+X-MS-Office365-Filtering-Correlation-Id: f9f48367-1c3c-48fa-c370-08dec282c67f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024|11063799006|56012099006|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info: eePRK/sWB+pdf2GHK0wQzm1pI750Kx5HKqUewRtj/ybb1XYtHHT99BKi2Ursn3MrcRu2LyfOAjv9a8241Nxv8z0hcmWPscS3txI2Vc/ub+ewAOVzbnao3FLdGNm56oV0efvgjd9q5FQLlvA0uICKQ4MsrRGv+Is1lTRGJQ7i5Y8dsq7YEKQHs0LHu5b5e8YrB65Y8ExZ0cO5MUzM/NU/uiQOqOayzeiUegNHl5nBziZPOfKmhb2pxKGCkKSuRns7wZEkF+ZHAqg1p8wWMl/SDBydGxxLzvHppSJJ2Akuvvy7cMRbm5/ru54bAx11ZSYP3wuL1OPIP1YriUv9OPAX/VfQ9i0cBdWOAEw8Bs/eSqEuwS7AiMUoAit9OC5lgLy9/XJSWkbVxf4GeVQj5TXJ0CL1YvbB9OsqtXrSFM5ueVysMxtreyDo+RSZ1ROZVFoQH384DLru2vbrfXRrpMZnKXD5zKX+pEcJjQ/9zaiL+tTiTw+apRCiWIrhnAOppZPUAz0YgBmxRzuvAO+WFbfbUCLXDho7Pt6D1PX8ehdlKcLnWVu2aGshY+ZocENJFJIxrhTUtHJwO+W5AdsdOyp7uEAHXFLxwX6A1y347xnfWkB2KjFlsjGj5yNCxyRL+y50iU0P+kuSbSivFKEf1JU7QvuShZo2XbCDIRhUWn/2LmtNrmynUeoC7S/8iRR9p01/
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB7381.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(11063799006)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?N0VLM0Q1WHJTNWdpZThoV1RZcmxOTk55THJoaEcrNVJFVXB2VkZNdHkyS215?=
+ =?utf-8?B?ZFdoZ2UvckpScEQ3YVpST2FDeDBZNXBCNjBNV0JJOXVjSDZOU3F3aVRqR2xz?=
+ =?utf-8?B?NEJkKzUvNC9HelcyUnlOUkZCQXNjajBZTUN0YmNnUkVXVmU1Q0FYQTlUWU5F?=
+ =?utf-8?B?eUFzaFlFdmE0VlJwOUwrL3p3UnhEK2hjcThRejltZ0k1Y0NMMjNDVXlGbFVY?=
+ =?utf-8?B?Y0NDU3VxUnFhUHcwTXh1cHZOV2VZMVJBbG41d005Zy9zQTB1Ym52K2VUNVZl?=
+ =?utf-8?B?NG9JZW9rd0RpZ1NEbEt1WFlTY2x2bnlVU3ViNXNKZGl4UGVSZ3dzMEUrT05j?=
+ =?utf-8?B?Y2t4RGo4dXRYVnVvcjVQTFIzdlV4VTNIK3Y3dktRUkhnNHk0d3pBejNJekxn?=
+ =?utf-8?B?MStuWTkzWEs0RjlTVVZiQXRZZS9sUkhKaWpDcnlzNDNMd3A0cTczRHFvT1F1?=
+ =?utf-8?B?N2w1ZytWQ1ZNV3NvMlozR1Uxa1FmZXBoV1NsTExqNFlQMi9QU2VVcXErbUxF?=
+ =?utf-8?B?UEx2YzFTZURYTWUra3J3V0RWT1AzY0owY1U4Y0l3TXNMT084Qnc2bEpjMEI2?=
+ =?utf-8?B?TFBnS3hvSjdKMmNGU2s1MWNROXlmRCtrU1JmUU5zUlo4V0hoL1N6QkNKbUU3?=
+ =?utf-8?B?dUU0cU10S1lnbnNxU3ZyYWxrajkyTjRwZkFDQkVyNHhQN0NUOGFzTThjUDl3?=
+ =?utf-8?B?WTdtMVMxQ3EwNSswQW0xZ2RBNGdNYlVkbEVNcWtCZ3FzbVllUkUwMkdzNHZh?=
+ =?utf-8?B?RGlCbUZEWDdNV1JTYVZ1K0U4ejFWVFBIUHBOcmNuY01KVEladXVGQlJINit3?=
+ =?utf-8?B?MVNEUnVlVzZQaERKaHowUkJ2dlFYVk9ZZzhsRFROdU93MVFicUVCRDl0cXlm?=
+ =?utf-8?B?d1VaWkpXTlVNL2lUSHlPYzkrNDJaZnoxT01tWkVSN3V2UjhlTE5RTVREajAv?=
+ =?utf-8?B?WklhbUhCb1VGMTVkam1UYlhDYUk4VU43ZXZGUVVXMHd2TlBqQ3hVTlRhUUpt?=
+ =?utf-8?B?RzNEdzR6QXJRSER3S2dZbXltOWJBWElhRXdCTDNWdzJxb25FTkdDQW42Y3hy?=
+ =?utf-8?B?bjJLckkybDRRVjlMbXdZcVpPRmFwU0NDMDJBZUhyWnppYUtEbWVqTEMzWXE0?=
+ =?utf-8?B?dWxUeEFFWDNQMU1VbS9hbUR3ZWtqNmpNQ0d2VGRFNS8zaGxZem1ySWt6R1Nn?=
+ =?utf-8?B?cTN3ZnNoYW04NEdLVEVUODFYb3A2WENINERDWWpveU1vUm8yY1lNbDJYeU43?=
+ =?utf-8?B?RzJOb0hoUHYzc3hDcjZEZkhxNUYwNitUVlpzVFpVeTRKSGlIdm5KVGU4V1Br?=
+ =?utf-8?B?TCsvSWtzeE9oWERLcmtUSzhoNmNyZTA1OVJndTBCclhUTGRrcmttR3k3R1Bo?=
+ =?utf-8?B?OW5XK2FDT2hBWUM0bkU0K2M3RnA2eGlPNytzeklKemdBMWVZUXRQOFR0d0kz?=
+ =?utf-8?B?TnBSVWprd3d1R3hveUxDZlZSRloybWVIcCt3L3ltcEsvU0NTemx0aWl6VGhO?=
+ =?utf-8?B?NitrdzI2WWgzdjlpOStPcis3SEliZkZHcXhtbEY1bkVwL0Z2NjdoWmZPT0pi?=
+ =?utf-8?B?bnpZN09scnJkSk96a3VzVzY4VzJiR0tVOFlVaVpFMWJjK0kzT2p2SWcveXpy?=
+ =?utf-8?B?L0dvTWdQUkxSendzampvdm5JSEdOZkExcUhiR0ozekpCRjJ3TFFFakFFeDVl?=
+ =?utf-8?B?TkxzbDVkbGQrei8xUXE1NmVEZWdWdlZJT3dPbW1rT1JCYnhIdytqdUNVZjc3?=
+ =?utf-8?B?YlJiMkw5WDhHeDNiMndJeUxCTVJodnpDK1piejRya2NGaXd2ei91d1NMdXda?=
+ =?utf-8?B?V05qQ0RjV3NsYjQ1Qmk1S0Ftd1o3R29oOEp0S2YwRnAvOFlHNWd6SmpUTW5V?=
+ =?utf-8?B?ai9BSXRGaTZoMFVpNE5CYnYvVGJ6Rm5IclAxNXZqSWg5eGZwMFFkYlIzZFY1?=
+ =?utf-8?B?ZndYbW81VXRpcDVrSk5YdWZaWU5nTTZqdFRWbUFmRVIvbnBjTWV4QWdaQXBy?=
+ =?utf-8?B?NkJ6ZXlzY2YwWnRTaDIvc2Zpb1dYdk5Kanl5d3ViTkUyelI5eS9tbEt2cDJl?=
+ =?utf-8?B?c1E3cUhVQ0Jpb1ZVelBuNENmT0tHUEtKYkxlMG4vcmFVTCszekFPeVJiSCt3?=
+ =?utf-8?B?amkvUUlRS3NMNEs4aDFGU3FmRTZsbjQ2VDNzZkFpTXJ1UTU5MlNVSUc2Ry9l?=
+ =?utf-8?B?QnRXRUh1N0JDN0w5T0hUdy85Q1hMTWFMUHR3RnEwMEJNZjBmbzVzL2lGK290?=
+ =?utf-8?B?S1Z0TWQzSGRNbkxMM3RHYlBibnF3dkdTRGFEdGs3OWRHUkV5YzVDQU1hOWpu?=
+ =?utf-8?B?cDBSb0RvejNxNjFvL1BoY3VjUjN4b0h6WTcvbGNyaWg4N1JkY3FlNnY1Ylg4?=
+ =?utf-8?Q?SjpYmybFneofI2hE=3D?=
+X-Exchange-RoutingPolicyChecked: saD6GC2l91uZxD+gvhnbZs8t6oZRozEkb8qFc79lVVZ9jcWxVE0rsD51vh4k5SSkSKL3pPigh+Ll/lPH5fQqqVzc4saSMIdH/3v7B0qYQOQZwzLw/wc0AQNJqBUomy99rc8UTb209qF4yWCUNGgoVQ855FXgS7erCEYBM6AwbTsKRqzM8pH1sEkCZLPZE/btTLug4NS3ze4L6vkxaWcOFuUFz0vFFiMt1IgKhHhFYaCHoN6NA+LoQYhOsoSBDNHPWPcu/b2shTrMwa+7q9jMI5Rw5OYid/QLCvSlXT2UaKpjZEMaBo6APjSCL1wR35PEp6CM7vRD3DRylK7Z39da1Q==
+X-MS-Exchange-CrossTenant-Network-Message-Id: f9f48367-1c3c-48fa-c370-08dec282c67f
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7381.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Jun 2026 21:46:46.6833
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: w+Yme/lQOaDQu+GTvT+/TpIEhcMphxifULh/VUPLIRP9e8s0z0DZ/KsQDauWGLmWxbMixISyvDivERVdLfW94TKlQrScH7KahQCDZMAKaDY=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR11MB6004
+X-OriginatorOrg: intel.com
 
-On Tue, Jun 02, 2026 at 10:50:37AM +0400, George Moussalem wrote:
-> Move the clock property and restriction from the ethernet-phy.yaml file
-> to the individual PHY binding files. This allows each PHY to manage its
-> own clock requirements.
+> diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.c b/drivers/net/ethernet/intel/ice/ice_ptp.c
+> index 36df742c326c..a00fbce6337f 100644
+> --- a/drivers/net/ethernet/intel/ice/ice_ptp.c
+> +++ b/drivers/net/ethernet/intel/ice/ice_ptp.c
+> @@ -382,6 +382,7 @@ void ice_ptp_req_tx_single_tstamp(struct ice_ptp_tx *tx, u8 idx)
+>  	struct ice_ptp_port *ptp_port;
+>  	unsigned long flags;
+>  	struct sk_buff *skb;
+> +	struct device *dev;
+>  	struct ice_pf *pf;
+>  
+>  	if (!tx->init)
+> @@ -389,6 +390,7 @@ void ice_ptp_req_tx_single_tstamp(struct ice_ptp_tx *tx, u8 idx)
+>  
+>  	ptp_port = container_of(tx, struct ice_ptp_port, tx);
+>  	pf = ptp_port_to_pf(ptp_port);
+> +	dev = ice_pf_to_dev(pf);
+>  	params = &pf->hw.ptp.phy.e810;
+>  
+>  	/* Drop packets which have waited for more than 2 seconds */
+
+Sashiko says:
+
 > 
-> Signed-off-by: George Moussalem <george.moussalem@outlook.com>
-> ---
-> Commit 350b7a258f20 introduced the clocks property with a restriction to
-> maximum 1 to the main ethernet-phy.yaml binding for Realtek to add an
-> optional external clock source. This is restrictive to all PHY bindings,
-> as some PHYs may require more than 1 clock such as the IPQ5018 PHY which
-> requires 2 clocks (for RX and TX).
+> This is a pre-existing issue, but does the early return in the timeout
+> path of ice_ptp_req_tx_single_tstamp() abort the hardware interrupt chain?
+> If a request times out, the function drops the packet and returns early:
+>     if (time_is_before_jiffies(tx->tstamps[idx].start + 2 * HZ)) {
+>         ...
+>         dev_kfree_skb_any(skb);
+>         return;
+>     }
+> Returning early without initiating the next firmware read seems like it
+> would stall the chain and strand any remaining timestamps.
+
+
+I think this is plausible, if unlikely to actually have happened in
+practice. The 2-second drop was copied from the normal interface for Tx
+timestamps, and not the low latency interrupt.
+
+I think this should probably be moved out of
+ice_ptp_req_tx_single_tstamp() and placed in the caller which determines
+the index and drops stale timestamps until it finds a valid index.
+
+> @@ -408,7 +410,13 @@ void ice_ptp_req_tx_single_tstamp(struct ice_ptp_tx *tx, u8 idx)
+>  
+>  	spin_lock_irqsave(&params->atqbal_wq.lock, flags);
+>  
+> -	params->atqbal_flags |= ATQBAL_FLAGS_INTR_IN_PROGRESS;
+> +	if (test_and_set_bit(ATQBAL_FLAGS_INTR_IN_PROGRESS,
+> +			     params->atqbal_flags)) {
+> +		dev_dbg(dev, "%s: low latency interrupt request already in progress\n",
+> +			__func__);
+> +		spin_unlock_irqrestore(&params->atqbal_wq.lock, flags);
+> +		return;
+> +	}
+>  
+
+
+Sashiko says:
+
 > 
-> There are three other PHY drivers that require clock management:
-> - Micrel: requires 1 optional clock and the micrel.yaml file already
-> accomodates for the clock property.
+> If ATQBAL_FLAGS_INTR_IN_PROGRESS is leaked and sticks permanently, does
+> this new check prevent the system from ever recovering?
+> Previously, calling this function would overwrite the registers and
+> effectively self-heal. Now, if the flag is leaked (for example, if
+> firmware drops a timestamp or during teardown), the function will return
+> early. This could lead to a permanent deadlock of all Tx timestamp and
+> clock operations.
 
-It does? Where?
 
-> - SMSC: requires an optional clock and the legacy bindings file
-> (smsc-lan87xx.txt) already accomodates for the clock property.
-> - BCM7xxx: requires an optional clock. I could not find a bindings file
-> for this PHY family.
+I don't know of a real case where the firmware would drop a timestamp.
+However, if it were to happen this could now deadlock the timestamp
+interface.
 
-Because it only uses what is defined in ethernet-phy.yaml. The only way 
-to enforce 1 clock in this case is split ethernet-phy.yaml into common 
-properties (removing the 'select') and a 'generic' phy schema that 
-selects nodes with name 'ethernet-phy' and also have no 'compatible' 
-property. Not sure if that's really worth doing. We generally try to 
-require compatible for any new phys, but that's only if they try to add 
-something to ethernet-phy.yaml so we see it.
+>  	/* Write TS index to read to the PF register so the FW can read it */
+>  	wr32(&pf->hw, REG_LL_PROXY_H,
+> @@ -449,7 +457,8 @@ void ice_ptp_complete_tx_single_tstamp(struct ice_ptp_tx *tx)
+>  
+>  	spin_lock_irqsave(&params->atqbal_wq.lock, flags);
+>  
+> -	if (!(params->atqbal_flags & ATQBAL_FLAGS_INTR_IN_PROGRESS))
+> +	if (!test_and_clear_bit(ATQBAL_FLAGS_INTR_IN_PROGRESS,
+> +				params->atqbal_flags))
+>  		dev_dbg(dev, "%s: low latency interrupt request not in progress?\n",
+>  			__func__);
+>  
 
-The simple solution is you need to keep 'clocks' and make it 1-2 
-clocks. It's been how many years until we needed 2 clocks? So probably 
-some time before needing more if ever.
 
-Rob
+Sashiko says:
+
+> Can the ATQBAL_FLAGS_INTR_IN_PROGRESS flag be leaked if the completion
+> routine bails out early?
+> For example, in ice_ptp_complete_tx_single_tstamp(), there is an early
+> return before this flag is cleared:
+>     if (!tx->init || tx->last_ll_ts_idx_read < 0)
+>         return;
+> If this early return is hit, won't we leak the
+> ATQBAL_FLAGS_INTR_IN_PROGRESS flag? Since the new test_and_set_bit()
+> check in ice_ptp_req_tx_single_tstamp() relies on this flag being
+> cleared to proceed, leaving it set here would cause all future timestamp
+> requests to permanently fail.
+
+This is ultimately effectively the same concern as the previous comment.
+If the timestamp doesn't complete or if we get an invalid index etc,
+this will potentially get stuck.
+
+I think both of these concerns should be addressed by adding a mechanism
+to clear the flag after some time if no timestamp has completed. I think
+this fits well with our existing PTP watchdog thread. Thus I plan to do
+the following:
+
+1) move the 2-second drop out of ice_ptp_req_tx_single_tstamp(), and
+have its caller perform the check while picking the next available
+timestamp. Depending on size, this may be done in a separate patch, I'm
+not yet certain.
+
+2) Add a mechanism to the watchdog to check and clear the flag if we've
+been waiting for too long for the timestamp to arrive, and we should
+therefore assume firmware won't respond to that request.
+
+Regards,
+Jake
