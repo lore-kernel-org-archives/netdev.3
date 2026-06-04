@@ -1,118 +1,303 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C61E30F54B
-	for <netdev@vger.kernel.org>; Thu,  4 Jun 2026 08:24:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD1D0352C28;
+	Thu,  4 Jun 2026 08:30:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780561459; cv=none; b=D91NDXKV/3AkBRHLP5NPiSN/kG6W/ZI7NA4z42xKOYcf+GttjE71rcNz3M8lSZ3ikx2lUQ/zzPrRnVJ/rPO3DwhEwQuJHyybwKDWuWwjDIqd/1R+ZXYHsXm6FAEYTHvPkwbXJA9l1m/9SjYU54QI8TShUIKF82bFJvw2Dlw3OCI=
+	t=1780561821; cv=none; b=toCZ89kd6SpE+WmT95m5XFRyH9LaNDo42JXc3mHcMIPm6xpJbsnTmSRvnnwxK+0M/L8C2vh0asoJ6RzM3+dkTE0LZtzNbW6zgxtZVgtrsPKr64vgHL4QFwKEFKTjA/EKb75REa3gEDJMHxrJsL9OBdzEedrc9cXJR0QZ/TCY7OE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780561459; c=relaxed/simple;
-	bh=P0ptasRrHsOq1GbyRRWE4UK1KFj1lLae8zDQDtaOHxU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uEBnIQI/sTXHWv/HkLPNjly4rUVBdxFoGxh0PGNG6eYNS0pcEn0hNG2Yghb2IhdZli6r1iILQs2907HWdWZn5StPS5OMV4eSgrqnPehjk5YCAgGfju/xWvmCJccvYRku+fxvZ6HVwyem7gSxOztcax6PlYFEsXu9paVbjzdkFNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZGZOOc+M; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=aV+QRnNi; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1780561821; c=relaxed/simple;
+	bh=EqUsJb5dmF8hJKkcZTRQyLGmvdg26mTAQ0mITdbTufg=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=PsfIyFKtMnQuN0pWrlhI3rRiM7o+MV0q5k3fzP33/ncPp4l7usJdzXR5jv6+Aj/dthxax7i+5r2tf1jRWkfa8JU6oI3dojWZB6cWoNOVL7sA/HFnMsognp5YDDBGT2lv4q4GVa2DWrcv6w+Eto4Gh9JOkOAPSu1zf4nsvs56X3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A5NPQlqq; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZGZOOc+M";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="aV+QRnNi"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1780561456;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=k6ANPjdusuIst0nSmuvnn+083ZoJCUj2jh5LtAj6Enc=;
-	b=ZGZOOc+Mwi1jalgAdLhsS+KBIhXBqzKfXhWZ+wA9NWaRX2kVxxPoJGzsKubCO06LyNOohn
-	YGQzIe6I+OEfRVdJ2IIOaLAbRVJYf8ve9zrUpqKhw5y2SI5fxfFwFVl9CP+eqeiPm344sT
-	DjgulanRXrD1Bnd1XiMa5NOgzQ6nyek=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-400-ugqqIEPFPZmcjHsZZlUyqA-1; Thu, 04 Jun 2026 04:24:15 -0400
-X-MC-Unique: ugqqIEPFPZmcjHsZZlUyqA-1
-X-Mimecast-MFC-AGG-ID: ugqqIEPFPZmcjHsZZlUyqA_1780561454
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-45efb6e60e4so361076f8f.0
-        for <netdev@vger.kernel.org>; Thu, 04 Jun 2026 01:24:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1780561454; x=1781166254; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=k6ANPjdusuIst0nSmuvnn+083ZoJCUj2jh5LtAj6Enc=;
-        b=aV+QRnNiiC7v+cOBVMhxKUhHRfkJR3JwrJ3vpOVfKLwnB9Qp0NfHjjsettc4/UCPTr
-         AiBL2yFYthAFO9h99YznCkYEYmKWaP+ue0ztYR1Ayv9IqELSY60JF3Zh866WFf0QLQyO
-         GOTMxBany8Yi6PBvKQoMUekdJNpaX5cCMvWH6G3o2Tcl0s9McsWZ5DHQXsCYtrNP/Fh/
-         kb0ne4yL6r/0VNjCbuO5m6I6OL64rG8QmxXXHRjJYJ4FI2dkCmr+mDeq+VWDlrLXLdz4
-         kLkOrA9IczoUvbWVE7A/dZsxfqbjbuWVOtlICO5OKCYues+pxAXBGe0A1uvu0kB37Wb8
-         TLEA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780561454; x=1781166254;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=k6ANPjdusuIst0nSmuvnn+083ZoJCUj2jh5LtAj6Enc=;
-        b=HnVVNFQcCrvep6lcnCUdFqRGYi+Cyy8aS6aZtlq9mM3icAohYaEpDWiIfY0LXr4c0h
-         f1mB3a3to/m7V6I9bNMUYW4wPbor0IWwD8SsJ3e0tPuQheFPC1Glr8TqwVsEWblDoM5l
-         SrJa143mt0J4ro9e1QAhQvpmcC8Ck4mNhyTjstVaTO95MSg6Pzmz2ZDgbjW3U/PR8jkr
-         oKy35isbN29NMPLVmlcJTXwwj6pf/OovT4T2oJR5ijIfZcsbxDk3chYPquo0veNWgELM
-         v0BlPUHih8lcurhnB07b+WWADC2TSSVrMLunmlzLg7pTkh8/uj+dF65QvgFfeq3KqnJh
-         2Nvw==
-X-Forwarded-Encrypted: i=1; AFNElJ+rHsgGpyAxH4eKZwTNHs85uDv0MdUpJZQLRoIlv87uNZCsFlQ6pZN+Xomo9swIneoC/V9UFC0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzARhlgNKi/a5Jr6lUuvhGIoqA5HgrO9v76VEeG8UHaNjNMmD5K
-	bOo4QjUNm5Kd10CMIOxxpt7rAgzf8u0QBg0KSVMfBEiHMV25O9+H7rthhVDBIYPJNG514ZjR8RF
-	aljoQFNpSZKDAlXUCrcQNlgDKP3206kEU40rYYDM0E6X/8aHWcTzqpwYYFQ==
-X-Gm-Gg: Acq92OGrgsPpyy+JYVRrIhAv78DYfUr0tVmcYrRHjvCjS7BPc5AVU9ZPnlWW3+0BcLC
-	2fB9gkheQtFDvv20h89EITIPEWTS7THwnTwIy472pUsyLxyG0RFAWmM/m5RVZHiwozeJl9LM7wr
-	gEOmm1sVsbSEhxnu2uguEGLiAVLTQ0C5thu8p8lzr9HuW1Afdfe4X+8+QD2EDM0Wq0aYFRGO8uI
-	ZH7yZTSfTQJDB4BgBkfIWam77/1bXkcvWKOJJn7aVuQCVJVRGtxoQsKOdV/90rz3DRqygvLtANw
-	vBtciEg4R2oHJ38M8f4KS/nYu1K/XI7NwmLxNCFlo0aFVUQxHSqePZA/a5I5tAQyPeH2JROuyJx
-	fGe/B+p9CskmedjPyIohKv3me+wAB8/X2R0ENCOc5No4kmG+7gQ7MP+G+pPe5WhcpcDc=
-X-Received: by 2002:a05:600c:3552:b0:48a:563c:c8e2 with SMTP id 5b1f17b1804b1-490b5e73ef3mr99664605e9.3.1780561453988;
-        Thu, 04 Jun 2026 01:24:13 -0700 (PDT)
-X-Received: by 2002:a05:600c:3552:b0:48a:563c:c8e2 with SMTP id 5b1f17b1804b1-490b5e73ef3mr99663985e9.3.1780561453504;
-        Thu, 04 Jun 2026 01:24:13 -0700 (PDT)
-Received: from [192.168.88.32] ([212.105.155.59])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490bc3fd663sm59428225e9.10.2026.06.04.01.24.12
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 04 Jun 2026 01:24:13 -0700 (PDT)
-Message-ID: <60c82009-790e-4be9-8651-309b14a6f55d@redhat.com>
-Date: Thu, 4 Jun 2026 10:24:11 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A5NPQlqq"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 69E91C2BCC6;
+	Thu,  4 Jun 2026 08:30:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1780561821;
+	bh=EqUsJb5dmF8hJKkcZTRQyLGmvdg26mTAQ0mITdbTufg=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=A5NPQlqqmtUoH8md30A7A3t4PqZPHYIliMi+XLiWx2E4Bhf7nttWDZxf477AY6Fyd
+	 3IoJjK44SyhMeovFyRIioxvo1Ip264aHndt9mzDhP7xglI7p/p93PchHUaEFxmD7ph
+	 dZx1p3mnYgvNzJVo88Pz0kzp5jGnyHibR2fL2p1sfr79tq7cH228nZ8B+zIox3/V+l
+	 h3Os/wKbvplEIBj9O/l0kNdJjZxEehnaLbSg/csdmJ2iDPMtKMey/ND/YrP9989MTY
+	 7auY64yK00CmYXWOQbUTaWqj9r+XFnQQB+Rw2o3C2j2fyd2M1UgbCV17woyR3rZNk8
+	 3nABI9ZQ4gVmw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 55411CD6E4A;
+	Thu,  4 Jun 2026 08:30:21 +0000 (UTC)
+From: Cedric Jehasse via B4 Relay <devnull+cedric.jehasse.luminex.be@kernel.org>
+Date: Thu, 04 Jun 2026 10:30:14 +0200
+Subject: [PATCH net-next 1/2] net: dsa: add support for dcb pcp app
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v6 3/5] veth: add tx_timeout watchdog as BQL
- safety net
-To: hawk@kernel.org, netdev@vger.kernel.org
-Cc: =?UTF-8?Q?Jonas_K=C3=B6ppeler?= <j.koeppeler@tu-berlin.de>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, linux-kernel@vger.kernel.org
-References: <20260527135418.1166665-1-hawk@kernel.org>
- <20260527135418.1166665-4-hawk@kernel.org>
-From: Paolo Abeni <pabeni@redhat.com>
-Content-Language: en-US
-In-Reply-To: <20260527135418.1166665-4-hawk@kernel.org>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20260604-net-next-mv88e6xxx-pcp-prio-v1-1-f9d10fe6cdc8@luminex.be>
+References: <20260604-net-next-mv88e6xxx-pcp-prio-v1-0-f9d10fe6cdc8@luminex.be>
+In-Reply-To: <20260604-net-next-mv88e6xxx-pcp-prio-v1-0-f9d10fe6cdc8@luminex.be>
+To: Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, Russell King <linux@armlinux.org.uk>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Luke Howard <lukeh@padl.com>, Cedric Jehasse <cedric.jehasse@gmail.com>, 
+ Cedric Jehasse <cedric.jehasse@luminex.be>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1780561819; l=7081;
+ i=cedric.jehasse@luminex.be; s=20260213; h=from:subject:message-id;
+ bh=vAbt2oUZwh/Xl1VBsXEixbjizxp0CkUnxtZsJliOylM=;
+ b=fRYhAMUUjGItSLgK1KBvFXTrF64mRPvaT/fHSgkT2XMW6s1snlpMsIo7J1q7Ion/DSLUt+pBH
+ k2FIxzWGT9iASVhBQiI+cGU5+BGe5UlCvFmDY1GE0VdFzizo2cyskR+
+X-Developer-Key: i=cedric.jehasse@luminex.be; a=ed25519;
+ pk=DL2RaHc2bc7tTDTMJdugm42BtJk4Ip+7V41Gkj+Avjk=
+X-Endpoint-Received: by B4 Relay for cedric.jehasse@luminex.be/20260213
+ with auth_id=638
+X-Original-From: Cedric Jehasse <cedric.jehasse@luminex.be>
+Reply-To: cedric.jehasse@luminex.be
 
-On 5/27/26 3:54 PM, hawk@kernel.org wrote:
-> @@ -1819,6 +1836,7 @@ static void veth_setup(struct net_device *dev)
->  	dev->priv_destructor = veth_dev_free;
->  	dev->pcpu_stat_type = NETDEV_PCPU_STAT_TSTATS;
->  	dev->max_mtu = ETH_MAX_MTU;
-> +	dev->watchdog_timeo = msecs_to_jiffies(16000);
+From: Cedric Jehasse <cedric.jehasse@luminex.be>
 
-Since a repost is neede it could be possibly usedfull using a macro for
-the above constant and expanding the math leading to the actual value.
-Also possibly an additional + 1 to avoid a very unlikely false positive
-on exactly the maximum possible interval timer?
+Set/get of dscp-prio map is already supported by dsa.
+This adds support for set/get of pcp-prio map in a similar way.
 
-/P
+Signed-off-by: Cedric Jehasse <cedric.jehasse@luminex.be>
+---
+ include/net/dsa.h |  10 +++++
+ net/dsa/user.c    | 126 +++++++++++++++++++++++++++++++++++++++++++++++++++---
+ 2 files changed, 129 insertions(+), 7 deletions(-)
+
+diff --git a/include/net/dsa.h b/include/net/dsa.h
+index 8b6d34e8a6f0..05428c555ccd 100644
+--- a/include/net/dsa.h
++++ b/include/net/dsa.h
+@@ -447,6 +447,11 @@ struct dsa_switch {
+ 	 */
+ 	u32			dscp_prio_mapping_is_global:1;
+ 
++	/* Drivers that have global PCP mapping settings must set this to
++	 * true to automatically apply the settings to all ports.
++	 */
++	u32			pcp_prio_mapping_is_global:1;
++
+ 	/* Listener for switch fabric events */
+ 	struct notifier_block	nb;
+ 
+@@ -970,6 +975,11 @@ struct dsa_switch_ops {
+ 				      u8 prio);
+ 	int	(*port_del_dscp_prio)(struct dsa_switch *ds, int port, u8 dscp,
+ 				      u8 prio);
++	int	(*port_get_pcp_prio)(struct dsa_switch *ds, int port, u8 pcp);
++	int	(*port_add_pcp_prio)(struct dsa_switch *ds, int port, u8 pcp,
++				     u8 prio);
++	int	(*port_del_pcp_prio)(struct dsa_switch *ds, int port, u8 pcp,
++				     u8 prio);
+ 	int	(*port_set_apptrust)(struct dsa_switch *ds, int port,
+ 				     const u8 *sel, int nsel);
+ 	int	(*port_get_apptrust)(struct dsa_switch *ds, int port, u8 *sel,
+diff --git a/net/dsa/user.c b/net/dsa/user.c
+index c4bd6fe90b45..aa6d030968b9 100644
+--- a/net/dsa/user.c
++++ b/net/dsa/user.c
+@@ -2238,11 +2238,11 @@ dsa_user_dcbnl_set_default_prio(struct net_device *dev, struct dcb_app *app)
+ 	return 0;
+ }
+ 
+-/* Update the DSCP prio entries on all user ports of the switch in case
+- * the switch supports global DSCP prio instead of per port DSCP prios.
++/* Update the APP entries on all user ports of the switch in case
++ * the switch supports global prio settings instead of per port prios.
+  */
+-static int dsa_user_dcbnl_ieee_global_dscp_setdel(struct net_device *dev,
+-						  struct dcb_app *app, bool del)
++static int dsa_user_dcbnl_ieee_global_setdel(struct net_device *dev,
++					     struct dcb_app *app, bool del)
+ {
+ 	int (*setdel)(struct net_device *dev, struct dcb_app *app);
+ 	struct dsa_port *dp = dsa_user_to_port(dev);
+@@ -2284,7 +2284,7 @@ static int dsa_user_dcbnl_ieee_global_dscp_setdel(struct net_device *dev,
+ 
+ 		restore_err = setdel(user, app);
+ 		if (restore_err)
+-			netdev_err(user, "Failed to restore DSCP prio entry configuration\n");
++			netdev_err(user, "Failed to restore APP entry configuration\n");
+ 	}
+ 
+ 	return err;
+@@ -2324,7 +2324,7 @@ dsa_user_dcbnl_add_dscp_prio(struct net_device *dev, struct dcb_app *app)
+ 	if (!ds->dscp_prio_mapping_is_global)
+ 		return 0;
+ 
+-	err = dsa_user_dcbnl_ieee_global_dscp_setdel(dev, app, false);
++	err = dsa_user_dcbnl_ieee_global_setdel(dev, app, false);
+ 	if (err) {
+ 		if (ds->ops->port_del_dscp_prio)
+ 			ds->ops->port_del_dscp_prio(ds, port, dscp, new_prio);
+@@ -2335,6 +2335,54 @@ dsa_user_dcbnl_add_dscp_prio(struct net_device *dev, struct dcb_app *app)
+ 	return 0;
+ }
+ 
++static int __maybe_unused
++dsa_user_dcbnl_add_pcp_prio(struct net_device *dev, struct dcb_app *app)
++{
++	struct dsa_port *dp = dsa_user_to_port(dev);
++	struct dsa_switch *ds = dp->ds;
++	unsigned long mask, new_prio;
++	int err, port = dp->index;
++	u8 pcp = app->protocol;
++
++	if (!ds->ops->port_add_pcp_prio)
++		return -EOPNOTSUPP;
++
++	if (app->priority >= IEEE_8021QAZ_MAX_TCS)
++		return -EINVAL;
++
++	if (pcp >= 16) {
++		netdev_err(dev, "PCP APP entry with protocol value %u is invalid\n",
++			   pcp);
++		return -EINVAL;
++	}
++
++	err = dcb_ieee_setapp(dev, app);
++	if (err)
++		return err;
++
++	mask = dcb_ieee_getapp_mask(dev, app);
++	new_prio = __fls(mask);
++
++	err = ds->ops->port_add_pcp_prio(ds, port, pcp, new_prio);
++	if (err) {
++		dcb_ieee_delapp(dev, app);
++		return err;
++	}
++
++	if (!ds->pcp_prio_mapping_is_global)
++		return 0;
++
++	err = dsa_user_dcbnl_ieee_global_setdel(dev, app, false);
++	if (err) {
++		if (ds->ops->port_del_pcp_prio)
++			ds->ops->port_del_pcp_prio(ds, port, pcp, new_prio);
++		dcb_ieee_delapp(dev, app);
++		return err;
++	}
++
++	return 0;
++}
++
+ static int __maybe_unused dsa_user_dcbnl_ieee_setapp(struct net_device *dev,
+ 						     struct dcb_app *app)
+ {
+@@ -2349,6 +2397,8 @@ static int __maybe_unused dsa_user_dcbnl_ieee_setapp(struct net_device *dev,
+ 		break;
+ 	case IEEE_8021QAZ_APP_SEL_DSCP:
+ 		return dsa_user_dcbnl_add_dscp_prio(dev, app);
++	case DCB_APP_SEL_PCP:
++		return dsa_user_dcbnl_add_pcp_prio(dev, app);
+ 	default:
+ 		return -EOPNOTSUPP;
+ 	}
+@@ -2405,7 +2455,7 @@ dsa_user_dcbnl_del_dscp_prio(struct net_device *dev, struct dcb_app *app)
+ 	if (!ds->dscp_prio_mapping_is_global)
+ 		return 0;
+ 
+-	err = dsa_user_dcbnl_ieee_global_dscp_setdel(dev, app, true);
++	err = dsa_user_dcbnl_ieee_global_setdel(dev, app, true);
+ 	if (err) {
+ 		if (ds->ops->port_add_dscp_prio)
+ 			ds->ops->port_add_dscp_prio(ds, port, dscp,
+@@ -2417,6 +2467,42 @@ dsa_user_dcbnl_del_dscp_prio(struct net_device *dev, struct dcb_app *app)
+ 	return 0;
+ }
+ 
++static int __maybe_unused
++dsa_user_dcbnl_del_pcp_prio(struct net_device *dev, struct dcb_app *app)
++{
++	struct dsa_port *dp = dsa_user_to_port(dev);
++	struct dsa_switch *ds = dp->ds;
++	int err, port = dp->index;
++	u8 pcp = app->protocol;
++
++	if (!ds->ops->port_del_pcp_prio)
++		return -EOPNOTSUPP;
++
++	err = dcb_ieee_delapp(dev, app);
++	if (err)
++		return err;
++
++	err = ds->ops->port_del_pcp_prio(ds, port, pcp, app->priority);
++	if (err) {
++		dcb_ieee_setapp(dev, app);
++		return err;
++	}
++
++	if (!ds->pcp_prio_mapping_is_global)
++		return 0;
++
++	err = dsa_user_dcbnl_ieee_global_setdel(dev, app, true);
++	if (err) {
++		if (ds->ops->port_add_pcp_prio)
++			ds->ops->port_add_pcp_prio(ds, port, pcp,
++						   app->priority);
++		dcb_ieee_setapp(dev, app);
++		return err;
++	}
++
++	return 0;
++}
++
+ static int __maybe_unused dsa_user_dcbnl_ieee_delapp(struct net_device *dev,
+ 						     struct dcb_app *app)
+ {
+@@ -2431,6 +2517,8 @@ static int __maybe_unused dsa_user_dcbnl_ieee_delapp(struct net_device *dev,
+ 		break;
+ 	case IEEE_8021QAZ_APP_SEL_DSCP:
+ 		return dsa_user_dcbnl_del_dscp_prio(dev, app);
++	case DCB_APP_SEL_PCP:
++		return dsa_user_dcbnl_del_pcp_prio(dev, app);
+ 	default:
+ 		return -EOPNOTSUPP;
+ 	}
+@@ -2486,6 +2574,30 @@ static int dsa_user_dcbnl_init(struct net_device *dev)
+ 		}
+ 	}
+ 
++	if (ds->ops->port_get_pcp_prio) {
++		int protocol;
++
++		for (protocol = 0; protocol < 16; protocol++) {
++			struct dcb_app app = {
++				.selector = DCB_APP_SEL_PCP,
++				.protocol = protocol,
++			};
++			int prio;
++
++			prio = ds->ops->port_get_pcp_prio(ds, port, protocol);
++			if (prio == -EOPNOTSUPP)
++				continue;
++			if (prio < 0)
++				return prio;
++
++			app.priority = prio;
++
++			err = dcb_ieee_setapp(dev, &app);
++			if (err)
++				return err;
++		}
++	}
++
+ 	return 0;
+ }
+ 
+
+-- 
+2.43.0
+
 
