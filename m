@@ -1,84 +1,122 @@
-Received: from us.padl.com (us.padl.com [216.154.215.154])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62BAA3542D1;
-	Thu,  4 Jun 2026 10:37:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.154.215.154
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21011364055
+	for <netdev@vger.kernel.org>; Thu,  4 Jun 2026 10:39:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780569459; cv=none; b=tUqkX8xYbjIWGmBi8Kii8j4CUGbytGCNZa93N/fZYOhDX8HbRykPf/Doy6IJ+xO4dt1dQGwlUlnBUKN/bg0wvvjCmHdGPyyi9cddxZ7CqUFLpq9FgqYluKB6U0nGkdSkgbtso3v6Z6zyPv0tkFVG9I9VCU1Zj15o2MPKC3C9pn0=
+	t=1780569587; cv=none; b=MYW9neqUbHwPjiyk0KzhnYDI8f+Z5Ybgev21fVAXwPpdz9gUtWXvLoxsrdTyyioLbDPOpuDgjeda1rXVpMOVX/v6FIUGZceLS3nlsnTuf2nRLlsqKVh3ukEQ5S0OQrDDNyShZIXoRi0QUR/aVrYIfEeDFaPaBBanMjgP2V3XVhc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780569459; c=relaxed/simple;
-	bh=xBdOVJi2ZWjXtAvFskpGT4bQJfPgetQIH36aB7GNwAI=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=bLdXNvUb6yRGxqpmhiEJg1vMVanprBV8Gw7pRVy3ktBj2maTrP0Yzmu2fdO29b+lzerWOrAxBsM3VlmSPWWCbjk56H3Dy1T8PuJC74IzX1reXvr9WvjyzY8HBLVXc6Xai4lNjErcdkTJX7u+MiRtUs0YXHrA5RgrUklZhbUSrLw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=padl.com; spf=pass smtp.mailfrom=padl.com; dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b=c4JEmpOd; arc=none smtp.client-ip=216.154.215.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=padl.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=padl.com
+	s=arc-20240116; t=1780569587; c=relaxed/simple;
+	bh=2Vh56h57Z0T91eA8r4mMnsXiuc3McXuOqM+28axWqVI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bR0PCxXu7fBNQw4dSc5wYaKJgb4Zu9St9fWcSgC3vHZkhuWRoBMtOad3ByCpKM0TlQAEplgfM46jMEtBeJLrLL4OQevzFLqcGo3xqFyai9uR1u387KDlieouUp24lwRYPhhO2DPJR7Fe+nGQ+krYPin8ohrCNs2hKZk8Fus7mbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=V+ilH8ko; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=VpZCfonc; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b="c4JEmpOd"
-Received: from smtpclient.apple (119-18-22-158.771216.mel.static.aussiebb.net [119.18.22.158])
-	by us.padl.com (Postfix) with ESMTPSA id CAF0260C6D;
-	Thu,  4 Jun 2026 06:37:30 -0400 (EDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=padl.com; s=default;
-	t=1780569453; bh=xBdOVJi2ZWjXtAvFskpGT4bQJfPgetQIH36aB7GNwAI=;
-	h=Subject:From:In-Reply-To:Date:Cc:References:To:From;
-	b=c4JEmpOd38gqv+fSNBwepO6gGvuuPWFdmWOR8q4NScYyUFRChT+Fvz/fcA5+0UEzO
-	 MWPogEhDpkUTbuR8/rPv2uhjdYf5ExYjt3RyPr2nZAACpMaWqFFr1wFHeCC6fF3eYd
-	 0LTLs6CwYZ6NsmMueG0uiPECFGrUzuFrxyFfjc6tI8r41cNH19DAN6926mZhTZ2BgX
-	 JZg5O1NWMC7ohnNbS4GAqGtxcFIm5V4yrDuexp9qh1ay6W8n3BtxOVepTHUt97+kPJ
-	 44bp9RWXaMrq7MwSM42KtLjRHyYOZwQOGDvD3hBn3n+lmca4/cF164sLLwBhV8Z+nf
-	 zQsLOhfidfGWg==
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="V+ilH8ko";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="VpZCfonc"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1780569585;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=aXLe0Lyqp3ntcJ5AmrAA7vOVVp+FJ2nW9Yvine+7m/M=;
+	b=V+ilH8ko2mmfkyocfAHnaOlVAw1/mSkIh2VFO/C+EMjewjoRx1oTGOW+4aZBGwSP01JHhn
+	zGgpmnHV0bj0jnNIaxkQSqqZgzOyUmOtoTthgx/RbvQY1JKin3It07j5FPtY6X7NzlKcvd
+	GfRmWJ7RM0W9aLytT+11hULYCYUE+6w=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-346-o606aRXjOIGYOtgwMUXfMA-1; Thu, 04 Jun 2026 06:39:44 -0400
+X-MC-Unique: o606aRXjOIGYOtgwMUXfMA-1
+X-Mimecast-MFC-AGG-ID: o606aRXjOIGYOtgwMUXfMA_1780569583
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-4601daf4c65so360416f8f.2
+        for <netdev@vger.kernel.org>; Thu, 04 Jun 2026 03:39:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1780569583; x=1781174383; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=aXLe0Lyqp3ntcJ5AmrAA7vOVVp+FJ2nW9Yvine+7m/M=;
+        b=VpZCfoncwY1fB4+hinZsrq1WO3odm3ru35Jv7VlxAyuFdxyxlFld4YGU6NZPSYXFMa
+         Fzap4JsczqbEzOhQYFOt4FwyU7GOfEIq01dDkkx6Ia2HDmbpgi5BGRh64vKL3AlI5B2R
+         3ERL7y6Kmxar3lMR960bDa1NEdW8BJxAihz9Ov/LqChhY9dARMIRtHEFRELkrmp5weTq
+         sU0NKG2t38jLokSJPwGQH/PqPZ4Xfgsd6MNcOHW2VoJRCCyqW6J9+jAXLxy0dAW/8Z8T
+         tyD4AlgEYXi5zkX/dRYKgvzKI2fmRJ8iktitbZNcWxkNtnL4eHNTexK9cYJ3kIL79N+b
+         ZVtA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780569583; x=1781174383;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=aXLe0Lyqp3ntcJ5AmrAA7vOVVp+FJ2nW9Yvine+7m/M=;
+        b=sjhxthvV7UH+BSsJ0j8Vb5juXPBRlfIbh9WbZygkI+/leHOd9DlDiCQCxhnGv03CQ5
+         /q2VXByVM5zMNge1OO8J8tN5XmFjMFINBclpoBb8fmEWasOQKQPqPPcoJoxKrjYg8DTc
+         8D4pzEMLhYiyzre1WUwsnufb6UV7VOVAY6vgaYqdSCdjoaZC43coKmP055SfTKepxnsa
+         Vw3EuaPvmhgA2JeaFILgj2PiHmbSblTr3aHHAhktfc9FAHrReE9AN4GxoTBUp/DNK9pV
+         a1RMI6ClIf7iMqFmLbP74C8ZhdiQZxsvVky7cvoPJbA+0gRZ47QhsLrNwRRshyC52UoE
+         T1PA==
+X-Forwarded-Encrypted: i=1; AFNElJ8eKavAFYyvWQy1yd17iCSmh+ScSc+jXj2d+zYY5O/W0KDLzRniFelL41dNxTFVgOIb6ua3ss8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxnrd7gv8Q4pgJQgr41kv1jHZDImD9yBfIEqs4/DljQvftNCSMt
+	U/Ct5gSoqVvprhEtWnD0s9ggStkB0XKcaCt/kwddeuQjaf5yx7OyRYyS6SgsqdhfrQB8Q3kTo0G
+	rSSNy9eY/vH5sEVp/ZFtsgVumoyCL1Dj/xrCgzF1t5QamTmg4YusKZLNFng==
+X-Gm-Gg: Acq92OEH7Uu9WZYHGEP6eR4EkApThgmHWhsLmYOx0o90JH01U8VzrrlSR6FDv9WQqw2
+	POP9jfGIF/UEcACB2ho4Prt3dsmqcqA/bY4/T0nkar3YmTXtTp6AP3QER0ecS5NZUbVm75lZGy0
+	iPRejckQ2R3jgDR+i5BapeSYGwqIG+gOEPY2L7Pu5XJlM/B37guuP4z1AlWLSecchvEfWnarQM9
+	trb/QnbDo+rlmT327jlFZFncMGvhjwg6IYpKBEfyGm9CZY314r2w3QBe3633tJFhU0ytXfuTQ1J
+	q49FdrlRtGL1+8buOcS7u0Rnr93A/UIVL5ZNjLRt+DEV1bovFZPZnBJNc6h624AKVHVVd3FuzKs
+	30JL55mFJxGvczvQF+UVtysmCNirrAtrpx7GxYKeQGI2dke+WW+8r/yPDzMdf/COpiheF8sLLiU
+	v77tKMug==
+X-Received: by 2002:a05:600c:608d:b0:490:b8c0:d471 with SMTP id 5b1f17b1804b1-490b8c0d5eemr115722275e9.23.1780569582735;
+        Thu, 04 Jun 2026 03:39:42 -0700 (PDT)
+X-Received: by 2002:a05:600c:608d:b0:490:b8c0:d471 with SMTP id 5b1f17b1804b1-490b8c0d5eemr115721305e9.23.1780569582103;
+        Thu, 04 Jun 2026 03:39:42 -0700 (PDT)
+Received: from sgarzare-redhat (host-82-53-135-12.retail.telecomitalia.it. [82.53.135.12])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4601f351d69sm25192327f8f.29.2026.06.04.03.39.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 04 Jun 2026 03:39:41 -0700 (PDT)
+Date: Thu, 4 Jun 2026 12:39:35 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Raf Dickson <rafdog35@gmail.com>
+Cc: pabeni@redhat.com, netdev@vger.kernel.org, 
+	virtualization@lists.linux.dev, linux-kernel@vger.kernel.org, stefanha@redhat.com, 
+	bryan-bt.tan@broadcom.com, vishnu.dasa@broadcom.com, bcm-kernel-feedback-list@broadcom.com, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH] vsock/vmci: fix sk_ack_backlog leak on failed handshake
+Message-ID: <aiFT9FBrEW_fW3KW@sgarzare-redhat>
+References: <97069506-352b-4152-a57b-5a974320529d@redhat.com>
+ <20260601095646.180085-1-rafdog35@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.500.181.1.5\))
-Subject: Re: [PATCH net-next 0/2] net: dsa: mv88e6xxx: add support for dcb pcp
- app
-From: Luke Howard <lukeh@padl.com>
-In-Reply-To: <20260604-net-next-mv88e6xxx-pcp-prio-v1-0-f9d10fe6cdc8@luminex.be>
-Date: Thu, 4 Jun 2026 20:37:17 +1000
-Cc: Andrew Lunn <andrew@lunn.ch>,
- Vladimir Oltean <olteanv@gmail.com>,
- "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>,
- Russell King <linux@armlinux.org.uk>,
- netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- Cedric Jehasse <cedric.jehasse@gmail.com>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <02BDD59A-30A9-46F9-8413-28A867B50CD5@padl.com>
-References: <20260604-net-next-mv88e6xxx-pcp-prio-v1-0-f9d10fe6cdc8@luminex.be>
-To: cedric.jehasse@luminex.be
-X-Mailer: Apple Mail (2.3826.500.181.1.5)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20260601095646.180085-1-rafdog35@gmail.com>
 
+On Mon, Jun 01, 2026 at 09:56:46AM +0000, Raf Dickson wrote:
+>On Mon, Jun 1, 2026 at 9:26 AM Paolo Abeni wrote:
+>> I'm wondering if sk_acceptq_removed() should be bounded in
+>> vsock_remove_pending() ? (even if that change would probably be
+>> net-next material).
+>
+>Agreed, that would prevent this class of bug entirely. Happy to prepare
+>a follow-up patch for net-next once this fix lands, if that would be
+>useful.
 
+And maybe sk_acceptq_added() calls moved in vsock_add_pending().
+That said I was wondering about other transports, but it seems both 
+virtio and hyperv have a simplier handshake that doesn't require the 
+pending list, since the socket is moved directly in the accept list.
 
-> On 4 Jun 2026, at 6:30=E2=80=AFpm, Cedric Jehasse via B4 Relay =
-<devnull+cedric.jehasse.luminex.be@kernel.org> wrote:
->=20
-> There's another patch series [1] on the mailing list that uses the =
-same
-> IEEE PRI Mapping table to implement MPQRIO. To me the dcb pcp app =
-feels
-> like the natural way to configure the pcp to QPri mappings in the
-> switch
+BTW if you are going to sent a follow up, maybe another improvement 
+(unrelated so another patch) could be to use sk_acceptq_is_full() 
+instead of `sk->sk_ack_backlog >= sk->sk_max_ack_backlog`. Discovered 
+while comparing vmci with virtio.
 
-I=E2=80=99m not familiar with the API or user tools, but the fact it =
-supports both global and ingress mappings makes it seem like a better =
-option, agreed.
+Thanks,
+Stefano
 
-It seems like we maybe could support MQPRIO properly with TCAM but =
-perhaps that isn=E2=80=99t really necessary (certainly not for my =
-all-ports-in-bridge use case, where there isn=E2=80=99t a distinction =
-between ingress and egress priority mappings).
-
-I still need to find a similarly natural way to expose the switch=E2=80=99=
-s AVB capabilities / 802.1Qat admission control. Perhaps there is none =
-and it will need to remain a local patch.=
