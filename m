@@ -1,35 +1,35 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 203C9399CE6;
-	Thu,  4 Jun 2026 08:16:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D80D73A3E66;
+	Thu,  4 Jun 2026 08:16:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780560981; cv=none; b=YQeXTsPdd3qIQsv36hS7CmqQyE5b89T32rChHrjNSPAr1SWaWLzuN6H2PIV/CADpf91TxqCQ5KWbSVaZb9YkDDIDOxS7lvL5Jcm0A5pkSiW25ACGihuCI2IeABn/laBVz0+6lL/xUj0fi3sQpGsM0ltZd2dGCj1sBslwaH3jtW8=
+	t=1780560987; cv=none; b=cbbV+PS36v/e2iMOo+Aalv9UNvYxm2FfkuBxwsQj8e2EBcA5I+/6cWGPK8cZqcnxbOq+kxuCx9MaDSDxuJgDFkeBU0FoWU34CwG7E6hhRw1lbyy+28rJ6ZhaI6uJGYEvzW+qcUQf4yqskrHGpuekRt6vD6UosWzKH7PzHR3ROyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780560981; c=relaxed/simple;
-	bh=BifGpaOg5XZrQzvVB2o5ei3lOIDNjG9z9BVx4H29PYc=;
+	s=arc-20240116; t=1780560987; c=relaxed/simple;
+	bh=hg8iabcFIbap/ynQls0mcJx6AM2EhUOOGizDrln07Wg=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=PGJRcfIuCic0cUZlktFXdqQkfuAMvIhNSo/UwqUf1KC9hD0hIHZeT2c70Vffz5KI9kvP/cUnDPAtfcUf2tXlwsdwWBOtjsnW5Oj9SMQyPJki/wUQ3tWgGqe4BPbOE/kPan8+Elt0p5j7s13UrTB9loAl/aWOUIghL936mLK9gTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TD02Gkzh; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=H4UHQQxNFwqgzslN7w6qFg3iX1pruo1/Bb/svEMWPRlr9ngeJydqjCYYUdlnOLVe6aYes/pCVqpX+HqwT/EPqUUl7w+8Akip9jNhq33oBhaz/ECmDDUY7fYzTvcBzU1dOUiQjbFE3J+SldNKeYOwY0Q37mWTg5hmawaebDNMelo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R0M/47tt; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TD02Gkzh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4A9F1F0089A;
-	Thu,  4 Jun 2026 08:16:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R0M/47tt"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54FFA1F00898;
+	Thu,  4 Jun 2026 08:16:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780560979;
-	bh=05ZbWYYW4RjjQ6p3V7sBtDHHa/eUPxq6EJ99nZ/1k5U=;
+	s=k20260515; t=1780560984;
+	bh=Zx7rvW5ZY9Px9CVnzO/KcJSO7h1jSduZQlE1l8PfwWY=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=TD02GkzhkXFjJWzVap8s7JiJEIh0C8V98rAGfajb3X0O3y7qdGxWBAXfnGZBYL9L9
-	 FTbF93bxFjyIstOkXAQXyf5hF4aHylATyPWIzSESMC7BuitQzRkqE1v2umT95Xlt8b
-	 KFle45Gu2qTsJgs0HV+MURRplmHXPA6rK63c+gRsHZuOsVaYbvPyDKtF7Gy9vrlAfd
-	 PnbT3RBQ6VB68e6NnPMbwRug7XALuJfoUYqjhgqttc0RzlSF551wLNxHygqCUuXmxx
-	 yKT8YFq3tR4V5Jnu3Mr1VNCyQpQNUeLCknR7HGMboy6Fq+YE0AysD9/ZiEQRv7C6YP
-	 hCiyki3ixXLnA==
+	b=R0M/47ttOAsgoFmUiICK8eviaJNbMOYPOLBadThIWZ7i7l1bKFG8iY+l3bIDZp5gL
+	 F58Q9g+01JMFtKFrwjN9vdrmNJoQBHAYRcE0iDzUn6Yn33I3CSIeYe3HxbWsl/n3ag
+	 B43grAD6Ni4NxsZRvhE2RzAZeEYqbn9snCA+yEQydDmEEFuec94fPLcZKpBElKBR6Q
+	 VpELlmSv9uxjfwlk/GxwQ56pwcQ3qBbk7+RIs5l4wPBvLJHIqZ17Ddw932jhNDoDZF
+	 WrZiKnisYnpOpJiKJwfWFAvKaC27AZkbcq8WywZKtq0MKFHtBI72zm68F5aWfQ9Z5Z
+	 vO+pF+m4EDcpA==
 From: Linus Walleij <linusw@kernel.org>
-Date: Thu, 04 Jun 2026 10:15:50 +0200
-Subject: [PATCH net-next v5 1/5] net: dsa: microchip: Add fallback Micrel
- compatibles
+Date: Thu, 04 Jun 2026 10:15:51 +0200
+Subject: [PATCH net-next v5 2/5] dt-bindings: net: dsa: microchip: Add
+ KSZ8995XA
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -38,7 +38,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260604-ks8995-to-ksz8-v5-1-98baeb45e665@kernel.org>
+Message-Id: <20260604-ks8995-to-ksz8-v5-2-98baeb45e665@kernel.org>
 References: <20260604-ks8995-to-ksz8-v5-0-98baeb45e665@kernel.org>
 In-Reply-To: <20260604-ks8995-to-ksz8-v5-0-98baeb45e665@kernel.org>
 To: Woojung Huh <woojung.huh@microchip.com>, UNGLinuxDriver@microchip.com, 
@@ -50,62 +50,35 @@ To: Woojung Huh <woojung.huh@microchip.com>, UNGLinuxDriver@microchip.com,
  Simon Horman <horms@kernel.org>, Russell King <linux@armlinux.org.uk>
 Cc: netdev@vger.kernel.org, Woojung Huh <Woojung.Huh@microchip.com>, 
  devicetree@vger.kernel.org, Linus Walleij <linusw@kernel.org>, 
- Nicolai Buchwitz <nb@tipi-net.de>
+ Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 X-Mailer: b4 0.15.2
 
-Because of forking paths when Micrel was acquired by Microchip,
-two devices also exist with the micrel,* prefix bindings.
-Add these to the KSZ SPI driver so users can use the more capable
-driver.
+The KSZ8995XA is just like the KSZ8795 and KSZ8864 a Micrel
+product. It was renamed from KS8995XA to KSZ8995XA at some point,
+but it has the same properties as the KS8995XA.
 
-Make the KS8995 driver mutually exclusive with this driver
-to avoid probe races.
+Be careful to use the full product name in this new compatible:
+there is also KSZ8995MA and KSZ8995E which are not compatible
+with the KS8995XA.
 
-Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 Signed-off-by: Linus Walleij <linusw@kernel.org>
 ---
- drivers/net/dsa/Kconfig             |  1 +
- drivers/net/dsa/microchip/ksz_spi.c | 15 +++++++++++++++
- 2 files changed, 16 insertions(+)
+ Documentation/devicetree/bindings/net/dsa/microchip,ksz.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/dsa/Kconfig b/drivers/net/dsa/Kconfig
-index 4ab567c5bbaf..e704ab702c18 100644
---- a/drivers/net/dsa/Kconfig
-+++ b/drivers/net/dsa/Kconfig
-@@ -100,6 +100,7 @@ config NET_DSA_RZN1_A5PSW
- config NET_DSA_KS8995
- 	tristate "Micrel KS8995 family 5-ports 10/100 Ethernet switches"
- 	depends on SPI
-+	depends on !NET_DSA_MICROCHIP_KSZ_SPI
- 	select NET_DSA_TAG_NONE
- 	help
- 	  This driver supports the Micrel KS8995 family of 10/100 Mbit ethernet
-diff --git a/drivers/net/dsa/microchip/ksz_spi.c b/drivers/net/dsa/microchip/ksz_spi.c
-index 373e9054947c..77aecac32466 100644
---- a/drivers/net/dsa/microchip/ksz_spi.c
-+++ b/drivers/net/dsa/microchip/ksz_spi.c
-@@ -224,6 +224,21 @@ static void ksz_spi_shutdown(struct spi_device *spi)
- }
- 
- static const struct of_device_id ksz_dt_ids[] = {
-+	/*
-+	 * Legacy Micrel bindings. In 2015 Microchip acquired
-+	 * Micrel which is the originator of the KSZ series, and
-+	 * devices branded for Micrel already existed, as well as
-+	 * some device tree bindings. These two products are identical
-+	 * to the same Microchip products.
-+	 */
-+	{
-+		.compatible = "micrel,ksz8864",
-+		.data = &ksz_switch_chips[KSZ8864]
-+	},
-+	{
-+		.compatible = "micrel,ksz8795",
-+		.data = &ksz_switch_chips[KSZ8795]
-+	},
- 	{
- 		.compatible = "microchip,ksz8463",
- 		.data = &ksz_switch_chips[KSZ8463]
+diff --git a/Documentation/devicetree/bindings/net/dsa/microchip,ksz.yaml b/Documentation/devicetree/bindings/net/dsa/microchip,ksz.yaml
+index 8d4a3a9a33fc..4ed13870ed3a 100644
+--- a/Documentation/devicetree/bindings/net/dsa/microchip,ksz.yaml
++++ b/Documentation/devicetree/bindings/net/dsa/microchip,ksz.yaml
+@@ -23,6 +23,7 @@ properties:
+       - microchip,ksz8864  # 4-port version of KSZ8895 family switch
+       - microchip,ksz8873
+       - microchip,ksz8895  # 5-port version of KSZ8895 family switch
++      - microchip,ksz8995xa
+       - microchip,ksz9477
+       - microchip,ksz9897
+       - microchip,ksz9896
 
 -- 
 2.54.0
