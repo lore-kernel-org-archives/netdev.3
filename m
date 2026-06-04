@@ -1,84 +1,91 @@
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F7CD299931;
-	Thu,  4 Jun 2026 09:28:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FB4433D51A;
+	Thu,  4 Jun 2026 09:28:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780565291; cv=none; b=u0BfoNuQTmSonWBh7xsc13wo9tHSV4x6oLCR0Kom737jC9zSiz6e2Pif6tGOkgtAQqxKk6r2AE6k2d4T3qZh/yC+gkrMQhVQyPhDggYsAToqCDpyT0qlPtBrLqyL6O41clrsr7BR1pPFPfE0ATH4Wb45sLesTfQOccG9uK4cU7Y=
+	t=1780565309; cv=none; b=Qc00JJnFAGHCftB7gx3Tz+qNhq/b/yI9E5Wp0d4TGalmuVa7Lu/Ajksg94plVbJ5Z5OzhL3KFSgvvNJgQ79fstLsUPE+4u2grhYdg584tF1OTajcQGtwycvUJFxXm36qz4VHRA4u2JiKh7XlM2eTIq0D5AJUsuAawYTZNz/bQ0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780565291; c=relaxed/simple;
-	bh=0sERuNzUlon60NH1Auwx6L7IMB2nqtA0p7z5GpOk898=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=phnk+oat7yS52Ezj/2hVHEFmT5wXsg3bkM1TcSJtU0tjI5nWoLFG6/rDDTO3eMwsJ4wmBCpiDjdZE3qouPWZJSA02z4T3jKTb9yqX941/gS1TQdHxZx3nCT+Q+RGDBaXciN+qVrjuh4Df7ii60Hs7XutlnV44gFmvUrU3fwnyt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=k5vjNC4n; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+	s=arc-20240116; t=1780565309; c=relaxed/simple;
+	bh=4lcZmXXAIs5xCW0g8bp8hPpzij7y+vApybuIUh4gFy0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MNdqKion/t4kIR7dzl5rrYHIGopy/jdBFkc0u1naWvIIsKp76BPcwJ+5sGFnlnlPgACdgD8rcaFLMqDgU7E4HhkJSmg++cQVIEEelG4jhHQS92KDia/Gj600CBcCft1zLjWd66A6hqdyHK/4j/NLN7WEqY9fCorQgUTeg75kDI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=RnM6vwu9; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="k5vjNC4n"
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 6549S2690251280, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1780565282; bh=0sERuNzUlon60NH1Auwx6L7IMB2nqtA0p7z5GpOk898=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=k5vjNC4nOv7VQstPo7chZ/kLvIVJ0PBRiPixhrJAzAvPX8xs0mU7G29faBgL8WjiX
-	 UAJLKzMW83fz3nXZkkkwcTNvuwfsU8BALyxgajbw5kYWh0lihd7qdju6xXdWO5NKH9
-	 /cqe9dKA8x5TpgJXKPh2WbREcisrKAEjp/iImzI/d3ilcdsqWDI21r5e4sZHHg7OUZ
-	 UMi7UjVMZTtAnlXPiDMG+W39Lg1I64N3YkUrNwWlxYzYtfqpKYQeXxXOTVmWiQAgmJ
-	 A6Bnm5NMtNd4FOIfWbNwvJUlQdnUOvPmRPdefr2GUJly4Ryt19dyJh1KoUbFNXaFLf
-	 RWM8hkyfjrqTw==
-Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
-	by rtits2.realtek.com.tw (8.15.2/3.28/5.94) with ESMTPS id 6549S2690251280
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Thu, 4 Jun 2026 17:28:02 +0800
-Received: from RTKEXHMBS03.realtek.com.tw (10.21.1.53) by
- RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Thu, 4 Jun 2026 17:28:02 +0800
-Received: from RTKEXHMBS03.realtek.com.tw ([::1]) by
- RTKEXHMBS03.realtek.com.tw ([fe80::a2e:aeb4:fa27:c32f%9]) with mapi id
- 15.02.2562.017; Thu, 4 Jun 2026 17:28:02 +0800
-From: Hayes Wang <hayeswang@realtek.com>
-To: Chih Kai Hsu <hsu.chih.kai@realtek.com>, "kuba@kernel.org"
-	<kuba@kernel.org>, "davem@davemloft.net" <davem@davemloft.net>
-CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>, nic_swsd
-	<nic_swsd@realtek.com>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linux-usb@vger.kernel.org"
-	<linux-usb@vger.kernel.org>, Chih Kai Hsu <hsu.chih.kai@realtek.com>
-Subject: RE: [PATCH net] r8152: handle the return value of usb_reset_device()
-Thread-Topic: [PATCH net] r8152: handle the return value of usb_reset_device()
-Thread-Index: AQHc9APCJVlwBSmXAEOkvH0w1LP1cLYuIDUw
-Date: Thu, 4 Jun 2026 09:28:02 +0000
-Message-ID: <4bf89cb16f754e748f4db485e1376d3d@realtek.com>
-References: <20260604092247.27158-450-nic_swsd@realtek.com>
-In-Reply-To: <20260604092247.27158-450-nic_swsd@realtek.com>
-Accept-Language: zh-TW, en-US
-Content-Language: zh-TW
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="RnM6vwu9"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 0A5EF1A0663;
+	Thu,  4 Jun 2026 09:28:26 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id D1AB05FEF7;
+	Thu,  4 Jun 2026 09:28:25 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E5D05106A157A;
+	Thu,  4 Jun 2026 11:28:20 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1780565304; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=9fk2Di8TzdytoF3ZfFdEtnPwG5rt6VhXi2K9+A9IUC4=;
+	b=RnM6vwu9oyFvwfZxoLlJ7WQuSmATL8ZERNamCVeggaBMmZ6qY4p7wGDzv4CrDtmrZc5qsB
+	Bm3LLOlSxxZa/U62TNly8KssrvtXwaNpprF3SjIQk3i1eLZQMOcSLEJujUd/stClEdU0CZ
+	gHTR5dZ5u4TomjFbgJJ9IlDSEUSLuNtzP/ACnQBIMWlaDQljmrZqGyi3eIbw6Su16w0UVj
+	yjsd67ukGqb5XP4klFhdLUmDx0XnbbkvnWoAzTAw4mnFE5a9sA6DxxoW1p8KB4K4XC2uWW
+	i00kYBBoirAs4P6AsIrsjB/4Sc1Ot+RiwXxq3nLtcKaxyB1PrDT3n16Cu49V1g==
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	davem@davemloft.net,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Nicolai Buchwitz <nb@tipi-net.de>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	thomas.petazzoni@bootlin.com
+Subject: [PATCH net v3 0/4] net: phy: some cleanups following phy_port SFP
+Date: Thu,  4 Jun 2026 11:28:14 +0200
+Message-ID: <20260604092819.723505-1-maxime.chevallier@bootlin.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Chih Kai Hsu <hsu.chih.kai@realtek.com>
-> Sent: Thursday, June 4, 2026 5:23 PM
-> To: kuba@kernel.org; davem@davemloft.net
-> Cc: netdev@vger.kernel.org; nic_swsd <nic_swsd@realtek.com>;
-> linux-kernel@vger.kernel.org; linux-usb@vger.kernel.org; Chih Kai Hsu
-> <hsu.chih.kai@realtek.com>
-> Subject: [PATCH net] r8152: handle the return value of usb_reset_device()
->=20
-> If usb_reset_device() returns a negative error code, stop the process of
-> probing.
->=20
-> Fixes: 10c3271712f5 ("r8152: disable the ECM mode")
-> Signed-off-by: Chih Kai Hsu <hsu.chih.kai@realtek.com>
+While posting the v11 of phy_port netlink, sashiko found some
+pre-existing issues, and following the tentative fix, Nicolai found
+some more :)
 
-Reviewed-by: Hayes Wang <hayeswang@realtek.com>
+This is V3, with a re-ordering of the port/sfp cleanup, as well as a new
+patch (patch 3) that also reorders the phy_remove() path.
 
-Best Regards,
-Hayes
+V3 :
+ - Re-order port cleanup and sfp cleanup
+ - patch 3 is new
+ - Fix typo wich -> which
+ - Add Nicolai's revies
+
+V2 : https://lore.kernel.org/r/20260601084029.815461-1-maxime.chevallier@bootlin.com
+ - Add port cleanup - Nicolai
+ - Don't probe SFP for genphy drivers - sashiko
+
+V1 : https://lore.kernel.org/r/20260530072706.3167745-1-maxime.chevallier@bootlin.com
+
+Maxime Chevallier (4):
+  net: phy: clean the sfp upstream if phy probing fails
+  net: phy: remove phy ports upon probe failure
+  net: phy: Clean the phy_ports after unregistering the downstream SFP
+    bus
+  net: phy: don't try to setup PHY-driven SFP cages when using genphy
+
+ drivers/net/phy/phy_device.c | 24 +++++++++++++++++++-----
+ 1 file changed, 19 insertions(+), 5 deletions(-)
+
+-- 
+2.54.0
 
