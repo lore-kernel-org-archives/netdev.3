@@ -1,100 +1,111 @@
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f202.google.com (mail-qk1-f202.google.com [209.85.222.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3A97480354;
-	Thu,  4 Jun 2026 14:00:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70398408015
+	for <netdev@vger.kernel.org>; Thu,  4 Jun 2026 14:13:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780581610; cv=none; b=FJBVKVqGuVZLIss+x/Uog07gI1lqUt7jUKR3+ugLD7XTDW/hBa5nT3PRRNyZQ0K09rBcoOxgwAxAoCxC63SKnwMN/+nFMwe11R9Kp43wmBFyL/V7pl1u8l0zu8e0pC72SCEP2X3r4UO34ybjjY1w4wor4vB8HPf/dzndzmuYGJk=
+	t=1780582427; cv=none; b=pIJOiE2l7tfqBhK+0OAQAaeeU9PayP02vb4ECFTbxRLqAHEz1TKizYgK+FbzwBg+6MsysBnDB1tNg3QRLQq/9UU11nnqBGeicEJbWtlkzW2Bm6HwsiAneWiPjnn+WjyLx4BkFm7dhWxttvysM1aTrXC3SjqLcrf6GRkUaO8uVm0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780581610; c=relaxed/simple;
-	bh=8MMB8bFJ8LNC1D+1B0HLn2eXpH4+sY71iCNWI8FmUiU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=l+1NkKXWkHPDaWrTJ1TxbgDYsVSIDwZWiLemqLwnr0bJPmT6DneYOSIdJHJIPwZdX8ggHaw24ww4jI1IAqjtvGKoCQANjkqxFtQao3V7Qnh2paH/S8I+EePoDJbooUNSDkY4ISKa6IoZgfRd8v1fcu4+80+AUxJMQtQ/C72M6HA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=PRDVeNsg; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
+	s=arc-20240116; t=1780582427; c=relaxed/simple;
+	bh=BtE/ujvfLBacl0UnHk85GonvAoEPVdXHHA6gPKFwrsA=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=ngms6x8QW+L3j+4JigH7HgRiMZuax/VMikqVGJvge7jrIQk0mp3jOllAZ5iYRV85WB+mceliSSUDpstlwhSWwmbeGmqMNJXio9IaG01yD4nudINC9bnFeeoppGDYz8OKpL9a6HQWSgaRUr7ZUcEjDJsBU6/vgfjTuhhY2GtI/9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=egNiAFhK; arc=none smtp.client-ip=209.85.222.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="PRDVeNsg"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=nRBXMkQp51i7rSpx936ZuKTdmIEGW7cKA2P/HWYWFKw=; b=PRDVeNsggkUUq/F72LhcBMaGvL
-	JSOS40/4rE0eWpZqQ5IVcWAK/BQ/43IQ9h44uKlqZQxC1LbeCa0CdjSE2/nwIx/FOTvwTZaN+pjgR
-	PMIda75u6ERrSw/l52txx7HkXVMqJrw4pAI9+uWXybSfwZgPlU9KOH/8zdo+5uixESfJB1FQDqUB7
-	ZktNd2UnIWlL1I6GQsJmMH9DU0U4EaEw/UdxpTkxvT+lfy0F8m66AuZE8pUxwJeAn/IlgRJ1iVJEw
-	sXwwpLEkc4s83lmn3a4O6nAnadI9sdPWNJ2YX2CuVy7dhMHQTYg6zkz3utzd4KwK6j0GHTAZFFiBq
-	81+GNDDw==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1wV8bs-004Z6A-10;
-	Thu, 04 Jun 2026 13:59:49 +0000
-Date: Thu, 4 Jun 2026 06:59:43 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Simon Horman <horms@kernel.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH net-next v2 0/3] netconsole: Fix reported problems
-Message-ID: <aiF-SG6mhZBt2jaF@gmail.com>
-References: <20260602-netcons_fix_before_move-v2-0-eca3f8a8b1a3@debian.org>
- <20260604130622.GB3920875@horms.kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="egNiAFhK"
+Received: by mail-qk1-f202.google.com with SMTP id af79cd13be357-91598ab3a1aso127223285a.3
+        for <netdev@vger.kernel.org>; Thu, 04 Jun 2026 07:13:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1780582425; x=1781187225; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=aR4m/EW+SbkO71LxXWUeB9WXm0o2d3NjFbxvkptMB5U=;
+        b=egNiAFhKEr4k38MYTXfXchEZFtHyHrsWDhhYEkVyZSbHh1gfdC6HpgZbtPq1n8Rw0F
+         cRbG4IlgLUS+r4+ANYiKDT/D4DeaHVevAEr1bxWdZl9AASBXiixjUPFL4tC+uZ1+Vyy8
+         r+vpla/ItiNarhqpK1tzMvQcBb9gOA+czNOeErgbkX7KVEo6Xmr9X2ogTKjut3E4qVJe
+         Q9TpyhjvfG7i2V4+NOjtsN7pqvTLNjhlTAhmniqGxTaEU4R/QztKo9xjxQhll0GvxG9p
+         WuaI3am/+CYER/VCIGhzUi3KbTxT6YIZDBfdoWW1WyIBxzUcvM/JBKRyLGp7hu6IDwmw
+         /Wvg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780582425; x=1781187225;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=aR4m/EW+SbkO71LxXWUeB9WXm0o2d3NjFbxvkptMB5U=;
+        b=M92oVakpnJoy44ZioxDpozVg4pz8zl3ZfX/yh+xmcjeC9eMFKMVh57QBtzIzGPUa0k
+         sEWymPSk7a+BXHW05KJWkeIgRee4k6I/5aZuj8FANaxhsx39Rd/59rm5TvltG8b+eVqW
+         2psPM5H7PVjzQXNqm+Sz+PXHUSIHptQtzrjUYeY0lFZDIdXe0cABjDIXn3KcihuIjq86
+         DuVsRt2o9cviWZNoOTc8n4QwNyTxTBzRESlAa//CcOzhHMPqics1Dy4HhboOWkM69TS9
+         mbezC9frTJvrL9QC4bxHBVZ9klOY8TlUiBx2v+HYcrlm948hXr7G0/oBk3Ig0JNvaJx/
+         qdaA==
+X-Forwarded-Encrypted: i=1; AFNElJ9JOsw0m8bUQh3olV9XJBvFsFfFhOtQpockRA/UKi6VqZMFSAnAmIALluvvP492cYiBOudOzSM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyiIids8EIofZK/c+6FLrf21FtHCO1e6XmdiyKAj3Iygr7LUA2l
+	0ChsKt4LWl7Uc9nt9OtEjEoHqUcT6T7xGm8RroHOvQ1mM4F/PtVIhdKQ++rJboM3bVaNNtim0x9
+	pgXVnW+CEdeIFgQ==
+X-Received: from qkbde6.prod.google.com ([2002:a05:620a:3706:b0:912:add7:777d])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:620a:3199:b0:915:86c6:8432 with SMTP id af79cd13be357-9158a6979f0mr1339024185a.14.1780582424839;
+ Thu, 04 Jun 2026 07:13:44 -0700 (PDT)
+Date: Thu,  4 Jun 2026 14:13:32 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260604130622.GB3920875@horms.kernel.org>
-X-Debian-User: leitao
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.54.0.1032.g2f8565e1d1-goog
+Message-ID: <20260604141343.2124500-1-edumazet@google.com>
+Subject: [PATCH v3 net-next 00/11] bridge: prepare lockless
+ br_port_fill_attrs() (I)
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, Nikolay Aleksandrov <razor@blackwall.org>, 
+	Ido Schimmel <idosch@nvidia.com>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
+	Eric Dumazet <edumazet@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, Jun 04, 2026 at 02:06:22PM +0100, Simon Horman wrote:
-> On Tue, Jun 02, 2026 at 07:26:56AM -0700, Breno Leitao wrote:
-> > These are some of the issues that LLM reported to netconsole, and they
-> > are being addressed here before big refactors.
-> >
-> > I was doing some big refactors, and got some "pre-existent-issues"
-> > during LLM review of the refactor, that make them hard to guarantee that
-> > refactor is not introducing any bug, so, let's clean these pre-existent
-> > bugs first, and then submit the refactor.
-> >
-> > The issues fixed in this patchset were reported during the review of
-> > https://lore.kernel.org/all/20260524-netconsole_move_more-v1-0-909d1ab398b4@debian.org/
-> >
-> > Not all of them got fixed, but, those that were easy to reason about.
-> >
-> > Why net-next and not 'net' tree.
-> >
-> > Most of the functions that are being fixed here moved from netpoll to
-> > netconsole, thus, fixing this on net will cause merge conflicts from
-> > 'net' to 'net-next', thus I decided to fix it on 'net-next', given we
-> > are on 7.1-rc6 already. Sorry if that is not the right approach.
-> >
-> > Changed from v1:
-> >   * Change it from 'net' to 'net-next'.
->
-> Hi Breno,
->
-> There is AI-generated review of this patch-set available on both
-> https://sashiko.dev and https://netdev-ai.bots.linux.dev/sashiko/
->
-> I would appreciate it if you could look over that with a view
-> to addressing any issues that directly effect this patch-set.
+medium-term goal is to allow "ip link show" dump commands to run without RTNL.
 
-Ack. While most of the reported issues are pre-existing are being fixed,
-there is one genuine regression: invoking WARN_ON_ONCE() in a potential
-NMI context is problematic since it may trigger panic_on_warn.
+This round of patches adds/fixes some lockess accesses in bridge.
 
-I will send a revised version.
+This is not complete, more patches will come later.
 
-Thanks,
---breno
+Ultimately all changes to p->flags should use set_bit()/clear_bit().
 
---
-pw-bot: cr
+I repeat (AI agents might read this cover ?):
+
+Many p->flags accesses are racy, and will hopefully be fixed in a
+future series.
+
+v3: addressed Ido's feedback again (patch 6), silly me.
+v2: addressed Ido's feedback (patches 5 & 6).
+
+Eric Dumazet (11):
+  bridge: add a READ_ONCE() in br_timer_value()
+  bridge: add bridge_flags_bit enum
+  bridge: use BR_PROMISC_BIT
+  bridge: use BR_ADMIN_COST_BIT
+  bridge: provide lockless access to p->path_cost
+  bridge: provide lockless access to p->designated_cost
+  bridge: provide lockless access to p->designated_port
+  bridge: provide lockless access to p->priority
+  bridge: provide lockless access to p->port_id
+  bridge: provide lockless access to p->config_pending
+  bridge: read p->flags once in br_port_fill_attrs()
+
+ include/linux/if_bridge.h | 78 ++++++++++++++++++++++++++-------------
+ net/bridge/br_if.c        |  8 ++--
+ net/bridge/br_ioctl.c     | 10 ++---
+ net/bridge/br_netlink.c   | 55 ++++++++++++++-------------
+ net/bridge/br_private.h   |  2 +-
+ net/bridge/br_stp.c       | 47 ++++++++++++++---------
+ net/bridge/br_stp_if.c    | 16 ++++----
+ net/bridge/br_stp_timer.c |  2 +-
+ net/bridge/br_sysfs_if.c  | 12 +++---
+ 9 files changed, 136 insertions(+), 94 deletions(-)
+
+-- 
+2.54.0.1032.g2f8565e1d1-goog
+
