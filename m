@@ -1,54 +1,54 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B344A2F7F14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0438F263F4A
 	for <netdev@vger.kernel.org>; Thu,  4 Jun 2026 22:47:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780613242; cv=none; b=Ag0IvXP0OV7SqoRIRT8QbYMhREirjWUiVf0faQT/NPIk06jaEa9y47A0QWvS7EJcD+zUw4QmwSpqYVi3TJcbcn2BMle+SLkaqJPW2fnh3kKeMPxo5naLoA6OJhxX0toLLbUu8qSWGMCYzOGRdI9e7mhcH49i3czsqnMIq/rrPnY=
+	t=1780613243; cv=none; b=H9wFbEOmiI4qzVObqHjL6Gx/k0qpefch136c2lxjPSHth6SJy0jXAkHg/y/+9bAwdnjSujBn6w6umV1DSMeHOQkYZkdk9kmk7qkORq1B3hGXMLLnn07taEdtwGvFtX68rDvwxVIjcA+sYM1DS6yrcgZg1wwKJAhJxsGA8nf6NNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780613242; c=relaxed/simple;
-	bh=scE5nSvt6sH6IDkOhq+SHblZhFr8L8f3mGayWDrZOGs=;
+	s=arc-20240116; t=1780613243; c=relaxed/simple;
+	bh=CrhcH43a/gYR+2K6n4AM8+cnEshLKKK2gvXOmlI2APA=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=XLjgZ90rtgN0mTJaVGEbJxkgxoTlTcO4JiKhMDjcM2B69RKwDd6sJ5bb3dbq6Zs2mCq0Fiw9uak9rjNfbGMS2rvko+9Iy8/k9MYz0wj5kXfRoPPO08iRTO0qR1U9o3h2kYRsYh7kYKoW76msMme5OXD+0TeSbQaqfPpjB60I7xA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=G+0uz0mA; arc=none smtp.client-ip=209.85.216.74
+	 To:Cc:Content-Type; b=RqvSpKU3yx0m/49X8mGVN229tFKzCka5+9DZpcrmw3P0iG05/E4lUu62D1sz/J1WaIOKMduWqVrHavHFk9LK5N+uZ3pKYM264o1sm9v4Hre0OhwMpevfSqv2kEB9avjhy+d/bk0trMM66Uw9ZlWrVPh/f1xDjrAPnvQmISYp/VA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GCLzkc7J; arc=none smtp.client-ip=209.85.210.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="G+0uz0mA"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-36d98b74447so815221a91.2
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GCLzkc7J"
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-842b0dd8107so117939b3a.0
         for <netdev@vger.kernel.org>; Thu, 04 Jun 2026 15:47:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780613240; x=1781218040; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1780613241; x=1781218041; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=EuzCZZHh0Giyw1iTlEs9FMI2itiUtC678o8MzBoBREQ=;
-        b=G+0uz0mAVIPmiXIZmV+bNe5jCcOpOuDnKvWKHBLKHgOBD+x4FvbsR8o20Wha81Tgj+
-         /5V7j/k4pwbUSWI9xqC0cAGJ36dxV3+oDQFmAqPDfqcZ9+6KheGSzgEqFykKyaKh9MQn
-         cpfo0GIeLHv6NTCmBzfjQJiaABNh54pi3y82F53jj9J1k9deQuHc7IHVMyD1ZD2yuyC/
-         eTW0dgBrXETu0z8LQYbXeJOfEMEIAqQN+R8gn1XE1kWduevZRoB/cGSeJsWjRl6uVhhm
-         +XH6q4S6P4xg6B5k513o2Qevyxe1kuY66v/VESfstFuD1kyf4HtH4j0sD3FrhNk+VP7O
-         mQEw==
+        bh=LljQoMsrT+rI6NbScCYdrsaU31SJSEc6KDPiyq+eTCY=;
+        b=GCLzkc7J6EXnBkPbxugp/PPFxoRKoyrk4sa+dQGHXLBETALukd/b2otGqr/+zcu9xg
+         z7wdhLIvbqjkmFybKifB2r84ffFbezKYi2+wcCZWjwQUaCNLnmpI5+qy6RFCJJRnxxOi
+         5C+Gx1jbSZjJtvkVygFCBbeuZeKfkYTta2e/u9f+NuLfPAWrtploG97JUBZ3TCbZAPDT
+         mXjHoqjIUDoJ/p4jSyhOeUprk3hlNb1R8Brig5AiBBVy+u3YNYnEDWX0WsYdZ47GYru8
+         ih7wyuNJ7Xk8Bd7ypQTVvc4MtCFgVwDCLmI/v6hr48MeMpKnL+XZXC9BHENGmfFuDSlb
+         P2NQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780613240; x=1781218040;
+        d=1e100.net; s=20251104; t=1780613241; x=1781218041;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=EuzCZZHh0Giyw1iTlEs9FMI2itiUtC678o8MzBoBREQ=;
-        b=qKN3Y0ed3hJGcGHNa5uHpaDnGrvGxezuPbvJq3pIsDZIDvhCZzNPy56HGJiCgbElpx
-         zjBRCgI0PoISkUxhkYpbpI4FthBt6/gpRynumtslkau+3LSU5EbW++6z7kgAwJ+hNWGg
-         O/veZIbZb3D3RtUrvYS2rjD6YqWojrHRr0mB3ZVPmSRv5M+4p1vqEUqH2vOFPsstkrXv
-         n10brC1syjs8+DKZjIZPbDPx1Cyoz2il67ooiA1TlcL+9CszN1QvoU/OIRr6cypDhdSe
-         mo92/xriGUs070fu4SRtlMsaxdUzNK8I8T9KJRUUOZQwnlNyVn1rXHkhSnj/5jf5aWx8
-         up5w==
-X-Forwarded-Encrypted: i=1; AFNElJ+qH5L1YICtx6aG21ohFYAurz4PD72UsuUyRbChbhyysz3BUo1seu+qftc742A8gSrZv8Qalag=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzvi/5Dd4U+oyiVXhlPTwEUhMfiLu9r7QDSwj5tU2Ppx8Zx6X8J
-	h6oqZ0Wh4w7VGam6tq2h8ozQ447+jkdv9QnvVkV80fDogTKbivDn+lYGtp90J87fG86k5fwaJ2b
-	SZS2ddQ==
-X-Received: from pgjm14.prod.google.com ([2002:a63:fd4e:0:b0:c73:ef4d:6a16])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:1809:b0:368:6998:b49d
- with SMTP id 98e67ed59e1d1-370eeff6b37mr827223a91.10.1780613240168; Thu, 04
- Jun 2026 15:47:20 -0700 (PDT)
-Date: Thu,  4 Jun 2026 22:46:22 +0000
+        bh=LljQoMsrT+rI6NbScCYdrsaU31SJSEc6KDPiyq+eTCY=;
+        b=A1ImI3l8ut51dwabA8cEOb+sTuWp83yW5wjQCVCQYYMZY5dL0pP4P64105hTAblOn/
+         fSDJDFW8hKpmt73GiY2y3BX9KlgNu3Cp60U6d+9mjDbxCGllSbL2vwb+zg0o6qL3YrC4
+         S7GA/UOLEcDVMDx752UJ+3IfdYkoza8vFbibg0Jq6kwK16IH3Pcy3LpliGbTYgqCeli/
+         cWImoSJu7I+4GMIzy+/Bnc80VBJ8JVc7s50rz/8T3O9NIR9R86xZpfjwEGyH6bDxY+Fs
+         wVAQ8Lppfv8MHX3ZGNujH/gqY5aQ4tWb/L5KBWt6nxMtCOC39RrpVv5JUv9BbfmNrNNc
+         +ayg==
+X-Forwarded-Encrypted: i=1; AFNElJ/A7n+N4i9LVfZR1FUggL/twjRjbFjeKydYsPnpzGGfevys4Qk6VyfLe9I+DkFvdeLi7PpPkI4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxOaCzb+jq1q9gR//xbKtYgt2+fZ/OT8mzqh/frd6WSp4x6kbOU
+	vpnCF3EkLToCfnuhYw3tE40IlKc9YicaskXi9ul/4S4/o0uqRoTnxitqVSW9tI+i93YGKcXrNRy
+	Rv4BtyA==
+X-Received: from pfbiv2.prod.google.com ([2002:a05:6a00:66c2:b0:842:6be9:dfb1])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:bb0f:b0:842:79f5:8325
+ with SMTP id d2e1a72fcca58-842b0ffc873mr640503b3a.44.1780613241015; Thu, 04
+ Jun 2026 15:47:21 -0700 (PDT)
+Date: Thu,  4 Jun 2026 22:46:23 +0000
 In-Reply-To: <20260604224712.3209821-1-kuniyu@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -58,8 +58,8 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260604224712.3209821-1-kuniyu@google.com>
 X-Mailer: git-send-email 2.54.0.1032.g2f8565e1d1-goog
-Message-ID: <20260604224712.3209821-5-kuniyu@google.com>
-Subject: [PATCH v3 net-next 04/15] ip6mr: Allocate skb earlier in ip6mr_rtm_getroute().
+Message-ID: <20260604224712.3209821-6-kuniyu@google.com>
+Subject: [PATCH v3 net-next 05/15] ip6mr: Convert ip6mr_rtm_getroute() to RCU.
 From: Kuniyuki Iwashima <kuniyu@google.com>
 To: "David S . Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>, 
 	Eric Dumazet <edumazet@google.com>, Ido Schimmel <idosch@nvidia.com>, 
@@ -68,74 +68,74 @@ Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>,
 	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-We will convert ip6mr_rtm_getroute() to RCU in the following patch,
-where __ip6mr_get_table() will be called under RCU.
+ip6mr_rtm_getroute() calls __ip6mr_get_table(), ip6mr_cache_find(),
+and ip6mr_fill_mroute().
 
-nlmsg_new() uses GFP_KERNEL and needs to be called before holding
-rcu_read_lock().
+Once created, struct mr_table is not freed until netns dismantle,
+so it's safe under RCU.
 
-As a prep, let's move nlmsg_new() before __ip6mr_get_table().
+ip6mr_cache_find() iterates mrt->mfc_hash with rhl_for_each_entry_rcu().
+struct mr_mfc is freed with call_rcu(), so this is also safe under
+RCU.
+
+ip6mr_fill_mroute() calls mr_fill_mroute(), which properly uses
+RCU helpers.
+
+Let's call them under RCU and register ip6mr_rtm_getroute() with
+RTNL_FLAG_DOIT_UNLOCKED.
 
 Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
 ---
- net/ipv6/ip6mr.c | 24 ++++++++++++++----------
- 1 file changed, 14 insertions(+), 10 deletions(-)
+ net/ipv6/ip6mr.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
 diff --git a/net/ipv6/ip6mr.c b/net/ipv6/ip6mr.c
-index ed56c4c8fda0..018985593b03 100644
+index 018985593b03..51ba22f59506 100644
 --- a/net/ipv6/ip6mr.c
 +++ b/net/ipv6/ip6mr.c
-@@ -2700,6 +2700,10 @@ static int ip6mr_rtm_getroute(struct sk_buff *in_skb, struct nlmsghdr *nlh,
- 	if (err < 0)
- 		return err;
+@@ -1386,7 +1386,8 @@ static struct pernet_operations ip6mr_net_ops = {
+ static const struct rtnl_msg_handler ip6mr_rtnl_msg_handlers[] __initconst_or_module = {
+ 	{.owner = THIS_MODULE, .protocol = RTNL_FAMILY_IP6MR,
+ 	 .msgtype = RTM_GETROUTE,
+-	 .doit = ip6mr_rtm_getroute, .dumpit = ip6mr_rtm_dumproute},
++	 .doit = ip6mr_rtm_getroute, .dumpit = ip6mr_rtm_dumproute,
++	 .flags = RTNL_FLAG_DOIT_UNLOCKED},
+ };
  
-+	skb = nlmsg_new(mr6_msgsize(false), GFP_KERNEL);
-+	if (!skb)
-+		return -ENOBUFS;
+ int __init ip6_mr_init(void)
+@@ -2710,6 +2711,8 @@ static int ip6mr_rtm_getroute(struct sk_buff *in_skb, struct nlmsghdr *nlh,
+ 		grp = nla_get_in6_addr(tb[RTA_DST]);
+ 	tableid = nla_get_u32_default(tb[RTA_TABLE], 0);
+ 
++	rcu_read_lock();
 +
- 	if (tb[RTA_SRC])
- 		src = nla_get_in6_addr(tb[RTA_SRC]);
- 	if (tb[RTA_DST])
-@@ -2709,7 +2713,8 @@ static int ip6mr_rtm_getroute(struct sk_buff *in_skb, struct nlmsghdr *nlh,
  	mrt = __ip6mr_get_table(net, tableid ?: RT_TABLE_DEFAULT);
  	if (!mrt) {
  		NL_SET_ERR_MSG_MOD(extack, "MR table does not exist");
--		return -ENOENT;
-+		err = -ENOENT;
-+		goto err;
+@@ -2717,10 +2720,7 @@ static int ip6mr_rtm_getroute(struct sk_buff *in_skb, struct nlmsghdr *nlh,
+ 		goto err;
  	}
  
- 	/* entries are added/deleted only under RTNL */
-@@ -2718,21 +2723,20 @@ static int ip6mr_rtm_getroute(struct sk_buff *in_skb, struct nlmsghdr *nlh,
- 	rcu_read_unlock();
+-	/* entries are added/deleted only under RTNL */
+-	rcu_read_lock();
+ 	cache = ip6mr_cache_find(mrt, &src, &grp);
+-	rcu_read_unlock();
  	if (!cache) {
  		NL_SET_ERR_MSG_MOD(extack, "MR cache entry not found");
--		return -ENOENT;
-+		err = -ENOENT;
-+		goto err;
- 	}
+ 		err = -ENOENT;
+@@ -2732,9 +2732,12 @@ static int ip6mr_rtm_getroute(struct sk_buff *in_skb, struct nlmsghdr *nlh,
+ 	if (err < 0)
+ 		goto err;
  
--	skb = nlmsg_new(mr6_msgsize(false), GFP_KERNEL);
--	if (!skb)
--		return -ENOBUFS;
--
- 	err = ip6mr_fill_mroute(mrt, skb, NETLINK_CB(in_skb).portid,
- 				nlh->nlmsg_seq, cache, RTM_NEWROUTE, 0);
--	if (err < 0) {
--		kfree_skb(skb);
--		return err;
--	}
-+	if (err < 0)
-+		goto err;
- 
- 	return rtnl_unicast(skb, net, NETLINK_CB(in_skb).portid);
++	rcu_read_unlock();
 +
-+err:
-+	kfree_skb(skb);
-+	return err;
- }
+ 	return rtnl_unicast(skb, net, NETLINK_CB(in_skb).portid);
  
- static int ip6mr_rtm_dumproute(struct sk_buff *skb, struct netlink_callback *cb)
+ err:
++	rcu_read_unlock();
+ 	kfree_skb(skb);
+ 	return err;
+ }
 -- 
 2.54.0.1032.g2f8565e1d1-goog
 
