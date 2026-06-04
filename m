@@ -1,217 +1,150 @@
-Received: from mta1.formilux.org (mta1.formilux.org [51.159.59.229])
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3751139734D;
-	Thu,  4 Jun 2026 16:09:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.159.59.229
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B47723F44EF;
+	Thu,  4 Jun 2026 16:10:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780589398; cv=none; b=t+wY6Zs3WqFQ3zBHhf5ijd6TqZWBPY4bCRFASeX2h1Uoa+zwpQODcRPeyePQc4ItdRB1w3intXaZINHK+pmIQRYJknCV76BmyLtZafPyNbb/zuJ/iHfbOGrelcJ8Q1bBaJm/6vR1zXwpfm00rQSFhhdHxR4dB3KW8s/TPSwCTrg=
+	t=1780589446; cv=none; b=OhWwzHhE+xg63X2+OJg/KqB5e36odkSAqiE3dMvqPrSvLGq0WSIx8I70HRRmazwZmvQPx8pfgJFCeTvYMtlpb6rNgkZ/RWKuMJXIpbiJ2KDq6lCurKeR5ZSuZtBP7ruH7umlgwcR7iZ2E2Sa/8x6G5V+Tfe7LmMK4OYzQUX0FGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780589398; c=relaxed/simple;
-	bh=OumF9YU/W2DC9TQahWgOlbC3nl6qPntnyIOFO8hcbT0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Qg/4tAPZtJ4nEpZJURUccfaTVa1wahJDi3nBq9rr2sGN0ZZUo90TBOWz2f9cy/PJaBsDOxWhwl10WPHJ11/kSM4R90NHP+nKEnNZsJPimZqbm6AOetVHFMd9OZzXjoNJdgNFAKEuWORXi96WCuZRCrvzqk5kSCI8jLCi8x4TuM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=1wt.eu; spf=pass smtp.mailfrom=1wt.eu; dkim=pass (1024-bit key) header.d=1wt.eu header.i=@1wt.eu header.b=TElWUM0s; arc=none smtp.client-ip=51.159.59.229
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=1wt.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=1wt.eu
+	s=arc-20240116; t=1780589446; c=relaxed/simple;
+	bh=/Zn3vEz3PvXrX6NlCleQ6n7gHQC61l3pzu24aOFFGl8=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=XMeAsujPjQOlD+kJsAnSupjZ07rSwsTqOr1QXos9YDIeccsqJxlL55EQ7KSQnucSdSapfKQHUBWSwKFT+tHbakDYmHhXi/kIXULjVZcGyNVURHw7Y6PbIaWUc4R1coxYtXwtzlbTrfu4YViqDNPw5sIuGjhHE2DX7emBHa3yrjw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=cwbmEcFX; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=1wt.eu header.i=@1wt.eu header.b="TElWUM0s"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1wt.eu; s=mail;
-	t=1780589394; bh=y/e/KFECQ0nVdisZcQGbObkQi59gFXxoiirNSRFoeAU=;
-	h=From:Message-ID:From;
-	b=TElWUM0sOEBUzobw2i+ObteZadlxtBDeRmHqCRPCvh5A8JvN3VVhCrmkxgCvned89
-	 gmmyp3Pp+k3E4V5MOhBKRMkYMNO+fi3SWg5c7mqTFtLTt5SRePYS6NF8eqRvdPqZMy
-	 zGRiGXJVHF2QJGmtNzwVRIVXrzMUAuNzP2a//igE=
-Received: from 1wt.eu (ded1.1wt.eu [163.172.96.212])
-	by mta1.formilux.org (Postfix) with ESMTP id 8DE61C0BB1;
-	Thu, 04 Jun 2026 18:09:54 +0200 (CEST)
-Date: Thu, 4 Jun 2026 18:09:54 +0200
-From: Willy Tarreau <w@1wt.eu>
-To: Andy Lutomirski <luto@amacapital.net>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Christian Brauner <brauner@kernel.org>,
-        Askar Safin <safinaskar@gmail.com>, linux-kernel@vger.kernel.org,
-        linux-mm@kvack.org, linux-api@vger.kernel.org, netdev@vger.kernel.org,
-        Matthew Wilcox <willy@infradead.org>, Jens Axboe <axboe@kernel.dk>,
-        Christoph Hellwig <hch@infradead.org>,
-        David Howells <dhowells@redhat.com>,
-        David Hildenbrand <david@kernel.org>, Pedro Falcato <pfalcato@suse.de>,
-        Miklos Szeredi <miklos@szeredi.hu>, patches@lists.linux.dev,
-        linux-fsdevel@vger.kernel.org, Jan Kara <jack@suse.cz>
-Subject: Re: [PATCH 0/3] vmsplice: make vmsplice a trivial wrapper for
- preadv2/pwritev2
-Message-ID: <aiGjUqI59e966oBu@1wt.eu>
-References: <20260531010107.1953702-1-safinaskar@gmail.com>
- <20260601-enthusiasmus-canceln-anlehnen-0e62317a9784@brauner>
- <CAHk-=wifX_rrDjRGnDnOqE-usptAukuXKrmuPuVDP5bOCBWzGQ@mail.gmail.com>
- <20260601173325.GH2636677@ZenIV>
- <20260601160455.2c187574@gandalf.local.home>
- <20260601172825.a51a588ec1c32617a0e12d78@linux-foundation.org>
- <aiEb8CTM-ovMIq7-@1wt.eu>
- <CALCETrULMixRGJyGqAAujW7RN6PP2f_Orn2Y_0hpPMjRqQnY7Q@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="cwbmEcFX"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:In-Reply-To:References:
+	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	From:Reply-To:Content-ID:Content-Description;
+	bh=9S5daKe6q1OH/iTEY5c0ti/UepSQSFPvr+OxewRVe+M=; b=cwbmEcFXVwg3j70JN7MfgZK5Tz
+	0aMf6xDn/8iVoPucD46mu3jAM4nRPkpuPCiac0YJC9xere9X41pm6bxXnTj8gFdO10G1+MpN/SdF5
+	jDflNA7WlveB5IgeNSw4w2CnluQjeEfqYP8vD9h9Bw2nYlkngri8A6CiMw/BCZoliAiDM+UPYsfix
+	9HjfDs56VbO+hnbsTpWAieyNsdixQnm5bjo0kqMgA2jl+iiWxsEJMLk8kjs1MFcQcAP8resUKJ8V1
+	rsh1D7KPxSE5d5aVB/im4UI3KNVG4rqmoQY2DxRks2GeycjYyxHKS5Gh7z0xCLoyKidI8yMJTn3JL
+	AH3jKHag==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wVAeU-004dNv-1W;
+	Thu, 04 Jun 2026 16:10:38 +0000
+From: Breno Leitao <leitao@debian.org>
+Date: Thu, 04 Jun 2026 09:10:10 -0700
+Subject: [PATCH net-next v3 1/5] netconsole: do not schedule skb pool
+ refill from NMI
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CALCETrULMixRGJyGqAAujW7RN6PP2f_Orn2Y_0hpPMjRqQnY7Q@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260604-netcons_fix_before_move-v3-1-ab055b3a6aa5@debian.org>
+References: <20260604-netcons_fix_before_move-v3-0-ab055b3a6aa5@debian.org>
+In-Reply-To: <20260604-netcons_fix_before_move-v3-0-ab055b3a6aa5@debian.org>
+To: Breno Leitao <leitao@debian.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ kernel-team@meta.com
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2970; i=leitao@debian.org;
+ h=from:subject:message-id; bh=/Zn3vEz3PvXrX6NlCleQ6n7gHQC61l3pzu24aOFFGl8=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBqIaN1VoOb0Sw8uhoCa6qx8sCFDf2NKwSbNPtN7
+ vVju+2YYJuJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaiGjdQAKCRA1o5Of/Hh3
+ bbgNEACAMEsSRxUjbVWRXP/wGCp1kZCtu5SPR5g2cnrHmXSbd9ABZB+5zd//hvtS26043Swq892
+ 5jPllJhVWX9mOr8MWqhVDagHbN4zx/Uu/kbUV03nxxOrBc+4fkFAcIf2JUHib8Onev/3dpRt4wP
+ 1ZcWTctfb/ifPl5/ZiOUn+beGuA5FhhjfYmsbYiUC7Qd9nTKEj8E38pRzz5RhosZITCEDW0JUeA
+ zDwIvtnPJtMsYM3tJrdefXtZTYO77+x4sioAohdFuUcouZY5d5UCAkbj5bK2oIDBj0pce8xNhN8
+ H+VXHzlVyZAhOgBgVZvL4Q+2WUuSMHfi0gPqT1mZqf94S7mXKxY7mr30GERGvbYZiPxa2W2Ornj
+ 7Jg5rcaeRfykCClwubwaI4gNak7ejs1FSGHtb0BS1hLnzmiv2Nbpm+7q3AR4dTsOPfgojObs+sP
+ kvBL70ciLNOF5slpsnyKsQo6IVvYPiqNTfz9qAVYFkHZGbjFQ/C3phBafUx8r6HcnUizBMubEeL
+ NXprHirUv8qbGWTkEx7+FkXN/ve5gOoqNWpKbkwS///qw0UZL8WpOM6+EFLqED4jEWDAtR8o5x2
+ 9i/ol666WyhQlIhjFeBidgFlFZphCLeyBZFaQvG9jJLhY703MugTrVVElGuNPFHBUGT4Xy1Okaj
+ W7U/wWD0Z6J1xpw==
+X-Developer-Key: i=leitao@debian.org; a=openpgp;
+ fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
+X-Debian-User: leitao
 
-On Thu, Jun 04, 2026 at 08:53:15AM -0700, Andy Lutomirski wrote:
-> On Wed, Jun 3, 2026 at 11:32 PM Willy Tarreau <w@1wt.eu> wrote:
-> >
-> > On Mon, Jun 01, 2026 at 05:28:25PM -0700, Andrew Morton wrote:
-> > > On Mon, 1 Jun 2026 16:04:55 -0400 Steven Rostedt <rostedt@goodmis.org> wrote:
-> > >
-> > > > On Mon, 1 Jun 2026 18:33:25 +0100
-> > > > Al Viro <viro@zeniv.linux.org.uk> wrote:
-> > > >
-> > > > > On Mon, Jun 01, 2026 at 10:17:23AM -0700, Linus Torvalds wrote:
-> > > > >
-> > > > > > TLDR: maybe we could ghet rid of "f_op->splice_read". *That* would be
-> > > > > > a big simplification.
-> > > > >
-> > > > > FUSE might be interesting - fuse_dev_splice_read() and its ilk.
-> > > > > Communications between the kernel and fuse server at least used to
-> > > > > seriously want that, so that would be one place to look for unhappy
-> > > > > userland...
-> > > > >
-> > > > > splice-related logics in fs/fuse/dev.c is interesting; another place
-> > > > > like this is kernel/trace/, but I'm less familiar with that one.
-> > > > >
-> > > > > rostedt Cc'd (miklos already had been)
-> > > >
-> > > > Thanks for the Cc. The tracing ring buffer was specifically made to be used
-> > > > by splice and the libtracefs has a lot of code to use it as well. As
-> > > > reading the ring buffer literally swaps out the write portion with a blank
-> > > > read portion, that portion (sub-buffer) is used to be directly fed into
-> > > > splice, providing a zero-copy of the trace data from the write of the event
-> > > > to going into a file.
-> > > >
-> > > > trace-cmd defaults to using splice to copy the tracing ring buffer directly
-> > > > into files to avoid as much copying during live recordings as possible.
-> > > >
-> > > > Whatever changes we make, I would like to make sure there's no regressions
-> > > > in performance of trace-cmd record.
-> > >
-> > > Well yes, The patchset seems sensible from a quality POV.  But to make
-> > > a decision we should first have a decent understanding of its downside
-> > > impact.
-> > >
-> > > I haven't seen a description of that impact in the discussion thus far.
-> > > And that description is owed, please.
-> > >
-> > > I assume a small number of specialized applications are using
-> > > vmsplice() to great effect?  What are those applications?  What is the
-> > > impact of this change?
-> >
-> > > Once we are armed with that information, is there some middle ground in
-> > > which we de-feature vmsplice()?  Fall back to pread/pwrite in the
-> > > tricky cases and still permit vmsplicing if the application is
-> > > appropriately restrictive in it usage?
-> >
-> > I'm using vmsplice() + tee() + splice() in high-performance applications,
-> > load generators to be precise, and soon a cache. This is super convenient
-> > and extremely efficient:
-> >
-> >   - vmsplice() is used to prepare a "master" pipe with data to be sent
-> >     over TCP or kTLS
-> >   - then for each request, we do tee() from this master pipe to per-request
-> >     pipes.
-> >   - the per-request pipes are those that are used to deliver the data to
-> >     the socket via splice().
-> >
-> > So we effectively use vmsplice(), tee() and splice() here, and for exactly
-> > the reasons they were designed: only play with page refcount and not copy
-> > data. The code is here for the curious:
-> >
-> >    https://git.haproxy.org/?p=haproxy.git;a=blob;f=src/haterm.c
-> >
-> > and its ancestor is here:
-> >
-> >    https://github.com/wtarreau/httpterm/blob/master/httpterm.c
-> >
-> > It simply doubles the network bandwidth compared to not using that.
-> > (62 Gbps per core vs 31). I would seriously miss it if I couldn't use
-> > this anymore.
-> >
-> 
-> Wait a moment.  This is neat, but it's literally just a benchmark,
-> right?
+When alloc_skb() fails in find_skb(), the fallback path dequeues an skb
+from np->skb_pool and unconditionally calls schedule_work() to top the
+pool back up. schedule_work() ends up taking the workqueue pool locks,
+which are not NMI-safe.
 
-No, it's a benchmark *tool*: it's being used to stress production code,
-which is important and super hard at high loads. You place it after your
-proxy and you measure the performance of the proxy (which is supposed not
-to be as capable as the testing tools otherwise the methodology revolves
-to testing the testing tools, which is not the point).
+netconsole_write() is registered as the nbcon write_atomic callback and
+is explicitly marked CON_NBCON_ATOMIC_UNSAFE, meaning it is invoked from
+emergency/panic contexts including NMIs. If the NMI interrupts a thread
+already holding the workqueue pool lock, calling schedule_work()
+self-deadlocks and the panic message that was being printed is lost.
 
-> I skimmed the code, and it doesn't look like a production
-> workload, either.  And you manage to get around the awfulness of the
-> vmsplice API's complete failure to tell you when it's done with a
-> buffer by ... never actually changing the contents of the buffer.  Do
-> you have any idea how you would write correct code that uses vmsplice
-> for sends and then *ever* mutates the data without literally
-> munmapping (or madvise or something) the data do you can safely mutate
-> it?
+Introduce netcons_skb_pop() to fold the pool dequeue and the refill
+request into a single helper. The helper skips schedule_work() when
+called from NMI context; the pool is best-effort, so the refill is simply
+deferred to the next non-NMI find_skb() call that exhausts alloc_skb()
+and hits the fallback again. This keeps the fast path untouched and the
+locking rules around the fallback pool documented in one place.
 
-I'm not sure what you mean here Andy. I *do not* need to change the
-data, it's just a pre-made pattern.
+Note this only removes the schedule_work() hazard from the NMI path. The
+allocation itself is still not fully NMI-safe: the alloc_skb(GFP_ATOMIC)
+attempted first may take slab locks, and the skb_dequeue() fallback takes
+np->skb_pool.lock, so either can deadlock if the NMI interrupts a holder
+of those locks. Closing those windows requires an NMI-safe (lockless) skb
+pool and is left to a follow-up; this patch addresses the schedule_work()
+deadlock, which is both the most likely and the easiest to trigger.
 
-> > I also have mid-term plans for using vmsplice() to deliver contents from
-> > a cache to sockets as well via splice(). Right now our cache is split into
-> > too small chunks (1kB) to make that useful, but as soon as we can move to
-> > 4kB pages, it will make sense. There the same gains are expected, and I
-> > would particularly dislike the idea of no longer being able to implement
-> > zero-copy!
-> 
-> If I'm understanding you correctly, you see (and measured!) a
-> performance improvement, and you would like to use it in production.
+Signed-off-by: Breno Leitao <leitao@debian.org>
+---
+ drivers/net/netconsole.c | 23 +++++++++++++++++++----
+ 1 file changed, 19 insertions(+), 4 deletions(-)
 
-The prod for the tool is to be used to benchmark other tools. It does
-the job quite well. It's even more important when you use kTLS-enabled
-hardware where you can get zero-copy all along the line and delegate
-the crypto to the hardware. That's the beauty of all the nice work that
-was done in the stack along all these years. That code started to be
-used in clear maybe 15 years ago or so, but nowadays the gains are even
-more interesting.
+diff --git a/drivers/net/netconsole.c b/drivers/net/netconsole.c
+index 8ecc2c71c699..918e4a9f4456 100644
+--- a/drivers/net/netconsole.c
++++ b/drivers/net/netconsole.c
+@@ -1654,6 +1654,23 @@ static struct notifier_block netconsole_netdev_notifier = {
+ 	.notifier_call  = netconsole_netdev_event,
+ };
+ 
++/* Pop a pre-allocated skb from the pool and request a refill.
++ *
++ * The refill is requested via schedule_work(), which takes the workqueue
++ * pool locks and is therefore not NMI-safe. Skip the refill when called
++ * from NMI context; the next non-NMI caller will top the pool back up.
++ */
++static struct sk_buff *netcons_skb_pop(struct netpoll *np)
++{
++	struct sk_buff *skb;
++
++	skb = skb_dequeue(&np->skb_pool);
++	if (!in_nmi())
++		schedule_work(&np->refill_wq);
++
++	return skb;
++}
++
+ static struct sk_buff *find_skb(struct netpoll *np, int len, int reserve)
+ {
+ 	int count = 0;
+@@ -1663,10 +1680,8 @@ static struct sk_buff *find_skb(struct netpoll *np, int len, int reserve)
+ repeat:
+ 
+ 	skb = alloc_skb(len, GFP_ATOMIC);
+-	if (!skb) {
+-		skb = skb_dequeue(&np->skb_pool);
+-		schedule_work(&np->refill_wq);
+-	}
++	if (!skb)
++		skb = netcons_skb_pop(np);
+ 
+ 	if (!skb) {
+ 		if (++count < 10) {
 
-> It seems to me that this is an excellent opportunity to remember that
-> vmsplice gets a performance boost in a highly synthetic situation that
-> sort of resembles a cache scenario and then to deprecate vmsplice and
-> build something better!
+-- 
+2.53.0-Meta
 
-I've definitely been keeping vmsplice() on my radar for our cache,
-and we've progressively implemented various architectural updates in
-haproxy precisely for this.
-
-> Or discover that we already have something better, perhaps :)
-> 
-> https://man7.org/linux/man-pages/man3/io_uring_prep_send_zc.3.html
-
-io_uring is different. We tried it "the dirty way" in the past, by
-emulating a poller, and it's not worth it this way. And in order to
-do it the right way, it needs to be done totally differently, which
-has impacts all over the stack. The code in the file pointed to above
-is just for the httpterm testing feature, but the rest is much more
-complex.
-
-> I see that this can submit a buffer without a syscall (tee + splice is
-> *two* syscalls!) and that it has directly addressed what I see as the
-> really big deficiency in vmsplice: "This second notification tells the
-> application that the memory associated with the send is safe to get
-> reused."  If I were writing the user code, I would very much want that
-> notification to be an explicit part of the API instead of making a
-> wild guess as I think I would need to do with vmsplice.
-
-I agree, for the cache it's something important (not for the load
-generator). But IIRC that's something you can also check via SIOCOUTQ
-which is normally sufficient for a cache's eviction system (though not
-fantastic).
-
-Willy
