@@ -1,99 +1,170 @@
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58A6A239E7F
-	for <netdev@vger.kernel.org>; Thu,  4 Jun 2026 15:59:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780588798; cv=none; b=WFu802t9t2kp/ktTok6zz3wI+FHyVS6Vrv0I45Y7WfWemTOQhbWbSAD8+ZCPJ56CLbOvAQbqIFtCdNzaQmNO737NSjOVF7+78EXAP8YhO7C/YUcH1fGTfDb6nMRB8rCN7tQeNBMEiye51mwRqFeqZMoCkC2L/syASvSYZMM3TCc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780588798; c=relaxed/simple;
-	bh=PkBQf6/m2Tb/nKtrhOagLm6wr8LXc5iMTcJU5kSDYPo=;
-	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References:
-	 MIME-Version:Content-Type; b=QAiPJpCaT01JNCjv5cfvjL+zhygzhvI0CYsdEgsHGp8xDLgTifw0R1tFSPE17WkBGOvroo28aMUPxCarK6Ee0W+e4HlfEYXhuZfBGeh7xmMFX57J5McT/Elz2NMVkD8B6d2HaXat7VzCO3ds37pVzav3jsJzAtCffOEwUtgWw8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Gr4A+RLO; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A5253ABD98
+	for <netdev@vger.kernel.org>; Thu,  4 Jun 2026 16:00:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.42
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780588819; cv=pass; b=aPPqb1NhmXDuiDkc0GrePOA0I1iTmIrAeRaPclHIpEzpeAGK8CMn5UcgzdzMvQTLRR+t0xaFxmqzjWZo71N4oCe9H2C4kXRMh44vNMa64XBljGV+Pq+bYECM+nWMz5c6qBT6lQMd0kBLrCMhTnLUWz9H4umgZxF1/Mf3PkdIfl4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780588819; c=relaxed/simple;
+	bh=bLe1Y9Of8HNmICgPAiQwdq9YGoPx+pI+2J6qjn08Evs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=PU56knB+4BS9Ln4pm/gKI9EuQrIcE458KjI4wiIJhP98u+Ux6gZslXCwpqz7yJctP+N07dBLQzaDCILhmGWIhPpP0thyu8Ods2AiwcscAiQvvVCFZHG65PB322ClCdJ68KNYTI8vh8YwXBCo7O/18+6kmdUbQXgbvpyUduTk4Hk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=u+W5gTsp; arc=pass smtp.client-ip=209.85.219.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Gr4A+RLO"
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-490b8a97b11so10419375e9.0
-        for <netdev@vger.kernel.org>; Thu, 04 Jun 2026 08:59:57 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="u+W5gTsp"
+Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-8ccf887de87so10055276d6.0
+        for <netdev@vger.kernel.org>; Thu, 04 Jun 2026 09:00:18 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780588818; cv=none;
+        d=google.com; s=arc-20240605;
+        b=OpiY07X3gGlKqZS/UnTlo6DLiZrMytIG0siADDMEbYDRHwUtnERFarUxJFCIHP4pcN
+         pgPCorpXl2PmKwXovk5SDeXXR5pimglkar62fD0Zlf+38cbKn1tCq/QioRANHGDg2aht
+         qAO7QQHsHm7z3vvTOGcVGxHDbHlbasKaLaSUrK0Op37v6qmNxOewRkcx1MYws1nrpZK1
+         oX8mlJ0LXJc/ywb0/MCEcoF8l0Sp/CwVPuyRxsdw1fSiW7QKScPW8/zknJoWTkK8ITXq
+         avlNOP1EFOo5IwpctPyIKQPKsE3/feVHN1D1f9JituZq2VL0ddKO6qb2kFbe52IP9WQD
+         YTFg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=cLg4KQvgwweGiSdYyzi1L3wlPRaBrfee+IZJmKuxAhM=;
+        fh=0zGfenSGUjkfVRO6gi6TwRLf+U2tUnJLtixvV0DMJcU=;
+        b=JjZ/zmGAatstzH3uQJqyje7cshH9+xUWmvst3662omc6HnfvbXLPImIM2Io3NCztHX
+         gT7k5V/JStA4bggNaZ69pCnePE7hylohnFI1CL/sNWFxjBVUFx5gwW1YgC9Z1barR2UO
+         ZWfUogrOHd3SxfaFmyK+qQnZC1OcVe/VPjpFFzpKyUuEZJmy5kFodNQk4ckGvAEfVC6H
+         F6wkYUt5mMX9sGNRQWP3OKq8RZhQ9BV23C9w+EIYOHSI3qvWWJLTyLyR07sAOAdXHQIc
+         MCt4Wo39j41OGpQdjyAVViMTkc9XqF1mcNFJRiZ3iiNqd/BiLB8n/4ZR0fuZydrUxX5A
+         LURQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780588796; x=1781193596; darn=vger.kernel.org;
-        h=mime-version:user-agent:references:message-id:date:in-reply-to
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=jAYg5oWM0VhHaA6FaWfIENucykRBhNBMHKz1DuPcFF8=;
-        b=Gr4A+RLOMjXT3hXoP2cMbceDbiLbiUdYx3EXvgEGC/MtPTxdzPxVBc2PUuQgwzOa6R
-         aj6qsLfhl9wKTcju/8QTEzb2UfGxhZeZjE0YmGQB2iC9zuC3s1n//CIdEVveAHTyXY9E
-         7fiPBOay+oP/bfUFMibxCt/umsaaggEJkU3/6Ghe2tWoZNDRoqok7ZbKXaTae6t1X+xl
-         ona+E9ipf/ahVZRv4E5zqEL1Yem+UeBlFvZvc4Kr4SKQqru2/HLh6nx+V4HOS663cGL1
-         042nwO185dz2jNFM/WCzBT4o+KlO2ucilBQLYIATdVP95lkMtz0pxrgpm532a/W3u2px
-         OeJg==
+        d=google.com; s=20251104; t=1780588818; x=1781193618; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cLg4KQvgwweGiSdYyzi1L3wlPRaBrfee+IZJmKuxAhM=;
+        b=u+W5gTspgU7emHOlGec2XqngThnMxBQIKTmm7vfRDrXp13HcKDwBJjAihc7t3EVcT8
+         7PAf76n/MVCgsKKCLlhchuRER60XCV/cXii/0T7dsooZuC1hD7ieY4Aj/zvqVX/xvGN0
+         QBDzEz0fciASkL2RhvgytvVNAJKI8T7lIuibo8PmROiBAN7+FOGUmNRjJ6RZiBynNTcI
+         k0M63+CNU9VSJujY23LYFOrzISTbMaCdN6d7vL6DriLQ0z3PAC7UWwmV2lndt4uJys+c
+         4t+SPr7gsQ2hlPFUNUB53m3Quu6cmb3KiEcx+SDTCgwKymj626Zmwp2Fe7KJ7VBTm6rD
+         qRoQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780588796; x=1781193596;
-        h=mime-version:user-agent:references:message-id:date:in-reply-to
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=jAYg5oWM0VhHaA6FaWfIENucykRBhNBMHKz1DuPcFF8=;
-        b=rF5dV06/cHbHkN7LPetsVXglaLDJljG3B5NHNrM4uifLCTaLAOUnFrbvqRjiZmu780
-         93aR5h5ReWQTCsy4M3sSf2TGUsdvaziqD9KuCdW7G5i3mEGf/EVtPBHNCGqQJ30xn+Jq
-         v3D+NQZ/isEFornD6LCzTa/ZL5dntl8iZJw59c+NJUKgPse1d2VzubqvEw1PZc6DhYij
-         /seFBorTcGthIDRB+jLt3QEC7mntCx652BA2dJEVQVPeBWzobBUcbDeLChRuu+/VZCsN
-         WiSszGX3kzNECrilsofCp6qj4QvKzwZCSGtNjcHG2vR+ZymYYNvTdFcWmprhVhxzDnfs
-         321A==
-X-Forwarded-Encrypted: i=1; AFNElJ/p1q0jyNmomFH7AsAxo2AMHHukA6p2GExD9HO6kj7oKE2tampa8XCjfFdRxfaVIQPt80wxjEY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyj92sKaul8UaZdL7PAxBBemP1QFyeCVSTHfNxXKOZzlq+vUw66
-	RG6gfFGsIbbJn8U7zMUUpuPO3WtsJq+io4zsxqK7/aEIf8mvEvYfmAio
-X-Gm-Gg: Acq92OFfiATXWzdUjduVo4If/xZpc/5WSV30g+h0qRAJ2wRvpN2r4I6DHH1satEB2me
-	cvrupSYgEygrPamSEohr18Rc9KkBheRFiRm3nhoXRa03MM506YBDhtnr0KtCCfc7xXTwUiidA32
-	DU0EByUtzoFeisxrRFY/B0vEjG+c8xwWtTL6hUHFzbWI9gy9uPiEBTIpyiuMpqaBKbXjhUZFg06
-	1h9CA69FRZMIqQEQS2MO5X6wGEcVSkXHwKZHE7RCB/2FRXJQ8Z6DlH4PZVenKOkWfq7rBRDsPGk
-	xfQHPfLBixtjOUFMb7+z3ZF9Fu/H20sI6+83Y66E4EnjPtyvM3iPAPekn9XAYTyMTYt/MEx6Ihu
-	b/1IID0Aq980+0ATlv/THs+J/vNmoXwIAUEcm8gZfo1IWZj7kkGq2n7uOTPi9a2Ebownl0KtrtG
-	NI3qmHIaBwM6yCXvlRUy1svTlDB/Tlxfd/GgpzbcR+Rwttem6LO/QqGw==
-X-Received: by 2002:a05:600c:8b5b:b0:490:4ee0:82f9 with SMTP id 5b1f17b1804b1-490b5e73dbamr139887345e9.7.1780588795497;
-        Thu, 04 Jun 2026 08:59:55 -0700 (PDT)
-Received: from imac ([2a0d:3344:372:fd08:b141:2042:3ad9:7342])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490bc391aaasm93697605e9.1.2026.06.04.08.59.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Jun 2026 08:59:54 -0700 (PDT)
-From: Donald Hunter <donald.hunter@gmail.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net,  netdev@vger.kernel.org,  edumazet@google.com,
-  pabeni@redhat.com,  andrew+netdev@lunn.ch,  horms@kernel.org
-Subject: Re: [PATCH net-next] tools: ynl: try to avoid the very slow YAML
- loader
-In-Reply-To: <20260603210810.2636193-1-kuba@kernel.org>
-Date: Thu, 04 Jun 2026 11:41:03 +0100
-Message-ID: <m2wlwed1vk.fsf@gmail.com>
-References: <20260603210810.2636193-1-kuba@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+        d=1e100.net; s=20251104; t=1780588818; x=1781193618;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=cLg4KQvgwweGiSdYyzi1L3wlPRaBrfee+IZJmKuxAhM=;
+        b=cFcLtrJvQQfVa2AJKNw6aepkMn7o6Tfx2tV8IFwhhED3vE6+CQlmAMRQ56tIrSn4PR
+         U3sAPcYSyOIgYw+KQ7XgWrtVRiVkt2ZtbPrckO180zC4XPoT6x/kdq5jJyFwN+vYxg98
+         trh4DTYSkHqw00+EoYzvy5/N8SAS/boqbITRf94rTiuIT1QQhNXNOaKA5zHn6O0wu90b
+         JJlXBWqwQxJ2qjal34QP86KiBonyig6h31e5oRiNlTRuQuf8uGqRqc3rEpwZMQ8ewJQH
+         GWFmiZVYbWGLNon1l+vFByWHdN0SdqkETrPc9doa24kBJClydv9d1Jtygt5i4GndilX4
+         2y6g==
+X-Forwarded-Encrypted: i=1; AFNElJ8U2O7QJ2s8d0b8I7UvBnksOykRk0rXQppSCmmPvo4XRBXRHzlWSlIb1uFvhEW+v6AYBmp2Qp8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwAB6Ovfqh8K+ZThnZH/N9So7u82x/m6YkgYsO1D8w4aRpDfKJA
+	j1vB+XtW4L4xGYXVXbFNhYjun31pnZ7T9GPg8Ohi2y9513pruTBbOtiqeBL8VHRer2NI/gv5KLK
+	F/ncO/GWG0ox3OvXK3BsnZfzkt56+EJZ5+thllD17
+X-Gm-Gg: Acq92OGSH0c799tWv5KqVsMrVcAV07xlwu2b07+qq+CJmCwtdtW5dOwpvFf7Ijnuyp6
+	y9Ix+coJXVkgh64VrTonu1Y1BOVvkCw6ShXxG1OYVOtQ5nXZnWGeZzgcUxiXvO97haIMJk4nOcW
+	wfGYFCYL/Ow4LuXBr6n6pjcBVF18w9ec1x8a8cPgVdEidu8rFStZ7Xa4Oadfuys+DXlU1gz//Ag
+	8ENgn6YwCgKv8pTeMuTAtUejv2Rbrm9IVHIR+U9e4WCMAje+jheajUV9XGUYDcVYjhTGvS8hEnX
+	W4gDXt7Qh2l4hNL+ppGA0Oz9UyJR2pI9BWYMpCsFC7eLyPAeFmPzCCOcKH8tB3pVAwkykMcEU2k
+	IJv6GkBVZDR9OrcKp8r+djuNJeAgUZw==
+X-Received: by 2002:a05:6214:3c9f:b0:8ce:a005:3e93 with SMTP id
+ 6a1803df08f44-8cece02dadamr121809056d6.35.1780588815554; Thu, 04 Jun 2026
+ 09:00:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20260603162737.697215-1-rhkrqnwk98@gmail.com> <b5d4d726-c32f-45e4-9ea7-28f7b6a1f8d7@linux.dev>
+In-Reply-To: <b5d4d726-c32f-45e4-9ea7-28f7b6a1f8d7@linux.dev>
+From: Eric Dumazet <edumazet@google.com>
+Date: Thu, 4 Jun 2026 09:00:04 -0700
+X-Gm-Features: AVHnY4KFeB_7dmL9P1vPP7kjQ_Xqs-Cnp4utG2D6VMV7WmTclo4knkrnYzYYWMU
+Message-ID: <CANn89iLhibjsgf-nk5U9be5kRpg3k4FXchKszmerkMbaaK6z6w@mail.gmail.com>
+Subject: Re: [PATCH net v2] udp: clear skb->dev before running a sockmap verdict
+To: Jiayuan Chen <jiayuan.chen@linux.dev>
+Cc: Sechang Lim <rhkrqnwk98@gmail.com>, willemdebruijn.kernel@gmail.com, 
+	davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
+	daniel@iogearbox.net, john.fastabend@gmail.com, jakub@cloudflare.com, 
+	aleksander.lobakin@intel.com, netdev@vger.kernel.org, bpf@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Jakub Kicinski <kuba@kernel.org> writes:
+On Wed, Jun 3, 2026 at 6:49=E2=80=AFPM Jiayuan Chen <jiayuan.chen@linux.dev=
+> wrote:
+>
+>
+> On 6/4/26 12:27 AM, Sechang Lim wrote:
+> > On the UDP receive path skb->dev is repurposed as dev_scratch (the
+> > truesize/state cache set by udp_set_dev_scratch()), through the
+> > union { struct net_device *dev; unsigned long dev_scratch; } in sk_buff=
+.
+> >
+> > When a UDP socket is in a sockmap, sk_data_ready is
+> > sk_psock_verdict_data_ready(), which calls udp_read_skb() -> recv_actor=
+()
+> > (sk_psock_verdict_recv) to run the attached SK_SKB verdict program in s=
+oftirq.
+> > If that program calls a socket-lookup helper (bpf_sk_lookup_tcp/udp,
+> > bpf_skc_lookup_tcp), bpf_skc_lookup() does:
+> >
+> >       if (skb->dev)
+> >               caller_net =3D dev_net(skb->dev);
+> >
+> > skb->dev still holds the dev_scratch value (a non-NULL integer), so dev=
+_net()
+> > dereferences it as a struct net_device * and the kernel takes a general
+> > protection fault on a non-canonical address in softirq:
+> >
+> >    Oops: general protection fault, probably for non-canonical address 0=
+x1010000800004a0
+> >    CPU: 1 UID: 0 PID: 1406 Comm: syz.2.19 Not tainted 7.1.0-rc6 #1 PREE=
+MPT(full)
+> >    RIP: 0010:bpf_skc_lookup net/core/filter.c:7033 [inline]
+> >    RIP: 0010:bpf_sk_lookup+0x45/0x160 net/core/filter.c:7047
+> >    Call Trace:
+> >     <IRQ>
+> >     bpf_prog_4675cb904b7071f8+0x12e/0x14e
+> >     bpf_prog_run_pin_on_cpu+0xc6/0x1f0
+> >     sk_psock_verdict_recv+0x1ba/0x350
+> >     udp_read_skb+0x31a/0x370
+> >     sk_psock_verdict_data_ready+0x2e3/0x600
+> >     __udp_enqueue_schedule_skb+0x4c8/0x650
+> >     udpv6_queue_rcv_one_skb+0x3ec/0x740
+> >     udp6_unicast_rcv_skb+0x11d/0x140
+> >     ip6_protocol_deliver_rcu+0x61e/0x950
+> >     ip6_input_finish+0xa9/0x150
+> >     NF_HOOK+0x286/0x2f0
+> >     ip6_input+0x117/0x220
+> >     NF_HOOK+0x286/0x2f0
+> >     __netif_receive_skb+0x85/0x200
+> >     process_backlog+0x374/0x9a0
+> >     __napi_poll+0x4f/0x1c0
+> >     net_rx_action+0x3b0/0x770
+> >     handle_softirqs+0x15a/0x460
+> >     do_softirq+0x57/0x80
+> >     </IRQ>
+> >
+> > The rmem charge that dev_scratch accounted for is released by skb_recv_=
+udp() on
+> > dequeue, just above, so the scratch is dead by the time recv_actor() ru=
+ns. Clear
+> > skb->dev so bpf_skc_lookup() falls back to sock_net(skb->sk), which
+> > skb_set_owner_sk_safe() set just above.
+> >
+> > Fixes: 965b57b469a5 ("net: Introduce a new proto_ops ->read_skb()")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Sechang Lim <rhkrqnwk98@gmail.com>
+>
+>
+> Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
 
-> Turns out Python YAML defaults to a pure Python loader for YAML
-> files which is a lot slower than the C loader (using libyaml).
-> Try to use the C one whenever possible.
->
-> The avg time to run:
->   $ tools/net/ynl/pyynl/cli.py --family tc --no-schema
-> drops from 300+ ms to 115 ms with this change (40 samples).
->
-> We could drop the load time further to 85 ms if we "compiled"
-> the specs to JSON. Slightly tricky parts are that we don't
-> currently install the specs at all on make install, so it's
-> unclear where to put the conversion. Also JSON has questionable
-> support for comments and we need an SPDX line.
->
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> ---
-> CC: donald.hunter@gmail.com
-
-Reviewed-by: Donald Hunter <donald.hunter@gmail.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
