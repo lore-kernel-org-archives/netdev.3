@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95491391E55;
-	Thu,  4 Jun 2026 16:00:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 271D1405C47;
+	Thu,  4 Jun 2026 16:00:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780588826; cv=none; b=G6FnxM9AjUuVRA0O1GKUJoUUOmlvQh4thGBP8q8ZLV/eNIrmZzOcGevH8AKROkLRPX1fiZdWcIC7hCkj5YQc5MkEQv90czIUtUzKvWPfiRURGAlSXuv0IcdM0Kw46ViQUVHQNvwONnpPXWWnD6D+k4sIdUZ5JrdcQ3Mpw2mK+X4=
+	t=1780588828; cv=none; b=siFyywnLnI6RinZiIoPA/kyNbjPH8xGpMra3IFUK3KE3OyjqxiwArtwspg9lKrM1UrVHiENRap0n1oREqYto2gXvDk969OjZaZ7+F2Df1gnHA3DBRpGGVCuhjZ10FM7YeIb63UDNhbGkyZFlcfYZVX2tQI3SXDzceDoqKBfFc84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780588826; c=relaxed/simple;
-	bh=5Mvt7hsQjRW93hgJ2c6P2ez+LL0PROIEiH8o8Uf0Jy8=;
+	s=arc-20240116; t=1780588828; c=relaxed/simple;
+	bh=ypR96IrQoOzGi+Fcf010+SB6gEtTsDX8Dp7tAjnbv7M=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=BcP7j9HrLWzWRcE8DpWNzvdsizsjNGRunqJvwlLhNZmhOEdDqil0CtIZQpflCEBFX9GLWNz180Q+AWcWclSr5G+vxqNvndDavo8tQfCpWtbXRx7rrolTCThZdg1sXh0AJsGpyG26oGfsIBVKjNjHQrGvsaSODBAdk6Qk0eQrijs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L0E0ofpZ; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=NysbnSZ1aAw+x1Fq3e9J229ZcbgoO4ZKWXUf4FMOAtMZm5r8JO5quDnih/mpemH4LJDHOU3OWqAQMK8eJohQ40BNIce6kP9fKTDLJp7EXc7v66FI2mbzO0+13CKFkHnHn96Q0DypYv5qpd827g2PQ1aurHR9T2Bf+9ZYc+uJSI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UL+1Kh4O; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L0E0ofpZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38D6B1F00893;
-	Thu,  4 Jun 2026 16:00:25 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UL+1Kh4O"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5D9C1F00893;
+	Thu,  4 Jun 2026 16:00:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780588825;
-	bh=qcXclboO2qIaa57rWCQiVOhNuR14QDL4omKf50SB4Fk=;
+	s=k20260515; t=1780588826;
+	bh=PkuSGZUyjfZCaNq7tverjM8boOF6AWYFbE7yr2uGwEQ=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=L0E0ofpZatU10ebiQTM1jeIsnlshMqcAfu5c2f8N06WHwFvzBVE+Yv5HS5bDlHv60
-	 bCYxBumVs6yCxloOQrkkyKl/xtP/hYsPvnG9tyuMoRI+ib2WlVXmJwOIgORXKOAdfq
-	 cYqHJFJBJArkkIq4B24V47yIZ9LtX4rSuClEx1ElM9TM9KCITEAa5mpiATgk1vtCAC
-	 A/dIE2e7dR0wkVV/iwrHBOD9GGJub91Bm7huoGWJDT4ouMbN8GsczKxsRJ1trzm2Mq
-	 mBnt0tenrWoSlqEkoB+yPdYpCr2pZ40ntYrgQDOnyXEjq9U/JkyjX682bGI0aHJsi9
-	 xmN4gJy1buHmg==
+	b=UL+1Kh4OoXnPj0dOSEIc681JENcE+gL17pT33qYV29DWMAxlGUhAqwVMJrkxju/qU
+	 QDgkMHkbPWSCZ5o1rc0B0gBMeS/urpB1//VdG2o7XWI8SrCp3DIPUpViYFLO6Ipk9I
+	 9OBF68Pb8hKyU6GXGb9ClVIEhL4RI1rExjYob0cD6rfmuc37wuVFhvH6Jfa3gnmo5U
+	 Hnk59ElF0sCO1wTHN1xV52/j23Q+Fl5oMXRHi2FDW4B6vJKHi6kJJjyUv+V0UJhaFw
+	 pHRWQ8sDCgABhIfUujMuqkIpnVKuRJulwYpSP4PIieIgKkS0syscGhhHgoOkKkoGOS
+	 1eeC6rrgdPWig==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 569CB39309B7;
-	Thu,  4 Jun 2026 16:00:27 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0B5C39309B7;
+	Thu,  4 Jun 2026 16:00:28 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,45 +37,41 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2 0/3] vxlan: vnifilter: fix VNI add/update
- notifications
+Subject: Re: [PATCH v2 net] net/802/mrp: fix vector attribute parsing in
+ mrp_pdu_parse_vecattr
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178058882614.2493857.5621998893656016843.git-patchwork-notify@kernel.org>
-Date: Thu, 04 Jun 2026 16:00:26 +0000
-References: <20260602185138.253265-1-aroulin@nvidia.com>
-In-Reply-To: <20260602185138.253265-1-aroulin@nvidia.com>
-To: Andy Roulin <aroulin@nvidia.com>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
- edumazet@google.com, pabeni@redhat.com, andrew+netdev@lunn.ch,
- roopa@nvidia.com, petrm@nvidia.com, idosch@nvidia.com, chirag@nvidia.com,
- shuah@kernel.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org
+ <178058882739.2493857.9626725543438968509.git-patchwork-notify@kernel.org>
+Date: Thu, 04 Jun 2026 16:00:27 +0000
+References: <20260603060016.21522-1-zhaoyz24@mails.tsinghua.edu.cn>
+In-Reply-To: <20260603060016.21522-1-zhaoyz24@mails.tsinghua.edu.cn>
+To: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ linux-kernel@vger.kernel.org, yangyx22@mails.tsinghua.edu.cn,
+ wangao@seu.edu.cn, fengxw06@126.com, qli01@tsinghua.edu.cn,
+ xuke@tsinghua.edu.cn
 
 Hello:
 
-This series was applied to netdev/net.git (main)
+This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Tue,  2 Jun 2026 11:51:35 -0700 you wrote:
-> When a vxlan device has vnifilter enabled, userspace observers
-> (e.g., bridge monitor vni) miss VNI add events and see spurious
-> notifications on no-op VNI re-adds.
+On Wed,  3 Jun 2026 14:00:13 +0800 you wrote:
+> In mrp_pdu_parse_vecattr(), vector attribute events are encoded three
+> per byte and valen tracks the number of events left to process.
 > 
-> Patch 1 fixes the missing notification on VNI add: vxlan_vni_add()
-> guarded the notification on a 'changed' flag that vxlan_vni_update_group()
-> only sets when a multicast group or remote is supplied, so VNIs added
-> without a group (e.g., L3 VXLAN) were silently created.
+> The parser decrements valen after processing the first and second events
+> from each event byte, but not after processing the third one. When valen
+> is exactly a multiple of three, the loop continues after the last valid
+> event and consumes the next byte as a new event byte, applying a
+> spurious event to the MRP applicant state.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v2,1/3] vxlan: vnifilter: send notification on VNI add
-    https://git.kernel.org/netdev/net/c/aa6ca1c5c338
-  - [net,v2,2/3] vxlan: vnifilter: fix spurious notification on VNI update
-    https://git.kernel.org/netdev/net/c/84683b5b60c7
-  - [net,v2,3/3] selftests: net: add vxlan vnifilter notification test
-    https://git.kernel.org/netdev/net/c/8df1c84e7272
+  - [v2,net] net/802/mrp: fix vector attribute parsing in mrp_pdu_parse_vecattr
+    https://git.kernel.org/netdev/net/c/7561c7fbc694
 
 You are awesome, thank you!
 -- 
