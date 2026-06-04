@@ -1,122 +1,276 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D14B62594B9
-	for <netdev@vger.kernel.org>; Thu,  4 Jun 2026 09:15:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD54035BDCA;
+	Thu,  4 Jun 2026 09:20:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780564536; cv=none; b=pK2hcpYPP5yX56W56W17uzEOWtRZp9tL+HqpwoMmp3kTQakjMW6rBcQOw/zeQhIZS+nJd1KZsozZ+kP/Dfswur/xQDGcb0395N7x+mcaffUphnD/mBR2An2hNawv9ElF4+seNXhU6muwmpf0PAxB79+Qvr1PTXxXLXu9J/qjmYw=
+	t=1780564822; cv=none; b=W7aZZDB7UdSnFnaIL9h5txB88uA98aNfpG8sv+eg/OrRbpY2Z/Lqp+xOi5v/PERcSiD2+Ua5thU0zMy52dLd7BanqmTU4hrcMokdfA1kaA5mBCxaI5ZquL+TWFbF6AsBNphxKqttXaP8N49BcabNSnXMyPV5KOZpf8I5qX+wrhE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780564536; c=relaxed/simple;
-	bh=wsr9lRmy+9GHB+KZJernDtnANvnDAYWV+AVYa6tMfCg=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=b9LVOPSNjeU38VMc+B+1FnACQcAcMX2mLDskECZn/16QnsgzGiS1TnA4F1DW0ItIbITa2u4aba9hC8MYbyU4qqJBJ5GLmLnFrpuLfa8H5oTw9+9Ku6LgGSkBDfqkFeDCoUaW5hSbwZxKAM54CssdqYD4vfOxT0aWnxa3FMpPj7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=VjCjt4Fk; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=CxkjhJzw; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1780564822; c=relaxed/simple;
+	bh=EScwtVtHVv7EXmUVim3RrrnEtQbK/uJ4Hrp1cA0YN4A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ohvq4saiFWSeI1wpz8JF+Po2prV047l9oJCGw7M8x5cy+wUCgDVwGS4QDg6j6EyvOorajwT6FkP37TLMwiN+r7yjooGHq5/J61ZU4Jlit7DQT+hMJaQh7DabLkmT/eKK/k+j5EJL2UsAjFtG+Q3MAhnE48DeBYGj+5/54YPoVe4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fZYTMnRF; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="VjCjt4Fk";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="CxkjhJzw"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1780564533;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=goPcdb5xw4qHAjfQje1ZQDCpey1L+feZyrp7b4X8Yhs=;
-	b=VjCjt4Fk1Nk2TM3mfYw686kGLyQcFCS3HwPN5zAE5D7Wer5Va/elhMMG2Zc1Gpv+YTvhQN
-	fXP5Dq5Tbkl2KiVPB5ySF2Ho/JjwhKmwNLzqs5NhbBf3H8fN/310FO+kFwJJZsbe5n6G/2
-	jqV+8Gz5ZoED+EYypTQi9oi/2IV/0uk=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-695-VGJkHV_KNxGMIrKV9I-wBg-1; Thu, 04 Jun 2026 05:15:32 -0400
-X-MC-Unique: VGJkHV_KNxGMIrKV9I-wBg-1
-X-Mimecast-MFC-AGG-ID: VGJkHV_KNxGMIrKV9I-wBg_1780564531
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-490b79e6b94so3430975e9.2
-        for <netdev@vger.kernel.org>; Thu, 04 Jun 2026 02:15:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1780564531; x=1781169331; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=goPcdb5xw4qHAjfQje1ZQDCpey1L+feZyrp7b4X8Yhs=;
-        b=CxkjhJzwVHPGY/RIoBteT0WvFtT/umFmxtHEOfRPya8lgKOxpLHuNrfMY5Yy58QZXI
-         RhOvoyyJA9jDcC0XJT9erTc1MVus71oyJIpADx6hJoIY7m2nNvQKJKvUkKq5iQKpOxXh
-         QbDqTgILipiEwxeLBFV1mc3I835RwdhBF/1mtrFKn/EacFOveQeZ/T8HTpNPqdADXCol
-         U+UukMr21jE8SbizyXNa9JKtujChc+EtW3UOxbQ+jrV1UElECJ14h5TDxMECdyrrQGF8
-         q3szQtGdzaYWXMpXLtFvrDtTdL8XghBwjMJGjPQk0ZSX+a977DIQfeAw/q+aCOVQWfJ6
-         pVqg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780564531; x=1781169331;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=goPcdb5xw4qHAjfQje1ZQDCpey1L+feZyrp7b4X8Yhs=;
-        b=RQkRr6aTTwitPEoFPh0E7pwiTjWbuiB0TyNwe0zUTegW7YF+k9+YwwsY2biQilCaMy
-         cPNwV2bwDP0z8NbhkSk2Aoio5M0f1XfmmJ9AfhrxywZkqHhOL+ReLm2gXPXu8DWN1dwS
-         IG8P9v1sUaNKdlg8A5VxqRuqm89QuWwYDTiF05I53z6EfYj9hEDYtBNkkev6Tc7H+V0E
-         A9B/SpGvq+uvkTuzgm0kvfUavDIkG3IPsTYjWak2mmbL265V4SjDA8vfHcAiwC7wo+8K
-         tw0O0Yfg/efPT8tfD5m2Zss8HxFSjWnb6Ei0iLtnwm1MSNMlUswoQw82bnDLkCOpOUxs
-         yCCg==
-X-Forwarded-Encrypted: i=1; AFNElJ/i1ZVzbW/1qywZJ91sKHhBFIAcc7PpTrJfzV8iv5osi4EO6XvZlERHBUn3iN9ZVWTYqcrbKeM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxA64OZxGZl3zkJCKxTU/PJ9Gna2UKCC+9TtpT7b9dUQ3SkyFF8
-	YvqIJDcR6+Nq9TQIzvNRmN13GaxpUr8EGtj9WAdWZjv9vBqo2/9TYDyF1DRvzq9sXCD8gS9i5Px
-	Zm+0khqIWbwwVSU5Lr0iPaC+VUL4omNt0mp+7c8qz4pajRJZiHfgQQ2WqtGdw0QDA1A==
-X-Gm-Gg: Acq92OHWL1UORdOsR7QL3B3guxFhXZ5ZUbIImNodgCCav1/QUTdcYJPutyd/m7h6lKO
-	qPWaOvmrRuA7AgzjhR+tfa1pSZnpqOhQWS+7d7QV85CoVo/iObVWoJL2RJ5prTxjyX5oDo2eAEU
-	YHlYop7TLj23lL2EeQF+lSduUk2olNcZj0RZvZjPr/RdiMUEOdFLgblqL1R38+G/UnNW1r10uHB
-	bWP75x6iYU7kZ0CFsJ07HMU3lGylGCnHArsVFjwtTAoIdLm5Jk9ZsNa2T50TVKd7/bvfdR9nJlW
-	+qCVMvL+5D7xPLAmpsvkGI79xg5iSkMXpdnkU2pg2bpiAIRNtHPteKQyBliH6lG9JXZMQrsEpKM
-	zA+LC1jOKDKIi+rLqi6foeAEEMq69Nt4gkszgrkidGcbMXmGkGvEsMDGwJWuKeET2oE0=
-X-Received: by 2002:a05:600c:810c:b0:490:47e3:929a with SMTP id 5b1f17b1804b1-490b5e7961fmr119685435e9.6.1780564531467;
-        Thu, 04 Jun 2026 02:15:31 -0700 (PDT)
-X-Received: by 2002:a05:600c:810c:b0:490:47e3:929a with SMTP id 5b1f17b1804b1-490b5e7961fmr119684795e9.6.1780564531011;
-        Thu, 04 Jun 2026 02:15:31 -0700 (PDT)
-Received: from [192.168.88.32] ([212.105.155.59])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490bc3b59f0sm65255285e9.2.2026.06.04.02.15.29
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 04 Jun 2026 02:15:30 -0700 (PDT)
-Message-ID: <bcffe05b-c10c-4a27-b260-e6ae872c795e@redhat.com>
-Date: Thu, 4 Jun 2026 11:15:29 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fZYTMnRF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1A601F00893;
+	Thu,  4 Jun 2026 09:20:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780564820;
+	bh=aXWX2X1IdSYuWmeJ4APMMdKu4ZoZ7LZ+WFh9+wZtPXc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=fZYTMnRFIH8WWQgBB2lEzzMzQy+hhuNR+MyMG6+e3Tlzf3roeq3kJR1MK+By5cR+z
+	 n0ISfSyzY4DtK4ROq5VUTKP+xNd1wCU0awoLYdid9jlMZ+tYbPZR6c8GbgQVhel2ix
+	 EhEo7b4XltVj6L9MX4d8BeU51tAvI7yqAcJ3Hnoq5JINf3iAB0Qs/wffYJMKeXtIUI
+	 tGHqMJYcy8PoXDZKK9iJzkT3HiDJkCbC5qwV5qCvU+2IMinWU+439/VipnM912qlW9
+	 pILQkFBeSZUG2Mkg9S3pczfhGKDWW8L6d8UB5lZb/EqCZdofYitmBVw6x4e3CDn9Ua
+	 PQdWBa8YnyCWQ==
+Date: Thu, 4 Jun 2026 11:20:18 +0200
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>
+Cc: Christian Marangi <ansuelsmth@gmail.com>,
+	Benjamin Larsson <benjamin.larsson@genexis.eu>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	Madhur Agrawal <madhur.agrawal@airoha.com>
+Subject: Re: [PATCH net-next v9 6/6] net: airoha: Support multiple LAN/WAN
+ interfaces for hw MAC address configuration
+Message-ID: <aiFDUpMC1RHRkzZL@lore-desk>
+References: <20260603-airoha-eth-multi-serdes-v9-0-5d476bc2f426@kernel.org>
+ <20260603-airoha-eth-multi-serdes-v9-6-5d476bc2f426@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] ipv4: igmp: annotate data-races around
- in_dev->mc_count
-From: Paolo Abeni <pabeni@redhat.com>
-To: Yuyang Huang <yuyanghuang@google.com>
-Cc: "David S. Miller" <davem@davemloft.net>, David Ahern
- <dsahern@kernel.org>, Eric Dumazet <edumazet@google.com>,
- Ido Schimmel <idosch@nvidia.com>, Jakub Kicinski <kuba@kernel.org>,
- Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org
-References: <20260531030705.3754389-1-yuyanghuang@google.com>
- <20260531030705.3754389-2-yuyanghuang@google.com>
- <95adff35-ee56-49d3-8567-382ac17810b3@redhat.com>
-Content-Language: en-US
-In-Reply-To: <95adff35-ee56-49d3-8567-382ac17810b3@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="SFnAkeHUpYpN2nJa"
+Content-Disposition: inline
+In-Reply-To: <20260603-airoha-eth-multi-serdes-v9-6-5d476bc2f426@kernel.org>
 
-On 6/4/26 11:11 AM, Paolo Abeni wrote:
-> On 5/31/26 5:07 AM, Yuyang Huang wrote:
->> @@ -1922,7 +1923,7 @@ void ip_mc_destroy_dev(struct in_device *in_dev)
->>  
->>  	while ((i = rtnl_dereference(in_dev->mc_list)) != NULL) {
->>  		in_dev->mc_list = i->next_rcu;
->> -		in_dev->mc_count--;
->> +		WRITE_ONCE(in_dev->mc_count, in_dev->mc_count - 1);
->>  		ip_mc_clear_src(i);
->>  		ip_ma_put(i);
-> 
-> The patch LGTM,
-But it does not apply cleanly to net. Please rebase and report, adding
-the target tree (`net`) and a revision number (`v2`) in the subj prefix.
 
-/P
+--SFnAkeHUpYpN2nJa
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
+On Jun 03, Lorenzo Bianconi wrote:
+> The EN7581 and AN7583 SoCs provide registers to configure hardware LAN/WAN
+> MAC addresses. These registers are used during FE hw acceleration to
+> determine whether received traffic is destined to this host (L3 traffic)
+> or should be switched to another device (L2 traffic).
+> The SoC hardware design assumes all interfaces configured as LAN (or WAN)
+> share the MAC address MSBs, which are programmed into the
+> REG_FE_{LAN,WAN}_MAC_H register. The LSBs of 'local' mac addresses can be
+> expressed as a range via the REG_FE_MAC_LMIN and REG_FE_MAC_LMAX
+> registers. In order to properly accelerate the traffic, FE module requires
+> the user to configure the REG_FE_{LAN,WAN}_MAC_H register respecting this
+> limitation. Please note a misconfiguration in REG_FE_{LAN,WAN}_MAC_H
+> will still allow the user to log into the device for debugging.
+> Previously, only a single interface was considered when programming these
+> registers. Extend the logic to derive the correct minimum and maximum
+> values for REG_FE_MAC_LMIN/REG_FE_MAC_LMAX when two or more interfaces are
+> configured as LAN or WAN. Since this functionality was not available
+> before this series, no regression is introduced.
+
+Commenting on sashiko's report:
+https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260603-airoha-eth-mul=
+ti-serdes-v9-0-5d476bc2f426%40kernel.org
+
+- How does this validation interact with the init path?=20
+  In airoha_alloc_gdm_device(), interfaces lacking a DT MAC fall back to
+  eth_hw_addr_random(), and airoha_dev_init() calls airoha_set_macaddr()
+  but discards the int return, so a netdev whose initial MAC would fail
+  the new MSB check still proceeds to register and reaches NETREG_REGISTERE=
+D.
+  - This is done on purpose to not block the device probe and allow the user
+    to log into the system, and based on the syslog, fix the issue manually.
+
+Regards,
+Lorenzo
+
+>=20
+> Tested-by: Madhur Agrawal <madhur.agrawal@airoha.com>
+> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> ---
+>  drivers/net/ethernet/airoha/airoha_eth.c | 77 ++++++++++++++++++++++++++=
+++----
+>  drivers/net/ethernet/airoha/airoha_eth.h |  2 +-
+>  drivers/net/ethernet/airoha/airoha_ppe.c |  4 +-
+>  3 files changed, 71 insertions(+), 12 deletions(-)
+>=20
+> diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ether=
+net/airoha/airoha_eth.c
+> index 64ee526da241..8f2608293bb7 100644
+> --- a/drivers/net/ethernet/airoha/airoha_eth.c
+> +++ b/drivers/net/ethernet/airoha/airoha_eth.c
+> @@ -71,20 +71,76 @@ static void airoha_qdma_irq_disable(struct airoha_irq=
+_bank *irq_bank,
+>  	airoha_qdma_set_irqmask(irq_bank, index, mask, 0);
+>  }
+> =20
+> -static void airoha_set_macaddr(struct airoha_gdm_dev *dev, const u8 *add=
+r)
+> +static int airoha_set_macaddr(struct airoha_gdm_dev *dev, const u8 *addr)
+>  {
+> +	u8 ref_addr[ETH_ALEN] __aligned(2);
+>  	struct airoha_eth *eth =3D dev->eth;
+> -	u32 val, reg;
+> +	u32 reg, val, lmin, lmax;
+> +	int i;
+> +
+> +	eth_zero_addr(ref_addr);
+> +	lmin =3D (addr[3] << 16) | (addr[4] << 8) | addr[5];
+> +	lmax =3D lmin;
+> +
+> +	for (i =3D 0; i < ARRAY_SIZE(eth->ports); i++) {
+> +		struct airoha_gdm_port *port =3D eth->ports[i];
+> +		int j;
+> +
+> +		if (!port)
+> +			continue;
+> +
+> +		for (j =3D 0; j < ARRAY_SIZE(port->devs); j++) {
+> +			struct airoha_gdm_dev *iter_dev;
+> +			struct net_device *netdev;
+> +
+> +			iter_dev =3D port->devs[j];
+> +			if (!iter_dev || iter_dev =3D=3D dev)
+> +				continue;
+> +
+> +			if (airoha_is_lan_gdm_dev(iter_dev) !=3D
+> +			    airoha_is_lan_gdm_dev(dev))
+> +				continue;
+> +
+> +			netdev =3D netdev_from_priv(iter_dev);
+> +			if (netdev->reg_state !=3D NETREG_REGISTERED)
+> +				continue;
+> +
+> +			ether_addr_copy(ref_addr, netdev->dev_addr);
+> +			val =3D (netdev->dev_addr[3] << 16) |
+> +			      (netdev->dev_addr[4] << 8) | netdev->dev_addr[5];
+> +			if (val < lmin)
+> +				lmin =3D val;
+> +			if (val > lmax)
+> +				lmax =3D val;
+> +		}
+> +	}
+> +
+> +	if (!is_zero_ether_addr(ref_addr) && memcmp(ref_addr, addr, 3)) {
+> +		/* According to the HW design, hw mac address MSBs must be
+> +		 * the same for each net_device with the same LAN/WAN
+> +		 * configuration.
+> +		 */
+> +		struct net_device *netdev =3D netdev_from_priv(dev);
+> +
+> +		dev_warn(eth->dev,
+> +			 "%s: wrong mac addr, MSBs must be %02x:%02x:%02x\n",
+> +			 netdev->name, ref_addr[0], ref_addr[1],
+> +			 ref_addr[2]);
+> +		dev_warn(eth->dev, "FE hw forwarding won't work properly\n");
+> +
+> +		return -EINVAL;
+> +	}
+> =20
+>  	reg =3D airoha_is_lan_gdm_dev(dev) ? REG_FE_LAN_MAC_H : REG_FE_WAN_MAC_=
+H;
+>  	val =3D (addr[0] << 16) | (addr[1] << 8) | addr[2];
+>  	airoha_fe_wr(eth, reg, val);
+> =20
+> -	val =3D (addr[3] << 16) | (addr[4] << 8) | addr[5];
+> -	airoha_fe_wr(eth, REG_FE_MAC_LMIN(reg), val);
+> -	airoha_fe_wr(eth, REG_FE_MAC_LMAX(reg), val);
+> +	airoha_fe_wr(eth, REG_FE_MAC_LMIN(reg), lmin);
+> +	airoha_fe_wr(eth, REG_FE_MAC_LMAX(reg), lmax);
+> =20
+> -	airoha_ppe_init_upd_mem(dev);
+> +	airoha_ppe_init_upd_mem(dev, addr);
+> +
+> +	return 0;
+>  }
+> =20
+>  static void airoha_set_gdm_port_fwd_cfg(struct airoha_eth *eth, u32 addr,
+> @@ -1826,13 +1882,18 @@ static int airoha_dev_stop(struct net_device *net=
+dev)
+>  static int airoha_dev_set_macaddr(struct net_device *netdev, void *p)
+>  {
+>  	struct airoha_gdm_dev *dev =3D netdev_priv(netdev);
+> +	struct sockaddr *addr =3D p;
+>  	int err;
+> =20
+> -	err =3D eth_mac_addr(netdev, p);
+> +	err =3D eth_prepare_mac_addr_change(netdev, p);
+>  	if (err)
+>  		return err;
+> =20
+> -	airoha_set_macaddr(dev, netdev->dev_addr);
+> +	err =3D airoha_set_macaddr(dev, addr->sa_data);
+> +	if (err)
+> +		return err;
+> +
+> +	eth_commit_mac_addr_change(netdev, p);
+> =20
+>  	return 0;
+>  }
+> diff --git a/drivers/net/ethernet/airoha/airoha_eth.h b/drivers/net/ether=
+net/airoha/airoha_eth.h
+> index 3e8262f583a7..8f42973f9cf5 100644
+> --- a/drivers/net/ethernet/airoha/airoha_eth.h
+> +++ b/drivers/net/ethernet/airoha/airoha_eth.h
+> @@ -683,7 +683,7 @@ void airoha_ppe_check_skb(struct airoha_ppe_dev *dev,=
+ struct sk_buff *skb,
+>  int airoha_ppe_setup_tc_block_cb(struct airoha_ppe_dev *dev, void *type_=
+data);
+>  int airoha_ppe_init(struct airoha_eth *eth);
+>  void airoha_ppe_deinit(struct airoha_eth *eth);
+> -void airoha_ppe_init_upd_mem(struct airoha_gdm_dev *dev);
+> +void airoha_ppe_init_upd_mem(struct airoha_gdm_dev *dev, const u8 *addr);
+>  u32 airoha_ppe_get_total_num_entries(struct airoha_ppe *ppe);
+>  struct airoha_foe_entry *airoha_ppe_foe_get_entry(struct airoha_ppe *ppe,
+>  						  u32 hash);
+> diff --git a/drivers/net/ethernet/airoha/airoha_ppe.c b/drivers/net/ether=
+net/airoha/airoha_ppe.c
+> index f54622904733..91bcc55a6ac6 100644
+> --- a/drivers/net/ethernet/airoha/airoha_ppe.c
+> +++ b/drivers/net/ethernet/airoha/airoha_ppe.c
+> @@ -1487,12 +1487,10 @@ void airoha_ppe_check_skb(struct airoha_ppe_dev *=
+dev, struct sk_buff *skb,
+>  	airoha_ppe_foe_insert_entry(ppe, skb, hash, rx_wlan);
+>  }
+> =20
+> -void airoha_ppe_init_upd_mem(struct airoha_gdm_dev *dev)
+> +void airoha_ppe_init_upd_mem(struct airoha_gdm_dev *dev, const u8 *addr)
+>  {
+> -	struct net_device *netdev =3D netdev_from_priv(dev);
+>  	struct airoha_gdm_port *port =3D dev->port;
+>  	struct airoha_eth *eth =3D dev->eth;
+> -	const u8 *addr =3D netdev->dev_addr;
+>  	u32 val;
+> =20
+>  	val =3D (addr[2] << 24) | (addr[3] << 16) | (addr[4] << 8) | addr[5];
+>=20
+> --=20
+> 2.54.0
+>=20
+
+--SFnAkeHUpYpN2nJa
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCaiFDUgAKCRA6cBh0uS2t
+rKFZAPsFq8wtcGM5fSMmaXoN8r3ZJahwhyksHFbQVLSGqyPnpgEAonKxBLMX2x26
+QDHe2K2ddF+pJgWY5jkwF5mFrWv1uQo=
+=7aG6
+-----END PGP SIGNATURE-----
+
+--SFnAkeHUpYpN2nJa--
