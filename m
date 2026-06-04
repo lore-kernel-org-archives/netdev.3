@@ -1,99 +1,118 @@
-Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B86FF46AF0E
-	for <netdev@vger.kernel.org>; Thu,  4 Jun 2026 12:58:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D793833F8A3;
+	Thu,  4 Jun 2026 12:59:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780577891; cv=none; b=ID+9lpkoq3M97gE0mVLZhUJbSqqxx8YiizmZmRQeq8iHUKs7UZkd/j1TF5XYT5Pfz3VysJuxmFZXetiDyxgw29Joz9xniCQ1qpz35RxXqWQXVvdY5fMsC2Vrq/GxNzptFBfIIQFBZFFND9C6HEtRqIuDqILtzp25AG/7NCwBsVA=
+	t=1780577973; cv=none; b=dXl7bzIobFWLzyFryOH0XX8Aihf/pz9m+42JPizhRaJKQC8dANoP1vwo6JZADr6qWTS0R4GSeCBq7GduH88zrvZhfqFR4lNdQGne8aAi9Gq9n7a57O7hQCKYS5aYV5LvyEgZ3osvGzjvNNVuIiY+1q9N73pEGSx+eKmkiMJfvyM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780577891; c=relaxed/simple;
-	bh=ITxfvDI8oavPccggeMNhMEmG800okNLoYQVxixVjF4Q=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=XOe9xPAj115K1rc8gV+sU5+4qY4i0DekjATy1pVN6Tz4peqlrR9j7u5IbmH8FIIjvu+Qlg0UcpOkScGAaswnDRSbfasl+pukwRFnypDRVpHxMLs4sLbNHArhLukutvaEP8wJgAToNkhXJtIhN+V04+rZQAmHdYZq/Ftf/CgPWpw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=dqAS6YXd; arc=none smtp.client-ip=91.218.175.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1780577973; c=relaxed/simple;
+	bh=EgMRvBu5YzRiwRNtwLh6fB99d7xpTCuSwobg5a4x1T0=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=KZnJJP9FIlIGhKhwfOT/CVLZ3JSQZ4H9/eTNwOCq+yrVZ/RH3S2duUb7ws88d+FDbSIP+zkImwN3qTGy6uWHmkZxttrPQqKzkwzE54sSvvXVVfwsn0ekV3f+tft5cPyVGkxUfa+L5rNsIQiXE5aH95dvdkQAdOhUQA79LytWrKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iO/WIFOF; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="dqAS6YXd"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1780577888;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lzdPHcgJjIO+zOaddsmfgLBr0nf2Cuw80ULqxQvRe3g=;
-	b=dqAS6YXdZ2542+iQaGqWxws+YR0KFa0MAKoAaREnVvgF+V/AqBr3p/vCrXTmpcmS1CCcP9
-	zAoAKdpZB3lwJVtJv/8PVcOjrASR2uuHhDFUOTSFvnMpLaVcrqHjqK9U75BMbM6pwX16hS
-	wTFb4rbzmPz51e5iN0XrO2bawhMlSwk=
-From: Fushuai Wang <fushuai.wang@linux.dev>
-To: saeedm@nvidia.com,
-	leon@kernel.org,
-	tariqt@nvidia.com,
-	mbloch@nvidia.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	shayd@nvidia.com,
-	parav@nvidia.com,
-	moshe@nvidia.com
-Cc: netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	wangfushuai@baidu.com
-Subject: [PATCH v2 2/2] net/mlx5: Use effective affinity mask for IRQ selection
-Date: Thu,  4 Jun 2026 20:57:05 +0800
-Message-Id: <20260604125705.21241-3-fushuai.wang@linux.dev>
-In-Reply-To: <20260604125705.21241-1-fushuai.wang@linux.dev>
-References: <20260604125705.21241-1-fushuai.wang@linux.dev>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iO/WIFOF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2C981F00893;
+	Thu,  4 Jun 2026 12:59:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780577970;
+	bh=obLgFgbfsTgxgYKjwNEFpJIxnlo2UXx+ip5/KtopYow=;
+	h=Date:From:To:Cc:Subject;
+	b=iO/WIFOF/9oAhcI20MLOKf3IawGhKBDhswAFykHuGex8EWzlJR7N+dWzbyXjC6ZNC
+	 YO2RUUwJr5srOliac/s+94K0XmJIX9wBRO9M2f5LiV04S2S1cAqKw3TTMLEWUHZ5up
+	 uJ8CNns26YPbpHHTqxvfYOocBFMnciQu2Yqkr9JigFKV6q6ZppjNuXMwJ853n+cDMy
+	 XFfdzb/lEZ4vQ6Jyw1LS+602CyhvhIv02K3Oklatvj+sBHlNqxdky1t2Ma4o5ZxcNf
+	 dde52kYOrkExUnFmfkEeC+o4YpZ18j9dq6k++A9EPeFK75tXFzhBW4oVfCE4l0GkJa
+	 KAKktEvJSwBng==
+Date: Thu, 4 Jun 2026 13:59:26 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Daniel Borkmann <daniel@iogearbox.net>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>, bpf <bpf@vger.kernel.org>,
+	Networking <netdev@vger.kernel.org>
+Cc: Christian Brauner <brauner@kernel.org>,
+	Deepanshu Kartikey <kartikey406@gmail.com>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Linux Next Mailing List <linux-next@vger.kernel.org>
+Subject: linux-next: manual merge of the bpf-next tree with the vfs-brauner
+ tree
+Message-ID: <aiF2rsdpUb5LuhmZ@sirena.org.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="DM+wrrA3zhYr83Bt"
+Content-Disposition: inline
 
-From: Fushuai Wang <wangfushuai@baidu.com>
 
-When an SF is created after a CPU has been taken offline, the IRQ pool may
-contain IRQs with affinity masks that include the offline CPU. Since only
-online CPUs should be considered for IRQ placement, cpumask_subset() check
-would fail because the iter_mask contains offline CPUs that are not present
-in req_mask, causing SF creation to fail.
+--DM+wrrA3zhYr83Bt
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Use irq_get_effective_affinity_mask() instead, which returns the IRQ's
-actual effective affinity that already excludes offline CPUs.
+Hi all,
 
-Fixes: 061f5b23588a ("net/mlx5: SF, Use all available cpu for setting cpu affinity")
-Suggested-by: Shay Drory <shayd@nvidia.com>
-Signed-off-by: Fushuai Wang <wangfushuai@baidu.com>
----
- drivers/net/ethernet/mellanox/mlx5/core/irq_affinity.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+Today's linux-next merge of the bpf-next tree got a conflict in:
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/irq_affinity.c b/drivers/net/ethernet/mellanox/mlx5/core/irq_affinity.c
-index 994fe83da4be..c5d784cbc8e4 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/irq_affinity.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/irq_affinity.c
-@@ -105,9 +105,12 @@ irq_pool_find_least_loaded(struct mlx5_irq_pool *pool, const struct cpumask *req
- 
- 	lockdep_assert_held(&pool->lock);
- 	xa_for_each_range(&pool->irqs, index, iter, start, end) {
--		struct cpumask *iter_mask = mlx5_irq_get_affinity_mask(iter);
-+		const struct cpumask *iter_mask;
- 		int iter_refcount = mlx5_irq_read_locked(iter);
- 
-+		iter_mask = irq_get_effective_affinity_mask(mlx5_irq_get_irq(iter));
-+		if (!iter_mask)
-+			continue;
- 		if (!cpumask_subset(iter_mask, req_mask))
- 			/* skip IRQs with a mask which is not subset of req_mask */
- 			continue;
--- 
-2.36.1
+  kernel/bpf/inode.c
 
+between commit:
+
+  a146500e11445 ("bpf: Add simple xattr support to bpffs")
+
+=66rom the vfs-brauner tree and commit:
+
+  b93c55b4932dd ("bpf: fix UAF by restoring RCU-delayed inode freeing in bp=
+ffs")
+
+=66rom the bpf-next tree.
+
+This merge resolution definitely needs a double check.
+
+I fixed it up (see below) and can carry the fix as necessary. This
+is now fixed as far as linux-next is concerned, but any non trivial
+conflicts should be mentioned to your upstream maintainer when your tree
+is submitted for merging.  You may also want to consider cooperating
+with the maintainer of the conflicting tree to minimise any particularly
+complex conflicts.
+
+diff --cc kernel/bpf/inode.c
+index c3f79b5a2f8c0,188c774a469ca..0000000000000
+--- a/kernel/bpf/inode.c
++++ b/kernel/bpf/inode.c
+@@@ -842,9 -768,12 +842,13 @@@ static void bpf_destroy_inode(struct in
+ =20
+  	if (!bpf_inode_type(inode, &type))
+  		bpf_any_put(inode->i_private, type);
+ +	simple_xattrs_free(&opts->xa_cache, &bi->xattrs, NULL);
+  }
+ =20
++ /*
++  * Called after RCU grace period - safe to free inode and anything
++  *  that might be accessed by RCU pathwalk (inode fields, i_link).
++  */
+  static void bpf_free_inode(struct inode *inode)
+  {
+  	if (S_ISLNK(inode->i_mode))
+
+--DM+wrrA3zhYr83Bt
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmohdq0ACgkQJNaLcl1U
+h9C/xwf+Ou85YMQWM49bpHCIPdrcn1qpCkDTO7jthITlYfCXD5EYFKzsZmuvrHD0
+f1f9+vwESZUIqg0M+V+xofKyFp7tkslGhZhWaf82PQjNGjnePVTAwGDfkh05JIaf
+Pokq/B3I2v55oopFLxMcsMwjlWoclWcakMrGtKPavZ8t0TOzxYSiuu8+QBj/r1SJ
+0VGQFIkD3DHJHap3MlEhaquZ1RJwGQWALh44IyybqbEOfGeS6GStOSeXen+ykKkT
+HOawpmgONJ8dAInEwDRy07m2iGK0vcE0IxWPYZfhB5hF9V3zgrWsQowOC3/vjrl6
+K1M1Im4wy0R21v0Tu6+Y8384MxwiFg==
+=05SM
+-----END PGP SIGNATURE-----
+
+--DM+wrrA3zhYr83Bt--
