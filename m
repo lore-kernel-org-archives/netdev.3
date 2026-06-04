@@ -1,138 +1,163 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f97.google.com (mail-yx1-f97.google.com [74.125.224.97])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30C2140961E;
-	Thu,  4 Jun 2026 16:36:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C15F934DB46
+	for <netdev@vger.kernel.org>; Thu,  4 Jun 2026 16:37:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.97
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780590981; cv=none; b=hcJCyfMaRqoyRcV2uAqzSdZAkGgThW8XS8mf66GJzXp71gyCv4hRRNHYkI6GWowe/TMRBJzn+7eXyceywwfB+vZLI/N7mEQlM1T790vfpd0dBea45NePwTKrSWApYvr+3kOHgeoigOYPLCbelwFMXgxWz7VXz9drpIvx6gIPW5I=
+	t=1780591069; cv=none; b=ptL3OnpLnzOO6y5S/ZaNyX0dmgUfFO8Znt6cSwY5W3bF4B3OQVDywVtM/fb72TzhqbqBsdk3O2jUileiTwE5Hsas14zRQZSqgcAWwklciLmKRwyXSL2+gVZlnhHZQWDEVWxYHTrPTmnkbFgCxU2yasAP3n9ampIwQOkvo0IDV/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780590981; c=relaxed/simple;
-	bh=79767qT4cxoYvoYC9/wCqAKQO0v9jT3L2K/ugsJBoLI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=i93+sqyzKzq4yQ4fJB2euaTjtJangEXiHl1R+Ih3GsnRDH9afeHe3FuM9vvtXugJCd24O5lMAHUvLuKRnijCmStExprw29HpAkftIj+GzuBGc5oLPSORQaUhva4ISajNAkAMUo0M5fEf4nxv0a/rI4a8AmCWXQhRMuQ/mMWchQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UeJbxwqN; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780591069; c=relaxed/simple;
+	bh=0Y0Sjy44RdkBzYSdAeUlWQZAogOV193vCQin/KVtbQE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=A3kSiR+klcxuQnYv3KK3DDkeZXmfug/m3yoSUILLPxGBG9dJrGMnbl0dg1z2mGiYD98Ftom6ePzomQ3IgSJth73gKLEHl+AJ/PQ5U9nYS7AspILaRxNGCDZsGO/LtXyckacsp+8/hAr3elQs/ol9+BY/S8XCxotwprwBESMvtbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=NXFlboor; arc=none smtp.client-ip=74.125.224.97
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UeJbxwqN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F214D1F00893;
-	Thu,  4 Jun 2026 16:36:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780590980;
-	bh=79767qT4cxoYvoYC9/wCqAKQO0v9jT3L2K/ugsJBoLI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=UeJbxwqNUrMAoASAFTbAhPd7x6kg0LyZyTe09Aq5Fj0mG5kt3Pug43cVhKlgMvG18
-	 lmLzxJFIvevDeWXHTE4r3etdwIiTwmzCyrrJ0GpYA3wIw6Fs28liplDRy68UOPzXjJ
-	 fEnVWxHoef0dWOPrYsVspsiVpPdjhEIAzFt7O98xOY/njlqugajhLFcac+lThvA0zZ
-	 cKGpZD9RV8pa6mpnwNGX73Crg3Ixo1JmCPA28nQbA+HpoTRWi0cY0wfoWH2xfwKC73
-	 ONBmOFyzb5I0iwhSRGWeuooZBeumd+cI3H35RrDnE/saQHV8k3xS8K2ErSHOpdTkCJ
-	 ZAAR7Um/zNPfA==
-Date: Thu, 4 Jun 2026 17:36:15 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
-Cc: "Parthiban.Veerasooran@microchip.com" <Parthiban.Veerasooran@microchip.com>,
-	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
-	"davem@davemloft.net" <davem@davemloft.net>,
-	"edumazet@google.com" <edumazet@google.com>,
-	"kuba@kernel.org" <kuba@kernel.org>,
-	"pabeni@redhat.com" <pabeni@redhat.com>,
-	"robh@kernel.org" <robh@kernel.org>,
-	"krzk+dt@kernel.org" <krzk+dt@kernel.org>,
-	"conor+dt@kernel.org" <conor+dt@kernel.org>,
-	Piergiorgio Beruto <Pier.Beruto@onsemi.com>,
-	"andrew@lunn.ch" <andrew@lunn.ch>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"Conor.Dooley@microchip.com" <Conor.Dooley@microchip.com>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
-Subject: Re: [PATCH net v3 2/2] dt-bindings: net: updated interrupt type to
- be active low, level triggered
-Message-ID: <20260604-swimwear-garnet-3eb092e6fda7@spud>
-References: <20260601-level-trigger-v3-0-da73e7010532@onsemi.com>
- <20260601-level-trigger-v3-2-da73e7010532@onsemi.com>
- <20260602-rebel-snide-5036c97e410d@spud>
- <CY8PR02MB92493D2E5491AAE5416C05A283122@CY8PR02MB9249.namprd02.prod.outlook.com>
- <a5abb9b8-6ebf-4f95-a684-fc889b98acea@microchip.com>
- <CY8PR02MB9249E607ACBF3A05AB83ABF683102@CY8PR02MB9249.namprd02.prod.outlook.com>
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="NXFlboor"
+Received: by mail-yx1-f97.google.com with SMTP id 956f58d0204a3-6605c3453f2so1134368d50.1
+        for <netdev@vger.kernel.org>; Thu, 04 Jun 2026 09:37:47 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780591067; x=1781195867;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=dA1YjKYHZBhklMysioMr6OFl2p5kCNCILPwzpCesPi8=;
+        b=ojcEAoDScWN5yMBX5rwsSQhflxFWPeOXiJvikX8oLs0Z9rifCxF6zF4GmPWD+zSX5q
+         xKqjXI2JS9muAzmLsa4CgKt3fu0Pf6jJX7+aAADvsboGY1t1okuAxHO+30Ztzh15ao7D
+         vrmltqJNMzwX9jDTl4zsOqdQoPVVevL2IvISF5w4UFYgW/hUGtqQDnlp1O6Dxz3G57Hx
+         +1PWjTSuRC0Fqpo6krIwqgxiZnHJegslegzkhLhfc3HEQqABT5oC/amXjOxDsRKFrNEF
+         wt4zptzepUKDK0QcwI9L7W9RfIaJ0uo4ht/dkbZ8GRFsdqiJsNzqaaSX6xfqe3Et8fJA
+         2uTQ==
+X-Gm-Message-State: AOJu0YypcWR9L5hWGoj5EMccDf42oAKfor/LDv7xp7yIgTI0OCq4jxgh
+	otudjQ6F6l58boqzNgqwxEB9H+DTIY1z74iEZCQ8dVEj7OlBnTkwj2Vwhd8/b8SkXqlfhzCXsiI
+	KsUQif6E50Zq1i2oczUdcFwshKNFThbwLxP7L+Wr8gVxBTaqSnbMyBpajnx5IxgBlFZ4KDmkDed
+	+G4TrBXw41fY6K/0T2Thi4b/M5JrizbpH1gXNfQlL8iO/I35rWSQZ2IypJfxp+dSH6GsnzztXpq
+	4hbsnz5fZGS
+X-Gm-Gg: Acq92OGW500meNBzmM+X8qNCWgOadtBOidYewAybPb5Hc2ZZx+GMV+sZN/2vkZK+IIB
+	oiVZaWpFEvhUbWX+afdhBFDLUTrRBoK15HNX07gB+yKcuic3kvRJLpKg/C9xHxs0LOesgpfRmSh
+	Clmmfw89FcMtPl7z3ejJeSRe56io+wQjoL2WcFBeicoVv6cRWhN/njVClRKOOj5aFwBorpVwU+i
+	e5VhAbWCfSdR8r4Ws145ZreGTBMlTcIQj4pM5z2itziWjRk6+cY6C85KPkZJKLva+xn+fntEK7P
+	xwq3juqcjLDPuBx+/HhPlCf3QVS6mCty6qLnqfCnL/y2rBGwCZfzh27o7zKG4uMj26g8N69MZkI
+	8NpxI91GZSd0opW6ij8oLAxFNrOCf3zhx+ISGCxUb8B+Rz/aU/mWH/aLEKEyLu0CFdFofcGz2f/
+	vYmw0CBgVjdue8Km55ku/O7DVWUJficnbwqNlC5f8n/dHQZK+YZzLrVyar8cRI5zOLZ/jo
+X-Received: by 2002:a53:d006:0:b0:660:8253:b84d with SMTP id 956f58d0204a3-660dc2a6eb4mr7774081d50.31.1780591066611;
+        Thu, 04 Jun 2026 09:37:46 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-117.dlp.protect.broadcom.com. [144.49.247.117])
+        by smtp-relay.gmail.com with ESMTPS id 956f58d0204a3-660d61ea17fsm521040d50.15.2026.06.04.09.37.46
+        for <netdev@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 04 Jun 2026 09:37:46 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2c0c36f4b76so9940545ad.3
+        for <netdev@vger.kernel.org>; Thu, 04 Jun 2026 09:37:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1780591065; x=1781195865; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=dA1YjKYHZBhklMysioMr6OFl2p5kCNCILPwzpCesPi8=;
+        b=NXFlboorQJmHlG/5Nvo5AXFclF3OghgXlKHr42GmNVQi++XBUtz6aSpGLfpNDKoIla
+         6WkVCajspctAJmrdClDazsoBI0CHIdczoosaBcFFkjemaBmCnk70bpmIbE+VvDGOzONj
+         uPhmQaOx+VdmVNALAqMkXV5HJ1LSyFaT4KbW0=
+X-Received: by 2002:a17:902:c602:b0:2c0:a555:80d6 with SMTP id d9443c01a7336-2c163a14eb7mr56838815ad.2.1780591065303;
+        Thu, 04 Jun 2026 09:37:45 -0700 (PDT)
+X-Received: by 2002:a17:902:c602:b0:2c0:a555:80d6 with SMTP id d9443c01a7336-2c163a14eb7mr56838585ad.2.1780591064803;
+        Thu, 04 Jun 2026 09:37:44 -0700 (PDT)
+Received: from localhost.localdomain ([192.19.203.250])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c16629c08bsm64746735ad.61.2026.06.04.09.37.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 04 Jun 2026 09:37:44 -0700 (PDT)
+From: Vikas Gupta <vikas.gupta@broadcom.com>
+To: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	andrew+netdev@lunn.ch,
+	horms@kernel.org
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	vsrama-krishna.nemani@broadcom.com,
+	bhargava.marreddy@broadcom.com,
+	rajashekar.hudumula@broadcom.com,
+	ajit.khaparde@broadcom.com,
+	dharmender.garg@broadcom.com,
+	rahul-rg.gupta@broadcom.com,
+	Vikas Gupta <vikas.gupta@broadcom.com>
+Subject: [PATCH net] bnge: fix context mem iteration
+Date: Thu,  4 Jun 2026 22:07:09 +0530
+Message-ID: <20260604163709.497649-1-vikas.gupta@broadcom.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="dDRoXKzkAjgb7RZm"
-Content-Disposition: inline
-In-Reply-To: <CY8PR02MB9249E607ACBF3A05AB83ABF683102@CY8PR02MB9249.namprd02.prod.outlook.com>
+Content-Transfer-Encoding: 8bit
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
+The firmware advertises context memory (backing store) types
+through a linked list, with BNGE_CTX_INV serving as the
+end-of-list sentinel.
+However, the driver incorrectly assumes that the list is strictly
+ordered and prematurely terminates traversal when it encounters
+an unrecognized type (>=BNGE_CTX_V2_MAX). As a result, any valid
+context types that appear later in the chain are silently skipped,
+leading to incomplete memory configuration and eventual driver load
+failure.
 
---dDRoXKzkAjgb7RZm
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Fix this by traversing the entire list until the BNGE_CTX_INV sentinel
+is reached, while safely ignoring only those context types that fall
+outside the supported range.
 
-On Thu, Jun 04, 2026 at 03:21:47PM +0000, Selvamani Rajagopal wrote:
-> > Subject: Re: [PATCH net v3 2/2] dt-bindings: net: updated interrupt typ=
-e to be active low,
-> > level triggered
-> >=20
-> > Hi Conor & Selvamani,
+Fixes: 29c5b358f385 ("bng_en: Add backing store support")
+Signed-off-by: Vikas Gupta <vikas.gupta@broadcom.com>
+Reviewed-by: Dharmender Garg <dharmender.garg@broadcom.com>
+---
+ drivers/net/ethernet/broadcom/bnge/bnge_hwrm_lib.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-To be clear, my angle here is making sure that the microchip device is
-not deviant from the spec. I don't know or care about this hardware in
-particular.
-I just made the assumption that what was in the example worked, and
-wanted clarification that what the example was changed to actually
-reflected something else that worked on the hardware in question before
-I gave an ack. I'm a dt-binding maintainer, not someone with knowledge
-of these devices.
+diff --git a/drivers/net/ethernet/broadcom/bnge/bnge_hwrm_lib.c b/drivers/net/ethernet/broadcom/bnge/bnge_hwrm_lib.c
+index eb11800f5573..1c9cfec1b633 100644
+--- a/drivers/net/ethernet/broadcom/bnge/bnge_hwrm_lib.c
++++ b/drivers/net/ethernet/broadcom/bnge/bnge_hwrm_lib.c
+@@ -277,7 +277,7 @@ int bnge_hwrm_func_backing_store_qcaps(struct bnge_dev *bd)
+ 	struct hwrm_func_backing_store_qcaps_v2_output *resp;
+ 	struct hwrm_func_backing_store_qcaps_v2_input *req;
+ 	struct bnge_ctx_mem_info *ctx;
+-	u16 type;
++	u16 type, next_type;
+ 	int rc;
+ 
+ 	if (bd->ctx)
+@@ -294,8 +294,8 @@ int bnge_hwrm_func_backing_store_qcaps(struct bnge_dev *bd)
+ 
+ 	resp = bnge_hwrm_req_hold(bd, req);
+ 
+-	for (type = 0; type < BNGE_CTX_V2_MAX; ) {
+-		struct bnge_ctx_mem_type *ctxm = &ctx->ctx_arr[type];
++	for (type = 0; type < BNGE_CTX_INV; type = next_type) {
++		struct bnge_ctx_mem_type *ctxm;
+ 		u8 init_val, init_off, i;
+ 		__le32 *p;
+ 		u32 flags;
+@@ -304,8 +304,14 @@ int bnge_hwrm_func_backing_store_qcaps(struct bnge_dev *bd)
+ 		rc = bnge_hwrm_req_send(bd, req);
+ 		if (rc)
+ 			goto ctx_done;
++
++		next_type = le16_to_cpu(resp->next_valid_type);
++		if (type >= BNGE_CTX_V2_MAX)
++			continue;
++
++		ctxm = &ctx->ctx_arr[type];
+ 		flags = le32_to_cpu(resp->flags);
+-		type = le16_to_cpu(resp->next_valid_type);
++
+ 		if (!(flags &
+ 		      FUNC_BACKING_STORE_QCAPS_V2_RESP_FLAGS_TYPE_VALID))
+ 			continue;
+-- 
+2.47.1
 
-> >=20
-> [.]
-> > One possible alternative could be to use a threaded IRQ handler with
-> > IRQF_ONESHOT, where the IRQ line is disabled until the handler
-> > completes, and sleeping is allowed. In that case, we could perform the
-> > SPI transfer in the threaded handler to send the data header and
-> > deassert the interrupt, while deferring the remaining work to a separate
-> > kthread (the current SPI thread). However, I have not yet tried this
-> > implementation, so I cannot comment on its behavior or effectiveness
-> > without implementing and testing it.
->=20
-> I can test this in my setup.
->=20
-> >=20
-> > I may be missing something here and am trying to clarify my
-> > understanding. I am also curious why this issue reproduces on our system
-> > but does not appear in Selvamani=E2=80=99s setup with an active=E2=80=
-=91low level
-> > interrupt configuration. If possible, could you share details of your
-> > setup and how the testing is being performed?
->=20
-> My setup is similar to yours. We have Raspberry Pi boards (P-4 & Pi-5) co=
-nnected
-> to our MAC-PHY evaluation board. As you could see in my patch submissions=
-,=20
-> there are no changes to oa_tc6.c in the way interrupts are handled.
->=20
-> >=20
-> > Best regards,
-> > Parthiban V
-> > >
-> > >>
-> > >> Cheers,
-> > >> Conor.
-> > >>
-> > >>>
->=20
-
---dDRoXKzkAjgb7RZm
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaiGpfgAKCRB4tDGHoIJi
-0tLdAQDyZP4DBC3h3sB2EKG6Xrs/w0FHmzR69qe7gr1KiN8fnQEAxQq0LUEp574U
-u25Oy7xpfeAn/+cFEAMtRdExAl7tzgY=
-=xdbe
------END PGP SIGNATURE-----
-
---dDRoXKzkAjgb7RZm--
