@@ -1,212 +1,108 @@
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A95824E4C6
-	for <netdev@vger.kernel.org>; Thu,  4 Jun 2026 14:53:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 218783033DE
+	for <netdev@vger.kernel.org>; Thu,  4 Jun 2026 14:57:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780584793; cv=none; b=JKrlErHHBD5yHo0/w3PZjeBf3ew/7pZ4NBDHkFGYAuaULS2865hnwv4bmi/wughIJfNL2P3GUiYSlKtvt7+HUqahVfa50COnvTGZ7NvekJ2e2gIQrA9DuqXxwTFHsYOfPu5s1251wQaJhAy7J6m9B+vrLWa3hvGhHz6ZlYFdCa4=
+	t=1780585074; cv=none; b=Vhl+/OTxA7utYw+0mpSZqJcJMeDujsoVIwZ8dXa/cgn8CZtWU86qbqVjNJtH1ahAzvaVbAPzKSLAfrB7V3CVGhApLLFF09TPfFqcWvKTIjrgNr0aKVxtlW68zdxPyWu59pv+nakOzSOqiHkoM5OJO50CC2h9FqkodV8dYOBGnvo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780584793; c=relaxed/simple;
-	bh=8cH4mAiquyBWMo7JCLMDAIcgKxWh3mA2G+eVR5xhxcw=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CX/f1JwHbWmJCh53MHzBFLqdbsdDPjwSeTgcsE0puC/87lvdyw86fufM/Aditrd3W6HDEBLkoRMaediRSw91cNJnddbJ6PNty7DKHFfH9N7rnYp1E4yuo2Wvx1M/8K78a2i2EO0m9QjiBvF5GveBCQNhrIfop4oA1jQwLQy3A2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qTC/jynT; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1780585074; c=relaxed/simple;
+	bh=o9UXxMYdY0WvCiPyBbAMkXmO2+fN1JZrlFMmoUWsUhI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tZlR3xyem767Labuicn53qdI7/XgTX3QhBjz4SwphJ/+C6vCsAGBif8NlqFYxm/1yoyG/Z14Os0fSOp23RfLNv+Z+hEQsESIVTB62FRxvVT2/ZHvuaLNY2NJUqr9OfFUbJw2mvA/HHolHzSP/sAtvwZecrRBnQlGY05Mu/PiY4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=S0wXq46T; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qTC/jynT"
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-490ace40f4bso9918435e9.3
-        for <netdev@vger.kernel.org>; Thu, 04 Jun 2026 07:53:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780584790; x=1781189590; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GjRGuOqbwCyHAFXf1dsFmUnnUDQzMFMpBmyvdHjNefI=;
-        b=qTC/jynTxhm3I5qQzwfZQKtBilHchZNwXRtUmI82AJYBHnanRmxaE2sdXL43vRE057
-         VTdKCkrtJ7gLFcnsqTUT7XyKQrE1tiaz9aYfAcQL8bU0Nis4rIcHls9Rx6ck3+yje9/w
-         X9BadcrLdVt4jAjxbi2KChhtwWN9p4V6K7HgTnMHa2Amp79Ai/a7sQmSkEO9isd/PKlx
-         7Awg/NolOpvSqQGZdM2LsZsSPZ5iT4tQoSVpHS4bm5BbstbgeBI41+OkVbqkOXCvNaNp
-         TfHJ59ntCMwQE8CvYzwmvNf246mDi7exNjnVljV56ZALIPK6Ex3XE6qx8BRL9aYz4fot
-         40rg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780584790; x=1781189590;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=GjRGuOqbwCyHAFXf1dsFmUnnUDQzMFMpBmyvdHjNefI=;
-        b=ROyJntS2od+E7Y0Qf4CiQchWcqV6GCkEQdBT8p65+eS27KNABw0L/urTl+Y1VmsJvr
-         8vibRdzQ0l2KVDpG72WqZSgM38V0JJbXie7LYIVf4EtpSWOOyyza8zb29j6VAciIn1pD
-         jJhPynitiysQyQ2bw1dwSk/P2zZZsMALHQ22GA3GnKWKOw6SU/6JB6WLVks+ymhmuTBZ
-         V5qkq1jMHVPobZdD6cBHqjB5HKoR0rJdvHH9AqH5UjS5HDoiKwXIyApZwnm2GPaue4RG
-         m9RI8G0ntS1mopsadGHzogQhUM+Z9S87w/0/ckv1hROMqUAedSVb7QQ7VXim7Ov5GDej
-         FscA==
-X-Forwarded-Encrypted: i=1; AFNElJ/CnMmIB9pMPboatn3UbN4y/q8d3c/ku5DPstmt61EldaKHp0FsWSh/BjkuEGVFRgSAdmOnkuw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxXlNQZRwcHIRYF8nkhC9cOWABOWkCQA9IJSepV7nnVMZo5daO1
-	jIA126uf8C1LJsJS2NWEX1sWRPWDGjSxSUcZggenWyRshMzRUyUaX6tt
-X-Gm-Gg: Acq92OGlpM3TfkwPxOcGE/61zexf+fl9XjxEhV8REcaJ1Hjvv0w/zUuwn8ul0i7QoHH
-	I3MkUIXSvWp/ao1Bfr5ETIgf34dpNP+x7rK8ZEgKkJBRAwt2dHIvOacPzfN/FVV8eNvdSoAraK3
-	8FAZPokELD/x+SyKyyPd74/T+JCXvoCU4sscqAEqEQM/lQsz4nVvNfP6PROKfPDjkmrrXSt++Mt
-	4TctO4C/VSkopspinLwhicdDRK7Wo0a5ZLP71oBG+pAaZfMPrUpYuqiRbP2Cugp+fMd4t81C4Kl
-	YFImY0GKucXs2Cem3KVQtKXuJznBJ2amdDhifHxav/bvY35cEKzOtRByvtqTTUBRTtJDo4zKQqX
-	oGGwPLPMMVmxr6h976sk620QHnPJhiT0+E9rsXr6vyzula+3AdusoexkbXDk22kT1oiFTIC3CxB
-	fD7jiu5H9pmwuNXVGzuwXW3TmJvzzmxGPgw4svzJH2bdVXfNWtvINqn/aqi546hhbeEQ0H0M7T4
-	9+dLNhVjA==
-X-Received: by 2002:a05:600c:a0c:b0:490:bd66:e526 with SMTP id 5b1f17b1804b1-490bd66e5femr59985365e9.32.1780584790359;
-        Thu, 04 Jun 2026 07:53:10 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4601f0a43e9sm17030103f8f.0.2026.06.04.07.53.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Jun 2026 07:53:10 -0700 (PDT)
-Date: Thu, 4 Jun 2026 15:53:08 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Justin Lai <justinlai0215@realtek.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, "kuba@kernel.org" <kuba@kernel.org>,
- "davem@davemloft.net" <davem@davemloft.net>, "edumazet@google.com"
- <edumazet@google.com>, "pabeni@redhat.com" <pabeni@redhat.com>,
- "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>, "horms@kernel.org"
- <horms@kernel.org>, Ping-Ke Shih <pkshih@realtek.com>, Larry Chiu
- <larry.chiu@realtek.com>
-Subject: Re: [PATCH] rtase: Workaround for IP fragmented UDP packet hardware
- bug
-Message-ID: <20260604155308.770b2deb@pumpkin>
-In-Reply-To: <1489704deb9844b08848758af95a448e@realtek.com>
-References: <20260601062341.63981-1-justinlai0215@realtek.com>
-	<5c095b26-9720-45b0-a8d5-a8495291e45b@lunn.ch>
-	<447c46ad1f654222a8daa423149f0b89@realtek.com>
-	<20260604124606.7143581b@pumpkin>
-	<1489704deb9844b08848758af95a448e@realtek.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="S0wXq46T"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1780585072;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3g3EIKMkRGmHVm4qeCIejvJKEgg0irayPWEuc7aC1Ag=;
+	b=S0wXq46TYTAmHHKAghmtJmoOh/EVD0g54D43lRKS46o3HkNry78Xex+KS6MI7DJ8zPllC7
+	sRLoA3qLdxQTt0XCUGceBShcbuBV/xT7qsXZ13VvT9zIJGmDj3bVdIegU/A7vhueAbXsN9
+	wiTADyEEkf6Tp08zivyETEl87WYJH8U=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-8-9WKG0g7PNzSot_sOaysypw-1; Thu,
+ 04 Jun 2026 10:57:47 -0400
+X-MC-Unique: 9WKG0g7PNzSot_sOaysypw-1
+X-Mimecast-MFC-AGG-ID: 9WKG0g7PNzSot_sOaysypw_1780585066
+Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 95F89180059F;
+	Thu,  4 Jun 2026 14:57:45 +0000 (UTC)
+Received: from [10.44.49.177] (unknown [10.44.49.177])
+	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 7F97B1766;
+	Thu,  4 Jun 2026 14:57:41 +0000 (UTC)
+Message-ID: <2960f14c-df57-4cb8-a7e5-4b715e475b13@redhat.com>
+Date: Thu, 4 Jun 2026 16:57:40 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v5 3/4] dpll: zl3073x: add per-DPLL serialization
+ lock
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: netdev@vger.kernel.org,
+ Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+ "David S. Miller" <davem@davemloft.net>,
+ Donald Hunter <donald.hunter@gmail.com>, Eric Dumazet <edumazet@google.com>,
+ Jiri Pirko <jiri@resnulli.us>, Michal Schmidt <mschmidt@redhat.com>,
+ Paolo Abeni <pabeni@redhat.com>, Pasi Vaananen <pvaanane@redhat.com>,
+ Petr Oros <poros@redhat.com>, Prathosh Satish
+ <Prathosh.Satish@microchip.com>, Simon Horman <horms@kernel.org>,
+ Vadim Fedorenko <vadim.fedorenko@linux.dev>, linux-kernel@vger.kernel.org
+References: <20260531194423.383366-1-ivecera@redhat.com>
+ <20260531194423.383366-4-ivecera@redhat.com>
+ <20260603184046.4c834317@kernel.org>
+Content-Language: en-US
+From: Ivan Vecera <ivecera@redhat.com>
+In-Reply-To: <20260603184046.4c834317@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
 
-On Thu, 4 Jun 2026 13:43:27 +0000
-Justin Lai <justinlai0215@realtek.com> wrote:
-
-> David Laight <david.laight.linux@gmail.com> wrote:
-> > 
-> > On Thu, 4 Jun 2026 08:33:51 +0000
-> > Justin Lai <justinlai0215@realtek.com> wrote:
-> >   
-> > > Andrew Lunn <andrew@lunn.ch> wrote:  
-> > > >
-> > > > On Mon, Jun 01, 2026 at 02:23:41PM +0800, Justin Lai wrote:  
-> > > > > The hardware parser incorrectly interprets 319/320 in a short IP
-> > > > > fragmented UDP packet payload as standard PTP destination ports
-> > > > > and treats the fragment as a PTP packet for further parsing.  
-> > 
-> > Is that a packet that has been segmented by IP, or one where the skb is
-> > fragmented enough that the data in the header is too short?
-> > I thought that IPv4 required an mtu of 128 bytes (ish) and IPv6 somewhat
-> > larger - so I don't see how that is a problem.
-> > 
-> > If the skb is fragmented then you need to move data into the header not pad
-> > the frame.
-> > 
-> > If the hardware really is broken then I suspect you need to disable the feature
-> > and suffer the consequences.
-> >   
-> > > > >
-> > > > > If the transport data is smaller than RTASE_MIN_PAD_LEN, the
-> > > > > remaining data is insufficient for further parsing and causes hardware TX  
-> > hang.  
-> > > >
-> > > > Where does RTASE_SHORT_PKT_THRESH come into this?
-> > > >
-> > > > RTASE_MIN_PAD_LEN is 47, so matches all packets which need padding
-> > > > up to
-> > > > 60 bytes, plus FCS. There are not many such packets, so why both
-> > > > this all the complexity and just pad all small packets? Do you have
-> > > > any performance numbers which show the complexity is worth it?
-> > > >  
-> > > > > Pad these packets so the transport data reaches RTASE_MIN_PAD_LEN
-> > > > > before transmitting to avoid triggering the hardware issue.
-> > > > >
-> > > > > Signed-off-by: Justin Lai <justinlai0215@realtek.com>  
-> > > >
-> > > > Is this a Fix? Please add a Fixes: tag. And base it on net.
-> > > >
-> > > > https://www.kernel.org/doc/html/latest/process/maintainer-netdev.htm
-> > > > l
-> > > >
-> > > >     Andrew
-> > > >
-> > > > ---
-> > > > pw-bot: cr  
-> > >
-> > > Hi Andrew,
-> > >
-> > > RTASE_MIN_PAD_LEN is not the Ethernet minimum-frame padding  
-> > threshold.  
-> > > It is the minimum transport-data length required by the hardware
-> > > parser after the packet is incorrectly detected as a PTP packet.
-> > >
-> > > Therefore, this workaround needs to pad the packets which can trigger
-> > > the hardware issue, rather than just padding packets to the Ethernet
-> > > minimum frame size.  
-> > 
-> > Is that a longer length?
-> > Excessive frame padding (beyond 60+FCS) can be treated as a protocol error.
-> > 
-> > -- David
-> >   
-> > >
-> > > I agree that RTASE_SHORT_PKT_THRESH is not necessary here. I will
-> > > remove it in the next revision.
-> > >
-> > > Yes, this is a fix. I will add a Fixes tag and repost it against the
-> > > net tree.
-> > >
-> > > Thanks,
-> > > Justin
-> > >  
+On 6/4/26 3:40 AM, Jakub Kicinski wrote:
+> On Sun, 31 May 2026 21:44:22 +0200 Ivan Vecera wrote:
+>> Add a per-DPLL mutex that serializes all operations on a given DPLL
+>> channel across DPLL netlink callbacks, the periodic kthread worker,
 > 
-> Hi David,
->  
-> This is an IP fragmented packet, not a fragmented skb.
+> Sounds like there are already two entities accessing the state?
+> If so why is this not a fix?
 
-Ok, your tests are broken for fragmented skb.
-skb_tail_pointer() is the end of the initial fragment, not the
-end of the actual data.
-So you could be adding padding to a full length packet making
-it overlong.
-Somewhere you need to be looking at skb->len.
-Probably with a fast-path check to ignore long packets.
+Yes, but prior NCO pin implementation (patch 4) this was not a problem.
 
->  
-> The issue occurs on a non-initial IP fragment whose payload
-> contains values matching the PTP event/general destination
-> ports (319/320). The hardware parser incorrectly identifies the
-> fragment as a PTP packet and attempts further parsing.
+1. All DPLL callbacks are serialized by the DPLL subsys mutex and they
+- read status and measurements from cache (ref, chan, out and synth)
+- writes config into HW and cache
 
-Wait a minute, what stops someone using either of those port numbers
-for something else?
-There are no hard restrictions on the use of UDP port numbers.
-So what does the hardware do with UDP packets to port 319/320 that
-are being used for something else entirely?
+2. Periodic function
+- reads config from cache (...)
+- reads status and measurements from HW and writes to cache (...)
+- emits notifications when something was changed
 
-> The workaround does not modify the IP or UDP length fields. The
-> original protocol headers still describe the actual packet size.
->  
-> Therefore, the protocol-defined payload size remains unchanged.
->  
-> We have tested this workaround and have not observed issues
-> caused by the additional padding.
+All accesses to cache objects' fields are atomic.
 
-Have you checked all the systems that might receive such packets?
+With patch 4 there is a change because at least df_offset can be written
+by both (DPLL callback during switching or periodic function during
+measurement). At this point it is reasonable and safe to do explicit
+locking on DPLL level.
 
--- David
+And the next series I have in my queue (that depends on this series)
+introduces the PHC support into zl3073x and there will be a need to
+serialize DPLL and PTP callbacks.
 
->  
-> Thanks,
-> Justin
+Thanks,
+Ivan
 
