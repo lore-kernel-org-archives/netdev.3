@@ -1,105 +1,107 @@
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us.padl.com (us.padl.com [216.154.215.154])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41326378D96
-	for <netdev@vger.kernel.org>; Thu,  4 Jun 2026 22:47:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6CC72EA171;
+	Thu,  4 Jun 2026 22:52:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.154.215.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780613258; cv=none; b=fQb0IuxiY9gGAOKmQoFmm1norW5WN5yt1drUJ/RK4gXHTedGnbP9Ex3k8urQuDOEWRc7Y3ibOfP8g5KDQQH3h/4puYmQEY8ZbBn+E8mz0WdbMSymL5VWE7aR5N1lV8q2MggcD2o3KUyxD7eJsdzZ4uQ47/BwMA7Rhh92/3n0nk8=
+	t=1780613534; cv=none; b=V40JZE6Fn7rpJNsV/alckPtfPWozYvJqfLqknPisEQedfJoWwWEJoRwvSI2PXP5fAUFIuTGkPbmGjoJAiLECQ4pf5BNEZWHG0wd69SMhqK+z9KKFi7fCqbXcrqm7j7o7gUrXtr6f766uTk7NTrQpSpOrrCxl8a4cK3IU1yBJ9dw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780613258; c=relaxed/simple;
-	bh=mZnGMPLL65HcRjsIqQjSSFBhPjFd1j5JcJecBX1WXwM=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=mQMUqoxCpTQMZyhBS4pErisVLxNk2VmB39X6gu7m8/q/BHpRIlJMdIJgNe9hoCLhgy4g+Dlw+f8ivGcA6f30iiOmB+Gduihq6jOMUQdrNva2UEQhEGGIRObgBANi7xY+QylVZRCSeQ9Q7gYMni++ur0x/tHAVc+ApE5HXVjvJFo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=aokRzs4a; arc=none smtp.client-ip=209.85.215.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
+	s=arc-20240116; t=1780613534; c=relaxed/simple;
+	bh=OEm1hdLn46Ff+W5Kx9p8C2M4P47h2b5Qaf5LFifR0nc=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=ba5wgFlhgItI+r5U/PNxIwAZWM+nIObe+ZmlMZ6UdglvKc5ijUQ/TLcb11b8Uqdqj1NXVfHnHGCBj4uFAelEJUd3SEqk5TJt76mKXVUzvIm8xOR2LGh7DxXdFvBYZ0z09BqyigVthfBfVDYhfON8VOhy2BkjKpNcCzK9Js7DnPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=padl.com; spf=pass smtp.mailfrom=padl.com; dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b=kTYAXuMs; arc=none smtp.client-ip=216.154.215.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=padl.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=padl.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="aokRzs4a"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c860544c077so412903a12.3
-        for <netdev@vger.kernel.org>; Thu, 04 Jun 2026 15:47:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780613256; x=1781218056; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=BPaehixkqGDAreIZNrKXsadKilH5nfmF81fGCUQ3FS0=;
-        b=aokRzs4a7xsCUT5Y0aFB2Ih/lGFz1PpSnJn7dI4NlVDgqKiriTVNN2wEp5ZfQMWj0t
-         46qUv3ZjHRd58HCx83HGAjYQ2z3MQxySv0olmbfOSqIlG48Of63Q6eDkviNBx4lp3PNT
-         Xdxd0l5lkaOaoM/HQm+PHMrJE+Z980Z3vKoMc+Nqcc9kCCfRUOzqbox+TBRLFjkrBQH1
-         fvn6RXkPI2voPLq7nWPAJCv62E/4wslc/fWHm8yu7HqLLnIP3qzPek/utD/0OKLblsKb
-         kwd893BrgCCCI/a1YzXkByDM27hc5Uw3zLyubbtsXGfOIXiV0UvPs6NKwO7PU6fUfBZh
-         gEow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780613256; x=1781218056;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=BPaehixkqGDAreIZNrKXsadKilH5nfmF81fGCUQ3FS0=;
-        b=bwYofYr5FVBJvOi53Th7kVnePAS8oyF3i2eiA8gRYT40ZdwRvLu/8az4iAFZudzZnr
-         gTxuQu5ZjPwt8/L1GWiF4QeM/BpLcocaqf4j0vYCX4PtdkIloVA7qWH+F+xgttyUDYl0
-         mXLT5zkvlAQBZfQnCLnXIYv/ZAAQ+vKizQhPR31n4cxHh5L/+YuyvhqHssP4eZWyTlgw
-         FATouvQlrYA8EjIsIWs7CF/wQuipNnU8WPDTlCfKWUfcI44udHpd9fGe30msOq7Te2VK
-         nTzM/+mNf3KIOqDP8e8iRvVjrWbKDYXiiMwGkUMrZeSNCByxa6loBPdq6LaVSwtAX6Dc
-         Na7Q==
-X-Forwarded-Encrypted: i=1; AFNElJ/+HCo4NEE2Yw55znhO2T0zHiYw1APxYiVwKnfM2ltS1cEJQriMotSnzfsJCWWdfhWaadzLyZs=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yykmdmyuhi6ErDAMSUYiWTqqc83X1a7haNGpW+0L60l8kkgz4mH
-	PWd5wPlmVQRaqvyq1gUWjuYhAyKsQHbnuWiKSaaAj8hsLUn8OEFU+NL4qcJp6Uk/vQL1lD8pG/H
-	L1kMDog==
-X-Received: from pgbcm4.prod.google.com ([2002:a05:6a02:a04:b0:c79:22b6:a344])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:1409:b0:3b2:8685:1473
- with SMTP id adf61e73a8af0-3b4ccd00069mr1059039637.7.1780613256428; Thu, 04
- Jun 2026 15:47:36 -0700 (PDT)
-Date: Thu,  4 Jun 2026 22:46:33 +0000
-In-Reply-To: <20260604224712.3209821-1-kuniyu@google.com>
+	dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b="kTYAXuMs"
+Received: from smtpclient.apple (border.lukktone.com [139.130.100.52])
+	by us.padl.com (Postfix) with ESMTPSA id D2DF960C6D;
+	Thu,  4 Jun 2026 18:52:08 -0400 (EDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=padl.com; s=default;
+	t=1780613531; bh=HMJb5ahSNURO+v12SkoNhUjqk5ykiyADfmMXFoQmvOk=;
+	h=Subject:From:In-Reply-To:Date:Cc:References:To:From;
+	b=kTYAXuMsJ6t6QzFi2meSE+6bqSyaFb/75Y+b88APEz4vv44dLQwNzsNYh3DcvBhRu
+	 OTcv35sQ2DAplU9HFIv91FrJGRa1Yomw5bXN3Am8cQON3MHIxlu543rHXl54dEGTy5
+	 zICOuA6uKmoqC9Mo2s2lA65MGHj106d7g9Tmmn79vpefGh8kuqgvbjcHmaxAb1ouBP
+	 pE2SvfdAKnEzbxsHRAmhILnIl9aHnM2n/PKkVtWNCQamS0t4oIPT0rrXrlptT1HoYJ
+	 QfS57Fo9uWz/ZBvt8R10Aqnaf6ntUh7oJClU66er/J9MX+eQ3HzagtiClq0V6nWKM8
+	 uGElNrxIlm+SQ==
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260604224712.3209821-1-kuniyu@google.com>
-X-Mailer: git-send-email 2.54.0.1032.g2f8565e1d1-goog
-Message-ID: <20260604224712.3209821-16-kuniyu@google.com>
-Subject: [PATCH v3 net-next 15/15] ip6mr: Define net->ipv6.{ip6mr_notifier_ops,ipmr_seq}
- under CONFIG_IPV6_MROUTE.
-From: Kuniyuki Iwashima <kuniyu@google.com>
-To: "David S . Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>, 
-	Eric Dumazet <edumazet@google.com>, Ido Schimmel <idosch@nvidia.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, 
-	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH net-next 0/2] net: dsa: mv88e6xxx: add support for dcb pcp
+ app
+From: Luke Howard <lukeh@padl.com>
+In-Reply-To: <v4fqikeec52ginmogfvsfe5gobul2nqspe2ebzpzpja52lxacb@wq2elxqwrucf>
+Date: Fri, 5 Jun 2026 08:51:56 +1000
+Cc: cedric.jehasse@luminex.be,
+ Andrew Lunn <andrew@lunn.ch>,
+ Vladimir Oltean <olteanv@gmail.com>,
+ "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>,
+ Russell King <linux@armlinux.org.uk>,
+ netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <E43832AD-0F8A-465F-95E3-2AF5E72FB7B9@padl.com>
+References: <20260604-net-next-mv88e6xxx-pcp-prio-v1-0-f9d10fe6cdc8@luminex.be>
+ <02BDD59A-30A9-46F9-8413-28A867B50CD5@padl.com>
+ <v4fqikeec52ginmogfvsfe5gobul2nqspe2ebzpzpja52lxacb@wq2elxqwrucf>
+To: Cedric Jehasse <cedric.jehasse@gmail.com>
+X-Mailer: Apple Mail (2.3826.700.81)
 
-net->ipv6.ip6mr_notifier_ops and net->ipv6.ipmr_seq are used
-only in net/ipv6/ip6mr.c.
+Hi Cedric,
 
-Let's move these definitions under CONFIG_IPV6_MROUTE.
+> On 4 Jun 2026, at 10:01=E2=80=AFpm, Cedric Jehasse =
+<cedric.jehasse@gmail.com> wrote:
+>=20
+> On Thu, Jun 04, 2026 at 08:37:17PM +1000, Luke Howard wrote:
+>> I still need to find a similarly natural way to expose the switch=E2=80=
+=99s AVB capabilities / 802.1Qat admission control. Perhaps there is =
+none and it will need to remain a local patch.
+>=20
+> There's a devlink port param command. I've been wondering if this =
+could be used
+> to set a port's AvbMode. However:
+> * at the moment there are no drivers supporting this.
+>  eg. devlink_nl_port_param_set_doit and other return this isn't =
+supported
+> * i don't know if AvbMode is a valid use for devlink port param, and =
+if it
+>  would get accepted
 
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
----
- include/net/netns/ipv6.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+mv88e6xxx already exposes the ATU_hash driver-specific devlink =
+parameter, so there is a precedent which augurs well.
 
-diff --git a/include/net/netns/ipv6.h b/include/net/netns/ipv6.h
-index 668f10498c5c..ffda15318be5 100644
---- a/include/net/netns/ipv6.h
-+++ b/include/net/netns/ipv6.h
-@@ -112,14 +112,14 @@ struct netns_ipv6 {
- 	struct list_head	mr6_tables;
- 	struct fib_rules_ops	*mr6_rules_ops;
- #endif
-+	struct fib_notifier_ops	*ip6mr_notifier_ops;
-+	atomic_t		ipmr_seq;
- 	struct mutex		mfc_mutex;
- #endif
- 	atomic_t		dev_addr_genid;
- 	atomic_t		fib6_sernum;
- 	struct seg6_pernet_data *seg6_data;
- 	struct fib_notifier_ops	*notifier_ops;
--	struct fib_notifier_ops	*ip6mr_notifier_ops;
--	atomic_t		ipmr_seq;
- 	int			flowlabel_count;
- 	struct {
- 		struct hlist_head head;
--- 
-2.54.0.1032.g2f8565e1d1-goog
+A per-port AVB mode devlink could configure:
 
+- AVB mode to enhanced
+- iso ptrs to number of enabled ports * N (currently we use N=3D64)
+- enabling interpreting AVB_NRL entries as AVB with G1_ATU_CTL_MAC_AVB
+
+The leaves two issues:
+
+- if at least one port has AVB mode set, we could install permanent MDB =
+entries as AVB_NRL. But here we have the old problem, that AVB mode is =
+on the ingress port, whereas MDB entries are on the egress port.
+- also the AVB FPri and QPri values would need to be configured, either =
+via another devlink parameter or MQPRIO
+
+This approach would integrate well with your CBS and DCB patches. Having =
+said that, AVB mode could likely be reimplemented with TCAM, and =
+(assuming an SRP daemon that knew how to install those flower entries) =
+that might be a more portable and idiomatic solution. I am not sure how =
+it would perform compared to the native AVB admission control in the =
+switch.
+
+Luke=
