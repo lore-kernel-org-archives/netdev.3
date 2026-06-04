@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3CF63E1687
-	for <netdev@vger.kernel.org>; Thu,  4 Jun 2026 16:00:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E9C847B431;
+	Thu,  4 Jun 2026 16:00:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780588830; cv=none; b=XCdkfTxHEQ3feTS4xqR8wXyaRfUzSGwYcLyjnyKKBkBB5cF6dFORVlL5jwC9/YikyS5NH2QbQniEmvL2xqOw1ZbrOXjnP9tqkknpVD7zxW+JNP19AUl7R6uq563lhDOrDgpP8dRfvGX4QTSaZfb1noHJODPQ2RaPzmGCmpd4EwA=
+	t=1780588832; cv=none; b=i2r3TeIBYD/PvF514t97IIzAEjxQ5ijaKoWsdHUtGJlO9m9h/lmzRC+eNPYkM+3iFJFOt5heZt3LVzUMHpZS5i8Q4g+Qwn8N2m7WMKe81v+j8FVBio+wRPA3Erm+JWl1CLk3xZwlyFIQr35feoMZhFgBxmgC1qn1dZTg5Mb3Ups=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780588830; c=relaxed/simple;
-	bh=KlFX57cnW5BSTLbfr9V70xdcrEDD+AfRHfMS6ohMz34=;
+	s=arc-20240116; t=1780588832; c=relaxed/simple;
+	bh=/DuU/H+ePsONsMhYu4qmqPYLCf70f1/9AKu9wRqIunc=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=soQmxr+kHSCab3wQjXZj0hkq99HSlyDQBpHOIAOCEEWsjE4ZcmZCj6g2L4r+rF0m5pFiUj5E89LL6CeqwwdKr85AIfGyO2DQ3a0+9L8IzdABdJk6ocwGm99YuKZxtUXgUJFSMuwmKuCMfvsUIOWrOZ5KcQ7WLjB+d740kN9gmFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EFwcHWoG; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=gPopnY+3BgsTwwIJ7XjfQIw9sX1kMpvpLd0c9aNeAqOSKBavIR+/vbWwNkreB40tKWnwt5WGJSS+3+d1lttEZlJ0xos4tIjzvtFzRM/JMo66Ew10S9jttDpdIkdOnHhjT6fAL4NqLWQhJOWWQJSaJKOSs7Uci6gy/6yab7gz9ms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qu/XSKzs; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EFwcHWoG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B30281F00893;
-	Thu,  4 Jun 2026 16:00:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780588829;
-	bh=Hro0gi99KmBsc4frq0Tvz/7m/n33Eu8GMR5E1Lpqz5M=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=EFwcHWoGj6TooKsuahNCbZATEnUmxzY0KQBGO/e5a0+Ec5onmT4tgVtDRtjG1MlaV
-	 PtFCSySWvM7d/bFnDr5ZOErjhX1KfhuJ65HsE+4+JcJI3idTvm1isRa+y3O2H4wOUw
-	 dxqdJqxW2S3oU2c+Q6aYn33cHoE8M8wYZ/G8MJziNCOERqXkH+CVt1seIdTvRvmsPQ
-	 5o8spVvje879EKoyFcExKEbj7g5HxuCXxRu+bswWuLy0DdIQV+nQ/sIdiLC//JvVUp
-	 12/7y7phqgthGinZiNfJotiNAjY6cHbwFdoelrGmW9ABqG1+CjTOPXacIBnvj/B54P
-	 amsmlDK7NsJBA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D09A139309B7;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qu/XSKzs"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 394701F00893;
 	Thu,  4 Jun 2026 16:00:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780588831;
+	bh=EJEf64ZBQsNzoWifPhtZA9P/vPax0Lu5T3OxobFaaJg=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=Qu/XSKzs7mlytpjAQqsaZY+AWM5fEaBYftI+qI0GjzoBURUaaikPmF3NmwzcBccn/
+	 BY21p4Ec78JFombHsCEdb/97ipy+RUUHykYipFJPMBdlDjQ+AdmYU9ym8EwJnEAg+j
+	 ecuAu+XMGZhG0Gjg+YjZCOt1PRflY4sj+rW2MvQr+DcO7qwFPfsfJj8nVwBmkVJEXa
+	 I7wB2q7mhBZzyuQwBJMP4lpJHhVJRjbtW5u4sEdeHum3oI4Q3ffuhAtaBHU1XdyD+W
+	 PoX3Boq80v3inIOHZYtotFDRvHHTHzhjTR136mnwaScK09Q9CJKB/5mcT2HPe5+g6X
+	 IlP3PxhQaUjSQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 5695039309B7;
+	Thu,  4 Jun 2026 16:00:33 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,39 +37,37 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] ieee802154: 6lowpan: only accept IPv6 packets in
- lowpan_xmit()
+Subject: Re: [PATCH net v2] rtase: Avoid sleeping in get_stats64()
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178058883039.2493857.14674144949588359883.git-patchwork-notify@kernel.org>
-Date: Thu, 04 Jun 2026 16:00:30 +0000
-References: <20260603072955.4032221-1-edumazet@google.com>
-In-Reply-To: <20260603072955.4032221-1-edumazet@google.com>
-To: Eric Dumazet <edumazet@google.com>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- netdev@vger.kernel.org, eric.dumazet@gmail.com,
- syzbot+f13c19f75e1097abd116@syzkaller.appspotmail.com, alex.aring@gmail.com,
- stefan@datenfreihafen.org, miquel.raynal@bootlin.com
+ <178058883188.2493857.544475254028266565.git-patchwork-notify@kernel.org>
+Date: Thu, 04 Jun 2026 16:00:31 +0000
+References: <20260603061816.31356-1-justinlai0215@realtek.com>
+In-Reply-To: <20260603061816.31356-1-justinlai0215@realtek.com>
+To: Justin Lai <justinlai0215@realtek.com>
+Cc: kuba@kernel.org, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com, andrew+netdev@lunn.ch, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org, stable@vger.kernel.org, horms@kernel.org,
+ aleksander.lobakin@intel.com, pkshih@realtek.com, larry.chiu@realtek.com
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Wed,  3 Jun 2026 07:29:55 +0000 you wrote:
-> The aoe driver (or similar) generates a non-IPv6 packet
-> (e.g., ETH_P_AOE) and queues it for transmission via dev_queue_xmit()
-> on a 6LoWPAN interface (configured by the user or test case).
+On Wed, 3 Jun 2026 14:18:16 +0800 you wrote:
+> The .ndo_get_stats64 callback must not sleep because it can be
+> called when reading /proc/net/dev.
 > 
-> Since the packet is not IPv6, the 6LoWPAN header_ops->create function
-> (lowpan_header_create or header_create) returns early without initializing
-> the lowpan_addr_info structure in the skb headroom.
+> rtase_get_stats64() calls rtase_dump_tally_counter(), which polls
+> the tally counter dump bit with read_poll_timeout(). This may
+> sleep while waiting for the hardware counter dump to complete.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] ieee802154: 6lowpan: only accept IPv6 packets in lowpan_xmit()
-    https://git.kernel.org/netdev/net/c/3a5f3f7aff18
+  - [net,v2] rtase: Avoid sleeping in get_stats64()
+    https://git.kernel.org/netdev/net/c/9fc237f8d49f
 
 You are awesome, thank you!
 -- 
