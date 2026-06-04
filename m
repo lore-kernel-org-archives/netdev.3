@@ -1,83 +1,95 @@
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FA8C1F4174
-	for <netdev@vger.kernel.org>; Thu,  4 Jun 2026 08:17:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF0AA39DBE8;
+	Thu,  4 Jun 2026 08:18:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780561042; cv=none; b=A37VKpNI0jLZHzm5MxFFTzoC3e6H51Rob7qGlJvEWTdei0Cpp+WioMqjmAPaUSN3KjMXPZgG5zmGziPHPd4d7tzvCUdV2iWtqlZgrlrGC+7DM20rs0qC+wx92fHJojYr93vfq7D5cRIbb5GBH1uXJqm3sYJ9jM2WKeTBGoayL00=
+	t=1780561082; cv=none; b=OgV1e7Evwv3i6Z6RAl6FbP+bwkLGSBLBUF8J+SOT9cfTur4uj1oa5F9KMUrLhzRDdmVrZ4qi5/JuExGsZ3Z4tV8e8Bzk5zkDAEUDydkNnds3DawFXScNPJKSAPWkc4EdumqLwpuIP15b9jzvGgj+OWHuRIY/wSnOxl7e+WeU6fg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780561042; c=relaxed/simple;
-	bh=MbBXDLLN2+8AL4Ih5EYGErcv9YBkh34L7MTEz/ptLxs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AUD5tmiNj53t9atODJWgN2bEM3NRKjy6zCW1a0U+/sUKiYNd/pWaqrPKxufng/hqZjb+OJg8/4cBD1Pkv/upi4EeYf5HUkF03PaVQyoAG0gj61AjCUCQXdPalJZmJSW47AyfrBy3Cpiv8YfVeJW0YmTvrU0wS5fZut13whCP5BY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=f15e3XuX; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
+	s=arc-20240116; t=1780561082; c=relaxed/simple;
+	bh=ByEm3TUK6eUzjF5SjlhbvOJ6jVwo3FM3oHJbVBvrrmc=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=PgvqQ0YDdmU4PTU1xNHBw6+gcCBIiS0EBhZy9pXkoSDW1Rz9KekVNAGInS6H2Ln6pHfoy0SqXeyngPE8liqE3Da0LmAqA4gfny9tTB6nxd4JxaAZE1dAZ+pWjnKb2B85amtJkOTHOc+Q/gWtLDSpW/n7Dsg1oGNxJzL1UMu18PQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=Q7rptp2N; arc=none smtp.client-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="f15e3XuX"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=zyVYfWEZgqIx/CQc1BEe2jo/5M+qhbsyRuWc13UO/SE=; b=f15e3XuXyyggszA8ILLWruGBYF
-	rZn2V/nhqLu1lpx0pHYD7NlPRK0etmLgcX53VCHPNbVs5ziJQWvKzOuaee8768+NZfsf0hC/B6ayG
-	9cUIfqfoY6B3BtM80bkaMHM3Y4X7shnifyWoeUIzUsZnm9nQFXTU+yl9mPay/bELpo4GVZmzV7lMB
-	XC50MvomF2X/VqIRo/Y9P0cBDvhzQgGxsWKuWp7yoje6tg6fqP7XWS3cBNPxCcqdDTvph4rUqahQO
-	DD+HxHG8OiSj5Gr6ocmDpUEmxQ8VSroq5HyVZLldxJXzXxlnpuMSHY8QDorF8c/+QgRd+wPQLdyJz
-	JGwl+BQw==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1wV3GK-004Nel-02;
-	Thu, 04 Jun 2026 08:17:12 +0000
-Date: Thu, 4 Jun 2026 01:17:07 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com, 
-	pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org, 
-	michael.chan@broadcom.com, pavan.chebbi@broadcom.com, sdf@fomichev.me, 
-	aleksandr.loktionov@intel.com
-Subject: Re: [PATCH net] Reapply "bnxt_en: bring back rtnl_lock() in the
- bnxt_open() path"
-Message-ID: <aiE0Z74p1ey14I5A@gmail.com>
-References: <20260603195845.2574426-1-kuba@kernel.org>
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="Q7rptp2N"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A66EFA4C2B;
+	Thu,  4 Jun 2026 10:17:55 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1780561078; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=6A98WJJ7gTV9m+rio9++J4CMz0Lll/v+T5HkaBJuKnE=;
+	b=Q7rptp2Nomp+MyBrxG2yQVSXEtIAccyjmKvrCIzs+J/JXf/EfDv0f44QJi/b6p7c/HGkfb
+	QlJs70qIhOMdn+/P7aZc/qYW1IxGvn4NI3lBb45PgyVFsx2fE9jq+ZJaWi1G8mjtoRnME2
+	xTUFJSWYyIeKlUQgxG8cluzuOsMU28QeQTdxtCZ3DDItq0Cym8Sl+IKV1Xqf4WjcuyfxdI
+	3Gg2y7P97/8NqYPjtYTLn33bFESjZ8yazXgkzaGcfkJ21xgal0GtKHtUNOe917QY30OKDy
+	i20mXqa5IRW3szQjf6EvD0D5tINk6UY96LbrlNJ/lx3ZIoPn8lDXC7ydFIg8hg==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260603195845.2574426-1-kuba@kernel.org>
-X-Debian-User: leitao
+Date: Thu, 04 Jun 2026 10:17:55 +0200
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: javen <javen_xu@realsil.com.cn>
+Cc: andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, freddy_gu@realsil.com.cn, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, daniel@makrotopia.org, vladimir.oltean@nxp.com
+Subject: Re: [PATCH net-next v2 1/4] net: phy: c45: add
+ genphy_c45_soft_reset()
+In-Reply-To: <20260604074209.93-2-javen_xu@realsil.com.cn>
+References: <20260604074209.93-1-javen_xu@realsil.com.cn>
+ <20260604074209.93-2-javen_xu@realsil.com.cn>
+Message-ID: <e0fd12f5a19611e6fa4a1fff64baed51@tipi-net.de>
+X-Sender: nb@tipi-net.de
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Wed, Jun 03, 2026 at 12:58:45PM -0700, Jakub Kicinski wrote:
-> This reverts commit 850d9248d2eac662f869c766a598c877690c74e5.
-> This reapplies commit 325eb217e41f ("bnxt_en: bring back rtnl_lock()
-> in the bnxt_open() path").
-> 
-> Breno reports a lockdep warning in bnxt. During FW reset the driver
-> may end up calling netif_set_real_num_tx_queues() (if queue count
-> changes), so calls to bnxt_open() still require rtnl_lock.
-> 
->   net/sched/sch_generic.c:1416 suspicious rcu_dereference_protected() usage!
-> 
->    dev_qdisc_change_real_num_tx+0x54/0xe0
->    netif_set_real_num_tx_queues+0x4ed/0xa80
->    __bnxt_open_nic+0x9cb/0x3490
->    bnxt_open+0x1cb/0x370
->    bnxt_fw_reset_task+0x80d/0x1e80
->    process_scheduled_works+0x9c1/0x13b0
-> 
-> The reverted commit was just an optimization / experiment
-> so let's go back to taking the lock.
-> 
-> Reported-by: Breno Leitao <leitao@debian.org>
-> Link: https://lore.kernel.org/ah726OtFX-Qw3U-R@gmail.com
-> Fixes: 850d9248d2ea ("Revert "bnxt_en: bring back rtnl_lock() in the bnxt_open() path"")
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Hi Javen
 
-Reviewed-by: Breno Leitao <leitao@debian.org>
+On 4.6.2026 09:42, javen wrote:
+> From: Javen Xu <javen_xu@realsil.com.cn>
+> 
+> Add a generic Clause 45 software reset helper. The helper sets the 
+> reset
+> bit in the PMA/PMD control register and waits until the bit is cleared 
+> by
+> hardware.
+> 
+> Signed-off-by: Javen Xu <javen_xu@realsil.com.cn>
+
+> [...]
+
+> +
+>  /**
+>   * genphy_c45_restart_aneg - Enable and restart auto-negotiation
+>   * @phydev: target phy_device struct
+> diff --git a/include/linux/phy.h b/include/linux/phy.h
+> index 199a7aaa341b..25a66320df56 100644
+> --- a/include/linux/phy.h
+> +++ b/include/linux/phy.h
+> @@ -2309,6 +2309,7 @@ int genphy_c37_read_status(struct phy_device 
+> *phydev, bool *changed);
+>  /* Clause 45 PHY */
+>  int genphy_c45_restart_aneg(struct phy_device *phydev);
+>  int genphy_c45_check_and_restart_aneg(struct phy_device *phydev, bool 
+> restart);
+> +int genphy_c45_soft_reset(struct phy_device *phydev);
+>  int genphy_c45_aneg_done(struct phy_device *phydev);
+>  int genphy_c45_read_link(struct phy_device *phydev);
+>  int genphy_c45_read_lpa(struct phy_device *phydev);
+
+nit: Ordering in c and header files mismatches, but this probably my OCD 
+:-)
+
+Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
+
+THanks,
+Nicolai
