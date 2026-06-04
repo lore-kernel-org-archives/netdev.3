@@ -1,171 +1,131 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01FCA428837
-	for <netdev@vger.kernel.org>; Thu,  4 Jun 2026 13:16:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8E164418FC
+	for <netdev@vger.kernel.org>; Thu,  4 Jun 2026 13:19:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780578983; cv=none; b=g9TQOTVCeeRSf2UDkdDRzO9Pqx4UOk7bN2eSI+kv4HjCE8uLRB8XgFIYhrhbAeMUDavsXfRU2Ytiw3Obnue9o2MSmOKKAAIjqcjjs2iYaeTPKHlgS7t5gqKjVDzIRV8CSW9H4TzF20jn1m4A0vjN4RIfXC7oSYOgruSEb745E7M=
+	t=1780579148; cv=none; b=obQw1A/gUj2v8VwuW7gIp3nUfitvWVA4QW9DxWcULcY9/uaKp9jT4EIj3XzB30x3pU0WQ2ICVGu0mxe8LPT8Go9ZaI6Shp9Kjoknu16dPNvm1ox4g3cqnhwowcyY+IZIDjL9bPQFV7yK8pAuF493Z/qIFUUhLZfHK5BAR9+MWAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780578983; c=relaxed/simple;
-	bh=8OD6vercM0NQHHJSxm5Sh0hKSf3htVrAK5i51eWlaSU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OTKxp/i5696pOskM/XFXobkceEeTp8s1JubcgsKpDVh3RcDz6VPOtgKlC4QCQsqUHaJjJLunVH3/fHc8ackDa1xdRqCUYNbsXhj4KvVP0pEHqgjJdXRWC6FGtS92jiD5bz6hsg7FBsenORPObVQBr+qKkc/UdrcNe5YufWhXvWo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QHDsM81D; arc=none smtp.client-ip=170.10.133.124
+	s=arc-20240116; t=1780579148; c=relaxed/simple;
+	bh=ZL2GPEr3Ol2qT7YzkCE58F7Qiw4vVP+eKl/QElSmojU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gfCWc0dwuE+SRu1cEcykMyrLchREl1FxJy4tQow9ReqbDxP5bUK50ld7Mv6ZjywjHqcvcCDSNPuNZqliXqj99lw3ZiQnt6gQ6k5d+Vq1zPqktajlsBn+YrVkbWtWv6M/Se10S8/CQKPCTj9ioRpzqkGfNZf9TI6Hg/6wl28uzWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Z7qWBLZ+; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=YwWmMvKB; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QHDsM81D"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Z7qWBLZ+";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="YwWmMvKB"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1780578981;
+	s=mimecast20190719; t=1780579146;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=GhL0S4CuF0yaYjDeJxiaG9Bkv2Z5ozlbJ8LkQmq7O/4=;
-	b=QHDsM81Dvc9NZR4+bckQxl3mR6l2QEPZdpLGNR7B7pqvSOOtbEgEhJC/38mnQFHsYHGYux
-	XOhJlIgkpQ6AWqIq8dsi/VFKZjV/THmnHbxt4zIwDp1UxIHpCIx5DgF+RU80AdvsbrkhuI
-	CwMdHr8bKZB4UDD7dJd0cVTkRSnIgJY=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-230-uYZtNnHnOEKK1fT3yG-frw-1; Thu,
- 04 Jun 2026 09:16:17 -0400
-X-MC-Unique: uYZtNnHnOEKK1fT3yG-frw-1
-X-Mimecast-MFC-AGG-ID: uYZtNnHnOEKK1fT3yG-frw_1780578975
-Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 581311956088;
-	Thu,  4 Jun 2026 13:16:15 +0000 (UTC)
-Received: from gerbillo.redhat.com (unknown [10.44.49.23])
-	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 751C9763;
-	Thu,  4 Jun 2026 13:16:11 +0000 (UTC)
-From: Paolo Abeni <pabeni@redhat.com>
-To: j.raczynski@samsung.com
-Cc: netdev@vger.kernel.org,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	mcoquelin.stm32@gmail.com,
-	alexandre.torgue@foss.st.com,
-	linux-kernel@vger.kernel.org,
-	k.domagalski@samsung.com,
-	k.tegowski@samsung.com,
-	cs0617.lee@samsung.com
-Subject: Re: [PATCH net-next v2 3/3] include/stmmac: Increase max DMA/MTL channel count from 8 to 16
-Date: Thu,  4 Jun 2026 15:16:06 +0200
-Message-ID: <20260604131606.185700-1-pabeni@redhat.com>
-In-Reply-To: <20260601162537.553512-4-j.raczynski@samsung.com>
-References: <20260601162537.553512-4-j.raczynski@samsung.com>
+	bh=m9NLf3OTZQcVdHSOSM3gNimtkOpf0GLwo462qJlWyY4=;
+	b=Z7qWBLZ+7W1wD640MW6X2CeqEV9yN0OvHoVCmjzDuTTCJCuA92wBmo5mIP20YEZN4cwAzE
+	T68zOnpJ+MsAV2N0af00/ba1CDrCKjY1GtaDzfa3nn/o8Mp85dj2bZc2gZ80VkUddITN+l
+	z2htKQZYij+YW07fGTCqDMcnPTDpTTE=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-127-6cPGE0vjMC-lwadfO3p1sg-1; Thu, 04 Jun 2026 09:19:04 -0400
+X-MC-Unique: 6cPGE0vjMC-lwadfO3p1sg-1
+X-Mimecast-MFC-AGG-ID: 6cPGE0vjMC-lwadfO3p1sg_1780579143
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-490a7aeaddbso5738755e9.1
+        for <netdev@vger.kernel.org>; Thu, 04 Jun 2026 06:19:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1780579143; x=1781183943; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=m9NLf3OTZQcVdHSOSM3gNimtkOpf0GLwo462qJlWyY4=;
+        b=YwWmMvKBg9sN0srUH0/NYGk8t/fDExQDXtR8OsE068Yj0onW1r16hCDGGeFeWLbw80
+         lzwlW7Kq4bjnB+JfpozomDf4Hr9XoNq5pLgHLThbEKBAtGzjkqEbapxTwCpus4MtSnrH
+         m7Jzz5JZzGyKBZhV9MVfkg+zdbDc9V5zo9Yr7BH+Ct/6QY05rYGZxmceVPJEH2a+UcoE
+         UHVERDmswwo8IPbNWPgMgHT6o6QUzKBBWYg0dbPgu035CvGPnvssKqcpYeTMPQ7F/EpT
+         NdSew8+ELJC3XgBpJSJdI2yjqbDtSN6jwfPytI7YczQt+KIFkDi13DCqIvrss8Wllv0k
+         X07w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780579143; x=1781183943;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=m9NLf3OTZQcVdHSOSM3gNimtkOpf0GLwo462qJlWyY4=;
+        b=rkgnkF61Bc1NtR7rnxKcysEyGAFV19K4Tx9fYR1K1wzsoWJ+eQYFHrIuhbOls6Z80o
+         jvYQ5s5frXXwE+tCvUf6I2qNxReUoh6VAbG4+Qc72o1xZZapblZk/DxRpV1kJ3iEKkGd
+         kwI14JsnFR13x/wedjUYyUspMKBOqwHb163OoT+r+3C/fco61+hx1QyAjKCQV4j5/1CS
+         lv1jmB3tAgB+IC3DdlG7GfLIZ6v847CIhC7R6hRLELZ7qPnVeYJpuKTpeDc8zhy0mthc
+         DhYdCeWfbrqaHRuL4qXQMBaqerbgUGVNdOduL8nb23hQFxDpqIATrPiF0+yA0gPFxl/u
+         lAbw==
+X-Forwarded-Encrypted: i=1; AFNElJ8b1X6QSymoLX8kBuoy4szuNYMYKQD2GjzNXOgvLI04Jfw3tFkuKeiH/B9tOjhxXinESP/j7as=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx8p+jBoYK/t1QuaVAuW+GqgRbMG9EbMxPbSS+BNKJzAcKFUrF1
+	RkxR3uUwpLkG4uBzY3nWekQnbtJDFVBbtX4FVMRo65RNU9JfVynJvoq/wVO/dPz1mEpsjo+3JqZ
+	5HKtvJkFxqN1NOI69wqNj41qTZhGri67+sWdZFinoRG/hE7hPILKEV3vTmw==
+X-Gm-Gg: Acq92OHHamH4npWmaB4FNEUf4N0VicCckTDVWLipM4RAPrc2e6VR0SRiLTBzso9BKYl
+	jfZ3YVlFSjJkhE9nmOlGhxIv0jxU42g60+ZnSafhJWK2HBTUDpYEIKlGIQ2Lik29zz9IfKMsmP8
+	3i1Qdj5Ak6Ix6ciobHXy//m26NRptgqnJpiGK8bTT/OynhB+Gl3OB26R8mGiIEB4zI23IhXhk0u
+	EZGDAYeGqQbJ5mgcgxXMK57Sliiud6HdOqndmX8MYizhqmcH3aBX9ialfcOrd8nK6/I6hcy+/ZH
+	TyxEEzbi6Vfiopok7O9doOs57v0qADBa/9r/IcTonxYubIDEPzSXFe5Ud7MWF4OKYlohM/C6Cyj
+	+Qkdr3BpIYrMHT2jLv9nJfQcUC/rqi26vsKA2DAXXDXqp19GPpom36dFoicghkm+jZnM=
+X-Received: by 2002:a05:600c:6095:b0:490:bb60:68ca with SMTP id 5b1f17b1804b1-490bc4b54b4mr51068615e9.3.1780579143354;
+        Thu, 04 Jun 2026 06:19:03 -0700 (PDT)
+X-Received: by 2002:a05:600c:6095:b0:490:bb60:68ca with SMTP id 5b1f17b1804b1-490bc4b54b4mr51067875e9.3.1780579142742;
+        Thu, 04 Jun 2026 06:19:02 -0700 (PDT)
+Received: from [192.168.88.32] ([212.105.155.59])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490b7a273e3sm107604705e9.0.2026.06.04.06.19.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 04 Jun 2026 06:19:02 -0700 (PDT)
+Message-ID: <42052da1-2d33-4023-b383-482006fcb628@redhat.com>
+Date: Thu, 4 Jun 2026 15:19:00 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v3 0/2] Resubmitting with cover-letter and threaded
+ patch series.
+To: Selvamani.Rajagopal@onsemi.com,
+ Parthiban Veerasooran <parthiban.veerasooran@microchip.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
+Cc: Piergiorgio Beruto <pier.beruto@onsemi.com>, Andrew Lunn
+ <andrew@lunn.ch>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Conor Dooley <conor.dooley@microchip.com>, devicetree@vger.kernel.org
+References: <20260601-level-trigger-v3-0-da73e7010532@onsemi.com>
+From: Paolo Abeni <pabeni@redhat.com>
+Content-Language: en-US
+In-Reply-To: <20260601-level-trigger-v3-0-da73e7010532@onsemi.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: AI Reviewer <ai@example.com>
+On 6/1/26 6:07 PM, Selvamani Rajagopal via B4 Relay wrote:
+> According to OPEN Alliance 10BASE-T1x MAC-PHY Serial Interface
+> specification, MAC-PHY interrupt is "active low, level triggered".
+> The specification mentions about the conditions in which the IRQ
+> is asserted and deasserted.
+> 
+> Bug is inadvertently introduced by treating the IRQ in the OA TC6
+> framework driver and in dt-binding YAML file as edge triggered.
+> 
+> Changes are done in two files
+>  - OA TC6 framework Ethernet driver
+>  - YAML file for the vendor that already uses OA TC6 framework.
+> 
+> Maintainer for this driver is already informed and aware of these
+> changes. Testing for these changes was done in onsemi's setup and
+> found to be working.
+> 
+> Signed-off-by: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
-Full review at: https://sashiko.dev/
----
-include/stmmac: Increase max DMA/MTL channel count from 8 to 16
+Note for future submissions: the cover letter subj must refer to the
+series content, and not to changes from the previous revision.
 
-Newer XGMAC hardware does support up to 16 DMA/MTL queues. Add support for
-these after previous modifications of driver to accommodate for that.
-
-> diff --git a/include/linux/stmmac.h b/include/linux/stmmac.h
-> index 4430b967abdeb..a9d19e2c388c6 100644
-> --- a/include/linux/stmmac.h
-> +++ b/include/linux/stmmac.h
-> @@ -15,9 +15,9 @@
->  #include <linux/platform_device.h>
->  #include <linux/phylink.h>
->  
-> -#define MTL_MAX_RX_QUEUES	8
-> -#define MTL_MAX_TX_QUEUES	8
-> -#define STMMAC_CH_MAX		8
-> +#define MTL_MAX_RX_QUEUES	16
-> +#define MTL_MAX_TX_QUEUES	16
-> +#define STMMAC_CH_MAX		16
-
-[Severity: High]
-Does increasing these limits to 16 cause undefined behavior and silent register
-truncation in the hardware configuration functions when queue >= 8?
-
-In dwxgmac2_core.c:dwxgmac2_tx_queue_prio(), when queue >= 8, the logic
-only subtracts 4:
-
-    if (queue >= 4)
-        queue -= 4;
-
-This leaves queue >= 4, which causes XGMAC_PSTC_SHIFT(queue) to shift by >= 32
-bits, overflowing the 32-bit integer.
-
-A similar regression occurs in dwmac4_core.c:dwmac4_tx_queue_priority() where
-it shifts by GMAC_TXQCTRL_PSTQX_SHIFT(queue).
-
-Additionally, in dwmac4_core.c:dwmac4_rx_queue_routing(), the queue variable
-is masked against a 3-bit bitmask, which silently truncates any queue >= 8:
-
-    value |= (queue << route_possibilities[packet-1].reg_shift) & 
-             route_possibilities[packet - 1].reg_mask;
-
-Finally, dwmac4_core.c:dwmac4_map_mtl_dma() only maps queues up to 7 (using
-MAP0 and MAP1):
-
-    if (queue < 4) {
-    ...
-    } else {
-        value = readl(ioaddr + MTL_RXQ_DMA_MAP1);
-        value &= ~MTL_RXQ_DMA_QXMDMACH_MASK(queue - 4);
-
-For queue >= 8, the shift calculation overflows and corrupts register data.
-Should these hardware configuration functions be updated to handle the expanded
-queue limits?
-
-[Severity: Critical]
-This is a pre-existing issue, but does missing bounds checking on the device
-tree properties expose an out-of-bounds array access during device probe?
-
-In stmmac_platform.c:stmmac_mtl_setup(), the device tree property
-snps,tx-queues-to-use is parsed and clamped only to 255 (U8_MAX):
-
-    if (!of_property_read_u32(tx_node, "snps,tx-queues-to-use", &value)) {
-        if (value > U8_MAX)
-            value = U8_MAX;
-        plat->tx_queues_to_use = value;
-    }
-
-Later in stmmac_main.c:stmmac_hw_setup(), it attempts to dynamically clamp
-this value to the hardware capabilities:
-
-    if (priv->dma_cap.number_tx_queues &&
-        priv->plat->tx_queues_to_use > priv->dma_cap.number_tx_queues) {
-        priv->plat->tx_queues_to_use = priv->dma_cap.number_tx_queues;
-    }
-
-However, if the hardware feature registers report 0 (which happens for older
-GMAC versions), this check is bypassed. The driver fails to clamp the
-requested queues against the static internal array limit MTL_MAX_TX_QUEUES.
-
-As a result, in stmmac_main.c:init_dma_tx_desc_rings(), the initialization
-loop iterates up to the unvalidated tx_queues_to_use:
-
-    for (queue = 0; queue < tx_queue_cnt; queue++)
-        __init_dma_tx_desc_rings(priv, dma_conf, queue);
-
-This will overrun the bounds of arrays embedded in struct stmmac_priv (like
-dma_conf->tx_queue) if the device tree configuration exceeds the static array
-limits. Should we add a strict bounds check against MTL_MAX_TX_QUEUES and
-MTL_MAX_RX_QUEUES during probe?
--- 
-This is an AI-generated review.
+/P
 
