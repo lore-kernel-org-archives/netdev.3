@@ -1,100 +1,81 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94363342C88
-	for <netdev@vger.kernel.org>; Thu,  4 Jun 2026 15:36:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52BDF356765;
+	Thu,  4 Jun 2026 15:40:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780587387; cv=none; b=dMSFd4olB2Igb4g4sCo8OJFcvHco3psdgZ3WqY4IM/CVwC0Ikg4nAGBTHC3yLznTxfuHZ2cqnteqLoAsOG8Xv3+jzOnA2ASCedOQrIXDpgbggEbx9IUMhZBrhqhT7Wi0ewGVfQwKFE88lz4iHIpJ1xXW/htDb6ef5DFcqH8yX2s=
+	t=1780587612; cv=none; b=ZqveKE550+XqN4CXUHS4RzqQWvyQGSL/K0Wf1MKgUPDGW+giECBVTqelOzRph5eXHiuSeKH9eojpur11fWcXrArkFS+Hw/b5nAUrq10NuvgG4Xsf6hGyk0d1fpaPlCHSh+YKfUcnXOwTUWq6W1itXmzZVNqWPKUg7sU2qads8Jc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780587387; c=relaxed/simple;
-	bh=qkVKFYCe5VPkcUo7OKFJOM8zmsofehNViaFbdXZx0uE=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=UJ6fGM+zdpVMsaxLg1xhbDcuPnGK7r2/AiWvB+P0/zHCniQHw2FG2jEjUOZPw1N340ircVoHUoBHIPKk4fER8mADLITApzCJGcAnXyXqT8aAF6aFknG/HWymJ6MshHVJQI7hiEnh0GVwPw1d200CsaLImO/SsHPa9DVlx3jwdNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=glPRWIeE; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1780587612; c=relaxed/simple;
+	bh=I+zXD3fCsou6wp205kAa2H7w5pkxVHw6Gc5PQPzJJ/w=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=PlzZS8SDhys8xuEUo+4KSxU6n2I+5jyr8bdqdZJ0e+BcMDHcR9pmXx47lZiRRONjJck+loCOz9EB/PG2VVye0hmqqTe6A3T1FCe4yu2CxXDMjllcCm4fio3CBB+P5guPLokrLKEbEhiQawRKvfBPsgdGqqiCmZdhdbi+T2UekT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iykPeG/d; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="glPRWIeE"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1780587385;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lKEGFEOyGjd+radcR4C1q84cAHVu0//u+OiuLG8lrUA=;
-	b=glPRWIeEopzMRynOsXtjFPtA60rjcG4AEcWp/UgehPp2V3VAI72TgbyGhCxRN17bWOYHhm
-	5WtIH8ekyPVBe/Sq1ga9VVQo/XbhWWuuyTJB68RQGHXwvUfx/rhGiCpw59gfMFuGzoaU4d
-	uHwrDZT4oGnZQ7y0WXCuMXQyRhvsG8M=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-605-pNO9Zv0wPZqe0TPXmkWp5A-1; Thu,
- 04 Jun 2026 11:36:22 -0400
-X-MC-Unique: pNO9Zv0wPZqe0TPXmkWp5A-1
-X-Mimecast-MFC-AGG-ID: pNO9Zv0wPZqe0TPXmkWp5A_1780587379
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8B4B81956094;
-	Thu,  4 Jun 2026 15:36:19 +0000 (UTC)
-Received: from RHTRH0061144 (unknown [10.22.88.184])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4E0B230001A1;
-	Thu,  4 Jun 2026 15:36:17 +0000 (UTC)
-From: Aaron Conole <aconole@redhat.com>
-To: Adrian Moreno via dev <ovs-dev@openvswitch.org>
-Cc: netdev@vger.kernel.org,  Adrian Moreno <amorenoz@redhat.com>,  "open
- list:OPENVSWITCH" <dev@openvswitch.org>,  Paolo Abeni <pabeni@redhat.com>,
-  Pravin B Shelar <pshelar@nicira.com>,  Ilya Maximets
- <i.maximets@ovn.org>,  open list <linux-kernel@vger.kernel.org>,  Eric
- Dumazet <edumazet@google.com>,  Simon Horman <horms@kernel.org>,  Jarno
- Rajahalme <jrajahalme@nicira.com>,  Jakub Kicinski <kuba@kernel.org>,
-  "David S. Miller" <davem@davemloft.net>, Minxi Hou <houminxi@gmail.com>
-Subject: Re: [ovs-dev] [PATCH net] net: openvswitch: fix possible kfree_skb
- of ERR_PTR
-In-Reply-To: <20260604121946.942164-1-amorenoz@redhat.com> (Adrian Moreno via
-	dev's message of "Thu, 4 Jun 2026 14:19:46 +0200")
-References: <20260604121946.942164-1-amorenoz@redhat.com>
-Date: Thu, 04 Jun 2026 11:36:16 -0400
-Message-ID: <f7tzf1agvwv.fsf@redhat.com>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iykPeG/d"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0EB91F00893;
+	Thu,  4 Jun 2026 15:40:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780587609;
+	bh=nNvEQY7/ZanMRiYKcGjHR08scMy0tMkJfWg1swlQF3A=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=iykPeG/dx49r+oBr2Q69SXiT7xB3uA5oAJzYci4zAzPZUQ1+xFedQ396JvAm0RaSi
+	 9MD6jzGiJe5lAlcJeaaGJfZJmjOEigQrwk8WAib1LL6sG5+NRQnrwblIyGUXeKrEhQ
+	 cgXgQ8YMK51NGZhMYiDrumh8jsfGbeNKfgdQf8Z86wqoq083EoVTVN8SLYJV/xd4bp
+	 ZV7fe6pwVV4ctKxu6AigpbTfj2a7RBlhfMk7B1/pyPKjEdnL6MJZzpU1Vp9XKqM7wT
+	 6fhkkfGf/mxQ922gWo1ttxiX04+auZ+85y6i28IgHL/GEGj/rPaQhml6fXgA0N9kE3
+	 919bqd3NaQ9PQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 19A2E39309B7;
+	Thu,  4 Jun 2026 15:40:11 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v5 1/1] net/sched: fix pedit partial COW leading to
+ page
+ cache corruption
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178058760965.2484354.17011007371452142706.git-patchwork-notify@kernel.org>
+Date: Thu, 04 Jun 2026 15:40:09 +0000
+References: <20260531123221.48732-1-jhs@mojatatu.com>
+In-Reply-To: <20260531123221.48732-1-jhs@mojatatu.com>
+To: Jamal Hadi Salim <jhs@mojatatu.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, jiri@resnulli.us,
+ victor@mojatatu.com, david.laight.linux@gmail.com, yimingqian591@gmail.com,
+ keenanat2000@gmail.com, 2045gemini@gmail.com, rollkingzzc@gmail.com,
+ toke@redhat.com, dcaratti@redhat.com, security@kernel.org,
+ linux-kernel@vger.kernel.org, stable@kernel.org, rajat.gupta@oss.qualcomm.com
 
-Hi Adrian,
+Hello:
 
-Adrian Moreno via dev <ovs-dev@openvswitch.org> writes:
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-> After the patch in the "Fixes" tag, the allocation of the "reply" skb
-> can happen either before or after locking the ovs_mutex.
->
-> However, error cleanups still follow the classical reversed order,
-> assuming "reply" is allocated before locking: it is freed after unlocking.
->
-> If "reply" allocation happens after locking the mutex and it fails,
-> "reply" is left with an ERR_PTR, and execution jumps to the correspondent
-> cleanup stage which will try to free an invalid pointer.
->
-> Fix this by setting the pointer to NULL after having saved its error
-> value.
->
-> Fixes: 893f139b9a6c ("openvswitch: Minimize ovs_flow_cmd_new|set
-> critical sections.")
->
-> Signed-off-by: Adrian Moreno <amorenoz@redhat.com>
-> ---
+On Sun, 31 May 2026 08:32:21 -0400 you wrote:
+> From: Rajat Gupta <rajat.gupta@oss.qualcomm.com>
+> 
+> tcf_pedit_act() computes the COW range for skb_ensure_writable()
+> once before the key loop using tcfp_off_max_hint, but the hint does
+> not account for the runtime header offset added by typed keys. This
+> can leave part of the write region un-COW'd.
+> 
+> [...]
 
-Good catch - I guess this should only happen when modifying an existing
-flow without putting any actions (and that would be only from an
-implicit drop case since the actions list would be empty).  CC'ing
-Minxi, since he's recently had interest in the selftests area and may be
-able to help with writing a test case for the scenario.
+Here is the summary with links:
+  - [net,v5,1/1] net/sched: fix pedit partial COW leading to page cache corruption
+    https://git.kernel.org/netdev/net/c/899ee91156e5
 
-Reviewed-by: Aaron Conole <aconole@redhat.com>
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
