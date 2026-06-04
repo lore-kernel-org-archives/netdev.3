@@ -1,110 +1,219 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D94A7400E01
-	for <netdev@vger.kernel.org>; Thu,  4 Jun 2026 09:28:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEDDE3FDC08
+	for <netdev@vger.kernel.org>; Thu,  4 Jun 2026 09:29:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780565314; cv=none; b=poWRx3D6OkqaLFWYgfmWbbR6KAmYSKHyjWhI/b97LpRl/KQaA5HdIeLQRxba4Hfkh7sTyOBhTIKlMUpz0qmVoW8tYCG5KQ5Jh6VtaRg5SIOXGnwfx2AJYZw5Av3sQKKnX2KZY1s3T6lvj/bwXmBL7QP/eCXGwZZvjajN/gZ9G9g=
+	t=1780565380; cv=none; b=BR7b+EA3jgG0grvKvC8rL3puyxszsk+/9jUX/IVFkRRpt2SOcZvPonQN3vIII0VUdU6vnZqk6n43GQ6CiDe0UYFv11txPljS3Uu1aK3rYyrNG3Yqqu400wZYoorFQ5wB71raDdA+vbF0xhQcCle9V+baW8W/67qayfaO5d7nXxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780565314; c=relaxed/simple;
-	bh=jskCFflmxToUINjJmLffODvvm6DVOanoQ5eEaEd+aVI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MZToobUf7jcn1K3W7ReCYOLBPPei2FXtfD8yWldgSvGQBMr/GcDJcCUEHWxnIFvny7uGuBDnK8Uz3r+woZXHIOc1B5BEi//dlPWYPu8tcm4XBy9X9k5KgAVrCXWW/x+7qujwPSEF3nRVd11O/iCUNN9Mg0mWVFyfRjqazJz6k1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=jFOlI3bO; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1780565380; c=relaxed/simple;
+	bh=LSYx6S/5jyu9KfVp/5iYPsZKG9eGFj04YvZKjTai2Y8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=SXYMMTaAqPYUAVxJNMF22NhcnNmZbhy6KWtskro5SIPsgjCeuF7Djla3Dv4pzuZXABLGm6G/wNWSTcdnw7kSgx2qs+uwEc5tif4t9K2QQ6mnD2sCFjrJec7YjrxpPhR6SnQbY6Jj0YiTbhkoQRpSqfR+/fdvVyDEwnFVOqdTg0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HEBKvVmb; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=MrGwsVwB; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="jFOlI3bO"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id B96CB4E406AC;
-	Thu,  4 Jun 2026 09:28:31 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 8CFEA5FEF7;
-	Thu,  4 Jun 2026 09:28:31 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id DDC09106A17C0;
-	Thu,  4 Jun 2026 11:28:29 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1780565310; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=YsRgl1lRAk6jP9fJqYly+oGLmo/o8RaokN6f/Q0aPJY=;
-	b=jFOlI3bOuPoe+KcopbAWXAHlKCLBJmjGsmlFd1z/oFxMWlwk/ulCgkDc9k5b6QAUSesoOR
-	Cl5zLQnY8kip0261+ZGGzyW2VZHX0Zx5vpAdslTPk2yhVvYkS+/PMgDyozG30i48uJiU3t
-	FtmcoExh+YdIOuO8XwWTXW+8/Dp9afLQJptpNybULvSTX4SxtCc2/hlWtzrfrwNABYnBnt
-	5h86l7ww7MR2kCTCvSYDdzKvyZFJnISTImhq1P69uMLASQFLKBs223cxb+8CJDltF2odlg
-	tp4RgfZn7/1Yfy8+wFB17pEIF1Xre10shK0TpXtjclEM9vyN7QnUsUI0hyYmCQ==
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	davem@davemloft.net,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Nicolai Buchwitz <nb@tipi-net.de>
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	thomas.petazzoni@bootlin.com
-Subject: [PATCH net v3 4/4] net: phy: don't try to setup PHY-driven SFP cages when using genphy
-Date: Thu,  4 Jun 2026 11:28:18 +0200
-Message-ID: <20260604092819.723505-5-maxime.chevallier@bootlin.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260604092819.723505-1-maxime.chevallier@bootlin.com>
-References: <20260604092819.723505-1-maxime.chevallier@bootlin.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HEBKvVmb";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="MrGwsVwB"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1780565377;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+huBJ1nPsqC9QTJtR1rRZxAcoh6LRj4ywJbAKenhqm4=;
+	b=HEBKvVmbafbigtjQIpDRJTOo5jtaHv+jDwL5nXG+fbYJ/huRvHi0/P+OF4OUkejY3W506l
+	ncTdj0E33z8os+6qDf8gacOHfNdYMmdxhUFT9nVYyKOeuY0Noo6LSZXkarlyGxACi7K0Uu
+	nZuw3EBboF5MNjscWRnsqF+SI9VEmrM=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-630-UyPI1s6jN7et_szLiWPVFg-1; Thu, 04 Jun 2026 05:29:35 -0400
+X-MC-Unique: UyPI1s6jN7et_szLiWPVFg-1
+X-Mimecast-MFC-AGG-ID: UyPI1s6jN7et_szLiWPVFg_1780565375
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-490b4d3d3e6so4014485e9.0
+        for <netdev@vger.kernel.org>; Thu, 04 Jun 2026 02:29:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1780565374; x=1781170174; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=+huBJ1nPsqC9QTJtR1rRZxAcoh6LRj4ywJbAKenhqm4=;
+        b=MrGwsVwBVmKBHV3LNcnxKwkeYZBZz4/9S/ZG93qcrPWEBjxvCQ/Mvet4v7imvKTi+P
+         c3JPtQuD/YYxlw8rOLdGIDqsG36yrPhLxHAlenO4jOTeoYCJt7GDlujr+Q7EbmlBT9xF
+         MBcEhrpr27Ao7SnmG/yRQ3Io39ZpGwaOx0He1itSGPDxPlKDZB9R5JFhXgghsW8R7imW
+         ceopw6yzmM8ieQ9rqLdjOWZx5hXWTg4UU7ViEsLahOgKfLytUoKu360dJEwqO/+ALC/r
+         QTzl7/RR61WMnhRPaRdMTCJCYNjtVc1dGAfSp7tU9nqJIfPGpLLo4Zqk74eH+ibMx2XI
+         uAuQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780565374; x=1781170174;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=+huBJ1nPsqC9QTJtR1rRZxAcoh6LRj4ywJbAKenhqm4=;
+        b=CJUdlip+FW5FZ2TrgLYmyAm5EG98zFJkNqlKKQzTvZZjbJHLOucG8qbCnYy5WNGGNO
+         Fhh4OdePQpXjsZqv006S9syce34yVzEhXPv4l6bCKqXtJhhhQLvabiC/IoqJXYvxUt7V
+         h4Cf6pUmKezBomyNDJddptyBY8EbiuOt3kDhoHp1UqOpW3X5exObJ1NPpYlIlsNTjjxF
+         8F5t5Yhd7MwG0dz3z/QpDQDnWYwsPr58pZrmHsuSszNWI8IyrpGWJN2wCqNK8VQDLYxa
+         b6StHgb6rJuXnoignTSMDT2y5y/H2DtKKrNqNMxttefi+PZtxddQKgi546gHSsxZPQ8i
+         lqog==
+X-Forwarded-Encrypted: i=1; AFNElJ9+zFbVlxkNS8tkI1bsiVWbiit87vtF7O7Kp8zpKfLWrucvJ+3sZpmB1rbszDTKjorABesNV7A=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzM1p6h0Q0RTpKLA38p1OtEf2aV5TGK1nSVXXDSOUb6eXZCtPAq
+	35GRu4iQ00vmhSz9JkKMPtb84psVmVzMEII291YvMLkUTrIipV3R+5c3YyyMdwnwLB1Hvdj9xXb
+	taYmxPCbUbeLiUweqlN+lzzjoiudY4bTt8LRvZjXgowtYPQ9M/9bBDdpX3hXQ3uP87w==
+X-Gm-Gg: Acq92OH4DKAVJ5HNJsH12dP5n8fk69oZztKlGXym18cGyIh2PW5bcnuuEKU90RH7EdP
+	UQycSloRqSyh7txWzZeHfRhzNOpALgpwBOBp1Fr3gPbPUB5d8BEIiy0zKWrsfxxdwBPWRVQJ+O3
+	IyN0DfXHO4CPmVIw9iR+I5SVYFH7XoOT9X0JE21ONhMRgovUAKvQw7lQFNeLAYXAvJpuLNMFhIs
+	qxR1VDm4c4x2uYStfw7oGr8ArA26fPZVGtzqtOCVe50R9CLjAvwQ6yP20xliocj1kiJ5CSQlvmv
+	qrjMVPgMQpzhPmLxWsIHpNCDBPjpR6xGmXbJ9DZldTeSJU/huetTgkKBxvdMrCeZ8QHQtwx7qAK
+	/VFeSpqtGKhLf5CRwGCDrgK8YaNHJz/2hV/9i/iu3Pok4YKIrFlPaL6ACF6vSHbqmxq0=
+X-Received: by 2002:a05:600c:4fc6:b0:490:4973:91a0 with SMTP id 5b1f17b1804b1-490b5e950admr112769595e9.10.1780565374424;
+        Thu, 04 Jun 2026 02:29:34 -0700 (PDT)
+X-Received: by 2002:a05:600c:4fc6:b0:490:4973:91a0 with SMTP id 5b1f17b1804b1-490b5e950admr112769175e9.10.1780565373963;
+        Thu, 04 Jun 2026 02:29:33 -0700 (PDT)
+Received: from [192.168.88.32] ([212.105.155.59])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490bd670c2esm45301645e9.0.2026.06.04.02.29.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 04 Jun 2026 02:29:33 -0700 (PDT)
+Message-ID: <c1fcc5f6-8a61-4774-9063-44fc5f458b97@redhat.com>
+Date: Thu, 4 Jun 2026 11:29:31 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] net: wwan: t7xx: fix race between TX thread and system PM
+ suspend
+To: Tim JH Chen <tim770802@gmail.com>, netdev@vger.kernel.org
+Cc: haijun.liu@mediatek.com, chandrashekar.devegowda@intel.com,
+ ricardo.martinez@linux.intel.com, loic.poulain@oss.qualcomm.com,
+ ryazanov.s.a@gmail.com, johannes@sipsolutions.net, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ linux-kernel@vger.kernel.org, tim.jh.chen@wnc.com.tw,
+ Chih.Hung.Huang@wnc.com.tw
+References: <2f9c5f6b-1d8d-4c8b-815d-77a40aa76e23@redhat.com>
+ <20260601015231.3211764-1-tim.jh.chen@wnc.com.tw>
+From: Paolo Abeni <pabeni@redhat.com>
+Content-Language: en-US
+In-Reply-To: <20260601015231.3211764-1-tim.jh.chen@wnc.com.tw>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
 
-We don't have support for PHY-driver SFP cages with the genphy code.
+On 6/1/26 3:52 AM, Tim JH Chen wrote:
+> When system suspend is triggered while the DPMAIF TX kthread
+> (t7xx_dpmaif_tx_hw_push_thread) is running, a deadlock can occur
+> leading to a CPU soft lockup.
+> 
+> The root cause is two-fold:
+> 
+> 1. t7xx_dpmaif_suspend() calls t7xx_dpmaif_tx_stop() which only stops
+>    the TX work-queue items (by clearing txq->que_started and waiting on
+>    txq->tx_processing). It does NOT signal the kthread and does NOT
+>    update dpmaif_ctrl->state, which stays DPMAIF_STATE_PWRON.
+> 
+> 2. The kthread's state guard is only checked at the top of each loop
+>    iteration. If the thread already passed this guard, it proceeds
+>    unconditionally to call pm_runtime_resume_and_get() — which tries to
+>    acquire dev->power.lock also contended by the system PM suspend path.
+> 
+> The result is a spinlock deadlock observed as:
+> 
+>   watchdog: BUG: soft lockup - CPU#N stuck for 26s! [dpmaif_tx_hw_pu]
+>   RIP: _raw_spin_unlock_irqrestore
+>   Call Trace:
+>     __pm_runtime_resume+0x5b/0x80
+>     t7xx_dpmaif_tx_hw_push_thread+0xc4 [mtk_t7xx]
+> 
+> The condition requires ASPM L1 enabled on the endpoint (which extends
+> the time pm_runtime_resume_and_get() holds dev->power.lock during L1.2
+> link retraining) and hundreds of repeated suspend/resume cycles to
+> trigger reliably.
+> 
+> Fix by introducing tx_pm_lock (struct mutex) and several coordinated
+> changes:
+> 
+> t7xx_dpmaif_suspend():
+>   After t7xx_dpmaif_tx_stop(), acquire tx_pm_lock. Under the lock,
+>   snapshot dpmaif_ctrl->state into pre_suspend_state (capturing the
+>   modem state atomically with respect to the kthread's PM section),
+>   then set DPMAIF_STATE_PWROFF via WRITE_ONCE(). Release the lock
+>   and call wake_up() so any sleeping kthread re-evaluates the
+>   wait_event condition and exits.
+> 
+>   t7xx_dpmaif_suspend() acquires tx_pm_lock without holding any PM
+>   lock. While it waits, the kthread may call pm_runtime_resume_and_get()
+>   which briefly takes and releases dev->power.lock independently.
+>   Because the suspend callback does not compete for dev->power.lock at
+>   this point, the original spinlock deadlock cannot occur. Suspend
+>   latency increases by at most one TX burst drain time, which is
+>   bounded by the DRB ring depth.
+> 
+> t7xx_dpmaif_resume():
+>   When pre_suspend_state is DPMAIF_STATE_PWRON, re-arm the HW fully
+>   (start_txrx_qs, enable_irq, unmask_dlq_intr, start_hw) before
+>   publishing the new state. This ensures the kthread cannot issue
+>   ul_update_hw_drb_cnt() MMIO writes before UL_ALL_Q_EN is set by
+>   t7xx_dpmaif_start_hw(). Publish the restored state under tx_pm_lock
+>   to serialise with the kthread's under-lock state check. Wake up the
+>   kthread only after HW and state are both consistent.
+> 
+>   When pre_suspend_state is DPMAIF_STATE_PWROFF (modem was already
+>   stopped or in exception before suspend), skip HW re-arming entirely
+>   to avoid leaving DMA engines running while the MD state machine
+>   considers the modem inactive.
+> 
+> t7xx_dpmaif_tx_hw_push_thread():
+>   Hold tx_pm_lock across the [state check -> pm_runtime_resume_and_get
+>   -> pm_runtime_put_autosuspend] sequence. A second READ_ONCE() state
+>   check under the lock closes the TOCTOU window between the wait_event
+>   guard at the loop top and the pm_runtime call. READ_ONCE() is used
+>   in all unguarded state reads in this function.
+> 
+> t7xx_dpmaif_start() / t7xx_dpmaif_stop():
+>   Use WRITE_ONCE() for state writes to match the READ_ONCE() reads
+>   used throughout the driver and prevent compiler optimisations from
+>   obscuring concurrent access.
+> 
+> t7xx_do_tx_hw_push():
+>   Use READ_ONCE() in the do/while termination condition to match the
+>   WRITE_ONCE() annotations on the write side.
+> 
+> t7xx_dpmaif_tx_thread_init():
+>   Initialise tx_pm_lock with mutex_init().
+> 
+> Note: t7xx_dpmaif_start() and t7xx_dpmaif_stop() (called from the
+> MD-FSM kthread via t7xx_dpmaif_md_state_callback()) do not hold
+> tx_pm_lock. A race where the FSM transitions the modem to
+> DPMAIF_STATE_PWROFF concurrently with the TX kthread's last burst is
+> pre-existing and not introduced by this patch; the do/while condition
+> in t7xx_do_tx_hw_push() now re-checks state with READ_ONCE() at each
+> iteration boundary, limiting exposure to at most one burst.
+> 
+> Tested: no soft lockup observed over 500+ suspend/resume cycles with
+> SIM registered and ASPM L1 enabled (previously triggered in < 300).
+> 
+> Fixes: 46e8f49ed7b3 ("net: wwan: t7xx: Introduce power management")
+> Signed-off-by: Tim JH Chen <tim.jh.chen@wnc.com.tw>
 
-On top of that, it was found by sashiko that running
-sfp_bus_add_upstream() for genphy deadlocks, as for genphy the PHY
-probing runs under RTNL, which isn't the case for non-genphy drivers.
+The above is way too verbose and hints that this patch should likely 
+be split in a series.
 
-This problem was reproduced, and does lead to a deadlock on RTNL.
+Note that process wise there are still several problems:
+- missing revision number in the suby prefix
+- mismatch between from email message and SoB
+- new revision MUST NOT be in reply-to of older ones.
 
-Before the blamed commit, the phy_sfp_probe() call was made by
-individual PHY drivers, so there was no way to get to the SFP probing
-path when using genphy.
+Please try to be accurate with your next resubmission, or we will
+have to delay processing this patch for an additional while.
 
-Let's therefore only run phy_sfp_probe when not using genphy.
+Sashiko has still quite a bit of concerns:
 
-Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
-Fixes: bad869b5e41a ("net: phy: Only rely on phy_port for PHY-driven SFP")
-Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
----
- drivers/net/phy/phy_device.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260601015231.3211764-1-tim.jh.chen%40wnc.com.tw
 
-diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-index b48722589f40..1511385b9b36 100644
---- a/drivers/net/phy/phy_device.c
-+++ b/drivers/net/phy/phy_device.c
-@@ -3512,9 +3512,15 @@ static int phy_setup_ports(struct phy_device *phydev)
- 	if (ret)
- 		return ret;
- 
--	ret = phy_sfp_probe(phydev);
--	if (ret)
--		goto out;
-+	/* We don't support SFP with genphy drivers. Also, genphy driver
-+	 * binding occurs with RTNL help, which will deadlock the call to
-+	 * sfp_bus_add_upstream().
-+	 */
-+	if (!phydev->is_genphy_driven) {
-+		ret = phy_sfp_probe(phydev);
-+		if (ret)
-+			goto out;
-+	}
- 
- 	if (phydev->n_ports < phydev->max_n_ports) {
- 		ret = phy_default_setup_single_port(phydev);
--- 
-2.54.0
+/P
 
