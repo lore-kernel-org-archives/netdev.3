@@ -1,193 +1,103 @@
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B1373BBFD7
-	for <netdev@vger.kernel.org>; Thu,  4 Jun 2026 21:56:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.176
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780610217; cv=pass; b=X0HXjviLX3EhcKSP0BSEdLPj9SO+BWl35uTU99AkNC9m8uzxZSZudkPKoAB3KPdRZavfrBTNWOL/jloKEG2VEsZxEO7PnBK020+/vXWakqoZNEv8aYL3qz1WkBYcVfaMZaqFvLLTJjdQyidP4eIn+369brTAyz9WuUVs5WXgTM8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780610217; c=relaxed/simple;
-	bh=GIdR7oXqN0/LHonkwkN7zibl3m3ihCq0T2taL9KvOb8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ptZT5M11/+9v+i9RGJtvlAtyHwnd7LaYA5WNvfAOEVwhseDzngLYuS/tf5RzE2TQ/AcGkXbQfsU3x92sLbMixbeuYy9MLs9LcfQ1IHZXTsku0j6slhEHaPi0NVjDxfUb1eMkughl7cf2kwJvZNvbGvY6033fNzcuXBDUjmhsXes=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GDeAJUUr; arc=pass smtp.client-ip=209.85.210.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 206DB30D3E8
+	for <netdev@vger.kernel.org>; Thu,  4 Jun 2026 22:09:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780610948; cv=none; b=R6mpl2C/3/Z01uFX8q1WiaFWRIrhP2WcydKNav2LTOI3a8ggZKISwQsy4SMeQWzhhHAOBKnb1fT78hbrWV+IdsaPfjteXDBh6BDHy4WCPEkkdP0ZnivpS5cYiFajf6hGsEUVbNRpR7+ITBORgnSXlc/DiK/rGntDjS5wrGU8RQg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780610948; c=relaxed/simple;
+	bh=wl1EgPZ73oLh2FZKrzVhNcIqNN4ssianfunB+skD6i0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sjLJGXrOtC3y7Cm8Lb4uXLqfJaDmU2R1KY5Yrv39UB2O12zgqlLVrtXm8YOLYgnt1B9snwLRUHRYq3AEWTXDX/ukfkRCltq7YvX/jfF/fHugaQ7vOiJxZrHOH6U5dFNj2v0z8eJ+iNFV0mmApRqgPi6xnrgV/GJPbV7G1nKwRnE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dOtP1aR8; arc=none smtp.client-ip=209.85.210.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GDeAJUUr"
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-84229481d44so569754b3a.0
-        for <netdev@vger.kernel.org>; Thu, 04 Jun 2026 14:56:56 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780610216; cv=none;
-        d=google.com; s=arc-20240605;
-        b=g4/lYDAjEYHzUtTus8Rs6NfcNW+ltlPNn6Q40fbLOTQqJqgEJpuvKcFs+ohGGoOuHA
-         79DFzy6sG43F8/wd6n8WQlKi2qG9pf97dv+1vMLzu8Ncd1yox0faUM3tjmiKz9Qi9UHU
-         0wiVV2vKR4n1u1bGRqXwv2lza8f2yyrJ1gXmtuAY2hNC9qI466aip7EP5U8+ULQjIQud
-         yXMa1D+K8QNnE0o4wpmCEbG4KDbSUgpkTJvWU/Oq3cCsQGZA247+SIi7vP94WMWJVptv
-         xiWTpqRZ3sV0hS6xCNiE6i5LrbEHmTTpn3vHc7AYB+tT/0+o8tPfhlOT3cKe1ng7YWK9
-         Boyw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=B4P/E5eJRLHfKf3xAmuxsjbx58eaDCcmLeQej3n1fA0=;
-        fh=A7Gf0h+BSxANZPyd/202dd7odkMopc3XmYTdDroGHTY=;
-        b=PaUFhIIm0yXIJcRhz69MLqjCvnUwsKCvtSLaad4zRp3wwk4C6vIicDkybbKnNqWz/+
-         q6mjotM0b4RlW7tdjdBgfG5cJrj7yAoe0QqqRYwLolvnHfXvNdpMsiIGXYd+zwmVWk56
-         uW6jhFuHR0+ziIShrXqxOviyFfUEgY89iM3Z7Jr/ZwoGLDrQ1pFRWqgdwCOuehvOS0EX
-         Tp12UxEXi2jjTGHb7IFVZYVys6Ywia8ZEipbVqMnIPgaXSpnwwUHHFp1VH+GyVdqIuwP
-         UjC4O9sorHdqZ0s5cfaisGObfYfhgPlDymZMS9X9fMr8HisieIWGcA7RbBbFA4phA/R3
-         p8pg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dOtP1aR8"
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-8423f420455so556066b3a.3
+        for <netdev@vger.kernel.org>; Thu, 04 Jun 2026 15:09:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780610216; x=1781215016; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=B4P/E5eJRLHfKf3xAmuxsjbx58eaDCcmLeQej3n1fA0=;
-        b=GDeAJUUr2FNIMnSIcQ9d5U4kqK5otWjjbAECP2YiTVpJ8i2oVLo+TBEff/J//y02mA
-         KCy+2Uqie0pqFKLBts1+JUmDKgVSmDLxe91G3ELB+QWVfoJnjw8KKkG8GC9meb3UTLe4
-         UDawuyFW1HcXtVh+Hy7AdL4orPo4V4IvXnPC9y1RsvRk66BpjCpyqWf1JONcLZ31vfjc
-         epUm9zYKVlKCE8B9IsAgXRHETLC4azq2EgK9uwv7g2W7dmgiazen/txBJHjl7FNvf7JD
-         r+eVWV+Tj6KcsDjyKMMCNrdhQMfKT3B/skmCgT0ueSu3m/Se8Vj5KghM4/AT3T5w7Dpj
-         ug6w==
+        d=gmail.com; s=20251104; t=1780610946; x=1781215746; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=xe4pjIvCbIVOQdn6bIkFT1c3V4LzfoAMSIQAWXY6Goc=;
+        b=dOtP1aR8Bu/77/mCettqYp5d1dcU0M5IgKZyI8793+Mg9sIDzisA2ql/x/zNDpArAn
+         8xAt+Jn/+YJSAjQ/oUqy85JtA8cPDSa/gmdpNAm6lcXm5OOrtUH3jnBMBnJF18lV/9so
+         okihSpOxOpH92Ws51O3tofR8fxwdkUGXeznj5qRtW+em5o6Srbw9u/pCWrnITttygjNw
+         j2s1mpr8yIj9w4FRKzypiuGSP+cFm2/3PMGXlk06ef6x/2qf4G0gLIa1GcQ9zIpu+/9E
+         IF05NBTqSLspeGo58pLYTzs6clyplnEX2GWdGABaIcWXAKFl38KCkzygtdLwcYL7xkK6
+         7cHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780610216; x=1781215016;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=B4P/E5eJRLHfKf3xAmuxsjbx58eaDCcmLeQej3n1fA0=;
-        b=cosUDxckiXsddUhQ1cmSSo3QaYcYoiGR2rXPmp9vCtUmaHiDriDsmM5L7toxBOvGIE
-         rgnEaeknaBepdRU10gaDAm3lRWLnjVcV3LDe/IhWHFutCkXb6a4DJLwf/RmhlTXsbPTA
-         vF4mV39Pt0laNS0yS4WqXtMZvuD3Ru+NWg/XWQ5ylKTQv7XDU2FDA93Nb+5d1qjXI7N3
-         mGybdEkn8Wbez29MO0Be5lRwXj5fnXkaeBRhkV0JDsQmgoPkZNiUfoTXZskmuKhZ4+8G
-         J4UbtSIA5FdMMqilvGB3VrT9kDHu1Hs2su9B5Yk+7GZp9C6SkZChQuuISX7Qbbpx5ad/
-         oD2A==
-X-Gm-Message-State: AOJu0YzRxCuTrL1Zr6XWLaQFGHGViXwQv8G5O8i6Myz1LQYgXRGBlND2
-	30hkgSbPAHWtWbve+sXVUQ4iyxPDY1tLGnLvp6yQbZLyWm+z36CGpXAoeUc2IBlohGTz/PZYNjR
-	f7OjDq4WZAkGV7p2KEWkwJJJWZRS+LmQ=
-X-Gm-Gg: Acq92OF2vwWQspaKIR59++G7jf+9UexNBvG+Nsv+Udn/x20vIYnhSqgPkuk07Mew2zz
-	nr3bn/2UgCYIXJIU4LHho5rXWECSVFJvuAGi5D3Xb7MzkliD0abQDX03s1NQhQP1eHV4DrOt1+I
-	0AkMn7YJQ4Mk5bZ9gAqJj4LUh0NHdKO2p7n5PkUIV8dsBUOf/iKhu778A1SVKSypI5xkKGkx3gz
-	yrFeR/Z5M6ULby1/JjAZbWyhQjl6CQuBjp4QgzGjWF2uGGrq6r973oK2WQM3y7G6YLDRXnc3HPB
-	undxiiCclqIscBsU46u5gZl1+THNyjrCA6DtBMpvENEtZE3qKWCk6Mo4bic/ZeZahdtGi3b9YiK
-	u17nXrsyyNUB8FmTi
-X-Received: by 2002:a05:6a00:982:b0:81e:ef16:b288 with SMTP id
- d2e1a72fcca58-842b0ea4a70mr489004b3a.22.1780610215549; Thu, 04 Jun 2026
- 14:56:55 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1780610946; x=1781215746;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xe4pjIvCbIVOQdn6bIkFT1c3V4LzfoAMSIQAWXY6Goc=;
+        b=OEX2B2PU7+TUMOX1c4K8ioxaksWe/MHyAAJK5/8gwB3u9wUeKReQhEOyp2WE3QKozk
+         vQJCJboomLtbGBQaFJ0tcKPWrYj9IqB+hNO5BHMxMiHCah8yGYs1t35Nk3EPd68rTAet
+         +/uGBShJ+ACIRw3Gku9a8wiRKom2z35IbveixWWDoyrENz2/aQcgiLW2g/RY0W8bPedv
+         rh19UmizCZ7DHJmiem855B7gC0mfi2cGSr/HIDOApF2MD/DxizMvIBoQcS/YzSvrXkyi
+         bv8tZ5cAnlXNkqxnqTEXaj5VuALMfM4xR5oyDvZOvUoMbsr2SjrLRXgRXfLYFSJ8wRtN
+         qh+A==
+X-Gm-Message-State: AOJu0Yxm3zP2fPQ7kMEAgcZUdJMnfu+4F3WZchWr8dYwcAImtWEAkCXw
+	DF8y44KGHOzOZHeWb1y1OHumPpj9hcOR7ezuekxKlGwXJFpCmkBCXXX3
+X-Gm-Gg: Acq92OGoxDJ2L5TlttH7/qRR92T7jToRoW6jpA0eluonuhhdGG5nzQA/6TZBVMDDaak
+	I3oONP6EgTOwOQjtIC5ulwwciEMBKy9o3yHtJBY6sLDuhAKT9SF0KNOSXrRUBoqCGSEst6oT09n
+	ZO/1IY/HheYA55Z3zuWI4Q29jSnhipJ1RH22ymYFzfjJpDGvJN6Qvl+Pn8IptS6vsvhLRsReb0u
+	5ZNJuci7pjQL+JlGjSShJBI0UcPYBxaC7qNHF+AoTMw9+z29jexjxJ+XJK6ylYfdCek3It2eyte
+	nkf8uJBeWCVlzXdgWAte76+1O+7N5eVUepEqUJpT/AmvOKIL1vllIzhtGduU1U5GXJAfp9KxpHQ
+	YiV8vneAiyHCI3FMgIVgT5agb0UeNtjldom5nR9iLlx4bR/bVdlgOZJM3NyFe2qCUgIW0FZSnO1
+	vSwRrt+gjyKpJdIZOuhdUchIsaxzhZzgq+V7M=
+X-Received: by 2002:a05:6a00:808f:b0:838:127d:a167 with SMTP id d2e1a72fcca58-842b0e6bb0bmr501247b3a.16.1780610946246;
+        Thu, 04 Jun 2026 15:09:06 -0700 (PDT)
+Received: from localhost ([2a03:2880:ff:72::])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84282221059sm6693426b3a.7.2026.06.04.15.09.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 04 Jun 2026 15:09:05 -0700 (PDT)
+From: Amery Hung <ameryhung@gmail.com>
+To: bpf@vger.kernel.org
+Cc: netdev@vger.kernel.org,
+	alexei.starovoitov@gmail.com,
+	andrii@kernel.org,
+	daniel@iogearbox.net,
+	eddyz87@gmail.com,
+	memxor@gmail.com,
+	martin.lau@kernel.org,
+	mykyta.yatsenko5@gmail.com,
+	ameryhung@gmail.com,
+	kernel-team@meta.com
+Subject: [PATCH bpf-next v1 0/3] Object relationship refactor followup
+Date: Thu,  4 Jun 2026 15:09:01 -0700
+Message-ID: <20260604220904.1032145-1-ameryhung@gmail.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <eb60825fa22d6f9e663c7d4dbb69f397b5d34d42.1780362366.git.lucien.xin@gmail.com>
- <20260604104712.3904260-3-horms@kernel.org>
-In-Reply-To: <20260604104712.3904260-3-horms@kernel.org>
-From: Xin Long <lucien.xin@gmail.com>
-Date: Thu, 4 Jun 2026 17:56:43 -0400
-X-Gm-Features: AVHnY4KeqM76a83Gitn5qA73uaqekrRS_cFoPicNj3QEsgW6dv5w_KCYuv_b4us
-Message-ID: <CADvbK_fZ760o-A1JkFvzTphdsH9Qugj+BE+UCOba3v4GQJdtRQ@mail.gmail.com>
-Subject: Re: [PATCH net] sctp: validate cached peer INIT chunk length in
- COOKIE_ECHO processing
-To: Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org, linux-sctp@vger.kernel.org, davem@davemloft.net, 
-	kuba@kernel.org, edumazet@google.com, pabeni@redhat.com, 
-	marcelo.leitner@gmail.com, bgeffon@google.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Thu, Jun 4, 2026 at 6:48=E2=80=AFAM Simon Horman <horms@kernel.org> wrot=
-e:
->
-> From: 'Simon Horman' <horms@kernel.org>
->
-> This is an AI-generated review of your patch. The human sending this
-> email has considered the AI review valid, or at least plausible.
-> Full review at: https://sashiko.dev
-> ---
-> sctp: validate cached peer INIT chunk length in COOKIE_ECHO processing
->
-> This commit adds a bounds check to ensure the cached peer INIT chunk
-> length does not exceed the available data in the COOKIE_ECHO buffer
-> during unpacking.
->
-> Simon says:
->
-> Hi Xin,
->
-> Although the issues flagged below are flagged as pre-existing I am
-> wondering if they directly impact the effectiveness of this patch.
-> Could you take a look?
->
-> > diff --git a/net/sctp/sm_make_chunk.c b/net/sctp/sm_make_chunk.c
-> > index de86ac088289e..85264862fb6b6 100644
-> > --- a/net/sctp/sm_make_chunk.c
-> > +++ b/net/sctp/sm_make_chunk.c
->
-> [ ... ]
->
-> > @@ -1759,6 +1760,10 @@ struct sctp_association *sctp_unpack_cookie(
-> >       cookie =3D chunk->subh.cookie_hdr;
-> >       bear_cookie =3D &cookie->c;
-> >
-> > +     ch =3D (struct sctp_chunkhdr *)(bear_cookie + 1);
-> > +     if (ntohs(ch->length) > len - fixed_size)
-> > +             goto malformed;
-> > +
->
-> [Severity: High]
-> This isn't a bug introduced by this patch, but does this check also
-> need to ensure the length is at least the size of the INIT header?
->
-> If ch->length is small, for example 4 bytes for just the chunk header,
-> this check passes. However, sctp_process_init() appears to unconditionall=
-y
-> read the init_hdr fields:
->
-> net/sctp/sm_make_chunk.c:sctp_process_init() {
->     ...
->     asoc->peer.i.init_tag =3D ntohl(peer_init->init_hdr.init_tag);
->     asoc->peer.i.a_rwnd =3D ntohl(peer_init->init_hdr.a_rwnd);
->     ...
-> }
->
-> Could an attacker send a COOKIE_ECHO chunk with an embedded INIT chunk
-> truncated to 4 bytes and trigger an out-of-bounds read past the SKB paylo=
-ad?
->
-> [Severity: High]
-> This is a pre-existing issue, but is cookie->raw_addr_list_len properly
-> validated against the remaining payload length before use?
->
-> If SCTP cookie authentication is disabled, an unvalidated
-> raw_addr_list_len could lead to out-of-bounds reads when
-> sctp_assoc_set_bind_addr_from_cookie() calls c()
-> to parse the bind addresses:
->
-> net/sctp/bind_addr.c:sctp_raw_to_bind_addrs() {
->     ...
->     while (addrs_len >=3D sizeof(struct sctp_paramhdr)) {
->         param =3D (struct sctp_paramhdr *)raw_addr_list;
->         len =3D ntohs(param->length);
->         addrs_len -=3D len;
->         raw_addr_list +=3D len;
->     }
->     ...
-> }
->
-> If the unvalidated addrs_len is artificially large, or if a supplied
-> param->length is larger than addrs_len causing an integer underflow on
-> addrs_len -=3D len, could this bypass the loop condition, read into unmap=
-ped
-> pages, and cause a panic?
->
-Yes, these seem like real issues.
+Hi,
 
-We likely need more cookie validation than just checking the chunk length
-and raw_addr_list_len. This was probably missed because the cookie is
-generated locally, but it can still be maliciously modified.
+The main patchset refactoring object relationship tracking in the
+verifier has landed and this is a followup that addresses the remaining
+feedback in v6 [0].
 
-I will try to reproduce and get them fixed.
+[0] https://lore.kernel.org/bpf/20260529014936.2811085-1-ameryhung@gmail.com/
 
-Thanks.
+
+Amery Hung (3):
+  bpf: Fix dead error check on acquire_reference() in check_kfunc_call
+  bpf: Compare parent_id in refsafe() for REF_TYPE_PTR
+  selftests/bpf: Use bpf_dynptr_slice() to read file dynptr in leak test
+
+ kernel/bpf/states.c                                  | 3 +++
+ kernel/bpf/verifier.c                                | 3 ++-
+ tools/testing/selftests/bpf/progs/file_reader_fail.c | 8 ++++----
+ 3 files changed, 9 insertions(+), 5 deletions(-)
+
+-- 
+2.53.0-Meta
+
