@@ -1,161 +1,332 @@
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010049.outbound.protection.outlook.com [52.101.61.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB028426696
-	for <netdev@vger.kernel.org>; Thu,  4 Jun 2026 11:46:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780573573; cv=none; b=dPAIuBEQiGF6vkBSCGiqdH4FMH/oTLZKLpDVEqeF2lmBSkE+UwLa7jT9l6BlZhNzwQpe7xv28deofRPDWl0QTBZOOEMtjmHrwzqPS6X7wTJjLJdTo5qxztiurio4cDBKRVv8e53Kw3YXO/Tl25YitQ2Lfa+NiEoO+tmTPGhzIWo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780573573; c=relaxed/simple;
-	bh=PWuIcGz5vNTqw02XB6wwcfvjc8RDJqZ8JfYtcJ+Dh/k=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sD6WBoQYjdjS/M/PFy5Hlplf9qA//748P3fItBA1m93UbZIH1PusW52S0QZ/PxtHtcJbesifQ0prD3fLwk4pOloskiZ3HT2JTFdwjFqafBMZqFnADPPE7xpDo1RRsNXpiIEYemctwkqYafrJxdflxy4QZoERHIXQt+24a6ys8cg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jgQgk8oY; arc=none smtp.client-ip=209.85.221.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61B05425CD0;
+	Thu,  4 Jun 2026 11:46:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.61.49
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780573576; cv=fail; b=qC9EsnVCBGMnwfeFNocIeePV8CXMCYe7OJDkg3R3g4EzwupNrsDcwaAWAcsBa2gnhSzI5ia8pfw9BkzQ0FUplu8+wzaXOobrL4PidwSQrz1O071dBK2NM148FcfS7O9AnSwjUTNMiAu8vvHLk3f5WIw21fhwcbZIjc+XMvl0rS4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780573576; c=relaxed/simple;
+	bh=rQ22eNsSCZrbd/KzcTXg7qekydIYOrMDtp5ZoAHeGoE=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=q4v2xAbJ0PWQkW12roBfio1ATm8ugWFtRygJqNKDemnM0GqDsuvLFTl14vaMWazLfHvyFqltK8Il0AvH8CXNFg/1JhqNgljSx7uzj3OqUjFydBx1ODeffyXhcR259AFQOG5uAZuUu7SguMpTgY8r5ghNX6FOCXcaO4Z2BBt6p1M=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=D65igEqP; arc=fail smtp.client-ip=52.101.61.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jgQgk8oY"
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-45eea68dd6fso325180f8f.2
-        for <netdev@vger.kernel.org>; Thu, 04 Jun 2026 04:46:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780573570; x=1781178370; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=M39ky5jJ8hrxGUGYRdmHvRvE6Z5mXN7XNJEml5sbr1k=;
-        b=jgQgk8oYL8mNg7fdQg2T0NqICAr5MYWqRzPtjD5XDyhNMT92wFT7a1czpr4TUHja8T
-         Tk5/mc7GkgcE4k08XFCGo//YArjNt9SGFOW+w3bOEv88o9Knjq4F305DrCHXalJ5T9gk
-         oC5aj8ydp2Gvu9FJHic2PKMX/RSmanoTHVDUHAKzvdnRZIza5cgtSGgVwds0y5V8e2ZF
-         Oh0Lnc4gRZL6YfCQgaez8RbcsHTRz3PYzpmko2T6vptvr7/3tJjyBwkk+ehLz/wzdr67
-         Cwr373mpkiRI/WKYEmFau8BGFMpYaVHZBq+k0SVOUqYIbJ3KM3fD8XqtHicPQ32aARNm
-         xv7w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780573570; x=1781178370;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=M39ky5jJ8hrxGUGYRdmHvRvE6Z5mXN7XNJEml5sbr1k=;
-        b=JdgF9dmfJgqiTqGyfiJY1r14Ikz2Ytur1iab1/J87frgpUJpSS4z2n8h46xTmtQMcu
-         EHTKWfn7miwjqqulDF04WNvYeiPPWFB5QWvV9f95sxwpbDnDd1blOmyeBelbqDmr4uEp
-         sjwA3kE6t0D7DWw/8WjeIAzotzAaVxGFlCV96wWeNIjPCMsohEnYgtuQgW6aocqpwqIM
-         K9Tqu9baGNFp76Yh9DSCWXuKwq0ksTS7tv0EIEkLw0UP54iBB4rZVzYLcX32UNNr4cPN
-         Q+2qQXAnMSvVzfFHnKOxq3j8g8TG1gkAPOrteHUDrqmppQaiv7JJ2XWnwStM7iT9Vio6
-         iKyw==
-X-Forwarded-Encrypted: i=1; AFNElJ/PIlKR+uVgKpdi/fr4R8zKm/BLF0ECvqH0Oh9FrfhyH8xzYkllWnklcr/36oIwQ6cObNSUTn8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx2chFrbdsGwUjDvBf8DdmUApF/Ney7sO014h+f7lMcBQdWcHa8
-	OlftXCJrj4038bmJeuE0jEXKtr5fdjdZhf9c4qUBm0w2EI4rUj6k0Fon
-X-Gm-Gg: Acq92OFLAzSwOIZ8ub1zlXy7HeMyC9WFNzdJHM4NX1e2HX0/lYDBSyhsauQmBcvD8I1
-	T5nsAQ2HmJLeQhaZVgOs7Ksb+B65ePZylPk4P+L9sxFTTmUTcN3zUnuYg+9ikWg6tVtE86PeZjq
-	0R0VkuQBbsT5NJDP5v5Jf9JiYFRkGXaHDqcIyV2G8RJbl9/viIs/JsJ6A7ia/3w8gJveYyznJ2Q
-	CjBJ6I7+zDhl6Md/gquy3Jpw55tQwItUPfrfGYImv0oscfAXtMVgEgzThp6D3AUmXTZ0LxOZiGc
-	GhL3eepY8t9OEonexW8yxRWrXyU61nCMylWZkkPTgUEUPLwY0RpOFvvL1HPSLdFCAG8w8gqiXc1
-	nn5x//2aAoxEU+5JW7yRcnYfNEljMVSDNu4zl170LWKVdqtKO0Abej0Baf2/zhRu7T6d5DdcZoi
-	s1wAlHqLfX939+vGCZmRJJw1AlzJftFMsmrlADTzuA9lORRNCaAlWNdYEqrtWzqaILt157Hbg=
-X-Received: by 2002:adf:f8c4:0:b0:460:e0f:8d19 with SMTP id ffacd0b85a97d-4602179121cmr9540725f8f.9.1780573569802;
-        Thu, 04 Jun 2026 04:46:09 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4601f3444fesm17351838f8f.20.2026.06.04.04.46.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Jun 2026 04:46:09 -0700 (PDT)
-Date: Thu, 4 Jun 2026 12:46:06 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Justin Lai <justinlai0215@realtek.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, "kuba@kernel.org" <kuba@kernel.org>,
- "davem@davemloft.net" <davem@davemloft.net>, "edumazet@google.com"
- <edumazet@google.com>, "pabeni@redhat.com" <pabeni@redhat.com>,
- "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>, "horms@kernel.org"
- <horms@kernel.org>, Ping-Ke Shih <pkshih@realtek.com>, Larry Chiu
- <larry.chiu@realtek.com>
-Subject: Re: [PATCH] rtase: Workaround for IP fragmented UDP packet hardware
- bug
-Message-ID: <20260604124606.7143581b@pumpkin>
-In-Reply-To: <447c46ad1f654222a8daa423149f0b89@realtek.com>
-References: <20260601062341.63981-1-justinlai0215@realtek.com>
-	<5c095b26-9720-45b0-a8d5-a8495291e45b@lunn.ch>
-	<447c46ad1f654222a8daa423149f0b89@realtek.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="D65igEqP"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=NGWTDu/DOSNeYDEFmNcGkdxbARj+1lbD55o4dAky+pivnQIc7JxJckcURYshcZYH3ke/Y8MrHIM8uj4Qsd9FPUCqL4jWVeL4zDkI4IOW5W6IFsdLEPf6T/2p3T8YetxIMPoAWcN4hRNXGpsDfLJHhAsgM2bstow0XQxJVznKHiLj2cgUWex+yTOi+it620e40xu3d5RKH2xzDmqJW0leayi9OdjS4F/vWGYg6I6fihZqUsWN5O0yWFkxx9sPDM5QJtUnrieZEcigfy5TUNem6O5Qb+gWyzZbol36sa17arx5YbYtkwlVOhob0u1u1vHEsbMMhlmBweS2DE1gEstnUw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=cQZcBLJCZHvW3Ntw1r3ypf69EVU9L+YsENmz6th/NdQ=;
+ b=j8G3BN3P58z4JC9nXkM0dHNHSXYjKkffKo7vc8GIIJGYzNWN+uXI2s3OqAZn8ctQaN96uChcvKQXGb6B+2uSSsmdisKfMGMUQlePPwQYkwsvFa5jsZujRrjFVPLk0JSqJwmg0P2eW5cegRlxFsn45WI40O+Ftuy7mepPFWOyFdwP5392HHGeW+6b0qeyFVVvsei5uKIGNZc/zsIJ1zAFpibMhWP/caKN/CCBLiHBd1XeekK8zixu6QNcDCEFinKXIt7xL9naU8M1OZ3f6sYOz/nPsZhs8QGLjw7M3bDDGVEOPjIWWilmM+6PWZcOICYC7zzYIwB/kKm3mTs81zjwOA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.118.233) smtp.rcpttodomain=google.com smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=cQZcBLJCZHvW3Ntw1r3ypf69EVU9L+YsENmz6th/NdQ=;
+ b=D65igEqPXsok7DYU8o/ScbdmyMQOKB8fo/YwDRxywzYwV0ojSRkQUhTHDXMONubsteC1RX5tdPniyi9pGSamOFelPghlHYAmoWY2PEGMWq5Iue4PwzUr2d00Ehv8uDUeWQfrg4mH2j9scAPTF7QcJ/JQtK/eZ4L4fv7tvOQHtRdscxJnH7pckHIgplbntBFKNKKY4uJQ0GJdvf84mI6ziFoAcyeazQ5EMPDX9r7jGPfxGZ+aac/IM3yPfUwb7w6snzk11Qh8EKtSXzQkc2iov8KZFqbOPakKa2YFW+bkpQcytEorWZzMILawwu8arSWUBSQxw9/bam+98Ut2Exjoog==
+Received: from BN0PR04CA0176.namprd04.prod.outlook.com (2603:10b6:408:eb::31)
+ by MW4PR12MB6998.namprd12.prod.outlook.com (2603:10b6:303:20a::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.16; Thu, 4 Jun 2026
+ 11:46:06 +0000
+Received: from BN2PEPF000044A2.namprd02.prod.outlook.com
+ (2603:10b6:408:eb:cafe::42) by BN0PR04CA0176.outlook.office365.com
+ (2603:10b6:408:eb::31) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.92.7 via Frontend Transport; Thu, 4
+ Jun 2026 11:46:05 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.233)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.233) by
+ BN2PEPF000044A2.mail.protection.outlook.com (10.167.243.153) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.92.5 via Frontend Transport; Thu, 4 Jun 2026 11:46:04 +0000
+Received: from drhqmail203.nvidia.com (10.126.190.182) by mail.nvidia.com
+ (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Thu, 4 Jun
+ 2026 04:45:51 -0700
+Received: from drhqmail202.nvidia.com (10.126.190.181) by
+ drhqmail203.nvidia.com (10.126.190.182) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.20; Thu, 4 Jun 2026 04:45:51 -0700
+Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com
+ (10.126.190.181) with Microsoft SMTP Server id 15.2.2562.20 via Frontend
+ Transport; Thu, 4 Jun 2026 04:45:46 -0700
+From: Tariq Toukan <tariqt@nvidia.com>
+To: Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David
+ S. Miller" <davem@davemloft.net>
+CC: Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
+	Tariq Toukan <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>, Shay Drory
+	<shayd@nvidia.com>, Or Har-Toov <ohartoov@nvidia.com>, Edward Srouji
+	<edwards@nvidia.com>, Simon Horman <horms@kernel.org>, Maher Sanalla
+	<msanalla@nvidia.com>, Parav Pandit <parav@nvidia.com>, Kees Cook
+	<kees@kernel.org>, Moshe Shemesh <moshe@nvidia.com>, Patrisious Haddad
+	<phaddad@nvidia.com>, <netdev@vger.kernel.org>, <linux-rdma@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, Gal Pressman <gal@nvidia.com>
+Subject: [PATCH net-next 04/15] net/mlx5: SD, make primary/secondary role determination more robust
+Date: Thu, 4 Jun 2026 14:44:44 +0300
+Message-ID: <20260604114455.434711-5-tariqt@nvidia.com>
+X-Mailer: git-send-email 2.44.0
+In-Reply-To: <20260604114455.434711-1-tariqt@nvidia.com>
+References: <20260604114455.434711-1-tariqt@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN2PEPF000044A2:EE_|MW4PR12MB6998:EE_
+X-MS-Office365-Filtering-Correlation-Id: a6b3e7fe-c907-486f-2cf4-08dec22edc22
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|7416014|376014|1800799024|36860700016|18002099003|22082099003|56012099006|5023799004|11063799006;
+X-Microsoft-Antispam-Message-Info:
+	VuekgTifV38ze24U1wcKUsX2mYYOgpxzJaYMUdwsCAHvqFNrEbuWxFvnZLn/eq4QZg80wXzKMiRq2O6V+a2Gh84OVC3vgKIKh6pljvUxl3cX5Zlf4DQxRW/IeSEbEqPNOQdDLEdYJ/oogQEkqNhMeUU/lmHpA3Nrmx7pcq72lbMHWsH5xKwIz2uohX849akRrcsDyZ/CwrgPXixw9o1ZoZubzaQ3IHC37IXydWSew4g7qTPrQUHPJy32OA+owFAePeN7oMD8CNfWkID4fE4gen+aHkWgSmxYPExt1ULaghN4vgcSu/S2Oty5NR4pNuqFDB5b/Lz8uPcMOp8MAn3rHogacqfq94YSbJJqwbUjSpAA17cetiUIimBiSGHse6E/Zi4atJTFqiOQlmzWmuTSO54tePZ4aRmVhfricrVR5u8ipHAVFzx1AmP0Y65nGAEJkH+vTBRCOSXaB/y9rUeMHBamyNpXktaNGG9F094/EeIDbNYSHdfFN3TvwJS/bedrP+NECvMOL3IYXBwCdOt/pBriqxKXml5OK+th+0b8z1Z/6TMCqokQNHfP7ahvP4cmCKtT2r0LPOWRy2ebOGpUjF8LK87P14g5Imd6P6jpOY/yozuTUuRJryVNsRHY2VPeZVSZBcqVDH5pv3UPkjec3UNcMZ7jPqnVFaDrMHWaHgiOBvlkTkw8IEmdOcWXeKpud9oRc30mnyPLIxxYaEYct0/F5rJfx483Z/tnn9rcYcw=
+X-Forefront-Antispam-Report:
+	CIP:216.228.118.233;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge2.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(7416014)(376014)(1800799024)(36860700016)(18002099003)(22082099003)(56012099006)(5023799004)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	ubMy+NQYOW3sXNC5g144K6IkGn0O/+Jsi/ekD0J+PJIfE/6j4s0CeqmJyn3BYjkcCONlawWEshlgjM6c9yw0EvTUngAj7wqGVt26VHS5YQ4QEFMTS5gz0zojnpJSFtoE/Xd+3Psuy8IBn+YCUJeoSUU3dPBbNfqzk6sYvS1gSGeMK7VlIiqTcxofXOtdfgzw4uPps+bHmkPrVRXKsSSis4k10PmIevlzmkuYq14dagVS/scgh5a8h3Poi5d4BqK5b1TqBQp0yRxBDZ7wiPSdunhV67HemA60ZptVhnkoa2CvcnI3PRETulBS7J8ViWt6w0jQrqdT0SgcxBCs9jtr+MwzTgpopyWBMYeEiBUyGgV9q4+glLwPALMQaxOc1f2MzVUYFu6XHcPm+HMBQLquE4nbLsF7lKrXYkMxenFNuhmlSX7FWcbernPBVYdgETu5
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Jun 2026 11:46:04.8811
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: a6b3e7fe-c907-486f-2cf4-08dec22edc22
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.233];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN2PEPF000044A2.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB6998
 
-On Thu, 4 Jun 2026 08:33:51 +0000
-Justin Lai <justinlai0215@realtek.com> wrote:
+From: Shay Drory <shayd@nvidia.com>
 
-> Andrew Lunn <andrew@lunn.ch> wrote:
-> > 
-> > On Mon, Jun 01, 2026 at 02:23:41PM +0800, Justin Lai wrote:  
-> > > The hardware parser incorrectly interprets 319/320 in a short IP
-> > > fragmented UDP packet payload as standard PTP destination ports and
-> > > treats the fragment as a PTP packet for further parsing.
+Refactor SD group registration to use devcom event-driven role
+determination to ensure SD is marked as ready only after roles are fully
+assigned and the group state is consistent, making outside accessors,
+which will be added in downstream patches, safe to use without races.
 
-Is that a packet that has been segmented by IP, or one where the skb
-is fragmented enough that the data in the header is too short?
-I thought that IPv4 required an mtu of 128 bytes (ish) and IPv6 somewhat
-larger - so I don't see how that is a problem.
+The devcom events:
+- SD_PRIMARY_SET event: each device compares bus numbers with peers
+  to determine which should be primary
+- SD_SECONDARIES_SET event: secondaries register themselves with the
+  elected primary device
 
-If the skb is fragmented then you need to move data into the header
-not pad the frame.
+Signed-off-by: Shay Drory <shayd@nvidia.com>
+Reviewed-by: Mark Bloch <mbloch@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+---
+ .../net/ethernet/mellanox/mlx5/core/lib/sd.c  | 137 +++++++++++++-----
+ 1 file changed, 102 insertions(+), 35 deletions(-)
 
-If the hardware really is broken then I suspect you need to disable
-the feature and suffer the consequences.
-
-> > >
-> > > If the transport data is smaller than RTASE_MIN_PAD_LEN, the remaining
-> > > data is insufficient for further parsing and causes hardware TX hang.  
-> > 
-> > Where does RTASE_SHORT_PKT_THRESH come into this?
-> > 
-> > RTASE_MIN_PAD_LEN is 47, so matches all packets which need padding up to
-> > 60 bytes, plus FCS. There are not many such packets, so why both this all the
-> > complexity and just pad all small packets? Do you have any performance
-> > numbers which show the complexity is worth it?
-> >   
-> > > Pad these packets so the transport data reaches RTASE_MIN_PAD_LEN
-> > > before transmitting to avoid triggering the hardware issue.
-> > >
-> > > Signed-off-by: Justin Lai <justinlai0215@realtek.com>  
-> > 
-> > Is this a Fix? Please add a Fixes: tag. And base it on net.
-> > 
-> > https://www.kernel.org/doc/html/latest/process/maintainer-netdev.html
-> > 
-> >     Andrew
-> > 
-> > ---
-> > pw-bot: cr  
-> 
-> Hi Andrew,
->  
-> RTASE_MIN_PAD_LEN is not the Ethernet minimum-frame padding
-> threshold. It is the minimum transport-data length required by
-> the hardware parser after the packet is incorrectly detected as
-> a PTP packet.
->  
-> Therefore, this workaround needs to pad the packets which can
-> trigger the hardware issue, rather than just padding packets to
-> the Ethernet minimum frame size.
-
-Is that a longer length?
-Excessive frame padding (beyond 60+FCS) can be treated as a protocol error.
-
--- David
-
->  
-> I agree that RTASE_SHORT_PKT_THRESH is not necessary here. I
-> will remove it in the next revision.
->  
-> Yes, this is a fix. I will add a Fixes tag and repost it
-> against the net tree.
->  
-> Thanks,
-> Justin
-> 
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/sd.c b/drivers/net/ethernet/mellanox/mlx5/core/lib/sd.c
+index 25286ecd724e..41979bf6a615 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/lib/sd.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/sd.c
+@@ -26,6 +26,8 @@ struct mlx5_sd {
+ 		struct { /* primary */
+ 			struct mlx5_core_dev *secondaries[MLX5_SD_MAX_GROUP_SZ - 1];
+ 			struct mlx5_flow_table *tx_ft;
++			/* Next index for secondary registration */
++			u8 next_secondary_idx;
+ 		};
+ 		struct { /* secondary */
+ 			struct mlx5_core_dev *primary_dev;
+@@ -374,62 +376,125 @@ static void sd_lag_cleanup(struct mlx5_core_dev *dev)
+ 	mutex_unlock(&ldev->lock);
+ }
+ 
++enum {
++	SD_PRIMARY_SET,
++	SD_SECONDARIES_SET,
++};
++
++static void sd_handle_primary_set(struct mlx5_core_dev *dev,
++				  struct mlx5_core_dev *peer)
++{
++	struct mlx5_sd *peer_sd = mlx5_get_sd(peer);
++	struct mlx5_sd *sd = mlx5_get_sd(dev);
++	struct mlx5_core_dev *candidate;
++	struct mlx5_sd *candidate_sd;
++
++	/* Peer is the device that being sent to all the other devices in the
++	 * group. Hence, use peer to get the candidate device.
++	 */
++	candidate = peer_sd->primary ? peer : peer_sd->primary_dev;
++
++	if (dev->pdev->bus->number >= candidate->pdev->bus->number)
++		return;
++
++	candidate_sd = mlx5_get_sd(candidate);
++
++	sd->primary = true;
++	candidate_sd->primary = false;
++	candidate_sd->primary_dev = dev;
++	peer_sd->primary = false;
++	peer_sd->primary_dev = dev;
++}
++
++static void sd_handle_secondaries_set(struct mlx5_core_dev *dev,
++				      struct mlx5_core_dev *peer)
++{
++	struct mlx5_sd *peer_sd = mlx5_get_sd(peer);
++	struct mlx5_sd *sd = mlx5_get_sd(dev);
++	u8 idx;
++
++	/* Primary has nothing to register with itself. */
++	if (sd->primary)
++		return;
++
++	/* dev is a secondary device, peer is the primary device.
++	 * Secondary registers itself with the primary.
++	 */
++	idx = peer_sd->next_secondary_idx++;
++	peer_sd->secondaries[idx] = dev;
++	sd->primary_dev = peer;
++}
++
++static int mlx5_sd_devcom_event(int event, void *my_data, void *event_data)
++{
++	struct mlx5_core_dev *peer = event_data;
++	struct mlx5_core_dev *dev = my_data;
++
++	switch (event) {
++	case SD_PRIMARY_SET:
++		sd_handle_primary_set(dev, peer);
++		break;
++	case SD_SECONDARIES_SET:
++		sd_handle_secondaries_set(dev, peer);
++		break;
++	}
++
++	return 0;
++}
++
+ static int sd_register(struct mlx5_core_dev *dev)
+ {
+-	struct mlx5_devcom_comp_dev *devcom, *pos;
+ 	struct mlx5_devcom_match_attr attr = {};
+-	struct mlx5_core_dev *peer, *primary;
+-	struct mlx5_sd *sd, *primary_sd;
+-	int err, i;
++	struct mlx5_devcom_comp_dev *devcom;
++	struct mlx5_core_dev *primary;
++	struct mlx5_sd *sd;
++	int err;
+ 
+ 	sd = mlx5_get_sd(dev);
+ 	attr.key.val = sd->group_id;
+ 	attr.flags = MLX5_DEVCOM_MATCH_FLAGS_NS;
+ 	attr.net = mlx5_core_net(dev);
+-	devcom = mlx5_devcom_register_component(dev->priv.devc, MLX5_DEVCOM_SD_GROUP,
+-						&attr, NULL, dev);
++	devcom = mlx5_devcom_register_component(dev->priv.devc,
++						MLX5_DEVCOM_SD_GROUP,
++						&attr, mlx5_sd_devcom_event,
++						dev);
+ 	if (!devcom)
+ 		return -EINVAL;
+ 
+ 	sd->devcom = devcom;
+ 
+-	if (mlx5_devcom_comp_get_size(devcom) != sd->host_buses)
+-		return 0;
+-
+ 	mlx5_devcom_comp_lock(devcom);
+-	mlx5_devcom_comp_set_ready(devcom, true);
+-	mlx5_devcom_comp_unlock(devcom);
++	if (mlx5_devcom_comp_get_size(devcom) != sd->host_buses ||
++	    mlx5_devcom_comp_is_ready(devcom))
++		goto out;
+ 
+-	if (!mlx5_devcom_for_each_peer_begin(devcom)) {
+-		err = -ENODEV;
++	/* Send SD_PRIMARY_SET event with this device.
++	 * All peers will receive this event and compare to this device.
++	 * The one with lowest bus number will be marked as primary.
++	 */
++	sd->primary = true;
++	err = mlx5_devcom_locked_send_event(devcom, SD_PRIMARY_SET,
++					    SD_PRIMARY_SET, dev);
++	if (err)
+ 		goto err_devcom_unreg;
+-	}
+-
+-	primary = dev;
+-	mlx5_devcom_for_each_peer_entry(devcom, peer, pos)
+-		if (peer->pdev->bus->number < primary->pdev->bus->number)
+-			primary = peer;
+ 
+-	primary_sd = mlx5_get_sd(primary);
+-	primary_sd->primary = true;
+-	i = 0;
+-	/* loop the secondaries */
+-	mlx5_devcom_for_each_peer_entry(primary_sd->devcom, peer, pos) {
+-		struct mlx5_sd *peer_sd = mlx5_get_sd(peer);
+-
+-		primary_sd->secondaries[i++] = peer;
+-		peer_sd->primary = false;
+-		peer_sd->primary_dev = primary;
+-	}
++	/* Broadcast SD_SECONDARIES_SET. Each non-sender peer's handler runs;
++	 * the primary's handler returns early so only secondaries register.
++	 */
++	primary = sd->primary ? dev : sd->primary_dev;
++	if (!sd->primary)
++		sd_handle_secondaries_set(dev, primary);
++	mlx5_devcom_locked_send_event(devcom, SD_SECONDARIES_SET,
++				      DEVCOM_CANT_FAIL, primary);
+ 
+-	mlx5_devcom_for_each_peer_end(devcom);
++	mlx5_devcom_comp_set_ready(devcom, true);
++out:
++	mlx5_devcom_comp_unlock(devcom);
+ 	return 0;
+ 
+ err_devcom_unreg:
+-	mlx5_devcom_comp_lock(sd->devcom);
+-	mlx5_devcom_comp_set_ready(sd->devcom, false);
+-	mlx5_devcom_comp_unlock(sd->devcom);
+-	mlx5_devcom_unregister_component(sd->devcom);
++	mlx5_devcom_comp_unlock(devcom);
++	mlx5_devcom_unregister_component(devcom);
+ 	return err;
+ }
+ 
+@@ -672,6 +737,7 @@ int mlx5_sd_init(struct mlx5_core_dev *dev)
+ 		peer_sd->primary_dev = NULL;
+ 	}
+ 	primary_sd->primary = false;
++	primary_sd->next_secondary_idx = 0;
+ 	mlx5_devcom_comp_set_ready(sd->devcom, false);
+ 	mlx5_devcom_comp_unlock(sd->devcom);
+ 	sd_unregister(dev);
+@@ -719,6 +785,7 @@ void mlx5_sd_cleanup(struct mlx5_core_dev *dev)
+ 		peer_sd->primary_dev = NULL;
+ 	}
+ 	primary_sd->primary = false;
++	primary_sd->next_secondary_idx = 0;
+ out_ready_false:
+ 	mlx5_devcom_comp_set_ready(sd->devcom, false);
+ out_unlock:
+-- 
+2.44.0
 
