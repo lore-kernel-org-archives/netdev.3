@@ -1,254 +1,134 @@
-Received: from mail-dl1-f51.google.com (mail-dl1-f51.google.com [74.125.82.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58FEE3542F4
-	for <netdev@vger.kernel.org>; Thu,  4 Jun 2026 06:45:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.51
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780555521; cv=pass; b=YGRsIZXB63Ss0D/zy/cK1otChA0DJu6MppVvkGWJ8kzltKK8dTksxQ3zEEiWXEM/b/+kalrDisSwZG5RDqVWLWHXUn3LjadGppFaDapRzpHdATgWgTJhYIQ0Tutb/4ymrStqDK7xnjmtinV4QhUAQuvAJVtr84fP/3z3/3nOEXA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780555521; c=relaxed/simple;
-	bh=vanpS1yaGLVvjgX9OJUOk5+5XahkPs+IQUwZLe28efY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=IfYjj3p2lnJCXAkgNJCPfKvlvHZk4Sj4bvMpGoD7KrUsXs8o7rc4ETml2kCsa4u33QjhH+KplsWSmTuGScSXc2J8Ib2RKo0T/p/YpDhWgQa+TgI/wr7IWriDsLj8RQWN/B8RfBiSoMKpNbgWtfrjnHj2zcYpByAfl5+P0pMefQg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bqd1/HBu; arc=pass smtp.client-ip=74.125.82.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5870823EAB4;
+	Thu,  4 Jun 2026 06:49:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780555754; cv=none; b=BcvNjykhLbV3NdkLb/81q818PBEMYlrP8pCesuzwefdoeUp9Sdb4ISxkenAMrB2+tMe/r2BBoYYy+ucIGTAmVKEOUwSZVjiXK7zwe7rCFodAlujOAP3ZX7wrIFbMfHg/tzNnCKbFoLHI9qA//idYpZtfmpH553X7qLJGbBxGmPA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780555754; c=relaxed/simple;
+	bh=JpyqooivJdjNE3jKQT2tqH5f4eKJTCVAMKFgcUxXdoY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=eH7xgWPQlC7UJ/vyW1B18T6+zN6f951moJmXYyRvn3l2mQl/OAXaxlzuMgCQnO0ThZi6BmJqR0i0vfl654wJqhARUlMwQAA1O25t0aYBEAsIw0lp3fGboZsXNf4eXymIZpx0FnjqPCgGy3JitgK9iaoHdXazVFV9jy7uaTUxC+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=IpFywxfx; arc=none smtp.client-ip=220.197.31.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bqd1/HBu"
-Received: by mail-dl1-f51.google.com with SMTP id a92af1059eb24-137f27712fdso25222c88.0
-        for <netdev@vger.kernel.org>; Wed, 03 Jun 2026 23:45:16 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780555515; cv=none;
-        d=google.com; s=arc-20240605;
-        b=ERazyG0Au3OV46Eg4AtuMCWlCSRjeNmmp23TMaM834DUf6N8nIq6hDZOR85EBDayIO
-         3drNpZQxHuK6EmHC2nxVT2WVrFmFdrvUXKw7mmgeHkgcwZme8EMfBbJcuSuCShOClkMI
-         a2n/2sxoBhuwRtGOdLHhvCHCN/0ThWN4sn4yE9UNV8X2rf4j/BYe+nqU8WebP5MRH+tV
-         LYx5PpnS2jJUCFU0ajxzKa4ZH+zuKVqM9RxtsCLE5HtIW5tSevHr0hR9ciQe5idc2N2g
-         sB7w7adz1d4F9DfKF2GEAIGWcgbwSRM+DkRUnwAw+kOsSqu1JwL51VpoKUz5Kgqryi0O
-         jCDQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=oqLC1ZyUbsrS8VIC+GHhJNOdtBNsT5LpOiDbY5gQx0o=;
-        fh=/93hyZUIM3W5waDYAih9kb54/7/pIZs4lnHYtxJ1qug=;
-        b=FkQKKk6JDyvFu5EKuXnQmsFO6QiuBk01wS9vyNtT59kIsvMJJKptj3zG6o4z/b9b56
-         naDwZEMn5aflASKFEKQs+8oZYlig2XVTApaDhbrKDGTE94H5tHFsrRe+GiXBlmmhCFU2
-         Z/JVFqrR9jo12BVAjBRQZgqlMmPfrpMV0/TvLxzGMzDk0ygZtZhw0icVxDN2+LxReDaX
-         ds8Dgi7s59Yr8PTCAbyXPDfj0S5I7TBprkl+zTya40AXFLEEGQMHyPTMtV7h6LduVDyS
-         Ax7PQoimSDjSE7CP1GxaJPTNdcDcGrM5HIN08MS4FeFJ83XiG8OedfQZntvGFAQlJaY2
-         yIkw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780555515; x=1781160315; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=oqLC1ZyUbsrS8VIC+GHhJNOdtBNsT5LpOiDbY5gQx0o=;
-        b=bqd1/HBuWsey45XVxRanYJLzPm6smQnqxsyGE6mSNNAmh+65Hzkz3cqZ7CRA1xRyf5
-         jD7ilICaTagtZOB9oDOUHqGBpTPUP7/Y4mxKO5bNotL61OY4sRjcZQQQNI7DSHHZ6Ymv
-         zYSk2LA9tp+cDaAPjZhlXCZ7J/5fCtIfiBbPY/hV3LloN+NO32Xm5MtL24yFh4GhSiGm
-         5W7SRLhl2gya3Jqp8C+kFP+38Fiq2WnE0NcqumoIrMm5cRZlAizWaBJmYRUa1DyfHBeF
-         /Ao2ERrmNhgYkg6fKKT0eSzIjrdaXq/gb+VIJ9LjwlXc3WKArcdu7tI+cpRoMz/YLnb1
-         kjGg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780555515; x=1781160315;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=oqLC1ZyUbsrS8VIC+GHhJNOdtBNsT5LpOiDbY5gQx0o=;
-        b=UBiV2ezFgNE7Z4Xc0syeGZXwmTIQcy3BkB9OhM96HRgufiWTrgXPj8LsYIO2gon/NG
-         MTFb0IBrOLlfhCnOUJAp6dOV0zuMNWV+RvYG4L0B+VUnpCEU5tik5BvbL5WBITnl4Fz8
-         HLKKuEarkFzm9u4wmWZw7SF95X7mFbpsi3KRy8Vr61GsaiQXoeaQvMe0mPKdcmRY6elj
-         Ic0XShIm6GSlEc2Nt25KZCES3A5BGc2UD8E+IffYtRF7oCuO/sTioncWI952nAz7ySab
-         ddzYxt2buogSxMcPQMoG8MGtRXmOWBgkWDTMDCNhYYdrmMtTPgzTjRZ17kJWI0OpAqMY
-         zhoQ==
-X-Forwarded-Encrypted: i=1; AFNElJ99FcDwlkHixoM9C3ihPO3DULJ6Aogvn6AyGe+4CU9RCafH8U94RmVb+pYo/0G78JSG9bDS8No=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx4rtnGsvw1/d/+NTuW9UNuTw8jGWI76hIBQycDAejyTaQTEsov
-	JLWjp4EuMfSMrbH8ZedvvZkgz/0PDbAmEN47PMdj/bCutAKLdS67UVoyJt8rDMWOZuKM4hSFQ7c
-	6knYGNU2OYuskFK5RYvFD61N87fZQEEk4FCvBtYoK
-X-Gm-Gg: Acq92OFZPPw9/GJ1hu/AR4ye+t2xstJ/EIvCJDqzRiSaPMqD7ONpB9FsFYDRBb8slUj
-	6Ye2ciG/BTsCgSFnEooz6xgP8ZeYGKB9bETTOKd78wIDyts3us4taHpfKYf8l7HTw9bQ741Gm/w
-	+sj97wqgqSN1vHYxaaSih6c2O8tGYA5Rvwvy36rCcLqHyQjqaXGV2j653MRj1Rb8dhWLhtwLEtm
-	Ynm6zxrcOLV/58bPEoziMONOMZBBaci2GK+1RRLytGa+/MQ6VlYC1zs43uhFTPr0YUUsL2U/dpY
-	B2DcGUs/3QTxF0MJIENx17z7GHLW8IPjvwXEMDQTk74HRGp8GvxzXerMcCh85KBCJZQgTUt9Dk0
-	A4afgyES9kqyrraTabLcvKxBfG6nLy1evYA2cp/KoQCjRxaj8lacKffvhg+xOHDc=
-X-Received: by 2002:a05:7022:628b:b0:137:699d:7b95 with SMTP id
- a92af1059eb24-137f6bc8a08mr2650501c88.19.1780555514624; Wed, 03 Jun 2026
- 23:45:14 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="IpFywxfx"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=1x
+	4jrzaczNfj01i95gQ7WeXi4BNP+sXCZMohEU4DDP4=; b=IpFywxfxo4ftn/3XDm
+	8VmOepU9flMI3I+NkKjvwAZUMjs3TV5y75Ys6OT9RayZIP5Zs6nnAIRIBqDGXpcT
+	So+zXVcEgzo4qcmLaprMnjylphAfTF7ikbBtg4dTYpucse+R3xlzvvrc9LpO+ml0
+	tb2XTwYlyJB8QvJYWBxDSU85o=
+Received: from 163.com (unknown [])
+	by gzsmtp3 (Coremail) with SMTP id PigvCgAXpAOoHyFqmrOtAQ--.52491S2;
+	Thu, 04 Jun 2026 14:48:11 +0800 (CST)
+From: w15303746062@163.com
+To: Manivannan Sadhasivam <mani@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>,
+	Luca Weiss <luca@lucaweiss.eu>,
+	Bjorn Andersson <andersson@kernel.org>,
+	linux-arm-msm@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Mingyu Wang <25181214217@stu.xidian.edu.cn>
+Subject: [PATCH v2] net: qrtr: fix refcount saturation and potential UAF in qrtr_port_remove
+Date: Thu,  4 Jun 2026 14:48:01 +0800
+Message-Id: <20260604064801.1180388-1-w15303746062@163.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260601034148.1272080-1-maoyixie.tju@gmail.com>
-In-Reply-To: <20260601034148.1272080-1-maoyixie.tju@gmail.com>
-From: Kuniyuki Iwashima <kuniyu@google.com>
-Date: Wed, 3 Jun 2026 23:45:03 -0700
-X-Gm-Features: AVHnY4IpoIBqL7O4an-vF8_7ewLRrxVC-xjimvQxF5gwh4Yh2qBo4D5NO5WQrCo
-Message-ID: <CAAVpQUCUtPJuktP7gxbC02NtDWDFEHegPUPwyQoPGA==+d0Jfw@mail.gmail.com>
-Subject: Re: [PATCH net v2] net: require CAP_NET_ADMIN in the device netns for
- tunnel changelink
-To: Maoyi Xie <maoyixie.tju@gmail.com>
-Cc: Jakub Kicinski <kuba@kernel.org>, "David S . Miller" <davem@davemloft.net>, 
-	Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>, 
-	David Ahern <dsahern@kernel.org>, Xiao Liang <shaw.leon@gmail.com>, 
-	Nikolaos Gkarlis <nickgarlis@gmail.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:PigvCgAXpAOoHyFqmrOtAQ--.52491S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxCFyDZFy5Kw15Zw1fZr1UZFb_yoW5ArW7pr
+	W0yFs0y3ykGrn2kF4Ika18Ga40vF1rJrZxGFZ3Cws5ZFn3Aw13Aw4Fy34Y9FyUGFZ3JrWv
+	vF1DCrs09FyqvFDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jYbyZUUUUU=
+X-CM-SenderInfo: jzrvjiatxuliiws6il2tof0z/xtbC4wzVuWohH6zgXgAA3F
 
-On Sun, May 31, 2026 at 8:41=E2=80=AFPM Maoyi Xie <maoyixie.tju@gmail.com> =
-wrote:
->
-> A tunnel changelink mutates the tunnel hash of the device's creation
-> netns. ip_tunnel_changelink(), ip6_tnl_changelink(), vti6_changelink(),
-> ip6gre_changelink(), ip6erspan_changelink() and xfrmi_changelink() all
-> look up and update through t->net.
->
-> The rtnl path into changelink only checks CAP_NET_ADMIN against
-> tgt_net. After IFLA_NET_NS_FD migration the creation netns differs from
-> the caller's netns. A caller with caps only in its current netns can
-> then rewrite an entry in the creation netns hash. They pick the
-> endpoint addresses. Commit 8b484efd5cb4 ("ip6: vti: Use ip6_tnl.net in
-> vti6_siocdevprivate().") added the same check on the ioctl path. This
-> adds it on the RTM_NEWLINK path.
->
-> Check ns_capable(t->net->user_ns, CAP_NET_ADMIN) in each changelink
-> before the lookup and update. The newlink path has long checked the
-> capability in the link netns. The changelink path never did.
->
-> Reported-by: Xiao Liang <shaw.leon@gmail.com>
-> Closes: https://lore.kernel.org/netdev/CABAhCOSzP1vaThGV35_VnsRCb=3D87_CP=
-jPVsTHbq905k8A+BuUg@mail.gmail.com/
-> Fixes: d0f418516022 ("net, ip_tunnel: fix namespaces move")
-> Fixes: 5311a69aaca3 ("net, ip6_tunnel: fix namespaces move")
-> Fixes: 690afc165bb3 ("net: ip6_gre: fix moving ip6gre between namespaces"=
-)
-> Fixes: f203b76d7809 ("xfrm: Add virtual xfrm interfaces")
-> Fixes: 11b326fb0a37 ("ip6: vti: Use ip6_tnl.net in vti6_changelink().")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Maoyi Xie <maoyixie.tju@gmail.com>
-> ---
-> v2: Reworked per Kuniyuki Iwashima's review. v1 gated the check on
->     dev->rtnl_link_ops->get_link_net in __rtnl_newlink(). That gate is
->     too broad. For peer types like netkit and veth get_link_net returns
->     the peer netns, which changelink does not mutate, so the core check
->     would wrongly require CAP_NET_ADMIN there. Move the check into the
->     changelink path of the tunnel types that mutate t->net, against
->     t->net->user_ns. This mirrors the ioctl side in 8b484efd5cb4.
->
-> v1: https://lore.kernel.org/netdev/20260527070824.2677331-1-maoyixie.tju@=
-gmail.com/
->
->  net/ipv4/ip_tunnel.c           | 3 +++
->  net/ipv6/ip6_gre.c             | 6 ++++++
->  net/ipv6/ip6_tunnel.c          | 3 +++
->  net/ipv6/ip6_vti.c             | 3 +++
->  net/xfrm/xfrm_interface_core.c | 3 +++
->  5 files changed, 18 insertions(+)
->
-> diff --git a/net/ipv4/ip_tunnel.c b/net/ipv4/ip_tunnel.c
-> index 50d0f5fe4e4c..51d8787318f3 100644
-> --- a/net/ipv4/ip_tunnel.c
-> +++ b/net/ipv4/ip_tunnel.c
-> @@ -1251,6 +1251,9 @@ int ip_tunnel_changelink(struct net_device *dev, st=
-ruct nlattr *tb[],
->         struct net *net =3D tunnel->net;
->         struct ip_tunnel_net *itn =3D net_generic(net, tunnel->ip_tnl_net=
-_id);
->
-> +       if (!ns_capable(net->user_ns, CAP_NET_ADMIN))
+From: Mingyu Wang <25181214217@stu.xidian.edu.cn>
 
-Some attributes might have already changed before calling
-ip_tunnel_changelink().
+In qrtr_port_remove(), the socket reference count is decremented via
+__sock_put() before the port is removed from the qrtr_ports XArray and
+before the RCU grace period elapses.
 
-e.g. ipgre_netlink_parms() updates t->collect_md, which will
-be visible once the device owner calls changelink.
+This breaks the fundamental RCU update paradigm. It exposes a race
+window where a concurrent RCU reader (such as qrtr_reset_ports() or
+qrtr_port_lookup()) can obtain a pointer to the socket from the XArray,
+and attempt to call sock_hold() on a socket whose reference count has
+already dropped to zero.
 
-Also, check net_eq(net, dev_net(dev)) to avoid unnecessary
-LSM invocations.
+This exact race condition was hit during syzkaller fuzzing, leading to
+the following refcount saturation warning and a potential Use-After-Free:
 
+  refcount_t: saturated; leaking memory.
+  WARNING: CPU: 3 PID: 1273 at lib/refcount.c:22 refcount_warn_saturate+0xae/0x1d0
+  Modules linked in: qrtr(+) bochs drm_shmem_helper ...
+  Call Trace:
+   <TASK>
+   qrtr_reset_ports net/qrtr/af_qrtr.c:768 [inline] [qrtr]
+   __qrtr_bind.isra.0+0x48b/0x570 net/qrtr/af_qrtr.c:805 [qrtr]
+   qrtr_bind+0x17d/0x210 net/qrtr/af_qrtr.c:901 [qrtr]
+   kernel_bind+0xe4/0x120 net/socket.c:3592
+   qrtr_ns_init+0x1a6/0x380 net/qrtr/ns.c:715 [qrtr]
+   qrtr_proto_init+0x3b/0xff0 net/qrtr/af_qrtr.c:169 [qrtr]
+   do_one_initcall+0xf5/0x5e0 init/main.c:1283
+   ...
+   </TASK>
 
-> +               return -EPERM;
-> +
->         if (dev =3D=3D itn->fb_tunnel_dev)
->                 return -EINVAL;
->
-> diff --git a/net/ipv6/ip6_gre.c b/net/ipv6/ip6_gre.c
-> index 365b4059eb20..0de4994bc92f 100644
-> --- a/net/ipv6/ip6_gre.c
-> +++ b/net/ipv6/ip6_gre.c
-> @@ -2047,6 +2047,9 @@ static int ip6gre_changelink(struct net_device *dev=
-, struct nlattr *tb[],
->         struct ip6gre_net *ign =3D net_generic(t->net, ip6gre_net_id);
->         struct __ip6_tnl_parm p;
->
-> +       if (!ns_capable(t->net->user_ns, CAP_NET_ADMIN))
-> +               return -EPERM;
-> +
->         t =3D ip6gre_changelink_common(dev, tb, data, &p, extack);
->         if (IS_ERR(t))
->                 return PTR_ERR(t);
-> @@ -2266,6 +2269,9 @@ static int ip6erspan_changelink(struct net_device *=
-dev, struct nlattr *tb[],
->         struct __ip6_tnl_parm p;
->         struct ip6gre_net *ign;
->
-> +       if (!ns_capable(t->net->user_ns, CAP_NET_ADMIN))
-> +               return -EPERM;
-> +
->         ign =3D net_generic(t->net, ip6gre_net_id);
->         t =3D ip6gre_changelink_common(dev, tb, data, &p, extack);
->         if (IS_ERR(t))
-> diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
-> index 9d1037ac082f..2834004c7011 100644
-> --- a/net/ipv6/ip6_tunnel.c
-> +++ b/net/ipv6/ip6_tunnel.c
-> @@ -2102,6 +2102,9 @@ static int ip6_tnl_changelink(struct net_device *de=
-v, struct nlattr *tb[],
->         struct ip6_tnl_net *ip6n =3D net_generic(net, ip6_tnl_net_id);
->         struct ip_tunnel_encap ipencap;
->
-> +       if (!ns_capable(net->user_ns, CAP_NET_ADMIN))
-> +               return -EPERM;
-> +
->         if (dev =3D=3D ip6n->fb_tnl_dev) {
->                 if (ip_tunnel_netlink_encap_parms(data, &ipencap)) {
->                         /* iproute2 always sets TUNNEL_ENCAP_FLAG_CSUM6, =
-so
-> diff --git a/net/ipv6/ip6_vti.c b/net/ipv6/ip6_vti.c
-> index df793c8bfffb..7b05e0c491db 100644
-> --- a/net/ipv6/ip6_vti.c
-> +++ b/net/ipv6/ip6_vti.c
-> @@ -1044,6 +1044,9 @@ static int vti6_changelink(struct net_device *dev, =
-struct nlattr *tb[],
->         struct __ip6_tnl_parm p;
->         struct vti6_net *ip6n;
->
-> +       if (!ns_capable(net->user_ns, CAP_NET_ADMIN))
-> +               return -EPERM;
-> +
->         ip6n =3D net_generic(net, vti6_net_id);
->         if (dev =3D=3D ip6n->fb_tnl_dev)
->                 return -EINVAL;
-> diff --git a/net/xfrm/xfrm_interface_core.c b/net/xfrm/xfrm_interface_cor=
-e.c
-> index 330a05286a56..a1029a829406 100644
-> --- a/net/xfrm/xfrm_interface_core.c
-> +++ b/net/xfrm/xfrm_interface_core.c
-> @@ -869,6 +869,9 @@ static int xfrmi_changelink(struct net_device *dev, s=
-truct nlattr *tb[],
->         struct net *net =3D xi->net;
->         struct xfrm_if_parms p =3D {};
->
-> +       if (!ns_capable(net->user_ns, CAP_NET_ADMIN))
-> +               return -EPERM;
-> +
->         xfrmi_netlink_parms(data, &p);
->         if (!p.if_id) {
->                 NL_SET_ERR_MSG(extack, "if_id must be non zero");
-> --
-> 2.34.1
->
+Fix this by deferring the reference count decrement until after the
+xa_erase() and the synchronize_rcu() complete.
+
+(Note: The v1 of this patch incorrectly replaced __sock_put() with
+sock_put(). As Simon Horman pointed out, the callers of qrtr_port_remove()
+still hold a reference to the socket, so freeing the socket memory here
+would lead to a subsequent UAF in the caller. Thus, the __sock_put() is
+kept, but only repositioned to close the RCU race.)
+
+Fixes: bdabad3e363d ("net: Add Qualcomm IPC router")
+Signed-off-by: Mingyu Wang <25181214217@stu.xidian.edu.cn>
+---
+v1: https://lore.kernel.org/netdev/20260530082243.1123402-1-w15303746062@163.com/
+
+Changes in v2:
+- Reverted the change from __sock_put() to sock_put() to avoid UAF
+  in callers like qrtr_release(), as suggested by Simon Horman.
+- Removed misleading "memory leak" wording from commit message.
+- Corrected the Fixes tag to point to the initial commit introducing
+  the race (bdabad3e363d).
+
+ net/qrtr/af_qrtr.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/net/qrtr/af_qrtr.c b/net/qrtr/af_qrtr.c
+index 7cec6a7859b0..db823177e636 100644
+--- a/net/qrtr/af_qrtr.c
++++ b/net/qrtr/af_qrtr.c
+@@ -707,13 +707,13 @@ static void qrtr_port_remove(struct qrtr_sock *ipc)
+ 	if (port == QRTR_PORT_CTRL)
+ 		port = 0;
+ 
+-	__sock_put(&ipc->sk);
+-
+ 	xa_erase(&qrtr_ports, port);
+ 
+ 	/* Ensure that if qrtr_port_lookup() did enter the RCU read section we
+ 	 * wait for it to up increment the refcount */
+ 	synchronize_rcu();
++
++	__sock_put(&ipc->sk);
+ }
+ 
+ /* Assign port number to socket.
+-- 
+2.34.1
+
