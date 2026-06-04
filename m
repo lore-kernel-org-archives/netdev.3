@@ -1,78 +1,113 @@
-Received: from mx1.riseup.net (mx1.riseup.net [198.252.153.129])
+Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82888402BB1
-	for <netdev@vger.kernel.org>; Thu,  4 Jun 2026 12:54:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.252.153.129
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B26F4477987;
+	Thu,  4 Jun 2026 12:55:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780577682; cv=none; b=IFpzUrB97hboGdt6bPoVmKgGJcfo83VIOODVFrOST+4SAyVgUPyhsdaS1447OcebQenAiGS6T9/COth5coW7IgAXkHFSgiU8gPiKIknG3Fm3gGVoWcKcgf0rAlXcGFCEvAjqFHmodgcGe24sT6KxE5LwjeVcK/SuSIfEKR2Gw1U=
+	t=1780577706; cv=none; b=MG8QJqSyPVmODSThx71bO3ZsdkCmRhnzuVsnZjxOkFpoywj8ba8uGnvbirPq/hyjsEa+OvzXgzb+lZ7w3nNR8cN80pFD/jX2ctp+CMPPJpTMCvgaBWi/rknxlPdMZ/mPpMqtT3wDiK6k9QN9h5m/wyEvn+fqBzvtEAQz7sNcsyM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780577682; c=relaxed/simple;
-	bh=8vbOIbpxtv5/SwgOcEPbDAd4aBFnRTK+DSf6GjRlfLA=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Content-Type; b=QU/yGjrFaL/Kb56s22l3tKURXFbsFC2sUhwD/Lq6vL6pHbCrWGUomkmmCOrg/Twe2VPLZXbug6V48sbKRs/MYJin4k5704bgleMmAVrXvM9uqmeUYayY1F8geCulh0Dd+wsm3RqmKkLfiSoMvMs65W2stTznFDesAn6guBl3H+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riseup.net; spf=pass smtp.mailfrom=riseup.net; dkim=pass (1024-bit key) header.d=riseup.net header.i=@riseup.net header.b=VoAQi4CK; arc=none smtp.client-ip=198.252.153.129
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riseup.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=riseup.net
+	s=arc-20240116; t=1780577706; c=relaxed/simple;
+	bh=QxSGRY4L3Tgf3x+iOHyGVPvIzaF30Hlk6xO46vSv8Dw=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=B39Fp8u+CC1g7YUgz/0CdRaluryFqEzhE7Anhv2qZEPqLikggzxFdlncQKV6AqPed4W2UTYSVtR8RsHx7CBwT4/MjoxVnnq0TlZ4/CRJNf/7RNbA2CIfHJPPH2Wm6kJ4Qd+xuANa+m1cVORa+8oUYfalttujZMmc5wIXqvwhL3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=EC5j3yEx; arc=none smtp.client-ip=91.218.175.184
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=riseup.net header.i=@riseup.net header.b="VoAQi4CK"
-Received: from mx0.riseup.net (mx0-pn.riseup.net [10.0.1.42])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx1.riseup.net (Postfix) with ESMTPS id 4gWPV34B2TzDsTR
-	for <netdev@vger.kernel.org>; Thu,  4 Jun 2026 12:47:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=riseup.net; s=squak;
-	t=1780577243; bh=UZ3UnbOw9o0qfUbZ/k9TATPouz1S1OJahKNqU+lwhCY=;
-	h=Date:From:Subject:To:From;
-	b=VoAQi4CK05/pzC4j0rmtEZCN86F7jM5fmhnB1u+AyTmL3waFt0kCDBMFpyrQF5HvT
-	 Ss3J3RfPaK09lUUyenQinYgCE5KdCnUaLo7DoQilXjj/myIohbIHY4D2qNErUf1NhY
-	 CbhZnWl3kaH2eiP8kcus8h/Xib3g6mzMLycAs9NU=
-Received: from fews04-sea.riseup.net (fews04-sea-pn.riseup.net [10.0.1.154])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx0.riseup.net (Postfix) with ESMTPS id 4gWPTx4JyZz9s76
-	for <netdev@vger.kernel.org>; Thu,  4 Jun 2026 12:47:17 +0000 (UTC)
-X-Riseup-User-ID: 370806BE397B9D5595A66A45481B322E0EE2CC8ED9E8D081A0CB890A7D3FD319
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-	 by fews04-sea.riseup.net (Postfix) with ESMTPSA id 4gWPTx18fYz5vMb
-	for <netdev@vger.kernel.org>; Thu,  4 Jun 2026 12:47:16 +0000 (UTC)
-Message-ID: <e69b2aeb-0fb0-44a3-89b2-e4ddee16dbf2@riseup.net>
-Date: Thu, 4 Jun 2026 14:47:14 +0200
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="EC5j3yEx"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1780577702;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=r3MGpzxEfhVL51O4IZ6GwBDnyJ7cfCwaCriJzF1YfgA=;
+	b=EC5j3yExvJBfA12Qtv3Xe8KvPU/oWt4LMe09BEih7PuEK7sFCewUk6c0aOoTt2zMQagtxL
+	HrxRt8uNXG69bG05So1eGhMN0vuJSFouqWWo8WHKN/pLzG+XUtm7MYmFAmdvPl03KZpQ7p
+	n7YLamSWiSJ38bqRJHatqfW0QgGjvBI=
+From: Fushuai Wang <fushuai.wang@linux.dev>
+To: shayd@nvidia.com
+Cc: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	fushuai.wang@linux.dev,
+	kuba@kernel.org,
+	leon@kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	mbloch@nvidia.com,
+	moshe@nvidia.com,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	parav@nvidia.com,
+	saeedm@nvidia.com,
+	tariqt@nvidia.com,
+	wangfushuai@baidu.com
+Subject: Re: [PATCH 2/2] net/mlx5: Only consider online CPUs in affinity subset check
+Date: Thu,  4 Jun 2026 20:54:42 +0800
+Message-Id: <20260604125442.20673-1-fushuai.wang@linux.dev>
+In-Reply-To: <7018a27a-29fb-4c8e-84cf-dc90d1b3bd9c@nvidia.com>
+References: <7018a27a-29fb-4c8e-84cf-dc90d1b3bd9c@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: DrRac27 <drrac27@riseup.net>
-Subject: [BUG] No cgroups in network namespace
-Content-Language: en-US
-To: netdev@vger.kernel.org
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=y
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-Hey,
+> > From: Fushuai Wang <wangfushuai@baidu.com>
+> > 
+> > When an SF is created after a CPU has been taken offline, the IRQ pool may
+> > contain IRQs with affinity masks that include the offline CPU. Since only
+> > online CPUs should be considered for IRQ placement, cpumask_subset() check
+> > would fail because the iter_mask contains offline CPUs that are not present
+> > in req_mask, causing SF creation to fail.
+> 
+> Thank for the patch!
+> 
+> can you please provide a full example? for simplicity, lets say the SF
+> pool is of size of 2 IRQs.
+> 
+
+Sure, here are the AI summarized steps:
+
+  1. When mlx5 driver loads, it initializes the IRQ pools.
+     For sf_ctrl_pool with ≤64 SFs:
+     - xa_num_irqs = {N, N} (There is only one slot)
+  2. When the first SF is created:
+     - The ctrl IRQ is allocated with mask=cpu_online_mask={0-191}
+  2. We take CPU 20 offline
+  3. Existing ctl irq still have mask={0-191}
+  4. Create a new SF:
+     - req_mask={0-19,21-191}
+     - iter_mask={0-191}
+     - {0-191} is NOT a subset of {0-19,21-191}
+     - least_loaded_irq=NULL
+  5. Try to allocate a new irq via irq_pool_request_irq()
+  6. xa_alloc() fails because the pool is full(There is only one slot)
+  7. sf creation fails with error
 
 
-I think I found a bug and wanted to let you know. If I create a network 
-namespace and enter it using iproute2 I can't use cgroupfs2:
+> > 
+> > Filter the affinity mask to only include online CPUs before checking if it's
+> > a subset of the requested mask, 
+> 
+> won't this cause the affinity mask to be empty, which is kind of missing
+> the point of this API... :(
 
-$ sudo ip netns add testnetns
-$ sudo ip netns exec testnetns stat -f -c %T /sys/fs/cgroup
-sysfs
-$ stat -f -c %T /sys/fs/cgroup
-cgroup2fs
+Yes, I didn't realize this.
 
-Is this to be expected?
+> can you check if irq_get_effective_affinity_mask() will solve the issue?
+> 
 
-I can reproduce it on Debian 13/12 as well as Arch Linux.
-If I enter a network namespace via systemd.service (5) using 
-"NetworkNamespacePath=/run/netns/testnetns" I get my expected output: 
-"cgroupfs2" instead of "sysfs" (tested on Debian 13).
+Yes, I tested that irq_get_effective_affinity_mask can solve the issue.
+I will send a v2 shortly.
 
-First reported here: https://github.com/systemd/systemd/issues/42461
-
-
+-- 
 Regards,
-DrRac27
+WANG
