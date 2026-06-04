@@ -1,83 +1,92 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from us.padl.com (us.padl.com [216.154.215.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCE103BBFB6;
-	Thu,  4 Jun 2026 22:31:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A71C730BB91;
+	Thu,  4 Jun 2026 22:35:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.154.215.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780612297; cv=none; b=SIgikro7J48nxpkGeXi7jWXT04Rz4S6tPOsGX2bVWNVsq/fcAnCYxjFqV+f0m6cTZuVgdTTuKR3F2rOjRmfxqsqnrKVw4Q2wDXDTfNHp9nFaBMzWwuv82aaMunr1Wk1fJaPOEekjpmVqe8zpZrv5xBz9Iig8mCh78aFgzNi2fpg=
+	t=1780612526; cv=none; b=gWVpAaz0XTX5+KkqkwlrHyK0RKmZ1pb96HkJLgAqkPQP3dB2SPjdihL2Nzmx0VjvABt0KcHF8iiKiBvDwCa11HWosPfmukGmK33vZaLmwPPxltmL6xHOT06Q5ht2TxoOyS/dTnyZTg8PFXZsGZhyokOwhw9PwX7Igm+qGBdmg6w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780612297; c=relaxed/simple;
-	bh=5HAtlgw5/Y7O7w6wpFMhAKspPS+xoUwCTIb4OZ8B1nE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nzU/QyeTbiH8i//rCBsBvFLDpoRDfqrqcU2rquvur+toWUKlOdpdzheNKs5cC4ViThK7jfWmYEAXyZRN6CxDnKHcEFE718SWxvq8Tj8vTT4Ow5krtsJLlZl7pDUN5NQ1VLUzDrBiYf8rTc6ycyVKgyD06d/+LZAdhvC3jg9muHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=K+WTlvB+; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1780612526; c=relaxed/simple;
+	bh=rLTMAydKOOra8DwW4cjtAIbOul+bhLvtg3gNxgP4t2k=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=RKkoZTILBs2PxKQ79eXgpNClO4W+2rxQO9HwfSmd0Y9UbzlUy8OoFN2IFILeirdP4YFu4CYclTxapESw1eMEe8S/BItzv2Ff51wYLAiizEzVEgH32TG1Ts70c3oahlytWuW97v3unibSPHME0CzwbwAMxELjEPgj64ZEulP+r9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=padl.com; spf=pass smtp.mailfrom=padl.com; dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b=Dz7qK4sP; arc=none smtp.client-ip=216.154.215.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=padl.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=padl.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="K+WTlvB+"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
-	In-Reply-To:References; bh=+jIBNjlrd+8cBpesyOegY0Ulnp5mjGSHeu8lpw+r880=; b=K+
-	WTlvB+tcexno4iGj1x0gIpyyUT39sI5jy5yJGiWkNkCHi8Prm7Eh4lMUZkclmARYN7NswZ7tzISc+
-	hfEZR+GNqbevMRmUKnZRRTalgPToIEtMx6hSibeg9/TFiDZbfmMwwgKJOL/j0lFUdnxjOSyMUq4hd
-	gzH6n7SvcmaTgeA=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wVGay-00678b-Mk; Fri, 05 Jun 2026 00:31:24 +0200
-Date: Fri, 5 Jun 2026 00:31:24 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: ciprian.regus@analog.com
-Cc: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH net-next v3 09/13] net: ethernet: oa_tc6: Add new
- register address defines
-Message-ID: <a113080e-44ae-4867-8414-14a1b1a3c7a9@lunn.ch>
-References: <20260604-adin1140-driver-v3-0-5debdb3173c4@analog.com>
- <20260604-adin1140-driver-v3-9-5debdb3173c4@analog.com>
+	dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b="Dz7qK4sP"
+Received: from smtpclient.apple (border.lukktone.com [139.130.100.52])
+	by us.padl.com (Postfix) with ESMTPSA id 1C14860C6D;
+	Thu,  4 Jun 2026 18:35:19 -0400 (EDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=padl.com; s=default;
+	t=1780612523; bh=8UEh4sCajbfrVQTbpv+xJtTwvbWZPfqHLFXzMe4K8N0=;
+	h=Subject:From:In-Reply-To:Date:Cc:References:To:From;
+	b=Dz7qK4sPUlfuYZSQwmf8V9BHKqnkqRwlg+jGLHhV5FUkEWHkrGf6Qjf4QPcz/kkZM
+	 HIGKVDWA75ywKepHihraidIh4BGhbyfn/RvylKXwo97NxoQv3RwFncDs3hfAg6p7dH
+	 g+aUfb69442MRyQHUsrk1miq0ImodL/7qdM9IqMIdMT6TcVr26Hnativ9N+lH1J4mK
+	 voq67d0cPQAAqNVK2MYheay1pfjHUU1RfZAuAKTMCr1/Dq4xT8lMf3Y/Z+N+TOpwUd
+	 kVTk9/vCPUDWdJf6mZIQ4eNa02IBlOA8W9AIckm5whYexPvrctEYxK+6bZCLjnBAVo
+	 caGBq9t1joNrA==
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260604-adin1140-driver-v3-9-5debdb3173c4@analog.com>
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH net-next v6 2/2] net: dsa: mv88e6xxx: add support for
+ credit based shaper
+From: Luke Howard <lukeh@padl.com>
+In-Reply-To: <20260604-net-next-mv88e6xxx-cbs-v6-2-b68c01142d1e@luminex.be>
+Date: Fri, 5 Jun 2026 08:35:07 +1000
+Cc: Andrew Lunn <andrew@lunn.ch>,
+ Vladimir Oltean <olteanv@gmail.com>,
+ "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>,
+ Russell King <linux@armlinux.org.uk>,
+ netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ =?utf-8?Q?Marek_Beh=C3=BAn?= <kabel@kernel.org>,
+ Cedric Jehasse <cedric.jehasse@gmail.com>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <B7FE46EB-2AE6-4F8E-8821-24882C1DEDED@padl.com>
+References: <20260604-net-next-mv88e6xxx-cbs-v6-0-b68c01142d1e@luminex.be>
+ <20260604-net-next-mv88e6xxx-cbs-v6-2-b68c01142d1e@luminex.be>
+To: cedric.jehasse@luminex.be
+X-Mailer: Apple Mail (2.3826.700.81)
 
-> +/* Vendor specific memory map. */
-> +#define OA_TC6_VEND_MMS1			1
 
-I'm not sure that is the best name. Table 6 calls it MAC. 10-15 are
-listed as vendor specific. Ideally we want to avoid confusion between
-MAC registers and other vendor registers. So maybe OA_TC6_MAC_MMS1?
-That would fit the pattern:
 
-/* PHY – Clause 45 registers memory map selector (MMS) as per table 6 in the
- * OPEN Alliance specification.
- */
-#define OA_TC6_PHY_C45_PCS_MMS2                 2       /* MMD 3 */
-#define OA_TC6_PHY_C45_PMA_PMD_MMS3             3       /* MMD 1 */
-#define OA_TC6_PHY_C45_VS_PLCA_MMS4             4       /* MMD 31 */
-#define OA_TC6_PHY_C45_AUTO_NEG_MMS5            5       /* MMD 7 */
-#define OA_TC6_PHY_C45_POWER_UNIT_MMS6          6       /* MMD 13 */
+> On 4 Jun 2026, at 11:44=E2=80=AFpm, Cedric Jehasse via B4 Relay =
+<devnull+cedric.jehasse.luminex.be@kernel.org> wrote:
+>=20
+> From: Cedric Jehasse <cedric.jehasse@luminex.be>
+>=20
+> Some of the chips supported by this driver have credit based shaper
+> support. Support is added for the 6341, 6352, 6390 and 6393 families.
+> This is configured using the Qav registers in the AVB register block.
+> There are small differences in the Qav registers between the chip
+> families (eg. the unit used for the rate and number of bits in the
+> registers). mv88e6xxx_qav_info is introduced to configure this per =
+chip.
+>=20
+> Eg. setting up 20mbps credit based shaper on a 1GBit link:
+> tc qdisc add dev p8 parent root handle 100: mqprio \
+>                num_tc 8 \
+>                map 0 0 6 7 0 5 0 0 0 0 0 0 0 0 0 0 \
+>                queues 1@0 1@1 1@2 1@3 1@4 1@5 1@6 1@7 \
+>                hw 0
+>=20
+> tc qdisc replace dev p8 parent 100:8 cbs locredit -1470 hicredit 30 \
+>    sendslope -980000 idleslope 20000 offload 1
+>=20
+> Note: only idleslope and hicredit can be programmed in the switch
+> registers, other parameters won't affect settings.
 
-I personally would generalise the comment here, and add it to this
-list, so keeping everything together.
+Reviewed-by: Luke Howard <lukeh@padl.com>
 
-    Andrew
