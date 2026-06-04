@@ -1,146 +1,138 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73A30481AB0;
-	Thu,  4 Jun 2026 16:33:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30C2140961E;
+	Thu,  4 Jun 2026 16:36:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780590780; cv=none; b=sw/Ai61bZD+URygggpkSvBLIOzdSVvizLCkGZwdGh5fhNf3K2vybd7OwjEw+UqIOIrsBfAouJGHgZ/lm7ooPEwJMLjK1Mkn0eqErMH1at7tJDzwJPbEz7WXQdioZvMYJkSaQ+Vkct+j9jChHQliEbZIN4KbO8ETk5EpA/JuyS78=
+	t=1780590981; cv=none; b=hcJCyfMaRqoyRcV2uAqzSdZAkGgThW8XS8mf66GJzXp71gyCv4hRRNHYkI6GWowe/TMRBJzn+7eXyceywwfB+vZLI/N7mEQlM1T790vfpd0dBea45NePwTKrSWApYvr+3kOHgeoigOYPLCbelwFMXgxWz7VXz9drpIvx6gIPW5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780590780; c=relaxed/simple;
-	bh=+0sz9FwBA9o5uFK67oULtBM3+uyl7upIRQbA6uFPnQg=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=j0IFhPGE89o9jXgsyZRq2U52bYxofCwsnYiA1qH9YZsi54XFq4ttVLswmfI1UKnyXC1SYwlj2y6aDt1eGczlw3ql2t7CdrGn3kohw3UgBP9SCfs1G88X7DADV6sxBmOcb8s2Ky58I0YnR/Vhf9sNEUNycH2NSPunznyCcSqC+UU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R8YDfcGE; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1780590981; c=relaxed/simple;
+	bh=79767qT4cxoYvoYC9/wCqAKQO0v9jT3L2K/ugsJBoLI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=i93+sqyzKzq4yQ4fJB2euaTjtJangEXiHl1R+Ih3GsnRDH9afeHe3FuM9vvtXugJCd24O5lMAHUvLuKRnijCmStExprw29HpAkftIj+GzuBGc5oLPSORQaUhva4ISajNAkAMUo0M5fEf4nxv0a/rI4a8AmCWXQhRMuQ/mMWchQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UeJbxwqN; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R8YDfcGE"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 4CCF3C2BCF6;
-	Thu,  4 Jun 2026 16:33:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1780590780;
-	bh=+0sz9FwBA9o5uFK67oULtBM3+uyl7upIRQbA6uFPnQg=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=R8YDfcGEmEdmj1BR3bC54doqcaMJgi7+rHqEpFZrHGoapO9J0GnCedG/9LlcUzlyp
-	 7ew5vn8IY8D8jXVxbd+dklJ0cFm9VzOnAAnVNfKm4j8ts3D0YturL+6rUp0nuH1bho
-	 y8rXTArgofGvWdUl+kPTOI9LhZvyrSegl5Cvt71p5MSAYXLbqiicxBTTkAxSHr1hgG
-	 TLlu1MyYeVpAmjcCpjb/BAQEIAqr/yfyRu95Vke6MDjj5LvCy8vhCs5H37Dl8tzhfi
-	 BXyyAeyZqrv9tKc1BHmgo3ugQqeBiNV4aJ9nkYdi2zvFk3krTpGggw0qOwd+CIb0+P
-	 IONJu4YB0R5vw==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3F103CD6E77;
-	Thu,  4 Jun 2026 16:33:00 +0000 (UTC)
-From: Ciprian Regus via B4 Relay <devnull+ciprian.regus.analog.com@kernel.org>
-Date: Thu, 04 Jun 2026 19:32:56 +0300
-Subject: [PATCH net-next v3 11/13] net: phy: microchip-t1s: use generic C45
- MMD access helpers
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UeJbxwqN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F214D1F00893;
+	Thu,  4 Jun 2026 16:36:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780590980;
+	bh=79767qT4cxoYvoYC9/wCqAKQO0v9jT3L2K/ugsJBoLI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=UeJbxwqNUrMAoASAFTbAhPd7x6kg0LyZyTe09Aq5Fj0mG5kt3Pug43cVhKlgMvG18
+	 lmLzxJFIvevDeWXHTE4r3etdwIiTwmzCyrrJ0GpYA3wIw6Fs28liplDRy68UOPzXjJ
+	 fEnVWxHoef0dWOPrYsVspsiVpPdjhEIAzFt7O98xOY/njlqugajhLFcac+lThvA0zZ
+	 cKGpZD9RV8pa6mpnwNGX73Crg3Ixo1JmCPA28nQbA+HpoTRWi0cY0wfoWH2xfwKC73
+	 ONBmOFyzb5I0iwhSRGWeuooZBeumd+cI3H35RrDnE/saQHV8k3xS8K2ErSHOpdTkCJ
+	 ZAAR7Um/zNPfA==
+Date: Thu, 4 Jun 2026 17:36:15 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
+Cc: "Parthiban.Veerasooran@microchip.com" <Parthiban.Veerasooran@microchip.com>,
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
+	"davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>,
+	"pabeni@redhat.com" <pabeni@redhat.com>,
+	"robh@kernel.org" <robh@kernel.org>,
+	"krzk+dt@kernel.org" <krzk+dt@kernel.org>,
+	"conor+dt@kernel.org" <conor+dt@kernel.org>,
+	Piergiorgio Beruto <Pier.Beruto@onsemi.com>,
+	"andrew@lunn.ch" <andrew@lunn.ch>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"Conor.Dooley@microchip.com" <Conor.Dooley@microchip.com>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+Subject: Re: [PATCH net v3 2/2] dt-bindings: net: updated interrupt type to
+ be active low, level triggered
+Message-ID: <20260604-swimwear-garnet-3eb092e6fda7@spud>
+References: <20260601-level-trigger-v3-0-da73e7010532@onsemi.com>
+ <20260601-level-trigger-v3-2-da73e7010532@onsemi.com>
+ <20260602-rebel-snide-5036c97e410d@spud>
+ <CY8PR02MB92493D2E5491AAE5416C05A283122@CY8PR02MB9249.namprd02.prod.outlook.com>
+ <a5abb9b8-6ebf-4f95-a684-fc889b98acea@microchip.com>
+ <CY8PR02MB9249E607ACBF3A05AB83ABF683102@CY8PR02MB9249.namprd02.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260604-adin1140-driver-v3-11-5debdb3173c4@analog.com>
-References: <20260604-adin1140-driver-v3-0-5debdb3173c4@analog.com>
-In-Reply-To: <20260604-adin1140-driver-v3-0-5debdb3173c4@analog.com>
-To: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
- Shuah Khan <skhan@linuxfoundation.org>, Andrew Lunn <andrew@lunn.ch>, 
- Heiner Kallweit <hkallweit1@gmail.com>, 
- Russell King <linux@armlinux.org.uk>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-doc@vger.kernel.org, devicetree@vger.kernel.org, 
- Ciprian Regus <ciprian.regus@analog.com>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1780590775; l=2613;
- i=ciprian.regus@analog.com; s=20260330; h=from:subject:message-id;
- bh=faPK/DX3mw0tSktXa1fye/FIW++DcevQxjmxvyg/zD8=;
- b=ud7NKDkrBW2tKYUXhENLT+NeqhArjh9XfyDFsn08aYyNXptmF+q8Nz2HPNRWMrRlIzFUiVKx2
- mWJ6/nxYDOuDth3DTvaOWsDXSDyHW5VPLMn3RQp2FAZbXtAavGOg5Lr
-X-Developer-Key: i=ciprian.regus@analog.com; a=ed25519;
- pk=8WoNhI0kQcQUl8YqJO5ZevROYk9HP8lOIeIgIYgjfbc=
-X-Endpoint-Received: by B4 Relay for ciprian.regus@analog.com/20260330 with
- auth_id=703
-X-Original-From: Ciprian Regus <ciprian.regus@analog.com>
-Reply-To: ciprian.regus@analog.com
-
-From: Ciprian Regus <ciprian.regus@analog.com>
-
-Replace the driver specific lan865x_phy_read_mmd() and
-lan865x_phy_write_mmd() with the shared genphy_read_mmd_c45() and
-genphy_write_mmd_c45() helpers.
-
-No functional change.
-
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Ciprian Regus <ciprian.regus@analog.com>
----
-v3 changelog:
- - no change
-v2 changelog:
- - New patch
----
- drivers/net/phy/microchip_t1s.c | 32 ++------------------------------
- 1 file changed, 2 insertions(+), 30 deletions(-)
-
-diff --git a/drivers/net/phy/microchip_t1s.c b/drivers/net/phy/microchip_t1s.c
-index e601d56b2507..73c23d311d72 100644
---- a/drivers/net/phy/microchip_t1s.c
-+++ b/drivers/net/phy/microchip_t1s.c
-@@ -506,34 +506,6 @@ static int lan86xx_read_status(struct phy_device *phydev)
- 	return 0;
- }
- 
--/* OPEN Alliance 10BASE-T1x compliance MAC-PHYs will have both C22 and
-- * C45 registers space. If the PHY is discovered via C22 bus protocol it assumes
-- * it uses C22 protocol and always uses C22 registers indirect access to access
-- * C45 registers. This is because, we don't have a clean separation between
-- * C22/C45 register space and C22/C45 MDIO bus protocols. Resulting, PHY C45
-- * registers direct access can't be used which can save multiple SPI bus access.
-- * To support this feature, set .read_mmd/.write_mmd in the PHY driver to call
-- * .read_c45/.write_c45 in the OPEN Alliance framework
-- * drivers/net/ethernet/oa_tc6.c
-- */
--static int lan865x_phy_read_mmd(struct phy_device *phydev, int devnum,
--				u16 regnum)
--{
--	struct mii_bus *bus = phydev->mdio.bus;
--	int addr = phydev->mdio.addr;
--
--	return __mdiobus_c45_read(bus, addr, devnum, regnum);
--}
--
--static int lan865x_phy_write_mmd(struct phy_device *phydev, int devnum,
--				 u16 regnum, u16 val)
--{
--	struct mii_bus *bus = phydev->mdio.bus;
--	int addr = phydev->mdio.addr;
--
--	return __mdiobus_c45_write(bus, addr, devnum, regnum, val);
--}
--
- static struct phy_driver microchip_t1s_driver[] = {
- 	{
- 		PHY_ID_MATCH_EXACT(PHY_ID_LAN867X_REVB1),
-@@ -584,8 +556,8 @@ static struct phy_driver microchip_t1s_driver[] = {
- 		.features           = PHY_BASIC_T1S_P2MP_FEATURES,
- 		.config_init        = lan865x_revb_config_init,
- 		.read_status        = lan86xx_read_status,
--		.read_mmd           = lan865x_phy_read_mmd,
--		.write_mmd          = lan865x_phy_write_mmd,
-+		.read_mmd           = genphy_read_mmd_c45,
-+		.write_mmd          = genphy_write_mmd_c45,
- 		.get_plca_cfg	    = genphy_c45_plca_get_cfg,
- 		.set_plca_cfg	    = lan86xx_plca_set_cfg,
- 		.get_plca_status    = genphy_c45_plca_get_status,
-
--- 
-2.43.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="dDRoXKzkAjgb7RZm"
+Content-Disposition: inline
+In-Reply-To: <CY8PR02MB9249E607ACBF3A05AB83ABF683102@CY8PR02MB9249.namprd02.prod.outlook.com>
 
 
+--dDRoXKzkAjgb7RZm
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Thu, Jun 04, 2026 at 03:21:47PM +0000, Selvamani Rajagopal wrote:
+> > Subject: Re: [PATCH net v3 2/2] dt-bindings: net: updated interrupt typ=
+e to be active low,
+> > level triggered
+> >=20
+> > Hi Conor & Selvamani,
+
+To be clear, my angle here is making sure that the microchip device is
+not deviant from the spec. I don't know or care about this hardware in
+particular.
+I just made the assumption that what was in the example worked, and
+wanted clarification that what the example was changed to actually
+reflected something else that worked on the hardware in question before
+I gave an ack. I'm a dt-binding maintainer, not someone with knowledge
+of these devices.
+
+> >=20
+> [.]
+> > One possible alternative could be to use a threaded IRQ handler with
+> > IRQF_ONESHOT, where the IRQ line is disabled until the handler
+> > completes, and sleeping is allowed. In that case, we could perform the
+> > SPI transfer in the threaded handler to send the data header and
+> > deassert the interrupt, while deferring the remaining work to a separate
+> > kthread (the current SPI thread). However, I have not yet tried this
+> > implementation, so I cannot comment on its behavior or effectiveness
+> > without implementing and testing it.
+>=20
+> I can test this in my setup.
+>=20
+> >=20
+> > I may be missing something here and am trying to clarify my
+> > understanding. I am also curious why this issue reproduces on our system
+> > but does not appear in Selvamani=E2=80=99s setup with an active=E2=80=
+=91low level
+> > interrupt configuration. If possible, could you share details of your
+> > setup and how the testing is being performed?
+>=20
+> My setup is similar to yours. We have Raspberry Pi boards (P-4 & Pi-5) co=
+nnected
+> to our MAC-PHY evaluation board. As you could see in my patch submissions=
+,=20
+> there are no changes to oa_tc6.c in the way interrupts are handled.
+>=20
+> >=20
+> > Best regards,
+> > Parthiban V
+> > >
+> > >>
+> > >> Cheers,
+> > >> Conor.
+> > >>
+> > >>>
+>=20
+
+--dDRoXKzkAjgb7RZm
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaiGpfgAKCRB4tDGHoIJi
+0tLdAQDyZP4DBC3h3sB2EKG6Xrs/w0FHmzR69qe7gr1KiN8fnQEAxQq0LUEp574U
+u25Oy7xpfeAn/+cFEAMtRdExAl7tzgY=
+=xdbe
+-----END PGP SIGNATURE-----
+
+--dDRoXKzkAjgb7RZm--
