@@ -1,126 +1,106 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7612F2F531B;
-	Thu,  4 Jun 2026 16:39:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 674053AFCE8;
+	Thu,  4 Jun 2026 16:39:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780591146; cv=none; b=FhPSwxVVnCFZ7Sf7dZOP1ciPUDuknF4t/IqkR9mlpLCm//KzSBFLhOxvCtN1krrtaqgep4z/jRaMktKOTCsEwfOl6KezwtvLFtmo537VQnUan1jByOrUBxQMOKNOZZ5EMCgjceEq90m7y2k9IW4bCSCQ1cubWPaPzxkvs5jmp4Q=
+	t=1780591179; cv=none; b=dSc5KYMUIld31SCGxcKWBwMPXaKmKJxAM9H6oDfQ2JSJW9MRLhap5q00lvul5vjH6ihGCOGIt/XdCJ2U81bZrVbktJAF3imIkl3YtoknrK+2hFY8P3bOS0BXl+1hIS9SMcv/XJHiesDv9v///vPr2mMc4c3Lu1THY/KInqZPZYk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780591146; c=relaxed/simple;
-	bh=7y1X+mc0RP4JERnetQIXLYlQgO98q5svq1wduccnOns=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lr4Nur5OrW16h07jCI/Mo75Il4J/3PnLvqF+UpeAsZfFvlSPjrfrzhp/A5WyHZ4dKpkq5eOziZyKTTQOxjRtN5D7EJ8GNubNh+hirNlvNKupzrt38Gt2W495PB/Iasl0QliZF4cYoUlHmXDMEvo9nL5GazvJ/LDnJBWfjUW5tII=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dm0Wf9c5; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780591179; c=relaxed/simple;
+	bh=c37l7/my8PeBcqolj2D0YxpepY2LnMLvvONRHTXMPyg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GB0hkgex74G9EjFSw1IOMH6AYLGDWDsSxe3Okr6kUHr6ukW9qJ5bQwR8HlRTlZ5XAziMS/8ya6f0FV2KjVsi6P5LY/TXtOIZKnC0/S/2ZDNpqgeg2R9y1UY7KCwNRgFw63DAy67FmtTwzIGqv5SHXIRhGPN4sb/kpFMuXA8YZgg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OA9vIs9p; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dm0Wf9c5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD9B71F00893;
-	Thu,  4 Jun 2026 16:39:02 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OA9vIs9p"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D9201F00898;
+	Thu,  4 Jun 2026 16:39:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780591145;
-	bh=C97OinIMHdoGNYwilRL1cyfSqURl26hCe8MlGB8UpuE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dm0Wf9c5FAae4OWnJETtorw91Jbgd1QsxZvME4aM3YDOUcrQtZhMboaCdLlHmz3OR
-	 cmEaQYetJ1uQHU7ddQkTxJHGRjx83VtThq4Eafg6WDShb8clHN0zKHJj2OMEXrDS/h
-	 K/+dHUmuckP8102D/4z8p5TYR3V9VmzG0fPBTBWBEf2sDaLHlruDtJPqvYqHEOE+Gu
-	 /LJNKdgKlk05c6PzJLqtvfsGHb9qJ6kFDg3bt+hhTMmWcNNAaYE742GpSrtMaf1t3r
-	 cFqRBPfwh8I26LIYThlTWgpPzuLoak+eXDlvVu1+/mNBS8qSoVb0GPwuZcCSwTe9p5
-	 /riCyQXM+zvew==
-From: Simon Horman <horms@kernel.org>
-To: mmyangfl@gmail.com
-Cc: 'Simon Horman' <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	vladimir.oltean@nxp.com,
-	UNGLinuxDriver@microchip.com,
-	andrew@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next] net: dsa: felix: validate switch in .netdev_to_port() conversion
-Date: Thu,  4 Jun 2026 17:36:30 +0100
-Message-ID: <20260604163629.3976927-2-horms@kernel.org>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260603024234.66603-1-mmyangfl@gmail.com>
-References: <20260603024234.66603-1-mmyangfl@gmail.com>
+	s=k20260515; t=1780591178;
+	bh=4KZsy5obdlZxh/b5c8a6JTkwwxyP0LH4cSc0OEXfIcY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=OA9vIs9pIPYZ7nlFvWVaT0sGcqXPSIgkM2xGgElld8VamNpZ9SWpPbOaiIvTUw//C
+	 mOEePXq14cPfzDO6knZ2uIzRGROV2bLUhxff5SbEiGjCgmU3C/Cha/QcCxXp7P52j7
+	 yeRTrRKXS8H4izNPyd/Pfd2ORkg2+lERfq2atgAhmlpT3ChXBeMLwbv3JAjraMAhqH
+	 ahDErjcLn/98KqHLtxsavHeK5T3qOr0TlEOQYEtQ8eMX53VLYqellTqyRokNwPYy+x
+	 TklmwBAiXsabTvpzBc9OhuW2hwEWbz62Mn8CCGFQS/o9e45aGjCIir8lKFtpDyOgc/
+	 R4bW96XyA3Ghw==
+Date: Thu, 4 Jun 2026 17:39:32 +0100
+From: Conor Dooley <conor@kernel.org>
+To: ciprian.regus@analog.com
+Cc: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+	devicetree@vger.kernel.org
+Subject: Re: [PATCH net-next v3 01/13] dt-bindings: net: Add ADIN1140
+Message-ID: <20260604-devoutly-registry-6564d8cd3ed8@spud>
+References: <20260604-adin1140-driver-v3-0-5debdb3173c4@analog.com>
+ <20260604-adin1140-driver-v3-1-5debdb3173c4@analog.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="wPqzZuWB6wYVv20r"
+Content-Disposition: inline
+In-Reply-To: <20260604-adin1140-driver-v3-1-5debdb3173c4@analog.com>
 
-From: 'Simon Horman' <horms@kernel.org>
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
-Full review at: https://sashiko.dev
----
-net: dsa: felix: validate switch in .netdev_to_port() conversion
+--wPqzZuWB6wYVv20r
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-This commit changes the .netdev_to_port() callback to take a struct
-ocelot pointer and adds a dp->ds mismatch check in felix_netdev_to_port()
-so that a netdev belonging to a different switch is rejected before the
-port index is consumed by flower rule parsing.
+On Thu, Jun 04, 2026 at 07:32:46PM +0300, Ciprian Regus via B4 Relay wrote:
+> From: Ciprian Regus <ciprian.regus@analog.com>
+>=20
+> The ADIN1140 is a single port 10BASE-T1S Ethernet controller that
+> includes both the MAC and a PHY in the same package.
+>=20
+> Signed-off-by: Ciprian Regus <ciprian.regus@analog.com>
+>=20
+> ---
+> v3 changelog:
+>  - set adi,ad3306 as a fallback compatible.
+> v2 changelog:
+>  - Reorder the compatible entries in the dt schema (ad3306, adin1140).
+>  - Removed "dt-bindings" from the commit title and message.
+>  - Updated the DT example to use IRQ_TYPE_LEVEL_LOW instead of
+>    IRQ_TYPE_EDGE_FALLING for the interrupt trigger condition.
+>  - "implements" -> "tries to implement" in the description.
+>  - Removed the MAINTAINERS entry, as it will be added in a later patch
+>    in the series.
+>  - Reordered as the first patch of the series
+> ---
+>  .../devicetree/bindings/net/adi,adin1140.yaml      | 71 ++++++++++++++++=
+++++++
 
-> diff --git a/drivers/net/ethernet/mscc/ocelot_net.c b/drivers/net/ethernet/mscc/ocelot_net.c
-> index 1b8269320464..d2e96d065dc4 100644
-> --- a/drivers/net/ethernet/mscc/ocelot_net.c
-> +++ b/drivers/net/ethernet/mscc/ocelot_net.c
-> @@ -984,7 +984,7 @@ static bool ocelot_netdevice_dev_check(const struct net_device *dev)
->  	return dev->netdev_ops == &ocelot_port_netdev_ops;
->  }
->  
-> -int ocelot_netdev_to_port(struct net_device *dev)
-> +int ocelot_netdev_to_port(struct ocelot *ocelot, struct net_device *dev)
->  {
->  	struct ocelot_port_private *priv;
+File should probably be named after the fallback compatible, but
+otherwise this looks okay.
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
 
-[Medium]
-The new ocelot parameter is added here to match the updated
-ocelot_ops::netdev_to_port signature, but is it actually used in the
-body of ocelot_netdev_to_port()?
+--wPqzZuWB6wYVv20r
+Content-Type: application/pgp-signature; name="signature.asc"
 
-The function still does only:
+-----BEGIN PGP SIGNATURE-----
 
-    if (!dev || !ocelot_netdevice_dev_check(dev))
-            return -EINVAL;
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaiGqRAAKCRB4tDGHoIJi
+0hSnAP40G5o4GiXBt3J2g0xEBk1CvhYU08hklJOuK6koHHrslgD/Y+cm6b3gd+wh
+ER0xd3SqY21oFM3je23FnyAEqrFgrQE=
+=sJ8C
+-----END PGP SIGNATURE-----
 
-    priv = netdev_priv(dev);
-
-    return priv->port.index;
-
-ocelot_netdevice_dev_check() compares dev->netdev_ops against the
-file-scope ocelot_port_netdev_ops vtable, which is shared across all
-ocelot instances, so a netdev belonging to a sibling ocelot switch
-passes this check and priv->port.index is returned as a port number
-on the local hardware.
-
-Isn't this the same silent wrong-port resolution the commit message
-describes for the felix path?
-
-The corresponding switch-ownership check the commit adds for felix:
-
-    if (IS_ERR(dp) || dp->ds != ds)
-            return -EINVAL;
-
-has no analogue in the ocelot variant. struct ocelot_port carries a
-back-pointer to its owning struct ocelot (used elsewhere in this
-file), so a symmetric check such as:
-
-    if (priv->port.ocelot != ocelot)
-            return -EINVAL;
-
-after the netdev_ops check would mirror the felix change and consume
-the otherwise unused ocelot argument. Without it, the parameter is
-dead and the validation promised by the commit message is only
-half-applied.
-
-The two call sites in ocelot_flower.c, ocelot_flower_parse_egress_port()
-consuming a->dev and ocelot_flower_parse_indev() resolving a netdev
-from a user-supplied ifindex via __dev_get_by_index(), both feed
-externally-controlled netdevs into ocelot->ops->netdev_to_port(ocelot, dev),
-so the standalone ocelot path used by ocelot_vsc7514 still accepts a
-foreign switch's netdev when more than one ocelot instance is present.
+--wPqzZuWB6wYVv20r--
