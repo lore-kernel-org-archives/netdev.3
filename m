@@ -1,219 +1,218 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEDDE3FDC08
-	for <netdev@vger.kernel.org>; Thu,  4 Jun 2026 09:29:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780565380; cv=none; b=BR7b+EA3jgG0grvKvC8rL3puyxszsk+/9jUX/IVFkRRpt2SOcZvPonQN3vIII0VUdU6vnZqk6n43GQ6CiDe0UYFv11txPljS3Uu1aK3rYyrNG3Yqqu400wZYoorFQ5wB71raDdA+vbF0xhQcCle9V+baW8W/67qayfaO5d7nXxo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780565380; c=relaxed/simple;
-	bh=LSYx6S/5jyu9KfVp/5iYPsZKG9eGFj04YvZKjTai2Y8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SXYMMTaAqPYUAVxJNMF22NhcnNmZbhy6KWtskro5SIPsgjCeuF7Djla3Dv4pzuZXABLGm6G/wNWSTcdnw7kSgx2qs+uwEc5tif4t9K2QQ6mnD2sCFjrJec7YjrxpPhR6SnQbY6Jj0YiTbhkoQRpSqfR+/fdvVyDEwnFVOqdTg0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HEBKvVmb; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=MrGwsVwB; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB5523CAE6E
+	for <netdev@vger.kernel.org>; Thu,  4 Jun 2026 09:37:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=205.220.180.131
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780565831; cv=pass; b=HVaki1rMl7a5mWsSt9AW163cRgUhEzgVJ6QznIEGiMg2WmML6q7XULAU+oWdAGHuZLTxBmUUcgEZpzszMqWIr/ZjukFkkyWNOBsdfe/6PaQpThEVaftVc4E4hAw1YOJnfp73UrounDRwEHt25SAETsFgdKTW0Tq6VESR0Itt6EQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780565831; c=relaxed/simple;
+	bh=LKFmCuDQNLkJpDjv10PTCN7SoRI92sQX+juYlxXSmCU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=e66TU9sPm+iiWjaOJkGFpEFvZGKNt+oc3WW10XvZalG+/TI3coLjUzCCARRIZUdc4WRVRhMK+gC5FaQdkRqQ5vT7z/Cto5BMFm3jexbDg6kH3/E3gFpaWf0T7EWLLAoL5HoLJwLSciscjh1tWV+JlHkqtBzw56Ygz4zfquFl80U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=gkwQ7pQG; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=hKgd3/UY; arc=pass smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HEBKvVmb";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="MrGwsVwB"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1780565377;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+huBJ1nPsqC9QTJtR1rRZxAcoh6LRj4ywJbAKenhqm4=;
-	b=HEBKvVmbafbigtjQIpDRJTOo5jtaHv+jDwL5nXG+fbYJ/huRvHi0/P+OF4OUkejY3W506l
-	ncTdj0E33z8os+6qDf8gacOHfNdYMmdxhUFT9nVYyKOeuY0Noo6LSZXkarlyGxACi7K0Uu
-	nZuw3EBboF5MNjscWRnsqF+SI9VEmrM=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-630-UyPI1s6jN7et_szLiWPVFg-1; Thu, 04 Jun 2026 05:29:35 -0400
-X-MC-Unique: UyPI1s6jN7et_szLiWPVFg-1
-X-Mimecast-MFC-AGG-ID: UyPI1s6jN7et_szLiWPVFg_1780565375
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-490b4d3d3e6so4014485e9.0
-        for <netdev@vger.kernel.org>; Thu, 04 Jun 2026 02:29:35 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="gkwQ7pQG";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="hKgd3/UY"
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6546E0Yw3240528
+	for <netdev@vger.kernel.org>; Thu, 4 Jun 2026 09:37:08 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:to; s=
+	qcppdkim1; bh=LbH2Ej66t35eFH01LN7Yn1mCVFPgBbI2BNIp23nOi0I=; b=gk
+	wQ7pQGrydVH4blqAd03q/e5Ae1bc6NbOQrmi8+rkuGoe4hzxNhqsJTwdZ7wdW/+N
+	qDxXNeOTPUwizWZs2hH9w8/Dguipy6CaRuCRoLEcFNj16hvzbndv+YDWdp5V7tbO
+	myZCEQ905ekyZ8KmSkGZ4nHoSkeaSZo90THNZ8f1Ow09YhZkoFIQTeHNfhZw9Vx4
+	PFfg/aVoZC4rsLW1ANya/izCW3kjD78HPRL82MviYJ9f77AWmu3ujblBlbiwXYV0
+	1gWu4CL/J3Nn8B9UV26DMYO+HnPLUwIs+kzQRLfroybnAOf5kfTrCEXsRYwhpABP
+	B5FOeZZdPcS6JqR0hCZw==
+Received: from mail-oa1-f71.google.com (mail-oa1-f71.google.com [209.85.160.71])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4ejvd0a7q7-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Thu, 04 Jun 2026 09:37:07 +0000 (GMT)
+Received: by mail-oa1-f71.google.com with SMTP id 586e51a60fabf-440e399d049so466612fac.1
+        for <netdev@vger.kernel.org>; Thu, 04 Jun 2026 02:37:07 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780565827; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Em+dQYpsufFeeySNX/xJbnWDupdfRfpPe1iuYL7k6ZbIFQ9g91taEaROMpJ2wGzWUE
+         5QX+1wG6gDryuNZHOrkzC9s9s+wErFzKPFn4MHfo+WEtcIGZRqapzMaVZK+R6wvqUTRU
+         QeKPJl0Z6k5eGwwheY5pn8/7zzjvuEo6bRO6LDShBchrvPV7dERIRKcRwPpAyRalLuv7
+         9SCtHqcjbkIm+KiLy8hpO90Xt5Z/uNTf0qrdWplrAzqz4onV8mJEEhgRUQbXMlh3dphv
+         u6vdHBS8oHqbnHOibF2lnB1AWdZQ4oBDF69TonvgkDyix9giu3fKpqgfGPFuGW97v5sm
+         +ZCA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :reply-to:in-reply-to:references:mime-version:dkim-signature;
+        bh=LbH2Ej66t35eFH01LN7Yn1mCVFPgBbI2BNIp23nOi0I=;
+        fh=aF+D1Jm5m9H5vFfpew6hIBbPXutXO3INKh9gcEx5Wns=;
+        b=bvpK00z84P1/nUTF1EKC0/gu2f5D5fVretEKZ+9ArSn1z8XVkTVcIDWgOsH8wr5+mY
+         umcTPV1XJJK07KJEzPOg9zGcgmkIHaPFHhkWnr9uahEAeVDYsybnTvbrWlBIKDuFyVRX
+         TsR8YFKqChi9YEq1D8wlFb3BEdXmGsoUepU+UTHddH1DH2b6oMXG61UhF4umXY5oTAzq
+         YwgGfm5eRBr+IWq6Wr9YoEJvqN98ydwyHGrHKKVdz1U+aoVc9QqTk9Ts8F2Ovgl2ss5P
+         q6RxWLg6BkdH6UINTnA1VnHZKR9iLciP5Ht+AE1J5DlSLa9m1g2kpIUcvustbWzdvy3Q
+         6aPw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1780565374; x=1781170174; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=+huBJ1nPsqC9QTJtR1rRZxAcoh6LRj4ywJbAKenhqm4=;
-        b=MrGwsVwBVmKBHV3LNcnxKwkeYZBZz4/9S/ZG93qcrPWEBjxvCQ/Mvet4v7imvKTi+P
-         c3JPtQuD/YYxlw8rOLdGIDqsG36yrPhLxHAlenO4jOTeoYCJt7GDlujr+Q7EbmlBT9xF
-         MBcEhrpr27Ao7SnmG/yRQ3Io39ZpGwaOx0He1itSGPDxPlKDZB9R5JFhXgghsW8R7imW
-         ceopw6yzmM8ieQ9rqLdjOWZx5hXWTg4UU7ViEsLahOgKfLytUoKu360dJEwqO/+ALC/r
-         QTzl7/RR61WMnhRPaRdMTCJCYNjtVc1dGAfSp7tU9nqJIfPGpLLo4Zqk74eH+ibMx2XI
-         uAuQ==
+        d=oss.qualcomm.com; s=google; t=1780565827; x=1781170627; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :reply-to:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=LbH2Ej66t35eFH01LN7Yn1mCVFPgBbI2BNIp23nOi0I=;
+        b=hKgd3/UYOYkLn6Vt4jiCJoWhjU3CQEf++REHBScqG1MtabumpLwC9RKT1QDzSOVkzW
+         5Hjej8nFe4FFnlmi3imAptcteDpfftBYMQqE/T+qGOFskaHDM6oW6metZC29PA1GadHC
+         Mh00QfXDC4poTJJAqxGY/gmRGRm32+56z/BI6HRLa7mdBTFOcL7ntieksrsxudwfExJt
+         kVEw+rr2a3ncxokBKwoRwPRQU3psljLRwWHeoQTqrSwVnpwr779e/7GNdrceGr2MKAyQ
+         ko7Ai7QJp7wPy/t0aoxUvFxxQPVef7teClXNSmzsFYK0j/LEA4fjuLV7TW87WkK5/9p4
+         80mw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780565374; x=1781170174;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=+huBJ1nPsqC9QTJtR1rRZxAcoh6LRj4ywJbAKenhqm4=;
-        b=CJUdlip+FW5FZ2TrgLYmyAm5EG98zFJkNqlKKQzTvZZjbJHLOucG8qbCnYy5WNGGNO
-         Fhh4OdePQpXjsZqv006S9syce34yVzEhXPv4l6bCKqXtJhhhQLvabiC/IoqJXYvxUt7V
-         h4Cf6pUmKezBomyNDJddptyBY8EbiuOt3kDhoHp1UqOpW3X5exObJ1NPpYlIlsNTjjxF
-         8F5t5Yhd7MwG0dz3z/QpDQDnWYwsPr58pZrmHsuSszNWI8IyrpGWJN2wCqNK8VQDLYxa
-         b6StHgb6rJuXnoignTSMDT2y5y/H2DtKKrNqNMxttefi+PZtxddQKgi546gHSsxZPQ8i
-         lqog==
-X-Forwarded-Encrypted: i=1; AFNElJ9+zFbVlxkNS8tkI1bsiVWbiit87vtF7O7Kp8zpKfLWrucvJ+3sZpmB1rbszDTKjorABesNV7A=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzM1p6h0Q0RTpKLA38p1OtEf2aV5TGK1nSVXXDSOUb6eXZCtPAq
-	35GRu4iQ00vmhSz9JkKMPtb84psVmVzMEII291YvMLkUTrIipV3R+5c3YyyMdwnwLB1Hvdj9xXb
-	taYmxPCbUbeLiUweqlN+lzzjoiudY4bTt8LRvZjXgowtYPQ9M/9bBDdpX3hXQ3uP87w==
-X-Gm-Gg: Acq92OH4DKAVJ5HNJsH12dP5n8fk69oZztKlGXym18cGyIh2PW5bcnuuEKU90RH7EdP
-	UQycSloRqSyh7txWzZeHfRhzNOpALgpwBOBp1Fr3gPbPUB5d8BEIiy0zKWrsfxxdwBPWRVQJ+O3
-	IyN0DfXHO4CPmVIw9iR+I5SVYFH7XoOT9X0JE21ONhMRgovUAKvQw7lQFNeLAYXAvJpuLNMFhIs
-	qxR1VDm4c4x2uYStfw7oGr8ArA26fPZVGtzqtOCVe50R9CLjAvwQ6yP20xliocj1kiJ5CSQlvmv
-	qrjMVPgMQpzhPmLxWsIHpNCDBPjpR6xGmXbJ9DZldTeSJU/huetTgkKBxvdMrCeZ8QHQtwx7qAK
-	/VFeSpqtGKhLf5CRwGCDrgK8YaNHJz/2hV/9i/iu3Pok4YKIrFlPaL6ACF6vSHbqmxq0=
-X-Received: by 2002:a05:600c:4fc6:b0:490:4973:91a0 with SMTP id 5b1f17b1804b1-490b5e950admr112769595e9.10.1780565374424;
-        Thu, 04 Jun 2026 02:29:34 -0700 (PDT)
-X-Received: by 2002:a05:600c:4fc6:b0:490:4973:91a0 with SMTP id 5b1f17b1804b1-490b5e950admr112769175e9.10.1780565373963;
-        Thu, 04 Jun 2026 02:29:33 -0700 (PDT)
-Received: from [192.168.88.32] ([212.105.155.59])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490bd670c2esm45301645e9.0.2026.06.04.02.29.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 04 Jun 2026 02:29:33 -0700 (PDT)
-Message-ID: <c1fcc5f6-8a61-4774-9063-44fc5f458b97@redhat.com>
-Date: Thu, 4 Jun 2026 11:29:31 +0200
+        d=1e100.net; s=20251104; t=1780565827; x=1781170627;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :reply-to:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=LbH2Ej66t35eFH01LN7Yn1mCVFPgBbI2BNIp23nOi0I=;
+        b=cau3LGIkqYKDWEl0s4YeAN3kdYVhDVfjc6JY3OWpX2yzIO2QSx+hNUVVX6sCSpCpFE
+         QBIy0dsrJindXXklQNXLyHpr2qQzhVz4je8e+L8tqTnIsCicrDexk3uNrVCz1nzMfeW3
+         RgV0s0I/+vWubQoTAZBtE8mLMQdzdLswdv070FUYGOUI818hEyxuNkPwgb02RYdnJDTH
+         4nrmlsWIcBZCHvuWd2My9oAS3ZrAU0rCO+RWH12hNQ5nF3+CK5MU152MemuVbwHAmuVu
+         Fx0nGEfJ8bNLgs3Mxe8TaEiN5nZWJS7jKxtIm2VF+AG16Fp1X9HWjUwwc/WTGQyl0iMV
+         4+6g==
+X-Forwarded-Encrypted: i=1; AFNElJ+5VUjIpDtE6QKxInfEw08XGmI5LZYL1wiAI3jMqoXmloKXQsy1KgJcS1ciptw7LeJv0B2zHvE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxJAxpqNMsfG8Dly8CSd8Sr4vP+XCPs36BGXv9D8VvrRL5s3tAz
+	aHPXdmuUCQMA5Ve+Fe6PRCzoBMeeRDeU7hz5SN86Gzgrl5YZxbgKw4lOhtR/wLotw1M7dOv1JqA
+	lDrXL4YlpIn/AjidJTBfGmT0LLSKvtBdkYJ3PnM9C2P7SK0Pzw5wwPXdYpR3+WD12zpjJcBFm2U
+	YWPh42yQdSzXakug++hok/vx3GEpPBwM2/kQ==
+X-Gm-Gg: Acq92OEpxsxs7iAtp9933b1iQecmnirIpjVwWOEBvTZLm2oa8MIKcNivvl7sYMBKom9
+	AwFNzfXAjivq391dRcj2dIHvvVNPEDtsKsTfwDqz2ENN+icjRZkyIUCR76qMEzhAIdgqjsAPTVN
+	murXCZZnT6qqPraN3pIwtt+PStz2kv3WQchaOQ/gFn4N7wLaOOqF6Uglf5XDpuIaNLKk8x9O165
+	dCs6NSe+mKYL+8gAw==
+X-Received: by 2002:a05:6870:d0d3:b0:43b:9922:9df2 with SMTP id 586e51a60fabf-440db7cf55cmr4593212fac.21.1780565827213;
+        Thu, 04 Jun 2026 02:37:07 -0700 (PDT)
+X-Received: by 2002:a05:6870:d0d3:b0:43b:9922:9df2 with SMTP id
+ 586e51a60fabf-440db7cf55cmr4593192fac.21.1780565826858; Thu, 04 Jun 2026
+ 02:37:06 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] net: wwan: t7xx: fix race between TX thread and system PM
- suspend
-To: Tim JH Chen <tim770802@gmail.com>, netdev@vger.kernel.org
-Cc: haijun.liu@mediatek.com, chandrashekar.devegowda@intel.com,
- ricardo.martinez@linux.intel.com, loic.poulain@oss.qualcomm.com,
- ryazanov.s.a@gmail.com, johannes@sipsolutions.net, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- linux-kernel@vger.kernel.org, tim.jh.chen@wnc.com.tw,
- Chih.Hung.Huang@wnc.com.tw
-References: <2f9c5f6b-1d8d-4c8b-815d-77a40aa76e23@redhat.com>
- <20260601015231.3211764-1-tim.jh.chen@wnc.com.tw>
-From: Paolo Abeni <pabeni@redhat.com>
-Content-Language: en-US
-In-Reply-To: <20260601015231.3211764-1-tim.jh.chen@wnc.com.tw>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20260528093437.2519248-1-hch@lst.de> <20260528093437.2519248-2-hch@lst.de>
+ <5f7f90d8-cb32-4ffb-8f1c-0722aafbe869@kernel.org> <20260529135045.GA10647@lst.de>
+ <5f3ba603-a6ad-4cf2-9a54-aebc10273c59@kernel.org> <58cc76e7-2348-443d-a989-2a06e61178af@kernel.org>
+ <20260601113831.GA25535@lst.de> <d7b08296-7f6e-4d89-ab3b-04e43d04929e@kernel.org>
+ <CACSVV00k-fxW6+waHNqvmYcnVNDkRexoWWprFzfayZfqdyMuuA@mail.gmail.com>
+ <CACSVV00dNWgpNVU5rB=Hmg+3oWF18yTyfKNr_tWesjoP1jMxwg@mail.gmail.com>
+ <5e6948b3-d235-4b61-aed7-e8b4d0f5b452@kernel.org> <CACSVV02v0Fuc6=Rqyd89D-_tcSjEXuQmxz0+2-4aoRAEwJE4zg@mail.gmail.com>
+ <b6f6323e-6f5b-4928-b474-bd2743eac3f2@kernel.org> <f027078c-6a55-463b-8938-95ede02dca3b@kernel.org>
+ <29bd5886-15c7-462b-8a39-f2ff25269ddf@kernel.org>
+In-Reply-To: <29bd5886-15c7-462b-8a39-f2ff25269ddf@kernel.org>
+Reply-To: rob.clark@oss.qualcomm.com
+From: Rob Clark <rob.clark@oss.qualcomm.com>
+Date: Thu, 4 Jun 2026 02:36:55 -0700
+X-Gm-Features: AVVi8CdLwF-PFxeKWBcz71YZzZxxEA0LQrJYMS3qkVqAqJLyt2EL9LT70o-g4fs
+Message-ID: <CACSVV03Ez9uKw0WDm9G2HTfyXy8SLu9AFGGnY58z-GK+32DV3A@mail.gmail.com>
+Subject: Re: [PATCH] mm/slab: improve kmem_cache_alloc_bulk
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Harry Yoo <harry@kernel.org>, Christoph Hellwig <hch@lst.de>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Mark Brown <broonie@kernel.org>, Hao Li <hao.li@linux.dev>,
+        Christoph Lameter <cl@gentwo.org>,
+        David Rientjes <rientjes@google.com>,
+        Roman Gushchin <roman.gushchin@linux.dev>,
+        Jesper Dangaard Brouer <hawk@kernel.org>,
+        linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        linux-mm@kvack.org, io-uring@vger.kernel.org,
+        kasan-dev@googlegroups.com, bpf@vger.kernel.org,
+        netdev@vger.kernel.org,
+        Alexander Lobakin <aleksander.lobakin@intel.com>,
+        Boris Brezillon <boris.brezillon@collabora.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-GUID: 4dRkgZeooMS_u4kGovSKJRUd1wsMSQS7
+X-Authority-Analysis: v=2.4 cv=M8h97Sws c=1 sm=1 tr=0 ts=6a214743 cx=c_pps
+ a=CWtnpBpaoqyeOyNyJ5EW7Q==:117 a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10
+ a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22
+ a=3WHJM1ZQz_JShphwDgj5:22 a=VwQbUJbxAAAA:8 a=G_pyjxEXS8sYRXXvRXQA:9
+ a=QEXdDO2ut3YA:10 a=vh23qwtRXIYOdz9xvnmn:22
+X-Proofpoint-ORIG-GUID: 4dRkgZeooMS_u4kGovSKJRUd1wsMSQS7
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjA0MDA5MiBTYWx0ZWRfX7uXgD7Jru/pr
+ Cclv4JxR6qugiFaoXyikMI6ZKcx8A9d+oGMlCttcfjbF/nzFqQoIMWZF5308aR3Ow0eNj51ptS5
+ 9yUYdLbIzd9SWRYc7vnWz8PWKDLeTogt6jqWhUwW0wYpnVmkqQQdovzPmWVKq2t07nsCzXqy/d/
+ kCoIEOhHmUxszTDIV5mkeFDqNd2hy/0C1vSAT4gxugddMJ6ZmQrTwQhNC5eXDrAiKrDTDf3CJhr
+ FM1A4CmU3M5C/Ts/BEXYWwhv+gjxZqUdGsytB2zNlhPFhstGvcYzlqoRKxvx0H3Xi3yZCeqCn3/
+ SAV1oElTY4/28Xj9yZWThr+Qo4pI58eCJTQm79vx8GTZzEGQSNnbYXx/zDN56kaQwm8NtS2tJlN
+ wTM21v4b4AarLqTGCG2nIMo+CqpLZXckuyopeVeRCf+XzZITmbHZlu4kbvB+cXQk6qxAfbtELif
+ wVkLQ0AuIDxFJomEVVQ==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-04_03,2026-05-28_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 bulkscore=0 malwarescore=0 suspectscore=0 spamscore=0
+ impostorscore=0 phishscore=0 lowpriorityscore=0 clxscore=1015 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2605210000 definitions=main-2606040092
 
-On 6/1/26 3:52 AM, Tim JH Chen wrote:
-> When system suspend is triggered while the DPMAIF TX kthread
-> (t7xx_dpmaif_tx_hw_push_thread) is running, a deadlock can occur
-> leading to a CPU soft lockup.
-> 
-> The root cause is two-fold:
-> 
-> 1. t7xx_dpmaif_suspend() calls t7xx_dpmaif_tx_stop() which only stops
->    the TX work-queue items (by clearing txq->que_started and waiting on
->    txq->tx_processing). It does NOT signal the kthread and does NOT
->    update dpmaif_ctrl->state, which stays DPMAIF_STATE_PWRON.
-> 
-> 2. The kthread's state guard is only checked at the top of each loop
->    iteration. If the thread already passed this guard, it proceeds
->    unconditionally to call pm_runtime_resume_and_get() — which tries to
->    acquire dev->power.lock also contended by the system PM suspend path.
-> 
-> The result is a spinlock deadlock observed as:
-> 
->   watchdog: BUG: soft lockup - CPU#N stuck for 26s! [dpmaif_tx_hw_pu]
->   RIP: _raw_spin_unlock_irqrestore
->   Call Trace:
->     __pm_runtime_resume+0x5b/0x80
->     t7xx_dpmaif_tx_hw_push_thread+0xc4 [mtk_t7xx]
-> 
-> The condition requires ASPM L1 enabled on the endpoint (which extends
-> the time pm_runtime_resume_and_get() holds dev->power.lock during L1.2
-> link retraining) and hundreds of repeated suspend/resume cycles to
-> trigger reliably.
-> 
-> Fix by introducing tx_pm_lock (struct mutex) and several coordinated
-> changes:
-> 
-> t7xx_dpmaif_suspend():
->   After t7xx_dpmaif_tx_stop(), acquire tx_pm_lock. Under the lock,
->   snapshot dpmaif_ctrl->state into pre_suspend_state (capturing the
->   modem state atomically with respect to the kthread's PM section),
->   then set DPMAIF_STATE_PWROFF via WRITE_ONCE(). Release the lock
->   and call wake_up() so any sleeping kthread re-evaluates the
->   wait_event condition and exits.
-> 
->   t7xx_dpmaif_suspend() acquires tx_pm_lock without holding any PM
->   lock. While it waits, the kthread may call pm_runtime_resume_and_get()
->   which briefly takes and releases dev->power.lock independently.
->   Because the suspend callback does not compete for dev->power.lock at
->   this point, the original spinlock deadlock cannot occur. Suspend
->   latency increases by at most one TX burst drain time, which is
->   bounded by the DRB ring depth.
-> 
-> t7xx_dpmaif_resume():
->   When pre_suspend_state is DPMAIF_STATE_PWRON, re-arm the HW fully
->   (start_txrx_qs, enable_irq, unmask_dlq_intr, start_hw) before
->   publishing the new state. This ensures the kthread cannot issue
->   ul_update_hw_drb_cnt() MMIO writes before UL_ALL_Q_EN is set by
->   t7xx_dpmaif_start_hw(). Publish the restored state under tx_pm_lock
->   to serialise with the kthread's under-lock state check. Wake up the
->   kthread only after HW and state are both consistent.
-> 
->   When pre_suspend_state is DPMAIF_STATE_PWROFF (modem was already
->   stopped or in exception before suspend), skip HW re-arming entirely
->   to avoid leaving DMA engines running while the MD state machine
->   considers the modem inactive.
-> 
-> t7xx_dpmaif_tx_hw_push_thread():
->   Hold tx_pm_lock across the [state check -> pm_runtime_resume_and_get
->   -> pm_runtime_put_autosuspend] sequence. A second READ_ONCE() state
->   check under the lock closes the TOCTOU window between the wait_event
->   guard at the loop top and the pm_runtime call. READ_ONCE() is used
->   in all unguarded state reads in this function.
-> 
-> t7xx_dpmaif_start() / t7xx_dpmaif_stop():
->   Use WRITE_ONCE() for state writes to match the READ_ONCE() reads
->   used throughout the driver and prevent compiler optimisations from
->   obscuring concurrent access.
-> 
-> t7xx_do_tx_hw_push():
->   Use READ_ONCE() in the do/while termination condition to match the
->   WRITE_ONCE() annotations on the write side.
-> 
-> t7xx_dpmaif_tx_thread_init():
->   Initialise tx_pm_lock with mutex_init().
-> 
-> Note: t7xx_dpmaif_start() and t7xx_dpmaif_stop() (called from the
-> MD-FSM kthread via t7xx_dpmaif_md_state_callback()) do not hold
-> tx_pm_lock. A race where the FSM transitions the modem to
-> DPMAIF_STATE_PWROFF concurrently with the TX kthread's last burst is
-> pre-existing and not introduced by this patch; the do/while condition
-> in t7xx_do_tx_hw_push() now re-checks state with READ_ONCE() at each
-> iteration boundary, limiting exposure to at most one burst.
-> 
-> Tested: no soft lockup observed over 500+ suspend/resume cycles with
-> SIM registered and ASPM L1 enabled (previously triggered in < 300).
-> 
-> Fixes: 46e8f49ed7b3 ("net: wwan: t7xx: Introduce power management")
-> Signed-off-by: Tim JH Chen <tim.jh.chen@wnc.com.tw>
+On Thu, Jun 4, 2026 at 12:35=E2=80=AFAM Vlastimil Babka (SUSE)
+<vbabka@kernel.org> wrote:
+>
+> On 6/4/26 09:10, Harry Yoo wrote:
+> >
+> >
+> > On 6/4/26 1:22 AM, Vlastimil Babka (SUSE) wrote:
+> >> On 6/3/26 13:13, Rob Clark wrote:
+> >>> On Wed, Jun 3, 2026 at 2:17=E2=80=AFAM Vlastimil Babka (SUSE) <vbabka=
+@kernel.org> wrote:
+> >>>>
+> >>>> We know p->pages is NULL in this case, right? Because it was allocat=
+ed by
+> >>>> vm_bind_job_create() using kzalloc().
+> >>>> And the job can't be reused with a leftover value?
+> >>>> (msm_iommu_pagetable_prealloc_cleanup doesn't set p->pages to zero).
+> >>>> Or should we set p->pages to NULL here.
+> >>>
+> >>> Correct, the job is not reused.  But I suppose setting p->pages to
+> >>> NULL would make things more obvious, so no objection to that.
+> >>
+> >> OK, did that, just in case. Thanks.
+> >
+> > The kvfree() -> kfree() part should probably be a separate patch
+> > with Fixes: 830d68f2cb8a ("drm/msm: Fix pgtable prealloc error
+> > path") and Cc: stable?
+> >
+> > ...as the commit landed v6.18.
+>
+> Hm right, but realistically, can there be so many pages necessary, that t=
+he
+> array to hold their pointers would be over what kmalloc() can provide?
 
-The above is way too verbose and hints that this patch should likely 
-be split in a series.
+Pretty unlikely.. IIRC kvmalloc won't fallback to vmalloc for anything
+under PAGE_SIZE, so count=3D=3D512..  which is more than 10x what I've
+seen in practice
 
-Note that process wise there are still several problems:
-- missing revision number in the suby prefix
-- mismatch between from email message and SoB
-- new revision MUST NOT be in reply-to of older ones.
+BR,
+-R
 
-Please try to be accurate with your next resubmission, or we will
-have to delay processing this patch for an additional while.
-
-Sashiko has still quite a bit of concerns:
-
-https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260601015231.3211764-1-tim.jh.chen%40wnc.com.tw
-
-/P
-
+> >>> BR,
+> >>> -R
+> >>>
+> >>>>> +
+> >>>>>         p->pages =3D kvmalloc_objs(*p->pages, p->count);
+> >>>>>         if (!p->pages)
+> >>>>>                 return -ENOMEM;
+> >>>>>
+> >>>>>         ret =3D kmem_cache_alloc_bulk(pt_cache, GFP_KERNEL, p->coun=
+t, p->pages);
+> >>>>>         if (ret !=3D p->count) {
+> >>>>> -               kfree(p->pages);
+> >>>>> +               kvfree(p->pages);
+> >>>>>                 p->pages =3D NULL;
+> >>>>>                 p->count =3D ret;
+> >>>>>                 return -ENOMEM;
+> >
+>
