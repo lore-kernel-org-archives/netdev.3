@@ -1,175 +1,195 @@
-Received: from usb-smtp-delivery-120.mimecast.com (usb-smtp-delivery-120.mimecast.com [170.10.153.120])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC97830AD0B
-	for <netdev@vger.kernel.org>; Thu,  4 Jun 2026 15:22:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.153.120
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D017130AD0B
+	for <netdev@vger.kernel.org>; Thu,  4 Jun 2026 15:22:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780586523; cv=none; b=L6XRoQOJRTJLmo8KdyZ5bHuY2XV0q1xTO/vKSiGLtoBWdR2vg2NMxvMlEagRCNKb83UT+6kjQIYlnG+ZVLWoGlSbMXv0ZTu0qx32gjww8oi6WBh6eiHGWYr22xpTQzHGTfedjZsg75nlDV1KWOiBwGZYgtEhdJ6oNZaZLEFVhsw=
+	t=1780586566; cv=none; b=AGHdZD6j/hUCbjcvuPglqwEAuERHES82q4FoWPcZM0jP5UpR9zQBmYLk50kRvfTIeoLZSyu9JT4+6F1VJrUHQAVBq9SZICzCLV9z1CMj923y8afPeD1hrh5Ms+qRahrsnEKeiSlLj6XSoqRyIbbimkyLVaD7w2VjxLg+x78DY5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780586523; c=relaxed/simple;
-	bh=KcthLx6++yL4uXemk1N3qj99iA9kzIt/QcGDckz7V3M=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 MIME-Version:Content-Type; b=oNat6w9dRsjAfNHiQZ9jD/Wyb1r2LY2cAeHYPn2+XfzybW9yFsc7t8vPtUUXdlW/YYSq3/sRCINqha2V4xmwIHPg0i00aYLVRpAlYTLSP2sawd9JxWuAm2hUFEvW56rnzrmlnwldu72L38smwO4Rqx+dNmWBVBXnkjUZu5+LAww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onsemi.com; spf=pass smtp.mailfrom=onsemi.com; dkim=pass (2048-bit key) header.d=onsemi.com header.i=@onsemi.com header.b=jP7v96Q7; arc=none smtp.client-ip=170.10.153.120
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onsemi.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onsemi.com
+	s=arc-20240116; t=1780586566; c=relaxed/simple;
+	bh=1N2/YBPS0yKsXsmbDL1qepre7J2Bz11f1c9p72hi8do=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qGxF2UFHtmgXFpiArvu0IjEKPeLa4q/s3Eh9vVhGx4ef3/Ic877rFuRv0KAqh01WFUC0momhHgq+5fShiPRJKyxfZAqXMO0C4WsPoSZUsHggaz83/FL4tHpapZeEOX3hAksGpKaZlzC1pKLRvbU8p6HCiV9ggLZzc++2MqLEw3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0sec.ai; spf=pass smtp.mailfrom=0sec.ai; dkim=temperror (0-bit key) header.d=0sec.ai header.i=@0sec.ai header.b=qB7T3zH3; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0sec.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=0sec.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=onsemi.com header.i=@onsemi.com header.b="jP7v96Q7"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onsemi.com;
-	s=mimecast20250127; t=1780586521;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KcthLx6++yL4uXemk1N3qj99iA9kzIt/QcGDckz7V3M=;
-	b=jP7v96Q7q6UyIKmuOciYBhjg8P6TUdhVleKAgPM/vRc781iTML4tM+NsrjDP/bwURYuAZE
-	J33g3/lbKVyPycE+VLq1GHW3/S/Y1HLGySpWT8jF+UiZJjs6xlKiGQQ2Ffuh27gat0HAYz
-	xuE2jKS2HSsgVx1UpfXvdNJhSfMdpwFs+bxrFZD7XrvhSLsrV+Iiak2o3DHGp5w/zxMA2c
-	yCT/fo2VhjruBPM7IJOZXiqgEP3KTtVSjvnTvN899PLkQDDEBrcITpwXokm/h9jaQ/ctDn
-	+hXgM8jYZ59bdmzETw5THlcpuAItufUXNOjUiJBLpDuqV9XA/L7a/I3+GeUy+A==
-Received: from BL0PR03CU003.outbound.protection.outlook.com
- (mail-eastusazon11012041.outbound.protection.outlook.com [52.101.53.41]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id usb-mta-72-sdP4K0x0Oyqz4SvULhW3Xw-1; Thu,
- 04 Jun 2026 08:21:55 -0700
-X-MC-Unique: sdP4K0x0Oyqz4SvULhW3Xw-1
-X-Mimecast-MFC-AGG-ID: sdP4K0x0Oyqz4SvULhW3Xw_1780586510
-Received: from CY8PR02MB9249.namprd02.prod.outlook.com (2603:10b6:930:9c::17)
- by SAWPR02MB11996.namprd02.prod.outlook.com (2603:10b6:806:55b::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.8; Thu, 4 Jun 2026
- 15:21:47 +0000
-Received: from CY8PR02MB9249.namprd02.prod.outlook.com
- ([fe80::e437:4ba8:6506:4cda]) by CY8PR02MB9249.namprd02.prod.outlook.com
- ([fe80::e437:4ba8:6506:4cda%3]) with mapi id 15.21.0092.007; Thu, 4 Jun 2026
- 15:21:47 +0000
-From: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
-To: "Parthiban.Veerasooran@microchip.com"
-	<Parthiban.Veerasooran@microchip.com>, "conor@kernel.org" <conor@kernel.org>
-CC: "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net"
-	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
-	"kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
-	"robh@kernel.org" <robh@kernel.org>, "krzk+dt@kernel.org"
-	<krzk+dt@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>,
-	Piergiorgio Beruto <Pier.Beruto@onsemi.com>, "andrew@lunn.ch"
-	<andrew@lunn.ch>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"Conor.Dooley@microchip.com" <Conor.Dooley@microchip.com>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
-Subject: RE: [PATCH net v3 2/2] dt-bindings: net: updated interrupt type to be
- active low, level triggered
-Thread-Topic: [PATCH net v3 2/2] dt-bindings: net: updated interrupt type to
- be active low, level triggered
-Thread-Index: AQHc8eDLvWzkHnbXI0KmrY/VvMfuDrYrecyAgAALlpCAAm25gIAAkU0w
-Date: Thu, 4 Jun 2026 15:21:47 +0000
-Message-ID: <CY8PR02MB9249E607ACBF3A05AB83ABF683102@CY8PR02MB9249.namprd02.prod.outlook.com>
-References: <20260601-level-trigger-v3-0-da73e7010532@onsemi.com>
- <20260601-level-trigger-v3-2-da73e7010532@onsemi.com>
- <20260602-rebel-snide-5036c97e410d@spud>
- <CY8PR02MB92493D2E5491AAE5416C05A283122@CY8PR02MB9249.namprd02.prod.outlook.com>
- <a5abb9b8-6ebf-4f95-a684-fc889b98acea@microchip.com>
-In-Reply-To: <a5abb9b8-6ebf-4f95-a684-fc889b98acea@microchip.com>
-Accept-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: CY8PR02MB9249:EE_|SAWPR02MB11996:EE_
-x-ms-office365-filtering-correlation-id: 642f23d7-e137-40ef-feee-08dec24cfe46
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|366016|7416014|376014|1800799024|18002099003|6133799003|22082099003|38070700021|4143699003|56012099006|5023799004|11063799006
-x-microsoft-antispam-message-info: A+eKcY+A2eR435ci3D1FPE9WuPnKR++P1eKkLs7SK5S1KpDIU+n+oV1YuwIlQRxDnzrfYzSp/JpFurEx416kJCbkddu+nNlBhCrystBGL/JUZ12Eq1GZxUQnqmEGRId89sgeAHJJ0SFqDAZ4iNB3xm9SyeTZxl+EUKELZz5ynb4G5mhr1m6RXMXCpGzdAplNzvgMho34cpggJ0N4ZMplwssSAiCuVDLXcrMz/0hHEiBFP4M5E+lHuoiPa5P8kIwZQNN3+W0T5tp7P9khu1ny3Nfpi1sUAs3O0J4GLO2IbFAkbiLpqgUqCU8uJhB6Cbi4XNj7RGMDbF4AS/fD3rq9zPpIyiVbeRkbjY7t+pMDwITsaY34zxZqZcYK2udvBMT+se4xm98IV4yY+mfJASc523mWAeHUKnlxKu+ev6oYKdfeKaVbi+J8oGniThg8/kf0qvItdykeOuTqv764UdWrzE2Kygqta8Pikl5aPYDMIK+/FRUsPg1KPwTPNHX+I/RuYvqdx0doV3p5JeLHPqcbNcEnmZWWKawlFLMIDXFIBN1+NhDU9PL/V1t1yzhtjUxewlSFYj2mSlHyXzj/Y8XJsL9WpabrN6oy+ryxB5yncQP1pGeAaVuvQeGtjbD3Ltl7YmBf/8Sz//FBdhA5G73WMln2Ktf6mtb3gLzkBeBRaSG2GAI/EolA1WZbTLcf8YE66izsd4E1nfPy3Xr9Z/6UCINX5x5BPv4jenuFPvvi1TnO/OZBrlg6b7E1GTSksBuV
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY8PR02MB9249.namprd02.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(18002099003)(6133799003)(22082099003)(38070700021)(4143699003)(56012099006)(5023799004)(11063799006);DIR:OUT;SFP:1101
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?cC9YVUp3bHJJN1NDalJxa2E3RDRDVUx3ODM0cmMyRms2WWpISHo4WTRWdUtO?=
- =?utf-8?B?aWhPRXEzMGJzSFQ5VzlDSllFc0ZGcjREd3hqa2MwcXFiN2tUMWtkR2FCRXJl?=
- =?utf-8?B?UUtYMTFIRjgxZXpYSlViSlNWZm8ySHIwa0JIL0psTkZ0RmRYYUlwQm4rcVFh?=
- =?utf-8?B?UHh4eEVwenQycnhzRzNvQnBnTTlNM2lVVi9HcVNOcURWRER5QlR2SFAzSCtI?=
- =?utf-8?B?aUx0UUZUN0lMak5Zdlp0QTNRTXRFNi9nRGdxdUpmdm12ek1qZWdNZkowcmZV?=
- =?utf-8?B?dGNrVGk1cWVwUmVEMk9iWXRTUnNuMitOMVF0UFZ4K3V6YTR2Q3ZUMUJ5Q210?=
- =?utf-8?B?cWc0L0pjYzlOUFBGbWl5ZDlGSnd2TDBDRTFwRnpJTWdwN3dCL0J2cVdlRnVC?=
- =?utf-8?B?MkhsWGFDY3EyK0d5UnYwV3dpSjdNY1lCMkJucTk2NDJzRjdDaEw1cFc2WTUv?=
- =?utf-8?B?WXpJTXpEVUVwZlBOTmhsYzB0N3JHSzdoSjduc1lSU0kyUG50K1lFZmE0SmF3?=
- =?utf-8?B?R2NlanhlTTVHWXEyUmFCWWtvc3paMW1qRzhLTTRTRU1FaVlXSUxEdmFwdW9S?=
- =?utf-8?B?NWpuQlIxR1U5QVcvUnlhMVFGekpFYyt2b3JUOFhHTXN3cXpUUzBpVC9kYmh3?=
- =?utf-8?B?bzlxOVJkZXlaT21RUlp2blpheEl3cytqdGRSVWhqc1NXWll3ZEs4dHFRU1ZK?=
- =?utf-8?B?MDJYdW9qcWFGQlhWdFNyb1ZFL1E5N3l0N1Z4ZzE3b0JlemcwcERrSmhsaDJT?=
- =?utf-8?B?L2x3S2hPMkF6RTBxckM3THIzN2xnei9ibldlQWVuOUV1SDdxc3hiQXYzaUIx?=
- =?utf-8?B?SzkyQ1J3QkpqYzdNYXVCQ2x0WEs1enFDZE1NNjBOWWJjdHlxTjRScVFqcVBO?=
- =?utf-8?B?OW4zSklCRlVMS05wTXFkNXZjUFVLNkJwRnh6RUhrZVpwcW5ZYzZrWnBoOVhu?=
- =?utf-8?B?d0xHbHp2ak5rR2pSelZheFF2Ylljck9hMTJwV1p2VEgvcFVKWGd1c01RN2l4?=
- =?utf-8?B?WmkxQzJScFdRTUlwMklyR0pYeXFkTld6eG5FMGt4RUV2Z3BmMWlrbmtNRjV5?=
- =?utf-8?B?TGdZdTJNUjM0OW00TVNLVDhoRU10bnQ0Y2poeTRrSHdGbkZKSjR2SUROQjNO?=
- =?utf-8?B?elNsUlVDcllzOTNDbS92V2w2TDNWdm5YeHdaMGp6R0VDQUNZZm1SWUhwNDE5?=
- =?utf-8?B?NGZ3OFp6bDVBZWNrQUI1MjM3eUdvMWcrRXNSRXVCd2xrOGRWemg3YWc1R1Q1?=
- =?utf-8?B?Z3Bqa085NDJsNCs2VGFoc3JMYUF1WFYvSXF0cDR3bmpXNU9kbkQ3WVMzVTVy?=
- =?utf-8?B?dU9TcFNLZUdERExxMUJPVmtEL0ZRU1A3ditLakQxWDhiMUkzNlJVUVNRVXkx?=
- =?utf-8?B?NGZSOEczNzVZdG1qbGhlZVd5bURRMHo1L3k4TWY5d2FlNEo3VnFNbncvK0N6?=
- =?utf-8?B?VGtZOVE1TnM4RXVPUEdaQ0NxM1d3R2hUQytsdko3cFRDRjVwU0JHYXZqSG9W?=
- =?utf-8?B?d1ZWVUdwV3dPeVB2S2xjWEcrdG5BdU5sbWtmaVJqck1nTnFObi9XTUI0QVlU?=
- =?utf-8?B?YisxYTNGSjc2T2d5VXFyNHpXdmJ1ZUV3aUpOOUNIYml6YktFaFJuREpUYzB5?=
- =?utf-8?B?bkpVcmZDRHFxaEdwdVRkVTN3QVlRbnBNUUY3dDRHWm5hcnZLckk2TnJ3YzJ5?=
- =?utf-8?B?eFR4Z1lMdTEySVFMb3U5Sm9jaTVaekk1bWlHMDZERGxqSkZORUhJTjhpb3Yz?=
- =?utf-8?B?VzNkVlpLNHBxUHRmUlEvZXpDSzd1dFVCcHVNdGdoTU14eG55a0duTG1RQ0VX?=
- =?utf-8?B?YS85c01sLzhpSVNuQXE4Vy80Vk9aS2xlR05Ea2ZRZlhlWUFYTjhJdnFsTlBH?=
- =?utf-8?B?UzlFelRyRUhTTDVob2k3dVFyc1RESUVaRmswdFVLZjVtNzhldjhRVzJVK1JW?=
- =?utf-8?B?a0pyOWZUVFVmVkRxVndzY28yQ0ZTTWpvN1p2UWhacXA1RHc5eHlVNUpSWTVM?=
- =?utf-8?B?Wk8rMGdtVTVqUUErSHlxWVJnSXFmMWhmcFJxQlFNUVBEaFJNWmhzeDg4UHFn?=
- =?utf-8?B?K3dvZ2M4MWg4b3ZCbkhqYWlnQ2l6YkN1U1JiRDQyVWVHODluSDZoTmNiMWNW?=
- =?utf-8?B?dml0R29HV1VEb2cvdS8xa1EydEFTVTJEckFnTFpjYjRNU2ZZRWU3T05NaFlF?=
- =?utf-8?B?c0xFTHVIOEJEWXhLQmFoWTBDYWhsUXExOEZxOTd2SVlQMWFaZGNCYUdZR2pR?=
- =?utf-8?B?aUhOZXB2N1BXSy9yZzVCMEZTamVlU1Ziby84S0RUNzFGdTNhamVXRkpCN0Rm?=
- =?utf-8?B?THh6RlpKYm94THMySVgyUWZ2S0ppZXkxQW80UnJDZmkvM3VZTHQ3TGxhdTYy?=
- =?utf-8?Q?xCwPqsZMI/D8lz6A=3D?=
+	dkim=temperror (0-bit key) header.d=0sec.ai header.i=@0sec.ai header.b="qB7T3zH3"
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-490abf12f0fso4757655e9.0
+        for <netdev@vger.kernel.org>; Thu, 04 Jun 2026 08:22:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=0sec.ai; s=google; t=1780586563; x=1781191363; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=d57863DyLZ15Xl19eK7AJO9RSKTq1a/9ZBFF5sPg3ZM=;
+        b=qB7T3zH3RgO2fD6+qEcOdqINMzJOrpIK/NYinsXlgtz82tKyu+uPVnOsVLTWCv3enE
+         VHy1m+r2RV6g9MLZpcjlIXfkE18LlFuPo4q132DT+CO2btoT6muCemBzM5K90JGKiKtC
+         mFtjOKbmaSZhvWRNUrKKC91x9tMVn4gaw4NzbiqPFRszgctdOAWg0OL1GfdlxKIhn1p/
+         3eLcIHvTtjpM4jVDY634muZkhRzS0BGho991Vs6MetuFvNjcxawoGNQ92GTTBwadxqwv
+         BBCYzg4KRdl5KG7hwExSakl5R3+0WcgSDA+k64QFAv2yV2dIdeKmm+vl+S0m5kZ3la/h
+         6AuQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780586563; x=1781191363;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=d57863DyLZ15Xl19eK7AJO9RSKTq1a/9ZBFF5sPg3ZM=;
+        b=AM9k7ejqiLpvaln5s3a2yBWECxOk4VYYlgqK3WnF+S2SXl1tDuwklhDKeQJd7ID1Vv
+         y6CajSmSFO53hTwJMw8wb2iy+bd6Hq9+lfZYbJR93mQE9cg5oCLWl6LRPenn1fsW15Uc
+         Gmdt8cH9ZrFQR9gzqpBqfz/3uJOcF58VMxh4QiwXa4lcEwxMcGJGIWH+XO0hPz4Wykvl
+         dJRB+xSzFHYn4AIrQemx6Q+5JkW3q0NIPQGqmJ8vuWHUiB099KhkHz1FxrtPdnEV1AoJ
+         32RyjJyHUpSgDz3VHUhHTJKxuw4POrcN8CCIYp8ngREonNvUlGNRCjEQzuZUB1BsREig
+         Eqkg==
+X-Forwarded-Encrypted: i=1; AFNElJ+eNiq3uFdOyjnWr5Ga1V7uSYcRCU8clBsNgu38fFAlshBHmqokpuN/+w2IVbI50Gn+DSoyRkA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz8xiGA5QI6XGQ9HFkGT1Kb5NLMaiVEfq5q6k9TBlFk1Bmoe6Bf
+	4wDE1Q7ejzycQbX1vEjYliNYW28b+eJrdR8TR+J9W1wQuxfR5rUYi4sORn11rERXS/v8
+X-Gm-Gg: Acq92OFN9Kn3vdXz9ep9LMf6w/4TBkXyVQXeegvONkhbY/WuFMEGlO/IQX71p1UcGzb
+	tFvVOwT7o0lhq/ET9o2pgG6W/wCzxD7TW1JwvHwkix05XW8pFczgdddIDPGEMHZEOZ5qYaW9pKq
+	KQmmvkbNgSM3U+nYKdjCg7q5J9AJJqHdXANjnMcqvVP3YoS00xVsrPvW78N4ZJkqYc3FWOTyHOY
+	CgRLvSkX89OCrJoOQF0lTWEY3PItad10HgkgTexp609NUD0ffAnBCKQ/7I8paZYcCW+Tm02gJpM
+	kJgKsgqBevzutYLtMbhuZPk/Pho7662gkodZWI/HExS06KBwg35ADIGTxaDkqiqnAUtXM5vzJv5
+	IiTpjO9a8I8bOuF95hJXRaTQKLwOexNAsLwNfTfzxtNOOTcPiJ25vrwe0Swp2PmMMhGJNafG2oa
+	G0a0+i3Wt7Owq8GcoKXIilt0aC3ANESulAOY5H1UzFAFGQTyqzj/qJJDjNplYhtE1SrjPJvdhWm
+	xxvS15mxvBKRxLp2L6umb9soUtySr3iNxJ3HsPWhJBg1poT0P/2Znk=
+X-Received: by 2002:a05:600c:8505:b0:490:3cf0:8d81 with SMTP id 5b1f17b1804b1-490bc4ff20bmr71110015e9.13.1780586562894;
+        Thu, 04 Jun 2026 08:22:42 -0700 (PDT)
+Received: from PeakBook-Mini.tail8e484.ts.net ([178.197.223.24])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490bc3cc140sm95418975e9.9.2026.06.04.08.22.41
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Thu, 04 Jun 2026 08:22:42 -0700 (PDT)
+From: Doruk Tan Ozturk <doruk@0sec.ai>
+To: david@ixit.cz,
+	oe-linux-nfc@lists.linux.dev
+Cc: david.laight.linux@gmail.com,
+	horms@kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net v3] nfc: llcp: bound SNL TLV parsing to the skb and add length checks
+Date: Thu,  4 Jun 2026 17:22:40 +0200
+Message-ID: <20260604152240.14162-1-doruk@0sec.ai>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: fMJewksZ5s72RA0DEDROUAJII4akR0J5Ny+OB01vTa0BQT9P985uremIaSQ3eNLUcZRJMCaOCaona8UwSDqGEFeAhu3HL91PG5zn8OgHqywO3XTRjJ6wbtmH1gO4iCbX0L1Mv8Shk9xuLNIcOvsfwX6FYgO6Ab9+kF1Cmqb6VCO+kJ3FwRb+sW71nUgXZ5DHfjezrgGBxSLd5a4KXPj3Km/Iv51nekR3jRayDecWMQwG04xTcNYOiQtuJnxou7TRUZL7Wvr2hF92P3b2xWBf7M16VexqPPm3/awjXlo00C+Is3NnHM9NLOQ8MuLHZ6VncqvPyibZfar2arhfI1LVnA==
-X-OriginatorOrg: onsemi.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CY8PR02MB9249.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 642f23d7-e137-40ef-feee-08dec24cfe46
-X-MS-Exchange-CrossTenant-originalarrivaltime: 04 Jun 2026 15:21:47.1599
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 04e1674b-7af5-4d13-a082-64fc6e42384c
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: I7F52jBYUbU09zEyXLe/SfTrSGKiDl+ZXxDsVJVOEedp19D60yKNibMwinyIMTFYijJucdFeq3FJ6g6A7A1JL2T6bPq0HF6yFR/xlIIOjf8=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SAWPR02MB11996
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: ftgh4RmCb6tGK4K6eODGOYFDOAxhunciRo_SwgdO5UA_1780586510
-X-Mimecast-Originator: onsemi.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: 8bit
 
-PiBTdWJqZWN0OiBSZTogW1BBVENIIG5ldCB2MyAyLzJdIGR0LWJpbmRpbmdzOiBuZXQ6IHVwZGF0
-ZWQgaW50ZXJydXB0IHR5cGUgdG8gYmUgYWN0aXZlIGxvdywNCj4gbGV2ZWwgdHJpZ2dlcmVkDQo+
-IA0KPiBIaSBDb25vciAmIFNlbHZhbWFuaSwNCj4gDQpbLl0NCj4gT25lIHBvc3NpYmxlIGFsdGVy
-bmF0aXZlIGNvdWxkIGJlIHRvIHVzZSBhIHRocmVhZGVkIElSUSBoYW5kbGVyIHdpdGgNCj4gSVJR
-Rl9PTkVTSE9ULCB3aGVyZSB0aGUgSVJRIGxpbmUgaXMgZGlzYWJsZWQgdW50aWwgdGhlIGhhbmRs
-ZXINCj4gY29tcGxldGVzLCBhbmQgc2xlZXBpbmcgaXMgYWxsb3dlZC4gSW4gdGhhdCBjYXNlLCB3
-ZSBjb3VsZCBwZXJmb3JtIHRoZQ0KPiBTUEkgdHJhbnNmZXIgaW4gdGhlIHRocmVhZGVkIGhhbmRs
-ZXIgdG8gc2VuZCB0aGUgZGF0YSBoZWFkZXIgYW5kDQo+IGRlYXNzZXJ0IHRoZSBpbnRlcnJ1cHQs
-IHdoaWxlIGRlZmVycmluZyB0aGUgcmVtYWluaW5nIHdvcmsgdG8gYSBzZXBhcmF0ZQ0KPiBrdGhy
-ZWFkICh0aGUgY3VycmVudCBTUEkgdGhyZWFkKS4gSG93ZXZlciwgSSBoYXZlIG5vdCB5ZXQgdHJp
-ZWQgdGhpcw0KPiBpbXBsZW1lbnRhdGlvbiwgc28gSSBjYW5ub3QgY29tbWVudCBvbiBpdHMgYmVo
-YXZpb3Igb3IgZWZmZWN0aXZlbmVzcw0KPiB3aXRob3V0IGltcGxlbWVudGluZyBhbmQgdGVzdGlu
-ZyBpdC4NCg0KSSBjYW4gdGVzdCB0aGlzIGluIG15IHNldHVwLg0KDQo+IA0KPiBJIG1heSBiZSBt
-aXNzaW5nIHNvbWV0aGluZyBoZXJlIGFuZCBhbSB0cnlpbmcgdG8gY2xhcmlmeSBteQ0KPiB1bmRl
-cnN0YW5kaW5nLiBJIGFtIGFsc28gY3VyaW91cyB3aHkgdGhpcyBpc3N1ZSByZXByb2R1Y2VzIG9u
-IG91ciBzeXN0ZW0NCj4gYnV0IGRvZXMgbm90IGFwcGVhciBpbiBTZWx2YW1hbmnigJlzIHNldHVw
-IHdpdGggYW4gYWN0aXZl4oCRbG93IGxldmVsDQo+IGludGVycnVwdCBjb25maWd1cmF0aW9uLiBJ
-ZiBwb3NzaWJsZSwgY291bGQgeW91IHNoYXJlIGRldGFpbHMgb2YgeW91cg0KPiBzZXR1cCBhbmQg
-aG93IHRoZSB0ZXN0aW5nIGlzIGJlaW5nIHBlcmZvcm1lZD8NCg0KTXkgc2V0dXAgaXMgc2ltaWxh
-ciB0byB5b3Vycy4gV2UgaGF2ZSBSYXNwYmVycnkgUGkgYm9hcmRzIChQLTQgJiBQaS01KSBjb25u
-ZWN0ZWQNCnRvIG91ciBNQUMtUEhZIGV2YWx1YXRpb24gYm9hcmQuIEFzIHlvdSBjb3VsZCBzZWUg
-aW4gbXkgcGF0Y2ggc3VibWlzc2lvbnMsIA0KdGhlcmUgYXJlIG5vIGNoYW5nZXMgdG8gb2FfdGM2
-LmMgaW4gdGhlIHdheSBpbnRlcnJ1cHRzIGFyZSBoYW5kbGVkLg0KDQo+IA0KPiBCZXN0IHJlZ2Fy
-ZHMsDQo+IFBhcnRoaWJhbiBWDQo+ID4NCj4gPj4NCj4gPj4gQ2hlZXJzLA0KPiA+PiBDb25vci4N
-Cj4gPj4NCj4gPj4+DQoNCg==
+nfc_llcp_recv_snl() walked the SNL TLV list using a u16 offset/length
+pair derived from skb->len, without bounding reads to the actual skb
+data. Three problems followed:
+
+  - For a short frame (skb->len < LLCP_HEADER_SIZE), tlv_len underflowed.
+  - The per-TLV header (type, length) was read without checking that two
+    bytes remained.
+  - A declared TLV length could run past the end of the buffer, and an
+    SDREQ with length == 0 made "service_name_len = length - 1" underflow
+    (size_t), driving an out-of-bounds read in the following strncmp() /
+    nfc_llcp_sock_from_sn(). The SDRES case likewise read tlv[2]/tlv[3]
+    without a length check.
+
+A nearby NFC device can reach this without authentication; LLCP link
+activation happens automatically after NFC-DEP.
+
+Walk the TLV list by pointer, bounded by skb_tail_pointer() over the
+linear skb data, and validate each TLV declared length before use. Add
+explicit length checks for SDREQ (>= 1) and SDRES (exactly 2).
+
+Found by 0sec automated security-research tooling (https://0sec.ai).
+
+Signed-off-by: Doruk Tan Ozturk <doruk@0sec.ai>
+---
+v3 (review cleanups, no functional change to the fix):
+ - Comment that only the linear part of the skb is parsed (David Laight).
+ - Use int for service_name_len and print the bounded service name
+   directly with %.*s; drop the min_t()/cast (David Laight).
+ - Require SDRES length to be exactly 2, not just >= 2 (David Laight).
+
+v2: https://lore.kernel.org/netdev/20260603135935.62647-1-doruk@0sec.ai/
+ - Walk by pointer bounded on skb_tail_pointer(); drop the 16-bit
+   offset/tlv_len math and fix the short-frame underflow (David Laight).
+ - Add an SDRES length check alongside SDREQ length >= 1 (David Laight).
+ - Bound the SDREQ service-name pr_debug to the field length.
+ - Rebased onto linux-nfc for-next (David Heidelberg).
+
+ net/nfc/llcp_core.c | 29 +++++++++++++++++++++--------
+ 1 file changed, 21 insertions(+), 8 deletions(-)
+
+diff --git a/net/nfc/llcp_core.c b/net/nfc/llcp_core.c
+index dc65c719f..aed5fe1af 100644
+--- a/net/nfc/llcp_core.c
++++ b/net/nfc/llcp_core.c
+@@ -1286,10 +1286,9 @@ static void nfc_llcp_recv_snl(struct nfc_llcp_local *local,
+ {
+ 	struct nfc_llcp_sock *llcp_sock;
+ 	u8 dsap, ssap, type, length, tid, sap;
+-	const u8 *tlv;
+-	u16 tlv_len, offset;
++	const u8 *tlv, *tlv_end;
+ 	const char *service_name;
+-	size_t service_name_len;
++	int service_name_len;
+ 	struct nfc_llcp_sdp_tlv *sdp;
+ 	HLIST_HEAD(llc_sdres_list);
+ 	size_t sdres_tlvs_len;
+@@ -1305,22 +1304,34 @@ static void nfc_llcp_recv_snl(struct nfc_llcp_local *local,
+ 		return;
+ 	}
+ 
++	/*
++	 * Walk the SNL TLV list in the linear part of the skb only,
++	 * bounded by skb_tail_pointer(). Each TLV needs a two-byte
++	 * header (type, length) and its declared length must fit before
++	 * the end; this also keeps the walk safe for very short frames.
++	 */
+ 	tlv = &skb->data[LLCP_HEADER_SIZE];
+-	tlv_len = skb->len - LLCP_HEADER_SIZE;
+-	offset = 0;
++	tlv_end = skb_tail_pointer(skb);
+ 	sdres_tlvs_len = 0;
+ 
+-	while (offset < tlv_len) {
++	while (tlv + 2 < tlv_end) {
+ 		type = tlv[0];
+ 		length = tlv[1];
+ 
++		if (tlv + 2 + length > tlv_end)
++			break;
++
+ 		switch (type) {
+ 		case LLCP_TLV_SDREQ:
++			if (length < 1)
++				break;
++
+ 			tid = tlv[2];
+ 			service_name = (char *) &tlv[3];
+ 			service_name_len = length - 1;
+ 
+-			pr_debug("Looking for %.16s\n", service_name);
++			pr_debug("Looking for %.*s\n", service_name_len,
++				 service_name);
+ 
+ 			if (service_name_len == strlen("urn:nfc:sn:sdp") &&
+ 			    !strncmp(service_name, "urn:nfc:sn:sdp",
+@@ -1380,6 +1391,9 @@ static void nfc_llcp_recv_snl(struct nfc_llcp_local *local,
+ 			break;
+ 
+ 		case LLCP_TLV_SDRES:
++			if (length != 2)
++				break;
++
+ 			mutex_lock(&local->sdreq_lock);
+ 
+ 			pr_debug("LLCP_TLV_SDRES: searching tid %d\n", tlv[2]);
+@@ -1408,7 +1422,6 @@ static void nfc_llcp_recv_snl(struct nfc_llcp_local *local,
+ 			break;
+ 		}
+ 
+-		offset += length + 2;
+ 		tlv += length + 2;
+ 	}
+ 
+-- 
+2.53.0
 
