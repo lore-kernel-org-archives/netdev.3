@@ -1,33 +1,33 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83D322EEE8A;
-	Thu,  4 Jun 2026 22:21:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A16CD30D3EF;
+	Thu,  4 Jun 2026 22:23:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780611706; cv=none; b=peEcc4zeZzmagUkEyj58o6PAehuOoxKPqnlCD6fK9iXrBDFQU6+7R74edbvxQSFt3frov1M+Q+wkqPPRGy7DQyAivbpq0LVlM2+J0UQY8CQpKH2FBCkm+ueLLtW2ZDuSx7PUOUmaPnTme9EtbrIrvb/OAMwWVIokejLGLVHowD4=
+	t=1780611798; cv=none; b=WmJsYNZkm/IKD9ASnRRGWTrzGZ4qFpQKI4Ixhp8M2uEA0yb34arvv2ORwVGKQwp+nNL91mxqxgNHTBqIJUffUEA+PevLmTsILFgYYhBX9GwPLDBWcmooauz2rRy4as9XKPZhmy534Qc80x01l8rnq1WWTuib1GElZ4+Cj7vJBT4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780611706; c=relaxed/simple;
-	bh=+CKgqB/YJkxILwT2ak7EQahmIG03A3cY1QsoiM2dDmw=;
+	s=arc-20240116; t=1780611798; c=relaxed/simple;
+	bh=Cj3a5wtbJ7+9lriBGBUrGy+4XLBy51/W0EZUlVmGtGY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=W18H/48eWBzi9gdwTxyvVWVwHQDPnP9Zp3eACqEW8T3PW7zgKLbIB93zpqiBw693ZUkpMdpnHKAydBYcGFDgiUJ9vKVkRFrXkxZgMgK1N7zhl4vYpJ52VKVR+U38/KamhmbLu4pDKO/6roDQyZcEz3baOQVlikH2+7dLdvF8WQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=hqgNdtAm; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=FXTdwZZL3ANOdTBd585nWKU2S2yUqfvQEd9PfvzflNDYZnXF0/bSKRuWn+lJlE/mecTVAMSG5YCurre/l6FFrmvlLeMTm1D4BPcDu6ZeWesR8ILRWj9vdcvLQAuJDsjURxkt+cHPqEHbtK+9WT+kgBysLg29IZxaXYdJ1TMqXgc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=qTEoC8WW; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="hqgNdtAm"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="qTEoC8WW"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=i9r5Qdw+LqjvQBs7tLMu94QRtOhMM5/rtVdOPRFY20o=; b=hqgNdtAmtFIGPiqrJt6IsAdmVo
-	ogWW7HavniFMta9cNFwQ2hCPlfVYWTm5WCRnT4vd/UA2qrN28msXaOtWHG52F16syQ5HZtAFMxDiU
-	cSWDXznoGjQhdaIp652aVxvOVuB3R6zUOi1XCJBJgiDqZwgdiz0SSYnpShhTW5ep+X64=;
+	bh=70hpHvvUCowNhdJWsu6EfsO0ZrtpVhg0eQt9nqZdnls=; b=qTEoC8WWwHUsxdgORz64AsaXpH
+	sMpqf2ilVRBFEPq8GM56vJxIV+dg5sJEKP7eg3yrJ7QG5I+MB3FuHsAyF4tyxR62+lvtJ0ZUypdzb
+	e8eqKjHP2eod+5q83rQZbI6r2jCf+3Nv2xEC1sikJzcEJamm/FdDAj3LETbu/pC4R3cg=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1wVGRS-00673v-J5; Fri, 05 Jun 2026 00:21:34 +0200
-Date: Fri, 5 Jun 2026 00:21:34 +0200
+	id 1wVGSv-00674u-0d; Fri, 05 Jun 2026 00:23:05 +0200
+Date: Fri, 5 Jun 2026 00:23:05 +0200
 From: Andrew Lunn <andrew@lunn.ch>
 To: ciprian.regus@analog.com
 Cc: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>,
@@ -43,11 +43,11 @@ Cc: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>,
 	Conor Dooley <conor+dt@kernel.org>, netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
 	devicetree@vger.kernel.org
-Subject: Re: [PATCH net-next v3 07/13] net: ethernet: oa_tc6: Add
- read_mms/write_mms register access functions
-Message-ID: <d74d15f6-cfe6-44b5-88d7-d4a4a163d208@lunn.ch>
+Subject: Re: [PATCH net-next v3 08/13] net: ethernet: oa_tc6: Use the
+ read_mms/write_mms functions for C45
+Message-ID: <22e977f2-c957-41ec-beed-0670a6704e15@lunn.ch>
 References: <20260604-adin1140-driver-v3-0-5debdb3173c4@analog.com>
- <20260604-adin1140-driver-v3-7-5debdb3173c4@analog.com>
+ <20260604-adin1140-driver-v3-8-5debdb3173c4@analog.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -56,17 +56,20 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260604-adin1140-driver-v3-7-5debdb3173c4@analog.com>
+In-Reply-To: <20260604-adin1140-driver-v3-8-5debdb3173c4@analog.com>
 
-> +#define OA_TC6_REG_ADDR_MASK		GENMASK(15, 0)
+On Thu, Jun 04, 2026 at 07:32:53PM +0300, Ciprian Regus via B4 Relay wrote:
+> From: Ciprian Regus <ciprian.regus@analog.com>
+> 
+> Accessing PHY MMD devices requires control transactions to registers in
+> a memory map other than 0. Replace the current formatting of the
+> register addresses with the oa_tc6_{read,write}_register_mms()
+> functions. While we're here, introduce the mms variable to store the
+> memory map returned by oa_tc6_get_phy_c45_mms() instead of ret, in order
+> to improve the code readability.
+> 
+> Signed-off-by: Ciprian Regus <ciprian.regus@analog.com>
 
-> +int oa_tc6_read_register_mms(struct oa_tc6 *tc6, u8 mms, u32 address,
-> +			     u32 *value)
-
-I think address should be a u16? That way the compiler will catch
-anybody trying to pass an address which is too big.
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
     Andrew
-
----
-pw-bot: cr
