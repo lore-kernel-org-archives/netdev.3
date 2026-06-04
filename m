@@ -1,224 +1,181 @@
-Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013054.outbound.protection.outlook.com [40.107.201.54])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E1E7438FEF;
-	Thu,  4 Jun 2026 11:45:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780573558; cv=fail; b=Jy9cIf6+M790EQO39gUJMdbPKco8hhKL0COEaIUw5xHe0OY61BaRvknZnRMCWFnXliYgae/UEQseSe6Hkybh0Q25+TMzZuxloEHq30WcsHxEDhGZplQZ+AN3V3r0u13xs+fciBd9Qna7hWF63v53F62EjjJQdIakzXEa6JrjAuw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780573558; c=relaxed/simple;
-	bh=uniS2HCWjGDEtovVNXVHKmyiH68v6Ot4OsXTYbefww0=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Qj4VoKuQkS8QOQo2eM4sZ57vfhD2WRg2gc++Pnnzt58qnNSjeYyzCVjyv1jvXFifhudJv6QZqm4hMBSLFPDrhwaAGxIzejtMKiEWwTWTQeVpNkqS+WIr4sagzZ9afpfx6M6p2zfxj84vcNTz1tWggU74Wcj3IkCZmkOdpE7Qx2k=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=cw2lxfNv; arc=fail smtp.client-ip=40.107.201.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1384F425CE6
+	for <netdev@vger.kernel.org>; Thu,  4 Jun 2026 11:46:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780573572; cv=none; b=FeeLn4vsrztyMe0fuDLimC0q+7Z2kMonNX3SqmZCSgFpWMa0ZNqCJPf1cFyn8MvT4ESRY9wHNUmJbK7c6Bd+Ah7Xg4k8Pmst/nbP7yPoRbPEsXF0DPUw2pge/dmCBWoPFYcqGX32e6R7jIDcZvK4KZdFBBu90zvOij/sO94TK1o=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780573572; c=relaxed/simple;
+	bh=tyBVDAGqORGCNfVRHw3Ru9dCLxp3WyGsGwS0iSMyDzg=;
+	h=From:To:cc:Subject:MIME-Version:Content-Type:Date:Message-ID; b=p1ohPM5eIM/pfmCBH3hJtXKeNVmWTicKi0XFSXTQi1evYJcIRarjZVjh7sicK4/ICnlDJRvFwJ12LxfodkZq0/KZMgu8oHhNKyGXXj4sqZkZUJ7rz9ut4h7/s8Jxz8lvHjkG95FYvOXMtOrnRSJ/oKrfust/NurvLEI7O7Eg4RU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OhD8y0Cq; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="cw2lxfNv"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=sKM//aPRqLEbvCa++5jW4E0QgGICx222G8J5nEg04vbuxn8uStftLLnmLDyPbRqbZR5VhuyBBD/OtJIe2SPnZ/lgNFMWTbfXfjdqydwEKiXIjKxQ9FM0dBtA6iflwS+qEsdQN0nQ3pxwT1zEaK4DSJ1B2oW94DEKnZCYKCmjyt4E4Qp6+RHswJSORArbujb/gA+1SYZoE3ho7Y3rlvpyucGda1txBMxlmAYnZvosKOqhaP6Y+I/1GpqyEivM4WeflhsMQheaKW9cX2ouRA64Vl9ZbtSCZynhfe5C+QwOAYT3rDEVETo6JdoqM62hYhex2UWytoYDRvoq9G90wi1uiw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=CtnTz+coA8yrqJ+gMluWV7GH9ViBzn9vVK2VT1yus0o=;
- b=qfDqRRsuGSVodvmF+0jUb0P3Z9FUGktnD7vOhT4bVzEDbMIfnRuL6jjDBXPU6Ykx7DKz4ykneR6n60rXvwA4ciIf5Cmu4QPJBxZ+PUOg/S2CGEOrGnyQ41qY5aBKJBxQ3sSr0iLMob3ESbB96vkIpimS7NB+Cz4exCidhUr6hfHX0oArs7W6apl49G0R3AYC1NZ7u1UDVOsz1T4wc4YHq4ev4Y1B+gn3KEG78px/PBvClpZ91wouCIWeny/oN0dQ+tRlgTgCgq+LCbG7y9uX1O+G+9mIpy49XDvJep631bTq+R9wy/RxLfR/Eyikbfzqr0eiyJJ3wCRapCAMAFYjzQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.233) smtp.rcpttodomain=google.com smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=CtnTz+coA8yrqJ+gMluWV7GH9ViBzn9vVK2VT1yus0o=;
- b=cw2lxfNvrnOJVkKjFJARr8/5VYAovHZ99z8yPlZwf8T+9vKJLVhCkT9681mrNvzFpL5byZrcxVWbP2ys6ebO1w48EznmsRdvYQMY6Zo/2nrZML+HCGjrb8RCMLA9XS8lhT3fFlgK6YMBwWGP0L624VkPD4ZRzrEQHD0kHZStBxkq4Gb3bUpl6eUhjSaSrUKbLY/DOR2kjYlngL9PuqlK1Cwe8gfwxG6TC9eDTb8F4xPgkE5/xNEdsAcXMNNehoOwmFdlz3NL1G4JcGO2OBF+dMCfuWGKENQUjFZz2U5oP/WVW8hfnFFUzNUDsGAVtFzRQVVj4mo8x0TseOaDGYMIXA==
-Received: from BN9PR03CA0069.namprd03.prod.outlook.com (2603:10b6:408:fc::14)
- by CY8PR12MB7491.namprd12.prod.outlook.com (2603:10b6:930:92::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.8; Thu, 4 Jun 2026
- 11:45:51 +0000
-Received: from BN2PEPF000044A3.namprd02.prod.outlook.com
- (2603:10b6:408:fc:cafe::84) by BN9PR03CA0069.outlook.office365.com
- (2603:10b6:408:fc::14) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.92.7 via Frontend Transport; Thu, 4
- Jun 2026 11:45:50 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.233)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.233) by
- BN2PEPF000044A3.mail.protection.outlook.com (10.167.243.154) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.92.5 via Frontend Transport; Thu, 4 Jun 2026 11:45:50 +0000
-Received: from drhqmail201.nvidia.com (10.126.190.180) by mail.nvidia.com
- (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Thu, 4 Jun
- 2026 04:45:40 -0700
-Received: from drhqmail202.nvidia.com (10.126.190.181) by
- drhqmail201.nvidia.com (10.126.190.180) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.20; Thu, 4 Jun 2026 04:45:40 -0700
-Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com
- (10.126.190.181) with Microsoft SMTP Server id 15.2.2562.20 via Frontend
- Transport; Thu, 4 Jun 2026 04:45:35 -0700
-From: Tariq Toukan <tariqt@nvidia.com>
-To: Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David
- S. Miller" <davem@davemloft.net>
-CC: Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
-	Tariq Toukan <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>, Shay Drory
-	<shayd@nvidia.com>, Or Har-Toov <ohartoov@nvidia.com>, Edward Srouji
-	<edwards@nvidia.com>, Simon Horman <horms@kernel.org>, Maher Sanalla
-	<msanalla@nvidia.com>, Parav Pandit <parav@nvidia.com>, Kees Cook
-	<kees@kernel.org>, Moshe Shemesh <moshe@nvidia.com>, Patrisious Haddad
-	<phaddad@nvidia.com>, <netdev@vger.kernel.org>, <linux-rdma@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, Gal Pressman <gal@nvidia.com>
-Subject: [PATCH net-next 02/15] net/mlx5: devcom, expose locked variant of send_event
-Date: Thu, 4 Jun 2026 14:44:42 +0300
-Message-ID: <20260604114455.434711-3-tariqt@nvidia.com>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20260604114455.434711-1-tariqt@nvidia.com>
-References: <20260604114455.434711-1-tariqt@nvidia.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OhD8y0Cq"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1780573570;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=1bjPY9dHNK2+TuuIlF+joIQGrJbqLPAjvn/n6TvWQ44=;
+	b=OhD8y0CqyZ2fzMyEzoUCdYpNa8G95XG0cJ9MjY9Ey3H6W9++v5YzrjR0EbX7f9ME4eorCQ
+	hLwTG8e9vcmrNqDoKghTQ5rATVAZ0bWFSSGzqqVIQ8l6AjdjpPnI65xiGHwEVAWAdK3GpN
+	niqB0f3Nk05jjUPmMGCOrR17rNcB+D0=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-665-RbdsaTjfP-K8hroyv3bcXQ-1; Thu,
+ 04 Jun 2026 07:46:09 -0400
+X-MC-Unique: RbdsaTjfP-K8hroyv3bcXQ-1
+X-Mimecast-MFC-AGG-ID: RbdsaTjfP-K8hroyv3bcXQ_1780573567
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2CCB1180047F;
+	Thu,  4 Jun 2026 11:46:07 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.44.50.14])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id E0FF81955D87;
+	Thu,  4 Jun 2026 11:46:02 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+To: netdev@vger.kernel.org
+cc: dhowells@redhat.com, Michael Bommarito <michael.bommarito@gmail.com>,
+    Marc Dionne <marc.dionne@auristor.com>,
+    Jeffrey Altman <jaltman@auristor.com>,
+    Eric Dumazet <edumazet@google.com>,
+    "David S. Miller" <davem@davemloft.net>,
+    Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+    Simon Horman <horms@kernel.org>, linux-afs@lists.infradead.org,
+    stable@kernel.org, linux-kernel@kernel.org
+Subject: [PATCH net v2] rxrpc: Fix the ACK parser to extract the SACK table for parsing
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN2PEPF000044A3:EE_|CY8PR12MB7491:EE_
-X-MS-Office365-Filtering-Correlation-Id: f4e4fab3-fed6-4b21-5aec-08dec22ed376
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700016|82310400026|7416014|376014|1800799024|22082099003|18002099003|6133799003|11063799006|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	0uiydLsDRzHyi16ym7U+jH3XuCqN7e1MMHFh/tLGjn3FbYFR7EK1ulU40z2V0GUrPWC1iOLI5UzcQO3ce6LGvmya9k5q342+EAUai1BpivBAgYo8ARIDWC86WT0Rr6hkJJKCf5fXL0PLj7zMNplLf8v9R5vttSQ9GUq2EUdY98J/bgIL4vgoq1DMCrdiBJVtOztQiRlLlYAp2iSB79VaCuGo6HhijDwhJpJaZfrGT+Rt6YAd3tPM3c2+msk+gTAMrwsefb2kGYAO8ROsx2QRvz6NsqP45yQ0IZy6+vZ82SzoOVtifhCfmfYc+NfvEU3BdXNxjG64ysCq9xnKzEcMXlbsRfsQDeDyvPIJqP09TO/haRm9VEQWv0E2BFCF9nE8/Frj7HVDRCKqYSz2+YsjdMUIJ8+M9usDSDHMAzXbV/txjYdRfp2wWBmC9G9ztomF81IlmHTY6wIG02YFT3MNWIo7waVx6UlZrEYvcsCXlGMZ+F0zfszda67av59fTOUKZEmBcss9LIXB1c8OAE4bMUaUM0Ijak1EtzMkZeNRt9/nI668CfS1yWesjDMR3VsKerGrWrpJ4ivFAKkQeBV2raGo3i+ArqOH6UyWkL6X1YhTdvzDB/OQMAZ9xRK4fo/uElUMt+iP0fp378ZNayyUJwvRRiob4uom7j6pyjlR5sUQSTu8tVTUJFcpZTDojbZc+0uydJHXbFJ0uaBu+IKFv2v3EoF3Xs1rsQY/23/Auo4=
-X-Forefront-Antispam-Report:
-	CIP:216.228.118.233;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge2.nvidia.com;CAT:NONE;SFS:(13230040)(36860700016)(82310400026)(7416014)(376014)(1800799024)(22082099003)(18002099003)(6133799003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	zHCnFwzuc3e+Ehg52ACt5NIVCCRFgqtXcnTObTNx3hJi2GoWVFyi5qptI3s/9AbmCMceB645RkUazo1PoNQmNmQAob4hd5IZuyY/i4O/Cq6rQNkrgwcy5No1ISK6hZJjvRrmICM1G2BVR+aaLzwitQ7VILfEDDS/1MFYEiE5IXRTxZCfqQLWDseLFHE0He/J+xON4DZ6HIPdJig5NMOyCXRJsMeo5hlEswZBQsCp2CKdeWb5w7JXL4Hhd00hrmXFJLIF+isGq0qse/QGkRIeqPMfvUwt8Hyj2dS66ThiBVsN6sMLwWNkEqhMT16k+GDMea94Rg0Wjy4JVB6WGK2fP05yTlLNpcXTewmsnD2evp3crf7bdjbZzzvZDasf3pL4SuflR4utEp6mIeFSkmWX57PEhH0e9tuDCKY1d8r5R1cNUeAMSVlFWBcpksTQiNdz
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Jun 2026 11:45:50.3335
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: f4e4fab3-fed6-4b21-5aec-08dec22ed376
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.233];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN2PEPF000044A3.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7491
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <105361.1780573560.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 04 Jun 2026 12:46:00 +0100
+Message-ID: <105362.1780573560@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-From: Shay Drory <shayd@nvidia.com>
+    =
 
-Factor mlx5_devcom_send_event() into two functions:
-- mlx5_devcom_locked_send_event(): performs the dispatch (and
-  rollback) with comp->sem already held by the caller.
-- mlx5_devcom_send_event(): unchanged wrapper that takes comp->sem,
-  calls the locked variant, and releases it.
+Fix modification of the received skbuff in rxrpc_input_soft_acks() and a
+potential incorrect access of the buffer in a fragmented UDP packet (the
+packet would probably have to be deliberately pre-generated as fragmented)
+when AF_RXRPC tries to extract the contents of the SACK table by copying
+out the contents of the SACK table into a buffer before attempting to pars=
+e
 
-This lets callers bracket multiple event broadcasts under a single
-held write lock, eliminating the gap between consecutive dispatches
-where peer state could change.
+AF_RXRPC assumes that it can just call skb_condense() and then validly
+access the SACK table from skb->data and that it will be a flat buffer -
+but skb_condense() can silently fail to do anything under some
+circumstances.
 
-Will be used by a downstream patch.
+Note that whilst rxrpc_input_soft_acks() should be able to parse extended
+ACKs, the rest of AF_RXRPC doesn't currently support that.
 
-Signed-off-by: Shay Drory <shayd@nvidia.com>
-Reviewed-by: Mark Bloch <mbloch@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Further, there's then no need to call skb_condense() in rxrpc_input_ack(),
+so don't.
+
+Fixes: d57a3a151660 ("rxrpc: Save last ACK's SACK table rather than markin=
+g txbufs")
+Reported-by: Michael Bommarito <michael.bommarito@gmail.com>
+Link: https://lore.kernel.org/r/20260513180907.2061972-1-michael.bommarito=
+@gmail.com
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Jeffrey Altman <jaltman@auristor.com>
+cc: Eric Dumazet <edumazet@google.com>
+cc: "David S. Miller" <davem@davemloft.net>
+cc: Jakub Kicinski <kuba@kernel.org>
+cc: Paolo Abeni <pabeni@redhat.com>
+cc: Simon Horman <horms@kernel.org>
+cc: linux-afs@lists.infradead.org
+cc: netdev@vger.kernel.org
+cc: stable@kernel.org
 ---
- .../ethernet/mellanox/mlx5/core/lib/devcom.c  | 29 ++++++++++++++-----
- .../ethernet/mellanox/mlx5/core/lib/devcom.h  |  3 ++
- 2 files changed, 25 insertions(+), 7 deletions(-)
+ Changes
+ =3D=3D=3D=3D=3D=3D=3D
+ ver #2)
+ - Fix potential overflow/infinite loop as detected by AI[1] by resetting
+   acks pointer should the ack number hit a multiple of 256.
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.c b/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.c
-index d40c53193ea8..96b4f06d6184 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.c
-@@ -287,9 +287,9 @@ int mlx5_devcom_comp_get_size(struct mlx5_devcom_comp_dev *devcom)
- 	return kref_read(&comp->ref);
- }
- 
--int mlx5_devcom_send_event(struct mlx5_devcom_comp_dev *devcom,
--			   int event, int rollback_event,
--			   void *event_data)
-+int mlx5_devcom_locked_send_event(struct mlx5_devcom_comp_dev *devcom,
-+				  int event, int rollback_event,
-+				  void *event_data)
- {
- 	struct mlx5_devcom_comp_dev *pos;
- 	struct mlx5_devcom_comp *comp;
-@@ -299,8 +299,8 @@ int mlx5_devcom_send_event(struct mlx5_devcom_comp_dev *devcom,
- 	if (!devcom)
- 		return -ENODEV;
- 
-+	lockdep_assert_held_write(&devcom->comp->sem);
- 	comp = devcom->comp;
--	down_write(&comp->sem);
- 	list_for_each_entry(pos, &comp->comp_dev_list_head, list) {
- 		data = rcu_dereference_protected(pos->data, lockdep_is_held(&comp->sem));
- 
-@@ -311,12 +311,11 @@ int mlx5_devcom_send_event(struct mlx5_devcom_comp_dev *devcom,
- 		}
- 	}
- 
--	up_write(&comp->sem);
- 	return 0;
- 
- rollback:
- 	if (list_entry_is_head(pos, &comp->comp_dev_list_head, list))
--		goto out;
-+		return err;
- 	pos = list_prev_entry(pos, list);
- 	list_for_each_entry_from_reverse(pos, &comp->comp_dev_list_head, list) {
- 		data = rcu_dereference_protected(pos->data, lockdep_is_held(&comp->sem));
-@@ -324,7 +323,23 @@ int mlx5_devcom_send_event(struct mlx5_devcom_comp_dev *devcom,
- 		if (pos != devcom && data)
- 			comp->handler(rollback_event, data, event_data);
- 	}
--out:
-+	return err;
-+}
+ [1] https://lore.kernel.org/r/20260521021910.687776-2-kuba@kernel.org/
+
+ net/rxrpc/input.c |   26 +++++++++++++++++---------
+ 1 file changed, 17 insertions(+), 9 deletions(-)
+
+diff --git a/net/rxrpc/input.c b/net/rxrpc/input.c
+index 24aceb183c2c..ce761466b02d 100644
+--- a/net/rxrpc/input.c
++++ b/net/rxrpc/input.c
+@@ -963,23 +963,34 @@ static void rxrpc_input_soft_acks(struct rxrpc_call =
+*call,
+ 	struct rxrpc_skb_priv *sp =3D rxrpc_skb(skb);
+ 	struct rxrpc_txqueue *tq =3D call->tx_queue;
+ 	unsigned long extracted =3D ~0UL;
+-	unsigned int nr =3D 0;
++	unsigned int nr =3D 0, nsack;
+ 	rxrpc_seq_t seq =3D call->acks_hard_ack + 1;
+ 	rxrpc_seq_t lowest_nak =3D seq + sp->ack.nr_acks;
+-	u8 *acks =3D skb->data + sizeof(struct rxrpc_wire_header) + sizeof(struc=
+t rxrpc_ackpacket);
++	u8 sack[256] __aligned(sizeof(unsigned long));
++	u8 *acks =3D sack;
+ =
+
+ 	_enter("%x,%x,%u", tq->qbase, seq, sp->ack.nr_acks);
+ =
+
+ 	while (after(seq, tq->qbase + RXRPC_NR_TXQUEUE - 1))
+ 		tq =3D tq->next;
+ =
+
++	/* Extract an individual SACK table.  A normal SACK table is up to 255
++	 * bytes with 1 ACK flag per byte, but an extended SACK table can be up
++	 * to 256 bytes with up to 8 ACK/NACK flags per byte.  The ACK flags go
++	 * across all bit 0's then all bit 1's, then all bit 2's, ...
++	 */
++	memset(sack, 0, sizeof(sack));
++	nsack =3D umin(sp->ack.nr_acks, 256);
++	if (skb_copy_bits(skb,
++			  sizeof(struct rxrpc_wire_header) + sizeof(struct rxrpc_ackpacket),
++			  sack, nsack) < 0)
++		return;
 +
-+int mlx5_devcom_send_event(struct mlx5_devcom_comp_dev *devcom,
-+			   int event, int rollback_event,
-+			   void *event_data)
-+{
-+	struct mlx5_devcom_comp *comp;
-+	int err;
-+
-+	if (!devcom)
-+		return -ENODEV;
-+
-+	comp = devcom->comp;
-+	down_write(&comp->sem);
-+	err = mlx5_devcom_locked_send_event(devcom, event, rollback_event,
-+					    event_data);
- 	up_write(&comp->sem);
- 	return err;
- }
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.h b/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.h
-index 316052a85ca5..d5c60c03e55c 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.h
-@@ -46,6 +46,9 @@ mlx5_devcom_register_component(struct mlx5_devcom_dev *devc,
- 			       void *data);
- void mlx5_devcom_unregister_component(struct mlx5_devcom_comp_dev *devcom);
- 
-+int mlx5_devcom_locked_send_event(struct mlx5_devcom_comp_dev *devcom,
-+				  int event, int rollback_event,
-+				  void *event_data);
- int mlx5_devcom_send_event(struct mlx5_devcom_comp_dev *devcom,
- 			   int event, int rollback_event,
- 			   void *event_data);
--- 
-2.44.0
+ 	for (unsigned int i =3D 0; i < sp->ack.nr_acks; i++) {
+ 		/* Decant ACKs until we hit a txqueue boundary. */
++		if ((i & 255) =3D=3D 0)
++			acks =3D sack;
+ 		shiftr_adv_rotr(acks, extracted);
+-		if (i =3D=3D 256) {
+-			acks -=3D i;
+-			i =3D 0;
+-		}
+ 		seq++;
+ 		nr++;
+ 		if ((seq & RXRPC_TXQ_MASK) !=3D 0)
+@@ -1117,9 +1128,6 @@ static void rxrpc_input_ack(struct rxrpc_call *call,=
+ struct sk_buff *skb)
+ 	    skb_copy_bits(skb, ioffset, &trailer, sizeof(trailer)) < 0)
+ 		return rxrpc_proto_abort(call, 0, rxrpc_badmsg_short_ack_trailer);
+ =
+
+-	if (nr_acks > 0)
+-		skb_condense(skb);
+-
+ 	call->acks_latest_ts =3D ktime_get_real();
+ 	call->acks_hard_ack =3D hard_ack;
+ 	call->acks_prev_seq =3D prev_pkt;
 
