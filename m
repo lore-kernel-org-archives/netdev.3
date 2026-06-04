@@ -1,181 +1,92 @@
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 984C43CCA12;
-	Thu,  4 Jun 2026 10:14:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14B3D2DECCC;
+	Thu,  4 Jun 2026 10:14:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780568067; cv=none; b=k7iGPzo/DSozXYwwiWr/Y6Yyd7EN3A3nnc4QzcrEvJQgokv6XsN9cCnZXu0CqpiHrE5I5Jmzllwb3jk5z6H/r8U4ZYIC6zw5gRzKcXe+ATSVYFxKxYJ510T14HxA/QnNGjVyd4kU/97f+N3XU2eRXbKIjicFKnWhQ3xzQzlWCJo=
+	t=1780568081; cv=none; b=Fk85EzNJgIW0jyeNc+DRA367HoSwVyzElkcNbVL2/RYrP/w/PgwQSl0WsWRMejk32IQ3awW+Dt7Pi/6Zlnt0JBjcPHAtizjCVDca8S6pmHYHcUCAnKSI9IcUabLGMnjuKP0rdLgPV7mhPW2lxmKEqczUX2PEyKqO0LEsWAJF190=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780568067; c=relaxed/simple;
-	bh=DqVEM59lL7OQTcn9p0HqHEzBAvvMHwapc8TYXfz0Adk=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=m4QgsR8yLYBCpVk+PzFXtslEou3OLYSCLBHsqKOfxqvvPKn04lpbueNjrrnnB596eCVFU0nqGzyAZhy6sNteCXfzac6UvD5eWNEpQPVXToOfGHfu3K9Ibr5Cxe+5EjfyU9Qa7VroF1Cm+vEWNxVX3lKK01lfAWBbNtBUaWC3edQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=Z08RoqU9; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+	s=arc-20240116; t=1780568081; c=relaxed/simple;
+	bh=/+CJJgRHEyIIeHG5j3aiknNYDnxeautieeBV+Z34z38=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=LFAdWBjX4UhmZE8/pg9yIeNt9glKiStmjVRI/ehRuqPjj9tAQCSMubhvh/QgEb0Vc1mKZi+KWK5UHMECZyBy7/MiiYHEFNmDYu2/VkKRAvjJmldqOBFPJF6qnlHo3P2pDWxEjKZ7c7SSdoROTNdyqOe1wrK7YVmvJu0lyUfLWwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=Ntyc6x3l; arc=none smtp.client-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="Z08RoqU9"
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 654ADxYaA268502, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1780568039; bh=TzXF7cxakGWG0ahpOW6BzzmAHd3zqxkCPLc1yupiztA=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:
-	 Content-Transfer-Encoding:Content-Type;
-	b=Z08RoqU9ZvUER1vIRTTeBAXuTa+Qdfs88DzwK4Bc71Gu3Ys6kR3NGhj3kcA8TNEIt
-	 7EdDVk+X5YxAqGhjYPd6WWNoxS6M+Sea9VQUaqxlPjYml9mLxBEfUtJqpbK/kw3fYU
-	 sRIFLRS9+0Eiss5NkU2m0t/n8Y0mxRVuqK9nfmv8fO86jowjjTXGY7M/wRnpT9yIsa
-	 10QBq93Yd6xRsTfWVwQ6BL58ayRzxkxDTvm3GdNDn8yWf+WzTZwErdxrkyQwZqtwpc
-	 7/8GQ7KCudNm1XI/D7o5p6AeXRTDupdg40DHm2lGxM+UWqiaksFkITpfPaH95J5VGb
-	 Y0tNBXh7LYHJQ==
-Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
-	by rtits2.realtek.com.tw (8.15.2/3.28/5.94) with ESMTPS id 654ADxYaA268502
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Thu, 4 Jun 2026 18:13:59 +0800
-Received: from RTKEXHMBS01.realtek.com.tw (172.21.6.40) by
- RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Thu, 4 Jun 2026 18:14:00 +0800
-Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS01.realtek.com.tw (172.21.6.40) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Thu, 4 Jun 2026 18:14:00 +0800
-Received: from RTDOMAIN (172.21.42.225) by RTKEXHMBS06.realtek.com.tw
- (10.21.1.56) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
- Transport; Thu, 4 Jun 2026 18:14:00 +0800
-From: Justin Lai <justinlai0215@realtek.com>
-To: <kuba@kernel.org>
-CC: <davem@davemloft.net>, <edumazet@google.com>, <pabeni@redhat.com>,
-	<andrew+netdev@lunn.ch>, <linux-kernel@vger.kernel.org>,
-	<netdev@vger.kernel.org>, <stable@vger.kernel.org>, <horms@kernel.org>,
-	<richardcochran@gmail.com>, <aleksander.lobakin@intel.com>,
-	<pkshih@realtek.com>, <larry.chiu@realtek.com>, Justin Lai
-	<justinlai0215@realtek.com>
-Subject: [PATCH net v2] rtase: Workaround for IP fragmented UDP packet hardware bug
-Date: Thu, 4 Jun 2026 18:13:56 +0800
-Message-ID: <20260604101356.15611-1-justinlai0215@realtek.com>
-X-Mailer: git-send-email 2.40.1
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="Ntyc6x3l"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 61FD4A4C3B;
+	Thu,  4 Jun 2026 12:14:32 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1780568074; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=zemI8c9e1s9E7UmnLp+2NAD5n/JjJXwZd+gMxu4JH7k=;
+	b=Ntyc6x3lhqB4xDkFJkHLiSGXeuqM45oO/ZDtM92IDCgx1wqXA5I4zcVGxrmB4jSnbTKTU3
+	XaVEY7ZaFjfJv+aXopYUEKWifpK6NLmlyMMweL70ttE0Rdl819CNRvk3xVJLGjkBaKYIjE
+	tDnO5ulISBJBsxyTcJJgHzTZk+nJJd10CxqLx9uQfqCs1NJlmIuSost0x8l2Ll9j0sSndV
+	O0Sj5GwmqigECwoc8mrPQm2XDAVHDOBKuWVum/hywiBK15yJQ6FqREbBqCYS0nf5ZeOH60
+	EmiRDdXhf9Dj7u3CQEFPv7gES8DhMHv5XEbMR1nSsCwC0K8pRyHaQi+jXCl9rg==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+Date: Thu, 04 Jun 2026 12:14:32 +0200
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, Russell King <linux@armlinux.org.uk>, Heiner Kallweit
+ <hkallweit1@gmail.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, thomas.petazzoni@bootlin.com
+Subject: Re: [PATCH net v3 3/4] net: phy: Clean the phy_ports after
+ unregistering the downstream SFP bus
+In-Reply-To: <20260604092819.723505-4-maxime.chevallier@bootlin.com>
+References: <20260604092819.723505-1-maxime.chevallier@bootlin.com>
+ <20260604092819.723505-4-maxime.chevallier@bootlin.com>
+Message-ID: <4cafbb0aef07e1a41d3ee784062c7da6@tipi-net.de>
+X-Sender: nb@tipi-net.de
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-The hardware parser incorrectly interprets 319/320 in a short
-IP fragmented UDP packet payload as standard PTP destination
-ports and treats the fragment as a PTP packet for further
-parsing.
+HI Maxime
 
-If the transport data is smaller than RTASE_MIN_PAD_LEN, the
-remaining data is insufficient for further parsing and causes
-hardware TX hang.
+On 4.6.2026 11:28, Maxime Chevallier wrote:
+> As reported by sashiko when looking a other patches, we need to ensure
+> that the downstream SFP bus gets unregistered prior to destroying the
+> phy_ports attached to a phy_device, as the SFP code may reference these
+> ports. Let's make sure we follow that ordering in phy_remove().
+> 
+> Fixes: 589e934d2735 ("net: phy: Introduce PHY ports representation")
+> Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+> ---
+>  drivers/net/phy/phy_device.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/net/phy/phy_device.c 
+> b/drivers/net/phy/phy_device.c
+> index 4ba880446896..b48722589f40 100644
+> --- a/drivers/net/phy/phy_device.c
+> +++ b/drivers/net/phy/phy_device.c
+> @@ -3806,11 +3806,11 @@ static int phy_remove(struct device *dev)
+> 
+>  	phydev->state = PHY_DOWN;
+> 
+> -	phy_cleanup_ports(phydev);
+> -
+>  	sfp_bus_del_upstream(phydev->sfp_bus);
+>  	phydev->sfp_bus = NULL;
+> 
+> +	phy_cleanup_ports(phydev);
+> +
+>  	if (phydev->drv && phydev->drv->remove)
+>  		phydev->drv->remove(phydev);
 
-Pad these packets so the transport data reaches
-RTASE_MIN_PAD_LEN before transmitting to avoid triggering the
-hardware issue.
+Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
 
-Fixes: d6e882b89fdf ("rtase: Implement .ndo_start_xmit function")
-Cc: stable@vger.kernel.org
-Signed-off-by: Justin Lai <justinlai0215@realtek.com>
----
-v1 -> v2:
-- Remove RTASE_SHORT_PKT_THRESH and the packet length check.
-- Check transport data length before parsing the UDP header.
-- Add Fixes tag.
-- Add Cc: stable@vger.kernel.org.
-- Target net tree.
----
- drivers/net/ethernet/realtek/rtase/rtase.h    |  2 +
- .../net/ethernet/realtek/rtase/rtase_main.c   | 50 +++++++++++++++++++
- 2 files changed, 52 insertions(+)
-
-diff --git a/drivers/net/ethernet/realtek/rtase/rtase.h b/drivers/net/ethernet/realtek/rtase/rtase.h
-index b9209eb6ea73..d489d20177ac 100644
---- a/drivers/net/ethernet/realtek/rtase/rtase.h
-+++ b/drivers/net/ethernet/realtek/rtase/rtase.h
-@@ -359,4 +359,6 @@ struct rtase_private {
- 
- #define RTASE_MSS_MASK GENMASK(28, 18)
- 
-+#define RTASE_MIN_PAD_LEN 47
-+
- #endif /* RTASE_H */
-diff --git a/drivers/net/ethernet/realtek/rtase/rtase_main.c b/drivers/net/ethernet/realtek/rtase/rtase_main.c
-index 55105d34bc79..6c189b3efab0 100644
---- a/drivers/net/ethernet/realtek/rtase/rtase_main.c
-+++ b/drivers/net/ethernet/realtek/rtase/rtase_main.c
-@@ -61,6 +61,7 @@
- #include <linux/pci.h>
- #include <linux/pm_runtime.h>
- #include <linux/prefetch.h>
-+#include <linux/ptp_classify.h>
- #include <linux/rtnetlink.h>
- #include <linux/tcp.h>
- #include <asm/irq.h>
-@@ -1249,6 +1250,52 @@ static u32 rtase_tx_csum(struct sk_buff *skb, const struct net_device *dev)
- 	return csum_cmd;
- }
- 
-+static bool rtase_skb_is_udp(struct sk_buff *skb)
-+{
-+	int no = skb_network_offset(skb);
-+	struct ipv6hdr *i6h, _i6h;
-+	struct iphdr *ih, _ih;
-+
-+	switch (vlan_get_protocol(skb)) {
-+	case htons(ETH_P_IP):
-+		ih = skb_header_pointer(skb, no, sizeof(_ih), &_ih);
-+		return ih && ih->protocol == IPPROTO_UDP;
-+	case htons(ETH_P_IPV6):
-+		i6h = skb_header_pointer(skb, no, sizeof(_i6h), &_i6h);
-+		return i6h && i6h->nexthdr == IPPROTO_UDP;
-+	default:
-+		return false;
-+	}
-+}
-+
-+static bool rtase_skb_pad(struct sk_buff *skb)
-+{
-+	u32 trans_data_len;
-+	u16 dest_port;
-+	u32 pad_len;
-+
-+	if (!skb_transport_header_was_set(skb))
-+		return true;
-+
-+	trans_data_len = skb_tail_pointer(skb) - skb_transport_header(skb);
-+	if (trans_data_len < offsetof(struct udphdr, len) ||
-+	    trans_data_len >= RTASE_MIN_PAD_LEN)
-+		return true;
-+
-+	if (!rtase_skb_is_udp(skb))
-+		return true;
-+
-+	dest_port = ntohs(udp_hdr(skb)->dest);
-+
-+	if (dest_port == PTP_EV_PORT || dest_port == PTP_GEN_PORT) {
-+		pad_len = RTASE_MIN_PAD_LEN - trans_data_len;
-+		if (__skb_put_padto(skb, skb->len + pad_len, false))
-+			return false;
-+	}
-+
-+	return true;
-+}
-+
- static int rtase_xmit_frags(struct rtase_ring *ring, struct sk_buff *skb,
- 			    u32 opts1, u32 opts2)
- {
-@@ -1362,6 +1409,9 @@ static netdev_tx_t rtase_start_xmit(struct sk_buff *skb,
- 		opts2 |= rtase_tx_csum(skb, dev);
- 	}
- 
-+	if (!rtase_skb_pad(skb))
-+		goto err_dma_0;
-+
- 	frags = rtase_xmit_frags(ring, skb, opts1, opts2);
- 	if (unlikely(frags < 0))
- 		goto err_dma_0;
--- 
-2.40.1
-
+Thanks,
+Nicolai
