@@ -1,134 +1,115 @@
-Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013022.outbound.protection.outlook.com [40.107.201.22])
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71BFF70808;
-	Thu,  4 Jun 2026 10:21:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.22
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780568461; cv=fail; b=mjD2+c/+m/4Z2tLoUHDsMyzAIbBqGW4TOoEvbbl5F1tvK3OT3Bs8pKKCO5xIedIoFzibTW+4BaH2J8LfPCJqdrhfK+KL3fKajHJI/7QuXTrcONmM+i145mwnGXpM5j89GhO061oZ5WiP6T0CqJmGFT5w4r4wMyVOuRtbGKVAAmM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780568461; c=relaxed/simple;
-	bh=jc3VBc30R/H5JCjAhri0/lcgSDdOemOB8+icUueRiwo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=LaE0V+nSEddhhKQmHKfz6+e+gg1XQSny4UWctPMHJMsdyqpzSsJc6Aqa/qIhK3+hKzIU0aOYpsSFm51oYtvKluyV7pjugg/4OCQMU6lp8QhIdo+uydbZo7NYhQjW3lnmMAAidnAFPHB13t6qvapaKKX4HGgW6oN1irx7GFKhF0o=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=uaIZChsN; arc=fail smtp.client-ip=40.107.201.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A11F4342C98
+	for <netdev@vger.kernel.org>; Thu,  4 Jun 2026 10:21:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780568481; cv=none; b=LV9OkrGYOCpEZho0T5N0T3mrmXMezu3ZcZZl/BLQQ2yCPQc16f8+JKrLDsgOFEda9krzzSZ/Y4Nv4CMEkHRHYo/MA0pk2r0atXOZZ89l8RFxjnpmNzADDl6XVvITpAoHbtV1NkL0nIfQEp6B9cyRWae7SVgSzCLOdngssSagB2A=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780568481; c=relaxed/simple;
+	bh=j22bdv9oPvFnjlSd+/YWy+aZ8pdIVUE4JTKplAf6Lg8=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=LGif24VztHGRibZnYecfoxZRNtP1q9HRnC92i1q3bVl7smwkYD/SZ0rLVA+Wa4GZ8oJoiF1HQ+5SKiIEG997XO5rQFwgpD3zqhlLGsdPyDYcCWG7qUiHC99ealO6OBkAM6JDV2bca16XWzdAM+VS6ikvE6DiAEJEmIy27hwJr2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=DNCS45tC; arc=none smtp.client-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="uaIZChsN"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=wONWdrKokzZWxyOgltO6ulZFy1cJJl0kUzIT7+Z8urUgfUMKAszYVXoggefxgXktX25p+E6Of3bO+/gtZ01NbymzeDqqvmg1aJA4NYq/AeDaI2D6u31aWsH80Rhv7MrTM1XMuL83EtKv+fuZzDYLeQLNaLr8nKbsX7T/2hVFXLLhnroFeWCGJXzBlUgUFN2bH6j5DuIaD+ToTVOXShPpzc9CJniM7Sf65rfZmYxDbIJKBCMiD1dJ9kT0wz+LTIUAniVIURiLSFSr1Zqv6Lqa8ELhI6VN+7xgvhK6pCgVIaORhUVg64UpCmvd8OkW1B2uKNJ4d1gaClNHy4H4TSJMKg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=WSR3v6veNg2V0/JnY9YlQi+dCJzFS8wXoE4X0BQRz0s=;
- b=G3eNChOEE6Z6NdISCpjxho7/N+v2z3bIEd6+kvRgndkbbghznwyQmNoIuidaeIZQWIqpMabyZxPQtoM/RGGwiuJgvqBsQBdDEPExIlvl84rxYMa9WBjmvBM8T36WozTTj2wOSJ+ZoKP2n/F8cM47T7vSyi8f+S2xEmO/WmlVSVnngUJV7+9/Jf8x+pMB+j1x/r/+YTKBetgBEDwIqsxYP65V6deMjUTNN0trTAIhpGV7xaNN8o59x6/wJgM8imaR5k2YveBJox0inB7tnBQtPeUi5GtFx/Aq9I7OJY5ZT5MZcXYmP07igbP6TWstAM9DwC1BbUIEH7Nrp9kbNFLPmQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=WSR3v6veNg2V0/JnY9YlQi+dCJzFS8wXoE4X0BQRz0s=;
- b=uaIZChsNrEJqHj/JR20KChfTdLuxkv0ngG4qcCyEgv7HdHzQybNryX3p07oe8EkKMJAvK/WmZ3yyCwJ9pDD0cHrweN7Qa9+Oo4ukEbllPATrVmom1c83oqxpNY+FOBLMVzgJZ1qfTxcXP9SmvGeIuAtDIpkzmqOVNrZJqjugZwF25PZoaaArH7nepHiOTSLk0MjusIuRyru6JAjB6UX0NRzatx+ovam1+FHUcxg63hTg4CWnSdNTcyFDKDTpsCQr8lOGG7Qa3L8AwdMcGbuLgIXc9fRK/lJEV7WPe0R3NqayjZSeXeIXMwoUkIRbxbMicPzvOdUL8Dv0e3vnoQZNzQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from SA3PR12MB7901.namprd12.prod.outlook.com (2603:10b6:806:306::12)
- by PH7PR12MB7819.namprd12.prod.outlook.com (2603:10b6:510:27f::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.14; Thu, 4 Jun 2026
- 10:20:56 +0000
-Received: from SA3PR12MB7901.namprd12.prod.outlook.com
- ([fe80::6f7f:5844:f0f7:acc2]) by SA3PR12MB7901.namprd12.prod.outlook.com
- ([fe80::6f7f:5844:f0f7:acc2%6]) with mapi id 15.21.0092.007; Thu, 4 Jun 2026
- 10:20:55 +0000
-Date: Thu, 4 Jun 2026 13:20:44 +0300
-From: Ido Schimmel <idosch@nvidia.com>
-To: Runyu Xiao <runyu.xiao@seu.edu.cn>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
-	dsahern@kernel.org, edumazet@google.com, horms@kernel.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	jianhao.xu@seu.edu.cn
-Subject: Re: [PATCH net v2] ipv6: use READ_ONCE() for bindv6only default in
- inet6_create()
-Message-ID: <20260604102044.GE771160@shredder>
-References: <20260602002414.1504106-1-runyu.xiao@seu.edu.cn>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260602002414.1504106-1-runyu.xiao@seu.edu.cn>
-X-ClientProxiedBy: FR4P281CA0033.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:c7::16) To SA3PR12MB7901.namprd12.prod.outlook.com
- (2603:10b6:806:306::12)
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="DNCS45tC"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id BD42AA4C55;
+	Thu,  4 Jun 2026 12:21:16 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1780568477; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=eXdVtjcOydMZf6JHfGJ2qYRXGk9C4bzSq34+tbFiQOo=;
+	b=DNCS45tC1g/hdn2LEdDuSLmFoTECMMqjQCXssdm2wbAYK/RkLBJRNNxJ+fGSF8ux57NRXV
+	0U4M7wX5yemBoeXemxMvOUzF9cyDe4CwYJ9qh8O+ffCPFwJjZflbUj6Ml0N7pNlf8rUT2f
+	NCegmc1lEb1YE4beocYUQltMREhsvEdwf8TRMxhwdXRROZDETyVv0msec5XNtlN0GOnVc8
+	oJ438HfGi1eF5mFW+q+LINFnj9hPj4z4u5kYn6Y7Ye6NPJ9mg2DDyVq5GkJ1W6eonNCBHo
+	50MdU5AMW7bYzNFXatyHZR2dzXv0HSH0kBdPGRoL165cu+irZJd3+1Ruh+YEKw==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA3PR12MB7901:EE_|PH7PR12MB7819:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3f7650ec-1abd-4c5f-2630-08dec222f6c1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|7416014|1800799024|376014|18002099003|22082099003|56012099006|11063799006;
-X-Microsoft-Antispam-Message-Info:
-	/76yVPpra10T2XkjWWookkdfhYZE4wBxTue6vbvI15Pv6EdvDbVauwW0jLh1mCTseVr+VQCNM2mHBofPL2Z2jlSSmb51d2dhcytDRal2Joh4K7z7vmHnmRkB5yNQFex2hsOvWJ1qWu5zRJXdpFPsu3YcvgTK8cbg12F2fidci2B8eTOMEAnupsSn5Sn3AX836fUrTtKGe5bs5TKD5Pfi7i2ecQIWvp7uA9yuMj293luHImEo7FBl6Sc1P4QE8gedwocNLkHCg177SJj/wSja8hBcAwLY0IVs5w37Jxf41eVhUecs4k9H2CHyW3mdlkPXNfHfRqt9SP4rMsp+5I3d18RnHXUCK4HBbuR7ncPSzkiKxDEZt+P5ZGcqIJVHRYTm7hQ9De/wVtz/LAQ9mbQMe1PWSr9hJlxpjH4ZcAIGqYWEHCS+nOmOgBtD1kp0fGcPBT763lceeMQY99WLzx+QokmRUs71DXgnGeMmVQN+StZah8nb7FJBVE1EtMDohQi999ds7o3J3nrrb+5WO92pCsjUZfHqAP5jQUPIu4kXwbsndvUWYtXv0YA6seFAKkYIacS5WNyCqHrso91AkDiBEN9VCci2XjQUZCI81HhrCQpdxWQ8BPnmVY1RDameo5fjDf6vIIqlFrlD9wuyyGWPfn9Pcn9r9XysuLE25a4TXg4lTMq0IZoTgSQ/QwkIlvLk
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR12MB7901.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(1800799024)(376014)(18002099003)(22082099003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?dWEo5l6XywL0riw4QExrjkv+JBocsfWb+nfX73UQ0724jDWMwdPfB8lFSMEN?=
- =?us-ascii?Q?gF+g94/wjfABCLZOFAOW1JPfG2tbxosLhdQnk/i5M6k1fUSqi/RIRSNwb3/f?=
- =?us-ascii?Q?0VnLhWXqgVRo878saAiJXfEJvCtoFZ7ZNRK4r/uj/9idVYDzEuCHu7ysfDBR?=
- =?us-ascii?Q?U6tQtKMCFqi1Lw1eCjHGuMJlYdn8Ute9IlO8rAyZ1BPl5FOc8Oe2c3iaphv6?=
- =?us-ascii?Q?ks/zGmBQR+ZX0zqYrW4ZeffN+A4AQ5zyvHy+HqGRWVo8JuEEIOoH8qF2GLsk?=
- =?us-ascii?Q?tya8+3L1KYLwj23ktmy+SPe2nPdK33Trj4GDY4Lquw2d0ze7KXzWsQlx8fAY?=
- =?us-ascii?Q?SC0sGp35QOHpTS+ynlcGny/ljDj+eK/WU9gf4lRnPBLR0ZEPjiszGqTvpMYa?=
- =?us-ascii?Q?xrJhQ2yQzY9y7425STirsKSLJZtmfLDqipiiVaZNeU4eADvpu7oYamI1ujqB?=
- =?us-ascii?Q?Y5WCqz1K4qT6CJdRN3dK13T17GG9GpOAKCYagjj6Zm2FkRILmuy9Mfy5y0Da?=
- =?us-ascii?Q?E0prexEpL0d5bG620cKUXhg/BY4E2jW0qy8a7S4FxASEEaIMYI/rp7NjIbMP?=
- =?us-ascii?Q?Oka+H+ip7jCL2+CbnsEa2hDRFQ9lxMG8UwhFeNd8/qA3kZ2jPB+4LObko1j2?=
- =?us-ascii?Q?MN/fZGhYHLhY/lK+b+1aH4YVlaBZd4iNDWMap49DuRICwX8RhOQVvnAQefy5?=
- =?us-ascii?Q?eF6Y8KlKvM972V/9QIyvjnDM/pve5+ve45vXZ0s02ipPXPBzkT+WLJ+T0TF1?=
- =?us-ascii?Q?TxTBZG+WQDowOG+yZTxiIcOfgX38AjsKR4ZkTBPIn4gkIW6jEGn4zTsi6NLY?=
- =?us-ascii?Q?Zk778zdOuKS6izTbnIpOImVwSL4Ol42NM6sEjAtZDZbLURtS6jNzmed1VSwy?=
- =?us-ascii?Q?+U9B2TTnDKD20YgzRIqO3T1RbhgbnaICENhbMFLbZsz9Y/MHfCIapDuEpbTa?=
- =?us-ascii?Q?uD3Sl19A1GFwRd1rU2x6GbXic+phfdC1D47KV+7syehisdIpFhUeWyPpG0H5?=
- =?us-ascii?Q?JZw7Pf9ROQ2KKW2vcKQDPpyjAdhv+bAlABin4PLADNEUHo6y3R5mWWHgHaac?=
- =?us-ascii?Q?UrZ3Ck6xUxDh1rocHrQQ0pe1navhz3UX7Rfdg+Y2cbLbEirFdB9YBTQN9LQP?=
- =?us-ascii?Q?1aQbTXSSuuVQPVOjx4t5znOrez+RB6YFCCv2GU+mMSIkdcENBtO2cKuITvqq?=
- =?us-ascii?Q?vVsD27329cTHjSMGdBAUlFmIKFveV/iYhX8PTB2MDiFyr5pgi2F/zHX7sc25?=
- =?us-ascii?Q?OQ6ruuevV+vUxI2HFSXopy7fRwlYg7ngBED4mUpiRC2TJFwrtKG/cPbgIK7R?=
- =?us-ascii?Q?mWV84vdS+BU9plB1tEgt+mqJsTiMdMv+6Q7h7Yi6PT1gGBa0IKmVOm2Q/Uz6?=
- =?us-ascii?Q?c6fVhsTWP9BUzKNDHs0bDwoveP0QRe+X0KQerraE7r1DhZAYyYuGrF/0QuL4?=
- =?us-ascii?Q?OkCXXxjWzNtgfu+gm8KU1146vS2rBFB4FI3sCYNuqkepfPgrAXXAFTtfTuI2?=
- =?us-ascii?Q?i+VYUOL79URGafqIpzRl5MACi+Xlo2oUCJvpyGDZptMBrMYreMmEHxR2hv8t?=
- =?us-ascii?Q?9mGf2M4u5AIon73Y0RYjsj333Pcoi3/YCfh6ffSg35R3yZLWhBvSPl4yl+bC?=
- =?us-ascii?Q?ZqBvxTMFlMoM+6S4CD5R5L5olPN56sxemDjdUXiBzXpPOxLvmrlIxdRpAf8u?=
- =?us-ascii?Q?WvxEW+uAGIniKZ1EDIyLrbEuYNVoVb+arlZ8x3VPVBdTaOsz8KC92MINo7t8?=
- =?us-ascii?Q?Wyt8/tukKg=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3f7650ec-1abd-4c5f-2630-08dec222f6c1
-X-MS-Exchange-CrossTenant-AuthSource: SA3PR12MB7901.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Jun 2026 10:20:55.8971
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: njmL1qQPYRx37L58D/hgICWX41hGs1eMLbktgW27jzl8ZA70r3K1os3sNoOyW7s2udYFIANBHYTGV6BmynABXA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7819
+Date: Thu, 04 Jun 2026 12:21:16 +0200
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: Jacob Keller <jacob.e.keller@intel.com>, Jakub Kicinski
+ <kuba@kernel.org>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+ pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
+ donald.hunter@gmail.com
+Subject: Re: [PATCH net-next] tools: ynl: try to avoid the very slow YAML
+ loader
+In-Reply-To: <3ca7d6b6-1aeb-4e7b-9263-64f4b427d1ef@intel.com>
+References: <20260603210810.2636193-1-kuba@kernel.org>
+ <508a922f-c8e4-4b31-8670-43d44d45f467@intel.com>
+ <20260603163518.7bde747a@kernel.org>
+ <3ca7d6b6-1aeb-4e7b-9263-64f4b427d1ef@intel.com>
+Message-ID: <191ecbc0a4f9b51b9ead8ba559d6a170@tipi-net.de>
+X-Sender: nb@tipi-net.de
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Tue, Jun 02, 2026 at 08:24:14AM +0800, Runyu Xiao wrote:
-> inet6_create() reads net->ipv6.sysctl.bindv6only locklessly.
+On 4.6.2026 02:17, Jacob Keller wrote:
+> On 6/3/2026 4:35 PM, Jakub Kicinski wrote:
+>> On Wed, 3 Jun 2026 15:08:46 -0700 Jacob Keller wrote:
+>>> Hmm. I was a bit confused at first by the switch from safe_load to
+>>> load.. but we're passing Loader as _yaml_loader which will either be
+>>> CSafeLoader *or* the default SafeLoader, so we'll get the appropriate
+>>> loader equivalent to what safe_load would have done, so there's no
+>>> change. Ok
+>> 
+>> Maybe I should have mentioned this in the commit msg. I was also super
+>> confused by these APIs but IDK how much is this me not knowing Python
+>> and how much it's special. AFAIU basically:
+>> 
 > 
-> Use READ_ONCE() for this sysctl access.
+> This is a pyyaml issue not a generic python one I think.
+> 
+>> somewhere in pyyaml...
+>> 
+>> 	def safe_load(file):
+>> 		return load(file, Loader=SafeLoader)
+>> 
+>> so safe_load() is just a "shorthand" for using SafeLoader, which 
+>> unlike
+>> load()s default loader doesn't allow constructing real/binary Python
+>> objects ?
+> 
+> load() by default uses the generic Loader that supports the full spec
+> and because of that is "unsafe":
+> 
+> https://github.com/yaml/pyyaml/wiki/PyYAML-yaml.load(input)-Deprecation
+> 
+> Basically, loading the full YAML spec on untrusted input is unsafe 
+> since
+> it allows arbitrary execution.
+>> 
+>> Why it doesn't default to the C one is beyond my understanding.
+> 
+> Right. I'm not super familiar here as to how it ends up not defaulting
+> to CSafeLoader, but probably its because its not always available.
 
-There should be a blank line here.
+That's correct. CSafeLoader is only available if libyaml-dev was present 
+when
+pyyaml was built. Auto-enabling the libyaml bindings was requested a few 
+years
+ago, but it stalled due to internals [1]. It would also require 
+reworking
+safe_load() and others, which are atm hardcoded. Hence the usual 
+try/except
+import pattern.
 
-> Signed-off-by: Runyu Xiao <runyu.xiao@seu.edu.cn>
+Anyway, the changes match the usual patterns.
 
-For net-next:
+Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
 
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+[1] https://github.com/yaml/pyyaml/issues/437
+
+Regards
+Nicolai
+
