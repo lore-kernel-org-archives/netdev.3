@@ -1,154 +1,98 @@
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45315373BEB
-	for <netdev@vger.kernel.org>; Thu,  4 Jun 2026 08:50:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20C01391E45;
+	Thu,  4 Jun 2026 08:55:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780563014; cv=none; b=TtMuKuOkRfWXwEecviLd1RHwnXPxtCv/mNScwbfz2pWTSohwWAnQHbVrelEJnXfqLZYMpzDu950wqFFDlgZuhnqPrPG/aFZjrCkbLjZsDMhARSz9vVRSRkDQ3ypvkxba2pKnnPxE+fVx2loMCEfHBSS0BcIh9FnNgd7p0S/9X0E=
+	t=1780563338; cv=none; b=i7FHRck1rVUmA39kZRAarp3SFKJHsfLVaM/0QR8tsdjyodJTqLju0yLivjTdVYIWBCSrCGLLp8YyBFABBmLKlqpEmZTHJVQ7ptbfdb6qjvTaxshYyjpx7XkNmLZVVKEmXDu5gFzuVQ+fn6WNOnxzKGYT54GNgv9XoA1IJdyle2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780563014; c=relaxed/simple;
-	bh=cN3GYDYGdfIRk/xGq7e7i9c6SplFkqWMiAa3artP++A=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YbblOvpqW3gziwFHGY4XNjgxHZOHxrUA9icrrbxDwT6fEKTuPwgfFdgOL57KtXPv6wNHYIHw3xgAdKZpV7rzbg2US4kQJMuXOIJ6SPR3PwvOTQe+ROG0BErI0M9Pxl7ZKqEIJa/mwiyt47b+6jkwjipnlFloUx1qn0UmU+nDyXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=s42ztUpo; arc=none smtp.client-ip=209.85.221.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1780563338; c=relaxed/simple;
+	bh=OZhIrREOk5xqsN7sLFlNvuIz95WyJa1sgb9bIzxf8IA=;
+	h=Message-ID:Date:MIME-Version:To:From:Subject:Cc:Content-Type; b=oSo6+MXN601ReX5dT9OI8LcuIz5ER/fG4AfV7rxcHHrLSO+1v1iDnzW+5y+wza9HfxKl9SLus2ceB1ZyC59qs9HSn0TtL9nKQ2Gsz2xFdJdYPoQ1wcH5GQjhYVQc57Ug7sdi7V9nKT+66+FbFLG4EWXLSDiiYYajYZAVV46iWlc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=iI6n0JY4; arc=none smtp.client-ip=220.197.32.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="s42ztUpo"
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-45ebafde87cso317935f8f.3
-        for <netdev@vger.kernel.org>; Thu, 04 Jun 2026 01:50:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780563012; x=1781167812; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WRiYMliuSQAUYMFdmOihHUU9eCsvr1hWSuEoUDPjWaE=;
-        b=s42ztUpoKTYeJ+wXQohzHwc9+OdYXDKXrSzJ2gafUnIxQz8tvz+bJzC/xX0bTzcX3J
-         GxGOO4P/xiTu38LXKsi9WVqAWgZll7QEFaFVd/HJsXcmgR/yWL7RS4PDscCWmW2dVqzG
-         SsBPziNBDrxjhH6FRbrxK26L4jDGuX6g8o+SDgfauT76JL8wawrDpGzwaIfLAccubz3x
-         e/V48aaAUJVgECyqLBufdb6bEKgVIwiNxuoGp0WUSw0KvdfJEZ6z6cmG7W7GTlWAMEjU
-         nQVzRc09XF9sYK5StI84MuBSfjToxQm0Me+uwzOGsB4PyOVbJuhbU4PY4sd1Xm+Va5xm
-         /tjw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780563012; x=1781167812;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=WRiYMliuSQAUYMFdmOihHUU9eCsvr1hWSuEoUDPjWaE=;
-        b=jKMWolgdo1p1uVolzX5QDIXUa4kCcagLbJH2wuKtl+hS8b+MIBXbH130ZgywXQtV8y
-         MXSNiNJQ1tXqI8Ll+PQH+1KLmqUi86Utci23TRZWn0dkpQaJpI668yi/hsjTwtc0xAPP
-         Db0+QnkgUQzML4dUunN6MT86uk5n3uqqDvBGbqWvipXzqKEKc8WvZmIEVf1ijH7ygsKq
-         6xc9nmhuHpBEA/UgbW4SQMdiIbio7h8y9JKdatR8vUSdurRHhIwiZi3j8MrKbKsszyKf
-         r81IV2brkll5i9hpV0TizvgyiZWTPYOhaT/UpUoK9astrSYXcfq1DCMYiVIGGyjtalup
-         oOvg==
-X-Gm-Message-State: AOJu0YwHjqcPweXQ38vhW4Y55O49ShiRNSdMUmyHkVdjAdJZoPgMFHSR
-	O1EgEothFwgSIwnn4UoVmfMOBRwtcKSKKcUUGxpzV1Gr12JR/hnzSSpR
-X-Gm-Gg: Acq92OEdKaVpN9kUwgQjPWlQPvAAT6JMSRNXC1vh/6jLRxs5Ii5X7Wn3XB8PVezS/fS
-	ME/OHjFJeR3ebaXBI4SiMGdBRKkAlozAdhFwuHQC5f9lYUJMV5+Mbxp1D9ClTejdwOgfPJ/wXHS
-	5cluDvnhRhyfj5ivk+6KsdhbEnNQwsyxmdGzKzdVuA1xeD+rpaN0jg7+gRqube7FWgBQfmowB53
-	S1aNlMus7TP8UxC1sddRGVWHBR3O9eL1Ji552RRHHlYqbPVzknYlgDSG9A/ktu7Hhqw7fCbG4b2
-	+X60IiLVSv5l4wQO4udGbeYsuzfGrR8TDfYXuRWgtEH677a5e1LVv6U3/Lsj5VqVfs6/IOTofuq
-	Ti7osydMYZdco09VLIktn+7EmVk6XbTEfxefXUmlU6s6VRnQ69ZN0QscgM5kkfx47rZlnhqLlXu
-	cENPIpYvfTCLIxAVK98r1KseNqXtcuPIkKp1K7G+RgVAnzzo+AE2C2rGljWXXTtoJgm/AGOVE=
-X-Received: by 2002:a5d:5f8e:0:b0:45e:dacb:8885 with SMTP id ffacd0b85a97d-460217600f5mr10672512f8f.35.1780563011569;
-        Thu, 04 Jun 2026 01:50:11 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4601f2f67c6sm14846055f8f.16.2026.06.04.01.50.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Jun 2026 01:50:11 -0700 (PDT)
-Date: Thu, 4 Jun 2026 09:50:10 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Rosen Penev <rosenp@gmail.com>
-Cc: netdev@vger.kernel.org, Michael Chan <michael.chan@broadcom.com>, Andrew
- Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
- Abeni <pabeni@redhat.com>, linux-kernel@vger.kernel.org (open list)
-Subject: Re: [PATCH] net: b44: use ethtool_puts
-Message-ID: <20260604095010.35476abb@pumpkin>
-In-Reply-To: <20260531000334.388351-1-rosenp@gmail.com>
-References: <20260531000334.388351-1-rosenp@gmail.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="iI6n0JY4"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
+	s=s110527; h=Message-ID:Date:MIME-Version:To:From:Subject:
+	Content-Type; bh=qBFSoMFwX16MwlmUQDGEuGdAFIZgIayoUg2RKgDD4QQ=;
+	b=iI6n0JY4Qg/6r6y9HbsazA5M1egTUqqmzGqEks6nqdNgBDR69EEGMwX2ENOMKN
+	/qNBbEMA0EosY4UWcsNG8pnDJ06069r8FUmNpmJYP6J19o6mjXovvcgNp7MK7959
+	LnIQi7bQbwMjUm7CSIR1YjBwr7GzFJrfopqDhndHWMSa8=
+Received: from [100.70.220.18] (unknown [])
+	by gzsmtp1 (Coremail) with UTF8SMTPA id Mc8vCgDnrbm6NSFq2tqWAQ--.7870S2;
+	Thu, 04 Jun 2026 16:22:19 +0800 (CST)
+Message-ID: <b8a3b4eb-b75d-4cbd-ac1c-9b0a606a932a@yeah.net>
+Date: Thu, 4 Jun 2026 16:22:13 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+To: edumazet@google.com, davem@davemloft.net, kuba@kernel.org,
+ pabeni@redhat.com
+From: xietangxin <xietangxin@yeah.net>
+Subject: [BUG] TCP connection deadlock under simultaneous bidirectional
+ ICSK_ACK_NOMEM (OOM)
+Cc: jmaloy@redhat.com, menglong8.dong@gmail.com, kuniyu@google.com,
+ horms@kernel.org, willemb@google.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:Mc8vCgDnrbm6NSFq2tqWAQ--.7870S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7tr18KrWDtF4xJrykJryxXwb_yoW8AF1UpF
+	n3Jry3Crs5t3sayr48tw1xG348Jrs8AFnxJr1qvrWxtw45CFsYgry0q3y09r9FkFyDJryq
+	kF92vF1Dtr1kXaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zRUUUUUUUUU=
+X-CM-SenderInfo: x0lh3tpqj0x0o61htxgoqh3/1tbiIRtekmohNbtCXAAA3t
 
-On Sat, 30 May 2026 17:03:34 -0700
-Rosen Penev <rosenp@gmail.com> wrote:
+Hi all,
 
-> There's a subtle error with the memcpy here, where b44_gstrings should
-> not be dereferenced. Dereferening causes the following error with W=1:
+We have observed a TCP connection deadlock on stable 6.6 under heavy stress testing.
 
-The definition is:
-static const char b44_gstrings[][ETH_GSTRING_LEN] = ...
+1.Both Peer A and Peer B enter the ICSK_ACK_NOMEM branch in tcp_select_window().
+After commit 8c670bdfa58e ("tcp: correct handling of extreme memory squeeze"),
+Both peers freeze their rcv_nxt and set rcv_wnd = 0.
 
-There is nothing wrong with using memcpy().
+2.Prior to freezing, both sides had already sent out flight data.
+Since both sides are dropping incoming data packets due to OOM, rcv_nxt stops advancing,
+but the peer's seq of subsequent packets continues to grow.
 
-> 
-> In file included from drivers/net/ethernet/broadcom/b44.c:17:
-> In file included from ./include/linux/module.h:18:
-> In file included from ./include/linux/kmod.h:9:
-> In file included from ./include/linux/umh.h:4:
-> In file included from ./include/linux/gfp.h:7:
-> In file included from ./include/linux/mmzone.h:8:
-> In file included from ./include/linux/spinlock.h:56:
-> In file included from ./include/linux/preempt.h:79:
-> In file included from ./arch/powerpc/include/asm/preempt.h:5:
-> In file included from ./include/asm-generic/preempt.h:5:
-> In file included from ./include/linux/thread_info.h:23:
-> In file included from ./arch/powerpc/include/asm/current.h:13:
-> In file included from ./arch/powerpc/include/asm/paca.h:16:
-> In file included from ./include/linux/string.h:386:
-> ./include/linux/fortify-string.h:578:4: error: call to
-> '__read_overflow2_field' declared with 'warning' attribute: detected read
-> beyond size of field (2nd parameter); maybe use>
->   578 |                        __read_overflow2_field(q_size_field, size);
->       |                         ^
-> 
-> Instead of fixing the memcpy, use ethtool_puts, which is the proper
-> helper for printing ethtool gstrings.
+3.When Peer A receives Peer B's Zero Window ACK,
+the packet's seq is far ahead of Peer A's frozen rcv_nxt.
+Both peers drop each other's packet, also no Zero Window Probes are triggered
+because snd_wnd is never updated to 0.
 
-ethtool_puts() lets you pass short strings as well as ones that don't
-contain a '\0' terminator.
-It isn't needed here because all the strings are already padded.
 
-> 
-> Signed-off-by: Rosen Penev <rosenp@gmail.com>
-> ---
->  drivers/net/ethernet/broadcom/b44.c | 10 +++++-----
->  1 file changed, 5 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/broadcom/b44.c b/drivers/net/ethernet/broadcom/b44.c
-> index 90df02e0039c..f994636fbd5f 100644
-> --- a/drivers/net/ethernet/broadcom/b44.c
-> +++ b/drivers/net/ethernet/broadcom/b44.c
-> @@ -2031,11 +2031,11 @@ static int b44_set_pauseparam(struct net_device *dev,
->  
->  static void b44_get_strings(struct net_device *dev, u32 stringset, u8 *data)
->  {
-> -	switch(stringset) {
-> -	case ETH_SS_STATS:
-> -		memcpy(data, *b44_gstrings, sizeof(b44_gstrings));
+Simplified Packet Trace:
 
-Just remove the * or replace with an & - either is valid.
-The existing code is reading b44_gstrings[0] so overruns into the following
-strings.
+Assume Peer A's rcv_nxt = 1000, and Peer B's rcv_nxt = 5000 initially.
 
--- David
+Time  Dir      Type        Seq   Ack   Win  Len  Status
+------------------------------------------------------------------------
+T1:   B -> A   [PSH, ACK]  1000  5000  3000 100  (A hits OOM, rcv_nxt=1000)
+T2:   B -> A   [ACK]       1100  5000  3000 200  (Dropped due to A's OOM)
+T3:   B -> A   [PSH, ACK]  1300  5000  3000 200  (Dropped due to A's OOM)
 
-> -		break;
-> -	}
-> +	if (stringset != ETH_SS_STATS)
-> +		return;
-> +
-> +	for (int i = 0; i < ARRAY_SIZE(b44_gstrings); i++)
-> +		ethtool_puts(&data, b44_gstrings[i]);
->  }
->  
->  static int b44_get_sset_count(struct net_device *dev, int sset)
+T4:   A -> B   [PSH, ACK]  5000  1000  3000 100  (B hits OOM, rcv_nxt=5000)
+T5:   A -> B   [ACK]       5100  1000  3000 200  (Dropped due to B's OOM)
+T6:   A -> B   [PSH, ACK]  5300  1000  3000 200  (Dropped due to B's OOM)
+
+-- Both sides are now in OOM. B's Seq is 1500; A's Seq is 5500 --
+
+T7:   B -> A   [ZeroWin]   1500  5000  0    0    (Dropped: Seq 1500 != 1000)
+T8:   A -> B   [ZeroWin]   5500  1000  0    0    (Dropped: Seq 5500 != 5000)
+T9:   A -> B   [WinUpdate] 5500  1000  20   0    (Dropped: Seq 5500 != 5000)
+
+Should we relax the sequence check in tcp_sequence() for zero window ACK?
+
+Any feedback or guidance would be greatly appreciated.
+
+-- 
+Best regards,
+Tangxin Xie
 
