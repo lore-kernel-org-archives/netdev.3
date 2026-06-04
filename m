@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE3853B6360;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F145E3B637C;
 	Thu,  4 Jun 2026 16:32:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780590780; cv=none; b=kaWjYerbsAC1glAYqocx7XNTqwzmvPR1B5eFbtd8QVESQsphvKijaRa2OgTaJ/wvN0usoHv8v5bgqnH1H87VxeyeWeoDZAtY55wYQ4BYd0T2Y1fsGEDyXfOemMffm1am/1gLiFhxxExIyHO5Uw4TvZcrc/Yze5PcAneBqZ7rQR8=
+	t=1780590780; cv=none; b=s4nPDqGmwq+Qr2zC+uDnx7RaLZK9XFlszCZ6yjXflnXhfPEQNe1j1QgiMhgi66X3vdx+kSp3AgIDV71k9RVl5GNlIWVKHNm0vAmt0nPltO84Y1EsfxXj8F/aSQHEeKKwF9p+7iYafe6DD/IFPxoNMWOXAP8xgF0Zp5OGHJStPvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1780590780; c=relaxed/simple;
-	bh=mzsvcWgWrk/j+iP3V81lxgbhzpht86Bvc9U9KjjEXeY=;
+	bh=7e0V/xq7Qkbu9Dbbj2MlePvt6HUgkRd3jbrGzKEUKgE=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=NvS4wRzlbVJohrvgpHbZmoPcC3tEGqd94nTJUuZR9psiayGgVTRL61TDBW08HBiGqTKcawocFEdvFPCDhO1JDvNO+2h5mpS3YGDmla79+kTL+bJEwa+Ga2bdqchCrSbLWlT6WOzxOi/fIQzimLYpDdEDVSULxkyNRkJWFXoWG8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WIEMPvVu; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=QVik+w14+pA6UAGy+MbnuWSZ5PtbOIHXYdaEELtECJ1jg1X9LtCcdZSju+9nPerVsDAWBkVUBIdZc5G77UIwLDiVgRxuQe2YvWTbk4ase97DtkEIHOYVnq4ZSuboSg2fJTpTrTeLid9yUvysMgmqBUF4dNlQ0otkGgDINy0BAhg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Su/F/RqH; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WIEMPvVu"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id B8F0EC4AF0B;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Su/F/RqH"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id C2E81C2BCFA;
 	Thu,  4 Jun 2026 16:32:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1780590779;
-	bh=mzsvcWgWrk/j+iP3V81lxgbhzpht86Bvc9U9KjjEXeY=;
+	bh=7e0V/xq7Qkbu9Dbbj2MlePvt6HUgkRd3jbrGzKEUKgE=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=WIEMPvVuH52r9g63WIOsMhBDICsxUzuRif+0qsHq4xIHpq3swz8iHWkXj6qaJT9SB
-	 2nVf6L/PV9ynN5fIYRkXTL7ME0eLavcrcJ71BiBFBqANJaONAVXWsjV7J59o1bEY2P
-	 yhbv3sjGw8/xqzmzN2Ay7EagFstDysBsVh/ONVwNf/0RzB5g1aXPqmxx0UJupIofof
-	 4sLCAzZvJ7m/e4bTDdQqrT6t1Amd3nVH3y3q8lU2Dp9SCjD5i3udNKiTFtzLT/dMeR
-	 eVpuARZ27q9GyWZ4VlZ9Ufn34UHie19Mld7u/UxUK/rQbfUWHvBXTC8G4nrfho6RVm
-	 gG8WcXwPDK7Pg==
+	b=Su/F/RqHvuoW2RrahDIpopswRuiO8GI5iUAvA+MjWsQX6SbSEjwbaNSAYob239/JT
+	 XADkQjDmDLSV/yeIJXm2+N4B2KGk7UNZ+cPRbd7B79Y1J2NmXXzAE4b/BbH1DSqeEX
+	 WrHmikZC2s4PDRPtEwZoe+fsInQJ3wTyoCOLjH9aCZmFIUNRTpr1FMHtU6/SI3X/3A
+	 rghN3w5NJL1bQ66K/UPliwvzDRqWWK63eH3xxaKXgzGdUx3QNljqEWqw5d3aCtP/RK
+	 ig+eev3qRa6R5/KZ+smb3G8H0f4OzIa1JaJpjRuB3ei2C7U0HlucWc+TY5e867LFsI
+	 p8YAnF7k0taBg==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A7B25CD6E7B;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B7747CD6E75;
 	Thu,  4 Jun 2026 16:32:59 +0000 (UTC)
 From: Ciprian Regus via B4 Relay <devnull+ciprian.regus.analog.com@kernel.org>
-Date: Thu, 04 Jun 2026 19:32:48 +0300
-Subject: [PATCH net-next v3 03/13] net: ethernet: oa_tc6: add
- OA_TC6_BROKEN_PHY quirk flag
+Date: Thu, 04 Jun 2026 19:32:49 +0300
+Subject: [PATCH net-next v3 04/13] net: ethernet: oa_tc6: Export the C45
+ access functions
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260604-adin1140-driver-v3-3-5debdb3173c4@analog.com>
+Message-Id: <20260604-adin1140-driver-v3-4-5debdb3173c4@analog.com>
 References: <20260604-adin1140-driver-v3-0-5debdb3173c4@analog.com>
 In-Reply-To: <20260604-adin1140-driver-v3-0-5debdb3173c4@analog.com>
 To: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>, 
@@ -58,11 +58,11 @@ Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-doc@vger.kernel.org, devicetree@vger.kernel.org, 
  Ciprian Regus <ciprian.regus@analog.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1780590775; l=5115;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1780590775; l=2308;
  i=ciprian.regus@analog.com; s=20260330; h=from:subject:message-id;
- bh=2FWHfvXb7tUvZHk+WgFVnjlf71OX2G3l7tmCwpA0aqc=;
- b=bDV/U/65sEX5NBT1vVAveAvcfCeY64ssKjOr94BPBRJedX5wQawhe/ojoaifzVRcyrx8QMX/F
- +QW5L6NQ1q3B2M2Lwa7tq8Je7aDDJTcp9pvV2KXQY2vXhUQmsbOsfy8
+ bh=z7cSpX5t5HgjHdWjBI4GiWiysbSWbBu/ywbEFt955do=;
+ b=N+F+ekPwZJy9QUJTAP1uYY26DS+HbG307fN9yNEgWxFo1noQ9rfAv9zd7mDhqvQCAW31UfhWk
+ Pg20+29VhecAKdzHFApUtmzTleWmeIOe7+VGKnCyDgtFaVv4JR3taKD
 X-Developer-Key: i=ciprian.regus@analog.com; a=ed25519;
  pk=8WoNhI0kQcQUl8YqJO5ZevROYk9HP8lOIeIgIYgjfbc=
 X-Endpoint-Received: by B4 Relay for ciprian.regus@analog.com/20260330 with
@@ -72,138 +72,69 @@ Reply-To: ciprian.regus@analog.com
 
 From: Ciprian Regus <ciprian.regus@analog.com>
 
-Some MAC-PHY devices need custom MDIO bus access functions to work
-around hardware issues. Add the OA_TC6_BROKEN_PHY quirk flag so drivers
-can opt in to skip oa_tc6's internal PHY init and manage the PHY
-themselves. When the flag is set, oa_tc6 skips MDIO bus registration,
-PHY discovery and PHY connection, leaving these to the driver.
+The C45 access functions can still be used by some Ethernet drivers
+which set the OA_TC6_BROKEN_PHY flag. Export them.
 
-Drivers that do not set the flag retain the existing behavior. Update
-lan865x and the framework documentation accordingly.
-
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 Signed-off-by: Ciprian Regus <ciprian.regus@analog.com>
-
 ---
 v3 changelog:
- - add the oa_tc6_quirks struct to the oa_tc6_init() parameters (along
-   the spi_device and net_device), instead of adding everything in a
-   single struct.
+ - no change
 v2 changelog:
- - Added the quirk flag field in the oa_tc6_config struct and a first
-   value entry (OA_TC6_BROKEN_PHY) instead of the mii_bus struct.
+ - New patch
 ---
- Documentation/networking/oa-tc6-framework.rst    |  3 ++-
- drivers/net/ethernet/microchip/lan865x/lan865x.c |  2 +-
- drivers/net/ethernet/oa_tc6.c                    | 14 +++++++++++++-
- include/linux/oa_tc6.h                           | 11 ++++++++++-
- 4 files changed, 26 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/oa_tc6.c | 10 ++++++----
+ include/linux/oa_tc6.h        |  4 ++++
+ 2 files changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/Documentation/networking/oa-tc6-framework.rst b/Documentation/networking/oa-tc6-framework.rst
-index fe2aabde923a..013824078cea 100644
---- a/Documentation/networking/oa-tc6-framework.rst
-+++ b/Documentation/networking/oa-tc6-framework.rst
-@@ -454,7 +454,8 @@ Device drivers API
- The include/linux/oa_tc6.h defines the following functions:
- 
- .. c:function:: struct oa_tc6 *oa_tc6_init(struct spi_device *spi, \
--                                           struct net_device *netdev)
-+                                           struct net_device *netdev, \
-+                                           struct oa_tc6_quirks *quirks)
- 
- Initialize OA TC6 lib.
- 
-diff --git a/drivers/net/ethernet/microchip/lan865x/lan865x.c b/drivers/net/ethernet/microchip/lan865x/lan865x.c
-index 0277d9737369..26a2761332a5 100644
---- a/drivers/net/ethernet/microchip/lan865x/lan865x.c
-+++ b/drivers/net/ethernet/microchip/lan865x/lan865x.c
-@@ -346,7 +346,7 @@ static int lan865x_probe(struct spi_device *spi)
- 	spi_set_drvdata(spi, priv);
- 	INIT_WORK(&priv->multicast_work, lan865x_multicast_work_handler);
- 
--	priv->tc6 = oa_tc6_init(spi, netdev);
-+	priv->tc6 = oa_tc6_init(spi, netdev, NULL);
- 	if (!priv->tc6) {
- 		ret = -ENODEV;
- 		goto free_netdev;
 diff --git a/drivers/net/ethernet/oa_tc6.c b/drivers/net/ethernet/oa_tc6.c
-index baba5aad84df..2a72f0c4b009 100644
+index 2a72f0c4b009..b37e398e30e3 100644
 --- a/drivers/net/ethernet/oa_tc6.c
 +++ b/drivers/net/ethernet/oa_tc6.c
-@@ -134,6 +134,7 @@ struct oa_tc6 {
- 	bool rx_buf_overflow;
- 	bool int_flag;
- 	bool prot_ctrl;
-+	enum oa_tc6_quirk_flag quirk_flags;
- };
- 
- enum oa_tc6_header_type {
-@@ -580,6 +581,9 @@ static int oa_tc6_phy_init(struct oa_tc6 *tc6)
- {
- 	int ret;
- 
-+	if (tc6->quirk_flags & OA_TC6_BROKEN_PHY)
-+		return 0;
-+
- 	ret = oa_tc6_check_phy_reg_direct_access_capability(tc6);
- 	if (ret) {
- 		netdev_err(tc6->netdev,
-@@ -616,6 +620,9 @@ static int oa_tc6_phy_init(struct oa_tc6 *tc6)
- 
- static void oa_tc6_phy_exit(struct oa_tc6 *tc6)
- {
-+	if (tc6->quirk_flags & OA_TC6_BROKEN_PHY)
-+		return;
-+
- 	phy_disconnect(tc6->phydev);
- 	oa_tc6_mdiobus_unregister(tc6);
+@@ -499,8 +499,8 @@ static int oa_tc6_get_phy_c45_mms(int devnum)
+ 	}
  }
-@@ -1279,11 +1286,13 @@ static int oa_tc6_check_ctrl_protection(struct oa_tc6 *tc6)
-  * oa_tc6_init - allocates and initializes oa_tc6 structure.
-  * @spi: device with which data will be exchanged.
-  * @netdev: network device interface structure.
-+ * @quirks: device specific modifiers for the OA TC6 protocol.
-  *
-  * Return: pointer reference to the oa_tc6 structure if the MAC-PHY
-  * initialization is successful otherwise NULL.
-  */
--struct oa_tc6 *oa_tc6_init(struct spi_device *spi, struct net_device *netdev)
-+struct oa_tc6 *oa_tc6_init(struct spi_device *spi, struct net_device *netdev,
-+			   struct oa_tc6_quirks *quirks)
- {
- 	struct oa_tc6 *tc6;
- 	int ret;
-@@ -1298,6 +1307,9 @@ struct oa_tc6 *oa_tc6_init(struct spi_device *spi, struct net_device *netdev)
- 	mutex_init(&tc6->spi_ctrl_lock);
- 	spin_lock_init(&tc6->tx_skb_lock);
  
-+	if (quirks)
-+		tc6->quirk_flags = quirks->quirk_flags;
-+
- 	/* Set the SPI controller to pump at realtime priority */
- 	tc6->spi->rt = true;
- 	if (spi_setup(tc6->spi) < 0)
+-static int oa_tc6_mdiobus_read_c45(struct mii_bus *bus, int addr, int devnum,
+-				   int regnum)
++int oa_tc6_mdiobus_read_c45(struct mii_bus *bus, int addr, int devnum,
++			    int regnum)
+ {
+ 	struct oa_tc6 *tc6 = bus->priv;
+ 	u32 regval;
+@@ -516,9 +516,10 @@ static int oa_tc6_mdiobus_read_c45(struct mii_bus *bus, int addr, int devnum,
+ 
+ 	return regval;
+ }
++EXPORT_SYMBOL_GPL(oa_tc6_mdiobus_read_c45);
+ 
+-static int oa_tc6_mdiobus_write_c45(struct mii_bus *bus, int addr, int devnum,
+-				    int regnum, u16 val)
++int oa_tc6_mdiobus_write_c45(struct mii_bus *bus, int addr, int devnum,
++			     int regnum, u16 val)
+ {
+ 	struct oa_tc6 *tc6 = bus->priv;
+ 	int ret;
+@@ -529,6 +530,7 @@ static int oa_tc6_mdiobus_write_c45(struct mii_bus *bus, int addr, int devnum,
+ 
+ 	return oa_tc6_write_register(tc6, (ret << 16) | regnum, val);
+ }
++EXPORT_SYMBOL_GPL(oa_tc6_mdiobus_write_c45);
+ 
+ static int oa_tc6_mdiobus_register(struct oa_tc6 *tc6)
+ {
 diff --git a/include/linux/oa_tc6.h b/include/linux/oa_tc6.h
-index 15f58e3c56c7..62e3d89f80ed 100644
+index 62e3d89f80ed..2660eefa3504 100644
 --- a/include/linux/oa_tc6.h
 +++ b/include/linux/oa_tc6.h
-@@ -12,7 +12,16 @@
- 
- struct oa_tc6;
- 
--struct oa_tc6 *oa_tc6_init(struct spi_device *spi, struct net_device *netdev);
-+enum oa_tc6_quirk_flag {
-+	OA_TC6_BROKEN_PHY = BIT(0),
-+};
-+
-+struct oa_tc6_quirks {
-+	enum oa_tc6_quirk_flag quirk_flags;
-+};
-+
-+struct oa_tc6 *oa_tc6_init(struct spi_device *spi, struct net_device *netdev,
-+			   struct oa_tc6_quirks *quirks);
- void oa_tc6_exit(struct oa_tc6 *tc6);
- int oa_tc6_write_register(struct oa_tc6 *tc6, u32 address, u32 value);
- int oa_tc6_write_registers(struct oa_tc6 *tc6, u32 address, u32 value[],
+@@ -31,3 +31,7 @@ int oa_tc6_read_registers(struct oa_tc6 *tc6, u32 address, u32 value[],
+ 			  u8 length);
+ netdev_tx_t oa_tc6_start_xmit(struct oa_tc6 *tc6, struct sk_buff *skb);
+ int oa_tc6_zero_align_receive_frame_enable(struct oa_tc6 *tc6);
++int oa_tc6_mdiobus_read_c45(struct mii_bus *bus, int addr, int devnum,
++			    int regnum);
++int oa_tc6_mdiobus_write_c45(struct mii_bus *bus, int addr, int devnum,
++			     int regnum, u16 val);
 
 -- 
 2.43.0
