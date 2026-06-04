@@ -1,153 +1,126 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94D5F318B83;
-	Thu,  4 Jun 2026 07:35:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB89E394788;
+	Thu,  4 Jun 2026 07:42:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780558543; cv=none; b=qsBjHYOSWotzHH7K6/xzJU1s/8kaWjQbcJyzw/XDTk2b/5qbD8mAdaFin89hPU+iXl/rAxMTrCFUqBjGJuIhd9r51QbgCFeex7EH22zBanpb+SlbrdArm49cct3UzCF7Vr0dndVxGhDP0+sEbTaYF+vrT1EOY4IrQPwnKQLIeWA=
+	t=1780558972; cv=none; b=XKPLn9B4vvhSOOtcJP6K5n2wONomXkcC09eEmR7XssURh5KMfhs5Uywj+joPMBWXTH9RLro63/eoCIlpb/ac3bnoTkXVexo4CRL5MAI9L9n39jvFXYiWbhhLCytu6HQBvux8M6N1Rj8XdM2Rl2SdqM4YQKwSqcK/uK9zc5FLj60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780558543; c=relaxed/simple;
-	bh=mirkgjfF+dpCIZzWRJzEHU3RtOI4HGEEuDGdxg/Jdfg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=e/gimcuY8TJZFaigGJ2BVrXTpebe1VbHTb4m37wV5D4aPFNK88Y24QGz1955etH49ZDXkWIWs9mXpGdbckDpMpwVy9mu7mYVgYLg0xSlT65mM/VNTuVO4rZC5XPUnBF6I+vriFzYQ8zGJR+SVBOwsztyPoR2hXw665ODfpBy+FM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jDwBqXnK; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780558972; c=relaxed/simple;
+	bh=TnMIemFlNZga1NcA05eZMeODmw+F/dtvCz3ialD0qh8=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=EhmgvjdNbe3VjXI46Lv/GHSID6zxyYUbeJA9L8FN+logQz8jinGJ7Aahed70befq0tl3ab1J9Yo9Rxp+D0UaazcbxSPEzqdyC1FBr4oAIwOS9mQEXoA7p2UnUbHaAgonDDTzTw++9+/kYvJ73x5P969qDfMm1L7t4BT1/VgKyNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn; spf=pass smtp.mailfrom=realsil.com.cn; dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b=ucYemEry; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realsil.com.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jDwBqXnK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6704A1F00893;
-	Thu,  4 Jun 2026 07:35:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780558542;
-	bh=tTbdFo/eiGyuAmjSs4sKcnxBavN3f7YIKZ6weBXs2/8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=jDwBqXnKhVbnpDUK6fabMTZB0oLrH8R46x1dZH+YW9dHF0YaaQxDOmP4Vktvy3GLX
-	 do3byvDj3Qpg6mxJ+LhYcl5uSt5HR28PZv5CL7KRuIsw0tWc0yg6wY5+rHD6qhsP+r
-	 POFWnngBRtW/nP5iMbIGojzavGOtmwJxD+ylJDWzCITG7o5UQ5zbFJm5hjZ+UfGsC3
-	 R+AR6WVYtQOtNIU+crVHPpUUDrBBnZP0n1D7qab63UjG0S63idM7lyWW/itp6z+LVD
-	 fNcm7RpMLx8d3x/hkJZf+cjb35ywj3QwRr6tmqoAkjf/WaIz8BIvzuOqklV92M6MK4
-	 G/UGnMh2UocKg==
-Message-ID: <29bd5886-15c7-462b-8a39-f2ff25269ddf@kernel.org>
-Date: Thu, 4 Jun 2026 09:35:36 +0200
+	dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b="ucYemEry"
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 6547gCosD206040, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realsil.com.cn;
+	s=dkim; t=1780558932;
+	bh=EwdlIooH6T36HcqnKhFk40dIknqRzenkj9VLa93ZvVc=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding:Content-Type;
+	b=ucYemErynuH/IPO/nn7dJGSWFAw1G8ADxFzbmzB7JxazO5c9VCkJ4FAKeNw/nJW34
+	 KMmmIhjXRwuvzNOh/HGagDPqjnq/SkigAoogllCpLBX8SoCubIdouEJeGsD5ZbNdo2
+	 oGW60aWlN+VtgfGrSV0ys0MLLNJRzI1RXjztTr5ep7ez2stx8wk8x7pM/BR+AW37SS
+	 krgegkyIbwzqEuxeW0wUl4XtE0FLY8bidUrP10rgBmzu9D8QIDQVt+WO/JbJfMu7rT
+	 f9mwX/1MwbZXFnWqkklR9aIWsajjGF1Vz4C6WxQ5uOZR7gyIRp08DRH3NcfZFL8v25
+	 La2KNGoAfAxEw==
+Received: from RS-EX-MBS4.realsil.com.cn ([172.29.17.104])
+	by rtits2.realtek.com.tw (8.15.2/3.28/5.94) with ESMTPS id 6547gCosD206040
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Thu, 4 Jun 2026 15:42:12 +0800
+Received: from RS-EX-MBS2.realsil.com.cn (172.29.17.102) by
+ RS-EX-MBS4.realsil.com.cn (172.29.17.104) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17; Thu, 4 Jun 2026 15:42:11 +0800
+Received: from 172.29.37.154 (172.29.37.152) by RS-EX-MBS2.realsil.com.cn
+ (172.29.17.102) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
+ Transport; Thu, 4 Jun 2026 15:42:11 +0800
+From: javen <javen_xu@realsil.com.cn>
+To: <andrew@lunn.ch>, <hkallweit1@gmail.com>, <linux@armlinux.org.uk>,
+	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <freddy_gu@realsil.com.cn>
+CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<daniel@makrotopia.org>, <vladimir.oltean@nxp.com>, Javen Xu
+	<javen_xu@realsil.com.cn>
+Subject: [PATCH net-next v2 1/4] net: phy: c45: add genphy_c45_soft_reset()
+Date: Thu, 4 Jun 2026 15:42:06 +0800
+Message-ID: <20260604074209.93-2-javen_xu@realsil.com.cn>
+X-Mailer: git-send-email 2.50.1.windows.1
+In-Reply-To: <20260604074209.93-1-javen_xu@realsil.com.cn>
+References: <20260604074209.93-1-javen_xu@realsil.com.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/slab: improve kmem_cache_alloc_bulk
-Content-Language: en-US
-To: Harry Yoo <harry@kernel.org>, rob.clark@oss.qualcomm.com
-Cc: Christoph Hellwig <hch@lst.de>, Andrew Morton
- <akpm@linux-foundation.org>, Mark Brown <broonie@kernel.org>,
- Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
- David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Jesper Dangaard Brouer <hawk@kernel.org>, linux-arm-msm@vger.kernel.org,
- dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, io-uring@vger.kernel.org,
- kasan-dev@googlegroups.com, bpf@vger.kernel.org, netdev@vger.kernel.org,
- Alexander Lobakin <aleksander.lobakin@intel.com>,
- Boris Brezillon <boris.brezillon@collabora.com>
-References: <20260528093437.2519248-1-hch@lst.de>
- <20260528093437.2519248-2-hch@lst.de>
- <5f7f90d8-cb32-4ffb-8f1c-0722aafbe869@kernel.org>
- <20260529135045.GA10647@lst.de>
- <5f3ba603-a6ad-4cf2-9a54-aebc10273c59@kernel.org>
- <58cc76e7-2348-443d-a989-2a06e61178af@kernel.org>
- <20260601113831.GA25535@lst.de>
- <d7b08296-7f6e-4d89-ab3b-04e43d04929e@kernel.org>
- <CACSVV00k-fxW6+waHNqvmYcnVNDkRexoWWprFzfayZfqdyMuuA@mail.gmail.com>
- <CACSVV00dNWgpNVU5rB=Hmg+3oWF18yTyfKNr_tWesjoP1jMxwg@mail.gmail.com>
- <5e6948b3-d235-4b61-aed7-e8b4d0f5b452@kernel.org>
- <CACSVV02v0Fuc6=Rqyd89D-_tcSjEXuQmxz0+2-4aoRAEwJE4zg@mail.gmail.com>
- <b6f6323e-6f5b-4928-b474-bd2743eac3f2@kernel.org>
- <f027078c-6a55-463b-8938-95ede02dca3b@kernel.org>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <f027078c-6a55-463b-8938-95ede02dca3b@kernel.org>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-On 6/4/26 09:10, Harry Yoo wrote:
-> 
-> 
-> On 6/4/26 1:22 AM, Vlastimil Babka (SUSE) wrote:
->> On 6/3/26 13:13, Rob Clark wrote:
->>> On Wed, Jun 3, 2026 at 2:17 AM Vlastimil Babka (SUSE) <vbabka@kernel.org> wrote:
->>>>
->>>> We know p->pages is NULL in this case, right? Because it was allocated by
->>>> vm_bind_job_create() using kzalloc().
->>>> And the job can't be reused with a leftover value?
->>>> (msm_iommu_pagetable_prealloc_cleanup doesn't set p->pages to zero).
->>>> Or should we set p->pages to NULL here.
->>>
->>> Correct, the job is not reused.  But I suppose setting p->pages to
->>> NULL would make things more obvious, so no objection to that.
->> 
->> OK, did that, just in case. Thanks.
-> 
-> The kvfree() -> kfree() part should probably be a separate patch
-> with Fixes: 830d68f2cb8a ("drm/msm: Fix pgtable prealloc error
-> path") and Cc: stable?
-> 
-> ...as the commit landed v6.18.
+From: Javen Xu <javen_xu@realsil.com.cn>
 
-Hm right, but realistically, can there be so many pages necessary, that the
-array to hold their pointers would be over what kmalloc() can provide?
+Add a generic Clause 45 software reset helper. The helper sets the reset
+bit in the PMA/PMD control register and waits until the bit is cleared by
+hardware.
 
->>> BR,
->>> -R
->>>
->>>>> +
->>>>>         p->pages = kvmalloc_objs(*p->pages, p->count);
->>>>>         if (!p->pages)
->>>>>                 return -ENOMEM;
->>>>>
->>>>>         ret = kmem_cache_alloc_bulk(pt_cache, GFP_KERNEL, p->count, p->pages);
->>>>>         if (ret != p->count) {
->>>>> -               kfree(p->pages);
->>>>> +               kvfree(p->pages);
->>>>>                 p->pages = NULL;
->>>>>                 p->count = ret;
->>>>>                 return -ENOMEM;
-> 
+Signed-off-by: Javen Xu <javen_xu@realsil.com.cn>
+---
+Changes in v2:
+ - no changes, new file
+---
+ drivers/net/phy/phy-c45.c | 22 ++++++++++++++++++++++
+ include/linux/phy.h       |  1 +
+ 2 files changed, 23 insertions(+)
+
+diff --git a/drivers/net/phy/phy-c45.c b/drivers/net/phy/phy-c45.c
+index 126951741428..216a2cb9e3f0 100644
+--- a/drivers/net/phy/phy-c45.c
++++ b/drivers/net/phy/phy-c45.c
+@@ -330,6 +330,28 @@ int genphy_c45_an_disable_aneg(struct phy_device *phydev)
+ }
+ EXPORT_SYMBOL_GPL(genphy_c45_an_disable_aneg);
+ 
++/**
++ * genphy_c45_soft_reset - software reset the PHY via Clause 45 PMA/PMD control register
++ * @phydev: target phy_device struct
++ *
++ * Return: 0 on success, negative errno on failure.
++ */
++int genphy_c45_soft_reset(struct phy_device *phydev)
++{
++	int ret, val;
++
++	ret = phy_set_bits_mmd(phydev, MDIO_MMD_PMAPMD, MDIO_CTRL1,
++			       MDIO_CTRL1_RESET);
++	if (ret < 0)
++		return ret;
++
++	return phy_read_mmd_poll_timeout(phydev, MDIO_MMD_PMAPMD,
++					 MDIO_CTRL1, val,
++					 !(val & MDIO_CTRL1_RESET),
++					 5000, 100000, true);
++}
++EXPORT_SYMBOL_GPL(genphy_c45_soft_reset);
++
+ /**
+  * genphy_c45_restart_aneg - Enable and restart auto-negotiation
+  * @phydev: target phy_device struct
+diff --git a/include/linux/phy.h b/include/linux/phy.h
+index 199a7aaa341b..25a66320df56 100644
+--- a/include/linux/phy.h
++++ b/include/linux/phy.h
+@@ -2309,6 +2309,7 @@ int genphy_c37_read_status(struct phy_device *phydev, bool *changed);
+ /* Clause 45 PHY */
+ int genphy_c45_restart_aneg(struct phy_device *phydev);
+ int genphy_c45_check_and_restart_aneg(struct phy_device *phydev, bool restart);
++int genphy_c45_soft_reset(struct phy_device *phydev);
+ int genphy_c45_aneg_done(struct phy_device *phydev);
+ int genphy_c45_read_link(struct phy_device *phydev);
+ int genphy_c45_read_lpa(struct phy_device *phydev);
+-- 
+2.43.0
 
