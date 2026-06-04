@@ -1,654 +1,153 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012052.outbound.protection.outlook.com [40.107.209.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60A4233B6F8
-	for <netdev@vger.kernel.org>; Thu,  4 Jun 2026 10:18:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780568293; cv=none; b=nM4esxOmyjvKa6rv+DDChP5D2m6TIDOE7HxIWM8C2G2v12ovSaIDIqsJfTx7KjvIjdDB1fH5TtvA53OE4x/onA/8NpYVbDdbcgYi7M1mejGnGfmsXw4EsRBaRn6UaNz4482fVfcPsL2xEj7itV6kBep4GWqDTo9uE6vbjUbGBLI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780568293; c=relaxed/simple;
-	bh=KhLIJUHBbJHC/lHLUecAXzoPMGxTL2ki66v/YWfiaYM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Nd5GsN/Sf7CTjwwgTN6i0VMSWXrqfJE0SGYAgPtuwe8SjvM/ZSBpwLK4Vc1PhDZ44MA+pI26KAFkvI0M9A2OdSioKcnaNfymZfnwr3XMSbD1wAAEecyLxDiwxjtYZOzdEpBTrQ8fmvuqaWGkVcCh/mmD3K3fv3jhimNYb8sW4lE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=AHeCUvTq; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=psS9YGL3; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 421A1202963;
+	Thu,  4 Jun 2026 10:18:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.52
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780568295; cv=fail; b=ZN5YAGDKzG1HLHuWKLdtzK04SNSbmWxJH8GcuUBpfskzCiEozL2V4HXaMgrUqb/vhhCKMQFZvX0holzb1MpoNl3cdhUHqKiTkgWPUiZ7Zfvxa2MmfV2hJaQX/EqYlF6CTZzMMN86F0tEBvpcfRvI+PCSKLVbk5aY4eto9gvw1FQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780568295; c=relaxed/simple;
+	bh=9JzqbWt7HRX+WCYkhs1mjRG+J8h67nysfecwpl3+h+Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=tmBzKUIhr7FEfK6sjsc1RxtrJ/0vO26Zwjqw0QCS1DbejbMNTYp038+McYKynpHb0/D1O4U5U6y/tDRUz2OUdmkuxqaPSluwkQu74I4Em7Y09aK0vkuUxf2mHQf7gLk1AVOLFP7GN+kqNkWbDfW5mC5MrObTvctHVrNDikJ/uCo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=E7f8ohdB; arc=fail smtp.client-ip=40.107.209.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="AHeCUvTq";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="psS9YGL3"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1780568290;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kF73Sj6shq7pcG8t4VFsQHJ7hu1p/CAQIq9b7qcJi98=;
-	b=AHeCUvTqNlX6wsauPanw5MyFoHSWvl/ZmtBYiIDzK5ednAO+h/jzf2V+5ND2XfYUOTFSCs
-	TSq88rHzUDfn4Fa0Uof9nsyAKWcVu1UfktCFcxRyRq5XFRixod/uMbP9oK8PGlWlO3w6EU
-	qfoMbT1SRBO5fIXulDi0+6NamsrZL9o=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-418-j2SAN42TMnWS-rqHhyYRMw-1; Thu, 04 Jun 2026 06:18:09 -0400
-X-MC-Unique: j2SAN42TMnWS-rqHhyYRMw-1
-X-Mimecast-MFC-AGG-ID: j2SAN42TMnWS-rqHhyYRMw_1780568288
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-45ef3aeeb41so380466f8f.1
-        for <netdev@vger.kernel.org>; Thu, 04 Jun 2026 03:18:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1780568288; x=1781173088; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=kF73Sj6shq7pcG8t4VFsQHJ7hu1p/CAQIq9b7qcJi98=;
-        b=psS9YGL3O/HIQ//FZEz0pFVdK7/Du8zJ7p4rd9QpiJofU1KYm3CTRZt8RRznJEBhxE
-         SXU+bzOrmQ5ryuzo3FG9oi4EtJzXizsuhMOh+SJnw4orYVIKC93yviyIatwXy3E1W4wI
-         aYzwHAAjGHOMO23a5cqTWJnMMXKcZxNAk0/dp7Pbc8/s1mFBjsC/FzWtAYiQ+hTd3dLL
-         HYZ05jtBokRrIZO0BvkJ1xLy6agpQ1WObUAjpYTb/KibA9qG/sRNIZemG5+LXwf5h5Ve
-         C5XkN+pvhzMx+A5zZwdowo+eYOBAe5FIqCGXwOybDf1dp2aghWGvwmL/es2Xnjur/bVS
-         gm8w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780568288; x=1781173088;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=kF73Sj6shq7pcG8t4VFsQHJ7hu1p/CAQIq9b7qcJi98=;
-        b=G5zqMfo6o+Us27Li4z9uuNnT4V1w+ILm4gZ73ndiFT6mpugNESJagq61LDb4wy20R8
-         8eQou4SqTOGynIUiBMt8q+YwOo+RaeyCNBNDsRk7CPsY/8e3FuBoLKV/dgVR/GIPoz9i
-         L33UYxWhIE/hedX+h8//ywn8RzzX+2nC5yyMEs5JFEbKcygNVoh7L9kewuRUcJbXMrF5
-         f0GH37fNwg0xNNDHbbObi1X0rimY7KmMSSXw1eExttNi52jDo5hb2Jb+i6LylLCkon92
-         9otMvJbyrUN4Px7rlsmnCNDLWCFSV9rDQOnGzN2dmcMF59KB097s98OMyiqZZ4OXYTeQ
-         Uv9Q==
-X-Forwarded-Encrypted: i=1; AFNElJ8tnrWARFRwpMrquFFCJZPfsLVYaWBZqB6ZtKrzqg9yDy9KRIaXDkm4qIEc73ufrGyVzaPDLSM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxqmQAiC+65SsBaRBHI4+7nSkN25dF9wLzCsdbzVLX3HlrJya2w
-	dpeoak5TsQ78SPMgcDEfo6qoAutgyt3HiNspZgL5aKjWwIa9D8uy+HdA21/IT1VswyXnKDwi1+5
-	DZvJO13wWievMnxjo1CKYROTN7ELmvIq2CWSjZoPkKNv76aoR77tCoN1QpMdkpDvmJg==
-X-Gm-Gg: Acq92OFn3ByZHHHjb2N/irq4gywoKP3MqTfToMNMUAl3DBP7q6BrWargC+ncyuezeZg
-	e3YGVd2LfMCUG4rsHpDfCtGCazA3Rpcb/30p9PwlGI9yerbglp2kwMoy38smXTuLAZjDJBBMtBM
-	7FCGqa+yCzF4dN+1wBN6d1xoiNZU6n9ueBByqDmWUd7CqXMCHPEp3jH9RbRRI7PAjWJdiFV0QJW
-	ke+1qQvE5jWzNrAJL86zk3Z8IN8QQsj8RGxQS9v4NJ0UkuHcj7JW7+uLn9CVmYQHT18FddwCakX
-	bhaUG7Vhqwn2M3InKVWU5b3/byV2LwGN50JO6hMlfBrd87Lj7Gy289zlQ/aNn7TUqRU0NgD1GtT
-	g8zpZ0i0fdMVLSFcYDDwdXbTP6Y8WibzhAVtl3dSMnu5Y5Gna6XD2JyGfTbeFT4RuGy8=
-X-Received: by 2002:a05:600c:1d09:b0:490:3f7a:108b with SMTP id 5b1f17b1804b1-490b5e51a49mr120275675e9.16.1780568287803;
-        Thu, 04 Jun 2026 03:18:07 -0700 (PDT)
-X-Received: by 2002:a05:600c:1d09:b0:490:3f7a:108b with SMTP id 5b1f17b1804b1-490b5e51a49mr120275035e9.16.1780568287295;
-        Thu, 04 Jun 2026 03:18:07 -0700 (PDT)
-Received: from [192.168.88.32] ([212.105.155.59])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490b79d64e8sm154376175e9.0.2026.06.04.03.18.05
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 04 Jun 2026 03:18:06 -0700 (PDT)
-Message-ID: <c5750d8a-5b37-4269-819b-1c3c04be0ddf@redhat.com>
-Date: Thu, 4 Jun 2026 12:18:05 +0200
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="E7f8ohdB"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Rpu6Xj8lw9p5e8SMvVpMxCD0xFD9So+psj/0BjP43MQMtAMy0Wigkt3FR8DWZ+jbVLhQMU8WDzYL/aTlRiMB8qDHKbGF2VGmlWRkpxZaBtj5YBQE7ip4Rzafo+00V52Tp7KemQGuW9dlcm94dFHepP5Sr2HR1pTnZcna59JOxgaInJ9VDHPQk4qbxH6zd7PeeNpRufiS6CldhStcT8JQ+MHj+4tfn8XCeSPMeL/MSPUzZjwpIHwiydVuac3yfK8Rbxc2M5BD/6/z2hOVR8XQy12xvXlr7yPXNciNVNOpqxDDoHtVmX8QU1LOflTL5TPllP4OTWECq6pmhJTrRl1FJg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=WCzADedvTwY3rJ6qh4tAUMGe1ySM24axM7+B+qh7Xiw=;
+ b=H1aSLADf+QIXJ4xFdRfODgy7n8rZhXVWvss39naJDua12L1iSP+HHesQOpAeM65SLW3WY+kLK7SsysNvvkg6zCMuSUNNKiAT/gYRD2jUxU5txY5vIWDCH026NqYbGmSsm1WfA3KiydpOzZTuazDFIbi4hiMQ9VsrGeg+xTAK32mwXNTzNBhdQoog52ka5T22xNjt79IsuPp6LRP8LZeuBD47/s3eklbECaQ8dw1XmryibW8UfjeJDZfXFZWFUqlBQ9w9ra9fhHP/K3SlVm1yywDacMTj06kATiYrZpMmUDPchAn0TWztGT8NhJqiIiCUhdl3/faKTuHtndD8l12r3Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=WCzADedvTwY3rJ6qh4tAUMGe1ySM24axM7+B+qh7Xiw=;
+ b=E7f8ohdBnNE+QLbqBDHTKaSmNhrQZPb1UsbaoVbHS6YPX0mRJmrVmPZ9fUvXXNnkWW8IRWwnDZg+kZ6NrjLn7vxQ0toe76b8OxD/6PpRgR4SzIlRFvyJfg4t/4jp3TNXDFpBOYAFSVx6ixyOiZV5SkurnYLec2BOSUo/09QiJ+5leby3hk2Qc1gFXVk+eW+8ZdTqcXVr+S2FG4v2VdA4uyI1uMRXazjHlvxkvbkIifcu0kbF42S73LOEI32VCxWQ68aBpHiquAzz6V54CiU5lkf/9IULxPkSByG+NhbCOI6fbRagbi6XnFOjFOFUzt3QrLl2KK5DiUBlv8KX9U75iw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from SA3PR12MB7901.namprd12.prod.outlook.com (2603:10b6:806:306::12)
+ by CYYPR12MB8921.namprd12.prod.outlook.com (2603:10b6:930:c7::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.7; Thu, 4 Jun 2026
+ 10:18:09 +0000
+Received: from SA3PR12MB7901.namprd12.prod.outlook.com
+ ([fe80::6f7f:5844:f0f7:acc2]) by SA3PR12MB7901.namprd12.prod.outlook.com
+ ([fe80::6f7f:5844:f0f7:acc2%6]) with mapi id 15.21.0092.007; Thu, 4 Jun 2026
+ 10:18:09 +0000
+Date: Thu, 4 Jun 2026 13:17:28 +0300
+From: Ido Schimmel <idosch@nvidia.com>
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: Yuyang Huang <yuyanghuang@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	David Ahern <dsahern@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH 1/2] ipv4: igmp: annotate data-races around
+ in_dev->mc_count
+Message-ID: <20260604101728.GA771160@shredder>
+References: <20260531030705.3754389-1-yuyanghuang@google.com>
+ <20260531030705.3754389-2-yuyanghuang@google.com>
+ <95adff35-ee56-49d3-8567-382ac17810b3@redhat.com>
+ <bcffe05b-c10c-4a27-b260-e6ae872c795e@redhat.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <bcffe05b-c10c-4a27-b260-e6ae872c795e@redhat.com>
+X-ClientProxiedBy: TL2P290CA0014.ISRP290.PROD.OUTLOOK.COM
+ (2603:1096:950:2::17) To SA3PR12MB7901.namprd12.prod.outlook.com
+ (2603:10b6:806:306::12)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v17 net-next 05/11] net/nebula-matrix: add channel layer
-To: "illusion.wang" <illusion.wang@nebula-matrix.com>,
- dimon.zhao@nebula-matrix.com, alvin.wang@nebula-matrix.com,
- sam.chen@nebula-matrix.com, netdev@vger.kernel.org
-Cc: andrew+netdev@lunn.ch, corbet@lwn.net, kuba@kernel.org, horms@kernel.org,
- linux-doc@vger.kernel.org, vadim.fedorenko@linux.dev,
- lukas.bulwahn@redhat.com, edumazet@google.com, enelsonmoore@gmail.com,
- skhan@linuxfoundation.org, hkallweit1@gmail.com,
- open list <linux-kernel@vger.kernel.org>
-References: <20260601093149.25905-1-illusion.wang@nebula-matrix.com>
- <20260601093149.25905-6-illusion.wang@nebula-matrix.com>
-From: Paolo Abeni <pabeni@redhat.com>
-Content-Language: en-US
-In-Reply-To: <20260601093149.25905-6-illusion.wang@nebula-matrix.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA3PR12MB7901:EE_|CYYPR12MB8921:EE_
+X-MS-Office365-Filtering-Correlation-Id: 32acfc60-7539-4e20-a4c1-08dec222933f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|376014|1800799024|4143699003|22082099003|56012099006|11063799006|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	Wa9ZyvY9QPpvTmJ+ia2+7lyJ7PtQky98kaoQXAdmwpPllU8bMB0B3DK+BrEwG+qE36E7tobueARteoEizKZAawTrPK5C4QDY1tXCpDjaV+ByOx9DaoW0WuLmYO3fNO4mV4lpZZfRINA+KGWdI4hdBJNR1YctNqZZaN7SA+7c3TIcW97AabtIZ5P7rpyp6wnNx2SR9bR2F4iocM96ez9CrREFajehqPTWCo6e/rOhG5eSQo9h1N3ekjCvnm9TDMFD0KGQaYecdAZ+TEErLNR9ynJpYFQBmcBz6tiewjbDtSc9fJOn6ByRKf38g65BipfN0oTsXS1a2wFTo0Gwd1WyLhuAWYK8lSutxgmiGs0gFGL4OPEd5Rnx8nR1oDiHlM6TqeIRwQSHjh3uouBJAby9vtsL89U4mRey12iP7d9GLDVFK5Fu/MoDR2Ol5M7pe07Xw5POHdmhGiQeE4fOuyrax94lpRToB7F991uMxQy+U3fQAo6YZxYyRGeDZPuqxlLpbiBQiOdMowCh5yayQsbDsepDlK3sHculWp5mXT9e+q2JaE0Y5aRTmvv0eaGQZyPtO9yRyK6z7xIPwqVaZh/Mwn7AIrga5S9yosXPbKKuOrd/ga4eUT9c46CgDMtZz6+g6XOsTIg7ZtpJrplFy8iyGZ3+PcIk6xIbKUPqtY/31rSf/+qp7ugC7N53ijQ6pgEmDErn2Hk2pMXCWHREg8eEZg==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR12MB7901.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(4143699003)(22082099003)(56012099006)(11063799006)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?gpJvPDU24d8bBNclVnXPYTZwB/OS6vHdhKJO8sWl6rmaefuHtPVMl2QVipLj?=
+ =?us-ascii?Q?5rwb4c5H+uCVfPOjb7Jj3Exv+Z79dRIRk9f0Ighgj7zhe3R2pGt0B4rL09py?=
+ =?us-ascii?Q?l/fV3iuCHeGUmVdkR5x5mWAq4tNNN+0iM43ixxY7Ff7IYBu3eoosHRawsf1k?=
+ =?us-ascii?Q?275/3QO0wVO27LjnjYvUbu9SF83r5u2Hr2aEpbI7D9DGapXiG9tc6htIBeEF?=
+ =?us-ascii?Q?aDelpgiMhaaNJCPqO97Yr/mmwLhjNqLLRAwbUDuOArOHTjqm348atcly3N0a?=
+ =?us-ascii?Q?gOOyUGQLYm9Z7jy3+dz8ELwbEUF4A+ftRW5zX3/bf4TcidMBxjU2V7D387yP?=
+ =?us-ascii?Q?mzB4s1K/4Zg7p51LFxUmtwTq2faZ/7X1VrBgR3OgedXTNaRkV/Ek/q0kkAI7?=
+ =?us-ascii?Q?BTb8XIpMKIKpOdeXXMJEw4SwmVRe+8flEZmthzoLCJB0QVL2fCIaS+YH99Mz?=
+ =?us-ascii?Q?St3ecnIL690ONNype8Wnx0uiNmHY4Zs3+xWa+JvvuzWSFQgyi+smJNMH1SxS?=
+ =?us-ascii?Q?TwD7IzCa7g0ulzpmwHzH7krOpPDP+vZ8C2ueVvhWLaUOj44ZjlMzcWm/szGS?=
+ =?us-ascii?Q?4Bbix74vn+U27Hfv96LmLVuybCPuSAc1YpA/XfzStbdC/f2dfml10w6h0WzV?=
+ =?us-ascii?Q?PDgeCeNVc3Kzm18XGjXXDqhLQ+Ns32cCKRrxeTZqRNM+IUcKzbSwhFH3mpWh?=
+ =?us-ascii?Q?JTuVHtWSUV/WcSXAHp6RAwPSSHNrGlAK0CIc6094wPUYp+i6r7QozhrvE88E?=
+ =?us-ascii?Q?XTAEvJacIc3TDbnWtWCUcTzsjeG4IQlfg3jYTdq+1ZL1kyh8VYWbrthgzoRW?=
+ =?us-ascii?Q?ogGpxKP/kGsHZJq6E2p6iYw6lmkNh0cf5dP/NoQiuYmUgrBTgx1PvM4WuxFo?=
+ =?us-ascii?Q?UdQhupp+lcY9dIjqcRex0Bnpii4CG0rIA0RxyHuAvVGKZeCt1wx32y8/V86t?=
+ =?us-ascii?Q?soPFd13Lev04wr5SLO1Yab6UJttIxEmYC4RW3IgAHnA4Et4XruibRoAZ4X7R?=
+ =?us-ascii?Q?O3zBczwSt+x6ykbV+Govxp1mVoYHCBrhXMikFszX8uBLDLfTyIodgOx3fGMD?=
+ =?us-ascii?Q?rb6j9bAg7QREgOapLoAYt6s6OwwUkK7P/VZLdE2AYfIAgCoPvhLQUKcxKGsI?=
+ =?us-ascii?Q?egnS51Zu4NddCIrp4EfovpawPtfK8Hdmw0lpX7aoQEEymMebk+3mHNk8v1I1?=
+ =?us-ascii?Q?1/uftfviWWsUGNKA3xQPQf5zB+F7zYZ/sMfjqB6TDPWN9hIThPtos9JPf0vB?=
+ =?us-ascii?Q?9UrfpjbWc792CpkWBOgGWUPi20Y8ZU2Wwfv+qEHa+Ri603kPDKy4XoZTJrLK?=
+ =?us-ascii?Q?H93/yTJHs5+xGUvwRWhQE5PUiU0z6AqhaTYdl7NqmToMypbGH7mToHAF7ez9?=
+ =?us-ascii?Q?o73l9YymLmtmS6igFt/vdzGNqXOEMhDWknDq87LKlM8mPNbqwOy78E8tWFTA?=
+ =?us-ascii?Q?epOg7/ZzloBqsyheeWOdwYVdhUPgtrpfOohC4kuitM6U3CYZScckCmRZtgDH?=
+ =?us-ascii?Q?K8j8z8eNDNKKmgr5qjnW5MVYBt5CFqteOxubdcRf1yV55z8wR1GYJI8qugLg?=
+ =?us-ascii?Q?CzKlVJUpnyIPMD/Tq4j3hZO4+nm/ouErZTZZL+TqJv0I4i7IGSwIfuQ9Xi3B?=
+ =?us-ascii?Q?bCK4cLUgB+sciD/hXSRVmjg3lpnzV7h035SvbiWpTA9R+5BhL+Sr0+wztVup?=
+ =?us-ascii?Q?hS/WXPxugkfcxf5aiOCzUaiPrLGh3otGqfuodXA3Hpy2/mJxOp56/DRaz7DG?=
+ =?us-ascii?Q?LH/fs9fOcw=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 32acfc60-7539-4e20-a4c1-08dec222933f
+X-MS-Exchange-CrossTenant-AuthSource: SA3PR12MB7901.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Jun 2026 10:18:09.0650
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: WBY7khAlmSi2L8ki9NyZylhnD1RkVucUhJaSw6Re4wuxEa4m5eI375NLsSvrs21Jynu8XpXsnXHL98PpJYMoKg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYYPR12MB8921
 
-On 6/1/26 11:31 AM, illusion.wang wrote:
-> A channel management layer provides a structured approach to handle
-> communication between different components and drivers. Here's a summary
-> of its key functionalities:
-> 
-> 1. Message Handling Framework
->    Message Registration: Functions (nbl_chan_register_msg) allow dynamic
->    registration of message handlers for specific message types, enabling
->    extensible communication protocols.
-> 
->    Message Sending/Acknowledgment: Core functions (nbl_chan_send_msg,
->    nbl_chan_send_ack) handle message transmission, including asynchronous
->    operations with acknowledgment (ACK) support. Received ACKs are
->    processed via nbl_chan_recv_ack_msg.
-> 
->    Hash-Based Handler Lookup: A hash table (`handle_hash_tbl`) stores
->    message handlers for efficient O(1) lookup by message type. The
->    entire table is removed via `nbl_chan_remove_msg_handler` during
->    driver teardown (per-message-type removal is not implemented
->    in this version).
-> 
-> 2. Channel Types and Queue Management
->    Mailbox Channel: For direct communication between PF0 and Other PF.
-> 
->    Queue Initialization: Functions (nbl_chan_init_queue,
->    nbl_chan_init_tx_queue) allocate resources:
->    - TX descriptors: dmam_alloc_coherent()
->    - RX descriptors: dmam_alloc_coherent()
->    - TX/RX buffer metadata arrays (txq->buf, rxq->buf): devm_kcalloc()
-> 
->    Queue Teardown: nbl_chan_teardown_queue() stops queues, cancels
->    pending work items (clean_task), and destroys mutexes. It does NOT
->    free DMA memory, which is released automatically via devm on driver
->    remove.
-> 
->    IMPORTANT - Resource Lifecycle Design:
->    DMA memory allocated with dmam_alloc_coherent() is intentionally NOT
->    freed in nbl_chan_teardown_queue(). The queues are allocated once
->    during driver probe and freed only during driver remove (when all
->    devm_ resources are released). This assumes queues are NOT dynamically
->    torn down and recreated per-PF during normal operation.
-> 
->    Queue Configuration: Hardware-specific queue parameters (e.g., buffer
->    sizes, entry counts) are set via nbl_chan_config_queue, with hardware
->    interactions delegated to hw_ops.
-> 
-> 3. Hardware Abstraction Layer (HW Ops)
->    Hardware-Specific Operations: The nbl_hw_ops structure abstracts
->    hardware interactions: queue configuration (config_mailbox_txq/rxq),
->    tail pointer updates (update_mailbox_queue_tail_ptr).
-> 
-> Signed-off-by: illusion.wang <illusion.wang@nebula-matrix.com>
-> ---
->  .../net/ethernet/nebula-matrix/nbl/Makefile   |   3 +-
->  .../nbl/nbl_channel/nbl_channel.c             | 942 +++++++++++++++++-
->  .../nbl/nbl_channel/nbl_channel.h             | 146 +++
->  .../nebula-matrix/nbl/nbl_common/nbl_common.c | 193 ++++
->  .../nebula-matrix/nbl/nbl_common/nbl_common.h |  33 +
->  .../nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c  | 151 +++
->  .../nebula-matrix/nbl/nbl_hw/nbl_hw_reg.h     |   1 +
->  .../nbl/nbl_include/nbl_def_channel.h         |  84 ++
->  .../nbl/nbl_include/nbl_def_common.h          |  26 +
->  .../nbl/nbl_include/nbl_def_hw.h              |  28 +
->  .../nbl/nbl_include/nbl_include.h             |   6 +
->  11 files changed, 1609 insertions(+), 4 deletions(-)
->  create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_common/nbl_common.c
->  create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_common/nbl_common.h
-> 
-> diff --git a/drivers/net/ethernet/nebula-matrix/nbl/Makefile b/drivers/net/ethernet/nebula-matrix/nbl/Makefile
-> index 63116d1d7043..c9bc060732e7 100644
-> --- a/drivers/net/ethernet/nebula-matrix/nbl/Makefile
-> +++ b/drivers/net/ethernet/nebula-matrix/nbl/Makefile
-> @@ -3,7 +3,8 @@
->  
->  obj-$(CONFIG_NBL) := nbl.o
->  
-> -nbl-objs +=       nbl_channel/nbl_channel.o \
-> +nbl-objs +=       nbl_common/nbl_common.o \
-> +				nbl_channel/nbl_channel.o \
->  				nbl_hw/nbl_hw_leonis/nbl_hw_leonis.o \
->  				nbl_hw/nbl_hw_leonis/nbl_resource_leonis.o \
->  				nbl_hw/nbl_hw_leonis/nbl_hw_leonis_regs.o \
-> diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_channel/nbl_channel.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_channel/nbl_channel.c
-> index c7689f0e4029..b44dfc8c3eee 100644
-> --- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_channel/nbl_channel.c
-> +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_channel/nbl_channel.c
-> @@ -2,12 +2,912 @@
->  /*
->   * Copyright (c) 2025 Nebula Matrix Limited.
->   */
-> -
-> +#include <linux/delay.h>
->  #include <linux/device.h>
->  #include <linux/pci.h>
-> +#include <linux/bits.h>
-> +#include <linux/dma-mapping.h>
->  #include "nbl_channel.h"
->  
-> +static int nbl_chan_add_msg_handler(struct nbl_channel_mgt *chan_mgt,
-> +				    u16 msg_type, nbl_chan_resp func,
-> +				    void *priv)
-> +{
-> +	struct nbl_chan_msg_node_data handler = { 0 };
-> +	int ret;
-> +
-> +	handler.func = func;
-> +	handler.priv = priv;
-> +	ret = nbl_common_alloc_hash_node(chan_mgt->handle_hash_tbl, &msg_type,
-> +					 &handler, NULL);
-> +
-> +	return ret;
-> +}
-> +
-> +static int nbl_chan_init_msg_handler(struct nbl_channel_mgt *chan_mgt)
-> +{
-> +	struct nbl_common_info *common = chan_mgt->common;
-> +	struct nbl_hash_tbl_key tbl_key = {0};
-> +
-> +	tbl_key.dev = common->dev;
-> +	tbl_key.key_size = sizeof(u16);
-> +	tbl_key.data_size = sizeof(struct nbl_chan_msg_node_data);
-> +	tbl_key.bucket_size = NBL_CHAN_HANDLER_TBL_BUCKET_SIZE;
-> +
-> +	chan_mgt->handle_hash_tbl = nbl_common_init_hash_table(&tbl_key);
-> +	if (!chan_mgt->handle_hash_tbl)
-> +		return -ENOMEM;
-> +
-> +	return 0;
-> +}
-> +
-> +static void nbl_chan_remove_msg_handler(struct nbl_channel_mgt *chan_mgt)
-> +{
-> +	nbl_common_remove_hash_table(chan_mgt->handle_hash_tbl, NULL);
-> +
-> +	chan_mgt->handle_hash_tbl = NULL;
-> +}
-> +
-> +static void nbl_chan_init_queue_param(struct nbl_chan_info *chan_info,
-> +				      u16 num_txq_entries, u16 num_rxq_entries,
-> +				      u16 txq_buf_size, u16 rxq_buf_size)
-> +{
-> +	mutex_init(&chan_info->txq_lock);
-> +	mutex_init(&chan_info->rxq_lock);
-> +	chan_info->num_txq_entries = num_txq_entries;
-> +	chan_info->num_rxq_entries = num_rxq_entries;
-> +	chan_info->txq_buf_size = txq_buf_size;
-> +	chan_info->rxq_buf_size = rxq_buf_size;
-> +}
-> +
-> +static int nbl_chan_init_tx_queue(struct nbl_common_info *common,
-> +				  struct nbl_chan_info *chan_info)
-> +{
-> +	struct nbl_chan_ring *txq = &chan_info->txq;
-> +	struct device *dev = common->dev;
-> +	size_t size =
-> +		chan_info->num_txq_entries * sizeof(struct nbl_chan_tx_desc);
-> +	int i;
-> +
-> +	txq->desc.tx_desc = dmam_alloc_coherent(dev, size, &txq->dma,
-> +						GFP_KERNEL);
-> +	if (!txq->desc.tx_desc)
-> +		return -ENOMEM;
-> +
-> +	chan_info->wait = devm_kcalloc(dev, chan_info->num_txq_entries,
-> +				       sizeof(*chan_info->wait),
-> +				       GFP_KERNEL);
-> +	if (!chan_info->wait)
-> +		return -ENOMEM;
-> +	for (i = 0; i < chan_info->num_txq_entries; i++) {
-> +		init_waitqueue_head(&chan_info->wait[i].wait_queue);
-> +		atomic_set(&chan_info->wait[i].status, NBL_MBX_STATUS_IDLE);
-> +	}
-> +
-> +	txq->buf = devm_kcalloc(dev, chan_info->num_txq_entries,
-> +				sizeof(*txq->buf), GFP_KERNEL);
-> +	if (!txq->buf)
-> +		return -ENOMEM;
-> +
-> +	return 0;
-> +}
-> +
-> +static int nbl_chan_init_rx_queue(struct nbl_common_info *common,
-> +				  struct nbl_chan_info *chan_info)
-> +{
-> +	struct nbl_chan_ring *rxq = &chan_info->rxq;
-> +	struct device *dev = common->dev;
-> +	size_t size =
-> +		chan_info->num_rxq_entries * sizeof(struct nbl_chan_rx_desc);
-> +
-> +	rxq->desc.rx_desc = dmam_alloc_coherent(dev, size, &rxq->dma,
-> +						GFP_KERNEL);
-> +	if (!rxq->desc.rx_desc) {
-> +		dev_err(dev,
-> +			"Allocate DMA for chan rx descriptor ring failed\n");
-> +		return -ENOMEM;
-> +	}
-> +
-> +	rxq->buf = devm_kcalloc(dev, chan_info->num_rxq_entries,
-> +				sizeof(*rxq->buf), GFP_KERNEL);
-> +	if (!rxq->buf)
-> +		return -ENOMEM;
-> +
-> +	return 0;
-> +}
-> +
-> +static int nbl_chan_init_queue(struct nbl_common_info *common,
-> +			       struct nbl_chan_info *chan_info)
-> +{
-> +	int err;
-> +
-> +	err = nbl_chan_init_tx_queue(common, chan_info);
-> +	if (err)
-> +		return err;
-> +
-> +	err = nbl_chan_init_rx_queue(common, chan_info);
-> +
-> +	return err;
-> +}
-> +
-> +static void nbl_chan_config_queue(struct nbl_channel_mgt *chan_mgt,
-> +				  struct nbl_chan_info *chan_info, bool tx)
-> +{
-> +	struct nbl_hw_ops *hw_ops = chan_mgt->hw_ops_tbl->ops;
-> +	struct nbl_hw_mgt *p = chan_mgt->hw_ops_tbl->priv;
-> +	int size_bwid;
-> +	struct nbl_chan_ring *ring;
-> +	dma_addr_t dma_addr;
-> +
-> +	if (tx)
-> +		ring = &chan_info->txq;
-> +	else
-> +		ring = &chan_info->rxq;
-> +	dma_addr = ring->dma;
-> +	if (tx) {
-> +		size_bwid = ilog2(chan_info->num_txq_entries);
-> +		hw_ops->config_mailbox_txq(p, dma_addr, size_bwid);
-> +	} else {
-> +		size_bwid = ilog2(chan_info->num_rxq_entries);
-> +		hw_ops->config_mailbox_rxq(p, dma_addr, size_bwid);
-> +	}
-> +}
-> +
-> +static int nbl_chan_alloc_all_tx_bufs(struct nbl_channel_mgt *chan_mgt,
-> +				      struct nbl_chan_info *chan_info)
-> +{
-> +	struct nbl_chan_ring *txq = &chan_info->txq;
-> +	struct device *dev = chan_mgt->common->dev;
-> +	struct nbl_chan_buf *buf;
-> +	u16 i;
-> +
-> +	for (i = 0; i < chan_info->num_txq_entries; i++) {
-> +		buf = &txq->buf[i];
-> +		buf->va = dmam_alloc_coherent(dev, chan_info->txq_buf_size,
-> +					      &buf->pa,
-> +					      GFP_KERNEL);
-> +		if (!buf->va) {
-> +			dev_err(dev,
-> +				"Allocate buffer for chan tx queue failed\n");
-> +			return -ENOMEM;
-> +		}
-> +	}
-> +
-> +	txq->next_to_clean = 0;
-> +	txq->next_to_use = 0;
-> +	txq->tail_ptr = 0;
-> +
-> +	return 0;
-> +}
-> +
-> +static void nbl_chan_cfg_qinfo_map_table(struct nbl_channel_mgt *chan_mgt)
-> +{
-> +	struct nbl_hw_ops *hw_ops = chan_mgt->hw_ops_tbl->ops;
-> +	struct nbl_common_info *common = chan_mgt->common;
-> +	struct nbl_hw_mgt *p = chan_mgt->hw_ops_tbl->priv;
-> +	u8 func_id;
-> +	u32 pf_mask;
-> +
-> +	pf_mask = hw_ops->get_host_pf_mask(p);
-> +	for (func_id = 0; func_id < NBL_MAX_PF; func_id++) {
-> +		if (!(pf_mask & (1 << func_id)))
-> +			hw_ops->cfg_mailbox_qinfo(p, func_id, common->hw_bus,
-> +						  common->devid,
-> +						  common->function + func_id);
-> +	}
-> +}
-> +
-> +#define NBL_UPDATE_QUEUE_TAIL_PTR(chan_info, hw_ops, chan_mgt, tail_ptr, qid)\
-> +do {									\
-> +	(void)(chan_info);						\
-> +	typeof(hw_ops) _hw_ops = (hw_ops);				\
-> +	typeof(chan_mgt) _chan_mgt = (chan_mgt);			\
-> +	typeof(tail_ptr) _tail_ptr = (tail_ptr);			\
-> +	typeof(qid) _qid = (qid);					\
-> +	(_hw_ops)->update_mailbox_queue_tail_ptr(			\
-> +		_chan_mgt->hw_ops_tbl->priv, _tail_ptr, _qid);	\
-> +} while (0)
-> +
-> +static int nbl_chan_alloc_all_rx_bufs(struct nbl_channel_mgt *chan_mgt,
-> +				      struct nbl_chan_info *chan_info)
-> +{
-> +	struct nbl_hw_ops *hw_ops = chan_mgt->hw_ops_tbl->ops;
-> +	struct nbl_chan_ring *rxq = &chan_info->rxq;
-> +	struct device *dev = chan_mgt->common->dev;
-> +	struct nbl_chan_rx_desc *desc;
-> +	struct nbl_chan_buf *buf;
-> +	u16 i;
-> +
-> +	for (i = 0; i < chan_info->num_rxq_entries; i++) {
-> +		buf = &rxq->buf[i];
-> +		buf->va = dmam_alloc_coherent(dev, chan_info->rxq_buf_size,
-> +					      &buf->pa,
-> +					      GFP_KERNEL);
-> +		if (!buf->va) {
-> +			dev_err(dev,
-> +				"Allocate buffer for chan rx queue failed\n");
-> +			goto err;
-> +		}
-> +	}
-> +
-> +	desc = rxq->desc.rx_desc;
-> +	for (i = 0; i < chan_info->num_rxq_entries - 1; i++) {
-> +		buf = &rxq->buf[i];
-> +		desc[i].buf_addr = cpu_to_le64(buf->pa);
-> +		desc[i].buf_len = cpu_to_le32(chan_info->rxq_buf_size);
-> +		desc[i].flags = cpu_to_le16(BIT(NBL_CHAN_RX_DESC_AVAIL));
-> +	}
-> +
-> +	rxq->next_to_clean = 0;
-> +	rxq->next_to_use = chan_info->num_rxq_entries - 1;
-> +	rxq->tail_ptr = chan_info->num_rxq_entries - 1;
-> +
-> +	NBL_UPDATE_QUEUE_TAIL_PTR(chan_info, hw_ops, chan_mgt, rxq->tail_ptr,
-> +				  NBL_MB_RX_QID);
-> +
-> +	return 0;
-> +err:
-> +	return -ENOMEM;
-> +}
-> +
-> +static int nbl_chan_alloc_all_bufs(struct nbl_channel_mgt *chan_mgt,
-> +				   struct nbl_chan_info *chan_info)
-> +{
-> +	int err;
-> +
-> +	err = nbl_chan_alloc_all_tx_bufs(chan_mgt, chan_info);
-> +	if (err)
-> +		return err;
-> +	err = nbl_chan_alloc_all_rx_bufs(chan_mgt, chan_info);
-> +
-> +	return err;
-> +}
-> +
-> +static void nbl_chan_stop_queue(struct nbl_channel_mgt *chan_mgt)
-> +{
-> +	struct nbl_hw_ops *hw_ops = chan_mgt->hw_ops_tbl->ops;
-> +
-> +	hw_ops->stop_mailbox_rxq(chan_mgt->hw_ops_tbl->priv);
-> +	hw_ops->stop_mailbox_txq(chan_mgt->hw_ops_tbl->priv);
-> +}
-> +
-> +static int nbl_chan_teardown_queue(struct nbl_channel_mgt *chan_mgt,
-> +				   u8 chan_type)
-> +{
-> +	struct nbl_chan_info *chan_info = chan_mgt->chan_info[chan_type];
-> +
-> +	nbl_chan_stop_queue(chan_mgt);
-> +	if (chan_info->clean_task)
-> +		cancel_work_sync(chan_info->clean_task);
-> +	/*
-> +	 * Lock and unlock to wait for any in-flight callers that may still
-> +	 * be holding the lock. After unlock returns, we are guaranteed that
-> +	 * no other thread is using this lock, so it's safe to destroy.
-> +	 */
-> +	mutex_lock(&chan_info->txq_lock);
-> +	mutex_unlock(&chan_info->txq_lock);
-> +	mutex_destroy(&chan_info->txq_lock);
-> +
-> +	mutex_lock(&chan_info->rxq_lock);
-> +	mutex_unlock(&chan_info->rxq_lock);
-> +	mutex_destroy(&chan_info->rxq_lock);
-> +
-> +	return 0;
-> +}
-> +
-> +static int nbl_chan_setup_queue(struct nbl_channel_mgt *chan_mgt, u8 chan_type)
-> +{
-> +	struct nbl_chan_info *chan_info = chan_mgt->chan_info[chan_type];
-> +	struct nbl_common_info *common = chan_mgt->common;
-> +	int err;
-> +
-> +	nbl_chan_init_queue_param(chan_info, NBL_CHAN_QUEUE_LEN,
-> +				  NBL_CHAN_QUEUE_LEN, NBL_CHAN_BUF_LEN,
-> +				  NBL_CHAN_BUF_LEN);
-> +	err = nbl_chan_init_queue(common, chan_info);
-> +	if (err)
-> +		return err;
-> +
-> +	nbl_chan_config_queue(chan_mgt, chan_info, true); /* tx */
-> +	nbl_chan_config_queue(chan_mgt, chan_info, false); /* rx */
-> +
-> +	err = nbl_chan_alloc_all_bufs(chan_mgt, chan_info);
-> +	if (err)
-> +		goto chan_q_setup_fail;
-> +
-> +	return 0;
-> +
-> +chan_q_setup_fail:
-> +	mutex_destroy(&chan_info->txq_lock);
-> +	mutex_destroy(&chan_info->rxq_lock);
-> +	return err;
-> +}
-> +
-> +static int nbl_chan_update_txqueue(struct nbl_channel_mgt *chan_mgt,
-> +				   struct nbl_chan_info *chan_info,
-> +				   struct nbl_chan_tx_param *param)
-> +{
-> +	struct nbl_chan_ring *txq = &chan_info->txq;
-> +	struct nbl_chan_tx_desc *tx_desc =
-> +		NBL_CHAN_TX_RING_TO_DESC(txq, txq->next_to_use);
-> +	struct nbl_chan_buf *tx_buf =
-> +		NBL_CHAN_TX_RING_TO_BUF(txq, txq->next_to_use);
-> +
-> +	if (param->arg_len > NBL_CHAN_BUF_LEN - sizeof(*tx_desc))
-> +		return -EINVAL;
-> +
-> +	tx_desc->dstid = cpu_to_le16(param->dstid);
-> +	tx_desc->msg_type = cpu_to_le16(param->msg_type);
-> +	tx_desc->msgid = cpu_to_le16(param->msgid);
-> +
-> +	if (param->arg_len > NBL_CHAN_TX_DESC_EMBEDDED_DATA_LEN) {
-> +		memcpy(tx_buf->va, param->arg, param->arg_len);
-> +		tx_desc->buf_addr = cpu_to_le64(tx_buf->pa);
-> +		tx_desc->buf_len = cpu_to_le16(param->arg_len);
-> +		tx_desc->data_len = 0;
-> +		memset(tx_desc->data, 0, sizeof(tx_desc->data));
-> +	} else {
-> +		memset(tx_desc->data, 0, sizeof(tx_desc->data));
-> +		memcpy(tx_desc->data, param->arg, param->arg_len);
-> +		tx_desc->buf_len = 0;
-> +		tx_desc->data_len = cpu_to_le16(param->arg_len);
-> +	}
-> +	/* Ensure desc body is visible to DMA before writing AVAIL flag */
-> +	dma_wmb();
-> +	tx_desc->flags = cpu_to_le16(BIT(NBL_CHAN_TX_DESC_AVAIL));
-> +
-> +	txq->next_to_use =
-> +		NBL_NEXT_ID(txq->next_to_use, chan_info->num_txq_entries - 1);
-> +	txq->tail_ptr++;
-> +
-> +	return 0;
-> +}
-> +
-> +static int nbl_chan_kick_tx_ring(struct nbl_channel_mgt *chan_mgt,
-> +				 struct nbl_chan_info *chan_info)
-> +{
-> +	struct nbl_hw_ops *hw_ops = chan_mgt->hw_ops_tbl->ops;
-> +	struct nbl_chan_ring *txq = &chan_info->txq;
-> +	struct device *dev = chan_mgt->common->dev;
-> +	int max_retries = NBL_CHAN_TX_WAIT_TIMES;
-> +	struct nbl_chan_tx_desc *tx_desc;
-> +	int retry_count = 0;
-> +
-> +	NBL_UPDATE_QUEUE_TAIL_PTR(chan_info, hw_ops, chan_mgt, txq->tail_ptr,
-> +				  NBL_MB_TX_QID);
-> +
-> +	tx_desc = NBL_CHAN_TX_RING_TO_DESC(txq, txq->next_to_clean);
-> +	while (retry_count < max_retries) {
-> +		if (le16_to_cpu(READ_ONCE(tx_desc->flags)) &
-> +		    BIT(NBL_CHAN_TX_DESC_USED)) {
-> +			dma_rmb();
-> +			break;
-> +		}
-> +
-> +		if (!(retry_count % NBL_CHAN_TX_REKICK_WAIT_TIMES))
-> +			NBL_UPDATE_QUEUE_TAIL_PTR(chan_info, hw_ops, chan_mgt,
-> +						  txq->tail_ptr, NBL_MB_TX_QID);
-> +		retry_count++;
-> +
-> +		usleep_range(NBL_CHAN_TX_WAIT_US, NBL_CHAN_TX_WAIT_US_MAX);
-> +	}
-> +
-> +	txq->next_to_clean = txq->next_to_use;
-> +	if (retry_count >= max_retries) {
-> +		dev_err(dev, "chan send message type: %d timeout\n",
-> +			le16_to_cpu(READ_ONCE(tx_desc->msg_type)));
-> +		return -ETIMEDOUT;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static void nbl_chan_recv_ack_msg(void *priv, u16 srcid, u16 msgid, void *data,
-> +				  u32 data_len)
-> +{
-> +	struct nbl_channel_mgt *chan_mgt = (struct nbl_channel_mgt *)priv;
-> +	struct nbl_chan_waitqueue_head *wait_head = NULL;
-> +	union nbl_chan_msg_id ack_msgid = { { 0 } };
-> +	struct device *dev = chan_mgt->common->dev;
-> +	struct nbl_chan_info *chan_info =
-> +		chan_mgt->chan_info[NBL_CHAN_TYPE_MAILBOX];
-> +	u32 *payload = data;
-> +	u32 ack_datalen, ack_msgtype = 0;
-> +	u32 copy_len;
-> +
-> +	if (data_len > NBL_CHAN_BUF_LEN ||
-> +	    data_len < NBL_CHAN_ACK_HEAD_LEN * sizeof(u32)) {
-> +		dev_err(dev, "Invalid ACK data_len: %u\n", data_len);
-> +		return;
-> +	}
-> +	ack_datalen = data_len - NBL_CHAN_ACK_HEAD_LEN * sizeof(u32);
-> +	ack_msgtype = le16_to_cpu(*(__le16 *)(payload + NBL_CHAN_MSG_TYPE_POS));
-> +	ack_msgid.id = le16_to_cpu(*(__le16 *)(payload + NBL_CHAN_MSG_ID_POS));
-> +	if (ack_msgid.info.loc >= NBL_CHAN_QUEUE_LEN) {
-> +		dev_err(dev, "chan recv msg loc: %d err\n", ack_msgid.info.loc);
-> +		return;
-> +	}
-> +	wait_head = &chan_info->wait[ack_msgid.info.loc];
-> +	if (srcid != wait_head->dstid) {
-> +		atomic_set(&wait_head->status, NBL_MBX_STATUS_IDLE);
-> +		dev_err(dev, "ACK srcid=%u != dstid=%u, rejecting\n",
-> +			srcid, wait_head->dstid);
-> +		return;
-> +	}
-> +	if (!atomic_cmpxchg_acquire(&wait_head->status, NBL_MBX_STATUS_WAITING,
-> +				    NBL_MBX_STATUS_ACKD)) {
-> +		dev_err(dev, "Skip ack with invalid status, wait_head msgtype:%u msg_index:%u status:%d ack_data_len:%d, ack msgtype:%u msgid:%u datalen:%d\n",
-> +			wait_head->msg_type, wait_head->msg_index,
-> +			atomic_read(&wait_head->status),
-> +			wait_head->ack_data_len, ack_msgtype,
-> +			ack_msgid.id, ack_datalen);
-> +		return;
-> +	}
+On Thu, Jun 04, 2026 at 11:15:29AM +0200, Paolo Abeni wrote:
+> On 6/4/26 11:11 AM, Paolo Abeni wrote:
+> > On 5/31/26 5:07 AM, Yuyang Huang wrote:
+> >> @@ -1922,7 +1923,7 @@ void ip_mc_destroy_dev(struct in_device *in_dev)
+> >>  
+> >>  	while ((i = rtnl_dereference(in_dev->mc_list)) != NULL) {
+> >>  		in_dev->mc_list = i->next_rcu;
+> >> -		in_dev->mc_count--;
+> >> +		WRITE_ONCE(in_dev->mc_count, in_dev->mc_count - 1);
+> >>  		ip_mc_clear_src(i);
+> >>  		ip_ma_put(i);
+> > 
+> > The patch LGTM,
+> But it does not apply cleanly to net. Please rebase and report, adding
+> the target tree (`net`) and a revision number (`v2`) in the subj prefix.
 
-Sashiko reports a number of issues WRT the atomic status updates:
+Paolo, I think it's better to target such patches at net-next and
+dropping the fixes tag. 
 
-https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260601093149.25905-1-illusion.wang%40nebula-matrix.com
+See for example this recent patch that went into net-next:
 
-It's indeed quite complex to get things right this way. I'm wondering if 
-you should use a spin_lock instead to protect the relevant state?
+https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next.git/commit/net/ipv4/igmp.c?id=061c0aa740d5d3847cd600a74c66a165bee1fbe0
 
-Also a few process related notes:
-- to make effective progresses you should proactively reply on the ML WRT
-the sashiko comments discussion if and why they are (not) relevant.
-- is 'illusion wang' (all lower case) your real name? we can't accept
-pseudonims as SoB tag.
+And this message from Linus:
 
-/P
-
+https://lwn.net/Articles/1074171/
