@@ -1,35 +1,35 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79F914CA269;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D315C4CA273;
 	Thu,  4 Jun 2026 17:48:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780595323; cv=none; b=RiWptPKQ6HYRVD2Gtc98ySCqg7/bOvFHGyFvwFEOQuyuV7QwHbgkRJ2Qc8AByKUG310fWdyvmuHWdziDiH0TQ5zJhpuKFPSoh5FdepbzprvW148UxG0UnQPwsQaBGAA2LOO/6PVOeL+Z4R0wPzWB5Arv7WNWX6v/o0k4R6sU1G0=
+	t=1780595324; cv=none; b=tKJmMWDIkoE9L+GSgI2Vqj7eQyi6uiUaDmAv6kzcxgZ4cQK/sgG659/b2KZXs79liuboig32RO2sbk3e/sJEx/5fZCqFTGXH7X204DV3aw67hQ0lbW7AZjLqC3/uAC497amKMPSueqPdSYSilNivikI9gDIaUJmGsvFKmAStGCw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780595323; c=relaxed/simple;
-	bh=wXAhdqw/SV8ZZocAdCUroCEpQxQ1uifAl7eehfCqoyY=;
+	s=arc-20240116; t=1780595324; c=relaxed/simple;
+	bh=C2/nssUxBkPedsqmFndypAybwKSTg2oDemH+VrUaJBs=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ALsZxPfPb9pzV+NY+PhrqJnrRLSZAin/T7dbdhyiRA50dFNKmlmLu1pIJV/Y8nsPycYd1AmEbtdkdWT6Vo3Qj9YvADApkr0gkSVENI1wVfOitRf1P5/lECdFM9cCpz8HC7AKWm6XNwsRtRSvsQuPeTo4Bd+Pn+iVYDg3ipfk9/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=esu9AHsN; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=CV02vjjoeFu4UpH3q9zrBbcioFffnEZ1BZ6pkh8M86iGJk3iLadBrStbHmaoZK77Unm6xW22nJpNRHcnN1CirLHwmE16ullZJfeq8cf5MOxxIIScVuvfdVHjlryvV4MwfeD2vS5XuYISd7k+DIuNwCEDxDJFHAsBv16mYCDoaXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZRSN1nPB; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="esu9AHsN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 080CB1F0089C;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZRSN1nPB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75DF61F0089D;
 	Thu,  4 Jun 2026 17:48:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1780595322;
-	bh=Z4XE+cmE63csSg/8k7URSHVKH79trvvdwh9WCSOPI54=;
+	bh=V2saVs70r1BK11yZ8/U6XDPksLhhGD0CRO3QjBGK+EU=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=esu9AHsN+O1VHaFaEHNXRcrj/lHVY5PCsbS7GK9gy/tzZXSv9mOkI+OETn+wKdqrU
-	 kQCdsMYry6cf8SmhWBXRgDFvlZYtTJCxZCnZti6z3korD4LfOs9R1ZnlTSdQ3jLlYT
-	 kEyGv6ZJ6ZFad56MHFGi8cfpUStvfx+daW9cypZq2rxg0ZInCv68gZAsuvQYCX7do5
-	 q3ZQPxKCU8Cy4Jq9C6w/y0Q9GpY+OQylq3kq1DTRqkgc7EssNEpOi+5+DcA1xGDP3f
-	 C6pe+ycqPXFz8Rq+gW0I0+Qi04ZZb9zcaTeb7Ko7vG4VoMQxKy5/TeL1q7sOYlxwAM
-	 6rCPcLH+w7dXA==
+	b=ZRSN1nPBMDEBmdk628KyoaU8/hLnvRG0iAYULc+QW/OxcXVZk2d+mmvoPjBisieXa
+	 Zjv3N3RV729ZH+M4gPFZuCsAk56/yUsLVVXmirbBjjrVVnlVU8dbg2MOvl51lBlr4k
+	 Nsd08eaI5hQvqJkRS2X+fticKa3bmXcfmWuSPmKru9GNrMkl7cKjOhYoNaHx+L9DTp
+	 b/OUnfh+ge2NJ9iERK3tyMzQOPeS0xTvTB6oB1bYFUxOQeBPljRphe5DeG0/AXyAy+
+	 VN+4KlMEaRb/Ovo6NnVuekpqitII7baiT/dwZAYPB1jXbyTGzjOOmkacHIVx0hZOkh
+	 cReH0r/VdYP6A==
 From: Chuck Lever <cel@kernel.org>
-Date: Thu, 04 Jun 2026 13:48:27 -0400
-Subject: [PATCH net-next v12 4/6] tls: Factor tls_strp_msg_consume() from
- tls_strp_msg_done()
+Date: Thu, 04 Jun 2026 13:48:28 -0400
+Subject: [PATCH net-next v12 5/6] tls: Suppress spurious saved_data_ready
+ on all receive paths
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -38,7 +38,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260604-tls-read-sock-v12-4-b114efa6e3e2@oracle.com>
+Message-Id: <20260604-tls-read-sock-v12-5-b114efa6e3e2@oracle.com>
 References: <20260604-tls-read-sock-v12-0-b114efa6e3e2@oracle.com>
 In-Reply-To: <20260604-tls-read-sock-v12-0-b114efa6e3e2@oracle.com>
 To: John Fastabend <john.fastabend@gmail.com>, 
@@ -46,86 +46,267 @@ To: John Fastabend <john.fastabend@gmail.com>,
 Cc: Eric Dumazet <edumazet@google.com>, Simon Horman <horms@kernel.org>, 
  Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, 
  kernel-tls-handshake@lists.linux.dev, Chuck Lever <chuck.lever@oracle.com>, 
- Hannes Reinecke <hare@suse.de>, Alistair Francis <alistair.francis@wdc.com>
+ Hannes Reinecke <hare@kernel.org>
 X-Mailer: b4 0.16-dev-da966
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2134;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=8402;
  i=chuck.lever@oracle.com; h=from:subject:message-id;
- bh=GKsYmrWcX7wrTdNnT9sOWBOGwUEovS6suOvycH27ydU=;
- b=owEBbQKS/ZANAwAKATNqszNvZn+XAcsmYgBqIbp3M8Y9KczpCPP7lCOOPeAiKdZFjRv6j0QXi
- zpIHYla7S+JAjMEAAEKAB0WIQQosuWwEobfJDzyPv4zarMzb2Z/lwUCaiG6dwAKCRAzarMzb2Z/
- l2sMD/9NP4vOM4HL3EMJj1NsmUsrZbbdGxFY8ZAnmPX/LTrOJr23LjlvwQV7kp4V7egabIVmBg7
- +sF3LA4CeQk4xqbwHa4v4AOQJ8SLIdqDj1IyjIUoQKPQRWYSR5eRF5+CHnBNF3+P4YPSyNwzgxB
- tgzNzOKBgqO5XxDrbDwVCHI6RWT0ucuuCSJzhsKh0Exy74/HUqdgx1N5z1Ewe+UfhC1KYWg/PL3
- Dr25JrVjNHmuQUt+wHwHR4MlBoSUJHH9WzKErJcOvGKkcrJwBlblax4aw/jdv5lHppXRKzvHWs7
- 4rugZva+RyNqcBjeOyb2hNki4ohO6wynXPL4KLm6ngpBe2IlESK+IzNXEbsjiaHl2yD33DJiN/K
- 21oi6txEdyUntBYRHFBY0WR+NZrT7DdKYcRDYX0ca8/+PfkuU1C1/JYi50OoKw9X5zHgWlyxGAB
- RSRO+qzrR4KKdluay2p+vMnjSlnjY3y4IvU2km6NKs/Kbmx7Np8NxZVODxgU2nSyS0d8ofszQZZ
- s0yv0BcQhehhkpQtQSS/w+m4+zeWikbguB5X7mAPVECtXjXM2vsDUhBiS9eLmVW045MA1Avcbg1
- x0+VSinE9EMY20E3weD7fk8U3m7XW9UjQZlVFLLRxjFNc7ysfc4PnkWbYr/Yywp/XIwUXbnUBz6
- CWZynvId/f9VYTQ==
+ bh=lt+aITkqtwmLLOEhw1No9gSiDpddh8d9T5+gc7F0vVM=;
+ b=owEBbQKS/ZANAwAKATNqszNvZn+XAcsmYgBqIbp3HIPTAYw9ZIo29ToHm8fLljJ5mmvbPbj1D
+ QOOLpQMr6CJAjMEAAEKAB0WIQQosuWwEobfJDzyPv4zarMzb2Z/lwUCaiG6dwAKCRAzarMzb2Z/
+ l+vGD/9QkqUojfhG6YIpEuwIy9vQsmIP3uj0WniTQfD5jMl8WdFvx6rMnszh4JCOfzHxF8dQwS0
+ 5f858E+lLG0iOjhgOy8W8T6ryKz5YNtdWcZ53XbFmDHpOsFfLV02QUqBTvx0Mk3+3QeFFQHbvcN
+ EmLSX+8Vzpg3kFW29XLHRKGzlz6OXQmZDI1Zgw/YjedjccHSL6oBHCQsfiLxuChOAXctHySsDaN
+ Snef0sjz/+l1tWfHk4T4SUgFapnaXSqf6y4x7loUKifPoYKbMJVx7jGBEqO7s1p4dggTCPQCE8G
+ gpk+RAnug4GZm/JftnPxJ2ueXW8kRjNdg5XBU1RpFOk9xDCHZyQNT1s/Et38Fcy6B8+a7Xfrlta
+ PL0sHnsvufi8ABA1i2fUvBYcWJJSZeHMuAhpJYRCxKlwh1i9In/MgP19ns3fg3Cw0MjnommXnry
+ Lx2lEhJU28BBKmENpmU0E+rNQwbluPbzYEPOLVfsNW0lTrDFy8W291/nkoTTupyeDTMmS5IGanc
+ HHykldxrAGkv2Z6IV2CzJRD1d5EmQRUDHtxKfeUjN5DB+NQEug6//SLfQL7u9LAm+goxL+zwgkv
+ c+/JhsEFkqsxmDLPmriaEfIn50cKGYAhTNknPU/aD36NDwUJjNTPs62aqN28R2a2ARWJcI3py7m
+ auj6aCmZM+hM3/A==
 X-Developer-Key: i=chuck.lever@oracle.com; a=openpgp;
  fpr=28B2E5B01286DF243CF23EFE336AB3336F667F97
 
 From: Chuck Lever <chuck.lever@oracle.com>
 
-tls_strp_msg_done() conflates releasing the current record with
-checking for the next one via tls_strp_check_rcv(). A subsequent
-patch needs to release a record without immediately triggering
-that check, so the release step is separated into
-tls_strp_msg_consume(). tls_strp_msg_done() is preserved as a
-wrapper for existing callers.
+Each record release via tls_strp_msg_done() triggered
+tls_strp_check_rcv(), which called tls_rx_msg_ready() and
+fired saved_data_ready(). During a multi-record receive, the
+first N-1 wakeups are pure overhead: the caller is already
+running and will pick up subsequent records on the next loop
+iteration. The recvmsg and splice_read paths share this waste.
 
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Suppress per-record notifications and emit a single one on
+reader exit. tls_rx_rec_done() releases the current record
+and parses the next without announcing; tls_strp_check_rcv()
+gains a bool announce parameter so callers can request the
+quiet form. tls_rx_reader_release() fires the deferred
+announce on exit through tls_rx_msg_maybe_announce(), an
+idempotent helper that calls saved_data_ready() only when a
+record is parsed and has not yet been announced.
+
+To keep the final notification idempotent against records that
+the BH or the worker has already announced, tls_strparser gains
+a msg_announced bit. tls_rx_msg_maybe_announce() sets the bit
+when firing saved_data_ready(); the bit is cleared whenever
+the parsed record is wiped, by tls_strp_msg_consume() on
+consumption or by tls_strp_msg_load() when the lower socket
+loses bytes from under the parse. A second call for the same
+parsed record -- as when recvmsg() satisfies the request from
+ctx->rx_list without touching the strparser -- becomes a
+no-op.
+
+With no remaining callers, tls_strp_msg_done() is removed.
+
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Reviewed-by: Hannes Reinecke <hare@kernel.org>
 Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
 ---
- net/tls/tls.h      |  1 +
- net/tls/tls_strp.c | 11 ++++++++++-
- 2 files changed, 11 insertions(+), 1 deletion(-)
+ include/net/tls.h  |  5 +++++
+ net/tls/tls.h      |  5 ++---
+ net/tls/tls_main.c |  2 +-
+ net/tls/tls_strp.c | 23 ++++++++++++-----------
+ net/tls/tls_sw.c   | 27 ++++++++++++++++++++++++---
+ 5 files changed, 44 insertions(+), 18 deletions(-)
 
+diff --git a/include/net/tls.h b/include/net/tls.h
+index ebd2550280ae..3811943288b3 100644
+--- a/include/net/tls.h
++++ b/include/net/tls.h
+@@ -111,11 +111,16 @@ struct tls_sw_context_tx {
+ struct tls_strparser {
+ 	struct sock *sk;
+ 
++	/* Bitfield word and msg_ready are serialized by the lower
++	 * socket lock; BH and worker contexts both acquire it.
++	 */
+ 	u32 mark : 8;
+ 	u32 stopped : 1;
+ 	u32 copy_mode : 1;
+ 	u32 mixed_decrypted : 1;
+ 
++	u32 msg_announced : 1;
++
+ 	bool msg_ready;
+ 
+ 	struct strp_msg stm;
 diff --git a/net/tls/tls.h b/net/tls/tls.h
-index 12f44cb649c9..cb0091e03f41 100644
+index cb0091e03f41..60a37bdaaa25 100644
 --- a/net/tls/tls.h
 +++ b/net/tls/tls.h
-@@ -194,6 +194,7 @@ int tls_strp_init(struct tls_strparser *strp, struct sock *sk);
+@@ -193,12 +193,11 @@ void tls_strp_stop(struct tls_strparser *strp);
+ int tls_strp_init(struct tls_strparser *strp, struct sock *sk);
  void tls_strp_data_ready(struct tls_strparser *strp);
  
- void tls_strp_check_rcv(struct tls_strparser *strp);
-+void tls_strp_msg_consume(struct tls_strparser *strp);
- void tls_strp_msg_done(struct tls_strparser *strp);
+-void tls_strp_check_rcv(struct tls_strparser *strp);
++void tls_strp_check_rcv(struct tls_strparser *strp, bool announce);
+ void tls_strp_msg_consume(struct tls_strparser *strp);
+-void tls_strp_msg_done(struct tls_strparser *strp);
  
  int tls_rx_msg_size(struct tls_strparser *strp, struct sk_buff *skb);
+-void tls_rx_msg_ready(struct tls_strparser *strp);
++void tls_rx_msg_maybe_announce(struct tls_strparser *strp);
+ 
+ bool tls_strp_msg_load(struct tls_strparser *strp, bool force_refresh);
+ int tls_strp_msg_cow(struct tls_sw_context_rx *ctx);
+diff --git a/net/tls/tls_main.c b/net/tls/tls_main.c
+index fd39acf41a61..c10a3fd7fc17 100644
+--- a/net/tls/tls_main.c
++++ b/net/tls/tls_main.c
+@@ -769,7 +769,7 @@ static int do_tls_setsockopt_conf(struct sock *sk, sockptr_t optval,
+ 	} else {
+ 		struct tls_sw_context_rx *rx_ctx = tls_sw_ctx_rx(ctx);
+ 
+-		tls_strp_check_rcv(&rx_ctx->strp);
++		tls_strp_check_rcv(&rx_ctx->strp, true);
+ 	}
+ 	return 0;
+ 
 diff --git a/net/tls/tls_strp.c b/net/tls/tls_strp.c
-index c72e88317627..e7aaee6efe6e 100644
+index e7aaee6efe6e..61b10c697ecc 100644
 --- a/net/tls/tls_strp.c
 +++ b/net/tls/tls_strp.c
-@@ -581,7 +581,12 @@ static void tls_strp_work(struct work_struct *w)
+@@ -368,7 +368,6 @@ static int tls_strp_copyin(read_descriptor_t *desc, struct sk_buff *in_skb,
+ 		desc->count = 0;
+ 
+ 		WRITE_ONCE(strp->msg_ready, 1);
+-		tls_rx_msg_ready(strp);
+ 	}
+ 
+ 	return ret;
+@@ -492,6 +491,7 @@ bool tls_strp_msg_load(struct tls_strparser *strp, bool force_refresh)
+ 	if (!strp->copy_mode && force_refresh) {
+ 		if (unlikely(tcp_inq(strp->sk) < strp->stm.full_len)) {
+ 			WRITE_ONCE(strp->msg_ready, 0);
++			strp->msg_announced = 0;
+ 			memset(&strp->stm, 0, sizeof(strp->stm));
+ 			return false;
+ 		}
+@@ -539,18 +539,24 @@ static int tls_strp_read_sock(struct tls_strparser *strp)
+ 		return tls_strp_read_copy(strp, false);
+ 
+ 	WRITE_ONCE(strp->msg_ready, 1);
+-	tls_rx_msg_ready(strp);
+ 
+ 	return 0;
+ }
+ 
+-void tls_strp_check_rcv(struct tls_strparser *strp)
++/* Parse queued data. When @announce is true and parsing produces a
++ * newly-ready record, fire the consumer notification. Callers that
++ * need to notify a waiter about a record parsed by another path
++ * should invoke tls_rx_msg_maybe_announce() directly.
++ */
++void tls_strp_check_rcv(struct tls_strparser *strp, bool announce)
+ {
+ 	if (unlikely(strp->stopped) || strp->msg_ready)
+ 		return;
+ 
+ 	if (tls_strp_read_sock(strp) == -ENOMEM)
+ 		queue_work(tls_strp_wq, &strp->work);
++	else if (announce && strp->msg_ready)
++		tls_rx_msg_maybe_announce(strp);
+ }
+ 
+ /* Lower sock lock held */
+@@ -568,7 +574,7 @@ void tls_strp_data_ready(struct tls_strparser *strp)
+ 		return;
+ 	}
+ 
+-	tls_strp_check_rcv(strp);
++	tls_strp_check_rcv(strp, true);
+ }
+ 
+ static void tls_strp_work(struct work_struct *w)
+@@ -577,7 +583,7 @@ static void tls_strp_work(struct work_struct *w)
+ 		container_of(w, struct tls_strparser, work);
+ 
+ 	lock_sock(strp->sk);
+-	tls_strp_check_rcv(strp);
++	tls_strp_check_rcv(strp, true);
  	release_sock(strp->sk);
  }
  
--void tls_strp_msg_done(struct tls_strparser *strp)
-+/* Release the current record without triggering a check for the
-+ * next record. Callers must invoke tls_strp_check_rcv() before
-+ * releasing the socket lock, or queued data will stall until the
-+ * next tls_strp_data_ready() event.
-+ */
-+void tls_strp_msg_consume(struct tls_strparser *strp)
- {
- 	WARN_ON(!strp->stm.full_len);
- 
-@@ -592,7 +597,11 @@ void tls_strp_msg_done(struct tls_strparser *strp)
+@@ -596,15 +602,10 @@ void tls_strp_msg_consume(struct tls_strparser *strp)
+ 		tls_strp_flush_anchor_copy(strp);
  
  	WRITE_ONCE(strp->msg_ready, 0);
++	strp->msg_announced = 0;
  	memset(&strp->stm, 0, sizeof(strp->stm));
-+}
- 
-+void tls_strp_msg_done(struct tls_strparser *strp)
-+{
-+	tls_strp_msg_consume(strp);
- 	tls_strp_check_rcv(strp);
  }
  
+-void tls_strp_msg_done(struct tls_strparser *strp)
+-{
+-	tls_strp_msg_consume(strp);
+-	tls_strp_check_rcv(strp);
+-}
+-
+ void tls_strp_stop(struct tls_strparser *strp)
+ {
+ 	strp->stopped = 1;
+diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
+index 798f2535ddf7..df4cdf11f784 100644
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -1401,7 +1401,10 @@ tls_rx_rec_wait(struct sock *sk, struct sk_psock *psock, bool nonblock,
+ 			return ret;
+ 
+ 		if (!skb_queue_empty(&sk->sk_receive_queue)) {
+-			tls_strp_check_rcv(&ctx->strp);
++			/* Defer notification to the exit point; this thread
++			 * will consume the record directly.
++			 */
++			tls_strp_check_rcv(&ctx->strp, false);
+ 			if (tls_strp_msg_ready(ctx))
+ 				break;
+ 		}
+@@ -1887,9 +1890,13 @@ static int tls_record_content_type(struct msghdr *msg, struct tls_msg *tlm,
+ 	return 1;
+ }
+ 
++/* The deferred announce is fired once on reader exit by
++ * tls_rx_reader_release().
++ */
+ static void tls_rx_rec_done(struct tls_sw_context_rx *ctx)
+ {
+-	tls_strp_msg_done(&ctx->strp);
++	tls_strp_msg_consume(&ctx->strp);
++	tls_strp_check_rcv(&ctx->strp, false);
+ }
+ 
+ /* This function traverses the rx_list in tls receive context to copies the
+@@ -2044,6 +2051,12 @@ static int tls_rx_reader_lock(struct sock *sk, struct tls_sw_context_rx *ctx,
+ 
+ static void tls_rx_reader_release(struct sock *sk, struct tls_sw_context_rx *ctx)
+ {
++	/* Fire any deferred announce once per reader so that a record
++	 * parsed but not yet announced becomes visible to the next
++	 * reader. The call is idempotent through msg_announced.
++	 */
++	tls_rx_msg_maybe_announce(&ctx->strp);
++
+ 	if (unlikely(ctx->reader_contended)) {
+ 		if (wq_has_sleeper(&ctx->wq))
+ 			wake_up(&ctx->wq);
+@@ -2520,10 +2533,18 @@ int tls_rx_msg_size(struct tls_strparser *strp, struct sk_buff *skb)
+ 	return ret;
+ }
+ 
+-void tls_rx_msg_ready(struct tls_strparser *strp)
++/* Fire saved_data_ready() at most once per parsed record. The
++ * msg_announced bit is cleared by tls_strp_msg_consume() when the
++ * record is consumed, arming the next announcement.
++ */
++void tls_rx_msg_maybe_announce(struct tls_strparser *strp)
+ {
+ 	struct tls_sw_context_rx *ctx;
+ 
++	if (!READ_ONCE(strp->msg_ready) || strp->msg_announced)
++		return;
++	strp->msg_announced = 1;
++
+ 	ctx = container_of(strp, struct tls_sw_context_rx, strp);
+ 	ctx->saved_data_ready(strp->sk);
+ }
 
 -- 
 2.54.0
