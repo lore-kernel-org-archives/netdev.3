@@ -1,45 +1,46 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37B7637106D;
-	Thu,  4 Jun 2026 12:21:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DCF418EB0;
+	Thu,  4 Jun 2026 12:28:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780575711; cv=none; b=Ea2pRnTThkPlQO4hWcdpFHMPi6yiMbSapfOSG37JR2bOweNj6TXnAOk04MWc6vgEv8/D5OVP/E8v6vxSDvq/vrIGQIL21cZksXNWcfDA4DArWQVFCKF+xjPtPTi6F/ZgpYkUwyLe/g+MbolThGe948/RkeLypLyPxsQS+Bt9ZkU=
+	t=1780576083; cv=none; b=rrtI2Tq2WCRu6COFnDFP8dpVxDU1KJtKDSyA/XY6UBPydsIu6OPOPn3HWID5Qb1k9ycs45hxyS3tqdNEGix1PVUSvgW9AW5/CLL187rMwp4Rn1lsJDjiD3WFkPm7EK6CgUCgAM0eZXkWo78Syihnf+BfqtYAyWV1IUHBLTytDuA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780575711; c=relaxed/simple;
-	bh=EBOGZAZBpe9lJRSHV9rUOOG0nfNd+yRb+ioWV0gPjrM=;
+	s=arc-20240116; t=1780576083; c=relaxed/simple;
+	bh=iC1JKZwh6KYUm+GL10uTLhw4nuH2oT9Hf20McyPRe9I=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Jjadr4RKe6PATSOKuRU2we8Ytrr2+5Z5uI+dwt83yurLXhhsvszbHeYpKFkiq8Vcccv3A5U8tPS+JPb7NDHB0pTJyy0VIQKWLfsjoL4y/akhLaBZ5Mqx8VyTtoC7jP0Z/uCfTDnCTZSwMHJqk1dxzHrnxmmFRkkZNpH9v+zTklM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=vCIdrZOX; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=gTHfvMwN52t5IBvoTtO5xrkJfzyjaTaGLyz7jdC046SElmg50mVqX4GM5in+nIEWOfkwOogYANWUp3kFn00XvuqnXdYXtedQfajZOY16nZvVm8lal278jsiYKBwUTcdMjP4ufMC+fxK5nQzaV1dyxdOx9+eFVSJEroZES81B6+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=lUNzcnOe; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="vCIdrZOX"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="lUNzcnOe"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=Ugmz9XEK1aHJ48et251gx7959TULBGUCHT0e+RTmo4M=; b=vCIdrZOXYYHpdsOHeBiYOdNfKV
-	8jxeQnBF08R4Tr+lpZ8S1kmFrB1G0+CT7cfc3ZGis/gVWnFElTr8d/g7pdyKRAdbEUjwJ+UudlhT7
-	nd1IHGzbPieSyulWpm3G/jKOkkWmECewe71xduKUcFZJjVJGb9ORmCIfrl75e+4lQ+ik=;
+	bh=tjxK9kQvrnV25eSapXgxCTW+fRl1m+DJpHF40IT8DfY=; b=lUNzcnOeQJl4W1WzPemTmW4SO3
+	Zyvu1uRttj+In636N/PitX6KuziY+XSV5syIGnpoSqCWL3sUHr8gx8WSTgmu/oufKMHUDQY5JUfNx
+	ZS0/VpzYfdRNlqU1CRB9vfaf+IAYya8MQBmwrxnpO83myGv0Fh5/gePcl93hkch2oook=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1wV74u-0062YC-Fn; Thu, 04 Jun 2026 14:21:40 +0200
-Date: Thu, 4 Jun 2026 14:21:40 +0200
+	id 1wV7Au-0062b9-U3; Thu, 04 Jun 2026 14:27:52 +0200
+Date: Thu, 4 Jun 2026 14:27:52 +0200
 From: Andrew Lunn <andrew@lunn.ch>
-To: javen <javen_xu@realsil.com.cn>
-Cc: hkallweit1@gmail.com, linux@armlinux.org.uk, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	freddy_gu@realsil.com.cn, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, daniel@makrotopia.org,
-	vladimir.oltean@nxp.com
-Subject: Re: [PATCH net-next v2 1/4] net: phy: c45: add
- genphy_c45_soft_reset()
-Message-ID: <c9d4621d-c628-4fe3-b437-7e23d96c69c8@lunn.ch>
+To: Nicolai Buchwitz <nb@tipi-net.de>
+Cc: javen <javen_xu@realsil.com.cn>, hkallweit1@gmail.com,
+	linux@armlinux.org.uk, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, freddy_gu@realsil.com.cn,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	daniel@makrotopia.org, vladimir.oltean@nxp.com
+Subject: Re: [PATCH net-next v2 2/4] net: phy: c45: add
+ genphy_c45_config_master_slave()
+Message-ID: <8e1017e5-0baf-4dd2-9e9e-00733284b5a2@lunn.ch>
 References: <20260604074209.93-1-javen_xu@realsil.com.cn>
- <20260604074209.93-2-javen_xu@realsil.com.cn>
+ <20260604074209.93-3-javen_xu@realsil.com.cn>
+ <521e53fe8f22eb938ea7b9073516378f@tipi-net.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,17 +49,56 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260604074209.93-2-javen_xu@realsil.com.cn>
+In-Reply-To: <521e53fe8f22eb938ea7b9073516378f@tipi-net.de>
 
-On Thu, Jun 04, 2026 at 03:42:06PM +0800, javen wrote:
-> From: Javen Xu <javen_xu@realsil.com.cn>
+> > +/**
+> > + * genphy_c45_config_master_slave - Configure Master/Slave setting for
+> > C45 PHYs
+> > + * @phydev: target phy_device struct
+> > + *
+> > + * Description: Configures the Master/Slave manual setting in the
+> > + * 10GBASE-T control register (MMD 7, Register 0x0020) according to
+> > + * IEEE 802.3 standards.
+> > + */
 > 
-> Add a generic Clause 45 software reset helper. The helper sets the reset
-> bit in the PMA/PMD control register and waits until the bit is cleared by
-> hardware.
+> Please document the return value (0 = unchanged, 1 = changed, <0 errno),
+> like
+> it is done for genphy_c45_an_config_aneg().
 > 
-> Signed-off-by: Javen Xu <javen_xu@realsil.com.cn>
+> > +int genphy_c45_config_master_slave(struct phy_device *phydev)
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+We already have genphy_c45_pma_baset1_setup_master_slave(). This new
+function does the same thing, but not for T1 PHYs. It probably should
+use a similar name.
+
+> > +{
+> > +	u16 val = 0;
+> > +
+> > +	switch (phydev->master_slave_set) {
+> > +	case MASTER_SLAVE_CFG_MASTER_FORCE:
+> > +		val = MDIO_AN_10GBT_CTRL_MS_ENABLE | MDIO_AN_10GBT_CTRL_MS_VALUE;
+> > +		break;
+> > +	case MASTER_SLAVE_CFG_SLAVE_FORCE:
+> > +		val = MDIO_AN_10GBT_CTRL_MS_ENABLE;
+> > +		break;
+> > +	case MASTER_SLAVE_CFG_UNKNOWN:
+> > +	case MASTER_SLAVE_CFG_MASTER_PREFERRED:
+> > +	case MASTER_SLAVE_CFG_SLAVE_PREFERRED:
+> > +	default:
+> > +		break;
+> > +	}
+> 
+> Per IEEE 802.3 (45.2.7.10.3), 7.32.13 (port type) is a copy of 9.10 /
+> CTL1000_PREFER_MASTER, like it is done in c22's genphy_setup_master_slave().
+> 
+> So set it for MASTER_PREFERRED, clear it for SLAVE_PREFERRED and leave
+> UNKNOWN/UNSUPPORTED
+> untouched (return 0). Use -EOPNOTSUPP only for default.
+
+Agreed, making it the same as
+genphy_c45_pma_baset1_setup_master_slave().
 
     Andrew
+
+---
+pw-bot: cr
