@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 562E4343890;
-	Thu,  4 Jun 2026 02:20:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C4E5340403;
+	Thu,  4 Jun 2026 02:20:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780539622; cv=none; b=Wh4k0Jo1sYpxuMou5+awQy+mnC1weRBfw4oKSTE/aldYtVPnPYrgW1Pog/8D3sB7IwA3Rh9RXAqoVlQoRMXpaINWTlnqPvNasC7TqFKofgAEBJBAtDHVzeldO2pkT4L6qPR3lhPc9NPWX4NNugOqjTxj4Pyj4djuC3oYtYiPZxQ=
+	t=1780539627; cv=none; b=adlvmw4sdBTBq8zrWZDuyyUMybOxv7Fa17L+f4g8uTzOfu72lbBXgyARitUl8RijnkaG/kDfO856uMBDZSpg9kpGRaec4WMwiPWcpMNdAIMo0MrV9cf+8E1K1YdpeYrhF12lqiekzJba70jke+KG4ludQBSNFWLDjAvAz3v7efU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780539622; c=relaxed/simple;
-	bh=nt/HwTmCow5dv42xI1a8K/9JYxpd7JpspAR656fkpH4=;
+	s=arc-20240116; t=1780539627; c=relaxed/simple;
+	bh=BrhQ4zzSYteaEhdryH2jtQO/CNs/SF3YtlYjUHXvR+w=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=a5o5if479E56zSSmzbb/SHr2BYUhDJyTjXfLp8LJLtFappY+VRWuq5ARZRd79fB3tWCpuKlpZODw/0WSzBoVcUjklBNlTMooLbA3cldfHaS3cT7KFnsnF/KjZ1MTVKBaamFPWgqIOYW+DaIYPjYPn5jd1NhSoc1HAvpIv0D/J+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mUA9/UHC; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=CvkUjYaFjdQp4WRnu6qhuO23GtLYEtAXmC8Q3bHK6y0vCYk6nW2T9LIPtFXfOVmatv/Pp23V55EjOw1YwLt9bSeIbEm2kg/54Tb7BCOzg4TPmFLkofZHQR2mWQq7DSXtprFYdm3/u/DUP5+2QOktIZB1UW02StoNTNQjwiiN2Nk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RJQVc6QJ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mUA9/UHC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD4481F00893;
-	Thu,  4 Jun 2026 02:20:18 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RJQVc6QJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7022F1F00893;
+	Thu,  4 Jun 2026 02:20:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780539618;
-	bh=+hmXS4U34AH1Xpy67XuolNkGjHnQ6n/VI1Ap1gmPo7Q=;
+	s=k20260515; t=1780539624;
+	bh=P5d3Eer+YEY0uHzVRb55+j5QfptcaIiirxQbjtmwGT0=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=mUA9/UHCljUdNiLjLXa76IH79eZrU1iCCE+mzL/pQElQNZCPIRwGxrHfuNNkgcaXj
-	 Iwgf9/h9SGC8hO+g3MWxbyzpyRm7EwH2iWsoEAGLzKIv+89yUoxc+Iw3fEkTbvw5Dp
-	 abE6HWo/ZKixWBAEOXOdwyHR2zuPwhQ22P++29MOQrQcjdXnfS09cJdrq7C/ptsMMt
-	 KCjHWPGtW10/j3/o67huJBOPGW6w6PV34R8eVoafQBPavyWk/YGuJLDvZfx4x0R0/W
-	 9RyZbGIgcWNJ4cUAHGy6oeMkUesXf0l4F6TwcGWZXKF16UW56CRp6EYLzwMreDJeds
-	 5WD04Q8OiPm8A==
+	b=RJQVc6QJNbjAQr8K1j3phO3EB0DPrcAWz1gmUyNLTcG21Hi2PR8tXs/Lqtf2OGUWM
+	 bSz5kgueRMDHgH/ik3aOghy/RjMBJX12UUj41cmxll+BtKvFbQomTZmXVXxNZfSkDo
+	 Am4/kgo7XGpnZRktiGGRypDVkYPzuItPmEGhxzzmnIlsY/hC8TFm6d1KG4c8UnnhL0
+	 0Wf1P7CnQp6MCalimCPyxgLuvk6O/eFZ1CAh2vCO4SJ4J8c0dgvQ/i+SnWWP1522bR
+	 JaPFXvRoWxjFjq3vUcwimaWlEGdzT5ERIW6O2+IcJV213Pq3yBZHQLzUO8LRZdEnsY
+	 SGXJDYnMKj4QA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 199E439308E1;
-	Thu,  4 Jun 2026 02:20:21 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0A8739308E1;
+	Thu,  4 Jun 2026 02:20:26 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,34 +37,37 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [GIT PULL] wireless-2026-06-03
+Subject: Re: [PATCH net] net: ibm: emac: fix unchecked platform_get_irq return
+ value
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178053961964.2207566.7336189080547624467.git-patchwork-notify@kernel.org>
-Date: Thu, 04 Jun 2026 02:20:19 +0000
-References: <20260603113208.171874-3-johannes@sipsolutions.net>
-In-Reply-To: <20260603113208.171874-3-johannes@sipsolutions.net>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: netdev@vger.kernel.org, linux-wireless@vger.kernel.org
+ <178053962538.2207566.17063343584858473413.git-patchwork-notify@kernel.org>
+Date: Thu, 04 Jun 2026 02:20:25 +0000
+References: <20260601040201.103481-1-rosenp@gmail.com>
+In-Reply-To: <20260601040201.103481-1-rosenp@gmail.com>
+To: Rosen Penev <rosenp@gmail.com>
+Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, sln@onemain.com,
+ horms@kernel.org, linux-kernel@vger.kernel.org
 
 Hello:
 
-This pull request was applied to netdev/net.git (main)
+This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Wed,  3 Jun 2026 13:31:24 +0200 you wrote:
-> Hi,
-> 
-> And yet more things ... I'm going to defer a number of driver
-> things to wireless-next though, e.g. a PCIe device IRQ race.
-> 
-> Please pull and let us know if there's any problem.
+On Sun, 31 May 2026 21:02:00 -0700 you wrote:
+> platform_get_irq() returns a negative errno on failure.
+> Commit a598f66d9169 replaced irq_of_parse_and_map() (which returns 0
+> on failure) with platform_get_irq() but dropped the error check.
+> Without it, a negative IRQ number is passed to devm_request_irq(),
+> which fails with -EINVAL instead of propagating the real error
+> from platform_get_irq().
 > 
 > [...]
 
 Here is the summary with links:
-  - [GIT,PULL] wireless-2026-06-03
-    https://git.kernel.org/netdev/net/c/ac056099822e
+  - [net] net: ibm: emac: fix unchecked platform_get_irq return value
+    https://git.kernel.org/netdev/net-next/c/1681cb1bde05
 
 You are awesome, thank you!
 -- 
