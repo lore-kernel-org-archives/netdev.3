@@ -1,85 +1,85 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4733405C52
-	for <netdev@vger.kernel.org>; Thu,  4 Jun 2026 10:55:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A79C409602
+	for <netdev@vger.kernel.org>; Thu,  4 Jun 2026 11:07:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780570562; cv=none; b=hQ3I78KaZBBDsHGE0F1NetaLUhRa5rQX+8wKQkT1lbrXZ53gufink2U1Gk1Bb4vc/R0rByP46Exj3gZTgoYkG7lXgrdBUnOP8WcuSRbrdusj7piD3BTJnAozGW8b/7qVDAJnLcnOB3wm9YUXjTGRPE5cOYM5jxlU4C23hX5gWcs=
+	t=1780571243; cv=none; b=H9Almf9UHDvODZU+fRWMXJUK3LHhaMVKhkInTnNoo+U1RIAAiPNFBPWTGfTewFqqL4MS0oCsLX+e+sfdXM3VP0O7Mt2LllbsuYPNe8H/S8vCzJd22gFRHNwfhpWzxX6vmFFSPXt3f3wBZjZWSaYXg73lRAvqsrAaXre5GXTpZjE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780570562; c=relaxed/simple;
-	bh=7PDVjOFFBvB62jh1T+5fxxeccqZf3wobQfN0ejWBl+k=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OtGyBAt034B5qn7eJOpE+lKrhkdRQ0CIQ3x83Tk2TtwAhY+98c7LOnWQjFBvo/NcEq1NWc85VVLY1aasOMpyhEb+zVcP2C6nVHi88GE4cEvO6LnpLfO3dQOHhJ9BDTaCt774VNeZ7M56vMpb/9Ac0P270eRNXk00jwMjM6vImkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=I4cyXq2j; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=MI9EvFI5; arc=none smtp.client-ip=170.10.133.124
+	s=arc-20240116; t=1780571243; c=relaxed/simple;
+	bh=tBgp5vRQFOl7a8nBW4mepV+LziDESM9zSsnbBm6iXLQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:Cc:
+	 In-Reply-To:Content-Type; b=XY6jWsZfbNXhfuZbIBEyAgWIufkvBQf3dOFSDV5PWdKdSkPDB666jFixoHReBxLdkO/PDMPcMtpFZMDn01NIvll3hPNbUPRifYvFxiBjm+RyWr+AQBJpkkAnU+eKmlY+RAgveS1RI0HXsn5sxEYmrTeBDQZ4RNbEi8SO541+7Ps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=X6bP4QGV; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=jtejQYAR; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="I4cyXq2j";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="MI9EvFI5"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="X6bP4QGV";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="jtejQYAR"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1780570558;
+	s=mimecast20190719; t=1780571241;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=7wklQVRsViMBNiTmJy4yFl6j2hWwlYVgd/9iVl7uSjw=;
-	b=I4cyXq2j1MXxWa4MHZi8HHFkB55NiitQqhTwRK5EjBbkwwV6XqzEMuAI298hIw7j+IeA4D
-	xN0CLLEqM1DAo4dX8xFUoRN5kgi0UEhnlkfDiaMvxJ9aIBukniBT0HuoFAYmpX/JfxOjOV
-	Szye3FORi5arkASpFok5Fj+jXOr/Bgk=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=AK5uzOYSCwraOmBHC9lcOGmnhT5oZxWafdDkYZzfB28=;
+	b=X6bP4QGVYNF7Z76bUUhOHAM+6QBR7zmKQSSUw5rFMuRSlcSq5jETZK/Lvv7fhAmXnFsp5f
+	Y59HFebyO1ma4M8GwOYFBU/duTqEzlkcWc8crF947Je0CIBdcoN3uo4+wwtoSjAPNFx3sy
+	uP6A9cU7xGABRrZTsflPCWSAkp8zYuI=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-352-G3FWmn1oOaSJ8JxYxkEDnA-1; Thu, 04 Jun 2026 06:55:56 -0400
-X-MC-Unique: G3FWmn1oOaSJ8JxYxkEDnA-1
-X-Mimecast-MFC-AGG-ID: G3FWmn1oOaSJ8JxYxkEDnA_1780570552
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-45ef5e38a18so287070f8f.1
-        for <netdev@vger.kernel.org>; Thu, 04 Jun 2026 03:55:56 -0700 (PDT)
+ us-mta-205-NLfunxI_NAm2Zq6UTsgV1g-1; Thu, 04 Jun 2026 07:07:19 -0400
+X-MC-Unique: NLfunxI_NAm2Zq6UTsgV1g-1
+X-Mimecast-MFC-AGG-ID: NLfunxI_NAm2Zq6UTsgV1g_1780571239
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-45eef10d5ebso301549f8f.0
+        for <netdev@vger.kernel.org>; Thu, 04 Jun 2026 04:07:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1780570552; x=1781175352; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=7wklQVRsViMBNiTmJy4yFl6j2hWwlYVgd/9iVl7uSjw=;
-        b=MI9EvFI5CC492CNU1fnOZp0eV9EwEJ3muBcXeBfSLBLuG7XJFSapj1Za9v8hw6SiVZ
-         bFoTynRh2bExwPgVOiOic52NPaeBITTOJsOJs9F+T0mSuI5LYPAbetIBCcAcXyZHlTYE
-         2iM6zJwUYnPVOPtRnx2w1afksrn1P/NAe70hyHoEml68K5ap0j1aObZHaje9LViTQq/h
-         Gcb8UeA2YppKS+vRg8w2PGfVmwwSSk4vbpZ3z03JquRN2rl/yeYZFjVSknUajYrdMGrh
-         8PJzYqfbYcT6ZgbajW2ChvKV9os/h2XAvI/6hbLR9DGIJW4m0pYsz1nbO0VklJoDAxfN
-         3UQg==
+        d=redhat.com; s=google; t=1780571238; x=1781176038; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:cc:content-language:from
+         :references:to:subject:user-agent:mime-version:date:message-id:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=AK5uzOYSCwraOmBHC9lcOGmnhT5oZxWafdDkYZzfB28=;
+        b=jtejQYARh1ZcFlts6Ajztfi8j+ryKKybSzck+arZ2zAuD/r7nOW7gRvEO7CgSjwPKk
+         DRICOVnk+HWp5DKKCLYjjt28QickP2QiDbHa6JyCMtCQ5GbgBOZArWsP6VFgZgVKXuwJ
+         1vYRsrnl7PnULiz8sR6uIL49+SjShD4BJ+i90goi1bNHjm4fJg7RcAygjO6ZyYjmSR/D
+         kJ3QTWbuMGPPQCESUjRQ/8nOdYDRPHlLz983GUTcb1R5OHIVjLGtndmmPaDnzmOZk0gq
+         zLC+9F2tAShB6NYWrxjpBmXXm6amk0zIed6BCHSlI+5n0TR9bWyTvzQlaEfuStqj8uH/
+         a7NA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780570552; x=1781175352;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20251104; t=1780571238; x=1781176038;
+        h=content-transfer-encoding:in-reply-to:cc:content-language:from
+         :references:to:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=7wklQVRsViMBNiTmJy4yFl6j2hWwlYVgd/9iVl7uSjw=;
-        b=VGQiKXzNsqegHeloAK1Ct61hm9SJLKT3hXcMvYCJZh7bGjOb0RLQ1e+D0VIH7kP6Jc
-         DJ2cAkByx2iMlEDuUncOwS1ph33soBA76WYzPvmYfr4qb/YGHMPODmQcsl1RAtUPxGo5
-         BwuTUtYcRlCs5pUyBXe4pNuCYdsvdAY5GqpdgRroDOgzJsiwXVYwTLYHrL7Em8ShUT03
-         ZTGG/JdTZs/qBz6XYCV1fewCY6AV0ThP9NIAPpV8QBMSjDruAoJSpQ0h2zYCdCmJ8Bma
-         TcHrQxqffq2v7aieMKuJRcJ36MzhfFcLOhX6tegCIdoTZgVbkxkMe+w/t+1YfqrJNHlO
-         D5eg==
-X-Forwarded-Encrypted: i=1; AFNElJ8W3d3pFkz1mRXRG/pmfHkgxQU5TExMBl5KINsg383itZqJyUsluUaXO2Mj2uFua/j+4Q9IXog=@vger.kernel.org
-X-Gm-Message-State: AOJu0YySnRfaG4F4W2G80HQ0Osl60x4gMawPmy3mUC6nS6x9cL3Dto7i
-	jQODg2pA+JjChlvSN0cWEC5kKl3Rjjea7Q1PG/torgEaj/AcfQLlmE7tnGufaGI0zgehxYdnFUL
-	RmV7llTMk7tsX1a4FdBDi9wS3CFfJCaz+8onx0H4xfbdNTLR1GEsjfkdNhQ==
-X-Gm-Gg: Acq92OHPQkS1EJ1DQCkW0wNEJdRRU+OzdOLaPf/a2KDtlVmH3tRaCw683AaWL6HqfPl
-	KxwAZPxI67eASX7f3Wz8tjmDlr7Mse2v+XC8BJkxQah344+3Ln47vKafj0YcTaxxvIQX7gpepLM
-	b/JETyb3ZFqwjgkUj70wT/15JT5lF0jA0kUOKEhVrJL4CbT2wLvOxhCFcLbR2BdrFURlGyDXFWE
-	Zs8MWbB25UgN7ergyQWZbHpMnA5lj5AZ5boVoUXLQMRnk2Q1zvE1wRSK3ax1qKmuiXHdPnAEtWu
-	qz+mAfmM7/2GiJv3quAOvSXoLm6bvPdebpCbRt6UeO5hLS6TZzWcNvmY90Y1oz9Igh1BH70EjmC
-	MPFO7GmoleJcRAzQ52HYil24Awu6hk3FOlYwnkNXamP+753bB9qMjOztLg+3oDi4st7k=
-X-Received: by 2002:adf:fb85:0:b0:45e:fa38:c899 with SMTP id ffacd0b85a97d-46021783cecmr8984905f8f.4.1780570551759;
-        Thu, 04 Jun 2026 03:55:51 -0700 (PDT)
-X-Received: by 2002:adf:fb85:0:b0:45e:fa38:c899 with SMTP id ffacd0b85a97d-46021783cecmr8984861f8f.4.1780570551302;
-        Thu, 04 Jun 2026 03:55:51 -0700 (PDT)
+        bh=AK5uzOYSCwraOmBHC9lcOGmnhT5oZxWafdDkYZzfB28=;
+        b=JlMGA18uEPV/TAr0+o0gzYFW+cz2zYeH85hiC2Z9VKtLwACc6X1mVT1UvtMJhUuc/H
+         hoJZpTmv7iYXHNluJ+sPbWd3VvpaFocz78HlfpdQT2+DF4i1wE1jJr3d09cm/fnTdgDC
+         /yWAGyIclGbOac6mc9uW+Y0pbU2DcNvz6PzAS01HPngXNykNXss7JSxk10ZyAdIR6dAb
+         OwgpFSC/HeWBdJWrYirT7cngRSNd1NGwco3+d47VtJMZF9MEmPC16DOsoxahrWZqZe4B
+         nZqjhcy9S/2B0qRfg+/jexPKXHyZHTDocS9NkVjF3GfmmPB1YT7FcKDAEyxtPbe+rzOB
+         JZAg==
+X-Forwarded-Encrypted: i=1; AFNElJ+9+Ey9YTbvjUqyoPg5H8NPWfr1GaIDXvhJ/lsPeEBa4ZB0U9C8nKcNTiXS86CBgrBY5b908H0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwitaAnGziqKYjfyIReqM0ANryYxSVcBsX3W1ic+qxb2QJsca/r
+	UKPbDvSbwDCFYSL4BCS0MxBDC1k71i7H+KEeERsmfLY0vlrLF2tG5hLP9hQR6U31nzT9KeqhTLY
+	p8Z1Zq9ZBL1mNsuNCjiZqWPXeK6UdZiDMJw6oL6Z7VuqRmVQzKfi2bh3cuA==
+X-Gm-Gg: Acq92OHjcDZ861DEGNL5DqOgUSg0cVEwL9jX7LtAUe1TGe2M/PN78sqPDBQ03P1s5Wq
+	6mmLKRl4XOLzscKiL+2xodxLhKP+bQ71XvNGnNKFIvS7MR9DgEPRvX1z7XSFgqgCxxv94MIxrcd
+	yWrmKYthk70+rR02EzEGanFzWaF//XOlBs5tCrqUQ8lX0sZ6KIz+zqkghp94I9MUanC/yA3g2+D
+	7PblMIZ5DvwX1WvtU/qNLIZ3qdX/apRtVOti/pHgCoNsFXB9/lBavYUwhtGNZPyJZ9syntdDVPj
+	RO7mUUt2brnRF4xzSojuJdLf6AysHjGLdUFVlUkWFyu8DwvR2bPMKlcOkwK0U9IZgGjxrH2c9j9
+	wnkSWlRlfASRPq35RG23j0KWKpcbUmQ8crKnsRYBAf//Br+HrTPPUTxPBR0hLdTH2i+8=
+X-Received: by 2002:a5d:640e:0:b0:43c:fc5c:a9fe with SMTP id ffacd0b85a97d-4602182bbe9mr8255849f8f.20.1780571238600;
+        Thu, 04 Jun 2026 04:07:18 -0700 (PDT)
+X-Received: by 2002:a5d:640e:0:b0:43c:fc5c:a9fe with SMTP id ffacd0b85a97d-4602182bbe9mr8255812f8f.20.1780571238218;
+        Thu, 04 Jun 2026 04:07:18 -0700 (PDT)
 Received: from [192.168.88.32] ([212.105.155.59])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4601f3529e0sm15330789f8f.28.2026.06.04.03.55.50
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4601f3529e0sm15396808f8f.28.2026.06.04.04.07.17
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 04 Jun 2026 03:55:50 -0700 (PDT)
-Message-ID: <b6182472-503c-43e9-a850-87cd40f86aa8@redhat.com>
-Date: Thu, 4 Jun 2026 12:55:49 +0200
+        Thu, 04 Jun 2026 04:07:17 -0700 (PDT)
+Message-ID: <16b81f1a-ae24-4a05-a348-0259f8935378@redhat.com>
+Date: Thu, 4 Jun 2026 13:07:16 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -87,60 +87,35 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] vhost/net: complete zerocopy ubufs only once
-To: Qing Ming <a0yami@mailbox.org>, "Michael S. Tsirkin" <mst@redhat.com>,
- Jason Wang <jasowang@redhat.com>
-Cc: =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>,
- Shirley <xma@us.ibm.com>, "David S. Miller" <davem@davemloft.net>,
- kvm@vger.kernel.org, virtualization@lists.linux.dev, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260601104300.197210-1-a0yami@mailbox.org>
+Subject: Re: [PATCH net 3/3] net: phy: as21xxx: force C45 OPs for AUTONEG
+To: Christian Marangi <ansuelsmth@gmail.com>
+References: <20260601105342.28865-1-ansuelsmth@gmail.com>
+ <20260601105342.28865-3-ansuelsmth@gmail.com>
 From: Paolo Abeni <pabeni@redhat.com>
 Content-Language: en-US
-In-Reply-To: <20260601104300.197210-1-a0yami@mailbox.org>
+Cc: Russell King <linux@armlinux.org.uk>,
+ "David S. Miller" <davem@davemloft.net>,
+ Heiner Kallweit <hkallweit1@gmail.com>, Andrew Lunn <andrew@lunn.ch>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+In-Reply-To: <20260601105342.28865-3-ansuelsmth@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 6/1/26 12:43 PM, Qing Ming wrote:
-> vhost-net initializes one ubuf_info per outstanding zerocopy TX
-> descriptor and hands it to the backend socket.  The networking stack may
-> then clone a zerocopy skb before all skb references are released.  For
-> example, batman-adv fragmentation reaches skb_split(), which calls
-> skb_zerocopy_clone() and increments the same ubuf_info refcount.
+On 6/1/26 12:53 PM, Christian Marangi wrote:
+> With further testing with 2.5G NIC, it was discovered that the PHY
+> require the C45 OPs to configure and restart ANEG or speed higher than
+> 1G doesn't function correctly.
 > 
-> vhost_zerocopy_complete() currently treats every ubuf callback as a
-> completed vhost descriptor.  It dereferences ubuf->ctx, writes the
-> descriptor completion state, and drops the vhost_net_ubuf_ref even when
-> the callback only releases a cloned skb reference.  A backend reset can
-> therefore wait for and free the vhost_net_ubuf_ref while another cloned
-> skb still carries the same ubuf_info.  A later completion then
-> dereferences the freed ubufs pointer.
+> To force C45 OPs with generic PHY function, clear the C22 bit from
+> devices_in_package bitmask.
 > 
-> KASAN reports the stale completion as:
-> 
->   BUG: KASAN: slab-use-after-free in vhost_zerocopy_complete+0x1d7/0x1f0
->   BUG: KASAN: slab-use-after-free in vhost_zerocopy_complete+0x101/0x1f0
->   vhost_zerocopy_complete
->   skb_copy_ubufs
->   __dev_forward_skb2
->   veth_xmit
-> 
-> The freed object was allocated from vhost_net_ioctl() while setting the
-> backend and freed through kfree_rcu()/kvfree_rcu_bulk after backend
-> removal, while delayed skb completion still reached
-> vhost_zerocopy_complete().
-> 
-> Honor the generic ubuf_info refcount before touching vhost state, and run
-> the vhost descriptor completion only for the final ubuf reference.  This
-> matches the msg_zerocopy_complete() ownership rule for cloned zerocopy
-> skbs.
-> 
-> Fixes: bab632d69ee4 ("vhost: vhost TX zero-copy support")
-> Signed-off-by: Qing Ming <a0yami@mailbox.org>
+> Fixes: 830877d89edc ("net: phy: Add support for Aeonsemi AS21xxx PHYs")
+> Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
 
-The patch LGTM.
+Sashiko has a few comments here and on the previous patch:
 
-@Michael: to you want to take it via your tree?
+https://sashiko.dev/#/patchset/20260601105342.28865-1-ansuelsmth%40gmail.com
 
-/P
+could you please double check them?
 
