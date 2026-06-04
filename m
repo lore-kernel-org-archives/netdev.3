@@ -1,63 +1,65 @@
-Received: from mail-qk1-f202.google.com (mail-qk1-f202.google.com [209.85.222.202])
+Received: from mail-yx1-f74.google.com (mail-yx1-f74.google.com [74.125.224.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70398408015
-	for <netdev@vger.kernel.org>; Thu,  4 Jun 2026 14:13:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A2D1472772
+	for <netdev@vger.kernel.org>; Thu,  4 Jun 2026 14:13:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780582427; cv=none; b=pIJOiE2l7tfqBhK+0OAQAaeeU9PayP02vb4ECFTbxRLqAHEz1TKizYgK+FbzwBg+6MsysBnDB1tNg3QRLQq/9UU11nnqBGeicEJbWtlkzW2Bm6HwsiAneWiPjnn+WjyLx4BkFm7dhWxttvysM1aTrXC3SjqLcrf6GRkUaO8uVm0=
+	t=1780582429; cv=none; b=Elo8JlKPpa/v5g1aZ7H+u8+3Z9YjGEf3Jw5YsNtaoYFsWKo/yoyXIA3t0FtjRO6tMf0oV2nGFErDMy5F65YfhpPA6BMaw9MlID+dHdSBSlOw4Lxs52xsRC+2oEYEmeWT7HxwbM7P9zlfQm0Da2XO1b7E5VFyj5vPzVeSZdtRHWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780582427; c=relaxed/simple;
-	bh=BtE/ujvfLBacl0UnHk85GonvAoEPVdXHHA6gPKFwrsA=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=ngms6x8QW+L3j+4JigH7HgRiMZuax/VMikqVGJvge7jrIQk0mp3jOllAZ5iYRV85WB+mceliSSUDpstlwhSWwmbeGmqMNJXio9IaG01yD4nudINC9bnFeeoppGDYz8OKpL9a6HQWSgaRUr7ZUcEjDJsBU6/vgfjTuhhY2GtI/9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=egNiAFhK; arc=none smtp.client-ip=209.85.222.202
+	s=arc-20240116; t=1780582429; c=relaxed/simple;
+	bh=ll1d6D/mCvvNOaZJ2ZWt1HhXCi/uNGg//rlXeO7ijV0=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=V1gyQ83byWCXrLU0LRdsxz5qeVUdYFBXvN+UaMnIz4VI3ZnQchypA2XIOzdMnIvW1rB/3mBnfoSBCIaTj2pqTnkdFJI/8xIplquvPDAmijfQHnpaRjoz0j4doLrOLqwxELejyQUNoEHUz1wPAZNWJig2//lC+YmoTg0Jpl8Rojo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=azdgDWMF; arc=none smtp.client-ip=74.125.224.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="egNiAFhK"
-Received: by mail-qk1-f202.google.com with SMTP id af79cd13be357-91598ab3a1aso127223285a.3
-        for <netdev@vger.kernel.org>; Thu, 04 Jun 2026 07:13:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="azdgDWMF"
+Received: by mail-yx1-f74.google.com with SMTP id 956f58d0204a3-66043ac620fso1417244d50.3
+        for <netdev@vger.kernel.org>; Thu, 04 Jun 2026 07:13:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780582425; x=1781187225; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=aR4m/EW+SbkO71LxXWUeB9WXm0o2d3NjFbxvkptMB5U=;
-        b=egNiAFhKEr4k38MYTXfXchEZFtHyHrsWDhhYEkVyZSbHh1gfdC6HpgZbtPq1n8Rw0F
-         cRbG4IlgLUS+r4+ANYiKDT/D4DeaHVevAEr1bxWdZl9AASBXiixjUPFL4tC+uZ1+Vyy8
-         r+vpla/ItiNarhqpK1tzMvQcBb9gOA+czNOeErgbkX7KVEo6Xmr9X2ogTKjut3E4qVJe
-         Q9TpyhjvfG7i2V4+NOjtsN7pqvTLNjhlTAhmniqGxTaEU4R/QztKo9xjxQhll0GvxG9p
-         WuaI3am/+CYER/VCIGhzUi3KbTxT6YIZDBfdoWW1WyIBxzUcvM/JBKRyLGp7hu6IDwmw
-         /Wvg==
+        d=google.com; s=20251104; t=1780582427; x=1781187227; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=aveLMHlnviqtytDsiSdbRJSwTX2GOpu8oXn6tzESZ2o=;
+        b=azdgDWMFeTGglODFO7+4gkEKacghbhYeMxhhE9KvYnu7g771y2tzRvW2IFdDSa9fVF
+         ATPJsojfXOetlZyAbZ7rAFckAj6Cw1IdfvGvmRSnFgfsqig9h8Y5GOrhR8E7zM3vEIzI
+         gTAo6WlTqmjQJf191tmGqMSfj5pRF7yn9hweHqa/BE3wXbnrjNvDjrI9VPYQjzQdFrju
+         FMgU9mqBncMXPBXV82bhTgyLrZNzzExko2YsJtPttQ+JIZDLYFKYZWabJtnCvEl/gr/y
+         Px60RDeKbEme822JlaKIp1434RM0JCjaboXSi57cmrsKk3WvK1eVw7fLt+1+n/g4aFfd
+         iMeA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780582425; x=1781187225;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=aR4m/EW+SbkO71LxXWUeB9WXm0o2d3NjFbxvkptMB5U=;
-        b=M92oVakpnJoy44ZioxDpozVg4pz8zl3ZfX/yh+xmcjeC9eMFKMVh57QBtzIzGPUa0k
-         sEWymPSk7a+BXHW05KJWkeIgRee4k6I/5aZuj8FANaxhsx39Rd/59rm5TvltG8b+eVqW
-         2psPM5H7PVjzQXNqm+Sz+PXHUSIHptQtzrjUYeY0lFZDIdXe0cABjDIXn3KcihuIjq86
-         DuVsRt2o9cviWZNoOTc8n4QwNyTxTBzRESlAa//CcOzhHMPqics1Dy4HhboOWkM69TS9
-         mbezC9frTJvrL9QC4bxHBVZ9klOY8TlUiBx2v+HYcrlm948hXr7G0/oBk3Ig0JNvaJx/
-         qdaA==
-X-Forwarded-Encrypted: i=1; AFNElJ9JOsw0m8bUQh3olV9XJBvFsFfFhOtQpockRA/UKi6VqZMFSAnAmIALluvvP492cYiBOudOzSM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyiIids8EIofZK/c+6FLrf21FtHCO1e6XmdiyKAj3Iygr7LUA2l
-	0ChsKt4LWl7Uc9nt9OtEjEoHqUcT6T7xGm8RroHOvQ1mM4F/PtVIhdKQ++rJboM3bVaNNtim0x9
-	pgXVnW+CEdeIFgQ==
-X-Received: from qkbde6.prod.google.com ([2002:a05:620a:3706:b0:912:add7:777d])
+        d=1e100.net; s=20251104; t=1780582427; x=1781187227;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=aveLMHlnviqtytDsiSdbRJSwTX2GOpu8oXn6tzESZ2o=;
+        b=IvVAQzOk8QMyFJwubnoxkiDtIBTe4wdbb0YDnyNY+X0mEeEctaIpHcc5TFWhq8loBJ
+         XT8FWii4TYeX/aSSqqrRIA1fdgdYTbrTZLKcdEeEJ/wGqLjTnn30Dx747Gwa4m5K2O0x
+         DvKcVZstd3jPKypqZ/siDSggV6E6WtzFeWUY8rg+TKL7q8P/qVR5tx217y+xyxyJFNBL
+         qpqwygsKvmLaebHjm4OQ58srzQ797vjpUEZglR8qTB78CbazsoVcZkW/m3YK3OugNlgC
+         //3g9toIAf+KlrFbHBsiLML9obmR1DUfRYozdmEktLVmoCGlH+ug7vrBpTL3xVdvtdYk
+         g9Dw==
+X-Forwarded-Encrypted: i=1; AFNElJ+VvjU8/0OFXvwkg7eHPMxHyEFciVMoZ4dUp1FdYsIaBOXRejc+Kx9WTVrd+gAzw2k7YnJW5Hg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzJ3my39AwUAS3K8wWxKOOOwiXpiAxiWLIux4QIXRSwf9NbkIu/
+	Yd5UkdjgcNwiEjhTDLYZ0fiGs1ny1WLDwYC6JvpYTMV7JCr4sCiRktYrT4zLEdjzH8gULqjEKAr
+	ny2LOrvKi+rSF3A==
+X-Received: from qtbki14.prod.google.com ([2002:a05:622a:770e:b0:517:82a8:c7a5])
  (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:620a:3199:b0:915:86c6:8432 with SMTP id af79cd13be357-9158a6979f0mr1339024185a.14.1780582424839;
- Thu, 04 Jun 2026 07:13:44 -0700 (PDT)
-Date: Thu,  4 Jun 2026 14:13:32 +0000
+ 2002:a05:690e:1288:b0:651:cf29:430b with SMTP id 956f58d0204a3-660df4810acmr7057208d50.12.1780582426617;
+ Thu, 04 Jun 2026 07:13:46 -0700 (PDT)
+Date: Thu,  4 Jun 2026 14:13:33 +0000
+In-Reply-To: <20260604141343.2124500-1-edumazet@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
+References: <20260604141343.2124500-1-edumazet@google.com>
 X-Mailer: git-send-email 2.54.0.1032.g2f8565e1d1-goog
-Message-ID: <20260604141343.2124500-1-edumazet@google.com>
-Subject: [PATCH v3 net-next 00/11] bridge: prepare lockless
- br_port_fill_attrs() (I)
+Message-ID: <20260604141343.2124500-2-edumazet@google.com>
+Subject: [PATCH v3 net-next 01/11] bridge: add a READ_ONCE() in br_timer_value()
 From: Eric Dumazet <edumazet@google.com>
 To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
 	Paolo Abeni <pabeni@redhat.com>
@@ -66,46 +68,27 @@ Cc: Simon Horman <horms@kernel.org>, Nikolay Aleksandrov <razor@blackwall.org>,
 	Eric Dumazet <edumazet@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-medium-term goal is to allow "ip link show" dump commands to run without RTNL.
+br_timer_value() can be called locklessly, the expires field
+could be changed concurrently.
 
-This round of patches adds/fixes some lockess accesses in bridge.
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+---
+ net/bridge/br_stp_timer.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-This is not complete, more patches will come later.
-
-Ultimately all changes to p->flags should use set_bit()/clear_bit().
-
-I repeat (AI agents might read this cover ?):
-
-Many p->flags accesses are racy, and will hopefully be fixed in a
-future series.
-
-v3: addressed Ido's feedback again (patch 6), silly me.
-v2: addressed Ido's feedback (patches 5 & 6).
-
-Eric Dumazet (11):
-  bridge: add a READ_ONCE() in br_timer_value()
-  bridge: add bridge_flags_bit enum
-  bridge: use BR_PROMISC_BIT
-  bridge: use BR_ADMIN_COST_BIT
-  bridge: provide lockless access to p->path_cost
-  bridge: provide lockless access to p->designated_cost
-  bridge: provide lockless access to p->designated_port
-  bridge: provide lockless access to p->priority
-  bridge: provide lockless access to p->port_id
-  bridge: provide lockless access to p->config_pending
-  bridge: read p->flags once in br_port_fill_attrs()
-
- include/linux/if_bridge.h | 78 ++++++++++++++++++++++++++-------------
- net/bridge/br_if.c        |  8 ++--
- net/bridge/br_ioctl.c     | 10 ++---
- net/bridge/br_netlink.c   | 55 ++++++++++++++-------------
- net/bridge/br_private.h   |  2 +-
- net/bridge/br_stp.c       | 47 ++++++++++++++---------
- net/bridge/br_stp_if.c    | 16 ++++----
- net/bridge/br_stp_timer.c |  2 +-
- net/bridge/br_sysfs_if.c  | 12 +++---
- 9 files changed, 136 insertions(+), 94 deletions(-)
-
+diff --git a/net/bridge/br_stp_timer.c b/net/bridge/br_stp_timer.c
+index e5d453305381baa34225a144ac99e98f2a62d810..83cc9c6a3943508eb94d20ddc1b7e737a58d7abb 100644
+--- a/net/bridge/br_stp_timer.c
++++ b/net/bridge/br_stp_timer.c
+@@ -160,5 +160,5 @@ void br_stp_port_timer_init(struct net_bridge_port *p)
+ unsigned long br_timer_value(const struct timer_list *timer)
+ {
+ 	return timer_pending(timer)
+-		? jiffies_delta_to_clock_t(timer->expires - jiffies) : 0;
++		? jiffies_delta_to_clock_t(READ_ONCE(timer->expires) - jiffies) : 0;
+ }
 -- 
 2.54.0.1032.g2f8565e1d1-goog
 
