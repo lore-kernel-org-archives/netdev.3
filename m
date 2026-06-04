@@ -1,138 +1,122 @@
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55FDF407590
-	for <netdev@vger.kernel.org>; Thu,  4 Jun 2026 11:31:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780572704; cv=none; b=r6tRskTIMPwbqvhNI/DiDcEc1DTxtqvnf7pi9fBwAz0hsbe1I0cy2a63Iw2m3DGbbLx+eJfJC7EZ/IW5QLHMj0jBuO/Yw43uZFAzrAJ/XVpa2nJxPslcACCquG3TgWdpDuQM9cE5AB+eQ2UiiPgK29zdssPLuG/ArwejvcHSmyo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780572704; c=relaxed/simple;
-	bh=LyyIlg3QPX1rQJHGpgzEqbAUkTXPZTiK+PQ73NyhaYc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OJobvaBZ2GulXm1uDLP6Yo1zt+8YaD9lUInfyRQ+lXSRfstBVL6u/6piHKMn/OGeZmst8KHg715edOzpc7CihkdMdosKdE1yyHfv1kqYLvpjqahfgzR8OezBXroommEVw505sXuJvBvdTGgdOtjESInyViRYQtH6mC2887ZKiFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pSR8395E; arc=none smtp.client-ip=209.85.215.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C69A1407597
+	for <netdev@vger.kernel.org>; Thu,  4 Jun 2026 11:35:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.175
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780572955; cv=pass; b=Q+ELRaTtDJBB+S82sWPmIVYYU2KpTBAxos7AIzjkXZ251BkwaQ41Z9jAeWgEew6KQVnkWV2J/ZQnckeRWzFyKKWa0CZAXsIm0s5AbYEJ6BD+OMZ0nR5VAgL9qafdNtTNoop+cdfbbu6oXmHmv3YcXGBW4cNlNLCixMqgMj3gAfE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780572955; c=relaxed/simple;
+	bh=SgU2+O1qVnP93tbbWQNDkNxh2GJU8NRcrJqhzXyf8l0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qyP3zIlkNfPYZ5M0w9FPA/A/52mquuieZBexESH4gH3iLdzvD1xNcium5yiXGV2MKI20z7Nsl0IcV7eKe9F2xBj6TIVrN/CeeUYaA8kpBSJ4oRpFhH8oR/s9eBdfU9uyKV5dOfRwkX2eRnPnnMBMG2iD/VprjD0TYZAs+rq9x4A=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KZD8gqOM; arc=pass smtp.client-ip=209.85.160.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pSR8395E"
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-c85a2c012e5so232842a12.1
-        for <netdev@vger.kernel.org>; Thu, 04 Jun 2026 04:31:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KZD8gqOM"
+Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-5175d339e8bso521221cf.0
+        for <netdev@vger.kernel.org>; Thu, 04 Jun 2026 04:35:54 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780572954; cv=none;
+        d=google.com; s=arc-20240605;
+        b=EoOkTPe7GCViMY4EbA74dO+7zcGfwangWbQCZd5pGbxWxsFDt62pLR3yGmWWzLgnUd
+         Hor6wFvXPU9YsvAyF2du8MhNyTDIlajkx0RcIyBvSP6vvZYfvClLOYQ+N/FDJ6TQni+R
+         +YAMb5WdteZ/fFlefNgAQ3td1U+Ihbkpaqvb7qvmhfj5Xk0kYDtEu+OICpDacdrJruNM
+         sspxBu0pwBIZGPBl80d1i46d+jNP4RR0hDYZGKptEvFrTPv8lh9vJJ09awKfLXpWybDc
+         5vid/sbM7rLrCmD7UOqer0lxTV3A1B5peRPVbeTckQ1muG7lb6DtVxHPrYZqRLIt2i7X
+         qWnQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=yg4x99fBtz+f6aO+UsqxYVWgAGOJf5YpBuFNQpiKhok=;
+        fh=1AqvwXpwljB1e6nnNrr77wUgDtAr6bssWemo3TCf4+I=;
+        b=UXUHvTwLMpo2OrOBAU4LRwe6HSQvkEM0pkVt3D2dKYPa47FJ/AnTFEWwt2k9Nw/gXG
+         vIRSAs2qtrasVqeY68oKc0bCVB4U0i2r7fxKh/pE6t1WbVn8cWrJQF1ZnrsYRuYQOfvq
+         529d0hfZZ1D+zMjk3WFu/Yt//rMdvJfogRiI/oF8Yi0XZ20h6uYNQIX3rUXXWXsuirtl
+         YYp2cE1qGBC22gvfmAgo5kj7jPFklTJThN/V02MFhXbpS2UZrpKSKHfUAK5flSIp1liV
+         IUn4ZKfliXVr0Cc0awWutXuOi2NVQTQvXbrvHQUGYo/LIlFb+Dz/KZDbdpEwuXPqql5+
+         X2Lw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780572702; x=1781177502; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=aWJU4AISHJoKW2jVY+HLmgCpe1wG/GRzkKLWOkBA9NQ=;
-        b=pSR8395EYeg876uScrRj3WexBnuPB3+AmQJttzO2xqjXClIJWFxNcK5EDBg1mmy5K7
-         HxcqDZGkfbgPECLth7Y0RmlQhvoJM3LRJkS6piZOUU99xRikWKe/xfw/l4LmaKixw73R
-         9unVJ/uRhnbI5kLnaVwe2PNIvhHQKWvb+De+++RwLXAlxdllDbCYN4nMGcErDp+DcSEH
-         MNzyYS0YYRdA2NPPHmRxGNbuXTTqNtwg8X9KvIGQHWgCcEPIa7H9mLEZUCveiQZ24apR
-         QV69GuwFDgEkuwFCKZIEy5RzeHfZWw9oz+8xSnuX0Q+vq1P/SwteIrHXQDRY92pvPNRL
-         MA4Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780572702; x=1781177502;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=google.com; s=20251104; t=1780572954; x=1781177754; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=aWJU4AISHJoKW2jVY+HLmgCpe1wG/GRzkKLWOkBA9NQ=;
-        b=Vbx2t49mOpJsbNL9b+XHj3Q8yzOu6pvcSlAJIHSqJJ6qmu9JPiul83bRq2LE7VszvE
-         QXcMpiT+OOHbaqy58Mnbipkk715Tf20yqnJyy5pC8TDEnoq6VExaT9WPykrFfA2P6eGx
-         TovY2gV/uGi/BRBADrgfOmATQCZ+0hwssBGDYTeIpkT+iNRjEv0gBLpLKeQTElXfODZV
-         dycZhhRkSShAl0v05WVA92P0kpbO/y3l98/fSKSlbM9zyncV424LGtwLF1pIyZ0E7y2c
-         C0NFBs2h+FOP1obj2tP0mlUEs7FkmKE/MLNdls4NlzHkFBWsoal1HsIj1EaxG/uuPPeO
-         qYsA==
-X-Forwarded-Encrypted: i=1; AFNElJ8bimjtfakVZQ2sUbvgZO4bSCmYXZndtzFbs5tTROLu307L0BBqcBEGWAaohoqamxD/UNdtHpM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxuxDMlVpJsqQ4Ev1nbVf8WUMjKIoJ1Z9ES29wFf07bnHt1Uv2c
-	n7wJ9Wi4iIdDEZPUqW73Tuv30KPQBbAMTTn4ZgtfSjampAAYItTiyriWSvQQM5JXCn8=
-X-Gm-Gg: Acq92OG7uf/K/D29DQsgYk4zQQOVllrLLWWL3ZgUcDBlJeABOpxgKfJq/vYBvUKPnSi
-	3lp225M/dN1GSMaxMoEuOWcJxFNeH/dPpAujUmRDbrmblPz74eZUbXzPKAlD/fH7JskPtroJ1SA
-	YkhvCr1AGkPM+AklhsjQG8aFSfO4vyNqF4raqM4RX/ns+Uu1Mny1DkNtvDL+jP2APUvPWBKDzop
-	JCumNojm5yMXd/uV9wSuv5bEfjLUPcwN8Qq5AoS4Q+uUXVgwKOsniYgKyCcuLvT2nRB50nHZx3o
-	alvtHIMr87/p4TFhJ4bgSpo7UkVhIQQMlKiqlyp0YGJhgOJiLJHe3QdTvB/aB36BTx1JG9+NwU0
-	RidjH1ODQ7RTTejCstl4u2qv0dduFszs3+O0bPXL011nB8Y20IC/SSirqHMugPIe8wHX/FIuYyo
-	5zmVih053rjAIZKycL1Kt0Q7jwIuo=
-X-Received: by 2002:a05:6a21:2212:b0:3a2:f7bd:a9a5 with SMTP id adf61e73a8af0-3b4979e946fmr8507751637.38.1780572702468;
-        Thu, 04 Jun 2026 04:31:42 -0700 (PDT)
-Received: from lgs.. ([2001:250:5800:1000::f280])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8428221c3e4sm6124968b3a.5.2026.06.04.04.31.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Jun 2026 04:31:42 -0700 (PDT)
-From: Guangshuo Li <lgs201920130244@gmail.com>
-To: Horatiu Vultur <horatiu.vultur@microchip.com>,
-	UNGLinuxDriver@microchip.com,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	David Carlier <devnexen@gmail.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	bpf@vger.kernel.org
-Cc: Guangshuo Li <lgs201920130244@gmail.com>
-Subject: [PATCH] net: lan966x: restore XDP RXQ page pool on reload failure
-Date: Thu,  4 Jun 2026 19:28:46 +0800
-Message-ID: <20260604112846.1420908-1-lgs201920130244@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        bh=yg4x99fBtz+f6aO+UsqxYVWgAGOJf5YpBuFNQpiKhok=;
+        b=KZD8gqOM3Vb/3ankMKar0nH6CkccCSAnyZHHmgb+w8nDtVwuHoo7F3ii0Y9DZGaeiV
+         2Rg/gXdGMWQo9XdvA8TWKPnpB84ZGBcjA5kQf5z7nhaxUnuItHVXO71InU9i2/Sa4UgL
+         F/AxMJVyIgQZtEUKc4lfLGlXK78tpQG8GJApyX088i2+E8np2I5YkpkzdNCPu2jGKG5z
+         q2lU+sEl09Rl8jaem28bLKqhF8wNWW8mZc6xQbn0XpFfryOcxul6ux7gxjPZfpvgQivC
+         gg+5OhTMtLoWjNkBcfYnnBhtvghL5iOgOAeUzyONY/oupZYDRUYfW+aPv2C1SyyY9AsF
+         v6RQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780572954; x=1781177754;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=yg4x99fBtz+f6aO+UsqxYVWgAGOJf5YpBuFNQpiKhok=;
+        b=bi12az/MSFI6RkczmbGA+j3TEHOsOdKvDbVb0BG0T8XOsklXQT1Q7c2fggXQFMudUF
+         Esb6ZN3uf4mE0dmhEm3La0eOETeOVjGD6bJNipZTLOr8woENMDbtY65HbpvAkNTOHD05
+         U93yg2IJdgfo5DoRFgc7zUp99nafGHh+LfRsCghOirgYxLYqA5aBKADfqH71K3ejI/W2
+         uQ/phrKebbhb8X+m2A7eyiN+OpH1qPXHdzmP+nF4onMVISo7v2WCDaXuOeP1oR52HflZ
+         GMIiSfUdHLq7kbyguK9r24RNXvqukq+jW3Bdsd8eJlG+Spu4xH3MHKu49EE4fPs3nQON
+         NTUQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9C/2L0BMFQsX3ZsxyvKc93w5mxmSXBJxwIeYzQh2mq3Fbb14pAg/zNxZgc2UBGiUgsk7kJ7+Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyCzjm3dt2Mgpa9A5vusz46ZRnNqcd2F9E6muG1yOkS3zhRWSBX
+	YKBWL9mqvhNtBwrDuMfaG8se0Gs++vITcCyU+iN9zuh6LOULbH18w2Sq+RIuIQpGMkBp/ApOVgS
+	EWbQyi6ymggkHyiCEcDq3/rRZlB+N9T1F2kH79Jlh
+X-Gm-Gg: Acq92OFMnRbo8zfWdBMVcLjWsht/wYcBDA70QxBZKlcyROkiG/saWFTyONqWOQ/X/mP
+	IGUsyTu2/E9qX9hvA4VzUD2ps9S4O6lFUz3Blx577yN6BthqVUgykzuAezlQghoDHXOXyOdFmLs
+	/Lm4sNL1iDFZ8JzIhcxmBlbp+T4VKTOFHCFBf35SqwOVsL91UC3p757WlEYtRiOJBGv0JU5Dhyf
+	H/1vrDcWScUwo/bKaa9YupPSW3GFu9WeCvgtn/wjnwehPIDqLzPaoMgMP8Hn5KavZ8J5NSoD0DG
+	0uFAr9dvGYh9HbHS+7ukd+61SitNhnKHk5FH47NaNycgMZzAgA==
+X-Received: by 2002:ac8:4651:0:b0:516:4f62:85ed with SMTP id
+ d75a77b69052e-51787a79f2dmr9114181cf.18.1780572953224; Thu, 04 Jun 2026
+ 04:35:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260531030705.3754389-1-yuyanghuang@google.com>
+ <20260531030705.3754389-3-yuyanghuang@google.com> <20260604102001.GC771160@shredder>
+In-Reply-To: <20260604102001.GC771160@shredder>
+From: Yuyang Huang <yuyanghuang@google.com>
+Date: Thu, 4 Jun 2026 20:35:16 +0900
+X-Gm-Features: AVHnY4Lb_a_R7bflhmfrKCJj7HqnSgAjEhk1Gu-NoCgjI_cfw2jrUR7vXLGTjks
+Message-ID: <CADXeF1F2E55krqjxHXv3PrhvJ_E1oUnUWg9oZ4pL-M13Ke+fyQ@mail.gmail.com>
+Subject: Re: [PATCH 2/2] ipv4: igmp: annotate data-races around timer-related fields
+To: Ido Schimmel <idosch@nvidia.com>
+Cc: "David S. Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-lan966x_fdma_rx_alloc_page_pool() registers the newly allocated page pool
-with each port's XDP RXQ. During an FDMA reload, this registration is
-performed before fdma_alloc_coherent() is called.
+On Thu, Jun 4, 2026 at 7:20=E2=80=AFPM Ido Schimmel <idosch@nvidia.com> wro=
+te:
+>
+> > Fixes: 1d7138de878d ("igmp: RCU conversion of in_dev->mc_list")
+>
+> Pending Paolo's approval, please drop the Fixes tag given the patch is
+> targeted at net-next.
 
-If fdma_alloc_coherent() fails, lan966x_fdma_rx_alloc() destroys the new
-page pool and returns an error. The reload rollback path restores
-rx->page_pool and rx->fdma to their old values, but it does not restore
-the per-port XDP RXQ mem model registration. As a result, the XDP RXQ
-state can remain associated with the page pool from the failed allocation
-attempt while the RX state has been rolled back to the old page pool.
+Thanks, will fix it in patch v2.
 
-Restore the old page pool registration for each port's XDP RXQ in the
-reload rollback path before RX is started again, so the XDP RXQ state
-matches the restored RX state.
+>
+> [...]
+>
+> > @@ -2964,6 +2964,7 @@ static int igmp_mc_seq_show(struct seq_file *seq,=
+ void *v)
+> >               struct igmp_mc_iter_state *state =3D igmp_mc_seq_private(=
+seq);
+> >               char   *querier;
+> >               long delta;
+> > +             int tm_running;
+>
+> Nit: Please move this above 'delta' for reverse xmas tree ordering
 
-Fixes: 59c3d55a946c ("net: lan966x: fix use-after-free and leak in lan966x_fdma_reload()")
-Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
----
- .../net/ethernet/microchip/lan966x/lan966x_fdma.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
-
-diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c b/drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c
-index f8ce735a7fc0..76654b44baf2 100644
---- a/drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c
-+++ b/drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c
-@@ -855,6 +855,21 @@ static int lan966x_fdma_reload(struct lan966x *lan966x, int new_mtu)
- restore:
- 	lan966x->rx.page_pool = page_pool;
- 	memcpy(&lan966x->rx.fdma, &fdma_rx_old, sizeof(struct fdma));
-+	/*
-+	 * lan966x_fdma_rx_alloc_page_pool() registered the new pool with
-+	 * each port's XDP RXQ before the allocation failed. The new pool is
-+	 * destroyed by lan966x_fdma_rx_alloc(), so restore the old pool's
-+	 * registration before restarting RX.
-+	 */
-+	for (int i = 0; i < lan966x->num_phys_ports; i++) {
-+		if (!lan966x->ports[i])
-+			continue;
-+
-+		xdp_rxq_info_unreg_mem_model(&lan966x->ports[i]->xdp_rxq);
-+		xdp_rxq_info_reg_mem_model(&lan966x->ports[i]->xdp_rxq,
-+					   MEM_TYPE_PAGE_POOL, page_pool);
-+	}
-+
- 	lan966x_fdma_rx_start(&lan966x->rx);
- 
- 	lan966x_fdma_wakeup_netdev(lan966x);
--- 
-2.43.0
-
+Thanks, will fix it in patch v2.
