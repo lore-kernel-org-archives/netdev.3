@@ -1,519 +1,191 @@
-Received: from smtpbgeu1.qq.com (smtpbgeu1.qq.com [52.59.177.22])
+Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010000.outbound.protection.outlook.com [52.101.201.0])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F08A3D6CAE
-	for <netdev@vger.kernel.org>; Thu,  4 Jun 2026 08:57:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.59.177.22
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780563475; cv=none; b=NmS1JUHG5Is5x3zB5KEHnN1kXxu5zr82MNmtROZK/J6F/yCVqJIKFYJ6A5+wEcPL4noF8c54CFhK5fMxu3zD/JtOWdz5OAsp9I18GEJTUvEtDiYALmJbtlyPd6b2S6BG4ofxrbydWeBQYiMJBdxFshlYxPiU9F5lzUi/zhrtDRM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780563475; c=relaxed/simple;
-	bh=PYr35FbpHPXKcZ2Eh4OIErQbovQVhDS4Fjg56y1ULmY=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=FFAwS6T3fTFQT8Pj9Tijie0qi8zcRw7uF2+d3V+vKP0AwzjT1uzvgojjOf4XH1MRleZgkbrpZ93fxWbLbRR+wRJwVfrxP97nx38QVmpd6BObj7EgkRLVdkwXzUBNB7HGay3G9IoQ74CwJFltAnK9GJqoQ4PxHPvtaKx0wN/VsO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=52.59.177.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid: zesmtpsz9t1780563420t36d094ec
-X-QQ-Originating-IP: u4uooeoUVi83SttJ5ApXM64QhEzJVZ6YUErMJb2lMY0=
-Received: from lap-jiawenwu.trustnetic.com ( [36.24.207.111])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Thu, 04 Jun 2026 16:56:57 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 2424792223360520790
-EX-QQ-RecipientCnt: 22
-From: Jiawen Wu <jiawenwu@trustnetic.com>
-To: netdev@vger.kernel.org
-Cc: Mengyuan Lou <mengyuanlou@net-swift.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Kees Cook <kees@kernel.org>,
-	Larysa Zaremba <larysa.zaremba@intel.com>,
-	Joe Damato <joe@dama.to>,
-	Breno Leitao <leitao@debian.org>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig=20=28The=20Capable=20Hub=29?= <u.kleine-koenig@baylibre.com>,
-	Fabio Baltieri <fabio.baltieri@gmail.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiawen Wu <jiawenwu@trustnetic.com>
-Subject: [PATCH net-next v5 5/5] net: wangxun: add pcie error handler
-Date: Thu,  4 Jun 2026 16:56:31 +0800
-Message-Id: <20260604085631.12720-6-jiawenwu@trustnetic.com>
-X-Mailer: git-send-email 2.21.0.windows.1
-In-Reply-To: <20260604085631.12720-1-jiawenwu@trustnetic.com>
-References: <20260604085631.12720-1-jiawenwu@trustnetic.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27869346A1E;
+	Thu,  4 Jun 2026 09:01:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.0
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780563696; cv=fail; b=jJDa+++nsVowajcLk38Iug80IVcSR8NkzkqZZ8HQk2VPgrKbJIQQy5NGpgDD0wnojvei4+e+rHnTh/dH1/FH0i2SYpsBc16d76fzK3qo8bDxZoBfogFlYqB9tS+RA1Sg5WlclGTslR05Lx7LlEp3O5945B6AOQTQCL1WHYl8pUk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780563696; c=relaxed/simple;
+	bh=Bqzit4W3QCR3WYsXIbR04SiiZvMfyRCHDTrhZpujjdU=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=Afo6lYu1eXQtBiNhup6fimjA5X9Z91Oi1FKKXZU2vAZaDoNv3cvmYXoM69jF6IA5n3rlGeCCNj3oZo8Tts1MDcJj0Zh543LCF+AzCsYdeB+Tkrb+TiP3HAr3v5DVGALc5HGZrv/L5mMZDn+uIpbeqvVcJncPyeZ3X1pN8c7+FfU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=altera.com; spf=pass smtp.mailfrom=altera.com; dkim=pass (2048-bit key) header.d=altera.com header.i=@altera.com header.b=k/EebRvt; arc=fail smtp.client-ip=52.101.201.0
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=altera.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altera.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=altera.com header.i=@altera.com header.b="k/EebRvt"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=K3AbPvdQpNlPc/4Bq8UBdRqtN5itD1q05EeS0JXdCg2PYgpVbLUUCFfssnNCqLEIsbUxGejDVvf8MDWXENqxxwbNCbEK5UTZg2zmAMVqnazjx2M1ybneAk7wg+mKS/MpIV6cInzhv6eJBYZQE7qpF+RERHaiuhMrjjgBnUKmYRnmfC88KSibRlwZuyhZUPXxUDO4TxEB1bn9/KY4BHIbJojojKHbMKW0mCS1H57nrg6ZGsNeWBNjEtbLU730EtaW+wHlVr4DxC+DcqPVSpiwiSBDHzmBUvMOnByNq7TXGhJfgoAfTAQ4R6U8xm5T0Eh+e03YU2Pv6OWzL+IylD8iyA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Bqzit4W3QCR3WYsXIbR04SiiZvMfyRCHDTrhZpujjdU=;
+ b=g0/4vvWTpSaEw6nMKD9kUfnvgVR+dVzyJxUFMIxJbqtLJexB/QC9pU7GI4kxrJxka2xCiPEia76lDfjFeoGUVUMRYaYVfkRrNAOkc8LHAP6pkVlCoCRkC+P9cnqzXk9gV+m8xKvTGeB+E6P57m7y+X9Dz6uCoHLpmG119/XDJwOOa+CatRaeCv7b5yatgRvYWWebVtmNuCH33yJUh416A764z/NFAnva8rM9UckaBe9kDznWpWj/8vWVcKJlrT02ueBxl3CeXPn84+mmc5WTWLGsX5WWw0XZvvFtfMg39qM5TO96/3BmmQgRCuaBLLi37lDqLcC0QFu+0zN8JOAX+g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=altera.com; dmarc=pass action=none header.from=altera.com;
+ dkim=pass header.d=altera.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=altera.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Bqzit4W3QCR3WYsXIbR04SiiZvMfyRCHDTrhZpujjdU=;
+ b=k/EebRvtdp9eIKG6Ed4ul7Bumr+r8yxs8VJEZKT/N6JVDaeMrBuxZdoEsJtKDRaWihdYtPGNOSCY4WuVAUcZ48zVAng/HdJ1KaqKYrGP3HsPO7T3NXI2ze4/ypFYHi+a7XeD+Zy6pvSs2v9bUvads1xf4nr4dRunx5sb0hntqChZff3WbmC3+/uMETfAvChzau6ue/nHdAkv6WltmjwlL3bQtmZg5WzJRTCcfjw2u8O1umVaRVs1I9GP0o2LYJdYuL1Asg6HOvbKNMcyz6n3ON5gJJNwK8LwRlTus86LSNCGwhzN2dhHlVtFeAld8r4LATKe7izp1TVEmWMsSJ2nrA==
+Received: from SJ0PR03MB6964.namprd03.prod.outlook.com (2603:10b6:a03:432::18)
+ by PH0PR03MB7040.namprd03.prod.outlook.com (2603:10b6:510:294::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.7; Thu, 4 Jun 2026
+ 09:01:32 +0000
+Received: from SJ0PR03MB6964.namprd03.prod.outlook.com
+ ([fe80::b965:bfa8:58fb:e775]) by SJ0PR03MB6964.namprd03.prod.outlook.com
+ ([fe80::b965:bfa8:58fb:e775%6]) with mapi id 15.21.0092.006; Thu, 4 Jun 2026
+ 09:01:31 +0000
+From: "Nazle Asmade, Muhammad Nazim Amirul"
+	<muhammad.nazim.amirul.nazle.asmade@altera.com>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>
+CC: "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net"
+	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
+	"mcoquelin.stm32@gmail.com" <mcoquelin.stm32@gmail.com>,
+	"alexandre.torgue@foss.st.com" <alexandre.torgue@foss.st.com>,
+	"rmk+kernel@armlinux.org.uk" <rmk+kernel@armlinux.org.uk>,
+	"Jose.Abreu@synopsys.com" <Jose.Abreu@synopsys.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] net: stmmac: xgmac2: disable RBUE in default RX interrupt
+ mask
+Thread-Topic: [PATCH] net: stmmac: xgmac2: disable RBUE in default RX
+ interrupt mask
+Thread-Index: AQHc7zs59LjZoyL/IEeye5wZsOHR4bYlYYyAgAjBdwA=
+Date: Thu, 4 Jun 2026 09:01:31 +0000
+Message-ID: <6837ed21-196a-48dd-b8b0-0f6691a946d0@altera.com>
+References:
+ <20260529071734.27722-1-muhammad.nazim.amirul.nazle.asmade@altera.com>
+ <e10fe18a-a0a0-4c80-8ca6-88d0e0f18559@bootlin.com>
+In-Reply-To: <e10fe18a-a0a0-4c80-8ca6-88d0e0f18559@bootlin.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=altera.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SJ0PR03MB6964:EE_|PH0PR03MB7040:EE_
+x-ms-office365-filtering-correlation-id: 4b9e294a-7974-4fa5-ac18-08dec217def8
+x-ms-exchange-atpmessageproperties: SA
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|366016|1800799024|376014|7416014|22082099003|18002099003|56012099006|6133799003|4133799003|4143699003|11063799006|55112099003|38070700021;
+x-microsoft-antispam-message-info:
+ /kWkfnaae5WZoj5Uc8NfHQNplrwYixqQnJXie3mjk+Qq1H0KghM9gIzZxzb+EE8ZPdXCTEkcHBpCY1MtiKO5cg6i8w49JMI4bYq5K9PS95ZmewSXouzI1Nfsb4YTiQaE5EvxfwgcBleJgvxacjRVg/oVdf1dbUppbgqSWk6B4J8Y23/UScmIZKcQYVXRHOnAR+hkDIHqa+/ATTwZvekgFV5WuAuwxzmPfQsqxAXZJFlp8mEa59Z681m1RNHamkWNcd/3kuEHfhvGIZOo8VfmkO5jJSptYuFHD/iXbaUjD5kdLnwueKOpZ1uWGK7O4HDB8vfQtxT5TyIofRDBLJGiYMVNb986Aq9OeQUY8tii1TRckW2bxpl3slvcqZXYGKH4JblpnSiAvly9dwwSbPvKma2FXzad7QhsLFODUlSEJ3pmtNdSfsUwg5dgzloqfsYIm1Ckn/h7AHP8JWEDb2+WuJx67Or3OMZZ/CztYBxwKzbB9TW+n6fYsG/okgJeCYPaXMt+xzT+esvDMzjD745NiOLws0CF4Ejz4vTZiOBY6Fps3m0sH5cy2bdhFUHJFpR3sRvBRDKpWvzUZlxwrMcCihfC1cEsA3vguJf7deCzp4MpcbtGakPcmYL+oWmKDavzXHXEu1j3sZsG/+NhCBq4HIxaDMARgU3ebUpZ4QlaY9vFDyTrF+XdjjuBek+PwyHVWFEw6qlEgRhwviSvXBCtRQ==
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR03MB6964.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(22082099003)(18002099003)(56012099006)(6133799003)(4133799003)(4143699003)(11063799006)(55112099003)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 2
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?SG1KRkRWY3h6V3ZQcFBkd2VzV2ViczFsMEFRNkR4MlNnWmc4M0NaR01FN2p6?=
+ =?utf-8?B?eWxkeHZkSmMyMjJKbUJGcDB0TkxQV2FpalFsRGI1R3E1dmRZUGUxUmNIdUpS?=
+ =?utf-8?B?SW1scXdQd08yQXU1VUhRRFNFeEFUbUk4Wkl4WUQrNnc1di9SenFDeTJuVWxl?=
+ =?utf-8?B?WnQyTFUzUWRpTmNmL2NNQjBiKytGTW1nUXprSTZRVDYxclZTM1VIZlBhYmJl?=
+ =?utf-8?B?b0t2MmVzd3p0eUpOR2V6SHNaRnIvUXU2dmpPREdQZHpyaHZwUlk0bHVMWllY?=
+ =?utf-8?B?VHBUSDJZY0QzWUxxc056Q2pLYVZwQ0hjR0lTZ2dxczdzQkVrTHFDMWZMZlpC?=
+ =?utf-8?B?SzBSRm02ZEgrWUNTTytqdkw2Y0R6SGdTWFlWQnhYdFZTTmQvL0QyMnYyL2JU?=
+ =?utf-8?B?enVrdkhlRndrcFNic0krK3dRSmhrRTBoWEp6MjVpK1J3SWlxSmp1SUhvQ0lk?=
+ =?utf-8?B?R0RUdjJEd3Naa2x2S2JsclU3YjRUMFE2b2dyTWs1Q01hd2dRaVBxY2VDdTZx?=
+ =?utf-8?B?amFzZ0JTc1RNTHlqVVFLNGh6Y3RMUSs2VjZLQ2pTWDF5MDBoNXpzN01rUVRD?=
+ =?utf-8?B?cTJlbm9aZHFNaSttR0xDOVFPRXV6NllWZVlPVzFXUmZMdWx4TkRUalVqT25Z?=
+ =?utf-8?B?bDZEMzRmbW81WEJ2RnJVNVE1b1ZTYm1LcjY2YkRjY1E4cFRLSWovczc1Yitl?=
+ =?utf-8?B?N0NKZ1grdDE0U2xvRjltWDEycGJDVmZ3Y09QNmJPdDBKMXdnMy9HUDVBRS9Q?=
+ =?utf-8?B?R01nZnlLNkRtcENFTmlwdTlNYzRtYnpSUXk2UmdacFFJazdLYU9ZakJ4bUY2?=
+ =?utf-8?B?RWdpSmNtK3BSV2doUHZ4YmpOWUljYzlYNW1TUGN3bnpYSzZJTjJEbEoxR1lY?=
+ =?utf-8?B?UWU1bzM2ZE9VQ3RlYUtwK2hkNjJEUG8vTXNvS3RxQ2lURW9pS2N2SEgvamN4?=
+ =?utf-8?B?ZFU0N2lhQ05KZ2Q2dEZXTG4wUWYzQi90aTVmNFlvbzhhcmNVeHhvRHd6UXp5?=
+ =?utf-8?B?Z0JlU3pTMEhENklJajZ3MDJWb2dMbDBPTVJ1NlNOUEhPQ0Zudkd5dC8wYlFS?=
+ =?utf-8?B?QmVBV1EvMkI4QXA2WFdhOHZXVG4vZkJNUFlUNXdHbVVLdzJHSk5UTWFDRDMz?=
+ =?utf-8?B?MzBTb3NhdTlYUHNKSmFUc25pTzVkS1ZNcjZQZmtnclkrV2RsbW0yckRDSU04?=
+ =?utf-8?B?ajhmY2pzY0JQczc5UCtXTzkyMEVYZ1pQOHowOEhpR3p2b1dPTUNVV1JTSHg0?=
+ =?utf-8?B?b0dFSXZSUFUrQ2hlWnQyYnhGQW90TE13QTdiOXJGQkZYbzRSOGJvZjlPNmww?=
+ =?utf-8?B?dFYrbFNYMFlHUlJFVWdCVUpxelVySmIxUVg2aytKMUJlYmhVTHhOZ3RTcVls?=
+ =?utf-8?B?REVpc3pUUTUxUkxTcVlSSlRxdzdOaVdxTkpEVHYwM2FKeHJzM1JYcnpWbTg0?=
+ =?utf-8?B?dDk1QXNTK0lzTzBDa1VmRldFQkZjZ2FPL2lRTXhKYlZvYWFoMHVSUGNpSnFr?=
+ =?utf-8?B?Z0FBNGVvYnpPV29WZkVLLzFZcC9VQVhFWFhWdlNka3ZzYmdZMDVYMzFlZWZk?=
+ =?utf-8?B?Mm52OVdSRlFnM1R5WHhydzZXaTQ0Wm9DaHBsc3E1Y1VrNGZnbm9nenVheWUx?=
+ =?utf-8?B?RHU3RGNkNW9NMHNxQ0M4ckJjeXdrRGJsV3VlZXdQdTZFdHl4SHd1RWoxT2dM?=
+ =?utf-8?B?dzlGU1BzYUVMTnVTbzJOMjBsNVo1eGh2VUZ2L2FaUFZFVHgzd2hQSHFHOUFY?=
+ =?utf-8?B?bTUrM2lFZXVrZHdmOXdjdnlwWkRMcHpydkVrb1ROK0RWcVVLVmlzMHVBN3pY?=
+ =?utf-8?B?dUdwQzlRU1diRncvR3U2UzF6cnlwL2phSW5pc3NDVHlHSGdCNmFYVnhjZ2lp?=
+ =?utf-8?B?aXBHWEtRa0YrbXppZnYrTGVCZHlxYXJncXBGNlhXWElOMXJMN05IeDlnVlQr?=
+ =?utf-8?B?bzBmQUxNeUs0MlVXWnMzOWxhanJ4U3RqaVp1UkNvNVhCR2ordERYU3F2eEFj?=
+ =?utf-8?B?d3dJRDhnRnRPU0NiWTYyWnlmb09LajVzNmNRa1ovWXJrUUd4d2M2OEZsajQ4?=
+ =?utf-8?B?eEltczhRUzF5VHpuYXBBQ0NYcXBPYUM2Z0hUUDRhYlZ3Q0JHZDJucjdydC9E?=
+ =?utf-8?B?TmdZM2JUajV6a3VkY29NMHdUZFpmY1V5Q2pJVVJ2SVNGTGoram15ZXhoOG1q?=
+ =?utf-8?B?T1NzTzhEZmNyUzcvNTdDSjlaMm8xMmRBUEEyY005TzVscTRFSFo1TDhlbXFa?=
+ =?utf-8?B?Ty9sRkNZZWpzdThNQVFKR3hRTTFNT1lsbEhOY1g5Si9UYkZiSWF5cVU4bTFD?=
+ =?utf-8?B?ZEdSZHFLL21OQkVrVDJuOVh2cWpKTGgrNlhyVmNkVThpd3I3UnBUMG13YWNW?=
+ =?utf-8?Q?5obRerwVzbqRTasNl6sOx57d9b7zhs80FpUA2Vhk41zbO?=
+x-ms-exchange-antispam-messagedata-1: HoVa0owysbvbSQ==
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <244410BB15480349B5B69A142EB1F0E1@namprd03.prod.outlook.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpsz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: OYYBGyz9w/VIPx5jJiO3zi2xW0ZrQ3ITUJ9xTtB3wQ9Isf1wRjST+4YB
-	ZEP0x0JFaCyP9HDAB10p7KSrl8MZ3oFcn2Labm4T33y3mFPQ5pHKnZryA7AcJpTbWSdhW9M
-	yZ5IecVv0W2EnUNnUmSMyMz3WhTIgWEOVyAt8BlrdiCNQD+I15PMql2A/fo1F2v7dioNxns
-	eLfvIoG3AewmAmOim2N4KJXS99kzHYu3wYu57saFpUo6koMLdXE+0t0k8RTd3Bg1Nz//NaA
-	Fv2Xr5ecSoJDdJXD9PRnU5U0rvdBQsX8rLoVP75s/XwqQieG+NodStvDpDNk3ViRmtMvhzN
-	c7ExRJKnhIWKBF1eK4e/urw3dmYVh9ySJW7WXumlRzNf5UMuVGODgssFHeCfs+SAu3sTcoP
-	TpW0ES0lOCgjjse4CeezLUR6YyveL9cIeHZZL8RvAg1YsCAIaIukz6InbkbD8boOIeuVBa8
-	SJzdEw1upygsIX8X7UpnSqAA2sbQPBcLaN8JPvOM1DfscU/BFPsqCS4JCXs8cjyvCa0TKTa
-	T5Q1iDV2aoLWVgpyfE6oY5G9GlsMZkBx/ascFOL8OnHTVOvGWrV7mbC/0J29vdSWsKXl3B2
-	pI0DjFCXmpnAu3FUxEpHKOP1L4Vub0arlyihJRTwgMPZAboPjR6VTqGYHITDydpn4dP2VFN
-	4p8HyHaPGUyLiN1IO6M6mi5B/apoIGhI4001aapJTrsv1/2o+/0cmt4XtWFLpYYbKxy6by2
-	YViLDV/hKGvK5a9UIdeffQgg1cuh65vwHnbdYv+p4eXNmmEZd+y1+idOXgKdi7fM0otXAIX
-	tCYd5J7TgvQc/vdFvzMXPqR0tfuiYfZO9DapVnqpX1Uqu0oAfGuvz2A09aomk6A4YYP3VVd
-	J/JpBBuJxlWpmlx8HG0KYX2s7Xs6Z49gIa6YG5qFHu+wy8rC0fMOFa3Cc6DGli9xMYxaJlX
-	fxTlrkGeJPxEdaFglCWchZR+2UCg/oFz8dDv2T3Z3uKQLT4DxtLEXf7/nTo9EjzA474OY7m
-	rEEOJT6lVEjzxBZoulM5nogqifkPwheygS7WywG7pfO7zX7WdcXCjy5IXc1haZnS04pygE5
-	nrW7QjeZl9JJ5oc5oIr1T/zeigjvrJheg==
-X-QQ-XMRINFO: OD9hHCdaPRBwH5bRRRw8tsiH4UAatJqXfg==
-X-QQ-RECHKSPAM: 0
+X-OriginatorOrg: altera.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SJ0PR03MB6964.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4b9e294a-7974-4fa5-ac18-08dec217def8
+X-MS-Exchange-CrossTenant-originalarrivaltime: 04 Jun 2026 09:01:31.3843
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: fbd72e03-d4a5-4110-adce-614d51f2077a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 5UJ7EdZaeWX8EO6bUoSPruyZbZADn+XEz6XWEkxyIM0MNmTEvFazCyQWyNXonigUH9OjYUmoFj+ayVehcVNHzDciRTZ1073xsVcS81o6lCw6E0uSwKypM5PO3fAH5P2dllfjYJytCADcfrn4c3PpUA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR03MB7040
 
-Support AER driver to handle the PCIe errors. Sometimes netdev watchdog
-Tx timeout happens before the AER error report when a PCIe error occurs,
-CPU blocking would be caused by MMIO during the reset process. To
-prevent it, error return is added in reset path. The current function of
-ngbe is not yet fully developed, it will be completed in the future.
-
-Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
----
- drivers/net/ethernet/wangxun/libwx/wx_err.c   | 114 ++++++++++++++++++
- drivers/net/ethernet/wangxun/libwx/wx_err.h   |   2 +
- drivers/net/ethernet/wangxun/libwx/wx_type.h  |   2 +
- drivers/net/ethernet/wangxun/ngbe/ngbe_main.c |  23 +++-
- .../ethernet/wangxun/txgbe/txgbe_ethtool.c    |   6 +-
- .../net/ethernet/wangxun/txgbe/txgbe_main.c   |  53 ++++++--
- .../net/ethernet/wangxun/txgbe/txgbe_type.h   |   2 +-
- 7 files changed, 189 insertions(+), 13 deletions(-)
-
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_err.c b/drivers/net/ethernet/wangxun/libwx/wx_err.c
-index ee27f96735dc..9a4dbb3427d9 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_err.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_err.c
-@@ -4,11 +4,125 @@
- 
- #include <linux/netdevice.h>
- #include <linux/pci.h>
-+#include <linux/aer.h>
- 
- #include "wx_type.h"
- #include "wx_lib.h"
- #include "wx_err.h"
- 
-+/**
-+ * wx_io_error_detected - called when PCI error is detected
-+ * @pdev: Pointer to PCI device
-+ * @state: The current pci connection state
-+ *
-+ * Return: pci_ers_result_t.
-+ *
-+ * This function is called after a PCI bus error affecting
-+ * this device has been detected.
-+ */
-+static pci_ers_result_t wx_io_error_detected(struct pci_dev *pdev,
-+					     pci_channel_state_t state)
-+{
-+	struct wx *wx = pci_get_drvdata(pdev);
-+	struct net_device *netdev;
-+
-+	if (!wx)
-+		return PCI_ERS_RESULT_DISCONNECT;
-+
-+	netdev = wx->netdev;
-+	if (!netif_device_present(netdev))
-+		return PCI_ERS_RESULT_DISCONNECT;
-+
-+	if (state == pci_channel_io_perm_failure)
-+		return PCI_ERS_RESULT_DISCONNECT;
-+
-+	rtnl_lock();
-+	netif_device_detach(netdev);
-+
-+	if (netif_running(netdev) &&
-+	    !test_and_set_bit(WX_STATE_DOWN, wx->state))
-+		wx_soft_quiesce(wx);
-+
-+	if (!test_and_set_bit(WX_STATE_DISABLED, wx->state))
-+		pci_disable_device(pdev);
-+	rtnl_unlock();
-+
-+	/* Request a slot reset. */
-+	return PCI_ERS_RESULT_NEED_RESET;
-+}
-+
-+/**
-+ * wx_io_slot_reset - called after the pci bus has been reset.
-+ * @pdev: Pointer to PCI device
-+ *
-+ * Return: pci_ers_result_t.
-+ *
-+ * Restart the card from scratch, as if from a cold-boot.
-+ */
-+static pci_ers_result_t wx_io_slot_reset(struct pci_dev *pdev)
-+{
-+	struct wx *wx = pci_get_drvdata(pdev);
-+	pci_ers_result_t result;
-+
-+	if (pci_enable_device_mem(pdev)) {
-+		wx_err(wx, "Cannot re-enable PCI device after reset.\n");
-+		result = PCI_ERS_RESULT_DISCONNECT;
-+	} else {
-+		/* make all memory operations done before clearing the flag */
-+		smp_mb__before_atomic();
-+		clear_bit(WX_STATE_DISABLED, wx->state);
-+		pci_set_master(pdev);
-+		pci_restore_state(pdev);
-+		pci_wake_from_d3(pdev, false);
-+
-+		rtnl_lock();
-+		if (netif_running(wx->netdev) && wx->down_suspend)
-+			wx->down_suspend(wx);
-+		if (wx->do_reset)
-+			wx->do_reset(wx->netdev, false);
-+		rtnl_unlock();
-+		result = PCI_ERS_RESULT_RECOVERED;
-+	}
-+
-+	pci_aer_clear_nonfatal_status(pdev);
-+
-+	return result;
-+}
-+
-+/**
-+ * wx_io_resume - called when traffic can start flowing again.
-+ * @pdev: Pointer to PCI device
-+ *
-+ * This callback is called when the error recovery driver tells us that
-+ * its OK to resume normal operation.
-+ */
-+static void wx_io_resume(struct pci_dev *pdev)
-+{
-+	struct wx *wx = pci_get_drvdata(pdev);
-+	struct net_device *netdev;
-+	int err;
-+
-+	netdev = wx->netdev;
-+	rtnl_lock();
-+	if (netif_running(netdev)) {
-+		err = netdev->netdev_ops->ndo_open(netdev);
-+		if (err) {
-+			wx_err(wx, "Failed to open netdev after reset\n");
-+			goto out;
-+		}
-+	}
-+	netif_device_attach(netdev);
-+out:
-+	rtnl_unlock();
-+}
-+
-+const struct pci_error_handlers wx_err_handler = {
-+	.error_detected = wx_io_error_detected,
-+	.slot_reset = wx_io_slot_reset,
-+	.resume = wx_io_resume,
-+};
-+EXPORT_SYMBOL(wx_err_handler);
-+
- static void wx_pf_reset_subtask(struct wx *wx)
- {
- 	if (!test_and_clear_bit(WX_FLAG_NEED_PF_RESET, wx->flags))
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_err.h b/drivers/net/ethernet/wangxun/libwx/wx_err.h
-index 1eed13e48095..a6a82a263528 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_err.h
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_err.h
-@@ -7,6 +7,8 @@
- #ifndef _WX_ERR_H_
- #define _WX_ERR_H_
- 
-+extern const struct pci_error_handlers wx_err_handler;
-+
- void wx_check_err_subtask(struct wx *wx);
- int wx_init_err_task(struct wx *wx);
- void wx_check_hang_subtask(struct wx *wx);
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_type.h b/drivers/net/ethernet/wangxun/libwx/wx_type.h
-index a8b4e84787f4..ec66a34b272d 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_type.h
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_type.h
-@@ -1221,6 +1221,7 @@ enum wx_state {
- 	WX_STATE_PTP_RUNNING,
- 	WX_STATE_PTP_TX_IN_PROGRESS,
- 	WX_STATE_SERVICE_SCHED,
-+	WX_STATE_DISABLED,
- 	WX_STATE_NBITS		/* must be last */
- };
- 
-@@ -1409,6 +1410,7 @@ struct wx {
- 	void (*configure_fdir)(struct wx *wx);
- 	int (*setup_tc)(struct net_device *netdev, u8 tc);
- 	void (*do_reset)(struct net_device *netdev, bool reinit);
-+	void (*down_suspend)(struct wx *wx);
- 	int (*ptp_setup_sdp)(struct wx *wx);
- 	void (*set_num_queues)(struct wx *wx);
- 
-diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-index 7dd3e12d48aa..effe9311a57a 100644
---- a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-+++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-@@ -47,6 +47,19 @@ static const struct pci_device_id ngbe_pci_tbl[] = {
- 	{ }
- };
- 
-+static void ngbe_down_suspend(struct wx *wx)
-+{
-+	phylink_stop(wx->phylink);
-+	phylink_disconnect_phy(wx->phylink);
-+
-+	wx_clean_all_tx_rings(wx);
-+	wx_clean_all_rx_rings(wx);
-+
-+	wx_free_irq(wx);
-+	wx_free_isb_resources(wx);
-+	wx_free_resources(wx);
-+}
-+
- /**
-  *  ngbe_init_type_code - Initialize the shared code
-  *  @wx: pointer to hardware structure
-@@ -135,6 +148,7 @@ static int ngbe_sw_init(struct wx *wx)
- 	wx->mbx.size = WX_VXMAILBOX_SIZE;
- 	wx->setup_tc = ngbe_setup_tc;
- 	wx->do_reset = ngbe_do_reset;
-+	wx->down_suspend = ngbe_down_suspend;
- 	set_bit(0, &wx->fwd_bitmask);
- 
- 	return 0;
-@@ -566,7 +580,8 @@ static void ngbe_dev_shutdown(struct pci_dev *pdev, bool *enable_wake)
- 	*enable_wake = !!wufc;
- 	wx_control_hw(wx, false);
- 
--	pci_disable_device(pdev);
-+	if (!test_and_set_bit(WX_STATE_DISABLED, wx->state))
-+		pci_disable_device(pdev);
- }
- 
- static void ngbe_shutdown(struct pci_dev *pdev)
-@@ -856,6 +871,7 @@ static int ngbe_probe(struct pci_dev *pdev,
- 		goto err_register;
- 
- 	pci_set_drvdata(pdev, wx);
-+	pci_save_state(pdev);
- 
- 	return 0;
- 
-@@ -911,7 +927,8 @@ static void ngbe_remove(struct pci_dev *pdev)
- 	kfree(wx->mac_table);
- 	wx_clear_interrupt_scheme(wx);
- 
--	pci_disable_device(pdev);
-+	if (!test_and_set_bit(WX_STATE_DISABLED, wx->state))
-+		pci_disable_device(pdev);
- }
- 
- static int ngbe_suspend(struct pci_dev *pdev, pm_message_t state)
-@@ -938,6 +955,7 @@ static int ngbe_resume(struct pci_dev *pdev)
- 		wx_err(wx, "Cannot enable PCI device from suspend\n");
- 		return err;
- 	}
-+	clear_bit(WX_STATE_DISABLED, wx->state);
- 	pci_set_master(pdev);
- 	device_wakeup_disable(&pdev->dev);
- 
-@@ -962,6 +980,7 @@ static struct pci_driver ngbe_driver = {
- 	.resume   = ngbe_resume,
- 	.shutdown = ngbe_shutdown,
- 	.sriov_configure = wx_pci_sriov_configure,
-+	.err_handler = &wx_err_handler,
- };
- 
- module_pci_driver(ngbe_driver);
-diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_ethtool.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_ethtool.c
-index 3e32aca72806..80811947d5ac 100644
---- a/drivers/net/ethernet/wangxun/txgbe/txgbe_ethtool.c
-+++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_ethtool.c
-@@ -78,13 +78,17 @@ static int txgbe_set_ringparam(struct net_device *netdev,
- 		goto clear_reset;
- 	}
- 
--	txgbe_down(wx);
-+	err = txgbe_down(wx);
-+	if (err)
-+		goto free_temp;
- 
- 	wx_set_ring(wx, new_tx_count, new_rx_count, temp_ring);
- 	kvfree(temp_ring);
- 
- 	txgbe_up(wx);
- 
-+free_temp:
-+	kvfree(temp_ring);
- clear_reset:
- 	clear_bit(WX_STATE_RESETTING, wx->state);
- 	mutex_unlock(&wx->reset_lock);
-diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-index f6e596eb9217..98786efbe871 100644
---- a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-+++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-@@ -212,15 +212,21 @@ static void txgbe_reset(struct wx *wx)
- 		wx_ptp_reset(wx);
- }
- 
--static void txgbe_disable_device(struct wx *wx)
-+static int txgbe_disable_device(struct wx *wx)
- {
- 	struct net_device *netdev = wx->netdev;
-+	int ret = 0;
- 	u32 i;
- 
- 	if (test_and_set_bit(WX_STATE_DOWN, wx->state))
--		return;
-+		return 0;
-+
-+	ret = wx_disable_pcie_master(wx);
-+	if (ret) {
-+		wx_soft_quiesce(wx);
-+		return ret;
-+	}
- 
--	wx_disable_pcie_master(wx);
- 	/* disable receives */
- 	wx_disable_rx(wx);
- 
-@@ -270,11 +276,18 @@ static void txgbe_disable_device(struct wx *wx)
- 
- 	/* Disable the Tx DMA engine */
- 	wr32m(wx, WX_TDM_CTL, WX_TDM_CTL_TE, 0);
-+
-+	return 0;
- }
- 
--void txgbe_down(struct wx *wx)
-+int txgbe_down(struct wx *wx)
- {
--	txgbe_disable_device(wx);
-+	int ret = 0;
-+
-+	ret = txgbe_disable_device(wx);
-+	if (ret)
-+		return ret;
-+
- 	txgbe_reset(wx);
- 
- 	switch (wx->mac.type) {
-@@ -295,6 +308,8 @@ void txgbe_down(struct wx *wx)
- 
- 	wx_clean_all_tx_rings(wx);
- 	wx_clean_all_rx_rings(wx);
-+
-+	return 0;
- }
- 
- void txgbe_up(struct wx *wx)
-@@ -304,6 +319,18 @@ void txgbe_up(struct wx *wx)
- 	txgbe_up_complete(wx);
- }
- 
-+static void txgbe_down_suspend(struct wx *wx)
-+{
-+	phylink_stop(wx->phylink);
-+
-+	wx_clean_all_tx_rings(wx);
-+	wx_clean_all_rx_rings(wx);
-+
-+	wx_free_irq(wx);
-+	txgbe_free_misc_irq(wx->priv);
-+	wx_free_resources(wx);
-+}
-+
- /**
-  *  txgbe_init_type_code - Initialize the shared code
-  *  @wx: pointer to hardware structure
-@@ -420,6 +447,7 @@ static int txgbe_sw_init(struct wx *wx)
- 
- 	wx->setup_tc = txgbe_setup_tc;
- 	wx->do_reset = txgbe_do_reset;
-+	wx->down_suspend = txgbe_down_suspend;
- 	set_bit(0, &wx->fwd_bitmask);
- 
- 	switch (wx->mac.type) {
-@@ -556,7 +584,8 @@ static void txgbe_dev_shutdown(struct pci_dev *pdev)
- 
- 	wx_control_hw(wx, false);
- 
--	pci_disable_device(pdev);
-+	if (!test_and_set_bit(WX_STATE_DISABLED, wx->state))
-+		pci_disable_device(pdev);
- }
- 
- static void txgbe_shutdown(struct pci_dev *pdev)
-@@ -606,13 +635,16 @@ int txgbe_setup_tc(struct net_device *dev, u8 tc)
- 
- static void txgbe_reinit_locked(struct wx *wx)
- {
-+	int ret;
-+
- 	netif_trans_update(wx->netdev);
- 
- 	mutex_lock(&wx->reset_lock);
- 	set_bit(WX_STATE_RESETTING, wx->state);
- 
--	txgbe_down(wx);
--	txgbe_up(wx);
-+	ret = txgbe_down(wx);
-+	if (!ret)
-+		txgbe_up(wx);
- 
- 	clear_bit(WX_STATE_RESETTING, wx->state);
- 	mutex_unlock(&wx->reset_lock);
-@@ -908,6 +940,7 @@ static int txgbe_probe(struct pci_dev *pdev,
- 		goto err_remove_phy;
- 
- 	pci_set_drvdata(pdev, wx);
-+	pci_save_state(pdev);
- 
- 	netif_tx_stop_all_queues(netdev);
- 
-@@ -982,7 +1015,8 @@ static void txgbe_remove(struct pci_dev *pdev)
- 	kfree(wx->mac_table);
- 	wx_clear_interrupt_scheme(wx);
- 
--	pci_disable_device(pdev);
-+	if (!test_and_set_bit(WX_STATE_DISABLED, wx->state))
-+		pci_disable_device(pdev);
- }
- 
- static struct pci_driver txgbe_driver = {
-@@ -992,6 +1026,7 @@ static struct pci_driver txgbe_driver = {
- 	.remove   = txgbe_remove,
- 	.shutdown = txgbe_shutdown,
- 	.sriov_configure = wx_pci_sriov_configure,
-+	.err_handler = &wx_err_handler,
- };
- 
- module_pci_driver(txgbe_driver);
-diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h b/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
-index 1e373f7fd9b5..daef87274678 100644
---- a/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
-+++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
-@@ -310,7 +310,7 @@ struct txgbe_fdir_filter {
- 
- extern char txgbe_driver_name[];
- 
--void txgbe_down(struct wx *wx);
-+int txgbe_down(struct wx *wx);
- void txgbe_up(struct wx *wx);
- int txgbe_setup_tc(struct net_device *dev, u8 tc);
- void txgbe_do_reset(struct net_device *netdev, bool reinit);
--- 
-2.51.0
-
+T24gMzAvNS8yMDI2IDM6MTkgYW0sIE1heGltZSBDaGV2YWxsaWVyIHdyb3RlOg0KPiBIaSwNCj4g
+DQo+IE9uIDUvMjkvMjYgMDk6MTcsIG11aGFtbWFkLm5hemltLmFtaXJ1bC5uYXpsZS5hc21hZGVA
+YWx0ZXJhLmNvbSB3cm90ZToNCj4+IEZyb206IE5hemltIEFtaXJ1bCA8bXVoYW1tYWQubmF6aW0u
+YW1pcnVsLm5hemxlLmFzbWFkZUBhbHRlcmEuY29tPg0KPj4NCj4+IEVuYWJsaW5nIHRoZSBSWCBC
+dWZmZXIgVW5hdmFpbGFibGUgKFJCVUUpIGludGVycnVwdCBpcyBjb3VudGVycHJvZHVjdGl2ZQ0K
+Pj4gYW5kIGNhbiB0cmlnZ2VyIGEgTUFDIGludGVycnVwdCBzdG9ybSB1bmRlciBoZWF2eSBSWCBw
+cmVzc3VyZS4gV2hlbiB0aGUNCj4+IERNQSBydW5zIG91dCBvZiBSWCBkZXNjcmlwdG9ycyBpdCBm
+aXJlcyBSQlVFIGNvbnRpbnVvdXNseSB1bnRpbCBzb2Z0d2FyZQ0KPj4gcmVmaWxscyB0aGUgcmlu
+Zy4NCj4+DQo+PiBIb3dldmVyLCBSQlVFIGlzIHJlZHVuZGFudDogdGhlIG5vcm1hbCBSWCBjb21w
+bGV0aW9uIGludGVycnVwdCAoUklFKQ0KPj4gYWxyZWFkeSB0cmlnZ2VycyBOQVBJLCB3aGljaCBw
+cm9jZXNzZXMgY29tcGxldGVkIGRlc2NyaXB0b3JzIGFuZCByZWZpbGxzDQo+PiB0aGUgcmluZywg
+Y2F1c2luZyB0aGUgRE1BIHRvIHJlc3VtZS4gVGhlIFJCVUUgaGFuZGxlciBpdHNlbGYgb25seSBz
+ZXRzDQo+PiBoYW5kbGVfcnggLSB0aGUgc2FtZSBvdXRjb21lIGFzIFJJRS4NCj4+DQo+PiBSZW1v
+dmUgUkJVRSBmcm9tIFhHTUFDX0RNQV9JTlRfREVGQVVMVF9FTiBhbmQgWEdNQUNfRE1BX0lOVF9E
+RUZBVUxUX1JYDQo+PiB0byBwcmV2ZW50IHRoZSBpbnRlcnJ1cHQgc3Rvcm0gd2hpbGUga2VlcGlu
+ZyBub3JtYWwgUlggaGFuZGxpbmcgaW50YWN0Lg0KPj4NCj4+IEZpeGVzOiBkNmRkZmFjZDk1Yzcg
+KCJuZXQ6IHN0bW1hYzogQWRkIERNQSByZWxhdGVkIGNhbGxiYWNrcyBmb3IgWEdNQUMyIikNCj4+
+IFNpZ25lZC1vZmYtYnk6IE5hemltIEFtaXJ1bCANCj4+IDxtdWhhbW1hZC5uYXppbS5hbWlydWwu
+bmF6bGUuYXNtYWRlQGFsdGVyYS5jb20+DQo+IA0KPiBXZSBoYWQgYW4gb3Bwb3NpdGUgZGlzY3Vz
+c2lvbiBhYm91dCBlbmFibGluZyByeCBidWYgdW5hdmFpbGFibGUNCj4gaW50ZXJydXB0cyBmb3Ig
+b3RoZXIgRFdNQUMgdmVyc2lvbnMgOg0KPiANCj4gaHR0cHM6Ly9uYW0xMC5zYWZlbGlua3MucHJv
+dGVjdGlvbi5vdXRsb29rLmNvbS8/IA0KPiB1cmw9aHR0cHMlM0ElMkYlMkZsb3JlLmtlcm5lbC5v
+cmclMkZuZXRkZXYlMkZFMXdCQmFSLTAwMDAwMDBHWkhSLTFkYk0lNDBybWstUEMuYXJtbGludXgu
+b3JnLnVrJTJGJmRhdGE9MDUlN0MwMiU3Q211aGFtbWFkLm5hemltLmFtaXJ1bC5uYXpsZS5hc21h
+ZGUlNDBhbHRlcmEuY29tJTdDYzNlMGEzNTk0Njk0NGI3Y2ViYzUwOGRlYmRiNzI5ZDElN0NmYmQ3
+MmUwM2Q0YTU0MTEwYWRjZTYxNGQ1MWYyMDc3YSU3QzAlN0MwJTdDNjM5MTU2NzkxNTczMTM1MjE2
+JTdDVW5rbm93biU3Q1RXRnBiR1pzYjNkOGV5SkZiWEIwZVUxaGNHa2lPblJ5ZFdVc0lsWWlPaUl3
+TGpBdU1EQXdNQ0lzSWxBaU9pSlhhVzR6TWlJc0lrRk9Jam9pVFdGcGJDSXNJbGRVSWpveWZRJTNE
+JTNEJTdDMCU3QyU3QyU3QyZzZGF0YT16Z09kOURha0xBUCUyQkZJT0dTTFl4U3ZYZWpIeEZhZSUy
+Qmhua3RkSDdUMVVVcyUzRCZyZXNlcnZlZD0wDQo+IA0KPiBXaGlsZSB5b3VyIHBhdGNoIG1ha2Vz
+IHNlbnNlLCBJIHRoaW5rIGl0J3MgaW1wb3J0YW50IHRvIG5vdGUgdGhhdCBpdCdsbA0KPiBub3cg
+bWFrZSB0aGUgInJ4X2J1Zl91bmF2X2lycSIgc3RhdCAodGhhdCB3ZSBjYW4gcXVlcnkgZnJvbSB1
+c2Vyc3BhY2UpDQo+IHN0dWNrIGF0IDAgbm93Lg0KPiANCj4gVGhhdCdzIGEgdXNlci12aXNpYmxl
+IGJlaGF2aW91ciBjaGFuZ2UsIGZvciBhIHN0YXQgdGhhdCBjYW4gYmUgdXNlZnVsLA0KPiBvbmUg
+Y291bGQgY29uc2lkZXIgdGhhdCBhIHVBUEkgY2hhbmdlLi4uDQo+IA0KPiBEbyB5b3UgaGF2ZSBz
+b21lIG51bWJlcnMgb24gdGhlIHBlcmYgaW1wYWN0IHlvdSBzZWUgd2hlbiBidWZmZXINCj4gc3Rh
+cnZhdGlvbiBoaXRzIHRvIHNlZSB3aGF0IHdlIGFyZSBnYWluaW5nL2xvc2luZyBoZXJlID8NCj4g
+DQo+IE1heGltZQ0KPiANCkhpIE1heGltZSwNCg0KVGhhbmsgeW91IGZvciB0aGUgcmV2aWV3IGFu
+ZCBmb3IgcG9pbnRpbmcgb3V0IHRoZSByeF9idWZfdW5hdl9pcnEgY29uY2Vybi4NCg0KV2UgZG8g
+aGF2ZSBpbnRlcnJ1cHQgc3Rvcm0gZGF0YSB0byBzaGFyZS4gT24gQWdpbGV4NSwgdW5kZXIgaGVh
+dnkgUlggDQpwcmVzc3VyZSB3ZSBvYnNlcnZlZDoNCg0KVW5kZXIgaGVhdnkgUlggcHJlc3N1cmUg
+d2Ugb2JzZXJ2ZWQgZXRoMDptYWMgZmlyaW5nIDEsODIxLDgxMSw1NTUgdGltZXMgDQp2cyAyLDYx
+OCw2MjcgYWN0dWFsIFJYIGNvbXBsZXRpb25zIG9uIGV0aDA6cngtMCDigJQgYSB+Njk1eCByYXRp
+by4NCg0KQlIsDQpOYXppbQ0K
