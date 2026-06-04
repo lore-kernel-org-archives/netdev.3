@@ -1,158 +1,288 @@
-Received: from mail-yx1-f46.google.com (mail-yx1-f46.google.com [74.125.224.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B8392517A5
-	for <netdev@vger.kernel.org>; Thu,  4 Jun 2026 04:23:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.46
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780546982; cv=pass; b=nkYNkJqAI+8zYPOsjNYcUU/YVKjxarxo3ocxPPJLZ+uxG5LOQPpfbHQu998RDLTrAxtqCxyRNTWJCgTS6x3mxfomeFoxk/WuWJcUv+us1t62EVPzPho5VtHSCQtHhXa0d73qwVQUVVQDzBF/KnP9YJTFdaqrp+xvdsp0Pl5ifv4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780546982; c=relaxed/simple;
-	bh=vMJIO0/VJDOw3ph6V6pYDwvUo/TujnLGusvcPY/NRBo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lACikk4pKe6rsUC6H7xkJO+ljiUMx+HBG/baWI5cQLFc75Hhmc1IfK8zxp4qTYQiZMGVUGIrJLWA3Dx3ANeKR2K0i4uJdPGBmKQva8zX50UbW2lUysARIpTDPQUuHt+E2PE7BXr3nOZNQNEPOtQJlXWYSWmPxinX7aPWAdVqgg4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mBfF/g2z; arc=pass smtp.client-ip=74.125.224.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6096C245019;
+	Thu,  4 Jun 2026 04:39:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780547974; cv=none; b=V6Zt9wkxSVg/EgM3vsEOD+sxSUDhqdPwom/Lv/RXqY6Nxa5QPjXi7SFtEN3Lc75QS/j3TKVtLefkHHAh8G8wqLnP2oirihoZivSXPusjwpLDrtY6aWLe2YWJ/Hct4gjeE5VwBkaU3nzUB4hV6J/JJUqxtVyQPLSf6fcgf9pdtlU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780547974; c=relaxed/simple;
+	bh=3TD/EbWlUgw5Oxp6TsO4T2zyEASvjXycXPbXPXSTw2E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IwtHwCpxYqGivxpwQBXr4z6pluAU3lExNNhfsgcDc2lQWPZQz3N2r5FUWr16eNyPGLplX30Q2j9KhNFAh1zZWjGB30hSSMiR6HtG9AtfiYEIiVQem236mp6wAe/6lcBBAzt3Bi7bAaAVMkBiBmuh5VlEy2XhBDo6Rdkkt5Eeusg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=UglmN5g9; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mBfF/g2z"
-Received: by mail-yx1-f46.google.com with SMTP id 956f58d0204a3-660ea43107fso338847d50.0
-        for <netdev@vger.kernel.org>; Wed, 03 Jun 2026 21:23:00 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780546980; cv=none;
-        d=google.com; s=arc-20240605;
-        b=PsNOzykpvzg54V3dHpU8tcCHeAEAFrErWvi0u1znc9wlfI3cykEZZXKnwTUe8b50pj
-         1t7g6XfYBYYQAkseG7FeMCH754ePY9d0aE3YI41LiEOP7myyrK4L+Kj9VYDdbLWGIqMy
-         QAAGUIiLhn1iJvRR2eUruAHrAeFnkwyZL1mOsJkwlqmOEq7ffAuN37egiEMHaXkjGmuL
-         PHMRA9QCeAIE1O5C27T8qUpDmI8y6tAc9CHGSaHoMQ5GQMeBWIgBshgyY/L67WH7h9rY
-         5QCweQgGXhZLOsBh6oVDL3tQY2vUb95XHUEi5dKexgIP7zdEecOKfME6tW7zfWgpNPIo
-         LMGA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=N+UAvzNp7kr1X+8H+52+phqg8y1TmFeAUeyBSpAhRxc=;
-        fh=iBQVPOJ8q8dG3GkM6VDzCYFSCHidC3FZEje5e8FD2ZE=;
-        b=aNAnaVFYC7XitUsOzyAGLc0EiaptfFeSkYjv1uTtOEYZS/mC5htmkWRphw15Q7hMGl
-         wzk2GSZ2FsXB8L7JKnmxTdZj/ChKzh8f5macq3IEJliGsbpwRA0Wv6hdeyn6bmCYsBpI
-         v5ybpO49IDJyTX/7cD9fM4QAlNPgOq1e8gDwXPglTzMW5aRsZy69wDsnE+wzPx98s0Sn
-         wFWNC5t2QL6H4zPCVRX0YzAfxHWgFCj6DRc/S67tOasL89mgO72LWL0QrsSloOyd3JQT
-         x8fXhaPVrezFVUxpEWmcpyUKnsi4hCuwdo0qZSXJ+f4cOJg/h8qOSmSo2nL2yBada1cV
-         b0vQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780546980; x=1781151780; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=N+UAvzNp7kr1X+8H+52+phqg8y1TmFeAUeyBSpAhRxc=;
-        b=mBfF/g2zB4gACyYVb9XP4LyaU0EG5WoHgpANzjyxewBby6dZ2hdCl2ExRGBWIc1AS2
-         D+JxfImGyizH/cHCnr/1YI/ddiFBncQbU4/Tvxx7yT3He4bZHiOs3Y4ddowo/VV4E7gl
-         nJQbjHV0xkiQOSdVy59kC10UdS6ZoN29h1q8FYugJfclAa8Wn1l2qvuyEtU5duhlAu44
-         XhFvx+dyzDBIn+FOvXLgyeeUPeb/nULsdOjY0ts4cjVkDrqc8DigECuQ2zyLQPIPES5M
-         KHXOnzJxYQmAsTB1WYePVs5jdGjXFD9OVzGrOW7+6ZMOLy6mK5r+XInkeskd8FRGaTY8
-         BVkA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780546980; x=1781151780;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=N+UAvzNp7kr1X+8H+52+phqg8y1TmFeAUeyBSpAhRxc=;
-        b=sd5s3XwmTib3oSWWUim9Rtcvx2OBbgqeb0Ynz5/r8Xa+si8Kkl0p0uR/NZWEORxN4c
-         9oEZLjPIPCUiouf4vyTQ54LNNGbylvOm3P8UZO8BGZDltR63gw3VOZ+vM+CMvz4B8R6E
-         yUyQZ83PxRYQFrXH9+3nmIqCFVJK00+55ytOTvQvfevmZmAQEkCD4P1vMc97PFE7saiR
-         ljiILez7AG0URkVUnoiQJuWRobCKOyceBhQhtNZQbKD8QXmvpn7eEI0JP+eMRcw5StC6
-         +ig/kTr555j9l8urH1s+UQIkPGzG/Sgv+YK8xjzPJNVcczfOs1dsACx5K6WKnH01CKaj
-         5r2A==
-X-Gm-Message-State: AOJu0YyFOyUd3SYwJxTJ/oxCPecEW+cu9BWfhpB20rg/ctwvsyj1KXGv
-	OAEbXI7+mMcsIErz8EKBlNBLq1Pae+w5JDj3+V2QQDYfwx02S6JRmdM4QnKxGv7h9RgJS/odV5e
-	pLTJ7a1CkoE/goNTfy8ydvtHPwpNh9jI=
-X-Gm-Gg: Acq92OGIWq60YsRDFnDi+haLe5mbqvR1V+XyM1UQ2lkSR9c3iqWIiBfzpYWoAnKrhBk
-	q5rPo8J8bj6PywD7bQfhXaf3heFgciq1D3qMb4siHjhFi6pHfm4AcUU3Z+zC548aLQCSt1y+r7G
-	jgmYCdUa9GYIqZjD8D1NR9m6Z3jLapS9IbRsauQ8mNTWowWNRhFgK2RqfA7WfYVDiPxzIYOImE6
-	sPoTMKyzv4ogxr+kuTF6ARNdNyQj9CIqEeZSGO5XJMDulS6kIEdLiI8cHQoP6WE67yx7w1tHVfD
-	CHbStxrbXkDntIWE5U5CoTq5BNIpwkE=
-X-Received: by 2002:a05:690e:4199:b0:660:651a:26e2 with SMTP id
- 956f58d0204a3-660dbe97c0amr5430479d50.13.1780546980048; Wed, 03 Jun 2026
- 21:23:00 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="UglmN5g9"
+Received: by linux.microsoft.com (Postfix, from userid 1134)
+	id 9C1FA20B7168; Wed,  3 Jun 2026 21:39:18 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 9C1FA20B7168
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1780547958;
+	bh=rS4jtbTUUzAmQ4oxR78vqTVOwiU0QMyHLpZQiXKQYyY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=UglmN5g9gwJz1zQfFDWNUaTZpokmsFN+TAoL05Tx43anuQpgeSZfiEti18jBIFDXn
+	 /hHds2ZlNKGBBDr9zUZ2QiZdj59Tt1Kq8dcXQvMU2iP5vwmdY+6Lng6FTojP293BPe
+	 coiGkZ/ewOoS+qsNGUi9wUHaAxA+KigeHbAalsUo=
+Date: Wed, 3 Jun 2026 21:39:18 -0700
+From: Shradha Gupta <shradhagupta@linux.microsoft.com>
+To: Jacob Keller <jacob.e.keller@intel.com>
+Cc: Dexuan Cui <decui@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Konstantin Taranov <kotaranov@microsoft.com>,
+	Simon Horman <horms@kernel.org>,
+	Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
+	Dipayaan Roy <dipayanroy@linux.microsoft.com>,
+	Shiraz Saleem <shirazsaleem@microsoft.com>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Long Li <longli@microsoft.com>, Yury Norov <yury.norov@gmail.com>,
+	linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org, Paul Rosswurm <paulros@microsoft.com>,
+	Shradha Gupta <shradhagupta@microsoft.com>,
+	Saurabh Singh Sengar <ssengar@microsoft.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH net v3] net: mana: Optimize irq affinity for low vcpu
+ configs
+Message-ID: <aiEBdsP7NTBd0+ah@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+References: <20260601102749.1768304-1-shradhagupta@linux.microsoft.com>
+ <10988db9-8a8d-4ad0-917e-317dd4b20253@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260603140742.1398659-1-lgs201920130244@gmail.com> <c835f4f16639eb47111aa64c2968193fb71957ad.camel@siemens.com>
-In-Reply-To: <c835f4f16639eb47111aa64c2968193fb71957ad.camel@siemens.com>
-From: Guangshuo Li <lgs201920130244@gmail.com>
-Date: Thu, 4 Jun 2026 12:22:48 +0800
-X-Gm-Features: AVHnY4JWw6Atno5IMaMOvNK1N0PCOo-mGo6u3aZynkumDnwNDuJeF5ImeFCvCAA
-Message-ID: <CANUHTR-Z2qwdEwnG1dzfe8zH1z3hbdmGMaDNhch3oOxxA2RihQ@mail.gmail.com>
-Subject: Re: [PATCH] net: cpsw_new: unregister devlink on port registration failure
-To: "Sverdlin, Alexander" <alexander.sverdlin@siemens.com>
-Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <10988db9-8a8d-4ad0-917e-317dd4b20253@intel.com>
 
-Hi,
-
-Thank you for your review and comments.
-
-On Thu, 4 Jun 2026 at 00:58, Sverdlin, Alexander
-<alexander.sverdlin@siemens.com> wrote:
->
-> Hi Guangshuo,
->
-> On Wed, 2026-06-03 at 22:07 +0800, Guangshuo Li wrote:
-> > cpsw_probe() registers devlink before registering the CPSW ports.
-> >
-> > If cpsw_register_ports() fails, the error path only unregisters the
-> > notifiers and then releases the lower level resources. It does not undo
-> > the successful cpsw_register_devlink() call, leaving the devlink instance
-> > and its parameters registered after probe has failed.
-> >
-> > Add a devlink cleanup label for the path where devlink registration has
-> > already succeeded, and use it when port registration fails.
-> >
-> > Fixes: ed3525eda4c4 ("net: ethernet: ti: introduce cpsw switchdev based driver part 1 - dual-emac")
-> > Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
->
-> thanks for the patch! Apart from the issue Andrew mentioned, the fix itself
-> looks good to me,
->
-> Reviewed-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
->
+On Wed, Jun 03, 2026 at 02:49:24PM -0700, Jacob Keller wrote:
+> On 6/1/2026 3:27 AM, Shradha Gupta wrote:
+> > In mana driver, the number of IRQs allocated is capped by the
+> > min(num_cpu + 1, queue count). In cases, where the IRQ count is greater
+> > than the vcpu count, we want to utilize all the vCPUs, irrespective of
+> > their NUMA/core bindings.
+> > 
+> > This is important, especially in the envs where number of vCPUs are so
+> > few that the softIRQ handling overhead on two IRQs on the same vCPU is
+> > much more than their overheads if they were spread across sibling vCPUs.
+> > 
+> > This behaviour is more evident with dynamic IRQ allocation. Since MANA
+> > IRQs are assigned at a later stage compared to static allocation, other
+> > device IRQs may already be affinitized to the vCPUs. As a result, IRQ
+> > weights become imbalanced, causing multiple MANA IRQs to land on the
+> > same vCPU, while some vCPUs have none.
+> > 
+> > In such cases when many parallel TCP connections are tested, the
+> > throughput drops significantly.
+> > 
+> > Test envs:
+> > =======================================================
+> > Case 1: without this patch
+> > =======================================================
+> > 4 vcpu(2 cores), 5 MANA IRQs (1 HWC + 4 Queue)
+> > 
+> > 	TYPE		effective vCPU aff
+> > =======================================================
+> > IRQ0:	HWC		0
+> > IRQ1:	mana_q1		0
+> > IRQ2:	mana_q2		2
+> > IRQ3:	mana_q3		0
+> > IRQ4:	mana_q4		3
+> > 
+> > %soft on each vCPU(mpstat -P ALL 1) on receiver
+> > vCPU		0	1	2	3
+> > =======================================================
+> > pass 1:		38.85	0.03	24.89	24.65
+> > pass 2:		39.15	0.03	24.57	25.28
+> > pass 3:		40.36	0.03	23.20	23.17
+> > 
+> > =======================================================
+> > Case 2: with this patch
+> > =======================================================
+> > 4 vcpu(2 cores), 5 MANA IRQs (1 HWC + 4 Queue)
+> > 
+> >         TYPE            effective vCPU aff
+> > =======================================================
+> > IRQ0:   HWC             0
+> > IRQ1:   mana_q1         0
+> > IRQ2:   mana_q2         1
+> > IRQ3:   mana_q3         2
+> > IRQ4:   mana_q4         3
+> > 
+> > %soft on each vCPU(mpstat -P ALL 1) on receiver
+> > vCPU            0       1       2       3
+> > =======================================================
+> > pass 1:         15.42	15.85	14.99	14.51
+> > pass 2:         15.53	15.94	15.81	15.93
+> > pass 3:         16.41	16.35	16.40	16.36
+> > 
+> > =======================================================
+> > Throughput Impact(in Gbps, same env)
+> > =======================================================
+> > TCP conn	with patch	w/o patch
+> > 20480		15.65		7.73
+> > 10240		15.63		8.93
+> > 8192		15.64		9.69
+> > 6144		15.64		13.16
+> > 4096		15.69		15.75
+> > 2048		15.69		15.83
+> > 1024		15.71		15.28
+> > 
+> > Fixes: 755391121038 ("net: mana: Allocate MSI-X vectors dynamically")
+> > Cc: stable@vger.kernel.org
+> > Co-developed-by: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
+> > Signed-off-by: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
+> > Signed-off-by: Shradha Gupta <shradhagupta@linux.microsoft.com>
+> > Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
+> > Reviewed-by: Simon Horman <horms@kernel.org>
 > > ---
-> >  drivers/net/ethernet/ti/cpsw_new.c | 4 +++-
-> >  1 file changed, 3 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/net/ethernet/ti/cpsw_new.c b/drivers/net/ethernet/ti/cpsw_new.c
-> > index 7f42f58a4b03..95b3b58db6e0 100644
-> > --- a/drivers/net/ethernet/ti/cpsw_new.c
-> > +++ b/drivers/net/ethernet/ti/cpsw_new.c
-> > @@ -2050,7 +2050,7 @@ static int cpsw_probe(struct platform_device *pdev)
-> >
-> >       ret = cpsw_register_ports(cpsw);
-> >       if (ret)
-> > -             goto clean_unregister_notifiers;
-> > +             goto clean_unregister_devlink;
-> >
-> >       dev_notice(dev, "initialized (regs %pa, pool size %d) hw_ver:%08X %d.%d (%d)\n",
-> >                  &ss_res->start, descs_pool_size,
-> > @@ -2062,6 +2062,8 @@ static int cpsw_probe(struct platform_device *pdev)
-> >
-> >       return 0;
-> >
-> > +clean_unregister_devlink:
-> > +     cpsw_unregister_devlink(cpsw);
-> >  clean_unregister_notifiers:
-> >       cpsw_unregister_notifiers(cpsw);
-> >  clean_cpts:
->
-> --
-> Alexander Sverdlin
-> Siemens AG
-> www.siemens.com
-I will address Andrew's feedback and send a v2 with the subject updated
-accordingly. I will also target net-next and drop the Fixes tag.
+> > Changes in v3
+> >  * Optimize the comments in mana_gd_setup_dyn_irqs()
+> >  * add more details in the dev_dbg for extra IRQs 
+> > ---
+> > Changes in v2
+> >  * Removed the unused skip_first_cpu variable
+> >  * fixed exit condition in irq_setup_linear() with len == 0
+> >  * changed return type of irq_setup_linear() as it will always be 0
+> >  * removed the unnecessary rcu_read_lock() in irq_setup_linear()
+> >  * added appropriate comments to indicate expected behaviour when
+> >    IRQs are more than or equal to num_online_cpus()
+> > ---
+> >  .../net/ethernet/microsoft/mana/gdma_main.c   | 60 ++++++++++++++++---
+> >  1 file changed, 53 insertions(+), 7 deletions(-)
+> > 
+> > diff --git a/drivers/net/ethernet/microsoft/mana/gdma_main.c b/drivers/net/ethernet/microsoft/mana/gdma_main.c
+> > index 712a0881d720..00a28b3ca0a6 100644
+> > --- a/drivers/net/ethernet/microsoft/mana/gdma_main.c
+> > +++ b/drivers/net/ethernet/microsoft/mana/gdma_main.c
+> > @@ -197,6 +197,8 @@ static int mana_gd_query_max_resources(struct pci_dev *pdev)
+> >  	} else {
+> >  		/* If dynamic allocation is enabled we have already allocated
+> >  		 * hwc msi
+> > +		 * Also, we make sure in this case the following is always true
+> > +		 * (num_msix_usable - 1 HWC) <= num_online_cpus()
+> >  		 */
+> >  		gc->num_msix_usable = min(resp.max_msix, num_online_cpus() + 1);
+> >  	}
+> > @@ -1717,11 +1719,24 @@ static int irq_setup(unsigned int *irqs, unsigned int len, int node,
+> >  	return 0;
+> >  }
+> >  
+> > +/* should be called with cpus_read_lock() held */
+> > +static void irq_setup_linear(unsigned int *irqs, unsigned int len)
+> > +{
+> > +	int cpu;
+> > +
+> > +	for_each_online_cpu(cpu) {
+> > +		if (len == 0)
+> > +			break;
+> > +
+> > +		irq_set_affinity_and_hint(*irqs++, cpumask_of(cpu));
+> > +		len--;
+> > +	}
+> > +}
+> 
+> I would find all of this a bit easier to follow if irq_setup_linear()
+> and irq_setup() had a mana prefix so it was more obvious these are
+> specific to the driver. Of course irq_setup is pre-existing, and its not
+> my driver so do as you will :)
+> 
+> > +
+> >  static int mana_gd_setup_dyn_irqs(struct pci_dev *pdev, int nvec)
+> >  {
+> >  	struct gdma_context *gc = pci_get_drvdata(pdev);
+> >  	struct gdma_irq_context *gic;
+> > -	bool skip_first_cpu = false;
+> >  	int *irqs, irq, err, i;
+> >  
+> >  	irqs = kmalloc_objs(int, nvec);
+> > @@ -1729,6 +1744,8 @@ static int mana_gd_setup_dyn_irqs(struct pci_dev *pdev, int nvec)
+> >  		return -ENOMEM;
+> >  
+> >  	/*
+> > +	 * In this function, num_msix_usable = HWC IRQ + Queue IRQ.
+> > +	 * nvec is only Queue IRQ (HWC already setup).
+> >  	 * While processing the next pci irq vector, we start with index 1,
+> >  	 * as IRQ vector at index 0 is already processed for HWC.
+> >  	 * However, the population of irqs array starts with index 0, to be
+> > @@ -1767,13 +1784,42 @@ static int mana_gd_setup_dyn_irqs(struct pci_dev *pdev, int nvec)
+> >  	 * first CPU sibling group since they are already affinitized to HWC IRQ
+> >  	 */
+> >  	cpus_read_lock();
+> > -	if (gc->num_msix_usable <= num_online_cpus())
+> > -		skip_first_cpu = true;
+> > +	if (gc->num_msix_usable <= num_online_cpus()) {
+> > +		err = irq_setup(irqs, nvec, gc->numa_node, true);
+> > +		if (err) {
+> > +			cpus_read_unlock();
+> > +			goto free_irq;
+> > +		}
+> > +	} else {
+> > +		/*
+> > +		 * When num_msix_usable are more than num_online_cpus, our
+> > +		 * queue IRQs should be equal to num of online vCPUs.
+> > +		 * We try to make sure queue IRQs spread across all vCPUs.
+> > +		 * In such a case NUMA or CPU core affinity does not matter.
+> > +		 * Note: in this case the total mana IRQ should always be
+> > +		 * num_online_cpus + 1. The first HWC IRQ is already handled
+> > +		 * in HWC setup calls
+> > +		 * However, if CPUs went offline since num_msix_usable was
+> > +		 * computed, queue IRQs will be more than num_online_cpus().
+> > +		 * In such cases remaining extra IRQs will retain their default
+> > +		 * affinity.
+> > +		 */
+> > +		int first_unassigned = num_online_cpus();
+> > +		if (nvec > first_unassigned) {
+> > +			char buf[32];
+> > +
+> > +			if (first_unassigned == nvec - 1)
+> > +				snprintf(buf, sizeof(buf), "%d",
+> > +					 first_unassigned);
+> > +			else
+> > +				snprintf(buf, sizeof(buf), "%d-%d",
+> > +					 first_unassigned, nvec - 1);
+> > +
+> > +			dev_dbg(&pdev->dev,
+> > +				"MANA IRQ indices #%s will retain the default CPU affinity\n", buf);
+> > +		}
+> >  
+> > -	err = irq_setup(irqs, nvec, gc->numa_node, skip_first_cpu);
+> > -	if (err) {
+> > -		cpus_read_unlock();
+> > -		goto free_irq;
+> > +		irq_setup_linear(irqs, nvec);
+> 
+> irq_setup() doesn't have a driver prefix, but is actually a static
+> function in gdma_main.c, so its implementation is specific to this
+> driver despite its name.
+> 
+> So if I understand this change correctly, if the number of usable MSI-X
+> vectors is smaller than the number of CPUs, you contineu to use the
+> current irq_setup logic.. otherwise you switch to the simpler "linear"
+> logic.
+> 
+> I guess this means the logic and heuristic used in irq_setup() breaks
+> down when the number of vectors is large and number of vCPU is small?
+> 
+> Makes sense.
+> 
 
-Thanks,
-Guangshuo
+Hi Jacob,
+
+Yes, that's the right understanding. 
+Regarding the function names, let me take that up in a seperate patch to
+add prefixes to all such functions.
+
+Thanks.
+
+> >  	}
+> >  
+> >  	cpus_read_unlock();
+> > 
+> > base-commit: 8415598365503ced2e3d019491b0a2756c85c494
