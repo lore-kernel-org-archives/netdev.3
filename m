@@ -1,35 +1,35 @@
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 295EC3D6CDB;
-	Thu,  4 Jun 2026 10:27:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 987723C343F;
+	Thu,  4 Jun 2026 10:28:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780568883; cv=none; b=cdvGczgE7Zp+aUbqTpQSvB0FBy+f6QSowkSNXGsxLCJ/wsdMSPngjU0p/8goML6+j2EHcfHS9aVgN8TQqaKdklOVSDnRtMISqv1w/poWzvfTEV17dDoBbQYA4ndUmoi35uoZUT6kMgTJF/ECpV8hmWK0HEJxdfWWc6SFwTwbpnU=
+	t=1780568885; cv=none; b=ftd/hHJjQbVraaVpaU80y5fzXA9Q95MdYIP+X7sc9H3yb9lV2w+RKhfEtQHHfaIRFFZCjt+5ZLhWwMcSX7SQZ6r3qUUItZk+mP03iuPZkIhFC7c0w3sXm6+SPsczbyY3Ra18vZNyd+ZlCH3A7/q93lFEuR4N0BlPBCvdKcNKer8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780568883; c=relaxed/simple;
-	bh=rYAw6159oheg+nH4cGJcK95R4/mkk/NYBHiCSKTnBCU=;
+	s=arc-20240116; t=1780568885; c=relaxed/simple;
+	bh=0scIp1g6jFaZ5acwxQ9HF90x7/u6sNALHQ1o2PoyU6E=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MMIZLxV4J7Xjuw6wTx/GyP2c0Wt3OfsmhKE2KjMYBx11OLuQvq07UH+EPqKQF0Pbvn+Z0KLGejbPiofmnjizH6d3I8Nib4IBjwLfSmziPp5rasZ1SmjsHFVUmBmxgP5IQceWgkfBxBbfrVViBu9quymhxhoXTFLbd6IFqP1P9nM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn; spf=pass smtp.mailfrom=realsil.com.cn; dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b=EsBIjOmb; arc=none smtp.client-ip=211.75.126.72
+	 MIME-Version:Content-Type; b=NerB1DRUsVNjVkBWszS5ksne5qMZbqbrvHRNAPc2D/Mu6Xipv2yhCUwggF+vzZLaWClWP5DQp8TwR+k9jv9g1rNvw39k4GGb4M3GPC8rebzceE4Aeo/7Hmqcw3hMOXEdT9FZyw3wk7oU5fVRBAlgGg8F450QA9sL8QAtmfWmd/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn; spf=pass smtp.mailfrom=realsil.com.cn; dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b=JLzgZga7; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realsil.com.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b="EsBIjOmb"
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 654ARa622272242, This message is accepted by code: ctloc85258
+	dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b="JLzgZga7"
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 654ARa652272242, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realsil.com.cn;
-	s=dkim; t=1780568856;
-	bh=x1nFGHu126pSqs43OEXyxZh3Xes1NWcDX9fIgTGuIow=;
+	s=dkim; t=1780568857;
+	bh=oufD+Qi8eVvo8qzHrks1StU5mOYjeV4zUSl0nl4KwG8=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=EsBIjOmb94kwtPc6kkjlI6DxOQ1g4IZfH/+Dk5ZUH/2Nduy+WaH1hZ6aYEDq70ye3
-	 PEzy0J7dHVGZ/SZze8k5UoGB34ykuV3HfEocFVuQQois7dCpj4mU0U6IVt5Doy7aaQ
-	 SXiTrYFUYMKdo+5REKyES7OdfCUwAnjpg8ztGdWS+4fDS8iRk9JGLNwAubGJnLU3m9
-	 DW9g91Ku65Nh6WsQcSnxBAJpkUA+mBUO3CEGIcpncGD/gk5VGI9kvwfdUkEBNTAcVv
-	 FqkD7MdL3crBXz307nt5JfDKuMDjfKqCKZogJBWqiHKWhM3sfCdigPZHEhEvEis7m+
-	 dmV7FQK/wzTuA==
+	b=JLzgZga7Wpv4PtLdnbLb6YfGzUIOv5B5JvRvMmT9rtuwSUnEztdWL8jnJsC2m+7oC
+	 qAWILC0EiERFEP+aMVaKqQGGazdgIqNMIDpF/o3phFUYwk4F7wzbQ95h+EmBXtWWW3
+	 s0Iw3BuE9JX1xT6iYNw/jXbiTZR2olQp+Z2lO+SDDIYW9IpQ5HV3wX/ze8DNW7EDn9
+	 KehDhbwoZF4z1GAmKwz0O1vcETP81ACs8me59SEjSzAs6hjvZQyZVRqvbbf5xi/kC6
+	 z2YILlahTD97IerYPt4rru8G8NQfzpVzjLj74hhIJPsCoESrN/MLDi5BWxc0jm+2zl
+	 xh2UTyUq3dDQQ==
 Received: from RS-EX-MBS3.realsil.com.cn ([172.29.17.103])
-	by rtits2.realtek.com.tw (8.15.2/3.28/5.94) with ESMTPS id 654ARa622272242
+	by rtits2.realtek.com.tw (8.15.2/3.28/5.94) with ESMTPS id 654ARa652272242
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
 	Thu, 4 Jun 2026 18:27:36 +0800
 Received: from RS-EX-MBS1.realsil.com.cn (172.29.17.101) by
@@ -45,9 +45,9 @@ To: <hkallweit1@gmail.com>, <nic_swsd@realtek.com>, <andrew+netdev@lunn.ch>,
 	<pabeni@redhat.com>, <horms@kernel.org>
 CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Javen Xu
 	<javen_xu@realsil.com.cn>
-Subject: [PATCH net-next v7 4/7] r8169: enable new interrupt mapping
-Date: Thu, 4 Jun 2026 18:27:30 +0800
-Message-ID: <20260604102733.1582-5-javen_xu@realsil.com.cn>
+Subject: [PATCH net-next v7 7/7] r8169: support setting rx queue numbers via ethtool
+Date: Thu, 4 Jun 2026 18:27:33 +0800
+Message-ID: <20260604102733.1582-8-javen_xu@realsil.com.cn>
 X-Mailer: git-send-email 2.50.1.windows.1
 In-Reply-To: <20260604102733.1582-1-javen_xu@realsil.com.cn>
 References: <20260604102733.1582-1-javen_xu@realsil.com.cn>
@@ -62,7 +62,8 @@ Content-Type: text/plain
 
 From: Javen Xu <javen_xu@realsil.com.cn>
 
-This patch enables new interrupt mapping for RTL8127.
+This patch add support for changing rx queues by ethtool. We can set rx
+1, 2, 4, 8 by ethtool -L eth1 rx num.
 
 Signed-off-by: Javen Xu <javen_xu@realsil.com.cn>
 ---
@@ -73,50 +74,169 @@ Changes in v3:
  - no changes
 
 Changes in v4:
- - no changes
+ - remove rss_support and rss_enable
+ - remove some zero-initialized
+ - use kzalloc_objs instead of kcalloc
 
 Changes in v5:
  - no changes
 
 Changes in v6:
- - no changes
+ - change subject of this patch
+ - defer the assignment of tp->init_rx_desc_type until after
+   rtl8169_down()
+ - call netif_set_real_num_rx_queues() to synchronize the new rx queue
+   number with networking core
 
 Changes in v7:
  - no changes
 ---
- drivers/net/ethernet/realtek/r8169_main.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/net/ethernet/realtek/r8169_main.c | 125 ++++++++++++++++++++++
+ 1 file changed, 125 insertions(+)
 
 diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
-index a416d482aa86..44dfdd3d4d75 100644
+index ceecf1a88739..1cd362b0afbe 100644
 --- a/drivers/net/ethernet/realtek/r8169_main.c
 +++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -3945,6 +3945,15 @@ DECLARE_RTL_COND(rtl_mac_ocp_e00e_cond)
- 	return r8168_mac_ocp_read(tp, 0xe00e) & BIT(13);
+@@ -6225,6 +6225,129 @@ static void r8169_init_napi(struct rtl8169_private *tp)
+ 	}
  }
  
-+static void rtl8169_hw_enable_vec_mapping(struct rtl8169_private *tp)
++static void rtl8169_get_channels(struct net_device *dev,
++				 struct ethtool_channels *ch)
 +{
-+	u8 tmp;
++	struct rtl8169_private *tp = netdev_priv(dev);
 +
-+	tmp = RTL_R8(tp, INT_CFG0_8125);
-+	tmp |= INT_CFG0_ENABLE_8125;
-+	RTL_W8(tp, INT_CFG0_8125, tmp);
++	ch->max_rx = tp->hw_supp_num_rx_queues;
++	ch->max_tx = 1;
++
++	ch->rx_count = tp->num_rx_rings;
++	ch->tx_count = 1;
 +}
 +
- static void rtl_hw_start_8125_common(struct rtl8169_private *tp)
- {
- 	rtl_pcie_state_l2l3_disable(tp);
-@@ -3953,6 +3962,9 @@ static void rtl_hw_start_8125_common(struct rtl8169_private *tp)
- 	RTL_W32(tp, RSS_CTRL_8125, 0);
- 	RTL_W16(tp, Q_NUM_CTRL_8125, 0);
- 
-+	if (tp->irq_nvecs > 1)
-+		rtl8169_hw_enable_vec_mapping(tp);
++static int rtl8169_realloc_rx(struct rtl8169_private *tp,
++			      struct rtl8169_rx_ring *new_rx,
++			      int new_count)
++{
++	int i, ret;
 +
- 	/* disable UPS */
- 	r8168_mac_ocp_modify(tp, 0xd40a, 0x0010, 0x0000);
- 
++	for (i = 0; i < new_count; i++) {
++		struct rtl8169_rx_ring *ring = &new_rx[i];
++
++		ring->rx_desc_array = dma_alloc_coherent(&tp->pci_dev->dev,
++							 R8169_RX_RING_BYTES,
++							 &ring->rx_phy_addr,
++							 GFP_KERNEL);
++		if (!ring->rx_desc_array) {
++			ret = -ENOMEM;
++			goto err_free;
++		}
++
++		memset(ring->rx_databuff, 0, sizeof(ring->rx_databuff));
++		ret = rtl8169_rx_fill(tp, ring);
++		if (ret) {
++			dma_free_coherent(&tp->pci_dev->dev, R8169_RX_RING_BYTES,
++					  ring->rx_desc_array, ring->rx_phy_addr);
++			goto err_free;
++		}
++	}
++	return 0;
++
++err_free:
++	while (--i >= 0) {
++		rtl8169_rx_clear(tp, &new_rx[i]);
++		dma_free_coherent(&tp->pci_dev->dev, R8169_RX_RING_BYTES,
++				  new_rx[i].rx_desc_array, new_rx[i].rx_phy_addr);
++	}
++	return ret;
++}
++
++static int rtl8169_set_channels(struct net_device *dev,
++				struct ethtool_channels *ch)
++{
++	struct rtl8169_private *tp = netdev_priv(dev);
++	bool if_running = netif_running(dev);
++	enum rx_desc_type old_rx_desc_type;
++	enum rx_desc_type new_desc_type;
++	struct rtl8169_rx_ring *new_rx;
++	int i, ret;
++
++	old_rx_desc_type = tp->init_rx_desc_type;
++
++	if (!rtl_hw_support_rss(tp)) {
++		netdev_warn(dev, "This chip does not support multiple channels/RSS.\n");
++		return -EOPNOTSUPP;
++	}
++
++	if (ch->rx_count > R8169_MAX_RX_QUEUES)
++		return -EINVAL;
++
++	new_desc_type = ch->rx_count > 1 ? RX_DESC_TYPE_RSS : RX_DESC_TYPE_DEFAULT;
++
++	if (!if_running) {
++		tp->num_rx_rings = ch->rx_count;
++		tp->init_rx_desc_type = new_desc_type;
++		return 0;
++	}
++
++	netif_stop_queue(dev);
++	rtl8169_down(tp);
++
++	new_rx = kzalloc_objs(*new_rx, R8169_MAX_RX_QUEUES);
++	if (!new_rx)
++		return -ENOMEM;
++
++	tp->init_rx_desc_type = new_desc_type;
++	ret = rtl8169_realloc_rx(tp, new_rx, ch->rx_count);
++	if (ret) {
++		tp->init_rx_desc_type = old_rx_desc_type;
++		kfree(new_rx);
++		return ret;
++	}
++
++	for (i = 0; i < tp->num_rx_rings; i++)
++		rtl8169_rx_clear(tp, &tp->rx_ring[i]);
++	rtl8169_free_rx_desc(tp);
++
++	tp->num_rx_rings = ch->rx_count;
++
++	memset(tp->rx_ring, 0, sizeof(tp->rx_ring));
++	memcpy(tp->rx_ring, new_rx, sizeof(*new_rx) * ch->rx_count);
++
++	for (i = 0; i < tp->rss_data->hw_supp_indir_tbl_entries; i++) {
++		if (ch->rx_count > 1)
++			tp->rss_data->rss_indir_tbl[i] =
++				ethtool_rxfh_indir_default(i, tp->num_rx_rings);
++		else
++			tp->rss_data->rss_indir_tbl[i] = 0;
++	}
++
++	rtl_set_irq_mask(tp);
++
++	rtl8169_up(tp);
++	netif_start_queue(dev);
++
++	ret = netif_set_real_num_rx_queues(dev, ch->rx_count);
++	if (ret)
++		netdev_warn(dev, "Failed to set real num rx queues\n");
++
++	kfree(new_rx);
++
++	return 0;
++}
++
+ static const struct ethtool_ops rtl8169_ethtool_ops = {
+ 	.supported_coalesce_params = ETHTOOL_COALESCE_USECS |
+ 				     ETHTOOL_COALESCE_MAX_FRAMES,
+@@ -6243,6 +6366,8 @@ static const struct ethtool_ops rtl8169_ethtool_ops = {
+ 	.nway_reset		= phy_ethtool_nway_reset,
+ 	.get_eee		= rtl8169_get_eee,
+ 	.set_eee		= rtl8169_set_eee,
++	.get_channels		= rtl8169_get_channels,
++	.set_channels		= rtl8169_set_channels,
+ 	.get_link_ksettings	= phy_ethtool_get_link_ksettings,
+ 	.set_link_ksettings	= rtl8169_set_link_ksettings,
+ 	.get_ringparam		= rtl8169_get_ringparam,
 -- 
 2.43.0
 
