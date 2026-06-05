@@ -1,121 +1,179 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E56A2222AA;
-	Fri,  5 Jun 2026 12:18:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 305661E22E9
+	for <netdev@vger.kernel.org>; Fri,  5 Jun 2026 12:19:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780661933; cv=none; b=rK99J9dS14L7JlqOPma0QiJziLH890Hl7eggyrD+C9Ir0SO9pOkph4nZWuPK/ojc41X488PvsUX8wucY5sxAlfJOq1IAi6CzyiEsktL7IuQBCZkmktcupKzcorVfADvIJVLGRWLidtO/JqKODhom84kRckBsTfS7IOcV3HwdA6M=
+	t=1780661989; cv=none; b=qIu7q5h40Tbpt0vdWb750WeeIpH6+usNbmXjiWvEEQS00onrWxEmS7k3ggznHplLRBVMBX+rlmptwUkA/pKhsSI9ZBcMhb12OEluaOfDLJULgNL4ZUSwOxdP/pC+q0x+bNx4TnOiLRrlaI0fFqpKx4cDK+As2G5kBsRKDj8htm0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780661933; c=relaxed/simple;
-	bh=qR4ybGa3cWCX0SLUgFfwlnKl4P+ZfVg5K+z1HlywdGk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VHX1vFnbxZTUp1+txDk9PtUgDKKr/gC1G3Y1psFqgMZ5CzSLUD6dl5oxjjCWJbYAIb43F0/gKd/3sNATrYcMBe9e7bZtwdLQVnCfKByFt+bw/OyNzcMSwiSKa26uzLBm7Hd0an5jznUS7BHLVwZM3TBkjWRBNlC9jztni/Addyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B6ZbiSx0; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780661989; c=relaxed/simple;
+	bh=fG5cj9E2nMxzrFq+XWzFsnTRtUdYT3n82TzWC2ntc84=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=iVFDoUvoPJWuAhKf9aGAZI756XbT+X71kU/cxJZxqNWbDKCsna2zjAfIaZm5vydHtMNVJM+2ZTJtaKLeb7ReoFahPZ5br3YIZGY4R7zq7aZZaUqovhjkqcTnMG6lHqrBZugTchzaBYrDwn10Xs3+hX2D5+c4V9PlbmDLHKIGC5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=U5IBHMk2; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B6ZbiSx0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3680B1F00893;
-	Fri,  5 Jun 2026 12:18:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780661932;
-	bh=/HjuMOk3WVgtMcDzTwNBYPhsQV9U+DIpa82b0vn61Cw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=B6ZbiSx05oBJ7chQvQ/ntllvANNBFEMa9EcOIiJSVjAP/OKFNkFGomFVwuLIbEh+S
-	 20kIDl7Ha3LYle9T/0PSzWzaCdc5fZcxNiJ+ZJmhkm8/XR0hsoDMz0IvlyzEPadr35
-	 B2APB6kQVq6vujpiHLQ9XGq4k/2xwAVP0hGJlMMDE7JgpUoN8S88GU32fCFiZ7KPhJ
-	 5aHdZm6VNXpv0qJRoypblDiKXMIeOyKzQoPRJIPp5ZLuwnSs6kmXI7+nhiCVs/dUo5
-	 dzZdsgrBxQRdtTMmm690hmi5h0XAzX6HCHrWvz8VYLGFbLK2G/Ky5ioKkoR2keR14J
-	 lAcFAh/v+L/ZA==
-Received: from johan by xi.lan with local (Exim 4.99.3)
-	(envelope-from <johan@kernel.org>)
-	id 1wVTVh-00000000DXZ-0P54;
-	Fri, 05 Jun 2026 14:18:49 +0200
-Date: Fri, 5 Jun 2026 14:18:49 +0200
-From: Johan Hovold <johan@kernel.org>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Philipp Zabel <p.zabel@pengutronix.de>,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
-	Lee Jones <lee@kernel.org>,
-	Mark Brown <broonie@opensource.wolfsonmicro.com>,
-	Thierry Reding <thierry.reding@avionic-design.de>,
-	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Srinivas Kandagatla <srini@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Vinod Koul <vkoul@kernel.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Andi Shyti <andi.shyti@kernel.org>, Joerg Roedel <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
-	Doug Berger <opendmb@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Ulf Hansson <ulfh@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Peter Chen <peter.chen@kernel.org>,
-	Paul Cercueil <paul@crapouillou.net>, Bin Liu <b-liu@ti.com>,
-	Maximilian Luz <luzmaximilian@gmail.com>,
-	Hans de Goede <hansg@kernel.org>,
-	Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Benjamin Herrenschmidt <benh@kernel.crashing.org>, brgl@kernel.org,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org, linux-sound@vger.kernel.org,
-	driver-core@lists.linux.dev, devicetree@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, linux-i2c@vger.kernel.org,
-	iommu@lists.linux.dev, linux-pm@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-	linux-usb@vger.kernel.org, linux-mips@vger.kernel.org,
-	platform-driver-x86@vger.kernel.org
-Subject: Re: [PATCH 22/23] reset: rzg2l: use
- platform_device_set_of_node_from_dev()
-Message-ID: <aiK-qZqpuC-OEigf@hovoldconsulting.com>
-References: <20260521-pdev-fwnode-ref-v1-0-88c324a1b8d2@oss.qualcomm.com>
- <20260521-pdev-fwnode-ref-v1-22-88c324a1b8d2@oss.qualcomm.com>
- <6af284545729f03a60d06479339862a2f08c6b7e.camel@pengutronix.de>
- <ah9QtExF2rUUTMNo@ashevche-desk.local>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="U5IBHMk2"
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-490b2b037d2so16448985e9.3
+        for <netdev@vger.kernel.org>; Fri, 05 Jun 2026 05:19:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780661987; x=1781266787; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Gz+VtwQhYk3ng5JxyiUgLQa8oImJtLVBwaLlzEeVzFo=;
+        b=U5IBHMk2+rOzS/if0P1kHBKhHO1E+Ya49eQCQst9eVyKYrNqaV/ILHIswx3k/Ya6cH
+         uI/Mkj15UuGVafXE+YyfybWXy/xkKIInZpK6pfGSTpv+QymV2+wwfKUmIYjaXlERXnxm
+         77xU7BFQ07n8mdMkNY3AlGELiR6XSktldPtw6Y/m2xAzRkqWUu+XCkzUhmgw2vpaELtr
+         Lpezyfi7gwsgLU57oqpIBv5A8Vryff8AgqJRoWoybSdb0UY3cA2opYUA+qVE0WrXcR89
+         5jpz/98fNXaBTt1hYIX1P8e0rugg6WZ2MlNpbU0QiHlwGKXKS42vNN6OaT420/og3ZdI
+         j61Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780661987; x=1781266787;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Gz+VtwQhYk3ng5JxyiUgLQa8oImJtLVBwaLlzEeVzFo=;
+        b=bSdzehZ3V3/Aq8yr2p7QlC7eDyJbDcoyKiBcwYvg0DWJwGLWw3Tucw6fqOzhtnUSvr
+         45Xei3HrHhK5NwofpRmQqjWqUrCGQllRFcc0nYvW9BPIrvJEHA+qzaupnDaIlCvmva/v
+         LGTCc+2Zql3tVFQhhpJoVnV3AnS7uUNdaUk7X9AgD6Qu7HJECjA0ZjD5g6P8zkWXy8x8
+         86XhemwC+iUVxfuLgWUho3ZeLZZnqCqmYE/3eYo40PBfFOiiteVYj1WZvUsogisdrrxp
+         8MMaA3cqnkdAuEfDYind7OyCEI4vClPp31Se8oKE1FVAytr5V1OBIOqLXyAH+QaecNEA
+         1K1w==
+X-Forwarded-Encrypted: i=1; AFNElJ/X3y99HYn6XbyXssvY/sS9Uf1TFUYTFXq9H40MEqLp8F0u2km4E51bJffTxJklCGXcnxbKSeo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyG9Ga8tZrSmdo1QjGlUmo7rEeVuusBXuZtH3qAe3uaFT2OhQ1e
+	ciojUUvlwDrXQsxjGNR0Hg1X2zwf/zec8prgAo9q85DWbBwxOaXwbf9j
+X-Gm-Gg: Acq92OGWvOp7Cov2f0nfKc0L+d43KwYTDx47p6Hi0cQ3ikbhjZ2yGQKuCm7zAOetg8v
+	0PclxgzejqMpm1nFcFry8LI9u6ef06PWQCX9KlV/pvMGA/lxIc5Iw6i4CGkdVKyJs7Wxv//s5Qs
+	Kzk6bqvwIq2dKwE4aAkNgRP5QIbrAr0MUWU2gwUbb4W/IJfXAyTwJuIG87kz8XiX9THt6KYhaeQ
+	sYjMbL2tPgOpYkOR/nAWr9nV8Awa497a4cowk90fva98oKG/ScewW83mKVx5nfjzt02dQj97Kvk
+	FX6s8CorU8o+MnxbWFFeWghkdCp+m73cukuVzoNnBCmbFJ9exxVVmhCz9jnT2qKL6YFsk+dF3YX
+	W1WszoGB455UVGLRIqz1jhgwMnXvf1ppC/6SFvVXG2e1Lqz0ouWDIGnoRZ3kBAorvMju85rrNz4
+	/NaKSLRUjtjC2BsgMquFvaTROTfBlY6s52MYVkaBl2Uz53aBbgASVc3QhSVnVTAD+uuPkzGqQYe
+	GhrxwrCIw==
+X-Received: by 2002:a05:600c:1d12:b0:490:7227:100 with SMTP id 5b1f17b1804b1-490c26049a0mr52430315e9.18.1780661986468;
+        Fri, 05 Jun 2026 05:19:46 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490bc3cbfe4sm152016275e9.7.2026.06.05.05.19.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 05 Jun 2026 05:19:46 -0700 (PDT)
+Date: Fri, 5 Jun 2026 13:19:42 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: Stefan Metzmacher <metze@samba.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, Andy Lutomirski
+ <luto@amacapital.net>, Askar Safin <safinaskar@gmail.com>,
+ akpm@linux-foundation.org, axboe@kernel.dk, brauner@kernel.org,
+ david@kernel.org, dhowells@redhat.com, hch@infradead.org, jack@suse.cz,
+ linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, miklos@szeredi.hu,
+ netdev@vger.kernel.org, patches@lists.linux.dev, pfalcato@suse.de,
+ viro@zeniv.linux.org.uk, willy@infradead.org
+Subject: Re: [PATCH 0/3] vmsplice: make vmsplice a trivial wrapper for
+ preadv2/pwritev2
+Message-ID: <20260605131942.4584728e@pumpkin>
+In-Reply-To: <512d948f-7883-4d8c-b2c5-a777e70ca975@samba.org>
+References: <CAHk-=wiAqf0PdZ4AKj_4riUnnEb=g_ZNPkLnXrByA9BBHYiFRg@mail.gmail.com>
+	<20260602225426.122258-1-safinaskar@gmail.com>
+	<CAHk-=wgKy4dP0oQCNKyMQQf3-uVpaigmDyH6_T0Via76gWST9g@mail.gmail.com>
+	<CALCETrWx8-Q5-rK1KnAPCxCbXaWCd=Yfs_Pr8qVMa8k8L6of1w@mail.gmail.com>
+	<CAHk-=wizkDXRut5xLXRF-CVUVYMaZ5AOexxeghOAoXPb4yAvQg@mail.gmail.com>
+	<512d948f-7883-4d8c-b2c5-a777e70ca975@samba.org>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ah9QtExF2rUUTMNo@ashevche-desk.local>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed, Jun 03, 2026 at 12:52:52AM +0300, Andy Shevchenko wrote:
-> On Tue, Jun 02, 2026 at 10:24:41AM +0200, Philipp Zabel wrote:
-> > On Do, 2026-05-21 at 10:36 +0200, Bartosz Golaszewski wrote:
-> > > Ahead of reworking the reference counting logic for platform devices,
-> > > encapsulate the assignment of the OF node from another device for
-> > > dynamically allocated platform devices with the provided helper.
-> 
-> ...
-> 
-> > > -	device_set_of_node_from_dev(&vdev->dev, dev);
-> > > +	platform_device_set_of_node_from_dev(vdev, dev);
-> 
-> Same Q here, why it uses inherited call? Cargo cult?
-> 
-> 'reused' flag is solely pin control (provider!) thingy as far as I remember.
+On Fri, 5 Jun 2026 11:43:45 +0200
+Stefan Metzmacher <metze@samba.org> wrote:
 
-No, it's needed for pin control *consumers*, which can be any device,
-and potentially any other resource managed by driver core or bus code.
+> Hi Linus,
+> 
+> >> Am I understanding correctly that this will completely break zerocopy
+> >> sendfile?  
+> > 
+> > Very much, yes.
+> > 
+> > And it's worth making it very very clear that ABSOLUTELY NONE of the
+> > recent big security bugs were in splice.
+> > 
+> > They were all in the networking and crypto code that just didn't deal
+> > with shared data correctly.
+> > 
+> > So in that sense, it's a bit sad to discuss castrating splice.
+> > 
+> > But it's probably still the right thing to at least try.
+> > 
+> > I've seen very impressive benchmark numbers over the years, but
+> > they've often smelled more like benchmarketing than actual real work.
+> > 
+> > There's also a real possibility that a lot of the sendfile / splice
+> > advantage has little to do with zero-copy, and more to do with the
+> > cost of mapping and maintaining buffers in user space.
+> > 
+> > If you are sending file data using plain reads and writes, it's not
+> > just the "copy from user space to socket data structures".
+> > 
+> > There's also the cost of populating user space in the first place:
+> > page faults for mmap made *that* historical copy avoidance basically a
+> > fairy tale.
+> > 
+> > And not using mmap means that you have the cost of double caching in
+> > the kernel _and_ user space etc.
+> > 
+> > So sendfile() as a concept (whether you use combinations of splice()
+> > system calls or the sendfile system call itsefl) isn't necessarily
+> > only about the zero-copy, it's really also about avoiding the user
+> > space memory management.  
+> 
+> I don't think so. Ok, maybe for webservers just serving tiny
+> html files, that's true. But for me with Samba it's really the
+> copy_to/from_iter() that is the major factor.
 
-Johan
+Is that copy also doing the ip checksum?
+I really can't tell from the code (it does sometimes, even for tcp).
+But I can't help feeling that optimisation is well past its sell by date.
+
+-- David
+
+> 
+> We can use io_uring with IOSQE_ASYNC in order to offload
+> the memcpy cpu wasting to different cores, but it's still
+> wasting a lot of resources.
+> 
+> For the case of filesystem => socket, we can use
+> IORING_OP_SENDMSG_ZC and that at least removes the
+> copy_from_iter() in the sendmsg path, but the
+> IORING_OP_READV of buffers in the sizes up to 8MBytes
+> is wasting cpu in copy_to_iter().
+> 
+> For the case with smbdirect and RDMA offload with 2x200GBit/s links
+> changes from only ~33GBytes/s are used (and the server cpu even if using multiple cores)
+> is the limit. Without the memcpy waste ~46GByte/s is easily reached
+> and the limit is just the network link.
+> 
+> Maybe another solution could be having a version of
+> copy_to/from_iter that uses async_memcpy(), but didn't
+> have the time to experiment with that yet. Maybe a new flag
+> to preadv2/pwritev2 could control that, so that the
+> application can decide what's better.
+> 
+> But without an alternative please don't kill splice.
+> 
+> A lot of people are frustrated because they bought hardware
+> that is able to handle a lot of throughput, but
+> e.g. with the default of smb over tcp they get no
+> higher than 3.5GByte/s on a 100GBit/s link that's able
+> to handle ~11GBytes/s. And io_uring and splice are
+> a key factor to fix that.
+> 
+> Thanks!
+> metze
+> 
+
