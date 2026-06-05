@@ -1,56 +1,48 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A1BA3E2ABF
-	for <netdev@vger.kernel.org>; Fri,  5 Jun 2026 02:37:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D94F3E3155;
+	Fri,  5 Jun 2026 02:38:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780627041; cv=none; b=WZW3MG9H9RWbNyO1LJEmGrfufhz3Go16JSbG4i80UdICni04/r5UTk+py5rbtHIr6bpTq0W553UVShP7ROFfi4jPDPj/ugwmH5ZacyVebmmVyv8K7bEgwZ/pRWW5k+kYDaIBFs3oKfPeu7g0wwLToCNBAcZRF+pUmbbyknN4NXs=
+	t=1780627119; cv=none; b=lGh0lnAr6LE4X3HIoPgAT5TRy8JiZ9UV2x5gjuOqh/wnGygsXsUIz5QWJmV4vX5fBw6AcjJ5IJ1t5IuS36M6YCg6g4XuV4VoCFoGAoFyE3hmw66/cmkHUnjuLLAau7+PgI7xGslM5zPpSCfE5OcBU6lZ3BML7GbK+Aeelx+WHF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780627041; c=relaxed/simple;
-	bh=IbY5PVTOrL8eCaLa3jm1ws2zoEcSQsbPbwxz+zUyn1o=;
+	s=arc-20240116; t=1780627119; c=relaxed/simple;
+	bh=OGMmf6bsHMua57xPnzXPnpMsolC/thXXZ39muzt6fF0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cuVlZ00xlt/eHtI6wo7cvZDlYQXnqTXohhClruI7LNN0on/h9pCTZWVF/SgkThy+DhCik6cZwi55Sx/xp4wCZFLO8FD3XCtnWjGg2RACJ83RU7Qq1XOd9ofhngyRXlQy28RR9BOMwnHaSrhUbV9MVoreLNuJZUFgzGhyqGzYoC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HcrEvOi8; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=TMV/tBvgiNm7DykYpTNZrhTNpHPPHrfjJpi36pX7aScM2gw7W6IVzK5I8e9Y6sNhz0OxdiDrnU9esLFzxYw0iuEjP9NQBu/09N2wEpA3szoEDyGYyXJ4o6Gq4tGGnaKgZ29BYpcEFFIRghhDEfUvRDPAINbiHSR+0u47XhpZIe8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U7lX8lJi; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HcrEvOi8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AF9D1F00893;
-	Fri,  5 Jun 2026 02:37:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U7lX8lJi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F05FE1F00898;
+	Fri,  5 Jun 2026 02:38:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780627035;
-	bh=9lPe3V1kbXwQcy11sW9IOTZnFlvLl5J21zXgtrx0sp0=;
+	s=k20260515; t=1780627113;
+	bh=GvlsWfjga9Qduzi7rdkPjWoHL+cOvUF188mJhsiihbI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=HcrEvOi8fn1Uv0faiTif0FKT/GeSxSATG2b/i9Os2vBRMbDcknYXhXZgL3dCeKG+W
-	 CRbrhDTrD1RcwKQUv1kv7zFmpF17ADd21xXhwIeewwf3zNsNzAJGfBxwBb02J2/Iqs
-	 VwQr8GADFXdKb7O5PJUIK4X/yNp9lQpvm1YmEB/IRGtYrNKuHMwQX6ax1YC6NKtksM
-	 JA38qJpx9j5+sDTSAN3bsA1rfvXt/WLa87k99iXnvCLltt5X2pUWNQvQlLqaApzfmw
-	 AgVzPVh34V8XFxh/8mAjPDztbiexYyfg/Rb9UBzX7iCG3sPAn62DS99Hl6YcwLtXbx
-	 oNs+0BTfDk05g==
+	b=U7lX8lJirIERMIJIyMDyRTInVbZU2IOMaBc2G3pfZTsiYtkHQ7hQVqCrMrA1XjIbu
+	 NBAMI8MkQS7RAL4kEwHU7VMO3u+3u1P6OI/BmVGu9ZFiSIGhO5fdo5f5qNxiq0U1K0
+	 qgrUhiQHgEArk4KoVmuj/lND+aEwqRz5f2l29FI899d5HuPx/URr5OWTDy2sNcf6D1
+	 wIRds8lIMjnzGWs3wQ0V7CjJS15Gyx7pZum8SBf+XXnikk1SrejMcT4pwkCP0ueTH5
+	 zWnw3SJs9Z2THPTIeRnW6RgkPHW3WhRKBZ29nG5wwYm/MzU1cA1El+rNFGq5g77rgN
+	 CELVS1dZlUxrA==
 From: Jakub Kicinski <kuba@kernel.org>
-To: alice.kernel@fastmail.im
+To: sukhdeeps@marvell.com
 Cc: Jakub Kicinski <kuba@kernel.org>,
-	daniel@iogearbox.net,
+	netdev@vger.kernel.org,
+	andrew+netdev@lunn.ch,
 	davem@davemloft.net,
 	edumazet@google.com,
 	pabeni@redhat.com,
-	lucien.xin@gmail.com,
-	willemdebruijn.kernel@gmail.com,
-	willemb@google.com,
-	dsahern@kernel.org,
-	razor@blackwall.org,
-	shuah@kernel.org,
-	stfomichev@gmail.com,
-	andrew+netdev@lunn.ch,
+	linux-kernel@vger.kernel.org,
 	horms@kernel.org,
-	fw@strlen.de,
-	netdev@vger.kernel.org,
-	alice@isovalent.com
-Subject: Re: [PATCH net-next v6 05/11] udp: Support gro_ipv4_max_size > 65536
-Date: Thu,  4 Jun 2026 19:37:11 -0700
-Message-ID: <20260605023712.3627277-1-kuba@kernel.org>
+	vadim.fedorenko@linux.dev
+Subject: Re: [PATCH net-next v4 6/12] net: atlantic: fix AQC113 HW init: ART, L2 filter slot, MAC address
+Date: Thu,  4 Jun 2026 19:38:31 -0700
+Message-ID: <20260605023831.3629095-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260602093931.516281-6-alice.kernel@fastmail.im>
-References: <20260602093931.516281-6-alice.kernel@fastmail.im>
+In-Reply-To: <20260602135452.516-7-sukhdeeps@marvell.com>
+References: <20260602135452.516-7-sukhdeeps@marvell.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -62,73 +54,77 @@ Content-Transfer-Encoding: 8bit
 This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
 ---
-udp: Support gro_ipv4_max_size > 65536
+net: atlantic: fix AQC113 HW init: ART, L2 filter slot, MAC address
 
-This commit allows GRO to aggregate UDP packets larger than 65535 bytes
-by writing 0 to the UDP header length field (via udp_set_len()) and
-restoring the real length from skb->len in udp_rcv().
+This patch updates hw_atl2 init to use firmware-reported ART and L2
+filter base indices for AQC113, adds hw_atl2_hw_mac_addr_set() that
+programs the MAC into the firmware-assigned L2 filter slot, and wires
+.hw_get_regs into hw_atl2_ops.
 
-> diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
-> index 3e92575f1d55..856c23b9d6dd 100644
-> --- a/net/ipv4/udp.c
-> +++ b/net/ipv4/udp.c
-> @@ -2605,6 +2605,9 @@ int udp_rcv(struct sk_buff *skb)
->  	if (ulen > skb->len)
->  		goto short_packet;
->  
-> +	if (!ulen)
-> +		ulen = skb->len;
-> +
->  	if (ulen < sizeof(*uh))
->  		goto short_packet;
->  
-> diff --git a/net/ipv4/udp_offload.c b/net/ipv4/udp_offload.c
-> index 96987b1c05cd..f7da760f046f 100644
-> --- a/net/ipv4/udp_offload.c
-> +++ b/net/ipv4/udp_offload.c
-> @@ -919,7 +919,7 @@ int udp_gro_complete(struct sk_buff *skb, int nhoff,
->  	struct sock *sk;
->  	int err;
->  
-> -	udp_set_len_short(uh, newlen);
-> +	udp_set_len(uh, newlen);
-
-[High]
-After this change, udp_gro_complete() may write uh->len = 0 when the
-aggregated packet is >= GRO_LEGACY_MAX_SIZE (65536).  How does this
-interact with conntrack on the receive path?
-
-Looking at udp_validate_len() in net/netfilter/nf_conntrack_proto_udp.c
-at this commit:
-
-    static bool udp_validate_len(...)
-    {
-        unsigned int udplen = udp_get_len_short(hdr);
-        ...
-        if (udplen > skblen || udplen < sizeof(*hdr))
-            return false;
-        ...
-    }
-
-For a super-packet where uh->len has been zeroed, udp_get_len_short()
-returns 0, which is less than sizeof(*hdr), so udp_validate_len() returns
-false.  udp_error() then logs "truncated/malformed packet" and
-nf_conntrack_udp_packet() returns -NF_ACCEPT, leaving the flow untracked.
-
-The deployment this patch enables (gro_ipv4_max_size > 65536 with VXLAN
-or Geneve TCP-in-UDP and conntrack) is the very example given in the
-commit message.  Should this patch also update udp_validate_len() (or
-otherwise account for the zeroed length) so that conntrack does not drop
-out of the state machine for super-packets, breaking NAT and stateful
-firewalling?
-
-The follow-up patch in this series, "udp: Support BIG TCP GSO packets
-where they can occur" (b73c2d663201), updates udp_validate_len() to
-accept udplen == 0 when skblen >= GRO_LEGACY_MAX_SIZE, but until that
-patch is applied this commit on its own appears to regress conntrack for
-the configurations it is intended to support.
-
->  	sk = INDIRECT_CALL_INET(lookup, udp6_lib_lookup_skb,
->  				udp4_lib_lookup_skb, skb, uh->source, uh->dest);
+> diff --git a/drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2.c b/drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2.c
+> index 0ce9caae8799..27a62fffbc29 100644
+> --- a/drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2.c
+> +++ b/drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2.c
 
 [ ... ]
+
+> @@ -484,6 +508,7 @@ static int hw_atl2_act_rslvr_table_set(struct aq_hw_s *self, u8 location,
+>  static int hw_atl2_hw_init_rx_path(struct aq_hw_s *self)
+>  {
+>  	struct aq_nic_cfg_s *cfg = self->aq_nic_cfg;
+> +	struct hw_atl2_priv *priv = self->priv;
+>  	int i;
+>  
+>  	/* Rx TC/RSS number config */
+> @@ -499,7 +524,9 @@ static int hw_atl2_hw_init_rx_path(struct aq_hw_s *self)
+>  
+>  	/* Multicast filters */
+>  	for (i = HW_ATL2_MAC_MAX; i--;) {
+> -		hw_atl_rpfl2_uc_flr_en_set(self, (i == 0U) ? 1U : 0U, i);
+> +		hw_atl_rpfl2_uc_flr_en_set(self,
+> +					   (i == priv->l2_filters_base_index) ?
+> +					   1U : 0U, i);
+>  		hw_atl_rpfl2unicast_flr_act_set(self, 1U, i);
+>  	}
+
+[High]
+
+Can the multicast list handler now collide with the UC MAC slot?
+
+After this patch, the host MAC is programmed at slot
+priv->l2_filters_base_index (firmware-supplied, clamped by the new check
+in hw_atl2_utils_get_filter_caps() to the range [0, HW_ATL2_MAC_MAX-1]
+i.e. [0, 37]).  However, hw_atl2_hw_multicast_list_set() still iterates
+multicast entries into slots HW_ATL2_MAC_MIN + i (i.e. starting at slot
+1):
+
+  for (cfg->mc_list_count = 0U;
+       cfg->mc_list_count < count;
+       ++cfg->mc_list_count) {
+      u32 i = cfg->mc_list_count;
+      ...
+      hw_atl_rpfl2_uc_flr_en_set(self, 0U, HW_ATL2_MAC_MIN + i);
+      hw_atl_rpfl2unicast_dest_addresslsw_set(self, l,
+                                              HW_ATL2_MAC_MIN + i);
+      hw_atl_rpfl2unicast_dest_addressmsw_set(self, h,
+                                              HW_ATL2_MAC_MIN + i);
+      hw_atl2_rpfl2_uc_flr_tag_set(self, 1, HW_ATL2_MAC_MIN + i);
+      hw_atl_rpfl2_uc_flr_en_set(self, (cfg->is_mc_list_enabled),
+                                 HW_ATL2_MAC_MIN + i);
+  }
+
+If the firmware reports any value N in [1, 37] for
+l2_filters_base_index (which is the case the patch is intended to
+support, since for N=0 the change vs. the old hardcoded HW_ATL2_MAC_UC=0
+is a no-op) and the multicast list contains at least N entries, the
+iteration with i = N - 1 writes to slot HW_ATL2_MAC_MIN + (N - 1) = N,
+which is the UC MAC filter slot.
+
+Wouldn't routine ndo_set_rx_mode invocations (for example IGMP/MLD
+group joins or link state changes) then silently overwrite the host
+MAC's UC filter with a multicast address, causing the NIC to stop
+accepting unicast frames for the host?
+
+Should hw_atl2_hw_multicast_list_set() also be updated to skip or
+offset around priv->l2_filters_base_index, in the same way
+hw_atl2_hw_init_rx_path() and hw_atl2_hw_mac_addr_set() were?
