@@ -1,86 +1,99 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4DC84071DA;
-	Fri,  5 Jun 2026 22:07:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33371387362;
+	Fri,  5 Jun 2026 22:22:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780697237; cv=none; b=XjmuwP3KNMTgokTVsqO2JTb95fUhrnmKdlg+NYcBlSaDheJun5YEKb1edDcHVIYCpR4waCBT1h6dcUrQgcnnHSYuKI86ULqvPc9Ww/xaPUI5UT1H7mWGZa0E0TSFCR4ToG65DNcOU30HoUFJauDulnNVsb0PX5BoRAdlsSRejBQ=
+	t=1780698178; cv=none; b=d2bDqQYJ8+8V35wJrEiDjtCnea+NxTynCelLMZZ9gY8slf2dlbN+CXuY6thxHF2sHhgira0e4RlOSAsEEC33owTJSmXztngCtZCsz2CR3p8F672knWMLfGZPfAD/7HrkwmLLROzoRubENQF1uMLmMUQl+uaLAGyAFW+635WSAdg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780697237; c=relaxed/simple;
-	bh=Y7Pg5fAh9/b5hmp7rfWDWVRBVVLAi2cd9RJLnka7Lmg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=grvAhH5mE2LSZxsEuX3jiJtLJ6rL8zqGu4EBxbzYzDIhO8FE2DucY2qdXDgxu6+HSH5vucDA97kgPdIESX9WKXGudq1inqKUYVxAZw/b4JfM8yLkKY8g4Vk3dxkIcxkF7EA2DrYBORr9TxjaeFSyN6dATKGdceLJV2RJbtbYawg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MeIsVr4j; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780698178; c=relaxed/simple;
+	bh=y6xdVTXRfQbtR3STyUPrENAMKidFYd8kN+SkK8XvPOM=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=fqYyiO5XbivlEztBNW2+S4dXYEbdwn0PojESKYx4otF80M4iEGs+FThH9PFc9rdSSS3eQ1Fe8o/Z7uKUm+CB01Ty6041oyQ2WiCnnHi9jf81wGs+1eQe2n9TZx812Jz9xTaDhYE4xIGAndegujr5lw7zpM/UwJ0Tot65rFvLUDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PX+hhUSe; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MeIsVr4j"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20AC51F00893;
-	Fri,  5 Jun 2026 22:07:16 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PX+hhUSe"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 094BE1F00893;
+	Fri,  5 Jun 2026 22:22:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780697236;
-	bh=m+mXMDeY7i9LI/iEgBGFnHjF6kqWb3xtVcPntuQ526Y=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=MeIsVr4j5hVwn6+MWIlSgN5x+LeQ3FeifCYJV3/xzXIvAek4ekcjeIttlWgtypGwh
-	 WD9G2G15LSZGB+oz6EcWuyrxi0CgbxufwBGgHs9lJ+yTEhqjeRjdYyaW8nNDus4VTI
-	 Wkb6i5MobgWKxdRn90Z6z9mFJySR24kGLSFmyLyWw6ruvFh1r5qgeZkO8kIwsFw+0R
-	 LfsfUiGJ0y/qTLo1It1aA4y45X4jX+ccUZY5HtbuJdaigpu28nzE5vbnYrkc/BeIDU
-	 Lb56gcbugE7qG70YKNJhjPpHaWBEYzHSfEQYlAqlCiWrQEwaCS5LRpSFxIKYI1KfgO
-	 t8Isa/Z1g5MUA==
-Message-ID: <b9fd14e5-4692-419b-8a2a-1ae6c1c63435@kernel.org>
-Date: Fri, 5 Jun 2026 15:07:15 -0700
+	s=k20260515; t=1780698176;
+	bh=7XgDadmUDLEi2PC1fUYzSXSnqluO/U4sZustqFpUA7c=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=PX+hhUSee/XaWAVauUxaMUs33SGdzFkIF8mZefdpKs6KFjhT3Ua52TlU2WaxfP+LI
+	 c+nkqi8IMFU3IK8YOb5holuXdtNdOt5DFVPPzEXWaGwF275aCooidGjfdi/hc5AsMP
+	 Y7qSrFDE68ZMfwfoXeg/3cfGwZU0D25o/tQjfca4WTqmQ1TmaKcNSmrw9bPSQTsXi0
+	 kftPVx38S9TVznWDoTbXptYXkbjJNqQzlvDyQ2/+Wadr+53nZGCZh+R/qoVOa7XgyV
+	 zD3iZX94FmSovnqOkOekPXih5uPuCalWVFHYYfgJYZBx5O5GpQ/A/o1WY4okImSyx1
+	 yr2culC3IWTXw==
+Message-ID: <dea41eedebf284c2a57e75d1ca99b59a58863160.camel@kernel.org>
+Subject: Re: [PATCH net-next v2 1/3] rds: mark snapshot pages dirty in
+ rds_info_getsockopt()
+From: Allison Henderson <achender@kernel.org>
+To: Breno Leitao <leitao@debian.org>, "David S. Miller"
+ <davem@davemloft.net>,  Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+ <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,  Simon Horman
+ <horms@kernel.org>, Shuah Khan <shuah@kernel.org>
+Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-rdma@vger.kernel.org, rds-devel@oss.oracle.com, 
+	linux-kselftest@vger.kernel.org, kernel-team@meta.com
+Date: Fri, 05 Jun 2026 15:22:55 -0700
+In-Reply-To: <20260605-getsock_more-v2-1-80f38cdb8706@debian.org>
+References: <20260605-getsock_more-v2-0-80f38cdb8706@debian.org>
+	 <20260605-getsock_more-v2-1-80f38cdb8706@debian.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.3-0ubuntu1.1 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC] NFS: named client identities for mTLS mounts and a
- per-namespace .nfs keyring
-To: Sagi Grimberg <sagi@grimberg.me>, Hannes Reinecke <hare@suse.de>,
- linux-nfs@vger.kernel.org
-Cc: keyrings@vger.kernel.org, kernel-tls-handshake@lists.linux.dev,
- netdev@vger.kernel.org, Trond Myklebust <trondmy@kernel.org>,
- Anna Schumaker <anna@kernel.org>, Christoph Hellwig <hch@lst.de>,
- David Howells <dhowells@redhat.com>, Jarkko Sakkinen <jarkko@kernel.org>
-References: <20260602154740.49861-1-cel@kernel.org>
- <bb9a872a-d4aa-467a-b4c9-7bca174a6bbc@suse.de>
- <b38b0983-7a63-4e77-a549-2d8859752cb9@app.fastmail.com>
- <ab767baf-aa94-4ff7-81fb-c19804a7883d@grimberg.me>
-From: Chuck Lever <cel@kernel.org>
-Content-Language: en-US
-Organization: kernel.org
-In-Reply-To: <ab767baf-aa94-4ff7-81fb-c19804a7883d@grimberg.me>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
-On 6/5/26 2:32 PM, Sagi Grimberg wrote:
-> 
-> 
-> On 03/06/2026 17:27, Chuck Lever wrote:
->> On Tue, Jun 2, 2026, at 6:39 PM, Hannes Reinecke wrote:
->>> I am all for making keyrings namespace-aware. Logically I _think_ they
->>> should be tagged per user-namespace, as this really is about the
->>> filesystem (and as such would warrant to be tagged per mount ns).
->>> Tagging it per net-namespace is not a great fit (well, for me, at
->>> least), as also block devices might require keys to present the
->>> bdev (eg nvme authentication)
->> My understanding of the proposal is that there is one keyring on the
->> system for .nfs and the keys in it are visible only in the namespace
->> where they were created.
->>
->> Therefore the consumer (say, NFS, or NFSD) is running in a particular
->> network namespace. It will create keys on the one .nfs keyring, but
->> only the tlshd in that same network namespace will have access to
->> those keys.
-> 
-> Can tlshd run in multiple network namesapces today?
+On Fri, 2026-06-05 at 03:31 -0700, Breno Leitao wrote:
+> rds_info_getsockopt() pins the destination user pages with FOLL_WRITE and
+> the RDS_INFO_* producers memcpy the snapshot into them through
+> kmap_atomic(). Because that copy goes through the kernel direct map, the
+> dirty bit on the user PTE is never set, so unpin_user_pages() releases th=
+e
+> pages without marking them dirty. A file-backed destination page can then
+> be reclaimed without writeback, silently discarding the copied data.
+>=20
+> Use unpin_user_pages_dirty_lock() with make_dirty=3Dtrue so the modified
+> pages are marked dirty before they are unpinned.
+>=20
+> Signed-off-by: Breno Leitao <leitao@debian.org>
+Hi Breno,
 
-AIUI the netlink upcall in the kernel wants to use a netlink socket in
-the current network namespace. So there has to be at least one tlshd
-instance in each network namespace that wants to use in-kernel TLS
-consumers.
+Thanks for following up with the Sashiko report.  Since this is a bug fix, =
+it should carry a fixes tag.  This is a long
+standing bug that's been present since the codes original appearance in a8c=
+879a7ee98 ("RDS: Info and stats").  So it
+should carry that in a fixes tag:
 
+Fixes: a8c879a7ee98 ("RDS: Info and stats")
 
--- 
-Chuck Lever
+Other than that it looks fine to me.  Thanks for catching this.
+Allison
+
+> ---
+>  net/rds/info.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/net/rds/info.c b/net/rds/info.c
+> index f1b29994934a..17061f6ff74e 100644
+> --- a/net/rds/info.c
+> +++ b/net/rds/info.c
+> @@ -235,7 +235,7 @@ int rds_info_getsockopt(struct socket *sock, int optn=
+ame, char __user *optval,
+> =20
+>  out:
+>  	if (pages)
+> -		unpin_user_pages(pages, nr_pages);
+> +		unpin_user_pages_dirty_lock(pages, nr_pages, true);
+>  	kfree(pages);
+> =20
+>  	return ret;
+>=20
+
