@@ -1,114 +1,109 @@
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1A782BE02C
-	for <netdev@vger.kernel.org>; Fri,  5 Jun 2026 05:34:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB2142AD2C;
+	Fri,  5 Jun 2026 05:39:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780637651; cv=none; b=hCbGj803ONwEeYlhuRqVSEZvn3asXNhpynIA46BzjPcQVpKNfUsjz+hhZwykhu+vyvwAOBNnhUNSIFzWPtlWW+VQ8+TugT3yoVqGz42JuYaP9e7jTeszLROpZ6NfPP03ofT6nZkRyI/6QypggUJuFjDGVT2d/VLE57MrH+RBo+g=
+	t=1780637983; cv=none; b=IEaYmcdiFovK/4ECa5/mccw/7RybzFRFWN0DyU0PrXyn6mzjS0Gi5SQaSFLz6g66BZzoIfxbp1ilDFIuuLJZ0cGIqAGvoCrmZ6hRoDXfjx4V+kLjXR9F6WAA54d6UIGP/0aqwsJYjJfzCadJmxsjoQxLcLkIqd/mwkBuNZhIG/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780637651; c=relaxed/simple;
-	bh=sjXzyZnNDhRfEEmts9pWPcuuMg/BpffNpvk3G1fwCko=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=k9zrOE4x4qbnsAAwf4viC68PTiIhxqT99VdduQYQ4TRuLVJkUah2wiRmou2B/XAh/KlqWf5NR+1mCB1y7m78EfDjB7Hn8M2mDl1av0NRH9jFct3coXECI5fp09Eh5VQpJplqvVrtkWvaWhO8Q1NlsiusnKO3T9OIMTLCSVSeh24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mFoJfMV4; arc=none smtp.client-ip=209.85.221.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1780637983; c=relaxed/simple;
+	bh=OtzFLoaL6YRibt5cWxU3Bh1ybqbe+mB6LqicVDYoSVk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rr4pkLA6xuIPAYSFkcPHYDS6YDHUrOoQKWQfrxlK1kZRyudiCpNj1DKtR4id5QKQrCU64QMTg3dEE/hEwXDY388dfYRmKoLgG03MpduwYpYTqMnoI4B8ss+CYrKKaLG6H9iRct6d4OBSZ/KTwzinjo4B72wkyYiXCeRzWUhVzwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=kCFlTesH; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mFoJfMV4"
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-45ef29c5561so828236f8f.0
-        for <netdev@vger.kernel.org>; Thu, 04 Jun 2026 22:34:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780637648; x=1781242448; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sjXzyZnNDhRfEEmts9pWPcuuMg/BpffNpvk3G1fwCko=;
-        b=mFoJfMV4LKVtSRIKb04mFAtRI23vbjTcDwiarBEoQQyGYUsUADLqZbMiNr9sn5Hy9I
-         xTlKANlrBlbqyYYJOCDGt2fujG23kjQWyKxji6WMe1VsDul8rnhCHCbEzOJ28AeVylJG
-         bklJY+Ajmo/ZUW0mL+WIyruLrdThWiwmntH/ktshJlLC99XU38c0l7dSzCYwfhUtOPSo
-         MJmsilUqG3j7r0WvmI22lCsi508EIvcTnHRZHRpx7J5df3S/Opt9fKWPaXPUvM2mcowh
-         NO6IGKDCmH0fpHOuT4HRtreSoiLC348cXZAplSwlJE6g1olUf9jhQg7lZBtNz1q04t82
-         GJew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780637648; x=1781242448;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=sjXzyZnNDhRfEEmts9pWPcuuMg/BpffNpvk3G1fwCko=;
-        b=lcZEEc8zDucvy2xhPNy9Z/2hd2cllmQYNmQ8ojcKZSBnWfHyj3mnjyH6rC+1oaFIj9
-         DNSO+1mIyFdDMbS/AdxQN3wy30ENgFbqJqcAj3eyarLkGirl3xTpznZc6II0xZyIc6Aa
-         q1Io686WuGpmR58mV2rVdQeMZeeCirmt9SLTUDh42WcclzHXaVpXub6v1xVxqYAeCyHX
-         EkUZNJ5zxTbMoDFW41fzdedkwPRpxOxecTHjRzD/ym2sfIxnv55kx3OGotNcsTKXPwLp
-         YsTcygg2hUJxL/cftL3D4oi7ZDLteeTllLrjhob8QWS+SWeL6oxGn+kxvcm0g+PUkgxc
-         fFbQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9p89EEP7k91idxsivYwCnHpZ3ac0BnpCqqErsorPrMhfio88qSh3xNRIBR7Fh7/0UTuNUf6gQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzIskQ3hkl2cHXuYF6QrBk1S39uUs3QUNkxyqyL93OWq+zWeHPC
-	Xsv1FYh/O0LHHYfjAKILO5sqsc5BBAtUlAc686sVe4esqGltINtk+Y9H
-X-Gm-Gg: Acq92OFBaSbO4wJElS3IrZqb58t7d88dBbE8C1Uv38g2oyCqiSbtRd7eqPqQiY6gCEa
-	2nT+KEJ0/bO7MafozyeqLL/5RWhYQj0Vbr5V8O4TYMynSge99i+RceyrNKST1DQ+xvcErb8VzjX
-	eEWHSu6ZBPSI0iay24dmZoDAJkQRScVHfGDM4tdhdzuGd0xPOmedvgZrsYyupgPrDZD07k0RTAq
-	Hce05l4acWkrFp/W8l5ocmO6tDcR3wR5FWrWlp9reNcRTQHDZ5+m1Bx40tOkrm4B3NFEZZ+hp8A
-	EHCZL+1u1rbxleHKqoAWKexRZXVCA4jggs+AgXkduPNsfq0XQPqKr1MwpoVmsZk2EPEMAjE/MYV
-	JOx7t1Av/KE39l8kSY8p1HcivA3aHKyQiFBHAt/LnmYeqjQtWEd3GfCL7CfoHu1YPj8MVjT5FoU
-	Ua3LT3wpSKKimah4rmLBBDj7vFKKLSGav8ASGfzIRSvxgPqgTxtulqRLXBk1sNr3NXrvg0Wny1T
-	I7LobpuN9QEGaR0OtXf/G/v21ON
-X-Received: by 2002:a5d:4e09:0:b0:45e:ea68:523e with SMTP id ffacd0b85a97d-460304fe066mr2555737f8f.21.1780637648182;
-        Thu, 04 Jun 2026 22:34:08 -0700 (PDT)
-Received: from localhost.localdomain (ip-89-176-136-191.bb.vodafone.cz. [89.176.136.191])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4601f35fd33sm24383821f8f.35.2026.06.04.22.34.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Jun 2026 22:34:07 -0700 (PDT)
-From: Petr Wozniak <petr.wozniak@gmail.com>
-To: maxime.chevallier@bootlin.com,
-	netdev@vger.kernel.org
-Cc: kuba@kernel.org,
-	andrew@lunn.ch,
-	hkallweit1@gmail.com,
-	linux@armlinux.org.uk,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	linux-phy@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	bjorn@mork.no,
-	olek2@wp.pl,
-	Petr Wozniak <petr.wozniak@gmail.com>
-Subject: Re: [PATCH net-next] net: phy: mdio-i2c: defer RollBall bridge probe to PHY discovery
-Date: Fri,  5 Jun 2026 07:34:05 +0200
-Message-ID: <20260605053405.2019-1-petr.wozniak@gmail.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <19e947e08e51987b@gmail.com>
-References: <19e947e08e51987b@gmail.com>
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="kCFlTesH"
+Received: by linux.microsoft.com (Postfix, from userid 1173)
+	id BB02520B7169; Thu,  4 Jun 2026 22:29:29 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com BB02520B7169
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1780637369;
+	bh=qIO/sBp81IBMRVL//sPxD46ntAHHAdA/+qb5LsOMY8c=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=kCFlTesHtfd61rL4g6Pk2Gf9tPjaIQvHUm8+WvC9ONeLMpNzq74ueTfVx+or9v5vv
+	 i1BXiC6LmO5lem0eSeF2ac6gFBq4SoHHuxkTr/k7U+vLYWHs9daeBo9qR+YwUCTxqE
+	 ITX8nLq26F57iawXJOMbSFnOTQtZUFCFpRzqXi3k=
+Date: Thu, 4 Jun 2026 22:29:29 -0700
+From: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
+	decui@microsoft.com, longli@microsoft.com, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+	kotaranov@microsoft.com, horms@kernel.org,
+	dipayanroy@linux.microsoft.com, kees@kernel.org,
+	linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org
+Subject: Re: [PATCH net-next] net: mana: Cache MANA_QUERY_LINK_CONFIG result
+ to avoid repeated HWC queries
+Message-ID: <aiJeuU3DLKL7JcPN@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+References: <20260528180757.1536640-1-ernis@linux.microsoft.com>
+ <20260602132127.25fc27ee@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260602132127.25fc27ee@kernel.org>
 
-Hi Maxime,
+On Tue, Jun 02, 2026 at 01:21:27PM -0700, Jakub Kicinski wrote:
+> On Thu, 28 May 2026 11:07:51 -0700 Erni Sri Satya Vennela wrote:
+> > mana_query_link_cfg() sends an HWC command to firmware on every call,
+> > but the link speed and QoS values it returns only change when the
+> > driver explicitly calls mana_set_bw_clamp(). This function is called
+> > not only by userspace via ethtool get_link_ksettings, but also
+> > periodically by hv_netvsc through netvsc_get_link_ksettings and by
+> > the sysfs speed_show attribute via dev_attr_show, resulting in
+> > unnecessary HWC traffic every few minutes.
+> 
+> mana is ops-locked, right? Because you support net shapers
+> 
+> Could you instead take the netdev_lock() in the work?
+> It's already held around the user space originated calls.
 
-Thank you for the question — it revealed a gap in the commit message.
+Hi Jakub,
 
-The regression turns out to affect both boot-inserted and hotplugged
-genuine RollBall modules. Aleksander Bajkowski confirmed that his FLYPRO
-SFP-10GT-CS-30M (with Aquantia AQR113C) is broken even when hotplugged —
-the PHY is no longer detected after 8fe125892f40.
+I tried two netdev_lock-based variants. 
 
-So the root cause is not boot vs. hotplug specifically: sfp_sm_add_mdio_bus()
-in SFP_S_INIT gives the bridge only a 200 ms window, which is insufficient on
-hardware where bridge initialization takes longer, regardless of insertion
-timing.
+mana_query_link_cfg() has four callers:
 
-Jan Hoffmann also correctly pointed out that the commit message was wrong
-about the state: the probe runs in SFP_S_INIT (which follows SFP_S_WAIT),
-not "before initialization delays."
+1 ethtool ioctl/netlink			- has RTNL	- has netdev->lock
+2 sysfs speed_show/duplex_show		- has RTNL	- no netdev->lock
+3 netvsc_get_link_ksettings VF forward	- has RTNL	- no netdev->lock
+4 mana_shaper_set			- no RTNL	- has netdev->lock
 
-v2 with both corrections is at:
-https://lore.kernel.org/netdev/20260605053056.1977-1-petr.wozniak@gmail.com/
+No existing lock covers all four.
+
+A. netdev_assert_locked() in the mana_query_link_cfg() :
+Lockdep WARN on every sysfs cat /sys/class/net/eth*/speed and every
+periodic netvsc_get_link_ksettings() poll since callers 2 and 3 hold
+RTNL only.
+A slow firmware reply on callers 2/3 can land after mana_shaper_set
+(caller 4) has changed the rate and invalidated the cache,
+publishing a stale apc->speed / apc->max_speed as "cached valid". 
+Because the value is cached, the staleness then persists until the next
+shaper change
+
+B. ASSERT_RTNL() + netdev_lock_ops() inside mana_query_link_cfg():
+Self-deadlocks on #1 (__dev_ethtool already holds it) and #4
+(mana_shaper_set already holds it and calls mana_query_link_cfg() before
+the clamp).
+ASSERT_RTNL() also WARNs from #4 — shaper genl ops don't take RTNL.
+
+Eg. Deadlock scenario:
+__dev_ethtool()
+  netdev_lock_ops(dev)              ← held
+    ops->get_link_ksettings()
+      mana_get_link_ksettings()
+        mana_query_link_cfg()
+          netdev_lock_ops(ndev)     ← DEADLOCK
+
+Can we consider private link_cfg_mutex which is orthogonal to RTNL and
+netdev->lock and covers all four callers?
 
 Thanks,
-Petr
+Vennela
