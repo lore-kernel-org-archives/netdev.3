@@ -1,89 +1,105 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f194.google.com (mail-pl1-f194.google.com [209.85.214.194])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E82383E4C65;
-	Fri,  5 Jun 2026 15:30:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B2443B775E
+	for <netdev@vger.kernel.org>; Fri,  5 Jun 2026 15:35:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780673409; cv=none; b=KGCPLu8GYJUJge/SXmtcLQMTqJt/jD4aQZWAKBlXJcb0pMbGoOGZHZsJCNQuhljxZVZHaata36le4K8EbvPi3HvGKo73D5maoNfanyP7JgRwdd8zS8wcrX/2N5jRuVKzHglE5n3XGAJojEk0HQp6OX3nbcGvnBsp8P1Pb2OYHZU=
+	t=1780673739; cv=none; b=YouadkJPVKZ9DBhADSVWjU5uTnXBBvL8Q1fSyBsbsGRgxCcyyiR236H0WhpGJVd1a5UzoHz6LF+XJS1W9/P25YWUkKkoDFtcUKw82CypaRHX4KnfOhxyVbdKbi8mFS0z4UwZRVI87Htbv9eEjEtOab/fk20M4ZHL83W/vlQ7vqk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780673409; c=relaxed/simple;
-	bh=C1xtfUG0N5An2pmcMOU3sBP+r3o1WVlAapOlrsAjkgs=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=K6aB5IzPLHbjNMBEflyPD+wAhC+rOxIKvto764wTdLdIlCQvQK51B8kfcBUSWJk7uwneCtPixShMa/UAipOhwUI44HW8CkelnbGn6BqU2xBL8P9GJYbR4KoX7P9n+9o9h1a175mzfaS0PFua33kfwAkgH3OL00VuHJc9QaeOuf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GGTEaJWB; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780673739; c=relaxed/simple;
+	bh=PAnC4mLvyUUp9MLzPMbRT//DSkE3Dk1mXOL/7klrM+0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=I8gkg3lOK5UZYNjdgx8vrxmMgRMfnljBywkWOkIvobp9+46PiGZAA8cluHjfvK//DUJwXmup5SXIQqUr+EF/p5DvRlOIsG3dFcDgnXG08wG15ih8WFEkl5Lxb2pWQW2mGDuyRDj9x6Y9PMRpIPc8V92fs7pPrH6Uf5RXFdKweuU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fzWzVea7; arc=none smtp.client-ip=209.85.214.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GGTEaJWB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7FCA1F00898;
-	Fri,  5 Jun 2026 15:30:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780673408;
-	bh=htU68yBnR6ThA/0S5lSqWG9Jdr22od7ZJqdXDvMAz+Y=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=GGTEaJWBmhmoFNdtSnabN4ffLhxoZ3IDy06FpCysYQZOjc76TlFx0WEDSuzpGQSWB
-	 8VYqEh0eVKit7uHu9bVyHxnz5hBrPLpujo9uzjTKrQ+himWZXCus2rNiThi6gK3cyu
-	 8KkO21KiFytirc3WbAxJSS0MQfxMx47w2ISHPflwhfveq7Z2iVn4F3oKfv07fUJU0s
-	 E16/lCCSlq07o4zoZutEqAVuOsHNQZTzPRypLkyWJ/3mgj58/uaorWH2UawFOCVLcV
-	 KszQlTkieQZWB95qtexKsow8wMlRLS5rxeCzyI8dS4Or9GTzs4bYJghi42up979NMr
-	 bjnyq6dDzvRDw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 56A833930BA5;
-	Fri,  5 Jun 2026 15:30:10 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fzWzVea7"
+Received: by mail-pl1-f194.google.com with SMTP id d9443c01a7336-2c132ac5ec2so20094195ad.1
+        for <netdev@vger.kernel.org>; Fri, 05 Jun 2026 08:35:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780673736; x=1781278536; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=fcdauWu6kB0J8jFGQyoE+3xe804PkmDYTAOAHNlgs3o=;
+        b=fzWzVea7k6W62mlqRIwb3r7DPjksGcTZ3e4wD0vz72AcgLjseAZadyANrwv87Bkr2B
+         5WaKcZ2NaMnhu0MnEU26d/84dFKc1oBQCSKnfAt/0P90xhhyz0bl0NuwgZng/XttdAa/
+         HI+ZaneUtepfXkmuB2PSYvxrKK+aToUU+i0jE6dImZmhZcEE25XgCGT4Dl88FVqvpNYF
+         /oDBSKqmuGmzB9A7ne4khJwf60b6uckm0uI+e0jUOltvGW6QBfKWigETOOu5gaaIoKQT
+         Z2RzKuBamM+PNBAl0lnODRS/2H3eK7Bz+W5nBZh8AcTODbhAjRhIt9AnEFz+7SdaUt6I
+         AhBA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780673736; x=1781278536;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=fcdauWu6kB0J8jFGQyoE+3xe804PkmDYTAOAHNlgs3o=;
+        b=RyDlmcOqLXVuijajK+xttAVCGIDylLcFG9JkWYv81iPiT6Oz8PALoGVKNaQ0RnN9F6
+         W40U8B9Q17CEwGfS2Xr4TxOlDfgIkCBk35K0o++FTH9sEIiXrL9EHKnvuBsiGPIZG8Z0
+         P1du70fRbME/Sdc+pn8uFWiUnpd7e63jFLW3nmKgv1aMH4XiC/2Ly5kI2lWEyN++UCfa
+         bftmYjCvO8DmTqxvNMfybg200vkiT268WJqnGkjdUN/jgp4jVUbIy1M2YFEkeQvPqq5R
+         sVfP75kniGuUoZTLndL1TEScpcEtk+fxPLmjL3wcxJdKjAO5AKA9em5fvW7eX7wDZlKB
+         uK7w==
+X-Forwarded-Encrypted: i=1; AFNElJ/5Hzs07dxor27vpQcEQsuaXYs11XyfXd7rNBWQc+Fcs5juVgO03412mawyZ+jkpIYsj2pw4eM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyKeiqJsR5RjdrOS6t7QsDeyN5U8jFVwObex9JiJHy/ibxBPRcB
+	pPPPkaX0ikhsDzJ04p/36e1boZEgnlfFHimkeyoC42aDnF9IQI9NIvNN
+X-Gm-Gg: Acq92OExb5MBryLZNUivM+a58lyHDxvRJqn+SPSH1xhhYOm4k5GCX76iDJTvq3GkGG9
+	Sl0HC3DgNwsp+4qoCr8aIOBOV6UmU7os2mp+wPhI/zOC2u1yj77xHHenEwNMYkkOQE+d7bLxcca
+	Dk2UQ+98BdCa/OscrgpzGOe8HbdsyImAPEm6w5bjqcQc2lJQ5/Fc+o2nAOttbhE94NxzzFwdKG+
+	XbrSE/Mvvxa0Jhbkz387a0lE57hPG9G9q6i+QFUGQKrwq+eSLUkx6ykFrZsO2glx3lNGRhlHSQA
+	jOT1cjKv8JiWO3V3Iz/vg+FXNqlwdFX7eqvOHfSAXKt7n7vS3bzB0Nht9A5KB3O7+YbMi6Z1y3x
+	tjDqz2g1lvl9rmsdn7S7wASiIPfw0AiHWkh3z/OtoB/+Tg4YUbyehnuKR8ibjFpY+THiGi0mkM5
+	BarucZUCKL17NrVtCXDSSSLFSSBtc=
+X-Received: by 2002:a17:902:d4cb:b0:2ba:7749:f89a with SMTP id d9443c01a7336-2c1e7e55623mr43588465ad.11.1780673735644;
+        Fri, 05 Jun 2026 08:35:35 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:5e::])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c166391d53sm127920285ad.65.2026.06.05.08.35.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 05 Jun 2026 08:35:34 -0700 (PDT)
+Date: Fri, 5 Jun 2026 08:35:25 -0700
+From: Stanislav Fomichev <sdf.kernel@gmail.com>
+To: Bobby Eshleman <bobbyeshleman@gmail.com>
+Cc: Donald Hunter <donald.hunter@gmail.com>, 
+	Jakub Kicinski <kuba@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, Gerd Hoffmann <kraxel@redhat.com>, 
+	Vivek Kasireddy <vivek.kasireddy@intel.com>, Sumit Semwal <sumit.semwal@linaro.org>, 
+	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>, Shuah Khan <shuah@kernel.org>, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org, 
+	linaro-mm-sig@lists.linaro.org, linux-kselftest@vger.kernel.org, sdf@fomichev.me, 
+	razor@blackwall.org, daniel@iogearbox.net, almasrymina@google.com, matttbe@kernel.org, 
+	skhawaja@google.com, dw@davidwei.uk, Bobby Eshleman <bobbyeshleman@meta.com>
+Subject: Re: [PATCH net-next 3/4] selftests/net: ncdevmem: add -b option to
+ set rx-buf-size on bind
+Message-ID: <aiLsegSEGviNluv1@devvm7509.cco0.facebook.com>
+References: <20260603-tcpdm-large-niovs-v1-0-f37a4ac6726c@meta.com>
+ <20260603-tcpdm-large-niovs-v1-3-f37a4ac6726c@meta.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH bpf v2] bpf: devmap: reject fragmented frames in
- clone-based
- broadcasts
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178067340889.3804693.6720254457883948615.git-patchwork-notify@kernel.org>
-Date: Fri, 05 Jun 2026 15:30:08 +0000
-References: 
- <21c2d153dd25603d359069a02bf06779b51f6423.1780385378.git.zzhan461@ucr.edu>
-In-Reply-To: 
- <21c2d153dd25603d359069a02bf06779b51f6423.1780385378.git.zzhan461@ucr.edu>
-To: Ren Wei <n05ec@lzu.edu.cn>
-Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, ast@kernel.org,
- daniel@iogearbox.net, davem@davemloft.net, kuba@kernel.org, hawk@kernel.org,
- john.fastabend@gmail.com, sdf@fomichev.me, andrii@kernel.org,
- martin.lau@linux.dev, eddyz87@gmail.com, memxor@gmail.com, song@kernel.org,
- yonghong.song@linux.dev, jolsa@kernel.org, toke@redhat.com,
- liuhangbin@gmail.com, yuantan098@gmail.com, zcliangcn@gmail.com,
- bird@lzu.edu.cn, zzhan461@ucr.edu
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260603-tcpdm-large-niovs-v1-3-f37a4ac6726c@meta.com>
 
-Hello:
-
-This patch was applied to bpf/bpf-next.git (master)
-by Alexei Starovoitov <ast@kernel.org>:
-
-On Tue,  2 Jun 2026 16:43:33 +0800 you wrote:
-> From: Zhao Zhang <zzhan461@ucr.edu>
+On 06/03, Bobby Eshleman wrote:
+> From: Bobby Eshleman <bobbyeshleman@meta.com>
 > 
-> Devmap broadcast redirects clone the packet for all but the last
-> destination.
+> Add -b <bytes> to request a non-default niov size via
+> NETDEV_A_DMABUF_RX_BUF_SIZE. When the value exceeds PAGE_SIZE,
+> udmabuf_alloc() switches to an MFD_HUGETLB-backed memfd so each 2 MB
+> hugepage produces one naturally-aligned sg entry.
 > 
-> For native XDP, that clone path copies only the linear xdp_frame data,
-> while fragmented frames keep skb_shared_info in tailroom outside the
-> linear area. Cloning such a frame leaves XDP_FLAGS_HAS_FRAGS set but
-> without valid frag metadata, and the later free path can interpret
-> uninitialized tail data as skb_shared_info, leading to an out-of-bounds
-> access during frame return.
+> Reject values > 2 MB up front: MFD_HUGETLB + udmabuf can only guarantee
+> 2 MB per sg entry (one hugepage), so a larger rx_buf_size would fail the
+> per-sg length/alignment check.
 > 
-> [...]
+> Add CONFIG_HUGETLBFS=y to drivers/net/hw/config so the new path is
+> reachable in the CI kernels built for these tests.
 
-Here is the summary with links:
-  - [bpf,v2] bpf: devmap: reject fragmented frames in clone-based broadcasts
-    https://git.kernel.org/bpf/bpf-next/c/aa496720618f
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+I vaguely remember there was also some kernel cmdline argument to
+reserve these? Do we need to also do something to NIPA to reserve 2MB
+pages for this test? Or was it for 1GB pages?
