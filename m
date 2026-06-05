@@ -1,99 +1,149 @@
-Received: from us.padl.com (us.padl.com [216.154.215.154])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f65.google.com (mail-pj1-f65.google.com [209.85.216.65])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F38E282F1A;
-	Fri,  5 Jun 2026 22:37:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.154.215.154
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B4E5282F1A
+	for <netdev@vger.kernel.org>; Fri,  5 Jun 2026 22:48:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780699036; cv=none; b=t8aPJo3zsrstt812dxW/CGaqNO1AhGxvFiRq2f/kjV18MZ+fRjcLgVUo++0qyt5uMoevoyNAbqUVBlemaik87cWSG3R0hHnszFaOHAPkvDAqKItvCjhqIM2Cnn/cz/MP6o5dQFujP8+ck4sibT7IXbVwKMVR3PP2BbDHA1e6rzY=
+	t=1780699737; cv=none; b=vEY84FWrNexH5quHasC6P0pzHzFQEglLHoK9vvA0QACMKQDUCtNdwUV46Z3yZGKO/64fgGRBjMLTnrKrZ1JSmc933GuHe+h9DCzT6CmhRAk/WbwahywTmBlBUKFdMB273IJS1LBff/GspGEeyIaDQb8YEfnQ8Xe09bUbaftxkrs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780699036; c=relaxed/simple;
-	bh=DrzvSPrOSjJW3+VVlhh9e7GElkZoHFD80o/e/bA+fv0=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=qh1CG5UGMEt9XKfmpXXwsqDJSdwN5mAt5LXCeWNFI+v8e36iiyrvFCx4GdomkSUBQhOWehTlQ52PKKwLXNRkqQY4iv/CjpmEg1RgbZTmjfc9samr88aQor7/vPylsDlDDoAfmBHbpTPpfRaUGPCmaTOUPEJiPAZkcjpm513cc8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=padl.com; spf=pass smtp.mailfrom=padl.com; dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b=1OkXNAl3; arc=none smtp.client-ip=216.154.215.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=padl.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=padl.com
+	s=arc-20240116; t=1780699737; c=relaxed/simple;
+	bh=EQnNTf0pIZYmqTgtnPUvLmk/sLbCzfsQXpsApa9s9v0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ilqd0re5zWSBom59VWC4ywy9ggxvqTKgKVMpDSGsD7/DHp/p4x/NYSXPliSEfKAlTS8C8OtPnNzNmCCwmIxkoZbHeZeT7wRyx6a5phO/VUIgsbWmdKMZit9RLYVRCZylxN2D31rGvgmC9e8b/wbZRGCgJkUzzvi+kgkBAqp5Xuk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GJPlU4M7; arc=none smtp.client-ip=209.85.216.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b="1OkXNAl3"
-Received: from smtpclient.apple (119-18-22-158.771216.mel.static.aussiebb.net [119.18.22.158])
-	by us.padl.com (Postfix) with ESMTPSA id 3EDA160980;
-	Fri,  5 Jun 2026 18:37:07 -0400 (EDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=padl.com; s=default;
-	t=1780699031; bh=DrzvSPrOSjJW3+VVlhh9e7GElkZoHFD80o/e/bA+fv0=;
-	h=Subject:From:In-Reply-To:Date:Cc:References:To:From;
-	b=1OkXNAl3msO/YPjWFIsFkdJ2k+CFsQTZvRHO9RuEzmnjJIl1YFD72InK6c44/7IKQ
-	 CdraLxwFb56KPO3bVWdYk3lFeztXgPOO1RaIIKPNGbdaU48ghq0GBXAsCakCplDIF/
-	 wYRIXonhknZhYVqhKRRz0uX4WN3gz2fev6zKN6RRYbFFy2StAj2YNb+/JNdQPZyZvb
-	 NJGVXCCFj7ebAFiMQKhtNFyz1UqCDFlaXsS72bPcDR0JQKM0V42yzY1GVtrBOUSxBe
-	 HUo6mUxLZ1Xq8uGDlL/7LQLlLAYNwcIKWwCZsypoG3rlr8qhDZk29PU87/U/B0nnNo
-	 mUS50ucs7hqlA==
-Content-Type: text/plain;
-	charset=us-ascii
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GJPlU4M7"
+Received: by mail-pj1-f65.google.com with SMTP id 98e67ed59e1d1-36b9033d230so1305444a91.1
+        for <netdev@vger.kernel.org>; Fri, 05 Jun 2026 15:48:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780699736; x=1781304536; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=3DehWeiKc92M7Zv9NckDTBoXMxx9jy6o0Ks2Zn7INmk=;
+        b=GJPlU4M7VjFG2Y6DF4QqGvZxG8csyxx3a0Hsl4oR1s/Q7W2XX6+Aik0qK6K9E3zxRR
+         Euf69QvDrc69v/8Svpii+ihphrIQr98AhRHY9c+Qfc5BvvB/h8LjJy9sDM1HHqDz0ZlL
+         QE8lBAORwL/Rpx+Rn1gYEgcE2yhhhEf1Wu6OWfscARUFPcNHqUH7B87y83q50QOe/Cpl
+         yFIy8iqMFvTzJDP9+YkAlsoaet1i6BVDa6kZEdTBlRcF13ABm4r66E3fhUKshaeWQpDf
+         Md4skaLAH0h+ye0q7tpCwsG9zaApYV19A2gFafuyYFEekPw+DFd5BhbxjJVJwkjfFoPH
+         NnNw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780699736; x=1781304536;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=3DehWeiKc92M7Zv9NckDTBoXMxx9jy6o0Ks2Zn7INmk=;
+        b=V+oOsEWunOP+sF5Tledz4PkFkqC2zdfz61wuqC9dqa2UxcUAxqWqaxb2ILMFLCumx8
+         ReGqa2xn0pBOG/qCUweZJdNBw5CaJVmqtV/zttQNTijA4u+TQYiBe6vTIBE9cAnEfDpU
+         FSkWQeH12joBSyfx0W+OLNA8WswHeQ+II20IIKBIosiZpkDy+7laf5CzKASbsU6xrjxW
+         unrPX21a1YE/I3G74+ru1T63D9wDKo5dZrrGnuzfkavUnk3/b6uLvy6Z2iHQ/cyIjXiB
+         ifNSpdOptI/YjrTBDVp7qsaWI3hayL/r0hSBCPtChGFnkvRzEAYrZ5SG49jxnvcwH9ag
+         Ah5A==
+X-Forwarded-Encrypted: i=1; AFNElJ+VAFBzSwft2TTvWb+ssKpQyLnmRSu0F0qUJY19ir92UnXPMnkWIqyR12KeqzNoEgklOj+uD74=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwEoGpw2HYwUwlmfSU8B5OPxDoyaoKikqgbEcUJWlkql4D/e8tT
+	vx/H/FIXCiJeDEM5J0VnEhW9rItvjXBGCWA2vDX2O8+xLd0UGDdXVOjc
+X-Gm-Gg: Acq92OHOjTgaGcWq+gDh8YalpqVqk4xo8b1LwbrS0scAa6juoMLo/ao29TfrjCToGrO
+	9vRgYYH6kxWuiZch62jui38QgZsifaCMHkExu6vrSgLdfClKz4rx+xItO0XPPju8XSq+6kIvDcj
+	qVHCPJilOUl06xoxOGyJUhkyjoakFSl9XQn/4jLxJJNeosTq67/Up8Js6KyuCFiwxaKEJM3qhEK
+	wx8GexLLNZTWDB41ib7Qg5eFlLRu3LTrOqKXv1n/0FKjBeL1X86IjDiWXHBJnjI01u901s5sact
+	ClyXY8xn9QDgG4td8XqQMvGBejkD1xoEAWgzz0+z9usw/ffJpXgkd267xHMlirbc4AYvxPhLJAn
+	y1ADiCk9w4J3NKXv5ULvvja1exgfP5quMrC3CtL/S13ScZElpjLoOprcwL/z8fgihKGLleiMH2L
+	7ufTcMzESFgaX/AgFiVKpwu8+jSVk=
+X-Received: by 2002:a17:90b:560d:b0:36d:630a:c4e4 with SMTP id 98e67ed59e1d1-3712ffaa11fmr3719651a91.3.1780699734972;
+        Fri, 05 Jun 2026 15:48:54 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:46::])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36f712de91asm7669382a91.16.2026.06.05.15.48.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 05 Jun 2026 15:48:54 -0700 (PDT)
+Date: Fri, 5 Jun 2026 15:48:48 -0700
+From: Stanislav Fomichev <sdf.kernel@gmail.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com, 
+	pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org, 
+	michael.chan@broadcom.com, hkallweit1@gmail.com, maxime.chevallier@bootlin.com, 
+	joshwash@google.com, tariqt@nvidia.com, alexanderduyck@fb.com, willemb@google.com, 
+	jacob.e.keller@intel.com, kory.maincent@bootlin.com, jakub@cloudflare.com, nb@tipi-net.de
+Subject: Re: [PATCH net-next v2 00/12] net: ethtool: let ops locked drivers
+ run without rtnl_lock
+Message-ID: <aiNR_GaST-NnkZie@devvm7509.cco0.facebook.com>
+References: <20260605002912.3456868-1-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.500.181.1.5\))
-Subject: Re: [PATCH net-next v2 3/6] net: bridge: add 802.1Qat stream
- reservation admission control
-From: Luke Howard <lukeh@padl.com>
-In-Reply-To: <n2pi7h5nvxg3xvshtcxqeizpukp6hphqa7kodbe7b3ioc3kcq5@n34fgocvaicm>
-Date: Sat, 6 Jun 2026 08:36:52 +1000
-Cc: Nikolay Aleksandrov <razor@blackwall.org>,
- Jiri Pirko <jiri@resnulli.us>,
- Ivan Vecera <ivecera@redhat.com>,
- "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>,
- Ido Schimmel <idosch@nvidia.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>,
- David Ahern <dsahern@kernel.org>,
- Shuah Khan <shuah@kernel.org>,
- Andrew Lunn <andrew@lunn.ch>,
- Vladimir Oltean <olteanv@gmail.com>,
- netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- bridge@lists.linux.dev,
- linux-kselftest@vger.kernel.org,
- Max Hunter <max@huntershome.org>,
- Kieran Tyrrell <kieran@sienda.com>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <950DFD0B-0975-4AAC-967E-C7E4750A496C@padl.com>
-References: <20260602-mv88e6xxx-8021qat-mqprio-v2-0-72be14522e7c@padl.com>
- <20260602-mv88e6xxx-8021qat-mqprio-v2-3-72be14522e7c@padl.com>
- <537410c3-ff4e-43fd-834e-775cd1bbe89e@blackwall.org>
- <E1253C6D-F6F0-407A-AABF-FCAB57100A1C@padl.com>
- <n2pi7h5nvxg3xvshtcxqeizpukp6hphqa7kodbe7b3ioc3kcq5@n34fgocvaicm>
-To: Cedric Jehasse <cedric.jehasse@gmail.com>
-X-Mailer: Apple Mail (2.3826.500.181.1.5)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260605002912.3456868-1-kuba@kernel.org>
 
+On 06/04, Jakub Kicinski wrote:
+> With the ethtool_get_link_ksettings() situation hopefully ironed out
+> the previous series (commit 6a5d837f0ce2) let's return to the main
+> part of the series.
+> 
+> We have been slowly moving towards removing the rtnl_lock dependency
+> in driver ops since the concept of "ops-locked" drivers have been
+> introduced last year. Since last year will take the netdev instance
+> lock before invoking any ndo or ethtool op of "ops-locked" drivers.
+> 
+> We dipped our toes into rtnl_lock-less ops with the queue binding API.
+> Queue stats, NAPI, and other netdev-netlink objects are also queried
+> without holding rtnl_lock already. It's time to take the next logical
+> step and lift the requirement from ethtool ops.
+> 
+> The direct motivation for this patchset is that ethtool ops often
+> involve communicating with device FW, and may take a long time
+> to complete. Aggressive polling of device state on machines
+> with 10+ NICs have been shown to significantly increase rtnl_lock
+> pressure.
+> 
+> There's a handful of areas which still need rtnl_lock (see below).
+> I decided to convert everything to rtnl_lock-less by default, and
+> add a set of flags which let the drivers request rtnl_lock to still
+> be taken. I don't love this, but I'm worried that opt-in would be
+> even more confusing.
+> 
+> Known issues / exclusions:
+>  - qdiscs - qdisc configuration currently assumes rtnl_lock, this
+>    is mostly impacting set_channels callback. qdisc config is probably
+>    the easiest one of the exclusions to tackle, it's fairly self-contained.
+>  - features - even tho feature changes are (correctly) plumbed to
+>    the driver thru ndos they are part of ethtool uAPI. ethtool itself
+>    calls netdev_features_change() if it has spotted device feature change
+>    before vs after to the callback. Some drivers also call
+>    netdev_features_change() directly in response to various changes,
+>    e.g. setting priv flags.
+>    Since features have to propagate to upper and lower devices anything
+>    that touches features is quite hard to move from under rtnl_lock.
+>  - phylink - phylink and SFP depend on rtnl_lock today, I suspect
+>    that this is purely for historic reasons. I started poking at
+>    it and don't really see a need for a global lock. But accessing
+>    the netdev instance lock from the SFP entry points will require
+>    some attention from the phylink folks.
+>  - phydev - similar to phylink, looks quite doable. But no ops-locked
+>    driver currently has a phydev (fbnic only uses phylink) so phydev
+>    related paths retain a ASSERT_RTNL() for now.
+> 
+> Tested on mlx5, bnxt and fbnic.
+> 
+> Jakub Kicinski (12):
+>   net: ethtool: serialize broadcast notification sequence allocation
+>   net: ethtool: relax ethnl_req_get_phydev() locking assertion
+>   net: ethtool: make dev->hwprov ops-protected
+>   net: ethtool: optionally skip rtnl_lock on Netlink path for GET ops
+>   net: ethtool: optionally skip rtnl_lock on Netlink path for SET ops
+>   net: ethtool: optionally skip rtnl_lock in cable test handlers
+>   net: ethtool: optionally skip rtnl_lock in ethnl_tsinfo_dumpit()
+>   net: ethtool: optionally skip rtnl_lock in ethnl_act_module_fw_flash()
+>   net: ethtool: optionally skip rtnl_lock in RSS context handlers
+>   net: ethtool: ioctl: concentrate the locking
+>   net: ethtool: optionally skip rtnl_lock on IOCTL path
+>   docs: net: ethtool: document ops-locked drivers and op_needs_rtnl
 
-> But the concept comes from the 802.1Q spec. The spec describes =
-different types
-> of FDB entries. One of these is Dynamic Reservation Entries, which are =
-created
-> from the Stream Reservation Protocol.
-> The issue here is the Marvell switch has an implementation where we =
-need to
-> know if an entry is a Dynamic Reservation Entry. But the linux bridge =
-has a
-> simplified version of the FDB described in 802.1Q.
-> By adding a way to distinguish between the type of FDB entries, it's =
-possible
-> to program a Marvell which has this distinction between Dynamic =
-Reservation
-> Entries (or AVB entries) and other entries.
+Acked-by: Stanislav Fomichev <sdf@fomichev.me>
 
-If we only care about the multicast case, and we can depend on snooping =
-being enabled and flooding disabled, then I think Dynamic Reservation =
-Entries collapse to permanent MDB entries. Unicast is trickier.
-
-The issue of reclassifying (or dropping) frames that share a SRP class =
-PCP is separate. I think it could be done with a tc-flower entry that =
-reclassifies all ingress traffic with SRP PCPs (e.g. see 802.1Q Table =
-6-5) and then a per-stream egress entry that sets the queue and =
-priority.=
+netdev_ops_lock_dereference name trips me a bit (_compat suffix would've been
+more obvious), but I do agree with the reasoning about needing 'a' lock..
