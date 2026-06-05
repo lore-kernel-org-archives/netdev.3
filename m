@@ -1,112 +1,179 @@
-Received: from mta1.formilux.org (mta1.formilux.org [51.159.59.229])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F02C3A7F5F;
-	Fri,  5 Jun 2026 15:42:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.159.59.229
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780674128; cv=none; b=bsEB6RCfW92j9kriFIogYijZyxshXb91pQKmFt1ukZ+bxWKt51E2M0HG/A/pfDar4RFbnW2gY7J3Mq5P0TT9oRBf0gyhh0yrZB0TVpQd4NDzJ3XhFykFvcl/rdjrpelDP5cB3zS8VgyPdZ52JfWQWkhxQz/AnUudmpm3uTA57PY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780674128; c=relaxed/simple;
-	bh=tHiGUlNZoRY3qz+xlCsJ7VhqR+ifqZ6sLRszuefyeXU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DA9FeNFSevzxo3reCXIyERZSE/HlDvBcGUMTLSNKiUQlE22Uaq2S2cgo74m12xItNpjl3OmdwC/DTDtcJxYHd8GTBkvua9TkoZtIHBimkYck6YgDoIs/sXLH/BZ0GH8GXnMFxU4UR3rxVz9KUAgRfs1vIyjNeNE6Dl2JUZgXaV0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=1wt.eu; spf=pass smtp.mailfrom=1wt.eu; dkim=pass (1024-bit key) header.d=1wt.eu header.i=@1wt.eu header.b=pA/QxHuM; arc=none smtp.client-ip=51.159.59.229
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=1wt.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=1wt.eu
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 780213B71A5
+	for <netdev@vger.kernel.org>; Fri,  5 Jun 2026 15:44:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.171
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780674290; cv=pass; b=hcBHLSB2w9oePN42TgZ2FubkNH2ZPLiuaOnbNlQpLxHGnZNgbimlNQB9BDB6gKJ/MMxWgLHc10G712C7MPV/5tcrhjqVlSaXeV9/NRvt2dRZhZsAFw1qfaEHGGkMU1UyZlo3yDkxNdRBzPlZLI0UFqeajDMKn6Rt9LbbW2A9rMM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780674290; c=relaxed/simple;
+	bh=SIGgm/L1alKIv4HN6O02Y8AvR/R4pzEs/XXPa+5prPE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Et9V/ntcuUYoNekr4z7ultCs45d76J0GzZQZN3IvbDAbBwiZnDTkx/nzLPMv7xWbBcDkb8ltL7HLb7n64FAmRtDkX41AN0dmQo69U5Vq8QcWTyM5n/BKLZyQlpG5Jh334BQPLG+YMyR2Fu6nQuOqnd5LXyTWQmelSLF/U+pfZu8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EED1K7WV; arc=pass smtp.client-ip=209.85.210.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=1wt.eu header.i=@1wt.eu header.b="pA/QxHuM"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1wt.eu; s=mail;
-	t=1780674117; bh=duKO+vzFJ97ZNiF0DbRfLSuX03PYOSVq+ESDQC/usyM=;
-	h=From:Message-ID:From;
-	b=pA/QxHuMTNgLcMbBXWam2O0grD8k/53PmT5oIVHyiwNEJxBKXrLk6Tot5aez/4nrr
-	 0FMRtm/B1cHhBHBJWvjbasWgpyMtprd4qPimYB96Zr6vEy1TXL7feuhXHKWwXeoRRI
-	 5EU9YQwcSNnMN5TrxvJOsvK2NIIMq+5lGfHdGaV0=
-Received: from 1wt.eu (ded1.1wt.eu [163.172.96.212])
-	by mta1.formilux.org (Postfix) with ESMTP id C49B4C0A55;
-	Fri, 05 Jun 2026 17:41:57 +0200 (CEST)
-Date: Fri, 5 Jun 2026 17:41:56 +0200
-From: Willy Tarreau <w@1wt.eu>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Christian Brauner <brauner@kernel.org>,
-        Askar Safin <safinaskar@gmail.com>, linux-kernel@vger.kernel.org,
-        linux-mm@kvack.org, linux-api@vger.kernel.org, netdev@vger.kernel.org,
-        Matthew Wilcox <willy@infradead.org>, Jens Axboe <axboe@kernel.dk>,
-        Christoph Hellwig <hch@infradead.org>,
-        David Howells <dhowells@redhat.com>,
-        David Hildenbrand <david@kernel.org>, Pedro Falcato <pfalcato@suse.de>,
-        Miklos Szeredi <miklos@szeredi.hu>, patches@lists.linux.dev,
-        linux-fsdevel@vger.kernel.org, Jan Kara <jack@suse.cz>
-Subject: Re: [PATCH 0/3] vmsplice: make vmsplice a trivial wrapper for
- preadv2/pwritev2
-Message-ID: <aiLuRDJcQMYGuQsc@1wt.eu>
-References: <20260601-enthusiasmus-canceln-anlehnen-0e62317a9784@brauner>
- <CAHk-=wifX_rrDjRGnDnOqE-usptAukuXKrmuPuVDP5bOCBWzGQ@mail.gmail.com>
- <20260601173325.GH2636677@ZenIV>
- <20260601160455.2c187574@gandalf.local.home>
- <20260601172825.a51a588ec1c32617a0e12d78@linux-foundation.org>
- <aiEb8CTM-ovMIq7-@1wt.eu>
- <CAHk-=wiQB-j53cTs9kM4UeXoXPaFj78aJe3D6Yp1Fohg7i4tWA@mail.gmail.com>
- <aiGfgRch99l_5z11@1wt.eu>
- <CAHk-=wg0e8pP5haNW4qJP1=QwwUEctwjK5k07sv8bskitoMDgg@mail.gmail.com>
- <aiGkrQnMeyPmEvRB@1wt.eu>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EED1K7WV"
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-8419ab3a297so901924b3a.2
+        for <netdev@vger.kernel.org>; Fri, 05 Jun 2026 08:44:49 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780674289; cv=none;
+        d=google.com; s=arc-20240605;
+        b=HD9KfbUZnhMxUxKDRTNH3UMYdsiCTYweHBFtyjA8tSh3KBGM9OKCVA8okaVUfq9zAY
+         S30mq4hbywAe8gLwXY4rLfvFmJoGAC52Dub54bAGDOAGoBrznWu2On6E/h6WK8lYh3XC
+         e4k3/8vGwPozZMy0pliNM+NDkcISygLgT+bF3SCI94DIHM35jiGE8YpW/PS2Ex1SANG3
+         OmlVVnlEW6bkdWfX6tTg4T8dxbpvs9iQu/UZ0CF6JkVv6mGLS3ePOZQlJdIdJV01g50H
+         eJYXIm08kBzsrHImiBArDv7K9Sh/RaIwoYJc+QH/8WgpLN3MPBZznD4KSew7RTtSGPKD
+         HnfQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=91XmWNp/2iuNXAgWrEcWczmYAUf6TIOw0lYEdA91tpA=;
+        fh=+7ppmbZ0WLdgBjyQ58g0yjPg49p7Hck8hWcRXy6tZtI=;
+        b=IE4tyfoDjkT3fgj0buR4c6h6a/3UzbpinPJtCzX8JCSaxR+0sO45cr2RKGyPGgT6n/
+         Dzic0Q6z9YvqrLxwvbnJYc+aExAXmtW22VIQtaXCFP4F6Wq2+r1LfXw6VencTIFJWYfU
+         FE4cyOolJoecason9gUFx607UysWcDbXRW0wPCR8MsFrQcqTwHq5PKSfCPaIlkbzPT+C
+         S2urKsBvyn0iyNZ8H0eNYKdEjW+/5IhwJpwSTocvm3UFCsgkJk3gjJUY1OiStgAJEazh
+         ajbRvNCnnDVbilsvjQBoLc8H51b+5zf9itRLxzsCDz1derQfQbiBcO6CLxVps0Gu86Vd
+         RT9w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780674289; x=1781279089; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=91XmWNp/2iuNXAgWrEcWczmYAUf6TIOw0lYEdA91tpA=;
+        b=EED1K7WVmN65zfZ6kY3DmsF5XSMrrbruJRVL99TDp1ST9ei4VUudLzE/swtQGV+NeU
+         71xRLn1qGon/1v9RYZthCFAFTXFHCLBG1m3wikzuZUkLYezyQE/45lnJgNP23CDK+/33
+         oP4CQ8K08O6pG47DEAleQ1fGx/snmJEBdanUdAOugDyry3wTFjjUZKKbRWkSsXG09V/B
+         OoA/V1IHXudq0SzCua4eJoBWUN+9FdMX/iPeAvz4p3KiTEotRDLmvLCQL73QvD7094KQ
+         BNecaCWgMyomVNir5YoKK24OwY4+XzyHtietKgiuwoM7CQPfhc2VVcl33wfIFXuCNZQI
+         nQBQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780674289; x=1781279089;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=91XmWNp/2iuNXAgWrEcWczmYAUf6TIOw0lYEdA91tpA=;
+        b=s7xeTNvr5m2q91rIF2txWbpvEPWgP/UeOmEIE5wna9PG7tEnGhEWoc9AmUPyuDfMdF
+         t1sA7F5cgaaOtHPnLdUttVXH0SrwHE2Zpy3Zl/lmujF97ivg0BlndXWdGv2umyx2Jiis
+         BafbMzH9BIWpwDVOdPr/4mCRrzZ8ghT87mJ8QTgixs6Uw+ugYmglinDboQp3DcOeX6dG
+         HCJ6igOpjZ/gmq6VTFpNZxbyiUqe4yPzuEZg2l+viagSzKGWzWoAK74JMSPPp6OjHbvk
+         e9+G1EdL5XLp5jABsrn2UJUumvtIHVdMj7/DhQYzlVQ6qU5xYqDFU7NDoiLOWC3fGhuA
+         Kb4w==
+X-Forwarded-Encrypted: i=1; AFNElJ/QR5FOvKiMfn8Jul7CTiGX6yGqkXF6oBqJqlDoI5VG/AMf9x9C8s/hemcMAuB4ENMeJ2nCXss=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw4rOTJZZUZUn/BLpg5iP37ZwxOB/WRofSoiZ7AO6SBZvESlpTP
+	U5TSsAz9xwQKprwZbXlRV3cTiQVws47/3QfWzNXVsqRzu1hkKamX9opo9A9GIVv2nY7SZYqPNC7
+	pZXEUT7BryiKetpw2wgbCO2IQdYn0SB4=
+X-Gm-Gg: Acq92OGhd5eeN4SDYa4NCwD35jbHQELrH89C2rMMVlc5pJ1YDy9QYY8cJRdtp9i6+hW
+	+C4ULkaYGwF/O04QO+ahj3QTBl20M0fuLAud/P85LUXieGtGeJ+cCVR07sF8ledy4pJymjE3s1l
+	0OWKaoy+x7TZmxhfwN5LJRQiCLpp+La+4BLj8DBBov8tNCwiCTf2aHeZ/16FxHGsW9/cPEh+6WQ
+	u99sM4aLpiwxY+WHR75k0+5kb90Aw3vYXFXdfRhjzd0Lkn7u1qWFIOEeNf4xHh1vU4MVEVrvSWB
+	+SoalNbHFuDMjhR2T4Z0hYhGsNm75sTVJb2pgfczX9wGhyqkJOO6HazKGbO8MzpftNeEOxkWM0r
+	Tbdaotnnflby9SzM1/o+uJl2XBTCI0afvHmGiqGxPwRk9QMl36w==
+X-Received: by 2002:a05:6a00:9098:b0:842:8985:340 with SMTP id
+ d2e1a72fcca58-842b0fa550fmr4179929b3a.35.1780674288619; Fri, 05 Jun 2026
+ 08:44:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aiGkrQnMeyPmEvRB@1wt.eu>
+References: <20260604175803.2142975-1-michael.bommarito@gmail.com>
+In-Reply-To: <20260604175803.2142975-1-michael.bommarito@gmail.com>
+From: Xin Long <lucien.xin@gmail.com>
+Date: Fri, 5 Jun 2026 11:44:36 -0400
+X-Gm-Features: AVVi8Cc57qodMTHcO3Ah7wF-7tLXcfiDwzWLYHPyJXuCdUMFogbSOhqiEe0qEc8
+Message-ID: <CADvbK_eKM8qD6p141W1y0KsbTTm9bjRijg8ZnyyRbce7DBf9zg@mail.gmail.com>
+Subject: Re: [PATCH net] sctp: fix uninit-value in __sctp_rcv_asconf_lookup()
+To: Michael Bommarito <michael.bommarito@gmail.com>
+Cc: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, Vlad Yasevich <vladislav.yasevich@hp.com>, linux-sctp@vger.kernel.org, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jun 04, 2026 at 06:15:41PM +0200, Willy Tarreau wrote:
-> On Thu, Jun 04, 2026 at 08:58:33AM -0700, Linus Torvalds wrote:
-> > On Thu, 4 Jun 2026 at 08:53, Willy Tarreau <w@1wt.eu> wrote:
-> > >
-> > > > It looks like you're actually doing exactly the thing that I thought
-> > > > was crazy and wouldn't even work reliably: you change the
-> > > > common_response[] contents dynamically *after* the vmsplice, and
-> > > > depend on the fact that changing it in user space changes the buffer
-> > > > in the pipe too.
-> > >
-> > > No no, it's definitely not doing that (or it's a bug, but it's not
-> > > supposed to happen). I'm perfectly aware that one must definitely not
-> > > do that, and it's a guarantee the user of vmsplice() must provide.
-> > 
-> > Whew, good.
-> > 
-> > In that case, can you just try the vmsplice patch series (Christian
-> > already found a bug, but I don't think it will necessarily matter in
-> > practice - famous last words) and that test patch of mine, and see if
-> > it all (a) works for you and (b) if you have any numbers for
-> > performance that would be *great*.
-> 
-> Yes I wanted to do that and noted it on my todo list yesterday when
-> noticing the ongoing discussion. Just been super busy with yesterday's
-> by-yearly release ;-) But at least I wanted to share quick feedback in
-> this thread about existing uses.
+On Thu, Jun 4, 2026 at 1:58=E2=80=AFPM Michael Bommarito
+<michael.bommarito@gmail.com> wrote:
+>
+> __sctp_rcv_asconf_lookup() in net/sctp/input.c only checks that the ASCON=
+F
+> chunk can hold the ADDIP header and a parameter header, then calls
+> af->from_addr_param(), which reads the full address (16 bytes for IPv6)
+> trusting the parameter's declared length.
+>
+> An unauthenticated peer can send a truncated trailing ASCONF chunk that
+> declares an IPv6 address parameter but stops after the 4-byte parameter
+> header; reached from the no-association lookup path, from_addr_param() th=
+en
+> reads uninitialized bytes past the parameter.
+>
+> Impact: an unauthenticated SCTP peer makes the receive path read up to 16
+> bytes of uninitialized memory past a truncated ASCONF address parameter.
+>
+> The sibling __sctp_rcv_init_lookup() bounds parameters with
+> sctp_walk_params(); this path open-codes the fetch and omits the bound.
+> Verify the whole address parameter lies within the chunk before
+> from_addr_param() reads it, the same class of fix as commit 51e5ad549c43
+> ("net: sctp: fix KMSAN uninit-value in sctp_inq_pop").
+>
+> Fixes: df2185771439 ("[SCTP]: Update association lookup to look at ASCONF=
+ chunks as well")
+> Assisted-by: Claude:claude-opus-4-8
+> Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+> ---
+>  net/sctp/input.c | 11 +++++++++++
+>  1 file changed, 11 insertions(+)
+>
+> diff --git a/net/sctp/input.c b/net/sctp/input.c
+> --- a/net/sctp/input.c
+> +++ b/net/sctp/input.c
+> @@ -1196,6 +1196,7 @@ static struct sctp_association *__sctp_rcv_asconf_l=
+ookup(
+>         struct sctp_addip_chunk *asconf =3D (struct sctp_addip_chunk *)ch=
+;
+>         struct sctp_af *af;
+>         union sctp_addr_param *param;
+>         union sctp_addr paddr;
+> +       __u16 plen;
+>
+>         if (ntohs(ch->length) < sizeof(*asconf) + sizeof(struct sctp_para=
+mhdr))
+>                 return NULL;
+> @@ -1204,6 +1205,16 @@ static struct sctp_association *__sctp_rcv_asconf_=
+lookup(
+>         /* Skip over the ADDIP header and find the Address parameter */
+>         param =3D (union sctp_addr_param *)(asconf + 1);
+>
+> +       /* The whole address parameter must lie within the chunk before
+> +        * af->from_addr_param() reads the variable-length address; other=
+wise a
+> +        * truncated trailing ASCONF chunk lets it read uninitialized byt=
+es past
+> +        * the parameter.  Mirror the bound sctp_walk_params() applies on=
+ the
+> +        * INIT path.
+> +        */
+> +       plen =3D ntohs(param->p.length);
+> +       if (plen < sizeof(struct sctp_paramhdr) ||
+> +           (u8 *)param + plen > (u8 *)ch + ntohs(ch->length))
+> +               return NULL;
+> +
+>         af =3D sctp_get_af_specific(param_type2af(param->p.type));
+>         if (unlikely(!af))
+>                 return NULL;
 
-OK so I could run the test this afternoon, with:
-  - ddd664bbff63 Merge tag 'net-7.1-rc7' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net
-    (v7.1-rc6-178)
+This patch can't be applied:
 
-  - the same with Christian's vfs-7.2.vmsplice branch merged into it
-    ( 8d86fcfc2857 include/linux/splice.h: trivial fix: declerations -> declarations)
+https://sashiko.dev/#/patchset/20260604175803.2142975-1-michael.bommarito%4=
+0gmail.com
 
-Both show 71-72 Gbps of TLS traffic per core on my test utility (I
-stopped at 3 cores since having only 2x100G at the moment), so for
-this use case I'm not impacted by the change. I noted that I will
-have to reconsider other options for the cache (send(MSG_ZEROCOPY)
-probably) but in my case since the code doesn't exist yet it's not
-per-se a userland breakage, but a change of plans. I just hope I'll
-find my way through the alternate solution.
+I cannot apply it on my local repo as well.
 
-FWIW for Christian's branch:
+Please fix it.
 
-Tested-by: Willy Tarreau <w@1wt.eu>
-
-Willy
+Thanks.
