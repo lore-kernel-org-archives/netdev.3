@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49DE34C6EF4;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49E894C77D3;
 	Fri,  5 Jun 2026 11:49:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780660156; cv=none; b=OVsHf/lYgZZYcQdXcPKsAaSPxS9Vc4dHkJZHmrWXbdKcvSIQkYObgZHDzNsxslu9MX0Frf1t9b52ATaqwrOrDBqMCvq8zRpeSshh3zEBibkVluZ1fOdX5IBUFkOABgTsR+3RrbltHwLkAhtpx7yLRdSblPnJ3Dgy0l/4UTKupvE=
+	t=1780660156; cv=none; b=QIsQEkdP7DnWqIoKXEA8CqVc1zUAhrqtSeA0ULeqg/zNnqTxz4NTB7nv/XXs3f3SMm8AOa4SZ5oh4sy2gWqhpwJAsAv9ZY+F2JMDPfOvni7DT74n+zv06R2Po+XnRgP6/90BOUP7ZyLbTWa81Xs9apMeCMy5WZwwiUvshYf0mhA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1780660156; c=relaxed/simple;
-	bh=mtnM3Sj2cMIy3e+ie4Hp0c1qRbSYoX8+8V4uSy2F+p4=;
+	bh=d3bmHyS3yqhj7Muvu7OSNuDO+0Sz2jFUwYPWMtm86rI=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=PEnxstC5Gv4qj1FEtprGQuYU4jfCiE2bDvijAkJyB8wjdmn4KDQiR/88NZeMuWPXLLtIqj0hH9tYApwqBumM68bIVhd5R3bXhcFQC2bxUMnzVbvxlIyOWWc6z4lNyz7fVwDWrTvR3J/bbEVxKGvLUfz+uKkw9kJWx9LGPf9XGhk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wqe7pXeN; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=Tesp8p79pYVMtUswuylbG00UWnei5GxS5y/SZGlpm4uYLCxATddrROjzOM/tD2Z+F2Z/3lDJC6LQvnrTPhyncdZTrkqhfjcmEQJB8iegODIIUdiTjteVio0QEySIPtcYuTy2eKjLuZC22j0miE7lRZhBps8cOsYuaFlW7HN62O8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wc0nO5vg; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wqe7pXeN"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id E54B0C2BCB9;
-	Fri,  5 Jun 2026 11:49:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wc0nO5vg"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 11698C2BCF6;
+	Fri,  5 Jun 2026 11:49:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1780660156;
-	bh=mtnM3Sj2cMIy3e+ie4Hp0c1qRbSYoX8+8V4uSy2F+p4=;
+	bh=d3bmHyS3yqhj7Muvu7OSNuDO+0Sz2jFUwYPWMtm86rI=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=Wqe7pXeNMzMqmThbgCf+suxMyK0BxZrH03eXV8xdWUyUZpMRRds63h6LFlDkkjWk7
-	 gijoZP2+DgXAzPhJHqNr5zDa7pfM4PYsdI6Wqs2XbtISxTKImqyGdmpP6N2NtI5YRa
-	 ziQ41iEa9uV6GLYhkx+Qnx9evHFAtyyCLttOJdPJz1hxeGKyykmvwQ9y80XNO29YRN
-	 Ro+CGQTuis+xSXrHZwHNw9ubmwNwmSxSPAlJoALbNod2xkHm464w1JNfONaBgS+A5Q
-	 x0A9Od4e86XdRZCeqCWWNr6JbVyLvu+8J7hcQKyA7mb6UZUnVNPyPNKV4+aJCTRfHA
-	 ivARXzcQC1pKQ==
+	b=Wc0nO5vgGPQf8H1x37OnEyKAAQphwIqXsWF6wV3O1yD+/do83vBsyl0lnuHw3/lCt
+	 TF1KOndnO/avpqzI4JQisVWXKOV/7ckuwn6mhlYbriPBwP+GKzS8/fztKx4SSP490k
+	 pSEr3Koupp3HKighXUKtnq80q27aGtWfHxWIRjuRbM9r8FfTL7XkT0nLxOh3w15YuE
+	 t07BwjOf/DREBpvqIEGF9qwfV89j5iYc0bowZRfbFpKpNlehNS1STxCDIfpLSl8X0w
+	 6Z3jiu0bqWMOwnOuk8XsCcOs3qg3wTQ8o94cCCVFuzbeeklGnPLxmbDHY7f6enXaXM
+	 qmtg/ISfEteIw==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CFB19CD6E7C;
-	Fri,  5 Jun 2026 11:49:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 002F1CD6E74;
+	Fri,  5 Jun 2026 11:49:16 +0000 (UTC)
 From: Ricardo Pardini via B4 Relay <devnull+ricardo.pardini.net@kernel.org>
-Date: Fri, 05 Jun 2026 13:49:08 +0200
-Subject: [PATCH v3 1/3] dt-bindings: net: add Realtek r8169 family PCIe
- Ethernet
+Date: Fri, 05 Jun 2026 13:49:10 +0200
+Subject: [PATCH v3 3/3] arm64: dts: rockchip: describe PCIe RTL8125
+ Ethernet on Radxa ROCK 5 family
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260605-rk3588-dts-rtl-eth-describe-dt-alias-v3-1-8a8857b39daf@pardini.net>
+Message-Id: <20260605-rk3588-dts-rtl-eth-describe-dt-alias-v3-3-8a8857b39daf@pardini.net>
 References: <20260605-rk3588-dts-rtl-eth-describe-dt-alias-v3-0-8a8857b39daf@pardini.net>
 In-Reply-To: <20260605-rk3588-dts-rtl-eth-describe-dt-alias-v3-0-8a8857b39daf@pardini.net>
 To: Heiner Kallweit <hkallweit1@gmail.com>, nic_swsd@realtek.com, 
@@ -55,17 +55,17 @@ Cc: Sebastian Reichel <sebastian.reichel@collabora.com>,
  linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
  linux-rockchip@lists.infradead.org, Ricardo Pardini <ricardo@pardini.net>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2818;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2538;
  i=ricardo@pardini.net; h=from:subject:message-id;
- bh=SwvhGPGzhgbbXrid/Pg1myL4wDhH+eVp/OO6aNuLepE=;
- b=owGbwMvMwMFoHWf/eN7xty8ZT6slMWQpbd/FWGppYr/MysQiwyooP2dW8OqTcdMl65jLxefU5
- +/tbgnrZPRnYWDkYLAUU2RZI6HM8239q1N3PDomwwxiZQKZIi3SwAAELAx8uYl5pUY6Rnqm2oZ6
- hkY6BjrGDFycAjDV7Jnsf7h/aG+smiH5n33aR5fpvm1HGk9JbnOR+ZyvtGbSZr/NEez3vliZRHl
- cy7E6L+Ks8C9P8m7j7wDDBLH8I0EOmvz8TZ9qFmyIWO1xpnP5v56Gy9/WbjZL3K18Yj9nk8zWfa
- E1llPti9cd+c8s3l4XMYdt4qtXHh//e3EfPuldmfhwcdpFR+2Up5vcY2+KavrNsgktveWxITQku
- Nt3m8zNh9z7Fm+qv9j1gfX7Fv8H1eVn8qMjZj2c1Jfgkm35iiHDpjXhQar2FEXm/ZZc8g75vYqn
- Pr5NWHZLat+KSzHRaXK7Qw/6hy8WaDx/TPSaYZU5q96/O533e1JvOrX/nVA+71utW8T1O3VnTnT
- 2dJQyAgA=
+ bh=LIHBog7PhWwzcEUxupyYX2T61C7BO4xNMja5vQwH5CY=;
+ b=owEBiQF2/pANAwAIATteP+Oex+3pAcsmYgBqIre6wIJM7RZgDPgD8s8SkQDIHoW/1tRPAy5pM
+ btIcvSngIOJAU8EAAEIADkWIQSsGCMM9q/qytxIiJM7Xj/jnsft6QUCaiK3uhsUgAAAAAAEAA5t
+ YW51MiwyLjUrMS4xMiwwLDMACgkQO14/457H7enuGQf/bFJ3vTxCExUxai35sb1UlnEHaKf+G/g
+ XqJqRHri2pqDatFcSlBlySzP5hmTBcylm3Hyglr1BR2WoGS6A/2KyTVym+a+PqLBoObl5Czbspp
+ oa8Vk4d2WWNdxRFL0kq9De4vFvA93AiYjQ4xfziFiIZ7aj9k7ZrBsvkA0vaRVal8Y5JZ4joxEpp
+ koiyDqBvMgUKUa2JxRJ5trtQAwhjAaf69+6FdFd28Hejxitz+MzQ24gfi60evQMxE9m0vUgRYmr
+ jcvAJpNpTToqnOhedvsVAspBUUUeCwCgtsr2fGoQbaZVQ2GP/awi5bOyD3TskIfvnId7aEHhKO9
+ 7FlDSYuKICQ==
 X-Developer-Key: i=ricardo@pardini.net; a=openpgp;
  fpr=AC18230CF6AFEACADC4888933B5E3FE39EC7EDE9
 X-Endpoint-Received: by B4 Relay for ricardo@pardini.net/default with
@@ -75,95 +75,91 @@ Reply-To: ricardo@pardini.net
 
 From: Ricardo Pardini <ricardo@pardini.net>
 
-Add a binding for fixed/soldered Realtek PCIe Ethernet controllers
-driven by the r8169 driver (RTL8125/8126/8127/8168 and variants).
+The Radxa ROCK 5B / 5B+ / 5T all carry on-board Realtek RTL8125 NICs.
 
-The "pciVVVV,DDDD" compatibles are the Open Firmware PCI Bus Binding
-spelling, auto-derived from PCI-SIG vendor/device IDs, but they still
-need a binding when used in a board DT - analogous to "usbVVVV,PPPP"
-compatibles documented in their own bindings (e.g. microchip,lan95xx)
-so board DTs attaching properties (fixed MAC, nvmem cell, ...) to
-these PCI function nodes can be validated.
+Describe the fixed function nodes and attach ethernet0/ethernet1
+aliases, so that U-Boot's fdt_fixup_ethernet() can inject mac-address
+properties from its ethaddr/eth1addr env, for stable MACs across
+boots that both U-Boot and the kernel agree on.
 
-Suggested-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+The RTL8125 on pcie2x1l2 is shared by all three variants. The ROCK 5T
+additionally describes pcie2x1l1 with its second RTL8125.
+
 Signed-off-by: Ricardo Pardini <ricardo@pardini.net>
 ---
- .../devicetree/bindings/net/realtek,r8169.yaml     | 54 ++++++++++++++++++++++
- MAINTAINERS                                        |  1 +
- 2 files changed, 55 insertions(+)
+ .../arm64/boot/dts/rockchip/rk3588-rock-5b-5bp-5t.dtsi | 15 +++++++++++++++
+ arch/arm64/boot/dts/rockchip/rk3588-rock-5t.dts        | 18 ++++++++++++++++++
+ 2 files changed, 33 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/net/realtek,r8169.yaml b/Documentation/devicetree/bindings/net/realtek,r8169.yaml
-new file mode 100644
-index 0000000000000..6923211ff4c93
---- /dev/null
-+++ b/Documentation/devicetree/bindings/net/realtek,r8169.yaml
-@@ -0,0 +1,54 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/net/realtek,r8169.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Realtek r8169 family PCIe Ethernet Controllers
-+
-+maintainers:
-+  - Heiner Kallweit <hkallweit1@gmail.com>
-+
-+description:
-+  PCI function node properties for fixed/soldered Realtek Ethernet
-+  controllers driven by the r8169 driver.
-+
-+allOf:
-+  - $ref: ethernet-controller.yaml#
-+
-+properties:
-+  compatible:
-+    enum:
-+      - pci10ec,8125  # RTL8125 2.5GbE
-+      - pci10ec,8126  # RTL8126 5GbE
-+      - pci10ec,8127  # RTL8127
-+      - pci10ec,8161  # RTL8168 variant
-+      - pci10ec,8162  # RTL8168 variant
-+      - pci10ec,8168  # RTL8168/8111 GbE
-+
-+  reg:
-+    maxItems: 1
-+
-+  local-mac-address: true
-+  mac-address: true
-+  nvmem-cells: true
-+  nvmem-cell-names: true
-+
-+required:
-+  - compatible
-+  - reg
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    pcie {
-+        #address-cells = <3>;
-+        #size-cells = <2>;
-+
-+        ethernet@0,0 {
-+            compatible = "pci10ec,8125";
-+            reg = <0x10000 0 0 0 0>;
-+            local-mac-address = [00 00 00 00 00 00];
-+        };
-+    };
-diff --git a/MAINTAINERS b/MAINTAINERS
-index b539be153f6a4..6341de4fadb6c 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -134,6 +134,7 @@ M:	Heiner Kallweit <hkallweit1@gmail.com>
- M:	nic_swsd@realtek.com
- L:	netdev@vger.kernel.org
- S:	Maintained
-+F:	Documentation/devicetree/bindings/net/realtek,r8169.yaml
- F:	drivers/net/ethernet/realtek/r8169*
+diff --git a/arch/arm64/boot/dts/rockchip/rk3588-rock-5b-5bp-5t.dtsi b/arch/arm64/boot/dts/rockchip/rk3588-rock-5b-5bp-5t.dtsi
+index bf4a1d2e55ca3..1b48f57638fca 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3588-rock-5b-5bp-5t.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3588-rock-5b-5bp-5t.dtsi
+@@ -10,6 +10,7 @@
  
- 8250/16?50 (AND CLONE UARTS) SERIAL DRIVER
+ / {
+ 	aliases {
++		ethernet0 = &rtl_eth0;
+ 		mmc0 = &sdhci;
+ 		mmc1 = &sdmmc;
+ 		mmc2 = &sdio;
+@@ -482,6 +483,20 @@ &pcie2x1l2 {
+ 	reset-gpios = <&gpio3 RK_PB0 GPIO_ACTIVE_HIGH>;
+ 	vpcie3v3-supply = <&vcc3v3_pcie2x1l2>;
+ 	status = "okay";
++
++	pcie@0,0 {
++		reg = <0x400000 0 0 0 0>;
++		#address-cells = <3>;
++		#size-cells = <2>;
++		ranges;
++		device_type = "pci";
++		bus-range = <0x40 0x4f>;
++
++		rtl_eth0: ethernet@0,0 {
++			compatible = "pci10ec,8125";
++			reg = <0x410000 0 0 0 0>;
++		};
++	};
+ };
+ 
+ &pcie30phy {
+diff --git a/arch/arm64/boot/dts/rockchip/rk3588-rock-5t.dts b/arch/arm64/boot/dts/rockchip/rk3588-rock-5t.dts
+index 425036146b6d9..116e3512c4413 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3588-rock-5t.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3588-rock-5t.dts
+@@ -8,6 +8,10 @@ / {
+ 	model = "Radxa ROCK 5T";
+ 	compatible = "radxa,rock-5t", "rockchip,rk3588";
+ 
++	aliases {
++		ethernet1 = &rtl_eth1;
++	};
++
+ 	analog-sound {
+ 		compatible = "audio-graph-card";
+ 		label = "rk3588-es8316";
+@@ -76,6 +80,20 @@ &pcie2x1l1 {
+ 	reset-gpios = <&gpio4 RK_PA2 GPIO_ACTIVE_HIGH>;
+ 	vpcie3v3-supply = <&vcc3v3_pcie2x1l1>;
+ 	status = "okay";
++
++	pcie@0,0 {
++		reg = <0x300000 0 0 0 0>;
++		#address-cells = <3>;
++		#size-cells = <2>;
++		ranges;
++		device_type = "pci";
++		bus-range = <0x30 0x3f>;
++
++		rtl_eth1: ethernet@0,0 {
++			compatible = "pci10ec,8125";
++			reg = <0x310000 0 0 0 0>;
++		};
++	};
+ };
+ 
+ &pcie30phy {
 
 -- 
 2.54.0
