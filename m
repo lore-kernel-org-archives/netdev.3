@@ -1,109 +1,212 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB2142AD2C;
-	Fri,  5 Jun 2026 05:39:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED28F30FF20;
+	Fri,  5 Jun 2026 05:45:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780637983; cv=none; b=IEaYmcdiFovK/4ECa5/mccw/7RybzFRFWN0DyU0PrXyn6mzjS0Gi5SQaSFLz6g66BZzoIfxbp1ilDFIuuLJZ0cGIqAGvoCrmZ6hRoDXfjx4V+kLjXR9F6WAA54d6UIGP/0aqwsJYjJfzCadJmxsjoQxLcLkIqd/mwkBuNZhIG/c=
+	t=1780638341; cv=none; b=PAysw+zs93L7aTK9b4m5pP37aNQjMwzyq7rJ+u02qZGEb0uvK5bFIMVvSdzNFqNiZCOdlJtnGReiQaN76/aZb/iyE7tASiWJrSNJat5rbri3FiY0XyYdRKYR5Pj3UhJOZ1xD0LYb8XxyawP6wSM8jKcr6SHp76kg//1bUQaFhZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780637983; c=relaxed/simple;
-	bh=OtzFLoaL6YRibt5cWxU3Bh1ybqbe+mB6LqicVDYoSVk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rr4pkLA6xuIPAYSFkcPHYDS6YDHUrOoQKWQfrxlK1kZRyudiCpNj1DKtR4id5QKQrCU64QMTg3dEE/hEwXDY388dfYRmKoLgG03MpduwYpYTqMnoI4B8ss+CYrKKaLG6H9iRct6d4OBSZ/KTwzinjo4B72wkyYiXCeRzWUhVzwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=kCFlTesH; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+	s=arc-20240116; t=1780638341; c=relaxed/simple;
+	bh=nwXlljI8Y6t4hxChuNBKodksxjLzP/mgZriOqiVpDf4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=liRCuDnmGf50xMCj/v1Ec1+m2BB7FmV9AyROhe1YZsSAmuhvDB4V/dkfN3EtyaImTTU69xNTNXOwmVUWXwNhB9lhjslSyJIKsi5krpaKnQYUhCnguxjbavb6xrkoa6JnL1NorSDJ9nHu7SBQU8BTTtwe1ZwyQMAX+t4TFYH1jo0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Uu+kycIx; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="kCFlTesH"
-Received: by linux.microsoft.com (Postfix, from userid 1173)
-	id BB02520B7169; Thu,  4 Jun 2026 22:29:29 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com BB02520B7169
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1780637369;
-	bh=qIO/sBp81IBMRVL//sPxD46ntAHHAdA/+qb5LsOMY8c=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kCFlTesHtfd61rL4g6Pk2Gf9tPjaIQvHUm8+WvC9ONeLMpNzq74ueTfVx+or9v5vv
-	 i1BXiC6LmO5lem0eSeF2ac6gFBq4SoHHuxkTr/k7U+vLYWHs9daeBo9qR+YwUCTxqE
-	 ITX8nLq26F57iawXJOMbSFnOTQtZUFCFpRzqXi3k=
-Date: Thu, 4 Jun 2026 22:29:29 -0700
-From: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
-	decui@microsoft.com, longli@microsoft.com, andrew+netdev@lunn.ch,
-	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
-	kotaranov@microsoft.com, horms@kernel.org,
-	dipayanroy@linux.microsoft.com, kees@kernel.org,
-	linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org
-Subject: Re: [PATCH net-next] net: mana: Cache MANA_QUERY_LINK_CONFIG result
- to avoid repeated HWC queries
-Message-ID: <aiJeuU3DLKL7JcPN@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
-References: <20260528180757.1536640-1-ernis@linux.microsoft.com>
- <20260602132127.25fc27ee@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Uu+kycIx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 593121F00893;
+	Fri,  5 Jun 2026 05:45:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780638339;
+	bh=mhVtNpIY3P5HlHg06DPqLtn0RckcLp4C6pdGau2Sqv0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=Uu+kycIxx/OwP3X+MW0bxkvQU4ddOXwn3XvJ7ehtVT3TKsoeCOSObRuucLETHpt5k
+	 pdlTazcWxqM/rvf0VsEj6F9iXGfWD79yvmqOWbXXD3qK4rHo1aBhHk/Lg6KqoOSwJS
+	 /KH227tJUhDSUda5T4B9vGDT09V7SFVSXF6uSX+HDBmBkd9Av5QPF+sDmUZaXgFMM/
+	 6cKhDwlHOBYRPdbkwf8VLc8FFqlK8PMTNpWTshOJ/dBtdWtERGC0abLZ9Fx6NGIXM3
+	 ilTMDOT3piuhx356QjyJfh3GekndYg4p4r+HuBlK6LBYMRAddiO76Flw4lnODF5BLy
+	 KovD8fMcDvSmQ==
+Message-ID: <0198cf7c-ba09-47e9-abc3-dd230c1183dc@kernel.org>
+Date: Fri, 5 Jun 2026 14:45:28 +0900
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260602132127.25fc27ee@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] net: skb: isolate skb data area allocations into a
+ separate bucket
+To: Pedro Falcato <pfalcato@suse.de>
+Cc: Vlastimil Babka <vbabka@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ linux-hardening@vger.kernel.org, linux-mm@kvack.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Hao Li <hao.li@linux.dev>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Simon Horman <horms@kernel.org>,
+ Jason Xing <kerneljasonxing@gmail.com>, Kuniyuki Iwashima <kuniyu@google.com>
+References: <20260602183122.747759-1-pfalcato@suse.de>
+ <20260602183122.747759-3-pfalcato@suse.de>
+ <6d70757a-a849-4828-89e7-f3d51bf8c9f8@kernel.org>
+ <aiHIQ4ZxnMSifhmi@pedro-suse>
+Content-Language: en-US
+From: Harry Yoo <harry@kernel.org>
+In-Reply-To: <aiHIQ4ZxnMSifhmi@pedro-suse>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------997bZ7rcMfhtcga6qMSb40eN"
 
-On Tue, Jun 02, 2026 at 01:21:27PM -0700, Jakub Kicinski wrote:
-> On Thu, 28 May 2026 11:07:51 -0700 Erni Sri Satya Vennela wrote:
-> > mana_query_link_cfg() sends an HWC command to firmware on every call,
-> > but the link speed and QoS values it returns only change when the
-> > driver explicitly calls mana_set_bw_clamp(). This function is called
-> > not only by userspace via ethtool get_link_ksettings, but also
-> > periodically by hv_netvsc through netvsc_get_link_ksettings and by
-> > the sysfs speed_show attribute via dev_attr_show, resulting in
-> > unnecessary HWC traffic every few minutes.
-> 
-> mana is ops-locked, right? Because you support net shapers
-> 
-> Could you instead take the netdev_lock() in the work?
-> It's already held around the user space originated calls.
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------997bZ7rcMfhtcga6qMSb40eN
+Content-Type: multipart/mixed; boundary="------------n0FZEuI5Zztetg5lfgI5QZI8";
+ protected-headers="v1"
+From: Harry Yoo <harry@kernel.org>
+To: Pedro Falcato <pfalcato@suse.de>
+Cc: Vlastimil Babka <vbabka@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ linux-hardening@vger.kernel.org, linux-mm@kvack.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Hao Li <hao.li@linux.dev>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Simon Horman <horms@kernel.org>,
+ Jason Xing <kerneljasonxing@gmail.com>, Kuniyuki Iwashima <kuniyu@google.com>
+Message-ID: <0198cf7c-ba09-47e9-abc3-dd230c1183dc@kernel.org>
+Subject: Re: [PATCH 2/2] net: skb: isolate skb data area allocations into a
+ separate bucket
+References: <20260602183122.747759-1-pfalcato@suse.de>
+ <20260602183122.747759-3-pfalcato@suse.de>
+ <6d70757a-a849-4828-89e7-f3d51bf8c9f8@kernel.org>
+ <aiHIQ4ZxnMSifhmi@pedro-suse>
+In-Reply-To: <aiHIQ4ZxnMSifhmi@pedro-suse>
 
-Hi Jakub,
+--------------n0FZEuI5Zztetg5lfgI5QZI8
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-I tried two netdev_lock-based variants. 
 
-mana_query_link_cfg() has four callers:
 
-1 ethtool ioctl/netlink			- has RTNL	- has netdev->lock
-2 sysfs speed_show/duplex_show		- has RTNL	- no netdev->lock
-3 netvsc_get_link_ksettings VF forward	- has RTNL	- no netdev->lock
-4 mana_shaper_set			- no RTNL	- has netdev->lock
+On 6/5/26 4:12 AM, Pedro Falcato wrote:
+> On Thu, Jun 04, 2026 at 02:30:34PM +0900, Harry Yoo wrote:
+>>
+>>
+>> On 6/3/26 3:31 AM, Pedro Falcato wrote:
+>>> SKB data area allocations (as done from alloc_skb()) use kmalloc().
+>>> These allocations can be variably sized and their contents can be mor=
+e
+>>> or less controlled from userspace, which makes them useful for attack=
+ers
+>>> that want to overwrite a use-after-free'd object from the same kmallo=
+c slab
+>>> (which often just requires the sizes to roughly match into the same k=
+malloc
+>>> bucket). [0] is an easy example of an exploit that uses netlink skb
+>>> allocation to target another similarly-sized accidentally freed objec=
+t.
+>>>
+>>> While other mitigations like CONFIG_RANDOM_KMALLOC_CACHES exist, thes=
+e are
+>>> probabilistic. Use the existing kmem buckets API to further isolate t=
+hese
+>>> allocations in a guaranteed fashion, when CONFIG_SLAB_BUCKETS=3Dy.
+>>>
+>>> Link: https://github.com/google/security-research/blob/master/pocs/li=
+nux/kernelctf/CVE-2023-4207_lts_cos_mitigation_2/docs/exploit.md [0]
+>>> Signed-off-by: Pedro Falcato <pfalcato@suse.de>
+>>> ---
+>>>  net/core/skbuff.c | 5 ++++-
+>>>  1 file changed, 4 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+>>> index 44a7f8401468..1f6c6b531ece 100644
+>>> --- a/net/core/skbuff.c
+>>> +++ b/net/core/skbuff.c
+>>> @@ -594,6 +594,8 @@ static void *kmalloc_pfmemalloc(size_t obj_size, =
+gfp_t flags, int node)
+>>>  	return kmalloc_node_track_caller(obj_size, flags, node);
+>>>  }
+>>> =20
+>>> +static kmem_buckets *skb_data_buckets __ro_after_init;
+>>> +
+>>>  /*
+>>>   * kmalloc_reserve is a wrapper around kmalloc_node_track_caller tha=
+t tells
+>>>   * the caller if emergency pfmemalloc reserves are being used. If it=
+ is and
+>>> @@ -632,7 +634,7 @@ static void *kmalloc_reserve(unsigned int *size, =
+gfp_t flags, int node,
+>>>  	 * Try a regular allocation, when that fails and we're not entitled=
 
-No existing lock covers all four.
+>>>  	 * to the reserves, fail.
+>>>  	 */
+>>> -	obj =3D kmalloc_node_track_caller(obj_size,
+>>> +	obj =3D kmem_buckets_alloc_node_track_caller(skb_data_buckets, obj_=
+size,
+>>>  					flags | __GFP_NOMEMALLOC | __GFP_NOWARN,
+>>>  					node);
+>>>  	if (likely(obj))
+>>
+>> What about kmalloc_pfmemalloc()?
+>=20
+> Good point, that looks free as well.
+>=20
+> Sidenote: isolating kmem_cache_alloc for possibly-aliasing caches could=
+ also
+> be useful. skb allocation has net_hotdata.skb_small_head_cache. It does=
+n't merge
+> with anything for $raisins (odd size, plus I don't think usercopy cache=
+s are
+> getting merged?) but it feels too... accidental?
 
-A. netdev_assert_locked() in the mana_query_link_cfg() :
-Lockdep WARN on every sysfs cat /sys/class/net/eth*/speed and every
-periodic netvsc_get_link_ksettings() poll since callers 2 and 3 hold
-RTNL only.
-A slow firmware reply on callers 2/3 can land after mana_shaper_set
-(caller 4) has changed the rate and invalidated the cache,
-publishing a stale apc->speed / apc->max_speed as "cached valid". 
-Because the value is cached, the staleness then persists until the next
-shaper change
+Right, we never merge caches with useroffset/usersize.
 
-B. ASSERT_RTNL() + netdev_lock_ops() inside mana_query_link_cfg():
-Self-deadlocks on #1 (__dev_ethtool already holds it) and #4
-(mana_shaper_set already holds it and calls mana_query_link_cfg() before
-the clamp).
-ASSERT_RTNL() also WARNs from #4 — shaper genl ops don't take RTNL.
+Hmm...
 
-Eg. Deadlock scenario:
-__dev_ethtool()
-  netdev_lock_ops(dev)              ← held
-    ops->get_link_ksettings()
-      mana_get_link_ksettings()
-        mana_query_link_cfg()
-          netdev_lock_ops(ndev)     ← DEADLOCK
+/* SKB_SMALL_HEAD_CACHE_SIZE is the size used for the skbuff_small_head
+ * kmem_cache. The non-power-of-2 padding is kept for historical reasons =
+and
+ * to avoid potential collisions with generic kmalloc bucket sizes.
+ */
+#define SKB_SMALL_HEAD_CACHE_SIZE					\
+	(is_power_of_2(SKB_SMALL_HEAD_SIZE) ?			\
+		(SKB_SMALL_HEAD_SIZE + L1_CACHE_BYTES) :	\
+		SKB_SMALL_HEAD_SIZE)
 
-Can we consider private link_cfg_mutex which is orthogonal to RTNL and
-netdev->lock and covers all four callers?
 
-Thanks,
-Vennela
+What are "historical reasons" other than avoiding collisions with
+kmalloc caches?
+
+> Maybe passing something like SLAB_NO_MERGE and making the size
+> standard-looking would be nice. I have a size of 704 bytes per object, =
+and
+> this probably causes some weird wastage for each slab.
+
+Yes, unless the "historical reasons" do not make it infeasible to do that=
+=2E
+
+And I wonder if net/core/skbuff.c intends to always prevent merging, or
+only with hardening configs like SLAB_BUCKETS.
+
+--=20
+Cheers,
+Harry / Hyeonggon
+
+
+--------------n0FZEuI5Zztetg5lfgI5QZI8--
+
+--------------997bZ7rcMfhtcga6qMSb40eN
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCaiJieAAKCRCGXBN6rc5S
+1vqiAQCwzNxsZCILMai81ko92snBjCKgniuSar5HpR5PyzdzLQEAgghVBLPZo6us
+vlmp+GMB8t+jxEqUqiKgV0KKMxhigg0=
+=p8Ku
+-----END PGP SIGNATURE-----
+
+--------------997bZ7rcMfhtcga6qMSb40eN--
