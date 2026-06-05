@@ -1,168 +1,128 @@
-Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout-b-107.mailbox.org (mout-b-107.mailbox.org [195.10.208.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD9582D2496
-	for <netdev@vger.kernel.org>; Fri,  5 Jun 2026 12:31:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17A8C18BC3B;
+	Fri,  5 Jun 2026 12:34:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.10.208.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780662673; cv=none; b=c6RRgMKipPr3iYsQXZFdQRAN4G1T+/GXEqTn74NWUPm8Oy9QJgm6pFghOUEZplzF44aOaAFkSrKzRVYJPi50JDVUSd/qug8RKfYjshrpquRij+7RJrmgFEw/gdhwZTXB1iPsAL1/U3lXriJR+FZUBKW/xUCUGWoKFLP7jAhDjYE=
+	t=1780662849; cv=none; b=FGu/19iJ4nXZ3SpJHA6BAyp3xwz4Ys1DvSMmDAuMzNO/yAF7lXXcrIYNB4rI0hlpaQ2OBlNWvb12elc3rk56eUV01rRRYlzDXkjm3W8o/Wpo3DA9CkndleGE+JZlMe5CN6aV8kKJGasqMHyoFGPvqhzSkrQpmx+yakdPjFm4VmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780662673; c=relaxed/simple;
-	bh=Cco+vFiWz8nH8jHJl25YPtjf0AjyxuJKLseQuLXyV6w=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=m1faAtIRfH8rLV5Jr+52zc5TyKsOMRqjiHkbEvYVE1Hc77HCpTFlrP9oR5HaY2vOF2qP5nJL94AOEJzUOC3JpcQjlnfNkvoC5w/33DPOyMpNyYFm5Pllg7LaDgdWXDBAov0xCTEYTraCM/OGrkkEQVqC9lwNYODrlz/qsmvwmL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com; spf=pass smtp.mailfrom=riscstar.com; dkim=pass (2048-bit key) header.d=riscstar-com.20251104.gappssmtp.com header.i=@riscstar-com.20251104.gappssmtp.com header.b=nBOVrQT4; arc=none smtp.client-ip=209.85.222.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=riscstar.com
+	s=arc-20240116; t=1780662849; c=relaxed/simple;
+	bh=w4rChrUOsyDQFUNbvsiBR+csdsviDShe3ptWz8mB1wA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=IRx9LE9IqQXrHhojSOpZPmqX4/9N5xdUetiHG686YcaM1JvaZ8/nJoUOcWGkOoo+MzgA3h2EIgyMKOCxorQtG35Na1o26jYr/TlSema85x5FYLm5hz2hysCQ3FbTgpkcB/eYGurTQNhhIIxDiqucDOKcXiNLkVDDoikTgGadKXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com; spf=pass smtp.mailfrom=mandelbit.com; dkim=pass (2048-bit key) header.d=mandelbit.com header.i=@mandelbit.com header.b=n3PKsgAy; arc=none smtp.client-ip=195.10.208.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mandelbit.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=riscstar-com.20251104.gappssmtp.com header.i=@riscstar-com.20251104.gappssmtp.com header.b="nBOVrQT4"
-Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-915906a4becso220282185a.2
-        for <netdev@vger.kernel.org>; Fri, 05 Jun 2026 05:31:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=riscstar-com.20251104.gappssmtp.com; s=20251104; t=1780662671; x=1781267471; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=hOWy2W3C8F0epU9cKoqDrCPhuhX/iOel8Vt4x+uvwak=;
-        b=nBOVrQT4YuSrnvW4GHgMPILRAtsDd3zeSyGZP68L6OViiwFPurfZmgiMEDG0GjF/75
-         HU/XE8oHyiV8w9m0djX27oMSyCKIvcoaptEoafCXz+fjWI22opoRTEbc6BfQpRi2fn1W
-         3oE3fS3JLczE5L/mNu5q27BlsuOTsgP+3KQLXJAWCa5aEZLtpmsEeA3KbTlCv/Z7ZZYb
-         4vvLqFYruB0eztoNQK+WU3P+E36W7Mm3JN+mA+ADJjE/uslvAxcYeK0ibk5/SuHoQuEc
-         VWs5zZEQd61hsXCM3thBKpD3gpcyHIQAYbN9MRoNmqCMOqJHVoxBHNUpSneWNmCP1LqQ
-         c8KQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780662671; x=1781267471;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=hOWy2W3C8F0epU9cKoqDrCPhuhX/iOel8Vt4x+uvwak=;
-        b=ShYldECh6e2dPW6GrcMOjzc0u+TA9kFARaKSodmFN7hyztH1Z9jSm5nm5XtpV2fk5X
-         2eFSd125YRcKhfiEAu2wD3r1ByzL1/aTH6yv0SiaYE0vEPiSftpX/zu8LP/B4kZsTMa4
-         SjPPpjRW+GdszztWf2tmWt/Z9D7YfppA5EsWmiUFVMi8Evv9+NAZ9WIDJrzOkJpumGQW
-         fd3JfEkY73YA0RCbB45PtE2LLnMIv0G0Uj9m9xYp+5ltlpJnrXhoPkU5O6/TATsDB0pH
-         iMIFmilRtX/xlD3DKPNlVd1tAH0tUHFXEKcImTf6zcuSwH/+JuW6eEMAUTn90Zn/Hc9q
-         oLFQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+xfbSz+K/tLxlWVY1K4IqivDzDP6dMMrbobp4KTzoPE3ItwWFBu7zdFiUe9utEmTD6qGUFF/k=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzZQIOHIQblfu4ZN+g9Lt0b8Ecz+nbnL3SVXCvJhNmrCdKWrAN7
-	J9rGFpQiSglQWea7KQeui4H5RgM464NcY/LeTy5UIJreKZvPrLv5C+DIDWb3mFFdRNQ=
-X-Gm-Gg: Acq92OF/enAgEWYkP1sv2W9Bnq4MKNIqoxcCmW8pLoSCcgGZD/Mvo0M1GeLSw2rk036
-	aPXVWawkx9P4WhXgoYM+yQLSJ+hfk4tpFRVP49RXroK4o81kZNcOfWd+RJOnz6N1puvG53QhtQd
-	Ft1f49GuwLX1GqcldzXNzcEWMRYrp6n4F45VK+WnwepmG2DGpbY/pbPAIH5uq5+RX698qTTtEew
-	3ABhed2dA5IaL9cpHVImWBFZ2huK3DlB0GWlbRrl9UQvKmmTy5utPN3eHc682sAtKxg4c6AMPwQ
-	sMuhtae8gXhsXIR1rgoXtwc5HgkqDoZyrs0QF4z13iJYC+qZJyLpxPMYZtysc+ok/6gs8U6awmN
-	dBr7cRtnxQc5C2krCjNyzs0WRET9iOMDv+ArGOft0I2dHNkBIuZmz4t9oUMbKYRZljqO1PuBj7S
-	IIMQGCzau/0dI71ao0li8uXtjOVH4/7itndC8=
-X-Received: by 2002:a05:6830:6685:b0:7e6:deb1:484d with SMTP id 46e09a7af769-7e70c7b1386mr1725355a34.13.1780662284484;
-        Fri, 05 Jun 2026 05:24:44 -0700 (PDT)
-Received: from [172.22.22.234] ([73.62.185.64])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7e6e7974f22sm5817653a34.25.2026.06.05.05.24.41
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 05 Jun 2026 05:24:44 -0700 (PDT)
-Message-ID: <bd2c09d4-462d-4392-bb3f-ca91b2f08bd7@riscstar.com>
-Date: Fri, 5 Jun 2026 07:24:40 -0500
+	dkim=pass (2048-bit key) header.d=mandelbit.com header.i=@mandelbit.com header.b="n3PKsgAy"
+Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:b231:465::202])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-b-107.mailbox.org (Postfix) with ESMTPS id 4gX0xS36cVzDs62;
+	Fri,  5 Jun 2026 14:24:44 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mandelbit.com;
+	s=MBO0001; t=1780662284;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Rzw23HqIHJPtzDt+5Kp05vr651n/WjwjQt8cmi1SSTg=;
+	b=n3PKsgAyBex9vc7r+X3IhvHBr4YNRC6jT9KDY7ejkNJPrqRb92czoFz6HdYez6rXLCUzVr
+	tyx0hDtx3XLVr9B5HYsKzKFQvmUcWtWL+Hq38h8y6Q1RcxQC2HCNIJU/ZV6xIgQrKhPRin
+	Gore+bVgMDAk2J4PXndxttOFRAX4XyT0imC762CWD3pottdpAttFtxRKjyZfw2v7CVhbMr
+	LEGZJnRDKrX02/tOWOvmGg9mBf/MCC7BwQGqmCnVBSnejvZFfUO6wMgF1lvXbo4Rw9qKVz
+	N31tdxK9yjeu3knAYJty4MyR9XxP50jSYJ5qiY0FKpNlc6zsGuRHLpnVqzdjJA==
+Authentication-Results: outgoing_mbo_mout;
+	dkim=none;
+	spf=pass (outgoing_mbo_mout: domain of ralf@mandelbit.com designates 2001:67c:2050:b231:465::202 as permitted sender) smtp.mailfrom=ralf@mandelbit.com
+From: Ralf Lici <ralf@mandelbit.com>
+To: Xavier HSINYUAN <XavierHsinyuan@outlook.com>
+Cc: andrew+netdev@lunn.ch,
+	antonio@mandelbit.com,
+	davem@davemloft.net,
+	dxld@darkboxed.org,
+	edumazet@google.com,
+	kuba@kernel.org,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com
+Subject: Re: [RFC net-next 10/15] ipxlat: add 4to6 pre-fragmentation path
+Date: Fri,  5 Jun 2026 14:24:27 +0200
+Message-ID: <20260605122428.402982-1-ralf@mandelbit.com>
+In-Reply-To: <TYRPR01MB1266606B1144F3896FC712C3CCA032@TYRPR01MB12666.jpnprd01.prod.outlook.com>
+References: <TYRPR01MB1266606B1144F3896FC712C3CCA032@TYRPR01MB12666.jpnprd01.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v2 10/14] dt-bindings: net: toshiba,tc9654-dwmac:
- add TC9564 Ethernet bridge
-To: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: weishangjuan@eswincomputing.com, linux-gpio@vger.kernel.org,
- inochiama@gmail.com, davem@davemloft.net, devicetree@vger.kernel.org,
- kuba@kernel.org, me@ziyao.cc, hawk@kernel.org, arnd@arndb.de,
- konradybcio@kernel.org, mohd.anwar@oss.qualcomm.com, hkallweit1@gmail.com,
- pabeni@redhat.com, ast@kernel.org, maxime.chevallier@bootlin.com,
- bpf@vger.kernel.org, boon.khai.ng@altera.com, linusw@kernel.org,
- andersson@kernel.org, sdf@fomichev.me, linux-kernel@vger.kernel.org,
- livelycarpet87@gmail.com, a0987203069@gmail.com,
- linux-stm32@st-md-mailman.stormreply.com, daniel@iogearbox.net,
- john.fastabend@gmail.com, alexandre.torgue@foss.st.com,
- richardcochran@gmail.com, rmk+kernel@armlinux.org.uk, krzk+dt@kernel.org,
- conor+dt@kernel.org, rohan.g.thomas@altera.com, gregkh@linuxfoundation.org,
- Daniel Thompson <daniel@riscstar.com>, chenchuangyu@xiaomi.com,
- andrew+netdev@lunn.ch, mcoquelin.stm32@gmail.com, edumazet@google.com,
- siyanteng@cqsoftware.com.cn, wens@kernel.org, brgl@kernel.org,
- linux-arm-msm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- julianbraha@gmail.com, netdev@vger.kernel.org, chenhuacai@kernel.org,
- prabhakar.mahadev-lad.rj@bp.renesas.com
-References: <20260605010022.968612-1-elder@riscstar.com>
- <20260605010022.968612-11-elder@riscstar.com>
- <178062720108.1744752.12164392208085928081.robh@kernel.org>
-Content-Language: en-US
-From: Alex Elder <elder@riscstar.com>
-In-Reply-To: <178062720108.1744752.12164392208085928081.robh@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 4gX0xS36cVzDs62
 
-On 6/4/26 9:40 PM, Rob Herring (Arm) wrote:
-> 
-> On Thu, 04 Jun 2026 20:00:17 -0500, Alex Elder wrote:
->> From: Daniel Thompson <daniel@riscstar.com>
->>
->> Add devicetree bindings for the Toshiba TC956x family of Ethernet-AVB/TSN
->> bridges.
->>
->> The TC9564 contains a PCIe switch with one upstream and three downstream
->> PCIe ports.  The third PCIe downstream port has an attached embedded PCIe
->> endpoint, and that endpoint implements two PCIe functions.  Each internal
->> PCIe function has a Synopsys XGMAC Ethernet interface capable of 10 Gbps
->> operation.
->>
->> The TC9564 also implements an embedded GPIO controller, which exposes
->> 10 lines externally.  Some platforms use these GPIO lines, so this
->> GPIO controller is managed by a separate driver.  Other embedded
->> peripherals (like a microcontroller, SRAM, and UART) are currently
->> unused.
->>
->> The GPIO controller is managed by registers accessed via MMIO on an
->> internal PCIe function's registers.
->>
->> Signed-off-by: Daniel Thompson <daniel@riscstar.com>
->> Signed-off-by: Alex Elder <elder@riscstar.com>
->> ---
->>   .../bindings/net/toshiba,tc9564-dwmac.yaml    | 120 ++++++++++++++++++
->>   MAINTAINERS                                   |   6 +
->>   2 files changed, 126 insertions(+)
->>   create mode 100644 Documentation/devicetree/bindings/net/toshiba,tc9564-dwmac.yaml
->>
-> 
-> My bot found errors running 'make dt_binding_check' on your patch:
+On Mon, 18 May 2026 20:36:25 +0800, Xavier HSINYUAN <XavierHsinyuan@outlook.com> wrote:
+> Hi Ralf,
+>
 
-Thank you for this report.  After upgrading the "dtschema" package I
-also see these errors.  The "gpio" and "ethernet" properties will
-have an "unevaluatedProperties: false" constraint added in the next
-version of this series.  The name of the binding file will also be
-correct in the MAINTAINERS file.
+Hi Xavier,
 
-					-Alex
+Sorry for the slow reply. This got buried while I was busy with other
+kernel work.
 
-> yamllint warnings/errors:
-> 
-> dtschema/dtc warnings/errors:
-> /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/toshiba,tc9564-dwmac.yaml: gpio: Missing additionalProperties/unevaluatedProperties constraint
-> /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/toshiba,tc9564-dwmac.yaml: ethernet: Missing additionalProperties/unevaluatedProperties constraint
-> 
-> doc reference errors (make refcheckdocs):
-> Warning: MAINTAINERS references a file that doesn't exist: Documentation/devicetree/bindings/net/toshiba,tc956x-dwmac.yaml
-> MAINTAINERS: Documentation/devicetree/bindings/net/toshiba,tc956x-dwmac.yaml
-> 
-> See https://patchwork.kernel.org/project/devicetree/patch/20260605010022.968612-11-elder@riscstar.com
-> 
-> The base for the series is generally the latest rc1. A different dependency
-> should be noted in *this* patch.
-> 
-> If you already ran 'make dt_binding_check' and didn't see the above
-> error(s), then make sure 'yamllint' is installed and dt-schema is up to
-> date:
-> 
-> pip3 install dtschema --upgrade
-> 
-> Please check and re-submit after running the above command yourself. Note
-> that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-> your schema. However, it must be unset to test all examples with your schema.
-> 
+> >+int ipxlat_46_plan_prefrag(struct ipxlat_priv *ipxlat, struct sk_buff *skb)
+> >+{
+> >+	unsigned int pkt_len6, pmtu6, threshold6, frag_max_size, pkt_len4,
+> >+		old_l3_len, new_l3_len;
+> >+	struct ipxlat_cb *cb = ipxlat_skb_cb(skb);
+> >+	const struct iphdr *in4 = ip_hdr(skb);
+> >+	int l3_delta, frag_l3_delta;
+> >+
+> >+	if (unlikely(cb->frag_max_size)) {
+> >+		DEBUG_NET_WARN_ON_ONCE(1);
+> >+		cb->frag_max_size = 0;
+> >+	}
+> >+
+> >+	pkt_len4 = iph_totlen(skb, in4);
+> >+	old_l3_len = cb->l3_hdr_len;
+> >+	new_l3_len = sizeof(struct ipv6hdr) +
+> >+		     (ip_is_fragment(in4) ? sizeof(struct frag_hdr) : 0);
+> >+	l3_delta = (int)new_l3_len - (int)old_l3_len;
+> >+	pkt_len6 = pkt_len4 + l3_delta;
+> >+
+> >+	pmtu6 = ipxlat_46_lookup_pmtu6(ipxlat, skb, in4);
+> >+	threshold6 = min(pmtu6, READ_ONCE(ipxlat->lowest_ipv6_mtu));
+> >+
+> >+	if (likely(pkt_len6 <= threshold6))
+> >+		return 0;
+> >+
+> >+	/* df packets are never locally pre-fragmented */
+> >+	if (likely(be16_to_cpu(in4->frag_off) & IP_DF)) {
+> >+		/* Let the IPv6 forwarding path raise PTB when needed and rely
+> >+		 * on the reverse 6->4 ICMP translation path for feedback.
+> >+		 */
+> >+		return 0;
+> >+	}
+>
+> How about putting the DF check before the PMTU lookup?
+> ipxlat_46_lookup_pmtu6() requires ip6_route_output() and dst_release(),
+> but the DF bit is much cheaper to test and is typically set on most
+> TCP/QUIC packets. It looks like a pure reorder but I have not verified
+> it carefully.
+>
 
+Yes, that looks right to me. The PMTU lookup is only needed for the
+non-DF path, where we may actually compute a pre-fragmentation cap. For
+DF packets ipxlat_46_plan_prefrag should leave frag_max_size unset and
+let the later IPv6 output path generate PTB if the translated packet is
+too large.
+
+I'll move the DF check before ipxlat_46_lookup_pmtu6, after the stale
+frag_max_size clearing.
+
+Thanks!
+
+-- 
+Ralf Lici
+Mandelbit Srl
