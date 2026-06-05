@@ -1,53 +1,58 @@
-Received: from mail.rulkc.org (mail.rulkc.org [155.212.184.193])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D6E83B3BF2;
-	Fri,  5 Jun 2026 12:01:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=155.212.184.193
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE5772253A1
+	for <netdev@vger.kernel.org>; Fri,  5 Jun 2026 12:05:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780660881; cv=none; b=O0P43sSC52XN64Rig2bOO7qMAmcBkgPZPjmgkMts2An6eSYDUgz8O1ofqhw8NGuMgGEJ4/Ia+wlnzUIr52DsWLmbD4WwZs0sCshOdK9ScYxAvNSZuiN5X3i6gLs1ERvtKBENzclKiJb9GWpF6uxnh92qlN6KpzlB48WsHiQhSvE=
+	t=1780661114; cv=none; b=ZpO3RM7xQI30IdAKVOfAv6ovkUAJJqjlbKQSHvr4pAilKyMLuJJF8li+NiLkYc3eMQK7uC5Y8nJFhcrP995kXWeJ/KUiER7C211Z4yI0S3VF482FNhZweW2PoHlE/pbFEiqLTAo8Rs0zmhclQxiw1U502jfGHmxtJbwSkrpOdNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780660881; c=relaxed/simple;
-	bh=mVQZ3Z5gP/h9nfdD+wZ39ygVu8JFQL3b7h/XBXivkrQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sPxDRoKvOynSLm1JVGc7bJOoD0LHis9qEWemvfANAcQxLVrA0NP+7uU17kZG14KY7T3csXSAJteyW8/Z2GFw4Hg0uYzmE1eVsU/b0GESIUh/zKmabAthItDY9FAZ9C6aIQrkyZZsSjZygbKS0axBouJ9aKtjIsGgWQ+tyBg2n1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=rulkc.org; spf=pass smtp.mailfrom=rulkc.org; dkim=pass (2048-bit key) header.d=rulkc.org header.i=@rulkc.org header.b=gX8dz6Jy; arc=none smtp.client-ip=155.212.184.193
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=rulkc.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rulkc.org
+	s=arc-20240116; t=1780661114; c=relaxed/simple;
+	bh=PspPcxZj4eK+HGP+IlvV4ikRRIBQqslU9MXOR2NDmWk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OW5yWvlSJNwj+jDQgnnWMj4eobmp8qLCZ+oiEFPVPgzyUwoZGGQ3Rt4D/Zckbgwe90UcCzkIz42CCqicSYQuUk+RQdtT+EPId3lpsyXAyN0G1Jzr2teMLMYmplt6zIKvXF5nG2ZEYNtxwEIyP93rE2VNGboS5RwKtQQYAznIAbE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=K/Uz1CEW; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rulkc.org header.i=@rulkc.org header.b="gX8dz6Jy"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D416C100036;
-	Fri,  5 Jun 2026 14:53:33 +0300 (MSK)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rulkc.org; s=dkim;
-	t=1780660424; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding; bh=6iwVaCXRpwiv+vZVNr+kltBX5rtqh1FPWM+jo4bxm3Q=;
-	b=gX8dz6Jy2eSO7V4psvQMSFoBw/4WKMZBqGzngW/t9BLUC/h/82UuA5cn2TwlKfyC4GknqM
-	kern3R9VYAm4U+wajP55edgXl3yrBlzhHreotpUzjYknFHOmqvcdAFSeJb8ZjpyhzoppGH
-	2VeobGTX7wtgg6SE/4R7ammAm7GpKCtVxXO3m2htivJ5Vj94+TbxyuMnWkA8KQkillrTZe
-	pGRCKij7eOAR+yaM+G201q/S7ktlWQ8n7C6KG/Xj0s3IepcdHbRkUzgzX0vpYy9G06Tvjf
-	yLDjlPB1KgilNNxdGgbNYx47Eh36yvhoncwYMysg3hCSq9U0lTHrwJfd2PSBJA==
-From: Arseniy Krasnov <avkrasnov@rulkc.org>
-To: Stefan Hajnoczi <stefanha@redhat.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Bobby Eshleman <bobby.eshleman@bytedance.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	Simon Horman <horms@kernel.org>
-Cc: kvm@vger.kernel.org,
-	virtualization@lists.linux-foundation.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	oxffffaa@gmail.com,
-	rulkc@linuxtesting.org,
-	Arseniy Krasnov <avkrasnov@rulkc.org>
-Subject: [PATCH v1] vsock/virtio: rework MSG_ZEROCOPY flag handling
-Date: Fri,  5 Jun 2026 14:53:14 +0300
-Message-ID: <20260605115314.552321-1-avkrasnov@rulkc.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="K/Uz1CEW"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1780661113; x=1812197113;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=PspPcxZj4eK+HGP+IlvV4ikRRIBQqslU9MXOR2NDmWk=;
+  b=K/Uz1CEWn3ZcCfZqwErFgpCoKm64zDTnRBLN8hHfa9o4UlWlhHO9Avy6
+   kHi7CvhNqQUufQTfS6WaKbsrIDUhR8eZkJvl0xGOf04EV4HGqQftg6gu/
+   aTGXyM7bIk2EZfUWFLsbEVEiyr7gYylueJ02s2AXTOI1YQb8CrXDjrIhD
+   bMymwPJ1f9W9KnFFFzbDutF4WQhfE8Ne5omgBR+qYugOGa0d9KU07qzG2
+   Gbxgv8uWlVEWoQU1E3jmmfvdqxcCKxBtqZeXAg4RPv1p0zSOsujC70LI1
+   9yETYwpCf3SrbkQ3Lgr7e7Qoy6Iyn+Bv20wQN269A9lLLaEO8T6OlybBG
+   w==;
+X-CSE-ConnectionGUID: 29mcunvRTdyS2Xb8ZJ5saA==
+X-CSE-MsgGUID: ww8LgEqlSn2AR6yETFVrbw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11807"; a="92178247"
+X-IronPort-AV: E=Sophos;i="6.24,188,1774335600"; 
+   d="scan'208";a="92178247"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jun 2026 05:05:12 -0700
+X-CSE-ConnectionGUID: HJyVO94lTFOQoQX/Ra6/bw==
+X-CSE-MsgGUID: XL0Nxp4UQBKcuTttpnfLMw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,188,1774335600"; 
+   d="scan'208";a="268759073"
+Received: from pae-d-dell-r7525-263.igk.intel.com ([172.28.191.240])
+  by fmviesa001.fm.intel.com with ESMTP; 05 Jun 2026 05:05:11 -0700
+From: Przemyslaw Korba <przemyslaw.korba@intel.com>
+To: intel-wired-lan@lists.osuosl.org
+Cc: netdev@vger.kernel.org,
+	anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com,
+	konstantin.ilichev@intel.com,
+	aleksander.lobakin@intel.com,
+	Przemyslaw Korba <przemyslaw.korba@intel.com>
+Subject: [PATCH iwl-net v3] ice: fall back to SBQ when LL PHY timer interface times out
+Date: Fri,  5 Jun 2026 14:06:26 +0200
+Message-ID: <20260605120734.1462847-1-przemyslaw.korba@intel.com>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -56,141 +61,113 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
 
-Logically it was based on TCP implementation, so to make further
-support easier, rewrite it in the TCP way.
+The low-latency (LL) PHY timer interface relies on a tight, atomic poll
+of the PF_SB_ATQBAL register with a 2ms timeout. After an NVM update /
+EMPR, FW may need significantly longer than 2ms to start responding to
+ATQBAL commands. The first PHY adjust or incval write issued by
+ice_ptp_rebuild_owner() fails with -ETIMEDOUT.
 
-Signed-off-by: Arseniy Krasnov <avkrasnov@rulkc.org>
+Fix this by falling back to the existing SBQ-based PHY register write
+path when LL times out. This makes sure PTP is initialized when FW takes
+longer than expected to come back online.
+
+Steps to reproduce:
+./nvmupdate64e -if devlink -f
+Update E810 card with nvmupdate64e, and observe dmesg errors:
+  Failed to write PHC increment value, status -110
+  PTP reset failed, error: -110 (-ETIMEDOUT)
+
+Fixes: ef9a64c07294 ("ice: implement low latency PHY timer updates")
+Signed-off-by: Przemyslaw Korba <przemyslaw.korba@intel.com>
 ---
- net/vmw_vsock/virtio_transport_common.c | 64 ++++++++++++-------------
- 1 file changed, 32 insertions(+), 32 deletions(-)
+v3:
+* actually add TIMEDOUT check in ice_prep_phy_adj_e810 (did do it)
+v2:
+* add TIMEDOUT check in ice_prep_phy_adj_e810 (did not do it)
+https://lore.kernel.org/intel-wired-lan/20260603114904.1297713-1-przemyslaw.korba@intel.com/
+v1:
+https://lore.kernel.org/intel-wired-lan/20260511095830.1095984-1-przemyslaw.korba@intel.com/
+---
+ drivers/net/ethernet/intel/ice/ice_ptp_hw.c | 38 +++++++++++----------
+ 1 file changed, 20 insertions(+), 18 deletions(-)
 
-diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-index 2fd9eaaf5ca6..00caeeaa5590 100644
---- a/net/vmw_vsock/virtio_transport_common.c
-+++ b/net/vmw_vsock/virtio_transport_common.c
-@@ -73,10 +73,13 @@ static bool virtio_transport_can_zcopy(const struct virtio_transport *t_ops,
- static int virtio_transport_fill_skb(struct sk_buff *skb,
- 				     struct virtio_vsock_pkt_info *info,
- 				     size_t len,
--				     bool zcopy)
-+				     bool zcopy, struct ubuf_info *uarg)
- {
- 	struct msghdr *msg = info->msg;
+diff --git a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
+index d47d5baf3281..e77c7f2b5575 100644
+--- a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
++++ b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
+@@ -4789,15 +4789,12 @@ static int ice_ptp_prep_phy_adj_ll_e810(struct ice_hw *hw, s32 adj)
+ 				       !FIELD_GET(REG_LL_PROXY_H_EXEC, val),
+ 				       10, REG_LL_PROXY_H_TIMEOUT_US, false, hw,
+ 				       REG_LL_PROXY_H);
+-	if (err) {
+-		ice_debug(hw, ICE_DBG_PTP, "Failed to prepare PHY timer adjustment using low latency interface\n");
+-		spin_unlock_irq(&params->atqbal_wq.lock);
+-		return err;
+-	}
+-
+ 	spin_unlock_irq(&params->atqbal_wq.lock);
  
-+	/* We have completion - attach it to 'skb'. */
-+	skb_zcopy_set(skb, uarg, NULL);
+-	return 0;
++	if (err)
++		ice_debug(hw, ICE_DBG_PTP, "Failed to prepare PHY timer adjustment using low latency interface\n");
 +
- 	if (zcopy)
- 		return __zerocopy_sg_from_iter(msg, NULL, skb,
- 					       &msg->msg_iter, len, NULL);
-@@ -208,7 +211,8 @@ static struct sk_buff *virtio_transport_alloc_skb(struct virtio_vsock_pkt_info *
- 						  u32 src_cid,
- 						  u32 src_port,
- 						  u32 dst_cid,
--						  u32 dst_port)
-+						  u32 dst_port,
-+						  struct ubuf_info *uarg)
- {
- 	struct vsock_sock *vsk;
- 	struct sk_buff *skb;
-@@ -245,7 +249,7 @@ static struct sk_buff *virtio_transport_alloc_skb(struct virtio_vsock_pkt_info *
- 	if (info->msg && payload_len > 0) {
- 		int err;
++	return err;
+ }
  
--		err = virtio_transport_fill_skb(skb, info, payload_len, zcopy);
-+		err = virtio_transport_fill_skb(skb, info, payload_len, zcopy, uarg);
- 		if (err)
- 			goto out;
+ /**
+@@ -4818,8 +4815,12 @@ static int ice_ptp_prep_phy_adj_e810(struct ice_hw *hw, s32 adj)
+ 	u8 tmr_idx;
+ 	int err;
  
-@@ -321,38 +325,36 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
- 	if (pkt_len == 0 && info->op == VIRTIO_VSOCK_OP_RW)
- 		return pkt_len;
+-	if (hw->dev_caps.ts_dev_info.ll_phy_tmr_update)
+-		return ice_ptp_prep_phy_adj_ll_e810(hw, adj);
++	if (hw->dev_caps.ts_dev_info.ll_phy_tmr_update) {
++		err = ice_ptp_prep_phy_adj_ll_e810(hw, adj);
++		if (err != -ETIMEDOUT)
++			return err;
++		ice_debug(hw, ICE_DBG_PTP, "LL adj timed out, falling back to SBQ\n");
++	}
  
--	if (info->msg) {
--		/* If zerocopy is not enabled by 'setsockopt()', we behave as
--		 * there is no MSG_ZEROCOPY flag set.
-+	if (info->msg && (info->msg->msg_flags & MSG_ZEROCOPY)) {
-+		/* If 'info->msg' is not NULL, this is only VIRTIO_VSOCK_OP_RW.
-+		 * 'MSG_ZEROCOPY' flag handling here is based on the same flag
-+		 * handling from 'tcp_sendmsg_locked()'.
- 		 */
--		if (!sock_flag(sk_vsock(vsk), SOCK_ZEROCOPY))
--			info->msg->msg_flags &= ~MSG_ZEROCOPY;
-+		if (info->msg->msg_ubuf) {
-+			uarg = info->msg->msg_ubuf;
-+			can_zcopy = virtio_transport_can_zcopy(t_ops, info, pkt_len);
-+		} else if (sock_flag(sk_vsock(vsk), SOCK_ZEROCOPY)) {
-+			uarg = msg_zerocopy_realloc(sk_vsock(vsk), pkt_len,
-+						    NULL, false);
-+			if (!uarg) {
-+				virtio_transport_put_credit(vvs, pkt_len);
-+				return -ENOMEM;
-+			}
+ 	tmr_idx = hw->func_caps.ts_func_info.tmr_index_owned;
  
--		if (info->msg->msg_flags & MSG_ZEROCOPY)
- 			can_zcopy = virtio_transport_can_zcopy(t_ops, info, pkt_len);
+@@ -4882,15 +4883,12 @@ static int ice_ptp_prep_phy_incval_ll_e810(struct ice_hw *hw, u64 incval)
+ 				       !FIELD_GET(REG_LL_PROXY_H_EXEC, val),
+ 				       10, REG_LL_PROXY_H_TIMEOUT_US, false, hw,
+ 				       REG_LL_PROXY_H);
+-	if (err) {
+-		ice_debug(hw, ICE_DBG_PTP, "Failed to prepare PHY timer increment using low latency interface\n");
+-		spin_unlock_irq(&params->atqbal_wq.lock);
+-		return err;
+-	}
+-
+ 	spin_unlock_irq(&params->atqbal_wq.lock);
  
-+			if (!can_zcopy)
-+				uarg_to_msgzc(uarg)->zerocopy = 0;
+-	return 0;
++	if (err)
++		ice_debug(hw, ICE_DBG_PTP, "Failed to prepare PHY timer increment using low latency interface\n");
 +
-+			have_uref = true;
-+		}
-+
-+		/* 'can_zcopy' means that this transmission will be
-+		 * in zerocopy way (e.g. using 'frags' array).
-+		 */
- 		if (can_zcopy)
- 			max_skb_len = min_t(u32, VIRTIO_VSOCK_MAX_PKT_BUF_SIZE,
- 					    (MAX_SKB_FRAGS * PAGE_SIZE));
--
--		if (info->msg->msg_flags & MSG_ZEROCOPY &&
--		    info->op == VIRTIO_VSOCK_OP_RW) {
--			uarg = info->msg->msg_ubuf;
--
--			if (!uarg) {
--				uarg = msg_zerocopy_realloc(sk_vsock(vsk),
--							    pkt_len, NULL, false);
--				if (!uarg) {
--					virtio_transport_put_credit(vvs, pkt_len);
--					return -ENOMEM;
--				}
--
--				if (!can_zcopy)
--					uarg_to_msgzc(uarg)->zerocopy = 0;
--
--				have_uref = true;
--			}
--		}
- 	}
++	return err;
+ }
  
- 	rest_len = pkt_len;
-@@ -365,14 +367,12 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
+ /**
+@@ -4908,8 +4906,12 @@ static int ice_ptp_prep_phy_incval_e810(struct ice_hw *hw, u64 incval)
+ 	u8 tmr_idx;
+ 	int err;
  
- 		skb = virtio_transport_alloc_skb(info, skb_len, can_zcopy,
- 						 src_cid, src_port,
--						 dst_cid, dst_port);
-+						 dst_cid, dst_port, uarg);
- 		if (!skb) {
- 			ret = -ENOMEM;
- 			break;
- 		}
+-	if (hw->dev_caps.ts_dev_info.ll_phy_tmr_update)
+-		return ice_ptp_prep_phy_incval_ll_e810(hw, incval);
++	if (hw->dev_caps.ts_dev_info.ll_phy_tmr_update) {
++		err = ice_ptp_prep_phy_incval_ll_e810(hw, incval);
++		if (err != -ETIMEDOUT)
++			return err;
++		ice_debug(hw, ICE_DBG_PTP, "LL incval timed out, falling back to SBQ\n");
++	}
  
--		skb_zcopy_set(skb, uarg, NULL);
--
- 		virtio_transport_inc_tx_pkt(vvs, skb);
- 
- 		ret = t_ops->send_pkt(skb, info->net);
-@@ -1178,7 +1178,7 @@ static int virtio_transport_reset_no_sock(const struct virtio_transport *t,
- 					   le64_to_cpu(hdr->dst_cid),
- 					   le32_to_cpu(hdr->dst_port),
- 					   le64_to_cpu(hdr->src_cid),
--					   le32_to_cpu(hdr->src_port));
-+					   le32_to_cpu(hdr->src_port), NULL);
- 	if (!reply)
- 		return -ENOMEM;
- 
+ 	tmr_idx = hw->func_caps.ts_func_info.tmr_index_owned;
+ 	low = lower_32_bits(incval);
+
+base-commit: 2d72c95ac8e2d1abccf671d95b94532a8b2abb24
 -- 
-2.25.1
+2.43.0
 
