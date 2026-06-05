@@ -1,1018 +1,499 @@
-Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 289513F410C;
-	Fri,  5 Jun 2026 03:51:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780631486; cv=none; b=WFbiRtgeIgbzozMmA8vIqCFiln5WvlzRtkDBypLBAq9LcnLKAQtc3p0dkAUAS6LxpPIfBwJmZwCTV7H9HiXrjwFxIKXYCt9Ngs4BLEM23GiE4vwOjhL+iVYStp3GY2lMApKxdLTo3g9xayc/14UCWJtvpGeZJj8GmGyKATVm0nM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780631486; c=relaxed/simple;
-	bh=7LCYA0/0AqZisN1ZDfRo39/63Ht+GEgoDEv0EXzrhiY=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mafI4AsZpYl/TfsvMg+djlG4mt42yoKgdGbRBNemGPvxZPwHAuS06bBHiEHv7uRhbi3qlpDr0LsgVnioH8vM8akVfLQGlOrbNrSxl1rrwKAF5OrZBYeq7IFProATkKvUB9xydPUfzhk6Z0gfS6SXIRqpOr0KLryqCz8Z6HIZ7Dw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=KpqMYJFm; arc=none smtp.client-ip=67.231.156.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 514133EA947
+	for <netdev@vger.kernel.org>; Fri,  5 Jun 2026 03:52:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.171
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780631547; cv=pass; b=PRKsk2Ytz+suvclhoe5Jq6Jt3TrzT8mlcJkgAqk5rCMhF/1vnHJTonorycmI3qHByUz8SW/GmGMIcMZJQ0D1pXctaMonZIE6CFHXZnmCAC5Ry+4miawn0XnboGQr0+75Fo2apl6EJPlgUjYs2s5ucE2hWNrV1weM4btvO6tdUSc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780631547; c=relaxed/simple;
+	bh=mytLMrMXYhL+18GEQ9PIr2rS/CufdsXi7gDjg2qZmPQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=sxddblboPd+VjbQSwGC8vpHoAxKzEt/dl5ULLqrrFaMc3cf7ncJcS3qb7YEBy373a+AZqQwq15AF30R0za4oyuqKvbkmeHFMl+L2PklAonGihCbxOmoRXtUfVsWqLowiLleqyOhANhilFJrko1eU8UAk7EMb3zslJL/2iFi2wV4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rgOBgZST; arc=pass smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="KpqMYJFm"
-Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
-	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 654NJlpR3656746;
-	Thu, 4 Jun 2026 20:51:15 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pfpt0220; bh=4
-	fQ8GdI+wOyDUWFVMy74A7gXeh6NNt3X3lWBcnXJRSY=; b=KpqMYJFm0KQ92nNxI
-	WIRo18Vpto6QdS9621xqDgsuMqo2cFUIqQwvQOnOh54fM5FhOaU/yzryVQIBZflF
-	NF3cFdDBHyOCQFjbklTJ0Hj7TEbMjLbqChMwztjckUOGh/dvzUqCGGPBK2ajICm6
-	RlbmZO5GDHKlqrJFtpvyioPRcTplk6lWO/Y+vt0LYcFAAh8OiQfknzXcHi+kdQWE
-	1LJCNGbj+aeJw3xAphPOLsf3Gog5cGV6SimjWzqFWTPXHpYw73lOJUeO+iRZA9/C
-	QqHIQC6ysOBGvjpBtPvCSQGXSihDP2nJKDmySc8UsQr8+ltTS3dR6d8YUsnDp3oJ
-	O3/Xw==
-Received: from dc5-exch05.marvell.com ([199.233.59.128])
-	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4ejgsp7v4f-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 04 Jun 2026 20:51:14 -0700 (PDT)
-Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
- DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Thu, 4 Jun 2026 20:51:13 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
- (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Thu, 4 Jun 2026 20:51:13 -0700
-Received: from rkannoth-OptiPlex-7090.. (unknown [10.28.36.165])
-	by maili.marvell.com (Postfix) with ESMTP id AD3C43F707A;
-	Thu,  4 Jun 2026 20:51:09 -0700 (PDT)
-From: Ratheesh Kannoth <rkannoth@marvell.com>
-To: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>
-CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <donald.hunter@gmail.com>,
-        <edumazet@google.com>, <horms@kernel.org>, <jiri@resnulli.us>,
-        <kuba@kernel.org>, <pabeni@redhat.com>, <sgoutham@marvell.com>,
-        "Ratheesh
- Kannoth" <rkannoth@marvell.com>
-Subject: [PATCH v19 net-next 7/9] octeontx2-af: npc: Support for custom KPU profile from filesystem
-Date: Fri, 5 Jun 2026 09:20:27 +0530
-Message-ID: <20260605035030.3195141-8-rkannoth@marvell.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260605035030.3195141-1-rkannoth@marvell.com>
-References: <20260605035030.3195141-1-rkannoth@marvell.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rgOBgZST"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2bf2d865383so43185ad.1
+        for <netdev@vger.kernel.org>; Thu, 04 Jun 2026 20:52:25 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780631544; cv=none;
+        d=google.com; s=arc-20240605;
+        b=T7j2anEALqOUEXlyFKuIGfgtSbE0ClQkdYWWX9h3jak8GegfpIDQeg/nm701AQ1IwJ
+         aYO+w35SHJaUozsuWpBE36lZJ2/OZzRBMHArAzPlTfd6GYiED6xzrHjLnlfSkfJQX4IY
+         /gHrkNtvPzSEngUm1SVtw3yEqumYbgoO7wfAEdvxu0jWiFdOJ5NgPij/Pd5d3vpsKMz9
+         ZhqGZ5Sao4Hx1pgmvZsPXJcI0Ax9fN4j8Ql8vMsQ0mW963AMp4vGmdRwW1AIRuzeWXz8
+         u8TILBGBLJL1ewZmGFepffw/Wz7ZohwPJU6gvk9IF44SawQQIes9hBuI6v+RYsggfuPN
+         aZAA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=jZCfIZfLvmWGjkXuJlov1g2353YW7lR2ub/+EINb1fQ=;
+        fh=Ef9lcZO4ZwrztREP42xReRHLmD9Hg2GQuFQd3HW9yBk=;
+        b=B0lL2/3D4uYEVv7JeAOTr37Y/BoZ1ZpS4Lr8g08cX9zpMhGFa7Qzm/euGnUDUluQvF
+         9qcHlOyz9uYYzOiTrbv84t+wXg55zVcEiVKimX5w6mSRxUauhztEStjZr9Yd4an//MZe
+         F0ZhltkFly01edSI2NUf/ur5A5sNPHP9ODjYim8PXo+VG1sflPvtj6P0JaRVtCMi+5dg
+         6FHZ1bMgAT9J8vdgGASDKSiOS3pzNXvIOl+jGNuVowdiMzAIcdfMk5M+mqKPnYfxUFp1
+         onsv7ujR7j658P5QVsd+Tj+sjb5cVdCahPi0orBW6BrTXTdcFuLffvBjJjxKEJ7QIF7Y
+         TGYA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1780631544; x=1781236344; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jZCfIZfLvmWGjkXuJlov1g2353YW7lR2ub/+EINb1fQ=;
+        b=rgOBgZST1M4UwKR2L/1mHL2nUXDx54EBLd0JMzm6xzO4jFGUyoamQdAoUK24Yvav5y
+         uHGTKjZ97AvThKex1Ez5Ntr1EZ6buAkLGH7Hin/fcTZg6Ld+jQHis+j4LczFFEUYs0zx
+         JS938/QmxoH7t+VRSKmCEKmyZ8Sa3QJ2jugDcoTwZwAn9hzklW5c+wPpROOPWqKcXMT8
+         Bg3SzpkjKxEZ2HGts8JeaAKGwOSRAi1kwcK8JCDEsVxPt9EPySg8LUDlJ62w8lb2duG4
+         s3VO581Nrzv15VGJmQZjqSk3hoJ3VnLmooi4AdCOfwdgpYVp+UoIZH6nOrfy8xcZ1AMc
+         yr4Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780631544; x=1781236344;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=jZCfIZfLvmWGjkXuJlov1g2353YW7lR2ub/+EINb1fQ=;
+        b=KeJ0BR2A/fONt9GTTgS6WADwwPjp1DE+eo1i2iudAC5/KQkdUibrcBmE6GrD5qi4RE
+         0yFhvJ49pt15k4rqO0GQ/becALuNnWlB4wylTFxpkqt4awMp5DJy5lKN4OuUw/GRUE/9
+         FjZLluCl/aSnz2MkVz1Xz2w4N00CiSsnOTADRal7DEvBQ4clN3cSCK/KnUR3xFvPcExd
+         7MmVs8PvwRVW47nrbNi5KUVBnJxDqoq2hNQP6z1GAiT8PQ+sx/mbGys/zjdb1UqxTTmX
+         5H4KYlgyI/gL4nhecDz6bZykCFklBjMluUMydwpnXljj0AOTyOyT9t+cFXQqv2coytJ/
+         S7fw==
+X-Gm-Message-State: AOJu0YyT9h35i9/xN4E8puJOW5sxriK0e7YPIX70u6xjhRFbiz7uJLJ9
+	nr/378q/uEUWHLrFd6mS2lKmX66GxmTrjkoqgodQteq4yzahM854fveeJsXl2Yny7BsHoqeqE3h
+	1JH8wGyWN+AlGWa+qaSlm7wUxHqc9sb3fka2LVB+zl7bMcyiOv7+C2PYBEXuWNA==
+X-Gm-Gg: Acq92OEAHP8V2jWXeANKxIeZUSzS6N5JjBKGVn6DVELADIPoFuI4YiHBPfwcZ85bfZ4
+	pileBLpDzk2ZzGpzuq1ZO62Tv71Ivza6VhJ8ZvVl98ilwLBgIllKy+UAUC9LAQGnEqK6ttsdewx
+	5x+GQQTSNUMOfIiXwRItbw+eY6Nf5bKjD8VSIhY7iIMiIDagzj0aXDWGIRrJmEOxE/D98vl6R29
+	yIsa5YZmkgpCA4jf/M6CYIxABeOtVd8NV2bbSuYb166sRd7Z8R/WudaUrLGNTV/fu6JqzXOunJJ
+	IK3ApLskSx6VoLXms5qjXfOLFUYvpuE/KT54vBVYqQvB+oztSrNYdI9YkkirhlSqsy6JFPZYzag
+	K55TTFtzGJ4zQrrdlDww=
+X-Received: by 2002:a17:903:2a90:b0:2c1:ee6e:be1e with SMTP id
+ d9443c01a7336-2c1ee6eca49mr225255ad.28.1780631544010; Thu, 04 Jun 2026
+ 20:52:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-ORIG-GUID: r_dqSQM0bOzTvN2KRohKiMnZSN4rXkvk
-X-Proofpoint-GUID: r_dqSQM0bOzTvN2KRohKiMnZSN4rXkvk
-X-Authority-Analysis: v=2.4 cv=FJkrAeos c=1 sm=1 tr=0 ts=6a2247b3 cx=c_pps
- a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
- a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
- a=QXcCYyLzdtTjyudCfB6f:22 a=M5GUcnROAAAA:8 a=RqBH2XuCMo2EIviFO1EA:9
- a=OBjm3rFKGHvpk9ecZwUJ:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjA1MDAzMyBTYWx0ZWRfX4AiF2E8bE0tQ
- KNvvRjwwPUfli2n4HKHVKPp3Z8+Z7KeL/VJdsnUIxz0j6CZj7K0+l0cZMY83Emgyt0gjT8nSVYl
- jUSBan738Z3xKgUq7314+fyMrEs8L5rzqxd1meDxP9bxe8c9Uib45O/KSx8Cpx9wxXE3tm7lPMD
- llwhH6dFIJ89ZV/MGl3Emrzh9xxZ9CdoOATDFrgjb/7iGV3h74i3ccYcsW0Pc+WuFf8S4jGS8sV
- AYONmDGGL0QVeR0bNLat9rUmsJ4CQg2TrHtvIKeQJGQX4FWhAtL2xy+oPuqob4OaM3YB5uz0rfg
- PL2NguyZ3WMDZaxh9mJSevI6Y2RgnRJPyYtgwqAFOQPNJJUyuO2Fltd148iZq825jzA2sJ2L1L+
- np/pxCJZEy4Rlp7S4y380/UEGo5B9s5LK7HrNu7k8yximYqIBOeSBs9SthgUbmt29pfz+7lcJhk
- 3k31pFxiqAXh8G1xTOw==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-04_07,2026-05-28_03,2025-10-01_01
+References: <20260602235900.3050782-1-hramamurthy@google.com> <20260602235900.3050782-9-hramamurthy@google.com>
+In-Reply-To: <20260602235900.3050782-9-hramamurthy@google.com>
+From: Harshitha Ramamurthy <hramamurthy@google.com>
+Date: Thu, 4 Jun 2026 20:52:11 -0700
+X-Gm-Features: AVHnY4IHATH3pq3hK4RRmg04nYb43242eE0Wp-CgeWqd2H3oXD6pRB1wcTgJBAM
+Message-ID: <CAEAWyHerBjRnLvE92_w0YEknTAaDAkHsWB6Pts7+fLVqdgcLrQ@mail.gmail.com>
+Subject: Re: [PATCH net-next v2 08/15] gve: refactor gve_init_priv for reset path
+To: netdev@vger.kernel.org
+Cc: joshwash@google.com, andrew+netdev@lunn.ch, davem@davemloft.net, 
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, ast@kernel.org, 
+	daniel@iogearbox.net, hawk@kernel.org, john.fastabend@gmail.com, 
+	sdf@fomichev.me, willemb@google.com, jordanrhee@google.com, 
+	jfraker@google.com, nktgrg@google.com, bpf@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Flashing updated firmware on deployed devices is cumbersome. Provide a
-mechanism to load a custom KPU (Key Parse Unit) profile directly from
-the filesystem at module load time.
+On Tue, Jun 2, 2026 at 4:59=E2=80=AFPM Harshitha Ramamurthy
+<hramamurthy@google.com> wrote:
+>
+> The driver does not need to renegotiate all properties with
+> the device on a reset since those should stay constant through
+> a reset. Hence change gve_init_priv() into a method that only
+> sets these properties into the priv structure and hence needs
+> to be only called once during gve_probe().
+>
+> To achieve this end state of gve_init_priv(), do the following:
+> - introduce gve_adminq_init() which writes the driver version register
+>   and allocates the AdminQ and call it in gve_probe()
+> - move gve_adminq_get_device_properties() into gve_probe()
+> - introduce gve_setup_device() which deals with device setup logic and
+>   call it in gve_probe()
+> - resetting no. of registered pages is moved into gve_register_qpls()
+>   since that is a QPL specific property.
+>
+> With these changes, gve_adminq_get_device_properties() and
+> gve_init_priv() are only called once during gve_probe.
+> gve_reset_recovery() can now bypass full initialization and call these
+> targeted setup functions directly.
+>
+> This prepares the driver to add mailbox mode's control plane
+> initialization and device properties negotiation in the same place
+> as is done in AdminQ mode in the upcoming patches when adding the
+> mailbox ABI.
+>
+> These changes are only code movement, no functional change.
+>
+> Reviewed-by: Willem de Bruijn <willemb@google.com>
+> Reviewed-by: Jordan Rhee <jordanrhee@google.com>
+> Signed-off-by: Harshitha Ramamurthy <hramamurthy@google.com>
+> ---
+>  drivers/net/ethernet/google/gve/gve.h        |   2 +
+>  drivers/net/ethernet/google/gve/gve_adminq.c |  12 +-
+>  drivers/net/ethernet/google/gve/gve_adminq.h |   2 +-
+>  drivers/net/ethernet/google/gve/gve_main.c   | 132 +++++++++++--------
+>  4 files changed, 92 insertions(+), 56 deletions(-)
+>
+> diff --git a/drivers/net/ethernet/google/gve/gve.h b/drivers/net/ethernet=
+/google/gve/gve.h
+> index bd48c3d7a2b2..72588d201e5d 100644
+> --- a/drivers/net/ethernet/google/gve/gve.h
+> +++ b/drivers/net/ethernet/google/gve/gve.h
+> @@ -1252,6 +1252,8 @@ static inline bool gve_is_clock_enabled(struct gve_=
+priv *priv)
+>         return priv->nic_ts_report;
+>  }
+>
+> +void gve_adminq_write_version(u8 __iomem *driver_version_register);
+> +
+>  /* gqi napi handler defined in gve_main.c */
+>  int gve_napi_poll(struct napi_struct *napi, int budget);
+>
+> diff --git a/drivers/net/ethernet/google/gve/gve_adminq.c b/drivers/net/e=
+thernet/google/gve/gve_adminq.c
+> index 923a5c737258..e7956d2768b6 100644
+> --- a/drivers/net/ethernet/google/gve/gve_adminq.c
+> +++ b/drivers/net/ethernet/google/gve/gve_adminq.c
+> @@ -296,8 +296,10 @@ gve_process_device_options(struct gve_priv *priv,
+>         return 0;
+>  }
+>
+> -int gve_adminq_alloc(struct device *dev, struct gve_priv *priv)
+> +static int gve_adminq_alloc(struct gve_priv *priv)
+>  {
+> +       struct device *dev =3D &priv->pdev->dev;
+> +
+>         priv->adminq_pool =3D dma_pool_create("adminq_pool", dev,
+>                                             GVE_ADMINQ_BUFFER_SIZE, 0, 0)=
+;
+>         if (unlikely(!priv->adminq_pool))
+> @@ -353,6 +355,14 @@ int gve_adminq_alloc(struct device *dev, struct gve_=
+priv *priv)
+>         return 0;
+>  }
+>
+> +int gve_adminq_init(struct gve_priv *priv)
+> +{
+> +       struct gve_registers __iomem *reg_bar =3D priv->reg_bar0;
+> +
+> +       gve_adminq_write_version(&reg_bar->driver_version);
+> +       return gve_adminq_alloc(priv);
+> +}
+> +
+>  void gve_adminq_release(struct gve_priv *priv)
+>  {
+>         int i =3D 0;
+> diff --git a/drivers/net/ethernet/google/gve/gve_adminq.h b/drivers/net/e=
+thernet/google/gve/gve_adminq.h
+> index ac3ef9fd8d24..d07e9c6f279d 100644
+> --- a/drivers/net/ethernet/google/gve/gve_adminq.h
+> +++ b/drivers/net/ethernet/google/gve/gve_adminq.h
+> @@ -619,7 +619,7 @@ union gve_adminq_command {
+>
+>  static_assert(sizeof(union gve_adminq_command) =3D=3D 64);
+>
+> -int gve_adminq_alloc(struct device *dev, struct gve_priv *priv);
+> +int gve_adminq_init(struct gve_priv *priv);
+>  void gve_adminq_free(struct gve_priv *priv);
+>  void gve_adminq_release(struct gve_priv *priv);
+>  int gve_adminq_describe_device(struct gve_priv *priv);
+> diff --git a/drivers/net/ethernet/google/gve/gve_main.c b/drivers/net/eth=
+ernet/google/gve/gve_main.c
+> index d693caed7e3d..746ff69a28dd 100644
+> --- a/drivers/net/ethernet/google/gve/gve_main.c
+> +++ b/drivers/net/ethernet/google/gve/gve_main.c
+> @@ -797,6 +797,8 @@ static int gve_register_qpls(struct gve_priv *priv)
+>         int err;
+>         int i;
+>
+> +       priv->num_registered_pages =3D 0;
+> +
 
-When the rvu_af module is loaded with the kpu_profile parameter, the
-specified profile is read from /lib/firmware/kpu and programmed into
-the KPU registers. Add npc_kpu_profile_cam2 for the extended cam format
-used by filesystem-loaded profiles and support ptype/ptype_mask in
-npc_config_kpucam when profile->from_fs is set.
+Commenting on Sashiko's report:
 
-Usage:
-  1. Copy the KPU profile file to /lib/firmware/kpu.
-  2. Build OCTEONTX2_AF as a module.
-  3. Load: insmod rvu_af.ko kpu_profile=<profile_name>
+"When gve_reset_recovery() runs with was_up=3Dfalse, gve_open() is not
+called and gve_register_qpls() is not reached, so num_registered_pages
+is no longer zeroed on that path. Is that intentional, given the
+symmetry with gve_unregister_qpl() decrements?
 
-Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
----
- .../ethernet/marvell/octeontx2/af/cn20k/npc.c |  57 ++-
- .../net/ethernet/marvell/octeontx2/af/npc.h   |  17 +
- .../net/ethernet/marvell/octeontx2/af/rvu.h   |  12 +-
- .../ethernet/marvell/octeontx2/af/rvu_npc.c   | 466 ++++++++++++++----
- .../ethernet/marvell/octeontx2/af/rvu_npc.h   |  17 +
- .../ethernet/marvell/octeontx2/af/rvu_reg.h   |   1 +
- 6 files changed, 459 insertions(+), 111 deletions(-)
+Although this number will get reset every time queues are created, to
+be more symmetric, resetting this in gve_recover() which calls
+gve_setup_device or in gve_setup_device is better. Will fix in v3.
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.c b/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.c
-index 2705753c1878..32b53b5bc57a 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.c
-@@ -521,13 +521,17 @@ npc_program_single_kpm_profile(struct rvu *rvu, int blkaddr,
- 			       int kpm, int start_entry,
- 			       const struct npc_kpu_profile *profile)
- {
-+	int num_cam_entries, num_action_entries;
- 	int entry, num_entries, max_entries;
- 	u64 idx;
- 
--	if (profile->cam_entries != profile->action_entries) {
-+	num_cam_entries = npc_get_num_kpu_cam_entries(rvu, profile);
-+	num_action_entries = npc_get_num_kpu_action_entries(rvu, profile);
-+
-+	if (num_cam_entries != num_action_entries) {
- 		dev_err(rvu->dev,
- 			"kpm%d: CAM and action entries [%d != %d] not equal\n",
--			kpm, profile->cam_entries, profile->action_entries);
-+			kpm, num_cam_entries, num_action_entries);
- 
- 		WARN(1, "Fatal error\n");
- 		return;
-@@ -536,16 +540,18 @@ npc_program_single_kpm_profile(struct rvu *rvu, int blkaddr,
- 	max_entries = rvu->hw->npc_kpu_entries / 2;
- 	entry = start_entry;
- 	/* Program CAM match entries for previous kpm extracted data */
--	num_entries = min_t(int, profile->cam_entries, max_entries);
-+	num_entries = min_t(int, num_cam_entries, max_entries);
- 	for (idx = 0; entry < num_entries + start_entry; entry++, idx++)
--		npc_config_kpmcam(rvu, blkaddr, &profile->cam[idx],
-+		npc_config_kpmcam(rvu, blkaddr,
-+				  npc_get_kpu_cam_nth_entry(rvu, profile, idx),
- 				  kpm, entry);
- 
- 	entry = start_entry;
- 	/* Program this kpm's actions */
--	num_entries = min_t(int, profile->action_entries, max_entries);
-+	num_entries = min_t(int, num_action_entries, max_entries);
- 	for (idx = 0; entry < num_entries + start_entry; entry++, idx++)
--		npc_config_kpmaction(rvu, blkaddr, &profile->action[idx],
-+		npc_config_kpmaction(rvu, blkaddr,
-+				     npc_get_kpu_action_nth_entry(rvu, profile, idx),
- 				     kpm, entry, false);
- }
- 
-@@ -611,20 +617,23 @@ npc_enable_kpm_entry(struct rvu *rvu, int blkaddr, int kpm, int num_entries)
- static void npc_program_kpm_profile(struct rvu *rvu, int blkaddr, int num_kpms)
- {
- 	const struct npc_kpu_profile *profile1, *profile2;
-+	int pfl1_num_cam_entries, pfl2_num_cam_entries;
- 	int idx, total_cam_entries;
- 
- 	for (idx = 0; idx < num_kpms; idx++) {
- 		profile1 = &rvu->kpu.kpu[idx];
-+		pfl1_num_cam_entries = npc_get_num_kpu_cam_entries(rvu, profile1);
- 		npc_program_single_kpm_profile(rvu, blkaddr, idx, 0, profile1);
- 		profile2 = &rvu->kpu.kpu[idx + KPU_OFFSET];
-+		pfl2_num_cam_entries = npc_get_num_kpu_cam_entries(rvu, profile2);
-+
- 		npc_program_single_kpm_profile(rvu, blkaddr, idx,
--					       profile1->cam_entries,
-+					       pfl1_num_cam_entries,
- 					       profile2);
--		total_cam_entries = profile1->cam_entries +
--			profile2->cam_entries;
-+		total_cam_entries = pfl1_num_cam_entries + pfl2_num_cam_entries;
- 		npc_enable_kpm_entry(rvu, blkaddr, idx, total_cam_entries);
- 		rvu_write64(rvu, blkaddr, NPC_AF_KPMX_PASS2_OFFSET(idx),
--			    profile1->cam_entries);
-+			    pfl1_num_cam_entries);
- 		/* Enable the KPUs associated with this KPM */
- 		rvu_write64(rvu, blkaddr, NPC_AF_KPUX_CFG(idx), 0x01);
- 		rvu_write64(rvu, blkaddr, NPC_AF_KPUX_CFG(idx + KPU_OFFSET),
-@@ -634,6 +643,7 @@ static void npc_program_kpm_profile(struct rvu *rvu, int blkaddr, int num_kpms)
- 
- void npc_cn20k_parser_profile_init(struct rvu *rvu, int blkaddr)
- {
-+	struct npc_kpu_profile_action *act;
- 	struct rvu_hwinfo *hw = rvu->hw;
- 	int num_pkinds, idx;
- 
-@@ -665,9 +675,15 @@ void npc_cn20k_parser_profile_init(struct rvu *rvu, int blkaddr)
- 	num_pkinds = rvu->kpu.pkinds;
- 	num_pkinds = min_t(int, hw->npc_pkinds, num_pkinds);
- 
--	for (idx = 0; idx < num_pkinds; idx++)
--		npc_config_kpmaction(rvu, blkaddr, &rvu->kpu.ikpu[idx],
-+	/* Cn20k does not support Custom profile from filesystem */
-+	for (idx = 0; idx < num_pkinds; idx++) {
-+		act = npc_get_ikpu_nth_entry(rvu, idx);
-+		if (!act)
-+			continue;
-+
-+		npc_config_kpmaction(rvu, blkaddr, act,
- 				     0, idx, true);
-+	}
- 
- 	/* Program KPM CAM and Action profiles */
- 	npc_program_kpm_profile(rvu, blkaddr, hw->npc_kpms);
-@@ -679,7 +695,7 @@ struct npc_priv_t *npc_priv_get(void)
- }
- 
- static void npc_program_mkex_rx(struct rvu *rvu, int blkaddr,
--				struct npc_mcam_kex_extr *mkex_extr,
-+				const struct npc_mcam_kex_extr *mkex_extr,
- 				u8 intf)
- {
- 	u8 num_extr = rvu->hw->npc_kex_extr;
-@@ -708,7 +724,7 @@ static void npc_program_mkex_rx(struct rvu *rvu, int blkaddr,
- }
- 
- static void npc_program_mkex_tx(struct rvu *rvu, int blkaddr,
--				struct npc_mcam_kex_extr *mkex_extr,
-+				const struct npc_mcam_kex_extr *mkex_extr,
- 				u8 intf)
- {
- 	u8 num_extr = rvu->hw->npc_kex_extr;
-@@ -737,7 +753,7 @@ static void npc_program_mkex_tx(struct rvu *rvu, int blkaddr,
- }
- 
- static void npc_program_mkex_profile(struct rvu *rvu, int blkaddr,
--				     struct npc_mcam_kex_extr *mkex_extr)
-+				     const struct npc_mcam_kex_extr *mkex_extr)
- {
- 	struct rvu_hwinfo *hw = rvu->hw;
- 	u8 intf;
-@@ -1630,8 +1646,8 @@ npc_cn20k_update_action_entries_n_flags(struct rvu *rvu,
- int npc_cn20k_apply_custom_kpu(struct rvu *rvu,
- 			       struct npc_kpu_profile_adapter *profile)
- {
-+	const struct npc_cn20k_kpu_profile_fwdata *fw = rvu->kpu_fwdata;
- 	size_t hdr_sz = sizeof(struct npc_cn20k_kpu_profile_fwdata);
--	struct npc_cn20k_kpu_profile_fwdata *fw = rvu->kpu_fwdata;
- 	struct npc_kpu_profile_action *action;
- 	struct npc_kpu_profile_cam *cam;
- 	struct npc_kpu_fwdata *fw_kpu;
-@@ -1676,8 +1692,15 @@ int npc_cn20k_apply_custom_kpu(struct rvu *rvu,
- 	}
- 
- 	/* Verify if profile fits the HW */
-+	if (fw->kpus > rvu->hw->npc_kpus) {
-+		dev_warn(rvu->dev, "Not enough KPUs: %d > %d\n", fw->kpus,
-+			 rvu->hw->npc_kpus);
-+		return -EINVAL;
-+	}
-+
-+	/* Check if there is enough memory */
- 	if (fw->kpus > profile->kpus) {
--		dev_warn(rvu->dev, "Not enough KPUs: %d > %ld\n", fw->kpus,
-+		dev_warn(rvu->dev, "Not enough KPUs: %d > %zu\n", fw->kpus,
- 			 profile->kpus);
- 		return -EINVAL;
- 	}
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/npc.h b/drivers/net/ethernet/marvell/octeontx2/af/npc.h
-index 2138c044fe41..eaed172f1606 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/npc.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/npc.h
-@@ -267,6 +267,19 @@ struct npc_kpu_profile_cam {
- 	u16 dp2_mask;
- } __packed;
- 
-+struct npc_kpu_profile_cam2 {
-+	u8 state;
-+	u8 state_mask;
-+	u16 dp0;
-+	u16 dp0_mask;
-+	u16 dp1;
-+	u16 dp1_mask;
-+	u16 dp2;
-+	u16 dp2_mask;
-+	u8 ptype;
-+	u8 ptype_mask;
-+} __packed;
-+
- struct npc_kpu_profile_action {
- 	u8 errlev;
- 	u8 errcode;
-@@ -292,6 +305,10 @@ struct npc_kpu_profile {
- 	int action_entries;
- 	struct npc_kpu_profile_cam *cam;
- 	struct npc_kpu_profile_action *action;
-+	int cam_entries2;
-+	int action_entries2;
-+	struct npc_kpu_profile_action *action2;
-+	struct npc_kpu_profile_cam2 *cam2;
- };
- 
- /* NPC KPU register formats */
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu.h b/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
-index 65397daae4c2..7f3505ae6860 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
-@@ -553,17 +553,19 @@ struct npc_kpu_profile_adapter {
- 	const char			*name;
- 	u64				version;
- 	const struct npc_lt_def_cfg	*lt_def;
--	const struct npc_kpu_profile_action	*ikpu; /* array[pkinds] */
--	const struct npc_kpu_profile	*kpu; /* array[kpus] */
-+	struct npc_kpu_profile_action	*ikpu; /* array[pkinds] */
-+	struct npc_kpu_profile_action	*ikpu2; /* array[pkinds] */
-+	struct npc_kpu_profile	*kpu; /* array[kpus] */
- 	union npc_mcam_key_prfl {
--		struct npc_mcam_kex		*mkex;
-+		const struct npc_mcam_kex		*mkex;
- 					/* used for cn9k and cn10k */
--		struct npc_mcam_kex_extr	*mkex_extr; /* used for cn20k */
-+		const struct npc_mcam_kex_extr	*mkex_extr; /* used for cn20k */
- 	} mcam_kex_prfl;
- 	struct npc_mcam_kex_hash	*mkex_hash;
- 	bool				custom;
- 	size_t				pkinds;
- 	size_t				kpus;
-+	bool				from_fs;
- };
- 
- #define RVU_SWITCH_LBK_CHAN	63
-@@ -634,7 +636,7 @@ struct rvu {
- 
- 	/* Firmware data */
- 	struct rvu_fwdata	*fwdata;
--	void			*kpu_fwdata;
-+	const void		*kpu_fwdata;
- 	size_t			kpu_fwdata_sz;
- 	void __iomem		*kpu_prfl_addr;
- 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
-index 150d50b72c48..b4635d78f9d5 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
-@@ -1495,7 +1495,8 @@ void rvu_npc_free_mcam_entries(struct rvu *rvu, u16 pcifunc, int nixlf)
- }
- 
- static void npc_program_mkex_rx(struct rvu *rvu, int blkaddr,
--				struct npc_mcam_kex *mkex, u8 intf)
-+				const struct npc_mcam_kex *mkex,
-+				u8 intf)
- {
- 	int lid, lt, ld, fl;
- 
-@@ -1524,7 +1525,8 @@ static void npc_program_mkex_rx(struct rvu *rvu, int blkaddr,
- }
- 
- static void npc_program_mkex_tx(struct rvu *rvu, int blkaddr,
--				struct npc_mcam_kex *mkex, u8 intf)
-+				const struct npc_mcam_kex *mkex,
-+				u8 intf)
- {
- 	int lid, lt, ld, fl;
- 
-@@ -1553,7 +1555,7 @@ static void npc_program_mkex_tx(struct rvu *rvu, int blkaddr,
- }
- 
- static void npc_program_mkex_profile(struct rvu *rvu, int blkaddr,
--				     struct npc_mcam_kex *mkex)
-+				     const struct npc_mcam_kex *mkex)
- {
- 	struct rvu_hwinfo *hw = rvu->hw;
- 	u8 intf;
-@@ -1693,8 +1695,12 @@ static void npc_config_kpucam(struct rvu *rvu, int blkaddr,
- 			      const struct npc_kpu_profile_cam *kpucam,
- 			      int kpu, int entry)
- {
-+	const struct npc_kpu_profile_cam2 *kpucam2 = (void *)kpucam;
-+	struct npc_kpu_profile_adapter *profile = &rvu->kpu;
- 	struct npc_kpu_cam cam0 = {0};
- 	struct npc_kpu_cam cam1 = {0};
-+	u64 *val = (u64 *)&cam1;
-+	u64 *mask = (u64 *)&cam0;
- 
- 	cam1.state = kpucam->state & kpucam->state_mask;
- 	cam1.dp0_data = kpucam->dp0 & kpucam->dp0_mask;
-@@ -1706,6 +1712,14 @@ static void npc_config_kpucam(struct rvu *rvu, int blkaddr,
- 	cam0.dp1_data = ~kpucam->dp1 & kpucam->dp1_mask;
- 	cam0.dp2_data = ~kpucam->dp2 & kpucam->dp2_mask;
- 
-+	if (profile->from_fs) {
-+		u8 ptype = kpucam2->ptype;
-+		u8 pmask = kpucam2->ptype_mask;
-+
-+		*val |= FIELD_PREP(GENMASK_ULL(57, 56), ptype & pmask);
-+		*mask |= FIELD_PREP(GENMASK_ULL(57, 56), ~ptype & pmask);
-+	}
-+
- 	rvu_write64(rvu, blkaddr,
- 		    NPC_AF_KPUX_ENTRYX_CAMX(kpu, entry, 0), *(u64 *)&cam0);
- 	rvu_write64(rvu, blkaddr,
-@@ -1717,34 +1731,104 @@ u64 npc_enable_mask(int count)
- 	return (((count) < 64) ? ~(BIT_ULL(count) - 1) : (0x00ULL));
- }
- 
-+struct npc_kpu_profile_action *
-+npc_get_ikpu_nth_entry(struct rvu *rvu, int n)
-+{
-+	struct npc_kpu_profile_adapter *profile = &rvu->kpu;
-+
-+	if (profile->from_fs)
-+		return &profile->ikpu2[n];
-+
-+	return &profile->ikpu[n];
-+}
-+
-+int
-+npc_get_num_kpu_cam_entries(struct rvu *rvu,
-+			    const struct npc_kpu_profile *kpu_pfl)
-+{
-+	struct npc_kpu_profile_adapter *profile = &rvu->kpu;
-+
-+	if (profile->from_fs)
-+		return kpu_pfl->cam_entries2;
-+
-+	return kpu_pfl->cam_entries;
-+}
-+
-+struct npc_kpu_profile_cam *
-+npc_get_kpu_cam_nth_entry(struct rvu *rvu,
-+			  const struct npc_kpu_profile *kpu_pfl, int n)
-+{
-+	struct npc_kpu_profile_adapter *profile = &rvu->kpu;
-+
-+	if (profile->from_fs)
-+		return (void *)&kpu_pfl->cam2[n];
-+
-+	return (void *)&kpu_pfl->cam[n];
-+}
-+
-+int
-+npc_get_num_kpu_action_entries(struct rvu *rvu,
-+			       const struct npc_kpu_profile *kpu_pfl)
-+{
-+	struct npc_kpu_profile_adapter *profile = &rvu->kpu;
-+
-+	if (profile->from_fs)
-+		return kpu_pfl->action_entries2;
-+
-+	return kpu_pfl->action_entries;
-+}
-+
-+struct npc_kpu_profile_action *
-+npc_get_kpu_action_nth_entry(struct rvu *rvu,
-+			     const struct npc_kpu_profile *kpu_pfl,
-+			     int n)
-+{
-+	struct npc_kpu_profile_adapter *profile = &rvu->kpu;
-+
-+	if (profile->from_fs)
-+		return (void *)&kpu_pfl->action2[n];
-+
-+	return (void *)&kpu_pfl->action[n];
-+}
-+
- static void npc_program_kpu_profile(struct rvu *rvu, int blkaddr, int kpu,
- 				    const struct npc_kpu_profile *profile)
- {
-+	int num_cam_entries, num_action_entries;
- 	int entry, num_entries, max_entries;
- 	u64 entry_mask;
- 
--	if (profile->cam_entries != profile->action_entries) {
-+	num_cam_entries = npc_get_num_kpu_cam_entries(rvu, profile);
-+	num_action_entries = npc_get_num_kpu_action_entries(rvu, profile);
-+
-+	if (num_cam_entries != num_action_entries) {
- 		dev_err(rvu->dev,
- 			"KPU%d: CAM and action entries [%d != %d] not equal\n",
--			kpu, profile->cam_entries, profile->action_entries);
-+			kpu, num_cam_entries, num_action_entries);
- 	}
- 
- 	max_entries = rvu->hw->npc_kpu_entries;
- 
-+	WARN(num_cam_entries > max_entries,
-+	     "KPU%u: err: hw max entries=%u, input entries=%u\n",
-+	     kpu,  rvu->hw->npc_kpu_entries, num_cam_entries);
-+
- 	/* Program CAM match entries for previous KPU extracted data */
--	num_entries = min_t(int, profile->cam_entries, max_entries);
-+	num_entries = min_t(int, num_cam_entries, max_entries);
- 	for (entry = 0; entry < num_entries; entry++)
- 		npc_config_kpucam(rvu, blkaddr,
--				  &profile->cam[entry], kpu, entry);
-+				  (void *)npc_get_kpu_cam_nth_entry(rvu, profile, entry),
-+				  kpu, entry);
- 
- 	/* Program this KPU's actions */
--	num_entries = min_t(int, profile->action_entries, max_entries);
-+	num_entries = min_t(int, num_action_entries, max_entries);
- 	for (entry = 0; entry < num_entries; entry++)
--		npc_config_kpuaction(rvu, blkaddr, &profile->action[entry],
-+		npc_config_kpuaction(rvu, blkaddr,
-+				     (void *)npc_get_kpu_action_nth_entry(rvu, profile, entry),
- 				     kpu, entry, false);
- 
- 	/* Enable all programmed entries */
--	num_entries = min_t(int, profile->action_entries, profile->cam_entries);
-+	num_entries = min_t(int, num_action_entries, num_cam_entries);
- 	entry_mask = npc_enable_mask(num_entries);
- 	/* Disable first KPU_MAX_CST_ENT entries for built-in profile */
- 	if (!rvu->kpu.custom)
-@@ -1788,26 +1872,175 @@ static void npc_prepare_default_kpu(struct rvu *rvu,
- 	npc_cn20k_update_action_entries_n_flags(rvu, profile);
- }
- 
--static int npc_apply_custom_kpu(struct rvu *rvu,
--				struct npc_kpu_profile_adapter *profile)
-+static int npc_alloc_kpu_cam2_n_action2(struct rvu *rvu, int kpu_num,
-+					int num_entries)
-+{
-+	struct npc_kpu_profile_adapter *adapter = &rvu->kpu;
-+	struct npc_kpu_profile *kpu;
-+
-+	kpu = &adapter->kpu[kpu_num];
-+
-+	kpu->cam2 = devm_kcalloc(rvu->dev, num_entries,
-+				 sizeof(*kpu->cam2), GFP_KERNEL);
-+	if (!kpu->cam2)
-+		return -ENOMEM;
-+
-+	kpu->action2 = devm_kcalloc(rvu->dev, num_entries,
-+				    sizeof(*kpu->action2), GFP_KERNEL);
-+	if (!kpu->action2)
-+		return -ENOMEM;
-+
-+	return 0;
-+}
-+
-+static int npc_apply_custom_kpu_from_fw(struct rvu *rvu,
-+					struct npc_kpu_profile_adapter *profile)
- {
- 	size_t hdr_sz = sizeof(struct npc_kpu_profile_fwdata), offset = 0;
-+	const struct npc_kpu_profile_fwdata *fw;
- 	struct npc_kpu_profile_action *action;
--	struct npc_kpu_profile_fwdata *fw;
- 	struct npc_kpu_profile_cam *cam;
- 	struct npc_kpu_fwdata *fw_kpu;
--	int entries;
--	u16 kpu, entry;
-+	int entries, entry, kpu;
- 
--	if (is_cn20k(rvu->pdev))
--		return npc_cn20k_apply_custom_kpu(rvu, profile);
-+	fw = rvu->kpu_fwdata;
-+
-+	for (kpu = 0; kpu < fw->kpus; kpu++) {
-+		if (rvu->kpu_fwdata_sz < hdr_sz + offset) {
-+			dev_warn(rvu->dev,
-+				 "Profile size mismatch on KPU%i parsing\n",
-+				 kpu + 1);
-+			return -EINVAL;
-+		}
-+
-+		fw_kpu = (struct npc_kpu_fwdata *)(fw->data + offset);
-+		if (fw_kpu->entries < 0) {
-+			dev_warn(rvu->dev,
-+				 "Profile entries is negative on KPU%i parsing\n",
-+				 kpu + 1);
-+			return -EINVAL;
-+		}
-+
-+		if (fw_kpu->entries > KPU_MAX_CST_ENT)
-+			dev_warn(rvu->dev,
-+				 "Too many custom entries on KPU%d: %d > %d\n",
-+				 kpu, fw_kpu->entries, KPU_MAX_CST_ENT);
-+		entries = min_t(int, fw_kpu->entries, KPU_MAX_CST_ENT);
-+		cam = (struct npc_kpu_profile_cam *)fw_kpu->data;
-+		offset += sizeof(*fw_kpu) + fw_kpu->entries * sizeof(*cam);
-+		action = (struct npc_kpu_profile_action *)(fw->data + offset);
-+		offset += fw_kpu->entries * sizeof(*action);
-+		if (rvu->kpu_fwdata_sz < hdr_sz + offset) {
-+			dev_warn(rvu->dev,
-+				 "Profile size mismatch on KPU%i parsing.\n",
-+				 kpu + 1);
-+			return -EINVAL;
-+		}
-+		for (entry = 0; entry < entries; entry++) {
-+			profile->kpu[kpu].cam[entry] = cam[entry];
-+			profile->kpu[kpu].action[entry] = action[entry];
-+		}
-+	}
-+
-+	return 0;
-+}
-+
-+static int npc_apply_custom_kpu_from_fs(struct rvu *rvu,
-+					struct npc_kpu_profile_adapter *profile)
-+{
-+	size_t hdr_sz = sizeof(struct npc_kpu_profile_fwdata), offset = 0;
-+	const struct npc_kpu_profile_fwdata *fw;
-+	struct npc_kpu_profile_action *action;
-+	struct npc_kpu_profile_cam2 *cam2;
-+	struct npc_kpu_fwdata *fw_kpu;
-+	int entries, ret, entry, kpu;
- 
- 	fw = rvu->kpu_fwdata;
- 
-+	/* Binary blob contains ikpu actions entries at start of data[0] */
-+	profile->ikpu2 = devm_kcalloc(rvu->dev, 1,
-+				      sizeof(ikpu_action_entries),
-+				      GFP_KERNEL);
-+	if (!profile->ikpu2)
-+		return -ENOMEM;
-+
-+	action = (struct npc_kpu_profile_action *)(fw->data + offset);
-+
-+	if (rvu->kpu_fwdata_sz < hdr_sz + sizeof(ikpu_action_entries))
-+		return -EINVAL;
-+
-+	/* The firmware layout does dependent on the internal size of
-+	 * ikpu_action_entries.
-+	 */
-+	memcpy((void *)profile->ikpu2, action, sizeof(ikpu_action_entries));
-+	offset += sizeof(ikpu_action_entries);
-+
-+	for (kpu = 0; kpu < fw->kpus; kpu++) {
-+		if (rvu->kpu_fwdata_sz < hdr_sz + offset + sizeof(*fw_kpu)) {
-+			dev_warn(rvu->dev,
-+				 "profile size mismatch on kpu%i parsing\n",
-+				 kpu + 1);
-+			return -EINVAL;
-+		}
-+
-+		fw_kpu = (struct npc_kpu_fwdata *)(fw->data + offset);
-+		if (fw_kpu->entries <= 0) {
-+			dev_warn(rvu->dev,
-+				 "Invalid kpu entries on KPU%d\n", kpu);
-+			return -EINVAL;
-+		}
-+
-+		entries = min_t(int, fw_kpu->entries, rvu->hw->npc_kpu_entries);
-+		dev_info(rvu->dev,
-+			 "Loading %u entries on KPU%d\n", entries, kpu);
-+
-+		cam2 = (struct npc_kpu_profile_cam2 *)fw_kpu->data;
-+		offset += sizeof(*fw_kpu) + fw_kpu->entries * sizeof(*cam2);
-+		action = (struct npc_kpu_profile_action *)(fw->data + offset);
-+		offset += fw_kpu->entries * sizeof(*action);
-+		if (rvu->kpu_fwdata_sz < hdr_sz + offset) {
-+			dev_warn(rvu->dev,
-+				 "profile size mismatch on kpu%i parsing.\n",
-+				 kpu + 1);
-+			return -EINVAL;
-+		}
-+
-+		profile->kpu[kpu].cam_entries2 = entries;
-+		profile->kpu[kpu].action_entries2 = entries;
-+		ret = npc_alloc_kpu_cam2_n_action2(rvu, kpu, entries);
-+		if (ret) {
-+			dev_warn(rvu->dev,
-+				 "profile entry allocation failed for kpu=%d for %d entries\n",
-+				 kpu, entries);
-+			return -EINVAL;
-+		}
-+
-+		for (entry = 0; entry < entries; entry++) {
-+			profile->kpu[kpu].cam2[entry] = cam2[entry];
-+			profile->kpu[kpu].action2[entry] = action[entry];
-+		}
-+	}
-+
-+	return 0;
-+}
-+
-+static int npc_apply_custom_kpu(struct rvu *rvu,
-+				struct npc_kpu_profile_adapter *profile,
-+				bool from_fs, int *fw_kpus)
-+{
-+	size_t hdr_sz = sizeof(struct npc_kpu_profile_fwdata);
-+	const struct npc_kpu_profile_fwdata *fw;
-+	struct npc_kpu_profile_fwdata *sfw;
-+
-+	if (is_cn20k(rvu->pdev))
-+		return npc_cn20k_apply_custom_kpu(rvu, profile);
-+
- 	if (rvu->kpu_fwdata_sz < hdr_sz) {
- 		dev_warn(rvu->dev, "Invalid KPU profile size\n");
- 		return -EINVAL;
- 	}
-+
-+	fw = rvu->kpu_fwdata;
- 	if (le64_to_cpu(fw->signature) != KPU_SIGN) {
- 		dev_warn(rvu->dev, "Invalid KPU profile signature %llx\n",
- 			 fw->signature);
-@@ -1835,42 +2068,38 @@ static int npc_apply_custom_kpu(struct rvu *rvu,
- 		return -EINVAL;
- 	}
- 	/* Verify if profile fits the HW */
-+	if (fw->kpus > rvu->hw->npc_kpus) {
-+		dev_warn(rvu->dev, "Not enough KPUs: %d > %d\n", fw->kpus,
-+			 rvu->hw->npc_kpus);
-+		return -EINVAL;
-+	}
-+
-+	/* Check if there is enough memory for fw loading.
-+	 * Check if there is enough entries for profile->kpu[] to
-+	 * set cam_entries2 and action_entries2
-+	 */
- 	if (fw->kpus > profile->kpus) {
--		dev_warn(rvu->dev, "Not enough KPUs: %d > %ld\n", fw->kpus,
-+		dev_warn(rvu->dev, "Not enough KPUs: %d > %zu\n", fw->kpus,
- 			 profile->kpus);
- 		return -EINVAL;
- 	}
- 
-+	*fw_kpus = fw->kpus;
-+
-+	sfw = devm_kcalloc(rvu->dev, 1, sizeof(*sfw), GFP_KERNEL);
-+	if (!sfw)
-+		return -ENOMEM;
-+
-+	memcpy(sfw, fw, sizeof(*sfw));
-+
- 	profile->custom = 1;
--	profile->name = fw->name;
-+	profile->name = sfw->name;
- 	profile->version = le64_to_cpu(fw->version);
--	profile->mcam_kex_prfl.mkex = &fw->mkex;
--	profile->lt_def = &fw->lt_def;
--
--	for (kpu = 0; kpu < fw->kpus; kpu++) {
--		fw_kpu = (struct npc_kpu_fwdata *)(fw->data + offset);
--		if (fw_kpu->entries > KPU_MAX_CST_ENT)
--			dev_warn(rvu->dev,
--				 "Too many custom entries on KPU%d: %d > %d\n",
--				 kpu, fw_kpu->entries, KPU_MAX_CST_ENT);
--		entries = min(fw_kpu->entries, KPU_MAX_CST_ENT);
--		cam = (struct npc_kpu_profile_cam *)fw_kpu->data;
--		offset += sizeof(*fw_kpu) + fw_kpu->entries * sizeof(*cam);
--		action = (struct npc_kpu_profile_action *)(fw->data + offset);
--		offset += fw_kpu->entries * sizeof(*action);
--		if (rvu->kpu_fwdata_sz < hdr_sz + offset) {
--			dev_warn(rvu->dev,
--				 "Profile size mismatch on KPU%i parsing.\n",
--				 kpu + 1);
--			return -EINVAL;
--		}
--		for (entry = 0; entry < entries; entry++) {
--			profile->kpu[kpu].cam[entry] = cam[entry];
--			profile->kpu[kpu].action[entry] = action[entry];
--		}
--	}
-+	profile->mcam_kex_prfl.mkex = &sfw->mkex;
-+	profile->lt_def = &sfw->lt_def;
- 
--	return 0;
-+	return from_fs ? npc_apply_custom_kpu_from_fs(rvu, profile) :
-+		npc_apply_custom_kpu_from_fw(rvu, profile);
- }
- 
- static int npc_load_kpu_prfl_img(struct rvu *rvu, void __iomem *prfl_addr,
-@@ -1958,45 +2187,19 @@ static int npc_load_kpu_profile_fwdb(struct rvu *rvu, const char *kpu_profile)
- 	return ret;
- }
- 
--void npc_load_kpu_profile(struct rvu *rvu)
-+static int npc_load_kpu_profile_from_fw(struct rvu *rvu)
- {
- 	struct npc_kpu_profile_adapter *profile = &rvu->kpu;
- 	const char *kpu_profile = rvu->kpu_pfl_name;
--	const struct firmware *fw = NULL;
--	bool retry_fwdb = false;
--
--	/* If user not specified profile customization */
--	if (!strncmp(kpu_profile, def_pfl_name, KPU_NAME_LEN))
--		goto revert_to_default;
--	/* First prepare default KPU, then we'll customize top entries. */
--	npc_prepare_default_kpu(rvu, profile);
--
--	/* Order of preceedence for load loading NPC profile (high to low)
--	 * Firmware binary in filesystem.
--	 * Firmware database method.
--	 * Default KPU profile.
--	 */
--	if (!request_firmware_direct(&fw, kpu_profile, rvu->dev)) {
--		dev_info(rvu->dev, "Loading KPU profile from firmware: %s\n",
--			 kpu_profile);
--		rvu->kpu_fwdata = kzalloc(fw->size, GFP_KERNEL);
--		if (rvu->kpu_fwdata) {
--			memcpy(rvu->kpu_fwdata, fw->data, fw->size);
--			rvu->kpu_fwdata_sz = fw->size;
--		}
--		release_firmware(fw);
--		retry_fwdb = true;
--		goto program_kpu;
--	}
-+	int fw_kpus = 0;
- 
--load_image_fwdb:
- 	/* Loading the KPU profile using firmware database */
- 	if (npc_load_kpu_profile_fwdb(rvu, kpu_profile))
--		goto revert_to_default;
-+		return -EFAULT;
- 
--program_kpu:
- 	/* Apply profile customization if firmware was loaded. */
--	if (!rvu->kpu_fwdata_sz || npc_apply_custom_kpu(rvu, profile)) {
-+	if (!rvu->kpu_fwdata_sz ||
-+	    npc_apply_custom_kpu(rvu, profile, false, &fw_kpus)) {
- 		/* If image from firmware filesystem fails to load or invalid
- 		 * retry with firmware database method.
- 		 */
-@@ -2010,10 +2213,6 @@ void npc_load_kpu_profile(struct rvu *rvu)
- 			}
- 			rvu->kpu_fwdata = NULL;
- 			rvu->kpu_fwdata_sz = 0;
--			if (retry_fwdb) {
--				retry_fwdb = false;
--				goto load_image_fwdb;
--			}
- 		}
- 
- 		dev_warn(rvu->dev,
-@@ -2021,22 +2220,101 @@ void npc_load_kpu_profile(struct rvu *rvu)
- 			 kpu_profile);
- 		kfree(rvu->kpu_fwdata);
- 		rvu->kpu_fwdata = NULL;
--		goto revert_to_default;
-+		return -EFAULT;
- 	}
- 
--	dev_info(rvu->dev, "Using custom profile '%s', version %d.%d.%d\n",
-+	dev_info(rvu->dev, "Using custom profile '%.32s', version %d.%d.%d\n",
- 		 profile->name, NPC_KPU_VER_MAJ(profile->version),
- 		 NPC_KPU_VER_MIN(profile->version),
- 		 NPC_KPU_VER_PATCH(profile->version));
- 
--	return;
-+	return 0;
-+}
-+
-+static int npc_load_kpu_profile_from_fs(struct rvu *rvu)
-+{
-+	struct npc_kpu_profile_adapter *profile = &rvu->kpu;
-+	const char *kpu_profile = rvu->kpu_pfl_name;
-+	const struct firmware *fw = NULL;
-+	int ret, fw_kpus = 0;
-+	char path[512] = "kpu/";
-+
-+	if (strlen(kpu_profile) > sizeof(path) - strlen("kpu/") - 1) {
-+		dev_err(rvu->dev, "kpu profile name is too big\n");
-+		return -ENOSPC;
-+	}
-+
-+	strcat(path, kpu_profile);
-+
-+	if (request_firmware_direct(&fw, path, rvu->dev))
-+		return -ENOENT;
-+
-+	dev_info(rvu->dev, "Loading KPU profile from filesystem: %s\n",
-+		 path);
-+
-+	rvu->kpu_fwdata = fw->data;
-+	rvu->kpu_fwdata_sz = fw->size;
-+
-+	ret = npc_apply_custom_kpu(rvu, profile, true, &fw_kpus);
-+	release_firmware(fw);
-+	rvu->kpu_fwdata = NULL;
-+
-+	if (ret) {
-+		rvu->kpu_fwdata_sz = 0;
-+		dev_err(rvu->dev,
-+			"Loading KPU profile from filesystem failed\n");
-+		return ret;
-+	}
-+
-+	/* In firmware loading from filesystem method, all entries are from
-+	 * same binary blob.
-+	 */
-+	rvu->kpu.kpus = fw_kpus;
-+	profile->kpus = fw_kpus;
-+	profile->from_fs = true;
-+	return 0;
-+}
-+
-+void npc_load_kpu_profile(struct rvu *rvu)
-+{
-+	struct npc_kpu_profile_adapter *profile = &rvu->kpu;
-+	const char *kpu_profile = rvu->kpu_pfl_name;
-+
-+	profile->from_fs = false;
-+
-+	npc_prepare_default_kpu(rvu, profile);
-+
-+	/* If user not specified profile customization */
-+	if (!strncmp(kpu_profile, def_pfl_name, KPU_NAME_LEN))
-+		return;
-+
-+	/* Order of preceedence for load loading NPC profile (high to low)
-+	 * Firmware binary in filesystem.
-+	 * Firmware database method.
-+	 * Default KPU profile.
-+	 */
-+
-+	/* Filesystem-based KPU loading is not supported on cn20k.
-+	 * npc_prepare_default_kpu() was invoked earlier, but control
-+	 * reached this point because the default profile was not selected.
-+	 * No need to call it again.
-+	 */
-+	if (!is_cn20k(rvu->pdev)) {
-+		if (!npc_load_kpu_profile_from_fs(rvu))
-+			return;
-+	}
-+
-+	/* First prepare default KPU, then we'll customize top entries. */
-+	npc_prepare_default_kpu(rvu, profile);
-+	if (!npc_load_kpu_profile_from_fw(rvu))
-+		return;
- 
--revert_to_default:
- 	npc_prepare_default_kpu(rvu, profile);
- }
- 
- static void npc_parser_profile_init(struct rvu *rvu, int blkaddr)
- {
-+	struct npc_kpu_profile_adapter *profile = &rvu->kpu;
- 	struct rvu_hwinfo *hw = rvu->hw;
- 	int num_pkinds, num_kpus, idx;
- 
-@@ -2060,7 +2338,9 @@ static void npc_parser_profile_init(struct rvu *rvu, int blkaddr)
- 	num_pkinds = min_t(int, hw->npc_pkinds, num_pkinds);
- 
- 	for (idx = 0; idx < num_pkinds; idx++)
--		npc_config_kpuaction(rvu, blkaddr, &rvu->kpu.ikpu[idx], 0, idx, true);
-+		npc_config_kpuaction(rvu, blkaddr,
-+				     npc_get_ikpu_nth_entry(rvu, idx),
-+				     0, idx, true);
- 
- 	/* Program KPU CAM and Action profiles */
- 	num_kpus = rvu->kpu.kpus;
-@@ -2068,6 +2348,11 @@ static void npc_parser_profile_init(struct rvu *rvu, int blkaddr)
- 
- 	for (idx = 0; idx < num_kpus; idx++)
- 		npc_program_kpu_profile(rvu, blkaddr, idx, &rvu->kpu.kpu[idx]);
-+
-+	if (profile->from_fs) {
-+		rvu_write64(rvu, blkaddr, NPC_AF_PKINDX_TYPE(54), 0x03);
-+		rvu_write64(rvu, blkaddr, NPC_AF_PKINDX_TYPE(58), 0x03);
-+	}
- }
- 
- void npc_mcam_rsrcs_deinit(struct rvu *rvu)
-@@ -2297,18 +2582,21 @@ static void rvu_npc_hw_init(struct rvu *rvu, int blkaddr)
- 
- static void rvu_npc_setup_interfaces(struct rvu *rvu, int blkaddr)
- {
--	struct npc_mcam_kex_extr *mkex_extr = rvu->kpu.mcam_kex_prfl.mkex_extr;
--	struct npc_mcam_kex *mkex = rvu->kpu.mcam_kex_prfl.mkex;
-+	const struct npc_mcam_kex_extr *mkex_extr;
- 	struct npc_mcam *mcam = &rvu->hw->mcam;
- 	struct rvu_hwinfo *hw = rvu->hw;
-+	const struct npc_mcam_kex *mkex;
- 	u64 nibble_ena, rx_kex, tx_kex;
- 	u64 *keyx_cfg, reg;
- 	u8 intf;
- 
-+	mkex_extr = rvu->kpu.mcam_kex_prfl.mkex_extr;
-+	mkex = rvu->kpu.mcam_kex_prfl.mkex;
-+
- 	if (is_cn20k(rvu->pdev)) {
--		keyx_cfg = mkex_extr->keyx_cfg;
-+		keyx_cfg = (u64 *)mkex_extr->keyx_cfg;
- 	} else {
--		keyx_cfg = mkex->keyx_cfg;
-+		keyx_cfg = (u64 *)mkex->keyx_cfg;
- 		/* Reserve last counter for MCAM RX miss action which is set to
- 		 * drop packet. This way we will know how many pkts didn't
- 		 * match any MCAM entry.
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.h b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.h
-index 83c5e32e2afc..662f6693cfe9 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.h
-@@ -18,4 +18,21 @@ int npc_fwdb_prfl_img_map(struct rvu *rvu, void __iomem **prfl_img_addr,
- 
- void npc_mcam_clear_bit(struct npc_mcam *mcam, u16 index);
- void npc_mcam_set_bit(struct npc_mcam *mcam, u16 index);
-+
-+struct npc_kpu_profile_action *
-+npc_get_ikpu_nth_entry(struct rvu *rvu, int n);
-+
-+int
-+npc_get_num_kpu_cam_entries(struct rvu *rvu,
-+			    const struct npc_kpu_profile *kpu_pfl);
-+struct npc_kpu_profile_cam *
-+npc_get_kpu_cam_nth_entry(struct rvu *rvu,
-+			  const struct npc_kpu_profile *kpu_pfl, int n);
-+
-+int
-+npc_get_num_kpu_action_entries(struct rvu *rvu,
-+			       const struct npc_kpu_profile *kpu_pfl);
-+struct npc_kpu_profile_action *
-+npc_get_kpu_action_nth_entry(struct rvu *rvu,
-+			     const struct npc_kpu_profile *kpu_pfl, int n);
- #endif /* RVU_NPC_H */
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_reg.h b/drivers/net/ethernet/marvell/octeontx2/af/rvu_reg.h
-index 62cdc714ba57..ab89b8c6e490 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_reg.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_reg.h
-@@ -596,6 +596,7 @@
- #define NPC_AF_INTFX_KEX_CFG(a)		(0x01010 | (a) << 8)
- #define NPC_AF_PKINDX_ACTION0(a)	(0x80000ull | (a) << 6)
- #define NPC_AF_PKINDX_ACTION1(a)	(0x80008ull | (a) << 6)
-+#define NPC_AF_PKINDX_TYPE(a)		(0x80010ull | (a) << 6)
- #define NPC_AF_PKINDX_CPI_DEFX(a, b)	(0x80020ull | (a) << 6 | (b) << 3)
- #define NPC_AF_KPUX_ENTRYX_CAMX(a, b, c) \
- 		(0x100000 | (a) << 14 | (b) << 6 | (c) << 3)
--- 
-2.43.0
+>         num_tx_qpls =3D gve_num_tx_qpls(&priv->tx_cfg, gve_is_qpl(priv));
+>         num_rx_qpls =3D gve_num_rx_qpls(&priv->rx_cfg, gve_is_qpl(priv));
+>
+> @@ -2414,6 +2416,33 @@ static void gve_set_buf_sizes(struct gve_priv *pri=
+v)
+>                 priv->header_buf_size =3D device_info->header_buf_size;
+>  }
+>
+> +static int gve_setup_device(struct gve_priv *priv)
+> +{
+> +       int err;
+> +
+> +       priv->xsk_pools =3D bitmap_zalloc(priv->rx_cfg.max_queues, GFP_KE=
+RNEL);
 
+Commenting on Sashiko's report:
+
+"This is a pre-existing issue, but does this allocation cause an XDP socket
+DMA mapping leak and silently break XDP sockets during a device reset?
+When a device reset occurs, such as from a transmit timeout, the teardown
+process frees the priv->xsk_pools bitmap without unmapping the active XDP
+socket DMA mappings."
+
+Will send a separate net fix for this pre-existing issue.
+
+> +       if (!priv->xsk_pools) {
+> +               err =3D -ENOMEM;
+> +               goto err;
+> +       }
+> +
+> +       gve_set_netdev_xdp_features(priv);
+> +       if (!gve_is_gqi(priv))
+> +               priv->dev->xdp_metadata_ops =3D &gve_xdp_metadata_ops;
+> +
+> +       err =3D gve_setup_device_resources(priv);
+> +       if (err)
+> +               goto err_free_xsk_bitmap;
+> +
+> +       return 0;
+> +
+> +err_free_xsk_bitmap:
+> +       bitmap_free(priv->xsk_pools);
+> +       priv->xsk_pools =3D NULL;
+> +err:
+> +       return err;
+> +}
+> +
+>  static const struct gve_ctrl_ops gve_adminq_ops =3D {
+>         .map_db_bar             =3D gve_adminq_map_db_bar,
+>         .unmap_db_bar           =3D gve_adminq_unmap_db_bar,
+> @@ -2421,36 +2450,18 @@ static const struct gve_ctrl_ops gve_adminq_ops =
+=3D {
+>         .set_num_ntfy_blks      =3D gve_adminq_set_num_ntfy_blks,
+>  };
+>
+> -static int gve_init_priv(struct gve_priv *priv, bool skip_describe_devic=
+e)
+> +static int gve_init_priv(struct gve_priv *priv)
+>  {
+>         struct gve_device_info *device_info =3D &priv->device_info;
+>         int err;
+>
+> -       /* Set up the adminq */
+> -       err =3D gve_adminq_alloc(&priv->pdev->dev, priv);
+> -       if (err) {
+> -               dev_err(&priv->pdev->dev,
+> -                       "Failed to alloc admin queue: err=3D%d\n", err);
+> -               return err;
+> -       }
+> -
+> -       priv->num_registered_pages =3D 0;
+> -
+> -       if (skip_describe_device)
+> -               goto setup_device;
+> -
+> -       device_info->queue_format =3D GVE_QUEUE_FORMAT_UNSPECIFIED;
+> -       err =3D gve_adminq_get_device_properties(priv);
+> -       if (err)
+> -               goto err;
+> -
+>         priv->queue_format =3D priv->device_info.queue_format;
+>
+>         err =3D priv->ctrl_ops->set_num_ntfy_blks(priv);
+>         if (err) {
+>                 dev_err(&priv->pdev->dev,
+>                         "Could not setup notify blocks: err=3D%d\n", err)=
+;
+> -               goto err;
+> +               return err;
+>         }
+>
+>         priv->ctrl_ops->set_num_queues(priv);
+> @@ -2473,10 +2484,8 @@ static int gve_init_priv(struct gve_priv *priv, bo=
+ol skip_describe_device)
+>                 netif_set_tso_max_size(priv->dev, GVE_DQO_TX_MAX);
+>         }
+>
+> -       if (gve_set_mtu(priv)) {
+> -               err =3D -EINVAL;
+> -               goto err;
+> -       }
+> +       if (gve_set_mtu(priv))
+> +               return -EINVAL;
+>
+>         priv->num_event_counters =3D device_info->num_event_counters;
+>
+> @@ -2501,30 +2510,7 @@ static int gve_init_priv(struct gve_priv *priv, bo=
+ol skip_describe_device)
+>         priv->ts_config.tx_type =3D HWTSTAMP_TX_OFF;
+>         priv->ts_config.rx_filter =3D HWTSTAMP_FILTER_NONE;
+>         priv->nic_timestamp_supported =3D device_info->nic_timestamp_supp=
+orted;
+> -
+> -setup_device:
+> -       priv->xsk_pools =3D bitmap_zalloc(priv->rx_cfg.max_queues, GFP_KE=
+RNEL);
+> -       if (!priv->xsk_pools) {
+> -               err =3D -ENOMEM;
+> -               goto err;
+> -       }
+> -
+> -       gve_set_netdev_xdp_features(priv);
+> -       if (!gve_is_gqi(priv))
+> -               priv->dev->xdp_metadata_ops =3D &gve_xdp_metadata_ops;
+> -
+> -       err =3D gve_setup_device_resources(priv);
+> -       if (err)
+> -               goto err_free_xsk_bitmap;
+> -
+>         return 0;
+> -
+> -err_free_xsk_bitmap:
+> -       bitmap_free(priv->xsk_pools);
+> -       priv->xsk_pools =3D NULL;
+> -err:
+> -       gve_adminq_free(priv);
+> -       return err;
+>  }
+>
+>  static void gve_teardown_priv_resources(struct gve_priv *priv)
+> @@ -2554,15 +2540,29 @@ static int gve_reset_recovery(struct gve_priv *pr=
+iv, bool was_up)
+>  {
+>         int err;
+>
+> -       err =3D gve_init_priv(priv, true);
+> -       if (err)
+> +       err =3D gve_adminq_init(priv);
+> +       if (err) {
+> +               dev_err(&priv->pdev->dev,
+> +                       "Failed to alloc admin queue: err=3D%d\n", err);
+>                 goto err;
+> +       }
+> +
+> +       err =3D gve_setup_device(priv);
+> +       if (err)
+> +               goto err_free_adminq;
+>         if (was_up) {
+>                 err =3D gve_open(priv->dev);
+>                 if (err)
+> -                       goto err;
+> +                       goto err_free_device;
+>         }
+>         return 0;
+> +
+> +err_free_device:
+> +       gve_teardown_device_resources(priv);
+> +       bitmap_free(priv->xsk_pools);
+> +       priv->xsk_pools =3D NULL;
+> +err_free_adminq:
+> +       gve_adminq_free(priv);
+
+"If gve_open() fails here, the error path tears down device resources (free=
+ing
+priv->ntfy_blocks) and the admin queue DMA pool via gve_adminq_free().
+However, the net_device remains registered. If a user subsequently attempts=
+ to
+bring the interface up, gve_open() is invoked again. Because gve_open()
+currently does not check if resources are initialized, it proceeds to call
+gve_queues_start()."
+
+Correct, if gve_open() fails, will just return error instead. Will fix in v=
+3.
+
+>  err:
+>         dev_err(&priv->pdev->dev, "Reset failed! !!! DISABLING ALL QUEUES=
+ !!!\n");
+>         gve_turndown(priv);
+> @@ -2605,7 +2605,7 @@ int gve_reset(struct gve_priv *priv, bool attempt_t=
+eardown)
+>         return err;
+>  }
+>
+> -static void gve_write_version(u8 __iomem *driver_version_register)
+> +void gve_adminq_write_version(u8 __iomem *driver_version_register)
+>  {
+>         const char *c =3D gve_version_prefix;
+>
+> @@ -2838,7 +2838,6 @@ static int gve_probe(struct pci_dev *pdev, const st=
+ruct pci_device_id *ent)
+>                 goto abort_with_pci_region;
+>         }
+>
+> -       gve_write_version(&reg_bar->driver_version);
+>         /* Get max queues to alloc etherdev */
+>         max_tx_queues =3D ioread32be(&reg_bar->max_tx_queues);
+>         max_rx_queues =3D ioread32be(&reg_bar->max_rx_queues);
+> @@ -2885,13 +2884,28 @@ static int gve_probe(struct pci_dev *pdev, const =
+struct pci_device_id *ent)
+>         priv->rx_cfg.packet_buffer_size =3D GVE_DEFAULT_RX_BUFFER_SIZE;
+>         priv->max_rx_buffer_size =3D GVE_DEFAULT_RX_BUFFER_SIZE;
+>
+> +       err =3D gve_adminq_init(priv);
+> +       if (err) {
+> +               dev_err(&priv->pdev->dev,
+> +                       "Failed to alloc admin queue: err=3D%d\n", err);
+> +               goto abort_with_netdev;
+> +       }
+> +
+> +       priv->device_info.queue_format =3D GVE_QUEUE_FORMAT_UNSPECIFIED;
+> +       err =3D gve_adminq_get_device_properties(priv);
+> +       if (err) {
+> +               dev_err(&priv->pdev->dev,
+> +                       "Could not get device information: err=3D%d\n", e=
+rr);
+> +               goto abort_with_adminq;
+> +       }
+> +
+>         /* Set adminq ctrl ops */
+>         priv->ctrl_ops =3D &gve_adminq_ops;
+>
+>         err =3D priv->ctrl_ops->map_db_bar(priv);
+>         if (err) {
+>                 err =3D -ENOMEM;
+> -               goto abort_with_netdev;
+> +               goto abort_with_adminq;
+>         }
+>
+>         gve_set_probe_in_progress(priv);
+> @@ -2906,10 +2920,17 @@ static int gve_probe(struct pci_dev *pdev, const =
+struct pci_device_id *ent)
+>         priv->tx_cfg.max_queues =3D max_tx_queues;
+>         priv->rx_cfg.max_queues =3D max_rx_queues;
+>
+> -       err =3D gve_init_priv(priv, false);
+> +       err =3D gve_init_priv(priv);
+>         if (err)
+>                 goto abort_with_wq;
+>
+> +       err =3D gve_setup_device(priv);
+> +       if (err) {
+> +               dev_err(&priv->pdev->dev,
+> +                       "Could not setup device: err=3D%d\n", err);
+> +               goto abort_with_wq;
+> +       }
+> +
+>         if (!gve_is_gqi(priv) && !gve_is_qpl(priv))
+>                 dev->netmem_tx =3D NETMEM_TX_DMA;
+>
+> @@ -2932,6 +2953,9 @@ static int gve_probe(struct pci_dev *pdev, const st=
+ruct pci_device_id *ent)
+>  abort_with_unmap_db_bar:
+>         priv->ctrl_ops->unmap_db_bar(priv);
+>
+> +abort_with_adminq:
+> +       gve_adminq_free(priv);
+> +
+>  abort_with_netdev:
+>         free_netdev(dev);
+>
+> --
+> 2.54.0.1013.g208068f2d8-goog
+>
