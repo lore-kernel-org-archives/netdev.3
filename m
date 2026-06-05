@@ -1,167 +1,131 @@
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 844DE481FCA;
-	Fri,  5 Jun 2026 07:44:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 519913B7767;
+	Fri,  5 Jun 2026 07:48:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780645497; cv=none; b=TKlyMXI/R9CqmJj1hybdK0h0+5oZ1bDwVa4RjdH6gqysfmDfs2uLyodODJuxnsNZuOK7DALKQzr7cwx8vx88/emDDpAf7UNT0R1rW+B9CpzW3qqDjWfs2JhdWGFUNhyZYDYXehHWLXp1XPEOTgieXvqaULjCubkovjRKCOrDsgU=
+	t=1780645692; cv=none; b=Bi79qj0SZTeguXecf3StRofwneRYVECUpWkHT0BFhYOmgSZelyDXPyzYNBwlPjwYXNlhNxOQ5b7LEPd2Ptcj/n2kDUyQ037+eOF+RQ91WFUQpnahHUZSwOTC5jlKHsw1t4pTwh333sMIZVY5hc6k4sE0VyD0IJM1u6ZWoviW97o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780645497; c=relaxed/simple;
-	bh=T4B7H85vrvd5LrFha4O8snmkpPt3uAYMiFPtIBi1GXM=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WzGuRFM6/Y5btDk2Xjug38AmxFnzudQ7qwu1ZGxwT2Q9bq/cEuv/NOryKmPaCR47EozPES5CV5JQPufTBS/UF/sTFRgnOU1snnilKVH5QuoZS7BB4+5oTAiBq2fmdzJ5CEnp04yPvT5pUkuIfqKGTw5lPmaERMWqIdfxvS96uv8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn; spf=pass smtp.mailfrom=realsil.com.cn; dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b=WSSGsK92; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realsil.com.cn
+	s=arc-20240116; t=1780645692; c=relaxed/simple;
+	bh=bLVa+it7Fcgvro+pv1jm7ZG4kvYOadKHZDdsUxgN6uI=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gfvW4F1Y7+lJlEYLM6haSFhgjAGaAUMCEv496VbpXSZODFHvdv3uc1vROu1mruZ28vYQnoMTqrKaFh0c+N3Kq6kHJ8EuemaUBwCgD2y3eGE+jEP6vWLRmub2zI56UWZ3UUyyQH5rgYzksODK+kNM/KM4oSJBF7d6sJcMkO44TtA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=IVEFAsoI; arc=none smtp.client-ip=67.231.156.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b="WSSGsK92"
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 6557hUeW51221753, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realsil.com.cn;
-	s=dkim; t=1780645411;
-	bh=nWzts/H4wwuI5TljBKGOGaj/2CwHAdU2rSYQgB7LJbk=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=WSSGsK92N/CcWIPxdkM/o04OoQGctJ+JaYSZQaenAVR9BZiretChwtzPSugQoJiiL
-	 sSS1MEIiJ5o3iMuJl/0MwAffodmVxiRGgqrzxPGgFT7llcC9DGtsgdBgemah6v7zJB
-	 lAnwT/g/oViD6AM35TAAM5LiLHnbEIO+1h5i45NY9/j6UqY7Mq0TlYj6Ocddx8NSUR
-	 cOr5FxQVoEM+cU11N14ftvW5UcoGOYEW08BE5LYnR1leT3I0qBwVR7Brqtr387Yj5X
-	 Yc21sd5iRP2cRdsnrBKB8t1GqJ8JvaZzkAybPAa9BoeB3XIrIDJ3jDRD8QyFUGtblO
-	 yUt6sfx6ihdyw==
-Received: from RS-EX-MBS2.realsil.com.cn ([172.29.17.102])
-	by rtits2.realtek.com.tw (8.15.2/3.28/5.94) with ESMTPS id 6557hUeW51221753
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Fri, 5 Jun 2026 15:43:31 +0800
-Received: from RS-EX-MBS2.realsil.com.cn (172.29.17.102) by
- RS-EX-MBS2.realsil.com.cn (172.29.17.102) with Microsoft SMTP Server
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="IVEFAsoI"
+Received: from pps.filterd (m0431383.ppops.net [127.0.0.1])
+	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 654NS1Zr1933112;
+	Fri, 5 Jun 2026 00:48:03 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pfpt0220; bh=wQSEh8Sz1qZGPBUxTZT2mHSrL
+	TncE9qcUGzA4n5NyLI=; b=IVEFAsoIcqRDfUWD3S78EPMED5kRhP52I9ZiqjZAn
+	y4wLVBBb3ngmdYVD7YS6sqslsSUwOx0nxE1gabtZy4v0hLiXxVAHEkvTp2++APPl
+	k7GGvISQ7k7z/NNFO+HYrOZRZ8du5Z3bWfFMfnjQYCQKB3Z/012VaU18ZTkQdN/I
+	qo96Xgv+ZkCzDfLep7h6aYbupWMK811X/vXMBnHyxI0gcxBDbnfFZSsWzYQRZZcN
+	LNKSgZMVSTAB5H0vwVi7OquOPr5ABUwuAXGXTnxxjywrgii0BzeYKazCFJ4/PL+q
+	HiU2nxGO6rGRwHkKqo/ypIUAhN/6JAg7EnJK4CDF+GwRA==
+Received: from dc5-exch05.marvell.com ([199.233.59.128])
+	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4ekk2916a1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 05 Jun 2026 00:48:02 -0700 (PDT)
+Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
+ DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Fri, 5 Jun 2026 15:43:31 +0800
-Received: from 172.29.37.154 (172.29.37.152) by RS-EX-MBS2.realsil.com.cn
- (172.29.17.102) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
- Transport; Fri, 5 Jun 2026 15:43:31 +0800
-From: javen <javen_xu@realsil.com.cn>
-To: <andrew@lunn.ch>, <hkallweit1@gmail.com>, <linux@armlinux.org.uk>,
-	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <freddy_gu@realsil.com.cn>
-CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<daniel@makrotopia.org>, <vladimir.oltean@nxp.com>, Javen Xu
-	<javen_xu@realsil.com.cn>
-Subject: [PATCH net-next v3 2/4] net: phy: c45: add genphy_c45_an_setup_master_slave()
-Date: Fri, 5 Jun 2026 15:43:26 +0800
-Message-ID: <20260605074328.1800-3-javen_xu@realsil.com.cn>
-X-Mailer: git-send-email 2.50.1.windows.1
-In-Reply-To: <20260605074328.1800-1-javen_xu@realsil.com.cn>
-References: <20260605074328.1800-1-javen_xu@realsil.com.cn>
+ 15.2.1544.25; Fri, 5 Jun 2026 00:48:01 -0700
+Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
+ DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Fri, 5 Jun 2026 00:48:00 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
+ (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
+ Transport; Fri, 5 Jun 2026 00:48:00 -0700
+Received: from rkannoth-OptiPlex-7090 (unknown [10.28.36.165])
+	by maili.marvell.com (Postfix) with SMTP id 53AAE3F7079;
+	Fri,  5 Jun 2026 00:47:56 -0700 (PDT)
+Date: Fri, 5 Jun 2026 13:17:55 +0530
+From: Ratheesh Kannoth <rkannoth@marvell.com>
+To: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>
+CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <donald.hunter@gmail.com>,
+        <edumazet@google.com>, <horms@kernel.org>, <jiri@resnulli.us>,
+        <kuba@kernel.org>, <pabeni@redhat.com>, <sgoutham@marvell.com>
+Subject: Re: [PATCH v19 net-next 1/9] octeontx2-af: Enforce single RVU AF
+ probe
+Message-ID: <aiJ_K-Z7bV1Syyde@rkannoth-OptiPlex-7090>
+References: <20260605035030.3195141-1-rkannoth@marvell.com>
+ <20260605035030.3195141-2-rkannoth@marvell.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20260605035030.3195141-2-rkannoth@marvell.com>
+X-Authority-Analysis: v=2.4 cv=MOlQXsZl c=1 sm=1 tr=0 ts=6a227f32 cx=c_pps
+ a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
+ a=kj9zAlcOel0A:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=l0iWHRpgs5sLHlkKQ1IR:22 a=qit2iCtTFQkLgVSMPQTB:22 a=M5GUcnROAAAA:8
+ a=PhMr_M3VcTPrr3iKzVkA:9 a=CjuIK1q_8ugA:10 a=OBjm3rFKGHvpk9ecZwUJ:22
+ a=Oh551-UHZqmTy8JkqTUo:22
+X-Proofpoint-ORIG-GUID: VdwKVJYtSzj-W70ExOloTnELllTISmKo
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjA1MDA3NCBTYWx0ZWRfX/xtX4H9hn3Pi
+ k597YJd/e5A4XeBPlbTcndVrVZkAwGfWD50gLT0H11WLSk/n3kilp6bNHDFGyTlmmgeyu0ztUhB
+ NkCQNn97wmR4u8K4uATxJqSBCjL5sh6dqyKpl8XxSZYu/pDI8gZosw4L/2RJHTufibDJphgIKSK
+ hYOhrR0zoXbKXSjPASDNn8e6Wd9oWCetQ4CmnrBok1crCdTc02B41nEI68Ja+eDggNbNJBj5Dot
+ Ap3CEFBFLoZ2RyjJLgozJeUbl29UR4m/ItqUejig9CxQALCI0iu3vS9aumE0V6sBPefI/+oDmgA
+ zlsSdihZ7TMG9JKu58YOJTYuGKqn1qItHT9RFvKNyI9VcAmkXKrBhto4Em5w55HgdjSU1+mlPx8
+ /5DJBz0ycn2ibtz8RJ/owGkPVcFO/WobxvDhfIVA2WWOQqzUL7ILXuXZciNNvr3HasTDr2p7Qoc
+ 2qo8lGufxAyA6D/xmRg==
+X-Proofpoint-GUID: VdwKVJYtSzj-W70ExOloTnELllTISmKo
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-05_01,2026-05-28_03,2025-10-01_01
 
-From: Javen Xu <javen_xu@realsil.com.cn>
+On 2026-06-05 at 09:20:21, Ratheesh Kannoth (rkannoth@marvell.com) wrote:
+> There is only one admin-function PCI device per system.
+> Reject any additional AF probe with -EBUSY so the driver model matches
+> hardware and automated reviewers can rely on a single bound instance.
+>
+> Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
 
-Add a generic helper to configure forced master/slave mode for Clause 45
-PHYs using the 10GBASE-T AN control register.
+Apologies. Mavell SMTP server had many issues which resulted delaying,requeing, resending
+emails. Sorry for the noise. Please abandon this set as another patch (same patch) is
+active.
+pw-bot: changes-requested
 
-Signed-off-by: Javen Xu <javen_xu@realsil.com.cn>
----
-Changes in v2:
- - no changes, new file
-
-Changes in v3:
- - re-order function according to the order in phy-c45.c
- - add kernel-doc about return value
- - add MASTER_SLAVE_CFG_MASTER_PREFERRED,
-   MASTER_SLAVE_CFG_SLAVE_PREFERRED, MASTER_SLAVE_CFG_UNKNOWN,
-   MASTER_SLAVE_CFG_UNSUPPORTED, MASTER_SLAVE_CFG_SLAVE_PREFERRED cfg
----
- drivers/net/phy/phy-c45.c | 42 +++++++++++++++++++++++++++++++++++++++
- include/linux/phy.h       |  1 +
- include/uapi/linux/mdio.h |  3 +++
- 3 files changed, 46 insertions(+)
-
-diff --git a/drivers/net/phy/phy-c45.c b/drivers/net/phy/phy-c45.c
-index d8a83179ec40..28cb173ff7aa 100644
---- a/drivers/net/phy/phy-c45.c
-+++ b/drivers/net/phy/phy-c45.c
-@@ -406,6 +406,48 @@ int genphy_c45_soft_reset(struct phy_device *phydev)
- }
- EXPORT_SYMBOL_GPL(genphy_c45_soft_reset);
- 
-+/**
-+ * genphy_c45_an_setup_master_slave - Configure Master/Slave setting for C45 PHYs
-+ * @phydev: target phy_device struct
-+ *
-+ * Description: Configure the forced or preferred Master/Slave role
-+ * 10GBASE-T control register (MMD 7, Register 0x0020) according to
-+ * IEEE 802.3 standards.
-+ *
-+ * Returns negative errno code on failure, 0 if Master/Slave didn't change,
-+ * or 1 if Master/Slave modes changed.
-+ */
-+int genphy_c45_an_setup_master_slave(struct phy_device *phydev)
-+{
-+	u16 ctl = 0;
-+
-+	switch (phydev->master_slave_set) {
-+	case MASTER_SLAVE_CFG_MASTER_PREFERRED:
-+		ctl = MDIO_AN_10GBT_CTRL_MS_PORT_TYPE;
-+		break;
-+	case MASTER_SLAVE_CFG_SLAVE_PREFERRED:
-+		break;
-+	case MASTER_SLAVE_CFG_MASTER_FORCE:
-+		ctl = MDIO_AN_10GBT_CTRL_MS_ENABLE | MDIO_AN_10GBT_CTRL_MS_VALUE;
-+		break;
-+	case MASTER_SLAVE_CFG_SLAVE_FORCE:
-+		ctl = MDIO_AN_10GBT_CTRL_MS_ENABLE;
-+		break;
-+	case MASTER_SLAVE_CFG_UNKNOWN:
-+	case MASTER_SLAVE_CFG_UNSUPPORTED:
-+		return 0;
-+	default:
-+		phydev_warn(phydev, "Unsupported Master/Slave mode\n");
-+		return -EOPNOTSUPP;
-+	}
-+
-+	return phy_modify_mmd_changed(phydev, MDIO_MMD_AN, MDIO_AN_10GBT_CTRL,
-+				      MDIO_AN_10GBT_CTRL_MS_ENABLE |
-+				      MDIO_AN_10GBT_CTRL_MS_VALUE |
-+				      MDIO_AN_10GBT_CTRL_MS_PORT_TYPE, ctl);
-+}
-+EXPORT_SYMBOL_GPL(genphy_c45_an_setup_master_slave);
-+
- /**
-  * genphy_c45_aneg_done - return auto-negotiation complete status
-  * @phydev: target phy_device struct
-diff --git a/include/linux/phy.h b/include/linux/phy.h
-index 25a66320df56..a46f4d9a6155 100644
---- a/include/linux/phy.h
-+++ b/include/linux/phy.h
-@@ -2310,6 +2310,7 @@ int genphy_c37_read_status(struct phy_device *phydev, bool *changed);
- int genphy_c45_restart_aneg(struct phy_device *phydev);
- int genphy_c45_check_and_restart_aneg(struct phy_device *phydev, bool restart);
- int genphy_c45_soft_reset(struct phy_device *phydev);
-+int genphy_c45_an_setup_master_slave(struct phy_device *phydev);
- int genphy_c45_aneg_done(struct phy_device *phydev);
- int genphy_c45_read_link(struct phy_device *phydev);
- int genphy_c45_read_lpa(struct phy_device *phydev);
-diff --git a/include/uapi/linux/mdio.h b/include/uapi/linux/mdio.h
-index b2541c948fc1..ffca03fd82c9 100644
---- a/include/uapi/linux/mdio.h
-+++ b/include/uapi/linux/mdio.h
-@@ -332,6 +332,9 @@
- #define MDIO_AN_10GBT_CTRL_ADV2_5G	0x0080	/* Advertise 2.5GBASE-T */
- #define MDIO_AN_10GBT_CTRL_ADV5G	0x0100	/* Advertise 5GBASE-T */
- #define MDIO_AN_10GBT_CTRL_ADV10G	0x1000	/* Advertise 10GBASE-T */
-+#define MDIO_AN_10GBT_CTRL_MS_ENABLE	0x8000	/* Master/slave manual config enable */
-+#define MDIO_AN_10GBT_CTRL_MS_VALUE	0x4000	/* Master/slave config value (1=Master) */
-+#define MDIO_AN_10GBT_CTRL_MS_PORT_TYPE	0x2000	/* Master Preferred Type */
- 
- /* AN 10GBASE-T status register. */
- #define MDIO_AN_10GBT_STAT_LP2_5G	0x0020  /* LP is 2.5GBT capable */
--- 
-2.43.0
-
+> ---
+>  drivers/net/ethernet/marvell/octeontx2/af/rvu.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
+>
+> diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
+> index 3cf131508ecf..1f0c962e10f4 100644
+> --- a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
+> +++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
+> @@ -3542,12 +3542,19 @@ static void rvu_update_module_params(struct rvu *rvu)
+>  		kpu_profile ? kpu_profile : default_pfl_name, KPU_NAME_LEN);
+>  }
+>
+> +static atomic_t device_bound = ATOMIC_INIT(0);
+> +
+>  static int rvu_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+>  {
+>  	struct device *dev = &pdev->dev;
+>  	struct rvu *rvu;
+>  	int    err;
+>
+> +	if (atomic_cmpxchg(&device_bound, 0, 1) != 0) {
+> +		dev_warn(dev, "Only one af device is supported.\n");
+> +		return -EBUSY;
+> +	}
+> +
+>  	rvu = devm_kzalloc(dev, sizeof(*rvu), GFP_KERNEL);
+>  	if (!rvu)
+>  		return -ENOMEM;
+> --
+> 2.43.0
+>
