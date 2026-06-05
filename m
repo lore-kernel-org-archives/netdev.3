@@ -1,116 +1,362 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail.common-net.org (mail.common-net.org [139.28.148.254])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60C78361650;
-	Fri,  5 Jun 2026 01:24:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D429F3ACA40;
+	Fri,  5 Jun 2026 01:27:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=139.28.148.254
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780622669; cv=none; b=enM42X7LDMeogmH4meVKxAve/JIUTFO+7GxBBzSYhh2Mbc9dEYTrfSKw8cL6aae/5YIRpnF0Os2qvYUHSgASPcz6f4+xM8MBjjjhUierKmKYb4GKKuzYkGxFGXX41tLhqNvniH2HPzi4h4XmQA6T8I6fydkobhl4LA94lR8tu6I=
+	t=1780622842; cv=none; b=IwsUNcZqvs0nHh4E23jXOesl86rMROczqNkY0skSVKQnULQNm8BV74YSi78IvG3UsmcI6uCmVXVY+nhWv2QysEy5zIgx2pEec/THgkHzOcV3NSb2kVQFNn1MX970691BtMCJsiAFRt+jp2O60CY8+gsS4oIxJBVM8uWLp4rewf4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780622669; c=relaxed/simple;
-	bh=0F5y4FcvZ4sW3vclqK88EapePq6+JuWGywmKUd1PKE4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WPBnlbOn8mC9fDoKlCYKchYtQR+yTGIuBgkXMqpEWVg6wiExnYiVbPC4qWyK1I8Ihx1fgdz/FrKUtnzvuKZo4io9ETiiLceEyEYxAYinB+wgnFtuliL+Ijnw9ZQu9pOua+FTxjOrMiEqNEtdeJPJUXzCgB8R3oE+w7fTLaQpNEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aZNGRjx1; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780622842; c=relaxed/simple;
+	bh=EkcKrqemSCY0yi6n9Ks+W0G6p9umKM5KsvIETQ42Lhw=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=KCGRJSyNQcv5RlUSfCvaUS7XycUxjru0byYEaf4jFWDogKE++fDJCHACR6mW/tw/SbJii+//JQWPjJKWGkh3s5mdAfQ/rUJmbaQ0+0pl0eoIBEMHCqgcmCSdfK1p1RiyYovIWFh20t30nQbOFvsrpAfhXAvVd55sxQrtH1G+YSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=common-net.org; spf=pass smtp.mailfrom=common-net.org; dkim=pass (1024-bit key) header.d=common-net.org header.i=@common-net.org header.b=GnujR/id; arc=none smtp.client-ip=139.28.148.254
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=common-net.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=common-net.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aZNGRjx1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4DB41F0089B;
-	Fri,  5 Jun 2026 01:24:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780622663;
-	bh=fewRWzJCNDCCA8/KFWnc5g54zB+46ySS+Do+r/WrM6c=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=aZNGRjx1KgWzLCrVCPXsmakHcN8mAS8sdjpRpsacMcK7WB5KroIY8rF3ienwya3wL
-	 Sr7BlH/b76XOW+OKekjkTQpUmuUZmXrRmB6trh3jaU3HMDIZKnXt6JE9JJ307vhVua
-	 4XShbdHmCZHNGFlLOR6ONT8bhb6rYorYJmKM3lSlZ1VWWvNOgCrui8MAx+jagwTrtu
-	 gsqkkp1iUqWiuduXK8NWO/edAL+zu7y7m6LS+6E2EkRh+knZUDZpmR15uzRjMmJFeo
-	 7lS7wVgo0AKpGs7l+o21P4VRR25EGhTJmDQGrC32ebfw3s87aVfddikfsUneEiNFfi
-	 w3NhvX6V9XbiA==
-From: Jakub Kicinski <kuba@kernel.org>
-To: devnull+george.moussalem.outlook.com@kernel.org
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	andrew@lunn.ch,
-	olteanv@gmail.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	george.moussalem@outlook.com
-Subject: Re: [PATCH next-next] net: dsa: qca8k: Add support for force mode for fixed link topology
-Date: Thu,  4 Jun 2026 18:24:20 -0700
-Message-ID: <20260605012421.3517532-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260603-qca8337-force-mode-v1-1-caf7670ffab3@outlook.com>
-References: <20260603-qca8337-force-mode-v1-1-caf7670ffab3@outlook.com>
+	dkim=pass (1024-bit key) header.d=common-net.org header.i=@common-net.org header.b="GnujR/id"
+Received: from lubuntu-18.04 (host-87-1-225-234.retail.telecomitalia.it [87.1.225.234])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mail.common-net.org (Postfix) with ESMTPSA id 07DBD6D20B88;
+	Fri,  5 Jun 2026 03:20:02 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=common-net.org;
+	s=mail; t=1780622402;
+	bh=EkcKrqemSCY0yi6n9Ks+W0G6p9umKM5KsvIETQ42Lhw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=GnujR/idGnSi5mGQRyJpB5v7OxJ9uhhF0OB6ssCQOxa36Ge0tb0ayPT/7fwiMX34b
+	 i3K0zZCAYN2LKE7DjNZJVtutm7xJhcpelM43O7i0CH8LX8W04A7BfS/RWJKLoeN3rV
+	 08T1XsUzlLspHeuxtLQmLo1zBHY+8swP6ca913qM=
+Date: Fri, 5 Jun 2026 03:20:01 +0200
+From: Andrea Mayer <andrea@common-net.org>
+To: Yuya Kusakabe <yuya.kusakabe@gmail.com>
+Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, David Ahern <dsahern@kernel.org>, Jakub Kicinski
+ <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+ <horms@kernel.org>, Justin Iurman <justin.iurman@gmail.com>, Shuah Khan
+ <shuah@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Shuah Khan
+ <skhan@linuxfoundation.org>, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-doc@vger.kernel.org, stefano.salsano@uniroma2.it, ahabdels@cisco.com,
+ Andrea Mayer <andrea.mayer@uniroma2.it>, andrea@common-net.org
+Subject: Re: [PATCH v2 3/7] seg6: add End.M.GTP6.E behavior
+Message-Id: <20260605032001.2f46e6a55f69896d29da69df@common-net.org>
+In-Reply-To: <20260505-seg6-mobile-v2-3-9e8022bdfdb6@gmail.com>
+References: <20260505-seg6-mobile-v2-0-9e8022bdfdb6@gmail.com>
+	<20260505-seg6-mobile-v2-3-9e8022bdfdb6@gmail.com>
+Organization: Common Net
+X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
----
-net: dsa: qca8k: Add support for force mode for fixed link topology
-    
-A fixed link topology is commonly used to connect this switch (on port
-0 or 6) to a SoC's MAC over SGMII. When inband negotiation is not used,
-the switch needs to be configured to operate in force mode. As such,
-enable support for force mode.
+On Tue, 05 May 2026 01:30:13 +0900
+Yuya Kusakabe <yuya.kusakabe@gmail.com> wrote:
 
-> diff --git a/drivers/net/dsa/qca/qca8k-8xxx.c b/drivers/net/dsa/qca/qca8k-8xxx.c
-> index a36b8b07030e3..3dbd18ab86380 100644
-> --- a/drivers/net/dsa/qca/qca8k-8xxx.c
-> +++ b/drivers/net/dsa/qca/qca8k-8xxx.c
-[ ... ]
-> @@ -1611,10 +1611,14 @@ static int qca8k_pcs_config(struct phylink_pcs *pcs, unsigned int neg_mode,
->  	if (priv->ports_config.sgmii_tx_clk_falling_edge)
->  		val |= QCA8K_PORT0_PAD_SGMII_TXCLK_FALLING_EDGE;
+Hi Yuya,
+
+I do not repeat below the points from my cover letter and patch 1-2 replies
+(drop reasons, OIF/VRF removal, C helper, coding style, etc.).
+
+> Add the End.M.GTP6.E behavior (RFC 9433 Section 6.5), the IPv6 dual
+> of End.M.GTP4.E.  An End.M.GTP6.E SID always sits in the penultimate
+> position of an SR Policy (RFC 9433 Section 6.5 Notes); when it
+> becomes the active SID (segments_left == 1) the kernel pops the
+> IPv6/SRH outer, recovers TEID and QFI from the 40-bit
+> Args.Mob.Session field encoded in the locator-relative slice of the
+> SID, and re-encapsulates the inner T-PDU in IPv6/UDP/GTP-U toward
+> the next segment held in SRH[0].
+> 
+> The flow info, traffic class and hop limit are propagated from the
+> inbound IPv6 outer to the new outer (RFC 6040).
+> 
+> When net.netfilter.nf_hooks_lwtunnel=1, the inner T-PDU traverses
+> NF_INET_PRE_ROUTING between the SRv6 strip and the GTP-U push,
+> mirroring End.DX4 / End.DX6.
+> 
+> Configuration:
+> 
+>   ip -6 route add 2001:db8:e::/64 \
+>       encap seg6local action End.M.GTP6.E src 2001:db8:2::1 \
+>       dev <dev>
+
+SEG6_LOCAL_MOBILE_SRC_ADDR (the "src" attribute) is copied verbatim into
+the outer IPv6 source address. In patch 2 (End.M.GTP4.E) the same
+attribute is used as a template from which bits are extracted to form
+the IPv4 source address, and may be entirely unused depending on
+v4_mask_len.
+This UAPI overload needs revision.
+
+>
+> Link: https://www.rfc-editor.org/rfc/rfc9433.html#section-6.5
+> Link: https://www.rfc-editor.org/rfc/rfc6040
+> Signed-off-by: Yuya Kusakabe <yuya.kusakabe@gmail.com>
+> ---
+>  include/uapi/linux/seg6_local.h                    |   2 +
+>  net/ipv6/seg6_local.c                              | 312 ++++++++++++++++
+>  tools/testing/selftests/net/Makefile               |   1 +
+>  .../selftests/net/srv6_end_m_gtp6_e_test.sh        | 402 +++++++++++++++++++++
+>  4 files changed, 717 insertions(+)
+> 
+> diff --git a/include/uapi/linux/seg6_local.h b/include/uapi/linux/seg6_local.h
+> index b42cb526bb81..8e46ede2980d 100644
+> --- a/include/uapi/linux/seg6_local.h
+> +++ b/include/uapi/linux/seg6_local.h
+> @@ -75,6 +75,8 @@ enum {
+>  	SEG6_LOCAL_ACTION_END_MAP	= 17,
+>  	/* SRv6 to IPv4/GTP-U encap (RFC 9433 Section 6.6) */
+>  	SEG6_LOCAL_ACTION_END_M_GTP4_E	= 18,
+> +	/* SRv6 to IPv6/GTP-U encap (RFC 9433 Section 6.5) */
+> +	SEG6_LOCAL_ACTION_END_M_GTP6_E	= 19,
 >  
-> +	if (neg_mode == PHYLINK_PCS_NEG_OUTBAND)
-> +		val |= QCA8K_PORT_PAD_SGMII_FORCE_MODE;
+>  	__SEG6_LOCAL_ACTION_MAX,
+>  };
+> diff --git a/net/ipv6/seg6_local.c b/net/ipv6/seg6_local.c
+> index 4051fe89e6d1..4e5d138c3657 100644
+> --- a/net/ipv6/seg6_local.c
+> +++ b/net/ipv6/seg6_local.c
+
+> + [snip]
+
+> +static int input_action_end_m_gtp6_e_finish(struct net *net,
+> +					    struct sock *sk,
+> +					    struct sk_buff *skb)
+> +{
+> +	enum skb_drop_reason reason = SKB_DROP_REASON_SEG6_MOBILE_NOMEM;
+> +	struct seg6_mobile_gtp6_e_cb cb = *SEG6_MOBILE_GTP6_E_CB(skb);
+> +	struct dst_entry *orig_dst = skb_dst(skb);
+> +	const struct seg6_mobile_info *minfo;
+> +	struct seg6_local_lwt *slwt;
+> +	struct ipv6hdr *new_ip6h;
+> +	struct udphdr *uh;
+> +
+> +	slwt = seg6_local_lwtunnel(orig_dst->lwtstate);
+> +	minfo = &slwt->mobile_info;
 > +
 
-[Severity: High]
-Could there be an issue with configuring port 6 on QCA8327 and QCA8337
-hardware?
+Same dst/lwtstate issue as patch 2.
 
-Earlier in qca8k_pcs_config(), reg is overridden for these models:
+> +	/* Reject GSO packets that would not fit the egress IPv6/UDP/GTP-U
+> +	 * path after our outer headers are added; the GSO segmenter cannot
+> +	 * adjust mss across SRv6 -> GTP-U conversion.  Skip the check
+> +	 * entirely when no MTU is known on the current dst.
+> +	 */
+> +	if (skb_is_gso(skb)) {
+> +		unsigned int ovhd = sizeof(*new_ip6h) + sizeof(*uh) +
+> +				    sizeof(struct gtp1_header_long) +
+> +				    sizeof(struct seg6_mobile_pdu_session_ext);
+> +		unsigned int mtu = dst_mtu(skb_dst(skb));
+> +
+> +		if (mtu && (mtu <= ovhd ||
+> +			    !skb_gso_validate_network_len(skb, mtu - ovhd))) {
+> +			reason = SKB_DROP_REASON_SEG6_MOBILE_MTU_EXCEEDED;
+> +			goto drop;
+> +		}
+> +	}
+> +
+> +	/* Reserve worst-case headroom for the entire outer chain we are about
+> +	 * to push: IPv6 + UDP + GTP-U long header + PDU Session extension.
+> +	 * Subsequent skb_cow_head() calls inside seg6_mobile_push_gtpu() then
+> +	 * become no-ops.
+> +	 */
+> +	if (skb_cow_head(skb,
+> +			 sizeof(*new_ip6h) + sizeof(*uh) +
+> +			 sizeof(struct gtp1_header_long) +
+> +			 sizeof(struct seg6_mobile_pdu_session_ext)))
 
-	if (priv->switch_id == QCA8K_ID_QCA8327 ||
-	    priv->switch_id == QCA8K_ID_QCA8337)
-		reg = QCA8K_REG_PORT0_PAD_CTRL;
+Same ovhd scoping point as patch 2.
 
-Since the SGMII force mode configuration uses this same reg variable,
-won't this cause the FORCE_MODE bit for port 6 to be incorrectly written
-to port 0's PAD control register on these specific switches?
+> +		goto drop;
+> +
 
->  	if (val)
->  		ret = qca8k_rmw(priv, reg,
->  				QCA8K_PORT0_PAD_SGMII_RXCLK_FALLING_EDGE |
-> -				QCA8K_PORT0_PAD_SGMII_TXCLK_FALLING_EDGE,
-> +				QCA8K_PORT0_PAD_SGMII_TXCLK_FALLING_EDGE |
-> +				QCA8K_PORT_PAD_SGMII_FORCE_MODE,
->  				val);
+Same missing iptunnel_handle_offloads() as patch 2.
 
-[Severity: High]
-Is FORCE_MODE properly cleared if it was previously set by a bootloader,
-but we don't use outband negotiation and no clock falling edge properties
-are configured?
+> +	if (seg6_mobile_push_gtpu(skb, cb.teid, cb.qfi, cb.pdu_type,
+> +				  cb.pdu_type_set))
+> +		goto drop;
+> +
+> +	uh = skb_push(skb, sizeof(*uh));
+> +	skb_reset_transport_header(skb);
+> +	uh->source = htons(GTP1U_PORT);
+> +	uh->dest = htons(GTP1U_PORT);
+> +	uh->len = htons(skb->len);
+> +
 
-If neg_mode != PHYLINK_PCS_NEG_OUTBAND and the clock phase bits are not set,
-val will be 0. This causes the if (val) check to fail, skipping the
-qca8k_rmw() call entirely, leaving FORCE_MODE unchanged in hardware.
+Same fixed source port question as patch 2.
 
-However, if clock phases are configured in the device tree, val will be
-non-zero, and qca8k_rmw() will clear FORCE_MODE. Does this create a
-scenario where clearing this mode unpredictably depends on unrelated clock
-configurations?
+> +	new_ip6h = skb_push(skb, sizeof(*new_ip6h));
+> +	skb_reset_network_header(skb);
+> +	memset(new_ip6h, 0, sizeof(*new_ip6h));
+> +	ip6_flow_hdr(new_ip6h, cb.tclass, cb.flowlabel);
+> +	new_ip6h->payload_len = htons(skb->len - sizeof(*new_ip6h));
+> +	new_ip6h->nexthdr = IPPROTO_UDP;
+> +	new_ip6h->hop_limit = cb.hop_limit;
+> +	new_ip6h->saddr = minfo->src_addr;
+> +	new_ip6h->daddr = cb.next_sid;
+> +
+> +	/* RFC 8200 requires UDP/IPv6 checksums.  Initialise the
+> +	 * pseudo-header sum and let the stack/NIC complete it via
+> +	 * CHECKSUM_PARTIAL so we do not pay a per-packet linear sum and
+> +	 * we cooperate with offload.
+> +	 */
+> +	skb->ip_summed = CHECKSUM_PARTIAL;
+> +	skb->csum_start = (unsigned char *)uh - skb->head;
+> +	skb->csum_offset = offsetof(struct udphdr, check);
+> +	uh->check = ~csum_ipv6_magic(&new_ip6h->saddr, &new_ip6h->daddr,
+> +				     skb->len - sizeof(*new_ip6h),
+> +				     IPPROTO_UDP, 0);
+> +
 
->  
->  	return 0;
--- 
-pw-bot: cr
+udp6_set_csum() already handles the CHECKSUM_PARTIAL + pseudo-header seed
+setup and also covers the GSO case. Using it would avoid open-coding this
+sequence.
+
+> +	skb->protocol = htons(ETH_P_IPV6);
+> +	nf_reset_ct(skb);
+> +	skb_dst_drop(skb);
+> +
+> +	seg6_lookup_any_nexthop(skb, &cb.next_sid, 0, false, slwt->oif);
+> +	return dst_input(skb);
+> +
+> +drop:
+> +	kfree_skb_reason(skb, reason);
+> +	return -EINVAL;
+> +}
+
+seg6_lookup_any_nexthop() already calls skb_dst_drop() internally. The
+explicit call above is redundant.
+
+> + [snip]
+
+> +static int input_action_end_m_gtp6_e(struct sk_buff *skb,
+> +				     struct seg6_local_lwt *slwt)
+> +{
+> +	enum skb_drop_reason reason = SKB_DROP_REASON_SEG6_MOBILE_BAD_SID;
+> +	const struct seg6_mobile_info *minfo = &slwt->mobile_info;
+> +	struct seg6_mobile_gtp6_e_cb *cb;
+> +	struct in6_addr next_sid;
+> +	struct ipv6_sr_hdr *srh;
+> +	u8 hop_limit, tclass, qfi;
+> +	unsigned int outer_len;
+> +	struct ipv6hdr *ip6h;
+> +	int inner_nfproto;
+> +	__be32 flowlabel;
+> +	__be16 frag_off;
+> +	u64 args_mob;
+> +	u32 teid;
+> +	int off;
+> +	u8 nh;
+> +
+
+Same reverse Christmas tree issue as patch 2.
+
+> + [snip]
+
+> +	/* RFC 6040 outer-to-outer propagation: copy DSCP+ECN (tclass) and
+> +	 * the flow label from the SRv6 outer to the new IPv6 outer.  Use
+> +	 * ip6_flowlabel() (not ip6_flowinfo()) so the tclass byte is
+> +	 * supplied exactly once via the @tclass argument of ip6_flow_hdr().
+> +	 */
+> +	flowlabel = ip6_flowlabel(ip6h);
+> +	tclass = ipv6_get_dsfield(ip6h);
+> +	hop_limit = ip6h->hop_limit;
+> +
+
+Same RFC 6040 question as patch 2 (here also flow label).
+
+> +	/* RFC 9433 Section 6.5 upper-layer S02 mandates "Pop the IPv6
+> +	 * header and all its extension headers".  ipv6_skip_exthdr()
+> +	 * walks every extension header (HBH/Routing/Dest-Opts/Fragment)
+> +	 * so HBH-before-SRH and DOpts-after-SRH are handled too.  The
+> +	 * terminal next-header value also selects NFPROTO_IPV4 /
+> +	 * NFPROTO_IPV6 for the NF_INET_PRE_ROUTING hook below.
+> +	 */
+> +	nh = ip6h->nexthdr;
+> +	off = ipv6_skip_exthdr(skb, sizeof(*ip6h), &nh, &frag_off);
+> +	if (off < 0) {
+> +		reason = SKB_DROP_REASON_SEG6_MOBILE_BAD_INNER;
+> +		goto drop;
+> +	}
+> +	outer_len = off;
+> +
+
+Same BAD_INNER misuse as patch 2.
+
+Same frag_off check missing after ipv6_skip_exthdr() as patch 2.
+
+> + [snip]
+
+> +	/* For inner IP traffic that may traverse NF_INET_PRE_ROUTING below,
+> +	 * pull the full inner IP header into the linear area so a netfilter
+> +	 * hook reading skb_transport_header() does not access stale data.
+> +	 * Non-IP inner is forwarded as-is via the GTP-U T-PDU payload.
+> +	 */
+> +	if (!pskb_may_pull(skb, outer_len + ((inner_nfproto == NFPROTO_IPV4) ?
+> +					     sizeof(struct iphdr) :
+> +					     (inner_nfproto == NFPROTO_IPV6) ?
+> +					     sizeof(struct ipv6hdr) : 0))) {
+> +		reason = SKB_DROP_REASON_SEG6_MOBILE_BAD_INNER;
+> +		goto drop;
+> +	}
+> +
+
+Same repeated ternary as patch 2.
+
+> + [snip]
+
+>  static struct seg6_action_desc seg6_action_table[] = {
+>  	{
+> @@ -2153,6 +2431,17 @@ static struct seg6_action_desc seg6_action_table[] = {
+>  			.build_state = seg6_mobile_v4_validate,
+>  		},
+>  	},
+> +	{
+> +		.action		= SEG6_LOCAL_ACTION_END_M_GTP6_E,
+> +		.attrs		= SEG6_F_ATTR(SEG6_LOCAL_MOBILE_SRC_ADDR),
+> +		.optattrs	= SEG6_F_LOCAL_COUNTERS |
+> +				  SEG6_F_ATTR(SEG6_LOCAL_MOBILE_PDU_TYPE) |
+> +				  SEG6_F_ATTR(SEG6_LOCAL_OIF),
+> +		.input		= input_action_end_m_gtp6_e,
+> +		.slwt_ops	= {
+> +			.build_state = seg6_mobile_gtp6_e_validate,
+> +		},
+> +	},
+
+> + [snip]
+
+> +/* End.M.GTP6.E SID layout (RFC 9433 Section 6.5):
+> + *
+> + *   | locator (route prefix)  | Args.Mob.Session (40) | pad |
+> + *
+> + * The locator length is the route's IPv6 destination prefix length.
+> + * Reject route additions whose prefix leaves no room for the 40-bit
+> + * Args.Mob.Session field at setup time so the operator gets a clear
+> + * error from `ip route add` instead of silent per-packet drops.
+> + */
+> +static int seg6_mobile_gtp6_e_validate(struct seg6_local_lwt *slwt,
+> +				       const void *cfg,
+> +				       struct netlink_ext_ack *extack)
+> +{
+> +	const struct fib6_config *fib6_cfg = cfg;
+> +
+> +	if ((unsigned int)fib6_cfg->fc_dst_len + SEG6_MOBILE_ARGS_MOB_LEN > 128) {
+
+Nit: fc_dst_len is int in struct fib6_config (IPv6 prefix length, range
+0..128); the (unsigned int) cast is not needed.
+
+> + [snip]
+
+Thanks,
+
+Ciao,
+Andrea
+
+P.S. I am temporarily writing from another address due to a mail
+delivery issue at my @uniroma2.it address. Please always Cc my default
+andrea.mayer@uniroma2.it address on replies.
