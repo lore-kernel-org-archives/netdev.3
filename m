@@ -1,48 +1,48 @@
-Received: from mx0a-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
+Received: from mx0b-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62D5F3672A2;
-	Fri,  5 Jun 2026 06:33:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07ACF29A32D;
+	Fri,  5 Jun 2026 06:33:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780641224; cv=none; b=MeJngSjMjC4tSZlPjlMcCHYlbNXMcBr9Bv2Z7WijQ82N1q7JA8ipvCq5xhJjvE80/Bi3IYJghx9dZNia7NCxiwwQCtiXIldmXLYCtxwUU3yybTSg00+HzQLllMJfmfEjGrBP+61rT9dJIbejamXBtO/ONMiiAlNxoGvELOqQRWQ=
+	t=1780641241; cv=none; b=XYHCpl/Zn9ixp6oDcRgOLwUYi+phxudlajRSc5zbEbdJc+qd6002V8UxlO3r5UVkVofEtWuk+Bj6jjp1vzonNQhzfxappFDY3vRG6i72OA9XVbfy0LTUjfmLwN3MXb1wmviaej+xj0OwDBaDiJd68oFxO107VYnHMHm4pT9mjiw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780641224; c=relaxed/simple;
-	bh=7LCYA0/0AqZisN1ZDfRo39/63Ht+GEgoDEv0EXzrhiY=;
+	s=arc-20240116; t=1780641241; c=relaxed/simple;
+	bh=iJl76HCw92+D/pjPpN+GFGcfnIAsqVfvDIwJMrO+WHE=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EIlzYLkpRdSnqzCUwSF/jJwZJcRz8hYgyYAzukXypR2hcZCEXXEPDqRdkueGhkPTHuD6FhcWhj2TKGgXl9trJdilJf8LQKUoo8yA+VuF1n73JuQJYJuMSkqBsNqfC2mrfQebD4I6VF6x0SDzWKlH2hVJcxRjESr2bj9EMawHnqY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=dYPjlH3y; arc=none smtp.client-ip=67.231.148.174
+	 MIME-Version:Content-Type; b=c0K8hqW2smWekTX1GkL3LwK3nbtCeC7ro5pY1IICeQgDG9Gsz+XBA9LzZ27GQYi9WR6p0k8Ag4H2ZFM0uAv1O4SRwQOvcUBg+If4tY5xslJbiy4as5bzWIkZr7dvcVoqPZdJJbQO0amxOHLAGXNXm66YcU4b2RbiCfXqZ8MSEt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=hC4XvPoK; arc=none smtp.client-ip=67.231.148.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="dYPjlH3y"
-Received: from pps.filterd (m0431384.ppops.net [127.0.0.1])
-	by mx0a-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6553Y2x3302329;
-	Thu, 4 Jun 2026 23:33:31 -0700
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="hC4XvPoK"
+Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
+	by mx0a-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 654LPXvg3891046;
+	Thu, 4 Jun 2026 23:33:41 -0700
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pfpt0220; bh=4
-	fQ8GdI+wOyDUWFVMy74A7gXeh6NNt3X3lWBcnXJRSY=; b=dYPjlH3yABC/rspwN
-	3hkTL0YReN3MbjNfrRvoHAFCQxh0U7FT6+YZLQ5Tdi5INk2zCbafiIXuAcQHvktw
-	RXSSFBmDJeA4T9GzirrN6+dPPaWuYZY840F+dl0EN7rDTYLu1USsXvsq6f6xkxSI
-	AqGKPgVvnZfefBYmwTbnmEci0igYkUlD9wHBuB+wIyhJKYJQFxtYzDMbLkrJm5Oo
-	0aIZzOsScjbqV55VvCaj399HLuEyzZeupCIwzwiAfu7JQ23fHYzzVsjT0DtEoTIe
-	nNZBmLbF4ymIWfhEMffqZV3vUiICIoxdNdvHHzbfbz21viv0UZcRyO1RrnB58q1a
-	KvqNQ==
+	:message-id:mime-version:references:subject:to; s=pfpt0220; bh=O
+	eBP448QH3HrULgaPww9KXkoidleymWFHcrBeo0IwPA=; b=hC4XvPoKbE4c1/IHa
+	pV02lrZxoBDPF5zA0rDD5zEkrZq6jXVuWm2iknV4eCVT36eDGmf0FrehXXTmJT7o
+	Q+AUyMzT5AnZlhsEyuMz0yCgHqNqGWEJBCf2L6oW/2mcKrLyg0ybBCh5vBVjXdyW
+	Q+XQGf6VoQ3q+5nFVF3+KavRrrTwgQiYohqJBG9UcLlF/27B4KdUTpyS1Xmk8Jn5
+	W53l/vkGhghB6fPMOHuNHBMhGrPx1UY6XSLHqwQP/n3UCMvhxU64LtKIhsPAELuu
+	mPryRc80VQNs+kMxK8h6/ybyS8kh6ltPGXKjTxV2NSockuTyWHTd1+GsR3H5cBKH
+	6vh7w==
 Received: from dc5-exch05.marvell.com ([199.233.59.128])
-	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4ekcj0agnj-1
+	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4ekh8x9b6w-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 04 Jun 2026 23:33:31 -0700 (PDT)
+	Thu, 04 Jun 2026 23:33:40 -0700 (PDT)
 Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
  DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Thu, 4 Jun 2026 23:33:30 -0700
+ 15.2.1544.25; Thu, 4 Jun 2026 23:33:39 -0700
 Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
  (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Thu, 4 Jun 2026 23:33:30 -0700
+ Transport; Thu, 4 Jun 2026 23:33:39 -0700
 Received: from rkannoth-OptiPlex-7090.. (unknown [10.28.36.165])
-	by maili.marvell.com (Postfix) with ESMTP id AD8953F7074;
-	Thu,  4 Jun 2026 23:33:26 -0700 (PDT)
+	by maili.marvell.com (Postfix) with ESMTP id AAF5D3F707A;
+	Thu,  4 Jun 2026 23:33:35 -0700 (PDT)
 From: Ratheesh Kannoth <rkannoth@marvell.com>
 To: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>
 CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <donald.hunter@gmail.com>,
@@ -50,9 +50,9 @@ CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <donald.hunter@gmail.com>,
         <kuba@kernel.org>, <pabeni@redhat.com>, <sgoutham@marvell.com>,
         "Ratheesh
  Kannoth" <rkannoth@marvell.com>
-Subject: [PATCH v19 net-next 7/9] octeontx2-af: npc: Support for custom KPU profile from filesystem
-Date: Fri, 5 Jun 2026 12:02:43 +0530
-Message-ID: <20260605063245.3553861-8-rkannoth@marvell.com>
+Subject: [PATCH v19 net-next 9/9] octeontx2-af: npc: cn20k: Allocate npc_priv and dstats dynamically.
+Date: Fri, 5 Jun 2026 12:02:45 +0530
+Message-ID: <20260605063245.3553861-10-rkannoth@marvell.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260605063245.3553861-1-rkannoth@marvell.com>
 References: <20260605063245.3553861-1-rkannoth@marvell.com>
@@ -64,955 +64,1403 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Authority-Analysis: v=2.4 cv=G78s1dk5 c=1 sm=1 tr=0 ts=6a226dbb cx=c_pps
+X-Proofpoint-ORIG-GUID: E7_LjEQVyzsWRhYVL0F0jDu4fOF8GGGp
+X-Authority-Analysis: v=2.4 cv=DqNmPm/+ c=1 sm=1 tr=0 ts=6a226dc4 cx=c_pps
  a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
  a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
- a=TtqV-g6YmW1Jfm2GSLaY:22 a=M5GUcnROAAAA:8 a=RqBH2XuCMo2EIviFO1EA:9
- a=OBjm3rFKGHvpk9ecZwUJ:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjA1MDA2MSBTYWx0ZWRfX6rOF40U5iDQ7
- wX2D84OYWHJ8fFEUCTYmHxzB5RDWTFo3xm2W4cktT8Pd4/c+vh2D3k7BU1QbXbhefY42BJaVIPB
- bwrH0H5nsCm9oDNW6Md8PCHOlJOoqxWAg1k6njqOlpHAAz6FOfv6ZoCOSUdQ9TnEXW8ytUc2QwW
- Kyl10Mo4RAUGqGED4RcFsZj5j/HjhE273JPI8yzv61Gr09QUk/gzgaPj6WnLKgg39vQIcS+yZ6c
- Yvp3XA+mPlyYThS/sQUiPgEv9hY/TycIr3YBi0O2icYoEk55H0qz+Pv0BrhKoM7bt6IOlwOUJJ+
- rH1MQDepgmDkBy6DOQMtVYN8SEsUMIwsjaHRqEty/0Nyrq7258dPdcmiUP/kypIH3XxoTbopItm
- BSpLOYrxSeoLWDvkdqPE4MPlH/pFGT5a1v5/JaFxK9Bla8v/8Tpq5Qkg2g4TCcFeBHKn2TBIi00
- IXb8n402YLXJRf50cyQ==
-X-Proofpoint-GUID: BsV8YaopJ15eDyU2ATdRkZI_Tha15J3P
-X-Proofpoint-ORIG-GUID: BsV8YaopJ15eDyU2ATdRkZI_Tha15J3P
+ a=EAYMVhzMl8SCOHhVQcBL:22 a=M5GUcnROAAAA:8 a=S7HcfYHk9quoGn6NhDEA:9
+ a=jzFzRQuv5CvcdMS1:21 a=OBjm3rFKGHvpk9ecZwUJ:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjA1MDA2MSBTYWx0ZWRfXwxfwbh6Tpmb3
+ qLbfHPn83O94L6nw0uefl+iJJe7TuiIplOqnROxoblh46xo6l33Io0tEMAPwLEH1aCU9eWHaLlI
+ /8dnIZrrGGJ15AqME8HGt4GOhGmNcj32RqVJXZjSxRgE15OyEr1z1SHXUrE5yiq3Nb41YJYzXF4
+ d8rxY4tnXc6JrULSFsSshrAfUn2HsfzwTCuaZmJBbyruJUjmcYWwgGt3twa90xqY8uxBalNJfWW
+ brWciI7Hi+R2rpDH3y0x0wUtiFaa9nfeM8vWq9UJf1wRmuXD3uGEW425q1K1VbBMbqsj33e+ssj
+ UiB2u1Dy6v8atngnzR4o/vMvnlNEhP1fdJb++WhL1iDwZeigOM8ywSwGPs1vI7b1b0sjndjP/Yw
+ Ddz4xJI1IBJELFEEG9KOrzEQScVAI/FfEu8J+8u7y+BQ12/P484/0X+cLZot3xcozDJXpIYpPBX
+ MGO2blb64+pl4kBtbJA==
+X-Proofpoint-GUID: E7_LjEQVyzsWRhYVL0F0jDu4fOF8GGGp
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
  definitions=2026-06-05_01,2026-05-28_03,2025-10-01_01
 
-Flashing updated firmware on deployed devices is cumbersome. Provide a
-mechanism to load a custom KPU (Key Parse Unit) profile directly from
-the filesystem at module load time.
+Replace the file-scope static npc_priv with a kcalloc'd struct filled
+from hardware bank/subbank geometry at init (num_banks is no longer a
+const compile-time constant; drop init_done and use a non-NULL
+npc_priv pointer for liveness). Thread npc_priv_get() / pointer access
+through the CN20K NPC code paths, extend teardown to kfree the root
+struct on failure and in npc_cn20k_deinit, and adjust MCAM section
+setup to use the discovered subbank count.
 
-When the rvu_af module is loaded with the kpu_profile parameter, the
-specified profile is read from /lib/firmware/kpu and programmed into
-the KPU registers. Add npc_kpu_profile_cam2 for the extended cam format
-used by filesystem-loaded profiles and support ptype/ptype_mask in
-npc_config_kpucam when profile->from_fs is set.
-
-Usage:
-  1. Copy the KPU profile file to /lib/firmware/kpu.
-  2. Build OCTEONTX2_AF as a module.
-  3. Load: insmod rvu_af.ko kpu_profile=<profile_name>
+Allocate MCAM debugfs dstats via devm_kzalloc instead of a static matrix,
+and use the allocated backing store consistently when computing deltas
+(including the counter rollover compare).
 
 Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
 ---
- .../ethernet/marvell/octeontx2/af/cn20k/npc.c |  57 ++-
- .../net/ethernet/marvell/octeontx2/af/npc.h   |  17 +
- .../net/ethernet/marvell/octeontx2/af/rvu.h   |  12 +-
- .../ethernet/marvell/octeontx2/af/rvu_npc.c   | 466 ++++++++++++++----
- .../ethernet/marvell/octeontx2/af/rvu_npc.h   |  17 +
- .../ethernet/marvell/octeontx2/af/rvu_reg.h   |   1 +
- 6 files changed, 459 insertions(+), 111 deletions(-)
+ .../marvell/octeontx2/af/cn20k/debugfs.c      |  17 +-
+ .../ethernet/marvell/octeontx2/af/cn20k/npc.c | 442 +++++++++---------
+ .../ethernet/marvell/octeontx2/af/cn20k/npc.h |   4 +-
+ 3 files changed, 240 insertions(+), 223 deletions(-)
 
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/cn20k/debugfs.c b/drivers/net/ethernet/marvell/octeontx2/af/cn20k/debugfs.c
+index 730ef97a57e6..b6fda42e44c7 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/cn20k/debugfs.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/cn20k/debugfs.c
+@@ -176,7 +176,8 @@ static DEFINE_MUTEX(stats_lock);
+  * hard limit on all silicon variants, preventing any possibility of
+  * out-of-bounds access.
+  */
+-static u64 dstats[MAX_NUM_BANKS][MAX_SUBBANK_DEPTH * MAX_NUM_SUB_BANKS] = {};
++static u64 (*dstats)[MAX_NUM_BANKS][MAX_SUBBANK_DEPTH * MAX_NUM_SUB_BANKS];
++
+ static int npc_mcam_dstats_show(struct seq_file *s, void *unused)
+ {
+ 	struct npc_priv_t *npc_priv;
+@@ -212,24 +213,24 @@ static int npc_mcam_dstats_show(struct seq_file *s, void *unused)
+ 					   NPC_AF_CN20K_MCAMEX_BANKX_STAT_EXT(idx, bank));
+ 			if (!stats)
+ 				continue;
+-			if (stats == dstats[bank][idx])
++			if (stats == dstats[0][bank][idx])
+ 				continue;
+ 
+-			if (stats < dstats[bank][idx])
+-				dstats[bank][idx] = 0;
++			if (stats < dstats[0][bank][idx])
++				dstats[0][bank][idx] = 0;
+ 
+ 			pf = 0xFFFF;
+ 			map = xa_load(&npc_priv->xa_idx2pf_map, mcam_idx);
+ 			if (map)
+ 				pf = xa_to_value(map);
+ 
+-			delta = stats - dstats[bank][idx];
++			delta = stats - dstats[0][bank][idx];
+ 
+ 			snprintf(buff, sizeof(buff), "%u\t%#04x\t%llu\n",
+ 				 mcam_idx, pf, delta);
+ 			seq_puts(s, buff);
+ 
+-			dstats[bank][idx] = stats;
++			dstats[0][bank][idx] = stats;
+ 		}
+ 	}
+ 
+@@ -397,6 +398,10 @@ int npc_cn20k_debugfs_init(struct rvu *rvu)
+ 	debugfs_create_file("vidx2idx", 0444, rvu->rvu_dbg.npc,
+ 			    npc_priv, &npc_vidx2idx_map_fops);
+ 
++	dstats = devm_kzalloc(rvu->dev, sizeof(*dstats), GFP_KERNEL);
++	if (!dstats)
++		return -ENOMEM;
++
+ 	debugfs_create_file("dstats", 0444, rvu->rvu_dbg.npc, rvu,
+ 			    &npc_mcam_dstats_fops);
+ 
 diff --git a/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.c b/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.c
-index 2705753c1878..32b53b5bc57a 100644
+index d76aad867934..26618c652483 100644
 --- a/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.c
 +++ b/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.c
-@@ -521,13 +521,17 @@ npc_program_single_kpm_profile(struct rvu *rvu, int blkaddr,
- 			       int kpm, int start_entry,
- 			       const struct npc_kpu_profile *profile)
+@@ -16,9 +16,7 @@
+ #include "cn20k/reg.h"
+ #include "rvu_npc_fs.h"
+ 
+-static struct npc_priv_t npc_priv = {
+-	.num_banks = MAX_NUM_BANKS,
+-};
++static struct npc_priv_t *npc_priv;
+ 
+ static const char *npc_kw_name[NPC_MCAM_KEY_MAX] = {
+ 	[NPC_MCAM_KEY_DYN] = "DYNAMIC",
+@@ -226,7 +224,7 @@ static u16 npc_idx2vidx(u16 idx)
+ 	vidx = idx;
+ 	index = idx;
+ 
+-	map = xa_load(&npc_priv.xa_idx2vidx_map, index);
++	map = xa_load(&npc_priv->xa_idx2vidx_map, index);
+ 	if (!map)
+ 		goto done;
+ 
+@@ -242,7 +240,7 @@ static u16 npc_idx2vidx(u16 idx)
+ 
+ static bool npc_is_vidx(u16 vidx)
  {
-+	int num_cam_entries, num_action_entries;
- 	int entry, num_entries, max_entries;
- 	u64 idx;
- 
--	if (profile->cam_entries != profile->action_entries) {
-+	num_cam_entries = npc_get_num_kpu_cam_entries(rvu, profile);
-+	num_action_entries = npc_get_num_kpu_action_entries(rvu, profile);
-+
-+	if (num_cam_entries != num_action_entries) {
- 		dev_err(rvu->dev,
- 			"kpm%d: CAM and action entries [%d != %d] not equal\n",
--			kpm, profile->cam_entries, profile->action_entries);
-+			kpm, num_cam_entries, num_action_entries);
- 
- 		WARN(1, "Fatal error\n");
- 		return;
-@@ -536,16 +540,18 @@ npc_program_single_kpm_profile(struct rvu *rvu, int blkaddr,
- 	max_entries = rvu->hw->npc_kpu_entries / 2;
- 	entry = start_entry;
- 	/* Program CAM match entries for previous kpm extracted data */
--	num_entries = min_t(int, profile->cam_entries, max_entries);
-+	num_entries = min_t(int, num_cam_entries, max_entries);
- 	for (idx = 0; entry < num_entries + start_entry; entry++, idx++)
--		npc_config_kpmcam(rvu, blkaddr, &profile->cam[idx],
-+		npc_config_kpmcam(rvu, blkaddr,
-+				  npc_get_kpu_cam_nth_entry(rvu, profile, idx),
- 				  kpm, entry);
- 
- 	entry = start_entry;
- 	/* Program this kpm's actions */
--	num_entries = min_t(int, profile->action_entries, max_entries);
-+	num_entries = min_t(int, num_action_entries, max_entries);
- 	for (idx = 0; entry < num_entries + start_entry; entry++, idx++)
--		npc_config_kpmaction(rvu, blkaddr, &profile->action[idx],
-+		npc_config_kpmaction(rvu, blkaddr,
-+				     npc_get_kpu_action_nth_entry(rvu, profile, idx),
- 				     kpm, entry, false);
+-	return vidx >= npc_priv.bank_depth * 2;
++	return vidx >= npc_priv->bank_depth * 2;
  }
  
-@@ -611,20 +617,23 @@ npc_enable_kpm_entry(struct rvu *rvu, int blkaddr, int kpm, int num_entries)
- static void npc_program_kpm_profile(struct rvu *rvu, int blkaddr, int num_kpms)
+ static u16 npc_vidx2idx(u16 vidx)
+@@ -256,7 +254,7 @@ static u16 npc_vidx2idx(u16 vidx)
+ 	idx = vidx;
+ 	index = vidx;
+ 
+-	map = xa_load(&npc_priv.xa_vidx2idx_map, index);
++	map = xa_load(&npc_priv->xa_vidx2idx_map, index);
+ 	if (!map)
+ 		goto done;
+ 
+@@ -272,7 +270,7 @@ static u16 npc_vidx2idx(u16 vidx)
+ 
+ u16 npc_cn20k_vidx2idx(u16 idx)
  {
- 	const struct npc_kpu_profile *profile1, *profile2;
-+	int pfl1_num_cam_entries, pfl2_num_cam_entries;
- 	int idx, total_cam_entries;
+-	if (!npc_priv.init_done)
++	if (!npc_priv)
+ 		return idx;
  
- 	for (idx = 0; idx < num_kpms; idx++) {
- 		profile1 = &rvu->kpu.kpu[idx];
-+		pfl1_num_cam_entries = npc_get_num_kpu_cam_entries(rvu, profile1);
- 		npc_program_single_kpm_profile(rvu, blkaddr, idx, 0, profile1);
- 		profile2 = &rvu->kpu.kpu[idx + KPU_OFFSET];
-+		pfl2_num_cam_entries = npc_get_num_kpu_cam_entries(rvu, profile2);
-+
- 		npc_program_single_kpm_profile(rvu, blkaddr, idx,
--					       profile1->cam_entries,
-+					       pfl1_num_cam_entries,
- 					       profile2);
--		total_cam_entries = profile1->cam_entries +
--			profile2->cam_entries;
-+		total_cam_entries = pfl1_num_cam_entries + pfl2_num_cam_entries;
- 		npc_enable_kpm_entry(rvu, blkaddr, idx, total_cam_entries);
- 		rvu_write64(rvu, blkaddr, NPC_AF_KPMX_PASS2_OFFSET(idx),
--			    profile1->cam_entries);
-+			    pfl1_num_cam_entries);
- 		/* Enable the KPUs associated with this KPM */
- 		rvu_write64(rvu, blkaddr, NPC_AF_KPUX_CFG(idx), 0x01);
- 		rvu_write64(rvu, blkaddr, NPC_AF_KPUX_CFG(idx + KPU_OFFSET),
-@@ -634,6 +643,7 @@ static void npc_program_kpm_profile(struct rvu *rvu, int blkaddr, int num_kpms)
+ 	if (!npc_is_vidx(idx))
+@@ -283,7 +281,7 @@ u16 npc_cn20k_vidx2idx(u16 idx)
  
- void npc_cn20k_parser_profile_init(struct rvu *rvu, int blkaddr)
+ u16 npc_cn20k_idx2vidx(u16 idx)
  {
-+	struct npc_kpu_profile_action *act;
- 	struct rvu_hwinfo *hw = rvu->hw;
- 	int num_pkinds, idx;
+-	if (!npc_priv.init_done)
++	if (!npc_priv)
+ 		return idx;
  
-@@ -665,9 +675,15 @@ void npc_cn20k_parser_profile_init(struct rvu *rvu, int blkaddr)
- 	num_pkinds = rvu->kpu.pkinds;
- 	num_pkinds = min_t(int, hw->npc_pkinds, num_pkinds);
+ 	if (npc_is_vidx(idx))
+@@ -306,7 +304,7 @@ static int npc_vidx_maps_del_entry(struct rvu *rvu, u16 vidx, u16 *old_midx)
  
--	for (idx = 0; idx < num_pkinds; idx++)
--		npc_config_kpmaction(rvu, blkaddr, &rvu->kpu.ikpu[idx],
-+	/* Cn20k does not support Custom profile from filesystem */
-+	for (idx = 0; idx < num_pkinds; idx++) {
-+		act = npc_get_ikpu_nth_entry(rvu, idx);
-+		if (!act)
-+			continue;
-+
-+		npc_config_kpmaction(rvu, blkaddr, act,
- 				     0, idx, true);
-+	}
+ 	mcam_idx = npc_vidx2idx(vidx);
  
- 	/* Program KPM CAM and Action profiles */
- 	npc_program_kpm_profile(rvu, blkaddr, hw->npc_kpms);
-@@ -679,7 +695,7 @@ struct npc_priv_t *npc_priv_get(void)
+-	map = xa_erase(&npc_priv.xa_vidx2idx_map, vidx);
++	map = xa_erase(&npc_priv->xa_vidx2idx_map, vidx);
+ 	if (!map) {
+ 		dev_err(rvu->dev,
+ 			"%s: vidx(%u) does not map to proper mcam idx\n",
+@@ -314,7 +312,7 @@ static int npc_vidx_maps_del_entry(struct rvu *rvu, u16 vidx, u16 *old_midx)
+ 		return -ESRCH;
+ 	}
+ 
+-	map = xa_erase(&npc_priv.xa_idx2vidx_map, mcam_idx);
++	map = xa_erase(&npc_priv->xa_idx2vidx_map, mcam_idx);
+ 	if (!map) {
+ 		dev_err(rvu->dev,
+ 			"%s: vidx(%u) is not valid\n",
+@@ -341,7 +339,7 @@ static int npc_vidx_maps_modify(struct rvu *rvu, u16 vidx, u16 new_midx)
+ 		return -ESRCH;
+ 	}
+ 
+-	map = xa_erase(&npc_priv.xa_vidx2idx_map, vidx);
++	map = xa_erase(&npc_priv->xa_vidx2idx_map, vidx);
+ 	if (!map) {
+ 		dev_err(rvu->dev,
+ 			"%s: vidx(%u) could not be deleted from vidx2idx map\n",
+@@ -351,7 +349,7 @@ static int npc_vidx_maps_modify(struct rvu *rvu, u16 vidx, u16 new_midx)
+ 
+ 	old_midx = xa_to_value(map);
+ 
+-	rc = xa_insert(&npc_priv.xa_vidx2idx_map, vidx,
++	rc = xa_insert(&npc_priv->xa_vidx2idx_map, vidx,
+ 		       xa_mk_value(new_midx), GFP_KERNEL);
+ 	if (rc) {
+ 		dev_err(rvu->dev,
+@@ -360,7 +358,7 @@ static int npc_vidx_maps_modify(struct rvu *rvu, u16 vidx, u16 new_midx)
+ 		goto fail1;
+ 	}
+ 
+-	map = xa_erase(&npc_priv.xa_idx2vidx_map, old_midx);
++	map = xa_erase(&npc_priv->xa_idx2vidx_map, old_midx);
+ 	if (!map) {
+ 		dev_err(rvu->dev,
+ 			"%s: old_midx(%u, vidx(%u)) cannot be added to idx2vidx map\n",
+@@ -369,7 +367,7 @@ static int npc_vidx_maps_modify(struct rvu *rvu, u16 vidx, u16 new_midx)
+ 		goto fail2;
+ 	}
+ 
+-	rc = xa_insert(&npc_priv.xa_idx2vidx_map, new_midx,
++	rc = xa_insert(&npc_priv->xa_idx2vidx_map, new_midx,
+ 		       xa_mk_value(vidx), GFP_KERNEL);
+ 	if (rc) {
+ 		dev_err(rvu->dev,
+@@ -382,21 +380,21 @@ static int npc_vidx_maps_modify(struct rvu *rvu, u16 vidx, u16 new_midx)
+ 
+ fail3:
+ 	/* Restore vidx at old_midx location */
+-	if (xa_insert(&npc_priv.xa_idx2vidx_map, old_midx,
++	if (xa_insert(&npc_priv->xa_idx2vidx_map, old_midx,
+ 		      xa_mk_value(vidx), GFP_KERNEL))
+ 		dev_err(rvu->dev,
+ 			"%s: Error to roll back idx2vidx old_midx=%u vidx=%u\n",
+ 			__func__, old_midx, vidx);
+ fail2:
+ 	/* Erase new_midx inserted at vidx */
+-	if (!xa_erase(&npc_priv.xa_vidx2idx_map, vidx))
++	if (!xa_erase(&npc_priv->xa_vidx2idx_map, vidx))
+ 		dev_err(rvu->dev,
+ 			"%s: Failed to roll back vidx2idx vidx=%u\n",
+ 			__func__, vidx);
+ 
+ fail1:
+ 	/* Restore old_midx at vidx location */
+-	if (xa_insert(&npc_priv.xa_vidx2idx_map, vidx,
++	if (xa_insert(&npc_priv->xa_vidx2idx_map, vidx,
+ 		      xa_mk_value(old_midx), GFP_KERNEL))
+ 		dev_err(rvu->dev,
+ 			"%s: Failed to roll back vidx2idx to old_midx=%u, vidx=%u\n",
+@@ -412,10 +410,10 @@ static int npc_vidx_maps_add_entry(struct rvu *rvu, u16 mcam_idx, int pcifunc,
+ 	u32 id;
+ 
+ 	/* Virtual index start from maximum mcam index + 1 */
+-	max = npc_priv.bank_depth * 2 * 2 - 1;
+-	min = npc_priv.bank_depth * 2;
++	max = npc_priv->bank_depth * 2 * 2 - 1;
++	min = npc_priv->bank_depth * 2;
+ 
+-	rc = xa_alloc(&npc_priv.xa_vidx2idx_map, &id,
++	rc = xa_alloc(&npc_priv->xa_vidx2idx_map, &id,
+ 		      xa_mk_value(mcam_idx),
+ 		      XA_LIMIT(min, max), GFP_KERNEL);
+ 	if (rc) {
+@@ -425,7 +423,7 @@ static int npc_vidx_maps_add_entry(struct rvu *rvu, u16 mcam_idx, int pcifunc,
+ 		goto fail1;
+ 	}
+ 
+-	rc = xa_insert(&npc_priv.xa_idx2vidx_map, mcam_idx,
++	rc = xa_insert(&npc_priv->xa_idx2vidx_map, mcam_idx,
+ 		       xa_mk_value(id), GFP_KERNEL);
+ 	if (rc) {
+ 		dev_err(rvu->dev,
+@@ -440,7 +438,7 @@ static int npc_vidx_maps_add_entry(struct rvu *rvu, u16 mcam_idx, int pcifunc,
+ 	return 0;
+ 
+ fail2:
+-	xa_erase(&npc_priv.xa_vidx2idx_map, id);
++	xa_erase(&npc_priv->xa_vidx2idx_map, id);
+ fail1:
+ 	return rc;
+ }
+@@ -691,7 +689,7 @@ void npc_cn20k_parser_profile_init(struct rvu *rvu, int blkaddr)
+ 
+ struct npc_priv_t *npc_priv_get(void)
+ {
+-	return &npc_priv;
++	return npc_priv;
  }
  
  static void npc_program_mkex_rx(struct rvu *rvu, int blkaddr,
--				struct npc_mcam_kex_extr *mkex_extr,
-+				const struct npc_mcam_kex_extr *mkex_extr,
- 				u8 intf)
- {
- 	u8 num_extr = rvu->hw->npc_kex_extr;
-@@ -708,7 +724,7 @@ static void npc_program_mkex_rx(struct rvu *rvu, int blkaddr,
+@@ -860,9 +858,9 @@ npc_cn20k_enable_mcam_entry(struct rvu *rvu, int blkaddr,
+ 
+ update_en_map:
+ 	if (enable)
+-		set_bit(index, npc_priv.en_map);
++		set_bit(index, npc_priv->en_map);
+ 	else
+-		clear_bit(index, npc_priv.en_map);
++		clear_bit(index, npc_priv->en_map);
+ 
+ 	return 0;
  }
+@@ -1751,28 +1749,28 @@ int npc_mcam_idx_2_key_type(struct rvu *rvu, u16 mcam_idx, u8 *key_type)
+ 	int bank_off, sb_id;
  
- static void npc_program_mkex_tx(struct rvu *rvu, int blkaddr,
--				struct npc_mcam_kex_extr *mkex_extr,
-+				const struct npc_mcam_kex_extr *mkex_extr,
- 				u8 intf)
- {
- 	u8 num_extr = rvu->hw->npc_kex_extr;
-@@ -737,7 +753,7 @@ static void npc_program_mkex_tx(struct rvu *rvu, int blkaddr,
- }
- 
- static void npc_program_mkex_profile(struct rvu *rvu, int blkaddr,
--				     struct npc_mcam_kex_extr *mkex_extr)
-+				     const struct npc_mcam_kex_extr *mkex_extr)
- {
- 	struct rvu_hwinfo *hw = rvu->hw;
- 	u8 intf;
-@@ -1630,8 +1646,8 @@ npc_cn20k_update_action_entries_n_flags(struct rvu *rvu,
- int npc_cn20k_apply_custom_kpu(struct rvu *rvu,
- 			       struct npc_kpu_profile_adapter *profile)
- {
-+	const struct npc_cn20k_kpu_profile_fwdata *fw = rvu->kpu_fwdata;
- 	size_t hdr_sz = sizeof(struct npc_cn20k_kpu_profile_fwdata);
--	struct npc_cn20k_kpu_profile_fwdata *fw = rvu->kpu_fwdata;
- 	struct npc_kpu_profile_action *action;
- 	struct npc_kpu_profile_cam *cam;
- 	struct npc_kpu_fwdata *fw_kpu;
-@@ -1676,8 +1692,15 @@ int npc_cn20k_apply_custom_kpu(struct rvu *rvu,
- 	}
- 
- 	/* Verify if profile fits the HW */
-+	if (fw->kpus > rvu->hw->npc_kpus) {
-+		dev_warn(rvu->dev, "Not enough KPUs: %d > %d\n", fw->kpus,
-+			 rvu->hw->npc_kpus);
-+		return -EINVAL;
-+	}
-+
-+	/* Check if there is enough memory */
- 	if (fw->kpus > profile->kpus) {
--		dev_warn(rvu->dev, "Not enough KPUs: %d > %ld\n", fw->kpus,
-+		dev_warn(rvu->dev, "Not enough KPUs: %d > %zu\n", fw->kpus,
- 			 profile->kpus);
+ 	/* mcam_idx should be less than (2 * bank depth) */
+-	if (mcam_idx >= npc_priv.bank_depth * 2) {
++	if (mcam_idx >= npc_priv->bank_depth * 2) {
+ 		dev_err(rvu->dev, "%s: bad params\n",
+ 			__func__);
  		return -EINVAL;
  	}
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/npc.h b/drivers/net/ethernet/marvell/octeontx2/af/npc.h
-index 2138c044fe41..eaed172f1606 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/npc.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/npc.h
-@@ -267,6 +267,19 @@ struct npc_kpu_profile_cam {
- 	u16 dp2_mask;
- } __packed;
  
-+struct npc_kpu_profile_cam2 {
-+	u8 state;
-+	u8 state_mask;
-+	u16 dp0;
-+	u16 dp0_mask;
-+	u16 dp1;
-+	u16 dp1_mask;
-+	u16 dp2;
-+	u16 dp2_mask;
-+	u8 ptype;
-+	u8 ptype_mask;
-+} __packed;
-+
- struct npc_kpu_profile_action {
- 	u8 errlev;
- 	u8 errcode;
-@@ -292,6 +305,10 @@ struct npc_kpu_profile {
- 	int action_entries;
- 	struct npc_kpu_profile_cam *cam;
- 	struct npc_kpu_profile_action *action;
-+	int cam_entries2;
-+	int action_entries2;
-+	struct npc_kpu_profile_action *action2;
-+	struct npc_kpu_profile_cam2 *cam2;
- };
+ 	/* find mcam offset per bank */
+-	bank_off = mcam_idx & (npc_priv.bank_depth - 1);
++	bank_off = mcam_idx & (npc_priv->bank_depth - 1);
  
- /* NPC KPU register formats */
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu.h b/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
-index 65397daae4c2..7f3505ae6860 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
-@@ -553,17 +553,19 @@ struct npc_kpu_profile_adapter {
- 	const char			*name;
- 	u64				version;
- 	const struct npc_lt_def_cfg	*lt_def;
--	const struct npc_kpu_profile_action	*ikpu; /* array[pkinds] */
--	const struct npc_kpu_profile	*kpu; /* array[kpus] */
-+	struct npc_kpu_profile_action	*ikpu; /* array[pkinds] */
-+	struct npc_kpu_profile_action	*ikpu2; /* array[pkinds] */
-+	struct npc_kpu_profile	*kpu; /* array[kpus] */
- 	union npc_mcam_key_prfl {
--		struct npc_mcam_kex		*mkex;
-+		const struct npc_mcam_kex		*mkex;
- 					/* used for cn9k and cn10k */
--		struct npc_mcam_kex_extr	*mkex_extr; /* used for cn20k */
-+		const struct npc_mcam_kex_extr	*mkex_extr; /* used for cn20k */
- 	} mcam_kex_prfl;
- 	struct npc_mcam_kex_hash	*mkex_hash;
- 	bool				custom;
- 	size_t				pkinds;
- 	size_t				kpus;
-+	bool				from_fs;
- };
+ 	/* Find subbank id */
+-	sb_id = bank_off / npc_priv.subbank_depth;
++	sb_id = bank_off / npc_priv->subbank_depth;
  
- #define RVU_SWITCH_LBK_CHAN	63
-@@ -634,7 +636,7 @@ struct rvu {
+ 	/* Check if subbank id is more than maximum
+ 	 * number of subbanks available
+ 	 */
+-	if (sb_id >= npc_priv.num_subbanks) {
++	if (sb_id >= npc_priv->num_subbanks) {
+ 		dev_err(rvu->dev, "%s: invalid subbank %d\n",
+ 			__func__, sb_id);
+ 		return -EINVAL;
+ 	}
  
- 	/* Firmware data */
- 	struct rvu_fwdata	*fwdata;
--	void			*kpu_fwdata;
-+	const void		*kpu_fwdata;
- 	size_t			kpu_fwdata_sz;
- 	void __iomem		*kpu_prfl_addr;
+-	sb = &npc_priv.sb[sb_id];
++	sb = &npc_priv->sb[sb_id];
  
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
-index 150d50b72c48..b4635d78f9d5 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
-@@ -1495,7 +1495,8 @@ void rvu_npc_free_mcam_entries(struct rvu *rvu, u16 pcifunc, int nixlf)
- }
+ 	*key_type = sb->key_type;
  
- static void npc_program_mkex_rx(struct rvu *rvu, int blkaddr,
--				struct npc_mcam_kex *mkex, u8 intf)
-+				const struct npc_mcam_kex *mkex,
-+				u8 intf)
- {
- 	int lid, lt, ld, fl;
- 
-@@ -1524,7 +1525,8 @@ static void npc_program_mkex_rx(struct rvu *rvu, int blkaddr,
- }
- 
- static void npc_program_mkex_tx(struct rvu *rvu, int blkaddr,
--				struct npc_mcam_kex *mkex, u8 intf)
-+				const struct npc_mcam_kex *mkex,
-+				u8 intf)
- {
- 	int lid, lt, ld, fl;
- 
-@@ -1553,7 +1555,7 @@ static void npc_program_mkex_tx(struct rvu *rvu, int blkaddr,
- }
- 
- static void npc_program_mkex_profile(struct rvu *rvu, int blkaddr,
--				     struct npc_mcam_kex *mkex)
-+				     const struct npc_mcam_kex *mkex)
- {
- 	struct rvu_hwinfo *hw = rvu->hw;
- 	u8 intf;
-@@ -1693,8 +1695,12 @@ static void npc_config_kpucam(struct rvu *rvu, int blkaddr,
- 			      const struct npc_kpu_profile_cam *kpucam,
- 			      int kpu, int entry)
- {
-+	const struct npc_kpu_profile_cam2 *kpucam2 = (void *)kpucam;
-+	struct npc_kpu_profile_adapter *profile = &rvu->kpu;
- 	struct npc_kpu_cam cam0 = {0};
- 	struct npc_kpu_cam cam1 = {0};
-+	u64 *val = (u64 *)&cam1;
-+	u64 *mask = (u64 *)&cam0;
- 
- 	cam1.state = kpucam->state & kpucam->state_mask;
- 	cam1.dp0_data = kpucam->dp0 & kpucam->dp0_mask;
-@@ -1706,6 +1712,14 @@ static void npc_config_kpucam(struct rvu *rvu, int blkaddr,
- 	cam0.dp1_data = ~kpucam->dp1 & kpucam->dp1_mask;
- 	cam0.dp2_data = ~kpucam->dp2 & kpucam->dp2_mask;
- 
-+	if (profile->from_fs) {
-+		u8 ptype = kpucam2->ptype;
-+		u8 pmask = kpucam2->ptype_mask;
-+
-+		*val |= FIELD_PREP(GENMASK_ULL(57, 56), ptype & pmask);
-+		*mask |= FIELD_PREP(GENMASK_ULL(57, 56), ~ptype & pmask);
-+	}
-+
- 	rvu_write64(rvu, blkaddr,
- 		    NPC_AF_KPUX_ENTRYX_CAMX(kpu, entry, 0), *(u64 *)&cam0);
- 	rvu_write64(rvu, blkaddr,
-@@ -1717,34 +1731,104 @@ u64 npc_enable_mask(int count)
- 	return (((count) < 64) ? ~(BIT_ULL(count) - 1) : (0x00ULL));
- }
- 
-+struct npc_kpu_profile_action *
-+npc_get_ikpu_nth_entry(struct rvu *rvu, int n)
-+{
-+	struct npc_kpu_profile_adapter *profile = &rvu->kpu;
-+
-+	if (profile->from_fs)
-+		return &profile->ikpu2[n];
-+
-+	return &profile->ikpu[n];
-+}
-+
-+int
-+npc_get_num_kpu_cam_entries(struct rvu *rvu,
-+			    const struct npc_kpu_profile *kpu_pfl)
-+{
-+	struct npc_kpu_profile_adapter *profile = &rvu->kpu;
-+
-+	if (profile->from_fs)
-+		return kpu_pfl->cam_entries2;
-+
-+	return kpu_pfl->cam_entries;
-+}
-+
-+struct npc_kpu_profile_cam *
-+npc_get_kpu_cam_nth_entry(struct rvu *rvu,
-+			  const struct npc_kpu_profile *kpu_pfl, int n)
-+{
-+	struct npc_kpu_profile_adapter *profile = &rvu->kpu;
-+
-+	if (profile->from_fs)
-+		return (void *)&kpu_pfl->cam2[n];
-+
-+	return (void *)&kpu_pfl->cam[n];
-+}
-+
-+int
-+npc_get_num_kpu_action_entries(struct rvu *rvu,
-+			       const struct npc_kpu_profile *kpu_pfl)
-+{
-+	struct npc_kpu_profile_adapter *profile = &rvu->kpu;
-+
-+	if (profile->from_fs)
-+		return kpu_pfl->action_entries2;
-+
-+	return kpu_pfl->action_entries;
-+}
-+
-+struct npc_kpu_profile_action *
-+npc_get_kpu_action_nth_entry(struct rvu *rvu,
-+			     const struct npc_kpu_profile *kpu_pfl,
-+			     int n)
-+{
-+	struct npc_kpu_profile_adapter *profile = &rvu->kpu;
-+
-+	if (profile->from_fs)
-+		return (void *)&kpu_pfl->action2[n];
-+
-+	return (void *)&kpu_pfl->action[n];
-+}
-+
- static void npc_program_kpu_profile(struct rvu *rvu, int blkaddr, int kpu,
- 				    const struct npc_kpu_profile *profile)
- {
-+	int num_cam_entries, num_action_entries;
- 	int entry, num_entries, max_entries;
- 	u64 entry_mask;
- 
--	if (profile->cam_entries != profile->action_entries) {
-+	num_cam_entries = npc_get_num_kpu_cam_entries(rvu, profile);
-+	num_action_entries = npc_get_num_kpu_action_entries(rvu, profile);
-+
-+	if (num_cam_entries != num_action_entries) {
+@@ -1788,7 +1786,7 @@ static int npc_subbank_idx_2_mcam_idx(struct rvu *rvu, struct npc_subbank *sb,
+ 	 * subsection depth - 1
+ 	 */
+ 	if (sb->key_type == NPC_MCAM_KEY_X4 &&
+-	    sub_off >= npc_priv.subbank_depth) {
++	    sub_off >= npc_priv->subbank_depth) {
  		dev_err(rvu->dev,
- 			"KPU%d: CAM and action entries [%d != %d] not equal\n",
--			kpu, profile->cam_entries, profile->action_entries);
-+			kpu, num_cam_entries, num_action_entries);
+ 			"%s: Failed to get mcam idx (x4) sb->idx=%u sub_off=%u",
+ 			__func__, sb->idx, sub_off);
+@@ -1799,7 +1797,7 @@ static int npc_subbank_idx_2_mcam_idx(struct rvu *rvu, struct npc_subbank *sb,
+ 	 * 2 * subsection depth - 1
+ 	 */
+ 	if (sb->key_type == NPC_MCAM_KEY_X2 &&
+-	    sub_off >= npc_priv.subbank_depth * 2) {
++	    sub_off >= npc_priv->subbank_depth * 2) {
+ 		dev_err(rvu->dev,
+ 			"%s: Failed to get mcam idx (x2) sb->idx=%u sub_off=%u",
+ 			__func__, sb->idx, sub_off);
+@@ -1807,12 +1805,12 @@ static int npc_subbank_idx_2_mcam_idx(struct rvu *rvu, struct npc_subbank *sb,
  	}
  
- 	max_entries = rvu->hw->npc_kpu_entries;
+ 	/* Find subbank offset from respective subbank (w.r.t bank) */
+-	off = sub_off & (npc_priv.subbank_depth - 1);
++	off = sub_off & (npc_priv->subbank_depth - 1);
  
-+	WARN(num_cam_entries > max_entries,
-+	     "KPU%u: err: hw max entries=%u, input entries=%u\n",
-+	     kpu,  rvu->hw->npc_kpu_entries, num_cam_entries);
-+
- 	/* Program CAM match entries for previous KPU extracted data */
--	num_entries = min_t(int, profile->cam_entries, max_entries);
-+	num_entries = min_t(int, num_cam_entries, max_entries);
- 	for (entry = 0; entry < num_entries; entry++)
- 		npc_config_kpucam(rvu, blkaddr,
--				  &profile->cam[entry], kpu, entry);
-+				  (void *)npc_get_kpu_cam_nth_entry(rvu, profile, entry),
-+				  kpu, entry);
+ 	/* if subsection idx is in bank1, add bank depth,
+ 	 * which is part of sb->b1b
+ 	 */
+-	bot = sub_off >= npc_priv.subbank_depth ? sb->b1b : sb->b0b;
++	bot = sub_off >= npc_priv->subbank_depth ? sb->b1b : sb->b0b;
  
- 	/* Program this KPU's actions */
--	num_entries = min_t(int, profile->action_entries, max_entries);
-+	num_entries = min_t(int, num_action_entries, max_entries);
- 	for (entry = 0; entry < num_entries; entry++)
--		npc_config_kpuaction(rvu, blkaddr, &profile->action[entry],
-+		npc_config_kpuaction(rvu, blkaddr,
-+				     (void *)npc_get_kpu_action_nth_entry(rvu, profile, entry),
- 				     kpu, entry, false);
+ 	*mcam_idx = bot + off;
+ 	return 0;
+@@ -1825,37 +1823,37 @@ int npc_mcam_idx_2_subbank_idx(struct rvu *rvu, u16 mcam_idx,
+ 	int bank_off, sb_id;
  
- 	/* Enable all programmed entries */
--	num_entries = min_t(int, profile->action_entries, profile->cam_entries);
-+	num_entries = min_t(int, num_action_entries, num_cam_entries);
- 	entry_mask = npc_enable_mask(num_entries);
- 	/* Disable first KPU_MAX_CST_ENT entries for built-in profile */
- 	if (!rvu->kpu.custom)
-@@ -1788,26 +1872,175 @@ static void npc_prepare_default_kpu(struct rvu *rvu,
- 	npc_cn20k_update_action_entries_n_flags(rvu, profile);
+ 	/* mcam_idx should be less than (2 * bank depth) */
+-	if (mcam_idx >= npc_priv.bank_depth * 2) {
++	if (mcam_idx >= npc_priv->bank_depth * 2) {
+ 		dev_err(rvu->dev, "%s: Invalid mcam idx %u\n",
+ 			__func__, mcam_idx);
+ 		return -EINVAL;
+ 	}
+ 
+ 	/* find mcam offset per bank */
+-	bank_off = mcam_idx & (npc_priv.bank_depth - 1);
++	bank_off = mcam_idx & (npc_priv->bank_depth - 1);
+ 
+ 	/* Find subbank id */
+-	sb_id = bank_off / npc_priv.subbank_depth;
++	sb_id = bank_off / npc_priv->subbank_depth;
+ 
+ 	/* Check if subbank id is more than maximum
+ 	 * number of subbanks available
+ 	 */
+-	if (sb_id >= npc_priv.num_subbanks) {
++	if (sb_id >= npc_priv->num_subbanks) {
+ 		dev_err(rvu->dev, "%s: invalid subbank %d\n",
+ 			__func__, sb_id);
+ 		return -EINVAL;
+ 	}
+ 
+-	*sb = &npc_priv.sb[sb_id];
++	*sb = &npc_priv->sb[sb_id];
+ 
+ 	/* Subbank offset per bank */
+-	*sb_off = bank_off % npc_priv.subbank_depth;
++	*sb_off = bank_off % npc_priv->subbank_depth;
+ 
+ 	/* Index in a subbank should add subbank depth
+ 	 * if it is in bank1
+ 	 */
+-	if (mcam_idx >= npc_priv.bank_depth)
+-		*sb_off += npc_priv.subbank_depth;
++	if (mcam_idx >= npc_priv->bank_depth)
++		*sb_off += npc_priv->subbank_depth;
+ 
+ 	return 0;
  }
+@@ -1871,9 +1869,9 @@ static int __npc_subbank_contig_alloc(struct rvu *rvu,
+ 	int k, offset, delta = 0;
+ 	int cnt = 0, sbd;
  
--static int npc_apply_custom_kpu(struct rvu *rvu,
--				struct npc_kpu_profile_adapter *profile)
-+static int npc_alloc_kpu_cam2_n_action2(struct rvu *rvu, int kpu_num,
-+					int num_entries)
-+{
-+	struct npc_kpu_profile_adapter *adapter = &rvu->kpu;
-+	struct npc_kpu_profile *kpu;
-+
-+	kpu = &adapter->kpu[kpu_num];
-+
-+	kpu->cam2 = devm_kcalloc(rvu->dev, num_entries,
-+				 sizeof(*kpu->cam2), GFP_KERNEL);
-+	if (!kpu->cam2)
-+		return -ENOMEM;
-+
-+	kpu->action2 = devm_kcalloc(rvu->dev, num_entries,
-+				    sizeof(*kpu->action2), GFP_KERNEL);
-+	if (!kpu->action2)
-+		return -ENOMEM;
-+
-+	return 0;
-+}
-+
-+static int npc_apply_custom_kpu_from_fw(struct rvu *rvu,
-+					struct npc_kpu_profile_adapter *profile)
+-	sbd = npc_priv.subbank_depth;
++	sbd = npc_priv->subbank_depth;
+ 
+-	if (sidx >= npc_priv.bank_depth)
++	if (sidx >= npc_priv->bank_depth)
+ 		delta = sbd;
+ 
+ 	switch (prio) {
+@@ -1940,8 +1938,8 @@ static int __npc_subbank_non_contig_alloc(struct rvu *rvu,
+ 	int cnt = 0, delta;
+ 	int k, sbd;
+ 
+-	sbd = npc_priv.subbank_depth;
+-	delta = sidx >= npc_priv.bank_depth ? sbd : 0;
++	sbd = npc_priv->subbank_depth;
++	delta = sidx >= npc_priv->bank_depth ? sbd : 0;
+ 
+ 	switch (prio) {
+ 		/* Find an area of size 'count' from sidx to eidx */
+@@ -2002,7 +2000,7 @@ static void __npc_subbank_sboff_2_off(struct rvu *rvu, struct npc_subbank *sb,
  {
- 	size_t hdr_sz = sizeof(struct npc_kpu_profile_fwdata), offset = 0;
-+	const struct npc_kpu_profile_fwdata *fw;
- 	struct npc_kpu_profile_action *action;
--	struct npc_kpu_profile_fwdata *fw;
- 	struct npc_kpu_profile_cam *cam;
- 	struct npc_kpu_fwdata *fw_kpu;
--	int entries;
--	u16 kpu, entry;
-+	int entries, entry, kpu;
+ 	int sbd;
  
--	if (is_cn20k(rvu->pdev))
--		return npc_cn20k_apply_custom_kpu(rvu, profile);
-+	fw = rvu->kpu_fwdata;
-+
-+	for (kpu = 0; kpu < fw->kpus; kpu++) {
-+		if (rvu->kpu_fwdata_sz < hdr_sz + offset) {
-+			dev_warn(rvu->dev,
-+				 "Profile size mismatch on KPU%i parsing\n",
-+				 kpu + 1);
-+			return -EINVAL;
-+		}
-+
-+		fw_kpu = (struct npc_kpu_fwdata *)(fw->data + offset);
-+		if (fw_kpu->entries < 0) {
-+			dev_warn(rvu->dev,
-+				 "Profile entries is negative on KPU%i parsing\n",
-+				 kpu + 1);
-+			return -EINVAL;
-+		}
-+
-+		if (fw_kpu->entries > KPU_MAX_CST_ENT)
-+			dev_warn(rvu->dev,
-+				 "Too many custom entries on KPU%d: %d > %d\n",
-+				 kpu, fw_kpu->entries, KPU_MAX_CST_ENT);
-+		entries = min_t(int, fw_kpu->entries, KPU_MAX_CST_ENT);
-+		cam = (struct npc_kpu_profile_cam *)fw_kpu->data;
-+		offset += sizeof(*fw_kpu) + fw_kpu->entries * sizeof(*cam);
-+		action = (struct npc_kpu_profile_action *)(fw->data + offset);
-+		offset += fw_kpu->entries * sizeof(*action);
-+		if (rvu->kpu_fwdata_sz < hdr_sz + offset) {
-+			dev_warn(rvu->dev,
-+				 "Profile size mismatch on KPU%i parsing.\n",
-+				 kpu + 1);
-+			return -EINVAL;
-+		}
-+		for (entry = 0; entry < entries; entry++) {
-+			profile->kpu[kpu].cam[entry] = cam[entry];
-+			profile->kpu[kpu].action[entry] = action[entry];
-+		}
-+	}
-+
-+	return 0;
-+}
-+
-+static int npc_apply_custom_kpu_from_fs(struct rvu *rvu,
-+					struct npc_kpu_profile_adapter *profile)
-+{
-+	size_t hdr_sz = sizeof(struct npc_kpu_profile_fwdata), offset = 0;
-+	const struct npc_kpu_profile_fwdata *fw;
-+	struct npc_kpu_profile_action *action;
-+	struct npc_kpu_profile_cam2 *cam2;
-+	struct npc_kpu_fwdata *fw_kpu;
-+	int entries, ret, entry, kpu;
+-	sbd = npc_priv.subbank_depth;
++	sbd = npc_priv->subbank_depth;
  
- 	fw = rvu->kpu_fwdata;
+ 	*off = sb_off & (sbd - 1);
+ 	*bmap = (sb_off >= sbd) ? sb->b1map : sb->b0map;
+@@ -2051,20 +2049,20 @@ static int __npc_subbank_mark_free(struct rvu *rvu, struct npc_subbank *sb)
+ 	sb->flags = NPC_SUBBANK_FLAG_FREE;
+ 	sb->key_type = 0;
  
-+	/* Binary blob contains ikpu actions entries at start of data[0] */
-+	profile->ikpu2 = devm_kcalloc(rvu->dev, 1,
-+				      sizeof(ikpu_action_entries),
-+				      GFP_KERNEL);
-+	if (!profile->ikpu2)
-+		return -ENOMEM;
-+
-+	action = (struct npc_kpu_profile_action *)(fw->data + offset);
-+
-+	if (rvu->kpu_fwdata_sz < hdr_sz + sizeof(ikpu_action_entries))
-+		return -EINVAL;
-+
-+	/* The firmware layout does dependent on the internal size of
-+	 * ikpu_action_entries.
-+	 */
-+	memcpy((void *)profile->ikpu2, action, sizeof(ikpu_action_entries));
-+	offset += sizeof(ikpu_action_entries);
-+
-+	for (kpu = 0; kpu < fw->kpus; kpu++) {
-+		if (rvu->kpu_fwdata_sz < hdr_sz + offset + sizeof(*fw_kpu)) {
-+			dev_warn(rvu->dev,
-+				 "profile size mismatch on kpu%i parsing\n",
-+				 kpu + 1);
-+			return -EINVAL;
-+		}
-+
-+		fw_kpu = (struct npc_kpu_fwdata *)(fw->data + offset);
-+		if (fw_kpu->entries <= 0) {
-+			dev_warn(rvu->dev,
-+				 "Invalid kpu entries on KPU%d\n", kpu);
-+			return -EINVAL;
-+		}
-+
-+		entries = min_t(int, fw_kpu->entries, rvu->hw->npc_kpu_entries);
-+		dev_info(rvu->dev,
-+			 "Loading %u entries on KPU%d\n", entries, kpu);
-+
-+		cam2 = (struct npc_kpu_profile_cam2 *)fw_kpu->data;
-+		offset += sizeof(*fw_kpu) + fw_kpu->entries * sizeof(*cam2);
-+		action = (struct npc_kpu_profile_action *)(fw->data + offset);
-+		offset += fw_kpu->entries * sizeof(*action);
-+		if (rvu->kpu_fwdata_sz < hdr_sz + offset) {
-+			dev_warn(rvu->dev,
-+				 "profile size mismatch on kpu%i parsing.\n",
-+				 kpu + 1);
-+			return -EINVAL;
-+		}
-+
-+		profile->kpu[kpu].cam_entries2 = entries;
-+		profile->kpu[kpu].action_entries2 = entries;
-+		ret = npc_alloc_kpu_cam2_n_action2(rvu, kpu, entries);
-+		if (ret) {
-+			dev_warn(rvu->dev,
-+				 "profile entry allocation failed for kpu=%d for %d entries\n",
-+				 kpu, entries);
-+			return -EINVAL;
-+		}
-+
-+		for (entry = 0; entry < entries; entry++) {
-+			profile->kpu[kpu].cam2[entry] = cam2[entry];
-+			profile->kpu[kpu].action2[entry] = action[entry];
-+		}
-+	}
-+
-+	return 0;
-+}
-+
-+static int npc_apply_custom_kpu(struct rvu *rvu,
-+				struct npc_kpu_profile_adapter *profile,
-+				bool from_fs, int *fw_kpus)
-+{
-+	size_t hdr_sz = sizeof(struct npc_kpu_profile_fwdata);
-+	const struct npc_kpu_profile_fwdata *fw;
-+	struct npc_kpu_profile_fwdata *sfw;
-+
-+	if (is_cn20k(rvu->pdev))
-+		return npc_cn20k_apply_custom_kpu(rvu, profile);
-+
- 	if (rvu->kpu_fwdata_sz < hdr_sz) {
- 		dev_warn(rvu->dev, "Invalid KPU profile size\n");
- 		return -EINVAL;
- 	}
-+
-+	fw = rvu->kpu_fwdata;
- 	if (le64_to_cpu(fw->signature) != KPU_SIGN) {
- 		dev_warn(rvu->dev, "Invalid KPU profile signature %llx\n",
- 			 fw->signature);
-@@ -1835,42 +2068,38 @@ static int npc_apply_custom_kpu(struct rvu *rvu,
- 		return -EINVAL;
- 	}
- 	/* Verify if profile fits the HW */
-+	if (fw->kpus > rvu->hw->npc_kpus) {
-+		dev_warn(rvu->dev, "Not enough KPUs: %d > %d\n", fw->kpus,
-+			 rvu->hw->npc_kpus);
-+		return -EINVAL;
-+	}
-+
-+	/* Check if there is enough memory for fw loading.
-+	 * Check if there is enough entries for profile->kpu[] to
-+	 * set cam_entries2 and action_entries2
-+	 */
- 	if (fw->kpus > profile->kpus) {
--		dev_warn(rvu->dev, "Not enough KPUs: %d > %ld\n", fw->kpus,
-+		dev_warn(rvu->dev, "Not enough KPUs: %d > %zu\n", fw->kpus,
- 			 profile->kpus);
- 		return -EINVAL;
+-	bitmap_clear(sb->b0map, 0, npc_priv.subbank_depth);
+-	bitmap_clear(sb->b1map, 0, npc_priv.subbank_depth);
++	bitmap_clear(sb->b0map, 0, npc_priv->subbank_depth);
++	bitmap_clear(sb->b1map, 0, npc_priv->subbank_depth);
+ 
+-	if (!xa_erase(&npc_priv.xa_sb_used, sb->arr_idx)) {
++	if (!xa_erase(&npc_priv->xa_sb_used, sb->arr_idx)) {
+ 		dev_err(rvu->dev,
+ 			"%s: Error to delete from xa_sb_used array\n",
+ 			__func__);
+ 		return -EFAULT;
  	}
  
-+	*fw_kpus = fw->kpus;
-+
-+	sfw = devm_kcalloc(rvu->dev, 1, sizeof(*sfw), GFP_KERNEL);
-+	if (!sfw)
-+		return -ENOMEM;
-+
-+	memcpy(sfw, fw, sizeof(*sfw));
-+
- 	profile->custom = 1;
--	profile->name = fw->name;
-+	profile->name = sfw->name;
- 	profile->version = le64_to_cpu(fw->version);
--	profile->mcam_kex_prfl.mkex = &fw->mkex;
--	profile->lt_def = &fw->lt_def;
--
--	for (kpu = 0; kpu < fw->kpus; kpu++) {
--		fw_kpu = (struct npc_kpu_fwdata *)(fw->data + offset);
--		if (fw_kpu->entries > KPU_MAX_CST_ENT)
--			dev_warn(rvu->dev,
--				 "Too many custom entries on KPU%d: %d > %d\n",
--				 kpu, fw_kpu->entries, KPU_MAX_CST_ENT);
--		entries = min(fw_kpu->entries, KPU_MAX_CST_ENT);
--		cam = (struct npc_kpu_profile_cam *)fw_kpu->data;
--		offset += sizeof(*fw_kpu) + fw_kpu->entries * sizeof(*cam);
--		action = (struct npc_kpu_profile_action *)(fw->data + offset);
--		offset += fw_kpu->entries * sizeof(*action);
--		if (rvu->kpu_fwdata_sz < hdr_sz + offset) {
--			dev_warn(rvu->dev,
--				 "Profile size mismatch on KPU%i parsing.\n",
--				 kpu + 1);
--			return -EINVAL;
--		}
--		for (entry = 0; entry < entries; entry++) {
--			profile->kpu[kpu].cam[entry] = cam[entry];
--			profile->kpu[kpu].action[entry] = action[entry];
--		}
--	}
-+	profile->mcam_kex_prfl.mkex = &sfw->mkex;
-+	profile->lt_def = &sfw->lt_def;
+-	rc = xa_insert(&npc_priv.xa_sb_free, sb->arr_idx,
++	rc = xa_insert(&npc_priv->xa_sb_free, sb->arr_idx,
+ 		       xa_mk_value(sb->idx), GFP_KERNEL);
+ 	if (rc) {
+-		rc = xa_insert(&npc_priv.xa_sb_used, sb->arr_idx,
++		rc = xa_insert(&npc_priv->xa_sb_used, sb->arr_idx,
+ 			       xa_mk_value(sb->idx), GFP_KERNEL);
+ 		if (rc)
+ 			dev_err(rvu->dev,
+@@ -2093,21 +2091,21 @@ static int __npc_subbank_mark_used(struct rvu *rvu, struct npc_subbank *sb,
+ 	sb->flags = NPC_SUBBANK_FLAG_USED;
+ 	sb->key_type = key_type;
+ 	if (key_type == NPC_MCAM_KEY_X4)
+-		sb->free_cnt = npc_priv.subbank_depth;
++		sb->free_cnt = npc_priv->subbank_depth;
+ 	else
+-		sb->free_cnt = 2 * npc_priv.subbank_depth;
++		sb->free_cnt = 2 * npc_priv->subbank_depth;
  
--	return 0;
-+	return from_fs ? npc_apply_custom_kpu_from_fs(rvu, profile) :
-+		npc_apply_custom_kpu_from_fw(rvu, profile);
+-	bitmap_clear(sb->b0map, 0, npc_priv.subbank_depth);
+-	bitmap_clear(sb->b1map, 0, npc_priv.subbank_depth);
++	bitmap_clear(sb->b0map, 0, npc_priv->subbank_depth);
++	bitmap_clear(sb->b1map, 0, npc_priv->subbank_depth);
+ 
+-	if (!xa_erase(&npc_priv.xa_sb_free, sb->arr_idx)) {
++	if (!xa_erase(&npc_priv->xa_sb_free, sb->arr_idx)) {
+ 		dev_err(rvu->dev,
+ 			"%s: Error to delete from xa_sb_free array\n",
+ 			__func__);
+ 		return -EFAULT;
+ 	}
+ 
+-	rc = xa_insert(&npc_priv.xa_sb_used, sb->arr_idx,
++	rc = xa_insert(&npc_priv->xa_sb_used, sb->arr_idx,
+ 		       xa_mk_value(sb->idx), GFP_KERNEL);
+ 	if (rc)
+ 		dev_err(rvu->dev,
+@@ -2131,10 +2129,10 @@ static bool __npc_subbank_free(struct rvu *rvu, struct npc_subbank *sb,
+ 
+ 	/* Check whether we can mark whole subbank as free */
+ 	if (sb->key_type == NPC_MCAM_KEY_X4) {
+-		if (sb->free_cnt < npc_priv.subbank_depth)
++		if (sb->free_cnt < npc_priv->subbank_depth)
+ 			goto done;
+ 	} else {
+-		if (sb->free_cnt < 2 * npc_priv.subbank_depth)
++		if (sb->free_cnt < 2 * npc_priv->subbank_depth)
+ 			goto done;
+ 	}
+ 
+@@ -2213,7 +2211,7 @@ static int __npc_subbank_alloc(struct rvu *rvu, struct npc_subbank *sb,
+ 
+ 	/* x4 indexes are from 0 to bank size as it combines two x2 banks */
+ 	if (key_type == NPC_MCAM_KEY_X4 &&
+-	    (ref >= npc_priv.bank_depth || limit >= npc_priv.bank_depth)) {
++	    (ref >= npc_priv->bank_depth || limit >= npc_priv->bank_depth)) {
+ 		dev_err(rvu->dev,
+ 			"%s: Wrong ref_enty(%d) or limit(%d) for x4\n",
+ 			__func__, ref, limit);
+@@ -2223,8 +2221,8 @@ static int __npc_subbank_alloc(struct rvu *rvu, struct npc_subbank *sb,
+ 	/* This function is called either bank0 or bank1 portion of a subbank.
+ 	 * so ref and limit should be on same bank.
+ 	 */
+-	diffbank = !!((ref & npc_priv.bank_depth) ^
+-		      (limit & npc_priv.bank_depth));
++	diffbank = !!((ref & npc_priv->bank_depth) ^
++		      (limit & npc_priv->bank_depth));
+ 	if (diffbank) {
+ 		dev_err(rvu->dev,
+ 			"%s: request ref and limit should be from same bank\n",
+@@ -2248,7 +2246,7 @@ static int __npc_subbank_alloc(struct rvu *rvu, struct npc_subbank *sb,
+ 	 * or equal to mcam entries available in the subbank if contig.
+ 	 */
+ 	if (sb->flags & NPC_SUBBANK_FLAG_FREE) {
+-		if (contig && count > npc_priv.subbank_depth) {
++		if (contig && count > npc_priv->subbank_depth) {
+ 			dev_err(rvu->dev, "%s: Less number of entries\n",
+ 				__func__);
+ 			return -ENOSPC;
+@@ -2271,10 +2269,10 @@ static int __npc_subbank_alloc(struct rvu *rvu, struct npc_subbank *sb,
+ 	}
+ 
+ process:
+-	/* if ref or limit >= npc_priv.bank_depth, index are in bank1.
++	/* if ref or limit >= npc_priv->bank_depth, index are in bank1.
+ 	 * else bank0.
+ 	 */
+-	if (ref >= npc_priv.bank_depth) {
++	if (ref >= npc_priv->bank_depth) {
+ 		bmap = sb->b1map;
+ 		t = sb->b1t;
+ 		b = sb->b1b;
+@@ -2285,8 +2283,8 @@ static int __npc_subbank_alloc(struct rvu *rvu, struct npc_subbank *sb,
+ 	}
+ 
+ 	/* Calculate free slots */
+-	bw = bitmap_weight(bmap, npc_priv.subbank_depth);
+-	bfree = npc_priv.subbank_depth - bw;
++	bw = bitmap_weight(bmap, npc_priv->subbank_depth);
++	bfree = npc_priv->subbank_depth - bw;
+ 
+ 	if (!bfree) {
+ 		dev_dbg(rvu->dev, "%s: subbank is full\n", __func__);
+@@ -2415,7 +2413,7 @@ npc_del_from_pf_maps(struct rvu *rvu, u16 mcam_idx)
+ 	int pcifunc, idx;
+ 	void *map;
+ 
+-	map = xa_erase(&npc_priv.xa_idx2pf_map, mcam_idx);
++	map = xa_erase(&npc_priv->xa_idx2pf_map, mcam_idx);
+ 	if (!map) {
+ 		dev_err(rvu->dev,
+ 			"%s: failed to erase mcam_idx(%u) from xa_idx2pf map\n",
+@@ -2424,7 +2422,7 @@ npc_del_from_pf_maps(struct rvu *rvu, u16 mcam_idx)
+ 	}
+ 
+ 	pcifunc = xa_to_value(map);
+-	map = xa_load(&npc_priv.xa_pf_map, pcifunc);
++	map = xa_load(&npc_priv->xa_pf_map, pcifunc);
+ 	if (!map) {
+ 		dev_err(rvu->dev,
+ 			"%s: failed to find entry for (%u) from xa_pf_map, mcam=%u\n",
+@@ -2434,7 +2432,7 @@ npc_del_from_pf_maps(struct rvu *rvu, u16 mcam_idx)
+ 
+ 	idx = xa_to_value(map);
+ 
+-	map = xa_erase(&npc_priv.xa_pf2idx_map[idx], mcam_idx);
++	map = xa_erase(&npc_priv->xa_pf2idx_map[idx], mcam_idx);
+ 	if (!map) {
+ 		dev_err(rvu->dev,
+ 			"%s: failed to erase mcam_idx(%u) from xa_pf2idx_map map\n",
+@@ -2454,18 +2452,18 @@ npc_add_to_pf_maps(struct rvu *rvu, u16 mcam_idx, int pcifunc)
+ 		"%s: add2maps mcam_idx(%u) to xa_idx2pf map pcifunc=%#x\n",
+ 		__func__, mcam_idx, pcifunc);
+ 
+-	rc = xa_insert(&npc_priv.xa_idx2pf_map, mcam_idx,
++	rc = xa_insert(&npc_priv->xa_idx2pf_map, mcam_idx,
+ 		       xa_mk_value(pcifunc), GFP_KERNEL);
+ 
+ 	if (rc) {
+-		map = xa_load(&npc_priv.xa_idx2pf_map, mcam_idx);
++		map = xa_load(&npc_priv->xa_idx2pf_map, mcam_idx);
+ 		dev_err(rvu->dev,
+ 			"%s: failed to insert mcam_idx(%u) to xa_idx2pf map, existing value=%lu\n",
+ 			__func__, mcam_idx, xa_to_value(map));
+ 		return -EFAULT;
+ 	}
+ 
+-	map = xa_load(&npc_priv.xa_pf_map, pcifunc);
++	map = xa_load(&npc_priv->xa_pf_map, pcifunc);
+ 	if (!map) {
+ 		dev_err(rvu->dev,
+ 			"%s: failed to find pf map entry for pcifunc=%#x, mcam=%u\n",
+@@ -2475,12 +2473,12 @@ npc_add_to_pf_maps(struct rvu *rvu, u16 mcam_idx, int pcifunc)
+ 
+ 	idx = xa_to_value(map);
+ 
+-	rc = xa_insert(&npc_priv.xa_pf2idx_map[idx], mcam_idx,
++	rc = xa_insert(&npc_priv->xa_pf2idx_map[idx], mcam_idx,
+ 		       xa_mk_value(pcifunc), GFP_KERNEL);
+ 
+ 	if (rc) {
+-		map = xa_load(&npc_priv.xa_pf2idx_map[idx], mcam_idx);
+-		xa_erase(&npc_priv.xa_idx2pf_map, mcam_idx);
++		map = xa_load(&npc_priv->xa_pf2idx_map[idx], mcam_idx);
++		xa_erase(&npc_priv->xa_idx2pf_map, mcam_idx);
+ 		dev_err(rvu->dev,
+ 			"%s: failed to insert mcam_idx(%u) to xa_pf2idx_map map, earlier value=%lu idx=%u\n",
+ 			__func__, mcam_idx, xa_to_value(map), idx);
+@@ -2510,9 +2508,9 @@ npc_subbank_suits(struct npc_subbank *sb, int key_type)
+ 	return false;
  }
  
- static int npc_load_kpu_prfl_img(struct rvu *rvu, void __iomem *prfl_addr,
-@@ -1958,45 +2187,19 @@ static int npc_load_kpu_profile_fwdb(struct rvu *rvu, const char *kpu_profile)
- 	return ret;
- }
+-#define SB_ALIGN_UP(val)   (((val) + npc_priv.subbank_depth) & \
+-			    ~((npc_priv.subbank_depth) - 1))
+-#define SB_ALIGN_DOWN(val) ALIGN_DOWN((val), npc_priv.subbank_depth)
++#define SB_ALIGN_UP(val)   (((val) + npc_priv->subbank_depth) & \
++			    ~((npc_priv->subbank_depth) - 1))
++#define SB_ALIGN_DOWN(val) ALIGN_DOWN((val), npc_priv->subbank_depth)
  
--void npc_load_kpu_profile(struct rvu *rvu)
-+static int npc_load_kpu_profile_from_fw(struct rvu *rvu)
- {
- 	struct npc_kpu_profile_adapter *profile = &rvu->kpu;
- 	const char *kpu_profile = rvu->kpu_pfl_name;
--	const struct firmware *fw = NULL;
--	bool retry_fwdb = false;
--
--	/* If user not specified profile customization */
--	if (!strncmp(kpu_profile, def_pfl_name, KPU_NAME_LEN))
--		goto revert_to_default;
--	/* First prepare default KPU, then we'll customize top entries. */
--	npc_prepare_default_kpu(rvu, profile);
--
--	/* Order of preceedence for load loading NPC profile (high to low)
--	 * Firmware binary in filesystem.
--	 * Firmware database method.
--	 * Default KPU profile.
--	 */
--	if (!request_firmware_direct(&fw, kpu_profile, rvu->dev)) {
--		dev_info(rvu->dev, "Loading KPU profile from firmware: %s\n",
--			 kpu_profile);
--		rvu->kpu_fwdata = kzalloc(fw->size, GFP_KERNEL);
--		if (rvu->kpu_fwdata) {
--			memcpy(rvu->kpu_fwdata, fw->data, fw->size);
--			rvu->kpu_fwdata_sz = fw->size;
--		}
--		release_firmware(fw);
--		retry_fwdb = true;
--		goto program_kpu;
--	}
-+	int fw_kpus = 0;
+ static void npc_subbank_iter_down(struct rvu *rvu,
+ 				  int ref, int limit,
+@@ -2538,7 +2536,7 @@ static void npc_subbank_iter_down(struct rvu *rvu,
+ 	}
  
--load_image_fwdb:
- 	/* Loading the KPU profile using firmware database */
- 	if (npc_load_kpu_profile_fwdb(rvu, kpu_profile))
--		goto revert_to_default;
-+		return -EFAULT;
+ 	*cur_ref = *cur_limit - 1;
+-	align = *cur_ref - npc_priv.subbank_depth + 1;
++	align = *cur_ref - npc_priv->subbank_depth + 1;
+ 	if (align <= limit) {
+ 		*stop = true;
+ 		*cur_limit = limit;
+@@ -2578,7 +2576,7 @@ static void npc_subbank_iter_up(struct rvu *rvu,
+ 	}
  
--program_kpu:
- 	/* Apply profile customization if firmware was loaded. */
--	if (!rvu->kpu_fwdata_sz || npc_apply_custom_kpu(rvu, profile)) {
-+	if (!rvu->kpu_fwdata_sz ||
-+	    npc_apply_custom_kpu(rvu, profile, false, &fw_kpus)) {
- 		/* If image from firmware filesystem fails to load or invalid
- 		 * retry with firmware database method.
- 		 */
-@@ -2010,10 +2213,6 @@ void npc_load_kpu_profile(struct rvu *rvu)
- 			}
- 			rvu->kpu_fwdata = NULL;
- 			rvu->kpu_fwdata_sz = 0;
--			if (retry_fwdb) {
--				retry_fwdb = false;
--				goto load_image_fwdb;
--			}
+ 	*cur_ref = *cur_limit + 1;
+-	align = *cur_ref + npc_priv.subbank_depth - 1;
++	align = *cur_ref + npc_priv->subbank_depth - 1;
+ 
+ 	if (align >= limit) {
+ 		*stop = true;
+@@ -2606,17 +2604,17 @@ npc_subbank_iter(struct rvu *rvu, int key_type,
+ 
+ 	/* limit and ref should < bank_depth for x4 */
+ 	if (key_type == NPC_MCAM_KEY_X4) {
+-		if (*cur_ref >= npc_priv.bank_depth)
++		if (*cur_ref >= npc_priv->bank_depth)
+ 			return -EINVAL;
+ 
+-		if (*cur_limit >= npc_priv.bank_depth)
++		if (*cur_limit >= npc_priv->bank_depth)
+ 			return -EINVAL;
+ 	}
+ 	/* limit and ref should < 2 * bank_depth, for x2 */
+-	if (*cur_ref >= 2 * npc_priv.bank_depth)
++	if (*cur_ref >= 2 * npc_priv->bank_depth)
+ 		return -EINVAL;
+ 
+-	if (*cur_limit >= 2 * npc_priv.bank_depth)
++	if (*cur_limit >= 2 * npc_priv->bank_depth)
+ 		return -EINVAL;
+ 
+ 	return 0;
+@@ -2651,7 +2649,7 @@ static int npc_idx_free(struct rvu *rvu, u16 *mcam_idx, int count,
+ 			vidx = npc_idx2vidx(midx);
  		}
  
- 		dev_warn(rvu->dev,
-@@ -2021,22 +2220,101 @@ void npc_load_kpu_profile(struct rvu *rvu)
- 			 kpu_profile);
- 		kfree(rvu->kpu_fwdata);
- 		rvu->kpu_fwdata = NULL;
--		goto revert_to_default;
-+		return -EFAULT;
+-		if (midx >= npc_priv.bank_depth * npc_priv.num_banks) {
++		if (midx >= npc_priv->bank_depth * npc_priv->num_banks) {
+ 			dev_err(rvu->dev,
+ 				"%s: Invalid mcam_idx=%u cannot be deleted\n",
+ 				__func__, mcam_idx[i]);
+@@ -2846,7 +2844,7 @@ static int npc_subbank_free_cnt(struct rvu *rvu, struct npc_subbank *sb,
+ {
+ 	int cnt, spd;
+ 
+-	spd = npc_priv.subbank_depth;
++	spd = npc_priv->subbank_depth;
+ 	mutex_lock(&sb->lock);
+ 
+ 	if (sb->flags & NPC_SUBBANK_FLAG_FREE)
+@@ -3005,7 +3003,7 @@ static int npc_subbank_noref_alloc(struct rvu *rvu, int key_type, bool contig,
+ 	max_alloc = !contig;
+ 
+ 	/* Check used subbanks for free slots */
+-	xa_for_each(&npc_priv.xa_sb_used, index, val) {
++	xa_for_each(&npc_priv->xa_sb_used, index, val) {
+ 		idx = xa_to_value(val);
+ 
+ 		/* Minimize allocation from restricted subbanks
+@@ -3014,7 +3012,7 @@ static int npc_subbank_noref_alloc(struct rvu *rvu, int key_type, bool contig,
+ 		if (npc_subbank_restrict_usage(rvu, idx))
+ 			continue;
+ 
+-		sb = &npc_priv.sb[idx];
++		sb = &npc_priv->sb[idx];
+ 
+ 		/* Skip if not suitable subbank */
+ 		if (!npc_subbank_suits(sb, key_type))
+@@ -3071,9 +3069,9 @@ static int npc_subbank_noref_alloc(struct rvu *rvu, int key_type, bool contig,
  	}
  
--	dev_info(rvu->dev, "Using custom profile '%s', version %d.%d.%d\n",
-+	dev_info(rvu->dev, "Using custom profile '%.32s', version %d.%d.%d\n",
- 		 profile->name, NPC_KPU_VER_MAJ(profile->version),
- 		 NPC_KPU_VER_MIN(profile->version),
- 		 NPC_KPU_VER_PATCH(profile->version));
+ 	/* Allocate in free subbanks */
+-	xa_for_each(&npc_priv.xa_sb_free, index, val) {
++	xa_for_each(&npc_priv->xa_sb_free, index, val) {
+ 		idx = xa_to_value(val);
+-		sb = &npc_priv.sb[idx];
++		sb = &npc_priv->sb[idx];
  
--	return;
-+	return 0;
-+}
-+
-+static int npc_load_kpu_profile_from_fs(struct rvu *rvu)
-+{
-+	struct npc_kpu_profile_adapter *profile = &rvu->kpu;
-+	const char *kpu_profile = rvu->kpu_pfl_name;
-+	const struct firmware *fw = NULL;
-+	int ret, fw_kpus = 0;
-+	char path[512] = "kpu/";
-+
-+	if (strlen(kpu_profile) > sizeof(path) - strlen("kpu/") - 1) {
-+		dev_err(rvu->dev, "kpu profile name is too big\n");
-+		return -ENOSPC;
-+	}
-+
-+	strcat(path, kpu_profile);
-+
-+	if (request_firmware_direct(&fw, path, rvu->dev))
-+		return -ENOENT;
-+
-+	dev_info(rvu->dev, "Loading KPU profile from filesystem: %s\n",
-+		 path);
-+
-+	rvu->kpu_fwdata = fw->data;
-+	rvu->kpu_fwdata_sz = fw->size;
-+
-+	ret = npc_apply_custom_kpu(rvu, profile, true, &fw_kpus);
-+	release_firmware(fw);
-+	rvu->kpu_fwdata = NULL;
-+
-+	if (ret) {
-+		rvu->kpu_fwdata_sz = 0;
-+		dev_err(rvu->dev,
-+			"Loading KPU profile from filesystem failed\n");
-+		return ret;
-+	}
-+
-+	/* In firmware loading from filesystem method, all entries are from
-+	 * same binary blob.
-+	 */
-+	rvu->kpu.kpus = fw_kpus;
-+	profile->kpus = fw_kpus;
-+	profile->from_fs = true;
-+	return 0;
-+}
-+
-+void npc_load_kpu_profile(struct rvu *rvu)
-+{
-+	struct npc_kpu_profile_adapter *profile = &rvu->kpu;
-+	const char *kpu_profile = rvu->kpu_pfl_name;
-+
-+	profile->from_fs = false;
-+
-+	npc_prepare_default_kpu(rvu, profile);
-+
-+	/* If user not specified profile customization */
-+	if (!strncmp(kpu_profile, def_pfl_name, KPU_NAME_LEN))
-+		return;
-+
-+	/* Order of preceedence for load loading NPC profile (high to low)
-+	 * Firmware binary in filesystem.
-+	 * Firmware database method.
-+	 * Default KPU profile.
-+	 */
-+
-+	/* Filesystem-based KPU loading is not supported on cn20k.
-+	 * npc_prepare_default_kpu() was invoked earlier, but control
-+	 * reached this point because the default profile was not selected.
-+	 * No need to call it again.
-+	 */
-+	if (!is_cn20k(rvu->pdev)) {
-+		if (!npc_load_kpu_profile_from_fs(rvu))
-+			return;
-+	}
-+
-+	/* First prepare default KPU, then we'll customize top entries. */
-+	npc_prepare_default_kpu(rvu, profile);
-+	if (!npc_load_kpu_profile_from_fw(rvu))
-+		return;
+ 		/* Minimize allocation from restricted subbanks
+ 		 * in noref allocations.
+@@ -3129,7 +3127,7 @@ static int npc_subbank_noref_alloc(struct rvu *rvu, int key_type, bool contig,
+ 	for (i = 0; restrict_valid &&
+ 	     (i < ARRAY_SIZE(npc_subbank_restricted_idxs)); i++) {
+ 		idx = npc_subbank_restricted_idxs[i];
+-		sb = &npc_priv.sb[idx];
++		sb = &npc_priv->sb[idx];
  
--revert_to_default:
- 	npc_prepare_default_kpu(rvu, profile);
+ 		/* Skip if not suitable subbank */
+ 		if (!npc_subbank_suits(sb, key_type))
+@@ -3209,7 +3207,7 @@ int npc_cn20k_ref_idx_alloc(struct rvu *rvu, int pcifunc, int key_type,
+ 	bool ref_valid;
+ 	u16 vidx;
+ 
+-	bd = npc_priv.bank_depth;
++	bd = npc_priv->bank_depth;
+ 
+ 	/* Special case: ref == 0 && limit= 0 && prio == HIGH && count == 1
+ 	 * Here user wants to allocate 0th entry
+@@ -3227,7 +3225,7 @@ int npc_cn20k_ref_idx_alloc(struct rvu *rvu, int pcifunc, int key_type,
+ 	ref_valid = !!(limit || ref);
+ 	defrag_candidate = !ref_valid && !contig && virt;
+ 	if (!ref_valid) {
+-		if (contig && count > npc_priv.subbank_depth)
++		if (contig && count > npc_priv->subbank_depth)
+ 			goto try_noref_multi_subbank;
+ 
+ 		rc = npc_subbank_noref_alloc(rvu, key_type, contig,
+@@ -3272,7 +3270,7 @@ int npc_cn20k_ref_idx_alloc(struct rvu *rvu, int pcifunc, int key_type,
+ 		return -EINVAL;
+ 	}
+ 
+-	if (contig && count > npc_priv.subbank_depth)
++	if (contig && count > npc_priv->subbank_depth)
+ 		goto try_ref_multi_subbank;
+ 
+ 	rc = npc_subbank_ref_alloc(rvu, key_type, ref, limit,
+@@ -3334,8 +3332,8 @@ void npc_cn20k_subbank_calc_free(struct rvu *rvu, int *x2_free,
+ 	*x4_free = 0;
+ 	*sb_free = 0;
+ 
+-	for (i = 0; i < npc_priv.num_subbanks; i++) {
+-		sb = &npc_priv.sb[i];
++	for (i = 0; i < npc_priv->num_subbanks; i++) {
++		sb = &npc_priv->sb[i];
+ 		mutex_lock(&sb->lock);
+ 
+ 		/* Count number of free subbanks */
+@@ -3433,11 +3431,11 @@ static void npc_subbank_init(struct rvu *rvu, struct npc_subbank *sb, int idx)
+ {
+ 	mutex_init(&sb->lock);
+ 
+-	sb->b0b = idx * npc_priv.subbank_depth;
+-	sb->b0t = sb->b0b + npc_priv.subbank_depth - 1;
++	sb->b0b = idx * npc_priv->subbank_depth;
++	sb->b0t = sb->b0b + npc_priv->subbank_depth - 1;
+ 
+-	sb->b1b = npc_priv.bank_depth + idx * npc_priv.subbank_depth;
+-	sb->b1t = sb->b1b + npc_priv.subbank_depth - 1;
++	sb->b1b = npc_priv->bank_depth + idx * npc_priv->subbank_depth;
++	sb->b1t = sb->b1b + npc_priv->subbank_depth - 1;
+ 
+ 	sb->flags = NPC_SUBBANK_FLAG_FREE;
+ 	sb->idx = idx;
+@@ -3449,7 +3447,7 @@ static void npc_subbank_init(struct rvu *rvu, struct npc_subbank *sb, int idx)
+ 	/* Keep first and last subbank at end of free array; so that
+ 	 * it will be used at last
+ 	 */
+-	xa_store(&npc_priv.xa_sb_free, sb->arr_idx,
++	xa_store(&npc_priv->xa_sb_free, sb->arr_idx,
+ 		 xa_mk_value(sb->idx), GFP_KERNEL);
  }
  
- static void npc_parser_profile_init(struct rvu *rvu, int blkaddr)
+@@ -3474,7 +3472,7 @@ static int npc_pcifunc_map_create(struct rvu *rvu)
+ 
+ 		pcifunc = pf << 9;
+ 
+-		xa_store(&npc_priv.xa_pf_map, (unsigned long)pcifunc,
++		xa_store(&npc_priv->xa_pf_map, (unsigned long)pcifunc,
+ 			 xa_mk_value(cnt), GFP_KERNEL);
+ 
+ 		cnt++;
+@@ -3483,7 +3481,7 @@ static int npc_pcifunc_map_create(struct rvu *rvu)
+ 		for (vf = 0; vf < numvfs; vf++) {
+ 			pcifunc = (pf << 9) | (vf + 1);
+ 
+-			xa_store(&npc_priv.xa_pf_map, (unsigned long)pcifunc,
++			xa_store(&npc_priv->xa_pf_map, (unsigned long)pcifunc,
+ 				 xa_mk_value(cnt), GFP_KERNEL);
+ 			cnt++;
+ 		}
+@@ -3569,7 +3567,7 @@ static int npc_defrag_alloc_free_slots(struct rvu *rvu,
+ 	int rc, sb_off, i, err;
+ 	bool deleted;
+ 
+-	sb = &npc_priv.sb[f->idx];
++	sb = &npc_priv->sb[f->idx];
+ 
+ 	alloc_cnt1 = 0;
+ 	alloc_cnt2 = 0;
+@@ -3639,9 +3637,9 @@ static int npc_defrag_add_2_show_list(struct rvu *rvu, u16 old_midx,
+ 	node->vidx = vidx;
+ 	INIT_LIST_HEAD(&node->list);
+ 
+-	mutex_lock(&npc_priv.lock);
+-	list_add_tail(&node->list, &npc_priv.defrag_lh);
+-	mutex_unlock(&npc_priv.lock);
++	mutex_lock(&npc_priv->lock);
++	list_add_tail(&node->list, &npc_priv->defrag_lh);
++	mutex_unlock(&npc_priv->lock);
+ 
+ 	return 0;
+ }
+@@ -3745,7 +3743,7 @@ int npc_defrag_move_vdx_to_free(struct rvu *rvu,
+ 		}
+ 
+ 		/* save pcifunc */
+-		map = xa_load(&npc_priv.xa_idx2pf_map, old_midx);
++		map = xa_load(&npc_priv->xa_idx2pf_map, old_midx);
+ 		pcifunc = xa_to_value(map);
+ 
+ 		/* delete from pf maps */
+@@ -3904,29 +3902,29 @@ static void npc_defrag_list_clear(void)
  {
-+	struct npc_kpu_profile_adapter *profile = &rvu->kpu;
- 	struct rvu_hwinfo *hw = rvu->hw;
- 	int num_pkinds, num_kpus, idx;
+ 	struct npc_defrag_show_node *node, *next;
  
-@@ -2060,7 +2338,9 @@ static void npc_parser_profile_init(struct rvu *rvu, int blkaddr)
- 	num_pkinds = min_t(int, hw->npc_pkinds, num_pkinds);
+-	mutex_lock(&npc_priv.lock);
+-	list_for_each_entry_safe(node, next, &npc_priv.defrag_lh, list) {
++	mutex_lock(&npc_priv->lock);
++	list_for_each_entry_safe(node, next, &npc_priv->defrag_lh, list) {
+ 		list_del_init(&node->list);
+ 		kfree(node);
+ 	}
  
- 	for (idx = 0; idx < num_pkinds; idx++)
--		npc_config_kpuaction(rvu, blkaddr, &rvu->kpu.ikpu[idx], 0, idx, true);
-+		npc_config_kpuaction(rvu, blkaddr,
-+				     npc_get_ikpu_nth_entry(rvu, idx),
-+				     0, idx, true);
- 
- 	/* Program KPU CAM and Action profiles */
- 	num_kpus = rvu->kpu.kpus;
-@@ -2068,6 +2348,11 @@ static void npc_parser_profile_init(struct rvu *rvu, int blkaddr)
- 
- 	for (idx = 0; idx < num_kpus; idx++)
- 		npc_program_kpu_profile(rvu, blkaddr, idx, &rvu->kpu.kpu[idx]);
-+
-+	if (profile->from_fs) {
-+		rvu_write64(rvu, blkaddr, NPC_AF_PKINDX_TYPE(54), 0x03);
-+		rvu_write64(rvu, blkaddr, NPC_AF_PKINDX_TYPE(58), 0x03);
-+	}
+-	mutex_unlock(&npc_priv.lock);
++	mutex_unlock(&npc_priv->lock);
  }
  
- void npc_mcam_rsrcs_deinit(struct rvu *rvu)
-@@ -2297,18 +2582,21 @@ static void rvu_npc_hw_init(struct rvu *rvu, int blkaddr)
- 
- static void rvu_npc_setup_interfaces(struct rvu *rvu, int blkaddr)
+ static void npc_lock_all_subbank(void)
  {
--	struct npc_mcam_kex_extr *mkex_extr = rvu->kpu.mcam_kex_prfl.mkex_extr;
--	struct npc_mcam_kex *mkex = rvu->kpu.mcam_kex_prfl.mkex;
-+	const struct npc_mcam_kex_extr *mkex_extr;
- 	struct npc_mcam *mcam = &rvu->hw->mcam;
- 	struct rvu_hwinfo *hw = rvu->hw;
-+	const struct npc_mcam_kex *mkex;
- 	u64 nibble_ena, rx_kex, tx_kex;
- 	u64 *keyx_cfg, reg;
- 	u8 intf;
+ 	int i;
  
-+	mkex_extr = rvu->kpu.mcam_kex_prfl.mkex_extr;
-+	mkex = rvu->kpu.mcam_kex_prfl.mkex;
-+
- 	if (is_cn20k(rvu->pdev)) {
--		keyx_cfg = mkex_extr->keyx_cfg;
-+		keyx_cfg = (u64 *)mkex_extr->keyx_cfg;
+-	for (i = 0; i < npc_priv.num_subbanks; i++)
+-		mutex_lock(&npc_priv.sb[i].lock);
++	for (i = 0; i < npc_priv->num_subbanks; i++)
++		mutex_lock(&npc_priv->sb[i].lock);
+ }
+ 
+ static void npc_unlock_all_subbank(void)
+ {
+ 	int i;
+ 
+-	for (i = npc_priv.num_subbanks - 1; i >= 0; i--)
+-		mutex_unlock(&npc_priv.sb[i].lock);
++	for (i = npc_priv->num_subbanks - 1; i >= 0; i--)
++		mutex_unlock(&npc_priv->sb[i].lock);
+ }
+ 
+ int npc_cn20k_search_order_set(struct rvu *rvu,
+@@ -3944,9 +3942,9 @@ int npc_cn20k_search_order_set(struct rvu *rvu,
+ 		USED = 1,
+ 	};
+ 
+-	if (cnt != npc_priv.num_subbanks) {
++	if (cnt != npc_priv->num_subbanks) {
+ 		dev_err(rvu->dev, "Number of entries(%u) != %u\n",
+-			cnt, npc_priv.num_subbanks);
++			cnt, npc_priv->num_subbanks);
+ 		return -EINVAL;
+ 	}
+ 
+@@ -3954,18 +3952,18 @@ int npc_cn20k_search_order_set(struct rvu *rvu,
+ 	npc_lock_all_subbank();
+ 
+ 	for (sb_idx = 0; sb_idx < cnt; sb_idx++) {
+-		sb = &npc_priv.sb[sb_idx];
++		sb = &npc_priv->sb[sb_idx];
+ 		save[sb->idx] = sb->arr_idx;
+ 	}
+ 
+ 	for (prio = 0; prio < cnt; prio++) {
+ 		sb_idx = narr[prio];
+-		sb = &npc_priv.sb[sb_idx];
++		sb = &npc_priv->sb[sb_idx];
+ 
+ 		if (sb->flags & NPC_SUBBANK_FLAG_USED)
+-			xa = &npc_priv.xa_sb_used;
++			xa = &npc_priv->xa_sb_used;
+ 		else
+-			xa = &npc_priv.xa_sb_free;
++			xa = &npc_priv->xa_sb_free;
+ 
+ 		rc = xa_err(xa_store(xa, prio,
+ 				     xa_mk_value(sb_idx), GFP_KERNEL));
+@@ -3989,10 +3987,10 @@ int npc_cn20k_search_order_set(struct rvu *rvu,
+ 
+ 	for (prio = 0; prio < cnt; prio++) {
+ 		if (rsrc[FREE][prio] == -1)
+-			xa_erase(&npc_priv.xa_sb_free, prio);
++			xa_erase(&npc_priv->xa_sb_free, prio);
+ 
+ 		if (rsrc[USED][prio] == -1)
+-			xa_erase(&npc_priv.xa_sb_used, prio);
++			xa_erase(&npc_priv->xa_sb_used, prio);
+ 	}
+ 
+ 	for (int i = 0; i < cnt; i++)
+@@ -4008,20 +4006,20 @@ int npc_cn20k_search_order_set(struct rvu *rvu,
+ fail:
+ 	for (prio = 0; prio < cnt; prio++) {
+ 		if (rsrc[FREE][prio] == 1)
+-			xa_erase(&npc_priv.xa_sb_free, prio);
++			xa_erase(&npc_priv->xa_sb_free, prio);
+ 
+ 		if (rsrc[USED][prio] == 1)
+-			xa_erase(&npc_priv.xa_sb_used, prio);
++			xa_erase(&npc_priv->xa_sb_used, prio);
+ 	}
+ 
+ 	for (sb_idx = 0; sb_idx < cnt; sb_idx++) {
+-		sb = &npc_priv.sb[sb_idx];
++		sb = &npc_priv->sb[sb_idx];
+ 		sb->arr_idx = save[sb_idx];
+ 
+ 		if (sb->flags & NPC_SUBBANK_FLAG_USED)
+-			xa = &npc_priv.xa_sb_used;
++			xa = &npc_priv->xa_sb_used;
+ 		else
+-			xa = &npc_priv.xa_sb_free;
++			xa = &npc_priv->xa_sb_free;
+ 
+ 		/* Since the entry already exists, xa_store() replaces
+ 		 * the value without a kmalloc(), making failure highly unlikely.
+@@ -4041,7 +4039,7 @@ int npc_cn20k_search_order_set(struct rvu *rvu,
+ const u32 *npc_cn20k_search_order_get(bool *restricted_order, u32 *sz)
+ {
+ 	*restricted_order = restrict_valid;
+-	*sz = npc_priv.num_subbanks;
++	*sz = npc_priv->num_subbanks;
+ 	return subbank_srch_order;
+ }
+ 
+@@ -4065,7 +4063,7 @@ int npc_cn20k_defrag(struct rvu *rvu)
+ 	INIT_LIST_HEAD(&x4lh);
+ 	INIT_LIST_HEAD(&x2lh);
+ 
+-	node = kcalloc(npc_priv.num_subbanks, sizeof(*node), GFP_KERNEL);
++	node = kcalloc(npc_priv->num_subbanks, sizeof(*node), GFP_KERNEL);
+ 	if (!node)
+ 		return -ENOMEM;
+ 
+@@ -4074,13 +4072,13 @@ int npc_cn20k_defrag(struct rvu *rvu)
+ 	npc_lock_all_subbank();
+ 
+ 	/* Fill in node with subbank properties */
+-	for (i = 0; i < npc_priv.num_subbanks; i++) {
+-		sb = &npc_priv.sb[i];
++	for (i = 0; i < npc_priv->num_subbanks; i++) {
++		sb = &npc_priv->sb[i];
+ 
+ 		node[i].idx = i;
+ 		node[i].key_type = sb->key_type;
+ 		node[i].free_cnt = sb->free_cnt;
+-		node[i].vidx = kcalloc(npc_priv.subbank_depth * 2,
++		node[i].vidx = kcalloc(npc_priv->subbank_depth * 2,
+ 				       sizeof(*node[i].vidx),
+ 				       GFP_KERNEL);
+ 		if (!node[i].vidx) {
+@@ -4110,8 +4108,8 @@ int npc_cn20k_defrag(struct rvu *rvu)
+ 	}
+ 
+ 	/* Filling vidx[] array with all vidx in that subbank */
+-	xa_for_each_start(&npc_priv.xa_vidx2idx_map, index, map,
+-			  npc_priv.bank_depth * 2) {
++	xa_for_each_start(&npc_priv->xa_vidx2idx_map, index, map,
++			  npc_priv->bank_depth * 2) {
+ 		midx = xa_to_value(map);
+ 		rc =  npc_mcam_idx_2_subbank_idx(rvu, midx,
+ 						 &sb, &sb_off);
+@@ -4128,14 +4126,14 @@ int npc_cn20k_defrag(struct rvu *rvu)
+ 	}
+ 
+ 	/* Mark all subbank which has ref allocation */
+-	for (i = 0; i < npc_priv.num_subbanks; i++) {
++	for (i = 0; i < npc_priv->num_subbanks; i++) {
+ 		tnode = &node[i];
+ 
+ 		if (!tnode->valid)
+ 			continue;
+ 
+ 		tot = (tnode->key_type == NPC_MCAM_KEY_X2) ?
+-			npc_priv.subbank_depth * 2 : npc_priv.subbank_depth;
++			npc_priv->subbank_depth * 2 : npc_priv->subbank_depth;
+ 
+ 		if (node[i].vidx_cnt != tot - tnode->free_cnt)
+ 			tnode->refs = true;
+@@ -4152,7 +4150,7 @@ int npc_cn20k_defrag(struct rvu *rvu)
+ free_vidx:
+ 	npc_unlock_all_subbank();
+ 	mutex_unlock(&mcam->lock);
+-	for (i = 0; i < npc_priv.num_subbanks; i++)
++	for (i = 0; i < npc_priv->num_subbanks; i++)
+ 		kfree(node[i].vidx);
+ 	kfree(node);
+ 	return rc;
+@@ -4180,7 +4178,7 @@ int npc_cn20k_dft_rules_idx_get(struct rvu *rvu, u16 pcifunc, u16 *bcast,
+ 		*ptr[i] = USHRT_MAX;
+ 	}
+ 
+-	if (!npc_priv.init_done)
++	if (!npc_priv)
+ 		return 0;
+ 
+ 	if (is_lbk_vf(rvu, pcifunc)) {
+@@ -4188,7 +4186,7 @@ int npc_cn20k_dft_rules_idx_get(struct rvu *rvu, u16 pcifunc, u16 *bcast,
+ 			return -EINVAL;
+ 
+ 		idx = NPC_DFT_RULE_ID_MK(pcifunc, NPC_DFT_RULE_PROMISC_ID);
+-		val = xa_load(&npc_priv.xa_pf2dfl_rmap, idx);
++		val = xa_load(&npc_priv->xa_pf2dfl_rmap, idx);
+ 		if (!val) {
+ 			pr_debug("%s: Failed to find %s index for pcifunc=%#x\n",
+ 				 __func__,
+@@ -4207,7 +4205,7 @@ int npc_cn20k_dft_rules_idx_get(struct rvu *rvu, u16 pcifunc, u16 *bcast,
+ 			return -EINVAL;
+ 
+ 		idx = NPC_DFT_RULE_ID_MK(pcifunc, NPC_DFT_RULE_UCAST_ID);
+-		val = xa_load(&npc_priv.xa_pf2dfl_rmap, idx);
++		val = xa_load(&npc_priv->xa_pf2dfl_rmap, idx);
+ 		if (!val) {
+ 			pr_debug("%s: Failed to find %s index for pcifunc=%#x\n",
+ 				 __func__,
+@@ -4227,7 +4225,7 @@ int npc_cn20k_dft_rules_idx_get(struct rvu *rvu, u16 pcifunc, u16 *bcast,
+ 			continue;
+ 
+ 		idx = NPC_DFT_RULE_ID_MK(pcifunc, i);
+-		val = xa_load(&npc_priv.xa_pf2dfl_rmap, idx);
++		val = xa_load(&npc_priv->xa_pf2dfl_rmap, idx);
+ 		if (!val) {
+ 			pr_debug("%s: Failed to find %s index for pcifunc=%#x\n",
+ 				 __func__,
+@@ -4251,8 +4249,8 @@ int rvu_mbox_handler_npc_get_pfl_info(struct rvu *rvu, struct msg_req *req,
+ 		return -EOPNOTSUPP;
+ 	}
+ 
+-	rsp->kw_type = npc_priv.kw;
+-	rsp->x4_slots = npc_priv.bank_depth;
++	rsp->kw_type = npc_priv->kw;
++	rsp->x4_slots = npc_priv->bank_depth;
+ 	return 0;
+ }
+ 
+@@ -4342,7 +4340,7 @@ void npc_cn20k_dft_rules_free(struct rvu *rvu, u16 pcifunc)
+ 	int blkaddr, rc, i;
+ 	void *map;
+ 
+-	if (!npc_priv.init_done)
++	if (!npc_priv)
+ 		return;
+ 
+ 	if (!npc_is_cgx_or_lbk(rvu, pcifunc)) {
+@@ -4360,7 +4358,7 @@ void npc_cn20k_dft_rules_free(struct rvu *rvu, u16 pcifunc)
+ 	/* LBK */
+ 	if (is_lbk_vf(rvu, pcifunc)) {
+ 		index = NPC_DFT_RULE_ID_MK(pcifunc, NPC_DFT_RULE_PROMISC_ID);
+-		map = xa_erase(&npc_priv.xa_pf2dfl_rmap, index);
++		map = xa_erase(&npc_priv->xa_pf2dfl_rmap, index);
+ 		if (!map)
+ 			dev_dbg(rvu->dev,
+ 				"%s: Err from delete %s mcam idx from xarray (pcifunc=%#x\n",
+@@ -4374,7 +4372,7 @@ void npc_cn20k_dft_rules_free(struct rvu *rvu, u16 pcifunc)
+ 	/* VF */
+ 	if (is_vf(pcifunc)) {
+ 		index = NPC_DFT_RULE_ID_MK(pcifunc, NPC_DFT_RULE_UCAST_ID);
+-		map = xa_erase(&npc_priv.xa_pf2dfl_rmap, index);
++		map = xa_erase(&npc_priv->xa_pf2dfl_rmap, index);
+ 		if (!map)
+ 			dev_dbg(rvu->dev,
+ 				"%s: Err from delete %s mcam idx from xarray (pcifunc=%#x\n",
+@@ -4388,7 +4386,7 @@ void npc_cn20k_dft_rules_free(struct rvu *rvu, u16 pcifunc)
+ 	/* PF */
+ 	for (i = NPC_DFT_RULE_START_ID; i < NPC_DFT_RULE_MAX_ID; i++)  {
+ 		index = NPC_DFT_RULE_ID_MK(pcifunc, i);
+-		map = xa_erase(&npc_priv.xa_pf2dfl_rmap, index);
++		map = xa_erase(&npc_priv->xa_pf2dfl_rmap, index);
+ 		if (!map)
+ 			dev_dbg(rvu->dev,
+ 				"%s: Err from delete %s mcam idx from xarray (pcifunc=%#x\n",
+@@ -4448,7 +4446,7 @@ int npc_cn20k_dft_rules_alloc(struct rvu *rvu, u16 pcifunc)
+ 	struct msg_rsp free_rsp;
+ 	u16 b, m, p, u;
+ 
+-	if (!npc_priv.init_done)
++	if (!npc_priv)
+ 		return 0;
+ 
+ 	if (!npc_is_cgx_or_lbk(rvu, pcifunc)) {
+@@ -4471,7 +4469,7 @@ int npc_cn20k_dft_rules_alloc(struct rvu *rvu, u16 pcifunc)
+ 	}
+ 
+ 	/* Set ref index as lowest priority index */
+-	eidx = 2 * npc_priv.bank_depth - 1;
++	eidx = 2 * npc_priv->bank_depth - 1;
+ 
+ 	/* Install only UCAST for VF */
+ 	cnt = is_vf(pcifunc) ? 1 : ARRAY_SIZE(mcam_idx);
+@@ -4500,9 +4498,9 @@ int npc_cn20k_dft_rules_alloc(struct rvu *rvu, u16 pcifunc)
+ 	pfvf = rvu_get_pfvf(rvu, pcifunc);
+ 	pfvf->hw_prio = NPC_DFT_RULE_PRIO;
+ 
+-	if (npc_priv.kw == NPC_MCAM_KEY_X4) {
++	if (npc_priv->kw == NPC_MCAM_KEY_X4) {
+ 		req.kw_type = NPC_MCAM_KEY_X4;
+-		req.ref_entry = eidx & (npc_priv.bank_depth - 1);
++		req.ref_entry = eidx & (npc_priv->bank_depth - 1);
  	} else {
--		keyx_cfg = mkex->keyx_cfg;
-+		keyx_cfg = (u64 *)mkex->keyx_cfg;
- 		/* Reserve last counter for MCAM RX miss action which is set to
- 		 * drop packet. This way we will know how many pkts didn't
- 		 * match any MCAM entry.
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.h b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.h
-index 83c5e32e2afc..662f6693cfe9 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.h
-@@ -18,4 +18,21 @@ int npc_fwdb_prfl_img_map(struct rvu *rvu, void __iomem **prfl_img_addr,
+ 		req.kw_type = NPC_MCAM_KEY_X2;
+ 		req.ref_entry = eidx;
+@@ -4543,9 +4541,9 @@ int npc_cn20k_dft_rules_alloc(struct rvu *rvu, u16 pcifunc)
+ 	req.hdr.pcifunc = pcifunc;
+ 	req.ref_prio = NPC_MCAM_LOWER_PRIO;
  
- void npc_mcam_clear_bit(struct npc_mcam *mcam, u16 index);
- void npc_mcam_set_bit(struct npc_mcam *mcam, u16 index);
+-	if (npc_priv.kw == NPC_MCAM_KEY_X4) {
++	if (npc_priv->kw == NPC_MCAM_KEY_X4) {
+ 		req.kw_type = NPC_MCAM_KEY_X4;
+-		req.ref_entry = eidx & (npc_priv.bank_depth - 1);
++		req.ref_entry = eidx & (npc_priv->bank_depth - 1);
+ 	} else {
+ 		req.kw_type = NPC_MCAM_KEY_X2;
+ 		req.ref_entry = eidx;
+@@ -4569,7 +4567,7 @@ int npc_cn20k_dft_rules_alloc(struct rvu *rvu, u16 pcifunc)
+ 	/* LBK */
+ 	if (is_lbk_vf(rvu, pcifunc)) {
+ 		index = NPC_DFT_RULE_ID_MK(pcifunc, NPC_DFT_RULE_PROMISC_ID);
+-		ret = xa_insert(&npc_priv.xa_pf2dfl_rmap, index,
++		ret = xa_insert(&npc_priv->xa_pf2dfl_rmap, index,
+ 				xa_mk_value(mcam_idx[0]), GFP_KERNEL);
+ 		if (ret) {
+ 			dev_err(rvu->dev,
+@@ -4586,7 +4584,7 @@ int npc_cn20k_dft_rules_alloc(struct rvu *rvu, u16 pcifunc)
+ 	/* VF */
+ 	if (is_vf(pcifunc)) {
+ 		index = NPC_DFT_RULE_ID_MK(pcifunc, NPC_DFT_RULE_UCAST_ID);
+-		ret = xa_insert(&npc_priv.xa_pf2dfl_rmap, index,
++		ret = xa_insert(&npc_priv->xa_pf2dfl_rmap, index,
+ 				xa_mk_value(mcam_idx[0]), GFP_KERNEL);
+ 		if (ret) {
+ 			dev_err(rvu->dev,
+@@ -4604,7 +4602,7 @@ int npc_cn20k_dft_rules_alloc(struct rvu *rvu, u16 pcifunc)
+ 	for (i = NPC_DFT_RULE_START_ID, k = 0; i < NPC_DFT_RULE_MAX_ID &&
+ 	     k < cnt; i++, k++) {
+ 		index = NPC_DFT_RULE_ID_MK(pcifunc, i);
+-		ret = xa_insert(&npc_priv.xa_pf2dfl_rmap, index,
++		ret = xa_insert(&npc_priv->xa_pf2dfl_rmap, index,
+ 				xa_mk_value(mcam_idx[k]), GFP_KERNEL);
+ 		if (ret) {
+ 			dev_err(rvu->dev,
+@@ -4613,7 +4611,7 @@ int npc_cn20k_dft_rules_alloc(struct rvu *rvu, u16 pcifunc)
+ 				pcifunc);
+ 			for (int p = NPC_DFT_RULE_START_ID; p < i; p++) {
+ 				index = NPC_DFT_RULE_ID_MK(pcifunc, p);
+-				xa_erase(&npc_priv.xa_pf2dfl_rmap, index);
++				xa_erase(&npc_priv->xa_pf2dfl_rmap, index);
+ 			}
+ 			goto err;
+ 		}
+@@ -4687,71 +4685,79 @@ static int npc_priv_init(struct rvu *rvu)
+ 		return -EINVAL;
+ 	}
+ 
+-	npc_priv.num_subbanks = num_subbanks;
+-	npc_priv.bank_depth = bank_depth;
+-	npc_priv.subbank_depth = subbank_depth;
++	npc_priv = kcalloc(1, sizeof(*npc_priv), GFP_KERNEL);
++	if (!npc_priv)
++		return -ENOMEM;
 +
-+struct npc_kpu_profile_action *
-+npc_get_ikpu_nth_entry(struct rvu *rvu, int n);
++	npc_priv->num_banks = num_banks;
++	npc_priv->num_subbanks = num_subbanks;
++	npc_priv->bank_depth = bank_depth;
++	npc_priv->subbank_depth = subbank_depth;
+ 
+ 	/* Get kex configured key size */
+ 	cfg = rvu_read64(rvu, blkaddr, NPC_AF_INTFX_KEX_CFG(0));
+-	npc_priv.kw = FIELD_GET(GENMASK_ULL(34, 32), cfg);
++	npc_priv->kw = FIELD_GET(GENMASK_ULL(34, 32), cfg);
+ 
+ 	dev_info(rvu->dev,
+ 		 "banks=%u depth=%u, subbanks=%u depth=%u, key type=%s\n",
+ 		 num_banks, bank_depth, num_subbanks, subbank_depth,
+-		 npc_kw_name[npc_priv.kw]);
++		 npc_kw_name[npc_priv->kw]);
+ 
+-	npc_priv.sb = kcalloc(num_subbanks, sizeof(struct npc_subbank),
+-			      GFP_KERNEL);
+-	if (!npc_priv.sb)
+-		return -ENOMEM;
++	npc_priv->sb = kcalloc(num_subbanks, sizeof(struct npc_subbank),
++			       GFP_KERNEL);
++	if (!npc_priv->sb)
++		goto fail1;
+ 
+-	xa_init_flags(&npc_priv.xa_sb_used, XA_FLAGS_ALLOC);
+-	xa_init_flags(&npc_priv.xa_sb_free, XA_FLAGS_ALLOC);
+-	xa_init_flags(&npc_priv.xa_idx2pf_map, XA_FLAGS_ALLOC);
+-	xa_init_flags(&npc_priv.xa_pf_map, XA_FLAGS_ALLOC);
+-	xa_init_flags(&npc_priv.xa_pf2dfl_rmap, XA_FLAGS_ALLOC);
+-	xa_init_flags(&npc_priv.xa_idx2vidx_map, XA_FLAGS_ALLOC);
+-	xa_init_flags(&npc_priv.xa_vidx2idx_map, XA_FLAGS_ALLOC);
++	xa_init_flags(&npc_priv->xa_sb_used, XA_FLAGS_ALLOC);
++	xa_init_flags(&npc_priv->xa_sb_free, XA_FLAGS_ALLOC);
++	xa_init_flags(&npc_priv->xa_idx2pf_map, XA_FLAGS_ALLOC);
++	xa_init_flags(&npc_priv->xa_pf_map, XA_FLAGS_ALLOC);
++	xa_init_flags(&npc_priv->xa_pf2dfl_rmap, XA_FLAGS_ALLOC);
++	xa_init_flags(&npc_priv->xa_idx2vidx_map, XA_FLAGS_ALLOC);
++	xa_init_flags(&npc_priv->xa_vidx2idx_map, XA_FLAGS_ALLOC);
+ 
+ 	if (npc_create_srch_order(num_subbanks))
+-		goto fail1;
++		goto fail2;
+ 
+ 	npc_populate_restricted_idxs(num_subbanks);
+ 
+ 	/* Initialize subbanks */
+-	for (i = 0, sb = npc_priv.sb; i < num_subbanks; i++, sb++)
++	for (i = 0, sb = npc_priv->sb; i < num_subbanks; i++, sb++)
+ 		npc_subbank_init(rvu, sb, i);
+ 
+ 	/* Get number of pcifuncs in the system */
+-	npc_priv.pf_cnt = npc_pcifunc_map_create(rvu);
+-	npc_priv.xa_pf2idx_map = kcalloc(npc_priv.pf_cnt,
+-					 sizeof(struct xarray),
+-					 GFP_KERNEL);
+-	if (!npc_priv.xa_pf2idx_map)
+-		goto fail2;
++	npc_priv->pf_cnt = npc_pcifunc_map_create(rvu);
++	npc_priv->xa_pf2idx_map = kcalloc(npc_priv->pf_cnt,
++					  sizeof(struct xarray),
++					  GFP_KERNEL);
++	if (!npc_priv->xa_pf2idx_map)
++		goto fail3;
+ 
+-	for (i = 0; i < npc_priv.pf_cnt; i++)
+-		xa_init_flags(&npc_priv.xa_pf2idx_map[i], XA_FLAGS_ALLOC);
++	for (i = 0; i < npc_priv->pf_cnt; i++)
++		xa_init_flags(&npc_priv->xa_pf2idx_map[i], XA_FLAGS_ALLOC);
+ 
+-	INIT_LIST_HEAD(&npc_priv.defrag_lh);
+-	mutex_init(&npc_priv.lock);
++	INIT_LIST_HEAD(&npc_priv->defrag_lh);
++	mutex_init(&npc_priv->lock);
+ 
+ 	return 0;
+ 
+-fail2:
++fail3:
+ 	kfree(subbank_srch_order);
+ 	subbank_srch_order = NULL;
+ 
++fail2:
++	xa_destroy(&npc_priv->xa_sb_used);
++	xa_destroy(&npc_priv->xa_sb_free);
++	xa_destroy(&npc_priv->xa_idx2pf_map);
++	xa_destroy(&npc_priv->xa_pf_map);
++	xa_destroy(&npc_priv->xa_pf2dfl_rmap);
++	xa_destroy(&npc_priv->xa_idx2vidx_map);
++	xa_destroy(&npc_priv->xa_vidx2idx_map);
++	kfree(npc_priv->sb);
++	npc_priv->sb = NULL;
+ fail1:
+-	xa_destroy(&npc_priv.xa_sb_used);
+-	xa_destroy(&npc_priv.xa_sb_free);
+-	xa_destroy(&npc_priv.xa_idx2pf_map);
+-	xa_destroy(&npc_priv.xa_pf_map);
+-	xa_destroy(&npc_priv.xa_pf2dfl_rmap);
+-	xa_destroy(&npc_priv.xa_idx2vidx_map);
+-	xa_destroy(&npc_priv.xa_vidx2idx_map);
+-	kfree(npc_priv.sb);
+-	npc_priv.sb = NULL;
++	kfree(npc_priv);
++	npc_priv = NULL;
+ 	return -ENOMEM;
+ }
+ 
+@@ -4759,25 +4765,31 @@ void npc_cn20k_deinit(struct rvu *rvu)
+ {
+ 	int i;
+ 
+-	xa_destroy(&npc_priv.xa_sb_used);
+-	xa_destroy(&npc_priv.xa_sb_free);
+-	xa_destroy(&npc_priv.xa_idx2pf_map);
+-	xa_destroy(&npc_priv.xa_pf_map);
+-	xa_destroy(&npc_priv.xa_pf2dfl_rmap);
+-	xa_destroy(&npc_priv.xa_idx2vidx_map);
+-	xa_destroy(&npc_priv.xa_vidx2idx_map);
++	if (!npc_priv)
++		return;
+ 
+-	for (i = 0; i < npc_priv.pf_cnt; i++)
+-		xa_destroy(&npc_priv.xa_pf2idx_map[i]);
++	xa_destroy(&npc_priv->xa_sb_used);
++	xa_destroy(&npc_priv->xa_sb_free);
++	xa_destroy(&npc_priv->xa_idx2pf_map);
++	xa_destroy(&npc_priv->xa_pf_map);
++	xa_destroy(&npc_priv->xa_pf2dfl_rmap);
++	xa_destroy(&npc_priv->xa_idx2vidx_map);
++	xa_destroy(&npc_priv->xa_vidx2idx_map);
+ 
+-	kfree(npc_priv.xa_pf2idx_map);
++	for (i = 0; i < npc_priv->pf_cnt; i++)
++		xa_destroy(&npc_priv->xa_pf2idx_map[i]);
 +
-+int
-+npc_get_num_kpu_cam_entries(struct rvu *rvu,
-+			    const struct npc_kpu_profile *kpu_pfl);
-+struct npc_kpu_profile_cam *
-+npc_get_kpu_cam_nth_entry(struct rvu *rvu,
-+			  const struct npc_kpu_profile *kpu_pfl, int n);
++	kfree(npc_priv->xa_pf2idx_map);
+ 	/* No need to destroy mutex lock as it is
+ 	 * part of subbank structure
+ 	 */
+-	kfree(npc_priv.sb);
++	kfree(npc_priv->sb);
+ 	kfree(subbank_srch_order);
+-	bitmap_clear(npc_priv.en_map, 0, MAX_NUM_BANKS * MAX_NUM_SUB_BANKS *
++	bitmap_clear(npc_priv->en_map, 0, MAX_NUM_BANKS * MAX_NUM_SUB_BANKS *
+ 		     MAX_SUBBANK_DEPTH);
++	npc_defrag_list_clear();
++	kfree(npc_priv);
++	npc_priv = NULL;
+ }
+ 
+ static int npc_setup_mcam_section(struct rvu *rvu, int key_type)
+@@ -4790,7 +4802,7 @@ static int npc_setup_mcam_section(struct rvu *rvu, int key_type)
+ 		return -ENODEV;
+ 	}
+ 
+-	for (sec = 0; sec < npc_priv.num_subbanks; sec++)
++	for (sec = 0; sec < npc_priv->num_subbanks; sec++)
+ 		rvu_write64(rvu, blkaddr,
+ 			    NPC_AF_MCAM_SECTIONX_CFG_EXT(sec), key_type);
+ 
+@@ -4812,10 +4824,12 @@ int npc_cn20k_init(struct rvu *rvu)
+ 	if (err) {
+ 		dev_err(rvu->dev, "%s: mcam section configuration failure\n",
+ 			__func__);
+-		return err;
++		goto fail;
+ 	}
+ 
+-	npc_priv.init_done = true;
+-
+ 	return 0;
 +
-+int
-+npc_get_num_kpu_action_entries(struct rvu *rvu,
-+			       const struct npc_kpu_profile *kpu_pfl);
-+struct npc_kpu_profile_action *
-+npc_get_kpu_action_nth_entry(struct rvu *rvu,
-+			     const struct npc_kpu_profile *kpu_pfl, int n);
- #endif /* RVU_NPC_H */
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_reg.h b/drivers/net/ethernet/marvell/octeontx2/af/rvu_reg.h
-index 62cdc714ba57..ab89b8c6e490 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_reg.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_reg.h
-@@ -596,6 +596,7 @@
- #define NPC_AF_INTFX_KEX_CFG(a)		(0x01010 | (a) << 8)
- #define NPC_AF_PKINDX_ACTION0(a)	(0x80000ull | (a) << 6)
- #define NPC_AF_PKINDX_ACTION1(a)	(0x80008ull | (a) << 6)
-+#define NPC_AF_PKINDX_TYPE(a)		(0x80010ull | (a) << 6)
- #define NPC_AF_PKINDX_CPI_DEFX(a, b)	(0x80020ull | (a) << 6 | (b) << 3)
- #define NPC_AF_KPUX_ENTRYX_CAMX(a, b, c) \
- 		(0x100000 | (a) << 14 | (b) << 6 | (c) << 3)
++fail:
++	npc_cn20k_deinit(rvu);
++	return err;
+ }
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.h b/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.h
+index 8bf857317e49..10e5bab50f62 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.h
++++ b/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.h
+@@ -183,7 +183,6 @@ struct npc_defrag_show_node {
+  * @xa_idx2pf_map:	Mcam index to PF map.
+  * @xa_pf_map:		Pcifunc to index map.
+  * @pf_cnt:		Number of PFs.
+- * @init_done:		Indicates MCAM initialization is done.
+  * @xa_pf2dfl_rmap:	PF to default rule index map.
+  * @xa_idx2vidx_map:	Mcam index to virtual index map.
+  * @xa_vidx2idx_map:	virtual index to mcam index map.
+@@ -195,7 +194,7 @@ struct npc_defrag_show_node {
+  */
+ struct npc_priv_t {
+ 	int bank_depth;
+-	const int num_banks;
++	int num_banks;
+ 	int num_subbanks;
+ 	int subbank_depth;
+ 	DECLARE_BITMAP(en_map, MAX_NUM_BANKS *
+@@ -214,7 +213,6 @@ struct npc_priv_t {
+ 	struct list_head defrag_lh;
+ 	struct mutex lock; /* protect defrag nodes */
+ 	int pf_cnt;
+-	bool init_done;
+ };
+ 
+ struct npc_kpm_action0 {
 -- 
 2.43.0
 
