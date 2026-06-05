@@ -1,202 +1,237 @@
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazolkn19012048.outbound.protection.outlook.com [52.103.2.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F586175D53;
-	Fri,  5 Jun 2026 05:19:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.2.48
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780636746; cv=fail; b=hO/3EdxxGbbSVMbh8uWqbcN4RyzsTUdKj2MGw1fm2P9dylqey7uP3FLiMKKHcT7UXwfPXyEvwyMihQq6A32cs0o9aEDrH5aHrONnL4R0IDBQC2yVHyX1m4KN21uZij1hnx2JLFWx++O1WVsgWtmpQHzWsqITN+pB6TI/2Kj+5Fc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780636746; c=relaxed/simple;
-	bh=PsM2huVqYJTCi8fhX6R9y0f0pNF7FnEdPvQ0H2EZdIs=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=Wi34o3eaV5ZFuBCzG3LYh8l8mEDbhOuQj1S8DZlpgoFHPhDvRUylt/ToJr8jksBXKTitYyrYp+HDIN+QTsGKa5Hx7OX5HtqO+GOIqOqNbnV0e6KM+pM3UVao4f7s1oX9NfXEuQL5kk0OWtYPNMzNLB+6nCJEOyrceGuq/RtzUgY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=ZXWWYUPy; arc=fail smtp.client-ip=52.103.2.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C7851C5F27
+	for <netdev@vger.kernel.org>; Fri,  5 Jun 2026 05:31:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780637462; cv=none; b=RvoQt7iEaCrx3/bkerXDuiPHHEnwXtKa/uuucAkAK+YLgkhDcM+GDeXknQl/3ZEjjs8soOdp1eR8cW31yWr3uV8yPuG9qGS2iMur1tFszqF0kGEHYi7ymk7kYnQbyTA4NZZIENgh/G0AALlStGymEiAKFNh3lXjk9r6vMapRC4k=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780637462; c=relaxed/simple;
+	bh=6KkI5MZZbDclc8igv7Jmkuhhc3G1Kn/GhoYh9WlzOFE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Xw3GAJybbG3ErrW9Lgnhy+59Fc64tGzpRC5A7PK9eXlR6xJ2Q64avBL/ncPZIeUwSuF2+tdxGganwgwpLMP5oFEERNFvwIDA7lmwbShsZ5dP7Hb9Rp6wmjeuMp2xXK0+UqX6xDEX0EUwx0DLSomys8olGWqrkbo/ufyQmgckeog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MqihekrR; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="ZXWWYUPy"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=WGlOCRvZSvBljSlAT+KuTKMlgVVkLzzbK5c1d7xhW53FelNEtR7EW9/n970PAkOGCPSOnoD0zEcXlfxj2Pt9ai1iEAK9tMqJ4w7pQfR5kQIBfAd8QUE+eA7HuBkFqd5GROhackhnPtT3IeBE31PQCHTir0vTE469wurn4rM1c+Gfx4ML+7vkDbYhxxTzr4PG2bDqrKEl9r6UQqVMhigwz2FAF4yFBeQOGi5v7ufJPO0Qz2uSR4YCgzULyXW5Z7ZPBppmH/FYXQkZj9HuI6cjepVJZBDMXvA2h0HtblEsz7Bu4io4v8Mz/uQx73jHAvNsJs+YZS4g7+GAdXKJDtLmBw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YZdxHJpwNdd5ANg2ZlCpReLYMZWYgiU8X71JX8kab1I=;
- b=vzqtfOmDGMs1JknEffl6gdDM5bVMFX+/fY4Lwdbyae3pleOqpZiPwUc2qvtnPc9pEwcdUOQhN1ddGMhaKp9G2vV2uSJGUFDgdcBd2SAOt/0xQUzA3UNv/KuppvHuzHjsCacoawzNFvghc+Psyej4Z2KyKoXW8xu+BCR2CIII2REcXW0WRGT6VDW31PqCiHwoRDFsuu1k6glP3sHUeo4Ql7O980tizS9gXiWUzB2Bq0p0/ttsL6sOe75XuzwvxW0wsAHkP+hRr/ySRptQDjMxHPVRwrHOedXPSJxa/4QAx6pGPLTVpanxjbmINnqRauYmnYD+h8/pYcYtaA0Dpbzu8Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=YZdxHJpwNdd5ANg2ZlCpReLYMZWYgiU8X71JX8kab1I=;
- b=ZXWWYUPyVpbLQqDFKy0Nq8oQHR31VLb9jGNcGXfMIsfvDv0fpiLO6eVMB7Q3YJOGscvrm0p/JsDEl8u7jZrtj+PBhbrmfEpQGV2BRg8iQjet4P3dgFr8yBHODjc7EX9jAa0Mq/6OoRNg3btSjiKx8T8RIZyNdT+9HyPFZAeS3AR6XfSE9tpOMZEbIyhOlWcXzhRDovf4q68czIBfHG05uRBuA7K6aWfl8Z14JF3CyjiMQQyqQaVfmR+rnEl4aJePesBGpGniDQFjxUNPuxGohU9lTAObnl0sXVkGSW4T0nGM1aw9Br8/6+9EHXhLpthaP0apz1LPBb2G2O/U7W5bzQ==
-Received: from SN7PR19MB6736.namprd19.prod.outlook.com (2603:10b6:806:263::12)
- by DS6PR19MB997434.namprd19.prod.outlook.com (2603:10b6:8:463::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.8; Fri, 5 Jun 2026
- 05:19:04 +0000
-Received: from SN7PR19MB6736.namprd19.prod.outlook.com
- ([fe80::4b6c:b84f:b71c:d0a]) by SN7PR19MB6736.namprd19.prod.outlook.com
- ([fe80::4b6c:b84f:b71c:d0a%3]) with mapi id 15.21.0092.007; Fri, 5 Jun 2026
- 05:19:03 +0000
-Message-ID:
- <SN7PR19MB6736BF850FAF84B013000E5F9D112@SN7PR19MB6736.namprd19.prod.outlook.com>
-Date: Fri, 5 Jun 2026 09:18:56 +0400
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH next-next] net: dsa: qca8k: Add support for force mode for
- fixed link topology
-To: Jakub Kicinski <kuba@kernel.org>,
- devnull+george.moussalem.outlook.com@kernel.org
-Cc: andrew@lunn.ch, olteanv@gmail.com, davem@davemloft.net,
- edumazet@google.com, pabeni@redhat.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260603-qca8337-force-mode-v1-1-caf7670ffab3@outlook.com>
- <20260605012421.3517532-1-kuba@kernel.org>
-Content-Language: en-US
-From: George Moussalem <george.moussalem@outlook.com>
-In-Reply-To: <20260605012421.3517532-1-kuba@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: DX0P273CA0001.AREP273.PROD.OUTLOOK.COM
- (2603:1086:300:26::6) To SN7PR19MB6736.namprd19.prod.outlook.com
- (2603:10b6:806:263::12)
-X-Microsoft-Original-Message-ID:
- <0fc24d8e-902e-44eb-870a-f6616370e4b4@outlook.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MqihekrR"
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-490ace40f4bso17556675e9.3
+        for <netdev@vger.kernel.org>; Thu, 04 Jun 2026 22:31:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780637460; x=1781242260; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vuvdhqAuePBbJyQdMyyPcU8SDSteetKe1IJhuqarnPk=;
+        b=MqihekrRfuOfW+tty/TXvzHHBIvHlnPBGCae6Wz7T075FAfKXKQpZ+UOWZ7Z+Y54lF
+         RTe84Y+vlbk/HpOxclOUmMMvyfjgCA/l8LSgnGLLT6TrzUteFrplsOwCfGDnI7UybaNm
+         vSZSJrbwGJidcgzfW9yxmk+NKBc+awwEkGJbVq5eeriT0Y5BmEo4xXsZAZBmqlClj9JW
+         3JuPhFUEfpIIMAPhlT51FrTrLu8pbBH0M20M/W76CbLUxPe9bNXIDUU8iLg3FW5PDl1o
+         aj3K1Dsz/SUUiemvwH/4yIyuMOikb4Ta9GCs8w62TnpAXGgArRl0yRoLybD+NIciVL8C
+         N0Gw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780637460; x=1781242260;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=vuvdhqAuePBbJyQdMyyPcU8SDSteetKe1IJhuqarnPk=;
+        b=gq+qXEXw798F4x0WXSYVTeH4zOHg/9Z6CtHYvJqtEiabClfEy1L0utrL2/d6jmgo/D
+         C3FxnnbvOrFAWhGGPZRkRE7u3ZBBYTLb/FnkyboI6ZbFXSNeyBwqNiJV/9p+OIwe5GXs
+         fICw5UzZbjKmGi6iQzFTqBCl6J2iGubQYYFa/w6kRuIVw/g7XeWJcNqNtHr4rmUZWIYZ
+         csdfj0vcieBOzr39JRTgW+o+E69Dn9pFgq6AXNK9AScy4S8VrbuznQsqtoY638d+sbgu
+         u8IMtb16Svo7QbEGBKdE06g1Z00dFOhbHodaM73uNUd1ayeAzXRu96SvVm/evtmL5oPV
+         onCw==
+X-Gm-Message-State: AOJu0YwCjZj3zO2Qgg4cinwQPmvW3NeqlVSTbuq3d4J/ESkIB5LCysvP
+	aFtd9Bwc/QgGpyPSgsni9aS2GqK20rWyNnxKCuHHHoyq6QIkcwo6ZWnmh1IwjS6y
+X-Gm-Gg: Acq92OF5iQZYy+E8osE5QZfj8t/ETTqE1qAdVrteGgwq4HFBYZe0EUs/g1/Xp6iGNNT
+	5HcereGEO9PFoTmGQRinG5pRCSq21ODLG3e38F0ZDn3sMpQWOCTmB7epWrsnaUbudeg9hLX2tei
+	aI9joI59bpDdhW4yQdgAnX+kMTCwy5EZVvtu0t+jHvYi6QskfLzb0Jnb/Z28FGXQJwtkmVWUmjt
+	nTiKT4fW4wrSOi2UBxmQZB1UQOgZ9WHiu/57Lc1WiVj7qIJgQBpdFbRiqJNblIz4aybAicjAYFT
+	NFjL9lzGnVGtAX6Aa/ajic8qKRHSD5h2DzKhuDuRd9ysg/OFxA0DDU8sBLE+hujU86N7y11xXRz
+	px5sxzB9/hTW28pc9DdePL9VXAftF010KU3PC8x0rOJEz6Cc/GMGUFkBeQKwk3+ylEGNjO4h4Gd
+	4zixnzfE4tI0FJ2jHsPWJcmUl6D192e6sM2PcQc11eR7q8dQ5pPmr4FS02COQI4InbcQsdP7O7C
+	3H+BjoZJ2hwObdUuJhZHFqsTJUi
+X-Received: by 2002:a05:600c:4e09:b0:488:9bf8:7f17 with SMTP id 5b1f17b1804b1-490c25acd18mr28114225e9.14.1780637459481;
+        Thu, 04 Jun 2026 22:30:59 -0700 (PDT)
+Received: from localhost.localdomain (ip-89-176-136-191.bb.vodafone.cz. [89.176.136.191])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490bc413541sm128414495e9.14.2026.06.04.22.30.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 04 Jun 2026 22:30:59 -0700 (PDT)
+From: Petr Wozniak <petr.wozniak@gmail.com>
+To: netdev@vger.kernel.org
+Cc: kuba@kernel.org,
+	andrew@lunn.ch,
+	hkallweit1@gmail.com,
+	linux@armlinux.org.uk,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	linux-phy@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	maxime.chevallier@bootlin.com,
+	bjorn@mork.no,
+	olek2@wp.pl,
+	Petr Wozniak <petr.wozniak@gmail.com>
+Subject: [PATCH v2 net-next] net: phy: mdio-i2c: defer RollBall bridge probe to PHY discovery
+Date: Fri,  5 Jun 2026 07:30:56 +0200
+Message-ID: <20260605053056.1977-1-petr.wozniak@gmail.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20260604181207.17468-1-petr.wozniak@gmail.com>
+References: <20260604181207.17468-1-petr.wozniak@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN7PR19MB6736:EE_|DS6PR19MB997434:EE_
-X-MS-Office365-Filtering-Correlation-Id: 66e68753-54f0-4272-0996-08dec2c1f4d8
-X-Microsoft-Antispam:
-	BCL:0;ARA:14566002|15080799012|19110799012|8060799015|6090799003|12121999013|24021099003|55001999006|5072599009|41001999006|23021999003|51005399006|37011999003|3412199025|440099028|40105399003;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?VG9uNHkrMWI3N2tKcnU2T2UvUUtwT3hOL0puY0pkR2FMbkJjNlhHNld5VlFY?=
- =?utf-8?B?NE1YdkhOUXd2RERJR3ZjeGtDbWM4cVVOVVFwZUJiV0ZzcTNRdSs3Z2tNUmdh?=
- =?utf-8?B?N1RmQVBTdmZkWFVYNnZvNVlSaTBiUjNaQ3ZjYzlWTEwzSVN2NURFVkNoSWlj?=
- =?utf-8?B?NXp0amtHSytjZHFQY3EzZDdjc2YyV2UyVlhzd2tNTk56UlJOQ1ZTL2s0eHF5?=
- =?utf-8?B?Y1J5K0NHakxabk96QS9VMjduclBOQ0xXMVhadkdkd0h0dkZzWHEwbFVlSVB2?=
- =?utf-8?B?RFMzelU5dElKZWVLWU5XbElKSUk5Z0toQVg3R0NZanBzSlhWSVc2cFlSc1Vz?=
- =?utf-8?B?ZDl0VkF1aERoa2dBUmtBSW5KejZpS29IS3BPV0NYYnM2WjhtWkxqaFo5Tyt4?=
- =?utf-8?B?TFg3TThPYWNFZzIyV05xQjUweHFrWlE5OHpSWlJXQlFCVzcvcXdmME9NSWU1?=
- =?utf-8?B?ZHNmUDU1UXlPa05vRTFsSVdDRG01L0hVVVJVeXduUkJGWHFXTjBkYTY3b2Ex?=
- =?utf-8?B?V1pBM3RXTUVIV0ZTYUp5bWo2QkdxbDFoQW1hOXdNRXRSY0tsaFNHZ0NxQTVU?=
- =?utf-8?B?cVAxWDBDeVZ6bVpLTWlzOFJpbHA0aHdncWlhMXMvUzdOaVl3T09UMWhKdHJp?=
- =?utf-8?B?R0tNamJLd3BGWFRrOU41TXRaYzlpRTY3czdWQk5FMXFJc1N0dy82anRUMjJI?=
- =?utf-8?B?ajhuSTFib0lSeGN4cnE0L0x1VncvaDhhRDlSc2cwUGhmU0s4US8zQjJiNjJC?=
- =?utf-8?B?SlRGVEVUazZwSURDMjlwR1RDWmFFbktLR2dmZ3FscmRDbnRkM1kzaXFRRTJ3?=
- =?utf-8?B?SmpCanE4dms0N0NCOXdvRFlqdFRvdW9YQ01CTWJaSGZpVXRHaXhCRkNuSXlt?=
- =?utf-8?B?YlVWM3RCeGlPRC9uTkI1cUpTcUJBK09QTGoxVWdOWlc0eGtqa3o3ODRxTW94?=
- =?utf-8?B?a2t1S3BqaStJNGxaVjBBY3lOWSszVWVtRnF2TjFCVjhLMDlWQXZyWEU2dUkz?=
- =?utf-8?B?aFlzVFo0bW9ZK2pUeEk2MjFOWjFKOEpYVkVmSmVmSXVJcUQrZFc3S0ZCODda?=
- =?utf-8?B?cGVOeWZvZlRHaU45Z2pZREdXWkxxZXRmTGM0bXlLSGhnbjRUS2ZyRFVPUnEy?=
- =?utf-8?B?Rkw2aC85bXdteDc3NmNFRUNSL1RyRS9JQXNFaUt4SE5GeW5uYVlkVnNLZ1Bs?=
- =?utf-8?B?ajhpVVlnMGViNGVxTW9WWE5ubndUblFHb2xmNno0Y2syb2VoTDZFS1h6M2tr?=
- =?utf-8?B?RmxOK1YvVVFXTDVtQ0R6TEhNRnFlTkExY0NuZ3JaQlE2K1UxV2V2d25uZWpB?=
- =?utf-8?B?Y2dOSGVuSzJtZ1dvVFV5ZUdFNFNXcndENHRoY0JmK1lhTXppSXMzYmZzUUl0?=
- =?utf-8?B?ckRwQjlpZ0FLejNvRlRvNC9zRVBXb2plSEduVFFLVjczc0xPUnM0REJra1Nk?=
- =?utf-8?B?VlRaU1BZbGEyS3lnOVpVdjBGUTZTcVJvdzJ1dnZBPT0=?=
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ZzRDWXV4T1pGN0J0SzFLMWtrNE9uZExBMEJVKzloV1FxMmtQUk5LcGV2MFJV?=
- =?utf-8?B?MWJYUmducHk2MzA1UTJKUVZvNExoN1RHdG9leTdxZkN5MGxIc1pJaEFKeU9n?=
- =?utf-8?B?V1Jkc2RtZWVGOEZNOTl3WENJMnhmb0IrSlpBSERhTzZzLzZ0Ukt5Mmg3YVVI?=
- =?utf-8?B?ejVMMEdHcUJIQU04Um80NkJDYWFYa241MWV5SSszODl4YllYdDNsUU1OY0ta?=
- =?utf-8?B?bDdQb3hOSkVVYWtJTmdsU0IxOTdGRkl5KzUxU2hwNFNZNFVLREZ1VTc5bXhV?=
- =?utf-8?B?N3BnSFdRWkpOcnNoSkR2Z3VlWWdhd1psZ2kybllIYXhrWTRsSkpsQnJzUGs2?=
- =?utf-8?B?QWdaeEVXNWVwT3hMYkZKbExPTTlVTGZrMVI2QkJkSWcwSUdVaXdzRWE2WGZB?=
- =?utf-8?B?SE5DOVJaK2lJODdKaXVWUHFoUDh6d1RDVm03YzU3OUdmTG9Va1RHNUo0RUhm?=
- =?utf-8?B?bzRxTkVEdEtIRGtHY2J3ZENVOEttaldWR21KRnVXUG9zNmRRTmFQMEpkSnBm?=
- =?utf-8?B?ZUgwOGM0eDNnS24wNmJtREZ2cVdEYkg1UG51ZXM3R0dKZlFrS2V3T1VEL0tJ?=
- =?utf-8?B?c1A5ZEE2N2M3cVUzY1E1eUhDcklvUlZnOWVManBnMGJnVklKaFREZGkrQmpv?=
- =?utf-8?B?d3Q4UjRTMjMra3NEQXoxdjZYZ0FCdWtYRFgzNkdKYXF4WFNMcEhSRE51bjI5?=
- =?utf-8?B?M0VXWkpvT3htUGtZVGV5MExhQ0R6aVNxTXMxNHBFSmJmckJaMHpyZ1Rid0JN?=
- =?utf-8?B?YlBueW5SV2czbkdsT1pwVHc3eGRIMXFTY2Y1elJEblVtbzYzM09OQXgyN2RM?=
- =?utf-8?B?MjNiWEMwdm5YaE95UmE1UXN2RThhRktuUFB3b1FCOWdnZCtielM1MWlpSlgz?=
- =?utf-8?B?Ri9oTlJNWlRSclJZek96Q2liSUc5Y2V0WDFCSXVLb3Vva3NUK3JsbnFTbFpZ?=
- =?utf-8?B?dWNsWVBRTWRVRTJ1M0w0SzQrVVlaZ1F1ZzN1ZWtITEorNXJpeU1pVXZhTDBo?=
- =?utf-8?B?TzR6azhvMEhSM3lzdHlsdWJhTFh6d0tLSFNsWlR6Y2xGQ2lTM2dxMmpua3or?=
- =?utf-8?B?a3NiNHpRaGZDR2VwQ0pLRDIxT1dSVjBZTWNyK0hwNGFlL0xHdFdmOEVDbDVZ?=
- =?utf-8?B?UUM4THVBOXJVOERBNXJqMDF4OElkeDlmcG52eitsRFJHZllIK0h4bFVXNkNt?=
- =?utf-8?B?UENmT0RaK1B3eXNRa2VZRUc2d1FVeUVGQTkvbVBFbllVcmpaakF6dHdRb2hX?=
- =?utf-8?B?cGJlVUpvMlgwaDdlM3N5ZlVPSEJtb1hnSnppaGFucEQ2MGwvNnRiZXFnK1A2?=
- =?utf-8?B?cVUwUTlRTWJlS2NoSWtZUUVKdHdyU0FBamt3bWg0MWhjU25SRUJKSlZialBi?=
- =?utf-8?B?K0ZZaElybkMvREpGMXhNWldUTUNhcUtUWHpzQXZSbWJ2aHJiVFZuUkFhNHV2?=
- =?utf-8?B?L3M5ZTRMNGNycEp0MkxYbUlIMHNkU1ViYVUzMkVkR3hFbHpuTVJpdEdPOHRl?=
- =?utf-8?B?bE9nbUpMUGdYVVA0U0xBNk5QTllkS2RvUzZ6SlJ6TWladncvaXprMDZkbG9V?=
- =?utf-8?B?Ymc5blhlOTJibmZhanB0eU1BNXdPRUR1d3N6YzFlUHpnOVF6NlZlNGlQZjdi?=
- =?utf-8?B?aS8vRGFMWFZ0TXVQT2V4dWZlK21KdlpGaktEU0pyT1VqTGRGYWU0M3NjR0Jx?=
- =?utf-8?B?ZHc5Z3pnOU9Sc0dGYkdxTUUrNDZwQnRiV1haRkNiV2FzNUlncDUzeEhuUmFp?=
- =?utf-8?B?dDcxVkdSM3lrVWJ2S0l1VCt5ZTVjQ0Mra1hyUHl6eUl0dGQ4K3l5VTllQ2ZV?=
- =?utf-8?B?MzFDdUxSb04wNUxhWEcxZW1lRi9PcElRUThIYXNOL3NMdTBISW1hR0RPamU0?=
- =?utf-8?B?NXIwMTVGN2Y2U0RvTXVpYi9UNTZtc3VXRCtDMUlLb3RSYnc9PQ==?=
-X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 66e68753-54f0-4272-0996-08dec2c1f4d8
-X-MS-Exchange-CrossTenant-AuthSource: SN7PR19MB6736.namprd19.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Jun 2026 05:19:03.5929
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
-	00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS6PR19MB997434
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On 6/5/26 05:24, Jakub Kicinski wrote:
-> This is an AI-generated review of your patch. The human sending this
-> email has considered the AI review valid, or at least plausible.
-...
-> 
-> Earlier in qca8k_pcs_config(), reg is overridden for these models:
-> 
-> 	if (priv->switch_id == QCA8K_ID_QCA8327 ||
-> 	    priv->switch_id == QCA8K_ID_QCA8337)
-> 		reg = QCA8K_REG_PORT0_PAD_CTRL;
-> 
-> Since the SGMII force mode configuration uses this same reg variable,
-> won't this cause the FORCE_MODE bit for port 6 to be incorrectly written
-> to port 0's PAD control register on these specific switches?
+commit 8fe125892f40 ("net: phy: sfp: probe for RollBall I2C-to-MDIO
+bridge in mdio-i2c") introduced a regression: the RollBall I2C-to-MDIO
+bridge is not yet ready to respond to CMD_READ/CMD_DONE cycles when
+sfp_sm_add_mdio_bus() runs in SFP_S_INIT.  The 200 ms probe times out,
+i2c_mii_probe_rollball() returns -ENODEV, and sfp_sm_add_mdio_bus()
+sets mdio_protocol = MDIO_I2C_NONE.  By the time sfp_sm_probe_for_phy()
+runs (up to ~17 s later on affected hardware), the bridge is fully
+initialized — but PHY probing is skipped because the protocol has
+already been changed to NONE.
 
-I've taken another look at the vendor SDK and this property is always
-set on PORT0_PAD_CTRL regardless of whether it's physically wired on
-port 0 or 6. I did see it is only set on the QCA8337 version, so I'll
-check for that in v2.
+This affects both modules inserted before boot and hotplugged modules on
+hardware where bridge initialization exceeds the 200 ms probe window
+(confirmed: FLYPRO SFP-10GT-CS-30M with Aquantia AQR113C, hotplugged).
 
-> 
->>  	if (val)
->>  		ret = qca8k_rmw(priv, reg,
->>  				QCA8K_PORT0_PAD_SGMII_RXCLK_FALLING_EDGE |
->> -				QCA8K_PORT0_PAD_SGMII_TXCLK_FALLING_EDGE,
->> +				QCA8K_PORT0_PAD_SGMII_TXCLK_FALLING_EDGE |
->> +				QCA8K_PORT_PAD_SGMII_FORCE_MODE,
->>  				val);
-> 
-> [Severity: High]
-> Is FORCE_MODE properly cleared if it was previously set by a bootloader,
-> but we don't use outband negotiation and no clock falling edge properties
-> are configured?
-> 
-> If neg_mode != PHYLINK_PCS_NEG_OUTBAND and the clock phase bits are not set,
-> val will be 0. This causes the if (val) check to fail, skipping the
-> qca8k_rmw() call entirely, leaving FORCE_MODE unchanged in hardware.
-> 
-> However, if clock phases are configured in the device tree, val will be
-> non-zero, and qca8k_rmw() will clear FORCE_MODE. Does this create a
-> scenario where clearing this mode unpredictably depends on unrelated clock
-> configurations?
+Move the probe from i2c_mii_init_rollball() — called at bus-creation
+time — to sfp_sm_probe_for_phy() in sfp.c, where it runs after the SFP
+state machine's module initialization delays.  Export the probe function
+as mdio_i2c_probe_rollball() so sfp.c can call it.
 
-No, the default value, as for all documented bits on PORT0_PAD_CTRL, is
-0 (disabled) after a reset. So it will be disabled by default and only
-enabled if a fixed link is defined in the port node in the DT.
+For RTL8261BE-based modules: the probe correctly returns -ENODEV at PHY
+discovery time, causing sfp_sm_probe_for_phy() to destroy the MDIO bus
+and set MDIO_I2C_NONE — eliminating the 5+ minute PHY probe retry loop.
 
-> 
->>  
->>  	return 0;
+For genuine RollBall modules (e.g. FLYPRO SFP-10GT-CS-30M with Aquantia
+AQR113C): the probe now runs after initialization is complete and
+correctly returns 0 — PHY detection proceeds normally.
 
-Best regards,
-George
+Reported-by: Aleksander Bajkowski <olek2@wp.pl>
+Fixes: 8fe125892f40 ("net: phy: sfp: probe for RollBall I2C-to-MDIO bridge in mdio-i2c")
+Signed-off-by: Petr Wozniak <petr.wozniak@gmail.com>
+---
+Changes in v2:
+ - Generalize scope: regression affects both boot-inserted and hotplugged
+   modules on hardware where bridge init exceeds 200 ms; Aleksander
+   Bajkowski confirmed FLYPRO SFP-10GT-CS-30M / AQR113C broken even
+   when hotplugged
+ - Correct state machine description: probe runs in SFP_S_INIT (which
+   follows SFP_S_WAIT), not "before initialization delays" (Jan Hoffmann)
+ - No code changes from v1
 
+ drivers/net/mdio/mdio-i2c.c   | 18 ++++--------------
+ drivers/net/phy/sfp.c         | 18 ++++++++++++------
+ include/linux/mdio/mdio-i2c.h |  1 +
+ 3 files changed, 17 insertions(+), 20 deletions(-)
+
+diff --git a/drivers/net/mdio/mdio-i2c.c b/drivers/net/mdio/mdio-i2c.c
+--- a/drivers/net/mdio/mdio-i2c.c
++++ b/drivers/net/mdio/mdio-i2c.c
+@@ -352,7 +352,7 @@
+ 	return 0;
+ }
+
+-static int i2c_mii_probe_rollball(struct i2c_adapter *i2c)
++int mdio_i2c_probe_rollball(struct i2c_adapter *i2c)
+ {
+ 	u8 data_buf[] = { ROLLBALL_DATA_ADDR, 0x01, 0x00, 0x00 };
+ 	u8 cmd_buf[]  = { ROLLBALL_CMD_ADDR, ROLLBALL_CMD_READ };
+@@ -397,9 +397,11 @@
+
+ 	return -ENODEV;
+ }
++EXPORT_SYMBOL_GPL(mdio_i2c_probe_rollball);
+
+ static int i2c_mii_init_rollball(struct i2c_adapter *i2c)
+ {
++	/* Send the RollBall unlock password; bridge presence is verified
++	 * later, in sfp_sm_probe_for_phy(), after module initialization. */
+ 	struct i2c_msg msg;
+ 	u8 pw[5];
+ 	int ret;
+@@ -419,7 +421,7 @@
+ 	if (ret != 1)
+ 		return -EIO;
+
+-	return i2c_mii_probe_rollball(i2c);
++	return 0;
+ }
+
+ struct mii_bus *mdio_i2c_alloc(struct device *parent, struct i2c_adapter *i2c,
+@@ -444,12 +446,8 @@
+ 	case MDIO_I2C_ROLLBALL:
+ 		ret = i2c_mii_init_rollball(i2c);
+ 		if (ret < 0) {
+-			if (ret != -ENODEV)
+-				dev_err(parent,
+-					"Cannot initialize RollBall MDIO I2C protocol: %d\n",
+-					ret);
+-			/* -ENODEV propagates to caller: no bridge present,
+-			 * PHY probing should be skipped for this module. */
++			dev_err(parent,
++				"Cannot initialize RollBall MDIO I2C protocol: %d\n",
++				ret);
+ 			mdiobus_free(mii);
+ 			return ERR_PTR(ret);
+ 		}
+diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
+--- a/drivers/net/phy/sfp.c
++++ b/drivers/net/phy/sfp.c
+@@ -2028,17 +2028,8 @@ static int sfp_sm_add_mdio_bus(struct sfp *sfp)
+ 	dev_info(sfp->dev, "probing phy device through the [%s] protocol\n",
+ 		 mdio_i2c_proto_type(sfp->mdio_protocol));
+
+-	int ret;
+-
+ 	if (sfp->mdio_protocol == MDIO_I2C_NONE)
+ 		return 0;
+
+-	ret = sfp_i2c_mdiobus_create(sfp);
+-	if (ret == -ENODEV) {
+-		/* Probe confirmed no bridge present; skip PHY discovery. */
+-		sfp->mdio_protocol = MDIO_I2C_NONE;
+-		return 0;
+-	}
+-	return ret;
++	return sfp_i2c_mdiobus_create(sfp);
+ }
+
+ /* Probe a SFP for a PHY device if the module supports copper - the PHY
+@@ -2058,8 +2049,23 @@ static int sfp_sm_probe_for_phy(struct sfp *sfp)
+
+ 	case MDIO_I2C_ROLLBALL:
+-		err = sfp_sm_probe_phy(sfp, SFP_PHY_ADDR_ROLLBALL, true);
++		/* Probe here, after module initialization delays, so that
++		 * genuine RollBall bridges have had time to start up.
++		 * Modules without a bridge (e.g. RTL8261BE) return -ENODEV. */
++		err = mdio_i2c_probe_rollball(sfp->i2c);
++		if (err == -ENODEV) {
++			sfp_i2c_mdiobus_destroy(sfp);
++			sfp->mdio_protocol = MDIO_I2C_NONE;
++			break;
++		}
++		if (!err)
++			err = sfp_sm_probe_phy(sfp, SFP_PHY_ADDR_ROLLBALL, true);
+ 		break;
+ 	}
+diff --git a/include/linux/mdio/mdio-i2c.h b/include/linux/mdio/mdio-i2c.h
+--- a/include/linux/mdio/mdio-i2c.h
++++ b/include/linux/mdio/mdio-i2c.h
+@@ -33,5 +33,6 @@
+
+ struct mii_bus *mdio_i2c_alloc(struct device *parent, struct i2c_adapter *i2c,
+ 			       enum mdio_i2c_proto protocol);
++int mdio_i2c_probe_rollball(struct i2c_adapter *i2c);
+
+ #endif
+--
+2.51.0
