@@ -1,24 +1,66 @@
-Received: from relay-b03.edpnet.be (relay-b03.edpnet.be [212.71.1.220])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D9153C65FE
-	for <netdev@vger.kernel.org>; Fri,  5 Jun 2026 08:21:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.71.1.220
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F3CF3CE483
+	for <netdev@vger.kernel.org>; Fri,  5 Jun 2026 08:21:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780647670; cv=none; b=jXtj9e9fTeo3lfavvKr+a0W6g+GUDHMUqb2GaKwhpBSG8WtJtHn1EDzZnxoJY1LKprZUTzQpxYbHfGcV5ULN4Dt7lt9ObAZIAYkTEm3prGpASMOwyfIFvnUUk5rlHu0UUjRLz3a+6G8peOpwAiRHX/WTSFqMvY/WsC2iP6frlRc=
+	t=1780647672; cv=none; b=PXWjWEQvRN+l1eApOn8pvB/CNcTW4BU31gy47BzuU64c5h8SPAGOqdcbc7qzrwGwQgOe2Lpy/CYSNbEP5r9Gk2Ev6foiOeyu4FXskOj7TD8xBCz9JWWrio6iKJSRWH5W773b8YCj+u8V0WMM3guvY4LolZbfSgUfSv3CEA1yzvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780647670; c=relaxed/simple;
-	bh=gvOODPje+TEjM+2jIBwQ7IWN5bH+nt1eH6bEsvlWuDE=;
-	h=Message-ID:Date:MIME-Version:To:From:Subject:Content-Type; b=mMR5a9U3ymiDZ+W4SsNzu19UQKds+aWNMEpAZG8zGe/vf/KXQNgZ8S6boMBY5C2p6fy79s97Ww3b2odMHxbLMW18fGGRsVF7EQC6CqG3ECJZPy0JA4V8Xgp9C99s1XPqB4YtBbjBcnxQRFhCJjTsRRFnTyf4CAEjTYAM/YZluMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=kabelmail.de; spf=fail smtp.mailfrom=kabelmail.de; arc=none smtp.client-ip=212.71.1.220
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=kabelmail.de
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=kabelmail.de
-Received: from [192.168.177.83] (212.71.13.3.adsl.dyn.edpnet.net [212.71.13.3]) by relay-b03.edpnet.be with ESMTP id BFDwOVlck5m4BoaQ for <netdev@vger.kernel.org>; Fri, 05 Jun 2026 10:09:50 +0200 (CEST)
-X-Barracuda-Envelope-From: janpieter.sollie@kabelmail.de
-X-Barracuda-Effective-Source-IP: 212.71.13.3.adsl.dyn.edpnet.net[212.71.13.3]
-X-Barracuda-Apparent-Source-IP: 212.71.13.3
-Message-ID: <ec5bd768-3f54-4c30-b5a2-1e0b43f789e3@kabelmail.de>
-Date: Fri, 5 Jun 2026 10:09:46 +0200
+	s=arc-20240116; t=1780647672; c=relaxed/simple;
+	bh=rgfSYOiXywKrwLfB/qrMOdVjNG8ygmP3bouuywyCiSo=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=S+8Fp9mPg9tQ6SEOzNkMvrQdXdIzxbkGJGWitI0f7zSjJRArEbAvrqXPluFukc8PSzfFIbrWqop2WQfGjuBhsSu27vYaIjD/tAHhKxtgM6ssKZAIpJ/1FLameVqYxCqUnP4dM0Eq/8OerKBlBuMAFpfZ9X7spks60oLGXXgco/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=lQCE+b4X; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="lQCE+b4X"
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-490b8ac62baso18367855e9.0
+        for <netdev@vger.kernel.org>; Fri, 05 Jun 2026 01:21:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=blackwall.org; s=google; t=1780647669; x=1781252469; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:references:cc:to:from
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=xTR+ZXHU2zHqRTVuftEearzPbfFaRCiKJR11oO5z0GA=;
+        b=lQCE+b4Xau2GlY3QvO+SA3NmUzxPjvzh0asUeHoks7TRi8pAZtrchxL7EHtEy+55HT
+         HmEAHeC8AQNWU5SIsHp7GyEbQgwj6V3w23/WSsF740Eu6kbpjfjmeaPWJ3yHqv8EgE8E
+         /ndkqzlbvcR751xa3/UBJdveyFPVb91pPFtoEKFCXRhz3LBQ35FxLmxKRtRejxK3wj/y
+         wfoe+J44TLZDIJ+MKJg2HokmvAtdX8KMUBGAiBrzkdT1YGRCWtVv6e7feN/Uc1a3rjYo
+         yV/3x82IPHtPw2hxGk21NZjDZS7ZKuP2k0ccBS46y7fAoH3Oje//+KVAHKvFwO+PZWMM
+         zKKg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780647669; x=1781252469;
+        h=content-transfer-encoding:in-reply-to:references:cc:to:from
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=xTR+ZXHU2zHqRTVuftEearzPbfFaRCiKJR11oO5z0GA=;
+        b=k3SJDB67Hyl4GIhRjml9IzDGYO4aBe9GlZE5dDMYBGUJF0xxL82u/5T4AiPggGsVz2
+         tDxbZqU3ZasFib4ttZ7JUL8GFJMGRXYFQE7XEoe9sNOyUZMTAE6fvQJNBnX45lcLhFI1
+         6R1elxjI9k7yJQRq5auunExhaNmiXMf2Qx25tfp0IMhe27Kfiq6Q7h3rKQtDn+f/CSCd
+         AeTZpNQMd8K3UtfUPZmDrjOo0+i+NZb8PPTduqDwXAPloIZwzTQf7GTTWPgF6B7tA0tz
+         /INogsqCej2wbdXsnFhzTBcyTCkxP7b+rYRqXISaNrm2BdPviUDqOrANs5aydqNjCAA/
+         Wcfg==
+X-Forwarded-Encrypted: i=1; AFNElJ/umn0FXhIzMN+gQn4omMAmdcSlalSP7irpXbGEmuwn+EHzMF+W6HPHO511YrwZTPw4SIDodCI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwMFcVBidH/vk78K13l9TJTi1w0cemv5VogyKzT1qMqaoD526tq
+	7n/aSytxyvgd0MSJ2YZjLNi6SFRRUFWTNlSB0dCJibZsqZ++Cf+LbJGdqoOQB56tDnw=
+X-Gm-Gg: Acq92OF/ituS+TkVUtcof16R5YTnmj6DIsIlKUqFA3ioKl5a64cmzRb9JTci8mgFMRn
+	+y64PL1SB2cNZu9ENYMJkQD8KbyK5LCZeEKO5qcy+DkfRfFT25jg2suaw5IeVReQSsk1O6Qda62
+	I7UIolI020k2Bg7EntoBkV6Gc2Qb9LWJpjdTHwg2avqu0OAvGuCTiYXSwvytnlGSHFgzUUoWyGo
+	yJO9OaTd7hARKDqaQplFRGMv+Oc6sVjxrKcIxdi1NN+yGgz6iGqhNXDO1nGPqPhIIvTbAXsybik
+	dpNzc2KXXlENuEEKipQWSsNYuTG584/xX151D2G+5qRFByQ1dgyKDmIioidHNtA3iFVi7uW9Ntd
+	XbEdCpDIfF57qNFRXGX0AWLLY6MopXLw35wDrL26ybKDIxVcZcD6XTfTmr6BxsnjbLmHiWDHypD
+	sD7x7ReQR+dC/CQQDDIY9FX7L89cRVNjdKBKog14pxXEkZ6fEWj1CFG8A0dUIWgsjV
+X-Received: by 2002:a05:600c:4ed1:b0:490:b4cb:3866 with SMTP id 5b1f17b1804b1-490c2cf67f7mr22714655e9.10.1780647669382;
+        Fri, 05 Jun 2026 01:21:09 -0700 (PDT)
+Received: from [192.168.0.161] (78-154-15-182.ip.btc-net.bg. [78.154.15.182])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490bc413541sm141002065e9.14.2026.06.05.01.21.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 05 Jun 2026 01:21:08 -0700 (PDT)
+Message-ID: <8186bef1-aa58-47c5-9816-1b707ec949da@blackwall.org>
+Date: Fri, 5 Jun 2026 11:21:07 +0300
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -26,84 +68,52 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Content-Language: nl, en-US
-To: netdev@vger.kernel.org
-From: Janpieter Sollie <janpieter.sollie@kabelmail.de>
-Subject: SFP/MDIO/I2C: help requested unlocking a SFP+ MCU to expose PHY
-Autocrypt: addr=janpieter.sollie@kabelmail.de; keydata=
- xsBNBFhRXM0BCADnifwYnfbhQtJso1eeT+fjEDJh8OY5rwfvAbOhHyy003MJ82svXPmM/hUS
- C6hZjkE4kR7k2O2r+Ev6abRSlM6s6rJ/ZftmwOA7E8vdSkrFDNqRYL7P18+Iq/jM/t/6lsZv
- O+YcjF/gGmzfOCZ5AByQyLGmh5ZI3vpqJarXskrfi1QiZFeCG4H5WpMInml6NzeTpwFMdJaM
- JCr3BwnCyR+zeev7ROEWyVRcsj8ufW8ZLOrML9Q5QVjH7tkwzoedOc5UMv80uTaA5YaC1GcZ
- 57dAna6S1KWy5zx8VaHwXBwbXhDHWvZP318um2BxeTZbl21yXJrUMbYpaoLJzA5ZaoCFABEB
- AAHNMEphbnBpZXRlciBTb2xsaWUgPGphbnBpZXRlci5zb2xsaWVAa2FiZWxtYWlsLmRlPsLA
- jgQTAQgAOAIbIwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBGBBYpsrUd7LDG6rUrFUjEUP
- H5JbBQJoLGc9AAoJELFUjEUPH5Jb9qoIAKzdJWg5FNhGTDNevUvVEgfJLEbcL7tM97FL9qNK
- WV6fwyoXUM4eTabSqcq2JVbqR4pNur2i7OSPvF3a/VRhl2I0qMcFz8/08hVgFG55iBI9Rdwl
- sn3b37KzwdGR7RX5cRt83ST76riKVdEsB/EKeU88/i9utWmT7M8HaqvKw16qhcs2i2hAuM9T
- wNmLt+l65sFMZcgY2+3pne8X1DRj6c9aQ3IBUcKMsB977P2aiss0xQrJ4CqSG3Tgjtzw0c7F
- BuamFq8FIzAtTwRnjxHtqYVUnFLLMu7INfdcQuW2Q2eZHO6+X80QlL+uMDirXB+EbHKZcrU4
- EN13bLOk6OG5ODLOwU0EaCxqtwEQAOfQzQMy61HqB1NL4rWCCI3fG131Da4iyMceOuMntmZx
- 9EomthdZRiunLffjMcN7aBcgr4wCh2tNar0hpUkkPpnM/Lat+avTZBkaSmuSF52ukmkVZLEE
- +jPy33hTWkc+k2pJ91XvLVU9axtd33XDBL6bP2oNmG+QF8hfN7QzukWzI52EdzF+DYgt08te
- 875abopdtZa/csYO51uqGg5zBjixylZ48pB9o5lWM6h1HSlBoHGBHh3u2ptxyxqTGQYOX+MR
- QEJElLV7ydJSWmm+3cSza3z2BtwyfjKUPzgHXQEBhPQdTalH4cZeJQGi3Zxhy4iQBGpvg1nW
- msd2//x0FRSHkZtzTVaTCTuf0kHhqiQ8a50B6YDJiTC5koH0hp72Fz2SQoFBcDpUFkNzBWng
- Ju9o1LBGd69c7AvOgMYZxDWwvDyb2sUfPJX0V4f+jJUjffO1K+PTrtnq2gpHKjBZHgGUvG4w
- 36Juy5BFr7TDDRt5rZGN26Tcs4Nq4EZTjyE6QuJOtA5iyJQo3ZwqQ5d9apyStPBJC1CnBZCo
- kCbRrIbLgqe+mCgXhQngj3QZUZn8qmDB2VHEDmSdkJ4A9qKyiof9uRhmAH287uQ/i342xuUM
- 8raS/RGFQaNCV2bBGKqflpS9l1BKGyevk2MUw/IGKJOYfXYc6L5RoPLSlkseBdSpABEBAAHC
- wHwEGAEIACYWIQRgQWKbK1Heywxuq1KxVIxFDx+SWwUCaCxqtwIbDAUJCWYBgAAKCRCxVIxF
- Dx+SW62eB/0SdagAw65x1IEwtEbdo4qxTL/a2iShsMvFOZYt/UE8fDTMkyTJFlDnxHDJqiHR
- 0yHpt41+CGxt5z8xhd+4HE+NdQJD2rjvvk5A2C8baOQYv8Mb5I4iDjSuYJWjrAwjCo25oHo7
- CtoMd2jhn3+L1BO8/VY+AjdVXpGqPzor6Q/c5XAfUsgA2/2VEUpXLp8xKr7v/Gn08zUqaT+W
- 90QjvK1gwYv7sQ4X0w7kzf3sgQvN64cjo0jVsC3EG1AfdLtc+213+3dzDLqomtWtqoxmnrqx
- oMdve2PL2byHDAtzeWGGM38JB4H6A0VlvUyGqgAnRS/UyOLPpqNYbi1lPemVHZsk
-X-ASG-Orig-Subj: SFP/MDIO/I2C: help requested unlocking a SFP+ MCU to expose PHY
+Subject: Re: [RFC PATCH net-next] net: bridge: Move long delayed work on
+ system_dfl_long_wq
+Content-Language: en-US, bg
+From: Nikolay Aleksandrov <razor@blackwall.org>
+To: Marco Crivellari <marco.crivellari@suse.com>,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org, bridge@lists.linux.dev
+Cc: Tejun Heo <tj@kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>,
+ Frederic Weisbecker <frederic@kernel.org>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Michal Hocko <mhocko@suse.com>, Simon Horman <horms@verge.net.au>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Ido Schimmel <idosch@nvidia.com>
+References: <20260507134815.295588-1-marco.crivellari@suse.com>
+ <CAAofZF6CcyxoOsYr94KARUFtfi+=H1nF3mBQAtFWxEujdVgXUw@mail.gmail.com>
+ <4d9067d9-2a4a-45e2-aa43-c456648989da@blackwall.org>
+In-Reply-To: <4d9067d9-2a4a-45e2-aa43-c456648989da@blackwall.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Barracuda-Connect: 212.71.13.3.adsl.dyn.edpnet.net[212.71.13.3]
-X-Barracuda-Start-Time: 1780646990
-X-Barracuda-URL: https://212.71.1.220:443/cgi-mod/mark.cgi
-X-Virus-Scanned: by bsmtpd at edpnet.be
-X-Barracuda-Scan-Msg-Size: 1230
-X-Barracuda-BRTS-Status: 1
-X-ASG-Debug-ID: 1780646990-24639c1f231c9220001-BZBGGp
-X-Barracuda-Spam-Score: 0.00
-X-Barracuda-Spam-Status: No, SCORE=0.00 using global scores of TAG_LEVEL=10.0 QUARANTINE_LEVEL=10.0 KILL_LEVEL=7.0 test= 
-X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.125474
-	Rule breakdown below
-	  pts rule name              description
-	 ---- ---------------------- --------------------------------------------------
-	
+Content-Transfer-Encoding: 8bit
 
-Hi,
+On 05/06/2026 11:20, Nikolay Aleksandrov wrote:
+> On 05/06/2026 11:16, Marco Crivellari wrote:
+>> Hi,
+>>
+>> On Thu, May 7, 2026 at 3:48 PM Marco Crivellari
+>> <marco.crivellari@suse.com> wrote:
+>>> [...]
+>>>   net/bridge/br_fdb.c    | 2 +-
+>>>   net/bridge/br_stp.c    | 2 +-
+>>>   net/bridge/br_stp_if.c | 2 +-
+>>>   3 files changed, 3 insertions(+), 3 deletions(-)
+>>
+>> Gentle ping.
+>>
+>> Thanks!
+>>
+> 
+> Ping about what? The patch is marked as RFC so it is not
+> going to be considered. It already got a reviewed-by one
 
-This message is a follow-up on a previous request,
-I reverse-engineered a lot of stuff,
-and the question has become fundamentally different.
+err, considered to be applied
 
-I am trying to access the bcm84891 phy on a 10Gtek ASF-10G-T80 sfp+ transceiver.
-According to 10Gtek, these modules contain a bcm84891 phy.
-The MDIO commands seem te be sent to a MCU, not the phy itself.
-
-Does anybody know how to make a MCU transparent?
-Did he / she found a hack by writing a i2c register or something alike?
-
-I have a rollball password, but initializing MDIO with rollball does not work.
-with MDIO_I2C_NONE, the link comes up (and is stable), so the firmware / MCU does a lot on its own.
-with MDIO_I2C_C45 (the only method bcm84891 supports) says "no phy detected"
-with C22, it shows a buggy ID which isn't even close to the 84891 IDs in the 7.1 patch.
-
-All methods (C22/C45/Rollball (with/without password) can be used to read registers with i2csfp,
-but none are actually consistent (and rollball returning 0xffff at best).
-
-Also, writing to those registers, and reading them again, shows no changed value.
-
-Did anybody ever try + succeed making a MCU transparent?
-Could he / she teach me how it was done?
-
-Thanks,
-
-Janpieter Sollie
+> of the maintainers, I'm ok with it too, so when sending it please add:
+> 
+> Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+> 
+> Cheers,
+>   Nik
 
