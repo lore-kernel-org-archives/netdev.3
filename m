@@ -1,65 +1,37 @@
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A59348125B
-	for <netdev@vger.kernel.org>; Fri,  5 Jun 2026 07:57:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A30B6495510;
+	Fri,  5 Jun 2026 08:11:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780646245; cv=none; b=t4wA6EebZ9ghi17rdfjCOPZSq2UABAQWcEk0LSwe3rYk5gMOMJEBiFKnDvF4dbSvdhW7IL2q7QDinWAcHz3fCVrnja6g4jZXODEH4t4lTwobXgnjY5bcBWTo5v7leVFeczsJVfphmB97/e0CuRf/gKel9QicLoX5t+HmqCci154=
+	t=1780647091; cv=none; b=izElTZnAl4VU4jMwjDaYCFw9xgx5Jdm3nvzLj6yKtIxqBkHhndvHgZTl1ps4ZXGZY7WuzqrPlnZzKvjqbmLl9zMojNhz9bfdRUSxAHckbIK7FvDAqJkdGnW7vUVhM2Y2vqBfHF8y99Y7jlplG33EUJvsGus3U3Nwb3XrMMA+TEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780646245; c=relaxed/simple;
-	bh=FyoT6jElRNhZ/XR8me8pCu8SF+rmD4dgSDPDQvZXrZ8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=dGOI9XpCJbHQ3E7ANpSMPHYKoMElPiZhhy0Pi2lAXwXRevCQeyNUewlTQ3o7xE7m6p+a5Iv9hXrY0494RmKCHTDaEVzmPAg9/TGzmUD3/FyyJ64KEDBdmiEa/4AACogBv/ndcCeivaXZ89v/vqHSolg1XPnOXAU3tE/hS7kbgR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LRoFk0pz; arc=none smtp.client-ip=209.85.216.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1780647091; c=relaxed/simple;
+	bh=wVsP7qwG8BJu2wprX0HV2M1fTkH7tQV3G1mR8NtSBaw=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=YkSoB8rVHO59IG66zmiHuYuyYWLzbyGnZ4+Pyj30JYpjAyBu7MB3zgNmma5FE0yJ7yiQycoKrPcRux8qX7HpzavyQwPsDNmhSJ3eRqrE70gLAOVn8Aia4AnJW0rE5tcNyS6PhhYfflZLwAMqrMF9wuhVOgl8HQ/nT/H2Xry/x8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hbrnqrg9; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LRoFk0pz"
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-36d6bb38b44so1151942a91.0
-        for <netdev@vger.kernel.org>; Fri, 05 Jun 2026 00:57:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780646243; x=1781251043; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ypRXmfNw4AH7NGaRxQ71Nt3S+wAEO8XxXRpJWlgrK/o=;
-        b=LRoFk0pzEXlI9g+wQcOHkWJgIJz/lZ+546mIf56y3vR0op0BpXZ2K37D5dGWNj2SzJ
-         d3GzsLACru+w6jau1Nzo/VmfH3cDbyt+RMi3Kift9Tl0MN+6414a+DzCpYURezCuHQt+
-         72psawsisQ5YnBHMhhm5bYdknDAz4Oa3dplQeQe/+FC57402ZEFeOcOsq33CEuThRTGe
-         q7VJrxGIXM5oH0PG4IPENZ3kTSRQYyW4mHyvFMDzgzsx/anS7khK9AuFRvA5wVrBism5
-         IOn6CPM8jwouDQRoV7/2ui5ZKMtLJfGDGQgWrtlqUxW2NvP+G09ghB1UNGhl4T5i/Xpc
-         FrcA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780646243; x=1781251043;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ypRXmfNw4AH7NGaRxQ71Nt3S+wAEO8XxXRpJWlgrK/o=;
-        b=mOXvRjuraMYhvbHtneNGNcepMuv7/Ik7z2wvi+gKzrQI3sntcYgbIzSgWGywNzQjuz
-         sVGUAwBiOJFGfI5BopHFQwA0FKwhmEY4K7FAEfTbqmCRpzAFZRPf/598TYM8kJpAqNJY
-         AS0pPnyA0h1PBAl8mCu3rNGVkyf3BpcuQew4VMsYYjGKrHBMHIAATMh8VOKEqeaEE92z
-         xu7ir+7PXYXCEoUTQVHmVA/BfJkGUYRYbEeyHk1WK0zlPn3gRowAihjl0j6bQT9U8MUk
-         3HutRNOcAKypc8gstw1WbP0P96QwUol9WS96g4sQHMR3w+Rz3OoTtgUUBbXgivibU2np
-         P62w==
-X-Gm-Message-State: AOJu0YwoACo7UMhjVikkm+SA0IOXCorSQh1U04BQoEQEwzgC9sWibDPc
-	exC4t7GWGKlHkeDV9rwsDvOrDA+J/822x3fReYHzd1XHMZT9sbYvUgmv
-X-Gm-Gg: Acq92OE2OQMi/rF2c0VxkA31Imr9NbXuarMRzOP4oqZxNlXlelwAbS2eQ7mPxSIy5x6
-	ezrqLeRPu3ct5qw3iYd5k18Y7jbiJTv0zQmhSBCQhtFwDdvtQwlPbD6uMQC3b26wP6Z/oNnxmrN
-	1BBWrNaIK/iqbB6iLj6lurWeTddtPMicGEzWEqr73MwaIjTR8ccZAQ1EOg0dz86AQ0L+nlpY/UZ
-	/iMBYkU/nudeG1Qszk5aGV7LOyAlx6xTICV89GHmSbfFQ5yXbMnbgMNRLn4jMXyuquAmau5/AdG
-	3rVstAWX9sw6qn1HjXdZsO9buTq15al66LmzKJE/ImvXpCKqd4hWV81kWv/WDvDjhHvaDxrDUtR
-	/ODx3734EaIkZqoeQTyHJcGKiku7ZxCcg4p3429q6qbV+tdMjrRSZi74qUUpZmi/uav109WRnQz
-	EOmicWIS2pf3cn6utzRALCbQwurNvFFx2m2l/UsMrDTV+MbZouoYSo9zGh+QYIX6sQZ3JGrwKXU
-	A==
-X-Received: by 2002:a17:90b:3512:b0:36d:b424:4f17 with SMTP id 98e67ed59e1d1-370ee82fa3cmr2367318a91.1.1780646242679;
-        Fri, 05 Jun 2026 00:57:22 -0700 (PDT)
-Received: from u9dbb0cac493f51.ant.amazon.com ([50.35.61.175])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-37133082519sm897559a91.1.2026.06.05.00.57.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 Jun 2026 00:57:22 -0700 (PDT)
-From: Carlos Fangmeier <carlos.fangmeier@gmail.com>
-Date: Fri, 05 Jun 2026 00:56:35 -0700
-Subject: [PATCH] net: stmmac: prevent kernel panic during XDP program and
- XSK pool transitions
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hbrnqrg9"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 4CA61C2BCC6;
+	Fri,  5 Jun 2026 08:11:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1780647091;
+	bh=wVsP7qwG8BJu2wprX0HV2M1fTkH7tQV3G1mR8NtSBaw=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=Hbrnqrg9RhUWrD93DON6WYHKiUY/P9JoQoOKcBb0/KJWXzbzKUzy1aiEPRDNCz74l
+	 unOk46jE02c/euDZYR1gDWxh9Uxacss0xlUunTTj86g+Uk7iSNaM04wzH4DGgAqWuP
+	 QOK6c9mcDNCgEQ6otxAJVE8JDdQ6Rci/uyPf3YSW6lk2Xc5jca5/hSBn1Ed49K5Ycp
+	 e3VdODdZns9EJlfW2FyX1pLCLijdAZOhdw0+BdfL7Jl8v1NW3lPx68kX0BRG1rAFRs
+	 fIOgpgls+EJeJW0zsiaY65LScSz0F1I6vkcMUyGlEv/qY6jPK7TwZ9GbG+DUyC7SF3
+	 jl5FVBD61KZUQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 305B6CD6E5D;
+	Fri,  5 Jun 2026 08:11:31 +0000 (UTC)
+From: George Moussalem via B4 Relay <devnull+george.moussalem.outlook.com@kernel.org>
+Date: Fri, 05 Jun 2026 12:11:29 +0400
+Subject: [PATCH next-next v2] net: dsa: qca8k: Add support for force mode
+ for fixed link topology
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -67,145 +39,113 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260605-main-v1-1-aed15b1cf1af@gmail.com>
-X-B4-Tracking: v=1; b=H4sIADKBImoC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIzMDMwMT3dzEzDzdNDPLNEtTM5NEc5MkJaDSgqLUtMwKsDHRsRB+cWlSVmp
- yCUivUm0tAMnGDJdoAAAA
-X-Change-ID: 20260604-main-f69f9564a74b
-To: Alexei Starovoitov <ast@kernel.org>, 
- Daniel Borkmann <daniel@iogearbox.net>, 
- "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
- Jesper Dangaard Brouer <hawk@kernel.org>, 
- John Fastabend <john.fastabend@gmail.com>, 
- Stanislav Fomichev <sdf@fomichev.me>, Andrew Lunn <andrew+netdev@lunn.ch>, 
- Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, 
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
- Alexandre Torgue <alexandre.torgue@foss.st.com>, 
- Ong Boon Leong <boon.leong.ong@intel.com>
-Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, 
- linux-stm32@st-md-mailman.stormreply.com, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Carlos Fangmeier <carlos.fangmeier@gmail.com>
-X-Mailer: b4 0.15.2
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260605-qca8337-force-mode-v2-1-d9a6b6545bfa@outlook.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/32NTQ6CMBCFr0Jm7ZjSYlFX3sOwKGUqjdLRFgmGc
+ HcrB3Dzki/vb4FE0VOCc7FApMknzyGD3BVgexNuhL7LDFJILbRQ+LLmqFSNjqMlHLgjdK1tzUG
+ edFVpyMVnJOfnbfQKgeYRfwJNtnqfRo6f7W4qt8C/5anEEq1xta6Fc6ZVF36PD+b73vIAzbquX
+ 0/JJvLBAAAA
+X-Change-ID: 20260603-qca8337-force-mode-fbcba5296446
+To: Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ George Moussalem <george.moussalem@outlook.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1780647089; l=3187;
+ i=george.moussalem@outlook.com; s=20250321; h=from:subject:message-id;
+ bh=/1K49g/Q0+wrB8ffa0QJHaW9eANv5Yae+dqQkwbdI4U=;
+ b=Xn7RwqPiLUqBSMkfjxaoyatDwqn+EhlJZVxXog3mgyAtwLsVAImKiBsVWVvKVPlXJ//K6hwlv
+ IPyVfdFw1CBAI5t89drX8j9nLQevPmF9+g75OyKnuqOsk4jD9ZFIckZ
+X-Developer-Key: i=george.moussalem@outlook.com; a=ed25519;
+ pk=/PuRTSI9iYiHwcc6Nrde8qF4ZDhJBlUgpHdhsIjnqIk=
+X-Endpoint-Received: by B4 Relay for george.moussalem@outlook.com/20250321
+ with auth_id=364
+X-Original-From: George Moussalem <george.moussalem@outlook.com>
+Reply-To: george.moussalem@outlook.com
 
-stmmac_xdp_set_prog() tears down and rebuilds all DMA channels via
-stmmac_xdp_release()/stmmac_xdp_open() without pausing the netdev
-TX path. Similarly, stmmac_xdp_enable_pool() and
-stmmac_xdp_disable_pool() reconfigure individual queue DMA rings
-while TX remains active.
+From: George Moussalem <george.moussalem@outlook.com>
 
-If the kernel transmits a frame during these windows — for example an
-MLD report queued by the IPv6 stack — stmmac_xmit() calls
-dwmac4_set_addr() against an MMIO register whose mapping has been
-torn down, triggering a level-3 translation fault:
+A fixed link topology is commonly used to connect this switch (on port
+0 or 6) to a SoC's MAC over SGMII. When inband negotiation is not used,
+the switch needs to be configured to operate in force mode. As such,
+enable support for force mode.
 
-  Unable to handle kernel paging request at virtual address ffff8000840ec000
-  pc : dwmac4_set_addr+0x8/0x18
-  lr : stmmac_xmit+0x64c/0xb60
-  Call trace:
-   dwmac4_set_addr+0x8/0x18
-   dev_hard_start_xmit+0xb0/0x220
-   sch_direct_xmit+0x108/0x3f0
-   __dev_queue_xmit+0x844/0xd00
-   ip6_finish_output2+0x2d8/0x610
-   mld_sendpack+0x180/0x2e0
-   mld_ifc_work+0x1dc/0x480
-
-The existing netif_tx_disable() in stmmac_xdp_release() is not
-sufficient because stmmac_xdp_open() re-enables TX via
-netif_tx_start_all_queues() before the caller regains control, leaving
-a window where the freshly rebuilt rings can race with pending TX work.
-
-Fix this by wrapping each reconfiguration path with
-netif_tx_disable()/netif_tx_wake_all_queues():
-
- - stmmac_xdp_set_prog(): hold TX disabled across the full
-   stmmac_xdp_release() + stmmac_xdp_open() sequence, only waking
-   TX after stmmac_xdp_open() returns.
-
- - stmmac_xdp_enable_pool(): disable TX before tearing down the
-   queue, re-enable after the queue is rebuilt and NAPI is active.
-
- - stmmac_xdp_disable_pool(): same pattern around the pool teardown
-   and queue rebuild.
-
-Tested on Cortex-A55 (stmmac/dwmac4, kernel 6.6.60) with AF_XDP
-zero-copy and IPv6 active — no panics observed across repeated
-XDP attach/detach and XSK pool setup/teardown cycles.
-
-Fixes: 132c32ee5bc0 ("net: stmmac: Add TX via XDP zero-copy socket")
-Signed-off-by: Carlos Fangmeier <carlos.fangmeier@gmail.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: George Moussalem <george.moussalem@outlook.com>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac_xdp.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+Changes in v2:
+- Added check for QCA8337 switch ID and build up the register mask
+  accordingly before writing the force mode bit to avoid overwriting the
+  bit on switches other than QCA8337 for which there's no documentation
+  on whether force mode is supported or not.
+- Added comment to state that regardless of port used (0 or 6), the
+  force mode bit is written to the PORT0 PAD register as per vendor SDK.
+- Link to v1: https://lore.kernel.org/r/20260603-qca8337-force-mode-v1-1-caf7670ffab3@outlook.com
+---
+ drivers/net/dsa/qca/qca8k-8xxx.c | 22 ++++++++++++++++------
+ drivers/net/dsa/qca/qca8k.h      |  1 +
+ 2 files changed, 17 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_xdp.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_xdp.c
-index d7e4db7224b0..a6611aee687f 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_xdp.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_xdp.c
-@@ -34,6 +34,7 @@ static int stmmac_xdp_enable_pool(struct stmmac_priv *priv,
- 	need_update = netif_running(priv->dev) && stmmac_xdp_is_enabled(priv);
+diff --git a/drivers/net/dsa/qca/qca8k-8xxx.c b/drivers/net/dsa/qca/qca8k-8xxx.c
+index a36b8b07030e..4c928983b862 100644
+--- a/drivers/net/dsa/qca/qca8k-8xxx.c
++++ b/drivers/net/dsa/qca/qca8k-8xxx.c
+@@ -1538,7 +1538,7 @@ static int qca8k_pcs_config(struct phylink_pcs *pcs, unsigned int neg_mode,
+ {
+ 	struct qca8k_priv *priv = pcs_to_qca8k_pcs(pcs)->priv;
+ 	int cpu_port_index, ret, port;
+-	u32 reg, val;
++	u32 mask, reg, val;
  
- 	if (need_update) {
-+		netif_tx_disable(priv->dev);
- 		napi_disable(&ch->rx_napi);
- 		napi_disable(&ch->tx_napi);
- 		stmmac_disable_rx_queue(priv, queue);
-@@ -46,6 +47,7 @@ static int stmmac_xdp_enable_pool(struct stmmac_priv *priv,
- 		stmmac_enable_rx_queue(priv, queue);
- 		stmmac_enable_tx_queue(priv, queue);
- 		napi_enable(&ch->rxtx_napi);
-+		netif_tx_wake_all_queues(priv->dev);
+ 	port = pcs_to_qca8k_pcs(pcs)->port;
+ 	switch (port) {
+@@ -1611,11 +1611,21 @@ static int qca8k_pcs_config(struct phylink_pcs *pcs, unsigned int neg_mode,
+ 	if (priv->ports_config.sgmii_tx_clk_falling_edge)
+ 		val |= QCA8K_PORT0_PAD_SGMII_TXCLK_FALLING_EDGE;
  
- 		err = stmmac_xsk_wakeup(priv->dev, queue, XDP_WAKEUP_RX);
- 		if (err)
-@@ -72,6 +74,7 @@ static int stmmac_xdp_disable_pool(struct stmmac_priv *priv, u16 queue)
- 	need_update = netif_running(priv->dev) && stmmac_xdp_is_enabled(priv);
- 
- 	if (need_update) {
-+		netif_tx_disable(priv->dev);
- 		napi_disable(&ch->rxtx_napi);
- 		stmmac_disable_rx_queue(priv, queue);
- 		stmmac_disable_tx_queue(priv, queue);
-@@ -87,6 +90,7 @@ static int stmmac_xdp_disable_pool(struct stmmac_priv *priv, u16 queue)
- 		stmmac_enable_tx_queue(priv, queue);
- 		napi_enable(&ch->rx_napi);
- 		napi_enable(&ch->tx_napi);
-+		netif_tx_wake_all_queues(priv->dev);
- 	}
+-	if (val)
+-		ret = qca8k_rmw(priv, reg,
+-				QCA8K_PORT0_PAD_SGMII_RXCLK_FALLING_EDGE |
+-				QCA8K_PORT0_PAD_SGMII_TXCLK_FALLING_EDGE,
+-				val);
++	mask = (val) ? (QCA8K_PORT0_PAD_SGMII_RXCLK_FALLING_EDGE |
++			QCA8K_PORT0_PAD_SGMII_TXCLK_FALLING_EDGE) : 0;
++
++	/*
++	 * (Un)set force mode on QCA8337 only, don't include it in the mask for
++	 * others. It is written to the PORT0 PAD register for both port 0 and 6.
++	 */
++	if (priv->switch_id == QCA8K_ID_QCA8337) {
++		if (neg_mode == PHYLINK_PCS_NEG_OUTBAND)
++			val |= QCA8K_PORT_PAD_SGMII_FORCE_MODE;
++		mask |= QCA8K_PORT_PAD_SGMII_FORCE_MODE;
++	}
++
++	if (mask)
++		ret = qca8k_rmw(priv, reg, mask, val);
  
  	return 0;
-@@ -121,8 +125,10 @@ int stmmac_xdp_set_prog(struct stmmac_priv *priv, struct bpf_prog *prog,
- 		xdp_features_clear_redirect_target(dev);
- 
- 	need_update = !!priv->xdp_prog != !!prog;
--	if (if_running && need_update)
-+	if (if_running && need_update) {
-+		netif_tx_disable(dev);
- 		stmmac_xdp_release(dev);
-+	}
- 
- 	old_prog = xchg(&priv->xdp_prog, prog);
- 	if (old_prog)
-@@ -131,8 +137,10 @@ int stmmac_xdp_set_prog(struct stmmac_priv *priv, struct bpf_prog *prog,
- 	/* Disable RX SPH for XDP operation */
- 	priv->sph_active = priv->sph_capable && !stmmac_xdp_is_enabled(priv);
- 
--	if (if_running && need_update)
-+	if (if_running && need_update) {
- 		stmmac_xdp_open(dev);
-+		netif_tx_wake_all_queues(dev);
-+	}
- 
- 	if (prog)
- 		xdp_features_set_redirect_target(dev, false);
+ }
+diff --git a/drivers/net/dsa/qca/qca8k.h b/drivers/net/dsa/qca/qca8k.h
+index 1a00e2f62fef..956338893032 100644
+--- a/drivers/net/dsa/qca/qca8k.h
++++ b/drivers/net/dsa/qca/qca8k.h
+@@ -58,6 +58,7 @@
+ #define	  QCA8K_PORT_PAD_RGMII_TX_DELAY_EN		BIT(25)
+ #define   QCA8K_PORT_PAD_RGMII_RX_DELAY_EN		BIT(24)
+ #define   QCA8K_PORT_PAD_SGMII_EN			BIT(7)
++#define   QCA8K_PORT_PAD_SGMII_FORCE_MODE		BIT(3)
+ #define QCA8K_REG_PWS					0x010
+ #define   QCA8K_PWS_POWER_ON_SEL			BIT(31)
+ /* This reg is only valid for QCA832x and toggle the package
 
 ---
-base-commit: 4aacf509e537a711fa71bca9f234e5eb6968850e
-change-id: 20260604-main-f69f9564a74b
+base-commit: b7bee4ca5688e30ca50fbc87b1b8f7eed7006c17
+change-id: 20260603-qca8337-force-mode-fbcba5296446
 
 Best regards,
---  
-Carlos Fangmeier <carlos.fangmeier@gmail.com>
+-- 
+George Moussalem <george.moussalem@outlook.com>
+
 
