@@ -1,348 +1,328 @@
-Received: from mail-pf1-f195.google.com (mail-pf1-f195.google.com [209.85.210.195])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A8DB3B6366
-	for <netdev@vger.kernel.org>; Fri,  5 Jun 2026 15:35:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C2A52153D8;
+	Fri,  5 Jun 2026 15:36:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780673740; cv=none; b=bErPumSQ96z+hmlJm0ffkHytXPVDE0mmA79HHph1wBDTHEU72+7EV4Z+hMSO6zhCOByuvQdhhbkbu+FEOiUfUmedupHaN4Za75D0odYVHaTSIvW1B1xa5LEW76n3V+FqbPRRdvWWfh4xXrKQfzHt7U9oDOjpA8A8KbriDymGlPw=
+	t=1780673779; cv=none; b=KFcvWj4gMDnX8oUERu3RzVywVds8Tf81WkY5tVXZS98yIBGzUT82/DEWKpKmZSYQBfAWp6eGlibd/WJDTeo+IRXzYhDE4bs0Qe9gL6YH22SGVWsCSWnYJjtDExyNoK4ouBrByLB+Tiysf4inPgHwtW10b8p9SK+pNB/++z4J8ak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780673740; c=relaxed/simple;
-	bh=IzQ6VY1/pCSCuW589uWkrY4rVnE4dY+yC+x9fXtuNY8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VKxFFooipXPtqIsRp4oWnRtiNqMaBBqZa4eMaet7y0quh1xMMCMW+0Ry1pfpDZGGn3T+cEtCJNU+YgxuC6J/F/b0TYVCYu3+Mzm1n0mUniViKGpuv2GTOiwxDHY4cC/PfqZ3IKg3sQcgCYIOYmwE4Dfsmtr/ARxnUwRXkt1qcB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BbttMqiV; arc=none smtp.client-ip=209.85.210.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1780673779; c=relaxed/simple;
+	bh=n83rW4eamdlQ8FGqJ0dCVHLwmywwEa//w82pSDEfiJk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=eh1hOHNc/RJQLzg46rBVwngm9X9/aQFY9MvQWDgkZ5t2HVoCJ/4D4XSfnx/4gp61QKhyC1BTHO9gNEhZ5zH0Ki14/o7l+L9H1R0Ad+sohcyyW/LMJf4TTauPa33UC66Iyq5fh47J5H0UcAH52kfhivRmVnPBkST9JhvGAUXmpwQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=LSb3DbXw; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BbttMqiV"
-Received: by mail-pf1-f195.google.com with SMTP id d2e1a72fcca58-842307472d4so719868b3a.0
-        for <netdev@vger.kernel.org>; Fri, 05 Jun 2026 08:35:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780673734; x=1781278534; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=XoDRJzQHz7VdEkd5BqZ67I7g6IeSlqxM9mM4zX/QtD0=;
-        b=BbttMqiViaNA1nIeY58aGXn3fbQ+t4FYPmlDbFGL/urEb4gDpJPX/rioScSxtKDJ4l
-         2eA+wZaLzUYa8Bje1j3h75g1MDS87chBAUkj0FJVUybNFIsEYK83hRWBKaAha5HezH5d
-         a7AZWpSHkmLJEggzOkdlPJnM6e3XZBNqzHEhKTnje5U1nf5OrVvMj3IyTkfhGLfstP8w
-         K9u3LtBBGVhbvJCRaTrFbBLSV3/bpQ+xR4FObmwizJUWQg2ltk5fsp/NhS1SO4xFMggN
-         P6teWll26tAFJY+kixRUGxlrhh4JVcQ+jiS9St+ftlrG/uDBG8ZyccoCh4hp2QnFCOoI
-         gQiw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780673734; x=1781278534;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=XoDRJzQHz7VdEkd5BqZ67I7g6IeSlqxM9mM4zX/QtD0=;
-        b=aE4MAIpkAkQ04RkhGzrdTQDxbsK2jXxr8I9A3R7HZUlExzvLmMozD9hXZkGBXSW5Id
-         IUaDLs0r4uufuUZ7EY0bxPKb0abiODc9m+/rNW1PtXAtCnh60UFIKPJSdPCsMF47NbgG
-         RGL0EvM3pIrsBSreSSjiay2k+lyXzz38LFlOem/Z8orszNWO5qlTRQuYC62aHvfryOqj
-         JSJ+W1frt0SS7ydHBMyQ9m0dVDwXAVtXsqay4XxOojOmj4uVXHTx/R11Q4K7+EBRayII
-         E3TBBkssxu68HhYp/ThMp38g0fJUs7UzxFfVXdNGhto6fmCmvROdHUcjbrve1Jn3WAOg
-         ILDQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+LD9L0o1CVfJrVyhhfGDDqNDa7gDZgU9LyD+gyBtKF+zxercNy5LYEcYKJy9o0kcrjUEp0tYY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwZ7exWjQITWJ8GTI88LaXNPqCHaHrStaCL1CvcWGE8fI8xJhWD
-	2bpULBeaYT7Kh+figgx45oRFR451HnKp+RPlAnUGO7Bi7Tsj1/tr+WyU
-X-Gm-Gg: Acq92OH85tTJw59bT74WatSYGIdLoUZ3Ek6lZmXMoGAeFamS93S64E8OwZSJV1adLXp
-	6FoIFXm++p8X0uwMGMXTkQI7sv5Z0NAx8dxN65lMyVkpJgFWOihylr1fBoDzM5dEloQ+nE6/4GR
-	ZOI7Al3SvQ00yBlBxCFZTss9ecSHiu8EoOvMqP6UjgUo+/O6syO2tkYJo6S41JuP2i8HtAwjJg+
-	eFvcdc6hftilMSpEEqELapcSzueB0UVreoAN8nOLVzQucg6d65o4BMxe8VTPfcJcPoag5HfPjmu
-	NSCBCuNDfnR6gguzuG7zR79iRylF94h2Aiv7yk4SAY2N83mrNgjEWb1FKxNZrEOYbhp2mlaHfbM
-	wwbZp2sTttXzW0MPTeE8wOLqASFF0nYSeEcuzeXcsv72TEIEC3HJCxovbBquvGYODzPF7im/yfL
-	7q+6tKG+H9bi6Gvfw02MTb+jemkOA=
-X-Received: by 2002:a05:6a20:9383:b0:3a0:b781:4c80 with SMTP id adf61e73a8af0-3b4cccff825mr4945669637.4.1780673734235;
-        Fri, 05 Jun 2026 08:35:34 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:57::])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c85df0a4afdsm10022248a12.19.2026.06.05.08.35.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 Jun 2026 08:35:33 -0700 (PDT)
-Date: Fri, 5 Jun 2026 08:33:04 -0700
-From: Stanislav Fomichev <sdf.kernel@gmail.com>
-To: Bobby Eshleman <bobbyeshleman@gmail.com>
-Cc: Donald Hunter <donald.hunter@gmail.com>, 
-	Jakub Kicinski <kuba@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, Gerd Hoffmann <kraxel@redhat.com>, 
-	Vivek Kasireddy <vivek.kasireddy@intel.com>, Sumit Semwal <sumit.semwal@linaro.org>, 
-	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>, Shuah Khan <shuah@kernel.org>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org, 
-	linaro-mm-sig@lists.linaro.org, linux-kselftest@vger.kernel.org, sdf@fomichev.me, 
-	razor@blackwall.org, daniel@iogearbox.net, almasrymina@google.com, matttbe@kernel.org, 
-	skhawaja@google.com, dw@davidwei.uk, Bobby Eshleman <bobbyeshleman@meta.com>
-Subject: Re: [PATCH net-next 1/4] net: devmem: allow rx-buf-size > PAGE_SIZE
- per dmabuf binding
-Message-ID: <aiLrsLM8N0VzrNMe@devvm7509.cco0.facebook.com>
-References: <20260603-tcpdm-large-niovs-v1-0-f37a4ac6726c@meta.com>
- <20260603-tcpdm-large-niovs-v1-1-f37a4ac6726c@meta.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="LSb3DbXw"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 2D349C58479;
+	Fri,  5 Jun 2026 15:36:10 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 4A1AB5FED1;
+	Fri,  5 Jun 2026 15:36:10 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3C996106A24F0;
+	Fri,  5 Jun 2026 17:35:47 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1780673767; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=FHeuOlC/gaOtesZkFgqVr9DoEMDIdfxTclEETE4eqSU=;
+	b=LSb3DbXwWwWowFJQbUezIa1BBhdJR5igSpOLdXQsCT+BMkRWsdW44ijdI9dXSrrrcI8V3I
+	ecL7Zv+Q2UVM43Odjp/o2hzqvGbJH9gcvwM6bdnjCKpscXz21KdbG5a15Kc6ylGOPoMikV
+	/27OcnmIj1H+3ddtxGC9cfiTRCWoqBfbWXl8ciMGadarXoTP7kfh+SkJNF+NmdT7qNf3N7
+	nOUpMyUSLjBesoK1WhJDphDI8xte4Zjy9kt1XGP1BSTgKvcUlm5wSd8QHvl7H5BQGa0SY4
+	7tx4Gs7DtT2TfocD21W8eEKgMWx1a3Dd+/HcnhtEgGNrly28oFopJXpGDFJybQ==
+Message-ID: <566af63b-05a9-43f8-94e9-19af737c848a@bootlin.com>
+Date: Fri, 5 Jun 2026 17:35:47 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260603-tcpdm-large-niovs-v1-1-f37a4ac6726c@meta.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v2 03/14] net: pcs: pcs-xpcs-regmap: support XPCS
+ memory-mapped MDIO bus via regmap
+To: Alex Elder <elder@riscstar.com>, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, rmk+kernel@armlinux.org.uk, andersson@kernel.org,
+ konradybcio@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, linusw@kernel.org, brgl@kernel.org, arnd@arndb.de,
+ gregkh@linuxfoundation.org
+Cc: Daniel Thompson <daniel@riscstar.com>, mohd.anwar@oss.qualcomm.com,
+ a0987203069@gmail.com, alexandre.torgue@foss.st.com, ast@kernel.org,
+ boon.khai.ng@altera.com, chenchuangyu@xiaomi.com, chenhuacai@kernel.org,
+ daniel@iogearbox.net, hawk@kernel.org, hkallweit1@gmail.com,
+ inochiama@gmail.com, john.fastabend@gmail.com, julianbraha@gmail.com,
+ livelycarpet87@gmail.com, mcoquelin.stm32@gmail.com, me@ziyao.cc,
+ prabhakar.mahadev-lad.rj@bp.renesas.com, richardcochran@gmail.com,
+ rohan.g.thomas@altera.com, sdf@fomichev.me, siyanteng@cqsoftware.com.cn,
+ weishangjuan@eswincomputing.com, wens@kernel.org, netdev@vger.kernel.org,
+ bpf@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-gpio@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20260605010022.968612-1-elder@riscstar.com>
+ <20260605010022.968612-4-elder@riscstar.com>
+Content-Language: en-US
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+In-Reply-To: <20260605010022.968612-4-elder@riscstar.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On 06/03, Bobby Eshleman wrote:
-> From: Bobby Eshleman <bobbyeshleman@meta.com>
+Hi Alex,
+
+On 6/5/26 03:00, Alex Elder wrote:
+> From: Daniel Thompson <daniel@riscstar.com>
 > 
-> Every devmem dmabuf binding today hands the page_pool PAGE_SIZE niovs.
-> This caps a single RX descriptor at PAGE_SIZE, burning CPU on buffer
-> churn for large flows.
+> In some DesignWare XPCS implementatons the memory-mapped MDIO bus is
+> allocated to a register window that does not align to a page boundary.
+> This makes iomapping the registers problematic.
 > 
-> Add a bind-time netlink attribute, NETDEV_A_DMABUF_RX_BUF_SIZE, that
-> lets userspace request a larger niov size. The value must be a power of
-> two >= PAGE_SIZE.
+> For example the Toshiba TC9564 (a PCIe Ethernet-AVB/TSN bridge) provides
+> an "eMAC" subsystem with the XPCS base address cuddled up to XGMAC
+> registers.
 > 
-> Measurements
-> ------------
-> Setup: kperf in devmem RX/TX cuda mode, 4 flows, 64 MB messages, 60s,
-> dctcp, num-rx-queues=4, dmabuf-rx/tx-size-mb=2048, 10 runs per niov
-> size, mlx5.
+> Let's introduce helpers to allow the driver that owns the eMAC to register
+> an XPCS using is regmap for the memory-mapped MDIO bus.
 > 
-> CPU Util:
-> 
->    niov        net sirq %        net idle %         app sys %        app idle %
->   -----  ----------------  ----------------  ----------------  ----------------
->      4K   62.38 +/-  8.27   33.40 +/-  7.51   54.15 +/- 10.23   43.67 +/- 10.53
->     16K   58.91 +/-  5.35   35.23 +/-  5.88   41.05 +/-  8.87   56.42 +/-  9.24
->     32K   64.12 +/-  0.68   31.09 +/-  1.48   44.54 +/-  3.51   52.63 +/-  3.65
->     64K   54.69 +/-  5.54   39.67 +/-  5.81   35.47 +/-  3.11   61.97 +/-  3.27
-> 
-> RX app sys % drops ~19% from 4K to 64K.
-> 
-> Throughput:
-> 
->    niov       RX dev Gbps   RX flow avg Gbps
->   -----  ----------------  -----------------
->      4K  300.63 +/- 53.21    75.16 +/- 13.30
->     16K  321.35 +/- 28.20    80.34 +/-  7.05
->     32K  347.63 +/-  2.20    86.91 +/-  0.55
->     64K  332.11 +/- 14.26    83.03 +/-  3.56
-> 
-> Throughput seems to increase, but the stdev is pretty wide so could just
-> be noise.
-> 
-> kperf support (not yet merged):
-> https://github.com/facebookexperimental/kperf/commit/8837577f920876bce6986ec18869ac04439ebcd2
-> 
-> Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
+> Signed-off-by: Daniel Thompson <daniel@riscstar.com>
+> Signed-off-by: Alex Elder <elder@riscstar.com>
 > ---
->  Documentation/netlink/specs/netdev.yaml |  8 +++++
->  include/uapi/linux/netdev.h             |  1 +
->  net/core/devmem.c                       | 52 +++++++++++++++++++--------------
->  net/core/devmem.h                       | 13 ++++++---
->  net/core/netdev-genl-gen.c              |  5 ++--
->  net/core/netdev-genl.c                  | 18 ++++++++++--
->  tools/include/uapi/linux/netdev.h       |  1 +
->  7 files changed, 68 insertions(+), 30 deletions(-)
+>  MAINTAINERS                         |   2 +
+>  drivers/net/pcs/Makefile            |   4 +-
+>  drivers/net/pcs/pcs-xpcs-regmap.c   | 219 ++++++++++++++++++++++++++++
+>  include/linux/pcs/pcs-xpcs-regmap.h |  20 +++
+>  4 files changed, 243 insertions(+), 2 deletions(-)
+>  create mode 100644 drivers/net/pcs/pcs-xpcs-regmap.c
+>  create mode 100644 include/linux/pcs/pcs-xpcs-regmap.h
 > 
-> diff --git a/Documentation/netlink/specs/netdev.yaml b/Documentation/netlink/specs/netdev.yaml
-> index a1f4c5a561e9..063119907983 100644
-> --- a/Documentation/netlink/specs/netdev.yaml
-> +++ b/Documentation/netlink/specs/netdev.yaml
-> @@ -591,6 +591,13 @@ attribute-sets:
->          type: u32
->          checks:
->            min: 1
-> +      -
-> +        name: rx-buf-size
-> +        doc: |
-> +          Size in bytes of each RX buffer the NIC writes into from the bound
-> +          dmabuf. Must be a power of two and >= PAGE_SIZE; defaults to
-> +          PAGE_SIZE.
-> +        type: u32
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index eb8cdcc76324f..2aa6ea012c848 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -25931,8 +25931,10 @@ F:	drivers/net/ethernet/synopsys/
+>  SYNOPSYS DESIGNWARE ETHERNET XPCS DRIVER
+>  L:	netdev@vger.kernel.org
+>  S:	Orphan
+> +F:	drivers/net/pcs/pcs-xpcs-regmap.c
+>  F:	drivers/net/pcs/pcs-xpcs.c
+>  F:	drivers/net/pcs/pcs-xpcs.h
+> +F	include/linux/pcs/pcs-xpcs-regmap.h
+>  F:	include/linux/pcs/pcs-xpcs.h
 >  
->  operations:
->    list:
-> @@ -805,6 +812,7 @@ operations:
->              - ifindex
->              - fd
->              - queues
-> +            - rx-buf-size
->          reply:
->            attributes:
->              - id
-> diff --git a/include/uapi/linux/netdev.h b/include/uapi/linux/netdev.h
-> index 7df1056a35fd..180a4ffffd60 100644
-> --- a/include/uapi/linux/netdev.h
-> +++ b/include/uapi/linux/netdev.h
-> @@ -217,6 +217,7 @@ enum {
->  	NETDEV_A_DMABUF_QUEUES,
->  	NETDEV_A_DMABUF_FD,
->  	NETDEV_A_DMABUF_ID,
-> +	NETDEV_A_DMABUF_RX_BUF_SIZE,
+>  SYNOPSYS DESIGNWARE HDMI RX CONTROLLER DRIVER
+> diff --git a/drivers/net/pcs/Makefile b/drivers/net/pcs/Makefile
+> index 4f7920618b900..565f1b63fce0b 100644
+> --- a/drivers/net/pcs/Makefile
+> +++ b/drivers/net/pcs/Makefile
+> @@ -1,8 +1,8 @@
+>  # SPDX-License-Identifier: GPL-2.0
+>  # Makefile for Linux PCS drivers
 >  
->  	__NETDEV_A_DMABUF_MAX,
->  	NETDEV_A_DMABUF_MAX = (__NETDEV_A_DMABUF_MAX - 1)
-> diff --git a/net/core/devmem.c b/net/core/devmem.c
-> index 957d6b96216b..5a1c0d7984a8 100644
-> --- a/net/core/devmem.c
-> +++ b/net/core/devmem.c
-> @@ -46,7 +46,7 @@ static dma_addr_t net_devmem_get_dma_addr(const struct net_iov *niov)
+> -pcs_xpcs-$(CONFIG_PCS_XPCS)	:= pcs-xpcs.o pcs-xpcs-plat.o \
+> -				   pcs-xpcs-nxp.o pcs-xpcs-wx.o
+> +pcs_xpcs-$(CONFIG_PCS_XPCS)	:= pcs-xpcs.o pcs-xpcs-nxp.o pcs-xpcs-regmap.o \
+> +				   pcs-xpcs-plat.o pcs-xpcs-wx.o
 >  
->  	owner = net_devmem_iov_to_chunk_owner(niov);
->  	return owner->base_dma_addr +
-> -	       ((dma_addr_t)net_iov_idx(niov) << PAGE_SHIFT);
-> +	       ((dma_addr_t)net_iov_idx(niov) << owner->binding->niov_shift);
->  }
->  
->  static void net_devmem_dmabuf_binding_release(struct percpu_ref *ref)
-> @@ -93,13 +93,14 @@ net_devmem_alloc_dmabuf(struct net_devmem_dmabuf_binding *binding)
->  	ssize_t offset;
->  	ssize_t index;
->  
-> -	dma_addr = gen_pool_alloc_owner(binding->chunk_pool, PAGE_SIZE,
-> +	dma_addr = gen_pool_alloc_owner(binding->chunk_pool,
-> +					1UL << binding->niov_shift,
->  					(void **)&owner);
->  	if (!dma_addr)
->  		return NULL;
->  
->  	offset = dma_addr - owner->base_dma_addr;
-> -	index = offset / PAGE_SIZE;
-> +	index = offset >> binding->niov_shift;
->  	niov = &owner->area.niovs[index];
->  
->  	niov->desc.pp_magic = 0;
-> @@ -113,12 +114,13 @@ void net_devmem_free_dmabuf(struct net_iov *niov)
->  {
->  	struct net_devmem_dmabuf_binding *binding = net_devmem_iov_binding(niov);
->  	unsigned long dma_addr = net_devmem_get_dma_addr(niov);
-> +	size_t niov_size = 1UL << binding->niov_shift;
->  
->  	if (WARN_ON(!gen_pool_has_addr(binding->chunk_pool, dma_addr,
-> -				       PAGE_SIZE)))
-> +				       niov_size)))
->  		return;
->  
-> -	gen_pool_free(binding->chunk_pool, dma_addr, PAGE_SIZE);
-> +	gen_pool_free(binding->chunk_pool, dma_addr, niov_size);
->  }
->  
->  void net_devmem_unbind_dmabuf(struct net_devmem_dmabuf_binding *binding)
-> @@ -163,6 +165,9 @@ int net_devmem_bind_dmabuf_to_queue(struct net_device *dev, u32 rxq_idx,
->  	u32 xa_idx;
->  	int err;
->  
-> +	if (binding->niov_shift != PAGE_SHIFT)
-> +		mp_params.rx_page_size = 1U << binding->niov_shift;
+>  obj-$(CONFIG_PCS_XPCS)		+= pcs_xpcs.o
+>  obj-$(CONFIG_PCS_LYNX)		+= pcs-lynx.o
+> diff --git a/drivers/net/pcs/pcs-xpcs-regmap.c b/drivers/net/pcs/pcs-xpcs-regmap.c
+> new file mode 100644
+> index 0000000000000..55cd05d09c7db
+> --- /dev/null
+> +++ b/drivers/net/pcs/pcs-xpcs-regmap.c
+> @@ -0,0 +1,219 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Synopsys DesignWare XPCS regmap helpers
+> + *
+> + * Copyright (C) 2026 RISCstar Solutions.
+> + * Copyright (C) 2024 Serge Semin
+> + */
 > +
->  	err = netif_mp_open_rxq(dev, rxq_idx, &mp_params, extack);
->  	if (err)
->  		return err;
-> @@ -184,14 +189,16 @@ struct net_devmem_dmabuf_binding *
->  net_devmem_bind_dmabuf(struct net_device *dev, void *vdev,
->  		       struct device *dma_dev,
->  		       enum dma_data_direction direction,
-> -		       unsigned int dmabuf_fd, struct netdev_nl_sock *priv,
-> +		       unsigned int dmabuf_fd, unsigned int niov_shift,
-> +		       struct netdev_nl_sock *priv,
->  		       struct netlink_ext_ack *extack)
->  {
->  	struct net_devmem_dmabuf_binding *binding;
-> +	size_t niov_size = 1UL << niov_shift;
->  	static u32 id_alloc_next;
-> +	unsigned int sg_idx, i;
->  	struct scatterlist *sg;
->  	struct dma_buf *dmabuf;
-> -	unsigned int sg_idx, i;
->  	unsigned long virtual;
->  	int err;
->  
-> @@ -213,6 +220,7 @@ net_devmem_bind_dmabuf(struct net_device *dev, void *vdev,
->  
->  	binding->dev = dev;
->  	binding->vdev = vdev;
-> +	binding->niov_shift = niov_shift;
->  	xa_init_flags(&binding->bound_rxqs, XA_FLAGS_ALLOC);
->  
->  	err = percpu_ref_init(&binding->ref,
-> @@ -248,18 +256,14 @@ net_devmem_bind_dmabuf(struct net_device *dev, void *vdev,
->  			goto err_unmap;
->  		}
->  		binding->tx_vec = kvmalloc_objs(struct net_iov *,
-> -						dmabuf->size / PAGE_SIZE);
-> +						dmabuf->size >> niov_shift);
->  		if (!binding->tx_vec) {
->  			err = -ENOMEM;
->  			goto err_unmap;
->  		}
->  	}
->  
-> -	/* For simplicity we expect to make PAGE_SIZE allocations, but the
-> -	 * binding can be much more flexible than that. We may be able to
-> -	 * allocate MTU sized chunks here. Leave that for future work...
-> -	 */
-> -	binding->chunk_pool = gen_pool_create(PAGE_SHIFT,
-> +	binding->chunk_pool = gen_pool_create(niov_shift,
->  					      dev_to_node(&dev->dev));
->  	if (!binding->chunk_pool) {
->  		err = -ENOMEM;
-> @@ -273,9 +277,11 @@ net_devmem_bind_dmabuf(struct net_device *dev, void *vdev,
->  		size_t len = sg_dma_len(sg);
->  		struct net_iov *niov;
->  
-> -		if (!IS_ALIGNED(len, PAGE_SIZE)) {
-> +		if (!IS_ALIGNED(dma_addr, niov_size) ||
-> +		    !IS_ALIGNED(len, niov_size)) {
->  			err = -EINVAL;
-> -			NL_SET_ERR_MSG(extack, "dma-buf SG length must be PAGE_SIZE aligned");
-> +			NL_SET_ERR_MSG(extack,
-> +				       "dmabuf sg entry not aligned to niov size");
-
-nit: should we NL_SET_ERR_MSG_FMT here and export chunk len and expected
-alignment?
-
->  			goto err_free_chunks;
->  		}
->  
-> @@ -288,7 +294,7 @@ net_devmem_bind_dmabuf(struct net_device *dev, void *vdev,
->  
->  		owner->area.base_virtual = virtual;
->  		owner->base_dma_addr = dma_addr;
-> -		owner->area.num_niovs = len / PAGE_SIZE;
-> +		owner->area.num_niovs = len >> niov_shift;
->  		owner->binding = binding;
->  
->  		err = gen_pool_add_owner(binding->chunk_pool, dma_addr,
-> @@ -313,7 +319,7 @@ net_devmem_bind_dmabuf(struct net_device *dev, void *vdev,
->  			page_pool_set_dma_addr_netmem(net_iov_to_netmem(niov),
->  						      net_devmem_get_dma_addr(niov));
->  			if (direction == DMA_TO_DEVICE)
-> -				binding->tx_vec[owner->area.base_virtual / PAGE_SIZE + i] = niov;
-> +				binding->tx_vec[(owner->area.base_virtual >> niov_shift) + i] = niov;
->  		}
->  
->  		virtual += len;
-> @@ -430,13 +436,15 @@ struct net_iov *
->  net_devmem_get_niov_at(struct net_devmem_dmabuf_binding *binding,
->  		       size_t virt_addr, size_t *off, size_t *size)
->  {
-> +	size_t niov_size = 1UL << binding->niov_shift;
+> +#include <linux/device.h>
+> +#include <linux/kernel.h>
+> +#include <linux/mdio.h>
+> +#include <linux/pcs/pcs-xpcs.h>
+> +#include <linux/pcs/pcs-xpcs-regmap.h>
+> +#include <linux/regmap.h>
 > +
->  	if (virt_addr >= binding->dmabuf->size)
->  		return NULL;
->  
-> -	*off = virt_addr % PAGE_SIZE;
-> -	*size = PAGE_SIZE - *off;
-> +	*off = virt_addr & (niov_size - 1);
-> +	*size = niov_size - *off;
->  
-> -	return binding->tx_vec[virt_addr / PAGE_SIZE];
-> +	return binding->tx_vec[virt_addr >> binding->niov_shift];
->  }
->  
->  /*** "Dmabuf devmem memory provider" ***/
-> @@ -454,8 +462,8 @@ int mp_dmabuf_devmem_init(struct page_pool *pool)
->  	pool->dma_sync = false;
->  	pool->dma_sync_for_cpu = false;
->  
-> -	if (pool->p.order != 0)
-> -		return -E2BIG;
-> +	if (pool->p.order != binding->niov_shift - PAGE_SHIFT)
-> +		return -EINVAL;
+> +#include "pcs-xpcs.h"
+> +
+> +/* Page select register for the indirect MMIO CSRs access */
+> +#define DW_VR_CSR_VIEWPORT		0xff
+> +
+> +struct dw_xpcs_regmap {
+> +	struct device *dev;
+> +	struct mii_bus *bus;
+> +	struct regmap *regmap;
+> +	bool reg_indir;
+> +};
+> +
+> +static ptrdiff_t xpcs_regmap_addr_format(int dev, int reg)
+> +{
+> +	return FIELD_PREP(0x1f0000, dev) | FIELD_PREP(0xffff, reg);
+> +}
+> +
+> +static u16 xpcs_regmap_addr_page(ptrdiff_t csr)
+> +{
+> +	return FIELD_GET(0x1fff00, csr);
+> +}
+> +
+> +static ptrdiff_t xpcs_regmap_addr_offset(ptrdiff_t csr)
+> +{
+> +	return FIELD_GET(0xff, csr);
+> +}
+> +
+> +static int xpcs_regmap_read_reg_indirect(struct dw_xpcs_regmap *pxpcs, int dev,
+> +					 int reg)
+> +{
+> +	ptrdiff_t csr, ofs;
+> +	unsigned int val;
+> +	u16 page;
+> +	int res;
+> +
+> +	csr = xpcs_regmap_addr_format(dev, reg);
+> +	page = xpcs_regmap_addr_page(csr);
+> +	ofs = xpcs_regmap_addr_offset(csr);
+> +
+> +	res = regmap_write(pxpcs->regmap, DW_VR_CSR_VIEWPORT, page);
+> +	if (res < 0)
+> +		return res;
+> +
+> +	res = regmap_read(pxpcs->regmap, ofs, &val);
+> +	if (res < 0)
+> +		return res;
+> +
+> +	return val & 0xffff;
+> +}
+> +
+> +static int xpcs_regmap_write_reg_indirect(struct dw_xpcs_regmap *pxpcs, int dev,
+> +					  int reg, u16 val)
+> +{
+> +	ptrdiff_t csr, ofs;
+> +	u16 page;
+> +	int res;
+> +
+> +	csr = xpcs_regmap_addr_format(dev, reg);
+> +	page = xpcs_regmap_addr_page(csr);
+> +	ofs = xpcs_regmap_addr_offset(csr);
+> +
+> +	res = regmap_write(pxpcs->regmap, DW_VR_CSR_VIEWPORT, page);
+> +	if (res < 0)
+> +		return res;
+> +
+> +	return regmap_write(pxpcs->regmap, ofs, val);
+> +}
+> +
+> +static int xpcs_regmap_read_reg_direct(struct dw_xpcs_regmap *pxpcs, int dev,
+> +				       int reg)
+> +{
+> +	unsigned int val;
+> +	ptrdiff_t csr;
+> +	int res;
+> +
+> +	csr = xpcs_regmap_addr_format(dev, reg);
+> +	res = regmap_read(pxpcs->regmap, csr, &val);
+> +	if (res < 0)
+> +		return res;
+> +
+> +	return val & 0xffff;
+> +}
+> +
+> +static int xpcs_regmap_write_reg_direct(struct dw_xpcs_regmap *pxpcs, int dev,
+> +					int reg, u16 val)
+> +{
+> +	ptrdiff_t csr = xpcs_regmap_addr_format(dev, reg);
+> +
+> +	return regmap_write(pxpcs->regmap, csr, val);
+> +}
+> +
+> +static int xpcs_regmap_read_c22(struct mii_bus *bus, int addr, int reg)
+> +{
+> +	struct dw_xpcs_regmap *pxpcs = bus->priv;
+> +
+> +	if (addr != 0)
+> +		return -ENODEV;
+> +
+> +	if (pxpcs->reg_indir)
+> +		return xpcs_regmap_read_reg_indirect(pxpcs, MDIO_MMD_VEND2, reg);
+> +	else
+> +		return xpcs_regmap_read_reg_direct(pxpcs, MDIO_MMD_VEND2, reg);
+> +}
+> +
+> +static int xpcs_regmap_write_c22(struct mii_bus *bus, int addr, int reg, u16 val)
+> +{
+> +	struct dw_xpcs_regmap *pxpcs = bus->priv;
+> +
+> +	if (addr != 0)
+> +		return -ENODEV;
+> +
+> +	if (pxpcs->reg_indir)
+> +		return xpcs_regmap_write_reg_indirect(pxpcs, MDIO_MMD_VEND2, reg, val);
+> +	else
+> +		return xpcs_regmap_write_reg_direct(pxpcs, MDIO_MMD_VEND2, reg, val);
+> +}
+> +
+> +static int xpcs_regmap_read_c45(struct mii_bus *bus, int addr, int dev, int reg)
+> +{
+> +	struct dw_xpcs_regmap *pxpcs = bus->priv;
+> +
+> +	if (addr != 0)
+> +		return -ENODEV;
+> +
+> +	if (pxpcs->reg_indir)
+> +		return xpcs_regmap_read_reg_indirect(pxpcs, dev, reg);
+> +	else
+> +		return xpcs_regmap_read_reg_direct(pxpcs, dev, reg);
+> +}
+> +
+> +static int xpcs_regmap_write_c45(struct mii_bus *bus, int addr, int dev,
+> +				 int reg, u16 val)
+> +{
+> +	struct dw_xpcs_regmap *pxpcs = bus->priv;
+> +
+> +	if (addr != 0)
+> +		return -ENODEV;
+> +
+> +	if (pxpcs->reg_indir)
+> +		return xpcs_regmap_write_reg_indirect(pxpcs, dev, reg, val);
+> +	else
+> +		return xpcs_regmap_write_reg_direct(pxpcs, dev, reg, val);
+> +}
+> +
+> +static void devm_xpcs_regmap_destroy(void *data)
+> +{
+> +	struct dw_xpcs *xpcs = data;
+> +
+> +	xpcs_destroy(xpcs);
+> +}
+> +
+> +struct dw_xpcs *devm_xpcs_regmap_register(struct device *dev,
+> +					  const struct xpcs_regmap_config *config)
+> +{
+> +	static atomic_t id = ATOMIC_INIT(-1);
+> +	struct dw_xpcs_regmap *pxpcs;
+> +	struct dw_xpcs *xpcs;
+> +	int ret;
+> +
+> +	pxpcs = devm_kzalloc(dev, sizeof(*pxpcs), GFP_KERNEL);
+> +	if (!pxpcs)
+> +		return ERR_PTR(-ENOMEM);
+> +
+> +	pxpcs->dev = dev;
+> +	pxpcs->regmap = config->regmap;
+> +	pxpcs->reg_indir = config->reg_indir;
 
-Any specific reason you change E2BIG to EINVAL?
+Looking at the overall series, is there any reason for this flag ?
+
+Looks like the reg_indir=false path isn't used at all in this series.
+
+Maybe just drop it and let anyone add it back should the need arise ?
+
+Maxime
+
+
