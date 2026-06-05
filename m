@@ -1,123 +1,99 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 249C03E16BB
-	for <netdev@vger.kernel.org>; Fri,  5 Jun 2026 14:55:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 994C63F0ABF
+	for <netdev@vger.kernel.org>; Fri,  5 Jun 2026 14:58:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780671315; cv=none; b=guL1AXKAOhOa0pgAQFs180mlUURy8nzTIjYSV0EhUDm+x7lQFbx80yrU0KYQm60JrO7iWm2aXZx3R3J+uJPFRcyN8pe2ecMZkOvUL9Rrh22L5slWBDoWwkQiVwCPjYsx3MwbQ3+dgzkFISTeAVFQ7xwqLR81bBPeu2BjrjaDZEc=
+	t=1780671487; cv=none; b=TrP0NHoE/DF6siA3DLcXrDhWim6VawOxe1IwjNA2znCbmJNf27Ad/Y5SoYw51fj1i/8Ma6fCwN16cqIUfXlP5r1r5FwJjY8gZSBSwjyVaQ07w9wNztNa/pc7cbJEaQU656gEeXqtHRbx3s7qVIaKkP5SmsLtsOUu9Cim5P1fGJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780671315; c=relaxed/simple;
-	bh=1RIjhyMLtv99EBtOuAcd36dJda8OIlnmtL2e3xghDv0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XKKZJI7ySbUyhU0dobj6YpbnXDFcDXeZ2ZNaBw/QfrPPsOby4wgH3WOqum3vjZ0oj6Fh9DGF8NNUvA1AfIf7ereNH3rdfsxYUqZEqii+z7ViydjFPunNEuPFMlFXCw+TZ8zFthUf34TOYRmwjDOyHzwMmbJ+gu0+VTeUkCZG91Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=dz21K3Jb; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1780671487; c=relaxed/simple;
+	bh=KQWRMeiV7RrWEe5YleX7ZCRBQqaLYDYgedOiAtQKTc0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cfyTFBMPrrsJueuY7FyKR+eQoAwjFAEd6o1/iT0koZo2Ms8gBGkZGGl1ZgCqgPm/9+2JtQmR9vs3Eh+8UiltjivlNru2R4Sk0GYyOUBnx3eQyH+SxPFgqW2LwWQ/I1VMOvIQd+ex0v84PG+YTvYwnujTBokcSAE+amxIntg2jL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G4UadMJ6; arc=none smtp.client-ip=209.85.216.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="dz21K3Jb"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 7C5524E408EA;
-	Fri,  5 Jun 2026 14:55:11 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 3760F5FED1;
-	Fri,  5 Jun 2026 14:55:11 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B2859106A21AF;
-	Fri,  5 Jun 2026 16:55:03 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1780671310; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=qWXGRwd3dgogIG+Bvu9DUV5PG31p4cZwWp/87lf38RU=;
-	b=dz21K3JbykBYP0dGe9k0xmZ+3l5tU+Hx3gj08dAtSVDppefMhtMqpZl4jnL40WxdmZnGt2
-	HSn6st3ifIi3VTp8hME8IHDk96OCk+kOeZuQliZaubKA+bU3DNmUKsHuL6+pGPB1US4Ihz
-	bsFgKA3S/MBiBB0GjCwPvNT8sW/m3vJrj7Fjh0goXdzmDlsORzno5UJUIJrso+lookTdCn
-	jXOIaNFIXugn/xtmJUuqXUAvcBxpByCAXQML7AJJ1LpRuYywMZ7uRTYVmgKEAZANgnS48D
-	ti0wFnjaL6MJpvGcO0EAgS+HoImTNqfz9MouwZGZNgMaMvWSKqJM6vSdlp8T6A==
-Message-ID: <15d6ff60-cb36-4d61-a4ce-62b72c4429f5@bootlin.com>
-Date: Fri, 5 Jun 2026 16:55:02 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G4UadMJ6"
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-36ba706ab46so1357809a91.1
+        for <netdev@vger.kernel.org>; Fri, 05 Jun 2026 07:58:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780671486; x=1781276286; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=SicgXXLmoBuCrAjmaaXUctssd7xnBYRX/u0SMUzZpkk=;
+        b=G4UadMJ61EMVjz9GRIGqrp4qieA0DTwQ89nf26v82oa15lZ153r0J2EMbop4d+5wI8
+         rN9IgAJawEt3tFFMk/7/hATupTvZpnBJqBPyr1ndYqBakcDEURgCCV0NHk5gMypZwx26
+         /Dqta3ByC2ajaRwWymuXbvMHR5UHYI7EmF16HklFazX4sk/JwaN0td/FPTyR5zDHuz25
+         VNIqPq43xZ5w4fNJ3shC9kWMjh0TrbqIo3PAz2/qRg7BCJKodNk93ymwqMbBCiG9rp3J
+         rrmnAUF9Ftpxkhoqyrnxoj2AXpPs4QWGxRBpt6BMfXbqiWTFFZcO80sBJbRZrmFBkDLq
+         X1IQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780671486; x=1781276286;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SicgXXLmoBuCrAjmaaXUctssd7xnBYRX/u0SMUzZpkk=;
+        b=E/KdtDseDlnp6k1D0C3RIpj0JeNLp0D9J049BrxpfoENk7k1f8jAZX4CYG1UtDEesf
+         9HyJMqGDcR3GKXAhsKKvCf89MdcFSnsK4hiLqlXOMs9BGB/+lp8DkwlzMML98FmqZ0iK
+         Wi3WWU3PYlJvfJGYvXpSzESzvJIhon5XcZVSCr2lpd5S5BdqzEY+HNwUO29mDDVwLAnN
+         Np2RW5dH1+2NCIimKnuy3pD8jRBJ2iq8g6ncFL9TtQQoVSiyp0NtDSucQ/9KmAQgkmLE
+         g15mLgCPCdkEsoOqlcxvrdK2639mbh2b5ALoLFrZNITgS8gkWfQtRKm9eOpdADzVrZUv
+         prTQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8ynEA2lVsWygQ9iGdwAXhn0gKp0xPMfZ9Xjhlq5eyTmaK521U0jsvhN38brSFoAd+3+EooZ8s=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yybacju1Ca0GLBPLE2B/5y8tWUNZQeXUPGEfioOF6CYqPrhDqRy
+	ra9tVBL/LY+gR381VHzpaviBHHk0bBpDIHNlflId2FdMvevWLfnPn12u
+X-Gm-Gg: Acq92OFF3x4UxCwsvLpBPDLdcEEn64cu5/h1fcCOgkFyOUw6sforD37YnKA5xM5bBps
+	dk+cqOUJCnF66owyh+Nbw4spyQrOa4lowxsy0NrxSAuy6UzWVhutCRsSUCECSUVprsWRvDqIYAn
+	jCt+ybJBgb2wQubyeOGzRV0BkO2469aYhINfuNBXG3Jfbzmne9vKfz2sWlZ6clxJqMIlWEp03vj
+	A4v4Gf7aXgpNTrVfygFwCA19Q3RywUW/KG+XrFVyh7jIrQ4OU9MNDb3ETWKW/6tNIc9Mbw3+TDP
+	WmGC6W3tyWo/IURjNQAs8TCk6RFQ7tplP0Z/3OkbvlCbrXJHLrWB3juZCIUrJ0IOry0mGDGNcDt
+	kaZhXi8uGiJSVtDHc+rzOnhYJd/KPZTS/oT6dHNIE++f9s7nKm9Eh+jX4NBC3G+fqFgFbnD7QOI
+	2wNeAPIuJhKFe83AoPlLmCmLsgS73SPxa3QdXcx53DKzsIOhjf0p5CgG2v80vY6egw
+X-Received: by 2002:a17:90b:1ccf:b0:36d:9ea4:d0b with SMTP id 98e67ed59e1d1-370f0e49762mr4468192a91.24.1780671485727;
+        Fri, 05 Jun 2026 07:58:05 -0700 (PDT)
+Received: from m-upc-A520M-HDV.flets-east.jp ([2400:2410:3f60:500:1cda:ba68:a654:c3cf])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36f70a28c0esm7058231a91.12.2026.06.05.07.58.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 05 Jun 2026 07:58:05 -0700 (PDT)
+From: Yuyang Huang <sigefriedhyy@gmail.com>
+To: Yuyang Huang <sigefriedhyy@gmail.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	David Ahern <dsahern@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH net-next 0/2] ipv6: mcast: annotate data races in /proc/net/igmp6
+Date: Fri,  5 Jun 2026 23:57:57 +0900
+Message-ID: <20260605145759.59639-1-sigefriedhyy@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] net: stmmac: xgmac: report L3/L4 filter match count in
- ethtool stats
-To: muhammad.nazim.amirul.nazle.asmade@altera.com, netdev@vger.kernel.org
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, mcoquelin.stm32@gmail.com,
- alexandre.torgue@foss.st.com, rmk+kernel@armlinux.org.uk,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20260604083037.24407-1-muhammad.nazim.amirul.nazle.asmade@altera.com>
-Content-Language: en-US
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-In-Reply-To: <20260604083037.24407-1-muhammad.nazim.amirul.nazle.asmade@altera.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
 
-Hi,
+/proc/net/igmp6 walks IPv6 multicast memberships under RCU without
+holding idev->mc_lock, taking a lockless snapshot of two fields that
+writers update under the lock: mca_flags and mca_work.timer.expires.
 
-You're missing the 'net-next' in the Patch subject :(
+Patch 1 adds WRITE_ONCE() to all mca_flags update sites and READ_ONCE()
+to the procfs reader.  Patch 2 does the same for the timer.expires read
+in the procfs path.
 
-Besides that,
+Yuyang Huang (2):
+  ipv6: mcast: annotate data-races around mca_flags
+  ipv6: mcast: annotate igmp6 timer expiry race
 
-On 6/4/26 10:30, muhammad.nazim.amirul.nazle.asmade@altera.com wrote:
-> From: Nazim Amirul <muhammad.nazim.amirul.nazle.asmade@altera.com>
-> 
-> Read the L3FM and L4FM bits from the RX descriptor status word (RDES2)
-> and increment the corresponding ethtool statistics counters. This allows
-> users to observe L3/L4 filter hit rates via ethtool -S.
-> 
-> Signed-off-by: Rohan G Thomas <rohan.g.thomas@altera.com>
-> Signed-off-by: Nazim Amirul <muhammad.nazim.amirul.nazle.asmade@altera.com>
+ net/ipv6/mcast.c | 55 ++++++++++++++++++++++++++++++------------------
+ 1 file changed, 34 insertions(+), 21 deletions(-)
 
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-
-Maxime
-
-> ---
->  drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h       | 2 ++
->  drivers/net/ethernet/stmicro/stmmac/dwxgmac2_descs.c | 6 ++++++
->  2 files changed, 8 insertions(+)
-> 
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h
-> index 51943705a2b0..95fdf3133208 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h
-> +++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h
-> @@ -429,6 +429,8 @@
->  #define XGMAC_TDES3_VLTV		BIT(16)
->  #define XGMAC_TDES3_VT			GENMASK(15, 0)
->  #define XGMAC_TDES3_FL			GENMASK(14, 0)
-> +#define XGMAC_RDES2_L4FM		BIT(28)
-> +#define XGMAC_RDES2_L3FM		BIT(27)
->  #define XGMAC_RDES2_HL			GENMASK(9, 0)
->  #define XGMAC_RDES3_OWN			BIT(31)
->  #define XGMAC_RDES3_CTXT		BIT(30)
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_descs.c b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_descs.c
-> index b5f200a87484..6719ac6e395b 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_descs.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_descs.c
-> @@ -27,6 +27,7 @@ static int dwxgmac2_get_rx_status(struct stmmac_extra_stats *x,
->  				  struct dma_desc *p)
->  {
->  	u32 rdes3 = le32_to_cpu(p->des3);
-> +	u32 rdes2 = le32_to_cpu(p->des2);
->  
->  	if (unlikely(rdes3 & XGMAC_RDES3_OWN))
->  		return dma_own;
-> @@ -37,6 +38,11 @@ static int dwxgmac2_get_rx_status(struct stmmac_extra_stats *x,
->  	if (unlikely((rdes3 & XGMAC_RDES3_ES) && (rdes3 & XGMAC_RDES3_LD)))
->  		return discard_frame;
->  
-> +	if (rdes2 & XGMAC_RDES2_L3FM)
-> +		x->l3_filter_match++;
-> +	if (rdes2 & XGMAC_RDES2_L4FM)
-> +		x->l4_filter_match++;
-> +
->  	return good_frame;
->  }
->  
+-- 
+2.43.0
 
