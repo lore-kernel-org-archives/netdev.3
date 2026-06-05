@@ -1,371 +1,202 @@
-Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazolkn19012048.outbound.protection.outlook.com [52.103.2.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A69DD3FE658
-	for <netdev@vger.kernel.org>; Fri,  5 Jun 2026 04:57:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.174
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780635461; cv=none; b=TgKGUJkUzS3EaMZpeBGWmkj8yq0SPUp5zPj+9DzIpW25OKoVOCuvcl8ld83bijTBZP1Mjo0odpX7bvcLT0RQhBK7UZTGObZPCstc8Rq80sr2yy2/ergxoCOlYIeTCmKmVOBVEGFhxlnRB9g5sAV5Wzp7I1RUJ48uuYpTUXwuOaw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780635461; c=relaxed/simple;
-	bh=3Gfwvkk+f1S9rdkcoqBeuzCppREXgf5mbXgrT6ZT9Pk=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=HJj56zZSaURXtjHZ9DHBwdaMujIcftYA4DJsRQBcIRvetezTkvFeTOWEorWqpLv4b9iCV8mhSq2ntW2rnprKCfW65AqsGZAxpF0xPti0ldHS2+4rRrhDvFVizBC77FTlmJWSJxREckYdclia1RMFB0dWgzcQ4KAzc5eP2vBEPt0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=V4VUR2wt; arc=none smtp.client-ip=209.85.128.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F586175D53;
+	Fri,  5 Jun 2026 05:19:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.2.48
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780636746; cv=fail; b=hO/3EdxxGbbSVMbh8uWqbcN4RyzsTUdKj2MGw1fm2P9dylqey7uP3FLiMKKHcT7UXwfPXyEvwyMihQq6A32cs0o9aEDrH5aHrONnL4R0IDBQC2yVHyX1m4KN21uZij1hnx2JLFWx++O1WVsgWtmpQHzWsqITN+pB6TI/2Kj+5Fc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780636746; c=relaxed/simple;
+	bh=PsM2huVqYJTCi8fhX6R9y0f0pNF7FnEdPvQ0H2EZdIs=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=Wi34o3eaV5ZFuBCzG3LYh8l8mEDbhOuQj1S8DZlpgoFHPhDvRUylt/ToJr8jksBXKTitYyrYp+HDIN+QTsGKa5Hx7OX5HtqO+GOIqOqNbnV0e6KM+pM3UVao4f7s1oX9NfXEuQL5kk0OWtYPNMzNLB+6nCJEOyrceGuq/RtzUgY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=ZXWWYUPy; arc=fail smtp.client-ip=52.103.2.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="V4VUR2wt"
-Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-7e8833c99fcso17928617b3.3
-        for <netdev@vger.kernel.org>; Thu, 04 Jun 2026 21:57:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780635458; x=1781240258; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=1k+HbvrsmbL7k6zFMyWa5KtnqYAfbwmiD38lTrLiROw=;
-        b=V4VUR2wt1WjgZxnOZ9J47tBlVvaifTJ1stB+7ssqCZnFiqgY4lujix/p7RCpv0cmfb
-         kZNysZJYiCrhR6N9nJD1UYsm0zePndAKw0fHEoOSgTlIDEyxOiGONHRyAKlD3qfZuFvE
-         illfn+vGDPRo12hj2/aV8Db0Pq2bWF0HH2eoOVie+hM1mc+aXEhg+j9VCvzKh3XMp4/w
-         fwIKTNTaJXaVHJQ8pkewNYg8FxlMX4QwIka/aMc42g8DoFbe8jbaut4eL7MLfth49+B+
-         OCMYankKpmITjs0mLTPA/Oy4j9n6+q89jSUXMQZ5Nmkptkzjj0LiDNID79alkemN4MVC
-         mSPA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780635458; x=1781240258;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=1k+HbvrsmbL7k6zFMyWa5KtnqYAfbwmiD38lTrLiROw=;
-        b=L4/6Zrov1pjOs51J8rZB1UvRft1T/QzIw6pWSyNHLLl55cpTBHfN56kPQFzzuqz/r9
-         rIzO/AA1m3W9oYjTNTQNusSKRquGkWK5RnA45Mkr6/6D0cLfGdM8tCylXP3eYQXxNxaj
-         /WDK1Trs3Rlx0lQzwL/CP7QCLhLZzcIkOUPr1RXdSyXPlSHajkJd/kpG5C1fpBeCYBXP
-         PC9j/bl8kakURMDLqxnO5R3ppP9oPs/WUijJagA5NZjOrWFRhhvWI6c9MQMHBfqqfvg5
-         nQvYhQVORoooiwRLJOTRxXbc+J2G0mdPnZ4c28jIxBPhUQchvRGObisTPxOhDARlf+ZJ
-         9fOg==
-X-Gm-Message-State: AOJu0Yw/68U2n/fHRSVNvMaM5RNy5C8T/q46/D7CMCtDnhby4FHN0zNk
-	2xFXl1TU0pYqymgLZ3mxxFH6CtWhTZ0bxbgpcUW2voD6+UW60blPPOUR
-X-Gm-Gg: Acq92OFFeWm1WhZeYYw9+nXxEtQZ0uNs9w25Ye3t3xie2CnTgcwIPKbVJ+xLZNzUACY
-	4urGurbCk723mAGjo7P4IOywfMm8JuyuKG/0O8LGcXO2QwBnww9Y4O5IKNQmzWFZmHCAFvfuqeY
-	FtX0BBNgFEvJ0vfCeCfEZIsaEyGNX48vJ8XDVkyYQwHDn4cxRv7toZ8VmN4ZQdyDhvK3uqCoxSm
-	eRsbviqdIOHAqE7EkgW/38qdobE+asibO8JrFHCYshWEYgCWKz7UC1InQGgiUsPAXQUrdc0CxSf
-	3dZayKRsqKH0SEng711l1VPM9Ojv4PUmjdYAJDOqYw9Bg4pEgmDAatIAlfI8k5P91bRc6gve9hq
-	5HUX0g/4JzAVMxeP/zcu/u8aCbiZl4OfsdnNrKDOSmob/LSiLsBXI/NG463V06Pdi5ga/HEZRqC
-	Ed5C6+LyPqF0qYmlJcq9K12uPOqOJwtycYqOf9rLMll2BdgWlBp/sESyxFj6jo
-X-Received: by 2002:a05:690c:350a:b0:7e9:ab56:3c4e with SMTP id 00721157ae682-7ed0d5bfcf5mr17352847b3.18.1780635457709;
-        Thu, 04 Jun 2026 21:57:37 -0700 (PDT)
-Received: from tresc054937.tre-sc.gov.br ([187.65.210.13])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-7ea215825d2sm45840207b3.16.2026.06.04.21.57.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Jun 2026 21:57:36 -0700 (PDT)
-From: Luiz Angelo Daros de Luca <luizluca@gmail.com>
-Date: Fri, 05 Jun 2026 01:56:17 -0300
-Subject: [net-next PATCH v12 9/9] net: dsa: realtek: rtl8365mb: add bridge
- port flags
+	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="ZXWWYUPy"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=WGlOCRvZSvBljSlAT+KuTKMlgVVkLzzbK5c1d7xhW53FelNEtR7EW9/n970PAkOGCPSOnoD0zEcXlfxj2Pt9ai1iEAK9tMqJ4w7pQfR5kQIBfAd8QUE+eA7HuBkFqd5GROhackhnPtT3IeBE31PQCHTir0vTE469wurn4rM1c+Gfx4ML+7vkDbYhxxTzr4PG2bDqrKEl9r6UQqVMhigwz2FAF4yFBeQOGi5v7ufJPO0Qz2uSR4YCgzULyXW5Z7ZPBppmH/FYXQkZj9HuI6cjepVJZBDMXvA2h0HtblEsz7Bu4io4v8Mz/uQx73jHAvNsJs+YZS4g7+GAdXKJDtLmBw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=YZdxHJpwNdd5ANg2ZlCpReLYMZWYgiU8X71JX8kab1I=;
+ b=vzqtfOmDGMs1JknEffl6gdDM5bVMFX+/fY4Lwdbyae3pleOqpZiPwUc2qvtnPc9pEwcdUOQhN1ddGMhaKp9G2vV2uSJGUFDgdcBd2SAOt/0xQUzA3UNv/KuppvHuzHjsCacoawzNFvghc+Psyej4Z2KyKoXW8xu+BCR2CIII2REcXW0WRGT6VDW31PqCiHwoRDFsuu1k6glP3sHUeo4Ql7O980tizS9gXiWUzB2Bq0p0/ttsL6sOe75XuzwvxW0wsAHkP+hRr/ySRptQDjMxHPVRwrHOedXPSJxa/4QAx6pGPLTVpanxjbmINnqRauYmnYD+h8/pYcYtaA0Dpbzu8Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=YZdxHJpwNdd5ANg2ZlCpReLYMZWYgiU8X71JX8kab1I=;
+ b=ZXWWYUPyVpbLQqDFKy0Nq8oQHR31VLb9jGNcGXfMIsfvDv0fpiLO6eVMB7Q3YJOGscvrm0p/JsDEl8u7jZrtj+PBhbrmfEpQGV2BRg8iQjet4P3dgFr8yBHODjc7EX9jAa0Mq/6OoRNg3btSjiKx8T8RIZyNdT+9HyPFZAeS3AR6XfSE9tpOMZEbIyhOlWcXzhRDovf4q68czIBfHG05uRBuA7K6aWfl8Z14JF3CyjiMQQyqQaVfmR+rnEl4aJePesBGpGniDQFjxUNPuxGohU9lTAObnl0sXVkGSW4T0nGM1aw9Br8/6+9EHXhLpthaP0apz1LPBb2G2O/U7W5bzQ==
+Received: from SN7PR19MB6736.namprd19.prod.outlook.com (2603:10b6:806:263::12)
+ by DS6PR19MB997434.namprd19.prod.outlook.com (2603:10b6:8:463::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.8; Fri, 5 Jun 2026
+ 05:19:04 +0000
+Received: from SN7PR19MB6736.namprd19.prod.outlook.com
+ ([fe80::4b6c:b84f:b71c:d0a]) by SN7PR19MB6736.namprd19.prod.outlook.com
+ ([fe80::4b6c:b84f:b71c:d0a%3]) with mapi id 15.21.0092.007; Fri, 5 Jun 2026
+ 05:19:03 +0000
+Message-ID:
+ <SN7PR19MB6736BF850FAF84B013000E5F9D112@SN7PR19MB6736.namprd19.prod.outlook.com>
+Date: Fri, 5 Jun 2026 09:18:56 +0400
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH next-next] net: dsa: qca8k: Add support for force mode for
+ fixed link topology
+To: Jakub Kicinski <kuba@kernel.org>,
+ devnull+george.moussalem.outlook.com@kernel.org
+Cc: andrew@lunn.ch, olteanv@gmail.com, davem@davemloft.net,
+ edumazet@google.com, pabeni@redhat.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260603-qca8337-force-mode-v1-1-caf7670ffab3@outlook.com>
+ <20260605012421.3517532-1-kuba@kernel.org>
+Content-Language: en-US
+From: George Moussalem <george.moussalem@outlook.com>
+In-Reply-To: <20260605012421.3517532-1-kuba@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: DX0P273CA0001.AREP273.PROD.OUTLOOK.COM
+ (2603:1086:300:26::6) To SN7PR19MB6736.namprd19.prod.outlook.com
+ (2603:10b6:806:263::12)
+X-Microsoft-Original-Message-ID:
+ <0fc24d8e-902e-44eb-870a-f6616370e4b4@outlook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260605-realtek_forward-v12-9-78eb7b31df72@gmail.com>
-References: <20260605-realtek_forward-v12-0-78eb7b31df72@gmail.com>
-In-Reply-To: <20260605-realtek_forward-v12-0-78eb7b31df72@gmail.com>
-To: Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, Linus Walleij <linusw@kernel.org>, 
- =?utf-8?q?Alvin_=C5=A0ipraga?= <alsi@bang-olufsen.dk>, 
- Yury Norov <yury.norov@gmail.com>, 
- Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
- Russell King <linux@armlinux.org.uk>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Mieczyslaw Nalewaj <namiltd@yahoo.com>, 
- Luiz Angelo Daros de Luca <luizluca@gmail.com>
-X-Mailer: b4 0.15.2
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN7PR19MB6736:EE_|DS6PR19MB997434:EE_
+X-MS-Office365-Filtering-Correlation-Id: 66e68753-54f0-4272-0996-08dec2c1f4d8
+X-Microsoft-Antispam:
+	BCL:0;ARA:14566002|15080799012|19110799012|8060799015|6090799003|12121999013|24021099003|55001999006|5072599009|41001999006|23021999003|51005399006|37011999003|3412199025|440099028|40105399003;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?VG9uNHkrMWI3N2tKcnU2T2UvUUtwT3hOL0puY0pkR2FMbkJjNlhHNld5VlFY?=
+ =?utf-8?B?NE1YdkhOUXd2RERJR3ZjeGtDbWM4cVVOVVFwZUJiV0ZzcTNRdSs3Z2tNUmdh?=
+ =?utf-8?B?N1RmQVBTdmZkWFVYNnZvNVlSaTBiUjNaQ3ZjYzlWTEwzSVN2NURFVkNoSWlj?=
+ =?utf-8?B?NXp0amtHSytjZHFQY3EzZDdjc2YyV2UyVlhzd2tNTk56UlJOQ1ZTL2s0eHF5?=
+ =?utf-8?B?Y1J5K0NHakxabk96QS9VMjduclBOQ0xXMVhadkdkd0h0dkZzWHEwbFVlSVB2?=
+ =?utf-8?B?RFMzelU5dElKZWVLWU5XbElKSUk5Z0toQVg3R0NZanBzSlhWSVc2cFlSc1Vz?=
+ =?utf-8?B?ZDl0VkF1aERoa2dBUmtBSW5KejZpS29IS3BPV0NYYnM2WjhtWkxqaFo5Tyt4?=
+ =?utf-8?B?TFg3TThPYWNFZzIyV05xQjUweHFrWlE5OHpSWlJXQlFCVzcvcXdmME9NSWU1?=
+ =?utf-8?B?ZHNmUDU1UXlPa05vRTFsSVdDRG01L0hVVVJVeXduUkJGWHFXTjBkYTY3b2Ex?=
+ =?utf-8?B?V1pBM3RXTUVIV0ZTYUp5bWo2QkdxbDFoQW1hOXdNRXRSY0tsaFNHZ0NxQTVU?=
+ =?utf-8?B?cVAxWDBDeVZ6bVpLTWlzOFJpbHA0aHdncWlhMXMvUzdOaVl3T09UMWhKdHJp?=
+ =?utf-8?B?R0tNamJLd3BGWFRrOU41TXRaYzlpRTY3czdWQk5FMXFJc1N0dy82anRUMjJI?=
+ =?utf-8?B?ajhuSTFib0lSeGN4cnE0L0x1VncvaDhhRDlSc2cwUGhmU0s4US8zQjJiNjJC?=
+ =?utf-8?B?SlRGVEVUazZwSURDMjlwR1RDWmFFbktLR2dmZ3FscmRDbnRkM1kzaXFRRTJ3?=
+ =?utf-8?B?SmpCanE4dms0N0NCOXdvRFlqdFRvdW9YQ01CTWJaSGZpVXRHaXhCRkNuSXlt?=
+ =?utf-8?B?YlVWM3RCeGlPRC9uTkI1cUpTcUJBK09QTGoxVWdOWlc0eGtqa3o3ODRxTW94?=
+ =?utf-8?B?a2t1S3BqaStJNGxaVjBBY3lOWSszVWVtRnF2TjFCVjhLMDlWQXZyWEU2dUkz?=
+ =?utf-8?B?aFlzVFo0bW9ZK2pUeEk2MjFOWjFKOEpYVkVmSmVmSXVJcUQrZFc3S0ZCODda?=
+ =?utf-8?B?cGVOeWZvZlRHaU45Z2pZREdXWkxxZXRmTGM0bXlLSGhnbjRUS2ZyRFVPUnEy?=
+ =?utf-8?B?Rkw2aC85bXdteDc3NmNFRUNSL1RyRS9JQXNFaUt4SE5GeW5uYVlkVnNLZ1Bs?=
+ =?utf-8?B?ajhpVVlnMGViNGVxTW9WWE5ubndUblFHb2xmNno0Y2syb2VoTDZFS1h6M2tr?=
+ =?utf-8?B?RmxOK1YvVVFXTDVtQ0R6TEhNRnFlTkExY0NuZ3JaQlE2K1UxV2V2d25uZWpB?=
+ =?utf-8?B?Y2dOSGVuSzJtZ1dvVFV5ZUdFNFNXcndENHRoY0JmK1lhTXppSXMzYmZzUUl0?=
+ =?utf-8?B?ckRwQjlpZ0FLejNvRlRvNC9zRVBXb2plSEduVFFLVjczc0xPUnM0REJra1Nk?=
+ =?utf-8?B?VlRaU1BZbGEyS3lnOVpVdjBGUTZTcVJvdzJ1dnZBPT0=?=
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?ZzRDWXV4T1pGN0J0SzFLMWtrNE9uZExBMEJVKzloV1FxMmtQUk5LcGV2MFJV?=
+ =?utf-8?B?MWJYUmducHk2MzA1UTJKUVZvNExoN1RHdG9leTdxZkN5MGxIc1pJaEFKeU9n?=
+ =?utf-8?B?V1Jkc2RtZWVGOEZNOTl3WENJMnhmb0IrSlpBSERhTzZzLzZ0Ukt5Mmg3YVVI?=
+ =?utf-8?B?ejVMMEdHcUJIQU04Um80NkJDYWFYa241MWV5SSszODl4YllYdDNsUU1OY0ta?=
+ =?utf-8?B?bDdQb3hOSkVVYWtJTmdsU0IxOTdGRkl5KzUxU2hwNFNZNFVLREZ1VTc5bXhV?=
+ =?utf-8?B?N3BnSFdRWkpOcnNoSkR2Z3VlWWdhd1psZ2kybllIYXhrWTRsSkpsQnJzUGs2?=
+ =?utf-8?B?QWdaeEVXNWVwT3hMYkZKbExPTTlVTGZrMVI2QkJkSWcwSUdVaXdzRWE2WGZB?=
+ =?utf-8?B?SE5DOVJaK2lJODdKaXVWUHFoUDh6d1RDVm03YzU3OUdmTG9Va1RHNUo0RUhm?=
+ =?utf-8?B?bzRxTkVEdEtIRGtHY2J3ZENVOEttaldWR21KRnVXUG9zNmRRTmFQMEpkSnBm?=
+ =?utf-8?B?ZUgwOGM0eDNnS24wNmJtREZ2cVdEYkg1UG51ZXM3R0dKZlFrS2V3T1VEL0tJ?=
+ =?utf-8?B?c1A5ZEE2N2M3cVUzY1E1eUhDcklvUlZnOWVManBnMGJnVklKaFREZGkrQmpv?=
+ =?utf-8?B?d3Q4UjRTMjMra3NEQXoxdjZYZ0FCdWtYRFgzNkdKYXF4WFNMcEhSRE51bjI5?=
+ =?utf-8?B?M0VXWkpvT3htUGtZVGV5MExhQ0R6aVNxTXMxNHBFSmJmckJaMHpyZ1Rid0JN?=
+ =?utf-8?B?YlBueW5SV2czbkdsT1pwVHc3eGRIMXFTY2Y1elJEblVtbzYzM09OQXgyN2RM?=
+ =?utf-8?B?MjNiWEMwdm5YaE95UmE1UXN2RThhRktuUFB3b1FCOWdnZCtielM1MWlpSlgz?=
+ =?utf-8?B?Ri9oTlJNWlRSclJZek96Q2liSUc5Y2V0WDFCSXVLb3Vva3NUK3JsbnFTbFpZ?=
+ =?utf-8?B?dWNsWVBRTWRVRTJ1M0w0SzQrVVlaZ1F1ZzN1ZWtITEorNXJpeU1pVXZhTDBo?=
+ =?utf-8?B?TzR6azhvMEhSM3lzdHlsdWJhTFh6d0tLSFNsWlR6Y2xGQ2lTM2dxMmpua3or?=
+ =?utf-8?B?a3NiNHpRaGZDR2VwQ0pLRDIxT1dSVjBZTWNyK0hwNGFlL0xHdFdmOEVDbDVZ?=
+ =?utf-8?B?UUM4THVBOXJVOERBNXJqMDF4OElkeDlmcG52eitsRFJHZllIK0h4bFVXNkNt?=
+ =?utf-8?B?UENmT0RaK1B3eXNRa2VZRUc2d1FVeUVGQTkvbVBFbllVcmpaakF6dHdRb2hX?=
+ =?utf-8?B?cGJlVUpvMlgwaDdlM3N5ZlVPSEJtb1hnSnppaGFucEQ2MGwvNnRiZXFnK1A2?=
+ =?utf-8?B?cVUwUTlRTWJlS2NoSWtZUUVKdHdyU0FBamt3bWg0MWhjU25SRUJKSlZialBi?=
+ =?utf-8?B?K0ZZaElybkMvREpGMXhNWldUTUNhcUtUWHpzQXZSbWJ2aHJiVFZuUkFhNHV2?=
+ =?utf-8?B?L3M5ZTRMNGNycEp0MkxYbUlIMHNkU1ViYVUzMkVkR3hFbHpuTVJpdEdPOHRl?=
+ =?utf-8?B?bE9nbUpMUGdYVVA0U0xBNk5QTllkS2RvUzZ6SlJ6TWladncvaXprMDZkbG9V?=
+ =?utf-8?B?Ymc5blhlOTJibmZhanB0eU1BNXdPRUR1d3N6YzFlUHpnOVF6NlZlNGlQZjdi?=
+ =?utf-8?B?aS8vRGFMWFZ0TXVQT2V4dWZlK21KdlpGaktEU0pyT1VqTGRGYWU0M3NjR0Jx?=
+ =?utf-8?B?ZHc5Z3pnOU9Sc0dGYkdxTUUrNDZwQnRiV1haRkNiV2FzNUlncDUzeEhuUmFp?=
+ =?utf-8?B?dDcxVkdSM3lrVWJ2S0l1VCt5ZTVjQ0Mra1hyUHl6eUl0dGQ4K3l5VTllQ2ZV?=
+ =?utf-8?B?MzFDdUxSb04wNUxhWEcxZW1lRi9PcElRUThIYXNOL3NMdTBISW1hR0RPamU0?=
+ =?utf-8?B?NXIwMTVGN2Y2U0RvTXVpYi9UNTZtc3VXRCtDMUlLb3RSYnc9PQ==?=
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 66e68753-54f0-4272-0996-08dec2c1f4d8
+X-MS-Exchange-CrossTenant-AuthSource: SN7PR19MB6736.namprd19.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Jun 2026 05:19:03.5929
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS6PR19MB997434
 
-Implement support for bridge port flags to control learning and flooding
-behavior. This patch maps hardware functionalities to the following
-bridge flags:
+On 6/5/26 05:24, Jakub Kicinski wrote:
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
+...
+> 
+> Earlier in qca8k_pcs_config(), reg is overridden for these models:
+> 
+> 	if (priv->switch_id == QCA8K_ID_QCA8327 ||
+> 	    priv->switch_id == QCA8K_ID_QCA8337)
+> 		reg = QCA8K_REG_PORT0_PAD_CTRL;
+> 
+> Since the SGMII force mode configuration uses this same reg variable,
+> won't this cause the FORCE_MODE bit for port 6 to be incorrectly written
+> to port 0's PAD control register on these specific switches?
 
-- BR_LEARNING
-- BR_FLOOD
-- BR_MCAST_FLOOD
-- BR_BCAST_FLOOD
+I've taken another look at the vendor SDK and this property is always
+set on PORT0_PAD_CTRL regardless of whether it's physically wired on
+port 0 or 6. I did see it is only set on the QCA8337 version, so I'll
+check for that in v2.
 
-By default, all flooding types are enabled during port setup to ensure
-standard bridge behavior.
+> 
+>>  	if (val)
+>>  		ret = qca8k_rmw(priv, reg,
+>>  				QCA8K_PORT0_PAD_SGMII_RXCLK_FALLING_EDGE |
+>> -				QCA8K_PORT0_PAD_SGMII_TXCLK_FALLING_EDGE,
+>> +				QCA8K_PORT0_PAD_SGMII_TXCLK_FALLING_EDGE |
+>> +				QCA8K_PORT_PAD_SGMII_FORCE_MODE,
+>>  				val);
+> 
+> [Severity: High]
+> Is FORCE_MODE properly cleared if it was previously set by a bootloader,
+> but we don't use outband negotiation and no clock falling edge properties
+> are configured?
+> 
+> If neg_mode != PHYLINK_PCS_NEG_OUTBAND and the clock phase bits are not set,
+> val will be 0. This causes the if (val) check to fail, skipping the
+> qca8k_rmw() call entirely, leaving FORCE_MODE unchanged in hardware.
+> 
+> However, if clock phases are configured in the device tree, val will be
+> non-zero, and qca8k_rmw() will clear FORCE_MODE. Does this create a
+> scenario where clearing this mode unpredictably depends on unrelated clock
+> configurations?
 
-Reviewed-by: Linus Walleij <linusw@kernel.org>
-Reviewed-by: Mieczyslaw Nalewaj <namiltd@yahoo.com>
-Signed-off-by: Luiz Angelo Daros de Luca <luizluca@gmail.com>
----
- drivers/net/dsa/realtek/realtek.h        |   6 ++
- drivers/net/dsa/realtek/rtl8365mb_main.c |  68 +++++++++++++++++++++
- drivers/net/dsa/realtek/rtl83xx.c        | 101 +++++++++++++++++++++++++++++++
- drivers/net/dsa/realtek/rtl83xx.h        |   4 ++
- 4 files changed, 179 insertions(+)
+No, the default value, as for all documented bits on PORT0_PAD_CTRL, is
+0 (disabled) after a reset. So it will be disabled by default and only
+enabled if a fixed link is defined in the port node in the DT.
 
-diff --git a/drivers/net/dsa/realtek/realtek.h b/drivers/net/dsa/realtek/realtek.h
-index a6863f757c50..6e0148cee8d8 100644
---- a/drivers/net/dsa/realtek/realtek.h
-+++ b/drivers/net/dsa/realtek/realtek.h
-@@ -134,6 +134,12 @@ struct realtek_ops {
- 	int	(*port_set_efid)(struct realtek_priv *priv, int port, u32 efid);
- 	int	(*port_set_learning)(struct realtek_priv *priv, int port,
- 				     bool enable);
-+	int	(*port_set_ucast_flood)(struct realtek_priv *priv, int port,
-+					bool enable);
-+	int	(*port_set_mcast_flood)(struct realtek_priv *priv, int port,
-+					bool enable);
-+	int	(*port_set_bcast_flood)(struct realtek_priv *priv, int port,
-+					bool enable);
- 	int	(*l2_add_uc)(struct realtek_priv *priv, int port,
- 			     const unsigned char addr[ETH_ALEN],
- 			     u16 efid, u16 vid);
-diff --git a/drivers/net/dsa/realtek/rtl8365mb_main.c b/drivers/net/dsa/realtek/rtl8365mb_main.c
-index bc397cdd6f38..4e7cfafa546e 100644
---- a/drivers/net/dsa/realtek/rtl8365mb_main.c
-+++ b/drivers/net/dsa/realtek/rtl8365mb_main.c
-@@ -307,6 +307,21 @@
- #define   RTL8365MB_MSTI_CTRL_PORT_STATE_MASK(_physport) \
- 		(0x3 << RTL8365MB_MSTI_CTRL_PORT_STATE_OFFSET((_physport)))
- 
-+/* Unknown unicast DA flooding port mask */
-+#define RTL8365MB_UNKNOWN_UNICAST_FLOODING_PMASK_REG		0x0890
-+#define   RTL8365MB_UNKNOWN_UNICAST_FLOODING_PMASK_MASK		0x07FF
-+
-+/* Unknown multicast DA flooding port mask */
-+#define RTL8365MB_UNKNOWN_MULTICAST_FLOODING_PMASK_REG		0x0891
-+#define   RTL8365MB_UNKNOWN_MULTICAST_FLOODING_PMASK_MASK	0x07FF
-+
-+/* Broadcast flooding port mask */
-+#define RTL8365MB_UNKNOWN_BROADCAST_FLOODING_PMASK_REG		0x0892
-+#define   RTL8365MB_UNKNOWN_BROADCAST_FLOODING_PMASK_MASK	0x07FF
-+
-+#define RTL8365MB_SUPPORTED_BRIDGE_FLAGS \
-+	    (BR_LEARNING | BR_FLOOD | BR_MCAST_FLOOD | BR_BCAST_FLOOD)
-+
- /* Miscellaneous port configuration register, incl. VLAN egress mode */
- #define RTL8365MB_PORT_MISC_CFG_REG_BASE			0x000E
- #define RTL8365MB_PORT_MISC_CFG_REG(_p) \
-@@ -1568,6 +1583,49 @@ static int rtl8365mb_port_set_learning(struct realtek_priv *priv, int port,
- 			    enable ? RTL8365MB_LEARN_LIMIT_MAX : 0);
- }
- 
-+static int rtl8365mb_port_set_ucast_flood(struct realtek_priv *priv, int port,
-+					  bool enable)
-+{
-+	/* Frames with unknown unicast DA will be flooded to a programmable
-+	 * port mask that by default includes all ports. Add or remove
-+	 * the specified port from this port mask accordingly.
-+	 */
-+	return regmap_update_bits(priv->map,
-+				  RTL8365MB_UNKNOWN_UNICAST_FLOODING_PMASK_REG,
-+				  BIT(port), enable ? BIT(port) : 0);
-+}
-+
-+static int rtl8365mb_port_set_mcast_flood(struct realtek_priv *priv, int port,
-+					  bool enable)
-+{
-+	return regmap_update_bits(priv->map,
-+			RTL8365MB_UNKNOWN_MULTICAST_FLOODING_PMASK_REG,
-+			BIT(port), enable ? BIT(port) : 0);
-+}
-+
-+static int rtl8365mb_port_set_bcast_flood(struct realtek_priv *priv, int port,
-+					  bool enable)
-+{
-+	return regmap_update_bits(priv->map,
-+			RTL8365MB_UNKNOWN_BROADCAST_FLOODING_PMASK_REG,
-+			BIT(port), enable ? BIT(port) : 0);
-+}
-+
-+static int rtl8365mb_port_pre_bridge_flags(struct dsa_switch *ds, int port,
-+					   struct switchdev_brport_flags flags,
-+					   struct netlink_ext_ack *extack)
-+{
-+	struct realtek_priv *priv = ds->priv;
-+
-+	dev_dbg(priv->dev, "pre_bridge_flags port:%d flags:%lx supported:%lx\n",
-+		port, flags.mask, RTL8365MB_SUPPORTED_BRIDGE_FLAGS);
-+
-+	if (flags.mask & ~RTL8365MB_SUPPORTED_BRIDGE_FLAGS)
-+		return -EINVAL;
-+
-+	return 0;
-+}
-+
- static int rtl8365mb_port_set_efid(struct realtek_priv *priv, int port,
- 				   u32 efid)
- {
-@@ -2422,6 +2480,11 @@ static int rtl8365mb_setup(struct dsa_switch *ds)
- 		if (ret)
- 			goto out_teardown_irq;
- 
-+		/* Enable all types of flooding */
-+		ret = rtl83xx_setup_port_flood_control(priv, dp->index);
-+		if (ret)
-+			goto out_teardown_irq;
-+
- 		/* Set up per-port private data */
- 		p->priv = priv;
- 		p->index = dp->index;
-@@ -2609,6 +2672,8 @@ static const struct dsa_switch_ops rtl8365mb_switch_ops = {
- 	.phylink_get_caps = rtl8365mb_phylink_get_caps,
- 	.port_bridge_join = rtl83xx_port_bridge_join,
- 	.port_bridge_leave = rtl83xx_port_bridge_leave,
-+	.port_pre_bridge_flags = rtl8365mb_port_pre_bridge_flags,
-+	.port_bridge_flags = rtl83xx_port_bridge_flags,
- 	.port_stp_state_set = rtl8365mb_port_stp_state_set,
- 	.port_fast_age = rtl83xx_port_fast_age,
- 	.port_fdb_add = rtl83xx_port_fdb_add,
-@@ -2638,6 +2703,9 @@ static const struct realtek_ops rtl8365mb_ops = {
- 	.port_remove_isolation = rtl8365mb_port_remove_isolation,
- 	.port_set_efid = rtl8365mb_port_set_efid,
- 	.port_set_learning = rtl8365mb_port_set_learning,
-+	.port_set_ucast_flood = rtl8365mb_port_set_ucast_flood,
-+	.port_set_mcast_flood = rtl8365mb_port_set_mcast_flood,
-+	.port_set_bcast_flood = rtl8365mb_port_set_bcast_flood,
- 	.l2_add_uc = rtl8365mb_l2_add_uc,
- 	.l2_del_uc = rtl8365mb_l2_del_uc,
- 	.l2_get_next_uc = rtl8365mb_l2_get_next_uc,
-diff --git a/drivers/net/dsa/realtek/rtl83xx.c b/drivers/net/dsa/realtek/rtl83xx.c
-index 61921f914a57..71124ecca92f 100644
---- a/drivers/net/dsa/realtek/rtl83xx.c
-+++ b/drivers/net/dsa/realtek/rtl83xx.c
-@@ -3,6 +3,7 @@
- #include <linux/module.h>
- #include <linux/regmap.h>
- #include <linux/of_mdio.h>
-+#include <linux/if_bridge.h>
- #include <linux/etherdevice.h>
- 
- #include "realtek.h"
-@@ -787,6 +788,106 @@ int rtl83xx_port_mdb_del(struct dsa_switch *ds, int port,
- }
- EXPORT_SYMBOL_NS_GPL(rtl83xx_port_mdb_del, "REALTEK_DSA");
- 
-+/**
-+ * rtl83xx_port_bridge_flags() - set port bridge flags
-+ * @ds: DSA switch instance
-+ * @port: port index
-+ * @flags: bridge port flags
-+ * @extack: netlink extended ack for reporting errors
-+ *
-+ * This function handles setting bridge port flags like learning and flooding.
-+ *
-+ * Context: Can sleep.
-+ * Return: 0 on success, negative value for failure.
-+ */
-+int rtl83xx_port_bridge_flags(struct dsa_switch *ds, int port,
-+			      struct switchdev_brport_flags flags,
-+			      struct netlink_ext_ack *extack)
-+{
-+	struct realtek_priv *priv = ds->priv;
-+	bool enable;
-+	int ret;
-+
-+	if (flags.mask & BR_LEARNING) {
-+		if (!priv->ops->port_set_learning)
-+			return -EOPNOTSUPP;
-+
-+		enable = !!(flags.val & BR_LEARNING);
-+		ret = priv->ops->port_set_learning(priv, port, enable);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	if (flags.mask & BR_FLOOD) {
-+		if (!priv->ops->port_set_ucast_flood)
-+			return -EOPNOTSUPP;
-+
-+		enable = !!(flags.val & BR_FLOOD);
-+		ret = priv->ops->port_set_ucast_flood(priv, port, enable);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	if (flags.mask & BR_MCAST_FLOOD) {
-+		if (!priv->ops->port_set_mcast_flood)
-+			return -EOPNOTSUPP;
-+
-+		enable = !!(flags.val & BR_MCAST_FLOOD);
-+		ret = priv->ops->port_set_mcast_flood(priv, port, enable);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	if (flags.mask & BR_BCAST_FLOOD) {
-+		if (!priv->ops->port_set_bcast_flood)
-+			return -EOPNOTSUPP;
-+
-+		enable = !!(flags.val & BR_BCAST_FLOOD);
-+		ret = priv->ops->port_set_bcast_flood(priv, port, enable);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_NS_GPL(rtl83xx_port_bridge_flags, "REALTEK_DSA");
-+
-+/**
-+ * rtl83xx_setup_port_flood_control() - setup default flood control for a port
-+ * @priv: realtek_priv pointer
-+ * @port: port index
-+ *
-+ * This function enables flooding for a given port.
-+ *
-+ * Context: Can sleep.
-+ * Return: 0 on success, negative value for failure.
-+ */
-+int rtl83xx_setup_port_flood_control(struct realtek_priv *priv, int port)
-+{
-+	int ret;
-+
-+	if (priv->ops->port_set_ucast_flood) {
-+		ret = priv->ops->port_set_ucast_flood(priv, port, true);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	if (priv->ops->port_set_mcast_flood) {
-+		ret = priv->ops->port_set_mcast_flood(priv, port, true);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	if (priv->ops->port_set_bcast_flood) {
-+		ret = priv->ops->port_set_bcast_flood(priv, port, true);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_NS_GPL(rtl83xx_setup_port_flood_control, "REALTEK_DSA");
-+
- MODULE_AUTHOR("Luiz Angelo Daros de Luca <luizluca@gmail.com>");
- MODULE_AUTHOR("Linus Walleij <linus.walleij@linaro.org>");
- MODULE_DESCRIPTION("Realtek DSA switches common module");
-diff --git a/drivers/net/dsa/realtek/rtl83xx.h b/drivers/net/dsa/realtek/rtl83xx.h
-index dcb819fe567f..d86447121276 100644
---- a/drivers/net/dsa/realtek/rtl83xx.h
-+++ b/drivers/net/dsa/realtek/rtl83xx.h
-@@ -27,6 +27,10 @@ int rtl83xx_port_bridge_join(struct dsa_switch *ds, int port,
- 			     struct netlink_ext_ack *extack);
- void rtl83xx_port_bridge_leave(struct dsa_switch *ds, int port,
- 			       struct dsa_bridge bridge);
-+int rtl83xx_port_bridge_flags(struct dsa_switch *ds, int port,
-+			      struct switchdev_brport_flags flags,
-+			      struct netlink_ext_ack *extack);
-+int rtl83xx_setup_port_flood_control(struct realtek_priv *priv, int port);
- 
- void rtl83xx_port_fast_age(struct dsa_switch *ds, int port);
- int rtl83xx_port_fdb_add(struct dsa_switch *ds, int port,
+> 
+>>  
+>>  	return 0;
 
--- 
-2.54.0
+Best regards,
+George
 
