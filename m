@@ -1,63 +1,63 @@
-Received: from mail-oa1-f43.google.com (mail-oa1-f43.google.com [209.85.160.43])
+Received: from mail-oi1-f173.google.com (mail-oi1-f173.google.com [209.85.167.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22911305698
-	for <netdev@vger.kernel.org>; Fri,  5 Jun 2026 01:00:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA0F72C08CF
+	for <netdev@vger.kernel.org>; Fri,  5 Jun 2026 01:00:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780621252; cv=none; b=mZVw9WWb0+9uJWHKcqFkV18UK1WckWawxQTAxjobPCJXldIj24Wx8ANsfxfjWws69KF/kfPjnmvS5MfPL5yp3RUjm7THO1KtbJGHArLhaOypcU4rTisd4+QEdA3SnooDp5xUXFztp+NADdCVKfeoJAiCalion7bRiZUdohMGc1g=
+	t=1780621256; cv=none; b=GEN30Qp/aIElnro1IxFN4vEgq8ny5995ov5lzxUuvr2MQL/56C6wWMpkxxreuX7Xr0Nu1FL4AH0qzWadouRbt4PFx1IaqoCjsSVj/Yot4KEsjuW42x85wiS5iUyTUWGWIGHPbJUpkupsqjCeNDsjc5uvmLNmq5uKB/1XW1frQdE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780621252; c=relaxed/simple;
-	bh=x3hFYwAiPvlZKk9+fPMM1pZD6sj2EWkFRwILmjFArYQ=;
+	s=arc-20240116; t=1780621256; c=relaxed/simple;
+	bh=Fl2vvfFimqS4GlpOM20DZtsfCLCrtWoZalqmHnKTKCc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IM7UfEbq642yu92eoYvLUWnfc+/RonVAzaZ/XaoKQQThPBukUokSKM/V4/E4SMcfoyrfwV/eIpQHlEPXWbe0XQsjZGvSRwgofludM+ZTfoNT2lESjfoDRocaf1DeIPnokj9MIL6nKmA0o6BKQE+b/XvSccD0uBpmS31DaiuTGxw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com; spf=pass smtp.mailfrom=riscstar.com; dkim=pass (2048-bit key) header.d=riscstar-com.20251104.gappssmtp.com header.i=@riscstar-com.20251104.gappssmtp.com header.b=HumXQT81; arc=none smtp.client-ip=209.85.160.43
+	 MIME-Version; b=GocloFGQe2sHBTzS5SqzMfLM63V6KhctmJqTdr49DyUL8JxfZ3nMEU3cvptkFio8XKGUeBVlbaHjL2AcTguJkQ16pT7pHqeWC6cOyMLQAGkS8sFGIcGuBKQ37RUi1qKlE562D5aESQK2ptxccdkXPGiyxYX4dI80Wn9ruzN6yEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com; spf=pass smtp.mailfrom=riscstar.com; dkim=pass (2048-bit key) header.d=riscstar-com.20251104.gappssmtp.com header.i=@riscstar-com.20251104.gappssmtp.com header.b=hnPP2LhC; arc=none smtp.client-ip=209.85.167.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=riscstar.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=riscstar-com.20251104.gappssmtp.com header.i=@riscstar-com.20251104.gappssmtp.com header.b="HumXQT81"
-Received: by mail-oa1-f43.google.com with SMTP id 586e51a60fabf-43d16405b54so627846fac.3
-        for <netdev@vger.kernel.org>; Thu, 04 Jun 2026 18:00:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=riscstar-com.20251104.gappssmtp.com header.i=@riscstar-com.20251104.gappssmtp.com header.b="hnPP2LhC"
+Received: by mail-oi1-f173.google.com with SMTP id 5614622812f47-4862ed6ab36so811671b6e.1
+        for <netdev@vger.kernel.org>; Thu, 04 Jun 2026 18:00:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=riscstar-com.20251104.gappssmtp.com; s=20251104; t=1780621238; x=1781226038; darn=vger.kernel.org;
+        d=riscstar-com.20251104.gappssmtp.com; s=20251104; t=1780621241; x=1781226041; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=PXOGCojLUBGZIqNUtQ7tDvedemfOzrCuti6WoAljgjQ=;
-        b=HumXQT81dRRRCv6lwk4IzuFxR/rLQgkWK0lkFJXVU0HQCLJkE54RzZ50t5iz4Cl1BU
-         vCGkN2oF1KmrU5oCasLRn8YcsEf6k1cCvl2rihWghvy2SRBZaciXvF4cFbqeLHm/DtOb
-         roQtF9IMBWYR2/Lp6c2vm0fRPRMSBxh5ILYSx7L4nr8GV1JClEWErkrfAFiwtDuqoSr0
-         0N2mZbekrLDyBR4sMa7es5I0HZ0F9PGXR3SOxC1VfpPK7ou8O4ATmLMNx1829e9IVURw
-         qsfRIRvXhasK5Uo0wwjXvkcAqW1E3UQoJtoLLE4vpyLlFSeSxFyvkoZHhXmwerrjMwgN
-         5urA==
+        bh=EZkK5iRkM+bFu8r36hoA1oZzT41u9/qmzwRkx8FhOsM=;
+        b=hnPP2LhCrmphc0LS/cRwIZU/py9l8iqMlf/5s76G55Vbm22SCgKVelKwBEkfF4qIZO
+         NtHYL02toKdC1nI87qUMsmfD1yplesNL04PK7gmMP+7FPrlLHUwP7vx1KGzcLT7w+UjO
+         od15QFIpPyVrVlCbHpUppdWGsiZfGqOKKOPzPtsR3con7QeX2QmIG0wI+hDkWGNRH/k+
+         0Z/Rikks1UulXIN9VvXGldIawMTkALO+12U/8NWaFwTwfljOVJNAu/SffsPJOYtQa7LE
+         TFYGw/qDgWbPhJ0Qjr3bSbf3C+D+z1CuU98jyXVDDbGgp95VMcf4tqUOa/gNbJCUIkrB
+         qp1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780621238; x=1781226038;
+        d=1e100.net; s=20251104; t=1780621241; x=1781226041;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=PXOGCojLUBGZIqNUtQ7tDvedemfOzrCuti6WoAljgjQ=;
-        b=kLqA5ROb0CPGurMjnT+PVhbIgMe+k/xyv5ZdQ6xfBboojtfSbbiZFz041XYINqIPYu
-         yGkLKHkA2gSj2BV+FcX2l4ANImZ0H1KJO2tOrAgnyGTN3jQg/fIKIlTQ522vck38yo4R
-         CQ2NrDKm9PE/fcNlj8GGfARCEqva1oLOSJetYg5HcTjn5kuIIszT+9CcScQkO2gQBoSr
-         tvOE6fbrKRh5LEHo6jdmi3m173gc4U7i+gwVVx7pMYFGBSE4U22VMi872N77NxcTXdXn
-         Q0hYMf6SIw/WpCFu0V3yIR3+PYBdx1XVXTvuUZynJaHFfmslP9uvYpbuVRg5L2uFT/E8
-         YfTg==
-X-Forwarded-Encrypted: i=1; AFNElJ+wRiENBN/MvFB1XjNgxNuw9jyB/RPFlFzDivnYbR4kBqtEH3nFNQfmHwkK01kACD2dndTh4JE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yymdw7sbdDo9vAb0LJlwqiZS7Xso9KTa+SdM+crf8mOk7bgUkhT
-	wChqSAQHzGmgQoN+JsOSK5iOabRmP5g1+cLf7GzxSVxlK/q3/TohiSM259EJp5k6bkY=
-X-Gm-Gg: Acq92OGC3GjX2vV0BFoYmc2n/PtsUrGIT0GM/yPvL6MUznHV+bxepEw14xU0DvhlKG2
-	4Y/NaAlE89thhMML/veqcI2jdYUeUKb18rPgHoHfcWJoZnPPyTjtVy2IKAEeoc91EkMvDL+3AdX
-	i0wZLEnDqNBocQWfUbqKukNS4yDci7dI6FqHyD305ShRjz+q3xjq3Rdfksv8YqiHOO9ifXV4ETn
-	0zqLLKXbMpwgO99/MliBQ/mHHPWNOvprGVPH1hB87jZ+UfYZji0phKayqp02maO585e+3GrQkXO
-	kBKmec/49d0y4K+UHQP/p+NOtq4mzqdcwckmc+fH3un2PHLmvoHF9eGg7R6a0R5XW7EHPil/pAW
-	tPRdxiigV5nT3t3qyhK5ahfU4XeFqh2qa/KCLxrHJr9MRGG64pde2oyNLlX+yWj7/Zaff4jzgxZ
-	u/3lAAQmAtxrSuPMeAvYL6X7HwNQcMwDpb5FuR/Q==
-X-Received: by 2002:a05:6808:1a0d:b0:486:5275:8144 with SMTP id 5614622812f47-4868dc44e20mr851607b6e.2.1780621237642;
-        Thu, 04 Jun 2026 18:00:37 -0700 (PDT)
+        bh=EZkK5iRkM+bFu8r36hoA1oZzT41u9/qmzwRkx8FhOsM=;
+        b=JK3ASW3U+wfiSTiePxGkhoyiP2dYrPBHMhbW0wv7QgxCgh8VJ7NMuby2ou8V9WMIO/
+         vGLUTvIjP6MZybTja73IBowLqsEgiEUvoj49lYP9NEFaKXfjswiL6nUsr4tOPYzO3H4w
+         hjc2g3L6AZMG3I6kKc17I1RW5tYNai4gFtyA1sJBRi6JyUPxQypqJtgdU5HoMpMV0CWz
+         fdiF1mT1WpGKEPrLiuSbRXQ9lBi4DoALudxUUySHVdBQIUbuo2Kw1TMOZJuLwgyqb7wK
+         Y5M+F6NrxWTlHDGUHfgvKPCM+4kPyqMMYNN/NFtYvNIzr+3fn3EySqAKa1fyO48V1nWK
+         a9hg==
+X-Forwarded-Encrypted: i=1; AFNElJ/N+39yob51oHSwl62s92f4JAxLbMQJn+yk6rc9Ws+92POmoishmSHhLKYFYbubFhUnuG4D8uc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxbC97oH7HGbQrgKhVX2C8xQ90hyNbrFPNXGJBk4IyvyY0vCS17
+	4m18OR6jqkyCNQoKpOhYiXU7yCIQo4KEBqbk31PMqG4Tcpg9/7eFnuifzOsZDKUiphE=
+X-Gm-Gg: Acq92OGYQC9ZDhNHn5YP1O60ka1N6juhpzbYiKQ3UbvxoX1+0Qzec7VEWDf1Ouc2fLA
+	oahyddvVHo62okfdy80y5k7sRU9l00Rr4EdrADIl/BOfs7M3nNA2ybzahDE2gsodIGR90NX46XK
+	4jF5nmvHRkMbUacJ3HXbJvNNeGuKxt181M8DWdq4SIDtcYHRbwk2/Sbpo8VdE9lGe3O/Jw564Mg
+	0VhGopO+mIrQPTwJlf86FiLzjwiJbyznTwvXg3nhX/kWwYllfd0GBzgs8agFyLOxZmaz1O2bfYc
+	5FSd8hFfgdt4/B1n0CcwPrFWpriApX6KHoAJ2j1z1bj52PZJRCTuuIdhMoR9S29JUgum+EwPnFj
+	0SgNSbJ/2dfh6IJxxCv11O8HsYaNDHzO5gZmgFjytRgebkwwxIOTVt7Ig6CPzXbTBFfpFVn1FMN
+	6UBRpNc4IAE8nLDGkE+ChmHTVPczsf4EthlXvAeg==
+X-Received: by 2002:a05:6808:1b0e:b0:467:5f1:fc93 with SMTP id 5614622812f47-4868dbe795amr869921b6e.9.1780621240655;
+        Thu, 04 Jun 2026 18:00:40 -0700 (PDT)
 Received: from zippy.localdomain ([73.62.185.64])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-4865b6ec694sm5544631b6e.5.2026.06.04.18.00.34
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-4865b6ec694sm5544631b6e.5.2026.06.04.18.00.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Jun 2026 18:00:37 -0700 (PDT)
+        Thu, 04 Jun 2026 18:00:40 -0700 (PDT)
 From: Alex Elder <elder@riscstar.com>
 To: andrew+netdev@lunn.ch,
 	davem@davemloft.net,
@@ -108,9 +108,9 @@ Cc: Daniel Thompson <daniel@riscstar.com>,
 	linux-stm32@st-md-mailman.stormreply.com,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v2 03/14] net: pcs: pcs-xpcs-regmap: support XPCS memory-mapped MDIO bus via regmap
-Date: Thu,  4 Jun 2026 20:00:10 -0500
-Message-ID: <20260605010022.968612-4-elder@riscstar.com>
+Subject: [PATCH net-next v2 04/14] net: pcs: xpcs: re-order xpcs_pre_config() to update after the reset
+Date: Thu,  4 Jun 2026 20:00:11 -0500
+Message-ID: <20260605010022.968612-5-elder@riscstar.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260605010022.968612-1-elder@riscstar.com>
 References: <20260605010022.968612-1-elder@riscstar.com>
@@ -124,309 +124,106 @@ Content-Transfer-Encoding: 8bit
 
 From: Daniel Thompson <daniel@riscstar.com>
 
-In some DesignWare XPCS implementatons the memory-mapped MDIO bus is
-allocated to a register window that does not align to a page boundary.
-This makes iomapping the registers problematic.
+Currently, on Wangxun platforms, the XPCS is configured during the call
+to xpcs_switch_interface_mode() and, if the need_reset flag is set, the
+XPCS is reset and the configuration will be lost. This is harmless at
+present because need_reset will never actually be set on these platforms.
 
-For example the Toshiba TC9564 (a PCIe Ethernet-AVB/TSN bridge) provides
-an "eMAC" subsystem with the XPCS base address cuddled up to XGMAC
-registers.
+Nevertheless having xpcs_switch_interface_mode() on the wrong side of
+the reset is an obstacle for future changes where wiping out programmed
+configuration with a reset could be harmful.
 
-Let's introduce helpers to allow the driver that owns the eMAC to register
-an XPCS using is regmap for the memory-mapped MDIO bus.
+Reorder xpcs_pre_config() to allow the reset can happen before we
+switch interface mode. To make this work we have to hoist the special
+case logic for SGMII into the parent function.
 
 Signed-off-by: Daniel Thompson <daniel@riscstar.com>
 Signed-off-by: Alex Elder <elder@riscstar.com>
 ---
- MAINTAINERS                         |   2 +
- drivers/net/pcs/Makefile            |   4 +-
- drivers/net/pcs/pcs-xpcs-regmap.c   | 219 ++++++++++++++++++++++++++++
- include/linux/pcs/pcs-xpcs-regmap.h |  20 +++
- 4 files changed, 243 insertions(+), 2 deletions(-)
- create mode 100644 drivers/net/pcs/pcs-xpcs-regmap.c
- create mode 100644 include/linux/pcs/pcs-xpcs-regmap.h
+ drivers/net/pcs/pcs-xpcs.c | 56 ++++++++++++++++++++------------------
+ 1 file changed, 30 insertions(+), 26 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index eb8cdcc76324f..2aa6ea012c848 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -25931,8 +25931,10 @@ F:	drivers/net/ethernet/synopsys/
- SYNOPSYS DESIGNWARE ETHERNET XPCS DRIVER
- L:	netdev@vger.kernel.org
- S:	Orphan
-+F:	drivers/net/pcs/pcs-xpcs-regmap.c
- F:	drivers/net/pcs/pcs-xpcs.c
- F:	drivers/net/pcs/pcs-xpcs.h
-+F	include/linux/pcs/pcs-xpcs-regmap.h
- F:	include/linux/pcs/pcs-xpcs.h
+diff --git a/drivers/net/pcs/pcs-xpcs.c b/drivers/net/pcs/pcs-xpcs.c
+index e69fa2f0a0e8d..76c04372b5b50 100644
+--- a/drivers/net/pcs/pcs-xpcs.c
++++ b/drivers/net/pcs/pcs-xpcs.c
+@@ -705,46 +705,50 @@ static void xpcs_get_interfaces(struct dw_xpcs *xpcs, unsigned long *interfaces)
+ static int xpcs_switch_interface_mode(struct dw_xpcs *xpcs,
+ 				      phy_interface_t interface)
+ {
+-	int ret = 0;
++	/* Wangxun provides a full alternative implementation to handle quirks */
++	if (xpcs->info.pma == WX_TXGBE_XPCS_PMA_10G_ID)
++		return txgbe_xpcs_switch_mode(xpcs, interface);
  
- SYNOPSYS DESIGNWARE HDMI RX CONTROLLER DRIVER
-diff --git a/drivers/net/pcs/Makefile b/drivers/net/pcs/Makefile
-index 4f7920618b900..565f1b63fce0b 100644
---- a/drivers/net/pcs/Makefile
-+++ b/drivers/net/pcs/Makefile
-@@ -1,8 +1,8 @@
- # SPDX-License-Identifier: GPL-2.0
- # Makefile for Linux PCS drivers
+-	if (xpcs->info.pma == WX_TXGBE_XPCS_PMA_10G_ID) {
+-		ret = txgbe_xpcs_switch_mode(xpcs, interface);
+-	} else if (xpcs->interface != interface) {
+-		if (interface == PHY_INTERFACE_MODE_SGMII)
+-			xpcs->need_reset = true;
+-		xpcs->interface = interface;
+-	}
++	xpcs->interface = interface;
  
--pcs_xpcs-$(CONFIG_PCS_XPCS)	:= pcs-xpcs.o pcs-xpcs-plat.o \
--				   pcs-xpcs-nxp.o pcs-xpcs-wx.o
-+pcs_xpcs-$(CONFIG_PCS_XPCS)	:= pcs-xpcs.o pcs-xpcs-nxp.o pcs-xpcs-regmap.o \
-+				   pcs-xpcs-plat.o pcs-xpcs-wx.o
+-	return ret;
++	return 0;
+ }
  
- obj-$(CONFIG_PCS_XPCS)		+= pcs_xpcs.o
- obj-$(CONFIG_PCS_LYNX)		+= pcs-lynx.o
-diff --git a/drivers/net/pcs/pcs-xpcs-regmap.c b/drivers/net/pcs/pcs-xpcs-regmap.c
-new file mode 100644
-index 0000000000000..55cd05d09c7db
---- /dev/null
-+++ b/drivers/net/pcs/pcs-xpcs-regmap.c
-@@ -0,0 +1,219 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Synopsys DesignWare XPCS regmap helpers
-+ *
-+ * Copyright (C) 2026 RISCstar Solutions.
-+ * Copyright (C) 2024 Serge Semin
-+ */
-+
-+#include <linux/device.h>
-+#include <linux/kernel.h>
-+#include <linux/mdio.h>
-+#include <linux/pcs/pcs-xpcs.h>
-+#include <linux/pcs/pcs-xpcs-regmap.h>
-+#include <linux/regmap.h>
-+
-+#include "pcs-xpcs.h"
-+
-+/* Page select register for the indirect MMIO CSRs access */
-+#define DW_VR_CSR_VIEWPORT		0xff
-+
-+struct dw_xpcs_regmap {
-+	struct device *dev;
-+	struct mii_bus *bus;
-+	struct regmap *regmap;
-+	bool reg_indir;
-+};
-+
-+static ptrdiff_t xpcs_regmap_addr_format(int dev, int reg)
-+{
-+	return FIELD_PREP(0x1f0000, dev) | FIELD_PREP(0xffff, reg);
-+}
-+
-+static u16 xpcs_regmap_addr_page(ptrdiff_t csr)
-+{
-+	return FIELD_GET(0x1fff00, csr);
-+}
-+
-+static ptrdiff_t xpcs_regmap_addr_offset(ptrdiff_t csr)
-+{
-+	return FIELD_GET(0xff, csr);
-+}
-+
-+static int xpcs_regmap_read_reg_indirect(struct dw_xpcs_regmap *pxpcs, int dev,
-+					 int reg)
-+{
-+	ptrdiff_t csr, ofs;
-+	unsigned int val;
-+	u16 page;
-+	int res;
-+
-+	csr = xpcs_regmap_addr_format(dev, reg);
-+	page = xpcs_regmap_addr_page(csr);
-+	ofs = xpcs_regmap_addr_offset(csr);
-+
-+	res = regmap_write(pxpcs->regmap, DW_VR_CSR_VIEWPORT, page);
-+	if (res < 0)
-+		return res;
-+
-+	res = regmap_read(pxpcs->regmap, ofs, &val);
-+	if (res < 0)
-+		return res;
-+
-+	return val & 0xffff;
-+}
-+
-+static int xpcs_regmap_write_reg_indirect(struct dw_xpcs_regmap *pxpcs, int dev,
-+					  int reg, u16 val)
-+{
-+	ptrdiff_t csr, ofs;
-+	u16 page;
-+	int res;
-+
-+	csr = xpcs_regmap_addr_format(dev, reg);
-+	page = xpcs_regmap_addr_page(csr);
-+	ofs = xpcs_regmap_addr_offset(csr);
-+
-+	res = regmap_write(pxpcs->regmap, DW_VR_CSR_VIEWPORT, page);
-+	if (res < 0)
-+		return res;
-+
-+	return regmap_write(pxpcs->regmap, ofs, val);
-+}
-+
-+static int xpcs_regmap_read_reg_direct(struct dw_xpcs_regmap *pxpcs, int dev,
-+				       int reg)
-+{
-+	unsigned int val;
-+	ptrdiff_t csr;
-+	int res;
-+
-+	csr = xpcs_regmap_addr_format(dev, reg);
-+	res = regmap_read(pxpcs->regmap, csr, &val);
-+	if (res < 0)
-+		return res;
-+
-+	return val & 0xffff;
-+}
-+
-+static int xpcs_regmap_write_reg_direct(struct dw_xpcs_regmap *pxpcs, int dev,
-+					int reg, u16 val)
-+{
-+	ptrdiff_t csr = xpcs_regmap_addr_format(dev, reg);
-+
-+	return regmap_write(pxpcs->regmap, csr, val);
-+}
-+
-+static int xpcs_regmap_read_c22(struct mii_bus *bus, int addr, int reg)
-+{
-+	struct dw_xpcs_regmap *pxpcs = bus->priv;
-+
-+	if (addr != 0)
-+		return -ENODEV;
-+
-+	if (pxpcs->reg_indir)
-+		return xpcs_regmap_read_reg_indirect(pxpcs, MDIO_MMD_VEND2, reg);
-+	else
-+		return xpcs_regmap_read_reg_direct(pxpcs, MDIO_MMD_VEND2, reg);
-+}
-+
-+static int xpcs_regmap_write_c22(struct mii_bus *bus, int addr, int reg, u16 val)
-+{
-+	struct dw_xpcs_regmap *pxpcs = bus->priv;
-+
-+	if (addr != 0)
-+		return -ENODEV;
-+
-+	if (pxpcs->reg_indir)
-+		return xpcs_regmap_write_reg_indirect(pxpcs, MDIO_MMD_VEND2, reg, val);
-+	else
-+		return xpcs_regmap_write_reg_direct(pxpcs, MDIO_MMD_VEND2, reg, val);
-+}
-+
-+static int xpcs_regmap_read_c45(struct mii_bus *bus, int addr, int dev, int reg)
-+{
-+	struct dw_xpcs_regmap *pxpcs = bus->priv;
-+
-+	if (addr != 0)
-+		return -ENODEV;
-+
-+	if (pxpcs->reg_indir)
-+		return xpcs_regmap_read_reg_indirect(pxpcs, dev, reg);
-+	else
-+		return xpcs_regmap_read_reg_direct(pxpcs, dev, reg);
-+}
-+
-+static int xpcs_regmap_write_c45(struct mii_bus *bus, int addr, int dev,
-+				 int reg, u16 val)
-+{
-+	struct dw_xpcs_regmap *pxpcs = bus->priv;
-+
-+	if (addr != 0)
-+		return -ENODEV;
-+
-+	if (pxpcs->reg_indir)
-+		return xpcs_regmap_write_reg_indirect(pxpcs, dev, reg, val);
-+	else
-+		return xpcs_regmap_write_reg_direct(pxpcs, dev, reg, val);
-+}
-+
-+static void devm_xpcs_regmap_destroy(void *data)
-+{
-+	struct dw_xpcs *xpcs = data;
-+
-+	xpcs_destroy(xpcs);
-+}
-+
-+struct dw_xpcs *devm_xpcs_regmap_register(struct device *dev,
-+					  const struct xpcs_regmap_config *config)
-+{
-+	static atomic_t id = ATOMIC_INIT(-1);
-+	struct dw_xpcs_regmap *pxpcs;
-+	struct dw_xpcs *xpcs;
-+	int ret;
-+
-+	pxpcs = devm_kzalloc(dev, sizeof(*pxpcs), GFP_KERNEL);
-+	if (!pxpcs)
-+		return ERR_PTR(-ENOMEM);
-+
-+	pxpcs->dev = dev;
-+	pxpcs->regmap = config->regmap;
-+	pxpcs->reg_indir = config->reg_indir;
-+
-+	pxpcs->bus = devm_mdiobus_alloc_size(dev, 0);
-+	if (!pxpcs->bus)
-+		return ERR_PTR(-ENOMEM);
-+
-+	pxpcs->bus->name = "DW XPCS MCI/APB3";
-+	pxpcs->bus->read = xpcs_regmap_read_c22;
-+	pxpcs->bus->write = xpcs_regmap_write_c22;
-+	pxpcs->bus->read_c45 = xpcs_regmap_read_c45;
-+	pxpcs->bus->write_c45 = xpcs_regmap_write_c45;
-+	pxpcs->bus->phy_mask = ~0;
-+	pxpcs->bus->parent = dev;
-+	pxpcs->bus->priv = pxpcs;
-+
-+	snprintf(pxpcs->bus->id, MII_BUS_ID_SIZE,
-+		 "dwxpcs-%x", atomic_inc_return(&id));
-+
-+	/* MDIO-bus here serves as just a back-end engine abstracting out
-+	 * the MDIO and MCI/APB3 IO interfaces utilized for the DW XPCS CSRs
-+	 * access.
+ static void xpcs_pre_config(struct phylink_pcs *pcs, phy_interface_t interface)
+ {
+ 	struct dw_xpcs *xpcs = phylink_pcs_to_xpcs(pcs);
+ 	const struct dw_xpcs_compat *compat;
++	bool force_reset;
+ 	int ret;
+ 
++	/*
++	 * According to the XPCS datasheet, a soft reset is required to initiate
++	 * Clause 37 auto-negotiation when the XPCS switches interface modes.
 +	 */
-+	ret = devm_mdiobus_register(dev, pxpcs->bus);
-+	if (ret) {
-+		dev_err(dev, "Failed to create MDIO bus\n");
-+		return ERR_PTR(ret);
++	force_reset = interface == PHY_INTERFACE_MODE_SGMII;
++
++	if (force_reset || xpcs->need_reset) {
++		compat = xpcs_find_compat(xpcs, interface);
++		if (!compat) {
++			dev_err(&xpcs->mdiodev->dev, "unsupported interface %s\n",
++				phy_modes(interface));
++			return;
++		}
++
++		ret = xpcs_soft_reset(xpcs, compat);
++		if (ret) {
++			dev_err(&xpcs->mdiodev->dev, "soft reset failed: %pe\n",
++				ERR_PTR(ret));
++			return;
++		}
++
++		xpcs->need_reset = false;
 +	}
 +
-+	xpcs = xpcs_create_mdiodev(pxpcs->bus, 0);
-+	if (IS_ERR(xpcs))
-+		return xpcs;
-+
-+	ret = devm_add_action_or_reset(dev, devm_xpcs_regmap_destroy, xpcs);
-+	if (ret)
-+		return ERR_PTR(ret);
-+
-+	return xpcs;
-+}
-+EXPORT_SYMBOL_GPL(devm_xpcs_regmap_register);
-diff --git a/include/linux/pcs/pcs-xpcs-regmap.h b/include/linux/pcs/pcs-xpcs-regmap.h
-new file mode 100644
-index 0000000000000..19c99d4160365
---- /dev/null
-+++ b/include/linux/pcs/pcs-xpcs-regmap.h
-@@ -0,0 +1,20 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+
-+#ifndef __LINUX_PCS_XPCS_REGMAP_H
-+#define __LINUX_PCS_XPCS_REGMAP_H
-+
-+#include <linux/types.h>
-+
-+struct device;
-+struct regmap;
-+struct dw_xpcs;
-+
-+struct xpcs_regmap_config {
-+	struct regmap *regmap;
-+	bool reg_indir;
-+};
-+
-+struct dw_xpcs *devm_xpcs_regmap_register(
-+		struct device *dev, const struct xpcs_regmap_config *config);
-+
-+#endif /* __LINUX_PCS_XPCS_REGMAP_H */
+ 	ret = xpcs_switch_interface_mode(xpcs, interface);
+ 	if (ret)
+ 		dev_err(&xpcs->mdiodev->dev, "switch interface failed: %pe\n",
+ 			ERR_PTR(ret));
+-
+-	if (!xpcs->need_reset)
+-		return;
+-
+-	compat = xpcs_find_compat(xpcs, interface);
+-	if (!compat) {
+-		dev_err(&xpcs->mdiodev->dev, "unsupported interface %s\n",
+-			phy_modes(interface));
+-		return;
+-	}
+-
+-	ret = xpcs_soft_reset(xpcs, compat);
+-	if (ret)
+-		dev_err(&xpcs->mdiodev->dev, "soft reset failed: %pe\n",
+-			ERR_PTR(ret));
+-
+-	xpcs->need_reset = false;
+ }
+ 
+ static int xpcs_config_aneg_c37_sgmii(struct dw_xpcs *xpcs,
 -- 
 2.51.0
 
