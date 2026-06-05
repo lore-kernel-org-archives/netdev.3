@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FBA0364939;
-	Fri,  5 Jun 2026 01:40:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C8813BB115;
+	Fri,  5 Jun 2026 01:40:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780623629; cv=none; b=OZuxOQNs4H+Byg8kIJsWpQTGlLsns7MqFIIHSAK+DbP55vHlRWbjZYh7Zo1oiq0iXYD6Pz2rFBuD+SSsCnd+J91eVuIgIi35w9bfyZdgXegwEzD67y6d/IfioOIsuwzH8E2bWtCnVS0soKhSvAJ3TMG8/4JVcgV6G1zZNENT844=
+	t=1780623629; cv=none; b=IRyubIssrCWIq2Hii+6/ywrq10+EHDCH2jgk0CCcp5a4CBbKfoywgnJYOp5nHNqS16p+kUwcqrM+8vZVLqtaWVgWBAf+6aex3H2TvA/die4a77exAg4nv1Utx8mNX6NT8Nc6JZctV3X76II9ZkPfvW3yX+FI/vUU9y465f+x6Eg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1780623629; c=relaxed/simple;
-	bh=vRXAdQtaMB/n3LIqHdj8QcWdDFCWhTQBmDwBN/jt9rE=;
+	bh=Bk6KSh7osoOSa9v7pIwPsBtyBiM+c5iUa9g7bgdIFU4=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=Q9iCmXhyWvg6lhpfG5Z/NNKLfO3UDQ4XgFR2IcrOaPg1dlnmT//YEpSdQ1LBHSxLZzeh2F5Ox0/aXVI3RB7iBrTD743PeEnS/FOH1c1gZ4tc05jrYqWQT8ohrP4FSgH/T1dDtNYmm2lUUIn46ZMOziFiEvcHgOCbpA9nUVQ3S8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D6/l1+tK; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=kMyJrpBKosy5TDrhvVjZfrvoG9l7FE8+S/9PFBfJ90Df+lFXffDVUCOHJ4t2jyDmpiFSKeuksK1KHbAbDeUuKFFmx2TZ1TL6qTnghZ5z1EHtRt6Jaw0JdsxtnmMYKEmNceMnvNilJVVx5MOjuY8qdH0oE5htWyxcITif4uEHjk0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ayTrYNFn; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D6/l1+tK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74E021F00898;
-	Fri,  5 Jun 2026 01:40:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ayTrYNFn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECE7A1F00899;
+	Fri,  5 Jun 2026 01:40:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780623617;
-	bh=e1dGGFkL7mOP11H/4QSRAmNfsELjK81noFUNsbOWfS8=;
+	s=k20260515; t=1780623619;
+	bh=Vd0i8CUiFT34w88Wld/l9sYADsxEvf7jzRAB2oygGEY=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=D6/l1+tKegYdwgmTkTfH/p8zNg9Rfj/hINa3uVl5TscbpoVlJFuJERFuDM0iphxLz
-	 UZ/dmKV1W16SiytwzfbllX361bYzPTxhMxiYEG4m9fa74MmIUI7lafNos4B32te6XH
-	 2hH/taRnfuDiK1CNhhT9syTSQxsqdr5Tynay4sM43cJua50DBv8acpLqOsJZG1H1Vj
-	 7BihyKrDYrOhtwIQOuOySYwdXkkOhOC3OrvMTMqHPdQWNAlNRYcmN9p2zZMcYE4y8+
-	 28bmjnLfWRvsbiewu3/f4pO5/1uR5b3jvH00MgA15+1jPikghshbSa1Nuug5oVNkDY
-	 K6rVmI2hyz1Kg==
+	b=ayTrYNFn4+DYyhi9hYSAvl5plS/d59sbBnLgGhcwfdCG01gLKPNDU9zkGsSsl9g9w
+	 wBdmsx1P6w7oDAADKcW/TsDHC1q3URI06DTsahbO4xsZlPLyfHl6rxYLLa4JcMj8gz
+	 l3VHYeMGaRjo15JUgsut9pq9+zl40kADf/CIXsf4saECwxPQ155I51+7cFGSEK3vJq
+	 zYP+fVPPDSRF+UKxniUWijCfQqX/k2JcoXqqaet0ClGppO7raJ+uHW+booJkE+MMSl
+	 LwqGa6erE3pPjjZeKuxM7NP04nAoIegu34FXcruGytj7qm6brdtP1xVI+4YpqL0whS
+	 L/+0mkKbFab+Q==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 56AA13930A8B;
-	Fri,  5 Jun 2026 01:40:19 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0C933930A8B;
+	Fri,  5 Jun 2026 01:40:20 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,39 +37,41 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2] ipv6: use READ_ONCE() for bindv6only default in
- inet6_create()
+Subject: Re: [PATCH net-next] octeontx2-af: kpu: Default profile updates
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178062361789.3097022.10379548092017503549.git-patchwork-notify@kernel.org>
-Date: Fri, 05 Jun 2026 01:40:17 +0000
-References: <20260602002414.1504106-1-runyu.xiao@seu.edu.cn>
-In-Reply-To: <20260602002414.1504106-1-runyu.xiao@seu.edu.cn>
-To: Runyu Xiao <runyu.xiao@seu.edu.cn>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
- dsahern@kernel.org, idosch@nvidia.com, edumazet@google.com, horms@kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, jianhao.xu@seu.edu.cn
+ <178062361939.3097022.1256558950193949841.git-patchwork-notify@kernel.org>
+Date: Fri, 05 Jun 2026 01:40:19 +0000
+References: <20260602040535.3975769-1-nshettyj@marvell.com>
+In-Reply-To: <20260602040535.3975769-1-nshettyj@marvell.com>
+To: Nitin Shetty J <nshettyj@marvell.com>
+Cc: sgoutham@marvell.com, lcherian@marvell.com, gakula@marvell.com,
+ hkelam@marvell.com, sbhatta@marvell.com, kirankumark@marvell.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, rkannoth@marvell.com, sumang@marvell.com,
+ horms@kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Tue,  2 Jun 2026 08:24:14 +0800 you wrote:
-> inet6_create() reads net->ipv6.sysctl.bindv6only locklessly.
+On Tue, 2 Jun 2026 09:35:25 +0530 you wrote:
+> From: Kiran Kumar K <kirankumark@marvell.com>
 > 
-> Use READ_ONCE() for this sysctl access.
-> Signed-off-by: Runyu Xiao <runyu.xiao@seu.edu.cn>
-> ---
-> v2:
-> - Shorten the commit message per review feedback
-> - Drop the Fixes and stable CC trailers
+> Add support for parsing the following:
+> 1. fabric path header
+> 2. tpids 0x88a8, 0x9100 and 0x9200 parsing for
+>    first pass and second pass packets
+> 3. parse stacked VLANs
+> 4. RoCEv2 header with UDP destination port 4791
+> 5. single SBTAG parsing
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v2] ipv6: use READ_ONCE() for bindv6only default in inet6_create()
-    https://git.kernel.org/netdev/net-next/c/7a20eb54224a
+  - [net-next] octeontx2-af: kpu: Default profile updates
+    https://git.kernel.org/netdev/net-next/c/0416f7b35458
 
 You are awesome, thank you!
 -- 
