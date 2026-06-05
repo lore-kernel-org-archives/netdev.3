@@ -1,62 +1,65 @@
-Received: from mail-oa1-f74.google.com (mail-oa1-f74.google.com [209.85.160.74])
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 101A43C584A
-	for <netdev@vger.kernel.org>; Fri,  5 Jun 2026 01:43:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E39E43DEFFC
+	for <netdev@vger.kernel.org>; Fri,  5 Jun 2026 01:43:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780623815; cv=none; b=l5hmMk0Yd6FdN6pV/PmN5EFoL1fmIs/LlZAd0aEUHxXFH3FZOFDkHWntFSBB2vlL4GSjx3EMaqIMxmo4DqJgPIcc43OeDtMmWB3CPq3hYpYbRMS877bFjMXyMJcj83Rd5vMUMUvwoA4+lb5iDmCj9WfV6K9cT4eHEU2EBPHzueo=
+	t=1780623819; cv=none; b=XYoIl9m/ASkx21sklnsIqPSouui9C/UljYC6EwIaoJhhPJABxucFRYZin5s3EHIe97Fz61w12mwxQNQAaKFsn8zZwXt/ralpYOqxDMnmEJlbj+CoDkui7sXMnU3wxI5kMvk9PXKWH8D7jJw6GgQfxvg511jSsleglq7DyEtdDvU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780623815; c=relaxed/simple;
-	bh=58lYn4NE3WI2y/xPW1YkIlCmljVDW939C14m1Tbmczc=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=J9DGdWMlKTgvHkUKsVPZOqRE37UoTv1cBLds4u92q/B++1k8Ml6e3OAErTcBct55hZHSGf30jN8GLI3e5tOqjdj962ZfF0hJ3Rj8fyq53icGVS/OD0rtQadDEZD4hs2crTCSz1snMNSxBU5oN0cCmTCLFD1jxxo92U3JN53MzgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--yuyanghuang.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fX4PYkiv; arc=none smtp.client-ip=209.85.160.74
+	s=arc-20240116; t=1780623819; c=relaxed/simple;
+	bh=EDdO8sCFNSFFX5asKV9mS604oajtv91yhZtFBop5IP8=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=byyhGnmOx3vyG8vpuZxgVgAKvOed21yhPDZGnqFZlAMMqYFzh9hqZFl71b1zNrILmMlL3bXByW7n0yr+cA6bk7YnlbVQgkCkt515s3O2qzIDJb8ft9m9FgTYTXdwTl8tlbftXWmM7lo2j7hLvkEX9fHTuUeePXX4mcsAeASorsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--yuyanghuang.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Inr+20uM; arc=none smtp.client-ip=209.85.210.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--yuyanghuang.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fX4PYkiv"
-Received: by mail-oa1-f74.google.com with SMTP id 586e51a60fabf-43e09813423so1348479fac.1
-        for <netdev@vger.kernel.org>; Thu, 04 Jun 2026 18:43:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Inr+20uM"
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-8422a0eee68so1884769b3a.0
+        for <netdev@vger.kernel.org>; Thu, 04 Jun 2026 18:43:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780623803; x=1781228603; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=h2ow12NtxvVPueHOKMb1jCbeRS9jueVp2e0oPGXbXU8=;
-        b=fX4PYkivtbOFs0PWAKAEgTpJog32kB5SbrF68qz1SsO6xAKNzlwyvrDWXC5BHSm9X5
-         LtRM3DOmGosaECu8sa3Zxtz+rqFZsPR6IRvXObZE6a8dTzqCDDsV+LPPW1iltJ99zdGw
-         BT6kq23yAFqbxCvzf+l3oVjZiSD1pJCHis5NOI/pX3mn/irIbzvkTFcPLHz1H8+MtbAr
-         gagMFGlX0rbnZY++1kTdnoKQn8yrQJ/xtvRD+PImb9770zZkvRLw0SR7hmh5kznXEiJd
-         exht0tkkMyKSe8TP6bDBbkKSxtewe8gQ/SJ/8HSpkMwUOBnWBok+so6nYZCtDoxs0bAi
-         nmoA==
+        d=google.com; s=20251104; t=1780623808; x=1781228608; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=iVAJucd+GVsBBf1FGgcJQ8cRedfncMhwEKsquMbLLdE=;
+        b=Inr+20uMaAQbLN9lbx+DFFI+p8Zk3FYKooLRjyg6OE4Am/6RDsHF/o0BSUGsmG+Z/O
+         dsZFJ59bm1jpBuFcTTtTdSQCGZDr0luWTBaG8GHyE2Q0P+RAgpKpjS+6adNsGkAYGdMq
+         h0mcJABbaDZGfoAJ6iDVBtbMPxatAcEQyPgA+K0uu7YG34qma7DXBpU9dFa5HghG4O7F
+         w83RbywJrTvPJFsQdAGt9GT4ztpxe/0FmJ9kWsGWCOEhGYaTwUfSFrkBAKubIr29VfbN
+         yfBcIW30r6PlFIkFyOauX8jPy+6MD3N6xmR3BWkKXi8MyopaG9JcO3aXyPso9eEm1ppI
+         gT2w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780623803; x=1781228603;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=h2ow12NtxvVPueHOKMb1jCbeRS9jueVp2e0oPGXbXU8=;
-        b=PPrXnhAhOH+ef7Atg67Ojxa36hIuH0yYZmGAc1UrgmpJQ0B6zfvFFhned0kA3KYnfQ
-         kFEoMixW65nWup2a9xU4RaVs1MWTlHG29Kacyy9FTtYCqsgpPOWqyRG3zAJhuf1PdZiT
-         3wqpRYdFo/HzlOooWTd7odNQvYWLYVXmURDckD0oVMye+ggwaJrqSvkF/wZ1Q3dQKzzc
-         9kfW1fsOaKkSV5vhpJelVk8gcFciCvAVQnkUd4jsCEOHiQb0GUKUbIU+4SXRuwgvETuS
-         jwmgy0du4x878N/FUNVu7PuKCFehAjiPE6uwaikwnRgN3ZqQsSYSue342m2Pm+Y4Op8z
-         MaCQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8HMTrAJ5ObRYU0KaGkuv7bS4b+i0eb/2IWxLQ9JATlQN6t9v6JMjEtGtb+YJjITn2hUmmtXRc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxt9MviE/OQzx+BVYvy+n9fiEZ28MjVgyimhXKtO+24vpfZ9hYn
-	aVZONPYvLO0hCh9f9RGcrywkDARezNNrIy4YRtYCgOIjUPC4WmRUaGvIAclEgb2bhd4p+nXTLWx
-	e7m2JfOqUTVWoRU3IHlsURg5osA==
-X-Received: from oaff25.prod.google.com ([2002:a05:6871:c919:b0:441:1c3d:9b6f])
+        d=1e100.net; s=20251104; t=1780623808; x=1781228608;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=iVAJucd+GVsBBf1FGgcJQ8cRedfncMhwEKsquMbLLdE=;
+        b=PkqDZm/375aPLOdj0zuD5Ctqvb1FsYsyS7FXC1FQVRkOub6wB7TJ/EQ8boqWbWYeOS
+         UhMGsm3R4ufXqOjf8egdjU8lfzwfnKd4fbcG9Hlm6UO3FIo+BIPFze/+sa+ZCsXD9bkb
+         4H3/pDKySsyj9woEmL+iMmJuFv0znB+r7q2y3e4/fzDXELpG1pK9BvVquYQCw5oq71hH
+         mmkjw/qcIjfwwUfBYDCWEOCXS5UND0TciB75K/0LNCw9dOw9dYHBfSbTzQYvaxURFowB
+         s7KFYEOPanCyJMJL3K2A9npQ09a0IjIDLgOJEzeU4g45pLEFiUTWOF/x9i3+nZeM1W3e
+         6WVw==
+X-Forwarded-Encrypted: i=1; AFNElJ8/l7fLgHR2+foEmoimM7mO+WzrlnsrTjVLcKhanqNub41Ty2GA6NUmAoXtGL/XUpeyzJrRfAw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzGg7DgjyXHebP5rNR1+SUUNMQ163gFE+uAUbo8GbcOkU4i9qf+
+	its+UhBSl7N44qAYC/p5MgyWKdIAjR9L/aUhLol9ZgTJHc+2t90zg+OTHXNLNK2bRoNF0Wg04y8
+	k0hpgndc7/RPoP9a2lhSoTRcDmg==
+X-Received: from pghl22.prod.google.com ([2002:a63:f316:0:b0:c82:7df9:8c21])
  (user=yuyanghuang job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6871:358d:b0:42c:1f88:ac with SMTP id 586e51a60fabf-4413dcbd75emr730101fac.29.1780623803290;
- Thu, 04 Jun 2026 18:43:23 -0700 (PDT)
-Date: Fri,  5 Jun 2026 10:43:16 +0900
+ 2002:a05:6a21:a8b:b0:3b4:8ec9:514e with SMTP id adf61e73a8af0-3b4ccd77529mr1868150637.4.1780623807839;
+ Thu, 04 Jun 2026 18:43:27 -0700 (PDT)
+Date: Fri,  5 Jun 2026 10:43:17 +0900
+In-Reply-To: <20260605014318.3890804-1-yuyanghuang@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
+References: <20260605014318.3890804-1-yuyanghuang@google.com>
 X-Mailer: git-send-email 2.54.0.1032.g2f8565e1d1-goog
-Message-ID: <20260605014318.3890804-1-yuyanghuang@google.com>
-Subject: [PATCH net-next v2 0/2] ipv4: igmp: annotate diagnostic procfs data races
+Message-ID: <20260605014318.3890804-2-yuyanghuang@google.com>
+Subject: [PATCH net-next v2 1/2] ipv4: igmp: annotate data-races around in_dev->mc_count
 From: Yuyang Huang <yuyanghuang@google.com>
 To: Yuyang Huang <yuyanghuang@google.com>
 Cc: "David S. Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>, 
@@ -65,29 +68,61 @@ Cc: "David S. Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>,
 	linux-kernel@vger.kernel.org, netdev@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-This patch series addresses several unannotated data races between lockless
-RCU-protected diagnostic reads in /proc/net/igmp (igmp_mc_seq_show())
-and concurrent writes in serialized paths (RTNL and group spinlocks).
+/proc/net/igmp walks the multicast list for IPv4 interfaces locklessly
+under RCU and prints state->in_dev->mc_count. Concurrently, device
+init/destruction and multicast join/leave paths update the count
+under the RTNL lock. Fix this intentional lockless snapshot by
+annotating the read with READ_ONCE() and the updates with WRITE_ONCE().
 
-Following the precedent in commit 061c0aa740d5 ("ipv4: igmp: annotate
-data-races around im->users"), we annotate these intentional data races
-using READ_ONCE() and WRITE_ONCE() macros.
+Signed-off-by: Yuyang Huang <yuyanghuang@google.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+---
+ net/ipv4/igmp.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-- Patch 1 annotates races around `in_dev->mc_count` (interface-level joins).
-- Patch 2 annotates races around active timer-related state tracking fields
-  (`tm_running`, `reporter`, `expires`) on individual multicast groups.
-
-Changes in v2:
-  - Remove "Fixes:" tag from the commit messages.
-  - Fix reverse Christmas tree variable declaration order in igmp_mc_seq_show().
-
-Yuyang Huang (2):
-  ipv4: igmp: annotate data-races around in_dev->mc_count
-  ipv4: igmp: annotate data-races around timer-related fields
-
- net/ipv4/igmp.c | 35 ++++++++++++++++++++---------------
- 1 file changed, 20 insertions(+), 15 deletions(-)
-
+diff --git a/net/ipv4/igmp.c b/net/ipv4/igmp.c
+index f2aca659b29c..fd0faf042fa6 100644
+--- a/net/ipv4/igmp.c
++++ b/net/ipv4/igmp.c
+@@ -1566,7 +1566,7 @@ static void ____ip_mc_inc_group(struct in_device *in_dev, __be32 addr,
+ #endif
+ 
+ 	im->next_rcu = in_dev->mc_list;
+-	in_dev->mc_count++;
++	WRITE_ONCE(in_dev->mc_count, in_dev->mc_count + 1);
+ 	rcu_assign_pointer(in_dev->mc_list, im);
+ 
+ 	ip_mc_hash_add(in_dev, im);
+@@ -1790,7 +1790,8 @@ void __ip_mc_dec_group(struct in_device *in_dev, __be32 addr, gfp_t gfp)
+ 			if (new_users == 0) {
+ 				ip_mc_hash_remove(in_dev, i);
+ 				*ip = i->next_rcu;
+-				in_dev->mc_count--;
++				WRITE_ONCE(in_dev->mc_count,
++					   in_dev->mc_count - 1);
+ 				__igmp_group_dropped(i, gfp);
+ 				inet_ifmcaddr_notify(in_dev->dev, i,
+ 						     RTM_DELMULTICAST);
+@@ -1922,7 +1923,7 @@ void ip_mc_destroy_dev(struct in_device *in_dev)
+ 
+ 	while ((i = rtnl_dereference(in_dev->mc_list)) != NULL) {
+ 		in_dev->mc_list = i->next_rcu;
+-		in_dev->mc_count--;
++		WRITE_ONCE(in_dev->mc_count, in_dev->mc_count - 1);
+ 		ip_mc_clear_src(i);
+ 		ip_ma_put(i);
+ 	}
+@@ -2974,7 +2975,9 @@ static int igmp_mc_seq_show(struct seq_file *seq, void *v)
+ 
+ 		if (rcu_access_pointer(state->in_dev->mc_list) == im) {
+ 			seq_printf(seq, "%d\t%-10s: %5d %7s\n",
+-				   state->dev->ifindex, state->dev->name, state->in_dev->mc_count, querier);
++				   state->dev->ifindex, state->dev->name,
++				   READ_ONCE(state->in_dev->mc_count),
++				   querier);
+ 		}
+ 
+ 		delta = im->timer.expires - jiffies;
 -- 
 2.54.0.1032.g2f8565e1d1-goog
 
