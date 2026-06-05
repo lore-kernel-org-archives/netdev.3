@@ -1,328 +1,112 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from mta1.formilux.org (mta1.formilux.org [51.159.59.229])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C2A52153D8;
-	Fri,  5 Jun 2026 15:36:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F02C3A7F5F;
+	Fri,  5 Jun 2026 15:42:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.159.59.229
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780673779; cv=none; b=KFcvWj4gMDnX8oUERu3RzVywVds8Tf81WkY5tVXZS98yIBGzUT82/DEWKpKmZSYQBfAWp6eGlibd/WJDTeo+IRXzYhDE4bs0Qe9gL6YH22SGVWsCSWnYJjtDExyNoK4ouBrByLB+Tiysf4inPgHwtW10b8p9SK+pNB/++z4J8ak=
+	t=1780674128; cv=none; b=bsEB6RCfW92j9kriFIogYijZyxshXb91pQKmFt1ukZ+bxWKt51E2M0HG/A/pfDar4RFbnW2gY7J3Mq5P0TT9oRBf0gyhh0yrZB0TVpQd4NDzJ3XhFykFvcl/rdjrpelDP5cB3zS8VgyPdZ52JfWQWkhxQz/AnUudmpm3uTA57PY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780673779; c=relaxed/simple;
-	bh=n83rW4eamdlQ8FGqJ0dCVHLwmywwEa//w82pSDEfiJk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eh1hOHNc/RJQLzg46rBVwngm9X9/aQFY9MvQWDgkZ5t2HVoCJ/4D4XSfnx/4gp61QKhyC1BTHO9gNEhZ5zH0Ki14/o7l+L9H1R0Ad+sohcyyW/LMJf4TTauPa33UC66Iyq5fh47J5H0UcAH52kfhivRmVnPBkST9JhvGAUXmpwQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=LSb3DbXw; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1780674128; c=relaxed/simple;
+	bh=tHiGUlNZoRY3qz+xlCsJ7VhqR+ifqZ6sLRszuefyeXU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DA9FeNFSevzxo3reCXIyERZSE/HlDvBcGUMTLSNKiUQlE22Uaq2S2cgo74m12xItNpjl3OmdwC/DTDtcJxYHd8GTBkvua9TkoZtIHBimkYck6YgDoIs/sXLH/BZ0GH8GXnMFxU4UR3rxVz9KUAgRfs1vIyjNeNE6Dl2JUZgXaV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=1wt.eu; spf=pass smtp.mailfrom=1wt.eu; dkim=pass (1024-bit key) header.d=1wt.eu header.i=@1wt.eu header.b=pA/QxHuM; arc=none smtp.client-ip=51.159.59.229
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=1wt.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=1wt.eu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="LSb3DbXw"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 2D349C58479;
-	Fri,  5 Jun 2026 15:36:10 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 4A1AB5FED1;
-	Fri,  5 Jun 2026 15:36:10 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3C996106A24F0;
-	Fri,  5 Jun 2026 17:35:47 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1780673767; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=FHeuOlC/gaOtesZkFgqVr9DoEMDIdfxTclEETE4eqSU=;
-	b=LSb3DbXwWwWowFJQbUezIa1BBhdJR5igSpOLdXQsCT+BMkRWsdW44ijdI9dXSrrrcI8V3I
-	ecL7Zv+Q2UVM43Odjp/o2hzqvGbJH9gcvwM6bdnjCKpscXz21KdbG5a15Kc6ylGOPoMikV
-	/27OcnmIj1H+3ddtxGC9cfiTRCWoqBfbWXl8ciMGadarXoTP7kfh+SkJNF+NmdT7qNf3N7
-	nOUpMyUSLjBesoK1WhJDphDI8xte4Zjy9kt1XGP1BSTgKvcUlm5wSd8QHvl7H5BQGa0SY4
-	7tx4Gs7DtT2TfocD21W8eEKgMWx1a3Dd+/HcnhtEgGNrly28oFopJXpGDFJybQ==
-Message-ID: <566af63b-05a9-43f8-94e9-19af737c848a@bootlin.com>
-Date: Fri, 5 Jun 2026 17:35:47 +0200
+	dkim=pass (1024-bit key) header.d=1wt.eu header.i=@1wt.eu header.b="pA/QxHuM"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1wt.eu; s=mail;
+	t=1780674117; bh=duKO+vzFJ97ZNiF0DbRfLSuX03PYOSVq+ESDQC/usyM=;
+	h=From:Message-ID:From;
+	b=pA/QxHuMTNgLcMbBXWam2O0grD8k/53PmT5oIVHyiwNEJxBKXrLk6Tot5aez/4nrr
+	 0FMRtm/B1cHhBHBJWvjbasWgpyMtprd4qPimYB96Zr6vEy1TXL7feuhXHKWwXeoRRI
+	 5EU9YQwcSNnMN5TrxvJOsvK2NIIMq+5lGfHdGaV0=
+Received: from 1wt.eu (ded1.1wt.eu [163.172.96.212])
+	by mta1.formilux.org (Postfix) with ESMTP id C49B4C0A55;
+	Fri, 05 Jun 2026 17:41:57 +0200 (CEST)
+Date: Fri, 5 Jun 2026 17:41:56 +0200
+From: Willy Tarreau <w@1wt.eu>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Christian Brauner <brauner@kernel.org>,
+        Askar Safin <safinaskar@gmail.com>, linux-kernel@vger.kernel.org,
+        linux-mm@kvack.org, linux-api@vger.kernel.org, netdev@vger.kernel.org,
+        Matthew Wilcox <willy@infradead.org>, Jens Axboe <axboe@kernel.dk>,
+        Christoph Hellwig <hch@infradead.org>,
+        David Howells <dhowells@redhat.com>,
+        David Hildenbrand <david@kernel.org>, Pedro Falcato <pfalcato@suse.de>,
+        Miklos Szeredi <miklos@szeredi.hu>, patches@lists.linux.dev,
+        linux-fsdevel@vger.kernel.org, Jan Kara <jack@suse.cz>
+Subject: Re: [PATCH 0/3] vmsplice: make vmsplice a trivial wrapper for
+ preadv2/pwritev2
+Message-ID: <aiLuRDJcQMYGuQsc@1wt.eu>
+References: <20260601-enthusiasmus-canceln-anlehnen-0e62317a9784@brauner>
+ <CAHk-=wifX_rrDjRGnDnOqE-usptAukuXKrmuPuVDP5bOCBWzGQ@mail.gmail.com>
+ <20260601173325.GH2636677@ZenIV>
+ <20260601160455.2c187574@gandalf.local.home>
+ <20260601172825.a51a588ec1c32617a0e12d78@linux-foundation.org>
+ <aiEb8CTM-ovMIq7-@1wt.eu>
+ <CAHk-=wiQB-j53cTs9kM4UeXoXPaFj78aJe3D6Yp1Fohg7i4tWA@mail.gmail.com>
+ <aiGfgRch99l_5z11@1wt.eu>
+ <CAHk-=wg0e8pP5haNW4qJP1=QwwUEctwjK5k07sv8bskitoMDgg@mail.gmail.com>
+ <aiGkrQnMeyPmEvRB@1wt.eu>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v2 03/14] net: pcs: pcs-xpcs-regmap: support XPCS
- memory-mapped MDIO bus via regmap
-To: Alex Elder <elder@riscstar.com>, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, rmk+kernel@armlinux.org.uk, andersson@kernel.org,
- konradybcio@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, linusw@kernel.org, brgl@kernel.org, arnd@arndb.de,
- gregkh@linuxfoundation.org
-Cc: Daniel Thompson <daniel@riscstar.com>, mohd.anwar@oss.qualcomm.com,
- a0987203069@gmail.com, alexandre.torgue@foss.st.com, ast@kernel.org,
- boon.khai.ng@altera.com, chenchuangyu@xiaomi.com, chenhuacai@kernel.org,
- daniel@iogearbox.net, hawk@kernel.org, hkallweit1@gmail.com,
- inochiama@gmail.com, john.fastabend@gmail.com, julianbraha@gmail.com,
- livelycarpet87@gmail.com, mcoquelin.stm32@gmail.com, me@ziyao.cc,
- prabhakar.mahadev-lad.rj@bp.renesas.com, richardcochran@gmail.com,
- rohan.g.thomas@altera.com, sdf@fomichev.me, siyanteng@cqsoftware.com.cn,
- weishangjuan@eswincomputing.com, wens@kernel.org, netdev@vger.kernel.org,
- bpf@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- devicetree@vger.kernel.org, linux-gpio@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20260605010022.968612-1-elder@riscstar.com>
- <20260605010022.968612-4-elder@riscstar.com>
-Content-Language: en-US
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-In-Reply-To: <20260605010022.968612-4-elder@riscstar.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aiGkrQnMeyPmEvRB@1wt.eu>
 
-Hi Alex,
-
-On 6/5/26 03:00, Alex Elder wrote:
-> From: Daniel Thompson <daniel@riscstar.com>
+On Thu, Jun 04, 2026 at 06:15:41PM +0200, Willy Tarreau wrote:
+> On Thu, Jun 04, 2026 at 08:58:33AM -0700, Linus Torvalds wrote:
+> > On Thu, 4 Jun 2026 at 08:53, Willy Tarreau <w@1wt.eu> wrote:
+> > >
+> > > > It looks like you're actually doing exactly the thing that I thought
+> > > > was crazy and wouldn't even work reliably: you change the
+> > > > common_response[] contents dynamically *after* the vmsplice, and
+> > > > depend on the fact that changing it in user space changes the buffer
+> > > > in the pipe too.
+> > >
+> > > No no, it's definitely not doing that (or it's a bug, but it's not
+> > > supposed to happen). I'm perfectly aware that one must definitely not
+> > > do that, and it's a guarantee the user of vmsplice() must provide.
+> > 
+> > Whew, good.
+> > 
+> > In that case, can you just try the vmsplice patch series (Christian
+> > already found a bug, but I don't think it will necessarily matter in
+> > practice - famous last words) and that test patch of mine, and see if
+> > it all (a) works for you and (b) if you have any numbers for
+> > performance that would be *great*.
 > 
-> In some DesignWare XPCS implementatons the memory-mapped MDIO bus is
-> allocated to a register window that does not align to a page boundary.
-> This makes iomapping the registers problematic.
-> 
-> For example the Toshiba TC9564 (a PCIe Ethernet-AVB/TSN bridge) provides
-> an "eMAC" subsystem with the XPCS base address cuddled up to XGMAC
-> registers.
-> 
-> Let's introduce helpers to allow the driver that owns the eMAC to register
-> an XPCS using is regmap for the memory-mapped MDIO bus.
-> 
-> Signed-off-by: Daniel Thompson <daniel@riscstar.com>
-> Signed-off-by: Alex Elder <elder@riscstar.com>
-> ---
->  MAINTAINERS                         |   2 +
->  drivers/net/pcs/Makefile            |   4 +-
->  drivers/net/pcs/pcs-xpcs-regmap.c   | 219 ++++++++++++++++++++++++++++
->  include/linux/pcs/pcs-xpcs-regmap.h |  20 +++
->  4 files changed, 243 insertions(+), 2 deletions(-)
->  create mode 100644 drivers/net/pcs/pcs-xpcs-regmap.c
->  create mode 100644 include/linux/pcs/pcs-xpcs-regmap.h
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index eb8cdcc76324f..2aa6ea012c848 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -25931,8 +25931,10 @@ F:	drivers/net/ethernet/synopsys/
->  SYNOPSYS DESIGNWARE ETHERNET XPCS DRIVER
->  L:	netdev@vger.kernel.org
->  S:	Orphan
-> +F:	drivers/net/pcs/pcs-xpcs-regmap.c
->  F:	drivers/net/pcs/pcs-xpcs.c
->  F:	drivers/net/pcs/pcs-xpcs.h
-> +F	include/linux/pcs/pcs-xpcs-regmap.h
->  F:	include/linux/pcs/pcs-xpcs.h
->  
->  SYNOPSYS DESIGNWARE HDMI RX CONTROLLER DRIVER
-> diff --git a/drivers/net/pcs/Makefile b/drivers/net/pcs/Makefile
-> index 4f7920618b900..565f1b63fce0b 100644
-> --- a/drivers/net/pcs/Makefile
-> +++ b/drivers/net/pcs/Makefile
-> @@ -1,8 +1,8 @@
->  # SPDX-License-Identifier: GPL-2.0
->  # Makefile for Linux PCS drivers
->  
-> -pcs_xpcs-$(CONFIG_PCS_XPCS)	:= pcs-xpcs.o pcs-xpcs-plat.o \
-> -				   pcs-xpcs-nxp.o pcs-xpcs-wx.o
-> +pcs_xpcs-$(CONFIG_PCS_XPCS)	:= pcs-xpcs.o pcs-xpcs-nxp.o pcs-xpcs-regmap.o \
-> +				   pcs-xpcs-plat.o pcs-xpcs-wx.o
->  
->  obj-$(CONFIG_PCS_XPCS)		+= pcs_xpcs.o
->  obj-$(CONFIG_PCS_LYNX)		+= pcs-lynx.o
-> diff --git a/drivers/net/pcs/pcs-xpcs-regmap.c b/drivers/net/pcs/pcs-xpcs-regmap.c
-> new file mode 100644
-> index 0000000000000..55cd05d09c7db
-> --- /dev/null
-> +++ b/drivers/net/pcs/pcs-xpcs-regmap.c
-> @@ -0,0 +1,219 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * Synopsys DesignWare XPCS regmap helpers
-> + *
-> + * Copyright (C) 2026 RISCstar Solutions.
-> + * Copyright (C) 2024 Serge Semin
-> + */
-> +
-> +#include <linux/device.h>
-> +#include <linux/kernel.h>
-> +#include <linux/mdio.h>
-> +#include <linux/pcs/pcs-xpcs.h>
-> +#include <linux/pcs/pcs-xpcs-regmap.h>
-> +#include <linux/regmap.h>
-> +
-> +#include "pcs-xpcs.h"
-> +
-> +/* Page select register for the indirect MMIO CSRs access */
-> +#define DW_VR_CSR_VIEWPORT		0xff
-> +
-> +struct dw_xpcs_regmap {
-> +	struct device *dev;
-> +	struct mii_bus *bus;
-> +	struct regmap *regmap;
-> +	bool reg_indir;
-> +};
-> +
-> +static ptrdiff_t xpcs_regmap_addr_format(int dev, int reg)
-> +{
-> +	return FIELD_PREP(0x1f0000, dev) | FIELD_PREP(0xffff, reg);
-> +}
-> +
-> +static u16 xpcs_regmap_addr_page(ptrdiff_t csr)
-> +{
-> +	return FIELD_GET(0x1fff00, csr);
-> +}
-> +
-> +static ptrdiff_t xpcs_regmap_addr_offset(ptrdiff_t csr)
-> +{
-> +	return FIELD_GET(0xff, csr);
-> +}
-> +
-> +static int xpcs_regmap_read_reg_indirect(struct dw_xpcs_regmap *pxpcs, int dev,
-> +					 int reg)
-> +{
-> +	ptrdiff_t csr, ofs;
-> +	unsigned int val;
-> +	u16 page;
-> +	int res;
-> +
-> +	csr = xpcs_regmap_addr_format(dev, reg);
-> +	page = xpcs_regmap_addr_page(csr);
-> +	ofs = xpcs_regmap_addr_offset(csr);
-> +
-> +	res = regmap_write(pxpcs->regmap, DW_VR_CSR_VIEWPORT, page);
-> +	if (res < 0)
-> +		return res;
-> +
-> +	res = regmap_read(pxpcs->regmap, ofs, &val);
-> +	if (res < 0)
-> +		return res;
-> +
-> +	return val & 0xffff;
-> +}
-> +
-> +static int xpcs_regmap_write_reg_indirect(struct dw_xpcs_regmap *pxpcs, int dev,
-> +					  int reg, u16 val)
-> +{
-> +	ptrdiff_t csr, ofs;
-> +	u16 page;
-> +	int res;
-> +
-> +	csr = xpcs_regmap_addr_format(dev, reg);
-> +	page = xpcs_regmap_addr_page(csr);
-> +	ofs = xpcs_regmap_addr_offset(csr);
-> +
-> +	res = regmap_write(pxpcs->regmap, DW_VR_CSR_VIEWPORT, page);
-> +	if (res < 0)
-> +		return res;
-> +
-> +	return regmap_write(pxpcs->regmap, ofs, val);
-> +}
-> +
-> +static int xpcs_regmap_read_reg_direct(struct dw_xpcs_regmap *pxpcs, int dev,
-> +				       int reg)
-> +{
-> +	unsigned int val;
-> +	ptrdiff_t csr;
-> +	int res;
-> +
-> +	csr = xpcs_regmap_addr_format(dev, reg);
-> +	res = regmap_read(pxpcs->regmap, csr, &val);
-> +	if (res < 0)
-> +		return res;
-> +
-> +	return val & 0xffff;
-> +}
-> +
-> +static int xpcs_regmap_write_reg_direct(struct dw_xpcs_regmap *pxpcs, int dev,
-> +					int reg, u16 val)
-> +{
-> +	ptrdiff_t csr = xpcs_regmap_addr_format(dev, reg);
-> +
-> +	return regmap_write(pxpcs->regmap, csr, val);
-> +}
-> +
-> +static int xpcs_regmap_read_c22(struct mii_bus *bus, int addr, int reg)
-> +{
-> +	struct dw_xpcs_regmap *pxpcs = bus->priv;
-> +
-> +	if (addr != 0)
-> +		return -ENODEV;
-> +
-> +	if (pxpcs->reg_indir)
-> +		return xpcs_regmap_read_reg_indirect(pxpcs, MDIO_MMD_VEND2, reg);
-> +	else
-> +		return xpcs_regmap_read_reg_direct(pxpcs, MDIO_MMD_VEND2, reg);
-> +}
-> +
-> +static int xpcs_regmap_write_c22(struct mii_bus *bus, int addr, int reg, u16 val)
-> +{
-> +	struct dw_xpcs_regmap *pxpcs = bus->priv;
-> +
-> +	if (addr != 0)
-> +		return -ENODEV;
-> +
-> +	if (pxpcs->reg_indir)
-> +		return xpcs_regmap_write_reg_indirect(pxpcs, MDIO_MMD_VEND2, reg, val);
-> +	else
-> +		return xpcs_regmap_write_reg_direct(pxpcs, MDIO_MMD_VEND2, reg, val);
-> +}
-> +
-> +static int xpcs_regmap_read_c45(struct mii_bus *bus, int addr, int dev, int reg)
-> +{
-> +	struct dw_xpcs_regmap *pxpcs = bus->priv;
-> +
-> +	if (addr != 0)
-> +		return -ENODEV;
-> +
-> +	if (pxpcs->reg_indir)
-> +		return xpcs_regmap_read_reg_indirect(pxpcs, dev, reg);
-> +	else
-> +		return xpcs_regmap_read_reg_direct(pxpcs, dev, reg);
-> +}
-> +
-> +static int xpcs_regmap_write_c45(struct mii_bus *bus, int addr, int dev,
-> +				 int reg, u16 val)
-> +{
-> +	struct dw_xpcs_regmap *pxpcs = bus->priv;
-> +
-> +	if (addr != 0)
-> +		return -ENODEV;
-> +
-> +	if (pxpcs->reg_indir)
-> +		return xpcs_regmap_write_reg_indirect(pxpcs, dev, reg, val);
-> +	else
-> +		return xpcs_regmap_write_reg_direct(pxpcs, dev, reg, val);
-> +}
-> +
-> +static void devm_xpcs_regmap_destroy(void *data)
-> +{
-> +	struct dw_xpcs *xpcs = data;
-> +
-> +	xpcs_destroy(xpcs);
-> +}
-> +
-> +struct dw_xpcs *devm_xpcs_regmap_register(struct device *dev,
-> +					  const struct xpcs_regmap_config *config)
-> +{
-> +	static atomic_t id = ATOMIC_INIT(-1);
-> +	struct dw_xpcs_regmap *pxpcs;
-> +	struct dw_xpcs *xpcs;
-> +	int ret;
-> +
-> +	pxpcs = devm_kzalloc(dev, sizeof(*pxpcs), GFP_KERNEL);
-> +	if (!pxpcs)
-> +		return ERR_PTR(-ENOMEM);
-> +
-> +	pxpcs->dev = dev;
-> +	pxpcs->regmap = config->regmap;
-> +	pxpcs->reg_indir = config->reg_indir;
+> Yes I wanted to do that and noted it on my todo list yesterday when
+> noticing the ongoing discussion. Just been super busy with yesterday's
+> by-yearly release ;-) But at least I wanted to share quick feedback in
+> this thread about existing uses.
 
-Looking at the overall series, is there any reason for this flag ?
+OK so I could run the test this afternoon, with:
+  - ddd664bbff63 Merge tag 'net-7.1-rc7' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net
+    (v7.1-rc6-178)
 
-Looks like the reg_indir=false path isn't used at all in this series.
+  - the same with Christian's vfs-7.2.vmsplice branch merged into it
+    ( 8d86fcfc2857 include/linux/splice.h: trivial fix: declerations -> declarations)
 
-Maybe just drop it and let anyone add it back should the need arise ?
+Both show 71-72 Gbps of TLS traffic per core on my test utility (I
+stopped at 3 cores since having only 2x100G at the moment), so for
+this use case I'm not impacted by the change. I noted that I will
+have to reconsider other options for the cache (send(MSG_ZEROCOPY)
+probably) but in my case since the code doesn't exist yet it's not
+per-se a userland breakage, but a change of plans. I just hope I'll
+find my way through the alternate solution.
 
-Maxime
+FWIW for Christian's branch:
 
+Tested-by: Willy Tarreau <w@1wt.eu>
 
+Willy
