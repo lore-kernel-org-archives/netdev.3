@@ -1,99 +1,124 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0b-002e3701.pphosted.com (mx0b-002e3701.pphosted.com [148.163.143.35])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33371387362;
-	Fri,  5 Jun 2026 22:22:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8AA13C3C02;
+	Fri,  5 Jun 2026 22:25:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.143.35
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780698178; cv=none; b=d2bDqQYJ8+8V35wJrEiDjtCnea+NxTynCelLMZZ9gY8slf2dlbN+CXuY6thxHF2sHhgira0e4RlOSAsEEC33owTJSmXztngCtZCsz2CR3p8F672knWMLfGZPfAD/7HrkwmLLROzoRubENQF1uMLmMUQl+uaLAGyAFW+635WSAdg=
+	t=1780698354; cv=none; b=jbkXsJQN5FTSzfYKBIR/RJpPoCZ8W6BGp6cCEkiQ77FSPwhJ8s+maBfBUwiQp5Ij6SwZbDEGgPFoqF2NZvgzP7Sy9aJb0+64vrC+mafiFvr6fbPL1mui+ZnyGh8h/SQtXAbSWOz4kTFGFs8SR1XyfSftuGJTN9LDzNyS95TkcKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780698178; c=relaxed/simple;
-	bh=y6xdVTXRfQbtR3STyUPrENAMKidFYd8kN+SkK8XvPOM=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=fqYyiO5XbivlEztBNW2+S4dXYEbdwn0PojESKYx4otF80M4iEGs+FThH9PFc9rdSSS3eQ1Fe8o/Z7uKUm+CB01Ty6041oyQ2WiCnnHi9jf81wGs+1eQe2n9TZx812Jz9xTaDhYE4xIGAndegujr5lw7zpM/UwJ0Tot65rFvLUDw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PX+hhUSe; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780698354; c=relaxed/simple;
+	bh=hR9xslRbdiigPAZ5ZfCCV7KUc5lDvC+AACgfaWEYnWo=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=T1y968t4zGM63nVr9uIwHMjNq1XTL3HV8BGK+BObaBT3x7T0uP1w9mqwBbfCpLUTELVIgWcv8q2mw3oifBkKFz0Sh3ONXlpD/p4yCjX6OQP8FqXUfYhUEMXR0JWzSIiFDl8g2w1Eiagal/F3og8hitqObzcOU0/ItIZ3b0Vn1Yg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hpe.com; spf=pass smtp.mailfrom=hpe.com; dkim=pass (2048-bit key) header.d=hpe.com header.i=@hpe.com header.b=Zf/XiCzX; arc=none smtp.client-ip=148.163.143.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hpe.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hpe.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PX+hhUSe"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 094BE1F00893;
-	Fri,  5 Jun 2026 22:22:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780698176;
-	bh=7XgDadmUDLEi2PC1fUYzSXSnqluO/U4sZustqFpUA7c=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=PX+hhUSee/XaWAVauUxaMUs33SGdzFkIF8mZefdpKs6KFjhT3Ua52TlU2WaxfP+LI
-	 c+nkqi8IMFU3IK8YOb5holuXdtNdOt5DFVPPzEXWaGwF275aCooidGjfdi/hc5AsMP
-	 Y7qSrFDE68ZMfwfoXeg/3cfGwZU0D25o/tQjfca4WTqmQ1TmaKcNSmrw9bPSQTsXi0
-	 kftPVx38S9TVznWDoTbXptYXkbjJNqQzlvDyQ2/+Wadr+53nZGCZh+R/qoVOa7XgyV
-	 zD3iZX94FmSovnqOkOekPXih5uPuCalWVFHYYfgJYZBx5O5GpQ/A/o1WY4okImSyx1
-	 yr2culC3IWTXw==
-Message-ID: <dea41eedebf284c2a57e75d1ca99b59a58863160.camel@kernel.org>
-Subject: Re: [PATCH net-next v2 1/3] rds: mark snapshot pages dirty in
- rds_info_getsockopt()
-From: Allison Henderson <achender@kernel.org>
-To: Breno Leitao <leitao@debian.org>, "David S. Miller"
- <davem@davemloft.net>,  Eric Dumazet <edumazet@google.com>, Jakub Kicinski
- <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,  Simon Horman
- <horms@kernel.org>, Shuah Khan <shuah@kernel.org>
-Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-rdma@vger.kernel.org, rds-devel@oss.oracle.com, 
-	linux-kselftest@vger.kernel.org, kernel-team@meta.com
-Date: Fri, 05 Jun 2026 15:22:55 -0700
-In-Reply-To: <20260605-getsock_more-v2-1-80f38cdb8706@debian.org>
-References: <20260605-getsock_more-v2-0-80f38cdb8706@debian.org>
-	 <20260605-getsock_more-v2-1-80f38cdb8706@debian.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.3-0ubuntu1.1 
+	dkim=pass (2048-bit key) header.d=hpe.com header.i=@hpe.com header.b="Zf/XiCzX"
+Received: from pps.filterd (m0134423.ppops.net [127.0.0.1])
+	by mx0b-002e3701.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 655HZJq6408510;
+	Fri, 5 Jun 2026 22:25:28 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=cc
+	:content-type:date:from:message-id:mime-version:subject:to; s=
+	pps0720; bh=/ntOmGPECocOXVF+Qff9yChtuO6F1D0acS3zzuw89O8=; b=Zf/X
+	iCzXJ0WIPVE96k76D4ShODhYfJbuuryGsYD8vZaNupNnIU65IRUFTtJ5hdZcWMx5
+	W7R+/1+MEL+8G7TKup6aAJOrEHOti4cdpljLsIjWFqZGptu5xfbeqONAca07ennx
+	840do9sv/ixmyepZP7cpH5J2aRzyWd0UByCA9nXChOBdJE5PlUMo3W9pr31tu4T6
+	FKAlwNsI1il5swZg3si4ZzPvErUv7xkU5GJxgsxb0H+HBcZlfjTE+s51dRUtPFQB
+	i7/M5SWPM7doaZ8VnZ96QWQbjf44rCWwj+dxCGJL/juGfg2WDwuD7XmICFQjbIof
+	X/MOnvLu8BQiXgxyjQ==
+Received: from p1lg14878.it.hpe.com (p1lg14878.it.hpe.com [16.230.97.204])
+	by mx0b-002e3701.pphosted.com (PPS) with ESMTPS id 4em305jtdt-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Fri, 05 Jun 2026 22:25:28 +0000 (GMT)
+Received: from p1lg14885.dc01.its.hpecorp.net (unknown [10.119.18.236])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by p1lg14878.it.hpe.com (Postfix) with ESMTPS id 86C90132DA;
+	Fri,  5 Jun 2026 22:25:27 +0000 (UTC)
+Received: from HPE-5CG20646DK.localdomain (unknown [16.231.227.36])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by p1lg14885.dc01.its.hpecorp.net (Postfix) with ESMTPS id 484B9801613;
+	Fri,  5 Jun 2026 22:25:26 +0000 (UTC)
+Date: Fri, 5 Jun 2026 17:25:24 -0500
+From: Kyle Meyer <kyle.meyer@hpe.com>
+To: michael.chan@broadcom.com, pavan.chebbi@broadcom.com,
+        andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] bnxt_en: Fix NULL pointer dereference
+Message-ID: <aiNM1CY2-StPilxW@hpe.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Proofpoint-GUID: Yaytd8mKrkxs13hOSQTO17blgzicMqOy
+X-Proofpoint-ORIG-GUID: Yaytd8mKrkxs13hOSQTO17blgzicMqOy
+X-Authority-Analysis: v=2.4 cv=Qp9uG1yd c=1 sm=1 tr=0 ts=6a234cd8 cx=c_pps
+ a=UObrlqRbTUrrdMEdGJ+KZA==:117 a=UObrlqRbTUrrdMEdGJ+KZA==:17
+ a=kj9zAlcOel0A:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=gQcMVamqm3wCPoSYhaRC:22 a=g3u0LPWLDYfGfufhFw6-:22 a=VwQbUJbxAAAA:8
+ a=MvuuwTCpAAAA:8 a=ubeRpN5ZeyW9BGWM014A:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjA1MDIyMSBTYWx0ZWRfXwm0AnEAt6oyV
+ MdyzOPllGK2QHdEBei5TOsOxVQHQUysoI6ixzIFP15mSOUuw26D707CL1Gx3KsybVLD5DP3OT+J
+ 3C8hXYYEgf5rsyFnM79PNnHc4JZgR/tRCRkyVUJ18omxNZ59+I1kD7THrFE5gz23l5MIeXSGBLB
+ 1PjR3QMfN9H3+0Ni9DpyMmr9IROYF6mkhMC4BACii7XoUS6boRivbzazSjXNqMNhPJpTpQqdEAh
+ JpxDNdM+4QaIZ5g28yXBBVpItksYUH83erbObjyUARZhGk6n9/JmHskhafyzCJdnO/xPqlJ5px9
+ RVEUUMXuwoNmFvqbtZr9c3TAWasTbnqaxHnKraQW1GA0Fvo9TWg8lL8BlzILNJ72oq4nA7XRmj+
+ 8Go6V+xprQAWSrGJMPyBdrbkjuCEv6n0YNd4jj/330BHZr8aR3es3SwsVr1yQIC7ilZ7p520Lb9
+ tj+Td8nGdv+cJ8fYahA==
+X-HPE-SCL: -1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-05_04,2026-06-05_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 priorityscore=1501 phishscore=0 spamscore=0 impostorscore=0
+ suspectscore=0 malwarescore=0 clxscore=1011 bulkscore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2605210000 definitions=main-2606050221
 
-On Fri, 2026-06-05 at 03:31 -0700, Breno Leitao wrote:
-> rds_info_getsockopt() pins the destination user pages with FOLL_WRITE and
-> the RDS_INFO_* producers memcpy the snapshot into them through
-> kmap_atomic(). Because that copy goes through the kernel direct map, the
-> dirty bit on the user PTE is never set, so unpin_user_pages() releases th=
-e
-> pages without marking them dirty. A file-backed destination page can then
-> be reclaimed without writeback, silently discarding the copied data.
->=20
-> Use unpin_user_pages_dirty_lock() with make_dirty=3Dtrue so the modified
-> pages are marked dirty before they are unpinned.
->=20
-> Signed-off-by: Breno Leitao <leitao@debian.org>
-Hi Breno,
+PCIe errors detected by a Root Port or Downstream Port cause error
+recovery services to run on all subordinate devices regardless of
+administrative state.
 
-Thanks for following up with the Sashiko report.  Since this is a bug fix, =
-it should carry a fixes tag.  This is a long
-standing bug that's been present since the codes original appearance in a8c=
-879a7ee98 ("RDS: Info and stats").  So it
-should carry that in a fixes tag:
+The .error_detected() callback, bnxt_io_error_detected(), disables
+and synchronizes IRQs via bnxt_disable_int_sync(), which calls
+bnxt_cp_num_to_irq_num() to map completion rings to IRQs using
+bp->bnapi.
 
-Fixes: a8c879a7ee98 ("RDS: Info and stats")
+Since bp->bnapi is allocated on NIC open and freed on NIC close, PCIe
+error recovery on a closed NIC can dereference a NULL pointer.
 
-Other than that it looks fine to me.  Thanks for catching this.
-Allison
+Check if bp->bnapi is NULL before disabling and synchronizing IRQs.
 
-> ---
->  net/rds/info.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/net/rds/info.c b/net/rds/info.c
-> index f1b29994934a..17061f6ff74e 100644
-> --- a/net/rds/info.c
-> +++ b/net/rds/info.c
-> @@ -235,7 +235,7 @@ int rds_info_getsockopt(struct socket *sock, int optn=
-ame, char __user *optval,
-> =20
->  out:
->  	if (pages)
-> -		unpin_user_pages(pages, nr_pages);
-> +		unpin_user_pages_dirty_lock(pages, nr_pages, true);
->  	kfree(pages);
-> =20
->  	return ret;
->=20
+Fixes: e5811b8c09df ("bnxt_en: Add IRQ remapping logic.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Kyle Meyer <kyle.meyer@hpe.com>
+---
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index 008c34cff7b4..ec38a0a40875 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -5748,7 +5748,7 @@ static void bnxt_disable_int_sync(struct bnxt *bp)
+ {
+ 	int i;
+ 
+-	if (!bp->irq_tbl)
++	if (!bp->irq_tbl || !bp->bnapi)
+ 		return;
+ 
+ 	atomic_inc(&bp->intr_sem);
+-- 
+2.51.0
 
