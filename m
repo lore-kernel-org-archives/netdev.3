@@ -1,132 +1,99 @@
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3B113ED13E
-	for <netdev@vger.kernel.org>; Fri,  5 Jun 2026 20:21:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD3BD3655FA;
+	Fri,  5 Jun 2026 20:50:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780690867; cv=none; b=X9auyXRhca5T+Wno1gounWyGCpeI+Jh82v2AowDSVD7oFTNu7wDo9rrJdugqum3psWjLjeVdHfphQN1VtfvHS08iWL/Q9g0lI+Md0j4zaSwCa91JiJd2ClbwYsxwT/Gwnr4BGyJjZL87aOKIU+0Jyk1OLK7RvpZAfCiS8H8Zi9Y=
+	t=1780692631; cv=none; b=TSbK6iLtlXothGAOwbDLRxuDMTRfd7lyE8L6BwK5HTmZ1XKsSTMoS/tGwdTOhs90brM9yIVyMid32g7Vcc5E1ftcwYvE2USFy6Jev4C0aIDIGL9whAnXQxXw5by8AkRlTO1na3YCk0btEwt3EDVEjdl9aLhc7G4nViOjRWkwBrs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780690867; c=relaxed/simple;
-	bh=0K6YGPmo5oE+oT8qEcDlB0fOA+kgYJZzHLTEFFd7qyI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CrqmESgR1v4f+RVpuJ4pny00AC/+65e6Q6Qu3019JvDfcnSwEXcvhL2Ywc7cV6jlsTFl+BFNUsD47QJ9Gu2R3UF3A0bGulC6IphEaLlTzOuYhEG1ErBIRkpulegByZb6kRtnM+qP+EBVf+2OlX2GP38Hdgo6OkNO82WdSRTUb3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=l6zOXCPu; arc=none smtp.client-ip=209.85.210.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1780692631; c=relaxed/simple;
+	bh=dneQpZJPLHfP6JKnpr7kV/Wk7lIOx9P9coYbAN6/+d4=;
+	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
+	 Subject:From:To:Cc:Date; b=klyqbsns/KC1ZCZBbwLzwlRXUJPqzHPrt7E4rvVl80zP6T6ku22KqSV2b5+Nb5OnUS+Xrm9oDX9Zken7igsmlcrLM9ud4+byIfgVPqfhRdBxFTTe2sXb1mHZ7k1Az0SJ7ADaka7CpCXGV6z+sfMByKSQ+TsmWzLfVsXtSsuZpRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IGoiwSQ9; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="l6zOXCPu"
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-8419ab3a297so1042900b3a.2
-        for <netdev@vger.kernel.org>; Fri, 05 Jun 2026 13:21:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780690862; x=1781295662; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PvtsSjqoa8csGDPIPn9CW3BdCwPSSCraeMH+eLutkdw=;
-        b=l6zOXCPu5E+u2VpaO6S4CEVQTWd36Jf+EkVQYB24YaXI/2HHUtHARBdYtfc8qb0nt3
-         yv42/H/aut4gW3dcn6xwWvAcnqYru5Lrdsy3QcEdaSZ4cQ3gVUz3kVPuKpjCbPAlB4Da
-         hszgS7h+vx3HT1vKgil6r/I+FXV47uVZ7gtx75CGte8BsVIikB3vBXlRkq/96pL2SVEo
-         lxQfz43LeO8fC8tJTPylAil5h+jviL9sDqwB3RFcTlS8NRKEErBmhwJZbZ5SrKSwktI5
-         bZdDuXzThMGcuDNW3zikSejYzNahtL/3+upHtcp/50Xt6WLBC02mJHCdmpqCAHBhF/I9
-         5Tpg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780690862; x=1781295662;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=PvtsSjqoa8csGDPIPn9CW3BdCwPSSCraeMH+eLutkdw=;
-        b=ZyuUQv9joTckS6NNTId6QoDAoMvW4Tb5luJ2pexwFXOJ0lfgtw7Wjs1o3LH0OFvRuf
-         BJJMuF2Y91jIRMiTP3fgXowe+9pXbpcUNCjX8e6RKA2AqlQF5/UejqDGr7nbRvwDBAS2
-         oAW+9wgUYJaymrxmAZ4Jty5dEE9p1a8+b2k+/2OyTbjXhFbfHtVno3/AKyUe6Ec6PE8+
-         fJ/upZE67UCpkGgSHn5ZzwDR+sf8CL9rk03Oer797seu6zTkA9ePRV7kgjWtXOpl6OfX
-         2RVCKLXQjPQR2aZCE6K4rUKHTFuEtSyLPksGw8vHukdZ5ZJ0waTGESCo+g9oxYZs1TGQ
-         ADLA==
-X-Gm-Message-State: AOJu0YwcsnGh3DC5dl+D3oTuJC7z68vC02hbEM9FM4JWvSv5OAXe7Nrx
-	xKLR7KtDsXIQq1zb0OvQB9ps0BIlQA+BQT69RU+aymdzXFQHUEHUGLI1
-X-Gm-Gg: Acq92OETHV4aLO9HJ+I57+LBJySnEDsodkKCnxWLPKY/R3yOLn1Go9lqsYm5WZy38Yp
-	dXRsBL5OHJOUjoCYB8cKtXTfX9mTgXNfTIbcC2rKv/s/Qw372ESMPfHoNwv2a8ZBCkxIUT/yHtC
-	4kzzn6/QoaGAfsdDspCiCbPjVdEYyDiAV7IiKGkeJnxd6qwUSiHhaWhBbbS6TfuT+HQHkeSWUpB
-	lKfPxSOQ7uc+WLYm7o1PNaEWU1k6yPDj9JdvAeFRxg62QUjMiV0z7PPE/kHnYyWXe7bVR7ra/BF
-	th2DkGUx3uEU7nRouIty4QR7w3wE145Yw6wkWy6Dcs3k+OzHoytR/NtpwKZ2bYMndJF32dQ17Lb
-	eXeaJm3ETmv0+8HLLtJ8d5XhE8O9kzP7k1bU/2ZtYKqvGjpL16eZy+MQXbjLwQJm6neAHzx3Gtg
-	9KSzXVRWFlB/RqBEsMvxarJblp88NcNlXrUYU=
-X-Received: by 2002:a05:6a00:418d:b0:842:6fac:ba7 with SMTP id d2e1a72fcca58-842b0e1dd8cmr5397249b3a.5.1780690861988;
-        Fri, 05 Jun 2026 13:21:01 -0700 (PDT)
-Received: from localhost ([2a03:2880:ff:5d::])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-842822222ccsm12000282b3a.3.2026.06.05.13.21.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 Jun 2026 13:21:01 -0700 (PDT)
-From: Amery Hung <ameryhung@gmail.com>
-To: bpf@vger.kernel.org
-Cc: netdev@vger.kernel.org,
-	alexei.starovoitov@gmail.com,
-	andrii@kernel.org,
-	daniel@iogearbox.net,
-	eddyz87@gmail.com,
-	memxor@gmail.com,
-	martin.lau@kernel.org,
-	mykyta.yatsenko5@gmail.com,
-	ameryhung@gmail.com,
-	kernel-team@meta.com
-Subject: [PATCH bpf-next v3 5/5] selftests/bpf: Use bpf_dynptr_slice() to read file dynptr in leak test
-Date: Fri,  5 Jun 2026 13:20:56 -0700
-Message-ID: <20260605202056.1780352-6-ameryhung@gmail.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260605202056.1780352-1-ameryhung@gmail.com>
-References: <20260605202056.1780352-1-ameryhung@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IGoiwSQ9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C30F1F00893;
+	Fri,  5 Jun 2026 20:50:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780692630;
+	bh=jrCk6P19v6NkCvWn/IburagsHY6Nf8CVVq24ih2ZYIQ=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date;
+	b=IGoiwSQ9ZZpYJnOdZLm0cNawP2A7skPqQtarEzo1u9ZVNkjI4mhBFz+9FSTHv7km3
+	 xKHe00RA2ut5NgPYoCDX0Nq1lYv2DKd6UvDfWdEukT9E4T6fp81L4Q1KRbHD9YGlWt
+	 +UUSNAXiwSYvSXKjNTpjR22x+m5H0Gq98VmdDnUNyBhorgkd/CyyMhWP6rJLFCyUCf
+	 Lb4YNM2cnzlEQva1Q2GY465cF3Oi/N3D1kHLvrL0hTMujfQVe2dJlLHAKXmW03ZduK
+	 Q5Y1aSofgIQidEKdDBh/znPz93jH0EMi/roO4Cs2B4sEvj7BntdzS9oVlhutuTLXcH
+	 6gQeEk8NIwRAQ==
+Content-Type: multipart/mixed; boundary="===============5870699331573661861=="
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Message-Id: <d75a13a8ff29d61faea4d180b139cc1f73bc38375cedc50544273531005dff4c@mail.kernel.org>
+In-Reply-To: <20260605202056.1780352-4-ameryhung@gmail.com>
+References: <20260605202056.1780352-4-ameryhung@gmail.com>
+Subject: Re: [PATCH bpf-next v3 3/5] bpf: Compare parent_id in refsafe() for REF_TYPE_PTR
+From: bot+bpf-ci@kernel.org
+To: ameryhung@gmail.com,bpf@vger.kernel.org
+Cc: netdev@vger.kernel.org,alexei.starovoitov@gmail.com,andrii@kernel.org,daniel@iogearbox.net,eddyz87@gmail.com,memxor@gmail.com,martin.lau@kernel.org,mykyta.yatsenko5@gmail.com,ameryhung@gmail.com,kernel-team@meta.com,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
+Date: Fri,  5 Jun 2026 20:50:30 +0000 (UTC)
 
-use_file_dynptr_slice_after_put_file() reads the dynptr via
-bpf_dynptr_data(), which always returns NULL for a read-only file
-dynptr, making the example confusing. Switch to bpf_dynptr_slice(), the
-correct read API for file dynptrs, and read (rather than write) the slice
-since it is read-only. The test still fails as expected.
+--===============5870699331573661861==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Acked-by: Eduard Zingerman <eddyz87@gmail.com>
-Signed-off-by: Amery Hung <ameryhung@gmail.com>
+> diff --git a/kernel/bpf/states.c b/kernel/bpf/states.c
+> index 5945956a7573..06d9ae24f006 100644
+> --- a/kernel/bpf/states.c
+> +++ b/kernel/bpf/states.c
+> @@ -890,6 +890,9 @@ static bool refsafe(struct bpf_verifier_state *old, struct bpf_verifier_state *c
+>  			return false;
+>  		switch (old->refs[i].type) {
+>  		case REF_TYPE_PTR:
+> +			if (!check_ids(old->refs[i].parent_id, cur->refs[i].parent_id, idmap))
+> +				return false;
+> +			break;
+
+Feeding parent_id through check_ids() here was raised during review (by
+the bpf-ci and Sashiko bots and by Eduard Zingerman on v1) as something
+that makes BPF_ID_MAP_SIZE exhaustion more reachable, which would hit the
+WARN_ON_ONCE(1) in check_ids() and become a DoS under panic_on_warn.
+
+The agreed resolution in that discussion was to drop the WARN_ON_ONCE(1)
+in check_ids(), since not all ids correspond to register or stack slots
+anymore:
+
+  https://lore.kernel.org/bpf/6d86c2fae9be63eb110ebd5b3fc19bc4cf1de2dc.camel@gmail.com/
+
+  "I agree that it should be fine to just return false from check_ids()
+   if there is no space in the idmap. However, since not all ids
+   correspond to register/stack slots anymore, I think that
+   WARN_ON_ONCE(1) should be removed."
+
+The reply indicated that removal lands in patch 4 of the series. In this
+branch only 3 patches are present, and check_ids() still contains the
+WARN_ON_ONCE(1):
+
+kernel/bpf/states.c:check_ids() {
+	...
+	/* We ran out of idmap slots, which should be impossible */
+	WARN_ON_ONCE(1);
+	return false;
+}
+
+Should the WARN_ON_ONCE(1) removal be applied together with this change,
+so the parent_id comparison is not added before its dependent fix is in
+place?
+
+
 ---
- tools/testing/selftests/bpf/progs/file_reader_fail.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
 
-diff --git a/tools/testing/selftests/bpf/progs/file_reader_fail.c b/tools/testing/selftests/bpf/progs/file_reader_fail.c
-index d5fae5e4cf9a..3bb9e2612f8f 100644
---- a/tools/testing/selftests/bpf/progs/file_reader_fail.c
-+++ b/tools/testing/selftests/bpf/progs/file_reader_fail.c
-@@ -87,7 +87,8 @@ int use_file_dynptr_slice_after_put_file(void *ctx)
- 	struct task_struct *task = bpf_get_current_task_btf();
- 	struct file *file = bpf_get_task_exe_file(task);
- 	struct bpf_dynptr dynptr;
--	char *data;
-+	char buf[1];
-+	const char *data;
- 
- 	if (!file)
- 		return 0;
-@@ -95,15 +96,14 @@ int use_file_dynptr_slice_after_put_file(void *ctx)
- 	if (bpf_dynptr_from_file(file, 0, &dynptr))
- 		goto out;
- 
--	data = bpf_dynptr_data(&dynptr, 0, 1);
-+	data = bpf_dynptr_slice(&dynptr, 0, buf, sizeof(buf));
- 	if (!data)
- 		goto out;
- 
- 	/* this should fail - file dynptr should be discarded first to prevent resource leak */
- 	bpf_put_file(file);
- 
--	*data = 'x';
--	return 0;
-+	return data[0];
- 
- out:
- 	bpf_dynptr_file_discard(&dynptr);
--- 
-2.53.0-Meta
-
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/27038754519
+--===============5870699331573661861==--
