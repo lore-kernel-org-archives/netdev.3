@@ -1,129 +1,251 @@
-Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011041.outbound.protection.outlook.com [52.101.52.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C135383C94
-	for <netdev@vger.kernel.org>; Fri,  5 Jun 2026 18:09:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57CAD352C5C;
+	Fri,  5 Jun 2026 18:11:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.52.41
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780682969; cv=pass; b=iLGDQkB7fo8osWEcVTBcHB+bjoQ73Jk+0AGAzHuVWNC+YLFGSA85cofzXth6x9aM2DoaTTsBg9EFWvyT6QRruEu2URH4qzIKxnr4EWh17/+8DmghvuxXx9231DoizBPvz7pWEnLmFQTvndXf7PZx6jElwSjH/SqglhM5JWzRMLA=
+	t=1780683070; cv=fail; b=R7XZimyWvX9kfB2vejloQTNSYMhjWEleowBCkNdQkbzFo/JmCD1rpKOtF5Js6sP8B6YR+TcdA8MqBcs8kddUmT8Sf0zMMXFdp0GY9Gg7bzG0URZ0mwosLugQa7FHvTE0OBjsDXHG2ZrbpEbGNojrfWyqGOfu1MFAFragEzwZqaA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780682969; c=relaxed/simple;
-	bh=+tGN2Gbd5XNQv6kqDrk16jTZ7vSM1i8VmXiPpbOw1tQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gPBUiHCFRqcQoYTo+/beaUhs0fgDduNs98Dtx9ID0/T+IxHxdpNu4GDM4rPFTHi+t/B4fno6rxZ7IYqhUTf4KkMF29KxBzNuNyPrMHRsFm+gzdySXZvI1uVutx7uNPfF03eBGtS8Ys2iEczmquOTkX+RrUvygeAH/2SAidwVqLQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SVnPf/tv; arc=pass smtp.client-ip=209.85.128.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1780683070; c=relaxed/simple;
+	bh=WWj+SibAQaur8eEyW7G/ZcregjHhv8eLRYL+lE/yZnM=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=aWXCnyj41p6dm/8rIsJ/FQOCh1apCMTVJvKrZUHD2YanYyALHHEceLm6+aQelmBJPVuWPIBpVRdUkj1t2M1Jxh4LgKN8EoZsW+1q1JBMOnYU5gE0qvYoMMGpRTlOMTNVBTH167FiGdon8Br2zAXhAG/+BOW4BbnlilVVo36os7M=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=RGgdsz5H; arc=fail smtp.client-ip=52.101.52.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SVnPf/tv"
-Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-7e053987001so30031107b3.0
-        for <netdev@vger.kernel.org>; Fri, 05 Jun 2026 11:09:28 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780682967; cv=none;
-        d=google.com; s=arc-20240605;
-        b=kPGchwF2/v2QoB5Y/obdsjr2fdTXqNCVEgckxnkpXcQ6kDqAWveZ2zL+RDVk/X8jqP
-         BR0kIf/0UunV834lsTLBP3swXwPCQsacti4fYcLfen2tD/alRq2kYAm2qX4eRwYPxQwm
-         ZtfRJDcQuKipaSkyZw2xJ7nNsNwAcKlM4KDuGNLo9lOEnMJkYvf455ovFNT6eB7aRxPa
-         uExKmPyUepVBgLrnzhU3OzasDHnBQonx5jUAGuJZ7fTxbm2bEANyfFXQkiClW2MTEd/9
-         RCln9QK8x/UbmIVgjj7aehMpo/3i7VBw9ekvrPojE/CwgNtTQ4s1tRw91VJmwiubPMnF
-         vVkw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=+tGN2Gbd5XNQv6kqDrk16jTZ7vSM1i8VmXiPpbOw1tQ=;
-        fh=aiyPmISDRM7kJzEsv6lIj4g2hcA18CX0DTaYKkS3J90=;
-        b=MQco5rkw2IICxim2lkPUyzVc3+IvcbRWozcUtdT8cvfbTurHwhhwrl0Ux9keS473wO
-         Z+mljILMlDetHrryzME1319/ohaKp9DjZUYFjDgLUMH9sTuclbAp5N2s638RyEDbOhuB
-         wcCH93hsITU4N0FMToWnip/eG6Y/MxKy/J4Ceg0jTUIbrwZu4kh43KMw7g2Yr4crypEC
-         S7dArgYadLeevT1dfQR45FFRDarM2pmYlyrmPvmys982sKFtmQEaUapfAQXwgBSehv/Q
-         iEsLmioPMjt1uY1fwj3cnhvEMU41EwRjWolSZVlFHIEEppm3VN3+zd32c00bP+mWlA4R
-         qWsQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780682967; x=1781287767; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+tGN2Gbd5XNQv6kqDrk16jTZ7vSM1i8VmXiPpbOw1tQ=;
-        b=SVnPf/tvPQYmQaWHp4ty5uYXx7IgrDg2mOyurFfQq/I697476IlxV0eP/F+qvoTfnY
-         DN6wl4sR/Y9FEOotH5CeCCZShfsvXIgqoSZ2U17PFAkP46IaDFJejh06WNLu5p7iPKp3
-         K5i1TX3saHtRBdKsGLvH+VXjSFo2nX0PN4KsUwcerPcOlxG3wif6xF/ByKU58gjd+qBe
-         CFMukAsd8PlrU5YdeMsMZMWye02yTHQCNhe8K+0R1OFckOTgK/s9kG48tqmUQIJtbT0x
-         Nuodrq8t53RBlYPm9mpG7yL5UM79JimsCj+i6z60SUZVaVXJ9Qx0LXmN55fig8zV+u47
-         3+lw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780682967; x=1781287767;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=+tGN2Gbd5XNQv6kqDrk16jTZ7vSM1i8VmXiPpbOw1tQ=;
-        b=GWUF8fajy67b/34Oyqh//z5k2R/E1ql5vGjQwva6iBUNoMZ2TawDEBg04BSFO3xuFr
-         iA9uJK2U20o9dXI8EcCD92P9OMbHj9IncEyoeKh56dTFfDaQeY6UQiTsXICg3K7UiC3R
-         YNw9WUqvRfBUcKLeyhFMKFlwGeOIhUNlc54KzqkyrJ7jA/J5n1lXZR+Fl0/JWD55mIsX
-         3gWe7hMmZLrijhTIY2LRD4dBOZoLJ+v8mouZxQ6gUwRNTsSWKCwkcFB0QePAloU1kxw2
-         E1+b8T6kPXC8EZOYSCNZRjc2CbUf2GSqlUWfVxJhYzbXYIocjLrGL1wQN1Bjps9UkjuT
-         Z+8A==
-X-Forwarded-Encrypted: i=1; AFNElJ/B47LzomNTzqRpY4QlKA4Mifo2IIPXgmuHGyIYRiChGkDYc/fcmveg0qGwIocnAhy9aW0wcYc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwSSA+Gqwi+37GKArEv8/ZtUEHTjdcBgk35Z2yGAG1/FgGAm7ke
-	jLGfVmolGTLrB/DAnpRB+lzEzDHsfzFp1AwhiaZB0yeUxPG3gWlIVo7ukwxQcg5DZl7WvqhY3Nd
-	TeoYzBwuWLDxNeydyTj8qMGJ2M7Ai17I=
-X-Gm-Gg: Acq92OGVpNszVTMrAdIye4kQa2Qb2bAUDmjtOAbV29nKX6zsskkJud+VwNZbAjnoN9K
-	2pAE321gwGahXQXn8LBIxVVD1StProQ+uuih4XbBIZIIXtA/Ylu3Q5uG2PxaAfCW49KFGw7KPfF
-	knfFwlVb9DGEkUmhJpuA2kwp5VeEZPtnYR9f4SNJif6oYg1Ln803WMU9v1WbnriySsAIapgQwip
-	545jqx9kiqxnwaVIikc/bU/HVmRwlrjPPxpCtCAvpes0h+BzV4ULDs1iSsqYlIAoWkELbQ3zV0Q
-	gn+sDM8/cHlfNm4pQcqqpNYdfPi0y34uIgo1dCZEOEjx
-X-Received: by 2002:a05:690c:600f:b0:7bd:a6ea:c50c with SMTP id
- 00721157ae682-7ed516400b7mr27415387b3.15.1780682967473; Fri, 05 Jun 2026
- 11:09:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="RGgdsz5H"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=n8IgIShwwx9i5md+S3Uwn842rUjUPmOr+Yfzn2u5DReLAaGm8XZdS3NfqTN+DKVRUr2dwk5Q0VZUD6D+WISLG0JuaziKFySpEGruMjqi220mf/DoEzcsehQiKWO5SgWrygWYrQXrQVdmBeYt1eHdfGWjGIyDXxvL5e86S0qp5d8iclIvfrGO2AYWbAkEp/1whcZN5a/bbZgzMvGVMhyRgX0zYYMnj6okDoPpCExRrC0Wg6IbXjS7e5gdZiHHiKFQhpDQzrBGd5TCZTOJ71oBQlVUyAjB6HoeQalbtVsST0u0xm9JzOeb8qWb8PLshoCg45PFgIWx+hAu4Bk6X34X6A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=uOzXg4ELiIwpdVe8654QZ59eyu84oQASRviVXdJpObY=;
+ b=NtiOB0Kp2l1yuYXSNSvkO3Mbvw3rjXBMRipBBlMSaKUwYr5fM2jB9Cjr/vqlMj7jIVV9B1z4qS1JublJARWSbsyYvSjlwFn63pQNPMkcKHtVQmMmrji1mssjgd36P2J77j/6cYlSpH1Wjw03u7T81TMFHVkdENYQ0X9LJV/BeWeNnK3eQrGPlxOZrVlDoblP8Z2tphKR+1hEo6G3Nokq51Fhvx5HK7I9rruzTcWgJmnMJ9E/EPufAQhmbskccoT86c+LPem/3DwCL4xMcjUNEBQA7d7YO/ks5ZSZ/wVTayl2djzAMffdaSrXLesr6bPnWAtrD+n6JmxIcOAcKrSwCw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.118.232) smtp.rcpttodomain=google.com smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=uOzXg4ELiIwpdVe8654QZ59eyu84oQASRviVXdJpObY=;
+ b=RGgdsz5H01RfX7qmc0yrz4hTdxSSCBJJpQlQ18u9BaIMcru1n/fwL0nbvpmWodFCsWtWrChXQ+a5ZgwCoLcS+HgSolv7J+dTutCIbHPc1UYW6RzMc7veo59e52AUuSc6xT7Umlh5ofgv1B0J3EtPGPsvmEQkco+ZEhtlv7aOYKP+vf5dj1WOk7qQigKLGlTmHcEPGnR9Nw9DPTmN+MnsuL8Z1vxEvOO4phgpoOfI/1+54Oe3h88xSLNlIOAoAZKeP41x8aSZiSo3QEe7ve3Ob1eG7z2sTDNkFJIN8BR7cXTitEQfFmhfDg4dWvr5HzUCjwEBg5vOpsTfnXxc6P+jPg==
+Received: from PH7PR17CA0017.namprd17.prod.outlook.com (2603:10b6:510:324::13)
+ by CH3PR12MB7523.namprd12.prod.outlook.com (2603:10b6:610:148::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.9; Fri, 5 Jun 2026
+ 18:11:01 +0000
+Received: from MW1PEPF0001615A.namprd21.prod.outlook.com
+ (2603:10b6:510:324:cafe::53) by PH7PR17CA0017.outlook.office365.com
+ (2603:10b6:510:324::13) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.92.9 via Frontend Transport; Fri, 5
+ Jun 2026 18:11:00 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.232)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.232) by
+ MW1PEPF0001615A.mail.protection.outlook.com (10.167.249.85) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.113.2 via Frontend Transport; Fri, 5 Jun 2026 18:11:00 +0000
+Received: from drhqmail201.nvidia.com (10.126.190.180) by mail.nvidia.com
+ (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Fri, 5 Jun
+ 2026 11:10:41 -0700
+Received: from drhqmail203.nvidia.com (10.126.190.182) by
+ drhqmail201.nvidia.com (10.126.190.180) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.20; Fri, 5 Jun 2026 11:10:40 -0700
+Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com
+ (10.126.190.182) with Microsoft SMTP Server id 15.2.2562.20 via Frontend
+ Transport; Fri, 5 Jun 2026 11:10:31 -0700
+From: Mark Bloch <mbloch@nvidia.com>
+To: Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David
+ S. Miller" <davem@davemloft.net>
+CC: Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+	Jiri Pirko <jiri@resnulli.us>, Simon Horman <horms@kernel.org>, Sunil Goutham
+	<sgoutham@marvell.com>, Linu Cherian <lcherian@marvell.com>, Geetha sowjanya
+	<gakula@marvell.com>, hariprasad <hkelam@marvell.com>, Subbaraya Sundeep
+	<sbhatta@marvell.com>, Bharat Bhushan <bbhushan2@marvell.com>, Saeed Mahameed
+	<saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>, Tariq Toukan
+	<tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>, "Borislav Petkov (AMD)"
+	<bp@alien8.de>, Andrew Morton <akpm@linux-foundation.org>, Randy Dunlap
+	<rdunlap@infradead.org>, Thomas Gleixner <tglx@kernel.org>, Petr Mladek
+	<pmladek@suse.com>, "Peter Zijlstra (Intel)" <peterz@infradead.org>, "Dave
+ Hansen" <dave.hansen@linux.intel.com>, Vlastimil Babka <vbabka@kernel.org>,
+	Christian Brauner <brauner@kernel.org>, Tejun Heo <tj@kernel.org>, Feng Tang
+	<feng.tang@linux.alibaba.com>, Dapeng Mi <dapeng1.mi@linux.intel.com>, "Kees
+ Cook" <kees@kernel.org>, Marco Elver <elver@google.com>, Eric Biggers
+	<ebiggers@kernel.org>, Li RongQing <lirongqing@baidu.com>, "Paul E. McKenney"
+	<paulmck@kernel.org>, Ethan Nelson-Moore <enelsonmoore@gmail.com>,
+	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<netdev@vger.kernel.org>, <linux-rdma@vger.kernel.org>
+Subject: [PATCH net-next V3 0/7] devlink: Add boot-time eswitch mode defaults
+Date: Fri, 5 Jun 2026 21:10:23 +0300
+Message-ID: <20260605181030.3486619-1-mbloch@nvidia.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260604220904.1032145-3-ameryhung@gmail.com> <a5988106169c7350f39a4d07b36b679a5fb39cda49ca371cb79c23da7b63971d@mail.kernel.org>
- <b4302a13ccae77b304a09b47c58565c8ff1970c2.camel@gmail.com>
- <CAMB2axPLpxk8fh-Qp2sGwtsZBCE42DLo+h8pB+ObffLifP9aZg@mail.gmail.com>
- <CAMB2axOOG3ptDkWvTDpGut+EmDeroe3GPR3obb-Br_Dg1aGmgw@mail.gmail.com> <6d86c2fae9be63eb110ebd5b3fc19bc4cf1de2dc.camel@gmail.com>
-In-Reply-To: <6d86c2fae9be63eb110ebd5b3fc19bc4cf1de2dc.camel@gmail.com>
-From: Amery Hung <ameryhung@gmail.com>
-Date: Fri, 5 Jun 2026 11:09:16 -0700
-X-Gm-Features: AVHnY4J3-fQZb3RAbqdWeoIKN6ciyIVNP6qjMWxwAp_5IUqS_2V4BVceYK8dAzc
-Message-ID: <CAMB2axN3phpufSt5SFj60Q19w=1NWpOks4ykgZ2Q1zS_5K300Q@mail.gmail.com>
-Subject: Re: [PATCH bpf-next v1 2/3] bpf: Compare parent_id in refsafe() for REF_TYPE_PTR
-To: Eduard Zingerman <eddyz87@gmail.com>
-Cc: bot+bpf-ci@kernel.org, bpf@vger.kernel.org, netdev@vger.kernel.org, 
-	alexei.starovoitov@gmail.com, andrii@kernel.org, daniel@iogearbox.net, 
-	memxor@gmail.com, martin.lau@kernel.org, mykyta.yatsenko5@gmail.com, 
-	kernel-team@meta.com, ast@kernel.org, yonghong.song@linux.dev, clm@meta.com, 
-	ihor.solodrai@linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MW1PEPF0001615A:EE_|CH3PR12MB7523:EE_
+X-MS-Office365-Filtering-Correlation-Id: 79297108-1477-4d21-b2ea-08dec32dccbb
+X-LD-Processed: 43083d15-7273-40c1-b7db-39efd9ccc17a,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|1800799024|376014|7416014|36860700016|6133799003|18002099003|3023799007|11063799006|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	b8QAAm5aV7gTf9pohVoKHL+C16a6rLnhFgFnocmgYDzz9LFu/mNy+41L3fvoHX/pqrAlbKejoO8Sa6jg0b1Sw5NzY63iqBJIa73hZh/MMIyUh4U8bxg3CrfQgTSNnxvd6qD+jxmH1JonlVRtz3bJsYvackDEMEObwzuTL0KEXPbyRuQG05cFQ0TmKsOnU7DriKi4wZi1iqqG5ci6Bk5R5Ydd/U+EJAM7opyP5a0vZIFoWYBrpyl34q2cgWpSUqTRANuYUMwOp0XOSiYzqIkqm+a30ozYyF4km+ggwfXSlz/jbUlKSKC5iCr+aIY755eV5gjYxMho9r1gX7PcphZIvJooL2dEOwry8qoIMWwr1WPTsfXKxmXYx7xbcbd4D8EfvXNytqfO80c+uvkjiOFJ0t2DXws3LnNdq7dvgFLm+uMjTJLdZso+oNXAD+olpmyFs2xTCeeRThqBGZ3Go7lfY1CSrKTwbkexAsTc3dD2tj599VFkJHrfTQ4QPfsbtmSoaATj6IHqinUdPoG4co/qFhx5uNRFplPjm9FnhnsqfiDqMiqxSOwGd/gnCITUKAiDghhR0P9E2AA8ClVfCecrX0FSS30qfOhZgEWqf51U49MfcOiXf1dptWFT/XPkbYTST6CFifMu83uo1rEwBnTb73xaiOCJ6vnvYAFefdGmpnVP0OhSjxrejjTZv/Hlxegs2Yn5o9zlNITQyTc88HycBak2Xm6p/4x5wRJjHhnozCA=
+X-Forefront-Antispam-Report:
+	CIP:216.228.118.232;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge1.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(376014)(7416014)(36860700016)(6133799003)(18002099003)(3023799007)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	g8rIsIYbY+N46HsgPOiWdh2gswfzWcVy4Gio3nE3yPTT32etkQJrzM1TuTCzF8x3CpEnNaU4KwXyw1Mp/ITd6qi19shvHep5KsqpG38cd7GSIAzCTw5Z1hLx6FOeZ8IT605x8tNmxBe/efeai+aQn/aZqNdknABOaYKbo1tDtT1yW2N7CFngb4yW+4wWsSyndB5NuC+7O5MCt1AWAJVcY8H5sEkfijFunEVPPPBVBKmYtDsHRbM5WRSKs7c+xAAnzO6c/R3K6uTpAMWOKwv0TaOlDM3QKf7hHHv1l4MozuXfmLc1v0ybOz2FRqrdG9A4mzK9NSqFofReqenjoUEr7BqrmR+mK4VB5jJub45wc4xkWH3xIyAlXW5T3vmhof3yRT8PXdKVhoXujS0zEjknj1blMjKiHzpazcndA0Yd5z+D0PVTntmsSxuL1zeKYjVg
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Jun 2026 18:11:00.8259
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 79297108-1477-4d21-b2ea-08dec32dccbb
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.232];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	MW1PEPF0001615A.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB7523
 
-On Fri, Jun 5, 2026 at 11:04=E2=80=AFAM Eduard Zingerman <eddyz87@gmail.com=
-> wrote:
->
-> On Fri, 2026-06-05 at 10:57 -0700, Amery Hung wrote:
->
-> [...]
->
-> > Actually, looking at it a bit more. I think I would hold on changing
-> > check_ids().
-> >
-> > This patch should not increase idmap usage. parent_id refers to id and
-> > therefore check_ids(parent_id) will reuse an existing slot.
-> >
-> > The id_map is indeed more likely to be triggered since there is also
-> > an intermediate reference for reference dynptr introduce during the
-> > refactor, but that should still be very unlikely under normal usage.
-> > check_ids() also already fails in this scenario by returning false. So
-> > overall, I am not sure if we need to change it.
-> >
-> > WDYT?
->
-> I agree that it should be fine to just return false from check_ids()
-> if there is no space in the idmap. However, since not all ids
-> correspond to register/stack slots anymore, I think that
-> WARN_ON_ONCE(1) should be removed.
+This series adds a devlink_eswitch_mode= kernel command line parameter for
+applying a default devlink eswitch mode during device initialization.
 
-Ack. I will drop WARN_ON_ONCE(1).
+Following the discussion with Jakub[1] and the feedback on the RFC
+postings, this version keeps the scope limited to a boot-time devlink
+eswitch mode default only.
+
+The option selects either all devlink handles or an explicit comma
+separated handle list:
+
+devlink_eswitch_mode=*=switchdev
+devlink_eswitch_mode=pci/0000:08:00.0,pci/0000:09:00.1=switchdev_inactive
+
+The supported modes are legacy, switchdev and switchdev_inactive. The
+selected mode is applied through the existing eswitch_mode_set() devlink
+operation, the same operation used by the devlink eswitch mode command.
+
+The preparatory patches move registration points that expose the devlink
+instance before the driver is ready for a registration-time eswitch mode
+change. Where registration is moved later, the matching unregister path is
+moved earlier so unregister notifications are sent from devl_unregister()
+before object teardown. The final patch adds the parser and applies the
+default from devlink core when a matching instance is registered and after
+a successful devlink reload that performed DRIVER_REINIT.
+
+Patch 1 skips devlink health recovery notifications while a devlink
+instance is not registered. Health state and counters are still updated,
+but there is no registered instance for userspace to observe or receive
+notifications from yet. This lets drivers move registration later without
+hitting health notification registration assertions during early
+initialization.
+
+Patch 2 moves netdevsim devlink registration after device initialization,
+so registration-time defaults can call eswitch_mode_set() after simulator
+state is ready. It also unregisters devlink before netdevsim tears down
+the objects that were registered before devlink became visible.
+
+Patch 3 clears the mlx5 FW reset-in-progress bit before reloading after a
+firmware reset.
+
+Patch 4 moves mlx5 devlink registration after device initialization,
+including the lightweight init path, and moves unregister before the
+matching teardown.
+
+Patch 5 moves octeontx2 AF devlink registration after SR-IOV setup and
+switch lock initialization.
+
+Patch 6 moves octeontx2 PF devlink registration after PF SR-IOV state
+setup.
+
+Patch 7 adds the devlink_eswitch_mode= parser, documentation,
+registration-time default application and successful reload default
+application.
+
+Changelog:
+
+v2 -> v3:
+
+- Change the devlink_eswitch_mode= API syntax to use <selector>=<mode>
+  instead of [<selector>]:<mode>, following a comment from Randy Dunlap.
+
+v1 -> v2:
+
+- Move default eswitch mode application into devlink core. The default is
+  now applied during devlink registration and after a successful devlink
+  reload that performed DRIVER_REINIT.
+
+- Remove the exported devl_apply_default_esw_mode() driver API and the mlx5
+  driver-side call to it.
+
+- Skip devlink health recovery notifications while the devlink instance is
+  not registered, so drivers can move registration later without early
+  health work hitting registration assertions.
+
+- Move mlx5 devlink registration after device initialization, including the
+  lightweight init path, so the core can apply the default through the
+  normal registration flow.
+
+- Move the matching netdevsim and mlx5 unregister paths before object
+  teardown, so unregister notifications come from devl_unregister() and the
+  later object teardown paths run while the devlink instance is no longer
+  registered.
+
+- Add registration-ordering preparation patches for netdevsim and octeontx2
+  AF/PF, so their eswitch state is ready before registration-time defaults
+  may call eswitch_mode_set().
+
+[1] https://lore.kernel.org/all/20260502184153.4fd8d06f@kernel.org/
+RFC V1 : https://lore.kernel.org/all/20260506123739.1959770-1-mbloch@nvidia.com/
+RFC V2 : https://lore.kernel.org/all/20260510185424.2041415-1-mbloch@nvidia.com/
+v1     : https://lore.kernel.org/all/20260521072434.362624-1-tariqt@nvidia.com/
+v2     : https://lore.kernel.org/all/20260603193259.3412464-1-mbloch@nvidia.com/
+
+Signed-off-by: Mark Bloch <mbloch@nvidia.com>
+
+Mark Bloch (7):
+  devlink: Skip health recover notifications before register
+  netdevsim: Register devlink after device init
+  net/mlx5: Clear FW reset-in-progress bit before reload
+  net/mlx5: Register devlink after device init
+  octeontx2-af: Register devlink after SR-IOV init
+  octeontx2-pf: Register devlink after SR-IOV state init
+  devlink: Add eswitch mode boot defaults
+
+ .../admin-guide/kernel-parameters.txt         |  25 ++
+ .../networking/devlink/devlink-defaults.rst   |  78 +++++
+ Documentation/networking/devlink/index.rst    |   1 +
+ .../net/ethernet/marvell/octeontx2/af/rvu.c   |  24 +-
+ .../ethernet/marvell/octeontx2/nic/otx2_pf.c  |  17 +-
+ .../ethernet/mellanox/mlx5/core/fw_reset.c    |  28 +-
+ .../net/ethernet/mellanox/mlx5/core/main.c    |  34 ++-
+ drivers/net/netdevsim/dev.c                   |  15 +-
+ net/devlink/core.c                            | 271 ++++++++++++++++++
+ net/devlink/dev.c                             |   3 +
+ net/devlink/devl_internal.h                   |   1 +
+ net/devlink/health.c                          |   3 +-
+ 12 files changed, 451 insertions(+), 49 deletions(-)
+ create mode 100644 Documentation/networking/devlink/devlink-defaults.rst
+
+
+base-commit: bfa3d89cc15c09f7d1581c834a5ed725189ec19f
+-- 
+2.34.1
+
