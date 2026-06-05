@@ -1,164 +1,450 @@
-Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11020115.outbound.protection.outlook.com [52.101.85.115])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f170.google.com (mail-oi1-f170.google.com [209.85.167.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D18D32459CF;
-	Fri,  5 Jun 2026 00:58:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.115
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780621133; cv=fail; b=QVPDQVjt8ywwPmxXC2l6O/qmCzsTT+IIRqwug0hzd4jyF9pEG7LCuIeSUf8hlKseWGbH1bXPMRDxBEQRnSvSMSTaWDGVJ+RXWTFE28/HxTrPCCIVghBEvLXiGjjZ7C3bY4HAjhXaZpVHH1JzvFD2Xn877u9AzcSxc9jRQgU2nIA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780621133; c=relaxed/simple;
-	bh=cfB9lZJ1Op9bYgW4LmAQig8m9MT6YTrNyjg7GnVNkCg=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=MgUscZ7T6N+p+GJnM7gH8CSj4F2DaQQLdswVHj9KPlPJEow/e42qWpnG7hlpp/6AkdINwWtUHueiv+amCdWmtgBxjYaDUbE5FFOV7lIfe0LDt8JpUm8HC5692o9WRSZld9SX6MUNY89xUFMRdGft84aQK8UEqqr166RJ0N0AiPA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com; spf=pass smtp.mailfrom=microsoft.com; dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b=cqHSyYkQ; arc=fail smtp.client-ip=52.101.85.115
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microsoft.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11420253F13
+	for <netdev@vger.kernel.org>; Fri,  5 Jun 2026 01:00:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.170
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780621243; cv=none; b=fImltGv723uqpvEMQx/XrOPoQWvwSapTHcznCOSqIR136Iathel+r0SbLpr6iElfQ7s3r04EJX1m+fUp2GnsOdJNmcHQnhBKLI+s8D9tT5jIevIDxnqRRWvhrxxtTZ1G2JnN4wrRXDKjsNJzRCkNhiY8WWCimK7lipB2/ybEaC8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780621243; c=relaxed/simple;
+	bh=W29pTaZXmRQCy8zecxMQOvUhWVemZ1uTRB6lBfDis6c=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kW4IdOmt5izTXaM/bKsU6MOdw5U93/H6zpGtRMnpeINJw2rP7xhgcU+jcPXofWfwvH6bBQmmLVRKLCRdl0hJ5NjQM2rTq/sk2/VYvLAWv6asLpMGeFRbwTYg6wvSARINfzQFg3QGne91v/UFG9MDDQJjuj+UlzoBRxdSBKnFzY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com; spf=pass smtp.mailfrom=riscstar.com; dkim=pass (2048-bit key) header.d=riscstar-com.20251104.gappssmtp.com header.i=@riscstar-com.20251104.gappssmtp.com header.b=xz+fwOG4; arc=none smtp.client-ip=209.85.167.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=riscstar.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b="cqHSyYkQ"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=G+h/vzfc6Hql1utYymCG11n6Kzf23qnffJn34k/Fxj01DDn3YIT9N7ne+LlnPxzP2+O2Yn+avPQjE6zmIE0xQBpINwHZNJRAnCHqIJMgPaum4Kk+t6bbD+3ned/zjizg2fLzPQMkyk+jhu0UFMXqzDh/q5tq8Y2tc3eCAmmkNs++Ahs5Jfi0tpDSzhOMX4Sur1YAk+1+3c1dpbcilfP092C8yHdreSG5+H0dphdtAs39lZl/c8pDDwdBfLoH+k8PJqlhW74uu2N5cPjRJnd2MZcwupRK0zyrCYBcOYzRkHrpKrW3libtRiJDZ+Cul4aAe8rMwbvslSAs64eJcrCQuA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+5AVXGJBVq8R4Kqqhzgy31bBZsQhNuvSXvU12qBL9zE=;
- b=yfHXiBggG9teMpDrf083V/bKlJY7ThxwEFxI10HSb0gcuW+EfkcGXbYpXUX3LDx2Igi0vT34G2w68scM7zfFRY+j25BH8vjet38sykpAcrNb4xMKLfr3yGneRBByuIFP7wNLNct6SmsEEkFDBEMeLnP7jeQRVYtRW4+NXHGgU6JoFxAdzfTWZ84JB+Ab4TePtI9KAlLlXMEKVTdLdKVqyE4uwCuaYQ6f7T7pOkcQTZPm218OvIq+3XASlvcI4190sp7zdtgG0Gbpuqa8cs4S4wHBTOnnKmxdonen9aN4QGBpoQutiYN+KOLkVDBBKF6GO3EMw7PLYZcTaodzYnW2zg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=microsoft.com; dmarc=pass action=none
- header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+5AVXGJBVq8R4Kqqhzgy31bBZsQhNuvSXvU12qBL9zE=;
- b=cqHSyYkQYMgDKaetwkn5Kj+oSD9w2wdcdRYxv3kAhMLjx5S7QsG52pZPT2mKv0/sAkXQIQ13cYnwYu5ur7J5VkKHm7v+ZiQTe/1qLRanyQK/Jm0+dg9MCvZzMVJSu4xrir0uQvAyz43Tc6DVm8OV8yITupIzHlWdzjKW+J9KZ/k=
-Received: from SA1PR21MB6683.namprd21.prod.outlook.com (2603:10b6:806:4a4::6)
- by SA1PR21MB6080.namprd21.prod.outlook.com (2603:10b6:806:4af::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.113.3; Fri, 5 Jun 2026
- 00:58:40 +0000
-Received: from SA1PR21MB6683.namprd21.prod.outlook.com
- ([fe80::8bad:6294:8a07:fe18]) by SA1PR21MB6683.namprd21.prod.outlook.com
- ([fe80::8bad:6294:8a07:fe18%3]) with mapi id 15.21.0113.000; Fri, 5 Jun 2026
- 00:58:40 +0000
-From: Long Li <longli@microsoft.com>
-To: Jakub Kicinski <kuba@kernel.org>
-CC: Konstantin Taranov <kotaranov@microsoft.com>, "David S . Miller"
-	<davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>, Eric Dumazet
-	<edumazet@google.com>, Andrew Lunn <andrew+netdev@lunn.ch>, Jason Gunthorpe
-	<jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, Haiyang Zhang
-	<haiyangz@microsoft.com>, KY Srinivasan <kys@microsoft.com>, Wei Liu
-	<wei.liu@kernel.org>, Dexuan Cui <DECUI@microsoft.com>,
-	"shradhagupta@linux.microsoft.com" <shradhagupta@linux.microsoft.com>, Simon
- Horman <horms@kernel.org>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
-	"linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [EXTERNAL] Re: [PATCH net-next v11 0/6] net: mana: Per-vPort EQ
- and MSI-X management
-Thread-Topic: [EXTERNAL] Re: [PATCH net-next v11 0/6] net: mana: Per-vPort EQ
- and MSI-X management
-Thread-Index: AQHc6lhTyIkZh41VFEGbRGEZk/VnV7YivmWAgAFG0OCAB+hzAIAAH5aAgAMqyNA=
-Date: Fri, 5 Jun 2026 00:58:40 +0000
-Message-ID:
- <SA1PR21MB6683B6E7F5A29C68B00FC01CCE112@SA1PR21MB6683.namprd21.prod.outlook.com>
-References: <20260523020258.1107742-1-longli@microsoft.com>
-	<20260527192735.34a794cf@kernel.org>
-	<SA1PR21MB6683A7B2415BEAF17BD0EB4ECE092@SA1PR21MB6683.namprd21.prod.outlook.com>
-	<SA1PR21MB6683230E973519C12E2AB797CE122@SA1PR21MB6683.namprd21.prod.outlook.com>
- <20260602173607.34063034@kernel.org>
-In-Reply-To: <20260602173607.34063034@kernel.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
- MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ActionId=25e9a4e3-4eec-45b8-ba90-3b289d9e0e9e;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ContentBits=0;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Enabled=true;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Method=Standard;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Name=Internal;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SetDate=2026-06-05T00:58:01Z;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SiteId=72f988bf-86f1-41af-91ab-2d7cd011db47;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Tag=10,
- 3, 0, 1;
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=microsoft.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SA1PR21MB6683:EE_|SA1PR21MB6080:EE_
-x-ms-office365-filtering-correlation-id: ab0ce05a-44fc-4bd4-db31-08dec29d953c
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|376014|1800799024|366016|7416014|38070700021|6133799003|18002099003|22082099003|56012099006|4143699003|11063799006;
-x-microsoft-antispam-message-info:
- /2AT2gj72E/vFqJ6b6aRw8NqZ9OWDCCwt8MH1ISRgjA1/axjzrjgTWJaremYyOSCK3da6eoW20vao/3nzkQcweZtYhg9IbSySYZSv+KcMrkkS4AZPlrQi7MOypiaP97QJoe6PSVHzbPLlalRXgM1irmO/pPC/fr7iQ6akiu2WDPPtAkiDB8xtBOnZxyJze7EF0xqdqr0VkowmvxCK2o3rDYLc5fH+LTe7eZkOUu15mSxvJlfCIzUIpRmfq4D58JbJ60Eomgi351ZGiPf0V35yrxnWrfAP2JW960axi/xSOgT80l9Mc4IG++Kf7511y8ycLSLgh3kCB8LAfCNz0aqd5I46sjb+t7PIlaQThdcNRmfMbysSlh9D8j/qfJvpblX5512fHk7eMOrSK2yDBohdCOFj8miqBF7s433E/aOAhhKXKctT+XRbUMC8S+kxx8vS9pfqNseExOKYvcZTpJbapr5OQbaGjL8jqmKXhAUwQbtfiVv8E4Trq3uY1H6H83tPsdK5D7ixsMHWCm4cQ6GLvUS4IDHDZkrzTLPFK+4FVvAI9enNTK2zc6O8TmA5K6tyEpOI0AVOAcvao9PUtXdhqeJEQUYjHZQx3kkBByBbGrOfkD1C1/pilDDgl6KlbX1C6Lq2hK82owoFaUM/CvGXiy9PH7duUFGE0QbjxpfGcGMEa/UOEOIYDfxWQkfZW2jtPLRI4th5uB5+e1qgIpMXS3/1iUNpDEcI7Uk0bneBkG6dXdjspiy3H6ubL/BpuzK
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR21MB6683.namprd21.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(7416014)(38070700021)(6133799003)(18002099003)(22082099003)(56012099006)(4143699003)(11063799006);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?25Q2GLWm8Db3XZR7kcKhRYxFERWs93VgYbm3prBZgoR49j6RDHa7Rn9GS8Mj?=
- =?us-ascii?Q?DNF7gVcacPxa89A/RiwgSAKCv9wsYobgxbFBeuExu6nAaP46u/YNWLZypwB+?=
- =?us-ascii?Q?bzv2tFPBFGyDgpguVu0whyRBgZ+vGx9oRKrWgTx85CTCDIoynDqKAtLA/R03?=
- =?us-ascii?Q?SS5TBW/GP3TC9/ymjQRHtgtWTp2qM7F1Nh/yfAZODZJf9n9sLNEqvMLd5fjr?=
- =?us-ascii?Q?y/bKhNI1cH9MQM1Z1z5b4282nHs6vm3StuOInh+LjAo7GOc/6A13+IHLMeeO?=
- =?us-ascii?Q?mX3tIOZNDqNRm84VoQq4fGw42Xb6/kzrGPGXP9K3c4NMAEnHROUQSvyiqHXp?=
- =?us-ascii?Q?SZG1969JOJ9gzYyCF8cpZvCKOI/6Aqz9tSZy9vbcIvtLLMuFLH/ndWOxBBRd?=
- =?us-ascii?Q?JcjRlj2Shc7o41tZNrkpdvCHc62qVKwLUSxpbL5J4EcTcFzM1Nh+0OJn6ExY?=
- =?us-ascii?Q?OyY0p8Jpj9IgnQiCff6w3VqriYTd7gfrW9LLOHpJXa7L/kGytJDoHNDskXIE?=
- =?us-ascii?Q?zAYEIjQX/+gUGlt41R3tNQo1KWvcgIAH0Bygr/iIC77k2U/Ksp9BIINqkbrw?=
- =?us-ascii?Q?Vb3Sxa11MS/xoG2hRwYro1Xn6pZgyf+4Ll4EorXM4MaSTR13bq+iQoxKYcU6?=
- =?us-ascii?Q?WCZG1lWko5BgzchF0LEw5qZfUrqPKvTmzQUQxhsi6cJ5OmDbY/q73rW1WN+j?=
- =?us-ascii?Q?jImOXpblx0peumXranR2OJLOqdvmdus/DrHIoUOF8Wd5/im4T0O5SQOMtmi9?=
- =?us-ascii?Q?AOeCw9aeID7Hw0hSkzQWxqw3Vg2n3h2bLa7MRbrHDjtj9wTydBPdNlPyZKWo?=
- =?us-ascii?Q?GLc/r9CO+jncqejo4+mObcTVKBH+ucwAAsVn1wWyTtW9LWMJ1Jt2lpP6FgFh?=
- =?us-ascii?Q?Gg77es4sm2f837/Wmkmt/R3gUTwt2wby7pIaUHQnpRWIUTU0GANgGOXxyxS1?=
- =?us-ascii?Q?DaOibjNEfg1iBcXIdOdXzaOGGIo1F7PAqMb2DYrXSIc3YsfpbOYc5rogMt5t?=
- =?us-ascii?Q?R1x7/7qraDCG7bryloqANjaHPXrqkQwW6pHO633j4x7LNPzO6T7NDIsz4jrd?=
- =?us-ascii?Q?6dMEZhhRFW1UO5R1ho0RDndmx6ETDQmwUDdZR7tZZUHP60EnZxFoR4hc0/Nz?=
- =?us-ascii?Q?MVN3lhmRA9fbyEwJYTYB4qy4uP2Iwdk0YDjlTlO12eKCx/PHEGIO6qMZrR5h?=
- =?us-ascii?Q?Vr/3RPuQfB4LnTRafOafMVAB8z2diAkMpr3ixtRCyIXkmN8QWo4zH/fPDK9z?=
- =?us-ascii?Q?ZHj2ZrrsmRG9JRIKlvPSpVZhXK+8kgom7Zgw/51QIuxut8WEAIYsDhFdSZKa?=
- =?us-ascii?Q?/9ioKO9lwabmbx1eJ7HPqUwgVZomjbOAwo6Z9Bp2mhnIqKUyJZHSAjhADMjD?=
- =?us-ascii?Q?/1vdc4pr+lKpGQSVdFtnQCpnyBHuzW6HcO0nfxbCiOZZjcmjsUooj6Z+vNYO?=
- =?us-ascii?Q?41CVc2jrDqwFHDIiUSQ4ZJPhDFLiHKC35C2khrZCacTKW3ePt0OFCumXvvoP?=
- =?us-ascii?Q?KEnahMfPjDBwzyUtMzGsQDhacmLDRsBhGMDimE171wB4PTOItppoTVImdgzj?=
- =?us-ascii?Q?rp61z7Pc1cQWuE0jObItQeW0m9KblGAxfxOxJgLXCpI2n0J+16xLFvImu5jX?=
- =?us-ascii?Q?xus1CpanO/bk5WzqooYLjNU5rmNL7yyPBkAKeJ7cNGF0w7XU/xwpn4CVImS5?=
- =?us-ascii?Q?dYCA0k5pLkYktDqnLx78xKPTzm4wFQuchxz1SRDfXzF19P6O?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=riscstar-com.20251104.gappssmtp.com header.i=@riscstar-com.20251104.gappssmtp.com header.b="xz+fwOG4"
+Received: by mail-oi1-f170.google.com with SMTP id 5614622812f47-486304fa184so1059694b6e.1
+        for <netdev@vger.kernel.org>; Thu, 04 Jun 2026 18:00:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=riscstar-com.20251104.gappssmtp.com; s=20251104; t=1780621229; x=1781226029; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=OqbmcXSAlAGCA27gHjydvmcFDD6CfDKTo92atFvy+XY=;
+        b=xz+fwOG4pycobLAgfxkU4KLBJINw1D8hoqQHn2Ti4KNirWS5Aymo3xd5KBgbv5ob84
+         cjxU7eNuMZoM/58qeaETz1287QeOB++jCtTAvKLaKqZDhuRR2fXxZ3zI63EuLB9d8ey0
+         fM9T96jf4KO8vNhS1nX8ONubY3d2+tQXwAEjZTvb52XfI+IBGAB1HUeWUWNhF8WJOcEE
+         niwMUznmzQEdOse2E4oUt3hN4zKwqcZif+3LPR5iOzcIHy1FPYmun3O3KSt8qdDTbb9y
+         43sBtJqCWjPxo8lPVWlXVNRurKILPj1nCjsBX/QCbwzoubn08J9jHa241mixlxy/iKDr
+         R3dA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780621229; x=1781226029;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=OqbmcXSAlAGCA27gHjydvmcFDD6CfDKTo92atFvy+XY=;
+        b=ZmOmD3N7kOoBoIGCvtcE2v/FDMwrylZ7F5dtGGkvurUA2DekZhRf0eEK18DJ4zq4HT
+         mTcOYgCxULobvfFVCuSZVTfPYGLr0Jl5i0moCXAnNSyEkmq7ze/wEkFhBpLDE1nrqDEZ
+         yTfU7pq4T8eN8PAOioUFhEnNqVBCw/p2tLI+wQw2c0qsAw7hQtkQrE/1IyhGUSdFHzu+
+         RjaAig1ibFA0PU7zVtgbt03K8bJGe28kNoLnRfFwRucTx3vWJ0utKboP/YpLTevrYmHR
+         QQ4nJdocCFrLTbE2GJsXeDVo4ZeIHN655kk4sGyLmVVX0XFEllnW8rfhDj9a6OfcOfn2
+         n6CQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+2i/U/DwWf9atjDlZfxQRFLWZNE+wcmqTff+U4s1RD0VZHaP5KzNCHn0TB9fMYWa+ixA/jWPo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzUJDglXqnvuhDhezU0ULM4GhJvKYrMkC2oxvWx94ZrgK9BdovP
+	0xw6eEswcExSe5HLy8VF6VW6UjwpnuiQPpAYRKL6i9o0f+y+Yd1jRQRqvhpRNDWXaCc=
+X-Gm-Gg: Acq92OHvaEyiH+Dh/Y83Tre+lKoU5iNMKUYccrYz5cUw7L6QTeHOYIvl6Qt8BgG7cVe
+	q9fzb2Tr0E0LHaJZewX9hAXTTVJRaOeJ23h749Loo3cdrwMFM5RFTRHrNajUIedSR38XRx6AEup
+	dAsCfDpcXYLdhduZmEfsTKmQpOSNq1kOpdQSGxWEv+zrEQUfKFkW2r0NqKiLqtG6fP+nWfXGpMD
+	wRRE1NI7TzCV39Ro14NBaffleAPDe5AvakT5BEliwE3m3q9V/18l3LKf8fj5lDusoBjW73vGwgO
+	6dJUvuuiU613maM+ir2rU/6AuIz6Vu/aBrVa2cucjevFMq0bbzpRvpYunwtw8Tpj55CBbdLIRds
+	841ljq8+cppO8jMoVOH5ePcmU+4CLOci2bas8lwOYuW1L+U531S2VBUmlko4h7/NKPIpYD+gkJi
+	GF4oFqD50PV7qQPWIqCGs7r7P2DP1Tszo/zSAwng==
+X-Received: by 2002:a05:6808:2508:b0:485:4c7a:898f with SMTP id 5614622812f47-4868ddf9d5dmr723329b6e.17.1780621228591;
+        Thu, 04 Jun 2026 18:00:28 -0700 (PDT)
+Received: from zippy.localdomain ([73.62.185.64])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-4865b6ec694sm5544631b6e.5.2026.06.04.18.00.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 04 Jun 2026 18:00:28 -0700 (PDT)
+From: Alex Elder <elder@riscstar.com>
+To: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	maxime.chevallier@bootlin.com,
+	rmk+kernel@armlinux.org.uk,
+	andersson@kernel.org,
+	konradybcio@kernel.org,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	linusw@kernel.org,
+	brgl@kernel.org,
+	arnd@arndb.de,
+	gregkh@linuxfoundation.org
+Cc: daniel@riscstar.com,
+	elder@riscstar.com,
+	mohd.anwar@oss.qualcomm.com,
+	a0987203069@gmail.com,
+	alexandre.torgue@foss.st.com,
+	ast@kernel.org,
+	boon.khai.ng@altera.com,
+	chenchuangyu@xiaomi.com,
+	chenhuacai@kernel.org,
+	daniel@iogearbox.net,
+	hawk@kernel.org,
+	hkallweit1@gmail.com,
+	inochiama@gmail.com,
+	john.fastabend@gmail.com,
+	julianbraha@gmail.com,
+	livelycarpet87@gmail.com,
+	mcoquelin.stm32@gmail.com,
+	me@ziyao.cc,
+	prabhakar.mahadev-lad.rj@bp.renesas.com,
+	richardcochran@gmail.com,
+	rohan.g.thomas@altera.com,
+	sdf@fomichev.me,
+	siyanteng@cqsoftware.com.cn,
+	weishangjuan@eswincomputing.com,
+	wens@kernel.org,
+	netdev@vger.kernel.org,
+	bpf@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-gpio@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v2 00/14] net: enable TC956x support
+Date: Thu,  4 Jun 2026 20:00:07 -0500
+Message-ID: <20260605010022.968612-1-elder@riscstar.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: microsoft.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SA1PR21MB6683.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ab0ce05a-44fc-4bd4-db31-08dec29d953c
-X-MS-Exchange-CrossTenant-originalarrivaltime: 05 Jun 2026 00:58:40.2282
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: uOOBbfV8h4h4UqwI9V197mf1HjUCfltP8yV0JbYI39GNo1C3Gyn9Mu55GJ5xFiWR+4IcBsl470SZjUXpM+dM7A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR21MB6080
+Content-Transfer-Encoding: 8bit
 
-> On Tue, 2 Jun 2026 22:48:05 +0000 Long Li wrote:
-> > Changes in patch 6 from v2 to v11:
-> >
-> >  - Error handling updated from NULL/-ENOMEM to IS_ERR()/PTR_ERR() for
-> > mana_gd_get_gic() return values
-> >  - Added mdev->eqs[i]->eq.irq =3D gic->irq to populate the irq field on
-> > all RDMA EQs for consistency with the Ethernet path
-> >  - Introduced a separate msi variable instead of modifying
-> > spec.eq.msix_index directly
-> >  - Commit message updated
-> >
-> > The gdma.h changes are identical to v2.
->=20
-> Hm, yes, Leon seems to be AFK since May 19th.
-> Please repost with his tag included, the list of changes you provided doe=
-s seem
-> immaterial. I don't want to merge v11 as is, there's a good chance people=
- marked
-> this thread as ignored by now.
+(A fairly detailed list of changes since v1 is included below.
+Because there are so many changes listed, they are not repeated
+in the individual patches that follow.  Note also that this
+series depends on two prerequisite commits, as explained below.)
 
-I have sent v12 with Leon's tag on patch 6.
+This series introduces stmmac driver support for the Toshiba TC9564
+(also known as Qualcomm QPS615).  This is an Ethernet-AVB/TSN bridge IC
+that provides a high-speed connection between a host SoC and Ethernet
+devices on a network.  It incorporates a PCIe switch, and implements
+two 10 Gbps capable Ethernet MACs (along with other IP blocks), and
+is essentially a small and highly-specialized SoC.  The TC9564 is a
+member of a family of similar chips, and the driver code uses "tc956x"
+to reflect this.
 
-Thanks,
-Long
+TC956x chips incorporate a PCIe gen 3 switch, with one upstream and
+three downstream ports.  Its PCIe functionality is already supported
+upstream, including a power control driver that performs some early
+configuration of the PCI ports ("pci-pwrctrl-tc9563.c").
+
+One of the PCIe switch's downstream ports has an internal PCIe endpoint,
+which implements two PCIe functions, each of which has an Ethernet MAC
+(eMAC) subsystem. The eMAC is composed of a Synopsis Designware XGMAC
+combined with an XPCS and PMA.  Each MAC is capable of operating at
+10M/100M/1G/2.5G/5Gps and 10Gps.  The initial target platform is the
+Qualcomm RB3gen2, which supports a 10Gbps Marvell PHY on port A, and
+a 2.5Gbps Qualcomm PHY on port B.  (The Marvell PHY is not populated
+on all RB3gen2 boards, and only the 2.5 Gbps Qualcomm PHY is supported
+initially.)
+
+TC956x chips also implement several other blocks of functionality,
+including a GPIO controller, interrupt controllers (MSIGEN), I2C
+and SPI, a UART, and an Arm Cortex M3 CPU with 128KB SRAM.  The GPIO
+interface exposes several lines to manage external resets.  The
+interrupt controllers are used internally by the eMAC functions.  The
+UART, SPI, microcontroller, and SRAM are currently unused.
+
+              ----------------------------------
+              |              Host              |
+              ------+...+----------+........+---
+                    |i2c|          |  PCIe  |
+    ----------------+...+----------+........+------
+    | TC956x        |I2C|          |upstream|     |
+    |               -----        --+--------+---  |
+    |  -----  ------  -------    | PCIe switch |  |
+    |  |SPI|  |GPIO|  |reset|    |             |  |
+    |  -----  ------  |clock|    | DS3 DS2 DS1 |  |
+    |                 -------    ---++--++--++--  |
+    |  -----  ------     downstream//    \\  \\   |  downstream
+    |  |MCU|  |SRAM|    /==========/      \\  \===== PCIe port 1
+    |  -----  ------   //PCIe port 3       \\     |
+    |                  ||                   \======= downstream
+    |  ----+-----------++-----------+----         |  PCIe port 2
+    |  | M | internal PCIe endpoint | M |         |
+    |  | S |------------------------| S |  ------ |
+    |  | I |   PCIe   |  |   PCIe   | I |  |UART| |
+    |  | G |function 0|  |function 1| G |  ------ |
+    |  | E |----++----|  |----++----| E |         |
+    |  | N |  eMAC 0  |  |  eMAC 1  | N |         |
+    --------+.......+------+.....+-----------------
+            |USXGMII|      |SGMII|
+          --+.......+--  --+.....+--
+          |  ARQ113C  |  | QEP8121 |
+          |    PHY    |  |   PHY   |
+          -------------  -----------
+
+The primary objective for this series is to support the Ethernet
+functionality provided by the TC956x.  The code providing this
+support has been structured into three distinct modules.
+  - A "chip" driver, associated with the PCIe functions
+  - A driver for the GPIO controller
+  - Code enabling the TC956x-specific eMAC/MSIGEN hardware
+
+To manage the common functionality (including configuring address
+translation and controlling internal reset and clock signals), a
+"chip" driver is implemented.  The chip driver binds to PCI
+functions 0 and 1, and creates a shared data structure describing
+the common chip elements shared by the two driver instances.  PCIe
+function 1 defers probing until after PCIe function 0 has created
+this shared data structure.
+
+Common/shared functionality is handled by PCIe function 0.  This
+common code uses PCIe function 0's mapped BARs to configure the
+hardware.  If the TC9564 GPIO controller is needed (i.e., defined
+in a node in devicetree), it is created as an auxiliary device
+when PCIe function 0 is probed.
+
+Both PCIe function 0 and function 1 implement an Ethernet
+controller as well, though one or the other might be unused on
+a given platform.  If a PCIe function node defines an ethernet
+subnode in devicetree, the corresponding eMAC is enabled, and
+the PCIe function driver will create an auxiliary device to
+represent it.
+
+The GPIO driver is implemented separately because in some hardware
+configurations, these GPIO lines are used to manage resets for
+external Ethernet PHYs.  We describe these PHYs via devicetree,
+where the GPIO-based reset signals are defined using phandles.
+
+The code for eMAC and MSIGEN consists of a new source file that
+populates hardware-specific details about the two MACs, and integrates
+with the existing stmmac driver.  This also required implementing some
+enhancements to the core stmmac driver, described further below.
+
+The version of the Synopsys MAC IP is 3.01, which is largely compatible
+with version 2.20.  The core stmmac driver required several changes to
+enable support for the TC956x.
+  - A change to dwxgmac2 support changes the interrupt mode when
+    multi_msi_en is enabled.
+  - While most support for version 3.01 simply uses the 2.20 code,
+    an erratum related to the RX ring length is implemented for
+    3.01 DMA operations.
+  - Having the PCIe device be separate from an auxiliarly device
+    implementing the eMAC required allowing a distinct DMA device
+    to be maintained for an stmmac interface.
+
+In addition:
+  - A new source file provides memory-mapped access to XPCS using
+    regmap.  The alignment of the TC956x MDIO registers aren't
+    suitable for using simple MMIO.
+  - Two additional XPCS changes are implemented that provides
+    support for the XPCS as implemented in the TC956x.
+
+NOTE:
+    This series is based on net-next/main, but depends on these
+    two commits found in linux-next/master:
+
+	68d801eabda52 gpio: regmap: Support sparsed fixed direction
+	806e7acf7f331 gpio: regmap: Don't set a fixed direction line
+       
+					-Alex (and Daniel)
+
+This series is available here:
+  https://github.com/riscstar/linux/tree/tc956x/stmmac-v2
+
+Changes between version 1 and version 2:
+
+NEW
+  - The qca808x.c PHY driver now supports enabling up to four optional
+    regulators
+
+GENERAL
+  - The order of patches has been rearranged a bit.  One consequence
+    is that the TOSHIBA_TC956X_PCI Kconfig symbol is now defined
+    before it's used.
+
+PATCH 00/12
+  - MAINTAINERS entries have been added for all new files
+
+PATCH 01/12
+  - devm_xpcs_regmap_register() now ensures the xpcs_destroy() is
+    called when the device is unbound (suggested by Sashiko).
+
+PATCH 02/12
+  - Reworked how the quirky behavior was handled.  Now:
+    - A soft reset is issued in xpcs_pre_config() *before* calling
+      xpcs_switch_interface_mode() calls txgbe_xpcs_switch_mode().
+      It does this now for an SGMII interface, not just if the
+      need-reset flag is set
+    - xpcs_switch_interface_mode() calls txgbe_xpcs_switch_mode(),
+      preserving previous behavior
+    - For other (non-Wangxun) platforms, if the XPCS supports
+      10Gbase-R, xpcs_switch_interface_mode() programs the interface
+      operating mode to use a reserved value rather than the default
+
+PATCH 03/12
+    - This change has been removed; the default_an_inband platform
+      data flag is set instead (in what was previously patch 10)
+      
+PATCH 04/12
+    - Two issues were pointed out by Sashiko, both of which were
+      problems related to DMA handling.  They were pre-existing
+      issues, and I plan to send separate patches to address
+      them.
+    - A mask local variable (to shorten a long line) is no longer
+      created.  Checkpatch no longer complains about that line.
+
+PATCH 05/12
+    - The description was clarified a bit in response to a comment
+      from Andrew
+
+PATCH 06/12
+  - No comments received, no changes
+
+PATCH 07/12
+  - Sashiko suggested that exporting some symbols from the stmmac
+    core might not be desirable, and suggested using the standard
+    DMA API to accomplish the same thing.  For now we are igoring
+    this suggestion--not finding a way to do what was suggested.
+
+PATCH 08/12
+  - The description has been revised to focus on the hardware and
+    not the "node".
+  - The ASCII art (copied from below) has been incorporated into the
+    binding
+  - The file name has been changed to "toshiba,tc9564-dwmac.yaml" and
+    the $id value matches the file name
+  - Only one example is provided now
+  - The references and unevaluatedProperties have been moved later
+    in the file
+  - We no longer reference "pci-bus-common.yaml".  We are describing
+    a device, not a bridge.
+  - Subnodes have been added to represent the GPIO controller (on
+    PCIe function 0) and the Ethernet interfaces (possible on PCIe
+    functions 0 and 1).
+
+PATCH 09/12
+  - The GPIO controller is now implemented using regmap-gpio
+  - The Kconfig entry for the GPIO driver has been updated to select
+    GPIO_REGMAP, and to define its default value as "m" unconditionally
+  - The Kconfig entry is now defined in the memory-mapped GPIO section
+  - The regmap use has been adjusted so it's clear it is MMIO-based,
+    which normally does not require error checking.
+  - We no longer call drv_get_drvdata()
+
+PATCH 10/12
+  - The name of the IRQ domain now includes the MAC ID (0 or 1)
+  - SP_SEL_SGMII_2500M is now named SP_SEL_2500BASEX
+  - A typo in the commit has been fixed, and the error check after creating
+    the RX IRQ mapping now checks the right pointer for an error
+  - The Kconfig entry now selects GENERIC_IRQ_CHIP
+  - The PHY interface is now taken into account in the fix_max_speed
+    callback
+  - We now check the correct pointer for an error when creating the RX
+    IRQ mappings
+  - We are not implementing a shutdown driver callback
+  - Xilin has other discussion related to WoL, which we should save
+    and use, but we're not acting on it now.
+  - In four function, Sashiko noted that a 32-bit dma_addr_t can't hold
+    TC956X_SLV00_SRC_ADDR, so the type of local variable has been changed
+    to be u64: tc956x_dma_init_rx_chan(), tc956x_dma_init_tx_chan(),
+    tc956x_desc_set_addr(), and tc956x_desc_set_sec_addr().
+  - tc956x_mac_disable() is now called if stmmac_dvr_probe() fails;
+    suggested by Sashiko.
+  - Sashiko noted the MDIO device tree node was being leaked.  This
+    has been resolved.
+  - Sashiko also pointed out that IRQ mappings were not being freed,
+    and this too is fixed.
+
+PATCH 11/12
+  - The reset and clock functions are no longer defined inline
+  - The REFCLK clock name has been renamed REFCLKO, and a comment
+    has been added to explain it is an (unused) output clock.
+  - If the PCI device has no DT node it is reported with dev_err().
+  - <linux/bitfield.h> is now included, to avoid errors in various
+    non-Arm64 builds.
+  - The devicetree Ethernet node is no longer leaked in adev_device_add()
+    (noticed by Sashiko).
+  - The Kconfig entry now depends on ARM64 or COMPILE_TEST
+  - The Kconfig entry now selects REGMAP and REGMAP_MMIO
+  - Sashiko reported that the reference count on the PCIe slot
+    for function 0 was being leaked.  This has been fixed.
+  - Sashiko questioned whether the cleanup action to delete
+    a created device link was associated with the wrong device.
+    It was, and this has been fixed.
+  - Sashiko also suggested that the allocated PCI IRQ vector
+    was not properly getting removed.  It now is.
+  - Sashiko suggested that function 1 might proceed with probing
+    even though there was still a chance that function 0's probe
+    failed.  The platform_data pointer that function 1 uses to
+    decide it's OK to probe is now assigned later.
+
+PATCH 12/12
+  - The PHY interrupt is now defined as a level interrupt.
+  - A typo in the PHY name has been corrected in the patch description
+
+Here is the initial version of the series.
+  https://lore.kernel.org/netdev/20260501155421.3329862-1-elder@riscstar.com/
+
+Alex Elder (3):
+  net: stmmac: dma: create a separate dma_device pointer
+  misc: tc956x_pci: add TC956x/QPS615 support
+  gpio: tc956x: add TC956x/QPS615 support
+
+Daniel Thompson (11):
+  dt-bindings: net: qca,qca808x: Add regulator properties
+  net: phy: qcom: qca808x: Add regulator management
+  net: pcs: pcs-xpcs-regmap: support XPCS memory-mapped MDIO bus via
+    regmap
+  net: pcs: xpcs: re-order xpcs_pre_config() to update after the reset
+  net: pcs: pcs-xpcs: select operating mode for 10G-baseR capable PCS
+  net: stmmac: dwxgmac2: Add multi MSI interrupt mode
+  net: stmmac: dwxgmac2: Add XGMAC 3.01a support
+  net: stmmac: dwxgmac2: export symbols for XGMAC 3.01a DMA
+  dt-bindings: net: toshiba,tc9654-dwmac: add TC9564 Ethernet bridge
+  net: stmmac: tc956x: add TC956x/QPS615 support
+  arm64: dts: qcom: qcs6490-rb3gen2: enable TC9564 with a single QCA8081
+    phy
+
+ .../devicetree/bindings/net/qca,qca808x.yaml  |  14 +
+ .../bindings/net/toshiba,tc9564-dwmac.yaml    | 120 +++
+ MAINTAINERS                                   |  12 +
+ arch/arm64/boot/dts/qcom/qcs6490-rb3gen2.dts  |  48 +
+ drivers/gpio/Kconfig                          |  12 +
+ drivers/gpio/Makefile                         |   1 +
+ drivers/gpio/gpio-tc956x.c                    | 130 +++
+ drivers/misc/Kconfig                          |  12 +
+ drivers/misc/Makefile                         |   1 +
+ drivers/misc/tc956x_pci.c                     | 741 ++++++++++++++++
+ drivers/net/ethernet/stmicro/stmmac/Kconfig   |  14 +
+ drivers/net/ethernet/stmicro/stmmac/Makefile  |   2 +
+ .../net/ethernet/stmicro/stmmac/chain_mode.c  |  12 +-
+ .../ethernet/stmicro/stmmac/dwmac-tc956x.c    | 818 ++++++++++++++++++
+ .../net/ethernet/stmicro/stmmac/dwxgmac2.h    |  12 +
+ .../ethernet/stmicro/stmmac/dwxgmac2_core.c   |   1 +
+ .../ethernet/stmicro/stmmac/dwxgmac2_descs.c  |   1 +
+ .../ethernet/stmicro/stmmac/dwxgmac2_dma.c    |  79 +-
+ .../net/ethernet/stmicro/stmmac/ring_mode.c   |  12 +-
+ drivers/net/ethernet/stmicro/stmmac/stmmac.h  |   1 +
+ .../net/ethernet/stmicro/stmmac/stmmac_main.c |  58 +-
+ .../net/ethernet/stmicro/stmmac/stmmac_xdp.c  |   2 +-
+ drivers/net/pcs/Makefile                      |   4 +-
+ drivers/net/pcs/pcs-xpcs-regmap.c             | 219 +++++
+ drivers/net/pcs/pcs-xpcs.c                    |  93 +-
+ drivers/net/phy/qcom/qca808x.c                |  30 +
+ include/linux/pcs/pcs-xpcs-regmap.h           |  20 +
+ include/linux/stmmac.h                        |   1 +
+ include/soc/toshiba/tc956x-dwmac.h            |  84 ++
+ 29 files changed, 2478 insertions(+), 76 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/net/toshiba,tc9564-dwmac.yaml
+ create mode 100644 drivers/gpio/gpio-tc956x.c
+ create mode 100644 drivers/misc/tc956x_pci.c
+ create mode 100644 drivers/net/ethernet/stmicro/stmmac/dwmac-tc956x.c
+ create mode 100644 drivers/net/pcs/pcs-xpcs-regmap.c
+ create mode 100644 include/linux/pcs/pcs-xpcs-regmap.h
+ create mode 100644 include/soc/toshiba/tc956x-dwmac.h
+
+base-commit: 07c4bca9d92e51ab6b46797a86c6ea559812351a
+-- 
+2.51.0
+
