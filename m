@@ -1,52 +1,52 @@
 Received: from mx0b-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C1B144D68A;
-	Fri,  5 Jun 2026 07:04:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55AD947798A;
+	Fri,  5 Jun 2026 07:04:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780643081; cv=none; b=iffJhOc7vS9G3SzCAHHSYDCIBg7MgS1o3dxY7TgyoivzGIMRqAyGGel8r5NxvqdjmSGTc68Y0qn5AW5CHqR/Zz24fwPbhrWLklk6je8YqSnIrcpu2adXLAw8FX2LQWBb1LeIJTDUR6k1NQT+s77nFS0pHwYmNQt4aQhS1nG1A6U=
+	t=1780643085; cv=none; b=FliegjH+wOdHG48Z3e1C9vdr/tTERZbdTVcWFU/NllnVYSEYeCx6TxL76fY0hB6nSlrGzggVQ7H0TJ7VO8ZTpZd5LgObqxyt0NMvYMacq+lbbrBDENrfDqJTKqFgnObw6Ma9lg9epV3JP6pjxtwYZBSkmesWhtIc2DIbYS28MPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780643081; c=relaxed/simple;
-	bh=jQuojE6Pd6dEdxS9m/VxSCN7wNukWXM1Snhn+bcANLg=;
+	s=arc-20240116; t=1780643085; c=relaxed/simple;
+	bh=Z/d/A90k65ZEmjLxckOi5aNSfA7K79CbcoxcYeHLkWk=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=O4qLZpRu4oliTCd2Y6m3F7LDseQetrpm7zm4an8brno1Fsf92of3oQB1VtcY5p4Fg/vjz18WsqVePG3EA0XTdLRngE/IQlQCIJsFlRG+yteKqFFq7kRFjfq07e+YjL0NhkvjSCxmKwt7yMDwC16GFCyuta6kluo19zKYtyeJYa4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=bw+9GiMi; arc=none smtp.client-ip=67.231.148.174
+	 MIME-Version:Content-Type; b=d4XEj1C+oLUd6BLmjXnKiMGYtMUAq4zC95nhXGDWqObQBuIt/oIhyY+QqTVPj95ngTKwL9up581QgwHPGLl1OBXD34Smi3gi10UpIggHIYCJUC67l2ZX+4TL90Fg9JqQv+9GmZCHJB3BrOgDdfjViEUN3BJjonEEERpqq7n5TL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=QSIKqbV9; arc=none smtp.client-ip=67.231.148.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="bw+9GiMi"
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="QSIKqbV9"
 Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
-	by mx0a-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 654LQMGq3892390;
-	Fri, 5 Jun 2026 00:04:27 -0700
+	by mx0a-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 654LQMGv3892390;
+	Fri, 5 Jun 2026 00:04:33 -0700
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pfpt0220; bh=y
-	OjoTYfizbwAhVUXVgZxBzdXn60ookjAmORafR9UyZA=; b=bw+9GiMiAIN/tDTvj
-	uGUkUfwfWAUBBUaBACvI1rohiwCToAHhiEgcijftMFje3+yI0awy5YYvcTaCFF+v
-	TWjWZBt+EkSk1N7oSXtMpAFqginTpJn72ITchyvarBxK005YKW5XMJZCYhM4MN5T
-	WYRuB1tY6JgdX8ASTJ9+YloaU4IyOO1OjNrcW4ceyWJ1236hI96Ez/pLUFEB/a/E
-	FdeTC/uAUPydGMtb7ev8omrvUWmQQoabI+UvYEwNkxmFyK0YawdsWBqODf8sxLiL
-	U8GOezxXA93G+SzQ5erzQRvfqLaaLJb+/OQAV8NMJW3iWZE7lxcXyTVrqJA/iihI
-	pyHgw==
+	:message-id:mime-version:references:subject:to; s=pfpt0220; bh=O
+	iks7CmXjiKNmZU9B24n4fWVZ8gh6WXRZOY5Lnuo+/w=; b=QSIKqbV9hnLen9jbD
+	2GifNUVYfGOWIKM9Nwr4Sh8Oezvh94Ho+yMDPFUcyLLiQZVFVsLr4ybLXZfEMdsj
+	bIBasgM+wdCvc+YEu9lFm3OTbXRup8QIaOc4OEEG3Sa17Pt/qdGsJ7Mlpk8y8mNS
+	orS3C05SsrjqQzSih0my44ZGYV9Fer0A/4KijxpitEVrmdqI05BZt9dCIefcfwKp
+	fJUePORY8chnCe2TGJ2alx6sAWwcDEuyVaAnAHKB16uvKLEKxQlWxu9VS6hLT32V
+	nrTfpBMHvPTZTuJ/HIVUUjGX1KDpdkyOrX2b/zIMavpkXJkw1uC7RQFLntPlobql
+	vB7hw==
 Received: from dc5-exch05.marvell.com ([199.233.59.128])
-	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4ekh8x9e58-8
+	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4ekh8x9e58-18
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 05 Jun 2026 00:04:26 -0700 (PDT)
+	Fri, 05 Jun 2026 00:04:32 -0700 (PDT)
 Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
  DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Fri, 5 Jun 2026 00:02:54 -0700
+ 15.2.1544.25; Fri, 5 Jun 2026 00:02:56 -0700
 Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
  DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Thu, 4 Jun 2026 23:33:35 -0700
+ 15.2.1544.25; Thu, 4 Jun 2026 23:33:26 -0700
 Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
  (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Thu, 4 Jun 2026 23:33:35 -0700
+ Transport; Thu, 4 Jun 2026 23:33:26 -0700
 Received: from rkannoth-OptiPlex-7090.. (unknown [10.28.36.165])
-	by maili.marvell.com (Postfix) with ESMTP id 6C2A23F7074;
-	Thu,  4 Jun 2026 23:33:31 -0700 (PDT)
+	by maili.marvell.com (Postfix) with ESMTP id 3AA033F707A;
+	Thu,  4 Jun 2026 23:33:21 -0700 (PDT)
 From: Ratheesh Kannoth <rkannoth@marvell.com>
 To: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>
 CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <donald.hunter@gmail.com>,
@@ -54,9 +54,9 @@ CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <donald.hunter@gmail.com>,
         <kuba@kernel.org>, <pabeni@redhat.com>, <sgoutham@marvell.com>,
         "Ratheesh
  Kannoth" <rkannoth@marvell.com>
-Subject: [PATCH v19 net-next 8/9] octeontx2: cn20k: Respect NPC MCAM X2/X4 profile in flows and DFT alloc
-Date: Fri, 5 Jun 2026 12:02:44 +0530
-Message-ID: <20260605063245.3553861-9-rkannoth@marvell.com>
+Subject: [PATCH v19 net-next 6/9] octeontx2: cn20k: Coordinate default rules with NIX LF lifecycle
+Date: Fri, 5 Jun 2026 12:02:42 +0530
+Message-ID: <20260605063245.3553861-7-rkannoth@marvell.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260605063245.3553861-1-rkannoth@marvell.com>
 References: <20260605063245.3553861-1-rkannoth@marvell.com>
@@ -68,267 +68,328 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Proofpoint-ORIG-GUID: p10t9Tquq4waE593WucdI8BYYThx306h
-X-Authority-Analysis: v=2.4 cv=DqNmPm/+ c=1 sm=1 tr=0 ts=6a2274fa cx=c_pps
+X-Proofpoint-ORIG-GUID: lDjSqbqtRQNWHUZB62IuMD_0riMgkNoc
+X-Authority-Analysis: v=2.4 cv=DqNmPm/+ c=1 sm=1 tr=0 ts=6a227500 cx=c_pps
  a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
  a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
- a=EAYMVhzMl8SCOHhVQcBL:22 a=M5GUcnROAAAA:8 a=3zpKOMqohp-RhpYd6ikA:9
+ a=EAYMVhzMl8SCOHhVQcBL:22 a=M5GUcnROAAAA:8 a=D4RoFv6TgYvzmL5duKYA:9
  a=OBjm3rFKGHvpk9ecZwUJ:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjA1MDA2NiBTYWx0ZWRfX/mRGk2fFe7Wx
- eqf5ZSUHjPIpKwlOjevuMomRnBWRT0zZus8ouIW5dwoIAuOr6cA/Cwj2dEs2nSNrkEjq1m1ZE+6
- Rlzmhi4SpnVibVsftOfNfd0B1pv4V7x4d/BR8GuAZTKYmsuzb1drW0tnsCidqVFIab9UR2AvipU
- iXaeKEPWRACVm4Mct/XWOGUgITuPPsrovq0HRNSgb88su4VdhFR4ckc5QozQxP9eSFCAS8l2uIO
- DR0BMRn/k0qDjt/A1/I9xmdYPfcvz50jChCt1GXYyDuIf2jhWxqQZqnwFJBSTYLhD6bPHIa8Trx
- Zrwq3IKAvnV4GMMIl1dGKxdKNJMMaP7jdUO75O9gLwW1mqA6uIlXfg7f13ulc2YmnmMTyTJ65j5
- ezFd5OLPzwx1tFAucFfs/Sw73fpLtgepe2kcE9F6wYOnB83WInM6ITDvbGlTeObnno2/x1VbunJ
- WZMrDdSWAMNH8GZIV6A==
-X-Proofpoint-GUID: p10t9Tquq4waE593WucdI8BYYThx306h
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjA1MDA2NiBTYWx0ZWRfX3R/wa6v2XEEX
+ HxV8IIYmZ6vgMoUXBmTmSEb27jp9f3RQVQx+fkptudi3rjkHWAu0LimGuik34aoDE4oiX7rYXtD
+ Wlh0cMTc2DbN8Ipd72m8yvDODoqA+FI5bqITAvtIMsRlZVuKI+egymM+PyLDrcGFrRZnUdPBBDz
+ F4XFw4GQjs46oQqrXImIm4leZNUw772fkAYtrPVXkwlo2vCTnYE/+U/awanVcEp9UeWRbmTVxd6
+ aa9/VgHEEjI6BgOWTw7z3quAPyFpF5kszxf0q3/j1FNRb39+ESAFC6Xv9fsh2FNLX0P6uPHlBn3
+ iq6Zb6lwV9n/JwzVWmwrnXpvi1giTWCSrwHqI4UtpI+zBpZMlZS3a4XeuvQ4KbV+15cRPw/GnF7
+ tQtZ8vIK67C8T4Yc3qC117Z+8YbUtBv/n8SrHOB8MCWObjxV8gohyZ8LmX/DbHn4lKUaL2/1rP/
+ K6YVVz/ou+0QBuj6y2Q==
+X-Proofpoint-GUID: lDjSqbqtRQNWHUZB62IuMD_0riMgkNoc
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
  definitions=2026-06-05_01,2026-05-28_03,2025-10-01_01
 
-Default CN20K NPC rule allocation now keys off the active MCAM keyword
-width: use X4 with a bank-masked reference index when the silicon uses
-X4 keys, and X2 with the raw index otherwise (replacing the previous
-always-X2 / eidx + 1 behaviour).
+Add NIX_LF_DONT_FREE_DFT_IDXS so the PF can send NIX LF free during hw
+reinit or teardown without the AF freeing CN20K default NPC rule indexes
+while the driver still owns that state (otx2_init_hw_resources and
+otx2_free_hw_resources).
 
-In the AF flow-install path, flows that need more than 256 key bits
-query the NPC profile; if the platform is fixed to X2 entries, fail
-with -EOPNOTSUPP instead of requesting X4. Otherwise select X4 for the
-MCAM alloc.
-
-On the PF, cache and pass the profile kw_type from npc_get_pfl_info
-through otx2_mcam_pfl_info_get(), and use it when allocating MCAM
-entries for RSS/defaults and when installing ethtool flows on CN20K,
-including masking the reference index for X4 slot layout.
+On CN20K, allocate default NPC rules from NIX LF alloc before
+nix_interface_init, roll back with npc_cn20k_dft_rules_free on failure,
+and free from NIX LF free when the new flag is not set. Tighten
+rvu_mbox_handler_nix_lf_alloc error handling: use a single rc, propagate
+qmem_alloc and other errors, and set -ENOMEM only when kcalloc fails
+(remove the blanket -ENOMEM at the free_mem path).
 
 Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
 ---
- .../ethernet/marvell/octeontx2/af/cn20k/npc.c | 21 ++++++--
- .../marvell/octeontx2/af/rvu_npc_fs.c         | 12 ++++-
- .../marvell/octeontx2/nic/otx2_flows.c        | 48 +++++++++++++------
- 3 files changed, 61 insertions(+), 20 deletions(-)
+ .../net/ethernet/marvell/octeontx2/af/mbox.h  |  1 +
+ .../ethernet/marvell/octeontx2/af/rvu_nix.c   | 77 +++++++++++++------
+ .../ethernet/marvell/octeontx2/af/rvu_npc.c   | 20 +++--
+ .../ethernet/marvell/octeontx2/nic/otx2_pf.c  |  6 +-
+ 4 files changed, 69 insertions(+), 35 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.c b/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.c
-index 32b53b5bc57a..d76aad867934 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.c
-@@ -4500,10 +4500,16 @@ int npc_cn20k_dft_rules_alloc(struct rvu *rvu, u16 pcifunc)
- 	pfvf = rvu_get_pfvf(rvu, pcifunc);
- 	pfvf->hw_prio = NPC_DFT_RULE_PRIO;
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/mbox.h b/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
+index dc42c81c0942..e07fbf842b94 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
++++ b/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
+@@ -1009,6 +1009,7 @@ struct nix_lf_free_req {
+ 	struct mbox_msghdr hdr;
+ #define NIX_LF_DISABLE_FLOWS		BIT_ULL(0)
+ #define NIX_LF_DONT_FREE_TX_VTAG	BIT_ULL(1)
++#define NIX_LF_DONT_FREE_DFT_IDXS	BIT_ULL(2)
+ 	u64 flags;
+ };
  
-+	if (npc_priv.kw == NPC_MCAM_KEY_X4) {
-+		req.kw_type = NPC_MCAM_KEY_X4;
-+		req.ref_entry = eidx & (npc_priv.bank_depth - 1);
-+	} else {
-+		req.kw_type = NPC_MCAM_KEY_X2;
-+		req.ref_entry = eidx;
-+	}
-+
- 	req.contig = false;
- 	req.ref_prio = NPC_MCAM_HIGHER_PRIO;
--	req.ref_entry = eidx;
--	req.kw_type = NPC_MCAM_KEY_X2;
- 	req.count = cnt;
- 	req.hdr.pcifunc = pcifunc;
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
+index f977734ae712..d8989395e875 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
+@@ -16,6 +16,7 @@
+ #include "cgx.h"
+ #include "lmac_common.h"
+ #include "rvu_npc_hash.h"
++#include "cn20k/npc.h"
  
-@@ -4533,11 +4539,18 @@ int npc_cn20k_dft_rules_alloc(struct rvu *rvu, u16 pcifunc)
- 	 * as NPC_DFT_RULE_PRIO - 1 (higher hw priority)
- 	 */
- 	req.contig = false;
--	req.kw_type = NPC_MCAM_KEY_X2;
- 	req.count = cnt;
- 	req.hdr.pcifunc = pcifunc;
- 	req.ref_prio = NPC_MCAM_LOWER_PRIO;
--	req.ref_entry = eidx + 1;
-+
-+	if (npc_priv.kw == NPC_MCAM_KEY_X4) {
-+		req.kw_type = NPC_MCAM_KEY_X4;
-+		req.ref_entry = eidx & (npc_priv.bank_depth - 1);
-+	} else {
-+		req.kw_type = NPC_MCAM_KEY_X2;
-+		req.ref_entry = eidx;
-+	}
-+
- 	ret = rvu_mbox_handler_npc_mcam_alloc_entry(rvu, &req, &rsp);
- 	if (ret) {
- 		dev_err(rvu->dev,
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
-index 34f1e066707b..a22decbe3449 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
-@@ -1671,9 +1671,11 @@ rvu_npc_alloc_entry_for_flow_install(struct rvu *rvu,
+ static void nix_free_tx_vtag_entries(struct rvu *rvu, u16 pcifunc);
+ static int rvu_nix_get_bpid(struct rvu *rvu, struct nix_bp_cfg_req *req,
+@@ -1499,9 +1500,11 @@ int rvu_mbox_handler_nix_lf_alloc(struct rvu *rvu,
+ 				  struct nix_lf_alloc_req *req,
+ 				  struct nix_lf_alloc_rsp *rsp)
  {
- 	struct npc_mcam_alloc_entry_req entry_req;
- 	struct npc_mcam_alloc_entry_rsp entry_rsp;
-+	struct npc_get_pfl_info_rsp rsp = { 0 };
- 	struct npc_get_num_kws_req kws_req;
- 	struct npc_get_num_kws_rsp kws_rsp;
- 	int off, kw_bits, rc;
-+	struct msg_req req;
- 	u8 *src, *dst;
+-	int nixlf, qints, hwctx_size, intf, err, rc = 0;
++	int nixlf, qints, hwctx_size, intf, rc = 0;
++	u16 bcast, mcast, promisc, ucast;
+ 	struct rvu_hwinfo *hw = rvu->hw;
+ 	u16 pcifunc = req->hdr.pcifunc;
++	bool rules_created = false;
+ 	struct rvu_block *block;
+ 	struct rvu_pfvf *pfvf;
+ 	u64 cfg, ctx_cfg;
+@@ -1555,8 +1558,8 @@ int rvu_mbox_handler_nix_lf_alloc(struct rvu *rvu,
+ 		return NIX_AF_ERR_RSS_GRPS_INVALID;
  
- 	if (!is_cn20k(rvu->pdev)) {
-@@ -1697,8 +1699,16 @@ rvu_npc_alloc_entry_for_flow_install(struct rvu *rvu,
- 	kw_bits = kws_rsp.kws * 64;
+ 	/* Reset this NIX LF */
+-	err = rvu_lf_reset(rvu, block, nixlf);
+-	if (err) {
++	rc = rvu_lf_reset(rvu, block, nixlf);
++	if (rc) {
+ 		dev_err(rvu->dev, "Failed to reset NIX%d LF%d\n",
+ 			block->addr - BLKADDR_NIX0, nixlf);
+ 		return NIX_AF_ERR_LF_RESET;
+@@ -1566,13 +1569,15 @@ int rvu_mbox_handler_nix_lf_alloc(struct rvu *rvu,
  
- 	*kw_type = NPC_MCAM_KEY_X2;
--	if (kw_bits > 256)
-+	if (kw_bits > 256) {
-+		rvu_mbox_handler_npc_get_pfl_info(rvu, &req, &rsp);
-+		if (rsp.kw_type == NPC_MCAM_KEY_X2) {
-+			dev_err(rvu->dev,
-+				"Only X2 entries are supported in X2 profile\n");
-+			return -EOPNOTSUPP;
+ 	/* Alloc NIX RQ HW context memory and config the base */
+ 	hwctx_size = 1UL << ((ctx_cfg >> 4) & 0xF);
+-	err = qmem_alloc(rvu->dev, &pfvf->rq_ctx, req->rq_cnt, hwctx_size);
+-	if (err)
++	rc = qmem_alloc(rvu->dev, &pfvf->rq_ctx, req->rq_cnt, hwctx_size);
++	if (rc)
+ 		goto free_mem;
+ 
+ 	pfvf->rq_bmap = kcalloc(req->rq_cnt, sizeof(long), GFP_KERNEL);
+-	if (!pfvf->rq_bmap)
++	if (!pfvf->rq_bmap) {
++		rc = -ENOMEM;
+ 		goto free_mem;
++	}
+ 
+ 	rvu_write64(rvu, blkaddr, NIX_AF_LFX_RQS_BASE(nixlf),
+ 		    (u64)pfvf->rq_ctx->iova);
+@@ -1583,13 +1588,15 @@ int rvu_mbox_handler_nix_lf_alloc(struct rvu *rvu,
+ 
+ 	/* Alloc NIX SQ HW context memory and config the base */
+ 	hwctx_size = 1UL << (ctx_cfg & 0xF);
+-	err = qmem_alloc(rvu->dev, &pfvf->sq_ctx, req->sq_cnt, hwctx_size);
+-	if (err)
++	rc = qmem_alloc(rvu->dev, &pfvf->sq_ctx, req->sq_cnt, hwctx_size);
++	if (rc)
+ 		goto free_mem;
+ 
+ 	pfvf->sq_bmap = kcalloc(req->sq_cnt, sizeof(long), GFP_KERNEL);
+-	if (!pfvf->sq_bmap)
++	if (!pfvf->sq_bmap) {
++		rc = -ENOMEM;
+ 		goto free_mem;
++	}
+ 
+ 	rvu_write64(rvu, blkaddr, NIX_AF_LFX_SQS_BASE(nixlf),
+ 		    (u64)pfvf->sq_ctx->iova);
+@@ -1599,13 +1606,15 @@ int rvu_mbox_handler_nix_lf_alloc(struct rvu *rvu,
+ 
+ 	/* Alloc NIX CQ HW context memory and config the base */
+ 	hwctx_size = 1UL << ((ctx_cfg >> 8) & 0xF);
+-	err = qmem_alloc(rvu->dev, &pfvf->cq_ctx, req->cq_cnt, hwctx_size);
+-	if (err)
++	rc = qmem_alloc(rvu->dev, &pfvf->cq_ctx, req->cq_cnt, hwctx_size);
++	if (rc)
+ 		goto free_mem;
+ 
+ 	pfvf->cq_bmap = kcalloc(req->cq_cnt, sizeof(long), GFP_KERNEL);
+-	if (!pfvf->cq_bmap)
++	if (!pfvf->cq_bmap) {
++		rc = -ENOMEM;
+ 		goto free_mem;
++	}
+ 
+ 	rvu_write64(rvu, blkaddr, NIX_AF_LFX_CQS_BASE(nixlf),
+ 		    (u64)pfvf->cq_ctx->iova);
+@@ -1615,18 +1624,18 @@ int rvu_mbox_handler_nix_lf_alloc(struct rvu *rvu,
+ 
+ 	/* Initialize receive side scaling (RSS) */
+ 	hwctx_size = 1UL << ((ctx_cfg >> 12) & 0xF);
+-	err = nixlf_rss_ctx_init(rvu, blkaddr, pfvf, nixlf, req->rss_sz,
+-				 req->rss_grps, hwctx_size, req->way_mask,
+-				 !!(req->flags & NIX_LF_RSS_TAG_LSB_AS_ADDER));
+-	if (err)
++	rc = nixlf_rss_ctx_init(rvu, blkaddr, pfvf, nixlf, req->rss_sz,
++				req->rss_grps, hwctx_size, req->way_mask,
++				!!(req->flags & NIX_LF_RSS_TAG_LSB_AS_ADDER));
++	if (rc)
+ 		goto free_mem;
+ 
+ 	/* Alloc memory for CQINT's HW contexts */
+ 	cfg = rvu_read64(rvu, blkaddr, NIX_AF_CONST2);
+ 	qints = (cfg >> 24) & 0xFFF;
+ 	hwctx_size = 1UL << ((ctx_cfg >> 24) & 0xF);
+-	err = qmem_alloc(rvu->dev, &pfvf->cq_ints_ctx, qints, hwctx_size);
+-	if (err)
++	rc = qmem_alloc(rvu->dev, &pfvf->cq_ints_ctx, qints, hwctx_size);
++	if (rc)
+ 		goto free_mem;
+ 
+ 	rvu_write64(rvu, blkaddr, NIX_AF_LFX_CINTS_BASE(nixlf),
+@@ -1639,8 +1648,8 @@ int rvu_mbox_handler_nix_lf_alloc(struct rvu *rvu,
+ 	cfg = rvu_read64(rvu, blkaddr, NIX_AF_CONST2);
+ 	qints = (cfg >> 12) & 0xFFF;
+ 	hwctx_size = 1UL << ((ctx_cfg >> 20) & 0xF);
+-	err = qmem_alloc(rvu->dev, &pfvf->nix_qints_ctx, qints, hwctx_size);
+-	if (err)
++	rc = qmem_alloc(rvu->dev, &pfvf->nix_qints_ctx, qints, hwctx_size);
++	if (rc)
+ 		goto free_mem;
+ 
+ 	rvu_write64(rvu, blkaddr, NIX_AF_LFX_QINTS_BASE(nixlf),
+@@ -1684,10 +1693,22 @@ int rvu_mbox_handler_nix_lf_alloc(struct rvu *rvu,
+ 	if (is_sdp_pfvf(rvu, pcifunc))
+ 		intf = NIX_INTF_TYPE_SDP;
+ 
+-	err = nix_interface_init(rvu, pcifunc, intf, nixlf, rsp,
+-				 !!(req->flags & NIX_LF_LBK_BLK_SEL));
+-	if (err)
+-		goto free_mem;
++	if (is_cn20k(rvu->pdev)) {
++		rc = npc_cn20k_dft_rules_idx_get(rvu, pcifunc, &bcast, &mcast,
++						 &promisc, &ucast);
++		if (rc) {
++			rc = npc_cn20k_dft_rules_alloc(rvu, pcifunc);
++			if (rc)
++				goto free_mem;
++
++			rules_created = true;
 +		}
-+
- 		*kw_type = NPC_MCAM_KEY_X4;
 +	}
- 
- 	memset(&entry_req, 0, sizeof(entry_req));
- 	memset(&entry_rsp, 0, sizeof(entry_rsp));
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_flows.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_flows.c
-index 38cc539d724d..5dd0591fed99 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_flows.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_flows.c
-@@ -37,14 +37,13 @@ static void otx2_clear_ntuple_flow_info(struct otx2_nic *pfvf, struct otx2_flow_
- 	flow_cfg->max_flows = 0;
- }
- 
--static int otx2_mcam_pfl_info_get(struct otx2_nic *pfvf, bool *is_x2,
--				  u16 *x4_slots)
-+static int otx2_mcam_pfl_info_get(struct otx2_nic *pfvf, u16 *x4_slots, u8 *kw_type)
- {
- 	struct npc_get_pfl_info_rsp *rsp;
- 	struct msg_req *req;
- 	static struct {
- 		bool is_set;
--		bool is_x2;
-+		u8 kw_type;
- 		u16 x4_slots;
- 	} pfl_info;
- 
-@@ -53,8 +52,8 @@ static int otx2_mcam_pfl_info_get(struct otx2_nic *pfvf, bool *is_x2,
- 	 */
- 	mutex_lock(&pfvf->mbox.lock);
- 	if (pfl_info.is_set) {
--		*is_x2 = pfl_info.is_x2;
- 		*x4_slots = pfl_info.x4_slots;
-+		*kw_type = pfl_info.kw_type;
- 		mutex_unlock(&pfvf->mbox.lock);
- 		return 0;
- 	}
-@@ -79,16 +78,16 @@ static int otx2_mcam_pfl_info_get(struct otx2_nic *pfvf, bool *is_x2,
- 		return -EFAULT;
- 	}
- 
--	*is_x2 = (rsp->kw_type == NPC_MCAM_KEY_X2);
--	if (*is_x2)
--		*x4_slots = 0;
-+	pfl_info.kw_type = rsp->kw_type;
-+	if (rsp->kw_type == NPC_MCAM_KEY_X2)
-+		pfl_info.x4_slots = 0;
- 	else
--		*x4_slots = rsp->x4_slots;
--
--	pfl_info.is_x2 = *is_x2;
--	pfl_info.x4_slots = *x4_slots;
-+		pfl_info.x4_slots = rsp->x4_slots;
- 	pfl_info.is_set = true;
- 
-+	*x4_slots = pfl_info.x4_slots;
-+	*kw_type = pfl_info.kw_type;
 +
- 	mutex_unlock(&pfvf->mbox.lock);
++	rc = nix_interface_init(rvu, pcifunc, intf, nixlf, rsp,
++				!!(req->flags & NIX_LF_LBK_BLK_SEL));
++	if (rc)
++		goto free_dft;
+ 
+ 	/* Disable NPC entries as NIXLF's contexts are not initialized yet */
+ 	rvu_npc_disable_default_entries(rvu, pcifunc, nixlf);
+@@ -1699,9 +1720,12 @@ int rvu_mbox_handler_nix_lf_alloc(struct rvu *rvu,
+ 
+ 	goto exit;
+ 
++free_dft:
++	if (is_cn20k(rvu->pdev) && rules_created)
++		npc_cn20k_dft_rules_free(rvu, pcifunc);
++
+ free_mem:
+ 	nix_ctx_free(rvu, pfvf);
+-	rc = -ENOMEM;
+ 
+ exit:
+ 	/* Set macaddr of this PF/VF */
+@@ -1775,6 +1799,9 @@ int rvu_mbox_handler_nix_lf_free(struct rvu *rvu, struct nix_lf_free_req *req,
+ 
+ 	nix_ctx_free(rvu, pfvf);
+ 
++	if (is_cn20k(rvu->pdev) && !(req->flags & NIX_LF_DONT_FREE_DFT_IDXS))
++		npc_cn20k_dft_rules_free(rvu, pcifunc);
++
  	return 0;
  }
-@@ -164,6 +163,7 @@ int otx2_alloc_mcam_entries(struct otx2_nic *pfvf, u16 count)
- 	u16 dft_idx = 0, x4_slots = 0;
- 	int ent, allocated = 0, ref;
- 	bool is_x2 = false;
-+	u8 kw_type = 0;
- 	int rc;
  
- 	/* Free current ones and allocate new ones with requested count */
-@@ -182,12 +182,14 @@ int otx2_alloc_mcam_entries(struct otx2_nic *pfvf, u16 count)
- 	}
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
+index d301a3f0f87a..150d50b72c48 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
+@@ -1285,11 +1285,18 @@ void npc_enadis_default_mce_entry(struct rvu *rvu, u16 pcifunc,
+ 	struct nix_mce_list *mce_list;
+ 	int index, blkaddr, mce_idx;
+ 	struct rvu_pfvf *pfvf;
++	u16 ptr[4];
  
- 	if (is_cn20k(pfvf->pdev)) {
--		rc = otx2_mcam_pfl_info_get(pfvf, &is_x2, &x4_slots);
-+		rc = otx2_mcam_pfl_info_get(pfvf, &x4_slots, &kw_type);
- 		if (rc) {
- 			netdev_err(pfvf->netdev, "Error to retrieve profile info\n");
- 			return rc;
- 		}
+ 	/* multicast pkt replication is not enabled for AF's VFs & SDP links */
+ 	if (is_lbk_vf(rvu, pcifunc) || is_sdp_pfvf(rvu, pcifunc))
+ 		return;
  
-+		is_x2 = kw_type == NPC_MCAM_KEY_X2;
++	/* In cn20k, only CGX mapped devices have default MCAST entry */
++	if (is_cn20k(rvu->pdev) &&
++	    npc_cn20k_dft_rules_idx_get(rvu, pcifunc, &ptr[0], &ptr[1],
++					&ptr[2], &ptr[3]))
++		return;
 +
- 		rc = otx2_get_dft_rl_idx(pfvf, &dft_idx);
- 		if (rc) {
- 			netdev_err(pfvf->netdev,
-@@ -289,6 +291,8 @@ int otx2_mcam_entry_init(struct otx2_nic *pfvf)
- 	struct npc_mcam_alloc_entry_rsp *rsp;
- 	int vf_vlan_max_flows, count;
- 	int rc, ref, prio, ent;
-+	u8 kw_type = 0;
-+	u16 x4_slots;
- 	u16 dft_idx;
+ 	blkaddr = rvu_get_blkaddr(rvu, BLKTYPE_NPC, 0);
+ 	if (blkaddr < 0)
+ 		return;
+@@ -1329,9 +1336,12 @@ static void npc_enadis_default_entries(struct rvu *rvu, u16 pcifunc,
+ 	struct rvu_pfvf *pfvf = rvu_get_pfvf(rvu, pcifunc);
+ 	struct npc_mcam *mcam = &rvu->hw->mcam;
+ 	int index, blkaddr;
++	u16 ptr[4];
  
- 	ref = 0;
-@@ -315,6 +319,16 @@ int otx2_mcam_entry_init(struct otx2_nic *pfvf)
- 	if (!flow_cfg->def_ent)
- 		return -ENOMEM;
+ 	/* only CGX or LBK interfaces have default entries */
+-	if (is_cn20k(rvu->pdev) && !npc_is_cgx_or_lbk(rvu, pcifunc))
++	if (is_cn20k(rvu->pdev) &&
++	    npc_cn20k_dft_rules_idx_get(rvu, pcifunc, &ptr[0], &ptr[1],
++					&ptr[2], &ptr[3]))
+ 		return;
  
-+	kw_type = NPC_MCAM_KEY_X2;
-+	if (is_cn20k(pfvf->pdev)) {
-+		rc = otx2_mcam_pfl_info_get(pfvf, &x4_slots, &kw_type);
-+		if (rc) {
-+			netdev_err(pfvf->netdev,
-+				   "Error to get pfl info\n");
-+			return rc;
-+		}
-+	}
+ 	blkaddr = rvu_get_blkaddr(rvu, BLKTYPE_NPC, 0);
+@@ -4085,12 +4095,10 @@ void rvu_npc_clear_ucast_entry(struct rvu *rvu, int pcifunc, int nixlf)
+ 
+ 	ucast_idx = npc_get_nixlf_mcam_index(mcam, pcifunc,
+ 					     nixlf, NIXLF_UCAST_ENTRY);
+-	if (ucast_idx < 0) {
+-		dev_err(rvu->dev,
+-			"%s: Error to get ucast entry for pcifunc=%#x\n",
+-			__func__, pcifunc);
 +
- 	mutex_lock(&pfvf->mbox.lock);
++	/* In cn20k, default rules are freed before detach rsrc */
++	if (ucast_idx < 0)
+ 		return;
+-	}
  
- 	req = otx2_mbox_alloc_msg_npc_mcam_alloc_entry(&pfvf->mbox);
-@@ -324,6 +338,10 @@ int otx2_mcam_entry_init(struct otx2_nic *pfvf)
+ 	npc_enable_mcam_entry(rvu, mcam, blkaddr, ucast_idx, false);
+ 
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
+index f9fbf0c17648..b4538edb13f8 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
+@@ -1053,7 +1053,6 @@ irqreturn_t otx2_pfaf_mbox_intr_handler(int irq, void *pf_irq)
+ 	/* Clear the IRQ */
+ 	otx2_write64(pf, RVU_PF_INT, BIT_ULL(0));
+ 
+-
+ 	mbox_data = otx2_read64(pf, RVU_PF_PFAF_MBOX0);
+ 
+ 	if (mbox_data & MBOX_UP_MSG) {
+@@ -1729,7 +1728,7 @@ int otx2_init_hw_resources(struct otx2_nic *pf)
+ 	mutex_lock(&mbox->lock);
+ 	free_req = otx2_mbox_alloc_msg_nix_lf_free(mbox);
+ 	if (free_req) {
+-		free_req->flags = NIX_LF_DISABLE_FLOWS;
++		free_req->flags = NIX_LF_DISABLE_FLOWS | NIX_LF_DONT_FREE_DFT_IDXS;
+ 		if (otx2_sync_mbox_msg(mbox))
+ 			dev_err(pf->dev, "%s failed to free nixlf\n", __func__);
  	}
+@@ -1803,7 +1802,7 @@ void otx2_free_hw_resources(struct otx2_nic *pf)
+ 	/* Reset NIX LF */
+ 	free_req = otx2_mbox_alloc_msg_nix_lf_free(mbox);
+ 	if (free_req) {
+-		free_req->flags = NIX_LF_DISABLE_FLOWS;
++		free_req->flags = NIX_LF_DISABLE_FLOWS | NIX_LF_DONT_FREE_DFT_IDXS;
+ 		if (!(pf->flags & OTX2_FLAG_PF_SHUTDOWN))
+ 			free_req->flags |= NIX_LF_DONT_FREE_TX_VTAG;
+ 		if (otx2_sync_mbox_msg(mbox))
+@@ -1926,7 +1925,6 @@ int otx2_alloc_queue_mem(struct otx2_nic *pf)
+ 	struct otx2_qset *qset = &pf->qset;
+ 	struct otx2_cq_poll *cq_poll;
  
- 	req->kw_type = NPC_MCAM_KEY_X2;
-+	if (is_cn20k(pfvf->pdev) && kw_type == NPC_MCAM_KEY_X4) {
-+		req->kw_type = NPC_MCAM_KEY_X4;
-+		ref &= (x4_slots - 1);
-+	}
- 	req->contig = false;
- 	req->count = count;
- 	req->ref_prio = prio;
-@@ -1174,15 +1192,14 @@ static int otx2_add_flow_msg(struct otx2_nic *pfvf, struct otx2_flow *flow)
- #ifdef CONFIG_DCB
- 	int vlan_prio, qidx, pfc_rule = 0;
- #endif
-+	bool modify = false, is_x2;
- 	int err, vf = 0, off, sz;
--	bool modify = false;
- 	u8 kw_type = 0;
- 	u8 *src, *dst;
- 	u16 x4_slots;
--	bool is_x2;
- 
- 	if (is_cn20k(pfvf->pdev)) {
--		err = otx2_mcam_pfl_info_get(pfvf, &is_x2, &x4_slots);
-+		err = otx2_mcam_pfl_info_get(pfvf, &x4_slots, &kw_type);
- 		if (err) {
- 			netdev_err(pfvf->netdev,
- 				   "Error to retrieve NPC profile info, pcifunc=%#x\n",
-@@ -1190,6 +1207,7 @@ static int otx2_add_flow_msg(struct otx2_nic *pfvf, struct otx2_flow *flow)
- 			return -EFAULT;
- 		}
- 
-+		is_x2 = kw_type == NPC_MCAM_KEY_X2;
- 		if (!is_x2) {
- 			err = otx2_prepare_flow_request(&flow->flow_spec,
- 							&treq);
+-
+ 	/* RQ and SQs are mapped to different CQs,
+ 	 * so find out max CQ IRQs (i.e CINTs) needed.
+ 	 */
 -- 
 2.43.0
 
