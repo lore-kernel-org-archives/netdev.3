@@ -1,77 +1,114 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us.padl.com (us.padl.com [216.154.215.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 105F42750E6;
-	Fri,  5 Jun 2026 01:10:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE0E227A91D;
+	Fri,  5 Jun 2026 01:14:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.154.215.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780621808; cv=none; b=IRUp1L25NhYBUdehsWsoccU0/UFqRA7Dj8e+Qbi0TdZ+mwhwAQyugsbthUZz8RHjRXim0qyuWrcaTmcTDR6mQ7GBB8syxG0S4d5w0OKmQvu/SaGf5L00amHZCS0EGFepYEfkeB9hPKphXHeWcErZNt2AquTbtIN682kGM8+Ym4g=
+	t=1780622054; cv=none; b=BztTgN/Byl+Adb0ETkGk0lmwgQXoQT+4oPtj3RTOk70hAHDYCDfwRnqnR1E31gYCxc9/vKMhaVSBOxUJ55Vdu5foyzNEN3TMHqNuBeygd+bfNc5A+9vfy496+j0Kk/CYJdSbEneZy4CR3r7tvMhn2a05DJTz7bjvD/1BMHdvJ9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780621808; c=relaxed/simple;
-	bh=9JOmf6KJF9lGSZLL1hN41NuukQHxDbeXKeQ0Wxn4Qso=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=UWMzeRJkE+Dmq4pjr/y/B3zZa5DnmhPM9mdQjMCWR4RIVDUlvTeB1ClhbG93gDoK0neMRNK5aGIa3g4JqgKlpUYibGkpr2aWKtsMcJ5imvm/AO7ROJun4a8hLib6YE31YAYqRsoEdpuvwbYNBT0Eem36Jjn3Vkh5N8IT4lbdJfc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nwUUuc8J; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780622054; c=relaxed/simple;
+	bh=DrfrjKEiOQMi4PdJ4tlqIf5bMHmaoVxpAStGpcKRSzc=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=txK6xQkU6sEiyNsXjgcbPlBVgD+HrngSimttoW4tyi4n5TCMvlcmsKsciT0iFCVGsom9XmyM8SMrVFACc7o5nekg53g/jqmd3YBCmbWu8LubAsm6+RYHQ+fc9SLrSLGdvTYiZvpONVcojNePq3tcudRXGL51EybvdOsokkKWpns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=padl.com; spf=pass smtp.mailfrom=padl.com; dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b=oDmkyogF; arc=none smtp.client-ip=216.154.215.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=padl.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=padl.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nwUUuc8J"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE74C1F00893;
-	Fri,  5 Jun 2026 01:10:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780621806;
-	bh=bAgGUIuT5Cowg661+H0J7z5VttyhEGD5ilxEI+SIQ2w=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=nwUUuc8JrALZn080+53+lOBCbJj/n3BXPm8Wvu9YA/kTFg2sJcwB3gFnvz55P4UM3
-	 jGzSp0g2R9zIrAhaslurHAAyjS2fuxBceKLiIvvlx+7wb8/z21zoeKI1iGRxx+3A5n
-	 xv2XcHJRZmSAxhWzX6bE4riGOnHoDN/n+LMujC/hZzeLK/JTxQEn0vqSvcPCjcAHAS
-	 UsHdLVzTZJ7A/GChIvX9sABsai/pr6Enx3QUi2uJNFQKagd3yySM9bHbxFjZaXTS9D
-	 tRA6xqjuaVHYfAQfA6efox4mz0GinS5teMVPNnZwwzY1/JG8EiN+cAX+GGWFhU+riA
-	 bIWzQ1Jwz30Yg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 939923930A84;
-	Fri,  5 Jun 2026 01:10:08 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b="oDmkyogF"
+Received: from smtpclient.apple (border.lukktone.com [139.130.100.52])
+	by us.padl.com (Postfix) with ESMTPSA id 2831C60937;
+	Thu,  4 Jun 2026 21:14:07 -0400 (EDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=padl.com; s=default;
+	t=1780622051; bh=DrfrjKEiOQMi4PdJ4tlqIf5bMHmaoVxpAStGpcKRSzc=;
+	h=Subject:From:In-Reply-To:Date:Cc:References:To:From;
+	b=oDmkyogFljIzJqXnVOl8N6/Z1kZ8rd/mJgU/o0OrOpVUeL8DjCpBOfUpS0pR0IKxn
+	 4Ulg+dMVm8mI5d598F3TyKPE9gre0i6QECupfnwYmae7zkb74kYp3+v/7qdWhZPc89
+	 8xlnQl18znnEZMBZ7wLva1NbgYrVBqnhxYeB13mFqcaxMbguXpY5KhEMRmPwHDvzUm
+	 MWpfb8ssI7lKribphXyl89P+batCi/NwOgz27KyR4RCupNVR+pDPCodmbnjT3niroz
+	 ZqCKdTG1QrdOG0NVcWtrpw7xc0wzre/SnHbyl0xpha357iFkxy6EcyVeLj4V2nc6RL
+	 Ur4T9AVp8AHbA==
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2] inet: frags: fix use-after-free caused by the
- fqdir_pre_exit() flush
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178062180740.3088134.15315966161183753620.git-patchwork-notify@kernel.org>
-Date: Fri, 05 Jun 2026 01:10:07 +0000
-References: <ah6ukYq5G98LshdA@v4bel>
-In-Reply-To: <ah6ukYq5G98LshdA@v4bel>
-To: Hyunwoo Kim <imv4bel@gmail.com>
-Cc: dsahern@kernel.org, idosch@nvidia.com, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- stable@vger.kernel.org, netdev@vger.kernel.org
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH net-next 0/2] net: dsa: mv88e6xxx: add support for dcb pcp
+ app
+From: Luke Howard <lukeh@padl.com>
+In-Reply-To: <4d6e6d83-af79-4a06-9736-d6d81e705a61@lunn.ch>
+Date: Fri, 5 Jun 2026 11:13:55 +1000
+Cc: Cedric Jehasse <cedric.jehasse@gmail.com>,
+ cedric.jehasse@luminex.be,
+ Vladimir Oltean <olteanv@gmail.com>,
+ "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>,
+ Russell King <linux@armlinux.org.uk>,
+ netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ Max Hunter <max@huntershome.org>,
+ Kieran Tyrrell <kieran@sienda.com>,
+ Nikolay Aleksandrov <razor@blackwall.org>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <B9290FD7-FB84-4FF7-BA30-529484B8A01F@padl.com>
+References: <20260604-net-next-mv88e6xxx-pcp-prio-v1-0-f9d10fe6cdc8@luminex.be>
+ <02BDD59A-30A9-46F9-8413-28A867B50CD5@padl.com>
+ <v4fqikeec52ginmogfvsfe5gobul2nqspe2ebzpzpja52lxacb@wq2elxqwrucf>
+ <E43832AD-0F8A-465F-95E3-2AF5E72FB7B9@padl.com>
+ <4d6e6d83-af79-4a06-9736-d6d81e705a61@lunn.ch>
+To: Andrew Lunn <andrew@lunn.ch>
+X-Mailer: Apple Mail (2.3826.700.81)
 
-Hello:
+Hi Andrew,
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+> I don't know enough about AVB, so this might not apply here....
+>=20
+> What does the pure software version of AVB look like? Is there a need
+> to configure these parameters? If not, why not? If there is, what API
+> is currently used?
 
-On Tue, 2 Jun 2026 19:21:05 +0900 you wrote:
-> On netns teardown, fqdir_pre_exit() walks the fqdir rhashtable and
-> flushes every fragment queue that is not yet complete using
-> inet_frag_queue_flush(). That helper frees all the skbs queued on the
-> fragment queue but does not set INET_FRAG_COMPLETE, and leaves
-> q->fragments_tail and q->last_run_head pointing at the freed skbs.
-> The queue itself stays in the rhashtable.
-> 
-> [...]
+Qdisc configuration for AVB is described here [1] albeit with reversed =
+numbering of TCs. CBS parameters are usually managed dynamically by SRP =
+(in user space), but static configuration as shown in the link would be =
+common for automative AVB/TSN.
 
-Here is the summary with links:
-  - [net,v2] inet: frags: fix use-after-free caused by the fqdir_pre_exit() flush
-    https://git.kernel.org/netdev/net/c/32594b098549
+> Ideally, the user should not need to know if some functionality has
+> been accelerated by offloading it to hardware. They just configure it
+> using the standard Linux model of the feature.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Absolutely, and that was the model I used when building a SRP daemon, =
+which I first tested with the software bridge and some i210s.
 
+One issue is that AVB is typically configured using MQPRIO, which =
+configures egress queue mapping. The Marvell switches support ingress =
+queue mapping (the subject of this patch), although there is a special =
+case for AVB traffic which does allow for egress queue mapping.
 
+The main issue is that inbound frames belonging to AVB TCs that do _not_ =
+have a SRP-managed DA must be dropped. This permits those queues=E2=80=99 =
+CBS bandwidth to be reserved for AVB streams.Marvell implements this =
+with the STATIC_AVB_NRL entry state, combined with an ingress port flag =
+that enables the packet filtering.
+
+My patch mapped the Marvell model to the software bridge, i.e. new =
+IFLA_BRPORT and MDB flags. However, Nikolay (correctly) points out that =
+these are unidiomatic for Linux.
+
+My understanding is that these should likely be managed with tc-flower. =
+The SRP daemon would manage tc-flower entries along with the MDB when an =
+AVB stream is admitted. Unfortunately, implemetning this in mv88e6xxx =
+would be more complicated: it would either require intercepting the =
+tc-flower requests and mapping them to native AVB admission control =
+(which may be fragile), or adding PCP/DA matching to the TCAM =
+implementation (which may not be sufficiently performant, more research =
+is needed).
+
+Luke
+
+[1] https://tsn.readthedocs.io/avb.html
