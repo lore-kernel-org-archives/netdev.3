@@ -1,87 +1,81 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC275451062;
-	Fri,  5 Jun 2026 07:15:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79E043FE67B
+	for <netdev@vger.kernel.org>; Fri,  5 Jun 2026 07:20:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780643713; cv=none; b=iz/Fah1CZyocR1TiAve/di3gFn4gzNJ83lZXPCmb1rdAqKWA4X/sb9mnATGqL2SsMuezzDcm5DZ1Wd9d+NgbxTF7tIp9rmNKHJnYxIV7bAc/UxRoQmN/DTWKcrSx4akYWgACygnwrWS20SE9QcFFH224PKBp/9Sz2y7XvcdG0Mg=
+	t=1780644017; cv=none; b=ncQDyLlyr26ac7Qq16mQopiOU+dAs00c94B7oWF9nYJ9rkNQJ/xyhiPTmpJYOZK9fp0bbhx8Bb0BSv0oABdsyQspYibJpF7QPaAn2l+dZCZiyK9tpVzEuGqO6t4lyXBqujn82D+A8Lig0c/Dmc/WxvAS+ii9bkC/vbRAtA8paV0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780643713; c=relaxed/simple;
-	bh=qwyPU7ax3kVXIchgtoYzveweTq4OWKz4g0yAXFqtEr4=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=qFNZgk1aJDGjVRFpBEqxbraEfrd59kT099MGGTxsGXgx9dmR6PqJIyhXxl7nPfom6VEoxIL20lGN9zjIefh5I4QQLNWHYBx4TfdzhjDKQCcIFWX2L3eCxslz801Fz01yArhd92yoSvdbyZOG8egRNa8n4J9fAVtijvMLJOOysgg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ASRz/R4g; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1780644017; c=relaxed/simple;
+	bh=B3SR2OjkOxvGM8I6oFC3OJ+w7UoeNauLTSn27eaKkxM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=k3v1zClIEYllnf/HzpuGygDuzuww5gyN3kB0uOhaq0ddh11umValNDu7o1F/qNLObL11GOUeShyTDwkaGYVFt3jnFCsPGxoB8jecwprF6flD1I2AbEWlfqL9Oe7PtorwFvBIc/9dNgIY/k0PfhgNgFkta74w2LOzRFQ4HMZuIBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=k/zYiKnl; arc=none smtp.client-ip=23.88.38.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ASRz/R4g"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1780643712; x=1812179712;
-  h=date:from:to:cc:subject:message-id;
-  bh=qwyPU7ax3kVXIchgtoYzveweTq4OWKz4g0yAXFqtEr4=;
-  b=ASRz/R4g+uZXuVT8F11rozeiGoIQZgPF7F1LStNF/OLxozqmqtPyeitP
-   N8b1uAnqNShH0vZw42uZKKue0VpOgKB0ESaP7AxLU4I+NHPpoQ8R2Dvwz
-   jJzg6AtAmHiH5jP/i3hIcTi7AtZPdVRwYqxIERt/OjqYEeC5jAMZoEQe7
-   OBwGxYfyZTLBQKPlVgOulDqht4HldbS8p/lsrPUDNM4ir8KdTWTdpyGap
-   xla1UCwZWfR8YDyyp1/5mdbuC9VmO1yFR8POj5uT8iQHC7P2JhY1HVgBv
-   ENUZoZNBdy7oMaYHd3fCuxIfJMeaNaeRIaTfGb9Q3fAUePKwMPHFC8Exm
-   g==;
-X-CSE-ConnectionGUID: WTfhmh8uSdK+NEqHaAJdhA==
-X-CSE-MsgGUID: ei9isWCUTWqt2GKdxq1wlQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11807"; a="85328557"
-X-IronPort-AV: E=Sophos;i="6.24,188,1774335600"; 
-   d="scan'208";a="85328557"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jun 2026 00:15:12 -0700
-X-CSE-ConnectionGUID: NORpfU9wT4OGYOVtU5E0Zg==
-X-CSE-MsgGUID: qI/sYgenQku/vn1+JNgt5Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,188,1774335600"; 
-   d="scan'208";a="249880727"
-Received: from igk-lkp-server01.igk.intel.com (HELO 892db79562d4) ([10.211.93.152])
-  by fmviesa005.fm.intel.com with ESMTP; 05 Jun 2026 00:15:10 -0700
-Received: from kbuild by 892db79562d4 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wVOlo-000000002VH-2SH1;
-	Fri, 05 Jun 2026 07:15:08 +0000
-Date: Fri, 05 Jun 2026 09:15:06 +0200
-From: kernel test robot <lkp@intel.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
- kvm@vger.kernel.org, virtualization@lists.linux-foundation.org,
- netdev@vger.kernel.org
-Subject: [mst-vhost:balloon 8/39] Warning: mm/page_alloc.c:7270
- expecting prototype for alloc_contig_frozen_pages_user_noprof(). Prototype
- was for alloc_contig_frozen_pages_user() instead
-Message-ID: <202606050959.Rsoiib9n-lkp@intel.com>
-User-Agent: s-nail v14.9.25
+	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="k/zYiKnl"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=simonwunderlich.de;
+	s=09092022; t=1780644013;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=t5VjgMR6R+zmUaoqlylF20/UjikHzP0+tYEYge+V4aQ=;
+	b=k/zYiKnlGSijjO53aH3e9I0c/Rcyd75R9R5vr9LMGh+BLm162CyI5A/q28zQ0Qg8HBI9q6
+	rKTWtEUtQBEJVj+pPHF33UN0QkPc7nPM4lLJHCcIIIun6Pmz4LEXk1mCXT+NUQWf1bwJSk
+	yzMWH0v13R+LdHKSyfuRzy5ZzImInKViqyL9e6RQ3LuiAxrC16E4Xzcstk6ewWmcgtZ5B+
+	ADoNPYRgQ8vy64ufaowBvYvvJAU+ii+7Kc+f9OJDERSqfwqmZeXojuN3mG4zhCqxtDG5fx
+	EBUMfrtHxzk1B0KmFXzN8i92tdh3os4pbe5ok/d6g7kW3ogfP16WtW8z3iAuZA==
+From: Simon Wunderlich <sw@simonwunderlich.de>
+To: netdev@vger.kernel.org
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	b.a.t.m.a.n@lists.open-mesh.org,
+	Sven Eckelmann <sven@narfation.org>,
+	Simon Wunderlich <sw@simonwunderlich.de>
+Subject: [PATCH net-next 03/11] batman-adv: drop duplicated wifi_flags assignments
+Date: Fri,  5 Jun 2026 09:19:57 +0200
+Message-ID: <20260605072005.490368-4-sw@simonwunderlich.de>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260605072005.490368-1-sw@simonwunderlich.de>
+References: <20260605072005.490368-1-sw@simonwunderlich.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Hi Michael,
+From: Sven Eckelmann <sven@narfation.org>
 
-FYI, the error/warning was bisected to this commit, please ignore it if it's irrelevant.
+During the initialization of the batadv_wifi_net_device_state, it is enough
+to write the wifi_flags once before the batadv_wifi_net_device_state is
+added to the batadv_wifi_net_devices rhashtable.
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/mst/vhost.git balloon
-head:   b145636d693114d343a0a47a4400f5b31e211fec
-commit: 2edc4a8a3ed54fe5fd742e60ff3cba3b7dbd8316 [8/39] mm: add alloc_contig_frozen_pages_user for cache-friendly zeroing
-config: x86_64-kexec (https://download.01.org/0day-ci/archive/20260605/202606050959.Rsoiib9n-lkp@intel.com/config)
-compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project f43d6834093b19baf79beda8c0337ab020ac5f17)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260605/202606050959.Rsoiib9n-lkp@intel.com/reproduce)
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+---
+ net/batman-adv/hard-interface.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202606050959.Rsoiib9n-lkp@intel.com/
+diff --git a/net/batman-adv/hard-interface.c b/net/batman-adv/hard-interface.c
+index 43ebf86e7b368..96b8130375a3a 100644
+--- a/net/batman-adv/hard-interface.c
++++ b/net/batman-adv/hard-interface.c
+@@ -987,7 +987,6 @@ batadv_wifi_net_device_insert(struct net_device *net_dev, u32 wifi_flags)
+ 	if (!device_state)
+ 		return -ENOMEM;
+ 
+-	device_state->wifi_flags = wifi_flags;
+ 	netdev_hold(net_dev, &device_state->dev_tracker, GFP_ATOMIC);
+ 	device_state->netdev = net_dev;
+ 	WRITE_ONCE(device_state->wifi_flags, wifi_flags);
+-- 
+2.47.3
 
-All warnings (new ones prefixed by >>):
-
->> Warning: mm/page_alloc.c:7270 expecting prototype for alloc_contig_frozen_pages_user_noprof(). Prototype was for alloc_contig_frozen_pages_user() instead
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
