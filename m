@@ -1,37 +1,37 @@
 Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E13935A39D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E0282EEE6E
 	for <netdev@vger.kernel.org>; Fri,  5 Jun 2026 07:25:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.241.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780644304; cv=none; b=Eed7s5tFP7Ce4wYFxyQm+chd8Ef5EElhWv0/c/G3UOSzqnsbYl2j4zhvPK6kYmWgkiuC0yILYMlyWhDR9BKKIm+6AGDnbzRvcPTKf3TlqZoX05mRNChwJVgCoHMuiaRSq/FC3E3jcBhR3Mky5DhxLtcZIMK6ZD7IkWMaNwPrTVE=
+	t=1780644305; cv=none; b=ud9V8431fcfjJkPeaRmgORPXHyF2c62wzNMIWSP9eTg76vieroNHt5uGDuL/mCOd/Mh2UlaBm6WyARogirs9BM5gw0V+GqIFrVonKhf9mRlBMttUwVr2qY0AIhhhQMpOoIUwg92KPIyAltXKSfluJCN42onhMJmorNn9Fq7viOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780644304; c=relaxed/simple;
-	bh=/UWkZ1dUTXtRj/99R69UG78iWqI3oJXS3iUTrt8A1po=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=KkeGtCQLyObUYcApR8rS/GhJEjb94LLTqaRjVj3OlW8xI/TSkmNOXAGLlXBBdcTzvtk78wI94XPFBGHPGxQewJSm0aI/ZCjWOJu73mq/T70Nmfeidis3vJ4HYH+tfM+Fo1/xN4Q8fsQ8AY8BXCLM4u8e2bNsfEM2ADCpeoSbFG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=ZsdGUqWu; arc=none smtp.client-ip=203.29.241.158
+	s=arc-20240116; t=1780644305; c=relaxed/simple;
+	bh=9grFE2KSODKoIdN9ek3i3EUMv2sEpMNnec0jRm2cbow=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=JM6huxcB36Dfn8Z+eGixC9BjPcx9FCHqrT3ZEquyddCrp583qiSNbdTU2sZ9Mtiwi0SbDM4UKZLn1YsfD0hdBeUVLVcHyf0g5THosEgXi+fR3lZhCFS8XkFUkeoPVJfm0a1ACeY/yLQARHoYf8mjggY75vRYiE+Wlnunthf/2NE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=AZk8/sNY; arc=none smtp.client-ip=203.29.241.158
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeconstruct.com.au
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="ZsdGUqWu"
+	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="AZk8/sNY"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=codeconstruct.com.au; s=2022a; t=1780644300;
-	bh=P7iqWUt3w20kciwIHEW47L5qMSmYSuFRjHdYSJz7fWY=;
-	h=From:Subject:Date:To:Cc;
-	b=ZsdGUqWutWg2Jrbh8KVvouQ4hvzAWWm3D+TtpWNHLEddIR+h7y/8EY6byGBU4r4AY
-	 u9VAM7j95cVVcoKQ4d9TQuL6Wjte3f/jQwyDHs+KV0l3v4URzjeBcXnLAdH7qgpEXE
-	 cvgsgUwnW7No/C4OQKyQM0m3JYcDhHcPE86bal5MPOgLGuIfwpcPGKqY5CHSF/+nWg
-	 2/Y8Y4sNplu6fWJsemsLQw6riZUsPwCe8/Za+JnLP8q4kNsQH3UN+hT9lz5gw8e3Yg
-	 SgtRW3qxZ/PMeGPFFX+Vn4f+367FHgQJNBADIcuPXeCsJq0pvi9xhz3Zl9ba5Hwajd
-	 nWQL86VDZMNtg==
+	d=codeconstruct.com.au; s=2022a; t=1780644301;
+	bh=OHZN43dKP5RfoSHgsdj7tvTpoo8gmu9tGeIA54hNkxU=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=AZk8/sNYVI7hsso7iuvZnGBxYB7K639bU7dW4MZwr48sIxAJ6vUCuXWrn+pLdhOuo
+	 Tdx46MZYzeW5Z5/9ZS5BXR/QyjAtenwiN3zwGmNk5FcSTBo4geuURCouOoJfcaQr/S
+	 FfhA4frJ1GhcZ7kj1pn+lP7xFikl7d+eJSvSdYPKqLKH93dNZg//B0kgEngEl/e7/P
+	 JuHg03AGrQ9f3Eun6liF89c5g8DQLc3qlwYTidi1acmLjsvUUDOm6XkYffU3Sg+qmm
+	 nTVwLDqUwLyWfOb/u5ojQG/btDZIfF2PlWYGc9aXaw9L0lGasKLIHUDbZX4UCznB0r
+	 VqRC/puBJgexg==
 Received: by codeconstruct.com.au (Postfix, from userid 10000)
-	id BD03B60516; Fri,  5 Jun 2026 15:25:00 +0800 (AWST)
+	id 0E99965093; Fri,  5 Jun 2026 15:25:01 +0800 (AWST)
 From: Jeremy Kerr <jk@codeconstruct.com.au>
-Subject: [PATCH net 0/2] net: mctp: usb: minor fixes for MCTP over USB
- transport driver
-Date: Fri, 05 Jun 2026 15:24:13 +0800
-Message-Id: <20260605-dev-mctp-usb-rx-requeue-v1-0-b86993d01ac0@codeconstruct.com.au>
+Date: Fri, 05 Jun 2026 15:24:14 +0800
+Subject: [PATCH net 1/2] net: mctp: usb: fix race between urb completion
+ and rx_retry cancellation
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -40,10 +40,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAJ15ImoC/yWMwQrCMBAFf6Xs2YU0NEX8FfFgkxeNYKy7SSmU/
- rtRjzMws5FCEpRO3UaCJWl65Qb9oSN/v+YbOIXGZI0dzWgcByz89GXmqhPLyoJ3RQXHIQbjYjj
- 21lGrZ0FM6+98poxCl7/UOj3gy/dJ+/4BH2/t3YAAAAA=
-X-Change-ID: 20260605-dev-mctp-usb-rx-requeue-f4fd05fd8125
+Message-Id: <20260605-dev-mctp-usb-rx-requeue-v1-1-b86993d01ac0@codeconstruct.com.au>
+References: <20260605-dev-mctp-usb-rx-requeue-v1-0-b86993d01ac0@codeconstruct.com.au>
+In-Reply-To: <20260605-dev-mctp-usb-rx-requeue-v1-0-b86993d01ac0@codeconstruct.com.au>
 To: Matt Johnston <matt@codeconstruct.com.au>, 
  Andrew Lunn <andrew+netdev@lunn.ch>, 
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
@@ -51,23 +50,123 @@ To: Matt Johnston <matt@codeconstruct.com.au>,
 Cc: netdev@vger.kernel.org, Jeremy Kerr <jk@codeconstruct.com.au>
 X-Mailer: b4 0.16-dev
 
-This series adds a couple of fixes in the ndo_open / ndo_stop path for
-the MCTP over USB transport, where we are incorrectly sequencing two
-error cases.
+It's possible that sequencing between setting ->stopped and cancelling
+the rx_retry work (in ndo_stop) could leave us with an urb queued:
+
+    T1: ndo_stop                  T2: rx_retry_work
+    ------------                  ----------------
+                                  LD: ->stopped => false
+    ST: ->stopped <= true
+    usb_kill_urb()
+                                  mctp_usb_rx_queue()
+                                    usb_submit_urb()
+    cancel_delayed_work_sync()
+
+Strenghen the sequencing between the stop (preventing another requeue)
+and the cancel by updating both atomically under a new rx lock. After
+setting ->rx_stopped, and cancelling pending work, we know that the
+requeue cannot occur, so all that's left is killing any pending urb.
 
 Signed-off-by: Jeremy Kerr <jk@codeconstruct.com.au>
 ---
-Jeremy Kerr (2):
-      net: mctp: usb: fix race between urb completion and rx_retry cancellation
-      net: mctp: usb: don't fail mctp_usb_rx_queue on a deferred submission
+ drivers/net/mctp/mctp-usb.c | 26 +++++++++++++++++---------
+ 1 file changed, 17 insertions(+), 9 deletions(-)
 
- drivers/net/mctp/mctp-usb.c | 28 ++++++++++++++++++----------
- 1 file changed, 18 insertions(+), 10 deletions(-)
----
-base-commit: 9147566d801602c9e7fc7f85e989735735bf38ba
-change-id: 20260605-dev-mctp-usb-rx-requeue-f4fd05fd8125
+diff --git a/drivers/net/mctp/mctp-usb.c b/drivers/net/mctp/mctp-usb.c
+index 3b5dff144177..cf6f6a93a451 100644
+--- a/drivers/net/mctp/mctp-usb.c
++++ b/drivers/net/mctp/mctp-usb.c
+@@ -22,7 +22,6 @@
+ struct mctp_usb {
+ 	struct usb_device *usbdev;
+ 	struct usb_interface *intf;
+-	bool stopped;
+ 
+ 	struct net_device *netdev;
+ 
+@@ -32,6 +31,9 @@ struct mctp_usb {
+ 	struct urb *tx_urb;
+ 	struct urb *rx_urb;
+ 
++	/* enforces atomic access to rx_stopped and requeuing the retry work */
++	spinlock_t rx_lock;
++	bool rx_stopped;
+ 	struct delayed_work rx_retry_work;
+ };
+ 
+@@ -122,6 +124,7 @@ static const unsigned long RX_RETRY_DELAY = HZ / 4;
+ 
+ static int mctp_usb_rx_queue(struct mctp_usb *mctp_usb, gfp_t gfp)
+ {
++	unsigned long flags;
+ 	struct sk_buff *skb;
+ 	int rc;
+ 
+@@ -147,7 +150,10 @@ static int mctp_usb_rx_queue(struct mctp_usb *mctp_usb, gfp_t gfp)
+ 	return rc;
+ 
+ err_retry:
+-	schedule_delayed_work(&mctp_usb->rx_retry_work, RX_RETRY_DELAY);
++	spin_lock_irqsave(&mctp_usb->rx_lock, flags);
++	if (!mctp_usb->rx_stopped)
++		schedule_delayed_work(&mctp_usb->rx_retry_work, RX_RETRY_DELAY);
++	spin_unlock_irqrestore(&mctp_usb->rx_lock, flags);
+ 	return rc;
+ }
+ 
+@@ -248,9 +254,6 @@ static void mctp_usb_rx_retry_work(struct work_struct *work)
+ 	struct mctp_usb *mctp_usb = container_of(work, struct mctp_usb,
+ 						 rx_retry_work.work);
+ 
+-	if (READ_ONCE(mctp_usb->stopped))
+-		return;
+-
+ 	mctp_usb_rx_queue(mctp_usb, GFP_KERNEL);
+ }
+ 
+@@ -258,7 +261,7 @@ static int mctp_usb_open(struct net_device *dev)
+ {
+ 	struct mctp_usb *mctp_usb = netdev_priv(dev);
+ 
+-	WRITE_ONCE(mctp_usb->stopped, false);
++	WRITE_ONCE(mctp_usb->rx_stopped, false);
+ 
+ 	netif_start_queue(dev);
+ 
+@@ -268,17 +271,21 @@ static int mctp_usb_open(struct net_device *dev)
+ static int mctp_usb_stop(struct net_device *dev)
+ {
+ 	struct mctp_usb *mctp_usb = netdev_priv(dev);
++	unsigned long flags;
+ 
+ 	netif_stop_queue(dev);
+ 
+ 	/* prevent RX submission retry */
+-	WRITE_ONCE(mctp_usb->stopped, true);
++	spin_lock_irqsave(&mctp_usb->rx_lock, flags);
++	mctp_usb->rx_stopped = true;
++	cancel_delayed_work(&mctp_usb->rx_retry_work);
++	spin_unlock_irqrestore(&mctp_usb->rx_lock, flags);
++
++	flush_delayed_work(&mctp_usb->rx_retry_work);
+ 
+ 	usb_kill_urb(mctp_usb->rx_urb);
+ 	usb_kill_urb(mctp_usb->tx_urb);
+ 
+-	cancel_delayed_work_sync(&mctp_usb->rx_retry_work);
+-
+ 	return 0;
+ }
+ 
+@@ -331,6 +338,7 @@ static int mctp_usb_probe(struct usb_interface *intf,
+ 	dev->netdev = netdev;
+ 	dev->usbdev = interface_to_usbdev(intf);
+ 	dev->intf = intf;
++	spin_lock_init(&dev->rx_lock);
+ 	usb_set_intfdata(intf, dev);
+ 
+ 	dev->ep_in = ep_in->bEndpointAddress;
 
-Best regards,
---  
-Jeremy Kerr <jk@codeconstruct.com.au>
+-- 
+2.47.3
 
