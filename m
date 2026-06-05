@@ -1,26 +1,27 @@
-Received: from smtpbgeu1.qq.com (smtpbgeu1.qq.com [52.59.177.22])
+Received: from smtpbgeu2.qq.com (smtpbgeu2.qq.com [18.194.254.142])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF434382F27
-	for <netdev@vger.kernel.org>; Fri,  5 Jun 2026 03:09:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.59.177.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83EA129AAF3
+	for <netdev@vger.kernel.org>; Fri,  5 Jun 2026 03:09:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.194.254.142
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780628993; cv=none; b=AwjPcgvot3QHrLO73v3Thi9dbmsFzCx9Rqo+t2F60YybofZVq8K209+X9As1b4V4WjJ8QE378lVHPScuyJb2QNqHuEEMYjN8KCjRdkAp5mQ+zAxumd7ughhx/T+ybssjIglFUsmR4QiCn+1Wvw5zfliqw9of4CzAM2wYJdT80yQ=
+	t=1780628996; cv=none; b=uJ4rvQIwHtJb6gFVCie9ig200zJ7vcW3wx1I0MS7QRsBc4PpLg5GXNJU/NPGZspLRWM8sdJ7Mx7m1X0zuN1b0SqJ1WOOz+4ombrQH9Ee/yedE5oma4gJhFWl8ZHIWTStn6WbU7e6mlcdmeCvoRpRItmDpHTaZVu+3+1LS6cC+AU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780628993; c=relaxed/simple;
-	bh=+I+u2qzLW0n3JK14fpvGx2YvjF2ILHylyAmsRhXzCto=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=WMgRmFiSd8P5y+3DEIa5Qjp69R+mi1BAC0Xa1xINzhkMDf0U0IVAxS4EycpOm7JPcXeeV9529dQLk30EqkT95h2V2Mr1NxpvrDUdHdAj/izDR3s2XdzmZAUY3cTOHnNHu0V37/qF1CmleJVDiXAqiUjYxVnOhnGuxRHeLDeoWxg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=52.59.177.22
+	s=arc-20240116; t=1780628996; c=relaxed/simple;
+	bh=dF4uXdqTHoQ/Seol55zUckDcNkdJDX1n2abrTG+IHdk=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=NdV3quYXPBJtZ5n3Qdh5/fVDKcJeUvlz3aXTKQMcyd4sFCdEayTEu5F8/WJadSDOvNnr+0Nj/Nl5K+z6zm7ve/wXxxL6TcnJP59x5yHxKw9h7HWzafpBOtJ4BXKUiFmx2Slu5XHI3FeDH6gdoOug0Po3F1nwqDAEz4T6Mj5Ur64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=18.194.254.142
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid: zesmtpsz4t1780628941t5ab1b94f
-X-QQ-Originating-IP: F6yyBS6bLkTGbI8pdo2hd8bN4EOulayBnnBBW85i7/Q=
+X-QQ-mid: zesmtpsz4t1780628948tb8a91a1f
+X-QQ-Originating-IP: ajqVTKfy225ReDp/i4e44lUCgmp2SfA6zv8cPozhAyA=
 Received: from lap-jiawenwu.trustnetic.com ( [36.24.207.111])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Fri, 05 Jun 2026 11:08:58 +0800 (CST)
+	id ; Fri, 05 Jun 2026 11:09:07 +0800 (CST)
 X-QQ-SSF: 0000000000000000000000000000000
 X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 16919765469182753366
+X-BIZMAIL-ID: 3770735181711243257
 EX-QQ-RecipientCnt: 9
 From: Jiawen Wu <jiawenwu@trustnetic.com>
 To: netdev@vger.kernel.org
@@ -32,10 +33,12 @@ Cc: Mengyuan Lou <mengyuanlou@net-swift.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>,
 	Jiawen Wu <jiawenwu@trustnetic.com>
-Subject: [PATCH net v2 0/3] net: txgbe: fix module identification
-Date: Fri,  5 Jun 2026 11:08:47 +0800
-Message-Id: <20260605030850.17796-1-jiawenwu@trustnetic.com>
+Subject: [PATCH net v2 3/3] net: txgbe: initialize PHY interface to 0
+Date: Fri,  5 Jun 2026 11:08:50 +0800
+Message-Id: <20260605030850.17796-4-jiawenwu@trustnetic.com>
 X-Mailer: git-send-email 2.21.0.windows.1
+In-Reply-To: <20260605030850.17796-1-jiawenwu@trustnetic.com>
+References: <20260605030850.17796-1-jiawenwu@trustnetic.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -45,56 +48,50 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
 Feedback-ID: zesmtpsz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: N1K0mG7Aq3SE7WHiTKiwMGSMFfZJ9o+vNzQHPOzKIA4cidJH5IEU3/X9
-	Fh0u3kyfEM0A6XaG1r0Xt7jZ5IAPhjVKGCbeRaSIfbTX+UJvs6LuVfVqC4xYSuY0ORRZCKG
-	XZ5i0nMbg4ES8WCDbSb80G32ub1DRN4KdK7eGNIToFKZUkYzyPxH3Okm20V52ADusnFH3tH
-	krPBAR5WusMLQZIO15zjcahgIofiZTf2w5f+Uf3pjeujyBQiTP2kXCerOXewKfVt6nhEfBF
-	6ItiykaIHIimA4OeH/vv3sg00q1BfEOlo9QPeAGOsys88FxRS3C0v6auNMumfcOtidOwE+J
-	Nb0eHtL8BdHFwb4Gs4XdLWvEXyfxYDs3AelJYSaVI2eHehFbUq9Nu0lXoSWq5Um4maq7cMx
-	kugfx8yhQaJsd8/4y9NO5O3zW0o6yu6o8dGpcK7Uc2BiyRkr2KHaPW6aeMVEdc7tSFve4SU
-	B/qTph0JRTOUbnM/wFZgvDqAjL1Ds17vnrrd0czqOLt0jYCY4+Oe2OlNH5+K+KbaQ2yGq9q
-	hDtFnlEKipJTro37yfqrJB86qfI2lWX+bzfL7ycmAjkNntX4e6BPZXv4ZWMAI6Iv1y7xI4+
-	0S2BoQjBLFEoe1Fpfr+R+ORbvJd1FM1q4krLRjXr10H7S8xJc5AE6X0nvFQf7orpPemTC3X
-	nlWJwGsOyPiQRmvjD3gZil0gQxeQzOzYmH+EoYzYo98uZ0ceGKtVG9CQaMIFsxTldSMHDQh
-	Xj8k09WVuZ28jj1Y7ueJ+cTL6cnFwQlPKZc2wHlkgn/aYEXkjLOVMbSLNhCoCERj/g0yT+i
-	LvcWD8bFl8KlrqMK6i4TTOeCnB8vHeUJBj6hKNSLmFmZZouVwqBm25xzWu0BsTXpVFJRtRc
-	jIyv+uejyb3C1ArMNTbKxj/Auw+9ppcJFyy3PY0eP0JeSh2loYC/lm8JtcGoFy3A62a0cHp
-	WxTiveVmjoJGtVx39/pyU25tohwS07080WP/nW/v+IOneecydFNmjoaP66zNUDLRdVFwUaL
-	9CEcoN9MIxO+PesjNW5V71Ku6XI99eSoM/5AAi6nHqzyNdoxFg1NUKDp92GcXLTZDW4YQas
-	e3hzQjF9jJnb8soVFwUnnuzd/AY61jTaw==
-X-QQ-XMRINFO: Nq+8W0+stu50tPAe92KXseR0ZZmBTk3gLg==
+X-QQ-XMAILINFO: MM5BK83ZQ9t0aqJ7dJ8HbQ87eMTNT/+qTyMPGPxWCamAXIRxckwYUed7
+	vmHaQbuaGQJAfPNWyYFg1ljQ1W/2m2jhd92FOkrpEnmjAfvxjRTEoT4+6b7gCE9xcKQFjvB
+	Bu/4A518eOmIkoF465mYJgg5RUiORMksnxN5ScDNobbKi/3BecairIJwJRskTgtc3rZiDvs
+	wn2XBswGJ3DLo9MRUBG1dVwSFaj53/jTEXW3uyYVWNwwTjF1sArh1S5YcvawaoxEZA5wnAZ
+	dSkSooC/0jVO3wo8ePZH3ncPNwmS5s/R141DSshmsn/FDJHiMiVs2nw7YkkSVqpNQ80/YRo
+	zSgv1DXjJ4mnfL+34suibM3OPET+ELSxQSuyd8W1tslFDRemggVaNJzxRenlTmGTFisGAPE
+	QOW8OmgoICSRh0fKDs37Phpr8gg+S7fZ+/dlwsQ0L84wt/jRUmePRexpD7pQYW8bb2WlYZ0
+	TXthUMKRROjJ3+kYv2EcCpj9bzF98G69SurntQ7KyRbq754BYBTy6TA3PLrbTKDoXFNN5uq
+	KVERHXzge2RRvFd1jsJU9poQtdVLV/ed1fZw1BkIfTJvqWAUuL0GZFxIrZvtZJCbj438gH3
+	7nbDWU+uTGk9Jb5JvZjg/6MOHyZRj1bzCAqaeCkfp/lVl15cE4j3iCdC8v65dmZN+4LXBLk
+	PrqnTqMKHJ2djMtnzY73N0IWEk0meQJ1E+P4JpmnPnpuvyoH0TBHbf2WjJIiPXbqc+XVdX5
+	sK5/aKt6pUVEEXydpt9TES/23lVldFuCYUciXNoo6irDsULgvrJP9x/WC0nDRv1CsgKtEUX
+	XElHZIK66COaOn+JSrrsHBok23OwP45ZTLhLSiumhr7EbZhzzvxeJOokiCFWUEbjCzaDtJD
+	EQfIQ88IFAygGZLrVogWxwTbMLP+tnnTHV/t9tvQTnDEKuBQL3QAt29nWJNxYRLfCiTn/vA
+	OkcrxA+0RWBwGGa88gBj+dHzWMs9mk3dB8EwvxtqlzueN7MX8gRev+80B9wOSiCZePaHGkU
+	N+SzEobteBfuCZb+vx2qlE5ZPjyzyrrp9HQyImgtsWmiRzY/YnDhmHxEr0zhIKDLZyd+p56
+	tYko5gVzKDOflC17ah7KwGIM+WAt5n1U2yToS79bXqr
+X-QQ-XMRINFO: OD9hHCdaPRBwH5bRRRw8tsiH4UAatJqXfg==
 X-QQ-RECHKSPAM: 0
 
-For AML devices, there are some issues where the wrong module
-indentified then configure PHY failed.
+DECLARE_PHY_INTERFACE_MASK() does not guarantee zeroed contents. Change
+the stack variable "interfaces" to be zeroed before setting supported
+interfaces.
 
-The module info buffers should be initialized to 0 before the firmware
-returns information. And DECLARE_PHY_INTERFACE_MASK() does not guarantee
-zeroed contents, so explicitly clear the temporary interface masks before
-setting supported interfaces.
-
-Rework txgbe_identify_module() to validate module identifiers through
-explicit type checks instead of relying on transceiver_type heuristics.
-When using the SFP module, transceiver_type could be a random value,
-because it was read from an invalid register.
-
+Fixes: 57d39faed4c9 ("net: txgbe: improve functions of AML 40G devices")
+Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
 ---
-Changes log:
-v2:
-- Split the patch into 3 fixes.
-- Change DECLARE_PHY_INTERFACE_MASK() to empty array.
+ drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-v1: https://lore.kernel.org/all/F3DA1ECDCE0A1E9E+20260602025443.332456-1-jiawenwu@trustnetic.com
----
-
-Jiawen Wu (3):
-  net: txgbe: initialize module info buffer
-  net: txgbe: distinguish module types by checking identifier
-  net: txgbe: initialize PHY interface to 0
-
- .../net/ethernet/wangxun/txgbe/txgbe_aml.c    | 22 +++++++++----------
- 1 file changed, 10 insertions(+), 12 deletions(-)
-
+diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c
+index bdac654a2364..d73295d26b85 100644
+--- a/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c
++++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c
+@@ -270,8 +270,8 @@ static int txgbe_sfp_to_linkmodes(struct wx *wx, struct txgbe_sff_id *id)
+ 
+ static int txgbe_qsfp_to_linkmodes(struct wx *wx, struct txgbe_sff_id *id)
+ {
++	unsigned long interfaces[PHY_INTERFACE_MODE_MAX] = {};
+ 	__ETHTOOL_DECLARE_LINK_MODE_MASK(modes) = { 0, };
+-	DECLARE_PHY_INTERFACE_MASK(interfaces);
+ 	struct txgbe *txgbe = wx->priv;
+ 
+ 	if (id->transceiver_type & TXGBE_SFF_ETHERNET_40G_CR4) {
 -- 
 2.51.0
 
