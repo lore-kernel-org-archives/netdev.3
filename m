@@ -1,64 +1,93 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f74.google.com (mail-oa1-f74.google.com [209.85.160.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55E293BADBD;
-	Fri,  5 Jun 2026 01:42:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 101A43C584A
+	for <netdev@vger.kernel.org>; Fri,  5 Jun 2026 01:43:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780623782; cv=none; b=NU+gHUA/3klkd/NrPb8AQNtMM2O8wRMqHVkDb0wg7D3ZPNZCdMr3c/zFL4vsmQBAmJoav0RFwncL1VEmxHMCNcQpPC4Kn+90+ukn92I75aR92S2DKUhrVojp54lsIko65JqzN+NDtrvLd6gdLpkjmzQQspKsosoeYUmFa5dwAq8=
+	t=1780623815; cv=none; b=l5hmMk0Yd6FdN6pV/PmN5EFoL1fmIs/LlZAd0aEUHxXFH3FZOFDkHWntFSBB2vlL4GSjx3EMaqIMxmo4DqJgPIcc43OeDtMmWB3CPq3hYpYbRMS877bFjMXyMJcj83Rd5vMUMUvwoA4+lb5iDmCj9WfV6K9cT4eHEU2EBPHzueo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780623782; c=relaxed/simple;
-	bh=dskLtZgJlzOyaLXcLQ6iatsl88TAxfTqf6uWcYshc2k=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=u5jVgH1fYWhod67GqA8/WnZTlXd8dC5Lri7hIpSWht2kTvzg6nkufpUYcluWER3VXmNOU4sqmiVU6/3zcuExz+uEowSbunH/yxir4FcIYOIaiRFoOXTzneyQXUMf+pABAJj6RKKXkZtdcHjTT1//wgPCGKtGVmjs4so7ff5RY24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eWKBQlUV; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780623815; c=relaxed/simple;
+	bh=58lYn4NE3WI2y/xPW1YkIlCmljVDW939C14m1Tbmczc=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=J9DGdWMlKTgvHkUKsVPZOqRE37UoTv1cBLds4u92q/B++1k8Ml6e3OAErTcBct55hZHSGf30jN8GLI3e5tOqjdj962ZfF0hJ3Rj8fyq53icGVS/OD0rtQadDEZD4hs2crTCSz1snMNSxBU5oN0cCmTCLFD1jxxo92U3JN53MzgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--yuyanghuang.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fX4PYkiv; arc=none smtp.client-ip=209.85.160.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--yuyanghuang.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eWKBQlUV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 960281F00893;
-	Fri,  5 Jun 2026 01:42:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780623775;
-	bh=hpggIRYA6ue9PnR1MTPLybxfDbNvo8P3BOtZSnhepK4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=eWKBQlUVj1t2Y4gWkWfZyZ4g81wt7AJs3pBYWLQ0h+GcTfEnUsq+rQyDvJ8mgf3Wf
-	 SIT9NS7G3Itd2eVi4lhmaPPJ9hilpYqhoCOJLoAIWLJ1Ud3i1AOeOZw6vzyGYSsW/+
-	 zb4QQ3abTaE7bL2vaLqTYzQ6yG76u0wJl2OwON+TpgEX5UoQPJSZQifwpN2ufbZCEV
-	 7m6Tq+wBucwQjOcIfTGQBIh5nGM8xTrawEEnS/BUSWazL6YoiOETt0cTjq22Fi5hhd
-	 SLCUqCd7pH8pqT5KNkjaT1IkGCblwlD5mXx1AoBC5a1cYyNzl5c3GAEeM/v9acbovX
-	 Or5VMRY29EyJw==
-Date: Thu, 4 Jun 2026 18:42:53 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Cc: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, brgl@kernel.org,
- stable@vger.kernel.org
-Subject: Re: [PATCH RESEND net] net: mv643xx: fix OF node refcount
-Message-ID: <20260604184253.2653d974@kernel.org>
-In-Reply-To: <20260604083430.2b61c2c3@kernel.org>
-References: <20260602073414.22500-1-bartosz.golaszewski@oss.qualcomm.com>
-	<20260604083430.2b61c2c3@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fX4PYkiv"
+Received: by mail-oa1-f74.google.com with SMTP id 586e51a60fabf-43e09813423so1348479fac.1
+        for <netdev@vger.kernel.org>; Thu, 04 Jun 2026 18:43:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1780623803; x=1781228603; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=h2ow12NtxvVPueHOKMb1jCbeRS9jueVp2e0oPGXbXU8=;
+        b=fX4PYkivtbOFs0PWAKAEgTpJog32kB5SbrF68qz1SsO6xAKNzlwyvrDWXC5BHSm9X5
+         LtRM3DOmGosaECu8sa3Zxtz+rqFZsPR6IRvXObZE6a8dTzqCDDsV+LPPW1iltJ99zdGw
+         BT6kq23yAFqbxCvzf+l3oVjZiSD1pJCHis5NOI/pX3mn/irIbzvkTFcPLHz1H8+MtbAr
+         gagMFGlX0rbnZY++1kTdnoKQn8yrQJ/xtvRD+PImb9770zZkvRLw0SR7hmh5kznXEiJd
+         exht0tkkMyKSe8TP6bDBbkKSxtewe8gQ/SJ/8HSpkMwUOBnWBok+so6nYZCtDoxs0bAi
+         nmoA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780623803; x=1781228603;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=h2ow12NtxvVPueHOKMb1jCbeRS9jueVp2e0oPGXbXU8=;
+        b=PPrXnhAhOH+ef7Atg67Ojxa36hIuH0yYZmGAc1UrgmpJQ0B6zfvFFhned0kA3KYnfQ
+         kFEoMixW65nWup2a9xU4RaVs1MWTlHG29Kacyy9FTtYCqsgpPOWqyRG3zAJhuf1PdZiT
+         3wqpRYdFo/HzlOooWTd7odNQvYWLYVXmURDckD0oVMye+ggwaJrqSvkF/wZ1Q3dQKzzc
+         9kfW1fsOaKkSV5vhpJelVk8gcFciCvAVQnkUd4jsCEOHiQb0GUKUbIU+4SXRuwgvETuS
+         jwmgy0du4x878N/FUNVu7PuKCFehAjiPE6uwaikwnRgN3ZqQsSYSue342m2Pm+Y4Op8z
+         MaCQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8HMTrAJ5ObRYU0KaGkuv7bS4b+i0eb/2IWxLQ9JATlQN6t9v6JMjEtGtb+YJjITn2hUmmtXRc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxt9MviE/OQzx+BVYvy+n9fiEZ28MjVgyimhXKtO+24vpfZ9hYn
+	aVZONPYvLO0hCh9f9RGcrywkDARezNNrIy4YRtYCgOIjUPC4WmRUaGvIAclEgb2bhd4p+nXTLWx
+	e7m2JfOqUTVWoRU3IHlsURg5osA==
+X-Received: from oaff25.prod.google.com ([2002:a05:6871:c919:b0:441:1c3d:9b6f])
+ (user=yuyanghuang job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6871:358d:b0:42c:1f88:ac with SMTP id 586e51a60fabf-4413dcbd75emr730101fac.29.1780623803290;
+ Thu, 04 Jun 2026 18:43:23 -0700 (PDT)
+Date: Fri,  5 Jun 2026 10:43:16 +0900
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.54.0.1032.g2f8565e1d1-goog
+Message-ID: <20260605014318.3890804-1-yuyanghuang@google.com>
+Subject: [PATCH net-next v2 0/2] ipv4: igmp: annotate diagnostic procfs data races
+From: Yuyang Huang <yuyanghuang@google.com>
+To: Yuyang Huang <yuyanghuang@google.com>
+Cc: "David S. Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>, 
+	Eric Dumazet <edumazet@google.com>, Ido Schimmel <idosch@nvidia.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, 4 Jun 2026 08:34:30 -0700 Jakub Kicinski wrote:
-> On Tue,  2 Jun 2026 09:34:14 +0200 Bartosz Golaszewski wrote:
-> > Platform devices created with platform_device_alloc() call
-> > platform_device_release() when the last reference to the device's
-> > kobject is dropped. This function calls of_node_put() unconditionally.
-> > This works fine for devices created with platform_device_register_full()
-> > but users of the split approach (platform_device_alloc() +
-> > platform_device_add()) must bump the reference of the of_node they
-> > assign manually. Add the missing call to of_node_get().  
-> 
-> Where is it released? I think it's important to note, I can amend
-> the commit message if needed..
+This patch series addresses several unannotated data races between lockless
+RCU-protected diagnostic reads in /proc/net/igmp (igmp_mc_seq_show())
+and concurrent writes in serialized paths (RTNL and group spinlocks).
 
-Not enough coffee in the morning I guess.
+Following the precedent in commit 061c0aa740d5 ("ipv4: igmp: annotate
+data-races around im->users"), we annotate these intentional data races
+using READ_ONCE() and WRITE_ONCE() macros.
+
+- Patch 1 annotates races around `in_dev->mc_count` (interface-level joins).
+- Patch 2 annotates races around active timer-related state tracking fields
+  (`tm_running`, `reporter`, `expires`) on individual multicast groups.
+
+Changes in v2:
+  - Remove "Fixes:" tag from the commit messages.
+  - Fix reverse Christmas tree variable declaration order in igmp_mc_seq_show().
+
+Yuyang Huang (2):
+  ipv4: igmp: annotate data-races around in_dev->mc_count
+  ipv4: igmp: annotate data-races around timer-related fields
+
+ net/ipv4/igmp.c | 35 ++++++++++++++++++++---------------
+ 1 file changed, 20 insertions(+), 15 deletions(-)
+
+-- 
+2.54.0.1032.g2f8565e1d1-goog
+
