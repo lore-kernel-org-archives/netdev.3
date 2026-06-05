@@ -1,141 +1,123 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58CCB3DD864;
-	Fri,  5 Jun 2026 14:54:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 249C03E16BB
+	for <netdev@vger.kernel.org>; Fri,  5 Jun 2026 14:55:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780671269; cv=none; b=XURFfdMpC/md6jqHfwBOB9U8ftXfzpl1ZkqI/2XmO8AOsB7oKqDqMIS1JHgEzW3OI1dTGSiohkOeiWBBgIrSWNLN2eOja0JBVhLsu33ZKToXg9bJO0aB9yPfkYK2+XIv0Jqqh8C4FVizPvRM35QV9NIcK4WYTYdCXTNWWZH5iY4=
+	t=1780671315; cv=none; b=guL1AXKAOhOa0pgAQFs180mlUURy8nzTIjYSV0EhUDm+x7lQFbx80yrU0KYQm60JrO7iWm2aXZx3R3J+uJPFRcyN8pe2ecMZkOvUL9Rrh22L5slWBDoWwkQiVwCPjYsx3MwbQ3+dgzkFISTeAVFQ7xwqLR81bBPeu2BjrjaDZEc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780671269; c=relaxed/simple;
-	bh=4tMeiKXzH2reWHQd2Do3LiCn4ypOHk0Io4ayzbOXR2A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uE69f7oEiRrURVD1baumey7QqDInL9iiWqiBfGrbP5jySeDDdkIWnvId4Zf4wiZOFUXt7Fyis0KDmSaGMqnDlbDIpCmY4fdq7H7yRTtig4qNyHktkoRtpRpFzScC1n7mwTj9WBhmpQ79TwXmcWmtMrlDOHt6uy4wEdK01J2e/nQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ViCrIBCD; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1780671315; c=relaxed/simple;
+	bh=1RIjhyMLtv99EBtOuAcd36dJda8OIlnmtL2e3xghDv0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XKKZJI7ySbUyhU0dobj6YpbnXDFcDXeZ2ZNaBw/QfrPPsOby4wgH3WOqum3vjZ0oj6Fh9DGF8NNUvA1AfIf7ereNH3rdfsxYUqZEqii+z7ViydjFPunNEuPFMlFXCw+TZ8zFthUf34TOYRmwjDOyHzwMmbJ+gu0+VTeUkCZG91Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=dz21K3Jb; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ViCrIBCD"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1780671269; x=1812207269;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=4tMeiKXzH2reWHQd2Do3LiCn4ypOHk0Io4ayzbOXR2A=;
-  b=ViCrIBCD8lCv6XAbtpT81FQ631uftKlCzal7av3ErRIqeaKCKymlgqn6
-   AoZVkeupiO2Xg79jhTTe77rFaGCtOmmBblSg8R0tb2lR31byKp3B6Y335
-   GzHmCh/RAMtIxamW2Ot1DumW6coJAGxX3Vv2f6pQRwLXWS8yBRVHbJkNO
-   SvAu7aJAScvOVWTCSvnnIfXc42pEaCW2PeESJFwBerwUF2SaUh2QdynjL
-   KUhMC7j1zNE5snvNw7VYH2wqff3SV/h/qaLcJm79GCnPjGAIeIkytw/fO
-   rLX/Vk9j3d+uZk9UOSchtxYi9OaNPMkWQ0LMC21U27AagpVieYbzloWS5
-   Q==;
-X-CSE-ConnectionGUID: 9ou23hR/QfCF9CuA/UpSrQ==
-X-CSE-MsgGUID: liEgSng5SJaoz8YLlT4+Pw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11807"; a="81565442"
-X-IronPort-AV: E=Sophos;i="6.24,188,1774335600"; 
-   d="scan'208";a="81565442"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jun 2026 07:54:28 -0700
-X-CSE-ConnectionGUID: h9Rk7ixqSzO/yh1S6oBceQ==
-X-CSE-MsgGUID: mgvGmj4gSWyogJmBey9GTw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,188,1774335600"; 
-   d="scan'208";a="243768683"
-Received: from ettammin-mobl2.ger.corp.intel.com (HELO localhost) ([10.245.245.178])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jun 2026 07:54:14 -0700
-Date: Fri, 5 Jun 2026 17:54:11 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Johan Hovold <johan@kernel.org>
-Cc: Philipp Zabel <p.zabel@pengutronix.de>,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
-	Lee Jones <lee@kernel.org>,
-	Mark Brown <broonie@opensource.wolfsonmicro.com>,
-	Thierry Reding <thierry.reding@avionic-design.de>,
-	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Srinivas Kandagatla <srini@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Vinod Koul <vkoul@kernel.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Andi Shyti <andi.shyti@kernel.org>, Joerg Roedel <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
-	Doug Berger <opendmb@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Ulf Hansson <ulfh@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Peter Chen <peter.chen@kernel.org>,
-	Paul Cercueil <paul@crapouillou.net>, Bin Liu <b-liu@ti.com>,
-	Maximilian Luz <luzmaximilian@gmail.com>,
-	Hans de Goede <hansg@kernel.org>,
-	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Benjamin Herrenschmidt <benh@kernel.crashing.org>, brgl@kernel.org,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org, linux-sound@vger.kernel.org,
-	driver-core@lists.linux.dev, devicetree@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, linux-i2c@vger.kernel.org,
-	iommu@lists.linux.dev, linux-pm@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-	linux-usb@vger.kernel.org, linux-mips@vger.kernel.org,
-	platform-driver-x86@vger.kernel.org
-Subject: Re: [PATCH 22/23] reset: rzg2l: use
- platform_device_set_of_node_from_dev()
-Message-ID: <aiLjE0SLwrDytyw0@ashevche-desk.local>
-References: <20260521-pdev-fwnode-ref-v1-0-88c324a1b8d2@oss.qualcomm.com>
- <20260521-pdev-fwnode-ref-v1-22-88c324a1b8d2@oss.qualcomm.com>
- <6af284545729f03a60d06479339862a2f08c6b7e.camel@pengutronix.de>
- <ah9QtExF2rUUTMNo@ashevche-desk.local>
- <aiK-qZqpuC-OEigf@hovoldconsulting.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="dz21K3Jb"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 7C5524E408EA;
+	Fri,  5 Jun 2026 14:55:11 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 3760F5FED1;
+	Fri,  5 Jun 2026 14:55:11 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B2859106A21AF;
+	Fri,  5 Jun 2026 16:55:03 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1780671310; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=qWXGRwd3dgogIG+Bvu9DUV5PG31p4cZwWp/87lf38RU=;
+	b=dz21K3JbykBYP0dGe9k0xmZ+3l5tU+Hx3gj08dAtSVDppefMhtMqpZl4jnL40WxdmZnGt2
+	HSn6st3ifIi3VTp8hME8IHDk96OCk+kOeZuQliZaubKA+bU3DNmUKsHuL6+pGPB1US4Ihz
+	bsFgKA3S/MBiBB0GjCwPvNT8sW/m3vJrj7Fjh0goXdzmDlsORzno5UJUIJrso+lookTdCn
+	jXOIaNFIXugn/xtmJUuqXUAvcBxpByCAXQML7AJJ1LpRuYywMZ7uRTYVmgKEAZANgnS48D
+	ti0wFnjaL6MJpvGcO0EAgS+HoImTNqfz9MouwZGZNgMaMvWSKqJM6vSdlp8T6A==
+Message-ID: <15d6ff60-cb36-4d61-a4ce-62b72c4429f5@bootlin.com>
+Date: Fri, 5 Jun 2026 16:55:02 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aiK-qZqpuC-OEigf@hovoldconsulting.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] net: stmmac: xgmac: report L3/L4 filter match count in
+ ethtool stats
+To: muhammad.nazim.amirul.nazle.asmade@altera.com, netdev@vger.kernel.org
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, mcoquelin.stm32@gmail.com,
+ alexandre.torgue@foss.st.com, rmk+kernel@armlinux.org.uk,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20260604083037.24407-1-muhammad.nazim.amirul.nazle.asmade@altera.com>
+Content-Language: en-US
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+In-Reply-To: <20260604083037.24407-1-muhammad.nazim.amirul.nazle.asmade@altera.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Fri, Jun 05, 2026 at 02:18:49PM +0200, Johan Hovold wrote:
-> On Wed, Jun 03, 2026 at 12:52:52AM +0300, Andy Shevchenko wrote:
-> > On Tue, Jun 02, 2026 at 10:24:41AM +0200, Philipp Zabel wrote:
-> > > On Do, 2026-05-21 at 10:36 +0200, Bartosz Golaszewski wrote:
+Hi,
 
-...
+You're missing the 'net-next' in the Patch subject :(
 
-> > > > -	device_set_of_node_from_dev(&vdev->dev, dev);
-> > > > +	platform_device_set_of_node_from_dev(vdev, dev);
-> > 
-> > Same Q here, why it uses inherited call? Cargo cult?
-> > 
-> > 'reused' flag is solely pin control (provider!) thingy as far as I remember.
+Besides that,
+
+On 6/4/26 10:30, muhammad.nazim.amirul.nazle.asmade@altera.com wrote:
+> From: Nazim Amirul <muhammad.nazim.amirul.nazle.asmade@altera.com>
 > 
-> No, it's needed for pin control *consumers*, which can be any device,
-> and potentially any other resource managed by driver core or bus code.
+> Read the L3FM and L4FM bits from the RX descriptor status word (RDES2)
+> and increment the corresponding ethtool statistics counters. This allows
+> users to observe L3/L4 filter hit rates via ethtool -S.
+> 
+> Signed-off-by: Rohan G Thomas <rohan.g.thomas@altera.com>
+> Signed-off-by: Nazim Amirul <muhammad.nazim.amirul.nazle.asmade@altera.com>
 
-Why don't we set it for every pin control consumer automatically?
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
 
--- 
-With Best Regards,
-Andy Shevchenko
+Maxime
 
+> ---
+>  drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h       | 2 ++
+>  drivers/net/ethernet/stmicro/stmmac/dwxgmac2_descs.c | 6 ++++++
+>  2 files changed, 8 insertions(+)
+> 
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h
+> index 51943705a2b0..95fdf3133208 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h
+> +++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h
+> @@ -429,6 +429,8 @@
+>  #define XGMAC_TDES3_VLTV		BIT(16)
+>  #define XGMAC_TDES3_VT			GENMASK(15, 0)
+>  #define XGMAC_TDES3_FL			GENMASK(14, 0)
+> +#define XGMAC_RDES2_L4FM		BIT(28)
+> +#define XGMAC_RDES2_L3FM		BIT(27)
+>  #define XGMAC_RDES2_HL			GENMASK(9, 0)
+>  #define XGMAC_RDES3_OWN			BIT(31)
+>  #define XGMAC_RDES3_CTXT		BIT(30)
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_descs.c b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_descs.c
+> index b5f200a87484..6719ac6e395b 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_descs.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_descs.c
+> @@ -27,6 +27,7 @@ static int dwxgmac2_get_rx_status(struct stmmac_extra_stats *x,
+>  				  struct dma_desc *p)
+>  {
+>  	u32 rdes3 = le32_to_cpu(p->des3);
+> +	u32 rdes2 = le32_to_cpu(p->des2);
+>  
+>  	if (unlikely(rdes3 & XGMAC_RDES3_OWN))
+>  		return dma_own;
+> @@ -37,6 +38,11 @@ static int dwxgmac2_get_rx_status(struct stmmac_extra_stats *x,
+>  	if (unlikely((rdes3 & XGMAC_RDES3_ES) && (rdes3 & XGMAC_RDES3_LD)))
+>  		return discard_frame;
+>  
+> +	if (rdes2 & XGMAC_RDES2_L3FM)
+> +		x->l3_filter_match++;
+> +	if (rdes2 & XGMAC_RDES2_L4FM)
+> +		x->l4_filter_match++;
+> +
+>  	return good_frame;
+>  }
+>  
 
