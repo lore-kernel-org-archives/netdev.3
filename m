@@ -1,90 +1,97 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BE9B3793D5;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBCD137C108;
 	Fri,  5 Jun 2026 01:24:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780622650; cv=none; b=Ujeb8vyJZNjdxC9r1x5k7zCb3TMMAgh3IVVSaRrtZnEfL/OvtZOygxFg9kQlHUdQjMrSOqc0NO+GpV/2vn82vp+0QOhObmcBNrWf80erjtZVuSrJaGv4uOWipqFKvpzLpk4sbiTGXEtI1PYEHpHAnwq/e4PYVJSAPTThnRNel5k=
+	t=1780622651; cv=none; b=fj2TI/wP2Nicbc1p3B+TWHIbbzOALYJH/uaO4YF7lIw3zGonFplyet/cCIcWi8QyS9oQcm2ZB521EqQHww7ydjscmR++Y6dnTrjwBrIBBBCtNCftTqcyCtR3zG02ie5iq+y8pB02WdwrOv0lMhem6uStEH7B+ca60h7jyM5fqAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780622650; c=relaxed/simple;
-	bh=wUXquFQuBDYMZICYnLQmQNv1jv/HaB9bdKctPiDDt8E=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=j+gAcpZnfBTg4VtiSlF128+E4rac7xQQANdUpbnj9IYi3WTsPGDCFGBzLNwYxkUILPu0tE5MiKog+P+RrAuSa8s9C0o30yGqZMRAdqvz0TUbsGjFt4RgHUhYLFCWGeO3hF52+dqQzY6WwFUeIcBQKUreB/F8kJuNwK5gRkBxdzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bEFGPvCW; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1780622651; c=relaxed/simple;
+	bh=vwgBJdCkr8sNOL19rwFXTW/V8L2QG4YVKyIgp93Ex04=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=LLeF5khZsKwEhhs8XMpxcgZ0FfE4Cqn3Kv4a64FlBwE/QJ/ncvIE3Zcewfti+7xBxVxmn4vlh3Omo24Iq5mQWtVm4dBZR1vmMWRWMgf2hpFe8+uqI4MG2slOl4I3ZayyYZYhttmhtyA3CARh2MUVlXHEl0MtcvZNrgCroJO874Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YwK7mFs2; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bEFGPvCW"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1780622645; x=1812158645;
-  h=date:from:to:cc:subject:message-id;
-  bh=wUXquFQuBDYMZICYnLQmQNv1jv/HaB9bdKctPiDDt8E=;
-  b=bEFGPvCWsE4spr/eTrpKF3++WVf6ZQqzRd4AA94o+p1WE8cSrawkdNXq
-   hqzplPmCxM2NdB6vnpt5dmK3z5leR8l95uhzm8dBclqindhC7qsG3sDFH
-   gDSwsDXB+IPCnIxGejx2BuA3RG9BZo1g+BdO8CWr59oQ2amcHurYc6dPX
-   q8LnJPTH2lk4LcpHH3uw1o/YOo7uPFpIzdtpzhR8YkcgB6WKDWP/rEcvq
-   py/RdbFhB+NWRvmCipmNE5Nh/X1CRZwJwtpdQwYDhYR5LcmGg+T89dF2U
-   7SZu0nc5MBsgTnPTvPPgnqTP86D86Udm3jJE6pJ+xi/ded2gdgjNiWfTH
-   g==;
-X-CSE-ConnectionGUID: UBB03Fs0TZ6biwcorQBLVA==
-X-CSE-MsgGUID: qMfYEqY7S5GIcO5DM6xoCg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11807"; a="92142078"
-X-IronPort-AV: E=Sophos;i="6.24,188,1774335600"; 
-   d="scan'208";a="92142078"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jun 2026 18:24:05 -0700
-X-CSE-ConnectionGUID: uF5IaECnRIOofeg8SgIBIg==
-X-CSE-MsgGUID: SZZHOVVQTCOmJU6YGz8JJw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,188,1774335600"; 
-   d="scan'208";a="240516094"
-Received: from lkp-server01.sh.intel.com (HELO f0d55cb201f0) ([10.239.97.150])
-  by fmviesa010.fm.intel.com with ESMTP; 04 Jun 2026 18:24:03 -0700
-Received: from kbuild by f0d55cb201f0 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wVJI0-00000000FQW-1P2q;
-	Fri, 05 Jun 2026 01:24:00 +0000
-Date: Fri, 05 Jun 2026 09:23:40 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
- kvm@vger.kernel.org, virtualization@lists.linux-foundation.org,
- netdev@vger.kernel.org
-Subject: [mst-vhost:balloon 12/38] ld.lld: error: undefined symbol:
- folio_zero_user
-Message-ID: <202606050942.HHhnHpHF-lkp@intel.com>
-User-Agent: s-nail v14.9.25
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YwK7mFs2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 338411F0089C;
+	Fri,  5 Jun 2026 01:24:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780622645;
+	bh=huoyUmBaKpAcN9h2w3dZScXtYQ+/Yk0hkH7JmG05ogE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=YwK7mFs2QOO2t1+TJ+2XxeQP1AVPFdWB5D5Vjx9mLpGcUHfd9CKaXdqlZTjuTi4N1
+	 zFUE2ikFqPNW/Fnjo+StULGeyfF5AxtgDI+26xK2k0oPDM6DY7VE/vJ7VZEflE061G
+	 dWiVYOuDsiMYztb0GMyQaOx2lCI6CLtg0oeeqlp8fsmIQYHIOWG6GWOtiUP/CCeZ/W
+	 KaWIK6MNlwChQ30QmUnfs7Xs1qGI/qQ8RVVSiBGTAVzJKwF5hGrPTvYVddV5wsUreO
+	 3Jzab2xQcdxwGuvo3IavJGwQ3vZlWpnNegazeh9eiY2frc/EfeiUxWRnjSIDMsAYEa
+	 4fOHdVbb9eDaw==
+From: Jakub Kicinski <kuba@kernel.org>
+To: maxime.chevallier@bootlin.com
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	linux@armlinux.org.uk,
+	hkallweit1@gmail.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	thomas.petazzoni@bootlin.com
+Subject: Re: [PATCH net v2 1/3] net: phy: clean the sfp upstream if phy probing fails
+Date: Thu,  4 Jun 2026 18:24:03 -0700
+Message-ID: <20260605012403.3513979-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260601084029.815461-2-maxime.chevallier@bootlin.com>
+References: <20260601084029.815461-2-maxime.chevallier@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Hi Michael,
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+---
+net: phy: clean the sfp upstream if phy probing fails
 
-FYI, the error/warning was bisected to this commit, please ignore it if it's irrelevant.
+This commit adds a call to sfp_bus_del_upstream() in the probe failure path
+to ensure the sfp-bus is not left with a dangling upstream field that could
+be used during subsequent SFP events.
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/mst/vhost.git balloon
-head:   b145636d693114d343a0a47a4400f5b31e211fec
-commit: c4af912c65bc897b31264a3403f18b0cf52fa10c [12/38] mm: use folio_zero_user for user pages in post_alloc_hook
-config: arm-allnoconfig (https://download.01.org/0day-ci/archive/20260605/202606050942.HHhnHpHF-lkp@intel.com/config)
-compiler: clang version 23.0.0git (https://github.com/llvm/llvm-project 7917772d7d61384696c61102c08c2ea158e610fa)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260605/202606050942.HHhnHpHF-lkp@intel.com/reproduce)
+> diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
+> --- a/drivers/net/phy/phy_device.c
+> +++ b/drivers/net/phy/phy_device.c
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202606050942.HHhnHpHF-lkp@intel.com/
+[ ... ]
 
-All errors (new ones prefixed by >>):
+> @@ -3775,6 +3778,9 @@ static int phy_probe(struct device *dev)
+>  	return 0;
+>  
+>  out:
+> +	sfp_bus_del_upstream(phydev->sfp_bus);
+> +	phydev->sfp_bus = NULL;
+> +
 
->> ld.lld: error: undefined symbol: folio_zero_user
-   >>> referenced by page_alloc.c
-   >>>               mm/page_alloc.o:(post_alloc_hook) in archive vmlinux.a
-   >>> referenced by page_alloc.c
-   >>>               mm/page_alloc.o:(get_page_from_freelist) in archive vmlinux.a
+[Severity: High]
+This is a pre-existing issue, but if a subsequent initialization step fails
+and we jump to the out label, should we be calling the specific PHY driver's
+remove callback?
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+If phydev->drv->probe() succeeds early in phy_probe(), but something like
+phy_setup_ports() or of_phy_leds() fails later, the execution jumps to this
+error path. Without calling phydev->drv->remove(phydev), any resources
+allocated by the driver are leaked.
+
+Also, drivers like dp83640 register the phydev with external subsystems,
+such as adding it to shared lists like clock->phylist during their probe.
+Leaving dangling pointers to this unbound phydev in those subsystems could
+lead to use-after-free crashes later.
+
+>  	if (!phydev->is_on_sfp_module)
+>  		phy_led_triggers_unregister(phydev);
+>
+-- 
+pw-bot: cr
