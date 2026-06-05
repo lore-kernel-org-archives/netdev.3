@@ -1,132 +1,245 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mx0a-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3819E407571
-	for <netdev@vger.kernel.org>; Fri,  5 Jun 2026 06:33:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F25F406270;
+	Fri,  5 Jun 2026 06:33:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780641188; cv=none; b=boL3z1ivEVhjfaH0eMcAAoKZBUpkk2LH+5W5jJ5Fd/v86gDFusGdNWAPnDw7CpeMD4r7QMZwIjnjGkUpkh7B8brF6Oung3kRSC485iNAt72mP16jdcKbt9phG2EUa9gDEpoKJA+mAcn5H4Y03ImxPc4G2UugBo3s7VHoMJBbxGs=
+	t=1780641190; cv=none; b=KCRfnWwWO5F5E2huT7vourS/yVImDNfCrWOeYbZKzIaxtFNIlQPtwUG7ug9AHvdmpIe/MzoiTqO5NVUwh4oNGYgOZM7VTUnVVfh4uerbmrblXCQJjwi6GHeeJyB5vzk17zjJpYp0VQdjI8umY/2TS3NLWOpIuvV3Km/e3bMJq34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780641188; c=relaxed/simple;
-	bh=GObav0t2xLliYCsPoAV//zijkxPq12LJaglbYe7Ih2o=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RXxouRAXoH1aRpsO1ixLn+Bhf4ysl5XLk90MNNJWXDYRGngzcatm2vaHhCkMWDiaBTrNZgcsaWsDMtDrkinYiAcAwh/+O6Y7LEvBu/3JMtCoaKyytLKw2O9MdxJcomnAtBtfCnGoe93pUXp2wqgXYp1VKMVLAxJ+g1bwQtWu/Ww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ULVyPXty; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=Ws81fXaj; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1780641190; c=relaxed/simple;
+	bh=/gYjDDnZRR1Vd0bQ9tglUxNvtcLGHf1+DH9L0c64xvc=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=j6vbrtnjlgB1OuFn16Pi+5FZbeLUA3hSj5nkLpzhdJC6+QfgvkU3G5aBYM1G7Vwd7cUGF+LK+F2nxM32rz+STIcJtn791gjX/2Zqxb6/fGQuVLxBuuuUCFHwFZj9xtWzE37AGUP6ZCUdtkt0pMFgr+cRsUt8HLc0dyYFE4MqPlM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=PzCRRmZo; arc=none smtp.client-ip=67.231.148.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ULVyPXty";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="Ws81fXaj"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1780641186;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=GObav0t2xLliYCsPoAV//zijkxPq12LJaglbYe7Ih2o=;
-	b=ULVyPXtyS/JTuiDdHAbVrdsyGj/i7AnFfglgaYMZRCoajy2jtjDo6Ox8p3aAEB+N7fkgzm
-	BOHm0CRB4JGcmBYJ12+x6y8KTbrc17MxDOH1HgrOw6tL9mWydOIC757P1S8cG+MQwLqe47
-	F7Z2TVIfht6V5BvYZv+SJd24Rt4fAqc=
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-524-4FET2WHgMVODtGbeTV-gaQ-1; Fri, 05 Jun 2026 02:33:04 -0400
-X-MC-Unique: 4FET2WHgMVODtGbeTV-gaQ-1
-X-Mimecast-MFC-AGG-ID: 4FET2WHgMVODtGbeTV-gaQ_1780641184
-Received: by mail-ed1-f71.google.com with SMTP id 4fb4d7f45d1cf-68d233bf9easo2245287a12.1
-        for <netdev@vger.kernel.org>; Thu, 04 Jun 2026 23:33:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1780641183; x=1781245983; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GObav0t2xLliYCsPoAV//zijkxPq12LJaglbYe7Ih2o=;
-        b=Ws81fXajv+0FKIbYYAPCo3dBMYOalLxQ9SyZF+cgSOeAX9N9tIrUrTelGmcX6bIF/X
-         QXZxK+PGf04CSHrDo2eGiT4uwD/H06VYxw7iZiGUiSMoC7QHBf5s/IXwtq0bfMMNb6rO
-         FDfbKvMCRpnZsxdGk8Hex+il+fFUKopC2oSGCCalaZDfB53/JTvQUMzpJzPY3jX1EQUH
-         p2wtGGFgeeT+VySNAi7jzDnVtMVPpkjaip8H0HwXt4BaACoU0V90HbiCYPXcWMh+28Lg
-         Fbu8vv1s74cC5Q2a4nsTWe/IAVHeCDn7LKUqGEC4updJ3XK6PItTmhj2hk6Vp3YtCZ+K
-         Ig4Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780641183; x=1781245983;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=GObav0t2xLliYCsPoAV//zijkxPq12LJaglbYe7Ih2o=;
-        b=T+Y+74TlWJJAjPmxEwC17q6BHZqKGcatehxTaDRTfdjO7rhVa9cHeEJREzPS9NsLHJ
-         0SjcQqPKa3qaBgZqS/N14ndP69Rtny0Np2UaX6voUHYFXvP4trcV6PXYoM8bNnvPLdfi
-         Be5Xw8zwoNqpvtWjIO8MbbVz6kGirA5Zfx8rcNNSS8eDU9C1GdCu00G4HBEmodokk9uM
-         s1GpTxatmq6YkBD5OhtS9Qumlm5m+d6KskfO4f4JcGSipnokt8lzet7yT7TKEaa4MdKI
-         i5YSZVSrSorPDPngaWORyImNnh/AlgCOkrExyrD37DbTizpE4HKAq4YCtshTZSVTgODz
-         /3xQ==
-X-Gm-Message-State: AOJu0YwfvgOT7m7WlqlGsuxXP0EKDhGVEd9YXCUrDmzjQ332AOffr4C9
-	on47llj5wK7IZKracl0tLxGYjxeGIimfFsccrTAp3o1z5npANPxKL44rO1cRl+e5PIPgiIvzK7O
-	4QFWr3bE/Ahyb0osVVZ6ZuavbnwNHTFuPc1nnh21zH0RwGKosmNWBgsBUDg==
-X-Gm-Gg: Acq92OHVPkmhuVpLxdylF17iyFfLZv8oLo7qrwxFumekhGp27KEIOQdTDvs4scocsHZ
-	hQXAaHa28YMLUf1sYRaBl/FqZdtoRTlKxywCAlVMWn4nBOhvE1GVVo//nbfxZuTjIcuDaVauEif
-	I3kwDc6b10imzCXcEYclYfHTjITbd48Zb3qRx1Yj+KVddj83CRKtj0mSnuDS0YXnQZWDVlFmq7f
-	MMawhXYL6af7vApRxO7zefyF6OFibyPrzP1Hv83VvnZsv2TLufRhuEOfaa1X9Tq9a0L9Ff/TvHX
-	EoEMQnRDMdxFOdojlVYhB4h/eEW78liyvEIV/V63Lttr6aHQc5qPLPMxzraUZ1U8Y7Rk5azRTIM
-	lYdXfUTfua8G/656m22tqLATdvXM8lMkBBoNKxJoJuB77+FkrVWkxAo9iiH9B4Fw8ywSrVMr6Pm
-	xTZColFQ==
-X-Received: by 2002:a05:6402:1f4a:b0:678:a507:e81b with SMTP id 4fb4d7f45d1cf-68fa5049406mr893962a12.21.1780641183521;
-        Thu, 04 Jun 2026 23:33:03 -0700 (PDT)
-X-Received: by 2002:a05:6402:1f4a:b0:678:a507:e81b with SMTP id 4fb4d7f45d1cf-68fa5049406mr893866a12.21.1780641180640;
-        Thu, 04 Jun 2026 23:33:00 -0700 (PDT)
-Received: from [10.44.49.226] (5920ab7b.static.cust.trined.nl. [89.32.171.123])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-68e6585185csm3322610a12.16.2026.06.04.23.32.58
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 04 Jun 2026 23:32:59 -0700 (PDT)
-From: Eelco Chaudron <echaudro@redhat.com>
-To: Adrian Moreno <amorenoz@redhat.com>
-Cc: netdev@vger.kernel.org, Aaron Conole <aconole@redhat.com>,
- Ilya Maximets <i.maximets@ovn.org>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Pravin B Shelar <pshelar@nicira.com>,
- Jarno Rajahalme <jrajahalme@nicira.com>,
- "open list:OPENVSWITCH" <dev@openvswitch.org>,
- open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net] net: openvswitch: fix possible kfree_skb of ERR_PTR
-Date: Fri, 05 Jun 2026 08:32:57 +0200
-X-Mailer: MailMate (2.0r6292)
-Message-ID: <5D810C0D-0AB9-4EE5-864D-8D1D60238527@redhat.com>
-In-Reply-To: <20260604121946.942164-1-amorenoz@redhat.com>
-References: <20260604121946.942164-1-amorenoz@redhat.com>
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="PzCRRmZo"
+Received: from pps.filterd (m0431384.ppops.net [127.0.0.1])
+	by mx0a-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6553RNAC302225;
+	Thu, 4 Jun 2026 23:32:58 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pfpt0220; bh=WGhBn0re31fLd4RFFPlltu3
+	Z9cx7X0PPG+2ZxQ+uAHs=; b=PzCRRmZoAjgEANPZ28R0s5z/Yc5GIzI3Hc6zQja
+	CrSsbD4ING+eNn+zsE/RS1fLFMpTIkJA731cRs3MmHfnfze4dRqvuRhwpF4rfi9m
+	j9RclDE9WQ2sFGdSDkYCc5us/n6K1mUTuPMnG+rvkPjjfrYTxknYY1S7Ntcgiw1G
+	yG6kDPAmb1n5IZJmzbrde6DClGcbDlrFDVReH8SPmTF/1XybxTp7Y+pmUBH00BJL
+	n8vBru7kXm35Mzv8z9E2936HUzF0TGpg5DJX7njKc8H6cQriF0D8laAcTnFW+8ef
+	3vTj6Mepx8IR1D1CBgNi37Odig+PYwxGshos4tYFspCZlNA==
+Received: from dc5-exch05.marvell.com ([199.233.59.128])
+	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4ekcj0agmf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 04 Jun 2026 23:32:57 -0700 (PDT)
+Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
+ DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Thu, 4 Jun 2026 23:32:56 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
+ (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
+ Transport; Thu, 4 Jun 2026 23:32:56 -0700
+Received: from rkannoth-OptiPlex-7090.. (unknown [10.28.36.165])
+	by maili.marvell.com (Postfix) with ESMTP id D09803F7074;
+	Thu,  4 Jun 2026 23:32:52 -0700 (PDT)
+From: Ratheesh Kannoth <rkannoth@marvell.com>
+To: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>
+CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <donald.hunter@gmail.com>,
+        <edumazet@google.com>, <horms@kernel.org>, <jiri@resnulli.us>,
+        <kuba@kernel.org>, <pabeni@redhat.com>, <sgoutham@marvell.com>,
+        "Ratheesh
+ Kannoth" <rkannoth@marvell.com>
+Subject: [PATCH v19 net-next 0/9] octeontx2-af: npc: Enhancements.
+Date: Fri, 5 Jun 2026 12:02:36 +0530
+Message-ID: <20260605063245.3553861-1-rkannoth@marvell.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
+X-Authority-Analysis: v=2.4 cv=G78s1dk5 c=1 sm=1 tr=0 ts=6a226d99 cx=c_pps
+ a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
+ a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
+ a=TtqV-g6YmW1Jfm2GSLaY:22 a=VwQbUJbxAAAA:8 a=M5GUcnROAAAA:8
+ a=1rdZWFfAsYpIarNArpIA:9 a=OBjm3rFKGHvpk9ecZwUJ:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjA1MDA2MCBTYWx0ZWRfXxe1GoDJ8NY+9
+ M0mrIZxyE7jOsFootYWt9BgkUQxt/qTdKuYThQsblNtPOyv+RwTWguhUXMkL/DLJcqaAmcRO57W
+ NtMLuBUva6sH5DJRJd2E3DkZ5pPQqqgN7Gf+Ysl8ZIP0IL1UlvidC9cKgcc6IarBNb1WuEkuQjF
+ vO1GyMGOv/oqFk6PJ2kE0+nnGR2DKZ0oRWxTnmAwAFMitcQXspnWM2eSdLkDn9q59Ed9G1APW8j
+ hyO8nzbzpU3i8bV6ymI6yBE2pFL0diIEM48WFLEkB2hfS2On+6ga+hbLh+kNXu41sn3DVD2Fvk+
+ CFUGAtkMWBGbGjQVDBqWq3fI0+HvMVpOEHY8bSSI8vrzPUCQgUN8/iPfZv1ER7MXw5nkBbFdzBc
+ kgfzbzLRv1jVfVx08MujSDCUSR2VuSwK5rYACDr49gNytfPZLvjdnh6jpp4N4JWsrq/EIN3+FM/
+ 6gG4VrhjNZPKAwA8s4w==
+X-Proofpoint-GUID: IWANrHP53C_1gR14nvy2ntSceRuNhsCd
+X-Proofpoint-ORIG-GUID: IWANrHP53C_1gR14nvy2ntSceRuNhsCd
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-05_01,2026-05-28_03,2025-10-01_01
 
+This series extends Marvell octeontx2-af support for CN20K NPC (MCAM
+debuggability, allocation policy, default-rule lifetime, optional KPU
+profiles from firmware files, X2/X4 MCAM keyword handling in flows and
+defaults, and dynamic CN20K NPC private state), adds a devlink mechanism
+for multi-value parameters, and moves devlink_nl_param_fill() temporaries
+to the heap so stack usage stays reasonable once union devlink_param_value
+grows (patch 3).
 
+Patch 1 enforces a single RVU admin-function PCI device per system: there
+is only one AF; rvu_probe() rejects any additional bind with -EBUSY, logs a
+warning, and matches the hardware model so automated reviewers and tooling
+can rely on exactly one bound AF instance.
 
-On 4 Jun 2026, at 14:19, Adrian Moreno wrote:
+Patch 2 improves CN20K MCAM visibility in debugfs: mcam_layout marks
+enabled entries, dstats reports per-entry hit deltas (baseline updated in
+software after each read; hardware counters are not cleared), and mismatch
+lists enabled entries without a PF mapping.
 
-> After the patch in the "Fixes" tag, the allocation of the "reply" skb
-> can happen either before or after locking the ovs_mutex.
->
-> However, error cleanups still follow the classical reversed order,
-> assuming "reply" is allocated before locking: it is freed after unlocki=
-ng.
->
-> If "reply" allocation happens after locking the mutex and it fails,
-> "reply" is left with an ERR_PTR, and execution jumps to the corresponde=
-nt
-> cleanup stage which will try to free an invalid pointer.
->
-> Fix this by setting the pointer to NULL after having saved its error
-> value.
->
-> Fixes: 893f139b9a6c ("openvswitch: Minimize ovs_flow_cmd_new|set critic=
-al sections.")
->
-> Signed-off-by: Adrian Moreno <amorenoz@redhat.com>
+Patch 3 allocates the per-configuration-mode union devlink_param_value
+buffers and struct devlink_param_gset_ctx used by devlink_nl_param_fill()
+with kcalloc()/kzalloc_obj() and funnels failures through a single cleanup
+path so the netlink reply path stays safe as the union grows.
 
-Thanks Adrian for finding and fixing this! The change looks good to me.
+Patch 4 (Saeed) introduces DEVLINK_PARAM_TYPE_U64_ARRAY and nested
+DEVLINK_ATTR_PARAM_VALUE_DATA attributes so drivers and user space can
+exchange bounded u64 arrays; YAML, uapi, and netlink validation are
+updated.
 
-Acked-by: Eelco Chaudron <echaudro@redhat.com>
+Patch 5 adds a runtime devlink parameter srch_order to reorder CN20K
+subbank search during MCAM allocation (the param uses the u64 array type
+from patch 4).
 
+Patch 6 ties default MCAM entries to NIX LF alloc/free on CN20K, adds
+NIX_LF_DONT_FREE_DFT_IDXS for PF teardown paths that must not drop default
+NPC indexes while the driver still owns state, and tightens nix_lf_alloc
+error propagation.
+
+Patch 7 allows loading a custom KPU profile from /lib/firmware/kpu via
+module parameter kpu_profile, with cam2 / ptype_mask wiring and helpers
+that share firmware-sourced vs filesystem-sourced profile layouts.
+
+Patch 8 makes default-rule allocation, AF flow install, and PF-side RSS,
+defaults, and ethtool flows respect the active CN20K MCAM keyword width
+(X2 vs X4), including X4 reference-index masking and -EOPNOTSUPP when a
+flow needs X4 keys on an X2-only profile.
+
+Patch 9 replaces file-scope npc_priv and static dstats with allocation
+sized from discovered bank/subbank geometry, threads npc_priv_get()
+through CN20K NPC paths, and allocates dstats via devm_kzalloc for the
+debugfs helper.
+
+This guard is ordered first so later patches assume a single bound AF.
+Heap-backed devlink_nl_param_fill() sits immediately before the U64 array param work so
+incremental builds stay stack-safe as the union grows; the CN20K patches
+keep srch_order ahead of NIX LF coordination, optional KPU profile load
+from firmware files, X2/X4 handling, and the npc_priv refactor that touches
+the same files heavily.
+
+Ratheesh Kannoth (8):
+  octeontx2-af: Enforce single RVU AF probe
+  octeontx2-af: npc: cn20k: debugfs enhancements
+  devlink: heap-allocate param fill buffers in devlink_nl_param_fill
+  octeontx2-af: npc: cn20k: add subbank search order control
+  octeontx2: cn20k: Coordinate default rules with NIX LF lifecycle
+  octeontx2-af: npc: Support for custom KPU profile from filesystem
+  octeontx2: cn20k: Respect NPC MCAM X2/X4 profile in flows and DFT
+    alloc
+  octeontx2-af: npc: cn20k: Allocate npc_priv and dstats dynamically.
+
+Saeed Mahameed (1):
+  devlink: Implement devlink param multi attribute nested data values
+
+ Documentation/netlink/specs/devlink.yaml      |   4 +
+ .../marvell/octeontx2/af/cn20k/debugfs.c      | 163 ++++-
+ .../ethernet/marvell/octeontx2/af/cn20k/npc.c | 633 ++++++++++++------
+ .../ethernet/marvell/octeontx2/af/cn20k/npc.h |  18 +-
+ .../net/ethernet/marvell/octeontx2/af/mbox.h  |   1 +
+ .../net/ethernet/marvell/octeontx2/af/npc.h   |  17 +
+ .../net/ethernet/marvell/octeontx2/af/rvu.c   |   7 +
+ .../net/ethernet/marvell/octeontx2/af/rvu.h   |  12 +-
+ .../marvell/octeontx2/af/rvu_devlink.c        |  92 ++-
+ .../ethernet/marvell/octeontx2/af/rvu_nix.c   |  77 ++-
+ .../ethernet/marvell/octeontx2/af/rvu_npc.c   | 486 +++++++++++---
+ .../ethernet/marvell/octeontx2/af/rvu_npc.h   |  17 +
+ .../marvell/octeontx2/af/rvu_npc_fs.c         |  12 +-
+ .../ethernet/marvell/octeontx2/af/rvu_reg.h   |   1 +
+ .../marvell/octeontx2/nic/otx2_flows.c        |  48 +-
+ .../ethernet/marvell/octeontx2/nic/otx2_pf.c  |   6 +-
+ include/net/devlink.h                         |   8 +
+ include/uapi/linux/devlink.h                  |   1 +
+ net/devlink/netlink_gen.c                     |   2 +
+ net/devlink/param.c                           |  95 ++-
+ 20 files changed, 1295 insertions(+), 405 deletions(-)
+
+--
+
+v18 -> v19: Addressed Jakub comments.
+	https://lore.kernel.org/netdev/20260602060359.1894952-1-rkannoth@marvell.com/
+	Added 1 more patch.
+
+v17 -> v18: Addressed sashiko comments.
+	https://lore.kernel.org/netdev/20260601025844.865865-1-rkannoth@marvell.com/
+
+v16 -> v17: Addressed Jakub comments.
+	https://lore.kernel.org/netdev/20260521095303.2395584-1-rkannoth@marvell.com/
+
+v15 -> v16: Addressed Sashiko comments
+	https://lore.kernel.org/netdev/20260520020939.1457231-1-rkannoth@marvell.com/
+
+v14 -> v15: Addressed Paolo comments
+	https://lore.kernel.org/netdev/20260514062537.3813802-1-rkannoth@marvell.com/
+
+v13 -> v14: Addressed sashiko comments.
+	I had to revert Jiri comment in v11 as sashiko was complaining about
+	leaking kernel memory to userspace.
+	https://lore.kernel.org/netdev/20260511033923.1301976-1-rkannoth@marvell.com/
+
+v12 -> v13: Addressed David Laight comments
+	https://lore.kernel.org/netdev/20260508034912.4082520-1-rkannoth@marvell.com/
+
+v11 -> v12: Addressed Paolo,Jiri comments.
+	https://lore.kernel.org/netdev/20260409025055.1664053-1-rkannoth@marvell.com/
+	Added one patch which was rejected by simon in net
+	(as it was kind of enhancement rather than a bug)
+	Added one more patch- which allocates two variables from heap.
+
+v10 -> v11: Addressed Paolo comments.
+	https://lore.kernel.org/netdev/20260403025533.6250-1-rkannoth@marvell.com/
+
+v9 -> v10: Addressed Paolo comments
+	https://lore.kernel.org/netdev/
+	20260330053105.2722453-1-rkannoth@marvell.com/
+
+v8 -> v9: Addressed Simon comments
+	https://lore.kernel.org/netdev/
+	20260325072159.1126964-1-rkannoth@marvell.com/
+
+v7 -> v8: Addressed Simon comments
+	https://lore.kernel.org/netdev/
+	20260323035110.3908741-1-rkannoth@marvell.com/T/#t
+
+v6 -> v7: Addressed Simon comments
+	https://lore.kernel.org/netdev/20260320165432.98832-1-horms@kernel.org/
+
+v5 -> v6: Addressed Jakub,Jiri comments
+	https://lore.kernel.org/netdev/
+	20260317045623.250187-1-rkannoth@marvell.com/
+
+v4 -> v5: Addressed Jakub comments
+	https://lore.kernel.org/netdev/
+	20260312022754.2029595-6-rkannoth@marvell.com/
+
+v3 -> v4: Addressed Simon comments
+	https://lore.kernel.org/netdev/abDeXLpMMxp7G1v3@rkannoth-OptiPlex-7090/#t
+
+v2 -> v3: Addressed Simon comments.
+	https://lore.kernel.org/netdev/
+	20260304043032.3661647-1-rkannoth@marvell.com/
+
+v1 -> v2: Addressed Jakub comments.
+	https://lore.kernel.org/netdev/
+	20260302085803.2449828-1-rkannoth@marvell.com/#t
+
+2.43.0
