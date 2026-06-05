@@ -1,131 +1,151 @@
-Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 519913B7767;
-	Fri,  5 Jun 2026 07:48:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780645692; cv=none; b=Bi79qj0SZTeguXecf3StRofwneRYVECUpWkHT0BFhYOmgSZelyDXPyzYNBwlPjwYXNlhNxOQ5b7LEPd2Ptcj/n2kDUyQ037+eOF+RQ91WFUQpnahHUZSwOTC5jlKHsw1t4pTwh333sMIZVY5hc6k4sE0VyD0IJM1u6ZWoviW97o=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780645692; c=relaxed/simple;
-	bh=bLVa+it7Fcgvro+pv1jm7ZG4kvYOadKHZDdsUxgN6uI=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gfvW4F1Y7+lJlEYLM6haSFhgjAGaAUMCEv496VbpXSZODFHvdv3uc1vROu1mruZ28vYQnoMTqrKaFh0c+N3Kq6kHJ8EuemaUBwCgD2y3eGE+jEP6vWLRmub2zI56UWZ3UUyyQH5rgYzksODK+kNM/KM4oSJBF7d6sJcMkO44TtA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=IVEFAsoI; arc=none smtp.client-ip=67.231.156.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E22ED47B423
+	for <netdev@vger.kernel.org>; Fri,  5 Jun 2026 07:48:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.47
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780645730; cv=pass; b=ri/ABMI+7iha2/Mx17AhmTsPWxYL0dcOnJnRKzS/hJchWwFl7uNAl38qytY9Vs85wUD8A26bk/MbJa55cCr95yZQtTaEeFeNXETASf+kXtcDcdKsbiyS04Dk6Wyqo/6jbBn7x+dWkduXAGJprP3uyBUndr0OgCH0FzDhagB6f1A=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780645730; c=relaxed/simple;
+	bh=8j+Icp8sb6eS4YvdbghVOKY9fl330RKRmJMN6gQjOgo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=H32BP5S++ET/H8Ueb6MtJzfXYy3ayVtYM6bTxT/TAR8JBDI15q5Pv/L63cFpItXTzaETkaH3bxBdDHphC/xakOXdjW+14GlrZCT01TzSMJwgdSPwuqtXbOH4xc7gds37QAbrOA0Wlo15J9o9d7gIHfsC56AMI9mkaPicXrRc0V0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=Nb8dQWj5; arc=pass smtp.client-ip=209.85.167.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="IVEFAsoI"
-Received: from pps.filterd (m0431383.ppops.net [127.0.0.1])
-	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 654NS1Zr1933112;
-	Fri, 5 Jun 2026 00:48:03 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pfpt0220; bh=wQSEh8Sz1qZGPBUxTZT2mHSrL
-	TncE9qcUGzA4n5NyLI=; b=IVEFAsoIcqRDfUWD3S78EPMED5kRhP52I9ZiqjZAn
-	y4wLVBBb3ngmdYVD7YS6sqslsSUwOx0nxE1gabtZy4v0hLiXxVAHEkvTp2++APPl
-	k7GGvISQ7k7z/NNFO+HYrOZRZ8du5Z3bWfFMfnjQYCQKB3Z/012VaU18ZTkQdN/I
-	qo96Xgv+ZkCzDfLep7h6aYbupWMK811X/vXMBnHyxI0gcxBDbnfFZSsWzYQRZZcN
-	LNKSgZMVSTAB5H0vwVi7OquOPr5ABUwuAXGXTnxxjywrgii0BzeYKazCFJ4/PL+q
-	HiU2nxGO6rGRwHkKqo/ypIUAhN/6JAg7EnJK4CDF+GwRA==
-Received: from dc5-exch05.marvell.com ([199.233.59.128])
-	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4ekk2916a1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 05 Jun 2026 00:48:02 -0700 (PDT)
-Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
- DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Fri, 5 Jun 2026 00:48:01 -0700
-Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
- DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Fri, 5 Jun 2026 00:48:00 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
- (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Fri, 5 Jun 2026 00:48:00 -0700
-Received: from rkannoth-OptiPlex-7090 (unknown [10.28.36.165])
-	by maili.marvell.com (Postfix) with SMTP id 53AAE3F7079;
-	Fri,  5 Jun 2026 00:47:56 -0700 (PDT)
-Date: Fri, 5 Jun 2026 13:17:55 +0530
-From: Ratheesh Kannoth <rkannoth@marvell.com>
-To: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>
-CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <donald.hunter@gmail.com>,
-        <edumazet@google.com>, <horms@kernel.org>, <jiri@resnulli.us>,
-        <kuba@kernel.org>, <pabeni@redhat.com>, <sgoutham@marvell.com>
-Subject: Re: [PATCH v19 net-next 1/9] octeontx2-af: Enforce single RVU AF
- probe
-Message-ID: <aiJ_K-Z7bV1Syyde@rkannoth-OptiPlex-7090>
-References: <20260605035030.3195141-1-rkannoth@marvell.com>
- <20260605035030.3195141-2-rkannoth@marvell.com>
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="Nb8dQWj5"
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-5aa68d9dc18so1582341e87.2
+        for <netdev@vger.kernel.org>; Fri, 05 Jun 2026 00:48:45 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780645724; cv=none;
+        d=google.com; s=arc-20240605;
+        b=SOwvxFplWMhTT8BJ642wwn9O8VKlXAZPU26gwTX7kjnbBESG296I5fcnRcCLBqN9ZV
+         aGuJrp1zGxIqrsWeK29U49xB4ux1ciQ2A23l206JumXW6O8/8AiRM9tgjQ2arTRpzLuU
+         TbEnT8ktShYlNW4R/iTrJFWfyu6QicPVULPa6zLyh9ASIpK//oKbGe0w0UXUCgioD2kH
+         Ek68FieKGyiAHd4VZzVqK7mpDlyHsv4gPmohKdOZtHkF/u5MZY+9jDJT7b/dOKTqaFmk
+         eZCjMWzO+7ntGvk1XbI1uigC2ghigx8/lSgfwdD6gC4Rx3lTmtOKCSrKwR/+Bz9BFbpd
+         kVQw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=jQFtOrahnneD/bkyDw8wE/BTPcqYNFp6Nak0UKya9VU=;
+        fh=72Vz8wFuW/r3g0l7AKf7EUgAlQxl9ZwtMfs4BnAx48A=;
+        b=b0ewOeukGm6gHDBIbduOoTd/B4GgxU5xI49YPT4fMvbHGmbbZX6gqnEn7ZiNKYDK9D
+         lxGaNDF84QEV8+etQuigkasmThaQt1La5sHSfYV85Q7XYht6h6oTuAyTCWwsWu2bGMgP
+         hGO03rMyOX8V0ii917IPx4mTvgirvc60mz/oyso8j9KjxizNkdoe90aQL0fjS3Ph9I/J
+         2kdW0jI/5Y4n5n014cEnbrOR8MNFvzdS/STZA0NRefG0LDLP8WQ80WXi4cxvQAAFxoHH
+         xa0Ax1mog4fFqCB2NW20BAxcRjjfTDdQ/tvGoU/1jM4Y5LRXVQixLWrc5kFtOb77WVVO
+         y0ew==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1780645724; x=1781250524; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jQFtOrahnneD/bkyDw8wE/BTPcqYNFp6Nak0UKya9VU=;
+        b=Nb8dQWj5398Q0qyF67qjIwwB/3cUioo7HdhoIFt2XkWfFQqpLV8bMu1ssTjxkMBrYN
+         gMbQV5D4KXHmg7+flOL4OfsE7zCkyHQ37V1tA8TTorwzAqv3jQG84nwIReRfgG3Q6YRP
+         UJ1rzvF4rExxEvdYio5vzqiT/88Rzmu+9u758Xlne8R0YH0SvIL8CouXwkB0m3H1hQWV
+         GoDQsZ6HNoEIwkN6B7StR94IdsaYuK3KCCHeQQuYJTL+oA1Fhp6sBdL/Zp47OfDd3rZm
+         9mIG/t+uaBgF3wh8nylVyUwqLfe2lO8AhdEFvvqX/jIx341ckn6aGFINtaOmt65yE43Q
+         c2/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780645724; x=1781250524;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=jQFtOrahnneD/bkyDw8wE/BTPcqYNFp6Nak0UKya9VU=;
+        b=WXUra8AFEMh4NcBuAZy+1lG5uwCt0NoNU78FvJxd7bqKwxHdelyLJImkJFnOwRuHN8
+         us0OwouFtbdTODaxb4SAvNqT8c7ae1OY6VHND8oUsOe9C6D2SMlP8zilj3NzgArYPh2A
+         //7AKj+PZ9ANXLQTyVrsDLr7C7fS5Nqsh++F2kk8/jt7av7AoTpcAj3daeSws8SuktyQ
+         IMtSBe3IXDNH/yayiQoXbN/bElokmPMUJqw7HpkUe3mtssRQebr45AVey8UYVjkwxsoO
+         ykOdY3yQ4nH77g7CKElIagBn50JwZGFl+aRpNwZDGjRSfeK2vQSYqwnSB0aWH1fowvvE
+         rfng==
+X-Forwarded-Encrypted: i=1; AFNElJ8UyRnTdxS8LXzpviGTLgLGGHXihfJwyDkW/ZOYKZr9giKc9KWAlmktJ6zI286Ch5YuTUzWrRE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyn5TgFnQqGqxfMcH6Fp8zPInCsOeNdMBSzEQDw2Qxwq6IEgHBd
+	qAepV2AvlNoE8oMbN8KRge4EcwLTFBe7iLWuUcnruW6zhJNrXX9MF7g8cvmaiqNJkTnlOoxO+1u
+	u56X6cGjcV2Si2Kyro8q/ESlkM4diXDTWqHg5f0ecHg==
+X-Gm-Gg: Acq92OF+O7VyZd3taU5UWs6v5W8xrjB5J2yq2IHPKtLA1Ey4auOFFxY6+vH3l4NDCof
+	Dhrhlqgtcetb+JZJbhenn2vdnV+jrBRdF5p4xqKjeVBKokIA89JIuRvkQ2xIHcBJSP3EFy/pxRs
+	sVBQ6iMJpblEC4+2fEBQ34ZXlOXt3yJs6fTBt42XNjPJnc7PngRA+c5grFbTJBRB2hcBOGqrHy3
+	1WuB1MvnEvF4hH0oER3jtaBdwNZHTquOSdqC6A27dJO0pIdTQzGG2k+0NzSh+e23j2iCVSgTQen
+	QIkNBD7mxazYH3tadW9ye9SFbXvwZJD8WYnRQlnaOcagaJ3IVOE=
+X-Received: by 2002:a05:6512:2523:b0:5aa:854c:61e8 with SMTP id
+ 2adb3069b0e04-5aa87bd7921mr758422e87.40.1780645723936; Fri, 05 Jun 2026
+ 00:48:43 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20260605035030.3195141-2-rkannoth@marvell.com>
-X-Authority-Analysis: v=2.4 cv=MOlQXsZl c=1 sm=1 tr=0 ts=6a227f32 cx=c_pps
- a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
- a=kj9zAlcOel0A:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=l0iWHRpgs5sLHlkKQ1IR:22 a=qit2iCtTFQkLgVSMPQTB:22 a=M5GUcnROAAAA:8
- a=PhMr_M3VcTPrr3iKzVkA:9 a=CjuIK1q_8ugA:10 a=OBjm3rFKGHvpk9ecZwUJ:22
- a=Oh551-UHZqmTy8JkqTUo:22
-X-Proofpoint-ORIG-GUID: VdwKVJYtSzj-W70ExOloTnELllTISmKo
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjA1MDA3NCBTYWx0ZWRfX/xtX4H9hn3Pi
- k597YJd/e5A4XeBPlbTcndVrVZkAwGfWD50gLT0H11WLSk/n3kilp6bNHDFGyTlmmgeyu0ztUhB
- NkCQNn97wmR4u8K4uATxJqSBCjL5sh6dqyKpl8XxSZYu/pDI8gZosw4L/2RJHTufibDJphgIKSK
- hYOhrR0zoXbKXSjPASDNn8e6Wd9oWCetQ4CmnrBok1crCdTc02B41nEI68Ja+eDggNbNJBj5Dot
- Ap3CEFBFLoZ2RyjJLgozJeUbl29UR4m/ItqUejig9CxQALCI0iu3vS9aumE0V6sBPefI/+oDmgA
- zlsSdihZ7TMG9JKu58YOJTYuGKqn1qItHT9RFvKNyI9VcAmkXKrBhto4Em5w55HgdjSU1+mlPx8
- /5DJBz0ycn2ibtz8RJ/owGkPVcFO/WobxvDhfIVA2WWOQqzUL7ILXuXZciNNvr3HasTDr2p7Qoc
- 2qo8lGufxAyA6D/xmRg==
-X-Proofpoint-GUID: VdwKVJYtSzj-W70ExOloTnELllTISmKo
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-05_01,2026-05-28_03,2025-10-01_01
+References: <20260511092846.120141-1-marco.crivellari@suse.com> <20260511092846.120141-2-marco.crivellari@suse.com>
+In-Reply-To: <20260511092846.120141-2-marco.crivellari@suse.com>
+From: Marco Crivellari <marco.crivellari@suse.com>
+Date: Fri, 5 Jun 2026 09:48:33 +0200
+X-Gm-Features: AVVi8CeCNaXxzJViaFHzMhO0fpnrVI-OJr9XPkVyccta7hRQi1pQd_D8MH43Wpg
+Message-ID: <CAAofZF7xvJ4tjUPk1NeG7fhxa8vXA=KX=QNvPDhg0Yx-rTzqhg@mail.gmail.com>
+Subject: Re: [RFC PATCH net-next 1/5] ibmvnic: Move long delayed work on system_dfl_long_wq
+To: linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+Cc: Tejun Heo <tj@kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>, 
+	Frederic Weisbecker <frederic@kernel.org>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
+	Michal Hocko <mhocko@suse.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Haren Myneni <haren@linux.ibm.com>, 
+	Rick Lindsley <ricklind@linux.ibm.com>, Nick Child <nnac123@linux.ibm.com>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Nicholas Piggin <npiggin@gmail.com>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, linuxppc-dev@lists.ozlabs.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 2026-06-05 at 09:20:21, Ratheesh Kannoth (rkannoth@marvell.com) wrote:
-> There is only one admin-function PCI device per system.
-> Reject any additional AF probe with -EBUSY so the driver model matches
-> hardware and automated reviewers can rely on a single bound instance.
+Hi,
+
+On Mon, May 11, 2026 at 11:28=E2=80=AFAM Marco Crivellari
+<marco.crivellari@suse.com> wrote:
 >
-> Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
-
-Apologies. Mavell SMTP server had many issues which resulted delaying,requeing, resending
-emails. Sorry for the noise. Please abandon this set as another patch (same patch) is
-active.
-pw-bot: changes-requested
-
+> Currently the code enqueue work items using {queue|mod}_delayed_work(),
+> using system_long_wq. This workqueue should be used when long works are
+> expected and it is a per-cpu workqueue.
+>
+> The function(s) end up calling __queue_delayed_work(), which set a global
+> timer that could fire anywhere, enqueuing the work where the timer fired.
+>
+> Unbound works could benefit from scheduler task placement, to optimize
+> performance and power consumption. Long work shouldn't stick to a single
+> CPU.
+>
+> Recently, a new unbound workqueue specific for long running work has
+> been added:
+>
+>     c116737e972e ("workqueue: Add system_dfl_long_wq for long unbound wor=
+ks")
+>
+> Since the workqueue work doesn't rely on per-cpu variables, there is no
+> obvious reason that justify the use of a per-cpu workqueue. So change
+> system_long_wq with system_dfl_long_wq so that the work may benefit from
+> scheduler task placement.
+>
+> Cc: Haren Myneni <haren@linux.ibm.com>
+> Cc: Rick Lindsley <ricklind@linux.ibm.com>
+> Cc: Nick Child <nnac123@linux.ibm.com>
+> Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Nicholas Piggin <npiggin@gmail.com>
+> Cc: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Signed-off-by: Marco Crivellari <marco.crivellari@suse.com>
 > ---
->  drivers/net/ethernet/marvell/octeontx2/af/rvu.c | 7 +++++++
->  1 file changed, 7 insertions(+)
->
-> diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
-> index 3cf131508ecf..1f0c962e10f4 100644
-> --- a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
-> +++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
-> @@ -3542,12 +3542,19 @@ static void rvu_update_module_params(struct rvu *rvu)
->  		kpu_profile ? kpu_profile : default_pfl_name, KPU_NAME_LEN);
->  }
->
-> +static atomic_t device_bound = ATOMIC_INIT(0);
-> +
->  static int rvu_probe(struct pci_dev *pdev, const struct pci_device_id *id)
->  {
->  	struct device *dev = &pdev->dev;
->  	struct rvu *rvu;
->  	int    err;
->
-> +	if (atomic_cmpxchg(&device_bound, 0, 1) != 0) {
-> +		dev_warn(dev, "Only one af device is supported.\n");
-> +		return -EBUSY;
-> +	}
-> +
->  	rvu = devm_kzalloc(dev, sizeof(*rvu), GFP_KERNEL);
->  	if (!rvu)
->  		return -ENOMEM;
-> --
-> 2.43.0
->
+>  drivers/net/ethernet/ibm/ibmvnic.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+
+Gentle ping.
+
+Thanks!
+
+--=20
+
+Marco Crivellari
+
+SUSE Labs
