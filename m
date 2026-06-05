@@ -1,96 +1,84 @@
-Received: from smtpbgau2.qq.com (smtpbgau2.qq.com [54.206.34.216])
+Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6733E3542D4
-	for <netdev@vger.kernel.org>; Fri,  5 Jun 2026 03:10:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.206.34.216
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9E2C2BEC27;
+	Fri,  5 Jun 2026 03:17:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780629011; cv=none; b=JVj0qmmH2cbfWjoqEPMZCHbJGAOW26LIOM9tfuWqGkJyA2XBuBBTak3SSkPfzlyOeKkKyws3rCBh7FzfTRcV17z7fJcCUMg6gLl+WXWLjRVDv7LdcL4O2BoHS8WcI5R8snlowN0c6PSWjdDNl7e5VwqwakulQw/NfERK44bK6qE=
+	t=1780629431; cv=none; b=BTFcz9tr+uhz5GgilNXduhMkJB57rFg+F0ubGIIZKDLls3y7v/xMibi9VrBZaMj4Mmo1FdtD0gv2YmhDBczUWYJcGpNmM071dImVGo6VHFODaeV8mx39jmb7WCGrh2KnydruZ+aRAVjOwYTWAH9nUTUQU2kFGMJkZK8LnG6PezE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780629011; c=relaxed/simple;
-	bh=7ZbhsAmErXfoZtkQrmTQ+rdUChNpfAHnnK8k380kei4=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=nHCFofd3rKWnQTc+ksthjG/5Y4VxI4QzonJzIzSYomuviUKSf0QHWOX9Vs/brb8k2fTV3ix3dIuOCJYoFkBDBR8qMqVBGF1XQc0BmtC5UQfzV09joQySUNs6JVZbimVvWcAVIARuAcye9Jy+pU/shoDn0a2vsj+D528tpV4JMOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.206.34.216
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid: zesmtpsz4t1780628944t0d4a5bd6
-X-QQ-Originating-IP: xFRs0rvGwHUgaQvxNqejK7ExMg43sN5UhL7K/f0n+aM=
-Received: from lap-jiawenwu.trustnetic.com ( [36.24.207.111])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Fri, 05 Jun 2026 11:09:02 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 7724180085447198529
-EX-QQ-RecipientCnt: 9
-From: Jiawen Wu <jiawenwu@trustnetic.com>
-To: netdev@vger.kernel.org
-Cc: Mengyuan Lou <mengyuanlou@net-swift.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Jiawen Wu <jiawenwu@trustnetic.com>
-Subject: [PATCH net v2 1/3] net: txgbe: initialize module info buffer
-Date: Fri,  5 Jun 2026 11:08:48 +0800
-Message-Id: <20260605030850.17796-2-jiawenwu@trustnetic.com>
-X-Mailer: git-send-email 2.21.0.windows.1
-In-Reply-To: <20260605030850.17796-1-jiawenwu@trustnetic.com>
-References: <20260605030850.17796-1-jiawenwu@trustnetic.com>
+	s=arc-20240116; t=1780629431; c=relaxed/simple;
+	bh=xd/9j3/ENuPiwUbFsPg/j2s7qeB5GS10FkVFDPd8i7w=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uswuSYENICmFOoAZZTq/2jMgQg4sZb1M1ngPEYTl1jvjmLsgcYIacBwcfqGsE/vFAYzlWS57VgNQ/HqeXhB0PeMu0YdGoKi/atMBCdXVqEZkFOX3dxV9BdZznyECFg9KKDXLfVxJMwA8PfrU0p+BvAfwiqBQLcYX1tAfCP+vUcE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=O4JDKQHB; arc=none smtp.client-ip=178.251.229.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="O4JDKQHB"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D1A571171EC;
+	Fri,  5 Jun 2026 05:16:55 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
+	s=dkim; t=1780629419;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=RYCdo5ZX9A+UjzMZvC7m8OuShR08M/FT//5UWv1YUdk=;
+	b=O4JDKQHBac5LWiVU8tDEsrZ63KRNrPCl8jfFEVMDj8pi/lQqjVgUI8o3s7D0v9GOLa2J2z
+	4nSRRb4YW3NX3ZkSpIzXqDTktp9yl6+nPnf4af3LtZ8rKQbAVn9Y5J+br+vm3VdHpmCa7v
+	SXaLIWpSJeQFfyP9nOe8SqUKhcxgNcrXS6mD+cVSmsN/zYA1gtKULnMlgyeqVpaL+ORnsb
+	EdGnYkVT/Mavapn2kIhoI2EdIWcRbi1ZgWKnOWaBxpPtIi/ElCXVz/PZCzrl+kgkHmIEdp
+	TMEOMz/mmfP0NAQ44U7VsRHdb3Qes3xqYvxLlDY0wm4prE2a85BYPQXBV7jhcA==
+Message-ID: <4098dafb-838e-4854-add6-cb3ce6668a70@nabladev.com>
+Date: Fri, 5 Jun 2026 05:16:54 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpsz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: MAhyWAJRphZxbrbdoPpGVx5Rwpbzdn4kbX0VGc6w9ofvsYiCKc1r0zKV
-	L13KK+MOOD3blh0TPOCgnnrS1Tc9d8kFOwdqHj+B8z8Jz3OJkDagsw2x3onEmcFa7DvCJJq
-	pA6M+9nG8+SDlKIrmuO0joqCrZ59T7VBcXJ2hOscdaCqzluosvSjAH/ZBRrZCZykWDnb7Ly
-	uRk8IWRCDcthlI//QqG4UB8YUP5fAIX5MwPCckWJEnSdYYCZunaH5DcjD/em2ewJcuEieIg
-	d9J0fc8+CCRpAtqX7LqxOd6CHySvUud3kcMb0nl+sdYzZJzJUyH9N7SrvkJBkkd/kxpDWDe
-	o2Ulb6xg3AnvwXQbqzxB8Vp6e6DjSVX6Hdaf7nE2MdnCVwNHhrOOvfjwJbz2ShqcRqd980K
-	TCS/GeLlEhIfN/rx0YZAp/WPoEhwTovpztyYggklrkxlewYH41o1zNX5Nrr6LBCRsV/MZkg
-	UcdgAUuz7iSiFLlQjf0G00Y4rDQ57dbpebisobKlgyUivqzxYwt2AP2VX/6uZupX5cZjPJs
-	ZayneGL5prSHiv2sWwk6tM+l+jNU1ij4aGrS582JrIR5gNfcKBurmkGuUoCVfXQ9pIhpuHt
-	au2imrhztkuGbUfY0zQQiEpmV6RSf9C3tgSq0xexBfV/QWhq2tuZD+/O1XMNy1c5UOftPZz
-	0oG3PDQ+xRXXFRUWQpPE8kapzR4CrROd8rXLDbhuAasagmWSae5NRXrQ+5e19z15pvOPaQI
-	iuhdH/z0SAU5n08ypR7bjRrhGAOgK52sLM6zFQrOdy3EPn8QCY1hdMfkGLjZbW+aSUeypoQ
-	6G92bQjBAlSQTELGU2mfqsEOXeMNBbwOo4Agoht0FFJQ1ExyGcZyX5Nea9pAmTayuGvHJMR
-	72rXM449Eu5+g1TCG4gEJe4aS5OWWs/N2ASq2wnlH/7wqPhoz2TQPJOQWJQbd3Wdm3bXvfY
-	uhiW6RsVbImUJIk7sECPokIBEpC6okyOMvfe+XnnkWodWkje7xSI3lUBGKoy88GNYHt5otx
-	C7O5/jewlXFmZ3p9Kh+ifwl9aD3u+TuTWEPRAj4ksDdScvyDVo13Q4l/x9vKQ3Qsdct6CNH
-	QXqpACNAwysO8KyT/u3OPg=
-X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
-X-QQ-RECHKSPAM: 0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v9 2/3] net: ethtool: add KSZ87xx low-loss cable
+ PHY tunables
+To: Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: lawson.fidelio@gmail.com, woojung.huh@microchip.com,
+ UNGLinuxDriver@microchip.com, andrew@lunn.ch, olteanv@gmail.com,
+ davem@davemloft.net, edumazet@google.com, maxime.chevallier@bootlin.com,
+ horms@kernel.org, hkallweit1@gmail.com, linux@armlinux.org.uk,
+ Tristram.Ha@microchip.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, nb@tipi-net.de, fidelio.lawson@exotec.com
+References: <20260601-ksz87xx_errata_low_loss_connections-v9-2-fdbbb15592cb@exotec.com>
+ <20260604114119.170747-1-pabeni@redhat.com>
+ <20260604193545.0a906598@kernel.org>
+Content-Language: en-US
+From: Marek Vasut <marex@nabladev.com>
+In-Reply-To: <20260604193545.0a906598@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-The module info buffer should be initialized to 0 before the firmware
-returns information. Otherwise, there is a risk that the buffer field
-not filled by the firmware is random value.
+On 6/5/26 4:35 AM, Jakub Kicinski wrote:
+> On Thu,  4 Jun 2026 13:41:19 +0200 Paolo Abeni wrote:
+>>> @@ -3114,6 +3114,9 @@ static int ethtool_phy_tunable_valid(const struct ethtool_tunable *tuna)
+>>>   	switch (tuna->id) {
+>>>   	case ETHTOOL_PHY_DOWNSHIFT:
+>>>   	case ETHTOOL_PHY_FAST_LINK_DOWN:
+>>> +	case ETHTOOL_PHY_SHORT_CABLE_PRESET:
+>>> +	case ETHTOOL_PHY_LPF_BW:
+>>> +	case ETHTOOL_PHY_DSP_EQ_INIT_VALUE:
+>>>   		if (tuna->len != sizeof(u8) ||
+>>>   		    tuna->type_id != ETHTOOL_TUNABLE_U8)
+>>>   			return -EINVAL;
+>>
+>> [Severity: High]
+>> Is it intentional to enforce an 8-bit type constraint for bandwidth and DSP
+>> equalizer tunables?
+>>
+>> This heavily couples the global API to the 8-bit register layout of the
+>> KSZ87xx hardware without defining generic units like Hz for bandwidth.
+> 
+> AFAIK this is the one comment from AI that survives scrutiny.
+> Seems unlikely we'd need more bits, but then again - why not.
+> u32 should be our default for integer values, u8 is more for
+> booleans.
 
-Fixes: 343929799ace ("net: txgbe: Support to handle GPIO IRQs for AML devices")
-Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
----
- drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c
-index f0514251d4f3..a7e81f9e1be1 100644
---- a/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c
-+++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c
-@@ -335,7 +335,7 @@ static int txgbe_qsfp_to_linkmodes(struct wx *wx, struct txgbe_sff_id *id)
- 
- int txgbe_identify_module(struct wx *wx)
- {
--	struct txgbe_hic_get_module_info buffer;
-+	struct txgbe_hic_get_module_info buffer = { 0 };
- 	struct txgbe_sff_id *id;
- 	int err = 0;
- 	u32 mod_abs;
--- 
-2.51.0
-
+Why waste memory space if we are already sure the space would not be used.
