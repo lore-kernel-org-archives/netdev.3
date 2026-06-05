@@ -1,98 +1,80 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40DEE3A3821;
-	Fri,  5 Jun 2026 18:14:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6932253340
+	for <netdev@vger.kernel.org>; Fri,  5 Jun 2026 18:16:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780683297; cv=none; b=GKbfeMpjOlyoZrqg/kywW42i//k2/idlpOQsJAFWJbjVUeYWRw6wwgKcm7VUHL/yXsnqi0/ng3NRV/EvXKzVicfv8aYORf7MJduyiZyYXpU/Y4jnBZCREPMvJvt5W6bPKJLnSu6F3l5whiJrwVxG1rzOCp7t9B4Ay0GoP27GO8k=
+	t=1780683376; cv=none; b=YvkopCjWIk9KDzutZR683v+arfvy37M5C9Wkk4u+zeCyKLTc9KLP+U1p/7nIfhSnVlCqYEFahDILl7TrNvQwF+q1qeNTrlAp3/Qs/DDlQXDQvuNVvCL21CnonMvf6DFL62aPXG6luHRz1Vjc4GlanLGpVl1FZrcRtT/rOm+nCmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780683297; c=relaxed/simple;
-	bh=Ge2nsXbXVB11wGz26n/HR93zpsXWkFswt9H/b+SLtgA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=C7JmOc7bZSzPLbTY/w/2CkYSCLyPpumvnJOxnr4xpBhB9xfomEJO0lj5ldK6u+0KWsXwktw2FlOQVR++kh+DntDzriendpWvy/LDY+4+KlygHoMoJF0vghbpjyzIZ9UWmNXlu9/S7EvBKZS0PHt828hWQX8f0qS7XdRyGR+tGx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=kKvXX5Tw; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1780683376; c=relaxed/simple;
+	bh=Dvr3HuucUQy9MSoVPbMBM9jW04Hs2nygJoBIBZTKxyM=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=klT3FzJ2ltvb4VD+KWkOwFu1nqZawNpKiIjO3uU4GbQmE9VB1g8rgwrh8iW8FP6LYGjCzA5DsL/e9AUPStmDYJGXWXdlUSaf0p7WRIaB3E3XGCwS6n/OFGH6zQF2CuBCCOY2lqSToG4brPTWeBssJ/+pLuUcVl+khTJppGnB3i8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=ozlRqFxB; arc=none smtp.client-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="kKvXX5Tw"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=CWSJhxCvKNv8WF2H5sZ3YZCpqe7EisvdRxWuvZCt+Lg=; b=kKvXX5Tw3k1zYXky5H61GA2eAn
-	YQCNCAOfKkOUytJ/ySMIjmGQwwTn903T3ajubR8xq7X2ymdVcWy5etV9+6ZpEv+kQYn2SsTy4QiUX
-	2hr4X3WWaFNDEQkSscWHthsGXvO+PfTiaXqUzXBmUkiw/Z45LVwc3z3cRtPm9l6SHmlg=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wVZ43-006H9d-S1; Fri, 05 Jun 2026 20:14:39 +0200
-Date: Fri, 5 Jun 2026 20:14:39 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: George Moussalem <george.moussalem@outlook.com>
-Cc: Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Florian Fainelli <f.fainelli@gmail.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	linux-arm-msm@vger.kernel.org
-Subject: Re: [PATCH v3 4/4] net: phy: at803x: add RX and TX clock management
- for IPQ5018 PHY
-Message-ID: <afdced5b-73b9-4214-a94a-c13fadd39dce@lunn.ch>
-References: <20260605-ipq5018-gephy-clocks-v3-0-f232d9ca0966@outlook.com>
- <20260605-ipq5018-gephy-clocks-v3-4-f232d9ca0966@outlook.com>
- <36cd63f4-749e-4b09-b8a6-cbf6924dea88@lunn.ch>
- <SN7PR19MB673634FEEF98FB8BCBBB15979D112@SN7PR19MB6736.namprd19.prod.outlook.com>
- <471a21f2-7ab0-410c-861d-5722a94b127d@lunn.ch>
- <SN7PR19MB67363B4F852FB37071637A299D112@SN7PR19MB6736.namprd19.prod.outlook.com>
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="ozlRqFxB"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8584BA4C3B;
+	Fri,  5 Jun 2026 20:16:07 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1780683368; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=wrNglY5ViloEmNs9RRyqZPGCG3oTEJgSEbE0UVjOUck=;
+	b=ozlRqFxBLDD+L0BZetFQ+Wo/u6kZCLjHHVtvN+ryTuzcsfQ4EaZW5rJF4s2T3iZSfpjgsP
+	gZfU/ZDWlSW9rpZN7mKqNk226UuwUtDc0T1s4fCSFumYnYGWKdbC00nKBWQWiCoYccMKoC
+	1Ha3nTkJiNWDZHqoemi+ydk65b9E85vIkeFm3/37ZVeQ4goT6LKxDLgHRO6rVrnuAFMMMr
+	II6drYy5BSnA1Xdph6piul+0G18JDvai0nBmQ2o7nAQCu4Ui/Mlx7Fl2+uMviukBsW0gWW
+	scXXLGBhQna2C6JPjvqO4/2h6dtfQsnePcuyudz9DsYP5seBVmNYAHM6uHnAAA==
+Date: Fri, 05 Jun 2026 20:16:03 +0200
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: Andrew Lunn <andrew@lunn.ch>,
+ Janpieter Sollie <janpieter.sollie@kabelmail.de>
+CC: netdev@vger.kernel.org
+Subject: Re: SFP/MDIO/I2C: help requested unlocking a SFP+ MCU to expose PHY
+User-Agent: Thunderbird for Android
+In-Reply-To: <903daf32-aecd-4160-8f69-4fc329fdad3f@lunn.ch>
+References: <ec5bd768-3f54-4c30-b5a2-1e0b43f789e3@kabelmail.de> <903daf32-aecd-4160-8f69-4fc329fdad3f@lunn.ch>
+Message-ID: <49CA4531-3BDC-4054-8830-BA80775C2B68@tipi-net.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <SN7PR19MB67363B4F852FB37071637A299D112@SN7PR19MB6736.namprd19.prod.outlook.com>
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Last-TLS-Session-Version: TLSv1.3
 
-> >> This PHY is integrated into the IPQ5018 SoC, connected to the first GMAC
-> >> (GMAC0) and probed upon boot. However, this PHY is not used on all
-> >> boards because an external PHY or switch can be wired to the SoC's
-> >> second GMAC instead (through a PCS). So from a power management
-> >> perspective, it would be better if we can disable the clocks if there's
-> >> no link detected.
-> > 
-> > Humm, is link the correct criteria? If the PHY is not used,
-> > .config_aneg should not be called. Why not have the probe method get
-> > the optional clocks, but leave them off. When .config_aneg is called
-> > for the first time, enable the clocks?
-> 
-> Will check if config_aneg is called and test accordingly.
-> 
-> ip link set eth0 up/down and cable (un)plug do trigger
-> link_change_notify, and based on the link state the RX/TX clocks are
-> turned off/on properly.
 
-You are talking about something else here. You say the device is not
-used. If it is not used, .config_aneg should not be called.
 
-This is a second use case, the device is used, and you want to limit
-the power it consumes, when there is no link. Do you have any numbers?
-How much power is actually saved?
+On June 5, 2026 6:51:56 PM GMT+02:00, Andrew Lunn <andrew@lunn=2Ech> wrote=
+:
+>On Fri, Jun 05, 2026 at 10:09:46AM +0200, Janpieter Sollie wrote:
+>> Hi,
+>>=20
+>> This message is a follow-up on a previous request,
+>> I reverse-engineered a lot of stuff,
+>> and the question has become fundamentally different=2E
+>>=20
+>> I am trying to access the bcm84891 phy on a 10Gtek ASF-10G-T80 sfp+ tra=
+nsceiver=2E
+>> According to 10Gtek, these modules contain a bcm84891 phy=2E
+>> The MDIO commands seem te be sent to a MCU, not the phy itself=2E
+>
+>Do you know what MCU is in the SFP? Is there a data sheet for it? Can
+>you read out the EEPROM holding its code over the I2C bus? You can
+>then disassemble/decompile the code and see what it is actually doing=2E
 
-> Could you explain why to use _optional variants of devm_clk_get as these
-> clocks are required? There are currently no users upstream.
+https://doc=2E10gtek=2Ecom/file/file/20240806/d6fa28f954989f74cde42c75353b=
+5fe6=2Epdf
 
-This last bit is important. We don't want to cause regressions on
-existing systems by adding in requirements which were not there in the
-past. But if you say there are currently no users, that is fine.
+I2c address should be A0h
 
-	Andrew
+Nicolai
+
+>
+>	Andrew
+>
