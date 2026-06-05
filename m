@@ -1,33 +1,33 @@
 Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACB51477E55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACAAF426EC1
 	for <netdev@vger.kernel.org>; Fri,  5 Jun 2026 07:20:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780644019; cv=none; b=Awuu/mSmz7qB+5e4VRGfyZAdz1SrNz5BQud3x/46Sm1aI1BNsdSReNyc33tB9gHIG/WK0GFBsKmhIE6WEqASdZHIf1dGVxaqdKksAss6F6vyzpn7vG1yGGU9ur28Hv0NHj6uVTYtm8fIwFyBKKR9EFrx+GedvaxP4WzafWTpuM8=
+	t=1780644020; cv=none; b=C6d1OfWMSMyDMhmkZay3W7ADpuFralsVFiu+y8eG9MnYX2z1XXu896ZTKxtYajM+r6YlM1s/6nDeRMkJAJ+k3BK8HogfP9XO/DVpi1BkkuHYsckB84GCQuQnkVtIqeYi/oxCTEhfU1yaJjr2eJMeOZtZSmUOG/eh78GQ/NXxcc4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780644019; c=relaxed/simple;
-	bh=qOy5vyj/Q7mif6y9Lx7vVzDyg4xSyuSntkGXCGN/zPc=;
+	s=arc-20240116; t=1780644020; c=relaxed/simple;
+	bh=Y5kgoPwwDx/Pmpy/Io8HZVWFjNi1ERfFtAXTnPDlGGE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=osVqNeVldwwU2ttxGNTPI96rmmxCx9TYa9Wt/4Xc72VB8LcwffC4ZXuuHI2Ksj9ey14PmOBndK3yYloNxRq9mdsVgDmITHo83nWmqlFAWn0DrDcsq+gKo93dH0WlFYzh3isJCdr4kpU/B77b0v2sdOYgwVSSIawlxlWHgMFTyLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=LcIl2QsH; arc=none smtp.client-ip=23.88.38.48
+	 MIME-Version; b=XN2CcVMuQP413gqqbWhX8x8idoJDBztwjQvhus+ZG8PnCAWI8Eaw4GB2IGWKZPJkw/5lBheLLt2FSl02SaRZUxUTHsbLKcZVGKzFnNtN916xOs7SoG+AEypbK9vjn8125N5MZStH1VkYnVGwQ3T0/1f1IytV19ihUP7OizR3vXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=AVdrMZoK; arc=none smtp.client-ip=23.88.38.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="LcIl2QsH"
+	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="AVdrMZoK"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=simonwunderlich.de;
-	s=09092022; t=1780644014;
+	s=09092022; t=1780644015;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=8Z3e0PI28LeGcMYG8odw5Z/Z//UT2Tl+ozm0Mg/7nqE=;
-	b=LcIl2QsHTdsLYxV/GZ5xPeL2W2u0vR4HHxqSzoAsROkZZqSU+qzUFsBeT/NfSvYIwNWt7m
-	qbIbDlBVGdipyNX0d689qoitud/P1z9XGQgqGSIWvoGebFEoF/y8BXQ7TY2Qy62Gs/Iuy3
-	oOqEkxjcUKh2U3dQoAPy7WX9sOoSYvyFQ05QEAFRAH5/uifRNwdopc/007UHK/y/geS4aT
-	KPgHu+HFNJlYxQA9SGQtKoDnbuU3/MxDZHEbwCEPPvHkCo/I9f6m18bq1UqNY4b8XldSG8
-	XnBqNgIsr13vWUDaozQ0mGjd+DMpoytRB9fVFzmCfWOa36AgJkfnSN38HF0uOA==
+	bh=RsEJ65hYXPcCWEyEzR+SRyfNmgEFmJ3/S+o4eeaUnSA=;
+	b=AVdrMZoK84TZnMtoxSL8nFPkwZS8Cka89dVvERMvAhfdwSRzEJvLB9a3ZJ9RmVszn9/lRi
+	p6be7JHwAoebauFj7M8qpttbPrVjcZU5TjmrA8Wuqor0toEtuUsLw7XwwcxKsom0xWbrh/
+	VaCaBgC3m+EdtZ2eKKnjb29T1k6PTndAhtbkkWhiWA03TLmbpgBtoOcq12eTl8eO6Urqzc
+	NiylzQlkqcSbBsyy/sWwWhg0cn8+mKfUCgCupTVJmG61MYZ2PdvSfsNZsqJ04ZkN+m1j5K
+	/uhGfRQLMuEtl5nOgmMWsMbKoyEjou5DuflzIuL+f8aVIpxoNl7JcK+qXCS03g==
 From: Simon Wunderlich <sw@simonwunderlich.de>
 To: netdev@vger.kernel.org
 Cc: "David S. Miller" <davem@davemloft.net>,
@@ -38,9 +38,9 @@ Cc: "David S. Miller" <davem@davemloft.net>,
 	b.a.t.m.a.n@lists.open-mesh.org,
 	Sven Eckelmann <sven@narfation.org>,
 	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH net-next 05/11] batman-adv: document cleanup of batadv_wifi_net_devices entries
-Date: Fri,  5 Jun 2026 09:19:59 +0200
-Message-ID: <20260605072005.490368-6-sw@simonwunderlich.de>
+Subject: [PATCH net-next 06/11] batman-adv: correct batadv_wifi_* kernel-doc
+Date: Fri,  5 Jun 2026 09:20:00 +0200
+Message-ID: <20260605072005.490368-7-sw@simonwunderlich.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260605072005.490368-1-sw@simonwunderlich.de>
 References: <20260605072005.490368-1-sw@simonwunderlich.de>
@@ -54,31 +54,63 @@ Content-Transfer-Encoding: 8bit
 
 From: Sven Eckelmann <sven@narfation.org>
 
-It doesn't seem to be obvious how the entries from the
-batadv_wifi_net_devices rhashtable are getting removed before the actual
-rhashtable is destroyed. Document the idea behind the process and which
-steps are involved.
+The original kernel documentation for the batadv_wifi_* functions contained
+copy+paste errors. Correct them to make it easier understandable.
 
 Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
 ---
- net/batman-adv/hard-interface.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ net/batman-adv/hard-interface.c | 6 +++---
+ net/batman-adv/hard-interface.h | 4 ++--
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
 diff --git a/net/batman-adv/hard-interface.c b/net/batman-adv/hard-interface.c
-index 04b227ec80525..e2c85bd8dbb53 100644
+index e2c85bd8dbb53..60cee2c2f2f41 100644
 --- a/net/batman-adv/hard-interface.c
 +++ b/net/batman-adv/hard-interface.c
-@@ -1185,5 +1185,9 @@ int __init batadv_wifi_net_devices_init(void)
+@@ -971,9 +971,9 @@ static int batadv_hard_if_event_meshif(unsigned long event,
+ /**
+  * batadv_wifi_net_device_insert() - save information about wifi net_device
+  * @net_dev: net_device to add to batadv_wifi_net_devices
+- * @wifi_flags: net_device which generated an event
++ * @wifi_flags: extracted batadv_hard_iface_wifi_flags of a net_device
+  *
+- * Return: 0 on result, negative value on error
++ * Return: 0 on success, negative value on error
   */
- void batadv_wifi_net_devices_deinit(void)
- {
-+	/* just destroy table. entries should have been removed by
-+	 * unregister_netdevice_notifier() and the corresponding
-+	 * NETDEV_UNREGISTER events
-+	 */
- 	rhashtable_destroy(&batadv_wifi_net_devices);
- }
+ static int
+ batadv_wifi_net_device_insert(struct net_device *net_dev, u32 wifi_flags)
+@@ -1006,7 +1006,7 @@ batadv_wifi_net_device_insert(struct net_device *net_dev, u32 wifi_flags)
+ 
+ /**
+  * batadv_wifi_net_device_remove() - remove information about wifi net_device
+- * @device_state: wifi net_device state to remove from batadv_wifi_net_device_state
++ * @device_state: wifi net_device state to remove from batadv_wifi_net_devices
+  */
+ static void
+ batadv_wifi_net_device_remove(struct batadv_wifi_net_device_state *device_state)
+diff --git a/net/batman-adv/hard-interface.h b/net/batman-adv/hard-interface.h
+index 822e7e378c4d1..af31696c39780 100644
+--- a/net/batman-adv/hard-interface.h
++++ b/net/batman-adv/hard-interface.h
+@@ -126,7 +126,7 @@ batadv_primary_if_get_selected(struct batadv_priv *bat_priv)
+ /**
+  * batadv_is_cfg80211() - check if the given hardif is a cfg80211
+  *  wifi interface
+- * @wifi_flags: extracted batadv_hard_iface_wifi_flagss of an net_device
++ * @wifi_flags: extracted batadv_hard_iface_wifi_flags of a net_device
+  *
+  * Return: true if the net device is a cfg80211 wireless device, false
+  *  otherwise.
+@@ -143,7 +143,7 @@ static inline bool batadv_is_cfg80211(u32 wifi_flags)
+ 
+ /**
+  * batadv_is_wifi() - check if flags belong to wifi interface
+- * @wifi_flags: extracted batadv_hard_iface_wifi_flagss of an net_device
++ * @wifi_flags: extracted batadv_hard_iface_wifi_flags of a net_device
+  *
+  * Return: true if the net device is a 802.11 wireless device, false otherwise.
+  */
 -- 
 2.47.3
 
