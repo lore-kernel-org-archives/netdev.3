@@ -1,100 +1,129 @@
-Received: from mx0b-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 341C847CC7C;
-	Fri,  5 Jun 2026 07:38:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4378047AF6C;
+	Fri,  5 Jun 2026 07:44:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780645139; cv=none; b=GEi6x+uLHQ+gjAZ+XRA6Jrgtq/2gW0LrjiOLb9EACrF3C58F7or4KttQIMmCzr4DqB8wlt6B+UsyxOHu/4SN3bbvVmFBIfBWsdbL3hCRvHRvcfYDcr3I4/0hJk0sYcYf0qV6SuO+P5fa4R6mJjKbgvUGWtJXR85VR0fcbYwfSNQ=
+	t=1780645492; cv=none; b=ofH8IanBPJbG3AILM3azav2NVo+BJXcDyyVggo2orHh+MIH81q/wThb0o3B0lZLJGBtrKUmgB6sN6hGDdCaneP4AYKEOX4oYuT3qvSeCLdDUxhzz1LEBMVqpN3jhsp9U4Cdocmk2CdGLgBLgsbhwZPr6k5Ck4jZQFlNO77EWX4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780645139; c=relaxed/simple;
-	bh=CYz+zFVmVunjZ0IJwS7O81HYQNxtf78UxYVYME/3fSM=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HQ+5N+sHko17VSK3mfRF1rJKah2DHd/h/53v0i+IifYMCGk4pmk2/uLzYc8OFM7sZdFPF3SlF31Z5LmR5knnp4AeQISAmRU5JmLSNBUGxBxG2fF23MY5V0JgIMlQT5rpPr2+EvhY2DfFSd/6J5WRY2Yd7SUH7ENBYRQoI1NgvW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=cVgw+qGB; arc=none smtp.client-ip=67.231.148.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	s=arc-20240116; t=1780645492; c=relaxed/simple;
+	bh=HAZBs5BOqikvqTV0pkWO+hF/E1kHkdu3KinoNRr3J/c=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=A8R4nJdKhRvgMxFao0+A6pXtlSkBpM97czM7zoFj1KWVObIK56JJXz0oyYoPcrMiBH5+AU1PJ6d6fXZrmebIqhP9vEQurJdNlzEstmOauKVMPoFA0fi0aPU2MXF1czXUQ7e9P2i0ttK6eS0+bRLE+LRqvc4WcXIUS3pFK55XkVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn; spf=pass smtp.mailfrom=realsil.com.cn; dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b=fWLDRy2/; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realsil.com.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="cVgw+qGB"
-Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
-	by mx0a-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 654LQMKU3892390;
-	Fri, 5 Jun 2026 00:38:47 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pfpt0220; bh=CYz+zFVmVunjZ0IJwS7O81HYQ
-	Nxtf78UxYVYME/3fSM=; b=cVgw+qGBOR/YReuyTMCA+gQG7njndVARRVsxejek6
-	jOHc4hnel9DSazg4apXe0dWbusiXp/yBP5NAdHi4nqmepKlFvChIULgBBn0re0v4
-	0ByYF/KSyWM7vyKn4aDJ4BRmGGlK4cVnG3PRG+ev0P5EPIsKFf7nxVEjTdHPS5HG
-	/lO9fsa+10qFzdj8bcmFHi7l82GfshlvnB7ihJukPnzYUcygylRd01qLRl33L7Md
-	SIM7zjt8EuKlDBFmjhRx+3zhBzz6tskzdqkS+hkaTSK4sxM28qMkpRPj1WCnCouu
-	r6zZ3gh4kqqojEl5+1ElQ5pb7n8jNV0abJn3FLy5FTh4w==
-Received: from dc5-exch05.marvell.com ([199.233.59.128])
-	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4ekh8x9h2y-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 05 Jun 2026 00:38:46 -0700 (PDT)
-Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
- DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
+	dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b="fWLDRy2/"
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 6557hUeV51221753, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realsil.com.cn;
+	s=dkim; t=1780645410;
+	bh=cAL7P3Xyg9/GaQs/Xyb7AvlE3Tyao+AY7aIvuGNaF18=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding:Content-Type;
+	b=fWLDRy2/udjw6yzWHU2OT6qivzH6oWWfxHdMbzbH3CLrneqzkCdxtKuSU1fQ2tRc/
+	 tRV+YmS+MxH2aWy41WoEZOm2FdfYQ65VcYQo5Xw360KBflaIMTbZC0CC4QDcvyKO1O
+	 BUgcKPNhLST/zy1Ps9PFtuDQfUDQItEIOWqCPG4sFyiQQjjXgxsyKgg7yZ6ndUpBgp
+	 x8b1E/FOyg/tZFaVOqFpFsHyAEbpnuTzMDklMVSu0SMy5PVAHePSW979YOoBlWuXCh
+	 kDMbJsEHYguyqMllmdg2m5ce76zNk5N33JN8YxxSxPDazgy2rxO4idnFMQlHTsHtzt
+	 Xh/C/6hMly6Qw==
+Received: from RS-EX-MBS2.realsil.com.cn ([172.29.17.102])
+	by rtits2.realtek.com.tw (8.15.2/3.28/5.94) with ESMTPS id 6557hUeV51221753
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Fri, 5 Jun 2026 15:43:30 +0800
+Received: from RS-EX-MBS2.realsil.com.cn (172.29.17.102) by
+ RS-EX-MBS2.realsil.com.cn (172.29.17.102) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Fri, 5 Jun 2026 00:38:45 -0700
-Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
- DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Fri, 5 Jun 2026 00:38:44 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
- (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Fri, 5 Jun 2026 00:38:44 -0700
-Received: from rkannoth-OptiPlex-7090 (unknown [10.28.36.165])
-	by maili.marvell.com (Postfix) with SMTP id 9891A3F7074;
-	Fri,  5 Jun 2026 00:38:40 -0700 (PDT)
-Date: Fri, 5 Jun 2026 13:08:39 +0530
-From: Ratheesh Kannoth <rkannoth@marvell.com>
-To: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>
-CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <donald.hunter@gmail.com>,
-        <edumazet@google.com>, <horms@kernel.org>, <jiri@resnulli.us>,
-        <kuba@kernel.org>, <pabeni@redhat.com>, <sgoutham@marvell.com>
-Subject: Re: [PATCH v19 net-next 0/9] octeontx2-af: npc: Enhancements.
-Message-ID: <aiJ8_-hd459l8Qea@rkannoth-OptiPlex-7090>
-References: <20260605035030.3195141-1-rkannoth@marvell.com>
+ 15.2.2562.17; Fri, 5 Jun 2026 15:43:31 +0800
+Received: from 172.29.37.154 (172.29.37.152) by RS-EX-MBS2.realsil.com.cn
+ (172.29.17.102) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
+ Transport; Fri, 5 Jun 2026 15:43:31 +0800
+From: javen <javen_xu@realsil.com.cn>
+To: <andrew@lunn.ch>, <hkallweit1@gmail.com>, <linux@armlinux.org.uk>,
+	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <freddy_gu@realsil.com.cn>
+CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<daniel@makrotopia.org>, <vladimir.oltean@nxp.com>, Javen Xu
+	<javen_xu@realsil.com.cn>
+Subject: [PATCH net-next v3 1/4] net: phy: c45: add genphy_c45_soft_reset()
+Date: Fri, 5 Jun 2026 15:43:25 +0800
+Message-ID: <20260605074328.1800-2-javen_xu@realsil.com.cn>
+X-Mailer: git-send-email 2.50.1.windows.1
+In-Reply-To: <20260605074328.1800-1-javen_xu@realsil.com.cn>
+References: <20260605074328.1800-1-javen_xu@realsil.com.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20260605035030.3195141-1-rkannoth@marvell.com>
-X-Proofpoint-ORIG-GUID: _EKqDtP6hzgr3QSqqqZBDXajRjZlJplE
-X-Authority-Analysis: v=2.4 cv=DqNmPm/+ c=1 sm=1 tr=0 ts=6a227d06 cx=c_pps
- a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
- a=kj9zAlcOel0A:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=l0iWHRpgs5sLHlkKQ1IR:22 a=EAYMVhzMl8SCOHhVQcBL:22 a=M5GUcnROAAAA:8
- a=7kmLdAY-aSTHbD8AGr4A:9 a=CjuIK1q_8ugA:10 a=ZXulRonScM0A:10
- a=OBjm3rFKGHvpk9ecZwUJ:22 a=Oh551-UHZqmTy8JkqTUo:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjA1MDA3MiBTYWx0ZWRfX46103NKPTaSe
- natG0Jf/86sHbF8/WEp7P3GdRuoDM9Dx/JgC3nvf764iyqOiDqpWdH6LJLs09tgYBq2x0h4iqeq
- +TEHWPOBKpbCeVM5693jhDjRBrVZL0Fsm/ApluSmHx+HMh2DrVnrjqBwKIdk74h3SmqiUkj9Rdo
- gJAdAwYUNXqIpx0g1vBCn1rbZ71cOBdS7vs6M6QGKYZdIvmatZqEzy9CCel2nPKCwoHbsf2Tvoh
- 7ABkdVddTgJhE8+Id6Vc/Ad9GTDRK1Ikl2VOUZp7kFEORuJ6Y0zmE+NbDTUOzUr0V5TRk4o02ps
- zIy3tbgm+aYmbcDvN699lxTrLJukS7ODppCa0S2LhEsQBcaXyjyADfGME5oj9yF8S7m4uhyluy+
- +3GUimTewqJj0QLO4FaaluMBAKTeHkl8koPL344zhK6o45P5YJqJZtw15nxeOGI+oESn8JN2pmv
- i599JbRApoB07DTfrYw==
-X-Proofpoint-GUID: _EKqDtP6hzgr3QSqqqZBDXajRjZlJplE
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-05_01,2026-05-28_03,2025-10-01_01
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-On 2026-06-05 at 09:20:20, Ratheesh Kannoth (rkannoth@marvell.com) wrote:
-> This series extends Marvell octeontx2-af support for CN20K NPC (MCAM
-> debuggability, allocation policy, default-rule lifetime, optional KPU
-> profiles from firmware files, X2/X4 MCAM keyword handling in flows and
-> defaults, and dynamic CN20K NPC private state), adds a devlink mechanism
-> for multi-value parameters, and moves devlink_nl_param_fill() temporaries
-> to the heap so stack usage stays reasonable once union devlink_param_value
-> grows (patch 3).
->A
+From: Javen Xu <javen_xu@realsil.com.cn>
 
-Apologies. Mavell SMTP server had many issues which resulted delaying,requeing, resending
-emails. Sorry for the noise. Please abandon this set as another patch (same patch) is
-active.
-pw-bot: changes-requested
+Add a generic Clause 45 software reset helper. The helper sets the reset
+bit in the PMA/PMD control register and waits until the bit is cleared by
+hardware.
+
+Signed-off-by: Javen Xu <javen_xu@realsil.com.cn>
+---
+Changes in v2:
+ - no changes, new file
+
+Changes in v3:
+ - re-order function according to the order in phy-c45.c
+---
+ drivers/net/phy/phy-c45.c | 22 ++++++++++++++++++++++
+ include/linux/phy.h       |  1 +
+ 2 files changed, 23 insertions(+)
+
+diff --git a/drivers/net/phy/phy-c45.c b/drivers/net/phy/phy-c45.c
+index 126951741428..d8a83179ec40 100644
+--- a/drivers/net/phy/phy-c45.c
++++ b/drivers/net/phy/phy-c45.c
+@@ -384,6 +384,28 @@ int genphy_c45_check_and_restart_aneg(struct phy_device *phydev, bool restart)
+ }
+ EXPORT_SYMBOL_GPL(genphy_c45_check_and_restart_aneg);
+ 
++/**
++ * genphy_c45_soft_reset - software reset the PHY via Clause 45 PMA/PMD control register
++ * @phydev: target phy_device struct
++ *
++ * Return: 0 on success, negative errno on failure.
++ */
++int genphy_c45_soft_reset(struct phy_device *phydev)
++{
++	int ret, val;
++
++	ret = phy_set_bits_mmd(phydev, MDIO_MMD_PMAPMD, MDIO_CTRL1,
++			       MDIO_CTRL1_RESET);
++	if (ret < 0)
++		return ret;
++
++	return phy_read_mmd_poll_timeout(phydev, MDIO_MMD_PMAPMD,
++					 MDIO_CTRL1, val,
++					 !(val & MDIO_CTRL1_RESET),
++					 5000, 100000, true);
++}
++EXPORT_SYMBOL_GPL(genphy_c45_soft_reset);
++
+ /**
+  * genphy_c45_aneg_done - return auto-negotiation complete status
+  * @phydev: target phy_device struct
+diff --git a/include/linux/phy.h b/include/linux/phy.h
+index 199a7aaa341b..25a66320df56 100644
+--- a/include/linux/phy.h
++++ b/include/linux/phy.h
+@@ -2309,6 +2309,7 @@ int genphy_c37_read_status(struct phy_device *phydev, bool *changed);
+ /* Clause 45 PHY */
+ int genphy_c45_restart_aneg(struct phy_device *phydev);
+ int genphy_c45_check_and_restart_aneg(struct phy_device *phydev, bool restart);
++int genphy_c45_soft_reset(struct phy_device *phydev);
+ int genphy_c45_aneg_done(struct phy_device *phydev);
+ int genphy_c45_read_link(struct phy_device *phydev);
+ int genphy_c45_read_lpa(struct phy_device *phydev);
+-- 
+2.43.0
+
