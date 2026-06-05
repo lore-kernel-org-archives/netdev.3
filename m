@@ -1,110 +1,117 @@
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A56C2376BEC
-	for <netdev@vger.kernel.org>; Fri,  5 Jun 2026 16:03:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B28E3126B1;
+	Fri,  5 Jun 2026 16:06:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780675395; cv=none; b=bwOczUX8vun5oUHq1xXKtbaDPr3gBHNhEKEJvdjA8W9PbqimYxUbuNXz8+KHPW/VPEiDuCTZzMoXYg4lHKGXKirbrGFJe+n/ONU3feoK+wRdMhMBJpaRGexGvddDCaBpIatY32cY2kjax0dZ0P+39W/h7qiSXd9hjkcXnvfcrO4=
+	t=1780675575; cv=none; b=YLZf4R1xVPK2r4M8xjfERhTE7Hg+UKLECFpVgDZeygQi8QxBGWCaxXpEiVXasRSvYaqL+8a1aXOjcE8/l/5idzLj1iu816JiFcbmyHvYonG1riNa+30malDbyIyizWPo9is/PYhmsYzNSyzhs3iXVyukR39zv5eojfn+FWT0wtg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780675395; c=relaxed/simple;
-	bh=3Jk2TzG5gR2RH4+LwM3XSlFeV25EIj3RoPOfWA1O8Gs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PDnVW0BpEHFw/e2TH8/wdxtnKIuUlTT/DR7uEAjztJ0NbfwfigFN26hQXqt6iw5v4K8WWaFNQjxWvA0qQpWi+SjX8zFhtbf/hop7br7LFjREc/vJN+La9D/GYCJ0LgW801nfk6dXzAPvxyg08bq/AdksixhTXZqCoQhD4zQAVGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Db4VlMey; arc=none smtp.client-ip=209.85.218.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+	s=arc-20240116; t=1780675575; c=relaxed/simple;
+	bh=lbQ0ZHWF0gkTF8f1YGmLlH6N5pd9CUfqcDjT2PzWmrM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=F/vlczdGkKZwvt3w1zRdmPOMaMSQR1t8M49teDjM48l0vRnucrnRMWHMTspx/VcnukmEYXf503TVFV0n5CHOmq3TXzPUqO3DGNjYLEFC9zns74gklc8DwJzvmGEL5Jb/TKqdN5kbcfL6nHBuhnzaUqVUeA+P1DAXksQnDoq2oxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=zvphM/Ca; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Db4VlMey"
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-bef47b1ac01so334831166b.2
-        for <netdev@vger.kernel.org>; Fri, 05 Jun 2026 09:03:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1780675392; x=1781280192; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=y6UQFMgxs4xPTWbEaYQXP4WreuO3V04h3DiBWisQT8s=;
-        b=Db4VlMey7aOrXifHlB0bd3gFxZGcgccsE1dp/1r0znjB2M9Vpl5GmXTvUkTZwtgNIj
-         4+CPKJLrTN+zEGsJEgPDjX9lRyIEvq7sqyDk0dwfvxsi158HH4YthBarO40aW2/baXrA
-         hPRjncUvFeV2ihESB6RGuWVDJghPSZj5G5DaY=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780675392; x=1781280192;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=y6UQFMgxs4xPTWbEaYQXP4WreuO3V04h3DiBWisQT8s=;
-        b=qmhD7Uv4DNy4b7iPGz6epbSHngg0wIyAt6G3i5GYOT+WdmePTfnpwNpNbT6bmklnZv
-         N7HSqDg0L/pAkzdL+Xtjzqh8sT6BcVkj6RGI2RRinGW91lG/ajjzQy+SBU2jqkqd9ZTp
-         wl7XqYfAzimgjsv3VcP+7vh2nXde2Caml+3nWWFL9O0LOOZclj8KosegMPp2apcDWVas
-         8CmW6KvQHGXvDI5OrVqchOXzIuWiSliHg2RS5qmFUYtmKrdVjzqlXX8cXuAgkQ/OMH35
-         WqyM4LeQ9IrqcwlTkzn9pE7527wF2uBvoG9qwIeoe4YAH3NgbuWvrvaPU9qOuEVToJ74
-         eS2w==
-X-Forwarded-Encrypted: i=1; AFNElJ87PElJBDrqODq2mxXE/kBeaEMUNlAoaPOUdVuTjEUNz9OMlviGJT/jK/W4SK+hdSjW54XMKHY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzbjFj4NF0GBJAuLdnAJpKBpM13rIDIvx/qXANNZDqAml1Cjn6x
-	r2of6ofDKvfQnxgw1+58MjEVenrGdsQJKsxYwYf9wxxs1HjRpnvStHwcIptnVxYSDBjlBi+MENE
-	75GiUPPn3rw==
-X-Gm-Gg: Acq92OETWkDmXTx/Pnz286zopfFFOu1Sk7po+B/SMJb9UksA7ym/nYB0Dd5HZwdvnvE
-	vVIlxwIlQfRhjZxZTxJ+xc/jKC5sLxbbLemrwPmRoppkJsndAjYYxb26AmTE1Epn4Z6/HMr2wg5
-	t5xShzcA3qTI+f6FdwUiDFkNblMm592EsdXHpllVI9snJ6AjDOj1KJDoq+SHE3/294UKQiSiPux
-	l+GDd5MQYPKMZF4AzFI06j/NNUXz5fht3P4mX/dCBuxE6jujoW+Euz0HrRj2HUwK9lY95LnERqD
-	sP3Xa02lDPVSz6Bxtd9rGdjLOepCNijVlLuuYLHlZK7kV0uajQXJNDb8bfjCsvBexQBkreLU0pL
-	agDzV/8/PY2cSnbOTT5i0dTNJGHeQxK1hJpYblzUQC8g3YagZCI5ye+1yQ+zEF7Dc+JvSMjKJF2
-	1PfHN6CFxUy4+ZaxS2gdjV7RruXMMZshmrEPSPZgfDF9V0HuM1oYEFk+uMPXZydGnnYBn4SxEy4
-	cSDZCLqRno=
-X-Received: by 2002:a17:906:846a:b0:bed:19af:f8a7 with SMTP id a640c23a62f3a-bf36fd9c54fmr145946766b.9.1780675391792;
-        Fri, 05 Jun 2026 09:03:11 -0700 (PDT)
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com. [209.85.218.44])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bf052097992sm502073366b.26.2026.06.05.09.03.10
-        for <netdev@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 05 Jun 2026 09:03:11 -0700 (PDT)
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-bdb3fd39045so267022466b.3
-        for <netdev@vger.kernel.org>; Fri, 05 Jun 2026 09:03:10 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ9n9OmvNf35DdeN6uGvM4zDr3zBskulfW4Si8TIAeHR1IrPy9yCohr79LmX0Zrq0Ws4XS4jnWs=@vger.kernel.org
-X-Received: by 2002:a17:907:9686:b0:bee:323d:1239 with SMTP id
- a640c23a62f3a-bf372e1e4fdmr260752266b.38.1780675389972; Fri, 05 Jun 2026
- 09:03:09 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="zvphM/Ca"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 6F166C58478;
+	Fri,  5 Jun 2026 16:06:11 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 9FF855FED1;
+	Fri,  5 Jun 2026 16:06:11 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 50A83106A2533;
+	Fri,  5 Jun 2026 18:05:47 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1780675569; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=xk45BjVakQOeHi7wm8QKE6eINYQ/jNZGrkwgZV41tIw=;
+	b=zvphM/CawlI8lv+bypTyNGk5QI0aaFSd+ta/nOlof5HxsbAqYwrTcdlBWPnIuvZ2nkCCPu
+	hbcuN8XA2utGYiVw3vAMz/EUcccOZ6nAVIPhuIwnmU/ZvEKqcCf+mrXrS7xQPsGjH5VnyL
+	jfU+2CYStZaWkh9I/v2V82G2VXEFEMjU8prhXTzet2GaJQCHCWFcuFFJnXiVHMYzele/m8
+	M2jI6t+La0RoeTKiZzWM/fX9/gkeeAapQr2r4/psEj0S1ukX9nQtJ224jAudfxQR6QRZIR
+	I2AoympPGcN2+ig3zx84LnAejH56/NY9zf9b6R90qA0XuuKGwk4feZJ5SaU+tg==
+Message-ID: <c60d1819-18d7-4d4c-a997-586599323d7e@bootlin.com>
+Date: Fri, 5 Jun 2026 18:05:47 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260531010107.1953702-1-safinaskar@gmail.com>
- <20260531010107.1953702-3-safinaskar@gmail.com> <d9806b34-fc73-4878-997a-95c5e8ae4b29@sirena.org.uk>
-In-Reply-To: <d9806b34-fc73-4878-997a-95c5e8ae4b29@sirena.org.uk>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Fri, 5 Jun 2026 09:02:52 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wjBZAzPdZgEeHAtSiwJpomt8ZZgKbixuiHfRm09a4=PtA@mail.gmail.com>
-X-Gm-Features: AVVi8CdZ5f-_r2ry70kDuq_xsye2rLgypwsymONxqFNfT92KlgrDUIUXs4-jBmo
-Message-ID: <CAHk-=wjBZAzPdZgEeHAtSiwJpomt8ZZgKbixuiHfRm09a4=PtA@mail.gmail.com>
-Subject: Re: [PATCH 2/3] vmsplice: make vmsplice a trivial wrapper for preadv2/pwritev2
-To: Mark Brown <broonie@kernel.org>
-Cc: Askar Safin <safinaskar@gmail.com>, linux-fsdevel@vger.kernel.org, 
-	Christian Brauner <brauner@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-api@vger.kernel.org, 
-	netdev@vger.kernel.org, Matthew Wilcox <willy@infradead.org>, Jens Axboe <axboe@kernel.dk>, 
-	Christoph Hellwig <hch@infradead.org>, David Howells <dhowells@redhat.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Pedro Falcato <pfalcato@suse.de>, Aiswharya.TCV@arm.com, ltp@lists.linux.it, 
-	Miklos Szeredi <miklos@szeredi.hu>, patches@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v2 13/14] net: stmmac: tc956x: add TC956x/QPS615
+ support
+To: Alex Elder <elder@riscstar.com>, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, rmk+kernel@armlinux.org.uk, andersson@kernel.org,
+ konradybcio@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, linusw@kernel.org, brgl@kernel.org, arnd@arndb.de,
+ gregkh@linuxfoundation.org
+Cc: Daniel Thompson <daniel@riscstar.com>, mohd.anwar@oss.qualcomm.com,
+ a0987203069@gmail.com, alexandre.torgue@foss.st.com, ast@kernel.org,
+ boon.khai.ng@altera.com, chenchuangyu@xiaomi.com, chenhuacai@kernel.org,
+ daniel@iogearbox.net, hawk@kernel.org, hkallweit1@gmail.com,
+ inochiama@gmail.com, john.fastabend@gmail.com, julianbraha@gmail.com,
+ livelycarpet87@gmail.com, mcoquelin.stm32@gmail.com, me@ziyao.cc,
+ prabhakar.mahadev-lad.rj@bp.renesas.com, richardcochran@gmail.com,
+ rohan.g.thomas@altera.com, sdf@fomichev.me, siyanteng@cqsoftware.com.cn,
+ weishangjuan@eswincomputing.com, wens@kernel.org, netdev@vger.kernel.org,
+ bpf@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-gpio@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20260605010022.968612-1-elder@riscstar.com>
+ <20260605010022.968612-14-elder@riscstar.com>
+Content-Language: en-US
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+In-Reply-To: <20260605010022.968612-14-elder@riscstar.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Fri, 5 Jun 2026 at 04:02, Mark Brown <broonie@kernel.org> wrote:
->
-> FWIW this is triggering a failure in the LTP vmsplice01 test case (which
-> sends with a vmsplice() and then tries to read that with a splice()) in
-> -next:
->
-> | tst_tmpdir.c:316: TINFO: Using /tmp/LTP_vmsp3vEmQ as tmpdir (tmpfs filesystem)
-> | L4471tst_test.c:2047: TINFO: LTP version: 20260130
-> | L4472tst_test.c:2050: TINFO: Tested kernel: 7.1.0-rc6-next-20260604 #1 SMP @1780589917 armv7l
-> | L4473tst_kconfig.c:71: TINFO: Couldn't locate kernel config!
-> | L4474tst_test.c:1875: TINFO: Overall timeout per run is 0h 00m 30s
+Hi Alex,
 
-I htink this is the same thing that Christian already noted (he said
-"reported by David", but I don't know which David ;), where the
-vmsplice() writev() emulation was done as a blocking write, even
-though vmsplice only blocked at the beginning (ie waiting only for
-_initial_ space to write, not then blocking afterwards).
+On 6/5/26 03:00, Alex Elder wrote:
+> From: Daniel Thompson <daniel@riscstar.com>
+> 
+> Toshiba TC956x is an Ethernet AVB/TSN bridge and is essentially a
+> small and highly-specialized SoC. TC956x includes an "eMAC" subsystem
+> that can be accessed, along with several other peripherals, via two
+> PCIe endpoint functions. There is a main driver for the endpoint that
+> decomposes things and creates auxiliary bus devices to model the SoC.
+> 
+> The eMAC consists of a Designware XGMAC, XPCS and PMA. Each eMAC is
+> supported by an MSIGEN that bridges TC956x level interrupts to PCIe
+> MSIs.
+> 
+> Add a driver for the eMAC/MSIGEN combination.
+> 
+> Co-developed-by: Alex Elder <elder@riscstar.com>
+> Signed-off-by: Alex Elder <elder@riscstar.com>
+> Signed-off-by: Daniel Thompson <daniel@riscstar.com>
+> ---
+[...]
 
-                 Linus
+> +static int tc956x_lookup_max_speed(phy_interface_t phy_interface)
+> +{
+> +	switch (phy_interface) {
+> +	case PHY_INTERFACE_MODE_SGMII:
+
+The SGMII definition we use in the kernel is the Cisco SGMII de-facto
+standard that only supports 10/100/1000M. Some vendors use flavours with
+names such as HS-SGMII and such, that's basically SGMII clocked at 2.5G
+with aneg disabled. It kinda becomes 2500BaseX then.
+
+So all in all, we don't support 2500M on SGMII.
+
+> +	case PHY_INTERFACE_MODE_2500BASEX:
+> +		return SPEED_2500;
+> +
+> +	default:
+> +		return -EOPNOTSUPP;
+> +	}
+
+Maxime
