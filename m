@@ -1,33 +1,33 @@
 Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34F6444D68A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34ED341C31B
 	for <netdev@vger.kernel.org>; Fri,  5 Jun 2026 07:20:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780644020; cv=none; b=hNcGQwIfJhpPvfys36ti5mh2Vd9RlAOZkpMed5tO/EaTlJqPbfK88Y5CEhHhgkCsK9PQOKFvbtk2vQvNEKGDqYa2qjL6KBTTMNhprQEtsY6Z5YNIol1EbUQ7tBH5BRowDeIV93o9OHJy58lpz9N6WVCI5Pjn9gNQ6rokEC/Kcj4=
+	t=1780644020; cv=none; b=SKDKxOx9x6hjjZAn64CDp9ZPxOWsHBsLyrg/yngP5N4cr+tU1DDf73WhDJQqe9/SgBzxq90yueksCOSL+4WExcXkklTwDqcOAZYRR01sD1MktQAgw6jwXR+e72l9A5/ddUmSjZ0GKIPehr8zSL7MFxMNPdO2oD0KWhtMTFgXCcE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1780644020; c=relaxed/simple;
-	bh=wfI5gPH4XkvFrt3lvuE7ERq7EJqyU2XvSp91TeTePMQ=;
+	bh=Obsha1/QLQjEyGmsc+3yvBUqvXx+6H5BtGwJmefMfP8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gIFrfsw9lLFF1Mzwm22NBQ8QMI7HuDmiyCunnXemv/d+4OmyJfwSYRBU5k1Xm1wDA0tYkbZK0bUmOS0zsodX/CdxzKiRxb1ZdJZu9SptQqzk6e7Y9ertc5WcDiDRkV6NAyFmr8MpXjYuRjRIYsC98QkhzaBuOQizZBmOhTIWxss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=RaHn+Uxw; arc=none smtp.client-ip=23.88.38.48
+	 MIME-Version; b=iwqpb2LGgbLGiHywIK2P/sG+afIUDvJPygeFM7WD3AB77bIl58lUJs4jkx1Lo1WnszHe3Q5ovBsYidyM7CAt1/CsZoDuQ1Xt6Xb8KGlZWuePC9fJH/3RbDrIU60AeDPEGxKRfGmD8p1BRSUioJ0nlxCrnmIFx6VPusKolXBBIcw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=w1GDLF2t; arc=none smtp.client-ip=23.88.38.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="RaHn+Uxw"
+	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="w1GDLF2t"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=simonwunderlich.de;
-	s=09092022; t=1780644017;
+	s=09092022; t=1780644016;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=dwwDQk/o0iE4YuAUidfs7nDM7wYXtXm46RbYWVM/OnI=;
-	b=RaHn+UxwTY05k7h3JSOpPEmjfA+ZKR3+yqksxOWtYbOPI7qDCsIfBJiJkGr3LqyhzTeDZo
-	/nrd9Kj/HblE+KNko565FI5V9Ls+2YQZcJGtGV6XZg+BYSaYPl3KICfAC3mp371PXrcFrz
-	jVMi7FYCc9f0K2KVYCp00wZRpkUAOjmsgPsSTEi9hIPW2M0FBz0nZprJ/M1N8kPZfqW3kg
-	PZQqj7ea6Etc//FyR8xgTC+ODBrcvQjNflgsmTyqGeSb8tHmhmGH51JcqgBD/wVNXKmJfb
-	pe+0rNs7GWtialp/I/GlgIoZim4UJ7gPadIN41qyHOa1sFksRuT9kGvLBc36Lw==
+	bh=8JwYgpPGj+vXgN7oOZfclO+SwAYin1aQSzciPTokuxk=;
+	b=w1GDLF2t3VGcrkDgrUcMHn2iQelb6ktbar4gRzbMv1qeJ3xZ87vMuWkwnEyNdgVmpqpHD0
+	6IgHjKUg7eSYtyEO0Wc9mnbFAj+L413hsR2k5UyO145iJMc7O4DQzCWJrungqSNcp2Rxir
+	eJKACQRtPpNFZsqxMHEZHt1Oxa6PKQgvPe5DtKoJKWby8/AINHyqmRlhh21HFbDaJk9+oz
+	zkYbjyszIQYiosW+8JUY4ALUC42B5jtJ6j8nKn5Lpjy8chE33phzHxrHfh8mclGdfbb1CR
+	2aDcevlC9rKC0+CgpW5mk8NMGmbwEyPLrwWidXHC7nJL6CtxatPzvsTntEcrAA==
 From: Simon Wunderlich <sw@simonwunderlich.de>
 To: netdev@vger.kernel.org
 Cc: "David S. Miller" <davem@davemloft.net>,
@@ -38,9 +38,9 @@ Cc: "David S. Miller" <davem@davemloft.net>,
 	b.a.t.m.a.n@lists.open-mesh.org,
 	Sven Eckelmann <sven@narfation.org>,
 	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH net-next 08/11] batman-adv: bla: update stale kernel-doc
-Date: Fri,  5 Jun 2026 09:20:02 +0200
-Message-ID: <20260605072005.490368-9-sw@simonwunderlich.de>
+Subject: [PATCH net-next 07/11] batman-adv: tp_meter: update stale kernel-doc after refactoring
+Date: Fri,  5 Jun 2026 09:20:01 +0200
+Message-ID: <20260605072005.490368-8-sw@simonwunderlich.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260605072005.490368-1-sw@simonwunderlich.de>
 References: <20260605072005.490368-1-sw@simonwunderlich.de>
@@ -54,78 +54,143 @@ Content-Transfer-Encoding: 8bit
 
 From: Sven Eckelmann <sven@narfation.org>
 
-The bridge-loop-avoidance code was changed recently to avoid inconsistent
-state and race condition problems. The kernel-doc addded in these commits
-(and related code) has various minor deficits which are now resolved.
+The tp_meter codebase was recently refactored:
+
+* throughput meter sender and receiver variables were split into
+  two different structures
+* the congestion control variables were extracted in a separate structure
+
+But the kernel-doc was not updated everywhere to reflect these changes.
 
 Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
 ---
- net/batman-adv/bridge_loop_avoidance.c |  2 +-
- net/batman-adv/bridge_loop_avoidance.h |  2 +-
- net/batman-adv/types.h                 | 10 +++++++---
- 3 files changed, 9 insertions(+), 5 deletions(-)
+ net/batman-adv/tp_meter.c | 16 ++++++++--------
+ net/batman-adv/types.h    | 14 ++++++++------
+ 2 files changed, 16 insertions(+), 14 deletions(-)
 
-diff --git a/net/batman-adv/bridge_loop_avoidance.c b/net/batman-adv/bridge_loop_avoidance.c
-index 0bd24a19ff202..5c73f6ba16cff 100644
---- a/net/batman-adv/bridge_loop_avoidance.c
-+++ b/net/batman-adv/bridge_loop_avoidance.c
-@@ -123,7 +123,7 @@ static bool batadv_compare_backbone_gw(const struct hlist_node *node,
-  * @node: list node of the first entry to compare
-  * @data2: pointer to the second claims
+diff --git a/net/batman-adv/tp_meter.c b/net/batman-adv/tp_meter.c
+index a404d70e053e2..7e98cbfbbb70d 100644
+--- a/net/batman-adv/tp_meter.c
++++ b/net/batman-adv/tp_meter.c
+@@ -289,7 +289,7 @@ batadv_tp_list_find_sender(struct batadv_priv *bat_priv, const u8 *dst)
+  * @bat_priv: the bat priv with all the mesh interface information
+  * @dst: the other endpoint MAC address to look for
   *
-- * Return: true if the claim have the same data, 0 otherwise
-+ * Return: true if the claims have the same data, false otherwise
+- * Return: if matching session with @dst was found
++ * Return: true if a matching session with @dst was found, false otherwise
   */
- static bool batadv_compare_claim(const struct hlist_node *node,
- 				 const void *data2)
-diff --git a/net/batman-adv/bridge_loop_avoidance.h b/net/batman-adv/bridge_loop_avoidance.h
-index 8673a265995ff..06c7dfb8c677f 100644
---- a/net/batman-adv/bridge_loop_avoidance.h
-+++ b/net/batman-adv/bridge_loop_avoidance.h
-@@ -21,7 +21,7 @@
-  *  detect frame sent by bridge loop avoidance
-  * @mac: mac address to check
+ static bool batadv_tp_list_active(struct batadv_priv *bat_priv, const u8 *dst)
+ 	__must_hold(&bat_priv->tp_list_lock)
+@@ -355,7 +355,7 @@ batadv_tp_list_find_sender_session(struct batadv_priv *bat_priv, const u8 *dst,
+ /**
+  * batadv_tp_vars_common_release() - release batadv_tp_vars_common from lists
+  *  and queue for free after rcu grace period
+- * @ref: kref pointer of the batadv_tp_vars
++ * @ref: kref pointer of the batadv_tp_vars_common
+  */
+ static void batadv_tp_vars_common_release(struct kref *ref)
+ {
+@@ -391,7 +391,7 @@ static void batadv_tp_sender_put(struct batadv_tp_sender *tp_vars)
+ }
+ 
+ /**
+- * batadv_tp_list_detach() - remove tp receiver session from mesh session list once
++ * batadv_tp_list_detach() - remove tp session from mesh session list once
+  * @tp_vars: the private data of the current TP meter session
   *
-- * Return: true if the it looks like a loop detect frame
-+ * Return: true if it looks like a loop detect frame
-  * (mac starts with BA:BE), false otherwise
+  * Return: whether tp_vars was detached from list and reference must be freed
+@@ -509,7 +509,7 @@ static void batadv_tp_sender_finish(struct work_struct *work)
+  * batadv_tp_reset_sender_timer() - reschedule the sender timer
+  * @tp_vars: the private TP meter data for this session
+  *
+- * Reschedule the timer using tp_vars->rto as delay
++ * Reschedule the timer using tp_vars->cc.rto as delay
   */
- static inline bool batadv_bla_is_loopdetect_mac(const uint8_t *mac)
+ static void batadv_tp_reset_sender_timer(struct batadv_tp_sender *tp_vars)
+ {
+@@ -621,9 +621,9 @@ static void batadv_tp_fill_prerandom(struct batadv_tp_sender *tp_vars,
+  *
+  * Create and send a single TP Meter message.
+  *
+- * Return: 0 on success, BATADV_TP_REASON_DST_UNREACHABLE if the destination is
+- * not reachable, BATADV_TP_REASON_MEMORY_ERROR if the packet couldn't be
+- * allocated
++ * Return: 0 on success, BATADV_TP_REASON_MEMORY_ERROR if the packet couldn't
++ * be allocated, BATADV_TP_REASON_CANT_SEND if the packet could not be
++ * transmitted
+  */
+ static int batadv_tp_send_msg(struct batadv_tp_sender *tp_vars, const u8 *src,
+ 			      struct batadv_orig_node *orig_node,
+@@ -913,7 +913,7 @@ static int batadv_tp_wait_available(struct batadv_tp_sender *tp_vars, size_t ple
+  * batadv_tp_send() - main sending thread of a tp meter session
+  * @arg: address of the related tp_vars
+  *
+- * Return: nothing, this function never returns
++ * Return: 0
+  */
+ static int batadv_tp_send(void *arg)
+ {
 diff --git a/net/batman-adv/types.h b/net/batman-adv/types.h
-index a7fa0d9e09288..5fd5bd358a249 100644
+index 5eb0371def83a..a7fa0d9e09288 100644
 --- a/net/batman-adv/types.h
 +++ b/net/batman-adv/types.h
-@@ -1723,22 +1723,26 @@ struct batadv_priv {
+@@ -1331,7 +1331,7 @@ struct batadv_tp_unacked {
+ 	/** @len: length of the packet */
+ 	u16 len;
  
- #ifdef CONFIG_BATMAN_ADV_BLA
+-	/** @list: list node for &batadv_tp_vars.unacked_list */
++	/** @list: list node for &batadv_tp_vars_common.unacked_list */
+ 	struct list_head list;
+ };
  
+@@ -1367,7 +1367,9 @@ struct batadv_tp_vars_common {
+ 	struct rcu_head rcu;
+ };
+ 
+-/** struct batadv_tp_sender_cc - congestion control variables */
 +/**
-+ * enum batadv_bla_backbone_gw_state - state of a bridge loop avoidance
-+ *  backbone gateway
++ * struct batadv_tp_sender_cc - congestion control variables
 + */
- enum batadv_bla_backbone_gw_state {
- 	/**
- 	 * @BATADV_BLA_BACKBONE_GW_STOPPED: backbone gw is being removed
--	 * and it must not longer work on requests
-+	 * and it must no longer work on requests
- 	 */
- 	BATADV_BLA_BACKBONE_GW_STOPPED,
+ struct batadv_tp_sender_cc {
+ 	/** @fast_recovery: true if in Fast Recovery mode */
+ 	bool fast_recovery:1;
+@@ -1410,7 +1412,7 @@ struct batadv_tp_sender_cc {
+  * struct batadv_tp_sender - sender tp meter private variables per session
+  */
+ struct batadv_tp_sender {
+-	/** @common: common batadv_tp_vars (best be first member) */
++	/** @common: common batadv_tp_vars_common (must be first member) */
+ 	struct batadv_tp_vars_common common;
  
- 	/**
- 	 * @BATADV_BLA_BACKBONE_GW_UNSYNCED: backbone was detected out
--	 * of sync and a request was send. No traffic is forwarded until the
-+	 * of sync and a request was sent. No traffic is forwarded until the
- 	 * situation is resolved
- 	 */
- 	BATADV_BLA_BACKBONE_GW_UNSYNCED,
+ 	/** @start_time: start time in jiffies */
+@@ -1437,7 +1439,7 @@ struct batadv_tp_sender {
+ 	/** @cc: congestion control variables */
+ 	struct batadv_tp_sender_cc cc;
  
- 	/**
--	 * @BATADV_BLA_BACKBONE_GW_SYNCED: backbone is consider to be in
-+	 * @BATADV_BLA_BACKBONE_GW_SYNCED: backbone is considered to be in
- 	 * sync. traffic can be forwarded
- 	 */
- 	BATADV_BLA_BACKBONE_GW_SYNCED,
+-	/** @cc_lock: lock do protect @cc */
++	/** @cc_lock: lock to protect @cc */
+ 	spinlock_t cc_lock;
+ 
+ 	/** @tot_sent: amount of data sent/ACKed so far */
+@@ -1460,7 +1462,7 @@ struct batadv_tp_sender {
+  * struct batadv_tp_receiver - receiver tp meter private variables per session
+  */
+ struct batadv_tp_receiver {
+-	/** @common: common batadv_tp_vars (best be first member) */
++	/** @common: common batadv_tp_vars_common (must be first member) */
+ 	struct batadv_tp_vars_common common;
+ 
+ 	/** @receiving: receiving binary semaphore: 1 if receiving, 0 is not */
+@@ -1662,7 +1664,7 @@ struct batadv_priv {
+ 	/** @forw_bcast_list_lock: lock protecting forw_bcast_list */
+ 	spinlock_t forw_bcast_list_lock;
+ 
+-	/** @tp_list_lock: spinlock protecting @tp_list */
++	/** @tp_list_lock: spinlock protecting @tp_sender_list + @tp_receiver_list */
+ 	spinlock_t tp_list_lock;
+ 
+ 	/** @tp_num: number of currently active tp sessions */
 -- 
 2.47.3
 
