@@ -1,80 +1,82 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0852317143
-	for <netdev@vger.kernel.org>; Fri,  5 Jun 2026 01:16:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1279A37F01D;
+	Fri,  5 Jun 2026 01:20:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780622165; cv=none; b=hAyB9Mi82fp2SBmsdPIHOrFIDEUD6ZR+ogZ0vb10cjGKQUPqL5VjFPfxceKtr6m2UIqX4jHxlqi/nI7hTT1e134/HE6g101b2EU+Bd2WK9Lp3icI/atzimpyKG8Ul/7hYGSonoTwh7jv1Nzcg+4DSDkCxzpcihXvKIbdLQ1ySN8=
+	t=1780622418; cv=none; b=oIYXrP6ZDZG/zItVTJ1qljkcl5zoVCUMKunxV8ZF5z6+MjTB/DLfmXGIkm/CI1dGV5OvO28xApXlor6Y6wvwlgQuHMnCzMoz07yflJvFzHhq9vNTJBwkCy9eN4efsrz7oJ74FMH7xWvGtmXM8xl0y5fFuVunj6SEKyRQ2O4f4fM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780622165; c=relaxed/simple;
-	bh=JFxTH3jKe4KFsjjZCpsw19+ny/is1Ss9MtWJgF894ts=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=t67dGtk4og2END/bbUlTEZJDBA8klEYtsV6InuMZCXOW9mhWrQ03V2nUzgLpjVKjhH++CbOCbcFu6jt69wX2XrZpuLRkE5zVubpWVGKB7IDJn4ZxCpIxZ/2C5Z7L6E6mbrgQ4kcHGsyOtfgBxx1V9CnQQT3IIkVXvXdMgYeDqGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dO78WiEV; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780622418; c=relaxed/simple;
+	bh=wgeL6N30aqp3zg58queOOBPIFVvApd+fuUMotuwatBc=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=C/wIJNWo4iWZBcQvbfjZVWHvCr0TbrXuKc1E+lNjqRVzuiMyo10JKO/mlDVF6o+nIEQ4pL1ihcT31pweWWroXvddSH2nxHR1fPPFVmBvjwsDFA/HRlKYkZHC4lToaVOLp5WiiC6QoydgNwkamnUdw0LB0vbMx+sUUGtQf3WpM0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hIk4yk3e; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dO78WiEV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CEE51F00893;
-	Fri,  5 Jun 2026 01:16:00 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hIk4yk3e"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 728471F00898;
+	Fri,  5 Jun 2026 01:20:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780622160;
-	bh=hkRL85CKlA0+NNH016iTsIqEMiEm4bunDrOSFpr4B4M=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=dO78WiEVFdsnjvYDgdEtWf1X4u+Ic/n2nycek/dma1uyfBpQvzKuvB81Utm3ksafY
-	 eW7d+ZaEuFPXrofQLeH4ogUXthLHdt42bFLyb5JQWJ9mcARbDxz/G8u5JdIMizA4PH
-	 NZpvakPbad8EmdX1UwEe1vqKeMwwaCJ9aSfsGpfQ9wD7CJIITcxUUJDAwx0hI+B1xw
-	 N1o9YeR7qxRCUL7TEBRco7uARNomeCFziKpHug7HZlxZExrs/D84mbAjYtDLE8zK7k
-	 6AZod71LZyaTxLdqkKHmRRC8Fa8+MRzmRZkOuh6FWIXqSlkOUOvIR0ciJUnXOO898j
-	 YvQRO8L0SOkEQ==
-Message-ID: <8d1c122a-829b-4812-86dc-ec3e0b1e1a9e@kernel.org>
-Date: Thu, 4 Jun 2026 19:15:59 -0600
+	s=k20260515; t=1780622412;
+	bh=C14zNPeB9pcCuzhIAG02oq/Y2iKdXBs1TI/eaNKG/PY=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=hIk4yk3eOKjsZICW1ttEmm9XrDJ1f9dRz9wATZmMQo7poF/MBFZTxDfIHWEfYobok
+	 ZrU6uWzwhbceIYPzL0ZZ1541N/Ni/++CWHxqx/XAMNoEPLCEmgvU6zH8W9P9S5TUty
+	 r3Q4QtKAubFE4UFrY6ZXRhhgBJ6HdXv/nkjFzyLZCg0yB2izhe191K+Oa8NCYatuuF
+	 CzEocS25Ouqlub5hk3N7kw1mWjIegAr52RFyYI6QejHBY2Q+sQSvB8FOjhu9+lq52i
+	 ytYAwB1aHQM4iNk+DTCEptWLauN+tDPXQBMNd3uEo0Qwb8CtDbzmeicBcevrzGGzid
+	 OHyzHnZRuiF+A==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 569663930A8A;
+	Fri,  5 Jun 2026 01:20:14 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next] ipv6: remove obsolete EXPORT_SYMBOL() and
- EXPORT_SYMBOL_GPL()
-Content-Language: en-US
-To: Eric Dumazet <edumazet@google.com>, "David S . Miller"
- <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
- netdev@vger.kernel.org, eric.dumazet@gmail.com
-References: <20260604174555.2801532-1-edumazet@google.com>
-From: David Ahern <dsahern@kernel.org>
-In-Reply-To: <20260604174555.2801532-1-edumazet@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next v2 0/2] rndis_host: add LE310X1 ID and enable
+ low-power handling
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178062241289.3090676.11112897312784678410.git-patchwork-notify@kernel.org>
+Date: Fri, 05 Jun 2026 01:20:12 +0000
+References: <tencent_29CB862D5756CBCBAFD2EE436EBAC98A7E05@qq.com>
+In-Reply-To: <tencent_29CB862D5756CBCBAFD2EE436EBAC98A7E05@qq.com>
+To: Shaoxu Liu <shaoxul@foxmail.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, linux-usb@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 
-On 6/4/26 11:45 AM, Eric Dumazet wrote:
-> These symbols don't need to be exported, they are only used from vmlinux:
-> 
-> - inet6addr_notifier_call_chain
-> - inet6addr_validator_notifier_call_chain
-> - in6addr_linklocal_allnodes
-> - in6addr_linklocal_allrouters
-> - in6addr_interfacelocal_allnodes
-> - in6addr_interfacelocal_allrouters
-> - in6addr_sitelocal_allrouters
-> - inet6_cleanup_sock
-> - ip6_sk_dst_lookup_flow
-> - ipv6_proxy_select_ident
-> - ip6_sk_update_pmtu
-> - ip6_sk_redirect
-> 
-> Signed-off-by: Eric Dumazet <edumazet@google.com>
-> ---
->  net/ipv6/addrconf_core.c | 6 ------
->  net/ipv6/af_inet6.c      | 1 -
->  net/ipv6/ip6_output.c    | 1 -
->  net/ipv6/output_core.c   | 1 -
->  net/ipv6/route.c         | 2 --
->  5 files changed, 11 deletions(-)
-> 
+Hello:
 
-Reviewed-by: David Ahern <dsahern@kernel.org>
+This series was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Tue,  2 Jun 2026 17:05:26 +0800 you wrote:
+> This series adds RNDIS support for Telit Cinterion LE310X1 and then enables
+> USB power management for that specific ID.
+> 
+> v2:
+> - split v1 single patch into two patches, per review
+> - patch 1: add LE310X1 USB ID only
+> - patch 2: enable power management only for LE310X1
+> - improve commit messages to separate enumeration from behavior change
+> - Link to v1: https://lore.kernel.org/netdev/<replace-with-v1-message-id>/
+> 
+> [...]
+
+Here is the summary with links:
+  - [net-next,v2,1/2] rndis_host: add Telit LE310X1 RNDIS USB ID
+    https://git.kernel.org/netdev/net-next/c/c847ff789f01
+  - [net-next,v2,2/2] rndis_host: enable power management for Telit LE310X1
+    https://git.kernel.org/netdev/net-next/c/3dfc7fe1d553
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
 
