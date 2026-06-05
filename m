@@ -1,103 +1,121 @@
-Received: from eidolon.nox.tf (eidolon.nox.tf [185.142.180.128])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ADED3B71B1
-	for <netdev@vger.kernel.org>; Fri,  5 Jun 2026 16:53:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.128
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DDB9364943
+	for <netdev@vger.kernel.org>; Fri,  5 Jun 2026 16:56:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780678390; cv=none; b=F94uySVSjXRqZqip5aI2h77m+hAmeGPgBAmMwXHokwFwwbIH+c/W/KlIyGrqfGzjBQNc8iQyHBl2J7UJ9DNcUmYycYa9aZv+CySzKLHo+KLRNM1+dII5ouF37LI4eFGbTlkI1uy/MGe+3Sut5bNL4PfnDIlfEUiXd1uCHY8HhhQ=
+	t=1780678610; cv=none; b=OkQKSHBznEUdD9utyzNoHrKFpU74e1nfceAAwkGLd+9VnNInmh8y6CcfqZ46TnElbSgpxG+qe0wkZXlwjUqLaHuNEECxuUubPti4C3PIOAqqMGElrt74K1KTRFXf+UOL8iRkDa4fv3LxYXG2DyPwZjeYP+NPQESmqZOq9xkSXes=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780678390; c=relaxed/simple;
-	bh=3YgQOYP4xXwMeX8FdVkgzOsBF/Im4M3INp1Vqgc7jck=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bydzoJy646LQwfmmaoSenTrZ5Sk8s+/iQj2C1a03nzOTHg7hCJ2n7VBnqn6zZkwp2fEBVRUBk6wOhVPe+KaR6pPjKJGXBESZbwsogaNYSBoxG8GpTnHRlpI7Fqane+9XNhwnEMc1Mk4wHgoWzvqsjItlYfOOfUlqB29hwGLpo5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=diac24.net; spf=pass smtp.mailfrom=diac24.net; arc=none smtp.client-ip=185.142.180.128
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=diac24.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=diac24.net
-Received: from [2a0e:c5c1:0:101:92af:12c8:1e35:e3a8] (helo=alea)
-	by eidolon.nox.tf with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <equinox@diac24.net>)
-	id 1wVXi9-00000003x9n-0BRG;
-	Fri, 05 Jun 2026 18:47:57 +0200
-Received: from equinox by alea with local (Exim 4.99.2)
-	(envelope-from <equinox@diac24.net>)
-	id 1wVXcN-00000000L80-0ZWb;
-	Fri, 05 Jun 2026 18:41:59 +0200
-From: David 'equinox' Lamparter <equinox@diac24.net>
-To: netdev@vger.kernel.org
-Cc: David 'equinox' Lamparter <equinox@diac24.net>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
+	s=arc-20240116; t=1780678610; c=relaxed/simple;
+	bh=d/cDT0ruaR9THqHE7wAti4oD73K1oJCeBXScG3umFvQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HsZZpoo9UDw68oBU7fr4EUYkph3rBVPQypN3CjupbZWBPdfpv4pyV7jSAKo9HMEBmgYRKQtD8bE92Uz+5EpQ43EYELN246q69i1dVgZsrFFbb63lHexUVReowWoY/fRAkV1TXoz1R5jQ7pFkXfZwS9OntJTcc16fDPNG6RCjFP0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DGLnEzMC; arc=none smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DGLnEzMC"
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2c0c1e0b0faso15515595ad.0
+        for <netdev@vger.kernel.org>; Fri, 05 Jun 2026 09:56:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780678608; x=1781283408; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=07Z9+e3inJcySCaf9Ls4BTaFTWY0Pppf5c+tjALyKsk=;
+        b=DGLnEzMC0aA6oOMptcEqzyZGTbXMRFHkBubeM86BkxJdQ3QjAn59LPR6sejHjDA+BE
+         2bkksarvA2u5f2zgXovnmh7dKC7soSa0BzsVLnR4qMm68vxDdIhbFhOAH+ggECP40Do9
+         H1jeeg1OLn9sxt+4CRpoPd+zmoUGGnH63VzW7pR8A5IzFbQyoV5hVvyb356x/jqiMJQz
+         LLwKwTgSNyDqMkpgDVidpeCPhRMkJFmkkoqakgs9cVndCuUKKK1V+roF+kdC1ck3OXNf
+         rv7v/HLtKRwqbBtyLS6GyGgdwSa8d5VbgDoZLTBCnsNWCSCPZYLMc8DcixxEq1IuNNG8
+         2/uw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780678608; x=1781283408;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=07Z9+e3inJcySCaf9Ls4BTaFTWY0Pppf5c+tjALyKsk=;
+        b=Ff3llxI6b3P0v6+vdbdAdXAtuA/1YASYsqDb9k1EYItbF5cwepgT8/O5fWJ06lXspk
+         4WMx9XD7c85zpj26xf3RR3ikoSCRCJsNQVbLMXYplcHf+6PLa4scvH4Y+yXhyiZ1WB2J
+         d4M3ESFGpX4CeDBIdLkL9vKPfIT8xV5AwvGrSrSVoeUds+j+blR1AYhuv8cRaTipvKCS
+         tHmhZe2bgPeARiffbdL6NYY8AMNwaeyR1uIs/MuVLeCs1D7ySUrp3ngPp05YndQrx5Gt
+         9+zCB/uGww5Izky0/fb0PaZDUAg8FMASSSbWCp70FRVXbv6+kOHZuAMZxXRo6k5hCH5P
+         faWg==
+X-Forwarded-Encrypted: i=1; AFNElJ/0PV9VcUy5f6vO5Bp02hoWjynCBryj8qIlO/HUoBFjyX5c4FiRoahUE6e7IItRV6C9+LeY0fw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyZ7CHEUilZ8lUCPmg/8x4WC8cuX/8v3hViEHsVDPgyPBkcD84p
+	WfnioY7GuiCuRPXupcKp4/Unq59kMDxJkuE00VTRHCftpufJx9xx71kf
+X-Gm-Gg: Acq92OFyItEf7lefm0CT1qQJn7pTiKzY/W62saDWUqII57QinNbvBDLN/tVUHzontc6
+	qIm15P6QcjFV1rXaCwgvg3hQrUmiOYywSyZ2UXXQZtltkv9u+12S6xdUJjxFMEda7BtTg6hVME4
+	nip7boi1USjcpNjm1ikbnL5noJCjNCrrXyPdXbJBgnh8Tl/1FW+lpKAoTE5aKMfBWsOBAKf5tKm
+	AnebDH4ZWRj5YpBGsdL0IZV3ROLvuuQYegnSQ5hmWZnJFC5AWIv04RHjfXm5+1iwnPMmrxWbTEg
+	EpG498e4CS+li8cJyzb3TJ2disnRQisNOZpWZ5BxyCKN04qwAs56JZ7okcwnJZVkTGVf6eGHVHQ
+	mfJ6E1HYpvo3XBZRd4vIskViVqStGTHerei6+YIY+w9QUJosikBEzZae43AAmcc0bn1oQnboQIq
+	LrPE0VgPaNZc8Od0wnxzSSiPIqqJIWS9WHFG7wg9y8qWBXJhJfm0q6FSI=
+X-Received: by 2002:a17:902:e790:b0:2bf:379b:53ed with SMTP id d9443c01a7336-2c1e821e5e8mr49794665ad.27.1780678608079;
+        Fri, 05 Jun 2026 09:56:48 -0700 (PDT)
+Received: from devvm29614.prn0.facebook.com ([2a03:2880:ff:71::])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c164f6dc92sm89653455ad.13.2026.06.05.09.56.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 05 Jun 2026 09:56:47 -0700 (PDT)
+Date: Fri, 5 Jun 2026 09:56:45 -0700
+From: Bobby Eshleman <bobbyeshleman@gmail.com>
+To: Stanislav Fomichev <sdf.kernel@gmail.com>
+Cc: Donald Hunter <donald.hunter@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH] if_ether.h: add 802.1AC, warn about GRE 0x00FE
-Date: Fri,  5 Jun 2026 18:41:44 +0200
-Message-ID: <20260605164144.81184-1-equinox@diac24.net>
-X-Mailer: git-send-email 2.53.0
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Gerd Hoffmann <kraxel@redhat.com>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	Shuah Khan <shuah@kernel.org>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
+	linux-kselftest@vger.kernel.org, sdf@fomichev.me,
+	razor@blackwall.org, daniel@iogearbox.net, almasrymina@google.com,
+	matttbe@kernel.org, skhawaja@google.com, dw@davidwei.uk,
+	Bobby Eshleman <bobbyeshleman@meta.com>
+Subject: Re: [PATCH net-next 3/4] selftests/net: ncdevmem: add -b option to
+ set rx-buf-size on bind
+Message-ID: <aiL/zQe7Ku7bKIJ6@devvm29614.prn0.facebook.com>
+References: <20260603-tcpdm-large-niovs-v1-0-f37a4ac6726c@meta.com>
+ <20260603-tcpdm-large-niovs-v1-3-f37a4ac6726c@meta.com>
+ <aiLsegSEGviNluv1@devvm7509.cco0.facebook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aiLsegSEGviNluv1@devvm7509.cco0.facebook.com>
 
-Because LLC wasn't complicated/annoying enough, there's 2 more
-"ethertypes" being used for it:
+On Fri, Jun 05, 2026 at 08:35:25AM -0700, Stanislav Fomichev wrote:
+> On 06/03, Bobby Eshleman wrote:
+> > From: Bobby Eshleman <bobbyeshleman@meta.com>
+> > 
+> > Add -b <bytes> to request a non-default niov size via
+> > NETDEV_A_DMABUF_RX_BUF_SIZE. When the value exceeds PAGE_SIZE,
+> > udmabuf_alloc() switches to an MFD_HUGETLB-backed memfd so each 2 MB
+> > hugepage produces one naturally-aligned sg entry.
+> > 
+> > Reject values > 2 MB up front: MFD_HUGETLB + udmabuf can only guarantee
+> > 2 MB per sg entry (one hugepage), so a larger rx_buf_size would fail the
+> > per-sg length/alignment check.
+> > 
+> > Add CONFIG_HUGETLBFS=y to drivers/net/hw/config so the new path is
+> > reachable in the CI kernels built for these tests.
+> 
+> I vaguely remember there was also some kernel cmdline argument to
+> reserve these? Do we need to also do something to NIPA to reserve 2MB
+> pages for this test? Or was it for 1GB pages?
 
-- 0x8870 is pretty "normal", it got standardized in
-  802.1AC-2016/Cor1-2018 for transporting LLC frames > 1500 bytes.
-  It simply replaces the length value (which is no longer encoded, and
-  must now be derived from the packet.)  The actual value dates back to
-  2001; https://datatracker.ietf.org/doc/html/draft-ietf-isis-ext-eth-01
-  (it was used without "proper" standardization for a long time)
+Good call, my little runner script when prototyping this adds these
+pages at runtime and I forgot to move it into the patch, we can have the
+py runner do this setup.
 
-- 0x00fe is a doozy - actually "invalid" depending on how you look at
-  it; it's used in GRE (and possibly GENEVE) tunnels to transport the
-  IS-IS routing protocol.  https://seclists.org/tcpdump/2002/q4/61 is
-  the best/oldest source I could find.  It's inspired by the 0xfe SAP
-  value, a GRE packet with protocol 0x00fe is followed by a payload "as
-  if" it was Ethernet with "<length> 0xfe 0xfe 0x03".  (Again the length
-  isn't encoded explicitly anymore.)
-
-The 0x00fe value is quite close to other values the kernel is using
-internally for various things (after all they "won't clash for 1500
-types").  Except this one does clash, and if someone unknowingly starts
-using it for something internal... we end up in a world of pain in
-getting IS-IS running on GRE tunnels.  Hence the "WARNING".
-
-Signed-off-by: David 'equinox' Lamparter <equinox@diac24.net>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>
-Cc: David S. Miller <davem@davemloft.net>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
----
- include/uapi/linux/if_ether.h | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/include/uapi/linux/if_ether.h b/include/uapi/linux/if_ether.h
-index fb5efc8e06cc..1ffac52c39df 100644
---- a/include/uapi/linux/if_ether.h
-+++ b/include/uapi/linux/if_ether.h
-@@ -82,6 +82,7 @@
- #define ETH_P_PPP_DISC	0x8863		/* PPPoE discovery messages     */
- #define ETH_P_PPP_SES	0x8864		/* PPPoE session messages	*/
- #define ETH_P_LINK_CTL	0x886c		/* HPNA, wlan link local tunnel */
-+#define ETH_P_8021AC	0x8870		/* 802.1AC LLC > 1500 bytes     */
- #define ETH_P_ATMFATE	0x8884		/* Frame-based ATM Transport
- 					 * over Ethernet
- 					 */
-@@ -164,6 +165,10 @@
- #define ETH_P_MCTP	0x00FA		/* Management component transport
- 					 * protocol packets
- 					 */
-+#define ETH_P_GRE_OSI	0x00FE		/* GRE tunnels: LLC "fe fe 03" analog,
-+					 * used primarily for IS-IS over GRE
-+					 * WARNING: not internal, used on wire!
-+					 */
- 
- /*
-  *	This is an Ethernet frame header.
--- 
-2.53.0
-
+Best,
+Bobby
