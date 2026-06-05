@@ -1,31 +1,33 @@
 Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79E8A41C31B
-	for <netdev@vger.kernel.org>; Fri,  5 Jun 2026 07:20:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D56144D68A
+	for <netdev@vger.kernel.org>; Fri,  5 Jun 2026 07:20:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780644017; cv=none; b=vBKAge8T9DnbhYTzdd47Qr9OWZXwOhhWw4WnljIdztrG5cMUGk6lQZVoShoCQLAqsVmItvd8nJgamywFgslfC/7f7sL3Ni/FWYP3+XwUZdIgIzK6ym7YHcHyYDv9v6mQgVCJf8JaOODm0XCmFFdNh1GIZOL3EUV+BL73L9MBSQk=
+	t=1780644017; cv=none; b=P4fnfmQRT4mP6hzVPDgZvJ8u0oZ8NSZpY2pWXWzEFJLRt5Tp5+Ba8gLKlAG/NX2mSs4sc/OLCQdswDACkUWqtao1kFh1fhQwm+XJgdhA/Zgv/JJZYbbrzJm7v9S6/2UTtBy1u4RcvnaxbgoF7WzteiZtjABZenCiPmUNcj3KeZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1780644017; c=relaxed/simple;
-	bh=kmQh30uShESdgxQeSFBEAfw3lvFAnHgFESPVnlPvq9c=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZB7P3hbGNumfRAFYMWJGVLfBYuibWddkcYFPse6cr7qAoEYwCw/5qq25R7r1sLVod6eiPniy0salCxj0BuSzGG7x0FFEnMwlqyKm95lhengNNPbcdzG5liQxI831mqpCP1UaEPYFwMO3O1DW/rUDTBmBTkbPH4e9LEOhdMDkJYQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=kF9bpel1; arc=none smtp.client-ip=23.88.38.48
+	bh=SGUYZ1nkXx80Zqb4tRp2lab0rilcBvn2REgWKpj6wZk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=OBK2bbrSR5HBXynwFtRaoXd8PoLK4lFWBsnwv8kmzEePkEnVfVuQbUMRT4FG9zm3eCf92EK/kg0cMM/LHdWpUOQn8bSKT+kv+rVLQGPophNKEBUz7IIILUWjC4oog3tffE7xMPrOd7LIqjzSjMnlhLXf+6Hnm1XOVeoGhHP/zi0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=gS2LJBm/; arc=none smtp.client-ip=23.88.38.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="kF9bpel1"
+	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="gS2LJBm/"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=simonwunderlich.de;
-	s=09092022; t=1780644007;
+	s=09092022; t=1780644013;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=naKYUFl2vGqcev/VZdeDENqs5fMgwMk1BQg8G5Yx5BA=;
-	b=kF9bpel1wv90SxzGm4i0Ys3SaCLT73q9xxuXHFnFr32SAjrUZAaLdBgWkld2kHCbOwRbR0
-	KUF9UCSJxqqtY6b09AUR3smIuBEOPA3wZzbxb6Jgjzg9g+tvWkWCiygzDGOeS3bYFJClMN
-	ABeVNMNC57rkwyNFnrRGBxNpoQvKuG8fg+igGRDMhfYu11eWs/D7A4/o2Ts1XYDRojSO3a
-	NerSNQnQ9/RmXbvWhODd2b/pvVW9sZf7sZ+UXr2xq0lIjnKoM9skkKdHmNEgf+wIKRbJqS
-	/oBedh83P9ddQWEnA1fEKD/6NbDRsUrBnqU3T0gW3qx04831zNDXffpCMF7Wyw==
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=pdWoGEypLT0hA4oET8XmjqY81On+S12Bc4UStp9tjaE=;
+	b=gS2LJBm/VjTOKGxFoTLo1ffpyMs5uutNlKIeDzb5eUDOyKUpABtuoNt61FC2shV3GMoag1
+	56ncRJtsezrEuJw890ipKzVO0sa1aAPJloagU2iYU3LYgIQ0ZQFwI1q+TCtsxV5JAa3tUm
+	KxIOd5l4iEkIxTiMe+8NxYpDg9t8wUCqk1pbdlTy0cPLYyvudQN/jKfbk3IagbwYWo/8We
+	wljn19pDaT1sZTsdBmh/82go/dGrlz9bCGS5bz9Tq2uR5cLr5Fp14HLwyFB+QX3RpZSUwY
+	CJWkkUdPAEtSudGILXV5YwJ34cPHHVrpDLumIItPhUjvI+UTGGpAkiWqjxq/aA==
 From: Simon Wunderlich <sw@simonwunderlich.de>
 To: netdev@vger.kernel.org
 Cc: "David S. Miller" <davem@davemloft.net>,
@@ -34,11 +36,14 @@ Cc: "David S. Miller" <davem@davemloft.net>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>,
 	b.a.t.m.a.n@lists.open-mesh.org,
+	Sven Eckelmann <sven@narfation.org>,
 	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH net-next 00/11] pull request for net-next: batman-adv 2026-06-05
-Date: Fri,  5 Jun 2026 09:19:54 +0200
-Message-ID: <20260605072005.490368-1-sw@simonwunderlich.de>
+Subject: [PATCH net-next 04/11] batman-adv: use GFP_KERNEL allocations for the wifi detection cache
+Date: Fri,  5 Jun 2026 09:19:58 +0200
+Message-ID: <20260605072005.490368-5-sw@simonwunderlich.de>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260605072005.490368-1-sw@simonwunderlich.de>
+References: <20260605072005.490368-1-sw@simonwunderlich.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,74 +52,36 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Dear net maintainers,
+From: Sven Eckelmann <sven@narfation.org>
 
-here is another cleanup pull request of batman-adv to go into net-next.
+The batadv_wifi_net_device_insert() is called with ASSERT_RTNL() held, but
+not inside a spinlock or another context which prevents "might_sleep"
+functions. To relax the requirements for the allocator, use GFP_KERNEL.
 
-Please pull or let me know of any problem!
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+---
+ net/batman-adv/hard-interface.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Thank you,
-      Simon
+diff --git a/net/batman-adv/hard-interface.c b/net/batman-adv/hard-interface.c
+index 96b8130375a3a..04b227ec80525 100644
+--- a/net/batman-adv/hard-interface.c
++++ b/net/batman-adv/hard-interface.c
+@@ -983,11 +983,11 @@ batadv_wifi_net_device_insert(struct net_device *net_dev, u32 wifi_flags)
+ 
+ 	ASSERT_RTNL();
+ 
+-	device_state = kzalloc_obj(*device_state, GFP_ATOMIC);
++	device_state = kzalloc_obj(*device_state, GFP_KERNEL);
+ 	if (!device_state)
+ 		return -ENOMEM;
+ 
+-	netdev_hold(net_dev, &device_state->dev_tracker, GFP_ATOMIC);
++	netdev_hold(net_dev, &device_state->dev_tracker, GFP_KERNEL);
+ 	device_state->netdev = net_dev;
+ 	WRITE_ONCE(device_state->wifi_flags, wifi_flags);
+ 
+-- 
+2.47.3
 
-The following changes since commit 626fd14371614b7a8177f79b357fd323a7b91032:
-
-  batman-adv: tt: directly retrieve wifi flags of net_device (2026-06-03 08:27:17 +0200)
-
-are available in the Git repository at:
-
-  https://git.open-mesh.org/batadv.git tags/batadv-next-pullrequest-20260605
-
-for you to fetch changes up to 1e2fa2b10c234578d3c98c70f89c04a7aba4db92:
-
-  batman-adv: fix kernel-doc typos and grammar errors (2026-06-05 09:12:09 +0200)
-
-----------------------------------------------------------------
-This cleanup patchset includes the following patches, all by
-Sven Eckelmann:
-
- - tp_meter: initialize last_recv_time during init
-
- - convert cancellation of work items to disable helper
-
- - clean up wifi detection cache (3 patches)
-
- - clean up kernel-doc: corrections, reword, typos (6 patches)
-
-----------------------------------------------------------------
-Sven Eckelmann (11):
-      batman-adv: tp_meter: initialize last_recv_time during init
-      batman-adv: convert cancellation of work items to disable helper
-      batman-adv: drop duplicated wifi_flags assignments
-      batman-adv: use GFP_KERNEL allocations for the wifi detection cache
-      batman-adv: document cleanup of batadv_wifi_net_devices entries
-      batman-adv: correct batadv_wifi_* kernel-doc
-      batman-adv: tp_meter: update stale kernel-doc after refactoring
-      batman-adv: bla: update stale kernel-doc
-      batman-adv: uapi: keep kernel-doc in struct member order
-      batman-adv: fix batadv_v_ogm_packet_recv error handling kernel-doc
-      batman-adv: fix kernel-doc typos and grammar errors
-
- include/uapi/linux/batadv_packet.h     |  6 +++---
- net/batman-adv/bat_iv_ogm.c            |  2 +-
- net/batman-adv/bat_v.c                 |  4 +++-
- net/batman-adv/bat_v_elp.c             |  6 +++---
- net/batman-adv/bat_v_ogm.c             | 16 +++++++++-------
- net/batman-adv/bitarray.c              |  2 +-
- net/batman-adv/bitarray.h              |  2 +-
- net/batman-adv/bridge_loop_avoidance.c |  6 +++---
- net/batman-adv/bridge_loop_avoidance.h |  2 +-
- net/batman-adv/distributed-arp-table.c |  2 +-
- net/batman-adv/fragmentation.c         |  3 ++-
- net/batman-adv/hard-interface.c        | 15 +++++++++------
- net/batman-adv/hard-interface.h        |  4 ++--
- net/batman-adv/hash.h                  |  4 ++--
- net/batman-adv/mesh-interface.c        |  6 +++---
- net/batman-adv/multicast.c             |  2 +-
- net/batman-adv/netlink.c               |  4 ++--
- net/batman-adv/originator.c            |  6 +++---
- net/batman-adv/send.c                  |  2 +-
- net/batman-adv/tp_meter.c              | 28 ++++++++++++++++------------
- net/batman-adv/translation-table.c     |  2 +-
- net/batman-adv/tvlv.c                  |  4 ++--
- net/batman-adv/types.h                 | 24 +++++++++++++++---------
- 23 files changed, 85 insertions(+), 67 deletions(-)
