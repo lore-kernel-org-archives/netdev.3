@@ -1,112 +1,63 @@
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30AFF30566F
-	for <netdev@vger.kernel.org>; Fri,  5 Jun 2026 21:33:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8802D3C3C02
+	for <netdev@vger.kernel.org>; Fri,  5 Jun 2026 21:34:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780695186; cv=none; b=GA6vqMEwe5Ls1Ej8JOSp8gdfiUgiK5xo5ZaDhtn7AknFYj0PsvpfONrvN2+F6+YQBd1R+mqLD1UUjaBwFEgg3gllInk2YQ/eg5DCfJUiIOwkXMsC8z/FCbbQBRTXwHDBxHpAHCXlKwbqMZY5mqBwB4ihkOIdGd1+Y2M6zzJpCNo=
+	t=1780695301; cv=none; b=IzqvyhPJ7hzq7jl5eoUzOm9qvblyYzeFC50tjOCBSuAMc4cG3eAoTUakg5FnoafO67902LEfkadYAlaA1hJhRuj1cfoedFwtX/pJxOerV8cQDIQl6n1Az+H9U+cr6Ar8ZIeH/Fc4cKbv2QCK9qqy5KFgoqVhxyT8+LeklXKuK7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780695186; c=relaxed/simple;
-	bh=yB8i6L7KoJ6YeQ5x5SkEb3TWEe2vEfLFo8gyBr/eSF0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sqVfxUI+tFDaa6P9rIZ5J3M4s1r1M1XHioOgWCfjPh1M1gqVGAcsCnGmZDsh5LvhvPcnViRTeEA6TK3gMyFYHOyLPJ5MVVMi4pIXcEg/SUDtXQyLIFC/SF8GnpA74usamaPcD3gx3FgwMfmfDSIo9aDCOSFNULGeZS33oVpM7eQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=grimberg.me; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=grimberg.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-490b211ee6aso17406105e9.3
-        for <netdev@vger.kernel.org>; Fri, 05 Jun 2026 14:33:04 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780695184; x=1781299984;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=yB8i6L7KoJ6YeQ5x5SkEb3TWEe2vEfLFo8gyBr/eSF0=;
-        b=M79jDEcZLFXRsZCP7tjOMXZfMOkXZjoPCkAIcbHNWLGLcPAh07dBWA+8vuqbhFF9qJ
-         fgY1zjAvE7y0Vn1Fh2KpnKN63sILDa1Ozw521X5tcUjxroKqNRNAjE5veaWcxDmZaVOM
-         qzVhZx0lMwwnybRITeC62k00F86XPESjmkKaXP2MJeY2MpVzmwWITgiXTE/tNFzJnXGK
-         czHkW5kLic509bZnjXka4qX/XpdHm8SyedFWqevjQEfjhAfE68PcrbGgCheEgDP76dMy
-         l7MUKpiLQbM7UAOyOMx0odLf1nhastpksK4RLPHs+CsZa9OwqfqyC89RAFumE+6yFtLd
-         n3Jw==
-X-Forwarded-Encrypted: i=1; AFNElJ9hqOdUrC8TOHnrMoh9OpviDqs/N26bqGol9j+i78gsS5ubPVW4RacUfKKdrnSzijSPb7mqO1w=@vger.kernel.org
-X-Gm-Message-State: AOJu0YziFD+yMBfJQt9Otzmxu0AIVXhRy8H/l7x/hKCvrguXD1tviVmV
-	uhshPK/QjviutZQ4bXhuY35s8SQVEQEq7f/zRrFGt+nefW+vJPYdRGm5
-X-Gm-Gg: Acq92OFqvWPegnzYDYDrvy8xMdfUhhCZFOgWlASzOKLs5SV/WHBrZt4iwqJWeImKkzK
-	yU61DcqCStHICWhv03ypYH+2ERKECr1+ZVk9RCUjfgNnn+Ae3zRkMW9Qd1qju+McgbslIX5/yR7
-	KS6QBJq0c12g6y3awV2LQlUOad3bX0QJD5maowD8LFRpRkb5z52oudTAFhB9J6X2ti25lqPGHQz
-	vMPm95ZsxidHTKfveVZ1fZmrpG4Ak2/b36A5f0bmWdOdSLsBfkvi7PO2KsnwEJ5gWdJtBKVtP3G
-	1k8zX0aTlyp2Na7jITPeqmDdivec6jqRRf5Urrpzy4ZkbQFIbSF+0kxhC4ZiDAoBq2M2NuQ67Ab
-	GxjJBUpEZ/NqxWvudoXYsAnATnE6erTtFfjEFE2YqierTWMp9tI3YAj41Kf2l2vvWzmhPlCuqEU
-	tM9/2/NF6+7EfW/eQvTlR7+LjI4nqx1/oIeMnjnjrKvUsvZ97Yfm8zhOFE1vsErs4=
-X-Received: by 2002:a05:600c:8183:b0:488:a882:c7 with SMTP id 5b1f17b1804b1-490c25c6625mr78070045e9.25.1780695183438;
-        Fri, 05 Jun 2026 14:33:03 -0700 (PDT)
-Received: from [10.100.102.74] (89-138-67-1.bb.netvision.net.il. [89.138.67.1])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490c2d52e5esm48030115e9.2.2026.06.05.14.33.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 05 Jun 2026 14:33:01 -0700 (PDT)
-Message-ID: <ab767baf-aa94-4ff7-81fb-c19804a7883d@grimberg.me>
-Date: Sat, 6 Jun 2026 00:32:59 +0300
+	s=arc-20240116; t=1780695301; c=relaxed/simple;
+	bh=v411BEioOSbdhB8wbPj1xLWLAoRmaYnLFMD7prb3wfY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FEmtr96TKKQzK5uucdTpjloLhmV+uN72hrhjRKjZE3kIhe1mvpxsLnkxLLM5FrCFs22ynHYWT/ua9DAYSXrdwhNnEuphuXLwQeoGQh2/yBoBNv5zp9uJzo5XbHDa1CicYhR9ST/w/aMGyjQDFbj4fwOLwScaSgw5xOzG5UJeiIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=j0rez7Up; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="j0rez7Up"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=AtofwzCo5uPvLJEvYg7I9k+VFHFEZkM8gtbo65Tun2k=; b=j0rez7Upx27U1lPXwh/O2qV9z1
+	DXPstTOLhpCbOwsMHXDMFsYNerb9NdGS7Lmr8FcZ0JS92rpKrEOBrJmaWyNcnvZdU/EsgDOoRBqth
+	NlyrR1PZhcO9bRmrP1hG3QvKsuSlxfudIVttXz43i7RG1XyBwbqGFDkd8wGLvCvWyNaA=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wVcBn-006I6g-PG; Fri, 05 Jun 2026 23:34:51 +0200
+Date: Fri, 5 Jun 2026 23:34:51 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Nicolai Buchwitz <nb@tipi-net.de>
+Cc: Janpieter Sollie <janpieter.sollie@kabelmail.de>,
+	netdev@vger.kernel.org
+Subject: Re: SFP/MDIO/I2C: help requested unlocking a SFP+ MCU to expose PHY
+Message-ID: <dc641872-9ac5-407b-b1c4-04cac5f0ef8a@lunn.ch>
+References: <ec5bd768-3f54-4c30-b5a2-1e0b43f789e3@kabelmail.de>
+ <903daf32-aecd-4160-8f69-4fc329fdad3f@lunn.ch>
+ <49CA4531-3BDC-4054-8830-BA80775C2B68@tipi-net.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC] NFS: named client identities for mTLS mounts and a
- per-namespace .nfs keyring
-To: Chuck Lever <cel@kernel.org>, Hannes Reinecke <hare@suse.de>,
- linux-nfs@vger.kernel.org
-Cc: keyrings@vger.kernel.org, kernel-tls-handshake@lists.linux.dev,
- netdev@vger.kernel.org, Trond Myklebust <trondmy@kernel.org>,
- Anna Schumaker <anna@kernel.org>, Christoph Hellwig <hch@lst.de>,
- David Howells <dhowells@redhat.com>, Jarkko Sakkinen <jarkko@kernel.org>
-References: <20260602154740.49861-1-cel@kernel.org>
- <bb9a872a-d4aa-467a-b4c9-7bca174a6bbc@suse.de>
- <b38b0983-7a63-4e77-a549-2d8859752cb9@app.fastmail.com>
-Content-Language: en-US
-From: Sagi Grimberg <sagi@grimberg.me>
-In-Reply-To: <b38b0983-7a63-4e77-a549-2d8859752cb9@app.fastmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <49CA4531-3BDC-4054-8830-BA80775C2B68@tipi-net.de>
 
+> >Do you know what MCU is in the SFP? Is there a data sheet for it? Can
+> >you read out the EEPROM holding its code over the I2C bus? You can
+> >then disassemble/decompile the code and see what it is actually doing.
+> 
+> https://doc.10gtek.com/file/file/20240806/d6fa28f954989f74cde42c75353b5fe6.pdf
+> 
+> I2c address should be A0h
 
+That is the usual address for an SFP. However, MCUs sometime have ways
+to program them, etc. That is why i asked if you know what the MCU
+is. I guess you have not taken one apart to see what is actually in
+it.
 
-On 03/06/2026 17:27, Chuck Lever wrote:
-> On Tue, Jun 2, 2026, at 6:39 PM, Hannes Reinecke wrote:
->> I am all for making keyrings namespace-aware. Logically I _think_ they
->> should be tagged per user-namespace, as this really is about the
->> filesystem (and as such would warrant to be tagged per mount ns).
->> Tagging it per net-namespace is not a great fit (well, for me, at
->> least), as also block devices might require keys to present the
->> bdev (eg nvme authentication)
-> My understanding of the proposal is that there is one keyring on the
-> system for .nfs and the keys in it are visible only in the namespace
-> where they were created.
->
-> Therefore the consumer (say, NFS, or NFSD) is running in a particular
-> network namespace. It will create keys on the one .nfs keyring, but
-> only the tlshd in that same network namespace will have access to
-> those keys.
-
-Can tlshd run in multiple network namesapces today?
-
->
->
->> I might be okay to have it tagged per net-namespace, though, as all
->> current users are in some shape or form being network related.
->> But I'm not sure if that stays that way, so I am worried if we're
->> not restricting ourselves to much by that choice.
->> As really, the question is: what is the driving the namespace selection?
->> Is it the _requesting_ layer, ie the layer issuing the mount() call?
->> Or is it the _providing_ layer, ie the layer providing the
->> devices/interfaces where the mount() call is operating on?
->> If it's the former, then we need to tag is as
->> net-namespace. If it's the latter, then we need to tag it as a
->> user-namespace / mount-ns.
-> tlshd is a network layer service, so it doesn't make sense to bind
-> it to a user or mount namespace, IMHO.
-
-I agree with network namespace isolation.
-
+	Andrew
