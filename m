@@ -1,275 +1,197 @@
-Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010060.outbound.protection.outlook.com [52.101.69.60])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1DD047AF5F
-	for <netdev@vger.kernel.org>; Fri,  5 Jun 2026 07:20:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780644023; cv=none; b=CO6HCp1Cwaj7wQsZX/twaYebbySD0cKPgXxjFpyLCU87vjsFXPNNOpfsnSvTxEB8kp7INRv7Dlje0TGzzeD+CnqOuQyDWMSEC2eYsrv1iKuVAvggnXQs40THAW4AbdAcDYM5ap10Qh7u0dZ5Pxq1jmXA1oQbTTdBGV7u+wXd5l4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780644023; c=relaxed/simple;
-	bh=lQDRxcjgvHnBXatnTQ2QbAVNZil0zT0OPFvKPDhkSRc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hP28al6n/9Sw5R1UoCD3BWoKYPWz0KZ65VZJ1sFVXZtKL3lFkpU+t1o59xG/bOyaGQkflNzQLulgldti1CtykJh92tLkTbK1hmASYfsFMfjLVuksl75rMgodGMuV7LZdetuVwBeHDGwniAtOcBvdlIBGXY+UtGANYrRRg+y/JkE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=JAfYZRRY; arc=none smtp.client-ip=23.88.38.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23705477982;
+	Fri,  5 Jun 2026 07:22:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.60
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780644181; cv=fail; b=SPUtVXDVloM7qSaVHgqAzA75FzdktY4POME5Y3mm8PJ2uLLArYyh3SspjUIvGKokxsj0MqPkoPaWBJaoOtwy0/+tdOrTBxMbLv+T/Ex9hkp+3PHz4hpu0c576XwmbY0Y9W0OKn1Y0TI+NC/TxCIg8Umk5DXTobyi5dD6BmaM1wI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780644181; c=relaxed/simple;
+	bh=F/Q3/VnF80p8yo65apXsKiH3n0V9mMz9yqnFU8o7bQg=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=Ntz9f2aVUARjizEShzb0mTTwITRzCRv0fH2altPqCUbeziFiwRHv9eBjOQ+Qo37YTaOhvlJ8eQNGSita2GaBoaYl0wywcQ6zlGCQofSZ6dP0z4a7gTeWKk35Ucjk6i6fDD4+1ey9Xub3s2LBMCpPH5ezPOZUTl7yePlbEbVHTHo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=SzewL/Jd; arc=fail smtp.client-ip=52.101.69.60
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="JAfYZRRY"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=simonwunderlich.de;
-	s=09092022; t=1780644019;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=l6ymu5WtKNXPSHwu5QBSvWS8PabPHSE8dRLENSvCWqE=;
-	b=JAfYZRRYAD1mcR1rKlpgYhn08nHSD4uQ9zqI6wv8cS0bJiSPa8SfPJNTtdxDSC0Sj7H+bc
-	6VWVJFQOisCRGVIFX3N2CLnXY/kT0wU9a+RYOM3l2TTUW+cLHgyVOWTOr5ISI8cUwrkePt
-	zfU3qrRRJSaTEKkygVUxzbkgpuxugtD6IetHMgM4g0+nv4/o848+iAyTsinRFUcW9asN3C
-	yqNulUJD9FYOX9Curyh41WI3xKMVg0sid/JTT4FoIfsD5P/WI3/XFRztgbrvA0GzHQ7FpB
-	G1tD7fmi/h+kqENjkvg2XlAk1aczDG1ovi8XTBvte0w1RRcqLgT031S7uLu1Rg==
-From: Simon Wunderlich <sw@simonwunderlich.de>
-To: netdev@vger.kernel.org
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	b.a.t.m.a.n@lists.open-mesh.org,
-	Sven Eckelmann <sven@narfation.org>,
-	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH net-next 11/11] batman-adv: fix kernel-doc typos and grammar errors
-Date: Fri,  5 Jun 2026 09:20:05 +0200
-Message-ID: <20260605072005.490368-12-sw@simonwunderlich.de>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260605072005.490368-1-sw@simonwunderlich.de>
-References: <20260605072005.490368-1-sw@simonwunderlich.de>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="SzewL/Jd"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=pVDcZx+Jsh3T2JHsjkQf4WNEMbQhUYGCMeR3LgiQjx8MeukHr/T6pqLXTvFoVZNDVO/RZ0nBRb8ZfNFzZ+aVsJRoZg1zOeIGyX3Ps4R0pLBO87hfZZTsP80+KIkzuPyZHiJqFy2sWBXNy7oYGG5wxVynLMTn2/LHUAE8XuS9nAmvci/+striaASoCaq5dLnR4rRkuGBCq/Jgeji52yDTNUnTMggKX9b6zlr0+TFZ3uj7nN4AbcHNzufmJ58g1TDM6Q0dWRTjS1AF7DddJn+B0tTI4mNhN73AQtDjSSykMu9LvTBfvCwGSjo7YLc96Ruwep3JIKMbOrXoYl0cdnNx2A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=bR/gbiC5/r/WYrcT7mCaMMk6E8099fDtDY1mwNC4wcs=;
+ b=KBAfT+lYWWPj5x4pyG7vE6ywol/qI65NMklzlsKeRBJmUgNesXC2GjpB7OQyXPW6XKepy5gS9joqALz1LsdFwJtn79cqAXKF93TX5e2bEzBgDpoT0LTltSPhj4sFL6cdjedx8rySjxYkLa6FoJHHQn9QqOLXXZDlygLdVPMeRabaIlj0aMKtQRD34xmxLzRX0uVMT3aTTFE29rLRP5SFlDrrZqoKPL9bYCqEidPHMIV4imM8W1HZ3CPkxHIAodRkiOQ4ARXURFYQJNqpaaTMUMA7lYuWgLAhdxYlckeLK58p0us8nxRfptN+uWWQQB9FPsxXbw9kYLSrElBseWMMFQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=bR/gbiC5/r/WYrcT7mCaMMk6E8099fDtDY1mwNC4wcs=;
+ b=SzewL/JdYC4mCfcmkTqjcsRlggnpdwHjsYwvU74tz3P09DaldpU20uVXFMpM6JfmV5DrIsMwcVyUVy92kdf3kwa1XPsteAaGAbT82uYOYIdA0BqUS6bLFHhgyo2peiwTop0gJ4bFrpl+QivA+PR/oGkdPQCqN1H4kerk1xUOBasgXstzI44f1FP8yRYtjyjbHLJOxe0fX33vCpHy9Apr+bFmiJ5xEbcQ1dBHIFZ6h8Deqhd206YoHM4hCSEyALHgsjmrWa41Hxe9VtplFdcafu0ulyO4c7cDxHmiD1ScroK+C/bEwkNP6A19v5ceD1EPo+QVZBAhAkXLyOegZhWOhA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from VE1PR04MB7216.eurprd04.prod.outlook.com (2603:10a6:800:1b0::22)
+ by PAWPR04MB9815.eurprd04.prod.outlook.com (2603:10a6:102:381::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.8; Fri, 5 Jun 2026
+ 07:22:56 +0000
+Received: from VE1PR04MB7216.eurprd04.prod.outlook.com
+ ([fe80::a9a5:cf83:dbe8:1f74]) by VE1PR04MB7216.eurprd04.prod.outlook.com
+ ([fe80::a9a5:cf83:dbe8:1f74%3]) with mapi id 15.21.0092.007; Fri, 5 Jun 2026
+ 07:22:56 +0000
+From: wei.fang@oss.nxp.com
+To: claudiu.manoil@nxp.com,
+	vladimir.oltean@nxp.com,
+	xiaoning.wang@nxp.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux@armlinux.org.uk,
+	wei.fang@nxp.com
+Cc: imx@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next 00/15] net: enetc: SR-IOV improvements and ENETC v4 VF support
+Date: Fri,  5 Jun 2026 14:55:35 +0800
+Message-Id: <20260605065550.3038579-1-wei.fang@oss.nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SI3PR02CA0013.apcprd02.prod.outlook.com
+ (2603:1096:4:295::10) To VE1PR04MB7216.eurprd04.prod.outlook.com
+ (2603:10a6:800:1b0::22)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: VE1PR04MB7216:EE_|PAWPR04MB9815:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7c55dc81-3b5c-4b3f-5f08-08dec2d3434f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|19092799006|376014|921020|18002099003|6133799003|11063799006|5023799004|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	ciqwE8nayr8EeddTCv7L6E3KrmJx1PMCn8MujoICo3jNQFmTNY3lrpS7FLva93zmA87B6qbgkcnQZgE63VPt+7lNjk1zjcGmt25y/3QCK28c3QkDInk7gpPgQI2r1cOIqmbPxiOao5wkVUQJDK9tO91tuf4VG9BwKSTSIaO8XdlcgsepkYcU736M/+ok0yJO+5HG0rlv+am7n6aBSoTMIDILnIU8Bdl2yDIR/L8CKol660p22jdMz0HR175JuYsiSybXDDMpoLWAkEoikCVJsvEK9D3ppewNWxV9hQwe8Y3s4sUnDQPQjsxPutO6+uY0rFDfHFHYl7Wl2XvWDgQiQ0rXcH/tArp/OgGmPh9PIDMSIPLjbGZa3OGskzvXULGr6wJitA5878ysc9EbZWyoePsXD0pCX67aEPLw1SpO1FOuEHAidv4fwLAKS4FfkpysbvYm1eF3E+RGjtxbUNn0fZvtq3WJg64XXWmiFCjZwgDQWHB5P+TJM6mdS6caouA2uUzvYcGuK2rbX7ZTNkSOjr37PTk2m91gF/bZG01du9AVAN1khuP7u6RJALqm1MD9ZsQxLp+DUDnPa0iRtCn+XO598q1k3VgVc6fhsmdkOIFIgGz0SgQ0Xp1SuojInl8vhJlKh/taj9GLaesEixN4WFE+z/ElhajDMYZ3ifrWOuysAq5uDrllUbz6rD9nC4fObOM+3hPvz9CUnF2MFMyIiXXXdyp5u+ISlJyaK70P6ww=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VE1PR04MB7216.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(19092799006)(376014)(921020)(18002099003)(6133799003)(11063799006)(5023799004)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?IItCcmPuCZ/2O9vNyBc+ODqiEpkK7yD8mBCOGy+P6Gn1SKFy8Uhy9b3S1+tN?=
+ =?us-ascii?Q?n0eH/ESfBZ92ouLXEREJgrEebRS5AvARg/F6g3eol0HpXFwKieyK7HCuAk3L?=
+ =?us-ascii?Q?ymVfbdDXALdJGS6Fr/bh3zNZmsPpUpLZOi4n/N+UIYety95n3BnDL060mbhi?=
+ =?us-ascii?Q?SzyTgM5OIUEfQMIEfQxtS++dfyhb7rlh7NHuCuVNkyLz+5nI4mrazttOIuKE?=
+ =?us-ascii?Q?n08aB4t6/lId/aR2kAQTY9gvqz+i5pH4UOjfYwSV/GvvXKDkr0bC9iaAwTFf?=
+ =?us-ascii?Q?FJUQzdQusCLVC50039ltOAfREveYdGMork1u8fgWoCs6w3kb56wYITXOB4vY?=
+ =?us-ascii?Q?0n+jOwom25DYHw8fBFg8WFlKNZbURllSbsmShx4MmoSfoPW3kINueLjQ9pA3?=
+ =?us-ascii?Q?NuWFcY3KDf47RcExDB8CPW2OgEsSwQ9VkGdVriRkEP2OEgPP32fTXnnPvbKY?=
+ =?us-ascii?Q?Xa2h4Kh/nu/Zx0JUhtRO6cfoIMbGvj7hG8LCL0vuo0/r66R2oLlrq3rKH4tg?=
+ =?us-ascii?Q?FTVBkT18l+hMkNUH3fo1P1Pvk50+GMPLJBPIOzt/jwPKwzVeWXtHLp0Xa7Ts?=
+ =?us-ascii?Q?1lVeGexyIVpzwjomrCQOUlqc1jdmgMKoqcGLYpM9xXadvQYx04xK1ywC2uyQ?=
+ =?us-ascii?Q?kvL/CA6fLG6dZR05MyO8Xp8GS6HCiBUKxIdkoWTPsNNC5RqPw5he4eVu+ERS?=
+ =?us-ascii?Q?6z+nl+5JriFQcrQ4FrYgoAH1KKaH8U/UsvAM5sMPXReqfzFlG3LK7BHfmKev?=
+ =?us-ascii?Q?CibnBiyB0vSs81Xchv6yGgaq2xJd5ANAYO31PhONevbAeZf1BWtJ2xSop2tz?=
+ =?us-ascii?Q?WcNgRWJrOC1AEJ4oHBYMEbeZHNWD4saOdOdEyTLE7wU4yqbrxQQI6J2Qsf7e?=
+ =?us-ascii?Q?KNGmeSuQPglFk50qNXxYrUMu23LCa5FqjLBcPafOQoUeaQNUG5+nqy1Ctiro?=
+ =?us-ascii?Q?349UwGW/3l+eSOxmZNnCrvyrOmqVTnLeRqU+H7fawOJ6kmQGuhPtxYi3Cfcs?=
+ =?us-ascii?Q?Si2+U1BwUDDQdxbQF7u59n/gdI3RQLRqXYRo0cZ0gw6kaa+EXesZUP1XaJQ4?=
+ =?us-ascii?Q?dzOFYmHBNws8Mz72kDF9ja1QsuqRLy2Imx6nAw8UqXpg0hqOb4GzAgnHVuYS?=
+ =?us-ascii?Q?SHJ3maKNwq/l1fOlAIUfYNdwcCQ/TvjFNNG5CIQDuaDs0x3q0t5lD9S0EH+A?=
+ =?us-ascii?Q?FlmDElvpGEGTWWp4s84QHBrxdji/WN1wuX8rGcfmV0OrbSM8mkcb+I1N5usO?=
+ =?us-ascii?Q?9a1zl/hrja+QrGM6XCL5Gamy3kWPZsUJE3IWa9n0QgkI5561IYT6aU/dJdlg?=
+ =?us-ascii?Q?To+6jpPjABdnMYFWmabDp7Og2twHhIbponCCIHNijM5tbfENNOKdalzD0JPf?=
+ =?us-ascii?Q?3I1urlX8lViWJ2NecFGiMEtyoX1Divj8uf+R6iIcT1gmjW4/hQ8vmbqfom/0?=
+ =?us-ascii?Q?rd9lZ8OGVL7b/RzBpPE6ASBBwR3gLpz4WBQZbciwvD3q9Bsw2LQ4y9cF/fho?=
+ =?us-ascii?Q?TPx0nWWWh2qe0//BUUKV++azAfjrlzF/ZL/R5swtZGWlbteg7bOB7nFk+XEj?=
+ =?us-ascii?Q?jlBDm84890AZUN3XawbfkXMXJHmYmjPIsrv8uD5teaWUStLBZ1DuyGndpMR/?=
+ =?us-ascii?Q?F87DelPb27voxEfocArxLnYZ/M4LEIhnjCtGF3ggDEoKYzO70J2KQgDqXlMR?=
+ =?us-ascii?Q?3jPs6IspNPQtgiqt3DWDbO3veYfODgKdPoXO4LGJ1ihibds+mt/x1H55ewqW?=
+ =?us-ascii?Q?1FtdrvpXiWBLqz/Buwyt48ZPackxbKwrLNCnDoAhdcJGpjkeUyhQ?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7c55dc81-3b5c-4b3f-5f08-08dec2d3434f
+X-MS-Exchange-CrossTenant-AuthSource: VE1PR04MB7216.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Jun 2026 07:22:55.9277
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: T4uOvpWAt2bhKuZCo7O/2GQ4BK2IgHLoVTl1rC6AOz9TXfiBGQ+J89flxRqqRWbY/34BCJE7zfBk5DFibm32TE/ncvmimQNLiRxrTQ//QtJ62Me5PUgKnF1J5L7sYSLV
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAWPR04MB9815
 
-From: Sven Eckelmann <sven@narfation.org>
+From: Wei Fang <wei.fang@nxp.com>
 
-Various minor errors were gathered over the time in batman-adv's kernel-doc
-comments. Get rid of many of them before they are copied (again) to new
-functions.
+This series enhances SR-IOV support for ENETC v1 and adds VF support
+for ENETC v4. For ENETC v1, the trusted VF management and per-VF
+configuration query via ndo_get_vf_config() are added. For ENETC v4,
+preliminary VF support is introduced for i.MX94 and i.MX95 platforms.
 
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
----
- net/batman-adv/bat_v.c          | 2 +-
- net/batman-adv/bat_v_ogm.c      | 8 ++++----
- net/batman-adv/bitarray.c       | 2 +-
- net/batman-adv/bitarray.h       | 2 +-
- net/batman-adv/fragmentation.c  | 3 ++-
- net/batman-adv/hash.h           | 4 ++--
- net/batman-adv/mesh-interface.c | 6 +++---
- net/batman-adv/netlink.c        | 4 ++--
- net/batman-adv/originator.c     | 4 ++--
- net/batman-adv/tvlv.c           | 4 ++--
- 10 files changed, 20 insertions(+), 19 deletions(-)
+On the PF side, the series introduces trust level management and MAC
+address assignment for VFs, and implements ndo_get_vf_config() so that
+userspace tools such as 'ip link show' can query the current per-VF
+configuration. The PSI-to-VSI messaging infrastructure is extended to
+handle link status and link speed queries from VFs, enabling DPDK-owned
+VFs to obtain accurate link information from the PF.
 
-diff --git a/net/batman-adv/bat_v.c b/net/batman-adv/bat_v.c
-index cb081038d14f5..fe7c0113d0df3 100644
---- a/net/batman-adv/bat_v.c
-+++ b/net/batman-adv/bat_v.c
-@@ -587,7 +587,7 @@ batadv_v_gw_get_best_gw_node(struct batadv_priv *bat_priv)
- }
- 
- /**
-- * batadv_v_gw_is_eligible() - check if a originator would be selected as GW
-+ * batadv_v_gw_is_eligible() - check if an originator would be selected as GW
-  * @bat_priv: the bat priv with all the mesh interface information
-  * @curr_gw_orig: originator representing the currently selected GW
-  * @orig_node: the originator representing the new candidate
-diff --git a/net/batman-adv/bat_v_ogm.c b/net/batman-adv/bat_v_ogm.c
-index 14920f4bb315b..81926ef9c02c9 100644
---- a/net/batman-adv/bat_v_ogm.c
-+++ b/net/batman-adv/bat_v_ogm.c
-@@ -515,7 +515,7 @@ static u32 batadv_v_forward_penalty(struct batadv_priv *bat_priv,
-  * @bat_priv: the bat priv with all the mesh interface information
-  * @ogm_received: previously received OGM to be forwarded
-  * @orig_node: the originator which has been updated
-- * @neigh_node: the neigh_node through with the OGM has been received
-+ * @neigh_node: the neigh_node through which the OGM has been received
-  * @if_incoming: the interface on which this OGM was received on
-  * @if_outgoing: the interface to which the OGM has to be forwarded to
-  *
-@@ -602,7 +602,7 @@ static void batadv_v_ogm_forward(struct batadv_priv *bat_priv,
-  * @bat_priv: the bat priv with all the mesh interface information
-  * @ogm2: OGM2 structure
-  * @orig_node: Originator structure for which the OGM has been received
-- * @neigh_node: the neigh_node through with the OGM has been received
-+ * @neigh_node: the neigh_node through which the OGM has been received
-  * @if_incoming: the interface where this packet was received
-  * @if_outgoing: the interface for which the packet should be considered
-  *
-@@ -686,7 +686,7 @@ static int batadv_v_ogm_metric_update(struct batadv_priv *bat_priv,
-  * @ethhdr: the Ethernet header of the OGM2
-  * @ogm2: OGM2 structure
-  * @orig_node: Originator structure for which the OGM has been received
-- * @neigh_node: the neigh_node through with the OGM has been received
-+ * @neigh_node: the neigh_node through which the OGM has been received
-  * @if_incoming: the interface where this packet was received
-  * @if_outgoing: the interface for which the packet should be considered
-  *
-@@ -781,7 +781,7 @@ static bool batadv_v_ogm_route_update(struct batadv_priv *bat_priv,
-  * @ethhdr: the Ethernet header of the OGM2
-  * @ogm2: OGM2 structure
-  * @orig_node: Originator structure for which the OGM has been received
-- * @neigh_node: the neigh_node through with the OGM has been received
-+ * @neigh_node: the neigh_node through which the OGM has been received
-  * @if_incoming: the interface where this packet was received
-  * @if_outgoing: the interface for which the packet should be considered
-  */
-diff --git a/net/batman-adv/bitarray.c b/net/batman-adv/bitarray.c
-index 2c49b27116503..67cb356332bf1 100644
---- a/net/batman-adv/bitarray.c
-+++ b/net/batman-adv/bitarray.c
-@@ -24,7 +24,7 @@ static void batadv_bitmap_shift_left(unsigned long *seq_bits, s32 n)
-  * batadv_bit_get_packet() - receive and process one packet within the sequence
-  *  number window
-  * @priv: the bat priv with all the mesh interface information
-- * @seq_bits: pointer to the sequence number receive packet
-+ * @seq_bits: pointer to the sequence number bitmap of received packets
-  * @seq_num_diff: difference between the current/received sequence number and
-  *  the last sequence number
-  * @set_mark: whether this packet should be marked in seq_bits
-diff --git a/net/batman-adv/bitarray.h b/net/batman-adv/bitarray.h
-index 37f7ae413bc66..2b9f5dbb3ec41 100644
---- a/net/batman-adv/bitarray.h
-+++ b/net/batman-adv/bitarray.h
-@@ -17,7 +17,7 @@
- /**
-  * batadv_test_bit() - check if bit is set in the current window
-  *
-- * @seq_bits: pointer to the sequence number receive packet
-+ * @seq_bits: pointer to the sequence number bitmap of received packets
-  * @last_seqno: latest sequence number in seq_bits
-  * @curr_seqno: sequence number to test for
-  *
-diff --git a/net/batman-adv/fragmentation.c b/net/batman-adv/fragmentation.c
-index 14ccf7811bf62..1e42cf99f8b33 100644
---- a/net/batman-adv/fragmentation.c
-+++ b/net/batman-adv/fragmentation.c
-@@ -309,7 +309,8 @@ batadv_frag_merge_packets(struct hlist_head *chain)
-  * batadv_skb_is_frag() - check if newly merged skb contains unicast fragment
-  * @skb: newly merged skb
-  *
-- * Return: if newly merged skb is of type BATADV_UNICAST_FRAG
-+ * Return: true if the newly merged skb is of type BATADV_UNICAST_FRAG, false
-+ *  otherwise
-  */
- static bool batadv_skb_is_frag(struct sk_buff *skb)
- {
-diff --git a/net/batman-adv/hash.h b/net/batman-adv/hash.h
-index fb251c385a1bb..86a2c20000dcf 100644
---- a/net/batman-adv/hash.h
-+++ b/net/batman-adv/hash.h
-@@ -120,10 +120,10 @@ static inline int batadv_hash_add(struct batadv_hashtable *hash,
-  * @choose: callback calculating the hash index
-  * @data: data passed to the aforementioned callbacks as argument
-  *
-- * ata could be the structure you use with  just the key filled, we just need
-+ * data could be the structure you use with just the key filled, we just need
-  * the key for comparing.
-  *
-- * Return: returns pointer do data on success, so you can remove the used
-+ * Return: returns pointer to data on success, so you can remove the used
-  * structure yourself, or NULL on error
-  */
- static inline void *batadv_hash_remove(struct batadv_hashtable *hash,
-diff --git a/net/batman-adv/mesh-interface.c b/net/batman-adv/mesh-interface.c
-index b6797654b18ab..44026810b99ce 100644
---- a/net/batman-adv/mesh-interface.c
-+++ b/net/batman-adv/mesh-interface.c
-@@ -392,13 +392,13 @@ static netdev_tx_t batadv_interface_tx(struct sk_buff *skb,
-  * @orig_node: originator from which the batman-adv packet was sent
-  *
-  * Sends an ethernet frame to the receive path of the local @mesh_iface.
-- * skb->data has still point to the batman-adv header with the size @hdr_size.
-+ * skb->data must still point to the batman-adv header with the size @hdr_size.
-  * The caller has to have parsed this header already and made sure that at least
-  * @hdr_size bytes are still available for pull in @skb.
-  *
-  * The packet may still get dropped. This can happen when the encapsulated
-- * ethernet frame is invalid or contains again an batman-adv packet. Also
-- * unicast packets will be dropped directly when it was sent between two
-+ * ethernet frame is invalid or contains again a batman-adv packet. Also
-+ * unicast packets will be dropped directly when they were sent between two
-  * isolated clients.
-  */
- void batadv_interface_rx(struct net_device *mesh_iface,
-diff --git a/net/batman-adv/netlink.c b/net/batman-adv/netlink.c
-index 1ba206e402733..4cf9e3c54ad3b 100644
---- a/net/batman-adv/netlink.c
-+++ b/net/batman-adv/netlink.c
-@@ -944,7 +944,7 @@ static int batadv_netlink_set_hardif(struct sk_buff *skb,
- }
- 
- /**
-- * batadv_netlink_dump_hardif() - Dump all hard interface into a messages
-+ * batadv_netlink_dump_hardif() - Dump all hard interfaces into a message
-  * @msg: Netlink message to dump into
-  * @cb: Parameters from query
-  *
-@@ -1101,7 +1101,7 @@ static int batadv_netlink_get_vlan(struct sk_buff *skb, struct genl_info *info)
- }
- 
- /**
-- * batadv_netlink_set_vlan() - Get vlan attributes
-+ * batadv_netlink_set_vlan() - Set vlan attributes
-  * @skb: Netlink message with request data
-  * @info: receiver information
-  *
-diff --git a/net/batman-adv/originator.c b/net/batman-adv/originator.c
-index b161232c10885..9b38bd9e8da7e 100644
---- a/net/batman-adv/originator.c
-+++ b/net/batman-adv/originator.c
-@@ -439,7 +439,7 @@ batadv_orig_ifinfo_new(struct batadv_orig_node *orig_node,
- }
- 
- /**
-- * batadv_neigh_ifinfo_get() - find the ifinfo from an neigh_node
-+ * batadv_neigh_ifinfo_get() - find the ifinfo from a neigh_node
-  * @neigh: the neigh node to be queried
-  * @if_outgoing: the interface for which the ifinfo should be acquired
-  *
-@@ -472,7 +472,7 @@ batadv_neigh_ifinfo_get(struct batadv_neigh_node *neigh,
- }
- 
- /**
-- * batadv_neigh_ifinfo_new() - search and possibly create an neigh_ifinfo object
-+ * batadv_neigh_ifinfo_new() - search and possibly create a neigh_ifinfo object
-  * @neigh: the neigh node to be queried
-  * @if_outgoing: the interface for which the ifinfo should be acquired
-  *
-diff --git a/net/batman-adv/tvlv.c b/net/batman-adv/tvlv.c
-index cd75daea478c5..403c854568704 100644
---- a/net/batman-adv/tvlv.c
-+++ b/net/batman-adv/tvlv.c
-@@ -48,7 +48,7 @@ static void batadv_tvlv_handler_release(struct kref *ref)
- }
- 
- /**
-- * batadv_tvlv_handler_put() - decrement the tvlv container refcounter and
-+ * batadv_tvlv_handler_put() - decrement the tvlv handler refcounter and
-  *  possibly release it
-  * @tvlv_handler: the tvlv handler to free
-  */
-@@ -272,7 +272,7 @@ void batadv_tvlv_container_register(struct batadv_priv *bat_priv,
-  * @additional_packet_len: requested additional packet size on top of minimum
-  *  size
-  *
-- * Return: true of the packet buffer could be changed to the requested size,
-+ * Return: true if the packet buffer could be changed to the requested size,
-  * false otherwise.
-  */
- static bool batadv_tvlv_realloc_packet_buff(struct batadv_ogm_buf *ogm_buff,
+On the VF side, MAC address filtering is implemented via the VSI-to-PSI
+mailbox, supporting both unicast/multicast hash filters and promiscuous
+mode control. Since the ndo_set_rx_mode callback is invoked with BH
+disabled and is incompatible with the mailbox polling path,
+ndo_set_rx_mode_async is used instead. Link status notifications are also
+supported: the VF registers with the PF and receives PSI-to-VSI messages
+on every PF link transition, keeping the VF carrier state in sync without
+polling.
+
+VF Function Level Reset is handled explicitly to restore the PF-managed
+MAC promiscuous policy after each reset, since the hardware default after
+FLR enables promiscuous mode regardless of the policy set by the PF
+driver.
+
+Several preparatory refactors are included to share infrastructure
+between the PF and VF drivers, such as moving msg_task and mac_filter
+from struct enetc_pf into the common struct enetc_si.
+
+Claudiu Manoil (1):
+  net: enetc: add trusted VF support
+
+Wei Fang (14):
+  net: enetc: move msg_task and msg_int_name to struct enetc_si
+  net: enetc: add link status message support to PF driver
+  net: enetc: add link speed message support to PF driver
+  net: enetc: use enetc_set_si_hw_addr() to set VF MAC address
+  net: enetc: relocate enetc_pf_set_vf_mac() for common PF support
+  net: enetc: add .ndo_set_vf_mac() to the enetc v4 driver
+  net: enetc: move mac_filter from struct enetc_pf to struct enetc_si
+  net: enetc: add MAC address filtering support for VFs of ENETC v4
+  net: enetc: simplify and rename PSIIER enable/disable helpers
+  net: enetc: restore VF MAC promiscuous mode after FLR for ENETC v4
+  net: enetc: add VF support for i.MX94 and i.MX95
+  net: enetc: implement ndo_set_rx_mode_async for ENETC v4 VF
+  net: enetc: add PSI-to-VSI link status notification support for VF
+  net: enetc: add ndo_get_vf_config() support
+
+ drivers/net/ethernet/freescale/enetc/Kconfig  |   1 +
+ drivers/net/ethernet/freescale/enetc/enetc.c  |  26 +
+ drivers/net/ethernet/freescale/enetc/enetc.h  |  10 +-
+ .../net/ethernet/freescale/enetc/enetc4_hw.h  |   1 +
+ .../net/ethernet/freescale/enetc/enetc4_pf.c  |  81 +++-
+ .../ethernet/freescale/enetc/enetc_ethtool.c  |   6 +
+ .../net/ethernet/freescale/enetc/enetc_hw.h   |  25 +
+ .../ethernet/freescale/enetc/enetc_mailbox.h  |  86 ++++
+ .../net/ethernet/freescale/enetc/enetc_msg.c  | 459 ++++++++++++++++--
+ .../net/ethernet/freescale/enetc/enetc_pf.c   |  60 +--
+ .../net/ethernet/freescale/enetc/enetc_pf.h   |  21 +-
+ .../freescale/enetc/enetc_pf_common.c         |  98 ++++
+ .../freescale/enetc/enetc_pf_common.h         |  13 +
+ .../net/ethernet/freescale/enetc/enetc_vf.c   | 325 ++++++++++++-
+ 14 files changed, 1119 insertions(+), 93 deletions(-)
+
 -- 
-2.47.3
+2.34.1
 
