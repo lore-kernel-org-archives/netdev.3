@@ -1,84 +1,67 @@
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B06CD3CFF69
-	for <netdev@vger.kernel.org>; Fri,  5 Jun 2026 23:04:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9832F3D4103;
+	Fri,  5 Jun 2026 23:13:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780700682; cv=none; b=Q/Mor2WOm3+XmbtpJAyk0a/vymidq1f4hY5LnBmO4F5U2tjE31pC/p6Z/gTExvlcqMQE1MAyBTSfaQ5uJ2WcsTLRPzIIOOMFCh7sVS7hk+FTOPRqc6tddi8rBQPlbxz46AyPZIYORDFdW7IHslAkOIxSH5sdkX9pfSV044kNGHE=
+	t=1780701198; cv=none; b=HVeAefl/PB5HWzLUi6HVVKeYVkwrGpBwHMfjzc0KNZJ6IArCxyd8jsyDvoCzST09Rqq+btWt/CD8ldY1qF/EhYON3aLLRLNQy1W2Z3CjuCRC8w/VsaswNiziTSkpYqtmBxmStgf4oHIXYINfvHlSZkOCkee7Botgvb/O4ZcrOrc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780700682; c=relaxed/simple;
-	bh=7Uwp+iLp+2o7FGr7TVfd72HI+0sHcUOFTnlziZ3O69E=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=WQgSiv3SGGlipNceUQnXIX2qEjdYAG4Q1lHj4bW9eBRY3QJIANbY49wfDVn+tyk65gEJDnlyP0BynSAIIQ3LOGDUoxCilhap6t+0wt809GyOk6fZLJnfODX6iEnk+iIvEiFDC9COayNi5Rh0ocHCbbCJO28NPVqBo+OdiJPk2RI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=Y7W3Vu7G; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	s=arc-20240116; t=1780701198; c=relaxed/simple;
+	bh=HVohKQd1pTvqn6Qh+3Y9RzCE0kuc0HwT8xPN8j79ya4=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=iAMjzfPnH4XiUhGWQ8vgtMUNFCHjSQyak07Q6qeCQsypLXKMvHjT3NPp3+gOulV9EKHer36jNuzi26srbNvZ0xU0YvvQM9p1LCWw4d6LBprOLEkIqgFhH/a6c0pZuy+4i88P4xX/1CGbcLM+3NJkq3OyFeuN+l5FmOUHGYm3Mwg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JrD2CULs; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="Y7W3Vu7G"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id DC31BA4B81;
-	Sat,  6 Jun 2026 01:04:29 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1780700670; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=CsNwhC0oH5i8bWZdrSp/c5rIJ5+ne35p/uH1hnHnnHI=;
-	b=Y7W3Vu7GRuv0/I0q7CGsQbeUfZD7W74nLicPf5nBdrdJ4qPiXGGDNqk7AGDFd5uF8J50Z6
-	sJkB9m5RzxrsmDELlQZsOYwp2o2Tn+UsK1FmrcrnNUtcTRmYmJbMBzm7NX3v3AO1RECUDZ
-	6TUtH5/g55QubDvg3r0WxxuoYABMVS5ocMt1fqAKBpBCmlGOAfEG9ffpWIFslPw/yHsRsD
-	ZvJK0QFNayEkzrklJMxkMqcM7DJyhxS3owhrT1NOeQfTq+/E/6P5zn9E0ujePzD25GzRJE
-	N93mk61FDcBz+h8WwG5GE/6RSu5+/5pWJHY/6RyZO4Tbf8ziTxrMtaxo8NkhSw==
-Date: Sat, 06 Jun 2026 01:04:25 +0200
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: Andrew Lunn <andrew@lunn.ch>
-CC: Janpieter Sollie <janpieter.sollie@kabelmail.de>, netdev@vger.kernel.org
-Subject: Re: SFP/MDIO/I2C: help requested unlocking a SFP+ MCU to expose PHY
-User-Agent: Thunderbird for Android
-In-Reply-To: <dc641872-9ac5-407b-b1c4-04cac5f0ef8a@lunn.ch>
-References: <ec5bd768-3f54-4c30-b5a2-1e0b43f789e3@kabelmail.de> <903daf32-aecd-4160-8f69-4fc329fdad3f@lunn.ch> <49CA4531-3BDC-4054-8830-BA80775C2B68@tipi-net.de> <dc641872-9ac5-407b-b1c4-04cac5f0ef8a@lunn.ch>
-Message-ID: <42B61948-B34B-4A63-B560-34AED03F1649@tipi-net.de>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JrD2CULs"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BED981F00893;
+	Fri,  5 Jun 2026 23:13:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780701197;
+	bh=MWVBiiFpEQ0/EmGFoo8huzeAXw0aY1xHLVjCxXfg3fA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=JrD2CULsR3Z5ODT7I7ePEHkBwtjOr436CUokEgXc2bRs3eRrlCFoVhkrkd/C6cnUs
+	 V0UZgHYXeIQdMV/LWuWsl+xIuFrNgKrlFoTQ0FwpDQHOWrtUp4HdNxc4wPvFtGu4cY
+	 KIct6ETV1OAS5EfQzBqRDl9nYAmH0LyfILs1BoIScWsp2nrhnauZsdphWmbGlGlFh1
+	 TZvKaMhVO6ER//uDAjIVC0K4AHT/cLXYiJ0xOVaWTNYnoTJb+3RJqpSdm9rHVs2HuF
+	 0Gos4gRHhv+3ZhQro5Lc0RJYy0eA4wpkAqNXaLumfvF5xkuzElhFQ7RltFnmRI59eN
+	 IfnPcdGTv6HPQ==
+Date: Fri, 5 Jun 2026 16:13:15 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
+Cc: kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
+ decui@microsoft.com, longli@microsoft.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+ kotaranov@microsoft.com, horms@kernel.org, dipayanroy@linux.microsoft.com,
+ kees@kernel.org, linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org
+Subject: Re: [PATCH net-next] net: mana: Cache MANA_QUERY_LINK_CONFIG result
+ to avoid repeated HWC queries
+Message-ID: <20260605161315.26784677@kernel.org>
+In-Reply-To: <aiJeuU3DLKL7JcPN@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+References: <20260528180757.1536640-1-ernis@linux.microsoft.com>
+	<20260602132127.25fc27ee@kernel.org>
+	<aiJeuU3DLKL7JcPN@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
+On Thu, 4 Jun 2026 22:29:29 -0700 Erni Sri Satya Vennela wrote:
+> I tried two netdev_lock-based variants. 
+> 
+> mana_query_link_cfg() has four callers:
+> 
+> 1 ethtool ioctl/netlink			- has RTNL	- has netdev->lock
+> 2 sysfs speed_show/duplex_show		- has RTNL	- no netdev->lock
+> 3 netvsc_get_link_ksettings VF forward	- has RTNL	- no netdev->lock
+> 4 mana_shaper_set			- no RTNL	- has netdev->lock
+> 
+> No existing lock covers all four.
 
-
-On June 5, 2026 11:34:51 PM GMT+02:00, Andrew Lunn <andrew@lunn=2Ech> wrot=
-e:
->> >Do you know what MCU is in the SFP? Is there a data sheet for it? Can
->> >you read out the EEPROM holding its code over the I2C bus? You can
->> >then disassemble/decompile the code and see what it is actually doing=
-=2E
->>=20
->> https://doc=2E10gtek=2Ecom/file/file/20240806/d6fa28f954989f74cde42c753=
-53b5fe6=2Epdf
->>=20
->> I2c address should be A0h
->
->That is the usual address for an SFP=2E However, MCUs sometime have ways
->to program them, etc=2E That is why i asked if you know what the MCU
-
-Right=2E If I read the sparse datasheet correctly, this is a branded winto=
-p module=2E AFAIR these wintop modules do plain i2c, even with their mcu=2E=
-=20
-
-A while ago a friend gifted me a mixed box with copper sfp+ modules from f=
-s and other second source vendors=2E If I recall it correctly there was a s=
-imilar/same=2E
-
-If I can find it, I will check the i2c interface next week=2E=2E=2E
-
->is=2E I guess you have not taken one apart to see what is actually in
->it=2E
->
->	Andrew
->
-
-Regards
-Nicolai
+How fresh is your tree? The just-minted commit 9f275c2e9020 should
+address the gap, I believe?
