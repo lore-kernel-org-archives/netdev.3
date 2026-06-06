@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0032230BB9B;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD0C730569E;
 	Sat,  6 Jun 2026 05:42:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780724570; cv=none; b=nlmmkZw9HB8wACjy6f7YRRt6LvCnVm8M+YRjCdHer+w99nPnBaxfIJ+tPbBbu9Zoad1FdNIlF6NIjtDV5zpZ+1Rrg5CeEOnFtXND+bH7pafoxdB1rN9/U8GhyAfL3+Yqi24UsKx+ALwE4cqQLju4idHoEJyb9by424Zy2e2JhG8=
+	t=1780724569; cv=none; b=FWIZpHxDvySAUzJq/9uTzHR8kNXBzxS7MyqtNb3+uD74qQOSuX/9uLu/8tkDVrzLifuIICWiNXtTwUX7X0dTi9WihDQQWJDNbdRYO2AiTXg1Z+14NkHY9DiN4x/h1yC1ShFmFXd0rKoDxhH2qye/Tv7sLqY2VyG5E3wHS25Gb9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780724570; c=relaxed/simple;
-	bh=J4JrRV9ojip8LEr3T9oThVuqU5VjGkOkn3KxxZc/+iQ=;
+	s=arc-20240116; t=1780724569; c=relaxed/simple;
+	bh=mKQoM1tv8RXprV8THVMxouHKboyYRpKLR8ZPyw0fMv8=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=iZWMTw57SphiXq0Vn5d4dGUOAG7q3K/lPhUO03c+X+T7RhmFMkVkuFs2Ft5URusnJhqUjCTC72op+KHASm9L3TZfCdVECtrRggPIEbN6RWVoV2RdRiYk36hPcHIXRHcDTrvol4/1WiZfAq1Xxz7NQV3t92FmanrXIRPOAlGZtHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YvIZ7rjR; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=Gg8H11Zhv4q4vKWDo9wE2ArWHVuwIAdBZrwNsoQwSYnnPyEzEcs2u8yNYBsuOqPazwtTXxQFrwrgVZ6LHDpQh0lcD7rAITgCc6dKrllGyBp1nSdjuTaUU1cHRoPuihUSxIk7amvK8pB8vB2yKC9Vlop9gfgq+jv7zmuj4uJQvw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FgYNFEII; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YvIZ7rjR"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id D6637C2BCB0;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FgYNFEII"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 6D41DC2BD05;
 	Sat,  6 Jun 2026 05:42:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1780724569;
-	bh=J4JrRV9ojip8LEr3T9oThVuqU5VjGkOkn3KxxZc/+iQ=;
+	bh=mKQoM1tv8RXprV8THVMxouHKboyYRpKLR8ZPyw0fMv8=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=YvIZ7rjRLtoqFBDpqTWWohcdWJgdkwOLjwBXFWuoiHz/uPMCUpwMwaax+bQNfkb8S
-	 dYyKJjaGT8/q2cHaE9eMdFn/3k4x4KmrdTbSsaXjyeKKJWWE0Eeop8NFl/Z6XaFJDR
-	 2FcRdXMu1Lnz/s6vPGJ4/li74WLgWFLiI1Damc57tRlBDS2WeyokWHz5N0bR1bt8nE
-	 8W17R0h/s/cFOsuMCNVlgBuVito3wJdsBiggd8M+AlUBC3deX5OgAcyl6uVT5y8N6d
-	 08ZJUxCKDgk4B/3022cmajdx68idaXnvVf2JQsNqaew/hv2p/n7JjaxRpzX0z3h1Gj
-	 njbn/qd+HT4cw==
+	b=FgYNFEIIeadWPLwndXNhG+CMiKZq7ZY45uIMOGb1ss8Yce1J6QhLdaPLfwRmGS+Ql
+	 GZEjh4fO0h6q3cAJ5vAUpyim2YgEhE6YNOsMWK+pKRW+Dl2TgqRDoN8ju/qenXozsx
+	 +U6LHPgrUp26swoiHhewyjCMD9W6lAMQV55LB78S/NJ/9CPbWvIu3xHaKMwijmaYM+
+	 POnBcuLPlqD4q5mzJ1ZxtqAeDeQwJSg0HQNlKTTY0UZS8cSSYTQsTI3z20PRoLOfEi
+	 b8810Vd4qYy4/Vz/4vcZS9WdgQ/+OQ3cBUbREudrmCxxU49Zf5IS/DPo0qSI6glcPR
+	 nJ0gDRglbhR7g==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CD75DCD8C85;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 63E75CD8C85;
 	Sat,  6 Jun 2026 05:42:49 +0000 (UTC)
 From: Selvamani Rajagopal via B4 Relay <devnull+Selvamani.Rajagopal.onsemi.com@kernel.org>
-Date: Fri, 05 Jun 2026 22:42:42 -0700
-Subject: [PATCH net-next v4 11/16] net: phy: ncn26000: Enable enhanced
- noise immunity
+Date: Fri, 05 Jun 2026 22:42:36 -0700
+Subject: [PATCH net-next v4 05/16] net: ethernet: oa_tc6: Move constant
+ definitions to header file
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -40,8 +40,8 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260605-s2500-mac-phy-support-v4-11-de0fbc13c6d8@onsemi.com>
+Content-Transfer-Encoding: 8bit
+Message-Id: <20260605-s2500-mac-phy-support-v4-5-de0fbc13c6d8@onsemi.com>
 References: <20260605-s2500-mac-phy-support-v4-0-de0fbc13c6d8@onsemi.com>
 In-Reply-To: <20260605-s2500-mac-phy-support-v4-0-de0fbc13c6d8@onsemi.com>
 To: Andrew Lunn <andrew@lunn.ch>, 
@@ -62,11 +62,11 @@ Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
  Jerry Ray <jerry.ray@microchip.com>, 
  Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1780724562; l=2396;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1780724562; l=12577;
  i=Selvamani.Rajagopal@onsemi.com; s=20260531; h=from:subject:message-id;
- bh=0U1RzAHZSWzomZ4iVBpV8zjyjt3Pi1KvW4neKMCTNpc=;
- b=1oliSqsYP6VMqMDJ7KLkRxrP2fjGPoHIw/YJ2XwkDPeNajF3W1VPdq/B6Pv6tEQKzPh/YuQuU
- S1VEGIDbQY7DhqC52elqhmDqEIkjo91fRi/Muo3v2q9jbMqJ7iMplSZ
+ bh=V9/p26HuvjVIzSu/3awlHVeh7NO/NgV0TeoDAwfwULI=;
+ b=Hc8VRQZQsguwQ9JjqCaF3OeMNKNUf/D0QX7dTMzV2SP8B+L9/yuDhHM5W263BavSJfbVg/1Ug
+ yDmqPWjNncxAHT6SnKFg/YEkuk5K1qmcfhflQzO8HB70ZxbKRniFdu/
 X-Developer-Key: i=Selvamani.Rajagopal@onsemi.com; a=ed25519;
  pk=5QRdM0HS/LGWWcUZZ9hVfZ+qbPQGZCumcTXOiN7Fyug=
 X-Endpoint-Received: by B4 Relay for
@@ -76,72 +76,368 @@ Reply-To: Selvamani.Rajagopal@onsemi.com
 
 From: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
 
-By setting ENI bit, noise immunity is improved and it is
-specifically meant for PLCA enabled nodes.
+To help other source files within the module share the
+constant definitions, they are moved to a header file.
 
 Signed-off-by: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
 ---
- drivers/net/phy/ncn26000.c | 26 ++++++++++++++++++++++++--
- 1 file changed, 24 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/oa_tc6/oa_tc6.c         | 145 +------------------------
+ drivers/net/ethernet/oa_tc6/oa_tc6_std_def.h | 157 +++++++++++++++++++++++++++
+ include/linux/oa_tc6.h                       |  15 +++
+ 3 files changed, 173 insertions(+), 144 deletions(-)
 
-diff --git a/drivers/net/phy/ncn26000.c b/drivers/net/phy/ncn26000.c
-index 2c8601c3f94a..c3a34b2c524d 100644
---- a/drivers/net/phy/ncn26000.c
-+++ b/drivers/net/phy/ncn26000.c
-@@ -36,6 +36,10 @@
+diff --git a/drivers/net/ethernet/oa_tc6/oa_tc6.c b/drivers/net/ethernet/oa_tc6/oa_tc6.c
+index 91a906a7918a..c7d70d37ba53 100644
+--- a/drivers/net/ethernet/oa_tc6/oa_tc6.c
++++ b/drivers/net/ethernet/oa_tc6/oa_tc6.c
+@@ -11,150 +11,7 @@
+ #include <linux/phy.h>
+ #include <linux/oa_tc6.h>
  
- #define TO_TMR_DEFAULT			32
+-/* OPEN Alliance TC6 registers */
+-/* Standard Capabilities Register */
+-#define OA_TC6_REG_STDCAP			0x0002
+-#define STDCAP_DIRECT_PHY_REG_ACCESS		BIT(8)
+-
+-/* Reset Control and Status Register */
+-#define OA_TC6_REG_RESET			0x0003
+-#define RESET_SWRESET				BIT(0)	/* Software Reset */
+-
+-/* Configuration Register #0 */
+-#define OA_TC6_REG_CONFIG0			0x0004
+-#define CONFIG0_SYNC				BIT(15)
+-#define CONFIG0_ZARFE_ENABLE			BIT(12)
+-
+-/* Status Register #0 */
+-#define OA_TC6_REG_STATUS0			0x0008
+-#define STATUS0_RESETC				BIT(6)	/* Reset Complete */
+-#define STATUS0_HEADER_ERROR			BIT(5)
+-#define STATUS0_LOSS_OF_FRAME_ERROR		BIT(4)
+-#define STATUS0_RX_BUFFER_OVERFLOW_ERROR	BIT(3)
+-#define STATUS0_TX_PROTOCOL_ERROR		BIT(0)
+-
+-/* Buffer Status Register */
+-#define OA_TC6_REG_BUFFER_STATUS		0x000B
+-#define BUFFER_STATUS_TX_CREDITS_AVAILABLE	GENMASK(15, 8)
+-#define BUFFER_STATUS_RX_CHUNKS_AVAILABLE	GENMASK(7, 0)
+-
+-/* Interrupt Mask Register #0 */
+-#define OA_TC6_REG_INT_MASK0			0x000C
+-#define INT_MASK0_HEADER_ERR_MASK		BIT(5)
+-#define INT_MASK0_LOSS_OF_FRAME_ERR_MASK	BIT(4)
+-#define INT_MASK0_RX_BUFFER_OVERFLOW_ERR_MASK	BIT(3)
+-#define INT_MASK0_TX_PROTOCOL_ERR_MASK		BIT(0)
+-
+-/* PHY Clause 22 registers base address and mask */
+-#define OA_TC6_PHY_STD_REG_ADDR_BASE		0xFF00
+-#define OA_TC6_PHY_STD_REG_ADDR_MASK		0x1F
+-
+-/* Control command header */
+-#define OA_TC6_CTRL_HEADER_DATA_NOT_CTRL	BIT(31)
+-#define OA_TC6_CTRL_HEADER_WRITE_NOT_READ	BIT(29)
+-#define OA_TC6_CTRL_HEADER_MEM_MAP_SELECTOR	GENMASK(27, 24)
+-#define OA_TC6_CTRL_HEADER_ADDR			GENMASK(23, 8)
+-#define OA_TC6_CTRL_HEADER_LENGTH		GENMASK(7, 1)
+-#define OA_TC6_CTRL_HEADER_PARITY		BIT(0)
+-
+-/* Data header */
+-#define OA_TC6_DATA_HEADER_DATA_NOT_CTRL	BIT(31)
+-#define OA_TC6_DATA_HEADER_DATA_VALID		BIT(21)
+-#define OA_TC6_DATA_HEADER_START_VALID		BIT(20)
+-#define OA_TC6_DATA_HEADER_START_WORD_OFFSET	GENMASK(19, 16)
+-#define OA_TC6_DATA_HEADER_END_VALID		BIT(14)
+-#define OA_TC6_DATA_HEADER_END_BYTE_OFFSET	GENMASK(13, 8)
+-#define OA_TC6_DATA_HEADER_PARITY		BIT(0)
+-
+-/* Data footer */
+-#define OA_TC6_DATA_FOOTER_EXTENDED_STS		BIT(31)
+-#define OA_TC6_DATA_FOOTER_RXD_HEADER_BAD	BIT(30)
+-#define OA_TC6_DATA_FOOTER_CONFIG_SYNC		BIT(29)
+-#define OA_TC6_DATA_FOOTER_RX_CHUNKS		GENMASK(28, 24)
+-#define OA_TC6_DATA_FOOTER_DATA_VALID		BIT(21)
+-#define OA_TC6_DATA_FOOTER_START_VALID		BIT(20)
+-#define OA_TC6_DATA_FOOTER_START_WORD_OFFSET	GENMASK(19, 16)
+-#define OA_TC6_DATA_FOOTER_END_VALID		BIT(14)
+-#define OA_TC6_DATA_FOOTER_END_BYTE_OFFSET	GENMASK(13, 8)
+-#define OA_TC6_DATA_FOOTER_TX_CREDITS		GENMASK(5, 1)
+-
+-/* PHY – Clause 45 registers memory map selector (MMS) as per table 6 in the
+- * OPEN Alliance specification.
+- */
+-#define OA_TC6_PHY_C45_PCS_MMS2			2	/* MMD 3 */
+-#define OA_TC6_PHY_C45_PMA_PMD_MMS3		3	/* MMD 1 */
+-#define OA_TC6_PHY_C45_VS_PLCA_MMS4		4	/* MMD 31 */
+-#define OA_TC6_PHY_C45_AUTO_NEG_MMS5		5	/* MMD 7 */
+-#define OA_TC6_PHY_C45_POWER_UNIT_MMS6		6	/* MMD 13 */
+-
+-#define OA_TC6_CTRL_HEADER_SIZE			4
+-#define OA_TC6_CTRL_REG_VALUE_SIZE		4
+-#define OA_TC6_CTRL_IGNORED_SIZE		4
+-#define OA_TC6_CTRL_MAX_REGISTERS		128
+-#define OA_TC6_CTRL_SPI_BUF_SIZE		(OA_TC6_CTRL_HEADER_SIZE +\
+-						(OA_TC6_CTRL_MAX_REGISTERS *\
+-						OA_TC6_CTRL_REG_VALUE_SIZE) +\
+-						OA_TC6_CTRL_IGNORED_SIZE)
+-#define OA_TC6_CHUNK_PAYLOAD_SIZE		64
+-#define OA_TC6_DATA_HEADER_SIZE			4
+-#define OA_TC6_CHUNK_SIZE			(OA_TC6_DATA_HEADER_SIZE +\
+-						OA_TC6_CHUNK_PAYLOAD_SIZE)
+-#define OA_TC6_MAX_TX_CHUNKS			48
+-#define OA_TC6_SPI_DATA_BUF_SIZE		(OA_TC6_MAX_TX_CHUNKS *\
+-						OA_TC6_CHUNK_SIZE)
+-#define STATUS0_RESETC_POLL_DELAY		1000
+-#define STATUS0_RESETC_POLL_TIMEOUT		1000000
+-
+-/* Internal structure for MAC-PHY drivers */
+-struct oa_tc6 {
+-	struct device *dev;
+-	struct net_device *netdev;
+-	struct phy_device *phydev;
+-	struct mii_bus *mdiobus;
+-	struct spi_device *spi;
+-	struct mutex spi_ctrl_lock; /* Protects spi control transfer */
+-	spinlock_t tx_skb_lock; /* Protects tx skb handling */
+-	void *spi_ctrl_tx_buf;
+-	void *spi_ctrl_rx_buf;
+-	void *spi_data_tx_buf;
+-	void *spi_data_rx_buf;
+-	struct sk_buff *ongoing_tx_skb;
+-	struct sk_buff *waiting_tx_skb;
+-	struct sk_buff *rx_skb;
+-	struct task_struct *spi_thread;
+-	wait_queue_head_t spi_wq;
+-	u16 tx_skb_offset;
+-	u16 spi_data_tx_buf_offset;
+-	u16 tx_credits;
+-	u8 rx_chunks_available;
+-	bool rx_buf_overflow;
+-	bool int_flag;
+-};
+-
+-enum oa_tc6_header_type {
+-	OA_TC6_CTRL_HEADER,
+-	OA_TC6_DATA_HEADER,
+-};
+-
+-enum oa_tc6_register_op {
+-	OA_TC6_CTRL_REG_READ = 0,
+-	OA_TC6_CTRL_REG_WRITE = 1,
+-};
+-
+-enum oa_tc6_data_valid_info {
+-	OA_TC6_DATA_INVALID,
+-	OA_TC6_DATA_VALID,
+-};
+-
+-enum oa_tc6_data_start_valid_info {
+-	OA_TC6_DATA_START_INVALID,
+-	OA_TC6_DATA_START_VALID,
+-};
+-
+-enum oa_tc6_data_end_valid_info {
+-	OA_TC6_DATA_END_INVALID,
+-	OA_TC6_DATA_END_VALID,
+-};
++#include "oa_tc6_std_def.h"
  
-+#define NCN26000_REG_PHYCFG1		0x8001
-+#define NCN26000_PHYCFG1_ENI		BIT(7)
-+#define NCN26000_PHYCFG1_ENI_MASK	BIT(7)
-+
- static int ncn26000_config_init(struct phy_device *phydev)
- {
- 	int ret = 0;
-@@ -106,6 +110,24 @@ static int ncn26000_read_status(struct phy_device *phydev)
- 	return 0;
- }
- 
-+/* Intercept PLCA enable/disable request to
-+ * set the proprietary, ENI mode accordingly
+ static int oa_tc6_spi_transfer(struct oa_tc6 *tc6,
+ 			       enum oa_tc6_header_type header_type, u16 length)
+diff --git a/drivers/net/ethernet/oa_tc6/oa_tc6_std_def.h b/drivers/net/ethernet/oa_tc6/oa_tc6_std_def.h
+new file mode 100644
+index 000000000000..2d8e28fb46fc
+--- /dev/null
++++ b/drivers/net/ethernet/oa_tc6/oa_tc6_std_def.h
+@@ -0,0 +1,157 @@
++/* SPDX-License-Identifier: GPL-2.0+ */
++/*
++ * Register and driver related definitions to support
++ * OPEN Alliance 10BASE‑T1x MAC‑PHY Serial Interface framework.
++ *
++ * Author: Selva Rajagopal <selvamani.rajagopal@onsemi.com>
 + */
-+static int ncn26000_c45_plca_set_cfg(struct phy_device *phydev,
-+				     const struct phy_plca_cfg *plca_cfg)
-+{
-+	int ret = genphy_c45_plca_set_cfg(phydev, plca_cfg);
-+	u16 eni_cfg = 0;
 +
-+	if (ret || plca_cfg->enabled < 0)
-+		return ret;
++#ifndef OA_TC6_STD_DEF_H
++#define OA_TC6_STD_DEF_H
 +
-+	eni_cfg = (plca_cfg->enabled) ? NCN26000_PHYCFG1_ENI : 0;
-+	return phy_modify_mmd(phydev, MDIO_MMD_VEND2,
-+			      NCN26000_REG_PHYCFG1,
-+			      NCN26000_PHYCFG1_ENI_MASK, eni_cfg);
-+}
++#include <linux/ptp_clock_kernel.h>
++#include <linux/net_tstamp.h>
++#include <linux/netdevice.h>
++#include <linux/spi/spi.h>
++#include <linux/skbuff.h>
++#include <linux/sched.h>
++#include <linux/wait.h>
++#include <linux/phy.h>
 +
- static irqreturn_t ncn26000_handle_interrupt(struct phy_device *phydev)
- {
- 	int ret;
-@@ -156,7 +178,7 @@ static struct phy_driver ncn26000_driver[] = {
- 		.config_aneg           = ncn26000_config_aneg,
- 		.read_status           = ncn26000_read_status,
- 		.handle_interrupt      = ncn26000_handle_interrupt,
--		.set_plca_cfg          = genphy_c45_plca_set_cfg,
-+		.set_plca_cfg          = ncn26000_c45_plca_set_cfg,
- 		.get_plca_cfg          = genphy_c45_plca_get_cfg,
- 		.get_plca_status       = genphy_c45_plca_get_status,
- 		.soft_reset            = genphy_soft_reset,
-@@ -177,7 +199,7 @@ static struct phy_driver ncn26000_driver[] = {
- 		.read_status		= ncn26000_read_status,
- 		.handle_interrupt       = ncn26000_handle_interrupt,
- 		.get_plca_cfg		= genphy_c45_plca_get_cfg,
--		.set_plca_cfg		= genphy_c45_plca_set_cfg,
-+		.set_plca_cfg		= ncn26000_c45_plca_set_cfg,
- 		.get_plca_status	= genphy_c45_plca_get_status,
- 		.soft_reset             = genphy_soft_reset,
- 	},
++/* OPEN Alliance TC6 registers */
++/* Standard Capabilities Register */
++#define OA_TC6_REG_STDCAP			0x0002
++#define STDCAP_DIRECT_PHY_REG_ACCESS		BIT(8)
++
++/* Reset Control and Status Register */
++#define OA_TC6_REG_RESET			0x0003
++#define RESET_SWRESET				BIT(0)	/* Software Reset */
++
++/* Configuration Register #0 */
++#define OA_TC6_REG_CONFIG0			0x0004
++#define CONFIG0_SYNC				BIT(15)
++#define CONFIG0_ZARFE_ENABLE			BIT(12)
++
++/* Status Register #0 */
++#define OA_TC6_REG_STATUS0			0x0008
++#define STATUS0_RESETC				BIT(6)	/* Reset Complete */
++#define STATUS0_HEADER_ERROR			BIT(5)
++#define STATUS0_LOSS_OF_FRAME_ERROR		BIT(4)
++#define STATUS0_RX_BUFFER_OVERFLOW_ERROR	BIT(3)
++#define STATUS0_TX_PROTOCOL_ERROR		BIT(0)
++
++/* Buffer Status Register */
++#define OA_TC6_REG_BUFFER_STATUS		0x000B
++#define BUFFER_STATUS_TX_CREDITS_AVAILABLE	GENMASK(15, 8)
++#define BUFFER_STATUS_RX_CHUNKS_AVAILABLE	GENMASK(7, 0)
++
++/* Interrupt Mask Register #0 */
++#define OA_TC6_REG_INT_MASK0			0x000C
++#define INT_MASK0_HEADER_ERR_MASK		BIT(5)
++#define INT_MASK0_LOSS_OF_FRAME_ERR_MASK	BIT(4)
++#define INT_MASK0_RX_BUFFER_OVERFLOW_ERR_MASK	BIT(3)
++#define INT_MASK0_TX_PROTOCOL_ERR_MASK		BIT(0)
++
++/* PHY Clause 22 registers base address and mask */
++#define OA_TC6_PHY_STD_REG_ADDR_BASE		0xFF00
++#define OA_TC6_PHY_STD_REG_ADDR_MASK		0x1F
++
++/* Control command header */
++#define OA_TC6_CTRL_HEADER_DATA_NOT_CTRL	BIT(31)
++#define OA_TC6_CTRL_HEADER_WRITE_NOT_READ	BIT(29)
++#define OA_TC6_CTRL_HEADER_MEM_MAP_SELECTOR	GENMASK(27, 24)
++#define OA_TC6_CTRL_HEADER_ADDR			GENMASK(23, 8)
++#define OA_TC6_CTRL_HEADER_LENGTH		GENMASK(7, 1)
++#define OA_TC6_CTRL_HEADER_PARITY		BIT(0)
++
++/* Data header */
++#define OA_TC6_DATA_HEADER_DATA_NOT_CTRL	BIT(31)
++#define OA_TC6_DATA_HEADER_DATA_VALID		BIT(21)
++#define OA_TC6_DATA_HEADER_START_VALID		BIT(20)
++#define OA_TC6_DATA_HEADER_START_WORD_OFFSET	GENMASK(19, 16)
++#define OA_TC6_DATA_HEADER_END_VALID		BIT(14)
++#define OA_TC6_DATA_HEADER_END_BYTE_OFFSET	GENMASK(13, 8)
++#define OA_TC6_DATA_HEADER_PARITY		BIT(0)
++
++/* Data footer */
++#define OA_TC6_DATA_FOOTER_EXTENDED_STS		BIT(31)
++#define OA_TC6_DATA_FOOTER_RXD_HEADER_BAD	BIT(30)
++#define OA_TC6_DATA_FOOTER_CONFIG_SYNC		BIT(29)
++#define OA_TC6_DATA_FOOTER_RX_CHUNKS		GENMASK(28, 24)
++#define OA_TC6_DATA_FOOTER_DATA_VALID		BIT(21)
++#define OA_TC6_DATA_FOOTER_START_VALID		BIT(20)
++#define OA_TC6_DATA_FOOTER_START_WORD_OFFSET	GENMASK(19, 16)
++#define OA_TC6_DATA_FOOTER_END_VALID		BIT(14)
++#define OA_TC6_DATA_FOOTER_END_BYTE_OFFSET	GENMASK(13, 8)
++#define OA_TC6_DATA_FOOTER_TX_CREDITS		GENMASK(5, 1)
++
++#define OA_TC6_CTRL_HEADER_SIZE			4
++#define OA_TC6_CTRL_REG_VALUE_SIZE		4
++#define OA_TC6_CTRL_IGNORED_SIZE		4
++#define OA_TC6_CTRL_MAX_REGISTERS		128
++#define OA_TC6_CTRL_SPI_BUF_SIZE		(OA_TC6_CTRL_HEADER_SIZE +\
++						(OA_TC6_CTRL_MAX_REGISTERS *\
++						OA_TC6_CTRL_REG_VALUE_SIZE) +\
++						OA_TC6_CTRL_IGNORED_SIZE)
++#define OA_TC6_CHUNK_PAYLOAD_SIZE		64
++#define OA_TC6_DATA_HEADER_SIZE			4
++#define OA_TC6_CHUNK_SIZE			(OA_TC6_DATA_HEADER_SIZE +\
++						OA_TC6_CHUNK_PAYLOAD_SIZE)
++#define OA_TC6_MAX_TX_CHUNKS			48
++#define OA_TC6_SPI_DATA_BUF_SIZE		(OA_TC6_MAX_TX_CHUNKS *\
++						OA_TC6_CHUNK_SIZE)
++#define STATUS0_RESETC_POLL_DELAY		1000
++#define STATUS0_RESETC_POLL_TIMEOUT		1000000
++
++/* Internal structure for MAC-PHY drivers */
++struct oa_tc6 {
++	struct device *dev;
++	struct net_device *netdev;
++	struct phy_device *phydev;
++	struct mii_bus *mdiobus;
++	struct spi_device *spi;
++	struct mutex spi_ctrl_lock; /* Protects spi control transfer */
++	spinlock_t tx_skb_lock; /* Protects tx skb handling */
++	void *spi_ctrl_tx_buf;
++	void *spi_ctrl_rx_buf;
++	void *spi_data_tx_buf;
++	void *spi_data_rx_buf;
++	struct sk_buff *ongoing_tx_skb;
++	struct sk_buff *waiting_tx_skb;
++	struct sk_buff *rx_skb;
++	struct task_struct *spi_thread;
++	wait_queue_head_t spi_wq;
++	u16 tx_skb_offset;
++	u16 spi_data_tx_buf_offset;
++	u16 tx_credits;
++	u8 rx_chunks_available;
++	bool rx_buf_overflow;
++	bool int_flag;
++};
++
++enum oa_tc6_header_type {
++	OA_TC6_CTRL_HEADER,
++	OA_TC6_DATA_HEADER,
++};
++
++enum oa_tc6_register_op {
++	OA_TC6_CTRL_REG_READ = 0,
++	OA_TC6_CTRL_REG_WRITE = 1,
++};
++
++enum oa_tc6_data_valid_info {
++	OA_TC6_DATA_INVALID,
++	OA_TC6_DATA_VALID,
++};
++
++enum oa_tc6_data_start_valid_info {
++	OA_TC6_DATA_START_INVALID,
++	OA_TC6_DATA_START_VALID,
++};
++
++enum oa_tc6_data_end_valid_info {
++	OA_TC6_DATA_END_INVALID,
++	OA_TC6_DATA_END_VALID,
++};
++#endif /* OA_TC6_STD_DEF_H */
++
+diff --git a/include/linux/oa_tc6.h b/include/linux/oa_tc6.h
+index 15f58e3c56c7..39b80033dfa9 100644
+--- a/include/linux/oa_tc6.h
++++ b/include/linux/oa_tc6.h
+@@ -7,9 +7,23 @@
+  * Author: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>
+  */
+ 
++#ifndef _LINUX_OA_TC6_H
++#define _LINUX_OA_TC6_H
++
+ #include <linux/etherdevice.h>
+ #include <linux/spi/spi.h>
+ 
++/* PHY – Clause 45 registers memory map selector (MMS) as per table 6 in
++ * the OPEN Alliance specification.
++ */
++#define OA_TC6_PHY_C45_MAC_MMS1			1	/* No MMD */
++#define OA_TC6_PHY_C45_PCS_MMS2			2	/* MMD 3 */
++#define OA_TC6_PHY_C45_PMA_PMD_MMS3		3	/* MMD 1 */
++#define OA_TC6_PHY_C45_VS_PLCA_MMS4		4	/* MMD 31 */
++#define OA_TC6_PHY_C45_AUTO_NEG_MMS5		5	/* MMD 7 */
++#define OA_TC6_PHY_C45_POWER_UNIT_MMS6		6	/* MMD 13 */
++#define OA_TC6_PHY_C45_VS_MMS12			12	/* for vendors */
++
+ struct oa_tc6;
+ 
+ struct oa_tc6 *oa_tc6_init(struct spi_device *spi, struct net_device *netdev);
+@@ -22,3 +36,4 @@ int oa_tc6_read_registers(struct oa_tc6 *tc6, u32 address, u32 value[],
+ 			  u8 length);
+ netdev_tx_t oa_tc6_start_xmit(struct oa_tc6 *tc6, struct sk_buff *skb);
+ int oa_tc6_zero_align_receive_frame_enable(struct oa_tc6 *tc6);
++#endif /* _LINUX_OA_TC6_H */
 
 -- 
 2.43.0
