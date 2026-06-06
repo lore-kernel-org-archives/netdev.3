@@ -1,40 +1,40 @@
-Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
+Received: from mailtransmit05.runbox.com (mailtransmit05.runbox.com [185.226.149.38])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DCED3C4B88;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B81FC3C5523;
 	Sat,  6 Jun 2026 20:27:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.38
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780777645; cv=none; b=l2rtWTR+edF+EWOxMF1TIWz5X4dpOFcwwkkvA1Irx/SbmTUkIp9PZ/+UhTl05dSH6Ybt/fiEb86sGRnUEL7MrrIAK4dx3xp2GCLocH1nPOcAEKSbRFPDoNGO1X+rgRKEIsY7TYsQW3PISUF4s7Jsw3bJlKlEr05wbxjxvGnR5sY=
+	t=1780777646; cv=none; b=fvaAG0AcGWc6uQ/+2gYv+2Pgurd1kjxMb95GAXu3aExUeM2uyhg4NaZHvBZT9ZA1NgRmcMROV/r99tb97Kwgv8wkhvWp3cOxSxpgZrlFnqJjABiYVg/XjhgoA8szggJpoFQy1jZJPZNqOzzkE6KpzUhlIY4QwuOELSI9FZchuu8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780777645; c=relaxed/simple;
-	bh=SxzaNOPuRKvYNLVHaRZrGNPTvEna/tHYJItD78azQwA=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=OMQ7wPM3cQx3Lgl2V6IV9qNENQK6bgFG77Z1hC+J8kPkzEmVkhnYWv3FRkhCw05Xta6qMFb/3V98ASzDqBtnRq/kyRvxrlLVSsbNaOIh4Nxc8hT72tB7yUzp4tnz7Hn9cMjGUvA/IlGVl5uVhY5jMwfFAphbUTdMyHwxFPj55Po=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=runbox.com; dkim=pass (2048-bit key) header.d=runbox.com header.i=@runbox.com header.b=mjpZOoiP; arc=none smtp.client-ip=185.226.149.37
+	s=arc-20240116; t=1780777646; c=relaxed/simple;
+	bh=bim886/OhiVSIxZy9+PFrFcewNlK854TqMdxiaNehuQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=eEOZ0hNKzZp5yMsf23QM427PqxuLbYflfPZF4Al6XBcQaJ+uhohPECptdHaUivr3GDQ7UaBen64YwDjwWW9Zkv95TFDVi77iJGTWfzVvo7cufNMJEfqPn8s2pA9UWcD8o61aX5ezU0l24vk1CYevq7beCWQh1hJc8cV2sD5S9mk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=runbox.com; dkim=pass (2048-bit key) header.d=runbox.com header.i=@runbox.com header.b=X5fDqLbr; arc=none smtp.client-ip=185.226.149.38
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=runbox.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=runbox.com header.i=@runbox.com header.b="mjpZOoiP"
+	dkim=pass (2048-bit key) header.d=runbox.com header.i=@runbox.com header.b="X5fDqLbr"
 Received: from mailtransmit02.runbox ([10.9.9.162] helo=aibo.runbox.com)
-	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	by mailtransmit05.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
 	(Exim 4.93)
 	(envelope-from <david.laight.linux_spam@runbox.com>)
-	id 1wVxbv-007NRO-02; Sat, 06 Jun 2026 22:27:15 +0200
+	id 1wVxby-007cJ6-46; Sat, 06 Jun 2026 22:27:18 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=runbox.com;
 	 s=selector1; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:
-	Subject:Cc:To:From; bh=7lP0V/PmqS5w6KerRWcqIcU3V9iQKo1pwTjde744MY0=; b=mjpZOo
-	iP4VjIuMbdQttdGmJCASaz05iyq0vYuvV/KCnS9a1/jEitNkyg/MfEuL1WcRBdyMGjJOXTZDzvGq6
-	Y0NiVxxDcVJDy5N17xcPqY5RCmsMFNDFWpANMy8nCRXf9hO3oiXAygd4SH4uWv7AEV9IFAZ3qUPWK
-	OKvCiMdiy1zkpXv5fe6Vxz4eHBDfgoqsKO9MgzyvhfYBNDj7mXy9JbQh7gKARO8wKEhbmcY+VqL0C
-	AWs7g2WfwwNp1psKRlcxt9YRa+nlEYR3gOz/Ru6I9mHoU9yLAHgTTIbWPF/AgLd6RxcPpqhUbhFZf
-	A616nkvHkx2Mup5sOwdbb+62yecQ==;
+	Subject:Cc:To:From; bh=1tmG7KQ+QBPSKVniy68SW2e0oX740RfjrVvq/1+fBk8=; b=X5fDqL
+	brptfHUFId9vfpXlWF6bAKGf8rM2PF4uxOt6jaaIADqMdQMHZZty3B6GMJCvcH5O5rKdFiFBZIUb7
+	LsMrcC49qC43SqmyHFRkIgCXZ1/4VXN9RWPv4G9FnaJeevqxT0LTzZSvUaekv/mghRrg0YZwM7wiZ
+	JUshngULxnJoWOfnZ6eLR6IUo184GMpYnfM8moTe2USZyJLWrwnb2MzLFykOF+WN7OFzlHUnq8Qmh
+	PWJG1KxMVe3g4UWUeLygB50Jul8W7q5sNGif1llUMUlrWSNnzJ1pnQQJ+dYEp08h/LwtoGHZjytgx
+	R2zbyoRtwaiX9Cp3dZ96woDSCQ4w==;
 Received: from [10.9.9.72] (helo=submission01.runbox)
 	by mailtransmit02.runbox with esmtp (Exim 4.86_2)
 	(envelope-from <david.laight.linux_spam@runbox.com>)
-	id 1wVxbu-0000ty-JJ; Sat, 06 Jun 2026 22:27:14 +0200
+	id 1wVxbx-0000ue-QC; Sat, 06 Jun 2026 22:27:17 +0200
 Received: by submission01.runbox with esmtpsa  [Authenticated ID (1493616)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.95)
-	id 1wVxbg-006V18-Vp;
+	id 1wVxbh-006V18-Fb;
 	Sat, 06 Jun 2026 22:27:01 +0200
 From: david.laight.linux@gmail.com
 To: Kees Cook <kees@kernel.org>,
@@ -50,9 +50,9 @@ Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	David Laight <david.laight.linux@gmail.com>
-Subject: [PATCH net-next] drivers/net/ethernet/sfc/falcon/efx: User strscpy() to copy device name
-Date: Sat,  6 Jun 2026 21:26:13 +0100
-Message-Id: <20260606202633.5018-19-david.laight.linux@gmail.com>
+Subject: [PATCH net-next] drivers/net/ethernet/sfc/siena/efx: Use strscpy() to copy device name
+Date: Sat,  6 Jun 2026 21:26:14 +0100
+Message-Id: <20260606202633.5018-20-david.laight.linux@gmail.com>
 X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -88,21 +88,21 @@ All the patches are being sent individually to avoid very long cc lists.
 Apologies for the terse commit messages and likely unexpected tags.
 (There are about 100 patches in total.)
 
- drivers/net/ethernet/sfc/falcon/efx.c | 2 +-
+ drivers/net/ethernet/sfc/siena/efx.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/sfc/falcon/efx.c b/drivers/net/ethernet/sfc/falcon/efx.c
-index 0c197b448645..28ae767432f9 100644
---- a/drivers/net/ethernet/sfc/falcon/efx.c
-+++ b/drivers/net/ethernet/sfc/falcon/efx.c
-@@ -2212,7 +2212,7 @@ static const struct net_device_ops ef4_netdev_ops = {
+diff --git a/drivers/net/ethernet/sfc/siena/efx.c b/drivers/net/ethernet/sfc/siena/efx.c
+index 59d3a6043379..05672d9c0f5e 100644
+--- a/drivers/net/ethernet/sfc/siena/efx.c
++++ b/drivers/net/ethernet/sfc/siena/efx.c
+@@ -677,7 +677,7 @@ static int efx_xdp_xmit(struct net_device *dev, int n, struct xdp_frame **xdpfs,
  
- static void ef4_update_name(struct ef4_nic *efx)
+ static void efx_update_name(struct efx_nic *efx)
  {
 -	strcpy(efx->name, efx->net_dev->name);
 +	strscpy(efx->name, efx->net_dev->name);
- 	ef4_mtd_rename(efx);
- 	ef4_set_channel_names(efx);
+ 	efx_siena_mtd_rename(efx);
+ 	efx_siena_set_channel_names(efx);
  }
 -- 
 2.39.5
