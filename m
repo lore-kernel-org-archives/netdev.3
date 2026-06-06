@@ -1,106 +1,150 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74FE81A9F88
-	for <netdev@vger.kernel.org>; Sat,  6 Jun 2026 05:50:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F360824E4C6
+	for <netdev@vger.kernel.org>; Sat,  6 Jun 2026 06:11:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780725039; cv=none; b=Yx7G7ZOePFAmMyR9ktjcNkPXY0IzdHWazmkXJp0VIPuB5gorhQJWveW8fRG8OBZncpUKhFRhp2peBO4M7CucZdl6BrRNpaY16zjgO/UryzNjIUWH5CRH637QiPCzhsOOEicBODCZhNSTUgAF5gShTE2ZVMEucvyii2sOo+9h5/4=
+	t=1780726264; cv=none; b=BQnR6MLyHGjbsLad5o8lDyPNwZoNl+4WyfomLPEhUm9OqkbUB8gfCy2Tq3bBDJGQEVt8dXC5BKpZeD/Q/b9NpWqnydzxjaWGeKyHk6iVaq4r2fpe8mjEKideWQYvaLACGik4YpvUi1j5RWPA+HMzFI/CP/R/c50lg8fcJoX4VqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780725039; c=relaxed/simple;
-	bh=z7SkIp9z+bRtbbNXb03wvDdYtpeVVyvfRF8vBgvn8nY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=CrLwvU8BphpGXX+SJRDUj1qv05jUK9OLOfXXZEjaytCDoSTkwiDrOTiH0MUU2/j1w6sjbFh35rSTjMmk5q9WFzZH5/qiwU8nCXMCwZ0ZKWDD2TUXB3WcYj/QkB7z6YYoSc+YxEJO1iJZlpmcsb94IiiCJp5XIqiQ1zyd+JzhMhY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Yc4pfBcr; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780726264; c=relaxed/simple;
+	bh=ve8FNUDJ+bfAlTYt1tyGpBHY0ZFpeP48sjRpO5hIorA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KXD9Gd7tPpJEDZ9kn8ljAx6ALAEZVlSiKTM+Qp6nl1B911Z4Fre4oZQOAsJCu0eY6b7/cVJHMN6nd3iocsQ72ntMbbPevXQ/2WaAIwBSqVshnyo2IgNT2K3w5qjgWVRopfxCp5QgMZmeHWKDxD96xeD0ZZvKmrS9RAEi+Sv761Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lZLnIKMI; arc=none smtp.client-ip=209.85.221.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Yc4pfBcr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C1A21F00893;
-	Sat,  6 Jun 2026 05:50:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780725038;
-	bh=Qd5esQLYkEp9qLYF3uDQurNkA79QQQMRr7j4ojvsKBA=;
-	h=From:Date:Subject:To:Cc;
-	b=Yc4pfBcr8gFeMuG0vq66p8dzpYN9BM+hwza4eVwJDCz1PwmKRHWTM7lvahzg5v7KT
-	 RDBqACQW8/eUYCkoKaOfkXIXwiU4LVYkvPRYVVlWQib+JSPY5UoxTzsd/xh2KYQbhk
-	 A4wOwSJ6i3mKIuGu0URERl3ePZcJbmtUhvWxcQ0epTP4G0QOH+ow62bu9mchPZrRAD
-	 xdijExBBMS3kfET120DVOjbOaeQeZxFLDqaOZP3I5oXEUWo8nQf02a4w6eJhdjBlTl
-	 JTXTQOesP1SdzBIfffPC18UsjJuwbozUl9uym1Ma+pryWMuVBMjiyuKcxNIRN+On/v
-	 abdb6qcbI1FDg==
-From: Lorenzo Bianconi <lorenzo@kernel.org>
-Date: Sat, 06 Jun 2026 07:49:59 +0200
-Subject: [PATCH net-next] net: airoha: Use int instead of atomic_t for qdma
- users counter
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lZLnIKMI"
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-45ef5146b56so2342345f8f.0
+        for <netdev@vger.kernel.org>; Fri, 05 Jun 2026 23:11:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780726261; x=1781331061; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=8r8X8oylGshLaIHIAK1kgCpu4mjI5I9eQ7pptBpGukw=;
+        b=lZLnIKMIF3d3ixq8CA9qHpI6c4K1GVAPpUE7R5cbmfuod843qux2ApzyxWcN9P1y0i
+         oMecdiFiZIMP/MgPqXZhVctyIRv7uFpA4tSLsF3uUJZwyQ4hA5iuZwQl9QFwGcd3gvGC
+         Hcdw9UucXPzWiaheQKM/ZZ/cvZbpBP7P1jAehUaNMz2+Lff0BSjM41b4lfirrrSchqdp
+         iipJrLwv6jAPAnpwodIcFsI9u55Gs6HqDYvjkk8XKoNqROoyb8jh13EJ828FZ0KvWiVZ
+         v7PCF9Eqn8mX4bx+AOr4+fAN6ce4raMku673pCYv0adx8D6N/lH1pEiyXmvfHU9o9LQR
+         FfZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780726261; x=1781331061;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8r8X8oylGshLaIHIAK1kgCpu4mjI5I9eQ7pptBpGukw=;
+        b=e4ygqE+ARLHrIINr23Ejga33RJtZv6AiIcn20MD8x5G2CCCOX7mlJ8mbGRI2FB6Joy
+         3OKCTQ+SJB1menbsxpvPPa2zj06NfvDpWmHPLzetrAFG6TXHYMGGjpxCwpsTZKyGovyJ
+         7O5r927B82CdgfzlFpvqX7wUi+/64W3DLN6h5WhsAPSLAR6iLtKzyrT/UNM2BnALngpE
+         vx9MbNHY31SofpvbPTAridEB5YcUTVIH69rCwHeOyQazrE5LYRmicyCqd+F4I6QRX3ao
+         Ryy1fASYgBOrzcssH6YFE6nFWdmhIToIzKNnWGLV3eKFf7n19VeA3RSphHxxGN7uCz7y
+         uSAw==
+X-Forwarded-Encrypted: i=1; AFNElJ8DMXvS3d19drv9uYDB9RYzeZi/sr5HdBJUcZPTJf3Um9+xOLaL7irqwu/YlogNQej73xhmkcw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzEFDfiKzU6zZlTJpT3g62ch5USM3eRJ75jAdWaBE0gRKTInqP8
+	LUT+vq1fTT2Go8Wg8aaQQOLTzCQQPHQ37dgBU8Tpab7t59lUETWvaP7o
+X-Gm-Gg: Acq92OHr0vGCQqASkvsI5cpAQ0yTlzCoXBHlCFBgCKuff+sbALko+qwL+gC+WCFVgy/
+	jWryXx6BTy/wKc97EVaRkx0T7hvrfQfd23Lv1IPkHNBB4lm76Ajy4IZ5523In11peeJUGVy/dCG
+	ZTsX/jR3PvAnwIFXjgSmaxVceDLItSXKjN3fFG0rZrmrzZlpfn9boPOWl4zB0tB1o+HvpWMU2GK
+	zns84d41TWm1jCS9YHxvtPr+yoQgP6wkvVi+QnXFGXPCdqUQMBPKJh+AUv7jHEcOW6faqFmRezX
+	GtLdjV+VzNAeFMKI6tklWr7J8ohSt8BNebCTdzqjTn0cq8iqyE3tYazaVGj3mNW60+XUFKkrDXk
+	iHbs+n1I7DW8Y6zeq3T+bXLg4a79JuWXAp/S86mP+70mKQAKjhGn5GeeWZiN32yZzobNBth0MCV
+	FbMPGabvwOVh+JoTquHDJlYtUsZokcFA==
+X-Received: by 2002:a05:6000:41c4:b0:45e:f5b5:885 with SMTP id ffacd0b85a97d-46032b610d1mr8361361f8f.2.1780726261254;
+        Fri, 05 Jun 2026 23:11:01 -0700 (PDT)
+Received: from localhost ([212.73.77.104])
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-4601f360bd6sm34254711f8f.36.2026.06.05.23.10.58
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 05 Jun 2026 23:11:00 -0700 (PDT)
+From: Askar Safin <safinaskar@gmail.com>
+To: linux-fsdevel@vger.kernel.org,
+	Christian Brauner <brauner@kernel.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Jan Kara <jack@suse.cz>
+Cc: linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-api@vger.kernel.org,
+	netdev@vger.kernel.org,
+	fuse-devel@lists.linux.dev,
+	ltp@lists.linux.it,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Christoph Hellwig <hch@infradead.org>,
+	David Howells <dhowells@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Miklos Szeredi <miklos@szeredi.hu>,
+	Andy Lutomirski <luto@amacapital.net>,
+	Collin Funk <collin.funk1@gmail.com>,
+	David Laight <david.laight.linux@gmail.com>,
+	Stefan Metzmacher <metze@samba.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	The 8472 <kernel@infinite-source.de>,
+	Willy Tarreau <w@1wt.eu>,
+	Joanne Koong <joannelkoong@gmail.com>,
+	patches@lists.linux.dev
+Subject: [PATCH 0/5] vmsplice: fix some problems in my previous vmsplice patchset
+Date: Sat,  6 Jun 2026 06:10:26 +0000
+Message-ID: <20260606061031.3744880-1-safinaskar@gmail.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260606-airoha_qdma_users-no-atomic-v1-1-86e2d6a1bfaf@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x2MQQqDMBAAvyJ77kIMtoJfkSJrXHUPbjRJiyD+v
- UuZ0xxmLsichDN01QWJv5Ilqkn9qCCspAujTObgnX85A0lSXGk4po2Gj8UZNSKVuElA1z5dCH5
- s/FyDHfbEs5z/ew/KBZXPAu/7/gGNKAtYdwAAAA==
-X-Change-ID: 20260606-airoha_qdma_users-no-atomic-0750cc2b42f1
-To: Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: linux-arm-kernel@lists.infradead.org, 
- linux-mediatek@lists.infradead.org, netdev@vger.kernel.org, 
- Lorenzo Bianconi <lorenzo@kernel.org>
-X-Mailer: b4 0.14.3
+Content-Transfer-Encoding: 8bit
 
-QDMA users counter is always accessed holding RTNL lock so we do not
-require atomic_t for it.
+This patchset is for VFS. Of course, it depends on my previous vmsplice
+patchset.
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- drivers/net/ethernet/airoha/airoha_eth.c | 4 ++--
- drivers/net/ethernet/airoha/airoha_eth.h | 3 +--
- 2 files changed, 3 insertions(+), 4 deletions(-)
+I fix some problems in my previous patchset.
 
-diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
-index 5a8e84fa9918..a5fe08864fa3 100644
---- a/drivers/net/ethernet/airoha/airoha_eth.c
-+++ b/drivers/net/ethernet/airoha/airoha_eth.c
-@@ -1809,7 +1809,7 @@ static int airoha_dev_open(struct net_device *netdev)
- 	airoha_qdma_set(qdma, REG_QDMA_GLOBAL_CFG,
- 			GLOBAL_CFG_TX_DMA_EN_MASK |
- 			GLOBAL_CFG_RX_DMA_EN_MASK);
--	atomic_inc(&qdma->users);
-+	qdma->users++;
- 
- 	if (!airoha_is_lan_gdm_dev(dev) &&
- 	    airoha_ppe_is_enabled(qdma->eth, 1))
-@@ -1863,7 +1863,7 @@ static int airoha_dev_stop(struct net_device *netdev)
- 					    REG_GDM_FWD_CFG(port->id),
- 					    FE_PSE_PORT_DROP);
- 
--	if (atomic_dec_and_test(&qdma->users)) {
-+	if (!--qdma->users) {
- 		airoha_qdma_clear(qdma, REG_QDMA_GLOBAL_CFG,
- 				  GLOBAL_CFG_TX_DMA_EN_MASK |
- 				  GLOBAL_CFG_RX_DMA_EN_MASK);
-diff --git a/drivers/net/ethernet/airoha/airoha_eth.h b/drivers/net/ethernet/airoha/airoha_eth.h
-index 8f42973f9cf5..e89c2dff411f 100644
---- a/drivers/net/ethernet/airoha/airoha_eth.h
-+++ b/drivers/net/ethernet/airoha/airoha_eth.h
-@@ -525,8 +525,7 @@ struct airoha_irq_bank {
- struct airoha_qdma {
- 	struct airoha_eth *eth;
- 	void __iomem *regs;
--
--	atomic_t users;
-+	int users;
- 
- 	struct airoha_irq_bank irq_banks[AIROHA_MAX_NUM_IRQ_BANKS];
- 
+1. Fix problem with CLASS(fd, f)(fd). See first patch for details.
+This is probably not so important, but I fix it anyway.
 
----
-base-commit: 903db046d5579bef0ea699eae4b279dd6455fc9f
-change-id: 20260606-airoha_qdma_users-no-atomic-0750cc2b42f1
+2. Change "unsigned long" back to "int". See second patch for details.
+Again, this is probably not important, but I want to fix this anyway.
 
-Best regards,
+3. Fix that LTP vmsplice01 bug.
+
+See patches for details.
+
+Please, run that LTP vmsplice01 test again.
+
+Notes:
+
+- I want to repeat: I change behavior around SPLICE_F_NONBLOCK.
+Previously, vmsplice ignored whether pipe itself was opened as
+non-blocking file. Now it is not ignored. And in my opinion
+new behavior is better.
+- vmsplice(2) now is in fs/read_write.c . It is very similar to
+preadv2 and pwritev2 now, so I think it belongs to fs/read_write.c now.
+
+Please, review this patchset carefully. I'm still new contributor.
+In particular, please, review that do-while loop, I'm not sure I did
+everything right.
+
+Tested in Qemu.
+
+Askar Safin (5):
+  vmsplice: open-code do_writev and do_readv
+  vmsplice: change argument type back to "int"
+  splice: turn wait_for_space flags argument into bool
+  pipe: move wait_for_space to fs/pipe.c and rename it
+  vmsplice: make sure we don't wait after writing some data
+
+ fs/pipe.c                 | 17 +++++++++++
+ fs/read_write.c           | 61 ++++++++++++++++++++++++++++++++++-----
+ fs/splice.c               | 19 +-----------
+ include/linux/pipe_fs_i.h |  2 ++
+ include/linux/syscalls.h  |  2 +-
+ 5 files changed, 75 insertions(+), 26 deletions(-)
+
+
+base-commit: 8d86fcfc2857d64af85f5c87c193c25655c970af (vfs-7.2.vmsplice)
 -- 
-Lorenzo Bianconi <lorenzo@kernel.org>
+2.47.3
 
