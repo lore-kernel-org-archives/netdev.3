@@ -1,41 +1,41 @@
-Received: from mailtransmit05.runbox.com (mailtransmit05.runbox.com [185.226.149.38])
+Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC5DB3C3BFA;
-	Sat,  6 Jun 2026 20:27:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.38
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 113D33BFAFC
+	for <netdev@vger.kernel.org>; Sat,  6 Jun 2026 20:27:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780777646; cv=none; b=QxbehmHx1Bgp6rLqp8Z0LOpPiK/eHJdWnBwdi/l8UAphVPtTH5EXnpCvcNJYi8haH1BHje7shnOiaBUomo6nHu4RA+AGREgG7btEb08YTSa170uMP7eCMz4FfDKx6IJOj+OKShp9TkrcN6voL8z0PSN8X6kQXoez3+jesaVvaOk=
+	t=1780777647; cv=none; b=W+aGEsO7YSD5knsmD8MzqFRAYZ6Q9miEZkqQuVQ8/MoYoLl16XMr94mpr9RQSIJWI4iQQR3mpFGvuum0xdKXuaj6/PG2KVkTQMuzA90CMMcTU0IhmU5o4w59PMK49OK2wcPMNYDCbcnZejc+jA1iavlLmojH4/i1QOAXiG2G2jk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780777646; c=relaxed/simple;
-	bh=tHQEQrPxlubWISHX02zXpkKqs7TtIMm13+hU8WYJMOk=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=N8Im7psRFFWsXDt6YxoD9pNV5y3vRRMMstyNXcfVzkw+gaVfCIcukPEmhPyoo4kEdHKqHR8wuwY4Z2Cl0UmUACVgePLSA0myt95QipS1ctTaDtHUVyadDTT+ylCfrGueCrfMAZnrfpwY+6Zvk860C8QZwaSvkO8iU3z6oECOrig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=runbox.com; dkim=pass (2048-bit key) header.d=runbox.com header.i=@runbox.com header.b=tpzfK8sl; arc=none smtp.client-ip=185.226.149.38
+	s=arc-20240116; t=1780777647; c=relaxed/simple;
+	bh=1mFrbojz0PWOhUZtx3IzxM5Cw9QosOrwnDFFT7UZSQE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=s7U4bB9kBxdRvORUOVsi2Z5F7QW0jEOWsH17HZVa6V0W3ur3d4OnKzfxUNloIqFp+t8OZirkN/lBbwoGCilB3+Hc2Lj4cQvSRlW22N2MvWgj2TzOTAqhJVsYa+vru5ZWbB8SJfwV6KrQmLrPseVPIL05dgTuHGGt5ECYLsaDs3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=runbox.com; dkim=pass (2048-bit key) header.d=runbox.com header.i=@runbox.com header.b=wijZ8IB/; arc=none smtp.client-ip=185.226.149.37
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=runbox.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=runbox.com header.i=@runbox.com header.b="tpzfK8sl"
+	dkim=pass (2048-bit key) header.d=runbox.com header.i=@runbox.com header.b="wijZ8IB/"
 Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
-	by mailtransmit05.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
 	(Exim 4.93)
 	(envelope-from <david.laight.linux_spam@runbox.com>)
-	id 1wVxbv-007cHl-U7; Sat, 06 Jun 2026 22:27:15 +0200
+	id 1wVxc1-007NTh-3f; Sat, 06 Jun 2026 22:27:21 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=runbox.com;
 	 s=selector1; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:
-	Subject:Cc:To:From; bh=9gIdnzM+dAgG4gvnmdxAjdZuQXK+gY/bR0bwUb0i+Fc=; b=tpzfK8
-	slwFwN9KZk7UmXtXiSkmIv/ImS8D6SQXxDgt9/6Wmym7Zt76I+in+meuBEeJPsScpvXWdkhASAVqG
-	ZYidEm1mIIrpCeKlrlqmFj5gJjw8h6cunogj2/C8mi3QzfkUbu2HJhaEWBiuFgWd0KXXucKLcLTe8
-	l/BHby6tvnWXvCZHMJ/7kNR7h6KYG1yvcqX6M1uQOcjHvPHtnRHrc3Nppd8hk8Pt8wHyVSMML4b4f
-	fOYqA2bAb6/ZvMHSNUJS/8GYDP/mRHvnrgmvQ6nCfYr2ydGEQLGYLqoVBIgfirHjC9RXCaehW3lbg
-	If2eIrPkM/YmfMW7ik2DlQ5TlQBg==;
+	Subject:Cc:To:From; bh=KhMKaOFxgwuQkIs6RKratwnTu2UWxE6iXhf6LBrZbME=; b=wijZ8I
+	B/QKevvdt5kIs4TVg4CKUyWlfIY6hFuZoGTbwyBcRGJefE8nJXSzDZQnMHDT22na81QMzQdYStjzK
+	++VhngaY9Y6RiQBpuxY5YSguSYB/Vsb5Cg35GjG00PPy/yxfQSDZ7uaRmK3mt5CGWxh585FcF5QyF
+	j3eDufEe6oBZAdYJLmQzQSBof+PJiUvhteccBci/F1/MUAxF+IueUqX3LXMR53NyOG6pXpx1nyZht
+	X7TXKgdYB28krBnMMlOGJHdw2dSNYM4bjfaQ+I3c2EPKSFpKBOTotX1Wgv5u8YrsKoOTIyKkeVLXy
+	tNxywe0G8/cTyOuI0mNxbqsCkAwA==;
 Received: from [10.9.9.72] (helo=submission01.runbox)
 	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
 	(envelope-from <david.laight.linux_spam@runbox.com>)
-	id 1wVxbt-0005Ct-SW; Sat, 06 Jun 2026 22:27:14 +0200
+	id 1wVxbv-0005DL-J6; Sat, 06 Jun 2026 22:27:15 +0200
 Received: by submission01.runbox with esmtpsa  [Authenticated ID (1493616)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.95)
-	id 1wVxbl-006V18-4d;
-	Sat, 06 Jun 2026 22:27:05 +0200
+	id 1wVxbk-006V18-65;
+	Sat, 06 Jun 2026 22:27:04 +0200
 From: david.laight.linux@gmail.com
 To: Kees Cook <kees@kernel.org>,
 	linux-hardening@vger.kernel.org,
@@ -45,15 +45,13 @@ To: Kees Cook <kees@kernel.org>,
 Cc: David Ahern <dsahern@kernel.org>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
 	Ido Schimmel <idosch@nvidia.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
 	David Laight <david.laight.linux@gmail.com>
-Subject: [PATCH net-next] net/ipv6/ip6_vti: Use strscpy() to copy device name
-Date: Sat,  6 Jun 2026 21:26:23 +0100
-Message-Id: <20260606202633.5018-29-david.laight.linux@gmail.com>
+Subject: [PATCH net-next] net/ipv4/ipconfig: Use strscpy() to copy device name
+Date: Sat,  6 Jun 2026 21:26:21 +0100
+Message-Id: <20260606202633.5018-27-david.laight.linux@gmail.com>
 X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -89,31 +87,22 @@ All the patches are being sent individually to avoid very long cc lists.
 Apologies for the terse commit messages and likely unexpected tags.
 (There are about 100 patches in total.)
 
- net/ipv6/ip6_vti.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/ipv4/ipconfig.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv6/ip6_vti.c b/net/ipv6/ip6_vti.c
-index ad5290be4dd6..c6cb756a1091 100644
---- a/net/ipv6/ip6_vti.c
-+++ b/net/ipv6/ip6_vti.c
-@@ -186,7 +186,7 @@ static int vti6_tnl_create2(struct net_device *dev)
- 	if (err < 0)
- 		goto out;
+diff --git a/net/ipv4/ipconfig.c b/net/ipv4/ipconfig.c
+index a35ffedacc7c..ec60e201ebe7 100644
+--- a/net/ipv4/ipconfig.c
++++ b/net/ipv4/ipconfig.c
+@@ -371,7 +371,7 @@ static int __init ic_setup_if(void)
+ 	int err;
  
--	strcpy(t->parms.name, dev->name);
-+	strscpy(t->parms.name, dev->name);
- 
- 	vti6_tnl_link(ip6n, t);
- 
-@@ -1161,7 +1161,7 @@ static int __net_init vti6_init_net(struct net *net)
- 
- 	t = netdev_priv(ip6n->fb_tnl_dev);
- 
--	strcpy(t->parms.name, ip6n->fb_tnl_dev->name);
-+	strscpy(t->parms.name, ip6n->fb_tnl_dev->name);
- 	return 0;
- 
- err_register:
+ 	memset(&ir, 0, sizeof(ir));
+-	strcpy(ir.ifr_ifrn.ifrn_name, ic_dev->dev->name);
++	strscpy(ir.ifr_ifrn.ifrn_name, ic_dev->dev->name);
+ 	set_sockaddr(sin, ic_myaddr, 0);
+ 	if ((err = devinet_ioctl(&init_net, SIOCSIFADDR, &ir)) < 0) {
+ 		pr_err("IP-Config: Unable to set interface address (%d)\n",
 -- 
 2.39.5
 
