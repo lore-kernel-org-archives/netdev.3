@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28FA122652D;
-	Sat,  6 Jun 2026 01:50:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E1AF25BF13;
+	Sat,  6 Jun 2026 01:50:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780710608; cv=none; b=g7trzpFzOyh7n8TUk+X8UTwM3JRXAal7kvdq6MZc9ijwD07NzwELB+lJyhBiONVbmBf7eBOVtOLEnTewfd7cSomNi6qaE423HjXUQAI02e/aJ80BN1Rx6UKVTpUWXC+XlNoe5okVDJF8jGrM46sgJqDPEVREcChf9fnlJNjgFE4=
+	t=1780710609; cv=none; b=M1j/Stv7vC0OjyYSKqS2aITT8VsHgeZaMHIIUslUHPWwWI+g7H/Ry2+MEJBuq4/IZzodrVeEjE3JIwb9+BBjj63g8UaF9jPmGfRYuKAEP98yFalvYvnqkuqTTxUIRmpFzpmk8kUfUl0YLv4bH35y2mvAZpZQIBTIvdhKhwrrtyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780710608; c=relaxed/simple;
-	bh=O9S2efjexbrsI3lcMeEXaNF+N6raNkemNqobYH8v5Lw=;
+	s=arc-20240116; t=1780710609; c=relaxed/simple;
+	bh=Sw3V6Jz0wtZR30vbr0HoLwyM+JmpPpMwicQdaFWTMWA=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=WFL0L1QnOPqky67EKEX3xUUKr/Ibs7gKiooPOoRYWaf17BYwlbougJgophyq3Mp4vlkYpDQDv3gFMC0xnB58kmMVpR6p+90Up52xAWPAoTFuZiq57JongMV88oetgI/Nc1g9i/bPmiwVhkjLqRwVKUNsCDMDteScW7PiBB3JYHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g6ZYJeNs; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=mWqEEsHLFdfmlGGc71GnyUb3ZArjdlQ7DEMggHsFlhz/iPfiEVR/Zs2+//2SqSI3z6d1cVIRFjC8dtpl4XUwZcxjs6WrTueeyVzWifyvktIvxa40pZRQGRVZ99LMx6Cfj7cF6MeSx5IX3nZOs5fAdmtRDt4LcaNr0/1AIJgrCYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lJezhLAK; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g6ZYJeNs"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4CAB1F00893;
-	Sat,  6 Jun 2026 01:50:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780710606;
-	bh=YZd/rp8sGaNuCD+N45AkBnt6khotKVn1OdeI6oj4XCc=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=g6ZYJeNsdvyPwRac2ef2TybDskjrkMBoL+Ikei4kXnrSeJK7elW28+6IAcCMRbEOw
-	 a5FJYv1lEjVZItPOYlTDSgIO8dZn8cRtE5Tr4hFwxvnZUZ/9ZRP5mm3TDbbbOZZhBu
-	 mHiYlDGijYTr5voc2LeQmO04x7tzfeaFdVQIAaXvArq2xqJIqm35ecRA6icjqqIuD1
-	 UcSjBmmBVEVX8U67cLJJ4wwY36cb2p8oGnsYMtmkeXrmfPIXf7xG7AL7LPSZJUcrEm
-	 1VtiN2AzbwSw0lJ2xLMsgmK63hJxRSFUwmgymWZ841MHJopV3cDuNibvbZrA/Z5vTF
-	 WZqE3yKWS/q6w==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 197C73930A9C;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lJezhLAK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38BD31F00893;
 	Sat,  6 Jun 2026 01:50:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780710608;
+	bh=tAJ7WVX7mJQQiFf4U+sYINxy71ImxnceGJLdv7M8zNU=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=lJezhLAKzd21A/MX43g5OVtZP7KYVgbwPyvD/QrXomNbNfZPaxlEJJzvT+0Vd7T86
+	 /qxXtO7jJxf27knoueD+3QnME9FWtxwkB9u2KKo4kD9rBMVPbqwjFqPPYnJzssOT/p
+	 w3oloxkemGyy3rjcR2/jRuNBLczWulQ00K/bMM2G1EjOs/5jiYUvTQTdn9gGDdDcBl
+	 ajeToxdTORqgIukJ29302V1LfsKuMtIxP4yKQ3PpnhM9op05fj6x+AaPuZ3CURVtAL
+	 O8S8ACDogrJdYnT1eaelt1oM0IH/IduK90B9U5yR5rq6RhGw8wYvFqmQRWJaRTkDs8
+	 DwhdS9ItlEtvg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 939B23930A9C;
+	Sat,  6 Jun 2026 01:50:09 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,42 +37,42 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v2,net] net: ena: PHC: Add missing barrier
+Subject: Re: [PATCH net] bnge: fix context mem iteration
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178071060665.3989414.8411045312934190903.git-patchwork-notify@kernel.org>
-Date: Sat, 06 Jun 2026 01:50:06 +0000
-References: <20260604080706.19366-1-akiyano@amazon.com>
-In-Reply-To: <20260604080706.19366-1-akiyano@amazon.com>
-To: Arthur Kiyanovski <akiyano@amazon.com>
-Cc: davem@davemloft.net, kuba@kernel.org, netdev@vger.kernel.org,
- edumazet@google.com, pabeni@redhat.com, dwmw@amazon.com, zorik@amazon.com,
- matua@amazon.com, saeedb@amazon.com, msw@amazon.com, aliguori@amazon.com,
- nafea@amazon.com, evgenys@amazon.com, netanel@amazon.com,
- alisaidi@amazon.com, benh@amazon.com, ndagan@amazon.com, darinzon@amazon.com,
- evostrov@amazon.com, ofirt@amazon.com, amitbern@amazon.com,
- andrew+netdev@lunn.ch, saeed.bishara.os@gmail.com,
- linux-kernel@vger.kernel.org
+ <178071060814.3989414.3144352465863361551.git-patchwork-notify@kernel.org>
+Date: Sat, 06 Jun 2026 01:50:08 +0000
+References: <20260604163709.497649-1-vikas.gupta@broadcom.com>
+In-Reply-To: <20260604163709.497649-1-vikas.gupta@broadcom.com>
+To: Vikas Gupta <vikas.gupta@broadcom.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ vsrama-krishna.nemani@broadcom.com, bhargava.marreddy@broadcom.com,
+ rajashekar.hudumula@broadcom.com, ajit.khaparde@broadcom.com,
+ dharmender.garg@broadcom.com, rahul-rg.gupta@broadcom.com
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Thu, 4 Jun 2026 08:07:04 +0000 you wrote:
-> Add dma_rmb() barrier after req_id completion check in
-> ena_com_phc_get_timestamp(). On weakly-ordered architectures,
-> payload fields may be read before req_id is observed as updated.
-> 
-> Fixes: e0ea34158ee8 ("net: ena: Add PHC support in the ENA driver")
-> Closes: https://sashiko.dev/#/patchset/20260430032507.11586-1-akiyano%40amazon.com
-> Signed-off-by: Arthur Kiyanovski <akiyano@amazon.com>
+On Thu,  4 Jun 2026 22:07:09 +0530 you wrote:
+> The firmware advertises context memory (backing store) types
+> through a linked list, with BNGE_CTX_INV serving as the
+> end-of-list sentinel.
+> However, the driver incorrectly assumes that the list is strictly
+> ordered and prematurely terminates traversal when it encounters
+> an unrecognized type (>=BNGE_CTX_V2_MAX). As a result, any valid
+> context types that appear later in the chain are silently skipped,
+> leading to incomplete memory configuration and eventual driver load
+> failure.
 > 
 > [...]
 
 Here is the summary with links:
-  - [v2,net] net: ena: PHC: Add missing barrier
-    https://git.kernel.org/netdev/net/c/954981dbbfbd
+  - [net] bnge: fix context mem iteration
+    https://git.kernel.org/netdev/net/c/3847d94783c0
 
 You are awesome, thank you!
 -- 
