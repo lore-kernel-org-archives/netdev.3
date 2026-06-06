@@ -1,54 +1,54 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18205155757;
-	Sat,  6 Jun 2026 13:31:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 260A03B2FF1;
+	Sat,  6 Jun 2026 13:31:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780752690; cv=none; b=H/rPF3Jz3jZnHeUtZhV9kSnb9FjKMAl5KJEf+lrENKgoG44A5c9qQoAEcAqNDnEYB1a13boO793yXTUx9zmc7g5m2cYVEzZD/aDeuYizqErH2Rd8GlSgDmCtnkeee61N30QgekFI+fKc0o3f6R6TQ6nRP+A/e7SlmXERefvfr0k=
+	t=1780752697; cv=none; b=HLlRPqG0X+k55xldb+5duwT+3SFumegp/7nkrgOHlSpXNZS28x1Ou7HBrR/Fka0/YgEnCPFF7O/n9ZaGFcRO5ziPv3ws7YHyiSRzKPqEw+VJCqzaOAOx8Zc9WOyrPpcCWkxDqFYtQlH3b8aUYVMUgFHZkaVKLx6CQ45aukY9k+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780752690; c=relaxed/simple;
-	bh=S0Y4vTzhu1uVbgQSJv23zUAtEwJgda+GHw5VKxaOXdY=;
+	s=arc-20240116; t=1780752697; c=relaxed/simple;
+	bh=iqdBp1SBe9s5B8xK7xryHGkN3EFOsiyJRhWFfYHWwXY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A/XDr0JcmT4I+aORGZ5KNWJ+J7749+DZdcEA25FaoVSUP1v4osodxX/ve2/E/98pz6N8C5QwwBIhlZcV5BuR40DjpLqNnqpQ6OATSL6ZPYDEoaaS6SeAq637GtJwnM5RMFptVJjHfG5WU6qaPuerVUGXh6KgC0TdVhbgWt9g9/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hz5DttO7; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=WTOhKgGg7Jida1r7J8gdhsMZS0ht8zt/ZTlrtrhVYScppLOSbcKpqA+fq7c9yUjXHx/W/uKD1AQAg1pqzaNSb6kjxdYFg2XRg8vAq4iWAy5dYt53TRnoU/PleAgIC4aq2KBH89TnvQ7opsPFi9/iQ/dCk8LXeyZnzMUmUrRXc1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Cb8qMDq7; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hz5DttO7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24F611F00898;
-	Sat,  6 Jun 2026 13:31:28 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Cb8qMDq7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 340B91F00899;
+	Sat,  6 Jun 2026 13:31:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780752689;
-	bh=iYlUnCtiF3nT5sjh1FybYoMPA5WXEzUG7/rae560OPc=;
+	s=k20260515; t=1780752693;
+	bh=JzucgvGDuY3nnjHaY/HehPAaXtFO2Zl/ImV4s57IpW4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Hz5DttO7XeTfaJtsyQFpPiNjhrtocJlCmCW82kNufxxwsz05hCUhVFQbL4GTZzpnt
-	 H5V45/3JScgGQBNssRvQGkREyBcokJod/0Yk5Hp6K+RfPhiQoWbNcJGGKOjldK4eBa
-	 +ftnqtf4oecZSQMzdMYY5ZZ5nSMUzxDvVmPHyBxqAZ2Z/m9mxOm/70dL+W4zYVKK4+
-	 sDWcv7RpF6AXyFk6wai7Kptg9DYJATYTamkq+9MIinI9Ybz8H2MZJ7JrxTG4if9tTE
-	 pZI1RvViUQUXl4b7m9BPW89vAYsRZBJDNwGG/ZnZY1VnZ8APNPWgfrJ26X+iMHVmXB
-	 l33Qre50bvjHQ==
+	b=Cb8qMDq7EkDP5+UtGVouj9wv6ricBE4nwU36/63nVZRa0HgEFXFFVDj+IaweH324M
+	 pFX4vH4lUMX3lMX/jKz2TZuFzH86UcU+lv87pPeVEz2TPK29kZpd2WfFoJf6OF56L7
+	 nTqumVUNJz4MzcuNoW318jRzY4yJAs+rKSz6XjxbX8Jv7bp6mP901pQhvhSWdQ/3MR
+	 fIMRXF+80DaPl8LPPT7WQufjolOoUjCC4NUj0RgixqjaQN9yqBDMSQ5F0D8IBiIjGN
+	 Yzu1li6pAkydqCTyNaWbzSylOjwlipmljMVEhynLDMObIv2A+SyvJa31MMQyRc8wls
+	 iiJbB8lstVOAA==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Sasha Levin <sashal@kernel.org>,
-	Alexey Panov <apanov@astralinux.ru>,
-	Jiri Pirko <jiri@resnulli.us>,
-	"David S. Miller" <davem@davemloft.net>,
+To: Steffen Klassert <steffen.klassert@secunet.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S . Miller" <davem@davemloft.net>,
+	David Ahern <dsahern@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	lvc-project@linuxtesting.org,
-	syzbot+a2a3b519de727b0f7903@syzkaller.appspotmail.com,
-	"Nikola Z . Ivanov" <zlatistiv@gmail.com>,
-	Jiri Pirko <jiri@nvidia.com>
-Subject: Re: [PATCH 5.10] team: Move team device type change at the end of team_port_add
-Date: Sat,  6 Jun 2026 09:31:16 -0400
-Message-ID: <20260606-stable-reply-0006@kernel.org>
+	stable@vger.kernel.org,
+	Simon Liebold <lieboldsimonpaul@gmail.com>
+Cc: Sasha Levin <sashal@kernel.org>,
+	Qi Tang <tpluszz77@gmail.com>,
+	Florian Westphal <fw@strlen.de>,
+	Simon Liebold <simonlie@amazon.de>
+Subject: Re: [PATCH 6.12.y] xfrm: hold dev ref until after transport_finish NF_HOOK
+Date: Sat,  6 Jun 2026 09:31:19 -0400
+Message-ID: <20260606-stable-reply-0009@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260605134700.23565-1-apanov@astralinux.ru>
-References: <20260605134700.23565-1-apanov@astralinux.ru>
+In-Reply-To: <20260605141254.1177152-1-simonlie@amazon.de>
+References: <20260605141254.1177152-1-simonlie@amazon.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -57,7 +57,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Queued for 5.10, thanks.
+Queued for 6.12, thanks.
 
 -- 
 Thanks,
