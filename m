@@ -1,64 +1,64 @@
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 338F73A4F4B
-	for <netdev@vger.kernel.org>; Sat,  6 Jun 2026 15:39:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 583303A4F4B
+	for <netdev@vger.kernel.org>; Sat,  6 Jun 2026 15:40:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780760371; cv=none; b=Vp2vd9DOVbW4hPSsAYaKL+jOHYYBkK+8om7X73QMGbRfjH/tKg/ykDf6CqZvqoy1DCL0E/xz8ywSiP3HeL0zEh3yH9I9rwSP6UWJFZbcYNpXSF1bAQPna9IxuzYSGfTXaeZNtVN5No3TCJMdKa6Bru7ECbb/zZE1EyTpqHeFzWY=
+	t=1780760407; cv=none; b=rCn94oxcbosMhmWRvT72hLRG5jMYVK+vZ5uvBgk4O67dwXcwB2blIouB+HOxtlabKS0X1h9b4DOPlj8kGK3EBMwaSzKAIh9SPHasXOrCQdJrt9heWK598o9+EniQMZr9JtAtXvp3g0UVOW0VN/+k5tUQHZRKMm/A41J/j1MuqqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780760371; c=relaxed/simple;
-	bh=ufkwTlSXf3ZWG1Dce5sP9AW5G+vLKGXNBj0iluLZVZI=;
+	s=arc-20240116; t=1780760407; c=relaxed/simple;
+	bh=AuKIwPE9i3X2sktlXsXGaLAwIb/BDdnSeCnhtqcogZ0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=M4uEDb52TTtEouQKdS6EPIelZumTlCOr2Evnu81dXz7B2AvPARnFm23C1Te24Erw6wDfRz/IylBKuVUt0aZD0UUktZfamquHd6Em1NMtYj1ME4kStEWnBfHzRZstG721bwmiAI5Cs8QfbdTDlawczqzuciQZ1qPpKoJYtpwNe4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ByWYB/cv; arc=none smtp.client-ip=209.85.214.169
+	 Content-Type:Content-Disposition:In-Reply-To; b=WuTucmra6zCB+CnJt9L7mtfkWq6ZLuvHuZwH6eg/z/1PJfsuAdyJUBD+yvdgSoQGAHI6Z4wJJErB2DI7t0VmkWo6X/8cybOfAUivlWjbk8zVRDdmsEh5VxFpg/EUTBSO7myLN1oV1PNxz5pDazxN52NQWxNzprGNySM3febYhbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CrhlwUWw; arc=none smtp.client-ip=209.85.214.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ByWYB/cv"
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2bf22c18ad3so223715ad.0
-        for <netdev@vger.kernel.org>; Sat, 06 Jun 2026 08:39:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CrhlwUWw"
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2bf22c18ad3so223815ad.0
+        for <netdev@vger.kernel.org>; Sat, 06 Jun 2026 08:40:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780760368; x=1781365168; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1780760405; x=1781365205; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=uqoLt1G0zuPhE5ck7aafsVgdkXtWSkd44IQ+/jjkZyM=;
-        b=ByWYB/cvXr/ClV6Fkhh9LFM7lNIDCM1kOlRQ8HWXKu69rqHuGfjhFodgyj0LiKb0D0
-         b/vXI9lJtZecZH+7I1mnwXQJkLYQYFsQcVbfFVw3AqNnA6yiVjq2xNIo71O2YW+lVCkg
-         5Akb/HMBFAPcz1jvA64WMGqG22ZioAP+i1+wsCU7BA029ooSWp4+uXyHCJjlgSJddHXT
-         3SVnIad6pGH0nh5IErI/H6R6BU3OyJlrPB2eRbTG4dC0zpb+tGRimE0XTLGstxxDPKdq
-         zNJHlXb8AWzsHw5T/wLSGn4J5kh6JxwI328DZjZk/nS8v00OezGZWfVWuX8hGC/lNoD6
-         Z/pw==
+        bh=JwDie3vRqtcV2a97m5zHtuohN/s1ZYi4/aVuLdrFAXM=;
+        b=CrhlwUWwukbPPkHXxZ0LcCIGfJSCd3U9gRXwItDaePd5QdDHmlCeVEWzfoFB373Eem
+         Rfi+u3/Mua1D6hri/vbNU2yDMeQQ/y817ekAFhYH2CJpsh2+U7vn5nsyqC7g6AtbHuV2
+         Q59e3UkzFhZL8sacctC0umz0qohB92/lHEk/aP+Bror7ZeZsMbkpL2TTHwPVxUb6oKIw
+         3UT+vqnbrFwAkiu4Oiw0kinO2VEIDkqjCB9krnB/SvmvelHeKsZWmdwrhyMMruKXNo9o
+         IIii9cbBqeiGXf0IBoVykut6dkBUiQylxVjcRyt8nF6yuIaGC+Q8VmzDUPBA0GH52b8E
+         papA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780760368; x=1781365168;
+        d=1e100.net; s=20251104; t=1780760405; x=1781365205;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=uqoLt1G0zuPhE5ck7aafsVgdkXtWSkd44IQ+/jjkZyM=;
-        b=FyMxxUJYvDdSCMuuTN/1ZbEmmKMHJKF/z3wehIlMtRneTRcv8x34OQ7zG0s5ybwIGc
-         03Sdb8odJMoQAmoQwkBqIPtJU7m+wgR9Icwk5AYQ0VLkNk3Y9ZB1uRjvq83b8bSihsSp
-         JmxryC438sS7+zTkSfGO586CiYxOnxoL6uAZ0YQSFKB443WPGUn0iJSdNInGRirh/voB
-         teIGZ6y7X4wBpa3u/IkQKSdLo3PPn3SdpWSXhleZXKjMiAAYHiXrLRAUdVmAgA0DP4rP
-         NStz3gETokI2vMoO1sDYbtXHnxP2JpEmxVtjYhb5nIFQ2nL0TZxu/HpJa6S9BApXS8Sz
-         cYFg==
-X-Forwarded-Encrypted: i=1; AFNElJ9a0Lx5C/jp5cPb62BdxVUTGgiAojF527QosKmofRwviqzRkUe084/99BR9BBsxjIAJZDixCB8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyMOb3bwuhrYAnQVscGPDp/ZiSPYJukcN2iXsPBpe8AwKJqs3OD
-	WXKkY2qVZsP9CBEmQP+U/I8UGygjo20xRJzgVOUZZSuxhfLm4hwpB9sQsQjAYEcteg==
-X-Gm-Gg: Acq92OEKdViUyBYh+7n0fSD3BCOIyzOAbxK4vjX0QzoguEojwNHluO+BEZc5viul7dX
-	k/W6Z0JUuUIwyctjzlAf151clGzveauY/3mUOMcid0q3tS3yNEoVWbu2ZnFZK/pAsOzsMojEmRi
-	tOdJ/LXKU/dttI/5hbTFDssYvnpWWe6djaCkeYif9rATZVstIm1qeZB02jmwaIWfMiw+7lIxGSv
-	n0M0K99GfVq9jIAJQMZZ4Q/K/mfSpyrvVPe5V3GrSL7eEeiIGHTbJGeXk92u0cAVjoyaLuPW+r9
-	lBqIowTDzjDGIKxssYi1ZnH9x1X6nkI+y1n+7Cj29tE6omgeMDhdd6LQNg9y6pE1rOU+y0YNKKi
-	rizNCleIoUcXxgbIjPmoh49PxPIedxsfxA8ncFkyFB49+a1v3CKqQ+rpA1hs6upUtcRco0C52sD
-	RjFgzIs1gnbdnkvutS+XJ3zPXv4h4yL7HGAAUlakpRS5E69z0oC6oX0ZEEv0BZ1uFamITEbz3Wa
-	TcPNlYeYNaxiuabsrL0XzX2KJEDH1moVAw2/F10ck76YOUhDyUsgTaU
-X-Received: by 2002:a17:903:8c3:b0:2c0:c14c:bf37 with SMTP id d9443c01a7336-2c1eb50a69bmr3034435ad.16.1780760367949;
-        Sat, 06 Jun 2026 08:39:27 -0700 (PDT)
+        bh=JwDie3vRqtcV2a97m5zHtuohN/s1ZYi4/aVuLdrFAXM=;
+        b=Hze/GZN7MFZr/9sz9o2UX6sr9438KWidFxbxJqm9SbOgDTw95yzipP99g1EHvxCdL/
+         zgdg5ikjuU6rkgbX4WdOe9dX6bo1EBPd4ySP4zOlA3En9Fo0g1KIst2FQmQvjBiofebK
+         AULW886PQQTT7h0FcvX6Und1K8OyC6bx3sEyV/M57K8or5C9R5ExU7+mPyUNgiQzETvN
+         Y1Rz9Ft90YpcGgooTM8In/FBhlI41nKDCd0CBZ7CXpnicsiuGiPxLwDp8qC6yorHDwCp
+         LkR9l68KQAgi7rVjKjvH6m56cMjQ4U/FqX3h4r+jHtSizHtnKJpXMvD5hxb+60pMaU1u
+         hQGQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8d8TOmECfPm9sMy94nVBvK9KN5bxRlsnINU2U2Ksr118pbVPlkwBZKchz8kofoWkYtMdpEkpk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy+8E7q3Xt2PA8BNU7CcpZQVzwlQWO21biMo0bJqWk0kDRnuFrN
+	FNoYhSux5ss81JZKYRDifIrEGZhCghSA/VdH7cHQhv0ySFRLFpEh2cVTqqZvoIHWWA==
+X-Gm-Gg: Acq92OG/mqHI4w4OldRtgdPIBeg01pBrkzTtQxQmCKTOSPsI5AvD62NuJqhRL6wv1cI
+	evdz2eIr3s0jvBjK039KIQfzc4UZud7tUXI3AJgzHkdhRFnq5XARK0n/B4vpT3c+Xj/DrbJpDZX
+	QQ+m+zJ1iaqTJEQG2gUKVp4Qx3LxGztbsev21QUZSxgktRQUGThUJA1TF06ClHpnTohthtQ2XIn
+	R107VEGYetCrxUIyduN3+XqYUGpcXWX0Cxs4uaqWy98ozqPZtr9VAPkfBxMIqYNeR3SPqRxQGut
+	LIsuaciIl4uEPCelreCnvMbwflJxduVZxW1SbUJQLCbZp7Ob6Aq6xGI/fb9vWzueyE4Zx7bJV1h
+	g+KEgcLwewo0PkviSQA8Z+P1fz8Ut/yNINmPUh9oIkqEQQpb8zdEivk6PEmpsVKAaxh9q2IddGl
+	xOA4F2e3j+BOHGcGTZrGvNCBN3bJPA7ykiXUnk5sDUlP8vfl9d5EWz8Nav07o6WfY5nd01fcE3w
+	0l0fi3qemUcgSjvDn9imKYIxv8Z+Hnv1tFpjGUAC7bRbMju+YONq6pL
+X-Received: by 2002:a17:902:e885:b0:2bd:7e8e:ad56 with SMTP id d9443c01a7336-2c1eafba702mr3201455ad.6.1780760405089;
+        Sat, 06 Jun 2026 08:40:05 -0700 (PDT)
 Received: from google.com (112.174.16.34.bc.googleusercontent.com. [34.16.174.112])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c164f6e2adsm135347905ad.5.2026.06.06.08.39.26
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c16649d2d4sm118379915ad.77.2026.06.06.08.40.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 06 Jun 2026 08:39:27 -0700 (PDT)
-Date: Sat, 6 Jun 2026 15:39:22 +0000
+        Sat, 06 Jun 2026 08:40:04 -0700 (PDT)
+Date: Sat, 6 Jun 2026 15:39:59 +0000
 From: Carlos Llamas <cmllamas@google.com>
 To: Alice Ryhl <aliceryhl@google.com>
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -79,11 +79,10 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Christian Brauner <brauner@kernel.org>,
 	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
 	netdev@vger.kernel.org
-Subject: Re: [PATCH v6 1/3] rust: net: add rust/kernel/net to NETWORKING
- [GENERAL]
-Message-ID: <aiQ_KizsNCBFOGRZ@google.com>
+Subject: Re: [PATCH v6 2/3] rust: netlink: add raw netlink abstraction
+Message-ID: <aiQ_T4g2mdHwcxmp@google.com>
 References: <20260529-binder-netlink-v6-0-92dd74b6a32e@google.com>
- <20260529-binder-netlink-v6-1-92dd74b6a32e@google.com>
+ <20260529-binder-netlink-v6-2-92dd74b6a32e@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -92,14 +91,23 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260529-binder-netlink-v6-1-92dd74b6a32e@google.com>
+In-Reply-To: <20260529-binder-netlink-v6-2-92dd74b6a32e@google.com>
 
-On Fri, May 29, 2026 at 01:28:38PM +0000, Alice Ryhl wrote:
-> To ensure that networking code can be found in a single shared place,
-> add it to the relevant NETWORKING entry. The net.rs file is moved into
-> the net/ directory so that it's included under the MAINTAINERS entry
-> without needing a separate rust/kernel/net.rs entry.
+On Fri, May 29, 2026 at 01:28:39PM +0000, Alice Ryhl wrote:
+> This implements a safe and relatively simple API over the netlink API,
+> that allows you to add different attributes to a netlink message and
+> broadcast it. As the first user of this API only makes use of broadcast,
+> only broadcast messages are supported here.
 > 
+> This API is intended to be safe and to be easy to use in *generated*
+> code. This is because netlink is generally used with yaml files that
+> describe the underlying API, and the python generator outputs C code
+> (or, soon, Rust code) that lets you use the API more easily. So for
+> example, if there is a string field, the code generator will output a
+> method that internall calls `put_string()` with the right attr type.
+> 
+> Reviewed-by: Matthew Maurer <mmaurer@google.com>
+> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 > ---
 
