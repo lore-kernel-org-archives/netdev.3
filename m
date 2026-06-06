@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1079830C15E;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B6BD30D416;
 	Sat,  6 Jun 2026 05:42:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780724570; cv=none; b=aKny8QFi4JejKJGrlUW1pOG7jCh0sap9HkD3HH/beT9rRdljYzjdv4TabzIa3QVRdDWlaCoxcnGSVOAdOsg8mKhtVmynYdlOKmHi8grHwnj3lB/+CBm1U1MKWqBxDUWHIpGB4cnDCNhR4i1FmCD1DCGno6HaLvxZkMM4mMoTiJA=
+	t=1780724570; cv=none; b=qZkSfSMY0GlI8Vnj2ThDm/37lbiLquw7ThXZJECC1TV+GE/yC3yB3nk6U1VsGnf1e0o10WKv20sN2WPbgM3txGCYKAiSS+MehDbDKbma0GT0CBbnRZAkYJKrVK1YahbNJp7Y1C4sDYBXexBB17qnSowyTk1u1SfBmxqOUjKROvg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1780724570; c=relaxed/simple;
-	bh=a8UyF6IF3XwRksQoSWDs0MTcbLNGhYf33YAHeVV8QLQ=;
+	bh=QG9/aUQq3lNYNSRpDS+oE4FGDJ/aRe862w851zW6Btg=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=MwFWSddulJQ8X352SqSsQUdBxtaVtE+pNI0cppZ4rxw7xtMLQxAu/193AZEDkpVVA69k5xTc/vqPMdffqNOiU9quwVjGKK4q1uEbN8V9JeW5po7ZdDzXq9HhU6/wRvHnqEQKPU87BUg00/SWkBlQp2JLyGi+7rdJX/GOXFmLqmk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gIaqNitm; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=G7KZOizGz/YDkpkg43acIes21PHO2QnuQLiBgBjqUVAQFtxh/YWjMTkZ6JGi4KuXRN7U1sb7UY+YpL/CKjo3eCHs3AMpi5/c9+8t96wgr+FSyYgjolMq+n92Syq8ekl1xjK3dczopnMleUV7tJUL4b1EHWansv4oegjyVz6lkgE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k4ps/SEc; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gIaqNitm"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id E39A2C2BCF5;
-	Sat,  6 Jun 2026 05:42:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k4ps/SEc"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 192AFC2BCC4;
+	Sat,  6 Jun 2026 05:42:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1780724569;
-	bh=a8UyF6IF3XwRksQoSWDs0MTcbLNGhYf33YAHeVV8QLQ=;
+	s=k20201202; t=1780724570;
+	bh=QG9/aUQq3lNYNSRpDS+oE4FGDJ/aRe862w851zW6Btg=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=gIaqNitmAu/yY/HHnyueIY41D26oNkToLddYW06a7Ybg2Hqa7ii8BLv77LvXMYiXR
-	 cpKbgCoR44UbrV5clbMIW20kS5w6O+WGdDlwwm0N+9NXBPtc7A7HvLm8SmO50gGU72
-	 RirDj4HIIEP7wFXGrNZnZMX2qG3+QUvDIdxEjqcbEhLlvuZF+c35joM3/Hb1dsM6We
-	 XlkTonB7O1LPHOg2FguBWGcNevBJjjM4G+aQiYzN08bU+ntXBzS6KxwPCMIosgQNcb
-	 RDTi16OGoWIiVPTPA7dLhnx8pWvdcCEl2TRkOnnihy6fddQDKvjSGcYz1hEYvTYWTZ
-	 5mQeh8z627c+g==
+	b=k4ps/SEcFKfWZEfXb6GFo8obkV4WlrsG6q3A+tQRdabPaKzIkrblJNhuwDnGZXAG+
+	 pvBczhT1aSL3yKqhk4aGe2Dx+IHeEp/DU9vdiMqdkKEXG0sx3ktJv1ixOnJzPB8RSd
+	 SZdpl6EmawYUNzK3AQZJyF1jMsqImz/iahZMQyR1W+H/tzvP7hzzjhfJdNoTOgd/oe
+	 /vNWpTliB036A07HsDFAbA2dtlcAk6VOyVm4Y3ww6DJZABwNCSKb23w0FBjhc9r4De
+	 oHSMbFjoPFGJ6IjnXaUWPtcvyfxKrYkLaz+Cctpejt1Ov48cOSs9HvAL71mgIgqfJ2
+	 8hgAy0gQVu3qQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DE4BDCD8C90;
-	Sat,  6 Jun 2026 05:42:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 11B01CD8C92;
+	Sat,  6 Jun 2026 05:42:50 +0000 (UTC)
 From: Selvamani Rajagopal via B4 Relay <devnull+Selvamani.Rajagopal.onsemi.com@kernel.org>
-Date: Fri, 05 Jun 2026 22:42:43 -0700
-Subject: [PATCH net-next v4 12/16] net: phy: ncn26000: Support for loopback
- support
+Date: Fri, 05 Jun 2026 22:42:45 -0700
+Subject: [PATCH net-next v4 14/16] onsemi: s2500: Added selftest support to
+ onsemi's S2500 driver
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260605-s2500-mac-phy-support-v4-12-de0fbc13c6d8@onsemi.com>
+Message-Id: <20260605-s2500-mac-phy-support-v4-14-de0fbc13c6d8@onsemi.com>
 References: <20260605-s2500-mac-phy-support-v4-0-de0fbc13c6d8@onsemi.com>
 In-Reply-To: <20260605-s2500-mac-phy-support-v4-0-de0fbc13c6d8@onsemi.com>
 To: Andrew Lunn <andrew@lunn.ch>, 
@@ -62,11 +62,11 @@ Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
  Jerry Ray <jerry.ray@microchip.com>, 
  Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1780724562; l=886;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1780724562; l=1929;
  i=Selvamani.Rajagopal@onsemi.com; s=20260531; h=from:subject:message-id;
- bh=6j9FApr9mdiEL4bEIZDwlR2AIaPGGvliDOcnuk/FhSQ=;
- b=rtNvJ5PfVSv8jTsb9GV2cu+Qtb2mF1ILOlEL2pfqnbKdFaLAM5m+RqUSMgxp+/Aqt5siWIYbN
- ZYWQn6EqCfCDxYxKiuYpyxiVJIkoLaG2mpwpZJbXu3DHRhpEFx8L+y4
+ bh=pwrT8nQjZ1Mftaz3kKIXboZB0R35Ne+b9zhE7hrK+JA=;
+ b=Vo5hs0XFfqz/FTSZZqZjSzJBiKaoXnTGTWT12jwxtBzdMhCw7nwlRfdpeiSUHg+/QfUeAOy5E
+ IAvRL59AlO7C2ha+bowftIcAja0L+O31YpDSc3/XZvBj5+GTztRnJmq
 X-Developer-Key: i=Selvamani.Rajagopal@onsemi.com; a=ed25519;
  pk=5QRdM0HS/LGWWcUZZ9hVfZ+qbPQGZCumcTXOiN7Fyug=
 X-Endpoint-Received: by B4 Relay for
@@ -76,26 +76,65 @@ Reply-To: Selvamani.Rajagopal@onsemi.com
 
 From: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
 
-Adding loopback support for S2500 internal PHY to help running
-loopback test through ethtool
+Split the selftest support into a separate patch for the ease of
+review.
 
 Signed-off-by: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
 ---
- drivers/net/phy/ncn26000.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/onsemi/s2500/Kconfig         | 1 +
+ drivers/net/ethernet/onsemi/s2500/s2500_ethtool.c | 7 +++++++
+ 2 files changed, 8 insertions(+)
 
-diff --git a/drivers/net/phy/ncn26000.c b/drivers/net/phy/ncn26000.c
-index c3a34b2c524d..afafa81dc22b 100644
---- a/drivers/net/phy/ncn26000.c
-+++ b/drivers/net/phy/ncn26000.c
-@@ -178,6 +178,7 @@ static struct phy_driver ncn26000_driver[] = {
- 		.config_aneg           = ncn26000_config_aneg,
- 		.read_status           = ncn26000_read_status,
- 		.handle_interrupt      = ncn26000_handle_interrupt,
-+		.set_loopback          = genphy_loopback_fixed_speed,
- 		.set_plca_cfg          = ncn26000_c45_plca_set_cfg,
- 		.get_plca_cfg          = genphy_c45_plca_get_cfg,
- 		.get_plca_status       = genphy_c45_plca_get_status,
+diff --git a/drivers/net/ethernet/onsemi/s2500/Kconfig b/drivers/net/ethernet/onsemi/s2500/Kconfig
+index 22b0afad7a21..822398eb4760 100644
+--- a/drivers/net/ethernet/onsemi/s2500/Kconfig
++++ b/drivers/net/ethernet/onsemi/s2500/Kconfig
+@@ -8,6 +8,7 @@ if NET_VENDOR_ONSEMI
+ config S2500_MACPHY
+ 	tristate "S2500 support"
+ 	depends on SPI
++	imply NET_SELFTESTS
+ 	select NCN26000_PHY
+ 	select OA_TC6
+ 	help
+diff --git a/drivers/net/ethernet/onsemi/s2500/s2500_ethtool.c b/drivers/net/ethernet/onsemi/s2500/s2500_ethtool.c
+index 85bd8ea50dd8..334fac71ddea 100644
+--- a/drivers/net/ethernet/onsemi/s2500/s2500_ethtool.c
++++ b/drivers/net/ethernet/onsemi/s2500/s2500_ethtool.c
+@@ -5,6 +5,7 @@
+  */
+ 
+ #include <linux/ethtool.h>
++#include <net/selftests.h>
+ #include <linux/phy.h>
+ 
+ #include "s2500_hw_def.h"
+@@ -229,6 +230,8 @@ static int s2500_get_sset_count(struct net_device *ndev, int sset)
+ 	switch (sset) {
+ 	case ETH_SS_STATS:
+ 		return S2500_MAC_STATS_LEN;
++	case ETH_SS_TEST:
++		return net_selftest_get_count();
+ 	default:
+ 		return -EOPNOTSUPP;
+ 	}
+@@ -242,6 +245,9 @@ static void s2500_get_strings(struct net_device *ndev, u32 stringset,
+ 		memcpy(buf, s2500_mac_stat_strings,
+ 		       S2500_MAC_STATS_LEN * ETH_GSTRING_LEN);
+ 		break;
++	case ETH_SS_TEST:
++		net_selftest_get_strings(buf);
++		break;
+ 	}
+ }
+ 
+@@ -343,5 +349,6 @@ const struct ethtool_ops s2500_ethtool_ops = {
+ 	.get_ts_info        = s2500_get_ts_info,
+ 	.get_regs_len       = s2500_get_regs_len,
+ 	.get_regs           = s2500_get_regs,
++	.self_test          = net_selftest,
+ };
+ 
 
 -- 
 2.43.0
