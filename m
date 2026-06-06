@@ -1,108 +1,129 @@
-Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f52.google.com (mail-dl1-f52.google.com [74.125.82.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A9043C1F57;
-	Sat,  6 Jun 2026 20:27:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780777647; cv=none; b=CBq9wQ5dN+z7rHGj8oEb+jMQjVuVh0VAQFMcjgS488eBrL36knnbKRTayyo6KLAZOqZOE8DSVKoMUJfnIJLqWORZV8QUv67PHfPaevdEfn8tqD2ggkCXm8H2e36noyszq7MOkdzGyTjcMB7AWDgBKcvVZSh2d3RI5oKzWiIW9F4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780777647; c=relaxed/simple;
-	bh=2fsk2za3j7BCpxRkGcfmii50BuoW7tHDyeFyfkxhoZc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=OBCyU7GpZHPJIr85wf/8Mpliw3Sr5BTpSbg3S/0AkGX7LzY+5C8vpZmcLDQ87f6AVt4SgtO78zDtlnmuxG7g6zxkJUB4dyyhMrrsYeTazg5JKI/IRDoEWBsLq6TBhMUA5Cku3TeUeTyTiMsPzr/8LQ1UaAOMsxI1vI8/3gCfUCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=runbox.com; dkim=pass (2048-bit key) header.d=runbox.com header.i=@runbox.com header.b=mchOOM7A; arc=none smtp.client-ip=185.226.149.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=runbox.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 297DD31327D
+	for <netdev@vger.kernel.org>; Sat,  6 Jun 2026 20:30:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.52
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780777808; cv=pass; b=NvjeoXrnXofDpbbonTcvXYYcaKRkb0nYI2/23M3rS90FH5Zf71epYfkwwdtbRPPTTHTv9JKIxJggJhnRvDeiGoQYJTiodHt3DcvsEx18tkjudiQvI7imBX6bjkeD8EEzigcYdlRRPAvm/tVPVc5LmFiDsZQsJHnqu39xa7XoIPo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780777808; c=relaxed/simple;
+	bh=BXmlLPOAouj55aZR5Z231tQ+5+yOAsTB1XYajP3GNkQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=E5blTW96D8a22lMcLyyQiJpotoCsWyTOlubpJ2p/DxwoteQvExxbVbmz7oT6oaOqpBPPNVRLdbhPCumNXDv7u2Nkzv/wxcKuKpSQYEVzMMxFtaITof/hjRrmPEdTFoLScbOhb7HUiPhhnI7bjVnLaVnfs7lT7MMCB/QPZO9RShI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=be/7Bcdw; arc=pass smtp.client-ip=74.125.82.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=runbox.com header.i=@runbox.com header.b="mchOOM7A"
-Received: from mailtransmit02.runbox ([10.9.9.162] helo=aibo.runbox.com)
-	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.93)
-	(envelope-from <david.laight.linux_spam@runbox.com>)
-	id 1wVxbu-007NR3-57; Sat, 06 Jun 2026 22:27:14 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=runbox.com;
-	 s=selector1; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:
-	Subject:Cc:To:From; bh=meVKVuvbuLoiOIYokwUI0qVk2UW2KhPhUL6Bj3liMXY=; b=mchOOM
-	7APt0CN9usyw4WmW8r9ArRfmvdvijSFMtcL5qw9/4bsgHSeNeC8BzAWcO5dPtHYWtiXTF/UBpt5hO
-	A+zMaDqMG/LMKoQS74tTm2NirMW6KxyHdPS37gEi62GdKbBAeJjSxHyPbA1dww2XYSmaazRpFO84+
-	VBt6rqhTBPZNglFdSpt5nvMvnJmVJJsLEFmENBiUNPBCWEpXsIjmy+wmXJhS7ieSyVG9eJsEvfZct
-	bLtnQdzFOqBwX6mYImLPN4jtEsDYPCEFiUOZVQ5uduatVVIrJXFb8T5R9qBW4gA0L+rkzSggnjNZ5
-	0wqk6XGac6xuP23XPoJIB13l50nw==;
-Received: from [10.9.9.72] (helo=submission01.runbox)
-	by mailtransmit02.runbox with esmtp (Exim 4.86_2)
-	(envelope-from <david.laight.linux_spam@runbox.com>)
-	id 1wVxbt-0000tm-9a; Sat, 06 Jun 2026 22:27:13 +0200
-Received: by submission01.runbox with esmtpsa  [Authenticated ID (1493616)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.95)
-	id 1wVxbe-006V18-LF;
-	Sat, 06 Jun 2026 22:26:58 +0200
-From: david.laight.linux@gmail.com
-To: Kees Cook <kees@kernel.org>,
-	linux-hardening@vger.kernel.org,
-	Arnd Bergmann <arnd@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jay Vosburgh <jv@jvosburgh.net>,
-	Paolo Abeni <pabeni@redhat.com>,
-	David Laight <david.laight.linux@gmail.com>
-Subject: [PATCH net-next] drivers/net/bonding: User strscpy() to copy device name
-Date: Sat,  6 Jun 2026 21:26:08 +0100
-Message-Id: <20260606202633.5018-14-david.laight.linux@gmail.com>
-X-Mailer: git-send-email 2.39.5
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="be/7Bcdw"
+Received: by mail-dl1-f52.google.com with SMTP id a92af1059eb24-13808436ccdso3929692c88.1
+        for <netdev@vger.kernel.org>; Sat, 06 Jun 2026 13:30:06 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780777806; cv=none;
+        d=google.com; s=arc-20240605;
+        b=dSo36hzz9s2ZtWC6FkuCbQlBQLZ7qHSxxC65xOD7nXtFXz66tV0ucD33LqWIk1Kpd3
+         nOV0vHUHAKP/thC6xeqmCUxx0Cc2L6dvrFYW34N3C51Ty1JcINxC3MypqaJLWD8mW0Gb
+         O7wVt8roJpJKpdf/75yaMWUuWgyyVkDPVeMBHlAfGVy1mcWg4AAwWu8V/Icu/jiMsH2F
+         K5ckzbYKhDkiikubMcaBdl7gm9YJhXd0bMZq7Fnb/Q7owC/ToU1Wy/vx7TA+ZNnRq+2J
+         4z1THEr3GPsChLufIL/GwFhKpIY2lI3MZI2JJ2/q9074cwkoeIGLFG8+KkmnQJL90w+P
+         RGVQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=1SLs08VFmrvVfMyB6YZLBVBsY6+S+bY35lwafjP/uOI=;
+        fh=zthNbhy9mB1NriJeMEEWd1xzipeCp1v/WFgMAdUy4oQ=;
+        b=egCbifGvH0clE+EZ0BwtG+8uh3hfZaEVMRGNCy54ARXIZnfAYau3biqDhzsk7UC5Ta
+         q/bIH57vX/piwc9hZfm77zfZhYif++Zti/H0xqfjiqI+kAe6eQ/EP+0WzU9aWNN6dwSM
+         CY/pkb31ArU3dn2Vfi3UCGXkCjw3pTKIGzLphYdMCfJPZr/1xSt4zVBgJSCOk9ZTVJ9C
+         9kAUuJRQrnitM9HugE0rFSY+BhlO6BxM86PEnPk5ATa3F3wsmGMTKP++8portCOUshlX
+         /6TMd/lIyC5gyAj+Tb3+lgF4rgxoRh/eWdDls751YpILXC3ALKR3xhxkvPyZPE+1oP38
+         kgYg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1780777806; x=1781382606; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1SLs08VFmrvVfMyB6YZLBVBsY6+S+bY35lwafjP/uOI=;
+        b=be/7BcdwsBfd9ii9WJV3NAZUEpX5pipn1/tjlr+KXSmqwlrKV2jF/ZKHJjzHRc8r7W
+         f6Byd8Dsb6NYD78cyR33gH0TtRU/VYGOtnnEGj/V8yYiXup9PdubF5QAis+hrQM1sZg0
+         thVX96juckQD3TXjzLVhWLKS2LM45mEOKzREfbiMM8fJ09chCrWIO2iTyLiNG5/9D4Ew
+         YXy8J/wwmlFMJccDTN6hZrk9ocHyWaWEJNRkhfrarYklViAB6517tYRsgskdnBWMCZak
+         fEdn6+h5xvMY21l0U06UAW8CF5vWC1p3pYDnjxL0GByUSYkvAfknJHF2noDWamNGI0l+
+         ROLw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780777806; x=1781382606;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=1SLs08VFmrvVfMyB6YZLBVBsY6+S+bY35lwafjP/uOI=;
+        b=gJ2KcW6GUsEx8BnjGCSzcc2NoQb1/VS0Wy3Bsx3I4pQt3XoBQqVL8+MdQwmy5G3Wkc
+         MKCMfae+4F/PKdeA9JfbPh0Re5LgnJ0DH2tJYR2q92OtTJwd07Bv6J/SbFwIi0q7V8cl
+         XlOJfG1R6900bDV7uhuRReaXnEm3A+qsE1wLHH+HzcCdcyf1LtV+MptdlqLUpXuWMy5V
+         UIoVbuOfypgw3WQFFQ8YmIb9tWcphxq9Kdq6IEM3VJGYShIX7jwhXuTQVULu44fID63T
+         TTciqO5iB5CCrNE7EhrruI6T5a9i6fIrDAqYSK+gxsddcsHGSCO8mO5BoZoxhETD7gWl
+         fYzQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8ptFppvGD+EEpHvSzjqm2ok8gj5KTTaJ2yjS7r7zR/qimyNiivXhld5uGKNtSto8OfeoeM3w8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwC6TxikMOSUvzuNZddH3GoPtnCZwhMRG83HLKpk3IqXANvI5xt
+	MdNT/y6atvmoarNWoP0US5hTQKUtbXT1tcL+dIhGOVHMcPCerDYLNyPZNJH60HBDJBFiLLYomSl
+	zYZtHQyrW4hYUNm7KmsN5P89Xvq9vHRvGcnI3teZ/
+X-Gm-Gg: Acq92OEPCh/NDVg76+d51F1uVgZDPPEl5PMcoERrFLAQl5Jrwsasr+wjY1o8oS6rHOx
+	SMyg/rAkaIb9j4O9VzZTWsh0u58Zk/bvsi9ZBfLfAyDDf0dpYEkN54uW6qtPyP0UpkGsG5YIImA
+	94zPXkydu/DKXAUW4KtsojHi3Q25trbR/shyWgLu+PJpTUH5uuMCxJIHvKa6TIVF78Cvs8EYeoh
+	TRNTdkfrm5idaDg7vVcwDhPVnO9bGAEBV43qnPjPXm+XiyRpMbRDtKXrqOsgVLIZCfnsroId4KA
+	IzTdxX3Gyh95odJWlAgLHNz6CRV+KH6Zya930jbrWuMgOf0yx/qOQ3YYghVXlikZyJG2+oK1Yp3
+	VpCbc65Er7jyQVyns0saVcCjvPQ642TUnia+4II9FGu6PV89/4jkiT8cuOBhMBD8=
+X-Received: by 2002:a05:7022:204:b0:137:ee9a:2ad1 with SMTP id
+ a92af1059eb24-138067331cemr5151779c88.35.1780777805549; Sat, 06 Jun 2026
+ 13:30:05 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260604052127.2227300-1-kuniyu@google.com> <5733ad97-d8be-4bc9-ae66-9137b93708b6@kernel.org>
+In-Reply-To: <5733ad97-d8be-4bc9-ae66-9137b93708b6@kernel.org>
+From: Kuniyuki Iwashima <kuniyu@google.com>
+Date: Sat, 6 Jun 2026 13:29:54 -0700
+X-Gm-Features: AVVi8Ccm7ukAFagTsrt_mw9IHvcP1CV7QT6LatIDsGFNfO70IBtlUXcPYa-QwHo
+Message-ID: <CAAVpQUDkBwDJb4BDrB3-hiDbOA10po6GMs+XfZOVEWhZ56zLww@mail.gmail.com>
+Subject: Re: [PATCH v3 iproute2-next] iplink_geneve: Support IFLA_GENEVE_LOCAL
+ and IFLA_GENEVE_LOCAL6.
+To: David Ahern <dsahern@kernel.org>
+Cc: Stephen Hemminger <stephen@networkplumber.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: David Laight <david.laight.linux@gmail.com>
+On Sat, Jun 6, 2026 at 12:27=E2=80=AFPM David Ahern <dsahern@kernel.org> wr=
+ote:
+>
+> On 6/3/26 11:21 PM, Kuniyuki Iwashima wrote:
+> > diff --git a/include/uapi/linux/if_link.h b/include/uapi/linux/if_link.=
+h
+> > index a8c64be26f2c..d692d466da6b 100644
+> > --- a/include/uapi/linux/if_link.h
+> > +++ b/include/uapi/linux/if_link.h
+> > @@ -1487,6 +1487,8 @@ enum {
+> >       IFLA_GENEVE_INNER_PROTO_INHERIT,
+> >       IFLA_GENEVE_PORT_RANGE,
+> >       IFLA_GENEVE_GRO_HINT,
+> > +     IFLA_GENEVE_LOCAL,
+> > +     IFLA_GENEVE_LOCAL6,
+> >       __IFLA_GENEVE_MAX
+> >  };
+> >  #define IFLA_GENEVE_MAX      (__IFLA_GENEVE_MAX - 1)
+>
+> drop the uapi from this patch and
 
-Signed-off-by: David Laight <david.laight.linux@gmail.com>
----
-This is one of a group of patches that remove potentially unbounded
-strcpy() calls.
+Do you mean split into two patches or will maintainers
+sync the header before applying the patch ?  I guess the
+latter from git log.
 
-They are mostly replaced by strscpy() or, when strlen() has just been
-called, with memcpy() (usually including the '\0').
 
-Calls with copy string literals into arrays are left unchanged.
-They are safe and easily detected as such.
+> update man/man8/ip-link.8.in
 
-The changes were made by getting the compiler to detect the calls and
-then fixing the code by hand.
-
-Note that all the changes are only compile tested.
-
-Some Makefiles were changed to allow files to contain strcpy().
-As well as 'difficult to fix' files, this included 'show' functions
-as they really need to use sysfs_emit() or seq_printf().
-
-All the patches are being sent individually to avoid very long cc lists.
-Apologies for the terse commit messages and likely unexpected tags.
-(There are about 100 patches in total.)
-
- drivers/net/bonding/bond_options.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/bonding/bond_options.c b/drivers/net/bonding/bond_options.c
-index 7380cc4ee75a..c57b7d6af043 100644
---- a/drivers/net/bonding/bond_options.c
-+++ b/drivers/net/bonding/bond_options.c
-@@ -1525,7 +1525,7 @@ static int bond_option_primary_set(struct bonding *bond,
- 		if (strncmp(slave->dev->name, primary, IFNAMSIZ) == 0) {
- 			slave_dbg(bond->dev, slave->dev, "Setting as primary slave\n");
- 			rcu_assign_pointer(bond->primary_slave, slave);
--			strcpy(bond->params.primary, slave->dev->name);
-+			strscpy(bond->params.primary, slave->dev->name);
- 			bond->force_primary = true;
- 			bond_select_active_slave(bond);
- 			goto out;
--- 
-2.39.5
-
+Will do.
