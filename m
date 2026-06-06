@@ -1,154 +1,139 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 347DF221F1F;
-	Sat,  6 Jun 2026 00:40:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EC57233938;
+	Sat,  6 Jun 2026 00:44:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780706424; cv=none; b=cCQ8zmr8IcX3DvYmHpiCqrmbwSklKG82D2Tb2I/NRSR4/OC14n4Qb80UEbALpDutBbITZWTsnFixs7I+6z3kSSaHlKl3ptpTdHADHAyUDaCJjL/Ht/6/eJO6303w2gFVX63Emh8KHkjjHBpA5LgARCqzqsmGq2Hd4lzdXZS+m+0=
+	t=1780706698; cv=none; b=by/5nvvOF/lbvvbHDwYLqilt5t0dP0u1CQJ29CxqLnRVEFUhI+/oIwbqY2BIDPB+7lGqVbzCwWNerHxlCbJ88oRfp6viGgHGpAb+xxaGwh7SW9J2/PGbOPqVLi7sYfodFxP18PJBE4I4bYyuljqDrVDSENoVHe2vSwsjnhXvSDE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780706424; c=relaxed/simple;
-	bh=3fAK4Dl8JZG1llmMesKBVr1X2bxg5q//jqNGIv/QkmM=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BfL58wIvIgaRomlR8A4V3FkdU5GC9QhcLZW4uP8IZ+22xYsAkeXvOi6bh7ODuKlLJuP79MmNxLjIKcQNmKYYk78b4co0Ff42AA97Ljj6BAoXtvPd+wy84ZTY10x0HnX6MDywUHHhsAyXbGFtGqFYZJvehSfQy55h4ydCw1s6V4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cqL7y8ki; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780706698; c=relaxed/simple;
+	bh=Y2FFh+aPah8I1Y8ik5nP4QyqDVX9pGTt6sh1NyTglf4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=kYLUVpX3IqUjtv2EcT90lcv48n4qYDirzbLwYyar0PMcUwzAXcu3tml3xNATK18mPX7IaKkcvqlZAWw5kCASqC/Q6x32tbCDFDmH+jb65cJRWPIJVO8IXrvsj7YdJqp1JeHq4wixLSx5p+IOVeZ/+jvfu4qbPqZLeAZnFkOsPI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A5F0Vg54; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cqL7y8ki"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F6A31F00893;
-	Sat,  6 Jun 2026 00:40:22 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A5F0Vg54"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8659C1F00893;
+	Sat,  6 Jun 2026 00:44:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780706423;
-	bh=GdG4svP0NHvHQkHliVHok2ibO/bodbvKdcGBvy/bY1M=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=cqL7y8kiJkcPjWRuO4ZdQFMG8MFhX0juI3NAsEEVShVYecF1cCVNxA7RZxQbV/Yr0
-	 Ri3KnDlg4bgfFW5iPik7wG7FdljefPU634ER5u87lJto1477xYQeuT5krW1MRc5Ctg
-	 qSGW3CdgXbJrZGp9DWrusVLQdIfM0JW45kswX22fRM77gbVPOLaSrrU0yFTbCdtIzT
-	 ILD1Qrl2gS8u04ZvqTBwc/VRkBti/wLNlXULKxL4NA0YcGfgelJ1+0B91s0a3QueSU
-	 7MLauaHBTx8tUB0mQXJZOlBiw2Hs6nT4Wj1Ram3njHtwADq3Vj7/FhO695iEiOhEFW
-	 0qN3CVfwu0JMA==
-Date: Fri, 5 Jun 2026 17:40:21 -0700
+	s=k20260515; t=1780706697;
+	bh=/D+An8IeHhHDaFNnqyy/svJ6dYDVwU/h0zfqDkHVgnM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=A5F0Vg54I9k9DO3lDluBD+8oTxIZ26bRvSBZJIAi2mSXxGXx0iNPTgJGbh7K/yxDw
+	 gtPbFibBQAHC5KGmCx0tI34DRCuNkauCqTxoNqC6AO2txJ2B4RPsTQkJXwnbjyyr+o
+	 HrXltTfNc/AXqTU5LAoAS8zDVpoSDuvL28d4LOD9fAd9td9E/6Dot0KOMtp77eUnRV
+	 B/A9iJ4on9zdRiLfqCY0BgJ881WtHe+G8A4+Zuj6j/wJSj4o2TTet6vUvTIslJt7Iq
+	 VQtluJq+HcE+4JuRlM3/M77mdF2XJWpb4AnXMuMQP/wksMOlaNGQGwAG+A65QwZ8k7
+	 JU2+UNkPX5eJg==
 From: Jakub Kicinski <kuba@kernel.org>
-To: Jijie Shao <shaojijie@huawei.com>
-Cc: <davem@davemloft.net>, <edumazet@google.com>, <pabeni@redhat.com>,
- <andrew+netdev@lunn.ch>, <horms@kernel.org>, <shenjian15@huawei.com>,
- <liuyonglong@huawei.com>, <chenhao418@huawei.com>,
- <huangdonghua3@h-partners.com>, <yangshuaisong@h-partners.com>,
- <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH V3 net-next 3/6] net: hns3: support two more actions for
- tc flow
-Message-ID: <20260605174021.7d4c6ec4@kernel.org>
-In-Reply-To: <20260602133337.2216918-4-shaojijie@huawei.com>
-References: <20260602133337.2216918-1-shaojijie@huawei.com>
-	<20260602133337.2216918-4-shaojijie@huawei.com>
+To: shaojijie@huawei.com
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	andrew+netdev@lunn.ch,
+	horms@kernel.org,
+	shenjian15@huawei.com,
+	liuyonglong@huawei.com,
+	chenhao418@huawei.com,
+	huangdonghua3@h-partners.com,
+	yangshuaisong@h-partners.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH V3 net-next 4/6] net: hns3: support IP and tunnel VNI dissectors for tc flow
+Date: Fri,  5 Jun 2026 17:44:55 -0700
+Message-ID: <20260606004455.4016108-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260602133337.2216918-5-shaojijie@huawei.com>
+References: <20260602133337.2216918-5-shaojijie@huawei.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Tue, 2 Jun 2026 21:33:34 +0800 Jijie Shao wrote:
-> Currently, the driver supports only one action:HCLGE_FD_ACTION_SELECT_TC.
-> 
-> This patch adds support for HCLGE_FD_ACTION_SELECT_QUEUE and
-> HCLGE_FD_ACTION_DROP_PACKET.
-> 
-> A rule can have only one action. Therefore, the driver intercepts rules
-> that have multiple actions or no action.
-> 
-> Note: The driver considers cls_flower->classid as an action:
-> HCLGE_FD_ACTION_SELECT_TC.
-> 
-> Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-> ---
->  .../hisilicon/hns3/hns3pf/hclge_main.c        | 59 ++++++++++++++++---
->  1 file changed, 52 insertions(+), 7 deletions(-)
-> 
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+---
+net: hns3: support IP and tunnel VNI dissectors for tc flow
+
+This patch adds support for FLOW_DISSECTOR_KEY_IP for ip_tos and 
+FLOW_DISSECTOR_KEY_ENC_KEYID for outer_tun_vni in the HNS3 driver's TC flow 
+dissection. It also explicitly marks user defined tuples as unused.
+
 > diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-> index 5e1f76513622..aa85abda2909 100644
+> index aa85abda29096..3559b471b3feb 100644
 > --- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
 > +++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-> @@ -7344,18 +7344,45 @@ static int hclge_get_tc_flower_action(struct hclge_dev *hdev,
->  				      struct flow_cls_offload *cls_flower,
->  				      struct hclge_fd_rule *rule)
->  {
-> +	struct flow_rule *flow = flow_cls_offload_flow_rule(cls_flower);
->  	struct hnae3_handle *handle = &hdev->vport[0].nic;
-> +	struct flow_action *action = &flow->action;
-> +	struct flow_action_entry *act;
->  	int tc;
->  
-> -	tc = tc_classid_to_hwtc(handle->netdev, cls_flower->classid);
-> -	if (tc < 0 || tc > hdev->tc_max) {
-> -		dev_err(&hdev->pdev->dev, "invalid traffic class: %d\n", tc);
-> -		return -EINVAL;
-> +	if (!flow_action_has_entries(&flow->action)) {
-> +		tc = tc_classid_to_hwtc(handle->netdev, cls_flower->classid);
-> +		if (tc < 0 || tc > hdev->tc_max) {
-> +			dev_err(&hdev->pdev->dev,
-> +				"invalid traffic class: %d\n", tc);
-> +			return -EINVAL;
-> +		}
-> +
-> +		rule->action = HCLGE_FD_ACTION_SELECT_TC;
-> +		rule->cls_flower.tc = tc;
-> +		return 0;
->  	}
->  
-> -	rule->action = HCLGE_FD_ACTION_SELECT_TC;
-> -	rule->cls_flower.tc = tc;
-> -	return 0;
-> +	act = &action->entries[0];
-> +	switch (act->id) {
-> +	case FLOW_ACTION_RX_QUEUE_MAPPING:
-> +		if (act->rx_queue >= handle->kinfo.num_tqps) {
-> +			dev_err(&hdev->pdev->dev,
-> +				"queue id (%u) should be less than %u\n",
-> +				act->rx_queue, handle->kinfo.num_tqps);
-> +			return -EINVAL;
-> +		}
-> +
-> +		rule->queue_id = act->rx_queue;
-> +		rule->action = HCLGE_FD_ACTION_SELECT_QUEUE;
-> +		return 0;
-> +	case FLOW_ACTION_DROP:
-> +		rule->action = HCLGE_FD_ACTION_DROP_PACKET;
-> +		return 0;
-> +	default:
-> +		dev_err(&hdev->pdev->dev, "unsupported action(%d)\n", act->id);
-> +		return -EOPNOTSUPP;
-> +	}
->  }
->  
->  static int hclge_parse_cls_flower(struct hclge_dev *hdev,
-> @@ -7412,6 +7439,24 @@ static int hclge_check_cls_flower(struct hclge_dev *hdev,
->  		return -EOPNOTSUPP;
->  	}
->  
-> +	/* driver will parses classid into an action */
-> +	if (cls_flower->classid && flow_action_has_entries(&flow->action)) {
-> +		dev_err(&hdev->pdev->dev,
-> +			"please not set classid and action together\n");
-> +		return -EOPNOTSUPP;
-> +	}
-> +
-> +	if (!flow_action_has_entries(&flow->action) && !cls_flower->classid) {
-> +		dev_err(&hdev->pdev->dev, "please set action or classid\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	if (flow_action_has_entries(&flow->action) &&
-> +	    !flow_offload_has_one_action(&flow->action)) {
-> +		dev_err(&hdev->pdev->dev, "unsupported multiple actions\n");
-> +		return -EOPNOTSUPP;
-> +	}
-> +
->  	return 0;
 
-Please use struct flow_cls_offload::common:extack and
-NL_SET_ERR_MSG_MOD() to return these to the caller instead of dumping
-them into the system logs.
--- 
-pw-bot: cr
+[ ... ]
+
+> @@ -5760,6 +5763,17 @@ static bool hclge_fd_convert_tuple(u32 tuple_bit, u8 *key_x, u8 *key_y,
+>  		*(__le32 *)key_x = cpu_to_le32(tmp_x_l);
+>  		*(__le32 *)key_y = cpu_to_le32(tmp_y_l);
+>  
+> +		return true;
+> +	case KEY_OPT_VNI:
+> +		calc_x(tmp_x_l, *(u32 *)(&p[offset]), *(u32 *)(&p[moffset]));
+> +		calc_y(tmp_y_l, *(u32 *)(&p[offset]), *(u32 *)(&p[moffset]));
+> +		for (i = 0; i < HCLGE_VNI_LENGTH; i++) {
+> +			key_x[i] = ((__force u32)cpu_to_le32(tmp_x_l) >>
+> +				    (i * BITS_PER_BYTE)) & 0xFF;
+> +			key_y[i] = ((__force u32)cpu_to_le32(tmp_y_l) >>
+> +				    (i * BITS_PER_BYTE)) & 0xFF;
+
+[Severity: Medium]
+On big-endian architectures, cpu_to_le32() byte-swaps the integer. If we
+apply an arithmetic right-shift to a byte-swapped integer here, won't it
+extract the bytes in the wrong order and drop the least significant byte?
+
+For example, a 24-bit VNI of 0x123456 becomes 0x56341200 after swapping.
+Shifting it right extracts 0x00, 0x12, and 0x34, entirely missing the 0x56
+byte. Should this code shift the host-endian integer directly before
+applying the mask?
+
+> +		}
+> +
+>  		return true;
+>  	default:
+>  		return false;
+
+[ ... ]
+
+> @@ -7340,6 +7354,53 @@ static void hclge_get_cls_key_port(const struct flow_rule *flow,
+
+[ ... ]
+
+> +static void hclge_get_cls_key_ip_tos(const struct flow_rule *flow,
+> +				     struct hclge_fd_rule *rule)
+> +{
+> +	if (flow_rule_match_key(flow, FLOW_DISSECTOR_KEY_IP)) {
+> +		struct flow_match_ip match;
+> +
+> +		flow_rule_match_ip(flow, &match);
+> +
+> +		rule->tuples.ip_tos = match.key->tos;
+> +		rule->tuples_mask.ip_tos = match.mask->tos;
+> +		if (!rule->tuples_mask.ip_tos)
+> +			rule->unused_tuple |= BIT(INNER_IP_TOS);
+
+[Severity: High]
+Since FLOW_DISSECTOR_KEY_IP is now added to the allowed keys list in
+hclge_check_cls_flower(), the networking stack could pass rules containing
+TTL constraints (match.mask->ttl).
+
+Does this code silently ignore match.mask->ttl?
+
+If the user requests a specific TTL match, the driver appears to successfully
+extract the tos field but completely ignores the ttl constraint. Could this
+cause the hardware filter to match broader traffic than intended, essentially
+bypassing the user's intent? Should it return an error if an unsupported
+TTL match is requested?
+
+> +	} else {
+> +		rule->unused_tuple |= BIT(INNER_IP_TOS);
+> +	}
+> +}
