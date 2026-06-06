@@ -1,65 +1,86 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0E7E218845
-	for <netdev@vger.kernel.org>; Sat,  6 Jun 2026 02:16:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24ED51AF4E9;
+	Sat,  6 Jun 2026 02:20:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780712185; cv=none; b=QJqTceQYrH2I2QQvE88Ncm0Th9rdCRw4oa6dSRnWuEPnJhdxgLiCQAQbNmRRH3mKXNM4/Oq48aGzNEGIPKN/4TtJEBn/3ytVDzaH64oXZ5l+iQAAcW/t02wUh7W40TM/q76sIN32BKkyHzZ1mU1xMto8Y/iOzNhstEqnbyJoRk0=
+	t=1780712413; cv=none; b=DQQ5Dm+dmf0sQZxgrw/oIlnTn2ftFGcSFOlgUNG+bEmvFXpm9LfvKJ91YJDy7Ijlnxf4n8uu6qNXlV+w7Gf9b7Q6eCBhbk3bFj9EzjN5MV+z5upzSVgAhoEfJ9QbC++j3W7c42TroIdvf15QE7+mKCyWbkKsdyCQKx2pHEBFFYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780712185; c=relaxed/simple;
-	bh=EXpPvVhvO3srh5GbHRveHQxvFa1MgTtnfaRQPVy3fME=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WnuG7UoerAi9XC3Ozv5Sda88pRUiLa8scjTE1W9Ns8ZKqFCTD4KRYkuos+eTjrrPN9H1RwG9aqKGkoSEEdw3ddI5RTboGmVA6G/DYshDX6+AdejWs7IWgCtKJ1BrpGjOzIm7iY/9YN7eAJcsQlRk55Qxi2wEfaMRHYffdqIPId0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TU08cqTE; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780712413; c=relaxed/simple;
+	bh=eW4rKG6foJ6QPTlGqacvcjToXBWnVtV9lGJPiy2BVuI=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=tedqM/gk/7KbEAu/G4tpvbwuR8HRubqa3itK4ooOTYq4q+vUaTPnWfHeXKD6B7w4P1LVJWQSONERDEZyWZICTQ0Ih0OcGj5UPT3o6SoIjPxhd2foFzo1u1dmh7PUmZnOyfMH86TDuD4Yx75pP1WvkXlME0GCmFKf+5JFHyfREVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OEBeRt8v; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TU08cqTE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E4A51F00893;
-	Sat,  6 Jun 2026 02:16:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OEBeRt8v"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2A2E1F00893;
+	Sat,  6 Jun 2026 02:20:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780712184;
-	bh=0dSmYx/stJatlZe4sWmdbEc/TJ2dGZOT2yA1DONA9fE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=TU08cqTEV+pIdvhDyim0lbPqiC1Z7Hd4bvqTCTJ0jFy0u8RCdqEKvSrJl4L4dz+1N
-	 8JkheMCwgZdYyLUJFKCVx5X6Dcn6yhsSBVBwKHfM+kQFOXBboQVJFAXulU7Yg6smw4
-	 t2jpGkX731V9XrspcwhcITYQu7uuxFUWnZLzsnTyJIcSgaRuKG2VNqkMMy2uT/Bbgz
-	 X0mB84K5ZUA2a95sGYK8/c2vxKb6uF7mY6bevqXaBPEJHz8ph35GIrXc/aZUgBY6xd
-	 ucf3DU00Gf2pRC3OtaKn5m63UXWIQxlTpAa+4azTgUJ9CZyPwWUew/eV2uLtJLyI3W
-	 ujPAE00xW2IDw==
-Date: Fri, 5 Jun 2026 19:16:22 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Wei Wang <weibunny.kernel@gmail.com>
-Cc: netdev@vger.kernel.org, Daniel Zahka <daniel.zahka@gmail.com>, Willem de
- Bruijn <willemdebruijn.kernel@gmail.com>, David Wei <dw@davidwei.uk>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
- <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Wei Wang
- <weibunny@fb.com>
-Subject: Re: [PATCH v15 net-next 00/11] psp: Add support for
- dev-assoc/disassoc
-Message-ID: <20260605191622.72699c06@kernel.org>
-In-Reply-To: <20260603235947.2986110-1-weibunny.kernel@gmail.com>
-References: <20260603235947.2986110-1-weibunny.kernel@gmail.com>
+	s=k20260515; t=1780712412;
+	bh=+3bLFsnB5839EFXEZht5YnnLpYejZsji1a+GgQPr6Xs=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=OEBeRt8vfZhvtrneTFV/QG9l+pY1C1nl9gOMUxhcOBiMOAB+vt1ugZttQAApXmSp9
+	 PltSMnKtFDsyfeutOZMAr1Lnf20Ti38wYl4wsNFIafomRr+O0phh/dWOgYwCSk5oNz
+	 ABDqPX0ioV0yQ46j90BoJ7D8FTUoyKCOQgxjFP+/GCGelCdK7qTHXQcD1y/3X2ym7N
+	 dV7fVA37y0a6Pr4oI8jvvZea5d9sErxCDwpn5XXZLK9VR5m8ADzmeZjqCq43eocsDp
+	 SpU9QQgMuf1hDxmBD/7hX1/DnMOMhqwTzc5nXrtzj8G4ck1GRdtiVGfQRf5/+hpKmE
+	 IijSmRSY11E/g==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 56A783930A9C;
+	Sat,  6 Jun 2026 02:20:13 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH] net: stmmac: xgmac: report L3/L4 filter match count in
+ ethtool stats
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178071241185.3995915.13210125850131582461.git-patchwork-notify@kernel.org>
+Date: Sat, 06 Jun 2026 02:20:11 +0000
+References: 
+ <20260604083037.24407-1-muhammad.nazim.amirul.nazle.asmade@altera.com>
+In-Reply-To: 
+ <20260604083037.24407-1-muhammad.nazim.amirul.nazle.asmade@altera.com>
+To: Nazle@aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org,
+	Asmade@aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org,
+	Muhammad Nazim Amirul <muhammad.nazim.amirul.nazle.asmade@altera.com>
+Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
+ rmk+kernel@armlinux.org.uk, maxime.chevallier@bootlin.com,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
 
-On Wed,  3 Jun 2026 16:59:29 -0700 Wei Wang wrote:
-> Subject: [PATCH v15 net-next 00/11] psp: Add support for dev-assoc/disassoc
+Hello:
 
-Applying: psp: add admin/non-admin version of psp_device_get_locked
-Applying: psp: add new netlink cmd for dev-assoc and dev-disassoc
-Applying: psp: add a new netdev event for dev unregister
-Applying: selftests/net: psp: refactor test builders to use ksft_variants
-Applying: selftests/net: add _find_bpf_obj() to search hw/ for BPF objects
-Applying: selftests/net: rename _nk_host_ifname to nk_host_ifname
-error: patch failed: tools/testing/selftests/drivers/net/lib/py/env.py:339
-error: tools/testing/selftests/drivers/net/lib/py/env.py: patch does not apply
-Patch failed at 0006 selftests/net: rename _nk_host_ifname to nk_host_ifname
+This patch was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-:(
+On Thu,  4 Jun 2026 01:30:37 -0700 you wrote:
+> From: Nazim Amirul <muhammad.nazim.amirul.nazle.asmade@altera.com>
+> 
+> Read the L3FM and L4FM bits from the RX descriptor status word (RDES2)
+> and increment the corresponding ethtool statistics counters. This allows
+> users to observe L3/L4 filter hit rates via ethtool -S.
+> 
+> Signed-off-by: Rohan G Thomas <rohan.g.thomas@altera.com>
+> Signed-off-by: Nazim Amirul <muhammad.nazim.amirul.nazle.asmade@altera.com>
+> 
+> [...]
+
+Here is the summary with links:
+  - net: stmmac: xgmac: report L3/L4 filter match count in ethtool stats
+    https://git.kernel.org/netdev/net-next/c/903db046d557
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
