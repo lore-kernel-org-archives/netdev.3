@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B796233134;
-	Sat,  6 Jun 2026 00:40:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9698E23395B;
+	Sat,  6 Jun 2026 00:40:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780706408; cv=none; b=ux0KsHX9rcUD475s7IBwm8FN5L1eMdHJoRqScN6jj/c7aMht89eKfEo4Xz2kRh39YlJ8mawn7Jl2bYjbl2QPyl6bfZzdjinBgeuXZg3FFWoF816ql/wgUfzHACyPZVceYdj9QuDXDtd2TE2GdxToBVqptx/e72XmXl+qDAP0YEc=
+	t=1780706409; cv=none; b=O1rWNQKoChj9NbB/ckT5WKYyRiXjgLQom8VX1qZo/4lM1bo3Y9n2KzL9ist5sLfEddJxuq4YoDEur0XWx+YufMZhRE8No05GzPZY3pD/xDbFFsvIr51wsZKwkzc+Q/wD/XdUOtuKBvgnyZ6H9UvRn+xl0s9uH3opx5+MaWFz8Is=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780706408; c=relaxed/simple;
-	bh=tQdR+hjJ0yRSIfMVMlI1NP/oKMERt6ndMwPbnVlrvuI=;
+	s=arc-20240116; t=1780706409; c=relaxed/simple;
+	bh=Md+NCMU4DyuWYZ9EOMm5A/RgCz2ljI7cHiN59vuGKjs=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=JJrRbGD8vVUS1hPts9azMR/DIZX6ubJxIgeef3C0ywI3+kab17q1152p8nOOle2m7RkDAG47RNxqyhg5lNNfUqvwQWOIqmUZJpeVRJW5caUTBgrK37owgxLNjAe7X19XQUP83NWCdxkR6R0Q8EQsesRMAVAIxZyA+5uCDl4FozA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ga8GN/7u; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=VEW1TeNp64v/QnQAkIwgSdT3cEIpMF3RR/kXhHpnvWu1u7A97hFdc+kiXjSOg2LkoTOLpOMhfx8lvGJhUqKhlR0oDwbKwTMgvQQanuO/NwCaV/uBoyRE4OPo37nR18FUuLMCuvTTg7q0cEsq3RPpvpTvsAJXpmryHY2RCDWxo74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=chr7q/M8; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ga8GN/7u"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E84F21F00898;
-	Sat,  6 Jun 2026 00:40:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780706407;
-	bh=HcD+V9Q59ikLK7b0LhQsfLRO42Oh60ODLNOq3l1Ezgg=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=ga8GN/7u3NJfk/RBdYfz39H1Znfesk9aAsfEDyQM8RqOBag/37B2Kc8tP3cP41rXK
-	 67QpPxIeuLV+kVyfitjd19Lksao1zmLOJB+Zb/Rb+2HZ0TeZO7Icsg8uCQGn2ztYbM
-	 k5moKy9222y9MzLb1+nA/pIxmN/DZtMy2DAo5TSXxkh+56hcN2fe8/OT5X6kjDF1pE
-	 perjPECWEyJnSWghtcMgqsfBYANFOGVT4FehYIc7zLsy6YLalT4/9r9Jp/x8joI6Gd
-	 Is3fwsguulWctQ4OyJwOLSXECAtze0pgmNLnqB6sDFCr49k+tfgXKuvwOCy6xj/Top
-	 jUTX+S36rz1Bg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 568533930C06;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="chr7q/M8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F1D61F00898;
 	Sat,  6 Jun 2026 00:40:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780706408;
+	bh=9bd+o5r6wGbxt9K0vgor2ZhlH1hGt/3yn9lOse8aatA=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=chr7q/M8pKpdZnFFg1AdLVac/LM/TUive45eoMaIhF3p2MG303KBHO34njFSKYZlR
+	 DtkePE0uCTYji8H1j03bpISeHORzYmS0WEUrNqbP8rrlSeXfwkBGKNLUt/8zeCr3IW
+	 Qak1MvWXiReu9AHxRsGPDc/jrjLmKC/bdXSf0faM3WxN34P0SHEJnKRceCxSXVVDmx
+	 CbnAPfa2acggy/ZDW/zVmUDn8NB5fhYE/no2EbxfXS/sHzTlNQhTCWL+GFNsL3MT9K
+	 Nk27Kc3PjCK/wunT0gQeppR5xInz0MzC0pucIi3CRdUM9QhhJwmFanvQImCS9JYWEQ
+	 BMpNMu4jFVa5A==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D09C43930C06;
+	Sat,  6 Jun 2026 00:40:09 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,41 +37,40 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] selftests: net: do not detect PPPoX loopback
+Subject: Re: [PATCH net-next v2] net: cpsw_new: unregister devlink on port
+ registration failure
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178070640715.3971808.7329061490220298966.git-patchwork-notify@kernel.org>
-Date: Sat, 06 Jun 2026 00:40:07 +0000
-References: <20260603061746.23452-1-qingfang.deng@linux.dev>
-In-Reply-To: <20260603061746.23452-1-qingfang.deng@linux.dev>
-To: Qingfang Deng <qingfang.deng@linux.dev>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, shuah@kernel.org,
- linux-ppp@vger.kernel.org, netdev@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
- matttbe@kernel.org
+ <178070640839.3971808.12083704478751748156.git-patchwork-notify@kernel.org>
+Date: Sat, 06 Jun 2026 00:40:08 +0000
+References: <20260604043115.1409134-1-lgs201920130244@gmail.com>
+In-Reply-To: <20260604043115.1409134-1-lgs201920130244@gmail.com>
+To: Guangshuo Li <lgs201920130244@gmail.com>
+Cc: s-vadapalli@ti.com, rogerq@kernel.org, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ alexander.sverdlin@gmail.com, haokexin@gmail.com,
+ aleksandr.loktionov@intel.com, daniel.zahka@gmail.com,
+ linux-omap@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, alexander.sverdlin@siemens.com
 
 Hello:
 
 This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Wed,  3 Jun 2026 14:17:44 +0800 you wrote:
-> By default, pppd attempts to detect loopbacks on the underlying
-> interface using a pseudo-randomly generated magic number and checks if
-> the same value is received. The seed for the PRNG is a hash of hostname
-> XOR current time XOR pid, which is likely to collide on NIPA, causing
-> false positives. Disable magic number generation.
+On Thu,  4 Jun 2026 12:31:15 +0800 you wrote:
+> cpsw_probe() registers devlink before registering the CPSW ports.
 > 
-> Reported-by: Matthieu Baerts <matttbe@kernel.org>
-> Fixes: 7af2a94f4dcf ("selftests: net: add tests for PPPoL2TP")
-> Signed-off-by: Qingfang Deng <qingfang.deng@linux.dev>
+> If cpsw_register_ports() fails, the error path only unregisters the
+> notifiers and then releases the lower level resources. It does not undo
+> the successful cpsw_register_devlink() call, leaving the devlink instance
+> and its parameters registered after probe has failed.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next] selftests: net: do not detect PPPoX loopback
-    https://git.kernel.org/netdev/net-next/c/2eb9a81a7f73
+  - [net-next,v2] net: cpsw_new: unregister devlink on port registration failure
+    https://git.kernel.org/netdev/net-next/c/b64f763b6074
 
 You are awesome, thank you!
 -- 
