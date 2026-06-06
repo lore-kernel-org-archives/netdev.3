@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8BEC309DDF;
-	Sat,  6 Jun 2026 05:42:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1079830C15E;
+	Sat,  6 Jun 2026 05:42:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780724570; cv=none; b=ArQ/WJGTAcLXVENkP6bVb3oe9aGqvk3KZvuIaNdG2B+XaSaUB2UM5y37M2j4vs5E4f1WpBTpczZxYfGzQm5D6I+rCsYMJQJawPnipQSdSwKn9023t36DwL6DaGfa+tTOeKdFr5SYsz4ruinGt7Gp7oEo5ioJjkDpOttQCQHRj30=
+	t=1780724570; cv=none; b=aKny8QFi4JejKJGrlUW1pOG7jCh0sap9HkD3HH/beT9rRdljYzjdv4TabzIa3QVRdDWlaCoxcnGSVOAdOsg8mKhtVmynYdlOKmHi8grHwnj3lB/+CBm1U1MKWqBxDUWHIpGB4cnDCNhR4i1FmCD1DCGno6HaLvxZkMM4mMoTiJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1780724570; c=relaxed/simple;
-	bh=VKo/KdBMt3l77WXwQ+vYFe76M/n/dMN4jksF6CUquSM=;
+	bh=a8UyF6IF3XwRksQoSWDs0MTcbLNGhYf33YAHeVV8QLQ=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=pO2FEe8FTAtUej+gJtKhBzp/Vi9ZwM44Go8TBgmmS0mm/fjAFutTnaTISRXzlzFNt7Xs3IEj9Iv+ceqSoU3iZkIdM5yGh0cULCrxlp2XAeyqdD0SHjRwnE4MpjYLVcEK3Z7EM0mxkHUmCvdgC+j+bwIl7/Cueom1wex6glzTycI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EG3OfGT7; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=MwFWSddulJQ8X352SqSsQUdBxtaVtE+pNI0cppZ4rxw7xtMLQxAu/193AZEDkpVVA69k5xTc/vqPMdffqNOiU9quwVjGKK4q1uEbN8V9JeW5po7ZdDzXq9HhU6/wRvHnqEQKPU87BUg00/SWkBlQp2JLyGi+7rdJX/GOXFmLqmk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gIaqNitm; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EG3OfGT7"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id B02D6C2BD00;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gIaqNitm"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id E39A2C2BCF5;
 	Sat,  6 Jun 2026 05:42:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1780724569;
-	bh=VKo/KdBMt3l77WXwQ+vYFe76M/n/dMN4jksF6CUquSM=;
+	bh=a8UyF6IF3XwRksQoSWDs0MTcbLNGhYf33YAHeVV8QLQ=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=EG3OfGT7L5GVBx+hOmFT/wh8cM+e8HchWFyB0BfiuwAj1/JXEHGud8quUC+fEOeeM
-	 BPgfanvSbpyhvp8PWTsGy+8o5JWdz8FIpw2fuJ8xztpHcpyb2y9s+CmPHOs21NMDj0
-	 09K907wLDLjVQqCIFQqIMmxLUhRr07irkqctdMpHiv5YHduAFJaGtcNx8xGDhikdhi
-	 kXiGekZQ5r0gUVzA23MrwDDWu7CPNpLKLslAFbyi6KGYFWCFOSnOtJ78qHa9mdKN9n
-	 uHvCpqqP2jjfCWaffLhw3nMdMHHMBCj4jtvtqFE8vV7MPDTKcqmws2jwPlFjY/XzJc
-	 R25zjGxn7d+Kw==
+	b=gIaqNitmAu/yY/HHnyueIY41D26oNkToLddYW06a7Ybg2Hqa7ii8BLv77LvXMYiXR
+	 cpKbgCoR44UbrV5clbMIW20kS5w6O+WGdDlwwm0N+9NXBPtc7A7HvLm8SmO50gGU72
+	 RirDj4HIIEP7wFXGrNZnZMX2qG3+QUvDIdxEjqcbEhLlvuZF+c35joM3/Hb1dsM6We
+	 XlkTonB7O1LPHOg2FguBWGcNevBJjjM4G+aQiYzN08bU+ntXBzS6KxwPCMIosgQNcb
+	 RDTi16OGoWIiVPTPA7dLhnx8pWvdcCEl2TRkOnnihy6fddQDKvjSGcYz1hEYvTYWTZ
+	 5mQeh8z627c+g==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A92E2CD8C85;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DE4BDCD8C90;
 	Sat,  6 Jun 2026 05:42:49 +0000 (UTC)
 From: Selvamani Rajagopal via B4 Relay <devnull+Selvamani.Rajagopal.onsemi.com@kernel.org>
-Date: Fri, 05 Jun 2026 22:42:40 -0700
-Subject: [PATCH net-next v4 09/16] net: ethernet: oa_tc6: read, write
- interface with MMS option
+Date: Fri, 05 Jun 2026 22:42:43 -0700
+Subject: [PATCH net-next v4 12/16] net: phy: ncn26000: Support for loopback
+ support
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260605-s2500-mac-phy-support-v4-9-de0fbc13c6d8@onsemi.com>
+Message-Id: <20260605-s2500-mac-phy-support-v4-12-de0fbc13c6d8@onsemi.com>
 References: <20260605-s2500-mac-phy-support-v4-0-de0fbc13c6d8@onsemi.com>
 In-Reply-To: <20260605-s2500-mac-phy-support-v4-0-de0fbc13c6d8@onsemi.com>
 To: Andrew Lunn <andrew@lunn.ch>, 
@@ -62,11 +62,11 @@ Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
  Jerry Ray <jerry.ray@microchip.com>, 
  Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1780724562; l=13151;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1780724562; l=886;
  i=Selvamani.Rajagopal@onsemi.com; s=20260531; h=from:subject:message-id;
- bh=6gf7mflhJ8D0twLwo1deSPFhe13HotYFkXHHYzefZ0o=;
- b=oSZjfjamdqshA0QzFunE54jeYkKdbPtS7XZDcanl4CKrFswgce2GpAL967Cofo3/6f9SifWpp
- KVdIiYolTwABTk3QLT0bxZKv+2R9GwWzV15W+zBvSkwLZ0a0TUcbuLX
+ bh=6j9FApr9mdiEL4bEIZDwlR2AIaPGGvliDOcnuk/FhSQ=;
+ b=rtNvJ5PfVSv8jTsb9GV2cu+Qtb2mF1ILOlEL2pfqnbKdFaLAM5m+RqUSMgxp+/Aqt5siWIYbN
+ ZYWQn6EqCfCDxYxKiuYpyxiVJIkoLaG2mpwpZJbXu3DHRhpEFx8L+y4
 X-Developer-Key: i=Selvamani.Rajagopal@onsemi.com; a=ed25519;
  pk=5QRdM0HS/LGWWcUZZ9hVfZ+qbPQGZCumcTXOiN7Fyug=
 X-Endpoint-Received: by B4 Relay for
@@ -76,346 +76,26 @@ Reply-To: Selvamani.Rajagopal@onsemi.com
 
 From: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
 
-Vendors are allowed to use any memory map selector that
-is between 10 and 15.
-
-Current read/write API interface expects register address with
-the value of MMS (memory map selector) embedded in it.
-
-This requires vendors to encoding the address whenever the call
-to read/write register is made. To avoid this extra step, and
-to bring consistency in usage of the API by different vendors,
-new APIs have been added to write and read registers with
-MMS as one of the parameters.
+Adding loopback support for S2500 internal PHY to help running
+loopback test through ethtool
 
 Signed-off-by: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
 ---
- drivers/net/ethernet/microchip/lan865x/lan865x.c | 61 +++++++++------
- drivers/net/ethernet/oa_tc6/oa_tc6.c             | 97 +++++++++++++++++++++---
- include/linux/oa_tc6.h                           |  8 ++
- 3 files changed, 131 insertions(+), 35 deletions(-)
+ drivers/net/phy/ncn26000.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/microchip/lan865x/lan865x.c b/drivers/net/ethernet/microchip/lan865x/lan865x.c
-index 0277d9737369..3b555ee69804 100644
---- a/drivers/net/ethernet/microchip/lan865x/lan865x.c
-+++ b/drivers/net/ethernet/microchip/lan865x/lan865x.c
-@@ -13,27 +13,27 @@
- #define DRV_NAME			"lan8650"
- 
- /* MAC Network Control Register */
--#define LAN865X_REG_MAC_NET_CTL		0x00010000
-+#define LAN865X_REG_MAC_NET_CTL		0x0
- #define MAC_NET_CTL_TXEN		BIT(3) /* Transmit Enable */
- #define MAC_NET_CTL_RXEN		BIT(2) /* Receive Enable */
- 
- /* MAC Network Configuration Reg */
--#define LAN865X_REG_MAC_NET_CFG		0x00010001
-+#define LAN865X_REG_MAC_NET_CFG		0x1
- #define MAC_NET_CFG_PROMISCUOUS_MODE	BIT(4)
- #define MAC_NET_CFG_MULTICAST_MODE	BIT(6)
- #define MAC_NET_CFG_UNICAST_MODE	BIT(7)
- 
- /* MAC Hash Register Bottom */
--#define LAN865X_REG_MAC_L_HASH		0x00010020
-+#define LAN865X_REG_MAC_L_HASH		0x20
- /* MAC Hash Register Top */
--#define LAN865X_REG_MAC_H_HASH		0x00010021
-+#define LAN865X_REG_MAC_H_HASH		0x21
- /* MAC Specific Addr 1 Bottom Reg */
--#define LAN865X_REG_MAC_L_SADDR1	0x00010022
-+#define LAN865X_REG_MAC_L_SADDR1	0x22
- /* MAC Specific Addr 1 Top Reg */
--#define LAN865X_REG_MAC_H_SADDR1	0x00010023
-+#define LAN865X_REG_MAC_H_SADDR1	0x23
- 
- /* MAC TSU Timer Increment Register */
--#define LAN865X_REG_MAC_TSU_TIMER_INCR		0x00010077
-+#define LAN865X_REG_MAC_TSU_TIMER_INCR		0x77
- #define MAC_TSU_TIMER_INCR_COUNT_NANOSECONDS	0x0028
- 
- struct lan865x_priv {
-@@ -49,7 +49,8 @@ static int lan865x_set_hw_macaddr_low_bytes(struct oa_tc6 *tc6, const u8 *mac)
- 
- 	regval = (mac[3] << 24) | (mac[2] << 16) | (mac[1] << 8) | mac[0];
- 
--	return oa_tc6_write_register(tc6, LAN865X_REG_MAC_L_SADDR1, regval);
-+	return oa_tc6_write_register_mms(tc6, LAN865X_REG_MAC_L_SADDR1,
-+					 OA_TC6_PHY_C45_MAC_MMS1, regval);
- }
- 
- static int lan865x_set_hw_macaddr(struct lan865x_priv *priv, const u8 *mac)
-@@ -65,8 +66,8 @@ static int lan865x_set_hw_macaddr(struct lan865x_priv *priv, const u8 *mac)
- 
- 	/* Prepare and configure MAC address high bytes */
- 	regval = (mac[5] << 8) | mac[4];
--	ret = oa_tc6_write_register(priv->tc6, LAN865X_REG_MAC_H_SADDR1,
--				    regval);
-+	ret = oa_tc6_write_register_mms(priv->tc6, LAN865X_REG_MAC_H_SADDR1,
-+					OA_TC6_PHY_C45_MAC_MMS1, regval);
- 	if (!ret)
- 		return 0;
- 
-@@ -146,14 +147,16 @@ static int lan865x_set_specific_multicast_addr(struct lan865x_priv *priv)
- 	}
- 
- 	/* Enabling specific multicast addresses */
--	ret = oa_tc6_write_register(priv->tc6, LAN865X_REG_MAC_H_HASH, hash_hi);
-+	ret = oa_tc6_write_register_mms(priv->tc6, LAN865X_REG_MAC_H_HASH,
-+					OA_TC6_PHY_C45_MAC_MMS1, hash_hi);
- 	if (ret) {
- 		netdev_err(priv->netdev, "Failed to write reg_hashh: %d\n",
- 			   ret);
- 		return ret;
- 	}
- 
--	ret = oa_tc6_write_register(priv->tc6, LAN865X_REG_MAC_L_HASH, hash_lo);
-+	ret = oa_tc6_write_register_mms(priv->tc6, LAN865X_REG_MAC_L_HASH,
-+					OA_TC6_PHY_C45_MAC_MMS1, hash_lo);
- 	if (ret)
- 		netdev_err(priv->netdev, "Failed to write reg_hashl: %d\n",
- 			   ret);
-@@ -166,16 +169,16 @@ static int lan865x_set_all_multicast_addr(struct lan865x_priv *priv)
- 	int ret;
- 
- 	/* Enabling all multicast addresses */
--	ret = oa_tc6_write_register(priv->tc6, LAN865X_REG_MAC_H_HASH,
--				    0xffffffff);
-+	ret = oa_tc6_write_register_mms(priv->tc6, LAN865X_REG_MAC_H_HASH,
-+					OA_TC6_PHY_C45_MAC_MMS1, 0xffffffff);
- 	if (ret) {
- 		netdev_err(priv->netdev, "Failed to write reg_hashh: %d\n",
- 			   ret);
- 		return ret;
- 	}
- 
--	ret = oa_tc6_write_register(priv->tc6, LAN865X_REG_MAC_L_HASH,
--				    0xffffffff);
-+	ret = oa_tc6_write_register_mms(priv->tc6, LAN865X_REG_MAC_L_HASH,
-+					OA_TC6_PHY_C45_MAC_MMS1, 0xffffffff);
- 	if (ret)
- 		netdev_err(priv->netdev, "Failed to write reg_hashl: %d\n",
- 			   ret);
-@@ -187,14 +190,16 @@ static int lan865x_clear_all_multicast_addr(struct lan865x_priv *priv)
- {
- 	int ret;
- 
--	ret = oa_tc6_write_register(priv->tc6, LAN865X_REG_MAC_H_HASH, 0);
-+	ret = oa_tc6_write_register_mms(priv->tc6, LAN865X_REG_MAC_H_HASH,
-+					OA_TC6_PHY_C45_MAC_MMS1, 0);
- 	if (ret) {
- 		netdev_err(priv->netdev, "Failed to write reg_hashh: %d\n",
- 			   ret);
- 		return ret;
- 	}
- 
--	ret = oa_tc6_write_register(priv->tc6, LAN865X_REG_MAC_L_HASH, 0);
-+	ret = oa_tc6_write_register_mms(priv->tc6, LAN865X_REG_MAC_L_HASH,
-+					OA_TC6_PHY_C45_MAC_MMS1, 0);
- 	if (ret)
- 		netdev_err(priv->netdev, "Failed to write reg_hashl: %d\n",
- 			   ret);
-@@ -235,7 +240,8 @@ static void lan865x_multicast_work_handler(struct work_struct *work)
- 		if (lan865x_clear_all_multicast_addr(priv))
- 			return;
- 	}
--	ret = oa_tc6_write_register(priv->tc6, LAN865X_REG_MAC_NET_CFG, regval);
-+	ret = oa_tc6_write_register_mms(priv->tc6, LAN865X_REG_MAC_NET_CFG,
-+					OA_TC6_PHY_C45_MAC_MMS1, regval);
- 	if (ret)
- 		netdev_err(priv->netdev, "Failed to enable promiscuous/multicast/normal mode: %d\n",
- 			   ret);
-@@ -260,12 +266,14 @@ static int lan865x_hw_disable(struct lan865x_priv *priv)
- {
- 	u32 regval;
- 
--	if (oa_tc6_read_register(priv->tc6, LAN865X_REG_MAC_NET_CTL, &regval))
-+	if (oa_tc6_read_register_mms(priv->tc6, LAN865X_REG_MAC_NET_CTL,
-+				     OA_TC6_PHY_C45_MAC_MMS1, &regval))
- 		return -ENODEV;
- 
- 	regval &= ~(MAC_NET_CTL_TXEN | MAC_NET_CTL_RXEN);
- 
--	if (oa_tc6_write_register(priv->tc6, LAN865X_REG_MAC_NET_CTL, regval))
-+	if (oa_tc6_write_register_mms(priv->tc6, LAN865X_REG_MAC_NET_CTL,
-+				      OA_TC6_PHY_C45_MAC_MMS1, regval))
- 		return -ENODEV;
- 
- 	return 0;
-@@ -291,12 +299,14 @@ static int lan865x_hw_enable(struct lan865x_priv *priv)
- {
- 	u32 regval;
- 
--	if (oa_tc6_read_register(priv->tc6, LAN865X_REG_MAC_NET_CTL, &regval))
-+	if (oa_tc6_read_register_mms(priv->tc6, LAN865X_REG_MAC_NET_CTL,
-+				     OA_TC6_PHY_C45_MAC_MMS1, &regval))
- 		return -ENODEV;
- 
- 	regval |= MAC_NET_CTL_TXEN | MAC_NET_CTL_RXEN;
- 
--	if (oa_tc6_write_register(priv->tc6, LAN865X_REG_MAC_NET_CTL, regval))
-+	if (oa_tc6_write_register_mms(priv->tc6, LAN865X_REG_MAC_NET_CTL,
-+				      OA_TC6_PHY_C45_MAC_MMS1, regval))
- 		return -ENODEV;
- 
- 	return 0;
-@@ -359,8 +369,9 @@ static int lan865x_probe(struct spi_device *spi)
- 	 * stamping at the end of the Start of Frame Delimiter (SFD) and set the
- 	 * Timer Increment reg to 40 ns to be used as a 25 MHz internal clock.
- 	 */
--	ret = oa_tc6_write_register(priv->tc6, LAN865X_REG_MAC_TSU_TIMER_INCR,
--				    MAC_TSU_TIMER_INCR_COUNT_NANOSECONDS);
-+	ret = oa_tc6_write_register_mms(priv->tc6, LAN865X_REG_MAC_TSU_TIMER_INCR,
-+					OA_TC6_PHY_C45_MAC_MMS1,
-+					MAC_TSU_TIMER_INCR_COUNT_NANOSECONDS);
- 	if (ret) {
- 		dev_err(&spi->dev, "Failed to config TSU Timer Incr reg: %d\n",
- 			ret);
-diff --git a/drivers/net/ethernet/oa_tc6/oa_tc6.c b/drivers/net/ethernet/oa_tc6/oa_tc6.c
-index 26033373f16f..a7d8c9bb1f28 100644
---- a/drivers/net/ethernet/oa_tc6/oa_tc6.c
-+++ b/drivers/net/ethernet/oa_tc6/oa_tc6.c
-@@ -377,6 +377,83 @@ int oa_tc6_read_register(struct oa_tc6 *tc6, u32 address, u32 *value)
- }
- EXPORT_SYMBOL_GPL(oa_tc6_read_register);
- 
-+/**
-+ * oa_tc6_read_registers_mms - function for reading multiple consecutive
-+ * registers for the given address, memory map selector pair.
-+ * @tc6: oa_tc6 struct.
-+ * @address: address of the first register to be read in the MAC-PHY.
-+ * @mms: Memory map selector for the registers to be read.
-+ * @value: values to be read from the starting register address @address.
-+ * @length: number of consecutive registers to be read from @address.
-+ *
-+ * Return: 0 on success otherwise failed.
-+ */
-+int oa_tc6_read_registers_mms(struct oa_tc6 *tc6, u16 address, u16 mms,
-+			      u32 value[], u8 length)
-+{
-+	u32 mms_addr = (u32)mms << 16 | (u32)address;
-+
-+	return oa_tc6_read_registers(tc6, mms_addr, value, length);
-+}
-+EXPORT_SYMBOL_GPL(oa_tc6_read_registers_mms);
-+
-+/**
-+ * oa_tc6_read_register_mms - function for reading a MAC-PHY register
-+ * for the given address, memory map selector pair.
-+ * @tc6: oa_tc6 struct.
-+ * @address: register address of the MAC-PHY to be read.
-+ * @mms: Memory Map Selector for the given address
-+ * @value: value read from the @address register address of the MAC-PHY.
-+ *
-+ * Return: 0 on success otherwise failed.
-+ */
-+int oa_tc6_read_register_mms(struct oa_tc6 *tc6, u16 address, u16 mms,
-+			     u32 *value)
-+{
-+	return oa_tc6_read_registers_mms(tc6, address, mms, value, 1);
-+}
-+EXPORT_SYMBOL_GPL(oa_tc6_read_register_mms);
-+
-+/**
-+ * oa_tc6_write_registers_mms - function for writing multiple consecutive
-+ * registers for the given address, memory map selector pair.
-+ * @tc6: oa_tc6 struct.
-+ * @address: address of the first register to be written in the MAC-PHY.
-+ * @mms: memory map Selector for the given register.
-+ * @value: values to be written from the starting register address @address.
-+ * @length: number of consecutive registers to be written from @address.
-+ *
-+ * Maximum of 128 consecutive registers can be written starting at @address.
-+ *
-+ * Return: 0 on success otherwise failed.
-+ */
-+int oa_tc6_write_registers_mms(struct oa_tc6 *tc6, u16 address, u16 mms,
-+			       u32 value[], u8 length)
-+{
-+	u32 mms_addr = (u32)mms << 16 | (u32)address;
-+
-+	return oa_tc6_write_registers(tc6, mms_addr, value, length);
-+}
-+EXPORT_SYMBOL_GPL(oa_tc6_write_registers_mms);
-+
-+/**
-+ * oa_tc6_write_register_mms - function for writing a MAC-PHY register
-+ * associated with the given memory map selector.
-+ * @tc6: oa_tc6 struct.
-+ * @address: register address of the MAC-PHY to be written.
-+ * @mms: memory map selector for the given register.
-+ * @value: value to be written in the @address register address of
-+ * the MAC-PHY.
-+ *
-+ * Return: 0 on success otherwise failed.
-+ */
-+int oa_tc6_write_register_mms(struct oa_tc6 *tc6, u16 address, u16 mms,
-+			      u32 value)
-+{
-+	return oa_tc6_write_registers_mms(tc6, address, mms, &value, 1);
-+}
-+EXPORT_SYMBOL_GPL(oa_tc6_write_register_mms);
-+
- /**
-  * oa_tc6_write_registers - function for writing multiple consecutive registers.
-  * @tc6: oa_tc6 struct.
-@@ -490,14 +567,14 @@ static int oa_tc6_mdiobus_read_c45(struct mii_bus *bus, int addr, int devnum,
- 				   int regnum)
- {
- 	struct oa_tc6 *tc6 = bus->priv;
-+	int mms, ret;
- 	u32 regval;
--	int ret;
- 
--	ret = oa_tc6_get_phy_c45_mms(tc6, devnum);
--	if (ret < 0)
--		return ret;
-+	mms = oa_tc6_get_phy_c45_mms(tc6, devnum);
-+	if (mms < 0)
-+		return mms;
- 
--	ret = oa_tc6_read_register(tc6, (ret << 16) | regnum, &regval);
-+	ret = oa_tc6_read_register_mms(tc6, (u16)regnum, (u16)mms, &regval);
- 	if (ret)
- 		return ret;
- 
-@@ -508,13 +585,13 @@ static int oa_tc6_mdiobus_write_c45(struct mii_bus *bus, int addr, int devnum,
- 				    int regnum, u16 val)
- {
- 	struct oa_tc6 *tc6 = bus->priv;
--	int ret;
-+	int mms;
- 
--	ret = oa_tc6_get_phy_c45_mms(tc6, devnum);
--	if (ret < 0)
--		return ret;
-+	mms = oa_tc6_get_phy_c45_mms(tc6, devnum);
-+	if (mms < 0)
-+		return mms;
- 
--	return oa_tc6_write_register(tc6, (ret << 16) | regnum, val);
-+	return oa_tc6_write_register_mms(tc6, (u16)regnum, (u16)mms, val);
- }
- 
- static int oa_tc6_mdiobus_register(struct oa_tc6 *tc6)
-diff --git a/include/linux/oa_tc6.h b/include/linux/oa_tc6.h
-index a89151267713..3d50971f0f5b 100644
---- a/include/linux/oa_tc6.h
-+++ b/include/linux/oa_tc6.h
-@@ -37,6 +37,14 @@ int oa_tc6_read_registers(struct oa_tc6 *tc6, u32 address, u32 value[],
- 			  u8 length);
- netdev_tx_t oa_tc6_start_xmit(struct oa_tc6 *tc6, struct sk_buff *skb);
- int oa_tc6_zero_align_receive_frame_enable(struct oa_tc6 *tc6);
-+int oa_tc6_write_registers_mms(struct oa_tc6 *tc6, u16 address, u16 mms,
-+			       u32 value[], u8 length);
-+int oa_tc6_write_register_mms(struct oa_tc6 *tc6, u16 address, u16 mms,
-+			      u32 value);
-+int oa_tc6_read_registers_mms(struct oa_tc6 *tc6, u16 address, u16 mms,
-+			      u32 value[], u8 length);
-+int oa_tc6_read_register_mms(struct oa_tc6 *tc6, u16 address, u16 mms,
-+			     u32 *value);
- int oa_tc6_ptp_register(struct oa_tc6 *tc6, struct ptp_clock_info *info);
- int oa_tc6_ioctl(struct oa_tc6 *tc6, struct ifreq *rq, int cmd);
- int oa_tc6_get_ts_info(struct oa_tc6 *tc6,
+diff --git a/drivers/net/phy/ncn26000.c b/drivers/net/phy/ncn26000.c
+index c3a34b2c524d..afafa81dc22b 100644
+--- a/drivers/net/phy/ncn26000.c
++++ b/drivers/net/phy/ncn26000.c
+@@ -178,6 +178,7 @@ static struct phy_driver ncn26000_driver[] = {
+ 		.config_aneg           = ncn26000_config_aneg,
+ 		.read_status           = ncn26000_read_status,
+ 		.handle_interrupt      = ncn26000_handle_interrupt,
++		.set_loopback          = genphy_loopback_fixed_speed,
+ 		.set_plca_cfg          = ncn26000_c45_plca_set_cfg,
+ 		.get_plca_cfg          = genphy_c45_plca_get_cfg,
+ 		.get_plca_status       = genphy_c45_plca_get_status,
 
 -- 
 2.43.0
