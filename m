@@ -1,42 +1,74 @@
-Received: from mail-m155101.qiye.163.com (mail-m155101.qiye.163.com [101.71.155.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f195.google.com (mail-dy1-f195.google.com [74.125.82.195])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81A681FBEB0;
-	Sun,  7 Jun 2026 15:02:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=101.71.155.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E425274B23
+	for <netdev@vger.kernel.org>; Sun,  7 Jun 2026 15:44:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780844555; cv=none; b=hO+7b8V6pbhNC+Bs8z9Kb2hofsOD+yZWDEiEgfGwks4LZhXc/rUPPgcKDxZECZ6yZJpxAvi9VE0eSsG3gNn8nXXpsRnnQ8TX5sHej/QOCXLY2Bu/cr/8sIja+tLVsCTGG8iA1iUuNijVn9wu5grfStJ0Doc3DIISk0ohAWxpXwM=
+	t=1780847081; cv=none; b=rf5AGblo1BxxEb+0ByzZF86wMMvo4qcBQ+irRKhYyxDGHPfA3eCbENi3FYzEGp6Ojpz/VFfKhhWqkA4PIhvS5IelQ9axbJJKBmJljjr/B4HYwkmTisqh92Iouqt8VAqUKpx1/74fYHlto6r3YNqTM+nyM3Spb4osIK0Dsy5NEkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780844555; c=relaxed/simple;
-	bh=rJH4DiD+myAN0gBKEx7g72RXEhghty7AqdKW0O0xR7Q=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=CV9HtWc5LGckYp8Mbnutu2+OC20J9b+h0oSuBPaVHAj7VQqN7LJDW+tvJCvP3uySQy1wHyJLiRiQlHTZ3pRsDi0uSwPbBtWWWdZffD82XO6KE2coR/4iCTlAXrMoUnZdyrwHbwfy81KFoTjoVzJnwrZbiaXibBpcfibXIiAg1xQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=XwqtSqIG; arc=none smtp.client-ip=101.71.155.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
+	s=arc-20240116; t=1780847081; c=relaxed/simple;
+	bh=idG7Ku7uJl0jqp6TckTuNiL8B/wD9Z/s9hlLWpvXd90=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Ej0B4GruU4kAWsTN2H066NmvFiYuJLw8DziSdmmVj/oYOcr2TdS6bcZjvBxbdYIxaN183e15oK6S/sA9RtBh+m+XVJQVIhiMbbgr4/sFVkcp9DahDM7cP0+YbP6BD2PqG9bWp11gCVEu3uouSs6k6Dt/U3HvoUw9cUgKOnFe8v8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CYivNc/f; arc=none smtp.client-ip=74.125.82.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="XwqtSqIG"
-Received: from DESKTOP-SUEFNF9.taila7e912.ts.net (unknown [58.241.16.34])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 4163e2705;
-	Sun, 7 Jun 2026 22:57:10 +0800 (GMT+08:00)
-From: Dawei Feng <dawei.feng@seu.edu.cn>
-To: Tony Nguyen <anthony.l.nguyen@intel.com>
-Cc: Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Dirk Brandewie <dirk.j.brandewie@intel.com>,
-	intel-wired-lan@lists.osuosl.org,
-	netdev@vger.kernel.org,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CYivNc/f"
+Received: by mail-dy1-f195.google.com with SMTP id 5a478bee46e88-304fb780deaso3455377eec.1
+        for <netdev@vger.kernel.org>; Sun, 07 Jun 2026 08:44:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780847078; x=1781451878; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=QWU/xwt2CG6wA3LDuejU+B8XKg46XhnTEXFr0yiHocU=;
+        b=CYivNc/fNhkyCC0pCZiRh++gOjsHUs8+YIU8Yaci2MBLGrjqMcOUXE+Id21AoP0JGJ
+         3ARpOYQkHtCKX2NJxJ5+RjgBkHomtj5fjIWsudxthEEn2lnvzIr9rW2as8hAXxcaXbaQ
+         U7f/4BfD37qHI65fiYO3eIXL3gH1XxMPH79CVtNS18xFT4RHpc4sHeHUqfolxRfxvlj7
+         BL0owzMR0WFv0jehrC+3LvO1Jfbo39Fod5/8ZrP+ebGIJhaqFDjjuP247+nk2af99+TX
+         6R2MPPYFhEo62rAYpbHaMH10iueHXNEPUZpXPIHrPaFW2DxSuOeMS0Z8EbO7DjTE6x4V
+         AfYg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780847078; x=1781451878;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QWU/xwt2CG6wA3LDuejU+B8XKg46XhnTEXFr0yiHocU=;
+        b=WpOu8Kl5X0kO2obx1hFwNARHVfF1ZG4FZhHn3ByGuPceC+vHNNkUPBlnd4uJNQ4feI
+         pbdpZqPuRNkQsmDHuLr4AW5cyXTOu8mOuOW4gem3NxSeO/1qUfZetnns1ffr9f8UwHzz
+         kOF5rOGFJ8HyVyFJDRtxjdPe/WkyLOGEue0lHg1UatRqH9Gfmgs/SREiV3yB2kgl29Ri
+         AQaWGvB+mtbd+JDErUcREZ3y285PJxO0DNZ/mb3RDMvwWrT+18xBcJfe1cha4RTQa2tp
+         1gBNneYlxeTQsWFA7aTHTkaxtzpw4Ztji2XjQCzitxHZN6UZtm1AkljkVgwbc8ZYC22a
+         LmkA==
+X-Forwarded-Encrypted: i=1; AFNElJ/ioU623tybjdGoDz+4gArDnaVAbegKp8Tk4kj3U7W7kD2MCWN0ocOmUdwssl72ToLhm4p8iiE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxxtpEEMtbcmIh0DXqhFols+XVY2adHktL5pev9fmmj0GfgoXyC
+	DuJPoL4yfXaboY0vuOtPQE3st0dcT14B2mgJFsn09d0asmzNCO+GZuWu
+X-Gm-Gg: Acq92OGtMNxlZIIh3lW8ZqlSsdulPmp8GWtSyGWbBec09OA/3aZ7dBkU6P0MGFfWp85
+	FwGQUtQ9e+MNjOaLPHLun1tC/DHbplAxQB9S1ibtQkqGDGSDqXROEebNdmvLS7uBffHPmNgRKOT
+	kyU3Gz5qiTD6Gs+Z3tU7O/TjxQDVu56FHDSx2B+RCGn4Wvw3OE79nGAqaom7/TPwMpRB0Qc1N+y
+	CP1Ms/YZ4QXtznkbHz+FMLJOjUba7lqIOAdxG3LUruzISnQad02E2/ilCcLeLoe9kCIks1xojyY
+	1lXJ0AzFyN8xtDZdEaFXHJfs7EjOX/97DmyEWKGlYJ7lWT32rZK7/dNO76FFjPsBk+tr6vywvlv
+	pVpxONTAUqFuP+sLbSh9gzR7W2oTpPI/Fef30/Abc0cE0rSYEAUUPOjigLWZd1/ihBC+lMbOX7Q
+	4qXUMnhMpGlAy7E23HUdDh9r/SvadMrR3MEukrifJqElektm152FhUeOeu8ORGcMKAgg==
+X-Received: by 2002:a05:7301:5f12:b0:304:2e00:5fb5 with SMTP id 5a478bee46e88-3077af0e98dmr6535455eec.3.1780847078197;
+        Sun, 07 Jun 2026 08:44:38 -0700 (PDT)
+Received: from localhost.localdomain ([76.32.119.210])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-30777ecf9e9sm8811765eec.28.2026.06.07.08.44.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 07 Jun 2026 08:44:37 -0700 (PDT)
+From: Hungyu Lin <dennylin0707@gmail.com>
+To: timur@kernel.org,
+	netdev@vger.kernel.org
+Cc: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
 	linux-kernel@vger.kernel.org,
-	jianhao.xu@seu.edu.cn,
-	Dawei Feng <dawei.feng@seu.edu.cn>,
-	stable@vger.kernel.org,
-	Zilin Guan <zilin@seu.edu.cn>
-Subject: [PATCH net] e1000: fix memory leak in e1000_probe()
-Date: Sun,  7 Jun 2026 22:57:06 +0800
-Message-Id: <20260607145706.2933860-1-dawei.feng@seu.edu.cn>
+	Hungyu Lin <dennylin0707@gmail.com>
+Subject: [PATCH] net: qualcomm: emac: replace strcpy() with strscpy()
+Date: Sun,  7 Jun 2026 15:44:23 +0000
+Message-Id: <20260607154423.67146-1-dennylin0707@gmail.com>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -45,61 +77,30 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9ea29678dd03a2kunm392e2c96b787a
-X-HM-MType: 10
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlCTRhIVklIQkxPT0pOHkMZGFYeHw
-	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlOQ1VJT0pVSk1VSE9ZV1kWGg8SFR0UWUFZT0tIVUpLSUhOQ0
-	NVSktLVUtZBg++
-DKIM-Signature: a=rsa-sha256;
-	b=XwqtSqIGXZcPQOauGN+4pq8mJd9J+ZwpxFkIekP0stgMnFI1UFr1kBGk7Q2uu3Msok1J36bm/eeWHCGpTnCCjMdyH3KQVFufKsII36BtIvSUMDDgHhgLvUQQY5jmFv1sPA6aowAonWCy9X7wPA4pqWgONC7nPKlEPwjHbncEz+w=; c=relaxed/relaxed; s=default; d=seu.edu.cn; v=1;
-	bh=mrsfiJvZujVMJsxbWI6VmHgpGn8Fz7/vkXorwSa3nAA=;
-	h=date:mime-version:subject:message-id:from;
 
-In the e1000_probe() path, e1000_sw_init() allocates adapter->tx_ring and
-adapter->rx_ring. If the subsequent CE4100-specific MDIO BAR mapping
-fails, the error handling jumps past the ring cleanup code, leaking both
-allocations.
+Replace strcpy() with strscpy() in emac_get_strings().
 
-Fix this leak by moving the err_mdio_ioremap label above the ring
-deallocation logic. This guarantees the proper release of these resources
-and prevents the memory leak.
+strscpy() is the preferred string copy helper in the kernel and
+provides better bounds checking semantics.
 
-The bug was first flagged by an experimental analysis tool we are
-developing for kernel memory-management bugs while analyzing
-v6.13-rc1. The tool is still under development and is not yet publicly
-available. Manual inspection confirms that the bug is still
-present in v7.1-rc6.
-
-An x86_64 allyesconfig build showed no new warnings. As we do not have a
-CE4100 reference platform to test with, no runtime testing was able to
-be performed.
-
-Fixes: 5377a4160bb65 ("e1000: Add support for the CE4100 reference platform")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Signed-off-by: Dawei Feng <dawei.feng@seu.edu.cn>
+Signed-off-by: Hungyu Lin <dennylin0707@gmail.com>
 ---
- drivers/net/ethernet/intel/e1000/e1000_main.c | 2 +-
+ drivers/net/ethernet/qualcomm/emac/emac-ethtool.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/e1000/e1000_main.c b/drivers/net/ethernet/intel/e1000/e1000_main.c
-index 9b09eb144b81..d7f5c6f16142 100644
---- a/drivers/net/ethernet/intel/e1000/e1000_main.c
-+++ b/drivers/net/ethernet/intel/e1000/e1000_main.c
-@@ -1222,11 +1222,11 @@ static int e1000_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+diff --git a/drivers/net/ethernet/qualcomm/emac/emac-ethtool.c b/drivers/net/ethernet/qualcomm/emac/emac-ethtool.c
+index f502db9cdea9..ffc300641aac 100644
+--- a/drivers/net/ethernet/qualcomm/emac/emac-ethtool.c
++++ b/drivers/net/ethernet/qualcomm/emac/emac-ethtool.c
+@@ -95,7 +95,7 @@ static void emac_get_strings(struct net_device *netdev, u32 stringset, u8 *data)
  
- 	if (hw->flash_address)
- 		iounmap(hw->flash_address);
-+err_mdio_ioremap:
- 	kfree(adapter->tx_ring);
- 	kfree(adapter->rx_ring);
- err_dma:
- err_sw_init:
--err_mdio_ioremap:
- 	iounmap(hw->ce4100_gbe_mdio_base_virt);
- 	iounmap(hw->hw_addr);
- err_ioremap:
+ 	switch (stringset) {
+ 	case ETH_SS_PRIV_FLAGS:
+-		strcpy(data, "single-pause-mode");
++		strscpy(data, "single-pause-mode", ETH_GSTRING_LEN);
+ 		break;
+ 
+ 	case ETH_SS_STATS:
 -- 
 2.34.1
 
