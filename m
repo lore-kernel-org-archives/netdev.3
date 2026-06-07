@@ -1,177 +1,164 @@
-Received: from smtp10.goneo.de (smtp10.goneo.de [85.220.189.106])
+Received: from mail.common-net.org (mail.common-net.org [139.28.148.254])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A0AD2AE8D;
-	Sun,  7 Jun 2026 13:51:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.220.189.106
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9AAF2253EE;
+	Sun,  7 Jun 2026 14:01:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=139.28.148.254
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780840274; cv=none; b=HZCl1sH2ViSXduGx2ZQTdRlKZZVuvcoPbhB1PcHNOA7caMGJLShfEM0akjnYXceaQI1LVzrTT7dS+r9ZyVJZyOuea8wmxnhn6SeEm1t69YbDr+S/Mg3q8Jq3PRSdgdQEKFQrkRoHRxckusL0QbHVqCyqn1WNYiUtlqmFlG31edI=
+	t=1780840885; cv=none; b=ngHJgYSbFk6xBbWE21BgYDf1+FBa/KdwVZP+HjWNE8ZANIOEgO3hBU6h9PauRO4jw1E9wC6rcggzUgjIlInzt6XQk9Zc6OJb1O4Ltpci91DOzaNKRXVRvCSSsZ3CH1xqlYja66tCugqCctmgO9pJYK4ILDR1J9kLwmZytpt1weE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780840274; c=relaxed/simple;
-	bh=+4txlRb61jWfcSdAwcGsJ21jPzWWq48W/vnO+eSxS/M=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LgEN/iAOhwCEoTOvrKx3XGibn6lnZx95K5iyOVmHKQR9AEN/UX3TJt9ULROAEfbvzAkF+UUKRvPtbmDxTUw0OfAXK5acZDASbFkKJZx+D/tbouaw7EPkFLVqx2aViUmcVJMX6uqmuLguC3FXSZ7gxfudmxjD1LdN38cADzZxvWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tk154.de; spf=pass smtp.mailfrom=tk154.de; dkim=pass (2048-bit key) header.d=tk154.de header.i=@tk154.de header.b=n1uQpKeA; arc=none smtp.client-ip=85.220.189.106
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tk154.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tk154.de
+	s=arc-20240116; t=1780840885; c=relaxed/simple;
+	bh=7IIMnHWhVf+twJaSVJxFuCA1jrlaS+iWejGB0SPwmUI=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=sbfHbGKNsLoSUBp7sH+TCcnh0R+DJrKsan8dezDrtLgqr2akSgOTpajAA41b0DFTS25+W93OycPUNQyRbqeoDLegIvqs+bIsBuiz9TaJLrgPWZT6/7/sCrRj4ENiZkeGcwAmh3WcYtUmkGXhzQe8rOyoTbYditZVeXaMe7UqLh4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=common-net.org; spf=pass smtp.mailfrom=common-net.org; dkim=pass (1024-bit key) header.d=common-net.org header.i=@common-net.org header.b=t/HU8RzL; arc=none smtp.client-ip=139.28.148.254
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=common-net.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=common-net.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tk154.de header.i=@tk154.de header.b="n1uQpKeA"
-Received: from hub1.goneo.de (hub1.goneo.de [85.220.129.52])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519)
+	dkim=pass (1024-bit key) header.d=common-net.org header.i=@common-net.org header.b="t/HU8RzL"
+Received: from lubuntu-18.04 (host-80-116-255-177.pool80116.interbusiness.it [80.116.255.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp10.goneo.de (Postfix) with ESMTPS id 0FE5E240937;
-	Sun, 07 Jun 2026 15:50:59 +0200 (CEST)
-Received: from hub1.goneo.de (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
-	(No client certificate requested)
-	by hub1.goneo.de (Postfix) with ESMTPS id 6BAE2240023;
-	Sun,  7 Jun 2026 15:50:57 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tk154.de; s=DKIM001;
-	t=1780840257;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5THlrM0am5qqbwBY1A1KQHMu7kcoO5c1HP7D/7vY/wg=;
-	b=n1uQpKeA/ffNHOSlH9IZ1XT1To3bBGqK9V6Tl4OoJFDbJGwWMiMCbcHRsqZaGId2FxZMoG
-	n3lX+w1esYoPS3hCxnMygNlUVBaErPjdS4/AY0pEopcFMlfrmKwnq8inT+fu76WP5LbZdI
-	T/iwlyZu3715vWLAcb6+tpjgB2l0OjBB5VXY6fjiIACLggB3YTUVX7PkZ+zIpub4sY/7hl
-	qpYxR51Oj5vt1vd7jkXWKZS1jm9V1rzZW904IkzlAoF02UCjcPugUI5xruw0TYP+JYgHZr
-	JSch64Fb3167GfL5xpKjiH3LsWwqQ/sEI8/00G4IbfvC0n584zJdhCllnFhorw==
-Received: from Til-Notebook.lan (unknown [IPv6:2a00:1f:5743:3300:7fdc:421c:b21a:ba71])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by hub1.goneo.de (Postfix) with ESMTPSA id 642512402A5;
-	Sun,  7 Jun 2026 15:50:54 +0200 (CEST)
-From: Til Kaiser <mail@tk154.de>
-To: netdev@vger.kernel.org,
-	bpf@vger.kernel.org
-Cc: marcin.s.wojtas@gmail.com,
-	linux@armlinux.org.uk,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	hawk@kernel.org,
-	john.fastabend@gmail.com,
-	sdf@fomichev.me,
-	mcroce@redhat.com,
-	sven.auhagen@voleatech.de,
-	lorenzo@kernel.org,
-	Til Kaiser <mail@tk154.de>
-Subject: [PATCH net v5 4/4] net: mvpp2: build skb from XDP-adjusted data on XDP_PASS
-Date: Sun,  7 Jun 2026 15:49:43 +0200
-Message-ID: <20260607134943.21996-5-mail@tk154.de>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607134943.21996-1-mail@tk154.de>
-References: <20260607134943.21996-1-mail@tk154.de>
+	by mail.common-net.org (Postfix) with ESMTPSA id AE0FA6D20B88;
+	Sun,  7 Jun 2026 16:01:19 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=common-net.org;
+	s=mail; t=1780840880;
+	bh=7IIMnHWhVf+twJaSVJxFuCA1jrlaS+iWejGB0SPwmUI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=t/HU8RzL4/U+SOIbtwUDTdZ1tq6YpQE+B8fu/n6ihwN5scNcji7geBeqComDRMyI+
+	 kfU0amV1PGzXCJtIFhguAYQNjEo0zr03dOqkwjgKlLrg2454pF3vpWQGohnSuJaFDO
+	 mV/bXt7sgJHOQbsu2XxAZTsFO0PZ/y5iExEvod5M=
+Date: Sun, 7 Jun 2026 16:01:19 +0200
+From: Andrea Mayer <andrea@common-net.org>
+To: Yuya Kusakabe <yuya.kusakabe@gmail.com>
+Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, David Ahern <dsahern@kernel.org>, Jakub Kicinski
+ <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+ <horms@kernel.org>, Justin Iurman <justin.iurman@gmail.com>, Shuah Khan
+ <shuah@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Shuah Khan
+ <skhan@linuxfoundation.org>, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-doc@vger.kernel.org, stefano.salsano@uniroma2.it, ahabdels@cisco.com,
+ Andrea Mayer <andrea.mayer@uniroma2.it>, andrea@common-net.org
+Subject: Re: [PATCH v2 5/7] seg6: add End.M.GTP6.D.Di behavior
+Message-Id: <20260607160119.ed2022e8a358d700e1134318@common-net.org>
+In-Reply-To: <20260505-seg6-mobile-v2-5-9e8022bdfdb6@gmail.com>
+References: <20260505-seg6-mobile-v2-0-9e8022bdfdb6@gmail.com>
+	<20260505-seg6-mobile-v2-5-9e8022bdfdb6@gmail.com>
+Organization: Common Net
+X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-UID: a84e83
-X-Rspamd-UID: 07283a
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-When an XDP program uses bpf_xdp_adjust_head() or bpf_xdp_adjust_tail()
-and then returns XDP_PASS, mvpp2 still builds the skb from fixed offsets
-derived from the original RX descriptor. Packet geometry changes made by
-the XDP program are therefore discarded before the skb reaches the stack.
+On Tue, 05 May 2026 01:30:15 +0900
+Yuya Kusakabe <yuya.kusakabe@gmail.com> wrote:
 
-Update rx_offset and rx_bytes from xdp.data and xdp.data_end for
-XDP_PASS. This makes skb_reserve() and skb_put() reflect the packet seen
-by XDP, and makes RX byte accounting for XDP_PASS follow the length of the
-skb passed to the network stack.
+Hi Yuya,
 
-Keep a separate rx_sync_size for page-pool recycling on skb allocation
-failure, which must stay tied to the received buffer range.
+I do not repeat below the points from the cover letter thread and patch
+1-4 replies (drop reasons, OIF/VRF removal, C helper, coding style, etc.).
 
-Non-PASS verdicts continue to account the descriptor length because no skb
-is passed up in those cases.
+The patch 4 review applies here, except for the parts where Section 6.4 is
+implemented instead of Section 6.3 (which is incorrectly implemented in
+patch 4).
 
-Fixes: 07dd0a7aae7f ("mvpp2: add basic XDP support")
-Signed-off-by: Til Kaiser <mail@tk154.de>
----
- .../net/ethernet/marvell/mvpp2/mvpp2_main.c   | 21 +++++++++++++------
- 1 file changed, 15 insertions(+), 6 deletions(-)
+> Add the End.M.GTP6.D.Di drop-in mode variant of End.M.GTP6.D
+> (RFC 9433 Section 6.4).  Unlike End.M.GTP6.D, the drop-in variant
+> does NOT fold the GTP-U identifiers into Args.Mob.Session: the
+> original outer IPv6 destination is preserved at SRH[0] of the new
+> SRH, so the destination side can keep the original address
+> untouched while still benefiting from SR Policy steering.
+>
+> The augmented SRH builder/destroyer is shared with End.M.GTP6.D.
+> The TEID and QFI parsed out of the inbound GTP-U header are
+> intentionally discarded for this variant (matching RFC 9433
+> Section 6.4).
+>
+> When net.netfilter.nf_hooks_lwtunnel=1, the inner T-PDU traverses
+> NF_INET_PRE_ROUTING between the GTP-U strip and the SRv6 push,
+> mirroring End.DX4 / End.DX6.
+>
+> Non-T-PDU GTP-U messages are forwarded the same way as in
+> End.M.GTP6.D: passed through via the lwtunnel's saved orig_input
+> to a downstream peer that owns the GTP-U control plane.
+>
+> Configuration:
+>
+>   ip -6 route add 2001:db8:f::/64 \
+>       encap seg6local action End.M.GTP6.D.Di \
+>           srh segs 2001:db8:2::e,2001:db8:3::e \
+>           src 2001:db8:2::1 \
+>       dev <dev>
+>
+> Link: https://www.rfc-editor.org/rfc/rfc9433.html#section-6.4
+> Signed-off-by: Yuya Kusakabe <yuya.kusakabe@gmail.com>
+> ---
+>  include/uapi/linux/seg6_local.h                    |   2 +
+>  net/ipv6/seg6_local.c                              | 222 +++++++++++
+>  tools/testing/selftests/net/Makefile               |   1 +
+>  .../selftests/net/srv6_end_m_gtp6_d_di_test.sh     | 427 +++++++++++++++++++++
+>  4 files changed, 652 insertions(+)
+>
+> diff --git a/include/uapi/linux/seg6_local.h b/include/uapi/linux/seg6_local.h
+> index 7d3d3d245b47..326da65ad5aa 100644
+> --- a/include/uapi/linux/seg6_local.h
+> +++ b/include/uapi/linux/seg6_local.h
+> @@ -80,6 +80,8 @@ enum {
+>  	SEG6_LOCAL_ACTION_END_M_GTP6_E	= 19,
+>  	/* IPv6/GTP-U decap into SRv6 (RFC 9433 Section 6.3) */
+>  	SEG6_LOCAL_ACTION_END_M_GTP6_D	= 20,
+> +	/* IPv6/GTP-U decap into SRv6, drop-in mode (RFC 9433 Section 6.4) */
+> +	SEG6_LOCAL_ACTION_END_M_GTP6_D_DI = 21,
+>
+>  	__SEG6_LOCAL_ACTION_MAX,
+>  };
+> diff --git a/net/ipv6/seg6_local.c b/net/ipv6/seg6_local.c
+> index 09e912e17df8..a6cd57ebcbde 100644
+> --- a/net/ipv6/seg6_local.c
+> +++ b/net/ipv6/seg6_local.c
 
-diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-index 481daafdc1cb..ccc24a1301f2 100644
---- a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-+++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-@@ -3917,10 +3917,10 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
- 		struct mvpp2_bm_pool *bm_pool;
- 		struct page_pool *pp = NULL;
- 		struct sk_buff *skb;
--		unsigned int frag_size;
-+		unsigned int frag_size, rx_sync_size;
- 		dma_addr_t dma_addr;
- 		phys_addr_t phys_addr;
--		int pool, rx_bytes, err, ret;
-+		int pool, rx_bytes, rx_offset, err, ret;
- 		struct page *page;
- 		void *data;
- 
-@@ -3933,6 +3933,8 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
- 		rx_status = mvpp2_rxdesc_status_get(port, rx_desc);
- 		rx_bytes = mvpp2_rxdesc_size_get(port, rx_desc);
- 		rx_bytes -= MVPP2_MH_SIZE;
-+		rx_sync_size = rx_bytes + MVPP2_MH_SIZE;
-+		rx_offset = MVPP2_MH_SIZE + MVPP2_SKB_HEADROOM;
- 		dma_addr = mvpp2_rxdesc_dma_addr_get(port, rx_desc);
- 
- 		pool = (rx_status & MVPP2_RXD_BM_POOL_ID_MASK) >>
-@@ -3948,7 +3950,7 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
- 
- 		dma_sync_single_range_for_cpu(dev->dev.parent, dma_addr,
- 					      MVPP2_SKB_HEADROOM,
--					      rx_bytes + MVPP2_MH_SIZE,
-+					      rx_sync_size,
- 					      dma_dir);
- 
- 		/* Buffer header not supported */
-@@ -3999,6 +4001,14 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
- 				continue;
- 			}
- 
-+			rx_sync_size = max_t(unsigned int, rx_sync_size,
-+					     xdp.data_end - xdp.data_hard_start -
-+					     MVPP2_SKB_HEADROOM);
-+
-+			/* Update offset and length to reflect any XDP adjustments. */
-+			rx_offset = xdp.data     - data;
-+			rx_bytes  = xdp.data_end - xdp.data;
-+
- 			metasize = xdp.data - xdp.data_meta;
- 		}
- 
-@@ -4010,8 +4020,7 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
- 			netdev_warn(port->dev, "skb build failed\n");
- 			if (pp) {
- 				page_pool_put_page(pp, virt_to_head_page(data),
--						   rx_bytes + MVPP2_MH_SIZE,
--						   true);
-+						   rx_sync_size, true);
- 			} else {
- 				dma_unmap_single_attrs(dev->dev.parent, dma_addr,
- 						       bm_pool->buf_size,
-@@ -4041,7 +4050,7 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
- 		ps.rx_packets++;
- 		ps.rx_bytes += rx_bytes;
- 
--		skb_reserve(skb, MVPP2_MH_SIZE + MVPP2_SKB_HEADROOM);
-+		skb_reserve(skb, rx_offset);
- 		skb_put(skb, rx_bytes);
- 		if (metasize)
- 			skb_metadata_set(skb, metasize);
--- 
-2.54.0
+> + [snip]
 
+input_action_end_m_gtp6_d_di() and its finish callback are largely
+identical to the patch 4 functions (input_action_end_m_gtp6_d() and its
+finish): the SRH check, GTP-U dispatch, outer strip, inner protocol
+detection, and NF_HOOK invocation are identical. The duplication should be
+reduced via shared helpers.
+
+> +static int input_action_end_m_gtp6_d_di(struct sk_buff *skb,
+> +					struct seg6_local_lwt *slwt)
+> +{
+
+> + [snip]
+
+> +		gtp_hdrlen = seg6_mobile_parse_gtpu(skb,
+> +						    upper_off + sizeof(*uh),
+> +						    &teid, &qfi);
+> +		if (gtp_hdrlen == -EOPNOTSUPP)
+> +			return seg6_mobile_passthrough_non_tpdu(skb);
+> +		if (gtp_hdrlen < 0) {
+> +			reason = SKB_DROP_REASON_SEG6_MOBILE_BAD_GTPU;
+> +			goto drop;
+> +		}
+> +		(void)teid;
+> +		(void)qfi;
+
+D.Di does not use teid or qfi, so these variables and the (void) casts are
+dead code and should be avoided. For example, seg6_mobile_parse_gtpu() could
+accept NULL for teid and qfi so callers that do not need them can pass NULL
+directly.
+
+Thanks,
+
+Ciao,
+Andrea
+
+P.S. I am temporarily writing from another address due to a mail
+delivery issue at my @uniroma2.it address. Please always Cc my default
+andrea.mayer@uniroma2.it address on replies.
