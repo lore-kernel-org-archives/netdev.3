@@ -1,189 +1,206 @@
-Received: from mail-244122.protonmail.ch (mail-244122.protonmail.ch [109.224.244.122])
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B77D32356BE
-	for <netdev@vger.kernel.org>; Sun,  7 Jun 2026 09:48:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.122
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B2622EA749;
+	Sun,  7 Jun 2026 09:50:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780825721; cv=none; b=l+Qt8gD/8M84uO0gdXqRtpLtlvESQ+kJyVOm+uI0J5eQrfzHGkS0ApK4H33XhcsY9oyPiN86vueR73PtYWKV9kKivEjDsV1/xD6B2m1zuWzsUx/iThFHONepy2pGcvjbhy8qhl2IwlVqMf9jhPSMbeCclziOr6h294EpAD7z6ak=
+	t=1780825803; cv=none; b=eVgWcZiTnQDcuUeIu2sU2ZMIQVZay/mleEpGOwf659wVN82omu3lnqmIlJCH3h5yH0CPqB7B+feSoRfiOcKorsieyv8hHWAhn7SpHVH+FnC8XdCy9PP+Dd7IM9F/VaoDwvFGOH7u/e05GFrbzHVD4iD9hUWJryMmhIbFs92+0RA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780825721; c=relaxed/simple;
-	bh=1rNxc1UaHTRXu5r2v0ow8mgrPehoHCYlRVkX/lQ2tCY=;
-	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=s1RPHK/Zx+dvpsm0drxUciEVtkwwWT8bIc5+7sy7uOiMKSNrvCdda3dPT+r1JA/0S0Aw0viV7k+EYkT4aESasNCAfOVFOmO8g02IQ9jeNgCFoWF7TSl0djbTwhS/6tTXBQWNIyj5vrevr0HY6/IUJqQ1g2rCpKd5x9FJ7m394Vo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=GZDkZ9L5; arc=none smtp.client-ip=109.224.244.122
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1780825803; c=relaxed/simple;
+	bh=rJ7eETTzifsaXgtHdZ7aVsiEUvTTjl/OQRlBUx2AgYI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=W5JQD8VlWDISPDkBPf4PzEeIefp1PpAAdBs7KlRosAcmR6BxtW2RtCuwNSaIvORJb7NbI6j4WERPrHGZyUCs+FYK97cpnBkXctErK1JNoDTTV5DjAEi/7lnAMY8g2sU0jirBlhJw+CJCV31juGEeWldjRl0sFazoyRCSjKemWDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=IlogekaJ; arc=none smtp.client-ip=217.70.190.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="GZDkZ9L5"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1780825713; x=1781084913;
-	bh=vQSZRMpoGuLhm10iyqcc9wChC3iOe39cE9LVFeXeHg4=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=GZDkZ9L5PYFKW97IaLe1KAMMkntmVvjsYUoRDA8qAwH51QrHlFM2lHZt0IBOe2EA+
-	 M3pshDse/KEn4MXrFrbmluOYx60RYJxvO8/cP4Y7o+fvaKUph92tUMsOkndIUM3RQo
-	 UWaGW4yAUEXReYVlPqfzzk2QlQItxCBzWRtk2KzCXiDU17EVnv1mx/kj1B1rzJkX3W
-	 Z0OpLrJr+5jp4ofTjt6KuMXHhot6L+EFdZ2KtVnKsZ/21HGVpPZbFgXop87c9w/qaW
-	 VvCMkl+SSqVwcnydLYeO3KY5gl4BinX8SIZDykNQxCePOYOxpQt/EdGIf94YL4YuDX
-	 hZ72/2Fl06K1A==
-Date: Sun, 07 Jun 2026 09:48:26 +0000
-To: David Heidelberg <david+nfc@ixit.cz>
-From: Bryam Vargas <hexlabsecurity@proton.me>
-Cc: oe-linux-nfc@lists.linux.dev, netdev@vger.kernel.org, stable@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] nfc: nci: add data_len bound checks to activation parameter extractors
-Message-ID: <20260607094822.322125-1-hexlabsecurity@proton.me>
-Feedback-ID: 199661219:user:proton
-X-Pm-Message-ID: ee73fa13d558072a404361bd75a1ace81025cebc
+	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="IlogekaJ"
+Received: from localhost.localdomain (mail-agni [217.70.190.124])
+	by mail.netfilter.org (Postfix) with ESMTPSA id 056DB6017D;
+	Sun,  7 Jun 2026 11:49:58 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
+	s=2025; t=1780825799;
+	bh=Zx8NOYTyLWz4MZPw2rSfn+u9IpYmGSzWjRHYcGFzBCg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=IlogekaJh1nesqZXg3estCX5X01MCk9NxDx4R7foPPi5/x3qLS+0Tn6fSkkbXmpS3
+	 iIB+wFRrow+wjghZHh6Tpj9EuPxYHXWlSuHBLaoBgl2K0WYg4RSyDAe1nPd96dxCoV
+	 t31FGkz2HyFppkTE9LEoYzSOTNxWaDCdovIsyM20CgeMeTnJK9Dst64U7295GEr0wY
+	 fS96UVfMWhvOjYmthU2Sb057lwGlScOcvXpxq1/JRt/MtCBEXQFEr1rRiTLYA74CEe
+	 rsU4j6HFJ3p8vEiEZItZRnlEk7Bfly1KM8G7oqhynMgmuM8T5Jil2841oUqvz7I88Y
+	 X0KkAzSrIhc2g==
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: netfilter-devel@vger.kernel.org
+Cc: davem@davemloft.net,
+	netdev@vger.kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	fw@strlen.de,
+	horms@kernel.org
+Subject: [PATCH net-next 00/15] Netfilter/IPVS updates for net-next
+Date: Sun,  7 Jun 2026 11:49:39 +0200
+Message-ID: <20260607094954.48892-1-pablo@netfilter.org>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-nci_extract_activation_params_iso_dep() and
-nci_extract_activation_params_nfc_dep() read an inner length byte from
-the NCI RF_INTF_ACTIVATED_NTF payload and use it to memcpy() into fixed
-kernel buffers, but neither function receives the caller-validated
-activation_params_len.  A crafted NCI notification with
-activation_params_len=3D1 and an inner length byte of up to 20 (NFC-A) or
-50 (NFC-B) causes memcpy() to read that many bytes past the one valid
-byte in the activation params region -- a slab out-of-bounds read of
-kernel memory adjacent to the NCI skb.
+Hi,
 
-The sibling nci_extract_rf_params_*() family was given equivalent
-protection by commit 571dcbeb8e63 ("net: nfc: nci: Fix parameter
-validation for packet data"), but the two activation parameter
-extractors were not updated at that time.
+The following patchset contains Netfilter/IPVS updates for net-next,
+this contains updates to address sashiko reports in IPVS and Netfilter
+on possible pre-existing issues. This also includes a series to add
+refcount for ct helper and timeout to deal with a corner case scenario
+with unconfirmed conntracks flying to nfqueue.
 
-Add a data_len parameter to both functions, guard against an empty
-region before consuming the inner length byte, decrement the remaining
-count after consuming it, and clamp the copy length to what is actually
-available.  Update both call sites to pass ntf.activation_params_len,
-which is already validated against the skb at ntf.c:801.
+1) Add a conn_max sysctl to IPVS to limit the maximum number of
+   connections, from Julian Anastasov.
 
-Fixes: e8c0dacd9836 ("NFC: Update names and structs to NCI spec 1.0 d18")
-Signed-off-by: Bryam Vargas <hexlabsecurity@proton.me>
----
-Verification (NFC-A ISO-DEP, NFC_ATS_MAXSIZE =3D 20):
+2) Use get_unaligned_be16() to access TCP MSS in nfnetlink_osf,
+   from Fernando Fernandez Mancera.
 
-  data_len  inner_len  without patch              with patch
-  --------  ---------  -------------------------  --------------------
-  1         0          rats_res_len=3D0, clean       same
-  1         1          memcpy +1B OOB              clamped to 0, clean
-  1         20         memcpy +20B OOB  <-- PoC   clamped to 0, clean
-  2         2          memcpy +1B OOB              clamped to 1, clean
-  21        20         memcpy 20B clean            same
+3) Use {READ,WRITE}_ONCE to access helper flags from nfnetlink_helper.
 
-NFC-B (attrib_res, max 50) and NFC-DEP poll/listen (atr_res/atr_req,
-max 62) have the same shape and receive the same fix.
+Several patches for the synproxy infrastructure, from Fernando
+Fernandez Mancera:
 
- net/nfc/nci/ntf.c | 26 ++++++++++++++++++++++----
- 1 file changed, 22 insertions(+), 4 deletions(-)
+4) Drop packet if TCP timestamp adjustment fails.
 
-diff --git a/net/nfc/nci/ntf.c b/net/nfc/nci/ntf.c
-index c96512bb8653..753f4cf08748 100644
---- a/net/nfc/nci/ntf.c
-+++ b/net/nfc/nci/ntf.c
-@@ -525,15 +525,19 @@ static int nci_rf_discover_ntf_packet(struct nci_dev =
-*ndev,
-=20
- static int nci_extract_activation_params_iso_dep(struct nci_dev *ndev,
- =09=09=09=09=09=09 struct nci_rf_intf_activated_ntf *ntf,
--=09=09=09=09=09=09 const __u8 *data)
-+=09=09=09=09=09=09 const __u8 *data, __u8 data_len)
- {
- =09struct activation_params_nfca_poll_iso_dep *nfca_poll;
- =09struct activation_params_nfcb_poll_iso_dep *nfcb_poll;
-=20
- =09switch (ntf->activation_rf_tech_and_mode) {
- =09case NCI_NFC_A_PASSIVE_POLL_MODE:
-+=09=09if (data_len < 1)
-+=09=09=09return -EINVAL;
- =09=09nfca_poll =3D &ntf->activation_params.nfca_poll_iso_dep;
- =09=09nfca_poll->rats_res_len =3D min_t(__u8, *data++, NFC_ATS_MAXSIZE);
-+=09=09data_len--;
-+=09=09nfca_poll->rats_res_len =3D min_t(__u8, nfca_poll->rats_res_len, dat=
-a_len);
- =09=09pr_debug("rats_res_len %d\n", nfca_poll->rats_res_len);
- =09=09if (nfca_poll->rats_res_len > 0) {
- =09=09=09memcpy(nfca_poll->rats_res,
-@@ -542,8 +546,12 @@ static int nci_extract_activation_params_iso_dep(struc=
-t nci_dev *ndev,
- =09=09break;
-=20
- =09case NCI_NFC_B_PASSIVE_POLL_MODE:
-+=09=09if (data_len < 1)
-+=09=09=09return -EINVAL;
- =09=09nfcb_poll =3D &ntf->activation_params.nfcb_poll_iso_dep;
- =09=09nfcb_poll->attrib_res_len =3D min_t(__u8, *data++, 50);
-+=09=09data_len--;
-+=09=09nfcb_poll->attrib_res_len =3D min_t(__u8, nfcb_poll->attrib_res_len,=
- data_len);
- =09=09pr_debug("attrib_res_len %d\n", nfcb_poll->attrib_res_len);
- =09=09if (nfcb_poll->attrib_res_len > 0) {
- =09=09=09memcpy(nfcb_poll->attrib_res,
-@@ -562,7 +570,7 @@ static int nci_extract_activation_params_iso_dep(struct=
- nci_dev *ndev,
-=20
- static int nci_extract_activation_params_nfc_dep(struct nci_dev *ndev,
- =09=09=09=09=09=09 struct nci_rf_intf_activated_ntf *ntf,
--=09=09=09=09=09=09 const __u8 *data)
-+=09=09=09=09=09=09 const __u8 *data, __u8 data_len)
- {
- =09struct activation_params_poll_nfc_dep *poll;
- =09struct activation_params_listen_nfc_dep *listen;
-@@ -570,9 +578,13 @@ static int nci_extract_activation_params_nfc_dep(struc=
-t nci_dev *ndev,
- =09switch (ntf->activation_rf_tech_and_mode) {
- =09case NCI_NFC_A_PASSIVE_POLL_MODE:
- =09case NCI_NFC_F_PASSIVE_POLL_MODE:
-+=09=09if (data_len < 1)
-+=09=09=09return -EINVAL;
- =09=09poll =3D &ntf->activation_params.poll_nfc_dep;
- =09=09poll->atr_res_len =3D min_t(__u8, *data++,
- =09=09=09=09=09  NFC_ATR_RES_MAXSIZE - 2);
-+=09=09data_len--;
-+=09=09poll->atr_res_len =3D min_t(__u8, poll->atr_res_len, data_len);
- =09=09pr_debug("atr_res_len %d\n", poll->atr_res_len);
- =09=09if (poll->atr_res_len > 0)
- =09=09=09memcpy(poll->atr_res, data, poll->atr_res_len);
-@@ -580,9 +592,13 @@ static int nci_extract_activation_params_nfc_dep(struc=
-t nci_dev *ndev,
-=20
- =09case NCI_NFC_A_PASSIVE_LISTEN_MODE:
- =09case NCI_NFC_F_PASSIVE_LISTEN_MODE:
-+=09=09if (data_len < 1)
-+=09=09=09return -EINVAL;
- =09=09listen =3D &ntf->activation_params.listen_nfc_dep;
- =09=09listen->atr_req_len =3D min_t(__u8, *data++,
- =09=09=09=09=09    NFC_ATR_REQ_MAXSIZE - 2);
-+=09=09data_len--;
-+=09=09listen->atr_req_len =3D min_t(__u8, listen->atr_req_len, data_len);
- =09=09pr_debug("atr_req_len %d\n", listen->atr_req_len);
- =09=09if (listen->atr_req_len > 0)
- =09=09=09memcpy(listen->atr_req, data, listen->atr_req_len);
-@@ -806,12 +822,14 @@ static int nci_rf_intf_activated_ntf_packet(struct nc=
-i_dev *ndev,
- =09=09switch (ntf.rf_interface) {
- =09=09case NCI_RF_INTERFACE_ISO_DEP:
- =09=09=09err =3D nci_extract_activation_params_iso_dep(ndev,
--=09=09=09=09=09=09=09=09    &ntf, data);
-+=09=09=09=09=09=09=09=09    &ntf, data,
-+=09=09=09=09=09=09=09=09    ntf.activation_params_len);
- =09=09=09break;
-=20
- =09=09case NCI_RF_INTERFACE_NFC_DEP:
- =09=09=09err =3D nci_extract_activation_params_nfc_dep(ndev,
--=09=09=09=09=09=09=09=09    &ntf, data);
-+=09=09=09=09=09=09=09=09    &ntf, data,
-+=09=09=09=09=09=09=09=09    ntf.activation_params_len);
- =09=09=09break;
-=20
- =09=09case NCI_RF_INTERFACE_FRAME:
---=20
-2.43.0
+5) Continue parsing of TCP timestamp to deal with possible duplicates.
 
+6) Use {get,put}_unaligned_be32() to acess the TCP timestamp.
 
+7) Hold ct->lock to initialize nf_ct_seqadj_init().
+
+Updates for the ct timeout infrastructure, to deal with a corner case
+for unconfirmed conntracks flying to nfqueue:
+
+8) Add a refcount to track ct timeout policy use by ct extension,
+   release the timeout until the last ct extension drops the refcnt
+   on it.
+
+Similar update for the ct helper infrastructure:
+
+9) Dynamic allocation of ct helpers, as a preparation for adding
+   refcount to track ct extension use.
+
+10) Move destroy_sibling_or_exp() to nf_conntrack_proto_gre, so
+    pptp conntrack helper module removal does not make this code
+    unreachable via the helper->destroy callback. This is another
+    dependency for the new refcount coming in this series.
+
+11) Add a refcount to track use of it from the ct extension, then
+    ct helper and timeout is reachable to the connection until
+    it goes away.
+
+12) Remove the genid infrastructure in ct extensions. The primary
+    goal was to detect that a ct extension such as ct timeout and
+    ct helper went stale for unconfirmed conntrack, either because
+    object or module was removed. This deactivates all ct extensions
+    though for this unconfirmed conntrack.
+
+13) Call nf_ct_gre_keymap_destroy() if this is a master conntrack
+    with a pptp helper only.
+
+sashiko.dev reports one more relevant issue when unsetting the helper
+via ctnetlink that I will address in a follow up patch.
+
+Then, two more assorted updates:
+
+14) Avoid a unlikely underflow in bridge VLAN untag, only possible
+    if buggy bridge VLAN filtering is buggy, remove WARN_ON_ONCE
+    while at it. From David Carlier.
+
+15) Use get_unaligned_be32() in nf_conntrack_tcp to access sack
+    extension, from Rosen Penev.
+
+Please, pull these changes from:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/netfilter/nf-next.git nf-next-26-06-07
+
+Thanks.
+
+----------------------------------------------------------------
+
+The following changes since commit bfa3d89cc15c09f7d1581c834a5ed725189ec19f:
+
+  Merge tag 'batadv-next-pullrequest-20260603' of https://git.open-mesh.org/batadv (2026-06-04 19:14:35 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/netfilter/nf-next.git tags/nf-next-26-06-07
+
+for you to fetch changes up to d3bf9eae486490832bd08fd62ab0ac601f346bd4:
+
+  netfilter: nf_conntrack: use get_unaligned_be32() in tcp_sack() (2026-06-07 11:13:47 +0200)
+
+----------------------------------------------------------------
+netfilter pull request 26-06-07
+
+----------------------------------------------------------------
+David Carlier (1):
+      netfilter: flowtable: avoid num_encaps underflow on bridge VLAN untag
+
+Fernando Fernandez Mancera (5):
+      netfilter: nfnetlink_osf: fix mss parsing on big-endian architectures
+      netfilter: synproxy: drop packets if timestamp adjustment fails
+      netfilter: synproxy: adjust duplicate timestamp options
+      netfilter: synproxy: fix unaligned memory access in timestamp adjustment
+      netfilter: synproxy: protect nf_ct_seqadj_init() with conntrack lock
+
+Julian Anastasov (1):
+      ipvs: add conn_max sysctl to limit connections
+
+Pablo Neira Ayuso (7):
+      netfilter: nfnetlink_cthelper: use {READ,WRITE}_ONCE for accessing helper flags
+      netfilter: cttimeout: detach dataplane timeout policy and repurpose refcount
+      netfilter: nf_conntrack_helper: dynamically allocate struct nf_conntrack_helper
+      netfilter: nf_conntrack_pptp: move GRE specific cleanup to GRE tracker
+      netfilter: nf_conntrack_helper: add refcounting from datapath
+      netfilter: conntrack: revert ct extension genid infrastructure
+      netfilter: conntrack: call nf_ct_gre_keymap_destroy() if master helper is pptp
+
+Rosen Penev (1):
+      netfilter: nf_conntrack: use get_unaligned_be32() in tcp_sack()
+
+ Documentation/networking/ipvs-sysctl.rst       |  35 +++++++
+ include/net/ip_vs.h                            |  22 +++++
+ include/net/netfilter/ipv4/nf_conntrack_ipv4.h |   4 +
+ include/net/netfilter/nf_conntrack_extend.h    |  12 ---
+ include/net/netfilter/nf_conntrack_helper.h    |  42 ++++++---
+ include/net/netfilter/nf_conntrack_timeout.h   |  27 +++++-
+ net/ipv4/netfilter/nf_nat_snmp_basic_main.c    |  27 +++---
+ net/netfilter/ipvs/ip_vs_conn.c                |  10 +-
+ net/netfilter/ipvs/ip_vs_ctl.c                 |  53 +++++++++++
+ net/netfilter/nf_conntrack_amanda.c            |  39 +++-----
+ net/netfilter/nf_conntrack_core.c              |  92 +++++-------------
+ net/netfilter/nf_conntrack_extend.c            |  32 +------
+ net/netfilter/nf_conntrack_ftp.c               |   5 +-
+ net/netfilter/nf_conntrack_h323_main.c         | 107 +++++++++------------
+ net/netfilter/nf_conntrack_helper.c            | 125 +++++++++++++++++--------
+ net/netfilter/nf_conntrack_irc.c               |   5 +-
+ net/netfilter/nf_conntrack_netbios_ns.c        |  20 ++--
+ net/netfilter/nf_conntrack_netlink.c           |  28 ++++--
+ net/netfilter/nf_conntrack_ovs.c               |   9 +-
+ net/netfilter/nf_conntrack_pptp.c              |  83 +++-------------
+ net/netfilter/nf_conntrack_proto.c             |  15 ++-
+ net/netfilter/nf_conntrack_proto_gre.c         |  61 ++++++++++++
+ net/netfilter/nf_conntrack_proto_tcp.c         |  10 +-
+ net/netfilter/nf_conntrack_sane.c              |   5 +-
+ net/netfilter/nf_conntrack_seqadj.c            |   2 +
+ net/netfilter/nf_conntrack_sip.c               |   5 +-
+ net/netfilter/nf_conntrack_snmp.c              |  21 ++---
+ net/netfilter/nf_conntrack_tftp.c              |   5 +-
+ net/netfilter/nf_conntrack_timeout.c           |  27 +++++-
+ net/netfilter/nf_flow_table_path.c             |   3 +-
+ net/netfilter/nf_synproxy_core.c               |  40 ++++----
+ net/netfilter/nfnetlink_cthelper.c             |  79 ++++++++--------
+ net/netfilter/nfnetlink_cttimeout.c            | 112 ++++++++++------------
+ net/netfilter/nfnetlink_osf.c                  |   6 +-
+ net/netfilter/nft_ct.c                         |  10 +-
+ net/netfilter/xt_CT.c                          |   3 -
+ 36 files changed, 653 insertions(+), 528 deletions(-)
