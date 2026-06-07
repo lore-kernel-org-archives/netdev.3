@@ -1,149 +1,61 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 525F22E2DDD
-	for <netdev@vger.kernel.org>; Sun,  7 Jun 2026 06:57:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7BCD18FC80
+	for <netdev@vger.kernel.org>; Sun,  7 Jun 2026 07:02:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780815456; cv=none; b=ISDstMtiJ4zNPgKy0E7adMqCjmuK3ilztbDpip50k/IxieGslRPHmcrQtv2TtkQaowHVtrH1Q7KR5uEoQAJ0KeZcICqErUdFhFrcazshi2cq4QR6RpJ6LqWzcay6v6hfYB2t+cEWtFgAZXbEWn6GDFtcAjaYDZLI5Yw+Mil6UxI=
+	t=1780815737; cv=none; b=OJ6TCNZZ47GWWTSkWWxVbb8MDR/lTedXVKBQ33piqjUj2MhvOG2i9cJHM484z7RLFuEpqhBYIFXOzqCt55eABxjwXoZdvyw7ZoB+bPH3d4uSKn3DoVEmpFaxt+53QQ8Sb/b01o4x9UAQP4xUSFbCwfPjvuHPmjbUo3MqAm9udSY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780815456; c=relaxed/simple;
-	bh=k4s5ik3Ik/k9mGVrRyeyGmxznXJENirRCrol/4UY0ho=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tBup/7iZERt3Hl+B0PEs23FQbcTqDH7g3cpOfDxOskes0BSgkSR2Q64/o3zfodTRJWh/rRNw7Jzs2SensxscSV/aXUwvIyPQCmDImVgbVNn3kPBwNAIhI5vAwsRiaP3tF2coFIqWgT47iCOIysh8DgVoCosUI1KSBdsC0LdU8pA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=EVfWTAeF; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=KP1RhKdK; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=EVfWTAeF; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=KP1RhKdK; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1780815737; c=relaxed/simple;
+	bh=HXcVk+J/jC94lJ4r/0go5TopyLFmG8Dt8FnFs9J7yDc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IXKV1XUYXCTbJega1L06NR2sSKODyKfvrVFRXdstnuFLhx93yVFpkDRxK8fC7ZbbRiu5urUrEdrDp+TycG81WH3Qk+I2Uy4c4rIApZUFwOsOEE7tBGyJcfziqqgloipjWaUmcWH4z4X/ooeFuOWHyQjXkUSRp9LKf+uc0DZJXqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=aoGvoJc4; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="EVfWTAeF";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="KP1RhKdK";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="EVfWTAeF";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="KP1RhKdK"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id A500D68927;
-	Sun,  7 Jun 2026 06:57:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1780815448; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BchahcDOuuwAPY3fjv6S/QxPtUMFkdq+WOrryYwXpOg=;
-	b=EVfWTAeF02w53DEn5KrPkUBbNJduPuYQMcu+qFnUX69AoPCo7LMae32yt9lb/jA1ZiH014
-	LSLMbarBVULpOh+cu9D9XlT0t6ansFeZP97s5xMY88DYvZEMxihX+3AliOElpoK+WgThs0
-	hbKv7dNuhemzUN7NZKz5WeLLacbVxbU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1780815448;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BchahcDOuuwAPY3fjv6S/QxPtUMFkdq+WOrryYwXpOg=;
-	b=KP1RhKdKfwSjwR70XGRM7fX68UBppJalYrHYiR7GK35NQMR0xRXxwDMNxIfzmHdeF1SrMi
-	oscAhLOfitpqZzCw==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1780815448; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BchahcDOuuwAPY3fjv6S/QxPtUMFkdq+WOrryYwXpOg=;
-	b=EVfWTAeF02w53DEn5KrPkUBbNJduPuYQMcu+qFnUX69AoPCo7LMae32yt9lb/jA1ZiH014
-	LSLMbarBVULpOh+cu9D9XlT0t6ansFeZP97s5xMY88DYvZEMxihX+3AliOElpoK+WgThs0
-	hbKv7dNuhemzUN7NZKz5WeLLacbVxbU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1780815448;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BchahcDOuuwAPY3fjv6S/QxPtUMFkdq+WOrryYwXpOg=;
-	b=KP1RhKdKfwSjwR70XGRM7fX68UBppJalYrHYiR7GK35NQMR0xRXxwDMNxIfzmHdeF1SrMi
-	oscAhLOfitpqZzCw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 36FBD779A7;
-	Sun,  7 Jun 2026 06:57:28 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id mKGYClgWJWoLIgAAD6G6ig
-	(envelope-from <fmancera@suse.de>); Sun, 07 Jun 2026 06:57:28 +0000
-From: Fernando Fernandez Mancera <fmancera@suse.de>
-To: netdev@vger.kernel.org
-Cc: dsahern@kernel.org,
-	stephen@networkplumber.org,
-	davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	Fernando Fernandez Mancera <fmancera@suse.de>
-Subject: [PATCH 2/2 iproute2-next] iplink: set NLA_F_NESTED for IPv4 devconf attributes
-Date: Sun,  7 Jun 2026 08:57:15 +0200
-Message-ID: <20260607065715.4573-2-fmancera@suse.de>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260607065715.4573-1-fmancera@suse.de>
-References: <20260607065715.4573-1-fmancera@suse.de>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="aoGvoJc4"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=OzshWX62bv6H2iTVYR0A3I8MxYDmhGZ4N9sOLl3B9Ac=; b=aoGvoJc4XZP196V/2MZ3KhxMzS
+	JSYyi7HgNSKyO8+Z+wopCzzeGHfMlcZYOt25fkEQM8FH7H+tTc5clwpcQOMxIWdcL+v0NPA1VTuPj
+	X/ytJutlxNC3DmgMZpzB6woHMpsKYMfopdE9a8idK+d9WFUGchAWxQ4lJlL1+kZBK61I=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wW7WN-006RO9-B5; Sun, 07 Jun 2026 09:02:11 +0200
+Date: Sun, 7 Jun 2026 09:02:11 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Potnuri Bharat Teja <bharat@chelsio.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
+	edumazet@google.com, pabeni@redhat.com, andrew+netdev@lunn.ch
+Subject: Re: [PATCH net-next v1 01/10] cxgb4: Add T7 register definitions and
+ core structures
+Message-ID: <e45bc138-f551-496f-9d86-74a48ccdf90a@lunn.ch>
+References: <20260607035220.528439-1-bharat@chelsio.com>
+ <20260607035220.528439-2-bharat@chelsio.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Flag: NO
-X-Spam-Score: -6.80
-X-Spamd-Result: default: False [-6.80 / 50.00];
-	REPLY(-4.00)[];
-	BAYES_HAM(-3.00)[99.99%];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_MISSING_CHARSET(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_COUNT_TWO(0.00)[2];
-	ARC_NA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:mid];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_TLS_ALL(0.00)[]
-X-Spam-Level: 
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260607035220.528439-2-bharat@chelsio.com>
 
-In order to use set multiple IPv4 devconf parameters at once,
-NLA_F_NESTED flag is required.
+> +/**
+> + * t4_os_lock_init - initialize spinlock
+> + * @lock: the spinlock
+> + */
+> +static inline void t4_os_lock_init(spinlock_t *lock)
+> +{
+> +	spin_lock_init(lock);
+> +}
 
-ip link set dev enp8s0 inet forwarding on proxy_arp off
+What is the point of this wrapper function. It does nothing.
 
-Fixes: fdb064bf64e5 ("iplink: add support for setting IPv4 devconf parameters")
-Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
----
- ip/iplink.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/ip/iplink.c b/ip/iplink.c
-index 9799530f..3f0b46c9 100644
---- a/ip/iplink.c
-+++ b/ip/iplink.c
-@@ -579,7 +579,8 @@ static int iplink_parse_inet(int *argcp, char ***argvp, struct iplink_req *req)
- 
- 	afs = addattr_nest(&req->n, sizeof(*req), IFLA_AF_SPEC);
- 	afinet = addattr_nest(&req->n, sizeof(*req), AF_INET);
--	inet_devconf = addattr_nest(&req->n, sizeof(*req), IFLA_INET_CONF);
-+	inet_devconf = addattr_nest(&req->n, sizeof(*req),
-+				    IFLA_INET_CONF | NLA_F_NESTED);
- 
- 	while (NEXT_ARG_OK()) {
- 		NEXT_ARG();
--- 
-2.54.0
-
+     Andrew
