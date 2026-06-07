@@ -1,137 +1,112 @@
-Received: from mail-pl1-f226.google.com (mail-pl1-f226.google.com [209.85.214.226])
+Received: from sonic314-20.consmr.mail.ne1.yahoo.com (sonic314-20.consmr.mail.ne1.yahoo.com [66.163.189.146])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6A14371890
-	for <netdev@vger.kernel.org>; Sun,  7 Jun 2026 13:18:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.226
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B56472C11E1
+	for <netdev@vger.kernel.org>; Sun,  7 Jun 2026 13:37:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.189.146
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780838298; cv=none; b=U82ReT6sTKRq+Kgd5S84QxjXordE/K9pmGsQsyCnFH3u18tvedKfNrbBcgD3mJ5KYHUlb84Z75RfgI4oxzN3vsHAEZE7hYAQvkMKZg8kjsexitG414m7mUTWoa+KfZEfcyNbVYA0Kl/nZ+twNTusaW17eYjkBGioxSo7y0v34OI=
+	t=1780839469; cv=none; b=d+ao8JtmqsD3mD/1JPKFvkxhYULqFOriI3mtZguk9KpD/QEbnyrkOMxokbYHQgpuKK4oHkLAq/53mLrvSnRxQCRciKIeqz6pwhiPbLlJZfGNu46CMb1E+lAumzWIHL0bXdvpWsCdW8/J+v7FsoaiUVWhoiy2JgFBYRyDho0a3No=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780838298; c=relaxed/simple;
-	bh=JVzHRA0qNe5PmaoL3NcuxTPdLc5I8zz6mVvDQe9+8Ws=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MXjSiwa/sGqm/nQEXEXaugJqnQotPGs/oN0yLx/Q2RBWUIpXQ7Ydaeu1Rk3DNG8r5apR8mJ16CdrlpCXO4QvnHS++V1NWr/lvM0DRCssxkJSZ5ptvlaIJ1bXz7nZLWPoUKBKFZu8UDr3/LqvcM7MzfhFONSt8jiQhyE0x361q/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=TD2h83CY; arc=none smtp.client-ip=209.85.214.226
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	s=arc-20240116; t=1780839469; c=relaxed/simple;
+	bh=TKV/6WCgaMwjYsWYdeQlMDzNzMnptRcV0L6Bk9B2Ypk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=F6QJrP0s1nMUubzXNWefJWZjIWOsjovTPt/bIZAalugXD5hKhLLljhr+WGY+ia8FYIosTBKcCDCfMtWzvYUdxqyCQEghjska1nd9XG85Q0dYxSgXvTkGx+JnHSLrOKe+gjRhnK4GjCH8TiFqkTFXC/WR8J8fsyWYdvGU0T7NojQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=e//npSH6; arc=none smtp.client-ip=66.163.189.146
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="TD2h83CY"
-Received: by mail-pl1-f226.google.com with SMTP id d9443c01a7336-2bf125989f2so24277035ad.3
-        for <netdev@vger.kernel.org>; Sun, 07 Jun 2026 06:18:16 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780838296; x=1781443096;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=yfVUV08jVaZxylIY4Wp2JU/+msgArLD3EBWtB73Ew10=;
-        b=AYoSPfUCmpATprC/JZb1rwknGVv561NE6ZS/faP6RFxcSz4g0yZ1KYzNd1R/ZtetLa
-         2OKO2ZXSIw3pb9nFvePk2UsJgNng+qEL2VJ1RTXl3qWM6Xa6/LL11qAlhWcvOJz13C8F
-         D7f/OwRo2KBMbf8z2+QjlIy6ZjA02F3u49163ZkKCou3Q5MMMf02QhzUDMlmxXqLHz25
-         dryyxaB8dSXGMKwXkvd1b2pSJPIgPYI4nBm1TFrmmPW5KXPVilKXk1sRoKhtJTikvXIy
-         KvHqOSLPDOdeXfLMfw4nf3Ygc+U1fku/t6JrcmnBDwqDlvYX+cr4frq9Wbc0NfCn13II
-         wx+Q==
-X-Forwarded-Encrypted: i=1; AFNElJ+n4OZ3N410G6uyaugNtCKu4IMBePUUzVAUGB6M3Obc1vMRGYUB1ZqE+InYXtUT1jLmU+vPvZA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YynhekBiKlDBUDNWj661OF8bIAL2lrGeNnGYR4wJ5a3Pj6IPS9q
-	q8VDNsGFJK+DxUIHe/CDvKOalkaDyM1jKz2ET3DIIahu9sP73QLYTnlafKuhoHMCFKNOonuvtq4
-	dOeet4ok2w451lGiDrXZdojT2mOyCQl+3D3ATYH5mPpTZVCpNSextxitIA2NO3OWvKpbqKbmTTg
-	0IN23XtDsXNaLyCC1ENTUGzSwtDn2eZt264ufPGEKlbRs7q1fV6a8M/SK9RkX5RhRDYqlKRWgzZ
-	up7AB3Qj2Y=
-X-Gm-Gg: Acq92OFmTzqv/YaQ5Ggs8vsC015oqTGP/CDWLT9WZ/FP2ls2/1D2KsDbeXD2yIRn9Ep
-	kRsZimpsPfWgnzRXjCdHIrosBJAxfdW7zx78MSWCS115neVst2jpwq1k/aDzoeaiml5a96BPq+J
-	lxV/3W6sDgGxtP1YWsheWG2QgDJnboHO75wY4ZDN0MkasItykS8eB1OHmATQubZmmor0Qk/c8tY
-	JRnPxwUvaJkOQqI245el5h4ZzunGTL7Nx/lFvgm2lYIODcRsd5wFTpc3pkG2B7xL6Vy8NjdbrYz
-	nfU9up07CBXyU6/9wGA68AsAC6y9v6/P2unr5dSZpwgx7Hr3IihgiX+5VzAio6BYOGoaERo5Py5
-	7bXUjvfQlzzdKmzSKxQdKlFRfWHKoaJOjzZZOmtOs8T1vCxZHVdcZcaXsHWDBwqe76rps6/PpDB
-	brENjT36daLJEKNC3yVbJhSJXqyCIFoU0pnGnBzFJktIiJWkda8y/DQ5yg5R+l8gxsKstjcQ==
-X-Received: by 2002:a17:902:fc46:b0:2c0:b9a1:6493 with SMTP id d9443c01a7336-2c1e7b082b4mr124710485ad.10.1780838295763;
-        Sun, 07 Jun 2026 06:18:15 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-117.dlp.protect.broadcom.com. [144.49.247.117])
-        by smtp-relay.gmail.com with ESMTPS id d9443c01a7336-2c164f70746sm14333805ad.7.2026.06.07.06.18.15
-        for <netdev@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 07 Jun 2026 06:18:15 -0700 (PDT)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-8423f544944so2565560b3a.3
-        for <netdev@vger.kernel.org>; Sun, 07 Jun 2026 06:18:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1780838294; x=1781443094; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yfVUV08jVaZxylIY4Wp2JU/+msgArLD3EBWtB73Ew10=;
-        b=TD2h83CYOioOG7dnPDIhz/mgGtuUpxDqOu2Lr7E1Hue3hcRqncSTKU65yJnRLOpLlO
-         G0ztFeN3xRF/N7rIdZz+aVfK+6/D2s4OKqk8XaUBx0t/tx2GTXilApt/LgM2dgHIhHJe
-         L1mAyBTb9XnBIBa7TOv01WElkAwL2wez3dMx8=
-X-Forwarded-Encrypted: i=1; AFNElJ/RsoshOcn2UemIRBxevrddmIU1lsD5xWBUji8wya4Hcj9JBPfbmufl319I7E537XIZjxqMeHA=@vger.kernel.org
-X-Received: by 2002:a05:6a00:90a7:b0:842:57e8:1bda with SMTP id d2e1a72fcca58-842b0e81fcemr11520009b3a.19.1780838294242;
-        Sun, 07 Jun 2026 06:18:14 -0700 (PDT)
-X-Received: by 2002:a05:6a00:90a7:b0:842:57e8:1bda with SMTP id
- d2e1a72fcca58-842b0e81fcemr11519984b3a.19.1780838293735; Sun, 07 Jun 2026
- 06:18:13 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="e//npSH6"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1780839468; bh=ftI/0fwtpfhLSCw0FxG3DApexfWjDxLD9LQrhgtlNa0=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=e//npSH6A6r7pLZpOQiBXpLqULR5CqgEaHpjZGRB8J9Fo7KAepu4Kaz7r9xw55vWI7b2/Zy0G0ZctvgjmoSKb2TSxyQIQ2a4HHmb1kWa6kQbbELLd2ReR5m4zfuSZ4GqtV31FwqSKj37wnQxEloktj4OUqv5KbFxuUTJBxIJrB/bHwlNMK5VQAoPh6E8U4IvcpBoLWp1D9WUR/CE8nvgElDwPBVK25Z9qgaOgebIamFO/jq58HkjWYa5esn6YRuWzSKR7bXqBPCR6fsdQBaudElzBO87gvgAiFxgAMw8byjIu+t6CsGkqOZ5i+Y8EIKnzQB1kONRxY23GZMHiyBeKg==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1780839468; bh=NyyLkgZ/HBGQoPhI1g1cSa3/Bahf8wsSj6VrXxzgd7e=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=QFE+0p8+rlbtDZCC+8OO0HWGNf8d2xsR6EqOIU+kG8doy8veL3Cd11PqcL5y4s+9+TawzVAXummF9XE3qBRAqdG1/LKs4zn8CzY1Zd1Hk88Yueu96pKdnB1MVR2L64yxox2jxGo/kJ5D8rX56ex5wpH+untSojR4BtZbtqCpFCGretLs0qRwP9jEMfGHzBe0ILWaGSupdTbeEn/V0t5zqD/u+s4c0sU+Hp/0Z2rRHxF3w5LtlQOMdq6MfI/5Zr2qDtIwKP5A7icSHkjoIrkZcOeh0RHjX89Z3sDGdGMoO7qgouCy9c2s/Wt6rWl4V6AaA689+9iBsu3s49wDmZlBRA==
+X-YMail-OSG: r3sX7uIVM1ljZBKYAkiu9lqj61iQZGx.tVU17ONTgWZJZvaEEcXo4hF8Iq_Nsme
+ c2I5cyxaMOs0NmgHIMsQVKTN8WrDOsPYoI7tx9XgO0lXPUmJs_rrjbvU4e1fHwz6kD2fE39qt4tG
+ cpTIc.n2rPdQyQUUXrlys0BG9Uq5yRPNoMbI.TqnIPl80Ak0.kzhz1mBp3LYpgLfuTTnIWoZ41sx
+ p_X62nsm.V1_k7RPembCg3wGO90HaQsmTlJjcGky4TPc22jOQvZ8YnuW_GYKPjh.DPQ6Do2iuA2k
+ Zm9OlMzSo77BVdTeqpgEgeIQSZa2bHhOaQ5KVZnQ.lSc9jwe0iR.GNXMhTLZ80QJq7FsutSkixFV
+ 7jlob8fxcy8JxUG3xEKqih3WvkM6QV3vcOM2eFkuGJWXFQNLvUfrCkuOmBYJvYqMcY9dw8TsyVQk
+ C_qkBURMnubU3EHYQCFw_6GeIv45BNuxF9toHEGHvEhGWHHo3VVsZwt30qWXKz70BIe8PfMUjU_G
+ Q9yhu7sqgyHaaHJZ9ju_Bp3RZJCshwvod5nntRp18p5hM62nJZluuUCQdDpcxpxnA9dqijLXAeD1
+ k.D_V43s5JH.hjx_fC5Pm2PgpNBAoNDqZNxQW_.CmM2dpg11_SkZ7qfIyXryK6pYzYOCBc08W8b_
+ zKv6lN2cOh5SRLlIam5Dwzv3Jv9QrXoXQivZXjhz.uQDn4u0e_5spa8TKrsWDwSq8vEt69tOZEvg
+ iDWw0djmJmqZD0Owi0MimrD1ae7mIWRcHjsyckB2L7QXI7p9Serl07Q7aEJj3.lDXZFKi7IJEM82
+ ldyzqy.Zo3_okBC0_QsWHju9qnB6xF3Xmzz.98hTvNB.7TPoe1YUVGznbNz2W_3hyC1lYVGnPyL.
+ S_NL3W7npkAY8vBgz4a45MrtDS6jYg.wgPlVOg1HQyt3_ECG8kjR9d8.yOUYLnE3Kn1jN0tqi0yc
+ Y0Q35zxC3s4A_8k7myiX4Ubs3QybH.giNLales48tSdtCeVZ88WnWQogXJEx5dzciqqoopnJd89o
+ zFYYDi.m7j.lz5tioyeUQoBZGeWa9CaDtNit3Im7CFdPHCUcw3YVTfh43IgSQGe5mC5vr2Dscde8
+ 8jaN9pZ1.E14VgbV5AKwOK7J0vj5cFMVgVoVd3M7Ol5NCnOUQ6Kgark4uNg9lXEnQBaZKXaMA2JU
+ nXrH2ubWnpuit5sC3QO0HZPSlZJNkTawU3mw7dFdyt057jVri5T8PmwA2d4SO_UVDAp095GsJafU
+ EmLmb_RzKemR2376183myCQYMwNboq_KGeFJDUiTbZGKM3ifB7s1Dgq.QGEbVRtjzdaK2wJ.FEnX
+ tD1fuFkFxrgQeIZLCz9mGM5oVKsywDdQnDnaLOKVOtIK8SdAbgjHN7b6ZAiKFbzLLdfl3q2bMaPK
+ yFVkGUiU3p_7dValN.LY_zDJGUShRXH90m.6_Y7E9ivJ7ZiHB2f3awHaWGVbVt1L_907QiY4SefR
+ Esl89xIx0xbbncvfQ6Wm7wnq5P1h4IW_622IIdzVM9oGycGXf95KmLgU3zJ1NZrDBhq2Me3AAYhE
+ cL3wv8mnaQTzWIo7gOnPQKm2FcXtzPDaBDvi4bHfbzyoNy8IZabsLIPq42yjPfm_LZt0jZGrP0bI
+ EDtu_B9WfT3shkxCAxHzmurHtQKVd8zKs7oowk46oBddjhjN3xyjBQephigRKZVReAtQzoCxgLkN
+ QSQ5Mkj_Lcu9UxkY9Mp3z8Ck7fNSM4c.fesB5cAoxCvsvHR1kAXAuusTsvAvsnRXPD5IwiILGIV5
+ jAPJtbTFTv2UWl1.ZT_8U7q5BlrNNxVRj8yIi2JDfz8wXe72YEmTRvsTXbhlU00OtOoM5tHzkMuA
+ TSWZRGVYFR8qfod.qeYusQzoNsSDpfDcq8t5Ygn2vFBO1bLfZ0Kku.jjJrR4qKRm0NNy1TP__wB1
+ Ux5HDkKsrwGS_bHraT8cHKEdQqCPBfyTQBVMGQcyfpcEW8yaSh0KpEyo.QiDEr8_3GsGNoXVRwV0
+ _AqeZvNbPDkD5pbHiv8MbXmX56Z4TVRhgeZeDt_DMUGu_vJzAVMEXlfCoh8p.9lGg2UI1kqxFZl_
+ YCsBOviZmJqFbupmVvMo.UhnEcKB5pLVEOSk2KXP4u.zTjjgPhkIQcEEp8mKvH379QFGS_dWR2ct
+ ewNVmd33p2MLbflc0750ARl5FLNmTmC0MJF8cepvHaP6lu2n1_S6RvpceYxM.OAsx56Rf29nJ.8Q
+ awwGgYDylt0T8XG46oLM2X2mJofUXjIsSAn9Rh72ogI3LUAH66XekRhbTqDgCugKn7C98D.I.wHG
+ I8Qq_LrUvrYxH04B.46GJj35Q.IxStMd0vpaAozJ3
+X-Sonic-MF: <namiltd@yahoo.com>
+X-Sonic-ID: 200907be-8b1b-481b-b0dc-cad3b8bdf600
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic314.consmr.mail.ne1.yahoo.com with HTTP; Sun, 7 Jun 2026 13:37:48 +0000
+Received: by hermes--production-ir2-89844b765-d82gs (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 84a60f0a442754d82af3c3f91ed8b6cd;
+          Sun, 07 Jun 2026 12:55:13 +0000 (UTC)
+Message-ID: <617aa489-4f0c-4fe0-8cf3-55c98f4d4d9e@yahoo.com>
+Date: Sun, 7 Jun 2026 14:55:07 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <aiNM1CY2-StPilxW@hpe.com>
-In-Reply-To: <aiNM1CY2-StPilxW@hpe.com>
-From: Pavan Chebbi <pavan.chebbi@broadcom.com>
-Date: Sun, 7 Jun 2026 18:48:02 +0530
-X-Gm-Features: AVVi8CcbwXg_-54C8vUiXN0aD0OE7a5FsKXgc9jUqy_8-3VgP_3g4XG7RflFM9o
-Message-ID: <CALs4sv1xboUxNCZMarHUnD2s52ZE3WYLWE8UZXbBQFNRdhYfCg@mail.gmail.com>
-Subject: Re: [PATCH] bnxt_en: Fix NULL pointer dereference
-To: Kyle Meyer <kyle.meyer@hpe.com>
-Cc: michael.chan@broadcom.com, andrew+netdev@lunn.ch, davem@davemloft.net, 
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+User-Agent: Mozilla Thunderbird
+Subject: Re: [net-next PATCH v13 2/9] net: dsa: realtek: rtl8365mb: reject
+ unsupported topologies
+To: Luiz Angelo Daros de Luca <luizluca@gmail.com>,
+ Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, Linus Walleij <linusw@kernel.org>,
+ =?UTF-8?Q?Alvin_=C5=A0ipraga?= <alsi@bang-olufsen.dk>,
+ Yury Norov <yury.norov@gmail.com>,
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+ Russell King <linux@armlinux.org.uk>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260606-realtek_forward-v13-0-b9e409687cbe@gmail.com>
+ <20260606-realtek_forward-v13-2-b9e409687cbe@gmail.com>
+Content-Language: pl
+From: Mieczyslaw Nalewaj <namiltd@yahoo.com>
+In-Reply-To: <20260606-realtek_forward-v13-2-b9e409687cbe@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Mailer: WebService/1.1.25918 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
 
-On Sat, Jun 6, 2026 at 3:55=E2=80=AFAM Kyle Meyer <kyle.meyer@hpe.com> wrot=
-e:
->
-> PCIe errors detected by a Root Port or Downstream Port cause error
-> recovery services to run on all subordinate devices regardless of
-> administrative state.
->
-> The .error_detected() callback, bnxt_io_error_detected(), disables
-> and synchronizes IRQs via bnxt_disable_int_sync(), which calls
-> bnxt_cp_num_to_irq_num() to map completion rings to IRQs using
-> bp->bnapi.
->
-> Since bp->bnapi is allocated on NIC open and freed on NIC close, PCIe
-> error recovery on a closed NIC can dereference a NULL pointer.
->
-> Check if bp->bnapi is NULL before disabling and synchronizing IRQs.
->
-> Fixes: e5811b8c09df ("bnxt_en: Add IRQ remapping logic.")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Kyle Meyer <kyle.meyer@hpe.com>
+On 6/6/2026 10:29 AM, Luiz Angelo Daros de Luca wrote:
+> Explicitly enforce the presence of a CPU port (-EINVAL) and reject DSA
+> cascade links (-EOPNOTSUPP) during setup to prevent silent failures.
+> 
+> These topologies were already non-functional. Without a CPU port, the
+> driver does not activate CPU tagging. Additionally, the switch hardware
+> was not designed to be cascaded, and DSA links never worked because
+> CPU tagging is not enabled for them.
+> 
+> Reviewed-by: Mieczyslaw Nalewaj <namiltd@yahoo.com>
+> Reviewed-by: Linus Walleij <linusw@kernel.org>
+> Signed-off-by: Luiz Angelo Daros de Luca <luizluca@gmail.com>
 > ---
->  drivers/net/ethernet/broadcom/bnxt/bnxt.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
+[...]
+>drivers/net/dsa/realtek/rtl8365mb.c:rtl8365mb_get_stats64() {
+>    ...
+>	mb = priv->chip_data;
+>	p = &mb->ports[port];
+>	spin_lock(&p->stats_lock);
+>	memcpy(s, &p->stats, sizeof(*s));
+>	spin_unlock(&p->stats_lock);
+>}
 
-LGTM. Thanks.
-Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
+Sashiko reports a potential deadlock around stats_lock, however I couldn't find a call chain reaching rtl8365mb_get_stats64() from softirq context. Can anyone point to such a path?
 
-> diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethe=
-rnet/broadcom/bnxt/bnxt.c
-> index 008c34cff7b4..ec38a0a40875 100644
-> --- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-> +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-> @@ -5748,7 +5748,7 @@ static void bnxt_disable_int_sync(struct bnxt *bp)
->  {
->         int i;
->
-> -       if (!bp->irq_tbl)
-> +       if (!bp->irq_tbl || !bp->bnapi)
->                 return;
->
->         atomic_inc(&bp->intr_sem);
-> --
-> 2.51.0
->
