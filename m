@@ -1,162 +1,205 @@
-Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
+Received: from mail-yx1-f46.google.com (mail-yx1-f46.google.com [74.125.224.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF4773264D0
-	for <netdev@vger.kernel.org>; Sun,  7 Jun 2026 14:34:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63FF33859CE
+	for <netdev@vger.kernel.org>; Sun,  7 Jun 2026 14:57:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.46
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780842843; cv=pass; b=gR+Ua3V94t4gvtiXi13EY7tTH1okz16WUYkyTXQl+GqeAU3ib93Pxk2bPRJ9YF74cZXE9sR+CWEj8axMNsg32S9F8sOnqSKV2WT2oE+xqEJZ80wIZR6Hoi1DWNQCUUdG0iVKyQWEYVD1RDGLilX9Mw4/JXIYp9NJ6os9+EA3hr0=
+	t=1780844254; cv=pass; b=Lpw0/SZApkCTSVGjuDGEs9m14Hti7IIJGVb4z9YnrrwEbTOyzNvIpR6xQedr46wV+kVO90UOW5KARzpxB6tXsIE1sQyVC/g7lMWcN8CmfJ6MkIXHP3n3+MdTLv0OAauw/zzYV4WCBqJd3qLqPBZz2PtmayH8vou3G6X08SAioLw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780842843; c=relaxed/simple;
-	bh=T9GE5eXzrNAz4VGE5rOsvFKtLGT8u9fcz4i/AknuEgQ=;
+	s=arc-20240116; t=1780844254; c=relaxed/simple;
+	bh=J7FO8rNeBHhd738iYmLPaOFFhde7lx+0DYImZHcOwRg=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=heBqaPckjKDsgf2SCw/HzBKCHbvaq3GvGQ6AlBDhEGuEfxOFAQG8pNUB3pu365eK1ibq79EN0WP+9Vbao2Dlh9IVzTHNh14/tanMYs5nKreVKfyNqBlSVWELR21DW8rEFD87nWkRpxlE8pPcB1L57pdXlRXcOJwqh/7M+qeV53A=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trailofbits.com; spf=pass smtp.mailfrom=trailofbits.com; dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b=g98Jo6+i; arc=pass smtp.client-ip=209.85.167.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trailofbits.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trailofbits.com
+	 To:Cc:Content-Type; b=lh7ITpoKSfLd5ZjGvtoXXdTrbNnQ1HXz5Z3S2bpiExVZ/MaGZBxqu7I+oNKBIGUv3fjFSpHvB5otl4pEXHN8QnObbVFF2q2N5xNb+TtDv41Y6X47ZhOChNxN8LUCrH3+xQh8t8TIRE4zAKZgV7pTwLlKD9GITSaxKH/uKth0nmw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NVze6Ieu; arc=pass smtp.client-ip=74.125.224.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b="g98Jo6+i"
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-5aa6863327fso2905795e87.0
-        for <netdev@vger.kernel.org>; Sun, 07 Jun 2026 07:34:00 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780842839; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NVze6Ieu"
+Received: by mail-yx1-f46.google.com with SMTP id 956f58d0204a3-660456349d9so3461510d50.3
+        for <netdev@vger.kernel.org>; Sun, 07 Jun 2026 07:57:32 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780844251; cv=none;
         d=google.com; s=arc-20240605;
-        b=Z97hvdU867naA42L+7jJWTfHgiHUC/rBQqQLmMEme6nvenwkVkK6JHQ2Dp9ASJBCsd
-         eTwABOk91pgTYL89L4BDJMOFobC3zz5+G9XKQ9wJfbOpF3SoO+GNnCW6dS9NRp8z6APp
-         5llGQJ1wd/TfHvz3QtW6nqSoM/E/GBVlpxS1DYPbpqzknOi6BK4nlDoIume2Ys466aXI
-         ogNfMrbD+hld7ZkFjvO0ftkOE8F8BfsKOx7WXmfwG91bIBv6arRymIFc0CfgkN0Wetdk
-         +MkwfJiqnlLOtaFkRSmIT431rFr3BqGCF83MDxJqMXNK1pD/d6UtzKXpZZNEDR9a0Dvu
-         NrnQ==
+        b=Dyuds6eLauPf502SWdbI5xnVU/fsU/Hj66ryq0TutkSPNkV1iQcaLXLtPjpx5kV/0D
+         V4l7qGo8E5hpqfmHjgc7bCDVfGyxl4BstwY7TlNdt24YnHMdfenWFU6Sw4mxNDxj/BkP
+         hIVjoGxZQcOtwfOX+ipNcurXho2pkvPb6dINP1CQRE2KcRgtq3D+95zUbRZHRUjuv8UZ
+         lP2XyCGGEhQTE6NKYJb2jMNvHOxiH8LoXKprp8IWixRTodCoMbOpSSSn3c0v3NNF8NFs
+         Hd1JuAOb2L2s8urGecz5N3DDanjQIKy0k9ho5xUcFvUSlF8CHoUOANw2UupnmpL9SzQt
+         zo1w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=7C14YURADh7hq1Zism3wRTF+TwlbmOv0MNpx2ZDOl9E=;
-        fh=jDQM5lXtOenJ6CEZkKeFvxFTY7+lPiMAd7dmuII+5Rs=;
-        b=iAZimdPkz+xYipwrZyuci8deEeWJUt4FWRM0dcT8dC3vi4fxg3U6sDX4PP0BXE/5Da
-         QsY7vk04MyDyPFYoliEFn+kV+TLxZ77U+r0tvEpRYJAUqz92O+IlQy8OrbQ1P7FnlOPX
-         l8Fq8pnv3PSDkHVwAb5ZCx5lMznii0PGsO0/Dwl/23RkXApYlMSxtLUxJC4d8PTfKrKH
-         DlSgic5A1hmeVLzzNQq02mMMoc4bw5xb7UbCbXzir9il0UNEnPzkOMCxsSoJKIMu+0SM
-         Wu8g9nas3EoUrpOEufC5HGp/HKt4VvrqEqn/I859r8RcWIwsMiszpBhB67p1raTzlygt
-         Wz6A==;
+        bh=MyUoD5DSJ9qV4GIFVl+nQMb0ZRsjixd3Li9Iu7KWuyg=;
+        fh=mf/Qmw3ufC5N7tULX/I1MJgudfWaZ1DF/MI9al+1AHI=;
+        b=cRSwLzoPUqaXpFbt5y/t4PH+O6LvcDtA48MxNo3bj4CpBZFVwv/qRMbTquO2Btymca
+         tWgoa4HVbx2tgniyFq0jubxRWcSuwkhVku9Fy+JdpNTLfVjUNMvx0YTbjlLcBEt0Acy6
+         CUcUzJdHoCIkLoFVKjnuCPdCaDxTCC6fdCEZsAupwGDgV+zej6pRioJAxktlcjkFUr5T
+         4ApAvJ+HKMnRrOgZzMxvewUe78qybBjAtqGWrJWtMyNmMgtfuScW+fvBs9Wh8tsAgHT/
+         nIHgdmB38uddRNnu5iwsY+LzflnZSEN3CLOcEVp6D/L+trFmvE8ud2awHAOQZve/G8yF
+         nSew==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=trailofbits.com; s=google; t=1780842839; x=1781447639; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1780844251; x=1781449051; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=7C14YURADh7hq1Zism3wRTF+TwlbmOv0MNpx2ZDOl9E=;
-        b=g98Jo6+iO1ol4OuNSTNTrFG2zQ2cvNnzU2E4nNfFwPFkL9LETvgmCUyHym126h64Jc
-         pGO2HWwZeoVcrmD9xjrTMTnveFcO0AQro5N1vnUGgAlFRpGLQB7Lkb5kPCiTwvzYAKDx
-         1rfpI4rH3E/Z5lnv5nDNuVgdSXJ3Gb1SZfsn1g3eFMzLQ5qKQI6UYKRON9VcVl/nQbYO
-         7TmwMhRdbzFzAJKbJQQJcE8HGsQszoGgibQlqVLniK2q8EcZ8fGRQ1CPSr2ns4VcAJrC
-         hLd/ymHD+KId9+k2yI2L/DdoTkD2IwrmIRaKcCZKh/9wbIcMDaiZaLWSmRvlpoabr7LV
-         mzRQ==
+        bh=MyUoD5DSJ9qV4GIFVl+nQMb0ZRsjixd3Li9Iu7KWuyg=;
+        b=NVze6Ieugqf1wP3ObzpNVB/n1gaCpu3HMliaGubW6b8BpSnyZ4waJqKMrY/cnMZjcn
+         nfA0QJC6u/obK+N1ORm75e7bFSHuzYnA6UJBfGQsqhmP5J4dx1ntKVQLykz3h/ROmJLX
+         yf9jwmBwi37JGsIIJvZKH5rNxTpGSHSJV4G0mKeQnXyssPGmYnt1Rc7uZmaRJDBaQYDf
+         r32r7jdPB33x78YUBXD4n3KNXapveQnTvDbS9e7FsH6Ree/xGteF4PqBjqITW7PL6cEn
+         G9R624fbOOqcdOFD6KfLEqvAOCuCBud8j6aX0hQin2vRqEXl2HBFzigpOSDVFLvqtnOo
+         Mokg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780842839; x=1781447639;
+        d=1e100.net; s=20251104; t=1780844251; x=1781449051;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=7C14YURADh7hq1Zism3wRTF+TwlbmOv0MNpx2ZDOl9E=;
-        b=aOiLDeUgf0BxWbfSnWy4vtXRsVjisCrcAfdThyNhtbIo8kClvaddT+GMyd1h5iwpBD
-         wk+AWO8BqqA2ArX5G3bq1fheY9OVB6EUwGiZ4/4HAQ46vW+tUdAdsyF9XSOqVtKaaG+v
-         xsXK85Y8XM0U2Pan1UiuhkSyvFJZT/93UNx9cSHwgAgj/cyZmIYn3kA7R7b71WVGf102
-         5/YzUkT1JueAAERK57BZCFbIessPqzLGzsvJBBLutlmlfPyPxe5+VfC7at9hK0Ea7PCB
-         y1mLdIqD3ZsFp/awW3BmXLrts2tPipZpV0M4C9Y0FLBEwYfJ9lh+rEE01z7A+7/EPGL5
-         xJ9w==
-X-Forwarded-Encrypted: i=1; AFNElJ+B3MgDhPd73GXgwsEk1PoWznoD4mm88R3g1ZTKr6iDxQgMBB60kAfOUhp1gdl9glkqlqPDpvk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzwf1Qj1XhoQy5MXCCmUXqjUhFlilqSSVkR5pLfMo4KO4mqKV/k
-	S2yE3pnSMM60EjhbD/Iv9TEoSI0tkEfKWt2Y2FbVHEftkkyMa6nn1IYU5m1TabjIv3BuLJWoRZE
-	Lb64MSi1dHhGAQZQPY/sjGKZqo9EIy1TUsdZ7mqsRhKSwx0gyjox2DbY=
-X-Gm-Gg: Acq92OGXy36+eoFqz4+Q79ymEUJKBOVzEDSMBzoZ/XQYfbA1vgsOFmeDs2cmwjDXZLO
-	gtugOH0X39KZa9zhgGRG4aPcXPn+2DBtalVXWwwLZ6YckPPkzeePS4cuUYuPuUwG5G8tTuCQ1me
-	VvUP47CWXFPkFMBHVd4BNuj1SzFrMkARPbYgo0g/WIqjnxIfoN6v0jRV1ng75oxmUbYy7fX3six
-	CLQQ5tFssqjrPljcsdvZMuUOXIuNLLzzUmmVU3mejch8jXMPe+Mvmhe3v1pOY4s58IqyamZ13hi
-	1UrkD6cpXZ+47HsJ
-X-Received: by 2002:a05:6512:15a5:b0:5aa:61da:f44 with SMTP id
- 2adb3069b0e04-5aa87b670aemr3347321e87.5.1780842838503; Sun, 07 Jun 2026
- 07:33:58 -0700 (PDT)
+        bh=MyUoD5DSJ9qV4GIFVl+nQMb0ZRsjixd3Li9Iu7KWuyg=;
+        b=Ra5/fATmYzP+MK7fO+EDqI+f5gMW1MFbO5J9yXn3xe00tj0QFl3ZmBizfk0WYKpoDO
+         dmHQntM9Qkca7Y3tNpHOr7r4RWy0HjZj7L3lTHAQpABozvworDRORjTafJRT+inE95/o
+         oRLs3aH4P/LA6Yqoudz8V+lYv45VlZKeTiV2GypkSM6eB29EICZkMxTS9RLtS4GKUmIj
+         aXWp80Y46JdFUCQycwSPEL2oYKCtruZsQTs7dO9CuUWnpARsDVElTOuEQOXFrz9URw6R
+         Wny5uCRTIyMOmciHKd0BLd61PnfB98tkq9z5zuOws+U/AB1Pkrd5tt3EMn9rl8tDBDLV
+         wapg==
+X-Forwarded-Encrypted: i=1; AFNElJ8hEjoQDaa3xI3+gg2uOC07CwLQF405kd+SUPj6ph7zq02qUEoingyYq3jl9TLUi/GH5/URP/M=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz1cN0CSj3mWoeADCIn1pG7RWPNMQqDxxwUIIRvarhy5DS0ZeP8
+	h1ZO2WLVpGH152c1uUXHWgVhxadMnDHHmjuAnXRDXlanRj4/sI2Yht3Kmq2CRyZNUY4MhuExMyP
+	Gjgzbvv12IHM7R+stIYUxG/3aiJ1QsF4=
+X-Gm-Gg: Acq92OGffLFIZoDlA8y2cKFNNk4DkgvCqVfqNMxl348b9wRdrb9+l3TTSipb1S21dPg
+	VP1lwVqPuhakrtyo01g2Exx+7+zN9EjfYx+RlGW2fTA68aaUfDSiupi0bMYEoKIsFQxj1ZsvhVX
+	OFaxgc3fm8XLK1LK41aqNh2A/baFlyFBzs67UgFCVMCODBOCea+//NUQ4noN1ZorBOzDmOLAYfK
+	PBFz8SA+4AjsqkUxSbqt6yGOjbVc3kWuDguTyNT2XsyZnaTsdXLEoL6zN0VKJ+5iQTsU9wlwmFN
+	bz5YmvUZdpRyhHhL/no=
+X-Received: by 2002:a05:690e:c49:b0:660:5c10:df11 with SMTP id
+ 956f58d0204a3-661070c04f7mr11777501d50.60.1780844251472; Sun, 07 Jun 2026
+ 07:57:31 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260605194640.2645386-1-sam.moelius@trailofbits.com> <CAM0EoMmeftLxWNdQqWsJonxEtMoCCuJdeTEjNzQfc2GYUX+mtw@mail.gmail.com>
-In-Reply-To: <CAM0EoMmeftLxWNdQqWsJonxEtMoCCuJdeTEjNzQfc2GYUX+mtw@mail.gmail.com>
-From: Samuel Moelius <sam.moelius@trailofbits.com>
-Date: Sun, 7 Jun 2026 10:33:47 -0400
-X-Gm-Features: AVVi8CfjDvxpey4KY4eMr6JTO65pRw4-bmDI3IJwXZQ-lDcBK3tVHTPesMTdCOg
-Message-ID: <CAE+C+DZTme=GQBy9BaXCiPe0pO7Pv7XNM69iru0VTGFX_ybBKg@mail.gmail.com>
-Subject: Re: [PATCH] net/sched: act_pedit: require matching IPv4 L4 protocol
-To: Jamal Hadi Salim <jhs@mojatatu.com>
-Cc: Jiri Pirko <jiri@resnulli.us>, "David S. Miller" <davem@davemloft.net>, 
+References: <20260604112846.1420908-1-lgs201920130244@gmail.com> <CA+XhMqyzy9B_UFeSC80XG-1ZMh4ckhZiXHT9anNsVutmZdmk0Q@mail.gmail.com>
+In-Reply-To: <CA+XhMqyzy9B_UFeSC80XG-1ZMh4ckhZiXHT9anNsVutmZdmk0Q@mail.gmail.com>
+From: Guangshuo Li <lgs201920130244@gmail.com>
+Date: Sun, 7 Jun 2026 22:57:22 +0800
+X-Gm-Features: AVVi8CcCrEj5XAdK4dp0xOE1JuG6b--Uue7KTDDPEIa-P51dPasYkE16aY9HmBs
+Message-ID: <CANUHTR8oByARnm-2REh8QaDznwj3Z1rGdzKKJ5-+sTZPL2poEw@mail.gmail.com>
+Subject: Re: [PATCH] net: lan966x: restore XDP RXQ page pool on reload failure
+To: David CARLIER <devnexen@gmail.com>
+Cc: Horatiu Vultur <horatiu.vultur@microchip.com>, UNGLinuxDriver@microchip.com, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
 	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, "open list:TC subsystem" <netdev@vger.kernel.org>, 
-	open list <linux-kernel@vger.kernel.org>
+	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Jesper Dangaard Brouer <hawk@kernel.org>, John Fastabend <john.fastabend@gmail.com>, 
+	Stanislav Fomichev <sdf@fomichev.me>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	bpf@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Jun 6, 2026 at 5:29=E2=80=AFPM Jamal Hadi Salim <jhs@mojatatu.com> =
-wrote:
+Hi David,
+
+Thank you for the review.
+
+On Thu, 4 Jun 2026 at 21:46, David CARLIER <devnexen@gmail.com> wrote:
 >
-> On Fri, Jun 5, 2026 at 3:46=E2=80=AFPM Samuel Moelius
-> <sam.moelius@trailofbits.com> wrote:
+> On Thu, 4 Jun 2026 at 12:31, Guangshuo Li <lgs201920130244@gmail.com> wro=
+te:
 > >
-> > The extended IPv4 L4 header mode in act_pedit can select TCP or UDP
-> > header fields without confirming that the IPv4 protocol field matches
-> > the selected transport header.
+> > lan966x_fdma_rx_alloc_page_pool() registers the newly allocated page po=
+ol
+> > with each port's XDP RXQ. During an FDMA reload, this registration is
+> > performed before fdma_alloc_coherent() is called.
 > >
-> > That lets a rule written for TCP or UDP modify unrelated payload bytes
-> > in a packet carrying a different protocol.
+> > If fdma_alloc_coherent() fails, lan966x_fdma_rx_alloc() destroys the ne=
+w
+> > page pool and returns an error. The reload rollback path restores
+> > rx->page_pool and rx->fdma to their old values, but it does not restore
+> > the per-port XDP RXQ mem model registration. As a result, the XDP RXQ
+> > state can remain associated with the page pool from the failed allocati=
+on
+> > attempt while the RX state has been rolled back to the old page pool.
 > >
-> > Verify the IPv4 protocol before applying TCP or UDP extended header
-> > edits.
+> > Restore the old page pool registration for each port's XDP RXQ in the
+> > reload rollback path before RX is started again, so the XDP RXQ state
+> > matches the restored RX state.
 > >
-> > Assisted-by: Codex:gpt-5.5-cyber-preview
-> > Signed-off-by: Samuel Moelius <sam.moelius@trailofbits.com>
+> > Fixes: 59c3d55a946c ("net: lan966x: fix use-after-free and leak in lan9=
+66x_fdma_reload()")
+> > Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
 > > ---
-> >  net/sched/act_pedit.c | 2 ++
-> >  1 file changed, 2 insertions(+)
+> >  .../net/ethernet/microchip/lan966x/lan966x_fdma.c | 15 +++++++++++++++
+> >  1 file changed, 15 insertions(+)
 > >
-> > diff --git a/net/sched/act_pedit.c b/net/sched/act_pedit.c
-> > index bc20f08a2789..9a4590451f7e 100644
-> > --- a/net/sched/act_pedit.c
-> > +++ b/net/sched/act_pedit.c
-> > @@ -341,6 +341,8 @@ static int pedit_l4_skb_offset(struct sk_buff *skb,=
- int *hoffset, const int head
+> > diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c b/dr=
+ivers/net/ethernet/microchip/lan966x/lan966x_fdma.c
+> > index f8ce735a7fc0..76654b44baf2 100644
+> > --- a/drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c
+> > +++ b/drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c
+> > @@ -855,6 +855,21 @@ static int lan966x_fdma_reload(struct lan966x *lan=
+966x, int new_mtu)
+> >  restore:
+> >         lan966x->rx.page_pool =3D page_pool;
+> >         memcpy(&lan966x->rx.fdma, &fdma_rx_old, sizeof(struct fdma));
+> > +       /*
+> > +        * lan966x_fdma_rx_alloc_page_pool() registered the new pool wi=
+th
+> > +        * each port's XDP RXQ before the allocation failed. The new po=
+ol is
+> > +        * destroyed by lan966x_fdma_rx_alloc(), so restore the old poo=
+l's
+> > +        * registration before restarting RX.
+> > +        */
+> > +       for (int i =3D 0; i < lan966x->num_phys_ports; i++) {
+> > +               if (!lan966x->ports[i])
+> > +                       continue;
+> > +
+> > +               xdp_rxq_info_unreg_mem_model(&lan966x->ports[i]->xdp_rx=
+q);
+> > +               xdp_rxq_info_reg_mem_model(&lan966x->ports[i]->xdp_rxq,
+> > +                                          MEM_TYPE_PAGE_POOL, page_poo=
+l);
+> > +       }
+> > +
+> >         lan966x_fdma_rx_start(&lan966x->rx);
 > >
-> >                 if (!iph)
-> >                         goto out;
-> > +               if (iph->ihl < 5 || iph->protocol !=3D header_type)
-> > +                       goto out;
+> >         lan966x_fdma_wakeup_netdev(lan966x);
+> > --
+> > 2.43.0
+> >
 >
-> From inspection the fix looks reasonable.
-> At first glance it seems that the only fix that resolves the issue you
-> are describing is to check the protocol header.
-> header length seems to be an extra thing. But let's do what the v6
-> side seems to and skip frags as well? Something maybe along the lines
-> of:
+> Hi Guangshuo,
 >
-> if (iph->ihl < 5 || iph->protocol !=3D header_type || (iph->frag_off &
-> htons(IP_OFFSET)))
->         goto out;
+> Just one remark. The re-registration fix looks right, but the same
+> restore path has a related gap.
+>
+>   Just above the failing alloc we set:
+>
+>   lan966x->rx.page_order =3D round_up(new_mtu, PAGE_SIZE) / PAGE_SIZE - 1=
+;
+>   lan966x->rx.max_mtu =3D new_mtu;
+>
+>   These aren't rolled back in restore:, so after a failed reload
+> page_order/max_mtu are new while pages/fdma/page_pool are old.
+> lan966x_xdp_run() then calls
+>   xdp_init_buff() with PAGE_SIZE << page_order, advertising a
+> too-large frame_sz =E2=80=94 for a jumbo MTU that bumps page_order,
+> bpf_xdp_adjust_tail() could grow past the real
+>   page.
+>
+>   Could you save and restore the old page_order/max_mtu too, so the
+> restored RX state is fully consistent?
+>
+> Cheers.
 
-I will submit an updated patch.
+Yes, that makes sense. I missed that page_order and max_mtu are also
+updated before the failing allocation and need to be restored together
+with the old RX state.
 
-> Are you able to describe how someone would configure a tc rule that
-> will allow this to happen?
-> IOW, how did you verify the problem and then validate that your fix works=
-?
+I will save and restore the old page_order/max_mtu in the reload rollback
+path, and send a v2 with that fixed.
 
-The bug was validated using a custom init script in QEMU. The specific
-line used was:
-
-/usr/sbin/tc filter add dev veth0 egress protocol ip pref 1 matchall
-action pedit ex munge udp dport set 18053
-
-An IPv4 TCP packet with destination port 2222 was sent through that
-path. With the unpatched kernel, the packet was received with TCP
-destination port 18053. With the patched kernel, the same packet was
-received unchanged.
-
-I can provide more details or artifacts if you would like.
+Thanks,
+Guangshuo
