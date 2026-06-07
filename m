@@ -1,61 +1,46 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C89527453;
-	Sun,  7 Jun 2026 17:53:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45EB33195FC
+	for <netdev@vger.kernel.org>; Sun,  7 Jun 2026 17:59:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780854807; cv=none; b=PKOFFjLuajzjcKBuazg3dWVeMFRMPjYLB4gR30yZVl8/HJq4TGh+tV7gqUa6c3Mb4CjsbFxuuhyI419HZgkmpP/ByR3LbPzTLCod5U2EppK8b0H0+RXQ3FMVyax8RP5SW8WgZ1xeUuMNoIrYiyGWJzHPIAeXH9CHWtTkG7yx0Ps=
+	t=1780855189; cv=none; b=RX4IZe+u+Nso+yTQ59/AncnL7teeAsWqfUprNd6LYrKyGyXvckO/r2vY0ddRt+ToxDARQCYOwN7fiQxIth1cGEVjixIHE28ikIIDMDWL6y+G6mwbugXIQODIras0RfFWEFjzlxJHYUs23MqWbl298PCZ1erID8qkbZZ11IzdDGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780854807; c=relaxed/simple;
-	bh=Wp1sWLpC4lb/tpO67nATgDedJ2AC/9CZP7Uafk3jLjY=;
+	s=arc-20240116; t=1780855189; c=relaxed/simple;
+	bh=dBSneK3g/mKHTKlzxrafMjuhEdTM5hLnwGt+sxPwlL4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Reeur0gZnGDDQN7EFcCcktu3IN00EZiEfwMmo0L18hM41UMxtbaCprvjtg2LdKc31blJ1gqHUbFStOcJ3HffwkF3IRGq0/QxlvFdws2iPErI0WJQgAI31H9ZM4r3v/gEIxf5ZtPdFlOQSA1/cQxiR7P+wTkYMR746DGPP1cNPOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=0kEo+1js; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=RWQgSlxoebdU+UfoRCOyd5Van9YHoZK3no3Dny8MQ3p0Ak+h86drzoiA3bMTns4SQkWzHJsfvdS0GCYdUXXEXikyhjfFjBOzd7CG1Kcy3JEcniwpfjVfSFjSXkcIfEWKwqkSQABnCF5X6myfnhiqW5RpBFI9CdwDrDNrCtKmTck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=uOSn24Ne; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="0kEo+1js"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="uOSn24Ne"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=RC4UpJZWJ3dXT7LKa11Eh5lvkgD8MR6nBFl7fzqu7wY=; b=0kEo+1jsZFmFPuILPU9h2Z8lK0
-	Tw3q/RsYcediV3XhUhcgz1JZyCPjTJbVqiHFhYhnrYRh5JjHvOVU4aib0LsSn1jxM9cKym+PQh0z+
-	bIovlTt9IcCUj1kEWGq/mQ6LuxQ+pbLPW6ZZ/t/TAnOA2bZRwcQwVSX+NwRlbO4jA79g=;
+	bh=/Zf0m97OgoTucNTnDyhotBDI2qtIuVu0YxmjCd+niLc=; b=uOSn24Ne3rG8pgy8ZmDnF7JrgC
+	JIQgnG892K+WKMichL5TzfvCURJ6PWDszUyPbZl5imeD5mE8ZLvfMDB/KgsuEVMJ19VnTboJ/khRj
+	417BdqDtr3lvgz8RD2ksIIb0aUuvvrKP47szBy7FHlgngGu43eNHFslfAezouo0ctvLQ=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1wWHg4-006UW9-B8; Sun, 07 Jun 2026 19:52:52 +0200
-Date: Sun, 7 Jun 2026 19:52:52 +0200
+	id 1wWHmb-006UZP-QO; Sun, 07 Jun 2026 19:59:37 +0200
+Date: Sun, 7 Jun 2026 19:59:37 +0200
 From: Andrew Lunn <andrew@lunn.ch>
-To: Alex Elder <elder@riscstar.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, maxime.chevallier@bootlin.com,
-	rmk+kernel@armlinux.org.uk, andersson@kernel.org,
-	konradybcio@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, linusw@kernel.org, brgl@kernel.org,
-	arnd@arndb.de, gregkh@linuxfoundation.org,
-	Daniel Thompson <daniel@riscstar.com>, mohd.anwar@oss.qualcomm.com,
-	a0987203069@gmail.com, alexandre.torgue@foss.st.com, ast@kernel.org,
-	boon.khai.ng@altera.com, chenchuangyu@xiaomi.com,
-	chenhuacai@kernel.org, daniel@iogearbox.net, hawk@kernel.org,
-	hkallweit1@gmail.com, inochiama@gmail.com, john.fastabend@gmail.com,
-	julianbraha@gmail.com, livelycarpet87@gmail.com,
-	mcoquelin.stm32@gmail.com, me@ziyao.cc,
-	prabhakar.mahadev-lad.rj@bp.renesas.com, richardcochran@gmail.com,
-	rohan.g.thomas@altera.com, sdf@fomichev.me,
-	siyanteng@cqsoftware.com.cn, weishangjuan@eswincomputing.com,
-	wens@kernel.org, netdev@vger.kernel.org, bpf@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-gpio@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v2 05/14] net: pcs: pcs-xpcs: select operating
- mode for 10G-baseR capable PCS
-Message-ID: <1225f728-8b54-44fb-bf70-94e3966359eb@lunn.ch>
-References: <20260605010022.968612-1-elder@riscstar.com>
- <20260605010022.968612-6-elder@riscstar.com>
+To: Lorenzo Bianconi <lorenzo@kernel.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org, netdev@vger.kernel.org,
+	Madhur Agrawal <madhur.agrawal@airoha.com>
+Subject: Re: [PATCH net-next v2] net: airoha: add ethtool priv_flags support
+ for LAN/WAN and GDM2 loopback
+Message-ID: <33c3a87d-ad97-4f6a-8f76-ebab80c496ac@lunn.ch>
+References: <20260607-airoha-ethtool-priv_flags-v2-1-742c7aa1e182@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -64,13 +49,14 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260605010022.968612-6-elder@riscstar.com>
+In-Reply-To: <20260607-airoha-ethtool-priv_flags-v2-1-742c7aa1e182@kernel.org>
 
-> Rather than introduce another quirk for TC956x let's attempt so solve
-> this generically by setting SR_XS_PCS_CTRL2:PCS_TYPE_SEL to a reserved
-> value when we detect the right we detect the right combination of phy
-> interface and XPCS feature support.
+> When a GDM3/GDM4 port is set to WAN mode, enable GDM2 loopback to
+> support hardware QoS. Conversely, when switching back to LAN mode,
+> disable the GDM2 loopback and restore the default forwarding
+> configuration.
 
-This sentence is broken.
+Why not just use the presence of an off loadable qdisc as the
+indicator to change mode?
 
-     Andrew
+	  Andrew
