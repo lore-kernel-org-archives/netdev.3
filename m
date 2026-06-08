@@ -1,170 +1,112 @@
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82A523B5319
-	for <netdev@vger.kernel.org>; Mon,  8 Jun 2026 09:55:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.177
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780912536; cv=pass; b=kXlHDNVVu+fJDZw/kYWhH3jWhWZE7M5z0h4CctsCKbD5jdtFJYMJpKWIfPwW9wpUMmeM43QfGp8IzzkvQHpb9E6/nGnCTasxyXQR9inDQiyQEJUnswWogsFvYdmKohwlEg/xxRZ+E84Q+/oNRzsNJqiD9Dcd9N8xfiuMxmreu3M=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780912536; c=relaxed/simple;
-	bh=nEe6Hp2P+fr54/g8RIpCfyjhQRc1tqxdIbRPosUg3Nc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MQ7ShltU8ayEX/K75gDQzPg3AKkip5ljm06naVKHNvsg4EkBVYtBUrgOtVT+BopkmDTEBgFVLl61jDyGaYDNNc9nbT8u6DXUA0bhk6H4Lf7VbTgUFGOhokj+1ctsSkOfp52uMTTJr3aOabNv4ekDWEqhvmcDg4YceErtm9Ctehc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=i4CYwU/n; arc=pass smtp.client-ip=209.85.210.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84EBD3AB283
+	for <netdev@vger.kernel.org>; Mon,  8 Jun 2026 09:55:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780912535; cv=none; b=hLAM9yGGxcqVpQHGx50FDguBi5OsPK72K6tOYJHEnkil4/RVc+4HrJlCe6xdjAY4Q7gHX++VOgGn3cA5wv1YL0JjMNfDslrYkt8H4zGAsqoGXWCczyJ8cQIR+YzuWYtf7iq7kWhXz6B5qYusPBL3yfuogha7nRJTYlwQOIm9Iyk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780912535; c=relaxed/simple;
+	bh=kjgzlGkCqp1NC5w51WcCRLvPiI8hJDKE74lYbf8SGl0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=D+k6CZ4LL+tb75IP/7SxD1b04gQ/9n44ut8S+XOF1GaTT58AwKnJ60OTV6U5LYLxd1UEz9G/WYMDZOEe7jseEGgDvyhA7lj9md35/gJVhVA2W2D1mgz833McYjKS2VpmzhjQb/VI28OrspKfWyRI9BvEZAENr9W8F/2CCgphf0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=runbox.com; dkim=pass (2048-bit key) header.d=runbox.com header.i=@runbox.com header.b=tX4WCsF6; arc=none smtp.client-ip=185.226.149.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=runbox.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="i4CYwU/n"
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-84230ab8857so1744215b3a.1
-        for <netdev@vger.kernel.org>; Mon, 08 Jun 2026 02:55:34 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780912534; cv=none;
-        d=google.com; s=arc-20240605;
-        b=CGypuAqkzgn/Zz4+Hh7jfRcFwqo3BvQzzcdEiA1lMzmZzrGNvBz3jB7IJvTWv0cRrv
-         UD5JBKGu6wwJRLvX7NMuRsfqxUV/61K93yAGBpwg4y9v/Ug9mDLAL9Y0ZGdCHhmjX4sH
-         ze46cz92PXAMVmqAjCgfx9wY4NS3zQN7kzrlJgCvcv5NOU4rb5MEck8eYuF1A7xetn1H
-         CCDwlnzzl4V/AkP5CNLIS79y1tJj8EpALiBU0/jylHU+Me/5ozDQ2bRhTwymjWU3D/jh
-         Qg7tJMuOglFQXBgbDZhnPlFPJipDkGOBWG7+ZWx2uGvKYZmxRKWg/ZCE/69AvGU1toUP
-         ByRA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=YhR32XRkG8GtOPOWI9COuVD7tE9ztEbEqFhQoZ5bTrU=;
-        fh=zfAMA90o8JRfRY27NA+1qn0M1w8+sO035EUZgAliPi8=;
-        b=I/CqQVsCaG0M73UaId17bnO52ZitL3A+BWvn+2fuVCpBoyF4D5CuUectru6RWCTiz9
-         TC0g1Gnjzs21TM23i6rgU5YW7rhVjYcbYiBy+r5YAWiU2whDqxR1D3rVz1IukQ223RYZ
-         +B42nWuXz+qUpf0ihcCQM/ZNQDJ8wpSFqrk4l/ox5zIIfKqa0VeGWqEBWSsDkqnD7DHe
-         cd0JZwp07VrZJyadJGBbd7b6Y8NDDQxUY0VEmZ3jNm9jUDf0/toK6EnAKtkFGyyrcxSN
-         YfkmXoyJHo3Ob/gN7sFrx+p6XY3Xt+QPhGQ7jFEIB3j4LEweQNMXhrjH0elCsL++0HDr
-         mGJw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1780912534; x=1781517334; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YhR32XRkG8GtOPOWI9COuVD7tE9ztEbEqFhQoZ5bTrU=;
-        b=i4CYwU/nzgEz2DJ9RMUlC/aTqIq3h769lyqC2PXduc3Cf/mrHk1dF8SVEKi27tzraO
-         WQeGWeCP2mtuQpohwOE0QevDyJzDwyh917iNpTWt7FrdMKkVhAdqF43tkNdYIYCPfAjL
-         e+z6nda8VPORPYu6KTs5nQa18dbaM5YXXsaus=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780912534; x=1781517334;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=YhR32XRkG8GtOPOWI9COuVD7tE9ztEbEqFhQoZ5bTrU=;
-        b=af94Ifb3Gyaknkrez4iyIiwb7xUfJwS4uTCteUTPYPkzRYZhMQvXa4H4nmW4/f2jK1
-         uWdqbgjYTOFKmb7Dkz01IT8jdaj/UJPFkqU5Jlkjd4+jUDmLeoR638WVhxPPKudlvCHw
-         KetGlW/5W9sj0V7q1Y95NOdX6jOCia3dvko0La9qyc3Zz41zUt8+R2MNj+feuo1A/h63
-         36pdSMyOafBDoHsrS0yLlpMBQuRlkFeKDaD6hXdhnTyM8FLW8NCzL4Q0pWZE9OLcj0Kp
-         3c+aqQy3kwIuzScjL0kmABcBowEGjObTelPQZ9T6sAG7ZLfOxDvPt22Xwq+LdkxjHzBP
-         viIg==
-X-Forwarded-Encrypted: i=1; AFNElJ+RJQu8MZR9CKVMfxMTJO9kgHVu7sLVpk2AT9yTGoE/nxq9CcP2Flm3mgzgmR1ZrdmXKCf/r4Q=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzLyJffkG8ECKe0bql+4no2UhPAMG21M8Rk+9nvjEICnk9sOcUK
-	L5TTjNluOUPRWCGiCs6Z4dX7fQJNhuoBnFiWAU+K84+vseR0vOV6p1dtxOBPPzxbdG+ZrCNfks2
-	mn4mobEFtZDsLBQTvznPUdWtDODusYLzlQmzvbNQV
-X-Gm-Gg: Acq92OEXD3+6CQcTS8rmdC4yFQ8Xpb1lP1NlziMKjtjBRuV42HW8E7zv2w/CjvZdZNF
-	A9Lfq0WpgPfP7QYaL4V1/q2Ra9v/Zu94Ntw2E9PudDWoAILM3W0r+7SHSHdDo9K86GFTl/9BVRd
-	mGNLXhRTmfpn4p9HNc2pitQUYH6mBKBrTyhj5zv9KRkYwaLpLlEtNBSqcRzqdm098AhvWpoNcVI
-	iCd8UFGbOpJOdS3ny8ic8Ryctx851t25W1g7umr8KYLtS11dJewFIc6Lr4+HcKAA8eGZahCQEj2
-	bfiRVqna0KKHC+MQn/i3nnH5ndNMSA==
-X-Received: by 2002:a05:6a00:2d0d:b0:842:5711:9a2f with SMTP id
- d2e1a72fcca58-842b0fb2273mr14704387b3a.36.1780912533858; Mon, 08 Jun 2026
- 02:55:33 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=runbox.com header.i=@runbox.com header.b="tX4WCsF6"
+Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
+	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.93)
+	(envelope-from <david.laight.linux_spam@runbox.com>)
+	id 1wWWha-00BRun-Uq; Mon, 08 Jun 2026 11:55:26 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=runbox.com;
+	 s=selector1; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:
+	Subject:Cc:To:From; bh=ph85ZDRTWov53bumdN4BhGhFsj9VkRRexE10g5yL/6o=; b=tX4WCs
+	F66HH9Bh7fiprOEtpdwojmDpEB9IBYKVPLZaJ5xMKldw73K3oeFov+5ggDN30O3e3ZGHfzNBaO/ca
+	vkRrpOaFLZ0cH3APoGF7q6xpsQyHtnWLt9yRTYWKFRu61ErDi52RcBJs6H2j6ugvQp++iBYnwCBnM
+	OUlUFU7y07RJJYNNa9ubJ6AWtbqSPzYktH/do4lC8Y7lRpm6Cb4h+6tQOnX+RLPgz3OjL8c58YQl+
+	dsd6gwjP+2pMjw0dYQZM2VCuV0cGYUiQh437xgcSKzaSWJ281/yVj/AQYUkKfnomt0vx+fC/0tbf9
+	Yt6HhJubm2xflL3ACP38CLi51tcg==;
+Received: from [10.9.9.73] (helo=submission02.runbox)
+	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
+	(envelope-from <david.laight.linux_spam@runbox.com>)
+	id 1wWWhQ-0003ZK-7j; Mon, 08 Jun 2026 11:55:16 +0200
+Received: by submission02.runbox with esmtpsa  [Authenticated ID (1493616)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.95)
+	id 1wWWhG-00Afz8-0J;
+	Mon, 08 Jun 2026 11:55:06 +0200
+From: david.laight.linux@gmail.com
+To: Kees Cook <kees@kernel.org>,
+	linux-hardening@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org
+Cc: Arnd Bergmann <arnd@kernel.org>,
+	Ajit Khaparde <ajit.khaparde@broadcom.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sriharsha Basavapatna <sriharsha.basavapatna@broadcom.com>,
+	David Laight <david.laight.linux@gmail.com>
+Subject: [PATCH net-next] drivers/net/ethernet/emulex/benet: Use strscpy() to copy strings into arrays
+Date: Mon,  8 Jun 2026 10:54:59 +0100
+Message-Id: <20260608095500.2567-4-david.laight.linux@gmail.com>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260607095727.647295505@linuxfoundation.org> <20260607173214.92693-1-ojeda@kernel.org>
-In-Reply-To: <20260607173214.92693-1-ojeda@kernel.org>
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-Date: Mon, 8 Jun 2026 05:55:22 -0400
-X-Gm-Features: AVVi8Ce0VqPP4wrmrfgQDErKpRLi3Z7rbl8b4dCcmWnRvhi1OSTpE0ZX-2GG1EY
-Message-ID: <CAM0EoMkszTXv82To=KnEYTgzQSmEdRW9XrAMVtJsUaDn=Akf6A@mail.gmail.com>
-Subject: Re: [PATCH 6.12 000/307] 6.12.93-rc1 review
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: gregkh@linuxfoundation.org, achill@achill.org, akpm@linux-foundation.org, 
-	broonie@kernel.org, conor@kernel.org, f.fainelli@gmail.com, 
-	hargar@microsoft.com, jonathanh@nvidia.com, linux-kernel@vger.kernel.org, 
-	linux@roeck-us.net, lkft-triage@lists.linaro.org, patches@kernelci.org, 
-	patches@lists.linux.dev, pavel@nabladev.com, rwarsow@gmx.de, shuah@kernel.org, 
-	sr@sladewatkins.com, stable@vger.kernel.org, sudipm.mukherjee@gmail.com, 
-	torvalds@linux-foundation.org, "Kito Xu (veritas501)" <hxzene@gmail.com>, 
-	Victor Nogueira <victor@mojatatu.com>, Paolo Abeni <pabeni@redhat.com>, Jiri Pirko <jiri@resnulli.us>, 
-	netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Hi Miguel,
+From: David Laight <david.laight.linux@gmail.com>
 
-Thanks for reporting this.
+Replacing strcpy() with strscpy() ensures that overflow of the target
+buffer cannot happen.
 
-On Sun, Jun 7, 2026 at 1:32=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wrot=
-e:
->
-> On Sun, 07 Jun 2026 11:56:37 +0200 Greg Kroah-Hartman <gregkh@linuxfounda=
-tion.org> wrote:
-> >
-> > This is the start of the stable review cycle for the 6.12.93 release.
-> > There are 307 patches in this series, all will be posted as a response
-> > to this one.  If anyone has any issues with these being applied, please
-> > let me know.
-> >
-> > Responses should be made by Tue, 09 Jun 2026 09:56:47 +0000.
-> > Anything received after that time might be too late.
->
-> Boot-tested under QEMU for Rust x86_64, arm64 and riscv64; built-tested
-> for loongarch64:
->
-> Tested-by: Miguel Ojeda <ojeda@kernel.org>
->
-> arm32 also builds fine.
->
-> On arm64, I am seeing:
->
->     net/sched/act_mirred.c:451:43: warning: variable 'm_eaction' is unini=
-tialized when used here [-Wuninitialized]
->       451 |         is_redirect =3D tcf_mirred_is_act_redirect(m_eaction)=
-;
->           |                                                  ^~~~~~~~~
->     net/sched/act_mirred.c:429:18: note: initialize the variable 'm_eacti=
-on' to silence this warning
->       429 |         int i, m_eaction;
->           |                         ^
->           |                          =3D 0
->
-> due to commit a01fbdecc3a2 ("net/sched: act_mirred: Fix return code in
-> early mirred redirect error paths") here.
->
-> And that one seems to be missing at least the assignment to the variable
-> that happened in commit a005fa5d7502 ("net/sched: act_mirred: Fix
-> blockcast recursion bypass leading to stack overflow").
->
+Signed-off-by: David Laight <david.laight.linux@gmail.com>
+---
+This is one of a group of patches that remove potentially unbounded
+strcpy() calls.
 
-Unless i am looking at the wrong code version, in the current code i
-see m_eaction is always initialized before being used.
-m_eaction =3D READ_ONCE(m->tcfm_eaction);
-Probably a compiler false positive?
-As per suggestion emmited, initializing m_eaction to 0 should help.
-Not sure what the process is.
-Perhaps, Miguel you want to send the fix? commit should say "appease
-compiler ..."
+They are mostly replaced by strscpy() or, when strlen() has just been
+called, with memcpy() (usually including the '\0').
 
-cheers,
-jamal
+Calls with copy string literals into arrays are left unchanged.
+They are safe and easily detected as such.
 
+The changes were made by getting the compiler to detect the calls and
+then fixing the code by hand.
 
-> I hope this helps!
->
-> Cc: Kito Xu (veritas501) <hxzene@gmail.com>
-> Cc: Victor Nogueira <victor@mojatatu.com>
-> Cc: Paolo Abeni <pabeni@redhat.com>
-> Cc: Jamal Hadi Salim <jhs@mojatatu.com>
-> Cc: Jiri Pirko <jiri@resnulli.us>
-> Cc: netdev@vger.kernel.org
->
-> Cheers,
-> Miguel
+Note that all the changes are only compile tested.
+
+Some Makefiles were changed to allow files to contain strcpy().
+As well as 'difficult to fix' files, this included 'show' functions
+as they really need to use sysfs_emit() or seq_printf().
+
+All the patches are being sent individually to avoid very long cc lists.
+Apologies for the terse commit messages and likely unexpected tags.
+(There are about 100 patches in total.)
+
+ drivers/net/ethernet/emulex/benet/be_cmds.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/ethernet/emulex/benet/be_cmds.c b/drivers/net/ethernet/emulex/benet/be_cmds.c
+index eab81e073e1e..230c91559322 100644
+--- a/drivers/net/ethernet/emulex/benet/be_cmds.c
++++ b/drivers/net/ethernet/emulex/benet/be_cmds.c
+@@ -2508,7 +2508,7 @@ int lancer_cmd_read_object(struct be_adapter *adapter, struct be_dma_mem *cmd,
+ 
+ 	req->desired_read_len = cpu_to_le32(data_size);
+ 	req->read_offset = cpu_to_le32(data_offset);
+-	strcpy(req->object_name, obj_name);
++	strscpy(req->object_name, obj_name);
+ 	req->descriptor_count = cpu_to_le32(1);
+ 	req->buf_len = cpu_to_le32(data_size);
+ 	req->addr_low = cpu_to_le32((cmd->dma & 0xFFFFFFFF));
+-- 
+2.39.5
+
