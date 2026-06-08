@@ -1,123 +1,210 @@
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDDF92772D
-	for <netdev@vger.kernel.org>; Mon,  8 Jun 2026 02:41:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.52
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780886509; cv=pass; b=qjBWsaXzFv8QFbSmVdD9NkFPOoOqaFTYcIgHeK8CiK1yYKj8CVM4vg5ODYYg7WpcKhXE2vlBIECijKAd9QiOom5HAzxyxYAj8O7CVHf6sUOKCI2xypVLCKju4oyaN6ZoMec+kYNAT7wZDUENtafFCytj3QxUpMfGPE1TLRmvw5s=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780886509; c=relaxed/simple;
-	bh=Nh7ZHpq/XNJFdqwO7lhwAzLTRleO5YExf1Y7bkJCOWU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QiHhJZpkRZ+mic7fr9BvabG4liFcOvOpZxXE5k34Hj3nGMp+Kst2bhID51IjpwYCSh6f3De5XBB0RE1N8SvtFIZgT29gepKWT8TWptQ7VuldqHRkJhxhrbnxKyw0NLBivk7oJh63ZN65v+bdyp6XtVwme59j4eVdAvWKMvLQcbo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=s8lPYEYd; arc=pass smtp.client-ip=209.85.218.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96CA2347500;
+	Mon,  8 Jun 2026 03:15:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.216
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780888524; cv=none; b=M8SMB++00khXUPw4Fj/0kywkYLM3YASFhJZlU8n9NL8JVPT08jcQGbd36GkjgToeftRyiT4wDKbJM+68HeZLHm3lpxLDnSSIh30EqHhFoEl9Eg0aSeg10WeIWnX+dGlyUbZ/0CbHYMq4ppgiKAUHx6B3cDRdrVDbVFFociiGPmU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780888524; c=relaxed/simple;
+	bh=TjX6iBnQjVhvvsZ7mDP+mvTZ7ze4RuE2HmNN4ecrVG4=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=sGD8D0uNRCr34fVUgExRWde37vwwSB0FOWcnXwZ77Dae2ltsgf8/gN+lxLZVk35pX5sEVtC4OfoVUtdtSfMEfaCG3UQ3NtpbYdy1H4FWc/e5FJfD/TK6Fcebl7PDbNucB86isMVUxVcmi+A8nJFljvSycU3hYiUsJEmm4JpgWUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=cv+Ph/FX; arc=none smtp.client-ip=113.46.200.216
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="s8lPYEYd"
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-bf0170c80f7so610412566b.3
-        for <netdev@vger.kernel.org>; Sun, 07 Jun 2026 19:41:47 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780886506; cv=none;
-        d=google.com; s=arc-20240605;
-        b=OS+k9O4gupaeNeCSQdblHPvSoqVkfT1Bnj36mvwL1XVNOluRQ/aJt77mG/IOPl0kcR
-         BkB3HAjE69xaN5flLyUFhTKD2anL12aYLW5qSsiTQ9B3m2Q/HfmXkxRW7AnNXeFrQ2ix
-         /T4A+e6GvsAZEo4OjFlF+MQ6oGcMqGeLEbaZq0QW4q2CxbBrGDpn7lFpwpAvvyZ8Vt9X
-         XcIAcE3VzUO7Is6ZaaP10QCijRMvRuP+gW7cNQ05Urh7dzga88zmn1HQ59wxgM4kK/gZ
-         Ec9bleTMAPF30/HpPSJI9A9+MsqZ1HiRK7hqjjplMYjWpNcT8J8OALKkvIhM9gBlbYkJ
-         J4HQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=Nh7ZHpq/XNJFdqwO7lhwAzLTRleO5YExf1Y7bkJCOWU=;
-        fh=Vn3Qu57EU56adbqPBHc/tDK1r+NtNjTrX/UCn/kdGU4=;
-        b=gWhB2vSlLTYvLOOOuiIaFUVe706iwD4ujD/qGW+JcQfiCD/WXFp39Ia96faZmLrut1
-         isHSnr9+wVLpk9/88NC0hQYao74l+xEX9WeE+VAPx2lEVfEAMD7QBeRhiuRwnnUbn3fq
-         JszogVhPDu2jSa0CoBFd5/fnA1WB994IQlR9rOWKibD3i8Sy4GyPYRlZbkIZKqErTn9J
-         F/7vfLwKs+lFk+oQjRkIjzc8lHydo4UlSUYH4YKdvvTifkaN6snhvYy5ZKK7v56h/yuZ
-         XQ++P+MJDoZuutcw7OrCl46sPe5Memqy+b9zRx9NMpx7uodQo0J/6KLJFWBEoieZ/puC
-         c00A==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780886506; x=1781491306; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=Nh7ZHpq/XNJFdqwO7lhwAzLTRleO5YExf1Y7bkJCOWU=;
-        b=s8lPYEYdSUpotTeS4lD9DjfPaCiw7SfjIm5hlKnQiFuFwaZmde+3Y2w0NcukwYbNy8
-         pP9wl9bZhvaB5s9Df/e0XufbOHjfXcnxf7E7NbeBgNS/Wgg1cIfUVwEbTm7P2H/dajO6
-         2YbgM20ZZEC0icHEDoYXACJ5xTLwfxXluXNfI8MEB3a7ho/yg0AUD1dkLSvwJQ+XRJwt
-         weoEgKaGpLoEySpSYoypWFDNZw0SEnhsEvk0DhYWn7Qi5vYw3lRop/mYoWtYDldZdnC9
-         LXUOnkjw8+W5fiuFU84bZ+8YIxlR3OugoyOUEAfkLEL0EYV3PNa7UZOIA1wP6jAybn5o
-         h0yA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780886506; x=1781491306;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Nh7ZHpq/XNJFdqwO7lhwAzLTRleO5YExf1Y7bkJCOWU=;
-        b=N/efEi5sAfy7j0W40i7FJlDH8QklZlngSIUzdVnA0r7XZkK407R7WsJzCmjl79iz/D
-         jzdau0DZtclO9fx+bosjKqwbZ5RH641uTTQQZPkyyhjIxORpIgW2QZ6pLeLVXwQhaeDC
-         sBPwb8YZL/psdxqmlsIkxvMRCUJRS5jKDHb2Ci1/EsyKjx69LUEzvzAQ6Sc3pdQ6qQ8P
-         o1IXDekSxoKHt0+Rb/yiA76X9B9E6vfAaSd5q9JyXPlBibhhrHsXBjq5888S8AG1nKEl
-         aQe8Gluft/rxKCi0XBAGOfQ/CEKLTVUMSoWmuW6aep7IhBhur+n8O69+cRJcaf5fR2Qi
-         7jAw==
-X-Forwarded-Encrypted: i=1; AFNElJ+VR9If1fW7LJ5ODcGfrfWmLXrSyGqyN3o6zEyogeYdhqpvFrmeDjL2Qbq7PC0GDwk5+uVAi8g=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwBYe5ALopT3o+WMsJzkI5HVj7E6dUfRC3rIZ5C+VecfCGTAR0n
-	0yqJEOr7f0a03RnuQsQgtMvmkP8F35I+TIDiNOD8dCBuMa6fwNojnkVf2szb9vZF9j85Ds3X8J6
-	B3TeJfDnEEFYuUsFc6ZtQylIH2/K8Dfw=
-X-Gm-Gg: Acq92OFkd38et4sFzcPx9y7S+CBO2nVVOcZBTyI8ul0ogu15uDq1gQCjeuOd/PWa6sh
-	R5y6V/coAo6NkGqE9NSmRlC/NLY7dgRmqt0BIrTyjBSx+OMJo+wE/WxZAfcrV7yQy6sjRTLSwrC
-	8p8pcZBa9uFaxgvKslJYg536dDOP4GtScAfPC6dLoEv+pAJOPQ6BLWs74Ntx2dyVARoEr7KmjoC
-	Da+gRgT3nTh4l9AEtpO2TkpbdvWyPJffjZmwEj944raNu/hUKqPavcqnrE4qawJFAHjZiDFZw9L
-	hr8GXwSx9ZwATN+tPs3uLFMakpZI4yyfxNh5k/kCueoMoEIawas=
-X-Received: by 2002:a17:907:7b8c:b0:bdf:bccd:a7e9 with SMTP id
- a640c23a62f3a-bf36fba39d4mr553056166b.2.1780886506096; Sun, 07 Jun 2026
- 19:41:46 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="cv+Ph/FX"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=+AUqm8IASLg6wXd019rBFythi5pBjq/sjGvkDAtM9eE=;
+	b=cv+Ph/FX4DXvKIQlO7B1p6f9WYzJs833yE5DYbwFtBS5CklcqQthaQcrpA7ThlcBm2rOViex6
+	HTiaCoYGFJzFZWlhgrDuX8e/hY/EuXMdQd0jK9p6ftNFMGx7qqnj4UMIsfCdYIfHxp9lQzwnCs9
+	vW0s4UJ+g0IzKArRhwshk3I=
+Received: from mail.maildlp.com (unknown [172.19.163.0])
+	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4gYcQR2WYmz1T4hb;
+	Mon,  8 Jun 2026 11:06:55 +0800 (CST)
+Received: from dggpemf500011.china.huawei.com (unknown [7.185.36.131])
+	by mail.maildlp.com (Postfix) with ESMTPS id 29D3840537;
+	Mon,  8 Jun 2026 11:15:13 +0800 (CST)
+Received: from huawei.com (10.90.53.73) by dggpemf500011.china.huawei.com
+ (7.185.36.131) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 8 Jun
+ 2026 11:15:12 +0800
+From: Jinjie Ruan <ruanjinjie@huawei.com>
+To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <sashal@kernel.org>, <horms@kernel.org>,
+	<ruanjinjie@huawei.com>, <jiayuan.chen@shopee.com>, <kartikey406@gmail.com>,
+	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: [PATCH v6.6] net: atm: net: atm: Fix "init active" ODEBUG warning for delayed_work timer
+Date: Mon, 8 Jun 2026 11:14:58 +0800
+Message-ID: <20260608031458.2895690-1-ruanjinjie@huawei.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260606-realtek_forward-v13-0-b9e409687cbe@gmail.com>
- <20260606-realtek_forward-v13-2-b9e409687cbe@gmail.com> <617aa489-4f0c-4fe0-8cf3-55c98f4d4d9e@yahoo.com>
-In-Reply-To: <617aa489-4f0c-4fe0-8cf3-55c98f4d4d9e@yahoo.com>
-From: Luiz Angelo Daros de Luca <luizluca@gmail.com>
-Date: Sun, 7 Jun 2026 23:41:33 -0300
-X-Gm-Features: AVVi8Cdy2z9Vqfw4og3Kv21K7Vl64diqsXfUe7hpXdRDKjFHG4YNxhSZd60Rx3M
-Message-ID: <CAJq09z5_q2Pjpb3XBJiyzjt=KTCqcVF3FkcQOz5xtryKXVkpWA@mail.gmail.com>
-Subject: Re: [net-next PATCH v13 2/9] net: dsa: realtek: rtl8365mb: reject
- unsupported topologies
-To: Mieczyslaw Nalewaj <namiltd@yahoo.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Linus Walleij <linusw@kernel.org>, =?UTF-8?Q?Alvin_=C5=A0ipraga?= <alsi@bang-olufsen.dk>, 
-	Yury Norov <yury.norov@gmail.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
-	Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ dggpemf500011.china.huawei.com (7.185.36.131)
 
-> Sashiko reports a potential deadlock around stats_lock, however I couldn't find a call chain reaching rtl8365mb_get_stats64() from softirq context. Can anyone point to such a path?
+In linux mainline, the net atm related code has been removed, but
+the stable code has the following bug.
 
-Hi,
+In lecd_attach(), when an interface is reused via the 'else' path,
+the driver unconditionally invokes lec_arp_init(priv) to re-initialize
+the ARP subsystem tracking states.
 
-This patch series does not modify the stats collection logic itself.
-The analyzer likely flagged this because the series touches the loop
-that initializes the stats_locks, drawing attention to the locking
-structure. If this deadlock path is valid, it is a pre-existing bug.
+Inside lec_arp_init(), INIT_DELAYED_WORK() is invoked to set up
+priv->lec_arp_work, which internally triggers timer_setup() to initialize
+the embedded 'struct timer_list' within the delayed_work container.
+However, if the interface is being reused and its delayed work
+remains pending or active from a previous session, re-initializing
+the running timer embedded in the work item corrupts the debug objects
+tracking logic, generating a fatal "ODEBUG: init active" warning.
 
-Regarding the softirq context, my bet is that this path might be
-triggered by bonding or TC. Both can invoke dev_get_stats(), which
-eventually calls rtl8365mb_get_stats64(). During tests, you could
-inject a larger lock window (using mdelay()) to increase the chance of
-a softirq hitting while the lock is held.
+Fix this by shifting the lec_arp_init(priv) call exclusively into the 'if'
+block where the net_device is initially allocated via alloc_etherdev(),
+ensuring that the embedded timer and delayed work lifecycle are established
+only once per device instance.
 
-If that is indeed the case, we should replace spin_lock() with
-spin_lock_bh() in a separate fix targeted at the net tree (not
-net-next).
+	1. With DEBUG_OBJECTS_TIMERS config off:
 
-Regards,
+	lec:lec_atm_close: lec0: Shut down!
+	==================================================================
+	BUG: KASAN: wild-memory-access in __run_timers.part.0+0x410/0x618
+	Write of size 8 at addr dead00000000012a by task test_1/428
 
-Luiz
+	CPU: 1 PID: 428 Comm: test_1 Not tainted 6.6.142 #2
+	Hardware name: linux,dummy-virt (DT)
+	Call trace:
+	 dump_backtrace+0x9c/0x128
+	 show_stack+0x20/0x38
+	 dump_stack_lvl+0x78/0xc8
+	 print_report+0x244/0x278
+	 kasan_report+0x84/0xd0
+	 __asan_store8+0x68/0xc0
+	 __run_timers.part.0+0x410/0x618
+	 run_timer_softirq+0x64/0xc0
+	 handle_softirqs+0x198/0x518
+	 __do_softirq+0x1c/0x28
+	 ____do_softirq+0x18/0x30
+	 call_on_irq_stack+0x30/0x48
+	 do_softirq_own_stack+0x24/0x38
+	 __irq_exit_rcu+0x188/0x198
+	 irq_exit_rcu+0x18/0x30
+	 el1_interrupt+0x4c/0xb0
+	 el1h_64_irq_handler+0x18/0x28
+	 el1h_64_irq+0x78/0x80
+	 percpu_counter_add_batch+0x190/0x220
+	 set_pte_range+0x128/0x348
+	 finish_fault+0x330/0x408
+	 do_read_fault+0x1b8/0x2d0
+	 do_pte_missing+0x210/0x2e0
+	 handle_pte_fault+0x13c/0x380
+	 __handle_mm_fault+0x2cc/0x4a0
+	 handle_mm_fault+0x148/0x3b8
+	 faultin_page+0x90/0x168
+	 __get_user_pages+0x154/0x3c0
+	 populate_vma_page_range+0xf0/0x150
+	 __mm_populate+0x12c/0x268
+	 vm_mmap_pgoff+0x1c8/0x238
+	 ksys_mmap_pgoff+0x54/0x278
+	 __arm64_sys_mmap+0x8c/0xb8
+	 invoke_syscall+0x64/0x178
+	 el0_svc_common.constprop.0+0x80/0x150
+	 do_el0_svc+0x3c/0x58
+	 el0_svc+0x34/0xe8
+	 el0t_64_sync_handler+0x13c/0x158
+	 el0t_64_sync+0x188/0x190
+	==================================================================
+	Disabling lock debugging due to kernel taint
+	Unable to handle kernel paging request at virtual address dead00000000012a
+	Mem abort info:
+	  ESR = 0x0000000096000044
+	  EC = 0x25: DABT (current EL), IL = 32 bits
+	  SET = 0, FnV = 0
+	  EA = 0, S1PTW = 0
+	  FSC = 0x04: level 0 translation fault
+	Data abort info:
+	  ISV = 0, ISS = 0x00000044, ISS2 = 0x00000000
+	  CM = 0, WnR = 1, TnD = 0, TagAccess = 0
+	  GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+	[dead00000000012a] address between user and kernel address ranges
+	Internal error: Oops: 0000000096000044 [#1] SMP
+
+	2. With DEBUG_OBJECTS_TIMERS config on:
+
+	ODEBUG: init active (active state 0) object: 00000000348135aa object type: timer_list hint: lec_arp_check_expire+0x0/0x360 [lec]
+	WARNING: CPU: 1 PID: 413 at lib/debugobjects.c:515 debug_print_object+0xf4/0x130
+	Modules linked in: lec atm cfg80211 rfkill 8021q garp stp mrp llc
+	CPU: 1 PID: 413 Comm: test Tainted: G        W          6.6.142 #1
+	Hardware name: linux,dummy-virt (DT)
+	pstate: 60002005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+	pc : debug_print_object+0xf4/0x130
+	lr : debug_print_object+0xf4/0x130
+	sp : ffff800081fe7780
+	pmr_save: 000000e0
+	x29: ffff800081fe7780 x28: ffff800081fe7860 x27: ffffae4adfb0c9c0
+	x26: ffff800081fe7888 x25: ffffae4ad3c24938 x24: ffffae4adf909ca0
+	x23: 0000000000000000 x22: ffffae4adfb0c580 x21: ffffae4adfb0be20
+	x20: ffff0e66c9062a98 x19: ffffae4ae0eb7988 x18: 000000001251fe40
+	x17: 626f206161353331 x16: 3834333030303030 x15: 303030203a746365
+	x14: 6a626f2029302065 x13: 0000000000000001 x12: ffff61cd1267112b
+	x11: 1fffe1cd1267112a x10: ffff61cd1267112a x9 : dfff800000000000
+	x8 : 00009e32ed98eed6 x7 : ffff0e6893388953 x6 : 0000000000000001
+	x5 : ffff0e6893388950 x4 : ffff0e6893388950 x3 : 0000000000000000
+	x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff0e66d17f6040
+	Call trace:
+	 debug_print_object+0xf4/0x130
+	 __debug_object_init+0x1f0/0x348
+	 debug_object_init+0x24/0x30
+	 init_timer_key+0x3c/0x170
+	 lecd_attach+0x130/0x448 [lec]
+	 lane_ioctl+0x104/0x158 [lec]
+	 do_vcc_ioctl+0x140/0x7f8 [atm]
+	 vcc_ioctl+0x1c/0x30 [atm]
+	 svc_ioctl+0x17c/0x2c0 [atm]
+	 sock_do_ioctl+0xc0/0x188
+	 sock_ioctl+0x1cc/0x478
+	 __arm64_sys_ioctl+0xd8/0x128
+	 invoke_syscall+0x64/0x178
+	 el0_svc_common.constprop.0+0x80/0x150
+	 do_el0_svc+0x3c/0x58
+	 el0_svc+0x34/0xe8
+	 el0t_64_sync_handler+0x13c/0x158
+	 el0t_64_sync+0x188/0x190
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org#4.19.x
+Cc: gregkh@linuxfoundation.org
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+---
+ net/atm/lec.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/net/atm/lec.c b/net/atm/lec.c
+index d8ab96962579..7f5a531b964c 100644
+--- a/net/atm/lec.c
++++ b/net/atm/lec.c
+@@ -773,12 +773,12 @@ static int lecd_attach(struct atm_vcc *vcc, int arg)
+ 		}
+ 
+ 		priv = netdev_priv(dev_lec[i]);
++		lec_arp_init(priv);
+ 	} else {
+ 		priv = netdev_priv(dev_lec[i]);
+ 		if (rcu_access_pointer(priv->lecd))
+ 			return -EADDRINUSE;
+ 	}
+-	lec_arp_init(priv);
+ 	priv->itfnum = i;	/* LANE2 addition */
+ 	rcu_assign_pointer(priv->lecd, vcc);
+ 	vcc->dev = &lecatm_dev;
+-- 
+2.34.1
+
