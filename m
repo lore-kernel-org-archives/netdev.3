@@ -1,110 +1,94 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52CDA262D0B;
-	Mon,  8 Jun 2026 13:15:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D20E2376A17;
+	Mon,  8 Jun 2026 13:31:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780924555; cv=none; b=a6aaGkh1ASfSqXiaPDzXp5kZ8tLs/P8y1M47IX7SVrzNLfvHVX9HWF5fiFnQlksJD2EkOQL5IvcDE17joX/TwJlufcqhSSO+Mp1wJ+azi7QrZ8rO+5X4EFEPUD7t854o1U7hj92nKhUlZTMm/a/LLiIoBUD11kUF8rVRXTYijts=
+	t=1780925508; cv=none; b=nFcjyILe8cjN21DzKx+5lUwX4DIrPvkuCmNzOqz4zuqOme/PX34+VzFAcJhMgIrU4IOgtK/ROg1KuZFEyjOvwL3vK3mt/lfiahz+zzUwzkbIXhUWHUyFNlTIeqcLgWGDjDjQ2B5C4Joaf96oCfO0L7/RkcKBLy10iqmafBW3ckI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780924555; c=relaxed/simple;
-	bh=0PmjobEK5RIy8U9k2P1HUPuw8Q9vZSEr46XySqeZcsE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cMWJf5XAxUslnd+SXlEuhZD+gmFX27ZwNnYBj/2gLPZ5FoGMhf0BZQsO3/kZRVcSgAnb0f0mBXNhvdWm/zVEZmv9Cc9nkge3BlRO20/7Az3UL+IhodWoNs9k73PahEi/HstV+g50P/o95yGqua3gDIXqiQ3NK51kuMvFUH1xDok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R+adxrp7; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780925508; c=relaxed/simple;
+	bh=JFy0iMesCs1fLlDssLTKJrAOwVCLYFr7WTMgno0degI=;
+	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
+	 Subject:From:To:Cc:Date; b=NKWq8QXCEV0hYEJRRsBnToqWlKIgkWLEQwckJwCHH+koKbwWiW0WDi/AvLCqJ9B0R//6sdaF5+qWJfD3xJYMKhtfbKQpwBnN8gdYV5zCmHMbKHvehRddJVBEcTgIU3KrCbVujc8FxvE6f7D8sh7GKMtjFHTFmmpa+0jhB31cB8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Sse/N6Uz; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R+adxrp7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E6311F00893;
-	Mon,  8 Jun 2026 13:15:51 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Sse/N6Uz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9819E1F00893;
+	Mon,  8 Jun 2026 13:31:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780924553;
-	bh=K2CO8R+uP6TgA1CrFSKqCjPkfGEqDgtnNBedtqJ03V8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=R+adxrp7ykSBobxhTPqVANynZ4d5InmXOdrra8k8dYkrOFJd4eL5VCV0CnCF84vEz
-	 OxIfr5Qz/spXinfFzTqGh+zBcGVxjhBQKxbEGQi5cOt87xtXkX2xxcaFgsz5ISUl11
-	 LIY9Wh05pwzrl2ZXTXuov+DSufla3j+wQks4b4vaEQZAJc1wtGu5/blZpuCo/OvM8S
-	 5pps1FNpWXV/fIuW42YWS7C/2eyw0eBWbXoMegpsGHyoJVLA+xjXDL1nP5rtdcAojA
-	 wwpIpgBENh+Nk17P/KQ+9zpzZE3AgzRDiPXZAex1KTxnMtCzRqoQ3+dqE7IqjZgla8
-	 HWpCrImkfy+eQ==
-Date: Mon, 8 Jun 2026 14:15:49 +0100
-From: Simon Horman <horms@kernel.org>
-To: w15303746062@163.com
-Cc: Manivannan Sadhasivam <mani@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Luca Weiss <luca@lucaweiss.eu>,
-	Bjorn Andersson <andersson@kernel.org>,
-	linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Mingyu Wang <25181214217@stu.xidian.edu.cn>
-Subject: Re: [PATCH v2] net: qrtr: fix refcount saturation and potential UAF
- in qrtr_port_remove
-Message-ID: <20260608131549.GI3920875@horms.kernel.org>
-References: <20260604064801.1180388-1-w15303746062@163.com>
+	s=k20260515; t=1780925507;
+	bh=eSDdP4tgfREZn/txwJ8wEN5USu6Zq86uelsFFw7+5gw=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date;
+	b=Sse/N6UzxxLJXfvnYq0dv9QDTC9hGuC65wyU9H95K++taSCKL0+o3BFM16687YRYf
+	 4DIY1vTh/PbOFsbJyrZF0WgQtWOxpCQlL/l51+rt43Mur60FRC21B6B8CpUWoTNnH2
+	 WXqNcVcG3TLdUOfw9vWgSRCzg7pBXWwsme1Q3lbTA5XEliYeloFg2jcokjbNBEO5Kj
+	 2bTl6AzQJPdJ2DFqTnd9XgyepkWSqcCaYZ8mP5S4P4Qx67w2B4OqcWplmT1P+MYrr0
+	 8V340x6mCoDb37Ak3/79fv0nwgy1cl/6UOY/TYvDMEzAwxou+KL5PEPUg7DFK9SJeL
+	 kWXoX0hlnhcLw==
+Content-Type: multipart/mixed; boundary="===============6294924719200785139=="
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260604064801.1180388-1-w15303746062@163.com>
+Message-Id: <ab7585da0a807e7a9c2e6dbc621a75132135d3812d273f2b23f0759426ac3843@mail.kernel.org>
+In-Reply-To: <20260608125846.157004-2-jiayuan.chen@linux.dev>
+References: <20260608125846.157004-2-jiayuan.chen@linux.dev>
+Subject: Re: [PATCH bpf v8 1/2] net: Validate protocol in skb_steal_sock() for BPF-assigned sockets
+From: bot+bpf-ci@kernel.org
+To: jiayuan.chen@linux.dev,bpf@vger.kernel.org
+Cc: jiayuan.chen@linux.dev,davem@davemloft.net,edumazet@google.com,kuba@kernel.org,pabeni@redhat.com,horms@kernel.org,willemdebruijn.kernel@gmail.com,ast@kernel.org,daniel@iogearbox.net,andrii@kernel.org,martin.lau@linux.dev,eddyz87@gmail.com,memxor@gmail.com,song@kernel.org,yonghong.song@linux.dev,jolsa@kernel.org,shuah@kernel.org,joe@wand.net.nz,kuniyu@google.com,netdev@vger.kernel.org,linux-kernel@vger.kernel.org,linux-kselftest@vger.kernel.org,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
+Date: Mon,  8 Jun 2026 13:31:46 +0000 (UTC)
 
-On Thu, Jun 04, 2026 at 02:48:01PM +0800, w15303746062@163.com wrote:
-> From: Mingyu Wang <25181214217@stu.xidian.edu.cn>
-> 
-> In qrtr_port_remove(), the socket reference count is decremented via
-> __sock_put() before the port is removed from the qrtr_ports XArray and
-> before the RCU grace period elapses.
-> 
-> This breaks the fundamental RCU update paradigm. It exposes a race
-> window where a concurrent RCU reader (such as qrtr_reset_ports() or
-> qrtr_port_lookup()) can obtain a pointer to the socket from the XArray,
-> and attempt to call sock_hold() on a socket whose reference count has
-> already dropped to zero.
-> 
-> This exact race condition was hit during syzkaller fuzzing, leading to
-> the following refcount saturation warning and a potential Use-After-Free:
-> 
->   refcount_t: saturated; leaking memory.
->   WARNING: CPU: 3 PID: 1273 at lib/refcount.c:22 refcount_warn_saturate+0xae/0x1d0
->   Modules linked in: qrtr(+) bochs drm_shmem_helper ...
->   Call Trace:
->    <TASK>
->    qrtr_reset_ports net/qrtr/af_qrtr.c:768 [inline] [qrtr]
->    __qrtr_bind.isra.0+0x48b/0x570 net/qrtr/af_qrtr.c:805 [qrtr]
->    qrtr_bind+0x17d/0x210 net/qrtr/af_qrtr.c:901 [qrtr]
->    kernel_bind+0xe4/0x120 net/socket.c:3592
->    qrtr_ns_init+0x1a6/0x380 net/qrtr/ns.c:715 [qrtr]
->    qrtr_proto_init+0x3b/0xff0 net/qrtr/af_qrtr.c:169 [qrtr]
->    do_one_initcall+0xf5/0x5e0 init/main.c:1283
->    ...
->    </TASK>
-> 
-> Fix this by deferring the reference count decrement until after the
-> xa_erase() and the synchronize_rcu() complete.
-> 
-> (Note: The v1 of this patch incorrectly replaced __sock_put() with
-> sock_put(). As Simon Horman pointed out, the callers of qrtr_port_remove()
-> still hold a reference to the socket, so freeing the socket memory here
-> would lead to a subsequent UAF in the caller. Thus, the __sock_put() is
-> kept, but only repositioned to close the RCU race.)
-> 
-> Fixes: bdabad3e363d ("net: Add Qualcomm IPC router")
-> Signed-off-by: Mingyu Wang <25181214217@stu.xidian.edu.cn>
-> ---
-> v1: https://lore.kernel.org/netdev/20260530082243.1123402-1-w15303746062@163.com/
-> 
-> Changes in v2:
-> - Reverted the change from __sock_put() to sock_put() to avoid UAF
->   in callers like qrtr_release(), as suggested by Simon Horman.
-> - Removed misleading "memory leak" wording from commit message.
-> - Corrected the Fixes tag to point to the initial commit introducing
->   the race (bdabad3e363d).
+--===============6294924719200785139==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Thanks for the updates.
+> diff --git a/include/net/request_sock.h b/include/net/request_sock.h
+> index 5a9c826a7092..c2b8c6350b62 100644
+> --- a/include/net/request_sock.h
+> +++ b/include/net/request_sock.h
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+[ ... ]
 
+> @@ -103,6 +105,18 @@ static inline struct sock *skb_steal_sock(struct sk_buff *skb,
+>
+>  	*prefetched = skb_sk_is_prefetched(skb);
+>  	if (*prefetched) {
+> +		/* A non-full socket here is either a reqsk or a
+> +		 * timewait sock, both only contain sock_common and
+> +		 * lack sk_protocol. Since both can only be TCP,
+> +		 * use IPPROTO_TCP as the protocol.
+> +		 */
+> +		if (unlikely(((sk_fullsock(sk) ? sk->sk_protocol : IPPROTO_TCP) != protocol))) {
+                         ^^^
+
+This isn't a bug, but there are extra parentheses around the expression
+inside unlikely(). Kuniyuki Iwashima requested adding unlikely() in v7
+review, but the v8 code has unlikely(((expression))) instead of
+unlikely(expression).
+
+Reference: https://lore.kernel.org/bpf/CAAVpQUA6z4bZVReNDMToRVL1V7xmYg4Tq2YMnWyU8AYXWoeB5A@mail.gmail.com/
+
+> +			skb_orphan(skb);
+> +			*prefetched = false;
+> +			*refcounted = false;
+> +			return NULL;
+> +		}
+> +
+>  #if IS_ENABLED(CONFIG_SYN_COOKIES)
+>  		if (sk->sk_state == TCP_NEW_SYN_RECV && inet_reqsk(sk)->syncookie) {
+>  			struct request_sock *req = inet_reqsk(sk);
+
+[ ... ]
+
+
+---
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/27139886597
+--===============6294924719200785139==--
