@@ -1,42 +1,42 @@
 Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 977003D0BFB;
-	Mon,  8 Jun 2026 14:10:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C731B3D330B
+	for <netdev@vger.kernel.org>; Mon,  8 Jun 2026 14:10:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780927828; cv=none; b=oTdvY6Er7MXzQ0OwcNLAEaocM6hRzUyIOrTuDHvwZ0gv2yXYnxAH2SyGa0CYHP03tFpDT1I24vacQNXe8owGJ7ZvrE2gp0qkVCzk0Fj8XOCEB/yfGCmmjLEwB4wE88Cm7z6THC0wfpLc6uGfeCTxJ8ulo2XTbJhQX47ATmtoFHg=
+	t=1780927831; cv=none; b=ZJtRqS8pbw0x3vwt+nbC+dozIiVQT/fOPzt9AecoT8yipRZ3cRXpWl6/AYVHrBy3zurD31ozd136BYpGeCOmYSPPgygTZR+JsWLfygBlhaLFQ+KOzSkTpnyH+73xLOcChVUAoAVQgDu++kbDfardH+36TQPHrnhUh6/QH975jXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780927828; c=relaxed/simple;
-	bh=MAgf7vq6Z0Wq6cX28QGN7dC/EHWKnTUsoIZrmr14QdU=;
+	s=arc-20240116; t=1780927831; c=relaxed/simple;
+	bh=0hUFGdUYmI9KO/PLb03TAtqcEyxvnl33H2o/iFpm7DA=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=KK74CQPhH4qf93SAUKH0I1FbDYZRx+tIUIO7s/85RKX+0z8XT0wbCxNv6LULGckiGJJV1f0WJEsqF8/EB+wUKbVdYoHpiskTC1aX1+J1ODTWA1KaopBmR9ZGH+7zpdURcQL5Gp5KXnHyZZJhW4b0InYfSRi7bxoGxJyZoeql1Pk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=OT7EPH7c; arc=none smtp.client-ip=185.246.84.56
+	 In-Reply-To:To:Cc; b=msOfSqIjbDstir5cQe4InLuwTFl0ak/5UTrmwLaOPr6bs5zyJ/eSCAKv5MznuWHpbK2zLSeKbDgvrgOqHPSUQovErLHKFZZhf2kq8urO60mcRKPviZAhftgYtHvhKzd9GyRKT7wVojE6maHC7l3Z7jdWtuYwPu+v3b3Oi0FQbLs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=AMaWqT0c; arc=none smtp.client-ip=185.246.84.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="OT7EPH7c"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="AMaWqT0c"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 7E32B1A37D5;
-	Mon,  8 Jun 2026 14:10:26 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 7FB331A37CB;
+	Mon,  8 Jun 2026 14:10:28 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 5154F5FFB7;
-	Mon,  8 Jun 2026 14:10:26 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 03144106A2941;
-	Mon,  8 Jun 2026 16:10:23 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 4B7505FFB7;
+	Mon,  8 Jun 2026 14:10:28 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C3ECC106A2958;
+	Mon,  8 Jun 2026 16:10:25 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1780927825; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1780927827; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=L8JKEMuqeLOLXD7sRAPR2ArzrkLzIQkNq/JilyTl52M=;
-	b=OT7EPH7crpCGFRMK4PuLsuiwkEa6sXjfr/WGLis3Z6uaZ+Fk1jb9fv9Rwsx2bDvLUd+XCT
-	xgjyDgAs/yxtxyJI3eey/+E36erYaseC9PrUCkikWGDFmVPmii1D+xtIlURNFgUBcnvw/E
-	AuApgzdpye2wS2k4Y196meCcwIuOvDeWlDfkB0AyHPHWhQy6TYWqNGQwnXGzVNd2XQJkfF
-	YOurRgWY2EIi+27pswW/MBmLN4KmbLQ0cX35Q7AZJDetnY3aLAmiPxGpyGi2+LXXd3Oi4i
-	fWuCjDy9CDNgPDlrBBesdYd8nYjxcteI8T6CWiEMOqB3mF8QtixtKLpkUvq4XA==
+	bh=yyO6kiczAR32v5H26dk2bCuiftWpi3tl9gOA036Lk9o=;
+	b=AMaWqT0cfSzH1b4jJYQsvt5Buad2u9jN7S1vvAMsrYJDSXl8kwOCTcnIw2n35DqFI3xxLz
+	5I4TWxyx6Oro4DRr7Yj0hBwHG6U9IIUJzRfkzXd5yDWcf8R7rxGKh/xudQrbKUSL+LrDd0
+	aJ4uIBhdkQij2PalWnArd7YwwJkHFoKKw0lBywZpl/McuP/R9TvAv+AZVU99Kts1yf8AZe
+	luigJqIUJuiOF9mpYuP8tWQhgYXjXkMQBa1mydojy5FFMA1k+YCbOjXbojB2rUizp8X4FH
+	cDuVEdqDFaIBd6/hkff7N7mqEVOaO8U5+dQtwqpuczl0SJRZTsJmZPYMxJEjtA==
 From: "Bastien Curutchet (Schneider Electric)" <bastien.curutchet@bootlin.com>
-Date: Mon, 08 Jun 2026 16:10:08 +0200
-Subject: [PATCH net-next v2 05/10] net: dsa: microchip: remove
- setup_rgmii_delay() KSZ operation
+Date: Mon, 08 Jun 2026 16:10:09 +0200
+Subject: [PATCH net-next v2 06/10] net: dsa: microchip: implement
+ .support_eee() only if needed
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -45,7 +45,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260608-clean-ksz-3rd-v2-5-6e61b7be23c4@bootlin.com>
+Message-Id: <20260608-clean-ksz-3rd-v2-6-6e61b7be23c4@bootlin.com>
 References: <20260608-clean-ksz-3rd-v2-0-6e61b7be23c4@bootlin.com>
 In-Reply-To: <20260608-clean-ksz-3rd-v2-0-6e61b7be23c4@bootlin.com>
 To: Woojung Huh <woojung.huh@microchip.com>, UNGLinuxDriver@microchip.com, 
@@ -62,112 +62,222 @@ Cc: Pascal Eberhard <pascal.eberhard@se.com>,
 X-Mailer: b4 0.14.3
 X-Last-TLS-Session-Version: TLSv1.3
 
-setup_rgmii_delay() operation is only used once during the common phylink
-MAC configuration. Only the lan937x switch implements this
-setup_rgmii_delay().
+The .support_eee() operation is optional. Yet, it is implemented by the
+KSZ switches through a common functon that reports false for every chip
+except for KSZ8563, KSZ9563 and KSZ9893 from the KSZ9477 family.
 
-Remove the setup_rgmii_delay operation from ksz_dev_ops.
-Implement a lan937x-specific phylink MAC configuration that does this
-RGMII delay setup.
-Export ksz_set_xmii since it's needed by the lan937x implementation.
+Remove the implementation from the switches that don't support EEE.
+Also remove .set_mac_eee() for them as .set_mac_eee() is gated by the
+`support_eee` presence in the core.
+
+Implement instead a ksz9477-specific support_eee for these three supported
+switches.
+
+Note that comment /* KSZ879x/KSZ877x/KSZ876x Errata DS80000687C Module 2 */
+is completely removed because it concerns the KSZ87xx family that doesn't
+support at all EEE.
 
 Signed-off-by: Bastien Curutchet (Schneider Electric) <bastien.curutchet@bootlin.com>
 ---
- drivers/net/dsa/microchip/ksz_common.c   |  9 ++-------
- drivers/net/dsa/microchip/ksz_common.h   |  2 +-
- drivers/net/dsa/microchip/lan937x_main.c | 17 +++++++++++++++--
- 3 files changed, 18 insertions(+), 10 deletions(-)
+ drivers/net/dsa/microchip/ksz8.c         |  6 ----
+ drivers/net/dsa/microchip/ksz9477.c      | 50 +++++++++++++++++++++++++++-
+ drivers/net/dsa/microchip/ksz_common.c   | 57 --------------------------------
+ drivers/net/dsa/microchip/ksz_common.h   |  1 -
+ drivers/net/dsa/microchip/lan937x_main.c |  2 --
+ 5 files changed, 49 insertions(+), 67 deletions(-)
 
-diff --git a/drivers/net/dsa/microchip/ksz_common.c b/drivers/net/dsa/microchip/ksz_common.c
-index f29287922843..33a20c2e0a8a 100644
---- a/drivers/net/dsa/microchip/ksz_common.c
-+++ b/drivers/net/dsa/microchip/ksz_common.c
-@@ -3127,8 +3127,7 @@ int ksz_set_mac_eee(struct dsa_switch *ds, int port,
- 	return 0;
+diff --git a/drivers/net/dsa/microchip/ksz8.c b/drivers/net/dsa/microchip/ksz8.c
+index 98cf7239057d..7b4b46db1ef6 100644
+--- a/drivers/net/dsa/microchip/ksz8.c
++++ b/drivers/net/dsa/microchip/ksz8.c
+@@ -2477,8 +2477,6 @@ const struct dsa_switch_ops ksz8463_switch_ops = {
+ 	.port_txtstamp		= ksz_port_txtstamp,
+ 	.port_rxtstamp		= ksz_port_rxtstamp,
+ 	.port_setup_tc		= ksz_setup_tc,
+-	.support_eee		= ksz_support_eee,
+-	.set_mac_eee		= ksz_set_mac_eee,
+ 	.port_get_default_prio	= ksz_port_get_default_prio,
+ 	.port_set_default_prio	= ksz_port_set_default_prio,
+ 	.port_get_dscp_prio	= ksz_port_get_dscp_prio,
+@@ -2534,8 +2532,6 @@ const struct dsa_switch_ops ksz87xx_switch_ops = {
+ 	.port_txtstamp		= ksz_port_txtstamp,
+ 	.port_rxtstamp		= ksz_port_rxtstamp,
+ 	.port_setup_tc		= ksz_setup_tc,
+-	.support_eee		= ksz_support_eee,
+-	.set_mac_eee		= ksz_set_mac_eee,
+ 	.port_get_default_prio	= ksz_port_get_default_prio,
+ 	.port_set_default_prio	= ksz_port_set_default_prio,
+ 	.port_get_dscp_prio	= ksz_port_get_dscp_prio,
+@@ -2592,8 +2588,6 @@ const struct dsa_switch_ops ksz88xx_switch_ops = {
+ 	.port_txtstamp		= ksz_port_txtstamp,
+ 	.port_rxtstamp		= ksz_port_rxtstamp,
+ 	.port_setup_tc		= ksz_setup_tc,
+-	.support_eee		= ksz_support_eee,
+-	.set_mac_eee		= ksz_set_mac_eee,
+ 	.port_get_default_prio	= ksz_port_get_default_prio,
+ 	.port_set_default_prio	= ksz_port_set_default_prio,
+ 	.port_get_dscp_prio	= ksz_port_get_dscp_prio,
+diff --git a/drivers/net/dsa/microchip/ksz9477.c b/drivers/net/dsa/microchip/ksz9477.c
+index a39541d29ad5..e0b3724a7558 100644
+--- a/drivers/net/dsa/microchip/ksz9477.c
++++ b/drivers/net/dsa/microchip/ksz9477.c
+@@ -1909,6 +1909,54 @@ void ksz9477_phylink_mac_link_up(struct phylink_config *config,
+ 	ksz9477_duplex_flowctrl(dev, port, duplex, tx_pause, rx_pause);
  }
  
--static void ksz_set_xmii(struct ksz_device *dev, int port,
--			 phy_interface_t interface)
-+void ksz_set_xmii(struct ksz_device *dev, int port, phy_interface_t interface)
- {
- 	const u8 *bitval = dev->info->xmii_ctrl1;
- 	struct ksz_port *p = &dev->ports[port];
-@@ -3242,12 +3241,8 @@ void ksz_phylink_mac_config(struct phylink_config *config,
- 	struct ksz_device *dev = dp->ds->priv;
- 	int port = dp->index;
- 
--	if (ksz_phylink_need_config(config, mode)) {
-+	if (ksz_phylink_need_config(config, mode))
- 		ksz_set_xmii(dev, port, state->interface);
--
--		if (dev->dev_ops->setup_rgmii_delay)
--			dev->dev_ops->setup_rgmii_delay(dev, port);
--	}
- }
- 
- bool ksz_get_gbit(struct ksz_device *dev, int port)
-diff --git a/drivers/net/dsa/microchip/ksz_common.h b/drivers/net/dsa/microchip/ksz_common.h
-index c377bd3e5542..ef8eb10fde50 100644
---- a/drivers/net/dsa/microchip/ksz_common.h
-+++ b/drivers/net/dsa/microchip/ksz_common.h
-@@ -410,7 +410,6 @@ struct ksz_dev_ops {
- 			   u8 data);
- 	void (*freeze_mib)(struct ksz_device *dev, int port, bool freeze);
- 	void (*port_init_cnt)(struct ksz_device *dev, int port);
--	void (*setup_rgmii_delay)(struct ksz_device *dev, int port);
- 	int (*tc_cbs_set_cinc)(struct ksz_device *dev, int port, u32 val);
- 	int (*init)(struct ksz_device *dev);
- };
-@@ -468,6 +467,7 @@ void ksz_phylink_get_caps(struct dsa_switch *ds, int port,
- void ksz_phylink_mac_disable_tx_lpi(struct phylink_config *config);
- int ksz_phylink_mac_enable_tx_lpi(struct phylink_config *config,
- 				  u32 timer, bool tx_clock_stop);
-+void ksz_set_xmii(struct ksz_device *dev, int port, phy_interface_t interface);
- bool ksz_phylink_need_config(struct phylink_config *config, unsigned int mode);
- void ksz_phylink_mac_config(struct phylink_config *config,
- 			    unsigned int mode,
-diff --git a/drivers/net/dsa/microchip/lan937x_main.c b/drivers/net/dsa/microchip/lan937x_main.c
-index 57e289637193..69df378a40bf 100644
---- a/drivers/net/dsa/microchip/lan937x_main.c
-+++ b/drivers/net/dsa/microchip/lan937x_main.c
-@@ -643,6 +643,20 @@ static void lan937x_setup_rgmii_delay(struct ksz_device *dev, int port)
- 	}
- }
- 
-+static void lan937x_phylink_mac_config(struct phylink_config *config,
-+				       unsigned int mode,
-+				       const struct phylink_link_state *state)
++/**
++ * ksz9477_support_eee - Determine Energy Efficient Ethernet (EEE) support for a
++ *                       port
++ * @ds: Pointer to the DSA switch structure
++ * @port: Port number to check
++ *
++ * This function also documents devices where EEE was initially advertised but
++ * later withdrawn due to reliability issues, as described in official errata
++ * documents. These devices are explicitly listed to record known limitations,
++ * even if there is no technical necessity for runtime checks.
++ *
++ * Returns: true if the internal PHY on the given port supports fully
++ * operational EEE, false otherwise.
++ */
++static bool ksz9477_support_eee(struct dsa_switch *ds, int port)
 +{
-+	struct dsa_port *dp = dsa_phylink_to_port(config);
-+	struct ksz_device *dev = dp->ds->priv;
-+	int port = dp->index;
++	struct ksz_device *dev = ds->priv;
 +
-+	if (ksz_phylink_need_config(config, mode)) {
-+		ksz_set_xmii(dev, port, state->interface);
-+		lan937x_setup_rgmii_delay(dev, port);
++	if (!dev->info->internal_phy[port])
++		return false;
++
++	switch (dev->chip_id) {
++	case KSZ8563_CHIP_ID:
++	case KSZ9563_CHIP_ID:
++	case KSZ9893_CHIP_ID:
++		return true;
++	default:
++		/* KSZ8567R Errata DS80000752C Module 4 */
++		/* KSZ9477S Errata DS80000754A Module 4 */
++		/* KSZ9567S Errata DS80000756A Module 4 */
++		/* KSZ9896C Errata DS80000757A Module 3 */
++		/* KSZ9897R Errata DS80000758C Module 4 */
++		/* Energy Efficient Ethernet (EEE) feature select must be
++		 * manually disabled
++		 *   The EEE feature is enabled by default, but it is not fully
++		 *   operational. It must be manually disabled through register
++		 *   controls. If not disabled, the PHY ports can auto-negotiate
++		 *   to enable EEE, and this feature can cause link drops when
++		 *   linked to another device supporting EEE.
++		 *
++		 * The same item appears in the errata for all switches above.
++		 */
++		break;
 +	}
++
++	return false;
 +}
 +
- static int lan937x_tc_cbs_set_cinc(struct ksz_device *dev, int port, u32 val)
- {
- 	return ksz_pwrite32(dev, port, REG_PORT_MTI_CREDIT_INCREMENT, val);
-@@ -821,7 +835,7 @@ static int lan937x_connect_tag_protocol(struct dsa_switch *ds,
+ static struct phylink_pcs *
+ ksz9477_phylink_mac_select_pcs(struct phylink_config *config,
+ 			       phy_interface_t interface)
+@@ -1998,7 +2046,7 @@ const struct dsa_switch_ops ksz9477_switch_ops = {
+ 	.cls_flower_add		= ksz9477_cls_flower_add,
+ 	.cls_flower_del		= ksz9477_cls_flower_del,
+ 	.port_setup_tc		= ksz_setup_tc,
+-	.support_eee		= ksz_support_eee,
++	.support_eee		= ksz9477_support_eee,
+ 	.set_mac_eee		= ksz_set_mac_eee,
+ 	.port_get_default_prio	= ksz_port_get_default_prio,
+ 	.port_set_default_prio	= ksz_port_set_default_prio,
+diff --git a/drivers/net/dsa/microchip/ksz_common.c b/drivers/net/dsa/microchip/ksz_common.c
+index 33a20c2e0a8a..bebf697ec60a 100644
+--- a/drivers/net/dsa/microchip/ksz_common.c
++++ b/drivers/net/dsa/microchip/ksz_common.c
+@@ -3052,63 +3052,6 @@ int ksz_max_mtu(struct dsa_switch *ds, int port)
+ 	return -EOPNOTSUPP;
  }
  
- const struct phylink_mac_ops lan937x_phylink_mac_ops = {
--	.mac_config	= ksz_phylink_mac_config,
-+	.mac_config	= lan937x_phylink_mac_config,
- 	.mac_link_down	= ksz_phylink_mac_link_down,
- 	.mac_link_up	= ksz9477_phylink_mac_link_up,
- 	.mac_disable_tx_lpi = ksz_phylink_mac_disable_tx_lpi,
-@@ -838,7 +852,6 @@ const struct ksz_dev_ops lan937x_dev_ops = {
- 	.r_mib_stat64 = ksz_r_mib_stats64,
- 	.freeze_mib = ksz9477_freeze_mib,
- 	.port_init_cnt = ksz9477_port_init_cnt,
--	.setup_rgmii_delay = lan937x_setup_rgmii_delay,
- 	.tc_cbs_set_cinc = lan937x_tc_cbs_set_cinc,
- 	.init = lan937x_switch_init,
- };
+-/**
+- * ksz_support_eee - Determine Energy Efficient Ethernet (EEE) support for a
+- *                   port
+- * @ds: Pointer to the DSA switch structure
+- * @port: Port number to check
+- *
+- * This function also documents devices where EEE was initially advertised but
+- * later withdrawn due to reliability issues, as described in official errata
+- * documents. These devices are explicitly listed to record known limitations,
+- * even if there is no technical necessity for runtime checks.
+- *
+- * Returns: true if the internal PHY on the given port supports fully
+- * operational EEE, false otherwise.
+- */
+-bool ksz_support_eee(struct dsa_switch *ds, int port)
+-{
+-	struct ksz_device *dev = ds->priv;
+-
+-	if (!dev->info->internal_phy[port])
+-		return false;
+-
+-	switch (dev->chip_id) {
+-	case KSZ8563_CHIP_ID:
+-	case KSZ9563_CHIP_ID:
+-	case KSZ9893_CHIP_ID:
+-		return true;
+-	case KSZ8567_CHIP_ID:
+-		/* KSZ8567R Errata DS80000752C Module 4 */
+-	case KSZ8765_CHIP_ID:
+-	case KSZ8794_CHIP_ID:
+-	case KSZ8795_CHIP_ID:
+-		/* KSZ879x/KSZ877x/KSZ876x Errata DS80000687C Module 2 */
+-	case KSZ9477_CHIP_ID:
+-		/* KSZ9477S Errata DS80000754A Module 4 */
+-	case KSZ9567_CHIP_ID:
+-		/* KSZ9567S Errata DS80000756A Module 4 */
+-	case KSZ9896_CHIP_ID:
+-		/* KSZ9896C Errata DS80000757A Module 3 */
+-	case KSZ9897_CHIP_ID:
+-	case LAN9646_CHIP_ID:
+-		/* KSZ9897R Errata DS80000758C Module 4 */
+-		/* Energy Efficient Ethernet (EEE) feature select must be
+-		 * manually disabled
+-		 *   The EEE feature is enabled by default, but it is not fully
+-		 *   operational. It must be manually disabled through register
+-		 *   controls. If not disabled, the PHY ports can auto-negotiate
+-		 *   to enable EEE, and this feature can cause link drops when
+-		 *   linked to another device supporting EEE.
+-		 *
+-		 * The same item appears in the errata for all switches above.
+-		 */
+-		break;
+-	}
+-
+-	return false;
+-}
+-
+ int ksz_set_mac_eee(struct dsa_switch *ds, int port,
+ 		    struct ethtool_keee *e)
+ {
+diff --git a/drivers/net/dsa/microchip/ksz_common.h b/drivers/net/dsa/microchip/ksz_common.h
+index ef8eb10fde50..17b7ba77aaa9 100644
+--- a/drivers/net/dsa/microchip/ksz_common.h
++++ b/drivers/net/dsa/microchip/ksz_common.h
+@@ -478,7 +478,6 @@ void ksz_phylink_mac_link_down(struct phylink_config *config,
+ 
+ int ksz_max_mtu(struct dsa_switch *ds, int port);
+ 
+-bool ksz_support_eee(struct dsa_switch *ds, int port);
+ int ksz_set_mac_eee(struct dsa_switch *ds, int port,
+ 		    struct ethtool_keee *e);
+ 
+diff --git a/drivers/net/dsa/microchip/lan937x_main.c b/drivers/net/dsa/microchip/lan937x_main.c
+index 69df378a40bf..e1aba93d1438 100644
+--- a/drivers/net/dsa/microchip/lan937x_main.c
++++ b/drivers/net/dsa/microchip/lan937x_main.c
+@@ -903,8 +903,6 @@ const struct dsa_switch_ops lan937x_switch_ops = {
+ 	.port_txtstamp		= ksz_port_txtstamp,
+ 	.port_rxtstamp		= ksz_port_rxtstamp,
+ 	.port_setup_tc		= ksz_setup_tc,
+-	.support_eee		= ksz_support_eee,
+-	.set_mac_eee		= ksz_set_mac_eee,
+ 	.port_get_default_prio	= ksz_port_get_default_prio,
+ 	.port_set_default_prio	= ksz_port_set_default_prio,
+ 	.port_get_dscp_prio	= ksz_port_get_dscp_prio,
 
 -- 
 2.54.0
