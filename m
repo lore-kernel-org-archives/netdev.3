@@ -1,172 +1,165 @@
-Received: from usb-smtp-delivery-120.mimecast.com (usb-smtp-delivery-120.mimecast.com [170.10.153.120])
+Received: from mta1.formilux.org (mta1.formilux.org [51.159.59.229])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC25C3DCD86
-	for <netdev@vger.kernel.org>; Mon,  8 Jun 2026 15:04:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.153.120
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78FBF4279E3
+	for <netdev@vger.kernel.org>; Mon,  8 Jun 2026 15:06:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.159.59.229
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780931075; cv=none; b=JuSq+2gJwZdPpVZNBUaYWh+y5lQa3OskIT3j+MB6gbswZMoNPTcSqb8GCZR4fMj8LZmlXGYo3/90xZRWf0hvQjrhovTT2ybzT/PwgqIxfn9DZXzZY6t82U/E/ZhJiAehPfgIXwRNmaTkTZk8exn+dJVFuoFneca9NIxOc1AlbAg=
+	t=1780931185; cv=none; b=rnkWEYzxizDFmN5ofeyF3iOPbrJEAVKY0Tbl4fpzYMulWZDn8+bBuZoPnFjoxk2WOJUp1f4ecz3TJQ7FHuCvZn52yESFmlvAG04Qpo+Fz+y5LlzPNYX39FLuU2dfZfwGvhjjM3AhB6L6DQ/Ta18GIMCX3Nsbpgw/rNT1MjMTD1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780931075; c=relaxed/simple;
-	bh=AMp19Y3f3mgCseJLZe5AGO/icYDr4A3NJA39rKfnj54=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 MIME-Version:Content-Type; b=oRvw7Jl9Ymu/VSItqtS36WAyvMn+oYv4O++rmtNEmWTsXEXShLRa+Ql+zRi7XkzDU/FDK4lwWy/Qqq0cCw1ZXKRNkdbVhaTUlMKdHsOd79htNVSuSAHO9YSj+59DFMbr4c3inZJ+9y1BqHMbmVrezub6RqE0Bmexen/sW5eHLLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onsemi.com; spf=pass smtp.mailfrom=onsemi.com; dkim=pass (2048-bit key) header.d=onsemi.com header.i=@onsemi.com header.b=aD7MQXZ2; arc=none smtp.client-ip=170.10.153.120
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onsemi.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onsemi.com
+	s=arc-20240116; t=1780931185; c=relaxed/simple;
+	bh=I88BegSto3+kNitB6kqvIqnIJzVLWXt+OPNwEUP1a04=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=i3sDAI2jYULj3LCuPPA5j0dGb4/FrNQwtUv2unXEENuvEEipJg0hGiPF9VJ+3ZN/NZIu2a8NG71as5Jvam0LshG3wAf2ebLSboBby+/WMLpDDdh60ApHISPfuyvGSkgC94xXSzLhfhpau7liu3u5fG2/Ok2/aPcytAFCXfQNx4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=1wt.eu; spf=pass smtp.mailfrom=1wt.eu; dkim=pass (1024-bit key) header.d=1wt.eu header.i=@1wt.eu header.b=F2pcrZl7; arc=none smtp.client-ip=51.159.59.229
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=1wt.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=1wt.eu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=onsemi.com header.i=@onsemi.com header.b="aD7MQXZ2"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onsemi.com;
-	s=mimecast20250127; t=1780931073;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=AMp19Y3f3mgCseJLZe5AGO/icYDr4A3NJA39rKfnj54=;
-	b=aD7MQXZ2Rs5zZ+wGH88DviJ9DwTg96/dlXhs3AoplBu/By5LceQMZnhpgElvhx99LU07AT
-	UtOS69PH2T8NtCTnWgOgrgHDSEIY9Ye9p2sD/cStZGUdKJ3X22VT6MS/ymcWwOHoHjppXL
-	iWZn6+DCOyXLeEIsECCJEi5rQqe9ueUg123Jjq3OTkZx/KiRAapOZSmKIoBYA/gx8BEA5a
-	ISrvmM2LEv2BTeExA/Qwf7hKok62/UsqC8pV2dpB6j0TO/zEV5mOq2Rza/FnLyTu7yqBu3
-	EVm7fIWZsDnVHlXYQBqeTQv6GKkU1nSsELkdo8nDWUeh/j2VBq4DzqJxDPcxeA==
-Received: from CH5PR02CU005.outbound.protection.outlook.com
- (mail-northcentralusazon11012056.outbound.protection.outlook.com
- [40.107.200.56]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- usb-mta-54-bxBH4JDtOxqh3JIfQ0Fm8g-1; Mon, 08 Jun 2026 08:04:28 -0700
-X-MC-Unique: bxBH4JDtOxqh3JIfQ0Fm8g-1
-X-Mimecast-MFC-AGG-ID: bxBH4JDtOxqh3JIfQ0Fm8g_1780931062
-Received: from CY8PR02MB9249.namprd02.prod.outlook.com (2603:10b6:930:9c::17)
- by CH3PR02MB10112.namprd02.prod.outlook.com (2603:10b6:610:197::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.12; Mon, 8 Jun 2026
- 15:04:19 +0000
-Received: from CY8PR02MB9249.namprd02.prod.outlook.com
- ([fe80::e437:4ba8:6506:4cda]) by CY8PR02MB9249.namprd02.prod.outlook.com
- ([fe80::e437:4ba8:6506:4cda%3]) with mapi id 15.21.0092.011; Mon, 8 Jun 2026
- 15:04:19 +0000
-From: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
-To: Andrew Lunn <andrew@lunn.ch>
-CC: "Parthiban.Veerasooran@microchip.com"
-	<Parthiban.Veerasooran@microchip.com>, "conor@kernel.org" <conor@kernel.org>,
-	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net"
-	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
-	"kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
-	"robh@kernel.org" <robh@kernel.org>, "krzk+dt@kernel.org"
-	<krzk+dt@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>,
-	Piergiorgio Beruto <Pier.Beruto@onsemi.com>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "Conor.Dooley@microchip.com"
-	<Conor.Dooley@microchip.com>, "devicetree@vger.kernel.org"
-	<devicetree@vger.kernel.org>
-Subject: RE: [PATCH net v3 2/2] dt-bindings: net: updated interrupt type to be
- active low, level triggered
-Thread-Topic: [PATCH net v3 2/2] dt-bindings: net: updated interrupt type to
- be active low, level triggered
-Thread-Index: AQHc8eDLvWzkHnbXI0KmrY/VvMfuDrYrecyAgAALlpCAAm25gIAAkU0wgAAYXICAAAajgIAFcz6AgAAGt5CAACvrAIAAgT8g
-Date: Mon, 8 Jun 2026 15:04:19 +0000
-Message-ID: <CY8PR02MB9249CBAC46F7F56A5075254E831C2@CY8PR02MB9249.namprd02.prod.outlook.com>
-References: <20260601-level-trigger-v3-0-da73e7010532@onsemi.com>
- <20260601-level-trigger-v3-2-da73e7010532@onsemi.com>
- <20260602-rebel-snide-5036c97e410d@spud>
- <CY8PR02MB92493D2E5491AAE5416C05A283122@CY8PR02MB9249.namprd02.prod.outlook.com>
- <a5abb9b8-6ebf-4f95-a684-fc889b98acea@microchip.com>
- <CY8PR02MB9249E607ACBF3A05AB83ABF683102@CY8PR02MB9249.namprd02.prod.outlook.com>
- <20260604-swimwear-garnet-3eb092e6fda7@spud>
- <4df9882b-3426-4c36-8048-0c76d0f11c74@lunn.ch>
- <7c68173a-ebff-42cc-8519-95e8365805b5@microchip.com>
- <DM4PR02MB926317F64B5A3827009B66A9831C2@DM4PR02MB9263.namprd02.prod.outlook.com>
- <103296ba-9577-4851-ad43-dcd261130afd@lunn.ch>
-In-Reply-To: <103296ba-9577-4851-ad43-dcd261130afd@lunn.ch>
-Accept-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: CY8PR02MB9249:EE_|CH3PR02MB10112:EE_
-x-ms-office365-filtering-correlation-id: dc5d7d61-9291-4c8d-aac4-08dec56f373e
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7416014|22082099003|18002099003|6133799003|38070700021|11063799006|4143699003|56012099006
-x-microsoft-antispam-message-info: x9vDLgSpVTZa7Hc8La+2MBBEtOy5CQhz5Ritg7JHW54xPj8senZ3cIDrApxjmyXxdazd8xKjwhdG/NwkLs57yy4qtlfpIkPeQO0m9zEpEcbL6U0ggQXGgxVZqlqDuVmJ8Uu1cwGzb805lylkKbmE4aEVS0paS67E2SMEoCQA9BMGzHnld/+6cRziY4fqT5hEZTC3uf/wgi5HOkDmldRcZkbblKBVdGzyVuyWnu3jqKps5FIfLR1QQWdFa6+F5QK/fvAJPSOBwancYGU2i0b6y8rt6a6hKedtghlOCdLBm95UMFhkcIdLn/IvsVodhogAMF8DSZNOXAC9tY50gbWtersbpy6lxoCpGKl52WqCx2KwLax33Ab0cJPNIqEUcop72HfZsmHo6n31XBxSqIHShFlb4/4KBg9xqAYuTHPT/Ah+OZ494uF4tQ76vt51Ch7yW9mUv03rl6Kw57B9TeCamx1klu76E9IjWR5vaFTvp1urXIgCFrdzza+c5+AJqvWJs6xppdKVSTU7dCmzkpaOSlG3HRtZz0rgdSA7gsERUhtbTanx5sM/8fLOiIopvb4F39fK5+mCx+HJWB2SKi6zve6bwmOPIoF20ncnWcRltdGeELzIXZ82nvbZibGeafFUuLwxgU8NfB4+i0A7GyPHv82hREpAA5TNQykin9dG+2LXX9BEPKivtCYAAx2hNpapDR5QBm1WBK6bATEZLvTVkf7Rg3Y27EtBKKebCGmdOZU9wdAdlyA4AU961Zc3NASB
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY8PR02MB9249.namprd02.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(22082099003)(18002099003)(6133799003)(38070700021)(11063799006)(4143699003)(56012099006);DIR:OUT;SFP:1101
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?MzJoaGVKbSt1WlloU3FPbzZoTktKMi9jNDFUWFlCR3lRWUkxdHBhaXZzTUpp?=
- =?utf-8?B?a1FjaVFmQ0tMNCszTFNucTFrY2hML2M3bXg1M0tYKzMvekd5T2JXVTRmTnJX?=
- =?utf-8?B?V1k5bDRZY0ozenVGcGFtL3JBVEROdkZFbE5MM09WczVuT1B1RUxydDBGS1ZN?=
- =?utf-8?B?MmF1RkZFZnhRUXNPSFI4MCtIWm1zcDNqcW1NRjFCcjJzcXBSbFhjc0F2Nzl1?=
- =?utf-8?B?d0VTOWNXOUpBMHVrSFhqU282dmhlNThMc2VwaFB2dHJVYkpPSXJiUE9Tb1dr?=
- =?utf-8?B?TWEyM3V5RERpdGtkRk9EOU8xV3Bhc1lOZTBSRmdqM0htK0ZrbmVlV1RLRW1D?=
- =?utf-8?B?RzAzU29qb01FSkJQMWVqVHpoaWJWNE5FeXJDNkVMcGZYcGFDRE5JdEJub2gv?=
- =?utf-8?B?emtuUm9JS0RCaUFraFRmYlRMSVR6djYyZitzQTllaHFDSkRzaXRvNnBrRUpr?=
- =?utf-8?B?elBrNzhQbXF4M01pc2lTdWZiYjV6eUVTZmE1ZkUwd0tWVDQ2Wjg2R3d6NjBZ?=
- =?utf-8?B?QjJYVXROMWdoV3dKOUtlUSt5ay9GeVMzeU94ZEYxUUZLalF6SHV4aDBVb0cr?=
- =?utf-8?B?MDQxamR5K0l3TUxuNko4N09BR0FlbUZ1blFPWHhEdE5jeHJJZGdEZkQyd0F1?=
- =?utf-8?B?cm84bmRvWXJBcVliUFc3OTNrZ0VEcUhkT1BwdSt6dGJLRUhsMUNsNFFCald5?=
- =?utf-8?B?a0FKTTJHVXRlbjNsSlllTVNMZmRDcStaK0hjNkh3Mk5aVHNtY1lKWXZ5V2l5?=
- =?utf-8?B?eUlTZVJaSnlxRFJkdHlPcG82Z2hONk9zcDVrczB2M2dvcVZwNURON2t3YWtv?=
- =?utf-8?B?ZDYraWlZT3MvMkhGUkljLzVxalY0aDg0cjRRYXdGV0hySUVZbDVhNzBFZWZa?=
- =?utf-8?B?SytFWGJxOHBxZDNBOTMyWUhEVDlBVURUNWJOVVVDU0Z3NGhzZEZtcy9EeUp4?=
- =?utf-8?B?Nllkak0xcitLRnlXOW9rOXliTy9PVkxVTVFkQk00UzJLZ2RiQ05WVXAzSDZY?=
- =?utf-8?B?eXNuQUUyT3F1VmdnclRLSkVTYzZJSFhMeEZ6b2lQNjRMUUZuY1pmNlN6UGUx?=
- =?utf-8?B?Y3NhY0lYYlFOWEh1QzY2TWJYYXFkZGlITDBrVGhsdFIzb0FTeXQ0TDRVUFRN?=
- =?utf-8?B?WkZvek4yNm9HekNtR1JYc3JNM0NONERyOFYzdTVrNDlBOG9yK1d6di8rZGhS?=
- =?utf-8?B?enRBSlZ3QjNJWHJZUEV4THRFN2Rvc3BSbkpIYTVJdlBQWmcwQ2xleE55azl5?=
- =?utf-8?B?bzFhQmdXQW5ac29pdXF0SFRaWTdZRklqRGsxZXFVU0F3RnVBVGNTQlVvVmI1?=
- =?utf-8?B?cmFSUkZtUGVRaFVvU1NzR2VneTE0YjFTQmJkZERpbkMrQVY3enRvaFpYYU40?=
- =?utf-8?B?MHZZZ2RxUExDMTBrcWk1SUhyc05SVW1FOE9QSDQ1ZkhzR2hMc3owTDF2Q1k2?=
- =?utf-8?B?bThnOFNuc01KaGRFVTlrODlKVk84ditCVkRuUVFCRkRqcVNMa2VWb3BHZlk4?=
- =?utf-8?B?VFg2bGFSVGdMWEVsWkpQS0Z6UkhPL3ZvRXpReW9USVZSQVR5QVBvWnZCbGpj?=
- =?utf-8?B?dE94TldTaWplbmhJWnh2d1h0NS9jMGJIaVo5MHFzejZyUENxczNNdjFleXRn?=
- =?utf-8?B?NzV4bmp1bU5JLzBZWWFsc255UldXdGhubVZIa290VXZlNGNKM0dzTEUwN0c3?=
- =?utf-8?B?OWQ1TE8zdm5ydU5tNUhUS25PWGdRYWlTYVFJSlphaDFHRkVwbFlmQXp2ZEpw?=
- =?utf-8?B?TFF6WjFBQjBqVzR3R2tTMXAxUXZtSlNwazJWTTJJWWsxSzlrWkl4VS9ZYUxR?=
- =?utf-8?B?ckVKUmpzSDN0ZjhDUGxZUXFhYmRJbmkzdWdEWXdleG44cUpuWVBIZ0hVei9Q?=
- =?utf-8?B?a3RGb3NLMnJUNEpQUVhVOExRcVV2RFlkRmVVTUQ3V1JUclBIeG1YTU5QVm1K?=
- =?utf-8?B?TWVCWnhDQ3VGeDRWWnVxMkR4VU15WHIxYkM0Rk1zcmM2SFQyTXFja3dDZmtj?=
- =?utf-8?B?NXBoaCtvSWJ3WThTUjc5MGN3NG5uaHErMUx2ZE5MR1hJaFV4YmhsY1dOS1B4?=
- =?utf-8?B?TDNBWC9BYnV5ZmVGMVNXZkRCV2Q5eUMzTWl1VERCYTR2VFNMaUR5MjlzU2Ey?=
- =?utf-8?B?bmZCYUs3S29IeWkyYloxYW9TNUNHNVNTeTZJLzJXSGxlRTZIN3pncTZWNWxF?=
- =?utf-8?B?cHhUTC9EQzV5TCtmc2ZmQ3R3blM3c2JSTDFvZkR2OUNYN3lyMkhqQ2dsSnE0?=
- =?utf-8?B?SGFnNk5lR09IY3Baa2JrNGZteldtb0dWd3hhc1lteFJkNjVpY0FMQzhJdTcr?=
- =?utf-8?B?R3drL2FFRzZlVGRzaVR2SFVqS0lHZDdjYWc1Yi9Yam1pSlh6aWVnQUx0V0dZ?=
- =?utf-8?Q?ANgDyuD3F88l0ON4=3D?=
+	dkim=pass (1024-bit key) header.d=1wt.eu header.i=@1wt.eu header.b="F2pcrZl7"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1wt.eu; s=mail;
+	t=1780931176; bh=Ir/GpmJ/KKeHQdGFw7gdehhXDFaca8MfgejuXXaaj74=;
+	h=From:Message-ID:From;
+	b=F2pcrZl7wvivWt9mwwfqC0HSz1EyN63HY+9FGRmnXPn0t2Gs/i1Hd79yJcmer2nzc
+	 j+/q3WsjXRfRgoJnfkJ8udXkII5eWpy2MvhbxHEriCzcYJH2D3vOIoXmta29VdLKp1
+	 IYcNWgUZeHQj9auIh7q1DhdE7FATeULPwplRn+BU=
+Received: from 1wt.eu (ded1.1wt.eu [163.172.96.212])
+	by mta1.formilux.org (Postfix) with ESMTP id 5E23CC0A10;
+	Mon, 08 Jun 2026 17:06:16 +0200 (CEST)
+Date: Mon, 8 Jun 2026 17:06:15 +0200
+From: Willy Tarreau <w@1wt.eu>
+To: Jiayuan Chen <jiayuan.chen@linux.dev>
+Cc: xietangxin <xietangxin@yeah.net>, Eric Dumazet <edumazet@google.com>,
+        Pablo Neira Ayuso <pablo@netfilter.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+        Simon Horman <horms@kernel.org>, Neal Cardwell <ncardwell@google.com>,
+        Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org,
+        eric.dumazet@gmail.com, Zhouyan Deng <dengzhouyan_nwpu@163.com>,
+        Florian Westphal <fw@strlen.de>
+Subject: Re: [PATCH net] tcp: secure_seq: add back ports to TS offset
+Message-ID: <aibaZyz4MT8Ixt0N@1wt.eu>
+References: <20260302205527.1982836-1-edumazet@google.com>
+ <99caeafd-edf5-44a4-8742-4eada5d0f5d1@yeah.net>
+ <CANn89iK8GcY3GHCRs-8EVrDoBPhdw1iY4mBjZKe8gx58+ko73Q@mail.gmail.com>
+ <aiaOor1JLLu5Xn75@1wt.eu>
+ <90cb7e92-2451-4c67-9f35-6ff96b7efd77@yeah.net>
+ <0e89ceb5-a2ae-4e7c-8fe2-5b6a89ba6ac5@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: Edy+XVJpoUim4ENAUFAE4Es+PSb6+rbv6xfe9QxZA/s8MQmDQ95YDUfxFSmHWgJa3hRxrSiHYKuaocsRNmkI7Wt9eZIzBCIxz3nEQh0RVyFXGYWS14mUNPlxvs/NPuk3BG7weGWmMEJfkZKn5ltqFj6yiUN6mm8z8pd80gggNhoPZ64La03w80/ZbQgO+Y2kA+tZjC/xXqocS7M4YTSbdEH8qfkR+1hMjZJVdkCEzJXPPzdmcZzMxQMI7lDtngICbcrX7hLZyOtEP/j08qb3/+fb0FhI1yANI9CJYADSfOx0iDhp50uaL1uNNvlEEfXr0P3kfYXZvAKcCROSuj253Q==
-X-OriginatorOrg: onsemi.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CY8PR02MB9249.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: dc5d7d61-9291-4c8d-aac4-08dec56f373e
-X-MS-Exchange-CrossTenant-originalarrivaltime: 08 Jun 2026 15:04:19.1462
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 04e1674b-7af5-4d13-a082-64fc6e42384c
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: DTMM18p83ilmg+bgFqWmaWWeH1Xx1Lzupf/M5QYhZ5A9HwQ0KlMbOHr7TX8OcxI8n0Ys3JcfgMDfJBAdaAWYi3znHN4+pXZjkGwgLoz68Vo=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR02MB10112
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: Du9pOQaOcKbqxeJB-yg9wgO-kb0rBjXlh9Xy5JZAiyk_1780931062
-X-Mimecast-Originator: onsemi.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <0e89ceb5-a2ae-4e7c-8fe2-5b6a89ba6ac5@linux.dev>
 
-PiBTdWJqZWN0OiBSZTogW1BBVENIIG5ldCB2MyAyLzJdIGR0LWJpbmRpbmdzOiBuZXQ6IHVwZGF0
-ZWQgaW50ZXJydXB0IHR5cGUgdG8gYmUgYWN0aXZlIGxvdywNCj4gbGV2ZWwgdHJpZ2dlcmVkDQo+
-IA0KPiANCj4gPiBJIGFncmVlLiBXaGVuIHdlIGNoYW5nZSB0byBsZXZlbCB0cmlnZ2VyZWQgaW50
-ZXJydXB0LCBjdXJyZW50IG1lY2hhbmlzbSB3b24ndCB3b3JrIGFzDQo+ID4gd2UgYXJlIG5vdCBk
-aXNhYmxpbmcgdGhlIGludGVycnVwdCB3aGVuIHdlIGhhbmRsZSB0aGVtLg0KPiANCj4gSSdtIGtp
-bmQgb2Ygc3VycHJpc2VkIGFib3V0IHRoYXQuIElmIHlvdSBvbmx5IHByb3ZpZGUgYSB0aHJlYWQg
-Y29udGV4dA0KPiBoYW5kbGVyLCBidXQgbm90IGEgaW50ZXJydXB0IGNvbnRleHQgaGFuZGxlciwg
-aSB3b3VsZCBvZiBleHBlY3RlZCB0aGUNCj4gSVJRIGNvcmUgdG8gbGVhdmUgdGhlIGludGVycnVw
-dCBkaXNhYmxlZCB1bnRpbCB0aGUgdGhyZWFkZWQgaGFuZGxlcg0KPiBleGl0ZWQuIEJ1dCBtYXli
-ZSBpdCBpcyBoaXN0b3JpYyBiZWhhdmlvdXIuDQoNCg0KWW91IGFyZSByaWdodC4gSSB3YXMganVz
-dCBoaWdobGlnaHRpbmcgdGhlIG5lZWQgZm9yIG1vdmluZyB0byANCnRocmVhZGVkIElSUSB3aGVu
-IHdlIG1vdmUgdG8gbGV2ZWwgdHJpZ2dlcmVkIGludGVycnVwdC4NCg0KQXMgeW91IGtub3csIHRo
-ZSBjdXJyZW50IGNvZGUgZG9lc24ndCBoYXZlIHRocmVhZGVkIElSUS4NCkl0IGhhcyBJU1Igd2Fr
-aW5nIHVwIGEgdGhyZWFkIHRoYXQgaGFuZGxlcyB0aGUgaW50ZXJydXB0DQogDQo+IEFuZHJldw0K
-DQo=
+On Mon, Jun 08, 2026 at 09:14:26PM +0800, Jiayuan Chen wrote:
+> 
+> On 6/8/26 8:51 PM, xietangxin wrote:
+> > 
+> > On 6/8/2026 5:42 PM, Willy Tarreau wrote:
+> > > On Mon, Jun 08, 2026 at 01:51:49AM -0700, Eric Dumazet wrote:
+> > > > On Sat, Jun 6, 2026 at 4:06 AM xietangxin <xietangxin@yeah.net> wrote:
+> > > > > 
+> > > > > Hi Eric and netdev,
+> > > > > 
+> > > > > I noticed a significant TCP performance regression (QPS drop) when using
+> > > > > iptables MASQUERADE with the `--random-fully` option, and I have bisected
+> > > > > it down to commit 165573e41f2f66ef98940cf65f838b2cb575d9d1
+> > > > > (tcp: secure_seq: add back ports to TS offset).
+> > > > > 
+> > > > > Here is the benchmark environment and test results.
+> > > > > Environment:
+> > > > > - Client & Server: 2 VMs
+> > > > > - Server: Nginx listening on port 80 (HTTP), and ip 10.0.0.1
+> > > > > - Benchmark tool: wrk (short-lived connections with "Connection: close")
+> > > > > 
+> > > > > Test Commands
+> > > > > 1. With random-fully:
+> > > > >     # iptables -t nat -A POSTROUTING -d 10.0.0.1 -p tcp --dport 80 -j MASQUERADE --random-fully
+> > > > >     # wrk -t8 -c200 -H "Connection: close" -d10s --latency http://10.0.0.1:80
+> > > > > 2. Without random-fully:
+> > > > >     # iptables -t nat -A POSTROUTING -d 10.0.0.1 -p tcp --dport 80 -j MASQUERADE
+> > > > >     # wrk -t8 -c200 -H "Connection: close" -d10s --latency http://10.0.0.1:80
+> > > > > 
+> > > > > Test Results (QPS):
+> > > > > 1. Parent Commit (7f083faf59d14c04e01ec05a7507f036c965acf8):
+> > > > >     - with random-fully:    18145.74, 15006.39, 15716.67
+> > > > >     - without random-fully: 18556.36, 16339.22, 21506.02
+> > > > > 
+> > > > > 2. Bad Commit (165573e41f2f66ef98940cf65f838b2cb575d9d1):
+> > > > >     - with random-fully:    11074.76, 10383.20, 10164.81  <-- (~35% drop)
+> > > > >     - without random-fully: 17310.75, 20279.85, 18399.48
+> > > > > 
+> > > > > Is this performance degradation an expected side-effect of the security fix,
+> > > > > or is there any sysctl param we should tune when `--random-fully` is
+> > > > > required for high-concurrency short connections?
+> > > > Hi Tangxin
+> > > > 
+> > > > I do not know why that patch would affect MASQUERADE performance.
+> > > > 
+> > > > Pablo, Florian, do you have an idea?
+> > > I suspect it's because MASQUERADE can shuffle the ports around and
+> > > break the end-to-end mapping. With host-based ISN the increments
+> > > remain positive regardless of the ports, while with port-based
+> > > increments if you shuffle ports around, two consecutive uses of
+> > > the same port can end up showing a decreasing ISN, and some
+> > > outgoing SYN will get an ACK instead of a SYN-ACK, then send an
+> > > RST, and a SYN again, causing a degradation.
+> > > 
+> > > I'm not saying this is necessarily what happens here but based on the
+> > > commit message description I suspect that this is what's happening
+> > > here. There's always a tradeoff between ISN secrecy and reliability
+> > > unfortunately.
+> > > 
+> > > Willy
+> > Hi,
+> > 
+> > Willy, your hypothesis is 100% correct!
+> > I captured the packets during the benchmark on the bad commit,
+> > and the trace perfectly shows the "SYN -> ACK -> RST".
+> > 
+> > Here is the key snippet of the packet trace (Client: 10.0.0.2, Server: 10.0.0.1):
+> > 
+> > // 1. First connection closes, Server sends last ACK(410615916), entering TIME_WAIT.
+> > 12105 08:54:39.128861 10.0.0.1 -> 10.0.0.2 TCP 80 -> 47824 [ACK] Seq=3315216203 Ack=410615916 TSval=273827652 TSecr=370383870
+> > 
+> > // 2. ~200ms later, next short-conn reuses port 47824 via MASQUERADE --random-fully
+> > 47637 08:54:39.332281 10.0.0.2 -> 10.0.0.1 TCP 47824 -> 80 [SYN] Seq=559739866 TSval=4137539723 TSecr=0
+> > 
+> > // 3. Server is sends a ACK with the old connection's expected ACK(410615916).
+> > 48591 08:54:39.337692 10.0.0.1 -> 10.0.0.2 TCP 80 -> 47824 [ACK] Seq=3315216203 Ack=410615916 TSval=273827858 TSecr=370383870
+> > 
+> > // 4. Client receives the unexpected old ACK, responds with RST, and has to retry the connection.
+> > 48600 08:54:39.337799 10.0.0.2 -> 10.0.0.1 TCP 47824 -> 80 [RST] Seq=410615916 Win=0
+> > 
+> > 
+> > Are there any architectural recommendations we should consider here,
+> > or is this considered an acceptable trade-off for security?
+> 
+> 
+> It's classic PAWS problem when packets go through NAT/Gateway.
+> 
+> Can you test the performance with following different two configs (client) ?
+> 
+>     sysctl -w net.ipv4.tcp_timestamps=2
+> 
+>     sysctl -w net.ipv4.tcp_timestamps=0
 
+The thing is, nothing forces a server to use PAWS to distinguish SYNs,
+and some OSes only apply the spec to the letter (at least Solaris in
+my experience). The spec basically says that PAWS protects against
+duplicate non-SYN segments, and duplicate SYNs while there is a
+connection. So while Linux (and other OSes) nicely covers the case
+of the transition from TIME_WAIT to SYN_RECV, others do not always do
+it.
+
+Regardless, while I hate it when we play borderline games with TCP for
+the sake of supposed security issues that can only be demonstrated in
+a lab, we must admit that masquerading remains an issue when the same
+port range is shared between multiple hosts, even with PAWS since there
+is no reason for multiple hosts to have the same clock.
+
+Willy
