@@ -1,166 +1,112 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B457E3C09E4;
-	Mon,  8 Jun 2026 10:05:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B59293C061C
+	for <netdev@vger.kernel.org>; Mon,  8 Jun 2026 10:05:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780913105; cv=none; b=IRHWOXn9skxcvGGV/O4Ds49G9a/nVWvHJflAdHb5dYbV6gOlif3r50GvFWc+S3GkUx5YOC/FMjWbmdfRt4VNr4/B0tEO2+FJh9/oxtTjPkrwTmjgKgfPDG51CxWkSKRNSXEK0tWAUvvEeFg2YIoU90Xm2RkC8660xYlAHAejWog=
+	t=1780913109; cv=none; b=nAkgoG7Cg0p1Rha2+4QUuaTmzrYPNYsMxLGTrG6Bki1R/EMdNh4lE3R6cETHBROzFwgieCBLckHZubp/WICQXpK/5S7H0Ak3wgiJq8WHX3L977b/gtjD/HcUmVr8v9uqRg9KT8G7rVf77uRxx4qjFCP2aH1vChPaiu5TAXdjtOY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780913105; c=relaxed/simple;
-	bh=pK8CS9MvrORCEFFnC1jlR8gB8rCvCJSOg0OUvw8+l04=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ehvMgwAUVwE1D3bwf54pY8yIEFhfzyfjU84HcEpCv+OjTwZ/KG4JjgCm70GaN8gWuMVXHpI9yJfrM2M6RkoNCjAu9H6/kSOgL1HezN+ENkgRMz2WgosGsVoU+YFhIkHnUM51+FqyZPQrg0+PPWFmqnSADo0HE5sPv1akFhZQAj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=USU4APxM; arc=none smtp.client-ip=68.232.154.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	s=arc-20240116; t=1780913109; c=relaxed/simple;
+	bh=0W94w6fs7viMhQbKSnlxjxu1MS9582Oqvi5JNJF5O30=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Y4L+mBF6z0b3rogpehoCmTgp1jewMdhq4Jyr9f/mPvUyT6jbLT/YTrAx9XFH9Qp85ybocUk07erU7q81GQuY+e+122k3e65wfeiAuQLrBLUuROnnWHumAP85sxzbepvPLGX3sJoFTNKQgIAl5ph+y09mfbYQ63uAaReiHVlgX1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MKP81Qz8; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="USU4APxM"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1780913103; x=1812449103;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=pK8CS9MvrORCEFFnC1jlR8gB8rCvCJSOg0OUvw8+l04=;
-  b=USU4APxMhOyUZWPESrLTbliddCOkkTn+35DKC4WFA9EOFLwF0UMQDl8s
-   YQUGAOCLISlhiMfb4lgL4rQ4FaXWK2bkBbTo1pv/fsy1a5WcFD0TBNtef
-   O/+oX7Bd9U9Dwl4mUJz3ZXt5I/u6iIVilXn3ueqBmbp2DDQ2Uxs1Qmr9l
-   W+pg2o80Xuy2WDLSm7JoBnbisb/I3BUOYkIRcez+yUXwXSB4Pho4pupMb
-   NROJvFiazkNIvCo2i2RbWbNpEgArQaKSo5aYvlr8MbYkLo7TTKXZiobIO
-   iqesMyQJYSK5rYVA+FVzXH5AkImjPqnvL6nwCYKvumLDCwilfSY4ue8du
-   w==;
-X-CSE-ConnectionGUID: 2tqGft09R7G4Mrjz4VQQ4w==
-X-CSE-MsgGUID: f9ediMdxQTWlm2z2n5zojA==
-X-IronPort-AV: E=Sophos;i="6.24,194,1774335600"; 
-   d="scan'208";a="225960970"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa6.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 08 Jun 2026 03:05:03 -0700
-Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Mon, 8 Jun 2026 03:05:02 -0700
-Received: from che-ld-unglab06.microchip.com (10.10.85.11) by
- chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Mon, 8 Jun 2026 03:04:59 -0700
-From: Thangaraj Samynathan <thangaraj.s@microchip.com>
-To: <netdev@vger.kernel.org>
-CC: Bryan Whitehead <bryan.whitehead@microchip.com>,
-	<UNGLinuxDriver@microchip.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S
- . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, "Jakub
- Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	<linux-kernel@vger.kernel.org>
-Subject: [PATCH net-next v3 2/2] net: lan743x: add support for RMII interface
-Date: Mon, 8 Jun 2026 15:34:35 +0530
-Message-ID: <20260608100435.11214-3-thangaraj.s@microchip.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260608100435.11214-1-thangaraj.s@microchip.com>
-References: <20260608100435.11214-1-thangaraj.s@microchip.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MKP81Qz8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F99E1F00893;
+	Mon,  8 Jun 2026 10:05:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780913108;
+	bh=9U+5fldVYmBvwp/O/A3JCN0H2APJJgaD0mE9E0vl4vk=;
+	h=From:Date:Subject:To:Cc;
+	b=MKP81Qz8m1T/iFQMx245ifNkvXfpskLsBHqePTCT28Q6mvhDJNetcOvliMhSlWTgr
+	 uRGeOcaANpRLIpFWfd6Evso0uHvyOX7EZotNKAnlZ/h4bNtuakgWFKe4hFBIMmYp+G
+	 VzzctX9eAr01FpWzEv3jetpV9egmlUp8YWIpeoLxkxXWz9FWuTkPLFV8V0ViAEykqC
+	 WH82cBvtbL5202KQ3fLkpWr/YQ1XnEd+RDpVrnpLm0TbBmkZempjh06iS+mjI9qSV8
+	 nCgYSGx8tT0LsF3JntJGc6FtCt6Mt193UZuL/rFUhXBcV9cew6zz9cwLLpCXvSPQ3q
+	 Be9Y0hE7tGI9A==
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+Date: Mon, 08 Jun 2026 12:04:40 +0200
+Subject: [PATCH net] net: airoha: Add retry mechanism to
+ airoha_qdma_set_trtcm_param()
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260608-airoha_qdma_set_trtcm_param-retry-fix-v1-1-f07704f0d8c5@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x2NQQrCMBAAv1L27EIMNBC/IhK2zdbuIWndLKKU/
+ t3gceYwc0BjFW5wGw5QfkuTrXa4XgaYV6pPRsmdwTsfXHAjkui2UnrlQqmxJVObS9pJqaCy6Rc
+ X+SDF7OMYpjj5BXprV+76/7lDZYPHef4ArEdXMXwAAAA=
+X-Change-ID: 20260605-airoha_qdma_set_trtcm_param-retry-fix-a9d2956b9b2f
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Lorenzo Bianconi <lorenzo@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org, 
+ linux-mediatek@lists.infradead.org, netdev@vger.kernel.org, 
+ Brown Huang <brown.huang@airoha.com>
+X-Mailer: b4 0.14.3
 
-Enable RMII interface in the lan743x driver for PHY and MAC
-configuration.
+From: Brown Huang <brown.huang@airoha.com>
 
-- Select RMII interface in lan743x_phy_interface_select().
-- Update phylink supported_interfaces and MAC capabilities.
-- Enable RMII via RMII_CTL in lan743x_hardware_init().
-- Define RMII_CTL register and enable bit in lan743x_main.h.
+CPU accesses QDMA via the bus. When multiple modules are using the bus
+simultaneously, CPU access to QDMA may encounter bus timeouts and fails,
+resulting in QDMA configuration failures and potentially causing packet
+transmission issues. In order to mitigate the issue, introduce a retry
+mechanism to airoha_qdma_set_trtcm_param routine in order to ensure the
+configuration is correctly applied to the hardware.
 
-EEE is not supported with RMII on PCI11x1x: the hardware does not
-implement LPI signaling over RMII. Clear RMII from lpi_interfaces to
-prevent phylink from enabling EEE on this interface.
-
-Signed-off-by: Thangaraj Samynathan <thangaraj.s@microchip.com>
+Fixes: ef1ca9271313b ("net: airoha: Add sched HTB offload support")
+Signed-off-by: Brown Huang <brown.huang@airoha.com>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
-Changes in v3:
-  - Update commit message to document that EEE is disabled by setting
-    lpi_capabilities = 0
+ drivers/net/ethernet/airoha/airoha_eth.c | 21 +++++++++++++++------
+ 1 file changed, 15 insertions(+), 6 deletions(-)
 
-Changes in v2:
-  - Remove redundant mac_capabilities &= ~MAC_1000FD; phylink already
-    handles capability reduction for RMII via phy_caps_from_interface()
-
- drivers/net/ethernet/microchip/lan743x_main.c | 17 +++++++++++++++++
- drivers/net/ethernet/microchip/lan743x_main.h |  3 +++
- 2 files changed, 20 insertions(+)
-
-diff --git a/drivers/net/ethernet/microchip/lan743x_main.c b/drivers/net/ethernet/microchip/lan743x_main.c
-index 0798f3f1f435..ad3f833c8d86 100644
---- a/drivers/net/ethernet/microchip/lan743x_main.c
-+++ b/drivers/net/ethernet/microchip/lan743x_main.c
-@@ -1402,6 +1402,8 @@ static void lan743x_phy_interface_select(struct lan743x_adapter *adapter)
+diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
+index eab6a98d62b9..aaf7d8c8ccd3 100644
+--- a/drivers/net/ethernet/airoha/airoha_eth.c
++++ b/drivers/net/ethernet/airoha/airoha_eth.c
+@@ -2493,14 +2493,23 @@ static int airoha_qdma_set_trtcm_param(struct airoha_qdma *qdma, int channel,
+ 		     FIELD_PREP(TRTCM_METER_GROUP_MASK, group) |
+ 		     FIELD_PREP(TRTCM_PARAM_INDEX_MASK, idx) |
+ 		     FIELD_PREP(TRTCM_PARAM_RATE_TYPE_MASK, mode);
++	int i;
  
- 	if (adapter->is_pci11x1x && adapter->is_sgmii_en)
- 		adapter->phy_interface = PHY_INTERFACE_MODE_SGMII;
-+	else if (adapter->is_pci11x1x && adapter->is_rmii_en)
-+		adapter->phy_interface = PHY_INTERFACE_MODE_RMII;
- 	else if (id_rev == ID_REV_ID_LAN7430_)
- 		adapter->phy_interface = PHY_INTERFACE_MODE_GMII;
- 	else if ((id_rev == ID_REV_ID_LAN7431_) && (data & MAC_CR_MII_EN_))
-@@ -3190,6 +3192,12 @@ static int lan743x_phylink_create(struct lan743x_adapter *adapter)
- 		__set_bit(PHY_INTERFACE_MODE_MII,
- 			  adapter->phylink_config.supported_interfaces);
- 		break;
-+	case PHY_INTERFACE_MODE_RMII:
-+		__set_bit(PHY_INTERFACE_MODE_RMII,
-+			  adapter->phylink_config.supported_interfaces);
-+		adapter->phylink_config.lpi_capabilities = 0;
-+		break;
+-	airoha_qdma_wr(qdma, REG_TRTCM_DATA_LOW(addr), val);
+-	airoha_qdma_wr(qdma, REG_TRTCM_CFG_PARAM(addr), config);
++	for (i = 0; i < 100; i++) {
++		u32 data;
+ 
+-	return read_poll_timeout(airoha_qdma_rr, val,
+-				 val & TRTCM_PARAM_RW_DONE_MASK,
+-				 USEC_PER_MSEC, 10 * USEC_PER_MSEC, true,
+-				 qdma, REG_TRTCM_CFG_PARAM(addr));
++		airoha_qdma_wr(qdma, REG_TRTCM_DATA_LOW(addr), val);
++		wmb();
++		airoha_qdma_wr(qdma, REG_TRTCM_CFG_PARAM(addr), config);
++		if (airoha_qdma_get_trtcm_param(qdma, channel, addr, param,
++						mode, &data, NULL))
++			continue;
 +
- 	default:
- 		phy_interface_set_rgmii(adapter->phylink_config.supported_interfaces);
- 	}
-@@ -3197,6 +3205,9 @@ static int lan743x_phylink_create(struct lan743x_adapter *adapter)
- 	memcpy(adapter->phylink_config.lpi_interfaces,
- 	       adapter->phylink_config.supported_interfaces,
- 	       sizeof(adapter->phylink_config.lpi_interfaces));
-+	if (adapter->phy_interface == PHY_INTERFACE_MODE_RMII)
-+		__clear_bit(PHY_INTERFACE_MODE_RMII,
-+			    adapter->phylink_config.lpi_interfaces);
- 
- 	pl = phylink_create(&adapter->phylink_config, NULL,
- 			    adapter->phy_interface, &lan743x_phylink_mac_ops);
-@@ -3541,6 +3552,7 @@ static int lan743x_hardware_init(struct lan743x_adapter *adapter,
- {
- 	struct lan743x_tx *tx;
- 	u32 sgmii_ctl;
-+	u32 rmii_ctl;
- 	int index;
- 	int ret;
- 
-@@ -3562,6 +3574,11 @@ static int lan743x_hardware_init(struct lan743x_adapter *adapter,
- 			sgmii_ctl |= SGMII_CTL_SGMII_POWER_DN_;
- 		}
- 		lan743x_csr_write(adapter, SGMII_CTL, sgmii_ctl);
-+		if (adapter->is_rmii_en) {
-+			rmii_ctl = lan743x_csr_read(adapter, RMII_CTL);
-+			rmii_ctl |= RMII_CTL_RMII_ENABLE_;
-+			lan743x_csr_write(adapter, RMII_CTL, rmii_ctl);
-+		}
- 	} else {
- 		adapter->max_tx_channels = LAN743X_MAX_TX_CHANNELS;
- 		adapter->used_tx_channels = LAN743X_USED_TX_CHANNELS;
-diff --git a/drivers/net/ethernet/microchip/lan743x_main.h b/drivers/net/ethernet/microchip/lan743x_main.h
-index 1f8d9294a6ef..d9495cf96b41 100644
---- a/drivers/net/ethernet/microchip/lan743x_main.h
-+++ b/drivers/net/ethernet/microchip/lan743x_main.h
-@@ -325,6 +325,9 @@
- #define MAC_WUCSR2_IPV6_TCPSYN_RCD_	BIT(5)
- #define MAC_WUCSR2_IPV4_TCPSYN_RCD_	BIT(4)
- 
-+#define RMII_CTL			(0x710)
-+#define RMII_CTL_RMII_ENABLE_		BIT(0)
++		if (data == val)
++			break;
++	}
 +
- #define SGMII_ACC			(0x720)
- #define SGMII_ACC_SGMII_BZY_		BIT(31)
- #define SGMII_ACC_SGMII_WR_		BIT(30)
++	return i == 100 ? -EBUSY : 0;
+ }
+ 
+ static int airoha_qdma_set_trtcm_config(struct airoha_qdma *qdma, int channel,
+
+---
+base-commit: 4aacf509e537a711fa71bca9f234e5eb6968850e
+change-id: 20260605-airoha_qdma_set_trtcm_param-retry-fix-a9d2956b9b2f
+
+Best regards,
 -- 
-2.34.1
+Lorenzo Bianconi <lorenzo@kernel.org>
 
