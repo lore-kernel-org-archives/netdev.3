@@ -1,59 +1,58 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2D8935BDC2
-	for <netdev@vger.kernel.org>; Mon,  8 Jun 2026 11:18:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38D79365A03
+	for <netdev@vger.kernel.org>; Mon,  8 Jun 2026 11:19:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780917541; cv=none; b=KBta/kmeVFxNRsRpH6p78hwMMoDTsw6FZt6AxAC2z4JB8mYkCmBJPfQs7WG2nj8EAvur11r2kcbf14wHs3Jnd7D2WKpMuDeTFJruX5nbn52fwPp15iHsTZCp/k7al90BoyaE+F9nUyjZVQ6Q5mLk8pzAIu09/XdWoMZiY32+VZ8=
+	t=1780917584; cv=none; b=DSNfYGpcKbFkczdIyHJ90AdQe7V8qyJj7618rFV1VD7i1ujXkmJcTb6KqcUFOOg6HQSks5m8tWO4tLdG3h08sIaiT/rB1FR/zK/fttAWHV8+KTKl5PdyXqZoRynEFubKPZAdBQb/qcQQn7knSb1UzDbvm41neOKjKnXdeOe7yz0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780917541; c=relaxed/simple;
-	bh=DPpaot2Svx2MSbq7KY9ZMt5/x26NfewXAR6zENf8kbQ=;
+	s=arc-20240116; t=1780917584; c=relaxed/simple;
+	bh=f5NAJHcxzb5iVdVk5j6K75Yy6lO9LRzQdplxfReb0dE=;
 	h=From:In-Reply-To:MIME-Version:References:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Xky7n/MMVQgAAjdFTpDLILJo9Lj56N+Ol/05EuZR8yUwjslObQZ/yB6UbMFVpZLcqnlRQF2+PrYHIbF/Azv4RcnzJtW42wI6DcvrCUjS67vxjJM6zCMqAxSsuG/HC/t4JKyjumkRER7o0O7nlDWyoINrXq7ds0AQP0+cNjIWVgg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kqjKgFkO; arc=none smtp.client-ip=100.103.45.18
+	 To:Cc:Content-Type; b=s0YM3+95aYMIqb32fEMe9AHK5FGdajFGY/Kqe9qnw16aVz8j8LteagyTUlb7Jv4vk5OmJ1fLzZ1EpG/vFz9z3TIy7R0ycU8EFyOzp7HdI/fINLG1Iq3JikpHcJWV1x6CchHVXH0uwrfALCeGr43eZuWn+uLKDIQzrj/LXjOXwO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IBsVzN3o; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kqjKgFkO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3C891F00899
-	for <netdev@vger.kernel.org>; Mon,  8 Jun 2026 11:18:59 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IBsVzN3o"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E50C91F00899
+	for <netdev@vger.kernel.org>; Mon,  8 Jun 2026 11:19:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780917539;
-	bh=DPpaot2Svx2MSbq7KY9ZMt5/x26NfewXAR6zENf8kbQ=;
+	s=k20260515; t=1780917581;
+	bh=f5NAJHcxzb5iVdVk5j6K75Yy6lO9LRzQdplxfReb0dE=;
 	h=From:In-Reply-To:References:Date:Subject:To:Cc;
-	b=kqjKgFkObqfwVvcVXJkmpZpX1TkQLYU2+UZlp+tpOIg2EQzD0ciQMwI5eKqP5zNNy
-	 1MnoAYN3hwHkJNojge4fY+NqquZfjcy1RFbVwG9S5vYZVoS7zIvnokjvKHsnZsatXL
-	 rkNjgnxHzxM+NNcXGGfbHCf4YLS0NUpvgH2u75haXaazraTVOdDCnaGnrs9qfizMBr
-	 OCXo4+GKRuOhfmzK7xphPdiBEIcJ5D7IVc10xgYL1LHgOXKW5TfbZJEfdl7/0qO9m9
-	 EuWqidU/SAy83NacJkFbC1yw+bkT0wGwguF7deGgd3UfJtYIBpIQrvdTVsXuRdl+QS
-	 +EgFvL7SjvVuQ==
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-5aa68d9d56fso4146988e87.2
-        for <netdev@vger.kernel.org>; Mon, 08 Jun 2026 04:18:59 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ+Lj8fj3OsrrTpipA1PbWZago9UMoWBVezH2gkqfWm7/52sWE6+1td2+WlTBqwh52n8St9XCns=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzUfqQnVCpYOjnA8xRC1155FnSzFIQruZ5jRpmTy1FeBot3t/hN
-	q/px9QbAWnGveHVie2JlZJ/21oO6gBcwmtjYjQ1Lg/vKxcIRxt6z1ZU8vUq3eT6wxomisdGNVfD
-	vMsnzFiT5if4gWmDH9bov9rz0DS5NgRjXkM4E9faBUw==
-X-Received: by 2002:a05:6512:61d3:10b0:5aa:6b85:85cf with SMTP id
- 2adb3069b0e04-5aa87babf3bmr2724481e87.10.1780917538408; Mon, 08 Jun 2026
- 04:18:58 -0700 (PDT)
+	b=IBsVzN3ogan36/89OV9DntGbgRlO4EaXnUSl9l4MdOfxxYGiF7wtHMJ/Vre/u0SPh
+	 6LrQTxHcl/GimI+L88il4sYmFnvjJli3ro9qv4gcbWUAVdIu2VUru9+5iChQS6CNf0
+	 KOmZtnyvu8OnqHxbc9gn5ZS/iqm1RYFnLXvzbgiyt4LafFAHIzykDtrfrc1igLJ8Vw
+	 QlAMaOmQZnPR7o9OoVQKyTqFJ3ywv6pRPR18ji/sJftlYY7BHSWJ8CCqsT33hbU+tE
+	 RwAB7znD0I9tXF5KTsW+Hgfc3DWr44iQYOYqZ0/oivzKPLv6P5hZc1SKl8GJgG8R2t
+	 MhNqn2aBDsiSg==
+Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-5aa66893e9fso4692092e87.1
+        for <netdev@vger.kernel.org>; Mon, 08 Jun 2026 04:19:41 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ8/7P3IHAup4Sa0EPOexUj0JmGrzqin4aiownDhQv+MGzpoUW5YBGt5fyQVNaUFle1/zVo6J7I=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzojqMoyD9fRw2jEeQ5o65lGRfkDgx4+O8tdihqfuXAQKqsN8Fe
+	YAt4SCE0jLGWGOPT1GdeVkBxwoZ3EP0p8zFCShaM7ZcOBpKjlOzKn/HH7wxU7j7R/aD/Yr6jFvG
+	UwFwa97mbEprtuxHSd30DD3SEoP9fc6P4ijujoyCVGQ==
+X-Received: by 2002:a05:6512:33cc:b0:5aa:6aba:76f8 with SMTP id
+ 2adb3069b0e04-5aa87bc8d69mr3784333e87.30.1780917580513; Mon, 08 Jun 2026
+ 04:19:40 -0700 (PDT)
 Received: from 969154062570 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 8 Jun 2026 04:18:56 -0700
+ HTTPREST; Mon, 8 Jun 2026 04:19:38 -0700
 Received: from 969154062570 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 8 Jun 2026 04:18:56 -0700
+ HTTPREST; Mon, 8 Jun 2026 04:19:38 -0700
 From: Bartosz Golaszewski <brgl@kernel.org>
-In-Reply-To: <20260608-block-as-nvmem-v3-2-82681f50aa35@oss.qualcomm.com>
+In-Reply-To: <20260608-block-as-nvmem-v3-6-82681f50aa35@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260608-block-as-nvmem-v3-0-82681f50aa35@oss.qualcomm.com> <20260608-block-as-nvmem-v3-2-82681f50aa35@oss.qualcomm.com>
-Date: Mon, 8 Jun 2026 04:18:56 -0700
-X-Gmail-Original-Message-ID: <CAMRc=MeyOS=ngzVcu9zHN1g2W60GXHuZgSFozCTSVb1cGxJwMw@mail.gmail.com>
-X-Gm-Features: AVVi8CevzSi8FWjqPtdJGMMjRNFkh5D31R7JAhStRKSOzvhr_7JJA4oBvY-YP1c
-Message-ID: <CAMRc=MeyOS=ngzVcu9zHN1g2W60GXHuZgSFozCTSVb1cGxJwMw@mail.gmail.com>
-Subject: Re: [PATCH v3 2/7] dt-bindings: net: wireless: qcom,ath10k: Document
- NVMEM cells
+References: <20260608-block-as-nvmem-v3-0-82681f50aa35@oss.qualcomm.com> <20260608-block-as-nvmem-v3-6-82681f50aa35@oss.qualcomm.com>
+Date: Mon, 8 Jun 2026 04:19:38 -0700
+X-Gmail-Original-Message-ID: <CAMRc=MdRZ_7jzDErZOxeBYE+awL2fe1KcKqC=Yi1gDD28ra=zg@mail.gmail.com>
+X-Gm-Features: AVVi8Cew2n-YmjEp_T_Fkca1TPT0Dv6DfUiL88X7yEcZLGkS30SEi9F-0nG9RjI
+Message-ID: <CAMRc=MdRZ_7jzDErZOxeBYE+awL2fe1KcKqC=Yi1gDD28ra=zg@mail.gmail.com>
+Subject: Re: [PATCH v3 6/7] Bluetooth: hci_sync: Add NVMEM-backed BD address retrieval
 To: Loic Poulain <loic.poulain@oss.qualcomm.com>
 Cc: linux-mmc@vger.kernel.org, devicetree@vger.kernel.org, 
 	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
@@ -73,10 +72,18 @@ Cc: linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
 	Saravana Kannan <saravanak@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 
-On Mon, 8 Jun 2026 12:50:39 +0200, Loic Poulain
+On Mon, 8 Jun 2026 12:50:43 +0200, Loic Poulain
 <loic.poulain@oss.qualcomm.com> said:
-> Document the NVMEM cells supported by the ath10k driver, the
-> mac-address, pre-calibration data, and calibration data.
+> Some devices store the Bluetooth BD address in non-volatile
+> memory, which can be accessed through the NVMEM framework.
+> Similar to Ethernet or WiFi MAC addresses, add support for
+> reading the BD address from a 'local-bd-address' NVMEM cell.
+>
+> As with the device-tree provided BD address, add a quirk to
+> indicate whether a device or platform should attempt to read
+> the address from NVMEM when no valid in-chip address is present.
+> Also add a quirk to indicate if the address is stored in
+> big-endian byte order.
 >
 > Signed-off-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
 > ---
