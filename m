@@ -1,133 +1,194 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D73573C4557
-	for <netdev@vger.kernel.org>; Mon,  8 Jun 2026 08:40:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 955883B42DC
+	for <netdev@vger.kernel.org>; Mon,  8 Jun 2026 08:42:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780908058; cv=none; b=tNb4yjxwZGkNfrKHIzQHTszUbzS4a85XgVb3DFu7x8iAaN8KkV0y/LrZjAfrckFH3BFFvupN3xNiXis+E18xSxt+Vw/oUrpBcsa+gKd6y8MxJSlb1u48di5gOiOHeHVQxl0QIL27egik/mAgt4gbN6i5wm15bG9sfeqF8DOaT0k=
+	t=1780908140; cv=none; b=pfrl5AptuRcTDgQGJlcEa1NEe40JiT0QXMP62qAixQoi9q1G8y+cHaT/P2OFzBGD9d5wyJs2ARv9R5dQhzsrudbOfKcNm2ohgv3POeSJSVj1HIEfG+LxhN7+mPWwxKoKMsFFJ0aHx7X7sJog4SH06F2/HA086guDYhD6MaTCINw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780908058; c=relaxed/simple;
-	bh=Z1tpQiF5SlWYkxPC/pBiynkFWvlAzchlifLEFft0XF8=;
-	h=From:In-Reply-To:MIME-Version:References:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Wuz68i3hziOPv7uMzKw0Ml+T7KcZ9bTHylFVlfO+yPKE1LQbYWsgc5C7v5CWhhkJ2BJvbllmUaBsJvkTNfEL0OBT+tQc6TLiQPCo0HRmfcMIbUeeaT3Bu+5WHce+vz04gY4RLwidXDPemKNn4KsCKddCY2z4iVf63Cxv+j6Xx6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UtAzf/TG; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780908140; c=relaxed/simple;
+	bh=z0v1uWiu8TNvRB/nbLUM//Lso4OwWGNSCYHIQjkF4jY=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=m/HlDP2hsvn6SznJRv4MYMiWMxlkFb5LEloTqALaKHx/D2SO1W7z+cAEVEEsFeHurFsZjIuQLzn28+7DXGsaGRN+XVv0XuFGh6lM7Tjx4ilaXF7qmU2ggtt+UlxSyG4nyHwhiEu5QejRmte0CiLLAHRSvoA7dNMOyrjeAv8JgV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cTaveqHx; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UtAzf/TG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 660681F00A06
-	for <netdev@vger.kernel.org>; Mon,  8 Jun 2026 08:40:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780908055;
-	bh=4HoT9KIsnYIDd0zvedKTYCGFgVE6ChDhK5tVcTIkXrs=;
-	h=From:In-Reply-To:References:Date:Subject:To:Cc;
-	b=UtAzf/TGWJfwCsNV2Ue5iolZ68yf3f30P6b6WmVzMzBqmmPCvh444Q2e4wBR9DYZC
-	 AnxUpcvEVn2Om/u9TmAeMRVOIJcAlsFT0YmOWjrVMVfIRbPKrc9iGS0/Jgf4Qr2NYD
-	 MBwOdTvIy/zAkvHr4quF7Wwq4FMCmIDH4DB7ddcjbeIN5xVcDXorm2J96nVOaL/XCC
-	 r8l2OPZPij1DKq+wHQbblb/+Tt2+7PzogxDLKgACcK819/76HiKDbpBS0bXE4RuGEG
-	 d69BNA98i9BydLxFP1a+/yqre2Wxr8M5vsK9LaX6cTvPy5TevPtps1emBN/QIKPBDS
-	 nJrnvZt+BYY4w==
-Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-5aa68d9dc18so3917899e87.2
-        for <netdev@vger.kernel.org>; Mon, 08 Jun 2026 01:40:55 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ858g+0pxneU0+3Xd/pvdDhSCovKVIA9AWjem7MAhpB7CN5uzOIfi3lJVeQbuP8d6uelpeAH3A=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyQRd3BgTI/8YUm0TZFNY7Ohh6//rPiyQsPcMtS0Gv4UgmnF2aK
-	HZWY6HVjmlnxxZylV4fgVrtZKusIIyDlCw9xcGMFcVu6DR6SbzVv2STtqmXd2Ho3sE8iDFsFXrY
-	W6vvrFKels+5aUL1KvhOrv2l319462FJ/U9o2je+qpg==
-X-Received: by 2002:a05:6512:8046:b0:5aa:6dff:cf0d with SMTP id
- 2adb3069b0e04-5aa87bc2279mr2524415e87.28.1780908053800; Mon, 08 Jun 2026
- 01:40:53 -0700 (PDT)
-Received: from 969154062570 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 8 Jun 2026 01:40:52 -0700
-Received: from 969154062570 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 8 Jun 2026 01:40:52 -0700
-From: Bartosz Golaszewski <brgl@kernel.org>
-In-Reply-To: <20260521-pdev-fwnode-ref-v1-5-88c324a1b8d2@oss.qualcomm.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cTaveqHx"
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-490af320e2aso44580145e9.2
+        for <netdev@vger.kernel.org>; Mon, 08 Jun 2026 01:42:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780908137; x=1781512937; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=scdbdNwzC/a5GHNDLiCsaeBV57d/4TFPto/ThqOE/Sw=;
+        b=cTaveqHxMqwC/9fjHVGiTgIYkwgwFIvIRyjVcN4kBZ3J6FKBB1Vkky2UnfWg2yONwH
+         sa0m4YERUbh+QQ8wivwZNQbVFMogSaLs3Je/9O6r1qgAn5+TMuxL3Vjs1pTsbFI1GemI
+         Z3erUxw1zdcCYm7Ut9dfN8E2OE/TyaKJxx9oxgRFJSXd9YTNUhFakiKpTKZq+8cWUIUf
+         4tZ2Lh/pdGhYWwdpw0SS4+OsVa1djJzRavgkYnPltdFIovhMnZm5AaJsVrJJSDsMiGwR
+         XeDsEGpdGFQtBhPEKwy9/pisSyCQHYmaWEpAew/fovSOnTXrFALK8hapsooIeNnQoX4R
+         Qftw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780908137; x=1781512937;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=scdbdNwzC/a5GHNDLiCsaeBV57d/4TFPto/ThqOE/Sw=;
+        b=AWtkAM5AQDjof84MheLeYR0bSJ/6wZaUA3I6fgm//6TON7LFpUdUJbVl5mtTVH/xYd
+         LTTPoa0j3r39QLrA2nwEs1cvLIu7IZaucN/SlU6mMqGDe9Wl9y6rET07iFsZoCuYU3t8
+         LZQQaCvUQLQcRETeo57YWTGJ31ZWaF7EJUO2obQGdP+gejYgj97voAZseHsP5oYigQ+K
+         d8pNLxUGx0553+Y0ZaiBZ1c4JgbZxV57TTsEpmXyQLGKxLifYjjuXb1U5oduDCzSlKL1
+         b0oDWLmW/7NcPSz1fTLfXUidAXs3d7hptx1Xeo08wvrUECVWehwtmF+VIvW3jD45u7VE
+         dcNQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9+KLA5KRRqmSv1/XByoEvPxCvQgxSOlDZIKRomnhsVBDwoZwNoP9KIgHo1cHfEqBNtpJ3ug+o=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy6s9aPXAolcfSgX4NoN4oH4wpamjIdlvyM5FKMXAum26F8iuou
+	UrbmU5J/typ5O22jkNQybTYODUJxsfNBYHL0XPSjp2OmUi84f2CVDmo4
+X-Gm-Gg: Acq92OG8ADIibkjJcBqzS9Y9AqaAe6zVIEkIW3wgb/lFpmcYW292fHLGskegYp4Fhha
+	HFOev8fmggp/IwGckSi9LgeL2ljWh9bBIU1Hbagv0d0BmYvjlTmXDLunqRUSKkwhbYs4gWkpV6H
+	XpLbN/MnnLn2aeo6p0VAp/wWS4WlQlWK1n2aTHM7zY7D5HSfkOn/Ao0fMZHm6r/qbr5Nk4PhEGR
+	myDcVjAFbiYCaOv764Vzd1IhC0tBIQu0SpjgtqU8alcFhgWtl4uZGF6cZ0Vvl0TwlkFhoKMRTOx
+	TnfE1zA69cOOHiallBioDWDGPm2/a40HlW56zVPywksdey5OCiaCJRE2Hj5jQWZDXZMWJmc5d7C
+	JwaL6l34JCEKmEcfWu3IVSzVLcAXelGTeV8i5V3HgmnuhG0RWLZZKHUqgTHoRQ+4ItAt0OtjJgI
+	jA16978ekTtRmr590pzjqOKHQ6p28ca8guIRdrAiQxIGdddFxyzfih0EUjYkWZHpu3fdNqOYo=
+X-Received: by 2002:a05:600c:3f10:b0:490:be44:32ea with SMTP id 5b1f17b1804b1-490c2591fcdmr250743905e9.7.1780908136860;
+        Mon, 08 Jun 2026 01:42:16 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4601f2e4004sm50813041f8f.9.2026.06.08.01.42.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 08 Jun 2026 01:42:16 -0700 (PDT)
+Date: Mon, 8 Jun 2026 09:42:15 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: Xin Long <lucien.xin@gmail.com>
+Cc: Michael Bommarito <michael.bommarito@gmail.com>, Marcelo Ricardo Leitner
+ <marcelo.leitner@gmail.com>, "David S . Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
+ Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Vlad Yasevich
+ <vladislav.yasevich@hp.com>, linux-sctp@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v2] sctp: fix uninit-value in
+ __sctp_rcv_asconf_lookup()
+Message-ID: <20260608094215.4dd984ed@pumpkin>
+In-Reply-To: <CADvbK_fn=t8+8cg5hCRUKrO_dF+-ikrzsSPmzgaeMT83jB_T-g@mail.gmail.com>
+References: <20260606183821.1688525-1-michael.bommarito@gmail.com>
+	<CADvbK_fn=t8+8cg5hCRUKrO_dF+-ikrzsSPmzgaeMT83jB_T-g@mail.gmail.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260521-pdev-fwnode-ref-v1-0-88c324a1b8d2@oss.qualcomm.com> <20260521-pdev-fwnode-ref-v1-5-88c324a1b8d2@oss.qualcomm.com>
-Date: Mon, 8 Jun 2026 01:40:52 -0700
-X-Gmail-Original-Message-ID: <CAMRc=MdrfyUUyk9sMGVCedyug_JmZQZEQHuK5T6+BRv3AvNT6g@mail.gmail.com>
-X-Gm-Features: AVVi8CchM9VaksLWvpKbwHirniTnl6glReoNd3-xvchi05VK9oh9JtbFGYTDxqA
-Message-ID: <CAMRc=MdrfyUUyk9sMGVCedyug_JmZQZEQHuK5T6+BRv3AvNT6g@mail.gmail.com>
-Subject: Re: [PATCH 05/23] powerpc/powermac: fix OF node refcount
-To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Cc: brgl@kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, linux-sound@vger.kernel.org, 
-	driver-core@lists.linux.dev, devicetree@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-i2c@vger.kernel.org, 
-	iommu@lists.linux.dev, linux-pm@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, intel-xe@lists.freedesktop.org, 
-	dri-devel@lists.freedesktop.org, linux-usb@vger.kernel.org, 
-	linux-mips@vger.kernel.org, platform-driver-x86@vger.kernel.org, 
-	stable@vger.kernel.org, Lee Jones <lee@kernel.org>, 
-	Mark Brown <broonie@opensource.wolfsonmicro.com>, 
-	Thierry Reding <thierry.reding@avionic-design.de>, 
-	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Srinivas Kandagatla <srini@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Vinod Koul <vkoul@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
-	Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@kernel.org>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Nicholas Piggin <npiggin@gmail.com>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
-	Andi Shyti <andi.shyti@kernel.org>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
-	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>, 
-	Doug Berger <opendmb@gmail.com>, Florian Fainelli <florian.fainelli@broadcom.com>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Ulf Hansson <ulfh@kernel.org>, 
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Matthew Brost <matthew.brost@intel.com>, 
-	=?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, 
-	Rodrigo Vivi <rodrigo.vivi@intel.com>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Peter Chen <peter.chen@kernel.org>, 
-	Paul Cercueil <paul@crapouillou.net>, Bin Liu <b-liu@ti.com>, 
-	Philipp Zabel <p.zabel@pengutronix.de>, Maximilian Luz <luzmaximilian@gmail.com>, 
-	Hans de Goede <hansg@kernel.org>, =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
-	Krzysztof Kozlowski <krzk@kernel.org>, Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, 21 May 2026 10:36:28 +0200, Bartosz Golaszewski
-<bartosz.golaszewski@oss.qualcomm.com> said:
-> Platform devices created with platform_device_alloc() call
-> platform_device_release() when the last reference to the device's
-> kobject is dropped. This function calls of_node_put() unconditionally.
-> This works fine for devices created with platform_device_register_full()
-> but users of the split approach (platform_device_alloc() +
-> platform_device_add()) must bump the reference of the of_node they
-> assign manually. Add the missing call to of_node_get().
->
-> Cc: stable@vger.kernel.org
-> Fixes: 81e5d8646ff6 ("i2c/powermac: Register i2c devices from device-tree")
-> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-> ---
->  arch/powerpc/platforms/powermac/low_i2c.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/arch/powerpc/platforms/powermac/low_i2c.c b/arch/powerpc/platforms/powermac/low_i2c.c
-> index da72a30ab8657e6dc7e6f3437af612155783d8f9..973f58771d9636605ed5d3e91b45008543b584d3 100644
-> --- a/arch/powerpc/platforms/powermac/low_i2c.c
-> +++ b/arch/powerpc/platforms/powermac/low_i2c.c
-> @@ -1471,7 +1471,7 @@ static int __init pmac_i2c_create_platform_devices(void)
->  		if (bus->platform_dev == NULL)
->  			return -ENOMEM;
->  		bus->platform_dev->dev.platform_data = bus;
-> -		bus->platform_dev->dev.of_node = bus->busnode;
-> +		bus->platform_dev->dev.of_node = of_node_get(bus->busnode);
->  		platform_device_add(bus->platform_dev);
->  	}
->
->
-> --
-> 2.47.3
->
->
+On Sun, 7 Jun 2026 19:42:25 -0400
+Xin Long <lucien.xin@gmail.com> wrote:
 
-Hi!
+> On Sat, Jun 6, 2026 at 2:39=E2=80=AFPM Michael Bommarito
+> <michael.bommarito@gmail.com> wrote:
+> >
+> > __sctp_rcv_asconf_lookup() in net/sctp/input.c only checks that the ASC=
+ONF
+> > chunk can hold the ADDIP header and a parameter header, then calls
+> > af->from_addr_param(), which reads the full address (16 bytes for IPv6)
+> > trusting the parameter's declared length.
+> >
+> > An unauthenticated peer can send a truncated trailing ASCONF chunk that
+> > declares an IPv6 address parameter but stops after the 4-byte parameter
+> > header; reached from the no-association lookup path, from_addr_param() =
+then
+> > reads uninitialized bytes past the parameter.
+> >
+> > Impact: an unauthenticated SCTP peer makes the receive path read up to =
+16
+> > bytes of uninitialized memory past a truncated ASCONF address parameter.
+> >
+> > The sibling __sctp_rcv_init_lookup() bounds parameters with
+> > sctp_walk_params(); this path open-codes the fetch and omits the bound.
+> > Verify the whole address parameter lies within the chunk before
+> > from_addr_param() reads it, the same class of fix as commit 51e5ad549c43
+> > ("net: sctp: fix KMSAN uninit-value in sctp_inq_pop").
+> >
+> > Fixes: df2185771439 ("[SCTP]: Update association lookup to look at ASCO=
+NF chunks as well")
+> > Assisted-by: Claude:claude-opus-4-8
+> > Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+> > ---
+> > v2:
+> > - Regenerate from net/main so the patch has index lines and applies
+> >   cleanly (Xin Long).
+> > - Use unsigned int for the decoded length and compare it against the
+> >   remaining parameter space after the ADDIP header (David Laight).
+> > v1: https://lore.kernel.org/all/20260604175803.2142975-1-michael.bommar=
+ito@gmail.com/
+> >
+> >  net/sctp/input.c | 13 +++++++++++++
+> >  1 file changed, 13 insertions(+)
+> >
+> > diff --git a/net/sctp/input.c b/net/sctp/input.c
+> > index e119e460ccde0..c63d42500aa28 100644
+> > --- a/net/sctp/input.c
+> > +++ b/net/sctp/input.c
+> > @@ -1197,13 +1197,26 @@ static struct sctp_association *__sctp_rcv_asco=
+nf_lookup(
+> >         struct sctp_af *af;
+> >         union sctp_addr_param *param;
+> >         union sctp_addr paddr;
+> > +       unsigned int param_space;
+> > +       unsigned int plen;
+> >
+> >         if (ntohs(ch->length) < sizeof(*asconf) + sizeof(struct sctp_pa=
+ramhdr))
+> >                 return NULL;
+> >
+> > +       param_space =3D ntohs(ch->length) - sizeof(*asconf);
+> > +
+> >         /* Skip over the ADDIP header and find the Address parameter */
+> >         param =3D (union sctp_addr_param *)(asconf + 1);
+> >
+> > +       /* The whole address parameter must lie within the chunk before
+> > +        * af->from_addr_param() reads the variable-length address; oth=
+erwise a
+> > +        * truncated trailing ASCONF chunk lets it read uninitialized b=
+ytes past
+> > +        * the parameter.
+> > +        */
+> > +       plen =3D ntohs(param->p.length);
+> > +       if (plen < sizeof(struct sctp_paramhdr) || plen > param_space)
+> > +               return NULL;
+> > + =20
+> I think we don't really need to check plen < sizeof(struct sctp_paramhdr).
+> This check is to ensure param->p.length can be safely accessed, but it's
+> already guaranteed by the early check:
+>=20
+> if (ntohs(ch->length) < sizeof(*asconf) + sizeof(struct sctp_paramhdr))
+>=20
+> I think you can just simplify your patch to:
+>=20
+> if (ntohs(param->p.length) > ntohs(ch->length) - sizeof(*asconf))
+>         return NULL;
 
-Gentle ping for that fix. Can we get this landed for v7.1 or early v7.2 and
-make getting the rest of the series upstream easier next cycle?
+To stop having to think about the values wrapping, how about swapping to:
+	if (sizeof(*asconf) + ntohs(param->p.length) > ntohs(ch->length))
+		return NULL;
+so that it is 100% clear they don't.
+Even if the earlier test is missing/incorrect that will only read
+invalid data and then return NULL.
 
-Bart
+-- David
+
+>=20
+> Also note  ntohs(param->p.length) < sizeof(struct sctp_paramhdr) will be
+> caught by af->from_addr_param(sctp_v4/v6_from_addr_param) and return NULL.
+>=20
+> Thanks.
+>=20
+> >         af =3D sctp_get_af_specific(param_type2af(param->p.type));
+> >         if (unlikely(!af))
+> >                 return NULL;
+> > --
+> > 2.53.0 =20
+>=20
+
