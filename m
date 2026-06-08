@@ -1,266 +1,107 @@
-Received: from mail.rulkc.org (mail.rulkc.org [155.212.184.193])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D8F33DD518;
-	Mon,  8 Jun 2026 18:20:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=155.212.184.193
+Received: from zg8tmtyylji0my4xnjqumte4.icoremail.net (zg8tmtyylji0my4xnjqumte4.icoremail.net [162.243.164.118])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 814B63E1211
+	for <netdev@vger.kernel.org>; Mon,  8 Jun 2026 18:34:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.243.164.118
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780942858; cv=none; b=qBz6jZoegsEBm5TiXFExnW4xFDsNkqvoCBZEH6/mZgoz/+VyqQLoumn0/1LqIDL1zy2QMen2VJR5r/ThnFzIobcaFI40XNf20yOLFipB6y7NNjp0pd4G+GUzECzJ1HEHas3M5nWCJmjjUUgpG/7r3veu4IjRg/2CpXESbfpaH/E=
+	t=1780943687; cv=none; b=aGmhAIfBcXP1O4AsnCZ9iHNGCkQonxhXP6j8AD1LG0Bj8XTrL1hV44M0Zkhh2sT4jNpXoV3tgAgMG0aDUZVoMmuHs0zkkvo/dYmePLFR9E6qh9m/PRPUO7T2mC0HCwuguqQHr9YOkSkZmHfHps5LqG+FLo7XmyaRqiCHNpXSPK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780942858; c=relaxed/simple;
-	bh=AFivZ9sIdgvcSE8MfbkuLx31k8O7VSDGHadagPSMhrA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XeQjyjSsxiUHZ90666P4TfXVsLN8St3tJo1VUK0t1rHYt45ooXMc8CQUSKZ8yc/4BUaYKvU8xcFk139dSSuOiAD5X5Evwg1aqVcf/+mnpI7A+rba2Ibn48ByNjXfFY6fUqtvnVK+h2C7f0Drso7dDB+F6mGKBtrgI+Hh4N8PAlg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=rulkc.org; spf=pass smtp.mailfrom=rulkc.org; dkim=pass (2048-bit key) header.d=rulkc.org header.i=@rulkc.org header.b=KfnbqbsF; arc=none smtp.client-ip=155.212.184.193
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=rulkc.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rulkc.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rulkc.org header.i=@rulkc.org header.b="KfnbqbsF"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9AD921003A5;
-	Mon,  8 Jun 2026 21:20:37 +0300 (MSK)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rulkc.org; s=dkim;
-	t=1780942847; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=kLCvwaWNfVfagj2opTtr+6FvDI985J5g55JamF0EV1k=;
-	b=KfnbqbsFpVN0zO/IRKidz1SRD3Sw3c5Zyuvt7oRmqrT/d4iUwMXdBLINweuwU7R8t8jMMl
-	4uqgmkAbRNiYt1TbU/ctfoc6VAC3ZALOjtjseTkA35rhnJ+FA0hiOhcB5wfGLQ9toCa0Zj
-	7LvyORxuPC2grZuwTUmX9VeVox5HE00oIlJLjrQs/MLi3H99VR0gU2CfYVsbAOYFBfaYM3
-	dizEl+VPQDonNBZ2srNepR5DxL9quwSgcSdnZJ/IoLqPoUEbu0eGdg6RcSZQeGdiawQs1l
-	go1ix/fvxSs9sa2vRPDaSvqWLHeqU4/zJ3+HoT9xZ8jr5T2FbAta1K6IAKZq5w==
-Message-ID: <57227194-f10a-49ab-acb1-a4bc0ba1c817@rulkc.org>
-Date: Mon, 8 Jun 2026 21:20:29 +0300
+	s=arc-20240116; t=1780943687; c=relaxed/simple;
+	bh=ucnZlmTMvuYHH0ldg7Rzadpxooc7vDPTejdg/SdlYbU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=W7x+7Je3Sztcp5a23dukI3ex94PevpQgXS+8Y/BT5b7Ta08fD8TaKwKAiswkoqVOmsRcDdieqvi/AdJlYZddOLc134dpymGpk/FiBT8iNQBppIyl54NesjOOON4SBaghTUizOLHul4ievyIveW0XvkRzAflThHT11Avue351eRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lzu.edu.cn; spf=pass smtp.mailfrom=lzu.edu.cn; arc=none smtp.client-ip=162.243.164.118
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lzu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lzu.edu.cn
+Received: from enjou-Legion-Y7000P-2019 (unknown [172.23.56.36])
+	by app1 (Coremail) with SMTP id ygmowADH6sQ4CydqRBRuAA--.16762S4;
+	Tue, 09 Jun 2026 02:34:35 +0800 (CST)
+From: Ren Wei <n05ec@lzu.edu.cn>
+To: netdev@vger.kernel.org
+Cc: kuba@kernel.org,
+	victor@mojatatu.com,
+	jhs@mojatatu.com,
+	yotam.gi@gmail.com,
+	davem@davemloft.net,
+	xiyou.wangcong@gmail.com,
+	yuantan098@gmail.com,
+	bird@lzu.edu.cn,
+	edragain@163.com,
+	n05ec@lzu.edu.cn
+Subject: [PATCH net v2 2/2] net: ife: require ETH_HLEN to be pullable in ife_decode()
+Date: Tue,  9 Jun 2026 02:34:23 +0800
+Message-ID: <f988cd8a9bbfacd570329c06eb7df9ec4c75cade.1780901080.git.edragain@163.com>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <cover.1780901080.git.edragain@163.com>
+References: <cover.1780901080.git.edragain@163.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] vsock/virtio: rework MSG_ZEROCOPY flag handling
-To: David Laight <david.laight.linux@gmail.com>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>,
- Stefano Garzarella <sgarzare@redhat.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
- Bobby Eshleman <bobby.eshleman@bytedance.com>,
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
- <eperezma@redhat.com>, Simon Horman <horms@kernel.org>, kvm@vger.kernel.org,
- virtualization@lists.linux-foundation.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, oxffffaa@gmail.com, rulkc@linuxtesting.org
-References: <20260605115314.552321-1-avkrasnov@rulkc.org>
- <20260605160851.3ddbd2ed@pumpkin>
- <e5200406-d336-4ddf-9abd-78fccda24546@rulkc.org>
- <20260608103701.7839ff1b@pumpkin>
-Content-Language: ru
-From: Arseniy Krasnov <avkrasnov@rulkc.org>
-In-Reply-To: <20260608103701.7839ff1b@pumpkin>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+X-CM-TRANSID:ygmowADH6sQ4CydqRBRuAA--.16762S4
+X-Coremail-Antispam: 1UD129KBjvJXoW7Kw17GFWrAFyDWF43JrW7CFg_yoW8Ww4fpw
+	13Gr1kKrWvqa47Cr1kWw4xW343Ca9xJFWxWFsYy3sY93Z8Zr17JFySgr45uF10vrZ5Wa9r
+	ZrnrZryUCa4DZFDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUBF1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AE
+	w4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2
+	IY67AKxVWUJVWUCwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwA2z4x0Y4vEx4A2
+	jsIE14v26F4j6r4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gr1j6F4UJwAS0I0E0xvYzx
+	vE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWU
+	JVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7V
+	AKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628vn2kIc2xKxwCY1x02
+	62kKe7AKxVWUtVW8ZwCY02Avz4vE-syl42xK82IYc2Ij64vIr41l42xK82IY6x8ErcxFaV
+	Av8VW8GwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E
+	7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcV
+	C0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF
+	04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7
+	CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUd-B_UUUUU=
+X-CM-SenderInfo: zqqvvuo6o23hxhgxhubq/1tbiAQAMCWome1AKFAAAs9
 
+From: Yong Wang <edragain@163.com>
 
-On 08/06/2026 12:37, David Laight wrote:
-> On Mon, 8 Jun 2026 11:10:24 +0300
-> Arseniy Krasnov <avkrasnov@rulkc.org> wrote:
->
->> On 05/06/2026 18:08, David Laight wrote:
->>> On Fri,  5 Jun 2026 14:53:14 +0300
->>> Arseniy Krasnov <avkrasnov@rulkc.org> wrote:
->>>  
->>>> Logically it was based on TCP implementation, so to make further
->>>> support easier, rewrite it in the TCP way.
->>>>
->>>> Signed-off-by: Arseniy Krasnov <avkrasnov@rulkc.org>
->>>> ---
->>>>  net/vmw_vsock/virtio_transport_common.c | 64 ++++++++++++-------------
->>>>  1 file changed, 32 insertions(+), 32 deletions(-)
->>>>
->>>> diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
->>>> index 2fd9eaaf5ca6..00caeeaa5590 100644
->>>> --- a/net/vmw_vsock/virtio_transport_common.c
->>>> +++ b/net/vmw_vsock/virtio_transport_common.c
->>>> @@ -73,10 +73,13 @@ static bool virtio_transport_can_zcopy(const struct virtio_transport *t_ops,
->>>>  static int virtio_transport_fill_skb(struct sk_buff *skb,
->>>>  				     struct virtio_vsock_pkt_info *info,
->>>>  				     size_t len,
->>>> -				     bool zcopy)
->>>> +				     bool zcopy, struct ubuf_info *uarg)
->>>>  {
->>>>  	struct msghdr *msg = info->msg;
->>>>  
->>>> +	/* We have completion - attach it to 'skb'. */
->>>> +	skb_zcopy_set(skb, uarg, NULL);
->>>> +
->>>>  	if (zcopy)
->>>>  		return __zerocopy_sg_from_iter(msg, NULL, skb,
->>>>  					       &msg->msg_iter, len, NULL);
->>>> @@ -208,7 +211,8 @@ static struct sk_buff *virtio_transport_alloc_skb(struct virtio_vsock_pkt_info *
->>>>  						  u32 src_cid,
->>>>  						  u32 src_port,
->>>>  						  u32 dst_cid,
->>>> -						  u32 dst_port)
->>>> +						  u32 dst_port,
->>>> +						  struct ubuf_info *uarg)
->>>>  {
->>>>  	struct vsock_sock *vsk;
->>>>  	struct sk_buff *skb;
->>>> @@ -245,7 +249,7 @@ static struct sk_buff *virtio_transport_alloc_skb(struct virtio_vsock_pkt_info *
->>>>  	if (info->msg && payload_len > 0) {
->>>>  		int err;
->>>>  
->>>> -		err = virtio_transport_fill_skb(skb, info, payload_len, zcopy);
->>>> +		err = virtio_transport_fill_skb(skb, info, payload_len, zcopy, uarg);
->>>>  		if (err)
->>>>  			goto out;
->>>>  
->>>> @@ -321,38 +325,36 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
->>>>  	if (pkt_len == 0 && info->op == VIRTIO_VSOCK_OP_RW)
->>>>  		return pkt_len;
->>>>  
->>>> -	if (info->msg) {
->>>> -		/* If zerocopy is not enabled by 'setsockopt()', we behave as
->>>> -		 * there is no MSG_ZEROCOPY flag set.
->>>> +	if (info->msg && (info->msg->msg_flags & MSG_ZEROCOPY)) {
->>>> +		/* If 'info->msg' is not NULL, this is only VIRTIO_VSOCK_OP_RW.
->>>> +		 * 'MSG_ZEROCOPY' flag handling here is based on the same flag
->>>> +		 * handling from 'tcp_sendmsg_locked()'.
->>>>  		 */
->>>> -		if (!sock_flag(sk_vsock(vsk), SOCK_ZEROCOPY))
->>>> -			info->msg->msg_flags &= ~MSG_ZEROCOPY;
->>>> +		if (info->msg->msg_ubuf) {
->>>> +			uarg = info->msg->msg_ubuf;
->>>> +			can_zcopy = virtio_transport_can_zcopy(t_ops, info, pkt_len);
->>>> +		} else if (sock_flag(sk_vsock(vsk), SOCK_ZEROCOPY)) {
->>>> +			uarg = msg_zerocopy_realloc(sk_vsock(vsk), pkt_len,
->>>> +						    NULL, false);
->>>> +			if (!uarg) {
->>>> +				virtio_transport_put_credit(vvs, pkt_len);
->>>> +				return -ENOMEM;
->>>> +			}
->>>>  
->>>> -		if (info->msg->msg_flags & MSG_ZEROCOPY)
->>>>  			can_zcopy = virtio_transport_can_zcopy(t_ops, info, pkt_len);
->>>>  
->>>> +			if (!can_zcopy)
->>>> +				uarg_to_msgzc(uarg)->zerocopy = 0;
->>>> +
->>>> +			have_uref = true;
->>>> +		}
->>>> +
->>>> +		/* 'can_zcopy' means that this transmission will be
->>>> +		 * in zerocopy way (e.g. using 'frags' array).
->>>> +		 */  
->>> I've not looked at the tcp code, but the above doesn't look right.
->>> I don't see why msg->msg_ubuf might be non-NULL without SOCK_ZEROCOPY set.
->>> That would give the outer code a callback when the last skb is freed but
->>> still copy the data.  
->> Hi, 
->>
->> I guess case when 'msg->msg_ubuf' is non-NULL is special case today for io_uring MSG_ZEROCOPY implementation.
->> It was added here https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=eb315a7d1396b1139fc7daea55f2d3191e8e7092
->> As I see implementation of its tests in tools/testing/selftests/net/io_uring_zerocopy_tx.c , it doesn't require setting SOCK_ZEROCOPY option for
->> socket, so for virtio vsock case I just copied same logic to maintain compatibility, because there is MSG_ZEROCOPY io_uring test for virtio/vsock.
-> That code path probably sets info->msg->msg_flags & MSG_ZEROCOPY so wants 'zerocopy'.
-> But wants it's own callback function called rather than one that msg_zerocopy_realloc()
-> adds.
->
-> But there is no reason why a caller might not just want a notification that
-> all the skb associated with the sendmsg have been freed without requesting zerocopy.
-> Maybe no one does it today, but it is trivial to support.
+ife decode may return after making only the outer IFE header and
+metadata pullable. The caller then passes the decapsulated packet to
+eth_type_trans(), which expects the inner Ethernet header to be
+accessible from the linear data area.
 
-Caller for this path is io_uring today. It uses own callback 'io_tx_ubuf_complete()' which implements notification using io_uring
-achitecture instead of classic MSG_ERRQUEUE socket read way.
+With a malformed IFE frame, the inner Ethernet header may still be
+shorter than ETH_HLEN in the linear area, which can lead to a crash in
+the original code.
 
->
->>
->>> I also don't see the point of calling msg_zerocopy_realloc() to get a
->>> callback when the last skb is freed and then setting
->>> 	uarg_to_msgzc(uarg)->zerocopy = 0;
->>> so that the callback doesn't actually do anything.
->>> It isn't as though you 'find out' later on that you can't actually do
->>> zerocopy.  
->>
->> Sorry, what do You mean "last skb" ? In this code we first allocate uarg (allocate, because third arg is always NULL). Then in
->> loop we allocate sk_buffs, fill it with data and send. I mean first/last skb will be freed after uarg is already allocated and we
->> don't touch it. I think i didn't understand Your question here.
-> The 'uarg' is referenced by all of the skb that contain data for the sendmsg().
-> So when the last one of them is freed the callback function is called.
-> The purpose of that callback is to 'undo' the zerocopy (page pinning etc).
-> But when you set uarg_to_msgzc(uarg)->zerocopy = 0 the callback does nothing.
-> So there is no point setting up the callback at all.
+Fix this by extending the pull check in ife_decode() so that the inner
+Ethernet header is also guaranteed to be pullable before returning.
 
-Pages are unpinned in sk_buff freeing logic: 'skb_release_data()' -> '__skb_frag_unref()'.  'zerocopy' flag of uarg shows 
-caller that real zerocopy was used of not - it is checked in '__msg_zerocopy_callback()' and 'SO_EE_CODE_ZEROCOPY_COPIED' is set in
-the 'ee_code' field of struct 'sock_extended_err' which is read by user. I mean idea of MSG_ZEROCOPY API is that if kernel doesn't
-return error from 'sendmsg()' call with MSG_ZEROCOPY flag passed, it will send notification about data tx complete anyway - it doesn't
-matter that real zercopy was done or not.
+Fixes: ef6980b6becb ("introduce IFE action")
+Cc: stable@vger.kernel.org
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Assisted-by: Codex:gpt-5.4
+Signed-off-by: Yong Wang <edragain@163.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+---
+Changes in v2:
+- move the ETH_HLEN pull check from tcf_ife_decode() into ife_decode()
+- apply Jamal's suggested total_pull + ETH_HLEN check shape
+- v1 link: https://lore.kernel.org/all/6200dc9e5ea7a85d500e72543d897c2d930fcdce.1780809474.git.edragain@163.com/
 
-Thanks
+ net/ife/ife.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/net/ife/ife.c b/net/ife/ife.c
+index be05b690b9ef..7a75947a31e3 100644
+--- a/net/ife/ife.c
++++ b/net/ife/ife.c
+@@ -79,7 +79,7 @@ void *ife_decode(struct sk_buff *skb, u16 *metalen)
+ 	if (unlikely(ifehdrln < 2))
+ 		return NULL;
+ 
+-	if (unlikely(!pskb_may_pull(skb, total_pull)))
++	if (unlikely(!pskb_may_pull(skb, total_pull + ETH_HLEN)))
+ 		return NULL;
+ 
+ 	ifehdr = (struct ifeheadr *)(skb->data + skb->dev->hard_header_len);
+-- 
+2.34.1
 
->
-> -- David
->
->>
->>>  
->>>>  		if (can_zcopy)
->>>>  			max_skb_len = min_t(u32, VIRTIO_VSOCK_MAX_PKT_BUF_SIZE,
->>>>  					    (MAX_SKB_FRAGS * PAGE_SIZE));
->>>> -
->>>> -		if (info->msg->msg_flags & MSG_ZEROCOPY &&
->>>> -		    info->op == VIRTIO_VSOCK_OP_RW) {
->>>> -			uarg = info->msg->msg_ubuf;
->>>> -
->>>> -			if (!uarg) {
->>>> -				uarg = msg_zerocopy_realloc(sk_vsock(vsk),
->>>> -							    pkt_len, NULL, false);
->>>> -				if (!uarg) {
->>>> -					virtio_transport_put_credit(vvs, pkt_len);
->>>> -					return -ENOMEM;
->>>> -				}
->>>> -
->>>> -				if (!can_zcopy)
->>>> -					uarg_to_msgzc(uarg)->zerocopy = 0;
->>>> -
->>>> -				have_uref = true;
->>>> -			}
->>>> -		}
->>>>  	}
->>>>  
->>>>  	rest_len = pkt_len;
->>>> @@ -365,14 +367,12 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
->>>>  
->>>>  		skb = virtio_transport_alloc_skb(info, skb_len, can_zcopy,
->>>>  						 src_cid, src_port,
->>>> -						 dst_cid, dst_port);
->>>> +						 dst_cid, dst_port, uarg);
->>>>  		if (!skb) {
->>>>  			ret = -ENOMEM;
->>>>  			break;
->>>>  		}
->>>>  
->>>> -		skb_zcopy_set(skb, uarg, NULL);  
->>> Aren't you passing uarg through two function calls instead of doing it here.
->>> Doesn't even make it clearer what is going on.  
->>
->> Agree, to simplify patch, uarg could be set earlier (without passing it to functions) I guess.
->>
->> Thanks
->>
->>
->>> -- David
->>>  
->>>> -
->>>>  		virtio_transport_inc_tx_pkt(vvs, skb);
->>>>  
->>>>  		ret = t_ops->send_pkt(skb, info->net);
->>>> @@ -1178,7 +1178,7 @@ static int virtio_transport_reset_no_sock(const struct virtio_transport *t,
->>>>  					   le64_to_cpu(hdr->dst_cid),
->>>>  					   le32_to_cpu(hdr->dst_port),
->>>>  					   le64_to_cpu(hdr->src_cid),
->>>> -					   le32_to_cpu(hdr->src_port));
->>>> +					   le32_to_cpu(hdr->src_port), NULL);
->>>>  	if (!reply)
->>>>  		return -ENOMEM;
->>>>    
