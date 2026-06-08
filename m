@@ -1,235 +1,311 @@
-Received: from relay-b01.edpnet.be (relay-b01.edpnet.be [212.71.1.221])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F3941419A4
-	for <netdev@vger.kernel.org>; Mon,  8 Jun 2026 09:35:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.71.1.221
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FFA83845B0
+	for <netdev@vger.kernel.org>; Mon,  8 Jun 2026 09:37:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780911324; cv=none; b=jmQ5YrrvvX2kxMJKjIr0uoN5+3VcE6yAcccnTvfbxzWFl3cJCy0SaY+EbvyyIGIF1+eOUNcO3jmG+3fuzaFDS8/VSmo9TvBC0igycv490J93IVSs7907/++ZhUN7mGJMvnH8ZQoWA097I23OC6ltzXWq0RouS81zr7B2O7vpY1Y=
+	t=1780911426; cv=none; b=VL6XYybwvPBJzFCTghGEnyYPjODtJayO4aVZ8yN3KblCBy/E9ab9md06miDfvh3+Lq9mJjh6Lxi4rucDW9jdiFxlsDUGDQh9x4tp0ZKLme3EMEX3Ajg43ukRqtDTFm6p53lv1ZhUZn9ED75ekiy2dqgkCTIAJHv4cegWfi/n9Cw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780911324; c=relaxed/simple;
-	bh=m+tGjoIq3m3dzG/J2EvBsluXCR7A+cn2+oiv/sXot4w=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=oiuUaNAYG6K2UcihNJnGIBk0UT0ZApYTd+zkxAds8CFSaEHqmrouZDMW2RCKVnMJm/sEZqAyq52kRX7q/9x6VMSUXOrUAKi9LU8ZpMDy+SAqUV0bz3C8I/06GxzQF8KYGqR83fDBvYjG7NgOay8paIJaTNAxYKnFjMhSIGSIbrA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=kabelmail.de; spf=fail smtp.mailfrom=kabelmail.de; arc=none smtp.client-ip=212.71.1.221
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=kabelmail.de
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=kabelmail.de
-Received: from [192.168.177.83] (212.71.13.3.static.edpnet.net [212.71.13.3]) by relay-b01.edpnet.be with ESMTP id 5bhmfmdAC185yeE9; Mon, 08 Jun 2026 11:21:05 +0200 (CEST)
-X-Barracuda-Envelope-From: janpieter.sollie@kabelmail.de
-X-Barracuda-Effective-Source-IP: 212.71.13.3.static.edpnet.net[212.71.13.3]
-X-Barracuda-Apparent-Source-IP: 212.71.13.3
-Message-ID: <7c0cf4f7-6e32-454b-bd56-5ef00eab8f98@kabelmail.de>
-Date: Mon, 8 Jun 2026 11:20:59 +0200
+	s=arc-20240116; t=1780911426; c=relaxed/simple;
+	bh=59/tSJ0dW51Zn1c5BQkejmWziRwoc8zt4d0DBdDQLfw=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=u5HhAnmH19kdLgSsioiM/WgjMxxO2bNkxHO4IG6PtTfpiyZKrdVe/IAuTVfhWXPhTpKty9sjHVbwttdITYyzctckuFaU3bQ7a8spxDCQe2Kw4ruIj/1nhDgM12CIkbAePASRBZ0r9FUTnaN0shRs+kd8bXHu76s8hCxKgLK+E+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X8G3fjYi; arc=none smtp.client-ip=209.85.221.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X8G3fjYi"
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-45f3cf907ceso1853781f8f.2
+        for <netdev@vger.kernel.org>; Mon, 08 Jun 2026 02:37:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780911424; x=1781516224; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4Spb0RtZEviQD3qiwv62vU4Wzwzz7ccUnGUeAg2w4gY=;
+        b=X8G3fjYiOpM9+24zhgjsJrZ3zuEqBqU3EkC2N1dTwSoOTpEl1xndwv3zkfy4ROBwEg
+         RosFkFZZgdpiII42/uF4+TMOWexyXGPc1aESM3UNq3oiZIdHDaSG0JFWXU125LUmLRAd
+         icY2fBfrbiZvzSTrMHimrJjfF84rs27H3w1nJg4A+McoZpIluyn5iBftyHK/9iYnu3g9
+         BZQmnPsO71bxLwat/Su8u0tdV6V4lxCk5wi1ROw1tbVUspchpzCuLG+NQsJI8qEeDheT
+         Wb7OlT3mXNrxIaUEQf1AS0I+sYfGE080oOis35xpFKLrSHAteFwnuLq+G6MxVJjeof1+
+         /6ag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780911424; x=1781516224;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=4Spb0RtZEviQD3qiwv62vU4Wzwzz7ccUnGUeAg2w4gY=;
+        b=YKXx4HXNdokaKebsgJ1VDgwifDvkpBnusJBpW5EWAP/jRn+5eIaMPXgqU2ZitwkC2e
+         E6gyi5NOJccfEzXq85KeLpWkQoJhEt8c30m1KozmLM08t5opKJBlUnVVYGyduBbZUWR2
+         bKUjQy3JUN6uKAVvXHlKYRCZG3Y3LopanUDTNUsDuXKLyyZaRWY3+nMKvVnVEXNi4oN4
+         ZSv6hPEPoqAiKkeDMZr936lpyE3WPMzWuwvbUZP+/LOZ0Ws1iNYa4oRuPn9rocm3nPHm
+         3xoMVjlwdNxbTiCSBtuUnVKqQk9Zqvm8Zu2Bc/Iu9VjTSU/zlGRpaOMKRnUhi/9XD3C+
+         JETg==
+X-Forwarded-Encrypted: i=1; AFNElJ/N2E4QMfGKlXUviDdkt5igTWPFo80MpRV+y9ZvewkjitbZg7QPbKKRYcC9ztZhjDxToGv24vM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzcPXqKLCbaY+y+CsG7VOFA9aB0EwGThObczIJSrO78ylcwTzCx
+	TeYWN47mlajM+Eq4cxrM9R3LKWgzvsOF202eijKNQkUi+UqAabWv2xSG
+X-Gm-Gg: Acq92OFCiXsabttIKchD5bANnZYrYh/xmdf7gkP5Qo28Vo6JwFyyoPOFEofSRYMvDTV
+	khH9axZQt3Mlnvq0G7E/Djsz+yND4e9XeH5D4RrjodY3eKtOfFBBjcoUv4MpwmxCsOCDS9MmPaZ
+	8u1f9Hu/kUFFtNRR9N6yQXJX9Cq9S9zikewOFvZwuiBM5/wYY2YfGSpqyhS8ORd2weTN5iIDD0M
+	a/CL9waXbuwCx8FKn+FZFr2WfzseGuL0FUm1Po3J2tPPDg516xb/lWLF8GC81wdfADWwPUGs7rU
+	vAq+Sacb198fKX2mrDdfKeGO9SjC5LVY8JwEEQQPc1rtcdvBAlAK7HBI7DId4aKe6RGk8Q9ka4Q
+	Zwc/H4RZj7IgxqpZkcxyPzZImHsNnDbdsLCoAC2YRioYqweIqfR8SYwaiDQi0k/PHNRP//DIoMg
+	/3xPYeLfZAEjDTT+dfANjvysLJucXtYCKh1zYkN15+04YE5xiAakSTGJf6aRNXShpSgfQw0E7hS
+	sb06bpHeQ==
+X-Received: by 2002:a5d:42d1:0:b0:43c:fa96:d939 with SMTP id ffacd0b85a97d-46030609782mr16804802f8f.22.1780911423510;
+        Mon, 08 Jun 2026 02:37:03 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4601f2dcad5sm55824962f8f.5.2026.06.08.02.37.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 08 Jun 2026 02:37:03 -0700 (PDT)
+Date: Mon, 8 Jun 2026 10:37:01 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: Arseniy Krasnov <avkrasnov@rulkc.org>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, Stefano Garzarella
+ <sgarzare@redhat.com>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
+ Abeni <pabeni@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, Jason
+ Wang <jasowang@redhat.com>, Bobby Eshleman <bobby.eshleman@bytedance.com>,
+ Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eugenio =?UTF-8?B?UMOpcmV6?=
+ <eperezma@redhat.com>, Simon Horman <horms@kernel.org>,
+ kvm@vger.kernel.org, virtualization@lists.linux-foundation.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, oxffffaa@gmail.com,
+ rulkc@linuxtesting.org
+Subject: Re: [PATCH v1] vsock/virtio: rework MSG_ZEROCOPY flag handling
+Message-ID: <20260608103701.7839ff1b@pumpkin>
+In-Reply-To: <e5200406-d336-4ddf-9abd-78fccda24546@rulkc.org>
+References: <20260605115314.552321-1-avkrasnov@rulkc.org>
+	<20260605160851.3ddbd2ed@pumpkin>
+	<e5200406-d336-4ddf-9abd-78fccda24546@rulkc.org>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: SFP/MDIO/I2C: help requested unlocking a SFP+ MCU to expose PHY
-To: Andrew Lunn <andrew@lunn.ch>, Nicolai Buchwitz <nb@tipi-net.de>
-X-ASG-Orig-Subj: Re: SFP/MDIO/I2C: help requested unlocking a SFP+ MCU to expose PHY
-Cc: netdev@vger.kernel.org
-References: <ec5bd768-3f54-4c30-b5a2-1e0b43f789e3@kabelmail.de>
- <903daf32-aecd-4160-8f69-4fc329fdad3f@lunn.ch>
- <49CA4531-3BDC-4054-8830-BA80775C2B68@tipi-net.de>
- <dc641872-9ac5-407b-b1c4-04cac5f0ef8a@lunn.ch>
-Content-Language: en-US
-From: Janpieter Sollie <janpieter.sollie@kabelmail.de>
-Autocrypt: addr=janpieter.sollie@kabelmail.de; keydata=
- xsBNBFhRXM0BCADnifwYnfbhQtJso1eeT+fjEDJh8OY5rwfvAbOhHyy003MJ82svXPmM/hUS
- C6hZjkE4kR7k2O2r+Ev6abRSlM6s6rJ/ZftmwOA7E8vdSkrFDNqRYL7P18+Iq/jM/t/6lsZv
- O+YcjF/gGmzfOCZ5AByQyLGmh5ZI3vpqJarXskrfi1QiZFeCG4H5WpMInml6NzeTpwFMdJaM
- JCr3BwnCyR+zeev7ROEWyVRcsj8ufW8ZLOrML9Q5QVjH7tkwzoedOc5UMv80uTaA5YaC1GcZ
- 57dAna6S1KWy5zx8VaHwXBwbXhDHWvZP318um2BxeTZbl21yXJrUMbYpaoLJzA5ZaoCFABEB
- AAHNMEphbnBpZXRlciBTb2xsaWUgPGphbnBpZXRlci5zb2xsaWVAa2FiZWxtYWlsLmRlPsLA
- jgQTAQgAOAIbIwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBGBBYpsrUd7LDG6rUrFUjEUP
- H5JbBQJoLGc9AAoJELFUjEUPH5Jb9qoIAKzdJWg5FNhGTDNevUvVEgfJLEbcL7tM97FL9qNK
- WV6fwyoXUM4eTabSqcq2JVbqR4pNur2i7OSPvF3a/VRhl2I0qMcFz8/08hVgFG55iBI9Rdwl
- sn3b37KzwdGR7RX5cRt83ST76riKVdEsB/EKeU88/i9utWmT7M8HaqvKw16qhcs2i2hAuM9T
- wNmLt+l65sFMZcgY2+3pne8X1DRj6c9aQ3IBUcKMsB977P2aiss0xQrJ4CqSG3Tgjtzw0c7F
- BuamFq8FIzAtTwRnjxHtqYVUnFLLMu7INfdcQuW2Q2eZHO6+X80QlL+uMDirXB+EbHKZcrU4
- EN13bLOk6OG5ODLOwU0EaCxqtwEQAOfQzQMy61HqB1NL4rWCCI3fG131Da4iyMceOuMntmZx
- 9EomthdZRiunLffjMcN7aBcgr4wCh2tNar0hpUkkPpnM/Lat+avTZBkaSmuSF52ukmkVZLEE
- +jPy33hTWkc+k2pJ91XvLVU9axtd33XDBL6bP2oNmG+QF8hfN7QzukWzI52EdzF+DYgt08te
- 875abopdtZa/csYO51uqGg5zBjixylZ48pB9o5lWM6h1HSlBoHGBHh3u2ptxyxqTGQYOX+MR
- QEJElLV7ydJSWmm+3cSza3z2BtwyfjKUPzgHXQEBhPQdTalH4cZeJQGi3Zxhy4iQBGpvg1nW
- msd2//x0FRSHkZtzTVaTCTuf0kHhqiQ8a50B6YDJiTC5koH0hp72Fz2SQoFBcDpUFkNzBWng
- Ju9o1LBGd69c7AvOgMYZxDWwvDyb2sUfPJX0V4f+jJUjffO1K+PTrtnq2gpHKjBZHgGUvG4w
- 36Juy5BFr7TDDRt5rZGN26Tcs4Nq4EZTjyE6QuJOtA5iyJQo3ZwqQ5d9apyStPBJC1CnBZCo
- kCbRrIbLgqe+mCgXhQngj3QZUZn8qmDB2VHEDmSdkJ4A9qKyiof9uRhmAH287uQ/i342xuUM
- 8raS/RGFQaNCV2bBGKqflpS9l1BKGyevk2MUw/IGKJOYfXYc6L5RoPLSlkseBdSpABEBAAHC
- wHwEGAEIACYWIQRgQWKbK1Heywxuq1KxVIxFDx+SWwUCaCxqtwIbDAUJCWYBgAAKCRCxVIxF
- Dx+SW62eB/0SdagAw65x1IEwtEbdo4qxTL/a2iShsMvFOZYt/UE8fDTMkyTJFlDnxHDJqiHR
- 0yHpt41+CGxt5z8xhd+4HE+NdQJD2rjvvk5A2C8baOQYv8Mb5I4iDjSuYJWjrAwjCo25oHo7
- CtoMd2jhn3+L1BO8/VY+AjdVXpGqPzor6Q/c5XAfUsgA2/2VEUpXLp8xKr7v/Gn08zUqaT+W
- 90QjvK1gwYv7sQ4X0w7kzf3sgQvN64cjo0jVsC3EG1AfdLtc+213+3dzDLqomtWtqoxmnrqx
- oMdve2PL2byHDAtzeWGGM38JB4H6A0VlvUyGqgAnRS/UyOLPpqNYbi1lPemVHZsk
-In-Reply-To: <dc641872-9ac5-407b-b1c4-04cac5f0ef8a@lunn.ch>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Barracuda-Connect: 212.71.13.3.static.edpnet.net[212.71.13.3]
-X-Barracuda-Start-Time: 1780910465
-X-Barracuda-URL: https://212.71.1.221:443/cgi-mod/mark.cgi
-X-Virus-Scanned: by bsmtpd at edpnet.be
-X-Barracuda-Scan-Msg-Size: 8893
-X-Barracuda-BRTS-Status: 1
-X-ASG-Debug-ID: 1780910465-23923417bd373410001-BZBGGp
-X-Barracuda-Spam-Score: 0.00
-X-Barracuda-Spam-Status: No, SCORE=0.00 using global scores of TAG_LEVEL=10.0 QUARANTINE_LEVEL=10.0 KILL_LEVEL=7.0 test= 
-X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.125474
-	Rule breakdown below
-	  pts rule name              description
-	 ---- ---------------------- --------------------------------------------------
-	
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Op 5/06/2026 om 23:34 schreef Andrew Lunn:
->>> Do you know what MCU is in the SFP? Is there a data sheet for it? Can
->>> you read out the EEPROM holding its code over the I2C bus? You can
->>> then disassemble/decompile the code and see what it is actually doing.
->> https://doc.10gtek.com/file/file/20240806/d6fa28f954989f74cde42c75353b5fe6.pdf
->>
->> I2c address should be A0h
-> That is the usual address for an SFP. However, MCUs sometime have ways
-> to program them, etc. That is why i asked if you know what the MCU
-> is. I guess you have not taken one apart to see what is actually in
-> it.
->
-> 	Andrew
->
->
-Thank you for your help, I was quite a bit lost in there.
-I got 2 modules, so I can send a dump of both, but my guess is that only 1 will be sufficient.
-Let me know whether you want the 2nd as well.
-below you can see the output.
-I was surprised reading OEM SFP-10G-T instead of ASF-10G-T80. but that's 10Gtek's decision , not 
-mine.
-i2cdump and i2csfp eepromdump (but only 0x51, 0x50 is already in i2cdetect).
-This is the output with IC_MDIO_NONE, so sfp.ko did not touch any config yet (I guess):
-Should I really take it apart? or is there a "in between" solution?
+On Mon, 8 Jun 2026 11:10:24 +0300
+Arseniy Krasnov <avkrasnov@rulkc.org> wrote:
 
-Thank you for your suggestions,
+> On 05/06/2026 18:08, David Laight wrote:
+> > On Fri,  5 Jun 2026 14:53:14 +0300
+> > Arseniy Krasnov <avkrasnov@rulkc.org> wrote:
+> > =20
+> >> Logically it was based on TCP implementation, so to make further
+> >> support easier, rewrite it in the TCP way.
+> >>
+> >> Signed-off-by: Arseniy Krasnov <avkrasnov@rulkc.org>
+> >> ---
+> >>  net/vmw_vsock/virtio_transport_common.c | 64 ++++++++++++-------------
+> >>  1 file changed, 32 insertions(+), 32 deletions(-)
+> >>
+> >> diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/v=
+irtio_transport_common.c
+> >> index 2fd9eaaf5ca6..00caeeaa5590 100644
+> >> --- a/net/vmw_vsock/virtio_transport_common.c
+> >> +++ b/net/vmw_vsock/virtio_transport_common.c
+> >> @@ -73,10 +73,13 @@ static bool virtio_transport_can_zcopy(const struc=
+t virtio_transport *t_ops,
+> >>  static int virtio_transport_fill_skb(struct sk_buff *skb,
+> >>  				     struct virtio_vsock_pkt_info *info,
+> >>  				     size_t len,
+> >> -				     bool zcopy)
+> >> +				     bool zcopy, struct ubuf_info *uarg)
+> >>  {
+> >>  	struct msghdr *msg =3D info->msg;
+> >> =20
+> >> +	/* We have completion - attach it to 'skb'. */
+> >> +	skb_zcopy_set(skb, uarg, NULL);
+> >> +
+> >>  	if (zcopy)
+> >>  		return __zerocopy_sg_from_iter(msg, NULL, skb,
+> >>  					       &msg->msg_iter, len, NULL);
+> >> @@ -208,7 +211,8 @@ static struct sk_buff *virtio_transport_alloc_skb(=
+struct virtio_vsock_pkt_info *
+> >>  						  u32 src_cid,
+> >>  						  u32 src_port,
+> >>  						  u32 dst_cid,
+> >> -						  u32 dst_port)
+> >> +						  u32 dst_port,
+> >> +						  struct ubuf_info *uarg)
+> >>  {
+> >>  	struct vsock_sock *vsk;
+> >>  	struct sk_buff *skb;
+> >> @@ -245,7 +249,7 @@ static struct sk_buff *virtio_transport_alloc_skb(=
+struct virtio_vsock_pkt_info *
+> >>  	if (info->msg && payload_len > 0) {
+> >>  		int err;
+> >> =20
+> >> -		err =3D virtio_transport_fill_skb(skb, info, payload_len, zcopy);
+> >> +		err =3D virtio_transport_fill_skb(skb, info, payload_len, zcopy, ua=
+rg);
+> >>  		if (err)
+> >>  			goto out;
+> >> =20
+> >> @@ -321,38 +325,36 @@ static int virtio_transport_send_pkt_info(struct=
+ vsock_sock *vsk,
+> >>  	if (pkt_len =3D=3D 0 && info->op =3D=3D VIRTIO_VSOCK_OP_RW)
+> >>  		return pkt_len;
+> >> =20
+> >> -	if (info->msg) {
+> >> -		/* If zerocopy is not enabled by 'setsockopt()', we behave as
+> >> -		 * there is no MSG_ZEROCOPY flag set.
+> >> +	if (info->msg && (info->msg->msg_flags & MSG_ZEROCOPY)) {
+> >> +		/* If 'info->msg' is not NULL, this is only VIRTIO_VSOCK_OP_RW.
+> >> +		 * 'MSG_ZEROCOPY' flag handling here is based on the same flag
+> >> +		 * handling from 'tcp_sendmsg_locked()'.
+> >>  		 */
+> >> -		if (!sock_flag(sk_vsock(vsk), SOCK_ZEROCOPY))
+> >> -			info->msg->msg_flags &=3D ~MSG_ZEROCOPY;
+> >> +		if (info->msg->msg_ubuf) {
+> >> +			uarg =3D info->msg->msg_ubuf;
+> >> +			can_zcopy =3D virtio_transport_can_zcopy(t_ops, info, pkt_len);
+> >> +		} else if (sock_flag(sk_vsock(vsk), SOCK_ZEROCOPY)) {
+> >> +			uarg =3D msg_zerocopy_realloc(sk_vsock(vsk), pkt_len,
+> >> +						    NULL, false);
+> >> +			if (!uarg) {
+> >> +				virtio_transport_put_credit(vvs, pkt_len);
+> >> +				return -ENOMEM;
+> >> +			}
+> >> =20
+> >> -		if (info->msg->msg_flags & MSG_ZEROCOPY)
+> >>  			can_zcopy =3D virtio_transport_can_zcopy(t_ops, info, pkt_len);
+> >> =20
+> >> +			if (!can_zcopy)
+> >> +				uarg_to_msgzc(uarg)->zerocopy =3D 0;
+> >> +
+> >> +			have_uref =3D true;
+> >> +		}
+> >> +
+> >> +		/* 'can_zcopy' means that this transmission will be
+> >> +		 * in zerocopy way (e.g. using 'frags' array).
+> >> +		 */ =20
+> > I've not looked at the tcp code, but the above doesn't look right.
+> > I don't see why msg->msg_ubuf might be non-NULL without SOCK_ZEROCOPY s=
+et.
+> > That would give the outer code a callback when the last skb is freed but
+> > still copy the data. =20
+>=20
+> Hi,=C2=A0
+>=20
+> I guess case when 'msg->msg_ubuf' is non-NULL is special case today for i=
+o_uring MSG_ZEROCOPY implementation.
+> It was added here https://git.kernel.org/pub/scm/linux/kernel/git/torvald=
+s/linux.git/commit/?id=3Deb315a7d1396b1139fc7daea55f2d3191e8e7092
+> As I see implementation of its tests in tools/testing/selftests/net/io_ur=
+ing_zerocopy_tx.c , it doesn't require setting SOCK_ZEROCOPY option for
+> socket, so for virtio vsock case I just copied same logic to maintain com=
+patibility, because there is MSG_ZEROCOPY io_uring test for virtio/vsock.
 
-Janpieter Sollie
+That code path probably sets info->msg->msg_flags & MSG_ZEROCOPY so wants '=
+zerocopy'.
+But wants it's own callback function called rather than one that msg_zeroco=
+py_realloc()
+adds.
 
-i2cdetect -y 3
-      0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
-00:          -- -- -- -- -- -- -- -- -- -- -- -- --
-10: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-20: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-30: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-40: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-50: 50 51 -- -- -- -- 56 -- -- -- -- -- -- -- -- --
-60: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-70: UU -- -- -- -- -- -- --
-# i2cdump -y 3 0x50
-   0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f 0123456789abcdef
-00: 03 04 07 10 00 00 00 00 00 00 00 06 67 00 00 00 ????.......?g...
-10: 08 02 00 1e 4f 45 4d 20 20 20 20 20 20 20 20 20    ??.?OEM
-20: 20 20 20 20 00 00 90 65 53 46 50 2d 31 30 47 2d ..?eSFP-10G-
-30: 54 20 20 20 20 20 20 20 30 32 20 20 03 52 00 3f    T       02 ?R.?
-40: 00 1a 00 00 43 53 59 31 30 31 50 41 36 32 35 39 .?..CSY101PA6259
-50: 20 20 20 20 32 35 30 39 33 30 20 20 68 80 03 e0        250930 h???
-60: 00 00 11 b9 60 12 02 18 29 53 70 64 c1 b1 1d 95 ..??`???)Spd????
-70: a1 2f 32 00 00 00 00 00 00 00 00 00 a4 f7 d6 06 ?/2.........????
-80: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ................
-90: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ................
-a0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ................
-b0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ................
-c0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ................
-d0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ................
-e0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ................
-f0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ................
-# i2cdump -y 3 0x51
-      0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f 0123456789abcdef
-00: 5f 00 7f 03 5a 00 d3 00 8c a0 75 30 88 b8 79 18 _.??Z.?.??u0??y?
-10: 1d 4c 01 f4 19 64 03 e8 4d f0 06 30 3d e8 06 f2 ?L???d??M??0=???
-20: 2b d4 00 c7 27 10 00 df 00 00 00 00 00 00 00 00 +?.?'?.?........
-30: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
-40: 00 00 00 00 3f 80 00 00 00 00 00 00 01 00 00 00 ....??......?...
-50: 01 00 00 00 01 00 00 00 01 00 00 00 00 00 00 a5 ?...?...?......?
-60: 47 4f 82 78 0b b8 13 88 0f a0 00 00 00 00 00 00 GO?x??????......
-70: 40 00 00 00 00 00 00 00 03 00 00 ff ff ff ff 00 @.......?.......
-80: 43 4f 55 49 41 38 4e 43 41 41 31 30 2d 32 34 31 COUIA8NCAA10-241
-90: 35 2d 30 33 56 30 33 20 01 00 46 00 00 00 00 c6    5-03V03 ?.F....?
-a0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
-b0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 aa 36 ..............?6
-c0: 53 46 50 2d 31 30 47 2d 53 52 20 20 20 20 20 20    SFP-10G-SR
-d0: 20 20 20 20 32 33 00 00 00 00 00 00 00 00 00 35 23.........5
-e0: 15 1a 20 24 2a 30 20 30 00 00 00 00 00 00 00 00    ?? $*0 0........
-f0: 00 00 00 00 00 1d 00 00 ff ff ff ff 00 00 00 00 .....?..........
-# i2cdump -y 3 0x56
-      0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f 0123456789abcdef
-00: 20 40 00 06 35 90 50 81 60 31 00 9b c0 00 00 09  @.?5?P?`1.??..?
-10: 93 01 00 00 00 1f 41 a4 41 a4 41 a4 00 00 00 00 ??...?A?A?A?....
-20: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ................
-30: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ................
-40: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ................
-50: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ................
-60: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ................
-70: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ................
-80: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ................
-90: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ................
-a0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ................
-b0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ................
-c0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ................
-d0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ................
-e0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ................
-f0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ................
+But there is no reason why a caller might not just want a notification that
+all the skb associated with the sendmsg have been freed without requesting =
+zerocopy.
+Maybe no one does it today, but it is trivial to support.
 
+>=20
+>=20
+> >
+> > I also don't see the point of calling msg_zerocopy_realloc() to get a
+> > callback when the last skb is freed and then setting
+> > 	uarg_to_msgzc(uarg)->zerocopy =3D 0;
+> > so that the callback doesn't actually do anything.
+> > It isn't as though you 'find out' later on that you can't actually do
+> > zerocopy. =20
+>=20
+>=20
+> Sorry, what do You mean "last skb" ? In this code we first allocate uarg =
+(allocate, because third arg is always NULL). Then in
+> loop we allocate sk_buffs, fill it with data and send. I mean first/last =
+skb will be freed after uarg is already allocated and we
+> don't touch it. I think i didn't understand Your question here.
 
-i2csfp /dev/i2c-3 eepromdump
-...
+The 'uarg' is referenced by all of the skb that contain data for the sendms=
+g().
+So when the last one of them is freed the callback function is called.
+The purpose of that callback is to 'undo' the zerocopy (page pinning etc).
+But when you set uarg_to_msgzc(uarg)->zerocopy =3D 0 the callback does noth=
+ing.
+So there is no point setting up the callback at all.
 
-0x51:
-      0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f  0123456789abcdef
-00: 5f 00 7f 03 5a 00 d3 00 8c a0 75 30 88 b8 79 18  _...Z.....u0..y.
-10: 1d 4c 01 f4 19 64 03 e8 4d f0 06 30 3d e8 06 f2  .L...d..M..0=...
-20: 2b d4 00 c7 27 10 00 df 00 00 00 00 00 00 00 00  +...'...........
-30: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-40: 00 00 00 00 3f 80 00 00 00 00 00 00 01 00 00 00  ....?...........
-50: 01 00 00 00 01 00 00 00 01 00 00 00 00 00 00 a5  ................
-60: 46 91 82 78 0b b8 13 88 0f a0 00 00 00 00 00 00  F..x............
-70: 40 00 00 00 00 00 00 00 03 00 00 ff ff ff ff 00  @...............
-0x51 PAGE 0x00:
-      0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f  0123456789abcdef
-80: 43 4f 55 49 41 38 4e 43 41 41 31 30 2d 32 34 31  COUIA8NCAA10-241
-90: 35 2d 30 33 56 30 33 20 01 00 46 00 00 00 00 c6   5-03V03 ..F.....
-a0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-b0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 aa 36  ...............6
-c0: 53 46 50 2d 31 30 47 2d 53 52 20 20 20 20 20 20   SFP-10G-SR
-d0: 20 20 20 20 32 33 00 00 00 00 00 00 00 00 00 35  23.........5
-e0: 15 1a 20 24 2a 30 20 30 00 00 00 00 00 00 00 00   .. $*0 0........
-f0: 00 00 00 00 00 1d 00 00 ff ff ff ff 00 00 00 00  ................
-0x51 PAGE 0x01:
-      0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f  0123456789abcdef
-80: 43 4f 55 49 41 38 4e 43 41 41 31 30 2d 32 34 31  COUIA8NCAA10-241
-90: 35 2d 30 33 56 30 33 20 01 00 46 00 00 00 00 c6   5-03V03 ..F.....
-a0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-b0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 aa 36  ...............6
-c0: 53 46 50 2d 31 30 47 2d 53 52 20 20 20 20 20 20   SFP-10G-SR
-d0: 20 20 20 20 32 33 00 00 00 00 00 00 00 00 00 35  23.........5
-e0: 15 1a 20 24 2a 30 20 30 00 00 00 00 00 00 00 00   .. $*0 0........
-f0: 00 00 00 00 00 1d 00 00 ff ff ff ff 00 00 00 00  ................
-0x51 PAGE 0x02:
-      0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f  0123456789abcdef
-80: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
-90: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
-a0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
-b0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
-c0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
-d0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
-e0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
-f0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
-0x51 PAGE 0x03:
-      0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f  0123456789abcdef
-80: 00 00 00 ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
-90: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
-a0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
-b0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
-c0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
-d0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
-e0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
-f0: ff ff ff ff ff 56 31 33 ff ff 02 00 63 73 77 77  .....V13....csww
+-- David
+
+>=20
+>=20
+> > =20
+> >>  		if (can_zcopy)
+> >>  			max_skb_len =3D min_t(u32, VIRTIO_VSOCK_MAX_PKT_BUF_SIZE,
+> >>  					    (MAX_SKB_FRAGS * PAGE_SIZE));
+> >> -
+> >> -		if (info->msg->msg_flags & MSG_ZEROCOPY &&
+> >> -		    info->op =3D=3D VIRTIO_VSOCK_OP_RW) {
+> >> -			uarg =3D info->msg->msg_ubuf;
+> >> -
+> >> -			if (!uarg) {
+> >> -				uarg =3D msg_zerocopy_realloc(sk_vsock(vsk),
+> >> -							    pkt_len, NULL, false);
+> >> -				if (!uarg) {
+> >> -					virtio_transport_put_credit(vvs, pkt_len);
+> >> -					return -ENOMEM;
+> >> -				}
+> >> -
+> >> -				if (!can_zcopy)
+> >> -					uarg_to_msgzc(uarg)->zerocopy =3D 0;
+> >> -
+> >> -				have_uref =3D true;
+> >> -			}
+> >> -		}
+> >>  	}
+> >> =20
+> >>  	rest_len =3D pkt_len;
+> >> @@ -365,14 +367,12 @@ static int virtio_transport_send_pkt_info(struct=
+ vsock_sock *vsk,
+> >> =20
+> >>  		skb =3D virtio_transport_alloc_skb(info, skb_len, can_zcopy,
+> >>  						 src_cid, src_port,
+> >> -						 dst_cid, dst_port);
+> >> +						 dst_cid, dst_port, uarg);
+> >>  		if (!skb) {
+> >>  			ret =3D -ENOMEM;
+> >>  			break;
+> >>  		}
+> >> =20
+> >> -		skb_zcopy_set(skb, uarg, NULL); =20
+> > Aren't you passing uarg through two function calls instead of doing it =
+here.
+> > Doesn't even make it clearer what is going on. =20
+>=20
+>=20
+> Agree, to simplify patch, uarg could be set earlier (without passing it t=
+o functions) I guess.
+>=20
+> Thanks
+>=20
+>=20
+> >
+> > -- David
+> > =20
+> >> -
+> >>  		virtio_transport_inc_tx_pkt(vvs, skb);
+> >> =20
+> >>  		ret =3D t_ops->send_pkt(skb, info->net);
+> >> @@ -1178,7 +1178,7 @@ static int virtio_transport_reset_no_sock(const =
+struct virtio_transport *t,
+> >>  					   le64_to_cpu(hdr->dst_cid),
+> >>  					   le32_to_cpu(hdr->dst_port),
+> >>  					   le64_to_cpu(hdr->src_cid),
+> >> -					   le32_to_cpu(hdr->src_port));
+> >> +					   le32_to_cpu(hdr->src_port), NULL);
+> >>  	if (!reply)
+> >>  		return -ENOMEM;
+> >>   =20
 
