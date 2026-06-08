@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB642F9E8
-	for <netdev@vger.kernel.org>; Mon,  8 Jun 2026 22:50:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E4AF3B2FCA
+	for <netdev@vger.kernel.org>; Mon,  8 Jun 2026 22:50:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780959008; cv=none; b=Z+z0tA/TNhOuTbJbhmBDXdTHDuIyZi6H1lBcR3HiV3Y925p3F51a+3O9TpDCKyONCWJOfzTKZJqT/MlP+7lQYEutzs8i3VU9UJtJwRjKwOqJVSAtd2bky20HaODDV/VGsXrM8uVbBklCL3kkVDyePjyKFX8tBS/uDPReLZKDNxw=
+	t=1780959026; cv=none; b=Kzqf7R9rqtNO/kQXtP34fi6ghjWcAkilgjch5/WGJvWGOo8rNA49PUV/Zyl5ZO4kx/4TrEqXwk2x3qVJ17ZwSH+ITw8MoTmaIiEwQelhvcRi82dlmY2qwUcgQCO4VbfB2J0lwTEoUM7dn3riFAaxU/sIwNdUvH8OzaRHJhPJSO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780959008; c=relaxed/simple;
-	bh=Y1ezw6yh0lr4QriJVKf17QhYu3Wwtnnx+mt0/gpws9w=;
+	s=arc-20240116; t=1780959026; c=relaxed/simple;
+	bh=T5i7bXpQ46WKU0ZAPmP6/Zv0sldXYauUPHbTq/jvNH4=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=NYsmmGsgvkKw2UncOkRnGAZuie6HBBRLbX45vu6iE1RsKpYi/fu9T9lsBuCjKModrVC/g5x8Vm92p+/28iQUHhMMN8v4xQTv+KxShpQcBopkKqyCTVs1mY5XNyxqHjgJkMeQKv7wU4/kDCTcvzVfkkWCin3SZfsD2tNDj5SLRR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aqUoIdU0; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=g5Gj7FTHKWrGDBtccOGxZW1XQq/+xSN2Dz+Kozh7ZeaPGba/WQCp9IQkpw4RxMdA8Xs8laGdavOYofvxSu23iPQ3clkSPZZz4DRO9wT7Z3qkzKh759yA48ETPuwg5XDdc03OSLd1dOuytQLMTQ1FDrQnH64tdJnIVbeySg8Dl60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EBQEJL+/; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aqUoIdU0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 655DA1F00893;
-	Mon,  8 Jun 2026 22:50:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EBQEJL+/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F7F71F00893;
+	Mon,  8 Jun 2026 22:50:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780959007;
-	bh=qDweXOGn0LK9hKT0UPLLnXfT2GFzAHxHj1i23DQ3Uj4=;
+	s=k20260515; t=1780959024;
+	bh=CPTRs0V+7zqr6gSzloTr0HtLD32F3BoDoQnWfccf2T0=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=aqUoIdU0omLx+mIMZTm7kLyBWpRgJX6xCER2b0/gAShRZxwKEUMxGHHorWSKnZDwJ
-	 n/lsgOUv0Ocge17ek4GyM/GEkNWbB5EqFH8kzLyDagEKP6ve/j5vsFJbIYoiyy02UD
-	 cxNLe8cCO0KI4xFRSkalrYzmgOVYqTjMixprC671v/DO9CaD29exJTH9FwG/AaVSWx
-	 0ddMtLJ3NeuZGBWwYTBzhwebX13mZzkSye4SN1yfr8FbmYkKGVjRhyq/usZiUjgaQz
-	 bz3ZgELRniujBJJAFNZ1Zm3qAmA4c07+DLdiiHf9enBvPca6z79nJ5X/0Vn7TwW0Uj
-	 N2Vmep3OyAQEw==
+	b=EBQEJL+/JJ3L+gsqFtArAS22gzpurELFW1X1tm+gk3C0KdzMnXlg5wDE1ceIpQM41
+	 cgh4+9xAKfZNnFL+sGpBlPBLjr+EvyDmAB5mrmvRKev1RHvdPgYuWnNvtpZyXTfZX6
+	 4GfRtPHPBqj+tppEYiB/cksUKj4dVqrTgLsZi4kZXKF3h7ERXpNj4AE5yDB/ClkE6Y
+	 HGD4KUIj8YVWHdwSYx2GtF+B6hy3SoxP8V0qwUtEWiC5c1LU2cyHcAW4fhWuKJ6Xzn
+	 axY8HoTTOyY9WmAXtQjectsDkmhhJYTtCkxgZEDXKX1yayWpbQrtGGTBACjnu03kVb
+	 BERBAAGWR2WNw==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 568FE3812FD9;
-	Mon,  8 Jun 2026 22:50:07 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 939BF3812FD9;
+	Mon,  8 Jun 2026 22:50:24 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,56 +37,57 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] tcp: restrict SO_ATTACH_FILTER to priv users
+Subject: Re: [PATCH net-next 01/11] batman-adv: tp_meter: initialize
+ last_recv_time during init
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178095900590.1702157.2907124553708857115.git-patchwork-notify@kernel.org>
-Date: Mon, 08 Jun 2026 22:50:05 +0000
-References: <20260605112134.3642413-1-edumazet@google.com>
-In-Reply-To: <20260605112134.3642413-1-edumazet@google.com>
-To: Eric Dumazet <edumazet@google.com>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- ncardwell@google.com, kuniyu@google.com, netdev@vger.kernel.org,
- eric.dumazet@gmail.com, tamirthesis@gmail.com, aksecurity@gmail.com,
- willemb@google.com, ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org,
- martin.lau@linux.dev, eddyz87@gmail.com, memxor@gmail.com, song@kernel.org,
- yonghong.song@linux.dev, jolsa@kernel.org, john.fastabend@gmail.com,
- sdf@fomichev.me
+ <178095902313.1702157.1003156200575946314.git-patchwork-notify@kernel.org>
+Date: Mon, 08 Jun 2026 22:50:23 +0000
+References: <20260605072005.490368-2-sw@simonwunderlich.de>
+In-Reply-To: <20260605072005.490368-2-sw@simonwunderlich.de>
+To: Simon Wunderlich <sw@simonwunderlich.de>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ b.a.t.m.a.n@lists.open-mesh.org, sven@narfation.org, stable@kernel.org
 
 Hello:
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+This series was applied to netdev/net-next.git (main)
+by Sven Eckelmann <sven@narfation.org>:
 
-On Fri,  5 Jun 2026 11:21:34 +0000 you wrote:
-> This patch restricts the use of SO_ATTACH_FILTER (cBPF) on TCP sockets
-> to users with CAP_NET_ADMIN capability.
+On Fri,  5 Jun 2026 09:19:55 +0200 you wrote:
+> From: Sven Eckelmann <sven@narfation.org>
 > 
-> This blocks potential side-channel attack where an unprivileged application
-> attaches a filter to leak TCP sequence/acknowledgment numbers.
-> 
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> Signed-off-by: Eric Dumazet <edumazet@google.com>
-> Reported-by: Tamir Shahar <tamirthesis@gmail.com>
-> Reported-by: Amit Klein <aksecurity@gmail.com>
-> Cc: Willem de Bruijn <willemb@google.com>
-> Cc: Alexei Starovoitov <ast@kernel.org>
-> Cc: Daniel Borkmann <daniel@iogearbox.net>
-> Cc: Andrii Nakryiko <andrii@kernel.org>
-> Cc: Martin KaFai Lau <martin.lau@linux.dev>
-> Cc: Eduard Zingerman <eddyz87@gmail.com>
-> Cc: Kumar Kartikeya Dwivedi <memxor@gmail.com>
-> Cc: Song Liu <song@kernel.org>
-> Cc: Yonghong Song <yonghong.song@linux.dev>
-> Cc: Jiri Olsa <jolsa@kernel.org>
-> Cc: John Fastabend <john.fastabend@gmail.com>
-> Cc: Stanislav Fomichev <sdf@fomichev.me>
+> The last_recv_time is the most important indicator for a receiver session
+> to figure out whether a session timed out or not. But this information was
+> only initialized after the session was added to the tp_receiver_list and
+> after the timer was started.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] tcp: restrict SO_ATTACH_FILTER to priv users
-    https://git.kernel.org/netdev/net/c/5d39580f68e6
+  - [net-next,01/11] batman-adv: tp_meter: initialize last_recv_time during init
+    https://git.kernel.org/netdev/net-next/c/811cb00fa8cd
+  - [net-next,02/11] batman-adv: convert cancellation of work items to disable helper
+    https://git.kernel.org/netdev/net-next/c/e9dc4072c549
+  - [net-next,03/11] batman-adv: drop duplicated wifi_flags assignments
+    https://git.kernel.org/netdev/net-next/c/b2e44a67ef4f
+  - [net-next,04/11] batman-adv: use GFP_KERNEL allocations for the wifi detection cache
+    https://git.kernel.org/netdev/net-next/c/ed497f64a617
+  - [net-next,05/11] batman-adv: document cleanup of batadv_wifi_net_devices entries
+    https://git.kernel.org/netdev/net-next/c/bb9e48e32d31
+  - [net-next,06/11] batman-adv: correct batadv_wifi_* kernel-doc
+    https://git.kernel.org/netdev/net-next/c/0e8c38fe9f50
+  - [net-next,07/11] batman-adv: tp_meter: update stale kernel-doc after refactoring
+    https://git.kernel.org/netdev/net-next/c/0c0f658d9abd
+  - [net-next,08/11] batman-adv: bla: update stale kernel-doc
+    https://git.kernel.org/netdev/net-next/c/219b4c46db7f
+  - [net-next,09/11] batman-adv: uapi: keep kernel-doc in struct member order
+    https://git.kernel.org/netdev/net-next/c/f3ff3eb0d6a4
+  - [net-next,10/11] batman-adv: fix batadv_v_ogm_packet_recv error handling kernel-doc
+    https://git.kernel.org/netdev/net-next/c/7b915cd40bb2
+  - [net-next,11/11] batman-adv: fix kernel-doc typos and grammar errors
+    https://git.kernel.org/netdev/net-next/c/1e2fa2b10c23
 
 You are awesome, thank you!
 -- 
