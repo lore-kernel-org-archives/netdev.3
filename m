@@ -1,107 +1,67 @@
-Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5A561DD877
-	for <netdev@vger.kernel.org>; Mon,  8 Jun 2026 17:30:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5050934EEF7
+	for <netdev@vger.kernel.org>; Mon,  8 Jun 2026 17:33:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780939855; cv=none; b=gJGCDAfRuJzPUTZgd4NDPf5izkdHI3zieSgVP4i70GXRNfJ/X11ubr8ZCCoW593IhW7rrusjoRoSU7EyUzcXuocZeGwgdGUSS1qyUk95Fq07BuSliqrU7ccBcYcqhGfvSyTOAPnoju3gn/JF3XDymbGlIOo7ziR6fj3RCQjQ/68=
+	t=1780939996; cv=none; b=fjaPVGBquYmi0dcrwYueLDys1VdoXqC9lS/dQps3GYfOxt8XZueCXBSP2bhbpKnYykwbzFzIEahuYKRJ9hpwh6MmfKEv9zo69e3MAask3eSjqXfJuPwMyqTIIO0885/6xreTDGHBMQi+oIv5NEFqc8DRl0oiyDW7FCSLQ6WjxYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780939855; c=relaxed/simple;
-	bh=8kCMTwljED/L2rYr27Y22xXrKDlzMGCGEZr76dtycjc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Zkb3Nf6RmxI65g8YBhDtkDSGecXO7gKo0ZaTXUDyV+PWmYX2EbNgsPaxGiBTgweKaNVRLtZn0b2wOeZd+KJg3cx7SGa60SNsEVmkJVA39lykeRTZnzNxvv5Ii3XEJefClRPSwU9UkjOIOwnpfi+o+HRmJdPqNGo92siHbXPpkHU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=om4WQfHE; arc=none smtp.client-ip=209.85.219.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	s=arc-20240116; t=1780939996; c=relaxed/simple;
+	bh=t6PbaQFaFaNPFScMXvcyC6deTSlUOgGj+lsEl6bI3BQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NG3eS8UBTehats2Aa4qF4rJ3TvHnb1dancTtDMQ8D+Yv8kLdHmMfIGRMCMlKlZEHzKUc3yhVFuRmrhvW/ilzptRfUvNfg577i/LMBYKGREEO+OdKhcDxorcOegAw0RziNaTNJBJL1IkX7L46W0AOVW0ZJX0stv2J7g4GqyHhstw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZGuhAUEW; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="om4WQfHE"
-Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-8ce9df31130so74606656d6.1
-        for <netdev@vger.kernel.org>; Mon, 08 Jun 2026 10:30:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1780939853; x=1781544653; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Hu8/bo/GD+ueu+T4fB3U+9+0cJ9Sc/+ZCWEG94ix8pc=;
-        b=om4WQfHEu/gXtWdtAffkc4eZi85w3lHvVVWRpIRY5GujPf6EK3DeDcmeErpkOdE14J
-         H8wHTzThy8Dfj9HhtUGLlo23jyYSzJKor+mQCoAnJmMXWkaML/r5sD70NeizOgfzh4/r
-         dU0byJNeGLWKqH9z/eq1/xus4VICLn/Ny4EAM92/4GnNO/wGRGcrTLEr5hx8ITHJNSQF
-         OLMKPFcJWs2XhpYY+t74XJIoCbHgVa3FTzh7h1ljg8Z0IFVYhLix8wGCCtoadyzoooL3
-         6nPHWu5BFpK8p1eaz+AXe5AzAcmoNqP+8X9QGB8HRhSxo+mDBnGXj96poD9lVyot/ixA
-         oiIg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780939853; x=1781544653;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Hu8/bo/GD+ueu+T4fB3U+9+0cJ9Sc/+ZCWEG94ix8pc=;
-        b=gFPbTFg2IxI2OtZXiudECc1bm09ZdG1qIhTRHt5vcmJbM6s9+gTCIwTFObaz42JBGJ
-         nnV6ze0LZgy5KKIwljzTUbbUHCXQHQyAvrHTVWBY6gkCrUM4bfxHzqMQPcQbGlLIHkUA
-         9yRyT/p5wHY4QFpVGRAZ797tKymkwwABSheppK5YbwnBSZHtv1H3ZO95wHWIr+7pP4qR
-         wWtMBb80PUc0rjgvrPw+jEuXEwv/wpeesA9gxhVVuItD8wy0BI0aVSiC2wJyFnL2344o
-         wWC34+KbjlOZwDyw2Nog5fIW1zkiKTTp7nweT3axBDtN1PqwHJgKlyW6nKLcyQmZZDBS
-         0FCg==
-X-Forwarded-Encrypted: i=1; AFNElJ9qdJc+UUb4mHHyTzff87rBFNwAHs54Vaz30C0ZpwrbSiwo1vIQWjEXAdZwUnIS4t+u2ceP+Hw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxyT+WQPj5VT7cFwlV7Jz4qwXc1aRzNOIe/oZf9XBB9GBXBtmaG
-	QbcBmJT1N4uJvER53LYgqv67DBsxPPQl9fEiHcfN5rraDnmuzAXuBqQ/2vVG3anb7tc=
-X-Gm-Gg: Acq92OE/aGNtnahhHrZgvPnW26Dat2OsYjumrD4nR6fXQlhJN/XXZ7a2z8Dnm3/j9yi
-	IZEHp4eHtl8NunRnO6f0G+rCQ13q22VRhgOl0t0YLQyI45puBxeCP7SAAQyxtfEYG6rK/QvA+YO
-	Aq8BHqODT2eJj6AmhTNVCZ2I3UppSBWsyuY04JfkvzRjyTOS5QXUdfAwKsttnj5I75aQrZx//aj
-	0jEzG0qVNtO+EV4bJEs4Mkh49GMoqP0vwykuV60ilhZnWE/sYVDTkGFJHt8OaWF2y7i++rJL15F
-	3lbIqGi8iB7t4t6twQrVffESwMolWUDin8m+fR1/XjlS8suyUvUK1tLU1bJwGG5BR6M7C/aN5Fr
-	l/ztiVoYTcuElVlDnj/ikOMjGk/gWwYQdCulUcDOB409M2GhFekX0GPfTQa0l7T3D/Nw7JOJroe
-	EL6YsdvA5vA3buTD+D3JcXOuhXiKV/ku+n35DQX7ZGCDY3SDhDJn94NK8YaN2ppXhGSoHCtYcUQ
-	e+WY1gH+EfvsJRNNnp428CNgtU=
-X-Received: by 2002:ac8:59cd:0:b0:517:b68a:8d84 with SMTP id d75a77b69052e-517c22529e3mr30782621cf.56.1780939841127;
-        Mon, 08 Jun 2026 10:30:41 -0700 (PDT)
-Received: from ziepe.ca (crbknf0213w-47-54-130-67.pppoe-dynamic.high-speed.nl.bellaliant.net. [47.54.130.67])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8ceccdb9bd6sm187424546d6.13.2026.06.08.10.30.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Jun 2026 10:30:40 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1wWdo7-00000000BOR-47jj;
-	Mon, 08 Jun 2026 14:30:39 -0300
-Date: Mon, 8 Jun 2026 14:30:39 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Abhijit Gangurde <abhijit.gangurde@amd.com>
-Cc: leon@kernel.org, brett.creeley@amd.com, andrew+netdev@lunn.ch,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, allen.hubbe@amd.com, nikhil.agarwal@amd.com,
-	linux-rdma@vger.kernel.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [for-next v3 5/5] RDMA/mlx5: move mlx5 clock info to common
- struct ib_uverbs_clock_info
-Message-ID: <20260608173039.GE2764304@ziepe.ca>
-References: <20260606050003.3648306-1-abhijit.gangurde@amd.com>
- <20260606050003.3648306-6-abhijit.gangurde@amd.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZGuhAUEW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F49D1F00893;
+	Mon,  8 Jun 2026 17:33:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780939995;
+	bh=o3U6GxMxZtA2Ttj48bu/+Feg1kdvNB6iFhl63WTlH6g=;
+	h=From:To:Cc:Subject:Date;
+	b=ZGuhAUEWeZX3ifWyZuT19b3HnOM78baZVH6FHA7tT3HcvohMJ2VB1AXhxqHiGR28i
+	 f8J/eC77os4kNY3WWOoMqKMT9PBsbuZ3hXGmC7h3EFO3xEPJQhhasW2H8nTLOQg1jD
+	 YQqdHo5yvtm7iXSXQn/rYv7c0yrosFUBrMwFxzHV83AvDMUHbgMqk4ZO/YNBl7RSDt
+	 /mgla2Av0o/G2AagIzN5hQn0fXoGLy6Vn4dcy6v1el0DDzbvmQQ0H9pL/6Lo0yjo/j
+	 oJqzzdvSQe8S3ihgInG5690qM/36yYA1FPN1u99Uf/SBZI/gc3zsia4v70l163OWK5
+	 8/i31uiTn7eEA==
+From: Jakub Kicinski <kuba@kernel.org>
+To: davem@davemloft.net
+Cc: netdev@vger.kernel.org,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	andrew+netdev@lunn.ch,
+	horms@kernel.org,
+	willemdebruijn.kernel@gmail.com,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH net-next 0/2] selftests: drv-net: so_txtime: trivial fixes
+Date: Mon,  8 Jun 2026 10:33:03 -0700
+Message-ID: <20260608173305.372987-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260606050003.3648306-6-abhijit.gangurde@amd.com>
+Content-Transfer-Encoding: 8bit
 
-On Sat, Jun 06, 2026 at 10:30:03AM +0530, Abhijit Gangurde wrote:
-> Use struct ib_uverbs_clock_info from ib_user_verbs.h for clock info.
-> 
-> The original struct mlx5_ib_clock_info remains in mlx5-abi.h for
-> userspace ABI compatibility.
+I noticed that so_txtime is only passing on NIPA setups which are
+looped within a single host. The cross-machine cases just flat out
+fail. The initial bug is obvious - the test does not deploy the binary.
+But even with that I think more work would be needed to sync the
+time / adjust the expectations for a dual-machine test.
 
-Please don't do that, we generally don't do compatability for
-compilation only, especially in this case where rdma-core is the only
-consumer and it has its own version linked copies of all these
-headers.
+Feel free to nack / take over, this series is admittedly achieving
+very little in practice. The test will still not be usable on dual-host.
 
-Though it seems like the contents are the same so you could just do:
+Jakub Kicinski (2):
+  selftests: drv-net: so_txtime: remember to deploy the binaries
+  selftests: drv-net: so_txtime: check IP versions
 
-> +/*
-> + * deprecated, see struct ib_uverbs_clock_info from ib_user_verbs.h
-> + */
+ tools/testing/selftests/drivers/net/so_txtime.py | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-#define mlx5_ib_clock_info ib_uverbs_clock_info
+-- 
+2.54.0
 
-Jason
