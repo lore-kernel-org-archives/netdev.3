@@ -1,58 +1,57 @@
 Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4C0D3B7763;
-	Mon,  8 Jun 2026 09:55:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B24503B895E;
+	Mon,  8 Jun 2026 09:55:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780912544; cv=none; b=jbYr6deMQY4CItdJjim3WZjJVvZxfAHhqi+BejTmMVFPkDwF2RuyPGJelqaVwmE87k2Uiww2ZUIMc8XDqQ7XlBmjaR+6RYjkQck/TRHzNVv2jj9s22NPM/0ubj7Aq9JLfwT/njWw/q+Ggm/670fC233KBbJYRBK+yOAIuS/jrEM=
+	t=1780912550; cv=none; b=LmmnoWhUx5C4oiHIp2AOUx8rCEEHtg9+/5SQJUSPN15XuyPtQPvGYGKLbe46mHwvZSuz6XnVKfyCQIC1UFuEBEa6D33mV/YZWwljR+ndUnocHVMXgAklmrXmbIxsydd1dnhGT33toAec1Dqht04973QHY01ZQcD4u195lI+QqoM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780912544; c=relaxed/simple;
-	bh=H9faC3CC3+kGPgIZUWF1KuGRrkkTHR9uw13swy8lrP0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ut3j2d6tzqGCPH+ME7N9W11VTJ38Eq9cq+Iq3iCI4QlHforeR11YhajgfDQHU5WDbOgU2xpS4jyBV+5zKCtUwGih7v5rxF3E3ZQEeEfZv9N4T9SbGLnjCLtJ5vwgV435eLhyIQ0y62p4xqGoH6YC33LzIfAe5iumto1qp6UjLmE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=runbox.com; dkim=pass (2048-bit key) header.d=runbox.com header.i=@runbox.com header.b=OsdmXmB1; arc=none smtp.client-ip=185.226.149.37
+	s=arc-20240116; t=1780912550; c=relaxed/simple;
+	bh=Sx4Ze7AgX5RJCC8XRCD64N/GIkt8A6C2cwwFknSZMa4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=qPIH5McdbxCvpfOYb6LbANgfX2JKZKu5U6g3XYDppAltOvpt3kyFaSVLd5PxerhMPr9QVJ8kxPtLBeN8+/RIPnvbgYs+kdPd5fDvWiGyoxF4kJLiM5xUoIv3rvh/daLrcjkW4EzwR5sQSuzGfjRqQiTze8Uo6vEVnzF5rd/F4OI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=runbox.com; dkim=pass (2048-bit key) header.d=runbox.com header.i=@runbox.com header.b=XfdPRi1k; arc=none smtp.client-ip=185.226.149.37
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=runbox.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=runbox.com header.i=@runbox.com header.b="OsdmXmB1"
-Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
+	dkim=pass (2048-bit key) header.d=runbox.com header.i=@runbox.com header.b="XfdPRi1k"
+Received: from mailtransmit02.runbox ([10.9.9.162] helo=aibo.runbox.com)
 	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
 	(Exim 4.93)
 	(envelope-from <david.laight.linux_spam@runbox.com>)
-	id 1wWWhk-00BRvU-P1; Mon, 08 Jun 2026 11:55:36 +0200
+	id 1wWWhr-00BRz4-0g; Mon, 08 Jun 2026 11:55:43 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=runbox.com;
 	 s=selector1; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:
-	Subject:Cc:To:From; bh=gDH7HwJrRgzOzbq2PKDR9N7cSTO28B1wI4/RAsxwyGc=; b=OsdmXm
-	B1VI6VL0vcC7JTLbc90dz9Lv0KuYQnNHOSuAmwxaN9uVxHqzHK7isO4/0eHizo44RArA+cumV7z1G
-	19v4iV1bDoqInjsyoJiwGydKU41vXbCvNw8/Glp5CieRL0RTSH0oX73bsAIOspMMdBPSk5FXqReNd
-	3kOHjByQBm2CYu8Yt+VZxth8fIgSn/TiAt3E7NQHGkRwZL8vxzH5DuwV+sa2QGfiL7OqlySCNGbqV
-	xYM4EG1MunruW3z16iO0WbI2euVoThwONPia2tdYVaW6dF8Wb4YjCp0O6uAwk8Mpv9XMziuyo1PmK
-	8Knq3VaTuSgutKfoZ+isFpMAn5vw==;
+	Subject:Cc:To:From; bh=MEGRMbuHpposeCciz6uVAu3BRF1Ammi62WRqbPW3TPk=; b=XfdPRi
+	1k/72dcTjk4m/Bgp0cm2XtwE5qP/bkGx+ZcxIfZ2d09qb/yDuxDou4E+exWgQggybZTmAj1s1P9Fd
+	AgUX07kkvGBBZPOtz9XxhtC8oySm/pSfQuUkfLVTEdcz/Nj2xrwvUKMJ1czcNPwjGtJdM9Da4m9TF
+	x7g3xvtDOBUxt5Z/Bs4PJWM+84G0rWAo+rxcJNS5BmfWmFRJyJO3OdS+IknYS0jvER7ebyg16yEY/
+	SSfJU0iAeDqenYWJkRpWY02UCw2x1TPcB4ZAhcKGKs8soJt3LUiIRBTXBKRZqLhFPPr3RQS27XClc
+	gjItoyXB6LA0S4oxnOn1CJJQbXnA==;
 Received: from [10.9.9.73] (helo=submission02.runbox)
-	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
+	by mailtransmit02.runbox with esmtp (Exim 4.86_2)
 	(envelope-from <david.laight.linux_spam@runbox.com>)
-	id 1wWWhk-0003ac-75; Mon, 08 Jun 2026 11:55:36 +0200
+	id 1wWWhp-0000GY-So; Mon, 08 Jun 2026 11:55:42 +0200
 Received: by submission02.runbox with esmtpsa  [Authenticated ID (1493616)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.95)
-	id 1wWWhi-00Ag6G-Us;
-	Mon, 08 Jun 2026 11:55:35 +0200
+	id 1wWWhf-00Ag6G-4O;
+	Mon, 08 Jun 2026 11:55:31 +0200
 From: david.laight.linux@gmail.com
 To: Kees Cook <kees@kernel.org>,
 	linux-hardening@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	netdev@vger.kernel.org
 Cc: Arnd Bergmann <arnd@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Michael Chan <mchan@broadcom.com>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
 	David Laight <david.laight.linux@gmail.com>
-Subject: [PATCH next] Rewrite tg3_bus_string() to avoid temporary string
-Date: Mon,  8 Jun 2026 10:55:07 +0100
-Message-Id: <20260608095523.2606-23-david.laight.linux@gmail.com>
+Subject: [PATCH net-next] net/key: Use strscpy() to copy strings into arrays
+Date: Mon,  8 Jun 2026 10:54:58 +0100
+Message-Id: <20260608095523.2606-14-david.laight.linux@gmail.com>
 X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -64,9 +63,8 @@ Content-Transfer-Encoding: 8bit
 
 From: David Laight <david.laight.linux@gmail.com>
 
-Rather than build (eg) "PCIX:33MHz:32-bit" in a temporary buffer,
-return the addresses of the three constituent components to be used
-in the final snprintf() call.
+Replacing strcpy() with strscpy() ensures that overflow of the target
+buffer cannot happen.
 
 Signed-off-by: David Laight <david.laight.linux@gmail.com>
 ---
@@ -92,93 +90,40 @@ All the patches are being sent individually to avoid very long cc lists.
 Apologies for the terse commit messages and likely unexpected tags.
 (There are about 100 patches in total.)
 
- drivers/net/ethernet/broadcom/tg3.c | 38 +++++++++++++++--------------
- 1 file changed, 20 insertions(+), 18 deletions(-)
+ net/key/af_key.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/tg3.c b/drivers/net/ethernet/broadcom/tg3.c
-index 73a4b569b03e..08bd5a074be8 100644
---- a/drivers/net/ethernet/broadcom/tg3.c
-+++ b/drivers/net/ethernet/broadcom/tg3.c
-@@ -17610,40 +17610,41 @@ static char *tg3_phy_string(struct tg3 *tp)
- 	}
- }
- 
--static char *tg3_bus_string(struct tg3 *tp, char *str)
-+static void tg3_bus_string(struct tg3 *tp, const char **str_a, const char **str_b, const char **str_c)
- {
- 	if (tg3_flag(tp, PCI_EXPRESS)) {
--		strcpy(str, "PCI Express");
--		return str;
-+		*str_a =  "PCI Express";
-+		*str_b = "";
-+		*str_c = "";
-+		return;
- 	} else if (tg3_flag(tp, PCIX_MODE)) {
- 		u32 clock_ctrl = tr32(TG3PCI_CLOCK_CTRL) & 0x1f;
- 
--		strcpy(str, "PCIX:");
-+		*str_a =  "PCIX:";
- 
- 		if ((clock_ctrl == 7) ||
- 		    ((tr32(GRC_MISC_CFG) & GRC_MISC_CFG_BOARD_ID_MASK) ==
- 		     GRC_MISC_CFG_BOARD_ID_5704CIOBE))
--			strcat(str, "133MHz");
-+			*str_b = "133MHz";
- 		else if (clock_ctrl == 0)
--			strcat(str, "33MHz");
-+			*str_b = "33MHz";
- 		else if (clock_ctrl == 2)
--			strcat(str, "50MHz");
-+			*str_b = "50MHz";
- 		else if (clock_ctrl == 4)
--			strcat(str, "66MHz");
-+			*str_b = "66MHz";
- 		else if (clock_ctrl == 6)
--			strcat(str, "100MHz");
-+			*str_b = "100MHz";
- 	} else {
--		strcpy(str, "PCI:");
-+		*str_a =  "PCI:";
- 		if (tg3_flag(tp, PCI_HIGH_SPEED))
--			strcat(str, "66MHz");
-+			*str_b = "66MHz";
- 		else
--			strcat(str, "33MHz");
-+			*str_b = "33MHz";
- 	}
- 	if (tg3_flag(tp, PCI_32BIT))
--		strcat(str, ":32-bit");
-+		*str_c = ":32-bit";
- 	else
--		strcat(str, ":64-bit");
--	return str;
-+		*str_c = ":64-bit";
- }
- 
- static void tg3_init_coal(struct tg3 *tp)
-@@ -17684,7 +17685,7 @@ static int tg3_init_one(struct pci_dev *pdev,
- 	struct tg3 *tp;
- 	int i, err;
- 	u32 sndmbx, rcvmbx, intmbx;
--	char str[40];
-+	const char *str_a, *str_b, *str_c;
- 	u64 dma_mask, persist_dma_mask;
- 	netdev_features_t features = 0;
- 	u8 addr[ETH_ALEN] __aligned(2);
-@@ -18008,10 +18009,11 @@ static int tg3_init_one(struct pci_dev *pdev,
- 			tp->ptp_clock = NULL;
- 	}
- 
--	netdev_info(dev, "Tigon3 [partno(%s) rev %04x] (%s) MAC address %pM\n",
-+	tg3_bus_string(tp, &str_a, &str_b, &str_c);
-+	netdev_info(dev, "Tigon3 [partno(%s) rev %04x] (%s%s%s) MAC address %pM\n",
- 		    tp->board_part_number,
- 		    tg3_chip_rev_id(tp),
--		    tg3_bus_string(tp, str),
-+		    str_a, str_b, str_c,
- 		    dev->dev_addr);
- 
- 	if (!(tp->phy_flags & TG3_PHYFLG_IS_CONNECTED)) {
+diff --git a/net/key/af_key.c b/net/key/af_key.c
+index a166a88d8788..625822d19071 100644
+--- a/net/key/af_key.c
++++ b/net/key/af_key.c
+@@ -1195,7 +1195,7 @@ static struct xfrm_state * pfkey_msg2xfrm_state(struct net *net,
+ 			err = -ENOMEM;
+ 			goto out;
+ 		}
+-		strcpy(x->aalg->alg_name, a->name);
++		strscpy(x->aalg->alg_name, a->name);
+ 		x->aalg->alg_key_len = 0;
+ 		if (key) {
+ 			x->aalg->alg_key_len = key->sadb_key_bits;
+@@ -1217,7 +1217,7 @@ static struct xfrm_state * pfkey_msg2xfrm_state(struct net *net,
+ 				err = -ENOMEM;
+ 				goto out;
+ 			}
+-			strcpy(x->calg->alg_name, a->name);
++			strscpy(x->calg->alg_name, a->name);
+ 			x->props.calgo = sa->sadb_sa_encrypt;
+ 		} else {
+ 			int keysize = 0;
+@@ -1234,7 +1234,7 @@ static struct xfrm_state * pfkey_msg2xfrm_state(struct net *net,
+ 				err = -ENOMEM;
+ 				goto out;
+ 			}
+-			strcpy(x->ealg->alg_name, a->name);
++			strscpy(x->ealg->alg_name, a->name);
+ 			x->ealg->alg_key_len = 0;
+ 			if (key) {
+ 				x->ealg->alg_key_len = key->sadb_key_bits;
 -- 
 2.39.5
 
