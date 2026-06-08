@@ -1,127 +1,83 @@
-Received: from smtpbgau1.qq.com (smtpbgau1.qq.com [54.206.16.166])
+Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEBE329B8CF;
-	Mon,  8 Jun 2026 01:09:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.206.16.166
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 409C32F60CC
+	for <netdev@vger.kernel.org>; Mon,  8 Jun 2026 01:25:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.241.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780880980; cv=none; b=nJJu4fLR4XOVdmvm9ki7CLyhiwDwEbc3P7KOVQFgVxsjs2PguxhJvsqJzdnb3+TP4HlaHN6v19bcK6exOdB+c7MNR//c27Zu77K3W0KoRZBxKzpaT2zSkLxoJ3cnlfmchlsoqzZ64ciIIUbjDsWMxlw1aKF+Y2rsVSdTrOxVqQU=
+	t=1780881955; cv=none; b=J6NjGsGTHn4vR1nMQb98DmWTWoObZATEqKzEQm9gd3hpzolbpSztmcUliWdwbdpyzOObpMKDwaAk4higg5u4nyQ8z1xkus8KnCIYzA8aEcZ2ZTjUWJVEikNmT4UOrx2u2G4rOFHbzhOuelR9tfmI2J8um5QsM+0xzo9qGbjQdIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780880980; c=relaxed/simple;
-	bh=6mFesj4hgoULMnFuaTjtFmFx3IRjOGWujjUMOSGa2r4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GK/RlCP/ul40iqaXSKYTBHPMGR6043MY8cg1kLbraZWUMgDUntGDvn3Rj0eEHrdSeI0O+oqwfhhvMwdwCtoJgROjpWpeaHEf1nC3hFD7DnD4onHrrSPLNSgDdTdU/Z07T0MuZsgz7NoMpP6JhFdDi6Okl4vN8qoo3h6t2f3M050=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=radxa.com; spf=pass smtp.mailfrom=radxa.com; arc=none smtp.client-ip=54.206.16.166
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=radxa.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=radxa.com
-X-QQ-mid: zesmtpgz3t1780880959t22d2278c
-X-QQ-Originating-IP: bXSnog20lGiDAATqGnwBlNDtCTN8ekmUmHTMsQS2HH0=
-Received: from [127.0.0.1] ( [116.234.26.110])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Mon, 08 Jun 2026 09:09:14 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 6460039914688242846
-Message-ID: <3ADB82C061204E67+dec56a7d-f8d1-4be9-9b21-3481a710df87@radxa.com>
-Date: Mon, 8 Jun 2026 09:11:44 +0800
+	s=arc-20240116; t=1780881955; c=relaxed/simple;
+	bh=sN1omTyXnnigNotHVc3GGtOQHzH/Ih5xwQyOnDATnA8=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=OkD3Fx+vmT8Z+eJJ8K/GMe16bLWO8kZkHf6sosxO0WfJGPCNl/Rvvun7Wq0ALw6Xyhxp4C8S7bUwLKgQMeobMQQEZd8PG4O8Ef7iVV/130LIjKUAu9E6KN1s4RbzRITrKEfE8rXIsP/Y4yToV/ddw7ntGlzJtTQig47NtteL5t4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=bWCr0SZk; arc=none smtp.client-ip=203.29.241.158
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeconstruct.com.au
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="bWCr0SZk"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=codeconstruct.com.au; s=2022a; t=1780881946;
+	bh=0RtRuX6Qw7AsqRudPWglNstsxLqPyoBPPmeFsv+QlOA=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=bWCr0SZk/P06iuKFs7mQ4x7hUbdN9twwIgbECG8qMe68luop05dBx8dCkVtiMGfnE
+	 DdFIyHh7bB+6P1/fjuxp+U5lSqXTHN/boSgxiVlHjsgnt9L8+TXvf38CQO5T4j2bmT
+	 YR3XROOOWBKieuTYvJzAcEPsB0GENQuChs5FYWO5+U4ZmA9iZ8DV8qpvJpBHGkgln9
+	 LYUpeopba0K7gaZeQFjVsl7aG/V6wgN6eT82z8LboAWOa7slWTMaJeYmI76GAIi+Jg
+	 TKjeZfVSXEJ24Np9mvJkWSPI2t7ZiyFK+M/qLd2GTSrzIh4MbnBYQlyP4W2UG92gdY
+	 CCGf3HDmdT7/w==
+Received: by codeconstruct.com.au (Postfix, from userid 10000)
+	id 7AB1C60886; Mon,  8 Jun 2026 09:25:46 +0800 (AWST)
+From: Jeremy Kerr <jk@codeconstruct.com.au>
+Date: Mon, 08 Jun 2026 09:25:41 +0800
+Subject: [PATCH net v2 2/2] net: mctp: usb: don't fail mctp_usb_rx_queue on
+ a deferred submission
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 10/12] net: stmmac: tc956x: add TC956x/QPS615
- support
-To: Daniel Thompson <daniel@riscstar.com>
-Cc: Alex Elder <elder@riscstar.com>, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, maxime.chevallier@bootlin.com,
- rmk+kernel@armlinux.org.uk, andersson@kernel.org, konradybcio@kernel.org,
- robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, linusw@kernel.org,
- brgl@kernel.org, arnd@arndb.de, gregkh@linuxfoundation.org,
- mohd.anwar@oss.qualcomm.com, a0987203069@gmail.com,
- alexandre.torgue@foss.st.com, ast@kernel.org, boon.khai.ng@altera.com,
- chenchuangyu@xiaomi.com, chenhuacai@kernel.org, daniel@iogearbox.net,
- hawk@kernel.org, hkallweit1@gmail.com, inochiama@gmail.com,
- john.fastabend@gmail.com, julianbraha@gmail.com, livelycarpet87@gmail.com,
- matthew.gerlach@altera.com, mcoquelin.stm32@gmail.com, me@ziyao.cc,
- prabhakar.mahadev-lad.rj@bp.renesas.com, richardcochran@gmail.com,
- rohan.g.thomas@altera.com, sdf@fomichev.me, siyanteng@cqsoftware.com.cn,
- weishangjuan@eswincomputing.com, wens@kernel.org, netdev@vger.kernel.org,
- bpf@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- devicetree@vger.kernel.org, linux-gpio@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20260501155421.3329862-1-elder@riscstar.com>
- <20260501155421.3329862-11-elder@riscstar.com>
- <DD71CDEABC7C16D5+02d052ff-13bb-4712-a847-91416f76c578@radxa.com>
- <7f3a0f16-5159-4bbc-8b15-9b5841603bf6@riscstar.com>
- <3A5C0389E7C0D241+21a4f16b-1af8-46ac-8831-0c1b49694df0@radxa.com>
- <agH4qC74A540koDl@aspen.lan>
-Content-Language: en-US
-From: Xilin Wu <sophon@radxa.com>
-In-Reply-To: <agH4qC74A540koDl@aspen.lan>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpgz:radxa.com:qybglogicsvrsz:qybglogicsvrsz3b-0
-X-QQ-XMAILINFO: MDqtQ4jGWXAGlDFsZ6teNi+ri0nkei5XfBZpP5QcO66nK0kgvh4BCaQl
-	Xv3oHRWmoZLiQ1NbhcZ1qXlPzIzEJ8CqCdsiu47q1Qn6F76e06528BVQ1LttQpUElnXfWVs
-	kxFAJ5ytcLC+VfARgmM31sq/2b7QO4PBBqhPnRI7sEDHqvvdwWDlv25MBk4KRA5bS4ucica
-	5LXUd562FvcGSuV/5jz0F2qItoNRjuYDfdVQn9Ufko3tz9ITXa9kLpaJH1DOIfOljiaTiM1
-	cm52MZ00AVEtz1epYd6lC8nyXQS77iE/Nko7iMytc+1tKt0H9lpaJW2fU/Q+dreKRRXaU4J
-	C7KZ1dJgfuieH3e5gBQzDZDgdNF9MhwvyNGQnczkg5M1eMnXrNypBMqTuOgGwJtDM7zXH7T
-	aL14LMPGqcut5WI7xpDFRVP8byDTHWJAF0aHiyGCVMlnVA9PHSMEzmSQ1nR2Y9Q476BFRC4
-	gZ3uTWWAKoUYbVPo0C2RjESWKWJUvHeKksk+VVbEYED45ujiEyjt8JVYaLp6nF9FaLzQANb
-	3rmqbPC/KMz+HZqvZE1vA0v13aS8u91Icyj4o41fJLWWreLEHmjko1yNMcIHfWgdp3knZm0
-	zGGPju3+xADUZ0IAFNwX7Aj33LiSbUsJ14uyp9uCjpNAT+xhmIuRRR4ZwaTyMf9QdBjZYPQ
-	2V22HYyjxivhLUFwTshRzC2ePMWyy+Z0fLfk2NUsbSZvEqDVKz/EeiGt98AXC+5a9OlRwcq
-	uVRELH4XNH4e4pA1gRUXqDQD6v7yszNBTvvQHJU8GcJagoWLLtOj/iADYboC++zeJvNNxaA
-	E2TS0jDnuvz+w11mRTOXml0xp3gU/6kcR9TVoPfyWf/966uwZSurnynl9XARHO4uscGHhhx
-	+ccDGOym4uCEc+bnxqt6u51SoQ5798+mxa8gFXpB2rM0r9RS6OuvQaZ5YX6r5XcQ06LtkLC
-	E4pSiQZCCa4RLLhuYmOGEpWqECYxcrP/FnHHjJifpUyFaMsNg69x+ef6ilhHzf4s4J7M=
-X-QQ-XMRINFO: OD9hHCdaPRBwH5bRRRw8tsiH4UAatJqXfg==
-X-QQ-RECHKSPAM: 0
+Message-Id: <20260608-dev-mctp-usb-rx-requeue-v2-2-29a3aa507609@codeconstruct.com.au>
+References: <20260608-dev-mctp-usb-rx-requeue-v2-0-29a3aa507609@codeconstruct.com.au>
+In-Reply-To: <20260608-dev-mctp-usb-rx-requeue-v2-0-29a3aa507609@codeconstruct.com.au>
+To: Matt Johnston <matt@codeconstruct.com.au>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org
+X-Mailer: b4 0.16-dev
 
-On 5/11/2026 11:41 PM, Daniel Thompson wrote:
-> Hi Xilin
-> 
-> On Thu, May 07, 2026 at 09:57:26PM +0800, Xilin Wu wrote:
->> Do you think if a shutdown callback like this is required? It looks like the
->> driver sometimes does a MDIO MMIO read when the PCIe link is down, causing
->> the board to reset due to SoC side PCIe NoC timeout.
->>
->> After this change, the board can always shutdown gracefully.
-> 
-> I've preferred controlled reboots to power cycles throughout development
-> and I hadn't spotted any major problems with graceful shutdown (which
-> isn't to say there have never crashes but generally I expect `reboot`
-> to provoke a reboot successfully).
-> 
-> Just to be sure configured my board with irq=POLL (to match your setup)
-> and still can't reproduce.
-> 
-> We mostly run Debian/systemd so there might be something happening in
-> userspace to sequence things nicely. However I have ruled out
-> NetworkManager.service and networking.service (stopped this services
-> does *not* tear down the network link).
-> 
-> Can you share a bit more about how to reproduce the problem (including
-> reliability of reproduction)?
-> 
-> 
-> Daniel.
-> 
+In the ndo_open path, a deferred queue open will report a failure, and
+so the netdev will not be ndo_stop()ed, leaving us with the rx_retry
+work potentially pending.
 
-Hi Daniel,
+Don't report a deferred queue as an error, as we are still operational.
+This means we use the ndo_stop() path for future cleanup, which handles
+rx_retry_work cancellation.
 
-Sorry for the late reply. After some more investigation, I think the 
-problem is more likely related to the PCIe platform driver rather than 
-this driver. So I agree that a shutdown callback is probably not needed 
-here.
+Fixes: 0791c0327a6e ("net: mctp: Add MCTP USB transport driver")
+Signed-off-by: Jeremy Kerr <jk@codeconstruct.com.au>
+---
+ drivers/net/mctp/mctp-usb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/mctp/mctp-usb.c b/drivers/net/mctp/mctp-usb.c
+index cf6f6a93a451..fade65f2f269 100644
+--- a/drivers/net/mctp/mctp-usb.c
++++ b/drivers/net/mctp/mctp-usb.c
+@@ -154,7 +154,7 @@ static int mctp_usb_rx_queue(struct mctp_usb *mctp_usb, gfp_t gfp)
+ 	if (!mctp_usb->rx_stopped)
+ 		schedule_delayed_work(&mctp_usb->rx_retry_work, RX_RETRY_DELAY);
+ 	spin_unlock_irqrestore(&mctp_usb->rx_lock, flags);
+-	return rc;
++	return 0;
+ }
+ 
+ static void mctp_usb_in_complete(struct urb *urb)
 
 -- 
-Best regards,
-Xilin Wu <sophon@radxa.com>
+2.47.3
 
