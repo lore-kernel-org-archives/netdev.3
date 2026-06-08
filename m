@@ -1,165 +1,222 @@
-Received: from mta1.formilux.org (mta1.formilux.org [51.159.59.229])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78FBF4279E3
-	for <netdev@vger.kernel.org>; Mon,  8 Jun 2026 15:06:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.159.59.229
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46D1830675C
+	for <netdev@vger.kernel.org>; Mon,  8 Jun 2026 15:07:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780931185; cv=none; b=rnkWEYzxizDFmN5ofeyF3iOPbrJEAVKY0Tbl4fpzYMulWZDn8+bBuZoPnFjoxk2WOJUp1f4ecz3TJQ7FHuCvZn52yESFmlvAG04Qpo+Fz+y5LlzPNYX39FLuU2dfZfwGvhjjM3AhB6L6DQ/Ta18GIMCX3Nsbpgw/rNT1MjMTD1o=
+	t=1780931271; cv=none; b=TVv/LlNYxdCEfhBD7eimn1mfzrsmmm2tZz2w37X5I28bNpxFbAOzdZTNprAAQ33ey/GquJa6th5lu4JjGNE0grWvg3HGxdd3pk8rMYq9QXrbr5eoLp1ZtnokG58kECWN3upRx+hieaNLbWGPGg98swsyGO+c3a19zkS2Xzspby4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780931185; c=relaxed/simple;
-	bh=I88BegSto3+kNitB6kqvIqnIJzVLWXt+OPNwEUP1a04=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=i3sDAI2jYULj3LCuPPA5j0dGb4/FrNQwtUv2unXEENuvEEipJg0hGiPF9VJ+3ZN/NZIu2a8NG71as5Jvam0LshG3wAf2ebLSboBby+/WMLpDDdh60ApHISPfuyvGSkgC94xXSzLhfhpau7liu3u5fG2/Ok2/aPcytAFCXfQNx4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=1wt.eu; spf=pass smtp.mailfrom=1wt.eu; dkim=pass (1024-bit key) header.d=1wt.eu header.i=@1wt.eu header.b=F2pcrZl7; arc=none smtp.client-ip=51.159.59.229
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=1wt.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=1wt.eu
+	s=arc-20240116; t=1780931271; c=relaxed/simple;
+	bh=3ZAi6k7uot/P9VWf4aeXBkjh3qrMw04RVar/N/MtQ28=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=WvDx4lK7wFcPuBY9JA4a1BdqA3FoT0DPc5yWflEzlweQpfcifIomMLmdRyvD2+9xTCP6yefovFrDoBJio/kHsjd3U7XMNPsaT42JapkPNHk22bLUJUd+HSUn8pu6LFVRiAK4yFT7Law6FbyviZEIByyi4i+7Oy6pViURsKD2sGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SNRpde6k; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=1wt.eu header.i=@1wt.eu header.b="F2pcrZl7"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1wt.eu; s=mail;
-	t=1780931176; bh=Ir/GpmJ/KKeHQdGFw7gdehhXDFaca8MfgejuXXaaj74=;
-	h=From:Message-ID:From;
-	b=F2pcrZl7wvivWt9mwwfqC0HSz1EyN63HY+9FGRmnXPn0t2Gs/i1Hd79yJcmer2nzc
-	 j+/q3WsjXRfRgoJnfkJ8udXkII5eWpy2MvhbxHEriCzcYJH2D3vOIoXmta29VdLKp1
-	 IYcNWgUZeHQj9auIh7q1DhdE7FATeULPwplRn+BU=
-Received: from 1wt.eu (ded1.1wt.eu [163.172.96.212])
-	by mta1.formilux.org (Postfix) with ESMTP id 5E23CC0A10;
-	Mon, 08 Jun 2026 17:06:16 +0200 (CEST)
-Date: Mon, 8 Jun 2026 17:06:15 +0200
-From: Willy Tarreau <w@1wt.eu>
-To: Jiayuan Chen <jiayuan.chen@linux.dev>
-Cc: xietangxin <xietangxin@yeah.net>, Eric Dumazet <edumazet@google.com>,
-        Pablo Neira Ayuso <pablo@netfilter.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-        Simon Horman <horms@kernel.org>, Neal Cardwell <ncardwell@google.com>,
-        Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org,
-        eric.dumazet@gmail.com, Zhouyan Deng <dengzhouyan_nwpu@163.com>,
-        Florian Westphal <fw@strlen.de>
-Subject: Re: [PATCH net] tcp: secure_seq: add back ports to TS offset
-Message-ID: <aibaZyz4MT8Ixt0N@1wt.eu>
-References: <20260302205527.1982836-1-edumazet@google.com>
- <99caeafd-edf5-44a4-8742-4eada5d0f5d1@yeah.net>
- <CANn89iK8GcY3GHCRs-8EVrDoBPhdw1iY4mBjZKe8gx58+ko73Q@mail.gmail.com>
- <aiaOor1JLLu5Xn75@1wt.eu>
- <90cb7e92-2451-4c67-9f35-6ff96b7efd77@yeah.net>
- <0e89ceb5-a2ae-4e7c-8fe2-5b6a89ba6ac5@linux.dev>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SNRpde6k"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0C421F00893;
+	Mon,  8 Jun 2026 15:07:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780931269;
+	bh=4LLNpNp2396w2WmhF3i7U1VNXInpT/sRq/l2UGIIvV0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=SNRpde6krlDWnxsgZ3jauKZP99qdShWOV1LWKqMYoXGC5wrmTkgymuPwjmEHv5PI0
+	 z285kLrrIyoctoIIkiEvN3n8gNhBepqgQSBZaxI5rT9ZrdwXAt8G8wcBzEIQIvAemC
+	 2JMju0QFD0/wKNHJNQ+2JfVgpIzWO+dHCPmdgb4DmRHQqbV29kjiv1QFNd50Euw8CA
+	 GwdpgIgcAk9+1XRrW2tSvrwHcVwvnXmco7nHypkxe8bfp94p096IG3CvrCdGL6xUIr
+	 uh6jNSRDFhlx8qf3D5CQ8gHGZZFNPXoX8VIUbWGLPI7fnM3WkZpUk9YfIthI1EfwuC
+	 U2diiPT06INOw==
+From: Simon Horman <horms@kernel.org>
+To: jiawenwu@trustnetic.com
+Cc: 'Simon Horman' <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	mengyuanlou@net-swift.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	richardcochran@gmail.com,
+	linux@armlinux.org.uk,
+	jacob.e.keller@intel.com,
+	michal.swiatkowski@linux.intel.com,
+	kees@kernel.org,
+	larysa.zaremba@intel.com,
+	joe@dama.to,
+	leitao@debian.org,
+	aleksandr.loktionov@intel.com,
+	u.kleine-koenig@baylibre.com,
+	fabio.baltieri@gmail.com,
+	tglx@kernel.org,
+	gregkh@linuxfoundation.org
+Subject: Re: [PATCH net-next v5 5/5] net: wangxun: add pcie error handler
+Date: Mon,  8 Jun 2026 16:05:31 +0100
+Message-ID: <20260608150529.149510-3-horms@kernel.org>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260604085631.12720-6-jiawenwu@trustnetic.com>
+References: <20260604085631.12720-6-jiawenwu@trustnetic.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <0e89ceb5-a2ae-4e7c-8fe2-5b6a89ba6ac5@linux.dev>
 
-On Mon, Jun 08, 2026 at 09:14:26PM +0800, Jiayuan Chen wrote:
-> 
-> On 6/8/26 8:51 PM, xietangxin wrote:
-> > 
-> > On 6/8/2026 5:42 PM, Willy Tarreau wrote:
-> > > On Mon, Jun 08, 2026 at 01:51:49AM -0700, Eric Dumazet wrote:
-> > > > On Sat, Jun 6, 2026 at 4:06 AM xietangxin <xietangxin@yeah.net> wrote:
-> > > > > 
-> > > > > Hi Eric and netdev,
-> > > > > 
-> > > > > I noticed a significant TCP performance regression (QPS drop) when using
-> > > > > iptables MASQUERADE with the `--random-fully` option, and I have bisected
-> > > > > it down to commit 165573e41f2f66ef98940cf65f838b2cb575d9d1
-> > > > > (tcp: secure_seq: add back ports to TS offset).
-> > > > > 
-> > > > > Here is the benchmark environment and test results.
-> > > > > Environment:
-> > > > > - Client & Server: 2 VMs
-> > > > > - Server: Nginx listening on port 80 (HTTP), and ip 10.0.0.1
-> > > > > - Benchmark tool: wrk (short-lived connections with "Connection: close")
-> > > > > 
-> > > > > Test Commands
-> > > > > 1. With random-fully:
-> > > > >     # iptables -t nat -A POSTROUTING -d 10.0.0.1 -p tcp --dport 80 -j MASQUERADE --random-fully
-> > > > >     # wrk -t8 -c200 -H "Connection: close" -d10s --latency http://10.0.0.1:80
-> > > > > 2. Without random-fully:
-> > > > >     # iptables -t nat -A POSTROUTING -d 10.0.0.1 -p tcp --dport 80 -j MASQUERADE
-> > > > >     # wrk -t8 -c200 -H "Connection: close" -d10s --latency http://10.0.0.1:80
-> > > > > 
-> > > > > Test Results (QPS):
-> > > > > 1. Parent Commit (7f083faf59d14c04e01ec05a7507f036c965acf8):
-> > > > >     - with random-fully:    18145.74, 15006.39, 15716.67
-> > > > >     - without random-fully: 18556.36, 16339.22, 21506.02
-> > > > > 
-> > > > > 2. Bad Commit (165573e41f2f66ef98940cf65f838b2cb575d9d1):
-> > > > >     - with random-fully:    11074.76, 10383.20, 10164.81  <-- (~35% drop)
-> > > > >     - without random-fully: 17310.75, 20279.85, 18399.48
-> > > > > 
-> > > > > Is this performance degradation an expected side-effect of the security fix,
-> > > > > or is there any sysctl param we should tune when `--random-fully` is
-> > > > > required for high-concurrency short connections?
-> > > > Hi Tangxin
-> > > > 
-> > > > I do not know why that patch would affect MASQUERADE performance.
-> > > > 
-> > > > Pablo, Florian, do you have an idea?
-> > > I suspect it's because MASQUERADE can shuffle the ports around and
-> > > break the end-to-end mapping. With host-based ISN the increments
-> > > remain positive regardless of the ports, while with port-based
-> > > increments if you shuffle ports around, two consecutive uses of
-> > > the same port can end up showing a decreasing ISN, and some
-> > > outgoing SYN will get an ACK instead of a SYN-ACK, then send an
-> > > RST, and a SYN again, causing a degradation.
-> > > 
-> > > I'm not saying this is necessarily what happens here but based on the
-> > > commit message description I suspect that this is what's happening
-> > > here. There's always a tradeoff between ISN secrecy and reliability
-> > > unfortunately.
-> > > 
-> > > Willy
-> > Hi,
-> > 
-> > Willy, your hypothesis is 100% correct!
-> > I captured the packets during the benchmark on the bad commit,
-> > and the trace perfectly shows the "SYN -> ACK -> RST".
-> > 
-> > Here is the key snippet of the packet trace (Client: 10.0.0.2, Server: 10.0.0.1):
-> > 
-> > // 1. First connection closes, Server sends last ACK(410615916), entering TIME_WAIT.
-> > 12105 08:54:39.128861 10.0.0.1 -> 10.0.0.2 TCP 80 -> 47824 [ACK] Seq=3315216203 Ack=410615916 TSval=273827652 TSecr=370383870
-> > 
-> > // 2. ~200ms later, next short-conn reuses port 47824 via MASQUERADE --random-fully
-> > 47637 08:54:39.332281 10.0.0.2 -> 10.0.0.1 TCP 47824 -> 80 [SYN] Seq=559739866 TSval=4137539723 TSecr=0
-> > 
-> > // 3. Server is sends a ACK with the old connection's expected ACK(410615916).
-> > 48591 08:54:39.337692 10.0.0.1 -> 10.0.0.2 TCP 80 -> 47824 [ACK] Seq=3315216203 Ack=410615916 TSval=273827858 TSecr=370383870
-> > 
-> > // 4. Client receives the unexpected old ACK, responds with RST, and has to retry the connection.
-> > 48600 08:54:39.337799 10.0.0.2 -> 10.0.0.1 TCP 47824 -> 80 [RST] Seq=410615916 Win=0
-> > 
-> > 
-> > Are there any architectural recommendations we should consider here,
-> > or is this considered an acceptable trade-off for security?
-> 
-> 
-> It's classic PAWS problem when packets go through NAT/Gateway.
-> 
-> Can you test the performance with following different two configs (client) ?
-> 
->     sysctl -w net.ipv4.tcp_timestamps=2
-> 
->     sysctl -w net.ipv4.tcp_timestamps=0
+From: 'Simon Horman' <horms@kernel.org>
 
-The thing is, nothing forces a server to use PAWS to distinguish SYNs,
-and some OSes only apply the spec to the letter (at least Solaris in
-my experience). The spec basically says that PAWS protects against
-duplicate non-SYN segments, and duplicate SYNs while there is a
-connection. So while Linux (and other OSes) nicely covers the case
-of the transition from TIME_WAIT to SYN_RECV, others do not always do
-it.
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+Full review at: https://sashiko.dev
 
-Regardless, while I hate it when we play borderline games with TCP for
-the sake of supposed security issues that can only be demonstrated in
-a lab, we must admit that masquerading remains an issue when the same
-port range is shared between multiple hosts, even with PAWS since there
-is no reason for multiple hosts to have the same clock.
+Simon says: there is also AI-generated review available of other patches of
+	    this patch-set. But I believe those flagged below are the ones
+	    that warrant investigation in the context of this patchset.
 
-Willy
+---
+net: wangxun: add pcie error handler
+
+Support AER driver to handle the PCIe errors. Sometimes netdev watchdog
+Tx timeout happens before the AER error report when a PCIe error occurs,
+CPU blocking would be caused by MMIO during the reset process. To
+prevent it, error return is added in reset path. The current function of
+ngbe is not yet fully developed, it will be completed in the future.
+
+> diff --git a/drivers/net/ethernet/wangxun/libwx/wx_err.c b/drivers/net/ethernet/wangxun/libwx/wx_err.c
+> index ee27f96735dc7..9a4dbb3427d93 100644
+> --- a/drivers/net/ethernet/wangxun/libwx/wx_err.c
+> +++ b/drivers/net/ethernet/wangxun/libwx/wx_err.c
+[ ... ]
+> @@ -4,11 +4,125 @@
+>  static pci_ers_result_t wx_io_slot_reset(struct pci_dev *pdev)
+>  {
+>  	struct wx *wx = pci_get_drvdata(pdev);
+>  	pci_ers_result_t result;
+>  
+>  	if (pci_enable_device_mem(pdev)) {
+>  		wx_err(wx, "Cannot re-enable PCI device after reset.\n");
+>  		result = PCI_ERS_RESULT_DISCONNECT;
+>  	} else {
+>  		/* make all memory operations done before clearing the flag */
+>  		smp_mb__before_atomic();
+>  		clear_bit(WX_STATE_DISABLED, wx->state);
+>  		pci_set_master(pdev);
+>  		pci_restore_state(pdev);
+>  		pci_wake_from_d3(pdev, false);
+>  
+> +		rtnl_lock();
+> +		if (netif_running(wx->netdev) && wx->down_suspend)
+> +			wx->down_suspend(wx);
+> +		if (wx->do_reset)
+> +			wx->do_reset(wx->netdev, false);
+> +		rtnl_unlock();
+
+[Severity: Critical]
+Does this sequence leave the netdev state out of sync if wx_io_resume()
+later fails?
+
+If wx_io_resume() fails its ndo_open() call, it returns with netif_running()
+still true. If an administrator later sets the interface down, the kernel
+will call ndo_stop (txgbe_close).
+
+txgbe_close() unconditionally calls wx_free_irq(), txgbe_free_misc_irq(), and
+wx_free_resources(). Because txgbe_free_misc_irq() does not set
+txgbe->misc.domain to NULL, calling it a second time causes a double free.
+
+> diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_ethtool.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_ethtool.c
+> index 3e32aca728065..80811947d5acf 100644
+> --- a/drivers/net/ethernet/wangxun/txgbe/txgbe_ethtool.c
+> +++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_ethtool.c
+[ ... ]
+> @@ -78,13 +78,17 @@ static int txgbe_set_ringparam(struct net_device *netdev,
+>  		goto clear_reset;
+>  	}
+>  
+> -	txgbe_down(wx);
+> +	err = txgbe_down(wx);
+> +	if (err)
+> +		goto free_temp;
+>  
+>  	wx_set_ring(wx, new_tx_count, new_rx_count, temp_ring);
+>  	kvfree(temp_ring);
+>  
+>  	txgbe_up(wx);
+>  
+> +free_temp:
+> +	kvfree(temp_ring);
+>  clear_reset:
+>  	clear_bit(WX_STATE_RESETTING, wx->state);
+
+[Severity: High]
+If txgbe_down() returns an error here, the function jumps to free_temp and
+skips calling txgbe_up().
+
+Because txgbe_disable_device() has already called wx_soft_quiesce() to stop
+TX queues and disable NAPI, does this leave the interface logically stuck
+down while the OS still considers it up?
+
+> diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
+> index f6e596eb92178..98786efbe871d 100644
+> --- a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
+> +++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
+[ ... ]
+> @@ -212,15 +212,21 @@ static void txgbe_reset(struct wx *wx)
+>  		wx_ptp_reset(wx);
+>  }
+>  
+> -static void txgbe_disable_device(struct wx *wx)
+> +static int txgbe_disable_device(struct wx *wx)
+>  {
+>  	struct net_device *netdev = wx->netdev;
+> +	int ret = 0;
+>  	u32 i;
+>  
+>  	if (test_and_set_bit(WX_STATE_DOWN, wx->state))
+> -		return;
+> +		return 0;
+> +
+> +	ret = wx_disable_pcie_master(wx);
+> +	if (ret) {
+> +		wx_soft_quiesce(wx);
+> +		return ret;
+> +	}
+
+[Severity: High]
+If wx_disable_pcie_master() times out and returns an error, the function
+exits without clearing the WX_STATE_DOWN bit. If a subsequent teardown
+attempt occurs, will the WX_STATE_DOWN check falsely assume the device is
+already disabled and return 0 (success)?
+
+[Severity: Critical]
+Returning early here skips critical hardware teardown like wx_disable_rx()
+and the MAC shutdown.
+
+Because callers like txgbe_close() do not check the return value of
+txgbe_down(), they proceed to unconditionally free all DMA rings via
+wx_free_resources(). Can this allow the hardware to DMA incoming packets into
+freed memory pages?
+
+[ ... ]
+> @@ -606,13 +635,16 @@ int txgbe_setup_tc(struct net_device *dev, u8 tc)
+>  
+>  static void txgbe_reinit_locked(struct wx *wx)
+>  {
+> +	int ret;
+> +
+>  	netif_trans_update(wx->netdev);
+>  
+>  	mutex_lock(&wx->reset_lock);
+>  	set_bit(WX_STATE_RESETTING, wx->state);
+>  
+> -	txgbe_down(wx);
+> -	txgbe_up(wx);
+> +	ret = txgbe_down(wx);
+> +	if (!ret)
+> +		txgbe_up(wx);
+>  
+>  	clear_bit(WX_STATE_RESETTING, wx->state);
+
+[Severity: High]
+Similar to the ethtool path, if txgbe_down() fails here, txgbe_up() is
+skipped. Does this leave the interface in a broken state until the next
+administrative down/up cycle?
