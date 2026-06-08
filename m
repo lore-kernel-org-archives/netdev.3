@@ -1,194 +1,144 @@
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 955883B42DC
-	for <netdev@vger.kernel.org>; Mon,  8 Jun 2026 08:42:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 169F53B19AF
+	for <netdev@vger.kernel.org>; Mon,  8 Jun 2026 08:42:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780908140; cv=none; b=pfrl5AptuRcTDgQGJlcEa1NEe40JiT0QXMP62qAixQoi9q1G8y+cHaT/P2OFzBGD9d5wyJs2ARv9R5dQhzsrudbOfKcNm2ohgv3POeSJSVj1HIEfG+LxhN7+mPWwxKoKMsFFJ0aHx7X7sJog4SH06F2/HA086guDYhD6MaTCINw=
+	t=1780908140; cv=none; b=QzrNf5+qtbbYpPxWY92wJ20wyq0aSqR/ucsC805g26ExoqWFM95nb3P/xEymr+KmhuBtzXV+KUF0tObFJmHk4mB5kzQJSQFk1zMssSSCP3ebxRSNfVIxjupIHcej7OSlS83n+DA+xwFsQTvb9+kxFRhvCBRcHvnKMoPEw1SLuRA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1780908140; c=relaxed/simple;
-	bh=z0v1uWiu8TNvRB/nbLUM//Lso4OwWGNSCYHIQjkF4jY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=m/HlDP2hsvn6SznJRv4MYMiWMxlkFb5LEloTqALaKHx/D2SO1W7z+cAEVEEsFeHurFsZjIuQLzn28+7DXGsaGRN+XVv0XuFGh6lM7Tjx4ilaXF7qmU2ggtt+UlxSyG4nyHwhiEu5QejRmte0CiLLAHRSvoA7dNMOyrjeAv8JgV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cTaveqHx; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	bh=IL5yCWDuQfoOijddF8IVyMHuiN+OBO5pbGD2FcEi+jw=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:In-Reply-To:
+	 Content-Type:References; b=S6pialNE8KgaPstfjRw/ymgJYBXtUbPWQfU82OD+aG0V6320B6gtpdQWV5u4toWWA8u2QIScA4THWh16D9CvF3NhOWEHMkvEVqSjdPhgOcDt/b4V5HXc+g/ua2TSOUfuryjqFCIpCDa5To8WxmxBODoxZY354ORvoftJiYNqjWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=M80ryKOh; arc=none smtp.client-ip=210.118.77.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cTaveqHx"
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-490af320e2aso44580145e9.2
-        for <netdev@vger.kernel.org>; Mon, 08 Jun 2026 01:42:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780908137; x=1781512937; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=scdbdNwzC/a5GHNDLiCsaeBV57d/4TFPto/ThqOE/Sw=;
-        b=cTaveqHxMqwC/9fjHVGiTgIYkwgwFIvIRyjVcN4kBZ3J6FKBB1Vkky2UnfWg2yONwH
-         sa0m4YERUbh+QQ8wivwZNQbVFMogSaLs3Je/9O6r1qgAn5+TMuxL3Vjs1pTsbFI1GemI
-         Z3erUxw1zdcCYm7Ut9dfN8E2OE/TyaKJxx9oxgRFJSXd9YTNUhFakiKpTKZq+8cWUIUf
-         4tZ2Lh/pdGhYWwdpw0SS4+OsVa1djJzRavgkYnPltdFIovhMnZm5AaJsVrJJSDsMiGwR
-         XeDsEGpdGFQtBhPEKwy9/pisSyCQHYmaWEpAew/fovSOnTXrFALK8hapsooIeNnQoX4R
-         Qftw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780908137; x=1781512937;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=scdbdNwzC/a5GHNDLiCsaeBV57d/4TFPto/ThqOE/Sw=;
-        b=AWtkAM5AQDjof84MheLeYR0bSJ/6wZaUA3I6fgm//6TON7LFpUdUJbVl5mtTVH/xYd
-         LTTPoa0j3r39QLrA2nwEs1cvLIu7IZaucN/SlU6mMqGDe9Wl9y6rET07iFsZoCuYU3t8
-         LZQQaCvUQLQcRETeo57YWTGJ31ZWaF7EJUO2obQGdP+gejYgj97voAZseHsP5oYigQ+K
-         d8pNLxUGx0553+Y0ZaiBZ1c4JgbZxV57TTsEpmXyQLGKxLifYjjuXb1U5oduDCzSlKL1
-         b0oDWLmW/7NcPSz1fTLfXUidAXs3d7hptx1Xeo08wvrUECVWehwtmF+VIvW3jD45u7VE
-         dcNQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9+KLA5KRRqmSv1/XByoEvPxCvQgxSOlDZIKRomnhsVBDwoZwNoP9KIgHo1cHfEqBNtpJ3ug+o=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy6s9aPXAolcfSgX4NoN4oH4wpamjIdlvyM5FKMXAum26F8iuou
-	UrbmU5J/typ5O22jkNQybTYODUJxsfNBYHL0XPSjp2OmUi84f2CVDmo4
-X-Gm-Gg: Acq92OG8ADIibkjJcBqzS9Y9AqaAe6zVIEkIW3wgb/lFpmcYW292fHLGskegYp4Fhha
-	HFOev8fmggp/IwGckSi9LgeL2ljWh9bBIU1Hbagv0d0BmYvjlTmXDLunqRUSKkwhbYs4gWkpV6H
-	XpLbN/MnnLn2aeo6p0VAp/wWS4WlQlWK1n2aTHM7zY7D5HSfkOn/Ao0fMZHm6r/qbr5Nk4PhEGR
-	myDcVjAFbiYCaOv764Vzd1IhC0tBIQu0SpjgtqU8alcFhgWtl4uZGF6cZ0Vvl0TwlkFhoKMRTOx
-	TnfE1zA69cOOHiallBioDWDGPm2/a40HlW56zVPywksdey5OCiaCJRE2Hj5jQWZDXZMWJmc5d7C
-	JwaL6l34JCEKmEcfWu3IVSzVLcAXelGTeV8i5V3HgmnuhG0RWLZZKHUqgTHoRQ+4ItAt0OtjJgI
-	jA16978ekTtRmr590pzjqOKHQ6p28ca8guIRdrAiQxIGdddFxyzfih0EUjYkWZHpu3fdNqOYo=
-X-Received: by 2002:a05:600c:3f10:b0:490:be44:32ea with SMTP id 5b1f17b1804b1-490c2591fcdmr250743905e9.7.1780908136860;
-        Mon, 08 Jun 2026 01:42:16 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4601f2e4004sm50813041f8f.9.2026.06.08.01.42.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Jun 2026 01:42:16 -0700 (PDT)
-Date: Mon, 8 Jun 2026 09:42:15 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Xin Long <lucien.xin@gmail.com>
-Cc: Michael Bommarito <michael.bommarito@gmail.com>, Marcelo Ricardo Leitner
- <marcelo.leitner@gmail.com>, "David S . Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
- Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Vlad Yasevich
- <vladislav.yasevich@hp.com>, linux-sctp@vger.kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v2] sctp: fix uninit-value in
- __sctp_rcv_asconf_lookup()
-Message-ID: <20260608094215.4dd984ed@pumpkin>
-In-Reply-To: <CADvbK_fn=t8+8cg5hCRUKrO_dF+-ikrzsSPmzgaeMT83jB_T-g@mail.gmail.com>
-References: <20260606183821.1688525-1-michael.bommarito@gmail.com>
-	<CADvbK_fn=t8+8cg5hCRUKrO_dF+-ikrzsSPmzgaeMT83jB_T-g@mail.gmail.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="M80ryKOh"
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20260608084216euoutp0171bd427c19304873ef9072a9b77e5123~3DoOg6Cku1787517875euoutp01F
+	for <netdev@vger.kernel.org>; Mon,  8 Jun 2026 08:42:16 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20260608084216euoutp0171bd427c19304873ef9072a9b77e5123~3DoOg6Cku1787517875euoutp01F
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1780908136;
+	bh=qkWkk5ZCuQXKFlsyWEDbI0/1Ag13t/eSgQqfEVSLCb4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=M80ryKOhtzdXs7bXpb5LQ7UMkbAykeVzOrUjwUwhrkwc/uaFiJEEFVqFHLCpjF3VF
+	 UQ05M/5UBadqE1hZ0zjJWlqPGyHb1qoUF+YyzKkZVYy8wAGO4GkTyewbyfE1ijtReA
+	 oST5mCnIj4v2GYCs+NENAnLnUETxZZJW0l3RafWw=
+Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
+	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+	20260608084215eucas1p120c1b6b6c39c336905bc144586cad692~3DoOJ4S6h0247402474eucas1p1O;
+	Mon,  8 Jun 2026 08:42:15 +0000 (GMT)
+Received: from AMDC4622.eu.corp.samsungelectronics.net (unknown
+	[106.120.77.34]) by eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+	20260608084215eusmtip2ca35be8c5f945603a879de58f5590eb7~3DoNkBlxy2049020490eusmtip2d;
+	Mon,  8 Jun 2026 08:42:15 +0000 (GMT)
+Date: Mon, 8 Jun 2026 10:42:14 +0200
+From: Jakub Raczynski <j.raczynski@samsung.com>
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, mcoquelin.stm32@gmail.com,
+	alexandre.torgue@foss.st.com, linux-kernel@vger.kernel.org,
+	k.domagalski@samsung.com, k.tegowski@samsung.com, cs0617.lee@samsung.com
+Subject: Re: [PATCH net-next v2 3/3] include/stmmac: Increase max DMA/MTL
+ channel count from 8 to 16
+Message-ID: <aiaAZjIHEx09UMDD@AMDC4622.eu.corp.samsungelectronics.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20260604131606.185700-1-pabeni@redhat.com>
+X-CMS-MailID: 20260608084215eucas1p120c1b6b6c39c336905bc144586cad692
+X-Msg-Generator: CA
+Content-Type: multipart/mixed;
+	boundary="----ri_B_5NHaOs85FNcStlWAa-YkdjA1OEu4E44JRLWFc1KTRWK=_112c9_"
+X-RootMTR: 20260604131625eucas1p10bd49e06fef41bb185578da137b7411d
+X-EPHeader: CA
+X-CMS-RootMailID: 20260604131625eucas1p10bd49e06fef41bb185578da137b7411d
+References: <20260601162537.553512-4-j.raczynski@samsung.com>
+	<CGME20260604131625eucas1p10bd49e06fef41bb185578da137b7411d@eucas1p1.samsung.com>
+	<20260604131606.185700-1-pabeni@redhat.com>
 
-On Sun, 7 Jun 2026 19:42:25 -0400
-Xin Long <lucien.xin@gmail.com> wrote:
+------ri_B_5NHaOs85FNcStlWAa-YkdjA1OEu4E44JRLWFc1KTRWK=_112c9_
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
 
-> On Sat, Jun 6, 2026 at 2:39=E2=80=AFPM Michael Bommarito
-> <michael.bommarito@gmail.com> wrote:
-> >
-> > __sctp_rcv_asconf_lookup() in net/sctp/input.c only checks that the ASC=
-ONF
-> > chunk can hold the ADDIP header and a parameter header, then calls
-> > af->from_addr_param(), which reads the full address (16 bytes for IPv6)
-> > trusting the parameter's declared length.
-> >
-> > An unauthenticated peer can send a truncated trailing ASCONF chunk that
-> > declares an IPv6 address parameter but stops after the 4-byte parameter
-> > header; reached from the no-association lookup path, from_addr_param() =
-then
-> > reads uninitialized bytes past the parameter.
-> >
-> > Impact: an unauthenticated SCTP peer makes the receive path read up to =
-16
-> > bytes of uninitialized memory past a truncated ASCONF address parameter.
-> >
-> > The sibling __sctp_rcv_init_lookup() bounds parameters with
-> > sctp_walk_params(); this path open-codes the fetch and omits the bound.
-> > Verify the whole address parameter lies within the chunk before
-> > from_addr_param() reads it, the same class of fix as commit 51e5ad549c43
-> > ("net: sctp: fix KMSAN uninit-value in sctp_inq_pop").
-> >
-> > Fixes: df2185771439 ("[SCTP]: Update association lookup to look at ASCO=
-NF chunks as well")
-> > Assisted-by: Claude:claude-opus-4-8
-> > Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-> > ---
-> > v2:
-> > - Regenerate from net/main so the patch has index lines and applies
-> >   cleanly (Xin Long).
-> > - Use unsigned int for the decoded length and compare it against the
-> >   remaining parameter space after the ADDIP header (David Laight).
-> > v1: https://lore.kernel.org/all/20260604175803.2142975-1-michael.bommar=
-ito@gmail.com/
-> >
-> >  net/sctp/input.c | 13 +++++++++++++
-> >  1 file changed, 13 insertions(+)
-> >
-> > diff --git a/net/sctp/input.c b/net/sctp/input.c
-> > index e119e460ccde0..c63d42500aa28 100644
-> > --- a/net/sctp/input.c
-> > +++ b/net/sctp/input.c
-> > @@ -1197,13 +1197,26 @@ static struct sctp_association *__sctp_rcv_asco=
-nf_lookup(
-> >         struct sctp_af *af;
-> >         union sctp_addr_param *param;
-> >         union sctp_addr paddr;
-> > +       unsigned int param_space;
-> > +       unsigned int plen;
-> >
-> >         if (ntohs(ch->length) < sizeof(*asconf) + sizeof(struct sctp_pa=
-ramhdr))
-> >                 return NULL;
-> >
-> > +       param_space =3D ntohs(ch->length) - sizeof(*asconf);
-> > +
-> >         /* Skip over the ADDIP header and find the Address parameter */
-> >         param =3D (union sctp_addr_param *)(asconf + 1);
-> >
-> > +       /* The whole address parameter must lie within the chunk before
-> > +        * af->from_addr_param() reads the variable-length address; oth=
-erwise a
-> > +        * truncated trailing ASCONF chunk lets it read uninitialized b=
-ytes past
-> > +        * the parameter.
-> > +        */
-> > +       plen =3D ntohs(param->p.length);
-> > +       if (plen < sizeof(struct sctp_paramhdr) || plen > param_space)
-> > +               return NULL;
-> > + =20
-> I think we don't really need to check plen < sizeof(struct sctp_paramhdr).
-> This check is to ensure param->p.length can be safely accessed, but it's
-> already guaranteed by the early check:
->=20
-> if (ntohs(ch->length) < sizeof(*asconf) + sizeof(struct sctp_paramhdr))
->=20
-> I think you can just simplify your patch to:
->=20
-> if (ntohs(param->p.length) > ntohs(ch->length) - sizeof(*asconf))
->         return NULL;
+I will be rewriting this patch as discussed in other thread,
+but will mention that IMO this AI review is generally invalid.
+Below why.
 
-To stop having to think about the values wrapping, how about swapping to:
-	if (sizeof(*asconf) + ntohs(param->p.length) > ntohs(ch->length))
-		return NULL;
-so that it is 100% clear they don't.
-Even if the earlier test is missing/incorrect that will only read
-invalid data and then return NULL.
+On Thu, Jun 04, 2026 at 03:16:06PM +0200, Paolo Abeni wrote:
+> From: AI Reviewer <ai@example.com>
+> 
+> 
+> [Severity: High]
+> Does increasing these limits to 16 cause undefined behavior and silent register
+> truncation in the hardware configuration functions when queue >= 8?
+> 
+> In dwxgmac2_core.c:dwxgmac2_tx_queue_prio(), when queue >= 8, the logic
+> only subtracts 4:
+> 
+>     if (queue >= 4)
+>         queue -= 4;
 
--- David
+This ignores previous check of queue > numtc, which is hardware returning
+maximum value of 8 (0-7). This is not direct 'queue > 7 ' for AI so I get it,
+but this is not possible, unless hardware would return wrong value.
 
->=20
-> Also note  ntohs(param->p.length) < sizeof(struct sctp_paramhdr) will be
-> caught by af->from_addr_param(sctp_v4/v6_from_addr_param) and return NULL.
->=20
-> Thanks.
->=20
-> >         af =3D sctp_get_af_specific(param_type2af(param->p.type));
-> >         if (unlikely(!af))
-> >                 return NULL;
-> > --
-> > 2.53.0 =20
->=20
+> 
+> Finally, dwmac4_core.c:dwmac4_map_mtl_dma() only maps queues up to 7 (using
+> MAP0 and MAP1):
+> 
+>     if (queue < 4) {
+>     ...
+>     } else {
+>         value = readl(ioaddr + MTL_RXQ_DMA_MAP1);
+>         value &= ~MTL_RXQ_DMA_QXMDMACH_MASK(queue - 4);
 
+Correct, would probably be good to not forget about dwmac, although
+GMAC does not return number of available TC's so check would be artificial.
+Although no function checks that currently, will be fixed by last comment and
+probably checking this stuff in upper layer.
+
+> 
+> [Severity: Critical]
+> This is a pre-existing issue, but does missing bounds checking on the device
+> tree properties expose an out-of-bounds array access during device probe?
+> 
+> In stmmac_platform.c:stmmac_mtl_setup(), the device tree property
+> snps,tx-queues-to-use is parsed and clamped only to 255 (U8_MAX):
+> 
+>     if (!of_property_read_u32(tx_node, "snps,tx-queues-to-use", &value)) {
+>         if (value > U8_MAX)
+>             value = U8_MAX;
+>         plat->tx_queues_to_use = value;
+>     }
+
+'Net' material, not for this patch (net-next), will probably send it later,
+as this is valid
+
+> 
+> Later in stmmac_main.c:stmmac_hw_setup(), it attempts to dynamically clamp
+> this value to the hardware capabilities:
+> 
+>     if (priv->dma_cap.number_tx_queues &&
+>         priv->plat->tx_queues_to_use > priv->dma_cap.number_tx_queues) {
+>         priv->plat->tx_queues_to_use = priv->dma_cap.number_tx_queues;
+>     }
+
+Well, XGMAC will correct incorrect value, so why not do the same for GMAC
+even though it would be artificial > MTL_MAX_TX_QUEUES.
+Same for RX. Although same as for above, probably 'net' material
+
+BR
+Jakub Raczynski
+
+------ri_B_5NHaOs85FNcStlWAa-YkdjA1OEu4E44JRLWFc1KTRWK=_112c9_
+Content-Type: text/plain; charset="utf-8"
+
+
+------ri_B_5NHaOs85FNcStlWAa-YkdjA1OEu4E44JRLWFc1KTRWK=_112c9_--
