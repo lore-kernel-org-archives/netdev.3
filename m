@@ -1,78 +1,40 @@
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4968037998B
-	for <netdev@vger.kernel.org>; Mon,  8 Jun 2026 21:07:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADEA93769E7
+	for <netdev@vger.kernel.org>; Mon,  8 Jun 2026 21:13:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780952834; cv=none; b=UNwMMFfzqkASvnlR/N7Kn65hL4WGQHu+NIu0sz7UB7UR0ESgdqSvxQYX0rPu0QDW8iIHhP091cfkaKxlmoT5sIiG3Y6tHeSVzIx+TaQ2PjQeb66QcMjV3xPAP8vtisk9K+rJTMI/0ZxlPKwfrS+M/JgQVbB9HspwxgZinMV4jOM=
+	t=1780953197; cv=none; b=eYR/fhaI2DPiNA/gxfD0j5HaFLo1Uq6KLtKrdH9w/BfC9WPdNwtP2o2FFo3Yv/4NdicGBqvif5KHeRDkXcnkyvNo+fSsKVMp3lMWTDoYTTcgKAZt9bl/adPrhKor4Gg9IXo5Bn/gMLSWv5rOm4bxTNjZc4C21SIG4FXzTK45su8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780952834; c=relaxed/simple;
-	bh=AkJ4Onjq6hRT+x3T2G96bEDlFlW6AzfGwTZ56r0g0r4=;
+	s=arc-20240116; t=1780953197; c=relaxed/simple;
+	bh=KlDs1Yb70V+ogVTc0HnQcHvKvwpsnDNCGvDvCWb18xc=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WF8kOORQVcBRr21bctOiC2nUqkzJJ7rb8ABEuaXLKDKzcmjhORr2pTHP+VcFWn6bkI7W5SqMXx8Tllt1JGoEUK3WKsxfSlLFlIv73jhxdKLATkk7rXi53bNef+3NaPz+16pR333TssiL7xNGDmWFuUSxTxHRvuG4s61mdvIApz8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ggieVirV; arc=none smtp.client-ip=209.85.221.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 MIME-Version:Content-Type; b=jLDAezLnOMstBvj1hU7TwHQfSH855qYizMl1Xq23Mwqy3S+4uvH1dpC/MuxLro3RUEq2bFISpnxenfyUJFwDHRUvwq7a5yPsZ/K8EqkDZAXRF/7hoPgoLhgno/O6mDj+qClcd4NuZQx0148/Fjm5YiviiqVMKbMZ8BfZwrYAdEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YN/jIl5M; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ggieVirV"
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-45ef4223be7so2541901f8f.2
-        for <netdev@vger.kernel.org>; Mon, 08 Jun 2026 14:07:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780952832; x=1781557632; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3sHjwoJ5ZnUIbl6Kzmw0eDuutU3fVA4THUQ3Mz9TeEk=;
-        b=ggieVirVWHqyof8Uy+u8MkDm3EBe+KpUNRopO7IO34rJ4n5BO8M7EhNCOuDcPz+3LC
-         h3uR8nkACCtY0ray2Mio528zObd6swx5fpUOzJcwxzwvwDwDavfp4wvqpEeD39hsjY75
-         lywV6qES1wTsUDhbQPYcPa/OUczaRgWKEsZwKreayX9xsisq2g7OtanE5VqW+/lbucLN
-         3osluvkuWdUUPWYCCAPRHOMBIMuV2Y5ZeQggfcqC/OmC4yYE0iGu8DiInzb47tqjXlW4
-         ZUEy0H0N1yZvprLqoeM57lEZaTqyxistYyJDwg9yPpSMbhw4eQ5XbpPKXodn06gAmNtV
-         U+iw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780952832; x=1781557632;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=3sHjwoJ5ZnUIbl6Kzmw0eDuutU3fVA4THUQ3Mz9TeEk=;
-        b=SkmwxFuYvWmH74l2BugzFlqCdI3HY0ysjW0QqjCh2Z76TQnFqGpwq5gO+e/4j9FYeh
-         7Z0HoNbRg6XR85xTwTM/hjXaUdKseReNkhBBukOpwkr4PgYpQRJ/994LpduwUuZcEO6l
-         sywj9GE+aUPBK6gq1Eoh4SaOIGWDT/4fVnvrMkXOo59uZtjyo3CWjmtplrLgCaVvuas5
-         V7uodtfMSbQPDLfVSCcXKVLK5JiYUA0HDA9nxi7SGf2xZ9jFp33Eaw2d2RQkoUHtKgpz
-         VBlFgCkqTn2Q71S4euFY49uwLrLNPFQfnhdQbRWbAmfbwZOul8uD54eOKTfXSYDlNXTA
-         eD6A==
-X-Forwarded-Encrypted: i=1; AFNElJ9bDbiWQFvqhXe94cLrebHEDomjVBZEZXkwSDumoX5VLIn3ALZsoCfXHPYl0unKB+YUgBeK9Jc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzjUX1a4rjsl5BYj7hvPXBZICrAfFvN50ZhgAIYZCC3PpX0dIVd
-	nGMY1yfVUuIgh4hHTCemwDdAIuvtsxJ3AiXNnylI8ypM3tN17eH2A5Hm
-X-Gm-Gg: Acq92OHXjGMq2+UT4VvixEtB9hE2FaMMIxHvs4PTpq4kz0VfUndfaoCaSKGeIaNBDFk
-	v6j+6xgtitULqZ+5V+BQf674Cu6NpnHG0y7f0eoitDHSniLihdjqtDD9hvCK/rvaSNJ5QNlksby
-	VqYyDwB6sk1qwS0+RtpEB01YEbsI+wlDBCVrmfGjRMBOO45lB4R6OOdadgaRoNQIhdwzAFOpEnw
-	ii5t3MOVOBtqhdilBHdSl2WlgLYHEwdHOpgJgeplkKHl6ppULiE0OfrWIZ2jTq9O6nf+ym3b5mV
-	oQb3NT8wjAg2nTaepEMyJrvfAJEVZxvecJiOnuW9CuxvRj7ZZ9r7pT+BTRCzGql6wp2rhLjC0XO
-	kZCOr5ouEpqDK8uyJiX4UqiwDfXlknLgvXdIb61fUpcBGsXp9HSmIthwNHIJ45xaH/qc7Vl3TYE
-	br5wicI2WyZofUGhc0s4V3V2Wd3Vnzc5WH+0DBg0ZPugVx3sjYscSSaksdqyBT6RNfouPIR8g=
-X-Received: by 2002:adf:f847:0:b0:45e:779a:302c with SMTP id ffacd0b85a97d-4603065b681mr18894313f8f.29.1780952831514;
-        Mon, 08 Jun 2026 14:07:11 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4602cda363bsm43293865f8f.31.2026.06.08.14.07.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Jun 2026 14:07:11 -0700 (PDT)
-Date: Mon, 8 Jun 2026 22:07:10 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Kees Cook <kees@kernel.org>, linux-hardening@vger.kernel.org, Arnd
- Bergmann <arnd@kernel.org>, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jay
- Vosburgh <jv@jvosburgh.net>, Paolo Abeni <pabeni@redhat.com>
-Subject: Re: [PATCH net-next] drivers/net/bonding: User strscpy() to copy
- device name
-Message-ID: <20260608220710.7499931d@pumpkin>
-In-Reply-To: <20260608132311.0fb69fed@kernel.org>
-References: <20260606202633.5018-13-david.laight.linux@gmail.com>
-	<20260608132311.0fb69fed@kernel.org>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YN/jIl5M"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D582F1F00893;
+	Mon,  8 Jun 2026 21:13:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780953196;
+	bh=PJYIVRsnEfzN0c9P01fI1dN7oB8nM7cwGJvoEdA6TLw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=YN/jIl5MObRBfx/SpWPK/dZzMLdo91OtNyczFDf9UXAoWWoxCdpA9Y9NWFgnH4OcO
+	 AZ3hZscTujcllsZeQYHOMVqMRV3NITV67M/RRO2iks4YUKHeWXtzsOyu5x8fR7BD2p
+	 yS+OyDXLW4z+nhNpzRgVpxmyxtVYR9sIVfR5dTEochLLp6ePlXqgrEfiHgFyl3qiyr
+	 YXo4drDs/DEGiksRvKoLkzIU1sbYY9JwgM0ncVcm9aWxhyuAZGvn/dK/tWqr57I5uP
+	 GMFQlwUbHLCv870tWEgzeOwfUXL2p0mFr/ema3P9LkiQlWt/CmvqkJISlPa86Aud9r
+	 iAwLosbZ+2SLQ==
+Date: Mon, 8 Jun 2026 14:13:14 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Potnuri Bharat Teja <bharat@chelsio.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com, andrew+netdev@lunn.ch
+Subject: Re: [PATCH net-next v1 0/10] cxgb4: Add Chelsio T7 support
+Message-ID: <20260608141314.5c79faad@kernel.org>
+In-Reply-To: <20260607035220.528439-1-bharat@chelsio.com>
+References: <20260607035220.528439-1-bharat@chelsio.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -82,19 +44,15 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 8 Jun 2026 13:23:11 -0700
-Jakub Kicinski <kuba@kernel.org> wrote:
+On Sat,  6 Jun 2026 23:52:10 -0400 Potnuri Bharat Teja wrote:
+> This patch series introduces base support for the next-generation Chelsio
+> T7 adapter family into the cxgb4 driver. 
 
-> On Sat,  6 Jun 2026 21:26:07 +0100 david.laight.linux@gmail.com wrote:
-> > From: David Laight <david.laight.linux@gmail.com>  
-> 
-> Could you be so very kind to read the automated message you received
-> when you posted this?
+Oh wow! I thought y'all disappeared.
 
-Looks like I managed to send two patches for files in the same directory
-that contained equivalent fixes.
+There have been >50 patches to cxgb4 driver over the last 3 years.
+Quick grep suggests that Chelsio only bothered reviewing a single one.
+You are not fulfilling your responsibilities:
+https://docs.kernel.org/next/maintainer/feature-and-driver-maintainers.html
 
-I think I should be able to merge the patch emails into one and send
-as a single V2 patch that contains both changes.
-
-	David
+This is not right, don't you think?
