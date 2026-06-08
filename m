@@ -1,37 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CCC14071ED;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CD66351C3B;
 	Mon,  8 Jun 2026 05:09:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780895366; cv=none; b=r1bwBcB0cG/9f0qkkImwjfGSKrkhB8m+Maid21tuKfqXEg/ZEcfEv6nUtLKHkJsMW2bA2nY4KZ3/53RgOvpxFj2Bn+luds68R94LI28QGjiHD36OpsVYI8jYaxg/F1tjBbQXcfxDK4qsFumvxLycQUz3a8gHnN1TjCT3R/566TM=
+	t=1780895366; cv=none; b=cVL/mkgREc6pZU0RiP94dKkFivKNEeLef2Vp01CAtbxGZysaaeWZNOYb/dt2eILx0Syoyb7zKdcHsmjW2OfMo/p0nvDhynbiSEpwnG0JNEgz5RVGUFcyskCDsAHYqgv5kVVkOniilgW54GxJDxY6W1k2g7WKX+HgwHpG7iiWoHU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1780895366; c=relaxed/simple;
-	bh=mUbPbxGPsJq6zrKufoKUIDyht+0XfDJdNp0bjmYdApw=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=mHbbssb2+0e5ENVjarCsZtx6eiBR5BA3ofE24M06e6VyNrlx14JDcagdJGWp71B7f3kEHST31H6iG293jxuR+3jCVDJMExfCVdo1Oh8bN7xww7+LWfYNJdJx+WQm9kNikhODotErbzSkDlVwNQNYA987zBLllwfnmlydlyBvWD8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K1/SG5D/; arc=none smtp.client-ip=10.30.226.201
+	bh=MHonpYPDMxu6OCmszC5LL+NjrY8r/y0Ipf59wp1R70c=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=BH9YTRIENY+V79LmYRpMY4xIOZ7p8QFERQZuiJzT9V3WoBn5yuhiMmBMxcoBN+j4RgzJaRdZ6bcK0l5Ln1sVm1ykOPCZcJqe7Dk3Kw2cw7yh3zaeCKwH2fkMCG9CGqAqf/4qJc4+CtQ7/wz6ENuOgySQjjHFBkwnBEXTQbU3pAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jG5by0qH; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K1/SG5D/"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 244A6C2BCB0;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jG5by0qH"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 410ACC4AF0F;
 	Mon,  8 Jun 2026 05:09:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1780895366;
-	bh=mUbPbxGPsJq6zrKufoKUIDyht+0XfDJdNp0bjmYdApw=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=K1/SG5D/mw++6Hs4NCTZEaluXP2Dxho1FWzDvqsWNpUGcdKFtt1UTE91dc/NK2iQ1
-	 UctrfZsVNaBhfe4FgdvelewXUrUTt84Fx/kwtyOg7JZfXCjT7RjhVkBi4K59NoVBIz
-	 vzxDooYAqk4OGGraI4yw8WZpQ9WEzpl1le8SUxSMftRYA5M1+8KI9DREqpRL12GcKx
-	 rkaztB/3pSxG7muk2SDtwZ/BIJrWghC4WsD5TxMlBC4h2Rdc48ZkZk7DWKhOJzs0s3
-	 Ac60TYAsLZmWfQFqAtnjHV2QMgv5JRsahmh03KNVkPATHDnbRAF5hD2Nd7avuGkXYS
-	 tsQNtDVxFFmGQ==
+	bh=MHonpYPDMxu6OCmszC5LL+NjrY8r/y0Ipf59wp1R70c=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=jG5by0qHVXXZQ5k3d9mTz3N6zOtAbsqKMGrpyhhSeehg5fNTkeIuk6PnsQa1kGvw2
+	 6PxvAjz7WKbFY1Ks91HgZG1/lDJ+u15Zu59k+kB2bI6cVq4iEzcnA7J6NdF5GY0DUr
+	 QEkgwGo4XyRNgLp/A0C8+5S8NyRBnZLDn8bzmc5IG8CRLniMk9QUZ5DM+jF8f5OUb0
+	 WMo9TGqjGuHhN/DXPaJMuqyQcZOI3ivEENihNZhB+eKiC0fnVZRyI31EnEVjoQWvsH
+	 Aw905p73vKFnxPEb1rK8Eb6j8tAHgDmHjOzwylWvzZSfZPG3SW7zO6E230LuZ0sHvU
+	 CCrYugV41j7/g==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 08B73CD8C8E;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2C2C1CD8CA4;
 	Mon,  8 Jun 2026 05:09:26 +0000 (UTC)
 From: George Moussalem via B4 Relay <devnull+george.moussalem.outlook.com@kernel.org>
-Subject: [PATCH v4 0/4] IPQ5018: Add and enable GEPHY RX and TX clocks
-Date: Mon, 08 Jun 2026 09:09:15 +0400
-Message-Id: <20260608-ipq5018-gephy-clocks-v4-0-fb2ccd56894b@outlook.com>
+Date: Mon, 08 Jun 2026 09:09:17 +0400
+Subject: [PATCH v4 2/4] dt-bindings: net: qca,ar803x: Add clocks for
+ IPQ5018 PHY
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -40,11 +41,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/4XNQQ6CMBCF4auQrq3pDFCKK+9hXDSlhQakSJFIC
- He3sMJE4vJ/yXwzE697qz25RDPp9Wi9dW2I5BQRVcm21NQWoQky5IwzoLZ7pgwELXVXTVQ1TtW
- eaiExSRhkQjISTrteG/ve2Ns9dGX94Ppp+zLCuv4BR6CMYmEEiiwDVPHVvYbGufqs3IOs5Ih7B
- g8YDAxPJRgohADzg4n3THrAxIExGGORK8lyzr+ZZVk+y8m7/UgBAAA=
-X-Change-ID: 20260601-ipq5018-gephy-clocks-e8a2440178a0
+Message-Id: <20260608-ipq5018-gephy-clocks-v4-2-fb2ccd56894b@outlook.com>
+References: <20260608-ipq5018-gephy-clocks-v4-0-fb2ccd56894b@outlook.com>
+In-Reply-To: <20260608-ipq5018-gephy-clocks-v4-0-fb2ccd56894b@outlook.com>
 To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
  Russell King <linux@armlinux.org.uk>, 
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
@@ -58,14 +57,13 @@ Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org,
  Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
  linux-arm-msm@vger.kernel.org, 
  George Moussalem <george.moussalem@outlook.com>, 
- Conor Dooley <conor.dooley@microchip.com>, 
- Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+ Conor Dooley <conor.dooley@microchip.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1780895363; l=3901;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1780895363; l=1860;
  i=george.moussalem@outlook.com; s=20250321; h=from:subject:message-id;
- bh=mUbPbxGPsJq6zrKufoKUIDyht+0XfDJdNp0bjmYdApw=;
- b=j7PTfT+AVzYO+QNVp70e0WTB6PJKkIvNwd26NqzHAbGAZa614pThDXkeei12jc9rIqCUIC7F2
- Uy9jcDNr118Di5TGlTudxPyi32XDeR93hQTJflcHcyV8RKbyxdIVuPr
+ bh=9Z6aakN1HhLaGxa1OIpuGJQY0KdKMjoTdfWwUAWMHF8=;
+ b=LFiQLhl1FVNGLEM516fSBbYg8lSXLhkWN81pTJCG8OTIG3vU3BNpXECY+Lu3BxKynEH5/ryOX
+ ra0oht7UxLMDwb1HAxQD9mBLxbNlt61o7RTYCabPTmcpTChqGFPytqU
 X-Developer-Key: i=george.moussalem@outlook.com; a=ed25519;
  pk=/PuRTSI9iYiHwcc6Nrde8qF4ZDhJBlUgpHdhsIjnqIk=
 X-Endpoint-Received: by B4 Relay for george.moussalem@outlook.com/20250321
@@ -73,85 +71,71 @@ X-Endpoint-Received: by B4 Relay for george.moussalem@outlook.com/20250321
 X-Original-From: George Moussalem <george.moussalem@outlook.com>
 Reply-To: george.moussalem@outlook.com
 
-Greetings,
+From: George Moussalem <george.moussalem@outlook.com>
 
-This patch series addresses a missing hardware description issue for the
-Qualcomm IPQ5018 Internal Ethernet PHY, where the data paths fail to
-function correctly unless their dedicated RX and TX clocks are
-explicitly enabled.
+Further testing revealed that the RX and TX clocks of the IPQ5018 PHY
+need to be explicitly enabled. As such, add the required clocks to the
+schema.
 
-Further testing revealed that leaving these clocks unmanaged by the
-kernel, they were inadvertently left enabled by the bootloader / QSDK
-platform, which masked the issue. Testing a fresh network configuration
-path exposed that the data link fails to work without explicit software
-gating.
-
-To correctly introduce the required multi-clock properties, the IPQ5018
-binding definition must first be split away from the shared
-qca,ar803x.yaml schema. This isolation is required because ar803x
-references the generic ethernet-phy.yaml, which enforces a strict
-single-clock limit constraint. 
-
-- Patch 1: Moves the clocks property and its restriction out of the
-	   generic ethernet-phy.yaml schema to individual bindings files
-	   that need it to allow for PHYs that require multiple clocks.
-- Patch 2: Add clocks property to qca,ar803x.yaml for the IPQ5018 PHY.
-- Patch 3: Appends the missing RX/TX clock definitions into the IPQ5018
-           device tree before driver modification to avoid the driver
-	   failing to probe.
-- Patch 4: Updates the Qualcomm AT803x PHY driver framework to acquire,
-	   enable, and gate these clocks upon link state changes for
-	   runtime power optimization.
-
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
 Signed-off-by: George Moussalem <george.moussalem@outlook.com>
 ---
-Changes in v4:
-- Removed code to enable/disable clocks upon link state changes.
-- Enable the RX/TX clocks during probe and removed them from priv struct
-  as we don't need to manage them after enabling during probe.
-- Link to v3: https://lore.kernel.org/r/20260605-ipq5018-gephy-clocks-v3-0-f232d9ca0966@outlook.com
-
-Changes in v3:
-- Revert the change to move the clocks property out of the generic
-  ethernet-phy.yaml schema and simple increase the maxItems limit to 2.
-- Listed clocks, clock-names, and resets as required properties in the
-  schema.
-- Acquire the RX and TX clock during probe without enabling them. Then
-  enable/disable the clocks in the link state change callback to ensure
-  they are only active when needed with checks to avoid redundant
-  enable/disable calls.
-- Re-ran make dt_binding_check on all schemas in net folder without new
-  issues.
-- Link to v2: https://lore.kernel.org/r/20260602-ipq5018-gephy-clocks-v2-0-65a1f1d881f3@outlook.com
-
-Changes in v2:
-- Added patch 1 to move the clocks property and its restriction out of
-  the generic ethernet-phy.yaml schema to individual bindings files that
-  need it to allow for PHYs that require multiple clocks.
-- Reverted splitting out IPQ5018 from the shared qca,ar803x.yaml schema
-  and simply added the clocks and clock-names properties to the
-  definition of the IPQ5018 PHY.
-- Corrected / updated commit title of patch 4 (qca,at803x -> at803x)
-- Link to v1: https://lore.kernel.org/r/20260601-ipq5018-gephy-clocks-v1-0-2df8287712c3@outlook.com
-
----
-George Moussalem (4):
-      dt-bindings: net: ethernet-phy: increase max clock count to two
-      dt-bindings: net: qca,ar803x: Add clocks for IPQ5018 PHY
-      arm64: qcom: ipq5018: Add GEPHY RX and TX clocks
-      net: phy: at803x: add RX and TX clock management for IPQ5018 PHY
-
- .../devicetree/bindings/net/ethernet-phy.yaml         |  9 ++++++---
  Documentation/devicetree/bindings/net/qca,ar803x.yaml | 19 +++++++++++++++++++
- arch/arm64/boot/dts/qcom/ipq5018.dtsi                 |  3 +++
- drivers/net/phy/qcom/at803x.c                         | 12 ++++++++++++
- 4 files changed, 40 insertions(+), 3 deletions(-)
----
-base-commit: 7da7f07112610a520567421dd2ffcb51beaefbcc
-change-id: 20260601-ipq5018-gephy-clocks-e8a2440178a0
+ 1 file changed, 19 insertions(+)
 
-Best regards,
+diff --git a/Documentation/devicetree/bindings/net/qca,ar803x.yaml b/Documentation/devicetree/bindings/net/qca,ar803x.yaml
+index 7ae5110e7aa2..53f648c4135f 100644
+--- a/Documentation/devicetree/bindings/net/qca,ar803x.yaml
++++ b/Documentation/devicetree/bindings/net/qca,ar803x.yaml
+@@ -28,6 +28,16 @@ allOf:
+         reg:
+           const: 7  # This PHY is always at MDIO address 7 in the IPQ5018 SoC
+ 
++        clocks:
++          items:
++            - description: RX clock
++            - description: TX clock
++
++        clock-names:
++          items:
++            - const: rx
++            - const: tx
++
+         resets:
+           items:
+             - description:
+@@ -42,6 +52,11 @@ allOf:
+             of this PHY are directly connected to an RJ45 connector.
+           type: boolean
+ 
++      required:
++        - clocks
++        - clock-names
++        - resets
++
+ properties:
+   compatible:
+     enum:
+@@ -162,6 +177,7 @@ examples:
+         };
+     };
+   - |
++    #include <dt-bindings/clock/qcom,gcc-ipq5018.h>
+     #include <dt-bindings/reset/qcom,gcc-ipq5018.h>
+ 
+     mdio {
+@@ -172,6 +188,9 @@ examples:
+             compatible = "ethernet-phy-id004d.d0c0";
+             reg = <7>;
+ 
++            clocks = <&gcc GCC_GEPHY_RX_CLK>,
++                     <&gcc GCC_GEPHY_TX_CLK>;
++            clock-names = "rx", "tx";
+             resets = <&gcc GCC_GEPHY_MISC_ARES>;
+         };
+     };
+
 -- 
-George Moussalem <george.moussalem@outlook.com>
+2.53.0
 
 
