@@ -1,137 +1,170 @@
-Received: from bg5.exmail.qq.com (bg5.exmail.qq.com [43.154.197.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EBE331E83B
-	for <netdev@vger.kernel.org>; Mon,  8 Jun 2026 10:40:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=43.154.197.177
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780915248; cv=none; b=cTLcb8O5M7WTWrffkwtDlogy6uXAumYiJXHhibI30Nk5ZH16MTFn95TgB7Q8o5/sZSCcJfrOwOHSuDJ8a2lknCpp2F75Jas3Ea0QOuXn3HkbtnFlN+1SB7tRJM2vaaQ0eKztYNk8NXMA2CzjNOPKFUlhdtyYk4HPqQG+x3PWgX4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780915248; c=relaxed/simple;
-	bh=1vFxqjG48wTvYu4MKW7o68czX6qnpZW+U+/US7mjkk4=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=UMnpe/L8HesvM8VVIrXbFchgU/Zekb+vJVGh7iSiXPMpw8ZpPF48o3XW3EBueel38lHIG6Nbdgd8oG13GbwGHfGI8zMSdaTVWPjqrs/VKHhrN/5DWs+39cqS2ZCKbxRliRL/hxcJOUghK5DBZ5JvJId7MVWiy+U/ZQxkxnG8UfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com; spf=pass smtp.mailfrom=net-swift.com; arc=none smtp.client-ip=43.154.197.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=net-swift.com
-X-QQ-mid: esmtpgz10t1780915193tc16a03bb
-X-QQ-Originating-IP: /lDHQDpH7LujvP+MBRlT0ghMOUY1OtBu34VRIRAyJDE=
-Received: from localhost.localdomain ( [36.24.184.84])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Mon, 08 Jun 2026 18:39:52 +0800 (CST)
-X-QQ-SSF: 0001000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 5682638928335802050
-EX-QQ-RecipientCnt: 6
-From: Mengyuan Lou <mengyuanlou@net-swift.com>
-To: netdev@vger.kernel.org
-Cc: jiawenwu@trustnetic.com,
-	duanqiangwen@net-swift.com,
-	horms@kernel.org,
-	kuba@kernel.org,
-	Mengyuan Lou <mengyuanlou@net-swift.com>
-Subject: [PATCH net-next v4 2/3] net: libwx: add support for set_coalesce in wx_ethtool_ops_vf
-Date: Mon,  8 Jun 2026 18:39:45 +0800
-Message-Id: <20260608103946.25786-3-mengyuanlou@net-swift.com>
-X-Mailer: git-send-email 2.30.1
-In-Reply-To: <20260608103946.25786-1-mengyuanlou@net-swift.com>
-References: <20260608103946.25786-1-mengyuanlou@net-swift.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 737504071CE
+	for <netdev@vger.kernel.org>; Mon,  8 Jun 2026 10:46:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.169
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780915620; cv=pass; b=GGqEPKirXi3fGFusEHyKugqEjVAIWs/+IZ+PnsVOTP9oUYE551zkLDPSeSJoc8Rjdi2utmy4cBstzEI97JMoNgtETDro6FhPmBwTRf4bA5pLzGXZpylJp0lhJTq1mW6CcTuxvkSDoa9AfzVJe3U7Xitnd9OcoslSPR2B/+loj5U=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780915620; c=relaxed/simple;
+	bh=w3D+Pg3BAXCJwfO88zczxxmfP+wZznyTuK7USknRcDA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=AAvdQjxsFmqiHjuUqYkCVETEhpiFvtn3OdxQya9u06Hqr6rgDKU+AAu/03fWGravu++4ok5E0b352cebHlhPhLYSC/GRyWaz2R1VS4aquL0414rHUyRsugRmkUKis8Pg/6rj0tQDsKMjWnrzo8x0u6Ss10UWy5LILuks55Kpd3w=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=OIpo5gFL; arc=pass smtp.client-ip=209.85.210.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="OIpo5gFL"
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-84234c83142so1621744b3a.1
+        for <netdev@vger.kernel.org>; Mon, 08 Jun 2026 03:46:59 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780915619; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Dd6pJFjdQE+3zdw3C7fZp/YspacBiSwC4KacVtVgDKZMfRvIFIRIliwrClJCFQ56bZ
+         6pVmw0D/pzt0z8HUdMZzENukbfcva0q3hmEHHrfPDyLfTOZw1RvH0fYe0Up9RgTEfRiG
+         cFwBQbxFpGVBK1YVJr6tVulKre9dO316AoEo0E+8ki0wDWg9hNWTtG5MnUYw8C0GJVZZ
+         QFOBGDXEF5bVLqSIUdiN0hTjwQ/NfbR1TbhnVLiuR4ZjvCHoscT6c881yAhk0pa0k8+r
+         WRUw3Uhn4/LYfurzcGsl15znKJcG+vnaKHzuLVVctlsWHKZlx1JR/SrA2L6nRy1okvry
+         VLDg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=hX75lj9UvWmArTL5O2CWCemxnLVEp3KiNKdt8nBqMA0=;
+        fh=g/U7ANc66XGS+qLMLSgwAfIZePycogdd1n1uy53TMs4=;
+        b=L0njIO58wnpMJiRrM4iuE2EWW/t9QNtBiys/C5QGZjWtCAykqb3XsFQzyMyc2217ZH
+         P/4CTji37LvR2iI057/8iTV4uxPvZHHm0sRIWxH8Nw6n33bO1n/MZ0owV7hzp0zPVPq1
+         vKYvohOX/fQf5TSUgWSlMKI9qfESG4lMMRmI716eV/PDqET+EVoKsmUaEKkwSLB/hVoY
+         A7mBzODWP8+56NLYPzX4nIna02n72c4KUnKgUjaHKdXvaOSUCuY05ud4w4tGWem73iFd
+         VtlS6LKmHV7rowjXQF4Og5ls8Mg5GDAxcyQciHGobX9eTBhzndkpJw0oTinQKD1SMTZr
+         vF7A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mojatatu.com; s=google; t=1780915619; x=1781520419; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hX75lj9UvWmArTL5O2CWCemxnLVEp3KiNKdt8nBqMA0=;
+        b=OIpo5gFLyQwR7iaxhsEFQZWRR4yljQMR2aBnhCboK72VRWQInxPoze+85oopiR9LUN
+         rwBmdfz39mTliHyjMvdM8D99IAl9NIe2se2GrVJTK1+r3dWBjN2Rd1ItqtE+c70wI5e1
+         8W1wR30oQTnzQpTycekm9HshIxikykaekJdnM=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780915619; x=1781520419;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=hX75lj9UvWmArTL5O2CWCemxnLVEp3KiNKdt8nBqMA0=;
+        b=ZALw0v2VQqitXoTBzVHyRF9cVkZ4X2RhGiD9KHkqmeanbkKPtW1GTzSszgi8HfDMDy
+         oqMLDHapNdTpHZ/wegYgdcGbWbkUlIBsb5GrPbIITPx7jnJzealkLwqERiJeo4sRwIze
+         JU3c8s8Pi7TGLiZ88nMLJc3HpPT1NNy5h8Gg98nTWdSTODtNZhD4+/htBF2uwnSLZsdk
+         DNRsro5m86kfQG7iOATvRAqIE25Xq9+UBtFTNczo7iM1JLSoa9tmEYydrRoJ4SPzKItm
+         rcRpWSPne+OuNNOaoliFwgXwwLzMk6AJz46VCZnVkyDfHKR6Wa3rLAd8cCQG/U7X/AF+
+         kwJA==
+X-Forwarded-Encrypted: i=1; AFNElJ8pXm9XnYytxsr47rltYUangZ0wlTl0i85MkCSIpxeaBg/YCJ9RQg3vFY/C0MTatxD5t40eLFQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwVozdHDYjTZ7IqcK66sdw2PyS6G0YOS+j7pERgezX2C22U4QMN
+	YetjG2QdkwxZLhxEbboeDOi8EFqBHVeQsloMxnF05j2DnL9OpxI+kZccjUQpeNJa6XuSVGSfokb
+	Jws33b3knz/kmt59udqg7yjteaEzp2aLXj6LxTK9A
+X-Gm-Gg: Acq92OGFTkOgp9MODZ+o86rSPGE/9fyxznEhecHS29tw5gbsANUJdUfBnNe6FNyMvdt
+	9rn28J9I6mWg3bO5z5So+Z1D7nQOu9v9Esoq6glqZW3pZ80wr2zQBeZogGZryoZSdiTdzi8yMyB
+	F0rMZodYeMPbZoHRZ2OT/HVHtHGW+/p+/2599V4Vtb7m2m5X00PumsxyIOqr54LrNWOduUhvjLS
+	cAB03Cu4T5ALNMqPb5ikfnOX9JpHAqMWaLT/J765NAnC1AG2Sf/vkzYtptMPbamgyB1PoTknVtx
+	FZKAfmygBHFw7d48+n4=
+X-Received: by 2002:a05:6a00:23ca:b0:842:5b63:6119 with SMTP id
+ d2e1a72fcca58-842b0e2f430mr14794701b3a.1.1780915618808; Mon, 08 Jun 2026
+ 03:46:58 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: esmtpgz:net-swift.com:qybglogicsvrgz:qybglogicsvrgz5b-1
-X-QQ-XMAILINFO: MoxesZjVrU4HxzxWRj5271UsphsXbAt4TH1yrK5+R/kj6KYO+zh7Hxa2
-	5FOBjTfLcEqpWRR7ySfRmWrTFH9YMOlSumTNZ4mx/iMP55b0u218rCQ21LBk6eOfD4AH09x
-	Viv5Ey7vb3AJX2FgHVJy6IsNNDPk9jTD3hn5+bThiS36O4PtcldRNaU+0qP8KRvKqOqQHIE
-	lyWd8NQWCdrx49WhuMwiDUglqIkf6rYvusA5/ywk1XkXNFG+WYr0F86agkAF+3KBQUhozAG
-	Fe98pOG3OpK5t7j7VOpKa72w4jtV9gv03cHZvn97tGggJ72pYvRlkvi1ajsf0Su7Zx599mO
-	q2WznB6JkMcLBB7MKv51MwO1nVJkwrvtsUt9XhgSBWLoTMaYoan6ArzlxTCXE+1s2u6+Zbh
-	uXBnfwj4YOljI6g1RrE6+CGB1plkCudqTzuEWrQLQ5fxDvlfhd0NOIlfLv9sWmleSTN6ScY
-	5J4aicB+mR1HPkmTlUF6cJ+UHXu+ypV8WmqrmCrvLgJC2k7/Qgl3gV+Fv3gsj7ZrfXSzG8m
-	aUTFtEQpAEJVAvJ4wZxPzEVDkKYzwE/ARJD1R/cYikL7m7yNwLEdVy7j1PFBiH3teR1mmUT
-	KEsFIaegJgtwEDumHBxV8ROpZWHWchD3i953fJQe0fxC2j0Q8NJHn83emdqO0Rn157Obj9i
-	68TPCHZ8wZrH/VhzirSFnB2hAvWeUjN1KHF+WbhNVLekN+/G2RhZPL3HUSxIedpWvavvFsz
-	j6DCcz73Cq1g/UkfiSQghQYgYUgvTiOUau1cUeCTyqS/3sdIOiYCHThvcso3zuWn8sue5Uh
-	xAQNUU1qVAUVqARF2w0haX/vQ3GCAmV8Wl7LbHbwxYkj1poR8c8GYL4OOjRY92l4ykm+5j7
-	fxCPrqoGBaIxPIAZwmpOy/K1lmk5356lfmJBp3fAzGXD8f8RLmMRHP+VID/zHGP5Onz2g9c
-	ha/VB5hq5YoicELyim0IryYjRc1vLrMZFuQkCJ15JLvm507xoxSbgq7F18cw8s4fAph5vIw
-	kLvahkZqGU/b1dFfz4crnLHpqKLFo/zo/8paNtcmXyym5xgrq//5jQ+PML7sjx+OlOSPAr8
-	IRHyzRf4dn905qPT83i9GIP223Gs3bVq/FNYXpyql4DoVPf6e3LMspJhCI8qe3cV+svv4pQ
-	jj7R+2mD4/zy0MrfRGqQDzSximQF31GbS/uZLorJYNlcYWIsYqSmukSTw4WkfUzzxpT8LKX
-	oSx5Qo5i0B3vPbmrSOQ==
-X-QQ-XMRINFO: NyFYKkN4Ny6FuXrnB5Ye7Aabb3ujjtK+gg==
-X-QQ-RECHKSPAM: 0
+References: <20260605194640.2645386-1-sam.moelius@trailofbits.com>
+ <CAM0EoMmeftLxWNdQqWsJonxEtMoCCuJdeTEjNzQfc2GYUX+mtw@mail.gmail.com> <CAE+C+DZTme=GQBy9BaXCiPe0pO7Pv7XNM69iru0VTGFX_ybBKg@mail.gmail.com>
+In-Reply-To: <CAE+C+DZTme=GQBy9BaXCiPe0pO7Pv7XNM69iru0VTGFX_ybBKg@mail.gmail.com>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+Date: Mon, 8 Jun 2026 06:46:46 -0400
+X-Gm-Features: AVVi8CeQlcB6w6tpNcR8QKmfjpjjni7kCUy9HMzVK5ay3z0dtfgs45EdiEocANQ
+Message-ID: <CAM0EoMmPb0jZGWeadX4KqsyQTx4Oo2gLg-3h+u=Ec=9rqzzjdQ@mail.gmail.com>
+Subject: Re: [PATCH] net/sched: act_pedit: require matching IPv4 L4 protocol
+To: Samuel Moelius <sam.moelius@trailofbits.com>
+Cc: Jiri Pirko <jiri@resnulli.us>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, "open list:TC subsystem" <netdev@vger.kernel.org>, 
+	open list <linux-kernel@vger.kernel.org>, Victor Nogueira <victor@mojatatu.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Add support for set_coalesce in wx_ethtool_ops_vf, which
-is used to set interrupt coalescing parameters.
+On Sun, Jun 7, 2026 at 10:33=E2=80=AFAM Samuel Moelius
+<sam.moelius@trailofbits.com> wrote:
+>
+> On Sat, Jun 6, 2026 at 5:29=E2=80=AFPM Jamal Hadi Salim <jhs@mojatatu.com=
+> wrote:
+> >
+> > On Fri, Jun 5, 2026 at 3:46=E2=80=AFPM Samuel Moelius
+> > <sam.moelius@trailofbits.com> wrote:
+> > >
+> > > The extended IPv4 L4 header mode in act_pedit can select TCP or UDP
+> > > header fields without confirming that the IPv4 protocol field matches
+> > > the selected transport header.
+> > >
+> > > That lets a rule written for TCP or UDP modify unrelated payload byte=
+s
+> > > in a packet carrying a different protocol.
+> > >
+> > > Verify the IPv4 protocol before applying TCP or UDP extended header
+> > > edits.
+> > >
+> > > Assisted-by: Codex:gpt-5.5-cyber-preview
+> > > Signed-off-by: Samuel Moelius <sam.moelius@trailofbits.com>
+> > > ---
+> > >  net/sched/act_pedit.c | 2 ++
+> > >  1 file changed, 2 insertions(+)
+> > >
+> > > diff --git a/net/sched/act_pedit.c b/net/sched/act_pedit.c
+> > > index bc20f08a2789..9a4590451f7e 100644
+> > > --- a/net/sched/act_pedit.c
+> > > +++ b/net/sched/act_pedit.c
+> > > @@ -341,6 +341,8 @@ static int pedit_l4_skb_offset(struct sk_buff *sk=
+b, int *hoffset, const int head
+> > >
+> > >                 if (!iph)
+> > >                         goto out;
+> > > +               if (iph->ihl < 5 || iph->protocol !=3D header_type)
+> > > +                       goto out;
+> >
+> > From inspection the fix looks reasonable.
+> > At first glance it seems that the only fix that resolves the issue you
+> > are describing is to check the protocol header.
+> > header length seems to be an extra thing. But let's do what the v6
+> > side seems to and skip frags as well? Something maybe along the lines
+> > of:
+> >
+> > if (iph->ihl < 5 || iph->protocol !=3D header_type || (iph->frag_off &
+> > htons(IP_OFFSET)))
+> >         goto out;
+>
+> I will submit an updated patch.
+>
+> > Are you able to describe how someone would configure a tc rule that
+> > will allow this to happen?
+> > IOW, how did you verify the problem and then validate that your fix wor=
+ks?
+>
+> The bug was validated using a custom init script in QEMU. The specific
+> line used was:
+>
+> /usr/sbin/tc filter add dev veth0 egress protocol ip pref 1 matchall
+> action pedit ex munge udp dport set 18053
+>
+> An IPv4 TCP packet with destination port 2222 was sent through that
+> path. With the unpatched kernel, the packet was received with TCP
+> destination port 18053. With the patched kernel, the same packet was
+> received unchanged.
+>
+> I can provide more details or artifacts if you would like.
 
-Signed-off-by: Mengyuan Lou <mengyuanlou@net-swift.com>
----
- drivers/net/ethernet/wangxun/libwx/wx_ethtool.c |  7 ++++++-
- drivers/net/ethernet/wangxun/libwx/wx_vf_lib.c  | 13 ++++++++++++-
- 2 files changed, 18 insertions(+), 2 deletions(-)
+A tdc test case is better. Victor or I can create one for you if you
+dont know how.
 
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c b/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
-index 6d8fcddde6fa..30c6ef6103ac 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
-@@ -10,6 +10,7 @@
- #include "wx_hw.h"
- #include "wx_lib.h"
- #include "wx_vf_common.h"
-+#include "wx_vf_lib.h"
- 
- struct wx_stats {
- 	char stat_string[ETH_GSTRING_LEN];
-@@ -488,7 +489,10 @@ int wx_set_coalesce(struct net_device *netdev,
- 		else
- 			/* rx only or mixed */
- 			q_vector->itr = rx_itr_param;
--		wx_write_eitr(q_vector);
-+		if (wx->pdev->is_virtfn)
-+			wx_write_eitr_vf(q_vector);
-+		else
-+			wx_write_eitr(q_vector);
- 	}
- 
- 	wx_update_rsc(wx);
-@@ -844,6 +848,7 @@ static const struct ethtool_ops wx_ethtool_ops_vf = {
- 	.set_ringparam		= wx_set_ringparam_vf,
- 	.get_msglevel		= wx_get_msglevel,
- 	.get_coalesce		= wx_get_coalesce,
-+	.set_coalesce		= wx_set_coalesce,
- 	.get_ts_info		= ethtool_op_get_ts_info,
- 	.get_link_ksettings	= wx_get_link_ksettings_vf,
- };
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_vf_lib.c b/drivers/net/ethernet/wangxun/libwx/wx_vf_lib.c
-index aa8be036956c..7325b475ee10 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_vf_lib.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_vf_lib.c
-@@ -16,7 +16,18 @@ void wx_write_eitr_vf(struct wx_q_vector *q_vector)
- 	int v_idx = q_vector->v_idx;
- 	u32 itr_reg;
- 
--	itr_reg = q_vector->itr & WX_VXITR_MASK;
-+	switch (wx->mac.type) {
-+	case wx_mac_sp:
-+		itr_reg = q_vector->itr & WX_SP_MAX_EITR;
-+		break;
-+	case wx_mac_aml:
-+	case wx_mac_aml40:
-+		itr_reg = (q_vector->itr >> 3) & WX_AML_MAX_EITR;
-+		break;
-+	default:
-+		itr_reg = q_vector->itr & WX_EM_MAX_EITR;
-+		break;
-+	}
- 
- 	/* set the WDIS bit to not clear the timer bits and cause an
- 	 * immediate assertion of the interrupt
--- 
-2.30.1
-
+cheers,
+jamal
