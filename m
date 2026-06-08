@@ -1,134 +1,98 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtpbg151.qq.com (smtpbg151.qq.com [18.169.211.239])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D89235E1C5;
-	Mon,  8 Jun 2026 07:03:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F23702E6CB8
+	for <netdev@vger.kernel.org>; Mon,  8 Jun 2026 07:09:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.169.211.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780902187; cv=none; b=JHsmTzwMvt3HA1MonoQjbz4f46vJZQ0JF5oYfcA5uf1hdTk57oz3E29m7ggZTdzkXiICt1rC3MOWdncRnyA/YFif0fqW1pZNfN5ZescKdpI0/8RsNjxV/QuvevMwLhGHmNWdzr8chKOV3WS/RNfnK5Xk3u+0Tq2/fSBOeNptVKY=
+	t=1780902602; cv=none; b=iB0PgUcFDeyr+LV46ppVNZtI2teRWuBnjJjRvoWCclPcwWKUPPba179FRAfoQzIQTWI1fZydbEeDJ1fTgTqJEpIUFLYGcbx/ZFU/LzNzkP71gppovxJVRj7v+tOWreFCwbrf18vfXhXMGbJ+XGlZDdw6ip1nebpO9oIvIAaKMlc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780902187; c=relaxed/simple;
-	bh=/EV8js+2v8OzyEkyzphqS7BgoRmZaabHmg7vtIFY5t8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rKEv80/br3FXob8jYeqyjObK6o3gMLBqtwurQeIJKK7qKryUPrIGtaHfVzjyrD23NZdE+sAR32v3QU94mIsGF9EhqKS1hsoYBgF3XYDh0AFcd7DZbMGz89rvtf5ukTLoLvuelrJZkYOs3Ycb0WlaBA6Z/3RMRCusZaut1UCHhug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ds8FYyBn; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ds8FYyBn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 980A31F0089A;
-	Mon,  8 Jun 2026 07:03:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780902185;
-	bh=10dFrUC/6z32jGP8zynGCsubM/uQN+Pn4UzSAjajejM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Ds8FYyBnv2B771u4jaYArIjXJx5UpC1WUxFyjTQDVhtf+l1qYyu5NwqVY+oOzuc6C
-	 YgqUxqU4gV2VnsPffdjORqDHElM1kd63ltUYUyVdF4TYaUEWtF2JD2pU6poVM1ArWL
-	 lMUinVJ6futH/7sdnAjzkFIuaCbufZx8fG+uk80ePL2EOH8cH49KxCDKv1sJ8txsUy
-	 Qpsb63Y/49p0ZHrtiY6ZwtKegiVpiUrgHwkrzV4CAq0F0zJwJnRUTZXAStb/+L2/kr
-	 FA/3lev2TYsrVndJqyIIwBECwbTBWrmYCkIgZRjk+HnLbC8Mzg1CGk5xkLhbQhHDnH
-	 KQOX+wjtpEfGA==
-Received: from johan by xi.lan with local (Exim 4.99.3)
-	(envelope-from <johan@kernel.org>)
-	id 1wWU0k-00000000LzQ-1V0O;
-	Mon, 08 Jun 2026 09:03:02 +0200
-Date: Mon, 8 Jun 2026 09:03:02 +0200
-From: Johan Hovold <johan@kernel.org>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
-	Lee Jones <lee@kernel.org>,
-	Mark Brown <broonie@opensource.wolfsonmicro.com>,
-	Thierry Reding <thierry.reding@avionic-design.de>,
-	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+	s=arc-20240116; t=1780902602; c=relaxed/simple;
+	bh=7ZbhsAmErXfoZtkQrmTQ+rdUChNpfAHnnK8k380kei4=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=g5Nci92B56SRLxmXH8+tCxKQCbbOt+GZwngU9zBfZwC04WYK9NWdCUztNehxDkKwKxHmHQaTX7lkGplNUQ7CBp5AyGeXi02/9601E88KTdD2y3M9V83gQZxDD8xrvXPTiuU6kMxt3qlr7WpRIDIvBnyle3LoAOGAnxgErOTw30U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=18.169.211.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
+X-QQ-mid: esmtpgz13t1780902538tb510d299
+X-QQ-Originating-IP: B5zlRMJGtHYJBP98UMFl03GA2zrWFGEpho6sazW6J1w=
+Received: from lap-jiawenwu.trustnetic.com ( [36.24.184.84])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Mon, 08 Jun 2026 15:08:57 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 14238453599175585417
+EX-QQ-RecipientCnt: 11
+From: Jiawen Wu <jiawenwu@trustnetic.com>
+To: netdev@vger.kernel.org
+Cc: Mengyuan Lou <mengyuanlou@net-swift.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Srinivas Kandagatla <srini@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Vinod Koul <vkoul@kernel.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Andi Shyti <andi.shyti@kernel.org>, Joerg Roedel <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
-	Doug Berger <opendmb@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Ulf Hansson <ulfh@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Peter Chen <peter.chen@kernel.org>,
-	Paul Cercueil <paul@crapouillou.net>, Bin Liu <b-liu@ti.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Maximilian Luz <luzmaximilian@gmail.com>,
-	Hans de Goede <hansg@kernel.org>,
-	Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Benjamin Herrenschmidt <benh@kernel.crashing.org>, brgl@kernel.org,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org, linux-sound@vger.kernel.org,
-	driver-core@lists.linux.dev, devicetree@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, linux-i2c@vger.kernel.org,
-	iommu@lists.linux.dev, linux-pm@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-	linux-usb@vger.kernel.org, linux-mips@vger.kernel.org,
-	platform-driver-x86@vger.kernel.org
-Subject: Re: [PATCH 08/23] driver core: platform: provide
- platform_device_set_of_node_from_dev()
-Message-ID: <aiZpJkQBXg2pcczy@hovoldconsulting.com>
-References: <20260521-pdev-fwnode-ref-v1-0-88c324a1b8d2@oss.qualcomm.com>
- <20260521-pdev-fwnode-ref-v1-8-88c324a1b8d2@oss.qualcomm.com>
- <ah9O15bMlAYgSlHx@ashevche-desk.local>
- <aiK-EXwp_xhcbty9@hovoldconsulting.com>
- <aiLi0KZskrCyEYO5@ashevche-desk.local>
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Larysa Zaremba <larysa.zaremba@intel.com>,
+	Fabio Baltieri <fabio.baltieri@gmail.com>,
+	Jiawen Wu <jiawenwu@trustnetic.com>
+Subject: [PATCH net v3 1/3] net: txgbe: initialize module info buffer
+Date: Mon,  8 Jun 2026 15:08:40 +0800
+Message-Id: <20260608070842.36504-2-jiawenwu@trustnetic.com>
+X-Mailer: git-send-email 2.21.0.windows.1
+In-Reply-To: <20260608070842.36504-1-jiawenwu@trustnetic.com>
+References: <20260608070842.36504-1-jiawenwu@trustnetic.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aiLi0KZskrCyEYO5@ashevche-desk.local>
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: esmtpgz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
+X-QQ-XMAILINFO: MJHgWiC2fbPUOCZFNYHthfMR/M/0ihm5a4bLjHyqqRlfiPtKGJjazaXd
+	Eq/rN1LRG8WssQ5iFi24CnADAtlev/ikaOR8jmzaYJONwDeXoliMkZcilI0ShUm0/DOFW1k
+	ka5tO8lQC6DnQTr7OnPW5s+gJ7Ul/9qaZpiSY+YDXRgnjn0S8l3/rAbMpEo7FKWcXvSoGQd
+	1K1UOcfSDbi/toL9WcdR4qxf92TMvDK1HF3Y52tWkhmvGJDZt9boh1zTEAI3ASVTqmTxUO+
+	+TC3JL/Tbr1E83Qx3mF9Jun1WQ6IuO0xhufZPLTGCv2QaueOmMtFNMODrvCz7QxPxDVZZRy
+	vuKvj1iZeLTEk66owbqSkSOlPGYVPR4lzR3/ZYqNL8DIFoFui3kuNkKS+dtbDOf36bruBq3
+	4cynv/AIy7u6a3T0MfXuadvDkJXr9ouL9tH2SRxNcoqyuVSzXcTNGim64g+gF4OA6rlit18
+	K6Ji4jYwx1s1cD/lxnzcQOkTDmDi9dpoao3hLHoAXZdUel0fYO47A1Ma12+yhkbOofOgH6d
+	WuKWPEg6XWskhqbJnbVVdTeOUn1dS+f6YR8Vo+DsyIcCq0JCWjsX6ime7nQosy6PyFfR0X8
+	/NOgP65EfQmyXyVkQ+/M+h123J47bg3J4zo0sBa9UfmIjNLFeTu+CtipNWCwK7WtKtpf9zs
+	96bs+mwEvGmz8zD1h2kyvHcYPNCFFX31zWXhnv6cF047V9KJoqYLSSNHyH8ckkKcU78meav
+	kwk21yy1ga4iVHY7vOZQ2UfvuDzBkantebwfK03cNbygtFqr4/4aczPZ2gIzsruNQ/sVN8K
+	8jmqdWfTePNXG0GhoZ4tFr3+u+tMDHXH8lWD0dHpxOhYA6IhOa150m1bbvL2iq983se9zCG
+	Pymp6deF/5AgsxGYElhUG1TehnoKKsLJt8OCuMPj/pioaDnLeUrGo39bx3oHGC7hS1HZWYn
+	TLz02mp/RxD45+kK87Zsn4a8iqFnFRxIvth0sOr8Y5nrD4Fx8prfyLb+l4rCn5p6I93tMgc
+	b3WD48vBX8Od/22ZZ2MJpTCIB/PUJ2Yy4C5wMCDQPmNL9oV8iQ/Xcw2HFoYAd9Z4CPzW7Ez
+	w==
+X-QQ-XMRINFO: NyFYKkN4Ny6FuXrnB5Ye7Aabb3ujjtK+gg==
+X-QQ-RECHKSPAM: 0
 
-On Fri, Jun 05, 2026 at 05:53:04PM +0300, Andy Shevchenko wrote:
-> On Fri, Jun 05, 2026 at 02:16:17PM +0200, Johan Hovold wrote:
-> > On Wed, Jun 03, 2026 at 12:44:55AM +0300, Andy Shevchenko wrote:
-> > > On Thu, May 21, 2026 at 10:36:31AM +0200, Bartosz Golaszewski wrote:
-> > > > Provide a platform-specific variant of device_set_of_node_from_dev(). In
-> > > > addition to bumping the reference count of the OF node being assigned,
-> > > > it also assigns the fwnode of the platform device.
-> > > 
-> > > Can we rather investigate the way how to make that of node reuse thingy
-> > > (which is used solely by pin control) differently and then drop this confusing
-> > > device_set_of_node_from_dev() call altogether?
-> > 
-> > No, that call is needed. See commit 4e75e1d7dac9 ("driver core: add
-> > helper to reuse a device-tree node") for details.
-> 
-> Bart fixes the problem with the platform driver. At the result this will be
-> the only device_set_node() + 'reused = true'.  As for 'reused' flag, the need
-> is only for pinmux/pin control stuff.
+The module info buffer should be initialized to 0 before the firmware
+returns information. Otherwise, there is a risk that the buffer field
+not filled by the firmware is random value.
 
-And any other resource which may (eventually) be claimed by driver core
-or bus code.
+Fixes: 343929799ace ("net: txgbe: Support to handle GPIO IRQs for AML devices")
+Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+---
+ drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> The question here is if there is a better
-> way to make that 'reused' be done automatically without need of setting some
-> flag explicitly.
+diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c
+index f0514251d4f3..a7e81f9e1be1 100644
+--- a/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c
++++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c
+@@ -335,7 +335,7 @@ static int txgbe_qsfp_to_linkmodes(struct wx *wx, struct txgbe_sff_id *id)
+ 
+ int txgbe_identify_module(struct wx *wx)
+ {
+-	struct txgbe_hic_get_module_info buffer;
++	struct txgbe_hic_get_module_info buffer = { 0 };
+ 	struct txgbe_sff_id *id;
+ 	int err = 0;
+ 	u32 mod_abs;
+-- 
+2.51.0
 
-That's not really relevant to the series at hand.
-
-If this is something we want to merge then you need to continue setting
-the flag in order not to cause regressions.
-
-Johan
