@@ -1,42 +1,42 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31A563CE0AE;
-	Mon,  8 Jun 2026 14:10:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 977003D0BFB;
+	Mon,  8 Jun 2026 14:10:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780927827; cv=none; b=A0nR9K+Yg1i143dP3skz4T1l2mtN3PfzH7zqV500tRzr1KtooC0dLxz0yuyDtBaI7Uxkx9cludJMvYrcsksvSVzQWvRi4dbgezbI+hftD1DGwCsjyxjlZRWrtuSBC0eFiJo0FtXcDtvVijfWCnYj9ADjVebeFqYh7ysUwhwL0xo=
+	t=1780927828; cv=none; b=oTdvY6Er7MXzQ0OwcNLAEaocM6hRzUyIOrTuDHvwZ0gv2yXYnxAH2SyGa0CYHP03tFpDT1I24vacQNXe8owGJ7ZvrE2gp0qkVCzk0Fj8XOCEB/yfGCmmjLEwB4wE88Cm7z6THC0wfpLc6uGfeCTxJ8ulo2XTbJhQX47ATmtoFHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780927827; c=relaxed/simple;
-	bh=EwijWD23hDssNIEkbyfh+Uz89hya5rVeY91Tem7LUME=;
+	s=arc-20240116; t=1780927828; c=relaxed/simple;
+	bh=MAgf7vq6Z0Wq6cX28QGN7dC/EHWKnTUsoIZrmr14QdU=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=dteT7bCj8MLgDFGddVGmQUSahMXA5pFxZSbJlqX0fCZFufJ+ZAtuTFuTYalEVV+3nZ2bfiNzDvIMpvNbJABEzXlW/5dhRHYyEYTvri3+vnrgNlLZi001v6l90mQzHOtr9j/s3BdXYuLKvIPirc1sN715KUXGeqw3tvaPnUP4qFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=rDVqYFsE; arc=none smtp.client-ip=185.246.85.4
+	 In-Reply-To:To:Cc; b=KK74CQPhH4qf93SAUKH0I1FbDYZRx+tIUIO7s/85RKX+0z8XT0wbCxNv6LULGckiGJJV1f0WJEsqF8/EB+wUKbVdYoHpiskTC1aX1+J1ODTWA1KaopBmR9ZGH+7zpdURcQL5Gp5KXnHyZZJhW4b0InYfSRi7bxoGxJyZoeql1Pk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=OT7EPH7c; arc=none smtp.client-ip=185.246.84.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="rDVqYFsE"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="OT7EPH7c"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id E914C4E4164C;
-	Mon,  8 Jun 2026 14:10:24 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 7E32B1A37D5;
+	Mon,  8 Jun 2026 14:10:26 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id B505B5FFB7;
-	Mon,  8 Jun 2026 14:10:24 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 54E1E106A2971;
-	Mon,  8 Jun 2026 16:10:22 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 5154F5FFB7;
+	Mon,  8 Jun 2026 14:10:26 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 03144106A2941;
+	Mon,  8 Jun 2026 16:10:23 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1780927823; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1780927825; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=tgNlGLqd4G7S3qN72u1yK4SQbSRdoynLTaxb/x8vdb4=;
-	b=rDVqYFsEW4Pz7lmw/4jjU1d8YR+nxeNwGkHq2NMuRbJevF7uNbhZc4Mz5UyxYOyKzwPuhz
-	QQ8u2uKh2NKidJ6SnMdCc5gO9BDZIWdLZfQ7jIHaYw08z9AAyEFw4MnyZrfV1Uz9dwf9vD
-	xT1+DTZZcyz0p/ckL41gUgzo7A2lpbWcxOvPPlmbd5zdjV5lqXfGF56Cgui39g7Sx/gWsp
-	VUBQMzY1m103a5/yF5uwSDPftUjVvVrk1YSl+fGSWeOBkuxvZhJpMzVXn5MKRzxx3FjIrC
-	X0J/RVn8EQz91mk+nrnHl50E7HPu1rkea2oZahuYAKSwhWiDHZoc1lg9AqZHhg==
+	bh=L8JKEMuqeLOLXD7sRAPR2ArzrkLzIQkNq/JilyTl52M=;
+	b=OT7EPH7crpCGFRMK4PuLsuiwkEa6sXjfr/WGLis3Z6uaZ+Fk1jb9fv9Rwsx2bDvLUd+XCT
+	xgjyDgAs/yxtxyJI3eey/+E36erYaseC9PrUCkikWGDFmVPmii1D+xtIlURNFgUBcnvw/E
+	AuApgzdpye2wS2k4Y196meCcwIuOvDeWlDfkB0AyHPHWhQy6TYWqNGQwnXGzVNd2XQJkfF
+	YOurRgWY2EIi+27pswW/MBmLN4KmbLQ0cX35Q7AZJDetnY3aLAmiPxGpyGi2+LXXd3Oi4i
+	fWuCjDy9CDNgPDlrBBesdYd8nYjxcteI8T6CWiEMOqB3mF8QtixtKLpkUvq4XA==
 From: "Bastien Curutchet (Schneider Electric)" <bastien.curutchet@bootlin.com>
-Date: Mon, 08 Jun 2026 16:10:07 +0200
-Subject: [PATCH net-next v2 04/10] net: dsa: microchip: wrap the MAC
- configuration checks in a function
+Date: Mon, 08 Jun 2026 16:10:08 +0200
+Subject: [PATCH net-next v2 05/10] net: dsa: microchip: remove
+ setup_rgmii_delay() KSZ operation
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -45,7 +45,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260608-clean-ksz-3rd-v2-4-6e61b7be23c4@bootlin.com>
+Message-Id: <20260608-clean-ksz-3rd-v2-5-6e61b7be23c4@bootlin.com>
 References: <20260608-clean-ksz-3rd-v2-0-6e61b7be23c4@bootlin.com>
 In-Reply-To: <20260608-clean-ksz-3rd-v2-0-6e61b7be23c4@bootlin.com>
 To: Woojung Huh <woojung.huh@microchip.com>, UNGLinuxDriver@microchip.com, 
@@ -62,64 +62,81 @@ Cc: Pascal Eberhard <pascal.eberhard@se.com>,
 X-Mailer: b4 0.14.3
 X-Last-TLS-Session-Version: TLSv1.3
 
-The common .mac_config() implementation checks some conditions before
-doing any register access. As this common implementation is about to be
-split in the upcoming patch, these checks would lead to code
-duplication.
+setup_rgmii_delay() operation is only used once during the common phylink
+MAC configuration. Only the lan937x switch implements this
+setup_rgmii_delay().
 
-Wrap all the checks in a need_config() function that returns true when
-the driver really need to access the switch registers to configure the
-MAC.
+Remove the setup_rgmii_delay operation from ksz_dev_ops.
+Implement a lan937x-specific phylink MAC configuration that does this
+RGMII delay setup.
+Export ksz_set_xmii since it's needed by the lan937x implementation.
 
 Signed-off-by: Bastien Curutchet (Schneider Electric) <bastien.curutchet@bootlin.com>
 ---
- drivers/net/dsa/microchip/ksz_common.c | 30 +++++++++++++++++++++---------
- drivers/net/dsa/microchip/ksz_common.h |  1 +
- 2 files changed, 22 insertions(+), 9 deletions(-)
+ drivers/net/dsa/microchip/ksz_common.c   |  9 ++-------
+ drivers/net/dsa/microchip/ksz_common.h   |  2 +-
+ drivers/net/dsa/microchip/lan937x_main.c | 17 +++++++++++++++--
+ 3 files changed, 18 insertions(+), 10 deletions(-)
 
 diff --git a/drivers/net/dsa/microchip/ksz_common.c b/drivers/net/dsa/microchip/ksz_common.c
-index 5fb151fbf4f3..f29287922843 100644
+index f29287922843..33a20c2e0a8a 100644
 --- a/drivers/net/dsa/microchip/ksz_common.c
 +++ b/drivers/net/dsa/microchip/ksz_common.c
-@@ -3211,9 +3211,8 @@ phy_interface_t ksz_get_xmii(struct ksz_device *dev, int port, bool gbit)
- 	return interface;
+@@ -3127,8 +3127,7 @@ int ksz_set_mac_eee(struct dsa_switch *ds, int port,
+ 	return 0;
  }
  
--void ksz_phylink_mac_config(struct phylink_config *config,
--			    unsigned int mode,
--			    const struct phylink_link_state *state)
-+bool ksz_phylink_need_config(struct phylink_config *config,
-+			     unsigned int mode)
+-static void ksz_set_xmii(struct ksz_device *dev, int port,
+-			 phy_interface_t interface)
++void ksz_set_xmii(struct ksz_device *dev, int port, phy_interface_t interface)
  {
- 	struct dsa_port *dp = dsa_phylink_to_port(config);
+ 	const u8 *bitval = dev->info->xmii_ctrl1;
+ 	struct ksz_port *p = &dev->ports[port];
+@@ -3242,12 +3241,8 @@ void ksz_phylink_mac_config(struct phylink_config *config,
  	struct ksz_device *dev = dp->ds->priv;
-@@ -3221,21 +3220,34 @@ void ksz_phylink_mac_config(struct phylink_config *config,
+ 	int port = dp->index;
  
- 	/* Internal PHYs */
- 	if (dev->info->internal_phy[port])
--		return;
-+		return false;
+-	if (ksz_phylink_need_config(config, mode)) {
++	if (ksz_phylink_need_config(config, mode))
+ 		ksz_set_xmii(dev, port, state->interface);
+-
+-		if (dev->dev_ops->setup_rgmii_delay)
+-			dev->dev_ops->setup_rgmii_delay(dev, port);
+-	}
+ }
  
- 	/* No need to configure XMII control register when using SGMII. */
- 	if (ksz_is_sgmii_port(dev, port))
--		return;
-+		return false;
- 
- 	if (phylink_autoneg_inband(mode)) {
- 		dev_err(dev->dev, "In-band AN not supported!\n");
--		return;
-+		return false;
+ bool ksz_get_gbit(struct ksz_device *dev, int port)
+diff --git a/drivers/net/dsa/microchip/ksz_common.h b/drivers/net/dsa/microchip/ksz_common.h
+index c377bd3e5542..ef8eb10fde50 100644
+--- a/drivers/net/dsa/microchip/ksz_common.h
++++ b/drivers/net/dsa/microchip/ksz_common.h
+@@ -410,7 +410,6 @@ struct ksz_dev_ops {
+ 			   u8 data);
+ 	void (*freeze_mib)(struct ksz_device *dev, int port, bool freeze);
+ 	void (*port_init_cnt)(struct ksz_device *dev, int port);
+-	void (*setup_rgmii_delay)(struct ksz_device *dev, int port);
+ 	int (*tc_cbs_set_cinc)(struct ksz_device *dev, int port, u32 val);
+ 	int (*init)(struct ksz_device *dev);
+ };
+@@ -468,6 +467,7 @@ void ksz_phylink_get_caps(struct dsa_switch *ds, int port,
+ void ksz_phylink_mac_disable_tx_lpi(struct phylink_config *config);
+ int ksz_phylink_mac_enable_tx_lpi(struct phylink_config *config,
+ 				  u32 timer, bool tx_clock_stop);
++void ksz_set_xmii(struct ksz_device *dev, int port, phy_interface_t interface);
+ bool ksz_phylink_need_config(struct phylink_config *config, unsigned int mode);
+ void ksz_phylink_mac_config(struct phylink_config *config,
+ 			    unsigned int mode,
+diff --git a/drivers/net/dsa/microchip/lan937x_main.c b/drivers/net/dsa/microchip/lan937x_main.c
+index 57e289637193..69df378a40bf 100644
+--- a/drivers/net/dsa/microchip/lan937x_main.c
++++ b/drivers/net/dsa/microchip/lan937x_main.c
+@@ -643,6 +643,20 @@ static void lan937x_setup_rgmii_delay(struct ksz_device *dev, int port)
  	}
+ }
  
--	ksz_set_xmii(dev, port, state->interface);
-+	return true;
-+}
- 
--	if (dev->dev_ops->setup_rgmii_delay)
--		dev->dev_ops->setup_rgmii_delay(dev, port);
-+void ksz_phylink_mac_config(struct phylink_config *config,
-+			    unsigned int mode,
-+			    const struct phylink_link_state *state)
++static void lan937x_phylink_mac_config(struct phylink_config *config,
++				       unsigned int mode,
++				       const struct phylink_link_state *state)
 +{
 +	struct dsa_port *dp = dsa_phylink_to_port(config);
 +	struct ksz_device *dev = dp->ds->priv;
@@ -127,25 +144,30 @@ index 5fb151fbf4f3..f29287922843 100644
 +
 +	if (ksz_phylink_need_config(config, mode)) {
 +		ksz_set_xmii(dev, port, state->interface);
-+
-+		if (dev->dev_ops->setup_rgmii_delay)
-+			dev->dev_ops->setup_rgmii_delay(dev, port);
++		lan937x_setup_rgmii_delay(dev, port);
 +	}
++}
++
+ static int lan937x_tc_cbs_set_cinc(struct ksz_device *dev, int port, u32 val)
+ {
+ 	return ksz_pwrite32(dev, port, REG_PORT_MTI_CREDIT_INCREMENT, val);
+@@ -821,7 +835,7 @@ static int lan937x_connect_tag_protocol(struct dsa_switch *ds,
  }
  
- bool ksz_get_gbit(struct ksz_device *dev, int port)
-diff --git a/drivers/net/dsa/microchip/ksz_common.h b/drivers/net/dsa/microchip/ksz_common.h
-index 804912fdd2db..c377bd3e5542 100644
---- a/drivers/net/dsa/microchip/ksz_common.h
-+++ b/drivers/net/dsa/microchip/ksz_common.h
-@@ -468,6 +468,7 @@ void ksz_phylink_get_caps(struct dsa_switch *ds, int port,
- void ksz_phylink_mac_disable_tx_lpi(struct phylink_config *config);
- int ksz_phylink_mac_enable_tx_lpi(struct phylink_config *config,
- 				  u32 timer, bool tx_clock_stop);
-+bool ksz_phylink_need_config(struct phylink_config *config, unsigned int mode);
- void ksz_phylink_mac_config(struct phylink_config *config,
- 			    unsigned int mode,
- 			    const struct phylink_link_state *state);
+ const struct phylink_mac_ops lan937x_phylink_mac_ops = {
+-	.mac_config	= ksz_phylink_mac_config,
++	.mac_config	= lan937x_phylink_mac_config,
+ 	.mac_link_down	= ksz_phylink_mac_link_down,
+ 	.mac_link_up	= ksz9477_phylink_mac_link_up,
+ 	.mac_disable_tx_lpi = ksz_phylink_mac_disable_tx_lpi,
+@@ -838,7 +852,6 @@ const struct ksz_dev_ops lan937x_dev_ops = {
+ 	.r_mib_stat64 = ksz_r_mib_stats64,
+ 	.freeze_mib = ksz9477_freeze_mib,
+ 	.port_init_cnt = ksz9477_port_init_cnt,
+-	.setup_rgmii_delay = lan937x_setup_rgmii_delay,
+ 	.tc_cbs_set_cinc = lan937x_tc_cbs_set_cinc,
+ 	.init = lan937x_switch_init,
+ };
 
 -- 
 2.54.0
