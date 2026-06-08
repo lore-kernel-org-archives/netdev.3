@@ -1,19 +1,20 @@
-Received: from zg8tmtyylji0my4xnjqumte4.icoremail.net (zg8tmtyylji0my4xnjqumte4.icoremail.net [162.243.164.118])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E42A1340412
-	for <netdev@vger.kernel.org>; Mon,  8 Jun 2026 07:47:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.243.164.118
+Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [52.229.168.213])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35D6A38644F
+	for <netdev@vger.kernel.org>; Mon,  8 Jun 2026 07:48:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.229.168.213
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780904884; cv=none; b=FpKjl5ZJ4Mo9PxGzxzgyOqCHZqC7A+cbQZcJKMcy7C6Px3L7yM9QIZWY3IcKvRpoUK+8tdab1QfkWshhWCGxYSpXH9JHRE7LuI6Yyz4n/fs6KUENSqf6jp/Uhkb0VPnL99sjjjvCQ9D+kvqCDDdBrMFPW3GLr2rQCaL+5UvshpM=
+	t=1780904904; cv=none; b=J7pxfJ/AGJdUZwOx4g+VUM2Xt9ulbLFBfmofb5mVz0Y2H7DWbNn6IGM12fhMClhZTqd8dcemvZ9OHandSVft36Z4cgdYoSo/fp86lMfQuuUiYijRQbr32zSlC1dh5ptik29k5P2/eGUkGv9IXpEhu7zU1l2i/QP+vWMjS27kxFg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780904884; c=relaxed/simple;
-	bh=iLp+pSSxcFOQYdAuXizn0effW15cJ+rVES6Nv93S9oI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NmgglwLqNgzkk2Rd+K5hXDkHcYlen5htQN0jCXyXKYUuJVptuHM20TZfjdFVgTeMP9ivn4II0UxApzg4XYKg8O6t3GS+j4153PcFt75LDme8GSq7PxD38YmJzD9oLtw/Qa5mBq6D9vSQFYMJJzCLgP/KjRFrVGcW4OpWMESBO/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lzu.edu.cn; spf=pass smtp.mailfrom=lzu.edu.cn; arc=none smtp.client-ip=162.243.164.118
+	s=arc-20240116; t=1780904904; c=relaxed/simple;
+	bh=Qj7s07iFcTLS2uOH/T7a9sE9e+uxOBRsWDCWj3+mg2k=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=D4ToUAXI1vhKPe8Pa2v5f7+b6ZRZa6T1VRWH3r4Qr1WcySOIZuupLufbyrAJ0S8DtiOyQJguq5wK554qkNT+uzQIppuxmMcuyp6oOG9PSq5wzozd1lRFOc6MZPSEKh3Wee+hhnikecLO8YbrVoJgzuSqS+lBo14yfcgtWp/MGnQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lzu.edu.cn; spf=pass smtp.mailfrom=lzu.edu.cn; arc=none smtp.client-ip=52.229.168.213
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lzu.edu.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lzu.edu.cn
 Received: from enjou-Legion-Y7000P-2019 (unknown [172.23.56.36])
-	by app1 (Coremail) with SMTP id ygmowACnycOncyZqzbRrAA--.51350S2;
-	Mon, 08 Jun 2026 15:47:51 +0800 (CST)
+	by app1 (Coremail) with SMTP id ygmowACnycOncyZqzbRrAA--.51350S3;
+	Mon, 08 Jun 2026 15:48:14 +0800 (CST)
 From: Ren Wei <n05ec@lzu.edu.cn>
 To: netdev@vger.kernel.org
 Cc: yuantan098@gmail.com,
@@ -22,10 +23,12 @@ Cc: yuantan098@gmail.com,
 	bird@lzu.edu.cn,
 	zcliangcn@gmail.com,
 	n05ec@lzu.edu.cn
-Subject: [PATCH net v2 1/2] llc: conn: use one state snapshot in llc_conn_service
-Date: Mon,  8 Jun 2026 15:46:53 +0800
-Message-ID: <86c82b564186dd085fae59984ea481493341b823.1780850934.git.zcliangcn@gmail.com>
+Subject: [PATCH net v2 2/2] llc: conn: publish OUT_OF_SVC before draining timers
+Date: Mon,  8 Jun 2026 15:46:54 +0800
+Message-ID: <57032b976770880663b57b4ac5459d23e1b130a9.1780850934.git.zcliangcn@gmail.com>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <86c82b564186dd085fae59984ea481493341b823.1780850934.git.zcliangcn@gmail.com>
+References: <86c82b564186dd085fae59984ea481493341b823.1780850934.git.zcliangcn@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -33,10 +36,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:ygmowACnycOncyZqzbRrAA--.51350S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxCF1xAr4kGFy5AFyrWFW5trb_yoWrJrWrpF
-	Zxur9xK34DXr13uF18JF4DZrZxCa1kGr12kryDJwnxt3WDtr1rCa98tFy2kr45JF9YkrW5
-	Jr4qvrn5Ga1xA37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+X-CM-TRANSID:ygmowACnycOncyZqzbRrAA--.51350S3
+X-Coremail-Antispam: 1UD129KBjvJXoW7KF17uFyfury5GF4kAw1xAFb_yoW8tF4fpr
+	Zxur13KFZrWr9xAF9rJFWvqr4rXan5Gr17A3s8C3Z7uan7Xr1jk3yF9FZF9Fs0kr40kFWa
+	yF4vqr1rCw4UArDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
 	9KBjDU0xBIdaVrnRJUUUvG1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AE
 	w4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2
 	IY67AKxVW7JVWDJwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVWxJVW8Jr1l84ACjcxK6I8E
@@ -47,27 +50,27 @@ X-Coremail-Antispam: 1UD129KBjvJXoWxCF1xAr4kGFy5AFyrWFW5trb_yoWrJrWrpF
 	MxAIw28IcxkI7VAKI48JMxAIw28IcVCjz48v1sIEY20_Gr4l4I8I3I0E4IkC6x0Yz7v_Jr
 	0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY
 	17CE14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcV
-	C0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY
+	C0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY
 	6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa
 	73UjIFyTuYvjfUYCJmUUUUU
-X-CM-SenderInfo: zqqvvuo6o23hxhgxhubq/1tbiAQEMCWolKdANHQABsi
+X-CM-SenderInfo: zqqvvuo6o23hxhgxhubq/1tbiAQwMCWolKdAPigAAs7
 
 From: Zhengchuan Liang <zcliangcn@gmail.com>
 
-llc_conn_service() only rejects states above NBR_CONN_STATES before
-the state machine lookup. That misses LLC_CONN_OUT_OF_SVC, whose value
-is 0.
+llc_ui_release() drops the socket lock with release_sock() before it
+calls llc_sk_free(). In that window, llc_conn_handler() can still take
+bh_lock_sock() on the same socket and run the LLC state machine.
 
-The LLC state machine can set a socket to LLC_CONN_OUT_OF_SVC, and
-llc_conn_disc() does not actually detach or free that socket yet. A
-later packet can therefore reach llc_qualify_conn_ev() with state 0,
-which indexes llc_conn_state_table[state - 1] and turns the lookup
-into an out-of-bounds access.
+If teardown only deletes timers at the end of llc_sk_free(), that
+concurrent packet path can still arm a timer again after teardown has
+started. timer_delete_sync() only drains timer callbacks; it does not
+wait for packet processing that races through llc_conn_handler().
 
-Take one READ_ONCE() snapshot in llc_conn_service(), reject
-LLC_CONN_OUT_OF_SVC there, and pass the validated state down to
-llc_qualify_conn_ev(). This also keeps the lookup on one consistent
-state value.
+Publish LLC_CONN_OUT_OF_SVC under sk->sk_lock.slock with bottom halves
+disabled before synchronously deleting timers. bh_lock_sock() takes
+that same lock, so teardown-time RX or timer work serialized there sees
+the closed state and stops instead of rearming timers, which closes the
+teardown window that can keep stale sockets active.
 
 Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Cc: stable@vger.kernel.org
@@ -79,72 +82,30 @@ Assisted-by: Codex:GPT-5.4
 Signed-off-by: Zhengchuan Liang <zcliangcn@gmail.com>
 Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
 ---
-changes in v2:
-  - Use a single READ_ONCE() snapshot of llc->state in llc_conn_service().
-  - Pass the validated state into llc_qualify_conn_ev() to avoid mixed state reads.
+  - New in v2 to address the teardown timer race raised in review.
+  - Publish LLC_CONN_OUT_OF_SVC before draining timers.
   - v1 link: https://lore.kernel.org/all/5f646c530f4a0820060499054c46b8dbecebd7be.1778638129.git.zlian064@ucr.edu/
 
 
- net/llc/llc_conn.c | 18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
+ net/llc/llc_conn.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/net/llc/llc_conn.c b/net/llc/llc_conn.c
-index 5c0ac243b248..9602183d09d8 100644
+index 9602183d09d8..dba114929bdd 100644
 --- a/net/llc/llc_conn.c
 +++ b/net/llc/llc_conn.c
-@@ -37,7 +37,8 @@ static int llc_exec_conn_trans_actions(struct sock *sk,
- 				       const struct llc_conn_state_trans *trans,
- 				       struct sk_buff *ev);
- static const struct llc_conn_state_trans *llc_qualify_conn_ev(struct sock *sk,
--							      struct sk_buff *skb);
-+							      struct sk_buff *skb,
-+							      u8 state);
- 
- /* Offset table on connection states transition diagram */
- static int llc_offset_table[NBR_CONN_STATES][NBR_CONN_EV];
-@@ -358,12 +359,15 @@ static int llc_conn_service(struct sock *sk, struct sk_buff *skb)
+@@ -978,8 +978,9 @@ void llc_sk_free(struct sock *sk)
  {
- 	const struct llc_conn_state_trans *trans;
  	struct llc_sock *llc = llc_sk(sk);
-+	u8 state = READ_ONCE(llc->state);
- 	int rc = 1;
  
--	if (llc->state > NBR_CONN_STATES)
-+	if (state == LLC_CONN_OUT_OF_SVC)
-+		return 0;
-+	if (state > NBR_CONN_STATES)
- 		goto out;
- 	rc = 0;
--	trans = llc_qualify_conn_ev(sk, skb);
-+	trans = llc_qualify_conn_ev(sk, skb, state);
- 	if (trans) {
- 		rc = llc_exec_conn_trans_actions(sk, trans, skb);
- 		if (!rc && trans->next_state != NO_STATE_CHANGE) {
-@@ -385,20 +389,20 @@ static int llc_conn_service(struct sock *sk, struct sk_buff *skb)
-  *	Returns pointer to found transition on success, %NULL otherwise.
-  */
- static const struct llc_conn_state_trans *llc_qualify_conn_ev(struct sock *sk,
--							      struct sk_buff *skb)
-+							      struct sk_buff *skb,
-+							      u8 state)
- {
- 	const struct llc_conn_state_trans **next_trans;
- 	const llc_conn_ev_qfyr_t *next_qualifier;
- 	struct llc_conn_state_ev *ev = llc_conn_ev(skb);
--	struct llc_sock *llc = llc_sk(sk);
- 	struct llc_conn_state *curr_state =
--					&llc_conn_state_table[llc->state - 1];
-+					&llc_conn_state_table[state - 1];
- 
- 	/* search thru events for this state until
- 	 * list exhausted or until no more
- 	 */
- 	for (next_trans = curr_state->transitions +
--		llc_find_offset(llc->state - 1, ev->type);
-+		llc_find_offset(state - 1, ev->type);
- 	     (*next_trans)->ev; next_trans++) {
- 		if (!((*next_trans)->ev)(sk, skb)) {
- 			/* got POSSIBLE event match; the event may require
+-	llc->state = LLC_CONN_OUT_OF_SVC;
+-	/* Stop all (possibly) running timers */
++	spin_lock_bh(&sk->sk_lock.slock);
++	WRITE_ONCE(llc->state, LLC_CONN_OUT_OF_SVC);
++	spin_unlock_bh(&sk->sk_lock.slock);
+ 	llc_sk_stop_all_timers(sk, true);
+ #ifdef DEBUG_LLC_CONN_ALLOC
+ 	printk(KERN_INFO "%s: unackq=%d, txq=%d\n", __func__,
 -- 
 2.47.3
 
