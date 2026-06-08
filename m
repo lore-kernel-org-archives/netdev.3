@@ -1,128 +1,98 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f202.google.com (mail-qk1-f202.google.com [209.85.222.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A9E52AE8D
-	for <netdev@vger.kernel.org>; Mon,  8 Jun 2026 15:48:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0565B3101A6
+	for <netdev@vger.kernel.org>; Mon,  8 Jun 2026 15:59:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780933701; cv=none; b=uJtMw5UtdwQvFrYvulFhVYjQRiSy7YzaNrAi7J/7lIZw83J8CPvfSUh0OhUxULvtTZqTAWtj25+KOSwrbpbCqvpLKwm3k83EnTSxNXhFSmvILf1RLjdwjOaSvG5byVzip+n04WpF/Phn/mJ0tOCNWsyEF1MpGb2G84/3DrEUKOY=
+	t=1780934363; cv=none; b=JaAsRAlXVCB8ZlKCiSdFhFia6ci6YLkepID/VTgLQnG+s6ceRsRQqnsjzWHiv+YLLTn6hmU4pcAhAuM3FBXd3R/HzQCZJBS4dfd+08AG5Uu5JbePyE6XoQ/h7Hz6X4q0+6oY5YYmp8EM6INSpdvAy+5U9DX3iQMJ+r1dgF2Ljq0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780933701; c=relaxed/simple;
-	bh=gXWiAR3eG1hw3O6lLoirp5wSX06NvOORpD7MunpI880=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Uz7GuSEa5OPbu5fj2KFf5mf+A7c82YSJNWMPUKFqL9KuHaQpJIPCe7yKdLHuBegXHCDvwFBTxN8+4xrFSTb8sgv5ZZJn2PIFoDupQVdZOkGlSoTwuAGOX9J/DLPh1634lzmQRR2Zg+cEF1Ve9Aga2GolQAKSnHidgm4TJ/XTQFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Kfzda56T; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1780934363; c=relaxed/simple;
+	bh=y1xHQSuJzF2UqRnyKwDq1kPH5W0soyshMDEbBGJOlc4=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=m+0CjlWSrkiUssZzmFUAScO4f72BLDeRcBwm4SIcRWKP1Wg4Eix6kUeaQd4aSWaIGC29t3qXFNAwoDC3uNT8Azsbo7de/1v/Osov7fEQG0WYB0CPfDBphR/aYBIh+zfnQeIDsRt3gCkw1pknul06Z/q4aTbmHGmYRWQtp5QtpMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=skhYtAnH; arc=none smtp.client-ip=209.85.222.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Kfzda56T"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1780933699;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=iQZZjnNUgN0/UHamiYqEX7QtlS2rp32rDzK8Diz0cFA=;
-	b=Kfzda56Tw2UZJZoeFHRo8cjg+PblLXkWAvqFawo3Mvc4uRJ3ZidWofUhxVHMyOxFUVJnGj
-	kB9eYu0AtyitThiuUfvaPh8jensN+9GZyrnRiMaTQ5bdG2G7qM/RDF/5shqzbLOj5WjqyT
-	smUHJXFfZ9lVYHZ802UNor9Lxvrruhk=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-696-lxBG658nMNS8ALq4SlugEQ-1; Mon,
- 08 Jun 2026 11:48:14 -0400
-X-MC-Unique: lxBG658nMNS8ALq4SlugEQ-1
-X-Mimecast-MFC-AGG-ID: lxBG658nMNS8ALq4SlugEQ_1780933693
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7FCC1180075E;
-	Mon,  8 Jun 2026 15:48:12 +0000 (UTC)
-Received: from [10.44.32.246] (unknown [10.44.32.246])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 60DF31800370;
-	Mon,  8 Jun 2026 15:48:08 +0000 (UTC)
-Message-ID: <b5853501-969a-4ac3-8aff-83c9da9c9834@redhat.com>
-Date: Mon, 8 Jun 2026 17:48:06 +0200
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="skhYtAnH"
+Received: by mail-qk1-f202.google.com with SMTP id af79cd13be357-9157116b988so1133801685a.0
+        for <netdev@vger.kernel.org>; Mon, 08 Jun 2026 08:59:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1780934361; x=1781539161; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=XJUOBELYHUBB25CfUsQ2Rqlqd/XV17NtWpT3OVe+uGw=;
+        b=skhYtAnHswgxurdBP4O/zpNQjsOdtCSxCs5k4Oogo9wFjt2ygOOLbYGEhfDktDuN+2
+         0iyf+8seqHREab5CmULslbP+5Hf8GD6sql5eHwBlyQoPy62oXqeSgo0IAWlwgjBCCOhI
+         U+zHSEZrTix50HBl9HJ9ZCW1lgM80ssNboxGdQLiCJX07Okln3F7bKw4i3FsJBP9d4lI
+         8D2b0E8XOcDum+5ySsRvAou26Lsd8D63kXf3MLOV5PzxRhoEPFFSidlXALy/GIXffph0
+         tRYICzLmS9YqsJEp8MMvGA1yRxVEx83PnampD6YSHIgcqckKtYsUi5h4e+Tl0bpIxjy1
+         uzNw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780934361; x=1781539161;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=XJUOBELYHUBB25CfUsQ2Rqlqd/XV17NtWpT3OVe+uGw=;
+        b=Ldk+EWjWLY0KbiU+BGXWV7TUozvB5fwJs2fAXWtPduxTWjpB8LVBbcTN5X8bSWV2JK
+         uOsKgofh6NPWiYFII5wTCG55IhBWRUEfBaIGvvT4fmNRdlflhmuCk6swYWwrqrweJBWr
+         TZI7vUdaq7TpZmLHOJhBcQK/t/pN+vRWo7/zY5NpQUwqsr30J81MJZn62tnkByTUIraY
+         Voilc61LhST50C83jwrjog8qqz7MFPg6igu4KMoUyNDwRt/rLAoTa9O/rJ0mqaCoNDG3
+         rVKP9/zI4+5xbWfcgr8TaW6eEwhDZifdXrg+Y/eh7iuGMYCQT3iLMivPF7Tz3JNi4tir
+         FHTg==
+X-Forwarded-Encrypted: i=1; AFNElJ8yo1wKigZ1SUq4avU4oZ6vuJ2R8RQtZeu+SHwj4ZC1dPxmX1O8Psr1jih7N1IdKA1i2qT1coY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx4qwmaNHh+IZC1SYFeYuvQZIKd4Xhz9wq6cvi3hbpQhlP39tP/
+	iUZIb+xhZ8x4AgGM+0Shd7kegd/82zWZ/coyRD3Ya5UqNX8a0RFjhJs88bDUCg604/L6kT3xKcN
+	NaiOV75nY9VAVew==
+X-Received: from qknre15.prod.google.com ([2002:a05:620a:8e0f:b0:915:8a6c:892d])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:620a:f10:b0:915:9bb4:9989 with SMTP id af79cd13be357-915a9c4bfb2mr2618246885a.1.1780934360672;
+ Mon, 08 Jun 2026 08:59:20 -0700 (PDT)
+Date: Mon,  8 Jun 2026 15:59:18 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v5 1/4] dpll: add DPLL_PIN_TYPE_INT_NCO pin type
-To: "Kubalewski, Arkadiusz" <arkadiusz.kubalewski@intel.com>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Cc: Jiri Pirko <jiri@nvidia.com>, "David S. Miller" <davem@davemloft.net>,
- Donald Hunter <donald.hunter@gmail.com>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Jiri Pirko <jiri@resnulli.us>,
- "Schmidt, Michal" <mschmidt@redhat.com>, Paolo Abeni <pabeni@redhat.com>,
- "Vaananen, Pasi" <pvaanane@redhat.com>, "Oros, Petr" <poros@redhat.com>,
- Prathosh Satish <Prathosh.Satish@microchip.com>,
- Simon Horman <horms@kernel.org>, Vadim Fedorenko
- <vadim.fedorenko@linux.dev>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <20260531194423.383366-1-ivecera@redhat.com>
- <20260531194423.383366-2-ivecera@redhat.com>
- <CH0PR11MB5394BA7DB19301ECD5F9B0139B1C2@CH0PR11MB5394.namprd11.prod.outlook.com>
-Content-Language: en-US
-From: Ivan Vecera <ivecera@redhat.com>
-In-Reply-To: <CH0PR11MB5394BA7DB19301ECD5F9B0139B1C2@CH0PR11MB5394.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.54.0.1032.g2f8565e1d1-goog
+Message-ID: <20260608155918.787644-1-edumazet@google.com>
+Subject: [PATCH net] ip6_vti: set netns_immutable on the fallback device.
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
+	Eric Dumazet <edumazet@google.com>, Noam Rathaus <noamr@ssd-disclosure.com>, 
+	Nicolas Dichtel <nicolas.dichtel@6wind.com>, Steffen Klassert <steffen.klassert@secunet.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On 6/8/26 4:43 PM, Kubalewski, Arkadiusz wrote:
->> From: Ivan Vecera <ivecera@redhat.com>
->> Sent: Sunday, May 31, 2026 9:44 PM
->> ...
->>        -
->>          name: gnss
->>          doc: GNSS recovered clock
->> +      -
->> +        name: int-nco
->> +        doc: |
->> +          Device internal numerically controlled oscillator.
->> +          When connected as a DPLL input, the DPLL enters NCO mode
->> +          where the output frequency is adjusted by the host via
->> +          the PTP clock interface.
-> 
-> Hi Ivan!
-> 
-> How would you control this in case of automatic mode dpll?
-> Automatic mode DPLL shall be controlled on HW level, such pin brakes
-> that rule and requires some driver magic to show it is higher
-> priority then the rest of the pins?
+john1988 and Noam Rathaus reported that vti6_init_net() does not set the
+netns_immutable flag on the per-netns fallback tunnel device (ip6_vti0).
 
-The NCO pin can be connected only in manual mode. In other words a DPLL
-in automatic mode cannot select NCO pin (switch to NCO mode) by its own.
+Other similar tunnel drivers (like ip6_tunnel, sit, ip6_gre, and ip_tunnel)
+correctly set this flag during their fallback device initialization to
+prevent them from being moved to another network namespace.
 
-If the DPLL device is in automatic mode then a user has to switch the
-device to manual mode and then manually set the NCO pin as connected.
+Fixes: 61220ab34948 ("vti6: Enable namespace changing")
+Reported-by: Noam Rathaus <noamr@ssd-disclosure.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Cc: Steffen Klassert <steffen.klassert@secunet.com>
+---
+ net/ipv6/ip6_vti.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-> Such NCO mode/pin is designed only for this single specific use case
-> where a timecard contains a DPLL and PHC?
-
-This is designed for a HW where DPLL channels (devices) support ToD
-counters (can act as PHC besides DPLL functionality) and support the
-mode where DPLL is not locked to any physical input and allows tuning
-of its frequency.
-
-> Any diagram?
-> 
-> Is there any other use case for such pin? (NCO is rather a general
-> DPLL control mechanism?) Shouldn't it be called explicitly like
-> ptp-nco?
-I discussed this with Jiri and result was:
-- DPLL_MODE is input selection strategy
-- NCO is a case of manual selection strategy
-
-And *_INT_PTP_NCO or *_PTP_NCO?
-
-Yes, this could be reasonable... I can't think of anything else to use
-other than PTP... for now (can be changed in future).
-
-Thanks,
-Ivan
+diff --git a/net/ipv6/ip6_vti.c b/net/ipv6/ip6_vti.c
+index df793c8bfffb0a26ea7f54933b88bccc9b1aa495..d2b74a6f2cf62dbb752d8842e1a4d33fc8392d41 100644
+--- a/net/ipv6/ip6_vti.c
++++ b/net/ipv6/ip6_vti.c
+@@ -1159,6 +1159,7 @@ static int __net_init vti6_init_net(struct net *net)
+ 		goto err_alloc_dev;
+ 	dev_net_set(ip6n->fb_tnl_dev, net);
+ 	ip6n->fb_tnl_dev->rtnl_link_ops = &vti6_link_ops;
++	ip6n->fb_tnl_dev->netns_immutable = true;
+ 
+ 	err = vti6_fb_tnl_dev_init(ip6n->fb_tnl_dev);
+ 	if (err < 0)
+-- 
+2.54.0.1032.g2f8565e1d1-goog
 
