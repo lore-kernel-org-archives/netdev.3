@@ -1,112 +1,144 @@
-Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 372703D3332;
-	Mon,  8 Jun 2026 09:55:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E622385D61;
+	Mon,  8 Jun 2026 10:00:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780912560; cv=none; b=BdENdzLwGL4SSLXNSqb6cMg20FEUiBNlauWuAwzdQ61MaTHizsxCK7MEARJEuLUqNpbIWVy5FnlOdf/XpUMWHrlE3CvYLS9xVsJakxECCJHVBWFrQgZcPc5u6Q4mMHD3201mYB10AntfXBMvuegxExcpZ1Q4vDJJDdIGs290Yoc=
+	t=1780912810; cv=none; b=WyMwBlu6X7EtOGZgzEH6hmAKRdPG0lkB/DTrDV1rp/OD4g/8XzXmJgie254ZixX/fSFf08qS5+Zv16j7QxAd0UEkNjREH8l0ULR7ko3SVgb4XUH0RERiueB+i89GjODNtNi2gl4FmydEWGJOiPjUtwQ3N1+lcQDvRQJhx8RDyYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780912560; c=relaxed/simple;
-	bh=rRMG2vuq12hFBjsTJqEu7ppDeFJeqY/J0McyArkok+s=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=OmnRpvWVJvQdn0bYTquSPkG+nj4xIa9ZwyU3fWz/GY5ZYvYvWOPMEQmkWcglH+O2lx7+ERPWq+BSsDN47MuCARAcvgDXvaVoDxdzHJXaf35pLWmE1anXq+1woX4lecDxeSXfV5nFaobckGg3JxHbkRS+JqFwYMW/9vmaV8mExaA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=runbox.com; dkim=pass (2048-bit key) header.d=runbox.com header.i=@runbox.com header.b=XJEdA+6B; arc=none smtp.client-ip=185.226.149.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=runbox.com
+	s=arc-20240116; t=1780912810; c=relaxed/simple;
+	bh=+8XfG6k1tXnXQyksouw2wdiv9qe1TAlzvlG7+q25o10=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=kGbr/an7D5H0eQdMeDanKQcspJKblp0fbPk2BNjcNUhe23lhnb5bKGkWBPrsA/ye2AMDvQnnwWAiZqn9x+N5g1Y3XCvgBoQ9ZrOEi8O3Dy46sBv2MvFOTtYJcyLLpxV+/S+dhr2FkaAjRsdhzi6J23gqiSUUHhdDjzlcbjSpt70=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=UV5EEmLM; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=runbox.com header.i=@runbox.com header.b="XJEdA+6B"
-Received: from mailtransmit02.runbox ([10.9.9.162] helo=aibo.runbox.com)
-	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.93)
-	(envelope-from <david.laight.linux_spam@runbox.com>)
-	id 1wWWi4-00BS6k-BO; Mon, 08 Jun 2026 11:55:56 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=runbox.com;
-	 s=selector1; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:
-	Subject:Cc:To:From; bh=OQIEcgVq7NOd4JbQ00khnJw1hkKI1O/HpLwNwh7rtvM=; b=XJEdA+
-	6BTl+Rv46D1xxPAR4/IVtdeWdl4DyeOoBiIQPraGm74ifHPlcrt7uCWYbnSG2gi9u0CdMgLLkJan7
-	4qSlrtiixwRQo5qUeeIxf7XvcuHojxIBTDzRUnwvGaVwl72bjHjbXKow567NrVs3un5CTXpMP5Jxb
-	IYxI+J0F5JxPJOP3zw2Kx09quCIbRZyxufwNW14i8DoSvYH1zNhQbgInd7wkME6yUMcT2kAHeAeKv
-	p+Zn1CbvKP7U9A8PdiaqnummDad4aOeyd8vxucZpp1r+/JjawDHixGDvmXuzfaHqZd7CV1Ts3XWDU
-	F+i1MBF/n0LvZRCyqdNVkEAHUKNg==;
-Received: from [10.9.9.73] (helo=submission02.runbox)
-	by mailtransmit02.runbox with esmtp (Exim 4.86_2)
-	(envelope-from <david.laight.linux_spam@runbox.com>)
-	id 1wWWi4-0000L2-1u; Mon, 08 Jun 2026 11:55:56 +0200
-Received: by submission02.runbox with esmtpsa  [Authenticated ID (1493616)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.95)
-	id 1wWWhl-00Ag6G-JZ;
-	Mon, 08 Jun 2026 11:55:37 +0200
-From: david.laight.linux@gmail.com
-To: Kees Cook <kees@kernel.org>,
-	linux-hardening@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org
-Cc: Arnd Bergmann <arnd@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Timur Tabi <timur@kernel.org>,
-	David Laight <david.laight.linux@gmail.com>
-Subject: [PATCH net-next] drivers/net/ethernet/qualcomm/emac: Use strscpy() to copy the ethtool strings
-Date: Mon,  8 Jun 2026 10:55:14 +0100
-Message-Id: <20260608095523.2606-30-david.laight.linux@gmail.com>
-X-Mailer: git-send-email 2.39.5
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="UV5EEmLM"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6589JnGc2817660;
+	Mon, 8 Jun 2026 10:00:04 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pp1; bh=65j6K3TwLBQrNRKhondLRsIzcSz2
+	RghwB/4ES/qifHs=; b=UV5EEmLMDZHqmVT5rQDQxkhbNcFX77CbFN73v9mxnO/1
+	DtzDJlfofNoiZyIIwbLymoAy7mhzJQPutxptqfjwUCPH2XOsfnDDv7AOR6+htIad
+	Pnm9DPspSzefLg1+K7Jwnz07Shb+h3ddVc4bd/eMQbypjn0frh7vhc0jq4LknXAb
+	hKjPXDvLy7NBkG2eoTQHzASRSJ///hCJscoxFgns0XVIXZeG5zL9GvyFXzswKwj8
+	9m1wFt/ipiJoz5aacMY406rMi5vGREE4RQGrWlwx2vhnXcVPms2/hpRf3gg7oynH
+	a+sIOh1D9fAAn5pSaDEnlCuMjUA6h5c2zeT8SRAbxA==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4emb23pq1p-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 08 Jun 2026 10:00:04 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 6589ndU1010122;
+	Mon, 8 Jun 2026 10:00:03 GMT
+Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4emx8vvv9y-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 08 Jun 2026 10:00:03 +0000 (GMT)
+Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
+	by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 658A02eu61473074
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 8 Jun 2026 10:00:02 GMT
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C31F258068;
+	Mon,  8 Jun 2026 10:00:02 +0000 (GMT)
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 63D455806D;
+	Mon,  8 Jun 2026 10:00:01 +0000 (GMT)
+Received: from [9.123.9.7] (unknown [9.123.9.7])
+	by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Mon,  8 Jun 2026 10:00:01 +0000 (GMT)
+Message-ID: <3ad19e86-234c-408f-896e-0d6c774fea49@linux.ibm.com>
+Date: Mon, 8 Jun 2026 15:30:00 +0530
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: netdev@vger.kernel.org, venkat88@linux.ibm.com
+Cc: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+From: Yeswanth Krishna <yeswanth@linux.ibm.com>
+Subject: [BUG] kernel BUG in team driver: buffer overflow in team_add_slave()
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=b4uCJNGx c=1 sm=1 tr=0 ts=6a2692a4 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8
+ a=qBxafnndnmzGIJbaEr4A:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: EeGipkoIuz3k5KIeLN3h9n4452L9zIqE
+X-Proofpoint-GUID: EeGipkoIuz3k5KIeLN3h9n4452L9zIqE
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjA4MDA4OSBTYWx0ZWRfX0ddjqY7emiR9
+ DZZvPaoV2dNPCtRetacd+xFFzYlp9m9rnMcyx/VN1m3NCQl/1Zrd7KL1g6uSwpJ21F6ZtP/8KDS
+ +qOwCC8mCzF6eFgD0FQiuLDqvGu9z9pPZsp21H2MeYORSRjsbHHZFQnpEBBeht39wuDiIbM0vfM
+ RrbHxa6mMn8KzpYem4GLTq/+DCWlzrpT72sea+XbZXdB9Z0lZRti16FF0GaxfIRsBd8333qsgFr
+ qhS/i8TEaNFfGAUcSkOfgaW5ILdBWS9GjkRrdo+Uc3uoeYqRFFHMjHK86GCRAuz9BwDwOrJoaDF
+ RDQfq3WEhAJp00LNaAWc6CcE3VLwQG8+qfnTtmvet/ainqvzSnmxgi+kbmBsMYVBZSJAK6KRYEt
+ lvBx/t30de8nQ/oI/4Goi6SJYo9NgP8FOUQ0UaQ4MKNq+IpYbsDPM1chgpeI1UQAlYBoPKyWSfd
+ VJ/2v2sxlcGsONNJKvg==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-08_02,2026-06-05_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1011 spamscore=0 bulkscore=0 phishscore=0 priorityscore=1501
+ lowpriorityscore=0 adultscore=0 malwarescore=0 impostorscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2605210000 definitions=main-2606080089
 
-From: David Laight <david.laight.linux@gmail.com>
+Hi Team ,
 
-While the string is short it is still best to use strscpy()
-with length ETH_GSTRING_LEN.
-Should still get optimised to a memcpy().
+I encountered a kernel crash while running selftests on kernel 7.1.0-rc6
+on a POWER10 system. The crash occurs when adding a slave device to a
+team interface, triggered by FORTIFY_SOURCE detecting a buffer overflow.
 
-Signed-off-by: David Laight <david.laight.linux@gmail.com>
----
-This is one of a group of patches that remove potentially unbounded
-strcpy() calls.
+**System Information:**
+- Kernel: 7.1.0-rc6-160099.42-default+ (commit d548c6f4301b)
+- Architecture: powerpc64le (ppc64le)
+- Hardware: IBM POWER10 (9043-MRX), pSeries
+- Config: CONFIG_FORTIFY_SOURCE=y
 
-They are mostly replaced by strscpy() or, when strlen() has just been
-called, with memcpy() (usually including the '\0').
+**Crash Location:**
 
-Calls with copy string literals into arrays are left unchanged.
-They are safe and easily detected as such.
+[ 3492.897824][T77143] kernel BUG at lib/string_helpers.c:1044!
+[ 3492.898057][T77143] NIP [c000000000ac1120] __fortify_panic+0x18/0x28
+[ 3492.898096][T77143] [c00000000efdb350] [c00800000b857a18] 
+team_add_slave+0xc60/0xcc0 [team]
 
-The changes were made by getting the compiler to detect the calls and
-then fixing the code by hand.
 
-Note that all the changes are only compile tested.
+**Call Trace:**
 
-Some Makefiles were changed to allow files to contain strcpy().
-As well as 'difficult to fix' files, this included 'show' functions
-as they really need to use sysfs_emit() or seq_printf().
+__fortify_panic+0x18/0x28
+team_add_slave+0xc60/0xcc0 [team]
+do_set_master+0x19c/0x240
+do_setlink.isra.0+0x388/0x1450
+rtnl_newlink+0xac8/0x1030
+rtnetlink_rcv_msg+0x450/0x530
+netlink_rcv_skb+0x74/0x1b0
+rtnetlink_rcv+0x24/0x40
+netlink_unicast+0x2e0/0x430
+netlink_sendmsg+0x210/0x580
+____sys_sendmsg+0x30c/0x470
+___sys_sendmsg+0x94/0xf0
+__sys_sendmsg+0x84/0x100
+system_call_exception+0x154/0x2b0
 
-All the patches are being sent individually to avoid very long cc lists.
-Apologies for the terse commit messages and likely unexpected tags.
-(There are about 100 patches in total.)
+**Reproducer:**
+The crash is 100% reproducible via selftests:
+```bash
+cd tools/testing/selftests
+make -C drivers/net/team run_tests
 
- drivers/net/ethernet/qualcomm/emac/emac-ethtool.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Please add below reported-by tag:
+yeswanth <yeswanth@linux.ibm.com>
 
-diff --git a/drivers/net/ethernet/qualcomm/emac/emac-ethtool.c b/drivers/net/ethernet/qualcomm/emac/emac-ethtool.c
-index f502db9cdea9..ffc300641aac 100644
---- a/drivers/net/ethernet/qualcomm/emac/emac-ethtool.c
-+++ b/drivers/net/ethernet/qualcomm/emac/emac-ethtool.c
-@@ -95,7 +95,7 @@ static void emac_get_strings(struct net_device *netdev, u32 stringset, u8 *data)
- 
- 	switch (stringset) {
- 	case ETH_SS_PRIV_FLAGS:
--		strcpy(data, "single-pause-mode");
-+		strscpy(data, "single-pause-mode", ETH_GSTRING_LEN);
- 		break;
- 
- 	case ETH_SS_STATS:
--- 
-2.39.5
+
+Thanks,
+Yeswanth Krishna
 
