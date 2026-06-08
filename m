@@ -1,483 +1,225 @@
-Received: from mail-qv1-f74.google.com (mail-qv1-f74.google.com [209.85.219.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012070.outbound.protection.outlook.com [40.107.209.70])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53F9F3B9D91
-	for <netdev@vger.kernel.org>; Mon,  8 Jun 2026 13:50:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.74
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780926662; cv=none; b=jlf8VatSOdavqfr/42YYgPxUUCVaHyJTE9wzBzGMsYFg9wS1QULjy2n5Mw6f/D1bfrDKFTPKYuqf2M0irVYKSxOCuAHaV+o782KFdcoNMA3Yn87SpuSmNlucoAMogg7qUePUDbBlOoBQcYd0evuQTWsATUIKCo2fjyd7xbq35As=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780926662; c=relaxed/simple;
-	bh=5HOI/0ZMNOMdBJAahgda/t7f7A7KWdJQEjc/2MaHN/c=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=eVfTtHYz9+mpuXAoK9uvA6NYp40sNYLK14u5nS8Hf/omAbgyvxpoTu/HcshODnbB8KTo09VmPnXg/01yd4dWYLpwiGmMWObjSLSCQQLvqW/IQkh4dOje2n1E+i32XBVcMz47kYdJ2C8BG/98vOM926NYDw+c57tkiKp93fUdp9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JQuH2pqU; arc=none smtp.client-ip=209.85.219.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E8293BCD0A;
+	Mon,  8 Jun 2026 13:57:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.70
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780927026; cv=fail; b=pGtqZEiDrwbcZB+ztXMOvJUtXSQMd75CSqVG9UiCxKRlN2q8QHLoN1NRwCxQH2NvXLH4Q4Qh+Ec6pVglprqFXkvCuRpzrHd38MhM47HDNO/bccLNIkcgDh4dF+3rlEyD+21YqKK1U1joKja+lnKV/fc9+/FbJi/jYyncOc78dy0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780927026; c=relaxed/simple;
+	bh=uniS2HCWjGDEtovVNXVHKmyiH68v6Ot4OsXTYbefww0=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=pCaI5gc1n7KQDPYd1+1lbajgbt7d//f3G0JlVqIAzHTwEoSI6j+TYzwmIKdoioxc63/TpFw97Kn7R+I+vTHt7zyRJzZIKJJx6KGRHty9vxdUucWZmQuw0RumD3hO70nGo86wZgjfpsPIy/j83LJSfmVqqVyPQxY6dpTiQWMS2JE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=QyThCKbx; arc=fail smtp.client-ip=40.107.209.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JQuH2pqU"
-Received: by mail-qv1-f74.google.com with SMTP id 6a1803df08f44-8cce2b4c290so18532246d6.3
-        for <netdev@vger.kernel.org>; Mon, 08 Jun 2026 06:50:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780926652; x=1781531452; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=J2jJVGCPCEJPSPGBzRrz1MdNXXTWUTDR6VZVUTL0pxI=;
-        b=JQuH2pqUhPHO+GnqyYoS9Cv570eYXf8STv3HN5rDxx0csgPelaGKF1vgEalrT49HzE
-         6pXIcdF8G7WIER0+E8My++9ni6aWICCzyu7hlwKH0XqUiQkgA9SerFiHMv1Z7xrm3szE
-         BLtuWnFfOjNj1pVTCZi8+bK3W6X/YPxzhJhQUoUoTbq34OtfuYEALaHr6CeceIlmJ2h+
-         l3hTH1DbXgmUfIHSTpVwFmRwjubTMHVhRe/m7QW/JVcEER79Zl38sYaOheeVFnN7WTHZ
-         163SuzB580p4Awf7dTs0gS+N3UNLpmo1pMctr/nyiq6qhtCtFWmwvPT7o2t5Te6dNCTt
-         1s/A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780926652; x=1781531452;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=J2jJVGCPCEJPSPGBzRrz1MdNXXTWUTDR6VZVUTL0pxI=;
-        b=Ayx50z2oC24wKlQ8dWKqbQBEQThvW2kghTA4ZOjN0stZOx9NyKTIZuom6h6NIYeZ8z
-         9ZHYBaCKUNbZSrRy1ebKCqJN8HRxOldW7/58BbOTDliQtl8BnStRFFXOmpE9qHjxtHqO
-         J8AT4iF2GKQ3L2HKHjJPA74FQQrc2wDN8CbpvUtI2PlC/YtrIVhMFf79SdZ0fell/WJa
-         EPp79Ixz4jTG2xkJgdeJ0wRcWykTVPFVc9penX0y/5QVUT6lFeStYJuLPD5KxldTp5lu
-         +GaqJ3x7RHh7ifXJuWy10u81BJx668Vknh9E7GA7e6MKyKVBjjTlu3s7nTKOAU8cb9+N
-         r0fQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9m6og+fM2Q00Ns/hSwgDOOr4mUSMGXXIGXHqzoquJB/Jbkaz/B0okYFAjOrZr/VB2XQyWWiF4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyF/KDSjRuDHsgJCMeV/TzetPGaWxBK54el/phi+5BM2Rxg54Pp
-	h2kCyI1usGjOgn2ByZn0DSSJzs5mQpvxrbULswgoJBDu4CGA23aZLfav9OOzFX4TLvCJeyg/GcR
-	bLsLMxY/96SpMKg==
-X-Received: from qvbgm3.prod.google.com ([2002:a05:6214:2683:b0:8ac:b731:7bee])
- (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6214:424e:b0:8ce:e409:22c5 with SMTP id 6a1803df08f44-8cee6152899mr194904636d6.22.1780926651939;
- Mon, 08 Jun 2026 06:50:51 -0700 (PDT)
-Date: Mon,  8 Jun 2026 13:50:51 +0000
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="QyThCKbx"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=bRIwlS+6jL7+uwuLwepy+cC+snCeRQ/0yAwEVH0z7xX+mUO28H4Aykqj8u3wXh1sSCkZiFJzQ5TN+8J+f8j5PpSpPTIvocyRqTH5vg/8WxmqEJjdXBZHdRbnF2V3tOqFmyNiPOJyYzvn8El2tZ/84DE9rysINoAtJURlx1kPmeU9zT50ewqodQtt53vhWMBQk3VnN8VIYCrIo1D5f/c9kK9Q5TP2eFQPYW7d3v1M3e2pkV5LqgGbGeshRcMFPFPYN0ogzNQ6dhnFL3n8l4DM5/sN2YzYzkxEz8wl7a8/Gyz/7afLKApD9PFG8YkIQOT3ZMrwsC40RUZL2adBQAS90w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=CtnTz+coA8yrqJ+gMluWV7GH9ViBzn9vVK2VT1yus0o=;
+ b=xw2oLl05z7YFG+mzndbD+bC+kDO7rrEiGmkWDW5UuPjSGeo6YezYPydUtVd5Fa2WYJm4tRacuEiugWFhCJDKt7u1bMjXWwqg7zR9MmNWjt53fsOlw5kzLGoa4FujId3aBjhGi60KbDQr1Vi+aTV+r+MC9/M/vN0RP0Axnf4bovDwKjLuHsO6N/5Je62aGKTTG4DHQjs5kmtXYf3n7V2oWuzx/EWnF6AORyEcK1W5CliZEGk2H28iHmK/XTipfFdtPfY/ix9rCH9xgEu7S6uaIiNpthWr0OOcgp2xDSE0vEvOeQaP+w/q66/0VddV2ZCSqpWb4TZg4GgIpx8KLbQVwA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.118.233) smtp.rcpttodomain=google.com smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=CtnTz+coA8yrqJ+gMluWV7GH9ViBzn9vVK2VT1yus0o=;
+ b=QyThCKbxB2X9dReUxwVELy1jbxR614qXbwjTynwadGvlBxwCFLgXqq6z/32ZGrKMIgD5lagV3GBSYLY158aZVvERd41aHD25PZb9boSzz1EtwGDI0nRwkXfMDGRn46AIUzGU8I3ovQ/GwzosCg3iG/suTOZbJCaKEslWUbh0RkCl6taXSQ3QD/8Psw0jisy1qGD+FWRpV0XucjqVPv8G1JGfPXycJ1jtXMA8NapWaaFuSEClqfqAL1hylY+wF8hPErEMTL7qQGYkhOY3mpYOeDYtbxXzE0jb/G3AgtXwV2SocLa6jM5ypmdJdd8l0bUsZfYmBc3DEkGQxbHrfzfz8A==
+Received: from BN0PR10CA0001.namprd10.prod.outlook.com (2603:10b6:408:143::31)
+ by IA1PR12MB9466.namprd12.prod.outlook.com (2603:10b6:208:595::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.12; Mon, 8 Jun 2026
+ 13:57:00 +0000
+Received: from BN1PEPF0000468C.namprd05.prod.outlook.com
+ (2603:10b6:408:143:cafe::76) by BN0PR10CA0001.outlook.office365.com
+ (2603:10b6:408:143::31) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.92.14 via Frontend Transport; Mon, 8
+ Jun 2026 13:57:00 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.233)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.233) by
+ BN1PEPF0000468C.mail.protection.outlook.com (10.167.243.137) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.113.7 via Frontend Transport; Mon, 8 Jun 2026 13:57:00 +0000
+Received: from drhqmail201.nvidia.com (10.126.190.180) by mail.nvidia.com
+ (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 8 Jun
+ 2026 06:56:43 -0700
+Received: from drhqmail202.nvidia.com (10.126.190.181) by
+ drhqmail201.nvidia.com (10.126.190.180) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.20; Mon, 8 Jun 2026 06:56:42 -0700
+Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com
+ (10.126.190.181) with Microsoft SMTP Server id 15.2.2562.20 via Frontend
+ Transport; Mon, 8 Jun 2026 06:56:37 -0700
+From: Tariq Toukan <tariqt@nvidia.com>
+To: Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David
+ S. Miller" <davem@davemloft.net>
+CC: Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
+	Tariq Toukan <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>, Shay Drory
+	<shayd@nvidia.com>, Or Har-Toov <ohartoov@nvidia.com>, Edward Srouji
+	<edwards@nvidia.com>, Simon Horman <horms@kernel.org>, Maher Sanalla
+	<msanalla@nvidia.com>, Parav Pandit <parav@nvidia.com>, Kees Cook
+	<kees@kernel.org>, Moshe Shemesh <moshe@nvidia.com>, Patrisious Haddad
+	<phaddad@nvidia.com>, <netdev@vger.kernel.org>, <linux-rdma@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, Gal Pressman <gal@nvidia.com>, Dragos Tatulea
+	<dtatulea@nvidia.com>
+Subject: [PATCH net-next V2 02/15] net/mlx5: devcom, expose locked variant of send_event
+Date: Mon, 8 Jun 2026 16:55:34 +0300
+Message-ID: <20260608135547.482825-3-tariqt@nvidia.com>
+X-Mailer: git-send-email 2.44.0
+In-Reply-To: <20260608135547.482825-1-tariqt@nvidia.com>
+References: <20260608135547.482825-1-tariqt@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.54.0.1032.g2f8565e1d1-goog
-Message-ID: <20260608135051.637439-1-edumazet@google.com>
-Subject: [PATCH v2 net] bonding: no longer rely on RTNL in bond_fill_info()
-From: Eric Dumazet <edumazet@google.com>
-To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
-	Eric Dumazet <edumazet@google.com>, Jay Vosburgh <jv@jvosburgh.net>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN1PEPF0000468C:EE_|IA1PR12MB9466:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1bdc296f-deb8-4048-e495-08dec565cffd
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|36860700016|82310400026|1800799024|11063799006|56012099006|6133799003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	VDJYSM2OXjDHkYvgH/tkj9u/5/k5UWPOY5hpTsB1CjxfHCR1Tk5md6WcAGq3g8mCLK9ow/p5VJEEQtZPIOlRccStUZW828o89QrcRQqm8k8y0j+2CQfbE90ncRItKemFVS69fjCri6FWSEfFiv3WMAddOCVO48iOOMoOwkLhyavVaySdtd5XVTZCDL5nKNLHnvaI6cl5xM434jzZU73YLLULWBuwsYR9yOIDtkZPBOJJBmUwpbZMFflen+A+jnC2EEaLzMtHs6e4mGVfmpwcfkaaSvpjaeREnC2ZPXFCbhc65Y526ajaP2ILqT1vHZuFgxV0GAuvMbD6DrS4gGOdW5mW8EtF1qPjDbrELSY2YtYoObmynydPGS4/P21V8ecXJQlnUJ2PkEDsmsIqEKcbAlP4PMimGqXSaebacrl9IyhEfJwyPv6g3PjPBGFeDBLeUjnXNeNloO9sIysiPAOi2hdM6fTBADQbKcHnewBoLIk9kdGwo0zqLtVSO4Pl0o8kdnkZMxdQQkU78cGINZRw1+49gTq9fmZMe5bcAfM0cyNTDtptGod23cK7F7ddoTieCboz7DLl2c3Nyvk7Ani9+XYy2s00WOR7F3xPE2Ip8X32Nmf52puXgZMkGfVUxhJQip7HWfSJAUep7ljebtGVblRBykcH3Rbs2pU6dl+xYm8PSR4cV7jn6UpSe8sYUYWYNj7yGEu4bV4IRnMoKwc0e7EZuwsgxgSohmEh5x1sfCg=
+X-Forefront-Antispam-Report:
+	CIP:216.228.118.233;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge2.nvidia.com;CAT:NONE;SFS:(13230040)(7416014)(376014)(36860700016)(82310400026)(1800799024)(11063799006)(56012099006)(6133799003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	HlIxxxs419zqZ1/hc/DKOtbj/svSioNB1WgcW4pr0CQjklwgFh0AQsbW78U5qE24wed/cq6P/w0ivz1J4iMX8Y4esZiF7vM4GRg/brqynvu0dUgcUEb1wyD5pI5Zq9iHNWfmBQSHT8s6gMAIAATb5Zss/P6NUlgi6NrYWnHOlnbaqz0PVHfkAcn8og5U2PnFzTjtLgg6RQ480jUQCWQLmGbMq6XSzOhNFc0udM3XxiIsX2qxpKdKeEHWunI/4zfXaK31xUXUOliyiGk1NCambuFWzeI7PE5O/5aHRwTE85C+a0/p6fjKE+jLvqZo0UfZV+H7AMxuLUzIVdMFb3d1QXqEBCpov+YZ6P5nJ59rPD4RsgFcB0DTWRWdKoShjovMD/U1fESSxRNJF8NCMx4c9ID32Ryv2tV+s+d7TRXCYbdX+jablQAUpGcdGcc1sQ7M
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jun 2026 13:57:00.3214
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1bdc296f-deb8-4048-e495-08dec565cffd
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.233];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN1PEPF0000468C.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB9466
 
-Add READ_ONCE()/WRITE_ONCE() annotations on port->is_enabled.
-While this field is written under bond->mode_lock protection,
-is is read without this lock being held.
+From: Shay Drory <shayd@nvidia.com>
 
-Change bond_fill_info() to acquire RCU and use READ_ONCE()
-to read bond->params fields that can be updated concurrently
-from sysfs/procfs/rtnetlink.
+Factor mlx5_devcom_send_event() into two functions:
+- mlx5_devcom_locked_send_event(): performs the dispatch (and
+  rollback) with comp->sem already held by the caller.
+- mlx5_devcom_send_event(): unchanged wrapper that takes comp->sem,
+  calls the locked variant, and releases it.
 
-Add const qualifiers to bond_uses_primary(), __agg_active_ports(),
-bond_option_active_slave_get_rcu(), bond_3ad_get_active_agg_info(),
-__bond_3ad_get_active_agg_info() helpers.
+This lets callers bracket multiple event broadcasts under a single
+held write lock, eliminating the gap between consecutive dispatches
+where peer state could change.
 
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Jay Vosburgh <jv@jvosburgh.net>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>
+Will be used by a downstream patch.
+
+Signed-off-by: Shay Drory <shayd@nvidia.com>
+Reviewed-by: Mark Bloch <mbloch@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
 ---
-v2: addressed sashiko.dev feedback.
+ .../ethernet/mellanox/mlx5/core/lib/devcom.c  | 29 ++++++++++++++-----
+ .../ethernet/mellanox/mlx5/core/lib/devcom.h  |  3 ++
+ 2 files changed, 25 insertions(+), 7 deletions(-)
 
- drivers/net/bonding/bond_3ad.c     |  18 ++---
- drivers/net/bonding/bond_netlink.c | 107 ++++++++++++++++-------------
- drivers/net/bonding/bond_options.c |   6 +-
- include/net/bond_3ad.h             |   4 +-
- include/net/bonding.h              |   8 +--
- 5 files changed, 78 insertions(+), 65 deletions(-)
-
-diff --git a/drivers/net/bonding/bond_3ad.c b/drivers/net/bonding/bond_3ad.c
-index 985ef66dc3331e89458c9951a222d140c2275fb9..090b13b1e83ae31c9dbca6ed92a7a62dfa17ed80 100644
---- a/drivers/net/bonding/bond_3ad.c
-+++ b/drivers/net/bonding/bond_3ad.c
-@@ -745,14 +745,14 @@ static void __set_agg_ports_ready(struct aggregator *aggregator, int val)
- 	}
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.c b/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.c
+index d40c53193ea8..96b4f06d6184 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.c
+@@ -287,9 +287,9 @@ int mlx5_devcom_comp_get_size(struct mlx5_devcom_comp_dev *devcom)
+ 	return kref_read(&comp->ref);
  }
  
--static int __agg_active_ports(struct aggregator *agg)
-+static int __agg_active_ports(const struct aggregator *agg)
+-int mlx5_devcom_send_event(struct mlx5_devcom_comp_dev *devcom,
+-			   int event, int rollback_event,
+-			   void *event_data)
++int mlx5_devcom_locked_send_event(struct mlx5_devcom_comp_dev *devcom,
++				  int event, int rollback_event,
++				  void *event_data)
  {
--	struct port *port;
-+	const struct port *port;
- 	int active = 0;
+ 	struct mlx5_devcom_comp_dev *pos;
+ 	struct mlx5_devcom_comp *comp;
+@@ -299,8 +299,8 @@ int mlx5_devcom_send_event(struct mlx5_devcom_comp_dev *devcom,
+ 	if (!devcom)
+ 		return -ENODEV;
  
- 	for (port = agg->lag_ports; port;
- 	     port = port->next_port_in_aggregator) {
--		if (port->is_enabled)
-+		if (READ_ONCE(port->is_enabled))
- 			active++;
- 	}
++	lockdep_assert_held_write(&devcom->comp->sem);
+ 	comp = devcom->comp;
+-	down_write(&comp->sem);
+ 	list_for_each_entry(pos, &comp->comp_dev_list_head, list) {
+ 		data = rcu_dereference_protected(pos->data, lockdep_is_held(&comp->sem));
  
-@@ -2782,11 +2782,11 @@ void bond_3ad_handle_link_change(struct slave *slave, char link)
- 	 * some of he adaptors(ce1000.lan) report.
- 	 */
- 	if (link == BOND_LINK_UP) {
--		port->is_enabled = true;
-+		WRITE_ONCE(port->is_enabled, true);
- 		ad_update_actor_keys(port, false);
- 	} else {
- 		/* link has failed */
--		port->is_enabled = false;
-+		WRITE_ONCE(port->is_enabled, false);
- 		ad_update_actor_keys(port, true);
- 	}
- 	agg = __get_first_agg(port);
-@@ -2857,13 +2857,13 @@ int bond_3ad_set_carrier(struct bonding *bond)
-  * Returns:   0 on success
-  *          < 0 on error
-  */
--int __bond_3ad_get_active_agg_info(struct bonding *bond,
-+int __bond_3ad_get_active_agg_info(const struct bonding *bond,
- 				   struct ad_info *ad_info)
- {
--	struct aggregator *aggregator = NULL, *tmp;
-+	const struct aggregator *aggregator = NULL, *tmp;
-+	const struct port *port;
- 	struct list_head *iter;
- 	struct slave *slave;
--	struct port *port;
- 
- 	bond_for_each_slave_rcu(bond, slave, iter) {
- 		port = &(SLAVE_AD_INFO(slave)->port);
-@@ -2886,7 +2886,7 @@ int __bond_3ad_get_active_agg_info(struct bonding *bond,
- 	return 0;
- }
- 
--int bond_3ad_get_active_agg_info(struct bonding *bond, struct ad_info *ad_info)
-+int bond_3ad_get_active_agg_info(const struct bonding *bond, struct ad_info *ad_info)
- {
- 	int ret;
- 
-diff --git a/drivers/net/bonding/bond_netlink.c b/drivers/net/bonding/bond_netlink.c
-index 90365d3f7ebff7f762b4cb10303a3dd3fdd49cc6..aa1725e6a37762b0386481eb012b2f6b90925427 100644
---- a/drivers/net/bonding/bond_netlink.c
-+++ b/drivers/net/bonding/bond_netlink.c
-@@ -674,53 +674,58 @@ static size_t bond_get_size(const struct net_device *bond_dev)
- 		0;
- }
- 
--static int bond_option_active_slave_get_ifindex(struct bonding *bond)
-+static int bond_option_active_slave_get_ifindex_rcu(const struct bonding *bond)
- {
--	const struct net_device *slave;
--	int ifindex;
-+	const struct net_device *dev = NULL;
-+	const struct slave *slave;
- 
--	rcu_read_lock();
--	slave = bond_option_active_slave_get_rcu(bond);
--	ifindex = slave ? slave->ifindex : 0;
--	rcu_read_unlock();
--	return ifindex;
-+	slave = rcu_dereference(bond->curr_active_slave);
-+	if (slave)
-+		dev = slave->dev;
-+	return dev ? dev->ifindex : 0;
- }
- 
- static int bond_fill_info(struct sk_buff *skb,
- 			  const struct net_device *bond_dev)
- {
--	struct bonding *bond = netdev_priv(bond_dev);
--	unsigned int packets_per_slave;
--	int ifindex, i, targets_added;
-+	const struct bonding *bond = netdev_priv(bond_dev);
-+	int i, targets_added, miimon, mode;
-+	const struct slave *primary;
- 	struct nlattr *targets;
--	struct slave *primary;
- 
--	if (nla_put_u8(skb, IFLA_BOND_MODE, BOND_MODE(bond)))
-+	rcu_read_lock();
-+	mode = READ_ONCE(bond->params.mode);
-+	if (nla_put_u8(skb, IFLA_BOND_MODE, mode))
- 		goto nla_put_failure;
- 
--	ifindex = bond_option_active_slave_get_ifindex(bond);
--	if (ifindex && nla_put_u32(skb, IFLA_BOND_ACTIVE_SLAVE, ifindex))
--		goto nla_put_failure;
-+	if (bond_mode_uses_primary(mode)) {
-+		int ifindex = bond_option_active_slave_get_ifindex_rcu(bond);
-+
-+		if (ifindex && nla_put_u32(skb, IFLA_BOND_ACTIVE_SLAVE, ifindex))
-+			goto nla_put_failure;
-+	}
- 
--	if (nla_put_u32(skb, IFLA_BOND_MIIMON, bond->params.miimon))
-+	miimon = READ_ONCE(bond->params.miimon);
-+	if (nla_put_u32(skb, IFLA_BOND_MIIMON, miimon))
- 		goto nla_put_failure;
- 
- 	if (nla_put_u32(skb, IFLA_BOND_UPDELAY,
--			bond->params.updelay * bond->params.miimon))
-+			READ_ONCE(bond->params.updelay) * miimon))
- 		goto nla_put_failure;
- 
- 	if (nla_put_u32(skb, IFLA_BOND_DOWNDELAY,
--			bond->params.downdelay * bond->params.miimon))
-+			READ_ONCE(bond->params.downdelay) * miimon))
- 		goto nla_put_failure;
- 
- 	if (nla_put_u32(skb, IFLA_BOND_PEER_NOTIF_DELAY,
--			bond->params.peer_notif_delay * bond->params.miimon))
-+			READ_ONCE(bond->params.peer_notif_delay) * miimon))
- 		goto nla_put_failure;
- 
- 	if (nla_put_u8(skb, IFLA_BOND_USE_CARRIER, 1))
- 		goto nla_put_failure;
- 
--	if (nla_put_u32(skb, IFLA_BOND_ARP_INTERVAL, bond->params.arp_interval))
-+	if (nla_put_u32(skb, IFLA_BOND_ARP_INTERVAL,
-+			READ_ONCE(bond->params.arp_interval)))
- 		goto nla_put_failure;
- 
- 	targets = nla_nest_start_noflag(skb, IFLA_BOND_ARP_IP_TARGET);
-@@ -729,8 +734,10 @@ static int bond_fill_info(struct sk_buff *skb,
- 
- 	targets_added = 0;
- 	for (i = 0; i < BOND_MAX_ARP_TARGETS; i++) {
--		if (bond->params.arp_targets[i]) {
--			if (nla_put_be32(skb, i, bond->params.arp_targets[i]))
-+		__be32 t = READ_ONCE(bond->params.arp_targets[i]);
-+
-+		if (t) {
-+			if (nla_put_be32(skb, i, t))
- 				goto nla_put_failure;
- 			targets_added = 1;
- 		}
-@@ -741,11 +748,12 @@ static int bond_fill_info(struct sk_buff *skb,
- 	else
- 		nla_nest_cancel(skb, targets);
- 
--	if (nla_put_u32(skb, IFLA_BOND_ARP_VALIDATE, bond->params.arp_validate))
-+	if (nla_put_u32(skb, IFLA_BOND_ARP_VALIDATE,
-+			READ_ONCE(bond->params.arp_validate)))
- 		goto nla_put_failure;
- 
- 	if (nla_put_u32(skb, IFLA_BOND_ARP_ALL_TARGETS,
--			bond->params.arp_all_targets))
-+			READ_ONCE(bond->params.arp_all_targets)))
- 		goto nla_put_failure;
- 
- #if IS_ENABLED(CONFIG_IPV6)
-@@ -755,6 +763,9 @@ static int bond_fill_info(struct sk_buff *skb,
- 
- 	targets_added = 0;
- 	for (i = 0; i < BOND_MAX_NS_TARGETS; i++) {
-+		/* Note: IPv6 addresses can not be read in an atomic READ_ONCE() yet.
-+		 * We accept this minor race for the moment.
-+		 */
- 		if (!ipv6_addr_any(&bond->params.ns_targets[i])) {
- 			if (nla_put_in6_addr(skb, i, &bond->params.ns_targets[i]))
- 				goto nla_put_failure;
-@@ -768,93 +779,93 @@ static int bond_fill_info(struct sk_buff *skb,
- 		nla_nest_cancel(skb, targets);
- #endif
- 
--	primary = rtnl_dereference(bond->primary_slave);
-+	primary = rcu_dereference(bond->primary_slave);
- 	if (primary &&
- 	    nla_put_u32(skb, IFLA_BOND_PRIMARY, primary->dev->ifindex))
- 		goto nla_put_failure;
- 
- 	if (nla_put_u8(skb, IFLA_BOND_PRIMARY_RESELECT,
--		       bond->params.primary_reselect))
-+		       READ_ONCE(bond->params.primary_reselect)))
- 		goto nla_put_failure;
- 
- 	if (nla_put_u8(skb, IFLA_BOND_FAIL_OVER_MAC,
--		       bond->params.fail_over_mac))
-+		       READ_ONCE(bond->params.fail_over_mac)))
- 		goto nla_put_failure;
- 
- 	if (nla_put_u8(skb, IFLA_BOND_XMIT_HASH_POLICY,
--		       bond->params.xmit_policy))
-+		       READ_ONCE(bond->params.xmit_policy)))
- 		goto nla_put_failure;
- 
- 	if (nla_put_u32(skb, IFLA_BOND_RESEND_IGMP,
--			bond->params.resend_igmp))
-+			READ_ONCE(bond->params.resend_igmp)))
- 		goto nla_put_failure;
- 
- 	if (nla_put_u8(skb, IFLA_BOND_NUM_PEER_NOTIF,
--		       bond->params.num_peer_notif))
-+		       READ_ONCE(bond->params.num_peer_notif)))
- 		goto nla_put_failure;
- 
- 	if (nla_put_u8(skb, IFLA_BOND_ALL_SLAVES_ACTIVE,
--		       bond->params.all_slaves_active))
-+		       READ_ONCE(bond->params.all_slaves_active)))
- 		goto nla_put_failure;
- 
- 	if (nla_put_u32(skb, IFLA_BOND_MIN_LINKS,
--			bond->params.min_links))
-+			READ_ONCE(bond->params.min_links)))
- 		goto nla_put_failure;
- 
- 	if (nla_put_u32(skb, IFLA_BOND_LP_INTERVAL,
--			bond->params.lp_interval))
-+			READ_ONCE(bond->params.lp_interval)))
- 		goto nla_put_failure;
- 
--	packets_per_slave = bond->params.packets_per_slave;
- 	if (nla_put_u32(skb, IFLA_BOND_PACKETS_PER_SLAVE,
--			packets_per_slave))
-+			READ_ONCE(bond->params.packets_per_slave)))
- 		goto nla_put_failure;
- 
- 	if (nla_put_u8(skb, IFLA_BOND_AD_LACP_ACTIVE,
--		       bond->params.lacp_active))
-+		       READ_ONCE(bond->params.lacp_active)))
- 		goto nla_put_failure;
- 
- 	if (nla_put_u8(skb, IFLA_BOND_AD_LACP_RATE,
--		       bond->params.lacp_fast))
-+		       READ_ONCE(bond->params.lacp_fast)))
- 		goto nla_put_failure;
- 
- 	if (nla_put_u8(skb, IFLA_BOND_AD_SELECT,
--		       bond->params.ad_select))
-+		       READ_ONCE(bond->params.ad_select)))
- 		goto nla_put_failure;
- 
- 	if (nla_put_u8(skb, IFLA_BOND_TLB_DYNAMIC_LB,
--		       bond->params.tlb_dynamic_lb))
-+		       READ_ONCE(bond->params.tlb_dynamic_lb)))
- 		goto nla_put_failure;
- 
- 	if (nla_put_u8(skb, IFLA_BOND_MISSED_MAX,
--		       bond->params.missed_max))
-+		       READ_ONCE(bond->params.missed_max)))
- 		goto nla_put_failure;
- 
- 	if (nla_put_u8(skb, IFLA_BOND_COUPLED_CONTROL,
--		       bond->params.coupled_control))
-+		       READ_ONCE(bond->params.coupled_control)))
- 		goto nla_put_failure;
- 
- 	if (nla_put_u8(skb, IFLA_BOND_BROADCAST_NEIGH,
--		       bond->params.broadcast_neighbor))
-+		       READ_ONCE(bond->params.broadcast_neighbor)))
- 		goto nla_put_failure;
- 
--	if (BOND_MODE(bond) == BOND_MODE_8023AD) {
-+	if (mode == BOND_MODE_8023AD) {
- 		struct ad_info info;
- 
- 		if (capable(CAP_NET_ADMIN)) {
- 			if (nla_put_u16(skb, IFLA_BOND_AD_ACTOR_SYS_PRIO,
--					bond->params.ad_actor_sys_prio))
-+					READ_ONCE(bond->params.ad_actor_sys_prio)))
- 				goto nla_put_failure;
- 
- 			if (nla_put_u16(skb, IFLA_BOND_AD_USER_PORT_KEY,
--					bond->params.ad_user_port_key))
-+					READ_ONCE(bond->params.ad_user_port_key)))
- 				goto nla_put_failure;
- 
-+			/* Small race here, this is a minor trade off. */
- 			if (nla_put(skb, IFLA_BOND_AD_ACTOR_SYSTEM,
- 				    ETH_ALEN, &bond->params.ad_actor_system))
- 				goto nla_put_failure;
- 		}
--		if (!bond_3ad_get_active_agg_info(bond, &info)) {
-+		if (!__bond_3ad_get_active_agg_info(bond, &info)) {
- 			struct nlattr *nest;
- 
- 			nest = nla_nest_start_noflag(skb, IFLA_BOND_AD_INFO);
-@@ -882,9 +893,11 @@ static int bond_fill_info(struct sk_buff *skb,
+@@ -311,12 +311,11 @@ int mlx5_devcom_send_event(struct mlx5_devcom_comp_dev *devcom,
  		}
  	}
  
-+	rcu_read_unlock();
+-	up_write(&comp->sem);
  	return 0;
  
- nla_put_failure:
-+	rcu_read_unlock();
- 	return -EMSGSIZE;
+ rollback:
+ 	if (list_entry_is_head(pos, &comp->comp_dev_list_head, list))
+-		goto out;
++		return err;
+ 	pos = list_prev_entry(pos, list);
+ 	list_for_each_entry_from_reverse(pos, &comp->comp_dev_list_head, list) {
+ 		data = rcu_dereference_protected(pos->data, lockdep_is_held(&comp->sem));
+@@ -324,7 +323,23 @@ int mlx5_devcom_send_event(struct mlx5_devcom_comp_dev *devcom,
+ 		if (pos != devcom && data)
+ 			comp->handler(rollback_event, data, event_data);
+ 	}
+-out:
++	return err;
++}
++
++int mlx5_devcom_send_event(struct mlx5_devcom_comp_dev *devcom,
++			   int event, int rollback_event,
++			   void *event_data)
++{
++	struct mlx5_devcom_comp *comp;
++	int err;
++
++	if (!devcom)
++		return -ENODEV;
++
++	comp = devcom->comp;
++	down_write(&comp->sem);
++	err = mlx5_devcom_locked_send_event(devcom, event, rollback_event,
++					    event_data);
+ 	up_write(&comp->sem);
+ 	return err;
  }
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.h b/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.h
+index 316052a85ca5..d5c60c03e55c 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.h
+@@ -46,6 +46,9 @@ mlx5_devcom_register_component(struct mlx5_devcom_dev *devc,
+ 			       void *data);
+ void mlx5_devcom_unregister_component(struct mlx5_devcom_comp_dev *devcom);
  
-diff --git a/drivers/net/bonding/bond_options.c b/drivers/net/bonding/bond_options.c
-index 5095ac3dad2cd924ff548343c7c1afe3e57e3065..a70407b5fb2bbfebe49c9f242f1be81933a6a912 100644
---- a/drivers/net/bonding/bond_options.c
-+++ b/drivers/net/bonding/bond_options.c
-@@ -918,14 +918,14 @@ static int bond_option_mode_set(struct bonding *bond,
- 
- 	/* don't cache arp_validate between modes */
- 	WRITE_ONCE(bond->params.arp_validate, BOND_ARP_VALIDATE_NONE);
--	bond->params.mode = newval->value;
-+	WRITE_ONCE(bond->params.mode, newval->value);
- 
- 	/* When changing mode, the bond device is down, we may reduce
- 	 * the bond_bcast_neigh_enabled in bond_close() if broadcast_neighbor
- 	 * enabled in 8023ad mode. Therefore, only clear broadcast_neighbor
- 	 * to 0.
- 	 */
--	bond->params.broadcast_neighbor = 0;
-+	WRITE_ONCE(bond->params.broadcast_neighbor, 0);
- 
- 	if (bond->dev->reg_state == NETREG_REGISTERED) {
- 		bool update = false;
-@@ -1900,7 +1900,7 @@ static int bond_option_broadcast_neigh_set(struct bonding *bond,
- 	if (bond->params.broadcast_neighbor == newval->value)
- 		return 0;
- 
--	bond->params.broadcast_neighbor = newval->value;
-+	WRITE_ONCE(bond->params.broadcast_neighbor, newval->value);
- 	if (bond->dev->flags & IFF_UP) {
- 		if (bond->params.broadcast_neighbor)
- 			static_branch_inc(&bond_bcast_neigh_enabled);
-diff --git a/include/net/bond_3ad.h b/include/net/bond_3ad.h
-index 05572c19e14b7ae97d497cc9c5d97d4314eab295..ef667dff297294dc78d98701aae10c31ef09df3f 100644
---- a/include/net/bond_3ad.h
-+++ b/include/net/bond_3ad.h
-@@ -302,8 +302,8 @@ void bond_3ad_state_machine_handler(struct work_struct *);
- void bond_3ad_initiate_agg_selection(struct bonding *bond, int timeout);
- void bond_3ad_adapter_speed_duplex_changed(struct slave *slave);
- void bond_3ad_handle_link_change(struct slave *slave, char link);
--int  bond_3ad_get_active_agg_info(struct bonding *bond, struct ad_info *ad_info);
--int  __bond_3ad_get_active_agg_info(struct bonding *bond,
-+int  bond_3ad_get_active_agg_info(const struct bonding *bond, struct ad_info *ad_info);
-+int  __bond_3ad_get_active_agg_info(const struct bonding *bond,
- 				    struct ad_info *ad_info);
- int bond_3ad_lacpdu_recv(const struct sk_buff *skb, struct bonding *bond,
- 			 struct slave *slave);
-diff --git a/include/net/bonding.h b/include/net/bonding.h
-index edd1942dcd736d3601e799dfbc9aeb8da0835902..f464ff163357637661500a6172902e5bb7401031 100644
---- a/include/net/bonding.h
-+++ b/include/net/bonding.h
-@@ -344,14 +344,14 @@ static inline bool bond_mode_uses_primary(int mode)
- 	       mode == BOND_MODE_ALB;
- }
- 
--static inline bool bond_uses_primary(struct bonding *bond)
-+static inline bool bond_uses_primary(const struct bonding *bond)
- {
- 	return bond_mode_uses_primary(BOND_MODE(bond));
- }
- 
--static inline struct net_device *bond_option_active_slave_get_rcu(struct bonding *bond)
-+static inline struct net_device *bond_option_active_slave_get_rcu(const struct bonding *bond)
- {
--	struct slave *slave = rcu_dereference_rtnl(bond->curr_active_slave);
-+	const struct slave *slave = rcu_dereference_rtnl(bond->curr_active_slave);
- 
- 	return bond_uses_primary(bond) && slave ? slave->dev : NULL;
- }
-@@ -702,7 +702,7 @@ void bond_setup(struct net_device *bond_dev);
- unsigned int bond_get_num_tx_queues(void);
- int bond_netlink_init(void);
- void bond_netlink_fini(void);
--struct net_device *bond_option_active_slave_get_rcu(struct bonding *bond);
-+struct net_device *bond_option_active_slave_get_rcu(const struct bonding *bond);
- const char *bond_slave_link_status(s8 link);
- struct bond_vlan_tag *bond_verify_device_path(struct net_device *start_dev,
- 					      struct net_device *end_dev,
++int mlx5_devcom_locked_send_event(struct mlx5_devcom_comp_dev *devcom,
++				  int event, int rollback_event,
++				  void *event_data);
+ int mlx5_devcom_send_event(struct mlx5_devcom_comp_dev *devcom,
+ 			   int event, int rollback_event,
+ 			   void *event_data);
 -- 
-2.54.0.1032.g2f8565e1d1-goog
+2.44.0
 
