@@ -1,79 +1,125 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2C8028B4E2;
-	Mon,  8 Jun 2026 07:15:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED05E30C16E;
+	Mon,  8 Jun 2026 07:22:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780902923; cv=none; b=MvwUq4UaVVhfjifHOIBAsAP8zUNS5raL2qNwTLwwA4jWcQl6DGZBfxXIeTQ1AQ2YC8GL1SJoKbQE2eU7t5ToHwBtpw7kGsyvtzAfhR2Jq5NHz6dkjc2dbOjuJkcrwe0KEOIEQR+P+bSHSMXYImAiir1hqTzzDfOKVx8cjM6KHm8=
+	t=1780903340; cv=none; b=ifH4nKjouFSDQVdHPHzV4a2STRU4dNtvz4IsJZIFRh2yYEtmNfNmBvev2dh3WtaAwj0CrVKCNECWOkGkas9Ks7yt0hgZJIZobHnIXuccL5iAg2GQpXHadw3rkUiHXrmhjWTzNR8APGSMYpDZVxvAvWcfbuIoF9Wsq+uwAwo1qiw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780902923; c=relaxed/simple;
-	bh=sgCSxu8SUDZnKgcwGPjsvCzlrsGDReY6qfSGvSmYa14=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QnLJ0CnYrUIknnAx0iT1lZXP/xinimvwJbXw9Ha2egVCe0xh7oQBNHhO8d7FkEze4ZLuKyBCN6Fb+vqQpbFm8SSSstXa6Y1RxzcRAzheh5o9WEXMXK8vSZLqZfauLGsKNexFy8DGrZ2YTsnJTkpEdUrsJXj7oRfpv7UsV/2xO9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=tqOY3TSX; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1780903340; c=relaxed/simple;
+	bh=POlbjguZIxiI8p8YrsvrR/hDEeJoeEbuygWZ0xZGOF8=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=e9VfX9ixFUyz06gUNsA5OuPN5lZX9UkT0lsD6Etmw584sgp2ecqO313SqoDo9FEUrJYBqdoVyLzPHhADJY1OZ5Z82kOQr6s+jQpnR7jyIbENHhZm2AMKK5osQciLZGMpZTxqCM8riT2caiWKfDWJ955nrSMFKGdurCrZQQ2C0rg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hQkyNClU; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="tqOY3TSX"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=2UXqzTLU9+fgWDwv5bt+CPv4MNbwS6rROorNZuf/poA=; b=tqOY3TSXVvOT7a5faZTDG8bbFC
-	JsRyxWLhUoiiLNg9AN/lcskFrw+TPaMAHsh9r5ZTwbfFBKRANUsRIhhhwofWQKZsYXBj78k+ZI8HV
-	nEP9kb2oIXM02WO4Qjg3MM0xif6MlYlYPgOtYyQEqwev0uf5uagxf7OckUbmoCTk58wo=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wWUCK-006Zm3-Ua; Mon, 08 Jun 2026 09:15:00 +0200
-Date: Mon, 8 Jun 2026 09:15:00 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
-Cc: "Parthiban.Veerasooran@microchip.com" <Parthiban.Veerasooran@microchip.com>,
-	"conor@kernel.org" <conor@kernel.org>,
-	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
-	"davem@davemloft.net" <davem@davemloft.net>,
-	"edumazet@google.com" <edumazet@google.com>,
-	"kuba@kernel.org" <kuba@kernel.org>,
-	"pabeni@redhat.com" <pabeni@redhat.com>,
-	"robh@kernel.org" <robh@kernel.org>,
-	"krzk+dt@kernel.org" <krzk+dt@kernel.org>,
-	"conor+dt@kernel.org" <conor+dt@kernel.org>,
-	Piergiorgio Beruto <Pier.Beruto@onsemi.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"Conor.Dooley@microchip.com" <Conor.Dooley@microchip.com>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
-Subject: Re: [PATCH net v3 2/2] dt-bindings: net: updated interrupt type to
- be active low, level triggered
-Message-ID: <103296ba-9577-4851-ad43-dcd261130afd@lunn.ch>
-References: <20260601-level-trigger-v3-0-da73e7010532@onsemi.com>
- <20260601-level-trigger-v3-2-da73e7010532@onsemi.com>
- <20260602-rebel-snide-5036c97e410d@spud>
- <CY8PR02MB92493D2E5491AAE5416C05A283122@CY8PR02MB9249.namprd02.prod.outlook.com>
- <a5abb9b8-6ebf-4f95-a684-fc889b98acea@microchip.com>
- <CY8PR02MB9249E607ACBF3A05AB83ABF683102@CY8PR02MB9249.namprd02.prod.outlook.com>
- <20260604-swimwear-garnet-3eb092e6fda7@spud>
- <4df9882b-3426-4c36-8048-0c76d0f11c74@lunn.ch>
- <7c68173a-ebff-42cc-8519-95e8365805b5@microchip.com>
- <DM4PR02MB926317F64B5A3827009B66A9831C2@DM4PR02MB9263.namprd02.prod.outlook.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hQkyNClU"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 8A288C2BCB0;
+	Mon,  8 Jun 2026 07:22:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1780903339;
+	bh=POlbjguZIxiI8p8YrsvrR/hDEeJoeEbuygWZ0xZGOF8=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=hQkyNClUiv/Nab1MDxqtuor/NGlka9IrRlVK8a/L4Mq+rLSSx9GNpOlEi7k7wmeQn
+	 KAFHRpuQa1prQFQI/uu+mzyUv+6FDeYxpi2M/06N6wJHrRzkPQhagheD63gXfYOpXA
+	 U8UD9Z/RrckMpCHtH8JNs/thR0WCenYwH+EvbPm4HIf0BVWBL4Xvdcl6XlQ+Q5yr6G
+	 GB7KUYSslOoysKRRHHElZFbFRc3QaQaHHcJH0qG76SyqkQtfvVFVKNf8qxFljqrjnV
+	 8eQxtleFTkT/T83CqdxbhdP6I35GoepIOyIgjnuW9FDovk4Tqec2hcWqYbFDTICZfB
+	 ACn38SPsVFdDg==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6E64DCD8C92;
+	Mon,  8 Jun 2026 07:22:19 +0000 (UTC)
+From: George Moussalem via B4 Relay <devnull+george.moussalem.outlook.com@kernel.org>
+Date: Mon, 08 Jun 2026 11:22:08 +0400
+Subject: [PATCH v3] net: dsa: qca8k: fix led devicename when using external
+ mdio bus
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DM4PR02MB926317F64B5A3827009B66A9831C2@DM4PR02MB9263.namprd02.prod.outlook.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260608-qca8k-leds-fix-v3-1-a915bb2f37ae@outlook.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/03MywrCMBCF4Vcps3YkpmkdXPke4iKXiQ29pCa1C
+ KXvbhAEl/+B822QOQXOcKk2SLyGHOJUoj5UYDs9PRiDKw1SyFa0gvBpNfU4sMvowxuZjHLk2ai
+ zgXKaE5f5C97upX2KIy5dYv1jGqFk88+sEk9o2pq8q4kaq6/xtQwx9kcbR9j3Dy1x+lqkAAAA
+X-Change-ID: 20260608-qca8k-leds-fix-e8b4d8feb47b
+To: Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Christian Marangi <ansuelsmth@gmail.com>, 
+ Florian Fainelli <f.fainelli@gmail.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ George Moussalem <george.moussalem@outlook.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1780903338; l=2408;
+ i=george.moussalem@outlook.com; s=20250321; h=from:subject:message-id;
+ bh=HiUw3Q504F5hs2do7v6tmrj/sdstwjc54LpITglorVY=;
+ b=6akJitugOoduxzekxXr8wUyxaunTXPSPvklTHqMbAzdPnSbxEeFFnt0i8kmIwCy8NxlIWVsL1
+ UFb4R/AmSnvDsmCKI1yyVbZUYEV0weZfCN2/aOR1uGK2stn129rnQ5T
+X-Developer-Key: i=george.moussalem@outlook.com; a=ed25519;
+ pk=/PuRTSI9iYiHwcc6Nrde8qF4ZDhJBlUgpHdhsIjnqIk=
+X-Endpoint-Received: by B4 Relay for george.moussalem@outlook.com/20250321
+ with auth_id=364
+X-Original-From: George Moussalem <george.moussalem@outlook.com>
+Reply-To: george.moussalem@outlook.com
 
-> I agree. When we change to level triggered interrupt, current mechanism won't work as
-> we are not disabling the interrupt when we handle them.
+From: George Moussalem <george.moussalem@outlook.com>
 
-I'm kind of surprised about that. If you only provide a thread context
-handler, but not a interrupt context handler, i would of expected the
-IRQ core to leave the interrupt disabled until the threaded handler
-exited. But maybe it is historic behaviour.
+The qca8k dsa switch can use either an external or internal mdio bus.
+This depends on whether the mdio node is defined under the switch node
+itself. Upon registering the internal mdio bus, the internal_mdio_bus
+of the dsa switch is assigned to this bus. When an external mdio bus is
+used, the driver still uses the internal_mdio_bus id which is used to
+create the device names of the leds.
+This leads to the leds being prefixed with '(efault)' as the
+internal_mii_bus is null. So let's fix this by adding a null check and
+use the devicename of the external bus instead when an external bus is
+configured.
 
-	Andrew
+Fixes: 1e264f9d2918 ("net: dsa: qca8k: add LEDs basic support")
+Signed-off-by: George Moussalem <george.moussalem@outlook.com>
+---
+Resending this patch as v3 with an updated commit message. There was a
+discussion on removing the notion of having an external and internal
+bus which was never followed up on, yet the issue is still there.
+Link: https://patchwork.kernel.org/project/netdevbpf/patch/20250425151309.30493-1-kabel@kernel.org/
+
+Changed in v3:
+- Rebased on top of tree
+- Updated commit message to reflect renaming of slave_mii_bus to
+  internal_mdio_bus
+- Link to v2: https://lore.kernel.org/r/20250425-qca8k-leds-v2-1-b638fd3885ca@outlook.com
+Changes in v2:
+- Fixed c/p error from older kernel version: slave_mii_bus was renamed
+  to internal_mdio_bus
+- Link to v1: https://lore.kernel.org/r/20250425-qca8k-leds-v1-1-6316ad36ad22@outlook.com
+---
+ drivers/net/dsa/qca/qca8k-leds.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/dsa/qca/qca8k-leds.c b/drivers/net/dsa/qca/qca8k-leds.c
+index 43ac68052baf..ef496e345a4e 100644
+--- a/drivers/net/dsa/qca/qca8k-leds.c
++++ b/drivers/net/dsa/qca/qca8k-leds.c
+@@ -429,7 +429,8 @@ qca8k_parse_port_leds(struct qca8k_priv *priv, struct fwnode_handle *port, int p
+ 		init_data.fwnode = led;
+ 		init_data.devname_mandatory = true;
+ 		init_data.devicename = kasprintf(GFP_KERNEL, "%s:0%d",
+-						 priv->internal_mdio_bus->id,
++						 priv->internal_mdio_bus ?
++						 priv->internal_mdio_bus->id : priv->bus->id,
+ 						 port_num);
+ 		if (!init_data.devicename) {
+ 			fwnode_handle_put(led);
+
+---
+base-commit: 6e845bcb78c95af935094040bd4edc3c2b6dd784
+change-id: 20260608-qca8k-leds-fix-e8b4d8feb47b
+
+Best regards,
+-- 
+George Moussalem <george.moussalem@outlook.com>
+
+
