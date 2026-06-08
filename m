@@ -1,58 +1,58 @@
-Received: from mailtransmit05.runbox.com (mailtransmit05.runbox.com [185.226.149.38])
+Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08F523B7B99;
-	Mon,  8 Jun 2026 09:55:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.38
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 960351DDC28;
+	Mon,  8 Jun 2026 09:55:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780912539; cv=none; b=oMGmg7UfaOT2924hiEtOdb9/8KTr6N6djmF2Sut1Hn1yrurPrSPzTsDp0Y7br/OabYfRDfEVFAz5UIWdvs6uyc+5pPBHsnBk0UrzaaZtNYS/JF/kNx+jgJhzQQRf/6Y5LXK6CS863cp8qhyQN3a8EihdL/aPAoVWYXhdvZTu1+0=
+	t=1780912529; cv=none; b=KW/Ezq63oaTQysJNp4WAwRt6hOSQKT+veYDo08a2ROg4ZPVMuHqyEZHTXZ2N8qDpH/rGENsVuuc1+twif74DVhq7EmOeV8bvxR8t3C5OvHRwz4UIOdOge2Zix1w+sb2RYn1oV/zQifsNKLrJdTTjyT62mwwN8lljWi5s1DZjI6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780912539; c=relaxed/simple;
-	bh=qi0iXmLrGA5MmpVbUabr6e2D/HZTE+tUhQ1O691tJzU=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=UeLQEID1v3oM3F4M8+tUFcO5w8P6ti3juswzLP/vg6c+jujrED8FPAqVdaR2dZvEYsd2506u4sci9M6fmKcssBV+HW5SB40PmZVBcq2ARxSmYBxCrOttISLlbmFENBqBcH2yP6Xjo1LXkbfgxYMMfK/3JouvPsVWmehGL2B9x2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=runbox.com; dkim=pass (2048-bit key) header.d=runbox.com header.i=@runbox.com header.b=TQA+wLv4; arc=none smtp.client-ip=185.226.149.38
+	s=arc-20240116; t=1780912529; c=relaxed/simple;
+	bh=8xZTCMT1S4DywamflLNbNoywCGXTThmHwn6krkZadPM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=GFwjLmhDLGytqYa5gSYQb/JsvIUybvl+o+M1gwG5i2QEL+Z3+OXNIgVf1OdgaBpYe4bgtBx1TuvmX6YaCGqEpKYxWdfPQ31pY61ubJOCpGRMzV9q1/9F2UZFmHGHy0n285MkyJ1+y8cx1HZrq45OoMqXTHVS55XovuaW9ElBaik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=runbox.com; dkim=pass (2048-bit key) header.d=runbox.com header.i=@runbox.com header.b=M/SGKXW2; arc=none smtp.client-ip=185.226.149.37
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=runbox.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=runbox.com header.i=@runbox.com header.b="TQA+wLv4"
-Received: from mailtransmit02.runbox ([10.9.9.162] helo=aibo.runbox.com)
-	by mailtransmit05.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	dkim=pass (2048-bit key) header.d=runbox.com header.i=@runbox.com header.b="M/SGKXW2"
+Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
+	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
 	(Exim 4.93)
 	(envelope-from <david.laight.linux_spam@runbox.com>)
-	id 1wWWhk-00Br5i-BB; Mon, 08 Jun 2026 11:55:36 +0200
+	id 1wWWhR-00BRu7-7X; Mon, 08 Jun 2026 11:55:17 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=runbox.com;
 	 s=selector1; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:
-	Subject:Cc:To:From; bh=W/EkfW3VI0FHPtIAcOhbpaSxsRIFKdVu7Fogbx79KNU=; b=TQA+wL
-	v4llDRyccSHJGvJzfsM8g7RzokE3LvnMfxaHvCYS0Qlyo8mLg61GcwjHow9PQJvTqv2f/lTIx6Qli
-	pk8ZpOI6B8kvx7LI77cA8Bmduk0odtom6KGCAPw03nUzKZVwhgPBUCIApXne0OH6tfen/fpm5r4Lj
-	p2R9wZDNq0PXDco2cmB86K7qPg4gBE1gCUUQYZ7t+f6UNgRCHg6ATp4H2tetjt9WSuDse2Z8BURar
-	9NO52fv/UoqBo+vWZB1JrHeudS6ydbyuMa+Jae3gLTWkSEpFyxQpmrOY0wmYyb3joxwlhCRFWuJnu
-	tYbuIB8HVKjmcDffMPV+wWcY/05A==;
+	Subject:Cc:To:From; bh=YJxqU3/Bh65yY+mdsy2M8hRFDTrWYAZvZQi8IuYPC5A=; b=M/SGKX
+	W2mlUXfh003hqndNrqDHL+Ea68Z6Z+BuGmmL0Bj1k5iJotyKCD/mwhnseIM2Uo+59el/sFJYg7Mh4
+	sJZN+BYN43MVm87VWJLeCqYgI8e6rVxoOKe1CGsiE1PCvZa0KQZqTCxclTBqoXTQG5hKzcE8MHq5p
+	i5j8DA5rKwxOGrna1p4iakOTDfFC+nV9kFifBOtWUDpXUd65W0GCNvqPxjiWzEz6VGM52C74vL7IX
+	WBqUGyQYZEnfP+UBciv5hI3cMoegcbfmHzj6vzpqkcKVG6mUbC2yU11VsRffg3iZLMSW6/x9GlFgt
+	dRtkPTQXI4GJQDv6ZQUe4wa8KK4g==;
 Received: from [10.9.9.73] (helo=submission02.runbox)
-	by mailtransmit02.runbox with esmtp (Exim 4.86_2)
+	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
 	(envelope-from <david.laight.linux_spam@runbox.com>)
-	id 1wWWhk-0000CW-1f; Mon, 08 Jun 2026 11:55:36 +0200
+	id 1wWWhQ-0003ZO-Es; Mon, 08 Jun 2026 11:55:16 +0200
 Received: by submission02.runbox with esmtpsa  [Authenticated ID (1493616)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.95)
-	id 1wWWhi-00Ag6G-Eq;
-	Mon, 08 Jun 2026 11:55:34 +0200
+	id 1wWWhG-00Afz8-Fv;
+	Mon, 08 Jun 2026 11:55:06 +0200
 From: david.laight.linux@gmail.com
 To: Kees Cook <kees@kernel.org>,
 	linux-hardening@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
+	linux-net-drivers@amd.com,
 	netdev@vger.kernel.org
 Cc: Arnd Bergmann <arnd@kernel.org>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
+	Edward Cree <ecree.xilinx@gmail.com>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Michael Chan <michael.chan@broadcom.com>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
 	David Laight <david.laight.linux@gmail.com>
-Subject: [PATCH net-next] drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool: Use strscpy() to copy ethtool test names
-Date: Mon,  8 Jun 2026 10:55:06 +0100
-Message-Id: <20260608095523.2606-22-david.laight.linux@gmail.com>
+Subject: [PATCH net-next] drivers/net/ethernet/sfc/ethtool_common: Use strscpy() to copy strings into arrays
+Date: Mon,  8 Jun 2026 10:55:00 +0100
+Message-Id: <20260608095500.2567-5-david.laight.linux@gmail.com>
 X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -64,8 +64,8 @@ Content-Transfer-Encoding: 8bit
 
 From: David Laight <david.laight.linux@gmail.com>
 
-The length must be specified (it is the size of the array element)
-because a pointer to the array element is used to shorten the line lengths.
+Replacing strcpy() with strscpy() ensures that overflow of the target
+buffer cannot happen.
 
 Signed-off-by: David Laight <david.laight.linux@gmail.com>
 ---
@@ -91,38 +91,22 @@ All the patches are being sent individually to avoid very long cc lists.
 Apologies for the terse commit messages and likely unexpected tags.
 (There are about 100 patches in total.)
 
- drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/sfc/ethtool_common.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
-index 9b14134d62d2..68e320285a08 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
-@@ -5542,18 +5542,19 @@ void bnxt_ethtool_init(struct bnxt *bp)
- 		test_info->timeout = HWRM_CMD_TIMEOUT;
- 	for (i = 0; i < bp->num_tests; i++) {
- 		char *str = test_info->string[i];
-+		int sz = sizeof (test_info->string[i]);
- 		char *fw_str = resp->test_name[i];
- 
- 		if (i == BNXT_MACLPBK_TEST_IDX) {
--			strcpy(str, "Mac loopback test (offline)");
-+			strscpy(str, "Mac loopback test (offline)", sz);
- 		} else if (i == BNXT_PHYLPBK_TEST_IDX) {
--			strcpy(str, "Phy loopback test (offline)");
-+			strscpy(str, "Phy loopback test (offline)", sz);
- 		} else if (i == BNXT_EXTLPBK_TEST_IDX) {
--			strcpy(str, "Ext loopback test (offline)");
-+			strscpy(str, "Ext loopback test (offline)", sz);
- 		} else if (i == BNXT_IRQ_TEST_IDX) {
--			strcpy(str, "Interrupt_test (offline)");
-+			strscpy(str, "Interrupt_test (offline)", sz);
- 		} else {
--			snprintf(str, ETH_GSTRING_LEN, "%s test (%s)",
-+			snprintf(str, sz, "%s test (%s)",
- 				 fw_str, test_info->offline_mask & (1 << i) ?
- 					"offline" : "online");
- 		}
+diff --git a/drivers/net/ethernet/sfc/ethtool_common.c b/drivers/net/ethernet/sfc/ethtool_common.c
+index 54f8e4626568..deb4d3e54573 100644
+--- a/drivers/net/ethernet/sfc/ethtool_common.c
++++ b/drivers/net/ethernet/sfc/ethtool_common.c
+@@ -270,7 +270,7 @@ static void efx_fill_test(unsigned int test_index, u8 *strings, u64 *data,
+ 			snprintf(unit_str, sizeof(unit_str),
+ 				 unit_format, unit_id);
+ 		else
+-			strcpy(unit_str, unit_format);
++			strscpy(unit_str, unit_format);
+ 		snprintf(test_str, sizeof(test_str), test_format, test_id);
+ 		snprintf(strings + test_index * ETH_GSTRING_LEN,
+ 			 ETH_GSTRING_LEN,
 -- 
 2.39.5
 
