@@ -1,112 +1,137 @@
-Received: from mta1.formilux.org (mta1.formilux.org [51.159.59.229])
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99E1A2EA480
-	for <netdev@vger.kernel.org>; Mon,  8 Jun 2026 09:43:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.159.59.229
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B28E337B81;
+	Mon,  8 Jun 2026 09:46:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780911790; cv=none; b=LpFbbjzl0Dz9f8+jDrIl/jSQcZIi9twYaEfWHrz+zRNuJNYCItWSQ3aWgKIiDhbrte4aNHDWE2ufmT36yDEa2WqPa7W5jBEns+cTHqtDLsxP5srN4fGA5JSATDAKM4f+9SutwAUwPEhtI0XWkNU2P3KnX2HLi3JMfmRto9q7TPg=
+	t=1780911969; cv=none; b=XZ4JhorEcH2cvGyYa+/Ti2e0UKafEI8Zd5R4RYzDScCBXHLd8p8KZK2+JHVSmJoK6XlPMtmsfjw/H/RXP4HfnnbxJliaLXP5Q7NBsuX+ylVFNhFVSISU8Ww6L2QaVCIJ+cVEgUgQs5cfxf2mzq/3BPOJfpcKM+m58cjcLOsrRtY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780911790; c=relaxed/simple;
-	bh=dmTlg6y6YJ6RgAhWDSVBpvaYlmi6+ny0raS9//d5JAw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HKmZEAclbfXb9OkMJ+PjRgsLVAHel2OgJc/lnPFFOuxjXQSEruzMLe7B18H9G9iRiuXKyhE5HmV5C9BZbPcoKFEIYi0sgf4vRDzzEZzhaOXF53hRi3liXeKAJ1Qqyxt3w2NRhmayodiNPWw6xxqI51ezRBzyUp2yzbPxr01ltSk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=1wt.eu; spf=pass smtp.mailfrom=1wt.eu; dkim=pass (1024-bit key) header.d=1wt.eu header.i=@1wt.eu header.b=AQeuq2tf; arc=none smtp.client-ip=51.159.59.229
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=1wt.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=1wt.eu
+	s=arc-20240116; t=1780911969; c=relaxed/simple;
+	bh=ZNqXIOMQx/9Cei0fmz4inEdM2L/JL2wYYV5+cGQyfdE=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=cpJ3QsaIoA4bVuAlNNZi2ESWCGR9yMNsnhY53/ZZwm94+sYxh+R5/RZCg9PxdY3cPnJ6Scmf5tNj+L34b3iDlvhpBmk2keW26VwKYkVJRkwvWqjamg+wW83oKYtaP31h6BUtbF37kXd8hFFNSVJG/gmnO775d8QWcKZvOf+YIOw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=QH+yS7L3; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=1wt.eu header.i=@1wt.eu header.b="AQeuq2tf"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1wt.eu; s=mail;
-	t=1780911779; bh=j5cxWlFBNSuYFYwvRwh1+a59MLTHwwMLo8fZ9XQ0NxQ=;
-	h=From:Message-ID:From;
-	b=AQeuq2tfJv9QiI9u6YyEAeX8IQBrRJ1CUACcF2GX6oA4i47IdiIJgxOiFoCBKKgqm
-	 KpiJKsLDJ9egk+gEz0bcavHqIqeBJm8y3F/MDa61qeZfgDHlVKqpM61gsIjRWpn4Bf
-	 8ubeBn4hD8Le0rXDg+Wpipg1skumRw6b67vDRnuA=
-Received: from 1wt.eu (ded1.1wt.eu [163.172.96.212])
-	by mta1.formilux.org (Postfix) with ESMTP id B6809C09FA;
-	Mon, 08 Jun 2026 11:42:59 +0200 (CEST)
-Date: Mon, 8 Jun 2026 11:42:58 +0200
-From: Willy Tarreau <w@1wt.eu>
-To: Eric Dumazet <edumazet@google.com>
-Cc: xietangxin <xietangxin@yeah.net>, Pablo Neira Ayuso <pablo@netfilter.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-        Simon Horman <horms@kernel.org>, Neal Cardwell <ncardwell@google.com>,
-        Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org,
-        eric.dumazet@gmail.com, Zhouyan Deng <dengzhouyan_nwpu@163.com>,
-        Florian Westphal <fw@strlen.de>
-Subject: Re: [PATCH net] tcp: secure_seq: add back ports to TS offset
-Message-ID: <aiaOor1JLLu5Xn75@1wt.eu>
-References: <20260302205527.1982836-1-edumazet@google.com>
- <99caeafd-edf5-44a4-8742-4eada5d0f5d1@yeah.net>
- <CANn89iK8GcY3GHCRs-8EVrDoBPhdw1iY4mBjZKe8gx58+ko73Q@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="QH+yS7L3"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Message-Id:Date:Subject:From:Reply-To:Content-ID:
+	Content-Description:In-Reply-To:References;
+	bh=GBAWpq3VWx9yVC9Jpc9XHimo01iW/tVjM3UeU3rQ7bM=; b=QH+yS7L3gJ03MjrME5DH0eTMvg
+	APKNQzww04jRBj9S7AoW61CO599tEik6vctHB1kVkairmOuoTrZkxQeZqZiP++ARDnmUoBMMP7wx4
+	Ubz6SFLDax/ZC+RHdyFtKS1WmF7VRMZDDb1oGfEGKiWMNKookzhb+PKttPA7wBd1dHeZzs/7RHsd2
+	B3lmeTh5m5slc0vzdRmYFviPBgCPWxfeiQDj2HWFtfuhQTnqZXGY59eyTCKEZDBz8lTG7YDMpzNnp
+	5OF/Xk2FdM/EXpnIkNj2DvgSpGtQL3upKjPbQd0sDN13YBrwpQ0bHp0aclE0CiSuK1EAov1mi/5xS
+	MkMCHIIw==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wWWYS-007XFC-0f;
+	Mon, 08 Jun 2026 09:46:00 +0000
+From: Breno Leitao <leitao@debian.org>
+Subject: [PATCH net-next v3 0/2] net: rds: convert rds to getsockopt_iter
+Date: Mon, 08 Jun 2026 02:44:56 -0700
+Message-Id: <20260608-getsock_more-v3-0-706ecf2ea332@debian.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANn89iK8GcY3GHCRs-8EVrDoBPhdw1iY4mBjZKe8gx58+ko73Q@mail.gmail.com>
+X-B4-Tracking: v=1; b=H4sIABiPJmoC/23N0QrCIBiG4VuR/3iGU2e2o+4jIqb+2yTSUBmLs
+ XsPPKro+ON5vw0yJo8ZerJBwsVnHwP0RDQE7DyECal30BPgjCummKATlhzt/faICalUBrVrbad
+ GBw2BZ8LRrzV3gYCFBlwLXBsCs88lplf9Wdq6/08uLWVUCqOdZFZreTo7NH4Ih5imWlr4p+5+N
+ KeMajYKbZ3RR6a+9L7vb9Gf9N3xAAAA
+X-Change-ID: 20260603-getsock_more-46be8d1c56fd
+To: Allison Henderson <achender@kernel.org>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>, 
+ Andy Grover <andy.grover@oracle.com>
+Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+ linux-rdma@vger.kernel.org, rds-devel@oss.oracle.com, 
+ linux-kselftest@vger.kernel.org, Breno Leitao <leitao@debian.org>, 
+ kernel-team@meta.com
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2524; i=leitao@debian.org;
+ h=from:subject:message-id; bh=ZNqXIOMQx/9Cei0fmz4inEdM2L/JL2wYYV5+cGQyfdE=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBqJo9Utu600ILqdENVlMGn3XjTeq22GF+fzocyn
+ xERVNUMnweJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaiaPVAAKCRA1o5Of/Hh3
+ bZhqD/9e5mw9Fr8hTfzJexYQxGpVuPNPn8f9rETxJ2dyxAlufWTbY6DhsTPmBP4aXodVkA/kWm/
+ gp0+V8tR2DsiJZf5VebMRI91S+DLBzZQzdNEp5L0zHSWjOAXzv7a1D+wAQAWNyNDSPnnH/oAvbV
+ piSv9I9UeP8P+GuKq+xPgMBBxsGo3AAehyWzO49onqZtg4L/KiCMQnDGIoCdkgX4aYOcShKZY8w
+ muSYkdpo7N7wcWQP9q7cvgmlujMZYWnhulJ1cWDcOKyLaaCCQlK7WKgg7XOxcxRkndpYj2XtSXJ
+ lfkylTjnOmb8aa7H3MdXZYTJgQl1N+KJVYW1baBwMK/Qo3SvURmomRp7Qh/x85cWTlAOqqQjLb6
+ 1G3k0b/xV36gsvGhDbnIwwTmBEViNXJ1LlUCrB6oDZA4hKm7tCACjCgzZbs2rGthOqCJJP5SCkk
+ dzgtzq4/SfxwVGd5hyb+DZqJnIQmpQqh2M+8bO5ePKaLJ9CnlbgTeQjSH1iQn4izsR/eRrGjLdZ
+ hto72g/CUG90fPyuoGSdL7zq66vbue+S71Vn9wmbCMUztqgvtcMD5aEH2rLHYJNOrt7MFc6hhcQ
+ 18MqxAkBhx8AZPX3nC3B+OA8r/7lEf5gdTUrGLxvY3Zcom0E+NJi4kKTaUWUrTaRp4tXo+5jmSn
+ lGEEFVHdpeehrNQ==
+X-Developer-Key: i=leitao@debian.org; a=openpgp;
+ fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
+X-Debian-User: leitao
 
-On Mon, Jun 08, 2026 at 01:51:49AM -0700, Eric Dumazet wrote:
-> On Sat, Jun 6, 2026 at 4:06 AM xietangxin <xietangxin@yeah.net> wrote:
-> >
-> >
-> 
-> > Hi Eric and netdev,
-> >
-> > I noticed a significant TCP performance regression (QPS drop) when using
-> > iptables MASQUERADE with the `--random-fully` option, and I have bisected
-> > it down to commit 165573e41f2f66ef98940cf65f838b2cb575d9d1
-> > (tcp: secure_seq: add back ports to TS offset).
-> >
-> > Here is the benchmark environment and test results.
-> > Environment:
-> > - Client & Server: 2 VMs
-> > - Server: Nginx listening on port 80 (HTTP), and ip 10.0.0.1
-> > - Benchmark tool: wrk (short-lived connections with "Connection: close")
-> >
-> > Test Commands
-> > 1. With random-fully:
-> >    # iptables -t nat -A POSTROUTING -d 10.0.0.1 -p tcp --dport 80 -j MASQUERADE --random-fully
-> >    # wrk -t8 -c200 -H "Connection: close" -d10s --latency http://10.0.0.1:80
-> > 2. Without random-fully:
-> >    # iptables -t nat -A POSTROUTING -d 10.0.0.1 -p tcp --dport 80 -j MASQUERADE
-> >    # wrk -t8 -c200 -H "Connection: close" -d10s --latency http://10.0.0.1:80
-> >
-> > Test Results (QPS):
-> > 1. Parent Commit (7f083faf59d14c04e01ec05a7507f036c965acf8):
-> >    - with random-fully:    18145.74, 15006.39, 15716.67
-> >    - without random-fully: 18556.36, 16339.22, 21506.02
-> >
-> > 2. Bad Commit (165573e41f2f66ef98940cf65f838b2cb575d9d1):
-> >    - with random-fully:    11074.76, 10383.20, 10164.81  <-- (~35% drop)
-> >    - without random-fully: 17310.75, 20279.85, 18399.48
-> >
-> > Is this performance degradation an expected side-effect of the security fix,
-> > or is there any sysctl param we should tune when `--random-fully` is
-> > required for high-concurrency short connections?
-> 
-> Hi Tangxin
-> 
-> I do not know why that patch would affect MASQUERADE performance.
-> 
-> Pablo, Florian, do you have an idea?
+This series continues the conversion of the remaining proto_ops getsockopt
+callbacks to the new getsockopt_iter callback introduced in commit
+67fab22a7adc ("net: add getsockopt_iter callback to proto_ops"), this time
+for RDS.
 
-I suspect it's because MASQUERADE can shuffle the ports around and
-break the end-to-end mapping. With host-based ISN the increments
-remain positive regardless of the ports, while with port-based
-increments if you shuffle ports around, two consecutive uses of
-the same port can end up showing a decreasing ISN, and some
-outgoing SYN will get an ACK instead of a SYN-ACK, then send an
-RST, and a SYN again, causing a degradation.
+RDS is a little more involved than the protocols converted so far, because
+the RDS_INFO_* options snapshot kernel state directly into the destination
+buffer: the info producers memcpy into the pages under a spinlock via
+kmap_atomic() and so must not fault.
 
-I'm not saying this is necessarily what happens here but based on the
-commit message description I suspect that this is what's happening
-here. There's always a tradeoff between ISN secrecy and reliability
-unfortunately.
+The conversion preserves that model â€” it obtains the same page array and
+starting offset from opt->iter_out with iov_iter_extract_pages(),
+preallocating the array so the iterator fills it in place, and leaves
+the rds_info_iterator / rds_info_copy machinery and all producer
+callbacks unchanged; kernel (ITER_KVEC) buffers remain unsupported on
+the RDS_INFO path, as before.
 
-Willy
+I've vibe-coded a kselftest exercising both the simple options and the
+RDS_INFO_* snapshot path, feel free to drop it in case this is not
+useful.
+
+Signed-off-by: Breno Leitao <leitao@debian.org>
+---
+Changes in v3:
+- Resolved the conflict with net-next
+- Added additional tags (assisted-by and reviewes)
+- Link to v2: https://lore.kernel.org/r/20260605-getsock_more-v2-0-80f38cdb8706@debian.org
+
+Changes in v2:
+- rds: reject non-user-backed buffers with !user_backed_iter() instead of
+  iov_iter_is_kvec() on the RDS_INFO path (Allison Henderson)
+- rds: gate the page unpin on iov_iter_extract_will_pin() and comment the
+  implicit pin (Allison Henderson)
+- selftest: size the snapshot mmap from the probed length instead of a fixed
+  two pages (Allison Henderson)
+- Add a new patch to fix a concern raised by Sashiko.
+- Link to v1:
+https://lore.kernel.org/r/20260603-getsock_more-v1-0-43b8d40c8849@debian.org
+
+---
+Breno Leitao (2):
+      selftests: net: rds: add getsockopt() conversion test
+      rds: convert to getsockopt_iter
+
+ net/rds/af_rds.c                             |  36 ++---
+ net/rds/info.c                               |  76 +++++-----
+ net/rds/info.h                               |   3 +-
+ tools/testing/selftests/net/rds/.gitignore   |   1 +
+ tools/testing/selftests/net/rds/Makefile     |   4 +
+ tools/testing/selftests/net/rds/getsockopt.c | 208 +++++++++++++++++++++++++++
+ 6 files changed, 278 insertions(+), 50 deletions(-)
+---
+base-commit: 903db046d5579bef0ea699eae4b279dd6455fc9f
+change-id: 20260603-getsock_more-46be8d1c56fd
+
+Best regards,
+-- 
+Breno Leitao <leitao@debian.org>
+
