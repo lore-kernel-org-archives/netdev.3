@@ -1,290 +1,135 @@
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013046.outbound.protection.outlook.com [52.101.83.46])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A835D3B42F3;
-	Mon,  8 Jun 2026 09:14:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.46
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780910058; cv=fail; b=E9vBp7cGp7jubaZjVOzQV+VDYygL4t8j4vnD24+tlqC7sfIg5spHjXnvpCJbVqmtZgnnk+nuABivcEBeYoNSMPscNV3WrdyuTLqDgtHpvwO/DNvxwg21K8FYfsXz3z6mxMbVpVTBHESbOkaGg7vLgzBe9khwLUiC9iOLymWQs1I=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780910058; c=relaxed/simple;
-	bh=ngtVvdP2/WC6Kgq8/u3Qa3OQ25GxXYGPxZLpT2TDfeU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=UZMRyL3XNC3Xrq+dQC7X0xZIUkFPGEgoHEetWlZRNmnUB8I0fIb/J7ZwNpy6wr9B/x8JM3+L8KOhnkIF/3RDVNjtCtzAIVqJ7SN3afYqi7F5GS42v4MFtRIzXSa/VPVvRUJeBpMKL69WiikQ0DWNUtcaLOO0mQZQQ8v4gze22y4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=bIOutu3v; arc=fail smtp.client-ip=52.101.83.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E10B2EC57C
+	for <netdev@vger.kernel.org>; Mon,  8 Jun 2026 09:29:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780910953; cv=none; b=GYsBCtORna6I7SNKWFocmiC5V4u5pib5VwXszK+54y35pqv5OuSRNOBErhbj3M4Fa2N/phWkIuTZqZQnbmH3no/IM/21zLqpRF4+nqEI0rwQXK9B/YtM2AmvgUIMJ5UDAeGp4mSXzGA1VJLSITRUpVITNR7I/SqJrOlhOMPatvM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780910953; c=relaxed/simple;
+	bh=wDKFQMOG/eXGIXHuHGVAtY3FLXx2kteE6/OW5EcUKxA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iHESx3fjb08tEuxx9enazt2rJZamVV6IbY7VhIeuA8psjh2yOzglCxyg3fYGiqKAJNuOCLcM4NqHwTssYcOfehMhff4CnMk0pXY+CEayj2nmMYiVSNza9tvhpsCK123a6e/GvIHuyA95y/MwZARV9CfrSsQxRDMkDq1Al/S2f1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j51Qiku0; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="bIOutu3v"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=YYr8P83yzl0gL9jIsIX3gIONSdPYXxqBZGf/DdtwpROtH6HketfR7VmcEnrC+05S/HnRcZbiMUWivZDTOQ8RWcA+q8GFZAFmWYvFwmo5G0T5hEaebvVpN03uAw9/9QbidKY0SR18WZQuQn+sapPGIe7gzHV+d5tpXBRLqXppRS/rTojK4w8n+B0uxuhAK8ZsvxA95ALzyKY9eayyJRwSKNf6PP32Z1gPZuXN+j9vi6y+qy5mc9rI3/tIPNkyKEeM8QAKD2SOlFT2QNVS25nH3VCz8DVPVCbOA80CozxvoKU/VJnyaR5yeCHWc5T5R2PJuNxTEu+xgLPaxGZQuvbvHw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=nHjMlYV1Xd7SI0H9VZLbXO0y3ABJdi1SVlm7PBYJWYM=;
- b=MNdIBNbaOL3TNLurFvIDg6j+bFFsxaUgeDdrdWm0kfDws1ujQjxu1PMw5rRYRoCR9lyvvnay6U+u4ktRE2LIURxRNeOfBUZlcfgmPVb520EFnssA7Fmv4MkLrVsxxnL1UYmYQ4R8ntCp070HZKBOya604x8/9toD9icX6kG+QY9LJzwDlnhxCH4ER5RbWae0IPlEZC6yaJfNN9avLLkMnSo/5vMqzqJU9Mh00VrNdzwDcj4divT7NgXjiV7WFE4rTF3hDMpYtJIJgyaNeaVi/9AYGbB7Bat8oTkyZ9IplwX94ecTccjgWrU1L8YlPVlPT+fmOI/stgk+NAaJN9zGwg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=nHjMlYV1Xd7SI0H9VZLbXO0y3ABJdi1SVlm7PBYJWYM=;
- b=bIOutu3v0tvOhuZWLwQUOqnMZwZ6IgtKQoRFhKAi3W9FYRN3vNAVB4ymuCXZz6LjfNV4x7aXKF8s8ljwBOEHqOFnOv87gei9YfD4OeE+n4mF4S2nuBVMyoSqs12JNDEtfpa1074usxaZc44hW//DKGDQiN2AUEDRQbnp8G+YBnoMqksyBv9VkctSPeyrTrAWdzA/N5QPR9drcarJyVE4Bap5ML2OmeybP0p9cuaYm1GrGJCHAw92YrLUvaNCrEofBF77GQ5kXnqxTAFXW9V1fOlTHlzq1Qv1vl8myZ7k7QgSJnQdxLThXxDCw95No4wh+KGGAW39aw25Llk9mguY9A==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from GVXPR04MB12290.eurprd04.prod.outlook.com
- (2603:10a6:150:319::13) by PAXPR04MB9280.eurprd04.prod.outlook.com
- (2603:10a6:102:2b6::11) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.13; Mon, 8 Jun 2026
- 09:14:11 +0000
-Received: from GVXPR04MB12290.eurprd04.prod.outlook.com
- ([fe80::1739:3404:2175:33dd]) by GVXPR04MB12290.eurprd04.prod.outlook.com
- ([fe80::1739:3404:2175:33dd%6]) with mapi id 15.21.0092.010; Mon, 8 Jun 2026
- 09:14:10 +0000
-Date: Mon, 8 Jun 2026 12:14:07 +0300
-From: Ioana Ciornei <ioana.ciornei@nxp.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, 
-	pabeni@redhat.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v3 02/12] dpaa2-switch: add support for LAG
- offload
-Message-ID: <7qgoy4ksmvswiaikzjzgiribtglsftmu3nfzhyem2uom5va63s@w4ruzw4fzzba>
-References: <20260603143623.3712024-3-ioana.ciornei@nxp.com>
- <20260606021047.4124576-1-kuba@kernel.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260606021047.4124576-1-kuba@kernel.org>
-X-ClientProxiedBy: FR4P281CA0021.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:c9::12) To GVXPR04MB12290.eurprd04.prod.outlook.com
- (2603:10a6:150:319::13)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j51Qiku0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76CB01F00893;
+	Mon,  8 Jun 2026 09:29:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780910952;
+	bh=fOAG6RO9IE4nsTI/RS9XCESeKjsw9dzfXz32mptaQog=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=j51Qiku0GklR6YKD+8NSuaIOjXBwv8dB96gffFhJ19vSdtctstN0LUdBBn1ovJzj8
+	 rI/KOmk9Wz5Zdl0Nn1RA0KbKwXe2Sw5GqX8gikRsYI/01PYmdhFqAygt0u895iZRCA
+	 hzqWFdCTbLAHUTsP/mpt5wUoqZJAhZ94j/BfmDZgnzOg1seKGA1CZe75bDxDLnhdqO
+	 2lVPpCJ0zaNrEuUTlJZX9kSMLWBhRCrisiaqpc0mxv1BFIMM3EEVvb/gEBP+jK0Fnh
+	 M2qILM6BArN0gG5obghgg0qdho1D+p3VX7T4Sk3SAxtc1BZa6eV0weNcc7Q2MM0AUl
+	 s4JfELEaQy2cA==
+Date: Mon, 8 Jun 2026 11:29:09 +0200
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org, netdev@vger.kernel.org
+Subject: Re: [PATCH net-next] net: airoha: Use int instead of atomic_t for
+ qdma users counter
+Message-ID: <aiaLZVvfsbj3zTgr@lore-desk>
+References: <20260606-airoha_qdma_users-no-atomic-v1-1-86e2d6a1bfaf@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GVXPR04MB12290:EE_|PAXPR04MB9280:EE_
-X-MS-Office365-Filtering-Correlation-Id: ae7cd55f-304c-4b14-5edd-08dec53e4d2c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|1800799024|376014|366016|6133799003|22082099003|18002099003|56012099006|11063799006|5023799004|4143699003;
-X-Microsoft-Antispam-Message-Info:
-	lVjH3/psnf2oCtGy7Ro8DONYGdpEWMuqKUvPzwg2wRRCrZP6epd0wmqBbs5pNuX3JApkA9gmTFx8d5DsBe1Yp+ZUZhtJEOSgMtnrGHZ4S+1EAMitbRaAc789XSJy4Ffm4cIrPMY9HzP7zeTyZKr0s6SXHAbE9puSSOTR8pcDd9PS+zNnVBjG985YtHHsj5jyrHKttr/7MmgNL+KdTCkQmbl7raxdEKQnd14g1VpH7RhFFPwlw/EQqbnNdA/MAV5IjqDNtDJNcgb+pSUxPNCb09X/6FKMzxEebG+bjMVOImwKW5CRszrup3U5KAihzTaG3WALMrazY5XIZ30BGzwCviruy17OpmGVECwdkG6je2ChAXvd7bLC3Tc0/vCCk2mLQn6otpSLiMDpzn6BG2JSVBITVpeYr+jEOw+GnoBelI0fDdtqFM0vC2oIVDMZD1jWehjExsynB2dfhisqddiTbxcEaj2J4WMjAyxwMjRlaQM01fD9JGotOBpO9qVAg5IJ6RvqmJUQd1sHapiQhC1gpfQxkxLsrZFfR7wixRfzqlii4hVdjkTRcYnacok81+eBUzMvzVEIup1crl5moPN62YmyR4JjB7yAOD21C6LuxLVvYE0uZ6CF9P1ALeQ+D2sIlhkAr/tJTl9OWOXivHc11W9Bs/9LSbI09GFsFVDtNHdyFaP4Yz4VBpEowkUB8GiZ
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GVXPR04MB12290.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(1800799024)(376014)(366016)(6133799003)(22082099003)(18002099003)(56012099006)(11063799006)(5023799004)(4143699003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?/aPv5tObAok2iQS9BaifriOciyQrZEpP75niBUobmfLk5qOUtHEDknbmbI7+?=
- =?us-ascii?Q?+zAyOfmn5Hh8upM8ahsYHel1jv8zI+rBsYDoIN8GrNN937PT0/Cou3A72+nm?=
- =?us-ascii?Q?a7daYqO5nuAr96Y7BfT1qiTReIf/skbzSGw5F7pFWX5mqgJglkpZ7GAoGrtf?=
- =?us-ascii?Q?UXQCDffzIulnuJ+kJN+aPldSPrEC+nxWzxZN0FOevLqERsWhruk0+crv9Jao?=
- =?us-ascii?Q?Fm3KjTmh2kcNlYCubjurMlAAN9G1i5iI1Z47pCmkE6kgbUQkwo028uuhubeV?=
- =?us-ascii?Q?PlBkFJCQZ8/ZunJmc85q7SJI5a9jplRL7WkwHozllsM9xaT5dqMUefb78/03?=
- =?us-ascii?Q?xAnfRjIMA1nza3EPgHRvOiKpWhXqBt2OvzVAd0kXQJJKsToSijZf1iLfHV3G?=
- =?us-ascii?Q?eXnUt123gJVSZTeF4QPiimVakyDrsNtTv5Um7gxcIELh034RsqMZckQG2bIP?=
- =?us-ascii?Q?5l/mr3OgGjmRgzxzNXlOR737D9eHxk8tKMqzh1oUOA+K3RVtMwpIN+a4CD27?=
- =?us-ascii?Q?0jEprVNYx1nkUH/xQoN+R63cgGbo1M8Hmq/h6GS1+utAdBpPdBvTVGjR/qXA?=
- =?us-ascii?Q?0ouFu1KzBtJ4MMuSc4WL5rom+d4zvg/G+kHcmvSKO/LLzEgKIBhlEoXhAMed?=
- =?us-ascii?Q?OR2z0C/bHsIuYbwY1xJDK9TL7QG8JQXDPE0ZbWvEYq00d47QFubcpjW4nO1U?=
- =?us-ascii?Q?G14sWzsEi2A4S+NuhFLUxCEtdj2uEWy9wOJwnp/26UaW4sCsGL/6U1Ccnb3z?=
- =?us-ascii?Q?89QSaBMyxy4qj8eFmS5YQjAHSV70CdhRPCETs0ic+Kll0uaMK/r0LajclQxw?=
- =?us-ascii?Q?RXE2su7ClMhwb7YePwRsqVgnXUs/XVoQUVmFWdl9m0MjIWZ0eHnLUlwqE62a?=
- =?us-ascii?Q?Kdg/alX/Z+aXQL8pcjYfSIjIk0uBAYaSGoo7meuhofTbS9FZHWaaTnOvuM8g?=
- =?us-ascii?Q?CZU7BCxK3/nyqKk8iI/0OAjaIps+AZPLIhEK0/qvvyiNRs8xRXSh9uEUmQnP?=
- =?us-ascii?Q?bcXy1G+81vh00a8NeVRWhpERPg5kFWmrWP9jGc9QVjYgJVbR8wOstX+f2fNp?=
- =?us-ascii?Q?5e8Rjb92YNtWTnZPt3jWiOIUFEQNkOtMio2AvMk8WFuDwCh8oQxLqcz9Y1ik?=
- =?us-ascii?Q?fJFQxPGeSdyEgfV7pUbubgJI+ZegvIvQI/IODTKL+gAOGD8kWbwQRap4jjnB?=
- =?us-ascii?Q?TFBAxfALaNm4NVSGfwh9XrgBa8sUczW06dT5Y92JwBEzx+wUmf8UKJb2IXOC?=
- =?us-ascii?Q?9QWBlomWFCcp/lQt88FT60e7Ib6fq8QjHXqsH7LmqG249Qadvj00Ocl6RqeB?=
- =?us-ascii?Q?TIXN7+mi8PbiKY/bGNwOQoSbQyimsq0sEPQiwIu69JQn3hHv6b+xG3yB7/5l?=
- =?us-ascii?Q?cVE2xDZGKOMoqfVhGv4w3O0E6PNgSOTEUMPcQ80YVwf3Ha9u5xb1cjGfcv4t?=
- =?us-ascii?Q?9n0zeWChN57CIqzG9CTnr3jiVIYinN9BghdQyUIfJ6EISb8lqQcByV2/ZF+K?=
- =?us-ascii?Q?rky7vNk4yLDya4vsbI1tJUofSGDEpo83wC/86qGphVMpkpnhfopiJiKCB+9D?=
- =?us-ascii?Q?Fqy4spf6BkGizhZ4gr0KCAJ/HICIBiNLBoaInKlALyg5Ny0dlx702WfFWfNh?=
- =?us-ascii?Q?1BFHq5zzulrS3fXX+MYUyov8lnfuoM+W2Rk5IH7ycfRtb9jKBZMuYreqHVzL?=
- =?us-ascii?Q?YICQ6/kgW0gk2PRBkIu8N1gRDdoDCR0eA2KRMylStgEyipvLLhEXg2QFk0nY?=
- =?us-ascii?Q?1euPtTO2Gg=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ae7cd55f-304c-4b14-5edd-08dec53e4d2c
-X-MS-Exchange-CrossTenant-AuthSource: GVXPR04MB12290.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jun 2026 09:14:10.8385
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: UhT6Mubu3thUDizFAwxnAaIGKI+2LGXD4yzZeyFwu9IOsOIZmMvAoCccPEkRE8JcUJrlSJps+ZIcF2QiyRD6lw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB9280
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="m6PvL9voaHHuHzEe"
+Content-Disposition: inline
+In-Reply-To: <20260606-airoha_qdma_users-no-atomic-v1-1-86e2d6a1bfaf@kernel.org>
 
-On Fri, Jun 05, 2026 at 07:10:47PM -0700, Jakub Kicinski wrote:
-> This is an AI-generated review of your patch. The human sending this
-> email has considered the AI review valid, or at least plausible.
+
+--m6PvL9voaHHuHzEe
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+> QDMA users counter is always accessed holding RTNL lock so we do not
+> require atomic_t for it.
+
+Please drop this patch since I need to modify it to address Andrew's request
+about LAN/WAN configuration.
+
+Regards,
+Lorenzo
+
+>=20
+> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 > ---
-> dpaa2-switch: add support for LAG offload
-> 
-> This patch adds the bulk of the changes needed in order to support
-> offloading of an upper bond device.
-> 
-> > diff --git a/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c b/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
-> > index a0bf5b50aae5f..d082ecf9b1252 100644
-> > --- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
-> > +++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
-> 
-> [ ... ]
-> 
-> > @@ -2210,19 +2300,275 @@ dpaa2_switch_prechangeupper_sanity_checks(struct net_device *netdev,
-> > +static int dpaa2_switch_port_bond_join(struct net_device *netdev,
-> > +				       struct net_device *bond_dev,
-> > +				       struct netdev_lag_upper_info *info,
-> > +				       struct netlink_ext_ack *extack)
-> > +{
-> 
-> [ ... ]
-> 
-> > +	/* If the bond device is a switch port, join the bridge as well */
-> > +	bridge_dev = netdev_master_upper_dev_get(bond_dev);
-> > +	if (!bridge_dev || !netif_is_bridge_master(bridge_dev))
-> > +		return 0;
-> > +
-> > +	err = dpaa2_switch_port_bridge_join(netdev, bridge_dev, extack);
-> 
-> [Severity: High]
-> Should switchdev_bridge_port_offload() inside dpaa2_switch_port_bridge_join()
-> receive the actual bridge port (the bond device) rather than the lower
-> physical port?
-> 
-> For ports enslaved to a LAG, passing the lower physical port might cause
-> switchdev to immediately abort the offload with -EINVAL, since the netdev
-> is not directly enslaved to the bridge. I see this was addressed in a later
-> commit adding a dpaa2_switch_port_to_bridge_port() helper.
-> 
-> [Severity: High]
-> When a port joins a LAG that is already enslaved to a bridge, is there a risk
-> of dpaa2_switch_port_set_fdb() corrupting the in_use flag of active FDBs?
-> 
-> Since the port first acquires the bond's shared FDB, and then
-> dpaa2_switch_port_bridge_join() finds a port already using that same FDB,
-> the code in dpaa2_switch_port_set_fdb() seems to lack a self-assignment
-> check. This could mark the shared FDB as unused before reassigning it,
-> allowing another standalone port to reallocate it. I note this was fixed in
-> a later commit covering bond scenarios.
-> 
-> [Severity: High]
-> Will dpaa2_switch_port_set_fdb() skip bonds when iterating through lower
-> devices, breaking cross-LAG forwarding?
-> 
-> When a port joins a bridge, dpaa2_switch_port_set_fdb() uses a non-recursive
-> iterator (netdev_for_each_lower_dev). If the other lower device is a bond,
-> dpaa2_switch_port_dev_check() will return false, skipping nested ports and
-> failing to share the hardware FDB. I note this was also fixed in a later
-> commit.
+>  drivers/net/ethernet/airoha/airoha_eth.c | 4 ++--
+>  drivers/net/ethernet/airoha/airoha_eth.h | 3 +--
+>  2 files changed, 3 insertions(+), 4 deletions(-)
+>=20
+> diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ether=
+net/airoha/airoha_eth.c
+> index 5a8e84fa9918..a5fe08864fa3 100644
+> --- a/drivers/net/ethernet/airoha/airoha_eth.c
+> +++ b/drivers/net/ethernet/airoha/airoha_eth.c
+> @@ -1809,7 +1809,7 @@ static int airoha_dev_open(struct net_device *netde=
+v)
+>  	airoha_qdma_set(qdma, REG_QDMA_GLOBAL_CFG,
+>  			GLOBAL_CFG_TX_DMA_EN_MASK |
+>  			GLOBAL_CFG_RX_DMA_EN_MASK);
+> -	atomic_inc(&qdma->users);
+> +	qdma->users++;
+> =20
+>  	if (!airoha_is_lan_gdm_dev(dev) &&
+>  	    airoha_ppe_is_enabled(qdma->eth, 1))
+> @@ -1863,7 +1863,7 @@ static int airoha_dev_stop(struct net_device *netde=
+v)
+>  					    REG_GDM_FWD_CFG(port->id),
+>  					    FE_PSE_PORT_DROP);
+> =20
+> -	if (atomic_dec_and_test(&qdma->users)) {
+> +	if (!--qdma->users) {
+>  		airoha_qdma_clear(qdma, REG_QDMA_GLOBAL_CFG,
+>  				  GLOBAL_CFG_TX_DMA_EN_MASK |
+>  				  GLOBAL_CFG_RX_DMA_EN_MASK);
+> diff --git a/drivers/net/ethernet/airoha/airoha_eth.h b/drivers/net/ether=
+net/airoha/airoha_eth.h
+> index 8f42973f9cf5..e89c2dff411f 100644
+> --- a/drivers/net/ethernet/airoha/airoha_eth.h
+> +++ b/drivers/net/ethernet/airoha/airoha_eth.h
+> @@ -525,8 +525,7 @@ struct airoha_irq_bank {
+>  struct airoha_qdma {
+>  	struct airoha_eth *eth;
+>  	void __iomem *regs;
+> -
+> -	atomic_t users;
+> +	int users;
+> =20
+>  	struct airoha_irq_bank irq_banks[AIROHA_MAX_NUM_IRQ_BANKS];
+> =20
+>=20
+> ---
+> base-commit: 903db046d5579bef0ea699eae4b279dd6455fc9f
+> change-id: 20260606-airoha_qdma_users-no-atomic-0750cc2b42f1
+>=20
+> Best regards,
+> --=20
+> Lorenzo Bianconi <lorenzo@kernel.org>
+>=20
 
-As sashisko also notes, these concerns were all addressed in later
-commits. After v1 I tried to reorder the patches in the hope that I
-reduce the chance of this kind of feedback but the later commits use
-structures / data put in place by this patch. This basically means that
-reversing the order would not improve anything.
+--m6PvL9voaHHuHzEe
+Content-Type: application/pgp-signature; name=signature.asc
 
-The only alternative is just to put everything in a single patch (FDB
-management change, changeupper events for bond etc) but I don't think
-that would make it easier to read.
+-----BEGIN PGP SIGNATURE-----
 
-Please let me know how I should proceed.
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCaiaLZQAKCRA6cBh0uS2t
+rO+6APwLDYmZI/JomfAanIi6AplM1iKDlhcwYtTDEJr1cs8BdgD/eLsP003LFzDw
+Bpn+4cLIONPJvzfc5X7KJC8GwM94vQc=
+=VKAi
+-----END PGP SIGNATURE-----
 
-> 
-> > +	if (err)
-> > +		goto err_bridge_join;
-> > +
-> > +	return err;
-> > +
-> > +err_bridge_join:
-> > +	dpaa2_switch_port_del_vlan(port_priv, DEFAULT_VLAN_ID);
-> > +err_vlan_add:
-> > +err_lag_cfg:
-> > +	rcu_assign_pointer(port_priv->lag, NULL);
-> > +	dpaa2_switch_set_lag_cfg(bond_dev, lag_id, ethsw);
-> > +err_egress_flood:
-> > +	if (port_priv->fdb != old_fdb) {
-> > +		new_fdb = port_priv->fdb;
-> > +
-> > +		/* Explicitly move the port back into the old private FDB */
-> > +		old_fdb->in_use = true;
-> > +		old_fdb->bridge_dev = NULL;
-> > +		port_priv->fdb = old_fdb;
-> > +
-> > +		/* Reprogram the bond FDB to no longer include this port */
-> > +		dpaa2_switch_fdb_set_egress_flood(ethsw, new_fdb->fdb_id);
-> 
-> [Severity: High]
-> Are we permanently leaking a hardware FDB resource in this error path?
-> 
-> If dpaa2_switch_port_bridge_join() fails, it will have allocated a new
-> intermediate FDB and marked it in_use. The cleanup block here restores
-> the original old_fdb, but does not appear to set new_fdb->in_use back to
-> false. Repeated failures might exhaust the fixed number of FDBs.
-
-No, this concern is not valid. The only case in which the FDB chances
-when a port join a bond is when this is not the first dpaa2-switch port
-to join that bond. In that case, the new FDB was already marked in_use
-prior to this moment so that change does not need to be reverted since
-even if this bond join fails, that FDB will still be in use for the
-other ports under the bond.
-
-> 
-> > +	} else {
-> > +		/* Same FDB means that this was the first port joining the
-> > +		 * bond. Keep using the same FDB.
-> > +		 */
-> > +		old_fdb->bridge_dev = NULL;
-> > +	}
-> 
-> [ ... ]
-> 
-> > +static int dpaa2_switch_port_bond_leave(struct net_device *netdev,
-> > +					struct net_device *bond_dev)
-> > +{
-> 
-> [ ... ]
-> 
-> > +lag_cleanup:
-> > +	/* Recreate the LAG configuration for the LAG group that we left. In
-> > +	 * case any step failed, at least we free up a LAG resource.
-> > +	 */
-> > +	rcu_assign_pointer(port_priv->lag, NULL);
-> > +	dpaa2_switch_set_lag_cfg(bond_dev, lag->id, ethsw);
-> 
-> [Severity: Critical]
-> Could this trigger a kernel panic if lag is NULL on the rollback path?
-> 
-> If dpaa2_switch_port_bond_join() fails and sets port_priv->lag to NULL, a
-> subsequent NETDEV_CHANGEUPPER rollback calls this function. The lag variable
-> is initialized via rtnl_dereference(port_priv->lag), which would be NULL,
-> leading to a dereference when accessing lag->id here.
-
-From what I know, a failure in a bond join will not generate a
-subsequent event with linking=false and the leave path only gets called
-with a valid upper device.
-
-Anyhow, I can add a defensive check for a NULL port_priv->lag pointer at
-the start of this function.
-
-> 
-> > @@ -2263,6 +2627,80 @@ static int dpaa2_switch_port_changeupper(struct net_device *netdev,
-> >  							     extack);
-> >  		else
-> >  			return dpaa2_switch_port_bridge_leave(netdev);
-> 
-> [Severity: High]
-> Does calling dpaa2_switch_port_bridge_leave() wrongly split LAG member ports
-> into isolated private FDBs?
-> 
-> When a LAG leaves a bridge, this is invoked for each member port. It will
-> unconditionally call dpaa2_switch_port_set_fdb(port_priv, NULL), which forces
-> the port to drop the shared FDB and isolates it from the other LAG members.
-> I note this was also fixed in a later commit covering bond scenarios.
-
-This is the same as above, concern addressed by a later commit.
-
-Ioana
+--m6PvL9voaHHuHzEe--
