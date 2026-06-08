@@ -1,98 +1,67 @@
-Received: from mail-qk1-f202.google.com (mail-qk1-f202.google.com [209.85.222.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0565B3101A6
-	for <netdev@vger.kernel.org>; Mon,  8 Jun 2026 15:59:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9EB532FA2E
+	for <netdev@vger.kernel.org>; Mon,  8 Jun 2026 16:01:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780934363; cv=none; b=JaAsRAlXVCB8ZlKCiSdFhFia6ci6YLkepID/VTgLQnG+s6ceRsRQqnsjzWHiv+YLLTn6hmU4pcAhAuM3FBXd3R/HzQCZJBS4dfd+08AG5Uu5JbePyE6XoQ/h7Hz6X4q0+6oY5YYmp8EM6INSpdvAy+5U9DX3iQMJ+r1dgF2Ljq0=
+	t=1780934463; cv=none; b=IQkpJDtzSDGiSZjBrqu1OdxGPRl++xeXjY+Qjs8f/TYhCSsm96kQdyRZaVqhQp8ewiE7SQWZVhiDAmVgTZ4LPzmjh10pQIdTEP6urVz+eFudO0R9M4r70k3TjU7OzL+TWi9z+KBhc/OXWRLvX7He2aASVQX4JA3saoNfZhVoNZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780934363; c=relaxed/simple;
-	bh=y1xHQSuJzF2UqRnyKwDq1kPH5W0soyshMDEbBGJOlc4=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=m+0CjlWSrkiUssZzmFUAScO4f72BLDeRcBwm4SIcRWKP1Wg4Eix6kUeaQd4aSWaIGC29t3qXFNAwoDC3uNT8Azsbo7de/1v/Osov7fEQG0WYB0CPfDBphR/aYBIh+zfnQeIDsRt3gCkw1pknul06Z/q4aTbmHGmYRWQtp5QtpMc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=skhYtAnH; arc=none smtp.client-ip=209.85.222.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
+	s=arc-20240116; t=1780934463; c=relaxed/simple;
+	bh=Ts8u5y43FkUxGVOnBltJQb/YAn0hirg3J7c793j5p54=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=m9CZEcCtkcBSi8cG+oDv9fWxOJACaWA52xJdg2+2hIcibNfezbkwIkaF7Rzeg95O96ARx9BiTwONWIfascr6Jhf8Zy2JfprdQRSRR/6j3HaVk+S2zxx6mStqKoljCHxys26nCRm5rXIdzdN9Pcpq5JKaJi2KtRZRl9wC4iUU33c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NbD4Jpuj; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="skhYtAnH"
-Received: by mail-qk1-f202.google.com with SMTP id af79cd13be357-9157116b988so1133801685a.0
-        for <netdev@vger.kernel.org>; Mon, 08 Jun 2026 08:59:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780934361; x=1781539161; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=XJUOBELYHUBB25CfUsQ2Rqlqd/XV17NtWpT3OVe+uGw=;
-        b=skhYtAnHswgxurdBP4O/zpNQjsOdtCSxCs5k4Oogo9wFjt2ygOOLbYGEhfDktDuN+2
-         0iyf+8seqHREab5CmULslbP+5Hf8GD6sql5eHwBlyQoPy62oXqeSgo0IAWlwgjBCCOhI
-         U+zHSEZrTix50HBl9HJ9ZCW1lgM80ssNboxGdQLiCJX07Okln3F7bKw4i3FsJBP9d4lI
-         8D2b0E8XOcDum+5ySsRvAou26Lsd8D63kXf3MLOV5PzxRhoEPFFSidlXALy/GIXffph0
-         tRYICzLmS9YqsJEp8MMvGA1yRxVEx83PnampD6YSHIgcqckKtYsUi5h4e+Tl0bpIxjy1
-         uzNw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780934361; x=1781539161;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=XJUOBELYHUBB25CfUsQ2Rqlqd/XV17NtWpT3OVe+uGw=;
-        b=Ldk+EWjWLY0KbiU+BGXWV7TUozvB5fwJs2fAXWtPduxTWjpB8LVBbcTN5X8bSWV2JK
-         uOsKgofh6NPWiYFII5wTCG55IhBWRUEfBaIGvvT4fmNRdlflhmuCk6swYWwrqrweJBWr
-         TZI7vUdaq7TpZmLHOJhBcQK/t/pN+vRWo7/zY5NpQUwqsr30J81MJZn62tnkByTUIraY
-         Voilc61LhST50C83jwrjog8qqz7MFPg6igu4KMoUyNDwRt/rLAoTa9O/rJ0mqaCoNDG3
-         rVKP9/zI4+5xbWfcgr8TaW6eEwhDZifdXrg+Y/eh7iuGMYCQT3iLMivPF7Tz3JNi4tir
-         FHTg==
-X-Forwarded-Encrypted: i=1; AFNElJ8yo1wKigZ1SUq4avU4oZ6vuJ2R8RQtZeu+SHwj4ZC1dPxmX1O8Psr1jih7N1IdKA1i2qT1coY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx4qwmaNHh+IZC1SYFeYuvQZIKd4Xhz9wq6cvi3hbpQhlP39tP/
-	iUZIb+xhZ8x4AgGM+0Shd7kegd/82zWZ/coyRD3Ya5UqNX8a0RFjhJs88bDUCg604/L6kT3xKcN
-	NaiOV75nY9VAVew==
-X-Received: from qknre15.prod.google.com ([2002:a05:620a:8e0f:b0:915:8a6c:892d])
- (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:620a:f10:b0:915:9bb4:9989 with SMTP id af79cd13be357-915a9c4bfb2mr2618246885a.1.1780934360672;
- Mon, 08 Jun 2026 08:59:20 -0700 (PDT)
-Date: Mon,  8 Jun 2026 15:59:18 +0000
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NbD4Jpuj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33D961F00893;
+	Mon,  8 Jun 2026 16:01:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780934462;
+	bh=Cd+2dTQEsuVtmckVeu5cIadqjrd3NxxW5x6IS+111+M=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=NbD4Jpujgo+tgnMDUDiZ7fr35vlavVwjfHf/nNm84/7nYtp2+0uEziuYySI39Jy9F
+	 nC8ehpQ+rM09jAvhF/SlJgUQqrG+rGUoKA/V9LVR+DfbER4S8yU0bpsXI7rfwImkui
+	 b6QCrh79b9IZ0t2syjOiCCJ9pbddWdEHKGjFwyH2xx+X5tD6DAWv6pbUIpnz/06hAX
+	 Hr5rZnRfLJ2I+OzemIebZZBaOcE+Fylm98Bwaqsff5NerKFW7BvF6lwIVTWBdvzeRw
+	 eHmoMLSXbqpuqAvXVRl4qcJDlw8LSdUizueE5n7gJRm2Wf2hHgyde7MjFlZY8l3GUj
+	 yiLJ+jlH+qP+g==
+Date: Mon, 8 Jun 2026 09:01:01 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Eric Dumazet <edumazet@google.com>
+Cc: "David S . Miller" <davem@davemloft.net>, Paolo Abeni
+ <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Kuniyuki Iwashima
+ <kuniyu@google.com>, netdev@vger.kernel.org, eric.dumazet@gmail.com,
+ syzbot+381d82bbf0253710b35d@syzkaller.appspotmail.com,
+ syzbot+3479efbc2821cb2a79f2@syzkaller.appspotmail.com
+Subject: Re: [PATCH net] net: watchdog: fix refcount tracking races
+Message-ID: <20260608090101.42b9f43c@kernel.org>
+In-Reply-To: <20260608123935.524879-1-edumazet@google.com>
+References: <20260608123935.524879-1-edumazet@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.54.0.1032.g2f8565e1d1-goog
-Message-ID: <20260608155918.787644-1-edumazet@google.com>
-Subject: [PATCH net] ip6_vti: set netns_immutable on the fallback device.
-From: Eric Dumazet <edumazet@google.com>
-To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
-	Eric Dumazet <edumazet@google.com>, Noam Rathaus <noamr@ssd-disclosure.com>, 
-	Nicolas Dichtel <nicolas.dichtel@6wind.com>, Steffen Klassert <steffen.klassert@secunet.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-john1988 and Noam Rathaus reported that vti6_init_net() does not set the
-netns_immutable flag on the per-netns fallback tunnel device (ip6_vti0).
+On Mon,  8 Jun 2026 12:39:35 +0000 Eric Dumazet wrote:
+> Blamed commit converted the untracked dev_hold()/dev_put() calls
+> in the watchdog code to use the tracked dev_hold_track()/dev_put_track()
+> (which were later renamed/interfaced to netdev_hold() and netdev_put()).
 
-Other similar tunnel drivers (like ip6_tunnel, sit, ip6_gre, and ip_tunnel)
-correctly set this flag during their fallback device initialization to
-prevent them from being moved to another network namespace.
+selftest kernel build says:
 
-Fixes: 61220ab34948 ("vti6: Enable namespace changing")
-Reported-by: Noam Rathaus <noamr@ssd-disclosure.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Nicolas Dichtel <nicolas.dichtel@6wind.com>
-Cc: Steffen Klassert <steffen.klassert@secunet.com>
----
- net/ipv6/ip6_vti.c | 1 +
- 1 file changed, 1 insertion(+)
+net/sched/sch_generic.c: In function =E2=80=98netdev_watchdog_up=E2=80=99:
+net/sched/sch_generic.c:594:39: error: incompatible type for argument 1 of =
+=E2=80=98IS_ERR_OR_NULL=E2=80=99
+  594 |                 if (IS_ERR_OR_NULL(dev->watchdog_dev_tracker))
+      |                                    ~~~^~~~~~~~~~~~~~~~~~~~~~
+      |                                       |
+      |                                       netdevice_tracker
 
-diff --git a/net/ipv6/ip6_vti.c b/net/ipv6/ip6_vti.c
-index df793c8bfffb0a26ea7f54933b88bccc9b1aa495..d2b74a6f2cf62dbb752d8842e1a4d33fc8392d41 100644
---- a/net/ipv6/ip6_vti.c
-+++ b/net/ipv6/ip6_vti.c
-@@ -1159,6 +1159,7 @@ static int __net_init vti6_init_net(struct net *net)
- 		goto err_alloc_dev;
- 	dev_net_set(ip6n->fb_tnl_dev, net);
- 	ip6n->fb_tnl_dev->rtnl_link_ops = &vti6_link_ops;
-+	ip6n->fb_tnl_dev->netns_immutable = true;
- 
- 	err = vti6_fb_tnl_dev_init(ip6n->fb_tnl_dev);
- 	if (err < 0)
--- 
-2.54.0.1032.g2f8565e1d1-goog
-
+config:
+https://netdev-ctrl.bots.linux.dev/logs/vmksft/forwarding/results/682182/co=
+nfig
