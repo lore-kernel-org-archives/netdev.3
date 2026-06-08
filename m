@@ -1,104 +1,114 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAEAE2E7F0A
-	for <netdev@vger.kernel.org>; Mon,  8 Jun 2026 09:32:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3821C2E739A;
+	Mon,  8 Jun 2026 09:33:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780911146; cv=none; b=n6Axp49UyZJ+ryNQBjf8HZWCvfLxlyTnKuudKCuDjTA8ttRLXsMfOtVz++kLUIvA34GCWCLwXgfAMLYkurfq/0MI3qxBYNU/3qb0xd3kXZ1zzBdV4ML9ismVfO0cvyTydwIM+iYEI6SyRotplmwqlOXj+sYva/yYAx7ysz5opeI=
+	t=1780911215; cv=none; b=puJ0PiD3XyyEF2ZQSQ6awnwrp1AytBSHD2rtwIwOmSMWT553nm3EFO2mbHdJ7huIa+8jJREV1K//yL5FxTE7/03RWGkGfQIdBE03FeByTQwxC83XF9hcBJSP5LQ/XDHADfFxaSQKKgmE1WsMw25bf8URXJoSjKLqiaAeAYl4Tzg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780911146; c=relaxed/simple;
-	bh=rrtvF0lNcj+pHRtfwXDY3phiLJ219l2m72vOnALNy8g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=d/gFRUJw0OUjaEtKpN9GL8BYTydoXFHcLoltqkqx9EJxy1cGf2BURyV1rzWHoMDXHs5Se/cPIkctj9s5aHfbFZ1Z1dlr/uw8MEAFH6XSZBl0AKsNH0uaNelSzxwqgxehi6exejpA1vCWnL7e4gyiY5APyqdcbURzfCmr2ec5H1Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wx0nR9mo; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780911215; c=relaxed/simple;
+	bh=jXSbK/y3T0J/qL0JEnlkmOmsA9DHD/x5LY8yfr0d2tI=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=RMs4kkWC0Jbuhp9ONxuQz0onac6sbwS0IpIPunbvYxO1qEByWZNyK2TfILjsVv11q/hr5Q8cueadF2NBEYV3PbDeTptlwWY6576EXkgNRch1aWv6V2AI6eHmy5Bxpg2HVvsPmClKpfHHQXd1AaaQRuoMdNYL0wGASfJmQZlSfYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=r++slE5y; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wx0nR9mo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8C351F00893;
-	Mon,  8 Jun 2026 09:32:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780911145;
-	bh=ber3utn/8EUmJVjFuWAwn9vEtzDxpWGplyIMDowu99g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Wx0nR9mok/6CM2+NSHU3FRGlv4mFmxhM9+nz/9D9zYxNnja3GH/7MC2DD90ujMk2i
-	 gSBpBUixI1ubPXnguTHRsGKMQ6gP5MJFR14oM77wXK6EKUsiJIwOlvWxHvhWvGXtdX
-	 6ttNKVy7kDYbCO4MKiyKGM2NTYDvXKB8d/KXMaNNZpZXAEFFTsA3gDcyhtc9uvhFDG
-	 F7imx4OXYr+skEUgOfBGkSLZGC/nZKciFw28FDIjFgGk4fgo0pyVqUPDSzIa33FBrW
-	 mLt8vQKwtKSNoFF8tcLbL4CqwWE8vPP2QZV6DYG61HzUFftORZiWuwhIjqriCPlCOh
-	 aJ9JWlkShUhhg==
-Date: Mon, 8 Jun 2026 11:32:23 +0200
-From: Lorenzo Bianconi <lorenzo@kernel.org>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org, netdev@vger.kernel.org,
-	Madhur Agrawal <madhur.agrawal@airoha.com>
-Subject: Re: [PATCH net-next v2] net: airoha: add ethtool priv_flags support
- for LAN/WAN and GDM2 loopback
-Message-ID: <aiaMJ6i4o3olQtu9@lore-desk>
-References: <20260607-airoha-ethtool-priv_flags-v2-1-742c7aa1e182@kernel.org>
- <33c3a87d-ad97-4f6a-8f76-ebab80c496ac@lunn.ch>
- <aiWzaV1f1Fpc2rhJ@lore-desk>
- <e8f3d24a-985b-4bde-9f51-2d5ae3d25b01@lunn.ch>
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="r++slE5y"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:Message-Id:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:
+	Reply-To:Content-ID:Content-Description:In-Reply-To:References;
+	bh=2536z80i2F49JQxoJ45J3DmC1kfjJnuOkkcVHn/LwUM=; b=r++slE5yJ6HlROhA2wjJvn/IqW
+	ux9pU135kG6+NXjKumcCvjRZ0m+XzmEo0fQ0DGYY9U+uyxfvQK6zQrJTH81EkCsrY3Q0/fu6EOSqh
+	Cl8tSvjhCvZu1Y/rrze4Vai3YAe4WaLk8tAZkciI6e9Qe/U+vWDrVge3h8tFnLx8B7cxRgMBxIhD9
+	0ovRodui0Lrt3D1Yd7TNEwEH+FDVhtBiYhlsw65hounOvf3M+MciIzZsae68ob5ri4mB5lLvhaO4e
+	1pkfVRW5WgdzHKvf3uW47EddSfRenWcEIuppihAFGcPgUVas6ENTl52ByDfkESySuh3/anOhrO3lI
+	s2howo8w==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wWWMJ-007WjY-1q;
+	Mon, 08 Jun 2026 09:33:27 +0000
+From: Breno Leitao <leitao@debian.org>
+Date: Mon, 08 Jun 2026 02:32:05 -0700
+Subject: [PATCH net] rds: mark snapshot pages dirty in
+ rds_info_getsockopt()
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="adOSsypNp6f03yZM"
-Content-Disposition: inline
-In-Reply-To: <e8f3d24a-985b-4bde-9f51-2d5ae3d25b01@lunn.ch>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260608-rds_fix-v1-1-006c88543408@debian.org>
+X-B4-Tracking: v=1; b=H4sIABSMJmoC/x3MUQqAIBAFwKss7zvBJKy8SkRErrU/FhoRiHcPm
+ gNMQeYknOGoIPEjWc4IR21D2I417qzEwxGMNlZbPajk8xLkVaPxduuD7gIbNIQrcZD3nyZEvjH
+ X+gGpqihWXgAAAA==
+X-Change-ID: 20260608-rds_fix-92d6c7f04fe2
+To: Allison Henderson <achender@kernel.org>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, Andy Grover <andy.grover@oracle.com>
+Cc: netdev@vger.kernel.org, linux-rdma@vger.kernel.org, 
+ rds-devel@oss.oracle.com, linux-kernel@vger.kernel.org, 
+ kernel-team@meta.com, Breno Leitao <leitao@debian.org>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1278; i=leitao@debian.org;
+ h=from:subject:message-id; bh=jXSbK/y3T0J/qL0JEnlkmOmsA9DHD/x5LY8yfr0d2tI=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBqJoxjdwIHRloEIey/wH+093QB8dvjSgrE4ToW9
+ f51Vho4aOiJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaiaMYwAKCRA1o5Of/Hh3
+ bXnrD/9Abi9ptLTHhISI6ZsdcLOArNcXEosMy6aGdfLb7IJ7aOMwLezl2Nyv91AxdO3/P8lg8Wv
+ odoVcyADPuwPLR8uqGtjDRkxbW+AKascfYwacwNHDjhIeBFsl2nH54AKIog2IHFqxw5iVXItbyh
+ Ujmkj0SofJ+IbWSiVLc70uUDcOe8X7nLLLGFZnitn+T/dSiaMEQifokCbv69WTIpd2Jhofa3NAV
+ 8Gq9nXo1+iNbJo70BOwavQOgpq0wmxG55Q1+DPtGyGtLYucXGXWiphynXXsuA4ZU++5cKubQ5SR
+ IixYPkdM6P9L2HS9fc53OMOLv6oF+NAy1tePEixaJTbAQPFrmCGveJXZ572ZV5bv6X+CaN6RF4G
+ E7+Fxpq0A3lk6ABkC3VOCXl3UKJIUQ2kT3JqyGqVSPLV/lu3kxF1qF653ypqj8VOOb6AlthxeNR
+ eXS2F0QJN3FpYa/yPePEj/TFooOn2mT/pP7Ddjs8LgA3xYVbED8VRNV2rGQVLphUzYUCn+n5l5h
+ MFObDdVzHMnBOaHt5j/2jpIYj31YpZa3BuD12acxg2Cyc5aW2+iW7pG6a5jCy5wPlGx0CJ8s8mX
+ BAiOI6Y0pltXUVCb447axaSv61vdjSCeEAt19nwvRAlXOTUmSEubAwYJyTd+8anraWKXZOQ67XV
+ 7hEz4PF1YP0kInw==
+X-Developer-Key: i=leitao@debian.org; a=openpgp;
+ fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
+X-Debian-User: leitao
 
+rds_info_getsockopt() pins the destination user pages with FOLL_WRITE and
+the RDS_INFO_* producers memcpy the snapshot into them through
+kmap_atomic(). Because that copy goes through the kernel direct map, the
+dirty bit on the user PTE is never set, so unpin_user_pages() releases the
+pages without marking them dirty. A file-backed destination page can then
+be reclaimed without writeback, silently discarding the copied data.
 
---adOSsypNp6f03yZM
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Use unpin_user_pages_dirty_lock() with make_dirty=true so the modified
+pages are marked dirty before they are unpinned.
 
-> On Sun, Jun 07, 2026 at 08:07:37PM +0200, Lorenzo Bianconi wrote:
-> > > > When a GDM3/GDM4 port is set to WAN mode, enable GDM2 loopback to
-> > > > support hardware QoS. Conversely, when switching back to LAN mode,
-> > > > disable the GDM2 loopback and restore the default forwarding
-> > > > configuration.
-> > >=20
-> > > Why not just use the presence of an off loadable qdisc as the
-> > > indicator to change mode?
-> >=20
-> > Hi Andrew,
-> >=20
-> > Interesting, can you please provide more details about you mean?
->=20
-> You say you need it to be in loopback mode in order to support
-> hardware QoS. You configure QoS by using a qdisc, and something like
-> mqprio, tcf etc. So when the user configures QoS, you can see if the
-> hardware supports the request QoS. If so, swap to loopback mode and
-> offload the QoS function to the hardware. If the hardware does not
-> support the requested QoS, leave it in software and keep with LAN
-> mode.
+Fixes: a8c879a7ee98 ("RDS: Info and stats")
+Signed-off-by: Breno Leitao <leitao@debian.org>
+---
+ net/rds/info.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-ack thx, nice idea. I will rework this patch in order to rely on tc to
-configure GDM3/GDM4 ports in LAN/WAN mode.
+diff --git a/net/rds/info.c b/net/rds/info.c
+index f1b29994934a..17061f6ff74e 100644
+--- a/net/rds/info.c
++++ b/net/rds/info.c
+@@ -235,7 +235,7 @@ int rds_info_getsockopt(struct socket *sock, int optname, char __user *optval,
+ 
+ out:
+ 	if (pages)
+-		unpin_user_pages(pages, nr_pages);
++		unpin_user_pages_dirty_lock(pages, nr_pages, true);
+ 	kfree(pages);
+ 
+ 	return ret;
 
-Regards,
-Lorenzo
+---
+base-commit: 9772589b57e44aedc240211c5c3f7a684a034d3a
+change-id: 20260608-rds_fix-92d6c7f04fe2
 
->=20
-> 	Andrew
+Best regards,
+-- 
+Breno Leitao <leitao@debian.org>
 
---adOSsypNp6f03yZM
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCaiaMJwAKCRA6cBh0uS2t
-rK2bAPwIvDBSx3qJGo2xGvPkpy2z4KzEamk7juLxscsrz/+wtQEAl3TTMKLxFV09
-y3YJwHEv243V0HLZH15bEMGGSDKoWws=
-=rM/X
------END PGP SIGNATURE-----
-
---adOSsypNp6f03yZM--
