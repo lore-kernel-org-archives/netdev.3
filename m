@@ -1,27 +1,27 @@
-Received: from smtpbgau1.qq.com (smtpbgau1.qq.com [54.206.16.166])
+Received: from smtpbg151.qq.com (smtpbg151.qq.com [18.169.211.239])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDDDD3B71BD
-	for <netdev@vger.kernel.org>; Mon,  8 Jun 2026 10:40:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.206.16.166
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1F463B9DA9
+	for <netdev@vger.kernel.org>; Mon,  8 Jun 2026 10:40:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.169.211.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780915230; cv=none; b=Jbj4lS/6/yfweezlU+m6dGymQn9JrVfny2Wj50ajDqlqMVH/DwG2ZD5Dw8HwId0kw53GmePPlfoHUeOZfoU9K7CzhkLv2K/cRES2LUg0R3b1Oeb4LP+we1lKR55Mw5V78bnZExP9aWHePOxJZ3N4xIcBGIQbYJDIKJXQfLLLgGs=
+	t=1780915239; cv=none; b=VL+E8bgJOaKwVsnWf3FQssMG0kMQl/pXMBSlC6AXbx1xJx20aP4TKLZ8irorq8U3BDKCegHX02H3fE4TWimFjWkBqhXVDmKeaSUDqPEwGHuIc4A++r2BTwT2erBzgFlWTYzZUCDtrLOj0W0oig2NU7JPrrVPJ3m8q1+28OK4b5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780915230; c=relaxed/simple;
-	bh=JxnRAz7OtvaeNZPxtRVItUXeAAiiWPxZ+RD4Bm6JIG0=;
+	s=arc-20240116; t=1780915239; c=relaxed/simple;
+	bh=E+SheBLH6hsoqgR7+Wkc3OBWiA4Qtf3j30gOsNlgyAU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=GYUz4x/oYphST7P1fOzLVRDAUrV5GDn/Rda/cntonxXPaK+PqZG8lTYV42hkJANjIMjpebiXx9kO4mHlCOSsufJhJGqeLQuRfq+ulG4tCQAjMJI9Dg7BwOFUDHKfElQww6Ov3TmlnMXdBHvDbD9Y2tRZCYG70GkATNOQTdYvkEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com; spf=pass smtp.mailfrom=net-swift.com; arc=none smtp.client-ip=54.206.16.166
+	 MIME-Version; b=SRHKVDmZllWTcNJ5QU0rdwYPkEFLOcbOundsZsO3WMzgtihiqusbG7umhnKLvxkVkjHXfuSG/Qcfrgb4WRwKuohv9NqQ2bUdU/0cH/KPfJKKi+/bMICV48jozkX8146w7WpeoH1tG8b3OWR+CmTtgEwhsq02PAtgNJycQLIY0Os=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com; spf=pass smtp.mailfrom=net-swift.com; arc=none smtp.client-ip=18.169.211.239
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=net-swift.com
-X-QQ-mid: esmtpgz10t1780915191t481dadcd
-X-QQ-Originating-IP: MGJmuGRkKW4X90GtJGTg3a12Ys+jszYez+0b9QsbJ3E=
+X-QQ-mid: esmtpgz10t1780915195taef874dc
+X-QQ-Originating-IP: JW4ZB+tgZV9oE1LW8B+V9lQjcZqJmQrU/ZgiHfIbNCk=
 Received: from localhost.localdomain ( [36.24.184.84])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Mon, 08 Jun 2026 18:39:50 +0800 (CST)
+	id ; Mon, 08 Jun 2026 18:39:54 +0800 (CST)
 X-QQ-SSF: 0001000000000000000000000000000
-X-QQ-GoodBg: 2
-X-BIZMAIL-ID: 10400062301939224614
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 8796568228109399643
 EX-QQ-RecipientCnt: 6
 From: Mengyuan Lou <mengyuanlou@net-swift.com>
 To: netdev@vger.kernel.org
@@ -30,9 +30,9 @@ Cc: jiawenwu@trustnetic.com,
 	horms@kernel.org,
 	kuba@kernel.org,
 	Mengyuan Lou <mengyuanlou@net-swift.com>
-Subject: [PATCH net-next v4 1/3] net: libwx: add support for set_ringparam in wx_ethtool_ops_vf
-Date: Mon,  8 Jun 2026 18:39:44 +0800
-Message-Id: <20260608103946.25786-2-mengyuanlou@net-swift.com>
+Subject: [PATCH net-next v4 3/3] net: libwx: support vf per-queue statistics via ethtool -S
+Date: Mon,  8 Jun 2026 18:39:46 +0800
+Message-Id: <20260608103946.25786-4-mengyuanlou@net-swift.com>
 X-Mailer: git-send-email 2.30.1
 In-Reply-To: <20260608103946.25786-1-mengyuanlou@net-swift.com>
 References: <20260608103946.25786-1-mengyuanlou@net-swift.com>
@@ -45,215 +45,182 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
 Feedback-ID: esmtpgz:net-swift.com:qybglogicsvrgz:qybglogicsvrgz5b-1
-X-QQ-XMAILINFO: OTOKxUKFeFTR7t8lqHKd0AcRPhmKNQF8qoItJz6Pg9F61Omde0xUIcNb
-	X1xUYHdiipG6r485blyKIzmZXMxNq1TLlOrCbbN21HgMJ7+ZbRRaUPR4gin70wFowA6doY7
-	d9R72TUiFVd/e1G/npOZNe7/xuvJ3konM3w9t6PZ7LQdMkYHaaGtPJzTIKrdMwMBist7McQ
-	/zjmqUHqEeOl3EbMtGbQ59j5cDaPb3vgtsBbxNv7DSBlDTp0InLnK4WqK9EfSb8nGVkHftw
-	mpxjXQ+VpRjtt4NyVVA9jvyfn0H80t3V2z11aJoBzUkAGzH/3sk6HOZHZp7AzCCQMoMmV2K
-	SWHStp76hTBSrIlGjtvhBzxzuiH516vSSqB/D3HuKg6NNNYHPuhvKC47V5Oa81LapfGbeqt
-	87l1bIEm28Mk84Qux24AAXqVg04cmtluIiVb4AzgZQVQheUscRCtu/LNlqV/N/L8NoN7DL+
-	UO0rOGj3jyIXtoDCN+mIIEnLDZDufZ8rjSN1Q96Q6vHsxh6VlGZi/XuZyqjxsTFfY8Mu5Le
-	2qIGgxO4hG3pL0X7Kx2QMZFHHPc5eeBSr7rosPPz9kn4o1pBvJJO8KgV64uM/vSAgnd8RYo
-	7Y+Ii7tScj1dDsRSByf42LOtPoT8hN8AkjZ/hZt9s4RyqgBBQdgnYSj+KMd35dqXOevnM6N
-	MrI4QMy0pRcSFLNLEQfxMLQRWDnlf90jNrhrb+j0Grj75wLjIptuDk4xCgsqR7i2I/+lbcN
-	Api8LvGYR789qv37jk18NhqBNkrMbFRG5EAFnGbwjUmC9jrpXHSrM7tD23nRVvXfUwbDqK9
-	Kv1h8L5KZV6If+vBiu9LRQ4XeBcSBBfsHk7x7/dcUjI3xwuyYvsoo4Tn3JQLNRUrcI/ioxn
-	GLJ7n8KwTPb9OVzH2r8I5qSUgncC5nyDDGOwgjarg7zLyyl2RkVlrsdis47xOG9PrdkAIiU
-	btmeAWlsrZzfYGCssTVEMbCS0vYNUef3rRDaTQRSZLCWPOns+HUmuKoItdF85Am3lTbA58X
-	HvhVi4gp7jQYcl8kgPle2NOotOImlTRnE7jDpzpKXGEVOFRipvETLyh7K9DU921gKYhEdD2
-	HRr3dpXBJ/81IBoIXn2XIOAFj57QuUCsJPtj8vElG5YFdUeATFlQULITaidt+j/Bkg7yDty
-	hj5SoSGSTQMcQ7mvgME+5sEtLNSDt+cl2Kzox9qPv55NGwLsq9UPUzu45OcODn4tXsjM
-X-QQ-XMRINFO: Mp0Kj//9VHAxzExpfF+O8yhSrljjwrznVg==
+X-QQ-XMAILINFO: McnIZrOgyhy6kl1n9N8OHfUYK9Hcz7LJ6oXMY2a4whGkp2JTOJRSYQLB
+	QdRpsDeNoIXsWHswdQzcHh5gGqo9UOea+PHOgJpIfcfwdd0thRQBMhfAwdmQEQwyZh/r1O4
+	QKYDZWr1rjb/U2QcJS2GdMmLGLG5F8sWsun+LPxQNq7QNJrw+1bNfngTaCf1oIJAbHAWXi6
+	KCNQnsPs+OmRvaJXabLuo8Z95Vj1j/Yc/tmDDCI8Lrg+FjLZkcWsz383gv/Sa9OlxZY9OkF
+	jjBgpem5mWrmlhEGHGgVRTPoyohIEtN923Vv8fVABme/PY0rZcAIF3IC3ClUpISS776ah1p
+	Sa6Yrv9kuPYXBJqMXTICVraJh1cgPoBpF8gV1bPBrT6STXVuGpWNZCRhq0HbvtNQ3OO+bki
+	3aHlg+/kR+4aMaDHcsHeedJ3n0MUyDe1NWq+lUnWBumWbSIKga6ns1aBFO5T5GrLPL3Zpwh
+	1wPRoRRgOVH+DoQweKKEJlmRlL8x25hg3w4X4THSgTC827sRdj3+undWheK6d1RxIhbiVZV
+	3dBVcb4c7Ev+JvlhEwrbHI8kI0fx9uWbzGdK6o/h2Koz1pFFskQOlNv1X5WKiq+WCcSgCe8
+	Rnw/Onypu7ATyHJsTuXrteNXJPK0ZDUTkZltkobxTov9wP3SNhzL40f+6TrJuJhejF2TKNR
+	yUdFSwGuLZH+x3qaz/JIfsf+cQHysh3XbaqXe5jBcUA6wstYrblnfEoBLKdoY9sE2hxcGbF
+	WswiSpMeD0p9aMQ7rvNzdJvXX3Es1G9w8pS3MS8oNLZdld+oJeu5ADbEwUPTmWrOTMatyZu
+	sCEPyfmbWHNnnYLafcVLHoXvt5OFWz0tTA7U1sBuSg9whvFK6kxj9dDGiksFkEB2ys7uoa6
+	4ZQ/2HJAoOrm/utYYh+zpdORTqQyEv+GfQ2i8BfqqfLQevH1eqH8mmWJSzVhRc+gQ0sKfk6
+	wD/vV2LBg3OFziEzNlX35gJKdGImXSrBvFvX0XzrA+zYJYzxGy1KotIPgLJdShvTi+w+G/j
+	eGLLFsVWhxX051JA04xAd7FSRWlrdlRsuZfpspzbvBGfEAovX1ChgL1tFXP4XhrEtZ23OwA
+	edaudLyUuOaqigltSQeh9XrWqmYrmk3ggVY9W6JvRGlnwJoIVHbtvyvDw281CCbg12dfyvr
+	0gphEqMp+Pi/xTg4Y3GBYHKaZg==
+X-QQ-XMRINFO: OWPUhxQsoeAVwkVaQIEGSKwwgKCxK/fD5g==
 X-QQ-RECHKSPAM: 0
 
-Add support for the set_ringparam in wx_ethtool_ops_vf,
-which is used to set ring sizes for ngbevf and txgbevf.
+Add per-queue TX/RX packet and byte counters to the VF ethtool stats
+table.
+The stats length is now dynamically determined based on whether the
+device is a VF or PF via wx_stats_len().
 
 Signed-off-by: Mengyuan Lou <mengyuanlou@net-swift.com>
 ---
- .../net/ethernet/wangxun/libwx/wx_ethtool.c   | 60 +++++++++++++++++++
- drivers/net/ethernet/wangxun/libwx/wx_lib.c   |  9 +--
- drivers/net/ethernet/wangxun/libwx/wx_lib.h   |  4 +-
- .../net/ethernet/wangxun/libwx/wx_vf_common.c |  4 +-
- .../net/ethernet/wangxun/libwx/wx_vf_common.h |  2 +
- 5 files changed, 71 insertions(+), 8 deletions(-)
+ .../net/ethernet/wangxun/libwx/wx_ethtool.c   | 48 +++++++++++++++----
+ drivers/net/ethernet/wangxun/libwx/wx_hw.c    |  4 ++
+ .../net/ethernet/wangxun/libwx/wx_vf_common.c |  2 +
+ 3 files changed, 44 insertions(+), 10 deletions(-)
 
 diff --git a/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c b/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
-index 5df971aca9e3..6d8fcddde6fa 100644
+index 30c6ef6103ac..86f6ac63acf7 100644
 --- a/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
 +++ b/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
-@@ -9,6 +9,7 @@
- #include "wx_ethtool.h"
- #include "wx_hw.h"
- #include "wx_lib.h"
-+#include "wx_vf_common.h"
+@@ -48,6 +48,10 @@ static const struct wx_stats wx_gstrings_stats[] = {
+ 	WX_STAT("rx_hwtstamp_cleared", rx_hwtstamp_cleared),
+ };
  
- struct wx_stats {
- 	char stat_string[ETH_GSTRING_LEN];
-@@ -775,6 +776,64 @@ static int wx_get_link_ksettings_vf(struct net_device *netdev,
- 	return 0;
- }
- 
-+static int wx_set_ringparam_vf(struct net_device *netdev,
-+			       struct ethtool_ringparam *ring,
-+			       struct kernel_ethtool_ringparam *kernel_ring,
-+			       struct netlink_ext_ack *extack)
++static const struct wx_stats wx_gstrings_stats_vf[] = {
++	WX_STAT("non_eop_descs", non_eop_descs),
++};
++
+ static const struct wx_stats wx_gstrings_fdir_stats[] = {
+ 	WX_STAT("fdir_match", stats.fdirmatch),
+ 	WX_STAT("fdir_miss", stats.fdirmiss),
+@@ -69,15 +73,26 @@ static const struct wx_stats wx_gstrings_rsc_stats[] = {
+ #define WX_QUEUE_STATS_LEN ( \
+ 		(WX_NUM_TX_QUEUES + WX_NUM_RX_QUEUES) * \
+ 		(sizeof(struct wx_queue_stats) / sizeof(u64)))
+-#define WX_GLOBAL_STATS_LEN  ARRAY_SIZE(wx_gstrings_stats)
+ #define WX_FDIR_STATS_LEN  ARRAY_SIZE(wx_gstrings_fdir_stats)
+ #define WX_RSC_STATS_LEN  ARRAY_SIZE(wx_gstrings_rsc_stats)
+-#define WX_STATS_LEN (WX_GLOBAL_STATS_LEN + WX_QUEUE_STATS_LEN)
++
++static inline unsigned int wx_global_stats_len(const struct wx *wx)
 +{
-+	struct wx *wx = netdev_priv(netdev);
-+	u32 new_rx_count, new_tx_count;
-+	struct wx_ring *temp_ring;
-+	int i, err = 0;
-+
-+	new_tx_count = clamp_t(u32, ring->tx_pending, WX_MIN_TXD, WX_MAX_TXD);
-+	new_tx_count = ALIGN(new_tx_count, WX_REQ_TX_DESCRIPTOR_MULTIPLE);
-+
-+	new_rx_count = clamp_t(u32, ring->rx_pending, WX_MIN_RXD, WX_MAX_RXD);
-+	new_rx_count = ALIGN(new_rx_count, WX_REQ_RX_DESCRIPTOR_MULTIPLE);
-+
-+	if (new_tx_count == wx->tx_ring_count &&
-+	    new_rx_count == wx->rx_ring_count)
-+		return 0;
-+
-+	mutex_lock(&wx->reset_lock);
-+	set_bit(WX_STATE_RESETTING, wx->state);
-+
-+	if (!netif_running(wx->netdev)) {
-+		for (i = 0; i < wx->num_tx_queues; i++)
-+			wx->tx_ring[i]->count = new_tx_count;
-+		for (i = 0; i < wx->num_rx_queues; i++)
-+			wx->rx_ring[i]->count = new_rx_count;
-+		wx->tx_ring_count = new_tx_count;
-+		wx->rx_ring_count = new_rx_count;
-+
-+		goto clear_reset;
-+	}
-+
-+	/* allocate temporary buffer to store rings in */
-+	i = max_t(int, wx->num_tx_queues, wx->num_rx_queues);
-+	temp_ring = kvmalloc_objs(struct wx_ring, i);
-+	if (!temp_ring) {
-+		err = -ENOMEM;
-+		goto clear_reset;
-+	}
-+
-+	wxvf_down(wx);
-+	/* When set_ring fails, the count will not be updated.
-+	 * It merely notifies that there is an error in the setting.
-+	 */
-+	err = wx_set_ring(wx, new_tx_count, new_rx_count, temp_ring);
-+	if (err)
-+		wx_err(wx, "failed to set ring parameters: %d", err);
-+	wx_configure_vf(wx);
-+	wxvf_up_complete(wx);
-+	kvfree(temp_ring);
-+clear_reset:
-+	clear_bit(WX_STATE_RESETTING, wx->state);
-+	mutex_unlock(&wx->reset_lock);
-+	return err;
++	return wx->pdev->is_virtfn ?
++	       ARRAY_SIZE(wx_gstrings_stats_vf) : ARRAY_SIZE(wx_gstrings_stats);
 +}
 +
- static const struct ethtool_ops wx_ethtool_ops_vf = {
- 	.supported_coalesce_params = ETHTOOL_COALESCE_USECS |
- 				     ETHTOOL_COALESCE_TX_MAX_FRAMES_IRQ |
-@@ -782,6 +841,7 @@ static const struct ethtool_ops wx_ethtool_ops_vf = {
- 	.get_drvinfo		= wx_get_drvinfo,
- 	.get_link		= ethtool_op_get_link,
- 	.get_ringparam		= wx_get_ringparam,
-+	.set_ringparam		= wx_set_ringparam_vf,
- 	.get_msglevel		= wx_get_msglevel,
- 	.get_coalesce		= wx_get_coalesce,
- 	.get_ts_info		= ethtool_op_get_ts_info,
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_lib.c b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-index d042567b8128..2e5dba88d04a 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-@@ -3248,8 +3248,8 @@ netdev_features_t wx_features_check(struct sk_buff *skb,
- }
- EXPORT_SYMBOL(wx_features_check);
++static inline unsigned int wx_stats_len(const struct wx *wx)
++{
++	struct net_device *netdev = wx->netdev;
++
++	return wx_global_stats_len(wx) + WX_QUEUE_STATS_LEN;
++}
  
--void wx_set_ring(struct wx *wx, u32 new_tx_count,
--		 u32 new_rx_count, struct wx_ring *temp_ring)
-+int wx_set_ring(struct wx *wx, u32 new_tx_count,
-+		u32 new_rx_count, struct wx_ring *temp_ring)
+ int wx_get_sset_count(struct net_device *netdev, int sset)
  {
- 	int i, err = 0;
+ 	struct wx *wx = netdev_priv(netdev);
+-	int len = WX_STATS_LEN;
++	int len = wx_stats_len(wx);
  
-@@ -3271,7 +3271,7 @@ void wx_set_ring(struct wx *wx, u32 new_tx_count,
- 					i--;
- 					wx_free_tx_resources(&temp_ring[i]);
- 				}
--				return;
-+				return err;
- 			}
- 		}
+ 	switch (sset) {
+ 	case ETH_SS_STATS:
+@@ -100,8 +115,11 @@ void wx_get_strings(struct net_device *netdev, u32 stringset, u8 *data)
  
-@@ -3299,7 +3299,7 @@ void wx_set_ring(struct wx *wx, u32 new_tx_count,
- 					i--;
- 					wx_free_rx_resources(&temp_ring[i]);
- 				}
--				return;
-+				return err;
- 			}
- 		}
+ 	switch (stringset) {
+ 	case ETH_SS_STATS:
+-		for (i = 0; i < WX_GLOBAL_STATS_LEN; i++)
+-			ethtool_puts(&p, wx_gstrings_stats[i].stat_string);
++		for (i = 0; i < wx_global_stats_len(wx); i++)
++			if (wx->pdev->is_virtfn)
++				ethtool_puts(&p, wx_gstrings_stats_vf[i].stat_string);
++			else
++				ethtool_puts(&p, wx_gstrings_stats[i].stat_string);
+ 		if (test_bit(WX_FLAG_FDIR_CAPABLE, wx->flags)) {
+ 			for (i = 0; i < WX_FDIR_STATS_LEN; i++)
+ 				ethtool_puts(&p, wx_gstrings_fdir_stats[i].stat_string);
+@@ -134,10 +152,16 @@ void wx_get_ethtool_stats(struct net_device *netdev,
  
-@@ -3311,6 +3311,7 @@ void wx_set_ring(struct wx *wx, u32 new_tx_count,
+ 	wx_update_stats(wx);
  
- 		wx->rx_ring_count = new_rx_count;
+-	for (i = 0; i < WX_GLOBAL_STATS_LEN; i++) {
+-		p = (char *)wx + wx_gstrings_stats[i].stat_offset;
+-		data[i] = (wx_gstrings_stats[i].sizeof_stat ==
+-			   sizeof(u64)) ? *(u64 *)p : *(u32 *)p;
++	for (i = 0; i < wx_global_stats_len(wx); i++) {
++		if (wx->pdev->is_virtfn) {
++			p = (char *)wx + wx_gstrings_stats_vf[i].stat_offset;
++			data[i] = (wx_gstrings_stats_vf[i].sizeof_stat ==
++				   sizeof(u64)) ? *(u64 *)p : *(u32 *)p;
++		} else {
++			p = (char *)wx + wx_gstrings_stats[i].stat_offset;
++			data[i] = (wx_gstrings_stats[i].sizeof_stat ==
++				   sizeof(u64)) ? *(u64 *)p : *(u32 *)p;
++		}
  	}
-+	return 0;
- }
- EXPORT_SYMBOL(wx_set_ring);
  
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_lib.h b/drivers/net/ethernet/wangxun/libwx/wx_lib.h
-index aed6ea8cf0d6..bc671786978e 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_lib.h
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_lib.h
-@@ -36,8 +36,8 @@ netdev_features_t wx_fix_features(struct net_device *netdev,
- netdev_features_t wx_features_check(struct sk_buff *skb,
- 				    struct net_device *netdev,
- 				    netdev_features_t features);
--void wx_set_ring(struct wx *wx, u32 new_tx_count,
--		 u32 new_rx_count, struct wx_ring *temp_ring);
-+int wx_set_ring(struct wx *wx, u32 new_tx_count,
-+		u32 new_rx_count, struct wx_ring *temp_ring);
- void wx_service_event_schedule(struct wx *wx);
- void wx_service_event_complete(struct wx *wx);
- void wx_service_timer(struct timer_list *t);
+ 	if (test_bit(WX_FLAG_FDIR_CAPABLE, wx->flags)) {
+@@ -219,9 +243,10 @@ EXPORT_SYMBOL(wx_get_pause_stats);
+ 
+ void wx_get_drvinfo(struct net_device *netdev, struct ethtool_drvinfo *info)
+ {
+-	unsigned int stats_len = WX_STATS_LEN;
+ 	struct wx *wx = netdev_priv(netdev);
++	unsigned int stats_len;
+ 
++	stats_len = wx_stats_len(wx);
+ 	if (test_bit(WX_FLAG_FDIR_CAPABLE, wx->flags))
+ 		stats_len += WX_FDIR_STATS_LEN;
+ 
+@@ -851,6 +876,9 @@ static const struct ethtool_ops wx_ethtool_ops_vf = {
+ 	.set_coalesce		= wx_set_coalesce,
+ 	.get_ts_info		= ethtool_op_get_ts_info,
+ 	.get_link_ksettings	= wx_get_link_ksettings_vf,
++	.get_sset_count		= wx_get_sset_count,
++	.get_strings		= wx_get_strings,
++	.get_ethtool_stats	= wx_get_ethtool_stats,
+ };
+ 
+ void wx_set_ethtool_ops_vf(struct net_device *netdev)
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_hw.c b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
+index 260e14d5d541..ce172b6deb80 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_hw.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
+@@ -2917,6 +2917,9 @@ void wx_update_stats(struct wx *wx)
+ 	wx->restart_queue = restart_queue;
+ 	wx->tx_busy = tx_busy;
+ 
++	if (wx->pdev->is_virtfn)
++		goto skip_hw_stats;
++
+ 	wx_update_xoff_rx_lfc(wx);
+ 
+ 	hwstats->gprc += rd32(wx, WX_RDM_PKT_CNT);
+@@ -2956,6 +2959,7 @@ void wx_update_stats(struct wx *wx)
+ 		hwstats->qmprc += rd32_wrap(wx, WX_PX_MPRC(i),
+ 					    &wx->last_stats.qmprc[i]);
+ 
++skip_hw_stats:
+ 	spin_unlock(&wx->hw_stats_lock);
+ }
+ EXPORT_SYMBOL(wx_update_stats);
 diff --git a/drivers/net/ethernet/wangxun/libwx/wx_vf_common.c b/drivers/net/ethernet/wangxun/libwx/wx_vf_common.c
-index 0d2db8d38cd5..26de78e9a69e 100644
+index 26de78e9a69e..1d84fe35d7d9 100644
 --- a/drivers/net/ethernet/wangxun/libwx/wx_vf_common.c
 +++ b/drivers/net/ethernet/wangxun/libwx/wx_vf_common.c
-@@ -269,7 +269,7 @@ static void wxvf_irq_enable(struct wx *wx)
- 	wr32(wx, WX_VXIMC, wx->eims_enable_mask);
+@@ -5,6 +5,7 @@
+ #include <linux/pci.h>
+ 
+ #include "wx_type.h"
++#include "wx_hw.h"
+ #include "wx_mbx.h"
+ #include "wx_lib.h"
+ #include "wx_vf.h"
+@@ -409,6 +410,7 @@ static void wxvf_service_task(struct work_struct *work)
+ 
+ 	wxvf_link_config_subtask(wx);
+ 	wxvf_reset_subtask(wx);
++	wx_update_stats(wx);
+ 	wx_service_event_complete(wx);
  }
- 
--static void wxvf_up_complete(struct wx *wx)
-+void wxvf_up_complete(struct wx *wx)
- {
- 	/* Always set the carrier off */
- 	netif_carrier_off(wx->netdev);
-@@ -324,7 +324,7 @@ int wxvf_open(struct net_device *netdev)
- }
- EXPORT_SYMBOL(wxvf_open);
- 
--static void wxvf_down(struct wx *wx)
-+void wxvf_down(struct wx *wx)
- {
- 	struct net_device *netdev = wx->netdev;
- 
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_vf_common.h b/drivers/net/ethernet/wangxun/libwx/wx_vf_common.h
-index cbbb1b178cb2..d45d5d8ac3ab 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_vf_common.h
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_vf_common.h
-@@ -15,7 +15,9 @@ void wx_set_rx_mode_vf(struct net_device *netdev);
- void wx_configure_vf(struct wx *wx);
- int wx_set_mac_vf(struct net_device *netdev, void *p);
- void wxvf_watchdog_update_link(struct wx *wx);
-+void wxvf_up_complete(struct wx *wx);
- int wxvf_open(struct net_device *netdev);
-+void wxvf_down(struct wx *wx);
- int wxvf_close(struct net_device *netdev);
- void wxvf_init_service(struct wx *wx);
  
 -- 
 2.30.1
