@@ -1,74 +1,75 @@
-Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010036.outbound.protection.outlook.com [52.101.46.36])
+Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013050.outbound.protection.outlook.com [40.107.201.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C2F73B8944;
-	Mon,  8 Jun 2026 22:41:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.36
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 661403B9D93;
+	Mon,  8 Jun 2026 22:41:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.50
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780958467; cv=fail; b=UVR6yyeGebiBIoF7MQaVIMDo2CCOHHqvdtwt55UmiA26xOhKmNVIV6Q8+aScGfv2Uz3Q6Ml+Uas3TzZYCto2uBKCKgK5gmxqyxPlb5WKltRjp45LHbFh6wu8Bw4ag9qyow1biOFiQOtqARLP4An5EIzQDxW1xByV1XPa9DCvP+0=
+	t=1780958468; cv=fail; b=RN6AfVUGCEspodPn/mLqx87L+GFJp0WoC8jzgdq+xbcIWFln2cZJo+X9+EpDYsH/KKHCAOu/Jn2ISJSfffbVef7mcrD0VTJA6YR3uPSYC1mvtRYyttUmPEzE/+HIYMsj2k+hostdwMXuHvCQOdHZpQakfoVuQw+pv/0zvp7n5js=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780958467; c=relaxed/simple;
-	bh=TxU4FLcqLIYr/eGxznYMyqtozEBD3goU2bBOTYGo7c0=;
+	s=arc-20240116; t=1780958468; c=relaxed/simple;
+	bh=YYWoBMkUkyU+av08pz9H39A625kK1kULrvA9pA6c+RI=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RI5hj8wwJV7Iq0P/olacRxLCyTPCxz1y1ZfefocycNdprgEVAXZtHKeWK1REwhNo6SWEaH1PbXueaYDE7Zb9R/tiuPkCem49QF6A1XFvX86T0H//4YPLWjvXKkfL16cSTRQ1MtYIq7uyjpZ+S071Onnn8O3SDn2kv5/rE/LuRko=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=E6dy7VFU; arc=fail smtp.client-ip=52.101.46.36
+	 MIME-Version:Content-Type; b=ezKBsDYXY1YggkwXm6g1NFeePT4hmmm4P3cEdblzQRlSDYYMxzpt+yX/reP4VG9v1dqp8B1/LTPOmi0jZZzpru4nH2FY87v9REn5tG3yaKMqZBAOmFWe9fFrNtzIrnbxYzi8zi+ESTp2ftNtcyH3+KA+yX4bkjHSHQCJEEISdWw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=FgomTE+A; arc=fail smtp.client-ip=40.107.201.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="E6dy7VFU"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="FgomTE+A"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=MzR/HLGc6fDzhxNs7PyLxYK+iYEabJcNOJjDxx1w3oUlWdsHITAZR9DMqadkQw/Q79cJitwj3FXRmU0jlHN3GoqPP0dejd1X7qxmL4kg5SF43QRGBfDxxL8kg57z1LeBkLMZqLi8wvDXh+4w9+lrqQ2jl6B1sMqhKzobHD/diZZvnuei7YJ5GlXAHAKPUT03zdSuG7efCtCwnvd2C5VtLcTJlaVbZwiEAp0u4ls+PKKGFKKMeOhUgPFHVQIS/vep7RxgDpklopz2hKw6NkwsDKScAXjWj0fAdQoynQgZiVJX6DqEIB+IjkWuj8B08p572ri48EJPHD3S/3fkYCqJcw==
+ b=s872iv+OD88lgU/caBtGR4p8cajM/Ip4gGJJDupqngShtPxGjZIBy7VMP5SWS64wsgact4zunzdHxwdCpkNync36j6D5ehDfm44Bxmb25NQgfDgNKewLq/Zy7t5aUJYIU0jz43y58QsLJKyfFW3zyvZLFwHGaKQYaVES8Hz+zMc5AFFKsdZmyRZxtWWrNiKS7kCj80oln+vKY9I8fgTEjhecBRFeQ3qg8SpQQSifly/+cfOcOXgHXhp6B2KE+TspbJ15a/shCNPRupjv6BaMA6lcXkBCbBCrGlN7z12dujZBO9mpkDu43NcFuJWqDkPNn3z41Q2MZ3VxsMyBi72y6w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=1bTTfLZx40cZcvXdBmJbCaYsj+piWoRGp5TaEpih+W4=;
- b=d0tCyxkA0V1bn+gaa57CHf6mMffWdAUrO5bOEsfDUMwJ/6oyhUammkByWn3gowx18l+G/aZTO2Ex3POdjMaeSSgAZpBhNBbSi79gaAHBbGKAReT3lpT23ekrzrSOtYHsXLD0stl1ZWF+CpEzgDf+iBOrffuVonOvwOGGB8vE4hcN+g6OYL1+/n2h1yfpSQeM8SbDnYXDEI001gE18Fj4DNXU+2L1e5Wt1m9C+Mpq/zO1v8LLwLg8+u6e85CNvXFPhsbZ5A7raBXGy1xIm/dSBDBV4+56HU6GRhi4UNRTW0UWZd2TcETro6tC3c0Xr+JGlmP95sSwtxv1zFg/5nH3zA==
+ bh=tn9TWrS82njs/6iJ17c21dOFKVyQBY1BXDl7apC6qT0=;
+ b=I4c6ysNMwTPZsrfEeanYROUFuYiQH3qwC+IhvpndsiNWUVAUgODYIBwtF6cLNygPLw39y4WxroFe8N0Qu4eLzvMdiPEI1ge6Wv/FowHFSkFBWUdns122qf1t/lN0VsKIrj7SFh4Pv28o4hSjBvNYlENK1WnUD/4R8Tg13R6rR8tMbw6c6ze8t/kgwjYhgi17pWTnckh2qluoH8hI41Nwlu7EjDO0Q85mGA08m413ImDtVvftby4my75sKMnNyqNY8ibKOPm5hyCkBnFd455eN9I6c5exa/6Nh+Ej6jd0T4b4tcCidyGc1xLLiHTSWDsXn4HeOX+1BH9/Iu5h01ww1A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1bTTfLZx40cZcvXdBmJbCaYsj+piWoRGp5TaEpih+W4=;
- b=E6dy7VFUCC1hioQGh01KYe6B0/h+9Y7xVmxH92hDw49GEFQUGCOBWaWikaMoOUoyf7hy6wL8i2cqMIcGGu1M97LcKDX4ANJb0MBPFEBIo5C2DJNmlTv0Zv4y28OqquNj+xnR5Tmzhne2QG45ziFIsPvWnPGjZXvvbVgY2XIBAFg=
-Received: from SN7PR04CA0055.namprd04.prod.outlook.com (2603:10b6:806:120::30)
- by SA1PR12MB7176.namprd12.prod.outlook.com (2603:10b6:806:2bd::19) with
+ bh=tn9TWrS82njs/6iJ17c21dOFKVyQBY1BXDl7apC6qT0=;
+ b=FgomTE+AQr8Bt4n7+qXeYcvG/Kj1KsMH8nKCCwCaoxGxCznffp8imoAIi7059tCYK+1r3gwnvachzmH07GNyl3fC+QprnJqYb1JTijv92eeBelnMVx68RxMvvpBj6wqbrLxhzu/Oin3oIgaMc5avVv6u6/MwfpwxP4KRuDsKGPM=
+Received: from MN0PR03CA0027.namprd03.prod.outlook.com (2603:10b6:208:52f::33)
+ by IA0PPFD78AA37BB.namprd12.prod.outlook.com (2603:10b6:20f:fc04::be6) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.12; Mon, 8 Jun 2026
- 22:40:55 +0000
-Received: from SN1PEPF000397B0.namprd05.prod.outlook.com
- (2603:10b6:806:120:cafe::a5) by SN7PR04CA0055.outlook.office365.com
- (2603:10b6:806:120::30) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.13; Mon, 8 Jun 2026
+ 22:41:00 +0000
+Received: from BL02EPF0001A103.namprd05.prod.outlook.com
+ (2603:10b6:208:52f:cafe::a) by MN0PR03CA0027.outlook.office365.com
+ (2603:10b6:208:52f::33) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.21.92.13 via Frontend Transport; Mon, 8
- Jun 2026 22:40:55 +0000
+ Jun 2026 22:41:00 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
 Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- SN1PEPF000397B0.mail.protection.outlook.com (10.167.248.54) with Microsoft
+ client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
+Received: from satlexmb08.amd.com (165.204.84.17) by
+ BL02EPF0001A103.mail.protection.outlook.com (10.167.241.133) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.113.7 via Frontend Transport; Mon, 8 Jun 2026 22:40:55 +0000
-Received: from Satlexmb09.amd.com (10.181.42.218) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ 15.21.113.7 via Frontend Transport; Mon, 8 Jun 2026 22:41:00 +0000
+Received: from Satlexmb09.amd.com (10.181.42.218) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Mon, 8 Jun
  2026 17:40:54 -0500
 Received: from amd.rund-run.pensando.io (10.180.168.240) by satlexmb09.amd.com
  (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Mon, 8 Jun
- 2026 15:33:13 -0700
+ 2026 15:33:15 -0700
 From: "Nikhil P. Rao" <nikhil.rao@amd.com>
 To: <netdev@vger.kernel.org>
 CC: Brett Creeley <brett.creeley@amd.com>, Andrew Lunn
 	<andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, "Eric
  Dumazet" <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
 	<pabeni@redhat.com>, <linux-kernel@vger.kernel.org>, Eric Joyner
-	<eric.joyner@amd.com>, "Nikhil P . Rao" <nikhil.rao@amd.com>
-Subject: [PATCH v3 3/6] pds_core: add PLDM firmware update support via devlink flash
-Date: Mon, 8 Jun 2026 22:32:53 +0000
-Message-ID: <20260608223256.12357-4-nikhil.rao@amd.com>
+	<eric.joyner@amd.com>, Vamsi Atluri <Vamsi.Atluri@amd.com>, "Nikhil P . Rao"
+	<nikhil.rao@amd.com>
+Subject: [PATCH v3 5/6] pds_core: add host backed memory support for firmware
+Date: Mon, 8 Jun 2026 22:32:55 +0000
+Message-ID: <20260608223256.12357-6-nikhil.rao@amd.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260608223256.12357-1-nikhil.rao@amd.com>
 References: <20260608223256.12357-1-nikhil.rao@amd.com>
@@ -84,1674 +85,422 @@ X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb09.amd.com
  (10.181.42.218)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN1PEPF000397B0:EE_|SA1PR12MB7176:EE_
-X-MS-Office365-Filtering-Correlation-Id: 72e55a72-76dc-4843-0d3e-08dec5af007c
+X-MS-TrafficTypeDiagnostic: BL02EPF0001A103:EE_|IA0PPFD78AA37BB:EE_
+X-MS-Office365-Filtering-Correlation-Id: c06249c0-e732-4d8c-5129-08dec5af0382
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|82310400026|376014|36860700016|18002099003|22082099003|6133799003|5023799004|11063799006|56012099006|3023799007;
+	BCL:0;ARA:13230040|376014|82310400026|1800799024|36860700016|3023799007|11063799006|56012099006|22082099003|18002099003|6133799003;
 X-Microsoft-Antispam-Message-Info:
-	WaNk5QBBfSnotqsLq4KhmoFEo8S+5Xn8kY6OoVQqQmUgRcn2uH16jBy1hnPK4Go+NSYo1QT2vzFb5wKBPgggSh6dAPugFMCdW0vvFPK29efRZvuZo4ZS1EQsKWY9gHoyVSMav4xG3VNjiAfBbhN3m75/IM9r2AStFIQ3Ne36pm/qPMiwG6hrXnBwpB+ojyJMSnhxEwQhrsrX2VyAZxm3s3Tda8URU0nrfNlFS9EP8r4ekXb7i+cVZW+FVsvkDBqDRdsGSK4QWeRvpPh40frJjj5c71GJglDBGPQN0gzzz1eKJArFTJVoQWRz+aFlapP5kkTh3a3ImXjaxCyrEWDkSsdTY8UcbpmZMQkr8137dTAcgf814iqyujkDrf1HOMvKAzbTfXqht3jDh2flJmG1yREPEmdj5/Sfu0jt0YawZRuVdPyn/wOBFvI2qvPWuvj+i7dmoLpinhlhtj0tFMiL6tNzfkthQ7akvWdNGeRBlR67XpfBdovX/kRiFHfn4Kwgsh9SVEWQAUlGjw4lpGS3Y6jabEtMCd/Q7Ru+KgxF5Rqh3mDSBasQtetVI8Ses0gayEfHOgkxSOSBreHtWiIApy73RfxeTGAW4icWDxo1VTUctr82h+sHEv1G4lEwEKE501kugw2hn4Vzh8ODvgpRR+gcq+ktMMG2lq6uLrcyjLR25UaFyILS9PAFBqck6u35n0CiRGefxhCf/5J+8SqqOWIAGmc2FpYsQUgdXrogrqQ=
+	SplZEzOKOoK6gb+ntzlfBjEtDAD+9druI33+r1MVDF0FW3wxEJCiYqn/XrTiy+zjxXaH5ELj6ffKKTu0If7bjlPZ+yNpE9lIvEDdb3yBpXx6Zm4YZdvmPSGvMVBEa1eEnWLMrPewUvxuqR0dUeTi28ZlpRaaSwpw7vA0r8pmDUGlW9ePvaolANvx/+IHUym4Kyv1g03rRx2rINoh7LMKVxefdQi6xeKA+syZAd4KHnE86V33bAGQLOKCvsrF7ZHfbyeNtGxjxUjpM5DxQZoowLgwqiwajtBkL1YbKNoPFyoHSx1n3zJLLFWnF6o+1Dq3Y5tm6QJ5b6sVzp56YHoR4ogDHX4s4CPMyXHc2MsB/zAoownjwyURTHwlMHRtGPm49yu7LS5Z4AffkSYyN4xxUu37Gtu8wkuhEsn/WiZUo9qxlRKgLO6XE9EVsTLIGwRazU6FNV7G2KUmfEksiaS5mNccYn9UjK6fEHzEVfRVkIIm8JMcnNpRQUAuAnIglBMIvU0R8B1R+fiC+SjegaUc/+aoJ24yrRIQaaug/ZuhJ6ZGvDAD1C0FmAlKsLf1TlAgnG5nK1W09lpElijAZmJjkp46tKlHP+SvgWAZ2o6M0mwMsKiY7PYh0swoEHj3j6iv0kYoWqOOqBnvRBDEuwJrvlQ7nZ8WQy3u1yn5P9okan/f3TEr5qFDvoMs2pT8Uay83Okxs/wvZC8YtGyEurKReqxbNTYFM4YWLjjvZB9bh7w=
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(376014)(36860700016)(18002099003)(22082099003)(6133799003)(5023799004)(11063799006)(56012099006)(3023799007);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(82310400026)(1800799024)(36860700016)(3023799007)(11063799006)(56012099006)(22082099003)(18002099003)(6133799003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	JARE/fpxmyUxPlgFhUXrI8XwsrBP6AyvzUPcIGDQmdhWMqe2KWcY/TkMal7WEWpDIzqoHFpIgmLKl2tr3TVENfhuPr3LJZEeLSgPpzTPTNjhzJEvX7XwPAEb79CdPrZwZ5llZJAAf9VDTeYLaJwQ5b38nAg1FbV5fNFiBKm0NMGmFuMb4yelDBwzKdyRvblCrqodz8essRhNs2nlImJnscsxrP8KfSZFPN3fEjp7L5bxaBBo8hWrvTfswaxt7vnbB0aAfpqVQEJIHpnXuZEMoaP+c+cUp6ypuIv2fLVgrmUHFGB3MreaeuEbnucTigFyISJkMT2Bn8ehQWDt2jSHEo86MThKeTKvVtQtctbgN6S7xtHU1Y/PLvhyMAETdNUMNpFvVF2IEUpEEpZG5W5K15yKQy0lTXX5IHjmkus8N6XUc6W5c2nWb5qcY7XdjFrt
+	XRrFoE3UGJ6BNLZq0l9hwJvXCyHrymr2+ZCUtvjEcEHFO2R/Zqx/PyWGXl/ZLAKYaWro/aHf2hGiYzeP7wPzUnVHbOjBExsQPvT5y4Ueb/nP7NFImz+MjFlqE8vbNZPNAk08hvYi/5Y5SUg54rPVyP3tDm2nCDg6AgJ/+nOTMx2DihZWoIKDZNMbB7rQtAv3GWVeSbB74EqWulzod+8mlVHSVvVi/CkYVmOqW5yzOlC58+6YP/8I7jSmpyDtosqbmXOtmX/xXIFxnLGVFSuvP/qOPDfzzRfCv1rmEyuMlUhp+Js2Hni8kfkYmnXb5dBoxpIJdZ+vZqUfGTIxV5IrzBD8IjaSmxRTdE1LaS89WueSHKU2TbFxj6JBdYdFcqQrmKGoC0inbKlbrP/32VVdMsjNGpbTZiS/CRvgfhE3+iv4geo/8nBEVq2StUOVp97q
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jun 2026 22:40:55.0879
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jun 2026 22:41:00.1667
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 72e55a72-76dc-4843-0d3e-08dec5af007c
+X-MS-Exchange-CrossTenant-Network-Message-Id: c06249c0-e732-4d8c-5129-08dec5af0382
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	SN1PEPF000397B0.namprd05.prod.outlook.com
+	BL02EPF0001A103.namprd05.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB7176
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PPFD78AA37BB
 
-From: Brett Creeley <brett.creeley@amd.com>
+From: Vamsi Atluri <Vamsi.Atluri@amd.com>
 
-Implement PLDM FW Update in the pds_core driver using the upstream
-pldmfw API. This allows updating an entire PLDM FW package at once
-or updating specific firmware components by name.
-
-Flash the entire image:
-  devlink dev flash pci/0000:b5:00.0 file firmware.pldmfw
-
-Flash a specific component from the PLDM FW package:
-  devlink dev flash pci/0000:b5:00.0 \
-    file firmware.pldmfw component fw.cpld
-
-Per-component update uses driver-defined component names (fw.mainfw,
-fw.cpld, etc.). Not all components support per-component update -
-devlink will reject the request if the specified component cannot
-be updated.
+Some newer AMD/Pensando cards have minimal memory and there are cases
+where components, specifically in the control plane, need more memory.
+This series adds support for host backed DMA memory that can be used
+by the firmware for the previously mentioned cases.
 
 Assisted-by: Claude:claude-opus-4.6
-Signed-off-by: Brett Creeley <brett.creeley@amd.com>
+Signed-off-by: Vamsi Atluri <Vamsi.Atluri@amd.com>
 Signed-off-by: Nikhil P. Rao <nikhil.rao@amd.com>
 ---
- .../device_drivers/ethernet/amd/pds_core.rst  |  88 ++
- drivers/net/ethernet/amd/Kconfig              |   1 +
- drivers/net/ethernet/amd/pds_core/core.h      |  30 +-
- drivers/net/ethernet/amd/pds_core/dev.c       |  79 ++
- drivers/net/ethernet/amd/pds_core/devlink.c   |   2 +-
- drivers/net/ethernet/amd/pds_core/fw.c        | 767 +++++++++++++++++-
- drivers/net/ethernet/amd/pds_core/main.c      |   7 +
- include/linux/pds/pds_core_if.h               | 402 +++++++++
- 8 files changed, 1371 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/amd/pds_core/core.c | 161 +++++++++++++++++++++++
+ drivers/net/ethernet/amd/pds_core/core.h |  20 +++
+ drivers/net/ethernet/amd/pds_core/main.c |   4 +-
+ include/linux/pds/pds_core_if.h          |  64 +++++++++
+ 4 files changed, 248 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/networking/device_drivers/ethernet/amd/pds_core.rst b/Documentation/networking/device_drivers/ethernet/amd/pds_core.rst
-index 9e8a16c44102..71f0222589bb 100644
---- a/Documentation/networking/device_drivers/ethernet/amd/pds_core.rst
-+++ b/Documentation/networking/device_drivers/ethernet/amd/pds_core.rst
-@@ -102,6 +102,94 @@ currently in use, and that bank will used for the next boot::
-   # devlink dev flash pci/0000:b5:00.0 \
-             file pensando/dsc_fw_1.63.0-22.tar
+diff --git a/drivers/net/ethernet/amd/pds_core/core.c b/drivers/net/ethernet/amd/pds_core/core.c
+index 705cab7b0727..249afcd5f5d7 100644
+--- a/drivers/net/ethernet/amd/pds_core/core.c
++++ b/drivers/net/ethernet/amd/pds_core/core.c
+@@ -487,6 +487,7 @@ void pdsc_teardown(struct pdsc *pdsc, bool removing)
+ 		pdsc->viftype_status = NULL;
+ 	}
  
-+Firmware Management (PLDM)
-+==========================
-+
-+Firmware that supports PLDM can be updated using the devlink flash command
-+with a PLDM firmware package. The entire package can be updated at once::
-+
-+  # devlink dev flash pci/0000:b5:00.0 file firmware.pldmfw
-+
-+Individual components can also be updated by specifying the component name::
-+
-+  # devlink dev flash pci/0000:b5:00.0 \
-+            file firmware.pldmfw component fw.cpld
-+
-+Per-component update uses driver-defined component names (fw.mainfw,
-+fw.cpld, etc.). Not all components support per-component update -
-+devlink will reject the request if the specified component cannot
-+be updated.
-+
-+Info versions (PLDM)
-+====================
-+
-+Firmware that supports PLDM reports component versions using driver-defined
-+names. The driver reports the following component versions:
-+
-+.. list-table:: devlink info versions for PLDM-capable firmware
-+   :widths: 5 5 90
-+
-+   * - Name
-+     - Type
-+     - Description
-+   * - ``fw``
-+     - running
-+     - Version of firmware running on the device
-+   * - ``fw.mainfw``
-+     - running, stored
-+     - Main firmware
-+   * - ``fw.mainfw.gold``
-+     - stored
-+     - Gold (recovery) firmware
-+   * - ``fw.bootloader``
-+     - running, stored
-+     - Boot loader
-+   * - ``fw.cpld``
-+     - running, stored
-+     - CPLD
-+   * - ``fw.secure``
-+     - running, stored
-+     - Secure boot firmware
-+   * - ``fw.fpga``
-+     - running, stored
-+     - FPGA configuration
-+   * - ``fw.suc.mainfw``
-+     - running, stored
-+     - System Unit Controller main firmware
-+   * - ``fw.suc.bootloader``
-+     - running, stored
-+     - System Unit Controller bootloader
-+   * - ``fw.uboot``
-+     - running, stored
-+     - U-Boot bootloader
-+   * - ``asic.id``
-+     - fixed
-+     - The ASIC type for this device
-+   * - ``asic.rev``
-+     - fixed
-+     - The revision of the ASIC for this device
-+
-+Example output::
-+
-+  $ devlink dev info pci/0000:00:05.0
-+  pci/0000:00:05.0:
-+    driver pds_core
-+    serial_number FLM18420073
-+    versions:
-+        fixed:
-+          asic.id 0x0
-+          asic.rev 0x0
-+        running:
-+          fw.bootloader 1.2.3
-+          fw.mainfw 1.3.0
-+          fw.cpld 3.18
-+          fw 1.3.0
-+        stored:
-+          fw.bootloader 1.2.3
-+          fw.mainfw.gold 1.2.0
-+          fw.mainfw 1.3.0
-+          fw.cpld 3.18
-+
- Health Reporters
- ================
++	pdsc_host_mem_free(pdsc);
+ 	pdsc_dev_uninit(pdsc);
  
-diff --git a/drivers/net/ethernet/amd/Kconfig b/drivers/net/ethernet/amd/Kconfig
-index e35991141a1a..743e3d4b6b94 100644
---- a/drivers/net/ethernet/amd/Kconfig
-+++ b/drivers/net/ethernet/amd/Kconfig
-@@ -171,6 +171,7 @@ config PDS_CORE
- 	depends on 64BIT && PCI
- 	select AUXILIARY_BUS
- 	select NET_DEVLINK
-+	select PLDMFW
- 	help
- 	  This enables the support for the AMD/Pensando Core device family of
- 	  adapters.  More specific information on this driver can be
+ 	set_bit(PDSC_S_FW_DEAD, &pdsc->state);
+@@ -496,6 +497,7 @@ int pdsc_start(struct pdsc *pdsc)
+ {
+ 	pds_core_intr_mask(&pdsc->intr_ctrl[pdsc->adminqcq.intx],
+ 			   PDS_CORE_INTR_MASK_CLEAR);
++	pdsc_host_mem_add(pdsc);
+ 
+ 	return 0;
+ }
+@@ -658,3 +660,162 @@ void pdsc_health_thread(struct work_struct *work)
+ out_unlock:
+ 	mutex_unlock(&pdsc->config_lock);
+ }
++
++static void pdsc_host_mem_del_one(struct pdsc *pdsc, u16 tag, u8 reason)
++{
++	union pds_core_dev_comp comp = {};
++	union pds_core_dev_cmd cmd = {
++		.host_mem.opcode = PDS_CORE_CMD_HOST_MEM,
++		.host_mem.oper = PDS_CORE_HOST_MEM_DEL,
++		.host_mem.tag = cpu_to_le16(tag),
++		.host_mem.reason = reason,
++	};
++
++	dev_dbg(pdsc->dev, "Sending devcmd for mem del tag %d\n", tag);
++	pdsc_devcmd(pdsc, &cmd, &comp, pdsc->devcmd_timeout);
++}
++
++static int pdsc_host_mem_add_one(struct pdsc *pdsc, int index)
++{
++	struct pdsc_host_mem *hm = &pdsc->host_mem_reqs[index];
++	union pds_core_dev_comp comp = {};
++	union pds_core_dev_cmd cmd = {};
++	int err;
++
++	memset(hm, 0, sizeof(*hm));
++	cmd.host_mem.opcode = PDS_CORE_CMD_HOST_MEM;
++	cmd.host_mem.oper = PDS_CORE_HOST_MEM_QUERY;
++	cmd.host_mem.index = cpu_to_le16(index);
++	dev_dbg(pdsc->dev, "Sending devcmd for mem query index %d\n", index);
++	err = pdsc_devcmd(pdsc, &cmd, &comp, pdsc->devcmd_timeout);
++	if (err || comp.status != PDS_RC_SUCCESS) {
++		dev_err(pdsc->dev, "mem query failed err %d status %d\n",
++			err, comp.status);
++		return err ? err : -EIO;
++	}
++	hm->size = le32_to_cpu(comp.host_mem.size);
++	hm->tag = le16_to_cpu(comp.host_mem.tag);
++	dev_dbg(pdsc->dev, "mem query returned size %d tag %d\n",
++		hm->size, hm->tag);
++
++	if (!hm->size || hm->size > PDSC_HOST_MEM_MAX_CONTIG) {
++		dev_err(pdsc->dev, "invalid size %d for tag %d\n",
++			hm->size, hm->tag);
++		err = -EINVAL;
++		goto err_del;
++	}
++
++	hm->order = get_order(hm->size);
++	hm->pg = alloc_pages(GFP_KERNEL | __GFP_ZERO | __GFP_NOWARN, hm->order);
++	if (!hm->pg) {
++		dev_err(pdsc->dev, "alloc order %d failed for tag %d\n",
++			hm->order, hm->tag);
++		err = -ENOMEM;
++		goto err_del;
++	}
++
++	hm->pa = dma_map_page(pdsc->dev, hm->pg, 0, hm->size,
++			      DMA_BIDIRECTIONAL);
++	if (dma_mapping_error(pdsc->dev, hm->pa)) {
++		dev_err(pdsc->dev, "dma map failed for tag %d size %d\n",
++			hm->tag, hm->size);
++		__free_pages(hm->pg, hm->order);
++		hm->pg = NULL;
++		err = -EIO;
++		goto err_del;
++	}
++
++	/* Track this allocation so pdsc_host_mem_free() can clean it up */
++	pdsc->num_host_mem_reqs++;
++
++	memset(&cmd, 0, sizeof(cmd));
++	memset(&comp, 0, sizeof(comp));
++	cmd.host_mem.opcode = PDS_CORE_CMD_HOST_MEM;
++	cmd.host_mem.oper = PDS_CORE_HOST_MEM_ADD;
++	cmd.host_mem.tag = cpu_to_le16(hm->tag);
++	cmd.host_mem.size = cpu_to_le32(hm->size);
++	cmd.host_mem.buf_pa = cpu_to_le64(hm->pa);
++
++	dev_dbg(pdsc->dev, "Sending devcmd for mem add tag %d size %d pa %pad\n",
++		hm->tag, hm->size, &hm->pa);
++	err = pdsc_devcmd(pdsc, &cmd, &comp, pdsc->devcmd_timeout);
++	if (err || comp.status != PDS_RC_SUCCESS) {
++		dev_err(pdsc->dev, "mem add failed err %d status %d for tag %d\n",
++			err, comp.status, hm->tag);
++		err = err ? err : -EIO;
++		goto err_del;
++	}
++	dev_dbg(pdsc->dev, "mem add completed for tag %d\n", hm->tag);
++
++	return 0;
++
++err_del:
++	/* After MEM_QUERY succeeds, firmware expects MEM_ADD or MEM_DEL */
++	pdsc_host_mem_del_one(pdsc, hm->tag, PDS_RC_ENOMEM);
++	return err;
++}
++
++void pdsc_host_mem_add(struct pdsc *pdsc)
++{
++	union pds_core_dev_comp comp = {};
++	union pds_core_dev_cmd cmd = {};
++	u16 count;
++	int err;
++	int i;
++
++	if (!(pdsc->dev_ident.capabilities &
++	     cpu_to_le64(PDS_CORE_DEV_CAP_HOST_MEM)))
++		return;
++
++	cmd.host_mem.opcode = PDS_CORE_CMD_HOST_MEM;
++	cmd.host_mem.oper = PDS_CORE_HOST_MEM_GET_COUNT;
++	cmd.host_mem.index = cpu_to_le16(PDSC_HOST_MEM_MAX_COUNT);
++	cmd.host_mem.max_contig = cpu_to_le32(PDSC_HOST_MEM_MAX_CONTIG);
++	dev_dbg(pdsc->dev, "Sending devcmd for mem get count max_contig %u\n",
++		PDSC_HOST_MEM_MAX_CONTIG);
++	err = pdsc_devcmd(pdsc, &cmd, &comp, pdsc->devcmd_timeout);
++	if (err || comp.status != PDS_RC_SUCCESS) {
++		dev_err(pdsc->dev, "mem get count failed err %d status %d\n",
++			err, comp.status);
++		return;
++	}
++
++	count = min(le16_to_cpu(comp.host_mem.count),
++		    PDSC_HOST_MEM_MAX_COUNT);
++	dev_dbg(pdsc->dev, "mem get count returned count %d\n", count);
++	if (count == 0)
++		return;
++
++	pdsc->host_mem_reqs = kzalloc_objs(*pdsc->host_mem_reqs, count,
++					   GFP_KERNEL);
++	if (!pdsc->host_mem_reqs) {
++		dev_err(pdsc->dev, "failed to alloc host_mem_reqs array\n");
++		return;
++	}
++
++	for (i = 0; i < count; i++) {
++		err = pdsc_host_mem_add_one(pdsc, i);
++		if (err)
++			break;
++	}
++}
++
++void pdsc_host_mem_free(struct pdsc *pdsc)
++{
++	int i;
++
++	if (!pdsc->host_mem_reqs)
++		return;
++
++	for (i = 0; i < pdsc->num_host_mem_reqs; i++) {
++		dma_unmap_page(pdsc->dev, pdsc->host_mem_reqs[i].pa,
++			       pdsc->host_mem_reqs[i].size,
++			       DMA_BIDIRECTIONAL);
++		__free_pages(pdsc->host_mem_reqs[i].pg,
++			     pdsc->host_mem_reqs[i].order);
++	}
++
++	kfree(pdsc->host_mem_reqs);
++	pdsc->host_mem_reqs = NULL;
++	pdsc->num_host_mem_reqs = 0;
++}
 diff --git a/drivers/net/ethernet/amd/pds_core/core.h b/drivers/net/ethernet/amd/pds_core/core.h
-index b7fe9ad73349..c686f0bbbaeb 100644
+index c686f0bbbaeb..53e5a6f0af9c 100644
 --- a/drivers/net/ethernet/amd/pds_core/core.h
 +++ b/drivers/net/ethernet/amd/pds_core/core.h
-@@ -23,6 +23,14 @@
+@@ -5,6 +5,7 @@
+ #define _PDSC_H_
+ 
+ #include <linux/debugfs.h>
++#include <linux/mmzone.h>
+ #include <net/devlink.h>
+ 
+ #include <linux/pds/pds_common.h>
+@@ -23,6 +24,10 @@
  #define PDSC_SETUP_RECOVERY	false
  #define PDSC_SETUP_INIT		true
  
-+struct pdsc_deferred_dma {
-+	struct list_head list;
-+	dma_addr_t dma_addr;
-+	void *va;
-+	size_t size;
-+	enum dma_data_direction dir;
-+};
++/* Use fixed 4MB max to avoid cpu_to_le32() truncation on large-page configs */
++#define PDSC_HOST_MEM_MAX_CONTIG (4 * 1024 * 1024)
++#define PDSC_HOST_MEM_MAX_COUNT  256
 +
- struct pdsc_dev_bar {
- 	void __iomem *vaddr;
- 	phys_addr_t bus_addr;
-@@ -185,6 +193,8 @@ struct pdsc {
- 	struct mutex devcmd_lock;	/* lock for dev_cmd operations */
- 	struct mutex config_lock;	/* lock for configuration operations */
- 	spinlock_t adminq_lock;		/* lock for adminq operations */
-+	struct list_head deferred_dma_list;
-+	spinlock_t deferred_dma_lock;	/* lock for deferred DMA list */
- 	refcount_t adminq_refcnt;
- 	struct pds_core_dev_info_regs __iomem *info_regs;
- 	struct pds_core_dev_cmd_regs __iomem *cmd_regs;
-@@ -199,6 +209,8 @@ struct pdsc {
- 	u64 last_eid;
- 	struct pdsc_viftype *viftype_status;
- 	struct work_struct pci_reset_work;
-+
-+	struct pds_core_component_list_info fw_components;
+ struct pdsc_deferred_dma {
+ 	struct list_head list;
+ 	dma_addr_t dma_addr;
+@@ -149,6 +154,14 @@ struct pdsc_viftype {
+ 	struct pds_auxiliary_dev *padev;
  };
  
- /** enum pds_core_dbell_bits - bitwise composition of dbell values.
-@@ -281,8 +293,16 @@ bool pdsc_is_fw_running(struct pdsc *pdsc);
- bool pdsc_is_fw_good(struct pdsc *pdsc);
- int pdsc_devcmd(struct pdsc *pdsc, union pds_core_dev_cmd *cmd,
- 		union pds_core_dev_comp *comp, int max_seconds);
-+int pdsc_devcmd_with_data(struct pdsc *pdsc, union pds_core_dev_cmd *cmd,
-+			  const void *data, size_t data_len,
-+			  union pds_core_dev_comp *comp, int max_seconds);
-+int pdsc_devcmd_with_data_nomsg(struct pdsc *pdsc, union pds_core_dev_cmd *cmd,
-+				const void *data, size_t data_len,
-+				union pds_core_dev_comp *comp, int max_seconds);
- int pdsc_devcmd_locked(struct pdsc *pdsc, union pds_core_dev_cmd *cmd,
- 		       union pds_core_dev_comp *comp, int max_seconds);
-+int pdsc_devcmd_locked_nomsg(struct pdsc *pdsc, union pds_core_dev_cmd *cmd,
-+			     union pds_core_dev_comp *comp, int max_seconds);
- int pdsc_devcmd_init(struct pdsc *pdsc);
- int pdsc_devcmd_reset(struct pdsc *pdsc);
- int pdsc_dev_init(struct pdsc *pdsc);
-@@ -315,11 +335,19 @@ void pdsc_process_adminq(struct pdsc_qcq *qcq);
- void pdsc_work_thread(struct work_struct *work);
- irqreturn_t pdsc_adminq_isr(int irq, void *data);
++struct pdsc_host_mem {
++	u32 size;
++	u16 tag;
++	u8 order;
++	struct page *pg;
++	dma_addr_t pa;
++};
++
+ /* No state flags set means we are in a steady running state */
+ enum pdsc_state_flags {
+ 	PDSC_S_FW_DEAD,		    /* stopped, wait on startup or recovery */
+@@ -210,6 +223,9 @@ struct pdsc {
+ 	struct pdsc_viftype *viftype_status;
+ 	struct work_struct pci_reset_work;
  
--int pdsc_firmware_update(struct pdsc *pdsc, const struct firmware *fw,
-+int pdsc_firmware_update(struct pdsc *pdsc,
-+			 struct devlink_flash_update_params *params,
- 			 struct netlink_ext_ack *extack);
-+int pdsc_get_component_info(struct pdsc *pdsc);
-+const char *pdsc_fw_type_to_name(u8 type);
++	struct pdsc_host_mem *host_mem_reqs;
++	u16 num_host_mem_reqs;
++
+ 	struct pds_core_component_list_info fw_components;
+ };
  
- void pdsc_fw_down(struct pdsc *pdsc);
+@@ -287,6 +303,7 @@ void pdsc_debugfs_add_viftype(struct pdsc *pdsc);
+ void pdsc_debugfs_add_irqs(struct pdsc *pdsc);
+ void pdsc_debugfs_add_qcq(struct pdsc *pdsc, struct pdsc_qcq *qcq);
+ void pdsc_debugfs_del_qcq(struct pdsc_qcq *qcq);
++void pdsc_debugfs_add_host_mem(struct pdsc *pdsc);
+ 
+ int pdsc_err_to_errno(enum pds_core_status_code code);
+ bool pdsc_is_fw_running(struct pdsc *pdsc);
+@@ -345,6 +362,9 @@ void pdsc_fw_down(struct pdsc *pdsc);
  void pdsc_fw_up(struct pdsc *pdsc);
  void pdsc_pci_reset_thread(struct work_struct *work);
  
-+void pdsc_deferred_dma_add(struct pdsc *pdsc, struct pdsc_deferred_dma *entry,
-+			   dma_addr_t dma_addr, void *va, size_t size,
-+			   enum dma_data_direction dir);
-+void pdsc_deferred_dma_free(struct pdsc *pdsc);
-+
- #endif /* _PDSC_H_ */
-diff --git a/drivers/net/ethernet/amd/pds_core/dev.c b/drivers/net/ethernet/amd/pds_core/dev.c
-index 5c0ca3d0b000..6082b28915db 100644
---- a/drivers/net/ethernet/amd/pds_core/dev.c
-+++ b/drivers/net/ethernet/amd/pds_core/dev.c
-@@ -206,15 +206,53 @@ static int __pdsc_devcmd_locked(struct pdsc *pdsc, union pds_core_dev_cmd *cmd,
- 	else
- 		memcpy_fromio(comp, &pdsc->cmd_regs->comp, sizeof(*comp));
- 
-+	if (err != -ETIMEDOUT && err != -EAGAIN)
-+		pdsc_deferred_dma_free(pdsc);
-+
- 	return err;
- }
- 
-+void pdsc_deferred_dma_add(struct pdsc *pdsc, struct pdsc_deferred_dma *entry,
-+			   dma_addr_t dma_addr, void *va, size_t size,
-+			   enum dma_data_direction dir)
-+{
-+	entry->dma_addr = dma_addr;
-+	entry->va = va;
-+	entry->size = size;
-+	entry->dir = dir;
-+
-+	spin_lock(&pdsc->deferred_dma_lock);
-+	list_add_tail(&entry->list, &pdsc->deferred_dma_list);
-+	spin_unlock(&pdsc->deferred_dma_lock);
-+}
-+
-+void pdsc_deferred_dma_free(struct pdsc *pdsc)
-+{
-+	struct pdsc_deferred_dma *entry, *tmp;
-+
-+	spin_lock(&pdsc->deferred_dma_lock);
-+	list_for_each_entry_safe(entry, tmp, &pdsc->deferred_dma_list, list) {
-+		dma_unmap_single(pdsc->dev, entry->dma_addr,
-+				 entry->size, entry->dir);
-+		kfree(entry->va);
-+		list_del(&entry->list);
-+		kfree(entry);
-+	}
-+	spin_unlock(&pdsc->deferred_dma_lock);
-+}
-+
- int pdsc_devcmd_locked(struct pdsc *pdsc, union pds_core_dev_cmd *cmd,
- 		       union pds_core_dev_comp *comp, int max_seconds)
- {
- 	return __pdsc_devcmd_locked(pdsc, cmd, comp, max_seconds, true);
- }
- 
-+int pdsc_devcmd_locked_nomsg(struct pdsc *pdsc, union pds_core_dev_cmd *cmd,
-+			     union pds_core_dev_comp *comp, int max_seconds)
-+{
-+	return __pdsc_devcmd_locked(pdsc, cmd, comp, max_seconds, false);
-+}
-+
- int pdsc_devcmd(struct pdsc *pdsc, union pds_core_dev_cmd *cmd,
- 		union pds_core_dev_comp *comp, int max_seconds)
- {
-@@ -227,6 +265,47 @@ int pdsc_devcmd(struct pdsc *pdsc, union pds_core_dev_cmd *cmd,
- 	return err;
- }
- 
-+static int __pdsc_devcmd_with_data(struct pdsc *pdsc,
-+				   union pds_core_dev_cmd *cmd,
-+				   const void *data, size_t data_len,
-+				   union pds_core_dev_comp *comp,
-+				   int max_seconds, bool do_msg)
-+{
-+	int err;
-+
-+	mutex_lock(&pdsc->devcmd_lock);
-+	if (!pdsc->cmd_regs) {
-+		err = -ENXIO;
-+		goto unlock;
-+	}
-+	if (data_len > sizeof(pdsc->cmd_regs->data)) {
-+		err = -ENOSPC;
-+		goto unlock;
-+	}
-+	memcpy_toio(&pdsc->cmd_regs->data, data, data_len);
-+	err = __pdsc_devcmd_locked(pdsc, cmd, comp, max_seconds, do_msg);
-+unlock:
-+	mutex_unlock(&pdsc->devcmd_lock);
-+
-+	return err;
-+}
-+
-+int pdsc_devcmd_with_data(struct pdsc *pdsc, union pds_core_dev_cmd *cmd,
-+			  const void *data, size_t data_len,
-+			  union pds_core_dev_comp *comp, int max_seconds)
-+{
-+	return __pdsc_devcmd_with_data(pdsc, cmd, data, data_len,
-+				       comp, max_seconds, true);
-+}
-+
-+int pdsc_devcmd_with_data_nomsg(struct pdsc *pdsc, union pds_core_dev_cmd *cmd,
-+				const void *data, size_t data_len,
-+				union pds_core_dev_comp *comp, int max_seconds)
-+{
-+	return __pdsc_devcmd_with_data(pdsc, cmd, data, data_len,
-+				       comp, max_seconds, false);
-+}
-+
- int pdsc_devcmd_init(struct pdsc *pdsc)
- {
- 	union pds_core_dev_comp comp = {};
-diff --git a/drivers/net/ethernet/amd/pds_core/devlink.c b/drivers/net/ethernet/amd/pds_core/devlink.c
-index 2ea97e1c5939..3b763ee1715e 100644
---- a/drivers/net/ethernet/amd/pds_core/devlink.c
-+++ b/drivers/net/ethernet/amd/pds_core/devlink.c
-@@ -90,7 +90,7 @@ int pdsc_dl_flash_update(struct devlink *dl,
- {
- 	struct pdsc *pdsc = devlink_priv(dl);
- 
--	return pdsc_firmware_update(pdsc, params->fw, extack);
-+	return pdsc_firmware_update(pdsc, params, extack);
- }
- 
- static char *fw_slotnames[] = {
-diff --git a/drivers/net/ethernet/amd/pds_core/fw.c b/drivers/net/ethernet/amd/pds_core/fw.c
-index fa626719e68d..0ef34869fdc0 100644
---- a/drivers/net/ethernet/amd/pds_core/fw.c
-+++ b/drivers/net/ethernet/amd/pds_core/fw.c
-@@ -1,6 +1,9 @@
- // SPDX-License-Identifier: GPL-2.0
- /* Copyright(c) 2023 Advanced Micro Devices, Inc */
- 
-+#include <linux/pldmfw.h>
-+#include <linux/vmalloc.h>
-+
- #include "core.h"
- 
- /* The worst case wait for the install activity is about 25 minutes when
-@@ -14,6 +17,46 @@
- /* Number of periodic log updates during fw file download */
- #define PDSC_FW_INTERVAL_FRACTION	32
- 
-+#define PDSC_FW_COMPONENT_PREFIX		"fw."
-+#define PDSC_FW_COMPONENT_FULL_NAME_BUFLEN \
-+	(sizeof(PDSC_FW_COMPONENT_PREFIX) + PDS_CORE_FW_COMPONENT_NAME_BUFLEN)
-+
-+/* Driver-defined component type to name mapping */
-+static const char * const pdsc_fw_type_names[] = {
-+	[PDS_CORE_FW_TYPE_MAIN]      = "mainfw",
-+	[PDS_CORE_FW_TYPE_BOOT]      = "bootloader",
-+	[PDS_CORE_FW_TYPE_CPLD]      = "cpld",
-+	[PDS_CORE_FW_TYPE_SECURE]    = "secure",
-+	[PDS_CORE_FW_TYPE_FPGA]      = "fpga",
-+	[PDS_CORE_FW_TYPE_SUC_MAIN]  = "suc.mainfw",
-+	[PDS_CORE_FW_TYPE_SUC_BOOT]  = "suc.bootloader",
-+	[PDS_CORE_FW_TYPE_UBOOT]     = "uboot",
-+};
-+
-+const char *pdsc_fw_type_to_name(u8 type)
-+{
-+	if (type < ARRAY_SIZE(pdsc_fw_type_names) && pdsc_fw_type_names[type])
-+		return pdsc_fw_type_names[type];
-+	return NULL;
-+}
-+
-+static u8 pdsc_name_to_fw_type(const char *name)
-+{
-+	size_t prefix_len;
-+	int i;
-+
-+	prefix_len = str_has_prefix(name, PDSC_FW_COMPONENT_PREFIX);
-+	if (prefix_len)
-+		name += prefix_len;
-+
-+	for (i = 1; i < ARRAY_SIZE(pdsc_fw_type_names); i++) {
-+		if (pdsc_fw_type_names[i] &&
-+		    !strcmp(name, pdsc_fw_type_names[i]))
-+			return i;
-+	}
-+	return 0;
-+}
-+
- static int pdsc_devcmd_fw_download_locked(struct pdsc *pdsc, u64 addr,
- 					  u32 offset, u32 length)
- {
-@@ -23,7 +66,7 @@ static int pdsc_devcmd_fw_download_locked(struct pdsc *pdsc, u64 addr,
- 		.fw_download.addr = cpu_to_le64(addr),
- 		.fw_download.length = cpu_to_le32(length),
- 	};
--	union pds_core_dev_comp comp;
-+	union pds_core_dev_comp comp = {};
- 
- 	return pdsc_devcmd_locked(pdsc, &cmd, &comp, pdsc->devcmd_timeout);
- }
-@@ -95,8 +138,9 @@ static int pdsc_fw_status_long_wait(struct pdsc *pdsc,
- 	return err;
- }
- 
--int pdsc_firmware_update(struct pdsc *pdsc, const struct firmware *fw,
--			 struct netlink_ext_ack *extack)
-+static int pdsc_legacy_firmware_update(struct pdsc *pdsc,
-+				       const struct firmware *fw,
-+				       struct netlink_ext_ack *extack)
- {
- 	u32 buf_sz, copy_sz, offset;
- 	struct devlink *dl;
-@@ -195,3 +239,720 @@ int pdsc_firmware_update(struct pdsc *pdsc, const struct firmware *fw,
- 						   NULL, 0, 0);
- 	return err;
- }
-+
-+struct pdsc_component_priv {
-+	u16 component_id;
-+	bool skip;
-+	struct list_head list_entry;
-+};
-+
-+struct pds_core_fwu_priv {
-+	struct pldmfw context;
-+	struct devlink_flash_update_params *params;
-+	struct netlink_ext_ack *extack;
-+	struct pdsc *pdsc;
-+	struct list_head components;
-+};
-+
-+static void pdsc_free_fwu_priv(struct pds_core_fwu_priv *priv)
-+{
-+	struct pdsc_component_priv *component_priv, *tmp;
-+
-+	list_for_each_entry_safe(component_priv, tmp, &priv->components,
-+				 list_entry) {
-+		list_del(&component_priv->list_entry);
-+		kfree(component_priv);
-+	}
-+}
-+
-+static int pdsc_devcmd_match_record_desc(struct pdsc *pdsc, u16 desc_type,
-+					 u16 desc_size, const u8 *desc_data,
-+					 u8 *match)
-+{
-+	union pds_core_dev_cmd cmd = {
-+		.match_record_desc.opcode = PDS_CORE_CMD_MATCH_RECORD_DESC,
-+		.match_record_desc.ver = 1,
-+		.match_record_desc.type = cpu_to_le16(desc_type),
-+		.match_record_desc.size = cpu_to_le16(desc_size),
-+	};
-+	union pds_core_dev_comp comp = {};
-+	int err;
-+
-+	err = pdsc_devcmd_with_data(pdsc, &cmd, desc_data, desc_size,
-+				    &comp, pdsc->devcmd_timeout);
-+	*match = comp.match_record_desc.match;
-+
-+	return err;
-+}
-+
-+static bool pdsc_match_record_descs(struct pldmfw *context,
-+				    struct pldmfw_record *record)
-+{
-+	struct pds_core_fwu_priv *priv =
-+		container_of(context, struct pds_core_fwu_priv, context);
-+	struct pdsc *pdsc = priv->pdsc;
-+	struct pldmfw_desc_tlv *desc;
-+
-+	if (!pldmfw_op_pci_match_record(context, record))
-+		return false;
-+
-+	list_for_each_entry(desc, &record->descs, entry) {
-+		u8 match;
-+		int err;
-+
-+		switch (desc->type) {
-+		/* skip types checked in pldmfw_op_pci_match_record */
-+		case PLDM_DESC_ID_PCI_VENDOR_ID:
-+		case PLDM_DESC_ID_PCI_DEVICE_ID:
-+		case PLDM_DESC_ID_PCI_SUBVENDOR_ID:
-+		case PLDM_DESC_ID_PCI_SUBDEV_ID:
-+			continue;
-+		}
-+
-+		if (!desc->size)
-+			return false;
-+
-+		err = pdsc_devcmd_match_record_desc(pdsc, desc->type,
-+						    desc->size, desc->data,
-+						    &match);
-+		if (err) {
-+			dev_err(pdsc->dev,
-+				"match_record_desc failed type: 0x%04x size: %u, err %d\n",
-+				desc->type, desc->size, err);
-+			return false;
-+		}
-+		/* all record descriptors must match */
-+		if (!match)
-+			return false;
-+	}
-+
-+	return true;
-+}
-+
-+static int pdsc_devcmd_send_package_data(struct pdsc *pdsc, u64 addr,
-+					 u16 length, u16 offset, u16 total_len)
-+{
-+	union pds_core_dev_cmd cmd = {
-+		.send_pkg_data.opcode = PDS_CORE_CMD_SEND_PKG_DATA,
-+		.send_pkg_data.ver = 1,
-+		.send_pkg_data.data_pa = cpu_to_le64(addr),
-+		.send_pkg_data.data_len = cpu_to_le16(length),
-+		.send_pkg_data.offset = cpu_to_le16(offset),
-+		.send_pkg_data.total_len = cpu_to_le16(total_len),
-+	};
-+	union pds_core_dev_comp comp = {};
-+
-+	return pdsc_devcmd(pdsc, &cmd, &comp, pdsc->devcmd_timeout);
-+}
-+
-+static int pdsc_send_package_data(struct pldmfw *context, const u8 *data,
-+				  u16 length)
-+{
-+	struct pds_core_fwu_priv *priv =
-+		container_of(context, struct pds_core_fwu_priv, context);
-+	struct pdsc_deferred_dma *deferred;
-+	struct device *dev = context->dev;
-+	struct pdsc *pdsc = priv->pdsc;
-+	dma_addr_t dma_addr;
-+	u8 *package_data;
-+	u32 offset;
-+	int err;
-+
-+	if (!length)
-+		return 0;
-+
-+	deferred = kmalloc_obj(*deferred, GFP_KERNEL);
-+	if (!deferred)
-+		return -ENOMEM;
-+
-+	package_data = kmemdup(data, length, GFP_KERNEL);
-+	if (!package_data) {
-+		kfree(deferred);
-+		return -ENOMEM;
-+	}
-+
-+	dma_addr = dma_map_single(dev, package_data, length, DMA_TO_DEVICE);
-+	if (dma_mapping_error(dev, dma_addr)) {
-+		dev_err(dev, "Failed to dma_map package_data length 0x%x\n",
-+			length);
-+		kfree(package_data);
-+		kfree(deferred);
-+		return -ENOMEM;
-+	}
-+
-+	for (offset = 0; offset < length; offset += PDS_PAGE_SIZE) {
-+		u32 copy_sz;
-+
-+		copy_sz = min_t(unsigned int, PDS_PAGE_SIZE, length - offset);
-+		err = pdsc_devcmd_send_package_data(pdsc, dma_addr + offset,
-+						    copy_sz, offset, length);
-+		if (err) {
-+			dev_err(dev,
-+				"send_package_data failed off 0x%x len 0x%x: %pe\n",
-+				offset, copy_sz, ERR_PTR(err));
-+			break;
-+		}
-+	}
-+
-+	if (err == -ETIMEDOUT || err == -EAGAIN) {
-+		pdsc_deferred_dma_add(pdsc, deferred, dma_addr,
-+				      package_data, length, DMA_TO_DEVICE);
-+		return err;
-+	}
-+
-+	kfree(deferred);
-+	dma_unmap_single(dev, dma_addr, length, DMA_TO_DEVICE);
-+	kfree(package_data);
-+	return err;
-+}
-+
-+static bool pdsc_component_type_exists(struct pdsc *pdsc, u8 type)
-+{
-+	int i;
-+
-+	for (i = 0; i < pdsc->fw_components.num_components; i++) {
-+		if (pdsc->fw_components.info[i].component_type == type)
-+			return true;
-+	}
-+	return false;
-+}
-+
-+static u8 pdsc_get_component_type_by_id(struct pdsc *pdsc, u16 component_id)
-+{
-+	int i;
-+
-+	for (i = 0; i < pdsc->fw_components.num_components; i++) {
-+		struct pds_core_fw_component_info *info =
-+			&pdsc->fw_components.info[i];
-+
-+		if (info->identifier == component_id)
-+			return info->component_type;
-+	}
-+	return 0;
-+}
-+
-+static bool pdsc_component_id_matches_type(struct pdsc *pdsc,
-+					   u8 component_id, u8 type)
-+{
-+	int i;
-+
-+	for (i = 0; i < pdsc->fw_components.num_components; i++) {
-+		struct pds_core_fw_component_info *info =
-+			&pdsc->fw_components.info[i];
-+
-+		if (info->identifier == component_id &&
-+		    info->component_type == type)
-+			return true;
-+	}
-+	return false;
-+}
-+
-+static bool pdsc_skip_component(struct pds_core_fwu_priv *priv,
-+				u16 component_id)
-+{
-+	struct pdsc_component_priv *component_priv;
-+
-+	list_for_each_entry(component_priv, &priv->components, list_entry) {
-+		if (component_priv->component_id == component_id)
-+			return component_priv->skip;
-+	}
-+
-+	return false;
-+}
-+
-+static int pdsc_send_component_table(struct pldmfw *context,
-+				     struct pldmfw_component *component,
-+				     u8 transfer_flag)
-+{
-+	struct pds_core_fwu_priv *priv =
-+		container_of(context, struct pds_core_fwu_priv, context);
-+	struct pds_core_component_tbl *component_tbl;
-+	struct pdsc_component_priv *component_priv;
-+	struct device *dev = context->dev;
-+	union pds_core_dev_comp comp = {};
-+	union pds_core_dev_cmd cmd = {};
-+	struct pdsc *pdsc = priv->pdsc;
-+	bool skip_component = false;
-+	u8 requested_type = 0;
-+	u16 buf_sz, tbl_sz;
-+	int err = 0;
-+
-+	dev_dbg(dev,
-+		"component name %s classification %u id %u activation_method %u ver_len %d ver_str %.*s index %u size %u transfer_flag 0x%02x\n",
-+		priv->params->component, component->classification,
-+		component->identifier, component->activation_method,
-+		component->version_len, component->version_len,
-+		component->version_string, component->index,
-+		component->component_size, transfer_flag);
-+
-+	component_priv = kzalloc_obj(*component_priv, GFP_KERNEL);
-+	if (!component_priv)
-+		return -ENOMEM;
-+
-+	if (priv->params->component) {
-+		requested_type = pdsc_name_to_fw_type(priv->params->component);
-+		if (component->identifier > U8_MAX ||
-+		    !pdsc_component_id_matches_type(pdsc,
-+						    component->identifier,
-+						    requested_type)) {
-+			skip_component = true;
-+			goto add_component_priv;
-+		}
-+	}
-+
-+	buf_sz = sizeof(pdsc->cmd_regs->data);
-+	tbl_sz = struct_size(component_tbl, version_str,
-+			     component->version_len);
-+	if (tbl_sz > buf_sz) {
-+		dev_err(dev, "component_tbl size %d too big, max size: %d\n",
-+			tbl_sz, buf_sz);
-+		err = -ENOSPC;
-+		goto free_component_priv;
-+	}
-+	component_tbl = kzalloc(tbl_sz, GFP_KERNEL);
-+	if (!component_tbl) {
-+		err = -ENOMEM;
-+		goto free_component_priv;
-+	}
-+
-+	component_tbl->comparison_stamp =
-+		cpu_to_le32(component->comparison_stamp);
-+	component_tbl->classification = cpu_to_le16(component->classification);
-+	component_tbl->identifier = cpu_to_le16(component->identifier);
-+	component_tbl->transfer_flag = transfer_flag;
-+	component_tbl->version_str_type = component->version_type;
-+	component_tbl->version_str_len = component->version_len;
-+	memcpy(component_tbl->version_str, component->version_string,
-+	       component->version_len);
-+
-+	cmd.send_component_tbl.opcode = PDS_CORE_CMD_SEND_COMPONENT_TBL;
-+	cmd.send_component_tbl.ver = 1;
-+	cmd.send_component_tbl.slot_id = PDS_CORE_FW_SLOT_INVALID;
-+
-+	err = pdsc_devcmd_with_data(pdsc, &cmd, component_tbl, tbl_sz,
-+				    &comp, pdsc->devcmd_timeout);
-+	kfree(component_tbl);
-+	if (err) {
-+		dev_err(dev, "Failed sending component table: %pe\n",
-+			ERR_PTR(err));
-+		goto free_component_priv;
-+	}
-+
-+	if (comp.send_component_tbl.response == 1 &&
-+	    comp.send_component_tbl.response_code ==
-+		PDS_CORE_COMPONENT_PREREQS_NOT_MET)
-+		skip_component = true;
-+
-+add_component_priv:
-+	component_priv->skip = skip_component;
-+	component_priv->component_id = component->identifier;
-+	list_add(&component_priv->list_entry, &priv->components);
-+
-+	return 0;
-+
-+free_component_priv:
-+	kfree(component_priv);
-+	return err;
-+}
-+
-+int pdsc_get_component_info(struct pdsc *pdsc)
-+{
-+	union pds_core_dev_cmd cmd = {
-+		.get_component_info.opcode = PDS_CORE_CMD_GET_COMPONENT_INFO,
-+		.get_component_info.ver = 1,
-+	};
-+	struct pds_core_component_list_info *list_info;
-+	struct pdsc_deferred_dma *deferred;
-+	union pds_core_dev_comp comp = {};
-+	dma_addr_t dma_addr;
-+	u8 num_components;
-+	int err, i;
-+
-+	deferred = kmalloc_obj(*deferred);
-+	if (!deferred)
-+		return -ENOMEM;
-+
-+	list_info = kzalloc(PDS_PAGE_SIZE, GFP_KERNEL);
-+	if (!list_info) {
-+		kfree(deferred);
-+		return -ENOMEM;
-+	}
-+
-+	dma_addr = dma_map_single(pdsc->dev, list_info, PDS_PAGE_SIZE,
-+				  DMA_FROM_DEVICE);
-+	if (dma_mapping_error(pdsc->dev, dma_addr)) {
-+		dev_err(pdsc->dev,
-+			"Failed to dma_map component_list_info length %d\n",
-+			PDS_PAGE_SIZE);
-+		kfree(list_info);
-+		kfree(deferred);
-+		return -ENOMEM;
-+	}
-+
-+	cmd.get_component_info.data_len = cpu_to_le16(PDS_PAGE_SIZE);
-+	cmd.get_component_info.data_pa = cpu_to_le64(dma_addr);
-+
-+	err = pdsc_devcmd(pdsc, &cmd, &comp, pdsc->devcmd_timeout * 2);
-+	if (err == -ETIMEDOUT || err == -EAGAIN) {
-+		pdsc_deferred_dma_add(pdsc, deferred, dma_addr, list_info,
-+				      PDS_PAGE_SIZE, DMA_FROM_DEVICE);
-+		return err;
-+	}
-+
-+	kfree(deferred);
-+	dma_unmap_single(pdsc->dev, dma_addr, PDS_PAGE_SIZE, DMA_FROM_DEVICE);
-+	if (err)
-+		goto out;
-+
-+	if (comp.get_component_info.ver == 0) {
-+		/* Don't support backward compatibility as version 0 has
-+		 * alignment issues, so give a hint to users to update
-+		 * their firmware
-+		 */
-+		dev_warn_once(pdsc->dev,
-+			      "Incompatible get_component_info version %u reported by firmware\n",
-+			      comp.get_component_info.ver);
-+		err = 0;
-+		goto out;
-+	}
-+
-+	num_components = list_info->num_components;
-+	if (num_components > PDS_CORE_FW_COMPONENT_LIST_LEN) {
-+		err = -ENOMEM;
-+		goto out;
-+	}
-+
-+	pdsc->fw_components.num_components = num_components;
-+	for (i = 0; i < num_components; i++) {
-+		struct pds_core_fw_component_info *info =
-+			&pdsc->fw_components.info[i];
-+
-+		memcpy(info, &list_info->info[i], sizeof(*info));
-+		info->version[PDS_CORE_FW_COMPONENT_VER_BUFLEN - 1] = 0;
-+		info->name[PDS_CORE_FW_COMPONENT_NAME_BUFLEN - 1] = 0;
-+	}
-+
-+out:
-+	kfree(list_info);
-+	return err;
-+}
-+
-+static int pdsc_devcmd_send_component(struct pdsc *pdsc,
-+				      struct pds_core_flash_component *info,
-+				      u16 info_sz, dma_addr_t addr, u32 length,
-+				      u32 offset, u16 slot_id,
-+				      union pds_core_dev_comp *comp)
-+{
-+	union pds_core_dev_cmd cmd = {
-+		.send_component.opcode = PDS_CORE_CMD_SEND_COMPONENT,
-+		.send_component.ver = 1,
-+		.send_component.operation = PDS_CORE_SEND_COMPONENT_START,
-+		.send_component.data_pa = cpu_to_le64(addr),
-+		.send_component.data_len = cpu_to_le32(length),
-+		.send_component.offset = cpu_to_le32(offset),
-+		.send_component.slot_id = slot_id,
-+	};
-+	unsigned long timeout = 300 * HZ;
-+	unsigned long start_time;
-+	unsigned long end_time;
-+	int err;
-+
-+	start_time = jiffies;
-+	end_time = start_time + timeout;
-+	do {
-+		/* prevent noisy/benign devcmd failures */
-+		err = pdsc_devcmd_with_data_nomsg(pdsc, &cmd, info, info_sz,
-+						  comp, 60);
-+		if (err != -EAGAIN)
-+			break;
-+
-+		/* if required, subsequent commands check status of
-+		 * PDS_CORE_CMD_SEND_COMPONENT command, which returns
-+		 * EAGAIN while the command is still running,
-+		 * else we get the final command status.
-+		 */
-+		cmd.send_component.operation = PDS_CORE_SEND_COMPONENT_STATUS;
-+		msleep(20);
-+	} while (time_before(jiffies, end_time));
-+
-+	if (err == -EAGAIN || err == -ETIMEDOUT)
-+		dev_err(pdsc->dev, "PDS_CORE_CMD_SEND_COMPONENT timed out\n");
-+
-+	return err;
-+}
-+
-+static int pdsc_flash_component_chunk(struct pdsc *pdsc, struct device *dev,
-+				      struct pds_core_flash_component *info,
-+				      u16 info_sz, const u8 *data, u16 copy_sz,
-+				      u32 offset, u8 slot_id,
-+				      union pds_core_dev_comp *comp)
-+{
-+	struct pdsc_deferred_dma *deferred;
-+	dma_addr_t dma_addr;
-+	u8 *component_data;
-+	int err;
-+
-+	deferred = kmalloc_obj(*deferred, GFP_KERNEL);
-+	if (!deferred)
-+		return -ENOMEM;
-+
-+	component_data = kmemdup(data, copy_sz, GFP_KERNEL);
-+	if (!component_data) {
-+		kfree(deferred);
-+		return -ENOMEM;
-+	}
-+
-+	dma_addr = dma_map_single(dev, component_data, copy_sz, DMA_TO_DEVICE);
-+	if (dma_mapping_error(dev, dma_addr)) {
-+		dev_err(dev,
-+			"Failed to dma_map component_data at offset 0x%x copy_sz 0x%x\n",
-+			offset, copy_sz);
-+		kfree(component_data);
-+		kfree(deferred);
-+		return -ENOMEM;
-+	}
-+
-+	err = pdsc_devcmd_send_component(pdsc, info, info_sz, dma_addr,
-+					 copy_sz, offset, slot_id, comp);
-+	if (err == -ETIMEDOUT || err == -EAGAIN) {
-+		pdsc_deferred_dma_add(pdsc, deferred, dma_addr,
-+				      component_data, copy_sz, DMA_TO_DEVICE);
-+		return err;
-+	}
-+
-+	kfree(deferred);
-+	dma_unmap_single(dev, dma_addr, copy_sz, DMA_TO_DEVICE);
-+	kfree(component_data);
-+
-+	return err;
-+}
-+
-+static int pdsc_flash_component(struct pldmfw *context,
-+				struct pldmfw_component *component)
-+{
-+	char component_name_buf[sizeof(PDSC_FW_COMPONENT_PREFIX) + 16];
-+	struct pds_core_fwu_priv *priv =
-+		container_of(context, struct pds_core_fwu_priv, context);
-+	struct pds_core_flash_component *component_info;
-+	const char *component_name = NULL;
-+	struct device *dev = context->dev;
-+	struct pdsc *pdsc = priv->pdsc;
-+	u16 buf_sz, info_sz;
-+	struct devlink *dl;
-+	u8 component_type;
-+	u32 total_len;
-+	u32 offset;
-+	int err;
-+
-+	if (pdsc_skip_component(priv, component->identifier))
-+		return 0;
-+
-+	component_type = pdsc_get_component_type_by_id(pdsc,
-+						       component->identifier);
-+	if (component_type) {
-+		const char *type_name = pdsc_fw_type_to_name(component_type);
-+
-+		if (type_name) {
-+			snprintf(component_name_buf, sizeof(component_name_buf),
-+				 "%s%s", PDSC_FW_COMPONENT_PREFIX, type_name);
-+			component_name = component_name_buf;
-+		}
-+	}
-+
-+	total_len = component->component_size;
-+	dev_dbg(dev,
-+		"component name %s class %u id %u act_meth %u ver_str %.*s index %u size %u\n",
-+		component_name ?: "(unknown)", component->classification,
-+		component->identifier, component->activation_method,
-+		component->version_len, component->version_string,
-+		component->index, component->component_size);
-+
-+	buf_sz = sizeof(pdsc->cmd_regs->data);
-+	info_sz = struct_size(component_info, version_str,
-+			      component->version_len);
-+	if (info_sz > buf_sz) {
-+		dev_err(dev, "component_info size %d too big, max size: %d\n",
-+			info_sz, buf_sz);
-+		return -ENOSPC;
-+	}
-+	component_info = vzalloc(info_sz);
-+	if (!component_info)
-+		return -ENOMEM;
-+
-+	component_info->comparison_stamp =
-+		cpu_to_le32(component->comparison_stamp);
-+	component_info->image_size = cpu_to_le32(total_len);
-+	component_info->classification = cpu_to_le16(component->classification);
-+	component_info->identifier = cpu_to_le16(component->identifier);
-+	component_info->options = cpu_to_le16(component->options);
-+	component_info->version_str_type = component->version_type;
-+	component_info->version_str_len = component->version_len;
-+	memcpy(component_info->version_str, component->version_string,
-+	       component->version_len);
-+
-+	dl = priv_to_devlink(pdsc);
-+
-+	offset = 0;
-+	while (offset < total_len) {
-+		union pds_core_dev_comp comp = {};
-+		u16 copy_sz;
-+
-+		copy_sz = min_t(unsigned int, PDS_PAGE_SIZE,
-+				total_len - offset);
-+
-+		err = pdsc_flash_component_chunk(pdsc, dev, component_info,
-+						 info_sz,
-+						 component->component_data +
-+						 offset, copy_sz, offset,
-+						 PDS_CORE_FW_SLOT_INVALID,
-+						 &comp);
-+		if (err &&
-+		    comp.send_component.compat_response &&
-+		    (comp.send_component.compat_response_code ==
-+		     PDS_CORE_COMPONENT_STAMP_IDENTICAL ||
-+		     comp.send_component.compat_response_code ==
-+		     PDS_CORE_COMPONENT_STAMP_LOWER)) {
-+			err = 0;
-+			devlink_flash_update_status_notify(dl, "Skipped",
-+							   component_name,
-+							   0, 0);
-+			goto skip_component;
-+		}
-+
-+		if (err) {
-+			dev_err(dev,
-+				"send_component failed offset 0x%x len 0x%x: %pe\n",
-+				offset, copy_sz, ERR_PTR(err));
-+			goto err_out;
-+		}
-+
-+		offset += copy_sz;
-+		devlink_flash_update_status_notify(dl,
-+						   "Erasing/Flashing",
-+						   component_name, offset,
-+						   total_len);
-+	}
-+
-+	vfree(component_info);
-+	return 0;
-+
-+err_out:
-+	devlink_flash_update_status_notify(dl,
-+					   "Erasing/Flashing Component Failed",
-+					   component_name, 0, 0);
-+skip_component:
-+	vfree(component_info);
-+	return err;
-+}
-+
-+static int pdsc_devcmd_finalize_update(struct pdsc *pdsc)
-+{
-+	union pds_core_dev_cmd cmd = {
-+		.finalize_update.opcode = PDS_CORE_CMD_FINALIZE_UPDATE,
-+		.finalize_update.ver = 1,
-+	};
-+	union pds_core_dev_comp comp = {};
-+
-+	return pdsc_devcmd(pdsc, &cmd, &comp, pdsc->devcmd_timeout);
-+}
-+
-+static int pdsc_finalize_update(struct pldmfw *context)
-+{
-+	struct pds_core_fwu_priv *priv =
-+		container_of(context, struct pds_core_fwu_priv, context);
-+	const char *component_name = priv->params->component;
-+	unsigned long start_time, end_time;
-+	struct device *dev = context->dev;
-+	struct pdsc *pdsc = priv->pdsc;
-+	struct devlink *dl;
-+	int err;
-+
-+	dl = priv_to_devlink(pdsc);
-+
-+	start_time = jiffies;
-+	end_time = start_time + (PDSC_FW_INSTALL_TIMEOUT * HZ);
-+	do {
-+		err = pdsc_devcmd_finalize_update(pdsc);
-+		if (!err || err != -EAGAIN)
-+			break;
-+
-+		dev_dbg(dev, "retrying finalize_update: %pe\n", ERR_PTR(err));
-+		msleep(20);
-+	} while (time_before(jiffies, end_time) && err == -EAGAIN);
-+
-+	if (err) {
-+		devlink_flash_update_status_notify(dl, "Finalize Update Failed",
-+						   component_name, 0, 0);
-+		dev_err(dev, "finalize_update failed: %pe\n", ERR_PTR(err));
-+		return err;
-+	}
-+
-+	devlink_flash_update_status_notify(dl, "Finalized Update",
-+					   component_name, 0, 0);
-+	return 0;
-+}
-+
-+static const struct pldmfw_ops pdsc_pldmfw_ops = {
-+	.match_record = pdsc_match_record_descs,
-+	.send_package_data = pdsc_send_package_data,
-+	.send_component_table = pdsc_send_component_table,
-+	.flash_component = pdsc_flash_component,
-+	.finalize_update = pdsc_finalize_update
-+};
-+
-+static int pdsc_pldm_firmware_update(struct pdsc *pdsc,
-+				     struct devlink_flash_update_params *params,
-+				     struct netlink_ext_ack *extack,
-+				     const struct firmware *fw)
-+{
-+	struct pds_core_fwu_priv priv = {};
-+	int err;
-+
-+	if (!pdsc->fw_components.num_components) {
-+		err = pdsc_get_component_info(pdsc);
-+		if (err) {
-+			dev_err(pdsc->dev,
-+				"Failed to get component info: %pe\n",
-+				ERR_PTR(err));
-+			return err;
-+		}
-+	}
-+
-+	if (params->component) {
-+		u8 type = pdsc_name_to_fw_type(params->component);
-+
-+		if (!type || !pdsc_component_type_exists(pdsc, type))
-+			return -ENOENT;
-+	}
-+
-+	INIT_LIST_HEAD(&priv.components);
-+	priv.context.ops = &pdsc_pldmfw_ops;
-+	priv.context.dev = pdsc->dev;
-+	priv.params = params;
-+	priv.pdsc = pdsc;
-+
-+	err = pldmfw_flash_image(&priv.context, fw);
-+	pdsc_free_fwu_priv(&priv);
-+
-+	return err;
-+}
-+
-+int pdsc_firmware_update(struct pdsc *pdsc,
-+			 struct devlink_flash_update_params *params,
-+			 struct netlink_ext_ack *extack)
-+{
-+	int err;
-+
-+	if (pdsc->dev_ident.version >= PDS_CORE_IDENTITY_VERSION_2 &&
-+	    pdsc->dev_ident.capabilities &
-+		cpu_to_le64(PDS_CORE_DEV_CAP_PLDM_FW_UPDATE))
-+		err = pdsc_pldm_firmware_update(pdsc, params, extack,
-+						params->fw);
-+	else
-+		err = pdsc_legacy_firmware_update(pdsc, params->fw, extack);
-+
-+	/* Invalidate cached component info so next info_get refreshes */
-+	pdsc->fw_components.num_components = 0;
-+
-+	return err;
-+}
++void pdsc_host_mem_add(struct pdsc *pdsc);
++void pdsc_host_mem_free(struct pdsc *pdsc);
++
+ void pdsc_deferred_dma_add(struct pdsc *pdsc, struct pdsc_deferred_dma *entry,
+ 			   dma_addr_t dma_addr, void *va, size_t size,
+ 			   enum dma_data_direction dir);
 diff --git a/drivers/net/ethernet/amd/pds_core/main.c b/drivers/net/ethernet/amd/pds_core/main.c
-index 22db78343eb0..02ff5e51f617 100644
+index 02ff5e51f617..a6f327f1c1d5 100644
 --- a/drivers/net/ethernet/amd/pds_core/main.c
 +++ b/drivers/net/ethernet/amd/pds_core/main.c
-@@ -246,6 +246,8 @@ static int pdsc_init_pf(struct pdsc *pdsc)
- 	mutex_init(&pdsc->devcmd_lock);
- 	mutex_init(&pdsc->config_lock);
- 	spin_lock_init(&pdsc->adminq_lock);
-+	INIT_LIST_HEAD(&pdsc->deferred_dma_list);
-+	spin_lock_init(&pdsc->deferred_dma_lock);
+@@ -21,6 +21,8 @@ static const struct pci_device_id pdsc_id_table[] = {
+ };
+ MODULE_DEVICE_TABLE(pci, pdsc_id_table);
  
- 	mutex_lock(&pdsc->config_lock);
- 	set_bit(PDSC_S_FW_DEAD, &pdsc->state);
-@@ -311,6 +313,7 @@ static int pdsc_init_pf(struct pdsc *pdsc)
- 		destroy_workqueue(pdsc->wq);
- 	mutex_destroy(&pdsc->config_lock);
- 	mutex_destroy(&pdsc->devcmd_lock);
-+	pdsc_deferred_dma_free(pdsc);
- 	pci_free_irq_vectors(pdsc->pdev);
- 	pdsc_unmap_bars(pdsc);
- err_out_release_regions:
-@@ -452,6 +455,8 @@ static void pdsc_remove(struct pci_dev *pdev)
- 	}
++static void pdsc_stop_health_thread(struct pdsc *pdsc);
++
+ static void pdsc_wdtimer_cb(struct timer_list *t)
+ {
+ 	struct pdsc *pdsc = timer_container_of(pdsc, t, wdtimer);
+@@ -437,7 +439,7 @@ static void pdsc_remove(struct pci_dev *pdev)
+ 		pdsc_sriov_configure(pdev, 0);
+ 		pdsc_auxbus_dev_del(pdsc, pdsc, &pdsc->padev);
  
- 	pci_disable_device(pdev);
-+	if (!pdev->is_virtfn)
-+		pdsc_deferred_dma_free(pdsc);
+-		timer_shutdown_sync(&pdsc->wdtimer);
++		pdsc_stop_health_thread(pdsc);
+ 		if (pdsc->wq)
+ 			destroy_workqueue(pdsc->wq);
  
- 	ida_free(&pdsc_ida, pdsc->uid);
- 	pdsc_debugfs_del_dev(pdsc);
-@@ -499,6 +504,8 @@ static void pdsc_reset_prepare(struct pci_dev *pdev)
- 	pci_release_regions(pdev);
- 	if (pci_is_enabled(pdev))
- 		pci_disable_device(pdev);
-+	if (!pdev->is_virtfn)
-+		pdsc_deferred_dma_free(pdsc);
- }
- 
- static void pdsc_reset_done(struct pci_dev *pdev)
 diff --git a/include/linux/pds/pds_core_if.h b/include/linux/pds/pds_core_if.h
-index 619186f26b5b..cc1f180aee55 100644
+index cc1f180aee55..8a0c962b6472 100644
 --- a/include/linux/pds/pds_core_if.h
 +++ b/include/linux/pds/pds_core_if.h
-@@ -40,6 +40,13 @@ enum pds_core_cmd_opcode {
- 	PDS_CORE_CMD_FW_DOWNLOAD	= 4,
- 	PDS_CORE_CMD_FW_CONTROL		= 5,
+@@ -46,6 +46,7 @@ enum pds_core_cmd_opcode {
+ 	PDS_CORE_CMD_SEND_COMPONENT	= 9,
+ 	PDS_CORE_CMD_FINALIZE_UPDATE	= 10,
+ 	PDS_CORE_CMD_MATCH_RECORD_DESC	= 11,
++	PDS_CORE_CMD_HOST_MEM		= 12,
  
-+	PDS_CORE_CMD_GET_COMPONENT_INFO	= 6,
-+	PDS_CORE_CMD_SEND_PKG_DATA	= 7,
-+	PDS_CORE_CMD_SEND_COMPONENT_TBL	= 8,
-+	PDS_CORE_CMD_SEND_COMPONENT	= 9,
-+	PDS_CORE_CMD_FINALIZE_UPDATE	= 10,
-+	PDS_CORE_CMD_MATCH_RECORD_DESC	= 11,
-+
  	/* SR/IOV commands */
  	PDS_CORE_CMD_VF_GETATTR		= 60,
- 	PDS_CORE_CMD_VF_SETATTR		= 61,
-@@ -100,6 +107,14 @@ struct pds_core_drv_identity {
- 	char   driver_ver_str[32];
- };
- 
-+/**
-+ * enum pds_core_dev_capability - Device capabilities
-+ * @PDS_CORE_DEV_CAP_PLDM_FW_UPDATE: Device only supports FW update via PLDM
-+ */
-+enum pds_core_dev_capability {
-+	PDS_CORE_DEV_CAP_PLDM_FW_UPDATE = BIT(0),
-+};
-+
- #define PDS_DEV_TYPE_MAX	16
+@@ -110,9 +111,11 @@ struct pds_core_drv_identity {
  /**
-  * struct pds_core_dev_identity - Device identity information
-@@ -119,6 +134,9 @@ struct pds_core_drv_identity {
-  *		      value in usecs to device units using:
-  *		      device units = usecs * mult / div
-  * @vif_types:        How many of each VIF device type is supported
-+ * @max_fw_slots:     Maximum number of fw slots/components
-+ *		      only supported on version >= PDS_CORE_IDENTITY_VERSION_2
-+ * @rsvd2:	      Word boundary padding
-  * @capabilities:     Device capabilities
-  *		      only supported on version >= PDS_CORE_IDENTITY_VERSION_2
+  * enum pds_core_dev_capability - Device capabilities
+  * @PDS_CORE_DEV_CAP_PLDM_FW_UPDATE: Device only supports FW update via PLDM
++ * @PDS_CORE_DEV_CAP_HOST_MEM: Device supports host memory for fw use
   */
-@@ -133,6 +151,8 @@ struct pds_core_dev_identity {
- 	__le32 intr_coal_mult;
- 	__le32 intr_coal_div;
- 	__le16 vif_types[PDS_DEV_TYPE_MAX];
-+	__le16 max_fw_slots;
-+	u8     rsvd2[6];
- 	__le64 capabilities;
+ enum pds_core_dev_capability {
+ 	PDS_CORE_DEV_CAP_PLDM_FW_UPDATE = BIT(0),
++	PDS_CORE_DEV_CAP_HOST_MEM = BIT(1),
  };
  
-@@ -279,11 +299,20 @@ enum pds_core_fw_control_oper {
- 	PDS_CORE_FW_GET_LIST               = 7,
+ #define PDS_DEV_TYPE_MAX	16
+@@ -838,6 +841,65 @@ struct pds_core_match_record_desc_comp {
+ 	u8 rsvd;
  };
  
 +/**
-+ * enum pds_core_fw_slot - Firmware slot identifiers
-+ * @PDS_CORE_FW_SLOT_INVALID: Let firmware select slot based on package metadata
-+ * @PDS_CORE_FW_SLOT_A:       Primary firmware slot A
-+ * @PDS_CORE_FW_SLOT_B:       Primary firmware slot B
-+ * @PDS_CORE_FW_SLOT_GOLD:    Gold/recovery firmware slot
-+ * @PDS_CORE_FW_SLOT_MAX:     Sentinel value indicating no slot resolved
++ * enum pds_core_host_mem_oper - HOST_MEM sub-operations
++ * @PDS_CORE_HOST_MEM_GET_COUNT: Query number of memory requests
++ * @PDS_CORE_HOST_MEM_QUERY:     Query details of a memory request
++ * @PDS_CORE_HOST_MEM_ADD:       Provide allocated memory to firmware
++ * @PDS_CORE_HOST_MEM_DEL:       Notify firmware of memory deallocation
 + */
- enum pds_core_fw_slot {
- 	PDS_CORE_FW_SLOT_INVALID    = 0,
- 	PDS_CORE_FW_SLOT_A	    = 1,
- 	PDS_CORE_FW_SLOT_B          = 2,
- 	PDS_CORE_FW_SLOT_GOLD       = 3,
-+	PDS_CORE_FW_SLOT_MAX        = 0xff,
- };
- 
- /**
-@@ -450,6 +479,365 @@ struct pds_core_vf_ctrl_comp {
- 	u8	status;
- };
- 
++enum pds_core_host_mem_oper {
++	PDS_CORE_HOST_MEM_GET_COUNT	= 0,
++	PDS_CORE_HOST_MEM_QUERY		= 1,
++	PDS_CORE_HOST_MEM_ADD		= 2,
++	PDS_CORE_HOST_MEM_DEL		= 3,
++};
++
 +/**
-+ * struct pds_core_send_pkg_data_cmd - Send package data command
-+ * @opcode: Opcode PDS_CORE_CMD_SEND_PKG_DATA
-+ * @ver: Driver's max support version of this command
-+ * @total_len: Total length of the package data
-+ * @offset: Offset in the package data, non-zero if multiple commands are
-+ *	    needed for sending the package data
-+ * @data_len: Length of data stored at data_pa
-+ * @data_pa: Data physical address for DMA to device
++ * struct pds_core_host_mem_cmd - HOST_MEM command
++ * @opcode:     Opcode PDS_CORE_CMD_HOST_MEM
++ * @oper:       Operation (enum pds_core_host_mem_oper)
++ * @index:      Memory request index (GET_COUNT: max_count, QUERY: index)
++ * @tag:        Tag for this memory request (ADD/DEL)
++ * @reason:     Reason for deletion (DEL only)
++ * @rsvd:       Reserved
++ * @max_contig: Maximum contiguous memory size (GET_COUNT only)
++ * @size:       Size of memory in bytes (ADD only)
++ * @buf_pa:     DMA address of memory (ADD only)
 + *
-+ * The package data may be too large to store in a single buffer, so multiple
-+ * PDS_CORE_CMD_SEND_PKG_DATA devcmds may be needed.
++ * Unified command for all host memory operations. Fields are reused
++ * across operations to minimize opcode space usage.
 + */
-+struct pds_core_send_pkg_data_cmd {
-+	u8 opcode;
-+	u8 ver;
-+	__le16 total_len;
-+	__le16 offset;
-+	__le16 data_len;
-+	__le64 data_pa;
++struct pds_core_host_mem_cmd {
++	u8     opcode;
++	u8     oper;
++	__le16 index;
++	__le16 tag;
++	u8     reason;
++	u8     rsvd;
++	__le32 max_contig;
++	__le32 size;
++	__le64 buf_pa;
 +};
 +
 +/**
-+ * struct pds_core_send_pkg_data_comp - Send package data completion
-+ * @status: Status of the command (enum pds_core_status_code)
-+ * @ver: Device's max supported version of this command
-+ * @rsvd: Word boundary padding
++ * struct pds_core_host_mem_comp - HOST_MEM completion
++ * @status:       Status of the command (enum pds_core_status_code)
++ * @oper:         Operation that was performed
++ * @count:        Number of memory requests (GET_COUNT)
++ * @size:         Size of memory request in bytes (QUERY)
++ * @tag:          Tag for this memory request (QUERY/DEL)
++ * @rsvd:         Reserved
 + */
-+struct pds_core_send_pkg_data_comp {
-+	u8 status;
-+	u8 ver;
-+	u8 rsvd[2];
-+};
-+
-+/**
-+ * struct pds_core_component_tbl - Component table details
-+ * @comparison_stamp: Comparison stamp used for component version checks
-+ * @classification: Vendor specific classification info
-+ * @identifier: Component's ID
-+ * @transfer_flag: Part of the component table this request represents
-+ * @version_str_type: The types of strings used
-+ * @version_str_len: Length of @version_str
-+ * @version_str: Component version information
-+ */
-+struct pds_core_component_tbl {
-+	__le32 comparison_stamp;
-+	__le16 classification;
-+	__le16 identifier;
-+	u8     transfer_flag;
-+	u8     version_str_type;
-+	u8     version_str_len;
-+	u8     version_str[];
-+};
-+
-+/**
-+ * struct pds_core_send_component_tbl_cmd - Send component table command
-+ * @opcode: Opcode PDS_CORE_CMD_SEND_COMPONENT_TBL
-+ * @ver: Driver's max support version of this command
-+ * @slot_id: enum pds_core_fw_slot
-+ * @rsvd: Word boundary padding
-+ *
-+ * Expects to find component table info (struct pds_core_component_tbl)
-+ * in cmd_regs->data.  Driver should keep the devcmd interface locked
-+ * while preparing the component table info.
-+ */
-+struct pds_core_send_component_tbl_cmd {
-+	u8 opcode;
-+	u8 ver;
-+	u8 slot_id;
-+	u8 rsvd;
-+};
-+
-+enum pds_core_component_resp_code {
-+	PDS_CORE_COMPONENT_VALID = 0x0,
-+	PDS_CORE_COMPONENT_STAMP_IDENTICAL = 0x1,
-+	PDS_CORE_COMPONENT_STAMP_LOWER = 0x2,
-+	PDS_CORE_COMPONENT_STAMP_OR_VERSION_INVALID = 0x3,
-+	PDS_CORE_COMPONENT_CONFLICT = 0x4,
-+	PDS_CORE_COMPONENT_PREREQS_NOT_MET = 0x5,
-+	PDS_CORE_COMPONENT_NOT_SUPPORTED = 0x6,
-+	PDS_CORE_COMPONENT_FW_TYPE_INVALID = 0xd0,
-+};
-+
-+/**
-+ * struct pds_core_send_component_tbl_comp - Send component table completion
-+ * @status: Status of the command (enum pds_core_status_code)
-+ * @ver: Device's max supported version of this command
-+ * @completion_code: Component completion code
-+ * @response: Component response
-+ * @response_code: Component response code
-+ * @slot_id: Actual slot_id of the component (enum pds_core_fw_slot)
-+ * @rsvd: Word boundary padding
-+ */
-+struct pds_core_send_component_tbl_comp {
-+	u8 status;
-+	u8 ver;
-+	u8 completion_code;
-+	u8 response;
-+	u8 response_code;
-+	u8 slot_id;
-+	u8 rsvd[2];
-+};
-+
-+/**
-+ * enum pds_core_send_component_op - PDS_CORE_CMD_SEND_COMPONENT operation
-+ * @PDS_CORE_SEND_COMPONENT_START: Initial operation to start transfer
-+ * @PDS_CORE_SEND_COMPONENT_STATUS: Subsequent calls to check on status
-+ * PDS_CORE_CMD_SEND_COMPONENT
-+ */
-+enum pds_core_send_component_op {
-+	PDS_CORE_SEND_COMPONENT_START = 0,
-+	PDS_CORE_SEND_COMPONENT_STATUS = 1,
-+};
-+
-+#define PDS_CORE_FW_COMPONENT_ID_INVALID 0xFFFF
-+/**
-+ * struct pds_core_flash_component - Component details
-+ * @comparison_stamp: Comparison stamp used for component version checks
-+ * @image_size: Component image size
-+ * @classification: Vendor specific classification info
-+ * @identifier: Component's ID
-+ * @options: Component options
-+ * @rsvd: Word boundary padding
-+ * @version_str_type: The types of strings used
-+ * @version_str_len: Length of @version_str
-+ * @version_str: Component version information
-+ */
-+struct pds_core_flash_component {
-+	__le32 comparison_stamp;
-+	__le32 image_size;
-+	__le16 classification;
-+	__le16 identifier;
-+	__le16 options;
-+	u8 rsvd[3];
-+	u8 version_str_type;
-+	u8 version_str_len;
-+	u8 version_str[];
-+};
-+
-+/**
-+ * struct pds_core_send_component_cmd - Send component command
-+ * @opcode: Opcode PDS_CORE_CMD_SEND_COMPONENT
-+ * @ver: Driver's max supported version of this command
-+ * @slot_id: enum pds_core_fw_slot
-+ * @operation: enum pds_core_send_component_op
-+ * @offset: Offset into the component, non-zero if multiple commands
-+ *	    are needed for a single component
-+ * @data_len: Length of this part of the component stored at @data_pa
-+ * @rsvd: Word boundary padding
-+ * @data_pa: DMA address of the component
-+ *
-+ * A component may be too large to store in a single buffer, so multiple
-+ * PDS_CORE_CMD_SEND_COMPONENT devcmds may be needed.
-+ *
-+ * Expects to find flash component info (struct pds_core_flash_component)
-+ * in cmd_regs->data. Driver should keep the devcmd interface locked
-+ * while preparing and sending the flash component info.
-+ */
-+struct pds_core_send_component_cmd {
-+	u8 opcode;
-+	u8 ver;
-+	u8 slot_id;
-+	u8 operation;
-+	__le32 offset;
-+	__le32 data_len;
-+	u8 rsvd[4];
-+	__le64 data_pa;
-+};
-+
-+/**
-+ * struct pds_core_send_component_comp - Send component completion
-+ * @status: Status of the command (enum pds_core_status_code)
-+ * @ver: Device's max supported version of this command
-+ * @completion_code: Completion code
-+ * @compat_response: Compatibility response (0 = Component can be updated)
-+ * @compat_response_code: Compatibility response code
-+ * @rsvd: Word boundary padding
-+ */
-+struct pds_core_send_component_comp {
-+	u8 status;
-+	u8 ver;
-+	u8 completion_code;
-+	u8 compat_response;
-+	u8 compat_response_code;
-+	u8 rsvd[3];
-+};
-+
-+/**
-+ * enum pds_core_fw_component_type - Firmware component type
-+ * @PDS_CORE_FW_TYPE_UNKNOWN: Unknown component type
-+ * @PDS_CORE_FW_TYPE_MAIN: Main firmware
-+ * @PDS_CORE_FW_TYPE_BOOT: Boot loader
-+ * @PDS_CORE_FW_TYPE_CPLD: CPLD firmware
-+ * @PDS_CORE_FW_TYPE_SECURE: Secure firmware
-+ * @PDS_CORE_FW_TYPE_FPGA: FPGA configuration
-+ * @PDS_CORE_FW_TYPE_SUC_MAIN: System Unit Controller firmware
-+ * @PDS_CORE_FW_TYPE_SUC_BOOT: System Unit Controller bootloader
-+ * @PDS_CORE_FW_TYPE_UBOOT: U-Boot bootloader
-+ *
-+ * Gold/recovery variants are identified by slot_id == PDS_CORE_FW_SLOT_GOLD
-+ * and reported with a ".gold" suffix (e.g., fw.mainfw.gold).
-+ */
-+enum pds_core_fw_component_type {
-+	PDS_CORE_FW_TYPE_UNKNOWN   = 0,
-+	PDS_CORE_FW_TYPE_MAIN      = 1,
-+	PDS_CORE_FW_TYPE_BOOT      = 2,
-+	PDS_CORE_FW_TYPE_CPLD      = 3,
-+	PDS_CORE_FW_TYPE_SECURE    = 4,
-+	PDS_CORE_FW_TYPE_FPGA      = 5,
-+	PDS_CORE_FW_TYPE_SUC_MAIN  = 6,
-+	PDS_CORE_FW_TYPE_SUC_BOOT  = 7,
-+	PDS_CORE_FW_TYPE_UBOOT     = 8,
-+};
-+
-+/**
-+ * enum pds_core_component_info_flags - Component info flags
-+ * @PDS_CORE_FW_COMPONENT_INFO_F_RUNNING: Component is currently running
-+ * @PDS_CORE_FW_COMPONENT_INFO_F_STARTUP: Component version on next FW boot
-+ * @PDS_CORE_FW_COMPONENT_INFO_F_FIXED: Component is fixed and cannot be updated
-+ * @PDS_CORE_FW_COMPONENT_INFO_F_UPDATE_BY_NAME: Component can be updated
-+ *	by name
-+ */
-+enum pds_core_component_info_flags {
-+	PDS_CORE_FW_COMPONENT_INFO_F_RUNNING = BIT(0),
-+	PDS_CORE_FW_COMPONENT_INFO_F_STARTUP = BIT(1),
-+	PDS_CORE_FW_COMPONENT_INFO_F_FIXED = BIT(2),
-+	PDS_CORE_FW_COMPONENT_INFO_F_UPDATE_BY_NAME = BIT(3),
-+};
-+
-+/**
-+ * struct pds_core_fw_component_info - GET_COMPONENT_INFO entry
-+ * @name: Component's name
-+ * @component_type: enum pds_core_fw_component_type
-+ * @rsvd: Word boundary padding
-+ * @flags: enum pds_core_component_info_flags
-+ * @identifier: Component's identifier
-+ * @slot_id: Component's slot identifier
-+ * @version: Component's version
-+ */
-+struct pds_core_fw_component_info {
-+#define PDS_CORE_FW_COMPONENT_NAME_BUFLEN 24
-+	char name[PDS_CORE_FW_COMPONENT_NAME_BUFLEN];
-+	u8 component_type;
-+	u8 rsvd[3];
-+	__le16 flags;
-+	u8 identifier;
-+	u8 slot_id;
-+#define PDS_CORE_FW_COMPONENT_VER_BUFLEN 32
-+	char version[PDS_CORE_FW_COMPONENT_VER_BUFLEN];
-+};
-+
-+#define PDS_CORE_FW_COMPONENT_LIST_LEN	((PDS_PAGE_SIZE - 8) / \
-+		sizeof(struct pds_core_fw_component_info))
-+
-+/**
-+ * struct pds_core_component_list_info - GET_COMPONENT_INFO completion data
-+ * @num_components: Number of valid components
-+ * @rsvd: Word boundary padding
-+ * @info: List of valid components
-+ */
-+struct pds_core_component_list_info {
-+	u8 num_components;
-+	u8 rsvd[7];
-+	struct pds_core_fw_component_info info[PDS_CORE_FW_COMPONENT_LIST_LEN];
-+};
-+
-+/**
-+ * struct pds_core_get_component_info_cmd - GET_COMPONENT_INFO command
-+ * @opcode: PDS_CORE_CMD_GET_COMPONENT_INFO
-+ * @ver: Driver's max supported version of this command
-+ * @data_len: Length of data at data_pa
-+ * @rsvd: Word boundary padding
-+ * @data_pa: DMA address of data
-+ *
-+ * FW populates struct pds_core_component_list_info pointed to by @data_pa
-+ */
-+struct pds_core_get_component_info_cmd {
-+	u8 opcode;
-+	u8 ver;
-+	__le16 data_len;
-+	u8 rsvd[4];
-+	__le64 data_pa;
-+};
-+
-+/**
-+ * struct pds_core_get_component_info_comp - GET_COMPONENT_INFO completion
-+ * @status: enum pds_core_status_code
-+ * @ver: Device's max supported version of this command
-+ * @rsvd: Word boundary padding
-+ */
-+struct pds_core_get_component_info_comp {
-+	u8 status;
-+	u8 ver;
-+	u8 rsvd[2];
-+};
-+
-+/**
-+ * struct pds_core_finalize_update_cmd - FINALIZE_UPDATE command
-+ * @opcode: PDS_CORE_CMD_FINALIZE_UPDATE
-+ * @ver: Driver's max support version of this command
-+ * @rsvd: Word boundary padding
-+ *
-+ * Driver sends at the end of updating all components to finalize the update
-+ */
-+struct pds_core_finalize_update_cmd {
-+	u8 opcode;
-+	u8 ver;
-+	u8 rsvd[2];
-+};
-+
-+/**
-+ * struct pds_core_finalize_update_comp - FINALIZE_UPDATE completion
-+ * @status: enum pds_core_status_code
-+ * @ver: Device's max supported version of this command
-+ * @rsvd: Word boundary padding
-+ */
-+struct pds_core_finalize_update_comp {
-+	u8 status;
-+	u8 ver;
-+	u8 rsvd[2];
-+};
-+
-+/**
-+ * struct pds_core_match_record_desc_cmd - MATCH_RECORD_DESC command
-+ * @opcode: PDS_CORE_CMD_MATCH_RECORD_DESC
-+ * @ver: Driver's max supported version of this command
-+ * @type: PLDM Descriptor Identifier Type
-+ * @size: Length of the Descriptor Identifier Value
-+ * @rsvd: Word boundary padding
-+ *
-+ * Expects to find the Descriptor Identifier Data in cmd_regs->data. Driver
-+ * should keep the devcmd interface locked while preparing and sending this
-+ * command.
-+ */
-+struct pds_core_match_record_desc_cmd {
-+	u8 opcode;
-+	u8 ver;
-+	__le16 type;
-+	__le16 size;
-+	u8 rsvd[2];
-+};
-+
-+/**
-+ * struct pds_core_match_record_desc_comp - MATCH_RECORD_DESC completion
-+ * @status: enum pds_core_status_code
-+ * @ver: Device's max supported version of this command
-+ * @match: Whether or not the Record Descriptor matches the device
-+ * @rsvd: Word boundary padding
-+ *
-+ * When status is PDS_RC_SUCCESS, then @match is valid, otherwise it's
-+ * undefined.
-+ */
-+struct pds_core_match_record_desc_comp {
-+	u8 status;
-+	u8 ver;
-+	u8 match;
-+	u8 rsvd;
++struct pds_core_host_mem_comp {
++	u8     status;
++	u8     oper;
++	__le16 count;
++	__le32 size;
++	__le16 tag;
++	u8     rsvd[6];
 +};
 +
  /*
   * union pds_core_dev_cmd - Overlay of core device command structures
   */
-@@ -466,6 +854,13 @@ union pds_core_dev_cmd {
- 	struct pds_core_vf_setattr_cmd   vf_setattr;
- 	struct pds_core_vf_getattr_cmd   vf_getattr;
- 	struct pds_core_vf_ctrl_cmd      vf_ctrl;
-+
-+	struct pds_core_get_component_info_cmd get_component_info;
-+	struct pds_core_send_pkg_data_cmd      send_pkg_data;
-+	struct pds_core_send_component_tbl_cmd send_component_tbl;
-+	struct pds_core_send_component_cmd     send_component;
-+	struct pds_core_finalize_update_cmd    finalize_update;
-+	struct pds_core_match_record_desc_cmd  match_record_desc;
+@@ -861,6 +923,7 @@ union pds_core_dev_cmd {
+ 	struct pds_core_send_component_cmd     send_component;
+ 	struct pds_core_finalize_update_cmd    finalize_update;
+ 	struct pds_core_match_record_desc_cmd  match_record_desc;
++	struct pds_core_host_mem_cmd           host_mem;
  };
  
  /*
-@@ -484,6 +879,13 @@ union pds_core_dev_comp {
- 	struct pds_core_vf_setattr_comp   vf_setattr;
- 	struct pds_core_vf_getattr_comp   vf_getattr;
- 	struct pds_core_vf_ctrl_comp      vf_ctrl;
-+
-+	struct pds_core_get_component_info_comp get_component_info;
-+	struct pds_core_send_pkg_data_comp      send_pkg_data;
-+	struct pds_core_send_component_tbl_comp send_component_tbl;
-+	struct pds_core_send_component_comp     send_component;
-+	struct pds_core_finalize_update_comp    finalize_update;
-+	struct pds_core_match_record_desc_comp  match_record_desc;
+@@ -886,6 +949,7 @@ union pds_core_dev_comp {
+ 	struct pds_core_send_component_comp     send_component;
+ 	struct pds_core_finalize_update_comp    finalize_update;
+ 	struct pds_core_match_record_desc_comp  match_record_desc;
++	struct pds_core_host_mem_comp           host_mem;
  };
  
  /**
