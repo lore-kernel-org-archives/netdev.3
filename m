@@ -1,46 +1,46 @@
 Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CE3A3C10A5
-	for <netdev@vger.kernel.org>; Tue,  9 Jun 2026 19:48:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 021724949F1
+	for <netdev@vger.kernel.org>; Tue,  9 Jun 2026 19:48:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.133.104.62
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781034525; cv=none; b=TMzLn7fxUP8ugC07IqpXNUsEAW9T/wLqgdtTrFqG+lEXpKkO1uxeVxR6QGix+F4rvwgAuRSlk8djSyU2/yb8rRjd938UIAce1u1qJ/de8tqlB6EsTAGUcvJmzdoPyS2LSyesgdM4ecOXhFrzlrSaQk4cMakBMdZFMm5GXG7B7lg=
+	t=1781034544; cv=none; b=YvFHCQ8dEahVj11UcC8XJfV0Us3pIlOim803IAJo8IwP0Gj+ocYK3E1ziwoK2SwwzewCA0yxFRwm06TV/TkBbohLRCHC2LicMqs1lFQx7e1P64GLnC3JEWzqY51VmRPcfa4pYM5+PPdtTNaBp1c7a49w9nmjNax1H5buob55LOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781034525; c=relaxed/simple;
-	bh=Q+V+ZXz58/YbYabUjPMyFv7WGqdcrhyjSsE9ulms0Kg=;
+	s=arc-20240116; t=1781034544; c=relaxed/simple;
+	bh=KykoCAFje42AUSScWpjzpzITDdkND/odcZAjC8S0Ljc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=j0XLHDQJ1OUlu3GiKKqooA4eIq31QzV3I5xImwaFbu++ZfVqZY2Qog8LvtlySkMbKFLv0RttUNnZwHPW/GcgVGqC1baRpcp1bPhnK/uaADFiwX4V0PvCrvPjgCHTuVZ5t2omeZkuYFBp7cLw0BmY4cO0eviGCwp8j3P0lDHr+Mg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net; spf=pass smtp.mailfrom=iogearbox.net; dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b=cVd43oHh; arc=none smtp.client-ip=213.133.104.62
+	 In-Reply-To:Content-Type; b=bNcVdLNDw7lKNd4yrFgdIsVt4jEl/drXfiuDsNrEFsu3ot2nHVStkIJ8XnLuCukjXAIWjeN6XV6vkl/7JXKkzZDRyzfTyRkm8fgTrN9YFlGiC9o2DqxsO6Z8PjpIjztOybPJdWDe1Givoelfe3IGT+D7jCh+AyiaOO2lLh0ECLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net; spf=pass smtp.mailfrom=iogearbox.net; dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b=WDFXQSwa; arc=none smtp.client-ip=213.133.104.62
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iogearbox.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b="cVd43oHh"
+	dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b="WDFXQSwa"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:Content-Type:
 	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
 	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=TBZW5NeGsmgRMInC2I12KlZ/tubqSlDfQ4qZgUlVA4I=; b=cVd43oHhpyNxPxugQfGWQ3Hahg
-	56ngaL+PwKZ5YygZplYT/g/SSvAjG8XpLwXA97jJLocWoHffwWP7oKSRbOzh90H/pZmdKeFTOkl+H
-	Gu2s6JWv9SMZlKzVWdrPjAbLIfrAvStcs8LIkh9y1ySS7fEt8qoLHo/lUO5gRldeOGJCnuPcRnw1c
-	Jco4nhHHQP13eHHoJKE6EFynItrM6DlD9bCbawriT5ehWHcTy++K69m7cDqrnlLWCgKy5OQpjyPhS
-	rbA2TaJ5kmTTF5sk9tVJ74qPu3oLUEtV6p/oGA1uhgm4hnBO4GfWAZyJB3ILqAnXLXrDuPvsqB7g1
-	M/52aoaQ==;
+	bh=bOXhIxDwzsumzqRp7h1i6xOUbWW20SEKZBMhZs/BZFk=; b=WDFXQSwacU2dX9Wq37hhU/8NJ9
+	i9GPqMZ/Rc9fXgiVH0gtZAEQ0b4yVPqVevEo/xtQ/7xljGegvnG6U7xExvWvkM/3VuLZX41+84EjE
+	8h5B7UP5+KjE7VyvQlxXSc/nyzkcWjRKWI7VA1LrfxPDlXNmrUi5rsjzFusBw3N5brdRpk0IHLUNp
+	sz5ux51MMVqP0Fyn4u/9WCGr2+HVo1PQ2J8+LQnZmd/7cx1DLwFVIabh+vygvsW/4AeiaeVQbkZQ8
+	aF5MSUZ8ksmuwxujZ1ZcomdHVJIVJHMto5Uhx0qSjGo1DthkD1LH8xYDcPtKJ5ILKjVaoK0+51zvh
+	0Jire3Kg==;
 Received: from sslproxy05.your-server.de ([78.46.172.2])
 	by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.96.2)
 	(envelope-from <daniel@iogearbox.net>)
-	id 1wX2Qu-000867-24;
-	Tue, 09 Jun 2026 21:48:20 +0200
+	id 1wX2RL-00088V-0i;
+	Tue, 09 Jun 2026 21:48:47 +0200
 Received: from localhost ([127.0.0.1])
 	by sslproxy05.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <daniel@iogearbox.net>)
-	id 1wX2Qt-0002Yg-0f;
-	Tue, 09 Jun 2026 21:48:19 +0200
-Message-ID: <5323da5c-6e1e-4797-8379-7d732552d8b9@iogearbox.net>
-Date: Tue, 9 Jun 2026 21:48:19 +0200
+	id 1wX2RJ-0005rh-2q;
+	Tue, 09 Jun 2026 21:48:46 +0200
+Message-ID: <c724f512-b2fa-4ef3-993d-73f11d7173bd@iogearbox.net>
+Date: Tue, 9 Jun 2026 21:48:46 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,15 +48,15 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 2/4] netdev: correct error code in
- netdev_nl_queue_fill_lease()
+Subject: Re: [PATCH net-next 3/4] netdev: avoid skipping objects on race with
+ device disappearance
 To: Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net
 Cc: netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com,
  andrew+netdev@lunn.ch, horms@kernel.org, dw@davidwei.uk,
  razor@blackwall.org, sdf@fomichev.me, dtatulea@nvidia.com,
  bobbyeshleman@meta.com
 References: <20260609190804.1137085-1-kuba@kernel.org>
- <20260609190804.1137085-3-kuba@kernel.org>
+ <20260609190804.1137085-4-kuba@kernel.org>
 Content-Language: en-US
 From: Daniel Borkmann <daniel@iogearbox.net>
 Autocrypt: addr=daniel@iogearbox.net; keydata=
@@ -102,16 +102,16 @@ Autocrypt: addr=daniel@iogearbox.net; keydata=
  rUD9YI1Je/WifL/HbIubHCCdK8/N7rblgUrZJMG3W+7vAvZsOh/6VTZeP4wCe7Gs/cJhE2gI
  DmGcR+7rQvbFQC4zQxEjo8fNaTwjpzLM9NIp4vG9SDIqAm20MXzLBAeVkofixCsosUWUODxP
  owLbpg7pFRJGL9YyEHpS7MGPb3jSLzucMAFXgoI8rVqoq6si2sxr2l0VsNH5o3NgoAgJNIg=
-In-Reply-To: <20260609190804.1137085-3-kuba@kernel.org>
+In-Reply-To: <20260609190804.1137085-4-kuba@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Virus-Scanned: Clear (ClamAV 1.4.3/28026/Tue Jun  9 08:25:31 2026)
 
 On 6/9/26 9:08 PM, Jakub Kicinski wrote:
-> netdev_nl_queue_fill_lease() returns ENOMEM on nla_put failures.
-> This is wrong, the error code should be EMSGSIZE. But it doesn't
-> matter, caller of netdev_nl_queue_fill_lease() just checks if
-> the retcode is zero or not, and uses EMSGSIZE.
+> If the currently dumped device disappears while we were mid-dump
+> we will get the next device without resetting the sub-object ID.
+> This is quite unlikely, it was reported by an AI tool not a real
+> user. Let's fix it for better dump consistency.
 > 
 > Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Acked-by: Daniel Borkmann <daniel@iogearbox.net>
