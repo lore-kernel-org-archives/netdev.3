@@ -1,156 +1,78 @@
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C01E023D7E3
-	for <netdev@vger.kernel.org>; Tue,  9 Jun 2026 00:48:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F28915E8B
+	for <netdev@vger.kernel.org>; Tue,  9 Jun 2026 00:50:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780966106; cv=none; b=lR2IdqHB3q1fctOXh1VAyWwi5X+INLpq/xRqrXpA66si+0Oe3ge5+Svz+4kZ3sKMhU8wat/MjhrxWTZG+S2JwGU+v7uoZ50jsxsR+ucdiKT9BtKaLuaNKi+mvk9dIXojrlT7ZZlZFtuDpVqKNkTR2RShKeFIx8azHYZvZzkX+qo=
+	t=1780966208; cv=none; b=OxThCeTphxLRdX6jyzvkRCLc5T3L0JBFhcVm+gmgN+fn2uilj7zyZCHuYWni0Forcp9xK3Z4/cDlW70k21V7N/9qo3E+JF0BQ1IO5q8OCQ3HqqG+hgU4L3HqQOUKblQ36SOaqrGioFRnL1xlEUhjAaQ75sye0s/9342ImWKv4JA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780966106; c=relaxed/simple;
-	bh=37MPcfbmxnv7oFfJE4XBHYuIXMm5oEIMI1uGgOdOOVk=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=ML00GRXdxD4CGhWmr8Q6d0i4fQeF8J1jSksuGSpC3lYGD8cp0GIZ5ZksCPT6GD3a+/X8Y7+AwjuRrjdb4h5RswRVGFv9OoBEelwo+99Czjim+Sctd8Ev9VkyjjcCyKAK++6yaCrGyuT67pmlX0VElmhcZfVARUZkvTQiGBEpZuY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--tavip.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=P0yHBx+C; arc=none smtp.client-ip=209.85.210.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--tavip.bounces.google.com
+	s=arc-20240116; t=1780966208; c=relaxed/simple;
+	bh=CGv12sGWgvTsMe3tUUkZv2uVtgDGrxGHxoOAfIvRjqY=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=i3l6smvPWLMD2IamdxUVkdqTzORHyF06wAT2ZReGD3tSUSzAxmE7yNZhDHWWGGRWJA+YszBGsmvCW+tOIk+uYp5daf6ZMVpVGzKzaKy0jgUWhiVXsknFGW61xlAvlhAckpDLA6L1QNlkELK62DGDatD9CUC54X2bEzCA/b+X+yQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nxCFhPVJ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="P0yHBx+C"
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-84240683a82so3523782b3a.1
-        for <netdev@vger.kernel.org>; Mon, 08 Jun 2026 17:48:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780966104; x=1781570904; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=StLjLCmXgF4Q/Ry3fnTHjp2FbwAsDgAHQZYkD5rM9oc=;
-        b=P0yHBx+C1xVV+S6q8DF3QpNF2JZfGhlRDiAOPlYC29qERfa1ozh4eNBU902QdOmjfd
-         oc7eJex/AQwf2BN2uB649ODJISdEdEBacsParxwbDjgMWoWNZLwnLobB2RHtAgTtIJgg
-         R5hGnhQHaMxamLxWf4oyX6P4loV3gPCZdT/PyKOPdOq6x7AjQgZzX7iOh6jjpQhntjY/
-         FF0lDGZnKbayApMcikmT6M+uR9r4HcmsqaaD6JorWmuYKs7HVYDru3l/EZnWFRjll34C
-         C9VXKC8amlWxNh0p9hhS1Hk0uYQ7VjtA+Kr8eruFOchdGJw7e+/FH45QXVw/3Liov2Ki
-         T8FA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780966104; x=1781570904;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=StLjLCmXgF4Q/Ry3fnTHjp2FbwAsDgAHQZYkD5rM9oc=;
-        b=qpgaLULwq7s0tPx9cPLfnBHzXhdWvvEl5p/TP7ZHRjSKY+PWO/UMh3D2B5K9MR980/
-         ZAXgGl51l791Ho+DgusFl42A6263KOdCEe0a5GrBSRcRen+a/qp5mk7Ah40l3hv2meXw
-         3JgznwI1PCfQo30fmhemxMsLJX+c2VyeNpMuNI0Pk+Lbe7GoktEleyX2QRTLzWdXz+BY
-         dp/hBdATZoWLT4aCFqiyELL6eRRh94hXDLyc59sG6VGUaEYrhry/yGWfCOzRpzVhzAT1
-         LQzy/NNqE6Ahe6gz2/FvWr+f0MCLejl2IGRS/T0anj4sObZMDFqxv/RwCbuVVzqzyNHf
-         gQrg==
-X-Gm-Message-State: AOJu0YzfftulpXxs9XQRO/89Jx2Y8RkQqAPwsc5DmDD4Yj/tJ78lvSF0
-	oBQVZ9As2F8x9+jWH1Q+f0I8V9z6wbpaOijHW8WiZee7m74Ny724RIBhCfbsrZiw+ZhSztOgkxp
-	neU34NbCB6bq5va0cGJlH6dSkP+3l5vE74CrT1t8EeF/0LwHG4ikKeT+HTmwit3MM2rWAgLcrpS
-	Z6cwsezvAL5iIXsfBkCURZ8jMEOV9R/o8=
-X-Received: from pfjd3.prod.google.com ([2002:a05:6a00:2443:b0:842:33b9:bdf8])
- (user=tavip job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:a201:b0:842:6293:fc43
- with SMTP id d2e1a72fcca58-842b66aa645mr12846516b3a.15.1780966103837; Mon, 08
- Jun 2026 17:48:23 -0700 (PDT)
-Date: Tue,  9 Jun 2026 00:48:05 +0000
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nxCFhPVJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADBA11F00893;
+	Tue,  9 Jun 2026 00:50:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780966206;
+	bh=4BRXMV3z09C+VLLFp+LaCDk0k636ZM/sYVGzBdOde60=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=nxCFhPVJxbWAm9zofD/TeEXR0Z/vWCUPbCAxc0vkzG15bpHR85+3dWlizk73kP+my
+	 GGG5PaDHK4X+dc+r8nlXzBSlDwOJ2FDpf45Vit4VnWSQrAwI1U0RNJPLK0zrm2c5Yo
+	 pgAFecJEB7f2uXCEBPfvrZrpMApNhmG9Pwm5O3LDJkwitrj6OSX4Am6JFEHHmDV+5B
+	 rwGAnXfFX2Og+jued0/nUOYtI0X8qumuwOdCBNJcQVw7tH74ClmOYfYYbD11EWx6iW
+	 hktvwQ4xI1DNWkS8BK8x1gUUVRO9QV+hFb7rwkAfQMFzmgti6/nqg6y1oSLRytiotU
+	 l6bO6VuRfiaYA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 939D83812FDA;
+	Tue,  9 Jun 2026 00:50:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.54.0.1064.gd145956f57-goog
-Message-ID: <20260609004809.1285028-1-tavip@google.com>
-Subject: [PATCH net] vsock/virtio: restore msg_iter on transmission failure
-From: Octavian Purdila <tavip@google.com>
-To: netdev@vger.kernel.org
-Cc: Octavian Purdila <tavip@google.com>, syzbot+28e5f3d207b14bae122a@syzkaller.appspotmail.com, 
-	Stefan Hajnoczi <stefanha@redhat.com>, Stefano Garzarella <sgarzare@redhat.com>, 
-	"Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
-	"=?UTF-8?q?Eugenio=20P=C3=A9rez?=" <eperezma@redhat.com>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, Arseniy Krasnov <avkrasnov@salutedevices.com>, kvm@vger.kernel.org, 
-	virtualization@lists.linux.dev, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net] netdev: fix double-free in netdev_nl_bind_rx_doit()
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178096620539.1733035.1756660792083140288.git-patchwork-notify@kernel.org>
+Date: Tue, 09 Jun 2026 00:50:05 +0000
+References: <20260606012124.4060950-1-kuba@kernel.org>
+In-Reply-To: <20260606012124.4060950-1-kuba@kernel.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+ pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
+ sashiko-bot@kernel.org, bobbyeshleman@gmail.com, dw@davidwei.uk,
+ daniel@iogearbox.net, razor@blackwall.org, sdf@fomichev.me,
+ willemb@google.com, kaiyuanz@google.com
 
-When transmission fails in virtio_transport_send_pkt_info, the msg_iter
-might have been partially advanced. If we don't restore it, the next
-attempt to send data will use an incorrect iterator state, leading to
-desync and warnings like "send_pkt() returns 0, but X expected".
+Hello:
 
-Specifically, this can happen in the following scenario, triggered by
-the syzkaller repro:
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-1. A write-only VMA (PROT_WRITE only) is partially populated by a
-   prior TUN write that failed with -EIO but still faulted in some
-   pages).
-2. A vsock sendmmsg call with MSG_ZEROCOPY requests transmission of a
-   buffer from this VMA.
-3. The first packet (64KB) is sent successfully because the pages are
-   populated.
-4. The second packet allocation fails because GUP fast pins the first page
-   but GUP slow fails on the next unpopulated page due to PROT_WRITE-only
-   permissions.
-5. The iterator is advanced by the partially successful GUP (68KB total
-   advanced: 64KB from first packet + 4KB from second), but the send loop
-   breaks and only reports 64KB sent. This creates a 4KB desync.
-6. The next retry starts with a non-zero iov_offset, disabling zerocopy
-   and falling back to copy mode.
-7. In copy mode, the transmission succeeds for the next packets but
-   exhausts the iterator early because of the desync.
-8. The final retry sees an empty iterator but zerocopy is re-enabled
-   (offset resets). It attempts to send the remaining bytes with zerocopy
-   but pins 0 pages, creating an empty packet.
-9. The transport sends the empty packet, triggering the warning because
-   the returned bytes (header only) do not match the expected payload size.
-10. The loop continues to spin, allocating ubuf_info each time, eventually
-    exhausting sysctl_optmem_max and returning -ENOMEM to userspace.
+On Fri,  5 Jun 2026 18:21:24 -0700 you wrote:
+> Sashiko flags that genlmsg_reply() always consumes the skb.
+> The error path calls nlmsg_free(rsp) so we can't jump directly
+> to it. Let's not unbind, just propagate the error to the user.
+> This is the typical way of handling genlmsg_reply() failures.
+> They shouldn't happen unless user does something silly like
+> calling the kernel with an already-full rcvbuf.
+> 
+> [...]
 
-Restore msg_iter to its original state before the packet allocation
-and transmission attempt if they fail.
+Here is the summary with links:
+  - [net] netdev: fix double-free in netdev_nl_bind_rx_doit()
+    https://git.kernel.org/netdev/net/c/c849de7d8757
 
-Fixes: e0718bd82e27 ("vsock: enable setting SO_ZEROCOPY")
-Reported-by: syzbot+28e5f3d207b14bae122a@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=28e5f3d207b14bae122a
-Assisted-by: gemini:gemini-3.1-pro
-Signed-off-by: Octavian Purdila <tavip@google.com>
----
- net/vmw_vsock/virtio_transport_common.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
-
-diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-index b10666937c490..588623a3e2bbc 100644
---- a/net/vmw_vsock/virtio_transport_common.c
-+++ b/net/vmw_vsock/virtio_transport_common.c
-@@ -367,6 +367,10 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
- 	do {
- 		struct sk_buff *skb;
- 		size_t skb_len;
-+		struct iov_iter saved_iter;
-+
-+		if (info->msg)
-+			saved_iter = info->msg->msg_iter;
- 
- 		skb_len = min(max_skb_len, rest_len);
- 
-@@ -375,6 +379,8 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
- 						 src_cid, src_port,
- 						 dst_cid, dst_port);
- 		if (!skb) {
-+			if (info->msg)
-+				info->msg->msg_iter = saved_iter;
- 			ret = -ENOMEM;
- 			break;
- 		}
-@@ -382,8 +388,11 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
- 		virtio_transport_inc_tx_pkt(vvs, skb);
- 
- 		ret = t_ops->send_pkt(skb, info->net);
--		if (ret < 0)
-+		if (ret < 0) {
-+			if (info->msg)
-+				info->msg->msg_iter = saved_iter;
- 			break;
-+		}
- 
- 		/* Both virtio and vhost 'send_pkt()' returns 'skb_len',
- 		 * but for reliability use 'ret' instead of 'skb_len'.
+You are awesome, thank you!
 -- 
-2.54.0.1064.gd145956f57-goog
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
