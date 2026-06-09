@@ -1,58 +1,83 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16FCA33F5A8
-	for <netdev@vger.kernel.org>; Tue,  9 Jun 2026 01:44:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9E6E26B2D3;
+	Tue,  9 Jun 2026 01:50:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780969481; cv=none; b=tmmNpiMUASnHG91OYBpPkDa+dnJJmEhywQSwPmpqhh4pfgQILkk7jc7gmoPdokeI1Vrzlo/CQbhtUVGMa1bLUzS8z4R3lMJLuS2JYlgv6RzsoTCuCONInHHYfT4XAVhKHZMLO2/BAH4rVDXZjE57xDOVHpXHCB40OYuBwoR5hDY=
+	t=1780969814; cv=none; b=V5NwTMUSOnnb6NtdSMdMtOV9FX4Co/EVjzQY7SGuIgckbpwIK+2eah/yZio0qeVbOmeVavpNi/NKfrYKAwdbZSAENl696BacN8dIp7XsNhyrHFUicEWXWrj9u+pYqsaoFTuVzxUFUqjwR88nWpuSfw8+m09BvxAul8s3fOYUUzE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780969481; c=relaxed/simple;
-	bh=so4zAyAo11zuXv4dkBAB3AdA1x58zl3QB+WyfPZ65xM=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XncBTYSPATzQ6jehat52+u+/XTMJMzoVPfrQlSih9NALFTv5aUyV02WZrXz+NKzFbfyABAqNgwhXwcvrARJ4+GKT5YNEP+sTUqaTr+IDSy04jwQVSvOo6JSareCZPl0XF05ZWDVhFA6Tje4Y597dsoBlCPqS1hiIKMuY9PeeLyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BDAXstC8; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780969814; c=relaxed/simple;
+	bh=+S+lC0jY+Jo/2wR3SS6lDlzMKUfNQOME3/2fjYtUNf0=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=MxnjROf8q6F67asBI0FmHSKGESUHpzZpNjZed1L54adH6TIwf0RklBcG5gAQo8+HQhsxCFQ9sOwCIntgzzCNmNLPpMtxCr7L36ejyM5nnugkrM6BjJx5E9DIHoAETWsyjfN0zoF4Dy50N2J5xPppeGR2Hhmr0SpqFIJw2ZO8snw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gWmJUGF3; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BDAXstC8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE5161F00893;
-	Tue,  9 Jun 2026 01:44:39 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gWmJUGF3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 714661F00893;
+	Tue,  9 Jun 2026 01:50:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780969480;
-	bh=cK2LKA5UTOsu2lvMtMaEowkuUEfI/iDTHt8ieFK57hg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=BDAXstC8HfsSknbEL93ubOlVvHM7liv9h5kUVQskAY4SnvYMFgT0gZnbQcx3D6DGd
-	 ZiFeDFwtQ8soMu8r40Hs7g8uT1+jktbz+Nk7pCc9WdnC+uFncFRKYgNsARlcWwO0nI
-	 I9i6x3WArwYixQPLXE8R/cOoAezfgQ0huhcIEI/PGHtsvA68oWUgEM5YOhqwCWDvCZ
-	 JbZs9qaw5GI0U1L4qTvufEqb0LAsAHOZ1V3pjPyyF5McJi/vLblIJOK9DUxj6m5sBY
-	 2dnME9qMWIU2gLbP75SV7hsL6Uw2RtYVeQ5RgcgSmRU8laZxE8kpEAfRnFPYiVy1Bj
-	 NyxxuC4qISBbg==
-Date: Mon, 8 Jun 2026 18:44:38 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: davem@davemloft.net
-Cc: netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com,
- andrew+netdev@lunn.ch, horms@kernel.org, michael.chan@broadcom.com,
- hkallweit1@gmail.com, maxime.chevallier@bootlin.com, joshwash@google.com,
- tariqt@nvidia.com, alexanderduyck@fb.com, willemb@google.com,
- jacob.e.keller@intel.com, kory.maincent@bootlin.com, sdf.kernel@gmail.com,
- jakub@cloudflare.com, nb@tipi-net.de
-Subject: Re: [PATCH net-next v2 00/12] net: ethtool: let ops locked drivers
- run without rtnl_lock
-Message-ID: <20260608184439.40e3502b@kernel.org>
-In-Reply-To: <20260605002912.3456868-1-kuba@kernel.org>
-References: <20260605002912.3456868-1-kuba@kernel.org>
+	s=k20260515; t=1780969813;
+	bh=I/qW2ZWDmN1uGRnA6d/46veWaR2fOxtQbLCPBaAnt5E=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=gWmJUGF3hkkV+dgGtZ++tnZcAmv+R/J7eoJ3YT9O5Z/tu/i61K6NUKRqIoOqQ0Mqk
+	 t1k+IlA88aVcuOeptmddGd3X9ff4TN/8ubyY/6rjaCo8qy3o7TXcT+Jq+g5t9IrdFr
+	 U8LaeZWY4lrm6vWU4FaxlEwbk1Q3HrQNU01WicIFso92ooQn9FeYb8gKg48vkd5O2z
+	 Do4EOecfwPo1BFFDOYOzrbQE71aZKvzpEbRNK/s1Vkp1tV0cxZhjmuotINHN2c7pJZ
+	 U9JrSRRMZAI2Ro03lVVZXjh7O4sNMX/oje/mx8Z2jRZ0eQp6OZrXrEXlxEz93qEMZY
+	 ZHu6vXeKSFsqA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 569313822D43;
+	Tue,  9 Jun 2026 01:50:13 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v3 0/4] net: phy: some cleanups following phy_port SFP
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178096981189.1750436.8360276227071708223.git-patchwork-notify@kernel.org>
+Date: Tue, 09 Jun 2026 01:50:11 +0000
+References: <20260604092819.723505-1-maxime.chevallier@bootlin.com>
+In-Reply-To: <20260604092819.723505-1-maxime.chevallier@bootlin.com>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, linux@armlinux.org.uk,
+ hkallweit1@gmail.com, nb@tipi-net.de, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, thomas.petazzoni@bootlin.com
 
-On Thu,  4 Jun 2026 17:29:00 -0700 Jakub Kicinski wrote:
-> With the ethtool_get_link_ksettings() situation hopefully ironed out
-> the previous series (commit 6a5d837f0ce2) let's return to the main
-> part of the series.
+Hello:
 
-FWIW I checked Sashiko and all issues are either preexisting or
-unreachable.
+This series was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Thu,  4 Jun 2026 11:28:14 +0200 you wrote:
+> While posting the v11 of phy_port netlink, sashiko found some
+> pre-existing issues, and following the tentative fix, Nicolai found
+> some more :)
+> 
+> This is V3, with a re-ordering of the port/sfp cleanup, as well as a new
+> patch (patch 3) that also reorders the phy_remove() path.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net,v3,1/4] net: phy: clean the sfp upstream if phy probing fails
+    https://git.kernel.org/netdev/net/c/48774e87bbaa
+  - [net,v3,2/4] net: phy: remove phy ports upon probe failure
+    https://git.kernel.org/netdev/net/c/b1e780bb37c6
+  - [net,v3,3/4] net: phy: Clean the phy_ports after unregistering the downstream SFP bus
+    https://git.kernel.org/netdev/net/c/4497f5028675
+  - [net,v3,4/4] net: phy: don't try to setup PHY-driven SFP cages when using genphy
+    https://git.kernel.org/netdev/net/c/5a0082ec20a0
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
