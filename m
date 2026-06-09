@@ -1,299 +1,141 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B352434D3B5;
-	Tue,  9 Jun 2026 14:27:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F177B342C93;
+	Tue,  9 Jun 2026 14:27:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781015238; cv=none; b=JVyz4dI3tb+TOFyFlYHuVntsPAaqx/QSKm+soKrSc9lPgtnfiVqSUdKFOmXBgxlqm5B20IWk0XRqrtzBqEqHHcLbhZyjOVZmSjo9FRAzAR774xLBO+EjRfbLG/NQREK1gJliBHoab1Jz4sCnkk4IhT5OU37sapxCFr6viAIhbn0=
+	t=1781015248; cv=none; b=q2y11hwKlgLFDo3Z1JK9KLYT0AFqNodnJ7gCqRisV8HO2AIQ9e53QrvwU7ytt5gsQynv1OA2WvAP7bJ+i8umNvlKCtHhrI///XWo4tLbL/i/oYFuWFApHosu66+fhD33W5W/x13yzMb9CEQCYoVyGErKlbC4ImPRlL1MWp+odUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781015238; c=relaxed/simple;
-	bh=nB6yR+5lHkcKXtcSPQmcAn47ObOmCovFrFplIEFItSw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OEdAVKjwEd9qtAqWmLoOyGzZJzqxenerF5zhhu2ijVk7IVPeXhFBwCMUK3zN+LQLtZIkm3Hu+TtY0l4S+syceub+nAlSUy8DN0FA5tWn+wtT/7VfPGE5dVoNbhE32AAqCj3U7x4TVdD7rxr6WOphQtYHsm8hWZCB2D12x1ahN0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91A421F00893;
-	Tue,  9 Jun 2026 14:27:12 +0000 (UTC)
-From: Greg Ungerer <gerg@linux-m68k.org>
-To: linux-m68k@lists.linux-m68k.org
-Cc: linux-kernel@vger.kernel.org,
-	arnd@kernel.org,
-	wei.fang@nxp.com,
-	frank.li@nxp.com,
-	shenwei.wang@nxp.com,
-	imx@lists.linux.dev,
-	netdev@vger.kernel.org,
-	nico@fluxnic.net,
-	adureghello@baylibre.com,
-	ulfh@kernel.org,
-	linux-mmc@vger.kernel.org,
-	linux-can@vger.kernel.org,
-	linux-spi@vger.kernel.org,
-	olteanv@gmail.com,
-	Greg Ungerer <gerg@linux-m68k.org>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCHv2 4/4] m68k: coldfire: fix non-standard readX()/writeX() functions
-Date: Wed, 10 Jun 2026 00:13:01 +1000
-Message-ID: <20260609142139.1563360-6-gerg@linux-m68k.org>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260609142139.1563360-1-gerg@linux-m68k.org>
-References: <20260609142139.1563360-1-gerg@linux-m68k.org>
+	s=arc-20240116; t=1781015248; c=relaxed/simple;
+	bh=Hc73zFAvz2tICSssvWylf3xw9PZh/KwFdXDcFohR1PI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=L0hoVtVC4rc0twtd8a5d8IcUNWvMRVS2Yx7379dgHPEgdPvA+jT1BJsizJB/wWHnFhr1X3GbXA40rUTr7W9Jq8A/5kXMbJSgTIop7QS9ZqkBRZhVKRkDeJdHzSRBplpAPBx4DmzCPJYgr6x4GlMky20J56mPOgL1QJxazX1fVDc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nTknKs6T; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nTknKs6T"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1781015247; x=1812551247;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=Hc73zFAvz2tICSssvWylf3xw9PZh/KwFdXDcFohR1PI=;
+  b=nTknKs6TUjP+KoOqcGkwtfB5+/0feRSakSxxSgnswPL+HseUN8J84+90
+   eYNv973Y4vywY00lTwrjueGZSFt26vF1520hyH3f5vK0hApojQdM4dEwc
+   JHBuQTFptrKUT2Z+24ciOfKHU3hlZgTi47VequI+NbVY5XmceA254tWrW
+   R5SmbRUSLn/td0PpbY+UZd/KXVgEikqq79MD/679Mwa/WgARULyUQ4JIl
+   Xc4dZZ+KkgE5yLX0Ib1xDZhW4/OcrslihXp28ZGazG+iE5ws7P/UDlhDL
+   4NthKEUNDRyxwqsEpU1DFB1QBncWEKQTmDcTyumIzoTQkJxYUtXkxn/AV
+   g==;
+X-CSE-ConnectionGUID: jvX5HfXVST25M2PIoo5FUA==
+X-CSE-MsgGUID: Zch/MPRJQSW5ieHXi/+isA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11812"; a="107213033"
+X-IronPort-AV: E=Sophos;i="6.24,196,1774335600"; 
+   d="scan'208";a="107213033"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2026 07:27:26 -0700
+X-CSE-ConnectionGUID: 6tqw48DKRHCJg2OyMoYNvQ==
+X-CSE-MsgGUID: csqgTnwCSRSXu9Qqitz4fg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,196,1774335600"; 
+   d="scan'208";a="239537131"
+Received: from mszycik-mobl1.ger.corp.intel.com (HELO [10.94.249.113]) ([10.94.249.113])
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2026 07:27:23 -0700
+Message-ID: <ea66e44e-c9b0-4942-af6f-0b76e3f065a1@linux.intel.com>
+Date: Tue, 9 Jun 2026 16:27:20 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Intel-wired-lan] [PATCH net] ice: fix memory leak in
+ ice_lbtest_prepare_rings()
+To: Dawei Feng <dawei.feng@seu.edu.cn>,
+ Tony Nguyen <anthony.l.nguyen@intel.com>
+Cc: Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, jianhao.xu@seu.edu.cn, stable@vger.kernel.org,
+ Zilin Guan <zilin@seu.edu.cn>
+References: <20260609125021.3873270-1-dawei.feng@seu.edu.cn>
+Content-Language: en-US
+From: Marcin Szycik <marcin.szycik@linux.intel.com>
+In-Reply-To: <20260609125021.3873270-1-dawei.feng@seu.edu.cn>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Remove the local ColdFire definitions of readb()/readw()/readl() and
-writeb()/writew()/writel() and use the asm-generic versions of them.
 
-The implementation of the readX()/writeX() family of IO access functions
-is non-standard on ColdFire platforms. They either return big-endian (that
-is native endian) data, or on platforms with PCI bus support check the
-supplied address and return either big or little endian data based on that
-check. This is non-standard, they are expected to always return
-little-endian byte ordered data. Unfortunately this behavior also means
-that ioreadX()/iowroteX() and their big-endian counter parts
-ioreadXbe()/iowriteXbe() are currently broken because they are implemented
-using the readX()/writeX() functions.
 
-The change to use the asm-generic versions of readX()/writeX() itself is
-quite strait forward, just remove the ColdFire local versions of them.  But
-this of course has implications for any remaining drivers that use any of
-these IO access functions. A number of drivers can be independently fixed,
-before this final fix to readX()/writeX() for ColdFire. A small number of
-drivers cannot easily be independently fixed and remain in a working
-state. Those drivers are fixed here as well:
+On 09.06.2026 14:50, Dawei Feng wrote:
+> While ice_lbtest_prepare_rings() correctly frees Rx rings if
+> ice_vsi_start_all_rx_rings() fails, the earlier error paths for
+> ice_vsi_setup_rx_rings() and ice_vsi_cfg_lan() jump past this cleanup.
+> If Rx ring setup or LAN configuration fails, the function leaks the
+> initialized Rx resources.
+> 
+> Fix this by routing these earlier failures to the existing
+> err_start_rx_ring label. This ensures the Rx rings are properly freed
+> before tearing down the Tx state.
+> 
+> The bug was first flagged by an experimental analysis tool we are
+> developing for kernel memory-management bugs while analyzing
+> v6.13-rc1. The tool is still under development and is not yet publicly
+> available. Manual inspection confirms that the bug is still
+> present in v7.1-rc5.
+> 
+> An x86_64 allyesconfig build showed no new warnings. As we do not have an
+> Intel E800 Series adapter available to run the ethtool offline loopback
+> selftest, no runtime testing was able to be performed.
 
-drivers/dma/mcf-edma-main.c
-  Supports big-endian access by setting the big-endian flag of
-  the drivers struct fsl_edma_engine. But locally should be using
-  ioread32be() and iowrite32be() instead of ioread32() and iowrite32().
+IMO last two paragraphs should not be included in commit message,
+rather after ---.
 
-drivers/net/can/flexcan/flexcan-core.c
-  Setting the driver quirks flag for big-endian access will force
-  driver to use correct access functions.
+> Fixes: 0e674aeb0b77 ("ice: Add handler for ethtool selftest")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+> Signed-off-by: Dawei Feng <dawei.feng@seu.edu.cn>
+> ---
+>  drivers/net/ethernet/intel/ice/ice_ethtool.c | 5 ++---
+>  1 file changed, 2 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool.c b/drivers/net/ethernet/intel/ice/ice_ethtool.c
+> index f28416a707d7..7c81ca313645 100644
+> --- a/drivers/net/ethernet/intel/ice/ice_ethtool.c
+> +++ b/drivers/net/ethernet/intel/ice/ice_ethtool.c
+> @@ -1065,11 +1065,11 @@ static int ice_lbtest_prepare_rings(struct ice_vsi *vsi)
+>  
+>  	status = ice_vsi_setup_rx_rings(vsi);
+>  	if (status)
+> -		goto err_setup_rx_ring;
+> +		goto err_start_rx_ring;
+>  
+>  	status = ice_vsi_cfg_lan(vsi);
+>  	if (status)
+> -		goto err_setup_rx_ring;
+> +		goto err_start_rx_ring;
+>  
+>  	status = ice_vsi_start_all_rx_rings(vsi);
+>  	if (status)
+> @@ -1079,7 +1079,6 @@ static int ice_lbtest_prepare_rings(struct ice_vsi *vsi)
+>  
+>  err_start_rx_ring:
+>  	ice_vsi_free_rx_rings(vsi);
+> -err_setup_rx_ring:
+>  	ice_vsi_stop_lan_tx_rings(vsi, ICE_NO_RESET, 0);
 
-drivers/spi/spi-fsl-dspi.c
-  Setting the regmap format_endian flags to use native endian will
-  force driver to use appropriate big or little endian access on
-  whatever platform it is built for.
+Correct me if I'm wrong, but looks like unroll order is reversed:
+ice_vsi_stop_lan_tx_rings() unrolls ice_vsi_cfg_lan()
+ice_vsi_free_rx_rings() unrolls ice_vsi_setup_rx_rings()
+(was reversed before this patch too, but since we're fixing it, might as well)
 
-These drivers have only been compile tested.
+>  err_setup_tx_ring:
+>  	ice_vsi_free_tx_rings(vsi);
 
-Acked-by: Marc Kleine-Budde <mkl@pengutronix.de> # for drivers/net/can/flexcan
-Signed-off-by: Greg Ungerer <gerg@linux-m68k.org>
----
-v2: changed from RFC to PATCH
-    use separate regmap config for mcf5441x (spi-fsl-dspi.c)
-    reorder quirks for mcf5441x (flexcan-core.c)
-
- arch/m68k/include/asm/io_no.h          | 68 +++-----------------------
- drivers/dma/mcf-edma-main.c            | 14 +++---
- drivers/net/can/flexcan/flexcan-core.c |  1 +
- drivers/spi/spi-fsl-dspi.c             | 14 +++++-
- 4 files changed, 27 insertions(+), 70 deletions(-)
-
-diff --git a/arch/m68k/include/asm/io_no.h b/arch/m68k/include/asm/io_no.h
-index 4f0f34b06e37..2f12f4ed0da5 100644
---- a/arch/m68k/include/asm/io_no.h
-+++ b/arch/m68k/include/asm/io_no.h
-@@ -3,15 +3,10 @@
- #define _M68KNOMMU_IO_H
- 
- /*
-- * Convert a physical memory address into a IO memory address.
-- * For us this is trivially a type cast.
-- */
--#define iomem(a)	((void __iomem *) (a))
--
--/*
-- * The non-MMU m68k and ColdFire IO and memory mapped hardware access
-- * functions have always worked in CPU native endian. We need to define
-- * that behavior here first before we include asm-generic/io.h.
-+ * Historically the raw native endian IO access macros for non-MMU m68k and
-+ * ColdFire have accepted any integral value as the address argument.
-+ * The asm-generic versions of these expect "void __iomem *" for the address,
-+ * so define local permissive versions here.
-  */
- #define __raw_readb(addr) \
-     ({ u8 __v = (*(__force volatile u8 *) (addr)); __v; })
-@@ -45,66 +40,15 @@
-  * applies just the same of there is no MMU but something like a PCI bus
-  * is present.
-  */
--static int __cf_internalio(unsigned long addr)
-+static inline int __cf_internalio(unsigned long addr)
- {
- 	return (addr >= IOMEMBASE) && (addr <= IOMEMBASE + IOMEMSIZE - 1);
- }
- 
--static int cf_internalio(const volatile void __iomem *addr)
-+static inline int cf_internalio(const volatile void __iomem *addr)
- {
- 	return __cf_internalio((unsigned long) addr);
- }
--
--/*
-- * We need to treat built-in peripherals and bus based address ranges
-- * differently. Local built-in peripherals (and the ColdFire SoC parts
-- * have quite a lot of them) are always native endian - which is big
-- * endian on m68k/ColdFire. Bus based address ranges, like the PCI bus,
-- * are accessed little endian - so we need to byte swap those.
-- */
--#define readw readw
--static inline u16 readw(const volatile void __iomem *addr)
--{
--	if (cf_internalio(addr))
--		return __raw_readw(addr);
--	return swab16(__raw_readw(addr));
--}
--
--#define readl readl
--static inline u32 readl(const volatile void __iomem *addr)
--{
--	if (cf_internalio(addr))
--		return __raw_readl(addr);
--	return swab32(__raw_readl(addr));
--}
--
--#define writew writew
--static inline void writew(u16 value, volatile void __iomem *addr)
--{
--	if (cf_internalio(addr))
--		__raw_writew(value, addr);
--	else
--		__raw_writew(swab16(value), addr);
--}
--
--#define writel writel
--static inline void writel(u32 value, volatile void __iomem *addr)
--{
--	if (cf_internalio(addr))
--		__raw_writel(value, addr);
--	else
--		__raw_writel(swab32(value), addr);
--}
--
--#else
--
--#define readb __raw_readb
--#define readw __raw_readw
--#define readl __raw_readl
--#define writeb __raw_writeb
--#define writew __raw_writew
--#define writel __raw_writel
--
- #endif /* IOMEMBASE */
- 
- #if defined(CONFIG_COLDFIRE)
-diff --git a/drivers/dma/mcf-edma-main.c b/drivers/dma/mcf-edma-main.c
-index 9e1c6400c77b..4ed0ce644e37 100644
---- a/drivers/dma/mcf-edma-main.c
-+++ b/drivers/dma/mcf-edma-main.c
-@@ -21,9 +21,9 @@ static irqreturn_t mcf_edma_tx_handler(int irq, void *dev_id)
- 	unsigned int ch;
- 	u64 intmap;
- 
--	intmap = ioread32(regs->inth);
-+	intmap = ioread32be(regs->inth);
- 	intmap <<= 32;
--	intmap |= ioread32(regs->intl);
-+	intmap |= ioread32be(regs->intl);
- 	if (!intmap)
- 		return IRQ_NONE;
- 
-@@ -43,7 +43,7 @@ static irqreturn_t mcf_edma_err_handler(int irq, void *dev_id)
- 	struct edma_regs *regs = &mcf_edma->regs;
- 	unsigned int err, ch;
- 
--	err = ioread32(regs->errl);
-+	err = ioread32be(regs->errl);
- 	if (!err)
- 		return IRQ_NONE;
- 
-@@ -55,7 +55,7 @@ static irqreturn_t mcf_edma_err_handler(int irq, void *dev_id)
- 		}
- 	}
- 
--	err = ioread32(regs->errh);
-+	err = ioread32be(regs->errh);
- 	if (!err)
- 		return IRQ_NONE;
- 
-@@ -203,8 +203,8 @@ static int mcf_edma_probe(struct platform_device *pdev)
- 		edma_write_tcdreg(mcf_chan, cpu_to_le32(0), csr);
- 	}
- 
--	iowrite32(~0, regs->inth);
--	iowrite32(~0, regs->intl);
-+	iowrite32be(~0, regs->inth);
-+	iowrite32be(~0, regs->intl);
- 
- 	ret = mcf_edma->drvdata->setup_irq(pdev, mcf_edma);
- 	if (ret)
-@@ -248,7 +248,7 @@ static int mcf_edma_probe(struct platform_device *pdev)
- 	}
- 
- 	/* Enable round robin arbitration */
--	iowrite32(EDMA_CR_ERGA | EDMA_CR_ERCA, regs->cr);
-+	iowrite32be(EDMA_CR_ERGA | EDMA_CR_ERCA, regs->cr);
- 
- 	return 0;
- }
-diff --git a/drivers/net/can/flexcan/flexcan-core.c b/drivers/net/can/flexcan/flexcan-core.c
-index f5d22c61503f..f0571b97817b 100644
---- a/drivers/net/can/flexcan/flexcan-core.c
-+++ b/drivers/net/can/flexcan/flexcan-core.c
-@@ -295,6 +295,7 @@ static_assert(sizeof(struct flexcan_regs) ==  0x4 * 18 + 0xfb8);
- 
- static const struct flexcan_devtype_data fsl_mcf5441x_devtype_data = {
- 	.quirks = FLEXCAN_QUIRK_BROKEN_PERR_STATE |
-+		FLEXCAN_QUIRK_DEFAULT_BIG_ENDIAN |
- 		FLEXCAN_QUIRK_NR_IRQ_3 | FLEXCAN_QUIRK_NR_MB_16 |
- 		FLEXCAN_QUIRK_SUPPORT_RX_MAILBOX |
- 		FLEXCAN_QUIRK_SUPPORT_RX_FIFO,
-diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index 9f2a7b8163b1..abd3b20c2f17 100644
---- a/drivers/spi/spi-fsl-dspi.c
-+++ b/drivers/spi/spi-fsl-dspi.c
-@@ -192,6 +192,7 @@ enum {
- 	DSPI_XSPI_REGMAP,
- 	S32G_DSPI_XSPI_REGMAP,
- 	DSPI_PUSHR,
-+	MCF5441X_DSPI_REGMAP,
- };
- 
- static const struct regmap_config dspi_regmap_config[] = {
-@@ -238,6 +239,17 @@ static const struct regmap_config dspi_regmap_config[] = {
- 		.reg_stride	= 2,
- 		.max_register	= 0x2,
- 	},
-+	[MCF5441X_DSPI_REGMAP] = {
-+		.reg_bits	= 32,
-+		.val_bits	= 32,
-+		.reg_stride	= 4,
-+		.max_register	= SPI_RXFR3,
-+		.volatile_table	= &dspi_volatile_table,
-+		.rd_table	= &dspi_access_table,
-+		.wr_table	= &dspi_access_table,
-+		.reg_format_endian = REGMAP_ENDIAN_BIG,
-+		.val_format_endian = REGMAP_ENDIAN_BIG,
-+	},
- };
- 
- static const struct fsl_dspi_devtype_data devtype_data[] = {
-@@ -303,7 +315,7 @@ static const struct fsl_dspi_devtype_data devtype_data[] = {
- 		.trans_mode		= DSPI_DMA_MODE,
- 		.max_clock_factor	= 8,
- 		.fifo_size		= 16,
--		.regmap			= &dspi_regmap_config[DSPI_REGMAP],
-+		.regmap			= &dspi_regmap_config[MCF5441X_DSPI_REGMAP],
- 	},
- 	[S32G] = {
- 		.trans_mode	  = DSPI_XSPI_MODE,
--- 
-2.54.0
-
+Thanks,
+Marcin
