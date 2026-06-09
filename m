@@ -1,184 +1,128 @@
-Received: from mail-dl1-f52.google.com (mail-dl1-f52.google.com [74.125.82.52])
+Received: from mail-yx1-f49.google.com (mail-yx1-f49.google.com [74.125.224.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8C9C4968E7
-	for <netdev@vger.kernel.org>; Tue,  9 Jun 2026 17:14:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.52
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781025295; cv=pass; b=k4EDbXwhZPdKQNjph/R+YNDhkmSQceGDv8DVbErc1BaZMhOKoLaZU58LQ01MYHgh0vplsK8ZsF+Ojk+MQ1QpNxrCQ2L1zXQGs5Aku15s2NVpTNwE6QxTVu7jo3PXfflEkm7CZNxPRx5hB9kw08xaJwPXQIfAgRjczOqTT0yD9X8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781025295; c=relaxed/simple;
-	bh=uEmI5xWjbsRJZ1CrxCtcNunqVcmNADT/o8HWSzvO/Zo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Wk03LXqFLrnlxjZkkv9r8M8GuzLirupKaKoBS+KA7fAgqypksKCsNSQSO2mF6PkmOHpkRGulQZY9g4GvPKmyh96nRTuwP/hppCGTnpfqJvI6su1QqXpMeeUJPu8P6v5N8XUhkqgLl30KvtfhZSsw2JCawGDj1/pnotef6axniQE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=b0rMbT1E; arc=pass smtp.client-ip=74.125.82.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DE344BCABC
+	for <netdev@vger.kernel.org>; Tue,  9 Jun 2026 17:15:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.49
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781025349; cv=none; b=E0N6IxPbH14wO/rkC3D4i5HTAfMySfx4kTh2/OGOt1FMgvni/xbVQNvmnGZTYivACFr03x1/21PO02Zh7tG0Jh/tovRWTj2rtmRG1rIQGpMPjuQlsmT04AUyeu4zqfDveh5EXMCgfrWSjLbCY9SCHzvVQA/BxlzLWreq1mrq2jk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781025349; c=relaxed/simple;
+	bh=jqbcJhtgkoSzv8XIfg25Tyt5orxfJdO+IEM+q5Lyjt0=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=LV9MUiqHjYRNk3epicTK2wd2ZLLGvLNjV8aXSElkXANMPKX2ohIXT51LwFAm11jwleACKgrui6GLaZ68XGEqF9V7wl1TfWkkrEGsg4+z3Nj66okUOIPXafmmTxZpPVJcR9mkK6DILA1f5o1E6YKeXAvynkBRIDd8X/YDL5S4i80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=L+5mIp4v; arc=none smtp.client-ip=74.125.224.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="b0rMbT1E"
-Received: by mail-dl1-f52.google.com with SMTP id a92af1059eb24-1370417c01cso7678686c88.1
-        for <netdev@vger.kernel.org>; Tue, 09 Jun 2026 10:14:53 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781025293; cv=none;
-        d=google.com; s=arc-20240605;
-        b=hfJWZXFE80ZiD19G+cKtUB06HY+3MbhmAGe59Skste5jzB7XBZihSMmn8oOocMyYoX
-         YCPKD+w0dD0O7/bgNs8DzRSCXldID0eJnd1o78sd+tFMjXjDObs5Df08ut2W364Be+e4
-         I+XqjnTsRF3jcYVD2mZyjzVtDMa5g/ifY3wvUgulk8PJmCJxXn6NLdFo4FFPqyB7VPIf
-         YPwCjpzn1A6LwYop2iOeCi2bTWWih+evqZSCumtvie+39d7Jcc+B5fjl3nl0iczkzMBZ
-         X9AvYkQ4GSjtc7Uscp4nM+4Dgk4mSB6dkqaV6eZ2L9FvWqvXdJPqLcG4Nv5AU13VSw/9
-         +6qw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=uEmI5xWjbsRJZ1CrxCtcNunqVcmNADT/o8HWSzvO/Zo=;
-        fh=HpyeTd1K1eutTPlIzNBJZuO10e4EIUXAwmrpJIkYDs8=;
-        b=kHws+nE5wFvB1XNJVeYFAtLosLtFP7wY8FWWFrBH194JSbM+a7MwpDJHer8yyYdUvf
-         xiBj1mnTOnbq4EljACBR8j3/XO/NlzYvsH+WJ4S7k862jP2+8MHiIcJcuScMbzSIMMb0
-         wL8jLX4d3mplbN2T/9HMrxbGxwNmIHOMYuipZZ9oa7RQieXAUwiaEKp7OYBIeMEjJzvF
-         CXnCkYx7Wzb+pc0Pz9xsE2bKi5q4JuS3sUosfCn94a11id0VcaYtNDQft61pnrY8q4ci
-         avlWC7nyHtLdi6G35uulkRErNF6Ep8Vj9G0eUiO/aqWDs/3EGaIRNqSi8l4j5/Ji/ZAO
-         mgCg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="L+5mIp4v"
+Received: by mail-yx1-f49.google.com with SMTP id 956f58d0204a3-6603d8697d2so5833273d50.0
+        for <netdev@vger.kernel.org>; Tue, 09 Jun 2026 10:15:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781025293; x=1781630093; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uEmI5xWjbsRJZ1CrxCtcNunqVcmNADT/o8HWSzvO/Zo=;
-        b=b0rMbT1EYBkozeO7X4b6HKQQyaiZA6zDG9qsJym95lRSvE55qHWJrNvAccj/CtItRe
-         NW5ThQElREuHxHtVPEvWDu7o+Mut2fCIduepMhZ64CReUnRxEXoudU+pbzgflpiVvE73
-         X0NcHq8fA5mvA7EK9CkKajfhCQsWcEeLDXQRoKRa4rNcwd1/lrclITJFjUS30JiksLPQ
-         lbx5VFX01U58iDqpppIKGtKfx8t9w31CaOBsJPP/CnKYhSeHwa9r3Cw7Sh3POhYrT1wh
-         s9AAMLyM8tqT4RSuHqMulYfqqKKR+Hi10pVsAowrRJpFTZzC1TZbnyT3Xq+RfQU5cBo7
-         mFTA==
+        d=gmail.com; s=20251104; t=1781025347; x=1781630147; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=8srGYATRAAKxjXB42YooJP0rF3U7oIz6k+vGSKsxIIs=;
+        b=L+5mIp4vKZPtio7jV9c4jnsLFvTrehGEeF4uyu9uhSkjMlMVj0laUFbXVgIMon5PJ+
+         8eUdMiP88bu9GoReSUMdOB9bC8xY/1GyO+Fmen8dNdqLssMHoNqtDwcrygMUwymb3nFJ
+         V1CthOz5fC+DhokHhzeBKeAA9sIhTneTNKpjuEO3IKBtfyF8fQRIG8tlatkWc7nfuIXn
+         DqFGvj7WILYa2tS4ThudwhmYlDrNbbAf6GPNJNYVH5r0t7LARqQeVwtlsNQm8SE2B5M9
+         rSOzHftHqm2wpCWp96CTEnOkWrBrWcNwZ3GwBD3sgBu4zSl/szXOgVcDS51kCYqVtsNK
+         JTQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781025293; x=1781630093;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=uEmI5xWjbsRJZ1CrxCtcNunqVcmNADT/o8HWSzvO/Zo=;
-        b=sGtQ7wUysnL2VDbxfOAE2dqMYjbm4wf5Vjmr82SpwwNn0DWWRTUaXElrnT1t4rCbVC
-         YJQYyhRFcwZki4XVmx6dduzdqVlnP47R3KGoi5mwy3RVtjA52ieTeD0QmlI0+rRgKOxf
-         TfdKTOWeAStvZAo5MDZI+j3elgyLfYxWKxoP4y9g538sEouo/zAO7BhJQUZEOuTQ7uvk
-         JdCVCeu7uQlIbj4cXo9PbnQuD17cJfmfsYt25PlI/sZoMjjZiKypxL6KKh4O0ErfiN99
-         iA3QXad48/bf34BQV6RWESOt3et2aloUx4aO+IrYMKTFaGr4sc7f/8wDSQZGKFLixKoB
-         g9sQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/DEoADUy1PQDoaa8/uPon8TzsviBzUEyCEzBcx/uynLsZt+hZtjA5FyVBQjKhzzFIQzmXEE08=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxNovKnE8gJGNtmZ4CVk7AzfNeQlSr08kP01u8iGYcttlxzafV6
-	x+WCRpDX0J8SjkbJK2EWByiHJIj2Rw6+eTC1dqkOIr/5qSJVPm/ILe2alw8WJ5UoI+7mUv9ZoJk
-	BLW84vHo4kw/uZYQK5D2G/UJL2cBsLoXp9vEBJHh3
-X-Gm-Gg: Acq92OHnqXV9wHwxT1AITz7f7l3cvZemQ7hu1MDa+QmTLk9VTL9I7mJvdETtwN8BvbF
-	aW7wYaHr7BbFEXYSlJ0u7ifYZhTrXbSfoPk5kX9OszLVqmkNXjETmt6sTA43iUqM0KyzlAmDAMZ
-	BbyEYRBOJWmOL4/vDZ8CZIu8p3w3mvGJ7K7SmkRTYGC94G/o34WsVkOhPNygJ4u0JgYTZE/2mLW
-	j2b6rR/MwoOUDlBZ1OjhJMWe6reEBrBlbKaLDUkYKUGvJM+wsN6lF5zHyBS2Rt0Nr5Y5ls7MBWa
-	TcD03mC15w+BiaaeTcas8DIfeUcGi18LjL/JWElcQOcMDNDgyfNTHWWOLgU3DK4O1VEb+OxLGd8
-	PDiM1rMoNwKi79eQxxZ4x5uW545EtWQYlnByQrLeEdkhB/WRtpibz43YBoEFh
-X-Received: by 2002:a05:7022:510:b0:136:83f5:c80 with SMTP id
- a92af1059eb24-138066608abmr10538613c88.4.1781025292274; Tue, 09 Jun 2026
- 10:14:52 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1781025347; x=1781630147;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=8srGYATRAAKxjXB42YooJP0rF3U7oIz6k+vGSKsxIIs=;
+        b=pkkOwKExa+pK9NaXuTVhwP6nhhInN84t4fCZReqBHxGv4QBGauCfaxp4A2sJ8R/FGz
+         D/aZ7i5eGErKX0kbjHbelZIjrFZwujCEy6uiwlfDTQteElvFyFYZn/KVprIMneLUY0wa
+         GEJUO7khK56v4iGsHLW48VWxCWzvt4dMahGtqWCjtETIEGxa3a9AsKB7QglOkftAUHhP
+         rEJsyRkVWX0BYtUmftiMTV/2g2Ev2eIYcYc0Mp66Sxg/5RP9eYiq5FvqAjc7p8WRSor9
+         9yYWTVFoN7ksWC6WMFaSj0t8Z4Z1RelEUjjTYjeAORVbnkB0iVhI0UY6z+6s8fCc1Qmm
+         +A2A==
+X-Forwarded-Encrypted: i=1; AFNElJ9dzZ7NWCUoAt49KN8eudIJmLAzPlh6ktXVkIhazf85YdIUuvnCmLwNKUnHI3DqwBJjXwbypH8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx3k5520ivrcp1iclS7kyO+yPTVGBDw6YOLpaZN9MLyFSAuPTbw
+	dfz04zsBJOWi679JZh+y/RpToMRVLSHoN0GDx36yKXvmfWunTh44RVa8
+X-Gm-Gg: Acq92OELYdtuUGhVoXgzeX3CxNJ5AxLKjM2NcmOhrXA3z9LFQbgf98gvi94o4ZsLED6
+	JFsJQfNM3qK1qa73PG4xPUxUXvcRzPo8Kas90I+biBdGE4pb/HjaEJj1Cw0Jig6tvM9C1z83vnJ
+	iA8GGzS/MTl6RDQsTXxzsIKAZaST4uBGVf9cw3RGYkK8s7rNRadWy3acfOcJadnZNSwENOx6Pur
+	kdKPy8Wl6RFQsBnEBPf2eyhcJ5h0tHHot15Xygpewc2Zk3DJowh2bzsZxXa00O2pwhd6veiciGl
+	BYARs49Fe5ZGU3hPUgHxJOdHivBaFwLABTgIAdbtsUIEOnvC5V268zhcXJbhDkeJ/R5xm6IZHRG
+	TK5F5q6uEX4vSxXAdgBAbzU7BXJkwH92toQw+DEBj8Omtkdbvy/d5gjeVMMS/hpBXkgTX0cM6zg
+	EMky7vL1CL5YpRzpnMk5mvz1rrEvewf4othC8qjNfP5dwaW7CtE0nZgxAtPkxlbt7zmA==
+X-Received: by 2002:a05:690e:13ce:b0:650:35b1:b16c with SMTP id 956f58d0204a3-6614f5b110bmr3139698d50.8.1781025347112;
+        Tue, 09 Jun 2026 10:15:47 -0700 (PDT)
+Received: from localhost (c-73-104-62-181.hsd1.fl.comcast.net. [73.104.62.181])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-660d5f86e2csm11127434d50.5.2026.06.09.10.15.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 09 Jun 2026 10:15:46 -0700 (PDT)
+From: Yury Norov <yury.norov@gmail.com>
+X-Google-Original-From: Yury Norov <ynorov@nvidia.com>
+To: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Felix Maurer <fmaurer@redhat.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Kexin Sun <kexinsun@smail.nju.edu.cn>,
+	Yury Norov <ynorov@nvidia.com>,
+	Quan Sun <2022090917019@std.uestc.edu.cn>,
+	Luka Gejak <luka.gejak@linux.dev>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] net: hsr: simplify fill_last_seq_nrs()
+Date: Tue,  9 Jun 2026 13:15:44 -0400
+Message-ID: <20260609171545.1051322-1-ynorov@nvidia.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260608125846.157004-1-jiayuan.chen@linux.dev>
- <20260608125846.157004-2-jiayuan.chen@linux.dev> <CAAVpQUDZoEVEX1kXok-29dzVHk=ZK_2MkZyZY8kRHCJCfAWVFg@mail.gmail.com>
- <DJ3XPJA746S5.NYKZWY1HBH8O@gmail.com> <CAAVpQUATP7S7OEZw4P_7fp5zmQO-T5jByxAfp0+YsjRENeWscg@mail.gmail.com>
- <CAADnVQKa2Z2HKKZMhyD1HrurQ4LTcCS0Mm0YPxtisGKwVfcxmg@mail.gmail.com>
- <CAAVpQUCJH3iknHSfNwMqvHVc_V09zNDK-YbXbqa-=K159PTqiw@mail.gmail.com>
- <DJ40JYME18U1.3RA3TUXB3MH3M@gmail.com> <CAAVpQUC1Ot9vr09gNoe+vxgLoqU8Wwn2DV+CQZYYpAJUATJiWg@mail.gmail.com>
- <f0468cb2-1b52-4216-9592-ceb204f6ea41@linux.dev>
-In-Reply-To: <f0468cb2-1b52-4216-9592-ceb204f6ea41@linux.dev>
-From: Kuniyuki Iwashima <kuniyu@google.com>
-Date: Tue, 9 Jun 2026 10:14:39 -0700
-X-Gm-Features: AVVi8CfkVjeAeUk17kjk2s6wRYeo3MTRMX2aePnQQmjsoDb5ybrS3XbXLwOcaFw
-Message-ID: <CAAVpQUC=AJvJS1yppw+aAVpmRhB6GganrUKMsKSo7WUKNkZHfA@mail.gmail.com>
-Subject: Re: [PATCH bpf v8 1/2] net: Validate protocol in skb_steal_sock() for
- BPF-assigned sockets
-To: Jiayuan Chen <jiayuan.chen@linux.dev>
-Cc: Alexei Starovoitov <alexei.starovoitov@gmail.com>, Alexei Starovoitov <ast@kernel.org>, 
-	bpf <bpf@vger.kernel.org>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
-	Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
-	Martin KaFai Lau <martin.lau@linux.dev>, Eduard Zingerman <eddyz87@gmail.com>, 
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Song Liu <song@kernel.org>, 
-	Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, 
-	Shuah Khan <shuah@kernel.org>, Joe Stringer <joe@wand.net.nz>, 
-	Network Development <netdev@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>, 
-	"open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jun 9, 2026 at 6:55=E2=80=AFAM Jiayuan Chen <jiayuan.chen@linux.dev=
-> wrote:
->
->
-> On 6/9/26 6:34 AM, Kuniyuki Iwashima wrote:
-> > On Mon, Jun 8, 2026 at 3:16=E2=80=AFPM Alexei Starovoitov
-> > <alexei.starovoitov@gmail.com> wrote:
-> >> On Mon Jun 8, 2026 at 2:35 PM PDT, Kuniyuki Iwashima wrote:
-> >>>> btw is earlier sashiko TOCTOU concern real?
-> >>> Yes, the selftest in patch 2 should reproduce null-ptr-deref.
-> >>> (I tested one in a prior version)
-> >>>
-> >>>
-> >>>> iph->protocol =3D IPPROTO_TCP;
-> >>>> bpf_sk_assign_tcp_reqsk(udp_skb, tcp_sk);
-> >>>> iph->protocol =3D IPPROTO_UDP;
-> >>>>
-> >>>> as far as I can tell past bpf_sk_assign_tcp_reqsk()
-> >>>> the networking stack only looks at skb->protocol,
-> >>>> so modifying iph->protocol will only mess up
-> >>>> things on the wire (if this packet goes out).
-> >>> ip_rcv_finish_core() uses iph->protocol for early demux
-> >>> and ip_local_deliver_finish() also uses it for demux.
-> >> ok. Another idea... we can keep the checks on bpf side and
-> >> teach the verifier to invalidate packet pointers at bpf_sk_assign_tcp_=
-reqsk()
-> >> and introduce new concept of "readonly skb".
-> >> So after invalidation the reloaded sbk->data will be read only.
-> > Yes, this is exactly what I had in mind in the other thread :)
-> >
-> > ---8<---
-> > On top of L4 validation in bpf_sk_assign() and bpf_sk_assign_tcp_reqsk(=
-),
-> > can't we mark such an skb immutable after the helpers and catch
-> > subsequent writes to skb->data on the verifier ?
-> > ---8<---
-> >
-> >
-> >> There is no such thing today. The verifier only understands PTR_TO_PAC=
-KET
-> >> as read/write. So it's not easy, but probably good thing to have
-> >> for this and other cases where bpf prog shouldn't touch the packet
-> >> once it called some kfunc/helper.
-> > This would be useful and we could (re)move some validations from
-> > the fast path.
->
->
-> Hi Kuniyuki and Alexei,
->
->
-> Thanks both for the discussion, it makes sense to me.
->
-> I'll go back to fixing this in the helper itself, like the previous
-> version did.
+The function checks the HSR_PT_SLAVE_A and HSR_PT_SLAVE_B bitmaps
+for emptiness right before calling find_last_bit().
 
-I think even the previous version is the same type of change
-for intentional misuse.
+This pass may be avoided, because if the bitmap is empty, the
+find_last_bit() returns >= HSR_SEQ_BLOCK_SIZE
 
-Both bpf_sk_assign() and bpf_sk_assign_tcp_reqsk() assumes
-sk_lookup() in advance, meaning the bpf must have dissected
-skb, and bpf_sk_assign() relies on it and has no protocol check.
+Signed-off-by: Yury Norov <ynorov@nvidia.com>
+---
+ net/hsr/hsr_framereg.c | 16 ++++++----------
+ 1 file changed, 6 insertions(+), 10 deletions(-)
 
+diff --git a/net/hsr/hsr_framereg.c b/net/hsr/hsr_framereg.c
+index 124619920d38..bf143b86999b 100644
+--- a/net/hsr/hsr_framereg.c
++++ b/net/hsr/hsr_framereg.c
+@@ -827,18 +827,14 @@ static void fill_last_seq_nrs(struct hsr_node *node, u16 *if1_seq, u16 *if2_seq)
+ 	block_sz = hsr_seq_block_size(node);
+ 	block = node->block_buf + block_off * block_sz;
+ 
+-	if (!bitmap_empty(block->seq_nrs[HSR_PT_SLAVE_B - 1],
+-			  HSR_SEQ_BLOCK_SIZE)) {
+-		seq_bit = find_last_bit(block->seq_nrs[HSR_PT_SLAVE_B - 1],
+-					HSR_SEQ_BLOCK_SIZE);
++	seq_bit = find_last_bit(block->seq_nrs[HSR_PT_SLAVE_B - 1], HSR_SEQ_BLOCK_SIZE);
++	if (seq_bit < HSR_SEQ_BLOCK_SIZE)
+ 		*if1_seq = (block->block_idx << HSR_SEQ_BLOCK_SHIFT) | seq_bit;
+-	}
+-	if (!bitmap_empty(block->seq_nrs[HSR_PT_SLAVE_A - 1],
+-			  HSR_SEQ_BLOCK_SIZE)) {
+-		seq_bit = find_last_bit(block->seq_nrs[HSR_PT_SLAVE_A - 1],
+-					HSR_SEQ_BLOCK_SIZE);
++
++	seq_bit = find_last_bit(block->seq_nrs[HSR_PT_SLAVE_A - 1], HSR_SEQ_BLOCK_SIZE);
++	if (seq_bit < HSR_SEQ_BLOCK_SIZE)
+ 		*if2_seq = (block->block_idx << HSR_SEQ_BLOCK_SHIFT) | seq_bit;
+-	}
++
+ 	spin_unlock_bh(&node->seq_out_lock);
+ }
+ 
+-- 
+2.53.0
 
->
->
-> Then, as a longer-term and more general solution, I'll try look into
-> marking the
-> skb as immutable after these helpers so the verifier can reject any
-> later writes
-> to the packet.
->
