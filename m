@@ -1,47 +1,47 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DF48305669
-	for <netdev@vger.kernel.org>; Tue,  9 Jun 2026 14:09:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B1EF32E6BC
+	for <netdev@vger.kernel.org>; Tue,  9 Jun 2026 14:09:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781014187; cv=none; b=FnLF5Y2tZkPcu4rISXZkqddJhWAHYpEwJhrnyCchaLaQD0skGZ28V/kbpXK8aDwYZVyExm7wYUVuKX4E3Y4z2AnB0geuJ9gz9lSkAoS9Z3Ulxv3lUgoQ8VJmGxYa7h5EMFrQoTRo/5+NgEexpccfrYMlXhx8qlzaD5Q9/aGkRIc=
+	t=1781014195; cv=none; b=dNlcoFxFx4qWaZrvx5dijpoIoLPJ7CRCErdiqJAOAzEUxQkILR3/pqt/dt6Hf7GS59Y4LUaggKd6+VnZchaSkZ7cCTXS1SDsqr3QQmipbU3CounrOhVPwVMSG8v64HSSqLu61tS+p2jPVmUypMItrUQwveu+lafQZObYy1cSPBc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781014187; c=relaxed/simple;
-	bh=MgeqBqbeM9ZjlJEyVlgOa8AhiCyuAqsINqkRrxIJK0s=;
+	s=arc-20240116; t=1781014195; c=relaxed/simple;
+	bh=vsqwP8YXh+M2bNPBsEQcgcJw0h57NoyNsFB3+oAaB/E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LTjteJrNpAGr9ZRUNKS3ewDNdfUv4RyiivmW31vAk1OMpRPty/Tl+f1vi8Qsp1vM0bRMohYAYWW4dHVKnpUdYG+Io4DkYuk+CpJjp6+ea4rNe2UNdMUkEIoeBkd9NjfYSjYVM2atdsro71X5A+qs657KZUL5l3ifmwW059Jamx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=L6INEzia; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version; b=MI6QnFTEWGB2FIx15HS266XZn0j2rwDu3w68JsIYe+9++oUag/QG/h9NHLS3ad4PDifsLRF/kBEMVbezOblFdHB4RZdowZ8RGvVVFApSzNeWcnuA5Bbw7oOUu+OZ7pA68g65jnxHRLV0X1TRtZUskYk84BqmdKtdg9Dek5suP8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LXv55nef; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="L6INEzia"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LXv55nef"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1781014185;
+	s=mimecast20190719; t=1781014193;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=HJpcmVk55zVXVTYST+KIIg3DqPL02LXVu+0D5lYDt7c=;
-	b=L6INEziaEoCuMfEyXgeCmWAHbe1gcYrGDG/foMpbHkNfXKrqCF7vnROqKs+7Z/5sVayx2Q
-	d48KGdEEckmAvkJxaDDmGRjOvfXPf021hl3AEWL/upDoHxu0qLtH5KGvJmDrIbgnfr8v9r
-	dN6jTHYmRz0WLGaqbUd57Ywr6tPEHmk=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+	bh=0OWe4NSbohWDDQtxvPc65jvBtu4PNpfSBPoC6Q/fajc=;
+	b=LXv55nefu+9jVTrWnNM7GwJ8EDKxq+Tp1B4Cl996VQgdKOM/BKyArVdZsVjO9zazGDD2q5
+	P1u9zewqgvIarfrdGUfxd14sQmj8vaost4U4SddFcUGeojdr8+c+UP5/h1xS9V8QTxjp4A
+	Ot0uMENb/soX7AlaXo0+0VTOEttpwiE=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-665-qTik1dEPM7qg9tPFIrqWYA-1; Tue,
- 09 Jun 2026 10:09:42 -0400
-X-MC-Unique: qTik1dEPM7qg9tPFIrqWYA-1
-X-Mimecast-MFC-AGG-ID: qTik1dEPM7qg9tPFIrqWYA_1781014179
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-253-zH8zfC1kODeBF1qVYB7I-w-1; Tue,
+ 09 Jun 2026 10:09:47 -0400
+X-MC-Unique: zH8zfC1kODeBF1qVYB7I-w-1
+X-Mimecast-MFC-AGG-ID: zH8zfC1kODeBF1qVYB7I-w_1781014185
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7474A180AC71;
-	Tue,  9 Jun 2026 14:09:39 +0000 (UTC)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4F60218501E9;
+	Tue,  9 Jun 2026 14:09:45 +0000 (UTC)
 Received: from warthog.procyon.org.com (unknown [10.44.32.43])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id BB8451954105;
-	Tue,  9 Jun 2026 14:09:35 +0000 (UTC)
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 059E33008B39;
+	Tue,  9 Jun 2026 14:09:40 +0000 (UTC)
 From: David Howells <dhowells@redhat.com>
 To: netdev@vger.kernel.org
 Cc: David Howells <dhowells@redhat.com>,
@@ -53,10 +53,13 @@ Cc: David Howells <dhowells@redhat.com>,
 	Simon Horman <horms@kernel.org>,
 	linux-afs@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
+	Li Daming <d4n.for.sec@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Jeffrey Altman <jaltman@auristor.com>,
 	stable@kernel.org
-Subject: [PATCH net 3/5] rxrpc: Fix UAF in rxgk_issue_challenge()
-Date: Tue,  9 Jun 2026 15:09:07 +0100
-Message-ID: <20260609140911.838677-4-dhowells@redhat.com>
+Subject: [PATCH net 4/5] afs: Fix netns teardown to cancel the preallocation charger
+Date: Tue,  9 Jun 2026 15:09:08 +0100
+Message-ID: <20260609140911.838677-5-dhowells@redhat.com>
 In-Reply-To: <20260609140911.838677-1-dhowells@redhat.com>
 References: <20260609140911.838677-1-dhowells@redhat.com>
 Precedence: bulk
@@ -66,15 +69,25 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-Fix rxgk_issue_challenge() to free the page containing the challenge
-content after invoking the tracepoint as the whdr passed to the tracepoint
-points into the page just freed.
+Fix the teardown of an afs network namespace to make sure it cancels the
+work item that keeps the preallocated rxrpc call/conn/peer queue charged
+before incoming calls are disabled (i.e. listen 0).
 
-Fixes: 9d1d2b59341f ("rxrpc: rxgk: Implement the yfs-rxgk security class (GSSAPI)")
-Reported-by: Marc Dionne <marc.dionne@auristor.com>
+Also, if net->live is false because the afs netns is being deleted, make
+afs_charge_preallocation() skip charging and make afs_rx_new_call() avoid
+requeuing the charger.
+
+(This was found by AI review).
+
+Fixes: 00e907127e6f ("rxrpc: Preallocate peers, conns and calls for incoming service requests")
+Reported-by: Simon Horman <horms@kernel.org>
 Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Li Daming <d4n.for.sec@gmail.com>
+cc: Ren Wei <n05ec@lzu.edu.cn>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Jeffrey Altman <jaltman@auristor.com>
 cc: Eric Dumazet <edumazet@google.com>
 cc: "David S. Miller" <davem@davemloft.net>
 cc: Jakub Kicinski <kuba@kernel.org>
@@ -84,30 +97,38 @@ cc: linux-afs@lists.infradead.org
 cc: netdev@vger.kernel.org
 cc: stable@kernel.org
 ---
- net/rxrpc/rxgk.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/afs/rxrpc.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/net/rxrpc/rxgk.c b/net/rxrpc/rxgk.c
-index a1ee102abae1..77a67ace1d24 100644
---- a/net/rxrpc/rxgk.c
-+++ b/net/rxrpc/rxgk.c
-@@ -687,16 +687,17 @@ static int rxgk_issue_challenge(struct rxrpc_connection *conn)
- 	ret = do_udp_sendmsg(conn->local->socket, &msg, len);
- 	if (ret > 0)
- 		rxrpc_peer_mark_tx(conn->peer);
--	__free_page(page);
+diff --git a/fs/afs/rxrpc.c b/fs/afs/rxrpc.c
+index 588f8de51167..d5cfd24e815b 100644
+--- a/fs/afs/rxrpc.c
++++ b/fs/afs/rxrpc.c
+@@ -127,6 +127,7 @@ void afs_close_socket(struct afs_net *net)
+ {
+ 	_enter("");
  
- 	if (ret < 0) {
- 		trace_rxrpc_tx_fail(conn->debug_id, serial, ret,
- 				    rxrpc_tx_point_rxgk_challenge);
-+		__free_page(page);
- 		return -EAGAIN;
- 	}
++	cancel_work_sync(&net->charge_preallocation_work);
+ 	kernel_listen(net->socket, 0);
+ 	flush_workqueue(afs_async_calls);
  
- 	trace_rxrpc_tx_packet(conn->debug_id, whdr,
- 			      rxrpc_tx_point_rxgk_challenge);
-+	__free_page(page);
- 	_leave(" = 0");
- 	return 0;
+@@ -742,7 +743,7 @@ void afs_charge_preallocation(struct work_struct *work)
+ 		container_of(work, struct afs_net, charge_preallocation_work);
+ 	struct afs_call *call = net->spare_incoming_call;
+ 
+-	for (;;) {
++	while (READ_ONCE(net->live)) {
+ 		if (!call) {
+ 			call = afs_alloc_call(net, &afs_RXCMxxxx, GFP_KERNEL);
+ 			if (!call)
+@@ -792,7 +793,8 @@ static void afs_rx_new_call(struct sock *sk, struct rxrpc_call *rxcall,
+ 	if (!call->server)
+ 		trace_afs_cm_no_server(call, rxrpc_kernel_remote_srx(call->peer));
+ 
+-	queue_work(afs_wq, &net->charge_preallocation_work);
++	if (net->live)
++		queue_work(afs_wq, &net->charge_preallocation_work);
  }
+ 
+ /*
 
