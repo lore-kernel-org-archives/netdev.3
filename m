@@ -1,147 +1,107 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f195.google.com (mail-dy1-f195.google.com [74.125.82.195])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47D73331EAE;
-	Tue,  9 Jun 2026 17:51:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6A4C331EB9
+	for <netdev@vger.kernel.org>; Tue,  9 Jun 2026 17:57:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781027469; cv=none; b=Z79vn4IOUFLkVeUvWQIh5KTRQVR0f4UVn0dw8nz5YqpxkJejWo0eBw5H2G6veKFIIn9DVn0HKFFRXsoAm5G47HEkr/DpUOhjklD/5JfHSsuY0egViRykjbq+zEQmOo/EsVYdfzponyhN2MAlYFn35Ltt09rrwT0cQ4pDf0sugMQ=
+	t=1781027824; cv=none; b=ZHDcNnhC9mMWYGnR7OSeZ5eMg60BK28H5pXzzXgjAorARF9egGJ+fSy+4leFlLJmJOWspIMHQ6iOhJzntSf2X1hbd5CdgD4oyzu7eHn7MyA2wz2h29qkFrNUAZjUleeN5Zx1EZ3ohlpVpzpKfdJRbdjnHqc0pgCU2l+oOcju+cQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781027469; c=relaxed/simple;
-	bh=MHSrLwUeLOfYLkwPcrWffBG0d8LBYSrvwS+e7ygv0cM=;
-	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
-	 Subject:From:To:Cc:Date; b=f+LiV+S+k69vfc+HKy32pfsV2w5uz9E9cx4UDcim9D59p0fI+Gfcx7SIQCbleP8UupnXedTODuPP5G5XH2z2X25SK7xBZa9/K01ec8DapCLFOQg7fEc8s/PolzRkG4w/9abHWBIsjjqw1hr9Nt6AY7KN8GhQHbpsTTW4N9Nf1sw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l9Tu4E46; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781027824; c=relaxed/simple;
+	bh=ceuTWt9w9LeDldUkLP4ll59iRFDfgMsttokwznfdTfs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KLaId400DGtxLJxkVac4T8idrDptIQKAnFDcktfvCmKUGdzEEXcQPhlPkbTAXUk2N+YJfOPO8QLDl2B0X06xMBkh6bcmUh3J8lMXYc48IHEASb1hTbblEvyoJU982mv3XR3cofQ+aFObALRSGWljAav1oWeBRnbE54IfOY4cbrI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bWk98bSH; arc=none smtp.client-ip=74.125.82.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l9Tu4E46"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26B381F00893;
-	Tue,  9 Jun 2026 17:51:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781027467;
-	bh=cFXAfTPwn5puZHl7L/GydstH0PobxJJd7HC+8+4WE30=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=l9Tu4E46gqjGAwhuTOUnqz5NbqW4G+Njutq0In/8eTz1yIOmG3VoXviWZkUsIcKOv
-	 kHj6TkbCqZQCaXXX6JKD0yuvuYa4Wtp8+4jpbaoe2nmpmAp5AQwC6DrSsZLwkO3hcC
-	 7tW6yj4WCfanHVD3T/YaJwJohiZ4qdKiwnu7ej48tdUKa4kdd+PL/nGcoVKk1ac43o
-	 +Ey8R6rBCXNKhkzghrz1JgEZ34fcnBdMWL8m8BtlRLg+VDPhQvLFJCSrLHgw+xMP+c
-	 RR/5ts/wHSKOP+E45fQE1P7w+jm+YC1sNX37hx2QTFN7hKyDLF/b/Rw0yOT5tiDU0a
-	 O2MW9iQcCofOw==
-Content-Type: multipart/mixed; boundary="===============4493727351168416969=="
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bWk98bSH"
+Received: by mail-dy1-f195.google.com with SMTP id 5a478bee46e88-3078e0dcd67so3746405eec.0
+        for <netdev@vger.kernel.org>; Tue, 09 Jun 2026 10:57:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781027821; x=1781632621; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=2kYpmhyNww2KkDuIdQFfU1ShKFDFbnvwHvNOiifQ3XM=;
+        b=bWk98bSH0oj5UeUoCMcm2pVuWjU4YZF/vQ6QsbLIDKa+8fwNdNurR0s6+VVznxmPRF
+         CgTZTrWVNoTeNiyHvcj7nwhjA19nFkQSwIBIe+fTx+XeTkFarpWt77xcsI7obG5l908n
+         1PbVgO1X+uBKJZ/EFdk7VboTYaqshBHbXLxKOy+moPzbglGFCw2jLotRBdbX+0792lo5
+         D2O5wGYSdBWrADfC3wHCn9UN379dexaQVOKnpVdP0lLf5fRDSq53rAO9qTrh+70gvDoG
+         Kj1ppCVBTw5sll9S4gPVPNP0y8Crj64VNa6tGIXwlrG3E8ebvySLeapjlK1/hG0I4zzt
+         N2bg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781027821; x=1781632621;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2kYpmhyNww2KkDuIdQFfU1ShKFDFbnvwHvNOiifQ3XM=;
+        b=hvZH3u351iEMEZi0mCxMtrLmJhkjfkxs5YMgQf9+5ly2SRePtYJrkTW8PfMMUApsHS
+         +0aM8nKEvJHSBGHoZJcU2j0WVf8Fd9sx7By96u9o9HJKCcc/WVeqG1DJYdHOJHra/JBd
+         HbgWTc4Gilaltxgi5ly2gzllqwpkGFXRSRsbMpZy4wW+CefipeNVav7TL68OdReIY50V
+         dyLx/YAtVHpgf1uLULHZY5WWzHiZGKmz/QsvLJlMKlkCUg5aUzCuk2Z86TGweZ3/ri5f
+         wBPRZl1aV4V2J33wrjCYxtBoMOVBLmiLdVNN6sA0I086P36VgeFl6sIEOh1SQXg50/eh
+         /y7Q==
+X-Gm-Message-State: AOJu0Yx+qbc5qHt/+/tLmpLwAhpomX6C/iPgaZOyZnN9sFGDMJXXJ7lw
+	lGhj2N0l3alW+usD4aGdNiV7J0bETdlNPn0FiRG8BaTvJa1fZ6k4KTyUrYKXD15l
+X-Gm-Gg: Acq92OFkU52s630IzVrJCRzQsoYAwoTaaabjCGqijT+a9HrpLOj9sdhijxaNjf+Np4A
+	VpwzB1LavIlutX9iFh8z1GytsDc1Wvkj5nTYrtUdTdy/ZsxUfJX0y69K+uRqzlXw+yqaRNYBgWr
+	G3aoYhAQIoCVHb50Tft0ZkAHvMAJpJMbKZcediRBpVvX2UWM3kZOcIEhhqXrlY6EqXp50+xc1oq
+	Vdh6NrVAWcFulUrCzmwiNi6JrmzaAl+CfIHvUsUdPahpQ5vgwW1HMNOBmkpcTotbJvOqfqRJf2s
+	Ns40Ck6FbUWQ7hvq4cbj1hysuXi4nmT+xB4dv7EE8Twfj496nAEkWd3U/TF58u5jPigOTZpXeG6
+	X8h5w07DL1zq07C9NmWC1ZC14H0KMAOHTezQP6Ev1V/15Or611pp1wR7d1Pp+fynnxjJVu4zozy
+	DYqyaDIJRxWNvOh9AU9VemESPhYseL8JWUmxYTBQh4r1cYoFCVbU54hBTxd0Y2aPfZJ+Uu+W0dS
+	XoA6NLb4eewAssE8Mu8MxkCrlwZqvxIWUE5qTVewQPQeLjgUS0ZFwoes61v0AwySaJyZBD7pppZ
+	8K6y+NhPN0L0lUrJ+uJdUZaFyupePM2N5f3Of9A=
+X-Received: by 2002:a05:7301:2b07:b0:307:43ff:f32e with SMTP id 5a478bee46e88-3077b36f7b6mr12416256eec.32.1781027820557;
+        Tue, 09 Jun 2026 10:57:00 -0700 (PDT)
+Received: from ethan-latitude5420.. (host-127-24.cafrjco.fresno.ca.us.clients.pavlovmedia.net. [68.180.127.24])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3074df77a0asm23586953eec.27.2026.06.09.10.56.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 09 Jun 2026 10:57:00 -0700 (PDT)
+From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+To: netdev@vger.kernel.org
+Cc: Ethan Nelson-Moore <enelsonmoore@gmail.com>,
+	Daniele Venzano <venza@brownhat.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH] net: ethernet: sis900: correct CONFIG_VLAN_8021Q macro name in comment
+Date: Tue,  9 Jun 2026 10:56:55 -0700
+Message-ID: <20260609175656.20574-1-enelsonmoore@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <d8b1da1af69842d46dd4a02216a183e8ba611a2af4ca07ed4c2c7957be4698cc@mail.kernel.org>
-In-Reply-To: <20260609172052.81613-1-avinash.duduskar@gmail.com>
-References: <20260609172052.81613-1-avinash.duduskar@gmail.com>
-Subject: Re: [PATCH bpf-next] bpf: Add BPF_FIB_LOOKUP_VLAN flag to bpf_fib_lookup() helper
-From: bot+bpf-ci@kernel.org
-To: avinash.duduskar@gmail.com,ast@kernel.org,daniel@iogearbox.net,andrii@kernel.org
-Cc: martin.lau@linux.dev,eddyz87@gmail.com,memxor@gmail.com,song@kernel.org,yonghong.song@linux.dev,jolsa@kernel.org,john.fastabend@gmail.com,sdf@fomichev.me,davem@davemloft.net,edumazet@google.com,kuba@kernel.org,pabeni@redhat.com,horms@kernel.org,hawk@kernel.org,kpsingh@kernel.org,toke@redhat.com,bpf@vger.kernel.org,netdev@vger.kernel.org,linux-kernel@vger.kernel.org,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
-Date: Tue,  9 Jun 2026 17:51:07 +0000 (UTC)
+Content-Transfer-Encoding: 8bit
 
---===============4493727351168416969==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+A comment in drivers/net/ethernet/sis/sis900.h incorrectly refers to
+CONFIG_VLAN_802_1Q instead of CONFIG_VLAN_8021Q. Correct it.
 
-> diff --git a/include/uapi/linux/bpf.h b/include/uapi/linux/bpf.h
-> index 11dd610fa5fa..aa7fe378a35d 100644
-> --- a/include/uapi/linux/bpf.h
-> +++ b/include/uapi/linux/bpf.h
+Discovered while searching for CONFIG_* symbols referenced in code but
+not defined in any Kconfig file.
 
-[ ... ]
-
-> diff --git a/net/core/filter.c b/net/core/filter.c
-> index 9590877b0714..782fa86df95a 100644
-> --- a/net/core/filter.c
-> +++ b/net/core/filter.c
-> @@ -6119,10 +6119,28 @@ static const struct bpf_func_proto bpf_skb_get_xfrm_state_proto = {
->  #endif
->
->  #if IS_ENABLED(CONFIG_INET) || IS_ENABLED(CONFIG_IPV6)
-> -static int bpf_fib_set_fwd_params(struct bpf_fib_lookup *params, u32 mtu)
-> +static int bpf_fib_set_fwd_params(struct net_device *dev,
-> +				  struct bpf_fib_lookup *params,
-> +				  u32 flags, u32 mtu)
->  {
->  	params->h_vlan_TCI = 0;
->  	params->h_vlan_proto = 0;
-> +
-> +	if ((flags & BPF_FIB_LOOKUP_VLAN) && is_vlan_dev(dev)) {
-> +		struct net_device *real_dev = vlan_dev_real_dev(dev);
-
-Does this correctly handle stacked VLANs (QinQ)? Both the commit message
-and the inline comment below mention that stacked VLANs are not walked and
-only the immediate parent is resolved.
-
-However, looking at the implementation of vlan_dev_real_dev() in
-net/8021q/vlan_core.c:
-
-const struct net_device *vlan_dev_real_dev(const struct net_device *dev)
-{
-    while (is_vlan_dev(dev))
-        dev = vlan_dev_priv(dev)->real_dev;
-    return dev;
-}
-
-It appears vlan_dev_real_dev() loops through all stacked VLANs to return
-the ultimate non-VLAN underlying device.
-
-If the configuration is QinQ, wouldn't this set params->ifindex to the base
-physical device while only returning the topmost VLAN tag in
-params->h_vlan_TCI? This could cause an XDP program to push only a single
-tag and drop the intermediate VLAN tags, bypassing the outer VLAN entirely.
-
-Should this use vlan_dev_priv(dev)->real_dev instead to only get the
-immediate parent as intended?
-
-> +
-> +		/* Only the immediate parent is resolved; stacked VLANs
-
-This isn't a bug, but the comment style here differs from BPF subsystem
-guidelines. The opening /* has comment text on the same line, but the BPF
-comment style prefers the opening /* on its own line with text starting
-on the next line.
-
-> +		 * (QinQ) are not walked, and a NULL real_dev (which
-> +		 * is_vlan_dev() rules out in practice) keeps the
-> +		 * original ifindex.
-> +		 */
-> +		if (real_dev) {
-> +			params->h_vlan_proto = vlan_dev_vlan_proto(dev);
-> +			params->h_vlan_TCI = htons(vlan_dev_vlan_id(dev));
-> +			params->ifindex = real_dev->ifindex;
-> +		}
-> +	}
-> +
->  	if (mtu)
->  		params->mtu_result = mtu; /* union with tot_len */
->
-> @@ -6265,7 +6283,7 @@ static int bpf_ipv4_fib_lookup(struct net *net, struct bpf_fib_lookup *params,
->  	memcpy(params->smac, dev->dev_addr, ETH_ALEN);
->
->  set_fwd_params:
-> -	return bpf_fib_set_fwd_params(params, mtu);
-> +	return bpf_fib_set_fwd_params(dev, params, flags, mtu);
->  }
->  #endif
-
-[ ... ]
-
-> diff --git a/tools/include/uapi/linux/bpf.h b/tools/include/uapi/linux/bpf.h
-> index 11dd610fa5fa..aa7fe378a35d 100644
-> --- a/tools/include/uapi/linux/bpf.h
-> +++ b/tools/include/uapi/linux/bpf.h
-
-[ ... ]
-
-
+Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
 ---
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+ drivers/net/ethernet/sis/sis900.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/27223878961
---===============4493727351168416969==--
+diff --git a/drivers/net/ethernet/sis/sis900.h b/drivers/net/ethernet/sis/sis900.h
+index 66e4bf38770f..b20665fc37f9 100644
+--- a/drivers/net/ethernet/sis/sis900.h
++++ b/drivers/net/ethernet/sis/sis900.h
+@@ -315,7 +315,7 @@ enum sis630_revision_id {
+ #define MAX_FRAME_SIZE  (1518 + 4)
+ #else
+ #define MAX_FRAME_SIZE  1518
+-#endif /* CONFIG_VLAN_802_1Q */
++#endif /* CONFIG_VLAN_8021Q */
+ 
+ #define TX_BUF_SIZE     (MAX_FRAME_SIZE+18)
+ #define RX_BUF_SIZE     (MAX_FRAME_SIZE+18)
+-- 
+2.43.0
+
