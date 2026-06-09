@@ -1,147 +1,100 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C68B3FC5B7
-	for <netdev@vger.kernel.org>; Tue,  9 Jun 2026 11:06:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D2053F9F32
+	for <netdev@vger.kernel.org>; Tue,  9 Jun 2026 11:06:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781003195; cv=none; b=H1uccL6GXZh5686WWdIo2gLnwac7aTBbnZ1xHjLHnQzAcjN2I8f2LSQKbAfGVtlOsgzyn3nELYzLIZZHj9C5DdqmrhkJUbvNBuv+FjN9+SmsbiA7Ijv80mu/J4g7U92/lVIeReDY4MZFiRib2qXRib5BNwnd40jI8AHJjPl+CKU=
+	t=1781003203; cv=none; b=DqzJdm1wPrHbiJa5O8WSxfzOLZkw1j76uqi/FcpjN+bX8VhOPJvBZBLMRLX6dkfof7q1cfQMEzSZkmrcQ+8sBRKPPfeMX2OKxsG31aUCak6TsMcAyZF8Q2w82lE8ex2+0Qewi+W83T3v2qquz61pLWrHz2aqCfOO71d4BhEjGm4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781003195; c=relaxed/simple;
-	bh=AOcKZuFx/azQdwXcVpOXgJNhyio42f13QH5YqlSZKwU=;
+	s=arc-20240116; t=1781003203; c=relaxed/simple;
+	bh=eT/9Sn/sYsrL31GQDuHiuEQUw+7Tb4fr2oU7PuE0GnI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sgwDRfO6bCirf3BIxuYY0e1yqSwWQIJkHQAyV3/H+DAZvBlIGZE1YWHFnEfiZUPVtuulXS0JRYYtECD95+9bhz4MaF3Mc/sVM10tUtRRsZc3L/UvryBoNpgGNwiA+ZKmud+zWJs/PuNWsici9heDnAqebzi/uej2JI0RkHAaw3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Usxk2Zp7; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 MIME-Version:Content-Type; b=qNqPoeJXY/DAbTzdPFVZBIlryygLMhVrkuuuBLz4udElfKx9RMcPWON4VeFJXD1k06Dz6vJnI1Zq5FyjmMDJ3NwY8cR/uWhziJaqJkgxCNBdlD5SBUN5JyESxsSrertaXSgDddAN/P0e/ASrqx3UzjiXX6pi0KH6CJoP5/gcvlM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=ncykL8Qy; arc=none smtp.client-ip=95.215.58.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Usxk2Zp7"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1781003192;
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="ncykL8Qy"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1781003200;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=y17cxi8kkPSr+8QFQJlEXOIBw/gAA9pL1DpslweEtNw=;
-	b=Usxk2Zp7G73x6KqAgyRDkKSeFOKZL69W9GDj3N/qgbYw/DfdDF4c9qrSEX948FTa+nhuMY
-	3ayYmxI2H0FalzTtCopEKKOCf2JB5dc4yD0WmzMgbiHdD4xMKnmITDa+E0LyPu+sxKIMGx
-	uWtOn5xTTDVdOcV7rsHylaz4/ix1xkg=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-49-JolvAdtIPYeLI0XQlXTNEQ-1; Tue,
- 09 Jun 2026 07:06:29 -0400
-X-MC-Unique: JolvAdtIPYeLI0XQlXTNEQ-1
-X-Mimecast-MFC-AGG-ID: JolvAdtIPYeLI0XQlXTNEQ_1781003187
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8821A195D01D;
-	Tue,  9 Jun 2026 11:06:27 +0000 (UTC)
-Received: from gerbillo.redhat.com (unknown [10.44.33.0])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 0DE993008B38;
-	Tue,  9 Jun 2026 11:06:23 +0000 (UTC)
-From: Paolo Abeni <pabeni@redhat.com>
-To: bestswngs@gmail.com
-Cc: 3chas3@gmail.com,
-	netdev@vger.kernel.org,
-	davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	horms@kernel.org,
-	linux-atm-general@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org,
-	xmei5@asu.edu
-Subject: Re: [PATCH net] net: atm: fix use-after-free in sigd_put_skb()
-Date: Tue,  9 Jun 2026 13:06:15 +0200
-Message-ID: <20260609110615.196819-1-pabeni@redhat.com>
-In-Reply-To: <20260604164916.2681964-2-bestswngs@gmail.com>
-References: <20260604164916.2681964-2-bestswngs@gmail.com>
+	bh=dOFwe83SM6QIMCLbxJXV0qmGwf1qp7uMCkco1AkMiLA=;
+	b=ncykL8QyKMmCpqapX6jRGNRoeYwfXLUa94vpzhXvxJdYLfWIGkVevVUp8Nx8omyNSYfTKh
+	DQy8f756Oy0E+iFy92HQtvQMHypZTxhyYbXOr57ZjtD/yyA0WV9iUYro39sFHPOOjo932n
+	DvhCSH3dUl1qH2nFsHE0skIi2xVsU2k=
+From: Menglong Dong <menglong.dong@linux.dev>
+To: Sun Jian <sun.jian.kdev@gmail.com>
+Cc: bpf@vger.kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, ast@kernel.org, daniel@iogearbox.net,
+ andrii@kernel.org, martin.lau@linux.dev, davem@davemloft.net,
+ kuba@kernel.org, hawk@kernel.org, john.fastabend@gmail.com, sdf@fomichev.me,
+ shuah@kernel.org, liuhangbin@gmail.com, Sun Jian <sun.jian.kdev@gmail.com>
+Subject: Re: [PATCH] bpf: Unshare cloned skb before devmap egress XDP program
+Date: Tue, 09 Jun 2026 19:06:20 +0800
+Message-ID: <L0cwr1-KRSKR7-dJdjDmJA@linux.dev>
+In-Reply-To: <20260609100214.337538-1-sun.jian.kdev@gmail.com>
+References: <20260609100214.337538-1-sun.jian.kdev@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="utf-8"
+X-Migadu-Flow: FLOW_OUT
 
-From: AI Reviewer <ai@example.com>
+On 2026/6/9 18:02 Sun Jian <sun.jian.kdev@gmail.com> write:
+> dev_map_redirect_clone() uses skb_clone() when redirecting a generic XDP
+> skb to multiple devmap destinations. The cloned skb can share packet data
+> with other clones.
+> 
+> If the destination devmap entry has an egress XDP program, that program
+> can modify packet data. Such modifications can then be observed by other
+> clones sharing the same packet data.
+> 
+> This can be reproduced by strengthening xdp_veth_egress to configure a
+> different source MAC for each egress device and checking that store_mac_1/2
+> observe the MAC configured for their own egress devices. Without the fix,
+> the SKB_MODE subtest observes store_mac_1 receiving the MAC configured for
+> the next egress device.
+> 
+> Fix this by unsharing the cloned skb before running the devmap egress XDP
+> program. Limit the extra copy to destinations with an attached egress
+> program.
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
-Full review at: https://sashiko.dev/
----
-net: atm: fix use-after-free in sigd_put_skb()
+Hi, Jian.
 
-This commit addresses a use-after-free in sigd_put_skb() by pinning the
-socket with find_get_vcc() and checking if it is marked SOCK_DEAD under
-the callback lock.
+This sounds like a good idea in this case. When I have a look at bpf_clone_redirect(),
+I found that it use skb_clone() too, which means it has the same problem. The
+data can be modified by other xdp prog in the destination NIC if we use
+bpf_clone_redirect().
 
-> diff --git a/net/atm/signaling.c b/net/atm/signaling.c
-> index b991d937205af..3dbe8e0fdc9af 100644
-> --- a/net/atm/signaling.c
-> +++ b/net/atm/signaling.c
-> @@ -54,14 +54,31 @@ static struct atm_vcc *find_get_vcc(struct atm_vcc *vcc)
+So maybe this is the default logic, and I'm not sure if this patch can break the
+existing users :/
+
+Thanks!
+Menglong Dong
+
+> 
+> Tested with:
+>   ./test_progs -t xdp_veth_egress
+>   ./test_progs -t xdp_veth
+>   ./test_progs -t xdp
+[...]
 >  
->  static void sigd_put_skb(struct sk_buff *skb)
->  {
-> -	if (!sigd) {
-> +	struct atm_vcc *vcc;
-> +	struct sock *sk;
-> +
-> +	vcc = find_get_vcc(READ_ONCE(sigd));
+>  destroy_xdp_redirect_map:
+> -- 
+> 2.43.0
+> 
+> 
+> 
 
-[Severity: Critical]
-Does this introduce a regression where an ABA vulnerability allows a KASLR
-bypass if the daemon socket is freed and reallocated?
 
-If the signaling daemon is closed, sigd is cleared and the socket freed, but
-an unprivileged thread in sigd_put_skb() might have already latched the old
-sigd pointer.
 
-If an unprivileged user subsequently creates a new ATM socket, couldn't the
-slab allocator reuse the exact same memory address? In this case, find_get_vcc()
-would match the raw pointer and return the attacker's new socket.
-
-Since the attacker's socket isn't marked SOCK_DEAD, sigd_put_skb() would blindly
-enqueue the signaling message to the attacker's receive queue.
-
-Because the message contains literal kernel pointers (vcc, listen_vcc),
-wouldn't this allow an unprivileged KASLR bypass and message injection?
-
-[ ... ]
-
-[Severity: High]
-This is a pre-existing issue, but does sigd_send() leak memory when queuing
-SKBs to a closing listening socket?
-
-When processing an as_indicate message, sigd_send() resolves the listening
-socket via msg->listen_vcc, acquires lock_sock(), and appends an SKB:
-
-net/atm/signaling.c:sigd_send() {
-    ...
-    lock_sock(sk);
-    if (sk_acceptq_is_full(sk)) {
-        ...
-    }
-    sk_acceptq_added(sk);
-    skb_queue_tail(&sk->sk_receive_queue, skb);
-    ...
-}
-
-Does this code blindly queue an SKB without checking if the socket has been
-marked closed (ATM_VF_CLOSE) and already purged?
-
-If the listening socket is concurrently closed, vcc_release() will lock the
-socket, purge its receive queue, mark it closed, and release the lock.
-
-Could sigd_send() then acquire the lock and append the new SKB to the dead
-socket's receive queue? Since sk_free() expects an empty queue and does not
-purge it during memory free, would this permanently leak the SKB and allow
-an attacker to exhaust kernel memory?
--- 
-This is an AI-generated review.
 
