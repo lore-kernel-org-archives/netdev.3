@@ -1,63 +1,79 @@
-Received: from mail-gw02.astralinux.ru (mail-gw02.astralinux.ru [93.188.205.243])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFEEF257452;
-	Tue,  9 Jun 2026 16:46:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.188.205.243
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5CE54ADD85
+	for <netdev@vger.kernel.org>; Tue,  9 Jun 2026 16:57:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781023624; cv=none; b=XhNKjqy9cMoA9IFjxgtLGE1qBWJuyOprEK++bBnfU2gHK/D7zIfePmDusDlbwIKZKR5vUh0KhAlBicW65YRZYRWMvowN5e5pvmIbDWwpO6ODE9Irkfll//Kb9PiKMB8ZmA7bHMWVsEHi9FMjcWvnbb5JWRgkKwS9H/ifqG1gm0w=
+	t=1781024263; cv=none; b=HwfFQbzd8072ppwZk2JhCahRXZhvfurt86HCqGJJW3C6VLwyVs+gvDUuY1pdjrUmyBruqinFk1eaGDf9j/LVxLXeLigLctvNaU1tvPOfv7l4DQr7UdHaUmskChh6E4S5xHwGbMOfWv/GMY+0R8M2JlIAx8of4BMMgYL/bADQdaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781023624; c=relaxed/simple;
-	bh=zd7otinO4B9I8rd1gNUK39hV2DeIxTjVexvphjc+8jg=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=uZW3WFwqMBswGdLxbgS29BEoxu5OO0QhNwsQ+Iz/E5vKVpmpKHZkJlpmqD3kw/XGBxHy1QwVG2NK5sCYDdEvu0Bke8/743QViV3eeWATsT4G9w70bWxo7FLrN9+NGmkPTH71mZA+cr/0q9IK5SVxY+K5iljRwSkFvwkDMZhBeIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=astralinux.ru; spf=pass smtp.mailfrom=astralinux.ru; dkim=pass (2048-bit key) header.d=astralinux.ru header.i=@astralinux.ru header.b=mawrAYlY; arc=none smtp.client-ip=93.188.205.243
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=astralinux.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=astralinux.ru
+	s=arc-20240116; t=1781024263; c=relaxed/simple;
+	bh=JZcX41kc/PnmNGyLbsWtRkljYop+3TqNeiSZZrwHmck=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MS7eFOPCwVeFmBFcBYf6BRz/J3nK2fFCQN81bwb5jbdZ2AnTU68K58d4+s+3l90MuXT0QfdALEvA7m3kDrfEUS0fSwCqTl7UCmRsYyid5POAL4oaRejJkBX7X7D5PZZkEU5Nv3Y8mTWBXdUZPo9btiYmGqe5pIFmqzDoDTT3XIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UIK1piuF; arc=none smtp.client-ip=209.85.128.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=astralinux.ru header.i=@astralinux.ru header.b="mawrAYlY"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=astralinux.ru;
-	s=mail; t=1781023610;
-	bh=zd7otinO4B9I8rd1gNUK39hV2DeIxTjVexvphjc+8jg=;
-	h=From:To:Cc:Subject:Date:From;
-	b=mawrAYlYRNEWbSOfUXrmjK+PzLRhAhuvHm6pom2O1XkfJm+1h8GTDfcAJ0CEFQAP2
-	 gVrQT/zb28wkQ3zR/HyctRiUtYzOuyxupPlXugjsJzcFX81A+ioqiYzy+9JMTegLMa
-	 30C2vax74SYMRMj3TqErLY2BhjLW5JZ3+nfGu2Ebtu2DD2RE0mXHmx9O8DDYsyGMvD
-	 JvTExdF/qnNPHDnA4kPhWN930rkIWDyrRyTc7rlT/4SIZyBkZrjzMswd6gCva2k2V2
-	 JEIHNJJFzii/2FVHlEs/f7ZTKOVGaEX6hpeburj5EZDNfTFQETGLnkC3LNz4vCHSEj
-	 l5VS8JNYf9y1Q==
-Received: from gca-msk-a-srv-ksmg01.astralinux.ru (localhost [127.0.0.1])
-	by mail-gw02.astralinux.ru (Postfix) with ESMTP id 551681FA44;
-	Tue,  9 Jun 2026 19:46:50 +0300 (MSK)
-Received: from new-mail.astralinux.ru (unknown [10.205.207.5])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail-gw02.astralinux.ru (Postfix) with ESMTPS;
-	Tue,  9 Jun 2026 19:46:47 +0300 (MSK)
-Received: from rbta-msk-lt-156703.astralinux.ru (unknown [10.198.18.49])
-	by new-mail.astralinux.ru (Postfix) with ESMTPA id 4gZZYz1JwYz2xd5;
-	Tue, 09 Jun 2026 19:46:47 +0300 (MSK)
-From: Alexey Panov <apanov@astralinux.ru>
-To: stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Alexey Panov <apanov@astralinux.ru>,
-	Oliver Neukum <oneukum@suse.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Kimball Murray <kmurray@f5.com>,
-	Soohoon Lee <Soohoon.Lee@f5.com>,
-	netdev@vger.kernel.org,
-	linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	lvc-project@linuxtesting.org,
-	Zqiang <qiang.zhang@linux.dev>
-Subject: [PATCH 5.10] usbnet: Fix using smp_processor_id() in preemptible code warnings
-Date: Tue,  9 Jun 2026 19:46:44 +0300
-Message-Id: <20260609164644.31375-1-apanov@astralinux.ru>
-X-Mailer: git-send-email 2.30.2
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UIK1piuF"
+Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-7e2fa3062easo59313697b3.2
+        for <netdev@vger.kernel.org>; Tue, 09 Jun 2026 09:57:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781024261; x=1781629061; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=av7EYFBoj6gq1ZvLp6d893SbwiyvMCDkkTCv0M4AutE=;
+        b=UIK1piuF1PzV/1g9rsMp2cDSLJyyX8YMAM6K5fC4Un4kAvMjLeVHS8Srd9M+B8GUlj
+         O1tF/YuXyY/dKf+tsI0OaLMNFWO5Yfolvl2mA8jLgOPaExHB22gpNG3KUsiQAXYUQfh3
+         AVkaVkXMCKJDgC6/ryp3MNvaR++cCVBq4tP4++qpdYqKU4fP+BTT0V8E+/gWQp1zj+0i
+         zhSL3SgiZ3zGXwGdl/KVKRTRwMKX9oXkPNDd5xvl1GcriZ2oZNUdWq2wpk7WWlb3NjdI
+         iq+SdjbfrUFnl/JLyV3QzN52GDEkZRLzpoa0s4vxkKoWSdAO/tiw0yqo22c9+0uS59Rf
+         W4yQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781024261; x=1781629061;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=av7EYFBoj6gq1ZvLp6d893SbwiyvMCDkkTCv0M4AutE=;
+        b=pElVaWKQ4fxMR97zRz0mx4ncA1s9Y6Dc/QL4ikErejHcGowU4KkZx2WNE9466AgOyh
+         MExaK/RpYC8txu1BOBSxqOqiLKIcWKHApOPDaF9kxTb/HMt67l8jt0CH/IUe4uaNlOpG
+         BL23otg1S1jCc9BrKopBJ0p7kLxV1qXiy0GM78TbvgRlboEAYxJj5J5cPKHyiB3Rmnms
+         cMZtacTA67bYLTIPN/f9GBSXgBon7Lv6CYYfzImx8gJwz4x2o6EnaNnQDe6sGZG9/paK
+         jZbe7vTXgLCpu0qmh4K/fR376eE4P0lPzABJJ0eTYqv0Chr8pClHRmNVlB3FC0gNshpD
+         2e1A==
+X-Gm-Message-State: AOJu0YyQqWpCBZG+3Kknc/4ZHTxRXmXKCfgewrQ0K2aHBl5m7tuv2bnN
+	AFnUXFgSJECigFxw6V56D7mYaypCgsV4MFag2uUIfVyq/yFOJGXXPsq2qW3RHSgpU/g=
+X-Gm-Gg: Acq92OHAjH6lesLQMgNlSyKvpCwYny4KiU0Ypu9OeYBpCiMQEoCG68bufyw0+P7ZFeA
+	OAAl60o6/Qxxv+CtoWsuPNzWQX0UYF6rNH9bVn5xvL9/FpXMGhRQcXXEIRkdpRBLyPQqxX1qHuJ
+	MBswCIASA3GUZFZpIe1X/WNkncPOkmEzjTYninntcjYy81wr4PmujzQ4N8kt7blxz18hdPs1JPr
+	GdiKRA6hpsF6q8VOMfVRdxKcQjjjt0d+s9AsL/bmAavR8EgI8WJ089cnldUImI9iig2cG+ZxACT
+	x+GYTs5vkVZAnrNULi7mZ9Xq4Y9BdaZO0h5JryyIeix3v5y34MW0Jo/QAc4dxK+CR5bQyZL8HXH
+	LN6y/S8TPOyF5qvdf9d6CDVQIEq5S8h28asGxsLkKnq2TBXObyBdmumGXl9CxiexyuFuTsf4G6r
+	DQZyl5WAtgIHqoKl8O9uPPbRuwhVmagf8DSKoS
+X-Received: by 2002:a05:690c:710a:b0:7bd:5579:185a with SMTP id 00721157ae682-7ed0c80a062mr196768697b3.25.1781024260523;
+        Tue, 09 Jun 2026 09:57:40 -0700 (PDT)
+Received: from houminxi ([23.133.88.228])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-7ea215825d2sm99814537b3.16.2026.06.09.09.57.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 09 Jun 2026 09:57:40 -0700 (PDT)
+From: Minxi Hou <houminxi@gmail.com>
+To: netdev@vger.kernel.org
+Cc: aconole@redhat.com,
+	echaudro@redhat.com,
+	i.maximets@ovn.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	shuah@kernel.org,
+	dev@openvswitch.org,
+	linux-kselftest@vger.kernel.org,
+	amorenoz@redhat.com,
+	Minxi Hou <houminxi@gmail.com>
+Subject: [PATCH net-next v2] selftests/net/openvswitch: add flow modify test
+Date: Wed, 10 Jun 2026 00:57:25 +0800
+Message-ID: <20260609165725.107484-1-houminxi@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -65,93 +81,209 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-KSMG-AntiPhishing: NotDetected, bases: 2026/06/09 15:41:00
-X-KSMG-AntiSpam-Auth: dkim=none
-X-KSMG-AntiSpam-Envelope-From: apanov@astralinux.ru
-X-KSMG-AntiSpam-Info: LuaCore: 107 0.3.107 575e75fe8e3b9d45c142d144823c5de38605099e, {date_rfc_vio_soft_silent}, {Tracking_uf_ne_domains}, {Tracking_internal2}, {Tracking_from_domain_doesnt_match_to}, patch.msgid.link:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;astralinux.ru:7.1.1;127.0.0.199:7.1.2;new-mail.astralinux.ru:7.1.1;syzkaller.appspot.com:5.0.1,7.1.1, FromAlignment: s
-X-KSMG-AntiSpam-Interceptor-Info: scan successful
-X-KSMG-AntiSpam-Lua-Profiles: 203763 [Jun 09 2026]
-X-KSMG-AntiSpam-Method: none
-X-KSMG-AntiSpam-Rate: 0
-X-KSMG-AntiSpam-Status: not_detected
-X-KSMG-AntiSpam-Version: 6.1.1.22
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.0.7854, bases: 2026/06/09 15:23:00 #28224840
-X-KSMG-AntiVirus-Status: NotDetected, skipped
-X-KSMG-LinksScanning: NotDetected, bases: 2026/06/09 15:41:00
-X-KSMG-Message-Action: skipped
-X-KSMG-Rule-ID: 1
 
-From: Zqiang <qiang.zhang@linux.dev>
+Add mod_flow() and the mod-flow CLI command to ovs-dpctl.py, exercising
+OVS_FLOW_CMD_SET. Add test_flow_set which first modifies an existing
+flow with new actions and verifies the change via traffic, then modifies
+the same flow without actions and verifies the kernel handles the
+no-actions case gracefully.
 
-commit 327cd4b68b4398b6c24f10eb2b2533ffbfc10185 upstream.
+The no-actions path is unreachable from userspace OVS tools (dpctl
+mod-flow requires actions) but reachable via raw netlink. This is the
+code path where Adrian Moreno found a possible kfree_skb of ERR_PTR
+when reply allocation fails after locking.
 
-Syzbot reported the following warning:
+Make parse() skip OVS_FLOW_ATTR_ACTIONS when actstr is None so the
+kernel enters the post-lock allocation branch in ovs_flow_cmd_set().
+After the no-actions set, verify via dump-flows that the flow retained
+its drop action.
 
-BUG: using smp_processor_id() in preemptible [00000000] code: dhcpcd/2879
-caller is usbnet_skb_return+0x74/0x490 drivers/net/usb/usbnet.c:331
-CPU: 1 UID: 0 PID: 2879 Comm: dhcpcd Not tainted 6.15.0-rc4-syzkaller-00098-g615dca38c2ea #0 PREEMPT(voluntary)
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x16c/0x1f0 lib/dump_stack.c:120
- check_preemption_disabled+0xd0/0xe0 lib/smp_processor_id.c:49
- usbnet_skb_return+0x74/0x490 drivers/net/usb/usbnet.c:331
- usbnet_resume_rx+0x4b/0x170 drivers/net/usb/usbnet.c:708
- usbnet_change_mtu+0x1be/0x220 drivers/net/usb/usbnet.c:417
- __dev_set_mtu net/core/dev.c:9443 [inline]
- netif_set_mtu_ext+0x369/0x5c0 net/core/dev.c:9496
- netif_set_mtu+0xb0/0x160 net/core/dev.c:9520
- dev_set_mtu+0xae/0x170 net/core/dev_api.c:247
- dev_ifsioc+0xa31/0x18d0 net/core/dev_ioctl.c:572
- dev_ioctl+0x223/0x10e0 net/core/dev_ioctl.c:821
- sock_do_ioctl+0x19d/0x280 net/socket.c:1204
- sock_ioctl+0x42f/0x6a0 net/socket.c:1311
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:906 [inline]
- __se_sys_ioctl fs/ioctl.c:892 [inline]
- __x64_sys_ioctl+0x190/0x200 fs/ioctl.c:892
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xcd/0x260 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-For historical and portability reasons, the netif_rx() is usually
-run in the softirq or interrupt context, this commit therefore add
-local_bh_disable/enable() protection in the usbnet_resume_rx().
-
-Fixes: 43daa96b166c ("usbnet: Stop RX Q on MTU change")
-Link: https://syzkaller.appspot.com/bug?id=81f55dfa587ee544baaaa5a359a060512228c1e1
-Suggested-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Zqiang <qiang.zhang@linux.dev>
-Link: https://patch.msgid.link/20251011070518.7095-1-qiang.zhang@linux.dev
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-[ Alexey: Keep tasklet_schedule() because commit 2c04d279e857 ("net: usb:
-  Convert tasklet API to new bottom half workqueue mechanism") is not present
-  in linux-5.10.y. ]
-Signed-off-by: Alexey Panov <apanov@astralinux.ru>
+Suggested-by: Aaron Conole <aconole@redhat.com>
+Signed-off-by: Minxi Hou <houminxi@gmail.com>
 ---
-Backport fix for CVE-2025-40164
- drivers/net/usb/usbnet.c | 2 ++
- 1 file changed, 2 insertions(+)
+v1 -> v2:
+  - Add dump-flows verification after no-actions mod-flow (Aaron)
+  - Add docstring to mod_flow() (pylint C0116)
+  - Use f-string in DP-not-found message (pylint C0209)
+---
+ .../selftests/net/openvswitch/openvswitch.sh  | 77 +++++++++++++++++++
+ .../selftests/net/openvswitch/ovs-dpctl.py    | 40 +++++++++-
+ 2 files changed, 114 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
-index 4a83228a2db5..4b34544d88aa 100644
---- a/drivers/net/usb/usbnet.c
-+++ b/drivers/net/usb/usbnet.c
-@@ -684,6 +684,7 @@ void usbnet_resume_rx(struct usbnet *dev)
- 	struct sk_buff *skb;
- 	int num = 0;
+diff --git a/tools/testing/selftests/net/openvswitch/openvswitch.sh b/tools/testing/selftests/net/openvswitch/openvswitch.sh
+index 82f066a0ceed..d533decca5c1 100755
+--- a/tools/testing/selftests/net/openvswitch/openvswitch.sh
++++ b/tools/testing/selftests/net/openvswitch/openvswitch.sh
+@@ -30,6 +30,7 @@ tests="
+ 	drop_reason				drop: test drop reasons are emitted
+ 	pop_vlan				vlan: POP_VLAN action strips tag
+ 	dec_ttl					ttl: dec_ttl decrements IP TTL
++	flow_set				flow-set: Flow modify
+ 	psample					psample: Sampling packets with psample"
  
-+	local_bh_disable();
- 	clear_bit(EVENT_RX_PAUSED, &dev->flags);
+ info() {
+@@ -193,6 +194,23 @@ ovs_add_flow () {
+ 	return 0
+ }
  
- 	while ((skb = skb_dequeue(&dev->rxq_pause)) != NULL) {
-@@ -692,6 +693,7 @@ void usbnet_resume_rx(struct usbnet *dev)
- 	}
++ovs_mod_flow () {
++	if [ -n "$4" ]; then
++		info "Modifying flow: sbx:$1 br:$2 flow:$3 act:$4"
++		ovs_sbx "$1" python3 $ovs_base/ovs-dpctl.py \
++			mod-flow "$2" "$3" "$4"
++	else
++		info "Modifying flow (no actions): sbx:$1 br:$2 flow:$3"
++		ovs_sbx "$1" python3 $ovs_base/ovs-dpctl.py \
++			mod-flow "$2" "$3"
++	fi
++	if [ $? -ne 0 ]; then
++		info "Flow modify [ $3 ] failed"
++		return 1
++	fi
++	return 0
++}
++
+ ovs_del_flows () {
+ 	info "Deleting all flows from DP: sbx:$1 br:$2"
+ 	ovs_sbx "$1" python3 $ovs_base/ovs-dpctl.py del-flows "$2"
+@@ -300,6 +318,65 @@ test_dec_ttl() {
+ 	return 0
+ }
  
- 	tasklet_schedule(&dev->bh);
-+	local_bh_enable();
++test_flow_set() {
++	sbx_add "test_flow_set" || return $?
++	ovs_add_dp "test_flow_set" flowset || return 1
++
++	info "create namespaces"
++	for ns in client server; do
++		ovs_add_netns_and_veths "test_flow_set" "flowset" "$ns" \
++			"${ns:0:1}0" "${ns:0:1}1" || return 1
++	done
++
++	ip netns exec client ip addr add 10.0.0.1/24 dev c1
++	ip netns exec client ip link set c1 up
++	ip netns exec server ip addr add 10.0.0.2/24 dev s1
++	ip netns exec server ip link set s1 up
++
++	ovs_add_flow "test_flow_set" flowset \
++		'in_port(1),eth(),eth_type(0x0806),arp()' '2' || return 1
++	ovs_add_flow "test_flow_set" flowset \
++		'in_port(2),eth(),eth_type(0x0806),arp()' '1' || return 1
++
++	local fwd_flow="ufid:00000001-0002-0003-0004-000500060007"
++	fwd_flow="$fwd_flow,in_port(1),eth(),eth_type(0x0800),ipv4()"
++
++	ovs_add_flow "test_flow_set" flowset "$fwd_flow" '2' \
++		|| return 1
++	ovs_add_flow "test_flow_set" flowset \
++		'in_port(2),eth(),eth_type(0x0800),ipv4()' '1' || return 1
++
++	info "verify initial forwarding"
++	ovs_sbx "test_flow_set" ip netns exec client ping -c 1 -W 2 \
++		10.0.0.2 || return 1
++
++	info "mod-flow with new actions (change to drop)"
++	ovs_mod_flow "test_flow_set" flowset "$fwd_flow" 'drop' \
++		|| return 1
++
++	info "verify traffic is now dropped"
++	ovs_sbx "test_flow_set" ip netns exec client ping -c 1 -W 2 \
++		10.0.0.2 >/dev/null 2>&1 \
++		&& { info "FAIL: ping should fail after mod-flow to drop"
++		     return 1; }
++
++	info "mod-flow without actions"
++	ovs_mod_flow "test_flow_set" flowset "$fwd_flow" || return 1
++
++	info "verify flow retained drop action via dump"
++	python3 "$ovs_base/ovs-dpctl.py" dump-flows flowset \
++		| grep -q "actions:drop" || \
++		{ info "FAIL: flow not showing drop action"; return 1; }
++
++	info "verify drop actions unchanged"
++	ovs_sbx "test_flow_set" ip netns exec client ping -c 1 -W 2 \
++		10.0.0.2 >/dev/null 2>&1 \
++		&& { info "FAIL: ping should still fail after no-actions set"
++		     return 1; }
++
++	return 0
++}
++
+ # psample test
+ # - use psample to observe packets
+ test_psample() {
+diff --git a/tools/testing/selftests/net/openvswitch/ovs-dpctl.py b/tools/testing/selftests/net/openvswitch/ovs-dpctl.py
+index 3342e295293d..e1ecfad2c03e 100644
+--- a/tools/testing/selftests/net/openvswitch/ovs-dpctl.py
++++ b/tools/testing/selftests/net/openvswitch/ovs-dpctl.py
+@@ -2702,9 +2702,10 @@ class OvsFlow(GenericNetlinkSocket):
+             self["attrs"].append(["OVS_FLOW_ATTR_KEY", k])
+             self["attrs"].append(["OVS_FLOW_ATTR_MASK", m])
  
- 	netif_dbg(dev, rx_status, dev->net,
- 		  "paused rx queue disabled, %d skbs requeued\n", num);
+-            a = ovsactions()
+-            a.parse(actstr)
+-            self["attrs"].append(["OVS_FLOW_ATTR_ACTIONS", a])
++            if actstr is not None:
++                a = ovsactions()
++                a.parse(actstr)
++                self["attrs"].append(["OVS_FLOW_ATTR_ACTIONS", a])
+ 
+     def __init__(self):
+         GenericNetlinkSocket.__init__(self)
+@@ -2738,6 +2739,25 @@ class OvsFlow(GenericNetlinkSocket):
+             raise ne
+         return reply
+ 
++    def mod_flow(self, dpifindex, flowmsg):
++        """Modify an existing flow in the kernel."""
++        flowmsg["cmd"] = OVS_FLOW_CMD_SET
++        flowmsg["version"] = OVS_DATAPATH_VERSION
++        flowmsg["reserved"] = 0
++        flowmsg["dpifindex"] = dpifindex
++
++        try:
++            reply = self.nlm_request(
++                flowmsg,
++                msg_type=self.prid,
++                msg_flags=NLM_F_REQUEST | NLM_F_ACK,
++            )
++            reply = reply[0]
++        except NetlinkError as ne:
++            print(flowmsg)
++            raise ne
++        return reply
++
+     def del_flows(self, dpifindex):
+         """
+         Send a del message to the kernel that will drop all flows.
+@@ -3013,6 +3033,12 @@ def main(argv):
+     addflcmd.add_argument("flow", help="Flow specification")
+     addflcmd.add_argument("acts", help="Flow actions")
+ 
++    modflcmd = subparsers.add_parser("mod-flow")
++    modflcmd.add_argument("modbr", help="Datapath name")
++    modflcmd.add_argument("modflow", help="Flow specification")
++    modflcmd.add_argument("modacts", help="Flow actions",
++                          nargs="?", default=None)
++
+     delfscmd = subparsers.add_parser("del-flows")
+     delfscmd.add_argument("flsbr", help="Datapath name")
+ 
+@@ -3110,6 +3136,14 @@ def main(argv):
+         flow = OvsFlow.ovs_flow_msg()
+         flow.parse(args.flow, args.acts, rep["dpifindex"])
+         ovsflow.add_flow(rep["dpifindex"], flow)
++    elif hasattr(args, "modbr"):
++        rep = ovsdp.info(args.modbr, 0)
++        if rep is None:
++            print(f"DP '{args.modbr}' not found.")
++            return 1
++        flow = OvsFlow.ovs_flow_msg()
++        flow.parse(args.modflow, args.modacts, rep["dpifindex"])
++        ovsflow.mod_flow(rep["dpifindex"], flow)
+     elif hasattr(args, "flsbr"):
+         rep = ovsdp.info(args.flsbr, 0)
+         if rep is None:
 -- 
-2.47.3
+2.54.0
+
