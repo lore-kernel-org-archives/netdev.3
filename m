@@ -1,111 +1,121 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 112DA48BD30;
-	Tue,  9 Jun 2026 19:50:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85CCC48124E
+	for <netdev@vger.kernel.org>; Tue,  9 Jun 2026 19:51:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781034640; cv=none; b=fVtGC3uxTz2dYLCLOqXn5xyJKV5lmzF4J6hahLT1gyg8y8m4d//oEaFeXQqjYePwZFR3i5k6svoUBHd8tXnLcjv7fMV4cscq/cBj8U73iMkcnMpjDefy+1XrzoRJ2a/fh7WbkOMO/0EpZXsaJ5rPOvbuevg2TvLWPOs65zaqSg0=
+	t=1781034684; cv=none; b=nslCcyQftuup2AOSoW3Q8JIEGgdNehxnu3DBJHxIFSl7XNm8WtAS4gxHIuAW5coEFgWsUCHxvEY953BwwnZEsLy7rxtw+IEw7Fta9Zcn+wg1LOjMIkjacgNktCtbb91Z2OpuPP0XgTRloJkAw8Yg3x9ggqcOfD3mL9xYjKgaP2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781034640; c=relaxed/simple;
-	bh=KW08t5lJgrtbiRiI4iWflun/lKNAeW7NI8u1pgoTVdM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=q78BQX0v0gKnFcyU7ScapUsuW04lGmOK2qwZXmfELQQ52dSfJHbZZGS8sVY8rtexT0/+1H0Y0vDmNrFgT4wKf2PXtx8IrD0EDLYu/1anOKzisbzMnbFKsPUc6hPSF68sgOzfMd5Pc1uvgr9S+SLG6f5Bqnij3l67RmIuMNWPF1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t3MaWyiB; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1781034684; c=relaxed/simple;
+	bh=fGch22jZAhUnZc2JB3l1ZbWmjnBlSQCGkHHpCvFs43M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kybQUgzYuyCnKgFKcd/XepUf6fm3HgPdVJaZud4mZHghaL/C1jcKtQDIaQvbnQM6h0YiMjN9E3Pin5DKvZr8DfBnyc/w2M2wsEyakVTTyLoAEy8idvk+15yoAtJZRUmB9/EusGs7BUKPqxl3Zb/yEDY09zzt5omNWbgcrmAivyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=UyXqKSNF; arc=none smtp.client-ip=209.85.210.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t3MaWyiB"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 84A3DC4AF0F;
-	Tue,  9 Jun 2026 19:50:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1781034639;
-	bh=KW08t5lJgrtbiRiI4iWflun/lKNAeW7NI8u1pgoTVdM=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=t3MaWyiBF1tCq3ikDFRyFL1w5vs+aY7xELG81KPjcpgqql1deCN7mPGnhiQ130I51
-	 G1bsFhBoCtU1mZDtSGpprECxmDGMFOK5VXTkrAXJMG/5hhVLJoxLuk8NWc6TKdBXoc
-	 jrZw/r3ePdf2t5FclSvMAy71HfcaqdBLyP0rRrS+6yeXSXo1ycwpL7d1oVjvDTJyMR
-	 aOMtH5TAHfofw+tSIfmuY/Olx5yyzop2aopL0IAic1QVsR/CS7bLgwNjzz7XooziZk
-	 zkyMVFTZ07aLFRzd5GwyYFfsfcFRyIr9MelcNhr66QJAnIAYhavitSkgBmjLT8cBn1
-	 3+3PBLGMceFaQ==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 713D5CD98C8;
-	Tue,  9 Jun 2026 19:50:39 +0000 (UTC)
-From: Selvamani Rajagopal via B4 Relay <devnull+Selvamani.Rajagopal.onsemi.com@kernel.org>
-Date: Tue, 09 Jun 2026 12:50:26 -0700
-Subject: [PATCH net v4 3/4] net: ethernet: oa_tc6: mdiobus->parent
- initialized with NULL
+	dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b="UyXqKSNF"
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-8421f0e9c5bso2740768b3a.3
+        for <netdev@vger.kernel.org>; Tue, 09 Jun 2026 12:51:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1781034677; x=1781639477; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=pcuzUwojIicQgNYVYeBBnWiTMNVB+UCosfiJT5lPt0I=;
+        b=UyXqKSNF7MeRdF+p+a/Q7xA+qqR94IN04PtDH2BybrKhexarRDDXAfF4tdhOmxHZrT
+         RlIT5FXzHVn8mYXZfEr57p3iHASMqWqz0grvrUmfMehVf65VlftVCjtoDVLWqKuJ2g9g
+         9ntRMpn+aNfBGOf07KdDrVHSl7U16jlIZWlT2DK43BKSPQUuTwCReOjGXHDGdl3IdIKh
+         6zSSH7ggMDgL6SSWsEGUT3QNdVktO652YtC3QiGVVZcCBLfQYyp3ClOrutX6WYPXVWlz
+         BNBdDphHRGrgneVhKMvz8GzV2KcIL06RS45LwY9HXPKhba+SWOylLOZqSXtO/6/vdshY
+         IvAw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781034677; x=1781639477;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=pcuzUwojIicQgNYVYeBBnWiTMNVB+UCosfiJT5lPt0I=;
+        b=MCALDfwgIiWmfbb1/IyaTLBuOIvydc7SRmJaTCDrxmcd353QomH8DlNrTTTTP0RWQ1
+         RVQjrYEsRpQxTJJqgjPwl602qIlyxNPpJZOk72Xr400oBkS949VaetLm+TwDBlmQirWy
+         ptJ2z7iWo1WEixniTlN68dTJuTdSO04Qpg3JqplRHT0pr7BfopDqOFSXfR7ENvPH+UgA
+         GNKMDNqKRBRUdC/snXMq2WYkIB4r0Zw0gGUkkSKlDpzrGtc6Ua8z1Qz/4r6DeEJtSiE3
+         poYtafC31NB4/KZETZQqhR1ojcfpyqMGbyXe1G/wxileiZZdM9bNsVlkpZMR8Slw8PHR
+         jh2Q==
+X-Forwarded-Encrypted: i=1; AFNElJ+VFE7LJgFT5aYZx5UzyteQmUz7kAXBTSFZVRV9u00xUP38b8Y56DPBH8w7K/qWyEs7PI9DBzw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyBL+WlZ+2ex57bvAa2wGT/weXLgWuAb4i8qcsqia0sXE8+tkVm
+	JUSC/TKVB/d5AjgTL+1uPrUMp83CZJGrVNPK7P0msf9PoSUbgNkP34AxlWdVV6duJLM/OccTcGW
+	2o87B
+X-Gm-Gg: Acq92OGM88mUl3rTZRRuDlCzVl1bE1F3RIjsCwDgB2zu7BJzYUOntpOqenocDfz060b
+	8/hL3yHd8QiWsRfiGZ1gqCUCMYT1QABnWXh/yiP4k8XDE3qYdoKyEDe9uYhxMfiAIFtyAaGRlHx
+	qp4pxGdhKEhF3E/ZdDLxZCvTzgFfr2WoxI9LxGIONM/8DXAo73ebGMizQDOW309RxKiS9fhDLrg
+	acVHlSkwPJbufavZhAuAtcm3taP5bPEujYTNdA7NvkoVlicUihy0/XwkwSoie/0kr+hMzP4Ox6H
+	sAB985Afb/00vC48YMDf28JhlWUosaWWRpweglfZTLCcqY7CDGQFE3XN0867WLzWOfavWc+89WJ
+	nkogmjYPU/fPyeHYK+Q8S/CXDkSLwIypsL0KTeU8van2bdMT6l0dzozbZttAIXe4NYKFzMCxqUa
+	QaN6I80mkcLzsCn+Q=
+X-Received: by 2002:a05:6a00:b807:b0:829:8942:2c93 with SMTP id d2e1a72fcca58-842b0e1c7d0mr21125579b3a.9.1781034677416;
+        Tue, 09 Jun 2026 12:51:17 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:4b::])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8428325d9a3sm22197411b3a.34.2026.06.09.12.51.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 09 Jun 2026 12:51:16 -0700 (PDT)
+Date: Tue, 9 Jun 2026 12:51:16 -0700
+From: Joe Damato <joe@dama.to>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+	pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
+	corbet@lwn.net, skhan@linuxfoundation.org,
+	linux-doc@vger.kernel.org
+Subject: Re: [PATCH net-next] docs: networking: add guidance on what to push
+ via extack
+Message-ID: <aihutHOO7Dwp8aQ/@devvm20253.cco0.facebook.com>
+Mail-Followup-To: Joe Damato <joe@dama.to>,
+	Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net,
+	netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com,
+	andrew+netdev@lunn.ch, horms@kernel.org, corbet@lwn.net,
+	skhan@linuxfoundation.org, linux-doc@vger.kernel.org
+References: <20260609190919.1139517-1-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260609-level-trigger-v4-3-6f389abdd192@onsemi.com>
-References: <20260609-level-trigger-v4-0-6f389abdd192@onsemi.com>
-In-Reply-To: <20260609-level-trigger-v4-0-6f389abdd192@onsemi.com>
-To: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: Parthiban Veerasooran <Parthiban.Veerasooran@microchip.com>, 
- Andrew Lunn <andrew@lunn.ch>, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Conor Dooley <conor.dooley@microchip.com>, 
- devicetree@vger.kernel.org, Piergiorgio Beruto <pier.beruto@onsemi.com>, 
- Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1781034634; l=1221;
- i=Selvamani.Rajagopal@onsemi.com; s=20260531; h=from:subject:message-id;
- bh=9JvUZCq1pALq6vC7gW8b4EQtBM4qeeaqZV2789jkVMw=;
- b=Qe4ffO/zEnjsqkbQGH/QcsHu3tQYGNqSgzzDMWybwPKW8sMwSMr8NENBvAKBU0Ub6VAAdPC5j
- mRbJ21ZicnzARN1XTyXWsXb9KFHo0hnL5hcrpY87Q+2ffs/pzDhIooE
-X-Developer-Key: i=Selvamani.Rajagopal@onsemi.com; a=ed25519;
- pk=5QRdM0HS/LGWWcUZZ9hVfZ+qbPQGZCumcTXOiN7Fyug=
-X-Endpoint-Received: by B4 Relay for
- Selvamani.Rajagopal@onsemi.com/20260531 with auth_id=803
-X-Original-From: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
-Reply-To: Selvamani.Rajagopal@onsemi.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260609190919.1139517-1-kuba@kernel.org>
 
-From: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
+On Tue, Jun 09, 2026 at 12:09:19PM -0700, Jakub Kicinski wrote:
+> Every now and then someone tries to duplicated extack
+> messages to dmesg. Document our guidance against this.
+> Also indicate that system level faults should continue
+> to go to system logs. The high level thinking is to try
+> to distinguish between what's important to the user vs
+> system admin.
+> 
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> ---
+> CC: corbet@lwn.net
+> CC: skhan@linuxfoundation.org
+> CC: linux-doc@vger.kernel.org
+> ---
+>  Documentation/networking/driver.rst | 13 +++++++++++++
+>  1 file changed, 13 insertions(+)
+> 
+> diff --git a/Documentation/networking/driver.rst b/Documentation/networking/driver.rst
+> index 195a916dc0de..abd366dd5e43 100644
+> --- a/Documentation/networking/driver.rst
+> +++ b/Documentation/networking/driver.rst
+> @@ -128,3 +128,16 @@ to be freed up.
+>  If you return NETDEV_TX_BUSY from the ndo_start_xmit method, you
+>  must not keep any reference to that SKB and you must not attempt
+>  to free it up.
+> +
+> +Error message reporting
+> +=======================
+> +
+> +Number of driver configuration interfaces pass a Netlink extended ACK
 
-As "dev" pointer in oa_tc6 structure is never initialized,
-mbiosub->parent was initialized with NULL.  This change
-fixes the issue.
+Maybe I'm reading it wrong, but seems like it should be: "A number of" ?
 
-Fixes: 2c6ce5354453 ("net: ethernet: oa_tc6: implement mac-phy interrupt")
-Signed-off-by: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
-
-Changes in v4:
-   new patch
----
- drivers/net/ethernet/oa_tc6.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
-diff --git a/drivers/net/ethernet/oa_tc6.c b/drivers/net/ethernet/oa_tc6.c
-index 20c9e98d1d60..0710a5a8dcde 100644
---- a/drivers/net/ethernet/oa_tc6.c
-+++ b/drivers/net/ethernet/oa_tc6.c
-@@ -108,7 +108,6 @@
- 
- /* Internal structure for MAC-PHY drivers */
- struct oa_tc6 {
--	struct device *dev;
- 	struct net_device *netdev;
- 	struct phy_device *phydev;
- 	struct mii_bus *mdiobus;
-@@ -517,7 +516,7 @@ static int oa_tc6_mdiobus_register(struct oa_tc6 *tc6)
- 	tc6->mdiobus->read_c45 = oa_tc6_mdiobus_read_c45;
- 	tc6->mdiobus->write_c45 = oa_tc6_mdiobus_write_c45;
- 	tc6->mdiobus->name = "oa-tc6-mdiobus";
--	tc6->mdiobus->parent = tc6->dev;
-+	tc6->mdiobus->parent = &tc6->spi->dev;
- 
- 	snprintf(tc6->mdiobus->id, ARRAY_SIZE(tc6->mdiobus->id), "%s",
- 		 dev_name(&tc6->spi->dev));
-
--- 
-2.43.0
-
-
+Reviewed-by: Joe Damato <joe@dama.to>
