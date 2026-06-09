@@ -1,123 +1,197 @@
-Received: from mail-gw02.astralinux.ru (mail-gw02.astralinux.ru [93.188.205.243])
+Received: from LO3P265CU004.outbound.protection.outlook.com (mail-uksouthazon11020101.outbound.protection.outlook.com [52.101.196.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E9ED47B437;
-	Tue,  9 Jun 2026 18:11:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.188.205.243
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781028700; cv=none; b=Zt0LPU8Aculy2KTFEJ0QsDwCFI+BRpQdmGej0pPbv8MH9pFlFL/VUnPKm7KvSdYJxJyuVwgVZwUny9Ydgo7tpeRtfY1D2XNWFX9/8JrVpJ9F7sk/9kg/7r77ndywittpp8FZse/T2PTfsULwB50Yw2j2yAsys9+a6XIU4PhvHxg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781028700; c=relaxed/simple;
-	bh=K/XNtJsvYMKaQT2ZuXL8vJBcKhMPjxZ5O9Wsd9CHl1c=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=XQwquC/9yKj+E91aM9hb+dpbIUP9ApgBDju2tFuA/4iuQFtT0OfwVDep3j6d9klW35vnel9AZsvsmNlWVTmfZE83Gc0mLZhtEybBN/4WqV0s/5qJI3R97NdAnoy0ytt5Fc8Xborv7YIza5vxuH3vWccohsaP4aylKWd/DtWSROA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=astralinux.ru; spf=pass smtp.mailfrom=astralinux.ru; dkim=pass (2048-bit key) header.d=astralinux.ru header.i=@astralinux.ru header.b=fJ+ZMNPf; arc=none smtp.client-ip=93.188.205.243
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=astralinux.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=astralinux.ru
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 775943CF1FD;
+	Tue,  9 Jun 2026 18:19:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.196.101
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781029189; cv=fail; b=V4UbbZLSI1g/asr6vDTvv3WFAbvaY0RhoKuoKV4VBeSFlqEIHdBMsh5kfngdy7oK7WD80eDHIfQWC23Zq7Vm1zE2KzhCG5jQfaYuIRwsORf44CxJDaoqOx9bKJ98/JOX5OUSn4pkCGoVNziw09uWukR9t6tJ662icHvj/9987M0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781029189; c=relaxed/simple;
+	bh=KhgbSElSJGHvS1a6h+cBNuu4nv/4yU6mcrpIOO0KIEo=;
+	h=Content-Type:Date:Message-Id:To:Cc:Subject:From:References:
+	 In-Reply-To:MIME-Version; b=oES/4rLh4Y2/LhtmUpOu4lgjQ9ECtknJ+RnoSUXke4lYfGQUjuvRaYPJRbAE4HyUGNFSGb+D/oNmeAyD46QM0/OgXRTCJlAA0rxpQbwDWJiGCqm3jxJMhaXjGAMxnmpxr9SyKAwwDszblghMDEXnWlbs9hmr+noXgz1+g5MgYos=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=oo75oP0G; arc=fail smtp.client-ip=52.101.196.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=astralinux.ru header.i=@astralinux.ru header.b="fJ+ZMNPf"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=astralinux.ru;
-	s=mail; t=1781028692;
-	bh=K/XNtJsvYMKaQT2ZuXL8vJBcKhMPjxZ5O9Wsd9CHl1c=;
-	h=From:To:Cc:Subject:Date:From;
-	b=fJ+ZMNPfYauGpUyv8mSYBA6AM0cC0l0LJpymMgMQBPHEah51uepOn1SX+HTZy/WxL
-	 aAygJTRKS1ThlEh5yifIEafveDBpc/1qA8LZLyYucDJYQYFNMTlG7MFX4j5sSJK+C8
-	 qeGfwU9IOb+Hwq78zZ/afUOx7yfuZKHvCaFpF7P3fW6geWZh/JPhhiwTRspiEzqSUv
-	 kq/APsgz/vBZNlpAnNTn6YATdn/v2feHesh7PXNf2xrTDJyGdq8pEgj+9wzHv5uBXk
-	 G9dMIXtyC5rjZB0kDC2FvfVBmrJOUDpEP9RRrzbaugKszWqA4LQwjN5JngxGI+Uo9M
-	 HNk/hVOiH4siw==
-Received: from gca-msk-a-srv-ksmg01.astralinux.ru (localhost [127.0.0.1])
-	by mail-gw02.astralinux.ru (Postfix) with ESMTP id CC28D1F402;
-	Tue,  9 Jun 2026 21:11:32 +0300 (MSK)
-Received: from new-mail.astralinux.ru (unknown [10.205.207.8])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail-gw02.astralinux.ru (Postfix) with ESMTPS;
-	Tue,  9 Jun 2026 21:11:31 +0300 (MSK)
-Received: from rbta-msk-lt-156703.astralinux.ru (unknown [10.198.18.49])
-	by new-mail.astralinux.ru (Postfix) with ESMTPA id 4gZcRk5vg1zZd5h;
-	Tue, 09 Jun 2026 21:11:30 +0300 (MSK)
-From: Alexey Panov <apanov@astralinux.ru>
-To: stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Alexey Panov <apanov@astralinux.ru>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	syzbot+56b6a844a4ea74487b7b@syzkaller.appspotmail.com,
-	Deepanshu Kartikey <kartikey406@gmail.com>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 5.10] wifi: mac80211: check tdls flag in ieee80211_tdls_oper
-Date: Tue,  9 Jun 2026 21:11:08 +0300
-Message-Id: <20260609181108.29138-1-apanov@astralinux.ru>
-X-Mailer: git-send-email 2.30.2
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="oo75oP0G"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=pxs0v1NzPZlKgoI2EwsfZZNuAbwdtB9+iML7b+dCYFurlNOSI3Y0vgV+QdSqFZFifeeSlrBWm9Gh+Q3TD0cLkDFLTg08EvDT4K/314v62yoZ9obT5BO3N83MV5c+kV+XsPJIUFyvrBiZV+LA0XuXclHXP3d5eHtBaZVBI6DU5ywVTWehpkiDphNEnLQcCUYcv8QM4iP3xd5aG8YqXo6KXzKaa7D6l97dnba5VNz5LHsqcrvRgUGrlRHL6L2FNC2RDWBEHFt8CBp2mLaxqvLy39oQWLR7pNkSIRNhGSDJrhbGejPPrvDlJSnlqzjS7DBmkUV6kKF1FWvDqScAMJrABg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=x2gYKZ8GWdsGTjtfLAtRtiXYRqSSVfBVhYeSRypP/Fs=;
+ b=NCJ3Qye4SMpfgDQSYokouTbAYap8dXkptQbutE9oarIvfZYRi1GCy+05PQIP8aFi0EHBDUcqVWVGzcBpkxPSbtN8JFEqAM8zMcNjgXt6xOjomjZwpUoBrhHknOG2mB5Ymc6qJD50Ye9n5UencbxtMwsY7uNoRrvj5E0kTZ8C8HNOp8P3zjWX2URhuZDL3N34Hn/wrAnhVRwCdDMtDCknILMm0u+/PgTpyC+2VoQJWESURrhTWfp0I25bkHp8TINU8eY60gRKan+sH6x9PVIuQ4IbYWs2FheuS3UapTQi1BPZ/pb1pwzOGEV2ptQsVhuXJlzYDHKMlhbGSEWi5RXfKQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=x2gYKZ8GWdsGTjtfLAtRtiXYRqSSVfBVhYeSRypP/Fs=;
+ b=oo75oP0G18yyqG7WPsTsWvx3X+8e3OIkIVi/tRLeCc4WTgBxikmXv7WF4FZ6ukb0BaHq4LtERcOr0BPScgT8KRA5hqtSqaicdd9s19NUYj8GKxFYybrwiIxcyA3li8yguaRfxbelMX6urdHSzUIckLjE8GFRMp23Y5trAXDBR+o=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
+ by LO0P265MB2811.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:182::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.15; Tue, 9 Jun 2026
+ 18:19:45 +0000
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986%4]) with mapi id 15.21.0092.011; Tue, 9 Jun 2026
+ 18:19:44 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 09 Jun 2026 19:19:42 +0100
+Message-Id: <DJ4Q5J5OILOX.1KCPFIVUFN2VV@garyguo.net>
+To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>
+Cc: "Danilo Krummrich" <dakr@kernel.org>, "Alexandre Courbot"
+ <acourbot@nvidia.com>, "Alice Ryhl" <aliceryhl@google.com>, "David Airlie"
+ <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor
+ Gross" <tmgross@umich.edu>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "FUJITA Tomonori"
+ <fujita.tomonori@gmail.com>, "Yury Norov" <yury.norov@gmail.com>, "Will
+ Deacon" <will@kernel.org>, "Peter Zijlstra" <peterz@infradead.org>, "Mark
+ Rutland" <mark.rutland@arm.com>, "Ingo Molnar" <mingo@redhat.com>, "Waiman
+ Long" <longman@redhat.com>, "Tamir Duberstein" <tamird@kernel.org>,
+ <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>,
+ <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
+ <driver-core@lists.linux.dev>, <netdev@vger.kernel.org>
+Subject: Re: [PATCH v4] rust: make `build_assert` module the home of related
+ macros
+From: "Gary Guo" <gary@garyguo.net>
+X-Mailer: aerc 0.21.0
+References: <20260609142637.373347-1-gary@kernel.org>
+ <CANiq72miJLmc2EadxUa+yVZ5T72QuTES4Gz=YVUsNivYvR=wDQ@mail.gmail.com>
+In-Reply-To: <CANiq72miJLmc2EadxUa+yVZ5T72QuTES4Gz=YVUsNivYvR=wDQ@mail.gmail.com>
+X-ClientProxiedBy: DU2PR04CA0252.eurprd04.prod.outlook.com
+ (2603:10a6:10:28e::17) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-KSMG-AntiPhishing: NotDetected, bases: 2026/06/09 17:43:00
-X-KSMG-AntiSpam-Auth: dkim=none
-X-KSMG-AntiSpam-Envelope-From: apanov@astralinux.ru
-X-KSMG-AntiSpam-Info: LuaCore: 107 0.3.107 575e75fe8e3b9d45c142d144823c5de38605099e, {date_rfc_vio_soft_silent}, {Tracking_uf_ne_domains}, {Tracking_internal2}, {Tracking_from_domain_doesnt_match_to}, d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;astralinux.ru:7.1.1;127.0.0.199:7.1.2;new-mail.astralinux.ru:7.1.1;syzkaller.appspot.com:7.1.1,5.0.1;patch.msgid.link:7.1.1, FromAlignment: s
-X-KSMG-AntiSpam-Interceptor-Info: scan successful
-X-KSMG-AntiSpam-Lua-Profiles: 203763 [Jun 09 2026]
-X-KSMG-AntiSpam-Method: none
-X-KSMG-AntiSpam-Rate: 0
-X-KSMG-AntiSpam-Status: not_detected
-X-KSMG-AntiSpam-Version: 6.1.1.22
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.0.7854, bases: 2026/06/09 15:23:00 #28224840
-X-KSMG-AntiVirus-Status: NotDetected, skipped
-X-KSMG-LinksScanning: NotDetected, bases: 2026/06/09 17:43:00
-X-KSMG-Message-Action: skipped
-X-KSMG-Rule-ID: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO0P265MB2811:EE_
+X-MS-Office365-Filtering-Correlation-Id: da1e3b0c-814f-49a4-9944-08dec653ae98
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|376014|7416014|18002099003|22082099003|4143699003|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	rKhIjfadBpCntIDyI1/1PRTQBmw3etHObGGkLum8sMnRayyngXUBabk9DpYulFh/lm7AmrCEGJrhRO/ZYRC65yQW5LhYFhNMl4iagpbURZXg7zO7st1YJKf5R9VEnw/wA/iqx6vcVKNsv4EzZhgVDAr1JpUwIO6gcfL2oFspLT9hEl1NaCJyoIl5WOUi/PNA6zTD0pkOOr8v5216xyGNyfQmJyIBzTsIKBOENDjEwRS9GcUy+VUdnabj/Fw0NgyJRfG/NWTd3zowex3xtCKi7hKmEFOUdgQ7AmrzNqW4mcCD+ojuCc2fKmhWvSv4P112TP6wk1Qq4kHSaakReoLUNxzsrHf1FETtbQH2ZV3ZX07YeZ33cGRchaavKKbPsJQCX/32kjEk4tyir++dsuh9EyDO+WK7mmU/prTh2sFEIsOZK8YSvvu+fxf7wKYWdtWh27w9ob2UgyOQIPY+ThPhVWLWgmO+dOA7M6jj29JA9epIX4zG1NkL6oVoONHunfw+1iNc6t/FAMv5wug3ywsxIvjfLQphamldOebykD+ZJx8YtQFF+KRRuMZKTI0+als6NioQqHUmS1TCSZOUPf9ZNHo2lvJjiEPC8cbZusn9tszkypgd2XimRy9f+8WZrGVFgo32mYkqupPHEiSxdnplEPOF+kfBitBbXMRc4caknDuiBIL6sVEvNOeqf6DTLLi3
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(18002099003)(22082099003)(4143699003)(56012099006);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?S3lGNzd1WWozUG1Bd01lbERXcUFrK2g1bjNXeUU2MFM2Tm9BS0lwaENyWHB2?=
+ =?utf-8?B?VTBpK0dYRnhmeU1LSDZCN2I1MVlKaUVZdmFidExRb3YzL2UydEJqYk9aQmNj?=
+ =?utf-8?B?OXZMWVk2eExFanJwR2FMSm1tSWVxbGd4UHBjM0xTZ0FoMTRHS3UwZzg1czVm?=
+ =?utf-8?B?T2JyNGtBT2x1blNjamxSNDhZZmhJVklLZVU0K3JKTFcxK0FQOG5mRWZQWlRB?=
+ =?utf-8?B?REV0Y2dkRzZMaTJsbFl4UnNlODJMalNLbnFYZDNoV1ZPWjZ6SkZBOG9lSXlW?=
+ =?utf-8?B?ZWJTbndIOHVaZkpraUZhb2JxQmtXcHFTSzRIYXllQWVnK05VL2ZyT3lZY2J5?=
+ =?utf-8?B?ZWRHSUVNaTlCZEx5N2FnNlBTZmFrNXFLNTNsSkJaTGpzbWRZV2EzVmlNclho?=
+ =?utf-8?B?cDZ0TzBBRElWZVlkT0didzM0T2owUW4yd0QvRUNISElRdXBBSENzNENxWVJp?=
+ =?utf-8?B?REtsYkF0cFIyc1dmQ0VBUjVFbUF3a2x6RGhQdktjRThPZXZJc3dLVmRUbUto?=
+ =?utf-8?B?RjRIWm9kd0R1empjaWxvM1hTSjMxVjZMYzlxdkVjLzFSWUxrOW02b0tBNy9w?=
+ =?utf-8?B?dU9WUUxSTU5LVDNzYjM0N090QVRZaHFjMVNWQWc3SDYwMlRnK2t6NG1oWEFx?=
+ =?utf-8?B?V0dUOHFhZFZCdU83VW5DVmQ4bnB2UUovNTdPczlxVlRUYjdnUkJkb0txSXR6?=
+ =?utf-8?B?T2dmU0pGQjVSc3lwczBSbVFhUXJwNkNMYXdOcWhkb0UwVmVaMkp0U1p1TWVl?=
+ =?utf-8?B?azVIbG9vS05hNmVZbnMvWlBJaFZvN01ycWRheGpKbTE1T0ZMZTkwMmNaZ2Q1?=
+ =?utf-8?B?QmdpS2c3QzJnM2RZV3pOWXBUYjlSRGQwQnN6NkpIU0lKNzZwN3pDYzAzaUFx?=
+ =?utf-8?B?QzlZRTBDVTN2Z293TDFlQWFEdHlMM0F2eVI3SFpvTGo0aHZQNVptQUtsN04z?=
+ =?utf-8?B?ajRrRk8zMU1PbytWR1FHdW9vdmpwc1IvbTBPbWxjSWE4RW9hMmwrL2Zqams1?=
+ =?utf-8?B?ZG9ncDhVV3NCYnFxbkZyNXh4OW9HNVFBTWVwUDZwZTF4ZjczbC9JQWloVzY4?=
+ =?utf-8?B?ei9HUXNia0o5aHJ3aGNwWFlWSVFSc3AwMnhQNFJmWFgyRlhtQVJOeXFidFUz?=
+ =?utf-8?B?bUl6RWFNSGt6enBKd2hBeU5CSUdKZ05JNHYvTmZxNDBzQ0YvNFBXa2swSktn?=
+ =?utf-8?B?OWdaQkJxUzcxK1hiUzF1MTJMVU9MOXhIc3B2bGRDMlNqSzByNW1aY0k5amRv?=
+ =?utf-8?B?Q3J6cGFWY0pPWHBBT0I5YmdVVDVwSDRmVW9vdkFLdkpDR1l0bmF3R25ZVy9w?=
+ =?utf-8?B?ZVRLYUlYTUg3YXp5Tmg0YTFFRWtDdE9vTjQrc1pZdjBXc1hnUzd5bGVjTTlH?=
+ =?utf-8?B?YisrdUN5dUt2OFc1TTFBUlNGYWM5VmdQUThCaHc1YVlVM0NTUHJZbnV5TXF2?=
+ =?utf-8?B?b0Q2N0lUQzNiTUJEQzFlRkJsdGdqL2hHSWkxNmxuVGRFS3FBOFFlRTJxaVpG?=
+ =?utf-8?B?dGZNVTBOU2xZMW4vUFF0bk5PUEFYYldZR2VrbUtGeXoySUJIUzd3SGtMdUJa?=
+ =?utf-8?B?ck91Qm1TV0VJTWRaVk9CbjV1K25xMk1xWjBEVGtabHdkSFJoSG51ZGNFLzRw?=
+ =?utf-8?B?NHBHR2NuMFptTytYNXNaQ28zOEJFMm9NOFl0NlgrUFlFbzdjU0w1N3NFK1Fi?=
+ =?utf-8?B?aEJuUlprdlRRRDh4aEs3VXYwYmFMRG1NQ1o1dDhiT0tYcDR1a2lSTitBYUpS?=
+ =?utf-8?B?SzNBZjREcGJNQTUxakpybkFzK1U4U21vQkxzMHBJNndGUmluOGNBL0xEazR0?=
+ =?utf-8?B?MjVYaVhBNnBnNFlHeUtKdXdodG14bXEzQUZFNFQ3cmZzM0ZLbDh4SGE0azQ5?=
+ =?utf-8?B?ZlVhWTdMN1Ewd1k2aUhpZnR6UDJNNkFJNTJnRXR0WVFQVmJ5YWVrT2IyVDA1?=
+ =?utf-8?B?MFF4eDBTc21yS21ZOHpsbUE0Rk9zUFdOWm1rM3d0ZG4xSFUrems2UU5SS1JI?=
+ =?utf-8?B?VTdiZDZPWklFK0RqRytwbi9FaEF4UU9wak4vNCtyR2R2RWhHWExPMFJtMWFQ?=
+ =?utf-8?B?TFNScVltc2xyTGh0UFFTcEZlMjFYZWlhcmFNRmlWZ3ZXWkRHMENpVnBLc0ps?=
+ =?utf-8?B?cWpsNnI5Q3phcFhsRlJXZnZDYUhlcDQrSGdWY2pXSGxVai9nV3EzSEFzcWIx?=
+ =?utf-8?B?U1NIWjFkN003Q2ZUMUFyRkVoMlRhaWZZNzNaM3BsVUE3Ry9HM1MyK2xMTm9E?=
+ =?utf-8?B?RW1kOExHaGZsODhodTFsb3hSTVcveEZVMWtLSFlvbzFIK1p4UHVFWVo4Zjhi?=
+ =?utf-8?Q?BDJFF2sI2pq0jeV0jC?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: da1e3b0c-814f-49a4-9944-08dec653ae98
+X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jun 2026 18:19:44.7927
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: UqA2cKWpP78/+W1Pu5YS/HA8JnrMVXbM7xuaucXMISA12Lo5+sEQHvDPjfBK/wAv3PXnKE6gE/4epR1/fHIZ6A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO0P265MB2811
 
-From: Deepanshu Kartikey <kartikey406@gmail.com>
+On Tue Jun 9, 2026 at 6:19 PM BST, Miguel Ojeda wrote:
+> On Tue, Jun 9, 2026 at 4:27=E2=80=AFPM Gary Guo <gary@kernel.org> wrote:
+>>
+>> This is the remaining unapplied patch from
+>> https://lore.kernel.org/rust-for-linux/20260319121653.2975748-1-gary@ker=
+nel.org/.
+>
+> Thanks for rebasing! I had it as "Waiting for apply" in the
+> spreadsheet, but this saved me a bit of work.
+>
+> Quick question below about the prelude...
+>
+>> +#[doc(no_inline)]
+>> +pub use crate::build_assert::{
+>> +    build_assert,
+>> +    build_error,
+>> +    const_assert,
+>> +    static_assert, //
+>> +};
+>
+> Did you split this for some reason? I moved the file to a single group
+> per crate when I moved the file to the new formatting style, so I was
+> wondering if we could keep it non-split. I mean, it may be nicer for
+> macros since it allows us to group them, but I hope we don't end up
+> with many `use`s again if we go down that road again...
 
-commit 7d73872d949c488a1d7c308031d6a9d89b5e0a8b upstream.
+I think I just kept it as is when rebasing. It's file to have them grouped =
+in
+the crate to.
 
-When NL80211_TDLS_ENABLE_LINK is called, the code only checks if the
-station exists but not whether it is actually a TDLS station. This
-allows the operation to proceed for non-TDLS stations, causing
-unintended side effects like modifying channel context and HT
-protection before failing.
+>
+> Or perhaps you did it for the attribute, i.e. it may behave
+> differently, but I doubt that is the case? i.e. if `no_inline` somehow
+> behaves differently this way.
+>
+>> rust/kernel/sync/atomic/predefine.rs
+>
+> In this one you used the prelude, but in the others not -- which is
+> fine, we should be using the prelude more (though perhaps it is a
+> separate change), but I wonder if there was a reason.
 
-Add a check for sta->sta.tdls early in the ENABLE_LINK case, before
-any side effects occur, to ensure the operation is only allowed for
-actual TDLS peers.
+This one is using size_of, align_of, c_void which are all in prelude. Howev=
+er it
+looks like I forgot to actually remove these imports in the last version, a=
+nd I
+didn't change it during rebase.
 
-Reported-by: syzbot+56b6a844a4ea74487b7b@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=56b6a844a4ea74487b7b
-Tested-by: syzbot+56b6a844a4ea74487b7b@syzkaller.appspotmail.com
-Suggested-by: Johannes Berg <johannes@sipsolutions.net>
-Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
-Link: https://patch.msgid.link/20260313092417.520807-1-kartikey406@gmail.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-[ Alexey: Adapted to the older sta_mtx locking and error-handling flow. ]
-Signed-off-by: Alexey Panov <apanov@astralinux.ru>
----
-Backport fix for CVE-2026-43052
- net/mac80211/tdls.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Are you okay with fixing during applying, or do you want me to send a new v=
+ersion?
 
-diff --git a/net/mac80211/tdls.c b/net/mac80211/tdls.c
-index e01e4daeb8cd..66e32f1d0a98 100644
---- a/net/mac80211/tdls.c
-+++ b/net/mac80211/tdls.c
-@@ -1380,7 +1380,7 @@ int ieee80211_tdls_oper(struct wiphy *wiphy, struct net_device *dev,
- 
- 		mutex_lock(&local->sta_mtx);
- 		sta = sta_info_get(sdata, peer);
--		if (!sta) {
-+		if (!sta || !sta->sta.tdls) {
- 			mutex_unlock(&local->sta_mtx);
- 			ret = -ENOLINK;
- 			break;
--- 
-2.47.3
+Best,
+Gary
