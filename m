@@ -1,136 +1,94 @@
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 576492D0C97
-	for <netdev@vger.kernel.org>; Tue,  9 Jun 2026 17:22:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63B4B36215E
+	for <netdev@vger.kernel.org>; Tue,  9 Jun 2026 17:25:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781025734; cv=none; b=UHOAw5X0eExhwZ/6oIKN4MCRG5RWSg7/iVNJwCYWSs6sCfz2ZHeMQLSO7dhRscBPkeumrV4oDrt+D8pzPQ33xEX3iipQu+1qN4gea8ktswxFem+/GpWXqGlH+HNG9Xe/hBNRrZMJhvCYbDzLqWuY7j3bv7qTCNHXsjI3afhwJww=
+	t=1781025906; cv=none; b=ofhfKP8vqn1o+hvGSyNnh0zFf83PPvXQnDmsZgsNAmRFTH/+efjsVvBtb29/xCSKHRzEbzec2ZEl4ECkmVikFSO5ySB8EK6WS9H1TDCV/Zdbt9GREVEG0DIAcZ+safg6GYJ3l4wRgMYnhiComnWrkDTNZ+9Ph+VpoLmsBL/eaeI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781025734; c=relaxed/simple;
-	bh=EAoIaV9pNUjobuXUO1ePSeJoEsKaKZUvgUq0xCcWJwI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AyIvFWy/QgvLF9wt1KhW004hy2pjIty16m3ookViggiKkT1Xyq3SDxy1DjlvpN68tumfrMM6b5zZY4jPyMyy3+pEiVYBC6snQoCwFYYCoRJAyu1PxpExGCLiFL2MCs6RcQ7kV8zOALKk4McXhx/448xxddvQ8/3D1LWS44iV7YU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=Q2XumI+s; arc=none smtp.client-ip=209.85.216.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
+	s=arc-20240116; t=1781025906; c=relaxed/simple;
+	bh=VuvrZhOahERiPEnoR8psCGdN87TZg7mRsVFM0v28rCo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KuuL5IxA3DZ/rNVZv6SEv3CjaX9pdeSHH+BblG0r/3PG2q5KZCoCXa9F9Z/XQUVaUD76sSc3Tbt5oHUl4m/eDeFfdaIVvx1v1EacWasjsevvE1k9otNkhMvJyByT2eby2ihjqd4PyHp0BSc4hEAC6ILnxsnHlyFHOF8EqO8UBfw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Q9HHVLee; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b="Q2XumI+s"
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-36d630c0e35so6314792a91.3
-        for <netdev@vger.kernel.org>; Tue, 09 Jun 2026 10:22:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1781025733; x=1781630533; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:mail-followup-to:message-id:subject:cc:to
-         :from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ce4y9KqIyAjhQ6PxfVsDJXSaJXhk3BB5Jl2BkdFmxQk=;
-        b=Q2XumI+s7PiJcVemIXJ1aONkvFkfaHnVplgbOxj4xZ0iLYzpqf+A/RoRuHAHdTJTR1
-         6XNdxdOmCljF+crs5Actzofs2AxmZvdcMWPMrCYBjfW2awBus3MGZxABreZ4YPdsE1WZ
-         TT9++opAPgypJXOpmzi58g0i2qBLwdh2dGvGr0uAQ2hJX0F/92CxdCTJddxPAppWo79j
-         fkJ7wYUeAV7c5I26wK5/Lof6mmHqqVBq9iIGaUSI7BWy9UQPHTjfdMoGq22ivNADOXkn
-         fJAiwRHvzMiieIbA8R+rAQv6MgtWKMGFxKJcI8W57pOG1iobm78fk3f0cjvQKoyDEIkz
-         S69g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781025733; x=1781630533;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:mail-followup-to:message-id:subject:cc:to
-         :from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ce4y9KqIyAjhQ6PxfVsDJXSaJXhk3BB5Jl2BkdFmxQk=;
-        b=QzwcRohmI1lHhna/+SbwgKxwSG5KS2eAovp5V8UhDO7FmnlJFo9zAr+qqH8oVij0gb
-         uKcbYkNNGQv9+e0NuED3sdDuIdWyUMbnmVa5pRY9dlOGk1cwvknLTVhhDZ7C7YvfO3Qg
-         3Ke1pwWdLPxN4uyP2xR5ZOFnwjy2N2YjFFj+4OP3CdN+tPzme2h0sHO6hZ58B1haft2f
-         eY0P3BKPQbQUIo/mzbrvD/MzPBxTn+rQmZmrDPIJ/u+ePWnmHJ4Vn94dI+N6rbOOHCMA
-         sCdx9r2+oK0DUeVnht8jNRaechAw/HSBCcnN2lsR05wyhT61YPXnG+8yBIlYSDP1EPgO
-         Gp5A==
-X-Gm-Message-State: AOJu0Yx0mIgq3IoQZpiTN+TFVYX9SZ1NER6JOWSVam/nAvcJcSLyAXEW
-	17EhC0iQH3HzJR1Gw5zDFdIIY6vbCwqaOMldXb2EO3G2aLGJaxhiREXNMm5PHiHl0Tw=
-X-Gm-Gg: Acq92OFdsfBw8CYlYAtZtbPoWIFHy9OtFSHQLIbV4cdYhWt2KlbZDAIdJktMeRoOMFq
-	O2HRvuXJ/McZABxxBkWe6i1tz4/f0VmCcbbxdDO7aPFGNnC59g7u4gPq7CHAdKuynMOT075JzyM
-	Vf8FsI1KZRPLC8XSWfSCOVmz709XmJbR4NpKfbxf1JPZBuy7zljVtFtdmY5Uw3a9c3EGcW2jsP2
-	lrHEAR7dHIGsnc9Gdbk9JGerym5L2sFvcjsAATnbZ1FVKnoUk1qrDYr68XhEffYJSsV49+obBpx
-	Skijk+jrN0ZjhSB9zzXXpSuAW10ZpfLctm2c3aLVosVQVCtH/Y1HQEFGHxk9Xky5XFr21fFC31w
-	RgAJ5W7MYRLTtI/cc1vRdXbf1WmYHC0uT4k5cLvOhA5nku/FeZxFoQmd2cLFbFzyos2RC0duvD5
-	ypG8uEyhsUsXWHxtTo3hcZHKwXZw==
-X-Received: by 2002:a17:90b:3d01:b0:36b:b3f4:d578 with SMTP id 98e67ed59e1d1-370f0095c8emr22699988a91.15.1781025732705;
-        Tue, 09 Jun 2026 10:22:12 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:4d::])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36f6bf830b2sm18483208a91.4.2026.06.09.10.22.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Jun 2026 10:22:12 -0700 (PDT)
-Date: Tue, 9 Jun 2026 10:22:11 -0700
-From: Joe Damato <joe@dama.to>
-To: Michael Chan <michael.chan@broadcom.com>
-Cc: netdev@vger.kernel.org, Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Somnath Kotur <somnath.kotur@broadcom.com>,
-	Andy Gospodarek <andrew.gospodarek@broadcom.com>, horms@kernel.org,
-	linux-kernel@vger.kernel.org, bpf@vger.kernel.org
-Subject: Re: [PATCH net] bnxt: fix head underflow on XDP head-grow
-Message-ID: <aihLw8yR6Vu5B6lS@devvm20253.cco0.facebook.com>
-Mail-Followup-To: Joe Damato <joe@dama.to>,
-	Michael Chan <michael.chan@broadcom.com>, netdev@vger.kernel.org,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Somnath Kotur <somnath.kotur@broadcom.com>,
-	Andy Gospodarek <andrew.gospodarek@broadcom.com>, horms@kernel.org,
-	linux-kernel@vger.kernel.org, bpf@vger.kernel.org
-References: <20260608203129.920104-1-joe@dama.to>
- <CACKFLikOyMh3Kbee-AifLXQryyPt-CftW7VYHeeKWoCuMoXj8w@mail.gmail.com>
- <aigoUdgW/icfFwvh@devvm20253.cco0.facebook.com>
- <CACKFLinzaJr8EjXx7yME5cKv9LR1+pF+2iY43V+GeYdEjbUo+Q@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Q9HHVLee"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1781025904; x=1812561904;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=VuvrZhOahERiPEnoR8psCGdN87TZg7mRsVFM0v28rCo=;
+  b=Q9HHVLeeA57e99kOhGJ18S2m0JOG9FDqzleyS6cpuMieI1HL7+4pmly5
+   bixngQvMZDa9advtcrfwVHW+BhbIyhE0LrHX2zQvaaRkXqIbWehfYz+qU
+   UteIyUMlrUXhm+SrtXZ3/8ksgnclnDoC90NHNB4n9Xqi36/UMB8nA78Fw
+   qo/200Y1+IFz82B5q4NnE3bqANd6Xa4GTzvVV9wo6QxmIYzqG45J+6FSp
+   0qYmLX7xMdxBJmnIVmEqug6Aq2+4jA3DJ65irVyh9jKPe4mZBiUTFNjGZ
+   q4nlKpYpN9XWyRGHvAd1jouAXvMoB9BdnctQIXDjoEeaue0W8tRDWPJca
+   g==;
+X-CSE-ConnectionGUID: FDPJma5cSf2QtZq4StzF+w==
+X-CSE-MsgGUID: XYmcYyAoREOYtzZfc5Ze2g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11812"; a="99373415"
+X-IronPort-AV: E=Sophos;i="6.24,196,1774335600"; 
+   d="scan'208";a="99373415"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2026 10:25:04 -0700
+X-CSE-ConnectionGUID: w/fQcriPQl+FRhqH+oy6Ug==
+X-CSE-MsgGUID: cJoBymkQRUCxUHc8EFVgCQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,196,1774335600"; 
+   d="scan'208";a="250995084"
+Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
+  by fmviesa005.fm.intel.com with ESMTP; 09 Jun 2026 10:25:03 -0700
+From: Tony Nguyen <anthony.l.nguyen@intel.com>
+To: davem@davemloft.net,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	andrew+netdev@lunn.ch,
+	netdev@vger.kernel.org
+Cc: Tony Nguyen <anthony.l.nguyen@intel.com>
+Subject: [PATCH net 0/3][pull request] Intel Wired LAN Driver Updates 2026-06-09 (idpf, ixgbe, igc)
+Date: Tue,  9 Jun 2026 10:24:53 -0700
+Message-ID: <20260609172458.4046222-1-anthony.l.nguyen@intel.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CACKFLinzaJr8EjXx7yME5cKv9LR1+pF+2iY43V+GeYdEjbUo+Q@mail.gmail.com>
 
-On Tue, Jun 09, 2026 at 09:44:17AM -0700, Michael Chan wrote:
-> On Tue, Jun 9, 2026 at 7:51 AM Joe Damato <joe@dama.to> wrote:
-> >
-> > On Mon, Jun 08, 2026 at 09:22:07PM -0700, Michael Chan wrote:
-> > > On Mon, Jun 8, 2026 at 1:31 PM Joe Damato <joe@dama.to> wrote:
-> > > >
-> > > > To fix this, we need to do a bit of math to recover the offset if this
-> > > > is a page fragment since it is not passed into rx_skb_func
-> > > > (bnxt_rx_multi_page_skb, in this case).
-> > >
-> > > I wonder if we should add an offset field to struct bnxt_sw_rx_bd to
-> > > simplify things for page mode.  Struct bnxt_sw_rx_agg_bd has the
-> > > offset field for a similar purpose.  Thanks.
-> >
-> > I don't mind doing that, but I wonder if that's better material for net-next?
-> >
-> > In other words, we get the minimal fix in (this patch?) and then do the
-> > cleanup and struct tweaking as a follow-up in net-next?
-> >
-> > I could definitely be wrong; I had just assumed patches for net were supposed
-> > to be as minimal as possible.
-> 
-> I think some minor refactoring/struct changes to make the fix
-> cleaner/simpler should be fine for -net.  I think the total number of
-> line changes should be about the same either way.
+Przemyslaw adds needed padding to idpf PTP structures to match firmware
+expectations.
 
-OK. Are you OK with changing the signature of rx_skb_func? I was going to add
-offset as an argument so it can be passed through.
+Larysa bypasses XPS configuration on XDP queues for ixgbe.
+
+Khai Wen corrects offset into packet buffer when handling for frame
+preemption on igc.
+
+The following are changes since commit 0aa05daef7848a5ac11158949dc73cd741995dc1:
+  Merge branch 'net-mctp-usb-minor-fixes-for-mctp-over-usb-transport-driver'
+and are available in the git repository at:
+  git://git.kernel.org/pub/scm/linux/kernel/git/tnguy/net-queue 200GbE
+
+KhaiWenTan (1):
+  igc: skip RX timestamp header for frame preemption verification
+
+Larysa Zaremba (1):
+  ixgbe: do not configure xps for XDP queues
+
+Przemyslaw Korba (1):
+  idpf: add padding to PTP virtchnl structures
+
+ drivers/net/ethernet/intel/idpf/virtchnl2.h   | 12 +++++++++---
+ drivers/net/ethernet/intel/igc/igc_main.c     |  2 +-
+ drivers/net/ethernet/intel/ixgbe/ixgbe_main.c |  3 ++-
+ 3 files changed, 12 insertions(+), 5 deletions(-)
+
+-- 
+2.47.1
+
