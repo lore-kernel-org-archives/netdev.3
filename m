@@ -1,45 +1,80 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3848E3905F4;
-	Tue,  9 Jun 2026 19:56:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86BE0364022
+	for <netdev@vger.kernel.org>; Tue,  9 Jun 2026 19:56:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781034975; cv=none; b=svhnITqJsNmIRiQ+WEzoHqixkuUWlAEComAeJO09BsOBKokgtE7G8Ec5rGpNmRMu2PIvqPUs6O+Ikc+ewwBAKC+Ko2vDw4Q/vVGTiJhiskRrijIWwJcag2Sv8GBnBW1f7+5tO9VF3x2SmwAkyj5a5GoYcG8kLDZGlIQvNpMTTgQ=
+	t=1781034981; cv=none; b=WW+/CCv4HseMXotwut7whz/bvc7jEO8+myrHO3KP33TBPDLrOHNTNGg88BpRtdRzems5sfHPsHd0WPwUcBAKEncUZRyqm5rpwSddAMYEh9db9ErdaMzgLM5m1k6OcwFqtraz1rMfXrkfL2Jx/aMmow0SHJmP++zbUvSPM2/XNEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781034975; c=relaxed/simple;
-	bh=6NOGgMTwvpFK9y9CwWV59BdaEs794jRjbrN/rBHlaP0=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=YU0ADBRRaPzT773Fqhuu8aVRjuUaMdTy0AGJZ5Q5llobRIN/+vd5bnZTJgOhNH0UsItjQHgfM9ToxhwusEcny24BpIau6lDRO9OPsImpws9Y5SXnmEouf7AJMWhvmSHnmIbCK8NyZzVhJ3/EfSWABIejr/twIzCoSKJs2iGJAsE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QvSThxOG; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781034981; c=relaxed/simple;
+	bh=MsfSgaZcmqEq4DGFKibOXSoVKhKaUyFuJnR70HqGRSw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IMJD967W5N5aN7jkz79VVufE8mCLiK1zDKuIdj68onQotfnxqYKQPp7FGSMJe3z+YLus3mVlZLBP0e4yqCUEbUcCQpH9RzIXiEPsBVW77YBy7B/h8JeJLRDUxwkY5C8UykpoGf6Fb2q8AIrpazeotfwlqZEX42El9nTCswWYmDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=yREL/nkG; arc=none smtp.client-ip=209.85.216.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QvSThxOG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A840F1F00893;
-	Tue,  9 Jun 2026 19:56:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781034973;
-	bh=y4iRsk+AhfxJSSqxKswZ1/phd34ipK67r/z1ycidumM=;
-	h=Date:From:To:Cc:Subject:In-Reply-To;
-	b=QvSThxOGvVJFNdr/naZAD6M8F4kr7tHnFy+Z5x0HnJL/H4yOVFl3qTjhpbbvPGMXQ
-	 cXBHVIgTsrYY2nzaNrl7bYLp6vnklAFTnZQoIcYV9NGY/Efnk/tQmTYqAA9txv/DT8
-	 QLQwMkUg9p9H7vm1ZqQ4AEd31RQjqayQa3zEkyboXBs7J1b/INwl2LvqmwkbktcPwY
-	 rMxsJIWA5Fwt7aVHw7Tk6enfab2EDtBKPtxIAHQIs4X0WnrC/AwdOpKaAbq9Lr+rf/
-	 BUyg3HdHYBXhG3pYTlAv3BqUpiW25/Fr1l0EXlFT6nTpJEpXw4jXyCecBwicC6NX39
-	 dmlfW70iAH08w==
-Date: Tue, 9 Jun 2026 14:56:12 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Zhiping Zhang <zhipingz@meta.com>
-Cc: Alex Williamson <alex@shazbot.org>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Christian Konig <christian.koenig@amd.com>, kvm@vger.kernel.org,
-	linux-rdma@vger.kernel.org, linux-pci@vger.kernel.org,
-	netdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	Keith Busch <kbusch@kernel.org>, Yochai Cohen <yochai@nvidia.com>,
-	Yishai Hadas <yishaih@nvidia.com>
-Subject: Re: [PATCH v6 2/5] PCI/TPH: expose enabled requester type and
- capability helpers
-Message-ID: <20260609195612.GA85322@bhelgaas>
+	dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b="yREL/nkG"
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-36da8439078so5313017a91.2
+        for <netdev@vger.kernel.org>; Tue, 09 Jun 2026 12:56:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1781034980; x=1781639780; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=qqt7ZDndbYapehX74SpkVRc0MkTnsPzQ6IaV8n+/d8o=;
+        b=yREL/nkGE0rJ1Sze+/VjG+RzY1EuajwYG+chLenXBrllVb+7F8VHR7yXqqeFH8Fxnc
+         s0MaVN6JwW4HZz8NnuKCmgN/5PurZC/hyYBgtkPhGFbtCqkpIICC6O6c8eQL85aPigJQ
+         bszZ0lskw1RZbrS75Zr2CGGaiw0XKia1iZmF0Sk8v+jZ2thtqk/FSJ3mc/PVFSv4D6Tf
+         m3848OHUKgozdUHemd2BtvrMkqnC1L3lyr5xbvnoVX0hSZK1nqCg3dQESpcwfV1MVYDs
+         6AmdV3nVXjfNUtML2Q8/JXs3Due5LMN8KFhovl4m84vKXO4io7j4e60W29/KW68toBrv
+         F2iQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781034980; x=1781639780;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=qqt7ZDndbYapehX74SpkVRc0MkTnsPzQ6IaV8n+/d8o=;
+        b=ZOa5bTD7U3JR6KIXHDHhQ4DPT+w0D5Kz405URQKuS57HUCYEPfi4o0fIOLA+zGqhFP
+         0qnIQW+5zr0lvm7600WQCY1oEm1orKdhpNSHrAr24w9vNd+SyLLJqMxJFW1soglVN8wc
+         jQHvfRXMGcj3GYTFM//QuxVQvvISs+1+34hWgFKKq8Q/721tIH2L3A7+TDtmxSSaj4ra
+         0YPme323bho+kXZvs7j+aXexW86K8zuC9gxfxcsKIlK+R1Tt2Q40BL74S2dyuuMInzwp
+         emTX8GIt9EwNyntTrDtR2SXXjUD+iEEYHN2hpxAVQ5r1p86YK1PUQiXCOpwJij0/Fjzf
+         ODPQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/KuTMdo7sEXVU/W3G+7/m8UxZ2ubet7rJ+zw5DKIWjaMgsS6drwFfDDSGDD4FjGMYnd1giXBg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwvdB74oShLA6ZaITyw/DPu+n4VMUIcdUDhO52Aq2uf42oWv4vY
+	psEbz+fH0O068SsyCUwFD5OK0Zlcr+bbSFNvWn5AJwaRcGd3E7h4WH5K9X9FkbuIk4k=
+X-Gm-Gg: Acq92OEERZNG9Ekcsg8PPuf8G9ugVy4jbv0pNz/NusCvnlZMzy6B/XvZX98DZY/BFug
+	fPttxki3DKhyRhyvr+GXUDBRvcyMQC+n0C/QGz6mT/iTVZH1oYO7xuBBURTaxs11j6B/kiktYyw
+	z1P5ikX8nyH9/6fsRpev6Wh8lw2hv5sews7uGDjsjeHZDS78aDa5pJcDWI6ONF8DNLv84yfw3Ur
+	m7Q6O+b4HIjTOXUMf8e7WBOFyRQuRHGkcPZMLgteT0u4ZIY1M/PBqtIUnxfHBkQgboNnEg4DHjO
+	Z/i48AnF6gWyo81Xy+iZ+Hh6W30UK8/87ukyPmbdfMbfDzJj3T7OuPm4U3ttfNgnwleLRsxnqvx
+	4rOEtVtJFuQEJD6C2314ZZxDgMIoLxhWPLdZEQzFCwiF/HOCRDQpmV3TkSxdohoFKseO9ciWv3g
+	BSaayguYFjcojNexo=
+X-Received: by 2002:a17:90b:3d8f:b0:36d:70c8:3a3 with SMTP id 98e67ed59e1d1-370f0772dc6mr22814079a91.15.1781034979721;
+        Tue, 09 Jun 2026 12:56:19 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:41::])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-37625ed1b03sm123806a91.1.2026.06.09.12.56.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 09 Jun 2026 12:56:19 -0700 (PDT)
+Date: Tue, 9 Jun 2026 12:56:18 -0700
+From: Joe Damato <joe@dama.to>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+	pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
+	dw@davidwei.uk, daniel@iogearbox.net, razor@blackwall.org,
+	sdf@fomichev.me, dtatulea@nvidia.com, bobbyeshleman@meta.com
+Subject: Re: [PATCH net-next 1/4] netdev: check for nla_put_u32() failures
+Message-ID: <aihv4sSmiub69Qyo@devvm20253.cco0.facebook.com>
+Mail-Followup-To: Joe Damato <joe@dama.to>,
+	Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net,
+	netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com,
+	andrew+netdev@lunn.ch, horms@kernel.org, dw@davidwei.uk,
+	daniel@iogearbox.net, razor@blackwall.org, sdf@fomichev.me,
+	dtatulea@nvidia.com, bobbyeshleman@meta.com
+References: <20260609190804.1137085-1-kuba@kernel.org>
+ <20260609190804.1137085-2-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,106 +83,17 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260608185646.4085127-3-zhipingz@meta.com>
+In-Reply-To: <20260609190804.1137085-2-kuba@kernel.org>
 
-On Mon, Jun 08, 2026 at 11:56:39AM -0700, Zhiping Zhang wrote:
-> Add pcie_tph_enabled_req_type() so drivers can query the enabled TPH
-> requester mode without reaching into pci_dev internals, and
-> pcie_tph_supported() so they can test whether the device exposes the
-> PCIe TPH Extended Capability without doing the same.
-
-s/exposes/advertises/
-
-> This keeps pci_dev::tph_req_type and pci_dev::tph_cap inside the
-> PCI/TPH code and provides !CONFIG_PCIE_TPH stubs for callers.
-
-Update subject line to match capitalization of history
-(use "git log --oneline drivers/pci/tph.c")
-
-s/expose/Add/ in subject.
-
-("Expose" suggests that the interfaces already exist and we're just
-exporting them, but these interfaces didn't exist at all before.)
-
-> Signed-off-by: Zhiping Zhang <zhipingz@meta.com>
-
-With the above,
-
-Acked-by: Bjorn Helgaas <bhelgaas@google.com>
-
+On Tue, Jun 09, 2026 at 12:08:01PM -0700, Jakub Kicinski wrote:
+> Make sure we check if nla_put_u32(id) was successful after creating
+> objects. This is theoretical today, the skbs are large enough to
+> always fit the ID.
+> 
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 > ---
->  drivers/pci/tph.c       | 25 +++++++++++++++++++++++++
->  include/linux/pci-tph.h |  7 +++++++
->  2 files changed, 32 insertions(+)
-> 
-> diff --git a/drivers/pci/tph.c b/drivers/pci/tph.c
-> index 91145e8d9d95..aa09113c46d4 100644
-> --- a/drivers/pci/tph.c
-> +++ b/drivers/pci/tph.c
-> @@ -174,6 +174,31 @@ u32 pcie_tph_get_st_table_loc(struct pci_dev *pdev)
->  }
->  EXPORT_SYMBOL(pcie_tph_get_st_table_loc);
->  
-> +/**
-> + * pcie_tph_enabled_req_type - Return the device's enabled TPH requester type
-> + * @pdev: PCI device to query
-> + *
-> + * Return: PCI_TPH_REQ_DISABLE, PCI_TPH_REQ_TPH_ONLY or PCI_TPH_REQ_EXT_TPH.
-> + */
-> +u8 pcie_tph_enabled_req_type(struct pci_dev *pdev)
-> +{
-> +	return pdev->tph_req_type;
-> +}
-> +EXPORT_SYMBOL(pcie_tph_enabled_req_type);
-> +
-> +/**
-> + * pcie_tph_supported - Whether the device advertises the TPH Extended Cap
-> + * @pdev: PCI device to query
-> + *
-> + * Return: true when the device exposes the PCIe TPH Extended Capability,
-> + * false otherwise.
-> + */
-> +bool pcie_tph_supported(struct pci_dev *pdev)
-> +{
-> +	return pdev->tph_cap != 0;
-> +}
-> +EXPORT_SYMBOL(pcie_tph_supported);
-> +
->  /*
->   * Return the size of ST table. If ST table is not in TPH Requester Extended
->   * Capability space, return 0. Otherwise return the ST Table Size + 1.
-> diff --git a/include/linux/pci-tph.h b/include/linux/pci-tph.h
-> index be68cd17f2f8..2e07bce77038 100644
-> --- a/include/linux/pci-tph.h
-> +++ b/include/linux/pci-tph.h
-> @@ -9,6 +9,8 @@
->  #ifndef LINUX_PCI_TPH_H
->  #define LINUX_PCI_TPH_H
->  
-> +#include <linux/pci_regs.h>
-> +
->  /*
->   * According to the ECN for PCI Firmware Spec, Steering Tag can be different
->   * depending on the memory type: Volatile Memory or Persistent Memory. When a
-> @@ -30,6 +32,8 @@ void pcie_disable_tph(struct pci_dev *pdev);
->  int pcie_enable_tph(struct pci_dev *pdev, int mode);
->  u16 pcie_tph_get_st_table_size(struct pci_dev *pdev);
->  u32 pcie_tph_get_st_table_loc(struct pci_dev *pdev);
-> +u8 pcie_tph_enabled_req_type(struct pci_dev *pdev);
-> +bool pcie_tph_supported(struct pci_dev *pdev);
->  #else
->  static inline int pcie_tph_set_st_entry(struct pci_dev *pdev,
->  					unsigned int index, u16 tag)
-> @@ -41,6 +45,9 @@ static inline int pcie_tph_get_cpu_st(struct pci_dev *dev,
->  static inline void pcie_disable_tph(struct pci_dev *pdev) { }
->  static inline int pcie_enable_tph(struct pci_dev *pdev, int mode)
->  { return -EINVAL; }
-> +static inline u8 pcie_tph_enabled_req_type(struct pci_dev *pdev)
-> +{ return PCI_TPH_REQ_DISABLE; }
-> +static inline bool pcie_tph_supported(struct pci_dev *pdev) { return false; }
->  #endif
->  
->  #endif /* LINUX_PCI_TPH_H */
-> -- 
-> 2.53.0-Meta
-> 
+>  net/core/netdev-genl.c | 21 ++++++++++++++++++---
+>  1 file changed, 18 insertions(+), 3 deletions(-)
+>
+
+Reviewed-by: Joe Damato <joe@dama.to>
