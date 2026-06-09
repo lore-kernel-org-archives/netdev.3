@@ -1,58 +1,59 @@
 Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDEBB3911A2;
-	Tue,  9 Jun 2026 04:05:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA43F35F16C;
+	Tue,  9 Jun 2026 04:05:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780977938; cv=none; b=XW8oJzRYdHqK/0rKMKzA/6Ox559vRC+IhLgPooRdnEZWoZeRY3QAvqLOdDucEe/D4+zpGt62oH/s7e8+7cFlnJmVqWGs+1SDnTmYOeIdB5rpJu5arKmjjF/YasnY5xaH8pyHT60Z+7uzpmdWnQkh57RBt79TdvWOU722XBBK4gE=
+	t=1780977938; cv=none; b=E1fY4BnYXwhV1lv7Q16pxGW12ObWDq9s3HTKy9zyiD6JBZOLmwXK8jD9qoDxu8+4yDd0FZyOoYr+zPOWvk4hr3fRVQ7B8dy/2lpZZdtJO9Cfr9tFkl4lJE8OLb1aIoIvXOkW8jJRhZ5rRBi5///5mFFOyKYt2gvDDLLRzR+NYVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1780977938; c=relaxed/simple;
-	bh=IGvTcYIvP72VHynQ3fkQoKPaVJfRYqENeJm+MK8j+iQ=;
+	bh=GZdS2QUjakgYotPC3ba+HveGsz2JyY7CGy5ir1LoI/Y=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iLSP72PkbGBWP1XclA8aaDQTUDIUK1cbmhbSbt0RSOjqLIzN4S1tIuavP8ZS+tQm7l7qpBS47Ef5TLC+rP91pg280isngxUztgxPJ0M8n1Vf1qwRcRV3lROPBTR2GteXmHajrVxat5wF44JqsU3WFor/7+CIZFAdBjrLNkIe+00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=PvNRLtFx; arc=none smtp.client-ip=67.231.156.173
+	 MIME-Version:Content-Type; b=WtwPyIPh5i7qlEU0eS3S7vts5/f7VOKjakuFJmwT2m+yJd23REeQAtljWJ3GZOqMFnw0JIhDJAvh9OXNbnYTXMdZGRf8jJ6KPs0dVeJJvh33G3NeiOdiMsnguRAn8HPA/ZwWfQlDEsACrbY/hJJmIGIGJqJE0Cho/bQ92p/gUHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=EcIvIsDV; arc=none smtp.client-ip=67.231.156.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="PvNRLtFx"
-Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
-	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65942FF04101369;
-	Mon, 8 Jun 2026 21:05:13 -0700
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="EcIvIsDV"
+Received: from pps.filterd (m0431383.ppops.net [127.0.0.1])
+	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 659428C83916129;
+	Mon, 8 Jun 2026 21:05:25 -0700
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pfpt0220; bh=R
-	pVlX6tD4EvftNHKBuX7pDDQVzbLdtAl6r3xqpe3pr4=; b=PvNRLtFxI0R59FCVm
-	lU2zMgJRBz3agvkwN88aU4pSqYX/Qao6BETokN6oIGd5iiJsZRcuxyzDYMG+Pdil
-	zhdhItYjwovKmp85L1xCHB8Rbrq2R6wW3A/YPJlPUtWMXB6mntku4Ovc3ZoOoVev
-	y4+u9OdC3/vuTftUYgIVwStB9F1UaZ+oULk5IdqPVbxdpW+vzhe/UHlYr7dvBBEB
-	qzlkHBKT5OZE2867d77Nn6d/5SAScWZtrqiyTVtC4uaRCVesW1bjAwnK1ZI88odK
-	KxrZlPMQa5fG/vHjlP0+yi9HZyRs9D6dIU2fAWdWWbNaGzlFCCaILW9VIWTaf/n2
-	onwVw==
+	:message-id:mime-version:references:subject:to; s=pfpt0220; bh=0
+	UMGw1wARK2aeNfvc9AWyb50o++H2+0dJcA2ALBV1ws=; b=EcIvIsDV1V2oIR8/s
+	x0wXi1LSruwGRKSt2F9tYk9SIn813zJz6C1kpLSmNaalwMQEpoBTTif49Am/Oz9O
+	U6+dAJLPxliLD0Te4W8SOCa5XlDqWLfil74U8Ammjq+W4XvyArkU2ixvlQdqp/vC
+	siCqkKk23QjIuF+nv/j/Tmy6yLtZIePmTgTVYFveYfikJOC4N0Y2kaTHz3IqifHL
+	4AsouuYU2zfchKyiPjptzYnxihd1VzRYJ6uP0ctK6XTy2Ux8GN9QafA0i4yUOHCr
+	nLOvC3e5Trpn5xFQ+Lrw4qkWT+qhb+QiPhCeJrrjMigOjZh9VeD1tEFL3Fx1HaGU
+	eYRLA==
 Received: from dc5-exch05.marvell.com ([199.233.59.128])
-	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4emk2esuqu-1
+	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4en4a5qd5r-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 08 Jun 2026 21:05:13 -0700 (PDT)
+	Mon, 08 Jun 2026 21:05:25 -0700 (PDT)
 Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
  DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Mon, 8 Jun 2026 21:05:12 -0700
+ 15.2.1544.25; Mon, 8 Jun 2026 21:05:24 -0700
 Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
  (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Mon, 8 Jun 2026 21:05:12 -0700
+ Transport; Mon, 8 Jun 2026 21:05:24 -0700
 Received: from rkannoth-OptiPlex-7090.. (unknown [10.28.36.165])
-	by maili.marvell.com (Postfix) with ESMTP id 91F143F704E;
-	Mon,  8 Jun 2026 21:05:08 -0700 (PDT)
+	by maili.marvell.com (Postfix) with ESMTP id 643633F704E;
+	Mon,  8 Jun 2026 21:05:20 -0700 (PDT)
 From: Ratheesh Kannoth <rkannoth@marvell.com>
 To: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>
 CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <donald.hunter@gmail.com>,
         <edumazet@google.com>, <horms@kernel.org>, <jiri@resnulli.us>,
         <kuba@kernel.org>, <pabeni@redhat.com>, <sgoutham@marvell.com>,
-        "Ratheesh
- Kannoth" <rkannoth@marvell.com>
-Subject: [PATCH v20 net-next 1/9] octeontx2-af: enforce single RVU AF probe
-Date: Tue, 9 Jun 2026 09:34:45 +0530
-Message-ID: <20260609040453.711932-2-rkannoth@marvell.com>
+        "Saeed
+ Mahameed" <saeedm@nvidia.com>,
+        Ratheesh Kannoth <rkannoth@marvell.com>
+Subject: [PATCH v20 net-next 4/9] devlink: Implement devlink param multi attribute nested data values
+Date: Tue, 9 Jun 2026 09:34:48 +0530
+Message-ID: <20260609040453.711932-5-rkannoth@marvell.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260609040453.711932-1-rkannoth@marvell.com>
 References: <20260609040453.711932-1-rkannoth@marvell.com>
@@ -64,89 +65,185 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjA5MDAzMyBTYWx0ZWRfX2J6mkvVPdxGS
- 669P9c9TmMgWgT/RLPUNcNZaaDHi1ouRA7a9uAZYH9I89roqjL25IveU/egSuRSIbUjAmKGXcIG
- O/Y08X7rHpnwtJ5F+g0DC6fE4oYUJ9cnXEnA/j2UBO44X9ki5Z/xrGBPW2H8HWI+9c5+LwaPgqA
- 6R1E5v2kQKm046mBCw0EC5oDQpvjuOMeSoihnfDUB3DpskZlQYZs70vnkjzjMtPJHHCQG4hRL+0
- Zy4X9Z4Jc+12Ll75Si5XF6V+CTsDbL7q0DhH9+uKT1y0bTMiUM7wrInLlclY/XLJdmAtMx22i/0
- G4VboqFIsYeWFeTljep1/+T1RH8kF/UMuQe4UNnhF1cTy5p3Ckha+7+x2SfZ2FdjLFu2C3zVA1D
- 2X5D9Jr22edRbh0M+TfGChDmZsPAw/NLIYbRzbNdQWtU0QYM9bUgbZmarjUw7V1mQaNfJ4rya9x
- uYRv/G4RE2G0UAvsgMQ==
-X-Proofpoint-GUID: qRX_1sj0EGrgW1_7TaprJzjElOimNX0t
-X-Authority-Analysis: v=2.4 cv=bJUm5v+Z c=1 sm=1 tr=0 ts=6a2790f9 cx=c_pps
+X-Authority-Analysis: v=2.4 cv=HpBG3UTS c=1 sm=1 tr=0 ts=6a279105 cx=c_pps
  a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
  a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
- a=QXcCYyLzdtTjyudCfB6f:22 a=M5GUcnROAAAA:8 a=QyIiUewd21HjhqVtCQUA:9
- a=OBjm3rFKGHvpk9ecZwUJ:22
-X-Proofpoint-ORIG-GUID: qRX_1sj0EGrgW1_7TaprJzjElOimNX0t
+ a=qit2iCtTFQkLgVSMPQTB:22 a=Ikd4Dj_1AAAA:8 a=M5GUcnROAAAA:8
+ a=poRX95JG0-uQvCm-gVcA:9 a=OBjm3rFKGHvpk9ecZwUJ:22
+X-Proofpoint-ORIG-GUID: EVsJzc_ywYd0kH24IM35zS4t_fWcwyxG
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjA5MDAzMyBTYWx0ZWRfX/bZwbuELuWjD
+ 4B5+8aDITsdqtLdVC1VeAAlp/u+l+kzydp6wAUMI2XVBoUYGF47MMIRfYib2edLshFMd/4PCtJj
+ oY06IHGCZWBWTtrPw05kjeY3hO96HaYPu0lt+kZX364+yp/dFXv3UTo2cwfYp6A1o+PQkzcVRkR
+ XRvO76STrgy+/UMePN0WHe9nzCLgE1iSPbRirJzJO5kNQhM+kR0LexsMlbuqaHDDAKpMXMCoIpU
+ bVkgZkxQ2AlZ7tflmuwTBiuNJdlwMiOgAHs0OolcbuqX4FCVHrqaSm+du/hSk1q1Y7Qs22Ddl5X
+ yKm19OmFFsPgp+y5eu65AVjmg+j2ajDIfz9LA0D8IZtgGLsVInRJ3O2xg+ia3n0rm/keiEYFfl+
+ NQPPzExwT4ahJyeOj6D9U8NiR6rDI0mA5hLGmF3ED/LGx/2vtbEZJFxwoojUDQzih41HCS3HaYh
+ W0QDslSyvyLfkFIls3Q==
+X-Proofpoint-GUID: EVsJzc_ywYd0kH24IM35zS4t_fWcwyxG
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
  definitions=2026-06-09_01,2026-06-09_01,2025-10-01_01
 
-On Octeon series SoCs, the AF is an integrated device within the SoC, and
-hardware resources such as NPC, NIX and related blocks are global and
-coordinated by the AF driver.  Physical and virtual functions request those
-resources via AF mailbox messages, so two AF driver instances cannot both
-own that global state; firmware exposes only one AF PCI function at boot
-and any further octeontx2-af PCI probe returns -EBUSY so software matches
-the single-AF model.
+From: Saeed Mahameed <saeedm@nvidia.com>
 
+Devlink param value attribute is not defined since devlink is handling
+the value validating and parsing internally, this allows us to implement
+multi attribute values without breaking any policies.
+
+Devlink param multi-attribute values are considered to be dynamically
+sized arrays of u64 values, by introducing a new devlink param type
+DEVLINK_PARAM_TYPE_U64_ARRAY, driver and user space can set a variable
+count of u64 values into the DEVLINK_ATTR_PARAM_VALUE_DATA attribute.
+
+Implement get/set parsing and add to the internal value structure passed
+to drivers.
+
+This is useful for devices that need to configure a list of values for
+a specific configuration.
+
+example:
+$ devlink dev param show pci/... name multi-value-param
+name multi-value-param type driver-specific
+values:
+cmode permanent value: 0,1,2,3,4,5,6,7
+
+$ devlink dev param set pci/... name multi-value-param \
+		value 4,5,6,7,0,1,2,3 cmode permanent
+
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
 Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/rvu.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ Documentation/netlink/specs/devlink.yaml |  4 +++
+ include/net/devlink.h                    |  8 ++++++
+ include/uapi/linux/devlink.h             |  1 +
+ net/devlink/netlink_gen.c                |  2 ++
+ net/devlink/param.c                      | 33 +++++++++++++++++++++++-
+ 5 files changed, 47 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
-index 3cf131508ecf..12db4c7a11f8 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
-@@ -3542,19 +3542,29 @@ static void rvu_update_module_params(struct rvu *rvu)
- 		kpu_profile ? kpu_profile : default_pfl_name, KPU_NAME_LEN);
- }
- 
-+static atomic_t device_bound = ATOMIC_INIT(0);
+diff --git a/Documentation/netlink/specs/devlink.yaml b/Documentation/netlink/specs/devlink.yaml
+index 247b147d689f..52ad1e7805d1 100644
+--- a/Documentation/netlink/specs/devlink.yaml
++++ b/Documentation/netlink/specs/devlink.yaml
+@@ -234,6 +234,10 @@ definitions:
+         value: 10
+       -
+         name: binary
++      -
++        name: u64-array
++        value: 129
 +
- static int rvu_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- {
- 	struct device *dev = &pdev->dev;
- 	struct rvu *rvu;
- 	int    err;
- 
-+	if (atomic_cmpxchg(&device_bound, 0, 1) != 0) {
-+		dev_warn(dev, "Only one af device is supported.\n");
-+		return -EBUSY;
-+	}
+   -
+     name: rate-tc-index-max
+     type: const
+diff --git a/include/net/devlink.h b/include/net/devlink.h
+index 5f4083dc4345..dd546dbd57cf 100644
+--- a/include/net/devlink.h
++++ b/include/net/devlink.h
+@@ -433,6 +433,13 @@ enum devlink_param_type {
+ 	DEVLINK_PARAM_TYPE_U64 = DEVLINK_VAR_ATTR_TYPE_U64,
+ 	DEVLINK_PARAM_TYPE_STRING = DEVLINK_VAR_ATTR_TYPE_STRING,
+ 	DEVLINK_PARAM_TYPE_BOOL = DEVLINK_VAR_ATTR_TYPE_FLAG,
++	DEVLINK_PARAM_TYPE_U64_ARRAY = DEVLINK_VAR_ATTR_TYPE_U64_ARRAY,
++};
 +
- 	rvu = devm_kzalloc(dev, sizeof(*rvu), GFP_KERNEL);
--	if (!rvu)
-+	if (!rvu) {
-+		atomic_set(&device_bound, 0);
- 		return -ENOMEM;
-+	}
++#define __DEVLINK_PARAM_MAX_ARRAY_SIZE 32
++struct devlink_param_u64_array {
++	u64 size;
++	u64 val[__DEVLINK_PARAM_MAX_ARRAY_SIZE];
+ };
  
- 	rvu->hw = devm_kzalloc(dev, sizeof(struct rvu_hwinfo), GFP_KERNEL);
- 	if (!rvu->hw) {
- 		devm_kfree(dev, rvu);
-+		atomic_set(&device_bound, 0);
- 		return -ENOMEM;
+ union devlink_param_value {
+@@ -442,6 +449,7 @@ union devlink_param_value {
+ 	u64 vu64;
+ 	char vstr[__DEVLINK_PARAM_MAX_STRING_VALUE];
+ 	bool vbool;
++	struct devlink_param_u64_array u64arr;
+ };
+ 
+ struct devlink_param_gset_ctx {
+diff --git a/include/uapi/linux/devlink.h b/include/uapi/linux/devlink.h
+index 0b165eac7619..ca713bcc47b9 100644
+--- a/include/uapi/linux/devlink.h
++++ b/include/uapi/linux/devlink.h
+@@ -406,6 +406,7 @@ enum devlink_var_attr_type {
+ 	DEVLINK_VAR_ATTR_TYPE_BINARY,
+ 	__DEVLINK_VAR_ATTR_TYPE_CUSTOM_BASE = 0x80,
+ 	/* Any possible custom types, unrelated to NLA_* values go below */
++	DEVLINK_VAR_ATTR_TYPE_U64_ARRAY,
+ };
+ 
+ enum devlink_attr {
+diff --git a/net/devlink/netlink_gen.c b/net/devlink/netlink_gen.c
+index 81899786fd98..f52b0c2b19ed 100644
+--- a/net/devlink/netlink_gen.c
++++ b/net/devlink/netlink_gen.c
+@@ -37,6 +37,8 @@ devlink_attr_param_type_validate(const struct nlattr *attr,
+ 	case DEVLINK_VAR_ATTR_TYPE_NUL_STRING:
+ 		fallthrough;
+ 	case DEVLINK_VAR_ATTR_TYPE_BINARY:
++		fallthrough;
++	case DEVLINK_VAR_ATTR_TYPE_U64_ARRAY:
+ 		return 0;
  	}
- 
-@@ -3687,6 +3697,7 @@ static int rvu_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 	pci_set_drvdata(pdev, NULL);
- 	devm_kfree(&pdev->dev, rvu->hw);
- 	devm_kfree(dev, rvu);
-+	atomic_set(&device_bound, 0);
- 	return err;
+ 	NL_SET_ERR_MSG_ATTR(extack, attr, "invalid enum value");
+diff --git a/net/devlink/param.c b/net/devlink/param.c
+index bd3881349c60..3e9d2e5750c2 100644
+--- a/net/devlink/param.c
++++ b/net/devlink/param.c
+@@ -252,6 +252,15 @@ devlink_nl_param_value_put(struct sk_buff *msg, enum devlink_param_type type,
+ 				return -EMSGSIZE;
+ 		}
+ 		break;
++	case DEVLINK_PARAM_TYPE_U64_ARRAY:
++		if (val->u64arr.size > __DEVLINK_PARAM_MAX_ARRAY_SIZE)
++			return -EMSGSIZE;
++
++		for (int i = 0; i < val->u64arr.size; i++) {
++			if (nla_put_uint(msg, nla_type, val->u64arr.val[i]))
++				return -EMSGSIZE;
++		}
++		break;
+ 	}
+ 	return 0;
  }
+@@ -537,7 +546,7 @@ devlink_param_value_get_from_info(const struct devlink_param *param,
+ 				  union devlink_param_value *value)
+ {
+ 	struct nlattr *param_data;
+-	int len;
++	int len, cnt, rem;
  
-@@ -3716,6 +3727,7 @@ static void rvu_remove(struct pci_dev *pdev)
- 		cn20k_free_mbox_memory(rvu);
- 	kfree(rvu->ng_rvu);
- 	devm_kfree(&pdev->dev, rvu);
-+	atomic_set(&device_bound, 0);
+ 	param_data = info->attrs[DEVLINK_ATTR_PARAM_VALUE_DATA];
+ 
+@@ -577,6 +586,28 @@ devlink_param_value_get_from_info(const struct devlink_param *param,
+ 			return -EINVAL;
+ 		value->vbool = nla_get_flag(param_data);
+ 		break;
++
++	case DEVLINK_PARAM_TYPE_U64_ARRAY:
++		cnt = 0;
++		nla_for_each_attr_type(param_data,
++				       DEVLINK_ATTR_PARAM_VALUE_DATA,
++				       genlmsg_data(info->genlhdr),
++				       genlmsg_len(info->genlhdr), rem) {
++			if (cnt >= __DEVLINK_PARAM_MAX_ARRAY_SIZE)
++				return -EMSGSIZE;
++
++			if ((nla_len(param_data) != sizeof(u64)) &&
++			    (nla_len(param_data) != sizeof(u32))) {
++				NL_SET_BAD_ATTR(info->extack, param_data);
++				return -EINVAL;
++			}
++
++			value->u64arr.val[cnt] = nla_get_uint(param_data);
++			cnt++;
++		}
++
++		value->u64arr.size = cnt;
++		break;
+ 	}
+ 	return 0;
  }
- 
- static void rvu_shutdown(struct pci_dev *pdev)
 -- 
 2.43.0
 
