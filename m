@@ -1,140 +1,204 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6363355F36
-	for <netdev@vger.kernel.org>; Tue,  9 Jun 2026 14:30:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 280F834165B
+	for <netdev@vger.kernel.org>; Tue,  9 Jun 2026 14:33:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781015420; cv=none; b=FT1u5P3jId5kErOeLag8R5dcDL/XwFa6BeJNb4H/LBDBNUvrkKl1xgWj6LX7tOrIzW7gu3qsp6NkeoWZFJwOh2CY58CvnPcOT6Wyz2CwwEwtoZEEPv020jOK+9gePPyxGd3PsBaQUmOXajVgIyRxwECaB2HstdlKybG6KoG+IM8=
+	t=1781015598; cv=none; b=pVRRZrpkyOYvT3o5ek2tMlQAd1MEv9GWA4lUb1NFJrrYZZPipkPKxhCV2DmP3JfMllAdo24SiiHljPg6Yfc5JfPPqvxRBEoRMRz7ZT0vrauR6QQ+lMC69TsyN94s58J93/pgzeniIEFI/Qa0KjMSJP+y74TEMubk3Q39CrEpSPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781015420; c=relaxed/simple;
-	bh=is2mRaWR+4YunR/LPXqVl1Ng9UrhinPbGcP3VKy5ZgY=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=S2GB6qbe+48TOzQwKwY83VtuxXuO+sIR1GiLci0pz5e3SYw6oLqpVD81hQq7O+7lAUnTlUaMEAGfm+RhIyqVNWJ+gCG10Bx9AihofYC7UrvVAuzNOowOaXKKqMZ7kZL/UPivRtI7JpBfv0/Dg2ibHg2ub38ETgtB1fRb6vZz1LM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aTJSty4D; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781015598; c=relaxed/simple;
+	bh=zPgr6yEqFCItOp7qEwBbRG3Hy3JQh/qbZNkIEK5EN2I=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=Umpf4i2URTOSpV0l0k9ogZFBzQKWM7vnP4Tofv5fIML/IMxD9loT5t/aZfTBb67NoLzBvBSECDmDiYF1YyFqi/9gpFvABiQyPguGwNJVK/PL3+V/J37/P2yh2JFl1uAxP7YA/dtTUm6nLa0Fv41scWebBJGvemTfW0BeWblloLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=QCzGJrcC; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aTJSty4D"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEBD61F008A2;
-	Tue,  9 Jun 2026 14:30:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781015418;
-	bh=mNllo/EAh5OGpFDve9m7daTWGpd6XC59pL4YC3FC5iw=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject;
-	b=aTJSty4Diblx3iJfPXl9JSxScs3lyUKgJCVZzgLCaiFqkA3vhlyBrCYmGVXuhEms5
-	 cyA1dxJETNcGxsoa8DXJQiv4uKqQf8o87ua1TKaKLHeyxHkXD77Ko8kWeBH7JskyR0
-	 kzeEovugzp8iInPqlzwEnx84F4VRCrNcqerPtJeaQNWRgVVCDgmihcB/KDhk3tptaJ
-	 A6kBnPvu+VgkMuklRacvUntgF0Mdcbf8et30Wh+jNIvLUaC3yUfjBPYoTmYBxwCDX7
-	 G+x2lkUzhxpHjyeCNdoEylWcDAyhPd5tIB0jbgxAVRSwzt12KaxopsgQHvEzioHSAw
-	 G/Q3H/4z1fJqg==
-Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 1D36DF4006A;
-	Tue,  9 Jun 2026 10:30:17 -0400 (EDT)
-Received: from phl-imap-15 ([10.202.2.104])
-  by phl-compute-10.internal (MEProxy); Tue, 09 Jun 2026 10:30:17 -0400
-X-ME-Sender: <xms:eCMoapKexCjkXyEZ3eOdAyNVK7HmUxvij5QfLLNufEv9AWuLQ4OiaQ>
-    <xme:eCMoav-DVagjzGgldgg9bfWz6OkOAYl2zJ8oTpsg5ImJjBNBsKlotda8ZuMZ-tUyS
-    jc9znDr0HiG4_kteXTEsN8IZh6LjAvOD7SyHAkeLQCKWo1rczrSMA>
-X-ME-Proxy-Cause: dmFkZTEizTHeulnQTPsT2PqpHc+Eyp22TRfQg2TIYhjfXCvDwYB5d+dpktqe8zqEr5vrux
-    inI0MaXzbLYOKH28GbCSYr7WNBS7ciLxN3MktKo4fd/b0/auhV9bx5/335lN43MtbhHgaw
-    pcY4At/FI5BH9Q+isuapA48wsxxK8yGo3GI50GUcEsmXZ1OJSWRlC2olrybnDDHyFp/NCB
-    sl9G29kfAu+FwiIfTdK1EP+bilNHvKeRJr2fVvvpZF64ZwSk4jSC2N1yq2mWiRQafdMPLV
-    CPoO225ay/zgAbScNX405bdIc8NAHneoofbMWsiMbGl4+bxfS42vp4TMFVMvhR1biniuhF
-    gvJfHtIE1phaCbK1q36GPBiNyAV/F4vqu6uIxtQxoD1dJq0DktPPW31G3BxxS/DDwqjrzB
-    RM0eEpdb5KDlAKMkqagjqGzPeerJfvJ2R3HRgCBCp6AqoN4fzYVfxbwVYOLm3gwM9TeC27
-    plWvOKPFbqflqJm5JC5PDKit7/NxQNlDe9prBsBtEp0jUDEI9+ImrN9ZRzgO9vbtzVoOlL
-    CmWOk5Mxr4UToBD/NN0Yb/wJ5R+iy9F3tj4YLdCzN20W2o+KnzZ3UEAmM+2XtO7Um8cabI
-    WDsPNsJ0mSyPa/ZAAAEOlRdmYZTGnWn+I1l+KodL7EdPraTepwLkDI2nFjPg
-X-ME-Proxy: <xmx:eSMoajydRPr-3XfKnVMdGvDQyBe_v-zUgmtCASsY_NKiBiclA2Vivw>
-    <xmx:eSMoara60p1DcjOLLYYii5Hx-wzp5cVEClGXsLDboIukoE9m05ED6A>
-    <xmx:eSMoarJhF3VGKrbDDOqeyll3AEz18DOvuZp8G3Ii1fOxpQ5PV-s09g>
-    <xmx:eSMoahzEx9yATQYXzLeypZFFTodr7zoXwfg9bS3LZjk0ocHzxe9bwg>
-    <xmx:eSMoajNWKedofmIUTPxdyquFv_J51zANp_OViVMCBNz3-k_uqafaWKfG>
-Feedback-ID: ifa6e4810:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id DD895780070; Tue,  9 Jun 2026 10:30:16 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="QCzGJrcC"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6595EfSA3019572;
+	Tue, 9 Jun 2026 14:33:10 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=GpS3vA
+	aOTTDMmWjoOLBnXrI1AoDUD047jdcfwj6uSow=; b=QCzGJrcCg32n5PIMde6dP3
+	SzeT63v9+c6s6YfSzhe4mhtMe6TpNjKS65IUdwjKYatuL93iB6goIGUqcez62eBU
+	/Jcvk2L3Eo9ioLf8rZolDYT6ROAor6NUGFBEAnt/iOxBUEei5Bgw1mQZVDomIk2V
+	dXyjwzSZb3nHI/W09y6tjqD6oBG82qzzW12mQeksb6Ls56caW8NsmItiCzHhusGM
+	YZB8t0pJA+LjuDfj4rEpDpBsiGCw20wm95ZMk+qM1o+hy7UGRmfx7XZJAI18fe1w
+	rBsFy5MsiHCQscgevdJE1ZZ3HA5M7wT8X0ta8NOlqkCsVlWogs5rcx/xoAn8e6Aw
+	==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4emb7qmm6t-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 09 Jun 2026 14:33:09 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 659EJaI5031182;
+	Tue, 9 Jun 2026 14:33:09 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4en03g273m-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 09 Jun 2026 14:33:08 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 659EX7MU34734520
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 9 Jun 2026 14:33:07 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2E8322004E;
+	Tue,  9 Jun 2026 14:33:07 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 02F6D2004B;
+	Tue,  9 Jun 2026 14:33:07 +0000 (GMT)
+Received: from [9.111.155.143] (unknown [9.111.155.143])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue,  9 Jun 2026 14:33:06 +0000 (GMT)
+Message-ID: <4aa93507-8587-4b16-b81e-54a2a967c60c@linux.ibm.com>
+Date: Tue, 9 Jun 2026 16:33:06 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: A_qtNCD-JAng
-Date: Tue, 09 Jun 2026 10:29:56 -0400
-From: "Chuck Lever" <cel@kernel.org>
-To: "Hannes Reinecke" <hare@suse.de>,
- "Donald Hunter" <donald.hunter@gmail.com>,
- "Jakub Kicinski" <kuba@kernel.org>, "David S. Miller" <davem@davemloft.net>,
- "Eric Dumazet" <edumazet@google.com>, "Paolo Abeni" <pabeni@redhat.com>,
- "Simon Horman" <horms@kernel.org>, "Jonathan Corbet" <corbet@lwn.net>,
- "Shuah Khan" <skhan@linuxfoundation.org>,
- "Andrew Morton" <akpm@linux-foundation.org>,
- "John Fastabend" <john.fastabend@gmail.com>,
- "Sabrina Dubroca" <sd@queasysnail.net>, "Keith Busch" <kbusch@kernel.org>,
- "Jens Axboe" <axboe@kernel.dk>, "Christoph Hellwig" <hch@lst.de>,
- "Sagi Grimberg" <sagi@grimberg.me>, "Chaitanya Kulkarni" <kch@nvidia.com>,
- "Jeff Layton" <jlayton@kernel.org>, NeilBrown <neil@brown.name>,
- "Olga Kornievskaia" <okorniev@redhat.com>, "Dai Ngo" <Dai.Ngo@oracle.com>,
- "Tom Talpey" <tom@talpey.com>, "Trond Myklebust" <trondmy@kernel.org>,
- "Anna Schumaker" <anna@kernel.org>
-Cc: kernel-tls-handshake@lists.linux.dev, netdev@vger.kernel.org,
- linux-nvme@lists.infradead.org, linux-nfs@vger.kernel.org,
- "Chuck Lever" <chuck.lever@oracle.com>
-Message-Id: <7b5276ff-cceb-446c-97ec-65ad80689495@app.fastmail.com>
-In-Reply-To: <40199ef9-416e-4a58-908a-ed514dfd6ff2@suse.de>
-References: <20260605-tls-session-tags-v1-0-47bd1d94d552@oracle.com>
- <20260605-tls-session-tags-v1-2-47bd1d94d552@oracle.com>
- <40199ef9-416e-4a58-908a-ed514dfd6ff2@suse.de>
-Subject: Re: [PATCH 2/9] handshake: Add tags to "done" downcall
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] dibs: fix use-after-free in dmb lookup functions
+From: Alexandra Winter <wintera@linux.ibm.com>
+To: Rahul Chandelkar <rc@rexion.ai>, netdev@vger.kernel.org
+Cc: "D. Wythe" <alibuda@linux.alibaba.com>,
+        Wenjia Zhang <wenjia@linux.ibm.com>
+References: <4gRZFl1CWvz2x9j@mail.spacemail.com>
+ <f664f9ca-30b5-404d-9b3c-268d8dbf2bcb@linux.ibm.com>
+ <8b0ca410-491f-4fda-af67-41b1a78c5cf7@linux.ibm.com>
+Content-Language: en-US
+In-Reply-To: <8b0ca410-491f-4fda-af67-41b1a78c5cf7@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=HppG3UTS c=1 sm=1 tr=0 ts=6a282426 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=c92rfblmAAAA:8
+ a=o8dFRQB0AAAA:8 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=4QYngW9aaQOuVnSYWv8A:9
+ a=QEXdDO2ut3YA:10 a=GvGzcOZaWPEFPQC_NcjD:22 a=D5cU4ZU6l4KboW5xFU7l:22
+X-Proofpoint-GUID: f4YYZk4vn5xJ9CEJHXzq0KUX6bsRkWtc
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjA5MDEzNCBTYWx0ZWRfXxE8Zu720Fd3r
+ e/zxtU8PCgsM8fJsWlBfwbFykXCkGNUXD7n0JARgqvAaqHZVzDUHjEorf2Ui3pdo/5UuxAMVaqb
+ Rr/bJdjnkG6GmA8Dh27ltwaoSuvT6mCyBtJ0iZQNsxtbmGcFa8PdFaUTwe0CAQpKgapmFpgFlX3
+ gh7mHpwrJqjFV2WOBmNkrBbaV143xZmRBBys3UBOcjKgVdrIxMSXTEiZFGgbWRaprBkJzOIQYAA
+ Cxe3GoyM8BhRBebisFh+SPYzrTi95m/aA4Sqh8BSMxs8NKyf/xtNvO3CQ/kZGunusBcYZCtFz3e
+ gyqY0JnnHyy8UXFt+mw4t+IRb25662ez4nocRaUfVzetMCdMOn7CQGqhyvaIhZLFDuLI5uoQRuo
+ epUAzaHjFG2y7p2ztqO58wIbHfSmGqqq79dv1hkrLg3z0kNR1PhUa916bFaJNr1Bf/eiQ4Cla4j
+ yPfE5HsDde4KgZQJpCw==
+X-Proofpoint-ORIG-GUID: GB9-wJNeRzoZUTjSRTHC2AxqRDw8NF69
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-09_03,2026-06-09_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0 adultscore=0 phishscore=0 malwarescore=0 impostorscore=0
+ priorityscore=1501 clxscore=1015 bulkscore=0 spamscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2605210000 definitions=main-2606090134
 
 
-On Tue, Jun 9, 2026, at 2:41 AM, Hannes Reinecke wrote:
-> On 6/5/26 19:34, Chuck Lever wrote:
->> We'd like tlshd to tag certificates according to admin-defined
->> characteristics. The tag list is to be returned on a successful
->> handshake. Upper Layer Protocols (such as NFS) can then authorize
->> access based on the set of tags returned to the kernel.
->> 
->> For example, suppose NFSD wants to restrict access to an export to
->> only clients that present certificates whose issuer DN contains
->> "O=Oracle". tlshd can parse incoming certificates, and add an
->> "oraclegroup" tag to handshakes where a client presents a
->> certificate with "O=Oracle" somewhere in its Issuer field. NFSD can
->> then be configured to look for that tag and permit access only when
->> it is present. NFSD needs no knowledge of x.509 certificates.
->> 
->> This patch plumbs in the netlink protocol elements for tlshd to
->> return a list of tags to the kernel when a TLS or QUIC handshake
->> succeeds. Subsequent patches add tag extraction and storage in
->> the handshake layer.
 
-> Not sure if I agree with this; to my untrained eye the 'tag' attribute 
-> is just a string, and someone else will have to parse that. But we
-> are at the netlink level here, so we _can_ have nested tags.
-> Wouldn't it be better to make 'tags' a nested tag (ie a list of tags)
-> such that we can avoid parsing in the caller/consumer?
+On 01.06.26 15:51, Alexandra Winter wrote:
+> 
+> 
+> On 29.05.26 15:11, Alexandra Winter wrote:
+>>
+>>
+>> On 29.05.26 09:08, Rahul Chandelkar wrote:
+>>> From 68f633e58deb6edffa435a3b2bdc4a12a5e36daf Mon Sep 17 00:00:00 2001
+>>> From: Rahul Chandelkar <rc@rexion.ai>
+>>> Date: Fri, 29 May 2026 12:32:34 +0530
+>>> Subject: [PATCH net] dibs: fix use-after-free in dmb lookup functions
+>>>
+>>> dibs_lo_attach_dmb(), dibs_lo_detach_dmb(), and dibs_lo_unregister_dmb()
+>>> all release read_lock_bh before operating on the dmb_node pointer found
+>>> during hash table lookup. A concurrent unregister on the same token can
+>>> kfree() the node in this window, causing a use-after-free when the
+>>> original caller subsequently performs refcount_inc_not_zero() or
+>>> refcount_dec_and_test() on the freed object.
+>>
+>> As discussed off-list, there is no such problem in the current kernel, as there
+>> is no such caller.
+>> I fully agree that this should be improved, but this should go to [net-next]
+>> as an improvement without a Fixes tag. (This matters, because it removes
+>> the burden of backporting, porting to Stable etc..)
+>>
+> 
+> 
+> Giving it some more thought, I think there could be such a race, when server and
+> client shutdown the smcd connection at the same time.
+> 
+> 
+>>>
+>>> Fix by performing the refcount operation while still holding read_lock_bh,
+>>> so the node cannot be freed between lookup and use. Release the lock
+>>> before any code path that may call __dibs_lo_unregister_dmb(), since that
+>>> function acquires write_lock_bh internally via hash_del().
+>>>
+>>> Fixes: cb990a45d7f6 ("dibs: Define dibs loopback")
+> 
+> Actually this mechanism was introduced with
+> c3a910f2380f ("net/smc: implement DMB-merged operations of loopback-ism")
+> 
+> cb990a45d7f6 only moved it into the dibs layer.
+> 
+> With that:
+> Reviewed-by: Alexandra Winter <wintera@linux.ibm.com>
+> 
+> 
+>>> Signed-off-by: Rahul Chandelkar <rc@rexion.ai>
+>>> ---
+>>
+[...]
+> 
+> Future work:
+> I think attach/detach_dmb() in dibs_lo have more scenarios where robustness
+> could be improved. e.g. when a does unregister_dmb() but not detach_dmb().
+> I don't like it, that in such a case, after successful unregister_dmb(),
+> the dmb is still in the hash table,  can still receive data, trigger
+> receive interrupts (move_data()), be target of attach_dmb(). Wen Gu, Tony
+> Lu, what do you think about that? Maybe that can even happen in SMC-D
+> today?
+> 
+> Maybe a get/put mechanism with release function would be appropriate, where
+> dibs_lo_unregister_dmb() does everything but freeing the dmb_node.
+> 
+> 
+> On a similar note, I think Shashiko is right with her second comment:
+> Link: https://sashiko.dev/#/patchset/4gRZFl1CWvz2x9j%40mail.spacemail.com
+> "Looking at dibs_lo_move_data(), it reads rmb_node->sba_idx while holding
+> read_lock_bh(&ldev->dmb_ht_lock), then drops the read lock before acquiring
+> spin_lock(&dibs->lock) to look up the client ID:
+> drivers/dibs/dibs_loopback.c:dibs_lo_move_data() {
+> 	...
+> 	sba_idx = rmb_node->sba_idx;
+> 	read_unlock_bh(&ldev->dmb_ht_lock);
+> 	if (!sf)
+> 		return 0;
+> 	spin_lock(&dibs->lock);
+> 	client_id = dibs->dmb_clientid_arr[sba_idx];
+> 	...
+> }
+> Between dropping the read lock and acquiring the spinlock, could the dmb be
+> completely unregistered by a concurrent thread, and its sba_idx reallocated
+> for a new dmb belonging to a completely different client?
+> If so, would the function read the new client's ID and erroneously call its
+> handle_irq handler?"
+> 
+> 
+> 
 
-Had some time to digest your comment a little more...
+Rahul,
+what are your plans with this patch? Will you send a v2?
 
-The tag attribute is declared "multi-attr: true", so it is already a
-list rather than a single delimited string. tlshd emits one
-HANDSHAKE_A_DONE_TAG attribute per tag, and the kernel receives each
-tag as a separate netlink attribute. There is no string to split in
-the consumer; the parsing you are worried about does not happen. 
+See
+https://patchwork.kernel.org/project/netdevbpf/patch/4gRZFl1CWvz2x9j@mail.spacemail.com/
 
-This matches remote-auth directly above it, which is likewise a
-multi-attr scalar list in the same DONE message.
-
-A nested attribute earns its keep when each list element is a
-structured record with several sub-fields to group. A tag is a single
-string, so nesting would add a container attribute, a second
-attribute-set, and a nested policy without making anything on the
-consumer side simpler. If a tag later needs to carry structured
-metadata, nesting becomes the right tool, but that is not in scope for
-this series.
+the current version does not apply on net.
 
 
--- 
-Chuck Lever
