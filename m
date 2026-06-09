@@ -1,78 +1,119 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4336539EF30;
-	Tue,  9 Jun 2026 23:03:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE6EE40D58C
+	for <netdev@vger.kernel.org>; Tue,  9 Jun 2026 23:23:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781046189; cv=none; b=Cj2qREAlFnJ4rl0qCGLcoAnyPkKwbO2MLVyIjfq7KEL6CD+XoILQ3rxaZUYRQL+tA+9jVjFyPralKmom0eI4j4Tlt7IjZjrVvEBcNTPxo2Ca7yHQazK+B/DWRKlwsh/O+SOw09dLSLl8HpIVVMXFNHzYUhrT4ece0qXvdFuJTfw=
+	t=1781047413; cv=none; b=EHcQIPKoYbc+3hJ9ujpO87JCWJ3Dxkv6AOu6zvtimE33zWZk91CyVqxaJDA9vTEGMyL8o7pAfQH1cHkxOvOR/gdabyf6/tj42002aBnDx3tOOmcuuCvIYMMKu7rCBphd61XQFxSP6c36wJeUF4VvkKErCx1s5H80aqiiSagD80Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781046189; c=relaxed/simple;
-	bh=S0FwGmOfWBF0ZuzvBV2cmCs6f1kahPE2hTDM8i1M9w4=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NB6pY/fSuZKJqqge6dno+pxR9GXic9k/X9RMNIitKgiFkL/qyCRU26dHqDXhkbu16dIon/MTCNKQ41yAFQxFCIK56zhsd+LIRSJOUV5ha14IpMKeiqC4q8geRyUcprHTswubUDLd5rvaO5AFsMraHyqXAb+IIf91bLOXJmZgt30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lXuNbtxE; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781047413; c=relaxed/simple;
+	bh=/moGaGSyE23xwp1CWmNIIXZGf49bTpQJ/4nZGzLnW64=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FMRkJQvxBd/+SG36W15h4IjYo8Vis+1FF/E5rBT3wlq/WNR9lq67px1iNLEeQx3hViv9+btTYc2IsS8UOnqqpIUr5S5LTpCQ8N97CcN66pIhcz9DCuxZkM4bQN/nv3ZkhmYquyuBFmwZ1vvXG7RdzXloT3XqB0CEu+iSpWI2kXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trailofbits.com; spf=pass smtp.mailfrom=trailofbits.com; dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b=fVyZQyCV; arc=none smtp.client-ip=209.85.160.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trailofbits.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trailofbits.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lXuNbtxE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A58AE1F00893;
-	Tue,  9 Jun 2026 23:03:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781046187;
-	bh=3/W3fHN//C2H+FsUJvZKtOCL62SWLw8hoJcSToyb1jA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=lXuNbtxE0EnawPRESQVgXRpJ+Yb0mNXuoeLDOCvz+XOzej0igTIP33uh5+ai3f36P
-	 t6xYhWVWjR49I9OKYuBtZUvchF32nZn8LaBmjFvHuCBWnVbPOo2dqP4+jvoCR1/8yI
-	 LbfaYWQ0+wgGlyrrqmpR+HYRzKHnD2MTbNUSd+RLxhZrOjI+3Q8ptuxVf/NXPDyBpA
-	 WRXDLheHVy5htKXqcTFhoNvhB94swJUVpIwI7e/ssY9n/Os2qGuufo23AItsAYiNVR
-	 D3/2iAGyZsiUZmBOGZks7YGHFCnq4mxChfUjLFwvg++oXwk3zShRft/og7ietUhAhD
-	 SdOCDjtjhH5Zg==
-Date: Tue, 9 Jun 2026 16:03:06 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Pablo Neira Ayuso <pablo@netfilter.org>
-Cc: Florian Westphal <fw@strlen.de>, netdev@vger.kernel.org,
- netfilter-devel@vger.kernel.org
-Subject: Re: [PATCH net-next] net: dummy: add phony ndo_setup_tc stub
-Message-ID: <20260609160306.79be97b5@kernel.org>
-In-Reply-To: <aiiaGPj0XQ0mx-cp@chamomile>
-References: <20260609142813.9197-1-fw@strlen.de>
-	<aiiaGPj0XQ0mx-cp@chamomile>
+	dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b="fVyZQyCV"
+Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-5176fc0cc72so61821311cf.1
+        for <netdev@vger.kernel.org>; Tue, 09 Jun 2026 16:23:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=trailofbits.com; s=google; t=1781047411; x=1781652211; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=AYN2/VUfjfy9nXjDQ56HkTZcEt97aRnd8nCnumbKYN0=;
+        b=fVyZQyCVDNl4tYoQVK1/K7jwqV04c6l5gLy++3lpBswkhXDvU9n9a9jb9o4dXoGASi
+         8r1jql/OyAJPP317i2e7+A9BCag85t7bfoJwu73R1rMaoQNlGhXorLVvhiqMYuu9/L9Y
+         5EwLMXgHXg6FTeaP2qv7JxZwfhNrCWqJ4eVzylcdTPF6ifKCa1uWDd/+OP1EsiG53dWG
+         2+Vdm+BbfRUAQch17AUMytUP8mhMfSvlqW1oG+n8P2zKcOqYgD7PoV/eaRlBVkxUv7+2
+         vM/saj9gmqBaU/+YcKmq3v4BnJVB1VmCyHOYruOcXgWjuWOYV9NBFGlEhO417av8A5IE
+         ayAw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781047411; x=1781652211;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=AYN2/VUfjfy9nXjDQ56HkTZcEt97aRnd8nCnumbKYN0=;
+        b=GqqKBYfaZPvFTDCAqxJlHP4eGFOzz5OQjkPSSQGy1m4ywRUU6Cwl8AA/9uJ4IJ6qdP
+         ICnPYvcDe36MJFBAEfnqVzIpfzq08ZVW5nbeCdLLn+FFL0sipDGW2BkyKS+nQgtjJ5ZS
+         i/tAtl39WiSqTSf+GwJ4or3glOPo9c+EnNTYWenGkH8nycf0tOxPCntdTquxp+pH6upF
+         abTM8lpOnMLPbiL7oQRmwMeyJ/9snsmpszVlZgtdzXY2pLuakXzjA9ttUpnpwUfLKx/N
+         u9DUXAWLHsWROgl47nSAOfd8+JBrXmsEylg7XkKsasQw2MGLDLBRMTsvBKxSZSf6C5U6
+         jQpQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/195vYQMoVzIFYYkfhFlRLFrYWfwM17VBHd72n+/S+WND3ZQ1ji7XCRxyRJmTB/NEmJ7uIy4c=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwYkb6oOXsonAkaDNJqrMGDwo53XmOoTejrMxpRg6GqkFwYltPy
+	HoUBnlRlZsGhpkydRrcCSUyDy/P0qWqrkWs3qRmrpd3AVf6IKQW+Q/EYMU2CTBv2a/8=
+X-Gm-Gg: Acq92OF/TYfU8HnCvlleFA2JFahlzflk6dt0kYfEh9ehvd2GANnpZx6D69srjSZgpX0
+	i/pOG0VNDYxGkksNAqJfgwsSA80R5Q+o751w+9VEvPcMEaRHW9/hAs7sJC3pWsN+997KvceD4vi
+	cecEFNu7aXrwefssXPLlwbUCFyUcxMaBn50t2M2B2xtJEENhzTqn0FqdWm8kXpoLrjP6ege8ozA
+	DEsHbkjWL+RvZmyeqjuRTqI6Sc1XKz6S60tJzA99NIQDvWmpw5mgo5+2iVTCf07855FnzO0Of2A
+	01ujIrV9MKGWwm9TfulFTkQ58MY+bEKBIW3HtsmRv2I2CKGEcdUwNakZu3V3Cm349TJFrgiGwvS
+	Xt79W9LuUs5OFHB/IDaMlcj7ifDjfueSaJcOZvGHOyTrD+kBmo6iz3WwSvG316moOkNiYLFJJqn
+	oOTfGrB4l3Z+X2HZgbfmMFBAGEHln7FSa2Daqv7g==
+X-Received: by 2002:a05:622a:4a0c:b0:50f:b494:7887 with SMTP id d75a77b69052e-51795cbf6acmr332005161cf.51.1781047410817;
+        Tue, 09 Jun 2026 16:23:30 -0700 (PDT)
+Received: from localhost ([161.35.96.86])
+        by smtp.gmail.com with UTF8SMTPSA id 6a1803df08f44-8cecd053032sm224336396d6.24.2026.06.09.16.23.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 09 Jun 2026 16:23:30 -0700 (PDT)
+From: Samuel Moelius <sam.moelius@trailofbits.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: Samuel Moelius <sam.moelius@trailofbits.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Wojciech Drewek <wojciech.drewek@intel.com>,
+	Marcin Szycik <marcin.szycik@linux.intel.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org (open list:NETWORKING DRIVERS),
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH net v2] net: pfcp: allocate per-cpu tstats for PFCP netdevs
+Date: Tue,  9 Jun 2026 23:22:45 +0000
+Message-ID: <20260609232244.1602027.c569f6c530f6.pfcp-missing-tstats-link-create-oops@trailofbits.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Wed, 10 Jun 2026 00:56:24 +0200 Pablo Neira Ayuso wrote:
-> On Tue, Jun 09, 2026 at 04:28:09PM +0200, Florian Westphal wrote:
-> > diff --git a/net/netfilter/nf_tables_offload.c b/net/netfilter/nf_tables_offload.c
-> > index 9101b1703b52..26e7ed5a8575 100644
-> > --- a/net/netfilter/nf_tables_offload.c
-> > +++ b/net/netfilter/nf_tables_offload.c
-> > @@ -234,6 +234,9 @@ bool nft_chain_offload_support(const struct nft_base_chain *basechain)
-> >  				return false;
-> >  
-> >  			dev = ops->dev;
-> > +			if (dev_net(dev)->user_ns != &init_user_ns)
-> > +				return false;  
-> 
-> I have no idea how hardware offload can be used away from init_net_ns
-> (not even init_user_ns). For most drivers, this exposes the same
-> hardware offload capabilities for all netns, so they can interfer
-> each?
-> 
-> @Jakub: Did you mention any driver that already support netns?
-> Otherwise, maybe it is worth to restrict driver which do not explicit
-> opt-in to netns support?
+PFCP uses dev_get_tstats64() as its ndo_get_stats64 callback, but
+pfcp_link_setup() does not request NETDEV_PCPU_STAT_TSTATS.  The net
+core therefore leaves dev->tstats NULL for PFCP devices.
 
-IDK if any SW driver can do it, I guess that's the risk here.
+Creating a PFCP rtnetlink device can immediately ask the new netdev for
+stats while building the RTM_NEWLINK notification.  That reaches
+dev_get_tstats64() and dereferences the NULL dev->tstats pointer.
 
-For HW drivers it doesn't matter which netns they are in, offload
-should just work. But of course malicious users can't conjure up HW
-devices, admin has to explicitly move the device into a netns.
-Which is an explicit "permission grant".
+Set pcpu_stat_type to NETDEV_PCPU_STAT_TSTATS during PFCP link setup so
+the net core allocates the storage expected by dev_get_tstats64().
 
-The offload itself should be inherently netns aware since it should 
-not cross netns boundaries?
+Fixes: 76c8764ef36a ("pfcp: add PFCP module")
+Assisted-by: Codex:gpt-5.5-cyber-preview
+Signed-off-by: Samuel Moelius <sam.moelius@trailofbits.com>
+---
+Changes in v2:
+  - Added fixes tag
+
+ drivers/net/pfcp.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/net/pfcp.c b/drivers/net/pfcp.c
+index 28e6bc4a1f14..a6aa30ae0af7 100644
+--- a/drivers/net/pfcp.c
++++ b/drivers/net/pfcp.c
+@@ -148,6 +148,7 @@ static void pfcp_link_setup(struct net_device *dev)
+ 	dev->flags = IFF_POINTOPOINT | IFF_NOARP | IFF_MULTICAST;
+ 	dev->priv_flags |= IFF_NO_QUEUE;
+ 
++	dev->pcpu_stat_type = NETDEV_PCPU_STAT_TSTATS;
+ 	netif_keep_dst(dev);
+ }
+ 
+-- 
+2.43.0
+
