@@ -1,72 +1,79 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7849313E34;
-	Tue,  9 Jun 2026 02:08:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F00FF346E75;
+	Tue,  9 Jun 2026 02:08:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780970902; cv=none; b=RGPw/r2dpXJODm4HacUs/QW1UqtZ63hgP4kbdKrKAvgNGD6JoAeCG0qdz3qysSqNYgDpjwAvRHKsxQDcpKdIoFHZ+P11XGOkzqv2USs39vH5ORQo7Wd3fTNskrQsMKE+9x0VSBL85NnZHc00hnXeiQo09b+VmeosoGNQXr5ANIM=
+	t=1780970929; cv=none; b=njGsKlShlUvwm8b7O1snUivUCBRS20Uo3KCU4lX68tDqWhTgjQSnNaIvRvt28r+PfoJQNCeNUVQ5mZdD3p2d3iUAyV/KF27mLK4qDZjzOihLHP2fxbVOT0M2KiuF2dCdS1OG4gYkASbh/hIu9DGAZzKyAlTdxULi+uPOuq5si54=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780970902; c=relaxed/simple;
-	bh=c7JD3w02JBo5tsTPDMmw4GptFNlt/PbYFnc2NsI8qaA=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XiCHrWJx7BHAb2up3iMX2RAqBLtO2uYOIXycIWe+wL0vf2roW1MD9QpjQWbTwzfW7F6Up6o3ux/6efkEklMAOAJCyh/Csmc5V0awGm3n2WOzlhmfkeXNlcA+80j4d0ncGzWUDSDZRbV937EzRNeW+xxE9kRE7Y7rf8gPYj12AMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LgajasKG; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780970929; c=relaxed/simple;
+	bh=4bEZbwNr96N8q8ruYinI3Xxo9B2GJ3hy71B/uj7qA0s=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=nTND9Jzx1nYY1YDzNURH1XOvGdN8p9oxFOgyuczsDwKsuF5XfYiw9YtsLiSC5bVEZxD7iTcGXCgu77C39DCZelep4ZUwS3Q440DLRJ4Xrhyr76BPQM2DHNrkLgfFYPs5IKQS4+WQoCRBd8oJ4CxR7GlNg4CGVlq4Jo1AScRfQ/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn; spf=pass smtp.mailfrom=realsil.com.cn; dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b=KOV7gisL; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realsil.com.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LgajasKG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F22211F00898;
-	Tue,  9 Jun 2026 02:08:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780970901;
-	bh=fsHEdsO8gQZ7KC1cppmjOB+DDC9HC3XZJCn72ObCXLc=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=LgajasKGMygU6JenratQCZdYHxi5XgKKuGJr6rYg4jBIfWny22QRAo8U9cEeJv56D
-	 ccYDvKLs5WbYIvKvXIwb4YJuOICx5fQe9dQwrwMmEE0J8ruc11lfqQs4KGBoTuzZA/
-	 fys19H8Pi228p2NN4VzMLVqaQIQh/vhvBSzl9lfEq2UhJbdQ/56uTkNAMYDrdFo+J0
-	 6s61qeiGOtruVcKNRjAHV1Hu/23KGjojoZYDWfYjRBi8uCLYQgRFak6iSXQpXlhpGY
-	 tH3QZpsI13qnkOvBizLMgbOuN9tWSU8nyKlfp9t2ZVDCN5h6rkrjHVPlmj9lZxPtFD
-	 fFh1J2T8ogGwQ==
-Date: Mon, 8 Jun 2026 19:08:20 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Arseniy Krasnov <avkrasnov@rulkc.org>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, Stefano Garzarella
- <sgarzare@redhat.com>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, "Michael S.
- Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, Bobby Eshleman
- <bobby.eshleman@bytedance.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
- Eugenio =?UTF-8?B?UMOpcmV6?= <eperezma@redhat.com>, Simon Horman
- <horms@kernel.org>, kvm@vger.kernel.org,
- virtualization@lists.linux-foundation.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, oxffffaa@gmail.com, rulkc@linuxtesting.org
-Subject: Re: [PATCH v1] vsock/virtio: rework MSG_ZEROCOPY flag handling
-Message-ID: <20260608190820.71785304@kernel.org>
-In-Reply-To: <20260605115314.552321-1-avkrasnov@rulkc.org>
-References: <20260605115314.552321-1-avkrasnov@rulkc.org>
+	dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b="KOV7gisL"
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 65927VbG44078006, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realsil.com.cn;
+	s=dkim; t=1780970852;
+	bh=iAuAcHyW9ngdN8p/ip5z8PrWS/Tb9Pesd6bn8uLu4ps=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:
+	 Content-Transfer-Encoding:Content-Type;
+	b=KOV7gisLIpHQKyS0XdoVLtdKE1pYqHMEJBWq55Lf0sIlBVmb7JlvJLlzTEUFY1G9i
+	 PPd2V6IiTZEsvURcRelHd2nz2VmGzFlN8pXM8fE6sGTiH+A5RQ/v/LP0UVvstzb121
+	 1eHwSxkHEUROMtB1P56xWgEYNB8qHoT+oLGPSKhnJl/zcM+WfLgKFENBqJ70u/mqOb
+	 H+9arRIonMzPzBuiW7762Knr//qPCg1L5zISbDLEVHFu3GJ4GlkQHEnxPsGIR4TFWE
+	 swkJwAT82bnTODd/dbtMgLlbqvc8akakL35yFFayxlfYiiBuFWa0cmX8p6jS4L8MHi
+	 kzl2XBjSCikww==
+Received: from RS-EX-MBS3.realsil.com.cn ([172.29.17.103])
+	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 65927VbG44078006
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Tue, 9 Jun 2026 10:07:32 +0800
+Received: from RS-EX-MBS1.realsil.com.cn (172.29.17.101) by
+ RS-EX-MBS3.realsil.com.cn (172.29.17.103) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17; Tue, 9 Jun 2026 10:07:31 +0800
+Received: from 172.29.37.154 (172.29.37.152) by RS-EX-MBS1.realsil.com.cn
+ (172.29.17.101) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
+ Transport; Tue, 9 Jun 2026 10:07:31 +0800
+From: javen <javen_xu@realsil.com.cn>
+To: <andrew@lunn.ch>, <hkallweit1@gmail.com>, <linux@armlinux.org.uk>,
+	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <freddy_gu@realsil.com.cn>, <nb@tipi-net.de>
+CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<daniel@makrotopia.org>, <vladimir.oltean@nxp.com>, Javen Xu
+	<javen_xu@realsil.com.cn>
+Subject: [PATCH net-next v4 0/4] Add support for RTL8261C_CG
+Date: Tue, 9 Jun 2026 10:07:23 +0800
+Message-ID: <20260609020727.1152-1-javen_xu@realsil.com.cn>
+X-Mailer: git-send-email 2.50.1.windows.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-On Fri,  5 Jun 2026 14:53:14 +0300 Arseniy Krasnov wrote:
-> Logically it was based on TCP implementation, so to make further
-> support easier, rewrite it in the TCP way.
+From: Javen Xu <javen_xu@realsil.com.cn>
 
-Does not apply:
+Add support for RTL8261C_CG and add support for loading firmware.
 
-$ git pw series apply 1106582
-Failed to apply patch:
-Applying: vsock/virtio: rework MSG_ZEROCOPY flag handling
-error: sha1 information is lacking or useless (net/vmw_vsock/virtio_transport_common.c).
-error: could not build fake ancestor
-hint: Use 'git am --show-current-patch=diff' to see the failed patch
-hint: When you have resolved this problem, run "git am --continue".
-hint: If you prefer to skip this patch, run "git am --skip" instead.
-hint: To restore the original branch and stop patching, run "git am --abort".
-hint: Disable this message with "git config set advice.mergeConflict false"
-Patch failed at 0001 vsock/virtio: rework MSG_ZEROCOPY flag handling
+Javen Xu (4):
+  net: phy: c45: add genphy_c45_soft_reset()
+  net: phy: c45: add genphy_c45_config_master_slave()
+  net: phy: realtek: add support for RTL8261C_CG
+  net: phy: realtek: load firmware for RTL8261C_CG
+
+ drivers/net/phy/phy-c45.c              |  64 ++++
+ drivers/net/phy/realtek/realtek_main.c | 406 +++++++++++++++++++++++++
+ include/linux/phy.h                    |   2 +
+ include/uapi/linux/mdio.h              |   3 +
+ 4 files changed, 475 insertions(+)
+
 -- 
-pw-bot: cr
+2.43.0
+
