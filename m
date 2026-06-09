@@ -1,37 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C952388361;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93A7C395D87;
 	Tue,  9 Jun 2026 15:28:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781018889; cv=none; b=T7utTUHDDaYb0jS5BaZbETDyF5JMlnxrRn4u8pSSQW75LPe9PJ8D+SmE/S3qX3mbLgWHQbLxR7J1X/iBYmRWqeGhXQcYDTH2CB8y7xKEbjU3Y800NpyhSjFqOKw39j3FGdCyNMPC9EFs2mrM+1/orKvCkA8m/Fg78E2t+RfXtD8=
+	t=1781018889; cv=none; b=F6o9tKAiYIVhvpsnIedVwS8CLp9XWF0UJidZPQVdUUM76nG+SEnVcIRvHwGdpSQO4qxk7p3/ZFQA7e2FgZrNCGQVptt6YIQtPfyfbVNolkkQv2LCP+9MxVpV4KSF5Urek6yEEY+/Cp+3U9qghO1O+pME5ZY17OpIZqrtUE/3z/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1781018889; c=relaxed/simple;
-	bh=qh003LIc/uIhMWVY85o8JBWSHB6sAl99SdLkuMp4qsg=;
+	bh=O5JU5bEqNobi8gn4QmmceJYrHR1KOrd196IKTzdqm9U=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=gOe90yJhEpH9np4lill3tXJx4wZbSjhHopO7SKNbVxuuuyU+YknvvayyXALXttplw5kmiLNNG0X+rvM2D/AuYLunhHSUlgJGQO01g+1OaFDXjaY3kwbhwXuHXZlPcq2b9MnJ7KJgavq2iulMolQiQTveYTXYqAWcTWBpgNY0v94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hdjCERwm; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=s+PJUCr7Yb/fOJeaPPRCYHj/ZlCN37pq8H3MHLTv70kRCVt87netzbl94D3bkAbA80KXl8A+OYUkWC1ymSPeye3xZsDwlXbnOdIvXvIEqpH5HmCPJksBPpbh1c8m4ZyiqudXq/aRq063w9t8AFiRwkfihY8FIaeZzMGmQ5u3e0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Nm+DCNbJ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hdjCERwm"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 29C2DC2BCB9;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Nm+DCNbJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 5524EC4AF1B;
 	Tue,  9 Jun 2026 15:28:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1781018889;
-	bh=qh003LIc/uIhMWVY85o8JBWSHB6sAl99SdLkuMp4qsg=;
+	bh=O5JU5bEqNobi8gn4QmmceJYrHR1KOrd196IKTzdqm9U=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=hdjCERwmMBBGseu+ioZnvGBnGRFf3whbTTJU7ab9agBcD9JON3TlZ2GGI54da0rya
-	 F9m9Y5A7O4XgFD9/IczJcJC/G8HjEClVoYgsGcdEH8s42gbXDaJv9qPJElBF3pgJhJ
-	 27mXhgV/w4udYrbccoXBPHZAArG20HS4nVRarPOgbEjBAQcqdnnBKIx1usu9zHr2oI
-	 lElfqf22y5iNpdSPVuFkjkX02bRy5xXm1b5R1KT6UgE4rQZOp/vA4+BYehPTUUFAtM
-	 eK/cuB9BZJIRKsCk5ri3GScrbQwywi88BIjs66WrIOwjRhd6x6u42D9K6WH3QTiDC/
-	 Ha0r7988JfFbw==
+	b=Nm+DCNbJ/o+NjnegAoP7vUh/bTLL6ipnY6/2Xir4l7XEH9QbbNSJJwSQyxULzW/DT
+	 0NvGxVabmiyIBNOy0qO+yYTH1atRpDNPTeLzw/SlXQ+OCHrq5qZ/2ntxNVrHheJMCj
+	 +KSSEEvPexWCg2r5UgVrUMAAN3oBc/5rGnkjf47WNcDMhj7R4kc7SGRiSKjF77XfSe
+	 TblpwaWth0pYQmzDRIRsqFh45S+ESPLLwDPjpUXSVsZsRflIje/Mwd79kUhUePklsp
+	 xa/bcvY8RyffyJoVBDxazooe9zChewXXZTkZiVN7j1DncwD9VT8zZ8XJ0HZEXDxI0J
+	 iHXNTS79ca2QA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1343ECD8CA4;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4C14ACD8CA4;
 	Tue,  9 Jun 2026 15:28:09 +0000 (UTC)
 From: Ciprian Regus via B4 Relay <devnull+ciprian.regus.analog.com@kernel.org>
-Date: Tue, 09 Jun 2026 18:28:00 +0300
-Subject: [PATCH net-next v4 01/13] dt-bindings: net: Add ADIN1140
+Date: Tue, 09 Jun 2026 18:28:03 +0300
+Subject: [PATCH net-next v4 04/13] net: ethernet: oa_tc6: Export the C45
+ access functions
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -40,7 +41,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260609-adin1140-driver-v4-1-0753e28ee004@analog.com>
+Message-Id: <20260609-adin1140-driver-v4-4-0753e28ee004@analog.com>
 References: <20260609-adin1140-driver-v4-0-0753e28ee004@analog.com>
 In-Reply-To: <20260609-adin1140-driver-v4-0-0753e28ee004@analog.com>
 To: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>, 
@@ -55,14 +56,13 @@ To: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>,
  Conor Dooley <conor+dt@kernel.org>
 Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
  linux-doc@vger.kernel.org, devicetree@vger.kernel.org, 
- Ciprian Regus <ciprian.regus@analog.com>, 
- Conor Dooley <conor.dooley@microchip.com>
+ Ciprian Regus <ciprian.regus@analog.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1781018886; l=3182;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1781018886; l=2337;
  i=ciprian.regus@analog.com; s=20260330; h=from:subject:message-id;
- bh=nCxQBJBvJSUcPd4lkJBD0b9pdtmq9tLITG54fjZBT8g=;
- b=VBEu4VEHuCKxtK9InjP5LX/JSCCfTJpAJgrDWuEKoqy2wPJALeVV3ZbKJwT/lwcKpo6/XrlvR
- OtZHEWGAdSoBM30KWmackD46KmLGy8A5T1TZz48hObFNWH5VvmzbX3K
+ bh=PXhiTLN/eJwzSVDtbuD8NyXEgUV3FNkSSabnshSdzNo=;
+ b=A7PKiH/bxz6XS2HkdmifsqnrdQ66IhRJOHb8lUtrlDBMGMV5pbcEkHxqT992Fd7P5aqQ//mWJ
+ kYB2vm9d9L1Cqi0Jhb+ThrLT6A5g+wtx9ZXfHeJihcnK2WVhfrpChcl
 X-Developer-Key: i=ciprian.regus@analog.com; a=ed25519;
  pk=8WoNhI0kQcQUl8YqJO5ZevROYk9HP8lOIeIgIYgjfbc=
 X-Endpoint-Received: by B4 Relay for ciprian.regus@analog.com/20260330 with
@@ -72,107 +72,71 @@ Reply-To: ciprian.regus@analog.com
 
 From: Ciprian Regus <ciprian.regus@analog.com>
 
-The ADIN1140 is a single port 10BASE-T1S Ethernet controller that
-includes both the MAC and a PHY in the same package.
+The C45 access functions can still be used by some Ethernet drivers
+which set the OA_TC6_BROKEN_PHY flag. Export them.
 
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 Signed-off-by: Ciprian Regus <ciprian.regus@analog.com>
 ---
 v4 changelog:
- - renamed the dt bindings file after the fallback compatible device
-   (adi,ad3306).
+ - no change
 v3 changelog:
- - set adi,ad3306 as a fallback compatible.
+ - no change
 v2 changelog:
- - Reorder the compatible entries in the dt schema (ad3306, adin1140).
- - Removed "dt-bindings" from the commit title and message.
- - Updated the DT example to use IRQ_TYPE_LEVEL_LOW instead of
-   IRQ_TYPE_EDGE_FALLING for the interrupt trigger condition.
- - "implements" -> "tries to implement" in the description.
- - Removed the MAINTAINERS entry, as it will be added in a later patch
-   in the series.
- - Reordered as the first patch of the series
+ - New patch
 ---
- .../devicetree/bindings/net/adi,ad3306.yaml        | 71 ++++++++++++++++++++++
- 1 file changed, 71 insertions(+)
+ drivers/net/ethernet/oa_tc6.c | 10 ++++++----
+ include/linux/oa_tc6.h        |  4 ++++
+ 2 files changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/net/adi,ad3306.yaml b/Documentation/devicetree/bindings/net/adi,ad3306.yaml
-new file mode 100644
-index 000000000000..785d05c995db
---- /dev/null
-+++ b/Documentation/devicetree/bindings/net/adi,ad3306.yaml
-@@ -0,0 +1,71 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/net/adi,ad3306.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: ADI ADIN1140 10BASE-T1S MAC-PHY
-+
-+maintainers:
-+  - Ciprian Regus <ciprian.regus@analog.com>
-+
-+description: |
-+  The ADIN1140 (also called AD3306) is a low power single port
-+  10BASE-T1S MAC-PHY. It integrates an Ethernet PHY with a MAC
-+  and all the associated analog circuitry.
-+  The device tries to implement the Open Alliance TC6 10BASE-T1x MAC-PHY
-+  Serial Interface specification and is compliant with the
-+  IEEE 802.3cg-2019 Ethernet standard for 10 Mbps single pair
-+  Ethernet (SPE). The device has a 4-wire SPI interface for
-+  communication between the MAC and host processor.
-+
-+allOf:
-+  - $ref: /schemas/net/ethernet-controller.yaml#
-+  - $ref: /schemas/spi/spi-peripheral-props.yaml#
-+
-+properties:
-+  compatible:
-+    oneOf:
-+      - items:
-+          - const: adi,adin1140
-+          - const: adi,ad3306
-+      - const: adi,ad3306
-+
-+  reg:
-+    maxItems: 1
-+
-+  spi-max-frequency:
-+    maximum: 25000000
-+
-+  interrupts:
-+    maxItems: 1
-+    description: Interrupt from the MAC-PHY for receive data available
-+      and error conditions
-+
-+required:
-+  - compatible
-+  - reg
-+  - interrupts
-+  - spi-max-frequency
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/interrupt-controller/irq.h>
-+
-+    spi {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        ethernet@0 {
-+            compatible = "adi,ad3306";
-+            reg = <0>;
-+            spi-max-frequency = <23000000>;
-+
-+            interrupt-parent = <&gpio>;
-+            interrupts = <6 IRQ_TYPE_LEVEL_LOW>;
-+
-+            local-mac-address = [ 00 11 22 33 44 55 ];
-+        };
-+    };
+diff --git a/drivers/net/ethernet/oa_tc6.c b/drivers/net/ethernet/oa_tc6.c
+index 2a72f0c4b009..b37e398e30e3 100644
+--- a/drivers/net/ethernet/oa_tc6.c
++++ b/drivers/net/ethernet/oa_tc6.c
+@@ -499,8 +499,8 @@ static int oa_tc6_get_phy_c45_mms(int devnum)
+ 	}
+ }
+ 
+-static int oa_tc6_mdiobus_read_c45(struct mii_bus *bus, int addr, int devnum,
+-				   int regnum)
++int oa_tc6_mdiobus_read_c45(struct mii_bus *bus, int addr, int devnum,
++			    int regnum)
+ {
+ 	struct oa_tc6 *tc6 = bus->priv;
+ 	u32 regval;
+@@ -516,9 +516,10 @@ static int oa_tc6_mdiobus_read_c45(struct mii_bus *bus, int addr, int devnum,
+ 
+ 	return regval;
+ }
++EXPORT_SYMBOL_GPL(oa_tc6_mdiobus_read_c45);
+ 
+-static int oa_tc6_mdiobus_write_c45(struct mii_bus *bus, int addr, int devnum,
+-				    int regnum, u16 val)
++int oa_tc6_mdiobus_write_c45(struct mii_bus *bus, int addr, int devnum,
++			     int regnum, u16 val)
+ {
+ 	struct oa_tc6 *tc6 = bus->priv;
+ 	int ret;
+@@ -529,6 +530,7 @@ static int oa_tc6_mdiobus_write_c45(struct mii_bus *bus, int addr, int devnum,
+ 
+ 	return oa_tc6_write_register(tc6, (ret << 16) | regnum, val);
+ }
++EXPORT_SYMBOL_GPL(oa_tc6_mdiobus_write_c45);
+ 
+ static int oa_tc6_mdiobus_register(struct oa_tc6 *tc6)
+ {
+diff --git a/include/linux/oa_tc6.h b/include/linux/oa_tc6.h
+index 62e3d89f80ed..2660eefa3504 100644
+--- a/include/linux/oa_tc6.h
++++ b/include/linux/oa_tc6.h
+@@ -31,3 +31,7 @@ int oa_tc6_read_registers(struct oa_tc6 *tc6, u32 address, u32 value[],
+ 			  u8 length);
+ netdev_tx_t oa_tc6_start_xmit(struct oa_tc6 *tc6, struct sk_buff *skb);
+ int oa_tc6_zero_align_receive_frame_enable(struct oa_tc6 *tc6);
++int oa_tc6_mdiobus_read_c45(struct mii_bus *bus, int addr, int devnum,
++			    int regnum);
++int oa_tc6_mdiobus_write_c45(struct mii_bus *bus, int addr, int devnum,
++			     int regnum, u16 val);
 
 -- 
 2.43.0
