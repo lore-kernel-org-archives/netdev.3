@@ -1,72 +1,77 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ABFC244661;
-	Tue,  9 Jun 2026 00:33:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B8F1231827;
+	Tue,  9 Jun 2026 00:36:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780965227; cv=none; b=sC5P05KF/MlXCyg9g9yr0z6bF14pMu0+ajjQ/7YsDswPNxC89fkrXlTO38SZ0alSuwYf1O9FTQajSDPgStSOLoBWXEQmtLUdnwUl+fZbWQy7Cv7z9IIZneTUgYs0IExBkAB+UUa2QdZC6n0+pxkuvy6xfVC+vmNRY5lOAiuhoxA=
+	t=1780965401; cv=none; b=UokchU7C+BsGo7OQVfUA7RLIH4aK7bL5SkkGfncV/Q2vnVcCh38O1Ihe6G5ct/zGS5zcpOig3d1cqUbb0B6+DA/8EigahD4TWJ9Fc3UxjyZQw4/lFlQv3N3uqmK7PnBmfpqFpriAUPyhf99tOPeiIswji6Rkbo7z11aql4tFaWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780965227; c=relaxed/simple;
-	bh=t8gEdjbrs6qgE0T05yWWf+zBdM3rY8wM+GccnVr1ZFw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=A3jHFUnwLnGwhvTdp/oDP+34ov0/Atrp1nrPtuKkA9XLrQ/kQAdVSpxUXSkG3vpxQDaKAPChUmLyyYYUBz9MQUlf7ZRCqSACFP+luUlEoeHaO/xqM2BWMZWnHyma7EkIJVHltU256/THWC8IyDFKy3Fyi3qXFb2yu3oTPxEdDbc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZODzerro; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780965401; c=relaxed/simple;
+	bh=kPUAUDRbebuuxhK+vTmu+BbAG/G9Y1jk3lUHYiR37TY=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=BH1WwYtCBIa9xXLCwt/2H4ML0mHRhoFmfryFLT8znCuAj0G72RGh4kp9j4ABBdmv8HOUDjlgbjo2LlpcrfnDA/0/8zO065WgJWQc/pCDVVxUmcB9zcd1rMA95V3OucXVNWBDeJpbo6gM6K8NrXWWhn+iMTi79siKXlGQjpNV/Ms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CmtSEKde; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZODzerro"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9BDD1F00899;
-	Tue,  9 Jun 2026 00:33:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CmtSEKde"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41D781F00893;
+	Tue,  9 Jun 2026 00:36:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780965226;
-	bh=YuDJfJJTRs3UGqZWaxi44T79ItiIkoQpI092YqffL3E=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ZODzerroKrElQpgiYs7ZyrZeFuZ/lXdg7gpSRRE4E6lwrOOFK+t4uKaAsmig7dkgs
-	 kGlydAKYDv9ZPW/J478CYPs0snXBTvoKFFJBsyCWFVZGaMXqmMSnm8tj4iya+4Xk3b
-	 sPC8xK1esKeHVJYHHyMwUResT23pi5JoFD/Ky829OQzKtU05jG0MCXuWTupmecWGgg
-	 90SvJDG0UafPP0qVa7zT671rkQ26LFmDh7B0myT3IhVjzlX0mhOksD6vqnN1IlaRFx
-	 HXsKHL7MSXwmXsINazzs3HSwLqOrfH7/zPbEGtyI3QyuFtiR9l1xA9EHLNlogSgzxv
-	 5gNsrgaT69ZOQ==
-From: Chuck Lever <cel@kernel.org>
-To: Kees Cook <kees@kernel.org>,
-	linux-hardening@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-nfs@vger.kernel.org,
-	netdev@vger.kernel.org,
-	david.laight.linux@gmail.com
-Cc: Chuck Lever <chuck.lever@oracle.com>,
-	Arnd Bergmann <arnd@kernel.org>,
-	Anna Schumaker <anna@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jeff Layton <jlayton@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Trond Myklebust <trondmy@kernel.org>
-Subject: Re: [PATCH net-next] net/sunrpc/svcauth_unix: Use strscpy() to copy strings into arrays
-Date: Mon,  8 Jun 2026 20:33:38 -0400
-Message-ID: <178096512223.86595.14618546480318543216.b4-ty@b4>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260608095523.2606-16-david.laight.linux@gmail.com>
-References: <20260608095523.2606-16-david.laight.linux@gmail.com>
+	s=k20260515; t=1780965399;
+	bh=+7gNPHTfQZb3hdNUaxuzeumP3gV621exu5pPvLDRQIQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=CmtSEKdexUWbSGFjcflQoKjhlC7QjC7hX8CWC4EWTgKaHL+ZsKhWhno3jTN+dmtL5
+	 U1C7U15LZZEDl0Y66Hzcda3DYSLbtfDwkqqN20tAftLUZEe4gach8yzeOGEpPr0XiT
+	 TljfmoExjvP19svZEukvBMjBvgW8ozXbyC2H+qctPG01RqaoRIp0o7W3PRl4BauffA
+	 M8WYTK+5c3XJ88dVJRBOxwA9OR40F/CxD3Fn41HmQtnzuGee/MoJD4o6TzzPJfWIJR
+	 EVXrnVBO/b1xqRyvRA0YQxRLFMj9BiU2E/PmcFFZPj8daWV3Ii0teRo5sHNGA/TLjh
+	 KfnPO+9ASEmPA==
+Date: Mon, 8 Jun 2026 17:36:38 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Rosen Penev <rosenp@gmail.com>
+Cc: Jacob Keller <jacob.e.keller@intel.com>, netdev@vger.kernel.org, Andrew
+ Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Jeff Garzik
+ <jeff@garzik.org>, Roland Dreier <rdreier@cisco.com>, open list
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net] net: ibm: emac: mal: fix potential system hang in
+ mal_remove()
+Message-ID: <20260608173638.74da73fe@kernel.org>
+In-Reply-To: <CAKxU2N8oh03r2-zJhbOXF0Qqx7RzNSX=zq+i6Ld1c9YXJqDfKQ@mail.gmail.com>
+References: <20260603230821.5619-1-rosenp@gmail.com>
+	<f49d5ac6-ef78-4530-a420-d94e612581aa@intel.com>
+	<CAKxU2N8oh03r2-zJhbOXF0Qqx7RzNSX=zq+i6Ld1c9YXJqDfKQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-From: Chuck Lever <chuck.lever@oracle.com>
+On Thu, 4 Jun 2026 16:03:43 -0700 Rosen Penev wrote:
+> > > -     if (!list_empty(&mal->list))
+> > > +     if (!list_empty(&mal->list)) {
+> > > +             napi_disable(&mal->napi);
+> > >               /* This is *very* bad */
+> > >               WARN(1, KERN_EMERG
+> > >                      "mal%d: commac list is not empty on remove!\n",
+> > >                      mal->index);  
+> >
+> > This one doesn't make sense to me. The list_empty check does a WARN()
+> > indicating that this is not supposed to happen.
+> >
+> > This implies that list_empty should be true, otherwise we'd see a WARN
+> > every time mal_remove is called.
+> >
+> > But in that case, we'd have been calling napi_disable incorrectly in
+> > most cases where it was previously unsafe according to your claim.
+> >
+> > At best, this list_empty check is the wrong way to tell if the napi is
+> > disabled, at worst, this whole change is pointless.  
+> I asked the AI. It doesn't agree:
 
-On Mon, 08 Jun 2026 10:55:00 +0100, david.laight.linux@gmail.com wrote:
-> Replacing strcpy() with strscpy() ensures that overflow of the target
-> buffer cannot happen.
-
-Applied to nfsd-testing, thanks!
-
-[1/1] net/sunrpc/svcauth_unix: Use strscpy() to copy strings into arrays
-      commit: cea9ba4f71e82766d782ed423c99bb12a69bbdf0
-
---
-Chuck Lever <chuck.lever@oracle.com>
+FTR I agree with Jake, the patch seems to indicate bigger structural
+issues. Then again I don't want to encourage the stream of patches
+to this driver so let me just apply this..
