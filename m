@@ -1,124 +1,183 @@
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from rcdn-iport-6.cisco.com (rcdn-iport-6.cisco.com [173.37.86.77])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E9424A13B5
-	for <netdev@vger.kernel.org>; Tue,  9 Jun 2026 16:31:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4C423B840F;
+	Tue,  9 Jun 2026 16:32:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=173.37.86.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781022705; cv=none; b=OR6kZ2r9qLaCIuNc2apuyPKY+N48zDjhufOa44Ue8O9hOQ/uzeshzErYb1kJ8jsQBkeedmC7LUL2KdE9QUBiWqJIjSb3yiJO7dZQzqeF2Yzs6f50lLM0Y3DH8JFp/ao73B4gUX/mTeCrlU8v2jzqLSuhHIg9YD7k9H2VinrFfTI=
+	t=1781022770; cv=none; b=TyvBrdE8+AEtdFAF4pR4U7qQnAjshnGcbcXRK+8B7sXCZJ8lIy8+GiTJCO6vW5vmRHqNjgPisv9RKfrPt5XM6aLXUiiymxdyU4szvlR7WIrDCBh2Hj4CVy8rTNsrDxIwTX0RbmzXfN9QOIgR07uLi91iYAEaTSBst7pqgQFaWmw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781022705; c=relaxed/simple;
-	bh=zgI4NC9pKO7UMNWYBik+NAFMUiFlDyGaDAxNKkRk7eA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=D33Du/DBrwfoirEt2ya7rbJvhZSO2AV47fln9VG12K8xEuLY1ojgugCohuyaqeq4AMhhsT8aY5M1PVUvc5NmyHBUqxedf6nJXNDG1q3ahi74twxDhMqRdZQGGdh7V0YvcFndzNo2FZU8Hf42kSIQ8hHRNDR2+eQeuLCc0g6NFEs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W3urr+00; arc=none smtp.client-ip=209.85.214.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1781022770; c=relaxed/simple;
+	bh=t34WFg1OJPAyXY9QMriV4a3e8O+6EvDBd8KRpI56OF4=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=Jlqhhgdkfd+LQLG8pDpml0NhHiGmZWgVQf0YUTywU3NIRhnJMniI54W+/8fvZfzql+HGafMXlux+B2Vktpfy9IPWkm6hZHHd03r+zJ/nyHk3AS+MrNizI59wnqAbL1QIbefkdzPpnSrkT/9SBXfX7nYDiiSXRFL0xbMNxqFtl/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com; spf=pass smtp.mailfrom=cisco.com; dkim=pass (2048-bit key) header.d=cisco.com header.i=@cisco.com header.b=Bvtcjvz7; arc=none smtp.client-ip=173.37.86.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cisco.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W3urr+00"
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2c0c3543590so38915235ad.2
-        for <netdev@vger.kernel.org>; Tue, 09 Jun 2026 09:31:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=cisco.com header.i=@cisco.com header.b="Bvtcjvz7"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781022704; x=1781627504; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=M5U7wZVwHyltBjwcbHNRkOqRDWQCG1C1EbQOzCQU3Qg=;
-        b=W3urr+00Sbw0wxX5OumE1wv58gXAcp3q1WiLrk9Bjt1cMM8WE0OmqjQsrWG3hURRcO
-         W8tD7ihqLj/eFvD6spSjCgVbhyINIULjj5D0FVoznCSFIKrUQW+RzOf5jHawrdWlflay
-         7ZShyF/RcSOo4IIw8UqPKnqlkiSDeBRj+NC03AzRVgcKCtQvOPBSE8+5atVad7ZcPeIm
-         RaaEhJbEWWuvSia9Uji31n43UlQR4tx9/CQ+OwUj56l0IH3VxIwccz7s0Qj/ngDyuJFT
-         v7J1KXuV+rVeJAaDjutp8AvvfdJd/B48XB9P9ASRaki2bXKVAdyEdJLqz2XbmYjMrqlY
-         o1bg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781022704; x=1781627504;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=M5U7wZVwHyltBjwcbHNRkOqRDWQCG1C1EbQOzCQU3Qg=;
-        b=tBU7xCl9wFpMPG3hQlX2MYxgrSsWWiXoD3QR35/dmL0RU13kIU1q39VcmYcN2YToQa
-         CSDjt4g2LMTvvv28XW71YJwrqZILRKpSpOz2sYuLo7il/ZExSlsTC678Em/4yyzWLWcG
-         UDom0rX7d6DZ2hqgx1UvVBQgNulZ5lV3jAieC7Iz9yGk2sZoS2TFAv8wrj0THTXfFzHy
-         AGOp7A9zZw+fZCaJLjPOLhxSHUmlXw1iPfcefraG1yY6lsmosyZokEfpzCtAABMZBFjh
-         ELmGibWVfS4F5k0N3h4tFkasRCVZiIdeaBFMOeCi5QvKx0Tv7uCiuSWHf29CWet6V9oy
-         0tww==
-X-Forwarded-Encrypted: i=1; AFNElJ/ckgB5mpi1rL+rQgbwkZ6bUmqqAHYOHjVx5z6O9D56qoHf30U6Uxz5XBwXWfp522+oxBAwu64=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxi/CdImwkHKExdmGbEsZGp6wRbrY+pzu9QaeOjaBetdy3UrvTr
-	nqsJEGeAODiS+MEf4dTzqUNI4oNf1SiLAvQ77KXM8HhLE2wuCGbAnc4F
-X-Gm-Gg: Acq92OFrkgB1stt5WmhASE58obXF6qAZLqgwQdrdU2qPdgkTpJehGZpnmtz2kxLXAij
-	/k7F+B6EGFgzDZOAvQ4zbfrdfpKPvwc1QbqKc94VppdMifHo5tt4jpF329ljmzGZVL1QmLexSe+
-	NvcWV6o3+Z0wxMKfHZnqij0w7Y0wqA2J8mApf4pdyYC0AWvo94cGrupPkAPs+NykUkeb5Eh22v9
-	AaNjuDDUF/17hElgKB35kk/kVT16P2Db8jiXaY5eYPjNiXfT+tFNrUU5uOYWlMrHFwaXFT0POl/
-	TH0P+SUllX5WdtlPE9fFRQHgXDmnDGak24H5k519qMQR3+6KT8x/6MJz05/dipe/rKnR0UluI+p
-	iWii0O0R0tzMjH4jR/NhXWiLp2DkFSyVCH12wVlcJxJ8RqrcZf/c4bCbcsSyi1blSz2HDLld2nl
-	YjBhhrQRtzu+NUfMG39vSF2MqwgL3gDe0VzT33jrcU84RgkjQb9QHFrCSIPzNp4masGNjqUQ==
-X-Received: by 2002:a17:903:4407:b0:2c1:d49c:8398 with SMTP id d9443c01a7336-2c1e78df934mr242762885ad.8.1781022703723;
-        Tue, 09 Jun 2026 09:31:43 -0700 (PDT)
-Received: from csl-conti-dell7858.ntu.edu.sg ([155.69.195.57])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c16629d042sm227710195ad.60.2026.06.09.09.31.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Jun 2026 09:31:43 -0700 (PDT)
-From: Maoyi Xie <maoyixie.tju@gmail.com>
-To: "David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: David Ahern <dsahern@kernel.org>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Xiao Liang <shaw.leon@gmail.com>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH net v4 7/7] xfrm: xfrm_interface: require CAP_NET_ADMIN in the device netns for changelink
-Date: Wed, 10 Jun 2026 00:31:10 +0800
-Message-Id: <20260609163110.1717419-8-maoyixie.tju@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260609163110.1717419-1-maoyixie.tju@gmail.com>
-References: <20260609163110.1717419-1-maoyixie.tju@gmail.com>
+  d=cisco.com; i=@cisco.com; l=2592; q=dns/txt;
+  s=iport01; t=1781022768; x=1782232368;
+  h=from:date:subject:mime-version:content-transfer-encoding:
+   message-id:references:in-reply-to:to:cc;
+  bh=EQWp/i9x4NzDrC5VaN05TPdpcwXUJymdJW1VclAN818=;
+  b=Bvtcjvz7Fqk9cl7eMQstpI6Bu4X3cbVFcq85qTa8FDHK+qFPwOEIRIyg
+   jTvBLlKqXNYMbanF2TbCrbmohF86wgVk05P31UK8A+l6B7ZzESk1zCYBL
+   wG9MFmQqZr6axhJkb8I929kF2YzMPOQ8jWaF3mxb6JeUBpQXQkWaEGUgU
+   vlQv+XjGSTWY8VVTaU/kjO5juVTxIWDl1/BjOhQRFityHK3nMCBlFK1G2
+   +70pM0yzfLCHmSryhmAqmPF7AH9xyXM48sIwiZE8xemrUpw6cYTgNHTG4
+   kmxUD7w6fOt2qarTW0VYnX5gNiA5kjDV+OT2EkX8dI2so0PvAzl9xnubC
+   A==;
+X-CSE-ConnectionGUID: HjUIZSZRQRuFC70osNjTVw==
+X-CSE-MsgGUID: 9wzlIQReQmSu2YDzlhHH9g==
+X-IPAS-Result: =?us-ascii?q?A0AaAAAaPyhq/4//Ja1aHAEBAQEBAQcBARIBAQQEAQGBf?=
+ =?us-ascii?q?AcBAQsBglaBUkNJhFeIHIc3giGeHoF+DwEBAQ9RBAEBhQYCjTcCJjQJDgECB?=
+ =?us-ascii?q?AMCAwEBAQEBAQEBAQEBCwEBBQEBAQIBBwWBDhOGXIZbAgEDIwRSECUCJgICR?=
+ =?us-ascii?q?hAGARKDAoJ0A7Ugen8zgQGEfdlFgWYBCxQBgQouAYVwgmkBgXCEBjuEQScbg?=
+ =?us-ascii?q?UlEhH2ECoQUgmoEgxwSkGcJP4ECHANZLAFVEw0KCwcFYVIzAyAKCxISGBUCF?=
+ =?us-ascii?q?C8PBBYyHXAMJxIsFzRYGwcFgUqBOxQxBCGBBYUSIx8DOYEVgXyBKGdpFTE1T?=
+ =?us-ascii?q?QMLGA1IESw3Bg4bBD0BbgeMOhcPgUhxPVKCaCmTQIMyjV9roQ6EJoFmoA8BM?=
+ =?us-ascii?q?pdnkwQsmFoio383hGiBaDyBWTMaCBsVgyJTGQ+OLRYcy2InMj8HAgcPApFzg?=
+ =?us-ascii?q?X0BAQ?=
+IronPort-Data: A9a23:5HvLKKj68W+CDrn2pFq5Sv7eX161vREKZh0ujC45NGQN5FlHY01je
+ htvCj3SaP2LMWXycoxyao3j8hsDu5bUnd8wQQI6/n01EC9jpJueD7x1DKtf0wB+jyHnZBg6h
+ ynLQoCYdKjYdleF+FH1dOOn9SUgvU2xbuKUIPbePSxsThNTRi4kiBZy88Y0mYcAbeKRW2thg
+ vus5ZeDULOZ82QsaDxMtfrS8EoHUMna4Vv0gHRvPZing3eG/5UlJMp3Db28KXL+Xr5VEoaSL
+ 87fzKu093/u5BwkDNWoiN7TKiXmlZaLYGBiIlIPM0STqkAqSh4ai87XB9JAAatjsAhlqvgqo
+ Dl7WTNcfi9yVkHEsLx1vxC1iEiSN4UekFPMCSDXXcB+UyQqflO0q8iCAn3aMqU4+NtWM1p8z
+ 8UiNR4mMUiEnMS0/IykH7wEasQLdKEHPasFsX1miDWcBvE8TNWbHePB5MRT23E7gcUm8fT2P
+ pVCL2EwKk6dPlsWZgx/5JEWxI9EglHkeiFZs1KWpYI84nPYy0p6172F3N/9Jo3QHJwKxRfEz
+ o7A1zXmEBU7DeaS8D++7yidqv3LnQPbCY1HQdVU8dYv2jV/3Fc7BBQIWF6TrfCnh0u6XNxDb
+ UoZ5kIGqaUz6EWsZtXwVRyxpjiDpBF0c9dcDugz+gyR4qXT5AmdCy4PSTspQN87vsYeRjEw0
+ FKN2dTzClRHubuZU3+CtbGZsT+/JwARMGkEIyQEJSMd6tPupoAblB/DTt9/VqWyi7XdHTD23
+ iDPryUkgbgXpdAE2r/9/l3dhT+o4J/TQWYd4AjLUm+7xh12aZTjZIGy71Xfq/FaI+6kokKpp
+ nMInY2aqesJF5zIzHLLS+QWF7bv7PGAWNHBvWNS81Aa32zF0xaekUp4uVmS+G8B3h44RALU
+IronPort-HdrOrdr: A9a23:v3+56q//lk+a5gj9xlVuk+AuI+orL9Y04lQ7vn2ZhyYlFvBw8P
+ rOoB1773HJYVkqNU3I9errBEDEewK/yXcX2+Ys1MmZPDUO0VHAROpfBMnZsl7d8kbFmtK1u5
+ 0QFpRWOZncAUd3iMDi7BL9MdoxqeP3iZyAtKPyw2hgSAdyZ7ol1Qd2DQ6HDlZ7LTM2Y6bRbK
+ DsgfZvln6HZWkdaNi9Cz0uWujOoMCOqbfdCCR2fyLOLGK1/EmVAHmQKWni4isj
+X-Talos-CUID: =?us-ascii?q?9a23=3A0R9vc2l+OrwHSbJ50MIV87x8lPPXOV3f8VbiGH2?=
+ =?us-ascii?q?CMFx0ZpbKEViL3qFYrdU7zg=3D=3D?=
+X-Talos-MUID: =?us-ascii?q?9a23=3AKLNanQ9ITICmn5RpfGFzjGeQf5Z38aCPMXoAqJA?=
+ =?us-ascii?q?9ppO1GT50Oxe93TviFw=3D=3D?=
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-AV: E=Sophos;i="6.24,196,1774310400"; 
+   d="scan'208";a="492117394"
+Received: from rcdn-l-core-06.cisco.com ([173.37.255.143])
+  by rcdn-iport-6.cisco.com with ESMTP/TLS/TLS_AES_256_GCM_SHA384; 09 Jun 2026 16:32:47 +0000
+Received: from [127.0.0.1] (unknown [10.25.128.186])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by rcdn-l-core-06.cisco.com (Postfix) with ESMTPS id 1E9F51800025F;
+	Tue,  9 Jun 2026 16:32:47 +0000 (GMT)
+From: Satish Kharat <satishkh@cisco.com>
+Date: Tue, 09 Jun 2026 09:32:27 -0700
+Subject: [PATCH net-next v8 01/10] enic: verify firmware supports V2 SR-IOV
+ at probe time
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260609-enic-sriov-v2-admin-channel-v2-v8-1-8ad8babbb826@cisco.com>
+References: <20260609-enic-sriov-v2-admin-channel-v2-v8-0-8ad8babbb826@cisco.com>
+In-Reply-To: <20260609-enic-sriov-v2-admin-channel-v2-v8-0-8ad8babbb826@cisco.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Sesidhar Baddela <sebaddel@cisco.com>, Satish Kharat <satishkh@cisco.com>, 
+ Breno Leitao <leitao@debian.org>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1781022766; l=2641;
+ i=satishkh@cisco.com; h=from:subject:message-id;
+ bh=t34WFg1OJPAyXY9QMriV4a3e8O+6EvDBd8KRpI56OF4=;
+ b=5U3PkOkHztm46C+fy23gls+YYxBUDl8TBDpJ5ChFS63osb9PRZHL2lAOtZIcJcLOOaeEwV4Bz
+ uBk0v6ZXgiMC5HJhYWbT4LvCA9g+fhq6vqbwVSTr/xOCyG90QHaKx7R
+X-Developer-Key: i=satishkh@cisco.com; a=ed25519;
+ pk=4BxbLoCGvHeIMH/PbpiNVx8/2IcTjFvqcr0AD8K6WLY=
+X-Outbound-Client-TLS: ANONYMOUS;unknown [10.25.128.186];TLSv1.3;TLS_AES_256_GCM_SHA384;256
+X-Outbound-SMTP-Client: 10.25.128.186, [10.25.128.186]
+X-Outbound-Node: rcdn-l-core-06.cisco.com
 
-xfrmi_changelink() rewrites the interface in its creation netns. After an
-IFLA_NET_NS_FD migration that netns is not the caller's, but the rtnl
-changelink path only checks CAP_NET_ADMIN against the caller's netns. A
-caller with caps only in its current netns can then rewrite an interface
-in another netns.
+During PF probe, query the firmware get-supported-feature interface
+to verify that the running firmware supports V2 SR-IOV. Firmware
+version 5.3(4.72) and later report VIC_FEATURE_SRIOV via
+CMD_GET_SUPP_FEATURE_VER. If the firmware does not support the
+feature, set vf_type to ENIC_VF_TYPE_NONE and log a warning so the
+admin knows a firmware upgrade is needed.
 
-Gate the op on net_admin_capable() at its top, before any attribute is
-parsed. The check is skipped when the interface netns is the device's
-current netns, where the rtnl path already checked the cap.
+VIC_FEATURE_SRIOV is assigned the explicit value 4 to match the
+firmware ABI.  Slot 3 (firmware's VIC_FEATURE_PTP) is reserved with
+a comment rather than a placeholder enum entry, since PTP is not
+used by the upstream driver.
 
-Reported-by: Xiao Liang <shaw.leon@gmail.com>
-Closes: https://lore.kernel.org/netdev/CABAhCOSzP1vaThGV35_VnsRCb=87_CPjPVsTHbq905k8A+BuUg@mail.gmail.com/
-Fixes: f203b76d7809 ("xfrm: Add virtual xfrm interfaces")
-Cc: stable@vger.kernel.org
-Signed-off-by: Maoyi Xie <maoyixie.tju@gmail.com>
+Suggested-by: Breno Leitao <leitao@debian.org>
+Signed-off-by: Satish Kharat <satishkh@cisco.com>
 ---
- net/xfrm/xfrm_interface_core.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/ethernet/cisco/enic/enic_main.c   | 21 ++++++++++++++++++++-
+ drivers/net/ethernet/cisco/enic/vnic_devcmd.h |  2 ++
+ 2 files changed, 22 insertions(+), 1 deletion(-)
 
-diff --git a/net/xfrm/xfrm_interface_core.c b/net/xfrm/xfrm_interface_core.c
-index 330a05286a56..8fd3842d20c2 100644
---- a/net/xfrm/xfrm_interface_core.c
-+++ b/net/xfrm/xfrm_interface_core.c
-@@ -869,6 +869,9 @@ static int xfrmi_changelink(struct net_device *dev, struct nlattr *tb[],
- 	struct net *net = xi->net;
- 	struct xfrm_if_parms p = {};
+diff --git a/drivers/net/ethernet/cisco/enic/enic_main.c b/drivers/net/ethernet/cisco/enic/enic_main.c
+index e7125b818087..53d68272d06a 100644
+--- a/drivers/net/ethernet/cisco/enic/enic_main.c
++++ b/drivers/net/ethernet/cisco/enic/enic_main.c
+@@ -2641,8 +2641,10 @@ static void enic_iounmap(struct enic *enic)
+ static void enic_sriov_detect_vf_type(struct enic *enic)
+ {
+ 	struct pci_dev *pdev = enic->pdev;
+-	int pos;
++	u64 supported_versions, a1 = 0;
+ 	u16 vf_dev_id;
++	int pos;
++	int err;
  
-+	if (!net_admin_capable(net, dev_net(dev)))
-+		return -EPERM;
+ 	if (enic_is_sriov_vf(enic) || enic_is_dynamic(enic))
+ 		return;
+@@ -2669,6 +2671,23 @@ static void enic_sriov_detect_vf_type(struct enic *enic)
+ 		enic->vf_type = ENIC_VF_TYPE_NONE;
+ 		break;
+ 	}
 +
- 	xfrmi_netlink_parms(data, &p);
- 	if (!p.if_id) {
- 		NL_SET_ERR_MSG(extack, "if_id must be non zero");
++	if (enic->vf_type != ENIC_VF_TYPE_V2)
++		return;
++
++	/* A successful command means firmware recognizes
++	 * VIC_FEATURE_SRIOV; supported_versions is available
++	 * for sub-feature versioning in the future.
++	 */
++	err = vnic_dev_get_supported_feature_ver(enic->vdev,
++						 VIC_FEATURE_SRIOV,
++						 &supported_versions,
++						 &a1);
++	if (err) {
++		dev_warn(&pdev->dev,
++			 "SR-IOV V2 not supported by current firmware. Upgrade to VIC FW 5.3(4.72) or higher.\n");
++		enic->vf_type = ENIC_VF_TYPE_NONE;
++	}
+ }
+ #endif
+ 
+diff --git a/drivers/net/ethernet/cisco/enic/vnic_devcmd.h b/drivers/net/ethernet/cisco/enic/vnic_devcmd.h
+index 605ef17f967e..3b6efa743dba 100644
+--- a/drivers/net/ethernet/cisco/enic/vnic_devcmd.h
++++ b/drivers/net/ethernet/cisco/enic/vnic_devcmd.h
+@@ -734,6 +734,8 @@ enum vic_feature_t {
+ 	VIC_FEATURE_VXLAN,
+ 	VIC_FEATURE_RDMA,
+ 	VIC_FEATURE_VXLAN_PATCH,
++	/* slot 3 reserved for firmware VIC_FEATURE_PTP */
++	VIC_FEATURE_SRIOV	= 4,
+ 	VIC_FEATURE_MAX,
+ };
+ 
+
 -- 
-2.34.1
+2.43.0
 
