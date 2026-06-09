@@ -1,46 +1,46 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 006C74A1384
-	for <netdev@vger.kernel.org>; Tue,  9 Jun 2026 21:36:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88B7348B380
+	for <netdev@vger.kernel.org>; Tue,  9 Jun 2026 21:36:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781040985; cv=none; b=sTS+Tfpb5IBjXY/YIONBKT/gJiEtYbIf72NQiCJLEPFSQAmsrJeFraJ1ix43m0DjEWxbPLuCYoOKN1vRPmDAjPro+VCMrEnUcUMQYGlNmwJF2RXH09W6au5JcRoW3WDmNiIqlEscP36L5Kd/KUG0lMoWO7qUb8oInol8kIdrJtA=
+	t=1781040985; cv=none; b=PmpJ2CtRT0C3oBGImyHfYQ//ukgAD+c1ggaU1LVpbOViLY22bj0ynO3Q8booLmlnDjmLa75CMfmt6xB70pC0qo9SuDClwPORZCcEyERuIAB38DVfvc/uPKwMcHxFYiMrTaBOYDUewAziMPOv6MCGchM6+VMZpQkM+uo3uJuv7j0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1781040985; c=relaxed/simple;
-	bh=U3yUU3HGEk8cqtRWdTyBWYJU/DC7CPcUg9P+e7J6ubk=;
+	bh=Hf04y06OeGmaIh3UEmwzbtwH8Eo/OwDUxMKTgY4QnRQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZSpKpsqUjOE9q5cdxSYhzdFcdRTsW3+7yMZK68sP4HZ/4JSsMody0NnZJRnvv/EK1Ja0iOdRp7nTuF5cKPDIbCsOQQ7cZRCeo4ndoMu5ln0/TbkTf286LwwD/AwlzRdmujEGi2nzFtFo5eiiG2FtaVWvca0oL5pvSMlNLU9pWHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UYbATTDz; arc=none smtp.client-ip=198.175.65.20
+	 MIME-Version; b=r41CgtT904zs3E9kidehhkNph9k4LxaCikLbW3PD8uql555tz7yOeuyksSWVBYtH9Ag92SigbJDkAJoScxyodERQNY6n2WTVkPUIsBBpbNmW7WYBbg+pgcSX3suUnFBDn2tPfLyASSNIMVTr/lM6YVH2s7GvF5eK+Nsbit5lMzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Fai3fOzZ; arc=none smtp.client-ip=198.175.65.20
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UYbATTDz"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Fai3fOzZ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1781040979; x=1812576979;
+  t=1781040980; x=1812576980;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=U3yUU3HGEk8cqtRWdTyBWYJU/DC7CPcUg9P+e7J6ubk=;
-  b=UYbATTDzL/3coWXtnV7yiaqnSFHhBRiwPnj9xwzetpH8tTj4P+b0oXlm
-   gdpIxqsHpb+v0US5pZxrw2b0LAvRs2TioHTY9mLmMUsNUpRJN6WQcI7Eo
-   u9HGBCPMvIVRMdmdt7nju+6AnSScDSl2taKYWruKJqIiJojJL+FecUl4u
-   ddNcgxDceAWTcx1t7ttN+1FlZhd+NOk0y04iWh/Hd90IMp+elCeBTbyVr
-   tD5t/+qnTkj3A/W98MoaLeb+A4IcqmOc7Hc2uDif9YGb6UotWeqp0H2dP
-   tG1A4iKH8JdSFRhFRY+gcPFHLZrJqLDwOi/PCEDRYqhMBPsQKTT6yJzUZ
-   g==;
-X-CSE-ConnectionGUID: 0tfGPPxnTbWU6opPPhnAmw==
-X-CSE-MsgGUID: OKNyLVJVQZaQnuRfronIEA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11812"; a="81568599"
+  bh=Hf04y06OeGmaIh3UEmwzbtwH8Eo/OwDUxMKTgY4QnRQ=;
+  b=Fai3fOzZD6okS8lQCW/7dwrYIMC8qSUv5z8aMFh0aISl8MH1jvu+hZCQ
+   4ckcgUObV6huLimyW9Q0jQcDu2NprdH+/KHtfBLeKZAlkDA/KVpLcPznq
+   Tho4rmLzhjBYEbz5EUXnTjkHzwLRzuX6b3+P+V0BXr8khWniRYoOfxOwr
+   tjBWeqM/eAoOBvCaetSIprWuwXlP7r1ZmdfEqqVoZAKeZBNdNXIt/jDL9
+   fJDAtOuKOpr3LDn3T042cBa+6XObLkuz/VjqwyGbguqbUr/dZHfmpx8UQ
+   pulmMeFck4/N8VU0p0J5/4DPFjeBJkM/mhMb74VL2aPu/Bg6wodk3BPwt
+   Q==;
+X-CSE-ConnectionGUID: ylvR3l38QOOK5qAS8hUePw==
+X-CSE-MsgGUID: d+htnK8PRY62BeymiGMAIA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11812"; a="81568606"
 X-IronPort-AV: E=Sophos;i="6.24,196,1774335600"; 
-   d="scan'208";a="81568599"
+   d="scan'208";a="81568606"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2026 14:36:09 -0700
-X-CSE-ConnectionGUID: pgZA8PKbSpinZayBL/W4ng==
-X-CSE-MsgGUID: EtO93m96Txe4XJT5BO0d1Q==
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2026 14:36:10 -0700
+X-CSE-ConnectionGUID: 6m/Y1Bw3Q1SskOFfteKwYQ==
+X-CSE-MsgGUID: Aqf2Ui8EST+14YzBm5x6mA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.24,196,1774335600"; 
-   d="scan'208";a="245838604"
+   d="scan'208";a="245838607"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
   by orviesa008.jf.intel.com with ESMTP; 09 Jun 2026 14:36:09 -0700
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
@@ -52,11 +52,13 @@ To: davem@davemloft.net,
 	netdev@vger.kernel.org
 Cc: Agalakov Daniil <ade@amicon.ru>,
 	anthony.l.nguyen@intel.com,
+	dima.ruinskiy@intel.com,
 	jacob.e.keller@intel.com,
-	Iskhakov Daniil <dish@amicon.ru>
-Subject: [PATCH net-next 12/15] e1000: limit endianness conversion to boundary words
-Date: Tue,  9 Jun 2026 14:35:53 -0700
-Message-ID: <20260609213559.178657-13-anthony.l.nguyen@intel.com>
+	Iskhakov Daniil <dish@amicon.ru>,
+	Avigail Dahan <avigailx.dahan@intel.com>
+Subject: [PATCH net-next 13/15] e1000e: limit endianness conversion to boundary words
+Date: Tue,  9 Jun 2026 14:35:54 -0700
+Message-ID: <20260609213559.178657-14-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20260609213559.178657-1-anthony.l.nguyen@intel.com>
 References: <20260609213559.178657-1-anthony.l.nguyen@intel.com>
@@ -89,31 +91,40 @@ Found by Linux Verification Center (linuxtesting.org) with SVACE.
 Co-developed-by: Iskhakov Daniil <dish@amicon.ru>
 Signed-off-by: Iskhakov Daniil <dish@amicon.ru>
 Signed-off-by: Agalakov Daniil <ade@amicon.ru>
+Tested-by: Avigail Dahan <avigailx.dahan@intel.com>
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
- drivers/net/ethernet/intel/e1000/e1000_ethtool.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/intel/e1000e/ethtool.c | 19 ++++++++++++-------
+ 1 file changed, 12 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/e1000/e1000_ethtool.c b/drivers/net/ethernet/intel/e1000/e1000_ethtool.c
-index 4dcbeabb3ad2..c15ad95c63c1 100644
---- a/drivers/net/ethernet/intel/e1000/e1000_ethtool.c
-+++ b/drivers/net/ethernet/intel/e1000/e1000_ethtool.c
-@@ -499,6 +499,9 @@ static int e1000_set_eeprom(struct net_device *netdev,
- 		if (ret_val)
- 			goto out;
- 
+diff --git a/drivers/net/ethernet/intel/e1000e/ethtool.c b/drivers/net/ethernet/intel/e1000e/ethtool.c
+index dbed30943ef4..a8b35ae41141 100644
+--- a/drivers/net/ethernet/intel/e1000e/ethtool.c
++++ b/drivers/net/ethernet/intel/e1000e/ethtool.c
+@@ -583,20 +583,25 @@ static int e1000_set_eeprom(struct net_device *netdev,
+ 		/* need read/modify/write of first changed EEPROM word */
+ 		/* only the second byte of the word is being modified */
+ 		ret_val = e1000_read_nvm(hw, first_word, 1, &eeprom_buff[0]);
++		if (ret_val)
++			goto out;
++
 +		/* Device's eeprom is always little-endian, word addressable */
 +		le16_to_cpus(&eeprom_buff[0]);
 +
  		ptr++;
  	}
- 	if ((eeprom->offset + eeprom->len) & 1) {
-@@ -509,11 +512,10 @@ static int e1000_set_eeprom(struct net_device *netdev,
- 					    &eeprom_buff[last_word - first_word]);
- 		if (ret_val)
- 			goto out;
--	}
+-	if (((eeprom->offset + eeprom->len) & 1) && (!ret_val))
++	if ((eeprom->offset + eeprom->len) & 1) {
+ 		/* need read/modify/write of last changed EEPROM word */
+ 		/* only the first byte of the word is being modified */
+ 		ret_val = e1000_read_nvm(hw, last_word, 1,
+ 					 &eeprom_buff[last_word - first_word]);
++		if (ret_val)
++			goto out;
  
+-	if (ret_val)
+-		goto out;
+-
 -	/* Device's eeprom is always little-endian, word addressable */
 -	for (i = 0; i < last_word - first_word + 1; i++)
 -		le16_to_cpus(&eeprom_buff[i]);
