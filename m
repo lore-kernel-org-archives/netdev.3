@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C940C48B385
-	for <netdev@vger.kernel.org>; Tue,  9 Jun 2026 18:08:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98B3748C402
+	for <netdev@vger.kernel.org>; Tue,  9 Jun 2026 18:08:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781028488; cv=none; b=W3Ilv+24WHV4NPx/vKL+QmmtV7kktk6DhI8WqMSa/zx8W4sSSXYH2CJDRKZ50txgfD1Ii8CP11yh9o31Yb4RkzqD79U3NSVXngK9kQdmvP+n0DwxXMOynQVTCQfLybvJ4kKlORcU8yZaSgOiDmzJ/bfaJS8nGrmClBSxGONBmgE=
+	t=1781028489; cv=none; b=m7HMFVYXQKLyPWTGJUMOAmbdtVwRoFvatdc7cqO5tL1JWKoQVBCGz9jHaxJbpt4pmS6Zm9bnLkss/mH1ZxTv6niCi3SrZ5ZOi7RqmQuYmGtMUbhpwvG9UZC7UeYpK8XaxqWg5hkzbB3kRbif3KckGR7/7D0gH3UmHcobdZIpnbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781028488; c=relaxed/simple;
-	bh=rsfCIjJKlomyyd/eAUHgcLyXPeNc20mIu+75scqSwRE=;
+	s=arc-20240116; t=1781028489; c=relaxed/simple;
+	bh=v1C9pUW++yD1b1MMk91kMJ7tKNuA+yFLmhcMJ1Kvi20=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XyRwLZVE74QOLr/62fN2j7r52SKI9NvHYnKLca3I7XgMTULgEKeJAWfq3Ns7Sc4mQTDAoMmbsv+JP+J0NJSkGO2fwW/GuzXt4IZdjSuvS61RBpdPaU9GJRYx8j02Rz0fqk7oef39iS0egOKNVVUJRbJGep2zPy6kHANvCYk65Vc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PvRJJKlL; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=A6lsOyVEQJstobQbnQW9+7n22yhGgupZi+LRcS7UTxrC62AESt2xHHcTPNmjYhQNLN0LFxxG9Fl4kgcUM/mVyyCTsxSRF50LE0P0F4f2X0Ld5IEJqaeR+DjX6pCR5Q2CEqbPfiRxnf/y0yv29ZdBECqEoNYTCvBmXCjYwawmM7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nZZhXFl3; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PvRJJKlL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A2451F0089A;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nZZhXFl3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 971E91F00898;
 	Tue,  9 Jun 2026 18:08:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781028486;
-	bh=vVDf4UOr86FVmnOEEutpECiXd2YrlIWDuaG/aK3l3zE=;
+	s=k20260515; t=1781028487;
+	bh=KBXTlonJ2h3j7ixA6x35jePeFtGv8nmz0Rf0U9Ecpu8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=PvRJJKlLymaTF6+UsO8QKnVOSVP8FwyRVJIB8CHr8zoeONjtK52RR7KHhZd5gYQ0s
-	 C+iKajQNpHHpSqWb5ojgLAPPP1EGdX9huWeryd8SRGiujb3yaNxzSAu1uGtMIZSBZI
-	 jISDXsJKm/j2dhlyaJQGgxDdwtOm1yEpCsjCd3psJtGg60TNCztCSSQ0Oa7/T88JVj
-	 pitRnPWyVNX6rTgB+FgaZbyZ8+MrvCNhz+rcQvsXM/1OiBGnCkuY95vlzFcl7ptlVq
-	 xxdGdngs/XEu2e8DhrIfh9aCr/NraFZyH4uIFc3CvwuVDEbHO1dvnHkLYlXncJL1tH
-	 oH+LwfPOUwANw==
+	b=nZZhXFl3+wXCO3apX0xP2d6KTaFnW2vdSsb7dvs+E3fIZvzlf1/EEcejuCYuzjCd5
+	 PsZFNzHlOv8Nrdyi55/fU4x/jQ+YJOkahTZriEvcvrlzrwIjjFLFiG0jPZRYONlwL+
+	 z46Hut/v9joIMSC32T5VI9GtVoFmLQlOIspC9rqLmLHE9+yGd+mmACM83qGc/Boz1T
+	 LaezUUgzgs3D2GR9dI3lMZhtKbOt1qc4Rreq6c1o6gi+OCIR+HgmR7fSTH3vAKeIXD
+	 yia+bfZqfHnyZXNo7iYttTFoQr9zL/YJtPjQJ7NMXCqGm4PrN/e72mBrzbqEuYQKSi
+	 VrFzSTKhhGKbA==
 From: Jakub Kicinski <kuba@kernel.org>
 To: davem@davemloft.net
 Cc: netdev@vger.kernel.org,
@@ -35,9 +35,9 @@ Cc: netdev@vger.kernel.org,
 	horms@kernel.org,
 	Jakub Kicinski <kuba@kernel.org>,
 	Willem de Bruijn <willemb@google.com>
-Subject: [PATCH net-next v2 1/2] selftests: drv-net: so_txtime: remember to deploy the binaries
-Date: Tue,  9 Jun 2026 11:08:02 -0700
-Message-ID: <20260609180803.1093428-2-kuba@kernel.org>
+Subject: [PATCH net-next v2 2/2] selftests: drv-net: so_txtime: check IP versions
+Date: Tue,  9 Jun 2026 11:08:03 -0700
+Message-ID: <20260609180803.1093428-3-kuba@kernel.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260609180803.1093428-1-kuba@kernel.org>
 References: <20260609180803.1093428-1-kuba@kernel.org>
@@ -49,45 +49,53 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The test seems to be written with a single-host loopback
-in mind. We need to deploy the binary to remote before
-we run it. This is just fixing an obvious issue, but
-more work will be needed to make the dual-host setup
-work reliably. Most of the runs still fail with:
+This test needs more work, and it fails in non-obvious way
+when IPv4 connectivity is not available:
 
-  FAIL: start time already passed
+  # Exception| CMD[remote]: /tmp/vjquwblf/gukinuzqso_txtime -4 -c mono -t 1780939014114542914 -S None -D None a,0 -r
+  # Exception|   EXIT: -15
+
+Explicitly check for IPv4 support to make the future triage
+less painful.
 
 Reviewed-by: Willem de Bruijn <willemb@google.com>
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 ---
- tools/testing/selftests/drivers/net/so_txtime.py | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+v2:
+ - add cfg.require_ipver(ipver) in test_so_txtime_fq_tai()
+v1: https://lore.kernel.org/20260608173305.372987-3-kuba@kernel.org
+---
+ tools/testing/selftests/drivers/net/so_txtime.py | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/tools/testing/selftests/drivers/net/so_txtime.py b/tools/testing/selftests/drivers/net/so_txtime.py
-index b7be4cabbec2..abdd2371cc1a 100755
+index abdd2371cc1a..adf6c848d6d8 100755
 --- a/tools/testing/selftests/drivers/net/so_txtime.py
 +++ b/tools/testing/selftests/drivers/net/so_txtime.py
-@@ -18,14 +18,16 @@ from lib.py import NetDrvEpEnv, bkg, cmd, defer, tc
-     """Main function. Run so_txtime as sender and receiver."""
-     slow_machine = os.environ.get('KSFT_MACHINE_SLOW')
+@@ -64,6 +64,7 @@ from lib.py import NetDrvEpEnv, bkg, cmd, defer, tc
+ @ksft_variants(_test_variants_fq())
+ def test_so_txtime_fq_mono(cfg, ipver, args_tx, args_rx):
+     """Run all variants of monotonic (fq) tests."""
++    cfg.require_ipver(ipver)
+     _qdisc_setup(cfg.ifname, "fq")
+     test_so_txtime(cfg, "mono", ipver, args_tx, args_rx, True)
  
--    bin_path = cfg.test_dir / "so_txtime"
-+    if not hasattr(cfg, "bin_remote"):
-+        cfg.bin_local = cfg.test_dir / "so_txtime"
-+        cfg.bin_remote = cfg.remote.deploy(cfg.bin_local)
+@@ -71,6 +72,7 @@ from lib.py import NetDrvEpEnv, bkg, cmd, defer, tc
+ @ksft_variants(_test_variants_fq())
+ def test_so_txtime_fq_tai(cfg, ipver, args_tx, args_rx):
+     """Run all variants of fq tests, but pass CLOCK_TAI to test conversion."""
++    cfg.require_ipver(ipver)
+     _qdisc_setup(cfg.ifname, "fq")
+     test_so_txtime(cfg, "tai", ipver, args_tx, args_rx, True)
  
-     tstart = time.time_ns() + (2000_000_000 if slow_machine else 200_000_000)
- 
-     cmd_addr = f"-S {cfg.addr_v[ipver]} -D {cfg.remote_addr_v[ipver]}"
--    cmd_base = f"{bin_path} -{ipver} -c {clockid} -t {tstart} {cmd_addr}"
--    cmd_rx = f"{cmd_base} {args_rx} -r"
--    cmd_tx = f"{cmd_base} {args_tx}"
-+    cmd_args = f"-{ipver} -c {clockid} -t {tstart} {cmd_addr}"
-+    cmd_rx = f"{cfg.bin_remote} {cmd_args} {args_rx} -r"
-+    cmd_tx = f"{cfg.bin_local} {cmd_args} {args_tx}"
- 
-     expect_fail = not expect_success
-     if slow_machine:
+@@ -93,6 +95,7 @@ from lib.py import NetDrvEpEnv, bkg, cmd, defer, tc
+ @ksft_variants(_test_variants_etf())
+ def test_so_txtime_etf(cfg, ipver, args_tx, args_rx, expect_fail):
+     """Run all variants of etf tests."""
++    cfg.require_ipver(ipver)
+     try:
+         _qdisc_setup(cfg.ifname, "etf", "clockid CLOCK_TAI delta 400000")
+     except Exception as e:
 -- 
 2.54.0
 
