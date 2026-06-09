@@ -1,112 +1,102 @@
-Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7B3D494A15
-	for <netdev@vger.kernel.org>; Tue,  9 Jun 2026 15:50:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.179
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781020222; cv=pass; b=gXhTzM24hXXwRz4bA2usMGZ3+CvUrrCC39mZpqRmYU8VFxsJoNt+RtiiRJX8nfXfO4SlZJdnni3e6FqqZvSWRm8/rVv1Ptfdl1+GqIN2jNO5HM+QA4byYzjqY9kJ4mjd8GfYYNd3FmF+IkLY9h5an3kCqUPlEc2D/T0KyoNBj8E=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781020222; c=relaxed/simple;
-	bh=iEqZZpRWV5lyDCLwxmWWrGZpRxM75Xdh+pFCbZqOkvs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JDwqNDFCdvWiD9UNJCEbQnw7ucfkVDHZW0pt4hgv1NQFm1+aOPsi92e+TDyGKK5bQDLGSuCdrNJWMcti2a/hPcAnfGNuj7/NnSi1t4U//kOc4gJ/SfHHQzVV2Fhntyk4jTIyb6ZYokCmQ1jVk0DXRo+FDFNjUdQxFeo2Sy+4f6g=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Ke6bXSOK; arc=pass smtp.client-ip=209.85.160.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2F873655D9;
+	Tue,  9 Jun 2026 16:04:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781021064; cv=none; b=tD8rSHOwoFaKq7COLDbWxnQskbw+0ghMnJD5nJ7jZT/OxQqDPz+XNn+qqVfzBS8iaKHstxM2Fjat8OpIGH71+sZxG1Gg/dFMrm3+Y6XuDQC4lB7Ym2WU/My9gEBENhyRwdHBI2ys270obESjIYlbP5u+CYVzJxNIOmmJ1s6w+3Q=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781021064; c=relaxed/simple;
+	bh=Htzjj+iBxZJDahLFAtt5wUwFAw1m+LlXlt/Fld8Ch1s=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=BLXLYxR9coYdyiho8WjAowcF6pBL62vtG5554rSYJsC+XUJJK3NVGcZYNQDXRBnJSzkShpxrn0Oy3xYPZfYXzF+TQENMROwvvvxzSYcx8WFc8MmNseKlDxbf05fSalHwOz3eNVufsEi+anh2onyZVWWFTcC5NnMrCfo6tRPCCDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Nx7jxR2I; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Ke6bXSOK"
-Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-5176096116fso62487261cf.0
-        for <netdev@vger.kernel.org>; Tue, 09 Jun 2026 08:50:21 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781020220; cv=none;
-        d=google.com; s=arc-20240605;
-        b=P9LmVNqyWVzbsijK66ijj3J1NXcHp+W7P82F2ef8+VnDTaiXXWhEJNjAmPoaGR4a5D
-         NwF1K4230I9/cj45rjN+Ar4zvTo4mYZ0yDeF/4dNrCKZjMtDbpiZ2Xt7eSmwc1kDf7o7
-         F4MA7xr53XVqVvqQFT4UZ1ZY6cEZtW8SiL/LiIC8idhmYhMS6wpS6ENk7I2khEKLy0YY
-         0TF9m4DmipJx9NHeJ7xa4tejtqrqzyJGjRvKkkpSwR9c4xxU7sY6aXBRCQtHS2Nv6OK6
-         5c1s5q087mMfPuxIFlFC2UbD8S86vJigthIu6I6JP6iOlrNSC+dngziWjMjLGbhvwryG
-         McNw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=iEqZZpRWV5lyDCLwxmWWrGZpRxM75Xdh+pFCbZqOkvs=;
-        fh=3e6nucIi0AzOI7fKhSR3kFPJYwJA8BWdmd471drWGk0=;
-        b=T7VlaKP9PK9afZjJf4iVK5zapPJWAxPf8E331IBXyhI96NJ+DP6DcnKly4ImR9hxe7
-         TmEmQZX2VBhhkkVowvEQ4A5Sm2AJRIi5xbGIjGY8UOg6/mjmHBvPQLdKNHkAB1h7mEdz
-         eMhJeXrKwXtQk1TCXXpcatzZJSbbtTM2Ui4RulDGv8IsQhpY9ihcX+U88/lg/b/JX/Ef
-         DYWnWp4gWWeaxS57AhTizdMDMciu9cZtGWtvFOabWRDuciA5heQ8mogPv0pRAsfhcQ4L
-         ZnzVfQREMmaBZv2Z4BnHHt+SPDp5wV7WBzag/+4Rwf/QgzSkuFi4i1a+IQomw9qIOBSX
-         FRVQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781020220; x=1781625020; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=iEqZZpRWV5lyDCLwxmWWrGZpRxM75Xdh+pFCbZqOkvs=;
-        b=Ke6bXSOKljKn665Ib170LcCVSaTqyzuga2IylE9wt2eT9FegceVpKWI/B8xbaELnfR
-         gonMopZfcvcjdXqzREi/zkxrSgF4oZt0OeYuO39AOzX8bbHPT+26Ojj48m4QWx+dCjGX
-         1Z3D02hLQlExlCfgwZ/MMwczYaECAbclUgK2bk8WYdvSgdRM3obzZEJwKCLoWskWkccI
-         kyz9RBLZTo9F0K7s6CAlHkx9SuOYU1T7/B/2zF764raxTI7XyZI49OjJGLYKxAiwDmYy
-         Hjv9ftKg45yJ2udsjnQfCdNuuZEC19RRVCp2xK1/LtO7LLhYfJZrJqz3unDaT6bP+f2C
-         2Jjg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781020220; x=1781625020;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=iEqZZpRWV5lyDCLwxmWWrGZpRxM75Xdh+pFCbZqOkvs=;
-        b=maD8zTcDf/ASurZYfR035f00licxn/SwzFyxL88qUaxDI2v5zg6h5UwPHVRv30Rwg1
-         SLI7ospIAKjVv5kvClJdDx9WhogDrkMg2j2nWci7nfnTpStue7Va7o92DL2CdUnImWU7
-         amUTKfxprSxbQ51VzF7lY5p758ue0rXB0UJIPqHfDxttPaRkTO/iKHxZt6HAVwUpzDRK
-         ZgGNabgRKNWYy4uywfp5u/ZwLfIBoj9zkoHWBiLbay290AM2BAy4DMoOAxxzby+wZDt9
-         o3gySmkKoGQ3uyZsucxt9UXa2qll577wsiZf8SNlflyhWcYbvh4aSXGPAlKziRmD5BTn
-         zgPg==
-X-Forwarded-Encrypted: i=1; AFNElJ/siMJszSctyiLOZwboKsYuGXcFWKsUa+2Xhyxi7M7z/IcqitOKTyHlavi9pemqE+NqXU07P3k=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx+M7wemCw+ThALIyXrXLCSjLM1x6REnqkApc1NkyPaW6ttUSej
-	Xg67A6dh0+zDIFO73HoxcP6MoJ6nJDJMExZV3ApXSHs3DGkLtJ32X0EvNBCvSSQR81bP/W9z9sS
-	905J/zMa5H2R8yJaAK+p9tccirHpSbKkDreR/aNWu
-X-Gm-Gg: Acq92OH7n4qFtNEZuVDqYWGTJLohdG2ljoPkupyLBL8kJ8/kV8cbGxzqQSYH5D9rXfG
-	CQ3HmmZainOYUpG+OKWok6blAjyI/QI3FwkMuiBReZzcDNt2SOGLFc5382Y8FLQ+mxU+0dIqxk4
-	Tjm9SjRSQ76CCGa5fM9wRdvUzDb7fx32e7pgJe2ObieQiRNKE2HdLuOy8FqcEiEWjTl7dzpHoUe
-	mMX6nJoPWuOPZMBo0WD0qQgZt3U+97Srgv2bDP5FipV6WAXACbmwWDqxl0tD/5UhXmZpzNoc1Tr
-	kzJyWwriC7fO6775ZGhn3mdNkVX4XrP0oVu98adhLzKrYmDQyL2DoVJzX2NT3yEbOZS/dRKzDbn
-	L1DCj230lRhLuk6gS3caHYHSFhaAVNw==
-X-Received: by 2002:ac8:51da:0:b0:517:9e9b:162d with SMTP id
- d75a77b69052e-517a0f3157bmr198339781cf.32.1781020220031; Tue, 09 Jun 2026
- 08:50:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Nx7jxR2I"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85C221F00893;
+	Tue,  9 Jun 2026 16:04:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781021063;
+	bh=t2wgkGNVfpS9fL7oWSyTipxzTFvk2mjVXvIgDz41TnE=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=Nx7jxR2IcaFDLN6VVikQBBdq4Q7JN6orMYlKhnIE3twN4qQmONXvaLb1rQKoGNtSy
+	 ej8B8kqjtFPXJcUhAm/iGM3T1mxaA2qqafPyhH4QHHv0mLnK32shnTTD78002b781/
+	 NccF8NiH1L4C+Hmjpd7P+lUBrLfZZV+yRuHOHoVTnBVYYf8FH/LhvnabGsSMUnezHJ
+	 IHlJ4n8GNSiVdAmDnzc2KJDpADb9ITOKpOyj0isUeLrl85TLhbkqpq1TGfRztddrl9
+	 rEamIZeC/LR6u9HAQzUoqgDO227C8TGk+62GTSC5Ob4VTzBKzBbhOw512FGcC2/4Mp
+	 6vndQb6g++Oig==
+Message-ID: <c68c873bf021ca2f64b582e337694c5a01871acd.camel@kernel.org>
+Subject: Re: [PATCH net] rds: mark snapshot pages dirty in
+ rds_info_getsockopt()
+From: Allison Henderson <achender@kernel.org>
+To: Breno Leitao <leitao@debian.org>
+Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>,  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Andy Grover
+ <andy.grover@oracle.com>,  netdev@vger.kernel.org,
+ linux-rdma@vger.kernel.org, rds-devel@oss.oracle.com, 
+ linux-kernel@vger.kernel.org, kernel-team@meta.com
+Date: Tue, 09 Jun 2026 09:04:21 -0700
+In-Reply-To: <aifP4O6jAMEKLJM-@gmail.com>
+References: <20260608-rds_fix-v1-1-006c88543408@debian.org>
+	 <7f310d00c39da9edf0019c130d346ce30107fd29.camel@kernel.org>
+	 <aifP4O6jAMEKLJM-@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.3-0ubuntu1.1 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260605002912.3456868-1-kuba@kernel.org> <20260605002912.3456868-13-kuba@kernel.org>
-In-Reply-To: <20260605002912.3456868-13-kuba@kernel.org>
-From: Eric Dumazet <edumazet@google.com>
-Date: Tue, 9 Jun 2026 08:50:07 -0700
-X-Gm-Features: AVVi8Cd9qT4BAnFIqF2c4rC0FSTTui5i5JugfkNTHSCanGrahDCo7pLcb42RlFE
-Message-ID: <CANn89iJE2Dmg79WrNw3jY51yHukr4w3Lj4qRGwM-SsODNUA-JQ@mail.gmail.com>
-Subject: Re: [PATCH net-next v2 12/12] docs: net: ethtool: document ops-locked
- drivers and op_needs_rtnl
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, pabeni@redhat.com, 
-	andrew+netdev@lunn.ch, horms@kernel.org, michael.chan@broadcom.com, 
-	hkallweit1@gmail.com, maxime.chevallier@bootlin.com, joshwash@google.com, 
-	tariqt@nvidia.com, alexanderduyck@fb.com, willemb@google.com, 
-	jacob.e.keller@intel.com, kory.maincent@bootlin.com, sdf.kernel@gmail.com, 
-	jakub@cloudflare.com, nb@tipi-net.de
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jun 4, 2026 at 5:29=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wro=
-te:
->
-> Catch up various bits of documentation after the locking changes.
->
-> Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> ---
+On Tue, 2026-06-09 at 01:35 -0700, Breno Leitao wrote:
+> On Tue, Jun 09, 2026 at 01:02:00AM -0700, Allison Henderson wrote:
+> > On Mon, 2026-06-08 at 02:32 -0700, Breno Leitao wrote:
+> > > rds_info_getsockopt() pins the destination user pages with FOLL_WRITE=
+ and
+> > > the RDS_INFO_* producers memcpy the snapshot into them through
+> > > kmap_atomic(). Because that copy goes through the kernel direct map, =
+the
+> > > dirty bit on the user PTE is never set, so unpin_user_pages() release=
+s the
+> > > pages without marking them dirty. A file-backed destination page can =
+then
+> > > be reclaimed without writeback, silently discarding the copied data.
+> > >=20
+> > > Use unpin_user_pages_dirty_lock() with make_dirty=3Dtrue so the modif=
+ied
+> > > pages are marked dirty before they are unpinned.
+> > >=20
+> > > Fixes: a8c879a7ee98 ("RDS: Info and stats")
+> > > Signed-off-by: Breno Leitao <leitao@debian.org>
+> >=20
+> > Hi Breno,
+> >=20
+> > Thanks for adding the Fixes tag. One thing though: now that this is
+> > standalone, it collides with "[PATCH net-next v3 2/2] rds: convert to
+> > getsockopt_iter" since both rewrite the same unpin in the out: block of
+> > rds_info_getsockopt(). =20
+> >=20
+> > Easiest on everyone is to just keep it folded into the net-next series =
+as
+> > a three-patch set, rather than splitting the fix out to net.
+>=20
+> I got from the maintainers that they want to continue to split the fixes
+> into net and non fixes (features) into net-next.
+>=20
+> 	"So just prepare for net with Fixes tags and we'll route the
+> 	patches accordingly." -- Jakub
+>=20
+> https://lore.kernel.org/all/20260527155942.45c43c8d@kernel.org/
+>=20
+> Thanks for the review,
+> --breno
 
-Reviewed-by: Eric Dumazet <edumazet@google.com>
+I see, ok it's fine to apply my rvb then.
+
+Thanks for working on this,
+Allison
+
