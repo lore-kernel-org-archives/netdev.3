@@ -1,63 +1,61 @@
-Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52030318BB3
-	for <netdev@vger.kernel.org>; Tue,  9 Jun 2026 06:14:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F1053D3CEE
+	for <netdev@vger.kernel.org>; Tue,  9 Jun 2026 06:19:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780985684; cv=none; b=hRKfp/th12SgG0tlWsL4GVVnKZvOcj2OlQsC/PmR3BIYDqMwbZrnTcDmYPlWQKuQxg4ufIkXhB4BiPsTh9VoNQgqQpRwD3bXPV9y63cuet+u6feiSKNDShYmyxV8l6HCdA3N0OCrNdVZW5uD8ulVDOumxkllu7zTzDX8+lnMsoQ=
+	t=1780985954; cv=none; b=i3m4oy22bzLLkThm+lO5j9F1o6GAWvE/Rxw9RWhTAZWnv59yZqaO2IN5EMgtkUhaUXLNe8R1rrtasAlCE+/tXaH74evraLkSQOreXrN6OZhbBg/F6+KzlpYn4u0lh4989/5JlSHweMxY2aD2Efp8jeEj2mT0o6MZQDuCA+Pb/7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780985684; c=relaxed/simple;
-	bh=KvRxid8MhZYIZmOgsEWn34Ns+SaA+u4dWe+sxfJm7eg=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=f1MWMWGLv1KC9fgfXZa2NqPIw97XsAZfCyt6TMDcW4G+t8wvkQq60b5JHtqKUzDUXNzgZxE/gx6qPg72jAeWW8zOTlo/Aqc/g5g3Sf4PlqDHeGECOQxGQfJUTm8GowAaw8OF9+DNiVgOvDr9WtCPKNVNv4+VJ/Lgse9HQ+oeN/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=koj78Ox0; arc=none smtp.client-ip=62.96.220.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
+	s=arc-20240116; t=1780985954; c=relaxed/simple;
+	bh=m/8588E549Sx7YLNT/Ae9prWJC1TGYAlx64orwC3YfE=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
+	 Content-Type:Date:Message-ID; b=W7SkMAQYwFYFEZ3vUYcuLbEWtaBxTy+xunbrzz3YGLnTrf1wsRV2NxTIq7HBmjgJP0bQ8Pcva9Q+RPqb82g0DtlTKizhvUv6Q0q5559P0a5K1CBR3mBDFlxLNUzrJPzBeBfl2bA0VTrVfi6p/UhuqtP8ek8FPmASiLAha0eGm9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QhmSyWOp; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="koj78Ox0"
-Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id A6040205E3;
-	Tue,  9 Jun 2026 08:14:41 +0200 (CEST)
-X-Virus-Scanned: by secunet
-Received: from mx1.secunet.com ([127.0.0.1])
- by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id CCVAa9MZLlRz; Tue,  9 Jun 2026 08:14:41 +0200 (CEST)
-Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QhmSyWOp"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1780985952;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+LsXj9LcLVuo5P5r2vxoLuNRU5yNtKTpqcp3OxS8uYM=;
+	b=QhmSyWOpoPuWKWwhknduBl8Bvf3ZtlvfVMOgz+TRb2p+hKBCFqttGpsNEBaA7/qlarNiN0
+	RbbWFI36wePXr8bgimtd4TJkPhX2nSMChc9uWSZljtjj1JHAw3up4YnkmJpJjn8ExAIRKg
+	njTBnDglXDXieQI3XaqDX1+YFfjZRtM=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-378-arpG9RpbNhSZ3v-1X6q95Q-1; Tue,
+ 09 Jun 2026 02:19:06 -0400
+X-MC-Unique: arpG9RpbNhSZ3v-1X6q95Q-1
+X-Mimecast-MFC-AGG-ID: arpG9RpbNhSZ3v-1X6q95Q_1780985944
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id 0F4B8204D9;
-	Tue,  9 Jun 2026 08:14:41 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 0F4B8204D9
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1780985681;
-	bh=MMPhR1fF46fp2XC0vdJQyJQoVQYvMTHkL2duWbzItNA=;
-	h=Date:From:To:CC:Subject:References:In-Reply-To:From;
-	b=koj78Ox0ngKuCKYYuGFHYFWYiMy4sJRWsPv/tUH0Hu6eHqsqFHfDdXPCAwSBU/4Mg
-	 oWtl17+C/rMa29YbCYzwYtSlHRii4X6OiUt8FprlK61uEfczKz7AQhirJMbnDH3RD5
-	 8T8vsDR/1EhcaOsPt7S+l8Y12His6H0rnvTfnzqFwHUOnxWYR+wj4iopLn1B1+vrZK
-	 siqSG8vRvo+0An1KPtuRsDIttd9iOwLpLtEBkI+hlOR1sCaKm4Jy3O2+njQU9U363z
-	 Toal98rzFhTYDDdDgLHSgwy/QuW97v+HG3rMYfPrvwr2FLE2faxgbse5sQ1hUEH546
-	 2BDPwUxvpIpcg==
-Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Tue, 9 Jun
- 2026 08:14:40 +0200
-Received: (nullmailer pid 893511 invoked by uid 1000);
-	Tue, 09 Jun 2026 06:14:39 -0000
-Date: Tue, 9 Jun 2026 08:14:39 +0200
-From: Steffen Klassert <steffen.klassert@secunet.com>
-To: "dongchenchen (A)" <dongchenchen2@huawei.com>
-CC: <herbert@gondor.apana.org.au>, <davem@davemloft.net>,
-	<edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
-	<horms@kernel.org>, <tpluszz77@gmail.com>, <netdev@vger.kernel.org>,
-	<zhangchangzhong@huawei.com>, <xuchunxiao3@huawei.com>
-Subject: Re: [PATCH net] xfrm: Fix dev use-after-free in xfrm async resumption
-Message-ID: <aievTyGbNueY5BBt@secunet.com>
-References: <20260529092111.1089315-1-dongchenchen2@huawei.com>
- <ah0nmpeq6TNHtQqd@secunet.com>
- <70a09730-69bc-49cd-aa61-89e63ba766e3@huawei.com>
- <7c79c7a1-897a-490e-91e1-83a1ac5ad27a@huawei.com>
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3418E19560B4;
+	Tue,  9 Jun 2026 06:19:04 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.44.32.43])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 6F4D51800598;
+	Tue,  9 Jun 2026 06:19:00 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <20260608173921.GA434331@google.com>
+References: <20260608173921.GA434331@google.com> <20260522050740.84561-1-ebiggers@kernel.org> <CAB9dFduBir-41_Ef4noEJPHsFU-++JHDxMU-6S7B8pBYynvadA@mail.gmail.com> <20260603050557.GB18149@sol>
+To: Eric Biggers <ebiggers@kernel.org>
+Cc: dhowells@redhat.com, Marc Dionne <marc.c.dionne@gmail.com>,
+    netdev@vger.kernel.org, linux-afs@lists.infradead.org,
+    linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
+    "David S . Miller" <davem@davemloft.net>,
+    Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+    Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
+Subject: Re: [PATCH net-next v2 0/5] Consolidate FCrypt and PCBC code into net/rxrpc/
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -65,17 +63,19 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <7c79c7a1-897a-490e-91e1-83a1ac5ad27a@huawei.com>
-X-ClientProxiedBy: EXCH-03.secunet.de (10.32.0.183) To EXCH-01.secunet.de
- (10.32.0.171)
+Content-ID: <764076.1780985938.1@warthog.procyon.org.uk>
+Date: Tue, 09 Jun 2026 07:18:58 +0100
+Message-ID: <764077.1780985938@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-On Tue, Jun 02, 2026 at 03:38:29PM +0800, dongchenchen (A) wrote:
+Eric Biggers <ebiggers@kernel.org> wrote:
+
+> > If there's no more feedback, could this be applied to net-next?
 > 
-> Maybe we can fix it as bellow:
-> Stash the original dev to fix refcnt imbalance.  Add rcu protection
-> for new skb->dev set by xfrm_rcv_cb to fix potential race with device
-> teardown.
+> Any update on this?
 
-Please submit the patch. In case we find issues then,
-you can just do another version.
+It's fine by me, but I'm not sure what I need to do with it - shouldn't it
+already be in the netdev queue, or do I need to post it?
+
+David
+
