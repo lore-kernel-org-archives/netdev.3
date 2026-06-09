@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBCAC25FA05;
-	Tue,  9 Jun 2026 00:30:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E075246783
+	for <netdev@vger.kernel.org>; Tue,  9 Jun 2026 00:30:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780965012; cv=none; b=AlP6HmHFfYij6hvuFpwvZQOPTqnNQVeVgG7JNPtYvicgauPl3TKDVulCXf1VY6X6aPhjPCRGDOfau25NTdOQFHAz8ApyYHs8L/R9+XmhBQ3lhpYRiX5N1005JqHWdm67pzxUB7I7SuOSA2cucUUgX3E/kWOnZO9GQV36sEpwwpc=
+	t=1780965018; cv=none; b=BLzyGx++M1ss7BJv0WTa/2AQOSXB+qMZ3kPwc0YrmfC/Jf9D9XURd1sJQuNr3SwWu6GF/wvvvUQ+rtnEjhgtz7SGrun2RbJC5/0rGEde9BF88OL2gBYjUlcSlkgTxKiUXaX4YH3VEqrhe6ZI5WgWInbOiMBOW/BvFyIBTC6hvI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780965012; c=relaxed/simple;
-	bh=kj2KXnTNNmf6Tzf2kZK47V6quFzLpPcGmpSCmxECHhU=;
+	s=arc-20240116; t=1780965018; c=relaxed/simple;
+	bh=nWuvcWOKHRZlAICMDGjK2WEQzW1Xfm4NW+ew5YF5pII=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=Cs6qUzjDPWvJMnKEf4ZROVQR/4OjCV8J3UYol+NPV4m/ce7KaaVV1QPEJJy0FysBCdqNGJ3EF11yx2M5d5vO67VFysf9HLtyc44ilKzHZ/tbc8aurnlih4O++O8oskmUmgPo/I8fQ8ug2viHlyM2HvhDv+W33HT7n7J6OcR+zrQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kZmvb2R0; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=VVNC06dQorOhrUcYFEI4/5oXYnVcAPDZk8xYojv2ayRww1sdO9Gw5RTTQx2rPKX3QLyOSs1iKZQ2IVXkLjeWz1mY6fpqMlMJwytcTsKKjAgauXo3RKdXu+WzY3FyfDKsKlaPTRuaAWDYZZVDgQ6AKORPdogwWoN5PHZvcv/RpdY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d1XEsqy4; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kZmvb2R0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C8401F00893;
-	Tue,  9 Jun 2026 00:30:11 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d1XEsqy4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A87EA1F00893;
+	Tue,  9 Jun 2026 00:30:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780965011;
-	bh=4ht2oC4CSK5BZkNCmgqpgK5CIHBdLYYHpYT2Hx3ogSg=;
+	s=k20260515; t=1780965016;
+	bh=6oflT6M4vpQGh89Fk1A0b9ZXCKAsjZCOBE9yFrqdnsM=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=kZmvb2R0ahBHRiYUiI5I7FRlUm3agM3H1PjErPCGCPBz7JxDjfkcf8xL9rbhJzmzY
-	 uFChsfKolNU43MwphKbWK5oGudrPDdKldtjPFydkzRV8GwuaZhko3tZMceGrvu85qK
-	 0B3wTX4TSeyIYAvrSd/9nIzx7KxYegYyM14DNHDgOwHNXvoO6dPZbLIssnvG60J/2u
-	 BRrLcs3oH2HvZi1JA0jEn9cPwLthh/cRp0snIVla+972BOorT1B59FJhzZWP+pkoU9
-	 J1LrEOFRcm3yhCUkNMEI+4PRo2FJkLP8Cs2C/Vl+ckP/sWHt/oE+FZOtMu35u0oT+U
-	 v/G3FaPqLkEzQ==
+	b=d1XEsqy43TiWZp6xjZr/FekUrH5OV4xC25lci/oH4II9/JgOELqBvLH4BMrVq+cVf
+	 mkC2ueEQuw2/0Tf/54X7Dy1UWxcoX9mSN89pkjpIx5M7sloychaZPTCgkwPoEBQ+oq
+	 i2fz5khBf4wzsZiuwQsZCc8tVSfkKqJ9eDYPMaqtFqIPsI7o6Rh0RuTTshZJNmBH/M
+	 lQGZvkxlkWVFDVo1go+FSp+CGo98wvsFvMP9c5RjXkqEuszQPsRBl5h6GGgtyLhyfC
+	 k4ARtBTigJ7swMDWOA3XTxZ+A6cEWK6h8ibjsBLPfRb+wZgb6/E5hEmx5jyRYIXP4x
+	 napRxTUqDQ/8A==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 568183812FDA;
-	Tue,  9 Jun 2026 00:30:11 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93AB53812FDA;
+	Tue,  9 Jun 2026 00:30:16 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,38 +37,36 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2] net/mlx4: avoid GCC 10 __bad_copy_from() false
- positive
+Subject: Re: [PATCH net v2] pds_core: quiesce DMA before freeing resources
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178096500989.1726280.2088342671692076500.git-patchwork-notify@kernel.org>
-Date: Tue, 09 Jun 2026 00:30:09 +0000
-References: <20260603061044.2055155-1-sangyao@kylinos.cn>
-In-Reply-To: <20260603061044.2055155-1-sangyao@kylinos.cn>
-To: Yao Sang <sangyao@kylinos.cn>
-Cc: tariqt@nvidia.com, davem@davemloft.net, kuba@kernel.org,
- pabeni@redhat.com, andrew+netdev@lunn.ch, edumazet@google.com,
- gustavoars@kernel.org, netdev@vger.kernel.org, linux-rdma@vger.kernel.org
+ <178096501514.1726280.11716563786761485251.git-patchwork-notify@kernel.org>
+Date: Tue, 09 Jun 2026 00:30:15 +0000
+References: <20260604213637.3844317-1-nikhil.rao@amd.com>
+In-Reply-To: <20260604213637.3844317-1-nikhil.rao@amd.com>
+To: Nikhil P. Rao <nikhil.rao@amd.com>
+Cc: netdev@vger.kernel.org, kuba@kernel.org, brett.creeley@amd.com,
+ eric.joyner@amd.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, pabeni@redhat.com, aleksander.lobakin@intel.com
 
 Hello:
 
-This patch was applied to netdev/net.git (main)
+This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Wed,  3 Jun 2026 14:10:44 +0800 you wrote:
-> mlx4_init_user_cqes() fills a scratch buffer with the CQE
-> initialization pattern and then copies from that buffer to userspace.
+On Thu, 4 Jun 2026 21:36:37 +0000 you wrote:
+> pdsc_teardown() frees DMA buffers but does not disable bus mastering,
+> leaving the device able to perform DMA after the buffers are freed.
+> This can lead to use-after-free if the device writes to freed memory.
 > 
-> In the single-copy path, the copy length is array_size(entries,
-> cqe_size), but the scratch buffer is allocated with PAGE_SIZE. GCC 10
-> does not carry the branch invariant strongly enough through the object
-> size checks and falsely triggers __bad_copy_from().
+> Add pci_clear_master() to pdsc_teardown() to disable bus mastering
+> before freeing resources, ensuring all DMA is quiesced.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v2] net/mlx4: avoid GCC 10 __bad_copy_from() false positive
-    https://git.kernel.org/netdev/net/c/2365343f4aad
+  - [net,v2] pds_core: quiesce DMA before freeing resources
+    https://git.kernel.org/netdev/net-next/c/6443f4f20bda
 
 You are awesome, thank you!
 -- 
