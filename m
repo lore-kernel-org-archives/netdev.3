@@ -1,614 +1,118 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fout-b8-smtp.messagingengine.com (fout-b8-smtp.messagingengine.com [202.12.124.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFF5740E8E3;
-	Tue,  9 Jun 2026 12:11:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4F2E40C5C0
+	for <netdev@vger.kernel.org>; Tue,  9 Jun 2026 12:13:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781007062; cv=none; b=L21l3lbD+bDE/hXHr5C12ZfCag3aGrYBGdd1Bvfv2Q4TXoTGl8pMlQOW0DVoKPw//WdbehjqaKQLtg+yO9W2XONETlCxmSywRCEMOcl3phU6BU7J9VouzQ6juf048drnFboXE3bggiwqi4mYvu4JzqI/Q5XhSzG3cfQ330QsC7s=
+	t=1781007186; cv=none; b=ai52UvGDjOs4wYNZNOl3MbMjSEV9HJNwTKVSR97RtAMaM0NFR+yJBlkclscbpDROactnE6odlYYXLHslPAfUGMLxv9rUY1N7Ix0PxqmQTjAdWJ8Gu62bhCeRh3snAqeht/0Xjy4IhUeW1wG9uHqfepyOndqffrxPfnNgycuspPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781007062; c=relaxed/simple;
-	bh=nRif5GfTHAcPeanGYwYT9+VbLNgbIEinsbCPXtCMm5c=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=U8gtE3TRo3I/QOM/zQBZpD/cCalHhwY+5+zYOxUuWn4IQ44qkLqAItVASuN9U/KQzUBo0djQYDqBneX+vXrDw6G73M6/QeGrVXVbtAqy1wPcVBnkRJf65mpSpC15/svo4ktc837qudm3xBGuWVW1tzMktPtV/KAGYQRBCB1nYUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o2SMekiN; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1781007186; c=relaxed/simple;
+	bh=G+vHkhOQyvX2lmekbnAv6Ywkb+ODNa78R7s251UQToU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kq7YhSz3UjlZrb/zQZMFoQMsoi0S++t9w1+eU6ZQBqZX34V8VggXIcXlSi4Ywm3sho3LDstxUXkazVho/Zn86sTrUrlx2Sw3J+jH8HDs4gMEOY11wGppobiSTSM8TAUSCHtFsfPUDE3RCRtubi56D9Bg1zIxTGxeIT/QLs/Euqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=lwj4AgJH; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=dxpvdnPI; arc=none smtp.client-ip=202.12.124.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o2SMekiN"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id A3AF2C2BCB9;
-	Tue,  9 Jun 2026 12:11:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1781007061;
-	bh=nRif5GfTHAcPeanGYwYT9+VbLNgbIEinsbCPXtCMm5c=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=o2SMekiNIaGCy5Lu23utIhZEsPm5dqrrvK89NmEZAdTPRGoJoUGb0qVkUYRcNUNG3
-	 a8CXTpTXm4CYxosNE9Hj6+qmFavEI9ivNlAtpoivORg0o9U5RzuI1Ol6crLB0CjTkS
-	 OrZIDatQowHgxhtLlmGmL12TeIZ6zNdybtc2ZXZ4lNkzzg7hqDosE8Dnk7MjHtNcrz
-	 IUSdw2Jjw6bWkVanGDvQTZRQFR27RdRrRlIlxFGgt5UjjwQ8bkt71C+RGq4GpaAbfJ
-	 RT3Nm/O18Y/lLHc6E3FIAeEMSi6BhD0sAJM3zdd7E+02wQhGgAikic6Lvrrom3BSiq
-	 xLku9HO6A/7Dg==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8713CCD8C92;
-	Tue,  9 Jun 2026 12:11:01 +0000 (UTC)
-From: Cedric Jehasse via B4 Relay <devnull+cedric.jehasse.luminex.be@kernel.org>
-Date: Tue, 09 Jun 2026 14:10:51 +0200
-Subject: [PATCH net-next v7 2/2] net: dsa: mv88e6xxx: add support for
- credit based shaper
+	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="lwj4AgJH";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="dxpvdnPI"
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfout.stl.internal (Postfix) with ESMTP id 83B401D00131;
+	Tue,  9 Jun 2026 08:13:02 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-06.internal (MEProxy); Tue, 09 Jun 2026 08:13:03 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm2; t=1781007182; x=
+	1781093582; bh=4DKX5bDGTzVNeK9Ona+JNrqFwEcAU1ZbrrtAEpOhs6M=; b=l
+	wj4AgJHVguL4xMYYDdth4JYognTCap74E5Fd3WjamFZJTd7uFy5GJXWoC9O+zMp7
+	YWRQ9Hr2smEQ0p6aR8n16ZbeRVqLbE1BkXz3IeIZzLpYEviK4VFmrUozbkb00m27
+	ekENwNi5pBKwyhGE/Xdt7kYiSEom4qejArx5Q3aOhoPfOiN6iL1xbV+Or/lZf3HE
+	83kyhROaKVt5m7JsyPzuXXZE6eWFLsgecCXT7Str8s96E9GT4NHz1Sz7fhjBVdYv
+	k9Yi6/QSkz8Md7lFq8SAApYsuhdkq2WlTD/rDW8YpiJ7Hu/bkvWNUYOqx78GOiPu
+	+9J768WS5B2MbWbYfU22w==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1781007182; x=1781093582; bh=4DKX5bDGTzVNeK9Ona+JNrqFwEcAU1Zbrrt
+	AEpOhs6M=; b=dxpvdnPIxvrkOm/Wx606TBlhjX67Ure4Jk90g/y3+A9A4w5JJeY
+	HvmunRovsZbiX3wCcNYRIiuIx8VDICWSGCDdoTvc6XelfGiw0NRWktPN7uWw30ls
+	dwjh7hLXct/iidkcl7ouO8qEwHqEIPrEfAOUQbeB7QoUdg+cI7hPydC+WTZ6zXFb
+	k8Rb6gZx85rOyTaEKNakLkR9m3qsjzR/PBWVvrsclyUYtb3DF5MajQ/eyWkTDOeJ
+	pHHCHPuMlqmJ5VFVdmyvWU6x9/ULp2Vn90grNG7dQ7LGp4jof1gjGfWoV76N5GOW
+	XywRqePzBa9fYYnOvtDWrEonI/DbUtJ8aPA==
+X-ME-Sender: <xms:TQMoaj9p7SFQDDue_M7hHRwTX22bZqGlv-Vo_HDqV3qdVmrzsKKEXA>
+    <xme:TQMoahSnZpmIMMLaLPNdLcHg0AH9KHM82LrbhVSz5WvQex06_GCIk4adReFbmJAdz
+    8xtKa1YhXO_5sNriu8wMi3awVHQ1N1EqdYOk6wYXVmmngdgKdjo4SCU>
+X-ME-Received: <xmr:TQMoagSyyy---EULH95Lj7MoS8BL4_nQjThbS5DYZFwrL5xTGK4yBifiNzijolt9x06nnkVf_kTxhWTSxmne2nY>
+X-ME-Proxy-Cause: dmFkZTFBYXm/+Yk5a+LVIvXPE+WgdUmcYXfyJ6+z1jaKtAJYdKcOrEJ3Im6UmG6F2r2k1l
+    23aLRp0a5jfBLU7R4KD/n9voZXAIncB5XJMS82spkGQx9wLRUNgIIegmssaF14t+D+oWe6
+    3XqVATEcZsmcEmDBtp57QzSDI+HJDxQPQe+/4UJVEdKKLq1b5QfZ4CSPGy1x7jcZcuMTqw
+    qttXSwHFgaIwmHFFPVm8XpdEBbNl3rUp2nNdzyNsx7G5ZiHaXPDcTBIRZOMaVo1YiDF7gL
+    7yCXiXUSd/j/u8nAkJVP2BfJpqwDu5oBHfi8EUL+5LV74btlJ/FtJzcb1dvu8PUG91kLhS
+    8whIrBZwa4bpbkkPw2BcC4yyiNrPABxcn2VjvbjWlzA9Gc6ppVv27A0k/gn718l8JxS/NR
+    pUL8Zw3M+eB+JlzRwY5IJPKmlvWe5rm1Fq6XBTmSX+8S2VsG+06YmXEg3cAbwoWyykatBb
+    OCylq2JXrhPi46R/+FEAX4Hlr7u2m6SpO8tWSWMGh2hzurwu69xK5tRTzNM+vTigh+t1Ra
+    12+i/pdwXZcuhvzYRH1at+l+YIdupz5nSDRGV0wr7csHRCFnOkFQur7s7/yWi++Ch9vLhT
+    xDTjcZ2vSd/Vjmx9dnlb7/itWLIPSkayCuzx7VmSAY3iSFWZYk5c2BCcglMw
+X-ME-Proxy: <xmx:TQMoal41WRr5yJk96trBcoAlZsjg-3_141-rr_urAoj99NV-7evH4A>
+    <xmx:TQMoatU6L96XdICYTGV7ctran5szrVe1hxbLPT53C1E1nEDhPbSQlA>
+    <xmx:TQMoaj_pvU24azqdJoiohgkcrVXFYURgeWo_brOBnN71F3eOv8mbig>
+    <xmx:TQMoaloLb97sLiZ894qMGKshT1V62WFirC4usl2S-_OKz0xoTlFP4w>
+    <xmx:TgMoaux5AacP8Ju3CM2T3Q5xE_ITGv3zUVXaty9c13R00KJno8qEI7BG>
+Feedback-ID: i934648bf:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 9 Jun 2026 08:13:00 -0400 (EDT)
+Date: Tue, 9 Jun 2026 14:12:58 +0200
+From: Sabrina Dubroca <sd@queasysnail.net>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Geliang Tang <geliang@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Atul Gupta <atul.gupta@chelsio.com>,
+	Geliang Tang <tanggeliang@kylinos.cn>, netdev@vger.kernel.org,
+	mptcp@lists.linux.dev, Gang Yan <yangang@kylinos.cn>
+Subject: Re: [PATCH net] tls: restore sk_prot before calling original
+ destructor
+Message-ID: <aigDShl67-mqMs2S@krikkit>
+References: <158c0562b4969c61574633e5d22c962d50e5bc31.1780663476.git.tanggeliang@kylinos.cn>
+ <aiZ9PZxNyp9jik2v@krikkit>
+ <20260608200254.3be56aa7@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260609-net-next-mv88e6xxx-cbs-v7-2-7d5d732df545@luminex.be>
-References: <20260609-net-next-mv88e6xxx-cbs-v7-0-7d5d732df545@luminex.be>
-In-Reply-To: <20260609-net-next-mv88e6xxx-cbs-v7-0-7d5d732df545@luminex.be>
-To: Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, Russell King <linux@armlinux.org.uk>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Luke Howard <lukeh@padl.com>, 
- =?utf-8?q?Marek_Beh=C3=BAn?= <kabel@kernel.org>, 
- Cedric Jehasse <cedric.jehasse@gmail.com>, 
- Cedric Jehasse <cedric.jehasse@luminex.be>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1781007059; l=19695;
- i=cedric.jehasse@luminex.be; s=20260213; h=from:subject:message-id;
- bh=hV5Z4jbZe/H79/cnGLd2uSZ223uXYNuDB7/w6qWBj4Y=;
- b=tPrXIS0ZSQ2QcmoLuT66Cv0rTZVNOu5rGrUAc19HE30Iky6PImT/x4C1zB/vv7p7zA4uc41cK
- SqUh4pIkWj5ARF5Ljs9XDBmOc3EtJvpcx5wXOtVZpxRar1cRu2ejdNs
-X-Developer-Key: i=cedric.jehasse@luminex.be; a=ed25519;
- pk=DL2RaHc2bc7tTDTMJdugm42BtJk4Ip+7V41Gkj+Avjk=
-X-Endpoint-Received: by B4 Relay for cedric.jehasse@luminex.be/20260213
- with auth_id=638
-X-Original-From: Cedric Jehasse <cedric.jehasse@luminex.be>
-Reply-To: cedric.jehasse@luminex.be
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260608200254.3be56aa7@kernel.org>
 
-From: Cedric Jehasse <cedric.jehasse@luminex.be>
+2026-06-08, 20:02:54 -0700, Jakub Kicinski wrote:
+> On Mon, 8 Jun 2026 10:28:45 +0200 Sabrina Dubroca wrote:
+> > 2026-06-05, 20:57:07 +0800, Geliang Tang wrote:
+> > > From: Geliang Tang <tanggeliang@kylinos.cn>
+> > > 
+> > > When a TLS socket is offloaded to a TOE device, tls_toe_bypass() replaces  
+> > 
+> > Or maybe it's time to simply drop tls_toe? There's only one driver
+> > that uses it (chelsio/chtls), and it hasn't been touched by someone at
+> > chelsio since 2021 (2355a6773a2c [1]). Since then, there have been a
+> > few fixes by people who I doubt are actually using this (Eric, Dan
+> > Carpenter), everything else is treewide/refactoring patches.
+> 
+> Yup, tls_toe is unsalvageable. Sabrina, could you float a net-next
+> patch to nuke it?
 
-Some of the chips supported by this driver have credit based shaper
-support. Support is added for the 6341, 6352, 6390 and 6393 families.
-This is configured using the Qav registers in the AVB register block.
-There are small differences in the Qav registers between the chip
-families (eg. the unit used for the rate and number of bits in the
-registers). mv88e6xxx_qav_info is introduced to configure this per chip.
-
-Eg. setting up 20mbps credit based shaper on a 1GBit link:
-tc qdisc add dev p8 parent root handle 100: mqprio \
-                num_tc 8 \
-                map 0 0 6 7 0 5 0 0 0 0 0 0 0 0 0 0 \
-                queues 1@0 1@1 1@2 1@3 1@4 1@5 1@6 1@7 \
-                hw 0
-
-tc qdisc replace dev p8 parent 100:8 cbs locredit -1470 hicredit 30 \
-    sendslope -980000 idleslope 20000 offload 1
-
-Note: only idleslope and hicredit can be programmed in the switch
-registers, other parameters won't affect settings.
-
-Signed-off-by: Cedric Jehasse <cedric.jehasse@luminex.be>
----
- drivers/net/dsa/mv88e6xxx/chip.c        | 133 ++++++++++++++++++++++++++++++++
- drivers/net/dsa/mv88e6xxx/chip.h        |  20 +++++
- drivers/net/dsa/mv88e6xxx/global2.h     |   3 +
- drivers/net/dsa/mv88e6xxx/global2_avb.c |  21 +++++
- drivers/net/dsa/mv88e6xxx/port.c        |  63 +++++++++++++++
- drivers/net/dsa/mv88e6xxx/port.h        |  20 +++++
- 6 files changed, 260 insertions(+)
-
-diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
-index ffd4fa41b7c5..233128851247 100644
---- a/drivers/net/dsa/mv88e6xxx/chip.c
-+++ b/drivers/net/dsa/mv88e6xxx/chip.c
-@@ -32,6 +32,7 @@
- #include <linux/gpio/consumer.h>
- #include <linux/phylink.h>
- #include <net/dsa.h>
-+#include <net/pkt_sched.h>
- 
- #include "chip.h"
- #include "devlink.h"
-@@ -5015,6 +5016,7 @@ static const struct mv88e6xxx_ops mv88e6240_ops = {
- 	.port_set_ether_type = mv88e6351_port_set_ether_type,
- 	.port_set_jumbo_size = mv88e6165_port_set_jumbo_size,
- 	.port_egress_rate_limiting = mv88e6097_port_egress_rate_limiting,
-+	.port_set_scheduling_mode = mv88e6352_port_set_scheduling_mode,
- 	.port_pause_limit = mv88e6097_port_pause_limit,
- 	.port_disable_learn_limit = mv88e6xxx_port_disable_learn_limit,
- 	.port_disable_pri_override = mv88e6xxx_port_disable_pri_override,
-@@ -5288,6 +5290,7 @@ static const struct mv88e6xxx_ops mv88e6341_ops = {
- 	.port_set_ether_type = mv88e6351_port_set_ether_type,
- 	.port_set_jumbo_size = mv88e6165_port_set_jumbo_size,
- 	.port_egress_rate_limiting = mv88e6097_port_egress_rate_limiting,
-+	.port_set_scheduling_mode = mv88e6352_port_set_scheduling_mode,
- 	.port_pause_limit = mv88e6097_port_pause_limit,
- 	.port_disable_learn_limit = mv88e6xxx_port_disable_learn_limit,
- 	.port_disable_pri_override = mv88e6xxx_port_disable_pri_override,
-@@ -5446,6 +5449,7 @@ static const struct mv88e6xxx_ops mv88e6352_ops = {
- 	.port_set_ether_type = mv88e6351_port_set_ether_type,
- 	.port_set_jumbo_size = mv88e6165_port_set_jumbo_size,
- 	.port_egress_rate_limiting = mv88e6097_port_egress_rate_limiting,
-+	.port_set_scheduling_mode = mv88e6352_port_set_scheduling_mode,
- 	.port_pause_limit = mv88e6097_port_pause_limit,
- 	.port_disable_learn_limit = mv88e6xxx_port_disable_learn_limit,
- 	.port_disable_pri_override = mv88e6xxx_port_disable_pri_override,
-@@ -5515,6 +5519,7 @@ static const struct mv88e6xxx_ops mv88e6390_ops = {
- 	.port_get_cmode = mv88e6352_port_get_cmode,
- 	.port_set_cmode = mv88e6390_port_set_cmode,
- 	.port_setup_message_port = mv88e6xxx_setup_message_port,
-+	.port_set_scheduling_mode = mv88e6390_port_set_scheduling_mode,
- 	.stats_snapshot = mv88e6390_g1_stats_snapshot,
- 	.stats_set_histogram = mv88e6390_g1_stats_set_histogram,
- 	.stats_get_sset_count = mv88e6320_stats_get_sset_count,
-@@ -5580,6 +5585,7 @@ static const struct mv88e6xxx_ops mv88e6390x_ops = {
- 	.port_get_cmode = mv88e6352_port_get_cmode,
- 	.port_set_cmode = mv88e6390x_port_set_cmode,
- 	.port_setup_message_port = mv88e6xxx_setup_message_port,
-+	.port_set_scheduling_mode = mv88e6390_port_set_scheduling_mode,
- 	.stats_snapshot = mv88e6390_g1_stats_snapshot,
- 	.stats_set_histogram = mv88e6390_g1_stats_set_histogram,
- 	.stats_get_sset_count = mv88e6320_stats_get_sset_count,
-@@ -5637,6 +5643,7 @@ static const struct mv88e6xxx_ops mv88e6393x_ops = {
- 	.port_set_ether_type = mv88e6393x_port_set_ether_type,
- 	.port_set_jumbo_size = mv88e6165_port_set_jumbo_size,
- 	.port_egress_rate_limiting = mv88e6097_port_egress_rate_limiting,
-+	.port_set_scheduling_mode = mv88e6390_port_set_scheduling_mode,
- 	.port_pause_limit = mv88e6390_port_pause_limit,
- 	.port_disable_learn_limit = mv88e6xxx_port_disable_learn_limit,
- 	.port_disable_pri_override = mv88e6xxx_port_disable_pri_override,
-@@ -5679,6 +5686,27 @@ static const struct mv88e6xxx_ops mv88e6393x_ops = {
- 	.tcam_ops = &mv88e6393_tcam_ops,
- };
- 
-+static const struct mv88e6xxx_qav_info mv88e6352_qav_info = {
-+	.rate_unit = 32,
-+	.rate_mask = GENMASK(14, 0),
-+	.hilimit_mask = GENMASK(14, 0),
-+	.queue_mask = GENMASK(3, 0),
-+};
-+
-+static const struct mv88e6xxx_qav_info mv88e6341_qav_info = {
-+	.rate_unit = 64,
-+	.rate_mask = GENMASK(15, 0),
-+	.hilimit_mask = GENMASK(13, 0),
-+	.queue_mask = GENMASK(3, 0),
-+};
-+
-+static const struct mv88e6xxx_qav_info mv88e6390_qav_info = {
-+	.rate_unit = 64,
-+	.rate_mask = GENMASK(15, 0),
-+	.hilimit_mask = GENMASK(13, 0),
-+	.queue_mask = GENMASK(7, 0),
-+};
-+
- static const struct mv88e6xxx_info mv88e6xxx_table[] = {
- 	[MV88E6020] = {
- 		.prod_num = MV88E6XXX_PORT_SWITCH_ID_PROD_6020,
-@@ -6243,6 +6271,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
- 		.multi_chip = true,
- 		.edsa_support = MV88E6XXX_EDSA_SUPPORTED,
- 		.ptp_support = true,
-+		.qav = &mv88e6352_qav_info,
- 		.ops = &mv88e6240_ops,
- 	},
- 
-@@ -6380,6 +6409,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
- 		.multi_chip = true,
- 		.edsa_support = MV88E6XXX_EDSA_SUPPORTED,
- 		.ptp_support = true,
-+		.qav = &mv88e6341_qav_info,
- 		.ops = &mv88e6341_ops,
- 	},
- 
-@@ -6460,6 +6490,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
- 		.multi_chip = true,
- 		.edsa_support = MV88E6XXX_EDSA_SUPPORTED,
- 		.ptp_support = true,
-+		.qav = &mv88e6352_qav_info,
- 		.ops = &mv88e6352_ops,
- 	},
- 	[MV88E6361] = {
-@@ -6517,6 +6548,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
- 		.multi_chip = true,
- 		.edsa_support = MV88E6XXX_EDSA_UNDOCUMENTED,
- 		.ptp_support = true,
-+		.qav = &mv88e6390_qav_info,
- 		.ops = &mv88e6390_ops,
- 	},
- 	[MV88E6390X] = {
-@@ -6544,6 +6576,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
- 		.multi_chip = true,
- 		.edsa_support = MV88E6XXX_EDSA_UNDOCUMENTED,
- 		.ptp_support = true,
-+		.qav = &mv88e6390_qav_info,
- 		.ops = &mv88e6390x_ops,
- 	},
- 
-@@ -6572,6 +6605,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
- 		.pvt = true,
- 		.multi_chip = true,
- 		.ptp_support = true,
-+		.qav = &mv88e6390_qav_info,
- 		.ops = &mv88e6393x_ops,
- 	},
- };
-@@ -7193,6 +7227,104 @@ static int mv88e6xxx_crosschip_lag_leave(struct dsa_switch *ds, int sw_index,
- 	return err_sync ? : err_pvt;
- }
- 
-+static int mv88e6xxx_setup_tc_cbs(struct dsa_switch *ds, int port,
-+				  struct tc_cbs_qopt_offload *cbs)
-+{
-+	const struct mv88e6xxx_avb_ops *avb_ops;
-+	struct mv88e6xxx_chip *chip = ds->priv;
-+	const struct mv88e6xxx_qav_info *qav;
-+	const struct mv88e6xxx_ops *ops;
-+	int hilimit_reg;
-+	int rate_reg;
-+	u8 queue_bit;
-+	u32 rate = 0;
-+	u16 hilimit;
-+	int err;
-+
-+	ops = chip->info->ops;
-+	avb_ops = ops->avb_ops;
-+	qav = chip->info->qav;
-+
-+	if (!qav || !avb_ops || !avb_ops->port_qav_write ||
-+	    !ops->port_set_scheduling_mode)
-+		return -EOPNOTSUPP;
-+
-+	if (!dsa_is_user_port(ds, port))
-+		return -EOPNOTSUPP;
-+
-+	if (!(qav->queue_mask & BIT(cbs->queue)))
-+		return -EOPNOTSUPP;
-+
-+	queue_bit = BIT(cbs->queue);
-+	rate_reg = MV88E6XXX_PORT_QAV_CFG_RATE(cbs->queue);
-+	hilimit_reg = MV88E6XXX_PORT_QAV_CFG_HILIMIT(cbs->queue);
-+
-+	if (cbs->enable) {
-+		if (cbs->hicredit <= 0 ||
-+		    cbs->hicredit > qav->hilimit_mask)
-+			return -ERANGE;
-+
-+		rate = DIV_ROUND_UP(cbs->idleslope, qav->rate_unit);
-+		if (rate > qav->rate_mask)
-+			return -ERANGE;
-+		/* avoid using zero rate */
-+		rate = max_t(u16, rate, 1);
-+	}
-+
-+	mv88e6xxx_reg_lock(chip);
-+
-+	if (!cbs->enable) {
-+		err = mv88e6xxx_port_qav_write(chip, port, rate_reg, 0);
-+		if (err)
-+			goto unlock;
-+
-+		if (!(chip->ports[port].cbs_active_queues & ~queue_bit)) {
-+			err = mv88e6xxx_port_set_scheduling_mode(chip, port, 0);
-+			if (err)
-+				goto unlock;
-+		}
-+		chip->ports[port].cbs_active_queues &= ~queue_bit;
-+		goto unlock;
-+	}
-+
-+	hilimit = cbs->hicredit & qav->hilimit_mask;
-+	err = mv88e6xxx_port_qav_write(chip, port, hilimit_reg, hilimit);
-+	if (err)
-+		goto unlock;
-+
-+	err = mv88e6xxx_port_qav_write(chip, port, rate_reg, rate);
-+	if (err)
-+		goto unlock;
-+
-+	if (!chip->ports[port].cbs_active_queues) {
-+		u8 sched_mode = chip->info->num_tx_queues - 1;
-+
-+		err = mv88e6xxx_port_set_scheduling_mode(chip, port,
-+							 sched_mode);
-+		if (err) {
-+			mv88e6xxx_port_qav_write(chip, port, rate_reg, 0);
-+			goto unlock;
-+		}
-+	}
-+	chip->ports[port].cbs_active_queues |= queue_bit;
-+
-+unlock:
-+	mv88e6xxx_reg_unlock(chip);
-+
-+	return err;
-+}
-+
-+static int mv88e6xxx_port_setup_tc(struct dsa_switch *ds, int port,
-+				   enum tc_setup_type type, void *type_data)
-+{
-+	switch (type) {
-+	case TC_SETUP_QDISC_CBS:
-+		return mv88e6xxx_setup_tc_cbs(ds, port, type_data);
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+}
-+
- static const struct phylink_mac_ops mv88e6xxx_phylink_mac_ops = {
- 	.mac_select_pcs		= mv88e6xxx_mac_select_pcs,
- 	.mac_prepare		= mv88e6xxx_mac_prepare,
-@@ -7252,6 +7384,7 @@ static const struct dsa_switch_ops mv88e6xxx_switch_ops = {
- 	.port_hwtstamp_get	= mv88e6xxx_port_hwtstamp_get,
- 	.port_txtstamp		= mv88e6xxx_port_txtstamp,
- 	.port_rxtstamp		= mv88e6xxx_port_rxtstamp,
-+	.port_setup_tc		= mv88e6xxx_port_setup_tc,
- 	.cls_flower_add		= mv88e6xxx_cls_flower_add,
- 	.cls_flower_del         = mv88e6xxx_cls_flower_del,
- 	.get_ts_info		= mv88e6xxx_get_ts_info,
-diff --git a/drivers/net/dsa/mv88e6xxx/chip.h b/drivers/net/dsa/mv88e6xxx/chip.h
-index 19d8eda19b78..fb86e62c92ce 100644
---- a/drivers/net/dsa/mv88e6xxx/chip.h
-+++ b/drivers/net/dsa/mv88e6xxx/chip.h
-@@ -125,6 +125,7 @@ enum mv88e6xxx_edsa_support {
- };
- 
- struct mv88e6xxx_ops;
-+struct mv88e6xxx_qav_info;
- 
- struct mv88e6xxx_info {
- 	enum mv88e6xxx_family family;
-@@ -177,6 +178,9 @@ struct mv88e6xxx_info {
- 	/* Supports PTP */
- 	bool ptp_support;
- 
-+	/* 802.1Qav credit based shaping */
-+	const struct mv88e6xxx_qav_info *qav;
-+
- 	/* Internal PHY start index. 0 means that internal PHYs range starts at
- 	 * port 0, 1 means internal PHYs range starts at port 1, etc
- 	 */
-@@ -304,6 +308,9 @@ struct mv88e6xxx_port {
- 
- 	/* MacAuth Bypass control flag */
- 	bool mab;
-+
-+	/* Queues with CBS currently enabled. */
-+	u8 cbs_active_queues;
- };
- 
- enum mv88e6xxx_region_id {
-@@ -607,6 +614,8 @@ struct mv88e6xxx_ops {
- 				   size_t size);
- 
- 	int (*port_egress_rate_limiting)(struct mv88e6xxx_chip *chip, int port);
-+	int (*port_set_scheduling_mode)(struct mv88e6xxx_chip *chip, int port,
-+					u8 mode);
- 	int (*port_pause_limit)(struct mv88e6xxx_chip *chip, int port, u8 in,
- 				u8 out);
- 	int (*port_disable_learn_limit)(struct mv88e6xxx_chip *chip, int port);
-@@ -764,6 +773,10 @@ struct mv88e6xxx_avb_ops {
- 	int (*tai_read)(struct mv88e6xxx_chip *chip, int addr, u16 *data,
- 			int len);
- 	int (*tai_write)(struct mv88e6xxx_chip *chip, int addr, u16 data);
-+
-+	/* Access port-scoped 802.1Qav registers */
-+	int (*port_qav_write)(struct mv88e6xxx_chip *chip, int port, int addr,
-+			      u16 data);
- };
- 
- struct mv88e6xxx_ptp_ops {
-@@ -799,6 +812,13 @@ struct mv88e6xxx_tcam_ops {
- 	int (*flush_tcam)(struct mv88e6xxx_chip *chip);
- };
- 
-+struct mv88e6xxx_qav_info {
-+	u16 rate_unit; /* in kbps */
-+	u16 rate_mask; /* QPri Rate valid bits mask */
-+	u16 hilimit_mask; /* QPri HiLimit bits mask*/
-+	u8 queue_mask; /* supported queues bitmask */
-+};
-+
- static inline bool mv88e6xxx_has_stu(struct mv88e6xxx_chip *chip)
- {
- 	return chip->info->max_sid > 0 &&
-diff --git a/drivers/net/dsa/mv88e6xxx/global2.h b/drivers/net/dsa/mv88e6xxx/global2.h
-index 82f9b410de0b..7ff891cc7f65 100644
---- a/drivers/net/dsa/mv88e6xxx/global2.h
-+++ b/drivers/net/dsa/mv88e6xxx/global2.h
-@@ -186,6 +186,9 @@
- #define MV88E6352_G2_AVB_CMD_BLOCK_MASK		0x00e0
- #define MV88E6352_G2_AVB_CMD_ADDR_MASK		0x001f
- 
-+#define MV88E6XXX_PORT_QAV_CFG_RATE(queue)	(((queue) & 0x7) << 1)
-+#define MV88E6XXX_PORT_QAV_CFG_HILIMIT(queue)	((((queue) & 0x7) << 1) + 1)
-+
- /* Offset 0x17: AVB Data Register */
- #define MV88E6352_G2_AVB_DATA		0x17
- 
-diff --git a/drivers/net/dsa/mv88e6xxx/global2_avb.c b/drivers/net/dsa/mv88e6xxx/global2_avb.c
-index 657783e043ff..6b54e275d21a 100644
---- a/drivers/net/dsa/mv88e6xxx/global2_avb.c
-+++ b/drivers/net/dsa/mv88e6xxx/global2_avb.c
-@@ -110,6 +110,15 @@ static int mv88e6352_g2_avb_port_ptp_write(struct mv88e6xxx_chip *chip,
- 	return mv88e6xxx_g2_avb_write(chip, writeop, data);
- }
- 
-+static int mv88e6352_g2_avb_port_qav_write(struct mv88e6xxx_chip *chip,
-+					   int port, int addr, u16 data)
-+{
-+	u16 writeop = MV88E6352_G2_AVB_CMD_OP_WRITE | (port << 8) |
-+		      (MV88E6352_G2_AVB_CMD_BLOCK_QAV << 5) | addr;
-+
-+	return mv88e6xxx_g2_avb_write(chip, writeop, data);
-+}
-+
- static int mv88e6352_g2_avb_ptp_read(struct mv88e6xxx_chip *chip, int addr,
- 				     u16 *data, int len)
- {
-@@ -149,6 +158,7 @@ const struct mv88e6xxx_avb_ops mv88e6352_avb_ops = {
- 	.ptp_write		= mv88e6352_g2_avb_ptp_write,
- 	.tai_read		= mv88e6352_g2_avb_tai_read,
- 	.tai_write		= mv88e6352_g2_avb_tai_write,
-+	.port_qav_write		= mv88e6352_g2_avb_port_qav_write,
- };
- 
- static int mv88e6165_g2_avb_tai_read(struct mv88e6xxx_chip *chip, int addr,
-@@ -174,6 +184,7 @@ const struct mv88e6xxx_avb_ops mv88e6165_avb_ops = {
- 	.ptp_write		= mv88e6352_g2_avb_ptp_write,
- 	.tai_read		= mv88e6165_g2_avb_tai_read,
- 	.tai_write		= mv88e6165_g2_avb_tai_write,
-+	.port_qav_write		= mv88e6352_g2_avb_port_qav_write,
- };
- 
- static int mv88e6390_g2_avb_port_ptp_read(struct mv88e6xxx_chip *chip,
-@@ -197,6 +208,15 @@ static int mv88e6390_g2_avb_port_ptp_write(struct mv88e6xxx_chip *chip,
- 	return mv88e6xxx_g2_avb_write(chip, writeop, data);
- }
- 
-+static int mv88e6390_g2_avb_port_qav_write(struct mv88e6xxx_chip *chip,
-+					   int port, int addr, u16 data)
-+{
-+	u16 writeop = MV88E6390_G2_AVB_CMD_OP_WRITE | (port << 8) |
-+		      (MV88E6352_G2_AVB_CMD_BLOCK_QAV << 5) | addr;
-+
-+	return mv88e6xxx_g2_avb_write(chip, writeop, data);
-+}
-+
- static int mv88e6390_g2_avb_ptp_read(struct mv88e6xxx_chip *chip, int addr,
- 				     u16 *data, int len)
- {
-@@ -236,4 +256,5 @@ const struct mv88e6xxx_avb_ops mv88e6390_avb_ops = {
- 	.ptp_write		= mv88e6390_g2_avb_ptp_write,
- 	.tai_read		= mv88e6390_g2_avb_tai_read,
- 	.tai_write		= mv88e6390_g2_avb_tai_write,
-+	.port_qav_write		= mv88e6390_g2_avb_port_qav_write,
- };
-diff --git a/drivers/net/dsa/mv88e6xxx/port.c b/drivers/net/dsa/mv88e6xxx/port.c
-index c90117d2dd83..23d1435db0d8 100644
---- a/drivers/net/dsa/mv88e6xxx/port.c
-+++ b/drivers/net/dsa/mv88e6xxx/port.c
-@@ -1348,6 +1348,51 @@ int mv88e6097_port_egress_rate_limiting(struct mv88e6xxx_chip *chip, int port)
- 				    0x0001);
- }
- 
-+int mv88e6352_port_set_scheduling_mode(struct mv88e6xxx_chip *chip, int port,
-+				       u8 mode)
-+{
-+	u16 reg;
-+	int err;
-+
-+	if (mode > 3)
-+		return -EINVAL;
-+
-+	err = mv88e6xxx_port_read(chip, port, MV88E6XXX_PORT_EGRESS_RATE_CTL2,
-+				  &reg);
-+	if (err)
-+		return err;
-+
-+	reg &= ~MV88E6XXX_PORT_EGRESS_RATE_CTL2_SCHEDULE_MASK;
-+	reg |= mode << MV88E6XXX_PORT_EGRESS_RATE_CTL2_SCHEDULE_SHIFT;
-+
-+	return mv88e6xxx_port_write(chip, port,
-+				    MV88E6XXX_PORT_EGRESS_RATE_CTL2, reg);
-+}
-+
-+int mv88e6390_port_set_scheduling_mode(struct mv88e6xxx_chip *chip, int port,
-+				       u8 mode)
-+{
-+	u16 reg;
-+	int err;
-+
-+	if (mode > MV88E6390_PORT_QUEUE_CTL_SCHEDULE_MASK)
-+		return -EINVAL;
-+
-+	reg = MV88E6390_PORT_QUEUE_CTL_UPDATE |
-+	      (MV88E6390_PORT_QUEUE_CTL_SCHEDULE <<
-+	       MV88E6390_PORT_QUEUE_CTL_PTR_SHIFT) |
-+	      (mode & MV88E6390_PORT_QUEUE_CTL_SCHEDULE_MASK);
-+
-+	err = mv88e6xxx_port_write(chip, port, MV88E6390_PORT_QUEUE_CTL,
-+				   reg);
-+	if (err)
-+		return err;
-+
-+	return mv88e6xxx_port_wait_bit(chip, port, MV88E6390_PORT_QUEUE_CTL,
-+				       __bf_shf(MV88E6390_PORT_QUEUE_CTL_UPDATE)
-+				       , 0);
-+}
-+
- /* Offset 0x0B: Port Association Vector */
- 
- int mv88e6xxx_port_set_assoc_vector(struct mv88e6xxx_chip *chip, int port,
-@@ -1761,3 +1806,21 @@ int mv88e6393x_port_set_policy(struct mv88e6xxx_chip *chip, int port,
- 
- 	return mv88e6393x_port_policy_write(chip, port, ptr, reg);
- }
-+
-+int mv88e6xxx_port_qav_write(struct mv88e6xxx_chip *chip, int port, int addr,
-+			     u16 data)
-+{
-+	if (!chip->info->ops->avb_ops->port_qav_write)
-+		return -EOPNOTSUPP;
-+
-+	return chip->info->ops->avb_ops->port_qav_write(chip, port, addr, data);
-+}
-+
-+int mv88e6xxx_port_set_scheduling_mode(struct mv88e6xxx_chip *chip, int port,
-+				       u8 mode)
-+{
-+	if (!chip->info->ops->port_set_scheduling_mode)
-+		return -EOPNOTSUPP;
-+
-+	return chip->info->ops->port_set_scheduling_mode(chip, port, mode);
-+}
-diff --git a/drivers/net/dsa/mv88e6xxx/port.h b/drivers/net/dsa/mv88e6xxx/port.h
-index f6041f91215e..cf8655a13729 100644
---- a/drivers/net/dsa/mv88e6xxx/port.h
-+++ b/drivers/net/dsa/mv88e6xxx/port.h
-@@ -241,6 +241,18 @@
- 
- /* Offset 0x0A: Egress Rate Control 2 */
- #define MV88E6XXX_PORT_EGRESS_RATE_CTL2		0x0a
-+#define MV88E6XXX_PORT_EGRESS_RATE_CTL2_SCHEDULE_MASK	0x3000
-+#define MV88E6XXX_PORT_EGRESS_RATE_CTL2_SCHEDULE_SHIFT	12
-+
-+/* Offset 0x1C: Port Queue Control */
-+#define MV88E6390_PORT_QUEUE_CTL			0x1c
-+#define MV88E6390_PORT_QUEUE_CTL_UPDATE			0x8000
-+#define MV88E6390_PORT_QUEUE_CTL_PTR_MASK		0x7f00
-+#define MV88E6390_PORT_QUEUE_CTL_PTR_SHIFT		8
-+#define MV88E6390_PORT_QUEUE_CTL_DATA_MASK		0x00ff
-+#define MV88E6390_PORT_QUEUE_CTL_SCHEDULE		0x00
-+#define MV88E6390_PORT_QUEUE_CTL_SCHEDULE_MASK		0x07
-+
- 
- /* Offset 0x0B: Port Association Vector */
- #define MV88E6XXX_PORT_ASSOC_VECTOR			0x0b
-@@ -569,6 +581,10 @@ int mv88e6165_port_set_jumbo_size(struct mv88e6xxx_chip *chip, int port,
- 				  size_t size);
- int mv88e6095_port_egress_rate_limiting(struct mv88e6xxx_chip *chip, int port);
- int mv88e6097_port_egress_rate_limiting(struct mv88e6xxx_chip *chip, int port);
-+int mv88e6352_port_set_scheduling_mode(struct mv88e6xxx_chip *chip, int port,
-+				       u8 mode);
-+int mv88e6390_port_set_scheduling_mode(struct mv88e6xxx_chip *chip, int port,
-+				       u8 mode);
- int mv88e6xxx_port_set_assoc_vector(struct mv88e6xxx_chip *chip, int port,
- 				    u16 pav);
- int mv88e6097_port_pause_limit(struct mv88e6xxx_chip *chip, int port, u8 in,
-@@ -613,5 +629,9 @@ int mv88e6xxx_port_hidden_read(struct mv88e6xxx_chip *chip, int block, int port,
- 			       int reg, u16 *val);
- 
- int mv88e6xxx_port_enable_tcam(struct mv88e6xxx_chip *chip, int port);
-+int mv88e6xxx_port_qav_write(struct mv88e6xxx_chip *chip, int port, int addr,
-+			     u16 data);
-+int mv88e6xxx_port_set_scheduling_mode(struct mv88e6xxx_chip *chip, int port,
-+				       u8 mode);
- 
- #endif /* _MV88E6XXX_PORT_H */
+Good, I'm on it. I'm also removing a bunch of EXPORT_SYMBOL* that are
+no longer used (and should never have been used outside of net/ipv6,
+but well).
 
 -- 
-2.43.0
-
-
+Sabrina
