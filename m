@@ -1,150 +1,208 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 459E0322B88
-	for <netdev@vger.kernel.org>; Tue,  9 Jun 2026 14:09:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781014199; cv=none; b=ht0GgzbmQN22LVkfSTwYDpaCnNJVbd/KpUTI8KZWrcmh9ZwTMmX/8UbXnusBJ3GQac202oGU+rYJDn2Gxagpbm5KW76ytUbJvrIhG5xGZxAafOKWgqFZ/15m7p/gwG2ERWxy1Wh9gJkfycPvsfmrGGsCvxKdzwWEcwM/TCJYE+o=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781014199; c=relaxed/simple;
-	bh=5/OPioWXPOxINyKCOBiJ+YNYdZjseqWVv2yQXHZrtxg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y61FAidYf8bstQMNMD5AIYs3PINGHSycwMHWeD0Kg1NoNZ1p/k05VXZB4TxX4nr/uf24F3CQTbDs/GlUAMKvrITgoavV1pVY2Iref23Y0pARc6J6hfwQ3/2KjcqgHBpab68jElSVUaDI+81/GemkbAXq42go12yHprAuXdHnD9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BCWEB2eU; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F39132A3DA
+	for <netdev@vger.kernel.org>; Tue,  9 Jun 2026 14:14:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.173
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781014477; cv=pass; b=dvPdx5Vx+2hwWWF3rzLzJBBTc3mpB3i2bdu5OJc9DHwJtQy0x/AOx3dZ7g9B9AEiodD8LBOINVaQh0ceJt0MAHbGJJPiJ2Bq9Pes1NResJ5dW0jgbgBKo0H3s8BGOHM8WdXavFNG6neVAtK3Up+JY2Miqke1E94lpzgheQbU9nY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781014477; c=relaxed/simple;
+	bh=WDuQ5aMcXXGMGWSgimjtG7u3272kvY4m8NMdW0ESSMg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=IWmOjY/A6ynQyj2mSC6KdippKjFJ24dM7t07lJVdhp4PEQfb+Zr26iN7hwzEZqF5aWS+joLkrdXjFrSeC6GDtJTUnWOt+uI69FI+X3ulbdcXvKqG7pcXdhXx9TmG/VysMFz24S91mLWqrxhvuGC8yFq/k/xKkOD15/FgwGC9ndA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=e95Aen3O; arc=pass smtp.client-ip=209.85.128.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BCWEB2eU"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1781014196;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7esvHq+dUpmKooYQgGpjyCb8hcHtrHglGKgUjfHEp/s=;
-	b=BCWEB2eUNYVJWkvRCgUS+C9znbtLeREXGmoiEQKgDWS6+M4lRT0RiCA9/i4wwWzWZrGA8j
-	5IldY9DMG0sAukGzu49XwyDmT14tIBH5AzVUTzAa5zQxrW33Pm47tOCCsqP5CyAQ4l7UVg
-	PrZQuoUev0d6GxAxZics3g7moknyrdw=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-453-0UFaWmuMNPajQtBhxSIJTg-1; Tue,
- 09 Jun 2026 10:09:55 -0400
-X-MC-Unique: 0UFaWmuMNPajQtBhxSIJTg-1
-X-Mimecast-MFC-AGG-ID: 0UFaWmuMNPajQtBhxSIJTg_1781014192
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 151EB185FC4E;
-	Tue,  9 Jun 2026 14:09:52 +0000 (UTC)
-Received: from warthog.procyon.org.com (unknown [10.44.32.43])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id EA3901954102;
-	Tue,  9 Jun 2026 14:09:46 +0000 (UTC)
-From: David Howells <dhowells@redhat.com>
-To: netdev@vger.kernel.org
-Cc: David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Li Daming <d4n.for.sec@gmail.com>,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Jeffrey Altman <jaltman@auristor.com>,
-	stable@kernel.org
-Subject: [PATCH net 5/5] rxrpc: serialize kernel accept preallocation with socket teardown
-Date: Tue,  9 Jun 2026 15:09:09 +0100
-Message-ID: <20260609140911.838677-6-dhowells@redhat.com>
-In-Reply-To: <20260609140911.838677-1-dhowells@redhat.com>
-References: <20260609140911.838677-1-dhowells@redhat.com>
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="e95Aen3O"
+Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-7e1916922b9so61750227b3.1
+        for <netdev@vger.kernel.org>; Tue, 09 Jun 2026 07:14:35 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781014474; cv=none;
+        d=google.com; s=arc-20240605;
+        b=kmucaXeZ4rD8sHUsuUJ3CuBG5C6hTrwFHI7KrvapCvRXgHhpIo3faXdiBcjv/B0q4D
+         9BxxgJqcLSf+QgvMRjCi0o/T5ucrSW4y5Hgr7EIsccVnRoHoIkHE7DFNRu0Tc5dU+v5z
+         npLT8G4QRzOGu2sixs0I7q0KvGL2EMY3/YtMF1nGjxnJxLzibToL5o3bVjIoILArff29
+         PjvSegVBVAQFkjKD24A2oaSYT3fU9+HOzCs5ht+lDROjmqFV/gt6q8Z437Am31p4sEA3
+         qL6N52r7hVmu5U8wfXbsXeNgVq+8UMbSQQNGkRdl23eraeAndcuqlfZqAeNtG1txvLbG
+         OdoQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=LOl8Qoe1dz/fZX2fWuUlrIc82O13Oquj25wgqoFE3Kk=;
+        fh=bvaUPO7vaQn4wnxrs/Qsp2GXur6IiSbD+nQk7t0eZSY=;
+        b=hXpLu18r3gV2x/fzs8EMoKSVjZ0FjUZNbelKV74FnhCHvCVLYR4NeLGh5NKcA4QEkn
+         VspNFqsZ0PUXdeRt0pomNeAekDzI0RZ5lt4RzSplUH1lXflG6YblyJqrCuTDRScEnn4S
+         trzQp6gQCGN25v+mHmOgQgmCg9lLMMYrN/aVFv8aLyXwIMtxXab4MifDBV8Y7sO72AUy
+         3mpqmt53Cu+5qyhEtLc5wCjU9RytU+7+96HErAACPgvznpywbTpSI2osdYLSgF2M4iMC
+         yUj7IZcCTxtvFacE0MLcy7kGNU19jwDY1dslq/YjteZ16qsEhe9gXQkAkFb8MuOiXkW3
+         tc5Q==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mojatatu.com; s=google; t=1781014474; x=1781619274; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LOl8Qoe1dz/fZX2fWuUlrIc82O13Oquj25wgqoFE3Kk=;
+        b=e95Aen3O5dHbSQTKL9NqiyKZgl2ItLu8ohfqTaitGE+AXJt06zbBYhfvneCmXbvenv
+         I2/bSLwLuaOp4rZRY4RDyk1HKXStpr2eXmZF/UDr83kIDFaQTHUNNKWMZ+7AwNj9Qph0
+         0igV/rNHo86KuMeiXzSHrzA91DNi8JMSfrjII=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781014474; x=1781619274;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=LOl8Qoe1dz/fZX2fWuUlrIc82O13Oquj25wgqoFE3Kk=;
+        b=owngEUsiq+U+UVqVLsGXVzpvsyJsFjsAaii9q703E0sD4o4GB0h0tMebdRM6K0zLUt
+         0MSZEj1T6iO7w1cK3IG/YsdNt9lGW7NDEmF+/TcvTRFW0C61wuE2sioCnx1In4zQ+/Bw
+         OIqV5Rnx2ayBqoPDxdTC9IiyHrmPeYEyoreP445h8MxriqoMtZcp5p2szCY7t5Jd4Mfv
+         lEh9ZeVdosaxuqLysFX26MImfyWS681JCFeIfd+ftCsFZ0jPIa+dGebnYb/OpYj3ZmJ7
+         Te7HZEHjg7ojgVa11/mLhew6NFK9Rvbqi8VX3G4bIazHmZnGKxfXdsO54Z8Bf6YtRuz7
+         kG+A==
+X-Forwarded-Encrypted: i=1; AFNElJ+yX5ubIpvpmfeF8USTOW1S8BqMznud5s2JUVUqtAyknEMCKMxio7N9Q51vGwc3O52/pZ90XTk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxr5WaZGGhfYMGGlmJGvamGsftr49r/UQIKhxwb5I6jVSdywYGZ
+	UuzuyXH9KpPQVTuRgkaKeVD0olGRZla5qhFEHjzXFFxpfg6U0sTXFKOmpZ0ZFB28S+vaw1RHXT4
+	nAmYPcuiUZjPoTBebUGXovESTv65nE4HZBaELdJMJ
+X-Gm-Gg: Acq92OE03dfcU7qEXte+7Bymajst8dKxSfpDmaoTaQ9YUhi2ZLlvvHdbZr7NvGvDCoI
+	PHjlWditvw+6cFWkJzrUtZpVYJcRVg+cHAIpEX59B1qJNAgF1ArBIcEv85i08oLmv6guWryritd
+	lASl2+MB+q2gkS1KJvN31itslf8vFYEayZdXoZcX2iDrrC+8e004MJADQZ1QD4EkS9ubgt7EBff
+	MJglamwAYXKA5wuuNyrogCga7I2+CYajOSmKDY9zBw+BUq41XlxbguOINQ4ee6vgue2QrAq47lu
+	i9YnYCdFAwymVwLzrDfTweSMZbXakp7BRyRm6O28nG78dwtiOfSPOZi3Efs=
+X-Received: by 2002:a05:690c:350a:b0:7b2:bf20:cdc3 with SMTP id
+ 00721157ae682-7ed0935434emr198858037b3.0.1781014474327; Tue, 09 Jun 2026
+ 07:14:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+References: <20260605194640.2645386-1-sam.moelius@trailofbits.com>
+ <CAM0EoMmeftLxWNdQqWsJonxEtMoCCuJdeTEjNzQfc2GYUX+mtw@mail.gmail.com>
+ <CAE+C+DZTme=GQBy9BaXCiPe0pO7Pv7XNM69iru0VTGFX_ybBKg@mail.gmail.com>
+ <CAM0EoMmPb0jZGWeadX4KqsyQTx4Oo2gLg-3h+u=Ec=9rqzzjdQ@mail.gmail.com>
+ <CA+NMeC_3bzJzn_NjztcnM=C1M0Xrf7Xo26DiQNRy_o_iZPAnMg@mail.gmail.com> <CAE+C+Dact=a0_rAm61A=m9b=LJoV9Nkny5ozOxL_UAiK_pdy2Q@mail.gmail.com>
+In-Reply-To: <CAE+C+Dact=a0_rAm61A=m9b=LJoV9Nkny5ozOxL_UAiK_pdy2Q@mail.gmail.com>
+From: Victor Nogueira <victor@mojatatu.com>
+Date: Tue, 9 Jun 2026 11:14:23 -0300
+X-Gm-Features: AVVi8CfRUgo2g50UBvWG401fxh8GRky118G54qn7McPaksyOTW60evJJ1RTollU
+Message-ID: <CA+NMeC_ZXhUEwrKirP3TiamZB9CoTTPfomOPoxv3AaVNJR5BxQ@mail.gmail.com>
+Subject: Re: [PATCH] net/sched: act_pedit: require matching IPv4 L4 protocol
+To: Samuel Moelius <sam.moelius@trailofbits.com>
+Cc: Jamal Hadi Salim <jhs@mojatatu.com>, Jiri Pirko <jiri@resnulli.us>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	"open list:TC subsystem" <netdev@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Li Daming <d4n.for.sec@gmail.com>
+On Tue, Jun 9, 2026 at 10:57=E2=80=AFAM Samuel Moelius
+<sam.moelius@trailofbits.com> wrote:
+>
+> On Mon, Jun 8, 2026 at 10:41=E2=80=AFAM Victor Nogueira <victor@mojatatu.=
+com> wrote:
+> >
+> > On Mon, Jun 8, 2026 at 7:46=E2=80=AFAM Jamal Hadi Salim <jhs@mojatatu.c=
+om> wrote:
+> > >
+> > > On Sun, Jun 7, 2026 at 10:33=E2=80=AFAM Samuel Moelius
+> > > <sam.moelius@trailofbits.com> wrote:
+> > > >
+> > > > On Sat, Jun 6, 2026 at 5:29=E2=80=AFPM Jamal Hadi Salim <jhs@mojata=
+tu.com> wrote:
+> > > > >
+> > > > > On Fri, Jun 5, 2026 at 3:46=E2=80=AFPM Samuel Moelius
+> > > > > <sam.moelius@trailofbits.com> wrote:
+> > > > > >
+> > > > > > The extended IPv4 L4 header mode in act_pedit can select TCP or=
+ UDP
+> > > > > > header fields without confirming that the IPv4 protocol field m=
+atches
+> > > > > > the selected transport header.
+> > > > > >
+> > > > > > That lets a rule written for TCP or UDP modify unrelated payloa=
+d bytes
+> > > > > > in a packet carrying a different protocol.
+> > > > > >
+> > > > > > Verify the IPv4 protocol before applying TCP or UDP extended he=
+ader
+> > > > > > edits.
+> > > > > >
+> > > > > > Assisted-by: Codex:gpt-5.5-cyber-preview
+> > > > > > Signed-off-by: Samuel Moelius <sam.moelius@trailofbits.com>
+> > > > > > ---
+> > > > > >  net/sched/act_pedit.c | 2 ++
+> > > > > >  1 file changed, 2 insertions(+)
+> > > > > >
+> > > > > > diff --git a/net/sched/act_pedit.c b/net/sched/act_pedit.c
+> > > > > > index bc20f08a2789..9a4590451f7e 100644
+> > > > > > --- a/net/sched/act_pedit.c
+> > > > > > +++ b/net/sched/act_pedit.c
+> > > > > > @@ -341,6 +341,8 @@ static int pedit_l4_skb_offset(struct sk_bu=
+ff *skb, int *hoffset, const int head
+> > > > > >
+> > > > > >                 if (!iph)
+> > > > > >                         goto out;
+> > > > > > +               if (iph->ihl < 5 || iph->protocol !=3D header_t=
+ype)
+> > > > > > +                       goto out;
+> > > > >
+> > > > > From inspection the fix looks reasonable.
+> > > > > At first glance it seems that the only fix that resolves the issu=
+e you
+> > > > > are describing is to check the protocol header.
+> > > > > header length seems to be an extra thing. But let's do what the v=
+6
+> > > > > side seems to and skip frags as well? Something maybe along the l=
+ines
+> > > > > of:
+> > > > >
+> > > > > if (iph->ihl < 5 || iph->protocol !=3D header_type || (iph->frag_=
+off &
+> > > > > htons(IP_OFFSET)))
+> > > > >         goto out;
+> > > >
+> > > > I will submit an updated patch.
+> > > >
+> > > > > Are you able to describe how someone would configure a tc rule th=
+at
+> > > > > will allow this to happen?
+> > > > > IOW, how did you verify the problem and then validate that your f=
+ix works?
+> > > >
+> > > > The bug was validated using a custom init script in QEMU. The speci=
+fic
+> > > > line used was:
+> > > >
+> > > > /usr/sbin/tc filter add dev veth0 egress protocol ip pref 1 matchal=
+l
+> > > > action pedit ex munge udp dport set 18053
+> > > >
+> > > > An IPv4 TCP packet with destination port 2222 was sent through that
+> > > > path. With the unpatched kernel, the packet was received with TCP
+> > > > destination port 18053. With the patched kernel, the same packet wa=
+s
+> > > > received unchanged.
+> > > >
+> > > > I can provide more details or artifacts if you would like.
+> > >
+> > > A tdc test case is better. Victor or I can create one for you if you
+> > > dont know how.
+> >
+> > It seems like v2 isn't applying so you'll have to send a new version.
+> > When you do, after waiting for the 24h period, can you resend with
+> > the attached patch (containing the tdc test)? Since this is a
+> > fix, in the new version, remember to target net and add a proper fixes
+> > tag.
+>
+> I'm sorry, I'm not quite following.
+>
+> I should send a multipart patch with the patch you shared as one of the p=
+arts?
 
-rxrpc_kernel_charge_accept() reads rx->backlog without any
-socket/backlog synchronization and passes that raw pointer into
-rxrpc_service_prealloc_one(). A concurrent rxrpc_discard_prealloc()
-sets rx->backlog = NULL and frees the backlog rings, so a kernel
-preallocation worker can keep using a freed struct rxrpc_backlog
-while updating *_backlog_head/tail and array slots.
+Yes, please send a patchset with patch 1 being your fix and patch 2 the tdc
+test.
 
-Serialize the state check and backlog lookup with the socket lock,
-and reject kernel preallocation once teardown has disabled
-listening or discarded the service backlog.
-
-Fixes: 00e907127e6f ("rxrpc: Preallocate peers, conns and calls for incoming service requests")
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Li Daming <d4n.for.sec@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Jeffrey Altman <jaltman@auristor.com>
-cc: Eric Dumazet <edumazet@google.com>
-cc: "David S. Miller" <davem@davemloft.net>
-cc: Jakub Kicinski <kuba@kernel.org>
-cc: Paolo Abeni <pabeni@redhat.com>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: netdev@vger.kernel.org
-cc: stable@kernel.org
----
- net/rxrpc/call_accept.c | 25 +++++++++++++++++++------
- 1 file changed, 19 insertions(+), 6 deletions(-)
-
-diff --git a/net/rxrpc/call_accept.c b/net/rxrpc/call_accept.c
-index ee2d1319e69a..47824120f1da 100644
---- a/net/rxrpc/call_accept.c
-+++ b/net/rxrpc/call_accept.c
-@@ -471,13 +471,26 @@ int rxrpc_kernel_charge_accept(struct socket *sock, rxrpc_notify_rx_t notify_rx,
- 			       unsigned long user_call_ID, gfp_t gfp,
- 			       unsigned int debug_id)
- {
--	struct rxrpc_sock *rx = rxrpc_sk(sock->sk);
--	struct rxrpc_backlog *b = rx->backlog;
-+	struct rxrpc_backlog *b;
-+	struct rxrpc_sock *rx;
-+	struct sock *sk;
-+	int ret;
- 
--	if (sock->sk->sk_state == RXRPC_CLOSE)
--		return -ESHUTDOWN;
-+	sk = sock->sk;
-+	rx = rxrpc_sk(sk);
-+
-+	lock_sock(sk);
-+	if (sk->sk_state != RXRPC_SERVER_LISTENING || !rx->backlog) {
-+		ret = -ESHUTDOWN;
-+		goto out;
-+	}
-+
-+	b = rx->backlog;
-+	ret = rxrpc_service_prealloc_one(rx, b, notify_rx, user_call_ID,
-+					 gfp, debug_id);
- 
--	return rxrpc_service_prealloc_one(rx, b, notify_rx, user_call_ID,
--					  gfp, debug_id);
-+out:
-+	release_sock(sk);
-+	return ret;
- }
- EXPORT_SYMBOL(rxrpc_kernel_charge_accept);
-
+cheers,
+Victor
