@@ -1,217 +1,94 @@
-Received: from mail-oi1-f182.google.com (mail-oi1-f182.google.com [209.85.167.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83B483E3C49
-	for <netdev@vger.kernel.org>; Tue,  9 Jun 2026 21:31:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 348963559F8;
+	Tue,  9 Jun 2026 21:35:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781040721; cv=none; b=mju11xuiwBGZvCfpiE9g/y/cRgGBa5TX5CHHEVwoPXUo4Q8aWi3vVgOZyfTsGtIXKDyfLN0zdHK8VAp5pxlPlqpfvErYVV5cEyng3h5ZXkDE06YeNI+KwGIRWyBW4L/zrEI81YJw04QUTe6bFJvO5vl5MesP7jhwqR9qbHwRZaM=
+	t=1781040961; cv=none; b=RnbyxKY+lf5VJbwmDvNSC37oWv3JYpc56BBFBhCoh/CKbmfH+h4XFCHGnmLPmVSBAHUY2piKn4beo+Xs82Sb0POyZxSErhUIj0mRd4MjoO8helbkZkeWMamgJ4u2fiNFX/Xxkmo5xdmOXn2gtuk9T6L51J3QZal6XC+PQaAjRnY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781040721; c=relaxed/simple;
-	bh=WAiXRaxAM4Z1bZ828ygiu2QGKA8btwndyvH6LWkBmvs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=czPk+CdNR4anBA4LVlx8XozmYEw2VDxaLWxM/OQgAGkwmpjSbPmhQhXZdv1MEXQZTkuKvw+D65YhWjTAmoIvs2g3PZieuZvnxIabX6G+cHhePeDHbAuipzMRXlbONxbniZmcxJ4SoKJYIMVZ/W09JaJxzIGXPrc4cE6zb9y2OO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com; spf=pass smtp.mailfrom=riscstar.com; dkim=pass (2048-bit key) header.d=riscstar-com.20251104.gappssmtp.com header.i=@riscstar-com.20251104.gappssmtp.com header.b=uoS8Wc2e; arc=none smtp.client-ip=209.85.167.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=riscstar.com
+	s=arc-20240116; t=1781040961; c=relaxed/simple;
+	bh=6yb47jyHXegDHsehtxP5Uvn7/Z7Yn5r3M2gfbFu8MB0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=tsIjPxnkoG6RIDjiLOsrCnFdxMemGjSivdBPSqWpDc3XPd7c3fNiOL+g0bkUb2ZUFMfEw4DDV8Y2Jg0HH53vqj14wgAR2itZ0UCUjsZ9n+gPf+tAw+oFC2lIh8kgluRSZUo7E1SqCZFg/z0SnHudJQFqTh0Urtfp8ukFGVWmXVg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kHud669n; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=riscstar-com.20251104.gappssmtp.com header.i=@riscstar-com.20251104.gappssmtp.com header.b="uoS8Wc2e"
-Received: by mail-oi1-f182.google.com with SMTP id 5614622812f47-486503ae8f0so4496835b6e.0
-        for <netdev@vger.kernel.org>; Tue, 09 Jun 2026 14:31:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=riscstar-com.20251104.gappssmtp.com; s=20251104; t=1781040718; x=1781645518; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=kQKbERiB0ntPOS/R2wMXRwGJAn2HHwIq3s8Tu7uVMO4=;
-        b=uoS8Wc2e1VeGoY7G1XUBEHm43nmS5gaWrdYwUmiNUbR6nAUt8w6us5wXqa8zvD0j8H
-         pElFvyvcXDwQRbA7XsXg25ZJRHvM8K6goHxTNObZ69eH7g4DY9o3ebLH0iTTxx0j3y5M
-         VKauDGWMkjgBFheiP8YjscG+JfsiNeZJp9RizPBwnWb2BY01EYdCMVKjHh58PXuq6py0
-         aKLhGhGkk7vUvFMeaqQ3OwEj7d8vo+rsKGKph1+Ix/B9kDz3fL8ZlaUpliFLu5oek+3b
-         oYjsUvyheB3NSko8ugKmu0mQq0yhwZCWmxtPvlx7+eF5c3u1n/XFljjOak4mPeOyK6q4
-         D2YA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781040718; x=1781645518;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=kQKbERiB0ntPOS/R2wMXRwGJAn2HHwIq3s8Tu7uVMO4=;
-        b=eElzttMNojqTolelzgsO8t3j/aHfLrOtiKB9jp6s+ZbftbCIP0/QscuiO5MxC6Agj6
-         vQIGbGWx3j+XQt5at8FlViqHkQmCbbEIi3WaShKJsQVY90EUTvX++WV/XjxbtksGsLp4
-         ejxUBlKCCyloZOiboUTvCfLEq+3+CJIv1TdmJ94Nr10+T4s6Ij8Z7Tdm1xSwnWqK9Oe6
-         qvcQkw74mZsT39Ov+5FCA4f4IhVRl9t2YopO//V2Xm6vWPqn89vI5Sa+fLMFiLEpyOgv
-         2fv6+mli2/QWMga2MqjYFccjboquktOvvKSpzdrFlzItsq7c8MuYusdZiFqJWnfbFlRG
-         L7Dg==
-X-Forwarded-Encrypted: i=1; AFNElJ86lRiDUzY7OQH843A8C0RPs7VJQEJKTYR5WrbEsJTj2smoFjreXgKy+9I+nAbrJ/rcvAWT5f4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yys5rGWABb9ngTL9GaXvB6L6GBpkJqY3KSCKRi71uHmDaYjjB2y
-	DejRKfUzf6yqgc1zZkbpzZe32W+3whfd+/LCy6pa2VggVgPztXZBdrBnvgi6vi2SDFM=
-X-Gm-Gg: Acq92OGRt6P8F0LFI0Hqwe/NmLeQLv3sij8eRoIgDJUAO/3jiGNcmN/of+M7/G2USKk
-	2xfMwVDiAzmO8PBSSj/a0r56lUO7O8OHYeplhFKn8WJZjI5513BWThJNt72v3KLwgynJhDyD5Bk
-	6CU8DhT+g0wZctQeHDmtf8eCXURSYMZrDsy6kg/7rkSzw/2c5O+cFCzo2Yn3Phgr863c6QV28Ps
-	3022VSRgAaiTVt3lSupYKh+GbxNBW8R+U/KUkQzPyJQ+Ny/NhFaQYSI4VhJtywnd2FLYK80Wh3g
-	d/XwmFAo4ElEqb6/LsjHi6el3rGwHJIr1n5R26pfNZTeWVRTZ1KRfHshhf2EniyoeXz1uduK96M
-	MAxRrFwUl+qonlcspVpaHYqFGK+/6+XDOAuSayTToOO4qD4612ZYigVjHGaCyUs1dVvaqms0/4q
-	SYxNfREvAHYOcf2LFRoagLbNSqSyJ97aXu7SL5xX8XFZDG
-X-Received: by 2002:a05:6808:4fe2:b0:485:a9b2:5457 with SMTP id 5614622812f47-4868df63ae3mr15052790b6e.35.1781040718541;
-        Tue, 09 Jun 2026 14:31:58 -0700 (PDT)
-Received: from [172.22.22.28] ([73.62.185.64])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-4865b5a5a64sm17024127b6e.4.2026.06.09.14.31.55
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 09 Jun 2026 14:31:58 -0700 (PDT)
-Message-ID: <b89fe088-496f-4281-9d27-7f8b0b3f38cb@riscstar.com>
-Date: Tue, 9 Jun 2026 16:31:55 -0500
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kHud669n"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4930B1F00893;
+	Tue,  9 Jun 2026 21:35:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781040959;
+	bh=ggD3WzIVX4wqGJPJeDoCT2PRxRqvWH2szMMGD6/H1GA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=kHud669nBOrGOYiQB3I1/VXoG/l2Gjpoiy77YHWLFXJwX/hj4ebCz8yMr2ykpkGdJ
+	 vBt3LzfASCnz9H/9mNIxbytL6NR/DojBBvda1wXjcPLVcc758rAdPuFObIRy1X3nKq
+	 mVHRkvW72bfM/YNW7Cs4Hxz07sGd8WUbJ3t1ijHdIsP4A1WJ/9rPDd8V6LUgq5ldcK
+	 U6s1O6++ViBZNp9prcL88tWpkd+T5fnGBAydOTBc8Sm9YmZvwjttfBa4z/TuRn3xHl
+	 Rqk7yyZ8j4uIx4y2KFNwfBsxICeWjgC7B96RAgl/GlFJ9M//R/6GOCZ80WVwdPseNB
+	 vNml8yrfjk7qQ==
+Date: Tue, 9 Jun 2026 14:35:58 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Steve Grubb <sgrubb@redhat.com>
+Cc: Ricardo Robaina <rrobaina@redhat.com>, audit@vger.kernel.org,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org, paul@paul-moore.com,
+ eparis@redhat.com, edumazet@google.com, pabeni@redhat.com, horms@kernel.org
+Subject: Re: [PATCH v2] netlink, audit: prevent false ENOBUFS on timeout
+ expiry
+Message-ID: <20260609143558.49d96656@kernel.org>
+In-Reply-To: <2756655.vYhyI6sBWr@x2>
+References: <20260513172443.1128496-1-rrobaina@redhat.com>
+	<2143396.Jadu78ljVU@x2>
+	<20260528162901.2d68e2e0@kernel.org>
+	<2756655.vYhyI6sBWr@x2>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v2 13/14] net: stmmac: tc956x: add TC956x/QPS615
- support
-To: Rob Herring <robh@kernel.org>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, maxime.chevallier@bootlin.com,
- rmk+kernel@armlinux.org.uk, andersson@kernel.org, konradybcio@kernel.org,
- krzk+dt@kernel.org, conor+dt@kernel.org, linusw@kernel.org, brgl@kernel.org,
- arnd@arndb.de, gregkh@linuxfoundation.org,
- Daniel Thompson <daniel@riscstar.com>, mohd.anwar@oss.qualcomm.com,
- a0987203069@gmail.com, alexandre.torgue@foss.st.com, ast@kernel.org,
- boon.khai.ng@altera.com, chenchuangyu@xiaomi.com, chenhuacai@kernel.org,
- daniel@iogearbox.net, hawk@kernel.org, hkallweit1@gmail.com,
- inochiama@gmail.com, john.fastabend@gmail.com, julianbraha@gmail.com,
- livelycarpet87@gmail.com, mcoquelin.stm32@gmail.com, me@ziyao.cc,
- prabhakar.mahadev-lad.rj@bp.renesas.com, richardcochran@gmail.com,
- rohan.g.thomas@altera.com, sdf@fomichev.me, siyanteng@cqsoftware.com.cn,
- weishangjuan@eswincomputing.com, wens@kernel.org, netdev@vger.kernel.org,
- bpf@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- devicetree@vger.kernel.org, linux-gpio@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20260605010022.968612-1-elder@riscstar.com>
- <20260605010022.968612-14-elder@riscstar.com>
- <20260605144758.GB3659201-robh@kernel.org>
-Content-Language: en-US
-From: Alex Elder <elder@riscstar.com>
-In-Reply-To: <20260605144758.GB3659201-robh@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On 6/5/26 9:47 AM, Rob Herring wrote:
-> On Thu, Jun 04, 2026 at 08:00:20PM -0500, Alex Elder wrote:
->> From: Daniel Thompson <daniel@riscstar.com>
->>
->> Toshiba TC956x is an Ethernet AVB/TSN bridge and is essentially a
->> small and highly-specialized SoC. TC956x includes an "eMAC" subsystem
->> that can be accessed, along with several other peripherals, via two
->> PCIe endpoint functions. There is a main driver for the endpoint that
->> decomposes things and creates auxiliary bus devices to model the SoC.
->>
->> The eMAC consists of a Designware XGMAC, XPCS and PMA. Each eMAC is
->> supported by an MSIGEN that bridges TC956x level interrupts to PCIe
->> MSIs.
->>
->> Add a driver for the eMAC/MSIGEN combination.
->>
->> Co-developed-by: Alex Elder <elder@riscstar.com>
->> Signed-off-by: Alex Elder <elder@riscstar.com>
->> Signed-off-by: Daniel Thompson <daniel@riscstar.com>
+On Tue, 09 Jun 2026 13:40:23 -0400 Steve Grubb wrote:
+> > > You're right, it is. I see how this flag would fix the pathological
+> > > behavior that was reported. But as I have looked at this suggestion,
+> > > there seems to be one wrinkle. User space should not need to know that
+> > > the audit code in the kernel has this retry mechanism.  
+> > 
+> > It's not about the retry mechanism, at least in my mind - I read
+> > your reply as "user space should not know that there was congestion".
+> > Why?  
 > 
-> The order is wrong here unless you worked on it and then Daniel took
-> over. Tags should be chronological order.
-
-I think this was a dumb reorder I did to address a complaint
-from checkpatch, but in any case I'll fix this.  Yes, my
-signoff should "wrap" the others.
-
->> ---
->>   MAINTAINERS                                   |   2 +
->>   drivers/net/ethernet/stmicro/stmmac/Kconfig   |  14 +
->>   drivers/net/ethernet/stmicro/stmmac/Makefile  |   2 +
->>   .../ethernet/stmicro/stmmac/dwmac-tc956x.c    | 818 ++++++++++++++++++
->>   4 files changed, 836 insertions(+)
->>   create mode 100644 drivers/net/ethernet/stmicro/stmmac/dwmac-tc956x.c
->>
->> diff --git a/MAINTAINERS b/MAINTAINERS
->> index 0439607d1155f..418537cbefbbb 100644
->> --- a/MAINTAINERS
->> +++ b/MAINTAINERS
->> @@ -27059,6 +27059,8 @@ S:	Maintained
->>   F:	Documentation/devicetree/bindings/net/toshiba,tc956x-dwmac.yaml
->>   F:	drivers/gpio/gpio-tc956x.c
->>   F:	drivers/misc/tc956x_pci.c
->> +F:	drivers/net/ethernet/stmicro/stmmac/dwmac-tc956x.c
->> +F:	include/soc/toshiba/tc956x-dwmac.h
->>   
->>   TOSHIBA WMI HOTKEYS DRIVER
->>   M:	Azael Avalos <coproscefalo@gmail.com>
->> diff --git a/drivers/net/ethernet/stmicro/stmmac/Kconfig b/drivers/net/ethernet/stmicro/stmmac/Kconfig
->> index e3dd5adda5aca..8d247e033e356 100644
->> --- a/drivers/net/ethernet/stmicro/stmmac/Kconfig
->> +++ b/drivers/net/ethernet/stmicro/stmmac/Kconfig
->> @@ -404,6 +404,20 @@ config DWMAC_MOTORCOMM
->>   	  This enables glue driver for Motorcomm DWMAC-based PCI Ethernet
->>   	  controllers. Currently only YT6801 is supported.
->>   
->> +config DWMAC_TC956X
->> +	tristate "Toshiba TC956X DWMAC support"
->> +	depends on PCI
->> +	depends on COMMON_CLK
->> +	depends on TOSHIBA_TC956X_PCI
->> +	default TOSHIBA_TC956X_PCI
->> +	select GENERIC_IRQ_CHIP
->> +	help
->> +	  This selects the Toshiba TC956X (and Qualcomm QPS615) support in the
->> +	  stmmac driver.
->> +
->> +	  This provides support for the ethernet controllers found on these
->> +	  devices.
->> +
->>   config STMMAC_PCI
->>   	tristate "STMMAC PCI bus support"
->>   	depends on PCI
->> diff --git a/drivers/net/ethernet/stmicro/stmmac/Makefile b/drivers/net/ethernet/stmicro/stmmac/Makefile
->> index a1cea2f57252e..e8e7f95dbe3e8 100644
->> --- a/drivers/net/ethernet/stmicro/stmmac/Makefile
->> +++ b/drivers/net/ethernet/stmicro/stmmac/Makefile
->> @@ -51,4 +51,6 @@ obj-$(CONFIG_STMMAC_PCI)	+= stmmac-pci.o
->>   obj-$(CONFIG_DWMAC_INTEL)	+= dwmac-intel.o
->>   obj-$(CONFIG_DWMAC_LOONGSON)	+= dwmac-loongson.o
->>   obj-$(CONFIG_DWMAC_MOTORCOMM)	+= dwmac-motorcomm.o
->> +obj-$(CONFIG_TC956X_PCI)	+= tc956x-pci.o
->> +obj-$(CONFIG_DWMAC_TC956X)	+= dwmac-tc956x.o
->>   stmmac-pci-objs:= stmmac_pci.o
->> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-tc956x.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-tc956x.c
->> new file mode 100644
->> index 0000000000000..c77585e4a50e6
->> --- /dev/null
->> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-tc956x.c
->> @@ -0,0 +1,818 @@
->> +// SPDX-License-Identifier: GPL-2.0
->> +
->> +/*
->> + * Copyright (C) 2026 by RISCstar Solutions Corporation.  All rights reserved.
->> + *
->> + * Derived from code having the following copyrights:
->> + * Copyright (C) 2011-2012  Vayavya Labs Pvt Ltd
->> + * Copyright (C) 2025 Toshiba Electronic Devices & Storage Corporation
->> + */
->> +
->> +#include <linux/auxiliary_bus.h>
+> In the audit case, it is not useful. I know there can be an endless supply 
+> and there's not much that can be done except dequeueing what's next.
 > 
-> Based on the block diagram, these are PCI devices. Auxiliary bus is the
-> wrong thing to use here.
-
-As I said in the other message, I'm going to rearrange this
-to use pci-ep-bus and platform drivers.  Most of the core
-code should be stay the same but the overall structure will
-change.
-
-Thanks for your suggestions.
-
-					-Alex
-
+> > It's not very useful, I get that, but user space can just clear
+> > the congestion signal and keep going.  
 > 
-> Rob
+> How? The recvfrom man page doesn't even discuss ENOBUFS. Which is one of the 
+> strongest arguments for a kernel side patch. The fact that there is exists a 
+> socket option to declare that you do not want ENOBUFS on netlink sockets is 
+> esoteric knowledge. The netlink(7) man page does cover the flag. But even 
+> where it discusses ENOBUFS, it does not mention that this is preventable by 
+> setting a socket option. I do appreciate this being pointed out. But getting 
+> from the recvfrom man page to a solution is not obvious.
 
+socket errors are generally "consumed" when they are returned.
+The user space should see one ENOBUF and then once the rcvbuf
+is drained completely the CONGESTION bit should also get auto
+cleared. This is my mental model how Netlink works, LMK if
+you're seeing different behavior, my memory is faulty...
+
+> > > It seems like the audit subsystem should set the flag on auditd's
+> > > socket at registration time in auditd_set(). The kernel is the right
+> > > place for this because it's the kernel that manages the retry/ hold
+> > > queues and sets the sk_sndtimeo that triggers the overrun path -
+> > > auditd has no knowledge of these internals.  
+> > 
+> > We have to carry this code somewhere, either in user space or in
+> > the kernel. I'd prefer not to carry it in the kernel.  
+> 
+> I can put this in the audit daemon. But whoever else writes a similar app 
+> will have to independently discover the same solution when faced with the 
+> pathologically bad behavior. A kernel side fix would have made it easier for 
+> future app developers to be successful.
