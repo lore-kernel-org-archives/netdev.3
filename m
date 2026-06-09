@@ -1,63 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30DC734040F;
-	Tue,  9 Jun 2026 14:27:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B352434D3B5;
+	Tue,  9 Jun 2026 14:27:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781015232; cv=none; b=eCa2K/B9wCHqbU05t0qruyFv+3aEvE90ne6WCHbxxENZtPC6i8b6TVKdKsdc4Ued+ymgg/2t7RnZQ0bobJpb2uz3ZrVPJg5VqUJOlNdGiM0WFOkORX5SbfyBIWrpBT+TBvoWPpw75BX/VTRk/uxFz3q8w7PyM7Nbj/9f0l+FreA=
+	t=1781015238; cv=none; b=JVyz4dI3tb+TOFyFlYHuVntsPAaqx/QSKm+soKrSc9lPgtnfiVqSUdKFOmXBgxlqm5B20IWk0XRqrtzBqEqHHcLbhZyjOVZmSjo9FRAzAR774xLBO+EjRfbLG/NQREK1gJliBHoab1Jz4sCnkk4IhT5OU37sapxCFr6viAIhbn0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781015232; c=relaxed/simple;
-	bh=iygAOfvA2foW8/+jP6Ee21bgu2uYdvqpa6z2Rjyy9uk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PWyQnNeFQ3UTnhTAzZvbj6ppLSL/rqsvEAarPZe+dquxt52/W9Ta7OxrU+uSgrF9o21HP5VDjo1kZ9Fb/jruXRL5QGgsSp0JGdQvfoOr8fMSb2oi62zANSJ6sAcsPpJwHz54Qzzdwy0fBVZ/VdFDv8oGLeWK+q1QqsxNsAlNp90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nwDszgGM; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nwDszgGM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72C0D1F00893;
-	Tue,  9 Jun 2026 14:27:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781015229;
-	bh=7b6cZO88qxYhwPQRHX9JdG5EbRfREDm6sv5DAhrto3Y=;
-	h=From:To:Cc:Subject:Date:Reply-To;
-	b=nwDszgGMS4Q5Gx6dDnrYmmxG3JFRwCznR8eeTRISzUFizK3fvgodofWAu0j6qV7Vm
-	 x8jzUygPHi0X7dKckNz5MK6s/lYGVbDQhxCVCq/CV6YZzLrPMaloIQFmQ9JFuDUE5t
-	 bsKGaAtZc/eXQskQawfXOzP2QBNT3/JHr9JepY5csJaBJqqS9brT6suCfR/tDAY0dl
-	 3cy1egpS8C+a924GwJU7wfUap2OVoYsh+qWf3VZMyjzZUZq62sEE4olr+tg2BSk3eU
-	 n3m/ldEIak5tl9p0RlIcfwcAmJu0eCLrYxhxYEWpbrCZaUgMHWORyNWIt7SezgpP9w
-	 fnMRyl333y4xg==
-From: Gary Guo <gary@kernel.org>
-To: Danilo Krummrich <dakr@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Yury Norov <yury.norov@gmail.com>,
-	Will Deacon <will@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Waiman Long <longman@redhat.com>,
-	Tamir Duberstein <tamird@kernel.org>
-Cc: nova-gpu@lists.linux.dev,
-	dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	driver-core@lists.linux.dev,
-	netdev@vger.kernel.org
-Subject: [PATCH v4] rust: make `build_assert` module the home of related macros
-Date: Tue,  9 Jun 2026 15:26:33 +0100
-Message-ID: <20260609142637.373347-1-gary@kernel.org>
+	s=arc-20240116; t=1781015238; c=relaxed/simple;
+	bh=nB6yR+5lHkcKXtcSPQmcAn47ObOmCovFrFplIEFItSw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=OEdAVKjwEd9qtAqWmLoOyGzZJzqxenerF5zhhu2ijVk7IVPeXhFBwCMUK3zN+LQLtZIkm3Hu+TtY0l4S+syceub+nAlSUy8DN0FA5tWn+wtT/7VfPGE5dVoNbhE32AAqCj3U7x4TVdD7rxr6WOphQtYHsm8hWZCB2D12x1ahN0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91A421F00893;
+	Tue,  9 Jun 2026 14:27:12 +0000 (UTC)
+From: Greg Ungerer <gerg@linux-m68k.org>
+To: linux-m68k@lists.linux-m68k.org
+Cc: linux-kernel@vger.kernel.org,
+	arnd@kernel.org,
+	wei.fang@nxp.com,
+	frank.li@nxp.com,
+	shenwei.wang@nxp.com,
+	imx@lists.linux.dev,
+	netdev@vger.kernel.org,
+	nico@fluxnic.net,
+	adureghello@baylibre.com,
+	ulfh@kernel.org,
+	linux-mmc@vger.kernel.org,
+	linux-can@vger.kernel.org,
+	linux-spi@vger.kernel.org,
+	olteanv@gmail.com,
+	Greg Ungerer <gerg@linux-m68k.org>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCHv2 4/4] m68k: coldfire: fix non-standard readX()/writeX() functions
+Date: Wed, 10 Jun 2026 00:13:01 +1000
+Message-ID: <20260609142139.1563360-6-gerg@linux-m68k.org>
 X-Mailer: git-send-email 2.54.0
-Reply-To: Gary Guo <gary@garyguo.net>
+In-Reply-To: <20260609142139.1563360-1-gerg@linux-m68k.org>
+References: <20260609142139.1563360-1-gerg@linux-m68k.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -66,408 +46,254 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Gary Guo <gary@garyguo.net>
+Remove the local ColdFire definitions of readb()/readw()/readl() and
+writeb()/writew()/writel() and use the asm-generic versions of them.
 
-Given the macro scoping rules, all macros are rendered twice, in the
-module and in the top-level of kernel crate.
+The implementation of the readX()/writeX() family of IO access functions
+is non-standard on ColdFire platforms. They either return big-endian (that
+is native endian) data, or on platforms with PCI bus support check the
+supplied address and return either big or little endian data based on that
+check. This is non-standard, they are expected to always return
+little-endian byte ordered data. Unfortunately this behavior also means
+that ioreadX()/iowroteX() and their big-endian counter parts
+ioreadXbe()/iowriteXbe() are currently broken because they are implemented
+using the readX()/writeX() functions.
 
-Add `#[doc(no_inline)]` to the prelude so it just shows up as re-export.
-Add `#[doc(hidden)]` to the macro definition and `#[doc(inline)]` to the
-re-export inside `build_assert` module so the top-level items are hidden.
+The change to use the asm-generic versions of readX()/writeX() itself is
+quite strait forward, just remove the ColdFire local versions of them.  But
+this of course has implications for any remaining drivers that use any of
+these IO access functions. A number of drivers can be independently fixed,
+before this final fix to readX()/writeX() for ColdFire. A small number of
+drivers cannot easily be independently fixed and remain in a working
+state. Those drivers are fixed here as well:
 
-Acked-by: Danilo Krummrich <dakr@kernel.org>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Acked-by: Alexandre Courbot <acourbot@nvidia.com>
-Acked-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Acked-by: Boqun Feng <boqun@kernel.org>
-Signed-off-by: Gary Guo <gary@garyguo.net>
+drivers/dma/mcf-edma-main.c
+  Supports big-endian access by setting the big-endian flag of
+  the drivers struct fsl_edma_engine. But locally should be using
+  ioread32be() and iowrite32be() instead of ioread32() and iowrite32().
+
+drivers/net/can/flexcan/flexcan-core.c
+  Setting the driver quirks flag for big-endian access will force
+  driver to use correct access functions.
+
+drivers/spi/spi-fsl-dspi.c
+  Setting the regmap format_endian flags to use native endian will
+  force driver to use appropriate big or little endian access on
+  whatever platform it is built for.
+
+These drivers have only been compile tested.
+
+Acked-by: Marc Kleine-Budde <mkl@pengutronix.de> # for drivers/net/can/flexcan
+Signed-off-by: Greg Ungerer <gerg@linux-m68k.org>
 ---
-This is the remaining unapplied patch from
-https://lore.kernel.org/rust-for-linux/20260319121653.2975748-1-gary@kernel.org/.
+v2: changed from RFC to PATCH
+    use separate regmap config for mcf5441x (spi-fsl-dspi.c)
+    reorder quirks for mcf5441x (flexcan-core.c)
 
-Changes:
-- Rebased so it applies cleanly. (both on linux-next and rust-next)
-- Picked up tags
-- Updated commit message to reflect that my other patch "rust: doc: disable
-  doc inlining for all prelude items" already reduce number of rendering
-  times from 3 to 2.
----
- drivers/gpu/nova-core/bitfield.rs    |  4 ++--
- drivers/gpu/nova-core/num.rs         |  2 +-
- rust/kernel/build_assert.rs          | 19 ++++++++++++-------
- rust/kernel/io/register.rs           | 19 ++++++++++++-------
- rust/kernel/io/resource.rs           |  2 +-
- rust/kernel/ioctl.rs                 |  2 +-
- rust/kernel/net/phy/reg.rs           |  8 +++++---
- rust/kernel/num/bounded.rs           |  2 +-
- rust/kernel/prelude.rs               | 12 ++++++++----
- rust/kernel/sync/atomic/internal.rs  |  9 ++++++---
- rust/kernel/sync/atomic/predefine.rs |  2 +-
- rust/kernel/sync/locked_by.rs        |  2 +-
- rust/kernel/sync/refcount.rs         |  8 +++++---
- rust/kernel/xarray.rs                | 10 ++++++++--
- 14 files changed, 64 insertions(+), 37 deletions(-)
+ arch/m68k/include/asm/io_no.h          | 68 +++-----------------------
+ drivers/dma/mcf-edma-main.c            | 14 +++---
+ drivers/net/can/flexcan/flexcan-core.c |  1 +
+ drivers/spi/spi-fsl-dspi.c             | 14 +++++-
+ 4 files changed, 27 insertions(+), 70 deletions(-)
 
-diff --git a/drivers/gpu/nova-core/bitfield.rs b/drivers/gpu/nova-core/bitfield.rs
-index 02efdcf78d89..660c3911402d 100644
---- a/drivers/gpu/nova-core/bitfield.rs
-+++ b/drivers/gpu/nova-core/bitfield.rs
-@@ -170,7 +170,7 @@ impl $name {
-     (@check_field_bounds $hi:tt:$lo:tt $field:ident as bool) => {
-         #[allow(clippy::eq_op)]
-         const _: () = {
--            ::kernel::build_assert!(
-+            ::kernel::build_assert::build_assert!(
-                 $hi == $lo,
-                 concat!("boolean field `", stringify!($field), "` covers more than one bit")
-             );
-@@ -181,7 +181,7 @@ impl $name {
-     (@check_field_bounds $hi:tt:$lo:tt $field:ident as $type:tt) => {
-         #[allow(clippy::eq_op)]
-         const _: () = {
--            ::kernel::build_assert!(
-+            ::kernel::build_assert::build_assert!(
-                 $hi >= $lo,
-                 concat!("field `", stringify!($field), "`'s MSB is smaller than its LSB")
-             );
-diff --git a/drivers/gpu/nova-core/num.rs b/drivers/gpu/nova-core/num.rs
-index 6c824b8d7b97..6eb174d136ab 100644
---- a/drivers/gpu/nova-core/num.rs
-+++ b/drivers/gpu/nova-core/num.rs
-@@ -49,7 +49,7 @@ macro_rules! impl_safe_as {
-             #[allow(unused)]
-             #[inline(always)]
-             pub(crate) const fn [<$from _as_ $into>](value: $from) -> $into {
--                kernel::static_assert!(size_of::<$into>() >= size_of::<$from>());
-+                ::kernel::build_assert::static_assert!(size_of::<$into>() >= size_of::<$from>());
+diff --git a/arch/m68k/include/asm/io_no.h b/arch/m68k/include/asm/io_no.h
+index 4f0f34b06e37..2f12f4ed0da5 100644
+--- a/arch/m68k/include/asm/io_no.h
++++ b/arch/m68k/include/asm/io_no.h
+@@ -3,15 +3,10 @@
+ #define _M68KNOMMU_IO_H
  
-                 value as $into
-             }
-diff --git a/rust/kernel/build_assert.rs b/rust/kernel/build_assert.rs
-index 2ea2154ec30c..c3acb9b68a65 100644
---- a/rust/kernel/build_assert.rs
-+++ b/rust/kernel/build_assert.rs
-@@ -61,15 +61,16 @@
- //! undefined symbols and linker errors, it is not developer friendly to debug, so it is recommended
- //! to avoid it and prefer other two assertions where possible.
- 
-+#[doc(inline)]
- pub use crate::{
--    build_assert,
-+    build_assert_macro as build_assert,
-     build_error,
-     const_assert,
-     static_assert, //
- };
- 
- #[doc(hidden)]
--pub use build_error::build_error;
-+pub use build_error::build_error as build_error_fn;
- 
- /// Static assert (i.e. compile-time assert).
- ///
-@@ -105,6 +106,7 @@
- /// static_assert!(f(40) == 42, "f(x) must add 2 to the given input.");
- /// ```
- #[macro_export]
-+#[doc(hidden)]
- macro_rules! static_assert {
-     ($condition:expr $(,$arg:literal)?) => {
-         const _: () = ::core::assert!($condition $(,$arg)?);
-@@ -133,6 +135,7 @@ macro_rules! static_assert {
- /// }
- /// ```
- #[macro_export]
-+#[doc(hidden)]
- macro_rules! const_assert {
-     ($condition:expr $(,$arg:literal)?) => {
-         const { ::core::assert!($condition $(,$arg)?) };
-@@ -157,12 +160,13 @@ macro_rules! const_assert {
- /// // foo(usize::MAX); // Fails to compile.
- /// ```
- #[macro_export]
-+#[doc(hidden)]
- macro_rules! build_error {
-     () => {{
--        $crate::build_assert::build_error("")
-+        $crate::build_assert::build_error_fn("")
-     }};
-     ($msg:expr) => {{
--        $crate::build_assert::build_error($msg)
-+        $crate::build_assert::build_error_fn($msg)
-     }};
- }
- 
-@@ -200,15 +204,16 @@ macro_rules! build_error {
- /// const _: () = const_bar(2);
- /// ```
- #[macro_export]
--macro_rules! build_assert {
-+#[doc(hidden)]
-+macro_rules! build_assert_macro {
-     ($cond:expr $(,)?) => {{
-         if !$cond {
--            $crate::build_assert::build_error(concat!("assertion failed: ", stringify!($cond)));
-+            $crate::build_assert::build_error_fn(concat!("assertion failed: ", stringify!($cond)));
-         }
-     }};
-     ($cond:expr, $msg:expr) => {{
-         if !$cond {
--            $crate::build_assert::build_error($msg);
-+            $crate::build_assert::build_error_fn($msg);
-         }
-     }};
- }
-diff --git a/rust/kernel/io/register.rs b/rust/kernel/io/register.rs
-index 388647f28292..f924c7c7c1db 100644
---- a/rust/kernel/io/register.rs
-+++ b/rust/kernel/io/register.rs
-@@ -108,9 +108,10 @@
- 
- use core::marker::PhantomData;
- 
--use crate::io::IoLoc;
+ /*
+- * Convert a physical memory address into a IO memory address.
+- * For us this is trivially a type cast.
+- */
+-#define iomem(a)	((void __iomem *) (a))
 -
--use kernel::build_assert;
-+use crate::{
-+    build_assert::build_assert,
-+    io::IoLoc, //
-+};
- 
- /// Trait implemented by all registers.
- pub trait Register: Sized {
-@@ -872,7 +873,7 @@ macro_rules! register {
-         @reg $(#[$attr:meta])* $vis:vis $name:ident ($storage:ty)
-             [ $size:expr, stride = $stride:expr ] @ $offset:literal { $($fields:tt)* }
-     ) => {
--        ::kernel::static_assert!(::core::mem::size_of::<$storage>() <= $stride);
-+        $crate::build_assert::static_assert!(::core::mem::size_of::<$storage>() <= $stride);
- 
-         $crate::register!(@bitfield $(#[$attr])* $vis struct $name($storage) { $($fields)* });
-         $crate::register!(@io_base $name($storage) @ $offset);
-@@ -895,7 +896,9 @@ macro_rules! register {
-         @reg $(#[$attr:meta])* $vis:vis $name:ident ($storage:ty) => $alias:ident [ $idx:expr ]
-             { $($fields:tt)* }
-     ) => {
--        ::kernel::static_assert!($idx < <$alias as $crate::io::register::RegisterArray>::SIZE);
-+        $crate::build_assert::static_assert!(
-+            $idx < <$alias as $crate::io::register::RegisterArray>::SIZE
-+        );
- 
-         $crate::register!(@bitfield $(#[$attr])* $vis struct $name($storage) { $($fields)* });
-         $crate::register!(
-@@ -912,7 +915,7 @@ macro_rules! register {
-             [ $size:expr, stride = $stride:expr ]
-             @ $base:ident + $offset:literal { $($fields:tt)* }
-     ) => {
--        ::kernel::static_assert!(::core::mem::size_of::<$storage>() <= $stride);
-+        $crate::build_assert::static_assert!(::core::mem::size_of::<$storage>() <= $stride);
- 
-         $crate::register!(@bitfield $(#[$attr])* $vis struct $name($storage) { $($fields)* });
-         $crate::register!(@io_base $name($storage) @ $offset);
-@@ -938,7 +941,9 @@ macro_rules! register {
-         @reg $(#[$attr:meta])* $vis:vis $name:ident ($storage:ty)
-             => $base:ident + $alias:ident [ $idx:expr ] { $($fields:tt)* }
-     ) => {
--        ::kernel::static_assert!($idx < <$alias as $crate::io::register::RegisterArray>::SIZE);
-+        $crate::build_assert::static_assert!(
-+            $idx < <$alias as $crate::io::register::RegisterArray>::SIZE
-+        );
- 
-         $crate::register!(@bitfield $(#[$attr])* $vis struct $name($storage) { $($fields)* });
-         $crate::register!(
-diff --git a/rust/kernel/io/resource.rs b/rust/kernel/io/resource.rs
-index b7ac9faf141d..17b0c174cfc5 100644
---- a/rust/kernel/io/resource.rs
-+++ b/rust/kernel/io/resource.rs
-@@ -229,7 +229,7 @@ impl Flags {
-     // Always inline to optimize out error path of `build_assert`.
-     #[inline(always)]
-     const fn new(value: u32) -> Self {
--        crate::build_assert!(value as u64 <= c_ulong::MAX as u64);
-+        build_assert!(value as u64 <= c_ulong::MAX as u64);
-         Flags(value as c_ulong)
-     }
+-/*
+- * The non-MMU m68k and ColdFire IO and memory mapped hardware access
+- * functions have always worked in CPU native endian. We need to define
+- * that behavior here first before we include asm-generic/io.h.
++ * Historically the raw native endian IO access macros for non-MMU m68k and
++ * ColdFire have accepted any integral value as the address argument.
++ * The asm-generic versions of these expect "void __iomem *" for the address,
++ * so define local permissive versions here.
+  */
+ #define __raw_readb(addr) \
+     ({ u8 __v = (*(__force volatile u8 *) (addr)); __v; })
+@@ -45,66 +40,15 @@
+  * applies just the same of there is no MMU but something like a PCI bus
+  * is present.
+  */
+-static int __cf_internalio(unsigned long addr)
++static inline int __cf_internalio(unsigned long addr)
+ {
+ 	return (addr >= IOMEMBASE) && (addr <= IOMEMBASE + IOMEMSIZE - 1);
  }
-diff --git a/rust/kernel/ioctl.rs b/rust/kernel/ioctl.rs
-index 2fc7662339e5..5bb5b48cf949 100644
---- a/rust/kernel/ioctl.rs
-+++ b/rust/kernel/ioctl.rs
-@@ -6,7 +6,7 @@
  
- #![expect(non_snake_case)]
+-static int cf_internalio(const volatile void __iomem *addr)
++static inline int cf_internalio(const volatile void __iomem *addr)
+ {
+ 	return __cf_internalio((unsigned long) addr);
+ }
+-
+-/*
+- * We need to treat built-in peripherals and bus based address ranges
+- * differently. Local built-in peripherals (and the ColdFire SoC parts
+- * have quite a lot of them) are always native endian - which is big
+- * endian on m68k/ColdFire. Bus based address ranges, like the PCI bus,
+- * are accessed little endian - so we need to byte swap those.
+- */
+-#define readw readw
+-static inline u16 readw(const volatile void __iomem *addr)
+-{
+-	if (cf_internalio(addr))
+-		return __raw_readw(addr);
+-	return swab16(__raw_readw(addr));
+-}
+-
+-#define readl readl
+-static inline u32 readl(const volatile void __iomem *addr)
+-{
+-	if (cf_internalio(addr))
+-		return __raw_readl(addr);
+-	return swab32(__raw_readl(addr));
+-}
+-
+-#define writew writew
+-static inline void writew(u16 value, volatile void __iomem *addr)
+-{
+-	if (cf_internalio(addr))
+-		__raw_writew(value, addr);
+-	else
+-		__raw_writew(swab16(value), addr);
+-}
+-
+-#define writel writel
+-static inline void writel(u32 value, volatile void __iomem *addr)
+-{
+-	if (cf_internalio(addr))
+-		__raw_writel(value, addr);
+-	else
+-		__raw_writel(swab32(value), addr);
+-}
+-
+-#else
+-
+-#define readb __raw_readb
+-#define readw __raw_readw
+-#define readl __raw_readl
+-#define writeb __raw_writeb
+-#define writew __raw_writew
+-#define writel __raw_writel
+-
+ #endif /* IOMEMBASE */
  
--use crate::build_assert;
-+use crate::build_assert::build_assert;
+ #if defined(CONFIG_COLDFIRE)
+diff --git a/drivers/dma/mcf-edma-main.c b/drivers/dma/mcf-edma-main.c
+index 9e1c6400c77b..4ed0ce644e37 100644
+--- a/drivers/dma/mcf-edma-main.c
++++ b/drivers/dma/mcf-edma-main.c
+@@ -21,9 +21,9 @@ static irqreturn_t mcf_edma_tx_handler(int irq, void *dev_id)
+ 	unsigned int ch;
+ 	u64 intmap;
  
- /// Build an ioctl number, analogous to the C macro of the same name.
- #[inline(always)]
-diff --git a/rust/kernel/net/phy/reg.rs b/rust/kernel/net/phy/reg.rs
-index a7db0064cb7d..80e22c264ea8 100644
---- a/rust/kernel/net/phy/reg.rs
-+++ b/rust/kernel/net/phy/reg.rs
-@@ -9,9 +9,11 @@
- //! defined in IEEE 802.3.
+-	intmap = ioread32(regs->inth);
++	intmap = ioread32be(regs->inth);
+ 	intmap <<= 32;
+-	intmap |= ioread32(regs->intl);
++	intmap |= ioread32be(regs->intl);
+ 	if (!intmap)
+ 		return IRQ_NONE;
  
- use super::Device;
--use crate::build_assert;
--use crate::error::*;
--use crate::uapi;
-+use crate::{
-+    build_assert::build_assert,
-+    error::*,
-+    uapi, //
-+};
+@@ -43,7 +43,7 @@ static irqreturn_t mcf_edma_err_handler(int irq, void *dev_id)
+ 	struct edma_regs *regs = &mcf_edma->regs;
+ 	unsigned int err, ch;
  
- mod private {
-     /// Marker that a trait cannot be implemented outside of this crate
-diff --git a/rust/kernel/num/bounded.rs b/rust/kernel/num/bounded.rs
-index f9f90d6ec482..dafe77782d79 100644
---- a/rust/kernel/num/bounded.rs
-+++ b/rust/kernel/num/bounded.rs
-@@ -364,7 +364,7 @@ pub fn try_new(value: T) -> Option<Self> {
-     // Always inline to optimize out error path of `build_assert`.
-     #[inline(always)]
-     pub fn from_expr(expr: T) -> Self {
--        crate::build_assert!(
-+        crate::build_assert::build_assert!(
-             fits_within(expr, N),
-             "Requested value larger than maximal representable value."
-         );
-diff --git a/rust/kernel/prelude.rs b/rust/kernel/prelude.rs
-index ca260cc3937a..f6e852638ade 100644
---- a/rust/kernel/prelude.rs
-+++ b/rust/kernel/prelude.rs
-@@ -79,9 +79,6 @@
-         VVec,
-         Vec, //
-     },
--    build_assert,
--    build_error,
--    const_assert,
-     current,
-     dev_alert,
-     dev_crit,
-@@ -105,7 +102,6 @@
-     pr_info,
-     pr_notice,
-     pr_warn,
--    static_assert,
-     str::CStrExt as _,
-     try_init,
-     try_pin_init,
-@@ -113,6 +109,14 @@
-     ThisModule, //
+-	err = ioread32(regs->errl);
++	err = ioread32be(regs->errl);
+ 	if (!err)
+ 		return IRQ_NONE;
+ 
+@@ -55,7 +55,7 @@ static irqreturn_t mcf_edma_err_handler(int irq, void *dev_id)
+ 		}
+ 	}
+ 
+-	err = ioread32(regs->errh);
++	err = ioread32be(regs->errh);
+ 	if (!err)
+ 		return IRQ_NONE;
+ 
+@@ -203,8 +203,8 @@ static int mcf_edma_probe(struct platform_device *pdev)
+ 		edma_write_tcdreg(mcf_chan, cpu_to_le32(0), csr);
+ 	}
+ 
+-	iowrite32(~0, regs->inth);
+-	iowrite32(~0, regs->intl);
++	iowrite32be(~0, regs->inth);
++	iowrite32be(~0, regs->intl);
+ 
+ 	ret = mcf_edma->drvdata->setup_irq(pdev, mcf_edma);
+ 	if (ret)
+@@ -248,7 +248,7 @@ static int mcf_edma_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	/* Enable round robin arbitration */
+-	iowrite32(EDMA_CR_ERGA | EDMA_CR_ERCA, regs->cr);
++	iowrite32be(EDMA_CR_ERGA | EDMA_CR_ERCA, regs->cr);
+ 
+ 	return 0;
+ }
+diff --git a/drivers/net/can/flexcan/flexcan-core.c b/drivers/net/can/flexcan/flexcan-core.c
+index f5d22c61503f..f0571b97817b 100644
+--- a/drivers/net/can/flexcan/flexcan-core.c
++++ b/drivers/net/can/flexcan/flexcan-core.c
+@@ -295,6 +295,7 @@ static_assert(sizeof(struct flexcan_regs) ==  0x4 * 18 + 0xfb8);
+ 
+ static const struct flexcan_devtype_data fsl_mcf5441x_devtype_data = {
+ 	.quirks = FLEXCAN_QUIRK_BROKEN_PERR_STATE |
++		FLEXCAN_QUIRK_DEFAULT_BIG_ENDIAN |
+ 		FLEXCAN_QUIRK_NR_IRQ_3 | FLEXCAN_QUIRK_NR_MB_16 |
+ 		FLEXCAN_QUIRK_SUPPORT_RX_MAILBOX |
+ 		FLEXCAN_QUIRK_SUPPORT_RX_FIFO,
+diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
+index 9f2a7b8163b1..abd3b20c2f17 100644
+--- a/drivers/spi/spi-fsl-dspi.c
++++ b/drivers/spi/spi-fsl-dspi.c
+@@ -192,6 +192,7 @@ enum {
+ 	DSPI_XSPI_REGMAP,
+ 	S32G_DSPI_XSPI_REGMAP,
+ 	DSPI_PUSHR,
++	MCF5441X_DSPI_REGMAP,
  };
  
-+#[doc(no_inline)]
-+pub use crate::build_assert::{
-+    build_assert,
-+    build_error,
-+    const_assert,
-+    static_assert, //
-+};
-+
- // `super::std_vendor` is hidden, which makes the macro inline for some reason.
- #[doc(no_inline)]
- pub use super::dbg;
-diff --git a/rust/kernel/sync/atomic/internal.rs b/rust/kernel/sync/atomic/internal.rs
-index ad810c2172ec..9c8a7a203abd 100644
---- a/rust/kernel/sync/atomic/internal.rs
-+++ b/rust/kernel/sync/atomic/internal.rs
-@@ -4,8 +4,11 @@
- //!
- //! Provides 1:1 mapping to the C atomic operations.
- 
--use crate::bindings;
--use crate::macros::paste;
-+use crate::{
-+    bindings,
-+    build_assert::static_assert,
-+    macros::paste, //
-+};
- use core::cell::UnsafeCell;
- use ffi::c_void;
- 
-@@ -46,7 +49,7 @@ pub trait AtomicImpl: Sized + Copy + private::Sealed {
- // In the future when a CONFIG_ARCH_SUPPORTS_ATOMIC_RMW=n architecture plans to support Rust, the
- // load/store helpers that guarantee atomicity against RmW operations (usually via a lock) need to
- // be added.
--crate::static_assert!(
-+static_assert!(
-     cfg!(CONFIG_ARCH_SUPPORTS_ATOMIC_RMW),
-     "The current implementation of atomic i8/i16/ptr relies on the architecure being \
-     ARCH_SUPPORTS_ATOMIC_RMW"
-diff --git a/rust/kernel/sync/atomic/predefine.rs b/rust/kernel/sync/atomic/predefine.rs
-index 7468153429e1..adc5fa126487 100644
---- a/rust/kernel/sync/atomic/predefine.rs
-+++ b/rust/kernel/sync/atomic/predefine.rs
-@@ -2,7 +2,7 @@
- 
- //! Pre-defined atomic types
- 
--use crate::static_assert;
-+use crate::prelude::*;
- use core::mem::{align_of, size_of};
- use ffi::c_void;
- 
-diff --git a/rust/kernel/sync/locked_by.rs b/rust/kernel/sync/locked_by.rs
-index 61f100a45b35..fb4a1430b3b4 100644
---- a/rust/kernel/sync/locked_by.rs
-+++ b/rust/kernel/sync/locked_by.rs
-@@ -3,7 +3,7 @@
- //! A wrapper for data protected by a lock that does not wrap it.
- 
- use super::{lock::Backend, lock::Lock};
--use crate::build_assert;
-+use crate::build_assert::build_assert;
- use core::{cell::UnsafeCell, mem::size_of, ptr};
- 
- /// Allows access to some data to be serialised by a lock that does not wrap it.
-diff --git a/rust/kernel/sync/refcount.rs b/rust/kernel/sync/refcount.rs
-index 6c7ae8b05a0b..23a5d201f343 100644
---- a/rust/kernel/sync/refcount.rs
-+++ b/rust/kernel/sync/refcount.rs
-@@ -4,9 +4,11 @@
- //!
- //! C header: [`include/linux/refcount.h`](srctree/include/linux/refcount.h)
- 
--use crate::build_assert;
--use crate::sync::atomic::Atomic;
--use crate::types::Opaque;
-+use crate::{
-+    build_assert::build_assert,
-+    sync::atomic::Atomic,
-+    types::Opaque, //
-+};
- 
- /// Atomic reference counter.
- ///
-diff --git a/rust/kernel/xarray.rs b/rust/kernel/xarray.rs
-index 46e5f43223fe..987c9c0c2198 100644
---- a/rust/kernel/xarray.rs
-+++ b/rust/kernel/xarray.rs
-@@ -5,10 +5,16 @@
- //! C header: [`include/linux/xarray.h`](srctree/include/linux/xarray.h)
- 
- use crate::{
--    alloc, bindings, build_assert,
-+    alloc,
-+    bindings,
-+    build_assert::build_assert,
-     error::{Error, Result},
-     ffi::c_void,
--    types::{ForeignOwnable, NotThreadSafe, Opaque},
-+    types::{
-+        ForeignOwnable,
-+        NotThreadSafe,
-+        Opaque, //
-+    }, //
+ static const struct regmap_config dspi_regmap_config[] = {
+@@ -238,6 +239,17 @@ static const struct regmap_config dspi_regmap_config[] = {
+ 		.reg_stride	= 2,
+ 		.max_register	= 0x2,
+ 	},
++	[MCF5441X_DSPI_REGMAP] = {
++		.reg_bits	= 32,
++		.val_bits	= 32,
++		.reg_stride	= 4,
++		.max_register	= SPI_RXFR3,
++		.volatile_table	= &dspi_volatile_table,
++		.rd_table	= &dspi_access_table,
++		.wr_table	= &dspi_access_table,
++		.reg_format_endian = REGMAP_ENDIAN_BIG,
++		.val_format_endian = REGMAP_ENDIAN_BIG,
++	},
  };
- use core::{iter, marker::PhantomData, pin::Pin, ptr::NonNull};
- use pin_init::{pin_data, pin_init, pinned_drop, PinInit};
-
-base-commit: 98cc68794c003bc76fc9da2e8a075e947eee5921
+ 
+ static const struct fsl_dspi_devtype_data devtype_data[] = {
+@@ -303,7 +315,7 @@ static const struct fsl_dspi_devtype_data devtype_data[] = {
+ 		.trans_mode		= DSPI_DMA_MODE,
+ 		.max_clock_factor	= 8,
+ 		.fifo_size		= 16,
+-		.regmap			= &dspi_regmap_config[DSPI_REGMAP],
++		.regmap			= &dspi_regmap_config[MCF5441X_DSPI_REGMAP],
+ 	},
+ 	[S32G] = {
+ 		.trans_mode	  = DSPI_XSPI_MODE,
 -- 
 2.54.0
 
