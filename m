@@ -1,161 +1,167 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B48043FBB73
-	for <netdev@vger.kernel.org>; Tue,  9 Jun 2026 11:05:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D05C139B4A5
+	for <netdev@vger.kernel.org>; Tue,  9 Jun 2026 11:06:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781003114; cv=none; b=oyGyGpEGn1jgN99yHGzUENaLXK9ZUXvAz11Nb0NQDlgHHOQdlKB2j2fhjnBMgpGaI2ILf81PDPv+yI1JIilaHw/btIVsL3Jz7Fc9TiIWtHdunV0uzMHbcfp4XdpC7uEoK+G2689qEaRTr5KOg6bU7zlycoULpYo4HZkABqwXpGc=
+	t=1781003192; cv=none; b=Y8ETdoAGh+JhVdlUCSEqXacTWoIXkOU83H5eWs0fwna3rgLqxXBa1gRdtdw7x/WJV7ixMqI1bsb59FbB07e3x6lrTvmDb01K8jvZdF8n024z4bF8qhTigncYwZZ96cxiSCbjx5lbix4y5Eae5l6WZqsvxEJ7DEfNwwLBK7k3VtA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781003114; c=relaxed/simple;
-	bh=FzHeD0sMZk02bfUIOVbZ7vcbl5dWXL2/Txt+74srelk=;
-	h=From:In-Reply-To:MIME-Version:References:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EdcXK6AH6XDuMxk50f4dh+u/GHJBYA1+69BMCzV8inwydg4yUjtJXGIp2zBqAasRM5W+N7nnFdYI9jW/dEXnJdP6zbBvIlkAZVFMtpm/zctzlYzB86VjcZEBv+hPC8VgkS5pxU7Rdx/bMY1CRXjh5sKqfxNzVuYmd2l012yGHg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RGDhzDnd; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781003192; c=relaxed/simple;
+	bh=+SqEI9oSMPALSE0Kzp1qHsg5DdBfNBNzZ+rOkJjrhFQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=avkvwP//Fm1ZgTirhWs6pqAkSMso9rEXfGjH5Pc3laQV4RFinF37Z4MjfKXQ3KtyIugQ8UrACj7QGXB2JJFZuoDUUUZzSBKb8+9f2CSspApDLzG5lfIb/Od/rj/jsFIDS2iO12nxOiUByqreXGlsUr8b09dKktsmRLnvfNW/2t8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20251104.gappssmtp.com header.i=@resnulli-us.20251104.gappssmtp.com header.b=mgPkDCW3; arc=none smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RGDhzDnd"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D5071F0089F
-	for <netdev@vger.kernel.org>; Tue,  9 Jun 2026 11:05:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781003113;
-	bh=+sX9ATTxluLYTPpyn9xT27ptWmmBF8CPbs0HcxCOGLE=;
-	h=From:In-Reply-To:References:Date:Subject:To:Cc;
-	b=RGDhzDndKBB2dkoo2ExWmstsyWaeZ8qJ18zZpU/Zh0vnaXRYAMzekOdsxjslSMmMP
-	 Zz8+CTH0TaVqx9FQtV3+0bfwMumlGnwVxTC4XbD3pQ9vXv5cjQPwxw+p/urFIYe+M1
-	 23mhKFfJTqrlZpJV745TVZPiLITUlVY6C7d5E8xA1cDZC81W784rbDYRkz7hR5lGZL
-	 64Iy0/HNkiWIMrL9ECwoHOiIF9wCFEfpU8Auj711VfrHHZui/L8EP/HRqjhrowKr2W
-	 OxVlAEX7eB4eXwfcJe6BQDfh51Xjtyo6bbEDsj8hF5jBGM4+Ii4e2FKcVqq3Vj0HgK
-	 9xuzxLAHXn0zA==
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-5aa612bf6efso5397361e87.3
-        for <netdev@vger.kernel.org>; Tue, 09 Jun 2026 04:05:13 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ8VE9g8yg+jU8Igp5HeKnYLVNe4ATVPz2DExtU1TILS0hJTdUcUWenRDIVH4l43ATSq7Ov8FEo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxc5WtqZ/gpV7b5LFYt0Ua+RUW2GgqCBS1YsShpEranZoaUCXDH
-	qUUgO0QHFo1ZLBh9h4KE1HK7WZCHQjsyVq8TcmR3VFnzGifgyH9Wd/YTsFtOKWUVihEa1W0dGgt
-	ytqS1uxNgOBGGTTsMfUKwP6JrJS7L6k/kSwx+o0RASw==
-X-Received: by 2002:a05:6512:2253:b0:5aa:5c8c:9cf4 with SMTP id
- 2adb3069b0e04-5aa87b5f803mr5428916e87.17.1781003111998; Tue, 09 Jun 2026
- 04:05:11 -0700 (PDT)
-Received: from 969154062570 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 9 Jun 2026 07:05:10 -0400
-Received: from 969154062570 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 9 Jun 2026 07:05:10 -0400
-From: Bartosz Golaszewski <brgl@kernel.org>
-In-Reply-To: <CAFEp6-1syMQsvuQ+dLU39bnDeL5Ok7vK1mA7CS0v1m7cjhyMQw@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=resnulli-us.20251104.gappssmtp.com header.i=@resnulli-us.20251104.gappssmtp.com header.b="mgPkDCW3"
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-490ae94a89eso45677845e9.1
+        for <netdev@vger.kernel.org>; Tue, 09 Jun 2026 04:06:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=resnulli-us.20251104.gappssmtp.com; s=20251104; t=1781003187; x=1781607987; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=FMrf+M67Ik9/dX+BZr6j9niX+OkNNmCoLuQbKvuVxcQ=;
+        b=mgPkDCW3ZopiDe8lRKQZQkv/YPusZiZoPBAD4XR1qIoaSIDFU77mP2ZITXQ7YABgbU
+         fyN7Lvif8syX8qU5IHvT52rwoJuk9msHhnc0/obw7F2PZhydGxcWKR2WCsAU9M8DwAO1
+         lmkqFW62cF0dBNSe+q6MbvZjqB4xgLsU2+5FW38qimJ1uUEHRD1R05cv7td/W1cmxjwR
+         QiuEcjwVu1YfADHee+bZoCcBcLgiv4CkrAOC4K5ykqRhgsrgBw5PSJQgeEyjrm66CjTT
+         TD201seNiEJacNoarv8logls7lM57l3nMtRwi32BkIQ3lzYhG1T8najoLiq9tzN1U1cA
+         ql8Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781003187; x=1781607987;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=FMrf+M67Ik9/dX+BZr6j9niX+OkNNmCoLuQbKvuVxcQ=;
+        b=hZMBsCiA59d6nH6ZV7HVOyx+AjtyjpJMWMKmbFjb2Pkq3G6tEyYw7aGLOjk+naX9SN
+         effYvTdS/jZg5vJIez4f+uGtbLzpFrQWGv7uo3fV9nGc8gQPPPYhK1yKbOa8WPSw6LoA
+         gBDaFzMIG0vY+Gs4NObeX8rzgH7gwwgKCAfmvK9r3ZV/yVN2JVsRttj7ieWC91Oy40zk
+         YvXVzw7zIhvv35lLUxBe+4LbsHv4dgzsseCIqcwPi5aifmp3YOx3LR9j10A3uve3mJG/
+         PAEGalPQ1MH2U/tIC05Spn3UaAySDlZLmGlLfmN/ZjiDvu0tkL/lKEz6GRG46cxDpbjq
+         GX/g==
+X-Forwarded-Encrypted: i=1; AFNElJ9MXHUOJhNUxQn48swBojbwS8/lsfkg7CQbI3vvZwtrFwGHw26MsYfVt4E49rHBbiGslDMTX9A=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw2c7RmQ9Pmq6p6pGfszWda5Imzas8sdLK5UdV9eZcRRHYZlq8z
+	9bklTXIVaGi+dTTtV+wUN/xG0euigOo88V+vZrxJzRvrGYWb/9XGRxlEBUpb6VpZrLk=
+X-Gm-Gg: Acq92OGIFUdDj3WwyUwB0lap7u66BJWLgfd1yukWC4ekF9M9mzik1utx91CgOzt8xuy
+	87KvT4uoZ+ZVqt4qHEPjNUnwA3lzYh9V01SHP5UA4G/Zu1tRh/XOosmOWmp21bcEy0N/5lST6cf
+	xqGcII46YZ1Jo6e9U2w4IhcDWAnxt6kvRw14P1oZLQsMS85jppzt2iVkapHZxQGDtbwuI6AFTrL
+	fzsE1g4PDUjfh/daCHTBbcfjF2m8A5ELTVnzc3CEQAyfGOsDF0zd9WElgsG+1zuZDpd+e2qiSwb
+	kkdlB0qjpWjVrSoWa28S28j/3o0/d7T07RGGKPi0abkHgVtCSXf1m8sfyW1ZDReRJMjYwxXMASA
+	hgaIm+fHF+3m56P2BNyD09u3As+QliQh/XgFBmDb9t1byfhpLXf9keMReWUSp/BUJ31jE7bDuwg
+	+uI5fSqOPJlgYEmDzxAIaUCE/WmZXeu+za5I2CgAyEJTuhhgdpyp978g==
+X-Received: by 2002:a05:600c:674f:b0:490:aef9:aa3b with SMTP id 5b1f17b1804b1-490c26263f7mr315729835e9.32.1781003186857;
+        Tue, 09 Jun 2026 04:06:26 -0700 (PDT)
+Received: from localhost ([140.209.217.212])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4601f344541sm57443482f8f.22.2026.06.09.04.06.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 09 Jun 2026 04:06:26 -0700 (PDT)
+Date: Tue, 9 Jun 2026 13:06:22 +0200
+From: Jiri Pirko <jiri@resnulli.us>
+To: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Cc: Ivan Vecera <ivecera@redhat.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>, netdev@vger.kernel.org, Jiri Pirko <jiri@nvidia.com>, 
+	"David S. Miller" <davem@davemloft.net>, Donald Hunter <donald.hunter@gmail.com>, 
+	Eric Dumazet <edumazet@google.com>, Michal Schmidt <mschmidt@redhat.com>, 
+	Paolo Abeni <pabeni@redhat.com>, Pasi Vaananen <pvaanane@redhat.com>, 
+	Petr Oros <poros@redhat.com>, Prathosh Satish <Prathosh.Satish@microchip.com>, 
+	Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org, 
+	Grzegorz Nitka <grzegorz.nitka@intel.com>
+Subject: Re: [PATCH net-next v5 1/4] dpll: add DPLL_PIN_TYPE_INT_NCO pin type
+Message-ID: <aiftnkuT9IP31qUm@FV6GYCPJ69>
+References: <20260531194423.383366-1-ivecera@redhat.com>
+ <20260531194423.383366-2-ivecera@redhat.com>
+ <20260603185037.05f8c6a0@kernel.org>
+ <be19bd30-0bb0-4a22-8932-e62f7678ccc5@redhat.com>
+ <20260604081649.1ae5302d@kernel.org>
+ <3c5e01f5-8563-41a3-964f-13fcb80383b7@redhat.com>
+ <d6b69d21-4542-498d-8253-7009a56634cc@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260609-block-as-nvmem-v4-0-45712e6b22c6@oss.qualcomm.com>
- <20260609-block-as-nvmem-v4-4-45712e6b22c6@oss.qualcomm.com>
- <CAMRc=MfuiPMkSm=-G6VEJpqKhos0TD_pf0ScBGqfwLHT0uk8yQ@mail.gmail.com> <CAFEp6-1syMQsvuQ+dLU39bnDeL5Ok7vK1mA7CS0v1m7cjhyMQw@mail.gmail.com>
-Date: Tue, 9 Jun 2026 07:05:10 -0400
-X-Gmail-Original-Message-ID: <CAMRc=Mc=-G0+ESPJUUgxd+jJWwuEzBcVXSJyAbAhx6BFkHeimA@mail.gmail.com>
-X-Gm-Features: AVVi8CdBM8fdpM7hiE50yrSmJrPYo7K9sdF-J87b4PfgsolvJ2MbyT4LVehGYdI
-Message-ID: <CAMRc=Mc=-G0+ESPJUUgxd+jJWwuEzBcVXSJyAbAhx6BFkHeimA@mail.gmail.com>
-Subject: Re: [PATCH v4 4/8] block: implement NVMEM provider
-To: Loic Poulain <loic.poulain@oss.qualcomm.com>
-Cc: linux-mmc@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	linux-block@vger.kernel.org, linux-wireless@vger.kernel.org, 
-	ath10k@lists.infradead.org, linux-bluetooth@vger.kernel.org, 
-	netdev@vger.kernel.org, daniel@makrotopia.org, Ulf Hansson <ulfh@kernel.org>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
-	Jens Axboe <axboe@kernel.dk>, Johannes Berg <johannes@sipsolutions.net>, 
-	Jeff Johnson <jjohnson@kernel.org>, Marcel Holtmann <marcel@holtmann.org>, 
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>, Balakrishna Godavarthi <quic_bgodavar@quicinc.com>, 
-	Rocky Liao <quic_rjliao@quicinc.com>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, Srinivas Kandagatla <srini@kernel.org>, Andrew Lunn <andrew@lunn.ch>, 
-	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
-	Saravana Kannan <saravanak@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d6b69d21-4542-498d-8253-7009a56634cc@linux.dev>
 
-On Tue, 9 Jun 2026 12:13:08 +0200, Loic Poulain
-<loic.poulain@oss.qualcomm.com> said:
-> Hi bartosz,
+Mon, Jun 08, 2026 at 01:33:56PM +0200, vadim.fedorenko@linux.dev wrote:
+>On 04/06/2026 17:42, Ivan Vecera wrote:
+>> On 6/4/26 5:16 PM, Jakub Kicinski wrote:
+>> > On Thu, 4 Jun 2026 17:01:36 +0200 Ivan Vecera wrote:
+>> > > > Purely going on intuition here but feels like NCO should be a mode
+>> > > > (enum dpll_mode) rather than one of the input pins?
+>> > > > 
+>> > > > More acks here would be great, Vadim, Arkadiusz, Grzegorz... ?
+>> > > 
+>> > > I had a long discussion with Jiri about this and we agreed finally
+>> > > that dpll_mode represents a reference (input pin) selection strategy
+>> > > mode and not a DPLL device running mode.
+>> > 
+>> > Long discussion? I see 2 emails ;) Let's hear from others.
+>> > (thanks for the link BTW, _if_ there's a v6 please put it in the cover
+>> > letter)
+>> 
+>> I called him... he explained me 'why?' in detail.
+>> I also appreciate others' opinion.
 >
+>Well, NCO mode means manual operation of frequency tuning. Does it mean
+>that different tunings may be applied to different out pins of DPLL
+>device? My assumption that it's not possible, and in this case NCO is
+>property/mode of DPLL device rather than single pin.
+>
+>@Jiri could you please share your detailed explanation on "why"?
 
-...
+Since the "why a pin and not a new dpll_mode?" question keeps coming up,
+let me try to describe why I believe that modelling NCO as an input pin
+(DPLL_PIN_TYPE_INT_NCO) is the right thing to do.
 
->>
->> On the other hand, we don't want to not provide the block device just be=
-cause
->> someone added a DT property on one that's too big. I'd say: warn, but re=
-turn 0.
->> Does it make sense?
->
-> It=E2=80=99s still technically an error in the sense that we cannot provi=
-de
-> the required nvmem feature. However, it only becomes a real issue if a
-> consumer actually attempts to use it.
-> Also, the block device should still be added, since the return code
-> from add_dev is not checked. In any case, I=E2=80=99m fine with either
-> approach, as long as we emit a warning message.
->
+In the DPLL UAPI, 'mode' only describes the *input selection policy*:
+MANUAL means userspace picks which input the loop locks to, AUTOMATIC
+means the DPLL auto-selects the highest-priority input. I know there was
+some fuzz about this semantics in the early stages of upstreaming DPLL
+subsystem, but eventually this became very clear both in code and in
+kdoc:
 
-We don't check the return value now (why?) but if we ever do, the safer opt=
-ion
-is to return 0 IMO.
+<qoute>
+ * enum dpll_mode - working modes a dpll can support, differentiates if and how
+ *   dpll selects one of its inputs to syntonize with it, valid values for
+ *   DPLL_A_MODE attribute
+</quote>
 
->>
->> > +     }
->> > +
->> > +     config.id =3D NVMEM_DEVID_NONE;
->> > +     config.dev =3D dev;
->> > +     config.name =3D dev_name(dev);
->> > +     config.owner =3D THIS_MODULE;
->> > +     config.priv =3D (void *)(uintptr_t)dev->devt;
->> > +     config.reg_read =3D blk_nvmem_reg_read;
->> > +     config.size =3D bdev_nr_bytes(bdev);
->> > +     config.word_size =3D 1;
->> > +     config.stride =3D 1;
->> > +     config.read_only =3D true;
->> > +     config.root_only =3D true;
->> > +     config.ignore_wp =3D true;
->> > +     config.of_node =3D to_of_node(dev->fwnode);
->> > +
->> > +     return PTR_ERR_OR_ZERO(devm_nvmem_register(dev, &config));
->>
->> And that was a wrong suggestion on my part too because I was under the
->> impression that we're in the probe() path, not device_add(). You can't u=
-se
->> devres here as the device at this point is not yet bound and may never b=
-e.
->
-> So I understand The bd_device is purely a class device with no bus, no dr=
-iver.
-> For driverless devices, devres_release_all() is called explicitly
-> within device_del() .
->
+NCO *is not* a third selection policy - it is just another *source* the
+loop is disciplined from. Except the source is steered by the host
+(via the PHC .adjfine() path) instead of being an external reference.
+Think of it as a virtual pin of some sort.
 
-Right.
+The object we already use for "a source the DPLL can lock to" is a pin,
+so an internal NCO belongs right next to DPLL_PIN_TYPE_INT_OSCILLATOR,
+which is already existing example of a similar virtual pin.
 
->>
->> Which leads me to the second point: this is not the moment to add the nv=
-mem
->> provider. This should happen at or after probe(). Once nvmem_register()
->> returns, you have a visible nvmem resource but nothing backing it in the=
- block
->> layer.
->
-> There is a short window during which a read attempt will 'properly'
-> fail, but this does seem somewhat fragile indeed.
->
->> Either do this in block core when registering a new device or schedule
->> a notifier here for the BUS_NOTIFY_BOUND_DRIVER event and do it in the n=
-otifier
->> callback.
->
-> So in the end, it seems that the simpler and more robust approach is
-> probably to move away from the class_interface driver and instead
-> register/unregister the nvmem directly in add_disk/del_gendisk.
-> If that's ok I will move to this approach in the next version.
->
+By having NCO as an input pin we reuse the existing model instead of
+inventing a parallel one. "Run as NCO" becomes "connect the NCO input"
+using the same connect/disconnect, pin state and pin-dump infrastructure
+as any other input. No new control surface, and it stays orthogonal to
+mode: we don't have to define what AUTOMATIC+NCO or pin priorities
+mean, and we don't grow enum dpll_mode and the supported-modes
+bitmask that every mode-aware consumer would then have to relearn.
 
-Yes, I think it's the right approach.
+For the pin info uAPI exposure we reuse the attributes pins already have
+- the output frequency offset from nominal is reported via the pin's
+fractional-frequency-offset / -ppt. A new device mode would need
+brand new device-level attributes for the same information.
 
-Bart
+Having said that, I think it's a perfect fit. The only "real" pull
+towards a new mode is that vendor datasheets call this NCO/DCO a "mode".
+But that is HW register terminology and we learned many times in
+the past that may be more or less misleading/incorrect wrt the uAPI.
+
+Therefore my strong preference is DPLL_PIN_TYPE_INT_NCO, no new mode.
+Honestly, I don't really understand why it would make even little sense
+to have this as new mode. Perhaps I'm missing something, if you can
+describe it, that would be awesome.
+
+Thanks!
+Jiri
