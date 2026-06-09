@@ -1,47 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63B4B36215E
-	for <netdev@vger.kernel.org>; Tue,  9 Jun 2026 17:25:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97674360EFF;
+	Tue,  9 Jun 2026 17:25:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781025906; cv=none; b=ofhfKP8vqn1o+hvGSyNnh0zFf83PPvXQnDmsZgsNAmRFTH/+efjsVvBtb29/xCSKHRzEbzec2ZEl4ECkmVikFSO5ySB8EK6WS9H1TDCV/Zdbt9GREVEG0DIAcZ+safg6GYJ3l4wRgMYnhiComnWrkDTNZ+9Ph+VpoLmsBL/eaeI=
+	t=1781025906; cv=none; b=WKqIZcidbMFytnmEJR4iJHgoMCD1cMCPJVJy6B+haSSaHaWPa12cTaLVrSwDiCmV+nFrAhYIRh/xAbKn8sKxFD6vI21jOnB9kPiCC/tJ0Npa2zgfjgXKsU0uLytEfSKhe9+u7sxiR5DksfkE53qdzE6wd6Fhh3n368C0gR7CyzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1781025906; c=relaxed/simple;
-	bh=VuvrZhOahERiPEnoR8psCGdN87TZg7mRsVFM0v28rCo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KuuL5IxA3DZ/rNVZv6SEv3CjaX9pdeSHH+BblG0r/3PG2q5KZCoCXa9F9Z/XQUVaUD76sSc3Tbt5oHUl4m/eDeFfdaIVvx1v1EacWasjsevvE1k9otNkhMvJyByT2eby2ihjqd4PyHp0BSc4hEAC6ILnxsnHlyFHOF8EqO8UBfw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Q9HHVLee; arc=none smtp.client-ip=192.198.163.8
+	bh=7TPgHVPsNGX1ZWVnyuoC8QmFtNFWXcrC4XJRUUQ5tiA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=LIJPxPcext8vS1rI82MWz/nHJ6zTmRsF63iL3agTBgbfGrAXpTJQkHBnYiOHGwM8gG7469plZ+55hSqy6Khgag4iIZIFhcx1Qv/sQdupiMg07gMMre7VRNFrRHYK6PachMAK/Fvzhn7/G0DodOzGGAE+TcTlmEM7826Y3psSs2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QeqvpDmY; arc=none smtp.client-ip=192.198.163.8
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Q9HHVLee"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QeqvpDmY"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1781025904; x=1812561904;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=VuvrZhOahERiPEnoR8psCGdN87TZg7mRsVFM0v28rCo=;
-  b=Q9HHVLeeA57e99kOhGJ18S2m0JOG9FDqzleyS6cpuMieI1HL7+4pmly5
-   bixngQvMZDa9advtcrfwVHW+BhbIyhE0LrHX2zQvaaRkXqIbWehfYz+qU
-   UteIyUMlrUXhm+SrtXZ3/8ksgnclnDoC90NHNB4n9Xqi36/UMB8nA78Fw
-   qo/200Y1+IFz82B5q4NnE3bqANd6Xa4GTzvVV9wo6QxmIYzqG45J+6FSp
-   0qYmLX7xMdxBJmnIVmEqug6Aq2+4jA3DJ65irVyh9jKPe4mZBiUTFNjGZ
-   q4nlKpYpN9XWyRGHvAd1jouAXvMoB9BdnctQIXDjoEeaue0W8tRDWPJca
-   g==;
-X-CSE-ConnectionGUID: FDPJma5cSf2QtZq4StzF+w==
-X-CSE-MsgGUID: XYmcYyAoREOYtzZfc5Ze2g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11812"; a="99373415"
+  t=1781025906; x=1812561906;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=7TPgHVPsNGX1ZWVnyuoC8QmFtNFWXcrC4XJRUUQ5tiA=;
+  b=QeqvpDmYBenvOMLTF1nnl/77FX12k5P1jk1xArVjP118WxOnZBSjISWB
+   0IW9lHcx+EQAD7okdtXBbcooKWAbqTB5FV3poTrTD9PZM7MOZ83MhmIQ6
+   ojjnHEQcBJkgjUWQe3/SoRul0VTwaa3LYU1PshgltDtt86Q68qjiYcpGr
+   +37T4z/58mJa6i/lk7X7BTf0C5YCRpJTu3Z4f12tBgaTi/ydSeJ+IuRiw
+   Evf7WwOCYzZ9xPe/s9wk5ojA4QO2kAqjOhkUN3kQI/aADEsPcudeb6Hhx
+   hCSBMLdCrSs3LuSV70Nx6D9vkkPC8gFGi9LYJ7C3N8TUKrpV2lVRiLPXI
+   A==;
+X-CSE-ConnectionGUID: xxgOXu3XQ7CmVWq/0TwG6g==
+X-CSE-MsgGUID: ShBGWyj9TxC3WzNTbxoZmg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11812"; a="99373422"
 X-IronPort-AV: E=Sophos;i="6.24,196,1774335600"; 
-   d="scan'208";a="99373415"
+   d="scan'208";a="99373422"
 Received: from fmviesa005.fm.intel.com ([10.60.135.145])
   by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2026 10:25:04 -0700
-X-CSE-ConnectionGUID: w/fQcriPQl+FRhqH+oy6Ug==
-X-CSE-MsgGUID: cJoBymkQRUCxUHc8EFVgCQ==
+X-CSE-ConnectionGUID: cUUKLbyoR5GvGALLIECMKw==
+X-CSE-MsgGUID: MWBeQb/WRvGJL3ELJhCDxQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.24,196,1774335600"; 
-   d="scan'208";a="250995084"
+   d="scan'208";a="250995088"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
-  by fmviesa005.fm.intel.com with ESMTP; 09 Jun 2026 10:25:03 -0700
+  by fmviesa005.fm.intel.com with ESMTP; 09 Jun 2026 10:25:04 -0700
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
 To: davem@davemloft.net,
 	kuba@kernel.org,
@@ -49,11 +50,21 @@ To: davem@davemloft.net,
 	edumazet@google.com,
 	andrew+netdev@lunn.ch,
 	netdev@vger.kernel.org
-Cc: Tony Nguyen <anthony.l.nguyen@intel.com>
-Subject: [PATCH net 0/3][pull request] Intel Wired LAN Driver Updates 2026-06-09 (idpf, ixgbe, igc)
-Date: Tue,  9 Jun 2026 10:24:53 -0700
-Message-ID: <20260609172458.4046222-1-anthony.l.nguyen@intel.com>
+Cc: Przemyslaw Korba <przemyslaw.korba@intel.com>,
+	anthony.l.nguyen@intel.com,
+	richardcochran@gmail.com,
+	konstantin.ilichev@intel.com,
+	willemb@google.com,
+	stable@vger.kernel.org,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Samuel Salin <Samuel.salin@intel.com>
+Subject: [PATCH net 1/3] idpf: add padding to PTP virtchnl structures
+Date: Tue,  9 Jun 2026 10:24:54 -0700
+Message-ID: <20260609172458.4046222-2-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20260609172458.4046222-1-anthony.l.nguyen@intel.com>
+References: <20260609172458.4046222-1-anthony.l.nguyen@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -62,33 +73,88 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Przemyslaw adds needed padding to idpf PTP structures to match firmware
-expectations.
+From: Przemyslaw Korba <przemyslaw.korba@intel.com>
 
-Larysa bypasses XPS configuration on XDP queues for ixgbe.
+Add padding to virtchnl2 PTP structures to match the Control Plane
+expected message sizes:
+* virtchnl2_ptp_get_dev_clk_time: 8 -> 16 bytes
+* virtchnl2_ptp_set_dev_clk_time: 8 -> 16 bytes
+* virtchnl2_ptp_get_cross_time: 16 -> 24 bytes
 
-Khai Wen corrects offset into packet buffer when handling for frame
-preemption on igc.
+The FW expects the above sizes and PTP negotiation fails due to the
+mismatch. Previously neither the FW nor the driver checked message/reply
+sizes strictly, so the problem appeared only after recent validation
+improvements.
 
-The following are changes since commit 0aa05daef7848a5ac11158949dc73cd741995dc1:
-  Merge branch 'net-mctp-usb-minor-fixes-for-mctp-over-usb-transport-driver'
-and are available in the git repository at:
-  git://git.kernel.org/pub/scm/linux/kernel/git/tnguy/net-queue 200GbE
+reproduction steps:
+ptp4l -i <pf> -m
+Observe: failed to open /dev/ptp0: Permission denied
 
-KhaiWenTan (1):
-  igc: skip RX timestamp header for frame preemption verification
+Fixes: bf27283ba594 ("virtchnl: add PTP virtchnl definitions")
+Cc: stable@vger.kernel.org
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Signed-off-by: Przemyslaw Korba <przemyslaw.korba@intel.com>
+Tested-by: Samuel Salin <Samuel.salin@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+---
+ drivers/net/ethernet/intel/idpf/virtchnl2.h | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-Larysa Zaremba (1):
-  ixgbe: do not configure xps for XDP queues
-
-Przemyslaw Korba (1):
-  idpf: add padding to PTP virtchnl structures
-
- drivers/net/ethernet/intel/idpf/virtchnl2.h   | 12 +++++++++---
- drivers/net/ethernet/intel/igc/igc_main.c     |  2 +-
- drivers/net/ethernet/intel/ixgbe/ixgbe_main.c |  3 ++-
- 3 files changed, 12 insertions(+), 5 deletions(-)
-
+diff --git a/drivers/net/ethernet/intel/idpf/virtchnl2.h b/drivers/net/ethernet/intel/idpf/virtchnl2.h
+index 02ae447cc24a..39fea65c075c 100644
+--- a/drivers/net/ethernet/intel/idpf/virtchnl2.h
++++ b/drivers/net/ethernet/intel/idpf/virtchnl2.h
+@@ -1572,13 +1572,15 @@ VIRTCHNL2_CHECK_STRUCT_LEN(16, virtchnl2_ptp_get_vport_tx_tstamp_latches);
+  * struct virtchnl2_ptp_get_dev_clk_time - Associated with message
+  *					   VIRTCHNL2_OP_PTP_GET_DEV_CLK_TIME.
+  * @dev_time_ns: Device clock time value in nanoseconds
++ * @pad: Padding for future extensions
+  *
+  * PF/VF sends this message to receive the time from the main timer.
+  */
+ struct virtchnl2_ptp_get_dev_clk_time {
+ 	__le64 dev_time_ns;
++	u8 pad[8];
+ };
+-VIRTCHNL2_CHECK_STRUCT_LEN(8, virtchnl2_ptp_get_dev_clk_time);
++VIRTCHNL2_CHECK_STRUCT_LEN(16, virtchnl2_ptp_get_dev_clk_time);
+ 
+ /**
+  * struct virtchnl2_ptp_get_cross_time: Associated with message
+@@ -1586,26 +1588,30 @@ VIRTCHNL2_CHECK_STRUCT_LEN(8, virtchnl2_ptp_get_dev_clk_time);
+  * @sys_time_ns: System counter value expressed in nanoseconds, read
+  *		 synchronously with device time
+  * @dev_time_ns: Device clock time value expressed in nanoseconds
++ * @pad: Padding for future extensions
+  *
+  * PF/VF sends this message to receive the cross time.
+  */
+ struct virtchnl2_ptp_get_cross_time {
+ 	__le64 sys_time_ns;
+ 	__le64 dev_time_ns;
++	u8 pad[8];
+ };
+-VIRTCHNL2_CHECK_STRUCT_LEN(16, virtchnl2_ptp_get_cross_time);
++VIRTCHNL2_CHECK_STRUCT_LEN(24, virtchnl2_ptp_get_cross_time);
+ 
+ /**
+  * struct virtchnl2_ptp_set_dev_clk_time: Associated with message
+  *					  VIRTCHNL2_OP_PTP_SET_DEV_CLK_TIME.
+  * @dev_time_ns: Device time value expressed in nanoseconds to set
++ * @pad: Padding for future extensions
+  *
+  * PF/VF sends this message to set the time of the main timer.
+  */
+ struct virtchnl2_ptp_set_dev_clk_time {
+ 	__le64 dev_time_ns;
++	u8 pad[8];
+ };
+-VIRTCHNL2_CHECK_STRUCT_LEN(8, virtchnl2_ptp_set_dev_clk_time);
++VIRTCHNL2_CHECK_STRUCT_LEN(16, virtchnl2_ptp_set_dev_clk_time);
+ 
+ /**
+  * struct virtchnl2_ptp_adj_dev_clk_fine: Associated with message
 -- 
 2.47.1
 
