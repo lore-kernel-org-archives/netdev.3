@@ -1,46 +1,45 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A26254071DF;
-	Tue,  9 Jun 2026 03:02:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7731363C57;
+	Tue,  9 Jun 2026 03:11:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780974176; cv=none; b=CVjKklFNx+2OR3hoVHQViRrlKx36pHsmwuKUt71Ke0/e056bA3P67X9gKK3YPsyOjm1xUK/fNcpAoI8CowMmU1pAc7qhDIqTirr5jN2dgsd73zPVY0CVLidnQjLDTo3hdPAQdLnfdqYH0SvIzJAHBNkpQT5d+czakrSONPWl9cA=
+	t=1780974684; cv=none; b=I0vuOnB8q/kKVBppd9gq1puRWfM6KZt59oefcjWkI+nVHxxsV6kKJ9JMfa5CgIXmOX94jriTdc+ke/nTPpBBxE9h5gk1YH0VKhA+1WJ/OO3bFP5naQ7zHaT1YFNsNZB1/XJS8PL4ZwgRqP/nV/Jp6cK9Uux/y7tDKKP6XmGX4J4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780974176; c=relaxed/simple;
-	bh=orb8iDW7a1XiL+KpKn+9g0fV1JjcByt9QNkC7Ah6yPE=;
+	s=arc-20240116; t=1780974684; c=relaxed/simple;
+	bh=Pd10usMEu2aDvJ7SDugSDXmPcOvHYOes02ogwr8cKa8=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ID8zy0qnguuJIQKFpWtGIk1VSwO577fB+noMT+Uq35axGdlFII43TrwiYw7QzhuGHsRkE7b8v1hkgS5tujw5uKCoMkbAEe24a1DYbld07Z/JXTTOYGizq2N/iE5xMczhuIWZV38Z2C7Gafs3jIbTd932p9I2xPygEtBWyus1h/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mQtfToXx; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=LRdgidA/qe6xjIRTl0LvP1/lxxwTa3CMvJK29XdfO5coGLhq5Gc7RR8efqSINcAMgxrbr1jxq0Z0apOT2Lp4/Pcmz7Bm1dhHWEa+HqttytEeTL7t1MmM3vfCeRk1rtKthu5+7A+EERsK6sROaJD4zjzi6nwFO3RRB+6BXXFGJEI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lDPAXF+U; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mQtfToXx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7EC61F00893;
-	Tue,  9 Jun 2026 03:02:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lDPAXF+U"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 158CE1F00893;
+	Tue,  9 Jun 2026 03:11:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780974175;
-	bh=vwdje7W5sCHtZF0KIqX9/9VQxJ5gDxlcEEv39SkOOe4=;
+	s=k20260515; t=1780974683;
+	bh=7n8Xha7y/8l9LARUxBQjdIVK8pW1dU++pwn+FBHj0Aw=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=mQtfToXxfBHPyCz66lq/Kyar2tJxM+U5y2ZjIfaer+YaBZ4KCGaOyiKK68EEue4LA
-	 3eiR8PS+Mz8qCCEnxh4kf1aiYXzEN1N7yKQjlNIVvzrHXdCOiOayad/cV9uXxNh6l6
-	 UyIQVQ84neMmbZJ7hyUey873JnZTVo5fiQCx/2u1iCAQ1rYZGJmNQ/6msmT4Zbolhe
-	 oz69P2zOiD4CIbS1RPpZyjjvRCvLCdp5T0tZJt9i72FvdjcMe9w/dCkEATJ1EAv8b3
-	 Uf8lNAR+ic2/xKlHSPpLBsAuThmK8Lxb9uG//9K6EyFl3z9sf2/LV3tizOLx6dC9FU
-	 LwwPrsHsWUFKg==
-Date: Mon, 8 Jun 2026 20:02:54 -0700
+	b=lDPAXF+UYbFuhiRyEaph9Bz5n3pqoMZFlyXHAglfAIrjKHQwq1Vxt1xG8zX5armN+
+	 M3V/dHdZUDen6TWiy5jz/EKcOi4JUWVpLnU4cM06G/Nrns28LVlbb/7cbXU/h9XOng
+	 Ik2v6mrOeP1SZUD1h4pw9BWioCDRQncuLNwvx5pc4PftGIHX/S2vd06/8U7Ao/bTSI
+	 Ldo3tYh1nviWJfOxZgA29kYxVtYYU4KT4+FYFWq+KVQLJrFMw7f5u/9NaZL5IhkVFu
+	 Pl9cvySCddxlo321OBtNWRrokvM4oq+3bkkl9Jc9youOgHrF7+bHBaCwIGGspgZtbK
+	 bjlrNrvZvNK+w==
+Date: Mon, 8 Jun 2026 20:11:22 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Sabrina Dubroca <sd@queasysnail.net>
-Cc: Geliang Tang <geliang@kernel.org>, John Fastabend
- <john.fastabend@gmail.com>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon
- Horman <horms@kernel.org>, Atul Gupta <atul.gupta@chelsio.com>, Geliang
- Tang <tanggeliang@kylinos.cn>, netdev@vger.kernel.org,
- mptcp@lists.linux.dev, Gang Yan <yangang@kylinos.cn>
-Subject: Re: [PATCH net] tls: restore sk_prot before calling original
- destructor
-Message-ID: <20260608200254.3be56aa7@kernel.org>
-In-Reply-To: <aiZ9PZxNyp9jik2v@krikkit>
-References: <158c0562b4969c61574633e5d22c962d50e5bc31.1780663476.git.tanggeliang@kylinos.cn>
-	<aiZ9PZxNyp9jik2v@krikkit>
+To: Chuck Lever <cel@kernel.org>
+Cc: John Fastabend <john.fastabend@gmail.com>, Sabrina Dubroca
+ <sd@queasysnail.net>, Eric Dumazet <edumazet@google.com>, Simon Horman
+ <horms@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ netdev@vger.kernel.org, kernel-tls-handshake@lists.linux.dev, Chuck Lever
+ <chuck.lever@oracle.com>, Sagi Grimberg <sagi@grimberg.me>, Hannes Reinecke
+ <hare@kernel.org>, Hannes Reinecke <hare@suse.de>, Alistair Francis
+ <alistair.francis@wdc.com>
+Subject: Re: [PATCH net-next v12 0/6] tls: receive-path fixes and clean-ups
+Message-ID: <20260608201122.0ca7b1f1@kernel.org>
+In-Reply-To: <20260604-tls-read-sock-v12-0-b114efa6e3e2@oracle.com>
+References: <20260604-tls-read-sock-v12-0-b114efa6e3e2@oracle.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -50,17 +49,22 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 8 Jun 2026 10:28:45 +0200 Sabrina Dubroca wrote:
-> 2026-06-05, 20:57:07 +0800, Geliang Tang wrote:
-> > From: Geliang Tang <tanggeliang@kylinos.cn>
-> > 
-> > When a TLS socket is offloaded to a TOE device, tls_toe_bypass() replaces  
+On Thu, 04 Jun 2026 13:48:23 -0400 Chuck Lever wrote:
+> I'd like to encourage in-kernel kTLS consumers (NFSD, NVMe/TCP) to
+> coalesce on the use of read_sock. While auditing read_sock for that
+> purpose, Hannes and Sabrina flagged a few rough edges in the receive
+> paths.
 > 
-> Or maybe it's time to simply drop tls_toe? There's only one driver
-> that uses it (chelsio/chtls), and it hasn't been touched by someone at
-> chelsio since 2021 (2355a6773a2c [1]). Since then, there have been a
-> few fixes by people who I doubt are actually using this (Eric, Dan
-> Carpenter), everything else is treewide/refactoring patches.
+> This series is a set of clean-ups, not a performance series. Async
+> batch decryption and its submit/deliver scaffolding were dropped
+> during previous review: async_capable is always false for TLS 1.3,
+> the version NFSD and NVMe/TCP both require, so async-related
+> improvements were unreachable for the in-kernel consumers this
+> work targets.
+> 
+> A subsequent series will introduce infrastructure to support
+> KeyUpdate for in-kernel kTLS consumers, which need to handle TLS
+> Alert messages that trigger a tlshd upcall.
 
-Yup, tls_toe is unsalvageable. Sabrina, could you float a net-next
-patch to nuke it?
+I still feel like the last patch should have _some_ kind of benchmark /
+experimental result included, but okay, let me not torture you :)
