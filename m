@@ -1,94 +1,122 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 348963559F8;
-	Tue,  9 Jun 2026 21:35:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 713DE3644C3
+	for <netdev@vger.kernel.org>; Tue,  9 Jun 2026 21:36:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781040961; cv=none; b=RnbyxKY+lf5VJbwmDvNSC37oWv3JYpc56BBFBhCoh/CKbmfH+h4XFCHGnmLPmVSBAHUY2piKn4beo+Xs82Sb0POyZxSErhUIj0mRd4MjoO8helbkZkeWMamgJ4u2fiNFX/Xxkmo5xdmOXn2gtuk9T6L51J3QZal6XC+PQaAjRnY=
+	t=1781040971; cv=none; b=r+E7vzTBoeJICC0xekUFHD0hkU757/E5GHIKwUz88DnHB/K3xKUblIutSTEjy47I5PhxWR3meUhsqmK0BZ96hH2ilyxP48HBJRIzEaw0BCLk1sjtD79vZ4j1207evuNOR7jBmawfB+jaTfMuDGuS+YUV6GK4POonV9YEMneHZeY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781040961; c=relaxed/simple;
-	bh=6yb47jyHXegDHsehtxP5Uvn7/Z7Yn5r3M2gfbFu8MB0=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tsIjPxnkoG6RIDjiLOsrCnFdxMemGjSivdBPSqWpDc3XPd7c3fNiOL+g0bkUb2ZUFMfEw4DDV8Y2Jg0HH53vqj14wgAR2itZ0UCUjsZ9n+gPf+tAw+oFC2lIh8kgluRSZUo7E1SqCZFg/z0SnHudJQFqTh0Urtfp8ukFGVWmXVg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kHud669n; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781040971; c=relaxed/simple;
+	bh=pcSEizI3Ez21/tItl5AycJUUJjrkFWUYFda5BeMZkzc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=AoQFOLoDtEJJT4nwDun89tmzpQ1MqI4oQEKzwXaiM4ZG5Ea/1PSx/8YsoLtJCaefveZet9Rze1bM+9tlwVu0/IBB8/hQl8SbgsvizRT18cWzTfWjHxChGE9N1IrTReQ1i1AsWd2c+gGtvvsBWpIpmTusLGvS99VHijwmc6rorP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Vg0GIRh4; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kHud669n"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4930B1F00893;
-	Tue,  9 Jun 2026 21:35:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781040959;
-	bh=ggD3WzIVX4wqGJPJeDoCT2PRxRqvWH2szMMGD6/H1GA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=kHud669nBOrGOYiQB3I1/VXoG/l2Gjpoiy77YHWLFXJwX/hj4ebCz8yMr2ykpkGdJ
-	 vBt3LzfASCnz9H/9mNIxbytL6NR/DojBBvda1wXjcPLVcc758rAdPuFObIRy1X3nKq
-	 mVHRkvW72bfM/YNW7Cs4Hxz07sGd8WUbJ3t1ijHdIsP4A1WJ/9rPDd8V6LUgq5ldcK
-	 U6s1O6++ViBZNp9prcL88tWpkd+T5fnGBAydOTBc8Sm9YmZvwjttfBa4z/TuRn3xHl
-	 Rqk7yyZ8j4uIx4y2KFNwfBsxICeWjgC7B96RAgl/GlFJ9M//R/6GOCZ80WVwdPseNB
-	 vNml8yrfjk7qQ==
-Date: Tue, 9 Jun 2026 14:35:58 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Steve Grubb <sgrubb@redhat.com>
-Cc: Ricardo Robaina <rrobaina@redhat.com>, audit@vger.kernel.org,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org, paul@paul-moore.com,
- eparis@redhat.com, edumazet@google.com, pabeni@redhat.com, horms@kernel.org
-Subject: Re: [PATCH v2] netlink, audit: prevent false ENOBUFS on timeout
- expiry
-Message-ID: <20260609143558.49d96656@kernel.org>
-In-Reply-To: <2756655.vYhyI6sBWr@x2>
-References: <20260513172443.1128496-1-rrobaina@redhat.com>
-	<2143396.Jadu78ljVU@x2>
-	<20260528162901.2d68e2e0@kernel.org>
-	<2756655.vYhyI6sBWr@x2>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Vg0GIRh4"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1781040970; x=1812576970;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=pcSEizI3Ez21/tItl5AycJUUJjrkFWUYFda5BeMZkzc=;
+  b=Vg0GIRh44HgWiASX3Cg1v8hOFH46YC/uDJM4nNRXgB9DqLb8wXy0w1EO
+   +0tuhNxUkJrc025xqE1CQGJE5CVTOJbYi8MYcQUAptoTiREQccNjH7+av
+   tSBQZRfCXCAnaPyfeOGjGhLZ61oPkyV8eOeuGCIS16M2VYskIj8Zz/oAN
+   cFULqd66IYNnj2Lc+NX2Bol/WrXqbpEwSqf5ThH7E3d2teio20maIhC/l
+   uqYDp9aiwXim1YMHRJNXOEFpvBAQEi6ifgUJ2fLf9Fx2Qph3PQIgQmY1K
+   EZSoZwkPLgJ67n8Ynhey5AhSBE5tnREm1pgXkRhcBbWNvTSpSlKYdF0qo
+   g==;
+X-CSE-ConnectionGUID: bzbqcGAGRQOyMEk90fQQDQ==
+X-CSE-MsgGUID: 1spsbvPxTcW+6xmIKJWETg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11812"; a="81568515"
+X-IronPort-AV: E=Sophos;i="6.24,196,1774335600"; 
+   d="scan'208";a="81568515"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2026 14:36:08 -0700
+X-CSE-ConnectionGUID: /d4vB7OLRUWeJG3vMmxAGA==
+X-CSE-MsgGUID: NwL84OcHRkqvBIUJ2ie+8A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,196,1774335600"; 
+   d="scan'208";a="245838568"
+Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
+  by orviesa008.jf.intel.com with ESMTP; 09 Jun 2026 14:36:07 -0700
+From: Tony Nguyen <anthony.l.nguyen@intel.com>
+To: davem@davemloft.net,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	andrew+netdev@lunn.ch,
+	netdev@vger.kernel.org
+Cc: Marco Crivellari <marco.crivellari@suse.com>,
+	anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com,
+	mhocko@suse.com,
+	jiangshanlai@gmail.com,
+	frederic@kernel.org,
+	tj@kernel.org,
+	bigeasy@linutronix.de,
+	Samuel Salin <Samuel.salin@intel.com>
+Subject: [PATCH net-next 01/15] idpf: Replace use of system_unbound_wq with system_dfl_wq
+Date: Tue,  9 Jun 2026 14:35:42 -0700
+Message-ID: <20260609213559.178657-2-anthony.l.nguyen@intel.com>
+X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20260609213559.178657-1-anthony.l.nguyen@intel.com>
+References: <20260609213559.178657-1-anthony.l.nguyen@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Tue, 09 Jun 2026 13:40:23 -0400 Steve Grubb wrote:
-> > > You're right, it is. I see how this flag would fix the pathological
-> > > behavior that was reported. But as I have looked at this suggestion,
-> > > there seems to be one wrinkle. User space should not need to know that
-> > > the audit code in the kernel has this retry mechanism.  
-> > 
-> > It's not about the retry mechanism, at least in my mind - I read
-> > your reply as "user space should not know that there was congestion".
-> > Why?  
-> 
-> In the audit case, it is not useful. I know there can be an endless supply 
-> and there's not much that can be done except dequeueing what's next.
-> 
-> > It's not very useful, I get that, but user space can just clear
-> > the congestion signal and keep going.  
-> 
-> How? The recvfrom man page doesn't even discuss ENOBUFS. Which is one of the 
-> strongest arguments for a kernel side patch. The fact that there is exists a 
-> socket option to declare that you do not want ENOBUFS on netlink sockets is 
-> esoteric knowledge. The netlink(7) man page does cover the flag. But even 
-> where it discusses ENOBUFS, it does not mention that this is preventable by 
-> setting a socket option. I do appreciate this being pointed out. But getting 
-> from the recvfrom man page to a solution is not obvious.
+From: Marco Crivellari <marco.crivellari@suse.com>
 
-socket errors are generally "consumed" when they are returned.
-The user space should see one ENOBUF and then once the rcvbuf
-is drained completely the CONGESTION bit should also get auto
-cleared. This is my mental model how Netlink works, LMK if
-you're seeing different behavior, my memory is faulty...
+This patch continues the effort to refactor workqueue APIs, which has begun
+with the changes introducing new workqueues and a new alloc_workqueue flag:
 
-> > > It seems like the audit subsystem should set the flag on auditd's
-> > > socket at registration time in auditd_set(). The kernel is the right
-> > > place for this because it's the kernel that manages the retry/ hold
-> > > queues and sets the sk_sndtimeo that triggers the overrun path -
-> > > auditd has no knowledge of these internals.  
-> > 
-> > We have to carry this code somewhere, either in user space or in
-> > the kernel. I'd prefer not to carry it in the kernel.  
-> 
-> I can put this in the audit daemon. But whoever else writes a similar app 
-> will have to independently discover the same solution when faced with the 
-> pathologically bad behavior. A kernel side fix would have made it easier for 
-> future app developers to be successful.
+   commit 128ea9f6ccfb ("workqueue: Add system_percpu_wq and system_dfl_wq")
+   commit 930c2ea566af ("workqueue: Add new WQ_PERCPU flag")
+
+The point of the refactoring is to eventually alter the default behavior of
+workqueues to become unbound by default so that their workload placement is
+optimized by the scheduler.
+
+Before that to happen, workqueue users must be converted to the better named
+new workqueues with no intended behaviour changes:
+
+   system_wq -> system_percpu_wq
+   system_unbound_wq -> system_dfl_wq
+
+This way the old obsolete workqueues (system_wq, system_unbound_wq) can be
+removed in the future.
+
+Link: https://lore.kernel.org/all/20250221112003.1dSuoGyc@linutronix.de/
+Suggested-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Marco Crivellari <marco.crivellari@suse.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Tested-by: Samuel Salin <Samuel.salin@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+---
+ drivers/net/ethernet/intel/idpf/idpf_txrx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
+index f6b3b15364ff..7f9056404f64 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
+@@ -2022,7 +2022,7 @@ static void idpf_tx_read_tstamp(struct idpf_tx_queue *txq, struct sk_buff *skb)
+ 		/* Fetch timestamp from completion descriptor through
+ 		 * virtchnl msg to report to stack.
+ 		 */
+-		queue_work(system_unbound_wq, txq->tstamp_task);
++		queue_work(system_dfl_wq, txq->tstamp_task);
+ 		break;
+ 	}
+ 
+-- 
+2.47.1
+
