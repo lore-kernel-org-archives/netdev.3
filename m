@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CB093914F5;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F5553A48C5;
 	Tue,  9 Jun 2026 15:28:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781018889; cv=none; b=ttG2DO0VG9ARlh7aiafzTPkUTQyJAOXR8WlHD7F4+R40YOgWYrFnu87DKH5PHyxdJXmkVun2yZqwBUB4BmY1sRDzgh4bNxxfpzEinJXFlVWkjMtk6azXyrQ3e4ACJGEzOuE4AbcFEpsekubjzkiPIymbuRuXTnwVlQarhOoVZXo=
+	t=1781018889; cv=none; b=LpzzOduUdsak0d0qGGk1jkDwuP3xZE5vUUx4dHyVu1xcaQlfo6drlo9UyS2cyra6LgXtWNXswwvUtKaiJNaqaX2pBnb85iAyPb8thp5lUw1Quuc0IExw4/2suKnEDvue8/YsYm3GrAQpS4VILjnKbUEW/1doBMMoF2WLe/rtUc0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1781018889; c=relaxed/simple;
-	bh=EJvTQsvjjjNaFcdcwnwQokls0ZpoiT9ZxJ5UN2ouEwE=;
+	bh=mM5og0hkgEVLkX3I+DLqT7B6L7pLeBg1nTT3loR8SSA=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=JE94V4Gip4qef4VQGXjJZPxt6rwhRvwgc6oFWdlpkDu/mUGTKrMVyFEHmE8IRZGuZNGrV9BPDbKbWcREzhPdKPUNY6ZHD/nXbv19Tf8EKu0pOy7L6JhqLBM6j7u1020XUp5VNeI9LdkBFZ5RRHPkhXOj0/cr4UOZEMFSlhN1VZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WC0lU/wz; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=Knquv4BmyugC4jNjpOSYzc2BcKGUHds1Yk1K8YA2dNzRaZf5woVR3A9b6U35VUxWTvOaFuKmec0UX4lbULvv3UqTdeSRHbimoJo9aUFv9CgYj3svUg8Xpqmfua82NhTlyTg62KzJJWmjkbVsAhg5JO/Yr01Ji1HX9TJocsDMQu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MKtI9OUB; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WC0lU/wz"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 45065C4AF0F;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MKtI9OUB"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 791F7C4AF5F;
 	Tue,  9 Jun 2026 15:28:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1781018889;
-	bh=EJvTQsvjjjNaFcdcwnwQokls0ZpoiT9ZxJ5UN2ouEwE=;
+	bh=mM5og0hkgEVLkX3I+DLqT7B6L7pLeBg1nTT3loR8SSA=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=WC0lU/wzRrKBwyTkL/l2eCBX55+bNrrGq5jZWekIBqCNsVJ44b5f+4oDFh900UUZF
-	 Cg/HaoaMxtasI6pQJshdPaYOS1qoJKkRH6gLnU54cvWTQ8yqsuCoDi9YU6WeNhfUtn
-	 YQAj3oJkJRtsBTHclZpVcLoXnmTVYi822uuvYExlM7VxlzkeuLDI5GYniwwRs/PC69
-	 tQYP+iUaMxbrCAMntoKQ0NjKW+2nKSS0R7u7zEftZ/grb56P/TJDre3jzj88blAjPh
-	 7ZVzhFPDK97J8COMtrontG+Pu6h2Gj24PvyBZP62t+THI0m80q8yF3fkp1+YiIV7Xw
-	 VHg35J1Mb3vuA==
+	b=MKtI9OUBVlF6GmN7M+hYtX2GakN7JkkHIiZvBTy1wL8xCNdnz1CZDOKpmDJcsAfh9
+	 /antnuTQ5gu+JvthVCeAR1x4wgaaqQo88YMBzwtqzUXMSnXcg0TQQrtOCPDD8rPSmA
+	 baIWHRbEtXd0Gipb9SbSqZgAzatTxBr0AePJqjJn63vhoDL71LcHsQUUWz1qA8jOAo
+	 TKKjcs97sqsBTR2KbIT4snBhixCumWl+ofclhEEswLipqLn8YPaXEec02eZlPmKChk
+	 NvksGNIddxTxRubxlVGVih7aQgtrjnO+L3nQ0yZuFTWfSsB2FTc3rQHVEHn2B+4cnT
+	 G4WRXL4ze2Grg==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3B5F2CD8CAA;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6F11BCD98C5;
 	Tue,  9 Jun 2026 15:28:09 +0000 (UTC)
 From: Ciprian Regus via B4 Relay <devnull+ciprian.regus.analog.com@kernel.org>
-Date: Tue, 09 Jun 2026 18:28:02 +0300
-Subject: [PATCH net-next v4 03/13] net: ethernet: oa_tc6: add
- OA_TC6_BROKEN_PHY quirk flag
+Date: Tue, 09 Jun 2026 18:28:04 +0300
+Subject: [PATCH net-next v4 05/13] net: ethernet: oa_tc6: Export standard
+ defined registers
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -40,8 +40,8 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260609-adin1140-driver-v4-3-0753e28ee004@analog.com>
+Content-Transfer-Encoding: 8bit
+Message-Id: <20260609-adin1140-driver-v4-5-0753e28ee004@analog.com>
 References: <20260609-adin1140-driver-v4-0-0753e28ee004@analog.com>
 In-Reply-To: <20260609-adin1140-driver-v4-0-0753e28ee004@analog.com>
 To: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>, 
@@ -58,11 +58,11 @@ Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-doc@vger.kernel.org, devicetree@vger.kernel.org, 
  Ciprian Regus <ciprian.regus@analog.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1781018886; l=5144;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1781018886; l=5365;
  i=ciprian.regus@analog.com; s=20260330; h=from:subject:message-id;
- bh=9TsRGTlIZdU2gO/bs2rZ+BFMFrMlFoFo6knK+fY1b6I=;
- b=yMgeMqIJp7pvAfeWimJ+QZjk8P4MkSO7wwFSlyX1EVn5v9VZTd/3lgz5cNDRcl0aahB76JT5s
- o15u2nG0TKVCGpgWczLqDO7qXMiqLcvOGWOICAbmLUHMsf9XZxjM/+O
+ bh=J5Po1KKY9LGnj4hzMHGdc7dLe+1V21E32gyy7Cdy+vU=;
+ b=ISd53pvXOj/HWLsAlyQmVmY8oajUkB2cCRisOfv4JXGrGHYashqJ/jN0keRFJC+cvM2Bre6jq
+ 0Egrri8CySVDOYDS+CemQBBGoFWQhM9anB+VPONAySFbgrJLgXcNch5
 X-Developer-Key: i=ciprian.regus@analog.com; a=ed25519;
  pk=8WoNhI0kQcQUl8YqJO5ZevROYk9HP8lOIeIgIYgjfbc=
 X-Endpoint-Received: by B4 Relay for ciprian.regus@analog.com/20260330 with
@@ -72,140 +72,151 @@ Reply-To: ciprian.regus@analog.com
 
 From: Ciprian Regus <ciprian.regus@analog.com>
 
-Some MAC-PHY devices need custom MDIO bus access functions to work
-around hardware issues. Add the OA_TC6_BROKEN_PHY quirk flag so drivers
-can opt in to skip oa_tc6's internal PHY init and manage the PHY
-themselves. When the flag is set, oa_tc6 skips MDIO bus registration,
-PHY discovery and PHY connection, leaving these to the driver.
+Move defines for standard Open Alliance TC6 register addresses and
+subfields in the oa_tc6's header. As such, other ethernet drivers
+that rely on oa_tc6 can use them directly.
 
-Drivers that do not set the flag retain the existing behavior. Update
-lan865x and the framework documentation accordingly.
-
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 Signed-off-by: Ciprian Regus <ciprian.regus@analog.com>
-
 ---
 v4 changelog:
- - no change
+ - Removed stale information about adding register address macros in the
+   commit message. No functional change was done, so I kept the
+   Reviewed-by tag.
 v3 changelog:
- - add the oa_tc6_quirks struct to the oa_tc6_init() parameters (along
-   the spi_device and net_device), instead of adding everything in a
-   single struct.
+ - Only move the register definitions, without adding the OA_TC6_ prefix
 v2 changelog:
- - Added the quirk flag field in the oa_tc6_config struct and a first
-   value entry (OA_TC6_BROKEN_PHY) instead of the mii_bus struct.
+ - New patch
 ---
- Documentation/networking/oa-tc6-framework.rst    |  3 ++-
- drivers/net/ethernet/microchip/lan865x/lan865x.c |  2 +-
- drivers/net/ethernet/oa_tc6.c                    | 14 +++++++++++++-
- include/linux/oa_tc6.h                           | 11 ++++++++++-
- 4 files changed, 26 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/oa_tc6.c | 48 -------------------------------------------
+ include/linux/oa_tc6.h        | 48 +++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 48 insertions(+), 48 deletions(-)
 
-diff --git a/Documentation/networking/oa-tc6-framework.rst b/Documentation/networking/oa-tc6-framework.rst
-index fe2aabde923a..013824078cea 100644
---- a/Documentation/networking/oa-tc6-framework.rst
-+++ b/Documentation/networking/oa-tc6-framework.rst
-@@ -454,7 +454,8 @@ Device drivers API
- The include/linux/oa_tc6.h defines the following functions:
- 
- .. c:function:: struct oa_tc6 *oa_tc6_init(struct spi_device *spi, \
--                                           struct net_device *netdev)
-+                                           struct net_device *netdev, \
-+                                           struct oa_tc6_quirks *quirks)
- 
- Initialize OA TC6 lib.
- 
-diff --git a/drivers/net/ethernet/microchip/lan865x/lan865x.c b/drivers/net/ethernet/microchip/lan865x/lan865x.c
-index 0277d9737369..26a2761332a5 100644
---- a/drivers/net/ethernet/microchip/lan865x/lan865x.c
-+++ b/drivers/net/ethernet/microchip/lan865x/lan865x.c
-@@ -346,7 +346,7 @@ static int lan865x_probe(struct spi_device *spi)
- 	spi_set_drvdata(spi, priv);
- 	INIT_WORK(&priv->multicast_work, lan865x_multicast_work_handler);
- 
--	priv->tc6 = oa_tc6_init(spi, netdev);
-+	priv->tc6 = oa_tc6_init(spi, netdev, NULL);
- 	if (!priv->tc6) {
- 		ret = -ENODEV;
- 		goto free_netdev;
 diff --git a/drivers/net/ethernet/oa_tc6.c b/drivers/net/ethernet/oa_tc6.c
-index baba5aad84df..2a72f0c4b009 100644
+index b37e398e30e3..97df38207827 100644
 --- a/drivers/net/ethernet/oa_tc6.c
 +++ b/drivers/net/ethernet/oa_tc6.c
-@@ -134,6 +134,7 @@ struct oa_tc6 {
- 	bool rx_buf_overflow;
- 	bool int_flag;
- 	bool prot_ctrl;
-+	enum oa_tc6_quirk_flag quirk_flags;
- };
+@@ -11,45 +11,6 @@
+ #include <linux/phy.h>
+ #include <linux/oa_tc6.h>
  
- enum oa_tc6_header_type {
-@@ -580,6 +581,9 @@ static int oa_tc6_phy_init(struct oa_tc6 *tc6)
- {
- 	int ret;
+-/* OPEN Alliance TC6 registers */
+-/* Standard Capabilities Register */
+-#define OA_TC6_REG_STDCAP			0x0002
+-#define STDCAP_DIRECT_PHY_REG_ACCESS		BIT(8)
+-
+-/* Reset Control and Status Register */
+-#define OA_TC6_REG_RESET			0x0003
+-#define RESET_SWRESET				BIT(0)	/* Software Reset */
+-
+-/* Configuration Register #0 */
+-#define OA_TC6_REG_CONFIG0			0x0004
+-#define CONFIG0_SYNC				BIT(15)
+-#define CONFIG0_ZARFE_ENABLE			BIT(12)
+-#define CONFIG0_PROTE				BIT(5)
+-
+-/* Status Register #0 */
+-#define OA_TC6_REG_STATUS0			0x0008
+-#define STATUS0_RESETC				BIT(6)	/* Reset Complete */
+-#define STATUS0_HEADER_ERROR			BIT(5)
+-#define STATUS0_LOSS_OF_FRAME_ERROR		BIT(4)
+-#define STATUS0_RX_BUFFER_OVERFLOW_ERROR	BIT(3)
+-#define STATUS0_TX_PROTOCOL_ERROR		BIT(0)
+-
+-/* Buffer Status Register */
+-#define OA_TC6_REG_BUFFER_STATUS		0x000B
+-#define BUFFER_STATUS_TX_CREDITS_AVAILABLE	GENMASK(15, 8)
+-#define BUFFER_STATUS_RX_CHUNKS_AVAILABLE	GENMASK(7, 0)
+-
+-/* Interrupt Mask Register #0 */
+-#define OA_TC6_REG_INT_MASK0			0x000C
+-#define INT_MASK0_HEADER_ERR_MASK		BIT(5)
+-#define INT_MASK0_LOSS_OF_FRAME_ERR_MASK	BIT(4)
+-#define INT_MASK0_RX_BUFFER_OVERFLOW_ERR_MASK	BIT(3)
+-#define INT_MASK0_TX_PROTOCOL_ERR_MASK		BIT(0)
+-
+-/* PHY Clause 22 registers base address and mask */
+-#define OA_TC6_PHY_STD_REG_ADDR_BASE		0xFF00
+-#define OA_TC6_PHY_STD_REG_ADDR_MASK		0x1F
+-
+ /* Control command header */
+ #define OA_TC6_CTRL_HEADER_DATA_NOT_CTRL	BIT(31)
+ #define OA_TC6_CTRL_HEADER_WRITE_NOT_READ	BIT(29)
+@@ -79,15 +40,6 @@
+ #define OA_TC6_DATA_FOOTER_END_BYTE_OFFSET	GENMASK(13, 8)
+ #define OA_TC6_DATA_FOOTER_TX_CREDITS		GENMASK(5, 1)
  
-+	if (tc6->quirk_flags & OA_TC6_BROKEN_PHY)
-+		return 0;
-+
- 	ret = oa_tc6_check_phy_reg_direct_access_capability(tc6);
- 	if (ret) {
- 		netdev_err(tc6->netdev,
-@@ -616,6 +620,9 @@ static int oa_tc6_phy_init(struct oa_tc6 *tc6)
- 
- static void oa_tc6_phy_exit(struct oa_tc6 *tc6)
- {
-+	if (tc6->quirk_flags & OA_TC6_BROKEN_PHY)
-+		return;
-+
- 	phy_disconnect(tc6->phydev);
- 	oa_tc6_mdiobus_unregister(tc6);
- }
-@@ -1279,11 +1286,13 @@ static int oa_tc6_check_ctrl_protection(struct oa_tc6 *tc6)
-  * oa_tc6_init - allocates and initializes oa_tc6 structure.
-  * @spi: device with which data will be exchanged.
-  * @netdev: network device interface structure.
-+ * @quirks: device specific modifiers for the OA TC6 protocol.
-  *
-  * Return: pointer reference to the oa_tc6 structure if the MAC-PHY
-  * initialization is successful otherwise NULL.
-  */
--struct oa_tc6 *oa_tc6_init(struct spi_device *spi, struct net_device *netdev)
-+struct oa_tc6 *oa_tc6_init(struct spi_device *spi, struct net_device *netdev,
-+			   struct oa_tc6_quirks *quirks)
- {
- 	struct oa_tc6 *tc6;
- 	int ret;
-@@ -1298,6 +1307,9 @@ struct oa_tc6 *oa_tc6_init(struct spi_device *spi, struct net_device *netdev)
- 	mutex_init(&tc6->spi_ctrl_lock);
- 	spin_lock_init(&tc6->tx_skb_lock);
- 
-+	if (quirks)
-+		tc6->quirk_flags = quirks->quirk_flags;
-+
- 	/* Set the SPI controller to pump at realtime priority */
- 	tc6->spi->rt = true;
- 	if (spi_setup(tc6->spi) < 0)
+-/* PHY – Clause 45 registers memory map selector (MMS) as per table 6 in the
+- * OPEN Alliance specification.
+- */
+-#define OA_TC6_PHY_C45_PCS_MMS2			2	/* MMD 3 */
+-#define OA_TC6_PHY_C45_PMA_PMD_MMS3		3	/* MMD 1 */
+-#define OA_TC6_PHY_C45_VS_PLCA_MMS4		4	/* MMD 31 */
+-#define OA_TC6_PHY_C45_AUTO_NEG_MMS5		5	/* MMD 7 */
+-#define OA_TC6_PHY_C45_POWER_UNIT_MMS6		6	/* MMD 13 */
+-
+ #define OA_TC6_CTRL_PROT_REPLY_SIZE		4
+ #define OA_TC6_CTRL_HEADER_SIZE			4
+ #define OA_TC6_CTRL_REG_VALUE_SIZE		4
 diff --git a/include/linux/oa_tc6.h b/include/linux/oa_tc6.h
-index 15f58e3c56c7..62e3d89f80ed 100644
+index 2660eefa3504..bbc42758a313 100644
 --- a/include/linux/oa_tc6.h
 +++ b/include/linux/oa_tc6.h
-@@ -12,7 +12,16 @@
+@@ -10,6 +10,54 @@
+ #include <linux/etherdevice.h>
+ #include <linux/spi/spi.h>
  
++/* OPEN Alliance TC6 registers */
++/* Standard Capabilities Register */
++#define OA_TC6_REG_STDCAP			0x0002
++#define STDCAP_DIRECT_PHY_REG_ACCESS		BIT(8)
++
++/* Reset Control and Status Register */
++#define OA_TC6_REG_RESET			0x0003
++#define RESET_SWRESET				BIT(0)	/* Software Reset */
++
++/* Configuration Register #0 */
++#define OA_TC6_REG_CONFIG0			0x0004
++#define CONFIG0_SYNC				BIT(15)
++#define CONFIG0_ZARFE_ENABLE			BIT(12)
++#define CONFIG0_PROTE				BIT(5)
++
++/* Status Register #0 */
++#define OA_TC6_REG_STATUS0			0x0008
++#define STATUS0_RESETC				BIT(6)	/* Reset Complete */
++#define STATUS0_HEADER_ERROR			BIT(5)
++#define STATUS0_LOSS_OF_FRAME_ERROR		BIT(4)
++#define STATUS0_RX_BUFFER_OVERFLOW_ERROR	BIT(3)
++#define STATUS0_TX_PROTOCOL_ERROR		BIT(0)
++
++/* Buffer Status Register */
++#define OA_TC6_REG_BUFFER_STATUS		0x000B
++#define BUFFER_STATUS_TX_CREDITS_AVAILABLE	GENMASK(15, 8)
++#define BUFFER_STATUS_RX_CHUNKS_AVAILABLE	GENMASK(7, 0)
++
++/* Interrupt Mask Register #0 */
++#define OA_TC6_REG_INT_MASK0			0x000C
++#define INT_MASK0_HEADER_ERR_MASK		BIT(5)
++#define INT_MASK0_LOSS_OF_FRAME_ERR_MASK	BIT(4)
++#define INT_MASK0_RX_BUFFER_OVERFLOW_ERR_MASK	BIT(3)
++#define INT_MASK0_TX_PROTOCOL_ERR_MASK		BIT(0)
++
++/* PHY Clause 22 registers base address and mask */
++#define OA_TC6_PHY_STD_REG_ADDR_BASE		0xFF00
++#define OA_TC6_PHY_STD_REG_ADDR_MASK		0x1F
++
++/* PHY – Clause 45 registers memory map selector (MMS) as per table 6 in the
++ * OPEN Alliance specification.
++ */
++#define OA_TC6_PHY_C45_PCS_MMS2			2	/* MMD 3 */
++#define OA_TC6_PHY_C45_PMA_PMD_MMS3		3	/* MMD 1 */
++#define OA_TC6_PHY_C45_VS_PLCA_MMS4		4	/* MMD 31 */
++#define OA_TC6_PHY_C45_AUTO_NEG_MMS5		5	/* MMD 7 */
++#define OA_TC6_PHY_C45_POWER_UNIT_MMS6		6	/* MMD 13 */
++
  struct oa_tc6;
  
--struct oa_tc6 *oa_tc6_init(struct spi_device *spi, struct net_device *netdev);
-+enum oa_tc6_quirk_flag {
-+	OA_TC6_BROKEN_PHY = BIT(0),
-+};
-+
-+struct oa_tc6_quirks {
-+	enum oa_tc6_quirk_flag quirk_flags;
-+};
-+
-+struct oa_tc6 *oa_tc6_init(struct spi_device *spi, struct net_device *netdev,
-+			   struct oa_tc6_quirks *quirks);
- void oa_tc6_exit(struct oa_tc6 *tc6);
- int oa_tc6_write_register(struct oa_tc6 *tc6, u32 address, u32 value);
- int oa_tc6_write_registers(struct oa_tc6 *tc6, u32 address, u32 value[],
+ enum oa_tc6_quirk_flag {
 
 -- 
 2.43.0
