@@ -1,114 +1,91 @@
-Received: from mail-m8131.xmail.ntesmail.com (mail-m8131.xmail.ntesmail.com [156.224.81.31])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A88EA3A9616;
-	Tue,  9 Jun 2026 12:50:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.224.81.31
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45E1F19CC0C
+	for <netdev@vger.kernel.org>; Tue,  9 Jun 2026 12:54:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781009437; cv=none; b=un0Wh0Y9t1iyvZkGBMimbnGsOuIYINmgdGd47TTKRZPS8cCwyTWGGSo1/1FHVKLKgPHTqZpcoFbhOa46FQxa7lwvQYRmmDwxJ+WBe7h2UfN3EZjMYf7w8L7WqBybsNt5TSEnW9xbjAyAUyNkc+cjQEWL2Vp3IUBbKd2mjYGMw9w=
+	t=1781009699; cv=none; b=ajAgRYbu2TfqIC0xDIeJU7DbY6a84wbqD2vS6xR+hYau4QWRxhmyL5EsK+ucMU8qS+hRkCSFLBMx/WqZliaGM58fP8lVxgMr8vHX8m07kzfnp9fqDO48mF3TGFpAEnk9C5P3da60j2jIkmTPY9irumNQJ+2cb9kKS+OmKnUTEd8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781009437; c=relaxed/simple;
-	bh=M7MuFBvFvOPVdHC4KkWz5wwYNVEMbppPjZZ3N2uEGM8=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=MBDmQSwoSgghlk5m5dAHK8Mklp88Zy0Zv0HPuQQHuKcseHzdwFOSiSqZ6qNuCatbL0lsujTaVgyLcBMyioJwDLayW9JoDJcfjoUUKW7YTEOobagmtJj34DZVYb4+5L9CAv6x2IpIFF/DdREYh2HtI9/AdtbHv2oDyUrnK3rK7ks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=O9vUur46; arc=none smtp.client-ip=156.224.81.31
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
+	s=arc-20240116; t=1781009699; c=relaxed/simple;
+	bh=FbmqELwkZE15Mwc2UsyKsCGlGrQeI7HFMN12yDJtqbQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=rbtOm40Q3HAV7JDcJQnSLkW6wlCBXWZFzBg7WjlSrO7IOjgZCZqp7BGmGfJ6gChtQEs4PnRYFXWMOGpKJx37ZbvzHCuRcvAchBraHsh9InQ7pUCRGwScyAjZOEjGApgv+y53RPRj88H+Ewcx6bnrFeHJfH8jh376oDFE7bW4pWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=VJx9IlZr; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="O9vUur46"
-Received: from DESKTOP-SUEFNF9.taila7e912.ts.net (unknown [221.228.238.82])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 41af408e8;
-	Tue, 9 Jun 2026 20:50:22 +0800 (GMT+08:00)
-From: Dawei Feng <dawei.feng@seu.edu.cn>
-To: Tony Nguyen <anthony.l.nguyen@intel.com>
-Cc: Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	intel-wired-lan@lists.osuosl.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	jianhao.xu@seu.edu.cn,
-	Dawei Feng <dawei.feng@seu.edu.cn>,
-	stable@vger.kernel.org,
-	Zilin Guan <zilin@seu.edu.cn>
-Subject: [PATCH net] ice: fix memory leak in ice_lbtest_prepare_rings()
-Date: Tue,  9 Jun 2026 20:50:21 +0800
-Message-Id: <20260609125021.3873270-1-dawei.feng@seu.edu.cn>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="VJx9IlZr"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1781009694;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=jSwQh1BOvnch4QBcgj6oKXjw4gnvSRB144OhFDs5fPs=;
+	b=VJx9IlZrmD2TVGZYr/nv5pn3UfU4tcs6TAZ9G1BQ6FJ2mCK1jMywHQchLnnig9drpKYYAK
+	cDA97Km852FgEBnOuL9bT8xfemjQAYcVJ1f82wW+sbRqNBbkChj0eQYSTffAVzhurftPyY
+	ytL8lGiAX6RNx2wGsoWho9Sp+cGVKBg=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-497-6IMNcjKDMfaDbJohaQ0mjw-1; Tue,
+ 09 Jun 2026 08:54:50 -0400
+X-MC-Unique: 6IMNcjKDMfaDbJohaQ0mjw-1
+X-Mimecast-MFC-AGG-ID: 6IMNcjKDMfaDbJohaQ0mjw_1781009688
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6A4941955F25;
+	Tue,  9 Jun 2026 12:54:48 +0000 (UTC)
+Received: from RHTRH0061144 (unknown [10.22.65.94])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8CE1119541B0;
+	Tue,  9 Jun 2026 12:54:46 +0000 (UTC)
+From: Aaron Conole <aconole@redhat.com>
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: Minxi Hou <houminxi@gmail.com>,  netdev@vger.kernel.org,
+  davem@davemloft.net,  echaudro@redhat.com,  edumazet@google.com,
+  horms@kernel.org,  i.maximets@ovn.org,  kuba@kernel.org,
+  shuah@kernel.org,  dev@openvswitch.org,  linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH] selftests/openvswitch: guard command substitutions
+ against empty output
+In-Reply-To: <c530d07f-5841-4bfb-b296-b47fc0ce0614@redhat.com> (Paolo Abeni's
+	message of "Tue, 9 Jun 2026 12:56:17 +0200")
+References: <20260601115307.1411211-1-houminxi@gmail.com>
+	<c530d07f-5841-4bfb-b296-b47fc0ce0614@redhat.com>
+Date: Tue, 09 Jun 2026 08:54:45 -0400
+Message-ID: <f7tbjdjg9gq.fsf@redhat.com>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9eac6f180803a2kunm9425b504132c7c
-X-HM-MType: 10
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkZT0saVk4fShpDTBpKGkMdQ1YeHw
-	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlJSUpVSUlDVUlIQ1VDSVlXWRYaDxIVHRRZQVlPS0hVSktISk
-	9ITFVKS0tVSkJLS1kG
-DKIM-Signature: a=rsa-sha256;
-	b=O9vUur46oTC1cMJOEpOFA+tVhmsQ4ivwwCKVAfk04gRbshq+Udvg6oH7HOK6sdDddR+SAmFWnVMA1ahkwmOctQXsewU/xkdKvQBjDEVO3Hg3aWa0qhuYUC0T6hbTPgbzkrcRdT9ygJs0R6NjIK7S5kbqE5QTWF5Pio8C16Adt64=; c=relaxed/relaxed; s=default; d=seu.edu.cn; v=1;
-	bh=gDFkhjOKI1BsP8BXzapJ6Ptm02LVwzRDI7vFZnvGtaI=;
-	h=date:mime-version:subject:message-id:from;
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-While ice_lbtest_prepare_rings() correctly frees Rx rings if
-ice_vsi_start_all_rx_rings() fails, the earlier error paths for
-ice_vsi_setup_rx_rings() and ice_vsi_cfg_lan() jump past this cleanup.
-If Rx ring setup or LAN configuration fails, the function leaks the
-initialized Rx resources.
+Paolo Abeni <pabeni@redhat.com> writes:
 
-Fix this by routing these earlier failures to the existing
-err_start_rx_ring label. This ensures the Rx rings are properly freed
-before tearing down the Tx state.
+> On 6/1/26 1:53 PM, Minxi Hou wrote:
+>> When ip-link output is unavailable, when the upcall daemon log has not
+>> been written yet, or when pahole does not know the OVS drop subsystem
+>> ID, the affected command substitutions silently produce empty strings.
+>> The caller then passes empty sha= or pid= arguments to ovs_add_flow,
+>> or matches against wrong drop reason codes, all without a diagnostic.
+>> 
+>> Add [ -z ] guards immediately after each assignment. For test_arp_ping,
+>> also align the MAC extraction to use awk '/link\/ether/' as in
+>> test_pop_vlan. The drop_reason guard returns ksft_skip because an
+>> absent subsystem ID is an environment issue, not a test failure.
+>> 
+>> Signed-off-by: Minxi Hou <houminxi@gmail.com>
+>
+> IMHO this is net-next material.
+>
+> @Aaron, @Eelco, @Ilya: WDYT?
 
-The bug was first flagged by an experimental analysis tool we are
-developing for kernel memory-management bugs while analyzing
-v6.13-rc1. The tool is still under development and is not yet publicly
-available. Manual inspection confirms that the bug is still
-present in v7.1-rc5.
+Agreed.
 
-An x86_64 allyesconfig build showed no new warnings. As we do not have an
-Intel E800 Series adapter available to run the ethtool offline loopback
-selftest, no runtime testing was able to be performed.
-
-Fixes: 0e674aeb0b77 ("ice: Add handler for ethtool selftest")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Signed-off-by: Dawei Feng <dawei.feng@seu.edu.cn>
----
- drivers/net/ethernet/intel/ice/ice_ethtool.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool.c b/drivers/net/ethernet/intel/ice/ice_ethtool.c
-index f28416a707d7..7c81ca313645 100644
---- a/drivers/net/ethernet/intel/ice/ice_ethtool.c
-+++ b/drivers/net/ethernet/intel/ice/ice_ethtool.c
-@@ -1065,11 +1065,11 @@ static int ice_lbtest_prepare_rings(struct ice_vsi *vsi)
- 
- 	status = ice_vsi_setup_rx_rings(vsi);
- 	if (status)
--		goto err_setup_rx_ring;
-+		goto err_start_rx_ring;
- 
- 	status = ice_vsi_cfg_lan(vsi);
- 	if (status)
--		goto err_setup_rx_ring;
-+		goto err_start_rx_ring;
- 
- 	status = ice_vsi_start_all_rx_rings(vsi);
- 	if (status)
-@@ -1079,7 +1079,6 @@ static int ice_lbtest_prepare_rings(struct ice_vsi *vsi)
- 
- err_start_rx_ring:
- 	ice_vsi_free_rx_rings(vsi);
--err_setup_rx_ring:
- 	ice_vsi_stop_lan_tx_rings(vsi, ICE_NO_RESET, 0);
- err_setup_tx_ring:
- 	ice_vsi_free_tx_rings(vsi);
--- 
-2.34.1
+> /P
 
