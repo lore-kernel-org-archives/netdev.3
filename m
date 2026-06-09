@@ -1,138 +1,170 @@
-Received: from mail-ej1-f65.google.com (mail-ej1-f65.google.com [209.85.218.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-gw02.astralinux.ru (mail-gw02.astralinux.ru [93.188.205.243])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C43294A341E
-	for <netdev@vger.kernel.org>; Tue,  9 Jun 2026 17:01:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E618F3FE35A;
+	Tue,  9 Jun 2026 17:02:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.188.205.243
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781024476; cv=none; b=eRwy5sCuRWnJXXWh+lHT1YBxpX1M8wjGOJVROYudtJ6dDar0e0KuRlp5AJtYYoUS9tubKK8MLO/ZftaxQGJriaPqs9bNnIOlmCLIr+NNNsP9Y839Xab8qN6WNZjaSpLDHa5ygW8noEhxMmsQHpc5qkalHrcw+CCBIq+l3sOKkaU=
+	t=1781024527; cv=none; b=PVHI6MSO/0HOerRw/A2LZA+NvjrDArNhOiOxwtOgIXBrCFrXjDsohlJIZpjuMO7nvitZh+mEqNbuM2/32xrZvKcbvqs8WNOA/R1ZPQyzYAnt9Wav6iH4SLaCpYVYcq/sYbjYUzn75g3YKhoUomdpBeE4jwjkxq3W0NFOWNzKWEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781024476; c=relaxed/simple;
-	bh=JASw7Uc4klmotXzbY7lf/BYtivzVBrCr8+zwLgDE7mk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CrnJX3lgCgtpQQ4lXmnXeezGkEZ6eTLQ96IIARDZ/v4+ZN/g5Z173L6YPF72W61dpboMy/D/M8wpejps0KcrMC8fDjqqoWj/xw4L8Rt/uX+D6VNNBAq4qFfcw3X9VhlXOdFBoOL0ukvqG+gCIFLQREkWu8IF2IlmonYUjXBgcWU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Yyy6CNf/; arc=none smtp.client-ip=209.85.218.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1781024527; c=relaxed/simple;
+	bh=VlT2GQMtF09lMcl1qD1/OfmoD7I5vnZUKdTaawBzjGM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=QT/68BNoYlSfw9++8Q3tqW1dS7LDDWxIYWupHpSsuiiLZvx1z6VqkLj+gnerAu4qB4sIbVbT0CGsqN1KgZ0PZqdcuWxKyqRM57a66B4VeoZj5AcebXbBmD0rtEkgi/CrUQ1Whyv8MkKk0UF1lA+/KcquSnbTvPFWdiWMKEr63Jo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=astralinux.ru; spf=pass smtp.mailfrom=astralinux.ru; dkim=pass (2048-bit key) header.d=astralinux.ru header.i=@astralinux.ru header.b=m/OVoJhq; arc=none smtp.client-ip=93.188.205.243
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=astralinux.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=astralinux.ru
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Yyy6CNf/"
-Received: by mail-ej1-f65.google.com with SMTP id a640c23a62f3a-bec43eea342so46151466b.1
-        for <netdev@vger.kernel.org>; Tue, 09 Jun 2026 10:01:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781024473; x=1781629273; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=mPOtRVB9Jc0eGv63GKGHPuidlbtDTypX2bkjNHtGnSg=;
-        b=Yyy6CNf/dEKJ2pLiJwZUllB0nohlzgOBxVsMXhEFsKFqEMLwPfPPbHfkmSnHqSVFP6
-         g7zCMfVP6fugHq11B0XtjTfKaw4HMrzRyBunR0yqzul8Fm2b7jnJEONjbVkEtBw549Cd
-         dXFcOIJ9YKo7VDTdWcl3LuSIhsQ8O+MNlNE4CUGLj9aLgj4c4UQFBEloraW6MetW5mac
-         I+vi4EFUr8MNEmOSJbesZ8Us9ACBuQmxQuYSFxCBHxo4ntKCtvvvIhKguY3hNUPS6wH/
-         zshmO66tPmm+h5UN4YQCmKJYWh6R3J0G0Xc7duS8DM79+P+DRYpCFI0Pa8IOSQP3lH4W
-         lIwA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781024473; x=1781629273;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=mPOtRVB9Jc0eGv63GKGHPuidlbtDTypX2bkjNHtGnSg=;
-        b=pIx2tNgXeVffSrEUmhLgTVYFImeCECuyjP8TsSrbiDD/WFIsAQ9Sh/kt2yFe6DtfHO
-         8cXHKtZVt0LlTiBEXQaj4pwwwCheDQGKuwc6/aOeORqRPiwqRc1QDOQRgvinAJRtyDK+
-         phiALdAWuLpUeujCr2QN98oPvK7zhAJZ5KlnUHFgSs/jS1hdGuTOoYODvfTwLmKx2FQb
-         YIet10EZXuevrefUi7D8tzAF5ww/tUcePQNtD71PJdHGr2bFe9kmcbp0/8X6yEapA62O
-         0DMklnBpQI+VqzUMnWAJxDu/1WcFC5ZidGiuo6eFr2CByY+ACQuD3LyFqCWSSSBbmRzL
-         iOkQ==
-X-Gm-Message-State: AOJu0YwGzPo5Nrj5QL+7GRsf2Zq9thuKP9kov1t8L2PpFyoN4CsqSMPV
-	vGsC692kXiMJT0+kGzeXIV6V8mWy7Vv71S27bIpPHEgGpOdjOS7DVbTv
-X-Gm-Gg: Acq92OGgV4JAOm270EYVym05iKIsz3VDwAcGFTyGQu4IP5QHZv4Xi6mBT/y/E/xnol+
-	rOFlJkRWeGYmTFLkKAOjXB8YuLJfKkkgftacs2Y0C27nHGS/cYHkeRiuDPC+KOQpwW6JA3PC6Nx
-	S1svtAhcHS+eQ1BPdCkdFyru2Or2gXJJKjHtIhzhRx+8wBGSFPbmp710Iy+QaRVCBmo7TKuB2BO
-	ucB9coqljbQPw9h6gqFHUFA2ko/I+PdZU01upjqADNv3/iCcICpm6RRbsHul2KZypQS5ecusc13
-	8WK9EsTUGj8Pega4MagiTUYSZirQN7NID1uRJBkbYO9klts76VrQjlC6uZk4T/38uB9X3F0NZwW
-	Zm+ZyjmkyfjMzTj1OpaUKbU9F5SgaqIisX5vF5BLAN9ouyxTwuMDa2ceuOWR75hI+xRXqZGQIR0
-	ucX67FhH4XIaX732q489XPRaw3Nbymc2w=
-X-Received: by 2002:a17:907:3f1c:b0:bd8:26e5:d7a1 with SMTP id a640c23a62f3a-bf36ff8eff6mr504052666b.2.1781024471389;
-        Tue, 09 Jun 2026 10:01:11 -0700 (PDT)
-Received: from localhost ([104.28.193.185])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bf0559f1f62sm1095756966b.57.2026.06.09.10.01.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 09 Jun 2026 10:01:10 -0700 (PDT)
-Message-ID: <715cf429-9f2b-4898-84b4-15dfba4a9a8e@gmail.com>
-Date: Tue, 9 Jun 2026 19:01:02 +0200
+	dkim=pass (2048-bit key) header.d=astralinux.ru header.i=@astralinux.ru header.b="m/OVoJhq"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=astralinux.ru;
+	s=mail; t=1781024519;
+	bh=VlT2GQMtF09lMcl1qD1/OfmoD7I5vnZUKdTaawBzjGM=;
+	h=From:To:Cc:Subject:Date:From;
+	b=m/OVoJhqsTfi/TSwAIck8cWNLWIPxKsJqTlE+znqMrZYI3PVXba8iNtUWsxLE3u5G
+	 g5sTOta1vnyPHxwlD7ug6u/NfltyuMQTvaF6WjDrE2H+emL2pGph5sScQ40GJuSBJ5
+	 h6rOKtrVzfg86KyN9f8Qujalf/aIGhzwbuMGgIs1acziybrDeF5QvxqaHQC7fqUGkB
+	 4MYWUw2wXFMk+m7E/1P2dEZYAXY40a4CFEAL6NwwMS8+a63RYFtTvxpf9YL6/aT5AZ
+	 9IpWrmgRaivKpevhCYHJ2HFayRpkFQXAHKFb/TCGDcmeSueB69hyCK9vXX+HTGBBUr
+	 UtC9K3kYxSJOA==
+Received: from gca-msk-a-srv-ksmg01.astralinux.ru (localhost [127.0.0.1])
+	by mail-gw02.astralinux.ru (Postfix) with ESMTP id F39BA1FA76;
+	Tue,  9 Jun 2026 20:01:58 +0300 (MSK)
+Received: from new-mail.astralinux.ru (unknown [10.205.207.5])
+	by mail-gw02.astralinux.ru (Postfix) with ESMTP;
+	Tue,  9 Jun 2026 20:01:56 +0300 (MSK)
+Received: from rbta-msk-lt-156703.astralinux.ru (unknown [10.198.18.49])
+	by new-mail.astralinux.ru (Postfix) with ESMTPA id 4gZZc83NQ2z2xd5;
+	Tue, 09 Jun 2026 19:48:40 +0300 (MSK)
+From: Alexey Panov <apanov@astralinux.ru>
+To: stable@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Alexey Panov <apanov@astralinux.ru>,
+	Jay Vosburgh <j.vosburgh@gmail.com>,
+	Veaceslav Falico <vfalico@gmail.com>,
+	Andy Gospodarek <andy@greyhouse.net>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Jeff Garzik <jeff@garzik.org>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Jay Vosburgh <jv@jvosburgh.net>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	lvc-project@linuxtesting.org,
+	syzbot+9c081b17773615f24672@syzkaller.appspotmail.com
+Subject: [PATCH 5.10] bonding: limit BOND_MODE_8023AD to Ethernet devices
+Date: Tue,  9 Jun 2026 19:48:35 +0300
+Message-Id: <20260609164835.32573-1-apanov@astralinux.ru>
+X-Mailer: git-send-email 2.30.2
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 00/10] tcp: support non-GSO jumbograms
-To: Eric Dumazet <edumazet@google.com>
-Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
- kuba@kernel.org, pabeni@redhat.com, dsahern@kernel.org, idosch@nvidia.com,
- ncardwell@google.com, shuah@kernel.org, kuniyu@google.com,
- alice@isovalent.com
-References: <20260608130755.5626-1-maklimek97@gmail.com>
- <CANn89iLjG0krEoEE__3KUrcK+ZO+USZRC_2qZV5hAsxRpkTmhw@mail.gmail.com>
-Content-Language: en-US
-From: Mariusz Klimek <maklimek97@gmail.com>
-In-Reply-To: <CANn89iLjG0krEoEE__3KUrcK+ZO+USZRC_2qZV5hAsxRpkTmhw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-KSMG-AntiPhishing: NotDetected, bases: 2026/06/09 15:41:00
+X-KSMG-AntiSpam-Auth: dkim=none
+X-KSMG-AntiSpam-Envelope-From: apanov@astralinux.ru
+X-KSMG-AntiSpam-Info: LuaCore: 107 0.3.107 575e75fe8e3b9d45c142d144823c5de38605099e, {date_rfc_vio_soft_silent}, {Tracking_uf_ne_domains}, {Tracking_internal2}, {Tracking_from_domain_doesnt_match_to}, patch.msgid.link:7.1.1;astralinux.ru:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;new-mail.astralinux.ru:7.1.1;127.0.0.199:7.1.2;lore.kernel.org:7.1.1, FromAlignment: s
+X-KSMG-AntiSpam-Interceptor-Info: scan successful
+X-KSMG-AntiSpam-Lua-Profiles: 203763 [Jun 09 2026]
+X-KSMG-AntiSpam-Method: none
+X-KSMG-AntiSpam-Rate: 0
+X-KSMG-AntiSpam-Status: not_detected
+X-KSMG-AntiSpam-Version: 6.1.1.22
+X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.0.7854, bases: 2026/06/09 15:23:00 #28224840
+X-KSMG-AntiVirus-Status: NotDetected, skipped
+X-KSMG-LinksScanning: NotDetected, bases: 2026/06/09 15:41:00
+X-KSMG-Message-Action: skipped
+X-KSMG-Rule-ID: 1
 
-On 6/9/26 03:15, Eric Dumazet wrote:
-> On Mon, Jun 8, 2026 at 9:35 AM Mariusz Klimek <maklimek97@gmail.com> wrote:
->>
->> This series adds support for sending TCP jumbograms over MTUs above 65535,
->> and adds support for setting such MTUs on veth devices.
->>
->> The TCP stack is already capable of receiving jumbograms and (up until
->> recently) sending GSO-jumbograms that get segmented before exiting the
->> host. However, the TCP stack doesn't support sending regular jumbograms
->> over high MTUs as described in RFC2675. Specifically, the TCP stack doesn't
->> support an MSS greater than 65535.
->>
->> No device currently supports setting an MTU greater than 65535 but there
->> are some devices that could benefit from higher MTUs and that can
->> theoretically support it. For example, IPoIB in connected-mode can support
->> MTUs up to 2^31. Virtual devices such as veth have no physical limitations
->> and therefore could also support such MTUs.
->>
->> This series only adds support for setting high MTUs on veth devices, with
->> support for other devices being delegated to future patch series. Allowing
->> jumbograms to pass through veth devices is useful for testing jumbogram
->> functionality, and also increases throughput when compared to BIG TCP (see
->> the benchmark numbers below).
->>
->> In addition to removing the upper limit on veth MTUs, This series adds the
->> missing pieces that allow the TCP stack to send TCP jumbograms. This
->> includes a bit of code removed recently by Alice's patch series [1]. Most
->> of the patches in this series are rather trivial. The main problem
->> addressed by this series is that the TCP stack conflates the TSO segment
->> length with the MSS, but the TSO segment length is a 16-bit integer, which
->> doesn't allow for MSS > 65535. This series decouples them.
->>
->> Running iperf over veth on an Intel Core i9-12900K CPU shows a 5%
->> improvement in throughput.
->>
->> Commands:
->> iperf3 -s
->> iperf3 -c -l 500KiB ${SERVER_IP}%veth0
-> 
-> You are adding code to TCP fast path, for a narrow (and possibly
-> dangerous) use case.
-> 
-> I am sorry, I will not review this patch series coming from a first-timer.
+From: Eric Dumazet <edumazet@google.com>
 
-I understand your concerns and they're reasonable. I would still like to
-proceed with this series, though. What can I do for you to consider this
-series? Would it help to submit a few less-significant patches first before
-resubmitting this patch series? Should I resubmit it as an RFC?
+commit c84fcb79e5dbde0b8d5aeeaf04282d2149aebcf6 upstream.
 
-This feature is opt-in, so even though I'm adding code to the TCP fastpath, it
-should be relatively straightforward to check that it doesn't introduce any
-bugs in the regular MTU < 65535 flow.
+BOND_MODE_8023AD makes sense for ARPHRD_ETHER only.
 
+syzbot reported:
+
+ BUG: KASAN: global-out-of-bounds in __hw_addr_create net/core/dev_addr_lists.c:63 [inline]
+ BUG: KASAN: global-out-of-bounds in __hw_addr_add_ex+0x25d/0x760 net/core/dev_addr_lists.c:118
+Read of size 16 at addr ffffffff8bf94040 by task syz.1.3580/19497
+
+CPU: 1 UID: 0 PID: 19497 Comm: syz.1.3580 Tainted: G             L      syzkaller #0 PREEMPT(full)
+Tainted: [L]=SOFTLOCKUP
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/25/2025
+Call Trace:
+ <TASK>
+  dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
+  print_address_description mm/kasan/report.c:378 [inline]
+  print_report+0xca/0x240 mm/kasan/report.c:482
+  kasan_report+0x118/0x150 mm/kasan/report.c:595
+ check_region_inline mm/kasan/generic.c:-1 [inline]
+  kasan_check_range+0x2b0/0x2c0 mm/kasan/generic.c:200
+  __asan_memcpy+0x29/0x70 mm/kasan/shadow.c:105
+  __hw_addr_create net/core/dev_addr_lists.c:63 [inline]
+  __hw_addr_add_ex+0x25d/0x760 net/core/dev_addr_lists.c:118
+  __dev_mc_add net/core/dev_addr_lists.c:868 [inline]
+  dev_mc_add+0xa1/0x120 net/core/dev_addr_lists.c:886
+  bond_enslave+0x2b8b/0x3ac0 drivers/net/bonding/bond_main.c:2180
+  do_set_master+0x533/0x6d0 net/core/rtnetlink.c:2963
+  do_setlink+0xcf0/0x41c0 net/core/rtnetlink.c:3165
+  rtnl_changelink net/core/rtnetlink.c:3776 [inline]
+  __rtnl_newlink net/core/rtnetlink.c:3935 [inline]
+  rtnl_newlink+0x161c/0x1c90 net/core/rtnetlink.c:4072
+  rtnetlink_rcv_msg+0x7cf/0xb70 net/core/rtnetlink.c:6958
+  netlink_rcv_skb+0x208/0x470 net/netlink/af_netlink.c:2550
+  netlink_unicast_kernel net/netlink/af_netlink.c:1318 [inline]
+  netlink_unicast+0x82f/0x9e0 net/netlink/af_netlink.c:1344
+  netlink_sendmsg+0x805/0xb30 net/netlink/af_netlink.c:1894
+  sock_sendmsg_nosec net/socket.c:727 [inline]
+  __sock_sendmsg+0x21c/0x270 net/socket.c:742
+  ____sys_sendmsg+0x505/0x820 net/socket.c:2592
+  ___sys_sendmsg+0x21f/0x2a0 net/socket.c:2646
+  __sys_sendmsg+0x164/0x220 net/socket.c:2678
+  do_syscall_32_irqs_on arch/x86/entry/syscall_32.c:83 [inline]
+  __do_fast_syscall_32+0x1dc/0x560 arch/x86/entry/syscall_32.c:307
+  do_fast_syscall_32+0x34/0x80 arch/x86/entry/syscall_32.c:332
+ entry_SYSENTER_compat_after_hwframe+0x84/0x8e
+ </TASK>
+
+The buggy address belongs to the variable:
+ lacpdu_mcast_addr+0x0/0x40
+
+Fixes: 872254dd6b1f ("net/bonding: Enable bonding to enslave non ARPHRD_ETHER")
+Reported-by: syzbot+9c081b17773615f24672@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/6966946b.a70a0220.245e30.0002.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>
+Acked-by: Jay Vosburgh <jv@jvosburgh.net>
+Link: https://patch.msgid.link/20260113191201.3970737-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Alexey: Replace SLAVE_NL_ERR() with NL_SET_ERR_MSG() and slave_err()
+  because SLAVE_NL_ERR() is not present in linux-5.10.y. ]
+Signed-off-by: Alexey Panov <apanov@astralinux.ru>
+---
+Backport fix for CVE-2026-23099
+ drivers/net/bonding/bond_main.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index 812e1792c232..86f0f155e986 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -1763,6 +1763,13 @@ int bond_enslave(struct net_device *bond_dev, struct net_device *slave_dev,
+ 	 */
+ 	if (!bond_has_slaves(bond)) {
+ 		if (bond_dev->type != slave_dev->type) {
++			if (slave_dev->type != ARPHRD_ETHER &&
++			    BOND_MODE(bond) == BOND_MODE_8023AD) {
++				NL_SET_ERR_MSG(extack, "8023AD mode requires Ethernet devices");
++				slave_err(bond_dev, slave_dev,
++					  "Error: 8023AD mode requires Ethernet devices\n");
++				return -EINVAL;
++			}
+ 			slave_dbg(bond_dev, slave_dev, "change device type from %d to %d\n",
+ 				  bond_dev->type, slave_dev->type);
+ 
 -- 
-Mariusz K.
+2.47.3
