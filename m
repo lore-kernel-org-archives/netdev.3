@@ -1,125 +1,420 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 604C740BCCD
-	for <netdev@vger.kernel.org>; Tue,  9 Jun 2026 12:03:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDF2040E8DF;
+	Tue,  9 Jun 2026 12:11:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781006595; cv=none; b=sU2BEC1C6+umJ/CFcwLn1dIsPdK++Sb/x9YSRHFhAauQ2tZiZoichdnz4oo+RDLx5UG6Hz3DuthCN53p2gExCRPjen7bIMcTQZ/Za+TLfoy2bJrT6oSrU5Ox9iSG3ZNaB9s1QYG4vuDmzKJJ6S6iWh7efpJKTvuBH1njImzsQ2g=
+	t=1781007061; cv=none; b=jeZWSyTMjAT6d+C4XM+Y3kKNTKJG19XtYfLRRJsjF378wCB7WjcujzPRbKlWpu4/l9ulNgowC0SgWEx06iiJLHYotRjl2IKEy4mWOxR3njg+R5G+u6hbql5wkPygIrD0URsyqIA4KfA56QhUIQaUPMklkg7jsMn8T03Zpk4nGHE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781006595; c=relaxed/simple;
-	bh=KYOKqzvxVdLkyqmcf60b2kuYcjBVPIadLaEpXbLdVdc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hMs7HAgXKCu5K4xBquM950CSMG5r6mdonpIdNS39xHYS3Kzov/MRkm3zUc2ExNIb9YSE9lBE8tyoXsTib1rfm1pThzAMVfBrB6ChnCQ0sCMPq0YUpHhbp0RO8Lc2REFm1wg18im0iwh1NHc6/CoQ05UIVmExtRYj0kHFas0A9Qg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KNF3HzKS; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=tlfhyqQW; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1781007061; c=relaxed/simple;
+	bh=oZtc6DSHxtLmIXZm0aUXNjW5ryjFtUfqhq5/XtnJYak=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=ZE7if3nJb5fAAo3MNtYRE9TSmDxMGa7QtL+iTiJCSXPwAbelj6OETknIEV5NfnAulanz+ankw1QIB0+1crGiBfX/V/hiPxb0gAY9Af/ThNNTYhaOggcOyC5KasH7LlZU//3KsetjRDtpjIo+C4aVEw6KEHEdaLkmW9lTMs4WqbY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mV6xy3OV; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KNF3HzKS";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="tlfhyqQW"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1781006593;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=u6DWBXCgC9aNmxDed7yrblpTHxFgCcNoc2g5n3N4dOo=;
-	b=KNF3HzKSuuSTnGKvN1G7Hc7OXy8VmINhOo2qlPjJPrP6O222wiOt1vCUfYxLP3zLYIDz5H
-	e9nMGUqWdtiEa6ui54sDLI7X4Ayq0bonB7+1JV4BBKsundg57bsy1v28NFvBOnVkvv3f0n
-	VAJoTqpQC/3WmMzFoLgX/DzCT0WIHcE=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-508-ZyBzQWHlNICpTmj81WHZnQ-1; Tue, 09 Jun 2026 08:03:12 -0400
-X-MC-Unique: ZyBzQWHlNICpTmj81WHZnQ-1
-X-Mimecast-MFC-AGG-ID: ZyBzQWHlNICpTmj81WHZnQ_1781006591
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-490ae0167ceso25260905e9.1
-        for <netdev@vger.kernel.org>; Tue, 09 Jun 2026 05:03:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1781006591; x=1781611391; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=u6DWBXCgC9aNmxDed7yrblpTHxFgCcNoc2g5n3N4dOo=;
-        b=tlfhyqQWgfBLsrnYXzEPzFm1+hWn6NRBk2wRtmGLmwrwHi2A5ud36FrGLjmdkmCc7t
-         YLnMQtyKh1mSsZMuI1ENK6tf+itPvRW332Ln43HWTOvPntR2lsJLydAC0Od5kLsd02qs
-         Caa1bm2oEF/w0JhvzxqTjblWktq1XktegFrGTeEzVYfp5pgHg6uY4OAVR4W+GadHpnUz
-         laoVfV/XueNMKMbi4TEjKzW2XeCfbey55jil9RfHEzt1QREvb8EOLBLmYCW8v5s80BDc
-         XRQg7qErpNAR67HvN36wMBMUFJgpfIWtLEBwuLCQj4WpWICBZ8MKdaNYOQHrKEvfFQgG
-         EaBg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781006591; x=1781611391;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=u6DWBXCgC9aNmxDed7yrblpTHxFgCcNoc2g5n3N4dOo=;
-        b=D7yANJwNdyqHjPuAYdHvUjfuR/iEYfYMdELuVPaq79zpRuWFGMYdinfp4w68QEe76V
-         eSbF2gjqnTM1p2oOrkSO5AKWKQCLN5jlMLV5q28TFrY41RLraQV4JEtmJfIX+3QqOD7t
-         1bdHDvjILq3OahWjwEpi0rCBecO/rvzuNGC3rwoEdocAbblNWr68bwyiNeYE/r+Uw6TM
-         R/YoZTk5MJwi+Wgct/MtNp6QYmr9H8mkoGz8JsgBH/aInAtZGxClhFunkzi6lE8fCeya
-         3K0Hu9Ivnvv0LDpSfukKEnLuBcCH2FHrBBdKdHLvhkIqKxO9kM4DIBIxRIqUnBdFr/uK
-         yvXw==
-X-Forwarded-Encrypted: i=1; AFNElJ/hZp2HVJj5FcOKxH4mAt5j9OtTlYse2vZp/JuNyN8sTbTyU+aedRtfa/AJUmXK0hwBDqq0w38=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz0rj/e1Z6PUCw0AuOzbY0pvtYfChHngQdueUNLObNlbnkd7ACb
-	ptLQzlPKrMQSuUXkULi2bEiwhAU4aJ2VCSJZwYcEDMoKEKXEHIGNDvlrSDzyz+2eCYuGxTBMiFT
-	lBS8C1lA3MN3XgwcdZJ6CIUljke2h5ejAqS0jW7Qe5EByuQmw2uyOFYPVMw==
-X-Gm-Gg: Acq92OEPXVSHx5OfkCI7imaZ5O9pRek9oDeT3FkmzWOlSwJYO898aYVmETmpBUjSK5L
-	4drKKQ0i/Q5LuQcVNbQlxQRSbVbO/ch2oTF/Nzi8fRV51lIFo1LcoJR35PC2xVj2I5if05B+hfJ
-	IEDNIf0JJQvWxsctgTaG7SsQJ1Xte3o9KvLHJlIYkxpQy8xYfU/qGf+Ke8EvPGgaiU592W8Tn2+
-	m0Aq7tS43gPd3qZYeLhaXnSesrO+udGjevPOTSVlKswL+loHMkM22kjxanw8LqRv2Jd0cuCshlh
-	yBPqOQaeGOHQPYdDzZGHgdvRKJvXu9+yPl9v+mWqeoheWkj86hStKlgNIEHodHsbBk/HjuYe2Jm
-	fUO7B5VHoeONUhEGVoZZPg7Bhuw5n5zXPsj3tlGDsh9K4gD4IOEDbGzDA14ekI8Os+Q==
-X-Received: by 2002:a05:600c:45c6:b0:490:b9fe:e64d with SMTP id 5b1f17b1804b1-490c2612b7fmr333238185e9.23.1781006590842;
-        Tue, 09 Jun 2026 05:03:10 -0700 (PDT)
-X-Received: by 2002:a05:600c:45c6:b0:490:b9fe:e64d with SMTP id 5b1f17b1804b1-490c2612b7fmr333237345e9.23.1781006590316;
-        Tue, 09 Jun 2026 05:03:10 -0700 (PDT)
-Received: from [192.168.88.32] ([150.228.93.44])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490c2d5d2b4sm314279195e9.2.2026.06.09.05.03.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 09 Jun 2026 05:03:09 -0700 (PDT)
-Message-ID: <c04cc47a-c27f-4267-97c7-fafb80639f5e@redhat.com>
-Date: Tue, 9 Jun 2026 14:03:07 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mV6xy3OV"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 90E06C2BCC7;
+	Tue,  9 Jun 2026 12:11:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1781007061;
+	bh=oZtc6DSHxtLmIXZm0aUXNjW5ryjFtUfqhq5/XtnJYak=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=mV6xy3OVBcoqnI0Z+nO3ODV1QXCBjRQLqSbKz43HlpYCT5eL9ngCLZ/jic7B0o57L
+	 tIDjdPz8BQoV4SPK9bCRKhnPyrQZveAdXL7fC4/mibwspS9fMYMTiB373alvDQ7c2U
+	 grYhv9mbhyL2ZR+Z6+XLRRXQh6mQ2qJ9m6yjQl4uJ+at/noUfD34zEozqYrB33pTHO
+	 qP46v5n8VCPESm//U9+z7m6/63a6Wflx5DOJaMrTbFhXBJeZFUBTInKZZ6+fhz7PQN
+	 P6WivkqoTYXiN6nUwSH+bzowNHM5g7ynyYtaKe9N88Et3noYGXfBA0aFz9kgAur4KX
+	 zU1aUR3tX4dIg==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 70B7ECD8CA8;
+	Tue,  9 Jun 2026 12:11:01 +0000 (UTC)
+From: Cedric Jehasse via B4 Relay <devnull+cedric.jehasse.luminex.be@kernel.org>
+Date: Tue, 09 Jun 2026 14:10:50 +0200
+Subject: [PATCH net-next v7 1/2] net: dsa: mv88e6xxx: use the hw tx queues
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v12 2/2] selftests: net: add local ECMP rehash
- test
-To: Neil Spring <ntspring@meta.com>, netdev@vger.kernel.org
-Cc: edumazet@google.com, ncardwell@google.com, kuniyu@google.com,
- davem@davemloft.net, kuba@kernel.org, dsahern@kernel.org, horms@kernel.org,
- shuah@kernel.org, linux-kselftest@vger.kernel.org, bpf@vger.kernel.org,
- martin.lau@linux.dev, daniel@iogearbox.net
-References: <20260604212246.265079-1-ntspring@meta.com>
- <20260604212246.265079-3-ntspring@meta.com>
-From: Paolo Abeni <pabeni@redhat.com>
-Content-Language: en-US
-In-Reply-To: <20260604212246.265079-3-ntspring@meta.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20260609-net-next-mv88e6xxx-cbs-v7-1-7d5d732df545@luminex.be>
+References: <20260609-net-next-mv88e6xxx-cbs-v7-0-7d5d732df545@luminex.be>
+In-Reply-To: <20260609-net-next-mv88e6xxx-cbs-v7-0-7d5d732df545@luminex.be>
+To: Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, Russell King <linux@armlinux.org.uk>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Luke Howard <lukeh@padl.com>, 
+ =?utf-8?q?Marek_Beh=C3=BAn?= <kabel@kernel.org>, 
+ Cedric Jehasse <cedric.jehasse@gmail.com>, 
+ Cedric Jehasse <cedric.jehasse@luminex.be>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1781007059; l=11502;
+ i=cedric.jehasse@luminex.be; s=20260213; h=from:subject:message-id;
+ bh=pgpb+YX014eD5g807V5tIM8bN22t0zjLVW2701Vk24g=;
+ b=SgFy3Rz7MNSQBVBFElllTwyAo/vmdLOo83UtnoIBoj/esnVIGazRHyp3MzpfxHH+zv8ORx8lc
+ 5S9sjQ/559NAOkp9qRY42yfO3vb4Wy5oMuJb4/jJc28zr7DARNxljLk
+X-Developer-Key: i=cedric.jehasse@luminex.be; a=ed25519;
+ pk=DL2RaHc2bc7tTDTMJdugm42BtJk4Ip+7V41Gkj+Avjk=
+X-Endpoint-Received: by B4 Relay for cedric.jehasse@luminex.be/20260213
+ with auth_id=638
+X-Original-From: Cedric Jehasse <cedric.jehasse@luminex.be>
+Reply-To: cedric.jehasse@luminex.be
 
-On 6/4/26 11:22 PM, Neil Spring wrote:
-> +test_ecmp_midstream_rehash()
-> +{
-> +	RET=0
-> +	local port=$((PORT + 1))
-> +
-> +	local fail_reason
-> +	fail_reason=$(ecmp_midstream_rehash_attempt "$port")
-Shellcheck complains for the above:
+From: Cedric Jehasse <cedric.jehasse@luminex.be>
 
-+	if [ $? -ne 0 ]; then
-+             ^-- SC2181 (style): Check exit code directly with e.g. 'if
-! mycmd;', not indirectly with $?.
+When transmitting fill in the PRI field in the dsa tag to select the
+egress queue is sent to.
+From the datasheets i've looked at these switches have 4 or 8 transmit
+queues per port.
+Note: skbs with skb->offload_fwd_mark set use the DSA_CMD_FORWARD
+tag. These are processed as normal ingress frames, meaning the queue
+they end up in can still be altered by other switch config. eg. priority
+overrides, tcam policies.
+This isn't done for vlan tagged frames because this would overwrite the
+PCP value in the vlan tag (The PRI field in the dsa
+tag is used as the PCP value in the vlan tag).
+
+Signed-off-by: Cedric Jehasse <cedric.jehasse@luminex.be>
+---
+ drivers/net/dsa/mv88e6xxx/chip.c | 35 +++++++++++++++++++++++++++++++++++
+ drivers/net/dsa/mv88e6xxx/chip.h |  1 +
+ net/dsa/tag_dsa.c                | 11 ++++++++++-
+ 3 files changed, 46 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
+index 8ca5fd40df92..ffd4fa41b7c5 100644
+--- a/drivers/net/dsa/mv88e6xxx/chip.c
++++ b/drivers/net/dsa/mv88e6xxx/chip.c
+@@ -3979,6 +3979,7 @@ static int mv88e6xxx_setup(struct dsa_switch *ds)
+ 
+ 	chip->ds = ds;
+ 	ds->user_mii_bus = mv88e6xxx_default_mdio_bus(chip);
++	ds->num_tx_queues = chip->info->num_tx_queues;
+ 
+ 	/* Since virtual bridges are mapped in the PVT, the number we support
+ 	 * depends on the physical switch topology. We need to let DSA figure
+@@ -5689,6 +5690,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		 */
+ 		.num_ports = 7,
+ 		.num_internal_phys = 2,
++		.num_tx_queues = 4,
+ 		.invalid_port_mask = BIT(2) | BIT(3) | BIT(4),
+ 		.max_vid = 4095,
+ 		.port_base_addr = 0x8,
+@@ -5711,6 +5713,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_databases = 64,
+ 		.num_ports = 7,
+ 		.num_internal_phys = 5,
++		.num_tx_queues = 4,
+ 		.max_vid = 4095,
+ 		.port_base_addr = 0x08,
+ 		.phy_base_addr = 0x00,
+@@ -5733,6 +5736,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_macs = 8192,
+ 		.num_ports = 10,
+ 		.num_internal_phys = 5,
++		.num_tx_queues = 4,
+ 		.max_vid = 4095,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x10,
+@@ -5757,6 +5761,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_macs = 8192,
+ 		.num_ports = 11,
+ 		.num_internal_phys = 0,
++		.num_tx_queues = 4,
+ 		.max_vid = 4095,
+ 		.port_base_addr = 0x10,
+ 		.phy_base_addr = 0x0,
+@@ -5778,6 +5783,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_macs = 8192,
+ 		.num_ports = 11,
+ 		.num_internal_phys = 8,
++		.num_tx_queues = 4,
+ 		.max_vid = 4095,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x10,
+@@ -5803,6 +5809,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_macs = 1024,
+ 		.num_ports = 3,
+ 		.num_internal_phys = 5,
++		.num_tx_queues = 4,
+ 		.max_vid = 4095,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x10,
+@@ -5828,6 +5835,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_macs = 8192,
+ 		.num_ports = 8,
+ 		.num_internal_phys = 0,
++		.num_tx_queues = 4,
+ 		.max_vid = 4095,
+ 		.port_base_addr = 0x10,
+ 		.phy_base_addr = 0x0,
+@@ -5850,6 +5858,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_ports = 6,
+ 		.num_internal_phys = 5,
+ 		.num_gpio = 11,
++		.num_tx_queues = 4,
+ 		.max_vid = 4095,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x10,
+@@ -5875,6 +5884,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_macs = 1024,
+ 		.num_ports = 6,
+ 		.num_internal_phys = 5,
++		.num_tx_queues = 4,
+ 		.max_vid = 4095,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x10,
+@@ -5901,6 +5911,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_macs = 8192,
+ 		.num_ports = 6,
+ 		.num_internal_phys = 0,
++		.num_tx_queues = 4,
+ 		.max_vid = 4095,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x10,
+@@ -5926,6 +5937,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_macs = 8192,
+ 		.num_ports = 7,
+ 		.num_internal_phys = 5,
++		.num_tx_queues = 4,
+ 		.max_vid = 4095,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x10,
+@@ -5952,6 +5964,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_ports = 7,
+ 		.num_internal_phys = 5,
+ 		.num_gpio = 15,
++		.num_tx_queues = 4,
+ 		.max_vid = 4095,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x10,
+@@ -5977,6 +5990,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_macs = 8192,
+ 		.num_ports = 7,
+ 		.num_internal_phys = 5,
++		.num_tx_queues = 4,
+ 		.max_vid = 4095,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x10,
+@@ -6003,6 +6017,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_ports = 7,
+ 		.num_internal_phys = 5,
+ 		.num_gpio = 15,
++		.num_tx_queues = 4,
+ 		.max_vid = 4095,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x10,
+@@ -6028,6 +6043,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_macs = 8192,
+ 		.num_ports = 10,
+ 		.num_internal_phys = 0,
++		.num_tx_queues = 4,
+ 		.max_vid = 4095,
+ 		.port_base_addr = 0x10,
+ 		.phy_base_addr = 0x0,
+@@ -6051,6 +6067,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_ports = 11,	/* 10 + Z80 */
+ 		.num_internal_phys = 9,
+ 		.num_gpio = 16,
++		.num_tx_queues = 8,
+ 		.max_vid = 8191,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x0,
+@@ -6076,6 +6093,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_ports = 11,	/* 10 + Z80 */
+ 		.num_internal_phys = 9,
+ 		.num_gpio = 16,
++		.num_tx_queues = 8,
+ 		.max_vid = 8191,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x0,
+@@ -6100,6 +6118,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_macs = 16384,
+ 		.num_ports = 11,	/* 10 + Z80 */
+ 		.num_internal_phys = 9,
++		.num_tx_queues = 8,
+ 		.max_vid = 8191,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x0,
+@@ -6125,6 +6144,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_ports = 11,	/* 10 + Z80 */
+ 		.num_internal_phys = 8,
+ 		.internal_phys_offset = 1,
++		.num_tx_queues = 8,
+ 		.max_vid = 8191,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x0,
+@@ -6151,6 +6171,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_internal_phys = 8,
+ 		.num_tcam_entries = 256,
+ 		.internal_phys_offset = 1,
++		.num_tx_queues = 8,
+ 		.max_vid = 8191,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x0,
+@@ -6181,6 +6202,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_ports = 7,
+ 		.num_internal_phys = 2,
+ 		.invalid_port_mask = BIT(2) | BIT(3) | BIT(4),
++		.num_tx_queues = 4,
+ 		.max_vid = 4095,
+ 		.port_base_addr = 0x08,
+ 		.phy_base_addr = 0x00,
+@@ -6205,6 +6227,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_ports = 7,
+ 		.num_internal_phys = 5,
+ 		.num_gpio = 15,
++		.num_tx_queues = 4,
+ 		.max_vid = 4095,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x10,
+@@ -6230,6 +6253,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_databases = 64,
+ 		.num_ports = 7,
+ 		.num_internal_phys = 5,
++		.num_tx_queues = 4,
+ 		.max_vid = 4095,
+ 		.port_base_addr = 0x08,
+ 		.phy_base_addr = 0x00,
+@@ -6254,6 +6278,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_internal_phys = 9,
+ 		.num_gpio = 16,
+ 		.num_tcam_entries = 256,
++		.num_tx_queues = 8,
+ 		.max_vid = 8191,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x0,
+@@ -6282,6 +6307,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_internal_phys = 2,
+ 		.internal_phys_offset = 3,
+ 		.num_gpio = 15,
++		.num_tx_queues = 4,
+ 		.max_vid = 4095,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x10,
+@@ -6310,6 +6336,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_internal_phys = 2,
+ 		.internal_phys_offset = 3,
+ 		.num_gpio = 15,
++		.num_tx_queues = 4,
+ 		.max_vid = 4095,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x10,
+@@ -6337,6 +6364,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_internal_phys = 5,
+ 		.num_ports = 6,
+ 		.num_gpio = 11,
++		.num_tx_queues = 4,
+ 		.max_vid = 4095,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x10,
+@@ -6363,6 +6391,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_macs = 8192,
+ 		.num_ports = 7,
+ 		.num_internal_phys = 5,
++		.num_tx_queues = 4,
+ 		.max_vid = 4095,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x10,
+@@ -6388,6 +6417,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_macs = 8192,
+ 		.num_ports = 7,
+ 		.num_internal_phys = 5,
++		.num_tx_queues = 4,
+ 		.max_vid = 4095,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x10,
+@@ -6414,6 +6444,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_ports = 7,
+ 		.num_internal_phys = 5,
+ 		.num_gpio = 15,
++		.num_tx_queues = 4,
+ 		.max_vid = 4095,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x10,
+@@ -6442,6 +6473,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.invalid_port_mask = BIT(1) | BIT(2) | BIT(8),
+ 		.num_internal_phys = 5,
+ 		.internal_phys_offset = 3,
++		.num_tx_queues = 8,
+ 		.max_vid = 8191,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x0,
+@@ -6468,6 +6500,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_internal_phys = 9,
+ 		.num_gpio = 16,
+ 		.num_tcam_entries = 256,
++		.num_tx_queues = 8,
+ 		.max_vid = 8191,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x0,
+@@ -6495,6 +6528,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_ports = 11,	/* 10 + Z80 */
+ 		.num_internal_phys = 9,
+ 		.num_gpio = 16,
++		.num_tx_queues = 8,
+ 		.max_vid = 8191,
+ 		.max_sid = 63,
+ 		.port_base_addr = 0x0,
+@@ -6521,6 +6555,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_ports = 11,	/* 10 + Z80 */
+ 		.num_internal_phys = 8,
+ 		.num_tcam_entries = 256,
++		.num_tx_queues = 8,
+ 		.internal_phys_offset = 1,
+ 		.max_vid = 8191,
+ 		.max_sid = 63,
+diff --git a/drivers/net/dsa/mv88e6xxx/chip.h b/drivers/net/dsa/mv88e6xxx/chip.h
+index cde71828e9d9..19d8eda19b78 100644
+--- a/drivers/net/dsa/mv88e6xxx/chip.h
++++ b/drivers/net/dsa/mv88e6xxx/chip.h
+@@ -136,6 +136,7 @@ struct mv88e6xxx_info {
+ 	unsigned int num_internal_phys;
+ 	unsigned int num_gpio;
+ 	unsigned int num_tcam_entries;
++	unsigned int num_tx_queues;
+ 	unsigned int max_vid;
+ 	unsigned int max_sid;
+ 	unsigned int port_base_addr;
+diff --git a/net/dsa/tag_dsa.c b/net/dsa/tag_dsa.c
+index 2a2c4fb61a65..cc27b2994c6b 100644
+--- a/net/dsa/tag_dsa.c
++++ b/net/dsa/tag_dsa.c
+@@ -179,8 +179,17 @@ static struct sk_buff *dsa_xmit_ll(struct sk_buff *skb, struct net_device *dev,
+ 			dsa_header[2] &= ~0x10;
+ 		}
+ 	} else {
++		u16 queue = skb_get_queue_mapping(skb) & 0x7;
+ 		u16 vid;
+ 
++		/* The PRI field is 3 bits. According to the documentation the
++		 * 2 highest bits specify the egress queue in From_CPU DSA
++		 * tagged frames. On devices with 8 queues it's possible to
++		 * send to the 8 queues, which means the 3 bits are used.
++		 */
++		if (dp->ds->num_tx_queues == 4)
++			queue <<= 1;
 +
+ 		vid = br_dev ? MV88E6XXX_VID_BRIDGED : MV88E6XXX_VID_STANDALONE;
+ 
+ 		skb_push(skb, DSA_HLEN + extra);
+@@ -191,7 +200,7 @@ static struct sk_buff *dsa_xmit_ll(struct sk_buff *skb, struct net_device *dev,
+ 
+ 		dsa_header[0] = (cmd << 6) | tag_dev;
+ 		dsa_header[1] = tag_port << 3;
+-		dsa_header[2] = vid >> 8;
++		dsa_header[2] = (queue << 5) | vid >> 8;
+ 		dsa_header[3] = vid & 0xff;
+ 	}
+ 
 
-Eiter disable the check or use:
+-- 
+2.43.0
 
-	if fail_reason=$(ecmp_midstream_rehash_attempt "$port"); then
-
-/P
 
