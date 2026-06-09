@@ -1,100 +1,128 @@
-Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D2053F9F32
-	for <netdev@vger.kernel.org>; Tue,  9 Jun 2026 11:06:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C31733FD14D
+	for <netdev@vger.kernel.org>; Tue,  9 Jun 2026 11:13:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781003203; cv=none; b=DqzJdm1wPrHbiJa5O8WSxfzOLZkw1j76uqi/FcpjN+bX8VhOPJvBZBLMRLX6dkfof7q1cfQMEzSZkmrcQ+8sBRKPPfeMX2OKxsG31aUCak6TsMcAyZF8Q2w82lE8ex2+0Qewi+W83T3v2qquz61pLWrHz2aqCfOO71d4BhEjGm4=
+	t=1781003611; cv=none; b=B6TmJKlqy+F2l5dJx8U+5cYE0d4evbIBh4vDYGUnjEVkLGWbWN+MInsmhhMF2/AqwGroNiqFJaiM2xFH8j7gjPmj508eQgE9WglkL8uSbMyOLpNSd6oPsk821+onsncW2VqdljjGWOxkypIGMWOBevhl6wg0rqXzxB+y4p7A/zg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781003203; c=relaxed/simple;
-	bh=eT/9Sn/sYsrL31GQDuHiuEQUw+7Tb4fr2oU7PuE0GnI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qNqPoeJXY/DAbTzdPFVZBIlryygLMhVrkuuuBLz4udElfKx9RMcPWON4VeFJXD1k06Dz6vJnI1Zq5FyjmMDJ3NwY8cR/uWhziJaqJkgxCNBdlD5SBUN5JyESxsSrertaXSgDddAN/P0e/ASrqx3UzjiXX6pi0KH6CJoP5/gcvlM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=ncykL8Qy; arc=none smtp.client-ip=95.215.58.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1781003611; c=relaxed/simple;
+	bh=ouNh14TYBwCREEsEiR68guasZnC1K1bCFOcICPuwNsA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IGtWnBTkh06k+zbvz7s0yBXY8yD4XZyk4CfiZ0zyTqcI6owKxefZAIWHJCH14jcsSYpffGhqfzJBaLCbjQA/dEjorcFOcIYfj8uI0z5NR4Jh3Pld7oAl3TcCooZx9AB4O+3Eow8XfnxpU4bVVjWYEgpU3XLm5MT+9Q/AaxD7EMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VYF/dd9s; arc=none smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="ncykL8Qy"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1781003200;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dOFwe83SM6QIMCLbxJXV0qmGwf1qp7uMCkco1AkMiLA=;
-	b=ncykL8QyKMmCpqapX6jRGNRoeYwfXLUa94vpzhXvxJdYLfWIGkVevVUp8Nx8omyNSYfTKh
-	DQy8f756Oy0E+iFy92HQtvQMHypZTxhyYbXOr57ZjtD/yyA0WV9iUYro39sFHPOOjo932n
-	DvhCSH3dUl1qH2nFsHE0skIi2xVsU2k=
-From: Menglong Dong <menglong.dong@linux.dev>
-To: Sun Jian <sun.jian.kdev@gmail.com>
-Cc: bpf@vger.kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, ast@kernel.org, daniel@iogearbox.net,
- andrii@kernel.org, martin.lau@linux.dev, davem@davemloft.net,
- kuba@kernel.org, hawk@kernel.org, john.fastabend@gmail.com, sdf@fomichev.me,
- shuah@kernel.org, liuhangbin@gmail.com, Sun Jian <sun.jian.kdev@gmail.com>
-Subject: Re: [PATCH] bpf: Unshare cloned skb before devmap egress XDP program
-Date: Tue, 09 Jun 2026 19:06:20 +0800
-Message-ID: <L0cwr1-KRSKR7-dJdjDmJA@linux.dev>
-In-Reply-To: <20260609100214.337538-1-sun.jian.kdev@gmail.com>
-References: <20260609100214.337538-1-sun.jian.kdev@gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VYF/dd9s"
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-490a76757e5so35059865e9.2
+        for <netdev@vger.kernel.org>; Tue, 09 Jun 2026 04:13:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781003608; x=1781608408; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=eFMjAZhUWTXQaO+yulTsj8OKBz24W905gLvHUSyY7n8=;
+        b=VYF/dd9srMGHiIgdE3bFS6jhZ93uqofR7GTPhUD18otjpcfW/lK0tBylWBgeSrxhqs
+         jtK7m0MDeA1VQBQKiq1Hm5B5b3qjXEV9bnSTP1jzPgBQK2tklIpnoHZL3Eajjx08CG4D
+         Un+yb+lyImfttCwZ9w3K018xQZe/GGuR0GK6jtex1HchlBhaERp7+CAJ4Ts7gj9FvlEN
+         AgUEDB+I6zWR8pT0Pl4sxLRy9rGc1OR9PYl4odGrhNQGRbRg9IjJKH3LleLg9JcqHWB4
+         YFHbm8vWZfa1uWvQV2SsN62+k7JzHZBiPSvP5WHi8Jv8Zmg0OEWPAqQ6+nZ1GYCOxh+u
+         tFeQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781003608; x=1781608408;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=eFMjAZhUWTXQaO+yulTsj8OKBz24W905gLvHUSyY7n8=;
+        b=sCw5oeBY438teS3SU1UGZN1latVcHuOuA6SIj+sFdU8QWsJ74T9yfXd5ii3zcI62n9
+         ZaNii8nPE5qShnFfqKL5a2SdnBcBSdJZuikbsgIvb9hiNy9jlHobNOJKcmDagO8qwmQR
+         pnudk63Rm1/GOa5skVetc/8WBknohVpPq1kE7XhWEde0znE77l+zL32I2G9E/08RkROp
+         cdAsw7qitWv9l5BwNO/6LqOyXXo8DU/6L7ZC2NlDVbrlx0/8WTs79yIDqQDaFHzRnY4+
+         JaF/w8Y3OVHZn8V0Hd6YE4YLTsk7+Gmjj8hlmzbubkbhqHVLiFluoC1iBNQkt8VBgHfY
+         y+iw==
+X-Forwarded-Encrypted: i=1; AFNElJ9T13aWNdejK7o+RQfrt8vET+5yOJcmAjvKHZ8jGZof6ttF/EZb7NGiArQcogvBRulTXKYfPPY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwztSwPEXdHDLxjO+Gz51ohgOuTJUxe3yyyw+kghXtIQ6p6tgS7
+	LywgCH7iZ5f05/sk0poagZ5be1qjZ86KA/mLXg2pXwbZR8cxLD6SM6eS
+X-Gm-Gg: Acq92OHBER7TDwaZdszrqjKJjK6SBuEqMxPjl1IhIrqBnnN+Zk3LKTMAgqBuEHJ49tF
+	vCdRN1aBv62vL6NeU+zY83ffkPAE/3xXuQVmmMwbfnPUK2IJCEykykTUfS3PBl2T70zOeVNHYf5
+	pGbroZCBibRhB8IORxYCL/8bBNbZwjHJLkmV1DOtzKB2AaaOhs+P52J/QOw2StsKkUQ0i5fGZsh
+	6nl5JCuXFvNtdiCAWBO2/gVxVDQzP6JFRnZRI+wgajAi5s/+VRaK78bQYl7nvsEDMTXm0hJth0l
+	yFQFoOInuZc1BkQPEB4eweMVwW5guX/lW3PsKtLGAVxk1qBZTT5G86i76/EhY5swsBxeHJIfSHU
+	3lKXc0PHhrCuad0cLCvQo9vuDGSnjtWoc+IrUs0llNCLSBvbx9MnaLHphfKLqzUJAyueYrQZwbf
+	5AlN7S+Q7i0iypGGa6aKFi9o4OE75nW3BhtbXqHsLf9GF0Ge0sxsZ6x5KYZ3FEG0OKIbmcPToP9
+	DBWFb0UthxDiD3PrC0iPpnOdwg658801L2QD3pe+LnL9H0=
+X-Received: by 2002:a05:600c:8285:b0:490:b1b8:95f5 with SMTP id 5b1f17b1804b1-490c25c2ae1mr335052495e9.15.1781003607911;
+        Tue, 09 Jun 2026 04:13:27 -0700 (PDT)
+Received: from cedric-laptop (2a02-1810-cd14-9200-1667-23af-a166-4689.ip6.access.telenet.be. [2a02:1810:cd14:9200:1667:23af:a166:4689])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4601f2f67c6sm58920642f8f.16.2026.06.09.04.13.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 09 Jun 2026 04:13:27 -0700 (PDT)
+Date: Tue, 9 Jun 2026 13:13:25 +0200
+From: Cedric Jehasse <cedric.jehasse@gmail.com>
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: cedric.jehasse@luminex.be, Andrew Lunn <andrew@lunn.ch>, 
+	Vladimir Oltean <olteanv@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Simon Horman <horms@kernel.org>, Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Luke Howard <lukeh@padl.com>, 
+	Marek =?utf-8?B?QmVow7pu?= <kabel@kernel.org>
+Subject: Re: [PATCH net-next v6 2/2] net: dsa: mv88e6xxx: add support for
+ credit based shaper
+Message-ID: <jrilirqhtwwuso7pzhh223g53whwyahtp3chwjrj3gf5o5vpvu@g3uwjlariagf>
+References: <20260604-net-next-mv88e6xxx-cbs-v6-0-b68c01142d1e@luminex.be>
+ <20260604-net-next-mv88e6xxx-cbs-v6-2-b68c01142d1e@luminex.be>
+ <455e779c-9d13-4f9d-9cf7-3b639e665743@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="utf-8"
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <455e779c-9d13-4f9d-9cf7-3b639e665743@redhat.com>
 
-On 2026/6/9 18:02 Sun Jian <sun.jian.kdev@gmail.com> write:
-> dev_map_redirect_clone() uses skb_clone() when redirecting a generic XDP
-> skb to multiple devmap destinations. The cloned skb can share packet data
-> with other clones.
+O Tue, Jun 09, 2026 at 12:05:41PM +0200, Paolo Abeni wrote:
+> On 6/4/26 3:44 PM, Cedric Jehasse via B4 Relay wrote:
+> > @@ -5679,6 +5686,27 @@ static const struct mv88e6xxx_ops mv88e6393x_ops = {
+> >  	.tcam_ops = &mv88e6393_tcam_ops,
+> >  };
+> >  
+> > +static const struct mv88e6xxx_qav_info mv88e6352_qav_info = {
+> > +	.rate_unit = 32,
+> > +	.rate_mask = GENMASK(14, 0),
+> > +	.hilimit_mask = GENMASK(14, 0),
+> > +	.queue_mask = GENMASK(3, 0),
+> > +};
+> > +
+> > +static const struct mv88e6xxx_qav_info mv88e6341_qav_info = {
+> > +	.rate_unit = 64,
+> > +	.rate_mask = GENMASK(15, 0),
+> > +	.hilimit_mask = GENMASK(14, 0),
+> > +	.queue_mask = GENMASK(3, 0),
+> > +};
+> > +
+> > +static const struct mv88e6xxx_qav_info mv88e6390_qav_info = {
+> > +	.rate_unit = 64,
+> > +	.rate_mask = GENMASK(15, 0),
+> > +	.hilimit_mask = GENMASK(13, 0),
+> > +	.queue_mask = GENMASK(7, 0),
+> > +};
 > 
-> If the destination devmap entry has an egress XDP program, that program
-> can modify packet data. Such modifications can then be observed by other
-> clones sharing the same packet data.
+> Sashiko mentions that the above masks are not consistent with the switch
+> datasheet.
 > 
-> This can be reproduced by strengthening xdp_veth_egress to configure a
-> different source MAC for each egress device and checking that store_mac_1/2
-> observe the MAC configured for their own egress devices. Without the fix,
-> the SKB_MODE subtest observes store_mac_1 receiving the MAC configured for
-> the next egress device.
+> I'm quite surprised the LLM could check such fine grain detail, could
+> you please double check if the comment makes sense:
 > 
-> Fix this by unsharing the cloned skb before running the devmap egress XDP
-> program. Limit the extra copy to destinations with an attached egress
-> program.
-
-Hi, Jian.
-
-This sounds like a good idea in this case. When I have a look at bpf_clone_redirect(),
-I found that it use skb_clone() too, which means it has the same problem. The
-data can be modified by other xdp prog in the destination NIC if we use
-bpf_clone_redirect().
-
-So maybe this is the default logic, and I'm not sure if this patch can break the
-existing users :/
-
-Thanks!
-Menglong Dong
-
-> 
-> Tested with:
->   ./test_progs -t xdp_veth_egress
->   ./test_progs -t xdp_veth
->   ./test_progs -t xdp
-[...]
->  
->  destroy_xdp_redirect_map:
-> -- 
-> 2.43.0
-> 
-> 
+> https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260604-net-next-mv88e6xxx-cbs-v6-0-b68c01142d1e%40luminex.be
 > 
 
+The datasheet i have doesn't mention a QPriEn bit in the QPri Rate register,
+that bit is marked as reserved in the datasheet. That comment doesn't seem
+valid.
+However, reviewing this i've spotted a mistake in the hilimit_mask for the 6341.
+I will fix it.
 
-
-
+Cedric
