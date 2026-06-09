@@ -1,225 +1,134 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37E30421F0D;
-	Tue,  9 Jun 2026 22:07:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.8
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781042866; cv=fail; b=ty+McpjYrsbnfz9ikqYusoxxzunR97tMsyuUezAQK8hR82umOU9TuW9iflKxt21t6lVfPKHrwGh54ZFBaqeFik0FEzNIBR6xBPIE/BLKPbj9XY4mi39ifQ/wdRtU94YHxzrYBfmw9L9hLNHWnIDq1eYdCxXcXTBtcjbK/+THp60=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781042866; c=relaxed/simple;
-	bh=QHC/RZZZ1pjq/A1jWWQ3GT6X3ToyIWmk9lg0BnANB8E=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=lgF2FnuakoYWWV2q/TjOhv9f1YFrqACFCFJGCATRpUqO/iJe1INHAWBtyFvjT1YhTXQwIOBkw3p8D9njsdsBNl93CnolV9x9leBqoiVvin3DV4jgNIsTylsqktrWBbvfNwnzTN739HTZEOLt+X5VVWM/MIhA3DR9Us97PEP3KRM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Xy8cTl0E; arc=fail smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99E0B40D58C;
+	Tue,  9 Jun 2026 22:09:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781042994; cv=none; b=Y7kjwGADViHJUgK0ihXc7sVtFBG9xAcrR86dEa9SYWIK+GivkAEUu+Xc069xrpBn4afmiOQFWE9SmGgZZgckK2IQ8vMrKIO5rCWAACsd6REJh43ziTuevFTcqaSuxml6099H7R+vaVStKKptOM2OZiMr1vb1vdoZ0Mn8ssg7VLI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781042994; c=relaxed/simple;
+	bh=aGX43GLxABFD4Cw0kwGvpjCU9UIDXIDWToEW4v4zKAg=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=WhjKXbZ1zEHaQMEVxA1JJTgNz2ysKUcJa/6oCuYEVxemfhjR3KH8L3QYblW3iSWHI153/g4/NRO0we8F8ccF8o2lL2mTQmrCYXRg/yoJHODEivX6sSuB2sV0s1o1lxxu/8A2BzzW6axxWnAjWArTvIYsIylky+0s8aLsHryGbiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KacxR+J1; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Xy8cTl0E"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1781042864; x=1812578864;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=QHC/RZZZ1pjq/A1jWWQ3GT6X3ToyIWmk9lg0BnANB8E=;
-  b=Xy8cTl0EGhEiaxzZ9d3VtjtnKa5UFNnlSh+6z43dVChDu7e4RTApkkuc
-   b7kHZVOIWwbERVqTsQzjYl1QOO9gpwvj/TLZdHvqeHlueFP52w5vRkQSd
-   w4OfvF0YooYpWluB5EBq4ZxtGo89ofB6RI0mQvIT5BYK/QTBedRDQy+R3
-   sUqdq2laeWlGfHUe0cz5YynP6/RamOH7jUukzgHCSHwvRXUTqDjPemOYJ
-   97jlbcgrHiLTzEVQd9lH+Yyq/weV6WPmlWdsLzn7HabpESn1LD+5csys1
-   7zUUOTuSzUcgcluh9/etV7VhaCBF42wAHel7l5j+Mnk7UWZ0lITg2IleP
-   w==;
-X-CSE-ConnectionGUID: xndoit0YR2GEUasYH1Tcnw==
-X-CSE-MsgGUID: z2vE4fDmRKG9zQ3SKOsFtQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11812"; a="99398194"
-X-IronPort-AV: E=Sophos;i="6.24,196,1774335600"; 
-   d="scan'208";a="99398194"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2026 15:07:43 -0700
-X-CSE-ConnectionGUID: RN6QRyinT42q/tbQG4nrrQ==
-X-CSE-MsgGUID: NkOTA+MaReOggm1B2WnGIw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,196,1774335600"; 
-   d="scan'208";a="247838379"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
-  by fmviesa004.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2026 15:07:43 -0700
-Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Tue, 9 Jun 2026 15:07:42 -0700
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Tue, 9 Jun 2026 15:07:42 -0700
-Received: from DM5PR21CU001.outbound.protection.outlook.com (52.101.62.2) by
- edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Tue, 9 Jun 2026 15:07:41 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=IB61L0h0xEYmx4aM3eX8z0L3zvacK9LOc9cqRvc8pNbSshKKL/sepnqXHfZAoA5zDXgfPJy5Lew9GLlwZUwDHj3gWikYU0WU40yxwfpSJRo7QjlbSG7MR3i/xmIiJTTe6cWWOk8elRlkXiuV4biabNuCQSIA39pw0hXQlVB7p+V0ELYxuMcs3sJp178xm2VYNNQQ4zL/AzWsI12x4Q4q/ylufpe+Y9v+dp92sJwl5uV+P2Vo7jlEtxIJvvpGRhckvRF7oPEBBGcNUTz3e1vtPcneXRcYF1s8jxf2tIxH15htu/s6eqCnjvvQFHJrcHww3t+jBU53vzATw4rjOurU2Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rif3U0pXWv7g6kKf9i72N5SGdr7I0k4o5s9oDgqIHno=;
- b=Fij8GAMi3/1ylteC4bRcnlZjM/lTwbG1d9dOOvNaPYM8ksbK5g3BdG4JIOXPNejD5O/tXjGM6m4XWgIcZPvtUb08R8afUcoEKY/Wh7JpjQaf7NEH/5YPEVRbFNRcYdDW00TWsLIuZBEex5bFNHnQOaIe+zbmTroZeZgawreuMfXDZgLGxXYuFZUOXjtpcsQLdotcjVKg9hvqrJvrxVuYCnX1pmu3c66CYle4scuvtJmo4xsay/8Nnc2j2hsY4vGLkwCtkqs95XnBGyx0z4c8lg4kATOZq8NTFZe095k1XTRQeS+M6xo8Z3celHehl19+uWHUtBUU3GAIyTstc/9sPA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS0PR11MB7381.namprd11.prod.outlook.com (2603:10b6:8:134::14)
- by DS4PPF64C459891.namprd11.prod.outlook.com (2603:10b6:f:fc02::27) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.14; Tue, 9 Jun 2026
- 22:07:40 +0000
-Received: from DS0PR11MB7381.namprd11.prod.outlook.com
- ([fe80::4c39:dfe6:d6dc:6f58]) by DS0PR11MB7381.namprd11.prod.outlook.com
- ([fe80::4c39:dfe6:d6dc:6f58%5]) with mapi id 15.21.0092.011; Tue, 9 Jun 2026
- 22:07:40 +0000
-Message-ID: <53959e5a-1e9c-482f-ad4a-595e576c5ba5@intel.com>
-Date: Tue, 9 Jun 2026 15:07:36 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net: ibm: emac: mal: fix potential system hang in
- mal_remove()
-To: Rosen Penev <rosenp@gmail.com>
-CC: Jakub Kicinski <kuba@kernel.org>, <netdev@vger.kernel.org>, Andrew Lunn
-	<andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Eric
- Dumazet" <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Jeff Garzik
-	<jeff@garzik.org>, Roland Dreier <rdreier@cisco.com>, open list
-	<linux-kernel@vger.kernel.org>
-References: <20260603230821.5619-1-rosenp@gmail.com>
- <f49d5ac6-ef78-4530-a420-d94e612581aa@intel.com>
- <CAKxU2N8oh03r2-zJhbOXF0Qqx7RzNSX=zq+i6Ld1c9YXJqDfKQ@mail.gmail.com>
- <20260608173638.74da73fe@kernel.org>
- <4575ae96-2084-4f96-8260-5025fd1ea7f5@intel.com>
- <CAKxU2N-0RnWV_BxQMX=ofcoH947L3icyKqReO7rf_4Q8tO2CSA@mail.gmail.com>
-Content-Language: en-US
-From: Jacob Keller <jacob.e.keller@intel.com>
-In-Reply-To: <CAKxU2N-0RnWV_BxQMX=ofcoH947L3icyKqReO7rf_4Q8tO2CSA@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MW4P223CA0009.NAMP223.PROD.OUTLOOK.COM
- (2603:10b6:303:80::14) To DS0PR11MB7381.namprd11.prod.outlook.com
- (2603:10b6:8:134::14)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KacxR+J1"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 62B73C2BCB4;
+	Tue,  9 Jun 2026 22:09:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1781042994;
+	bh=aGX43GLxABFD4Cw0kwGvpjCU9UIDXIDWToEW4v4zKAg=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=KacxR+J1UdY18lxKFc6V9u5KWLyh7o30Q5jNVTGILQ2bXBuhAbDYnNVn1oqciC/p6
+	 LSdEk5p2fRA2IibFElbY2nf/jt3OWT+bgWITdK0NEs5GukQvgVhcLJJrfEnK22d3Pa
+	 o9dCrFKIzbchGtILEfALjgd4VXyPHCUqJx2FUWJR/r+fgGvSOve7/GBJOD3LaCv8pb
+	 4IZs9TjZVH1wZzfmgfyr2GAKlJywAjlxYoAGoyD/V7QdrdtUxSdx99+PwRtMMarALC
+	 nb8ScAM8pzMmiVxv1vLSqS13Z8DQhunJXgwfDNJJi5j4e/MM9jc7s952xwwhp6dl/5
+	 50oPmjhuKn2Jg==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 46BCCCD8CB2;
+	Tue,  9 Jun 2026 22:09:54 +0000 (UTC)
+From: Simon Baatz via B4 Relay <devnull+gmbnomis.gmail.com@kernel.org>
+Date: Wed, 10 Jun 2026 00:09:24 +0200
+Subject: [PATCH net-next] tcp: tighten the FIN exception in tcp_sequence()
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR11MB7381:EE_|DS4PPF64C459891:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5a54d1d6-19c3-4c5b-5697-08dec67385a9
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7416014|18002099003|22082099003|56012099006|11063799006|4143699003;
-X-Microsoft-Antispam-Message-Info: /1oer6ZXsq8rp0HA/aZAG2qe5E90kJbAHY0bIXReH8IdQFCLBytX6i77Y/F+9rEw/uFAKE/SQ2HpkSkSpWvcXqzQA8N0AA9yK6waTXH9j+QwmLTqY0Tje09zB2Ko8QYBYy0j5MjbO2uPtysUaKZm2mieEL0EOWJGaGDc18tJRii8lwWUkqJWWMjvUaCzAXWYC0tzOIoyV6MdHiBdW2kSyS7OHvXmI1NlU3oufkeouJHHRpPXKx7Gav4L7uz3zcY0jy7ayKmfRMxcd/9U+SnhEcBWqbRV5SOBFbHFr2GjbPOQ7ULfBRMu/Z2b1OXakTyMm2vMOnmJzRVWs2FeKBESnXLeNiqzzagjRobT+A3YV1SY86i8FQngg0jNNSAhQQAnH08ZOeEiWDNcs83yxTWc6zBGxtGdUtabaNprdeAkYkvv+peIZH2YIUeWz4uHnDyCZ8wJ+NQPHpbWcGnRGD81nFK5fnJZuWeextELtOZoMDa6226qYxywAL+xxY08fqiS865GT0MzD2bHj0SQOUnmt6bL3ywc2b31T3Uty4Bz8T0YtFJxkNkcVTv/oQqavHzFW4Auc9uQpcyuqFlvxpeVpoGkWtxk6lfAaPcp855U2TAaQ1Vtp7OrJyS6fckkGXxOlQEWD3r2Lppd1oBcLJK5MPo7xbLOQ03a+MIDHvsrjwEYAVEHFnxZ36KDFD82Yy1ZWhEpOnaFb59ZO3WvwZzBfw==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB7381.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(18002099003)(22082099003)(56012099006)(11063799006)(4143699003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?MGFBc2szWTdYN2gyVDcrK3VTRkdEamhtNnorR3RWMzRJVlFlSDNVdGsxTDdK?=
- =?utf-8?B?TjZGVmV1ZjlFUUNLRVFKYmw0QmZrNk5nY01ZYXpMa0IvaE5HWjhEMmRnNXg5?=
- =?utf-8?B?T3plZlU0eHBPL0hXMXk4aE5KZjN5a05HbGp5VnVkWEZFUHVOclJ4Zm5kclNZ?=
- =?utf-8?B?ZzVMQUkzM0l6MTNhR3lYM05wMTZLS0VBRXlqeFlBQkxhbVFCZ1VkMzVBa0lL?=
- =?utf-8?B?T0pJSFZ1LzhVZWFkb1RuS1MzeWRCd3hIY1o3MFFKUDdZYnBxYnR0K25CN016?=
- =?utf-8?B?dkU0TU9yYXZOVlgwSUEvTVpWL3E3eC91SFNJSjNJbzA5OEIwQ1J2azMxYngv?=
- =?utf-8?B?WjVQUkozcDdEQlRYZlE0dHFUMitUUmZuNkFhUW5hWGNwUlExMUdCTk1zeG5R?=
- =?utf-8?B?R3J1TjllQkdGZE9SY2xYQWlRazl4VjJJb0FxcUc1YTZGRGZHaDliZzB2UlB0?=
- =?utf-8?B?Rm1qZlpkNm1uWVRmN0J2cDRkNEJsWW0ycXVFNXNwQ3dlYmxYVWJXRXM3bHcy?=
- =?utf-8?B?ZGFKcHk2YnRUd200VHIwbFBIeVN6S2JFUGV2UDhDQUc0OUxadUdGbTlXYXZx?=
- =?utf-8?B?L1k5bEVRUFpzM29qa1RxRUg5Q0xVT2dWM1gzVllZaXg0NHd4Mit3SmNPc3lM?=
- =?utf-8?B?clFadC9GZWJPNDVlcllwTitycFk0WkhHdEp0MEFFb3RmSHQvUnhYR2trZ3B0?=
- =?utf-8?B?OEx6L3BJMW9JdWJTUUdjYzN2K0tBOEl6Y3dpNmZrMFJxSUtRdFEzM2liNjR2?=
- =?utf-8?B?czF1NXVWdE5UT1lZQ2dCc2R2dXE5d0ZDTk1vaHVOY1ZEVVVpNHNrZlhwNkF6?=
- =?utf-8?B?OFJuQ3ZpcWxkMjhDdk9qNGFYK3Mxa0xqWTFDOE1HSElJSnVxaDBwR1pNd2xO?=
- =?utf-8?B?dVpLdkhtcnNZSEw1Y1Znd2tIcnIvU1B5RFhyNUozUWoxdCtLTkplVUxvM2x4?=
- =?utf-8?B?YmdiLy9ZMXhLMU9Jd004b3JZTzgzQnV2TkJuVnVUZnUrWnNpOGVQNUFhTkJ3?=
- =?utf-8?B?LytEVTFISk1aYit6SHpMOHpTSHlQR1ZvQ0QzSHEraUcxcGl6VzJzTTNPZEls?=
- =?utf-8?B?ZmROTXE1dDBGREJBazY2TG9yOTBjYXlkQUNaZ3hYNVN2NFhKbnMrZ2dpNHI0?=
- =?utf-8?B?RGQ0WU1EalJibkU3V1gwdXRyYTh5TDYzY2lPcnk5cC9MTGVkZE05OEFQZ3pp?=
- =?utf-8?B?eDVOMURTdUtHM0VoYXZVcnlIUytRWWVTTklZSG82T3VxZGt4RlZZc21JbURo?=
- =?utf-8?B?bm9rcjVRYUxCYWRKekdYcGVxRXR0WlVSVVpsQnljZ3FyUXVOYkd0aUZDYlR0?=
- =?utf-8?B?ekR2ajBCbGpzMkZML1cvNWZEb2MzZnJ6Y3lnZTdtS0dCRVlEYlNJZmRFM1NF?=
- =?utf-8?B?RXJaN1hubndnenhYYyt1WWFyOFhnSFhwdy9wdnJyME40TUNRb3J6S0lkRG5E?=
- =?utf-8?B?UWJaNkNkS1VpY3c3NVBQSjJhaWJQVnVkb3hGYjRIRHJMYkdENWlHcGRuVTlx?=
- =?utf-8?B?aDRwNFNVMzRYR0MzSnRNTkpvaFdoYlE2QVFuUlV6ZVJ1alR6ekYwWVd3ZUMv?=
- =?utf-8?B?aGpxT3o0NnZ2aTZObzcvbVB0NU1Oam9mTUljcVROcHhka0I3akJaSlJmeFFT?=
- =?utf-8?B?UnJXWXBmRm1pdTlOeGNyZjlkZ3dnWDNMR2c3eUcvQkZnNTlVQ2RhT3hnQU9j?=
- =?utf-8?B?VXZDam50aDU4NnpWWk4zL1ZNK05lbnJNWEFQWkZ6VmpVWUdESmgwSE0wNVlG?=
- =?utf-8?B?Wjg5U21OYjlhU0lUcUVUWVJFNklueHNENkdUMXFTM2ZvUXpnRXl1L3N3enoy?=
- =?utf-8?B?eTF0Q1VSTXdUSndaV2pLNVFGcTF6VWsycElrcVg3aHhqWjI3SUdWRndJZ2J3?=
- =?utf-8?B?NzhaUldxMW5FWmVXSENidFRuUVBkajJ1YkNnOUEzWk55bGFHcmU0NmZmR05x?=
- =?utf-8?B?Z3M1MHhPSjVqcFdUYzZOZWZiNDVLVTg0V0ZmZ1FRb0orVUVLZ3JhazhRMGJ2?=
- =?utf-8?B?RHJEZnBvYm1pdnVVbUhwemZLU3ZhZHdBc0pjNVE1K3BHdHV1NXBsWTdFR1F1?=
- =?utf-8?B?WWdvTU5JN01iR09zRmdONnhqckI4U2s1cEU4OFNWY3J2NTNDMUJybkJzQlhj?=
- =?utf-8?B?YmVmUUJKM2tZR0c2U1IzL0YzT2VpRFpXVGN4eFFFclFCZDF1SGpML2FZVExM?=
- =?utf-8?B?a1dDQi9BcjVjSXZERHR0b09iRjNwc25UTGhXUU5NUmlYeThuMDdUVFhPMEZ1?=
- =?utf-8?B?bkJ2M1FtME14Yk5sdjREVFlkZXhNZG5oUnlxSmNRdmNHNmNSaG1QK1ZqM1Ay?=
- =?utf-8?B?WmgxYjZmb3BUOE1JQ3RDOHNaa0RpNWQvSGN3R0dEcVNLY0pEVUI5dz09?=
-X-Exchange-RoutingPolicyChecked: XSIVu26uedCkwmm2KD2cwWQ+6+gyxnbti6xqG/1xiEMCOgc3YWv11ppwFBNoDIHWSAWnUIKUedD+YtBrHxMfurU4Bn7iUT/kasQcQbNfVSZYF6oxvY99vT4vVS8LSrNvL0qNsYNtJjfgZTWRhV39EPhkNrwtgwbhQ9sPpFBlydTZ+kMBE74fnr7vMxKF3PdeuGXY7YdlUK/DmwTFAF1EE2MLQocIJLdmpOGTIwBSH6qHRZXYwVV6efnkZf1LRu8yreqCkkoTXq/U+CMq7fCV5fOSRJFcMuYGq+ucS/FZz15VibDreRooOzy7QPDp3et9APdxs78VWuhZ2GoXSCB5Nw==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5a54d1d6-19c3-4c5b-5697-08dec67385a9
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7381.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jun 2026 22:07:40.0487
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 8V5ji/cKQ4ayPd3NmIYtg7CAjS1KQIykTrkCstL70Dm6LTYyyfZR6qL1ef2B5F7hnPHobBlJeTwKtqNp923Pv77j2PaKNI3y9Jlx93+vqJA=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS4PPF64C459891
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260610-tcp_fin_more_restrictive-v1-1-eefc30d7ddd8@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MQQrCMBBG4auUWRuIhcboVURCHf/qLJyWyVAKp
+ Xc3uPwW7+1UYYJKt24nwypVZm04nzriz6hvBHk1Ux/7FFO8BuelTKLlOxuKoboJu6wIw5NzzMg
+ XTiO1fDFMsv3Xd1J4UGxOj+P4AYwg7It0AAAA
+X-Change-ID: 20260609-tcp_fin_more_restrictive-5bc808e87c6a
+To: Eric Dumazet <edumazet@google.com>, 
+ Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
+ "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Simon Baatz <gmbnomis@gmail.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1781042993; l=2714;
+ i=gmbnomis@gmail.com; s=20260220; h=from:subject:message-id;
+ bh=HFJpmhvgg3ixgB987Rc4iByrE21jxx8pxIpyevnMWns=;
+ b=oPIv0XjKVR3yitOO56CyKcAknTDLI7cGqko7IbwwKp6boB19KAYKEyY8XjItrgE8aABtGgKCQ
+ uY0fEuvtzRFBwUZexKYbxD5T480b4rYFou8IYtfVDKh8r+IH0b2Qj74
+X-Developer-Key: i=gmbnomis@gmail.com; a=ed25519;
+ pk=T/JIz/6F5bf1uQJr69lmyi7czVG+F9TVZ/8x5z9Wtqw=
+X-Endpoint-Received: by B4 Relay for gmbnomis@gmail.com/20260220 with
+ auth_id=641
+X-Original-From: Simon Baatz <gmbnomis@gmail.com>
+Reply-To: gmbnomis@gmail.com
 
-On 6/8/2026 6:51 PM, Rosen Penev wrote:
-> On Mon, Jun 8, 2026 at 6:14 PM Jacob Keller <jacob.e.keller@intel.com> wrote:
->>
->> On 6/8/2026 5:36 PM, Jakub Kicinski wrote:
->>> On Thu, 4 Jun 2026 16:03:43 -0700 Rosen Penev wrote:
->>>>>> -     if (!list_empty(&mal->list))
->>>>>> +     if (!list_empty(&mal->list)) {
->>>>>> +             napi_disable(&mal->napi);
->>>>>>               /* This is *very* bad */
->>>>>>               WARN(1, KERN_EMERG
->>>>>>                      "mal%d: commac list is not empty on remove!\n",
->>>>>>                      mal->index);
->>>>>
->>>>> This one doesn't make sense to me. The list_empty check does a WARN()
->>>>> indicating that this is not supposed to happen.
->>>>>
->>>>> This implies that list_empty should be true, otherwise we'd see a WARN
->>>>> every time mal_remove is called.
->>>>>
->>>>> But in that case, we'd have been calling napi_disable incorrectly in
->>>>> most cases where it was previously unsafe according to your claim.
->>>>>
->>>>> At best, this list_empty check is the wrong way to tell if the napi is
->>>>> disabled, at worst, this whole change is pointless.
->>>> I asked the AI. It doesn't agree:
->>>
->>> FTR I agree with Jake, the patch seems to indicate bigger structural
->>> issues. Then again I don't want to encourage the stream of patches
->>> to this driver so let me just apply this..
->>
->> I don't see how applying this discourages the stream of patches?
->> Wouldn't that be encouraging?
->>
->> Or I guess the patch "does" fix something (an extra call to
->> napi_disable) and you don't want to encourage a raff of future changes
->> to try and fix the overall structural issues? I guess that makes sense.
->>
->> I still don't follow how this fixes
-> I don't either. But runtime testing shows it to be an improvement.
-> 
+From: Simon Baatz <gmbnomis@gmail.com>
 
-If you have runtime testing to back this up, then please ignore my
-objections :)
+Commit 1e3bb184e941 ("tcp: re-enable acceptance of FIN packets when
+RWIN is 0") added a special case in tcp_sequence() to mirror the FIN
+exception in tcp_data_queue(), which accepts bare in-order FINs even
+when the advertised window is zero. That behavior is not
+RFC-compliant, but was introduced in commit 2bd99aef1b19 ("tcp: accept
+bare FIN packets under memory pressure") to break tight FIN/ACK loops
+caused by broken clients.
 
-I think I'd be happier with just the removal of napi_disable from
-mal_remove(), and not trying to modify the list_empty WARN block, but
-thats only because it does seem obvious that the existing napi_disable
-shouldn't be called there (as it was called when the last item was
-removed from mal->list).
+However, the condition added by commit 1e3bb184e941 ("tcp: re-enable
+acceptance of FIN packets when RWIN is 0") is broader than required
+and allows other non-compliant packets as well.
 
-> Anyway, it seems various subsystem maintainers want me to fix
-> pre-existing issues reported by sashiko.
-> 
-> I also got this feedback previously:
-> https://lore.kernel.org/netdev/20260107185605.7932173f@kernel.org/
+Tighten the tcp_sequence() FIN exception to only allow packets where
+the packet is a bare in-order FIN and only the FIN flag extends beyond
+tcp_max_receive_window(). In particular, this exception is only
+reachable if tcp_max_receive_window() is zero. Otherwise the packet is
+already accepted by the normal sequence check.
+
+The existing packetdrill test tcp_rcv_zero_wnd_fin.pkt exercises this
+behavior already and does not need to be changed.
+
+Signed-off-by: Simon Baatz <gmbnomis@gmail.com>
+---
+ net/ipv4/tcp_input.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
+
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index ab7a4e5435a8..1eddae246963 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -4812,18 +4812,21 @@ static enum skb_drop_reason tcp_sequence(const struct sock *sk,
+ 					 const struct tcphdr *th)
+ {
+ 	const struct tcp_sock *tp = tcp_sk(sk);
++	u32 seq_limit;
+ 
+ 	if (before(end_seq, tp->rcv_wup))
+ 		return SKB_DROP_REASON_TCP_OLD_SEQUENCE;
+ 
+-	if (unlikely(after(end_seq, tp->rcv_nxt + tcp_max_receive_window(tp)))) {
+-		/* Some stacks are known to handle FIN incorrectly; allow the
+-		 * FIN to extend beyond the window and check it in detail later.
++	seq_limit = tp->rcv_nxt + tcp_max_receive_window(tp);
++	if (unlikely(after(end_seq, seq_limit))) {
++		/* Some stacks are known to send bare FIN packets
++		 * in a loop even if we send RWIN 0 in our ACK. Allow
++		 * them here, they are handled later in tcp_data_queue().
+ 		 */
+-		if (!after(end_seq - th->fin, tp->rcv_nxt + tcp_receive_window(tp)))
++		if (seq == tp->rcv_nxt && end_seq - th->fin == tp->rcv_nxt)
+ 			return SKB_NOT_DROPPED_YET;
+ 
+-		if (after(seq, tp->rcv_nxt + tcp_max_receive_window(tp)))
++		if (after(seq, seq_limit))
+ 			return SKB_DROP_REASON_TCP_INVALID_SEQUENCE;
+ 
+ 		/* Only accept this packet if receive queue is empty. */
+
+---
+base-commit: 3abbe30231441f1fbb3305e9854c56a34650af53
+change-id: 20260609-tcp_fin_more_restrictive-5bc808e87c6a
+
+Best regards,
+-- 
+Simon Baatz <gmbnomis@gmail.com>
+
+
