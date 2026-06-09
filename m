@@ -1,183 +1,187 @@
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 341BB3EDE57
-	for <netdev@vger.kernel.org>; Tue,  9 Jun 2026 16:20:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 480EE3B42D0
+	for <netdev@vger.kernel.org>; Tue,  9 Jun 2026 16:21:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781022016; cv=none; b=CzvQasJp334FM3/qMFZiHlUJDOe4MujSdo/OGG5ninBq4gEdDDtfJijwZ0F4IguIsLK0YNJwgPCqE+e3rGVoSvdGscTWg6k3DeOZR8t3PLhP79tsd3xLV+ryH+momhVMGz8ndeyOmp2p8wJlSQKwgQeHDM+jtl41l20uHaI4G2g=
+	t=1781022093; cv=none; b=nHal/gNSjSo2sCa0YNID/zJPfkyG6Ye/VYkEvv5gZeRR872mHDgSVU7Dlt6hvTWtUij9k+x6/JnFX/3LEvk9UKtRmDQ05IPO8AewI6fU/3I75PkQHThkXZLkHHSa/bnN4Jkw+Ucj2AQTU6Fwj4ylKOaf90HauNPkH9qMdWgcvEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781022016; c=relaxed/simple;
-	bh=UBHcYZ64s+XEqC1u/+Yu/XPGxukz4KBbMfIL4HIH8B8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=lv7VIDKXMi8WGwpDO2jorRyYtp1F3vI3k8R96oJT833kfZ+ZiOQxRc+yLxN72DFQmK13BeonnJPJ/HIEgbcb9Ix125qZ2NfzRXjXYpAxgjgshiyUyjVTwYjlvqAQNaG9Fapb5PCqudLUrYqXf+2xW2FBG8ZatezcNs15yb3b/68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BPbQwVNX; arc=none smtp.client-ip=209.85.128.51
+	s=arc-20240116; t=1781022093; c=relaxed/simple;
+	bh=ck+WKCWpzacqctEB7DtAb1BlHqEq2My9/KWEZvH7PVI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=taTMpkl3ff1LEeE9fIZ4fxZ8C9la0HjdGqvXSB96KPIfqiJuhhZAcFSnihEPFpBhtyZlAF5ZDbX8icL89STYrK9rr+4sSpOoK6ekZUfRo8QR8rc8SaCWfH1T6JQbxRdUj/QGlkVl95QWIEhPkTKa8WBWQiOHGnaAX7qt4aLCPrE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nMsFDVsc; arc=none smtp.client-ip=209.85.214.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BPbQwVNX"
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-490b2b037d2so50608885e9.3
-        for <netdev@vger.kernel.org>; Tue, 09 Jun 2026 09:20:14 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nMsFDVsc"
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2bf77d4a4e2so35976955ad.1
+        for <netdev@vger.kernel.org>; Tue, 09 Jun 2026 09:21:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781022013; x=1781626813; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=uLbnKjJBElbO+83M+imgVwItrnVR6hDvTiuQTQU/vBg=;
-        b=BPbQwVNX4bvU7/71ONwU0J8C8QNcSWmSQ8oLQnBMLDhGWg5C+Y2bU2ZTV46MQDF02j
-         36YNZ9Cn7B+uiozaDsJzM4NeJWuO42+5ZJL4CfYMtBkNjaGj3YdHvH5h+Br4qKjPZXX7
-         YhkV7he2JlEb0xNtXh8vpta6Wy4Dyh/3uRfHmbZ/srA32OCftXrgdK+n19u+xWuK8r00
-         jUF/K2rpd07tFcKM81IvAd3czwM/7G/sN3TM+rSmKf+miOzgNZ9b6M+JUvsDjY4Wqtmy
-         q3eUUFBPQVVCg+2G1cBAXNQzrLc35zjGxqUgmIJ290kUl/l8OleMShxvFHaag3wVxu65
-         lgvQ==
+        d=gmail.com; s=20251104; t=1781022092; x=1781626892; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=hUkosP9gtBfCsOOX+JW45J6OLqM+uaRONOFyKMC8tmc=;
+        b=nMsFDVscdOPC/cCGHBwpKFmGVpRtv15z0n4gHPqC57apiWsTdyANk3JxMPvAeY6k4L
+         uWKPUr4ZBSyozWR9Ma3FXNmu02XqXMlSLyWv9OOkxEd/wVKqX5RGK3Jfe9Yfo68dPkq7
+         3ZK2Y90LNEt1whF8Myqt18hwGdNfqtwwDIpNus/mRK8sdHmbzIJwkBsQQjBHJIZXJEej
+         7kC+Gfo9HCh5lGP0EZI7FwUvHXtSQFIiw9YQqBQ5Ut9K7Vd0+OBRXdD14zBTApYAz2nA
+         ZSEmKiwlufp7y0CB+XcG5FHPltOMTLIRD99mTubvLKvhvdmD0xYv62LsMarF7Se34UH1
+         RTNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781022013; x=1781626813;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=uLbnKjJBElbO+83M+imgVwItrnVR6hDvTiuQTQU/vBg=;
-        b=rVaTCtrzqNZW+O7v11qmW4eW0/lsnjb9Cc6jgiOzChBGxry0GwZBzLwgBLS6kKFMnf
-         8fY8mMI9xmbnsFiD7AJdi7YNLVADyI9TeFy52VI4atbf9quI0gSniLNSYA6gLpY/KhyG
-         4OahoCPkHB1tXBtNxpTVylZUyrsTM0k+n4TcZj+fZ01elFqs6EVd5ydDkdkrWMxA6tSw
-         xcIPikyGEjgEsablpLu7IYBBk6h3JsM2qxuebALoY6jHLmfp6rKytQtP7EQP/qOAniHl
-         zYG4XcICCtiRkUkFjT1zlVfWTlazdBQv9MDtidPewBUi2tYEjyOsN4CC8e4Y7FQ7HaAB
-         GtQA==
-X-Forwarded-Encrypted: i=1; AFNElJ8TSGNg1yBrHwh5WEVG96TFFtt7W1ZHXYqP+7lEe9CtlLzeBvWOPoh/qH/07JEaq5ITojv5P+o=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwRX/HWeOgBdzD31j6IktJqLH2qnO1LTOujhjpo9CdW7Uph6JAn
-	1NX6u4han9Ef9TAddogaa9jfbtdf041lRR84iFNFitDCaozaVcEmEw+3
-X-Gm-Gg: Acq92OERbZvl5tLG8eo5L8O7sAPesKhgfIMQrzzqrnfaLv7Hd737HPNHjwuRdvop+rH
-	/GylV98aT+u7bQJyR9mhgvVa2aanaaXMaotDzRUzzspOAjHWUYjbApovm1WMiMY4oWOIJ+9fI6Q
-	aBcc2n31VEKNt1yehJq1uGauCQyaoS5IIHy+V5mfOsI2gl2efkrJUfzNbriW0vLvRvugs10he6e
-	uSIir0jD7FAuKRC1PH/5BVsYC5Z2aRyeP97zq3K2SlOttCZAahOQe64LhlzLGioOeGIpx7SFK+U
-	Cq95DMzUv8RoATGF0yEq2r658lcrmX3cle+BEievcxq6zx0aKByJb8wzCo+8bZoxuQfo8b9quto
-	LTjUqeV/jOdo9GSmtDoGNIXVtINiMFARZTaEfGGlqUbvmbNizPZV4/r4/j5QjoMHJd0QxKY06cA
-	ZDb2EwFoXCwLUw/BipGktZJ1cJPmdM0Y0aayCZq3ykstGa3BDLC+12ftgpp0AdVAOCcL4+8CR4o
-	QhH6MWoPyADo2XofeJg
-X-Received: by 2002:a05:600c:37c9:b0:490:adb6:7957 with SMTP id 5b1f17b1804b1-490c262dcb5mr339696835e9.33.1781022012581;
-        Tue, 09 Jun 2026 09:20:12 -0700 (PDT)
-Received: from [127.0.1.1] (cust-east-par-46-193-119-166.cust.wifirst.net. [46.193.119.166])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490bc391aaasm569116365e9.1.2026.06.09.09.20.11
+        d=1e100.net; s=20251104; t=1781022092; x=1781626892;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hUkosP9gtBfCsOOX+JW45J6OLqM+uaRONOFyKMC8tmc=;
+        b=Z8RYdZmRD1p3Ylq4Y1f3Dvg0eUJOQkXyM6ICjheSqT6KGC8+XbHkX8Pyqn7MOkpaXe
+         9ywlhli6soq8chs8vJ84GuFDklQn02RfHH9iEL1bpRLtiRtzeDtaTZr6LbyODgBKjJM5
+         fHkXM+mN1sBrHq8cpgALHrQT4xqkmYoE+I0zYaMvkvCDWelHng6wEHuCUm9Yt4AkW5qS
+         ym2bXe6A3v5V5UHxQPfV7hMR1b+nJBJ5SYa8L0CgZ+rGyC6BWRbD9dt7pt4OTW4Voiqr
+         K0QN0GdSlmoATFYrp0qyRMtWOz8ZvNne1X0jLXgXVFDZV13KmjcDvutHgYl07KQsIuyw
+         v/MQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+pqY3CnVO/V4wKio2tkSN/M641aZp3CmevYBxVdKpwvBStLT0J8yZ2wuQ+ti0rnSPYq1BoTqM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyFoTxTJnNvYmul8lti0oQTkdq/JEvX67diDx58hAnnbIa96Nxo
+	UOBR/zqmuPjO5Dt+MPVlOyS+35eXdZGa7aqAx3SjlM5aCcf9xk0qlrgc
+X-Gm-Gg: Acq92OGs9WTEb5PaCWbHInRuuzgKc+r5dlUkzSLtUxAPXmGjIMVpqpcUBd4KGVJCtl5
+	CS25R0uclNLrbQ4qYs/Zr9KaJ4SWxxfqqDXTek/a2a7vp3ORTGMl2teqibVfchxSmeCtkrXSj0s
+	aSWaK5DQtX/M9M+Ft3lz6H83SS8dcPISI5BGsqkKxBh6uD32WgrXqVQq0xs221UBRxiRGy8C+to
+	VWyrNHjTIW6QliuyGZ2qKlmsGuyedkmPmlDr1WoDWCNLkkjqRwqLvsP10QEdPx3+Dl+la/FS5bc
+	wJgxd2uZAvxSkdIaOxGUUsdCF+xjHxvvFfFoOnLrw9U6mejeOlOSowA1uV9zP2cOGDbwJgW3OX/
+	ObQBeo19A1Zl5O5SIVa0bdejr7LGO7GJQmwBX0zUEYc7yAYTZJpCfT17GT3Hg5e5EI6WUtby379
+	Ihw8bgNy6DREVQ9yvhzP6oeS1GPT7SH/jXgKWOY1+6+/BnS0F+0ZEEk8Ex9Xg1A5lCgZKjExS3q
+	ZQuKFFWqDdXIP/n7KQee3E=
+X-Received: by 2002:a17:903:3b8c:b0:2bf:361e:3edc with SMTP id d9443c01a7336-2c1ec3f61a1mr181204435ad.2.1781022091605;
+        Tue, 09 Jun 2026 09:21:31 -0700 (PDT)
+Received: from SLSGDTSWING002.tail0ac356.ts.net ([129.126.109.177])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c1663981basm216519105ad.67.2026.06.09.09.21.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Jun 2026 09:20:12 -0700 (PDT)
-From: Fidelio Lawson <lawson.fidelio@gmail.com>
-X-Google-Original-From: Fidelio Lawson <fidelio.lawson@exotec.com>
-Date: Tue, 09 Jun 2026 18:19:56 +0200
-Subject: [PATCH net-next v10 2/3] net: ethtool: add KSZ87xx low-loss cable
- PHY tunables
+        Tue, 09 Jun 2026 09:21:31 -0700 (PDT)
+From: Weiming Shi <bestswngs@gmail.com>
+To: Chas Williams <3chas3@gmail.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>,
+	linux-atm-general@lists.sourceforge.net,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Xiang Mei <xmei5@asu.edu>,
+	Weiming Shi <bestswngs@gmail.com>
+Subject: [PATCH v2] atm: fix use-after-free in sigd_put_skb()
+Date: Wed, 10 Jun 2026 00:21:08 +0800
+Message-ID: <20260609162107.2865310-2-bestswngs@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260609-ksz87xx_errata_low_loss_connections-v10-2-9ba4418cf3db@exotec.com>
-References: <20260609-ksz87xx_errata_low_loss_connections-v10-0-9ba4418cf3db@exotec.com>
-In-Reply-To: <20260609-ksz87xx_errata_low_loss_connections-v10-0-9ba4418cf3db@exotec.com>
-To: Woojung Huh <woojung.huh@microchip.com>, UNGLinuxDriver@microchip.com, 
- Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Marek Vasut <marex@denx.de>, 
- Maxime Chevallier <maxime.chevallier@bootlin.com>, 
- Simon Horman <horms@kernel.org>, Heiner Kallweit <hkallweit1@gmail.com>, 
- Russell King <linux@armlinux.org.uk>, 
- Tristram Ha <Tristram.Ha@microchip.com>
-Cc: Woojung Huh <Woojung.Huh@microchip.com>, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Nicolai Buchwitz <nb@tipi-net.de>, 
- Fidelio Lawson <fidelio.lawson@exotec.com>, 
- Marek Vasut <marex@nabladev.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1781022010; l=3007;
- i=fidelio.lawson@exotec.com; s=20260326; h=from:subject:message-id;
- bh=UBHcYZ64s+XEqC1u/+Yu/XPGxukz4KBbMfIL4HIH8B8=;
- b=/VxUEs27sUOA/D+N+2RdqtvQWtXaJWaH/h5Gqw15VqqeLlXtmsskq7s0RmcT6a5WqFBRpYNvG
- oN5D/ehoROzBnWP4Ih60UHRIJOXeIpMKLTf7LaT3ppx+o0wmf1yQrjm
-X-Developer-Key: i=fidelio.lawson@exotec.com; a=ed25519;
- pk=866eH9Bmmpjc+ctgkr5T1uXxBefZzob3tEEuiVWZ6BI=
+Content-Transfer-Encoding: 8bit
 
-Introduce vendor-specific PHY tunable identifiers to control the
-KSZ87xx low-loss cable erratum handling through the ethtool PHY
-tunable interface.
+sigd_put_skb() delivers a signalling message to the daemon socket named
+by the global @sigd pointer, ending in a call to sk_data_ready(). It
+reads @sigd with no synchronisation, so it can race with a close of the
+daemon socket: sigd_close() clears @sigd and the socket is then torn
+down and freed.
 
-The following tunables are added:
+Holding a reference on the socket is not enough to make this safe. The
+daemon fd close runs __sock_release(), which frees the struct socket --
+and the wait queue that sk->sk_wq points at -- via iput() once
+->release() has returned. sk_data_ready() (sock_def_readable()) then
+dereferences a freed sk_wq:
 
-- a boolean "short-cable" tunable, applying a documented and
-  conservative preset intended for short or low-loss Ethernet cables;
+ KASAN: null-ptr-deref in range [0x0000000000000188-0x000000000000018f]
+ RIP: 0010:sigd_put_skb (net/atm/signaling.c:65)
+  sigd_enq2 (net/atm/signaling.c:228)
+  sigd_enq (net/atm/signaling.c:237)
+  svc_bind (net/atm/svc.c:135)
+  __sys_bind
+  __x64_sys_bind
+  do_syscall_64
 
-- an integer LPF bandwidth tunable, allowing advanced adjustment of the
-  receiver low-pass filter bandwidth;
+Fix it on both sides. sigd_close() now calls sock_orphan(), which under
+sk_callback_lock sets SOCK_DEAD and clears sk_wq before the socket is
+freed. sigd_put_skb() latches @sigd with READ_ONCE(), pins the socket
+with find_get_vcc(), and then takes sk_callback_lock; it delivers only
+while the socket is still the signalling daemon and not yet SOCK_DEAD,
+otherwise it drops the skb. sk_callback_lock is used rather than
+lock_sock() because sigd_put_skb() can be reached from vcc_sendmsg() ->
+sigd_send(), which already holds lock_sock() on the daemon socket.
 
-- an integer DSP EQ initial value tunable, allowing advanced tuning of
-  the PHY equalizer initialization.
+The READ_ONCE(sigd) != vcc check also rejects a reused VCC: a caller
+preempted between latching @sigd and validating it in find_get_vcc()
+could otherwise match a freed-and-reallocated, live (non-SOCK_DEAD) VCC.
+This needs a concurrent (privileged) daemon teardown, so it is hardening.
 
-The actual behavior is implemented by the corresponding PHY and switch
-drivers.
+Triggering the use-after-free requires CAP_NET_ADMIN and CAP_SYS_RAWIO
+to attach the daemon.
 
-Reviewed-by: Marek Vasut <marex@nabladev.com>
-Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
-Signed-off-by: Fidelio Lawson <fidelio.lawson@exotec.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: Xiang Mei <xmei5@asu.edu>
+Assisted-by: Claude:claude-opus-4-8
+Signed-off-by: Weiming Shi <bestswngs@gmail.com>
 ---
- include/uapi/linux/ethtool.h | 3 +++
- net/ethtool/common.c         | 3 +++
- net/ethtool/ioctl.c          | 7 +++++++
- 3 files changed, 13 insertions(+)
+v2:
+ - Also bail when READ_ONCE(sigd) != vcc, rejecting a reused VCC that a
+   preempted caller could match in find_get_vcc() (hardening, no stable).
 
-diff --git a/include/uapi/linux/ethtool.h b/include/uapi/linux/ethtool.h
-index 1cdfb8341df2..a2091d4e00f3 100644
---- a/include/uapi/linux/ethtool.h
-+++ b/include/uapi/linux/ethtool.h
-@@ -291,6 +291,9 @@ enum phy_tunable_id {
- 	ETHTOOL_PHY_DOWNSHIFT,
- 	ETHTOOL_PHY_FAST_LINK_DOWN,
- 	ETHTOOL_PHY_EDPD,
-+	ETHTOOL_PHY_SHORT_CABLE_PRESET,
-+	ETHTOOL_PHY_LPF_BW,
-+	ETHTOOL_PHY_DSP_EQ_INIT_VALUE,
- 	/*
- 	 * Add your fresh new phy tunable attribute above and remember to update
- 	 * phy_tunable_strings[] in net/ethtool/common.c
-diff --git a/net/ethtool/common.c b/net/ethtool/common.c
-index 84ec88dee05c..a24d3a8a9ec1 100644
---- a/net/ethtool/common.c
-+++ b/net/ethtool/common.c
-@@ -101,6 +101,9 @@ phy_tunable_strings[__ETHTOOL_PHY_TUNABLE_COUNT][ETH_GSTRING_LEN] = {
- 	[ETHTOOL_PHY_DOWNSHIFT]	= "phy-downshift",
- 	[ETHTOOL_PHY_FAST_LINK_DOWN] = "phy-fast-link-down",
- 	[ETHTOOL_PHY_EDPD]	= "phy-energy-detect-power-down",
-+	[ETHTOOL_PHY_SHORT_CABLE_PRESET] = "phy-short-cable-preset",
-+	[ETHTOOL_PHY_LPF_BW]	= "phy-lpf-bandwidth",
-+	[ETHTOOL_PHY_DSP_EQ_INIT_VALUE] = "phy-dsp-eq-init-value",
- };
+ net/atm/signaling.c | 29 +++++++++++++++++++++++++----
+ 1 file changed, 25 insertions(+), 4 deletions(-)
+
+diff --git a/net/atm/signaling.c b/net/atm/signaling.c
+index 358fbe5e4d1d0..346fb969166e8 100644
+--- a/net/atm/signaling.c
++++ b/net/atm/signaling.c
+@@ -54,14 +54,32 @@ static struct atm_vcc *find_get_vcc(struct atm_vcc *vcc)
  
- #define __LINK_MODE_NAME(speed, type, duplex) \
-diff --git a/net/ethtool/ioctl.c b/net/ethtool/ioctl.c
-index bd97f9b9bf18..11d757ba1265 100644
---- a/net/ethtool/ioctl.c
-+++ b/net/ethtool/ioctl.c
-@@ -3114,6 +3114,7 @@ static int ethtool_phy_tunable_valid(const struct ethtool_tunable *tuna)
- 	switch (tuna->id) {
- 	case ETHTOOL_PHY_DOWNSHIFT:
- 	case ETHTOOL_PHY_FAST_LINK_DOWN:
-+	case ETHTOOL_PHY_SHORT_CABLE_PRESET:
- 		if (tuna->len != sizeof(u8) ||
- 		    tuna->type_id != ETHTOOL_TUNABLE_U8)
- 			return -EINVAL;
-@@ -3123,6 +3124,12 @@ static int ethtool_phy_tunable_valid(const struct ethtool_tunable *tuna)
- 		    tuna->type_id != ETHTOOL_TUNABLE_U16)
- 			return -EINVAL;
- 		break;
-+	case ETHTOOL_PHY_LPF_BW:
-+	case ETHTOOL_PHY_DSP_EQ_INIT_VALUE:
-+		if (tuna->len != sizeof(u32) ||
-+		    tuna->type_id != ETHTOOL_TUNABLE_U32)
-+			return -EINVAL;
-+		break;
- 	default:
- 		return -EINVAL;
+ static void sigd_put_skb(struct sk_buff *skb)
+ {
+-	if (!sigd) {
++	struct atm_vcc *vcc;
++	struct sock *sk;
++
++	vcc = find_get_vcc(READ_ONCE(sigd));
++	if (!vcc) {
+ 		pr_debug("atmsvc: no signaling daemon\n");
+ 		kfree_skb(skb);
+ 		return;
  	}
-
+-	atm_force_charge(sigd, skb->truesize);
+-	skb_queue_tail(&sk_atm(sigd)->sk_receive_queue, skb);
+-	sk_atm(sigd)->sk_data_ready(sk_atm(sigd));
++	sk = sk_atm(vcc);
++
++	/* Pairs with sock_orphan() in sigd_close(). */
++	read_lock_bh(&sk->sk_callback_lock);
++	/* Bail if torn down, or if the slot was reused by another VCC. */
++	if (sock_flag(sk, SOCK_DEAD) || READ_ONCE(sigd) != vcc) {
++		read_unlock_bh(&sk->sk_callback_lock);
++		sock_put(sk);
++		kfree_skb(skb);
++		return;
++	}
++	atm_force_charge(vcc, skb->truesize);
++	skb_queue_tail(&sk->sk_receive_queue, skb);
++	sk->sk_data_ready(sk);
++	read_unlock_bh(&sk->sk_callback_lock);
++
++	sock_put(sk);
+ }
+ 
+ static void modify_qos(struct atm_vcc *vcc, struct atmsvc_msg *msg)
+@@ -257,6 +275,9 @@ static void sigd_close(struct atm_vcc *vcc)
+ 		pr_err("closing with requests pending\n");
+ 	skb_queue_purge(&sk_atm(vcc)->sk_receive_queue);
+ 
++	/* Make a concurrent sigd_put_skb() observe SOCK_DEAD and bail. */
++	sock_orphan(sk_atm(vcc));
++
+ 	read_lock(&vcc_sklist_lock);
+ 	for (i = 0; i < VCC_HTABLE_SIZE; ++i) {
+ 		struct hlist_head *head = &vcc_hash[i];
 -- 
-2.54.0
+2.43.0
 
