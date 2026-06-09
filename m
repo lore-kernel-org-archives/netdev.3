@@ -1,250 +1,130 @@
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 046A53403E5
-	for <netdev@vger.kernel.org>; Tue,  9 Jun 2026 07:56:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.47
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780991811; cv=pass; b=CJbL++uqh8Zlu9V99jH/rFG6aQ+WAAfZK7AwEnVdzEj4JawlnFXWq3W8Dw3FzfhMDJ6b3R90OsCJzXBx+nyRw2klKHrkNgI865CwbGKJFpw6Hwkf+ON0AFBXnVsfi8c3+8CZJL24/NhW9f+3ngtf+irQDbjs2uDXNluK7tsLyPk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780991811; c=relaxed/simple;
-	bh=D/PjZZW3iigL2V46ozkn8FuHHslvndqsqplywR7ggLM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WQIe7gBDDYiVYhF8ZmhIw4RIlzt88J1/ZCskwy/5mf6cPuu18mlSAZMvlrBD2ptvLMiyAm6whHNmCbe/y8j9YgGavwJ3q0w1v/kF04tuKQg3qXwYgSKf2AWG0iH6R8qkl3ZvNgtIOBYdPgWRISZ3wKLbEbNmu4+A8rgNZHUo7Sg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com; spf=pass smtp.mailfrom=6wind.com; dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b=XBR59D0f; arc=pass smtp.client-ip=209.85.208.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=6wind.com
+Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [13.76.78.106])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47DE72D7DC6;
+	Tue,  9 Jun 2026 08:01:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.76.78.106
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780992115; cv=none; b=fcU1EkkGijvHWvvQtUSUJEcG5QFi/55SgQxMUmbel5X0dZcxZ755I2ajVcNsMwmytzLbNNBAdOuGw074IKncg7L3uL3mSBhiQwnoeaXyXfYc6p4mygMGoTe9OOBV7gTHeval6iR1f7vjwzvRyZHsZEiT9sFSVX6VJYd3ytI4OLU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780992115; c=relaxed/simple;
+	bh=GF/2fKS5++wTq9aTQx1jHjXP5ARLwa2s5AV5w0K2fpA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=flA56FHJxn24sui+V5RVMbtyggg7X1W8RrA6LGLR5vFNH6J+PS7tLyE8+8g1O/VzhNgc0lNhI2LS1Tqx6wmTmoNsoLBizOHWBHAv8serSi+H5eBzvlClpf5bakrh+b6YZeQnzomCEAtZW61V3bSxH9ljBZuI+ojDB24wjHE9fwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn; dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b=QlVBfVfQ; arc=none smtp.client-ip=13.76.78.106
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b="XBR59D0f"
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-68ca6f01079so6139024a12.0
-        for <netdev@vger.kernel.org>; Tue, 09 Jun 2026 00:56:49 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780991808; cv=none;
-        d=google.com; s=arc-20240605;
-        b=RERiMzlPI7IinS4Brgz0gIHFsGGJhjdBS+jnvEptZJ48Mx0S6Yidqv+PZ2plY6SpvG
-         ltNr69QpZwVSOPQEQr/xknihdRNEUCTV1nshgrFPHXgKmeP+rM/VkxdJ0ijloGEZVJus
-         T5VztklKIA39BmMrJFs8C1/a3BmvTsq52WRVE330/NCxa+CWwz8vPjx7+aJ1aZJlekMQ
-         9Kgan6xb8TXF3mz29eK2AdVE26B0/ehQyY2Tg5RwYL7WFioYFe9apHOlXqbzmugg3bud
-         qo3iDn0dyKHB/MKOCIs+uekOmLPAhzN0fSw/hjUSeHkHr/GHsZCxUCXBKftKefeEjIgp
-         YRHQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=qlXpqdSIvaDRYi3v4lu9lGZ3LDCxsAMCc0+aS5zAWNo=;
-        fh=mXilKxTJGDOPTefkyrsG8lNp05KyOGit73pQqKosc60=;
-        b=JHkY6fwl1KnHIhJ4qQbMuyBltffGgsPkkCiLroGdp3SE3J7c0VwJLLPwVzqswvqOYD
-         XBAAaYfLAZ3ddtMoHuNEkBVwhxTmzb2hUu/zteqPXEdw6aMNiQnkQ4bYVC3nw6bvIXM/
-         +0huyDo0x1w6Elv62VAj0n5qm6IAID3HuS8Lod1VOWLn6w/1d+0f1GDv4fNFzQ43mu+o
-         bux+8YYZnGwf/1XjnPuZx4nEQvCaGG4AqIMU6h4fa7hYTJNpsLZfuiheP00mDTvm1lPM
-         CKSvCLywl2ejLqc2fk8C7sCiSPbF2Hgx90vE3vbBbQhg5UBQmE+7/YccJkP0eDQC19pv
-         aiDw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b="QlVBfVfQ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=6wind.com; s=google; t=1780991808; x=1781596608; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qlXpqdSIvaDRYi3v4lu9lGZ3LDCxsAMCc0+aS5zAWNo=;
-        b=XBR59D0fkbPldsktNEBlvs8CyNI/zL6LFAQyd15RKqye8TpJ8hu8DZiVHsDgq17luL
-         OoCNNf7kdOLqQQSYU+enLXFoneFViu8Y0cEO9xr3dnPMwOdXkYtcyMXjCHhwXCJzGflp
-         WT7afGK2S2cm7/JYzYscjdWiiemxvzB2tSGidY55g2by7zguWD0LxEp6jD7V/mYQPifS
-         +CltfBUpDWSAc4sVYbszbWiT3irkMELVLj/m9f20lz1uGgCiNE78LtY0bvvM3HOTXA7T
-         XvyHBdpJuuWRcJi3hB8+33j7cWI1mtr+b7RARbWPFxVI4O6P/HfVSFqezJvESKaSJAp1
-         ec2w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780991808; x=1781596608;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=qlXpqdSIvaDRYi3v4lu9lGZ3LDCxsAMCc0+aS5zAWNo=;
-        b=pyLAj2UxgA/EPWD3HvFgSM1opJZ5XabG2X/ZEdxF/tG5O6ZD9A6ztaCKzwWdzm0hFS
-         zUlE/0f+Kr0VL3kgSfldpDc6xJovcSegiKlx8Hsm8lrcb95cb6IxrtwHeup0lQgjV8vy
-         Umyit3w7K5oeFEZThkIsBUKTxdNstdjMFbb07fq+9AqMYqenFzMzRIpRUouTo2kxCYOq
-         PXnrrczX7azPn4hXEopT7Idtyr1BsSe2NNP8Ib2BVbxTU3BzlEo6Pg5t2nJPtaZiSn+V
-         sbQ3yUBXJrs8SBvpMhuwJyhtJDpw/AJa5rj4VYo+IUD4LCbswq9UyIuQl8HFsIbe5ckg
-         Jpzg==
-X-Gm-Message-State: AOJu0Yy5R8PGLtayH2alL6hrFeJjmL6MMDB+N8+wsmhtRB5+cG8GuDv1
-	zqrAb3hU4rV03DGNuW4nui1tHdJ6BVPu5cski8ka+Hrgv1D47NzVTL6YViYRoa8aLD2SrxyjQYp
-	wX0/lw+FeOLgfS2TyXzZqoyrXlB9GQiEyNugqactFog==
-X-Gm-Gg: Acq92OGhJlW/Ow6G5O3TbUEel2v3e8Pq2y84MHKM1WiiDY71VVy2rkS/88tpBQQ0+Cd
-	cWD1GGjDjneq94sW5XQijyimASE9x4nBkugkk16nIReYKYsZ+2E7olli+t0gAg6edeM6tLaZB8M
-	vxyod4CKbZrhe5P1MwVdfgXLkv3WrtdNYTxRAVAqiaD3AZtHCnjtDQqTwZ3RFp/A6ZKaiGhcDWW
-	oMX+r8ZqRnW4dHM642zRQTt8daNELBRNdH2bh57KEdd0Smnksys3cirO9deo1Rtbk6WT7u4L1Mb
-	UWZF2dHmxzpHDTZrjWrmwP1Gurm6l3ZLk8nu7BjrLkGUCzu8l7f6JjOd4SQ=
-X-Received: by 2002:a05:6402:847:b0:68e:4c0:f5b1 with SMTP id
- 4fb4d7f45d1cf-68fa4c00598mr7993774a12.2.1780991808218; Tue, 09 Jun 2026
- 00:56:48 -0700 (PDT)
+	d=mails.tsinghua.edu.cn; s=dkim; h=Received:From:To:Cc:Subject:
+	Date:Message-ID:MIME-Version:Content-Transfer-Encoding; bh=PXzN1
+	xAkeifUktlK/Qjjuspvc1N/0VC1hBVqxaAmblY=; b=QlVBfVfQlf+IugKux90DG
+	9WF2FTv2H3MlmqK5UHZiT5nLMwdxnMNxaT8mNeSYrB+r0iiR1dP8uOBZOBNVrbWh
+	HFo8N4h+P5XDoXCxhEVvsA/Tr6HL7gW4fgsYDbbjwdVnh6+kAT9mCssuhDGivgxx
+	3EepL3gsK06fIQoQj6f8jI=
+Received: from localhost.localdomain (unknown [101.5.13.135])
+	by web3 (Coremail) with SMTP id ygQGZQDnNJJZyCdqCLtCAg--.14269S2;
+	Tue, 09 Jun 2026 16:01:29 +0800 (CST)
+From: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+To: linux-bluetooth@vger.kernel.org
+Cc: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>,
+	Alexander Aring <alex.aring@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-wpan@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>,
+	Ao Wang <wangao@seu.edu.cn>,
+	Xuewei Feng <fengxw06@126.com>,
+	Qi Li <qli01@tsinghua.edu.cn>,
+	Ke Xu <xuke@tsinghua.edu.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] 6lowpan: fix NHC entry use-after-free on error path
+Date: Tue,  9 Jun 2026 16:00:52 +0800
+Message-ID: <20260609080054.4541-1-zhaoyz24@mails.tsinghua.edu.cn>
+X-Mailer: git-send-email 2.46.2
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260603150331.1919611-1-louis.scalbert@6wind.com>
- <20260603150331.1919611-5-louis.scalbert@6wind.com> <1041444.1780954642@famine>
-In-Reply-To: <1041444.1780954642@famine>
-From: Louis Scalbert <louis.scalbert@6wind.com>
-Date: Tue, 9 Jun 2026 09:56:37 +0200
-X-Gm-Features: AVVi8Cf6lUI8UQ4AsHoThF_evQAKZij1-N3GYYIQdFdAbzFyiH1wiOYxUsAfUS0
-Message-ID: <CAJ5u_Of1+eEL4iVe-sWzhOOva6xx3gPCeXeRP4Y3yCqny8=gOg@mail.gmail.com>
-Subject: Re: [PATCH net v8 4/6] bonding: 3ad: fix carrier when no usable slaves
-To: Jay Vosburgh <jv@jvosburgh.net>
-Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, edumazet@google.com, 
-	kuba@kernel.org, pabeni@redhat.com, fbl@redhat.com, andy@greyhouse.net, 
-	shemminger@vyatta.com, maheshb@google.com, jonas.gorski@gmail.com, 
-	horms@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:ygQGZQDnNJJZyCdqCLtCAg--.14269S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7uF1rJr45Aw4fJF4UJF4rGrg_yoW8tryfpa
+	y3K39ayFyDZry3Zw4vyw409w17AF4DJr1fKF1rKa4UZ3Z8Gr1Sqr93Kr97Za9IvFs3Ca4D
+	XrWDX3s0yws8CrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9v1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l8cAvFVAK
+	0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVWDJVCq3wA2z4
+	x0Y4vE2Ix0cI8IcVCY1x0267AKxVWxJr0_GcWl84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2
+	z4x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE3s1lnxkEFVAIw20F6cxK64vIFxWle2I262IYc4
+	CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E74AGY7Cv6cx26r4r
+	Kr1UJr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc
+	8vx2IErcIFxwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kKe7AKxVW8ZVWrXwCY02Av
+	z4vE14v_GFyl42xK82IYc2Ij64vIr41l42xK82IY6x8ErcxFaVAv8VW8Ww4UJr1UMxC20s
+	026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_
+	JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14
+	v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xva
+	j40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JV
+	W8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUbRVbPUUUUU==
+X-CM-SenderInfo: 52kd05r2suqzpdlo2hxwvl0wxkxdhvlgxou0/1tbiAgMNAWonQZv0bwAAsB
 
-Hello Jay,
+lowpan_nhc_do_uncompression() looks up an NHC descriptor while holding
+lowpan_nhc_lock.  If the descriptor has no uncompress callback, the error
+path drops the lock before printing nhc->name.
 
-Le lun. 8 juin 2026 =C3=A0 23:37, Jay Vosburgh <jv@jvosburgh.net> a =C3=A9c=
-rit :
->
-> Louis Scalbert <louis.scalbert@6wind.com> wrote:
->
-> >Apply the "lacp_strict" configuration from the previous commit.
-> >
-> >"lacp_strict" mode "on" asserts that the bonding master carrier is up
-> >only when at least 'min_links' slaves are in the Collecting_Distributing
-> >state.
-> >
-> >Fixes: 655f8919d549 ("bonding: add min links parameter to 802.3ad")
-> >Signed-off-by: Louis Scalbert <louis.scalbert@6wind.com>
-> >---
-> > drivers/net/bonding/bond_3ad.c     | 26 +++++++++++++++++++++++---
-> > drivers/net/bonding/bond_options.c |  1 +
-> > 2 files changed, 24 insertions(+), 3 deletions(-)
-> >
-> >diff --git a/drivers/net/bonding/bond_3ad.c b/drivers/net/bonding/bond_3=
-ad.c
-> >index f0aa7d2f2171..98abb2fdd7a6 100644
-> >--- a/drivers/net/bonding/bond_3ad.c
-> >+++ b/drivers/net/bonding/bond_3ad.c
-> >@@ -745,6 +745,21 @@ static void __set_agg_ports_ready(struct aggregator=
- *aggregator, int val)
-> >       }
-> > }
-> >
-> >+static int __agg_usable_ports(struct aggregator *agg)
-> >+{
-> >+      struct port *port;
-> >+      int valid =3D 0;
-> >+
-> >+      for (port =3D agg->lag_ports; port;
-> >+           port =3D port->next_port_in_aggregator) {
-> >+              if (port->actor_oper_port_state & LACP_STATE_COLLECTING &=
-&
-> >+                  port->actor_oper_port_state & LACP_STATE_DISTRIBUTING=
-)
-> >+                      valid++;
-> >+      }
-> >+
-> >+      return valid;
-> >+}
-> >+
-> > static int __agg_active_ports(struct aggregator *agg)
-> > {
-> >       struct port *port;
-> >@@ -1179,10 +1194,10 @@ static void ad_mux_machine(struct port *port, bo=
-ol *update_slave_arr)
-> >               switch (port->sm_mux_state) {
-> >               case AD_MUX_DETACHED:
-> >                       port->actor_oper_port_state &=3D ~LACP_STATE_SYNC=
-HRONIZATION;
-> >-                      ad_disable_collecting_distributing(port,
-> >-                                                         update_slave_a=
-rr);
-> >                       port->actor_oper_port_state &=3D ~LACP_STATE_COLL=
-ECTING;
-> >                       port->actor_oper_port_state &=3D ~LACP_STATE_DIST=
-RIBUTING;
-> >+                      ad_disable_collecting_distributing(port,
-> >+                                                         update_slave_a=
-rr);
->
->         Is there a functional reason to move this?  I don't see anything
-> obvious in ad_disable_collecting_distributing() that depends on the
-> actor_oper_port_state.  Since you want this to be backported via stable,
-> fewer actual changes reduce the chances of an issue applying the patch
-> to an older version.
+lowpan_nhc_del() removes descriptors under the same lock and then relies
+on synchronize_net() before the owning module can be unloaded.  That only
+waits for net RX RCU readers.  lowpan_header_decompress() is also exported
+and can be reached from callers that are not necessarily covered by the net
+core RX critical section, for example the Bluetooth 6LoWPAN L2CAP receive
+path.
 
-The path is ad_disable_collecting_distributing() ->
-bond_3ad_set_carrier() -> __agg_usable_ports(). __agg_usable_ports()
-reads port->actor_oper_port_state
+This leaves a race where one task drops lowpan_nhc_lock in the error path,
+another task unregisters and frees the matching descriptor after
+synchronize_net() returns, and the first task then dereferences nhc->name
+for the warning.
 
-It was found by
-https://sashiko.dev/#/message/20260526084048.1696544-5-louis.scalbert%406wi=
-nd.com
+With the post-unlock window widened, KASAN reports:
 
->
->         -J
->
->
-> >                       port->ntt =3D true;
-> >                       break;
-> >               case AD_MUX_WAITING:
-> >@@ -2105,6 +2120,7 @@ static void ad_disable_distributing(struct port *p=
-ort, bool *update_slave_arr)
-> >                         port->actor_port_number,
-> >                         aggregator->aggregator_identifier);
-> >               __disable_distributing_port(port);
-> >+              bond_3ad_set_carrier(port->slave->bond);
-> >               /* Slave array needs an update */
-> >               *update_slave_arr =3D true;
-> >       }
-> >@@ -2128,6 +2144,7 @@ static void ad_enable_collecting_distributing(stru=
-ct port *port,
-> >                         port->actor_port_number,
-> >                         aggregator->aggregator_identifier);
-> >               __enable_port(port);
-> >+              bond_3ad_set_carrier(port->slave->bond);
-> >               /* Slave array needs update */
-> >               *update_slave_arr =3D true;
-> >               /* Should notify peers if possible */
-> >@@ -2151,6 +2168,7 @@ static void ad_disable_collecting_distributing(str=
-uct port *port,
-> >                         port->actor_port_number,
-> >                         aggregator->aggregator_identifier);
-> >               __disable_port(port);
-> >+              bond_3ad_set_carrier(port->slave->bond);
-> >               /* Slave array needs an update */
-> >               *update_slave_arr =3D true;
-> >       }
-> >@@ -2830,7 +2848,9 @@ int bond_3ad_set_carrier(struct bonding *bond)
-> >       active =3D __get_active_agg(&(SLAVE_AD_INFO(first_slave)->aggrega=
-tor));
-> >       if (active) {
-> >               /* are enough slaves available to consider link up? */
-> >-              if (__agg_active_ports(active) < bond->params.min_links) =
-{
-> >+              if ((bond->params.lacp_strict ? __agg_usable_ports(active=
-)
-> >+                                      : __agg_active_ports(active)) <
-> >+                  bond->params.min_links) {
-> >                       if (netif_carrier_ok(bond->dev)) {
-> >                               netif_carrier_off(bond->dev);
-> >                               goto out;
-> >diff --git a/drivers/net/bonding/bond_options.c b/drivers/net/bonding/bo=
-nd_options.c
-> >index d358b831df77..94b7b0851f16 100644
-> >--- a/drivers/net/bonding/bond_options.c
-> >+++ b/drivers/net/bonding/bond_options.c
-> >@@ -1706,6 +1706,7 @@ static int bond_option_lacp_strict_set(struct bond=
-ing *bond,
-> >       netdev_dbg(bond->dev, "Setting LACP fallback to %s (%llu)\n",
-> >                  newval->string, newval->value);
-> >       bond->params.lacp_strict =3D newval->value;
-> >+      bond_3ad_set_carrier(bond);
-> >
-> >       return 0;
-> > }
-> >--
-> >2.39.2
-> >
->
-> ---
->         -Jay Vosburgh, jv@jvosburgh.net
-best regards,
+  BUG: KASAN: slab-use-after-free in lowpan_nhc_do_uncompression+0x1f4/0x220
+  Read of size 8
+  lowpan_nhc_do_uncompression
+  lowpan_header_decompress
 
-Louis Scalbert
+Fix this by printing the warning before dropping lowpan_nhc_lock, so the
+descriptor name is read while unregister is still excluded.  The malformed
+packet is still rejected with -ENOTSUPP.
+
+Fixes: 92aa7c65d295 ("6lowpan: add generic nhc layer interface")
+Cc: stable@vger.kernel.org
+Reported-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+Reported-by: Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>
+Reported-by: Ao Wang <wangao@seu.edu.cn>
+Reported-by: Xuewei Feng <fengxw06@126.com>
+Reported-by: Qi Li <qli01@tsinghua.edu.cn>
+Reported-by: Ke Xu <xuke@tsinghua.edu.cn>
+Assisted-by: GLM:GLM-5.1
+Signed-off-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+---
+diff --git a/net/6lowpan/nhc.c b/net/6lowpan/nhc.c
+index 7b374595328d..a4dde85664f2 100644
+--- a/net/6lowpan/nhc.c
++++ b/net/6lowpan/nhc.c
+@@ -117,9 +117,9 @@ int lowpan_nhc_do_uncompression(struct sk_buff *skb,
+ 				return ret;
+ 			}
+ 		} else {
+-			spin_unlock_bh(&lowpan_nhc_lock);
+ 			netdev_warn(dev, "received nhc id for %s which is not implemented.\n",
+ 				    nhc->name);
++			spin_unlock_bh(&lowpan_nhc_lock);
+ 			return -ENOTSUPP;
+ 		}
+ 	} else {
+
+--
+2.43.0
+
