@@ -1,35 +1,76 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74264261B92;
-	Tue,  9 Jun 2026 00:40:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA1692472AF
+	for <netdev@vger.kernel.org>; Tue,  9 Jun 2026 00:40:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780965614; cv=none; b=BOSizQRKBRaBPG/s99T9msOgtGUYy7dZjFfxCunqbRB+6Lg9a80BOlzPDFhW8KTaTPNIbTAP1XZw/quUFfZQ1s7A6oIKLQnKzZr7n9nS8CvFZFebyQv9Z3dz0EstTg8boAr43UojfPkDKBb0c6T1APWpCT3qJwCIN3BTX2Thc+k=
+	t=1780965626; cv=none; b=X6rBTozIeZ3dN+Jk11UBgxh7LpYxEm9F7zTfCbPe7ItSmbHcpqrQyWmTjiZvGKHrvAnU5hz/E7zyS+yKUSWajznxSENvyjqxO94O2cj3npke7r7Fi5YnI8lk65/2cL784XVY4MV4/HayRcxY55haGaoBVt03YM4CdtoW0L1huhc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780965614; c=relaxed/simple;
-	bh=hq9HpipbrHLUcCNDFXCuHkrMlc7wYl8mC2uOMYoTDds=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=kfqzfHtZyIfy14qTWyxkyrytC1uJYrYh2muISGMGRa+ZqtA+RU2jElO6hulAVwdJd6RW9d7CJwKu+AnjS6X6+gp1zTITZdET00qDhNrVIDp7XNs49hJ/fyjW+e671T1Pqw302EsauV5bW3iea1qDq2xAkMsTQtlHE706GNVA54o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lF5WlKvd; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780965626; c=relaxed/simple;
+	bh=RL2nelPuVquWigElAbGuRaJ/oJl0cri7fXzRSPP3f/8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tQxLFF3MFYbfjeNlWSGdTMeHBEsBqUum4WWMZ5VamYaoxdCUTCxavQwFmFr3ZBD3Fmtdf28G+2QoehW0IoXrpwZZHp5h116rZiEyGB+nofTp5528Msd8/nyffWyMLUzPk+ajo/Je5HW8ZbutiUJ9cdfYkDFbtzG0Ssl/6mx8fDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trailofbits.com; spf=pass smtp.mailfrom=trailofbits.com; dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b=CKvGJEwb; arc=none smtp.client-ip=209.85.222.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trailofbits.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trailofbits.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lF5WlKvd"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E1351F00893;
-	Tue,  9 Jun 2026 00:40:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780965613;
-	bh=kA6ctB1S1irr0qxXxLBZAIjmp55Qfd7J37oEWwwGYZc=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=lF5WlKvd8KDVZJ1tfezyC9KDf3MfH06jJoF+6zKIJxIH++KUkd55QY6rk0IpP1XTL
-	 SVnXNvXkwcscAWY6BZPBCAtQMwpoK9GhcSTIDOGUX/FIY4O4Ktrn53L/NQu/GHk+2q
-	 O70N18sywCslaOIt3arLH+OPqJFZUWjknLO4CtpCfrxKmJ67L2p8zKV+f+CsxOVpKb
-	 tB7XcxwyUSUkV6Ma3z2ZDmSWG4wjGjf8BMgbrABt7bszx+PfHADWjnIRjN8Ygpz2rr
-	 A8CSJICEWVfoj9hDdeZoKb9vSaVnmyXRTOe/+Emq5fIxJdtXQOSv/PcjiFd7TdJf63
-	 iZmk215wDeumQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 197CD3812FDA;
-	Tue,  9 Jun 2026 00:40:13 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b="CKvGJEwb"
+Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-9158c621ebbso589587185a.2
+        for <netdev@vger.kernel.org>; Mon, 08 Jun 2026 17:40:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=trailofbits.com; s=google; t=1780965624; x=1781570424; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=9YFVBWQFtxi3MWtqjY5JFqeW6UBOy9JZ/sfyVQG1lYc=;
+        b=CKvGJEwbIt6+/r3sADgT4v+fW4fvJaSx5wZKAryWxIMLKnz37XKIYrPWhiOSRADmZT
+         frER4xk7o/ASzZ71Wmv5+BNXOOpZ3UuFmhmIeJOO4eOfYQfUk6AsS8LhhVakfb+/9KqZ
+         8rMcES2MkQUodOVdTBPdim5SaAiR1/NNTOMCwxs58+9PbLhut5wS0mXV+bHo+9qzm8Ay
+         uYWZ56kcb5FQ9bNHksIm03NVe58T2Js9BRFvmepTyF8Gmk+V1TMgjF6p9fqRfEfVxfJp
+         IXFNRwox+xnM3Ug8QnsobxjhhWPFScAkCONFppBJpZoMNov3sz9gFtIj4dUJY2kVxQJ8
+         WvTA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780965624; x=1781570424;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9YFVBWQFtxi3MWtqjY5JFqeW6UBOy9JZ/sfyVQG1lYc=;
+        b=i0NUARw2MvATJWU1pwiLFo6fKlBDJ3QG5PuvE1GD0d37v8Isr/lKyzKCxOVYCY2G9g
+         h4JZwga+9ggJqQOGluxetkNIdkU2r7m+6cD2Ql4JSKy77AjG0FobVNBf5rVtKWz5TPr+
+         aRJpIjr2O8+G6DvcSTZIYcmv0gO45b8oupW25w2oLb9J0kY3mA8OiaJBrBLC2LKaFGn0
+         aimHT50CecVz4uHxzn8yyoj1L/USNqYfYWgU1mdAsR6hXyUG8ocbJnppBxgWT8stwway
+         TfrSFC2WQA2y0K4l9POGs6FBCe+W2AFJEA0lKcurt/RjJI55DTdHi34ki1S04SAw1Vco
+         SFlA==
+X-Forwarded-Encrypted: i=1; AFNElJ9I8Jtm9gs9MOUJeMs0yBgnNenSqIz6ET0OykJAaQcHWU1LiY43Qt5kz+xyryRA9IRYdKzA5bI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzOMbvUSFx4ySTSv26G5gHXwXw/tqiFAIwlqVLyBifwFbumjMvp
+	ncElqMNMUhurf1II8ZeaVU4y0RtX9SKSfebpZgMZOmLzkielQJciXHvJfFYznCNcNxE=
+X-Gm-Gg: Acq92OGwLvv49WoX23dz5J0lQJ4MmxfPmotQB/pvbsYgovevh6H1SkyohjoPygZl5Io
+	FHSfsyjX89UI60R2ccW59KfEkzgv/8PzrXKMwI7UT47zsnwONYul+bHiAbmKwOlBtum2aLRSEqX
+	wtOWFcWsYUtW4zcwpvTt71S8TfSr95bhsoRBvi1JhmGqn6sMqi/n8JXlxzQdnSztOLQivdnSDrC
+	MyPYCfl0IG3MHGJzf9RXsNxjDLzxZMrRiu5FUEjeugf+3ASXtn7Oo/BKoRDmf5q3Nb7exnCYGlb
+	a55DWuq8ASrDyfxWPu00fQU5kEja9JH9mxPBJzEsNQbj814I6Q5Iz9D93ckfZQ2Ol0ubDlNhln8
+	B5vHcSs/fzl5ImtlxyyntbTJ3N/JL+4r89/Cr2u5QuRrr13W7ATY4sfZeA3bz10xmbdfkbKSCQn
+	HYktNDdmzmprpWflI64RGS19kXxZoBTsFlBKXDKA==
+X-Received: by 2002:a05:620a:40c5:b0:915:c4de:7ac8 with SMTP id af79cd13be357-915c4de8553mr1549647085a.24.1780965623660;
+        Mon, 08 Jun 2026 17:40:23 -0700 (PDT)
+Received: from localhost ([161.35.96.86])
+        by smtp.gmail.com with UTF8SMTPSA id af79cd13be357-9158a243041sm1969686185a.18.2026.06.08.17.40.21
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 08 Jun 2026 17:40:21 -0700 (PDT)
+From: Samuel Moelius <sam.moelius@trailofbits.com>
+To: Jamal Hadi Salim <jhs@mojatatu.com>
+Cc: Samuel Moelius <sam.moelius@trailofbits.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org (open list:TC subsystem),
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH] net/sched: fq_pie: clamp flow deficit after quantum changes
+Date: Tue,  9 Jun 2026 00:39:59 +0000
+Message-ID: <20260609003958.1238678.04aa5c10b22f.fq-pie-change-quantum-stale-deficit@trailofbits.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,42 +78,59 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCHv2 net-next] net: ibm: emac: Clear MAL descriptors without
- memset
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178096561164.1730160.12681740323501157661.git-patchwork-notify@kernel.org>
-Date: Tue, 09 Jun 2026 00:40:11 +0000
-References: <20260603230754.5535-1-rosenp@gmail.com>
-In-Reply-To: <20260603230754.5535-1-rosenp@gmail.com>
-To: Rosen Penev <rosenp@gmail.com>
-Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, jeff@garzik.org,
- rdreier@cisco.com, linux-kernel@vger.kernel.org
 
-Hello:
+fq_pie keeps active flow deficits when userspace changes the scheduler
+quantum.  The next dequeue rounds can therefore spend credit that was
+accumulated under the previous quantum.
 
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+This can be observed by making a flow active, changing the quantum, and
+then dequeuing with the old deficit still present.
 
-On Wed,  3 Jun 2026 16:07:53 -0700 you wrote:
-> Clear MAL descriptor rings with explicit field stores instead of
-> memset().  The descriptor rings are carved from MAL coherent DMA memory,
-> which may be mapped uncached on 32-bit powerpc.  The optimized memset()
-> path can use dcbz there and trigger an alignment warning.
-> 
-> Use WRITE_ONCE() for each field to prevent the compiler from merging
-> the stores back into a memset() call.
-> 
-> [...]
+Clamp active flow deficits to the new quantum when the configured
+quantum changes.
 
-Here is the summary with links:
-  - [PATCHv2,net-next] net: ibm: emac: Clear MAL descriptors without memset
-    https://git.kernel.org/netdev/net-next/c/f0ba7f385de1
+Assisted-by: Codex:gpt-5.5-cyber-preview
+Signed-off-by: Samuel Moelius <sam.moelius@trailofbits.com>
+---
+ net/sched/sch_fq_pie.c | 17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
 
-You are awesome, thank you!
+diff --git a/net/sched/sch_fq_pie.c b/net/sched/sch_fq_pie.c
+index 7becbf5362b3..9c551bdb799d 100644
+--- a/net/sched/sch_fq_pie.c
++++ b/net/sched/sch_fq_pie.c
+@@ -284,6 +284,19 @@ static struct sk_buff *fq_pie_qdisc_dequeue(struct Qdisc *sch)
+ 	return skb;
+ }
+ 
++static void fq_pie_clamp_active_deficits(struct fq_pie_sched_data *q,
++					 u32 quantum)
++{
++	struct fq_pie_flow *flow;
++
++	list_for_each_entry(flow, &q->new_flows, flowchain)
++		if (READ_ONCE(flow->deficit) > quantum)
++			WRITE_ONCE(flow->deficit, quantum);
++	list_for_each_entry(flow, &q->old_flows, flowchain)
++		if (READ_ONCE(flow->deficit) > quantum)
++			WRITE_ONCE(flow->deficit, quantum);
++}
++
+ static int fq_pie_change(struct Qdisc *sch, struct nlattr *opt,
+ 			 struct netlink_ext_ack *extack)
+ {
+@@ -340,8 +353,10 @@ static int fq_pie_change(struct Qdisc *sch, struct nlattr *opt,
+ 		WRITE_ONCE(q->p_params.beta,
+ 			   nla_get_u32(tb[TCA_FQ_PIE_BETA]));
+ 
+-	if (tb[TCA_FQ_PIE_QUANTUM])
++	if (tb[TCA_FQ_PIE_QUANTUM]) {
++		fq_pie_clamp_active_deficits(q, nla_get_u32(tb[TCA_FQ_PIE_QUANTUM]));
+ 		WRITE_ONCE(q->quantum, nla_get_u32(tb[TCA_FQ_PIE_QUANTUM]));
++	}
+ 
+ 	if (tb[TCA_FQ_PIE_MEMORY_LIMIT])
+ 		WRITE_ONCE(q->memory_limit,
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.43.0
 
