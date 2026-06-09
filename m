@@ -1,46 +1,46 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B351A481652
-	for <netdev@vger.kernel.org>; Tue,  9 Jun 2026 21:36:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4782248AE04
+	for <netdev@vger.kernel.org>; Tue,  9 Jun 2026 21:36:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781040982; cv=none; b=cOqgUoVxjINih3Mb055coITk46OaLbpLN1T+uj2kextsRPLgMYIQTfLLXnEtUYJ+9UkITIVHHJBJYKYS2cWpLc1V8ODPynqhU6r5pHZvPkNiTkPczHquEhAmLmhEZwyLWTbaGJK1akRPX9odBdLAE+F9S7WYw+LRVTcxpb+cepQ=
+	t=1781040983; cv=none; b=VKrYEbaVPBB6NsFoMHM781uSYJSca6EbK96YlnAdtQVEg2eZTvsa8Q+g4+aQB5TwFwK76cVVmJvfWYeqH24yDvU51z5kmohZmuKBntv6Mf1OlWjUQgjzfW5SSgHMModOHVYpII3RQOymVeXubvwUYwzVP7ArRFIixjXvcl+jv5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781040982; c=relaxed/simple;
-	bh=Cc6mUHVXOuUDPOd/xKmpVugdE+2jCdAaDEYhGUMiQrM=;
+	s=arc-20240116; t=1781040983; c=relaxed/simple;
+	bh=CIAK89/RtZi1scyuSXxY1ewLcU63mb44L7YBQrzmwFY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=COnvNP2p6n1mWNOMFSeFMPM7csYmCZ+ZS1yqSdo00jtI8ic5QUxmVYkr4rCwlNYEzitBHID5r9S3pU5qYHT5NPsRKRn0idj58nrUsMGDG15nVeqiJQs4ZM8oFqfyw4qJmJXiAO8fmF3UfZ2kLn/1/62V3W8rg1+5vMzX1JMCQJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Bc1B7BtQ; arc=none smtp.client-ip=198.175.65.20
+	 MIME-Version; b=sVD/XoidBk3IoleUODCF+CMZm/Ve4T13gB4/FhCzU0ewz/SfJcWbyArjYZEgtzVskMIyQZLD4GF60nnDz0CZo9JGznuiaLKHPw9qYBbA+w1SlhBJKdCPUwjdle2IwsuV6jO4NIV6Ra/43kx6kGhR1m5FJTU6DRSzfydQcrb/srI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gjxkfAMt; arc=none smtp.client-ip=198.175.65.20
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Bc1B7BtQ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gjxkfAMt"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1781040979; x=1812576979;
+  t=1781040982; x=1812576982;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=Cc6mUHVXOuUDPOd/xKmpVugdE+2jCdAaDEYhGUMiQrM=;
-  b=Bc1B7BtQ9tEr9p79wT+JEOeYdEJp5n5uk+PLtRM3229Uzl4ivKGf6DQ3
-   cebpaskOo+P6FMrE2iwrQIFTLnHz2M+s319XfgSCONznv5bLBO9Kss4bT
-   LG7uaFu4RTTl6Ll2obOQWqPOfrkUP8glC2z+9nOiWbeh4kbXXAXywyEtb
-   szgzfxq8l44QBb0ESC1UAsCQrG9iBzQMoYiUKtMexjqYZmO4lvY1ftQ4c
-   9rfVI8K8ZzmLXDKHJ/RjsK30o4Uf59Y7rnsIjIl1dyjSfDsc/ovvrDwDb
-   Cy//NPFJeIUUWaQ0+3PzF+aXdmRUYP6uQO9Qk2zbHy6UQoGuQnmj8OtQW
-   Q==;
-X-CSE-ConnectionGUID: 7tnGDskUQy+B9R3I/WHm3Q==
-X-CSE-MsgGUID: +q4NaXWMQteKDMoGLDRJVQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11812"; a="81568592"
+  bh=CIAK89/RtZi1scyuSXxY1ewLcU63mb44L7YBQrzmwFY=;
+  b=gjxkfAMtCNHazGhnNHqX6PPvkkvly1nBoxLeLi6P+VnAaeXafo/nOYyL
+   FMZezy71pNMa8V0Eyoyg/zmPJXZE3+wEkAKou7ooTcMl2GHDKQ/E41x3D
+   qVtz3goAWQ7ZVLJQNqFn2zsasMrvy66HRwQU5Gl61a9/i/QK/BRQy04ON
+   yVKb31rtOgH2sYa5hCYbo2Ljo80FAfMm3YhO1d9YZKSKn7w+8he0Rz0Jy
+   iUxmod4OzErMbqIO5kL+fwd9/gFZTtcln9MtpRZvPBko/jygS2dTBGAgT
+   vFZEZu3w/3wrchice3GJYVub9CuMHkRBl4yXf/E9OjJHvpvHsuhUHzS3T
+   w==;
+X-CSE-ConnectionGUID: q4kz61fVRnK0vGQpQKlZ3A==
+X-CSE-MsgGUID: 2mPNggFdQkqCGdz9nZBkuA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11812"; a="81568613"
 X-IronPort-AV: E=Sophos;i="6.24,196,1774335600"; 
-   d="scan'208";a="81568592"
+   d="scan'208";a="81568613"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2026 14:36:09 -0700
-X-CSE-ConnectionGUID: 5btvEA3KQXuh0nCpGQO23A==
-X-CSE-MsgGUID: PsYzEe2dQJC2a0oLzM8TUQ==
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2026 14:36:10 -0700
+X-CSE-ConnectionGUID: U6Nbj1rmQB6VvQIS5wH4sw==
+X-CSE-MsgGUID: Df7KRK0OTTaG48GUveU4KQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.24,196,1774335600"; 
-   d="scan'208";a="245838601"
+   d="scan'208";a="245838610"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
   by orviesa008.jf.intel.com with ESMTP; 09 Jun 2026 14:36:09 -0700
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
@@ -50,14 +50,13 @@ To: davem@davemloft.net,
 	edumazet@google.com,
 	andrew+netdev@lunn.ch,
 	netdev@vger.kernel.org
-Cc: Matt Vollrath <tactii@gmail.com>,
+Cc: Maximilian Pezzullo <maximilianpezzullo@gmail.com>,
 	anthony.l.nguyen@intel.com,
-	dima.ruinskiy@intel.com,
 	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Michal Cohen <michalx.cohen@intel.com>
-Subject: [PATCH net-next 11/15] e1000e: Use __napi_schedule_irqoff()
-Date: Tue,  9 Jun 2026 14:35:52 -0700
-Message-ID: <20260609213559.178657-12-anthony.l.nguyen@intel.com>
+	Joe Damato <joe@dama.to>
+Subject: [PATCH net-next 14/15] igb: fix typos in comments
+Date: Tue,  9 Jun 2026 14:35:55 -0700
+Message-ID: <20260609213559.178657-15-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20260609213559.178657-1-anthony.l.nguyen@intel.com>
 References: <20260609213559.178657-1-anthony.l.nguyen@intel.com>
@@ -69,66 +68,77 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Matt Vollrath <tactii@gmail.com>
+From: Maximilian Pezzullo <maximilianpezzullo@gmail.com>
 
-The __napi_schedule_irqoff() macro is intended to bypass saving and
-restoring IRQ state when scheduling is requested from an IRQ handler,
-where hard interrupts are already disabled. Use this macro in all three
-interrupt handlers.
+Fix spelling errors in code comments:
+ - e1000_nvm.c: 'likley' -> 'likely'
+ - e1000_mac.c: 'auto-negotitation' -> 'auto-negotiation'
+ - e1000_mbx.h: 'exra' -> 'extra'
+ - e1000_defines.h: 'Aserted' -> 'Asserted'
 
-This was tested on a system with an I218-V and MSI interrupts. Because
-this is an optimization, I was interested in measuring the impact, so I
-added ktime_get() time measurement to e1000_intr_msi and a print of the
-last sample in the watchdog task. For each test case I ran a
-bi-directional iperf3 to saturate the line. With some help from awk,
-here are the statistics.
-
-49 samples each, all units ns
-previous: min 678 max 1265 mean 879.429 median 806 stddev 137.188
-noirq:    min 707 max 1165 mean 811.857 median 790 stddev  89.486
-
-According to this informal comparison, the mean time to handle an
-interrupt from start to finish is improved by about 8% under load.
-
-Signed-off-by: Matt Vollrath <tactii@gmail.com>
+Signed-off-by: Maximilian Pezzullo <maximilianpezzullo@gmail.com>
 Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Tested-by: Michal Cohen <michalx.cohen@intel.com>
+Reviewed-by: Joe Damato <joe@dama.to>
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
- drivers/net/ethernet/intel/e1000e/netdev.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/intel/igb/e1000_defines.h | 2 +-
+ drivers/net/ethernet/intel/igb/e1000_mac.c     | 2 +-
+ drivers/net/ethernet/intel/igb/e1000_mbx.h     | 2 +-
+ drivers/net/ethernet/intel/igb/e1000_nvm.c     | 2 +-
+ 4 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/e1000e/netdev.c b/drivers/net/ethernet/intel/e1000e/netdev.c
-index 3bdeb5f0dbea..808e5cddd6a9 100644
---- a/drivers/net/ethernet/intel/e1000e/netdev.c
-+++ b/drivers/net/ethernet/intel/e1000e/netdev.c
-@@ -1803,7 +1803,7 @@ static irqreturn_t e1000_intr_msi(int __always_unused irq, void *data)
- 		adapter->total_tx_packets = 0;
- 		adapter->total_rx_bytes = 0;
- 		adapter->total_rx_packets = 0;
--		__napi_schedule(&adapter->napi);
-+		__napi_schedule_irqoff(&adapter->napi);
- 	}
+diff --git a/drivers/net/ethernet/intel/igb/e1000_defines.h b/drivers/net/ethernet/intel/igb/e1000_defines.h
+index fa028928482f..7e6f9aa2d57b 100644
+--- a/drivers/net/ethernet/intel/igb/e1000_defines.h
++++ b/drivers/net/ethernet/intel/igb/e1000_defines.h
+@@ -442,7 +442,7 @@
+ /* Interrupt Cause Set */
+ #define E1000_ICS_LSC       E1000_ICR_LSC       /* Link Status Change */
+ #define E1000_ICS_RXDMT0    E1000_ICR_RXDMT0    /* rx desc min. threshold */
+-#define E1000_ICS_DRSTA     E1000_ICR_DRSTA     /* Device Reset Aserted */
++#define E1000_ICS_DRSTA     E1000_ICR_DRSTA     /* Device Reset Asserted */
  
- 	return IRQ_HANDLED;
-@@ -1882,7 +1882,7 @@ static irqreturn_t e1000_intr(int __always_unused irq, void *data)
- 		adapter->total_tx_packets = 0;
- 		adapter->total_rx_bytes = 0;
- 		adapter->total_rx_packets = 0;
--		__napi_schedule(&adapter->napi);
-+		__napi_schedule_irqoff(&adapter->napi);
- 	}
+ /* Extended Interrupt Cause Set */
+ /* E1000_EITR_CNT_IGNR is only for 82576 and newer */
+diff --git a/drivers/net/ethernet/intel/igb/e1000_mac.c b/drivers/net/ethernet/intel/igb/e1000_mac.c
+index fa3dfafd2bb1..2bcce6eef0c7 100644
+--- a/drivers/net/ethernet/intel/igb/e1000_mac.c
++++ b/drivers/net/ethernet/intel/igb/e1000_mac.c
+@@ -1581,7 +1581,7 @@ s32 igb_disable_pcie_master(struct e1000_hw *hw)
+  *  igb_validate_mdi_setting - Verify MDI/MDIx settings
+  *  @hw: pointer to the HW structure
+  *
+- *  Verify that when not using auto-negotitation that MDI/MDIx is correctly
++ *  Verify that when not using auto-negotiation that MDI/MDIx is correctly
+  *  set, which is forced to MDI mode only.
+  **/
+ s32 igb_validate_mdi_setting(struct e1000_hw *hw)
+diff --git a/drivers/net/ethernet/intel/igb/e1000_mbx.h b/drivers/net/ethernet/intel/igb/e1000_mbx.h
+index 178e60ec71d4..9e44527f5eea 100644
+--- a/drivers/net/ethernet/intel/igb/e1000_mbx.h
++++ b/drivers/net/ethernet/intel/igb/e1000_mbx.h
+@@ -30,7 +30,7 @@
+ /* Indicates that VF is still clear to send requests */
+ #define E1000_VT_MSGTYPE_CTS	0x20000000
+ #define E1000_VT_MSGINFO_SHIFT	16
+-/* bits 23:16 are used for exra info for certain messages */
++/* bits 23:16 are used for extra info for certain messages */
+ #define E1000_VT_MSGINFO_MASK	(0xFF << E1000_VT_MSGINFO_SHIFT)
  
- 	return IRQ_HANDLED;
-@@ -1951,7 +1951,7 @@ static irqreturn_t e1000_intr_msix_rx(int __always_unused irq, void *data)
- 	if (napi_schedule_prep(&adapter->napi)) {
- 		adapter->total_rx_bytes = 0;
- 		adapter->total_rx_packets = 0;
--		__napi_schedule(&adapter->napi);
-+		__napi_schedule_irqoff(&adapter->napi);
- 	}
- 	return IRQ_HANDLED;
- }
+ #define E1000_VF_RESET		0x01 /* VF requests reset */
+diff --git a/drivers/net/ethernet/intel/igb/e1000_nvm.c b/drivers/net/ethernet/intel/igb/e1000_nvm.c
+index c8638502c2be..cf4e5d0e9417 100644
+--- a/drivers/net/ethernet/intel/igb/e1000_nvm.c
++++ b/drivers/net/ethernet/intel/igb/e1000_nvm.c
+@@ -405,7 +405,7 @@ s32 igb_read_nvm_eerd(struct e1000_hw *hw, u16 offset, u16 words, u16 *data)
+  *  Writes data to EEPROM at offset using SPI interface.
+  *
+  *  If e1000_update_nvm_checksum is not called after this function , the
+- *  EEPROM will most likley contain an invalid checksum.
++ *  EEPROM will most likely contain an invalid checksum.
+  **/
+ s32 igb_write_nvm_spi(struct e1000_hw *hw, u16 offset, u16 words, u16 *data)
+ {
 -- 
 2.47.1
 
