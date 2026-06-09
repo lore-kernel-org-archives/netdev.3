@@ -1,113 +1,83 @@
-Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A666388361
-	for <netdev@vger.kernel.org>; Tue,  9 Jun 2026 09:36:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.182
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780997778; cv=pass; b=StevjC2oUQOVr7mV0uvikyUeMmExxE7dUPuBBhywQ2dFzi1Kn43lFfNYlGYIrB8wEP5eKzcd2xwr0XS/YoT0t53bLNH6TFNYDFQKznAECz1yxJQY+iziHlfw2VZBaZ3r/lNJoufnRirD3ldQcla9PbRQ+JMfNQm/L1se37jlCm0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780997778; c=relaxed/simple;
-	bh=Eb8MhuXa+k3Vx66xyti2/LygYTICXEV0gH0z76fItEc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=I8nhTS+nvvxCUFlzB4ZVPI6J26CB9KvQfggNciCvtQMxk7QB4SqEt4j7yE2BRLwLZxZX6O6ar7fKxKvAClU69pITzr8Gjzg+mKQcAVuegqW1UEH6hnsMsajzqvEmXyhMaHalnVtmLywOBp3glyEmfENVqb4FzVtefM5wVxdjJ+E=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=A4dBNN1I; arc=pass smtp.client-ip=209.85.160.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FF0038CFE5
+	for <netdev@vger.kernel.org>; Tue,  9 Jun 2026 09:40:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780998008; cv=none; b=CGLj9NjXlh/vpD6WdFt5NCqXvCB1EICFH1FDhMkq/dllvr7jV2kT2cQOQUM0dW6/Kv/x+aCxKIP3DXZ+fPH05DUUeBgDVEJ38nO5QwoFv0Bx97n7fdlJA8abgjyCqMqBaTuHlMF1Lh964/sGpgU0toAdqV1PQ1b03uvQUrsnXbU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780998008; c=relaxed/simple;
+	bh=4aGnP6/bH48dE3BmzD0+W/UIobCGQ972v1CjDVeJgvQ=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=AqANkJZVTRD+2X9NjkgnICIXRZdEgF5+PpKK5ZN7czr+kdzbsP/H6OTgtFwtXsvGGS/jvFF7NSwim2a8zwEXdbbwxJIlBDzSmzPT6yx1zvUJLb5RfsZTf0uMcFYeOMUu7qe1B75g1UlLLlJVMt56p4jNE/fYcrZuNlFdRj9daFY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xfe6UUJv; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="A4dBNN1I"
-Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-5176ca6bab1so56595931cf.0
-        for <netdev@vger.kernel.org>; Tue, 09 Jun 2026 02:36:16 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780997776; cv=none;
-        d=google.com; s=arc-20240605;
-        b=GXLNJa1T4GuTWSzMvQpcGixknpUFyMaHSTTfL9HhWN61S7i1hsh4GoLWOVTA1FsEoj
-         AWJYccee8GmDBoX66eTmOE3SVSoQDq4RcdaaKhShmTFOGAf1wrSODvbeB9lQ67CSKfPl
-         8YuN93eyx5gsE2uTE0RXFa+wljCST4+y/Ro7yGULcYB4kbHnHY/sSD3r3yofX/OHqUJL
-         p/bksPF/IFlSmQlEgpK/vkLA62ZXfV3iRW3KKH5/dgIj2uQDyh8ziypFAZtrU5dX4s75
-         Ay2svT3rR9wiju6rmlGm++t0IgK87VdEox8gfH1l2Pz4P7Pem8RCWh1MVtuh1oWvKwqg
-         3c9w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Eb8MhuXa+k3Vx66xyti2/LygYTICXEV0gH0z76fItEc=;
-        fh=0h4LfdVNJiKVaecOf4ZdCJjU/xabMCYxb61Y68Hqd0k=;
-        b=dh52xYeu1v+FiOWR19tS0uCJg2rnabjStifa7c+qqP3kkW2L6fEa/Oq8pNKFQtKkZx
-         0JXX51ljhhx4NWcNjq3rWiF5JKoyrCzlE0tzIrxJ47c72/1EOhaZz3vDqiSONzfQ6QbD
-         yAvLKveob+qn93MBwx0b++/4phGd/N9vI6E169pjUyuTEk4luEfgVEvf+8lMxYyvtDM5
-         fXh/1B04b6Icn5XKlryPYNVtHEOZvarDFOe2zjQC0UuhugUuBaO7J067CklDJ0l5Th9E
-         HOoQKN6CpKU4tIyYLg6ekaSfzPcahqCDyWSFpfy3WgnNkUr/bm3ibEDF9bi1wjCPu0Og
-         xPeQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780997776; x=1781602576; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Eb8MhuXa+k3Vx66xyti2/LygYTICXEV0gH0z76fItEc=;
-        b=A4dBNN1ILMhmRhd6KMLiiQMGMieGB4M063xnWSIo71DX+WJFETHBvvn9J+5LbCiRBz
-         5lSXYjRxoAnR8d1Cq7vYNvoYZQLwBp6cbvN1TSMylQUIitZHhxIpr/6q+483/xB0klHJ
-         FitV1km/GMi/Iix4dsd5Wzuniah1kcto6ffWyEzjzdIjJDsKjBJmPSNBUdKFSZZhVkMF
-         vA1XXzGe6+ba8AdnL0fxNEjScLj7Zr3N4rEx43dQ8mSWCdMUDsdmap0DJTF7GPsKUc9V
-         yWbOsorfR5eXH4rUydHDX7RvwAhcOdPCdkcK93ovGnMtBvRvfe7RRauXgT8Yf7p+j+Vc
-         6yzg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780997776; x=1781602576;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Eb8MhuXa+k3Vx66xyti2/LygYTICXEV0gH0z76fItEc=;
-        b=G6/cFmVkwhurw75XywoCvSI3rEny8kgE+xnbPPwTrApfUa2toR0OTkN4/d/PQdhxqk
-         CSe1lVG/ZJ7PpuvZzb5l51//SxpWNBe042VGf3v5Uy6069GqLjIbbM6h4SPAUDqhnInr
-         TicnhO5QB5xLgozjCEaNzUu7BPUHYtFQYA/w+TWwdXtgIYbyBkGXjNMs0Sc8antYzTyq
-         WEN5KOVlciaGwKcdjOEeG7DR3ZAN8nplnQwIZiIZecAs0SXZzMwe3aQ5QJseO+o9iMfh
-         yLbQacmP8LzM60ZAwlKDxsjlfg4cC9yoAiIYW1ZNZBOxY73PU8YaCb9savvS7dUpD490
-         DBSA==
-X-Forwarded-Encrypted: i=1; AFNElJ8fr3PN3RGIx5xFgibEor978I1LREcmT8Bw6EbFS/VOc2mI9t3Bf0twCRRm38pWozmQDhran50=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzZ6CqvkuPNEMUtdiGTU2AZsn3uChiW0vrvPmOyMLmufAfEtG7q
-	eScaBhklPPNTq3RdqJHVM7LQHF//g8ZILLvOUsTyQ8WGjvl7RVuiuAcfvRsfkw1eOCQPBuBsc5e
-	4N1NYnBEGNBGd2JhomEpChFzFoOmXLD7qdveCKW2jDLyHN5XG2XsFEGce
-X-Gm-Gg: Acq92OHXsJJCvvUZrRSqwR5C6gS4ssjRW7qsvLr/j/QbFV1HrFswfhPbvxfZCRMO+MN
-	yQLFJq1D79u3PS8bYxooKJJVEjJ6Y765nnpYpCNaLNyk9rclgHHP8iGLIUAjwIjNRT9NK56xkcZ
-	ueVc0oIN+HRvlrCogBoazWZavW7eOXQz1hbweAkSEaP+/NB2Ovu9ZgawFzuaFJNmS+gLk7WgtDH
-	AwIgNphzhxZJlwVuGCW1l2P/ryGc1NnfRmUZcOJvPtlwcz/IhyqOUX02gIVoO4HFkDY1VMIQ2Ij
-	UWlx40ds+MU/bShoFu2yBNveQEDgcOMjpiMaymy3uwcaXYPZERU9r/TM8mkVF+ibGiTpCdOo1Mp
-	w5xN5PfBatbdVG6Hctods4R2d98A/aIdsVUhtsiuf
-X-Received: by 2002:a05:622a:5518:b0:50b:3429:a10b with SMTP id
- d75a77b69052e-517986d4a6emr194261541cf.12.1780997775333; Tue, 09 Jun 2026
- 02:36:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xfe6UUJv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E44B1F00893;
+	Tue,  9 Jun 2026 09:40:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780998006;
+	bh=Epe+d6TgSqLv0QryFGEobWb3lCOX4vn5mrOCT1cBANY=;
+	h=Subject:From:Date:References:In-Reply-To:To:List-Id:Cc;
+	b=Xfe6UUJvx1IRhO2cPsYn7M6+DAfCS8+PSqvEfccB9nSGeNRbWZrVDnBrp1hLm9NKY
+	 CJCbPMxLuRAx4scg0fntdQ6xrBFKIoXXPf725YHFOryxmRgCb/K3pjXeMhDQ0nTGl6
+	 9iZJCQcFxxS9Sq+gcpVbe/rw8Ja2EfjCb0vs918oJOAFAGM3/+VFd9EXh61cznXOes
+	 bLyP6kYEh3O51eO8g3B2ObGRtItM2QzQWWdhvZ1MlP8HXz73uTMMbPktFnxNg7uE1G
+	 ilkt5xrt4HRUVgYBd7O/pe4l18XKSHEyInmeOuhsg2d1M1tzu6kcJjy44jpBr9r6tA
+	 sEDztVdSc9dNQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 568D93930789;
+	Tue,  9 Jun 2026 09:40:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260609081113.7613-1-sigefriedhyy@gmail.com> <20260609081113.7613-2-sigefriedhyy@gmail.com>
-In-Reply-To: <20260609081113.7613-2-sigefriedhyy@gmail.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Tue, 9 Jun 2026 02:36:04 -0700
-X-Gm-Features: AVVi8CejGZnsSJpub1bEIAys0m8wcSUbGl1g9jWjK5_pZ64d3Rl5cgdavnm2nEo
-Message-ID: <CANn89i+8MnZGUiP0cLT7wJLPModjj3UkUEp87X0SRne8Wcj2+Q@mail.gmail.com>
-Subject: Re: [PATCH net-next v2 1/2] ipv6: mcast: annotate data-races around mca_flags
-To: Yuyang Huang <sigefriedhyy@gmail.com>
-Cc: "David S. Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>, 
-	Ido Schimmel <idosch@nvidia.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v2] rxrpc: Fix the ACK parser to extract the SACK
+ table
+ for parsing
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178099800515.1915898.6611538071201601875.git-patchwork-notify@kernel.org>
+Date: Tue, 09 Jun 2026 09:40:05 +0000
+References: <105362.1780573560@warthog.procyon.org.uk>
+In-Reply-To: <105362.1780573560@warthog.procyon.org.uk>
+To: David Howells <dhowells@redhat.com>
+Cc: netdev@vger.kernel.org, michael.bommarito@gmail.com,
+ marc.dionne@auristor.com, jaltman@auristor.com, edumazet@google.com,
+ davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ linux-afs@lists.infradead.org, stable@kernel.org, linux-kernel@kernel.org
 
-On Tue, Jun 9, 2026 at 1:11=E2=80=AFAM Yuyang Huang <sigefriedhyy@gmail.com=
-> wrote:
->
-> /proc/net/igmp6 walks IPv6 multicast memberships under RCU and
-> prints mca_flags without holding idev->mc_lock. The multicast paths
-> update the field while holding idev->mc_lock.
->
-> Annotate this intentional lockless snapshot with READ_ONCE() and the
-> matching writers with WRITE_ONCE().
->
-> Signed-off-by: Yuyang Huang <sigefriedhyy@gmail.com>
-> ---
+Hello:
 
-You forgot to carry Ido's tag? Have you changed something in this
-patch compared to V1?
+This patch was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
+
+On Thu, 04 Jun 2026 12:46:00 +0100 you wrote:
+> Fix modification of the received skbuff in rxrpc_input_soft_acks() and a
+> potential incorrect access of the buffer in a fragmented UDP packet (the
+> packet would probably have to be deliberately pre-generated as fragmented)
+> when AF_RXRPC tries to extract the contents of the SACK table by copying
+> out the contents of the SACK table into a buffer before attempting to parse
+> 
+> AF_RXRPC assumes that it can just call skb_condense() and then validly
+> access the SACK table from skb->data and that it will be a flat buffer -
+> but skb_condense() can silently fail to do anything under some
+> circumstances.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net,v2] rxrpc: Fix the ACK parser to extract the SACK table for parsing
+    https://git.kernel.org/netdev/net/c/333b6d5bb9f8
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
