@@ -1,75 +1,189 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f74.google.com (mail-yx1-f74.google.com [74.125.224.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB31B3E9F7D;
-	Tue,  9 Jun 2026 09:20:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A54F334C0D
+	for <netdev@vger.kernel.org>; Tue,  9 Jun 2026 09:31:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780996808; cv=none; b=pHhx7z9tilCKmKSE6MdlqKFCsZcJwDI8jf6qwFmn6dTEIGlXFvgzTJkEuYg8+MsIBfVfwD50YNAwNOsMyyeHIIH+2HNfhyH8q6m6dXRZmyEPGdoxJZJ//SXitTyFt+JEx3Ce2EYyz5kj8qc4kaUMrkvnwznvT10jEtk8Op5hQwA=
+	t=1780997517; cv=none; b=gsCnGzFHOusCL1eUTdYHwX23rMHVYixKORpeYlp4NL7ZOC8ZkucaBB+irmM12ofTKm8llyP2Enhtr6dWh8reF6wjbMwAuKe0MVlEObEN2OqBv7sUnr5XXWfIvBbQGMxS1nLoTpow53hWSJtUD1en2wEHK66ZCKE6SMIVhGz/WiI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780996808; c=relaxed/simple;
-	bh=qZSA9ggaPKM6E6S8XSOJxK6I9nJSCiEit4OFAUMTPko=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=eZTxpJqAVxCN0TxWesLhCuQwL1y9j0zkNDv81eDJiakADYMZajYl4QjInmmBsuQ2SrWW5Q/jhnyRjm7/RwOaB4xz4t3nJJrn9rPr+dGGkVw+Rws+kl1gtzIjN5SYFjdbeK7tjfVZLvSFaxO5CauKEKeF2YIx+gIT07tIzO1ORKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nNBofypP; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780997517; c=relaxed/simple;
+	bh=SLQLodR+5Wd37XEsxb4HEBgY/1Hxm3Kg41CRLQjB4DU=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=nvdmSvQopCft7jV8BDS+JrIj+puyHRSANsG0NxmkaS0uQCikaNQOAz+jSLlqAG3f7oztEWpZkZ1vAcMnhQ63sQcltkKTaRCZqTyO91ezLy4Q8EYKgHWztoEWGk3ExH9lHOm7JRvmVsrTYiudnlGlvUXNE1OMG12ZmoHu+kkiAnI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=f5W07G7A; arc=none smtp.client-ip=74.125.224.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nNBofypP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 850631F00893;
-	Tue,  9 Jun 2026 09:20:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780996807;
-	bh=REqM60JIutvr1UlqjQEL5ZyXW6shAcahCKYRUH+V61g=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=nNBofypPqEcQ93osXQ7I03cQ3+3uCXmSwNxlY8nJMq6fSY0kMhiZ5IGsMUebjZ3qc
-	 gaEK583dbCQh7vx+ddKb1ahPTcyLeYvLrBLbv0hev+UIBlOnLNkMC2ScTrgwAnP7vz
-	 KdRjFz/wSHeYTOgvjxsPao1HmZ7ayL/lHCp9PuJmFli2omyut6DoG/lfm50GxlMJ/h
-	 6aBV6o7frmT9vQocHgwQX4I26QeqOCnuCRopggf5bkzHBPLE5jU7Ymjnu7xKLoKy4J
-	 L3w5f28VMY6pcmJM3vOOQPspOpIbc3j/vD9dxcW3p7ShOSVW+swT4cAAwGB5hV9g6C
-	 DCMzCvF5ZRbGA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 40A3F39302D6;
-	Tue,  9 Jun 2026 09:20:07 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="f5W07G7A"
+Received: by mail-yx1-f74.google.com with SMTP id 956f58d0204a3-66034c1b31cso7837932d50.1
+        for <netdev@vger.kernel.org>; Tue, 09 Jun 2026 02:31:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1780997515; x=1781602315; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=4iU/5PQhlVc0d41VS5cvaR8Wn95XDRnhef0Pw8pBHeo=;
+        b=f5W07G7A+MNVCK0J4lKEag3GXyc+i0cSQvk6yuZderdnIyU/WcqVNcmWgcVNdXOLPN
+         35fviBZqevY8wTFrNwps3wjGLn9xl12EaALIT3F1q/ptD4fiRDMONBhpTmiFX/w7bIaS
+         uuyAufqDD3Ao0PaGPSPvSohmeo821AEjzBKXO+l5bMaDwTBX1NR0BcdgtJUzjOPJpVoc
+         UCg6HCR3ADPH0cOCgNXiMDWLtcxwWxE7P3BWHckRn70fd5mi1vD4O6uHE3Fp9kqhnJnX
+         r7Twbdhmf6e79XdyafxiHsoj+2jWjPqRXwqYrcrqUKQwaqu8EvJ4BhUkMEUA6GQJdv8Y
+         LL6Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780997515; x=1781602315;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=4iU/5PQhlVc0d41VS5cvaR8Wn95XDRnhef0Pw8pBHeo=;
+        b=O6452X4yH84JCTLBLqJ16HmHJnAS4RKz8d972eA0IGbb1K+2Gp3heDn6jAqLaz/q/c
+         uhuppkwTbEpp7mknDI5RKPG863eq9p8oFAsNgux5iYNW916RvPVOYFl1dRdD7vfqOo+p
+         K3CFUc88mClV5cIQebN4PfQfxlRqeNAtJ4sLjtlJOB6TVmnxYre5SOrk+lkkztDE9YMJ
+         EcKfVuxNi7LCgcd5bp1RuHqi2aevoGWCnJ5xYqqeLI70c9NbOW1bWLpkyiUmpPhgbgQh
+         8gjI4P1m8yd3DBztvSal+Kh0t6Rbvm6ptlKMco20y7ey9fBIAqGjGrzWa3GwcWXvtBv2
+         PixQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8AHysPchErjygY8ILlWPYrM0BsVl3/ERO4ukWoib/xFT2ANXE9XoXiS6DwV0YznUWQZ0lxs68=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzLUQ+BYxwgyRIpEpAj4/wtE4LOHmlor/cX7HcBdhoFUb1RtBOU
+	H3K49o5mMaBB+Or0p85IkbBRS6ErWNJl8AdDkKeHdz/WxSEj8xBVANp1BsTiVcOzbhMhdliVWLv
+	OYilu/RCVn7we1w==
+X-Received: from yxjj11.prod.google.com ([2002:a05:690e:248b:b0:651:c20c:6ed3])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a53:d005:0:b0:660:7702:62df with SMTP id 956f58d0204a3-66106f392e1mr14944614d50.31.1780997514771;
+ Tue, 09 Jun 2026 02:31:54 -0700 (PDT)
+Date: Tue,  9 Jun 2026 09:31:53 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] r8152: handle the return value of usb_reset_device()
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178099680590.1906662.18338551033084703572.git-patchwork-notify@kernel.org>
-Date: Tue, 09 Jun 2026 09:20:05 +0000
-References: <20260604092247.27158-450-nic_swsd@realtek.com>
-In-Reply-To: <20260604092247.27158-450-nic_swsd@realtek.com>
-To: Chih Kai Hsu <hsu.chih.kai@realtek.com>
-Cc: kuba@kernel.org, davem@davemloft.net, netdev@vger.kernel.org,
- nic_swsd@realtek.com, linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.54.0.1064.gd145956f57-goog
+Message-ID: <20260609093154.2733956-1-edumazet@google.com>
+Subject: [PATCH net-next] ip6_tunnel: annotate data-races around t->err_count
+ and t->err_time
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
+	David Ahern <dsahern@kernel.org>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
+	Eric Dumazet <edumazet@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Hello:
+ip6_tnl_xmit() and ipip6_tunnel_xmit() run locklessly (dev->lltx == true).
 
-This patch was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+ip6gre_err() and ipip6_err() also run locklessly.
 
-On Thu, 4 Jun 2026 17:22:47 +0800 you wrote:
-> If usb_reset_device() returns a negative error code, stop the
-> process of probing.
-> 
-> Fixes: 10c3271712f5 ("r8152: disable the ECM mode")
-> Signed-off-by: Chih Kai Hsu <hsu.chih.kai@realtek.com>
-> ---
->  drivers/net/usb/r8152.c | 7 ++++++-
->  1 file changed, 6 insertions(+), 1 deletion(-)
+We need to add READ_ONCE() and WRITE_ONCE() annotations
+around t->err_count and t->err_time.
 
-Here is the summary with links:
-  - [net] r8152: handle the return value of usb_reset_device()
-    https://git.kernel.org/netdev/net/c/19440600e729
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+---
+ net/ipv6/ip6_gre.c    |  8 ++++----
+ net/ipv6/ip6_tunnel.c | 11 ++++++-----
+ net/ipv6/sit.c        | 22 ++++++++++++----------
+ 3 files changed, 22 insertions(+), 19 deletions(-)
 
-You are awesome, thank you!
+diff --git a/net/ipv6/ip6_gre.c b/net/ipv6/ip6_gre.c
+index 365b4059eb20354c256c491a16db0e606e0a9790..9f767db800ba03f131c3315b8cf808daea50accc 100644
+--- a/net/ipv6/ip6_gre.c
++++ b/net/ipv6/ip6_gre.c
+@@ -445,11 +445,11 @@ static int ip6gre_err(struct sk_buff *skb, struct inet6_skb_parm *opt,
+ 		return 0;
+ 	}
+ 
+-	if (time_before(jiffies, t->err_time + IP6TUNNEL_ERR_TIMEO))
+-		t->err_count++;
++	if (time_before(jiffies, READ_ONCE(t->err_time) + IP6TUNNEL_ERR_TIMEO))
++		WRITE_ONCE(t->err_count, t->err_count + 1);
+ 	else
+-		t->err_count = 1;
+-	t->err_time = jiffies;
++		WRITE_ONCE(t->err_count, 1);
++	WRITE_ONCE(t->err_time, jiffies);
+ 
+ 	return 0;
+ }
+diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
+index 9d1037ac082f6aad36c152ffdbe0f30237b65fc3..3445f81d9957e0ddd3f23d8b550ef5772672dba6 100644
+--- a/net/ipv6/ip6_tunnel.c
++++ b/net/ipv6/ip6_tunnel.c
+@@ -1104,7 +1104,7 @@ int ip6_tnl_xmit(struct sk_buff *skb, struct net_device *dev, __u8 dsfield,
+ 	struct ipv6_tel_txoption opt;
+ 	struct dst_entry *dst = NULL, *ndst = NULL;
+ 	struct net_device *tdev;
+-	int mtu;
++	int err_count, mtu;
+ 	unsigned int eth_hlen = t->dev->type == ARPHRD_ETHER ? ETH_HLEN : 0;
+ 	unsigned int psh_hlen = sizeof(struct ipv6hdr) + t->encap_hlen;
+ 	unsigned int max_headroom = psh_hlen;
+@@ -1214,14 +1214,15 @@ int ip6_tnl_xmit(struct sk_buff *skb, struct net_device *dev, __u8 dsfield,
+ 		goto tx_err_dst_release;
+ 	}
+ 
+-	if (t->err_count > 0) {
++	err_count = READ_ONCE(t->err_count);
++	if (err_count > 0) {
+ 		if (time_before(jiffies,
+-				t->err_time + IP6TUNNEL_ERR_TIMEO)) {
+-			t->err_count--;
++				READ_ONCE(t->err_time) + IP6TUNNEL_ERR_TIMEO)) {
++			WRITE_ONCE(t->err_count, err_count - 1);
+ 
+ 			dst_link_failure(skb);
+ 		} else {
+-			t->err_count = 0;
++			WRITE_ONCE(t->err_count, 0);
+ 		}
+ 	}
+ 
+diff --git a/net/ipv6/sit.c b/net/ipv6/sit.c
+index 201347b4e12742451de6d6036281d1abaff0dd84..f7a8d1d365e3c41edd9e10854c9009dfdd7e2aae 100644
+--- a/net/ipv6/sit.c
++++ b/net/ipv6/sit.c
+@@ -595,11 +595,11 @@ static int ipip6_err(struct sk_buff *skb, u32 info)
+ 	if (t->parms.iph.ttl == 0 && type == ICMP_TIME_EXCEEDED)
+ 		goto out;
+ 
+-	if (time_before(jiffies, t->err_time + IPTUNNEL_ERR_TIMEO))
+-		t->err_count++;
++	if (time_before(jiffies, READ_ONCE(t->err_time) + IPTUNNEL_ERR_TIMEO))
++		WRITE_ONCE(t->err_count, t->err_count + 1);
+ 	else
+-		t->err_count = 1;
+-	t->err_time = jiffies;
++		WRITE_ONCE(t->err_count, 1);
++	WRITE_ONCE(t->err_time, jiffies);
+ out:
+ 	return err;
+ }
+@@ -909,8 +909,8 @@ static netdev_tx_t ipip6_tunnel_xmit(struct sk_buff *skb,
+ 	struct net_device *tdev;	/* Device to other host */
+ 	unsigned int max_headroom;	/* The extra header space needed */
+ 	__be32 dst = tiph->daddr;
++	int err_count, mtu;
+ 	struct flowi4 fl4;
+-	int    mtu;
+ 	u8 ttl;
+ 	u8 protocol = IPPROTO_IPV6;
+ 	int t_hlen = tunnel->hlen + sizeof(struct iphdr);
+@@ -986,13 +986,15 @@ static netdev_tx_t ipip6_tunnel_xmit(struct sk_buff *skb,
+ 		}
+ 	}
+ 
+-	if (tunnel->err_count > 0) {
++	err_count = READ_ONCE(tunnel->err_count);
++	if (err_count > 0) {
+ 		if (time_before(jiffies,
+-				tunnel->err_time + IPTUNNEL_ERR_TIMEO)) {
+-			tunnel->err_count--;
++				READ_ONCE(tunnel->err_time) + IPTUNNEL_ERR_TIMEO)) {
++			WRITE_ONCE(tunnel->err_count, err_count - 1);
+ 			dst_link_failure(skb);
+-		} else
+-			tunnel->err_count = 0;
++		} else {
++			WRITE_ONCE(tunnel->err_count,  0);
++		}
+ 	}
+ 
+ 	/*
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.54.0.1064.gd145956f57-goog
 
