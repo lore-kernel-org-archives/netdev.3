@@ -1,93 +1,80 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from mail.rulkc.org (mail.rulkc.org [155.212.184.193])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DDD33F4115;
-	Tue,  9 Jun 2026 09:47:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4988C3EBF19;
+	Tue,  9 Jun 2026 09:48:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=155.212.184.193
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780998440; cv=none; b=WW/UFFtfXD9esLfaIMuE2OiANlo+QPfI3sKg27+Hbep0UaBVz95QCW+ummdLZhuv43BbMyczVMdLR2/Xw8Enqx7qRUMtdToCyI38Gc9rtKYVB2PpEIo9cYdqqH1MwnEvEAwx74xGO7YoyI3LjcyhwvE+MmFnOA3k23Bdnc6jHL0=
+	t=1780998530; cv=none; b=C/xfT1WrPAg0qAIHi4tfV1oUFfPNKSNWR3P0f7TeYwdaOttw8uPYx4uKr47+iN9zcqZ2kRR15vR9vJ1MwSsle1+59wn6GpnccNEU7nvdt8xZ7C9cTgBw1n6Va/d5DHM3VbeYM8pLm2t8Rv8goLXe6hgoTzsJRl3ebbDNJSJpq0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780998440; c=relaxed/simple;
-	bh=LuS36RU+WTuUwwvmG/HT9IVsmodfFZAdD+e4eG1mM50=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VrlFn5TBTdEA/g4SbCbffoKzVvhvnqdj+gPH8mgd2vLv9e5to1FbTaUabQ/aPlUKeaUAQM221PFLA19XPO/HiPE+DTt/hM4vIYSHcLvuGN5HO6woVFgIrlitB1HsJ48qCD+aZMR49GR2tKDc0Kpgm0OGBctaaVTDr/uwRxcGSEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=kmxxbabX; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1780998530; c=relaxed/simple;
+	bh=QdtnFTqoS1oY2E32jFZfL4GrvAxiwbAg8YbssX9PAPo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tPGGql+jI2WxdlPplpdBVo2WLQzKg1HRJpPdx9wDYUgcoBayCuSl6A1bbHtxsRFYn4DC+x1Eg3ZUrSTBZYuPaQbq4hQU4+HbC1RKjxJj8bsBicI7MsjCetJIbyo9S2cXxFQJddrYuQPowqItSz9doh9vfFY/wW9UT21wGKyOdeM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=rulkc.org; spf=pass smtp.mailfrom=rulkc.org; dkim=pass (2048-bit key) header.d=rulkc.org header.i=@rulkc.org header.b=KzdqJ7zE; arc=none smtp.client-ip=155.212.184.193
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=rulkc.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rulkc.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="kmxxbabX"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=1wE2Dps9NRUxIbcRxIJ0e8icPNgC1+yiq+5OV8gGLi4=; b=kmxxbabX74Inj11UcnqdrSIi8L
-	uaG/r/JAoLcyCVqri1rUeVpMyeW0FdaBD9PBTilk1hK5liflQGHQYp+4wOioYpz2lNddvoGUAXECR
-	0qdU5O2QVrmDK+AE/QaT5sSV6CAhkAFYyAjYCVULFovxNeGOv8+Be2Lk62wMvlSO8faQ=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wWt33-006m7g-J3; Tue, 09 Jun 2026 11:47:05 +0200
-Date: Tue, 9 Jun 2026 11:47:05 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Wentao Liang <vulab@iscas.ac.cn>
-Cc: hkallweit1@gmail.com, linux@armlinux.org.uk, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] mdio-airoha: fix refcount leak in airoha_mdio_probe()
-Message-ID: <a3757265-9487-4f75-9bdf-dcb38dff4022@lunn.ch>
-References: <20260609090729.219120-1-vulab@iscas.ac.cn>
+	dkim=pass (2048-bit key) header.d=rulkc.org header.i=@rulkc.org header.b="KzdqJ7zE"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id BE8081000E6;
+	Tue,  9 Jun 2026 12:48:27 +0300 (MSK)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rulkc.org; s=dkim;
+	t=1780998518; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=++Cs2JBZqXYs4iI+cjVHpwGDyqJVzN4jXYl2vkWqga0=;
+	b=KzdqJ7zEUO8/inpTW/TPejhvka7GGxtLYV52bori/ctOfyl56y18WgFqJxEBW4qZbGcJdZ
+	MQLkWkb5JClzlmGmUf8P5R3Ft2hBmv5i7fiZtiKGffozOoWGndQaF+oaYrwR9VLrFR0hou
+	mzqGi2OQk/lUHvRMekJAaVi8fxim/cua4gn5UOVtqt+uQr+rkIElcIcIZEUhuj8++KQVM6
+	hfhH5XR81kcJUbxD8VwqRa3bMLtu1NyRvfOuYrsYsbbuUcd7SubPHW2aDoKXVYEA03XAOU
+	+xR8PraxG7+fQc1K1ZOiKmSxYkHrYtK/eoPSpJMsXLvsyMUfy2c/WgmSGmhzZA==
+Message-ID: <76d3872f-8bd6-4b90-b84d-77e638e50cf6@rulkc.org>
+Date: Tue, 9 Jun 2026 12:48:19 +0300
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260609090729.219120-1-vulab@iscas.ac.cn>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1] vsock/virtio: rework MSG_ZEROCOPY flag handling
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Paolo Abeni <pabeni@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Jason Wang <jasowang@redhat.com>,
+ Bobby Eshleman <bobby.eshleman@bytedance.com>,
+ Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
+ <eperezma@redhat.com>, Simon Horman <horms@kernel.org>, kvm@vger.kernel.org,
+ virtualization@lists.linux-foundation.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, oxffffaa@gmail.com, rulkc@linuxtesting.org
+References: <20260605115314.552321-1-avkrasnov@rulkc.org>
+ <20260608190820.71785304@kernel.org>
+Content-Language: ru
+From: Arseniy Krasnov <avkrasnov@rulkc.org>
+In-Reply-To: <20260608190820.71785304@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Tue, Jun 09, 2026 at 09:07:29AM +0000, Wentao Liang wrote:
-> In airoha_mdio_probe(), after calling reset_control_deassert(),
-> if clk_set_rate() fails, the function returns immediately without
-> calling reset_control_assert().  This leaves the reset line
-> deasserted and causes a reference count leak on shared reset
-> controllers.  The devm cleanup does not assert the reset line, so
-> the unbalanced deassert persists.
-> 
-> Fix this by adding a reset_control_assert() call on the
-> clk_set_rate() error path, matching the existing error handling
-> for devm_of_mdiobus_register().
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 67e3ba978361 ("net: mdio: Add MDIO bus controller for Airoha AN7583")
-> Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-> ---
->  drivers/net/mdio/mdio-airoha.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/mdio/mdio-airoha.c b/drivers/net/mdio/mdio-airoha.c
-> index 52e7475121ea..030482b8318f 100644
-> --- a/drivers/net/mdio/mdio-airoha.c
-> +++ b/drivers/net/mdio/mdio-airoha.c
-> @@ -245,8 +245,10 @@ static int airoha_mdio_probe(struct platform_device *pdev)
->  		freq = 2500000;
->  
->  	ret = clk_set_rate(priv->clk, freq);
-> -	if (ret)
-> +	if (ret) {
-> +		reset_control_assert(priv->reset);
->  		return ret;
-> +	}
->  
->  	ret = devm_of_mdiobus_register(dev, bus, dev->of_node);
->  	if (ret) {
+Hi, I'll rebase it on latest net-next
 
-devm_of_mdiobus_register() also calls reset_control_assert() on
-error. So please put all the error cleanup handling at the end and use
-goto.
+Thanks
 
-    Andrew
-
----
-pw-bot: cr
+On 09/06/2026 05:08, Jakub Kicinski wrote:
+> On Fri,  5 Jun 2026 14:53:14 +0300 Arseniy Krasnov wrote:
+>> Logically it was based on TCP implementation, so to make further
+>> support easier, rewrite it in the TCP way.
+> Does not apply:
+>
+> $ git pw series apply 1106582
+> Failed to apply patch:
+> Applying: vsock/virtio: rework MSG_ZEROCOPY flag handling
+> error: sha1 information is lacking or useless (net/vmw_vsock/virtio_transport_common.c).
+> error: could not build fake ancestor
+> hint: Use 'git am --show-current-patch=diff' to see the failed patch
+> hint: When you have resolved this problem, run "git am --continue".
+> hint: If you prefer to skip this patch, run "git am --skip" instead.
+> hint: To restore the original branch and stop patching, run "git am --abort".
+> hint: Disable this message with "git config set advice.mergeConflict false"
+> Patch failed at 0001 vsock/virtio: rework MSG_ZEROCOPY flag handling
