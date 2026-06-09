@@ -1,54 +1,76 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71C272EEE60;
-	Tue,  9 Jun 2026 00:52:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2D32175A7E
+	for <netdev@vger.kernel.org>; Tue,  9 Jun 2026 00:54:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780966343; cv=none; b=TFewzwOOIh95orBggorKsafaHCD0zj4emn4gQlsZMX978yWXtv/3sfLhKcxwXnaj/icMizMzP1zUPhgaeRYOQ0631d0xQLWoNbrLh6NrIieQW58OZih9cRU5bzOLmgauccKp7rIAiKBZLNiHOnQyqhUVEN/vHVW98t+UiWLUYNk=
+	t=1780966444; cv=none; b=MjwH5nBQ9HsmLuL9BRL2d9Km8ku9g+al903bxZ+PXHcx9Ji56bb6R4qkDQEL0m1fd3hazxK8owEgoqBXCp4nzJ4kLz8Cs8zZyBWSanO5JzljR6WAJeuQHsLv5GbgT6tN6Cq0rjfJslbJZCpzsLs9COHeruveiTp9OuoRSU6vw+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780966343; c=relaxed/simple;
-	bh=nsjCiLewUQnyThO/nk3vegxsepbxGCb1ZuGqp/NqJp8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tyVfcuQvIy3w2q7UPahIfhtF7MJ9korN0WdOYyBvioWVU1/BiPQ8XIibbpQfvB/3RMIS+R54ENny8TdgMql9P67iF/3sgLNMXZZ/5KARMHdG7VKnOhQ/d79vaT6U77WCwvzmi0YsTDZbiqdB4Si25qGFNGvvQkQXI/rDHVMiaPk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lGkWL5D5; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780966444; c=relaxed/simple;
+	bh=PeMGTAiBDA1zLaaR/tkHWppVR0Mrqa7pwBx29pP1yq0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Vu25n9EMj7pw1j3T8BiECzTKCwz7mfYgL6n/XtZohXKoNkn9dySJgE7w+bqSoztRdG5HSrFt3O0wN3IgadohAziOczxorLxnLFD5xmSEUz1dF/YWstbfIcfqVtE99PoPhS5/gDfAeTRGIbsw9Fiu3fk4L+oIEaLtmVKqgV5XEa0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trailofbits.com; spf=pass smtp.mailfrom=trailofbits.com; dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b=Mr75bK+X; arc=none smtp.client-ip=209.85.219.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trailofbits.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trailofbits.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lGkWL5D5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BF8F1F00899;
-	Tue,  9 Jun 2026 00:52:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780966342;
-	bh=Lc0hJgnYhv04evvGi5aODLz+6yXOmwINNyB7mNxpGvY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=lGkWL5D5tEnCfZm9gL+fCLycFNvCrsCAV2KhPYPlg4kIJV9TC+uk16i1pDq5Nd0Xt
-	 Q+wvGxJDjPm1ikIeaWXc0Q3hSPQQnH10uyFe6FytvAre2ch43nV9R/Oi/BRaImhJtL
-	 Kb/kbM0UO2i6BUlOH+P0tlFeLYZEsrFZvzmotiYKPuJViYv65Ieb9nfFNOFEMnhcjh
-	 UmezEdM245NpKkZYQMsSPoJYF3eUeSBSmYVxjcKxi6DnqlmqnXIgqr7lQGDqUmcjJl
-	 QApSpWYmYw1yBKtyKYD1cBwYb2G6vNr4m9UuPA8OicWVYfV5FPF1ouwiM4gRZV3LJ/
-	 C9Qrxc5u3hhXg==
-From: Sasha Levin <sashal@kernel.org>
-To: Steffen Klassert <steffen.klassert@secunet.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S . Miller" <davem@davemloft.net>,
-	David Ahern <dsahern@kernel.org>,
+	dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b="Mr75bK+X"
+Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-8ccef25789fso34141286d6.3
+        for <netdev@vger.kernel.org>; Mon, 08 Jun 2026 17:54:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=trailofbits.com; s=google; t=1780966442; x=1781571242; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=SLIjYpf1CuOXyUq/M7hnmedCnWq0PTsVfjdjpT3u0Mo=;
+        b=Mr75bK+XSrCTmwWB3STn/l5lAm5EDPOaL7vEpwBHra2DkTMw69nFUKDDPpbuucF/ea
+         k7ol9Fa+gkozAh25rAJhjLaX/sk8ENWvD0u3LP45/gU9sUUK402vwPF8j7EY+eeHFbYK
+         XaW6z/cmXChP7y28/dyBonNdobicxAMbuSXVvcdZS1teTbldVVLBj2r+LwweYCz+4Oym
+         SwrvVCL4t9KrD8GO/RxntAg53aRPBVeMsiehBkliCytRjA5IUmDvSuIo1mKTxudoIBfb
+         GLDKo4hmycNo8C5V/XcjvkygxssCHEioKFRq13Wi3wX6Z9i0DJbyao5CCpC7eTraPg12
+         h1vA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780966442; x=1781571242;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SLIjYpf1CuOXyUq/M7hnmedCnWq0PTsVfjdjpT3u0Mo=;
+        b=CqIIL9g2uGevw1cMqGL1qXqLXOpRbRO4JnOTod7Ma1JIDp24LGEmj5CGjkwSXXGtgM
+         8jl7LSmH+uK/CSXyWxTQkOHDID2q/arqUzAm28+OjR8pqKaXa60n8hSzveJ9T1EwsY55
+         atawiM9lF9fRXI/II7iQGSSIGR1dlIHL8Ns7Fdv27diY6LeZfqdBfsoV1POzSWSxHSlQ
+         Z1MTep2Tz8sq1cvMCnhnGttpNL69WfwphzacZnX/WciNaj8hJzT98o2Tk7vuWUWjZ5/Y
+         V97DYeKv/9FZNWOuNggIaBMMqrFJq/tJ/DpQKiw5vBtJJS1o884oRagtX0xFCbugubeQ
+         sx1A==
+X-Forwarded-Encrypted: i=1; AFNElJ8rDehS8O71/nJDTmQ7xV3ZwA2wkO76LwDEwFX2QonAlYEnt+tyWWHFD7P8JKYr4b3W3X4Aea8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwlUcE537sgjUDrPbkFnhKAUfpEMUXuoMTT2Bf9MvLJHuJOFl8l
+	+yGVMXJOyP2XL3SvhUJLQXuDCAh8TNO9pmMECHc/2+XUanZ5hNhn8piwHR1BxsbkvoY=
+X-Gm-Gg: Acq92OFa79YWf8HT+j8s5iqi8CTCj/H71o+cJrhMizQIFHPL3Q3lwxntz/R+noW5wSO
+	ESX5DA6nx/7vnSiN/5zv5eYl3s13k1Ce7mzfP7/hJKoVwc7NdDQ7KbUcSZxkvJeRnRgjFgOTbZU
+	88GOMB6S+UirRRDXLzKtC+xSmMC869fJVPA1mPHVN2vFFqvXT1lZJaFJ8h1Q9PXavcl+KjioTFk
+	zXUgQvmGTf0u82FhseOXMmAUN9h8afsqY9jx0uVK6GvfoS1nrPgLUL21LRG/Ak8GOjpl6brxjOK
+	6WJxH7ElehF1m1yB8t+h8TMbNH/DmE76+GDWcJrOdlI5SpGgguddTO4ZoAsyN4baTvkOIezxD5q
+	u53i4JawnQ76yuDr6rgEfzrVAfL686sh9eQgte8opMNI7FpqLFOzi1kOBcsDcUXEWOeiKP+OpBF
+	gjyc+AAhE8IAH9W14z9PNrc5rX8+JcqIp0BkWwxA==
+X-Received: by 2002:a05:620a:454b:b0:915:7732:ea7c with SMTP id af79cd13be357-915a9da3801mr3019464085a.43.1780966441679;
+        Mon, 08 Jun 2026 17:54:01 -0700 (PDT)
+Received: from localhost ([161.35.96.86])
+        by smtp.gmail.com with UTF8SMTPSA id af79cd13be357-9158a2359ecsm1928705985a.14.2026.06.08.17.54.00
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 08 Jun 2026 17:54:01 -0700 (PDT)
+From: Samuel Moelius <sam.moelius@trailofbits.com>
+To: Jamal Hadi Salim <jhs@mojatatu.com>
+Cc: Samuel Moelius <sam.moelius@trailofbits.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Simon Liebold <lieboldsimonpaul@gmail.com>
-Cc: Sasha Levin <sashal@kernel.org>,
-	Qi Tang <tpluszz77@gmail.com>,
-	Florian Westphal <fw@strlen.de>,
-	Simon Liebold <simonlie@amazon.de>
-Subject: Re: [PATCH 6.6.y] xfrm: hold dev ref until after transport_finish NF_HOOK
-Date: Mon,  8 Jun 2026 20:51:58 -0400
-Message-ID: <20260608-stable-reply-0012@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260608082454.2786663-1-simonlie@amazon.de>
-References: <20260608082454.2786663-1-simonlie@amazon.de>
+	netdev@vger.kernel.org (open list:TC subsystem),
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH] net/sched: hhf: clear heavy-hitter state on reset
+Date: Tue,  9 Jun 2026 00:49:38 +0000
+Message-ID: <20260609004937.1240807.c0dcec938172.hhf-reset-stale-classifier@trailofbits.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -57,16 +79,59 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-> [PATCH 6.6.y] xfrm: hold dev ref until after transport_finish NF_HOOK
+HHF reset does not clear the classifier state used to identify heavy
+hitters.  Packets after reset can therefore be scheduled using flow
+history from before the reset.
 
-I'm holding all four of these (6.6, 6.1, 5.15 and 5.10) for now.
+The reset operation should return the qdisc to an empty state.
 
-As adapted, the backport leaks a netdev reference on the nested transport-mode
-path where both an async and a sync decapsulation happen: the inner dev_hold is
-balanced by a dev_put that the older trees don't have, so the saved reference
-is never released. Mainline avoids this because it has b05d42eefac7 ("xfrm:
-hold device only for the asynchronous decryption") as a prerequisite.
+Clear the heavy-hitter classifier tables when HHF is reset.
 
+Assisted-by: Codex:gpt-5.5-cyber-preview
+Signed-off-by: Samuel Moelius <sam.moelius@trailofbits.com>
+---
+ net/sched/sch_hhf.c | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
+
+diff --git a/net/sched/sch_hhf.c b/net/sched/sch_hhf.c
+index 96021f52d835..1698c1b54dec 100644
+--- a/net/sched/sch_hhf.c
++++ b/net/sched/sch_hhf.c
+@@ -461,12 +461,34 @@ static struct sk_buff *hhf_dequeue(struct Qdisc *sch)
+ 	return skb;
+ }
+ 
++static void hhf_reset_classifier(struct hhf_sched_data *q)
++{
++	int i;
++
++	for (i = 0; i < HH_FLOWS_CNT; i++) {
++		struct hh_flow_state *flow, *next;
++		struct list_head *head = &q->hh_flows[i];
++
++		list_for_each_entry_safe(flow, next, head, flowchain) {
++			list_del(&flow->flowchain);
++			kfree(flow);
++		}
++	}
++	WRITE_ONCE(q->hh_flows_current_cnt, 0);
++
++	for (i = 0; i < HHF_ARRAYS_CNT; i++)
++		bitmap_zero(q->hhf_valid_bits[i], HHF_ARRAYS_LEN);
++	q->hhf_arrays_reset_timestamp = hhf_time_stamp();
++}
++
+ static void hhf_reset(struct Qdisc *sch)
+ {
++	struct hhf_sched_data *q = qdisc_priv(sch);
+ 	struct sk_buff *skb;
+ 
+ 	while ((skb = hhf_dequeue(sch)) != NULL)
+ 		rtnl_kfree_skbs(skb, skb);
++	hhf_reset_classifier(q);
+ }
+ 
+ static void hhf_destroy(struct Qdisc *sch)
 -- 
-Thanks,
-Sasha
+2.43.0
+
