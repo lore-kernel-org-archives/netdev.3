@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4492421F0D;
-	Tue,  9 Jun 2026 15:28:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06B3743E9C8;
+	Tue,  9 Jun 2026 15:28:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781018889; cv=none; b=fBSihGzlUJxy8PWn5Hiwl4GEqK2MycWsgZwtX9cnU86rRM3oXc7ZwJ2mkKV+FLFOC/csDdc0TRUOa2iZTUNVwwTPTsj0FBCY5emFB5CoZ7ipOcw5oaeNIWozPsDbNi2NgMIySmqFLRi1ldFFAVn290kkSoZIbhw1CYMiYJHPEbo=
+	t=1781018890; cv=none; b=rqO4Zkg0+J7Ngkxf3xcF17rxXiC7EiyICJ4fbxvARcLhtwS/QvgmV23U7SmFJCaNuuMtPyL89t3nRHQ+2FA+eijPNWcqtT3ZCzbEIiTbHh5sO3D/CEpWFE80Xtiz5+gkU1zNgwBtCTMUZ048dSC57xC41yiM2ktpqC/nWoS+X9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781018889; c=relaxed/simple;
-	bh=FiKRCMy7nRNDSSCXUQkrQkas/Owj/jenoKfYpyZZa/w=;
+	s=arc-20240116; t=1781018890; c=relaxed/simple;
+	bh=0PoyS8TaDySwROS+c9soPDbetkiSCozHg26VGtBAXHs=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=SoRdzzqOH/2+8ylD2nclBx+Gb1kHrbTP2OHginY4Z7MB5u5e9/p8Udku/hDII2mkwNjYRlC4hbWF3piICB8X3lwmDJYzYmKitqrNOuSqdzVjeSkEB83ASoSze8mNvWo9/PoqGOCamtCWtdJTng8Ki1OixWenas/FwxHyH9mWzEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FOc/sQJR; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=dNLxpbsNFJOAoTzucJL6zpHmh58ZOp9/JN49n6zAQWEkmAIF+y5f05vn0D8FtlXzBqtJ7FlqK30vtogWmJ13bvC1UPHUB8Z4AqvdWXOFw/QK7yNhN0mGejmdsex120eQ6Di9q/DMC56tf6pd96NNsDExWzEFAPX9xEt085eNC04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RCtmRZGp; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FOc/sQJR"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id A07D6C4AF11;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RCtmRZGp"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id DC1A5C4AF10;
 	Tue,  9 Jun 2026 15:28:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1781018889;
-	bh=FiKRCMy7nRNDSSCXUQkrQkas/Owj/jenoKfYpyZZa/w=;
+	bh=0PoyS8TaDySwROS+c9soPDbetkiSCozHg26VGtBAXHs=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=FOc/sQJRcy9WZtRP5wDcctu31TuisHBntJOWXQ+Xk4b1pDDQu0ghR/yw9jNF8AbKj
-	 SBLzlDzyK8Ai3nPe8PFAKOrfMS8n9ejU04gMQM+x0HgY0JK575YtlKHptWuGdPwFu2
-	 qeR1FETuA2+ya10bGN4HuUmCAGwQWdexCG9V7Ifwkz2lGv/KCnPET+OVQEBS3Nz+Qt
-	 ArBB1Vm6f89BxlFxglNbWouIScdSKNz9BeW12etAz+1hzUDvriMnpS6zUfg8VSIk8K
-	 cAkf9SOhOsQsI7z4aXq+1AOMUj1PPeKn7POEXvhbYHM0FnxylwMy2BDCWf3woVgAx/
-	 ia1l/a8gfkIzg==
+	b=RCtmRZGp4ePgUvPcTs84q52ya6MRcLMwAApbgKOFq0JXjfu3pWC/W4sOjcF6ptS7F
+	 iJ/y2HWPVFGrYozXW3UKPSgVrktOVvM5AETRwd+thdT19QTteXeoKKgj/V1oWjQ5Zi
+	 Cai3v6x41LlCj2pOYlUcLhS8H/bzEPBIsMlCv6ZEe308i37pb3si8bv0IF48cO/htK
+	 DDqjoUky37MY++bV1FzOjqT7fSMWOr2DtQCEw2kE+yNqcSJjQXbhdwD5oTqPYk9nSG
+	 Gk8i+QQxCuixLNH+BcLXFsCpSHxoafsvFa1FaVPbSbq8LCiMF/YDFk7CloXf9Gat5V
+	 YWJM2vh8bDzGQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9819CCD98C6;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D3334CD8CB9;
 	Tue,  9 Jun 2026 15:28:09 +0000 (UTC)
 From: Ciprian Regus via B4 Relay <devnull+ciprian.regus.analog.com@kernel.org>
-Date: Tue, 09 Jun 2026 18:28:06 +0300
-Subject: [PATCH net-next v4 07/13] net: ethernet: oa_tc6: Add
- read_mms/write_mms register access functions
+Date: Tue, 09 Jun 2026 18:28:09 +0300
+Subject: [PATCH net-next v4 10/13] net: phy: add generic helpers for direct
+ C45 MMD access
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260609-adin1140-driver-v4-7-0753e28ee004@analog.com>
+Message-Id: <20260609-adin1140-driver-v4-10-0753e28ee004@analog.com>
 References: <20260609-adin1140-driver-v4-0-0753e28ee004@analog.com>
 In-Reply-To: <20260609-adin1140-driver-v4-0-0753e28ee004@analog.com>
 To: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>, 
@@ -58,11 +58,11 @@ Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-doc@vger.kernel.org, devicetree@vger.kernel.org, 
  Ciprian Regus <ciprian.regus@analog.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1781018886; l=4103;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1781018886; l=2711;
  i=ciprian.regus@analog.com; s=20260330; h=from:subject:message-id;
- bh=dVadBcbUmfh+DDH1tHXXzeNT96VpgE0AeeH0K1v9cWM=;
- b=7Pyk/2jhpqw3yGe0i/28KLThXyEXaYQfRSlWhbL1vlcTP5a5oz6nN4/wKzfqs8TLdaDgFQdyP
- rNAv8E0UiU2CFDzc9zm6NEwAaKyRUoC5nWAUXJsguCAHh9Z3j9j/oOq
+ bh=3vFOSyANNQzVtl2h405gheiZ2BA6Gw0e9c/c/C0Yj6Q=;
+ b=kNKvs/VFFFNxVRCsc0nJ9NcVa/S0gy/Yxyo2sW1fOLc6QfKe/smPHysoIKzacQb4xn+09M4xw
+ vt3c2PaHxtGB/3HRadupUa11qKp4jSOsokHIn9Vnx7oywcdX9EJgql3
 X-Developer-Key: i=ciprian.regus@analog.com; a=ed25519;
  pk=8WoNhI0kQcQUl8YqJO5ZevROYk9HP8lOIeIgIYgjfbc=
 X-Endpoint-Received: by B4 Relay for ciprian.regus@analog.com/20260330 with
@@ -72,115 +72,79 @@ Reply-To: ciprian.regus@analog.com
 
 From: Ciprian Regus <ciprian.regus@analog.com>
 
-The Open Alliance TC6 standard defines multiple memory maps for the
-MAC-PHY's register space. These are used to separate standard, vendor
-and PHY MMD specific registers. Define register access functions that
-allow the caller to specify the MMS.
+Some PHYs support direct C45 register access but not C22 indirect MMD
+access (registers 0xD and 0xE). When discovered via C22, phylib routes
+MMD access through the indirect path, which won't work on these
+devices.
 
+Add genphy_read_mmd_c45() and genphy_write_mmd_c45() as read_mmd/
+write_mmd callbacks that bypass the C22 indirect path and use the bus
+C45 accessors directly.
+
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 Signed-off-by: Ciprian Regus <ciprian.regus@analog.com>
-
 ---
 v4 changelog:
- - changed the address parameter type to u16 from u32.
- - reworded the kdoc header for the new {read,write}_register_mms
-   functions to better explain their use case.
+ - no change
 v3 changelog:
- - replace the OA_TC6_MMS_REG() macro with the register access functions
-   that allow passing an mms parameter.
+ - no change
 v2 changelog:
  - New patch
 ---
- drivers/net/ethernet/oa_tc6.c | 44 +++++++++++++++++++++++++++++++++++++++++++
- include/linux/oa_tc6.h        |  4 ++++
- 2 files changed, 48 insertions(+)
+ drivers/net/phy/phy_device.c | 25 +++++++++++++++++++++++++
+ include/linux/phy.h          |  3 +++
+ 2 files changed, 28 insertions(+)
 
-diff --git a/drivers/net/ethernet/oa_tc6.c b/drivers/net/ethernet/oa_tc6.c
-index 92da5bb74cc7..d32a1a323d48 100644
---- a/drivers/net/ethernet/oa_tc6.c
-+++ b/drivers/net/ethernet/oa_tc6.c
-@@ -61,6 +61,8 @@
- #define STATUS0_RESETC_POLL_DELAY		1000
- #define STATUS0_RESETC_POLL_TIMEOUT		1000000
- 
-+#define OA_TC6_REG_MMS_MASK		GENMASK(19, 16)
-+
- /* Internal structure for MAC-PHY drivers */
- struct oa_tc6 {
- 	struct device *dev;
-@@ -344,6 +346,27 @@ int oa_tc6_read_register(struct oa_tc6 *tc6, u32 address, u32 *value)
+diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
+index 3370eb822017..d33d096e700d 100644
+--- a/drivers/net/phy/phy_device.c
++++ b/drivers/net/phy/phy_device.c
+@@ -2764,6 +2764,31 @@ int genphy_read_abilities(struct phy_device *phydev)
  }
- EXPORT_SYMBOL_GPL(oa_tc6_read_register);
+ EXPORT_SYMBOL(genphy_read_abilities);
  
-+/**
-+ * oa_tc6_read_register_mms - function for reading a MAC-PHY register in a
-+ * specified memory map.
-+ * @tc6: oa_tc6 struct.
-+ * @mms: Memory map selector for the register.
-+ * @address: register address of the MAC-PHY to be read.
-+ * @value: value read from the @address register address of the MAC-PHY.
-+ *
-+ * Return: 0 on success or a negative error code on failure.
++/* Some PHYs support direct C45 register access but not C22 indirect
++ * MMD access (registers 13 and 14). When discovered via C22, phylib
++ * routes MMD access through the indirect path, which won't work on
++ * these devices. These helpers bypass indirect access and use the bus
++ * C45 accessors directly.
 + */
-+int oa_tc6_read_register_mms(struct oa_tc6 *tc6, u8 mms, u16 address,
-+			     u32 *value)
++int genphy_read_mmd_c45(struct phy_device *phydev, int devnum, u16 regnum)
 +{
-+	u32 mms_reg;
++	struct mii_bus *bus = phydev->mdio.bus;
++	int addr = phydev->mdio.addr;
 +
-+	mms_reg = FIELD_PREP(OA_TC6_REG_MMS_MASK, mms) | address;
-+
-+	return oa_tc6_read_registers(tc6, mms_reg, value, 1);
++	return __mdiobus_c45_read(bus, addr, devnum, regnum);
 +}
-+EXPORT_SYMBOL_GPL(oa_tc6_read_register_mms);
++EXPORT_SYMBOL(genphy_read_mmd_c45);
 +
- /**
-  * oa_tc6_write_registers - function for writing multiple consecutive registers.
-  * @tc6: oa_tc6 struct.
-@@ -388,6 +411,27 @@ int oa_tc6_write_register(struct oa_tc6 *tc6, u32 address, u32 value)
- }
- EXPORT_SYMBOL_GPL(oa_tc6_write_register);
- 
-+/**
-+ * oa_tc6_write_register_mms - function for writing a MAC-PHY register in a
-+ * specified memory map.
-+ * @tc6: oa_tc6 struct.
-+ * @mms: Memory map selector for the register.
-+ * @address: register address of the MAC-PHY to be written.
-+ * @value: value to be written in the @address register address of the MAC-PHY.
-+ *
-+ * Return: 0 on success or a negative error code on failure.
-+ */
-+int oa_tc6_write_register_mms(struct oa_tc6 *tc6, u8 mms, u16 address,
-+			      u32 value)
++int genphy_write_mmd_c45(struct phy_device *phydev, int devnum, u16 regnum,
++			 u16 val)
 +{
-+	u32 mms_reg;
++	struct mii_bus *bus = phydev->mdio.bus;
++	int addr = phydev->mdio.addr;
 +
-+	mms_reg = FIELD_PREP(OA_TC6_REG_MMS_MASK, mms) | address;
-+
-+	return oa_tc6_write_registers(tc6, mms_reg, &value, 1);
++	return __mdiobus_c45_write(bus, addr, devnum, regnum, val);
 +}
-+EXPORT_SYMBOL_GPL(oa_tc6_write_register_mms);
++EXPORT_SYMBOL(genphy_write_mmd_c45);
 +
- static int oa_tc6_check_phy_reg_direct_access_capability(struct oa_tc6 *tc6)
+ /* This is used for the phy device which doesn't support the MMD extended
+  * register access, but it does have side effect when we are trying to access
+  * the MMD register via indirect method.
+diff --git a/include/linux/phy.h b/include/linux/phy.h
+index 199a7aaa341b..432d44188dbc 100644
+--- a/include/linux/phy.h
++++ b/include/linux/phy.h
+@@ -2297,6 +2297,9 @@ static inline int genphy_no_config_intr(struct phy_device *phydev)
  {
- 	u32 regval;
-diff --git a/include/linux/oa_tc6.h b/include/linux/oa_tc6.h
-index bd369aac9c3b..cace67cfc709 100644
---- a/include/linux/oa_tc6.h
-+++ b/include/linux/oa_tc6.h
-@@ -72,9 +72,13 @@ struct oa_tc6 *oa_tc6_init(struct spi_device *spi, struct net_device *netdev,
- 			   struct oa_tc6_quirks *quirks);
- void oa_tc6_exit(struct oa_tc6 *tc6);
- int oa_tc6_write_register(struct oa_tc6 *tc6, u32 address, u32 value);
-+int oa_tc6_write_register_mms(struct oa_tc6 *tc6, u8 mms, u16 address,
-+			      u32 value);
- int oa_tc6_write_registers(struct oa_tc6 *tc6, u32 address, u32 value[],
- 			   u8 length);
- int oa_tc6_read_register(struct oa_tc6 *tc6, u32 address, u32 *value);
-+int oa_tc6_read_register_mms(struct oa_tc6 *tc6, u8 mms, u16 address,
-+			     u32 *value);
- int oa_tc6_read_registers(struct oa_tc6 *tc6, u32 address, u32 value[],
- 			  u8 length);
- netdev_tx_t oa_tc6_start_xmit(struct oa_tc6 *tc6, struct sk_buff *skb);
+ 	return 0;
+ }
++int genphy_read_mmd_c45(struct phy_device *phydev, int devnum, u16 regnum);
++int genphy_write_mmd_c45(struct phy_device *phydev, int devnum, u16 regnum,
++			 u16 val);
+ int genphy_read_mmd_unsupported(struct phy_device *phdev, int devad,
+ 				u16 regnum);
+ int genphy_write_mmd_unsupported(struct phy_device *phdev, int devnum,
 
 -- 
 2.43.0
