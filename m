@@ -1,87 +1,169 @@
-Received: from abb.hmeau.com (abb.hmeau.com [180.181.231.80])
+Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD395343D85;
-	Wed, 10 Jun 2026 05:09:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=180.181.231.80
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4E0F30C63B;
+	Wed, 10 Jun 2026 05:10:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781068180; cv=none; b=eoNHl19jk65qig/o+tVHS+TLLNAj3jGe6g01akfR3zrBAhVXaykPZqycSov6eM4esqiQEVLT6Qu6bJ1wOw6/GjdFDg79tihOsQvWjCWUmHqr8sbNhrYmOLxQNo7bWkG7tRSQWsKAgClagcwQjTB/pc6eZD4Mf/Y+GDpQ1ocPmfs=
+	t=1781068254; cv=none; b=aEGE+ZzxQZKn5KwFQJ2Hj8sIyNfxSEDpaLrSVymIIJ5J7r17Vaeih+0QHPFiuajxAds62vuTHVnDkVcvbhGWdbX9iC36SLYGmGUKS3RaYF8YvuvOZEFz7lzm2ftwL7E9bJ3JMIkJiDgo7nHuO8Euss+FesWqDQsXrwa6ToqxCps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781068180; c=relaxed/simple;
-	bh=U9uKUooBx4sOnx2QuXms6koNlM4zfz1WGMojOv6/Qcs=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=IKxy9v1zS8VPGcogvEgkROvcWkyP4OzS9M/yYv60ou966HmOvpKOEmME3nNWxN5AWm3LXlGeh8T8cIDh89K16KzZ4D37fZAnfy/kep+Ut/5PaYSiYwubQykBmvMcr5FOImx6n9q0YXxKZCxiRQNEfA01EFZmP4VLPTWaJ2ru/6E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.b=hzp5pVhD; arc=none smtp.client-ip=180.181.231.80
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
+	s=arc-20240116; t=1781068254; c=relaxed/simple;
+	bh=ksaRSIEGRqNuKkR6GNSxHMgPdXUtwHT+tYNBKfbVXog=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uyKgomM4E37RbC4kGFxlnAQAJ1K6RmIx9ICLgoylEL4qkwQ0VwtdR8Pd/GE9tLy3USD3DiIAJWuq5ehop3BOXzX9ngEM+r6lhUD48ladRp1tXb6jE+EtnjqxH9JQwBGcHFJMFonE6F5MNWlqvTzsUBUrIj+MbZnOllm3C0qblJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=kQ0fAZBd; arc=none smtp.client-ip=67.231.156.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.b="hzp5pVhD"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=gondor.apana.org.au; s=h01; h=In-Reply-To:Content-Type:MIME-Version:
-	Message-ID:Subject:Cc:To:From:Date:cc:to:subject:message-id:date:from:
-	content-type:references:reply-to;
-	bh=RHcfWFsJiVmAbunXLJMpnVW4BYFuN/HfVIVR+xGLhEI=; b=hzp5pVhDHzkGjEcskk8K5YTF4w
-	THr3gJHBdtRQFFgqjsAsoO6fdixFyGmx122vU0xpz3axRJBjX349/KHDmcO0t8sH4xw+Nn0lt/jY2
-	SCXUJZfn5c4x28vA9gBWC5UStdt2+Xc6Yb2TjcMFlrA/5I6FMTEWn8xqpZJhbkdDPRxN3o2uieafk
-	4J+vNNegmU5IXK2JiB6U1o0OAAZk3SKxDW0MlWQqStNrM2RwBxeKqXqhzj2P+8ZrXakgBxE+jXi+6
-	pKl3Mfd5HH7xMDICRjPQ+ZIGawzxVsCyCGtqfxXuC327udHGQrdV2ws+61CZGoJ8rbu5CP75oRNoR
-	ypNc0+Gg==;
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-	by formenos.hmeau.com with smtp (Exim 4.98.2 #2 (Debian))
-	id 1wXBBn-00000004AT4-37fd;
-	Wed, 10 Jun 2026 13:09:20 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Wed, 10 Jun 2026 13:09:19 +0800
-Date: Wed, 10 Jun 2026 13:09:19 +0800
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: luto@amacapital.net, safinaskar@gmail.com, akpm@linux-foundation.org,
-	axboe@kernel.dk, brauner@kernel.org, david@kernel.org,
-	dhowells@redhat.com, hch@infradead.org, jack@suse.cz,
-	linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, miklos@szeredi.hu,
-	netdev@vger.kernel.org, patches@lists.linux.dev, pfalcato@suse.de,
-	viro@zeniv.linux.org.uk, willy@infradead.org
-Subject: Re: [PATCH 0/3] vmsplice: make vmsplice a trivial wrapper for
- preadv2/pwritev2
-Message-ID: <aijxfxXrWLCVqV6-@gondor.apana.org.au>
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="kQ0fAZBd"
+Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
+	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65A3TVrS2550628;
+	Tue, 9 Jun 2026 22:10:44 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pfpt0220; bh=ONdJYD648I4Lsor1X/dqmnKnu
+	8RJk9wqHgawJy7PcnI=; b=kQ0fAZBdrsm1PYJquZ4d5uYfil6fV1BcL4OuSHu44
+	xQA4ykRbBd70Ks1KJCA7zmLInoGSv91jugPeHvGF4HSS2o2Sd+8vuI76vIlVApHL
+	yoC/HP49EaF3pyU0yDPJ6fFJJrYKOyugLI7snbxPJ8/6rm7Mur8ZjYqp6dez+5KP
+	KQ0lnEHwvWFZfeU2soIc4hWUMGjoqcojq/7E3xXUpE8Y/IZMveK/X4PGlTrneFZC
+	hfo+a6LFp137b9AbBnUDno24O/hh/V4uR+7Bjo0oOMCfVKs0vsbCErXH8CxZanTQ
+	nkG4aKS79IrQxgiDeyGPL0ozhrY6Ngc6IPyT0Xm1NMaAQ==
+Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
+	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4eq02mr8sq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 09 Jun 2026 22:10:44 -0700 (PDT)
+Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
+ DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Tue, 9 Jun 2026 22:10:43 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
+ (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
+ Transport; Tue, 9 Jun 2026 22:10:43 -0700
+Received: from rkannoth-OptiPlex-7090 (unknown [10.28.36.165])
+	by maili.marvell.com (Postfix) with SMTP id E4D0F3F708C;
+	Tue,  9 Jun 2026 22:10:39 -0700 (PDT)
+Date: Wed, 10 Jun 2026 10:40:38 +0530
+From: Ratheesh Kannoth <rkannoth@marvell.com>
+To: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>
+CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <donald.hunter@gmail.com>,
+        <edumazet@google.com>, <horms@kernel.org>, <jiri@resnulli.us>,
+        <kuba@kernel.org>, <pabeni@redhat.com>, <sgoutham@marvell.com>
+Subject: Re: [PATCH v20 net-next 5/9] octeontx2-af: npc: cn20k: add subbank
+ search order control
+Message-ID: <aijxzksHTt0kLt5J@rkannoth-OptiPlex-7090>
+References: <20260609040453.711932-1-rkannoth@marvell.com>
+ <20260609040453.711932-6-rkannoth@marvell.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <CAHk-=wh5bFj1a7eaGp9sixDg3UXu7xUGfU=YJo+ckpGxGAyhXQ@mail.gmail.com>
-X-Newsgroups: apana.lists.os.linux.kernel,apana.lists.os.linux.netdev
+In-Reply-To: <20260609040453.711932-6-rkannoth@marvell.com>
+X-Authority-Analysis: v=2.4 cv=cuGrVV4i c=1 sm=1 tr=0 ts=6a28f1d4 cx=c_pps
+ a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17
+ a=kj9zAlcOel0A:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=l0iWHRpgs5sLHlkKQ1IR:22 a=QXcCYyLzdtTjyudCfB6f:22 a=9R54UkLUAAAA:8
+ a=M5GUcnROAAAA:8 a=fMXJLkyFgcRvCBAknKgA:9 a=CjuIK1q_8ugA:10
+ a=YTcpBFlVQWkNscrzJ_Dz:22 a=OBjm3rFKGHvpk9ecZwUJ:22
+X-Proofpoint-GUID: CllH9FuE_tMIQKFLcdVhW1Wa03xlOMoR
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjEwMDA0NSBTYWx0ZWRfX7ga/DON0hHSn
+ lO7bZqWRxkHZA7nB/syEkna46VveHzPV6L/IRq7XBFbujNd3rLEwP2o0UcoXVxcCZntB6qCg2gY
+ wmawvPdeR7pAzfla7C8fcK/lo0foOjSHqZh0n/n7RqGX9hWP4GUB2LxMsBsEHpiAU2EosSnNUjk
+ 9U9XzNMxXspW2d5eRMpOozhE+rg2ABj7e55DMinLKaNJqkJgeSZQNii3zgH9HXsnEXSH9XPwJ9h
+ ZRjqWGGGq/AL8EzCWKHiWlK10VEYXAxV3umyLoNIGmKl2VTSQ0FySZcmE2kGHGegV5VGEH3IDsd
+ kMYBTPFjhz+oz3UHvmN7sSnZsM9D/qnILvmGV9sXY6cqp+0StOC6247WBr0xYjwO7t5dNyLIpRn
+ THNLUhv4Vl9zaHnu29HTuLNNNT+uIHhf2ZmhCy4F0itc3ljMTy4uStN/VnO52qFoCLnSYgMz4lo
+ 1dmcUqcbk3C2YvlsT9g==
+X-Proofpoint-ORIG-GUID: CllH9FuE_tMIQKFLcdVhW1Wa03xlOMoR
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-10_01,2026-06-09_02,2025-10-01_01
 
-Linus Torvalds <torvalds@linux-foundation.org> wrote:
+On 2026-06-09 at 09:34:49, Ratheesh Kannoth (rkannoth@marvell.com) wrote:
+> CN20K NPC MCAM is split into 32 subbanks that are searched in a
+> predefined order during allocation. Lower-numbered subbanks have
+> higher priority than higher-numbered ones.
 >
-> Because I think splice() is a *cool* feature. It was always *clever*.
-> I just don't think it's worth the pain it has cause.
-> 
-> And it's been around for a long long time, and after more than two
-> decades it's still most definitely not _widely_ used.
+> Add a runtime "srch_order" to control the order in which
+> subbanks are searched during MCAM allocation.
+>
+> Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
 
-A couple of years ago I used tee(2) in dash(1) so that we could
-avoid reading the input line byte-by-byte which is what every other
-shell does in order to pass the rest of stdin to the executed
-command.
+https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260609040453.711932-1-rkannoth%40marvell.com says:
+>> @@ -3906,6 +3906,122 @@ static void npc_unlock_all_subbank(void)
+>>  		mutex_unlock(&npc_priv.sb[i].lock);
+>>  }
+>>
+>> +int npc_cn20k_search_order_set(struct rvu *rvu,
+>> +			       u64 narr[MAX_NUM_SUB_BANKS], int cnt)
+>> +{
+>[ ... ]
+>> +	for (prio = 0; prio < cnt; prio++) {
+>> +		sb_idx = narr[prio];
+>> +		sb = &npc_priv.sb[sb_idx];
+>[ ... ]
+>> +		sb->arr_idx = prio;
+>> +	}
+>[ ... ]
+>> +	for (int i = 0; i < cnt; i++)
+>> +		subbank_srch_order[i] = (u32)narr[i];
+>Do the get and set paths agree with init on what subbank_srch_order[]
+>means?  The init path appears to treat the array as indexed by sb_idx
+>with priority as the value:
+>    /* npc_create_srch_order() */
+>    for (int i = 0; i < cnt; i += 2) {
+>        subbank_srch_order[i]     = cnt / 2 - val - 1;
+>        subbank_srch_order[i + 1] = cnt / 2 + 1 + val;
+>        val++;
+>    }
+>    subbank_srch_order[cnt - 1] = cnt / 2;
+>    /* npc_subbank_init() */
+>    sb->idx = idx;
+>    sb->arr_idx = subbank_srch_order[idx];
+>So initially subbank_srch_order[sb_idx] == priority (arr_idx).
+>The new set helper, however, treats narr as indexed by priority with
+>sb_idx as the value:
+>    for (prio = 0; prio < cnt; prio++) {
+>            sb_idx = narr[prio];
+>            sb = &npc_priv.sb[sb_idx];
+>            ...
+>            sb->arr_idx = prio;
+>    }
+>    ...
+>    for (int i = 0; i < cnt; i++)
+>            subbank_srch_order[i] = (u32)narr[i];
+>and the get helper returns subbank_srch_order verbatim.
+>With cnt = 4 the round-trip then looks like:
+>  after init:        subbank_srch_order = [1, 3, 0, 2]
+>                     arr_idx[sb0..sb3]  = [1, 3, 0, 2]
+>                     priority -> sb     = [2, 0, 3, 1]
+>  user issues GET  -> [1, 3, 0, 2]  (validate accepts: distinct, < cnt)
+>  user issues SET with the same array:
+>                     arr_idx[sb0..sb3]  = [2, 0, 3, 1]
+>                     priority -> sb     = [1, 3, 0, 2]
+>That is, an unmodified GET -> SET echo silently inverts the runtime
+>priority order of the MCAM subbanks.
+>Should init be reworked so subbank_srch_order is indexed by priority
+>(with npc_subbank_init() doing something like
+>sb[subbank_srch_order[p]].arr_idx = p), or should set/get use the same
+>indexing convention as init so a no-op round-trip is actually a no-op?
+>> +	restrict_valid = false;
+>> +
+>> +	npc_unlock_all_subbank();
+>> +	mutex_unlock(&mcam->lock);
+>> +
+>> +	return 0;
+>[ ... ]
+>> +}
+>> +
+>> +const u32 *npc_cn20k_search_order_get(bool *restricted_order, u32 *sz)
+>> +{
+>> +	*restricted_order = restrict_valid;
+>> +	*sz = npc_priv.num_subbanks;
+>> +	return subbank_srch_order;
 
-https://git.kernel.org/pub/scm/utils/dash/dash.git/commit/?id=44b15ea09a9ee5872cf477e4ffc6b42ef37d1e46
-
-It's definitely niche but made a huge performance difference to
-this rather common scenario:
-
-echo 'command
-...
-rest of stdin' | sh
-
-I didn't even know tee(2) prior to this, even though it was added
-way back.
-
-Thanks,
--- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+There is due to bug in npc_subbank_init() (not introduced by this patch).
+Will post a patch to "net" tree.
