@@ -1,139 +1,70 @@
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46B9426F46F;
-	Wed, 10 Jun 2026 14:26:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B5C03E120D
+	for <netdev@vger.kernel.org>; Wed, 10 Jun 2026 14:31:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781101582; cv=none; b=Lxq5aP50DFtUUNflG73+8nUSOpc3GPKeb8ej6naDsVrIORNEu5cW2s3/pxGLT5klVFInlnej0MEC0mwP93McIwJ3Xsij3VEcaZWS1PQ6WapoOEGR4RMU9Dtzt2jSoq1adpO8sMiApgjMxIN360i5uvuEqtK4vvbUGedQPFsnJRE=
+	t=1781101878; cv=none; b=So5ObHW1TTas0LpUirPEb7kG+WeBlGvJ6jFV+yav55BIZS6R2TAoPy+hZRzY/r6+FvoXhArWTP24GhFQ9J6sjR7k3a95l8sP9n7iDjYsSI84YFnYHieEHOHx+WvKfk8btlikgGqYiXKUPYjyP/UODiRHQzbmOvPiaIc2F8k8+pg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781101582; c=relaxed/simple;
-	bh=SxIcZR5DL6wkuaHVR0EdGoX3yLb5LHiiUVbHxBWmMfo=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=pewwx4Rm4a2s/jet/iK8TWgCtCsrkioEejlQlOyPzVQrfO796PhQj6JhyEryzYmesuZXigbaeXrbWB4lyK7nCRSTlZaFbFh76WvfBrtMd47Vsv9RR+aa4WUeHr/w/WZ/J2Uu7uGJ4R117ThZ6OlZLaBlxhqpE4Q1E+chKwZVXWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=RsglTPh3; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
+	s=arc-20240116; t=1781101878; c=relaxed/simple;
+	bh=tRWCc0VGxYHHGzbMCnp3Wupf1eOzfKs+ALbDRS75O7c=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=k93Y9v2NK19GRBwHFaDA/JRsCz8hrJbT5O37rR/H8MNcr5TpE9QQfwJU/7CInRWCA3Sl2XmcZeMe+7A+a2RaVvU7NIKjsLLLETYC5oJzoR8CPNQDm9CSeSDFp2r38bW/cG2ngDdfTp0fb2rTVmaDlxVwitoUnHN9wLHSyagmalE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qmzlzl9o; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="RsglTPh3"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:Message-Id:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:
-	Reply-To:Content-ID:Content-Description:In-Reply-To:References;
-	bh=qXpz3az42DpzkAdgLnMGCIIarhxdnB8K32mfTrVRPng=; b=RsglTPh3dmvpAvxCbQFJZoxiBg
-	CLSTOhII5jmM9CYU+mXPIEg6sPfEuC5wSawH/jvkfeI32MTXvcFB1TqrDS9Iv5x6tDVL6cX8hFnKA
-	P5YajG0/GsQm6pH6uslaNck0LkWkMBYo60wXeBEUEx6dawz7vwecGOreRpGFf+cTzhd7r71FvABxJ
-	XHHoGjFAJgVaVd65cnTB7klC2TIIMDXaAy1AamEJTTZ8ObcvdX3NwREgf0Wu+HMEWJR6fc3oZvCi4
-	kZGykpz1Tk9HBLntcLlNqcmp0MXVHghAI9LSKgoOqsPM8vYDEMRUKdidXyXkU4cq23ppZl+iDArxa
-	5F4jnFSw==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1wXJsg-009FfU-2F;
-	Wed, 10 Jun 2026 14:26:10 +0000
-From: Breno Leitao <leitao@debian.org>
-Date: Wed, 10 Jun 2026 07:26:04 -0700
-Subject: [PATCH net-next] netconsole: clear cached dev_name on
- resume-window cleanup
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qmzlzl9o"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BD641F00893;
+	Wed, 10 Jun 2026 14:31:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781101872;
+	bh=/zrnAFDsQiIgxF9TRP05xR9UguzkrzrtzioFKG2qt8Q=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=Qmzlzl9owzUlScCjmZJJaM7e1xKD3aeklnSDMC6UUM3mO6pm2sjGeK/qUMasv420L
+	 D2v3xOqMvlk+oryzhj4eSQUw4Wo8t7gEAfvIWBfS4dD0DFEIuMjCqpV+5VtpCdvgjx
+	 hmjRgpj5qN73yfWM5ifKg9AwW3ZpctJ2wNImWw2c3EPWCr6W9fIUZjuiVIIq/0VMXr
+	 rvFcL3KLO868MvwttWQgZLA5RYNbX9Qp8o9phdHfpKttMVb3XYfQQXYM2WImofiGf1
+	 GLlB1HbdNl6Slu9H3c9zPYeSlvxC6DKeaV1YQNfNH5HFT1iR+CUrzYIzUPlz4iLPBB
+	 pGKKnTaNP6HPA==
+Date: Wed, 10 Jun 2026 07:31:11 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Marco Baffo <marco@mandelbit.com>
+Cc: Antonio Quartulli <antonio@openvpn.net>, netdev@vger.kernel.org, Sabrina
+ Dubroca <sd@queasysnail.net>, Ralf Lici <ralf@mandelbit.com>, Paolo Abeni
+ <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>
+Subject: Re: [PATCH net 6/6] ovpn: use monotonic clock for peer keepalive
+ timeouts
+Message-ID: <20260610073111.6273e17a@kernel.org>
+In-Reply-To: <1290464191.15539.1781081055969@app.mailbox.org>
+References: <20260608150741.3320919-1-antonio@openvpn.net>
+	<20260608150741.3320919-7-antonio@openvpn.net>
+	<20260609194246.23c66818@kernel.org>
+	<1290464191.15539.1781081055969@app.mailbox.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260610-netconsole_fix_more-v1-1-a18652c47cef@debian.org>
-X-B4-Tracking: v=1; b=H4sIAPtzKWoC/x3MUQrDIBAFwKvI+46gKUjxKqWEYJ7JQrsWlSKE3
- L3QOcCcaKzChmhOVH6lSVFE4yeDdKy608qGaDC7ObjgnVX2VLSVF5csY3mXSuvvfr0x5BASMRl
- 8KrOM//qAslvl6Hhe1w+mwmAfbwAAAA==
-X-Change-ID: 20260610-netconsole_fix_more-181a3e6f66ce
-To: Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- kernel-team@meta.com, Breno Leitao <leitao@debian.org>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2443; i=leitao@debian.org;
- h=from:subject:message-id; bh=SxIcZR5DL6wkuaHVR0EdGoX3yLb5LHiiUVbHxBWmMfo=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBqKXP+KPMsyvTsJamYsHoGT7uwkPFzekW8ZItJ4
- 52eN5STrZuJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCailz/gAKCRA1o5Of/Hh3
- bQQ6EACKPSDbl9HwoV9LOGPuw8ttns9GRaMVL0Sqw4KBlXiMPvWZSB25dcQRB2ZJOHhWb97FBF3
- DLOkKw8tm/NRSAOsYaONaLr4iKtkS3lCxtKl06wGHJgI7tvtXwxOQxKp1HA47DlIzcJCwMTUDs8
- heKeanZj4nYL7dxouh1AvMvrJeAIhdBa1f3/xk2qtsT8afIUteNwZ4jCWnQVBUc6WUB5ahQ8CG5
- j/WKVHFfxncoN4CEyyoGSzVjOsGzOneIyWWKqp38zzuIgBd4oFF8fdgm37EpqrXhDNT7fSNpqGE
- 14eS+DvYiHi3NRA2oH8Plif2B+S7ipY5JUy1YynSueZSksJEWFoGkviPdHW4NeWScIbEGLrhbHi
- 9vxM/0mk+L3VdAykx4BjXCIY3AmBIj7PGllHR4ONY5h5Murf8EO1diQ9QEv0/QO8zlKVS60c2Hr
- PAYE/W2AlN8GMoUeUPnVREexwnJ+Qa+UdCPo/kf1CvOnQEiT5ovS/vD6OE/+3wiZaAhk+Ezdpni
- DZoPrOe+ySp58/vdl+xbp3UVInuHoQm2CBbg+UiUf/tBvpOphl4MDT5DIFmpFMNFxpxYVMRUBE7
- 9fjBzUPyJN8F7lQIRQaqOYsYZrG4357s7VFxGVEGFZ5C/GOCEcSqrB/0gPFi7ddaz7KkWm+NwON
- Qijurx5D0ID2HMA==
-X-Developer-Key: i=leitao@debian.org; a=openpgp;
- fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
-X-Debian-User: leitao
 
-When process_resume_target() catches a device that was unregistered
-while the target was off target_list, it calls do_netpoll_cleanup() to
-release the reference but leaves the cached np.dev_name in place. The
-other cleanup path, netconsole_process_cleanups_core(), already wipes
-dev_name for MAC-bound targets because the name was only a cache of the
-device that last carried the MAC and may no longer match.
+On Wed, 10 Jun 2026 10:44:15 +0200 (CEST) Marco Baffo wrote:
+> > On Mon,  8 Jun 2026 17:07:37 +0200 Antonio Quartulli wrote:  
+> > > Replace ktime_get_real_seconds() with the monotonic ktime_get_boottime_seconds()
+> > > to ensure the keepalive mechanism is robust against system clock modifications.  
+> > 
+> > Why boottime? Unless there's a reason shouldn't we be using
+> > plain ktime_get_seconds() which is CLOCK_MONOTONIC?
+> > 
+> > (if you decide to respin could you also drop the selftest change
+> > from this PR and move it to net-next? memory leaks in selftests
+> > are not important)  
+> 
+> Hi Jakub!
+> ktime_get_boottime() is like ktime_get() but it does not stop when suspended.
 
-The pattern is the same in both spots, so fold it into a small helper
-netcons_release_dev() and route both call sites through it. This makes
-the resume-window cleanup consistent with the notifier-driven one so a
-later enable does not let netpoll_setup() pick a stale interface by name
-when the user bound the target by MAC.
-
-Signed-off-by: Breno Leitao <leitao@debian.org>
----
- drivers/net/netconsole.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/netconsole.c b/drivers/net/netconsole.c
-index 606e265cdfd77..a159cb2939811 100644
---- a/drivers/net/netconsole.c
-+++ b/drivers/net/netconsole.c
-@@ -283,6 +283,13 @@ static bool bound_by_mac(struct netconsole_target *nt)
- 	return is_valid_ether_addr(nt->np.dev_mac);
- }
- 
-+static void netcons_release_dev(struct netconsole_target *nt)
-+{
-+	do_netpoll_cleanup(&nt->np);
-+	if (bound_by_mac(nt))
-+		memset(&nt->np.dev_name, 0, IFNAMSIZ);
-+}
-+
- /* Attempts to resume logging to a deactivated target. */
- static void resume_target(struct netconsole_target *nt)
- {
-@@ -349,7 +356,7 @@ static void process_resume_target(struct work_struct *work)
- 	rtnl_lock();
- 	if (nt->state == STATE_ENABLED && nt->np.dev &&
- 	    nt->np.dev->reg_state != NETREG_REGISTERED) {
--		do_netpoll_cleanup(&nt->np);
-+		netcons_release_dev(nt);
- 		nt->state = STATE_DISABLED;
- 	}
- 
-@@ -408,9 +415,7 @@ static void netconsole_process_cleanups_core(void)
- 	list_for_each_entry_safe(nt, tmp, &target_cleanup_list, list) {
- 		/* all entries in the cleanup_list needs to be disabled */
- 		WARN_ON_ONCE(nt->state == STATE_ENABLED);
--		do_netpoll_cleanup(&nt->np);
--		if (bound_by_mac(nt))
--			memset(&nt->np.dev_name, 0, IFNAMSIZ);
-+		netcons_release_dev(nt);
- 		/* moved the cleaned target to target_list. Need to hold both
- 		 * locks
- 		 */
-
----
-base-commit: 5855479abc796c3b5d7b2f2ca147d68fc56cae1f
-change-id: 20260610-netconsole_fix_more-181a3e6f66ce
-
-Best regards,
--- 
-Breno Leitao <leitao@debian.org>
-
+Worrying about keepalive timeout when system is suspended seems
+quite silly, did some AI tool suggest this? Anyway, if you want
+to keep this code please improve the commit message.
