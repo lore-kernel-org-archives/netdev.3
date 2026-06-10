@@ -1,115 +1,203 @@
-Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE6D83DCD8F
-	for <netdev@vger.kernel.org>; Wed, 10 Jun 2026 09:26:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.183
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09B3D374A03
+	for <netdev@vger.kernel.org>; Wed, 10 Jun 2026 09:31:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781083605; cv=none; b=SXgo0OXlLm4QQ3Vxsek9uiRnlmH7axuXDMnz8ukJaA1W0dCzQ+Tl7mW8Z1Wp/Uq2EloaZ3gXZn4KaZWb42TjYsI8dF7rgXeMpuPuxmOSKqEr8LnW2nGclP1pR/2kHIlxmChtb4WZNknB3ZjvUEdaFsWjQZOKHqp0beAdCRIfaQo=
+	t=1781083879; cv=none; b=Z7DE1oBZKHI4D/4sb4jmU17e9CH4xfkeVBDZXojxtzOidLDQ6yURQ5Cirl6P0wK46EkUp/mphgAE3HYG3RZzuCcnf3rrfn3ZEZEmI+RFnQHnB91xe6nLw3pIWV7bB8pgzTMBncLKR69MR4HDiYUsBMmbDM6m50SRFq41vKqEP+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781083605; c=relaxed/simple;
-	bh=rDYf0gnIrYdQKrUthpTVKGSXzN6k7STc6mNhFd5HTq8=;
+	s=arc-20240116; t=1781083879; c=relaxed/simple;
+	bh=WKDpiUAWn98w2fEup/ygkSwjILTQow+alyUFCHWB3YY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uj2hlG6ACBghNwb1VlMt2R8Cvxs1DgeyIoffFaiZfwJIFKAhx6DM2d+xt0l/gwZ8Vg8/J+iETzY8EKnrUga3+QYp/H0IPXrGkj19ZrH4Y3tVtrKDwL8fv4s3MduC/PGlCvINQg1Mb0fW86v3/WHB7qd/BKG4OnpQ5zkWsPCdi9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=AspQ/LZa; arc=none smtp.client-ip=91.218.175.183
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	 In-Reply-To:Content-Type; b=GufsI22fz5Ww+c2fXu95bttO1wXvrGgxJQBlNnvdJ7GZ5Izint66vlHX2B4Du+Ydy381Pn5IMOHTx0qjngqBWeJoGk/q5OEV/I+QNJEvYInTqrmdvPnHNSpWTuy9h8tWbPea4pkPM7I0g0UtfEgGmKonU6O86LPWoitlanETomk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=AYb6FL2c; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=S9VxEUOI; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="AspQ/LZa"
-Message-ID: <d26c8934-6d4c-4171-9e6f-f58a249dd9ff@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1781083589;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="AYb6FL2c";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="S9VxEUOI"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1781083876;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=hBbMp/terYy4HVPHHevofPr5zOE+Mp6tKWsqJZs/Bdc=;
-	b=AspQ/LZakOFXxrC2SCXedf0yZ3uQXNlZ64Y9A5eYt+43qCH6ANEViDyPPbNSHxH+NtVN0v
-	eC/mlBawAupz6KoDEM2cO0tzxBxFotGX2gjr9JjnzByOYHBZZzON+QniA2+PgL53c/dP84
-	3+m0JXoe9FR2NFr7Tfq+KfqtoF44VK0=
-Date: Wed, 10 Jun 2026 17:26:19 +0800
+	bh=bpmhBCyPyDRGUbBlC7Y/EzMHBCvQF8Q78wV9zm+DY4s=;
+	b=AYb6FL2c+/JQ2WB9SNYS1rJhzfH1oTCX1SdPlWKlQuV4UhE77AkKDNGyCgHL8AG4Gb6rID
+	EBf8h2A7v5DpQUD9dVUQz/Lubpk9Bunmp1jjbI1ogFKq73pW1lmquBJFtKDJh8do9T4O3F
+	3otrnagXrjwNpvg3evgwhG23cC8swJ4=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-77-s9kByo1bOzuPU0hJYdC7GQ-1; Wed, 10 Jun 2026 05:31:15 -0400
+X-MC-Unique: s9kByo1bOzuPU0hJYdC7GQ-1
+X-Mimecast-MFC-AGG-ID: s9kByo1bOzuPU0hJYdC7GQ_1781083874
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-490bde3d239so50292825e9.1
+        for <netdev@vger.kernel.org>; Wed, 10 Jun 2026 02:31:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1781083874; x=1781688674; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=bpmhBCyPyDRGUbBlC7Y/EzMHBCvQF8Q78wV9zm+DY4s=;
+        b=S9VxEUOIB+F8QNIvzunplRRdQM22Gmhl+cmbIKnQqQDUIzuHMVzJ4Pgek1OvBLBPvN
+         yQpy9VOPoCfmTFinBcc5EirUPZG992ezAWJgsrw60tMqUTgnCf+UBsoTFMEM8JM4/Cu5
+         T5CUqHvsIbxPe0EBfVeYIXAsQvTYDEF8zMpTgSE9Yrdric/yYsxGZ8bQoS2w9sMj5E7N
+         dFwDkZhIWED8xKpka3WtgaUrQALHWbolHER0fDcrs2hMpo1i7wQTG9RL2vndryYPdrB0
+         7cVLGmFZqN9BaWrPJWMDIF8YefLclALb8c95wTO2Iuqa8qzWYPPjwy5HUQNkdaJDc047
+         UTlA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781083874; x=1781688674;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=bpmhBCyPyDRGUbBlC7Y/EzMHBCvQF8Q78wV9zm+DY4s=;
+        b=PDG8KjlMjyacZqJqW8ZfO6p75lEei8WG7hdNi1+elNl1ja0Dl/33WDQQfPJvz3B1xL
+         IjYSUV2Mi5YVXoS4A0YEeGp3d90Nx7nj9Vr6+QyaxPJt0H9cDZ//2f9irZVH+qTe5Vw1
+         fTsBZB5rDYad3/GXoq17iVqd84LQQeN8VACWGM3DKsXSXGDLQoqU8A4GyIOGPu4Sotr7
+         enHt11Xq+KXB21ivE3qcGstwNNuiPtH1I1dch+zNARWElJPuhaPfkmCvdpTLZoCT0tKV
+         Wh4YozzQfsAUyzGViCKV6K/U1DiQJHnKke1hNm06hIwoyooM/VKZ8cvobm6T/5aFVpk+
+         L63Q==
+X-Forwarded-Encrypted: i=1; AFNElJ//pbcG+USuR79o7pnrwtM5nd1jTYUGkqc9QorVZ42PSfnKjl40qHKPS6VxJxmsqBrnHJ2WXVI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw1sjHpjL3t6qEfmwXxksOoHfir+fZjShOIIa4l7WOesHyUz/4/
+	hPJe3rFWAOM32NQzF79VfC/vuSFOaUv2yCUZFHY7PSIfdkpMyfju5jfuSZ1Eh9h3fQNWhLN6STO
+	BeakRHXrzYDgDX8gl/4PSYsw8dnuMEmq3QLoqY1GrIlPhdSZm3ZF8KgHenw==
+X-Gm-Gg: Acq92OGXePu4sndzNdFlECYqCOM6lSEXcML9iv2CYUeD2JAyV55KDNOHiCx91GR0BbG
+	wVhtq/rSq8S/2ZH0LagPHi8F8oekFW9KK4jPhur+8SPhkNVC25V92BvISMYSFtascNwU6jwxVpB
+	EsKRbf4Xh3RmwehNLaAoaoCFwJYzSd3rpXoByh0gsXX+0d/TrKPlnVqmW1paaiwyVuZUgwteuUl
+	VrscxeWrPcCOzpkbDjuDr8MmwPaCRMFcPdaYlY/cvKAiMuxkXXg2TGLcKil+nVk7PtfwN/WzKK9
+	o7P86JdykJbioMMTxi+s8nAJ3Z20DSOZZX3mT3RuDDyS6UqmgITrgnnf/YDWJ05LFW/Epx+Q0Oz
+	51pKMMAt8V+kdt1D6oNE+aaJe4nGSLZ8MXxbCLiYh6saxNdbFW5awWdQMjGkES9rXJA==
+X-Received: by 2002:a05:600d:8494:10b0:490:c2a3:3304 with SMTP id 5b1f17b1804b1-490c2a333c7mr254075615e9.35.1781083874323;
+        Wed, 10 Jun 2026 02:31:14 -0700 (PDT)
+X-Received: by 2002:a05:600d:8494:10b0:490:c2a3:3304 with SMTP id 5b1f17b1804b1-490c2a333c7mr254075025e9.35.1781083873786;
+        Wed, 10 Jun 2026 02:31:13 -0700 (PDT)
+Received: from [192.168.88.32] ([150.228.93.44])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490bc413adbsm556115855e9.15.2026.06.10.02.31.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 10 Jun 2026 02:31:12 -0700 (PDT)
+Message-ID: <859702b5-0528-416f-9325-c13757d8463f@redhat.com>
+Date: Wed, 10 Jun 2026 11:31:10 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [Kernel Bug] INFO: task hung in xt_find_table
-To: Longxing Li <coregee2000@gmail.com>,
- Pablo Neira Ayuso <pablo@netfilter.org>
-Cc: syzkaller@googlegroups.com, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, netfilter-devel@vger.kernel.org,
- coreteam@netfilter.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <CAHPqNmyfm4j0Vy--8rpYMEY1wOP-TgmnRWYd=7ragj1Z29=F7g@mail.gmail.com>
- <aih7PqPryonzP7cI@chamomile>
- <CAHPqNmxbS+YLQeOLOibm5rOBxA_nciMAVuEe5ERCOs3uE6+8+Q@mail.gmail.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-In-Reply-To: <CAHPqNmxbS+YLQeOLOibm5rOBxA_nciMAVuEe5ERCOs3uE6+8+Q@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v6 05/11] udp: Support gro_ipv4_max_size > 65536
+To: Alice Mikityanska <alice.kernel@fastmail.im>,
+ Daniel Borkmann <daniel@iogearbox.net>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Xin Long <lucien.xin@gmail.com>,
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+ Willem de Bruijn <willemb@google.com>, David Ahern <dsahern@kernel.org>,
+ Nikolay Aleksandrov <razor@blackwall.org>
+Cc: Shuah Khan <shuah@kernel.org>, Stanislav Fomichev <stfomichev@gmail.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, Simon Horman <horms@kernel.org>,
+ Florian Westphal <fw@strlen.de>, netdev@vger.kernel.org,
+ Alice Mikityanska <alice@isovalent.com>
+References: <20260602093931.516281-1-alice.kernel@fastmail.im>
+ <20260602093931.516281-6-alice.kernel@fastmail.im>
+ <ea5ed9f7-daf5-4996-8c0d-84c2bb946be5@redhat.com>
+ <6bdf5092-d877-4c09-b3a2-07a92b57fd54@app.fastmail.com>
+From: Paolo Abeni <pabeni@redhat.com>
+Content-Language: en-US
+In-Reply-To: <6bdf5092-d877-4c09-b3a2-07a92b57fd54@app.fastmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
 
+On 6/9/26 7:41 PM, Alice Mikityanska wrote:
+> On Tue, Jun 9, 2026, at 10:32, Paolo Abeni wrote:
+>> Hi,
+>>
+>> On 6/2/26 11:39 AM, Alice Mikityanska wrote:
+>>> @@ -2605,6 +2605,9 @@ int udp_rcv(struct sk_buff *skb)
+>>>  	if (ulen > skb->len)
+>>>  		goto short_packet;
+>>>  
+>>> +	if (!ulen)
+>>> +		ulen = skb->len;
+>>
+>> Sashiko noted the above is a bit fragile, as malformed udp skb will
+>> unconditionally use the skb len.
+> 
+> Malformed packets are addressed in patch 7 — it closes the gap, so that
+> uh->len = 0 can't come from the wire.
+> 
+>> What about introducing/using an additional helper alike:
+>>
+>> int udp_get_len(const struct sk_buff *skb, const struct udphdr *uh)
+>> {
+>> 	if (uh->len)
+>> 		return htons(uh->len);
+>> 	if (skb_is_gso(skb))
+>> 		return skb->len;
+>> 	return 0;
+>> }
+>>
+>> and use it here and in the next patch?
+> 
+> Since UDP-Lite was removed along with the special case in udp_rcv, the
+> helper for udp_get_len makes sense now, yes. The only two places where
+> it's going to be used, though, are udp_rcv and udpv6_rcv. AFAIR, only
+> these two need to read and decode len=0.
 
-On 6/10/26 3:14 PM, Longxing Li wrote:
-> sorry for not containing report plain text in last email. the report
-> is as follows:
->
-> INFO: task syz-executor.4:42949 blocked for more than 143 seconds.
->        Not tainted 7.0.6 #1
-> "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-> task:syz-executor.4  state:D stack:26456 pid:42949 tgid:42937
-> ppid:9759   task_flags:0x400140 flags:0x00080002
-> Call Trace:
->   <TASK>
->   context_switch kernel/sched/core.c:5298 [inline]
->   __schedule+0x1006/0x5f00 kernel/sched/core.c:6911
->   __schedule_loop kernel/sched/core.c:6993 [inline]
->   schedule+0xe7/0x3a0 kernel/sched/core.c:7008
->   schedule_preempt_disabled+0x13/0x30 kernel/sched/core.c:7065
->   __mutex_lock_common kernel/locking/mutex.c:692 [inline]
->   __mutex_lock+0xd9e/0x1df0 kernel/locking/mutex.c:776
->   xt_find_table+0x59/0x1a0 net/netfilter/x_tables.c:1245
->   ip6t_unregister_table_exit+0x22/0x50 net/ipv6/netfilter/ip6_tables.c:1808
->   ops_exit_list net/core/net_namespace.c:199 [inline]
->   ops_undo_list+0x2dd/0xa50 net/core/net_namespace.c:252
->   setup_net+0x1f3/0x3a0 net/core/net_namespace.c:462
->   copy_net_ns+0x351/0x7c0 net/core/net_namespace.c:579
->   create_new_namespaces+0x3f6/0xac0 kernel/nsproxy.c:130
->   copy_namespaces+0x45c/0x580 kernel/nsproxy.c:195
->   copy_process+0x30cc/0x76d0 kernel/fork.c:2227
->   kernel_clone+0xea/0x8f0 kernel/fork.c:2655
->   __do_sys_clone+0xce/0x120 kernel/fork.c:2796
->   do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
->   do_syscall_64+0x11b/0xf80 arch/x86/entry/syscall_64.c:94
->   entry_SYSCALL_64_after_hwframe+0x77/0x7f
-> RIP: 0033:0x471ecd
-> RSP: 002b:00007f51f163e008 EFLAGS: 00000202 ORIG_RAX: 0000000000000038
-> RAX: ffffffffffffffda RBX: 000000000059bf80 RCX: 0000000000471ecd
-> RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000040080020
-> RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
-> R10: 0000000000000000 R11: 0000000000000202 R12: 000000000059bf8c
-> R13: 000000000000000b R14: 000000000059bf80 R15: 00007f51f161e000
->   </TASK>
+I think also udp_validate_len() in nf_conntrack_proto_udp.c could/should
+use the same helper. 
 
+> I'm not sure about the skb_is_gso check, though. Given that malformed
+> packets are addressed in patch 7, do we need this check? udpv6_rcv
+> already does the following without checking for GSO:
+> 
+> 	/* Check for jumbo payload */
+> 	if (ulen == 0)
+> 		ulen = skb->len;
 
+AFAICS, checking in udp_gro_receive() is not enough to protect the whole 
+RX path: some NICs still do use NAPI, some other explicitly skips NAPI 
+when aggregation is not possible. Also malformed 0 len packets are not
+dropped at the GRO engine level, and with eventually reach udp{,v6}_rcv().
 
-This is not a deadlock — there's no lock cycle.
+I think the GSO check is the more robust among the easily
+available ones, and should not impact performances - it touches 2
+additional cachelines compared to the current code, but both should be
+already hot in all the relevant callers.
 
-The runner is simply under heavy pressure on all three axes: CPU (zswap 
-compression) + memory (direct reclaim) + IO (swap).
+> I don't think Linux supports jumbo UDP with HBH coming from the wire
+> natively, does it? If it doesn't, and the above is only for BIG TCP, it
+> should be safe to check skb_is_gso in udpv6_rcv too, but again, is it
+> actually necessary after patch 7?
 
-The hung task is just a victim. The actual holder is another task that 
-took the mutex and then fell into direct reclaim.
+WRT the need for such check, see the previous point. 
 
-Likely stack of the holder:
-get_entries
-   xt_find_table_lock
-   copy_entries_to_user
-     alloc_counters
-        vzalloc  -> direct reclaim
+I forgot about jumbograms. The current ipv6 udp RX path currently 
+handle them, I think we must preserve such handling. Possibly something 
+alike the following?
 
-"INFO: task hung" reports of this kind are common on the official 
-syzkaller dashboard https://syzkaller.appspot.com/upstream/
+---
+diff --git a/net/ipv6/udp.c b/net/ipv6/udp.c
+index 15e032194ecc..d4d1d85dd7cb 100644
+--- a/net/ipv6/udp.c
++++ b/net/ipv6/udp.c
+@@ -1085,8 +1085,9 @@ INDIRECT_CALLABLE_SCOPE int udpv6_rcv(struct sk_buff *skb)
+ 	if (ulen > skb->len)
+ 		goto short_packet;
+ 
+-	/* Check for jumbo payload */
+-	if (ulen == 0)
++	/* Check for Big TCP over UDP tunnel and jumbo payload. */
++	ulen = udp_get_len(skb, uh);
++	if (ulen == 0 && inet6_is_jumbogram(skb))
+ 		ulen = skb->len;
+ 
+ 	if (ulen < sizeof(*uh))
+---
 
+The above will make the check in the RX path more restrictive, but it will
+be also aligned with the existing one in recvmsg().
+
+/P
 
