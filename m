@@ -1,171 +1,166 @@
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F211428463
-	for <netdev@vger.kernel.org>; Wed, 10 Jun 2026 16:08:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781107727; cv=none; b=W8xM3ya1exFAISPRWFxuSOutXAm2jui3seCLOV/crwk/MT9mcV1r8kQa743d01AkClC1jqP9Yw0bbb3Qy9veNHmFTrDIwnEns4f9fq56cZngTZS7Gw5dqEhuCai9PmDJ5slrw9Oo/ckrdvi9ceLGSvcegAVdrIetHHwDUc/L/7U=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781107727; c=relaxed/simple;
-	bh=T8iqph9GHQBI61A8YzT1Kso8HRhlpEbAPfMd2qtm8LY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tORcwpTuemf8AgtrCBXVgEZXwm40fFstOcVK5IXou5a8dFViO/rEzSCj16jKWXDm+LszEvbOG5P8HPD42d3PHbouOf4zRmgVqVdsH3xhfqmpq1uXOm2MzqtzoXhcgMH+nnJ2QF5qXMVTMYCpf3CBUn7NEk5lJ0H+N+WAEZSljX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PnpaPzgr; arc=none smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E06F2407CFF
+	for <netdev@vger.kernel.org>; Wed, 10 Jun 2026 16:11:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.171
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781107884; cv=pass; b=lc3zhKa2Y1OppUy2p7AXW0hbmYRzI4/biywDJHkw9IaLB6YlpMN6cUxUli6UNxa9pZZ0IoD0Fb4JeG7ECkWsnZmhNJ57N7AAW2zlSrsmP95XKUC0V9F5/zZ0AiN3aODgneLHbxC/5/4t/C8g91eBS/0F9Kg0X/sneZgl4cTUuUI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781107884; c=relaxed/simple;
+	bh=UaKsvlPBoLK6Qf8cSPsxvJ7kOou5Bz2856Lr1B0BvNw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=dc3FY4ZQbMx02jDCMxUd50V1go70qLA6te1p4kohfSJ7B5vlBwLcHVKDrOYsUleoNPqm/4IiJgP1n6zzQAQPic0t74q7T4nUbKUJMvYj5d5mArd5Ibwdx5bpE0DFdhfJZczovRAfABHYue0ujkJvSZ9qvMT0ZENazcEJk4PhTJQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vMQ8bGK/; arc=pass smtp.client-ip=209.85.160.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PnpaPzgr"
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2bf114b0cf9so64675725ad.2
-        for <netdev@vger.kernel.org>; Wed, 10 Jun 2026 09:08:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vMQ8bGK/"
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-51764768c36so89718471cf.0
+        for <netdev@vger.kernel.org>; Wed, 10 Jun 2026 09:11:22 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781107882; cv=none;
+        d=google.com; s=arc-20240605;
+        b=bUsSoCSamSuOWx6hjnz2v8X0y3KPk2KBkVjQyEZcP1hFB8KdD8144Y+2mvjFbDAJg/
+         TzhrWI7lz4qYHSr0twATGDej7tVUMvz8nhtIQHskdnGnRCJBaGZpjGnbcSzIOvJzCCJw
+         bJK5uOWTiAwqGlRhKOd3skO/QIgYQDkVoOIBoVsd0VMH2ZdJSE4s4oss2rSQMcAyT+5U
+         ktheACNSdwY8hj1m45buAoPRnsPNx/z1BykEDzd5Royc5NwSYU0gZGcPg5VSd0hA8F1z
+         r1iqqI6tgs4jSVE7amutUbezMloFBwVgIiHQpOUH5qduzZed5gyY1GGwnt9mcdF45ivg
+         95SQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=aIJqbwhUq0DXsQgBGbz5NchUkysQwKa3ZvfK6WJ5p8A=;
+        fh=8dtxkCBlEi+6/9Vdk9vj8HSs8nev27n7pNloMnzoLd4=;
+        b=fVPHdsFwHxL2+nwqolcUx8XMFnvvyLdqRap5Mk5NEzingc/Pf5W46q57WBfGcd5uXW
+         P0SzuHFMAnuEotnM7uqnygY+G2reUEL3Wva0V5gBitR2NsQQ8xCzSI/YF/jN1IEThZIt
+         Ru1udQHtbcWDtBX0ekf2H+hDTshtm9Q73P7FnZ+hwGYgDJz5+Xd6CMRXrfNu2dsVqmK2
+         SDcuKPhMrV4woSH3c211cGR9CiqSz/vyBatHEP7n32mBE/E0aUwZ7Pzy3c6rjSVzZQ0y
+         mJgtZNACbEk5qhdUb6XD9DkAM0z+TXbv+qFhKikQtcnmjD87xPbYxS+30KiB+qHOR00r
+         Fwcw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781107725; x=1781712525; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=eFIEiprovOp703K0D/rIvyeptamFy22pkJ/EjlDN9sY=;
-        b=PnpaPzgrefpD0jRhnIGxrwSOhb5Wy8rsXQS1o2uAK6AG9cpMpk2IKW7FnO5TvTTE+k
-         AdW2/0RMD2B2S6kAlxMsa04Q5ai3VLGWudN1YPF6hnt8S2JPhfIcP2Y8oc6IImd6ubwn
-         as7dE8LGHQV9nXhXaVitSA386Zm1vlUYlCUkFl5+V6/GS3Rszgm7QyX8Z8/liO09Q8v7
-         WYzvhURnwIQFkshiXmEXp/r50AvSMt6fvMuyvMWOUVgxaPIdDaocEfKpAZInUat222+7
-         oMk0p6WjlwvO7tVSa9luxy3iiE9pNXbcNVslY6URtGSip8dnVQBdSQeS7gShRximp/Y2
-         x1+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781107725; x=1781712525;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=google.com; s=20251104; t=1781107882; x=1781712682; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=eFIEiprovOp703K0D/rIvyeptamFy22pkJ/EjlDN9sY=;
-        b=EhHdIoySHBh+h91jaDiSVX77gXWufacG3TBuobGnsxvVGdtxYbH4zi+Ez/LZSHCIak
-         yOTbOyGs/cfa8FNQAIFQKOGiBqK7KUPEeB5mutOK+G/QFNqxzIdyJhLQzyvYRexLLSd7
-         dZzsplc/GLKlHVr7Q2R1tStUX2nfVzQvPQh7WwZke1aeuaTKV4/8LhGnc6X7/VxI28P+
-         7KxKUWXAkPIfCUvGTX1rvEmkE5PbpzuvflvzkgIP8dx0Ksm0yK6SOufRn3olJvpMM9KQ
-         ifzZny5tFXMtQI9ohsuilAgV/vtHJx3JVJuNZw7x27SOXMv9g4464gZB5zsuS0eHt08h
-         UJGw==
-X-Forwarded-Encrypted: i=1; AFNElJ/ExMiAb+ocIoL7krB+nWoM6ajnreFM9vvDyjxOcAVCrhuVK4ubMlolgk/IhxuYzto9CLphJSw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzsYKeInlYsWW3OwQ4yRWVqmusR9BwhDJHIG3fQExyzYiDl3xGr
-	DI61zZAJVGYBk6pqPD8WwAbi+SDK4VMzT47wsRJtwxqfKbkM9ZbcivFM
-X-Gm-Gg: Acq92OHcn+QQkpYOEAW3k8OnYjsXrECoD74TCnao/fgnit9JCRlpwtu55mJjxTDgVzS
-	m/mRjL6SKFO8IG8TKjZaDpYeJLkdyVecsYhq7dGVue4NrBrbTrMhEJntWLCmqmS9kQSRqE+iOh/
-	pvFBTFN1C6Za0GMn3qjaifWFojVDOstg9GQbiwcNVKBUMZgmQNvG9JIqYpasA/IB5XyZCVBfGNC
-	n1qIrROiRB3koUmoBrZVxJcxbatvAGqSmizKUEiQaMVJmJoI6UhPfh/WvKCCvaOtu7/zUk7d1gD
-	7P93rD2X0lu1Lih9Pht6ZlW0/dBz1pnJfgBehxdFMhUeODNZYShKOodG457xHFE97qghomUWLr6
-	F7HLY752XgGm2Kdx4jsp27OViAjkgWeVq1GRa9saxmgMNWNy19XlRwIRC1XoAxzTbDiZeMeqXQ/
-	NZ/4wDMwcRvPy3ESyUH6OXvJaGmH+Co+XDwq+P3sSFgHUAyCXW5TGPxYZ0cOA9Pk/Ib/RSyImmj
-	zZhMjD0H0Nl8gwLczw6Qcg=
-X-Received: by 2002:a17:902:da88:b0:2bd:2de3:5181 with SMTP id d9443c01a7336-2c1e8213a72mr322078915ad.9.1781107725451;
-        Wed, 10 Jun 2026 09:08:45 -0700 (PDT)
-Received: from SLSGDTSWING002.tail0ac356.ts.net ([129.126.109.177])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c164f875casm252863845ad.22.2026.06.10.09.08.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Jun 2026 09:08:44 -0700 (PDT)
-From: Weiming Shi <bestswngs@gmail.com>
-To: Jon Maloy <jmaloy@redhat.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>,
-	Ying Xue <ying.xue@windriver.com>,
-	netdev@vger.kernel.org,
-	tipc-discussion@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org,
-	Xiang Mei <xmei5@asu.edu>,
-	Weiming Shi <bestswngs@gmail.com>
-Subject: [PATCH net] tipc: fix use-after-free of discoverer in tipc_disc_rcv()
-Date: Wed, 10 Jun 2026 23:33:50 +0800
-Message-ID: <20260610153349.2546041-2-bestswngs@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        bh=aIJqbwhUq0DXsQgBGbz5NchUkysQwKa3ZvfK6WJ5p8A=;
+        b=vMQ8bGK/R2eHra8LBoZeBn+vWCmFijRxK7ipVA1qA+Ru2BJZoKu5auqGOv7FM4cMxF
+         tvlcfEpjmtDY1LIZL7/I4qZmoexznOy49iguVlMiLGQ6tiNZKIbgEoQquiOOSGaVTdiE
+         g+YyNhxEEigyvPFfTIuQO42/4CP9HqyE6aNUxRbZ9ZHjTw4NR+KNZnNhOVG5J3aGW9si
+         g8lGstksEoP6CK+mOnHT8ljCzLspHZMgEEqqeSa+I6S8u551Yp/x+aXtSo0b60TEzMd7
+         rZMewlo+L8e/GStBe0jpuJEjg7PCjvS7tLyObrzYxKLoZWCPYTrRHaYd+Scw8XnwS6xV
+         J3Jg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781107882; x=1781712682;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=aIJqbwhUq0DXsQgBGbz5NchUkysQwKa3ZvfK6WJ5p8A=;
+        b=JuTjhEoZoF2/k1+6BIUatHVIoW2pCEQld0XAqg425mIIGjDCGz9jB70LXI12zA0CZK
+         aJPoxPxhOq7J64ewi1euijK024e/3mceMUCSSyj/mX3iKpm/tlE7coe+EFv1Dj9MOqHT
+         GVBG2dlPJPoU7fAu7XJ/HqQD2FlTjfTE3SqU/cr6c4iOwUMMMEnIoQZ8QmyvJ1963FL2
+         VeeLK2w+TIY8mOqG4O8Qcxum6cJWpsVsjNr8fpcTZa48wRXPZrqBwxLDK6HlmzSyGbTL
+         FQie2kqHqegBaXo+wsnzSp1FMsQaQxEWUiRvWwJHKkRaOj0ERfntqqszK5SHPeSlwXZk
+         IqXQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9akc1OeuJprrc9daU4JABpdEAS6OhbvfhxeLo7/uNxX4MaFynW2DCwqN6E4DMqgRchPdCN/zM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxw7OfDy9F7bHJrclMiF7A2Oy+2fW6RGc6dSQfka3lK7Z3mJMPV
+	9ULrc7IOQXRM/rWw6yWO5OAeCx9Vta13b3MeSaBtVTizQwtlaUKBydnYIlO/3gd2hG2XhuqxT+b
+	N9e6QJjffjWMJj0ScTNbRiP8rWydsYSZ1P6ALBcHN
+X-Gm-Gg: Acq92OH7eVOr/ilIjHu4vKHwA0uFkS8/j+wlr9gDnQLr+2ILCIMMbDkjxvgPY8WGL6l
+	OdqLKthxvClDJd8PXxPAvKfxgywWd4BAm8FCvW5CRi4vEXFPo/wBBfHGTKTc30Z0Zyzz9d0GnEU
+	aRHnxreFcOPmv8ihqTwbGY57QLUVmS74aQTHLEbU00/laHxIKzrGlROJoa/K6psqNy4f14ReBoO
+	MRkhS/msbxBhwIKP4Xg+CLpY8dMZtFNFzYfcdt7+CpDWssWuUEhdKSEmiEYRKIBlmd6vdFsJBt5
+	ZoHnAjCgn/JQ5H42X3fEg193lF26tmPNqQvXgbcEhRi3BF7c4O3Y2IXw4RNREYZHlR/8GTVINxR
+	yOHGljI+eQUJ0bZLoanf6GWtyz0o53Q==
+X-Received: by 2002:ac8:711a:0:b0:517:97f9:78f5 with SMTP id
+ d75a77b69052e-51797f97a8dmr255372111cf.10.1781107881302; Wed, 10 Jun 2026
+ 09:11:21 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260609080839.2506801-1-edumazet@google.com> <20260609080839.2506801-5-edumazet@google.com>
+ <9c330505-483c-47fc-9a7a-29b8abd6aad7@blackwall.org>
+In-Reply-To: <9c330505-483c-47fc-9a7a-29b8abd6aad7@blackwall.org>
+From: Eric Dumazet <edumazet@google.com>
+Date: Wed, 10 Jun 2026 09:11:08 -0700
+X-Gm-Features: AVVi8CdlkOHuikd3A35cYM2iYewAI8y5qsPhdTVSkOU0a2WgPM9Lad14Db8_G54
+Message-ID: <CANn89iLbCG4Q2cfJ8-MzUOqGw9r2zVYvovaM-KrPDtFJy86JQQ@mail.gmail.com>
+Subject: Re: [PATCH net-next 4/5] net: bridge: use atomic ops to read/change
+ p->flags (II)
+To: Nikolay Aleksandrov <razor@blackwall.org>
+Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
+	netdev@vger.kernel.org, eric.dumazet@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-bearer_disable() frees b->disc with tipc_disc_delete()'s plain kfree(),
-but tipc_disc_rcv() still dereferences b->disc in RX softirq under
-rcu_read_lock() (tipc_udp_recv -> tipc_rcv -> tipc_disc_rcv).
+On Tue, Jun 9, 2026 at 11:27=E2=80=AFPM Nikolay Aleksandrov <razor@blackwal=
+l.org> wrote:
+>
+> On 09/06/2026 11:08, Eric Dumazet wrote:
+> > Use READ_ONCE(p->flags) in br_port_flag_is_set() to keep its ABI.
+> >
+> > Use test_bit(), clear_bit(), set_bit() in:
+> >
+> >     net/bridge/br_input.c
+> >     net/bridge/br_mrp.c
+> >     net/bridge/br_mrp_netlink.c
+> >
+> > Signed-off-by: Eric Dumazet <edumazet@google.com>
+> > ---
+> >   net/bridge/br_if.c          |  2 +-
+> >   net/bridge/br_input.c       | 12 ++++++------
+> >   net/bridge/br_mrp.c         | 20 ++++++++++----------
+> >   net/bridge/br_mrp_netlink.c |  8 ++++----
+> >   4 files changed, 21 insertions(+), 21 deletions(-)
+> >
+> [snip]
+> > @@ -1246,7 +1246,7 @@ static int br_mrp_rcv(struct net_bridge_port *p,
+> >   static int br_mrp_process(struct net_bridge_port *p, struct sk_buff *=
+skb)
+> >   {
+> >       /* If there is no MRP instance do normal forwarding */
+> > -     if (likely(!(p->flags & BR_MRP_AWARE)))
+> > +     if (likely(!test_bit(BR_MRP_AWARE_BI, &p->flags)))
+>
+> s/BR_MRP_AWARE_BI/BR_MRP_AWARE_BIT/
+>
+> >               goto out;
+> >
+> >       return br_mrp_rcv(p, skb, p->dev);
+> > diff --git a/net/bridge/br_mrp_netlink.c b/net/bridge/br_mrp_netlink.c
+> > index 86f0e75d6e345f8f388ae163860a685279174222..cebd4037744ffa2796c170c=
+1e1ac2f213b315760 100644
+> > --- a/net/bridge/br_mrp_netlink.c
+> > +++ b/net/bridge/br_mrp_netlink.c
+> > @@ -538,9 +538,9 @@ int br_mrp_ring_port_open(struct net_device *dev, u=
+8 loc)
+> >       }
+> >
+> >       if (loc)
+> > -             p->flags |=3D BR_MRP_LOST_CONT;
+> > +             set_bit(BR_MRP_LOST_CONT_BIT, &p->flags);
+> >       else
+> > -             p->flags &=3D ~BR_MRP_LOST_CONT;
+> > +             clear_bit(BR_MRP_LOST_CONT_BIT, &p->flags);
+> >
+> >       br_ifinfo_notify(RTM_NEWLINK, NULL, p);
+> >
+> > @@ -560,9 +560,9 @@ int br_mrp_in_port_open(struct net_device *dev, u8 =
+loc)
+> >       }
+> >
+> >       if (loc)
+> > -             p->flags |=3D BR_MRP_LOST_IN_CONT;
+> > +             set_bit(BR_MRP_LOST_CONT_BIT, &p->flags);
+> >       else
+> > -             p->flags &=3D ~BR_MRP_LOST_IN_CONT;
+> > +             clear_bit(BR_MRP_LOST_CONT_BIT, &p->flags);
+>
+> this one changes LOST_IN_CONT to LOST_CONT_BIT
 
-L2 bearers are safe thanks to the synchronize_net() in
-tipc_disable_l2_media(), but the UDP bearer defers that call to the
-cleanup_bearer() workqueue, so the discoverer is freed with no grace
-period:
-
- BUG: KASAN: slab-use-after-free in tipc_disc_rcv (net/tipc/discover.c:149)
- Read of size 8 at addr ffff88802348b728 by task poc_tipc/184
- <IRQ>
-  tipc_disc_rcv (net/tipc/discover.c:149)
-  tipc_rcv (net/tipc/node.c:2126)
-  tipc_udp_recv (net/tipc/udp_media.c:391)
-  udp_rcv (net/ipv4/udp.c:2643)
-  ip_local_deliver_finish (net/ipv4/ip_input.c:241)
- </IRQ>
- Freed by task 181:
-  kfree (mm/slub.c:6565)
-  bearer_disable (net/tipc/bearer.c:418)
-  tipc_nl_bearer_disable (net/tipc/bearer.c:1001)
-
-The bearer is freed with kfree_rcu(); free the discoverer the same way.
-Add an rcu_head to struct tipc_discoverer and free it and its skb from an
-RCU callback.
-
-Reachable from an unprivileged user namespace: the TIPCv2 genl family is
-netnsok and its bearer commands have no GENL_ADMIN_PERM. Needs CONFIG_TIPC
-and CONFIG_TIPC_MEDIA_UDP.
-
-Fixes: 25b0b9c4e835 ("tipc: handle collisions of 32-bit node address hash values")
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Assisted-by: Claude:claude-opus-4-8
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
----
- net/tipc/discover.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
-
-diff --git a/net/tipc/discover.c b/net/tipc/discover.c
-index 3e54d2df5683a..34dbe5ad10e09 100644
---- a/net/tipc/discover.c
-+++ b/net/tipc/discover.c
-@@ -58,6 +58,7 @@
-  * @skb: request message to be (repeatedly) sent
-  * @timer: timer governing period between requests
-  * @timer_intv: current interval between requests (in ms)
-+ * @rcu: RCU head for deferred freeing
-  */
- struct tipc_discoverer {
- 	u32 bearer_id;
-@@ -69,6 +70,7 @@ struct tipc_discoverer {
- 	struct sk_buff *skb;
- 	struct timer_list timer;
- 	unsigned long timer_intv;
-+	struct rcu_head rcu;
- };
- 
- /**
-@@ -382,6 +384,14 @@ int tipc_disc_create(struct net *net, struct tipc_bearer *b,
- 	return 0;
- }
- 
-+static void tipc_disc_free_rcu(struct rcu_head *rp)
-+{
-+	struct tipc_discoverer *d = container_of(rp, struct tipc_discoverer, rcu);
-+
-+	kfree_skb(d->skb);
-+	kfree(d);
-+}
-+
- /**
-  * tipc_disc_delete - destroy object sending periodic link setup requests
-  * @d: ptr to link dest structure
-@@ -389,8 +399,7 @@ int tipc_disc_create(struct net *net, struct tipc_bearer *b,
- void tipc_disc_delete(struct tipc_discoverer *d)
- {
- 	timer_shutdown_sync(&d->timer);
--	kfree_skb(d->skb);
--	kfree(d);
-+	call_rcu(&d->rcu, tipc_disc_free_rcu);
- }
- 
- /**
--- 
-2.43.0
-
+Oops again, thanks again!
