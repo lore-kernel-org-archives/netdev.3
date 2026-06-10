@@ -1,234 +1,218 @@
-Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011018.outbound.protection.outlook.com [52.101.62.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24F583839AF;
-	Wed, 10 Jun 2026 07:05:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.18
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781075127; cv=fail; b=jKa/KhVcOfJ9DRlOrfamYM5Gogo7IDBP+r5IiAK53KIgOEgnPn/jAplDwSaL8ZvdALeKEA2cO0l+P56tM+1otg4R4poy31G0Q9mN98FNPhBlH6PJWD/rY6Bc/jWdXYLqMcuHYbkSEN0IKJuz+j+0sgPuyOsadzAWMeRDDYB4lDo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781075127; c=relaxed/simple;
-	bh=G+EbitmvzWg5enhw6EjkHan96FhORwusgA6ldVWwCgU=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=S8SPPmUcq/rO6hHvskk3CSf3gNirHAAY6o91YTfeWMMA4D3bNEpGpJFcSC2CyXLlsI9KY4k5Azntcl7D5h/Z1R/3c01APwnABVj69Fe9b41CiFN5WgJKJAIWT964lgO+NI7CJg3NwxUEBXxktMzjzfB45rt0F+CrDg8rVzYfPrA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=xpRXs8Zt; arc=fail smtp.client-ip=52.101.62.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CFE931F99B
+	for <netdev@vger.kernel.org>; Wed, 10 Jun 2026 07:06:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781075214; cv=none; b=r+zwQCSqUF5IVReOZTA8JHQBPUKUjkvi9WWZU8VqLVTdwQHFzButxZmpBLtjc4B4Yb+4CB+2WqrK31SLx4kG/fT7fOQL6TUB5+SJ/mdcqst80kUZSUXvq3qFUYhU2rZ3KlRUv6Fia6V+HBWf8Dce81uvJEF6For+nN5sZuLqun4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781075214; c=relaxed/simple;
+	bh=uwEoaXiN/XXygk3f43wDiGsyQIn9DxeM52TsPBk93n0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=EMjv4HEs431jFUvmb8Yiz8XrRIbcNEW8fl2dcNl7fsN8P6Qnq1trQgpKDmyCl1WPAMT/ifoaaOQnxLoe0QZAgLEIDprOR/anJofr/ZmGkO1sJ7B2AmhuQ+sAkT0eHaJCpmD95kaZ3r0vefU7NcCng89HzSCG2WG+gM6rG4SO7ns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=vZoXLgsL; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=vNI9vXR/; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=vZoXLgsL; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=vNI9vXR/; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="xpRXs8Zt"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=wC5gaRwugFgobAoTCWdjnvaFw5ZahNuTM/nnOT6KX/MSD1G0vYricNY7y1vS99ava03T01XuqX6A454WYigeSyjhL38goLJhSBlQwlHK+KSN8GpU6BKrt2XTSy4WWOrCIPvN3u+9JHLfg1pwqMmpM0uA15RyJbeCVDhln5D1B45iYhlFiqxss8Iuzm0bGEO3jTCeUruww2TwIv1e7kk2Ukul5h2KypYga5Ioix5QwGGuMOZCajOM/xgafD51FpVDGWeKDAf6V4+g/4Q2yA/iJJr558wvmVLyJzrUo1w52HGC9q++7zMzcNT13w895i0VOlySJfu+RPVY4jwAAbVMpA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3UI3tncPTi8BPTuOtb0LYX0hQd3bu6+ZfrwFLx8wrcU=;
- b=Dcf5wKXS9ot4tdy1yWhVeG8o4RS1ehsNjfusLSobe2+hCiCKlfng4P/sfdAp5lEW7HZV7kNpJmzWn21EvkOjm8T7aj7moePGCetehqiIDDwOIAsPkGb6Qnye6O6TaYQwhq3yNL/0vtvBls6e+MfUjlZTZTy3KRuJF92cgCP+3cFl++lAsULIkOlUV+Swt+01iLnVh5RpBpwrb7oA6DDu9HUW2M5HOo0t75UsCZXm+m2z+lLC5v68nkAMCFHBmfSRHpkAPjzzHImP9KcKCE7jnpdj03FcYxPf9B4Cy5dNg6IfQL0Sm8ylOXEhi+VOjsOh+DhDLxoeCZ3E/h9NW/Lldg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3UI3tncPTi8BPTuOtb0LYX0hQd3bu6+ZfrwFLx8wrcU=;
- b=xpRXs8ZtYT0DzY/FDERfvzMxQqgVOIXkAqu265cTbwjGbI6QPgb9RXnbue2uOTYiuaEZlA92tuVRMi3WQGAVVQelWxAVrhCCIP0pJHdMj/L2ueTapH/dL1APNXK/gITWYe8gTQJq4hDzomPaAXghwFNu30+J0ew2aiOCrePUL80=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
- by SA1PR12MB8598.namprd12.prod.outlook.com (2603:10b6:806:253::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.13; Wed, 10 Jun
- 2026 07:05:22 +0000
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::ce69:cfae:774d:a65c]) by PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::ce69:cfae:774d:a65c%5]) with mapi id 15.21.0092.006; Wed, 10 Jun 2026
- 07:05:22 +0000
-Message-ID: <c78eec30-159f-41f6-b725-8402752f90dd@amd.com>
-Date: Wed, 10 Jun 2026 09:04:06 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 2/4] udmabuf: emit one sg entry per pinned folio
-To: Bobby Eshleman <bobbyeshleman@gmail.com>
-Cc: Donald Hunter <donald.hunter@gmail.com>, Jakub Kicinski
- <kuba@kernel.org>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
- Gerd Hoffmann <kraxel@redhat.com>,
- Vivek Kasireddy <vivek.kasireddy@intel.com>,
- Sumit Semwal <sumit.semwal@linaro.org>, Shuah Khan <shuah@kernel.org>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org,
- linaro-mm-sig@lists.linaro.org, linux-kselftest@vger.kernel.org,
- sdf@fomichev.me, razor@blackwall.org, daniel@iogearbox.net,
- almasrymina@google.com, matttbe@kernel.org, skhawaja@google.com,
- dw@davidwei.uk, Bobby Eshleman <bobbyeshleman@meta.com>
-References: <20260603-tcpdm-large-niovs-v1-0-f37a4ac6726c@meta.com>
- <20260603-tcpdm-large-niovs-v1-2-f37a4ac6726c@meta.com>
- <bdce2488-fe77-4f36-9ed6-dd2c785fa7c1@amd.com>
- <aiMY8CpckM8Jav0g@devvm29614.prn0.facebook.com>
- <0c86f5d3-b5e9-4cac-aa9d-30c5c8ecca66@amd.com>
- <CAKB00G3opAoAYswsq2uz0Q6jgku8u4NthKOzCbSumZ0qK7QxcQ@mail.gmail.com>
- <a51e97bd-39dc-492f-bd7d-f137423277df@amd.com>
- <aigqFQWzPkiSh3ie@devvm29614.prn0.facebook.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-In-Reply-To: <aigqFQWzPkiSh3ie@devvm29614.prn0.facebook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: FR4P281CA0357.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:f4::18) To PH7PR12MB5685.namprd12.prod.outlook.com
- (2603:10b6:510:13c::22)
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="vZoXLgsL";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="vNI9vXR/";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="vZoXLgsL";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="vNI9vXR/"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id B550D75CA8;
+	Wed, 10 Jun 2026 07:06:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1781075211; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=I1gAeOLgTuEAAzcY5bQb3xMUyBqJE6jmw0ao7FkdqP8=;
+	b=vZoXLgsLK4JO+rXIi83jANeHzQ1nk6ZkXFQTTnc1Nn24iSwELqTySg7dIUWyHB5DJz49px
+	2c5X9QP/7achVuMUZ7eAcU5IoKt5PKJbx7Jski0vm+l/G31eCu1aviXddmqSAgr8/l0Taw
+	dffP1fHPyTZTarKZ68uw4ja23h1Kaj4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1781075211;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=I1gAeOLgTuEAAzcY5bQb3xMUyBqJE6jmw0ao7FkdqP8=;
+	b=vNI9vXR/WONDlg1KHtdE1YuXYMq4I1NH8lfuV1jwMzRgCiSEakWJ2s4vt6TglmRHhr7yA/
+	4Kwqp5rpv1zsRvBA==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=vZoXLgsL;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="vNI9vXR/"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1781075211; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=I1gAeOLgTuEAAzcY5bQb3xMUyBqJE6jmw0ao7FkdqP8=;
+	b=vZoXLgsLK4JO+rXIi83jANeHzQ1nk6ZkXFQTTnc1Nn24iSwELqTySg7dIUWyHB5DJz49px
+	2c5X9QP/7achVuMUZ7eAcU5IoKt5PKJbx7Jski0vm+l/G31eCu1aviXddmqSAgr8/l0Taw
+	dffP1fHPyTZTarKZ68uw4ja23h1Kaj4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1781075211;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=I1gAeOLgTuEAAzcY5bQb3xMUyBqJE6jmw0ao7FkdqP8=;
+	b=vNI9vXR/WONDlg1KHtdE1YuXYMq4I1NH8lfuV1jwMzRgCiSEakWJ2s4vt6TglmRHhr7yA/
+	4Kwqp5rpv1zsRvBA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 03A1E779A7;
+	Wed, 10 Jun 2026 07:06:50 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id GD8JOwoNKWr+LgAAD6G6ig
+	(envelope-from <hare@suse.de>); Wed, 10 Jun 2026 07:06:50 +0000
+Message-ID: <d14fff89-3c7b-40ea-9380-e8c37499916e@suse.de>
+Date: Wed, 10 Jun 2026 09:06:50 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|SA1PR12MB8598:EE_
-X-MS-Office365-Filtering-Correlation-Id: c9f7bbaa-e450-4695-b251-08dec6bea395
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|366016|1800799024|7416014|376014|10063799003|11063799006|56012099006|4143699003|6133799003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	U9FM1uTIw9GGijuROFDG0oSAWEZO4ts2TW7shhHgPp0oo2WTeuuMJd4Pt6QU2y/O9zoJ5F4iGh+f+OMPTQT3HvOY5blUChNkKKQeWbUAflUfR0CBNWQ/nbsDZLVfGXEGoYkHP8aw+O9ysZPu9pz/d7dJhT04UBpwcta3cnwdtZrQLkFsTVIzjOxZMjhpzw5V4eyU2FC9qO07dsaLZWygI5EwEuNApX7XRF8/e0yrfJz2cTuyCikLEl1iH6ekoaXEBH+RhxEccmFVFPRTBagEdmHk20Y//2KBhnr8ZvzGsQwM+IqcMSwpqAmwceeNJaAjR1lBhiX2y8RLVk0mBrpvtSZzJJU0X6Eax3nUadZsSiR9aM3zZ2rsvYDLBBR/uO3bh4Yc0vqDklJy7eReNB81yttkmJEEDJ4okS9akL8prPKKTcLboAjtJruBA5/K+ayOp89VgEl3luPyLn66K+s8lXpoBPZG3LcEWxZuImKa024p9qZ3MgwiDw4hAQ+JICEmAT6A93r93zSCavUGpo89BHpYopGXV4iiv20P1Y79ERdbpz//jqdo4xE4sN+0xKzeyYpuBdYGGyDzVvj8dXHCH070z9KbqY2xnOv7f0Xke4Zf5FV5b1ImEITWbeuX5iyXzUSA8Ld5U+K0UYTsISc/gmY5IJ1OCZUTq0EmtAvB/aEJxt4twN9IKrvVNE3tJJw7
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(1800799024)(7416014)(376014)(10063799003)(11063799006)(56012099006)(4143699003)(6133799003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?WEJDNStCY3ZCZ2Q1b2k0cWxhVVdSMHBPcVBCODYxRlNBa2lDUCtadm1iRFNT?=
- =?utf-8?B?Z2hMSUk2RTRTZ3hZUDdPc2xIcGQxTnZWbTRqblNVenZISER0dkpKSU83V2Uy?=
- =?utf-8?B?cktIcGZDWVkrcHVpUi9abk5jajJEbGtWZWlHWG5NVnZFMjYxUTRoMjFOOW9T?=
- =?utf-8?B?M25xdXFqMm0wY3QydUgxakw1UEdrUWN1WFR3emtMQXM0NnZGeEkwdXhlaVYv?=
- =?utf-8?B?bnA1OHpHenRUWXpVYXpkcDJCOTdVMm0zQTdESGFDK3JHTUt6ZjlVaFVNRS96?=
- =?utf-8?B?eUZNTXZoRHgwNk1Fc0ZwVTgyVmF1R0tKa29aaWd3RnZ3OUZMekJkTXY5NEJh?=
- =?utf-8?B?enAydXZGZW5hUWtUbElSSnRGd2cybzBYUVBiZ3B3MEw1ZDRGdzNQV2tPbmdT?=
- =?utf-8?B?U1U4cVc5dEZvaEVPYUtRL05haU5RL1dPRlVZK0pyMEtReUtnZTQvVFQ2MVBI?=
- =?utf-8?B?NmZLYnlNZ01RQkFSY1JaWEN5RjJkc0pkWkxKZmJ1b2lXaitNMTNSOEtIaDUr?=
- =?utf-8?B?blVpbzk5VnVOQWxHREhib2tvQ1pZZWJrOVh4RndqQjBoK0I0eVpGOXVBWGo1?=
- =?utf-8?B?VCt6UDBZdGZRVWlWY3IrUHFHOUJqU3kwRVV1dzJTSTN5ZHB2b3VFbVlTRDZh?=
- =?utf-8?B?cnNQWk1hMnhySmpWUURzOUU1ODNDdTlkVjZDZUJ4THZvN0tHUDhNVzRiZDhW?=
- =?utf-8?B?UlM3S2gySGl4WE43STBWL3UrRXNFckZuLzlEVEFCbkg2YWw0QWdYdVF3RmVR?=
- =?utf-8?B?TGNVV1M3MTVhREQrNDc0RVY4eXlIdTBYTnFLZE9Ybk5ndWptUEZiNldKaXor?=
- =?utf-8?B?Q05hVS9tWVlhZEVaVGJhdzMwVHh1aHJtQWpWT0dHOEdzS0RySnNpVmxzMXB6?=
- =?utf-8?B?UCtzeUJUbkozN2diNTVTemhFUEk4NExrWGY2Q3hJdXhjeTZ0UEQxUXB3M1oz?=
- =?utf-8?B?M3Y4WEEraC9KMDYvOTUxdHRHMXltOCt1SmZ3Q0FRNTUyemlKY3loOUVkcnpR?=
- =?utf-8?B?ZFNQQUgwMkptazIveU8xdTFqUWlxZXNVRU4yQmFSMDkvTXE5d2o1M0o1MTNM?=
- =?utf-8?B?cWFYdEdPL2htbGlaUXQ3VUFtRkZjMFBueVJVakZ1azhSWENwTUVnK1h1OWw1?=
- =?utf-8?B?OERTTmoydFgrbjZkUmNSdi9RRWZob2VCUU1ubEdoUU0reTJia3FHVm9RWGUv?=
- =?utf-8?B?U2lZV3BVQU1lWXRwdjVIMzhBWnNyMloxTjZVMmJkUHFmcDVHOEZlL1Rnd2ls?=
- =?utf-8?B?SzNUNUZZbHdyRjRxcEJydnA4MHF6Sk01VFhmcTdUR2pWeVA1eEV6ZmkveXVB?=
- =?utf-8?B?ZUpKVjYxeUFBTzN1ZHFMcVpYQ3loeGNndDRleERrSWNJVTJHUnFIWkpSaEVj?=
- =?utf-8?B?SW9ZYmk5dXdWcDQrMUVFZS9rRncyY1JLWjVYUjdtOUU3ZC9HYUNLK21PVHZr?=
- =?utf-8?B?LzRWejVXV3E1NkNYYkpoWnBjZ2lMb0xudzZGTWI2SUZTQjVXWFYrY1dqUWZH?=
- =?utf-8?B?NWZiTTc4QTV1UWFaR0MyTGM1NCs5b2dnejZsMlFkVDFycTMwdmNRdmNJcnp6?=
- =?utf-8?B?VHdJSWdsU0I0SDlkZ3BqZFh1b2Q1djVSdTNobDMydXBkVWo1aGdneTZFcmxC?=
- =?utf-8?B?SXVjT21BZjBWTFRkUlZaaDBiMHZiQ1lraHdaZEwyRnFZVnZnQ0xJUGl2ZVN6?=
- =?utf-8?B?NDlxSDlrRmd1UWFjOW03RXl2NEJ5UEV5TmRkNk1BWTdMV0tCOUxodVdSQ0lT?=
- =?utf-8?B?MUN0UHRMdE1WSDNyTHZsdDNYRytlUTFqWC9VOVUwci9xRHgxQ1BnanVXdkJ4?=
- =?utf-8?B?RlYwSmlNclBGdzdTOHk1b2trOEZtcUxEakJweGhQVUVxdnhiWU02a3BPcDJy?=
- =?utf-8?B?Y1RpQ2JJTFI0eERkaUQzVEp5c20wUFNDa09KcSt6R2dPVXB5a2xhWEE2WjI5?=
- =?utf-8?B?Z09aTExnbUgrWVVoalp2YXBRbVJmODNuZEhWbzRnUkdBSkRaRlU4NVNUWTF3?=
- =?utf-8?B?eUpydTkxY2xEdVNvK25SaUhyc3djNm9HV2p5TEV5ZXdjeUJnODFtOWhqbi9W?=
- =?utf-8?B?NlV6N1RSSklzYzFsRkJkSk9mcEhadW5TWFRCR0dFb2JkaFdVZ3p3NFV3c2Ri?=
- =?utf-8?B?MDZDZDBLTXBGT1BUYVRHM2NnY1BRQVRoMy9ldWlSZGVJdkNDNEdQWWRoTzlV?=
- =?utf-8?B?K2ZwVEI3bjgzd1l0QmhLRzVRZ29QdHdNZTRyM0ZBUEFBeUZHV3g2dVZUYnB1?=
- =?utf-8?B?NzRTV0JkT2ZZaE95QkxkN1Ewb1poa1dHaEJvclBHSUdnRXBONDA4SlpVQ29v?=
- =?utf-8?Q?QC24X2X0/kQBnG5rJN?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c9f7bbaa-e450-4695-b251-08dec6bea395
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jun 2026 07:05:22.5788
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: +jcpW5n71EkJnjSrLpPbEVLknf/3YNE0O8pZQe0UKv4Ww45oXdr9BpIzkalxRg/j
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB8598
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/9] lib: Add a "tagset" data structure
+To: Chuck Lever <cel@kernel.org>, Donald Hunter <donald.hunter@gmail.com>,
+ Jakub Kicinski <kuba@kernel.org>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ John Fastabend <john.fastabend@gmail.com>,
+ Sabrina Dubroca <sd@queasysnail.net>, Keith Busch <kbusch@kernel.org>,
+ Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>,
+ Sagi Grimberg <sagi@grimberg.me>, Chaitanya Kulkarni <kch@nvidia.com>,
+ Jeff Layton <jlayton@kernel.org>, NeilBrown <neil@brown.name>,
+ Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>,
+ Tom Talpey <tom@talpey.com>, Trond Myklebust <trondmy@kernel.org>,
+ Anna Schumaker <anna@kernel.org>
+Cc: kernel-tls-handshake@lists.linux.dev, netdev@vger.kernel.org,
+ linux-nvme@lists.infradead.org, linux-nfs@vger.kernel.org,
+ Chuck Lever <chuck.lever@oracle.com>
+References: <20260605-tls-session-tags-v1-0-47bd1d94d552@oracle.com>
+ <20260605-tls-session-tags-v1-3-47bd1d94d552@oracle.com>
+ <922040b0-f87e-484d-9f7b-78098024ad04@suse.de>
+ <2dc23995-3ff9-4714-ac6c-d70255b15687@app.fastmail.com>
+Content-Language: en-US
+From: Hannes Reinecke <hare@suse.de>
+In-Reply-To: <2dc23995-3ff9-4714-ac6c-d70255b15687@app.fastmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Flag: NO
+X-Rspamd-Action: no action
+X-Spam-Level: 
+X-Spamd-Result: default: False [-3.01 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-0.999];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCPT_COUNT_TWELVE(0.00)[29];
+	FREEMAIL_TO(0.00)[kernel.org,gmail.com,davemloft.net,google.com,redhat.com,lwn.net,linuxfoundation.org,linux-foundation.org,queasysnail.net,kernel.dk,lst.de,grimberg.me,nvidia.com,brown.name,oracle.com,talpey.com];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_TRACE(0.00)[suse.de:+];
+	RCVD_COUNT_TWO(0.00)[2];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	R_RATELIMIT(0.00)[to_ip_from(RLhu34id7c3duw89qhx7eswje4)];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:dkim,suse.de:mid,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns]
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Queue-Id: B550D75CA8
+X-Spam-Score: -3.01
 
-On 6/9/26 16:58, Bobby Eshleman wrote:
-> On Mon, Jun 08, 2026 at 03:59:04PM +0200, Christian König wrote:
->> On 6/8/26 15:55, Bobby Eshleman wrote:
->>>
->>> On Sun, Jun 7, 2026 at 11:42 PM Christian König <christian.koenig@amd.com <mailto:christian.koenig@amd.com>> wrote:
->>>
->>>     On 6/5/26 20:44, Bobby Eshleman wrote:
->>>     > On Fri, Jun 05, 2026 at 11:30:07AM +0200, Christian König wrote:
->>>     >> On 6/4/26 02:42, Bobby Eshleman wrote:
->>>     >>> From: Bobby Eshleman <bobbyeshleman@meta.com <mailto:bobbyeshleman@meta.com>>
->>>     >>>
->>>     >>> get_sg_table() emitted one PAGE_SIZE sg entry per page even when the
->>>     >>> underlying folio was larger.
->>>     >>>
->>>     >>> Instead, walk folios[] and emit one sg entry per folio. When folios
->>>     >>> represent large pages (as is for MFD_HUGETLB), each sg entry is a large
->>>     >>> page. Normal PAGE_SIZE sg tables are unchanged.
->>>     >>>
->>>     >>> Required by net/core/devmem to support rx-buf-size > PAGE_SIZE with
->>>     >>> udmabuf.
->>>     >>
->>>     >> That doesn't explain why this is required.
->>>     >
->>>     > Sure, can definitely add. Devmem currently requires dmabuf sg entries to
->>>     > be length and size aligned when it allocates niovs for NIC page pools.
->>>     > Though udmabuf is not violating any dmabuf contract by emitting
->>>     > PAGE_SIZE entries and the above restriction is probably more a
->>>     > shortfalling of devmem, by emitting a single entry per folio this patch
->>>     > allows udmabuf to be used by devmem for large pages.
->>>     >
->>>     >>
->>>     >> Please note that accessing the pages/folio of an sg-table returned by DMA-buf is illegal and strictly forbidden!
->>>     >>
->>>     >> Regards,
->>>     >> Christian.
->>>     >
->>>     > It seems both devmem and io_uring zcrx at least introspect through to
->>>     > the sg-table to build NIC page pools (not accessing the memory itself,
->>>     > however). Is there a better way?
->>>
->>>     That's an absolute NO-GO! We need to stop that immediately.
->>>
->>>     Touching the underlying struct page of an DMA-buf exported sg-table is strictly forbidden.
->>>
->>>     We even have code to wrap the sg_table and hide the struct pages on debug builds to catch those issues, see function dma_buf_wrap_sg_table().
->>>
->>>     My last status is that the NIC page pools are build directly from the DMA addresses exposed by the sg_table.
->>>
->>>     Was there any change I'm not aware of?
->>>
->>>     Regards,
->>>     Christian.
->>>
->>>
->>> Oh no change, your mental model is still current.
->>> They just go through each sg and use sg_dma_address() on each.
->>
->> Ah, thanks! That was a near heart attack :D
->>
->> Yeah that is perfectly correct, question is do you then still really need this udmabuf change? I mean the DMA API usually merges together contiguous DMA addresses.
->>
->> Regards,
->> Christian.
->>
+On 6/9/26 15:35, Chuck Lever wrote:
 > 
-> Hey Christian, sorry for the delay I justed want to double check what
-> I'm seeing...
+> On Tue, Jun 9, 2026, at 2:45 AM, Hannes Reinecke wrote:
+>> On 6/5/26 19:34, Chuck Lever wrote:
+>>> From: Chuck Lever <chuck.lever@oracle.com>
+>>>
+>>> Access control mechanisms sometimes need to match metadata tags
+>>> between a session and a resource. A tagset provides efficient
+>>> membership testing and set intersection operations for this purpose.
+>>>
+>>> The implementation uses a sorted array of string pointers. Unlike
+>>> hash tables, sorted arrays support efficient intersection without
+>>> needing to iterate one set and probe the other. Unlike rbtrees,
+>>> they require no per-element node allocation, minimizing memory
+>>> overhead for small sets typical of resource tagging.
+>>>
+>> [ .. ]
+>>
+>>
+>> Isn't this overcomplicating matters?
+>> In the end, this a list of strings.
+>> Wouldn't a simple rbtree holding the strings be sufficient?
+>> (And quicker to lookup :-)
 > 
-> I reverted the udmabuf patch and confirmed devmem still runs into 4K
-> pages even for hugepage udmabuf. I see that the dma_map_direct() path is
-> being taken, which if I am reading the code correctly results in the
-> sg_dma_len(sg) inheriting sg->length directly (set by udmabuf's
-> sg_set_folio(..., PAGE_SIZE) call), compared to the iommu_dma_map_phys()
-> path which looks like it does merge when possible.
+> This isn't overcomplicating matters.
+> 
+> Consider that a TLS session might have several, even dozens of
+> tags. An NFSD export might also have a dozen or more tags.
+> 
+> We need a mechanism that will compute the intersection of those
+> two sets efficiently -- that is not a simple lookup. Keeping a
+> set of tags in a list or in an r-b tree would require MxN look
+> up operations to compute that intersection.
+> 
+It sure would. But we're dealing with a comparative small number
+of entries (later patches cap it to 64), so runtime really is of
+no concern.
 
-
-Ok that makes more sense. Yeah something which could potentially be improved elsewhere.
-
-Feel free to go ahead with this patch as a workaround, just adjust the commit message and maybe add a code comment why it is necessary and helpful.
-
-Thanks,
-Christian.
+But let me see if I can come up with an alternative implementation
+using rb trees.
 
 > 
-> Best,
-> Bobby
+>> Also see my comment in the previous patch. I really would make
+>> 'tags' a nested attribute, and then parsing the 'tags' attribute
+>> would be simple iteration over the tags.
+> 
+> I leave it to Jakub to decide the best approach for passing tags
+> via the netlink protocol.
+> 
+> 
+Sure.
 
+>> (And don't name it tagset. That will be confusing the hell of out
+>> of any storage folks, where a tagset is something completely
+>> different.)
+> 
+> Since the primary operation on this container is "intersection",
+> set makes the most sense. Stringset?
+> 
+> 
+Better.
+
+Cheers,
+
+Hannes
+-- 
+Dr. Hannes Reinecke                  Kernel Storage Architect
+hare@suse.de                                +49 911 74053 688
+SUSE Software Solutions GmbH, Frankenstr. 146, 90461 Nürnberg
+HRB 36809 (AG Nürnberg), GF: I. Totev, A. McDonald, W. Knoblich
