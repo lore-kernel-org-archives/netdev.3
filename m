@@ -1,166 +1,138 @@
-Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E06F2407CFF
-	for <netdev@vger.kernel.org>; Wed, 10 Jun 2026 16:11:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.171
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781107884; cv=pass; b=lc3zhKa2Y1OppUy2p7AXW0hbmYRzI4/biywDJHkw9IaLB6YlpMN6cUxUli6UNxa9pZZ0IoD0Fb4JeG7ECkWsnZmhNJ57N7AAW2zlSrsmP95XKUC0V9F5/zZ0AiN3aODgneLHbxC/5/4t/C8g91eBS/0F9Kg0X/sneZgl4cTUuUI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781107884; c=relaxed/simple;
-	bh=UaKsvlPBoLK6Qf8cSPsxvJ7kOou5Bz2856Lr1B0BvNw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dc3FY4ZQbMx02jDCMxUd50V1go70qLA6te1p4kohfSJ7B5vlBwLcHVKDrOYsUleoNPqm/4IiJgP1n6zzQAQPic0t74q7T4nUbKUJMvYj5d5mArd5Ibwdx5bpE0DFdhfJZczovRAfABHYue0ujkJvSZ9qvMT0ZENazcEJk4PhTJQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vMQ8bGK/; arc=pass smtp.client-ip=209.85.160.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E526233929;
+	Wed, 10 Jun 2026 16:16:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781108197; cv=none; b=XFyTILgU5wPpo1qKnhw/slGdUpZ09bntBK1YvL+um3oN/kSdfkepI/2yAFpbpNEY+oHNGF3YC2rQyytuQFrT8wXKJ/dn1OUgb0ezPTjov3BHIr1qxmuZ2gp6RHdlB01bcVjvKioqdQIFhzpSzIPExS/ruEHV24rAaiqoFSI7CsI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781108197; c=relaxed/simple;
+	bh=hUM8jKlphMPt/PACxiOeB5cnIxEskPEFQjhk8b+quXU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sCe2NAiotg4/FlcTCY9gX26ul9e5PcJIfdiyXqySlVHoUgRTX/+05q1oWciUwCwA1uV+6HsZifG1HDbcWcyLkvLBKOFhK/zWFtFnjFcAXVg0HhmkE9o0mQ4Nl9kOaFAtrysGv8KEOuKLgmloymYY09zUrQwJbpcQmpOJsWgQZno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=OIsTubbR; arc=none smtp.client-ip=217.70.190.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vMQ8bGK/"
-Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-51764768c36so89718471cf.0
-        for <netdev@vger.kernel.org>; Wed, 10 Jun 2026 09:11:22 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781107882; cv=none;
-        d=google.com; s=arc-20240605;
-        b=bUsSoCSamSuOWx6hjnz2v8X0y3KPk2KBkVjQyEZcP1hFB8KdD8144Y+2mvjFbDAJg/
-         TzhrWI7lz4qYHSr0twATGDej7tVUMvz8nhtIQHskdnGnRCJBaGZpjGnbcSzIOvJzCCJw
-         bJK5uOWTiAwqGlRhKOd3skO/QIgYQDkVoOIBoVsd0VMH2ZdJSE4s4oss2rSQMcAyT+5U
-         ktheACNSdwY8hj1m45buAoPRnsPNx/z1BykEDzd5Royc5NwSYU0gZGcPg5VSd0hA8F1z
-         r1iqqI6tgs4jSVE7amutUbezMloFBwVgIiHQpOUH5qduzZed5gyY1GGwnt9mcdF45ivg
-         95SQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=aIJqbwhUq0DXsQgBGbz5NchUkysQwKa3ZvfK6WJ5p8A=;
-        fh=8dtxkCBlEi+6/9Vdk9vj8HSs8nev27n7pNloMnzoLd4=;
-        b=fVPHdsFwHxL2+nwqolcUx8XMFnvvyLdqRap5Mk5NEzingc/Pf5W46q57WBfGcd5uXW
-         P0SzuHFMAnuEotnM7uqnygY+G2reUEL3Wva0V5gBitR2NsQQ8xCzSI/YF/jN1IEThZIt
-         Ru1udQHtbcWDtBX0ekf2H+hDTshtm9Q73P7FnZ+hwGYgDJz5+Xd6CMRXrfNu2dsVqmK2
-         SDcuKPhMrV4woSH3c211cGR9CiqSz/vyBatHEP7n32mBE/E0aUwZ7Pzy3c6rjSVzZQ0y
-         mJgtZNACbEk5qhdUb6XD9DkAM0z+TXbv+qFhKikQtcnmjD87xPbYxS+30KiB+qHOR00r
-         Fwcw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781107882; x=1781712682; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=aIJqbwhUq0DXsQgBGbz5NchUkysQwKa3ZvfK6WJ5p8A=;
-        b=vMQ8bGK/R2eHra8LBoZeBn+vWCmFijRxK7ipVA1qA+Ru2BJZoKu5auqGOv7FM4cMxF
-         tvlcfEpjmtDY1LIZL7/I4qZmoexznOy49iguVlMiLGQ6tiNZKIbgEoQquiOOSGaVTdiE
-         g+YyNhxEEigyvPFfTIuQO42/4CP9HqyE6aNUxRbZ9ZHjTw4NR+KNZnNhOVG5J3aGW9si
-         g8lGstksEoP6CK+mOnHT8ljCzLspHZMgEEqqeSa+I6S8u551Yp/x+aXtSo0b60TEzMd7
-         rZMewlo+L8e/GStBe0jpuJEjg7PCjvS7tLyObrzYxKLoZWCPYTrRHaYd+Scw8XnwS6xV
-         J3Jg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781107882; x=1781712682;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=aIJqbwhUq0DXsQgBGbz5NchUkysQwKa3ZvfK6WJ5p8A=;
-        b=JuTjhEoZoF2/k1+6BIUatHVIoW2pCEQld0XAqg425mIIGjDCGz9jB70LXI12zA0CZK
-         aJPoxPxhOq7J64ewi1euijK024e/3mceMUCSSyj/mX3iKpm/tlE7coe+EFv1Dj9MOqHT
-         GVBG2dlPJPoU7fAu7XJ/HqQD2FlTjfTE3SqU/cr6c4iOwUMMMEnIoQZ8QmyvJ1963FL2
-         VeeLK2w+TIY8mOqG4O8Qcxum6cJWpsVsjNr8fpcTZa48wRXPZrqBwxLDK6HlmzSyGbTL
-         FQie2kqHqegBaXo+wsnzSp1FMsQaQxEWUiRvWwJHKkRaOj0ERfntqqszK5SHPeSlwXZk
-         IqXQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9akc1OeuJprrc9daU4JABpdEAS6OhbvfhxeLo7/uNxX4MaFynW2DCwqN6E4DMqgRchPdCN/zM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxw7OfDy9F7bHJrclMiF7A2Oy+2fW6RGc6dSQfka3lK7Z3mJMPV
-	9ULrc7IOQXRM/rWw6yWO5OAeCx9Vta13b3MeSaBtVTizQwtlaUKBydnYIlO/3gd2hG2XhuqxT+b
-	N9e6QJjffjWMJj0ScTNbRiP8rWydsYSZ1P6ALBcHN
-X-Gm-Gg: Acq92OH7eVOr/ilIjHu4vKHwA0uFkS8/j+wlr9gDnQLr+2ILCIMMbDkjxvgPY8WGL6l
-	OdqLKthxvClDJd8PXxPAvKfxgywWd4BAm8FCvW5CRi4vEXFPo/wBBfHGTKTc30Z0Zyzz9d0GnEU
-	aRHnxreFcOPmv8ihqTwbGY57QLUVmS74aQTHLEbU00/laHxIKzrGlROJoa/K6psqNy4f14ReBoO
-	MRkhS/msbxBhwIKP4Xg+CLpY8dMZtFNFzYfcdt7+CpDWssWuUEhdKSEmiEYRKIBlmd6vdFsJBt5
-	ZoHnAjCgn/JQ5H42X3fEg193lF26tmPNqQvXgbcEhRi3BF7c4O3Y2IXw4RNREYZHlR/8GTVINxR
-	yOHGljI+eQUJ0bZLoanf6GWtyz0o53Q==
-X-Received: by 2002:ac8:711a:0:b0:517:97f9:78f5 with SMTP id
- d75a77b69052e-51797f97a8dmr255372111cf.10.1781107881302; Wed, 10 Jun 2026
- 09:11:21 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="OIsTubbR"
+Received: from localhost.localdomain (mail-agni [217.70.190.124])
+	by mail.netfilter.org (Postfix) with ESMTPSA id C63DD601A5;
+	Wed, 10 Jun 2026 18:16:32 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
+	s=2025; t=1781108193;
+	bh=lUtNxWEhERt4m2r/xPglTQKdZUAIuGh+eAOkPsujlHM=;
+	h=From:To:Cc:Subject:Date:From;
+	b=OIsTubbRCILYF0x+amYAgZkjFsMm2sbkJDRqkRFe1CtD/Fvs2kIUHzWpF5SnAqRUy
+	 rnbe6pR9f2wSD4/roC7q8BZ4dQj3xKlWlfBL6M9aO7DDQL8nIV1DzlFX20DhW1ALbj
+	 +UkPpXS0Du73unHDZt2ckoUM3G68jJYTwFcWfjp7sirhFAfjaOZ5wkT0Fb9QZSeQYE
+	 CqJVtRYFpusytM+Sram5UVqbwXy7+wsXH0KQD+Jbcu643KdEhpr+tmS6cexJHFcqzQ
+	 fWoCqaRypr+Mox34v7qlINruo78O88EqMdRxbPVwx6m8ZPNV4Vt4nKcPetOOsbt3ot
+	 UUiXfbLSjnvlg==
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: netfilter-devel@vger.kernel.org
+Cc: davem@davemloft.net,
+	netdev@vger.kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	fw@strlen.de,
+	horms@kernel.org
+Subject: [PATCH net 0/8] Netfilter fixes for net
+Date: Wed, 10 Jun 2026 18:16:20 +0200
+Message-ID: <20260610161629.214092-1-pablo@netfilter.org>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260609080839.2506801-1-edumazet@google.com> <20260609080839.2506801-5-edumazet@google.com>
- <9c330505-483c-47fc-9a7a-29b8abd6aad7@blackwall.org>
-In-Reply-To: <9c330505-483c-47fc-9a7a-29b8abd6aad7@blackwall.org>
-From: Eric Dumazet <edumazet@google.com>
-Date: Wed, 10 Jun 2026 09:11:08 -0700
-X-Gm-Features: AVVi8CdlkOHuikd3A35cYM2iYewAI8y5qsPhdTVSkOU0a2WgPM9Lad14Db8_G54
-Message-ID: <CANn89iLbCG4Q2cfJ8-MzUOqGw9r2zVYvovaM-KrPDtFJy86JQQ@mail.gmail.com>
-Subject: Re: [PATCH net-next 4/5] net: bridge: use atomic ops to read/change
- p->flags (II)
-To: Nikolay Aleksandrov <razor@blackwall.org>
-Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
-	netdev@vger.kernel.org, eric.dumazet@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jun 9, 2026 at 11:27=E2=80=AFPM Nikolay Aleksandrov <razor@blackwal=
-l.org> wrote:
->
-> On 09/06/2026 11:08, Eric Dumazet wrote:
-> > Use READ_ONCE(p->flags) in br_port_flag_is_set() to keep its ABI.
-> >
-> > Use test_bit(), clear_bit(), set_bit() in:
-> >
-> >     net/bridge/br_input.c
-> >     net/bridge/br_mrp.c
-> >     net/bridge/br_mrp_netlink.c
-> >
-> > Signed-off-by: Eric Dumazet <edumazet@google.com>
-> > ---
-> >   net/bridge/br_if.c          |  2 +-
-> >   net/bridge/br_input.c       | 12 ++++++------
-> >   net/bridge/br_mrp.c         | 20 ++++++++++----------
-> >   net/bridge/br_mrp_netlink.c |  8 ++++----
-> >   4 files changed, 21 insertions(+), 21 deletions(-)
-> >
-> [snip]
-> > @@ -1246,7 +1246,7 @@ static int br_mrp_rcv(struct net_bridge_port *p,
-> >   static int br_mrp_process(struct net_bridge_port *p, struct sk_buff *=
-skb)
-> >   {
-> >       /* If there is no MRP instance do normal forwarding */
-> > -     if (likely(!(p->flags & BR_MRP_AWARE)))
-> > +     if (likely(!test_bit(BR_MRP_AWARE_BI, &p->flags)))
->
-> s/BR_MRP_AWARE_BI/BR_MRP_AWARE_BIT/
->
-> >               goto out;
-> >
-> >       return br_mrp_rcv(p, skb, p->dev);
-> > diff --git a/net/bridge/br_mrp_netlink.c b/net/bridge/br_mrp_netlink.c
-> > index 86f0e75d6e345f8f388ae163860a685279174222..cebd4037744ffa2796c170c=
-1e1ac2f213b315760 100644
-> > --- a/net/bridge/br_mrp_netlink.c
-> > +++ b/net/bridge/br_mrp_netlink.c
-> > @@ -538,9 +538,9 @@ int br_mrp_ring_port_open(struct net_device *dev, u=
-8 loc)
-> >       }
-> >
-> >       if (loc)
-> > -             p->flags |=3D BR_MRP_LOST_CONT;
-> > +             set_bit(BR_MRP_LOST_CONT_BIT, &p->flags);
-> >       else
-> > -             p->flags &=3D ~BR_MRP_LOST_CONT;
-> > +             clear_bit(BR_MRP_LOST_CONT_BIT, &p->flags);
-> >
-> >       br_ifinfo_notify(RTM_NEWLINK, NULL, p);
-> >
-> > @@ -560,9 +560,9 @@ int br_mrp_in_port_open(struct net_device *dev, u8 =
-loc)
-> >       }
-> >
-> >       if (loc)
-> > -             p->flags |=3D BR_MRP_LOST_IN_CONT;
-> > +             set_bit(BR_MRP_LOST_CONT_BIT, &p->flags);
-> >       else
-> > -             p->flags &=3D ~BR_MRP_LOST_IN_CONT;
-> > +             clear_bit(BR_MRP_LOST_CONT_BIT, &p->flags);
->
-> this one changes LOST_IN_CONT to LOST_CONT_BIT
+Hi,
 
-Oops again, thanks again!
+The following patchset contains Netfilter fixes for net:
+
+1) Revalidate bridge ports, add missing NULL checks to fetch the bridge
+   device by the port. From Florian Westphal.
+
+2) Fix netdevice refcount leak in the error path of nft_fwd hardware
+   offload function, also from Florian.
+
+3) Unregister helper expectfn callback on conntrack helper module
+   removal, otherwise dangling pointer remains in place,
+   from Weiming Shi.
+
+4) Fix possible pointer infoleak in getsockopt() IPT_SO_GET_ENTRIES,
+   From Kyle Zeng.
+
+5) Validate that device MAC header is present before nf_syslog
+   accesses it. From Xiang Mei.
+
+6-8) Three patches to address a possible infoleak of stale stack
+     data in three nf_tables expressions, due to mismatch in the
+     _init() and _eval() function which is possible since 14fb07130c7d.
+     From Davide Ornaghi and Florian Westphal.
+
+Please, pull these changes from:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/netfilter/nf.git nf-26-06-10
+
+Thanks.
+
+----------------------------------------------------------------
+
+The following changes since commit 4aacf509e537a711fa71bca9f234e5eb6968850e:
+
+  net: mv643xx: fix OF node refcount (2026-06-04 18:40:31 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/netfilter/nf.git nf-26-06-10
+
+for you to fetch changes up to c7d573551f9286100a055ef696cde6af54549677:
+
+  netfilter: nft_meta_bridge: fix stale stack leak via IIFHWADDR register (2026-06-10 18:00:32 +0200)
+
+----------------------------------------------------------------
+netfilter pull request 26-06-10
+
+----------------------------------------------------------------
+Davide Ornaghi (2):
+      netfilter: nft_fib: fix stale stack leak via the OIFNAME register
+      netfilter: nft_meta_bridge: fix stale stack leak via IIFHWADDR register
+
+Florian Westphal (3):
+      netfilter: revalidate bridge ports
+      netfilter: nf_tables_offload: drop device refcount on error
+      netfilter: nft_exthdr: fix register tracking for F_PRESENT flag
+
+Kyle Zeng (1):
+      netfilter: x_tables: avoid leaking percpu counter pointers
+
+Weiming Shi (1):
+      netfilter: nf_conntrack: destroy stale expectfn expectations on unregister
+
+Xiang Mei (1):
+      netfilter: nf_log: validate MAC header was set before dumping it
+
+ include/net/netfilter/nf_conntrack_helper.h |  1 +
+ net/bridge/netfilter/ebt_dnat.c             |  4 +-
+ net/bridge/netfilter/ebt_redirect.c         | 16 +++++---
+ net/bridge/netfilter/nft_meta_bridge.c      |  2 +
+ net/ipv4/netfilter/arp_tables.c             | 15 +++----
+ net/ipv4/netfilter/ip_tables.c              | 15 +++----
+ net/ipv4/netfilter/nf_nat_h323.c            |  2 +
+ net/ipv4/netfilter/nft_fib_ipv4.c           |  2 +-
+ net/ipv6/netfilter/ip6_tables.c             | 15 +++----
+ net/ipv6/netfilter/nft_fib_ipv6.c           |  2 +-
+ net/netfilter/nf_conntrack_helper.c         | 19 +++++++++
+ net/netfilter/nf_dup_netdev.c               |  6 ++-
+ net/netfilter/nf_log_syslog.c               |  4 +-
+ net/netfilter/nf_nat_core.c                 |  2 +
+ net/netfilter/nf_nat_sip.c                  |  1 +
+ net/netfilter/nfnetlink_log.c               | 23 +++++++++--
+ net/netfilter/nfnetlink_queue.c             | 64 +++++++++++++++++++++++++----
+ net/netfilter/nft_exthdr.c                  |  3 ++
+ net/netfilter/nft_fib.c                     |  6 +++
+ 19 files changed, 151 insertions(+), 51 deletions(-)
