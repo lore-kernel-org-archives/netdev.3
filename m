@@ -1,154 +1,115 @@
-Received: from mail-yw1-f193.google.com (mail-yw1-f193.google.com [209.85.128.193])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F094F3C1082
-	for <netdev@vger.kernel.org>; Wed, 10 Jun 2026 09:15:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.193
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781082954; cv=pass; b=M/thYjHfgptECNCnHleQHtzI+AvXZjpJkIbGpHdZd3gH9nnC8MQijbo2orXud7xXxk3W8Q3AG58ITOG/IAtF+0uhZzrY3LGApnEYw/H8oDkwUJ2WAdTUqbgUU2Wval0wsdaUgs5luznysbX9pXeA8qvzC20bKuxcFVoLLPHZJaE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781082954; c=relaxed/simple;
-	bh=dkWTevOEzDTMmxDai2XZ5/ake5l927UeEL0MaDVmHek=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lgB0c7+ivOP/RfDjqAlIVRFhiVRNPyVsG7z9b9p18lbakUuj6WemKenbOzZVPAONuGp6nq+KL/8XJjbjdYp5TOh3uP/PK7fpZVHCDPMcgYym7icuy7qk289iXdxE07M/2j1uE5UFX4FeVVEj9iR7NR7O8bwCvQWjAUs/SwJQ6lY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pk441WcU; arc=pass smtp.client-ip=209.85.128.193
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE6D83DCD8F
+	for <netdev@vger.kernel.org>; Wed, 10 Jun 2026 09:26:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.183
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781083605; cv=none; b=SXgo0OXlLm4QQ3Vxsek9uiRnlmH7axuXDMnz8ukJaA1W0dCzQ+Tl7mW8Z1Wp/Uq2EloaZ3gXZn4KaZWb42TjYsI8dF7rgXeMpuPuxmOSKqEr8LnW2nGclP1pR/2kHIlxmChtb4WZNknB3ZjvUEdaFsWjQZOKHqp0beAdCRIfaQo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781083605; c=relaxed/simple;
+	bh=rDYf0gnIrYdQKrUthpTVKGSXzN6k7STc6mNhFd5HTq8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uj2hlG6ACBghNwb1VlMt2R8Cvxs1DgeyIoffFaiZfwJIFKAhx6DM2d+xt0l/gwZ8Vg8/J+iETzY8EKnrUga3+QYp/H0IPXrGkj19ZrH4Y3tVtrKDwL8fv4s3MduC/PGlCvINQg1Mb0fW86v3/WHB7qd/BKG4OnpQ5zkWsPCdi9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=AspQ/LZa; arc=none smtp.client-ip=91.218.175.183
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pk441WcU"
-Received: by mail-yw1-f193.google.com with SMTP id 00721157ae682-7de68222e96so60636447b3.2
-        for <netdev@vger.kernel.org>; Wed, 10 Jun 2026 02:15:50 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781082950; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Seijla8KYaC8N24U1K/b8IIBZZnrHWlJItXRR/mysV6uHK6HgEZhnQFbtmaldxvSrh
-         fgiwO+nTKLcJ5wuaNEjeJDYqwzlBSNuCjuXhNRTz9B9zYLRN2ung0qCct8+GwtBqtXic
-         q6xsgRM+LuK7Kt5MoDJYWYyD2MUCgJEFxcww6MvHhO58VOfuTgY008tLEMFkIVzYfhV1
-         rM4Sok8RxOL6mWir0eRryq5LWrzJUaA0opH/WaZB6IBcYK1anVXeyZkBpL3f/9A+Fz84
-         VcbgzX2u8TwobK5aGLdgi7S+lC+WpqNrnh4Y0KIG9Zy8vuF833ifYAFJol7/XgDZht7I
-         sXhw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=7Vr1lvCHUXqA8wl46L5q/dYr6UTfHd+/3UQsnP1BtFs=;
-        fh=473ofnK6QaZrjJJKdjzE3qWFq015jpZK5tyPcVTxS+E=;
-        b=D+O0lri1keS3hQcgRZ0Siun9+Ghf8vtDZVtVpp2z4Ock2AY9MFbhkovC6QAO7mqJz5
-         UFJfv7YASd0I2S8IFsE6KHc+aKojQL0vboIbCzg6AHLbbl0L7Z1Yq/q44PoNNut+GIAT
-         krLixjPpASqOXwJrrCmDzHFx2mRAfEg4VQ+xHr1G2mycPWYwzdIBJr/uC8QrfbC0rXoQ
-         7jJM3j9IUnhRpj4TLHt097dd5C+hqstjh2WEdLapG2DXub78TMHZCyiYPtuI9Nvr2d6f
-         tkQrvV1Sj9cKpG6U9RdX7J4gQIvPhx8LqHF/58umbyh0yF5pr3Kmvpn/tRgpzmM6RicL
-         dNug==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781082950; x=1781687750; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7Vr1lvCHUXqA8wl46L5q/dYr6UTfHd+/3UQsnP1BtFs=;
-        b=pk441WcUPLA3ma3sVTWTu/7YhEpgLBNtx+7/GOBko+KyABEYzLZY/H3foF2ZYji0gg
-         NbxuokUIf3qbHUkCe5gUrHJZ/64NyNpblhbQr7bZwxWcWCrzcfGEs2lrbtacxYpu5N4G
-         GzUzCTIaKMIvM+vlXPURZ1G4KbIi7pvhRVFn26fi47o22CW2FPAqetFdND3bc1R0KFCJ
-         xm88q8U0FHcEADMSYvoMZB1MKm4rM32a+OriS2t9PMGK081yqqvK4sA9kxEBPfhgm9Pf
-         nCbW6D5q3oiGqhb7PuOOvXyWQdKimDnMN5GIkbZRUi6VVawulEWR41cqdEOK+dUnUaFD
-         6CHA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781082950; x=1781687750;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=7Vr1lvCHUXqA8wl46L5q/dYr6UTfHd+/3UQsnP1BtFs=;
-        b=U42hQ8gedQVvw5xSOSmneCP7xLrfyfohDs8hP3Xp0pQU/MJAtdU2pQ4hXYvKwjVtPy
-         9Z1CM5ZYmvlJQcEUT6XWwaYQAtgZ8RixdOIffuS2Sky7BS8FC38uAMATZKuJceXFFBWF
-         altcYrbINvI+2846N/KwojZlpDUrkKQmDdr21Q/KWKARf2Wq3AvZDGNRyMkzign1MhxP
-         VRAx/TCGzwqNiGOnxSAc+JMeLdb2mAqj5uHhs7CIWtT/5pzqq5KA/Kna8NntZ+J6gQF0
-         szSzP4kEahcl9z2IaHC4TmRfJSxW+kizSiRGGeXNqwHtyuL4UQaUcNJlcqcmj9k4AD94
-         J5Ag==
-X-Forwarded-Encrypted: i=1; AFNElJ9JlA+gTEGcowLQOP3jwDwwEx6Y5QGsT+p6fFRJMPTdWLEpfPAa1RPv/0ESKO2kfQoLGQVBcng=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwlO+j8SVJbZOF0DM2SxHebahj2mU4jvAiChGGTd8UI9UPtR0al
-	Wkp6G+nWxHaFJwQwoZhSnRhrMZNKqOBkEXM9ibB6RUtyB/azvfOPHJLdOaM3i4+QVDiaqK/Cb1o
-	wmxv/32uDcMnOkGJc/Elkdji+9exrl4Q=
-X-Gm-Gg: Acq92OFmfNKiqFbdS8Q12mvT4EBrInNHWMjxraTwa0+0qpT9GIyNevxbOBJITTzycT+
-	6IbT+vkO/ngfC8qne0U/Cv5Mn1m6kqmC6BNY0qyWnQkugukbWXCNuTiHCPoYiwCBZFdyobPqX6p
-	I4FvPzRFrv1kHmfnVyE8OdCHKMk++JCq2NHcInDvDJ+ebM2px7QXLWXken3uddqCbN69fUrZou+
-	QTcF8CPj3TBbwrc0xtdEvkLvMc8i5dXfZhGMvf5GiSExvQBMItb/D7c2V2qB7Xza6tmt7TDERa5
-	otaA8Msirz+mh15LHePb
-X-Received: by 2002:a05:690c:6088:b0:7b4:1ffe:f9f9 with SMTP id
- 00721157ae682-7ed0d5c0168mr228901987b3.16.1781082949719; Wed, 10 Jun 2026
- 02:15:49 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="AspQ/LZa"
+Message-ID: <d26c8934-6d4c-4171-9e6f-f58a249dd9ff@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1781083589;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hBbMp/terYy4HVPHHevofPr5zOE+Mp6tKWsqJZs/Bdc=;
+	b=AspQ/LZakOFXxrC2SCXedf0yZ3uQXNlZ64Y9A5eYt+43qCH6ANEViDyPPbNSHxH+NtVN0v
+	eC/mlBawAupz6KoDEM2cO0tzxBxFotGX2gjr9JjnzByOYHBZZzON+QniA2+PgL53c/dP84
+	3+m0JXoe9FR2NFr7Tfq+KfqtoF44VK0=
+Date: Wed, 10 Jun 2026 17:26:19 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260610081648.2205711-1-dongml2@chinatelecom.cn> <CAJaqyWeYiruNosJsMTh2jQ=XCEcPg7956aqeRRpDSyynfpjNZA@mail.gmail.com>
-In-Reply-To: <CAJaqyWeYiruNosJsMTh2jQ=XCEcPg7956aqeRRpDSyynfpjNZA@mail.gmail.com>
-From: Menglong Dong <menglong8.dong@gmail.com>
-Date: Wed, 10 Jun 2026 17:15:54 +0800
-X-Gm-Features: AVVi8CeKeNx-GTsiC8xsIcnA6meI4tsNjbFnxar3BDX9_eDtXkvFWK2nbkQsqV8
-Message-ID: <CADxym3ZVfwg7t96Ct20pnZdm9tTvpCypg_dp3f+3aj1TL2argQ@mail.gmail.com>
-Subject: Re: [PATCH net-next] virtio-net: support xsk wake up
-To: Eugenio Perez Martin <eperezma@redhat.com>
-Cc: xuanzhuo@linux.alibaba.com, mst@redhat.com, jasowang@redhat.com, 
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, 
-	kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org, 
-	virtualization@lists.linux.dev, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Subject: Re: [Kernel Bug] INFO: task hung in xt_find_table
+To: Longxing Li <coregee2000@gmail.com>,
+ Pablo Neira Ayuso <pablo@netfilter.org>
+Cc: syzkaller@googlegroups.com, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, netfilter-devel@vger.kernel.org,
+ coreteam@netfilter.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <CAHPqNmyfm4j0Vy--8rpYMEY1wOP-TgmnRWYd=7ragj1Z29=F7g@mail.gmail.com>
+ <aih7PqPryonzP7cI@chamomile>
+ <CAHPqNmxbS+YLQeOLOibm5rOBxA_nciMAVuEe5ERCOs3uE6+8+Q@mail.gmail.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+In-Reply-To: <CAHPqNmxbS+YLQeOLOibm5rOBxA_nciMAVuEe5ERCOs3uE6+8+Q@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-On Wed, Jun 10, 2026 at 4:28=E2=80=AFPM Eugenio Perez Martin
-<eperezma@redhat.com> wrote:
+
+On 6/10/26 3:14 PM, Longxing Li wrote:
+> sorry for not containing report plain text in last email. the report
+> is as follows:
 >
-> On Wed, Jun 10, 2026 at 10:17=E2=80=AFAM Menglong Dong <menglong8.dong@gm=
-ail.com> wrote:
-> >
-> > For now, XDP_RING_NEED_WAKEUP is not supported properly by the virtio-n=
-et.
-> > Take the tx path for example, we set xsk_set_tx_need_wakeup() in
-> > virtnet_xsk_xmit(), but we didn't call xsk_clear_tx_need_wakeup()
-> > anywhere, which means the user will call send() for every packet.
-> >
-> > For the tx path, we will call xsk_set_tx_need_wakeup() after
-> > virtnet_xsk_xmit_batch() if sq->vq is empty, as we can't be wakeup by t=
-he
-> > skb_xmit_done() in this case. Otherwise, we will clear the wakeup flag.
-> >
-> > For the rx path, we will call xsk_set_rx_need_wakeup() if we have free
-> > buffers in rq->vq.
-> >
-> > Race condition is considered for both rx and tx path.
-> >
->
-> I didn't review the code itself, but the patch message lacks a Fixes:
+> INFO: task syz-executor.4:42949 blocked for more than 143 seconds.
+>        Not tainted 7.0.6 #1
+> "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+> task:syz-executor.4  state:D stack:26456 pid:42949 tgid:42937
+> ppid:9759   task_flags:0x400140 flags:0x00080002
+> Call Trace:
+>   <TASK>
+>   context_switch kernel/sched/core.c:5298 [inline]
+>   __schedule+0x1006/0x5f00 kernel/sched/core.c:6911
+>   __schedule_loop kernel/sched/core.c:6993 [inline]
+>   schedule+0xe7/0x3a0 kernel/sched/core.c:7008
+>   schedule_preempt_disabled+0x13/0x30 kernel/sched/core.c:7065
+>   __mutex_lock_common kernel/locking/mutex.c:692 [inline]
+>   __mutex_lock+0xd9e/0x1df0 kernel/locking/mutex.c:776
+>   xt_find_table+0x59/0x1a0 net/netfilter/x_tables.c:1245
+>   ip6t_unregister_table_exit+0x22/0x50 net/ipv6/netfilter/ip6_tables.c:1808
+>   ops_exit_list net/core/net_namespace.c:199 [inline]
+>   ops_undo_list+0x2dd/0xa50 net/core/net_namespace.c:252
+>   setup_net+0x1f3/0x3a0 net/core/net_namespace.c:462
+>   copy_net_ns+0x351/0x7c0 net/core/net_namespace.c:579
+>   create_new_namespaces+0x3f6/0xac0 kernel/nsproxy.c:130
+>   copy_namespaces+0x45c/0x580 kernel/nsproxy.c:195
+>   copy_process+0x30cc/0x76d0 kernel/fork.c:2227
+>   kernel_clone+0xea/0x8f0 kernel/fork.c:2655
+>   __do_sys_clone+0xce/0x120 kernel/fork.c:2796
+>   do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+>   do_syscall_64+0x11b/0xf80 arch/x86/entry/syscall_64.c:94
+>   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+> RIP: 0033:0x471ecd
+> RSP: 002b:00007f51f163e008 EFLAGS: 00000202 ORIG_RAX: 0000000000000038
+> RAX: ffffffffffffffda RBX: 000000000059bf80 RCX: 0000000000471ecd
+> RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000040080020
+> RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
+> R10: 0000000000000000 R11: 0000000000000202 R12: 000000000059bf8c
+> R13: 000000000000000b R14: 000000000059bf80 R15: 00007f51f161e000
+>   </TASK>
 
-Yeah, you are right, it's better to use the Fix tag here, and I'll
-add it in the next version.
 
-> tag. And the From and Signed-off-by emails don't match, which I'm not
-> sure is valid.
 
-Sorry about that. I use my company email in the SOB. I used
-my company email for the From too. However, my company
-email system can trigger "Delivery failure" messages sometimes,
-and Alexei said it is annoying. So I didn't use it for the From
-and removed it from the CC since then :/
+This is not a deadlock — there's no lock cycle.
 
-Thanks!
-Menglong Dong
+The runner is simply under heavy pressure on all three axes: CPU (zswap 
+compression) + memory (direct reclaim) + IO (swap).
 
->
-> > Signed-off-by: Menglong Dong <dongml2@chinatelecom.cn>
-> > ---
-> >  drivers/net/virtio_net.c | 52 ++++++++++++++++++++++++++++++++++------
-> >  1 file changed, 45 insertions(+), 7 deletions(-)
-> >
-> > diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-> > index 9b3da9f9786c..25e895b849a6 100644
-> > --- a/drivers/net/virtio_net.c
-> > +++ b/drivers/net/virtio_net.c
-[...]
-> >
-> > --
-> > 2.54.0
-> >
->
+The hung task is just a victim. The actual holder is another task that 
+took the mutex and then fell into direct reclaim.
+
+Likely stack of the holder:
+get_entries
+   xt_find_table_lock
+   copy_entries_to_user
+     alloc_counters
+        vzalloc  -> direct reclaim
+
+"INFO: task hung" reports of this kind are common on the official 
+syzkaller dashboard https://syzkaller.appspot.com/upstream/
+
+
