@@ -1,106 +1,226 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D91B02BEC2E;
-	Wed, 10 Jun 2026 18:35:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D29E334D4EA
+	for <netdev@vger.kernel.org>; Wed, 10 Jun 2026 18:36:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781116543; cv=none; b=DtmB6cCwMYvAOaVbg4CH7uNJb2ETRMa9DONUhCQaJV7mlcO+tVWClbQZTpKQVxnW8yTlt0AyZqF7NB5wytuJp+qypbViO1VdwkMrvKXOJc839cpV0uBMYgev7tj0K8mxb+56qVNKaPUc+e2DQL1BQfsLRnrbdSkcQe6bDpKLg0Q=
+	t=1781116591; cv=none; b=fRZrIAY87Fwm9/PdOlX+ZbHoRcZAZc+XN77VN6vzEIiMdopwgMEdysUYawb2qSRypvANVar5mbHgpuyuKoB2c7rHjAgxlgnChemgv/vw1ChXiNuaSNqQUDXMwW1T/8HL2efYekmbglstn9AIavHx1xmOCPR5DbjCOryCtLBKOYk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781116543; c=relaxed/simple;
-	bh=3VPjY6B26IQMjJx9reh3upopSq7P+roDvoVaW9o9Dl4=;
-	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
-	 Subject:From:To:Cc:Date; b=nFPSiViRKxtU2egeKiGVIQ42/T4fPzOBHZ/gEkUum+XIh7Fzi8lL3Kv78ztmJ+h2UyeFFzldJauEwoUSpEmtSj3w48CVulFawcBgHykPyt2gjRhxBbyS2yFCtjx9Dif9xkOwoZbNuiyDmtzJe5uUchT34zKjl1VHD/APNhItUYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YfhDzwkD; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781116591; c=relaxed/simple;
+	bh=4rjlzwFl4SNJQSIhgRzMe6SvYNA6a91957CexrddqwM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=l4/tz5agzfIdaLiKKBNlEV5/n8p4IJkVxDctq/I1AchCjH77ndo1nlR9QRH4CUIn80mukBESx3tcR7HK6CWNirDipKHetUg03PFb6me6tvyq5MNwzQ7FopaFvgHZ8bIm7lx5dXFVWnlJCHzTqzLtmoVRk6ramw4HTAzkiUMEOW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=o/g3OJil; arc=none smtp.client-ip=209.85.128.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YfhDzwkD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 050221F00893;
-	Wed, 10 Jun 2026 18:35:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781116542;
-	bh=f8g6LjqXziptxh4NhHVOmB7NVF0gyTOHCrskPKDN7FA=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=YfhDzwkDcC1Co6IUNf9GV7gUKcWXQkDyyQiuFLhsZFv7U3VgX/SfwcAev7jhTP4Es
-	 k0QqF81mFZZu1LsuG0c5lt352RV7Qpv8OAeQXKV33Jp1kntzofntFyvFWs53wCd2uI
-	 Fc2m3m3lmo/kw6Vhz3mEZnr9URWMxenIV1pL5RWNoxkuTkIHtZRNE7TVXh9VGMtwPL
-	 YIW1LnN+0Xz6Zt3b1Uc/Pb9dEW9lFcqoaGC12C6XoYzLbfzRRftwH52jU6Fmx2fQE0
-	 DW5RWtmgD34ThP3QWPzWw38/sc30WlqzG0bxoiA1Esk2z7cdERJliS+xZmrHGnmHZ+
-	 O3lTxC6sbeCcA==
-Content-Type: multipart/mixed; boundary="===============9195040128409769066=="
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="o/g3OJil"
+Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-7dc67a5e102so73491527b3.1
+        for <netdev@vger.kernel.org>; Wed, 10 Jun 2026 11:36:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781116589; x=1781721389; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=BUujVtmtiJ0ulcRer2P4+Kpx3Yv3Q98tfMDf+JEUqu4=;
+        b=o/g3OJilUoqiUwx3KYWvDLAeUbI0Lqro0Gnu1knpKDvH9LuRSMEO4VFz7FM2yNcny7
+         I/uCphtEHbxiDuhRP6vtdIn89BUkL+XMgvvbs3DiRvD5vu7jgZ89Iw9BBjKmRzi3b1tx
+         HWhsb7l10W3dW5nWCook3jHmxaGZ5/5q6YT/91NLS5q9jPUKDDUZ9fhvlKdqsmtsANfW
+         Mw6SppixmNB0u65fPpOdr8fWNfe4NRbyWL8h1DjOsIkTN4FnEnNc4WeSBQi3WtDcKrF9
+         btzLYXhwODRy72++LjY6iT7hg6CrIJvm/jMmGAcUhx5wj3FjSfruDq1+nyKVE0YUcs1U
+         Ww6A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781116589; x=1781721389;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=BUujVtmtiJ0ulcRer2P4+Kpx3Yv3Q98tfMDf+JEUqu4=;
+        b=WNz/MfjZelCm6erqHfbekHhd9s0TjEoCcPnowBBngocV+vBiXMLSEXPjAoMphZFXTB
+         vN1M2oaTAzN9wv7nFwguH0DePR2j2Q03YVLWGMO7dNEN8ziqmaj1vO9muua0S0es4GlR
+         5Q11tNT+i6VQJDIDkAYF4wGlHD7XCHBAeCbBBoTBG3SHMqJ38pqVZTVZjwSdYyxSSNUk
+         u3swYM6gRiAjtxVdijkysTUHsr2/9gAm2Yggj2sjHjSAEXaRDMOYgidLXO3xqJvm3OUm
+         PALFf2SyHDv2xnLKPnfsKPxSMckE1YZvxbyXyr31/fThWOxf4eZ4OlXJhK8qmM0swn0/
+         B3bQ==
+X-Gm-Message-State: AOJu0Yz27EJamyKxxvu/zKgcwDO/4VEfjaMiabwvTUggdyW45LaqANT7
+	+1kFZfhjM/xtwWQ9/OBFoM0/3VrQPZGPNuWa94zpHU1TthGgOXauVQ9gyVrsHR23z17LoA==
+X-Gm-Gg: Acq92OEFHAFZAERiCHLCecphE/ym/Oc73UVyyaIG+47Dx9OaK+WcZx1AB1NdMjGbyuA
+	DOzxyGQzRDl1bOfnOOE7eTAJ/KcHS7bGOTwDdT5Cu4inBx6s5WKQ9XdvVzEJviiVLIwd076QTF5
+	mFXr2HyKNyLnnXutq2eH2TeQEL5EeqelAcW44y2ikuS+aRmXZLIKIf3gCS3GOAUHHeOjByV7VnE
+	nMMdUwktskVSNwUHNDbJnUDp6c65yTNqcrX3Mgcjlxh8q7cXcTXrTIkKShdqtHLeIL7ek8Y6Ltw
+	lMPn03j5MM6jXVHikBaPZ2UCwuFY9OQr5+odel3jVI0m+b9HTKHxcnBtP+JhBgB0CuNtkxuUw+f
+	AqZP+sGitTVbqqtEuwHMwoP0fRDcxFFM7dyLoBU19B/HE6s+Nabrmh54jbO++gLUaXlYZDxRQxI
+	89gI1BplUGRKWBdXRt/V3MrqiI/Ow=
+X-Received: by 2002:a05:690c:7004:b0:7bd:5b06:5c32 with SMTP id 00721157ae682-7f61711b7ecmr4602517b3.1.1781116588803;
+        Wed, 10 Jun 2026 11:36:28 -0700 (PDT)
+Received: from localhost ([2a03:2880:30ff:74::])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-7ea21968299sm116150847b3.19.2026.06.10.11.36.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 10 Jun 2026 11:36:28 -0700 (PDT)
+From: Vlad Poenaru <vlad.wing@gmail.com>
+To: netdev@vger.kernel.org,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>,
+	Breno Leitao <leitao@debian.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Clark Williams <clrkwllms@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	linux-rt-devel@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH net] netpoll: run NAPI poll in softirq context to avoid rq->lock self-deadlock
+Date: Wed, 10 Jun 2026 11:36:21 -0700
+Message-ID: <20260610183621.3915271-1-vlad.wing@gmail.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <359e25ff2c110786b600def61a694e1afbd4634b1c047b38b1c20a9ea21156e8@mail.kernel.org>
-In-Reply-To: <20260610175922.1103871-1-rhkrqnwk98@gmail.com>
-References: <20260610175922.1103871-1-rhkrqnwk98@gmail.com>
-Subject: Re: [PATCH bpf] bpf, sockmap: take the socket lock in udp_bpf_recvmsg()
-From: bot+bpf-ci@kernel.org
-To: rhkrqnwk98@gmail.com,john.fastabend@gmail.com,jakub@cloudflare.com,davem@davemloft.net,edumazet@google.com,kuba@kernel.org,pabeni@redhat.com
-Cc: horms@kernel.org,cong.wang@bytedance.com,ast@kernel.org,netdev@vger.kernel.org,bpf@vger.kernel.org,linux-kernel@vger.kernel.org,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
-Date: Wed, 10 Jun 2026 18:35:41 +0000 (UTC)
+Content-Transfer-Encoding: 8bit
 
---===============9195040128409769066==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+netpoll_poll_dev() can be called from process context with interrupts
+disabled, most notably from printk() -> netconsole when a WARN()/printk()
+is emitted while holding a runqueue lock inside __schedule() (e.g. from
+put_prev_entity() during a context switch). console_unlock() then flushes
+netconsole inline, which polls the NIC to drain its TX ring.
 
-> udp_bpf_recvmsg() drains the psock ingress_msg queue through
-> sk_msg_recvmsg() without holding the socket lock. __sk_msg_recvmsg()
-> walks the head sk_msg's scatterlist and updates each entry in place
-> (sge->length -= copy, sge->offset += copy), drops the page once an entry
-> is consumed, and frees the sk_msg when it is drained. ingress_lock only
-> serializes the queue list operations, not this per-entry consume;
-> copy_page_to_iter() can fault, so the loop cannot hold a spinlock.
->
-> Two threads calling recvmsg() on the same UDP socket then consume the
-> same sk_msg at once:
->
->   CPU0                                CPU1
->
->   sk_msg_recvmsg                      sk_msg_recvmsg
->     copy = sge->length                 copy = sge->length
->     copy_page_to_iter(copy)            copy_page_to_iter(copy)
->     sge->length -= copy
->       /* sge->length == 0 */
->                                        sge->length -= copy
->                                          /* underflows to ~0U */
->
-> The next pass loads the underflowed length into a signed int, the value
-> is negative so the copied + copy > len clamp is skipped, and
-> copy_page_to_iter() is handed ~2^64 as its size_t bytes, which trips
-> page_copy_sane(). The same race can put_page() one page twice and free
-> the sk_msg while the other reader still walks it.
->
-> tcp_bpf_recvmsg_parser() already serializes this with lock_sock() around
-> __sk_msg_recvmsg(); udp_bpf_recvmsg() does not. Take the socket lock
-> around the sk_msg_recvmsg() consume so a given ingress sk_msg is drained
-> by one reader at a time. The wait path is left unlocked, as
-> udp_msg_wait_data() sleeps without dropping the socket lock.
->
-> Fixes: 1f5be6b3b063 ("udp: Implement udp_bpf_recvmsg() for sockmap")
+Drivers free completed TX skbs from their ->poll() via
+dev_kfree_skb_irq_reason(), which queues the skb and calls
+raise_softirq_irqoff(NET_TX_SOFTIRQ). Outside softirq context that helper
+takes the !in_interrupt() path and calls wakeup_softirqd() ->
+try_to_wake_up(). Waking the local ksoftirqd takes the current CPU's
+rq->lock (ttwu_queue() -> rq_lock(); ttwu_queue_cond() refuses the remote
+wakelist for a same-CPU wakeup). If the caller already holds that rq->lock
+this recursively acquires a non-recursive spinlock: the CPU spins forever
+with IRQs disabled. Every other CPU that subsequently load-balances
+against this runqueue spins on the same lock, TLB-shootdown IPIs to the
+wedged CPUs go unanswered, and the machine dies under the NMI hard-lockup
+watchdog.
 
-Is the Fixes: tag pointing at the right commit?
+This was hit in production on a 252-CPU AMD system running a 6.16-based
+kernel. A scheduler WARN_ON_ONCE() fired from __enqueue_entity() with the
+rq lock held during a context switch; flushing it to netconsole reentered
+the scheduler and the CPU deadlocked on its own rq->lock. The backtrace of
+the wedged CPU (spinning at the top of the stack on the rq->lock it is
+already holding further down):
 
-Commit 1f5be6b3b063 ("udp: Implement udp_bpf_recvmsg() for sockmap")
-introduced udp_bpf_recvmsg() with a lock_sock(sk)/release_sock(sk) pair
-wrapping the whole function, including the sk_msg_recvmsg() consume, so the
-race described here was not present at that point.
+  native_queued_spin_lock_slowpath
+  _raw_spin_lock
+  raw_spin_rq_lock_nested
+  rq_lock
+  ttwu_queue
+  try_to_wake_up                  // wakes ksoftirqd/N
+  dev_kfree_skb_irq_reason        // raise_softirq_irqoff(NET_TX_SOFTIRQ)
+  __bnxt_tx_int
+  bnxt_poll_p5
+  poll_one_napi
+  poll_napi
+  netpoll_poll_dev
+  netpoll_send_udp
+  write_ext_msg                   // netconsole
+  console_unlock
+  vprintk_emit
+  __warn
+  __enqueue_entity                // WARN_ON_ONCE() here -- rq->lock held
+  put_prev_entity
+  put_prev_task_fair
+  __schedule
+  sched_exec
+  bprm_execve
+  __x64_sys_execve
 
-The unlocked consume appears to have been introduced later by
-9f2470fbc4cb ("skmsg: Improve udp_bpf_recvmsg() accuracy"), whose diff
-removes both lock_sock(sk) and release_sock(sk) from udp_bpf_recvmsg().
+About 215 of the 252 CPUs then piled up in sched_balance_rq() spinning on
+that runqueue's lock; pending TLB shootdowns to the wedged CPUs stalled in
+csd_lock_wait(), and a victim CPU finally took down the box with "Kernel
+panic - not syncing: Hard LOCKUP". The particular WARN is incidental --
+any printk() that reaches netconsole while a rq->lock is held reproduces
+the same self-deadlock.
 
-Should the tag instead be:
+In the normal receive path this cannot happen because net_rx_action()
+runs ->poll() with bottom halves disabled, so raise_softirq_irqoff() sees
+in_interrupt() and merely sets the pending bit. Make netpoll do the same:
+wrap the poll callbacks in local_bh_disable(). On !PREEMPT_RT all callers
+invoke netpoll_poll_dev() with IRQs disabled (see the WARN_ONCE() in
+netpoll_send_skb_on_dev()), so pair it with _local_bh_enable() to leave
+the section without running softirqs inline -- running them here would
+re-enable IRQs and execute softirq handlers deep in a lock-holding
+context. On PREEMPT_RT the path runs with IRQs enabled and softirqs are
+threaded; _local_bh_enable() is not available there and would not drop
+the softirq_ctrl local_lock taken by local_bh_disable(), so use the
+regular local_bh_enable(). The raised NET_TX softirq is harmless: netpoll
+reaps the freed skbs via zap_completion_queue() and the pending softirq
+is serviced at the next irq_exit().
 
-  Fixes: 9f2470fbc4cb ("skmsg: Improve udp_bpf_recvmsg() accuracy")
-
-
+Cc: stable@vger.kernel.org
+Signed-off-by: Vlad Poenaru <vlad.wing@gmail.com>
 ---
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+ net/core/netpoll.c | 45 +++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 45 insertions(+)
 
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/27296268347
---===============9195040128409769066==--
+diff --git a/net/core/netpoll.c b/net/core/netpoll.c
+index 3f4a17fa5713..18da97eff532 100644
+--- a/net/core/netpoll.c
++++ b/net/core/netpoll.c
+@@ -194,11 +194,56 @@ void netpoll_poll_dev(struct net_device *dev)
+ 	}
+ 
+ 	ops = dev->netdev_ops;
++
++	/*
++	 * Run the poll callbacks in softirq context, exactly as net_rx_action()
++	 * does for the normal NAPI path. netpoll_poll_dev() is called from
++	 * process context with IRQs disabled (e.g. printk() -> netconsole while
++	 * holding a rq->lock inside __schedule()). Drivers free completed TX
++	 * skbs from their ->poll() via dev_kfree_skb_irq_reason(), which calls
++	 * raise_softirq_irqoff(NET_TX_SOFTIRQ). Outside softirq context that
++	 * helper sees !in_interrupt() and calls wakeup_softirqd() ->
++	 * try_to_wake_up(), which takes the rq->lock of the current CPU. If the
++	 * caller already holds that rq->lock this self-deadlocks, wedging the
++	 * CPU (and then the whole machine via rq->lock contention) until the
++	 * hard-lockup watchdog panics.
++	 *
++	 * Disabling BH makes in_interrupt() true for the duration of the poll,
++	 * so the TX completion only sets the softirq-pending bit and never wakes
++	 * ksoftirqd. The raised softirq is harmless and benign: netpoll reaps
++	 * the freed skbs itself via zap_completion_queue() below, and the
++	 * pending NET_TX softirq is serviced at the next irq_exit().
++	 */
++	local_bh_disable();
++
+ 	if (ops->ndo_poll_controller)
+ 		ops->ndo_poll_controller(dev);
+ 
+ 	poll_napi(dev);
+ 
++#ifndef CONFIG_PREEMPT_RT
++	/*
++	 * On !PREEMPT_RT all netpoll_poll_dev() callers invoke us with IRQs
++	 * disabled (see the WARN_ONCE() in netpoll_send_skb_on_dev()). Use
++	 * _local_bh_enable(), which leaves the BH-disabled section without
++	 * running pending softirqs inline -- the full local_bh_enable() would
++	 * re-enable IRQs and run softirq handlers deep inside this restricted,
++	 * lock-holding context. The raised NET_TX softirq is benign: netpoll
++	 * reaps the freed skbs itself via zap_completion_queue() below, and the
++	 * pending softirq is serviced at the next irq_exit().
++	 */
++	_local_bh_enable();
++#else
++	/*
++	 * On PREEMPT_RT this path runs with IRQs enabled and softirqs are
++	 * threaded, so there is no IRQ-disabled, lock-holding context to
++	 * protect. _local_bh_enable() is not available on RT, and local_bh_disable()
++	 * there takes the per-CPU softirq_ctrl local_lock that only the full
++	 * local_bh_enable() releases -- so use it.
++	 */
++	local_bh_enable();
++#endif
++
+ 	up(&ni->dev_lock);
+ 
+ 	zap_completion_queue();
+-- 
+2.53.0-Meta
+
