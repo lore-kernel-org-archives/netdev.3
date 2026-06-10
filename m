@@ -1,122 +1,235 @@
-Received: from mail-dy1-f169.google.com (mail-dy1-f169.google.com [74.125.82.169])
+Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA306403AF7
-	for <netdev@vger.kernel.org>; Wed, 10 Jun 2026 13:09:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD40027B353
+	for <netdev@vger.kernel.org>; Wed, 10 Jun 2026 13:10:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.46
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781096945; cv=pass; b=RD9nmbpB108u3gruJURMJN5sWkgRjsCEf/XZgO9vzGaXqT/rkuAUODHAcc5odw5Yq48kT6l/iTT1nZAfWPjRRm4fWazFT2R6zfV1CLKlnG5Vygl7cdFLuIen3Skr3HWXfRpWuhHNW3p9yx9+GjHSP0Of0DwvUNpb9a8jwsQ1PW8=
+	t=1781097027; cv=pass; b=A8qZp8ulNCicYmg16tatiZwbC55TOhjnsg0S2vz/Dw4wia/Rvc3KRuSqIgCTPeOrCsSQQonBnOse3sTjmbsHZuWeEdJakEUBdoBuZXAN2Djpbn/ehz5PZWlO5HuW9IupatXRjbsQNGpCyDMAeTdMFdAkGxcBYjBZv2+To4G/pyo=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781096945; c=relaxed/simple;
-	bh=vMO+q+CyPLuQfigTmgGUaVN+qKKBldwqNdWDRJi9STE=;
+	s=arc-20240116; t=1781097027; c=relaxed/simple;
+	bh=KSTC4k+mFyL/3WNFMO+LVJpA3iwxG32DnXcDXmUeysY=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FZlnixBm2/8h81zdukvrk2agG+7QPJpzWGNKpda41RrCHD/CyTTfvvK40S0pcY1pcUJmAhk0lNjBKml8XIs7SmxoAohjV5AadOydx93N9y70MxM4saSNB1xpp8CAblh9rg/igJnkDiwMQYsTvP51Xejp58F/bKsefIStm3Q3NqI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NiirN0jc; arc=pass smtp.client-ip=74.125.82.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=EHn0xN+6XdRDs+gSfx6oaiud9Y8JxfzMoq4k3SJEa/Aw8WpMKYWOKFSkzVyX0hs1P9N155OS2ivEaQyP2Ur2IFQfM0EYOf8S/f8jNauuy3IFt3y7PtkKvu7XZYk1ph5X9zYRzRxDvpWdmxtt6G5oNiXsacKuEzduMO8MtDVtGdk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ownrisk.dk; spf=none smtp.mailfrom=ownrisk.dk; dkim=pass (2048-bit key) header.d=ownrisk-dk.20251104.gappssmtp.com header.i=@ownrisk-dk.20251104.gappssmtp.com header.b=ueOvockl; arc=pass smtp.client-ip=209.85.219.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ownrisk.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ownrisk.dk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NiirN0jc"
-Received: by mail-dy1-f169.google.com with SMTP id 5a478bee46e88-304d3d3d8f8so479107eec.2
-        for <netdev@vger.kernel.org>; Wed, 10 Jun 2026 06:09:04 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781096944; cv=none;
+	dkim=pass (2048-bit key) header.d=ownrisk-dk.20251104.gappssmtp.com header.i=@ownrisk-dk.20251104.gappssmtp.com header.b="ueOvockl"
+Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-8ccef25789fso46269976d6.3
+        for <netdev@vger.kernel.org>; Wed, 10 Jun 2026 06:10:24 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781097023; cv=none;
         d=google.com; s=arc-20240605;
-        b=M/hVubRGV94jh7zOqRuCCJJ/XmjDZauvFJqfoeF0TwoiNL9k1eh3ye9Fdv7r4q8+PF
-         xEN85pdQRGdpVuUnRAAWWtBamkVMFcOd6xnI7c2kedPuEN/qhlRnu7ysP54mdtLHMKQT
-         bkUjTQGlc/JoJ9NVqqLtIZ4P1HkOBICCSSb5rZi4giY9FVWwENlVs7orWmM3dWMh0lKg
-         cOSGke8ulFWAul7Nsp87DLg7QCTXmf1/I0Fgs0xcVumMW6ZYhCQ9hIP75unD5mqQY1vv
-         F1xaox7VNlRw/zRG9ghZFK11DLzSX6kw8olI+W0PiX94oPbxtsdS46lcbpU6RkL++i9y
-         nIUw==
+        b=Dv0pErV8tff/YO9drR6USYucnB0GPMMt0UydJ0w82ezNGjlnCfBFOm2JUgSDB9bxM3
+         KPbBmrBIFYmmJ5gFb4yUzb6tpe4AmjujcvG+XIuyHX0beFyePPZl47ELEXzqJs/uyOyn
+         /5q2UXzbn9fTmxiqKPZK88lu3kM5xGHhAvcZMIGy3VC8byZDvoyUV6CJerJhUWU8V4C2
+         7Bx/WEl1hdj41Fu2nsiHmJm/rdF6xowfO6xgaeG1pdVrpZC1F/KQj/UE7UyqkaxuWr96
+         dIkYrAWexyxYmdxlFCQunT/IpCH/ykfd0U+ZEubI8WoyIxThQve3UtSORzES7dvg9rzf
+         RRkA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=vMO+q+CyPLuQfigTmgGUaVN+qKKBldwqNdWDRJi9STE=;
-        fh=b1vWvx3bcXlYz4qEJYJOoWw9dG7OaI/KZm628IrXB7Q=;
-        b=E82VNxTURsdSx4S+0bjp3dFfo6BwsG37rIV0CgwWSqEL/Q7FJqmMbrMH9xUSnrEkL8
-         lC1Lxd7w8W5466PI6PkOE1otvBOmaxz9YlTWoY8FzXvFEMBl6pr1vRU4/tCEdV5Feya+
-         RT++hcQDbwb2+zzCW3whijWSj1zUb3w4A9YwiWFFp5Xa8aqQsn/DnH2w39HYENN1iK3P
-         WVnYM9uoxcBi6qWk65G1GtjCek63luMvU/OiP4Y5E3msbB2So3UuVNTcTGQ/fnV/K+Gu
-         oFGSar+gsnJOMCPEVG9P82d5zUUMhVbxoPHbKUAQHNpLqF/QwDHdtHP1vHp6mLh4SKAP
-         W/1g==;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=Sk9yvx8yYFR+qstLbRfhe+1164wVXZHqqAIjMOm9vvo=;
+        fh=SaOnNSnHlCQ5+u/JDOQ/NfGV/l5OyacYGAOpKT/1N6c=;
+        b=lGB8kq9fyOk7gHZrnNN7cr7m12XZjg2hmrl514BF1hqvh1eysAmtywlWO3tgNLpWaG
+         /6cdioqV1LNZXQzCCmT7L//i7GYWcagnzg5EMtBIjEiLYPBEz2ARexP045HnLIej//Of
+         xfE1Qv6VXZ5qqQFINwyndGAv9cJ3KmMPyUd0PJXslv9i7VCsi7As0ZZ3jVUj2Osi8HQH
+         sKCIGIEYdtAoK4+IDl+PyjgXVJsPgDwTjqQX6GZbHc53tFVcnDRb48W4RdAomdPPmXQb
+         CXsYii+LZNNjvJcv+WFpBdxyJtfyuR7nC1NEBnswwpVLbL00DAkIccXJN+tQdxlidPDg
+         4jZQ==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781096944; x=1781701744; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vMO+q+CyPLuQfigTmgGUaVN+qKKBldwqNdWDRJi9STE=;
-        b=NiirN0jctNGp0Xrul/PNU/K1v50I4gqMb1n5zsGuOSqZ9g/CVyFXVr8ghr+rfk1CsI
-         UKE3zToOcUOOXUjhn/hg+PCw6NC2vLMwJUBE2fXuGjm7Ua2ABhupZFBNIxxLsleDl1Mg
-         Pd/zOK50sgJDgZ72jd9xv9PzllIHHABaqVTQ4x45JOfzn+ujt87qqNKoiQPicapBBtpT
-         C5pTxgw3NgDCWafzAzr8iADMKy36+2bLdv7GEG6nhGFkik10OPQToFstgpc0OTHwKyHD
-         5sh0IfRAbxmng3n2aaTPytTttR6TMHyz8Z5OmstlLced1rct+3t4XgBZO3uhra1yE+ao
-         nP+g==
+        d=ownrisk-dk.20251104.gappssmtp.com; s=20251104; t=1781097023; x=1781701823; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Sk9yvx8yYFR+qstLbRfhe+1164wVXZHqqAIjMOm9vvo=;
+        b=ueOvockl5ycP5D8P9hY+PpH1uhtyyzW5SNGOUillYesthhbZ22fL5DrW6t8ionFg0w
+         yS+gWV2WtEmzeD+hgdrVHKhPyTf/reT4cnrnx0b9eEk3zTX2G25WyE+wowqXIu0A2ds6
+         5nAK3EvsIL+iXOxhiX2avW+UMDFKeVPcdhKPTwPNhrpyJdcEeHfbC/3beqFrmtwsZFIt
+         mYQ2MvoWVtXvm3sUM2V2bZn+KiPRaywwV6DAvENihjb4+xI2ItiQAehVXLGzCE5w0LxF
+         NqCW3ePGJG0SbM42a+E51VgU+pT2ARZxna2QWbqGXyJ/IlzZ1s9yTPxEsam7jF7z6IAe
+         Q6QQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781096944; x=1781701744;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=vMO+q+CyPLuQfigTmgGUaVN+qKKBldwqNdWDRJi9STE=;
-        b=JfBH48MMK2O6zw6aChhwih3l7PsCWluXiUTikkU7gKSNNzYTYc623fpQBgeBHYsJcL
-         XfGF2Bl5Zdwe6Gpis2/BN+dxMICjZB5iYrNLYxpJUupyqGEqEfoywIXzlb+rrLKVynSN
-         Z4mYM7rhy5foCjHCvalL3JJw0eyQ3LNfq1U2ka3/8I9WkOhIIT551mTL0VS/CPFWKiec
-         qiZsap0xxrviDUkRKlEspf3+A7F3NEA8Myces3BCIV5OIE5EqOa3GNI+P9BeIXKebRg2
-         aCPQAde7weX5Zew3hQfAu77wVgfvWsYwlMpXkrlKTrfvbRhT82N4ycZWDqZJMsO41If8
-         hS8w==
-X-Forwarded-Encrypted: i=1; AFNElJ9TlPgZVJGODgJ7H3Kqw4UgRrMp+Z0cZwBWOK85eFrU5O83eo1ciXDHKwtDoUh8fNoOFerY8M8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyobqhDQINm/9ORqdzBdPidZMaK+KoHhTCrYpMNpB7rWYqB0luI
-	OENgpfm/rUEMs+gDC0ZkEp7JL48t17LIq11Y2qDAJk/nxPfI2cfx0uivrTd1fmuhn+Cr5e7J266
-	G2cQkpThbaOcoM/8JMuIeI9Q2mvH+8Ug=
-X-Gm-Gg: Acq92OF9D4DNR5NcsXZEnrMdpncNE/mkffhfgahyfrszd2CkL8dYXjfO+D0qTYLeGVG
-	O1x7k1dfa98+03Cn+wBIBMRabb7PMpYv4JUcLocV2Jsan6bDqF3a2cgDiDWe+oBO7EOY9FYsPfh
-	CAs3JzgmqdVZmRIhBJSJxQZQ9rDKhLKDvfRbohC8st6uCkLpGafdABx46WkLEdQpAIjTrEgOmNs
-	iIAhepMaHvGrTGUiPugFRXiRBeAxEszVeJOJY1VrzHJsxLYFm0ReLxSm53UyGc6FuywebAJvzvx
-	QsXwOEyClycNFV+wnViZ6iwNiTNxZUlUL8jV41yYgAHejEPlNXTvvlHXcjHvH2Z2USY3CKQDhWu
-	onB6Pcw8fqosspa+m03lUmxlN4B8ZFRd/fw==
-X-Received: by 2002:a05:7300:1352:b0:304:c73b:79ea with SMTP id
- 5a478bee46e88-3077b576885mr6517116eec.3.1781096943682; Wed, 10 Jun 2026
- 06:09:03 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1781097023; x=1781701823;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Sk9yvx8yYFR+qstLbRfhe+1164wVXZHqqAIjMOm9vvo=;
+        b=fSMcg2n2q0hENsByYWFXGfgTqEuB1j59BI8dmjUhHO6IlUwQJDJzYlyP9hwoZZj+uP
+         U7ApyIHlVThbNXpxJADXzDpol5rswXt4CjmsalbHXzmAMvCy7g8U1b9HLRRohmVDby6j
+         YJc82OX5HsbTwvf1crqCYF80+8sbme5Ez4DLACqbqYdRDwdtfnibAPqETdhtsXqI2csg
+         dUuKLGl4oUkj2IkNkBRG94enNXKf8lzumQxONMKFjri7FfQLstkL2VL9FFfY9dVBE/b0
+         FJDZtfg+QuhyEyXFv2fkY+M7sNyoeeBTO05tsp9uVfUmGMO2tObqW6YjnXHVL3crpAV2
+         e56w==
+X-Gm-Message-State: AOJu0Ywyop2UsSY0cSR409bNq1+PCKHZvx3ppxoj6hNDrYHWmRFw6Unz
+	AOgk0VY7rq7fn0DAI7ptg2dEpyKv/HEaj7pFYFEG8O1XxV449udVyeMcKKnTGK1KQZLQS4P7qV1
+	exOR5ZVQoreGWZgPcgIS55bCkC1LgMHw3C9Nu3O7/h8tkwGBLF7KAoO8=
+X-Gm-Gg: Acq92OHhm/yETnVqYHrgIE8ScjRCtSQXXY0FbFE+JwJlRREMc4jQsYD+C1QNnkSEhMg
+	LfP+YAA7V1mT1tms4N47mELdqLhwOQ7hb6/kMSsBRCm+vBrntwM6bdcmBMn5Yh8bkNPDzvCw7HT
+	hIPYwuOXFgzBqRZPuqI7bxl6DsfAQRRjn7HqfHV6cQOo8eHotylrHzSmcKIL8l7Q4H1qc0HtEqz
+	E7rD0h1XCAVlGwBRlWFZ8GsiYJQmz/9rswG/EfygMvIhem9AV8VpRIHGEQHSiNASU+JdFIeH3Va
+	0kyIVhmaf8e+bhLjUoxEpxP4Dpfi85gTRQt5as3bQMO2TKD8
+X-Received: by 2002:a0c:fb43:0:b0:8cc:f3e0:87fd with SMTP id
+ 6a1803df08f44-8cee5f9f83dmr297340816d6.8.1781097023425; Wed, 10 Jun 2026
+ 06:10:23 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260607095727.647295505@linuxfoundation.org> <20260607173214.92693-1-ojeda@kernel.org>
- <CAM0EoMkszTXv82To=KnEYTgzQSmEdRW9XrAMVtJsUaDn=Akf6A@mail.gmail.com>
- <CANiq72mJNbNzYO37VK7s=ua5v31xBrRp8EnHDvEnKF8Z77jDmA@mail.gmail.com>
- <CAM0EoMmHd10iivCpDoEd3h+eae9fSnoGWAH_AkwFhrnS6PN63g@mail.gmail.com>
- <CANiq72k6J7FYT89svtX5qbCUWg-MKuhUHaT07cjk8o7PqaF8+A@mail.gmail.com> <CAM0EoMn9EA_TS80QzXsTscBpCgfJHssq0GHtiNbrMU3FAiP2mw@mail.gmail.com>
-In-Reply-To: <CAM0EoMn9EA_TS80QzXsTscBpCgfJHssq0GHtiNbrMU3FAiP2mw@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 10 Jun 2026 15:08:50 +0200
-X-Gm-Features: AVVi8CfHlwkVTHo8xz3kijx6SbCXBkd0w80sby_--JSQFG4p4xR4OJZ4-aRIac8
-Message-ID: <CANiq72ki_YW=0UbadZ8pp0Np3Je3W6gLvAw3GJgRmzjXZ5RBVA@mail.gmail.com>
-Subject: Re: [PATCH 6.12 000/307] 6.12.93-rc1 review
-To: Jamal Hadi Salim <jhs@mojatatu.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, gregkh@linuxfoundation.org, achill@achill.org, 
-	akpm@linux-foundation.org, broonie@kernel.org, conor@kernel.org, 
-	f.fainelli@gmail.com, hargar@microsoft.com, jonathanh@nvidia.com, 
-	linux-kernel@vger.kernel.org, linux@roeck-us.net, 
-	lkft-triage@lists.linaro.org, patches@kernelci.org, patches@lists.linux.dev, 
-	pavel@nabladev.com, rwarsow@gmx.de, shuah@kernel.org, sr@sladewatkins.com, 
-	stable@vger.kernel.org, sudipm.mukherjee@gmail.com, 
-	torvalds@linux-foundation.org, "Kito Xu (veritas501)" <hxzene@gmail.com>, 
-	Victor Nogueira <victor@mojatatu.com>, Paolo Abeni <pabeni@redhat.com>, Jiri Pirko <jiri@resnulli.us>, 
-	netdev@vger.kernel.org
+References: <CAKv6aAM8_EWgXScnKmKYm_4SwGDVBK++dzfP+Y6msUXbp99QUw@mail.gmail.com>
+ <18972686-936d-4fb0-850f-7e212c48ab97@ovn.org>
+In-Reply-To: <18972686-936d-4fb0-850f-7e212c48ab97@ovn.org>
+From: Johan Thomsen <write@ownrisk.dk>
+Date: Wed, 10 Jun 2026 15:10:12 +0200
+X-Gm-Features: AVVi8Ccp_06BgJAKDooqyTG9fYqL1BcRnGWGV3YUI8gE4NE5slL-gOTtE8rqtZk
+Message-ID: <CAKv6aAPoo98bZ-oRk34huUtD3=j7EuGcL2sOLBB_rwzf4vpj3A@mail.gmail.com>
+Subject: Re: [BUG] FORTIFY: memcpy overflow in skb_tunnel_info_unclone() from geneve_xmit()
+To: Ilya Maximets <i.maximets@ovn.org>
+Cc: netdev@vger.kernel.org, dev@openvswitch.org, Kees Cook <kees@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jun 8, 2026 at 10:36=E2=80=AFPM Jamal Hadi Salim <jhs@mojatatu.com>=
- wrote:
+Hi Ilya,
+
+Sorry for the late follow-up.
+Your patch has now run without crashes in my setup for 36 hours and
+I'm unable to re-trigger a panic.
+
+> But the operation in the diff above is kind of pointless as the memcpy
+> itself will copy the value again.
+
+Right. So it would probably need at least a comment, if that ends up
+becoming the final fix.
+I'm not a kernel dev and I don't know what is the right thing to do here.
+
+Happy to test alternative patches if needed.
+
+BR
+Johan
+
+Den man. 8. jun. 2026 kl. 11.41 skrev Ilya Maximets <i.maximets@ovn.org>:
 >
-> I think it was too early AM here when i was looking at this.
-> The answer was right there all along in what you said: The missing
-> piece is commit a005fa5d7502
-
-No worries, it happens :)
-
-I see a005fa5d7502 is now in the release.
-
-Cheers,
-Miguel
+> On 6/8/26 10:25 AM, Johan Thomsen wrote:
+> > Hello,
+> >
+> > I am seeing what looks like a kernel bug in the Geneve/OVS/vhost
+> > transmit path on a Talos Linux node running Kube-ovn with Geneve
+> > overlay and KubeVirt VM traffic.
+> >
+> > Environment:
+> >
+> > Kernel: 6.18.33-talos
+> > Distro: Talos v1.13.3
+> >
+> > Compiler/config:
+> >
+> > CONFIG_CC_VERSION_TEXT="clang version 22.1.2"
+> > CONFIG_CC_IS_CLANG=y
+> > CONFIG_LTO=y
+> > CONFIG_LTO_CLANG=y
+> > CONFIG_LTO_CLANG_THIN=y
+> > CONFIG_FORTIFY_SOURCE=y
+> >
+> > Hardware: HPE ProLiant DL325 Gen11, AMD EPYC
+> >
+> > NIC driver: bnxt_en
+> >
+> > Workload/network:
+> >
+> > Kube-OVN, Geneve overlay
+> > Open vSwitch datapath
+> > KubeVirt/QEMU VM traffic via vhost/tap
+> >
+> > Relevant console output:
+> >
+> > [  648.742603] memcpy: detected buffer overflow: 104 byte write of
+> > buffer size 96
+> > [  648.749907] WARNING: CPU: 61 PID: 27020 at
+> > lib/string_helpers.c:1036 __fortify_report+0x45/0x60
+> > [  648.758689] Modules linked in: dm_round_robin dm_multipath lpfc
+> > nvmet_fc nvmet intel_rapl_msr intel_rapl_common ahci nvme_auth bnxt_en
+> > nvme hpilo hkdf libahci sp5100_tco watchdog k10temp
+> > [  648.775429] CPU: 61 UID: 107 PID: 27020 Comm: vhost-27002 Not
+> > tainted 6.18.29-talos #1 PREEMPT(none)
+> > [  648.784735] Hardware name: HPE ProLiant DL325 Gen11/ProLiant DL325
+> > Gen11, BIOS 2.84 11/05/2025
+> > [  648.890478]  skb_tunnel_info_unclone+0x179/0x190
+> > [  648.895152]  geneve_xmit+0x7fe/0xe00
+> > [  648.907240]  dev_hard_start_xmit+0xa7/0x1f0
+> > [  648.911479]  __dev_queue_xmit+0x864/0xf40
+> > [  648.919688]  do_execute_actions+0x9b9/0x1be0
+> > [  648.927727]  ovs_execute_actions+0x58/0x170
+> > [  648.931960]  ovs_dp_process_packet+0xb1/0x1c0
+> > [  648.936370]  ovs_vport_receive+0x90/0x100
+> > [  648.940428]  netdev_frame_hook+0x146/0x1a0
+> > [  648.954093]  __netif_receive_skb+0x3f/0x160
+> > [  648.958324]  process_backlog+0x10c/0x210
+> > [  648.962295]  __napi_poll+0x2f/0x190
+> > [  648.965832]  net_rx_action+0x2e3/0x500
+> > [  648.969632]  handle_softirqs+0xe7/0x310
+> > [  648.985387]  tun_get_user+0x137e/0x1510
+> > [  649.005878]  handle_tx+0x41f/0xd30
+> > [  649.029014]  vhost_run_work_list+0x52/0x90
+> > [  649.033162]  vhost_task_fn+0xc2/0x140
+> > [  649.064145] ---[ end trace 0000000000000000 ]---
+> > [  649.068820] ------------[ cut here ]------------
+> > [  649.073489] kernel BUG at lib/string_helpers.c:1043!
+> >
+> > I don't know whether this is a real overflow or a FORTIFY false-positive.
+>
+> Looks like a false-positive from the __counted_by fortification.
+>
+> I'd guess something like this would fit it:
+>
+> diff --git a/include/net/dst_metadata.h b/include/net/dst_metadata.h
+> index 1fc2fb03ce3f9..e51c3795da474 100644
+> --- a/include/net/dst_metadata.h
+> +++ b/include/net/dst_metadata.h
+> @@ -164,6 +164,7 @@ static inline struct metadata_dst *tun_dst_unclone(struct sk_buff *skb)
+>         if (!new_md)
+>                 return ERR_PTR(-ENOMEM);
+>
+> +       new_md->u.tun_info.options_len = md_size;
+>         memcpy(&new_md->u.tun_info, &md_dst->u.tun_info,
+>                sizeof(struct ip_tunnel_info) + md_size);
+>  #ifdef CONFIG_DST_CACHE
+> ---
+>
+> Johan, could you try this in your setup?
+>
+> The memory was actually allocated for the options, but the structure
+> is zeroed out on allocation, so the __counted_by check doesn't work
+> properly for the initial initialization copy.
+>
+> But the operation in the diff above is kind of pointless as the memcpy
+> itself will copy the value again.  So, I'm not sure if that's the right
+> solution here.
+>
+> Alternative might be to revert the kmalloc_flex back to the simple
+> kmalloc in metadata_dst_alloc.
+>
+> CC: Kees
+>
+> Best regards, Ilya Maximets.
+>
+> >
+> > I cannot reproduce the issue on Talos v1.12.X which uses a gcc built
+> > kernel, whereas the affected kernel is built with clang. Don't know
+> > whether this is relevant here.
+> >
+> > I am currently trying to make a reliable reproducer, but I can almost
+> > always trigger the issue when iperf stressing the VM-network.
+> >
+> > Please let me know if this should go to a more specific
+> > maintainer/list or further info is needed. I am able to test candidate
+> > patches if provided.
+> >
+> > Downstream bug reports:
+> > https://github.com/siderolabs/talos/issues/13440
+> > https://github.com/kubeovn/kube-ovn/issues/6767
+> >
+> > Thanks,
+> > Johan
+>
