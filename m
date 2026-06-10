@@ -1,59 +1,92 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE7C62DCF6C;
-	Wed, 10 Jun 2026 07:23:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AA6338AC6E;
+	Wed, 10 Jun 2026 07:29:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781076228; cv=none; b=Y72k5iPNK3N6MVG70AxVE6XBAq+eiydoyUl+ulsPivXCj2n1MhRMS286sTxtaozbETkyywFNMgiuEjbRlBffOnSooBvu2M0YhDiITIrpL32CgC2PCWHCpdzbzBOq6uqm1tUmNbMq8ataxX8WvOCN5n1H0vl0Q3m3tzd3Ssv9OKU=
+	t=1781076599; cv=none; b=i2hxOBbw0G8ox5OfdG006iljEqahX5FMtqoSTCQN/2TWREDZQqi4Q4F/idx8+BefxAZUPKY92Y49v4yVVT/cEBxl7VDkDCSeO7yn5W4TS0aNH03l6p2ELbEyF/r5k4qX2MM39V2MSUbi8aLB/ASEm1IRzzuOw51ylpheRF16ZG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781076228; c=relaxed/simple;
-	bh=l1+DPqvMAgg3HOOALyhkcYJXxQRVlS9p5VuUtJl8PdA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=itN8o5sgRaAZsbgaUwtlTP/m3m/yETVtWg39WwI5+nl446GpGlm7WpWE/ctS7N/4V892LK334M/neocbtwpsQgoeotCt+BmNKsE8HxOh5pwPCgwwz1dfmqSnUSv112WvFtgkuLChm4UmlXgohSOVq46QuyiYZhi9DPsERWCpubw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=ZbIzPaQQ; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1781076599; c=relaxed/simple;
+	bh=AiSFfMoIY2TE+nHxtwX/bpt7ovICgLMC4JbA8Q1cu8w=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=U5YpD6dE2QNCEBkdV0CHRcOcgGNnH7fPOMzdj5oEo+HvkyAId53qA5BBEvAtYLest2RVjvq76m9Hc8VCEzm3AntJRsdK5jaQeyCuOa4tCFmTFfB9X+r7JT+8QLl5Vmf4pzMWn6xy6aUEqGm9ASfbqEEXPGElETsUyBufM+J6iQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZfgQ9Ljx; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="ZbIzPaQQ"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=9+73fvhzH0/0eG8vkUrapayA5/sgEVnP+SMhnMVF+eQ=; b=ZbIzPaQQl7esjo1YhKh/ff5FZE
-	RVjdf7asLlJ+lGRozwH+jUPEVecZ2bNkxYZ7adwxjFhlUMBX0DqM60RJhuiuB0X+GHyb+MN702L3X
-	NB0xC88/G/kW1GgIA4K05fhRPLf0cLJ5NnMV6pDR5Y+3fwRselSRErYj3GJtIGn25ndQ=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wXDHl-006wH1-76; Wed, 10 Jun 2026 09:23:37 +0200
-Date: Wed, 10 Jun 2026 09:23:37 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: David Yang <mmyangfl@gmail.com>
-Cc: netdev@vger.kernel.org, Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next] net: dsa: loop: Fix devlink resource ID
-Message-ID: <53211107-5f22-4ea6-8374-b70317b9b2cb@lunn.ch>
-References: <20260610062554.769892-1-mmyangfl@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZfgQ9Ljx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C2E31F00893;
+	Wed, 10 Jun 2026 07:29:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781076598;
+	bh=AiSFfMoIY2TE+nHxtwX/bpt7ovICgLMC4JbA8Q1cu8w=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=ZfgQ9LjxioHkZ8YmzINDziO5XNY3bRg4375unc2i/iSTsSx/Jf6jtcxsX1oVw34A2
+	 Maf7TTGdgfGi+Txkn/Iv9h8Thn4iKD0Hxas9qKpQwjYc73/VkVbjnajBP6xGu58eMH
+	 7cgtoE8Fks9ZbYWqYxMw9J8XZYy+BZpTny4HvF2HHyG8rB5J4n3P5vm9tw26sPRIME
+	 h7uWafB37kG+MmaIz0+uALe77dnFgyQJey/7f7J6v3FU/boWoLfLPqxfqT65JM6b8P
+	 ffLt+NgkW0QM7H1eQZQHDi4d15RamybNOry6SIKA4jD4d75nf7qbPwJg7ZOkVZ9cEZ
+	 FROfc4w+6TjWw==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: gary@garyguo.net
+Cc: a.hindborg@kernel.org,
+	acourbot@nvidia.com,
+	airlied@gmail.com,
+	aliceryhl@google.com,
+	bjorn3_gh@protonmail.com,
+	boqun@kernel.org,
+	dakr@kernel.org,
+	daniel.almeida@collabora.com,
+	dri-devel@lists.freedesktop.org,
+	driver-core@lists.linux.dev,
+	fujita.tomonori@gmail.com,
+	linux-kernel@vger.kernel.org,
+	longman@redhat.com,
+	lossin@kernel.org,
+	mark.rutland@arm.com,
+	miguel.ojeda.sandonis@gmail.com,
+	mingo@redhat.com,
+	netdev@vger.kernel.org,
+	nova-gpu@lists.linux.dev,
+	ojeda@kernel.org,
+	peterz@infradead.org,
+	rust-for-linux@vger.kernel.org,
+	simona@ffwll.ch,
+	tamird@kernel.org,
+	tmgross@umich.edu,
+	will@kernel.org,
+	yury.norov@gmail.com
+Subject: Re: [PATCH v4] rust: make `build_assert` module the home of related macros
+Date: Wed, 10 Jun 2026 09:29:47 +0200
+Message-ID: <20260610072947.338278-1-ojeda@kernel.org>
+In-Reply-To: <DJ4Q5J5OILOX.1KCPFIVUFN2VV@garyguo.net>
+References: <DJ4Q5J5OILOX.1KCPFIVUFN2VV@garyguo.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260610062554.769892-1-mmyangfl@gmail.com>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jun 10, 2026 at 02:25:45PM +0800, David Yang wrote:
-> Fix collision with DEVLINK_RESOURCE_ID_PARENT_TOP (0) by keeping the
-> real resource IDs in enum dsa_loop_devlink_resource_id starting at 1.
+On Tue, 09 Jun 2026 19:19:42 +0100 Gary Guo <gary@garyguo.net> wrote:
+>
+> I think I just kept it as is when rebasing. It's file to have them grouped in
+> the crate to.
 
-Please could you expand on this. What is actually wrong here?
+Thanks for confirming!
 
-When i look at mv88e6xxx, hellcreak and b53 it does the same.
+> This one is using size_of, align_of, c_void which are all in prelude. However it
+> looks like I forgot to actually remove these imports in the last version, and I
+> didn't change it during rebase.
 
-     Andrew
+Ah, I see, makes sense.
+
+> Are you okay with fixing during applying, or do you want me to send a new version?
+
+I did it on my side. I also tweaked a couple more bits: they were already
+`no_inline`, and I noted that they sadly do not appear in the prelude anymore,
+but the change looks fine and that may be more of a `rustdoc`-side issue or
+design choice.
+
+Cheers,
+Miguel
