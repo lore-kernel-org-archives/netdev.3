@@ -1,137 +1,144 @@
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh-b8-smtp.messagingengine.com (fhigh-b8-smtp.messagingengine.com [202.12.124.159])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A38A3A75A8
-	for <netdev@vger.kernel.org>; Wed, 10 Jun 2026 09:13:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B1943BCD3A;
+	Wed, 10 Jun 2026 09:14:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.159
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781082837; cv=none; b=FmYJkI0pkPHSu36s7GWLJwOHjlkHS53zlTb2N0YQPfFk5LDjSyI4zty9CzUvlFIVJqWoWmUmhLytxGckRYHUpF2kqMGsrAdfdfYGYgxNrAiwYBvnD/GS2OBxa66SE7A5kaSR1QdJmII7qMulnOOmEjagaNwnDCPvuVuYFpIVvqg=
+	t=1781082896; cv=none; b=YDlZ+kvL7mfV4Ytbk+ki26d+ph6yDUfQqcftFt4pphGgAKjcU2zYp8zRpegTtkpearaUF0kYf4HOkmy1tDkEhvvSVZN7QlTNcA230zpjOrUybyl6AH6vLVs01vJ63+lTjdfkMqfFKuWSPkSzPqcqGKpXAeP4J3JMXggf4c2S04M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781082837; c=relaxed/simple;
-	bh=n9Pb7a3axFjzxDMjrZkjjorf1UU1SU9m+G1T7dF5YAs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OU5EPFgIV4OKv9ytefhxT4pVfWpgz0YIg/xyyzLxlvgvA89Sqbo38kmzPRBoHtUCz9OFCDiAdnt2gVQHeRuJG62P512vFXy0gnVzn9rUOGz2fTNcDF+Y12PWdCep1xdJwQdTYmsgi7bUYG+ILharUJ1iP8HAbI7wO+oV/PC8WZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CqSPReaq; arc=none smtp.client-ip=209.85.216.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1781082896; c=relaxed/simple;
+	bh=HqIULhI3b7647nddpq6zQkDQPO1NJ/oNd3jU6sTQ44M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fFM4NFKvMadIWZV9JkfwPPug7eEocALvLCR/99A5f46jut84Fkug6SidApbUWwVJM5KGdqchOm8BlyOfMJsRxxiUnyMZ51UMbmo0uRgWADlMtT1cY4VLlxDak4LT4Yb3rsg7uk/DsaY/QMnvfbHxdycAnrQSFbZFdo4RZHHwGmo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se; spf=pass smtp.mailfrom=ragnatech.se; dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b=hFLhApMX; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=fbPSEoqi; arc=none smtp.client-ip=202.12.124.159
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ragnatech.se
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CqSPReaq"
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-36d98c9b596so4100627a91.3
-        for <netdev@vger.kernel.org>; Wed, 10 Jun 2026 02:13:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781082836; x=1781687636; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xujE92v9Fhi27fvUp8TSHkV9oiEzGhWhlzdRW6++/1E=;
-        b=CqSPReaqTlrfTkU3309mjkoe6t1uFo2AYuf6EU87t6I0yH1r1hoNrRhX8Lc3DnqZYo
-         3YWQ6HohlktoBpZkGZNAzkW7SxG1kTP7kqfiDh9IrBcrxqbP7JG8R1NPqCDlHvlAzO1c
-         YLWciKAZVUsr0mmpKcIMYjNfpglrtviH2EwY064LY67dUOETaKuWdarF4q8/7EmeHqt9
-         Lfjo4VFEnGLhvM9EeZteDNrAWla9sG3i8znSsZgvx3WA4tqWYFSoT5oTeiRBZJJDT0BZ
-         cEu+0U4vJz8ckNz5IGD0OM1rPMcYpmIukpw7X8FC8s7GpwvWptIImrA0FONc8yPQC4zU
-         eGsQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781082836; x=1781687636;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=xujE92v9Fhi27fvUp8TSHkV9oiEzGhWhlzdRW6++/1E=;
-        b=ajhGt/zA4+hJaSHwdIXk7TBhFSZCiIMz/TmTQm7n7ezy21cGtMZOm66bHidEvH02wH
-         Bem4XNmMf/tjH0OTqEKq+ekX10lT2Axh9BDxAD/svWiBPlc10Sd/NnU7JmAS4hDHnn51
-         1Rux8v1oaSdOSEStSr3GdDhOkls12gZgD/l2r2ZWe4Ds/iNELdvc2ByqvfRdNCydMFBL
-         Kd81pUAbHVCIeH7L53fcGO7Xdy+lEjOiPN8Jy2WEDoVCwnL6VSr7baEGstP/l1/T+5Y0
-         QVj1aob9qUmfCGq5sJuc8D+sfIJ5bOH5mB+8ZBNVmVfLlBq/4L1nZyXj4dC6m/lmS4v/
-         EYSA==
-X-Gm-Message-State: AOJu0Yy6BnWM64C+AnwXAkfhseS3e0p4tgTpNRxiRQVJqVuQSLq1gbKb
-	Oog4IeE6m1jn2kSWnWtrnQJZD5I1OUjrNxb6sxJlv4XEIoqKskyFn3zSBOyKJk7c9Q==
-X-Gm-Gg: Acq92OEW1G3SwgZELUVfgIiAyJSMYk45VT2+V+P0hsrpjruFRyHzZJmHlseTvTMwXFM
-	vGYWctLPZYP0thAshWTpeUpIiKqGYNU1+Yk7b9HiltMsYTEpIXZQPv7hudmHIUvlPQDFgL+gy6p
-	Unb7hMIv3HeJI74YUvLprp0IN9dbZqaeSOQnyg8O6drTjp3eeR5igJIq+aNO3r3+jbUft1Qp95v
-	aqun97kX0+FmR9kENMswKsrSc5rSuTXgERgsvuzaFaNXlRhw8McPsbaoqH4T9tbnsFJA+8/PET9
-	nn28xgCftbqLvv3gPDo8NCzgDqIV6nhvorbDkh8LzedjuGMh0WkwqZtW5edZC7jqexRm05HUvFt
-	UUcL/+IxiJd8hNODglm5sWpDdK0Or427rXYEp9MHPdxPgMijLpSKG4nq7oDw4hsZmvbXzu8Td/P
-	8SvnnCzqCgmAISlx0Q1bIKN/Z+BvcPzY0USf5gEY8MiSHXdmI69450nieLzmU13NHsmZmxZiPIO
-	FE84A==
-X-Received: by 2002:a17:902:c401:b0:2c2:cf20:213 with SMTP id d9443c01a7336-2c2cf200450mr7795645ad.29.1781082835600;
-        Wed, 10 Jun 2026 02:13:55 -0700 (PDT)
-Received: from raf.tailb4a862.ts.net ([153.124.163.116])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c16609e096sm242991765ad.44.2026.06.10.02.13.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Jun 2026 02:13:55 -0700 (PDT)
-From: Raf Dickson <rafdog35@gmail.com>
-To: netdev@vger.kernel.org,
-	virtualization@lists.linux.dev
-Cc: pabeni@redhat.com,
-	sgarzare@redhat.com,
-	stefanha@redhat.com,
-	bryan-bt.tan@broadcom.com,
-	vishnu.dasa@broadcom.com,
-	bcm-kernel-feedback-list@broadcom.com,
-	Raf Dickson <rafdog35@gmail.com>
-Subject: [PATCH net-next 2/2] vsock: fold sk_acceptq_removed() into vsock_remove_pending()
-Date: Wed, 10 Jun 2026 09:11:21 +0000
-Message-ID: <20260610091121.213324-3-rafdog35@gmail.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260610091121.213324-1-rafdog35@gmail.com>
-References: <20260610091121.213324-1-rafdog35@gmail.com>
+	dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b="hFLhApMX";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="fbPSEoqi"
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 9611D7A00E2;
+	Wed, 10 Jun 2026 05:14:52 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-01.internal (MEProxy); Wed, 10 Jun 2026 05:14:53 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ragnatech.se; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1781082892;
+	 x=1781169292; bh=3yo/U4zdqOGiza2buRx7viS4BvrMUEv8SC3a8B6j87M=; b=
+	hFLhApMXWXSNfTuOF3aD+hMvkl/kRdi976659ghl7wtBd1R4RtbMMKDXqCeKLPSH
+	UGwtNwiM5ZI/jTnJGoXdqE2eAWpxJnLm6JO/kbu2lOZbbVpSGJZRMbWIAvLICeh9
+	5Sq/fwTSrdfV5udpWLTjP02JbReE1G6r1LHeIunsoqalDtNwxPvYYh65xb9Slc8x
+	x/o18696boM/zX8PZwGO+bhw6qKix5FWWkf7QcU5YXek1nlLJtifaYWUGbs0xv1R
+	6IYmRbTdEPJ7N2cXvGFoHl6k2hZNW7viHDHFW2v6Lfs9ksX0UAJolZSM/P4znVbn
+	2NdQ2JacgFiJMbdim3FDaw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1781082892; x=
+	1781169292; bh=3yo/U4zdqOGiza2buRx7viS4BvrMUEv8SC3a8B6j87M=; b=f
+	bPSEoqiJW7mYRdAJ/0YN/xDLYzZT0+kqHnKsxu7JCJJds9IvB7xvs24d1JypnqhN
+	2Yr8hR0vEJgCL3rqdEEuzczldUe/7Y73W5yD9j9vZ5PS58d3Idk+Q8S+byuf8qMi
+	hcHDGZlTPYRHtYiQfHUVmk2A0jr/IBVX826SA0B9MOdCUpTN6s9mQlsTTxrai5+j
+	8d6APD1VgcWPKu5Te+OmSjJg6aL3U7fhhydGCskrmKgzF8QuRrRZEfdJsYw+F0FK
+	V3BnSOo1jOf6BwfAEXl/9BUl6az1UUoXl4kGJn1ckU6kpXEFa93+rWnxQvRGqhEc
+	1Yk0STi9fDFYMlYtTAV9g==
+X-ME-Sender: <xms:DCspas7o01iDubUTo5FT31CQ5VW_Ry_64WpERVOilHl_dcRyw41Yaw>
+    <xme:DCspasZx0VYsYvCGhIMg-PlTptViZuEsRuW29p1KhFLrLKXlGiWrlTFyM_wFH4a6Q
+    7jpjEs5ufWVF_fnP29gDmc4RsllInyKkq6dTlSjv2lPsRDYtUHY09s>
+X-ME-Received: <xmr:DCspaiRx6S_EnkEZr3kJFwbmYVeNHhdWMKy5yKJIHEQykoVPCGxhb5Sjky6lcPgFwJwWIGjuQQv7GuQlC149aWO5sIO6gnU3SDux>
+X-ME-Proxy-Cause: dmFkZTGs6pOpieH000WI8vwuexWh8o2R1t8h3HIWZjgnuP6wT5WtiXaBnwmkRethnSMxnd
+    YZxod+uyAtqSHF4xD1vBcVdhkhs0RtPKfH+4bP+uygCX5mZTE7NMtD37whpkpbo6AL/YiI
+    3AWwbaXeecdREQkXhD2JyRMOPrw8DtI+XeVS+LgSZDxcEpw2X89FYYvtdW4mNkauIMXECh
+    y4M2OUc10URgivQshWEQTshordWIzEbX2n/KApYJ8hPfyfHdZrgW5ffjHIeZol4UPVK1vY
+    rx4pO8XqNoA71FCdE0VgQjy5mrB7kGiBuqyF57fml1th6TUrn1fcLu0tXGOtAmA0tBsRin
+    gSHVuBkzXlVr/GU/c1wV4NzQc5OhBg+F7VVO8yL2O/DlJvtiGWPVCTDp38mWyJRtfnxRha
+    h+//alNAA0qtwVfO0dsBiRHdBTI5HVluDdBZSXH/2hzvRrwv8ye/ZdaRqD9APJikGFrV3Z
+    FbaM5vPgrcTof/IJ7By+7HM9clgb8/eInnmsF88rtjtMS60AHisKfA0Nbfp5Wr7GgttQUS
+    HpdrVFu1QCpg1iJRqrSkf0jxD+jjl1Z7/3IFgD7GIRlvTx9/GvCFGwMbaIhJQkRAnwAyLe
+    HpOhkH2KGuk8L4V+gqwNG2bHrT/tw9Io6Sa/MU4ZWQIjTyL9fmWAdjgDgKZg
+X-ME-Proxy: <xmx:DCspahLQoXgOxIy1_RX1uThey4w-4AWuf21DeXdvp4v1AgaStU9HYQ>
+    <xmx:DCspaoUBbfpnTJw-qHByqhDkHWiJcJKg8D_tZgOM3pHucPqcrRaoZQ>
+    <xmx:DCspatihm4j41yweRtBYhyarp-00SnsrqOO_oCE-HYe6PAwHJVcK0Q>
+    <xmx:DCspasv-eF9uT5FJn2Utjyo2nJOWyg9mGkGx1TaNepx8-DY_5jxkWQ>
+    <xmx:DCspaunuZxXvnOgCBbxTxV8KPPAUaiGJ8lhOIRB6pFwxkQtjUmf5FW59>
+Feedback-ID: i80c9496c:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 10 Jun 2026 05:14:51 -0400 (EDT)
+Date: Wed, 10 Jun 2026 11:14:50 +0200
+From: Niklas =?utf-8?Q?S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"DavidS. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	linux-renesas-soc@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [net-next 1/3] dt-bindings: ptp: renesas,rcar-gen4-gptp: Add
+ binding for R-Car Gen4
+Message-ID: <20260610091450.GD2465390@ragnatech.se>
+References: <20260609215711.2960150-1-niklas.soderlund+renesas@ragnatech.se>
+ <20260609215711.2960150-2-niklas.soderlund+renesas@ragnatech.se>
+ <6bd0229b-4895-48a2-9e36-0ea5296c7fb5@kernel.org>
+ <20260610085354.GC2465390@ragnatech.se>
+ <ded0ae1a-535f-4524-9c3c-e9970bdf387a@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <ded0ae1a-535f-4524-9c3c-e9970bdf387a@kernel.org>
 
-Callers of vsock_remove_pending() must also call sk_acceptq_removed()
-to keep sk_ack_backlog consistent. Move the call into
-vsock_remove_pending() itself to make it automatic and prevent future
-callers from forgetting it.
+On 2026-06-10 11:01:27 +0200, Krzysztof Kozlowski wrote:
+> On 10/06/2026 10:53, Niklas Söderlund wrote:
+> > Hi Krzysztof,
+> > 
+> > Thanks for your comments.
+> > 
+> > On 2026-06-10 08:54:06 +0200, Krzysztof Kozlowski wrote:
+> >> On 09/06/2026 23:57, Niklas Söderlund wrote:
+> >>> Add bindings for the R-Car Gen4 gPTP timer. The timer enables accurate
+> >>> synchronization of the clock in the control system. The timer is
+> >>> system-wide and used by different Ethernet devices on each Gen4 platform.
+> >>
+> >> A nit, subject: drop second/last, redundant "binding for". The
+> >> "dt-bindings" prefix is already stating that these are bindings.
+> > 
+> > Thanks, will fix.
+> > 
+> >> See also:
+> >> https://elixir.bootlin.com/linux/v6.17-rc3/source/Documentation/devicetree/bindings/submitting-patches.rst#L18
+> > 
+> > Not sure I follow this one, L18 reads,
+> > 
+> >   "Few subsystems, like ASoC, media, regulators and SPI, expect reverse 
+> >   order of the prefixes::"
+> > 
+> > But 'git log Documentation/devicetree/bindings/ptp/' shows all commits 
+> > in that directory use the 'dt-bindings: ptp:' prefix.
+> 
+> 5 lines below.
+> https://elixir.bootlin.com/linux/v6.17-rc3/source/Documentation/devicetree/bindings/submitting-patches.rst#L23
 
-Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
-Signed-off-by: Raf Dickson <rafdog35@gmail.com>
----
- net/vmw_vsock/af_vsock.c       | 3 +--
- net/vmw_vsock/vmci_transport.c | 5 +----
- 2 files changed, 2 insertions(+), 6 deletions(-)
+Ahh, thanks.
 
-diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
-index 73e6416ee9..b9772a0205 100644
---- a/net/vmw_vsock/af_vsock.c
-+++ b/net/vmw_vsock/af_vsock.c
-@@ -493,6 +493,7 @@ void vsock_remove_pending(struct sock *listener, struct sock *pending)
- 	list_del_init(&vpending->pending_links);
- 	sock_put(listener);
- 	sock_put(pending);
-+	sk_acceptq_removed(listener);
- }
- EXPORT_SYMBOL_GPL(vsock_remove_pending);
- 
-@@ -761,8 +762,6 @@ static void vsock_pending_work(struct work_struct *work)
- 
- 	if (vsock_is_pending(sk)) {
- 		vsock_remove_pending(listener, sk);
--
--		sk_acceptq_removed(listener);
- 	} else if (!vsk->rejected) {
- 		/* We are not on the pending list and accept() did not reject
- 		 * us, so we must have been accepted by our user process.  We
-diff --git a/net/vmw_vsock/vmci_transport.c b/net/vmw_vsock/vmci_transport.c
-index 4ce6660c11..356bebca7c 100644
---- a/net/vmw_vsock/vmci_transport.c
-+++ b/net/vmw_vsock/vmci_transport.c
-@@ -980,11 +980,8 @@ static int vmci_transport_recv_listen(struct sock *sk,
- 			err = -EINVAL;
- 		}
- 
--		if (err < 0) {
-+		if (err < 0)
- 			vsock_remove_pending(sk, pending);
--			sk_acceptq_removed(sk);
--		}
--
- 		release_sock(pending);
- 		vmci_transport_release_pending(pending);
- 
+> 
+> 
+> Best regards,
+> Krzysztof
+
 -- 
-2.54.0
-
+Kind Regards,
+Niklas Söderlund
