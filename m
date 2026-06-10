@@ -1,741 +1,359 @@
-Received: from canpmsgout09.his.huawei.com (canpmsgout09.his.huawei.com [113.46.200.224])
+Received: from unimail.uni-dortmund.de (mx1.hrz.uni-dortmund.de [129.217.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE2B232B121;
-	Wed, 10 Jun 2026 06:59:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.224
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDF9B1465B4;
+	Wed, 10 Jun 2026 07:04:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.217.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781074782; cv=none; b=TCzx0C142SUAsKAxk3/3cOu4ZDbDDatBGmll3/ILYTOx9L5h3XZa6GuP+ho5+cNmqMyw2VyokTlUB4shPqnv8alEURkpyhvzDRX3V5PwuCqckVEZuh2ZEarS9fuEIoif+HMH3olo6MsaU9YdHB+GRFFQhxX61Nxw6A2nsYLwv6Y=
+	t=1781075084; cv=none; b=NDx0TNWLMw40n+OYbSujoNJvDKv8L8GMywci+s+oYlzVTEgkns/SlGy9m1W060m7fmwALCsU320uj3Jrs2X3hSdUPFQ8Prpq+rzpAdrT2RtbBovmp9Z8RaH2my95mftvtLCdBgxNaKvclavIX00MpaiY8IcBdEoo7Z0N7TEN6k0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781074782; c=relaxed/simple;
-	bh=sPEp/lkp8mViokYSwmFRDY0BOKxKALcYg51ZYzHTJvY=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aEDR+t5RRzoUEKfSIO7L+oM5U82XhGXRvxneGLaEay/BBq+U2C4hCsRzDkcDJGGSXv/zHuXn1gPmzXxQGhhblD/2ILUfCrp3xPtj+Blz+pjG3NDnZiXVotifkUnvoE5V7VW40ayQAkX8F4H3rcmMpn63YKKWbbFwqiKGUmHelYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=z/so/F54; arc=none smtp.client-ip=113.46.200.224
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="z/so/F54"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=NQJ0R2Gx6siuXKyy51MuRa/pgxkPoCRB+FXx2OoVyko=;
-	b=z/so/F54vDJgjX5Dxe0TedtZH13qTvCtJTNaRJYFpSkGF3+dcuOgEJ8Jw9pSNds46uaOut/ob
-	duXpnNFIb/buzYa6Qn4dsIFPh2ivDpsgx98GBCjHFIlS8dfFX1kkNdYtX6YN4m2lgRcPv3+0a+0
-	TqcVylmeGGA27NAPlHUtXP4=
-Received: from mail.maildlp.com (unknown [172.19.163.15])
-	by canpmsgout09.his.huawei.com (SkyGuard) with ESMTPS id 4gZxJq0jFcz1cyPM;
-	Wed, 10 Jun 2026 14:51:39 +0800 (CST)
-Received: from kwepemf100013.china.huawei.com (unknown [7.202.181.12])
-	by mail.maildlp.com (Postfix) with ESMTPS id 0C47C40571;
-	Wed, 10 Jun 2026 14:59:32 +0800 (CST)
-Received: from DESKTOP-62GVMTR.china.huawei.com (10.174.189.124) by
- kwepemf100013.china.huawei.com (7.202.181.12) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.36; Wed, 10 Jun 2026 14:59:30 +0800
-From: Fan Gong <gongfan1@huawei.com>
-To: Fan Gong <gongfan1@huawei.com>, Wu Di <wudi234@huawei.com>, Teng Peisen
-	<tengpeisen@huawei.com>, <netdev@vger.kernel.org>, "David S. Miller"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
-	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
-	<horms@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, Ioana Ciornei
-	<ioana.ciornei@nxp.com>, Mohsin Bashir <mohsin.bashr@gmail.com>
-CC: <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>, luosifu
-	<luosifu@huawei.com>, Xin Guo <guoxin09@huawei.com>, Zhou Shuai
-	<zhoushuai28@huawei.com>, Wu Like <wulike1@huawei.com>, Shi Jing
-	<shijing34@huawei.com>, Zheng Jiezhen <zhengjiezhen@h-partners.com>, Maxime
- Chevallier <maxime.chevallier@bootlin.com>
-Subject: [PATCH net-next v09 4/5] hinic3: Add ethtool rss ops
-Date: Wed, 10 Jun 2026 14:59:14 +0800
-Message-ID: <7d1a4375fdf7c3e7a5a6162382cee4f48991d5da.1781062575.git.wudi234@huawei.com>
-X-Mailer: git-send-email 2.50.1.windows.1
-In-Reply-To: <cover.1781062575.git.wudi234@huawei.com>
-References: <cover.1781062575.git.wudi234@huawei.com>
+	s=arc-20240116; t=1781075084; c=relaxed/simple;
+	bh=zO22p2kz0zbI/8P3e70thMESsr7D1s3bagjfJ4ECxJE=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=feZgql60gqAu6A7i23P4jZO5zOXAfreQ7voBMn5xRrLVi5DzP5JV8GRugVOMrTEVXZkNTJmgq/781aYWif9IAr+3m5b9lkZS64Yfbr55BRdq144FcnqvV5LqkEqEdppnGscRYNRQ3SIfs6gkn2RFnSRi0Ns2jPbSUpDXqcyQZ4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de; spf=pass smtp.mailfrom=tu-dortmund.de; arc=none smtp.client-ip=129.217.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tu-dortmund.de
+Received: from [129.217.186.234] ([129.217.186.234])
+	(authenticated bits=0)
+	by unimail.uni-dortmund.de (8.19.0.1/8.19.0.1) with ESMTPSA id 65A74HDq021388
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Wed, 10 Jun 2026 09:04:17 +0200 (CEST)
+Message-ID: <fb84879b-9fdf-4474-b152-9cbf0887bd21@tu-dortmund.de>
+Date: Wed, 10 Jun 2026 09:04:16 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v6 5/5] veth: time-based BQL completion
+ coalescing via ethtool tx-usecs
+From: Simon Schippers <simon.schippers@tu-dortmund.de>
+To: Jesper Dangaard Brouer <hawk@kernel.org>,
+        =?UTF-8?Q?Jonas_K=C3=B6ppeler?= <j.koeppeler@tu-berlin.de>,
+        netdev@vger.kernel.org
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David S. Miller"
+ <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        John Fastabend <john.fastabend@gmail.com>,
+        Stanislav Fomichev <sdf@fomichev.me>, linux-kernel@vger.kernel.org,
+        bpf@vger.kernel.org, kernel-team <kernel-team@cloudflare.com>
+References: <20260527135418.1166665-1-hawk@kernel.org>
+ <20260527135418.1166665-6-hawk@kernel.org>
+ <db2aa3b9-09d4-46d8-aafc-0a859ee8b635@tu-dortmund.de>
+ <7fcb9f02-db61-416c-a6f5-b737d74110ec@kernel.org>
+ <e8478d82-5af6-44f7-a481-584c09ae8337@tu-berlin.de>
+ <b8569d0f-7a99-4488-a1bb-63d813231b7d@tu-dortmund.de>
+ <90fc9fc1-f396-4ed1-888f-89a96294664e@kernel.org>
+ <5e6315b1-b734-4f5f-af5e-bc76612f0993@tu-dortmund.de>
+Content-Language: en-US
+In-Reply-To: <5e6315b1-b734-4f5f-af5e-bc76612f0993@tu-dortmund.de>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
- kwepemf100013.china.huawei.com (7.202.181.12)
 
-  Implement following ethtool callback function:
-.get_rxnfc
-.set_rxnfc
-.get_channels
-.set_channels
-.get_rxfh_indir_size
-.get_rxfh_key_size
-.get_rxfh
-.set_rxfh
+On 6/9/26 17:08, Simon Schippers wrote:
+> On 6/9/26 15:59, Jesper Dangaard Brouer wrote:
+>>
+>>
+>> On 08/06/2026 16.21, Simon Schippers wrote:
+>>> On 6/8/26 15:13, Jonas Köppeler wrote:
+>>>>
+>>>> On 6/8/26 3:04 PM, Jesper Dangaard Brouer wrote:
+>>>>>
+>>>>>
+>>>>> On 08/06/2026 12.38, Simon Schippers wrote:
+>>>>>> On 5/27/26 15:54, hawk@kernel.org wrote:
+>>>>>>> From: Simon Schippers <simon.schippers@tu-dortmund.de>
+>>>>>>>
+>>>>>>> Per-packet BQL completion forces DQL to converge on limit=2, causing
+>>>>>>> excessive NAPI scheduling overhead and qdisc requeues.
+>>>>>>>
+>>>>>>> Accumulate BQL completions and flush them when a configurable time
+>>>>>>> threshold is exceeded, letting DQL discover a limit that bounds actual
+>>>>>>> queuing delay to the configured interval. Coalescing state persists
+>>>>>>> across NAPI polls in struct veth_rq so completions can accumulate
+>>>>>>> beyond a single budget=64 cycle.
+>>>>>>>
+>>>>>>> Add ethtool tx-usecs support for runtime tuning. Default is 100 us;
+>>>>>>> setting tx-usecs to 0 disables coalescing and falls back to per-packet
+>>>>>>> completion.
+>>>>>>>
+>>>>>>>     ethtool -C <veth-dev> tx-usecs 500  # 500us coalescing
+>>>>>>>     ethtool -C <veth-dev> tx-usecs 0    # per-packet (no coalescing)
+>>>>>>>
+>>>>>>> Co-developed-by: Jesper Dangaard Brouer <hawk@kernel.org>
+>>>>>>> Signed-off-by: Jesper Dangaard Brouer <hawk@kernel.org>
+>>>>>>> Signed-off-by: Simon Schippers <simon.schippers@tu-dortmund.de>
+>>>>>>> ---
+>>>>>>
+>>>>>> I found the issue that n_bql may become infinitly large if producer
+>>>>>> and consumer have the same speed (and tx_usecs is large). It could
+>>>>>> cause a potential BUG_ON if n_bql grows beyond INT_MAX...
+>>>>>> Also I figured that no hardware BQL driver ever completes more than
+>>>>>> BQL limit many elements.
+>>>>>>
+>>>>>> Therefore, I propose a simpler logic (see attachment) that completes
+>>>>>> either on the usual bql_flush_ns or if n_bql > dql.limit.
+>>>>>> If n_bql > dql.limit then we either have the case above that the
+>>>>>> producer is as fast as the consumer or we have BQL starvation.
+>>>>>>
+>>>>>> if (state->time + bql_flush_ns <= current_time ||
+>>>>>>      state->n_bql > peer_txq->dql.limit) {
+>>>>>>
+>>>>>> It must be n_bql *bigger than* dql.limit because the producer will
+>>>>>> always exceed the limit before it stops, see netdev_tx_sent_queue().
+>>>>>> It is fast because peer_txq->dql.limit is in the cacheline of the
+>>>>>> completion path, see dynamic_queue_limits.h.
+>>>>>>
+>>>>>> Another advantage is that we avoid the snippet checking for empty
+>>>>>> and BQL stopped which requires an smp_rmb() and an test_bit().
+>>>>>>
+>>>>>> Apart from that I:
+>>>>>> - Always call veth_bql_maybe_complete() in the for loop to have
+>>>>>>     more accurate completion intervals when having mixed XDP and
+>>>>>>     non-XDP packets.
+>>>>>> - Made it so tx_usecs = 0 is now also a normal case.
+>>>>>> - Change the type of n_bql to uint instead of int.
+>>>>>> - Added _ONCE() for tx_coalesce_usecs as suggested by Paolo.
+>>>>>> - Moved the bql_state init in __veth_napi_enable_range() in front
+>>>>>>     of napi_enable() to avoid a race (Sashiko).
+>>>>>> - Moved the bql_state reset in veth_napi_del_range() after the
+>>>>>>     ptr_ring_cleanup() (probably does not matter but makes sense to me)
+>>>>>>
+>>>>>> Benchmarks look just fine, see commit message.
+>>>>>>
+>>>>>> WDYT?
+>>>>
+>>>>>
+>>>>> Looks good to me, I will use this in my V7 patchset.
+>>>>>
+>>>>> A bike-shedding issue: We change the coalescing parameters for the veth
+>>>>> net_device, but should this be a TX or RX parameter?
+>>>>>
+>>>>
+>>>> Hi,
+>>>>
+>>>> The results look a little bit suspicious, that in some cases the p99 is smaller than the average, which can happen if you have really large max values. It feels something is off with the methodology. I think we should drop the avg, and include the max value. This would give a better picture.
+>>>
+>>> Luckily I saved the raw test result from /tmp (the raw ping output
+>>> is included).
+>>>
+>>> extract_ping_p99() seems to be broken. It has issues ordering the
+>>> numbers. So if there are 2 or 3 numbers after the point I think.
+>>> avg ping is fine.
+>>>
+>>> Claude Sonnet wrote a script for me to recalculate the p99 pings
+>>> from the raw ping output).
+>>
+>> For programming switch to Claude Opus, as Sonnet cannot code IMHO.
+> 
+> Already used 95% of my Copilot Pro+ Tokens this month :P
+> 
+>> (Claude Opus wrote the selftest we placed in [1])
+>>
+>> Is your script still based on our github[1] selftest ?
+>> If so, then please make some PR(s) against my repo.
+>> I want this to be easy reproducible for others.
+>>
+>> [1] https://github.com/netoptimizer/veth-backpressure-performance-testing
+>>
+> 
+> I forked Jonas latest branch [1] and ran the tests with that.
+> 
+> But I faced 2 issues that I then fixed:
+> - Ping fails in some runs (~20%) -> My fix: Retry the run until it
+>   works.
+> - extract_ping_p99() has a bug for me which caused wrong results,
+>   as pointed out by Jonas -> Also fixed it
+> 
+> Because of the inconsistencies I will rerun over night to have
+> clean benchmark results.
+> 
+> I will make a PR tomorrow.
+> 
+> [1] https://github.com/jkoeppeler/veth-backpressure-performance-testing/tree/pktgen-and-benchmark
+> 
 
-  These callbacks allow users to utilize ethtool for detailed
-RSS parameters configuration and monitoring.
+I ran the benchmarks over night and they look fine,
+see ASCII table below.
+I do not see a regression, tx_usecs of 50us even outperforms stock.
 
-Co-developed-by: Wu Di <wudi234@huawei.com>
-Signed-off-by: Wu Di <wudi234@huawei.com>
-Co-developed-by: Teng Peisen <tengpeisen@huawei.com>
-Signed-off-by: Teng Peisen <tengpeisen@huawei.com>
-Signed-off-by: Fan Gong <gongfan1@huawei.com>
----
- .../ethernet/huawei/hinic3/hinic3_ethtool.c   |   9 +
- .../huawei/hinic3/hinic3_mgmt_interface.h     |   2 +
- .../net/ethernet/huawei/hinic3/hinic3_rss.c   | 539 +++++++++++++++++-
- .../net/ethernet/huawei/hinic3/hinic3_rss.h   |  19 +
- 4 files changed, 567 insertions(+), 2 deletions(-)
+I did a PR, see [1]. Most of the code changes are by Jonas,
+because he rewrote the code to allow the usage of pktgen and
+added the bql_sweep.sh script. Thanks Jonas!
+My part is the 2 bugfixes, the output as ASCII table and
+the new benchmark results with my new 'v7' method.
 
-diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_ethtool.c b/drivers/net/ethernet/huawei/hinic3/hinic3_ethtool.c
-index 11c8eb0f5d2a..78818de9a946 100644
---- a/drivers/net/ethernet/huawei/hinic3/hinic3_ethtool.c
-+++ b/drivers/net/ethernet/huawei/hinic3/hinic3_ethtool.c
-@@ -16,6 +16,7 @@
- #include "hinic3_hw_comm.h"
- #include "hinic3_nic_dev.h"
- #include "hinic3_nic_cfg.h"
-+#include "hinic3_rss.h"
- 
- #define HINIC3_MGMT_VERSION_MAX_LEN     32
- /* Coalesce time properties in microseconds */
-@@ -1238,6 +1239,14 @@ static const struct ethtool_ops hinic3_ethtool_ops = {
- 	.get_pause_stats                = hinic3_get_pause_stats,
- 	.get_coalesce                   = hinic3_get_coalesce,
- 	.set_coalesce                   = hinic3_set_coalesce,
-+	.get_rxnfc                      = hinic3_get_rxnfc,
-+	.set_rxnfc                      = hinic3_set_rxnfc,
-+	.get_channels                   = hinic3_get_channels,
-+	.set_channels                   = hinic3_set_channels,
-+	.get_rxfh_indir_size            = hinic3_get_rxfh_indir_size,
-+	.get_rxfh_key_size              = hinic3_get_rxfh_key_size,
-+	.get_rxfh                       = hinic3_get_rxfh,
-+	.set_rxfh                       = hinic3_set_rxfh,
- };
- 
- void hinic3_set_ethtool_ops(struct net_device *netdev)
-diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_mgmt_interface.h b/drivers/net/ethernet/huawei/hinic3/hinic3_mgmt_interface.h
-index 76c691f82703..3c1263ff99ff 100644
---- a/drivers/net/ethernet/huawei/hinic3/hinic3_mgmt_interface.h
-+++ b/drivers/net/ethernet/huawei/hinic3/hinic3_mgmt_interface.h
-@@ -282,6 +282,7 @@ enum l2nic_cmd {
- 	L2NIC_CMD_SET_VLAN_FILTER_EN  = 26,
- 	L2NIC_CMD_SET_RX_VLAN_OFFLOAD = 27,
- 	L2NIC_CMD_CFG_RSS             = 60,
-+	L2NIC_CMD_GET_RSS_CTX_TBL     = 62,
- 	L2NIC_CMD_CFG_RSS_HASH_KEY    = 63,
- 	L2NIC_CMD_CFG_RSS_HASH_ENGINE = 64,
- 	L2NIC_CMD_SET_RSS_CTX_TBL     = 65,
-@@ -301,6 +302,7 @@ enum l2nic_ucode_cmd {
- 	L2NIC_UCODE_CMD_MODIFY_QUEUE_CTX  = 0,
- 	L2NIC_UCODE_CMD_CLEAN_QUEUE_CTX   = 1,
- 	L2NIC_UCODE_CMD_SET_RSS_INDIR_TBL = 4,
-+	L2NIC_UCODE_CMD_GET_RSS_INDIR_TBL = 6,
- };
- 
- /* hilink mac group command */
-diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_rss.c b/drivers/net/ethernet/huawei/hinic3/hinic3_rss.c
-index 25db74d8c7dd..811a6b491e74 100644
---- a/drivers/net/ethernet/huawei/hinic3/hinic3_rss.c
-+++ b/drivers/net/ethernet/huawei/hinic3/hinic3_rss.c
-@@ -155,7 +155,7 @@ static int hinic3_set_rss_type(struct hinic3_hwdev *hwdev,
- 				       L2NIC_CMD_SET_RSS_CTX_TBL, &msg_params);
- 
- 	if (ctx_tbl.msg_head.status == MGMT_STATUS_CMD_UNSUPPORTED) {
--		return MGMT_STATUS_CMD_UNSUPPORTED;
-+		return -EOPNOTSUPP;
- 	} else if (err || ctx_tbl.msg_head.status) {
- 		dev_err(hwdev->dev, "mgmt Failed to set rss context offload, err: %d, status: 0x%x\n",
- 			err, ctx_tbl.msg_head.status);
-@@ -165,6 +165,41 @@ static int hinic3_set_rss_type(struct hinic3_hwdev *hwdev,
- 	return 0;
- }
- 
-+static int hinic3_get_rss_type(struct hinic3_hwdev *hwdev,
-+			       struct hinic3_rss_type *rss_type)
-+{
-+	struct l2nic_cmd_rss_ctx_tbl ctx_tbl = {};
-+	struct mgmt_msg_params msg_params = {};
-+	int err;
-+
-+	ctx_tbl.func_id = hinic3_global_func_id(hwdev);
-+
-+	mgmt_msg_params_init_default(&msg_params, &ctx_tbl, sizeof(ctx_tbl));
-+
-+	err = hinic3_send_mbox_to_mgmt(hwdev, MGMT_MOD_L2NIC,
-+				       L2NIC_CMD_GET_RSS_CTX_TBL,
-+				       &msg_params);
-+	if (ctx_tbl.msg_head.status == MGMT_STATUS_CMD_UNSUPPORTED) {
-+		return -EOPNOTSUPP;
-+	} else if (err || ctx_tbl.msg_head.status) {
-+		dev_err(hwdev->dev, "Failed to get hash type, err: %d, status: 0x%x\n",
-+			err, ctx_tbl.msg_head.status);
-+		return -EINVAL;
-+	}
-+
-+	rss_type->ipv4         = L2NIC_RSS_TYPE_GET(ctx_tbl.context, IPV4);
-+	rss_type->ipv6         = L2NIC_RSS_TYPE_GET(ctx_tbl.context, IPV6);
-+	rss_type->ipv6_ext     = L2NIC_RSS_TYPE_GET(ctx_tbl.context, IPV6_EXT);
-+	rss_type->tcp_ipv4     = L2NIC_RSS_TYPE_GET(ctx_tbl.context, TCP_IPV4);
-+	rss_type->tcp_ipv6     = L2NIC_RSS_TYPE_GET(ctx_tbl.context, TCP_IPV6);
-+	rss_type->tcp_ipv6_ext = L2NIC_RSS_TYPE_GET(ctx_tbl.context,
-+						    TCP_IPV6_EXT);
-+	rss_type->udp_ipv4     = L2NIC_RSS_TYPE_GET(ctx_tbl.context, UDP_IPV4);
-+	rss_type->udp_ipv6     = L2NIC_RSS_TYPE_GET(ctx_tbl.context, UDP_IPV6);
-+
-+	return 0;
-+}
-+
- static int hinic3_rss_cfg_hash_type(struct hinic3_hwdev *hwdev, u8 opcode,
- 				    enum hinic3_rss_hash_type *type)
- {
-@@ -264,7 +299,8 @@ static int hinic3_set_hw_rss_parameters(struct net_device *netdev, u8 rss_en)
- 	if (err)
- 		return err;
- 
--	hinic3_fillout_indir_tbl(netdev, nic_dev->rss_indir);
-+	if (!netif_is_rxfh_configured(netdev))
-+		hinic3_fillout_indir_tbl(netdev, nic_dev->rss_indir);
- 
- 	err = hinic3_config_rss_hw_resource(netdev, nic_dev->rss_indir);
- 	if (err)
-@@ -334,3 +370,502 @@ void hinic3_try_to_enable_rss(struct net_device *netdev)
- 	clear_bit(HINIC3_RSS_ENABLE, &nic_dev->flags);
- 	nic_dev->q_params.num_qps = nic_dev->max_qps;
- }
-+
-+static int hinic3_set_l4_rss_hash_ops(const struct ethtool_rxnfc *cmd,
-+				      struct hinic3_rss_type *rss_type)
-+{
-+	u8 rss_l4_en;
-+
-+	switch (cmd->data & (RXH_L4_B_0_1 | RXH_L4_B_2_3)) {
-+	case 0:
-+		rss_l4_en = 0;
-+		break;
-+	case (RXH_L4_B_0_1 | RXH_L4_B_2_3):
-+		rss_l4_en = 1;
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	switch (cmd->flow_type) {
-+	case TCP_V4_FLOW:
-+		rss_type->tcp_ipv4 = rss_l4_en;
-+		break;
-+	case TCP_V6_FLOW:
-+		rss_type->tcp_ipv6 = rss_l4_en;
-+		break;
-+	case UDP_V4_FLOW:
-+		rss_type->udp_ipv4 = rss_l4_en;
-+		break;
-+	case UDP_V6_FLOW:
-+		rss_type->udp_ipv6 = rss_l4_en;
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	return 0;
-+}
-+
-+static int hinic3_update_rss_hash_opts(struct net_device *netdev,
-+				       struct ethtool_rxnfc *cmd,
-+				       struct hinic3_rss_type *rss_type)
-+{
-+	int err;
-+
-+	switch (cmd->flow_type) {
-+	case TCP_V4_FLOW:
-+	case TCP_V6_FLOW:
-+	case UDP_V4_FLOW:
-+	case UDP_V6_FLOW:
-+		err = hinic3_set_l4_rss_hash_ops(cmd, rss_type);
-+		if (err)
-+			return err;
-+
-+		break;
-+	case IPV4_FLOW:
-+		rss_type->ipv4 = 1;
-+		break;
-+	case IPV6_FLOW:
-+		rss_type->ipv6 = 1;
-+		break;
-+	default:
-+		netdev_err(netdev, "Unsupported flow type\n");
-+		return -EINVAL;
-+	}
-+
-+	return 0;
-+}
-+
-+static int hinic3_set_rss_hash_opts(struct net_device *netdev,
-+				    struct ethtool_rxnfc *cmd)
-+{
-+	struct hinic3_nic_dev *nic_dev = netdev_priv(netdev);
-+	struct hinic3_rss_type rss_type;
-+	int err;
-+
-+	if (!test_bit(HINIC3_RSS_ENABLE, &nic_dev->flags)) {
-+		cmd->data = 0;
-+		netdev_err(netdev, "RSS is disable, not support to set flow-hash\n");
-+		return -EOPNOTSUPP;
-+	}
-+
-+	/* RSS only supports hashing of IP addresses and L4 ports */
-+	if (cmd->data & ~(RXH_IP_SRC | RXH_IP_DST |
-+			  RXH_L4_B_0_1 | RXH_L4_B_2_3))
-+		return -EINVAL;
-+
-+	/* Both IP addresses must be part of the hash tuple */
-+	if (!(cmd->data & RXH_IP_SRC) || !(cmd->data & RXH_IP_DST))
-+		return -EINVAL;
-+
-+	/* L4 hash bits are not valid for pure L3 flow types */
-+	if ((cmd->flow_type == IPV4_FLOW || cmd->flow_type == IPV6_FLOW) &&
-+	    (cmd->data & (RXH_L4_B_0_1 | RXH_L4_B_2_3)))
-+		return -EINVAL;
-+
-+	err = hinic3_get_rss_type(nic_dev->hwdev, &rss_type);
-+	if (err) {
-+		netdev_err(netdev, "Failed to get rss type\n");
-+		return err;
-+	}
-+
-+	err = hinic3_update_rss_hash_opts(netdev, cmd, &rss_type);
-+	if (err)
-+		return err;
-+
-+	err = hinic3_set_rss_type(nic_dev->hwdev, rss_type);
-+	if (err) {
-+		netdev_err(netdev, "Failed to set rss type\n");
-+		return err;
-+	}
-+
-+	nic_dev->rss_type = rss_type;
-+
-+	return 0;
-+}
-+
-+static void convert_rss_l3_type(u8 rss_opt, struct ethtool_rxnfc *cmd)
-+{
-+	if (!rss_opt)
-+		cmd->data &= ~(RXH_IP_SRC | RXH_IP_DST);
-+}
-+
-+static void convert_rss_l4_type(u8 rss_opt, struct ethtool_rxnfc *cmd)
-+{
-+	if (rss_opt)
-+		cmd->data |= RXH_L4_B_0_1 | RXH_L4_B_2_3;
-+}
-+
-+static int hinic3_convert_rss_type(struct net_device *netdev,
-+				   struct hinic3_rss_type *rss_type,
-+				   struct ethtool_rxnfc *cmd)
-+{
-+	cmd->data = RXH_IP_SRC | RXH_IP_DST;
-+	switch (cmd->flow_type) {
-+	case TCP_V4_FLOW:
-+		convert_rss_l4_type(rss_type->tcp_ipv4, cmd);
-+		break;
-+	case TCP_V6_FLOW:
-+		convert_rss_l4_type(rss_type->tcp_ipv6, cmd);
-+		break;
-+	case UDP_V4_FLOW:
-+		convert_rss_l4_type(rss_type->udp_ipv4, cmd);
-+		break;
-+	case UDP_V6_FLOW:
-+		convert_rss_l4_type(rss_type->udp_ipv6, cmd);
-+		break;
-+	case IPV4_FLOW:
-+		convert_rss_l3_type(rss_type->ipv4, cmd);
-+		break;
-+	case IPV6_FLOW:
-+		convert_rss_l3_type(rss_type->ipv6, cmd);
-+		break;
-+	default:
-+		netdev_err(netdev, "Unsupported flow type\n");
-+		cmd->data = 0;
-+		return -EINVAL;
-+	}
-+
-+	return 0;
-+}
-+
-+static int hinic3_get_rss_hash_opts(struct net_device *netdev,
-+				    struct ethtool_rxnfc *cmd)
-+{
-+	struct hinic3_nic_dev *nic_dev = netdev_priv(netdev);
-+	struct hinic3_rss_type rss_type;
-+	int err;
-+
-+	cmd->data = 0;
-+
-+	if (!test_bit(HINIC3_RSS_ENABLE, &nic_dev->flags))
-+		return 0;
-+
-+	err = hinic3_get_rss_type(nic_dev->hwdev, &rss_type);
-+	if (err) {
-+		netdev_err(netdev, "Failed to get rss type\n");
-+		return err;
-+	}
-+
-+	return hinic3_convert_rss_type(netdev, &rss_type, cmd);
-+}
-+
-+int hinic3_get_rxnfc(struct net_device *netdev,
-+		     struct ethtool_rxnfc *cmd, u32 *rule_locs)
-+{
-+	struct hinic3_nic_dev *nic_dev = netdev_priv(netdev);
-+	int err = 0;
-+
-+	switch (cmd->cmd) {
-+	case ETHTOOL_GRXRINGS:
-+		cmd->data = nic_dev->q_params.num_qps;
-+		break;
-+	case ETHTOOL_GRXFH:
-+		err = hinic3_get_rss_hash_opts(netdev, cmd);
-+		break;
-+	default:
-+		err = -EOPNOTSUPP;
-+		break;
-+	}
-+
-+	return err;
-+}
-+
-+int hinic3_set_rxnfc(struct net_device *netdev, struct ethtool_rxnfc *cmd)
-+{
-+	int err;
-+
-+	switch (cmd->cmd) {
-+	case ETHTOOL_SRXFH:
-+		err = hinic3_set_rss_hash_opts(netdev, cmd);
-+		break;
-+	default:
-+		err = -EOPNOTSUPP;
-+		break;
-+	}
-+
-+	return err;
-+}
-+
-+static u16 hinic3_max_channels(struct net_device *netdev)
-+{
-+	struct hinic3_nic_dev *nic_dev = netdev_priv(netdev);
-+	u8 tcs = netdev_get_num_tc(netdev);
-+
-+	return tcs ? nic_dev->max_qps / tcs : nic_dev->max_qps;
-+}
-+
-+static u16 hinic3_curr_channels(struct net_device *netdev)
-+{
-+	struct hinic3_nic_dev *nic_dev = netdev_priv(netdev);
-+
-+	if (netif_running(netdev))
-+		return nic_dev->q_params.num_qps ?
-+				nic_dev->q_params.num_qps : 1;
-+	else
-+		return min_t(u16, hinic3_max_channels(netdev),
-+			     nic_dev->q_params.num_qps);
-+}
-+
-+void hinic3_get_channels(struct net_device *netdev,
-+			 struct ethtool_channels *channels)
-+{
-+	channels->max_rx = 0;
-+	channels->max_tx = 0;
-+	channels->max_other = 0;
-+	/* report maximum channels */
-+	channels->max_combined = hinic3_max_channels(netdev);
-+	channels->rx_count = 0;
-+	channels->tx_count = 0;
-+	channels->other_count = 0;
-+	/* report flow director queues as maximum channels */
-+	channels->combined_count = hinic3_curr_channels(netdev);
-+}
-+
-+static int
-+hinic3_validate_channel_parameter(struct net_device *netdev,
-+				  const struct ethtool_channels *channels)
-+{
-+	u16 max_channel = hinic3_max_channels(netdev);
-+	unsigned int count = channels->combined_count;
-+
-+	if (!count) {
-+		netdev_err(netdev, "Unsupported combined_count=0\n");
-+		return -EINVAL;
-+	}
-+
-+	if (channels->tx_count || channels->rx_count || channels->other_count) {
-+		netdev_err(netdev, "Setting rx/tx/other count not supported\n");
-+		return -EINVAL;
-+	}
-+
-+	if (count > max_channel) {
-+		netdev_err(netdev, "Combined count %u exceed limit %u\n", count,
-+			   max_channel);
-+		return -EINVAL;
-+	}
-+
-+	return 0;
-+}
-+
-+static int hinic3_rss_update_num_qps_and_reprogram(struct net_device *netdev)
-+{
-+	struct hinic3_nic_dev *nic_dev = netdev_priv(netdev);
-+	int err;
-+
-+	if (!netif_is_rxfh_configured(netdev))
-+		hinic3_rss_set_indir_tbl(nic_dev->hwdev, nic_dev->rss_indir);
-+
-+	if (!netif_running(netdev))
-+		return 0;
-+
-+	err = hinic3_set_hw_rss_parameters(netdev, 1);
-+	if (err)
-+		netdev_err(netdev,
-+			   "Failed to update RSS parameters after changing channels\n");
-+
-+	return err;
-+}
-+
-+int hinic3_set_channels(struct net_device *netdev,
-+			struct ethtool_channels *channels)
-+{
-+	struct hinic3_nic_dev *nic_dev = netdev_priv(netdev);
-+	unsigned int count = channels->combined_count;
-+	struct hinic3_dyna_txrxq_params q_params;
-+	int err;
-+
-+	err = hinic3_validate_channel_parameter(netdev, channels);
-+	if (err)
-+		return err;
-+
-+	if (!test_bit(HINIC3_RSS_ENABLE, &nic_dev->flags)) {
-+		netdev_err(netdev, "This function doesn't support RSS, only support 1 queue pair\n");
-+		return -EOPNOTSUPP;
-+	}
-+
-+	netdev_dbg(netdev, "Set max combined queue number from %u to %u\n",
-+		   nic_dev->q_params.num_qps, count);
-+
-+	if (netif_running(netdev)) {
-+		q_params = nic_dev->q_params;
-+		q_params.num_qps = (u16)count;
-+		q_params.txqs_res = NULL;
-+		q_params.rxqs_res = NULL;
-+		q_params.irq_cfg = NULL;
-+
-+		err = hinic3_change_channel_settings(netdev, &q_params);
-+		if (err) {
-+			netdev_err(netdev, "Failed to change channel settings\n");
-+			return err;
-+		}
-+	} else {
-+		nic_dev->q_params.num_qps = (u16)count;
-+	}
-+
-+	err = hinic3_rss_update_num_qps_and_reprogram(netdev);
-+	if (err)
-+		return err;
-+
-+	return 0;
-+}
-+
-+u32 hinic3_get_rxfh_indir_size(struct net_device *netdev)
-+{
-+	return L2NIC_RSS_INDIR_SIZE;
-+}
-+
-+static int hinic3_set_rss_rxfh(struct net_device *netdev,
-+			       const u32 *indir, u8 *key)
-+{
-+	struct hinic3_nic_dev *nic_dev = netdev_priv(netdev);
-+	u16 temp_indir[L2NIC_RSS_INDIR_SIZE];
-+	int err;
-+	u32 i;
-+
-+	if (indir) {
-+		for (i = 0; i < L2NIC_RSS_INDIR_SIZE; i++)
-+			temp_indir[i] = (u16)indir[i];
-+
-+		err = hinic3_rss_set_indir_tbl(nic_dev->hwdev, temp_indir);
-+		if (err) {
-+			netdev_err(netdev, "Failed to set rss indir table\n");
-+			return err;
-+		}
-+
-+		memcpy(nic_dev->rss_indir, temp_indir, L2NIC_RSS_INDIR_SIZE);
-+	}
-+
-+	if (key) {
-+		err = hinic3_rss_set_hash_key(nic_dev->hwdev, key);
-+		if (err) {
-+			netdev_err(netdev, "Failed to set rss key\n");
-+			return err;
-+		}
-+
-+		memcpy(nic_dev->rss_hkey, key, L2NIC_RSS_KEY_SIZE);
-+	}
-+
-+	return 0;
-+}
-+
-+u32 hinic3_get_rxfh_key_size(struct net_device *netdev)
-+{
-+	return L2NIC_RSS_KEY_SIZE;
-+}
-+
-+static int hinic3_rss_get_indir_tbl(struct hinic3_hwdev *hwdev,
-+				    u32 *indir_table)
-+{
-+	struct hinic3_cmd_buf_pair pair;
-+	__le16 *indir_tbl = NULL;
-+	int err, i;
-+
-+	err = hinic3_cmd_buf_pair_init(hwdev, &pair);
-+	if (err) {
-+		dev_err(hwdev->dev, "Failed to allocate cmd_buf.\n");
-+		return err;
-+	}
-+
-+	memset(pair.in->buf, 0, le16_to_cpu(pair.in->size));
-+
-+	err = hinic3_cmdq_detail_resp(hwdev, MGMT_MOD_L2NIC,
-+				      L2NIC_UCODE_CMD_GET_RSS_INDIR_TBL,
-+				      pair.in, pair.out, NULL);
-+	if (err) {
-+		dev_err(hwdev->dev, "Failed to get rss indir table\n");
-+		goto err_get_indir_tbl;
-+	}
-+
-+	indir_tbl = (__force __le16 *)pair.out->buf;
-+	for (i = 0; i < L2NIC_RSS_INDIR_SIZE; i++)
-+		indir_table[i] = le16_to_cpu(*(indir_tbl + i));
-+
-+err_get_indir_tbl:
-+	hinic3_cmd_buf_pair_uninit(hwdev, &pair);
-+
-+	return err;
-+}
-+
-+int hinic3_get_rxfh(struct net_device *netdev,
-+		    struct ethtool_rxfh_param *rxfh)
-+{
-+	struct hinic3_nic_dev *nic_dev = netdev_priv(netdev);
-+	int err = 0;
-+
-+	if (!test_bit(HINIC3_RSS_ENABLE, &nic_dev->flags)) {
-+		netdev_err(netdev, "Rss is disabled\n");
-+		return -EOPNOTSUPP;
-+	}
-+
-+	rxfh->hfunc =
-+		nic_dev->rss_hash_type == HINIC3_RSS_HASH_ENGINE_TYPE_XOR ?
-+		ETH_RSS_HASH_XOR : ETH_RSS_HASH_TOP;
-+
-+	if (rxfh->indir) {
-+		err = hinic3_rss_get_indir_tbl(nic_dev->hwdev, rxfh->indir);
-+		if (err)
-+			return err;
-+	}
-+
-+	if (rxfh->key)
-+		memcpy(rxfh->key, nic_dev->rss_hkey, L2NIC_RSS_KEY_SIZE);
-+
-+	return err;
-+}
-+
-+static int hinic3_update_hash_func_type(struct net_device *netdev, u8 hfunc)
-+{
-+	struct hinic3_nic_dev *nic_dev = netdev_priv(netdev);
-+	enum hinic3_rss_hash_type new_rss_hash_type;
-+	int err;
-+
-+	switch (hfunc) {
-+	case ETH_RSS_HASH_NO_CHANGE:
-+		return 0;
-+	case ETH_RSS_HASH_XOR:
-+		new_rss_hash_type = HINIC3_RSS_HASH_ENGINE_TYPE_XOR;
-+		break;
-+	case ETH_RSS_HASH_TOP:
-+		new_rss_hash_type = HINIC3_RSS_HASH_ENGINE_TYPE_TOEP;
-+		break;
-+	default:
-+		netdev_err(netdev, "Unsupported hash func %u\n", hfunc);
-+		return -EOPNOTSUPP;
-+	}
-+
-+	if (new_rss_hash_type == nic_dev->rss_hash_type)
-+		return 0;
-+
-+	err = hinic3_rss_set_hash_type(nic_dev->hwdev, nic_dev->rss_hash_type);
-+	if (err) {
-+		netdev_err(netdev, "Failed to set RSS hash type to HW\n");
-+		return err;
-+	}
-+
-+	nic_dev->rss_hash_type = new_rss_hash_type;
-+
-+	return 0;
-+}
-+
-+int hinic3_set_rxfh(struct net_device *netdev,
-+		    struct ethtool_rxfh_param *rxfh,
-+		    struct netlink_ext_ack *extack)
-+{
-+	struct hinic3_nic_dev *nic_dev = netdev_priv(netdev);
-+	int err;
-+
-+	if (!test_bit(HINIC3_RSS_ENABLE, &nic_dev->flags)) {
-+		netdev_err(netdev, "Not support to set rss parameters when rss is disable\n");
-+		return -EOPNOTSUPP;
-+	}
-+
-+	err = hinic3_update_hash_func_type(netdev, rxfh->hfunc);
-+	if (err)
-+		return err;
-+
-+	err = hinic3_set_rss_rxfh(netdev, rxfh->indir, rxfh->key);
-+
-+	return err;
-+}
-diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_rss.h b/drivers/net/ethernet/huawei/hinic3/hinic3_rss.h
-index 78d82c2aca06..9f1b77780cd4 100644
---- a/drivers/net/ethernet/huawei/hinic3/hinic3_rss.h
-+++ b/drivers/net/ethernet/huawei/hinic3/hinic3_rss.h
-@@ -5,10 +5,29 @@
- #define _HINIC3_RSS_H_
- 
- #include <linux/netdevice.h>
-+#include <linux/ethtool.h>
- 
- int hinic3_rss_init(struct net_device *netdev);
- void hinic3_rss_uninit(struct net_device *netdev);
- void hinic3_try_to_enable_rss(struct net_device *netdev);
- void hinic3_clear_rss_config(struct net_device *netdev);
- 
-+int hinic3_get_rxnfc(struct net_device *netdev,
-+		     struct ethtool_rxnfc *cmd, u32 *rule_locs);
-+int hinic3_set_rxnfc(struct net_device *netdev, struct ethtool_rxnfc *cmd);
-+
-+void hinic3_get_channels(struct net_device *netdev,
-+			 struct ethtool_channels *channels);
-+int hinic3_set_channels(struct net_device *netdev,
-+			struct ethtool_channels *channels);
-+
-+u32 hinic3_get_rxfh_indir_size(struct net_device *netdev);
-+u32 hinic3_get_rxfh_key_size(struct net_device *netdev);
-+
-+int hinic3_get_rxfh(struct net_device *netdev,
-+		    struct ethtool_rxfh_param *rxfh);
-+int hinic3_set_rxfh(struct net_device *netdev,
-+		    struct ethtool_rxfh_param *rxfh,
-+		    struct netlink_ext_ack *extack);
-+
- #endif
--- 
-2.43.0
+I have not tested bql_sweep.sh inside virtme-ng, I ran my benchmarks
+on the host system. I guess you could mount the folder with read+write
+in vng and then run bql_sweep.sh there.
 
+[1] https://github.com/netoptimizer/veth-backpressure-performance-testing/pull/9
+
+
+System information:
+Ryzen 5 5600X @ fixed 4.3 GHz, 3200 MHz RAM, CPU mitigations disabled,
+SMT disabled, on host system (NOT virtme-ng).
+
+Patched benchmark command:
+sudo ./veth_bql_sweep.sh --runs 10 --tx-usecs-list \
+"0 50 100 500 1000 5000 10000" --nrules-list "0 1 10 100 1000 10000" \
+--pktgen --duration 20 --qdisc fq_codel --no-bpftrace
+
+Stock benchmark command:
+sudo ./veth_bql_sweep.sh --runs 10 --tx-usecs-list "0" --nrules-list \
+"0 1 10 100 1000 10000" --pktgen --duration 20 --qdisc fq_codel \
+--no-bpftrace
+
+Throughput (pps)
+===========================================================================
+nrules |   0us |  50us | 100us | 500us | 1000us | 5000us | 10000us || stock
+-------+-------+-------+-------+-------+--------+--------+---------++------
+     0 | 1.62M | 1.89M | 1.75M | 1.73M |  1.73M |  1.73M |   1.73M || 1.76M
+     1 | 1.51M | 1.72M | 1.63M | 1.60M |  1.60M |  1.60M |   1.60M || 1.65M
+    10 | 1.33M | 1.52M | 1.47M | 1.41M |  1.41M |  1.41M |   1.41M || 1.45M
+   100 |  681K |  751K |  756K |  726K |   721K |   723K |    730K ||  736K
+  1000 |  116K |  123K |  124K |  124K |   124K |   125K |    123K ||  126K
+ 10000 |   13K |   13K |   13K |   13K |    13K |    13K |     13K ||   13K
+
+
+Ping RTT ms (avg)
+===========================================================================
+nrules |   0us |  50us | 100us | 500us | 1000us | 5000us | 10000us || stock
+-------+-------+-------+-------+-------+--------+--------+---------++------
+     0 | 0.016 | 0.089 | 0.136 | 0.137 |  0.138 |  0.134 |   0.135 || 0.132
+     1 | 0.018 | 0.097 | 0.144 | 0.146 |  0.146 |  0.150 |   0.147 || 0.142
+    10 | 0.019 | 0.093 | 0.156 | 0.164 |  0.164 |  0.164 |   0.167 || 0.158
+   100 | 0.029 | 0.104 | 0.180 | 0.315 |  0.312 |  0.314 |   0.311 || 0.307
+  1000 | 0.139 | 0.201 | 0.309 | 0.971 |   1.66 |   1.81 |    1.82 ||  1.77
+ 10000 |  1.12 |  1.74 |  1.72 |  1.83 |   2.90 |   9.14 |    15.9 ||  17.2
+
+
+Ping RTT ms (p99)
+===========================================================================
+nrules |   0us |  50us | 100us | 500us | 1000us | 5000us | 10000us || stock
+-------+-------+-------+-------+-------+--------+--------+---------++------
+     0 | 0.026 | 0.122 | 0.161 | 0.164 |  0.164 |  0.159 |   0.161 || 0.155
+     1 | 0.028 | 0.123 | 0.169 | 0.173 |  0.173 |  0.175 |   0.173 || 0.165
+    10 | 0.032 | 0.119 | 0.187 | 0.194 |  0.193 |  0.193 |   0.197 || 0.185
+   100 | 0.047 | 0.134 | 0.232 | 0.368 |  0.369 |  0.367 |   0.359 || 0.361
+  1000 | 0.232 | 0.303 | 0.409 |  1.27 |   2.13 |   2.10 |    2.13 ||  2.10
+ 10000 |  1.94 |  2.52 |  2.59 |  2.69 |   3.87 |   12.0 |    20.0 ||  20.3
+
+
+>>> Below is the new result. Not 100% sure but this seems right now.
+>>> Most pings are the same.
+>>>
+>>> Ping RTT ms (p99)
+>>> ===========================================================================
+>>> nrules |   0us |  50us | 100us | 500us | 1000us | 5000us | 10000us || stock
+>>> -------+-------+-------+-------+-------+--------+--------+---------++------
+>>>       0 | 0.028 | 0.115 | 0.159 | 0.161 |  0.163 |  0.161 |   0.163 || 0.154
+>>>       1 | 0.027 | 0.123 | 0.169 | 0.172 |  0.169 |  0.173 |   0.172 || 0.169
+>>>      10 | 0.030 | 0.117 | 0.189 | 0.193 |  0.195 |  0.192 |   0.196 || 0.186
+>>>     100 | 0.045 | 0.134 | 0.233 | 0.368 |  0.365 |  0.369 |   0.361 || 0.358
+>>>    1000 | 0.230 | 0.300 | 0.412 |  1.26 |   2.11 |   2.12 |    2.13 ||  2.07
+>>>   10000 |  2.04 |  2.55 |  2.54 |  2.72 |   3.77 |   12.1 |    20.1 ||  20.3
+>>>
+>>>>
+>>>> Is state->n_bql += veth_ptr_is_bql(ptr) something that is commonly done in the kernel? It relies on bool normalization which feels a bit implicit to me.
+>>>
+>>> Ok, we could swap for something like
+>>>
+>>> if (veth_ptr_is_bql(ptr))
+>>>     state->n_bql+;
+>>
+>> I'll see if I can adjust the V7 patch to this feedback.
+> 
+> Yes, and also this snippet pointed out by Jonas below:
+> 
+>  -       struct veth_priv *priv;
+>  -       u64 bql_flush_ns;
+>  +       u64 bql_flush_ns = 0;
+> 
+>  -       priv = netdev_priv(rq->dev);
+>  -       bql_flush_ns = (u64)priv->tx_coal_usecs * 1000;
+>  +       if (peer_txq) {
+>  +           struct veth_priv *peer_priv = netdev_priv(peer_txq->dev);
+>  +           bql_flush_ns = (u64)READ_ONCE(peer_priv->tx_coal_usecs) * 1000;
+>  +       }
+> 
+> Or is peer_txq != 0 guaranteed in veth_xdp_rcv()?
+> 
+> 
+> And also I would change in the commit message:
+> 
+> "Flushing when n_bql exceeds dql.limit handles two cases:
+> - BQL starvation
+> - The steady-state case where the producer and consumer run at the
+>   same speed with a large tx-usecs, which would otherwise allow n_bql
+>   to grow without bound (and potentially overflow int)."
+> 
+> ... to just...
+> 
+> "Flushing when n_bql exceeds dql.limit handles BQL starvation."
+> 
+> ... because after rethinking I think I overstated here.
+> n_bql should also not grow infinitely for the v6 version.
+> Nevertheless the new method should be simpler and faster.
+> 
+>>
+>>
+>>>>
+>>>>> For physical NICs adjusting TX coalescing will affect the BQL as this
+>>>>> affect the TX completion of the transmitted packets. For veth, it is the
+>>>>> veth-peer's RX NAPI that is "completing" or emptying the ptr_ring, which
+>>>>> is where this patch adds netdev_tx_completed_queue calls for BQL.
+>>>>> Any opinions on the "TX" or "RX" color?
+>>>
+>>> Personally I would also say TX.
+>>>
+>>
+>> Okay, we seem to have more votes for TX :-)
+>>
+>>
+>>>> I think I would prefer to configure it on the tx dev, and the recv
+>>>> side gets the value from the peer. Maybe something like this.
+>>>>
+>>
+>> I'm considering if we should simplify the config by having veth pairs have the same tx-coal value. WDYT?
+> 
+> I can not think of a case where a user would like to have a different
+> tx-coal value on either side..
+> So it's fine for me.
+> 
+>>
+>>
+>>>> @@ -997,11 +998,12 @@ static int veth_xdp_rcv(struct veth_rq *rq, int budget,
+>>>>          struct veth_bql_state *state = &rq->bql_state;
+>>>>          int i, done = 0, n_xdpf = 0;
+>>>>          void *xdpf[VETH_XDP_BATCH];
+>>>
+>>> Why this deletion?
+>>>
+>>>> -       struct veth_priv *priv;
+>>>> -       u64 bql_flush_ns;
+>>>> +       u64 bql_flush_ns = 0;
+>>>>
+>>>> -       priv = netdev_priv(rq->dev);
+>>>> -       bql_flush_ns = (u64)priv->tx_coal_usecs * 1000;
+>>>
+>>> I see we should check if peer_txq exists.
+>>>
+>>>> +       if (peer_txq) {
+>>>> +           struct veth_priv *peer_priv = netdev_priv(peer_txq->dev);
+>>>> +           bql_flush_ns = (u64)READ_ONCE(peer_priv->tx_coal_usecs) * 1000;
+>>>> +       }
+>>>>
+>>>>          /* Clamp stored timestamp in case we migrated to a CPU with a behind
+>>>>           * sched_clock(); prevents the deadline from never firing.
+>>>>
+>>>> - Jonas
+>>
+>> --Jesper
+>>
