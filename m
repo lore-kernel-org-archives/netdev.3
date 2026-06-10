@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54C6E17A305;
-	Wed, 10 Jun 2026 00:40:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 952E81A6839;
+	Wed, 10 Jun 2026 00:40:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781052008; cv=none; b=TxnrS1xOdftkLJ8xYxbDk9trL24xQVvJaYb5vAWudU3wrjUj+mV/r8kJwK48Yh1YLtCA8IzVwwMWbO7wAA9i3y3wrdLfVZEobI4PbzgwtkQL2nZ6kAmQXUOlakazQj6ZyNKWsHUfHVu9S2dHmMeZ0Y7Ehd3I0pq7cWPPko2BUdk=
+	t=1781052024; cv=none; b=PkRC/MlCCz3eH1LgpUYAIFNZHoWE4HDQKoVltCvrCW8C5Uw5NAt3AsnxPu1UAmI08fr/NZscost9/ajnOnSvDtHKTyR3GEn3tqOeqJ/AwJ/0+CtBujnmi5aqnqZ6NIxP9b8UKGTb2C3BldQF7fkNnOTp3YFIHZvADKdSeyJTmEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781052008; c=relaxed/simple;
-	bh=xvOFjLtPbijbOS5n3eWrAMA3PyhQTzIXElaXHD2l+6o=;
+	s=arc-20240116; t=1781052024; c=relaxed/simple;
+	bh=GNtruyY3bNPBssViOYW5EzehELt7YIr9EPaQxYU1H/U=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=DH5Gulm1yP7uQpCpnZ5XV3pXhSvYkfs1Dcx3x/wvuBCprxcaNPrU+O1gdrPT7k/NKKqYMFb3cLGSSzI6ABpg6IeXtZQHvseFbDaiD6kS8GuHbKCaPeHy0yfZb50yOvVyMHB3YO9TazjMvsmNz3F4BaKBS0nWiDytZ7dyLh9OFXE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lqiFIYzQ; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=u0990l0NeGCXM2BjcaOimcMHP2NByfn/EZDDUc/cmnrnAvbM8xTZgude2504OeCo6opeYhXiSsirvShEhs66VXKWJwdqOteTZGH55j6jnsPrwpIuaEcYxSERedbth/8oMaYEhHgs373FD/Z0R1IXBTczyNKXFdcxXfBD9WYXOzU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XeHvRbo1; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lqiFIYzQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC1721F00898;
-	Wed, 10 Jun 2026 00:40:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XeHvRbo1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33EF51F00893;
+	Wed, 10 Jun 2026 00:40:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781052007;
-	bh=q6+uncKJ085UzeERsTC0FucfvY0boOTO9qT3Iw48cuw=;
+	s=k20260515; t=1781052023;
+	bh=r2C275by+jKlR1Fdq7UgN01NONI8D6WcfVWSM4gOhTA=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=lqiFIYzQtmAQVorOPRkxzcL0ZqJPXIbHmf9SvcINe9rDNGOkqpI3aeczttW/SSg2P
-	 +rM1CMCzcYzDfq9Q1WKGpHC4PSbLt/cJA3huQooyPhkEdFw4ypQ2IGxfxjR47Axbic
-	 NWEhuxSI7d9HTkdv9vmV6zXriPk41ZUQa67LQ5ZJs641pd0UXeEcFF4lLq6PhvdOse
-	 0zvAlE0F2hdqltga31ca69l1OByYA5MTUH+R6WRvkwggtJAbqxW2yk7FOvE4pn3eeZ
-	 ECNlH4WktYRycgWtlMyAUVkS8PTDfpcVKfyTQXaGN0qxlm5NXPQYlnd8vHPjTd/SJ7
-	 ea7YN+EfXUQpA==
+	b=XeHvRbo1+h+ud2RjcKhkrzummeJVjUbbsIo+LJ5ZGj0PedaH6WR/UZ7V/v+po2cWx
+	 zhH+aE33hkNkd0sCOwuLmxRsW4qOJTDT2YpeOlOqH4DlmHPZOKDq01o9mBjv31Z8oW
+	 SX6UfRazMlx9MXr4MeEet3v+FvT3WrC6SVFZ5/aJH/fhzZf0QmqRaRYf4tS/gUgaYm
+	 f4Xpuua85wQJnk4HQGBdi8D4txPnssb1hHgT1277vfWIPuLNvTUmLL2SIcjwE8q5Ny
+	 4EZctWv8UvQGvALdIzGILw6aWxt3KbGqylZ9foOhSXiPg3mKSI87LT1BrazpZK3u4Z
+	 9lJcNo/cdFtfQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 568EC3930A0F;
-	Wed, 10 Jun 2026 00:40:06 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93A7F3930A0F;
+	Wed, 10 Jun 2026 00:40:22 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,41 +37,50 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2 1/1] sctp: stream: fully roll back denied
- add-stream
- state
+Subject: Re: [PATCH net-next v12 1/6] net: mana: Create separate EQs for each
+ vPort
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178105200514.2767403.6481473743961740562.git-patchwork-notify@kernel.org>
-Date: Wed, 10 Jun 2026 00:40:05 +0000
-References: 
- <d78954ecd94954653ee299400e98d74a03a6f7d3.1780603399.git.bronzed_45_vested@icloud.com>
-In-Reply-To: 
- <d78954ecd94954653ee299400e98d74a03a6f7d3.1780603399.git.bronzed_45_vested@icloud.com>
-To: Ren Wei <n05ec@lzu.edu.cn>
-Cc: linux-sctp@vger.kernel.org, netdev@vger.kernel.org,
- marcelo.leitner@gmail.com, lucien.xin@gmail.com, davem@davemloft.net,
- yuantan098@gmail.com, yifanwucs@gmail.com, tomapufckgml@gmail.com,
- zcliangcn@gmail.com, bird@lzu.edu.cn, bronzed_45_vested@icloud.com
+ <178105202111.2767403.16646247458376850244.git-patchwork-notify@kernel.org>
+Date: Wed, 10 Jun 2026 00:40:21 +0000
+References: <20260605005717.2059954-2-longli@microsoft.com>
+In-Reply-To: <20260605005717.2059954-2-longli@microsoft.com>
+To: Long Li <longli@microsoft.com>
+Cc: kotaranov@microsoft.com, kuba@kernel.org, davem@davemloft.net,
+ pabeni@redhat.com, edumazet@google.com, andrew+netdev@lunn.ch, jgg@ziepe.ca,
+ leon@kernel.org, haiyangz@microsoft.com, kys@microsoft.com,
+ wei.liu@kernel.org, decui@microsoft.com, shradhagupta@linux.microsoft.com,
+ horms@kernel.org, netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
+ linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org
 
 Hello:
 
-This patch was applied to netdev/net.git (main)
+This series was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Fri,  5 Jun 2026 13:53:42 +0800 you wrote:
-> From: Wyatt Feng <bronzed_45_vested@icloud.com>
+On Thu,  4 Jun 2026 17:57:10 -0700 you wrote:
+> To prepare for assigning vPorts to dedicated MSI-X vectors, remove EQ
+> sharing among the vPorts and create dedicated EQs for each vPort.
 > 
-> When ADD_OUT_STREAMS is denied, SCTP only shrinks the queued chunks and
-> then lowers outcnt. That leaves removed stream metadata behind, so a
-> later re-add can reuse a stale ext and hit a null-pointer dereference in
-> the scheduler get path.
+> Move the EQ definition from struct mana_context to struct mana_port_context
+> and update related support functions. Export mana_create_eq() and
+> mana_destroy_eq() for use by the MANA RDMA driver.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v2,1/1] sctp: stream: fully roll back denied add-stream state
-    https://git.kernel.org/netdev/net/c/a5f8a90ac9f7
+  - [net-next,v12,1/6] net: mana: Create separate EQs for each vPort
+    https://git.kernel.org/netdev/net-next/c/fa1a3b7bcd16
+  - [net-next,v12,2/6] net: mana: Query device capabilities and configure MSI-X sharing for EQs
+    https://git.kernel.org/netdev/net-next/c/d7c253d61488
+  - [net-next,v12,3/6] net: mana: Introduce GIC context with refcounting for interrupt management
+    https://git.kernel.org/netdev/net-next/c/d478457fc1b7
+  - [net-next,v12,4/6] net: mana: Use GIC functions to allocate global EQs
+    https://git.kernel.org/netdev/net-next/c/346c277d1db8
+  - [net-next,v12,5/6] net: mana: Allocate interrupt context for each EQ when creating vPort
+    https://git.kernel.org/netdev/net-next/c/487af6f5391e
+  - [net-next,v12,6/6] RDMA/mana_ib: Allocate interrupt contexts on EQs
+    https://git.kernel.org/netdev/net-next/c/062b2b051f14
 
 You are awesome, thank you!
 -- 
