@@ -1,127 +1,172 @@
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CHN02-BJS-obe.outbound.protection.partner.outlook.cn (mail-bjschn02on2122.outbound.protection.partner.outlook.cn [139.219.17.122])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF4FF3A48E3
-	for <netdev@vger.kernel.org>; Wed, 10 Jun 2026 09:55:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781085346; cv=none; b=Co4B4BT4w3pEVp2DtJ6vzsIQe8Q2i6dDMSzhniSIMbw5agO8GalFODgIQi2G3AA/CWQrYz7QDEUAl4v6NjukAESalWxcOyO7jbH6m+FAuhS/T9yxwaOgGJl7lafd9c9Q6pXyfnIXxGVZoOuuNs4UP8HP2E4i6EG9WGZfRgpBwMA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781085346; c=relaxed/simple;
-	bh=RxYtaOzOjvXLhABsTLKT5rUdf2WjHUzZ4ozMxheKOIQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iGDeUFRKkF5Nl62tKs7KM36P5GQZJUV0Z0GUSRPbpaUqPpaHAslOj+hrF1X73ymq8e430lFs6y30h7f4Uk3RF/vOlRTCJGx1IJ3sPGDyYcAv8XfQSPd3iuNeyVMM7dnZdbVPlkP2tc5xnROFFSnorW9lDqjVhXZeTXKXF3jmF+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gehZfH0X; arc=none smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gehZfH0X"
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-490b8ac62baso51335215e9.0
-        for <netdev@vger.kernel.org>; Wed, 10 Jun 2026 02:55:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781085342; x=1781690142; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DXXf5kDNkZaZma579LeFr3+QRDi52FtRCi+F8Ah0BJ0=;
-        b=gehZfH0XlCrjPYGryvmNLnz8gas78t1NCCGVCxYQuXc+ezJVxkJovg3gZ68eoCZhgT
-         w7yc27Z5FV6OxwB0FcPBX2EqHE5OPYPbURPQ7PvMZtE9MCaPKi95MUdpet0KUehGntqc
-         HKRVYuvq7W/adTDWj7WZk+9P4GJHI1tChfCf+Jq9+5a8m4OTJYSviMfYuqiW8Kxn9OQj
-         zL7dYye1N7l2Jd7Gx5fa399/j/FnsYswvqucZIgsSiW/jaK10oDH+iMuO0D6AA3auCEt
-         /IElReue6IxUwWl0P2t/ZHUQ0JIBvBsH4U6b1xso05OWP1ipmWJ6Je8m+oBQpDhf+jbR
-         rK0A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781085342; x=1781690142;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=DXXf5kDNkZaZma579LeFr3+QRDi52FtRCi+F8Ah0BJ0=;
-        b=sTMGt0nFJfnpYzuKjjA7ObUvjITjMc1qMk9DyZy+p5n3Dp0SpCY5VM2+brF8yNqsP1
-         Tkvicy4LC2oMqfBbQqfZuF6IavolkW5wsAoR5UbwK4PafVfsjd7URNAl3nVQYnTa5qp1
-         i9EoimTw3os39iHKHUDoDQK7AV35NxhKj/8+yqDkcuRdSrHmcVw5InzljNT26w8cYUso
-         hbmGAvRj/25kGUX54xmAc+UCOU0VoU/paABrt8Ak1cSxEMkgv97dFzcqWoyDoNJK7ZZ8
-         IvtN7SEP1Z62NVrROyLV8D6z3oxskULkaW1LoHV2wLRUQMGvo1uOOUDhtBe1662ijvEK
-         0YFw==
-X-Forwarded-Encrypted: i=1; AFNElJ9wYRRnBAyWeA2Cm9jnizUTHbb0/WpFHi0rfrwRWPM2LwcVwk6tTURy0ZRDr1LxzDDbmUUAljU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwlKkE4Rek0bPHZGGFr9Das+LBxoO6liynU2k49i8jpiXd0pGG+
-	N8IT4ch+5KN/3g+vzs8FSYRA2OURhL1Flth4PlzadPnzAD9LNttu9D+R
-X-Gm-Gg: Acq92OG+4oANMxIQ4p4wR0yE8fHmBYREzsH+3YyItURuYw4CbqlMqXei7oaxF/0BurP
-	PBP7BwFoP+cUVY9SMBSVo5CIGZH+tf+kQ/encycEXGOTNnsKUTbN4/KrPl7L+WOudBjDajtG5Zd
-	KsO/dz57VI6yzyKaM0N8RxPmjpr+SPU9fq/X4xSmvXeOYAz9dQ+fQdFZn0wqrG09PFlgOAisrRZ
-	As1YDaNesOixz/veI381WoRr87Vaz4qYwT1nILdNqzXiwNiXJaWd5tNcDxxpQ1c9fTl4zm1rJ0m
-	1z0kSXXyHTF/LaH2cP7sxCpau6qlO04NLPRIG7jFH1Tz/joFGIvwfee2veyjsdPAl1riURbZ1zD
-	LLTAHFVZrr7cQkfJt8rKg89YW/t2OsTysSPo8Uls6AT08IDQC5z0eN74i+CpIVmcPpR9sc6Vw/O
-	YnQ+33PotZYWyTVpUAw9hc5+0nAQAqoVOP2gopu3CVuFP60HFMnat1VsGuXKm74nAZsUWWRbOgY
-	hg5cgCZtw==
-X-Received: by 2002:a05:600c:6096:b0:490:c1cb:48f4 with SMTP id 5b1f17b1804b1-490c2d038e8mr309043665e9.12.1781085342059;
-        Wed, 10 Jun 2026 02:55:42 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490be1f69bcsm591850845e9.8.2026.06.10.02.55.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Jun 2026 02:55:41 -0700 (PDT)
-Date: Wed, 10 Jun 2026 10:55:40 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Herbert Xu <herbert@gondor.apana.org.au>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, luto@amacapital.net,
- safinaskar@gmail.com, akpm@linux-foundation.org, axboe@kernel.dk,
- brauner@kernel.org, david@kernel.org, dhowells@redhat.com,
- hch@infradead.org, jack@suse.cz, linux-api@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, miklos@szeredi.hu, netdev@vger.kernel.org,
- patches@lists.linux.dev, pfalcato@suse.de, viro@zeniv.linux.org.uk,
- willy@infradead.org
-Subject: Re: [PATCH 0/3] vmsplice: make vmsplice a trivial wrapper for
- preadv2/pwritev2
-Message-ID: <20260610105540.5901a5be@pumpkin>
-In-Reply-To: <aijxfxXrWLCVqV6-@gondor.apana.org.au>
-References: <CAHk-=wh5bFj1a7eaGp9sixDg3UXu7xUGfU=YJo+ckpGxGAyhXQ@mail.gmail.com>
-	<aijxfxXrWLCVqV6-@gondor.apana.org.au>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAA003E2754;
+	Wed, 10 Jun 2026 09:57:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=139.219.17.122
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781085466; cv=fail; b=UFi82lCC/NI446i6IHyo/fArgFsPi0twBesarhJbuVRKcAXWndZcaVLxWXAHg9SmPqPgCMVDFhnWLJQSnmwmpn4LsNjIBmsbHyvY8VBqFKXhNWcxZ4GtbBdDgL29/3SVEJy4Kp5WM9B5yP//L/XRRUpYA4BBpq9Ua9+0nVRDciI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781085466; c=relaxed/simple;
+	bh=7A7KVgft2ue4eb9zKiDHikW+tlvjwHfl/XQsYG/ETi0=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=dLRrMUQZDtIE/1HdmEKt3f5H1tsRAfx4CG5NpUjZquM7CvCnq2O+rkjqknDty9255MIHXTUh+b6hI7FmUl/fg1NhIK2iBNnN7F3ddvxadAEhnBUyB8CfMOZrgmnlYI1WtMcvw9M/ii2xycuBs9Y6HlQbtFLLoOrforJYoyP5xRc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com; spf=pass smtp.mailfrom=starfivetech.com; arc=fail smtp.client-ip=139.219.17.122
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=starfivetech.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=QdcNdO5iiNm4OrOFjxv5MD2tCAwpDmELJMv3FXpMYaG9/U8AJcSWtXFsHqozDwTl155rkF7QgRXjIy79MbhYyim0d3QI16N5Cfur0CFfnaALSgqVVGDSd/wOnbFVVB6wrolTJOpzmTPnSX31fZyd1oEwVnlTCcFRlyGnHazOzKI7h+fNEyWxwPrDThrtyGzJ8mOuNVLLQRPA9P7Dq/DrFiDvhH6qCyd9ZI4lfKhjhXxUUli0/k1BaNgCT3XBNij8JPTQA6vQaFMlxLJdHfq0y14giYr9uGDrI2rm/A0bkL8iS9b7wfYvf8lwoN62fSizNIz7uwx44g741xHLmvikKA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=dcEeQm5DdxCT9YGQcyHsXOsVRp1Z3YT5KA+ISTv0vl4=;
+ b=Hj/YAxmos8PrAV4e5JRjMi0UnIuB9uv3Sx8zBlkFXkch5XbVuYlddHD9icqMssDuMcLyI0XFQbqyoZVWxY2yrvHgiNtgB5reEFPbQTZadvMNwfa2/RG6QhZ4s8mh6am+zk8krpgAZe819iwC0cRBPnDXTcQER8LnkbgDj2vtralHfYseyXX5RTpIYAoQJdIk7+JjbArJJHudz4nTJ/AAty6yIZe1c7gjND99Ngze5mVZt/vs0kv5dItFqyYDKxC+yBkhcso621TfwJx3m9HjvnqMQVJOoSd5e6LrMVbI7ztYb4ICiKtdIlqaVsBDot598PcjsgFrlVvdK4fUu59Y4w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=starfivetech.com; dmarc=pass action=none
+ header.from=starfivetech.com; dkim=pass header.d=starfivetech.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=starfivetech.com;
+Received: from SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c311:25::15) by SHXPR01MB0512.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c311:1c::12) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.113.11; Wed, 10 Jun
+ 2026 07:24:32 +0000
+Received: from SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn
+ ([fe80::9b99:12dc:a115:b90f]) by
+ SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn ([fe80::9b99:12dc:a115:b90f%3])
+ with mapi id 15.21.0092.014; Wed, 10 Jun 2026 07:24:32 +0000
+From: Minda Chen <minda.chen@starfivetech.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jose Abreu <joabreu@synopsys.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor@kernel.org>,
+	netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	devicetree@vger.kernel.org,
+	Minda Chen <minda.chen@starfivetech.com>
+Subject: [net-next v1 4/6] net: stmmac: Add NCSI VLAN setting
+Date: Wed, 10 Jun 2026 15:24:18 +0800
+Message-Id: <20260610072420.64699-5-minda.chen@starfivetech.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20260610072420.64699-1-minda.chen@starfivetech.com>
+References: <20260610072420.64699-1-minda.chen@starfivetech.com>
+Content-Type: text/plain
+X-ClientProxiedBy: NT0PR01CA0003.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c510::15) To SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c311:25::15)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SHXPR01MB0863:EE_|SHXPR01MB0512:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4ea83b61-68bd-4287-89fc-08dec6c1510c
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230040|23010399003|366016|1800799024|7416014|376014|52116014|22082099003|18002099003|38350700014|921020|56012099006;
+X-Microsoft-Antispam-Message-Info:
+ N2UYCamWLi8kfLNvctwz8tbHbavysmPtdg0bGatJb5/gvfKmju6y+r6Omm30DdLnDMOHTGXWyJ/BN+o0hKTum6I4TFt75inJwWsR1cnz4HwPP9NIY7VBXXk7b3xcVPSxqQt1EPC8dvyapwBY9gyZyz1RND5fbCcuTIm2OHPRVLN+XfREVIiNdvwjs4njZtFf0N/Aj9Bal3agk5hkBXu9dcZ3NGMkqQDUYd4zceSza1A2JuaVR6IjaO6fLyV6X3uf4OQfU6eDX25EuKTU1lDomiW1+Ya/d3yr9ig7znTtbugJzsbu9hZ/fyPiTYJevOWuHgNSTLjoIOE2PU70Gr5P0kJjsOuV9I2/VjV7nrEMCYE7vvNuHR4HXBFRH4YhslqJSdSmmRvXowjDZHypBvO+LH5ENi8yMmuqFEGhNQbv8k2cV7dwg7YZw22hSJUFQsE8/jeSYbU41EDTwBBhHjmt3Oa1tWs3oIRX6K+0C60kTJ1fEb++nRciAcyAd/Vn4s/OzvWd7a+S2Zejt69RfhqqATDjlyiVjLJmKyYx971vvt6otUeQxZwy1uzFnYGhyrLeV4C7abmlSoqX40y41MCM4w==
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(1800799024)(7416014)(376014)(52116014)(22082099003)(18002099003)(38350700014)(921020)(56012099006);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?us-ascii?Q?NG9Jt8yWfgB6anf1e4/6pJbRxvY7EpvpUDjYTnaU+nQgTR5bD9PMUjWWeecJ?=
+ =?us-ascii?Q?OyGVZ/+Vye8BSaucl0JgzXr095g1bnqeodlHiEZJ6sxegNIR3mWri6KOc4OB?=
+ =?us-ascii?Q?ZM9ldswESPKo9qHSxAeTA1DW5x7KF1cNQc1/tysQPphRudNp2NWt43ZoI3vq?=
+ =?us-ascii?Q?t8muQl9t4M5NDkkfK7qBuVj9wXQqJu3/k6wNNZBr0k4i4Pr0t5aBswt51w3i?=
+ =?us-ascii?Q?HlhRMSVHc0Tg2zAei2zWNFixKmAorqz/Yt+d70LggwtD7Q0DBfpaXQIDKM5G?=
+ =?us-ascii?Q?dxUUczJB9e4U5BTMnCSoN/SL1+K7HhSkSdASntvQrTXwqAqljEg/1TxHbQt7?=
+ =?us-ascii?Q?VUQw/TokjqfZNe9H1fS9+Rl6C809QoIXJhbJ4lfF4qXDBV4vpTf3EbJRJesG?=
+ =?us-ascii?Q?xRx7zEbTtis2gMKlJEDp38N/3PYMLmEFfXaDbtS4Cf1tDU9xbvFAdc8oJohE?=
+ =?us-ascii?Q?O5shTb3ytN3bjamZ9thcUmVaXO77kckYcInJl1xH63PFHyOzYEQZU8EfFgZ1?=
+ =?us-ascii?Q?NyawEFAoooCNGl+negCVM/2d+Kx2UUCQ/ojtfDLAq6ddHBNhepcZZGQRR2x5?=
+ =?us-ascii?Q?etFyEi9/JnYz1AWzvCPsCrp4Fj6blstDsRuNI0onS2gNF//1gLMVJi82dy1m?=
+ =?us-ascii?Q?Dkm2iJZFOIlOqaIxi29eYO8KkVmGqk5EPThRVON2vo5muWfHPYe6/D3nXvYw?=
+ =?us-ascii?Q?hTCJnPyQ8drQ/fsEJ2BAjKI29s5GHSiDnC7z/KjbOS4yEF3HcLj3QbHLoWq7?=
+ =?us-ascii?Q?9HurUEoqC0Sf5ufJpTpVFvjLk8+8qwZ4jbIGuE7YFSuPyNrL6H4kfmKOZ63K?=
+ =?us-ascii?Q?s14tOzDayTv5X6VyMLDPQZ2joqqDVzRz9Coobw7PHR9QMzumxLVEjWVBTS8w?=
+ =?us-ascii?Q?7xc9FdidMFABifPPJ2RSKhORlCUR1ohr7LEKPLlfyGLHnF7N8CQj7V4ZuemS?=
+ =?us-ascii?Q?Z9xr4SM4VjpFUIi5M/56ZKerKy7WPuJQK/IyoF4qDwWWdpgEGMU1NjOTeVjW?=
+ =?us-ascii?Q?c9B23OFYRMYB+IK0xIYMq3ttIdcJvm66N/TVqYXFSknrDwF90kHpobH9yT8Y?=
+ =?us-ascii?Q?VzyN9UfCBl8ILaGjksFy0sKXgNxuWWRNGWZ5jBPJdLlGt4dk7okWgj0drMD0?=
+ =?us-ascii?Q?MZoPhLepc6TFgdefoYDRCmM0LXYKqv04bzqdw241FDIj0Vw62vpaythV0Y5p?=
+ =?us-ascii?Q?m+9eJC6YjbH18L3iCfUuYOn58D1SJSDrMYi1wV3XMjAcoznyjOFTMhIqAkzJ?=
+ =?us-ascii?Q?Re0fgisB+aExD2gf3uS0aVTbWUzGw9onVaKD41vxIyQWUVzs5cSMsGpwndD1?=
+ =?us-ascii?Q?p+8bGJd3ab74jY5CMMSVDy/5O5Xfd7om7//dJfk9Q9JE+/m7JfFkQuME2HJ0?=
+ =?us-ascii?Q?+igFkgueyTto22jPFlIsxDSkAxMpcCZ8ilsGN4wVLvgxeBiKq1qV9JI7iv4p?=
+ =?us-ascii?Q?rLp/AhABPeCOox38ISCR3pMpaU+Sxz5gO52nQ6xj6PSBSKEl5vwD7rRagx7I?=
+ =?us-ascii?Q?Xhg1SZmgcyb1W7jN8RkNgjmYqxa7Arnkj8eUCKPOkqZiOhtBU4/GK6MvO5mI?=
+ =?us-ascii?Q?ovNkZ0Kbd2R+KgyJBDJIy5hsYk9nIfD2odyw06DZB9pFQ02ZLxIXKNbEQ5xv?=
+ =?us-ascii?Q?vK+RB+//cRzqtajGlsBIX3cSFZTHxpa1XGGxnGEpbL6modS30oGrcGeYJDzj?=
+ =?us-ascii?Q?THgWRb86OzuPzGq4LLTS+IYT1Ofe3BWbjaCfmLAK6IG5FMWFfAlSSkqFDgy5?=
+ =?us-ascii?Q?3GYtnFbv3KoxXJELMRXkbOzI83l5qgg=3D?=
+X-OriginatorOrg: starfivetech.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4ea83b61-68bd-4287-89fc-08dec6c1510c
+X-MS-Exchange-CrossTenant-AuthSource: SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jun 2026 07:24:32.4963
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 06fe3fa3-1221-43d3-861b-5a4ee687a85c
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: EfWjy8E6tY5496EKO53T9pTnlBBz88PYp4NZjoyq6AM4qjKDtwaihUP87mkr1hhZ+MmeU7QANZzZWJeuIvJfMl5hMfVtKmbCehECNgZBALE=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SHXPR01MB0512
 
-On Wed, 10 Jun 2026 13:09:19 +0800
-Herbert Xu <herbert@gondor.apana.org.au> wrote:
+Add NCSI vlan setting while in NCSI cases,
+The code process is like NCSI mode in faraday
+ftgmac100.c.
 
-> Linus Torvalds <torvalds@linux-foundation.org> wrote:
-> >
-> > Because I think splice() is a *cool* feature. It was always *clever*.
-> > I just don't think it's worth the pain it has cause.
-> > 
-> > And it's been around for a long long time, and after more than two
-> > decades it's still most definitely not _widely_ used.  
-> 
-> A couple of years ago I used tee(2) in dash(1) so that we could
-> avoid reading the input line byte-by-byte which is what every other
-> shell does in order to pass the rest of stdin to the executed
-> command.
+Signed-off-by: Minda Chen <minda.chen@starfivetech.com>
+---
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-The shell just needs something like MSG_PEEK to do a non-consuming
-read from a pipe.
-(Without the strange behaviour of a second offset.)
-
-That would be simple and could have been implemented 40 years ago.
-
--- David
-
-> 
-> https://git.kernel.org/pub/scm/utils/dash/dash.git/commit/?id=44b15ea09a9ee5872cf477e4ffc6b42ef37d1e46
-> 
-> It's definitely niche but made a huge performance difference to
-> this rather common scenario:
-> 
-> echo 'command
-> ...
-> rest of stdin' | sh
-> 
-> I didn't even know tee(2) prior to this, even though it was added
-> way back.
-> 
-> Thanks,
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index b6af53783883..b8ce04d71d08 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -6866,6 +6866,9 @@ static int stmmac_vlan_rx_add_vid(struct net_device *ndev, __be16 proto, u16 vid
+ 	bool is_double = false;
+ 	int ret;
+ 
++	if (priv->plat->use_ncsi)
++		return ncsi_vlan_rx_add_vid(ndev, proto, vid);
++
+ 	ret = pm_runtime_resume_and_get(priv->device);
+ 	if (ret < 0)
+ 		return ret;
+@@ -6908,6 +6911,9 @@ static int stmmac_vlan_rx_kill_vid(struct net_device *ndev, __be16 proto, u16 vi
+ 	bool is_double = false;
+ 	int ret;
+ 
++	if (priv->plat->use_ncsi)
++		return ncsi_vlan_rx_kill_vid(ndev, proto, vid);
++
+ 	ret = pm_runtime_resume_and_get(priv->device);
+ 	if (ret < 0)
+ 		return ret;
+@@ -7943,6 +7949,9 @@ static int __stmmac_dvr_probe(struct device *device,
+ 	ndev->xdp_features = NETDEV_XDP_ACT_BASIC | NETDEV_XDP_ACT_REDIRECT |
+ 			     NETDEV_XDP_ACT_XSK_ZEROCOPY;
+ 
++	if (priv->plat->use_ncsi)
++		ndev->hw_features |= NETIF_F_HW_VLAN_CTAG_FILTER;
++
+ 	ret = stmmac_tc_init(priv, priv);
+ 	if (!ret) {
+ 		ndev->hw_features |= NETIF_F_HW_TC;
+-- 
+2.17.1
 
