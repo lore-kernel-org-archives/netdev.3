@@ -1,99 +1,160 @@
-Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BBD23ACEEC;
-	Wed, 10 Jun 2026 08:31:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C84DD399358;
+	Wed, 10 Jun 2026 08:31:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781080278; cv=none; b=N65SWzdzt/xL4HZ3eAPau4PmuK3mFHLfRMMofEuQ3Q+iTd7LfzRkKWswSe6J7S1iz8KUdhizfOKKN1ScqCJCAk+jO8sr2BDlqZVtdCWNHPD9ruDwqq9OEFkbZvgecGBzJbG/N0H2vKwu2/ENKWE/K52m6+IfQ/4+LWS9LQH04ec=
+	t=1781080288; cv=none; b=W/iHTro/w5HVvc74O3Fi1hcJp0N3NWGFvswiSkGGo9KLTpfLrXc6Z9M5d2a9FCgzA7hN/JVxW7JfW7yHLb1dzlHizCikMdEkS8rLrULscFQLDMK/Che1cPr4lqBxUhXogBiuRclCjdI6tq7AXta5lm0g+d3RYhhk52qOox0Wtcg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781080278; c=relaxed/simple;
-	bh=jTI+HIFny4/bth3PyE7ERPfvANuDmHYLce9vqdQxTKE=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=dmUOIGWwwT18+rbIqtKCe0CO5b3n6Ci0ZBwPrXbbmgTEM+8BO4ZpokXxREpbkTFCeEyE3iSfawt5fCCnb8LIJcNLySh9yD+kGrnSxdDSR51pGeUvx+wNHUu8rBeIpEn78MVeva5IQs1HTHOSlXMty42Co71ny6cTuVbuuF4LGEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=lWvP8vUk; arc=none smtp.client-ip=80.241.56.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+	s=arc-20240116; t=1781080288; c=relaxed/simple;
+	bh=v4HBoDWj3r6sBM7g0mxyX4dQ6EzByot+RLtUfjmPW1I=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=M8/txTnvspXHstrb1n0q8hdaD4qQMvi9ldq7dsB+3kbLxF7XP5Cgy9NnZeo6l/0ktOz1UJ2rb2zb8/ur741QWHi0l5L7jARrn1bCSA/h2JJpwzcGcw9JCFnUvqgHcgTTE8KgRx1hynixaGZGDtvnGJyURJsAOJlOW67Z0q8gd/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kYxEj0z1; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="lWvP8vUk"
-Received: from smtp102.mailbox.org (smtp102.mailbox.org [10.196.197.102])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4gZzWZ5yN8z9tr7;
-	Wed, 10 Jun 2026 10:31:06 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1781080266;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Klrgs6S1L7vyN25nRg842jZqnd2p9mAU1kL/Okh4r2g=;
-	b=lWvP8vUk+/Yq1piLALsm6ZrhFiE/iK7HqSXmQgTgi4Dpy1HU8z/83dIVf8wKs96VjYHyJ3
-	SqCHixavV22sESbcCmwqckKzLsEeuYnFJQu2Uz/KSqUnosc7ezrLnKiFDEuVz8uReoRGf+
-	w554SrnIpV3EY2HkBwvcEFPFWG1OiJxAip1KqbUGCizfB/5v7vcruIrI+0fMU/POWYR0Ia
-	NTB51AUPmn7rUYGaAr+XAhEqOVvXa/YB0VLmD4yCrt0DLT+tcldvs63gdP4SBUJmsv7BEe
-	jpt9DsneikbnvYusyCMr+X3lvVb7uy5ENCkH1r2Np/V77g07FXLi6rMvknOj4w==
-Message-ID: <c80c7ad9aa48dca8799ed2e76b1628aa7bec92b0.camel@mailbox.org>
-Subject: Re: [PATCH net-next] i40e: Use common error handling code in
- i40e_register_auxiliary_dev()
-From: Manuel Ebner <manuelebner@mailbox.org>
-To: Markus Elfring <Markus.Elfring@web.de>,
- intel-wired-lan@lists.osuosl.org, 	netdev@vger.kernel.org, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S. Miller"	 <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski	 <kuba@kernel.org>, Paolo
- Abeni <pabeni@redhat.com>, Przemek Kitszel	 <przemyslaw.kitszel@intel.com>,
- Shiraz Saleem <shiraz.saleem@intel.com>,  Tony Nguyen
- <anthony.l.nguyen@intel.com>
-Cc: LKML <linux-kernel@vger.kernel.org>, kernel-janitors@vger.kernel.org
-Date: Wed, 10 Jun 2026 10:30:59 +0200
-In-Reply-To: <f0b4e354-9ed7-43f5-8ffe-97019e421c02@web.de>
-References: <f0b4e354-9ed7-43f5-8ffe-97019e421c02@web.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kYxEj0z1"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 99DE9C2BCB9;
+	Wed, 10 Jun 2026 08:31:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1781080288;
+	bh=v4HBoDWj3r6sBM7g0mxyX4dQ6EzByot+RLtUfjmPW1I=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=kYxEj0z1VZPQBj7ZgGIGjEcn8VcgGlpQh7AuTe0HZS0Kj4N/gOmj8COtR4kmYtrIJ
+	 ribsK1uEZwTy80jOoxtCs+YjBCz75kyYVT3ajkUeIbklZaJOqZw3ZeKh3YqCrYLK8A
+	 5yQ/1XBnj+U0UtjFnvVf6DWcp6R54l2O0zKjzJdI1JEswl8W5P8ozRjPPZZWgexs0H
+	 TX/UKd4jlKl726Q/Mc84aAT1cjI8kmj3nMLfBWEys38hK6eDtBDJPliHCcFhrwRZRf
+	 MGj7SITNhbJxbuxqhruOrOBosKKRDjD2wVmCp9RA0i5Zb/rkJe/mtL5iUy6gYELkTQ
+	 Rlf3A3M/YgLFg==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7F54FCD8CB9;
+	Wed, 10 Jun 2026 08:31:28 +0000 (UTC)
+From: Cedric Jehasse via B4 Relay <devnull+cedric.jehasse.luminex.be@kernel.org>
+Date: Wed, 10 Jun 2026 10:31:23 +0200
+Subject: [PATCH RFC] net: bridge: mcast: don't clear L2 host_joined on port
+ group deletion
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MBO-RS-ID: 9bb7a79ae9e476ce094
-X-MBO-RS-META: inxwp8m3dr45e16ycngz46gfm9ofxwch
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260610-mdb_l2_host_joined_fix-v1-1-19746b0b8a5d@luminex.be>
+X-B4-Tracking: v=1; b=H4sIANogKWoC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDMwNL3dyUpPgco/iM/OKS+Kz8zLzUlPi0zArdtCSjlFQjQ1MLg2RzJaD
+ mgqJUoDDY4GilIDdnpdjaWgDkt+kAbQAAAA==
+X-Change-ID: 20260609-mdb_l2_host_joined_fix-fb2de21580c7
+To: Nikolay Aleksandrov <razor@blackwall.org>, 
+ Ido Schimmel <idosch@nvidia.com>, "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
+Cc: bridge@lists.linux.dev, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Cedric Jehasse <cedric.jehasse@gmail.com>, 
+ Cedric Jehasse <cedric.jehasse@luminex.be>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1781080287; l=4075;
+ i=cedric.jehasse@luminex.be; s=20260213; h=from:subject:message-id;
+ bh=Nc7ftwi5FCk1zbALrXN+jcXd41GY2T6GIvI9xkrpbyI=;
+ b=RibYAWjSHhDpRl4wwKOTGtVn2IwvM9Jw1n97jKA3elr9UsKpNIBvxLOjg/+skCn4QwVhywZJ3
+ a/yHESXt1GWDh5keWxvxnazzZKzdVDZHT+KvQ9hrQixTHvJhFJFZwBV
+X-Developer-Key: i=cedric.jehasse@luminex.be; a=ed25519;
+ pk=DL2RaHc2bc7tTDTMJdugm42BtJk4Ip+7V41Gkj+Avjk=
+X-Endpoint-Received: by B4 Relay for cedric.jehasse@luminex.be/20260213
+ with auth_id=638
+X-Original-From: Cedric Jehasse <cedric.jehasse@luminex.be>
+Reply-To: cedric.jehasse@luminex.be
 
-On Wed, 2026-06-10 at 10:20 +0200, Markus Elfring wrote:
-> From: Markus Elfring <elfring@users.sourceforge.net>
-> Date: Wed, 10 Jun 2026 10:02:58 +0200
->=20
-> [...]
->=20
-> diff --git a/drivers/net/ethernet/intel/i40e/i40e_client.c
-> b/drivers/net/ethernet/intel/i40e/i40e_client.c
-> index 84a97ca8a6d8..389b8b83afbd 100644
-> --- a/drivers/net/ethernet/intel/i40e/i40e_client.c
-> +++ b/drivers/net/ethernet/intel/i40e/i40e_client.c
-> @@ -304,15 +304,15 @@ static int i40e_register_auxiliary_dev(struct i40e_=
-info *ldev,
-> const char *name)
-> =C2=A0	ldev->aux_dev =3D aux_dev;
-> =C2=A0
-> =C2=A0	ret =3D ida_alloc(&i40e_client_ida, GFP_KERNEL);
-> -	if (ret < 0) {
-> -		kfree(i40e_aux_dev);
-> -		return ret;
-> -	}
-> +	if (ret < 0)
-> +		goto free_aux_dev;
-> +
-> =C2=A0	aux_dev->id =3D ret;
-> =C2=A0
-> =C2=A0	ret =3D auxiliary_device_init(aux_dev);
-> =C2=A0	if (ret < 0) {
-> =C2=A0		ida_free(&i40e_client_ida, aux_dev->id);
-> +free_aux_dev:
-> =C2=A0		kfree(i40e_aux_dev);
-> =C2=A0		return ret;
-why do you do this? There's no functional change, right?
-is it just readability?
+From: Cedric Jehasse <cedric.jehasse@luminex.be>
 
-Thanks
- Manuel
+For a static L2 multicast group that has both a host entry and a port
+entry, deleting the port entry also removes the host entry, and the
+whole group then disappears from "bridge mdb show".
+
+To reproduce:
+  bridge mdb add dev br0 port br0  grp 01:02:03:04:05:06 permanent
+  bridge mdb add dev br0 port swp1 grp 01:02:03:04:05:06 permanent
+  bridge mdb del dev br0 port swp1 grp 01:02:03:04:05:06 permanent
+  bridge mdb show # the "port br0" host entry is gone, too
+
+br_multicast_del_pg() processes every non-(*,G) entry through the S,G
+path, which removes the port group from br->sg_port_tbl and then calls
+br_multicast_sg_del_exclude_ports(). L2 entries are stored in
+sg_port_tbl as well, so they take this path too.
+
+When the last port is removed in br_multicast_sg_del_exclude_ports it
+sets "sgmp->host_joined = false", clearing the host membership directly
+and bypassing br_multicast_host_leave(). With host_joined now false and
+no ports left, br_multicast_del_pg() arms the group timer and
+br_multicast_group_expired() tears down the whole mdb entry -- even
+though the host membership was explicitly and permanently configured
+from user space.
+
+Keep removing L2 port groups from sg_port_tbl, but skip the S,G
+EXCLUDE-mode handling for them. The host membership of an L2 group is
+managed solely via br_multicast_host_join() / br_multicast_host_leave().
+
+Signed-off-by: Cedric Jehasse <cedric.jehasse@luminex.be>
+---
+For a static L2 multicast group that has both a host entry and a port
+entry, deleting the port entry also removes the host entry, and the
+whole group then disappears from "bridge mdb show".
+
+To reproduce:
+  bridge mdb add dev br0 port br0  grp 01:02:03:04:05:06 permanent
+  bridge mdb add dev br0 port swp1 grp 01:02:03:04:05:06 permanent
+  bridge mdb del dev br0 port swp1 grp 01:02:03:04:05:06 permanent
+  bridge mdb show # the "port br0" host entry is gone, too
+
+br_multicast_del_pg() processes every non-(*,G) entry through the S,G
+path, which removes the port group from br->sg_port_tbl and then calls
+br_multicast_sg_del_exclude_ports(). L2 entries are stored in
+sg_port_tbl as well, so they take this path too.
+
+When the last port is removed in br_multicast_sg_del_exclude_ports it
+sets "sgmp->host_joined = false", clearing the host membership directly
+and bypassing br_multicast_host_leave(). With host_joined now false and
+no ports left, br_multicast_del_pg() arms the group timer and
+br_multicast_group_expired() tears down the whole mdb entry -- even
+though the host membership was explicitly and permanently configured
+from user space.
+
+Keep removing L2 port groups from sg_port_tbl, but skip the S,G
+EXCLUDE-mode handling for them. The host membership of an L2 group is
+managed solely via br_multicast_host_join() / br_multicast_host_leave().
+
+This fixes the issue, but i'd like a second opinion on if this is the
+correct way to fix it.
+---
+ net/bridge/br_multicast.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/net/bridge/br_multicast.c b/net/bridge/br_multicast.c
+index 881d866d687a..d718a6d1ddb1 100644
+--- a/net/bridge/br_multicast.c
++++ b/net/bridge/br_multicast.c
+@@ -816,7 +816,13 @@ void br_multicast_del_pg(struct net_bridge_mdb_entry *mp,
+ 	if (!br_multicast_is_star_g(&mp->addr)) {
+ 		rhashtable_remove_fast(&br->sg_port_tbl, &pg->rhnode,
+ 				       br_sg_port_rht_params);
+-		br_multicast_sg_del_exclude_ports(mp);
++		/* L2 entries share sg_port_tbl with S,G entries but have no
++		 * *,G/S,G EXCLUDE-mode semantics; their host membership is
++		 * managed explicitly via br_multicast_host_join()/leave() and
++		 * must not be cleared here when the last port group is removed.
++		 */
++		if (!br_group_is_l2(&mp->addr))
++			br_multicast_sg_del_exclude_ports(mp);
+ 	} else {
+ 		br_multicast_star_g_handle_mode(pg, MCAST_INCLUDE);
+ 	}
+
+---
+base-commit: 022bdd9c0d036863c4bacd1688b73c6be3001cee
+change-id: 20260609-mdb_l2_host_joined_fix-fb2de21580c7
+
+Best regards,
+-- 
+Cedric Jehasse <cedric.jehasse@luminex.be>
+
+
