@@ -1,188 +1,134 @@
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F37238BF9A
-	for <netdev@vger.kernel.org>; Wed, 10 Jun 2026 20:03:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C721337DABE
+	for <netdev@vger.kernel.org>; Wed, 10 Jun 2026 20:10:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781121830; cv=none; b=FYMXwSzowlwQkLmvtJ/Hl3lIDE5kz7yogTATlAvJJUPw5Oy6Pat1FWTwd4N/39i5UWJinLsqQ0/nunpRKKMvTU9zzv+CCI/C6wFB9y8aa8uHp4jWVJPZlEU2xoecbcmwxq0409gedCOqVmp4oOn3yUBcjlb2Bevw1lSJz2yJw7k=
+	t=1781122263; cv=none; b=LruXKu8AEgEIbHne1e/x5140Ps653ZG+PzUiI7OlTrlpsavZICJp20/h+nTHJXreg2a1HODyJqCWoT7ZuKfYXQ2ZwHuWOjlOvm5CV+/pGFbirQ6gtJfyoscChET+rVPJdpR5rQlkqtkHA+xCeUnOiWt9sZ2wSAP0Km+PRoFwvR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781121830; c=relaxed/simple;
-	bh=3ZElmahT+PnwQEQ9dTHLRsZo9ZlnYm739b1Vi/iM/UQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dQoHIpm2UHqdlyhs0e4b7ySLVyHBQ/vxb/+7xOvKt3fCQcV8nxQpYhz4WEhYrCnq30bPC9WWfh06YiAuh531JokcXN58e5M4b15gBGLclVP+r+/2ePSoSbRaIs4WguYSb/DJfjyJ2fMrTxMTlzbu2bnivGk1aZwRmzSZomVARQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0sec.ai; spf=pass smtp.mailfrom=0sec.ai; dkim=temperror (0-bit key) header.d=0sec.ai header.i=@0sec.ai header.b=xVO+XLQa; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0sec.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=0sec.ai
+	s=arc-20240116; t=1781122263; c=relaxed/simple;
+	bh=g4RKJtX9XYeTrI+KiEMM5mprUDcxVsFdYk/GU3uHjBk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QzZA+0LxW+Z+6wlYFMxEgbuGSxRZanqPH1LCNgYFT3CVIyvfBdwwRGPQ4uzrRMu3Mktl2htwmNWpClP6PM22TilVcNAMxqy8cimePZPSvvuZBcGMFcmvBkvgQOCy+vOT7tt/3xKRp4OcrrSBJ75EZfujWVHJwYfKB+tnU2b0leA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UdbvUv5s; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=QkACF3Ky; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=0sec.ai header.i=@0sec.ai header.b="xVO+XLQa"
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-490acbb0f89so49465275e9.0
-        for <netdev@vger.kernel.org>; Wed, 10 Jun 2026 13:03:37 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UdbvUv5s";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="QkACF3Ky"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1781122254;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/g30yy8CMr3x848UQxbESXFBbV3w2mdx/10RodQlp3A=;
+	b=UdbvUv5sOuAEExC5XFEAp+R4SC29NKLgCKVlFfVAO8/KKbwHvjnEOHgd32q2GnUesOTpM8
+	wNENkXKHJTsvFEkrMQeMF+vK3tWtwjzSMji0sJJh3B+2ZXjJy9OHaaIBNGCiKNckq/Av2Q
+	ab0FjwTUxaZwPK2L+2gJ5LY/hoU1ZNc=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-586-4JPyFEBsOJKpTlNaikUqjQ-1; Wed, 10 Jun 2026 16:10:53 -0400
+X-MC-Unique: 4JPyFEBsOJKpTlNaikUqjQ-1
+X-Mimecast-MFC-AGG-ID: 4JPyFEBsOJKpTlNaikUqjQ_1781122252
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-45efa7755faso2807672f8f.1
+        for <netdev@vger.kernel.org>; Wed, 10 Jun 2026 13:10:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=0sec.ai; s=google; t=1781121816; x=1781726616; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Lgzi4vGlaNMbhkiNlf7vOeCQMYkJ2z31XuHhYzUTkxY=;
-        b=xVO+XLQaQmpBH7m8PLKN4b5MZyIUQ31Hxn7pT0yw0iUwyIZUUAzqfIFGXTUmM0tYZU
-         0fWrwJszh4TG6WSvHDadbC5fIio+7AxNIWJebKSTyIfL/f3BkQm5ifnmA3PFTmEV+4U9
-         quH9h2K1zm8XkzaorxketYnwZurxy4X9yF7u18dSC8WU0o4Fa2mup9A6gSpDmW/uV6mR
-         cYrkAN1uLB0E254PIM1hNnCow8oxY8DFvivV4JX+3oj6XnWmcvwXN1g1HbEfHc9HRI1A
-         VqIAOmQfiC/kL+Ac6p7Ou+nAQFtWp/+hluIAruEondvv43fafFlcVgJdAHhMG2kvRqub
-         pJew==
+        d=redhat.com; s=google; t=1781122252; x=1781727052; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=/g30yy8CMr3x848UQxbESXFBbV3w2mdx/10RodQlp3A=;
+        b=QkACF3Kyvnb1zyypnd5ZxszE6mgfa4H0ifa071S3q6U53nFUm931EPGmLlS0JZwEtY
+         McIWdz0YYfB5Jzh6IjcdRMfkUtnqm458QrxeXhXW4wkbYL8sdoFY+SWuOL2kYfANj+m5
+         ALZWmz0HIQ0nign6jg1K0umV5G1LtqtHMlrl+Guk72tJ9H/l1ESvAa3TBHXXcxWxoR2x
+         cJU7uQTZSncMmwQQuCx7euOO1ZVmohIGLxa3yDvm+RePzTi2szkz6na2oYtqvfQTWyOu
+         JevMvjA9DYGjo4vEK1YLYtp3T0xhnENH40f23w9btixBJXZrl+z/esKISIYJDgD3IgSR
+         ePzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781121816; x=1781726616;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Lgzi4vGlaNMbhkiNlf7vOeCQMYkJ2z31XuHhYzUTkxY=;
-        b=Afg8lmCz0kzCrOgxqDIiDVfYJqLWn/2TtnbJMn7fxFo3CQ70zbJ9SbC03jnJt8Ew6O
-         nShgUQ15VuUubu/Bwqp0DOvvHiiQTPEJ90uDr0dpMTC8Wn6aEvWudKtC7D6XsIWbDq6T
-         bZIKiO3IoW5alsKw+HF0BMHvNbGNDzWEBgg94cL71mvAMgjGs0vKo/d4O6G5F4elhxgO
-         rbXdjZIPBYiIlRVUCcoYKqTWnZm8KOmtJ4XMmPw8JKuABtM//q4cnZ/i98p1/3+RonZk
-         qFqRT//oEThTXf/raiu9rQAALEj+wQaud0l8inw9OyvNtKgq0slAz0PF/wFRJkv14YBn
-         kaIA==
-X-Forwarded-Encrypted: i=1; AFNElJ+nW2VjGOa50I20WCT90dATIUTp2bzrcaAUWvB5nj03EoV96S0P6+B1ib41/zjBiyX4hbPbGK8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxUoHD03g6TCb+XGI9M3Z1aqqIVPYKxuhybcuRrMqAgT7PHy+Dd
-	K+03KTo/ZNJNaPbR12IZSOOLz/AxnZRga/0AzGorNcio7UIZkE1hdGkVHxEVtrJ3YB65UKamYHM
-	9HedfvbzWNk4=
-X-Gm-Gg: Acq92OFqX774uNKu2xd757mVx13A7uMu+Y/P0Su+eDWhj8dBOpv9mN1Z5ya6pQX1fFP
-	C137190uvGYU1mX6xa2wuwIGjXxzt7cgc508lgfqcDPLNgj8Hg6ZiRYNd/6v/NUzAD6tfwB51VY
-	Dq9yQ9JLWaotJL5OghyS6LNj+hRKcPX003Cxxk1WLgAe63KRCOXUg4ie6W0PJ3wwQDnMto5gfRH
-	FrbRk6wX1mZ0nsWsuK2TraI5ex8pDVsfYAUSRYQRj/qwyigHLMg2vR47rgbMoedQhZZzoGC7Kg0
-	pLOmfRe4nRzuoVJc0FjsvGzaPeioknZlMoRbFY8/vkrY23/t7exuTLzmjNihlSt/0DKf3NWro2J
-	gZQYAZKaiIm/IbqjyxUFeV1lW7XA3KkB7oARa4XKMqMzrA1Iol85LRSyni8ZvknIAZqBqE97yST
-	SPkBA6okpUeeu7KZzmXHnaGEBocU9twTxHJxCGx0XlXMbrvnZaZ5ImgEpz1qraY85OWQzlbmalG
-	Hh+IZpPDK05yHrkAeaBuYGO0vwVPp1TPpr176WPzMuB8DtE2CHWw5kR
-X-Received: by 2002:a05:600c:4e09:b0:490:be14:bfda with SMTP id 5b1f17b1804b1-490c259a003mr461443265e9.6.1781121816053;
-        Wed, 10 Jun 2026 13:03:36 -0700 (PDT)
-Received: from PeakBook-Mini.tail8e484.ts.net ([178.197.222.237])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490e246f28asm10606275e9.0.2026.06.10.13.03.34
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 10 Jun 2026 13:03:35 -0700 (PDT)
-From: Doruk Tan Ozturk <doruk@0sec.ai>
-To: Jon Maloy <jmaloy@redhat.com>
-Cc: aleksander.lobakin@intel.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	netdev@vger.kernel.org,
-	tipc-discussion@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net v2] tipc: fix slab-use-after-free Read in tipc_aead_decrypt_done
-Date: Wed, 10 Jun 2026 22:03:32 +0200
-Message-ID: <20260610200332.33960-1-doruk@0sec.ai>
-X-Mailer: git-send-email 2.53.0
+        d=1e100.net; s=20251104; t=1781122252; x=1781727052;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=/g30yy8CMr3x848UQxbESXFBbV3w2mdx/10RodQlp3A=;
+        b=OfPAwWuyYerCHO7g781vtQuVjISQlHww9ajsRQxquIqLx/bS+q/UTTfpeF/tzMwUbJ
+         kJlPpG28fr0JAHAiCSG00++p4HjAvzcKp8kcF9LNuyfg1DEv8h5BQNG5F46zRWHuPfRb
+         BC+3lfwZhNIuu7JaFMFfRzV4WEtosyD7rLmYGABHAak1Gzfin3bXo4RmYKfJ6CAlm2tZ
+         12SA9kKzZNKr6Bc1FE2MIkbw4hrrPCYOMQG6R85se/DsGJRJ/gJ8K0b9eOL4Xhb2NH19
+         9tbyy+2X1wM5bIisVNZue/gxQfYs4QTB11fXRuWu8UV33yFBECjaHX4KQXsuWS/ljz8/
+         AIuw==
+X-Forwarded-Encrypted: i=1; AFNElJ8XQXyWPnM30pbz10KgJfRYUdNPMEm8TP6Z3xac3UTWm3AhzIWWzcsXHMP52sOk65D3jsx191A=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzZouRkaG5zI1sZxsNIxA/vQtAhNUPFenL57hTasISUXEVZK8yb
+	qql94e18BYKz7CIfUBZgf4NJELPRC1aEUFTCzJqjV0hwiIasJZg3OuFjEqAOtGyiq8X0Lc8exxi
+	/imuKGNOwk91xQy/j/fh5XmWvqXzSdtKi6Z36i5HsUI0hCOtnbPGra9SI/w==
+X-Gm-Gg: Acq92OFTJibHMpmtE9Ed6fDwCsKsFfuRCrNRCx8LgmIenr0hj+9RO4PqR9yr53lyTpQ
+	Ed9mW+wzpFFL9fl0Vk67JQ1Sl87PTrxFzWeGnAQqwiBc4DWAzd7ex4jlx51BZULla8bm6Q+UTRX
+	dQj2AcVPeNThd9Xml0iyQPbmtv9tJZ41uM4hPYzaARGbdbIkTshfzd/6uwDGaxLlfiCBPKb6l5U
+	q52Ybg0XvA6+tKS/nn0FO5+wyfwoyOyYCok+YVfCStIIZz7ZumcrxidcpAg1Fo5n9lYbWyGGcLX
+	hA3fP/y12URoECN5/wxbqi/760puRJefYtsNAlFcB0uxQvOMSk3VT7j/SezZu+0aKAZ0Ts749GA
+	0T+JSyEBA/xvLZKmY3iYov6WH7DNi2P57pdoqx+eilXyCkMURdpt2OsdK9Dw6kr5+QA==
+X-Received: by 2002:a5d:480a:0:b0:45e:f5b6:7bf9 with SMTP id ffacd0b85a97d-46030627a04mr27765830f8f.31.1781122251993;
+        Wed, 10 Jun 2026 13:10:51 -0700 (PDT)
+X-Received: by 2002:a5d:480a:0:b0:45e:f5b6:7bf9 with SMTP id ffacd0b85a97d-46030627a04mr27765813f8f.31.1781122251632;
+        Wed, 10 Jun 2026 13:10:51 -0700 (PDT)
+Received: from [192.168.88.32] ([150.228.93.44])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4601f345209sm79926955f8f.17.2026.06.10.13.10.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 10 Jun 2026 13:10:50 -0700 (PDT)
+Message-ID: <f926259d-4612-44d2-9711-4a408e41e7f6@redhat.com>
+Date: Wed, 10 Jun 2026 22:10:49 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 00/10] tcp: support non-GSO jumbograms
+To: Mariusz Klimek <maklimek97@gmail.com>
+Cc: Eric Dumazet <edumazet@google.com>, netdev@vger.kernel.org,
+ andrew+netdev@lunn.ch, davem@davemloft.net, dsahern@kernel.org,
+ idosch@nvidia.com, ncardwell@google.com, shuah@kernel.org,
+ kuniyu@google.com, alice@isovalent.com, Jakub Kicinski <kuba@kernel.org>
+References: <20260608130755.5626-1-maklimek97@gmail.com>
+ <CANn89iLjG0krEoEE__3KUrcK+ZO+USZRC_2qZV5hAsxRpkTmhw@mail.gmail.com>
+ <715cf429-9f2b-4898-84b4-15dfba4a9a8e@gmail.com>
+ <20260609152704.2512ce9d@kernel.org>
+ <85eaf82a-28bf-4d3d-958d-1225a7ae9608@gmail.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <85eaf82a-28bf-4d3d-958d-1225a7ae9608@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-The async decrypt completion path mirrors the encrypt one but is missing
-the net reference that guards against the tipc_crypto being freed during
-netns teardown.
+On 6/10/26 4:16 PM, Mariusz Klimek wrote:
+> On 6/10/26 00:27, Jakub Kicinski wrote:
+>> On Tue, 9 Jun 2026 19:01:02 +0200 Mariusz Klimek wrote:
+>>> I understand your concerns and they're reasonable. I would still like to
+>>> proceed with this series, though. What can I do for you to consider this
+>>> series? Would it help to submit a few less-significant patches first before
+>>> resubmitting this patch series? Should I resubmit it as an RFC?
+>>
+>> AI tools changed how much we value code, but they did not change much
+>> about how one joins a community.
+> 
+> OK, I'll start with smaller patches to establish myself more
+> in the community. I am still interested in eventually getting this
+> series through as it can speed up workloads relevant to our company.
+> Do you think this patch could potentially be considered down the line?
 
-When crypto_aead_decrypt() is offloaded to cryptd (the SIMD aead wrapper
-queues the request when crypto_simd_usable() is false), the cryptd worker
-runs tipc_aead_decrypt_done() asynchronously. If the bearer's netns is
-torn down in the meantime, tipc_exit_net() -> tipc_crypto_stop() frees the
-tipc_crypto, and the completion then reads it: tipc_aead_decrypt_done()
-dereferences aead->crypto->stats and aead->crypto->net, and
-tipc_crypto_rcv_complete() dereferences aead->crypto->aead[] and the node
-table, reading freed memory:
+If you are strongly motivated to do progresses in this area, one thing
+you could look at is the root cause of the performance difference
+between the veth jumbogram and the same size veth big tcp test: I'm
+quite surprised some delta is visible there.
 
-  BUG: KASAN: slab-use-after-free in tipc_crypto_rcv_complete
-  Read of size 8 at addr ffff888104c8c808 by task kworker/3:2/70
-  Workqueue: cryptd cryptd_queue_worker
-  Call Trace:
-   tipc_crypto_rcv_complete+0x1dd6/0x2240
-   tipc_aead_decrypt_done+0x1c3/0x300
-   cryptd_aead_crypt+0x3ae/0x660
-   cryptd_queue_worker+0x12b/0x200
-   process_one_work+0x66c/0x10c0
-   worker_thread+0x55d/0xc80
-   kthread+0x269/0x340
-  Allocated by task 1550:
-   tipc_crypto_start+0x7e/0x890
-   tipc_init_net+0x30d/0x480
-   ...
-  Freed by task 116:
-   tipc_crypto_stop+0x1a4/0x2a0
-   tipc_exit_net+0x11c/0x1c0
-   cleanup_net+0x510/0xaf0
+Possibly perf can outline some bottle-neck in the big tcp path that
+could be ironed-out.
 
-This is the same class of bug that commit e279024617134 ("net/tipc: fix
-slab-use-after-free Read in tipc_aead_encrypt_done") fixed for the
-encrypt side. The encrypt path takes maybe_get_net(aead->crypto->net)
-before crypto_aead_encrypt() and drops it with put_net() on the
-synchronous return paths and in tipc_aead_encrypt_done(); the -EINPROGRESS
-/-EBUSY return keeps the reference for the async callback to release. The
-decrypt path was left without the equivalent guard.
+Also it could be interesting if some devices could do H/W GRO based big TCP.
 
-Mirror the encrypt-side fix on the decrypt path: take a net reference
-before crypto_aead_decrypt() (failing with -ENODEV and the matching
-bearer put if it cannot be acquired), keep it across the -EINPROGRESS/
--EBUSY async return, and drop it with put_net() on the synchronous
-success/error return and at the end of tipc_aead_decrypt_done().
-
-Reproduced under KASAN on v6.12.92: a UDP bearer with a cluster key is
-flooded with encrypted frames from an unknown peer (driving the cluster-
-key decrypt path) while the bearer's netns is repeatedly torn down. The
-SIMD aead must be forced onto its cryptd async child for the completion
-to outlive tipc_crypto_stop(); with the patch applied the same workload
-runs cleanly. Found by 0sec automated security-research tooling while
-auditing the siblings of commit e279024617134.
-
-Found by 0sec automated security-research tooling (https://0sec.ai).
-
-Fixes: fc1b6d6de220 ("tipc: introduce TIPC encryption & authentication")
-Cc: stable@vger.kernel.org
-Signed-off-by: Doruk Tan Ozturk <doruk@0sec.ai>
-Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
----
-v2:
- - Add Cc: stable@vger.kernel.org and Alexander Lobakin's Reviewed-by
-   (per his review of v1). No functional change.
-
- net/tipc/crypto.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
-
-diff --git a/net/tipc/crypto.c b/net/tipc/crypto.c
-index 6d3b6b89b1d1..84a6489da036 100644
---- a/net/tipc/crypto.c
-+++ b/net/tipc/crypto.c
-@@ -941,12 +941,20 @@ static int tipc_aead_decrypt(struct net *net, struct tipc_aead *aead,
- 		goto exit;
- 	}
- 
-+	/* Get net to avoid freed tipc_crypto when delete namespace */
-+	if (!maybe_get_net(aead->crypto->net)) {
-+		tipc_bearer_put(b);
-+		rc = -ENODEV;
-+		goto exit;
-+	}
-+
- 	/* Now, do decrypt */
- 	rc = crypto_aead_decrypt(req);
- 	if (rc == -EINPROGRESS || rc == -EBUSY)
- 		return rc;
- 
- 	tipc_bearer_put(b);
-+	put_net(aead->crypto->net);
- 
- exit:
- 	kfree(ctx);
-@@ -984,6 +992,7 @@ static void tipc_aead_decrypt_done(void *data, int err)
- 	}
- 
- 	tipc_bearer_put(b);
-+	put_net(net);
- }
- 
- static inline int tipc_ehdr_size(struct tipc_ehdr *ehdr)
--- 
-2.43.0
+/P
 
