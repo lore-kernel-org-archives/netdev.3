@@ -1,110 +1,111 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012055.outbound.protection.outlook.com [52.101.66.55])
+Received: from FR4P281CU032.outbound.protection.outlook.com (mail-germanywestcentralazon11022099.outbound.protection.outlook.com [40.107.149.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 388FC3D75B8
-	for <netdev@vger.kernel.org>; Wed, 10 Jun 2026 10:53:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 578192BDC2A
+	for <netdev@vger.kernel.org>; Wed, 10 Jun 2026 10:56:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.149.99
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781088830; cv=fail; b=gwj8pJjPYy+/D6BTpdFSGlS8wahADW0XNjtQujvBOJDzPOAEdCNKJE9bYqHm/HZTEd2AOtNVztTEMW10xr1erN+pKIb9msrZbaySWOViK0eZYgIMDcGMLY6uUmn1VtiVBdynh/mEyh3o9393W+jMhMUVKBRlpdPJjw3W15tc1gw=
+	t=1781089021; cv=fail; b=sIb6Nza4kTep+2kdAvYVJQOqPoRikjfTO+sY3Y+OK1f/GGN14EotzFvye3O8S66rAbRNS8bL8ral/zzULRnd9W97j715KLbH3Px4XZ2TvuAKNX438s6CnOeqN9CnR3gEfRpiEhstffiEmE+yW2+zUcqYk+cnb3ZvBpIlkLGzINY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781088830; c=relaxed/simple;
-	bh=fTKsSs9UvIO/R1vgIMPySjsGFfKkDFNFDQpAsjnmLFE=;
+	s=arc-20240116; t=1781089021; c=relaxed/simple;
+	bh=deACWIGcpXF4jjjtXZ9DCT+zPQUctxWqUPTMa0eOEVs=;
 	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=ddFyW1J8wdOHv5BvYJHVMtGmfLHxEiNCaAKqgC0O2+tolKKKySH+7Rn2wOD0SoREpLXTeK3fFephFmzYYDJUVA+pWz/kiuj+YF48drAD23ehtXX6sxGZs86w+5m8s1xj/zawbwFIzb2G5LTyYKa7GDT89UIy5GGQ/B13gJ42gkw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=jVQGZRHP; arc=fail smtp.client-ip=52.101.66.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	 Content-Type:MIME-Version; b=ma6xV4CYQG5A+XaoO6ASHCRbIQ5LmSBOe5Lcs4cxDlcC8kM1EunteW7RfD36WKZaeLkGuTEaMiei7vVrdTh8b9xFeiEOsKG5YPDzcKOV3RWu8kM/4ac+AVM9NG58wUyXg0qnzAyBTiFBvwwxpW30mz48pDc+Zc1mgmvMCJPq6hI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=schleissheimer.de; spf=pass smtp.mailfrom=schleissheimer.de; dkim=pass (1024-bit key) header.d=schleissheimer.onmicrosoft.com header.i=@schleissheimer.onmicrosoft.com header.b=QBYNsBng; arc=fail smtp.client-ip=40.107.149.99
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=schleissheimer.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=schleissheimer.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="jVQGZRHP"
+	dkim=pass (1024-bit key) header.d=schleissheimer.onmicrosoft.com header.i=@schleissheimer.onmicrosoft.com header.b="QBYNsBng"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=aMQM6XE1j4ExrGmbzco6A4HMXVWZoI7K5vsfNRqj8B6yMGqUHA8s9hpw9VK6muof68Q2RBrMW5qglGAzDkCfeiOn/292szapxLSK2iZkjAI6OAEM/NcIq7XsVQbpoCTNv4PC+15ZxC0TxVGXkGwWZEtURmWRI5c/mIXbMnW1ky+LtsJwuuJw1cQXdeaO9Y3bVqkx4KATUahyTwBztJL2YgY5BH0+VYT7EW1rRX9I4ZjVtkeiXlvFcmDWEJh6TA7GfM683GMho3/jlKa129xbFhh07uIQHO1zC0kfbey/vZhwyz+6bwV1elE7ZCHVeYMtU7lQxKTlL14MLxYkdCz8IQ==
+ b=vMEH3WWys3b5bvu54ZBoIykPcnV408+9k/QgcF0fi1xyQRTNza+edvtVDkquaNezU283oYxv53ZLNm4nerl2VMZO3vZ+CJI2MB+GUCvPVkAIMHlciSpsiX3pq86l5uvzaW/uZTlW7yFmh7568slVXIomQPYn6sjIc1TsD/CEFjiGAQbctUgXNwpLbsZBawgcm50dQsyxHoCXv18vmZ7Yj+wYpmA6rCPQym7qw6apzejmzcdLjR8o1sCyIEQkejaxpB6WbH5XEm5R3OS2PbXk+2PICMqruWM2y8mhQWwvD9zVwwG2j0yRGTQN5sDmSgjyOUaHLPXsfNTf9lUEdfkBnA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=OkjWs4uZxNTyGO2y4e7lNGg9COu/KvuWF8myZD54Ies=;
- b=wlHY16IrTnIgcV8BsfpjfTVxF09wh0Wi9XrLRI+OkIteay5Gy2tIofaXv5LqK1y/qh7eMg7NEjbIeVVNSSI0+nvG5Sp5T3SoKcbkAx5ccW8oU6cDc/OoeCvI5JAT0ttULYLF/Guhf0+WYc9q4gzsr94Rehjw17D23SLQD7mxMB1emUpbWG4EjXcAQctqH5mDeNYDW++pK+uLlOzMH1qQBtKlsilVm3E0OIPGxQeA9BRUurVaiyJFHtE4JIs2c3//vvvfs1vrNSiGNVCIl6In4V94hQqcw+4gBqXr4my8km2VLL6RBCkvm5wiZf8LHK+ye5L6juWrayxwLzsTQF0Zig==
+ bh=GUOdRqdvX8KCprl1DxvIa0HSBn5K1fb7/nyCygyJ7co=;
+ b=Mh44zVxGohhGPKW+fNN916bRo+RogA3W5VzKITdH88gYcg2h02kf3drpM/hlLjYd2//vIJBla2LsxbiCmZ4QRqXbE58vIWutfJ09u69jUjwFfRKm0VSwfxoN172OlU6Wp2lFkQLhu79EVLaTNF70DZaJamzcggy/9nQkzOteM4X/TbDahnMeCVsPfnhTQQ55fRlqiOMMSYgEPJ/WNubNu4XdoOI8YZsx1sHaLKNfjYu6mSg+OE4dpfQch8uYXh5bhKIrsEoK43esv7++byScx5tG0WvXKHAxWcewFQjjjmX05J47RSjzaS2mGLZgW2UK84aShm4J7rSQJ5VXE3d/sg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ smtp.mailfrom=schleissheimer.de; dmarc=pass action=none
+ header.from=schleissheimer.de; dkim=pass header.d=schleissheimer.de; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=schleissheimer.onmicrosoft.com; s=selector1-schleissheimer-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=OkjWs4uZxNTyGO2y4e7lNGg9COu/KvuWF8myZD54Ies=;
- b=jVQGZRHPfAfSO74GuVyCrutuvdAYMiuEQ613DkHAXvolSgllh8ZVClv5m+v9tpUXZittfMqpKjmlqXMbCGWGvBnY6pH7qwKiBk/R0RuCbvLpMS8WvqlXvEF4DFBHzkgGBseLzM7wMJekNTHyNJi4ZyEv2/N+ykuUiuo2Fo1ZwDOYnTTUhkAf8VXx38bb+HhbEKW5bX1m9sVm7YEVgrF5CxY0f+Ky63kI0nPcq6k57tTxz/ZY1pLjlyWkPYTtid7pa+qHn0UkuEMYgFb+L7GqckOF1rGedRVsDJfG/5yk1IfiNX2Xk+WB3EiREvkjjYVT1H5UTFDky48ovHApnCFxwQ==
-Received: from DU2PR04MB8629.eurprd04.prod.outlook.com (2603:10a6:10:2dc::6)
- by DU2PR04MB9020.eurprd04.prod.outlook.com (2603:10a6:10:2e3::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.15; Wed, 10 Jun
- 2026 10:53:45 +0000
-Received: from DU2PR04MB8629.eurprd04.prod.outlook.com
- ([fe80::9d04:7526:a901:fe47]) by DU2PR04MB8629.eurprd04.prod.outlook.com
- ([fe80::9d04:7526:a901:fe47%6]) with mapi id 15.21.0113.011; Wed, 10 Jun 2026
- 10:53:45 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: Ethan Nelson-Moore <enelsonmoore@gmail.com>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>
-CC: Frank Li <frank.li@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, Andrew
- Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>
-Subject: RE: [PATCH] net: fec: remove reference to nonexistent
- CONFIG_GILBARCONAP option
-Thread-Topic: [PATCH] net: fec: remove reference to nonexistent
- CONFIG_GILBARCONAP option
-Thread-Index: AQHc98u8ZRRGEJU4MkqANoNUO3y6wLY3nvOg
-Date: Wed, 10 Jun 2026 10:53:45 +0000
+ bh=GUOdRqdvX8KCprl1DxvIa0HSBn5K1fb7/nyCygyJ7co=;
+ b=QBYNsBng8WMwwWTdAjjO7rNWs+WbR1jcRvymCb/QK9eWaKUlN9hhA3ZYoDRolRmRBJdS9I8NXFzux8kuX973mecPqpxW1C4QW+2CSNZqm7BUFvN44QhPmUma8NVaR1hTuZ8wkFHyBV375V7QULCE/z/fOMM4WT4uSBOIBl/zfZw=
+Received: from BEZP281MB2245.DEUP281.PROD.OUTLOOK.COM (2603:10a6:b10:52::10)
+ by FR2P281MB0283.DEUP281.PROD.OUTLOOK.COM (2603:10a6:d10:f::8) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.113.11; Wed, 10 Jun 2026 10:56:54 +0000
+Received: from BEZP281MB2245.DEUP281.PROD.OUTLOOK.COM
+ ([fe80::2bc1:32a6:153:c3e9]) by BEZP281MB2245.DEUP281.PROD.OUTLOOK.COM
+ ([fe80::2bc1:32a6:153:c3e9%4]) with mapi id 15.21.0092.014; Wed, 10 Jun 2026
+ 10:56:53 +0000
+From: Sven Schuchmann <schuchmann@schleissheimer.de>
+To: Andrew Lunn <andrew@lunn.ch>
+CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+Subject: AW: assert in phylink.c with lan7801 and dp83tc811 since kernel 6.18
+Thread-Topic: assert in phylink.c with lan7801 and dp83tc811 since kernel 6.18
+Thread-Index: AQHc3HSt2FaNRg+Hc0Clgdk/8rilD7X/aQMAgAEuzo+AAGP6gIA22u/Z
+Date: Wed, 10 Jun 2026 10:56:53 +0000
 Message-ID:
- <DU2PR04MB86295CF7C84FA84D9FDF80FB881A2@DU2PR04MB8629.eurprd04.prod.outlook.com>
-References: <20260609045200.32606-1-enelsonmoore@gmail.com>
-In-Reply-To: <20260609045200.32606-1-enelsonmoore@gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
+ <BEZP281MB2245F1C5486730A42CF105F1D91A2@BEZP281MB2245.DEUP281.PROD.OUTLOOK.COM>
+References:
+ <BEZP281MB224533D524B27CFC6E47B447D93E2@BEZP281MB2245.DEUP281.PROD.OUTLOOK.COM>
+ <57fb63c2-7a05-4bbe-ba2d-fc61ce1e3ba1@lunn.ch>
+ <BEZP281MB22458F571CC8251C141D933CD93F2@BEZP281MB2245.DEUP281.PROD.OUTLOOK.COM>
+ <62b15f5f-c9db-4443-b0ee-ac7044459c08@lunn.ch>
+In-Reply-To: <62b15f5f-c9db-4443-b0ee-ac7044459c08@lunn.ch>
+Accept-Language: de-DE, en-US
+Content-Language: de-DE
 X-MS-Has-Attach:
 X-MS-TNEF-Correlator:
+msip_labels:
 authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
+ header.d=none;dmarc=none action=none header.from=schleissheimer.de;
 x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DU2PR04MB8629:EE_|DU2PR04MB9020:EE_
-x-ms-office365-filtering-correlation-id: 64ca2ad4-16c5-4818-a881-08dec6de8b59
+x-ms-traffictypediagnostic: BEZP281MB2245:EE_|FR2P281MB0283:EE_
+x-ms-office365-filtering-correlation-id: f43a2bdb-3893-4385-3505-08dec6defb9e
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|1800799024|376014|23010399003|19092799006|38070700021|18002099003|22082099003|11063799006|56012099006;
+ BCL:0;ARA:13230040|376014|1800799024|23010399003|366016|22082099003|18002099003|38070700021|4143699003|56012099006;
 x-microsoft-antispam-message-info:
- ZwYitsrLLsfpwLJP3oWcgmBKy/TVLtzZ0j99khnFM333nN1Zd/kw+ZC/PSJt5ai7TdurRSDDcqsV5wBVjoyQ5BTYOOjrt5uZ/q0nR4DosDhfkorkkzzkA+06cy8TQKXsUptlXcRJ9QQ3qfOTLLeoa5tBg4Xpv8a/Zzg9eaBOwZlkfwqLF+dMI7DzDTW8AqQHWFKuQhInlHj+5cL37YFKPBF6lLOPj4I2dtJF5F7Z9doUDauPybB1tjRcVQ+LOFcHeU6ktrBFHahzm/7D+o3KoLGsr8tbIJjirMiX2t21u7a3xlUfzoXvHt6nweQKGas2FHMceyWDA3KPKa4dG0DKmcwB+yORWDyXZez4/+OsxcIK142PWoq5H8b5Abl0a5f3SSEJ6LgsbcUwL34Xmm0V7sLCtKh/X0sO/p2p91TeLJ06WEHflD2fze2sLOsIGB3tldyxqRxjOBvAe8QsHDAJeOlgUnayTBorb2W2k7cf9EveuugqYpCZohr7DWL5Qxn9GaXXpBogqyUpHdKtFC2tI9/WzZ4R2Ni/j0deUDM23RJ5ibDeUl2Zq7PXzPYaM7WzW3K4WFS/jVbzxwXZizRjhNmCU5CjjPsjrG4ZDCte56jhgRzGI445wvumrCJpPkI3qJDY0W4V47I129vKEkt+pNoW+omVoRedEB8z9LOCEV0h0tyAKFjI3RO/xt6DUjzm6kHjIy6xPuNsvQ1bkYVVN1xdeh0yq013Vl5RS0xE9XlZADlthMHRPMQCLBb/cHIe
+ b+3NjXreU/LO1K2YBRDTqc+MJ5f8Ye3mKC+geOoJNWArL2GYjPBEn5KmfWJP6NfCixGQswgGok9a/2aAhkbxXtmGRBBau5eQBe6kfvZ86LhRJw174vy0qpdAfcMsNS7S0PlrLyjP/GGHfUIS0UZqbNM30bLStws+7kijU1nbtpjHR6IpJy2QgMWqbk46wAWstR0x/+gT2zHZwuVqQXGpS24LYRHNjsdTF4sbix2jN30upkjiPn9LOEx74g3IqwrVmSYNfwFs+dqf96j5rpxRdUoBzz714+FSbvbUX9HF3FMOqxli3PTIJ+na5O8HSxfEVEpRv9F7vmw1/6P8tH/HGMJSxp7ZRlD1IlTxnhz2eyGeANMZv4PzV5q5CbevCXDemEuyWs8BDqBI3KKZKd9AizXs3J0zWI6E3/v9Z014DLULOj0yqvybEC6GsjZ1eRasmMRa753FxiMxKwvK1dMN4MZm4t1nNbZw05yZFk9DmFXe3AnOPEA6gM0NktkxxtB8MOb+HR210wKeavbzuB6SrMsxlhbEtJfXYvDfzoFvDus7IFV6T3B7NuBwhnU21mGX1AUxvFBwhvLM4VXF74CV94Av7SDbpt7Gjd3PSZiVJ8mnIzBN33EWnAVahc+ITltQbHa55M9sp1FhdCT3fKPp425EiCp0NUqHrYK4T/+kjql/cv5dP+qPuS1YLFkH0/B+HjrdUdiRBJmpdicihbvXszoLzMt33CcXBdzn7rUWkDhiRW7LgrY7k3S7j0UHgFtG
 x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8629.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(23010399003)(19092799006)(38070700021)(18002099003)(22082099003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BEZP281MB2245.DEUP281.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(23010399003)(366016)(22082099003)(18002099003)(38070700021)(4143699003)(56012099006);DIR:OUT;SFP:1102;
 x-ms-exchange-antispam-messagedata-chunkcount: 1
 x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?OEGikDS9MN43+VSuoQJ6Aa1D66irx20Fx2R1I/ExePmtoZyl2z8F11qLVsu+?=
- =?us-ascii?Q?N2OJLpVnRqIUWuFnqysWHgWHvEBMXuLck4P1bHzIs+4UAH/tNC9LPMPlBp5K?=
- =?us-ascii?Q?KqY+GnY5QGaQZhcoj26dbsQrxmmk86SMAinVWVZ5Iz2LmvGlSzDuK+wC5nbP?=
- =?us-ascii?Q?ezPrl3RTSpQ9wHv7zq5t6fYrvvXPmW0t3Fq7XZc+NASq3dAAYhnBbsrioxda?=
- =?us-ascii?Q?uQrtKFm0NwweDaZJhSnYUFyvyhtu65c/TC2ipkv2zlxQ7sWGF4vbGqwgdfKw?=
- =?us-ascii?Q?f1iHBtcMz04aNyrnwtudLlSxSQA1Tyj6zyVUUUMaKebYulzYbCr5w4Udqp6F?=
- =?us-ascii?Q?6yO6yo+pJtar23kMV0CxkSBK/rngZE0JhnvpQIq3D1fNI0oDvy2b+bfJwpal?=
- =?us-ascii?Q?f6M5UvnqZuE0yui4nV1lV8GHL+eUrtzRNCrWdygeUsKJnBa3oPnebYlVyEe8?=
- =?us-ascii?Q?2mCQf1IsZOtJ7n9ZA1e7eV/DVY9lnheuVytwDrBs4LlmC8+TfA597bUSfvaZ?=
- =?us-ascii?Q?wdMg8q+RY0OJJoy+bozj2H34DJWlpRWOQvgQMQf7dqr05P6eZgJ8MgjMVvE0?=
- =?us-ascii?Q?moVYE1wzWScNXq0gAzzIJRgHAN6SKziClIEyBMmF2QkTs1Lg3lDdt6LvYIlz?=
- =?us-ascii?Q?L90y5BbTnIg+lQt+tFEMQIzXKGVbZB6WM9RSlR36xmV1Ihv4psGkLifwsSTj?=
- =?us-ascii?Q?AoFZFg23+kdi/8xKBR2koGNzUi1elj2+5fKRMDYwsEwLySAmr5323H3pM7JJ?=
- =?us-ascii?Q?5TDsFHtIoAbYPUXe00tqOwNBmHkwheZfVbN2trFsu07WBVwgSO2V8Bm/cTCz?=
- =?us-ascii?Q?wmqcVSULubAXYSuw9VyhhS3aqRLgqegegJk+O7MEaqZCF5g5guVDN4KEAGQy?=
- =?us-ascii?Q?n7uPeTP2WjCryMlLMUpgAYGXC+9rURsSVsjjKwl75OjmvS1sGo+WZnEEs/Ic?=
- =?us-ascii?Q?nn8Q7m8AHjv8Hp+1BFLRzQbJKKu9RqkxbvguN8WjmwcAkkayNV+jW9VPu+bc?=
- =?us-ascii?Q?hRXMgNxeN2cMdHbBXk3SrT7EMp5IzPUVEBtkm5Ho8pfyoVcLQedSMTWaHQRv?=
- =?us-ascii?Q?7jkUVgQe/dEH99204w+zbQnecYcnhSfokbZ00hjhBkIsvS5zoT8eYYyJD+vn?=
- =?us-ascii?Q?ULrsEPMI9zOOejlTIyCioSdfKo3NTjMWnX2qgcLxfdvdCh3b15EYfwMi8/QW?=
- =?us-ascii?Q?jNBpEkBFbZSsNuB2uV/qPqRFjIIEdkMyvvObc6F9OmDtA9wBwBj7YXDzdb3N?=
- =?us-ascii?Q?aQFcktiNZKh6T1j5tkdRaGXjz59Q4bwc7zNpbQrrUbb1oiztylIHvHwS4Ww8?=
- =?us-ascii?Q?HNNlRriN0M22Bqf9PP6YP9jz8o7feR0Olgs1P1nuSpPuevN3VuopxKFrLe4H?=
- =?us-ascii?Q?IfGodO/naehZZ2IEO9jFjAwxDXp5rOiOMDLG3VllUBC03vm0/Qqv7U3RIjm+?=
- =?us-ascii?Q?/suTubr6SMasw6aVRLzyur2vr8O+GagJ2yb4RQ8KsYLDaXON34lc+A6g/c73?=
- =?us-ascii?Q?1fkoP4Nl5QWYcPD732WYAj+xemYwolQIfl7fGIT5A83XYPz76CfTtl+mVaC4?=
- =?us-ascii?Q?+LVJYYAUTg5/LUctQ8bINjy7gqTj+FnIBXruxXhypu9hDaFRAPe6nfkw00s9?=
- =?us-ascii?Q?5TD/iwAxVgDUwGu1Qh6oM0RrRRaldMvq9zfgFDZuQqEoO9Y0svF4OaECdB0w?=
- =?us-ascii?Q?/5G8VbHJIgOfIkNU7C311bMHLJ620XTjsNHKT5IB52/TZs03?=
-Content-Type: text/plain; charset="us-ascii"
+ =?iso-8859-1?Q?k0mmnr3laQUdsrbcVF58wPorf4IdQAbhsPYTpBfq1Pouontsl0ih5toOsp?=
+ =?iso-8859-1?Q?LhjstTg3D56nIfgQHY6Ku8rVLAVWCLE1K9uC5FNT3fwvPqBKKT91x0dtDu?=
+ =?iso-8859-1?Q?eC9Dq2x5Gw6CuF7Phpl+s4P6pkvaZaHgKxNflWtOzUNcde1xERHws5LxS6?=
+ =?iso-8859-1?Q?j7HVKC4NhjAG7fSvw7INie4udjUI9Wms/Mq9JOGSFBrPkko5DvH9hNQKX1?=
+ =?iso-8859-1?Q?XN0JUppVr8bg42VvGnPZWww/cA+8hXIRUMTWYxvxILD0acvuk8TSd0MJRW?=
+ =?iso-8859-1?Q?oUcEUWA+DssfVplS2lKTEcMNZzyUNFxvQEC5vclUwTiRez9XvHuD8BWo43?=
+ =?iso-8859-1?Q?oZHpKmSsCbJYci9ujOhf9nncPm0hWFusE1bNldbhBr/z60o+tLXB3VGRWR?=
+ =?iso-8859-1?Q?J8WCxFmSYCSuvNOm22InvfMxoaHc7cysT7lhbpC/3AEIRi8cchbEg1LA4Z?=
+ =?iso-8859-1?Q?Fpgwqg5p0OAgekCcJZTeUFzTL3BG/rv8Rv6KBDnmX5YdnwH3VFPKQB/As/?=
+ =?iso-8859-1?Q?7FaZPEJxg1H9Bb6VprnZyCOiO9k2y1hlPW9snz11owQoRejuCUBOl01WiT?=
+ =?iso-8859-1?Q?/gOBzXcwqFQIzECIdm+ATVyqDF1AvUSt+kQI1b1YnCelsL0b2r+/3zpTOf?=
+ =?iso-8859-1?Q?S4GalPoUBC7hPu3pXmjkiNyu7Refho/FTnM8ZDPzXyiI1QB3qLISyzH2zI?=
+ =?iso-8859-1?Q?m7ZRsu2n3HpH0u3OCP8MYlExqHFQijfEpnhmGZoXPRP9o2kv2uaEplUUfZ?=
+ =?iso-8859-1?Q?iAqR0NcfGwH5fC/rFzWMtF80opPHICMpHjY+X7o0/LXEF+4+2n2obADiYX?=
+ =?iso-8859-1?Q?PeDEnB1lDjxXKLnNmFogGHQJDt5TRChcEQpdjVi/rMpOTiXCGGRQJSnWUz?=
+ =?iso-8859-1?Q?S2pF4PVvGq8MMYJlDgfVdF34HDCa63P0LWzOPrXMhuPf3Yjq95PjQ2Qa9F?=
+ =?iso-8859-1?Q?fhLcgpRch5gyMkGfb0hYyR+O203xRFiESKWuQmACXFa8YkuHqxLxPfEbI+?=
+ =?iso-8859-1?Q?DNE6hefgjrqEPu9Fx7rUEBq8bUnwxsbqB/8UOc4tBAp5vEcKIZXTHpLjOQ?=
+ =?iso-8859-1?Q?yanvC1soWCv2yVu7gVLFMoV//3khzzYxaKC6R6r4BKimLWNy3rfSDR/Ehi?=
+ =?iso-8859-1?Q?Pi59zCfGs2/e/QU1/MgB12My0h6C/rGjc6AOkBugBo4N2Ab0wa7joZ/NJe?=
+ =?iso-8859-1?Q?zk3IUYkDXMbu71SEfDLue1x0r4raitVrh/fVSlBr93TCjQApa7duRC22jL?=
+ =?iso-8859-1?Q?0YImNMtgdMEyDBhPxbUXqfd7feBQmP+M5Q5kuMhnHQOAUD/5vaCPUsr3WL?=
+ =?iso-8859-1?Q?14vrHEsQ77qofkTnuOAsXI7FbhWYPV6eRIFHd+DideHRe3U2ScWyrDEO+c?=
+ =?iso-8859-1?Q?IuctvmnSLURQ9vwkI8qZstltDjpDGyhPd3CsfOTyTBNCn/YUZz68OPp1eO?=
+ =?iso-8859-1?Q?lCNR83bbhwgMtHb50fA/uUpMxa5pDZ29jHvIaA4WSk3RGT9f589X94UCVN?=
+ =?iso-8859-1?Q?NrWqvwHCvErJnxaMLn0W07KPzMsQySpMmqYs0C95wfoMPwCcLI0k0tlCPN?=
+ =?iso-8859-1?Q?HT2TYaQ4roqiPtB5zFq5JKywoB8gfbgZGdkDxXnYACnbZsjoeo8kaPAe0S?=
+ =?iso-8859-1?Q?pVPCIEyZM3or35MfSp1BG33jaiOXqUwg7+r5bzfpVNrRapjdkcfu6lf2M3?=
+ =?iso-8859-1?Q?ySnC0WOtcVSJ/HVc9nuU7fpWSHVXx7XMS+QtYNQfAdlulFjjhVkBzjvdYx?=
+ =?iso-8859-1?Q?ckstObsumpRzflY3GuD6J3ql4E7i5ZXygnSG0+g2My9NmpcIJFl7zCxsTm?=
+ =?iso-8859-1?Q?HNmMfKG8TQ=3D=3D?=
+Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -112,47 +113,98 @@ List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
+X-OriginatorOrg: schleissheimer.de
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8629.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 64ca2ad4-16c5-4818-a881-08dec6de8b59
-X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Jun 2026 10:53:45.6017
+X-MS-Exchange-CrossTenant-AuthSource: BEZP281MB2245.DEUP281.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: f43a2bdb-3893-4385-3505-08dec6defb9e
+X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Jun 2026 10:56:53.9488
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-id: ba05321a-a007-44df-8805-c7e62d5887b5
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 4kjjhP7/puerF36ELp3DqNlI91NJzIKuBk+z6PQOTjhmGI0tEYotOvdl3w8BfmQkBWuOia7e2pwnEkPLd0dPVw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR04MB9020
+X-MS-Exchange-CrossTenant-userprincipalname: witv6bmwyVeM421Iq4kUl4CHr514HfOQaloeU6z060ZGdVNcYsdGJULJ7vuBGvBT8bI7dCyG6Ku2pjyNWexrHt4w1G5UU/KDTRKK9+tvizg=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: FR2P281MB0283
 
-> The CONFIG_GILBARCONAP option has never been defined by the kernel, but
-> is referred to by drivers/net/ethernet/freescale/fec_main.c. Remove this
-> reference to eliminate dead code.
->=20
-> Discovered while searching for CONFIG_* symbols referenced in code but
-> not defined in any Kconfig file.
->=20
-> Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-> ---
->  drivers/net/ethernet/freescale/fec_main.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/drivers/net/ethernet/freescale/fec_main.c
-> b/drivers/net/ethernet/freescale/fec_main.c
-> index 6ebde65d7f1b..ced4dbf8cd90 100644
-> --- a/drivers/net/ethernet/freescale/fec_main.c
-> +++ b/drivers/net/ethernet/freescale/fec_main.c
-> @@ -218,7 +218,7 @@ MODULE_PARM_DESC(macaddr, "FEC Ethernet MAC
-> address");
->   */
->  #if defined(CONFIG_NETtel)
->  #define	FEC_FLASHMAC	0xf0006006
-> -#elif defined(CONFIG_GILBARCONAP) || defined(CONFIG_SCALES)
-> +#elif defined(CONFIG_SCALES)
->  #define	FEC_FLASHMAC	0xf0006000
->  #elif defined(CONFIG_CANCam)
->  #define	FEC_FLASHMAC	0xf0020000
-> --
-> 2.43.0
-
-Reviewed-by: Wei Fang <wei.fang@nxp.com>
-
+Hi Andrew,=0A=
+I think the patch ("net: usb: lan78xx: Fix cleanup in lan78xx_phy_init")=0A=
+you did is worth going mainline. Shouldn't it?=0A=
+Regards,=0A=
+   Sven=0A=
+=0A=
+________________________________________=0A=
+Von: Andrew Lunn <andrew@lunn.ch>=0A=
+Gesendet: Mittwoch, 06. Mai 2026 15:15=0A=
+An: Sven Schuchmann <schuchmann@schleissheimer.de>=0A=
+Cc: netdev@vger.kernel.org <netdev@vger.kernel.org>=0A=
+Betreff: Re: assert in phylink.c with lan7801 and dp83tc811 since kernel 6.=
+18=0A=
+=0A=
+...=0A=
+=0A=
+From ea55645b23092a0de7aa3ab0eaf7bcb73a7fb0e1 Mon Sep 17 00:00:00 2001=0A=
+From: Andrew Lunn <andrew@lunn.ch>=0A=
+Date: Wed, 6 May 2026 08:10:29 -0500=0A=
+Subject: [PATCH] net: usb: lan78xx: Fix cleanup in lan78xx_phy_init=0A=
+If phylink_connect_phy() fails, phylink_disconnect() should not be=0A=
+called. Rather than use lan78xx_phy_uninit() which does too much, add=0A=
+the cleanup at the end of the function and only undo what was=0A=
+successfully done.=0A=
+Signed-off-by: Andrew Lunn <andrew@lunn.ch>=0A=
+---=0A=
+ drivers/net/usb/lan78xx.c | 14 ++++++++------=0A=
+ 1 file changed, 8 insertions(+), 6 deletions(-)=0A=
+diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c=0A=
+index bcf293ea1bd3..9cfc122d76ef 100644=0A=
+--- a/drivers/net/usb/lan78xx.c=0A=
++++ b/drivers/net/usb/lan78xx.c=0A=
+@@ -2842,7 +2842,7 @@ static int lan78xx_phy_init(struct lan78xx_net *dev)=
+=0A=
+ =0A=
+        ret =3D lan78xx_mac_prepare_for_phy(dev);=0A=
+        if (ret < 0)=0A=
+-               goto phylink_uninit;=0A=
++               goto destroy_phylink;=0A=
+ =0A=
+        /* If no PHY is found, set up a fixed link. It is very specific to=
+=0A=
+         * the LAN7801 and is used in special cases like EVB-KSZ9897-1 wher=
+e=0A=
+@@ -2852,7 +2852,7 @@ static int lan78xx_phy_init(struct lan78xx_net *dev)=
+=0A=
+        if (!phydev) {=0A=
+                ret =3D lan78xx_set_fixed_link(dev);=0A=
+                if (ret < 0)=0A=
+-                       goto phylink_uninit;=0A=
++                       goto destroy_phylink;=0A=
+ =0A=
+                /* No PHY found, so set up a fixed link and return early.=
+=0A=
+                 * No need to configure PHY IRQ or attach to phylink.=0A=
+@@ -2871,17 +2871,19 @@ static int lan78xx_phy_init(struct lan78xx_net *dev=
+)=0A=
+        if (ret) {=0A=
+                netdev_err(dev->net, "can't attach PHY to %s, error %pe\n",=
+=0A=
+                           dev->mdiobus->id, ERR_PTR(ret));=0A=
+-               goto phylink_uninit;=0A=
++               goto destroy_phylink;=0A=
+        }=0A=
+ =0A=
+        ret =3D lan78xx_configure_leds_from_dt(dev, phydev);=0A=
+        if (ret < 0)=0A=
+-               goto phylink_uninit;=0A=
++               goto disconnect_phylink;=0A=
+ =0A=
+        return 0;=0A=
+ =0A=
+-phylink_uninit:=0A=
+-       lan78xx_phy_uninit(dev);=0A=
++disconnect_phylink:=0A=
++       phylink_disconnect_phy(dev->phylink);=0A=
++destroy_phylink:=0A=
++       phylink_destroy(dev->phylink);=0A=
+ =0A=
+        return ret;=0A=
+ }=0A=
+--=0A=
+2.53.0=0A=
