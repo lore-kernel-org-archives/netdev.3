@@ -1,396 +1,85 @@
-Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6EE9394793
-	for <netdev@vger.kernel.org>; Wed, 10 Jun 2026 08:03:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.133.104.62
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEA3430676E;
+	Wed, 10 Jun 2026 08:05:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781078632; cv=none; b=GlIw86m5joyIfk+WPf7FZBSz/IHN6c1UPI1ZhcyQThANpz2lRm9ufaVjOi0BEkZjFM9gA7tY5vko7CdrFc5Ddc+fTW/YQAgY/OkYeUClmVNAG0XuBLHwgc55UepoPh3PCmC1TWPn555rKmSOpnp7fcfeG8liL657yD1bRiyRByk=
+	t=1781078736; cv=none; b=GvQO6VVTsge6T4AvqvzGx/MAH2w5e+CJmzTG8YvifSPN0VvGmu6wTqreVezHsdzpCUA8jtCx79Jhy+pdxVYxv/k9vBo4xkZyRg9Lf/E20DZulOrh8j9Z0bHZjeCfwwT4iNneYQgKvkXClgu850DE0cDB5mkQUTMyhtJuB3GzJkY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781078632; c=relaxed/simple;
-	bh=b5B1Z9dKGWYwR04zkfBHRqmnA2pPux/JgYwQUn83lOg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CHMmprTG1kLVKvyzuc4+uRoNBms3lKbAodl86z0UyrRXo8vIk9xAArOQvd3BXguQGUx0giX3dEXcvcPFA8Zh7prHQuSK+Nk3p7C4e7Qg/19t5oqHJTzRKA2tcP/GIIydOeSAW9L0Uci1qcf8R7kCikYk9/fVHZnwIcguMqyHz0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net; spf=pass smtp.mailfrom=iogearbox.net; dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b=Fd8w+om+; arc=none smtp.client-ip=213.133.104.62
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iogearbox.net
+	s=arc-20240116; t=1781078736; c=relaxed/simple;
+	bh=Bku6vmbnfsIPF3upfNi33A0lpAy6UNfcQHI8Xaj7jk8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cGXazB/ZmJHdl5moDoxSYi2yGQSicZfT4rFwIEu4eqxqJyb31Yswt37wHQ7WT6ynDSeihufiF6rETYjkAm+t4Mqzu2z3Ptla/Xsm52naLo8E8LrhDCWBMiW6r8c6aA1ZiQ/ane4uim2EudcUTY5VBn8haStT04eKn2V30CYZ80E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=AVc9mwDe; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b="Fd8w+om+"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=I8LssJhvxwrAC6Pis+dAsvshegp/hr26k5MD8A+ETsA=; b=Fd8w+om+FUgJ414Vv/BxXiNG0R
-	uDLA1sOEwj44joEMozZ/fACvrdzXuiEXKJgd9HffTGjOlzFUEEl5lA1MTDIKmMM68Orw1RzdTW+w+
-	bcwtBE6PK/lYQBOZ0RuifFdn9AcEA5sx2gBpZuJChNtKu8ewgQkmvILLJaSRCn/fzp3foAtohDoMU
-	H7jdkZ0i1/RSwQPauFXXH1sTRAIBeePRmYZNcTubxT1X2t8+mmuRl69GBd0ROyaYzq//UYgZM6DT1
-	bzLv98T2RTxxmein8ru1O9dK43iqMnA4OE/q+phT2bNQnYos1UZb2uQu9QNiMZ9IbHeXFRn9ILDMw
-	6iohskrA==;
-Received: from localhost ([127.0.0.1])
-	by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <daniel@iogearbox.net>)
-	id 1wXDuc-0009Vt-1E;
-	Wed, 10 Jun 2026 10:03:46 +0200
-From: Daniel Borkmann <daniel@iogearbox.net>
-To: kuba@kernel.org
-Cc: razor@blackwall.org,
-	bobbyeshleman@meta.com,
-	dw@davidwei.uk,
-	netdev@vger.kernel.org
-Subject: [PATCH net-next 1/4] selftests/net: Move netkit lease hw setup into per-test fixtures
-Date: Wed, 10 Jun 2026 10:03:41 +0200
-Message-ID: <20260610080344.701380-2-daniel@iogearbox.net>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260610080344.701380-1-daniel@iogearbox.net>
-References: <20260610080344.701380-1-daniel@iogearbox.net>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="AVc9mwDe"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=SUBiUHt/0iiIKa8WSEzuAV3b4OE0sNSco6iZTF/7BsU=; b=AVc9mwDezYfcqmBMiqIwUCYUoM
+	Q7WdYxiJugJww1//sevc6nVN3YNGEIb1ab91J5FltT9bMo6KZKb9chMrSpLN+21EaPtwzcdK5FJhH
+	+TdA+GLaIdZE928yP4zk/+QF20dc/7uoTpRzXl9spIgb/+zWebK53U5SHIK6LIvjui2E=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wXDwI-006wZA-Ak; Wed, 10 Jun 2026 10:05:30 +0200
+Date: Wed, 10 Jun 2026 10:05:30 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Greg Ungerer <gerg@linux-m68k.org>
+Cc: linux-m68k@lists.linux-m68k.org, linux-kernel@vger.kernel.org,
+	arnd@kernel.org, wei.fang@nxp.com, frank.li@nxp.com,
+	shenwei.wang@nxp.com, imx@lists.linux.dev, netdev@vger.kernel.org,
+	nico@fluxnic.net, adureghello@baylibre.com, ulfh@kernel.org,
+	linux-mmc@vger.kernel.org, linux-can@vger.kernel.org,
+	linux-spi@vger.kernel.org, olteanv@gmail.com
+Subject: Re: [PATCHv2 1/4] net: fec: do not use readl()/writel() for ColdFire
+Message-ID: <caa2a34c-5a73-4075-9f7f-77b30673a4e2@lunn.ch>
+References: <20260609142139.1563360-1-gerg@linux-m68k.org>
+ <20260609142139.1563360-3-gerg@linux-m68k.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: Clear (ClamAV 1.4.3/28027/Wed Jun 10 08:29:13 2026)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260609142139.1563360-3-gerg@linux-m68k.org>
 
-The HW counterpart of nk_qlease.py was carrying its lease setup in main()
-and stashing src_queue / nk_queue / nk_*_ifname on cfg, which had drawbacks
-called out during the review at [0].
+On Wed, Jun 10, 2026 at 12:12:58AM +1000, Greg Ungerer wrote:
+> Modify the FEC driver to not directly use readl() and writel() to access
+> hardware registers but instead local fec_readl() and fec_writel() methods.
+> This allows for different architecture users of this driver to have
+> different underlying access functions - to support both little and big
+> endian hardware.
+> 
+> The FEC hardware block in ColdFire SoC parts is accessed big-endian.
+> The usual kernel readl()/writel() IO memory access methods are defined to
+> access little endian data. Change access for ColdFire to use __raw_readl()
+> and __raw_writel() access methods - which do not modify or swap bytes
+> on access.
+> 
+> The FEC driver works today because the m68k architecture io.h has a
+> kludge in the definitions of the readl() and writel() functions for
+> ColdFire that allow big-endian access if the address of the register to
+> access is within the SoC's internal peripheral registers. This is being
+> fixed in the near future to define readl() and writel() correctly - with
+> no byte swapping. Thus the motivation for this fix here.
+> 
+> __raw_readl()/__raw_writel() access methods are used instead of the more
+> commonly used ioread32be()/iowrite32be() here because those are broken too,
+> because of the current readl()/writel() kludge. They are implemented in
+> asm-generic/io.h in terms of readl()/writel().
+> 
+> Note that even when readl() and writel() are fixed on ColdFire they will
+> not be the right thing to use within the FEC driver on ColdFire hardware.
+> 
+> Signed-off-by: Greg Ungerer <gerg@linux-m68k.org>
 
-This is the deferred half of the cleanup that landed in commit e254ffb9502c
-("selftests/net: Split netdevsim tests from HW tests in nk_qlease") which
-was the SW counterpart of nk_qlease.py.
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/netdev/20260408162238.16709090@kernel.org/ [0]
----
- .../selftests/drivers/net/hw/nk_qlease.py     | 192 +++++++++++++-----
- 1 file changed, 146 insertions(+), 46 deletions(-)
-
-diff --git a/tools/testing/selftests/drivers/net/hw/nk_qlease.py b/tools/testing/selftests/drivers/net/hw/nk_qlease.py
-index 139a91ebd229..81125856727f 100755
---- a/tools/testing/selftests/drivers/net/hw/nk_qlease.py
-+++ b/tools/testing/selftests/drivers/net/hw/nk_qlease.py
-@@ -18,8 +18,10 @@ from lib.py import (
-     NetNSEnter,
-     EthtoolFamily,
-     NetdevFamily,
-+    RtnlFamily,
- )
- from lib.py import (
-+    Netlink,
-     bkg,
-     cmd,
-     defer,
-@@ -31,9 +33,117 @@ from lib.py import (
- from lib.py import KsftSkipEx, CmdExitFailure
- 
- 
--def set_flow_rule(cfg):
-+def _create_netkit_pair(cfg, rxqueues=2):
-+    if cfg._nk_host_ifname:
-+        cmd(f"ip link del dev {cfg._nk_host_ifname}", fail=False)
-+        cfg._nk_host_ifname = None
-+        cfg.nk_guest_ifname = None
-+    if getattr(cfg, "_tc_attached", False):
-+        cmd(
-+            f"tc filter del dev {cfg.ifname} ingress pref {cfg._bpf_prog_pref}",
-+            fail=False,
-+        )
-+        cfg._tc_attached = False
-+
-+    all_links = ip("-d link show", json=True)
-+    old_idxs = {
-+        link["ifindex"]
-+        for link in all_links
-+        if link.get("linkinfo", {}).get("info_kind") == "netkit"
-+    }
-+
-+    rtnl = RtnlFamily()
-+    rtnl.newlink(
-+        {
-+            "linkinfo": {
-+                "kind": "netkit",
-+                "data": {
-+                    "mode": "l2",
-+                    "policy": "forward",
-+                    "peer-policy": "forward",
-+                },
-+            },
-+            "num-rx-queues": rxqueues,
-+        },
-+        flags=[Netlink.NLM_F_CREATE, Netlink.NLM_F_EXCL],
-+    )
-+
-+    all_links = ip("-d link show", json=True)
-+    nk_links = [
-+        link
-+        for link in all_links
-+        if link.get("linkinfo", {}).get("info_kind") == "netkit"
-+        and link["ifindex"] not in old_idxs
-+    ]
-+    if len(nk_links) != 2:
-+        raise KsftSkipEx("Failed to create netkit pair")
-+
-+    nk_links.sort(key=lambda x: x["ifindex"])
-+    cfg._nk_host_ifname = nk_links[1]["ifname"]
-+    cfg.nk_guest_ifname = nk_links[0]["ifname"]
-+    cfg.nk_host_ifindex = nk_links[1]["ifindex"]
-+    cfg.nk_guest_ifindex = nk_links[0]["ifindex"]
-+
-+    ip(f"link set dev {cfg.nk_guest_ifname} netns {cfg.netns.name}")
-+    ip(f"link set dev {cfg._nk_host_ifname} up")
-+    ip(f"-6 addr add fe80::1/64 dev {cfg._nk_host_ifname} nodad")
-+    ip(
-+        f"-6 route add {cfg.nk_guest_ipv6}/128 via fe80::2 "
-+        f"dev {cfg._nk_host_ifname}"
-+    )
-+    ip(f"link set dev {cfg.nk_guest_ifname} up", ns=cfg.netns)
-+    ip(f"-6 addr add fe80::2/64 dev {cfg.nk_guest_ifname}", ns=cfg.netns)
-+    ip(
-+        f"-6 addr add {cfg.nk_guest_ipv6}/64 dev {cfg.nk_guest_ifname} nodad",
-+        ns=cfg.netns,
-+    )
-+    ip(
-+        f"-6 route add default via fe80::1 dev {cfg.nk_guest_ifname}",
-+        ns=cfg.netns,
-+    )
-+
-+    cfg._attach_bpf()
-+
-+
-+def _setup_lease(cfg, rxqueues=2):
-+    _create_netkit_pair(cfg, rxqueues=rxqueues)
-+
-+    ethnl = EthtoolFamily()
-+    channels = ethnl.channels_get({"header": {"dev-index": cfg.ifindex}})[
-+        "combined-count"
-+    ]
-+    if channels < 2:
-+        raise KsftSkipEx(
-+            "Test requires NETIF with at least 2 combined channels"
-+        )
-+    src_queue = channels - 1
-+
-+    with NetNSEnter(str(cfg.netns)):
-+        netdevnl = NetdevFamily()
-+        bind_result = netdevnl.queue_create(
-+            {
-+                "ifindex": cfg.nk_guest_ifindex,
-+                "type": "rx",
-+                "lease": {
-+                    "ifindex": cfg.ifindex,
-+                    "queue": {"id": src_queue, "type": "rx"},
-+                    "netns-id": 0,
-+                },
-+            }
-+        )
-+    return src_queue, bind_result["id"]
-+
-+
-+def _teardown_netkit(cfg):
-+    if cfg._nk_host_ifname:
-+        cmd(f"ip link del dev {cfg._nk_host_ifname}", fail=False)
-+        cfg._nk_host_ifname = None
-+        cfg.nk_guest_ifname = None
-+
-+
-+def set_flow_rule(cfg, src_queue):
-     output = ethtool(
--        f"-N {cfg.ifname} flow-type tcp6 dst-port {cfg.port} action {cfg.src_queue}"
-+        f"-N {cfg.ifname} flow-type tcp6 dst-port {cfg.port} action {src_queue}"
-     ).stdout
-     values = re.search(r"ID (\d+)", output).group(1)
-     return int(values)
-@@ -41,6 +151,8 @@ def set_flow_rule(cfg):
- 
- def test_iou_zcrx(cfg) -> None:
-     cfg.require_ipver("6")
-+    src_queue, nk_queue = _setup_lease(cfg)
-+    defer(_teardown_netkit, cfg)
-     ethnl = EthtoolFamily()
- 
-     rings = ethnl.rings_get({"header": {"dev-index": cfg.ifindex}})
-@@ -65,13 +177,16 @@ def test_iou_zcrx(cfg) -> None:
-         },
-     )
- 
--    ethtool(f"-X {cfg.ifname} equal {cfg.src_queue}")
-+    ethtool(f"-X {cfg.ifname} equal {src_queue}")
-     defer(ethtool, f"-X {cfg.ifname} default")
- 
--    flow_rule_id = set_flow_rule(cfg)
-+    flow_rule_id = set_flow_rule(cfg, src_queue)
-     defer(ethtool, f"-N {cfg.ifname} delete {flow_rule_id}")
- 
--    rx_cmd = f"ip netns exec {cfg.netns.name} {cfg.bin_local} -s -p {cfg.port} -i {cfg.nk_guest_ifname} -q {cfg.nk_queue}"
-+    rx_cmd = (
-+        f"ip netns exec {cfg.netns.name} {cfg.bin_local} "
-+        f"-s -p {cfg.port} -i {cfg.nk_guest_ifname} -q {nk_queue}"
-+    )
-     tx_cmd = f"{cfg.bin_remote} -c -h {cfg.nk_guest_ipv6} -p {cfg.port} -l 12840"
-     with bkg(rx_cmd, exit_wait=True):
-         wait_port_listen(cfg.port, proto="tcp", ns=cfg.netns)
-@@ -80,25 +195,29 @@ def test_iou_zcrx(cfg) -> None:
- 
- def test_attrs(cfg) -> None:
-     cfg.require_ipver("6")
-+    src_queue, nk_queue = _setup_lease(cfg)
-+    defer(_teardown_netkit, cfg)
-     netdevnl = NetdevFamily()
-     queue_info = netdevnl.queue_get(
--        {"ifindex": cfg.ifindex, "id": cfg.src_queue, "type": "rx"}
-+        {"ifindex": cfg.ifindex, "id": src_queue, "type": "rx"}
-     )
- 
--    ksft_eq(queue_info["id"], cfg.src_queue)
-+    ksft_eq(queue_info["id"], src_queue)
-     ksft_eq(queue_info["type"], "rx")
-     ksft_eq(queue_info["ifindex"], cfg.ifindex)
- 
-     ksft_in("lease", queue_info)
-     lease = queue_info["lease"]
-     ksft_eq(lease["ifindex"], cfg.nk_guest_ifindex)
--    ksft_eq(lease["queue"]["id"], cfg.nk_queue)
-+    ksft_eq(lease["queue"]["id"], nk_queue)
-     ksft_eq(lease["queue"]["type"], "rx")
-     ksft_in("netns-id", lease)
- 
- 
- def test_attach_xdp_with_mp(cfg) -> None:
-     cfg.require_ipver("6")
-+    src_queue, nk_queue = _setup_lease(cfg)
-+    defer(_teardown_netkit, cfg)
-     ethnl = EthtoolFamily()
- 
-     rings = ethnl.rings_get({"header": {"dev-index": cfg.ifindex}})
-@@ -123,18 +242,21 @@ def test_attach_xdp_with_mp(cfg) -> None:
-         },
-     )
- 
--    ethtool(f"-X {cfg.ifname} equal {cfg.src_queue}")
-+    ethtool(f"-X {cfg.ifname} equal {src_queue}")
-     defer(ethtool, f"-X {cfg.ifname} default")
- 
-     netdevnl = NetdevFamily()
- 
--    rx_cmd = f"ip netns exec {cfg.netns.name} {cfg.bin_local} -s -p {cfg.port} -i {cfg.nk_guest_ifname} -q {cfg.nk_queue}"
-+    rx_cmd = (
-+        f"ip netns exec {cfg.netns.name} {cfg.bin_local} "
-+        f"-s -p {cfg.port} -i {cfg.nk_guest_ifname} -q {nk_queue}"
-+    )
-     with bkg(rx_cmd):
-         wait_port_listen(cfg.port, proto="tcp", ns=cfg.netns)
- 
-         time.sleep(0.1)
-         queue_info = netdevnl.queue_get(
--            {"ifindex": cfg.ifindex, "id": cfg.src_queue, "type": "rx"}
-+            {"ifindex": cfg.ifindex, "id": src_queue, "type": "rx"}
-         )
-         ksft_in("io-uring", queue_info)
- 
-@@ -144,13 +266,15 @@ def test_attach_xdp_with_mp(cfg) -> None:
- 
-     time.sleep(0.1)
-     queue_info = netdevnl.queue_get(
--        {"ifindex": cfg.ifindex, "id": cfg.src_queue, "type": "rx"}
-+        {"ifindex": cfg.ifindex, "id": src_queue, "type": "rx"}
-     )
-     ksft_not_in("io-uring", queue_info)
- 
- 
- def test_destroy(cfg) -> None:
-     cfg.require_ipver("6")
-+    src_queue, nk_queue = _setup_lease(cfg)
-+    defer(_teardown_netkit, cfg)
-     ethnl = EthtoolFamily()
- 
-     rings = ethnl.rings_get({"header": {"dev-index": cfg.ifindex}})
-@@ -175,16 +299,19 @@ def test_destroy(cfg) -> None:
-         },
-     )
- 
--    ethtool(f"-X {cfg.ifname} equal {cfg.src_queue}")
-+    ethtool(f"-X {cfg.ifname} equal {src_queue}")
-     defer(ethtool, f"-X {cfg.ifname} default")
- 
--    rx_cmd = f"ip netns exec {cfg.netns.name} {cfg.bin_local} -s -p {cfg.port} -i {cfg.nk_guest_ifname} -q {cfg.nk_queue}"
-+    rx_cmd = (
-+        f"ip netns exec {cfg.netns.name} {cfg.bin_local} "
-+        f"-s -p {cfg.port} -i {cfg.nk_guest_ifname} -q {nk_queue}"
-+    )
-     rx_proc = cmd(rx_cmd, background=True)
-     wait_port_listen(cfg.port, proto="tcp", ns=cfg.netns)
- 
-     netdevnl = NetdevFamily()
-     queue_info = netdevnl.queue_get(
--        {"ifindex": cfg.ifindex, "id": cfg.src_queue, "type": "rx"}
-+        {"ifindex": cfg.ifindex, "id": src_queue, "type": "rx"}
-     )
-     ksft_in("io-uring", queue_info)
- 
-@@ -199,17 +326,14 @@ def test_destroy(cfg) -> None:
-     cfg.nk_guest_ifname = None
- 
-     queue_info = netdevnl.queue_get(
--        {"ifindex": cfg.ifindex, "id": cfg.src_queue, "type": "rx"}
-+        {"ifindex": cfg.ifindex, "id": src_queue, "type": "rx"}
-     )
-     ksft_not_in("io-uring", queue_info)
- 
--    cmd(f"tc filter del dev {cfg.ifname} ingress pref {cfg._bpf_prog_pref}")
--    cfg._tc_attached = False
--
--    flow_rule_id = set_flow_rule(cfg)
-+    flow_rule_id = set_flow_rule(cfg, src_queue)
-     defer(ethtool, f"-N {cfg.ifname} delete {flow_rule_id}")
- 
--    rx_cmd = f"{cfg.bin_local} -s -p {cfg.port} -i {cfg.ifname} -q {cfg.src_queue}"
-+    rx_cmd = f"{cfg.bin_local} -s -p {cfg.port} -i {cfg.ifname} -q {src_queue}"
-     tx_cmd = f"{cfg.bin_remote} -c -h {cfg.addr_v['6']} -p {cfg.port} -l 12840"
-     with bkg(rx_cmd, exit_wait=True):
-         wait_port_listen(cfg.port, proto="tcp")
-@@ -217,7 +341,7 @@ def test_destroy(cfg) -> None:
-     # Short delay since iou cleanup is async and takes a bit of time.
-     time.sleep(0.1)
-     queue_info = netdevnl.queue_get(
--        {"ifindex": cfg.ifindex, "id": cfg.src_queue, "type": "rx"}
-+        {"ifindex": cfg.ifindex, "id": src_queue, "type": "rx"}
-     )
-     ksft_not_in("io-uring", queue_info)
- 
-@@ -230,30 +354,6 @@ def main() -> None:
-         cfg.bin_remote = cfg.remote.deploy(cfg.bin_local)
-         cfg.port = rand_port()
- 
--        ethnl = EthtoolFamily()
--        channels = ethnl.channels_get({"header": {"dev-index": cfg.ifindex}})
--        channels = channels["combined-count"]
--        if channels < 2:
--            raise KsftSkipEx("Test requires NETIF with at least 2 combined channels")
--
--        cfg.src_queue = channels - 1
--
--        with NetNSEnter(str(cfg.netns)):
--            netdevnl = NetdevFamily()
--            bind_result = netdevnl.queue_create(
--                {
--                    "ifindex": cfg.nk_guest_ifindex,
--                    "type": "rx",
--                    "lease": {
--                        "ifindex": cfg.ifindex,
--                        "queue": {"id": cfg.src_queue, "type": "rx"},
--                        "netns-id": 0,
--                    },
--                }
--            )
--            cfg.nk_queue = bind_result["id"]
--
--        # test_destroy must be last because it destroys the netkit devices
-         ksft_run(
-             [test_iou_zcrx, test_attrs, test_attach_xdp_with_mp, test_destroy],
-             args=(cfg,),
--- 
-2.43.0
-
+    Andrew
