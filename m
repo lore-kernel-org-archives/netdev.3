@@ -1,85 +1,119 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEA3430676E;
-	Wed, 10 Jun 2026 08:05:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3076839FCBC
+	for <netdev@vger.kernel.org>; Wed, 10 Jun 2026 08:12:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781078736; cv=none; b=GvQO6VVTsge6T4AvqvzGx/MAH2w5e+CJmzTG8YvifSPN0VvGmu6wTqreVezHsdzpCUA8jtCx79Jhy+pdxVYxv/k9vBo4xkZyRg9Lf/E20DZulOrh8j9Z0bHZjeCfwwT4iNneYQgKvkXClgu850DE0cDB5mkQUTMyhtJuB3GzJkY=
+	t=1781079166; cv=none; b=G3sDeNmsV2zL9+SWFfjF6eLPszS0rgBzC1f9rqzr01EjYeyWkB2ll5RD5pm5dq0ATzhygDYUTVH820S+IAeYednNOVyCWUhpuuzsfB4H/JPV3XLU7Sd2LDthL6Q8sxrHJSg2h+Aw4Qezbv3fQMRks7b1oDCOC9stS2i3D5oOLlw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781078736; c=relaxed/simple;
-	bh=Bku6vmbnfsIPF3upfNi33A0lpAy6UNfcQHI8Xaj7jk8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cGXazB/ZmJHdl5moDoxSYi2yGQSicZfT4rFwIEu4eqxqJyb31Yswt37wHQ7WT6ynDSeihufiF6rETYjkAm+t4Mqzu2z3Ptla/Xsm52naLo8E8LrhDCWBMiW6r8c6aA1ZiQ/ane4uim2EudcUTY5VBn8haStT04eKn2V30CYZ80E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=AVc9mwDe; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1781079166; c=relaxed/simple;
+	bh=3mIefPDB43KmMDQcWcDMAg6qpJoLh01xoGq7lr55mDg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YukYBbOF5J9OGTeAuMl/6QArZ6U9NT8ymK2VEOvOxPl+7i2HEqWfj0z5F6QgFftNri8PKg8xeiqaiNfU52ge0bzpQwK29Lp3n1dFaNw5myQzuNR0VMyUZmxbIYJSW4YpQsT2uR8LB64us4Gv4rlm3f72BKWiHlKllgLnJmhPeHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Pr+8qgk9; arc=none smtp.client-ip=209.85.216.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="AVc9mwDe"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=SUBiUHt/0iiIKa8WSEzuAV3b4OE0sNSco6iZTF/7BsU=; b=AVc9mwDezYfcqmBMiqIwUCYUoM
-	Q7WdYxiJugJww1//sevc6nVN3YNGEIb1ab91J5FltT9bMo6KZKb9chMrSpLN+21EaPtwzcdK5FJhH
-	+TdA+GLaIdZE928yP4zk/+QF20dc/7uoTpRzXl9spIgb/+zWebK53U5SHIK6LIvjui2E=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wXDwI-006wZA-Ak; Wed, 10 Jun 2026 10:05:30 +0200
-Date: Wed, 10 Jun 2026 10:05:30 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Greg Ungerer <gerg@linux-m68k.org>
-Cc: linux-m68k@lists.linux-m68k.org, linux-kernel@vger.kernel.org,
-	arnd@kernel.org, wei.fang@nxp.com, frank.li@nxp.com,
-	shenwei.wang@nxp.com, imx@lists.linux.dev, netdev@vger.kernel.org,
-	nico@fluxnic.net, adureghello@baylibre.com, ulfh@kernel.org,
-	linux-mmc@vger.kernel.org, linux-can@vger.kernel.org,
-	linux-spi@vger.kernel.org, olteanv@gmail.com
-Subject: Re: [PATCHv2 1/4] net: fec: do not use readl()/writel() for ColdFire
-Message-ID: <caa2a34c-5a73-4075-9f7f-77b30673a4e2@lunn.ch>
-References: <20260609142139.1563360-1-gerg@linux-m68k.org>
- <20260609142139.1563360-3-gerg@linux-m68k.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Pr+8qgk9"
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-36b903567fdso6524763a91.1
+        for <netdev@vger.kernel.org>; Wed, 10 Jun 2026 01:12:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781079164; x=1781683964; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=iAJrDclWsxoQPkhKhcELIufNlH0kXnHvmBTgSWCpEJs=;
+        b=Pr+8qgk9P2LjQVCxEYVY3GSKVntPOK/KO8w124W+5BFy63WUMqWnXYMmtEuLwotfYh
+         mr8ugKBJ9i/q6t4QjdeO83V/FdVSpkccgZnSWkMVQw5YqToz04TT0n9hrT+CBpZRbnQR
+         iTq6OVBucQuEN05DgHBTBlNAqDfYjK5H5rtybVP5FZqfL4A8FGGq5ikthI6v40NCsfix
+         2R0DWgWpuArEtXPnWOhn8vPWkOuRdXvvY+Eqvib7Q4gfYgENR1quZXiDDfPYNTqhUNQ2
+         6Ev++qkdSu9bb99MTn1FGTclvVQHoG+zC99wnBqG53EYKHp+4lMJUOCdH97OQu+fUszK
+         hrhA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781079164; x=1781683964;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=iAJrDclWsxoQPkhKhcELIufNlH0kXnHvmBTgSWCpEJs=;
+        b=HQrxnmRMiiC+t/7a6eBXvTFOZ7rLOGmgYJd5IUToIhNgOPlCeDHmb6ufqideIyd5ho
+         eM972MAGbWQ/jpF5vmz2zh6MfXJLGK2nyuBB/UHG5dRj6RadXuoscTMnYOqmPRoqa6fd
+         xeSHCXJUERyYB/mEVtGu6RtGTrIsJW4jFYee++sCCcQAd7A5flh9Z73CDeD3iONeeA5u
+         oNSSSf6K3f4lM4qQJKin7Mrn+Frz4/h3kc/gFUMkdI1M2kJuqwMav/vdYHzEJjhV1Zps
+         4ccuCWWhnhWXOUNJmBcbFJtfxjqIdquxtEku640wT1JFfDdNvqUvjPePF0XXPo7bsRfm
+         NwaQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+S7L2F02vI+Jaxh82rk7zq7fnVbN31iIRC+kXCXRJLzd4Xhm+QqhN5Gnm0dgEzjYpxkcFwgeA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwbPWmqLkHaxabfLIL+YCA26OVO9Axf+mYZASXdogmyrXm7YpY8
+	Eis9QeTFKxyhMxMsqeqUy5EwmUziXc/Avwe9e6SRYP7qGm6BUjSaG08s
+X-Gm-Gg: Acq92OEbZRFola1UdTfb43h3t3+H5KfJa89TeIsmg3opllBWyTk4m4UYOibEG4Elof1
+	P8y6ME3ouFJQF9ddsakAwLpsXjwqnMTY4kBdGTF+e7atbS/NAd6gBoEYuMMaQRrqSHohaphvkLn
+	RFYQcixMScXymnlUeQiUe1iLw5sGMVD/+HYry0AFnPnpaE3c1tVXuI1Qzy575SmX2rp4ffs8oc8
+	/QriFLVMG4lS+Mhrz3ve2rDvjZR892FTVtJh6RhpuUekZfzhEq3unkCtzrOCpoEW8qiAGTop42w
+	aAa/w69vOsGnYv8pqOnwhKf/82d26qMQO2exPpLBDXXVdt6msVR5snMexHAr/n/U9IA9vR4zSK9
+	a2W7cY2VOKy7bxeNdMEL2rY3oRrzNCS3hb2hSUpytltIab3RFunNs0m2Ajo0cABz4Bf4Gwrc4+N
+	anOUnxAHZ7YNZZNb06I5uDSzo3TLNdODCEoj11FkPwCXB7622FZMh3bDJQqT7OOC0F67BbcrhH
+X-Received: by 2002:a17:90a:d40f:b0:36a:a16b:5f65 with SMTP id 98e67ed59e1d1-370ef1f3d01mr25989391a91.11.1781079164425;
+        Wed, 10 Jun 2026 01:12:44 -0700 (PDT)
+Received: from cps-manycore-1.. ([147.46.174.222])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-37645c1aeb5sm1241003a91.2.2026.06.10.01.12.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 10 Jun 2026 01:12:43 -0700 (PDT)
+From: Sechang Lim <rhkrqnwk98@gmail.com>
+To: Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Martin KaFai Lau <martin.lau@linux.dev>
+Cc: Eduard Zingerman <eddyz87@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Cong Wang <cwang@multikernel.io>,
+	Emil Tsalapatis <emil@etsalapatis.com>,
+	bpf@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH bpf v2 0/2] bpf, sockmap: fix bpf_msg_pop_data() integer overflow
+Date: Wed, 10 Jun 2026 08:11:52 +0000
+Message-ID: <20260610081218.506709-1-rhkrqnwk98@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260609142139.1563360-3-gerg@linux-m68k.org>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jun 10, 2026 at 12:12:58AM +1000, Greg Ungerer wrote:
-> Modify the FEC driver to not directly use readl() and writel() to access
-> hardware registers but instead local fec_readl() and fec_writel() methods.
-> This allows for different architecture users of this driver to have
-> different underlying access functions - to support both little and big
-> endian hardware.
-> 
-> The FEC hardware block in ColdFire SoC parts is accessed big-endian.
-> The usual kernel readl()/writel() IO memory access methods are defined to
-> access little endian data. Change access for ColdFire to use __raw_readl()
-> and __raw_writel() access methods - which do not modify or swap bytes
-> on access.
-> 
-> The FEC driver works today because the m68k architecture io.h has a
-> kludge in the definitions of the readl() and writel() functions for
-> ColdFire that allow big-endian access if the address of the register to
-> access is within the SoC's internal peripheral registers. This is being
-> fixed in the near future to define readl() and writel() correctly - with
-> no byte swapping. Thus the motivation for this fix here.
-> 
-> __raw_readl()/__raw_writel() access methods are used instead of the more
-> commonly used ioread32be()/iowrite32be() here because those are broken too,
-> because of the current readl()/writel() kludge. They are implemented in
-> asm-generic/io.h in terms of readl()/writel().
-> 
-> Note that even when readl() and writel() are fixed on ColdFire they will
-> not be the right thing to use within the FEC driver on ColdFire hardware.
-> 
-> Signed-off-by: Greg Ungerer <gerg@linux-m68k.org>
+bpf_msg_pop_data() computes "u64 last = start + len" with u32 operands,
+so a len close to U32_MAX wraps the sum and passes the bounds check. The
+pop loop then walks off the end of the sk_msg scatterlist and
+sk_msg_shift_left() calls put_page() on the empty msg->sg.end slot.
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+v2:
+ - add selftest (Cong Wang)
+ - change pop to u32 (Emil Tsalapatis)
 
-    Andrew
+v1:
+ - https://lore.kernel.org/all/20260609183927.4021802-1-rhkrqnwk98@gmail.com/
+
+Sechang Lim (2):
+  bpf, sockmap: fix integer overflow in bpf_msg_pop_data() bounds check
+  selftests/bpf: add test for bpf_msg_pop_data() overflow
+
+ net/core/filter.c                             |  4 +-
+ .../selftests/bpf/prog_tests/sockmap_basic.c  | 48 +++++++++++++++++++
+ .../bpf/progs/test_sockmap_msg_pop_data.c     | 27 +++++++++++
+ 3 files changed, 77 insertions(+), 2 deletions(-)
+ create mode 100644 tools/testing/selftests/bpf/progs/test_sockmap_msg_pop_data.c
+
+-- 
+2.43.0
+
