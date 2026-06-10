@@ -1,224 +1,62 @@
-Received: from mail-yx1-f41.google.com (mail-yx1-f41.google.com [74.125.224.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96B70248F66
-	for <netdev@vger.kernel.org>; Wed, 10 Jun 2026 01:58:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781056706; cv=pass; b=jXfWN4ZCLfKRUahHmOVwgLmdCKEpPm8Ah9uCar+DS8TVpYtA2kTYLrv4HBMl66WUxrz0mTuV8Q3TzFpkO+YuBAS3DgLg/2h960NEHbjyHPkwpWMQ0H7ynoJ3Bg7HV0p54pcUGgJdcipXjBJKylDx1KhmgjhbrVhcrL8ur7jZFUo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781056706; c=relaxed/simple;
-	bh=r7wZRIULkzfdJ6PbIVDPQrynqxU84BnGc6ZnGMKQxbU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jdQGQVF0kOhj4Zr3hWq9XF4gmhPGCDFvtT3TE+ncT5P8hAD5BrYxvT/wFwJRNHYt5gkmSz7xo28sUpaAV46ilV/YpK8rUiRIoE13XofaIO2WLcvJDR6cQ4afHPZnvD5W48M9F9wxZjDJuFelk+G6K47eVTXmkJUCW3UhjKNJS/Q=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IHt6vqUW; arc=pass smtp.client-ip=74.125.224.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E1CB16132A;
+	Wed, 10 Jun 2026 01:59:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781056757; cv=none; b=kfIS3ifhww86Pb6WbKZtY+TevgDs/vwi4iP78qbQsgVMUQ7t7vH9aQmB3YmJs9jlMd8GTEkq8zk9YaQLRMA//JO+d/XP1vd4vKfxhI/r2lIklWEJ00t94Eyjvhg2IbJGgGdq8r/8o7KuwASHh2s5Q8HKe+8pOmtuoz+/IqsSeqw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781056757; c=relaxed/simple;
+	bh=21kY2+Fqg0W8A8HmNPWueFtJrpgvxP5JBgkaXuBI+Y8=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=A8BJ6dXBlzkh2BCGmgKkgBgKO807xmWbsr4CviaAtQDtNnEAfSy2v/jP1OHJO9R0sIAg3hhbkolAxcPB31VxlatAgMA9iCjShxEwwstgbeube2cMnFYQ5BW3I6r2ij4logHj4uFxa4TXTXcm1MNZIAnaypIqXR4vrSV4qNoS+E0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f+o+2oX3; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IHt6vqUW"
-Received: by mail-yx1-f41.google.com with SMTP id 956f58d0204a3-66049669d78so5517598d50.0
-        for <netdev@vger.kernel.org>; Tue, 09 Jun 2026 18:58:25 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781056704; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Qu3RSZBg6iw/rl3Yk3kdKEjxpkVGm4CrZwoB2TQp9JjxHVfjMa/yzKVK9rJX3I+K97
-         qyxoO9ZEljitBLeZe5nt4Enncpu5pm4CMZUBKq6lEFXVAJz+ZVAiNmmYoo9Sq/33CTrK
-         Gy2uilrnUDYqvOcAwkBr4npOnypgfRJu8JnEK9BVOTwGPA3LCpG37rYG061nFIHwQ7jV
-         EC2fI0A3G+UuwxPxk+1NduhWackM4Hav63De4mD3O7sXCNsiopnIJA7YT1k8r5qg+PKz
-         M8NsiqybGXensELvIuxioOiSbwJRf3S8bFqOfc7Oz3xDf0mc8wnV60j/m0b0u1tTiEzO
-         xPEg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=V26tMOgLqjN+F+t/D87zLfcdZGcgB0R+hwG90xbmU9k=;
-        fh=e2HXHl3Uhh6sVAEHMqFo8daB6/7mfT6DDxeM7O3BiEQ=;
-        b=IHs5mMhYnH/uP2xT6oELPsezA3zt1C1IAyxjeJOCRswnz0w+40tDRkOGjeVnhvp2xG
-         545GJgrRg11BzxdupsJB3Q5iCrq0lfBL8LiL37xgyMyhCguwsicjkKpuaiTlQ5qLrgO/
-         ZLAcM8KB6wkUg7e3xlNJzrXt20Z7XhhKi0AErsmKRonnlT+69yiivTEVOtD2BifNR5Te
-         n7BVHP16RwuGMB1E2y25zbQktAYHaaO0wyXpPLs3ZYDTvmkuvkRrzlzXgJ1pM46C8XST
-         45jERDgBu2N9fCXatrgFRqP1FVzLP5Y+x0tvsOo2tM4cPpoys7bajiDKxFoqFjE+RgKY
-         jhQQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781056704; x=1781661504; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=V26tMOgLqjN+F+t/D87zLfcdZGcgB0R+hwG90xbmU9k=;
-        b=IHt6vqUWTuoZQ6HfufaMFIuLw052EaXdX8WR6Bn8l0Zcj9CUfBNVtlj+y+OblMvU3+
-         R5cMN5n+jW6V7I2+Aq58v39Y14o4e2l6YXq0p2HQ0qLH6fWJpxqfLckfIqsJBADapRTn
-         iJzHgEt7YXq+OuSufbQFiP9UYS0h8HGrNwj5VF/FPKx3Tba6il9QnQzDeCJO2gYmrWml
-         C2SWNZpiErUUpSBs1SWocJdfNrgO9RyKA0mQ7MS65XahO6PcZiUQD2QubNxnQoyw1lWK
-         YzUD2bG2KVd+ACm5Zai4385tTx5/yPGWsWIrhTHfFxS0HJHKZA6b1rY0Tl0dHWZSy/7c
-         vC2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781056704; x=1781661504;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=V26tMOgLqjN+F+t/D87zLfcdZGcgB0R+hwG90xbmU9k=;
-        b=Hs/8eq+2onQCc0t987HD0w5jyrKMBVQSK2w3CkjXoPzeJQOddPrdR47yMHww9N/pRP
-         qX8tDa0sz+7b61HG6vORwrPTdQV1tSKc0XFhk96cbzNuMFyjF9CRtwemdFFwTPUbluu6
-         ZAGsYOMKxj5duhX2Qb2pMr73ij8Hdl9fk76WoV4C+gHk5fVWWmq4IvHUq0wThupJbQkP
-         FwqIN1Rq/biucaJLP5fhQUyxxg/afr0sNcl1PRApnvvVEKA/9LZ2Jb/xQ/FX4zkhKJ1N
-         xpUBHoYPDJUsKABYiRBeGClCX3GFx4L3b+5oKA5hXlSl1FSjvE6oU4YzSK/cwIO3RMq/
-         dJ9g==
-X-Forwarded-Encrypted: i=1; AFNElJ/rN256hVK5XcjAS4fBBxjrZ77FMK0nxRokA0GudoJGT5SMGIHuUSmoWYWxwUfidyRQmez6hvw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyutoJCGfPVuXCHTcckMJuGz+m7KMiudFExYAuJHFUMju2G4K1s
-	/WsmJUvg+NPW+7+fhIM6CFBSD0g2JaQCc0IDhTHDKVtJO55UU5k2331AqUQoEpuDZ5L+BvDcVdF
-	wWjEEuOvz5rTS5ylpoaJCL60L00O1f2A=
-X-Gm-Gg: Acq92OHTFkkWnUlCaMbOFuZYaiGYYkBirf5p4R8+wGHbw+2C5X35PWI/Df9EOEfpS2h
-	DLsV+f1opnDaO4hYt6nyaxIYNf2HVIzDiIgpuR9PVBwCHosq+mjA6zSskpP+aZ7XPMFDh0JGbmV
-	heK3uq7uWhYjHxnJZVG0/DudQY+MInfkAIPNVSRJEYCFGXgLaxCrSV6yt0yEebbz6FuJ5gNOrjX
-	vvrTl1890hWR5LblWTuoGbNjq55I3G0NWviDj551NT6AWiepmbQbODJ7jv1Hjuu/9YDSssLomrP
-	YAkknq4WzNn4Esc4A/HroqdtombM29Uvh/UIUYD3sdk5+FpbPUwGs135qQt+9i3hGQyvVHpM
-X-Received: by 2002:a05:690e:4390:b0:660:4369:8cb1 with SMTP id
- 956f58d0204a3-66106e90b5cmr15646241d50.24.1781056704624; Tue, 09 Jun 2026
- 18:58:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f+o+2oX3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F00CA1F00893;
+	Wed, 10 Jun 2026 01:59:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781056756;
+	bh=LMo1YyeYGJbjVv1s9cUp1DtWyjbOOHVtkp74mFCuma8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=f+o+2oX3F6xjQkWgOdSyDCvfM62GSugEJzF8gOnm6aJ2VwDMeijjoaAOiTqG4juxo
+	 mzR3Cq75lQ5W6N2aXbk2ZQySp31dVk6/Y1uGywl6elSWasftdhogSHOfX3INHqSbH8
+	 Zd7dEu2y55bOzO6k9JeLLm94Aj8WKBPjKUasGgdkFvloaBy4QMBluKIB4h2NOVCDlM
+	 RU36YAEKBv5e22iFW6a+o0JBojQ1yobEzW1WacARf+AqWrtl4XwcYRQcUcrLSEVY51
+	 bufT0ZwISiLju7NiCawZH0TfrE6n4xl/FV/rGBXqbrZ1cKuMW8Q2iiMb+YJ1wWP44N
+	 eh8gPYgF8PKSA==
+Date: Tue, 9 Jun 2026 18:59:15 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Martijn de Gouw <martijn.de.gouw@prodrive-technologies.com>
+Cc: Vladimir Oltean <olteanv@gmail.com>, Andrew Lunn <andrew@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+ <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>
+Subject: Re: [PATCH] net: dsa: sja1105: Add rev-rmii support sja1110 devices
+Message-ID: <20260609185915.7aa34d8e@kernel.org>
+In-Reply-To: <20260608141654.2003932-1-martijn.de.gouw@prodrive-technologies.com>
+References: <20260608141654.2003932-1-martijn.de.gouw@prodrive-technologies.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260609100214.337538-1-sun.jian.kdev@gmail.com>
- <L0cwr1-KRSKR7-dJdjDmJA@linux.dev> <DJ4XIOT2RVMT.28I5LA2UOZVUI@etsalapatis.com>
- <AgOg1pJHQN-gpKhYUz3SMw@linux.dev>
-In-Reply-To: <AgOg1pJHQN-gpKhYUz3SMw@linux.dev>
-From: sun jian <sun.jian.kdev@gmail.com>
-Date: Wed, 10 Jun 2026 09:58:13 +0800
-X-Gm-Features: AVVi8Cd2Bbe0wde5qToQ7hXErFi3TvnK9_5Ol1Mi8_YsK_saSVysuCpjLW1uQ1Y
-Message-ID: <CABFUUZH9F+tiitstSBy2-M=WC84jg28CVMXU+Lu-va6jm71fDw@mail.gmail.com>
-Subject: Re: [PATCH] bpf: Unshare cloned skb before devmap egress XDP program
-To: Menglong Dong <menglong.dong@linux.dev>
-Cc: Emil Tsalapatis <emil@etsalapatis.com>, bpf@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, ast@kernel.org, 
-	daniel@iogearbox.net, andrii@kernel.org, martin.lau@linux.dev, 
-	davem@davemloft.net, kuba@kernel.org, hawk@kernel.org, 
-	john.fastabend@gmail.com, sdf@fomichev.me, shuah@kernel.org, 
-	liuhangbin@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed, Jun 10, 2026 at 9:21=E2=80=AFAM Menglong Dong <menglong.dong@linux.=
-dev> wrote:
->
-> On 2026/6/10 08:06 Emil Tsalapatis <emil@etsalapatis.com> write:
-> > On Tue Jun 9, 2026 at 7:06 AM EDT, Menglong Dong wrote:
-> > > On 2026/6/9 18:02 Sun Jian <sun.jian.kdev@gmail.com> write:
-> > >> dev_map_redirect_clone() uses skb_clone() when redirecting a generic=
- XDP
-> > >> skb to multiple devmap destinations. The cloned skb can share packet=
- data
-> > >> with other clones.
-> > >>
-> > >> If the destination devmap entry has an egress XDP program, that prog=
-ram
-> > >> can modify packet data. Such modifications can then be observed by o=
-ther
-> > >> clones sharing the same packet data.
-> > >>
-> > >> This can be reproduced by strengthening xdp_veth_egress to configure=
- a
-> > >> different source MAC for each egress device and checking that store_=
-mac_1/2
-> > >> observe the MAC configured for their own egress devices. Without the=
- fix,
-> > >> the SKB_MODE subtest observes store_mac_1 receiving the MAC configur=
-ed for
-> > >> the next egress device.
-> > >>
-> > >> Fix this by unsharing the cloned skb before running the devmap egres=
-s XDP
-> > >> program. Limit the extra copy to destinations with an attached egres=
-s
-> > >> program.
-> > >
-> > > Hi, Jian.
-> > >
-> > > This sounds like a good idea in this case. When I have a look at bpf_=
-clone_redirect(),
-> > > I found that it use skb_clone() too, which means it has the same prob=
-lem. The
-> > > data can be modified by other xdp prog in the destination NIC if we u=
-se
-> > > bpf_clone_redirect().
-> > >
-> > > So maybe this is the default logic, and I'm not sure if this patch ca=
-n break the
-> > > existing users :/
-> >
-> > I think for use cases where we are using bpf_clone_redirect() to use
-> > one clone for inspection this would add an unnecessary copy. Maybe
-> > adding *_copy() variants instead of changing the *_clone() would be
-> > better? That way we wouldn't be changing the behavior for existing
-> > consumers and the naming would be consistent with the skb_* methods.
->
-> Agree. It's not a good idea to change the logic of the existing API. Or
-> maybe we can add a BPF_F_CLONE flag for the existing API.
->
-> >
-> > But more importantly, is there an actual use case for the kind of API
-> > that the modified selftest requires? Nobody until now has considered
-> > the existing behavior to be a problem.
->
-> Agree too. Obviously, this is not a bug. For the use case in the commit
-> log, it's something that can be fixed by the user themself. If we need
-> modify the MAC, we'd better attach a BPF program for all the egress
-> device in the devmap.
->
-> >
-> > >
-> > > Thanks!
-> > > Menglong Dong
-> > >
-> > >>
-> > >> Tested with:
-> > >>   ./test_progs -t xdp_veth_egress
-> > >>   ./test_progs -t xdp_veth
-> > >>   ./test_progs -t xdp
-> > > [...]
-> > >>
-> > >>  destroy_xdp_redirect_map:
-> > >> --
-> > >> 2.43.0
-> > >>
-> > >>
-> > >>
-> >
->
->
->
->
+On Mon, 8 Jun 2026 16:16:51 +0200 Martijn de Gouw wrote:
+> When a rmii port is used in phy-mode (rev-rmii), the ref_clk is an input on
+> the rx clk pin. Configure both the rx and tx clock source to use the
+> rx_clk as external clock source input.
 
-Thanks for all the comments.
-
-I agree this should not be treated as a generic skb_clone() issue, and I
-understand the concern about changing existing clone/shared-data semantics.
-
-The case I was trying to address is narrower: generic XDP devmap
-broadcast/multi redirect with per-devmap-entry egress programs. The use cas=
-e is
-not newly introduced by this patch. The existing xdp_veth_egress test alrea=
-dy
-attaches xdp_devmap_prog to all egress devmap entries, and that program rew=
-rites
-eth->h_source based on ctx->egress_ifindex. My change only strengthens the =
-test
-from checking that the observed MAC is not equal to a single magic MAC to
-checking that each destination observes the MAC selected for its own egress
-ifindex.
-
-So attaching an egress program to all devmap entries is already what this t=
-est
-does. The SKB_MODE failure happens because the cloned skbs can still share =
-the
-packet data, and a later per-egress rewrite can be observed by another
-destination.
-
-That said, I see the concern that this may need a clearer semantic boundary
-between clone and copy behavior. I will also check the last_dst path pointe=
-d out
-by Sashiko before deciding whether this should be handled as a bug fix, or
-whether it needs a separate explicit copy/isolated redirect semantic instea=
-d.
+drivers/net/dsa/sja1105/sja1105_clocking.c:969:5: warning: no previous prototype for function 'sja1110_clocking_setup_port' [-Wmissing-prototypes]
+  969 | int sja1110_clocking_setup_port(struct sja1105_private *priv, int port)
+      |     ^
+drivers/net/dsa/sja1105/sja1105_clocking.c:969:1: note: declare 'static' if the function is not intended to be used outside of this translation unit
+  969 | int sja1110_clocking_setup_port(struct sja1105_private *priv, int port)
+      | ^
+      | static 
+-- 
+pw-bot: cr
