@@ -1,88 +1,119 @@
-Received: from mout-b-206.mailbox.org (mout-b-206.mailbox.org [195.10.208.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51435213E9C
-	for <netdev@vger.kernel.org>; Wed, 10 Jun 2026 08:50:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.10.208.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24D703B583C
+	for <netdev@vger.kernel.org>; Wed, 10 Jun 2026 08:52:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781081454; cv=none; b=sv9E7lL2UKrONDTqupYw28Lpd2v2aobNFluMfBrgZSswhKaEi+SMQBED/hlXC2CU1Fzf3cIkDvnjGxsh5b05JMUzxeduowJ9MelJkaHFzD8lr2g8drOx5JbZP1Gb35Nk6QyQLiuV3dA1yQm+uDbV2C+3b7dVfKtKsKXPsEia7+c=
+	t=1781081541; cv=none; b=dTGcAiaf9FHCLpoNqNiFPP8ogC6a9UbuzJR107cKg90NCykKfggDKnkU7ylXaNEGuTclL49xtSbECgcutV9b57/7qQmEUXmLzCUIZLqpOjfIZB1ICk+pEBwstUL0uwMYjYFBtuQkeUVEGqqoPyAs8prGpU65bPI27/kxW/wc1ro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781081454; c=relaxed/simple;
-	bh=Lta5JCWqxpn0mjgK7mIYEOUu+E970PhLTCsgq0Rz6EY=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=i/cZNnUXbLECHcs4SuIBWdkxgDhRn1MxqGMui64//Od3DiZUEpO2mb0VzkB/EFrWLOtVidy0m7ROd09oeCDTN+EbXGfChKaW7iEx6/U4brua+p0C9g0b7wOxMxBtSYfjqQj4U/WVq6QKjSZNydc1r7er1W/4Nap1LTh+74GpfWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com; spf=pass smtp.mailfrom=mandelbit.com; dkim=pass (2048-bit key) header.d=mandelbit.com header.i=@mandelbit.com header.b=WXrzODMQ; arc=none smtp.client-ip=195.10.208.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mandelbit.com
+	s=arc-20240116; t=1781081541; c=relaxed/simple;
+	bh=005kqibYyfonRcnHCwlpzKy2wPXsZAtXExaHgcOqx2w=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=g3AG+AW89KvSgLlIxbXV7swSklzmB0DPxpW6hUKv3pUbEJznnK+Dmm0dzURXZWR+NemxPdZDtvEwnOmBWsa1tmtwQueKFW9uEuO5WKmY6FqruFF6ZRLny+3sUfB8lqTk0PtaVfXQv/7Nd3B7eEwgEsWi3TXnJDatiNXC7/HTZqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com; spf=pass smtp.mailfrom=6wind.com; dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b=b4GV6tBf; arc=none smtp.client-ip=209.85.208.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=6wind.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mandelbit.com header.i=@mandelbit.com header.b="WXrzODMQ"
-Received: from smtp102.mailbox.org (smtp102.mailbox.org [10.196.197.102])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-b-206.mailbox.org (Postfix) with ESMTPS id 4gZzpp0SZlz9yNG;
-	Wed, 10 Jun 2026 10:44:18 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mandelbit.com;
-	s=MBO0001; t=1781081058;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tHeDnN5f03xSlAb5Dz1tT3TpMTPDrXOhiXurXUd3EPA=;
-	b=WXrzODMQuSADhN0RUN2+TjMRwpDgmV1CTM6v3q8ugPaRc3fCRxZ+IuitjmXUDpKdV9hIy6
-	ewF78bE5ia6asj6WLXVRbI8nsCM5jqfKOYmgKTV37dYXcMWcXP9gbXaSk6DQpcEM4w9yoD
-	eEhBzALcdVOLqxLHd/aGjuYrgKWS8b55QZLieJ4w/Sq2FOewcO7IiPw2lRTZUMM+WXwUdo
-	kGDm1Qd2hXwKRtPZuQiIvhwuoWqqZmscYA9EgsTXJ9m2QnCt21GaMOLKeAOnkmW8hjvJWV
-	GtZ8vBND0Rh9UubD9PV2c5UZb27hjJXN2Lb1TVcOLJ1ZXfUoWC8qImyc9pf+Eg==
-Date: Wed, 10 Jun 2026 10:44:15 +0200 (CEST)
-From: Marco Baffo <marco@mandelbit.com>
-To: Jakub Kicinski <kuba@kernel.org>,
-	Antonio Quartulli <antonio@openvpn.net>
-Cc: netdev@vger.kernel.org, Sabrina Dubroca <sd@queasysnail.net>,
-	Ralf Lici <ralf@mandelbit.com>, Paolo Abeni <pabeni@redhat.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>
-Message-ID: <1290464191.15539.1781081055969@app.mailbox.org>
-In-Reply-To: <20260609194246.23c66818@kernel.org>
-References: <20260608150741.3320919-1-antonio@openvpn.net>
- <20260608150741.3320919-7-antonio@openvpn.net>
- <20260609194246.23c66818@kernel.org>
-Subject: Re: [PATCH net 6/6] ovpn: use monotonic clock for peer keepalive
- timeouts
+	dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b="b4GV6tBf"
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-68f0fc103easo771833a12.2
+        for <netdev@vger.kernel.org>; Wed, 10 Jun 2026 01:52:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=6wind.com; s=google; t=1781081538; x=1781686338; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:organization:content-language
+         :from:references:cc:to:subject:reply-to:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=keO9Q9d4wSuesQmYGtEo2JR0GnYAaSiDUln8Q5/lybM=;
+        b=b4GV6tBf8+7tjGcAO9sUPh2xtm6sI1zM6D8eeaNJkPftnLoMPvNmX8ID/7bvE6Cqnb
+         sEcLO/J1Exie2QtMVAGJf7V5ZSedoLe/LjdOb9cEzU7igO0jRrIvSKexonPQhP22HGxM
+         d4wkJ986PCMGH0BB+ReJlaooXGlHBkpmScm72FJTNlSg1gemxi2yiswtUnVc62iBjJZJ
+         DTJPAG2aLhKmudxn8lGpaAJwS2mqJOHPPM53oBRJuhs0XXO4rsAQm2Vxz2h36og7MVP1
+         65naL/qvhYfnLKPHKRjjCy4ERbujPNTcQ9je/BzDpUfQgOHHXWHcFl8gpKBX/Vl4kwNN
+         sfgA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781081538; x=1781686338;
+        h=content-transfer-encoding:in-reply-to:organization:content-language
+         :from:references:cc:to:subject:reply-to:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=keO9Q9d4wSuesQmYGtEo2JR0GnYAaSiDUln8Q5/lybM=;
+        b=sfX9xvSGqOWPRrH6yI5mFkat6n2i3CaOj33Ate1XfFicgVo5IPA1DQES8MpbZ2i5Bo
+         hLnhuhCfg/YGAAo/X3bSZ8IoI3vIAw/3TGq3daG5du67dcK7nJwzczmSN8ZBFGeN4wqD
+         M4gXd4Jxam55z9S/QtFQHdK3mu/lLmr2tg887iT0towccc1B28W7/xBk6xkeQGBWrD+a
+         8yEAViF43lOYjophLdbWcc2QE4dQu8tz+NoMLB/4qnFUzdApc1GP2lz+sWoaC2K2GhNL
+         KRdauGGvYKj71qj8C9ZxORMIKLobqqcztH8h+NSpdP4kIGgXxVjwDbAW3i97r+e5EekE
+         iADg==
+X-Forwarded-Encrypted: i=1; AFNElJ9NbE7FStG/Wz43dFx3dz3dDq5Ji9KzdEqhZrz9v+MdZzRyKHYPJU+ZziJoqX3Njo7f97ZYtug=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyL9UfizL+9zh8JVn3MAfF3VFo/ZvUaXQ1JUm1Tdo4S4XLjjukS
+	udtRN9nceioRRgYDTKThb01QcOKtdPEWs7oPm3JsjMzXNiJvGmySABNRzZhNIvTBq1E=
+X-Gm-Gg: Acq92OFkk6HHXqv3GZ444P+7k9TUZAYQ6tp9Pr8CEEszsMp370ksVoiAAif1vA/itDW
+	/znHbMvkbEHcSxm1N+LNkSRzRav9NB1lx9xAa33cmUniKUGoXWsaKLZA3ZEf7UKiomy2wfS8v4U
+	/Zjhl5vlQ18PdjEGxO+s2HBKiHW87eoLZ+WQKIYVb3NgcHFgh4MNz6aROhQclfspu4nc5OnCDUO
+	8tgZPhId71bQX4qqSed7uRD51RnPVrCFky5CLQRUT3FkM/H/3WD74VvIXF23jIo/ZGv3m5WBp+w
+	0Mpjvv831WXcOV4ggoYYvkds8I+LtwKlCDIG5okMgid9jlHds7LYiROMiepovmU2z4IOsfzZOyM
+	DOCOJrMNLKCRqqyiy0OKo0KjP7UDQgu1djeXyLjSlMZd0Aq9B+Ce+fLvYsQA/KCZ081GuvRhdtQ
+	gu3WMD1NvyhtUilIy+2cLVTwo4O1U8syHqiP6+QWNcIKM3Lfr4Ol3iuewJALD0TRQF4hbUkFfbA
+	WJqrKSjJhOxYwk=
+X-Received: by 2002:a17:906:5a61:b0:beb:7979:47d5 with SMTP id a640c23a62f3a-bf93a7144efmr115138566b.6.1781081538525;
+        Wed, 10 Jun 2026 01:52:18 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:ab7:2110:6a1d:efff:fe52:1959? ([2a01:e0a:ab7:2110:6a1d:efff:fe52:1959])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bf054e05199sm1125952066b.29.2026.06.10.01.52.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 10 Jun 2026 01:52:18 -0700 (PDT)
+Message-ID: <5224a3f8-16e9-4967-9fce-14e1a0fc5205@6wind.com>
+Date: Wed, 10 Jun 2026 10:52:17 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Reply-To: nicolas.dichtel@6wind.com
+Subject: Re: [PATCH net-next] ipv4: igmp: remove multicast group from hash
+ table on device destruction
+To: Yuyang Huang <yuyanghuang@google.com>
+Cc: "David S. Miller" <davem@davemloft.net>, David Ahern
+ <dsahern@kernel.org>, Eric Dumazet <edumazet@google.com>,
+ Ido Schimmel <idosch@nvidia.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+References: <20260609122646.2297540-1-yuyanghuang@google.com>
+ <fdcc6f4b-6f81-4422-bfbc-7376dd5cd19f@6wind.com>
+ <CADXeF1FaYn2sDyM3Kfic5eyP2oQO9uQE_rFbwwRZFrOqyWSJcQ@mail.gmail.com>
+From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Content-Language: en-US
+Organization: 6WIND
+In-Reply-To: <CADXeF1FaYn2sDyM3Kfic5eyP2oQO9uQE_rFbwwRZFrOqyWSJcQ@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-Importance: Normal
+Content-Transfer-Encoding: 8bit
 
+Le 10/06/2026 à 10:37, Yuyang Huang a écrit :
+> On Wed, Jun 10, 2026 at 4:50 PM Nicolas Dichtel
+> <nicolas.dichtel@6wind.com> wrote:
+>>
+>> Le 09/06/2026 à 14:26, Yuyang Huang a écrit :
+>>> When a device is destroyed under RTNL, ip_mc_destroy_dev() iterates through
+>>> the multicast list and calls ip_ma_put() on each membership, scheduling
+>>> them for RCU reclamation. However, they are not unlinked from the device's
+>>> multicast hash table (mc_hash).
+>>>
+>>> Since the device remains published in dev->ip_ptr until after
+>>> ip_mc_destroy_dev() completes, concurrent RCU readers traversing mc_hash
+>>> can still locate and access the multicast group after its refcount is
+>>> decremented. If the RCU callback runs and frees the group while a reader is
+>>> accessing it, a use-after-free occurs.
+>>>
+>>> Fix this by unlinking the multicast group from mc_hash using
+>>> ip_mc_hash_remove() before scheduling it for reclamation.
+>>>
+>>> Signed-off-by: Yuyang Huang <yuyanghuang@google.com>
+>> A 'Fixes' tag may be useful for backports.
+> 
+> Thanks for the suggestion. Per discussion in the following thread, we
+> don't need to add the Fixes tag for a trivial fix.
+> 
+> https://lore.kernel.org/netdev/20260604101728.GA771160@shredder/
 
-> On 06/10/2026 4:42 AM CEST Jakub Kicinski <kuba@kernel.org> wrote:
-> 
->  
-> On Mon,  8 Jun 2026 17:07:37 +0200 Antonio Quartulli wrote:
-> > Replace ktime_get_real_seconds() with the monotonic ktime_get_boottime_seconds()
-> > to ensure the keepalive mechanism is robust against system clock modifications.
-> 
-> Why boottime? Unless there's a reason shouldn't we be using
-> plain ktime_get_seconds() which is CLOCK_MONOTONIC?
-> 
-> (if you decide to respin could you also drop the selftest change
-> from this PR and move it to net-next? memory leaks in selftests
-> are not important)
-
-Hi Jakub!
-ktime_get_boottime() is like ktime_get() but it does not stop when suspended.
-From Documentation/core-api/timekeeping.rst :
->ktime_t ktime_get(void)
->CLOCK_MONOTONIC
->Useful for reliable timestamps and measuring short time intervals >accurately. Starts at system boot time but stops during suspend.
->
->ktime_t ktime_get_boottime(void)
->CLOCK_BOOTTIME
->Like ktime_get(), but does not stop when suspended. This can be used >e.g. for key expiration times that need to be synchronized with other >machines across a suspend operation.
+I probably misunderstood the commit, but you are talking about a
+'use-after-free', which doesn't seem trivial for me.
