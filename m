@@ -1,91 +1,78 @@
-Received: from mout-b-110.mailbox.org (mout-b-110.mailbox.org [195.10.208.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4937C40861F
-	for <netdev@vger.kernel.org>; Wed, 10 Jun 2026 15:15:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.10.208.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0F8B427A0C;
+	Wed, 10 Jun 2026 15:20:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781104512; cv=none; b=pPnMZPVrS2YNFycBhSr+4IAEM1ON6sDS9Cu0r0CRcI45JoB/5qm2rDDDtkpAyR03N/KcAuIHRjKFZsG7/8Y4Y72AZKMh57I+D3CFtKC9EQOHaIP79g2grJbIJjSKGRUcgsbJDgIU1SnygpCdh1lHwE9NF4InNAkf6O5wVzxPXUM=
+	t=1781104812; cv=none; b=FRQvNPCx+H4M6OZZcYKK31P2u0HQvU3txHGFEVFMv6/zp5KUnRqcFR2R12VJhrdnNPmeFsLNeYEkWBr+H7GzaMpQOCDUVhT0xCWB8ZvSQgJVUiB8lG0/PfT/+OHssG4WZv0JGqh4Q0cZP6HDcAw8jCEcxoPeapXaoUElWV2yCwM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781104512; c=relaxed/simple;
-	bh=AcHnBkODCIJQUsA/TbUO5i7nbvynSvbc5zIJYSN8Wcg=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=Uf71Two3NPb777TBLxDNapU+jqlg4gFh89w6l+Q7Z19Yl4kCmMuqfQQAf/YX1+YlHpYMhZprtz/sv5+3w/HDRAz0dkGPZ3XBDhh4gPIWn032piDr8G8Suwiw9Yu7oiyEpN+5Y0fUgESgCKHxJZG/tfB+1HNm8Dsg/9ZghISFasg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com; spf=pass smtp.mailfrom=mandelbit.com; dkim=pass (2048-bit key) header.d=mandelbit.com header.i=@mandelbit.com header.b=BcR5yziy; arc=none smtp.client-ip=195.10.208.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mandelbit.com
+	s=arc-20240116; t=1781104812; c=relaxed/simple;
+	bh=pLCpcmfWdOkh9vAt/shqdNS3cH7550n0VAxQhyMZ4lk=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=bQte5zy04sanr71wqrlc9nfRB/gYtvX20QuZM9v+64T+dxbSvUcmkOAT+QUWfcUK5VMGEQnWhoTx6xBXDqdp6iMyGe/e8PJsQHFwLiliiU2olezkBqkeCRdTxpCjt65RTeNR3cLOvaAiqW8ZljfBq/dBQaeoCyLic3zCUMktoOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G70YDoVx; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mandelbit.com header.i=@mandelbit.com header.b="BcR5yziy"
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:b231:465::2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-b-110.mailbox.org (Postfix) with ESMTPS id 4gb8Jh16pkz9ydK;
-	Wed, 10 Jun 2026 17:07:16 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mandelbit.com;
-	s=MBO0001; t=1781104036;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=K8cyTzK8VVLFV0bzqRLOmtBcBa8FWin92OY6w3YNrns=;
-	b=BcR5yziyiahOm5d6mT4ZDwC6XMwDbJjCs+Krg/eRB436DuFFMYmmk5Ep89S78a0g327U3r
-	2BVNGEeoTFWjukFs0F6pMV9cYkGCJ0KJgpbquEyd96/RCrhLHIEs3iR3Hhxru8+1WGxFTq
-	iWW8hxVi7XELTJXy2huvGyGHPwGy16HncJ8zcP4yhHMm/Z835q4Nc6fCfGX4HMFcQlXzVO
-	4mP4imMNNjTVj+GUX8pgf+pKU63MuYP0P67OD3EfOTHyk+STgheXKsVI1su4ZqLCSz8AA8
-	2n07bCdFFuCnIb+WY9cwWYxEpD3eQzWTA5CuX5FqNAVp8XZiAFKDWm4c1pnqWA==
-Authentication-Results: outgoing_mbo_mout;
-	dkim=none;
-	spf=pass (outgoing_mbo_mout: domain of marco@mandelbit.com designates 2001:67c:2050:b231:465::2 as permitted sender) smtp.mailfrom=marco@mandelbit.com
-Date: Wed, 10 Jun 2026 17:07:12 +0200 (CEST)
-From: Marco Baffo <marco@mandelbit.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Antonio Quartulli <antonio@openvpn.net>, netdev@vger.kernel.org,
-	Sabrina Dubroca <sd@queasysnail.net>, Ralf Lici <ralf@mandelbit.com>,
-	Paolo Abeni <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>
-Message-ID: <1932179615.53655.1781104032870@app.mailbox.org>
-In-Reply-To: <20260610073111.6273e17a@kernel.org>
-References: <20260608150741.3320919-1-antonio@openvpn.net>
- <20260608150741.3320919-7-antonio@openvpn.net>
- <20260609194246.23c66818@kernel.org>
- <1290464191.15539.1781081055969@app.mailbox.org>
- <20260610073111.6273e17a@kernel.org>
-Subject: Re: [PATCH net 6/6] ovpn: use monotonic clock for peer keepalive
- timeouts
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G70YDoVx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80AB91F00899;
+	Wed, 10 Jun 2026 15:20:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781104811;
+	bh=6i9Jm5okbfmlos5U23G4dUUUadPFjk0l2q7W1GIsH0Q=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=G70YDoVxLKzDElLXlSz++v14/zxFXPXqcoxYcHEC1HCdy3MTUn4WNEwMITXYWiDhw
+	 Q35bcOiqnDg15yAaBLx5JBG3Ao+b1nZKYMNYuDq3P6tEen81Kw0efuN7+7YNwtBGZK
+	 cX9vFCPBKfS9A4zTUxvWoCC4N7Z49aIeNtn+ii0RiJUpvbRrnFTmDzzljIACrE3U+s
+	 LAsie0jHVF5zQEirKVMznjshrxHUFutMtuafgxwpwAS/voolPcuugmUXYJDqXwyRuV
+	 c7k9WdV61ApUuQ/J77T1vfYat1m+QwZEf5cW5s+kA/Fmea9I+pu/en9FcooUVjwh7a
+	 WGMpdLLfMoOfw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93A323930D5F;
+	Wed, 10 Jun 2026 15:20:10 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-Importance: Normal
-X-Rspamd-Queue-Id: 4gb8Jh16pkz9ydK
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net] rds: mark snapshot pages dirty in
+ rds_info_getsockopt()
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178110480913.3089075.6318008330720525320.git-patchwork-notify@kernel.org>
+Date: Wed, 10 Jun 2026 15:20:09 +0000
+References: <20260608-rds_fix-v1-1-006c88543408@debian.org>
+In-Reply-To: <20260608-rds_fix-v1-1-006c88543408@debian.org>
+To: Breno Leitao <leitao@debian.org>
+Cc: achender@kernel.org, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, andy.grover@oracle.com,
+ netdev@vger.kernel.org, linux-rdma@vger.kernel.org, rds-devel@oss.oracle.com,
+ linux-kernel@vger.kernel.org, kernel-team@meta.com
+
+Hello:
+
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Mon, 08 Jun 2026 02:32:05 -0700 you wrote:
+> rds_info_getsockopt() pins the destination user pages with FOLL_WRITE and
+> the RDS_INFO_* producers memcpy the snapshot into them through
+> kmap_atomic(). Because that copy goes through the kernel direct map, the
+> dirty bit on the user PTE is never set, so unpin_user_pages() releases the
+> pages without marking them dirty. A file-backed destination page can then
+> be reclaimed without writeback, silently discarding the copied data.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net] rds: mark snapshot pages dirty in rds_info_getsockopt()
+    https://git.kernel.org/netdev/net/c/512db8267b73
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
 
-> On 06/10/2026 4:31 PM CEST Jakub Kicinski <kuba@kernel.org> wrote:
-> 
->  
-> On Wed, 10 Jun 2026 10:44:15 +0200 (CEST) Marco Baffo wrote:
-> > > On Mon,  8 Jun 2026 17:07:37 +0200 Antonio Quartulli wrote:  
-> > > > Replace ktime_get_real_seconds() with the monotonic ktime_get_boottime_seconds()
-> > > > to ensure the keepalive mechanism is robust against system clock modifications.  
-> > > 
-> > > Why boottime? Unless there's a reason shouldn't we be using
-> > > plain ktime_get_seconds() which is CLOCK_MONOTONIC?
-> > > 
-> > > (if you decide to respin could you also drop the selftest change
-> > > from this PR and move it to net-next? memory leaks in selftests
-> > > are not important)  
-> > 
-> > Hi Jakub!
-> > ktime_get_boottime() is like ktime_get() but it does not stop when suspended.
-> 
-> Worrying about keepalive timeout when system is suspended seems
-> quite silly, did some AI tool suggest this? Anyway, if you want
-> to keep this code please improve the commit message.
-Yes, it was suggested by Sashiko but it does not seems like a bad idea to me anyway, but please tell me if i'm missing something. Regarding the commit message i would be happy to improve it but it looks good to me, do you have any suggestion?
