@@ -1,120 +1,170 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Received: from canpmsgout11.his.huawei.com (canpmsgout11.his.huawei.com [113.46.200.226])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED2052FE56A
-	for <netdev@vger.kernel.org>; Wed, 10 Jun 2026 03:49:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03E7B335564;
+	Wed, 10 Jun 2026 03:59:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.226
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781063373; cv=none; b=VTm/LqnR3qWew38U+MA7Y7guh8bntZpYBfVYiAyS0rxgfeJIiYryK73PKJX7ZodNVn0+OxYAhgrluh03KxME1YWTj42tSUyUQKYpMOo5ERkqxHhPfaMnHAceEU66PKgD1AKUa5lFDhs7iiteDqOKIAvMHLGrQdN0MZ/mNBAEPQQ=
+	t=1781063965; cv=none; b=pGj8BKCocBqZqgVCWsIh7dg5DdaKl/AuFDb77ixB4OptnMTYQCXihKOdkOu0M+1QQNsjro8CIxW966N/bJ40Rc43IczL38i+f+nRSr4kjf0JAoOkQn3aQLgh1MoNDsQlv/2Z3Uhc5Vbqy4vbcqi4f8i5YhDFYLpRKS7qUF80DHQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781063373; c=relaxed/simple;
-	bh=KYpIDmSexgrTILzapC+3rrNyZFokBG++p4LHZiLCPvQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=H5T6NodhjuiWI9behGYhu6MU09JK0GB1O19jewnlSEidUyTu9sVaJNK6qGOrSqcb3xvLxrHdAt9Wyffy8svvqUzCnZ9pnouBZci/tMoGsWgqEmpVmuCPhYfucRNE/EaO88wUs108Oxu+WRkSb2mcRR0EaUGw10lSP/2pl96t9PA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iAICHqWT; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1781063965; c=relaxed/simple;
+	bh=Dmz51v9w6Ls2qgeHfUsFwqv3UPHz5aq1fWSp+qLL6U4=;
+	h=Message-ID:Date:MIME-Version:CC:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=fK5mKrb42AfrDnD7WjlhzcS7WVcsR+79ceBIJnDg7hi7Ab3DM+YS8dMIJJakDhaU95LBjFw83lrkIS3KKb2noMECCvWRNd4SacPPyYwuaYwhdJEJWGUBKBRJxSC6i+e8gg4z7b+ljrpt4ECSZ7rt5j6aRuG/yDdbvYGBizczb7M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=WdqRy6u3; arc=none smtp.client-ip=113.46.200.226
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iAICHqWT"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1781063372; x=1812599372;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=KYpIDmSexgrTILzapC+3rrNyZFokBG++p4LHZiLCPvQ=;
-  b=iAICHqWTR5kI8e13TYUk1T2BywmbiHjlPa8COpK9FVdpfjfA/rJE/mH/
-   WYa3EUXo0JVVaKla2VTp6jUtktlG+LcyXDFscE5SLl56Ya5NtGmxs8sgK
-   N7657Aiy5ioRM4wScUVeue0lR/jNoBzAhsCOmE9a0Umh15adMPsgJlvWP
-   bLj/xzEVBxFB+pm7djgvkal9zu6IluaUWodDmm6u+BzFoFj9mRKvoD8NS
-   iKmJJAMS+R2QXINYwjykZRlEkRI7nzLDk783FluL/esZlof+X4R9EWBLs
-   vNXi3zFtYSXyN0RFFTf5URD+uy6jywkklTtLnEgTNnMU2WjcivuFvN/ol
-   A==;
-X-CSE-ConnectionGUID: 4myzRNj/RCOOFGcFkTIJSw==
-X-CSE-MsgGUID: Vdo0KVnIRBqAxfjbdDYkZA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11812"; a="82039530"
-X-IronPort-AV: E=Sophos;i="6.24,197,1774335600"; 
-   d="scan'208";a="82039530"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2026 20:49:32 -0700
-X-CSE-ConnectionGUID: IsPE+VdaRuSR6HvyLHOUGQ==
-X-CSE-MsgGUID: 2E+NuBHdQgq8eMn5EIyVlg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,197,1774335600"; 
-   d="scan'208";a="244909650"
-Received: from igk-lkp-server01.igk.intel.com (HELO 892db79562d4) ([10.211.93.152])
-  by orviesa006.jf.intel.com with ESMTP; 09 Jun 2026 20:49:30 -0700
-Received: from kbuild by 892db79562d4 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wX9wU-000000003bt-2z3n;
-	Wed, 10 Jun 2026 03:49:26 +0000
-Date: Wed, 10 Jun 2026 05:49:05 +0200
-From: kernel test robot <lkp@intel.com>
-To: Sabrina Dubroca <sd@queasysnail.net>, netdev@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, Sabrina Dubroca <sd@queasysnail.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Neal Cardwell <ncardwell@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>
-Subject: Re: [PATCH net-next 2/2] net: remove some unused EXPORT_SYMBOL()s
-Message-ID: <202606100534.VKtBus9X-lkp@intel.com>
-References: <cbf1457c5d192a206f2f244ea3453766cb5dbbf9.1781013810.git.sd@queasysnail.net>
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="WdqRy6u3"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=vYpQI444eCT/9B22GAgj2lgiHR0IYTAf7MYHj36rmus=;
+	b=WdqRy6u30ZS5bvwebbt/9rDNWY3F2bH/h6ymCM7qN0VMuN7+BzXq0x6UIOg9uQwTnJOKIDQQR
+	ri8dhrNz4xWiYeX4gkFqAcIo4FWPgVHpmtYDBH6L1ULq8vH2acrMvXFzfG4QqYlji0Ik8WSPhEC
+	eOjx0DL/l4BdfmRC0YRaCwA=
+Received: from mail.maildlp.com (unknown [172.19.163.15])
+	by canpmsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4gZsJn5mRhzKm4w;
+	Wed, 10 Jun 2026 11:51:21 +0800 (CST)
+Received: from kwepemk100013.china.huawei.com (unknown [7.202.194.61])
+	by mail.maildlp.com (Postfix) with ESMTPS id 5AEFC40571;
+	Wed, 10 Jun 2026 11:59:18 +0800 (CST)
+Received: from [10.67.120.192] (10.67.120.192) by
+ kwepemk100013.china.huawei.com (7.202.194.61) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.36; Wed, 10 Jun 2026 11:59:17 +0800
+Message-ID: <479aefe2-cca3-4868-9796-97c17b4436f5@huawei.com>
+Date: Wed, 10 Jun 2026 11:59:17 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cbf1457c5d192a206f2f244ea3453766cb5dbbf9.1781013810.git.sd@queasysnail.net>
-
-Hi Sabrina,
-
-kernel test robot noticed the following build warnings:
-
-[auto build test WARNING on net-next/main]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Sabrina-Dubroca/tls-remove-tls_toe-and-the-related-driver/20260609-223704
-base:   net-next/main
-patch link:    https://lore.kernel.org/r/cbf1457c5d192a206f2f244ea3453766cb5dbbf9.1781013810.git.sd%40queasysnail.net
-patch subject: [PATCH net-next 2/2] net: remove some unused EXPORT_SYMBOL()s
-compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project f43d6834093b19baf79beda8c0337ab020ac5f17)
-docutils: docutils (Docutils 0.21.2, Python 3.13.5, on linux)
-reproduce: (https://download.01.org/0day-ci/archive/20260610/202606100534.VKtBus9X-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202606100534.VKtBus9X-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
-   ===================================================== [docutils]
-   Documentation/networking/ipvs-sysctl.rst:88: ERROR: Unexpected indentation. [docutils]
->> Documentation/networking/tls-offload.rst:29: WARNING: Block quote ends without a blank line; unexpected unindent. [docutils]
-   MAINTAINERS:40: WARNING: Inline strong start-string without end-string. [docutils]
-   Documentation/userspace-api/landlock:504: ./security/landlock/errata/abi-4.h:5: ERROR: Unexpected section title.
+User-Agent: Mozilla Thunderbird
+CC: <shaojijie@huawei.com>, <davem@davemloft.net>, <edumazet@google.com>,
+	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <horms@kernel.org>,
+	<shenjian15@huawei.com>, <liuyonglong@huawei.com>, <chenhao418@huawei.com>,
+	<huangdonghua3@h-partners.com>, <yangshuaisong@h-partners.com>,
+	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH V3 net-next 3/6] net: hns3: support two more actions for
+ tc flow
+To: Jakub Kicinski <kuba@kernel.org>
+References: <20260602133337.2216918-1-shaojijie@huawei.com>
+ <20260602133337.2216918-4-shaojijie@huawei.com>
+ <20260605174021.7d4c6ec4@kernel.org>
+From: Jijie Shao <shaojijie@huawei.com>
+In-Reply-To: <20260605174021.7d4c6ec4@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ kwepemk100013.china.huawei.com (7.202.194.61)
 
 
-vim +29 Documentation/networking/tls-offload.rst
+on 2026/6/6 8:40, Jakub Kicinski wrote:
+> On Tue, 2 Jun 2026 21:33:34 +0800 Jijie Shao wrote:
+>> Currently, the driver supports only one action:HCLGE_FD_ACTION_SELECT_TC.
+>>
+>> This patch adds support for HCLGE_FD_ACTION_SELECT_QUEUE and
+>> HCLGE_FD_ACTION_DROP_PACKET.
+>>
+>> A rule can have only one action. Therefore, the driver intercepts rules
+>> that have multiple actions or no action.
+>>
+>> Note: The driver considers cls_flower->classid as an action:
+>> HCLGE_FD_ACTION_SELECT_TC.
+>>
+>> Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+>> ---
+>>   .../hisilicon/hns3/hns3pf/hclge_main.c        | 59 ++++++++++++++++---
+>>   1 file changed, 52 insertions(+), 7 deletions(-)
+>>
+>> diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+>> index 5e1f76513622..aa85abda2909 100644
+>> --- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+>> +++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+>> @@ -7344,18 +7344,45 @@ static int hclge_get_tc_flower_action(struct hclge_dev *hdev,
+>>   				      struct flow_cls_offload *cls_flower,
+>>   				      struct hclge_fd_rule *rule)
+>>   {
+>> +	struct flow_rule *flow = flow_cls_offload_flow_rule(cls_flower);
+>>   	struct hnae3_handle *handle = &hdev->vport[0].nic;
+>> +	struct flow_action *action = &flow->action;
+>> +	struct flow_action_entry *act;
+>>   	int tc;
+>>   
+>> -	tc = tc_classid_to_hwtc(handle->netdev, cls_flower->classid);
+>> -	if (tc < 0 || tc > hdev->tc_max) {
+>> -		dev_err(&hdev->pdev->dev, "invalid traffic class: %d\n", tc);
+>> -		return -EINVAL;
+>> +	if (!flow_action_has_entries(&flow->action)) {
+>> +		tc = tc_classid_to_hwtc(handle->netdev, cls_flower->classid);
+>> +		if (tc < 0 || tc > hdev->tc_max) {
+>> +			dev_err(&hdev->pdev->dev,
+>> +				"invalid traffic class: %d\n", tc);
+>> +			return -EINVAL;
+>> +		}
+>> +
+>> +		rule->action = HCLGE_FD_ACTION_SELECT_TC;
+>> +		rule->cls_flower.tc = tc;
+>> +		return 0;
+>>   	}
+>>   
+>> -	rule->action = HCLGE_FD_ACTION_SELECT_TC;
+>> -	rule->cls_flower.tc = tc;
+>> -	return 0;
+>> +	act = &action->entries[0];
+>> +	switch (act->id) {
+>> +	case FLOW_ACTION_RX_QUEUE_MAPPING:
+>> +		if (act->rx_queue >= handle->kinfo.num_tqps) {
+>> +			dev_err(&hdev->pdev->dev,
+>> +				"queue id (%u) should be less than %u\n",
+>> +				act->rx_queue, handle->kinfo.num_tqps);
+>> +			return -EINVAL;
+>> +		}
+>> +
+>> +		rule->queue_id = act->rx_queue;
+>> +		rule->action = HCLGE_FD_ACTION_SELECT_QUEUE;
+>> +		return 0;
+>> +	case FLOW_ACTION_DROP:
+>> +		rule->action = HCLGE_FD_ACTION_DROP_PACKET;
+>> +		return 0;
+>> +	default:
+>> +		dev_err(&hdev->pdev->dev, "unsupported action(%d)\n", act->id);
+>> +		return -EOPNOTSUPP;
+>> +	}
+>>   }
+>>   
+>>   static int hclge_parse_cls_flower(struct hclge_dev *hdev,
+>> @@ -7412,6 +7439,24 @@ static int hclge_check_cls_flower(struct hclge_dev *hdev,
+>>   		return -EOPNOTSUPP;
+>>   	}
+>>   
+>> +	/* driver will parses classid into an action */
+>> +	if (cls_flower->classid && flow_action_has_entries(&flow->action)) {
+>> +		dev_err(&hdev->pdev->dev,
+>> +			"please not set classid and action together\n");
+>> +		return -EOPNOTSUPP;
+>> +	}
+>> +
+>> +	if (!flow_action_has_entries(&flow->action) && !cls_flower->classid) {
+>> +		dev_err(&hdev->pdev->dev, "please set action or classid\n");
+>> +		return -EINVAL;
+>> +	}
+>> +
+>> +	if (flow_action_has_entries(&flow->action) &&
+>> +	    !flow_offload_has_one_action(&flow->action)) {
+>> +		dev_err(&hdev->pdev->dev, "unsupported multiple actions\n");
+>> +		return -EOPNOTSUPP;
+>> +	}
+>> +
+>>   	return 0;
+> Please use struct flow_cls_offload::common:extack and
+> NL_SET_ERR_MSG_MOD() to return these to the caller instead of dumping
+> them into the system logs.
 
-f42c104f2ec94a Jakub Kicinski 2019-05-21  17  
-f42c104f2ec94a Jakub Kicinski 2019-05-21  18   * Software crypto mode (``TLS_SW``) - CPU handles the cryptography.
-f42c104f2ec94a Jakub Kicinski 2019-05-21  19     In most basic cases only crypto operations synchronous with the CPU
-f42c104f2ec94a Jakub Kicinski 2019-05-21  20     can be used, but depending on calling context CPU may utilize
-f42c104f2ec94a Jakub Kicinski 2019-05-21  21     asynchronous crypto accelerators. The use of accelerators introduces extra
-f42c104f2ec94a Jakub Kicinski 2019-05-21  22     latency on socket reads (decryption only starts when a read syscall
-f42c104f2ec94a Jakub Kicinski 2019-05-21  23     is made) and additional I/O load on the system.
-f42c104f2ec94a Jakub Kicinski 2019-05-21  24   * Packet-based NIC offload mode (``TLS_HW``) - the NIC handles crypto
-f42c104f2ec94a Jakub Kicinski 2019-05-21  25     on a packet by packet basis, provided the packets arrive in order.
-f42c104f2ec94a Jakub Kicinski 2019-05-21  26     This mode integrates best with the kernel stack and is described in detail
-f42c104f2ec94a Jakub Kicinski 2019-05-21  27     in the remaining part of this document
-f42c104f2ec94a Jakub Kicinski 2019-05-21  28     (``ethtool`` flags ``tls-hw-tx-offload`` and ``tls-hw-rx-offload``).
-f42c104f2ec94a Jakub Kicinski 2019-05-21 @29  The operation mode is selected automatically based on device configuration,
-f42c104f2ec94a Jakub Kicinski 2019-05-21  30  offload opt-in or opt-out on per-connection basis is not currently supported.
-f42c104f2ec94a Jakub Kicinski 2019-05-21  31  
+Okay, I will modify all the error logs under hclge_add_cls_flower() to NL_SET_ERR_MSG_MOD().
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Thanks,
+Jijie Shao
+
