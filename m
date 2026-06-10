@@ -1,246 +1,125 @@
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010056.outbound.protection.outlook.com [52.101.69.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 497663E4503;
-	Wed, 10 Jun 2026 09:47:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.56
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781084823; cv=fail; b=J2XxQb5BhEc9AFmNGFupcjQH0ys2wgtAGD+GKvNXK0VJfDY7M2ZEo5p3bqqZZ2yloV/5YMSH4lJd0QM9XEDYVLKJ8gYs1OpJYBPBRRgM7Mm8DhqnmCaypYS+EU1+AY+XWA+/0cxVdCL/pxkHiwGUtX+K693yBe6Dt/SscHmTOpQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781084823; c=relaxed/simple;
-	bh=nodh5+3gkOSRZqg5Bs7uWGZwFcxdz27N9uLmFjByg3I=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=UFomn/utCH3fTgvUmz8h90Whm0XumbNjr0ItwQCzLWtECnE1X+bed/GVg80Hq6c0y0YbmZMqztrBvo8XN038+QtXK5dLXdSlNIuP7hLVIoGtzwoIRHukHIihqq+9oBxs962ZhH0H7U+F/vNosas7Kp1nPW443xy/dslekl4R+O8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=B3y3CmUD; arc=fail smtp.client-ip=52.101.69.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 546363E451F
+	for <netdev@vger.kernel.org>; Wed, 10 Jun 2026 09:47:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781084824; cv=none; b=fgraTd8fY9EjM+LhbB/4DcmzqsmbPmPTilPtb/PQE9ythFVl1gsM3W2Vz4Tp97A94VVmEQf+5f9eNjsJ+HR0RZDZacyvIpAWYPpOqjRjnC5qkNRwopeDccbOtwfSHx+3xBn6V1P06JKCtcX+8Z6Q+1odrXDXiwL64L2vUCxB44s=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781084824; c=relaxed/simple;
+	bh=gCmJFbhKv3A+285qnLQez3gGFUnvAD+Bwbz5WSkrKl0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Rri0dT81d5IOvyiFdnefFuCtsxxc9JALoawAbt0ikVz5ricY2YzNUJmn0UcjMukA8+ixt8RIQreb+SkbKfF81Xfg88XWmOdP0xvvLFZ5ZeBznbD8ub1TNYxeKkEKFzVQhnJMDKtEi3Hp1Ly+DxWmaY2ZWB9iUGlKQ+U+AG+MPMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b=FZUEeeIt; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="B3y3CmUD"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=PftbeNVXYSaf/V/IrfXUbIrSAc9oiT77dZ4Xj3rkkcH6418pFqSqLZQyY8J6uRntlDWUBUvbXLY/9sf/+P/32WFr8RbSFSLv3gFvl8L6DwnpOTeMhrQGZx5LRUZ4Hjme/UtGsoaeAHCOQRMDEz4AzjkDcykUX/T9wx14Sa8toVrG8eCKgFgADtj7r15sEY9zulGYDo9/JtxmxOyO70TjLIFEr0KcdbEl5YrOG/nnHQToz1cq5YgF4IxIJ8nXdP9RoBcA4HjawtrBiUAoB3jVNuDGDYmCzYhrbby6Dv5uUqXZg9jNkuti8D321IBUc/yQRTr5Bb+YN+xb/GvtQpDFZA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bwtqHmw5l/uM5Q+Brnu0fhdQdi1us7iRfPQNXdxiDbw=;
- b=GI/kM2G6XnBp36DkhieMWkq8v7A5e3Lsz7CbGpPmugB+mQw0GeowXKMKhYWSvRSChd7Ahcen/TkSZRhmQwmXp4NUMhOt/nc/OA1HfWuTr8+/LYEH8qIiqETnPJotxI7AKVWV7zusN5ee0y5J7uex8O+Aeh3r+OkAoatyQomFyh3RpjG4FlY6horTcpjX5ibLQYSPbLapvxrs2uGd1jw45x6hLBfe2rj1za3g+Hs45fgNO4hs+BVHON/afN3h8B1iH/vejLbHar7FZCFjuuhKghKpgAtXeiQnTrBPZipQXlxGiA3zeJPlbechQ+FNp1pwu6/3rnhtgrqEqEnU1/bgJw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bwtqHmw5l/uM5Q+Brnu0fhdQdi1us7iRfPQNXdxiDbw=;
- b=B3y3CmUDSxQyzTv0aB9cMmVZ3NAUHZsqxuUX3ks43YRBxvnp93KOyzmo/q1Ei2BLreH8S+5G0JA7nZD4+OA8Bhi397CO99/i7hP+IvmgRDrXujtZ60lu3XM58krOUSXN+OrwDQPkBlKQ5L0c5uNc+SPiYD+zkq91FewtTLIvkVzUzgey+xhmKfsbudg8OSYEWqRHTfVFhztG436Atyt0MwRA0iCe1aX1CPCeVrTx+RmefJcBzdx7E/vQlFdIXYbQo7YeZ5Oo8XDnIiNVvJwm6zGsOiCwfOYGa50L7XWXYUNoxfa2ZNJ1Ixo+ax86Q3MYvy/oudmI3o8MG+Zg+uE9pw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from DBAPR04MB7207.eurprd04.prod.outlook.com (2603:10a6:10:1b2::17)
- by DU4PR04MB12129.eurprd04.prod.outlook.com (2603:10a6:10:643::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.113.11; Wed, 10 Jun
- 2026 09:46:59 +0000
-Received: from DBAPR04MB7207.eurprd04.prod.outlook.com
- ([fe80::761a:f8dc:80dc:5e14]) by DBAPR04MB7207.eurprd04.prod.outlook.com
- ([fe80::761a:f8dc:80dc:5e14%6]) with mapi id 15.21.0092.011; Wed, 10 Jun 2026
- 09:46:59 +0000
-From: wei.fang@oss.nxp.com
-To: claudiu.manoil@nxp.com,
-	vladimir.oltean@nxp.com,
-	xiaoning.wang@nxp.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux@armlinux.org.uk,
-	wei.fang@nxp.com
-Cc: imx@lists.linux.dev,
+	dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b="FZUEeeIt"
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-490b8ac62baso51261915e9.0
+        for <netdev@vger.kernel.org>; Wed, 10 Jun 2026 02:47:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre.com; s=google; t=1781084820; x=1781689620; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Jki41EppFisXGMhg9bwkucZtLVS+PePEZuHeAkEWL80=;
+        b=FZUEeeItafnyGAeQjP1CYGBAKFeElN4JjN2MSS/qYW73eDRnQdrfqQ6GsgO8LUQlhd
+         y3R5wRMBUz7ZvEUJj26EBCMcemveST7oMd/BR6x3tNRGGPLDdc/NzEibfwLwuImqleOg
+         cR0d1OMA6USEoPEKfHQMdFjHlNln8nG1BeSi8SbXDwWlBzcbKBMxAA5r2Sl7qlJuWctr
+         cuR04m+VYpV8V4coS5WIju0kvYpjXFOef4vBT3hdijhpW3JXTSV4uXr2nxhkenE6k4PD
+         lIMZMLB0Q/RNhCuwBOTg0vdlIjOPeS/gfTBC5+qAT7kXxjgQW4QHeC90yvvKczolE+QD
+         fk8Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781084820; x=1781689620;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Jki41EppFisXGMhg9bwkucZtLVS+PePEZuHeAkEWL80=;
+        b=dkKOm7E/Mu/U7gbprUyr5o8L/7gCUeKzhYCaIwJ8j20iBmU3yezGPpESXLkeLM+p27
+         8xIXEYA9I8nPn3YVkGXhd2z3pferyvTWzPlL17JB5xCJTf2Vlchco9n5iUQkX5iiSFU5
+         xwVpKqV0DKQEHXOS7qwTueum8M87to8F2QEZG3PDWfM0W1puHQ6nPafGqaGQQuSM/4zS
+         +9xWC6gk24FbUyuxMacv0ZHXbtG5D+FaVn4NjGz2+xRh/dyhQvW+sXwiUVeVS2YCGY/0
+         042E8XgEUJ4vnM/rpcFw60WRTUdLbOFGbCg/t1Ze35HKkVQEBedCnkB/sd/dekMk+aGP
+         Lk1A==
+X-Forwarded-Encrypted: i=1; AFNElJ9oK2hR86HBPi+iVmFhxkB5SLkRWS/PDUUeZzaX8IcQ4HXnG8NA/rUnwsrimqwqTMPGVPG8kbY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw7iegtMpCOIcwK+yaSxrGf4PfILtAcwxPBwKrFk3y8gUHqZoYB
+	LdfoQYT8jH11wsXsucZrHfLkJBAW+IVGZfQch8SBu4vl2kLcjZZNF5Ky+qJKy+EPQxLR4M2o2p4
+	bqQns
+X-Gm-Gg: Acq92OE2wcRyx6WR66gCD55DMOZAmK6H5ywRVteYku1OyyAUYW7RbbaSbgoidFRxGTC
+	1lGKOe7QL74fDRIkSz/iqE9MkeP5jdSeH7AqN/OgL0Pkg6KJT//kW0IpkGzPuSE9PPTg3hlvAgy
+	74HqT14vO8OnXKPpwFNt5KRG4CZuiiOqaFFBzJ2ZvH7wZ1dANyOQCte/OrozJkS3uyC59JNmrZ/
+	6evi0dk/m9kYeSw3hVzPp/QAAAFzx+f8a9Q1cNzQ4cbAaqMHGHa5s4GX29trZWQra/pg/r0kHST
+	M2KhwyZ/iuW+d+7z7YQvJ4T1S6CgRXOJj0r+BcC+KlxMH1cOtgcAiZjlfPYtldjYa4bu2DOMKrt
+	GzY9Yblw8qYSIWXkFZve39/3KH+DR4cwdJhzROaMZPRRM9IPYpYfvj+Jnvy1sBUQmT7+vLifJS0
+	nznj1LDymcpk8KxnGOpANNAd3NsNTlLus9NkBezGg=
+X-Received: by 2002:a05:600c:8208:b0:490:ad1e:1846 with SMTP id 5b1f17b1804b1-490c2cf6718mr282882895e9.9.1781084819273;
+        Wed, 10 Jun 2026 02:46:59 -0700 (PDT)
+Received: from localhost ([2a02:8071:56d1:2de0:559d:eec2:887f:c200])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-490bc39e024sm735528315e9.4.2026.06.10.02.46.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 10 Jun 2026 02:46:58 -0700 (PDT)
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig=20=28The=20Capable=20Hub=29?= <u.kleine-koenig@baylibre.com>
+To: "Maciej W. Rozycki" <macro@orcam.me.uk>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 net-next 10/15] net: enetc: simplify and rename PSIIER enable/disable helpers
-Date: Wed, 10 Jun 2026 17:18:39 +0800
-Message-Id: <20260610091844.3423693-11-wei.fang@oss.nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260610091844.3423693-1-wei.fang@oss.nxp.com>
-References: <20260610091844.3423693-1-wei.fang@oss.nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SI3PR01CA0012.apcprd01.prod.exchangelabs.com
- (2603:1096:4:296::11) To DBAPR04MB7207.eurprd04.prod.outlook.com
- (2603:10a6:10:1b2::17)
+Subject: [PATCH net-next v1] ethernet: 3c509: Improve style of pnp_device_id array terminator
+Date: Wed, 10 Jun 2026 11:46:53 +0200
+Message-ID:  <a0cd057e6a24b9d355b5e4bdfcdb812cdd1e4652.1781082923.git.u.kleine-koenig@baylibre.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DBAPR04MB7207:EE_|DU4PR04MB12129:EE_
-X-MS-Office365-Filtering-Correlation-Id: f73d31b2-a3a6-40b1-f5a6-08dec6d53761
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|376014|366016|1800799024|19092799006|921020|56012099006|11063799006|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	jbFBGc4G5ADN8hq+wRQFaHaAwB9RCe/t0tLRE6QMf13cj/k3vTTZwDp+rAdanX5z+QAq7i7xW+OTqg0rS8I7+fSr4fCec6/MD0StjMMdfwvx5OqUWA+WudNXMYJZoA6pkJRvWQ2Y3U2NuaxT3yW24zG9lKdjWRgye2HrFn2YWnR46xS+TVP+wks8cuetIP0GXwmmjqPBE7ChakTRygz5B58/OjpT6HnpVa87fHmNs11TMYgbcdTcZNTb5LHB1ChEMOx/8mcMdF1SvtcXyXeUul8PFuFrAfvjdIMKOjh2/RVXJl9tRbAyKHzXBIDEIm4np0Q6E4DNuiRhMvOlY/HHoern5UeJuwLNbFjJhL8YV8huZzXPvNGnRhCTcbOLfrFlpBORGid54Si4WhFhquA+NFw1vhx5KRaxK0cTxoOrsY7nIgMWiHX99fzSyUbr/eGOiIyt1WDDPLcB6FYKaQMlWJiDD92ZEgP1Fq3O5DdREVKL+GlkG7T+VQvzavqd2+KROiHR1O/wvKHmC60sB/NmRghP7gkzfxbh+R4vMt47YdBzMrrxdxmuxsZt8VH2QNomuV1TtwlAJK3QpDr5dOl4oHfAY72wY+gHFuFHM29hE5zta6fLzYewqWVTiLSCzQwXkFuRJ1zIkqTGIpEHzRgwyf6ENUyV3yXhbh7LszspXdhm/nxE0R4rkxUaUjRo2UiBa9N6jmjfOmItjoVD7La5smYyqIKhqRtDYewT6Hw0BLY=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DBAPR04MB7207.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(366016)(1800799024)(19092799006)(921020)(56012099006)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Xhw043TKzsKqHz3r2orLi6aV/UFm1hr1Pi1jXlAlhunUrDzpHHGiqXyxTEJj?=
- =?us-ascii?Q?ymVlhJzpnrQfSibnRaRzSnwXArXfdxydZHn+av12CaeMjwiY7Nw5m9j79mUC?=
- =?us-ascii?Q?EbXUOWRyCILekxkmwjxROQgVKe1RLJ6pNa2UI+OLxwkwIz1g+QlhtyzVoucH?=
- =?us-ascii?Q?raHIuLq29TzyK2PNFM5sl6nLBx5Fe/2sfhWK+/8FYILEk0266hAlBlwYpjYh?=
- =?us-ascii?Q?tPGsKeVJc3Fk4i93yJ5ZecmXIQ5oi7JbqsWMDAcMDT9kal2eEYGewUIuz5Qp?=
- =?us-ascii?Q?XIzdMF+t7pBdLiPK5vz/2PlBSe9FkkXWzXuNt89cCBJyg6LOMTrEnYqCAh3C?=
- =?us-ascii?Q?T2g5JBGxF15I6S1f6HmQHtcPAjM02pqWR67GwLAYN5tHnrd/7bFgjXHr4HMf?=
- =?us-ascii?Q?DBEDgGa514GAfk6DvJcht4jA1zcdGPhjiZQ/yru0Cwzkeo6tUAAb+rgsHG9Y?=
- =?us-ascii?Q?2wvEWbIJpS7jHxFDicNkvhLiyEYat2NmmzBiB7Nnvab4aruqdcrTJzKF9S7I?=
- =?us-ascii?Q?qjIaSnjdRv3ZtcWakflSiFRJ3dxzn8j5QL6rI/Rnz6NFpXLNdL9VKjFhOdHF?=
- =?us-ascii?Q?KZLwqgQRc7WA6vY79+KiWTqclXDMCzo26mREsXNUUuHTTfdRcVN3pbjxv3BO?=
- =?us-ascii?Q?+/ou6FU1FY1Wd17UOE8SatOY0zIchUQ0upgfSuDkGOAyWmmWSV3954TjHUoC?=
- =?us-ascii?Q?kidsvS7gFReh3FKuwWZIbAjmQEYnlQAsD0z/F61JVeJcW1G83jyowmYvconl?=
- =?us-ascii?Q?r6GrNjbKLIIs3mX5vTM+K5Uwuuy9qMLndS852qvpNuEXGnRinrC9NKOiyiZy?=
- =?us-ascii?Q?6Ejjm/rA5suBfduHqFEwOZ7/Ik14kneajgiHMbI6XNAtnM7HyC7dDpLbq7bs?=
- =?us-ascii?Q?42We7C5Dy8kq12Ffkqlw+eyNTxMJnjX+xYCHPb3+arxxKxyfTyZRnkpbKPsj?=
- =?us-ascii?Q?mtHXVTz+f+sOmJJSy3rXzpIliExe40D0dUdIS6AD/wui70JU8npdnbcUVbIC?=
- =?us-ascii?Q?ZOIy63V2TvRT2dZiIyNug7fZtWhsXpfD4ESoPrHbnXUhbRf3IQZyRdBGFeVA?=
- =?us-ascii?Q?7dtPEyAjIkNiqHS6KAumuTxpiUB+c2dziU9G8BEm48LhWpfE3reFsNOWurCE?=
- =?us-ascii?Q?A9QEmUhAmUJcjPyPI4YKvTVij2uLoXFM735+sKnK5vt3APaL4CtDpw+kF6Q3?=
- =?us-ascii?Q?op09TzRkp0jv+8r6kFidqf6d6M5LvY7TIq7E1C1drjddDL5Rzjq7cCh5G+op?=
- =?us-ascii?Q?GL1ee7kTlIg16Lo4UmJcdbqfZyDh09IFoB3qGJkGbdJW2jBzkwG+CNzEcLbf?=
- =?us-ascii?Q?HzemMKWP8ogAqnt9S0PVJbghpcuhRN5bE+PjEzi/ssEMmPgss26BtkNcVAUH?=
- =?us-ascii?Q?cgGP/q32/BZgbturcP9o1ie/sxS0OreS7Fs+v2kBDqcJU4UhGF8L1Ko0GMD0?=
- =?us-ascii?Q?kxwUukv+/SIkw4/07XKyaCjlpQU/A2khVOKI1KKGnfm2MAwQTUx61crY0LZa?=
- =?us-ascii?Q?jIHIVYNPr4s0ZTDikDJOkCPaBjqGw+m7aUsooBrYBYItA8j+pvR/+O7XgtD1?=
- =?us-ascii?Q?OTiwrspdN7FOP3yxxot8kFi2MxIIvhnyQ2HHGWj18FI03Hg0V9rosybMjD2h?=
- =?us-ascii?Q?5rlJYUrgAqc38Zbj9k/UgoAXzfU+OKujIegZgjeDEk/P7vHqAXaanscnUIM4?=
- =?us-ascii?Q?4u9N2rTTTtNP+h2wWML/okNqDa9oqb6lkg1n82vOQNeIdhA1FbpRL1TQihZ8?=
- =?us-ascii?Q?PMaDIjlRKcqGKRvIGCDpZdnJqsSieqmV+Ty9TeV04gYatsN2CVoJ?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f73d31b2-a3a6-40b1-f5a6-08dec6d53761
-X-MS-Exchange-CrossTenant-AuthSource: DBAPR04MB7207.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jun 2026 09:46:59.4237
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 2t2sF/2vUpFjIXE38nS3ZXYPeMPvVsRvrWGfPuFxOreyOT9253lOPgGLwc8/cyKIzUmkew9rQgRZH+waUNkymVNxVx2c80tDSdTohGNpkQaQiYuzwtubvDzlpKMtDN90
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4PR04MB12129
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1344; i=u.kleine-koenig@baylibre.com; h=from:subject:message-id; bh=gCmJFbhKv3A+285qnLQez3gGFUnvAD+Bwbz5WSkrKl0=; b=owEBbAGT/pANAwAKAY+A+1h9Ev5OAcsmYgBqKTKMJwgLwWBaoKYGAYaI3/ZDT53fVv64vOqym U8GB85nCVqJATIEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCaikyjAAKCRCPgPtYfRL+ TibMB/ieyQAIb//vhdOKqE3FBysZx6nmro1WHJ9nW5msQbtBAtAYdxxqi4Md3a3+8MoNRkDa95B YFrYqR6IqBb4Jz915sXkyoHaog2WirIyGT2dHGhkpRk2g89s6EyVli1HSU9AjOstbBmsXbgwxrK kAWZPYIAT6GI776oqVrkopu5rnED5dgbYaZRTo30ZV4MEE9lnGqsPMOIR/95DVoeKmWhis2c8mt B/SDq5L0GD1jgfoC+gPPKvmPlGx0YpAg77Ib4Rli7kSWgbJf3skiN0GZdVKYSNIOhPVgDDDt2Pt aP+hsWUQ/BKkp49rhwcynjaft3LWPfrqB6j9xe9A5UTyecY=
+X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
+Content-Transfer-Encoding: 8bit
 
-From: Wei Fang <wei.fang@nxp.com>
+To match how device-id array terminators look like for other device
+types drop `.id = ""` from it and let the compiler care for zeroing the
+entry.
 
-The PSIIER register controls two categories of interrupt sources:
-message-receive (MR) interrupts, which fire when a VF sends a mailbox
-message to the PSI, and VF FLR interrupts, which fire when a VF
-performs a Function Level Reset.
+There are no changes in the compiled drivers, only the source looks
+nicer.
 
-The current helpers enetc_msg_enable_mr_int() and
-enetc_msg_disable_mr_int() use a read-modify-write sequence to update
-only the MR bits in PSIIER, intending to preserve any other bits that
-may be set. However, VF FLR interrupt support is not yet implemented,
-so PSIIER only ever holds MR interrupt bits at this point. The
-read-modify-write is therefore unnecessary overhead.
-
-Simplify enetc_disable_psiier_interrupts() to write 0 directly to
-PSIIER, disabling all interrupt sources at once, and simplify
-enetc_enable_psiier_interrupts() to write the MR mask directly without
-reading the current register value first.
-
-Rename both helpers from the MR-specific names to names that reflect
-their true scope, i.e. managing all PSIIER interrupt sources rather
-than just the MR bits. This prepares the code for a future patch that
-adds VF FLR interrupt support, at which point
-enetc_enable_psiier_interrupts() will be extended to also set the
-corresponding FLR bits.
-
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
+Signed-off-by: Uwe Kleine-König (The Capable Hub) <u.kleine-koenig@baylibre.com>
 ---
- .../net/ethernet/freescale/enetc/enetc_msg.c  | 30 ++++++++-----------
- 1 file changed, 12 insertions(+), 18 deletions(-)
+Hello,
 
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc_msg.c b/drivers/net/ethernet/freescale/enetc/enetc_msg.c
-index abf0f4d9aeac..fddc69cb4b90 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc_msg.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc_msg.c
-@@ -18,23 +18,17 @@
- 					    ENETC_MSG_CLASS_ID_MAC_FILTER) | \
- 				 FIELD_PREP(ENETC_PF_MSG_CLASS_CODE, (code)))
+I'm currently working on changing various *_device_id definitions.
+This patch is irrelevant for this quest and a pure style update for
+consistency reasons without further dependencies on it. I just stumbled
+over this while working on that quest.
+
+So if you don't like this patch, I won't insist.
+
+Best regards
+Uwe
+
+ drivers/net/ethernet/3com/3c509.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/ethernet/3com/3c509.c b/drivers/net/ethernet/3com/3c509.c
+index f23be7425daf..3438168befa6 100644
+--- a/drivers/net/ethernet/3com/3c509.c
++++ b/drivers/net/ethernet/3com/3c509.c
+@@ -438,7 +438,7 @@ static const struct pnp_device_id el3_pnp_ids[] = {
+ 	{ .id = "TCM5098" }, /* 3Com Etherlink III (TPC) */
+ 	{ .id = "PNP80f7" }, /* 3Com Etherlink III compatible */
+ 	{ .id = "PNP80f8" }, /* 3Com Etherlink III compatible */
+-	{ .id = "" }
++	{ }
+ };
+ MODULE_DEVICE_TABLE(pnp, el3_pnp_ids);
  
--static void enetc_msg_disable_mr_int(struct enetc_pf *pf)
-+static void enetc_disable_psiier_interrupts(struct enetc_pf *pf)
- {
- 	struct enetc_hw *hw = &pf->si->hw;
--	u32 psiier;
- 
--	psiier = enetc_rd(hw, ENETC_PSIIER) & ~ENETC_PSIMR_MASK(pf->num_vfs);
--
--	/* disable MR int source(s) */
--	enetc_wr(hw, ENETC_PSIIER, psiier);
-+	enetc_wr(hw, ENETC_PSIIER, 0);
- }
- 
--static void enetc_msg_enable_mr_int(struct enetc_pf *pf)
-+static void enetc_enable_psiier_interrupts(struct enetc_pf *pf)
- {
-+	u32 psiier = ENETC_PSIMR_MASK(pf->num_vfs);
- 	struct enetc_hw *hw = &pf->si->hw;
--	u32 psiier;
--
--	psiier = enetc_rd(hw, ENETC_PSIIER) | ENETC_PSIMR_MASK(pf->num_vfs);
- 
- 	enetc_wr(hw, ENETC_PSIIER, psiier);
- }
-@@ -44,7 +38,7 @@ static irqreturn_t enetc_msg_psi_msix(int irq, void *data)
- 	struct enetc_si *si = (struct enetc_si *)data;
- 	struct enetc_pf *pf = enetc_si_priv(si);
- 
--	enetc_msg_disable_mr_int(pf);
-+	enetc_disable_psiier_interrupts(pf);
- 	schedule_work(&si->msg_task);
- 
- 	return IRQ_HANDLED;
-@@ -628,7 +622,7 @@ static void enetc_msg_task(struct work_struct *work)
- 	}
- 
- out:
--	enetc_msg_enable_mr_int(pf);
-+	enetc_enable_psiier_interrupts(pf);
- }
- 
- /* Init */
-@@ -703,8 +697,8 @@ static int enetc_msg_psi_init(struct enetc_pf *pf)
- 	/* set one IRQ entry for PSI message receive notification (SI int) */
- 	enetc_wr(&si->hw, ENETC_SIMSIVR, ENETC_SI_INT_IDX);
- 
--	/* enable MR interrupts */
--	enetc_msg_enable_mr_int(pf);
-+	/* enable PSIIER interrupts */
-+	enetc_enable_psiier_interrupts(pf);
- 
- 	return 0;
- 
-@@ -720,16 +714,16 @@ static void enetc_msg_psi_free(struct enetc_pf *pf)
- 	struct enetc_si *si = pf->si;
- 	int i;
- 
--	/* disable MR interrupts */
--	enetc_msg_disable_mr_int(pf);
-+	/* disable PSIIER interrupts */
-+	enetc_disable_psiier_interrupts(pf);
- 
- 	/* de-register message passing interrupt handler */
- 	free_irq(pci_irq_vector(si->pdev, ENETC_SI_INT_IDX), si);
- 
- 	cancel_work_sync(&si->msg_task);
- 
--	/* MR interrupts may be re-enabled by workqueue */
--	enetc_msg_disable_mr_int(pf);
-+	/* PSIIER interrupts may be re-enabled by workqueue */
-+	enetc_disable_psiier_interrupts(pf);
- 
- 	for (i = 0; i < pf->num_vfs; i++)
- 		enetc_msg_free_mbx(si, i);
+
+base-commit: 49e02880ec0a8c378e811bc9d85da188d7c6204c
 -- 
-2.34.1
+2.47.3
 
