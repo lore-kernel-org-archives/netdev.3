@@ -1,141 +1,190 @@
-Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
+Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F30CA408010
-	for <netdev@vger.kernel.org>; Wed, 10 Jun 2026 12:40:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.175
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781095227; cv=none; b=MqsjORxgfVpr4Pgf33n6xjRvJ5FSZv6ArhLvkJvUYONGx9k/lNp1LUJ0SmAe6ftcSUA4pS19G/5x1T6v0DI6KJxmEGjJAG/+ekrNi4Jm6itBEMixUaA0I/OwBWj3WF790IjS0KNz4J2gDytrssd3p2kVTR85o5grb5QCPE3BJI8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781095227; c=relaxed/simple;
-	bh=3lbic6BKuHrKV44Tl4lVOFTZZtQZ8lsERUz5T+f5Z9g=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TYOfAS43elk80taHmHsPy8ILCfgzRwow0QEXrA674LcFVq7yP4QeOe/aZN3txpIMwUWKsqGTMXKYGgQaoM7257w0AVr72gsTJc+c2TyuONItvlX8TzgtVXVEPtBNzPCg8Kl2/4Qi9r3/qu0DniIerXcrfqikwNPXoC/t0qAzwHQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dqpSNu7n; arc=none smtp.client-ip=209.85.222.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E80B3FB06B
+	for <netdev@vger.kernel.org>; Wed, 10 Jun 2026 12:40:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.170
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781095236; cv=pass; b=K630LrMB2Z0p6VJwXtpH/y8lVhZ/dGBF70A+n91h+Lq/k0KT8nexGnXknU3IgZhYl7bJcXzrwboDsqX5/OHKUlWcjPlneBvwJfiEp5ds6UNOUdrxA6z31f+CXNqfO/+PpBzwTbFbSl4RdLy5F9u2/oosca09eAzp4toidyLq5uo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781095236; c=relaxed/simple;
+	bh=cTKHBimgFTP3cQwXDhhiTJFbyDNHW1Wc3JO7RqAcbas=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qRaUKf9TRWLXR4onPzfdzbt5hk/2DqIYWNtCYH6bKqJVPyItpZRAFQHsBCDMvy/nri8poflzFTGEd2AJ49yPzYjdiPJdGvV74H31TNq+jF2cWAuX4W6Odh7fqwJfF+rq2PTgT8iR9re0qO/XQQ0NQ9Zt49UgvHI+93yDfqCe5Us=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z91wcEt9; arc=pass smtp.client-ip=209.85.128.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dqpSNu7n"
-Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-915d17e2721so404042285a.3
-        for <netdev@vger.kernel.org>; Wed, 10 Jun 2026 05:40:12 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z91wcEt9"
+Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-7e053987001so61682577b3.0
+        for <netdev@vger.kernel.org>; Wed, 10 Jun 2026 05:40:35 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781095234; cv=none;
+        d=google.com; s=arc-20240605;
+        b=d2Ew5h110ZYpk6n4ibaVLtshGa2BGI4ViybYOOQlrEl/2qDwbMovSOzlF6kNMmWksa
+         9G18VfTjA9WAp73/BBz5rnz32ko2lhkvZ0aNBHwBPfp9MWSjvaStIK8VBam+BBCaXFn3
+         e4KvsJJPqLSecNKPp27QHkN6zOn9oCE23FSiflPdO4v99d4PPv1IECMHOaWsJDrlJwWG
+         vxbkmQ39da5ATCc8ZMhOq3RIbmfU1faE5rzEeO8vA/l2M5CAJLcwXfXQJAqt3l2+O0Y8
+         h7C7jK1Rh82QHVWGImWPjqLDS39ER/2pO3TQ3O5YfuMTqqnWVThry+QbRRdGZTfUFBcC
+         Ve1Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=5H1jBOYYY3PeAkd4J7mLCgYfvkPn6xRIFo0bYZfoRu8=;
+        fh=yoivYsvNbUAS1EHEuaUKM24sMIu6OM3XEMhtDleJXUA=;
+        b=QAGN69SN4GOiU8UvVBvQG1TP6VMNMGreh9IZKL+UCwZ45dQ9K4p//1lC1gP5ZO5VVE
+         IA7jq5yvxZn9wBG+8QTvqWXh6dWC0MPjlssEZiyawPO3cGVonunKx13W4cAblcokyuZ5
+         ldpduN30C/Kifhb2Sn4PRBg76F32PDf4/pwyh18LmhkCcaLAzYqUHvlbDM+U022T4BSp
+         4im4iKIdybtfNaKvTuvaXgROWoip5f2N9Cmy/3pqvfKTi8Htt2/IaUcXSR6+0u/6bcRH
+         dCFysCDICaYNjizqLZJz3HjMvPOC8AT+jBY1cUQpX5cCvX3gHgBP3hgjNTj4BhdWmTMx
+         4lMg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781095212; x=1781700012; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1781095234; x=1781700034; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=An/axLWUDL0c+TuA+eV8ebm4dYxt+pu/ziUp/2+XnXY=;
-        b=dqpSNu7n4/TyrRWfvprAJ895TN/gWG0jWkRW0D8PZdMwGT7g+Sfw9NpT7uC0DleQ85
-         kmWZHiEjE/KaRinhK0gFfkloWZq7tgFBhtJtN/O+nXAXFgDioRHMBJOHXTWlLuJGaiGx
-         69lDWgxu8B9xGOWN8GAzmu9SlVaV6LQmjLWTUS4/8ffedSQvsyegKpMgsI1DfiO0Nkxy
-         YhxXspZkdGGlD4jOOj1NFyb6WkaYDDAznvY+ZRLQlWrBbtluZlpRFZ51D+O5jRGJ+g0T
-         3m5WnbPL8IsOL4IhAHipbPfj1gczNg2PaULvYS2vvIuj75G/SrQltrvxCZPh24TyrV+7
-         CCYg==
+        bh=5H1jBOYYY3PeAkd4J7mLCgYfvkPn6xRIFo0bYZfoRu8=;
+        b=Z91wcEt97i8DPDVEAaGF43lhXxRPgA+2JEvAKRzmVx0pLtH/6mpkqhsJNqEu5Yag9Z
+         CoYgZJ7aHDbrCUHquARGDgfTWc8hCo7H5C0/UExz1IT0ctrOyh5J86SjuWopB/Hp53nT
+         8f4tuhHQmEeE8LNYv+Ydla/fxd69R+pmKNAo6aDaqys87/PCt1/3eBbmC+GExkwwP0ia
+         4/t+TA3jFfvuwVIah3DfZ7fd5i3dhschJx0cWrtkanWPDZtjZ6GdTgp+h2UiQy5+cwJn
+         V5yTV0wwzRRAEg7BBOolKHsXHY4Aj1QNz1vyootMAF2efydvbZSySbMc7IPIF7JThxZV
+         I7wg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781095212; x=1781700012;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+        d=1e100.net; s=20251104; t=1781095234; x=1781700034;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=An/axLWUDL0c+TuA+eV8ebm4dYxt+pu/ziUp/2+XnXY=;
-        b=sUe981PhAX7gkSOImZVyUwElBtKM2iBYYkDPEfxC5UnVkvVsfzZxeGrBFNYVeeBCM1
-         1YJdkmHtG4xIKMflpS1cXiUwNjtQt+4n8JWupJMgZpGmXZwzlExnzr2GM3J9zGgvXWaU
-         CgiGqS3Wb3giwqvNBri6tC8i1JlNQ6XfhJkk03qUUe9tyyb+MikoNaL7bhYHSwCtsVhm
-         PZ24kZqT/GVyKyWVQRtHbwzGQfTmg+YDLZXUEubNfri8ZAJxfOTzWS0NwyJB5czrK7Re
-         iTjiO3qbeIy9/6SGZnOSiX8IQT9t34Ok4XXI72CnFIa50Vne1yxN5tQ9aLeG75cOXfY0
-         PdGQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8K+Vdf9cssHt+v7kMdefOGQt7nIdJfZyuxys2jl4MdR2h3tylFgwPm65922ppJk/0m79VOXds=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzxee6c9Q1d8J4SRHFlD3VblFtFVGox8qe69W4t40nGDVJeL9hS
-	Wn44gr2QBmKoNZHwbudiMNmajyMYWyNfrjviP1yFSwHbzmTUD8ASvowa
-X-Gm-Gg: Acq92OHju7Zy3du25Rfojg2pOTR5Xc7lRtRTxAWPZKaTyHAJjYF7jJ+nw+uRCWh1qWr
-	OIao0y0MVMfGS0fQlAFMzWjd3rPG6Lz/w0M3wUY72073ooDsL6cHeRmqaDGQHvuibi66pgS3Xno
-	+Aoxm8vIqga7scyeHLDcF9scxdZf+6ibgyNXf45K6Qeq4jTzipY0TOJTF8Vf1z+pv7IHGnKt2QK
-	HFvnuLsf6BBwu55MfhURtRPdlp/RH2CzZWo0xyyqsyGEo9IRd0eoffR4bIbpveahNM7SdtBnr43
-	S0bQ02cSdl1QeSMHQ1QXilpEopj25FInRQgspyacL9pcIJAFr6B25uCS0aLMVQ6RWQDGV8/II1x
-	wqPgXSs8ZfWRSq2Ls9E6Tv+V0jYN3hL1/X4BbqWFOIes+vXB25Xaky4VGVhGuWCYqZvtnmnoG96
-	mXRocFopzVWdVhjb6Ud8J5x4m0E794tDsfuPFAV9HFGNUVi9cd0fQZgR+ALxrgETfhL0aLCLf/E
-	1sqrRuj/T9Z86TSINl+rez+/R/caCk=
-X-Received: by 2002:a05:620a:4141:b0:915:6cf9:5630 with SMTP id af79cd13be357-915a9d89fdamr4109579385a.34.1781095211893;
-        Wed, 10 Jun 2026 05:40:11 -0700 (PDT)
-Received: from server0 (c-68-48-65-54.hsd1.mi.comcast.net. [68.48.65.54])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-9158a237330sm2499096885a.16.2026.06.10.05.40.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Jun 2026 05:40:11 -0700 (PDT)
-From: Michael Bommarito <michael.bommarito@gmail.com>
-To: Jon Maloy <jmaloy@redhat.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Tung Quang Nguyen <tung.quang.nguyen@est.tech>,
-	Simon Horman <horms@kernel.org>,
-	Ying Xue <ying.xue@windriver.com>,
-	netdev@vger.kernel.org,
-	tipc-discussion@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net v4 3/3] tipc: reject inverted service ranges from peer bindings
-Date: Wed, 10 Jun 2026 08:40:03 -0400
-Message-ID: <20260610124003.3831170-4-michael.bommarito@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260610124003.3831170-1-michael.bommarito@gmail.com>
-References: <20260610124003.3831170-1-michael.bommarito@gmail.com>
+        bh=5H1jBOYYY3PeAkd4J7mLCgYfvkPn6xRIFo0bYZfoRu8=;
+        b=Oaa0cjahlN/4AAFRMR8pz8m4S4tqWEV786bPdeZGF+mjIzTRQ6by04rZRgfAC+a9Gt
+         Mrm4AqOXFqK0a6O3LZoyzboYnzj77BGttg1DzL7VPdGN9Sll5JX4nmhnXzrUzAsT8biJ
+         rXprfpzvO+JW64vhEKcNNo14ewWLNOBGWMsX0hA7FoJdGdgqqHdqqpB7/siFoMW86udp
+         cTI6ZQmEzvNasLc5ZqUWNFzkoRRdgxYF+63mT2foEkVSOw5vK7/jdylePvIJklolWCtu
+         Oj4GF2zccBSBogFJNsP4Iw7S1iHhy2PbE8lXJMRnj2jIJA+4PHhCyRiRpnRJByPP9VPf
+         X/3w==
+X-Forwarded-Encrypted: i=1; AFNElJ9YR6WH+Y4mf8ZLas4nC5+aoTCh+hJjpatm4ooKLFWz66+EJrayoDWa78jqMEgGimGLNMAiVDM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyUyhvjJhAS77LsFGe+A/ZZkgiyBGF1Ij5CZHJOhJ/R4B7IBD8S
+	S5ZuNuFndVCzzQYwI5GJbaEGzRvd8wlX1Zrux8RhjG0epCBfQb0WeRO9P/Ya+IHkWvyzl2ALrM8
+	SoINAwDNiZv3OwzdrnRQhXLomz9y8N8E=
+X-Gm-Gg: Acq92OHdoqcJzIUkz6TelpQckElh/kdZiGFn2/nhSmRMys7h1sloAkcGTCiKfETOFJN
+	5TaM8lUPk/KZvzUT3gXgGm+pGwwphihbpTrgWaiWPeh338f9wqurpCboOtxVuL6VRqn9odZQzB/
+	v+goW+vVObSot52ah+EHIyLUV9dtKSnSjPeqmC7gAPOy0AsHLpF6qQwHbrvNfcYUZ24uRXBOwQf
+	BpPr+3SPhMU2AGBLDsmSHOWwe7dq8y9hcSuzFhQ3Z2VFGaphBtK++l0TtRwLd/MLZaWKGTpEjBU
+	4o20XkCZa2SCMrBt7H54BvN1WK6lEB+ZJnNQtbtuWyR8gVQysfM=
+X-Received: by 2002:a05:690c:6106:b0:7bd:9a25:f39f with SMTP id
+ 00721157ae682-7ed5028e58bmr182960677b3.4.1781095234448; Wed, 10 Jun 2026
+ 05:40:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+References: <20260610120812.49054-1-laoar.shao@gmail.com> <1f949cfc-eebc-4813-9dfc-b9a9ec79494d@blackwall.org>
+In-Reply-To: <1f949cfc-eebc-4813-9dfc-b9a9ec79494d@blackwall.org>
+From: Yafang Shao <laoar.shao@gmail.com>
+Date: Wed, 10 Jun 2026 20:39:56 +0800
+X-Gm-Features: AVVi8CcO2DTbEHqga4RnxUkLkOH85qFDqmknHaj9LORAv4IFs_2V9oUMuG5Xo3A
+Message-ID: <CALOAHbBeBez2DAQD+1PPc1Dmm0HH0PQcytG-eaxgWyThRt890A@mail.gmail.com>
+Subject: Re: [PATCH net-next] bonding: add sysfs interface for broadcast_neighbor
+To: Nikolay Aleksandrov <razor@blackwall.org>
+Cc: jv@jvosburgh.net, andrew+netdev@lunn.ch, davem@davemloft.net, 
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
+	netdev@vger.kernel.org, Tonghao Zhang <tonghao@bamaicloud.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-tipc_update_nametbl() inserts a binding advertised by a peer node using
-the lower and upper service-range bounds taken directly from the wire,
-without checking that lower <= upper. The local bind path validates the
-ordering (tipc_uaddr_valid()), but the name-distribution path does not.
+On Wed, Jun 10, 2026 at 8:30=E2=80=AFPM Nikolay Aleksandrov <razor@blackwal=
+l.org> wrote:
+>
+> On 10/06/2026 15:08, Yafang Shao wrote:
+> > The upstream kernel has supported broadcast_neighbor for 802.3ad mode s=
+ince
+> > commit ce7a381697cb ("net: bonding: add broadcast_neighbor option for 8=
+02.3ad").
+> > When upgrading from our local kernel to 6.18.y stable, we switched from=
+ our
+> > out-of-tree implementation to the upstream one.
+> >
+> > However, the iproute2 package on our production servers is too old to
+> > support the broadcast_neighbor option. To enable this feature, add a ne=
+w
+> > sysfs attribute at:
+> >
+> >    /sys/class/net/<bond>/bonding/broadcast_neighbor
+> >
+> > This allows enabling the feature by writing "1" to the sysfs file, matc=
+hing
+> > the interface we previously maintained in our local kernel.
+> >
+> > The result is as follows,
+> >
+> > - For 802.3ad mode
+> >
+> >    $ ip link add bond0 type bond mode 802.3ad
+> >    $ cat /sys/class/net/bond0/bonding/broadcast_neighbor
+> >    0
+> >    $ echo 1 > /sys/class/net/bond0/bonding/broadcast_neighbor
+> >    $ cat /sys/class/net/bond0/bonding/broadcast_neighbor
+> >    1
+> >
+> > - For other modes
+> >
+> >    $ ip link add bond1 type bond
+> >    $ cat /sys/class/net/bond1/bonding/broadcast_neighbor
+> >    0
+> >    $ echo 1 > /sys/class/net/bond1/bonding/broadcast_neighbor
+> >    bash: echo: write error: Permission denied
+> >
+> > Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
+> > Cc: Tonghao Zhang <tonghao@bamaicloud.com>
+> > ---
+> >   drivers/net/bonding/bond_sysfs.c | 12 ++++++++++++
+> >   1 file changed, 12 insertions(+)
+> >
+> > diff --git a/drivers/net/bonding/bond_sysfs.c b/drivers/net/bonding/bon=
+d_sysfs.c
+> > index eaba44c76a5e..24eb23634d98 100644
+> > --- a/drivers/net/bonding/bond_sysfs.c
+> > +++ b/drivers/net/bonding/bond_sysfs.c
+> > @@ -750,6 +750,17 @@ static ssize_t bonding_show_ad_user_port_key(struc=
+t device *d,
+> >   static DEVICE_ATTR(ad_user_port_key, 0644,
+> >                  bonding_show_ad_user_port_key, bonding_sysfs_store_opt=
+ion);
+> >
+> > +static ssize_t bonding_show_broadcast_neighbor(struct device *d,
+> > +                                            struct device_attribute *a=
+ttr,
+> > +                                            char *buf)
+> > +{
+> > +     struct bonding *bond =3D to_bond(d);
+> > +
+> > +     return sysfs_emit(buf, "%d\n", bond->params.broadcast_neighbor);
+> > +}
+> > +static DEVICE_ATTR(broadcast_neighbor, 0644,
+> > +                bonding_show_broadcast_neighbor, bonding_sysfs_store_o=
+ption);
+> > +
+> >   static struct attribute *per_bond_attrs[] =3D {
+> >       &dev_attr_slaves.attr,
+> >       &dev_attr_mode.attr,
+> > @@ -789,6 +800,7 @@ static struct attribute *per_bond_attrs[] =3D {
+> >       &dev_attr_ad_actor_system.attr,
+> >       &dev_attr_ad_user_port_key.attr,
+> >       &dev_attr_arp_missed_max.attr,
+> > +     &dev_attr_broadcast_neighbor.attr,
+> >       NULL,
+> >   };
+> >
+>
+> Then update your iproute2 package, sysfs use for options is discouraged
 
-A binding with lower > upper is inserted at the far end of the
-service-range rbtree (keyed on lower) where no lookup or withdrawal can
-ever match it (service_range_foreach_match() requires sr->lower <= end).
-The publication, its service_range node and the augmented rbtree entry
-are then leaked for the lifetime of the namespace, and there is no
-per-peer cap equivalent to TIPC_MAX_PUBL on locally created bindings.
+Could you please explain in detail why this is discouraged?
 
-Reject inverted ranges in the network path as well. A peer node can
-otherwise leak unbounded binding-table memory by sending PUBLICATION
-items with lower > upper.
+> and is not being extended on purpose. Move to netlink.
 
-Fixes: 37922ea4a310 ("tipc: permit overlapping service ranges in name table")
-Assisted-by: Claude:claude-opus-4-7
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
----
- net/tipc/name_distr.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
-
-diff --git a/net/tipc/name_distr.c b/net/tipc/name_distr.c
-index 190b49c5cbc3e..ba4f4906e13b7 100644
---- a/net/tipc/name_distr.c
-+++ b/net/tipc/name_distr.c
-@@ -280,12 +280,21 @@ static bool tipc_update_nametbl(struct net *net, struct distr_item *i,
- 				u32 node, u32 dtype)
- {
- 	struct publication *p = NULL;
-+	u32 lower = ntohl(i->lower);
-+	u32 upper = ntohl(i->upper);
- 	struct tipc_socket_addr sk;
--	struct tipc_uaddr ua;
- 	u32 key = ntohl(i->key);
-+	struct tipc_uaddr ua;
-+
-+	/* A peer-advertised binding with lower > upper can never be matched
-+	 * or withdrawn and would leak the publication; the local bind path
-+	 * rejects such ranges, so reject ranges learned from the network too.
-+	 */
-+	if (lower > upper)
-+		return false;
- 
- 	tipc_uaddr(&ua, TIPC_SERVICE_RANGE, TIPC_CLUSTER_SCOPE,
--		   ntohl(i->type), ntohl(i->lower), ntohl(i->upper));
-+		   ntohl(i->type), lower, upper);
- 	sk.ref = ntohl(i->port);
- 	sk.node = node;
- 
--- 
-2.53.0
-
+--=20
+Regards
+Yafang
