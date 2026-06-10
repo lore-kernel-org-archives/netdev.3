@@ -1,48 +1,48 @@
-Received: from mx0a-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
+Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FAE3405C3C;
-	Wed, 10 Jun 2026 11:55:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21D563FC5B7;
+	Wed, 10 Jun 2026 11:55:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781092537; cv=none; b=TdgkAy8gkE94QuIf8vgQ4b7q/0lRiaGe/E7zKundWVjGJSZW0kitD8XibU+ZBZV2uy3Am2oX1faRWn9rD7e5QcOSjDmUm9m89AnkN+90ZVCTV2rDI6+MzLd8CKjREdyzeIxE+LQkcZ3u74yv3BTDW1ga+9sOh9Ao4XMjoXycljY=
+	t=1781092544; cv=none; b=hFzjrNWtNcyjNIo2+wphzgVIGwqQmXAN1T9xOcRMDdGuPcuJ5FPQCNmmvNiNEjQVMHxWHfIohu8k7+X4/H2+poVpadTNt4UVK2/n7vGlTtrum7oUZpeSZ5HSpIjqtvHT4WWv8Ac2fitsgDGzgFkI4XI2+p9bR+k9l+zdqzOV4vQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781092537; c=relaxed/simple;
-	bh=d+jXrkPUZ6keQyNl+ipvzwasBrMT2zOnCTLwo/Vd3lY=;
+	s=arc-20240116; t=1781092544; c=relaxed/simple;
+	bh=H+4qAHrNzSEXGL4cXE3fC9S8CPkJwrD1GPeWJyUccF8=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uLOn6e8UVUXzUL1iuhD23ha7Li/GJVjireB+Dn8Aaf/6IAIBpC4PKbAfmKtJEzjQ2+flnEaXKRwlk1R8E2Sp9u5dxiNaZlsXKIFWG0EQzpkW2Q180eBMo0oiOK35hbzZhxf0mY1EgvHwxK0q7eHkY7vMkfB8340nfYwRutMUxJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=LX4t7p+e; arc=none smtp.client-ip=67.231.148.174
+	 MIME-Version:Content-Type; b=mXxZMlMi/X9Kfyf6DigpzaTXYsV98AJcWCZPkpPbM460GmGVAH68YRNXnzIcPDaeWB7KlVFMNMW69DYAmcuJ1t6zuBV5SYlcm6amkSk71IL+ihGgCu6M1GRtmv7u0+8s9GusPOER7StEDfZibFzuvzHLT+cO/fqszR9NjL8LhF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=KTuP/IBc; arc=none smtp.client-ip=67.231.156.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="LX4t7p+e"
-Received: from pps.filterd (m0431384.ppops.net [127.0.0.1])
-	by mx0a-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65A7kDIS3125415;
-	Wed, 10 Jun 2026 04:55:18 -0700
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="KTuP/IBc"
+Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
+	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65A7kZMr3045240;
+	Wed, 10 Jun 2026 04:55:33 -0700
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pfpt0220; bh=n
-	yre+mdgC/HtDLCWL7bgHKAUlgFWEsf2DfIODerrdQE=; b=LX4t7p+em9ESHyGSt
-	DUZSP+iD0fxQ1J7H9A069VKs95ZIf8dUT5e51jkNoRbqHEC/6u3oIZ9FmAhnwXkG
-	iAoxsNnoemyF7DbltT+dIqwx6KvOu1LRBUtJ0vf2nfHIb9iA7xgODdgy+IlQV1eE
-	4nbwpx6cKp9TPSaz2X7WIWZlYwQgPclkth5KxnZ9gdC6ZW361yY/EkIQbzLdHxWD
-	9PY1vtw2pMF4T2k3VXNDssrWNpWM5kbppI6QcV8ivOOO8FB1yTSmf3v2ONZddK7q
-	hbQIqrCIgO9y4ILBbAR2dW9uxYupkHPlEUFvD18ncT1XVXj5G5s+/JeBBZJimKGU
-	w+EAQ==
+	:message-id:mime-version:references:subject:to; s=pfpt0220; bh=i
+	PP1TgwLiHuN/xsk0hwGnoltpgpzFb4ZmY+IG1tLlbA=; b=KTuP/IBc7i25ZMN+K
+	AAUFIwMnuJ21g/e0D/LJqVqIpZuvuA9FCVyVZ6dpOjZeEFI8s2sDmOhaamRbYULO
+	AGIEacGoCKJGKXlgd5W+JL30qwGwgyLuCY43hK5G6BjBXpM4uqrWOIlUtgmVYx8F
+	8M6OD3DsCe3hJ0MYW0/W3LObarJaVsYt/B/vb0YfPyTlz6UC3rGY+x8xbv/vZVE9
+	F/nkIhX7GbdnJ0SldmZGHcrlpZELzz71oeyaQaM3DIXxnb8YLkVdzgbyLhkOYL4y
+	7sDUbwtsYvXWBom5KgwZA9BRcwAI7c9E5syoE8egnyGRE4ttjQzFS8dcT2oeTpok
+	uIIOQ==
 Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
-	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4epex1n7s4-4
+	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4eq02msb08-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 10 Jun 2026 04:55:18 -0700 (PDT)
+	Wed, 10 Jun 2026 04:55:32 -0700 (PDT)
 Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
  DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Wed, 10 Jun 2026 04:55:17 -0700
+ 15.2.1544.25; Wed, 10 Jun 2026 04:55:32 -0700
 Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
  (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Wed, 10 Jun 2026 04:55:17 -0700
+ Transport; Wed, 10 Jun 2026 04:55:32 -0700
 Received: from BG-LT92649.marvell.com (unknown [10.193.66.228])
-	by maili.marvell.com (Postfix) with ESMTP id 712553F7090;
-	Wed, 10 Jun 2026 04:55:13 -0700 (PDT)
+	by maili.marvell.com (Postfix) with ESMTP id 16CB53F708D;
+	Wed, 10 Jun 2026 04:55:27 -0700 (PDT)
 From: <sukhdeeps@marvell.com>
 To: <netdev@vger.kernel.org>
 CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
@@ -50,9 +50,9 @@ CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
         <horms@kernel.org>, <vadim.fedorenko@linux.dev>,
         Sukhdeep Singh
 	<sukhdeeps@marvell.com>
-Subject: [PATCH net-next v5 4/12] net: atlantic: add AQC113 hardware register definitions and accessors
-Date: Wed, 10 Jun 2026 17:24:40 +0530
-Message-ID: <20260610115448.272-5-sukhdeeps@marvell.com>
+Subject: [PATCH net-next v5 7/12] net: atlantic: implement AQC113 L2/L3/L4 RX filter ops
+Date: Wed, 10 Jun 2026 17:24:43 +0530
+Message-ID: <20260610115448.272-8-sukhdeeps@marvell.com>
 X-Mailer: git-send-email 2.52.0.windows.1
 In-Reply-To: <20260610115448.272-1-sukhdeeps@marvell.com>
 References: <20260610115448.272-1-sukhdeeps@marvell.com>
@@ -64,812 +64,601 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjEwMDExMiBTYWx0ZWRfX3yQyTYCGY2aD
- 7gNC7K1BQ7um2EUoA9g7UMAdH5RECVc4eCj1Y4Xq7nVnZIns0WjQv11IeMzXXu+UvrkOtT7IEq9
- BheMC3sAwa/i4RYX4r+049v++nTiwBVDnuV1TQbmbbOMD9UxiN2VAqBejrY4DM7oLFnc3i3KEyB
- kqXwIgpYiG7b3zBB11Lm3/y2R+Me5SwMQw5X+8LAfq0MWD8w4RsFk++lCJz3gF6H+sGzfmBTeJ8
- /u7BQ+qm3s3yq5S3ugD9WfuS+dby9qSAJnKNbFVOa6YCFMmKhvqPQ+qH0HsXEbfk5tJQVjyUVHu
- yTvk8fz/0w69coDvaXB4jPKi8Dh07o4412rGeX/N9ii7FzqsT+a33XBNdfMt293fICymm3RTLa8
- SpA+eA5WP/c9rlK0OkI/MbywK2//vTDx5/d1i0nZTzns6IGJbOlK3U5K/hDciG9yWohy+SJ1YEj
- 9THA465kY2PFqr2UYRg==
-X-Proofpoint-ORIG-GUID: mUYUwTOgSQbiTlm-ylGP8HXCRJpMV0cl
-X-Authority-Analysis: v=2.4 cv=Aa2B2XXG c=1 sm=1 tr=0 ts=6a2950a6 cx=c_pps
+X-Authority-Analysis: v=2.4 cv=cuGrVV4i c=1 sm=1 tr=0 ts=6a2950b5 cx=c_pps
  a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17
  a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
- a=TtqV-g6YmW1Jfm2GSLaY:22 a=M5GUcnROAAAA:8 a=h7Nm1OVuJgqK08Gpl-MA:9
- a=BKCi58kbG2z5wyCY:21 a=OBjm3rFKGHvpk9ecZwUJ:22
-X-Proofpoint-GUID: mUYUwTOgSQbiTlm-ylGP8HXCRJpMV0cl
+ a=QXcCYyLzdtTjyudCfB6f:22 a=M5GUcnROAAAA:8 a=DqYEYfIcCQT9R2GCmsUA:9
+ a=OBjm3rFKGHvpk9ecZwUJ:22
+X-Proofpoint-GUID: zSwv4r7gb6EzlzgCi9medGE6yr0-IVFX
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjEwMDExMiBTYWx0ZWRfXy+lRfe7IHLKX
+ jbaITg4kMs95s1H/j844YFC/KxcPOoqseleg5d7yXaI/najh8hQpL3JBcpweaJpIQBn8T+VBrWP
+ 9l0K/K4hSo+7qwrw1d3f0sB/J6F0vUnN+xu7aWh5EN9jlD1MZ08jjNMm/uafTMkci3o52j8w5W7
+ oI6YyxFsMB8uB722zyrPlbL815Hb9Hi2rqdoyNqXSqNKlQf+OR5V06LJ8CnPWHKHlZ7KIsWCkwd
+ ELR4WPtgr1WB2ecGAekk9K3UO6/IHz+v/VsVbcKsOVECyX4Cf4GEoMvmIvdLYEVMZI0DTdqQDZk
+ yal6RdaGBUrHPDIpZ6AAnP77RXX8xA6kEPisrfKaptKjJh+gQcxIp7d9qBHUKlcKgyExysu7lD1
+ R2k1TbX2VB4zNZc2VxJLiDRJQXWzP/YgY+zQldE39tdcneosDkvlDvMQZLDqjgwtKWqMrx48FNt
+ sY1HXmcd91FM52aQGmQ==
+X-Proofpoint-ORIG-GUID: zSwv4r7gb6EzlzgCi9medGE6yr0-IVFX
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
  definitions=2026-06-10_02,2026-06-09_02,2025-10-01_01
 
 From: Sukhdeep Singh <sukhdeeps@marvell.com>
 
-Add low-level hardware register definitions and accessor functions
-for AQC113 (Antigua) chip features:
+Implement complete RX filter management for AQC113 hardware:
 
-- L3/L4 filter command, tag, and address registers for IPv4/IPv6
-- Ethertype filter tag registers
-- TSG (Time Stamp Generator) clock control, modification, and
-  GPIO event generation/input timestamp registers
-- TX descriptor timestamp writeback, timestamp enable, and AVB
-  enable registers
-- TX data/descriptor read request limit registers
-- TPB highest priority TC registers
-- PCIe extended tag enable register
-- RX descriptor timestamp request register
-- Action resolver section enable getter
-- GPIO special mode and TSG external GPIO TS input select
+- Add tag-based ethertype filter policy (hw_atl2_filter_tag_get/put)
+  that allocates and releases ART tags for L2 ethertype filters.
+
+- Add L3/L4 filter sharing via serialized usage counters in
+  hw_atl2_l3_filter/hw_atl2_l4_filter, managed through
+  hw_atl2_rxf_l3_get/put and hw_atl2_rxf_l4_get/put.
+
+- Implement L3 (IPv4/IPv6 source/destination address and protocol)
+  filter find, get (program HW and increment refcount), and put
+  (decrement refcount and clear HW when last user releases).
+
+- Implement L4 (TCP/UDP/SCTP source/destination port) filter management
+  with the same find/get/put pattern.
+
+- Add combined L3L4 filter configuration (hw_atl2_new_fl3l4_configure)
+  that translates legacy aq_rx_filter_l3l4 commands into AQC113 separate
+  L3+L4 filter programming with Action Resolver Table (ART) entries.
+
+- Add L2 ethertype filter set/clear (hw_atl2_hw_fl2_set/clear) with
+  tag-based ART integration.
+
+- Wire .hw_filter_l2_set, .hw_filter_l2_clear, .hw_filter_l3l4_set
+  into hw_atl2_ops.
 
 Signed-off-by: Sukhdeep Singh <sukhdeeps@marvell.com>
 ---
- .../aquantia/atlantic/hw_atl2/hw_atl2_llh.c   | 322 ++++++++++++++++++
- .../aquantia/atlantic/hw_atl2/hw_atl2_llh.h   |  97 +++++-
- .../atlantic/hw_atl2/hw_atl2_llh_internal.h   | 204 ++++++++++-
- 3 files changed, 617 insertions(+), 6 deletions(-)
+ .../aquantia/atlantic/hw_atl2/hw_atl2.c       | 518 ++++++++++++++++++
+ 1 file changed, 518 insertions(+)
 
-diff --git a/drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2_llh.c b/drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2_llh.c
-index cd954b11d24a..2414e60b2028 100644
---- a/drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2_llh.c
-+++ b/drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2_llh.c
-@@ -7,6 +7,13 @@
- #include "hw_atl2_llh_internal.h"
- #include "aq_hw_utils.h"
+diff --git a/drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2.c b/drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2.c
+index ec5b2a03fd6f..f48b7953274d 100644
+--- a/drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2.c
++++ b/drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2.c
+@@ -87,6 +87,38 @@ const struct aq_hw_caps_s hw_atl2_caps_aqc116c = {
+ 			  AQ_NIC_RATE_10M,
+ };
  
-+u32 hw_atl2_phi_ext_tag_get(struct aq_hw_s *aq_hw)
++/* Find tag with the same action or new free tag
++ *  top - top inclusive tag value
++ *  action - action for ActionResolverTable
++ */
++static int hw_atl2_filter_tag_get(struct hw_atl2_tag_policy *tags,
++				  int top, u16 action)
 +{
-+	return aq_hw_read_reg_bit(aq_hw, HW_ATL2_PHI_EXT_TAG_EN_ADR,
-+				  HW_ATL2_PHI_EXT_TAG_EN_MSK,
-+				  HW_ATL2_PHI_EXT_TAG_EN_SHIFT);
++	int i;
++
++	for (i = 1; i <= top; i++)
++		if (tags[i].usage > 0 && tags[i].action == action) {
++			tags[i].usage++;
++			return i;
++		}
++
++	for (i = 1; i <= top; i++)
++		if (tags[i].usage == 0) {
++			tags[i].usage = 1;
++			tags[i].action = action;
++			return i;
++		}
++
++	return -ENOSPC;
 +}
 +
- void hw_atl2_rpf_redirection_table2_select_set(struct aq_hw_s *aq_hw,
- 					       u32 select)
++static void hw_atl2_filter_tag_put(struct hw_atl2_tag_policy *tags,
++				   int tag)
++{
++	if (tags[tag].usage > 0)
++		tags[tag].usage--;
++}
++
+ static u32 hw_atl2_sem_act_rslvr_get(struct aq_hw_s *self)
  {
-@@ -66,6 +73,266 @@ void hw_atl2_rpf_vlan_flr_tag_set(struct aq_hw_s *aq_hw, u32 tag, u32 filter)
- 			    tag);
+ 	return hw_atl_reg_glb_cpu_sem_get(self, HW_ATL2_FW_SM_ACT_RSLVR);
+@@ -816,6 +848,489 @@ static struct aq_stats_s *hw_atl2_utils_get_hw_stats(struct aq_hw_s *self)
+ 	return &self->curr_stats;
  }
  
-+void hw_atl2_rpf_etht_flr_tag_set(struct aq_hw_s *aq_hw, u32 tag, u32 filter)
++static bool hw_atl2_rxf_l3_is_equal(struct hw_atl2_l3_filter *f1,
++				    struct hw_atl2_l3_filter *f2)
 +{
-+	aq_hw_write_reg_bit(aq_hw, HW_ATL2_RPF_ET_TAG_ADR(filter),
-+			    HW_ATL2_RPF_ET_TAG_MSK,
-+			    HW_ATL2_RPF_ET_TAG_SHIFT, tag);
++	if (f1->cmd != f2->cmd)
++		return false;
++
++	if (f1->cmd & HW_ATL2_RPF_L3_CMD_SA_EN)
++		if (f1->srcip[0] != f2->srcip[0])
++			return false;
++
++	if (f1->cmd & HW_ATL2_RPF_L3_CMD_DA_EN)
++		if (f1->dstip[0] != f2->dstip[0])
++			return false;
++
++	if (f1->cmd & (HW_ATL2_RPF_L3_CMD_PROTO_EN |
++		       HW_ATL2_RPF_L3_V6_CMD_PROTO_EN))
++		if (f1->proto != f2->proto)
++			return false;
++
++	if (f1->cmd & HW_ATL2_RPF_L3_V6_CMD_SA_EN)
++		if (memcmp(f1->srcip, f2->srcip, 16))
++			return false;
++
++	if (f1->cmd & HW_ATL2_RPF_L3_V6_CMD_DA_EN)
++		if (memcmp(f1->dstip, f2->dstip, 16))
++			return false;
++
++	return true;
 +}
 +
-+u32 hw_atl2_rpf_etht_flr_tag_get(struct aq_hw_s *aq_hw, u32 filter)
++static int hw_atl2_new_fl3l4_find_l3(struct aq_hw_s *self,
++				     struct hw_atl2_l3_filter *l3)
 +{
-+	return aq_hw_read_reg_bit(aq_hw, HW_ATL2_RPF_ET_TAG_ADR(filter),
-+				  HW_ATL2_RPF_ET_TAG_MSK,
-+				  HW_ATL2_RPF_ET_TAG_SHIFT);
-+}
++	struct hw_atl2_priv *priv = self->priv;
++	struct hw_atl2_l3_filter *l3_filters;
++	int i, first, last;
 +
-+void hw_atl2_rpf_l3_v4_dest_addr_set(struct aq_hw_s *aq_hw, u32 filter, u32 val)
-+{
-+	u32 addr_set = 6 + ((filter < 4) ? 0 : 1);
-+	u32 dword = filter % 4;
-+
-+	aq_hw_write_reg(aq_hw, HW_ATL2_RPF_L3_DA_DW_ADR(addr_set, dword), val);
-+}
-+
-+void hw_atl2_rpf_l3_v4_src_addr_set(struct aq_hw_s *aq_hw, u32 filter, u32 val)
-+{
-+	u32 addr_set = 6 + ((filter < 4) ? 0 : 1);
-+	u32 dword = filter % 4;
-+
-+	aq_hw_write_reg(aq_hw, HW_ATL2_RPF_L3_SA_DW_ADR(addr_set, dword), val);
-+}
-+
-+void hw_atl2_rpf_l3_v6_dest_addr_set(struct aq_hw_s *aq_hw, u8 location,
-+				     u32 *ipv6_dst)
-+{
-+	int i;
-+
-+	for (i = 0; i < 4; ++i)
-+		aq_hw_write_reg(aq_hw,
-+				HW_ATL2_RPF_L3_DA_DW_ADR(location, 3 - i),
-+				ipv6_dst[i]);
-+}
-+
-+void hw_atl2_rpf_l3_v6_src_addr_set(struct aq_hw_s *aq_hw, u8 location,
-+				    u32 *ipv6_src)
-+{
-+	int i;
-+
-+	for (i = 0; i < 4; ++i)
-+		aq_hw_write_reg(aq_hw,
-+				HW_ATL2_RPF_L3_SA_DW_ADR(location, 3 - i),
-+				ipv6_src[i]);
-+}
-+
-+void hw_atl2_rpf_l3_v4_cmd_set(struct aq_hw_s *aq_hw, u32 val, u32 filter)
-+{
-+	aq_hw_write_reg_bit(aq_hw, HW_ATL2_RPF_L3_V4_CMD_ADR(filter),
-+			    HW_ATL2_RPF_L3_V4_CMD_MSK,
-+			    HW_ATL2_RPF_L3_V4_CMD_SHIFT, val);
-+}
-+
-+void hw_atl2_rpf_l3_v6_cmd_set(struct aq_hw_s *aq_hw, u32 val, u32 filter)
-+{
-+	aq_hw_write_reg_bit(aq_hw, HW_ATL2_RPF_L3_V6_CMD_ADR(filter),
-+			    HW_ATL2_RPF_L3_V6_CMD_MSK,
-+			    HW_ATL2_RPF_L3_V6_CMD_SHIFT, val);
-+}
-+
-+void hw_atl2_rpf_l3_v6_v4_select_set(struct aq_hw_s *aq_hw, u32 val)
-+{
-+	aq_hw_write_reg_bit(aq_hw, HW_ATL2_RPF_L3_V6_V4_SELECT_ADR,
-+			    HW_ATL2_RPF_L3_V6_V4_SELECT_MSK,
-+			    HW_ATL2_RPF_L3_V6_V4_SELECT_SHIFT, val);
-+}
-+
-+void hw_atl2_rpf_l3_v4_tag_set(struct aq_hw_s *aq_hw, u32 val, u32 filter)
-+{
-+	aq_hw_write_reg_bit(aq_hw, HW_ATL2_RPF_L3_V4_TAG_ADR(filter),
-+			    HW_ATL2_RPF_L3_V4_TAG_MSK,
-+			    HW_ATL2_RPF_L3_V4_TAG_SHIFT, val);
-+}
-+
-+void hw_atl2_rpf_l3_v6_tag_set(struct aq_hw_s *aq_hw, u32 val, u32 filter)
-+{
-+	aq_hw_write_reg_bit(aq_hw, HW_ATL2_RPF_L3_V6_TAG_ADR(filter),
-+			    HW_ATL2_RPF_L3_V6_TAG_MSK,
-+			    HW_ATL2_RPF_L3_V6_TAG_SHIFT, val);
-+}
-+
-+void hw_atl2_rpf_l4_tag_set(struct aq_hw_s *aq_hw, u32 val, u32 filter)
-+{
-+	aq_hw_write_reg_bit(aq_hw, HW_ATL2_RPF_L4_TAG_ADR(filter),
-+			    HW_ATL2_RPF_L4_TAG_MSK,
-+			    HW_ATL2_RPF_L4_TAG_SHIFT, val);
-+}
-+
-+void hw_atl2_rpf_l4_cmd_set(struct aq_hw_s *aq_hw, u32 val, u32 filter)
-+{
-+	aq_hw_write_reg_bit(aq_hw, HW_ATL2_RPF_L4_CMD_ADR(filter),
-+			    HW_ATL2_RPF_L4_CMD_MSK,
-+			    HW_ATL2_RPF_L4_CMD_SHIFT, val);
-+}
-+
-+/* tsg */
-+static void hw_atl2_clock_modif_value_set(struct aq_hw_s *aq_hw,
-+					  u32 clock_sel, u64 ns)
-+{
-+	aq_hw_write_reg64(aq_hw,
-+			  HW_ATL2_TSG_REG_ADR(clock_sel, CLOCK_MODIF_VAL_LSW),
-+			  ns);
-+}
-+
-+void hw_atl2_tsg_clock_en(struct aq_hw_s *aq_hw,
-+			  u32 clock_sel, u32 clock_enable)
-+{
-+	aq_hw_write_reg_bit(aq_hw, HW_ATL2_TSG_REG_ADR(clock_sel, CLOCK_CFG),
-+			    HW_ATL2_TSG_CLOCK_EN_MSK,
-+			    HW_ATL2_TSG_CLOCK_EN_SHIFT,
-+			    clock_enable);
-+}
-+
-+void hw_atl2_tsg_clock_reset(struct aq_hw_s *aq_hw, u32 clock_sel)
-+{
-+	aq_hw_write_reg_bit(aq_hw, HW_ATL2_TSG_REG_ADR(clock_sel, CLOCK_CFG),
-+			    HW_ATL2_TSG_SYNC_RESET_MSK,
-+			    HW_ATL2_TSG_SYNC_RESET_SHIFT, 1);
-+	aq_hw_write_reg_bit(aq_hw, HW_ATL2_TSG_REG_ADR(clock_sel, CLOCK_CFG),
-+			    HW_ATL2_TSG_SYNC_RESET_MSK,
-+			    HW_ATL2_TSG_SYNC_RESET_SHIFT, 0);
-+}
-+
-+u64 hw_atl2_tsg_clock_read(struct aq_hw_s *aq_hw, u32 clock_sel)
-+{
-+	return aq_hw_read_reg64(aq_hw,
-+				HW_ATL2_TSG_REG_ADR(clock_sel,
-+						    READ_CUR_NS_LSW));
-+}
-+
-+void hw_atl2_tsg_clock_add(struct aq_hw_s *aq_hw, u32 clock_sel, u64 ns)
-+{
-+	hw_atl2_clock_modif_value_set(aq_hw, clock_sel, ns);
-+	aq_hw_write_reg(aq_hw,
-+			HW_ATL2_TSG_REG_ADR(clock_sel, CLOCK_MODIF_CTRL),
-+			HW_ATL2_TSG_ADD_COUNTER_MSK);
-+}
-+
-+void hw_atl2_tsg_clock_sub(struct aq_hw_s *aq_hw, u32 clock_sel, u64 ns)
-+{
-+	hw_atl2_clock_modif_value_set(aq_hw, clock_sel, ns);
-+	aq_hw_write_reg(aq_hw,
-+			HW_ATL2_TSG_REG_ADR(clock_sel, CLOCK_MODIF_CTRL),
-+			HW_ATL2_TSG_SUBTRACT_COUNTER_MSK);
-+}
-+
-+void hw_atl2_tsg_clock_increment_set(struct aq_hw_s *aq_hw,
-+				     u32 clock_sel, u32 ns, u32 fns)
-+{
-+	u32 nsfns = (ns & 0xff) | (fns & 0xffffff00);
-+
-+	aq_hw_write_reg(aq_hw,
-+			HW_ATL2_TSG_REG_ADR(clock_sel, CLOCK_INC_CFG),
-+			nsfns);
-+	aq_hw_write_reg(aq_hw,
-+			HW_ATL2_TSG_REG_ADR(clock_sel, CLOCK_MODIF_CTRL),
-+			HW_ATL2_TSG_LOAD_INC_CFG_MSK);
-+}
-+
-+void hw_atl2_tpb_tps_highest_priority_tc_enable_set(struct aq_hw_s *aq_hw,
-+						    u32 tps_highest_prio_tc_en)
-+{
-+	aq_hw_write_reg_bit(aq_hw, HW_ATL2_TPB_HIGHEST_PRIO_TC_EN_ADR,
-+			    HW_ATL2_TPB_HIGHEST_PRIO_TC_EN_MSK,
-+			    HW_ATL2_TPB_HIGHEST_PRIO_TC_EN_SHIFT,
-+			    tps_highest_prio_tc_en);
-+}
-+
-+void hw_atl2_tpb_tps_highest_priority_tc_set(struct aq_hw_s *aq_hw,
-+					     u32 tps_highest_prio_tc)
-+{
-+	aq_hw_write_reg_bit(aq_hw, HW_ATL2_TPB_HIGHEST_PRIO_TC_ADR,
-+			    HW_ATL2_TPB_HIGHEST_PRIO_TC_MSK,
-+			    HW_ATL2_TPB_HIGHEST_PRIO_TC_SHIFT,
-+			    tps_highest_prio_tc);
-+}
-+
-+void hw_atl2_tsg_gpio_isr_to_host_set(struct aq_hw_s *aq_hw,
-+				      int on, u32 clock_sel)
-+{
-+	aq_hw_write_reg_bit(aq_hw,
-+			    HW_ATL2_GLOBAL_HIGH_PRIO_INTERRUPT_1_MASK_ADR,
-+		clock_sel == 1 ? HW_ATL2_TSG_TSG1_GPIO_INTERRUPT_MSK :
-+			HW_ATL2_TSG_TSG0_GPIO_INTERRUPT_MSK,
-+		clock_sel == 1 ? HW_ATL2_TSG_TSG1_GPIO_INTERRUPT_SHIFT :
-+			HW_ATL2_TSG_TSG0_GPIO_INTERRUPT_SHIFT,
-+		!!on);
-+}
-+
-+void hw_atl2_tsg_gpio_clear_status(struct aq_hw_s *aq_hw)
-+{
-+	aq_hw_read_reg(aq_hw, HW_ATL2_GLOBAL_INTERNAL_ALARMS_1_ADR);
-+}
-+
-+void hw_atl2_tsg_gpio_input_event_info_get(struct aq_hw_s *aq_hw,
-+					   u32 clock_sel,
-+					   u32 *event_count,
-+					   u64 *event_ts)
-+{
-+	if (event_count)
-+		*event_count = aq_hw_read_reg(aq_hw,
-+					      HW_ATL2_TSG_REG_ADR(clock_sel,
-+								  EXT_CLK_COUNT));
-+
-+	if (event_ts)
-+		*event_ts = aq_hw_read_reg64(aq_hw,
-+					     HW_ATL2_TSG_REG_ADR(clock_sel,
-+								 GPIO_EVENT_TS_LSW));
-+}
-+
-+void hw_atl2_tsg_ptp_gpio_gen_pulse(struct aq_hw_s *aq_hw, u32 clk_sel,
-+				    u64 ts, u32 period, u32 hightime)
-+{
-+	u32 val = (HW_ATL2_TSG_GPIO_EVENT_MODE_SET_ON_TIME <<
-+		   (HW_ATL2_TSG_GPIO_EVENT_MODE_SHIFT -
-+		    HW_ATL2_TSG_GPIO_OUTPUT_EN_SHIFT)) |
-+		  (HW_ATL2_TSG_GPIO_GEN_OUTPUT_EN_MSK) |
-+		  (HW_ATL2_TSG_GPIO_OUTPUT_EN_MSK);
-+
-+	if (ts != 0) {
-+		aq_hw_write_reg64(aq_hw,
-+				  HW_ATL2_TSG_REG_ADR(clk_sel,
-+						      GPIO_EVENT_GEN_TS_LSW),
-+				  ts);
-+
-+		aq_hw_write_reg64(aq_hw,
-+				  HW_ATL2_TSG_REG_ADR(clk_sel,
-+						      GPIO_EVENT_HIGH_TIME_LSW),
-+				  hightime);
-+
-+		aq_hw_write_reg64(aq_hw,
-+				  HW_ATL2_TSG_REG_ADR(clk_sel,
-+						      GPIO_EVENT_LOW_TIME_LSW),
-+				  (period - hightime));
++	if (l3->cmd & HW_ATL2_RPF_L3_V6_CMD_EN) {
++		l3_filters = priv->l3_v6_filters;
++		first = priv->l3_v6_filter_base_index;
++		last = priv->l3_v6_filter_base_index +
++		       priv->l3_v6_filter_count;
++	} else {
++		l3_filters = priv->l3_v4_filters;
++		first = priv->l3_v4_filter_base_index;
++		last = priv->l3_v4_filter_base_index +
++		       priv->l3_v4_filter_count;
++	}
++	for (i = first; i < last; i++) {
++		if (hw_atl2_rxf_l3_is_equal(&l3_filters[i], l3))
++			return i;
 +	}
 +
-+	aq_hw_write_reg_bit(aq_hw,
-+			    HW_ATL2_TSG_REG_ADR(clk_sel, GPIO_EVENT_GEN_CFG),
-+			    HW_ATL2_TSG_GPIO_EVENT_MODE_MSK |
-+				HW_ATL2_TSG_GPIO_OUTPUT_EN_MSK |
-+				HW_ATL2_TSG_GPIO_GEN_OUTPUT_EN_MSK,
-+			   HW_ATL2_TSG_GPIO_OUTPUT_EN_SHIFT,
-+			   (!ts ? 0 : val));
++	for (i = first; i < last; i++) {
++		u32 l3_enable_mask = HW_ATL2_RPF_L3_CMD_EN |
++				     HW_ATL2_RPF_L3_V6_CMD_EN;
++
++		if (!(l3_filters[i].cmd & l3_enable_mask))
++			return i;
++	}
++
++	return -ENOSPC;
 +}
 +
-+void hw_atl2_rpf_rx_desc_timestamp_req_set(struct aq_hw_s *aq_hw, u32 request,
-+					   u32 descriptor)
++static void hw_atl2_rxf_l3_get(struct aq_hw_s *self,
++			       struct hw_atl2_l3_filter *l3, int idx,
++			       const struct hw_atl2_l3_filter *_l3)
 +{
-+	aq_hw_write_reg_bit(aq_hw,
-+			    HW_ATL2_RPF_TIMESTAMP_REQ_DESCD_ADR(descriptor),
-+			    HW_ATL2_RPF_TIMESTAMP_REQ_DESCD_MSK,
-+			    HW_ATL2_RPF_TIMESTAMP_REQ_DESCD_SHIFT, request);
++	int i;
++
++	l3->usage++;
++	if (l3->usage == 1) {
++		l3->cmd = _l3->cmd;
++		for (i = 0; i < 4; i++) {
++			l3->srcip[i] = _l3->srcip[i];
++			l3->dstip[i] = _l3->dstip[i];
++		}
++		l3->proto = _l3->proto;
++
++		if (l3->cmd & HW_ATL2_RPF_L3_CMD_EN) {
++			hw_atl2_rpf_l3_v4_cmd_set(self, l3->cmd, idx);
++			hw_atl2_rpf_l3_v4_tag_set(self, idx + 1, idx);
++			hw_atl2_rpf_l3_v4_dest_addr_set(self,
++							idx,
++							l3->dstip[0]);
++			hw_atl2_rpf_l3_v4_src_addr_set(self,
++						       idx,
++						       l3->srcip[0]);
++		} else {
++			hw_atl2_rpf_l3_v6_cmd_set(self, l3->cmd, idx);
++			hw_atl2_rpf_l3_v6_tag_set(self, idx + 1, idx);
++			hw_atl2_rpf_l3_v6_dest_addr_set(self,
++							idx,
++							l3->dstip);
++			hw_atl2_rpf_l3_v6_src_addr_set(self,
++						       idx,
++						       l3->srcip);
++		}
++	}
 +}
 +
- /* TX */
- 
- void hw_atl2_tpb_tx_tc_q_rand_map_en_set(struct aq_hw_s *aq_hw,
-@@ -93,6 +360,30 @@ void hw_atl2_reg_tx_intr_moder_ctrl_set(struct aq_hw_s *aq_hw,
- 			tx_intr_moderation_ctl);
- }
- 
-+void hw_atl2_tdm_tx_desc_timestamp_writeback_en_set(struct aq_hw_s *aq_hw,
-+						    u32 enable, u32 descriptor)
++static void hw_atl2_rxf_l3_put(struct aq_hw_s *self,
++			       struct hw_atl2_l3_filter *l3, int idx)
 +{
-+	aq_hw_write_reg_bit(aq_hw, HW_ATL2_TDM_DESCD_TS_WRB_EN_ADR(descriptor),
-+			    HW_ATL2_TDM_DESCD_TS_WRB_EN_MSK,
-+			    HW_ATL2_TDM_DESCD_TS_WRB_EN_SHIFT, enable);
++	if (l3->usage)
++		l3->usage--;
++
++	if (!l3->usage) {
++		if (l3->cmd & HW_ATL2_RPF_L3_V6_CMD_EN)
++			hw_atl2_rpf_l3_v6_cmd_set(self, 0, idx);
++		else
++			hw_atl2_rpf_l3_v4_cmd_set(self, 0, idx);
++		l3->cmd = 0;
++	}
 +}
 +
-+void hw_atl2_tdm_tx_desc_timestamp_en_set(struct aq_hw_s *aq_hw, u32 enable,
-+					  u32 descriptor)
++static bool hw_atl2_rxf_l4_is_equal(struct hw_atl2_l4_filter *f1,
++				    struct hw_atl2_l4_filter *f2)
 +{
-+	aq_hw_write_reg_bit(aq_hw, HW_ATL2_TDM_DESCD_TS_EN_ADR(descriptor),
-+			    HW_ATL2_TDM_DESCD_TS_EN_MSK,
-+			    HW_ATL2_TDM_DESCD_TS_EN_SHIFT, enable);
++	if (f1->cmd != f2->cmd)
++		return false;
++
++	if (f1->cmd & HW_ATL2_RPF_L4_CMD_SP_EN)
++		if (f1->sport != f2->sport)
++			return false;
++
++	if (f1->cmd & HW_ATL2_RPF_L4_CMD_DP_EN)
++		if (f1->dport != f2->dport)
++			return false;
++
++	return true;
 +}
 +
-+void hw_atl2_tdm_tx_desc_avb_en_set(struct aq_hw_s *aq_hw, u32 enable,
-+				    u32 descriptor)
++static int hw_atl2_new_fl3l4_find_l4(struct aq_hw_s *self,
++				     struct hw_atl2_l4_filter *l4)
 +{
-+	aq_hw_write_reg_bit(aq_hw, HW_ATL2_TDM_DESCD_AVB_EN_ADR(descriptor),
-+			    HW_ATL2_TDM_DESCD_AVB_EN_MSK,
-+			    HW_ATL2_TDM_DESCD_AVB_EN_SHIFT, enable);
++	struct hw_atl2_priv *priv = self->priv;
++	int i, first, last;
++
++	first = priv->l4_filter_base_index;
++	last = priv->l4_filter_base_index + priv->l4_filter_count;
++
++	for (i = first; i < last; i++)
++		if (hw_atl2_rxf_l4_is_equal(&priv->l4_filters[i], l4))
++			return i;
++
++	for (i = first; i < last; i++)
++		if ((priv->l4_filters[i].cmd & HW_ATL2_RPF_L4_CMD_EN) == 0)
++			return i;
++
++	return -ENOSPC;
 +}
 +
- void hw_atl2_tps_tx_pkt_shed_data_arb_mode_set(struct aq_hw_s *aq_hw,
- 					       const u32 data_arb_mode)
++static void hw_atl2_rxf_l4_put(struct aq_hw_s *self,
++			       struct hw_atl2_l4_filter *l4, int idx)
++{
++	if (l4->usage)
++		l4->usage--;
++
++	if (!l4->usage) {
++		l4->cmd = 0;
++		hw_atl2_rpf_l4_cmd_set(self, l4->cmd, idx);
++	}
++}
++
++static void hw_atl2_rxf_l4_get(struct aq_hw_s *self,
++			       struct hw_atl2_l4_filter *l4, int idx,
++			       const struct hw_atl2_l4_filter *_l4)
++{
++	l4->usage++;
++	if (l4->usage == 1) {
++		l4->cmd = _l4->cmd;
++		l4->sport = _l4->sport;
++		l4->dport = _l4->dport;
++
++		hw_atl2_rpf_l4_cmd_set(self, l4->cmd, idx);
++		hw_atl2_rpf_l4_tag_set(self, idx + 1, idx);
++		hw_atl_rpf_l4_spd_set(self, l4->sport, idx);
++		hw_atl_rpf_l4_dpd_set(self, l4->dport, idx);
++	}
++}
++
++static int hw_atl2_new_fl3l4_configure(struct aq_hw_s *self,
++				       struct aq_rx_filter_l3l4 *data)
++{
++	struct hw_atl2_priv *priv = self->priv;
++	s8 old_l3_index = priv->l3l4_filters[data->location].l3_index;
++	s8 old_l4_index = priv->l3l4_filters[data->location].l4_index;
++	u8 old_ipv6 = priv->l3l4_filters[data->location].ipv6;
++	struct hw_atl2_l3_filter *l3_filters;
++	struct hw_atl2_l3_filter l3;
++	struct hw_atl2_l4_filter l4;
++	s8 l3_idx = -1;
++	s8 l4_idx = -1;
++
++	if (!(data->cmd & HW_ATL_RX_ENABLE_FLTR_L3L4))
++		return 0;
++
++	memset(&l3, 0, sizeof(l3));
++	memset(&l4, 0, sizeof(l4));
++
++	/* convert legacy filter to new */
++	if (data->cmd & HW_ATL_RX_ENABLE_CMP_PROT_L4) {
++		l3.cmd |= data->is_ipv6 ? HW_ATL2_RPF_L3_V6_CMD_PROTO_EN :
++					  HW_ATL2_RPF_L3_CMD_PROTO_EN;
++		l3.cmd |= data->is_ipv6 ? HW_ATL2_RPF_L3_V6_CMD_EN :
++					  HW_ATL2_RPF_L3_CMD_EN;
++		switch (data->cmd & 0x7) {
++		case HW_ATL_RX_TCP:
++			l3.cmd |= IPPROTO_TCP << (data->is_ipv6 ? 0x18 : 8);
++			break;
++		case HW_ATL_RX_UDP:
++			l3.cmd |= IPPROTO_UDP << (data->is_ipv6 ? 0x18 : 8);
++			break;
++		case HW_ATL_RX_SCTP:
++			l3.cmd |= IPPROTO_SCTP << (data->is_ipv6 ? 0x18 : 8);
++			break;
++		case HW_ATL_RX_ICMP:
++			l3.cmd |= IPPROTO_ICMP << (data->is_ipv6 ? 0x18 : 8);
++			break;
++		}
++	}
++
++	if (data->cmd & HW_ATL_RX_ENABLE_CMP_SRC_ADDR_L3) {
++		if (data->is_ipv6) {
++			l3.cmd |= HW_ATL2_RPF_L3_V6_CMD_SA_EN |
++				  HW_ATL2_RPF_L3_V6_CMD_EN;
++			memcpy(l3.srcip, data->ip_src, sizeof(l3.srcip));
++		} else {
++			l3.cmd |= HW_ATL2_RPF_L3_CMD_SA_EN |
++				  HW_ATL2_RPF_L3_CMD_EN;
++			l3.srcip[0] = data->ip_src[0];
++		}
++	}
++	if (data->cmd & HW_ATL_RX_ENABLE_CMP_DEST_ADDR_L3) {
++		if (data->is_ipv6) {
++			l3.cmd |= HW_ATL2_RPF_L3_V6_CMD_DA_EN |
++				  HW_ATL2_RPF_L3_V6_CMD_EN;
++			memcpy(l3.dstip, data->ip_dst, sizeof(l3.dstip));
++		} else {
++			l3.cmd |= HW_ATL2_RPF_L3_CMD_DA_EN |
++				  HW_ATL2_RPF_L3_CMD_EN;
++			l3.dstip[0] = data->ip_dst[0];
++		}
++	}
++
++	if (data->cmd & HW_ATL_RX_ENABLE_CMP_DEST_PORT_L4) {
++		l4.cmd |= HW_ATL2_RPF_L4_CMD_DP_EN | HW_ATL2_RPF_L4_CMD_EN;
++		l4.dport = data->p_dst;
++	}
++	if (data->cmd & HW_ATL_RX_ENABLE_CMP_SRC_PORT_L4) {
++		l4.cmd |= HW_ATL2_RPF_L4_CMD_SP_EN | HW_ATL2_RPF_L4_CMD_EN;
++		l4.sport = data->p_src;
++	}
++
++	/* find L3 and L4 filters */
++	if (l3.cmd & (HW_ATL2_RPF_L3_CMD_EN | HW_ATL2_RPF_L3_V6_CMD_EN)) {
++		l3_idx = hw_atl2_new_fl3l4_find_l3(self, &l3);
++		if (l3_idx < 0)
++			return l3_idx;
++
++		if (l3.cmd & HW_ATL2_RPF_L3_V6_CMD_EN)
++			l3_filters = priv->l3_v6_filters;
++		else
++			l3_filters = priv->l3_v4_filters;
++
++		if (priv->l3l4_filters[data->location].l3_index != l3_idx ||
++		    old_ipv6 != !!(l3.cmd & HW_ATL2_RPF_L3_V6_CMD_EN))
++			hw_atl2_rxf_l3_get(self, &l3_filters[l3_idx],
++					   l3_idx, &l3);
++	}
++
++	if (old_l3_index != -1) {
++		if (old_ipv6)
++			l3_filters = priv->l3_v6_filters;
++		else
++			l3_filters = priv->l3_v4_filters;
++
++		if (!(hw_atl2_rxf_l3_is_equal(&l3,
++					      &l3_filters[old_l3_index]))) {
++			hw_atl2_rxf_l3_put(self,
++					   &l3_filters[old_l3_index],
++					   old_l3_index);
++		}
++	}
++	if (l3.cmd & HW_ATL2_RPF_L3_V6_CMD_EN)
++		priv->l3l4_filters[data->location].ipv6 = 1;
++	else
++		priv->l3l4_filters[data->location].ipv6 = 0;
++	priv->l3l4_filters[data->location].l3_index = l3_idx;
++
++	if (l4.cmd & HW_ATL2_RPF_L4_CMD_EN) {
++		l4_idx = hw_atl2_new_fl3l4_find_l4(self, &l4);
++		if (l4_idx < 0)
++			return l4_idx;
++
++		if (priv->l3l4_filters[data->location].l4_index != l4_idx)
++			hw_atl2_rxf_l4_get(self, &priv->l4_filters[l4_idx],
++					   l4_idx, &l4);
++	}
++
++	if (old_l4_index != -1) {
++		if (!(hw_atl2_rxf_l4_is_equal(&priv->l4_filters[old_l4_index],
++					      &l4))) {
++			hw_atl2_rxf_l4_put(self,
++					   &priv->l4_filters[old_l4_index],
++					   old_l4_index);
++		}
++	}
++	priv->l3l4_filters[data->location].l4_index = l4_idx;
++
++	return 0;
++}
++
++static int hw_atl2_hw_fl3l4_set(struct aq_hw_s *self,
++				struct aq_rx_filter_l3l4 *data)
++{
++	struct hw_atl2_priv *priv = self->priv;
++	struct hw_atl2_l3_filter *l3_filters;
++	struct hw_atl2_l3_filter *l3 = NULL;
++	struct hw_atl2_l4_filter *l4 = NULL;
++	u8 location = data->location;
++	u32 req_tag = 0;
++	u16 action = 0;
++	int l3_index;
++	int l4_index;
++	u32 mask = 0;
++	u8 index;
++	u8 ipv6;
++	int res;
++
++	res = hw_atl2_new_fl3l4_configure(self, data);
++	if (res)
++		return res;
++
++	l3_index = priv->l3l4_filters[location].l3_index;
++	l4_index = priv->l3l4_filters[location].l4_index;
++	ipv6 = priv->l3l4_filters[location].ipv6;
++	if (ipv6)
++		l3_filters = priv->l3_v6_filters;
++	else
++		l3_filters = priv->l3_v4_filters;
++
++	if (!(data->cmd & HW_ATL_RX_ENABLE_FLTR_L3L4)) {
++		if (l3_index > -1)
++			hw_atl2_rxf_l3_put(self, &l3_filters[l3_index],
++					   l3_index);
++
++		if (l4_index > -1)
++			hw_atl2_rxf_l4_put(self, &priv->l4_filters[l4_index],
++					   l4_index);
++
++		priv->l3l4_filters[location].l3_index = -1;
++		priv->l3l4_filters[location].l4_index = -1;
++		index = priv->art_base_index + HW_ATL2_RPF_L3L4_USER_INDEX +
++			location;
++		hw_atl2_act_rslvr_table_set(self, index, 0, 0,
++					    HW_ATL2_ACTION_DISABLE);
++
++		return 0;
++	}
++
++	if (l3_index != -1)
++		l3 = &l3_filters[l3_index];
++	if (l4_index != -1)
++		l4 = &priv->l4_filters[l4_index];
++
++	if (l4 && (l4->cmd & HW_ATL2_RPF_L4_CMD_EN)) {
++		req_tag |= (l4_index + 1) << HW_ATL2_RPF_TAG_L4_OFFSET;
++		mask |= HW_ATL2_RPF_TAG_L4_MASK;
++	}
++
++	if (l3) {
++		if (l3->cmd & HW_ATL2_RPF_L3_V6_CMD_EN) {
++			req_tag |= (l3_index + 1) <<
++				   HW_ATL2_RPF_TAG_L3_V6_OFFSET;
++			mask |= HW_ATL2_RPF_TAG_L3_V6_MASK;
++		} else {
++			req_tag |= (l3_index + 1) <<
++				   HW_ATL2_RPF_TAG_L3_V4_OFFSET;
++			mask |= HW_ATL2_RPF_TAG_L3_V4_MASK;
++		}
++	}
++
++	if (data->cmd & (HW_ATL_RX_HOST << HW_ATL2_RPF_L3_L4_ACTF_SHIFT))
++		action = HW_ATL2_ACTION_ASSIGN_QUEUE((data->cmd  &
++						      HW_ATL2_RPF_L3_L4_RXQF_MSK) >>
++						     HW_ATL2_RPF_L3_L4_RXQF_SHIFT);
++	else
++		action = HW_ATL2_ACTION_DROP;
++
++	index = priv->art_base_index + HW_ATL2_RPF_L3L4_USER_INDEX + location;
++	hw_atl2_act_rslvr_table_set(self, index, req_tag, mask, action);
++	return 0;
++}
++
++static int hw_atl2_hw_fl2_set(struct aq_hw_s *self,
++			      struct aq_rx_filter_l2 *data)
++{
++	struct hw_atl2_priv *priv = self->priv;
++	u32 mask = HW_ATL2_RPF_TAG_ET_MASK;
++	u32 req_tag = 0;
++	u16 action = 0;
++	u32 location;
++	u8 index;
++	int tag;
++
++	location = priv->etype_filter_base_index + data->location;
++
++	hw_atl_rpf_etht_flr_set(self, data->ethertype, location);
++	hw_atl_rpf_etht_user_priority_en_set(self,
++					     !!data->user_priority_en,
++					     location);
++	if (data->user_priority_en) {
++		hw_atl_rpf_etht_user_priority_set(self,
++						  data->user_priority,
++						  location);
++		req_tag |= data->user_priority << HW_ATL2_RPF_TAG_PCP_OFFSET;
++		mask |= HW_ATL2_RPF_TAG_PCP_MASK;
++	}
++
++	if (data->queue < 0) {
++		hw_atl_rpf_etht_flr_act_set(self, 0U, location);
++		hw_atl_rpf_etht_rx_queue_en_set(self, 0U, location);
++		action = HW_ATL2_ACTION_DROP;
++	} else {
++		hw_atl_rpf_etht_flr_act_set(self, 1U, location);
++		hw_atl_rpf_etht_rx_queue_en_set(self, 1U, location);
++		hw_atl_rpf_etht_rx_queue_set(self, data->queue, location);
++		action = HW_ATL2_ACTION_ASSIGN_QUEUE(data->queue);
++	}
++
++	tag = hw_atl2_filter_tag_get(priv->etype_policy,
++				     priv->etype_filter_tag_top,
++				     action);
++
++	if (tag < 0)
++		return -ENOSPC;
++
++	req_tag |= tag << HW_ATL2_RPF_TAG_ET_OFFSET;
++	hw_atl2_rpf_etht_flr_tag_set(self, tag, location);
++	index = priv->art_base_index + HW_ATL2_RPF_ET_PCP_USER_INDEX +
++		data->location;
++	hw_atl2_act_rslvr_table_set(self, index, req_tag, mask, action);
++
++	hw_atl_rpf_etht_flr_en_set(self, 1U, location);
++
++	return aq_hw_err_from_flags(self);
++}
++
++static int hw_atl2_hw_fl2_clear(struct aq_hw_s *self,
++				struct aq_rx_filter_l2 *data)
++{
++	struct hw_atl2_priv *priv = self->priv;
++	u32 location;
++	u8 index;
++	u32 tag;
++
++	location = priv->etype_filter_base_index + data->location;
++	hw_atl_rpf_etht_flr_en_set(self, 0U, location);
++	hw_atl_rpf_etht_flr_set(self, 0U, location);
++	hw_atl_rpf_etht_user_priority_en_set(self, 0U, location);
++
++	index = priv->art_base_index + HW_ATL2_RPF_ET_PCP_USER_INDEX +
++		data->location;
++	hw_atl2_act_rslvr_table_set(self, index, 0, 0,
++				    HW_ATL2_ACTION_DISABLE);
++	tag = hw_atl2_rpf_etht_flr_tag_get(self, location);
++	hw_atl2_filter_tag_put(priv->etype_policy, tag);
++
++	return aq_hw_err_from_flags(self);
++}
++
++/*
++ * Set VLAN filter table
++ * Configure VLAN filter table to accept (and assign the queue) traffic
++ * for the particular vlan ids.
++ * Note: use this function under vlan promisc mode not to lost the traffic
++ *
++ * param - aq_hw_s
++ * param - aq_rx_filter_vlan VLAN filter configuration
++ * return 0 - OK, <0 - error
++ */
+ static int hw_atl2_hw_vlan_set(struct aq_hw_s *self,
+ 			       struct aq_rx_filter_vlan *aq_vlans)
  {
-@@ -122,6 +413,20 @@ void hw_atl2_tps_tx_pkt_shed_tc_data_weight_set(struct aq_hw_s *aq_hw,
- 			    weight);
- }
- 
-+void hw_atl2_tdm_tx_data_read_req_limit_set(struct aq_hw_s *aq_hw, u32 limit)
-+{
-+	aq_hw_write_reg_bit(aq_hw, HW_ATL2_TDM_TX_DATA_RD_REQ_LIMIT_ADR,
-+			    HW_ATL2_TDM_TX_DATA_RD_REQ_LIMIT_MSK,
-+			    HW_ATL2_TDM_TX_DATA_RD_REQ_LIMIT_SHIFT, limit);
-+}
-+
-+void hw_atl2_tdm_tx_desc_read_req_limit_set(struct aq_hw_s *aq_hw, u32 limit)
-+{
-+	aq_hw_write_reg_bit(aq_hw, HW_ATL2_TDM_TX_DESC_RD_REQ_LIMIT_ADR,
-+			    HW_ATL2_TDM_TX_DESC_RD_REQ_LIMIT_MSK,
-+			    HW_ATL2_TDM_TX_DESC_RD_REQ_LIMIT_SHIFT, limit);
-+}
-+
- u32 hw_atl2_get_hw_version(struct aq_hw_s *aq_hw)
- {
- 	return aq_hw_read_reg(aq_hw, HW_ATL2_FPGA_VER_ADR);
-@@ -164,6 +469,13 @@ void hw_atl2_rpf_act_rslvr_section_en_set(struct aq_hw_s *aq_hw, u32 sections)
- 			    sections);
- }
- 
-+u32 hw_atl2_rpf_act_rslvr_section_en_get(struct aq_hw_s *aq_hw)
-+{
-+	return aq_hw_read_reg_bit(aq_hw, HW_ATL2_RPF_REC_TAB_EN_ADR,
-+				  HW_ATL2_RPF_REC_TAB_EN_MSK,
-+				  HW_ATL2_RPF_REC_TAB_EN_SHIFT);
-+}
-+
- void hw_atl2_mif_shared_buf_get(struct aq_hw_s *aq_hw, int offset, u32 *data,
- 				int len)
- {
-@@ -232,3 +544,13 @@ void hw_atl2_mif_host_req_int_clr(struct aq_hw_s *aq_hw, u32 val)
- 	return aq_hw_write_reg(aq_hw, HW_ATL2_MCP_HOST_REQ_INT_CLR_ADR,
- 			       val);
- }
-+
-+void hw_atl2_gpio_special_mode_set(struct aq_hw_s *aq_hw,
-+				   u32 gpio_special_mode,
-+				   u32 pin)
-+{
-+	aq_hw_write_reg_bit(aq_hw, HW_ATL2_GPIO_PIN_SPEC_MODE_ADR(pin),
-+			    HW_ATL2_GPIO_PIN_SPEC_MODE_MSK,
-+			    HW_ATL2_GPIO_PIN_SPEC_MODE_SHIFT,
-+			    gpio_special_mode);
-+}
-diff --git a/drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2_llh.h b/drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2_llh.h
-index 98c7a4621297..00dcc3e0184f 100644
---- a/drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2_llh.h
-+++ b/drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2_llh.h
-@@ -10,6 +10,9 @@
- 
- struct aq_hw_s;
- 
-+/* Get Enable usage of extended tags from 32-255. */
-+u32 hw_atl2_phi_ext_tag_get(struct aq_hw_s *aq_hw);
-+
- /* Set TX Interrupt Moderation Control Register */
- void hw_atl2_reg_tx_intr_moder_ctrl_set(struct aq_hw_s *aq_hw,
- 					u32 tx_intr_moderation_ctl,
-@@ -19,7 +22,7 @@ void hw_atl2_reg_tx_intr_moder_ctrl_set(struct aq_hw_s *aq_hw,
- void hw_atl2_rpf_redirection_table2_select_set(struct aq_hw_s *aq_hw,
- 					       u32 select);
- 
--/** Set RSS HASH type */
-+/* Set RSS HASH type */
- void hw_atl2_rpf_rss_hash_type_set(struct aq_hw_s *aq_hw, u32 rss_hash_type);
- 
- /* set new RPF enable */
-@@ -37,14 +40,91 @@ void hw_atl2_new_rpf_rss_redir_set(struct aq_hw_s *aq_hw, u32 tc, u32 index,
- 
- /* Set VLAN filter tag */
- void hw_atl2_rpf_vlan_flr_tag_set(struct aq_hw_s *aq_hw, u32 tag, u32 filter);
-+/* set ethertype filter tag */
-+void hw_atl2_rpf_etht_flr_tag_set(struct aq_hw_s *aq_hw, u32 tag, u32 filter);
-+
-+/* get ethertype filter tag */
-+u32 hw_atl2_rpf_etht_flr_tag_get(struct aq_hw_s *aq_hw, u32 filter);
-+
-+/* set L3 v4 dest address */
-+void hw_atl2_rpf_l3_v4_dest_addr_set(struct aq_hw_s *aq_hw,
-+				     u32 filter, u32 val);
-+
-+/* set L3 v4 src address */
-+void hw_atl2_rpf_l3_v4_src_addr_set(struct aq_hw_s *aq_hw, u32 filter, u32 val);
-+
-+/* set L3 v4 cmd */
-+void hw_atl2_rpf_l3_v4_cmd_set(struct aq_hw_s *aq_hw, u32 val, u32 filter);
-+
-+/* set L3 v6 cmd */
-+void hw_atl2_rpf_l3_v6_cmd_set(struct aq_hw_s *aq_hw, u32 val, u32 filter);
-+
-+/* set L3 v6 dest address */
-+void hw_atl2_rpf_l3_v6_dest_addr_set(struct aq_hw_s *aq_hw, u8 location,
-+				     u32 *ipv6_dst);
-+
-+/* set L3 v6 src address */
-+void hw_atl2_rpf_l3_v6_src_addr_set(struct aq_hw_s *aq_hw, u8 location,
-+				    u32 *ipv6_src);
-+
-+/* set L3 v6 v4 select */
-+void hw_atl2_rpf_l3_v6_v4_select_set(struct aq_hw_s *aq_hw, u32 val);
-+
-+/* set L3 v4 tag */
-+void hw_atl2_rpf_l3_v4_tag_set(struct aq_hw_s *aq_hw, u32 val, u32 filter);
-+
-+/* set L3 v6 tag */
-+void hw_atl2_rpf_l3_v6_tag_set(struct aq_hw_s *aq_hw, u32 val, u32 filter);
-+
-+/* set L4 cmd */
-+void hw_atl2_rpf_l4_cmd_set(struct aq_hw_s *aq_hw, u32 val, u32 filter);
-+
-+/* set L4 tag */
-+void hw_atl2_rpf_l4_tag_set(struct aq_hw_s *aq_hw, u32 val, u32 filter);
- 
- /* set tx random TC-queue mapping enable bit */
- void hw_atl2_tpb_tx_tc_q_rand_map_en_set(struct aq_hw_s *aq_hw,
- 					 const u32 tc_q_rand_map_en);
- 
-+void hw_atl2_tpb_tps_highest_priority_tc_enable_set(struct aq_hw_s *aq_hw,
-+						    u32 tps_highest_prio_tc_en);
-+
-+void hw_atl2_tpb_tps_highest_priority_tc_set(struct aq_hw_s *aq_hw,
-+					     u32 tps_highest_prio_tc);
-+
- /* set tx buffer clock gate enable */
- void hw_atl2_tpb_tx_buf_clk_gate_en_set(struct aq_hw_s *aq_hw, u32 clk_gate_en);
- 
-+/* tsg */
-+
-+void hw_atl2_tsg_clock_en(struct aq_hw_s *aq_hw, u32 clock_sel,
-+			  u32 clock_enable);
-+
-+void hw_atl2_tsg_clock_reset(struct aq_hw_s *aq_hw, u32 clock_sel);
-+u64 hw_atl2_tsg_clock_read(struct aq_hw_s *aq_hw, u32 clock_sel);
-+void hw_atl2_tsg_clock_add(struct aq_hw_s *aq_hw, u32 clock_sel,
-+			   u64 ns);
-+void hw_atl2_tsg_clock_sub(struct aq_hw_s *aq_hw, u32 clock_sel,
-+			   u64 ns);
-+void hw_atl2_tsg_clock_increment_set(struct aq_hw_s *aq_hw, u32 clock_sel,
-+				     u32 ns, u32 fns);
-+void hw_atl2_tsg_gpio_isr_to_host_set(struct aq_hw_s *aq_hw, int on,
-+				      u32 clock_sel);
-+void hw_atl2_tsg_gpio_clear_status(struct aq_hw_s *aq_hw);
-+void hw_atl2_tsg_gpio_input_event_info_get(struct aq_hw_s *aq_hw,
-+					   u32 clock_sel,
-+					   u32 *event_count,
-+					   u64 *event_ts);
-+/* Set Rx Descriptor0 Timestamp request */
-+void hw_atl2_rpf_rx_desc_timestamp_req_set(struct aq_hw_s *aq_hw, u32 request,
-+					   u32 descriptor);
-+/* Set Tx Descriptor Timestamp writeback Enable */
-+void hw_atl2_tdm_tx_desc_timestamp_writeback_en_set(struct aq_hw_s *aq_hw,
-+						    u32 enable,
-+						    u32 descriptor);
-+/* Set Tx Descriptor Timestamp enable */
-+void hw_atl2_tdm_tx_desc_timestamp_en_set(struct aq_hw_s *aq_hw, u32 enable,
-+					  u32 descriptor);
- void hw_atl2_tps_tx_pkt_shed_data_arb_mode_set(struct aq_hw_s *aq_hw,
- 					       const u32 data_arb_mode);
- 
-@@ -57,6 +137,15 @@ void hw_atl2_tps_tx_pkt_shed_tc_data_max_credit_set(struct aq_hw_s *aq_hw,
- void hw_atl2_tps_tx_pkt_shed_tc_data_weight_set(struct aq_hw_s *aq_hw,
- 						const u32 tc,
- 						const u32 weight);
-+/* Set Tx Descriptor AVB enable */
-+void hw_atl2_tdm_tx_desc_avb_en_set(struct aq_hw_s *aq_hw, u32 enable,
-+				    u32 descriptor);
-+void hw_atl2_tsg_ptp_gpio_gen_pulse(struct aq_hw_s *aq_hw, u32 clk_sel,
-+				    u64 ts, u32 period, u32 hightime);
-+
-+void hw_atl2_tdm_tx_data_read_req_limit_set(struct aq_hw_s *aq_hw, u32 limit);
-+
-+void hw_atl2_tdm_tx_desc_read_req_limit_set(struct aq_hw_s *aq_hw, u32 limit);
- 
- u32 hw_atl2_get_hw_version(struct aq_hw_s *aq_hw);
- 
-@@ -69,6 +158,9 @@ void hw_atl2_rpf_act_rslvr_record_set(struct aq_hw_s *aq_hw, u8 location,
- /* set enable action resolver section */
- void hw_atl2_rpf_act_rslvr_section_en_set(struct aq_hw_s *aq_hw, u32 sections);
- 
-+/* get enable action resolver section */
-+u32 hw_atl2_rpf_act_rslvr_section_en_get(struct aq_hw_s *aq_hw);
-+
- /* get data from firmware shared input buffer */
- void hw_atl2_mif_shared_buf_get(struct aq_hw_s *aq_hw, int offset, u32 *data,
- 				int len);
-@@ -99,4 +191,7 @@ u32 hw_atl2_mif_host_req_int_get(struct aq_hw_s *aq_hw);
- /* clear host interrupt request */
- void hw_atl2_mif_host_req_int_clr(struct aq_hw_s *aq_hw, u32 val);
- 
-+/* Set GPIO Special Mode */
-+void hw_atl2_gpio_special_mode_set(struct aq_hw_s *aq_hw,
-+				   u32 gpio_special_mode, u32 pin);
- #endif /* HW_ATL2_LLH_H */
-diff --git a/drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2_llh_internal.h b/drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2_llh_internal.h
-index e34c5cda061e..9b9be3ef1332 100644
---- a/drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2_llh_internal.h
-+++ b/drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2_llh_internal.h
-@@ -5,6 +5,11 @@
- 
- #ifndef HW_ATL2_LLH_INTERNAL_H
- #define HW_ATL2_LLH_INTERNAL_H
-+/* RX timestamp_req_desc{D} [1:0] Bitfield Definitions
-+ */
-+#define HW_ATL2_RPF_TIMESTAMP_REQ_DESCD_ADR(descr) (0x00005B08 + (descr) * 0x20)
-+#define HW_ATL2_RPF_TIMESTAMP_REQ_DESCD_MSK 0x00030000
-+#define HW_ATL2_RPF_TIMESTAMP_REQ_DESCD_SHIFT 16
- 
- /* RX pif_rpf_redir_2_en_i Bitfield Definitions
-  * PORT="pif_rpf_redir_2_en_i"
-@@ -114,7 +119,68 @@
- #define HW_ATL2_RPF_VL_TAG_WIDTH 4
- /* default value of bitfield vlan_req_tag0{f}[3:0] */
- #define HW_ATL2_RPF_VL_TAG_DEFAULT 0x0
--
-+/* register address for bitfield etype_req_tag0{f}[2:0] */
-+#define HW_ATL2_RPF_ET_TAG_ADR(filter) (0x00005340 + (filter) * 0x4)
-+/* bitmask for bitfield etype_req_tag0{f}[2:0] */
-+#define HW_ATL2_RPF_ET_TAG_MSK 0x00000007
-+/* lower bit position of bitfield etype_req_tag0{f}[2:0] */
-+#define HW_ATL2_RPF_ET_TAG_SHIFT 0
-+/* Lower bit position of bitfield l3_l4_act{F}[2:0] */
-+#define HW_ATL2_RPF_L3_L4_ACTF_SHIFT 16
-+/* Bitmask for bitfield l3_l4_rxq{F}[4:0] */
-+#define HW_ATL2_RPF_L3_L4_RXQF_MSK 0x00001F00u
-+/* Lower bit position of bitfield l3_l4_rxq{F}[4:0] */
-+#define HW_ATL2_RPF_L3_L4_RXQF_SHIFT 8
-+/* Register address for bitfield rpf_l3_v6_sa{F}_dw{D}[1F:0] */
-+#define HW_ATL2_RPF_L3_SA_DW_ADR(filter, dword) \
-+	(0x00006400u + (filter) * 0x10 + (dword) * 0x4)
-+
-+/* Register address for bitfield rpf_l3_v6_da{F}_dw{D}[1F:0] */
-+#define HW_ATL2_RPF_L3_DA_DW_ADR(filter, dword) \
-+	(0x00006480u + (filter) * 0x10 + (dword) * 0x4)
-+
-+/* Register address for bitfield rpf_l3_cmd{F}[1F:0] */
-+#define HW_ATL2_RPF_L3_V4_CMD_ADR(filter) (0x00006500u + (filter) * 0x4)
-+/* Bitmask for bitfield rpf_l3_cmd{F}[F:0] */
-+#define HW_ATL2_RPF_L3_V4_CMD_MSK 0x0000FFFFu
-+/* Lower bit position of bitfield rpf_l3_cmd{F}[1F:0] */
-+#define HW_ATL2_RPF_L3_V4_CMD_SHIFT 0
-+/* Register address for bitfield rpf_l3_v6_cmd{F}[1F:0] */
-+#define HW_ATL2_RPF_L3_V6_CMD_ADR(filter) (0x00006500u + (filter) * 0x4)
-+/* Bitmask for bitfield rpf_l3_v6_cmd{F}[F:0] */
-+#define HW_ATL2_RPF_L3_V6_CMD_MSK 0xFF7F0000u
-+/* Lower bit position of bitfield rpf_l3_v6_cmd{F}[1F:0] */
-+#define HW_ATL2_RPF_L3_V6_CMD_SHIFT 0
-+/* Register address for bitfield rpf_l3_v6_cmd{F}[F:0] */
-+#define HW_ATL2_RPF_L3_V6_V4_SELECT_ADR 0x00006500u
-+/* Bitmask for bitfield pif_rpf_l3_v6_v4_select*/
-+#define HW_ATL2_RPF_L3_V6_V4_SELECT_MSK 0x00800000u
-+/* Lower bit position of bitfield pif_rpf_l3_v6_v4_select */
-+#define HW_ATL2_RPF_L3_V6_V4_SELECT_SHIFT 23
-+/* Register address for bitfield rpf_l3_v4_req_tag{F}[2:0] */
-+#define HW_ATL2_RPF_L3_V4_TAG_ADR(filter) (0x00006500u + (filter) * 0x4)
-+/* Bitmask for bitfield rpf_l3_v4_req_tag{F}[2:0] */
-+#define HW_ATL2_RPF_L3_V4_TAG_MSK 0x00000070u
-+/* Lower bit position of bitfield rpf_l3_v4_req_tag{F}[2:0] */
-+#define HW_ATL2_RPF_L3_V4_TAG_SHIFT 4
-+/* Register address for bitfield rpf_l3_v6_req_tag{F}[2:0] */
-+#define HW_ATL2_RPF_L3_V6_TAG_ADR(filter) (0x00006500u + (filter) * 0x4)
-+/* Bitmask for bitfield rpf_l3_v6_req_tag{F}[2:0] */
-+#define HW_ATL2_RPF_L3_V6_TAG_MSK 0x00700000
-+/* Lower bit position of bitfield rpf_l3_v6_req_tag{F}[2:0] */
-+#define HW_ATL2_RPF_L3_V6_TAG_SHIFT 20
-+/* Register address for bitfield rpf_l4_cmd{F}[2:0] */
-+#define HW_ATL2_RPF_L4_CMD_ADR(filter) (0x00006520u + (filter) * 0x4)
-+/* Bitmask for bitfield rpf_l4_cmd{F}[2:0] */
-+#define HW_ATL2_RPF_L4_CMD_MSK 0x00000007u
-+/* Lower bit position of bitfield rpf_l4_cmd{F}[2:0] */
-+#define HW_ATL2_RPF_L4_CMD_SHIFT 0
-+/* Register address for bitfield rpf_l4_tag{F}[2:0] */
-+#define HW_ATL2_RPF_L4_TAG_ADR(filter) (0x00006520u + (filter) * 0x4)
-+/* Bitmask for bitfield rpf_l4_tag{F}[2:0] */
-+#define HW_ATL2_RPF_L4_TAG_MSK 0x00000070u
-+/* Lower bit position of bitfield rpf_l4_tag{F}[2:0] */
-+#define HW_ATL2_RPF_L4_TAG_SHIFT 4
- /* RX rx_q{Q}_tc_map[2:0] Bitfield Definitions
-  * Preprocessor definitions for the bitfield "rx_q{Q}_tc_map[2:0]".
-  * Parameter: Queue {Q} | bit-level stride | range [0, 31]
-@@ -131,7 +197,24 @@
- #define HW_ATL2_RX_Q_TC_MAP_WIDTH 3
- /* Default value of bitfield rx_q{Q}_tc_map[2:0] */
- #define HW_ATL2_RX_Q_TC_MAP_DEFAULT 0x0
--
-+/* TX desc{D}_ts_wrb_en Bitfield Definitions
-+ */
-+#define HW_ATL2_TDM_DESCD_TS_WRB_EN_ADR(descriptor) \
-+	(0x00007C08 + (descriptor) * 0x40)
-+#define HW_ATL2_TDM_DESCD_TS_WRB_EN_MSK 0x00040000
-+#define HW_ATL2_TDM_DESCD_TS_WRB_EN_SHIFT 18
-+/* TX desc{D}_ts_en Bitfield Definitions
-+ */
-+#define HW_ATL2_TDM_DESCD_TS_EN_ADR(descriptor) \
-+	(0x00007C08 + (descriptor) * 0x40)
-+#define HW_ATL2_TDM_DESCD_TS_EN_MSK 0x00020000
-+#define HW_ATL2_TDM_DESCD_TS_EN_SHIFT 17
-+/* TX desc{D}_avb_en Bitfield Definitions
-+ */
-+#define HW_ATL2_TDM_DESCD_AVB_EN_ADR(descriptor) \
-+	(0x00007C08 + (descriptor) * 0x40)
-+#define HW_ATL2_TDM_DESCD_AVB_EN_MSK 0x00010000
-+#define HW_ATL2_TDM_DESCD_AVB_EN_SHIFT 16
- /* tx tx_tc_q_rand_map_en bitfield definitions
-  * preprocessor definitions for the bitfield "tx_tc_q_rand_map_en".
-  * port="pif_tpb_tx_tc_q_rand_map_en_i"
-@@ -221,7 +304,18 @@
- #define HW_ATL2_TPS_DATA_TCTCREDIT_MAX_WIDTH 16
- /* default value of bitfield data_tc{t}_credit_max[f:0] */
- #define HW_ATL2_TPS_DATA_TCTCREDIT_MAX_DEFAULT 0x0
--
-+/* register address for bitfield pif_tpb_highest_prio_tc_en */
-+#define HW_ATL2_TPB_HIGHEST_PRIO_TC_EN_ADR 0x00007180
-+/* bitmask for bitfield pif_tpb_highest_prio_tc_en */
-+#define HW_ATL2_TPB_HIGHEST_PRIO_TC_EN_MSK 0x00000100
-+/* lower bit position of bitfield pif_tpb_highest_prio_tc_en */
-+#define HW_ATL2_TPB_HIGHEST_PRIO_TC_EN_SHIFT 8
-+/* register address for bitfield pif_tpb_highest_prio_tc */
-+#define HW_ATL2_TPB_HIGHEST_PRIO_TC_ADR 0x00007180
-+/* bitmask for bitfield pif_tpb_highest_prio_tc */
-+#define HW_ATL2_TPB_HIGHEST_PRIO_TC_MSK 0x00000007
-+/* lower bit position of bitfield pif_tpb_highest_prio_tc */
-+#define HW_ATL2_TPB_HIGHEST_PRIO_TC_SHIFT 0
- /* tx data_tc{t}_weight[e:0] bitfield definitions
-  * preprocessor definitions for the bitfield "data_tc{t}_weight[e:0]".
-  * parameter: tc {t} | stride size 0x4 | range [0, 7]
-@@ -248,7 +342,87 @@
-  */
- 
- #define HW_ATL2_TX_INTR_MODERATION_CTL_ADR(queue) (0x00007c28u + (queue) * 0x40)
--
-+/* TX tx_data_rd_req_limit[7:0] Bitfield Definitions
-+ */
-+#define HW_ATL2_TDM_TX_DATA_RD_REQ_LIMIT_ADR 0x00007B04
-+#define HW_ATL2_TDM_TX_DATA_RD_REQ_LIMIT_MSK 0x0000FF00
-+#define HW_ATL2_TDM_TX_DATA_RD_REQ_LIMIT_SHIFT 8
-+/* TX tx_desc_rd_req_limit[4:0] Bitfield Definitions
-+ */
-+#define HW_ATL2_TDM_TX_DESC_RD_REQ_LIMIT_ADR 0x00007B04
-+#define HW_ATL2_TDM_TX_DESC_RD_REQ_LIMIT_MSK 0x0000001F
-+#define HW_ATL2_TDM_TX_DESC_RD_REQ_LIMIT_SHIFT 0
-+/* register address for bitfield uP Force Interrupt */
-+#define HW_ATL2_GLB_CONTROL_2_ADR 0x00000404
-+#define HW_ATL2_MIF_INTERRUPT_2_TO_ITR_MSK 0x00000100
-+/* lower bit position of bitfield MIF Interrupt to ITR */
-+#define HW_ATL2_MIF_INTERRUPT_TO_ITR_SHIFT 6
-+#define HW_ATL2_EN_INTERRUPT_MIF2_TO_ITR_MSK 0x00001000
-+/* lower bit position of bitfield Enable MIF Interrupt to ITR */
-+#define HW_ATL2_EN_INTERRUPT_TO_ITR_SHIFT 0xA
-+#define HW_ATL2_GLOBAL_INTERNAL_ALARMS_1_ADR 0x00000924
-+#define HW_ATL2_GLOBAL_HIGH_PRIO_INTERRUPT_1_MASK_ADR 0x00000964
-+/* bitmask for bitfield TSG PTM GPIO interrupt */
-+#define HW_ATL2_TSG_TSG1_GPIO_INTERRUPT_MSK 0x00000200
-+/* lower bit position of bitfield TSG PTM GPIO interrupt */
-+#define HW_ATL2_TSG_TSG1_GPIO_INTERRUPT_SHIFT 9
-+/* bitmask for bitfield TSG0 GPIO interrupt */
-+#define HW_ATL2_TSG_TSG0_GPIO_INTERRUPT_MSK 0x00000020
-+/* lower bit position of bitfield TSG0 GPIO interrupt */
-+#define HW_ATL2_TSG_TSG0_GPIO_INTERRUPT_SHIFT 5
-+/* TSG registers */
-+#define HW_ATL2_TSG_REG_ADR(clk, reg_name) \
-+	((clk) == 0 ? HW_ATL2_CLK0_##reg_name##_ADR :\
-+		 HW_ATL2_CLK1_##reg_name##_ADR)
-+
-+#define HW_ATL2_CLK0_CLOCK_CFG_ADR 0x00000CA0u
-+#define HW_ATL2_CLK1_CLOCK_CFG_ADR 0x00000D50u
-+#define HW_ATL2_TSG_SYNC_RESET_MSK 0x00000001
-+#define HW_ATL2_TSG_SYNC_RESET_SHIFT 0x00000000
-+#define HW_ATL2_TSG_CLOCK_EN_MSK 0x00000002
-+#define HW_ATL2_TSG_CLOCK_EN_SHIFT 0x00000001
-+#define HW_ATL2_CLK0_CLOCK_MODIF_CTRL_ADR 0x00000CA4u
-+#define HW_ATL2_CLK1_CLOCK_MODIF_CTRL_ADR 0x00000D54u
-+#define HW_ATL2_TSG_SUBTRACT_COUNTER_MSK 0x00000002
-+#define HW_ATL2_TSG_ADD_COUNTER_MSK 0x00000004
-+#define HW_ATL2_TSG_LOAD_INC_CFG_MSK 0x00000008
-+#define HW_ATL2_CLK0_CLOCK_MODIF_VAL_LSW_ADR 0x00000CA8u
-+#define HW_ATL2_CLK1_CLOCK_MODIF_VAL_LSW_ADR 0x00000D58u
-+#define HW_ATL2_CLK0_CLOCK_INC_CFG_ADR 0x00000CB0u
-+#define HW_ATL2_CLK1_CLOCK_INC_CFG_ADR 0x00000D60u
-+#define HW_ATL2_CLK0_READ_CUR_NS_LSW_ADR 0x00000CB8u
-+#define HW_ATL2_CLK1_READ_CUR_NS_LSW_ADR 0x00000D68u
-+
-+#define HW_ATL2_CLK0_GPIO_CFG_ADR 0x00000CC4u
-+#define HW_ATL2_CLK1_GPIO_CFG_ADR 0x00000D74u
-+#define HW_ATL2_TSG_GPIO_IN_MONITOR_EN_SHIFT 0x00000000
-+#define HW_ATL2_TSG_GPIO_IN_MONITOR_EN_MSK 0x00000001
-+#define HW_ATL2_TSG_GPIO_IN_MODE_SHIFT 0x00000001
-+#define HW_ATL2_TSG_GPIO_IN_MODE_MSK 0x00000006
-+#define HW_ATL2_TSG_GPIO_IN_MODE_POSEDGE 0x00000000
-+#define HW_ATL2_CLK0_EXT_CLK_COUNT_ADR 0x00000CCCu
-+#define HW_ATL2_CLK1_EXT_CLK_COUNT_ADR 0x00000D7Cu
-+#define HW_ATL2_CLK0_GPIO_EVENT_TS_LSW_ADR 0x00000CD0u
-+#define HW_ATL2_CLK1_GPIO_EVENT_TS_LSW_ADR 0x00000D80u
-+#define HW_ATL2_CLK0_GPIO_EVENT_GEN_TS_LSW_ADR 0x00000CE0u
-+#define HW_ATL2_CLK1_GPIO_EVENT_GEN_TS_LSW_ADR 0x00000D90u
-+#define HW_ATL2_CLK0_GPIO_EVENT_GEN_CFG_ADR 0x00000CE8u
-+#define HW_ATL2_CLK1_GPIO_EVENT_GEN_CFG_ADR 0x00000D98u
-+#define HW_ATL2_TSG_GPIO_OUTPUT_EN_SHIFT 0x00000000
-+#define HW_ATL2_TSG_GPIO_OUTPUT_EN_MSK 0x00000001
-+#define HW_ATL2_TSG_GPIO_EVENT_MODE_SHIFT 0x00000001
-+#define HW_ATL2_TSG_GPIO_EVENT_MODE_MSK 0x00000006
-+#define HW_ATL2_TSG_GPIO_EVENT_MODE_SET_ON_TIME 0x00000003
-+#define HW_ATL2_TSG_GPIO_GEN_OUTPUT_EN_MSK 0x00000008
-+#define HW_ATL2_CLK0_GPIO_EVENT_HIGH_TIME_LSW_ADR 0x00000CF0u
-+#define HW_ATL2_CLK1_GPIO_EVENT_HIGH_TIME_LSW_ADR 0x00000DA0u
-+#define HW_ATL2_CLK0_GPIO_EVENT_LOW_TIME_LSW_ADR 0x00000CF8u
-+#define HW_ATL2_CLK1_GPIO_EVENT_LOW_TIME_LSW_ADR 0x00000DA8u
-+/* PCIE Extended tag enable Bitfield Definitions
-+ */
-+#define HW_ATL2_PHI_EXT_TAG_EN_ADR 0x00001000
-+#define HW_ATL2_PHI_EXT_TAG_EN_MSK 0x00000020
-+#define HW_ATL2_PHI_EXT_TAG_EN_SHIFT 5
- /* Launch time control register */
- #define HW_ATL2_LT_CTRL_ADR 0x00007a1c
- 
-@@ -387,5 +561,25 @@
- #define HW_ATL2_MCP_HOST_REQ_INT_ADR 0x00000F00u
- #define HW_ATL2_MCP_HOST_REQ_INT_SET_ADR 0x00000F04u
- #define HW_ATL2_MCP_HOST_REQ_INT_CLR_ADR 0x00000F08u
--
-+/* Register address for bitfield PTP EXT GPIO TS SEL */
-+#define HW_ATL2_TSG0_EXT_GPIO_TS_INPUT_SEL_ADR 0x00003664
-+/* Bitmask for bitfield PTP EXT GPIO TS SEL */
-+#define HW_ATL2_TSG0_EXT_GPIO_TS_INPUT_SEL_MSK 0x00001F00
-+/* Lower bit position of bitfield PTP EXT GPIO TS SEL */
-+#define HW_ATL2_TSG0_EXT_GPIO_TS_INPUT_SEL_SHIFT 8
-+/* Register address for bitfield TSG EXT GPIO TS SEL */
-+#define HW_ATL2_TSG1_EXT_GPIO_TS_INPUT_SEL_ADR 0x00003660
-+/* Bitmask for bitfield TSG EXT GPIO TS SEL */
-+#define HW_ATL2_TSG1_EXT_GPIO_TS_INPUT_SEL_MSK 0x00001F00
-+/* Lower bit position of bitfield TSG EXT GPIO TS SEL */
-+#define HW_ATL2_TSG1_EXT_GPIO_TS_INPUT_SEL_SHIFT 8
-+/* Register address for bitfield GPIO{P} Special Mode */
-+#define HW_ATL2_GPIO_PIN_SPEC_MODE_ADR(pin) (0x00003698 + (pin) * 0x4)
-+/* Bitmask for bitfield GPIO{P} Special Mode */
-+#define HW_ATL2_GPIO_PIN_SPEC_MODE_MSK 0x0000000C
-+/* Lower bit position of bitfield GPIO{P} Special Mode */
-+#define HW_ATL2_GPIO_PIN_SPEC_MODE_SHIFT 2
-+#define HW_ATL2_GPIO_PIN_SPEC_MODE_TSG1_EVENT_OUTPUT 0
-+#define HW_ATL2_GPIO_PIN_SPEC_MODE_TSG0_EVENT_OUTPUT 2
-+#define HW_ATL2_GPIO_PIN_SPEC_MODE_GPIO 3
- #endif /* HW_ATL2_LLH_INTERNAL_H */
+@@ -897,6 +1412,9 @@ const struct aq_hw_ops hw_atl2_ops = {
+ 	.hw_ring_rx_init             = hw_atl2_hw_ring_rx_init,
+ 	.hw_ring_tx_init             = hw_atl2_hw_ring_tx_init,
+ 	.hw_packet_filter_set        = hw_atl2_hw_packet_filter_set,
++	.hw_filter_l2_set            = hw_atl2_hw_fl2_set,
++	.hw_filter_l2_clear          = hw_atl2_hw_fl2_clear,
++	.hw_filter_l3l4_set          = hw_atl2_hw_fl3l4_set,
+ 	.hw_filter_vlan_set          = hw_atl2_hw_vlan_set,
+ 	.hw_filter_vlan_ctrl         = hw_atl2_hw_vlan_ctrl,
+ 	.hw_multicast_list_set       = hw_atl2_hw_multicast_list_set,
 -- 
 2.43.0
 
