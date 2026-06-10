@@ -1,81 +1,60 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BCDE2E7F20;
-	Wed, 10 Jun 2026 02:40:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09F22198E91
+	for <netdev@vger.kernel.org>; Wed, 10 Jun 2026 02:42:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781059224; cv=none; b=kxePye7NY23cVuAAYKmCrzP+8UecLaJk5fdzPO2pXLjOkys2CDfnd/hMcz0NnpJ3F3bSo9QAdvoN2e5lD5Arpkg+zVSHbzSd1A3W/XYEh3lTHktG8ePgOEvCjiUHiGu9Ni6K1dXREdrX1eddLmDTKHx6okkmXSjCWQSVZd9cOVE=
+	t=1781059368; cv=none; b=tphHb016iRSyXH9M/AYwdCQgQLCu9QJFto4IWRTmiJXetS5w6S/SugHGaHhJP+v+t+AQAL5+w/SzQl9Wk8ix5B89OYyI2BY6vfJArEb5/cE11ymCI3Lq2dkbynE7xeyrTUGJKY0R9cuNjBb1Z1tMj+KS7Z1jt114O2FVdb6pzAs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781059224; c=relaxed/simple;
-	bh=IzmuYkB9LC6LjeXQCdfl4xSPsoXi21F3mqcaffnWVjQ=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=JwCOGptNbDjdNNBKn6YNb1F/zlU7RkJqlMguTUSyzCV/pQeqjmhT+V4aMAQiwIblHwsNe3p/k2DuYpmjh7hTBaSRH7lD0OBqWrbrUyX9mbFEYFMug5RPBD7xW/RORHHKQ7J6d2LBD/XBomzdmnRlgvPwIpcx1KFZJ1Lg4Tbt/co=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F2QEVxPm; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781059368; c=relaxed/simple;
+	bh=LcwuuElJeSWryu6sRcjs/ftXOmLB0sJDxYiyLmTlvAo=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=YgydKr4DAR5WfE8/9LMqtl9jf+2vCEgXuASrGn+dmK6ZpAWWbL5zqbd2WBjMVxByBAYfhVt0u7Y2gOW9eZXRBIBye3p9Nes+W5uAx3uLpDoj0A1qGVP4z8DUu8h2z3fdrdRaZd6fXOR1k9JONZP8hc5U3x20yEePdZUpGy5dpsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PublGFB2; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F2QEVxPm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7B251F00893;
-	Wed, 10 Jun 2026 02:40:22 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PublGFB2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D7001F00893;
+	Wed, 10 Jun 2026 02:42:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781059222;
-	bh=vtTDuo0qKrSJp5n/OLHUXioCZxDc/kkSbEL8uF+ZTvc=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=F2QEVxPmcaA13n1VsDG/Uh2elXLR6Enw0BwoT7z7d/vx+VpV4+dDZCwyFBYkNPGUw
-	 QYgTtzue+x48FugnxxiRbt+4iLk7synEoBTCtpchNMY4huJggy4zIO33EwpPYaaofj
-	 3DvnsnyP+KpYSXFKFff/t44keeZyuBHWyVEtwW1sreAUi5pEed91I8vb0OBJKWZndH
-	 9kYRWoqyOnjD4tPkQ+GSBWXElVNNiPq4fteFAYiqH9yCz9IH8R+nLShBCriADUNaNJ
-	 WYBWXMAqTehbYyideQm2PXvPWwASdsmJ9M7a3bKJW0nxiOYlRJurLMPuAbsluISetk
-	 OkSHzJl8OWArA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 198E93930A20;
-	Wed, 10 Jun 2026 02:40:22 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1781059367;
+	bh=MHkTMDERPl1A47UHEZMGRZ4pIvAJRWE46Q2Dedu1Iww=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=PublGFB2pL8u0VTp5EHqUtAAHETz1l5qwcz8hu6/MMu91vOj/ZSYcK448oKXbs5nv
+	 oS6j4C12UCHjc2/qydBmsm4ifei0wK7KPv950pQjT3+Ir08805C0gbt1t7KiAjzwkK
+	 x6t8Q3wqKgDbtyD9EZuiN30G6xXX1B39OIa33tCjtvu3YjPP+XLd8goFH2KemNgIst
+	 8rQJDT6qnrTCgwMCDvTEruB0kPRHfDWjNVgBsoP/3TIvSb+j7jjHZ2a723j6qko5Hf
+	 EkkNoZtEmX1LZi+pbVHDHLq22u68PpQC23gNYxdIqZ5+hC0DN0sirigiLbytbpgHXb
+	 oT4gDaVcnTDkA==
+Date: Tue, 9 Jun 2026 19:42:46 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Antonio Quartulli <antonio@openvpn.net>
+Cc: netdev@vger.kernel.org, Marco Baffo <marco@mandelbit.com>, Sabrina
+ Dubroca <sd@queasysnail.net>, Ralf Lici <ralf@mandelbit.com>, Paolo Abeni
+ <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>
+Subject: Re: [PATCH net 6/6] ovpn: use monotonic clock for peer keepalive
+ timeouts
+Message-ID: <20260609194246.23c66818@kernel.org>
+In-Reply-To: <20260608150741.3320919-7-antonio@openvpn.net>
+References: <20260608150741.3320919-1-antonio@openvpn.net>
+	<20260608150741.3320919-7-antonio@openvpn.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v2] net: lan966x: restore RX state on reload failure
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178105922063.2803230.10155796854496927089.git-patchwork-notify@kernel.org>
-Date: Wed, 10 Jun 2026 02:40:20 +0000
-References: <20260607145747.1494514-1-lgs201920130244@gmail.com>
-In-Reply-To: <20260607145747.1494514-1-lgs201920130244@gmail.com>
-To: Guangshuo Li <lgs201920130244@gmail.com>
-Cc: horatiu.vultur@microchip.com, UNGLinuxDriver@microchip.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, ast@kernel.org, daniel@iogearbox.net,
- hawk@kernel.org, john.fastabend@gmail.com, sdf@fomichev.me,
- devnexen@gmail.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- bpf@vger.kernel.org
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
+On Mon,  8 Jun 2026 17:07:37 +0200 Antonio Quartulli wrote:
+> Replace ktime_get_real_seconds() with the monotonic ktime_get_boottime_seconds()
+> to ensure the keepalive mechanism is robust against system clock modifications.
 
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Why boottime? Unless there's a reason shouldn't we be using
+plain ktime_get_seconds() which is CLOCK_MONOTONIC?
 
-On Sun,  7 Jun 2026 22:57:47 +0800 you wrote:
-> lan966x_fdma_reload() backs up rx->page_pool and rx->fdma before
-> reallocating the RX resources for the new MTU. If the allocation fails,
-> the restore path puts these fields back before restarting RX.
-> 
-> However, the reload path also updates rx->page_order and rx->max_mtu
-> before calling lan966x_fdma_rx_alloc(). These fields are not restored on
-> failure, so RX can be restarted with the old pages, old FDMA state and
-> old page pool, but with the page geometry from the failed new MTU.
-> 
-> [...]
-
-Here is the summary with links:
-  - [v2] net: lan966x: restore RX state on reload failure
-    https://git.kernel.org/netdev/net-next/c/aa97f11a76e5
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+(if you decide to respin could you also drop the selftest change
+from this PR and move it to net-next? memory leaks in selftests
+are not important)
