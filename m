@@ -1,148 +1,88 @@
-Received: from mail-24418.protonmail.ch (mail-24418.protonmail.ch [109.224.244.18])
+Received: from mout-b-206.mailbox.org (mout-b-206.mailbox.org [195.10.208.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B8E83AFAED;
-	Wed, 10 Jun 2026 08:48:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51435213E9C
+	for <netdev@vger.kernel.org>; Wed, 10 Jun 2026 08:50:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.10.208.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781081313; cv=none; b=NL6DaTkc5rrEvt8xsDs4ZYshCx9bQSn5JzxdXfQ51dwqL2Oja0wbpgYMAgVUHNmoQSTEwBwjWt17b51MNZ7yhjo6v7PAFXIrNEixDKbsWbepvZKNZP31UNAEsLnPkrrPw60E34jMNxgXBJFtElp4rXaOpct8/prDyViFN/umQdc=
+	t=1781081454; cv=none; b=sv9E7lL2UKrONDTqupYw28Lpd2v2aobNFluMfBrgZSswhKaEi+SMQBED/hlXC2CU1Fzf3cIkDvnjGxsh5b05JMUzxeduowJ9MelJkaHFzD8lr2g8drOx5JbZP1Gb35Nk6QyQLiuV3dA1yQm+uDbV2C+3b7dVfKtKsKXPsEia7+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781081313; c=relaxed/simple;
-	bh=oSb3BjOGDrpzBuRwag4cIOkHeHtiFcIdTetZsHm+c4U=;
-	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=MobmP8ozhsGNUbA7K61B3udOy7zZQc7ToJMv4TwN8pjTALKsWSf/SUQb4HE78T3JOxkvUJ7OAs9VQNE4mEo2e6iIrwO4u5Iw6mDilvzDT/+J0voaDzykY6VnWg2eNNdHDVSAWWPKHwKE+SDVuCTOLEgl+hZVZFl1NLybNWCstHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=KoEf9LrZ; arc=none smtp.client-ip=109.224.244.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1781081454; c=relaxed/simple;
+	bh=Lta5JCWqxpn0mjgK7mIYEOUu+E970PhLTCsgq0Rz6EY=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=i/cZNnUXbLECHcs4SuIBWdkxgDhRn1MxqGMui64//Od3DiZUEpO2mb0VzkB/EFrWLOtVidy0m7ROd09oeCDTN+EbXGfChKaW7iEx6/U4brua+p0C9g0b7wOxMxBtSYfjqQj4U/WVq6QKjSZNydc1r7er1W/4Nap1LTh+74GpfWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com; spf=pass smtp.mailfrom=mandelbit.com; dkim=pass (2048-bit key) header.d=mandelbit.com header.i=@mandelbit.com header.b=WXrzODMQ; arc=none smtp.client-ip=195.10.208.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mandelbit.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="KoEf9LrZ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=6rcxnpf2zzez7flpf4ltxxhqgq.protonmail; t=1781081301; x=1781340501;
-	bh=CfVcEwBABCtgdPyDkYpsAiOBarZuyehRLdSudPytfdA=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=KoEf9LrZG6P6QnULGuMWCDZDfnxz6S50E14JtxRJYRIFKjbqWEhTjddsCgn91lvte
-	 28OPmDtR/cyls6a214m+18xcaM5uotWFlfTjHOGTMabhqaaxO6pbUYeeeytuxcemAm
-	 G/5ke57UcF4IUN8hGgfnSQEeqL8lOO666CEk5oaBGYQkVEfEn7fL/c3Xd0IYF5/t8a
-	 aql8pJ8tW8LbwKY8bEcQmcy25Hd8rQDRgXErBsFQBS5Uf3EmLLBcZy6lokvPqMf14O
-	 refda6lWpHrTRgMBQaClpwTPwXZSZSvPNfjVlYr1wA68Ko9DNE2PRgMlJGQCJR79fq
-	 dotmaQ98e4rPQ==
-Date: Wed, 10 Jun 2026 08:48:13 +0000
-To: "D . Wythe" <alibuda@linux.alibaba.com>, Dust Li <dust.li@linux.alibaba.com>, Sidraya Jayagond <sidraya@linux.ibm.com>, Wenjia Zhang <wenjia@linux.ibm.com>
-From: Bryam Vargas <hexlabsecurity@proton.me>
-Cc: Mahanta Jambigi <mjambigi@linux.ibm.com>, Tony Lu <tonylu@linux.alibaba.com>, Wen Gu <guwen@linux.alibaba.com>, "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Stefan Raspl <raspl@linux.ibm.com>, Ursula Braun <ubraun@linux.ibm.com>, linux-rdma@vger.kernel.org, linux-s390@vger.kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] net/smc: bound the peer producer cursor on SMC-D and SMC-R CDC receive
-Message-ID: <20260610084803.186516-1-hexlabsecurity@proton.me>
-Feedback-ID: 199661219:user:proton
-X-Pm-Message-ID: cc44dd5c1ee3ddfe483529e80be1c51ed93bd6d2
+	dkim=pass (2048-bit key) header.d=mandelbit.com header.i=@mandelbit.com header.b="WXrzODMQ"
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [10.196.197.102])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-b-206.mailbox.org (Postfix) with ESMTPS id 4gZzpp0SZlz9yNG;
+	Wed, 10 Jun 2026 10:44:18 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mandelbit.com;
+	s=MBO0001; t=1781081058;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=tHeDnN5f03xSlAb5Dz1tT3TpMTPDrXOhiXurXUd3EPA=;
+	b=WXrzODMQuSADhN0RUN2+TjMRwpDgmV1CTM6v3q8ugPaRc3fCRxZ+IuitjmXUDpKdV9hIy6
+	ewF78bE5ia6asj6WLXVRbI8nsCM5jqfKOYmgKTV37dYXcMWcXP9gbXaSk6DQpcEM4w9yoD
+	eEhBzALcdVOLqxLHd/aGjuYrgKWS8b55QZLieJ4w/Sq2FOewcO7IiPw2lRTZUMM+WXwUdo
+	kGDm1Qd2hXwKRtPZuQiIvhwuoWqqZmscYA9EgsTXJ9m2QnCt21GaMOLKeAOnkmW8hjvJWV
+	GtZ8vBND0Rh9UubD9PV2c5UZb27hjJXN2Lb1TVcOLJ1ZXfUoWC8qImyc9pf+Eg==
+Date: Wed, 10 Jun 2026 10:44:15 +0200 (CEST)
+From: Marco Baffo <marco@mandelbit.com>
+To: Jakub Kicinski <kuba@kernel.org>,
+	Antonio Quartulli <antonio@openvpn.net>
+Cc: netdev@vger.kernel.org, Sabrina Dubroca <sd@queasysnail.net>,
+	Ralf Lici <ralf@mandelbit.com>, Paolo Abeni <pabeni@redhat.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>
+Message-ID: <1290464191.15539.1781081055969@app.mailbox.org>
+In-Reply-To: <20260609194246.23c66818@kernel.org>
+References: <20260608150741.3320919-1-antonio@openvpn.net>
+ <20260608150741.3320919-7-antonio@openvpn.net>
+ <20260609194246.23c66818@kernel.org>
+Subject: Re: [PATCH net 6/6] ovpn: use monotonic clock for peer keepalive
+ timeouts
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-
-The SMC CDC receive path copies the peer's producer cursor -- a
-wire-controlled value -- into the local connection cursor with no upper
-bound against the receive buffer (RMB). A malicious peer can advertise a
-producer cursor past rmb_desc->len, which is then used out of bounds:
-
- - the urgent path uses the cursor count as a raw index:
-   smc_cdc_handle_urg_data_arrival() dereferences
-   *(rmb_desc->cpu_addr + rx_off + urg_curs.count - 1);
-
- - the receive path turns the cursor into a length:
-   smc_cdc_msg_recv_action() feeds it to smc_curs_diff() and
-   atomic_add()s the result into conn->bytes_to_rcv. The differing-wrap
-   branch returns (len - old.count) + new.count, which exceeds len for a
-   forged cursor and accumulates across CDCs, so bytes_to_rcv grows past
-   rmb_desc->len even when the cursor count itself is bounded;
-   smc_rx_recvmsg() then copies the wrap-around second chunk past the RMB.
-
-The RMB is a kernel allocation, so the reads disclose adjacent kernel
-memory, and a cursor pointing at an unmapped offset faults in the receive
-tasklet (softirq). Both transports are affected: SMC-D converts the
-cursor in smcd_cdc_msg_to_host() and SMC-R in smc_cdc_cursor_to_host(),
-and neither bounds the count.
-
-Bound the producer cursor count to the RMB at both conversion boundaries
-(this closes the urgent index on SMC-D and SMC-R) and enforce the
-documented "0 <=3D bytes_to_rcv <=3D rmb_desc->len" invariant in
-smc_cdc_msg_recv_action() (this closes the receive length, which the
-cursor-count clamp alone cannot because of the differing-wrap diff and
-the cumulative atomic_add).
-
-Fixes: de8474eb9d50 ("net/smc: urgent data support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Bryam Vargas <hexlabsecurity@proton.me>
----
-Reproduced under KASAN on 6.12.y. A forged producer cursor with
-prod.count =3D rmb_desc->len + 1 and prod_flags.urg_data_present set produc=
-es
-a 1-byte out-of-bounds read in smc_cdc_handle_urg_data_arrival()
-(slab-out-of-bounds Read of size 1); the cursor-count clamp makes the same
-input in-bounds. A wrap-flipped cursor drives bytes_to_rcv past
-rmb_desc->len across several CDCs so smc_rx_recvmsg() over-reads; the
-bytes_to_rcv invariant keeps it bounded. SMC-D was exercised over the
-in-kernel loopback-ism and the SMC-R converter (smc_cdc_cursor_to_host)
-over an emulated RDMA loopback. Clamping prod.count alone does not bound
-the recv length, hence the separate bytes_to_rcv hunk.
-
- net/smc/smc_cdc.c |  2 ++
- net/smc/smc_cdc.h | 12 ++++++++++++
- 2 files changed, 14 insertions(+)
-
-diff --git a/net/smc/smc_cdc.c b/net/smc/smc_cdc.c
-index 619b3bab3824..738c45fd5cd0 100644
---- a/net/smc/smc_cdc.c
-+++ b/net/smc/smc_cdc.c
-@@ -382,6 +382,8 @@ static void smc_cdc_msg_recv_action(struct smc_sock *sm=
-c,
- =09=09smp_mb__before_atomic();
- =09=09atomic_add(diff_prod, &conn->bytes_to_rcv);
- =09=09/* guarantee 0 <=3D bytes_to_rcv <=3D rmb_desc->len */
-+=09=09if (atomic_read(&conn->bytes_to_rcv) > conn->rmb_desc->len)
-+=09=09=09atomic_set(&conn->bytes_to_rcv, conn->rmb_desc->len);
- =09=09smp_mb__after_atomic();
- =09=09smc->sk.sk_data_ready(&smc->sk);
- =09} else {
-diff --git a/net/smc/smc_cdc.h b/net/smc/smc_cdc.h
-index 696cc11f2303..7fa6e0d3817f 100644
---- a/net/smc/smc_cdc.h
-+++ b/net/smc/smc_cdc.h
-@@ -230,6 +230,12 @@ static inline void smc_cdc_cursor_to_host(union smc_ho=
-st_cursor *local,
- =09smc_curs_copy_net(&net, peer, conn);
- =09temp.count =3D ntohl(net.count);
- =09temp.wrap =3D ntohs(net.wrap);
-+=09/* the peer producer cursor is wire-controlled; bound the SMC-R count t=
-o
-+=09 * our RMB before it is used as a raw index by the urgent path, mirrori=
-ng
-+=09 * the SMC-D conversion in smcd_cdc_msg_to_host().
-+=09 */
-+=09if (temp.count > conn->rmb_desc->len)
-+=09=09temp.count =3D conn->rmb_desc->len;
- =09if ((old.wrap > temp.wrap) && temp.wrap)
- =09=09return;
- =09if ((old.wrap =3D=3D temp.wrap) &&
-@@ -260,6 +266,12 @@ static inline void smcd_cdc_msg_to_host(struct smc_hos=
-t_cdc_msg *local,
-=20
- =09temp.wrap =3D peer->prod.wrap;
- =09temp.count =3D peer->prod.count;
-+=09/* the peer producer cursor is wire-controlled; a count past our RMB is
-+=09 * used as a raw index by the urgent path (smc_cdc_handle_urg_data_arri=
-val)
-+=09 * and as a length by the recv path.  Bound it to the RMB.
-+=09 */
-+=09if (temp.count > conn->rmb_desc->len)
-+=09=09temp.count =3D conn->rmb_desc->len;
- =09smc_curs_copy(&local->prod, &temp, conn);
-=20
- =09temp.wrap =3D peer->cons.wrap;
---=20
-2.43.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+Importance: Normal
 
 
+> On 06/10/2026 4:42 AM CEST Jakub Kicinski <kuba@kernel.org> wrote:
+> 
+>  
+> On Mon,  8 Jun 2026 17:07:37 +0200 Antonio Quartulli wrote:
+> > Replace ktime_get_real_seconds() with the monotonic ktime_get_boottime_seconds()
+> > to ensure the keepalive mechanism is robust against system clock modifications.
+> 
+> Why boottime? Unless there's a reason shouldn't we be using
+> plain ktime_get_seconds() which is CLOCK_MONOTONIC?
+> 
+> (if you decide to respin could you also drop the selftest change
+> from this PR and move it to net-next? memory leaks in selftests
+> are not important)
+
+Hi Jakub!
+ktime_get_boottime() is like ktime_get() but it does not stop when suspended.
+From Documentation/core-api/timekeeping.rst :
+>ktime_t ktime_get(void)
+>CLOCK_MONOTONIC
+>Useful for reliable timestamps and measuring short time intervals >accurately. Starts at system boot time but stops during suspend.
+>
+>ktime_t ktime_get_boottime(void)
+>CLOCK_BOOTTIME
+>Like ktime_get(), but does not stop when suspended. This can be used >e.g. for key expiration times that need to be synchronized with other >machines across a suspend operation.
