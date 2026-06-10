@@ -1,235 +1,104 @@
-Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C2F127B353
-	for <netdev@vger.kernel.org>; Wed, 10 Jun 2026 13:10:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.181
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781097031; cv=pass; b=oFq9flDaHpboCg1e/WWoS2LjFUI8kIfxj8kxfzF+xXQezekaEB6h1c9ZjzzEOqvANCBqbipmMZERMl58jbpFWlkBYZbF8BdDPjwZRPU5F3xg+Lyk56AJgtI0s0BkWJdP6fsGQJhRmAZcoXMyBxKWhXY/IfjhBQJn2x3vcgafBhw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781097031; c=relaxed/simple;
-	bh=CO80aREBKT4jwJQ1+t1e5YeUYBJqmiXpHflXmYTKDQk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nyKp62x2k3Elhfx+W4b/bpt+THx18qQitx/FhfGXlO2G+X82yFptJpHKBBMAeyeXxCMESPmfKPkevZoG6ulgwMxVLgEh6O/cqF2SJ9m6Zy3Nv67EPYbOBTrcpm9kFTJqqAEgfLJOAMhJEXJWRxeM2c0MARxkXPq2QnLqPj0ktfM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GqZNqFqb; arc=pass smtp.client-ip=209.85.128.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2532C222582
+	for <netdev@vger.kernel.org>; Wed, 10 Jun 2026 13:25:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781097933; cv=none; b=Ewnogk7J8U9hO2KxG4rer9V4Oiqjoli/OTxETMnKtxXpzAnL3pxygJwHDKAZta7fi63PXecKwTxWqWpcx1JvEtlfffeTaxRts3dCCKfZvPLD2r+0BJP33g/eEuHo1gzjZ7CqCTpwjZhLUIm/2b9Oz6fk1rhJf8P2GKUpWAYc+OQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781097933; c=relaxed/simple;
+	bh=79RAFI0eLfuo16XAHmrtpKfVd79PIk6sghlg9OoAz7o=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=tAjl0kVCwnt2XbTIC31Lg1zaMvS3cL0nVJvCMGvIHyKWOaWkliLTD0ixNT6pmGrJTNpwyrsrtDYkmcrnrUWOm0JdhLv9rtOCwDLYDRH2uBbMiF+NYeP4h8D2bH47E/Ef1IKYndGtkb5JjGnS0AGPhpMc5KVt6IvbeOySkPMDzWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NESv/YSM; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GqZNqFqb"
-Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-7e2fc11088dso61017627b3.2
-        for <netdev@vger.kernel.org>; Wed, 10 Jun 2026 06:10:30 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781097030; cv=none;
-        d=google.com; s=arc-20240605;
-        b=al0n/AXq/bAszTxIx/Rm0EG1Rg+DH9pepBpmdVarYtu2wghzuF4/sQc7XwhXKwvenO
-         8ba2+CUe+6h+v91rAoSORg7MD38+qcYHlXprguj6/xt9MJK3ZNoSY8YiULa6FJpRZyqH
-         xFPowyZxi8os0RwWJPtho/g5gze7MsKtb7MUwE1ZmNqfp/f8qXjcrPrxMmFJB2Nfmjv3
-         XUU9FTxihKSNQjldkqb15KkWTyaZ2/VVtgaUTBVYnqyNixNW4ui1oI6QuPPWbBKt+v/0
-         Q8hBiyLLn/DrtA2Qon4HGezZ4JThRk8kf3AEYJZLZh6K8J1FT7rKlGvcAvmRVBb8RMzc
-         2NKw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=XZ3cqlRT6t+bS9u/ulWJ1j1xI14SQqJ0tTJW5gmHh3k=;
-        fh=ijVgaA7YFtgz5U5Dur2p9oq1+XfLbktOBQNilcELb4Y=;
-        b=iCEUGmrr8jPRkOus0FTFr0qaABOY6CrO9MOK/Gxtavrw6+VJ9H4WZZgki6Da9jK1uw
-         +lm6qApc/c0NU2NABKpjEFIPYYRyPNwDF+Nr8VY99ogzxE17nWEf55iucjvWV/RR4Qk5
-         qxlEkSwm0VueStrM2wRWRFp9uM5GwGSBXDtDCS96pCQwd23cf04OGJWQKqI56s8famGL
-         iBFchlMg6CkKWUoI4ImXmnj35TuzkQZ7+k8G5AZsWWzRQJ/2yCV50SwuxJqKEOxRdt8H
-         aRBG79hJ6jU0jLUyaR9OxqYbfrorimCrhNZTKjvViOJc/YfD+kXBj9UJ/20v3QP/4R6s
-         D1mQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781097030; x=1781701830; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XZ3cqlRT6t+bS9u/ulWJ1j1xI14SQqJ0tTJW5gmHh3k=;
-        b=GqZNqFqbrHsHzf/1kIgEpsEIOAOIrX3yldiLe7fW0cEM5aocdwfmBaGM0G5mInt2o5
-         o1mgQloWQRrS3+aSfszdbDXVqZnepsHiQBxPZG4mGKMTS5elYEU5AOtM4iwG2AlY6vb4
-         sXlt98IfWUqVo4aKTo4ce0Di14cHEiOVUpBb4cGKD0YI9pbp4ROaZdTN1bqfYNXv+JKm
-         BmAGGyQGcg6Jp9HJ4aTakYyBaFOc+yxfqMQdHXx4DnOhY6a89iqbOrAumx76ipc9YTdb
-         ukPuwTBRL1iaywJ0Xc2SmKM/AelXph7mRIx+hvBZbCz2lQN9Tf7MHJm5NFQSbcX8t/3H
-         bGWA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781097030; x=1781701830;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=XZ3cqlRT6t+bS9u/ulWJ1j1xI14SQqJ0tTJW5gmHh3k=;
-        b=d6VbbU2n/2mUELQDyNNoMlFjAv+XxZ4U+p5CNjh5M6tJnYUxIk5jI14Rh2PIEin0dm
-         iKAkziCiS2bgXi/h/ZvL1kiVgX0SOJfwlg5rQh6sEIm3ZhErm2XQ8x5uSC0yt8eUW0QW
-         1qslvHLql/1MaUtOEE5ZVcM5bRSOQRtphRe9oEq4dnRHBYqKmPfHciRiy0VkhA0BPHgw
-         qVCdJFU7rJO27YCjyUeaBENmueHRqwGiWyK1tvByT6ZVfzq0As/cpp712JKq14cDA2cA
-         BLX39K4fH3WsF4i8EQF9zmhs9xsaoUxSgTmmwJOcyhIZxN3TQCntmTWVMDmNjxddKyuJ
-         2RCA==
-X-Forwarded-Encrypted: i=1; AFNElJ/9nf1+M8eeKh5DZDdbcW2CRnjDCQxJh4v0A4vEkvkc4L6ZPL/qB3uoG1pHcWsfRd+6IVpk6KA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxX7rZH8pZ6wpwcD1QHEarCw/qYozYo6Kh1hrNWaN92MBIQoQCn
-	IwFBZTjilKG8CyybdcOIqQoABmXz2Nv33cTZjNJhzUVemLy/pKd0JWm2uTb7+ZqAb5xRi9xhTpP
-	Cvuugw6QuSr3/Oe0cm7WXp8qpxwCmeCs=
-X-Gm-Gg: Acq92OHmxAKC7fzoYPio0En3qlURJH+v2nXRO1U3LhM11Ct5RbwLQQS5wuIFwCwv1Bh
-	p6d1INv+Aw9rZGsYo5gHXuh1lbQo26tRLve/w2G7Ja+qTv962KvCKfTDs1JMX+4XjJP11ky5z7m
-	LKG1xEijMhNzNZhGuYK+BBIO6VIQvoUZu07NV8tdHSTNmQHJTQVCYrUbbvEClqgeUMhA0JTVu8a
-	bEIqMuKUwYs8i35Bmd0TC2i1Gt10CC4j40p4OlaDAThq8r8DhIRGLUjl/kcjnJB1LAnMdprt1gH
-	Xhg0xawO0cTajX3BrX8deKE8MrBLZ2flQv3WfZ+bVrsU9TMHFTg=
-X-Received: by 2002:a05:690c:6d08:b0:7db:f1b4:15ed with SMTP id
- 00721157ae682-7ed0a200dc4mr240287727b3.3.1781097029483; Wed, 10 Jun 2026
- 06:10:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NESv/YSM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4039B1F00893;
+	Wed, 10 Jun 2026 13:25:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781097931;
+	bh=BGHkQNIcnO67qdZeWXWc4L3zaP3PkHtDlFiASvmwoyg=;
+	h=From:Date:Subject:To:Cc;
+	b=NESv/YSMug2guyTsmzMnuCCgaUFCkr0wAxYOPF+X1JObiDY4BXiB6Yyeujo8fUF9A
+	 9n6eE+JDQf0SUbiIqUoOm+IQPPPe8dEy+WhMTr6vVv+bVbwlQ06hb4d+ieZ9o+Ajg4
+	 TAyejcYp5cFMkhncjyk12SQzBV+/bTYcyQ9xjZm0PUxQXvl1WbmRDVGIE+/xl2vgyi
+	 9OkAqW0oEWsWRd19ktJIZwcwk7ell69E3SNYcZD6c2hazWQpWT+cQ77N8A9rdIMLZk
+	 0bE0AjbQ4nhRjBA8nICiqpfVIZLLZ81AvPYgJUJaBEnw5IOmnhNxjMgRS9KyOlqXIM
+	 7ADpHfcoZ10/w==
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+Date: Wed, 10 Jun 2026 15:25:13 +0200
+Subject: [PATCH net-next v2] net: airoha: simplify WAN device check in
+ airoha_dev_init()
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260610120812.49054-1-laoar.shao@gmail.com> <1f949cfc-eebc-4813-9dfc-b9a9ec79494d@blackwall.org>
- <CALOAHbBeBez2DAQD+1PPc1Dmm0HH0PQcytG-eaxgWyThRt890A@mail.gmail.com>
- <dd10cb23-261c-40b1-8b33-15a519f366c8@blackwall.org> <CALOAHbAnKP96ZZrVZw8duABJTUhmdcUZ_yWcJoRdjCCV9_pb2g@mail.gmail.com>
- <e1745196-d315-4dcc-8157-8a56a91f4e20@blackwall.org>
-In-Reply-To: <e1745196-d315-4dcc-8157-8a56a91f4e20@blackwall.org>
-From: Yafang Shao <laoar.shao@gmail.com>
-Date: Wed, 10 Jun 2026 21:09:52 +0800
-X-Gm-Features: AVVi8Cf-I_bA34n6I3A9X25h7PWQZzeM9D7tCYB1QxkVLq4i1JJwUygsE7udRnU
-Message-ID: <CALOAHbAXFmpG83RaaM9NMzQ_pT7Dseh1vYuMurG-0QMsFFk_Hw@mail.gmail.com>
-Subject: Re: [PATCH net-next] bonding: add sysfs interface for broadcast_neighbor
-To: Nikolay Aleksandrov <razor@blackwall.org>
-Cc: jv@jvosburgh.net, andrew+netdev@lunn.ch, davem@davemloft.net, 
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	netdev@vger.kernel.org, Tonghao Zhang <tonghao@bamaicloud.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260610-airoha-eth-simplify-dev-init-v2-1-8f244e69b0d4@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/42NQQqDMBBFryKz7pRotbWueo/iQuLEDLWJTEJQx
+ Ls3eILyV48H7+8QSJgCdMUOQokDe5ehuhSg7eAmQh4zQ6Wqu8rDgcXbASlaDPxdZjYbjpSQHUd
+ sxuamH1orVRPkxCJkeD3zb3AU0dEaoc/GcohetvM3laf/7yKVWKJRrWmpVnnP14fE0Xz1MkF/H
+ McPMGzOmtMAAAA=
+X-Change-ID: 20260606-airoha-eth-simplify-dev-init-5d53c7cc004e
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Lorenzo Bianconi <lorenzo@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org, 
+ linux-mediatek@lists.infradead.org, netdev@vger.kernel.org
+X-Mailer: b4 0.14.3
 
-On Wed, Jun 10, 2026 at 9:00=E2=80=AFPM Nikolay Aleksandrov <razor@blackwal=
-l.org> wrote:
->
-> On 10/06/2026 15:49, Yafang Shao wrote:
-> > On Wed, Jun 10, 2026 at 8:45=E2=80=AFPM Nikolay Aleksandrov <razor@blac=
-kwall.org> wrote:
-> >>
-> >> On 10/06/2026 15:39, Yafang Shao wrote:
-> >>> On Wed, Jun 10, 2026 at 8:30=E2=80=AFPM Nikolay Aleksandrov <razor@bl=
-ackwall.org> wrote:
-> >>>>
-> >>>> On 10/06/2026 15:08, Yafang Shao wrote:
-> >>>>> The upstream kernel has supported broadcast_neighbor for 802.3ad mo=
-de since
-> >>>>> commit ce7a381697cb ("net: bonding: add broadcast_neighbor option f=
-or 802.3ad").
-> >>>>> When upgrading from our local kernel to 6.18.y stable, we switched =
-from our
-> >>>>> out-of-tree implementation to the upstream one.
-> >>>>>
-> >>>>> However, the iproute2 package on our production servers is too old =
-to
-> >>>>> support the broadcast_neighbor option. To enable this feature, add =
-a new
-> >>>>> sysfs attribute at:
-> >>>>>
-> >>>>>      /sys/class/net/<bond>/bonding/broadcast_neighbor
-> >>>>>
-> >>>>> This allows enabling the feature by writing "1" to the sysfs file, =
-matching
-> >>>>> the interface we previously maintained in our local kernel.
-> >>>>>
-> >>>>> The result is as follows,
-> >>>>>
-> >>>>> - For 802.3ad mode
-> >>>>>
-> >>>>>      $ ip link add bond0 type bond mode 802.3ad
-> >>>>>      $ cat /sys/class/net/bond0/bonding/broadcast_neighbor
-> >>>>>      0
-> >>>>>      $ echo 1 > /sys/class/net/bond0/bonding/broadcast_neighbor
-> >>>>>      $ cat /sys/class/net/bond0/bonding/broadcast_neighbor
-> >>>>>      1
-> >>>>>
-> >>>>> - For other modes
-> >>>>>
-> >>>>>      $ ip link add bond1 type bond
-> >>>>>      $ cat /sys/class/net/bond1/bonding/broadcast_neighbor
-> >>>>>      0
-> >>>>>      $ echo 1 > /sys/class/net/bond1/bonding/broadcast_neighbor
-> >>>>>      bash: echo: write error: Permission denied
-> >>>>>
-> >>>>> Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
-> >>>>> Cc: Tonghao Zhang <tonghao@bamaicloud.com>
-> >>>>> ---
-> >>>>>     drivers/net/bonding/bond_sysfs.c | 12 ++++++++++++
-> >>>>>     1 file changed, 12 insertions(+)
-> >>>>>
-> >>>>> diff --git a/drivers/net/bonding/bond_sysfs.c b/drivers/net/bonding=
-/bond_sysfs.c
-> >>>>> index eaba44c76a5e..24eb23634d98 100644
-> >>>>> --- a/drivers/net/bonding/bond_sysfs.c
-> >>>>> +++ b/drivers/net/bonding/bond_sysfs.c
-> >>>>> @@ -750,6 +750,17 @@ static ssize_t bonding_show_ad_user_port_key(s=
-truct device *d,
-> >>>>>     static DEVICE_ATTR(ad_user_port_key, 0644,
-> >>>>>                    bonding_show_ad_user_port_key, bonding_sysfs_sto=
-re_option);
-> >>>>>
-> >>>>> +static ssize_t bonding_show_broadcast_neighbor(struct device *d,
-> >>>>> +                                            struct device_attribut=
-e *attr,
-> >>>>> +                                            char *buf)
-> >>>>> +{
-> >>>>> +     struct bonding *bond =3D to_bond(d);
-> >>>>> +
-> >>>>> +     return sysfs_emit(buf, "%d\n", bond->params.broadcast_neighbo=
-r);
-> >>>>> +}
-> >>>>> +static DEVICE_ATTR(broadcast_neighbor, 0644,
-> >>>>> +                bonding_show_broadcast_neighbor, bonding_sysfs_sto=
-re_option);
-> >>>>> +
-> >>>>>     static struct attribute *per_bond_attrs[] =3D {
-> >>>>>         &dev_attr_slaves.attr,
-> >>>>>         &dev_attr_mode.attr,
-> >>>>> @@ -789,6 +800,7 @@ static struct attribute *per_bond_attrs[] =3D {
-> >>>>>         &dev_attr_ad_actor_system.attr,
-> >>>>>         &dev_attr_ad_user_port_key.attr,
-> >>>>>         &dev_attr_arp_missed_max.attr,
-> >>>>> +     &dev_attr_broadcast_neighbor.attr,
-> >>>>>         NULL,
-> >>>>>     };
-> >>>>>
-> >>>>
-> >>>> Then update your iproute2 package, sysfs use for options is discoura=
-ged
-> >>>
-> >>> Could you please explain in detail why this is discouraged?
-> >>>
-> >>>> and is not being extended on purpose. Move to netlink.
-> >>>
-> >>
-> >> Networking has been moving to netlink-only options for awhile now. Che=
-ck for
-> >> example:
-> >> 1e16f382ae0b ("net: bridge: add warning comments to avoid extending sy=
-sfs")
-> >>
-> >> The preferred way to configure device types is via iproute2/netlink.
-> >
-> > Thanks for your explanation, but I still don't understand the benefit
-> > of it. Could you elaborate further?
-> >
->
-> The benefits of netlink over sysfs?? There are so many.. it will help if =
-you
-> look into how netlink vs sysfs operate. Netlink is structured, transactio=
-nal,
-> typed, easily extendable, you can dump, do specific queries, it is less c=
-alls
-> and it supports notifications. I'm sure I'm missing, but in a nutshell it=
-'s
-> preferred. :)
+airoha_register_gdm_devices() iterates eth->ports[] in order, so GDM2's
+netdev is always registered before GDM3/GDM4. This means the explicit
+check for eth->ports[1] && eth->ports[1]->devs[0] is a redundant
+special-case of what airoha_get_wan_gdm_dev() already covers, since
+GDM2 is always marked as WAN during its own ndo_init.
+Remove the redundant check and rely solely on airoha_get_wan_gdm_dev()
+which handles both the GDM2-present and GDM2-absent cases.
 
-Thank you for the explanation. Requesting package upgrades on
-production servers is often challenging, particularly when additional
-library updates are required. Consequently, sysadmins prefer utilizing
-native shell commands, such as echo, to avoid these dependencies;-)
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+Changes in v2:
+- Rebase on top of net-next.
+- Link to v1: https://lore.kernel.org/r/20260606-airoha-eth-simplify-dev-init-v1-1-f08f8e404049@kernel.org
+---
+ drivers/net/ethernet/airoha/airoha_eth.c | 12 ++----------
+ 1 file changed, 2 insertions(+), 10 deletions(-)
 
-Honestly, if a feature needs userspace tools to be upgraded, it will
-take years to see it in production... ;-)
+diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
+index 5a8e84fa9918..b333a7b309c2 100644
+--- a/drivers/net/ethernet/airoha/airoha_eth.c
++++ b/drivers/net/ethernet/airoha/airoha_eth.c
+@@ -2004,18 +2004,10 @@ static int airoha_dev_init(struct net_device *netdev)
+ 
+ 	switch (port->id) {
+ 	case AIROHA_GDM3_IDX:
+-	case AIROHA_GDM4_IDX: {
+-		struct airoha_eth *eth = dev->eth;
+-
+-		/* GDM2 supports a single net_device */
+-		if (eth->ports[1] && eth->ports[1]->devs[0])
+-			break;
+-
+-		if (airoha_get_wan_gdm_dev(eth))
++	case AIROHA_GDM4_IDX:
++		if (airoha_get_wan_gdm_dev(dev->eth))
+ 			break;
+-
+ 		fallthrough;
+-	}
+ 	case AIROHA_GDM2_IDX:
+ 		/* GDM2 is always used as wan */
+ 		dev->flags |= AIROHA_PRIV_F_WAN;
 
---=20
-Regards
-Yafang
+---
+base-commit: 5855479abc796c3b5d7b2f2ca147d68fc56cae1f
+change-id: 20260606-airoha-eth-simplify-dev-init-5d53c7cc004e
+
+Best regards,
+-- 
+Lorenzo Bianconi <lorenzo@kernel.org>
+
