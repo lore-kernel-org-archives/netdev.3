@@ -1,146 +1,380 @@
-Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013051.outbound.protection.outlook.com [40.93.201.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B17037204D
-	for <netdev@vger.kernel.org>; Wed, 10 Jun 2026 06:19:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.51
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781072346; cv=fail; b=Lkk5ooXb3h60itdYFzlqmqF5ikhF6XaJDmS5yHwtFcaSfqH5NCwgkEgo2X3g4ytks1bvujg1nhgHUjvS9oV457SmZ7hIn5Y/LO3cDWO7yhwWTLStdU//Gf50zki6oRZ75dMgK1SqaHWI5Fyd+swD9S/B7OtVDgxH0Sxv7tgwcuk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781072346; c=relaxed/simple;
-	bh=lhARjXRu1aetvYk+IcXLXWnyg3fyZ86eSsDvevbGiOo=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=C7AyXIB9x3b6y25a9LWt35FQtD21Pj17NdtpAbuQX6Z5D0/gGo3oqBMXbTusD69+swF1llxi2VAoByXiKoXZePaOjg9PkxL0fxYBk2o5GtGiXhcfEB5eqBXOjChjgzhB0SZOP+8xiuoB7vpMYTNnBZvHUj2dSsEXlsyYw28t/lY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=vzgMMRL9; arc=fail smtp.client-ip=40.93.201.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5B7537204D
+	for <netdev@vger.kernel.org>; Wed, 10 Jun 2026 06:21:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781072516; cv=none; b=jmiPQ+xxBmUBb2SDgR3Cf6ULMbwYM9QO7tL1C7I+JzFoRY7XSbVx9X5VaZgkpVhiG8C7811YQW1D3ddmtadCSD3RvrGzh4BtCQKqedbIS2bdpBX/FSA9WOZ5y1d5Vm1hmNgDq4eg5yrYMCEuoCKxIvtGEcQGfmmn8fCVbWTFkz0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781072516; c=relaxed/simple;
+	bh=Pe88eUAgT0wbmUNBsOs8zzWsG9xBnZCTpa0+FNgBMlg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=J8IldNuHU2b3RiZhlUfSAy9fjQwHvWFNoomo3/H+n6B9ab7O51JOcVULCIo6ohziq0+6w4eRoywESslDGqVVfOEzCinHq+jXc5NYyjzdDNIrWd+Cpsq1fLjNiUzQCxqSbhaJNJaq96qY3uVO6xsEFuqDFPHsVBWHB/PRBaIOVJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rUtIXBfX; arc=none smtp.client-ip=209.85.210.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="vzgMMRL9"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Gjj8ZJ8k0HZzzSlMJG5hAjkn1OMtu7RDJny22yrO4iIyRS2zwxu4mM853ycp1+EQow3b0/0t0ditfyTXmb724ZsxeIUHFkzGgXQ3S4YJoVHPyzOF/Mc25I+5oXFegQoCr4WImyvyTGa0Vo6zKGlzCmF7sknrwbLDQtfiGlWP9DGJAqUHhwM8r7kBOeKD8m5DtKnHtFgFJYW7Di2MViiS3xW4vtBKIRflVoio7/KH0Tlrep5ZXoCH2tJPP4+7FoqNZCtXBgNo2aUl9SAGe7zlO6XldKbBvaC6+aN/XNVZRNuJD0oXPbkk84aYRPDXCznz+uJj1Ht9S6quWr+01eTcuA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=BkvWXpIS0mq+qE4VNVfukAwZdPtGHRLAJV8+2ePyzF0=;
- b=CdmAPW0h2J5/zet4ikBaMNqclOxN0xL2Z6lPP+40l/vpe92t9VdSK6hWDCE+DXY5DC7DPkpvjO/lOcBtu4vKiFL7F+Ego+jjAv7X+NOO7Bz+p/SPSRVY93SEeldFHAble/WaPDrNo8+UEIA+eSeqkL1+mV7weZpN+uia6/UCyqIe9aBqlT5dfhMPGW7ON1NFQvILjq8vUyAUCIG9kgplWfYqgCFR62z8kguV3RcBM/JKMSUFCK4NMw/695FEkJ4IRUxprZEj1f2uTKDKwQF5WmoQp6UT3xNPq73tUOfGaRFylGzw0VC62YQQSTZwHs/ugprQzdr2+LlrtBJirzrHyg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=BkvWXpIS0mq+qE4VNVfukAwZdPtGHRLAJV8+2ePyzF0=;
- b=vzgMMRL9hnJki424Wa6EMLBlXzM10DHltsxJlkm06oX4NW5fZE9BeJXjgdYgq7gFTVRCbh84kPl+vIaU1rtBLwHe+lcem6CrSqOe/K4bugSmsYFneOFwWOv0kyVjAEzyEhLY9h0QZ7QJz0H4bIsGbtnMgVisfAqVcBYkNUWsp3s=
-Received: from MN2PR14CA0024.namprd14.prod.outlook.com (2603:10b6:208:23e::29)
- by DS2PR12MB9640.namprd12.prod.outlook.com (2603:10b6:8:27d::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.7; Wed, 10 Jun 2026
- 06:18:52 +0000
-Received: from MN1PEPF0000ECD7.namprd02.prod.outlook.com
- (2603:10b6:208:23e:cafe::7f) by MN2PR14CA0024.outlook.office365.com
- (2603:10b6:208:23e::29) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.113.10 via Frontend Transport; Wed,
- 10 Jun 2026 06:18:51 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- MN1PEPF0000ECD7.mail.protection.outlook.com (10.167.242.136) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.113.7 via Frontend Transport; Wed, 10 Jun 2026 06:18:51 +0000
-Received: from driver-dev1.pensando.io (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Wed, 10 Jun
- 2026 01:18:50 -0500
-From: Eric Joyner <eric.joyner@amd.com>
-To: <netdev@vger.kernel.org>
-CC: Brett Creeley <brett.creeley@amd.com>, Andrew Lunn
-	<andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Eric
- Dumazet" <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Jacob Keller <jacob.e.keller@intel.com>, Eric Joyner
-	<eric.joyner@amd.com>
-Subject: [PATCH net-next v4 1/5] ionic: Fix check in ionic_get_link_ext_stats
-Date: Tue, 9 Jun 2026 23:18:26 -0700
-Message-ID: <20260610061830.51037-2-eric.joyner@amd.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20260610061830.51037-1-eric.joyner@amd.com>
-References: <20260610061830.51037-1-eric.joyner@amd.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="rUtIXBfX"
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-842264dde84so3650327b3a.0
+        for <netdev@vger.kernel.org>; Tue, 09 Jun 2026 23:21:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781072514; x=1781677314; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Lp8Xg7BLPbTEgIPBs+tIAGAGPHg6LJRApIau6bGcWZc=;
+        b=rUtIXBfXGKW8/E31jLUIZ4kOY1pmfLDitWbwPOQmQLLBqGUmMJCdS/HLM+PO4TCJun
+         +cHk9t9uX7xc6pzsb7PfkwPiIMe+NkUovVUFm/bAyxCZ6zCIMkug1+911tGafzte2Vp+
+         Zh36y1dvgA1pyBzMnqGS+uCJF7ToQORq1DuP0D7zq8Ihn5rY0fu/u3+OvVSe2rwfgEIF
+         tMIaBtYgvPygZzxkgLVcK3TtrJ1fjSxdykzdhsPxSAtuEfLe4L4Wh1J5IrIE+SkBYHRs
+         kPn8LN7+nvU8odxAklMZrH4X08HMsCE0boWNv9yO9VwtR0WAWAWIKDZ9HF68EoOD9mkC
+         qGnQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781072514; x=1781677314;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Lp8Xg7BLPbTEgIPBs+tIAGAGPHg6LJRApIau6bGcWZc=;
+        b=WRQ3BdP+J8XqZrM7FWU/kRO7ijFs+btjyWrfvSza6XtsdsfqKd4YmKVz9oxyd0EOPL
+         CnT9WZeRkxwL+Qi+1jHzoUKeBdcpbL+pHVpgGAiVZJQEnxlfj6KC04e8SMwEJqq6W8rh
+         Y6Gx3+8WFomML0e+iheb3W09blTFqyCyDTvYNvo1FnO9eV+8nC43yPWDWFnpcwgIAzAE
+         mCowEVDDp/auAe75cY9rvxnlXxe8Vz7jelKaR5/wYYEjocXOsefAcZ1OoGWpYVLLnY1h
+         7M3FwtgQOH2BFh3nPMlWDAi1SrG5MCetO5/RaKZdG10TbrQkD855Qe4HCu0MjpZ/Y8Zg
+         EeLg==
+X-Forwarded-Encrypted: i=1; AFNElJ+181SjvZpHyIm8AVU6vRW6dHOLLjfX/yO7XhLgscp/1kg8I9GWROnyvSQQCaJeH4LD8/ONOg4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyjzm1l2bGsFnSa6zn0KPZRW62f+PBWAzlx1vhI44Rt08C1Z2Tg
+	AD4gEZ0zxMiHaM2q2faBEOMX5ZotWAdCRzAfqUmTQ0tQGo7H+QwEsYk9
+X-Gm-Gg: Acq92OE0d+QBrBrO1LJi2oVfpVuZFxYA+sg5GNx9tFcDlMzoPnEW3RmK4rdX0s6Tt97
+	VDX44e3bm4Evypv88ZfH/pCcX41ViPXdffqpP2hhRGoFyXFi0Pvw2dHud+xDAG12oek9+6OZfVH
+	uuxM+HGam5jLFcUMbyCNicXefhV8aaObQ531xvwP/5hBdNw+AhWfIBlT+n2UgCFd+ND01BAUKKe
+	wEDi+AVwH24qQA4CTIPNUI7/6hGPNyRBzyUwNtcVEQt/jSltsOlhlg+a2AIyHGf6anGFhQ24mY7
+	RuhBTKCdo1qQFw5CF6sd6Va1lmjz5g1ECwwYRmQ8cocW9QyGewOhYcuWmsMmNiG3E0Ry5D7wiyT
+	Ryf8mmYH4M1anfDi9WM+ujZ+2+D+oaYf9SVDA/uU7+L1SQGE9q7/SMUuNnwhOwxcMNkBmYmoG2B
+	3k75bskMmCAyVfpdrqL1bBe0TAxXxIqXhtPwKRQEx+PMUWooDvARE+hMdSU6wFaA==
+X-Received: by 2002:a05:6a00:1bc7:b0:83f:250d:5a5 with SMTP id d2e1a72fcca58-842b6787af8mr18982395b3a.16.1781072513757;
+        Tue, 09 Jun 2026 23:21:53 -0700 (PDT)
+Received: from kfuzz ([202.120.234.33])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8428221c3e4sm24196986b3a.5.2026.06.09.23.21.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 09 Jun 2026 23:21:53 -0700 (PDT)
+From: Yiming Qian <yimingqian591@gmail.com>
+To: security@kernel.org,
+	John Fastabend <john.fastabend@gmail.com>,
+	Jakub Sitnicki <jakub@cloudflare.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>
+Cc: keenanat2000@gmail.com,
+	yimingqian591@gmail.com,
+	netdev@vger.kernel.org,
+	bpf@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH net v2] net: skmsg: preserve sg.copy across SG transforms
+Date: Wed, 10 Jun 2026 06:21:36 +0000
+Message-ID: <20260610062137.49075-1-yimingqian591@gmail.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN1PEPF0000ECD7:EE_|DS2PR12MB9640:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0f50931d-a2a4-421c-413f-08dec6b82434
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|36860700016|1800799024|376014|82310400026|56012099006|11063799006|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	VsotsZP3hNxK4aKVDGgpAe+CGiPveg6tKnjXutPXhPyUMsZtntrU+ISb0muf+DBJttIpYt3u0T70Awx16Wf0rwb8uW97hAm1AKj2eE4OS73kx4PpssZEtJ9xEzY5xEfDGTbO7jAR1xfK2ZzG+Auuo+np5lzxb9Uevey6R4jhL+m9Z4iCWbiiBw0hA/YoECyKnwYV8rHfj57hOkvT60Np0r/28Tbq+cWsfyjCPieD7BYPPpaHed+VIij1/EzFhHgt2ai8lSC/HCoyAdM7oLm45PXjEoaUA4e/RVzmaA+jXroh0zCx0IVUpHY4Js39p/pdm6+LzLhMhUPzgxZr5EG01AsFXgJfiyl7vwYm75oWwnuxxwmztGAHFGwn1UTeHZIpVvABHkDydxpoa/Y7ry+uSTbulzJNgoL4TDLHRZJGKg7dgOdcuy8QNNU/e5rIpyMv88Aa5cbiNqzFEKMmuTuPG4MGjJ2dbwdt7VcqjIcWTtLoGQyXWuXMlDtgJDtSdCksvYrkTxWQZ7pDZvqLMofomXtnwCnls/X2KzQ52zoVQSHnox6Tir4ySRB4hrgUOZBDpUCv1ZYC+rQMBM5H+usNEc2xb3JAx5JWIedzOUsRxI63OxEpinVuPKepj49jRFNACKFmgQN1172vy4/JAZfDhdU3WFsMMETqdd1FsKDR/kVbcgDqzru6tn4WaSl7F27AJNrxqKc30Pm5A9WMW8gVf9G2lVLkSaDcLPrKNlFHsJo=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(23010399003)(36860700016)(1800799024)(376014)(82310400026)(56012099006)(11063799006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	CeGwrBK5FvzraOJRa9HUI3IM6y0HhmG5TcWTuVkLxkqqJjU+L6rgb4vVS0/Q3U5ZREFZAdSmy2xM5N8nco9gwGKZ193jaU2Ep4mHtsinlVn5xbuzcsbAFNrQlVhZKes8zt6utZ2THm9j8q1Ke12zPhqtOfNVPrNOmUuYKWi8k+steETgFzlpA8n4X/RsrM7B1s47rgLw9wZ7bRgSS8iJ0v0eeqdw3OZURiHI1PRvPAsjtLFzruAfl+dS7It4SzGwwpRmRzqfFRQh/0i2eiRuLVVhowgGTw8GWgMllPRxP0gWV0JfhuWJXGWJSBITsmbYUSq+ErZnUD8XlBtT5jm3dNa3q8uior4KZalHL5oJ0dSXukzuZdnsgnbSOapw3PofPbqRjQyn/HrhdSQIp/gpreR7PIQiSsq3lN+WePCLan3JPclXc9hVGaZRa7gTpOqQ
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jun 2026 06:18:51.6436
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0f50931d-a2a4-421c-413f-08dec6b82434
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	MN1PEPF0000ECD7.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS2PR12MB9640
+Content-Transfer-Encoding: 8bit
 
-From: Brett Creeley <brett.creeley@amd.com>
+The sk_msg sg.copy bitmap is part of the scatterlist entry ownership
+state. A set bit tells sk_msg_compute_data_pointers() not to expose the
+entry through writable BPF ctx->data. This protects entries backed by
+pages that are not private to the sk_msg, such as splice-backed file
+page-cache pages.
 
-The current check will fail if SR-IOV is not initialized for the
-physical function; this is because is_physfn is 0 if sriov_init() isn't
-run or fails. Change the check that prevents getting the link down count
-to use is_virtfn instead so that VFs don't get this functionality, which
-was the original intent.
+Several sk_msg transform paths move, copy, split, or compact
+msg->sg.data[] entries without moving the matching sg.copy bit. This can
+make an externally backed entry arrive at a new slot with a clear copy
+bit. A later SK_MSG verdict can then expose sg_virt(sge) as writable
+ctx->data and BPF stores can modify the original page cache.
 
-Fixes: 132b4ebfa090 ("ionic: add support for ethtool extended stat link_down_count")
-Signed-off-by: Brett Creeley <brett.creeley@amd.com>
-Signed-off-by: Eric Joyner <eric.joyner@amd.com>
+Keep sg.copy synchronized with sg.data[] whenever entries are
+transferred, shifted, split, or copied into a new sk_msg. Clear the bit
+when an entry is replaced by a newly allocated private page or freed.
+This covers the BPF pull/push/pop helpers, sk_msg_shift_left/right(),
+sk_msg_xfer(), and tls_split_open_record(), including the partial tail
+entry created during TLS open-record splitting.
+
+Fixes: d3b18ad31f93 ("tls: add bpf support to sk_msg handling")
+Cc: stable@vger.kernel.org
+Reported-by: Yiming Qian <yimingqian591@gmail.com>
+Reported-by: Keenan Dong <keenanat2000@gmail.com>
+Signed-off-by: Yiming Qian <yimingqian591@gmail.com>
 ---
- drivers/net/ethernet/pensando/ionic/ionic_ethtool.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+v2:
+- Use __assign_bit() and the _assign helper suffix suggested in review.
+- Broaden the fix beyond tls_split_open_record() to the sk_msg entry
+  transform paths in BPF pull/push/pop helpers, sk_msg shift helpers,
+  sk_msg_xfer(), and entry allocation/free cleanup.
+- Expand the commit message to explain why sg.copy must move with the
+  scatterlist entry.
 
-diff --git a/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c b/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c
-index 78a802eb159f..6069fa460913 100644
---- a/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c
-+++ b/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c
-@@ -116,8 +116,15 @@ static void ionic_get_link_ext_stats(struct net_device *netdev,
- {
- 	struct ionic_lif *lif = netdev_priv(netdev);
+ include/linux/skmsg.h | 15 +++++++++++----
+ net/core/filter.c     | 27 +++++++++++++++++++++++++++
+ net/core/skmsg.c      |  2 ++
+ net/tls/tls_sw.c      |  4 ++++
+ 4 files changed, 44 insertions(+), 4 deletions(-)
+
+diff --git a/include/linux/skmsg.h b/include/linux/skmsg.h
+index 19f4f253b4f90..937823856de59 100644
+--- a/include/linux/skmsg.h
++++ b/include/linux/skmsg.h
+@@ -4,6 +4,7 @@
+ #ifndef _LINUX_SKMSG_H
+ #define _LINUX_SKMSG_H
  
--	if (lif->ionic->pdev->is_physfn)
--		stats->link_down_events = lif->link_down_count;
-+	if (lif->ionic->pdev->is_virtfn)
-+		return;
-+
-+	if (!lif->ionic->idev.port_info) {
-+		netdev_err_once(netdev, "port_info not initialized\n");
-+		return;
-+	}
-+
-+	stats->link_down_events = lif->link_down_count;
++#include <linux/bitops.h>
+ #include <linux/bpf.h>
+ #include <linux/filter.h>
+ #include <linux/scatterlist.h>
+@@ -199,11 +200,14 @@ static inline void sk_msg_xfer(struct sk_msg *dst, struct sk_msg *src,
+ 			       int which, u32 size)
+ {
+ 	dst->sg.data[which] = src->sg.data[which];
++	__assign_bit(which, dst->sg.copy, test_bit(which, src->sg.copy));
+ 	dst->sg.data[which].length  = size;
+ 	dst->sg.size		   += size;
+ 	src->sg.size		   -= size;
+ 	src->sg.data[which].length -= size;
+ 	src->sg.data[which].offset += size;
++	if (!src->sg.data[which].length)
++		__clear_bit(which, src->sg.copy);
  }
  
- static int ionic_get_link_ksettings(struct net_device *netdev,
+ static inline void sk_msg_xfer_full(struct sk_msg *dst, struct sk_msg *src)
+@@ -273,16 +277,19 @@ static inline void sk_msg_page_add(struct sk_msg *msg, struct page *page,
+ static inline void sk_msg_sg_copy(struct sk_msg *msg, u32 i, bool copy_state)
+ {
+ 	do {
+-		if (copy_state)
+-			__set_bit(i, msg->sg.copy);
+-		else
+-			__clear_bit(i, msg->sg.copy);
++		__assign_bit(i, msg->sg.copy, copy_state);
+ 		sk_msg_iter_var_next(i);
+ 		if (i == msg->sg.end)
+ 			break;
+ 	} while (1);
+ }
+ 
++static inline void sk_msg_sg_copy_assign(struct sk_msg *dst, u32 dst_i,
++					 const struct sk_msg *src, u32 src_i)
++{
++	__assign_bit(dst_i, dst->sg.copy, test_bit(src_i, src->sg.copy));
++}
++
+ static inline void sk_msg_sg_copy_set(struct sk_msg *msg, u32 start)
+ {
+ 	sk_msg_sg_copy(msg, start, true);
+diff --git a/net/core/filter.c b/net/core/filter.c
+index 80439767e0eea..40037413dd4ec 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -2733,11 +2733,13 @@ BPF_CALL_4(bpf_msg_pull_data, struct sk_msg *, msg, u32, start,
+ 		poffset += len;
+ 		sge->length = 0;
+ 		put_page(sg_page(sge));
++		__clear_bit(i, msg->sg.copy);
+ 
+ 		sk_msg_iter_var_next(i);
+ 	} while (i != last_sge);
+ 
+ 	sg_set_page(&msg->sg.data[first_sge], page, copy, 0);
++	__clear_bit(first_sge, msg->sg.copy);
+ 
+ 	/* To repair sg ring we need to shift entries. If we only
+ 	 * had a single entry though we can just replace it and
+@@ -2763,9 +2765,11 @@ BPF_CALL_4(bpf_msg_pull_data, struct sk_msg *, msg, u32, start,
+ 			break;
+ 
+ 		msg->sg.data[i] = msg->sg.data[move_from];
++		sk_msg_sg_copy_assign(msg, i, msg, move_from);
+ 		msg->sg.data[move_from].length = 0;
+ 		msg->sg.data[move_from].page_link = 0;
+ 		msg->sg.data[move_from].offset = 0;
++		__clear_bit(move_from, msg->sg.copy);
+ 		sk_msg_iter_var_next(i);
+ 	} while (1);
+ 
+@@ -2794,6 +2798,7 @@ BPF_CALL_4(bpf_msg_push_data, struct sk_msg *, msg, u32, start,
+ {
+ 	struct scatterlist sge, nsge, nnsge, rsge = {0}, *psge;
+ 	u32 new, i = 0, l = 0, space, copy = 0, offset = 0;
++	bool sge_copy, nsge_copy, nnsge_copy, rsge_copy = false;
+ 	u8 *raw, *to, *from;
+ 	struct page *page;
+ 
+@@ -2866,6 +2871,7 @@ BPF_CALL_4(bpf_msg_push_data, struct sk_msg *, msg, u32, start,
+ 			sk_msg_iter_var_prev(i);
+ 		psge = sk_msg_elem(msg, i);
+ 		rsge = sk_msg_elem_cpy(msg, i);
++		rsge_copy = test_bit(i, msg->sg.copy);
+ 
+ 		psge->length = start - offset;
+ 		rsge.length -= psge->length;
+@@ -2890,24 +2896,32 @@ BPF_CALL_4(bpf_msg_push_data, struct sk_msg *, msg, u32, start,
+ 
+ 	/* Shift one or two slots as needed */
+ 	sge = sk_msg_elem_cpy(msg, new);
++	sge_copy = test_bit(new, msg->sg.copy);
+ 	sg_unmark_end(&sge);
+ 
+ 	nsge = sk_msg_elem_cpy(msg, i);
++	nsge_copy = test_bit(i, msg->sg.copy);
+ 	if (rsge.length) {
+ 		sk_msg_iter_var_next(i);
+ 		nnsge = sk_msg_elem_cpy(msg, i);
++		nnsge_copy = test_bit(i, msg->sg.copy);
+ 		sk_msg_iter_next(msg, end);
+ 	}
+ 
+ 	while (i != msg->sg.end) {
+ 		msg->sg.data[i] = sge;
++		__assign_bit(i, msg->sg.copy, sge_copy);
+ 		sge = nsge;
++		sge_copy = nsge_copy;
+ 		sk_msg_iter_var_next(i);
+ 		if (rsge.length) {
+ 			nsge = nnsge;
++			nsge_copy = nnsge_copy;
+ 			nnsge = sk_msg_elem_cpy(msg, i);
++			nnsge_copy = test_bit(i, msg->sg.copy);
+ 		} else {
+ 			nsge = sk_msg_elem_cpy(msg, i);
++			nsge_copy = test_bit(i, msg->sg.copy);
+ 		}
+ 	}
+ 
+@@ -2921,6 +2935,7 @@ BPF_CALL_4(bpf_msg_push_data, struct sk_msg *, msg, u32, start,
+ 		get_page(sg_page(&rsge));
+ 		sk_msg_iter_var_next(new);
+ 		msg->sg.data[new] = rsge;
++		__assign_bit(new, msg->sg.copy, rsge_copy);
+ 	}
+ 
+ 	sk_msg_reset_curr(msg);
+@@ -2948,25 +2963,33 @@ static void sk_msg_shift_left(struct sk_msg *msg, int i)
+ 		prev = i;
+ 		sk_msg_iter_var_next(i);
+ 		msg->sg.data[prev] = msg->sg.data[i];
++		sk_msg_sg_copy_assign(msg, prev, msg, i);
+ 	} while (i != msg->sg.end);
+ 
+ 	sk_msg_iter_prev(msg, end);
++	__clear_bit(msg->sg.end, msg->sg.copy);
+ }
+ 
+ static void sk_msg_shift_right(struct sk_msg *msg, int i)
+ {
+ 	struct scatterlist tmp, sge;
++	bool tmp_copy, sge_copy;
+ 
+ 	sk_msg_iter_next(msg, end);
+ 	sge = sk_msg_elem_cpy(msg, i);
++	sge_copy = test_bit(i, msg->sg.copy);
+ 	sk_msg_iter_var_next(i);
+ 	tmp = sk_msg_elem_cpy(msg, i);
++	tmp_copy = test_bit(i, msg->sg.copy);
+ 
+ 	while (i != msg->sg.end) {
+ 		msg->sg.data[i] = sge;
++		__assign_bit(i, msg->sg.copy, sge_copy);
+ 		sk_msg_iter_var_next(i);
+ 		sge = tmp;
++		sge_copy = tmp_copy;
+ 		tmp = sk_msg_elem_cpy(msg, i);
++		tmp_copy = test_bit(i, msg->sg.copy);
+ 	}
+ }
+ 
+@@ -3026,6 +3049,8 @@ BPF_CALL_4(bpf_msg_pop_data, struct sk_msg *, msg, u32, start,
+ 		struct scatterlist *nsge, *sge = sk_msg_elem(msg, i);
+ 		int a = start - offset;
+ 		int b = sge->length - pop - a;
++		u32 sge_i = i;
++		bool sge_copy = test_bit(i, msg->sg.copy);
+ 
+ 		sk_msg_iter_var_next(i);
+ 
+@@ -3038,6 +3063,7 @@ BPF_CALL_4(bpf_msg_pop_data, struct sk_msg *, msg, u32, start,
+ 				sg_set_page(nsge,
+ 					    sg_page(sge),
+ 					    b, sge->offset + pop + a);
++				__assign_bit(i, msg->sg.copy, sge_copy);
+ 			} else {
+ 				struct page *page, *orig;
+ 				u8 *to, *from;
+@@ -3054,6 +3080,7 @@ BPF_CALL_4(bpf_msg_pop_data, struct sk_msg *, msg, u32, start,
+ 				memcpy(to, from, a);
+ 				memcpy(to + a, from + a + pop, b);
+ 				sg_set_page(sge, page, a + b, 0);
++				__clear_bit(sge_i, msg->sg.copy);
+ 				put_page(orig);
+ 			}
+ 			pop = 0;
+diff --git a/net/core/skmsg.c b/net/core/skmsg.c
+index e1850caf1a71a..30c3b9a2681c4 100644
+--- a/net/core/skmsg.c
++++ b/net/core/skmsg.c
+@@ -66,6 +66,7 @@ int sk_msg_alloc(struct sock *sk, struct sk_msg *msg, int len,
+ 			sge = &msg->sg.data[msg->sg.end];
+ 			sg_unmark_end(sge);
+ 			sg_set_page(sge, pfrag->page, use, orig_offset);
++			__clear_bit(msg->sg.end, msg->sg.copy);
+ 			get_page(pfrag->page);
+ 			sk_msg_iter_next(msg, end);
+ 		}
+@@ -186,6 +187,7 @@ static int sk_msg_free_elem(struct sock *sk, struct sk_msg *msg, u32 i,
+ 			sk_mem_uncharge(sk, len);
+ 		put_page(sg_page(sge));
+ 	}
++	__clear_bit(i, msg->sg.copy);
+ 	memset(sge, 0, sizeof(*sge));
+ 	return len;
+ }
+diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
+index 964ebc268ee46..a47f6a1e2c77d 100644
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -623,6 +623,7 @@ static int tls_split_open_record(struct sock *sk, struct tls_rec *from,
+ 	struct scatterlist *sge, *osge, *nsge;
+ 	u32 orig_size = msg_opl->sg.size;
+ 	struct scatterlist tmp = { };
++	u32 tmp_i = 0;
+ 	struct sk_msg *msg_npl;
+ 	struct tls_rec *new;
+ 	int ret;
+@@ -644,6 +645,7 @@ static int tls_split_open_record(struct sock *sk, struct tls_rec *from,
+ 		if (sge->length > apply) {
+ 			u32 len = sge->length - apply;
+ 
++			tmp_i = i;
+ 			get_page(sg_page(sge));
+ 			sg_set_page(&tmp, sg_page(sge), len,
+ 				    sge->offset + apply);
+@@ -675,6 +677,7 @@ static int tls_split_open_record(struct sock *sk, struct tls_rec *from,
+ 	nsge = sk_msg_elem(msg_npl, j);
+ 	if (tmp.length) {
+ 		memcpy(nsge, &tmp, sizeof(*nsge));
++		sk_msg_sg_copy_assign(msg_npl, j, msg_opl, tmp_i);
+ 		sk_msg_iter_var_next(j);
+ 		nsge = sk_msg_elem(msg_npl, j);
+ 	}
+@@ -682,6 +685,7 @@ static int tls_split_open_record(struct sock *sk, struct tls_rec *from,
+ 	osge = sk_msg_elem(msg_opl, i);
+ 	while (osge->length) {
+ 		memcpy(nsge, osge, sizeof(*nsge));
++		sk_msg_sg_copy_assign(msg_npl, j, msg_opl, i);
+ 		sg_unmark_end(nsge);
+ 		sk_msg_iter_var_next(i);
+ 		sk_msg_iter_var_next(j);
 -- 
-2.17.1
-
+2.34.1
