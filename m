@@ -1,164 +1,161 @@
-Received: from mail-ot1-f80.google.com (mail-ot1-f80.google.com [209.85.210.80])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpbguseast2.qq.com (smtpbguseast2.qq.com [54.204.34.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 749BA2E92B3
-	for <netdev@vger.kernel.org>; Wed, 10 Jun 2026 06:11:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.80
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 172B12C0296
+	for <netdev@vger.kernel.org>; Wed, 10 Jun 2026 06:12:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.204.34.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781071891; cv=none; b=SToT4dHMApQPJMDmakx71GUtV+JE32UNWV3k3mSxPi66u82Q84gvPlObVpkU974kshFivg+fv/C5MgJkXzMM7DLf+mHM4FgydUCAphKzKb13PlJaWN6eufyo25hI4fBQd1R6lazcC1JSX5o/d1cKZmMCK6gyXDijNFSchwkUCks=
+	t=1781071960; cv=none; b=jn1bXOgDpmjd5wOHpzGzta1OkueiRzDHR/OD8bulFtojKjNe309LxFqSydpZ9y6N2yUNBf7MhGuZ5BP95DoIpSPbgSIHXzJ/FFifVjI5O1llEztUvc+78SKZ9JKHkuRTiuQT96YS4ZIcBJhgrcg5Ggj5fxT9Q4OGV8WetcLtIYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781071891; c=relaxed/simple;
-	bh=SJfpH95K3KVqOA6PwQXNrKEDVjcGxQcdnpDNckbiD44=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=YXQRI6tsUadJJqsyW5YMJCDAdRW/h0m0zrpFeZAqvKiSkPt6gCZ78vJiAiF0r4TmZnOJN4bWOvmaQyNHSRYC+HwZnh6mIHPvhZQVJ1H57OCzhgb8PvkZ8NqvOFoFvddm2miNp1wm8AW/2wldz1BsJKTSh/qPqpJkpGx3ugKtmvw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.210.80
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-ot1-f80.google.com with SMTP id 46e09a7af769-7e6fd5f007eso13472007a34.1
-        for <netdev@vger.kernel.org>; Tue, 09 Jun 2026 23:11:30 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781071889; x=1781676689;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=JNWluBeT0hw+OaMJX5X8l/3bAeW8JB8X5Q39LAJfYoE=;
-        b=i1m9pesAYs8TzW1JQYANUYr+VUcWdJpobqXBWpgiXf50GrMwuIqCrM7JCHC8D+6yzI
-         j6hckRVuOBymZKWkte8XjpDRIdHcIykQ8ZjCddUnM+Ipumr2bCt8ZMs6TIwGmu0GPcFe
-         mAPjsljbXyIRfgt+uirKwHChVrqWL+RwBYxALKPfo+5gfRDcP3hNLQYvBzXPANqotm7y
-         qcbaxwPF12DS4UCP9M+n+Xlf+QcjAs6YrF4FqBteQJL19CtFQ9u3z+dTtKusEaAoZfHb
-         yuRec5Oe4Jc6r1Lxk2sLGYQ60ohjgIgHOnt8Z8SX9JSAVPn3HAnEtPbTBioWrLJ5Dp2a
-         rDmw==
-X-Forwarded-Encrypted: i=1; AFNElJ9yOSWtlqcnmBbGW7CxHaXdrYSYJDC9g2oUDW+U8FnIqYD02GT+58xE9q7zRbEJFHiqagHEWBs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyYVpMHjAfEnpbEaptvPLJAC16ALk1m+AyxGA8/OLQ11/xA24Oe
-	qJ1IgJhuBUmudl8mI6E3fBHj9Jhc41tZmIo5HsbvtmEpSEpe4ps6r+9+emoOxpJ1T4zWNUas3oQ
-	FWMsjjYSbc5gvSo4yQBT62cSntmw5F2d0DgTpZxfou1FSjOg5OGE8PRqhK+c=
+	s=arc-20240116; t=1781071960; c=relaxed/simple;
+	bh=t41QsdGiylMsunZD9ScaHRKPeLfM4sCDMMXG9CVIobI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=jNhOMxNrpZcskLLB86fSovEHik/GSdCwkWbqRMTB1oNXNBKBk19/fAadYBIBEvoop6wJhSKiwUher6Pw8yMRi/fjgmn2WesfU/DIZiXdN+fnUq6oTJt45CPjTUHo26sLe7MAjKKlczJ1exHylPA+K0Sbs53Samp9zAumh5oLoe4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.204.34.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
+X-QQ-mid: esmtpsz10t1781071899ted1d8356
+X-QQ-Originating-IP: bdbl7D6dbbC8CZth+ol5xKw2Bk1gcU4uk7zlFYcGNEE=
+Received: from lap-jiawenwu.trustnetic.com ( [125.118.31.65])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Wed, 10 Jun 2026 14:11:36 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 16884222364843898554
+EX-QQ-RecipientCnt: 22
+From: Jiawen Wu <jiawenwu@trustnetic.com>
+To: netdev@vger.kernel.org
+Cc: Mengyuan Lou <mengyuanlou@net-swift.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Kees Cook <kees@kernel.org>,
+	Larysa Zaremba <larysa.zaremba@intel.com>,
+	Joe Damato <joe@dama.to>,
+	Breno Leitao <leitao@debian.org>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig=20=28The=20Capable=20Hub=29?= <u.kleine-koenig@baylibre.com>,
+	Fabio Baltieri <fabio.baltieri@gmail.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jiawen Wu <jiawenwu@trustnetic.com>
+Subject: [PATCH net-next v6 0/5] net: wangxun: timeout and error
+Date: Wed, 10 Jun 2026 14:09:12 +0800
+Message-Id: <20260610060917.23980-1-jiawenwu@trustnetic.com>
+X-Mailer: git-send-email 2.21.0.windows.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:4c86:b0:69d:8cf6:2e5a with SMTP id
- 006d021491bc7-69e6d487e50mr9983736eaf.23.1781071889482; Tue, 09 Jun 2026
- 23:11:29 -0700 (PDT)
-Date: Tue, 09 Jun 2026 23:11:29 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a290011.39669fcc.33b062.00b1.GAE@google.com>
-Subject: [syzbot] [net?] WARNING: refcount bug in nsim_fib_event_nb (3)
-From: syzbot <syzbot+cb2aa2390ac024e25f5c@syzkaller.appspotmail.com>
-To: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, 
-	kuba@kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
-	pabeni@redhat.com, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: esmtpsz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
+X-QQ-XMAILINFO: OKhYnE1LzMsBpM0YhE8PYjF5yxtvwhMrwZqldVk5mpeLyoAZ0ZKS851w
+	2vSfSPnkph2XHSnLrseDr3zANqs2yRpDQGcu65wsbB5VehAYeYjOqW1V2+gcYmRZtTho8rY
+	NFRdNAntBKviiNGRB/T7Zp7DfOjYiHmfa4FKdI73EJHp5FgWeYPEAl7rMpcDVeyWgwmk1ZC
+	bAwrtjBsgSxN+NEb3uoBkhD2GG80yzFQXl9UicgmO0Dk/iEyx3gslUpD/v0RrZfm38FnKJw
+	B/rS3G2ymo2107w3zRYXCLOc0KJIH9tsMI5Nm9KzukdR86mRGu8pYVzTmbckVBrre8hVgKR
+	G0/jX9ImKq/jmJZ0Wr0xT0V9C6ymGwLT7ODKyFYUXNsEIzk/W4ESnIOSTWp2m8q7kWW451K
+	7oazN3cvcJyXVOkRT5SUGnTtSvJEoOURASz9xjKkZSEuiNy/ajpzS4EF+p7N2BcUgiGALva
+	tkOiQxVPdOhoaiat2uEekUJnVVYvHAtpjmZ+eAEpEKuiTdu9esFTuXJ7g7C4IRRJZM5iFeB
+	gKDwqp0Ot/A4zyNU3j/ARCR8Czu5NgCDKDPBf9ZWOnTDlNIm41fMZn4LS7MCoxdAUzMd1SE
+	enStcQ3FHdKkwtAZrf0CLrvPd/AIUskNxdzw3lNRRHCQvB2svixaDLtDBt+byToY93s3V3T
+	d1XJqEBLeBuWXnX1JLM14gtRijLkyRS3Pm+F7NZpVEjwpSiRimwQ19a4xbiaKOZO6xQEpsf
+	TCmMWhMAv/3HXxG81JiYcie2rxnqw7MFORCgtzWUSZTBbV+PevbI5g05YFJFB+P1SsBwPWG
+	eytwmU5UJLCBWjiM7NJzJw9Sa18Qkq6L1RFFtV7XXguBwjXyKrXWAumA9pHSsx7VCqWlJck
+	bRUsj302cYQkuYE95e7JtobdPpcmjXdgjL+IaE5dGP4Cfa6Ef6nz/B4emmq14/gBXMuoD89
+	wi9I4hO/wUMDysKspMhFNzdWdjoHyYAGhsZ7nPILFfTOXdAeuj9LIX2Wxa3lz3TUgGLk9ah
+	iO2+KdqJFm/5DAEfys4MdQ1h7Nu6x/DX0BSWXMwAZZ6Uqt1imkkQEl/7lbPnifX65OIsr6s
+	6LB3fLtWIH4ZeAh8y5foR4=
+X-QQ-XMRINFO: MPJ6Tf5t3I/ylTmHUqvI8+Wpn+Gzalws3A==
+X-QQ-RECHKSPAM: 0
 
-Hello,
+It is about adding the Tx timeout process and pci_error_handlers.
+When a PCIe error occurs, the txgbe device is able to recover on platform
+that support AER interrupt. And for Tx timeout, the txgbe driver can
+recover the device by reset process.
 
-syzbot found the following issue on:
+For ngbe devices, due to the absence of the current function, it cannot
+br fully recovered once there is a PCIe error or Tx timeout. Its
+function will be completed in the future.
 
-HEAD commit:    6f3ed7fec72f Merge tag 'for-7.1/dm-fixes-3' of git://git.k..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=1144db7e580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=bd38685893011045
-dashboard link: https://syzkaller.appspot.com/bug?extid=cb2aa2390ac024e25f5c
-compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
+Changes log:
+v6:
+- Move the check of device status inside wx_soft_quiesce().
+- Reverse the error return of txgbe_disable_device().
+- Add PCIe error check in tx_timeout.
+- Add WX_STATE_RES_FREED flag to avoid double-free of resources.
 
-Unfortunately, I don't have any reproducer for this issue yet.
+v5: https://lore.kernel.org/all/20260604085631.12720-1-jiawenwu@trustnetic.com
+- Avoid the same name on two functions.
+- Encode the device identity into the name of reset work queue.
+- Change pr_err() to wx_err().
+- Check WX_STATE_DOWN and WX_STATE_RESETTING at the entry of every work item.
+- Implement wx_ptp_quiesce().
+- Add netif_carrier_off() and netif_tx_disable() in soft_quiesce.
+- Move resource free operations after PCIe recovery.
+- Return error code in down path.
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/625fc484e456/disk-6f3ed7fe.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/fd23de5678d1/vmlinux-6f3ed7fe.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/5395fddce64e/bzImage-6f3ed7fe.xz
+v4: https://lore.kernel.org/all/20260601072221.2952-1-jiawenwu@trustnetic.com
+- Create a separate work queue for the reset task.
+- Gate wx_watchdog_flush_tx() on netif_running().
+- Add rtnl_lock() around wx->do_reset() in wx_io_slot_reset().
+- Change .close_suspend() to .soft_quiesce() to avoid MMIO when PCI
+  channel is frozen.
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+cb2aa2390ac024e25f5c@syzkaller.appspotmail.com
+v3: https://lore.kernel.org/all/20260509100540.32612-1-jiawenwu@trustnetic.com
+- Merge the multiple string line into one in wx_handle_tx_hang().
+- Remove the redundant warn messages.
+- Use test_and_clear_bit() instead of checking the flag bit then clear it.
+- Drop the Tx hang check in tx_timeout.
+- Call wx_update_stats() before wx_check_tx_hang().
+- Add Tx flush when link lost.
+- Move wx_ptp_stop() into wx->close_suspend().
+- Drop V2 patch 5/6 because WOL packets are handled before DMA ring.
+- Check wx NULL pointer in wx_io_error_detected().
+- Check perm failure before hardware teardown.
 
-------------[ cut here ]------------
-refcount_t: addition on 0; use-after-free.
-WARNING: lib/refcount.c:25 at refcount_warn_saturate+0x9f/0x110 lib/refcount.c:25, CPU#1: kworker/u8:8/1044
-Modules linked in:
-CPU: 1 UID: 0 PID: 1044 Comm: kworker/u8:8 Not tainted syzkaller #0 PREEMPT_{RT,(full)} 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/18/2026
-Workqueue: netns cleanup_net
-RIP: 0010:refcount_warn_saturate+0x9f/0x110 lib/refcount.c:25
-Code: eb 66 85 db 74 3e 83 fb 01 75 4c e8 4b 36 23 fd 48 8d 3d 14 85 f1 0a 67 48 0f b9 3a eb 4a e8 38 36 23 fd 48 8d 3d 11 85 f1 0a <67> 48 0f b9 3a eb 37 e8 25 36 23 fd 48 8d 3d 0e 85 f1 0a 67 48 0f
-RSP: 0018:ffffc90005e4f270 EFLAGS: 00010293
-RAX: ffffffff84a135d8 RBX: 0000000000000002 RCX: ffff888027863d80
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffffffff8f92baf0
-RBP: 0000000000000000 R08: ffff888027863d80 R09: 0000000000000005
-R10: 0000000000000100 R11: 0000000000000004 R12: ffff8880117bd000
-R13: dffffc0000000000 R14: ffff88803392903c R15: ffff8880117bd000
-FS:  0000000000000000(0000) GS:ffff888126283000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000557b57a3d220 CR3: 00000000352b4000 CR4: 00000000003526f0
-Call Trace:
- <TASK>
- __refcount_add include/linux/refcount.h:-1 [inline]
- __refcount_inc include/linux/refcount.h:366 [inline]
- refcount_inc include/linux/refcount.h:383 [inline]
- fib_info_hold include/net/ip_fib.h:629 [inline]
- nsim_fib4_prepare_event drivers/net/netdevsim/fib.c:930 [inline]
- nsim_fib_event_schedule_work drivers/net/netdevsim/fib.c:1000 [inline]
- nsim_fib_event_nb+0x1055/0x1240 drivers/net/netdevsim/fib.c:1043
- call_fib_notifier+0x45/0x80 net/core/fib_notifier.c:25
- call_fib_entry_notifier net/ipv4/fib_trie.c:90 [inline]
- fib_leaf_notify net/ipv4/fib_trie.c:2176 [inline]
- fib_table_notify net/ipv4/fib_trie.c:2194 [inline]
- fib_notify+0x36b/0x5e0 net/ipv4/fib_trie.c:2217
- fib_net_dump net/core/fib_notifier.c:70 [inline]
- register_fib_notifier+0x184/0x360 net/core/fib_notifier.c:108
- nsim_fib_create+0x85d/0x9f0 drivers/net/netdevsim/fib.c:1596
- nsim_dev_reload_create drivers/net/netdevsim/dev.c:1604 [inline]
- nsim_dev_reload_up+0x374/0x7c0 drivers/net/netdevsim/dev.c:1058
- devlink_reload+0x501/0x8d0 net/devlink/dev.c:475
- devlink_pernet_pre_exit+0x1ff/0x420 net/devlink/core.c:558
- ops_pre_exit_list net/core/net_namespace.c:161 [inline]
- ops_undo_list+0x187/0x940 net/core/net_namespace.c:234
- cleanup_net+0x56e/0x800 net/core/net_namespace.c:702
- process_one_work kernel/workqueue.c:3314 [inline]
- process_scheduled_works+0xb5d/0x1860 kernel/workqueue.c:3397
- worker_thread+0xa53/0xfc0 kernel/workqueue.c:3478
- kthread+0x388/0x470 kernel/kthread.c:436
- ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
-----------------
-Code disassembly (best guess):
-   0:	eb 66                	jmp    0x68
-   2:	85 db                	test   %ebx,%ebx
-   4:	74 3e                	je     0x44
-   6:	83 fb 01             	cmp    $0x1,%ebx
-   9:	75 4c                	jne    0x57
-   b:	e8 4b 36 23 fd       	call   0xfd23365b
-  10:	48 8d 3d 14 85 f1 0a 	lea    0xaf18514(%rip),%rdi        # 0xaf1852b
-  17:	67 48 0f b9 3a       	ud1    (%edx),%rdi
-  1c:	eb 4a                	jmp    0x68
-  1e:	e8 38 36 23 fd       	call   0xfd23365b
-  23:	48 8d 3d 11 85 f1 0a 	lea    0xaf18511(%rip),%rdi        # 0xaf1853b
-* 2a:	67 48 0f b9 3a       	ud1    (%edx),%rdi <-- trapping instruction
-  2f:	eb 37                	jmp    0x68
-  31:	e8 25 36 23 fd       	call   0xfd23365b
-  36:	48 8d 3d 0e 85 f1 0a 	lea    0xaf1850e(%rip),%rdi        # 0xaf1854b
-  3d:	67                   	addr32
-  3e:	48                   	rex.W
-  3f:	0f                   	.byte 0xf
+v2: https://lore.kernel.org/all/20260430082517.19612-1-jiawenwu@trustnetic.com
+- Add the missing rtnl_unlock() at early return in wx_reset_subtask().
+- Replace ngbe_close() with ngbe_close_suspend() in ngbe_dev_shutdown().
+- Add a patch to clear stored DMA addresses.
+ 
+v1: https://lore.kernel.org/r/20260428021156.13564-1-jiawenwu@trustnetic.com
 
+Jiawen Wu (5):
+  net: ngbe: implement libwx reset ops
+  net: wangxun: add Tx timeout process
+  net: wangxun: add reinit parameter to wx->do_reset callback
+  net: wangxun: implement soft quiesce for PCIe error recovery
+  net: wangxun: add pcie error handler
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+ drivers/net/ethernet/wangxun/libwx/Makefile   |   2 +-
+ drivers/net/ethernet/wangxun/libwx/wx_err.c   | 321 ++++++++++++++++++
+ drivers/net/ethernet/wangxun/libwx/wx_err.h   |  18 +
+ .../net/ethernet/wangxun/libwx/wx_ethtool.c   |   2 +-
+ drivers/net/ethernet/wangxun/libwx/wx_hw.c    |  17 +-
+ drivers/net/ethernet/wangxun/libwx/wx_lib.c   |  59 +++-
+ drivers/net/ethernet/wangxun/libwx/wx_lib.h   |   1 +
+ drivers/net/ethernet/wangxun/libwx/wx_ptp.c   |  21 ++
+ drivers/net/ethernet/wangxun/libwx/wx_ptp.h   |   1 +
+ drivers/net/ethernet/wangxun/libwx/wx_type.h  |  25 +-
+ .../net/ethernet/wangxun/ngbe/ngbe_ethtool.c  |   1 -
+ drivers/net/ethernet/wangxun/ngbe/ngbe_main.c |  84 ++++-
+ drivers/net/ethernet/wangxun/ngbe/ngbe_type.h |   1 +
+ .../net/ethernet/wangxun/txgbe/txgbe_main.c   |  56 ++-
+ .../net/ethernet/wangxun/txgbe/txgbe_type.h   |   2 +-
+ 15 files changed, 592 insertions(+), 19 deletions(-)
+ create mode 100644 drivers/net/ethernet/wangxun/libwx/wx_err.c
+ create mode 100644 drivers/net/ethernet/wangxun/libwx/wx_err.h
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+-- 
+2.51.0
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
