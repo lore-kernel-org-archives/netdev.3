@@ -1,80 +1,127 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 207B87E0FF;
-	Wed, 10 Jun 2026 01:20:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D0F01A0BD0
+	for <netdev@vger.kernel.org>; Wed, 10 Jun 2026 01:21:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781054418; cv=none; b=N/CbTTTa5bVpTRTOsnidQgON1U5XvKlnOZZ9aWHQQIUw4oUVHKfb2dESlDqYqbP3ltnA3bgNkc+foZXnvVIN4gy8NXbluR4m+9teT0ikw/gQ/QCzVsYcxG1t+UHddxBX/aCsDzhIWzy/0s8ZlUgGCXL+K6AQ1Gu60sw4HwlOny8=
+	t=1781054510; cv=none; b=mx4lPqwUPOhDAonl0Ocy9itbXbjQZD13gXhJSqZy9U5D44H5ndYtnB0QOqmi7fkSAHyRrZpV1+17gIRwwFOv284Lz6tKAbPkC+ig96dYgebKFLj0Zy0kvROQAVeM8Y3oK5h4OGf5Jw8utufVRV7NKYcOs+6vX6Pdv6/tZd5lvnw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781054418; c=relaxed/simple;
-	bh=CHLiqPsKNMX5exPT742i0+3IE+Iy/k4VLewc72kYpw8=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=hb5zvjrvTiFzHyzWWc2lOmtJIz7yV1BqrQmJVjQDZjWxY7EUFpkVpv/NbuvYLL5J+kOhn86r12cC6wskZIbmbcOd7ypOHBHjWpOISrEY2DlamlnEw0mAiezzL4l1tADoKRB27uL1eyaAkI/tgLxja3iBZDU2Xp0+cbIx44UJoXw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eUtOg2mR; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781054510; c=relaxed/simple;
+	bh=RvIol9gM/1py5Hk7h4bLp0YoIkMSmUzyYPhAbZ4stdo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=BsiWJg4UaHlQvtJz/ud6+uGF2cIHq3YcEni0/D2bgBqQkKNhn+iVTyf425i+ziY04Cbc0YbbMmBmf4dkuEGEiA3eFnl/i7WJU3mycbigBgud5jSM19hib/VD1PoGtOkEAcBVmShEU0oNSc07o5Z52GC9UmdhtesM8unaws5Iorg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=bxpB40Vv; arc=none smtp.client-ip=91.218.175.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eUtOg2mR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B051F1F00893;
-	Wed, 10 Jun 2026 01:20:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781054414;
-	bh=aKGhdlzuvfHlB4+p9iqkgQqduQF9ViQTH2yVd3SVtuQ=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=eUtOg2mR1lCcDK8GHRNBijPvBxSw0/KeFz0ihiof2G8EChKTtyN9VTuNEEzrPzHsH
-	 +wJ6kG6bkglUnVdSedQRwvvdcD+KWhL4+Uyj/M3EeVXCKLhjzucWbId1uqr6nU4+x9
-	 mjEVsZqO1uJLBdXxIJ3IHoYRO0WKYxtX38JPRyOj2dOGFEa20tkAeilGfLH+GbmTc1
-	 Fn4O6coR4Wjm5t9oIIiAud2LQgks9rgWD/TmOfzJJh+7fEMvY2s0vE3h9XuAaYTniu
-	 noPxj9tWbhoYDOYhcGfOJOsZRz9Nivy5AuSqSAltNWjvNgXrMGeZKNx5iPWikLOT3S
-	 8renqt1l/1NQw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 197403930A12;
-	Wed, 10 Jun 2026 01:20:14 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="bxpB40Vv"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1781054496;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=jbRzG6Pa36uez5VKdsIv2ql0J1GpmIHCqFTPixbR7/o=;
+	b=bxpB40Vvc0ffLgfxsdSmHEVmfGQoqhtPRbWF8R6I+AuIYCZJGyL0xye2AExJHV1Illbc1D
+	uM3OlhIi9wkbKa/S2XQc7lN3WqvWYoymrvt3l2eQ0vrRL42Wd7mwYh0JPnRjG8S+1UtCPG
+	37kMelikDsIFVMspvuA4BOtMrAHttVg=
+From: Menglong Dong <menglong.dong@linux.dev>
+To: Sun Jian <sun.jian.kdev@gmail.com>, Emil Tsalapatis <emil@etsalapatis.com>
+Cc: bpf@vger.kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, ast@kernel.org, daniel@iogearbox.net,
+ andrii@kernel.org, martin.lau@linux.dev, davem@davemloft.net,
+ kuba@kernel.org, hawk@kernel.org, john.fastabend@gmail.com, sdf@fomichev.me,
+ shuah@kernel.org, liuhangbin@gmail.com
+Subject: Re: [PATCH] bpf: Unshare cloned skb before devmap egress XDP program
+Date: Wed, 10 Jun 2026 09:21:25 +0800
+Message-ID: <AgOg1pJHQN-gpKhYUz3SMw@linux.dev>
+In-Reply-To: <DJ4XIOT2RVMT.28I5LA2UOZVUI@etsalapatis.com>
+References:
+ <20260609100214.337538-1-sun.jian.kdev@gmail.com>
+ <L0cwr1-KRSKR7-dJdjDmJA@linux.dev>
+ <DJ4XIOT2RVMT.28I5LA2UOZVUI@etsalapatis.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH next] drivers/usb/atm: Replace strcpy() + strlcat() with
- snprintf()
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178105441263.2779729.6672573959508250060.git-patchwork-notify@kernel.org>
-Date: Wed, 10 Jun 2026 01:20:12 +0000
-References: <20260608095523.2606-36-david.laight.linux@gmail.com>
-In-Reply-To: <20260608095523.2606-36-david.laight.linux@gmail.com>
-To: David Laight <david.laight.linux@gmail.com>
-Cc: kees@kernel.org, linux-hardening@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
- netdev@vger.kernel.org, arnd@kernel.org, 3chas3@gmail.com,
- gregkh@linuxfoundation.org, castet.matthieu@free.fr, stf_xl@wp.pl
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="utf-8"
+X-Migadu-Flow: FLOW_OUT
 
-Hello:
-
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Mon,  8 Jun 2026 10:55:20 +0100 you wrote:
-> From: David Laight <david.laight.linux@gmail.com>
+On 2026/6/10 08:06 Emil Tsalapatis <emil@etsalapatis.com> write:
+> On Tue Jun 9, 2026 at 7:06 AM EDT, Menglong Dong wrote:
+> > On 2026/6/9 18:02 Sun Jian <sun.jian.kdev@gmail.com> write:
+> >> dev_map_redirect_clone() uses skb_clone() when redirecting a generic XDP
+> >> skb to multiple devmap destinations. The cloned skb can share packet data
+> >> with other clones.
+> >> 
+> >> If the destination devmap entry has an egress XDP program, that program
+> >> can modify packet data. Such modifications can then be observed by other
+> >> clones sharing the same packet data.
+> >> 
+> >> This can be reproduced by strengthening xdp_veth_egress to configure a
+> >> different source MAC for each egress device and checking that store_mac_1/2
+> >> observe the MAC configured for their own egress devices. Without the fix,
+> >> the SKB_MODE subtest observes store_mac_1 receiving the MAC configured for
+> >> the next egress device.
+> >> 
+> >> Fix this by unsharing the cloned skb before running the devmap egress XDP
+> >> program. Limit the extra copy to destinations with an attached egress
+> >> program.
+> >
+> > Hi, Jian.
+> >
+> > This sounds like a good idea in this case. When I have a look at bpf_clone_redirect(),
+> > I found that it use skb_clone() too, which means it has the same problem. The
+> > data can be modified by other xdp prog in the destination NIC if we use
+> > bpf_clone_redirect().
+> >
+> > So maybe this is the default logic, and I'm not sure if this patch can break the
+> > existing users :/
 > 
-> Avoid string function that are due to be deprecated.
-> 
-> Signed-off-by: David Laight <david.laight.linux@gmail.com>
-> ---
-> This is one of a group of patches that remove potentially unbounded
-> strcpy() calls.
-> 
-> [...]
+> I think for use cases where we are using bpf_clone_redirect() to use
+> one clone for inspection this would add an unnecessary copy. Maybe
+> adding *_copy() variants instead of changing the *_clone() would be
+> better? That way we wouldn't be changing the behavior for existing
+> consumers and the naming would be consistent with the skb_* methods.
 
-Here is the summary with links:
-  - [next] drivers/usb/atm: Replace strcpy() + strlcat() with snprintf()
-    https://git.kernel.org/netdev/net-next/c/41d3e102edc2
+Agree. It's not a good idea to change the logic of the existing API. Or
+maybe we can add a BPF_F_CLONE flag for the existing API.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+> 
+> But more importantly, is there an actual use case for the kind of API
+> that the modified selftest requires? Nobody until now has considered
+> the existing behavior to be a problem.
+
+Agree too. Obviously, this is not a bug. For the use case in the commit
+log, it's something that can be fixed by the user themself. If we need
+modify the MAC, we'd better attach a BPF program for all the egress
+device in the devmap.
+
+> 
+> >
+> > Thanks!
+> > Menglong Dong
+> >
+> >> 
+> >> Tested with:
+> >>   ./test_progs -t xdp_veth_egress
+> >>   ./test_progs -t xdp_veth
+> >>   ./test_progs -t xdp
+> > [...]
+> >>  
+> >>  destroy_xdp_redirect_map:
+> >> -- 
+> >> 2.43.0
+> >> 
+> >> 
+> >> 
+> 
+
+
 
 
