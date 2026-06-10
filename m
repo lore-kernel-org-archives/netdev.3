@@ -1,71 +1,70 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5489C40B364;
-	Wed, 10 Jun 2026 15:14:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B24C416D1D;
+	Wed, 10 Jun 2026 15:14:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781104477; cv=none; b=CU2qGZuBv+7TVziboiAbZ5bfSmRFMBY/zeQLbSY1cS2nyybEcrotZ/vnKr7rhOxFo09QzoaDoGcl6br4FSOFZXji73MKsTpY/u2A4cMY8M6pT1AVPRWE1UtkhBrTe+YMJSnDtqoscakcHEyVStwRlyDWNzuotS9QnlTIzLF3Yh8=
+	t=1781104491; cv=none; b=fp+E5smqBdBXmBH2bFfaqgLul74G+iTIBthe+KoEGACEEWP8XCB+FbpUvH3BIIp8KH1NYeoPIen4RCP46fwE9Oh1LA7SqiqAPYypQD6/iqO4rlmrVqfKAWR24wGW07c5NJ7xumYSCaDaZt54mPaWg9XH641P+cIDh7zUUC2OBfs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781104477; c=relaxed/simple;
-	bh=O4ESASxXJTBkmgS2eT0NxJimSSFVGnXuyGlnizkC9/M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KkH/2ozQTZxRbSCaQv24sotak37vm2rgCyVaHY1/hE5Fk9kdn0l5Nqk9j/LNX4zASDAsh+ytJDooamS3OTTuPIP9+fi2e1C0DwdJUYYpkbaIDr/PnGmY5ELdF5kq+KrLUZPBbwjJ+50rqV2zC2QkM+nh5Br6LmIXQtfKcEx1EKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U/zA5YJN; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781104491; c=relaxed/simple;
+	bh=qujQ7F/3q/fn9IDdmZYMq+zpEgNokiXiIRhelNM3z4U=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=JUEoGpHUidVL/y3W6GJ642UNtRi/+gdA/01yAleXP+lGOIFrVtcu7lns+YWv6uAk+5PJQh39oB7nwtE3DRtNZlg+fbyxw+ouqkwOqSgaNTFq4hfT65vSTuDoZd/GnXSDOH2fxsc7cGu0ajXYCBClz54ALYBKU1E01d2nwJ/bPkU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TtwsI9nw; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U/zA5YJN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C72C1F00893;
-	Wed, 10 Jun 2026 15:14:33 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TtwsI9nw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 057711F00893;
+	Wed, 10 Jun 2026 15:14:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781104476;
-	bh=GLeTvS7KTUFpD6LfplzKEmpJrqfI0Ec5tYBniK/zx6A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=U/zA5YJNyG0v9Tkb8N08UsOaggJjv6nmcfJyFhhIdvham0SugCTVlm3E5AJNz3q4+
-	 0ChixKfe8/i7aTSwKD/adpyDvqRqMZi0FOIBDJK56qYMDjMsyHqTtZDIQXUMI5pyoi
-	 DKnqCnpdWdBUW1ycIHiQ4D6c9VZjwuLzIjDAszVX7dKvD/2VddHtwVhS6/9XZeMSH0
-	 yLb2SvaB8bq8yJVt7x6RLHlJP7qkqRPmO+hvELQ/oygy3N7+MHqhgLiHoEsd4/eRg8
-	 D63LMbX7OgbAdOdlML3jU2mrqMKRAVUiW8tiEYj3GBur/Zr24n8DCu9ShQRDE7LVH2
-	 hrcfTkY4YzSEw==
-Date: Wed, 10 Jun 2026 16:14:30 +0100
-From: Simon Horman <horms@kernel.org>
-To: nshettyj@marvell.com
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	sgoutham@marvell.com, lcherian@marvell.com, gakula@marvell.com,
-	hkelam@marvell.com, sbhatta@marvell.com, andrew+netdev@lunn.ch,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, rkannoth@marvell.com, sumang@marvell.com,
-	kirankumark@marvell.com
-Subject: Re: [PATCH net] octeontx2-af: fix IP fragment flag corruption on
- custom KPU profile load
-Message-ID: <20260610151430.GN3920875@horms.kernel.org>
-References: <20260608095455.1499203-1-nshettyj@marvell.com>
+	s=k20260515; t=1781104489;
+	bh=0L8Gq+UhfVf7Y/GmoFXGXIyxgBspF5hA+qM+Yf+c/+E=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=TtwsI9nwxfkGT79klYybINZ8LOntEF3pmEDLaEdA6G1249kB9uWsTLplpw9BzYe5g
+	 M0HjQUr3c1xVg+ZFkQ+mcX8Gw25UxnyNv/1e5f+fmLIM6inPqTppVKToBIXFK8KJwn
+	 WZh1HUmL9MfONCtIp0l9/78DrdAUqx7qanyJcvgIz6muAQUQf1j+v+08D6KZfjSGks
+	 19LTxAvzB7VR/abmlP2PuMvH4wtDs3/UyiJloHz2RRCWj+/kpalQElO20r7qrnNXnH
+	 9MyA6xa65SP3zlIfym5U4y4POM8QCkH5jwF39g/msfIaITu3wcpXd4kwRxb4UR+wdq
+	 NAQUPXavvwmyQ==
+Date: Wed, 10 Jun 2026 08:14:48 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon
+ Horman <horms@kernel.org>, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>, Ao
+ Wang <wangao@seu.edu.cn>, Xuewei Feng <fengxw06@126.com>, Qi Li
+ <qli01@tsinghua.edu.cn>, Ke Xu <xuke@tsinghua.edu.cn>
+Subject: Re: [PATCH net] fddi: validate skb length before parsing headers
+Message-ID: <20260610081448.3a963be9@kernel.org>
+In-Reply-To: <20260607112408.92988-1-zhaoyz24@mails.tsinghua.edu.cn>
+References: <20260607112408.92988-1-zhaoyz24@mails.tsinghua.edu.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260608095455.1499203-1-nshettyj@marvell.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Mon, Jun 08, 2026 at 03:24:55PM +0530, nshettyj@marvell.com wrote:
-> From: Kiran Kumar K <kirankumark@marvell.com>
+On Sun,  7 Jun 2026 19:24:04 +0800 Yizhou Zhao wrote:
+> KASAN reports this when such a frame is processed through a dummy FDDI
+> netdev that calls the real fddi_type_trans() on an exact kmalloc() copy
+> of the frame:
 > 
-> npc_cn20k_apply_custom_kpu() overwrites KPU profile entries with custom
-> firmware values and then calls npc_cn20k_update_action_entries_n_flags()
-> over all entries.  Since the same function already ran during default
-> profile initialisation, entries not overridden by the custom firmware
-> get their flags translated twice, corrupting the CN20K-specific values.
+>   BUG: KASAN: slab-out-of-bounds in fddi_type_trans+0x385/0x3a0
+>   Read of size 2 at addr ffff888009c6fe33
+>   The buggy address is located 4 bytes to the right of
+>   allocated 15-byte region [ffff888009c6fe20, ffff888009c6fe2f)
 > 
-> Fix this by extracting the per-entry translation into a helper
-> npc_cn20k_translate_action_flags() and calling it as each custom entry
-> is loaded, removing the redundant batch call at the end.
+> Reject short frames before reading the fields: require the minimum 802.2
+> header length before accessing dsap or daddr, and require the full SNAP
+> header length before reading the SNAP ethertype.  Returning protocol 0
+> causes the malformed packet to be ignored by protocol handlers.
 > 
-> Fixes: ef992a0f12e8 ("octeontx2-af: npc: cn20k: MKEX profile support")
-> Cc: Suman Ghosh <sumang@marvell.com>
-> Signed-off-by: Kiran Kumar K <kirankumark@marvell.com>
-> Signed-off-by: Nitin Shetty J <nshettyj@marvell.com>
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Cc: stable@vger.kernel.org
 
-Reviewed-by: Simon Horman <horms@kernel.org>
-
+I'm stripping these, the problem seems entirely theoretical.
+"I invented a fake driver and it makes the stack crash" is not serious.
