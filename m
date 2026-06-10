@@ -1,280 +1,181 @@
-Received: from a9-1.smtp-out.amazonses.com (a9-1.smtp-out.amazonses.com [54.240.9.1])
-	(using TLSv1.2 with cipher AES128-SHA256 (128/128 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFD823B95FA;
-	Wed, 10 Jun 2026 08:41:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.240.9.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDD173BCD24;
+	Wed, 10 Jun 2026 08:41:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781080900; cv=none; b=GrCkBzA7GU7LY5GLCIY8hBWqg/VvfkKnKiVAdDZ0DHK+yIxFbs6TRHo40o8LA1ExAXuI+w5uHkxTSFR4iMCiEO+momRSYW+PRif6bnttqbAUWbFpvjuagXsrNXdtjmr+8gax0WgZRpi5fDM6F14hNHWffXz2qOm4YblMrgMbGdc=
+	t=1781080908; cv=none; b=V+J5DzNzL4iNYz9/w8ADyEUN+6ZnGA8Ps5R7ZfLoA8QRCst4OTXYTer97ChV8uOSdd0u4Ql8YkqOCi2pphU/hUJ44hcZmXo+7MRnpl+Bwb49Ddfg5VMqp2hMeEVVLvvh6eCgT96IV62qddor7awkbSHMjb8JsP+3Ujd1AValkdY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781080900; c=relaxed/simple;
-	bh=7yuc/FpS9HHAsZARRPbD7CJiSakoOtCY52IpvBIwkyU=;
-	h=In-Reply-To:References:From:To:Cc:Subject:Message-ID:Date:
-	 MIME-Version:Content-Type; b=tLNFHPfcwaqDyPzZLufdlwkpzErVmp49WoONCf77yiER7LT4yA66wK+FbzJ1ubmDGchq1scTGg7ta4eVjwqpZgZHJSBGNOK4Jg2HW6OCvrW4lVjajFUcKKfc8j5MgOjlqXSwzzuIwZ8NvZ0CCFEIvjPA4T3yCyPBu6mwX6Vr4Kk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=c127.dev; spf=pass smtp.mailfrom=send.c127.dev; dkim=pass (1024-bit key) header.d=c127.dev header.i=@c127.dev header.b=KH8xshjE; dkim=pass (1024-bit key) header.d=amazonses.com header.i=@amazonses.com header.b=GG9Rz5ne; arc=none smtp.client-ip=54.240.9.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=c127.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=send.c127.dev
+	s=arc-20240116; t=1781080908; c=relaxed/simple;
+	bh=3lFJnBqnKSo2+StgKXVA6UlMw2cv3e1IJkH4vnVp9ek=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=mc9fi80jAbcCcVXLimnRNXfg5wShvE5p2PVT6lC8/hGMjoWyx+gbBz3gkWRRO1e7FKqw97ImkraPsk08uoBrwMG5D8brXE3+u5tdFWGQmTHjzTzF608OqE0eTE3oOR2aMyD/8smretrKkof/f2HwmAHg+i4tQF35yyGAeh4xcds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn; spf=pass smtp.mailfrom=realsil.com.cn; dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b=R5oem+WO; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realsil.com.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=c127.dev header.i=@c127.dev header.b="KH8xshjE";
-	dkim=pass (1024-bit key) header.d=amazonses.com header.i=@amazonses.com header.b="GG9Rz5ne"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple; s=resend;
-	d=c127.dev; t=1781080898;
-	h=In-Reply-To:References:From:To:Cc:Subject:Message-ID:Content-Transfer-Encoding:Date:MIME-Version:Content-Type;
-	bh=7yuc/FpS9HHAsZARRPbD7CJiSakoOtCY52IpvBIwkyU=;
-	b=KH8xshjE8FO86PoewiOTZa4439cWim6BQX18RIf+LH9wmOTSlAa38yM3Ao2ssrUl
-	uO6gpdoUK9aCjssiJdXr83Q8iQP43ysPdkB4X3xMk+HgAI7OumMEo4Ttl1VFXHxKY1O
-	w2AB2LphhcF/E0JHG/3pIzPkOId4sG7JoA1gKVSg=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-	s=224i4yxa5dv7c2xz3womw6peuasteono; d=amazonses.com; t=1781080898;
-	h=In-Reply-To:References:From:To:Cc:Subject:Message-ID:Content-Transfer-Encoding:Date:MIME-Version:Content-Type:Feedback-ID;
-	bh=7yuc/FpS9HHAsZARRPbD7CJiSakoOtCY52IpvBIwkyU=;
-	b=GG9Rz5ne0apdgUEbpF5vtjYaYcrmrSkiYzt1pzX8ITEDz02zz4QSiuMl55cv5w21
-	/rS+B9JpmqUqN/rg5o5prVUXLg8Ho6Wu6iywB8qDb+tZ+GOALQLXRbbHFLbbPIaFdzZ
-	98fKZWCBjodEBKBwHJVeDsLDkyTymqY7ZYiC9Fl8=
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260610084120.1100326-1-contact@c127.dev>
-References: <20260610084120.1100326-1-contact@c127.dev>
-From: Johan Alvarado <contact@c127.dev>
-To: netdev@vger.kernel.org
-Cc: linusw@kernel.org, alsi@bang-olufsen.dk, andrew@lunn.ch, 
-	olteanv@gmail.com, davem@davemloft.net, edumazet@google.com, 
-	kuba@kernel.org, pabeni@redhat.com, linux@armlinux.org.uk, 
-	linux-kernel@vger.kernel.org, contact@c127.dev
-Subject: [PATCH net-next v2 2/2] net: dsa: realtek: rtl8365mb: add HSGMII
- support for RTL8367S
-Message-ID: <0100019eb0b1b8f6-7794876c-5c9a-443b-815d-402c8b19191d-000000@email.amazonses.com>
+	dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b="R5oem+WO"
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 65A8exfhF994810, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realsil.com.cn;
+	s=dkim; t=1781080860;
+	bh=vu7xMbJAOLWLR7XX0V4ysN/uopxYxfRnDPuIT7qo8OE=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=R5oem+WO4U/Wmziw9PmDIIMYzS6DjU+nLU72U/bNVRNz/+cAks9qtKm4oiGymkfkP
+	 ngLvek6EVDP0/yfEsqu0BWzpT2sUCt0uszDPpSaMb8XRnjMN5+nuBq+fS+H7yWyqkG
+	 GS7B68Ymd0jGRCglakMWfxVab715Nh2Z2j3rtAfvd9QkjevVt4xZhAkvWzLp70qViP
+	 H8/ysTLaE4UBgJLTS/TRNzeD2T/G888MzpgIBc6gorFj5hg3aFl6WQbmYXoqf8VlkI
+	 5guDUNnIaJMltWtFomxuw3B7C2vS5WZd2C2KlUR70dzceNfX0YxeKREqTvOODYKSv4
+	 ShbKxaNahQbpw==
+Received: from RS-EX-MBS4.realsil.com.cn ([172.29.17.104])
+	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 65A8exfhF994810
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Wed, 10 Jun 2026 16:41:00 +0800
+Received: from RS-EX-MBS3.realsil.com.cn (172.29.17.103) by
+ RS-EX-MBS4.realsil.com.cn (172.29.17.104) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17; Wed, 10 Jun 2026 16:40:59 +0800
+Received: from RS-EX-MBS3.realsil.com.cn ([172.29.17.103]) by
+ RS-EX-MBS3.realsil.com.cn ([172.29.17.103]) with mapi id 15.02.2562.017; Wed,
+ 10 Jun 2026 16:40:59 +0800
+From: Javen <javen_xu@realsil.com.cn>
+To: Andrew Lunn <andrew@lunn.ch>, Maxime Chevallier
+	<maxime.chevallier@bootlin.com>
+CC: "hkallweit1@gmail.com" <hkallweit1@gmail.com>, "nic_swsd@realtek.com"
+	<nic_swsd@realtek.com>, "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
+	"davem@davemloft.net" <davem@davemloft.net>, "edumazet@google.com"
+	<edumazet@google.com>, "kuba@kernel.org" <kuba@kernel.org>,
+	"pabeni@redhat.com" <pabeni@redhat.com>, "horms@kernel.org"
+	<horms@kernel.org>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH net-next v1 4/6] r8169: add support for RTL8116af
+Thread-Topic: [PATCH net-next v1 4/6] r8169: add support for RTL8116af
+Thread-Index: AQHc9NeKx3fmMihSw0SPIMX6a9yYtLYwzGSAgANkRqD//5L8AIADs7/g
+Date: Wed, 10 Jun 2026 08:40:59 +0000
+Message-ID: <7473edee9a67407c81b357492e9452c3@realsil.com.cn>
+References: <20260605103906.1445-1-javen_xu@realsil.com.cn>
+ <20260605103906.1445-5-javen_xu@realsil.com.cn>
+ <5005c1c3-d807-456d-a9a0-c77bde9f437e@lunn.ch>
+ <b54b5f3a6703498fbc17e64548550ba0@realsil.com.cn>
+ <282e4c64-a088-4602-b053-7a8e1cd32c5a@lunn.ch>
+In-Reply-To: <282e4c64-a088-4602-b053-7a8e1cd32c5a@lunn.ch>
+Accept-Language: zh-CN, en-US
+Content-Language: en-US
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 10 Jun 2026 08:41:37 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Feedback-ID: :1.us-east-1.z4rHY0qbNtjoW80ZyzVy+DEul17RQEOMT7FC66S60ffkhLWkV35D8ZWXVyxJY1/89bAuLCem4GFJq1VXsxM0u6ZfZbvT1qSjDUeuZG9/Lxk1uINIqi7CenEa93u+fNllqnJMZ0quaBrclhnmtzdFllG4KHSjZOEcaGLa1BWoSpA=:1.us-east-1.epbACCJLarUaEI78XZoGREJ9LamRjxMH5pM2kZb64rA=:AmazonSES
-X-SES-Outgoing: 2026.06.10-54.240.9.1
 
-In addition to SGMII, the RTL8367S SerDes also supports HSGMII, which
-carries 2.5 Gbps with the same signaling as SGMII at 2.5x clock rate.
-The chip info table already declares HSGMII as a supported interface
-mode for external interface 1.
+Hi, Andrew, Maxime
 
-Extend the SGMII configuration path to =
-handle HSGMII, which phylink
-represents as 2500base-x:
+>On Mon, Jun 08, 2026 at 06:32:19AM +0000, Javen wrote:
+>> >> +static bool rtl_is_8116af(struct rtl8169_private *tp) {
+>> >> +     return tp->mac_version =3D=3D RTL_GIGA_MAC_VER_52 &&
+>> >> +             (r8168_mac_ocp_read(tp, 0xdc00) & 0x0078) =3D=3D 0x0030=
+ &&
+>> >> +             (r8168_mac_ocp_read(tp, 0xd006) & 0x00ff) =3D=3D 0x0000=
+;
+>> >
+>> >Do we know what these magic numbers mean?
+>>
+>> 0xdc00 is a package-detect field. 0xd006 is internal HW id. RTL8116AF sh=
+ares
+>the same RTL_GIGA_MAC_VER_52 mac_version with other variants.
+>
+>Since you know what they are, please add #defines.
+>
+>> >> @@ -2509,9 +2543,10 @@ void r8169_apply_firmware(struct
+>> >rtl8169_private *tp)
+>> >>               tp->ocp_base =3D OCP_STD_PHY_BASE;
+>> >>
+>> >>               /* PHY soft reset may still be in progress */
+>> >> -             phy_read_poll_timeout(tp->phydev, MII_BMCR, val,
+>> >> -                                   !(val & BMCR_RESET),
+>> >> -                                   50000, 600000, true);
+>> >> +             if (tp->phydev)
+>> >> +                     phy_read_poll_timeout(tp->phydev, MII_BMCR, val=
+,
+>> >> +                                           !(val & BMCR_RESET),
+>> >> +                                           50000, 600000, true);
+>> >
+>> >Maybe this all needs to move into the PHY driver?
+>>
+>> This is after firmware application. And PHY_MDIO_CHG opcode switches the
+>access callbacks between PHY and MAC accessors.
+>> data =3D=3D 0: phy_read/phy_write
+>> data !=3D 0: mac_mcu_read/mac_mcu_write
+>> So the firmware may contain mixed PHY and MAC.
+>
+>Normally, the MAC does not touch the PHY, it only calls phylib/phylink API
+>methods. If standard MII interfaces are used, you can connect any MAC to a=
+ny
+>PHY.
+>
+>If it is all integrated into silicon, then there is no choice, you know th=
+e
+>MAC/PHY relationship. However, it is still good practice to keep MAC code =
+in
+>the MAC driver and PHY code in the PHY driver.
+>
+>Can firmware programming be moved into the PHY driver?
 
- - Use the HSGMII SerDes tuning parameters and external interface mode,
-   and mux the SerDes to MAC8 in HSGMII mode. The parameters are again
-   lifted from the GPL-licensed Realtek rtl8367c vendor driver.
+For our PCIe nics, they are single chips. r8169 driver is for the entire in=
+tegrated chip. Some internal phy shared the same PHY id, but the required P=
+HY parameters differ depending on the specific MAC/Chip it is integrated wi=
+th. So I think firmware here can not be moved.
 
- - Advertise 2500base-x and MAC_2500FD on ports whose external
-   interface supports HSGMII.
+>
+>> >> -     rg_saw_cnt =3D phy_read_paged(tp->phydev, 0x0c42, 0x13) & 0x3ff=
+f;
+>> >> -     if (rg_saw_cnt > 0) {
+>> >> -             u16 sw_cnt_1ms_ini;
+>> >> +     if (tp->phydev) {
+>> >> +             rg_saw_cnt =3D phy_read_paged(tp->phydev, 0x0c42, 0x13)=
+ &
+>0x3fff;
+>> >> +             if (rg_saw_cnt > 0) {
+>> >> +                     u16 sw_cnt_1ms_ini;
+>> >>
+>> >> -             sw_cnt_1ms_ini =3D (16000000 / rg_saw_cnt) & 0x0fff;
+>> >> -             r8168_mac_ocp_modify(tp, 0xd412, 0x0fff, sw_cnt_1ms_ini=
+);
+>> >> +                     sw_cnt_1ms_ini =3D (16000000 / rg_saw_cnt) & 0x=
+0fff;
+>> >> +                     r8168_mac_ocp_modify(tp, 0xd412, 0x0fff, sw_cnt=
+_1ms_ini);
+>> >> +             }
+>> >
+>> >Can this move into the PHY driver?
+>>
+>> It reads a counter from PHY, but the calculated value is programmed into
+>MAC OCP register via r8168_mac_ocp_modify, which accesses r8169 through
+>tp->mmio_addr. So I think this can not be moved.
+>
+>So, big picture, what is this doing? What is rg_saw_cnt?
 
- - Accept SPEED_2500 in the force mode =
-configuration. The MAC speed
-   field has no 2.5 Gbps value: the rate is =
-determined by the HSGMII
-   SerDes configuration, and the vendor driver =
-programs the 1 Gbps
-   value here, so do the same.
+UPS mode TX-link-pulse timing calibration. We read rg_saw_cnt from the GPHY=
+ page 0x0C42, register 0x13. This value is the SAW calibration result burne=
+d during mass production. If rg_saw_cnt =3D=3D 0, it means the MP did not b=
+urn the calibration result, so we do nothing. If calibrated (rg_saw_cnt > 0=
+), we calculate the 1ms timer counter: sw_cnt_1ms_ini =3D (16000000 / rg_sa=
+w_cnt). And then write it into the MAC OCP register (0xD412). This requires=
+ reading a hardware-specific value from the PHY to configure a timer regist=
+er in the MAC. So I think it can not be moved too.
 
-Tested on a Mercusys MR80X v2.20, where the RTL8367S is connected to
-the SoC over HSGMII.
+How do you recommend handling this kind of SoC-specific tight coupling with=
+in the phylink framework? Is it acceptable to retain a local phydev pointer=
+ in the MAC driver solely for these hardware-specific initialization quirks=
+, or is there a preferred approach for single-chip devices?
 
-Signed-off-by: Johan Alvarado <contact@c127.dev>
----
- drivers/net/dsa/realtek/rtl8365mb.c | 61 +++++++++++++++++++++++------
- 1 file changed, 48 insertions(+), 13 deletions(-)
+Any guidance for the migration would be greatly appreciated!
 
-diff --git a/drivers/net/dsa/realtek/rtl8365mb.c b/drivers/net/dsa/realtek/=
-rtl8365mb.c
-index 13ce8e6f1c72..fd8ec8bd6e55 100644
---- a/drivers/net/dsa/realtek/rtl8365mb.c
-+++ b/drivers/net/dsa/realtek/rtl=
-8365mb.c
-@@ -41,7 +41,7 @@
-  * matter.
-  *
-  * NOTE: Currently, only the =
-RGMII interface is implemented in this driver. On
-- * the RTL8367S, the =
-SGMII interface is also supported.
-+ * the RTL8367S, the SGMII and HSGMII =
-interfaces are also supported.
-  *
-  * The interrupt line is asserted on =
-link UP/DOWN events. The driver creates a
-  * custom irqchip to handle this=
- interrupt and demultiplex the events by reading
-@@ -521,6 +521,13 @@ =
-static const struct rtl8365mb_jam_tbl_entry rtl8365mb_sds_jam_sgmii[] =3D {
- 	{ 0x0424, 0xD810 }, { 0x002E, 0x83F2 },
- };
-=20
-+/* HSGMII SerDes tuning =
-parameters, lifted from the vendor driver sources */
-+static const struct rtl8365mb_jam_tbl_entry rtl8365mb_sds_jam_hsgmii[] =3D=
- {
-+	{ 0x0500, 0x82F0 }, { 0x0501, 0xF195 }, { 0x0502, 0x31A2 },
-+	{ 0x0503, 0x7960 }, { 0x0504, 0x9728 }, { 0x0423, 0x9D85 },
-+	{ 0x0424, 0xD810 }, { 0x0001, 0x0F80 }, { 0x002E, 0x83F2 },
-+};
-+
- enum rtl8365mb_phy_interface_mode {
- 	RTL8365MB_PHY_INTERFACE_MODE_INVAL =
-=3D 0,
- 	RTL8365MB_PHY_INTERFACE_MODE_INTERNAL =3D BIT(0),
-@@ -1128,6 +1135,9 @@ static int rtl8365mb_ext_config_sgmii(struct =
-realtek_priv *priv, int port,
- {
- 	const struct rtl8365mb_extint *extint =
-=3D
- 		rtl8365mb_get_port_extint(priv, port);
-+	const struct =
-rtl8365mb_jam_tbl_entry *sds_jam;
-+	size_t sds_jam_size;
-+	u32 mode;
- 	u16 val;
- 	int ret;
- 	int i;
-@@ -1139,6 +1149,16 @@ static int =
-rtl8365mb_ext_config_sgmii(struct realtek_priv *priv, int port,
- 	if (extint->id !=3D 1)
- 		return -EOPNOTSUPP;
-=20
-+	if (interface =3D=3D PHY_INTERFACE_MODE_2500BASEX) {
-+		sds_jam =3D rtl8365mb_sds_jam_hsgmii;
-+		sds_jam_size =3D =
-ARRAY_SIZE(rtl8365mb_sds_jam_hsgmii);
-+		mode =3D RTL8365MB_EXT_PORT_MODE_H=
-SGMII;
-+	} else {
-+		sds_jam =3D rtl8365mb_sds_jam_sgmii;
-+		sds_jam_size =3D ARRAY_SIZE(rtl8365mb_sds_jam_sgmii);
-+		mode =3D RTL8365MB_EXT_PORT_MODE_SGMII;
-+	}
-+
- 	/* The vendor driver =
-clears the line rate bypass for all interface
- 	 * modes except TMII.
- 	 */
-@@ -1148,28 +1168,28 @@ static int rtl8365mb_ext_config_sgmii(struct =
-realtek_priv *priv, int port,
- 		return ret;
-=20
- 	/* Tune the SerDes with =
-vendor-prescribed parameters */
--	for (i =3D 0; i < =
-ARRAY_SIZE(rtl8365mb_sds_jam_sgmii); i++) {
--		ret =3D =
-rtl8365mb_sds_write(priv, 0,
--					  rtl8365mb_sds_jam_sgmii[i].reg,
--					  rtl8365mb_sds_jam_sgmii[i].val);
-+	for (i =3D 0; i < sds_jam_size; =
-i++) {
-+		ret =3D rtl8365mb_sds_write(priv, 0, sds_jam[i].reg,
-+					  sds_jam[i].val);
- 		if (ret)
- 			return ret;
- 	}
-=20
--	/* Mux the SerDes to MAC8 in SGMII mode */
-+	/* Mux the SerDes to MAC8 in=
- the requested mode */
- 	ret =3D regmap_update_bits(priv->map, =
-RTL8365MB_SDS_MISC_REG,
- 				 RTL8365MB_SDS_MISC_MAC8_SEL_SGMII_MASK |
- 					 RTL8365MB_SDS_MISC_MAC8_SEL_HSGMII_MASK,
--				 =
-RTL8365MB_SDS_MISC_MAC8_SEL_SGMII_MASK);
-+				 mode =3D=3D =
-RTL8365MB_EXT_PORT_MODE_SGMII ?
-+					 RTL8365MB_SDS_MISC_MAC8_SEL_SGMII_MA=
-SK :
-+					 RTL8365MB_SDS_MISC_MAC8_SEL_HSGMII_MASK);
- 	if (ret)
- 		return ret;
-=20
- 	ret =3D regmap_update_bits(
- 		priv->map, =
-RTL8365MB_DIGITAL_INTERFACE_SELECT_REG(extint->id),
- 		RTL8365MB_DIGITAL_INTERFACE_SELECT_MODE_MASK(extint->id),
--		RTL8365MB_EXT_PORT_MODE_SGMII
--			<< RTL8365MB_DIGITAL_INTERFACE_SELECT_=
-MODE_OFFSET(
--				   extint->id));
-+		mode << RTL8365MB_DIGITAL_INTERFACE_S=
-ELECT_MODE_OFFSET(
-+			       extint->id));
- 	if (ret)
- 		return ret;
-=20
-@@ -1218,7 +1238,8 @@ static int rtl8365mb_ext_config_sgmii(struct =
-realtek_priv *priv, int port,
-=20
- static bool rtl8365mb_interface_is_serde=
-s(phy_interface_t interface)
- {
--	return interface =3D=3D =
-PHY_INTERFACE_MODE_SGMII;
-+	return interface =3D=3D =
-PHY_INTERFACE_MODE_SGMII ||
-+	       interface =3D=3D =
-PHY_INTERFACE_MODE_2500BASEX;
- }
-=20
- static int rtl8365mb_sds_config_force=
-mode(struct realtek_priv *priv, bool link,
-@@ -1234,7 +1255,11 @@ static =
-int rtl8365mb_sds_config_forcemode(struct realtek_priv *priv, bool link,
- 	u32 r_speed;
-=20
- 	if (link) {
--		if (speed =3D=3D SPEED_1000) {
-+		/* The speed field has no value for 2.5 Gbps: the rate is
-+		 * determined by the HSGMII SerDes configuration, and the
-+		 * vendor driver programs the 1 Gbps value here.
-+		 */
-+		if (speed =3D=3D SPEED_2500 || speed =3D=3D SPEED_1000) {
- 			r_speed =3D RTL8365MB_PORT_SPEED_1000M;
- 		} else if (speed =3D=3D =
-SPEED_100) {
- 			r_speed =3D RTL8365MB_PORT_SPEED_100M;
-@@ -1286,7 +1311,11 @@ static int rtl8365mb_ext_config_forcemode(struct =
-realtek_priv *priv, int port,
- 		r_rx_pause =3D rx_pause ? 1 : 0;
- 		r_tx_pause =3D tx_pause ? 1 : 0;
-=20
--		if (speed =3D=3D SPEED_1000) {
-+		/* The speed field has no value for 2.5 Gbps: the rate is
-+		 * determined by the HSGMII SerDes configuration, and the
-+		 * vendor driver programs the 1 Gbps value here.
-+		 */
-+		if (speed =3D=3D SPEED_2500 || speed =3D=3D SPEED_1000) {
- 			r_speed =3D RTL8365MB_PORT_SPEED_1000M;
- 		} else if (speed =3D=3D =
-SPEED_100) {
- 			r_speed =3D RTL8365MB_PORT_SPEED_100M;
-@@ -1366,6 +1395,12 @@ static void rtl8365mb_phylink_get_caps(struct =
-dsa_switch *ds, int port,
- 	if (extint->supported_interfaces & =
-RTL8365MB_PHY_INTERFACE_MODE_SGMII)
- 		__set_bit(PHY_INTERFACE_MODE_SGMII,
- 			  config->supported_interfaces);
-+
-+	if (extint->supported_interfaces &=
- RTL8365MB_PHY_INTERFACE_MODE_HSGMII) {
-+		__set_bit(PHY_INTERFACE_MODE_250=
-0BASEX,
-+			  config->supported_interfaces);
-+		config->mac_capabilities =
-|=3D MAC_2500FD;
-+	}
- }
-=20
- static void rtl8365mb_phylink_mac_config(struc=
-t phylink_config *config,
---=20
-2.54.0
-
+Thanks,
+BRs,
+Javen
+>
+>        Andrew
