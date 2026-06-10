@@ -1,161 +1,117 @@
-Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [13.75.44.102])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DDDB306B08
-	for <netdev@vger.kernel.org>; Wed, 10 Jun 2026 16:19:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.75.44.102
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781108347; cv=none; b=SDlP3CnBz6Tpi+/ys2D81tytGircUBZXXLrPmI+kdtwTvkIy4xj8gtc7gPSG78zFP/7Y6YeacS0Uw8KldwkGmN/Gfw1ZBDi7iHfiOBedjgQynbyvnmKHKvKI681L1eYxdSLYGotDiZLzn94mVlGDoq2epq89MbyGbBCd229TJv0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781108347; c=relaxed/simple;
-	bh=K6ZofjL03BA8CZvMc6y/6obeY6FFf6rEC5hfrcfuLR8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BooYxQJAkmpnkoNWpyZZcwoT7cr/CARTh+a1HK3Yiq99YQ2a1SeVvPS4ov8bsT037OLP/+QHTxFhvPWQUt3pOr4QrpuImZNK5IpcPB+1bIwq/2rpuonBoFMjX/w4I88P4NbeoiFkL8W2aBudoaswrGYDNtob3xNCBYhkngUJG2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lzu.edu.cn; spf=pass smtp.mailfrom=lzu.edu.cn; arc=none smtp.client-ip=13.75.44.102
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lzu.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lzu.edu.cn
-Received: from enjou-Legion-Y7000P-2019 (unknown [172.23.56.36])
-	by app3 (Coremail) with SMTP id ywmowAB3tv5ajilqTEIfAA--.36361S3;
-	Thu, 11 Jun 2026 00:18:39 +0800 (CST)
-From: Ren Wei <n05ec@lzu.edu.cn>
-To: netdev@vger.kernel.org
-Cc: edumazet@google.com,
-	pabeni@redhat.com,
-	kuba@kernel.org,
-	chia-yu.chang@nokia-bell-labs.com,
-	ij@kernel.org,
-	fmancera@suse.de,
-	yuuchihsu@gmail.com,
-	idosch@nvidia.com,
-	herbert@gondor.apana.org.au,
-	yuantan098@gmail.com,
-	zcliangcn@gmail.com,
-	bird@lzu.edu.cn,
-	bronzed_45_vested@icloud.com,
-	n05ec@lzu.edu.cn
-Subject: [PATCH net 1/1] net: ipv4: bound TCP reordering sysctl writes
-Date: Thu, 11 Jun 2026 00:18:23 +0800
-Message-ID: <42cd30856907350e1b3834a3338364f9828a307b.1780979031.git.bronzed_45_vested@icloud.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <cover.1780979031.git.bronzed_45_vested@icloud.com>
-References: <cover.1780979031.git.bronzed_45_vested@icloud.com>
+Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B34E2FD1CA
+	for <netdev@vger.kernel.org>; Wed, 10 Jun 2026 16:21:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.52
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781108469; cv=pass; b=IBJiy/+DpA4TJTCiDHZanVfzoDpgSax+u6Qh4ftCHihsLVLrYo0YSvBKLbAS7rWNsv9HeFp0zQL8Iq2jqf3MB887hJ9oE/k9sX9T+/vxBf85mCYUmFp5GW1t2rMKVnhr023ii/4cZcGS20rwjZ3mVWPO2XhOGn7gLdAs9f/pNaY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781108469; c=relaxed/simple;
+	bh=WTk5/mDZtQNo5DPquJ4PcXCJffLWXG7+tDuwF629DBQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ApQi0K7dcrJ/bUvmDAL6N84DUlrxT1iJNC4pYP/BF17V8bJYa1X0SkqCPWv/vAN3biKBxFIktnxW8m2l+lmzcPqkQ3AdjW148DYr1gjcYeT1QwluK8ZAT2x6TeowVzI2J5n/+yZpUISpiRsH80DzFEITr1N7pzNC9s0pmWF/bpE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PXw6PZ8L; arc=pass smtp.client-ip=209.85.219.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PXw6PZ8L"
+Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-8cd45d4b7e2so78349226d6.2
+        for <netdev@vger.kernel.org>; Wed, 10 Jun 2026 09:21:08 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781108467; cv=none;
+        d=google.com; s=arc-20240605;
+        b=c+s9CgCWzKJdBmmQsJE+Y0uc/TPP/F7TISSRLpwBFEHX9XNDnD0nIKztEgcb2qeAcI
+         p2Sy1iONuCtXt16Hc2WL2zMwmUyw5zaAYwcNmQfXusM8oqlyrjEfkZJqUKhHyANKV0bg
+         OWGbAeKTCs20pwgVjF0sQyMp1PdU3CN8C9nnKEpkw9WFuooQtQ4ig9n2kCn/S9fD/hIn
+         t42XY9D74z4yakWnl/KpfP8+o4rX4W5K813MFpufNrpydka4FKCXMNu9N1NCu6sWZgq8
+         5bwT1CMd30cqmqXb1TNQdO48GmNzeTB47v6kIdZPlMsP9NkLewvXhV8EwybW0fXAiOly
+         k8LA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=5S96bBa+ikDq+1P/boZXClsS2QEMX5j4Nx30bMY02YQ=;
+        fh=+O9C76uBFeYivO2YhKBENwKsmImwWcG0+Cioa2hDa00=;
+        b=asINOHfQm1FJuaG8wCxEhFj2lntvBdut/MoTVNPLv6w+lLkKTpBreLe3dh3c0hpmnO
+         Mil7k/k5SDh4m+vuMd1spgasffJRh2tYk06uJlv3A0v39RnOF4FvZxSgalkAZAp9dzP5
+         d5aopnHr9Y7soW2sLYQH6AsUqEDHNdWKS0LWIVL6xkM50skuAsTp1zq15F9vY2/uhZlG
+         xBCodXy4jh16/mN6ys7fJsl3z9wYuLfGOT59hGvUipGdcdJKFDdx8Xr+NInEjul1GanJ
+         qROA2FzIDeGlW7KF6A3kgMVdG88ksJAd32V8+939IY/1A3pJCm44FDkDEroV4+ppC/uV
+         kPwQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1781108467; x=1781713267; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5S96bBa+ikDq+1P/boZXClsS2QEMX5j4Nx30bMY02YQ=;
+        b=PXw6PZ8L5zchBFHTNYOB26aRVr3CFM4SQ9pVjmCYVf3zrWMtqf2k3Eav/0GOu3OJfs
+         +HEL9A5IMPGhc2oco/thrLIMQdnxAILH9dutkoEAgD706VJ3sQWyq1Bpt72V2oFbRwX/
+         9P0dWIKhPpzaN6em2fhxiQNqY8alwsESkQTI6bBex5yp+fekBciSZZ+K+iAWqkGInRVl
+         DmZJHKi9JY5YXHlSs7e430D3bwIZvUOsYtVUZeJMgYZ0xShCdFCg9DRUjH0+jxYsfOoS
+         rfUIoai9s/O6s5gvDm2t4+AHKtLQBXOGRD4TiyriRtt+VfAAAL7S4WDA3pDw+ucwD0IK
+         gy6g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781108467; x=1781713267;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=5S96bBa+ikDq+1P/boZXClsS2QEMX5j4Nx30bMY02YQ=;
+        b=stB8sZslOmBzcCS2zMQK+9a1E7EV57T1Adz63F5d/0rn1BopCCVgF/3yISsJQwPoIc
+         zfMTRfUy5ccqPL/DuVpsWP4tNBCJKo0xwWXc4Ny03OcIqTapOjgDUon9L4kgY8fUMNmJ
+         x2tT7sUuGTrUKf+yxypm/5dC48DGY0pJy6rnsqQ0xQnmsi6+JdTUoUykC+5sOjosJ0Mb
+         b8C66Zp2Eb05tquXBQKbNAk3/ZrEPvh5fSFxxXm4n+0BWxu5fXPXZdRdchDfxT4QeQgL
+         thEwpJbWTtmFYA6mKLVHLSV49umFSdoSYrqHNcZ3Z4y66lDfll/EiVQPpuThKSCDPVNT
+         XjlA==
+X-Forwarded-Encrypted: i=1; AFNElJ/eqCy8TdjuKwE5VF0N97Vb2LGzScYC7AiR+nLjcGwEI5X9kjqZZAH7ooESxUeuoQdQVbJdpsw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzVg9wonjwJ1ClZbTBgFGWKJB3v3xwWRz/O9Vz8MTKuRCg/LuQW
+	9rOk6irzhKe8d44KZXzuVdT0JLYEvNSIdFtN0ch3hcl1F8+qQsIeH4NSqAxKTJ2TNfrB/g/RNKS
+	IUGjJsjdeV+80j4zTaSiSd4dZob3VCdwdcCGC4M2G
+X-Gm-Gg: Acq92OGcFUxUmR8RDVvcKQDLgFLEzn3kVK6cm4Qy2CbStnL9qVgTY/7atBdrdr7Uu1Y
+	MtsbFbZG4GC9bD/WhzYeeamypiw9xgesT/3dHxG7Z3LhenEgKLBkwmDWTOXDU/dlKRYHfZMBwQf
+	cDZ60K0Y0lhiO5xNd6kjzd/jpoqzorquAlWsptVpWoRAxOJM0UWkOX8NFpLTF/RwqTcIZ47jiyu
+	SaE90bPM339chhV/vDYXBUtvophtGxwMZOTtUA5VdsvFJyXIDioK4DfYVr+RDSZcAUjGtCKYCkK
+	U6H2HbQNpszp5CGO8uEjxRNJf8OCRshuYyYfH7Y447ecxTHG/+vmyNOSihW4f/YKwaZVsBamq37
+	APYzglX/w/ykND48AClljIAT8CkWlog==
+X-Received: by 2002:ac8:7fca:0:b0:517:8127:d2c2 with SMTP id
+ d75a77b69052e-51795a66bfemr376002961cf.25.1781108466526; Wed, 10 Jun 2026
+ 09:21:06 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:ywmowAB3tv5ajilqTEIfAA--.36361S3
-X-Coremail-Antispam: 1UD129KBjvJXoWxJF47CFy8Kr1rCFW3CF1xXwb_yoW5urWDpF
-	W5t3y5Kry5G34fK3s3AFWjvr1SyF4kJw13CwnrGr1SkwsrKr97CFyFqrWa9F1j9rW2kryU
-	JF1qvFyDWw4qyFDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUB01xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AE
-	w4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2
-	IY67AKxVW8JVW5JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwA2z4x0Y4vEx4A2
-	jsIE14v26r4j6F4UM28EF7xvwVC2z280aVCY1x0267AKxVW8JVW8Jr1le2I262IYc4CY6c
-	8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_
-	Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwI
-	xGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAa
-	w2AFwI0_Jw0_GFylc2xSY4AK6svPMxAIw28IcxkI7VAKI48JMxAIw28IcVCjz48v1sIEY2
-	0_Gr4l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8G
-	jcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2I
-	x0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK
-	8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I
-	0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUonmRUUUUU
-X-CM-SenderInfo: zqqvvuo6o23hxhgxhubq/1tbiAQsOCWopHlEI9gAAs-
+References: <20260609093154.2733956-1-edumazet@google.com> <20260610090540.507cd300@kernel.org>
+In-Reply-To: <20260610090540.507cd300@kernel.org>
+From: Eric Dumazet <edumazet@google.com>
+Date: Wed, 10 Jun 2026 09:20:55 -0700
+X-Gm-Features: AVVi8Cf_RYosqNWM-QNpcFhSxEH53MkinwpkYGdmcbTy1Z15yqf0ndb1iH3Ff1w
+Message-ID: <CANn89iLWoTXKbQrMFc2zDLytQMczKCr2FNZseFZoJ05_Lm=4=g@mail.gmail.com>
+Subject: Re: [PATCH net-next] ip6_tunnel: annotate data-races around
+ t->err_count and t->err_time
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: "David S . Miller" <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, Ido Schimmel <idosch@nvidia.com>, David Ahern <dsahern@kernel.org>, 
+	netdev@vger.kernel.org, eric.dumazet@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Wyatt Feng <bronzed_45_vested@icloud.com>
+On Wed, Jun 10, 2026 at 9:05=E2=80=AFAM Jakub Kicinski <kuba@kernel.org> wr=
+ote:
+>
+> On Tue,  9 Jun 2026 09:31:53 +0000 Eric Dumazet wrote:
+> > -     if (time_before(jiffies, t->err_time + IP6TUNNEL_ERR_TIMEO))
+> > -             t->err_count++;
+> > +     if (time_before(jiffies, READ_ONCE(t->err_time) + IP6TUNNEL_ERR_T=
+IMEO))
+> > +             WRITE_ONCE(t->err_count, t->err_count + 1);
+>
+> Sashiko complains about the bare t->err_count read. Is there a reason
+> you added the temp variable in xmit but not on the error side?
+>
+> Maybe an extra sentence in the commit message on why the approximate
+> correctness is okay here would also be good?
 
-Reject invalid `net.ipv4.tcp_reordering` values before they reach TCP
-socket state. The sysctl is stored as an `int` but copied into the
-`u32` `tp->reordering` field for new sockets, so negative writes wrap
-to large values.
-
-With `tcp_mtu_probing=2`, the wrapped value can overflow the
-`tcp_mtu_probe()` size calculation and drive the MTU probing path into
-an out-of-bounds read. Route `tcp_reordering` writes through
-`proc_dointvec_minmax()` and clamp them to the per-netns range
-`[1, tcp_max_reordering]`.
-
-Apply the matching cross-check to `tcp_max_reordering` so the existing
-invariant `tcp_max_reordering >= tcp_reordering` is preserved. This
-keeps the fix at the sysctl boundary and avoids changing the TCP fast
-path.
-
-Fixes: 91cc17c0e5e5 ("[TCP]: MTUprobe: receiver window & data available checks fixed")
-Cc: stable@vger.kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Zhengchuan Liang <zcliangcn@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Assisted-by: Codex:GPT-5.4
-Signed-off-by: Wyatt Feng <bronzed_45_vested@icloud.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
----
- net/ipv4/sysctl_net_ipv4.c | 38 ++++++++++++++++++++++++++++++++++++--
- 1 file changed, 36 insertions(+), 2 deletions(-)
-
-diff --git a/net/ipv4/sysctl_net_ipv4.c b/net/ipv4/sysctl_net_ipv4.c
-index c0e85cc171ae..c44afb9c321d 100644
---- a/net/ipv4/sysctl_net_ipv4.c
-+++ b/net/ipv4/sysctl_net_ipv4.c
-@@ -215,6 +215,40 @@ static int ipv4_fwd_update_priority(const struct ctl_table *table, int write,
- 	return ret;
- }
- 
-+static int proc_tcp_reordering(const struct ctl_table *table, int write,
-+			       void *buffer, size_t *lenp, loff_t *ppos)
-+{
-+	struct ctl_table tmp = {
-+		.data		= table->data,
-+		.maxlen		= table->maxlen,
-+		.mode		= table->mode,
-+		.extra1		= SYSCTL_ONE,
-+	};
-+	struct net *net;
-+
-+	net = container_of(table->data, struct net, ipv4.sysctl_tcp_reordering);
-+	tmp.extra2 = &net->ipv4.sysctl_tcp_max_reordering;
-+
-+	return proc_dointvec_minmax(&tmp, write, buffer, lenp, ppos);
-+}
-+
-+static int proc_tcp_max_reordering(const struct ctl_table *table, int write,
-+				   void *buffer, size_t *lenp, loff_t *ppos)
-+{
-+	struct ctl_table tmp = {
-+		.data		= table->data,
-+		.maxlen		= table->maxlen,
-+		.mode		= table->mode,
-+	};
-+	struct net *net;
-+
-+	net = container_of(table->data, struct net,
-+			   ipv4.sysctl_tcp_max_reordering);
-+	tmp.extra1 = &net->ipv4.sysctl_tcp_reordering;
-+
-+	return proc_dointvec_minmax(&tmp, write, buffer, lenp, ppos);
-+}
-+
- static int proc_tcp_congestion_control(const struct ctl_table *ctl, int write,
- 				       void *buffer, size_t *lenp, loff_t *ppos)
- {
-@@ -1058,7 +1092,7 @@ static struct ctl_table ipv4_net_table[] = {
- 		.data		= &init_net.ipv4.sysctl_tcp_reordering,
- 		.maxlen		= sizeof(int),
- 		.mode		= 0644,
--		.proc_handler	= proc_dointvec
-+		.proc_handler	= proc_tcp_reordering
- 	},
- 	{
- 		.procname	= "tcp_retries1",
-@@ -1293,7 +1327,7 @@ static struct ctl_table ipv4_net_table[] = {
- 		.data		= &init_net.ipv4.sysctl_tcp_max_reordering,
- 		.maxlen		= sizeof(int),
- 		.mode		= 0644,
--		.proc_handler	= proc_dointvec
-+		.proc_handler	= proc_tcp_max_reordering
- 	},
- 	{
- 		.procname	= "tcp_dsack",
--- 
-2.47.3
-
+Sashiko is right; we can have concurrent writers, so I will send a V2.
+Thanks.
