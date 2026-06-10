@@ -1,281 +1,222 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A571C244685;
-	Wed, 10 Jun 2026 19:42:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.18
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781120549; cv=fail; b=tw0ygkM65jb9Vz5tdgscAM3a++LBKCX9hUlvpfPqdZJyqo/kbHKRAHWH7vpQ1yHR6+R8HwrIFktFpxAZaEKJnD9j/glDiKdGtB1Z4vSrYq+s+fTbk52ExhnbaGHSzRLoi34qW1hL8414FxeGRE5rSM0BzhMFxkA7AxHOy7A2XM8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781120549; c=relaxed/simple;
-	bh=q/0EVvTDwtl6Vt+tzAIWa6wwjCJGfBOMQFCyiSVO3f8=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=Ewcn2UxxXlWWawOj9zsmaAPaPqr6uA3Q/W5zTWnSht3XrHp3r9kcoFyF26fT2hEiJd0J4v3/CGM2PrKu9/ryx/8uHTp+mPNgB2mFtCfVADDe9gfGnPeoPClqtEpevBBlYkz9LVUJQg7y5t6UoM57kdmMxrba0KAV5SRUlchpFI8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IfhbuNZe; arc=fail smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F90B3793BF;
+	Wed, 10 Jun 2026 19:42:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.19
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781120555; cv=none; b=FTkW5jtWlqPsszIuqtzIBp3FckwvFiXlHUJw/ozqmUzbc84xvSBmf0QJhUjT2fKUAOX8Ix6obLnu2ZZWREnekuZEi2H9TQdIKtPOOcNsnw6DbdhhP4pFN4dx92Ls3vuV3JvE9Bt3zKwR2YkFBE/w3U5t0GEa462poCiSkLH70R8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781120555; c=relaxed/simple;
+	bh=9iFvjJ2PJ/Jac0i+t1AF2VXApCbG1WRZTP8GuKtN9Z0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=hjnDdmrVBm1MHUzetZwWvM9B3Ry03qDFB1QVIQiyDrbMjGqqyjKYS9VpWdRxfgblyx7B28ZtFGnkRJAGO88y8Sf2/nc1JtvNQeQzlWcbdPfxVaL+JXvMFHiPrRHclQ8Bf24RzXHPxiT/7gxz324m6L1x+bTrwompQFafbjVkuVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=markus.stockhausen@gmx.de header.b=X5ztV0D2; arc=none smtp.client-ip=212.227.15.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IfhbuNZe"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1781120547; x=1812656547;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=q/0EVvTDwtl6Vt+tzAIWa6wwjCJGfBOMQFCyiSVO3f8=;
-  b=IfhbuNZefj8GY7ezElo0OU1N6djDoWb9a9rz2zHYYbegkOTTSfYxyzds
-   LsMBQw4Ogioz5BhcyeIqNZFAej4zq0uFUAcrjfr0J+rzBnl/93llpknGy
-   uLRtAyC+EK3cdq+IOKUTp3eqiVzwUelhAxIV+3TqAZQaM+eEHwzaSVNod
-   rUJJmA0j88EaW2OSeFQchDsgEAbm5eKosGfryvWYVqnNx6qnizg6jV6YF
-   FVrfKc7cxqv9MZhPKkY74VXmzu9KefvqjSDGs59jRhZhHMaFESIBWhdZj
-   nCFMh03Q8LqAc+ucEctB1iyrM93/nJgpQlNnkJ6DOWgpUv8hnqNs6Yii7
-   Q==;
-X-CSE-ConnectionGUID: QNwciNkuQ8aZuoSd3r2+ew==
-X-CSE-MsgGUID: iqYEA6VHSIybYV63Cs86hg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11813"; a="81058379"
-X-IronPort-AV: E=Sophos;i="6.24,197,1774335600"; 
-   d="scan'208";a="81058379"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2026 12:42:27 -0700
-X-CSE-ConnectionGUID: rSSgURzWT5yWsgHy0MK3lA==
-X-CSE-MsgGUID: YCHQrI9zTeaGx6E9a1GM8A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,197,1774335600"; 
-   d="scan'208";a="246124274"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
-  by orviesa008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2026 12:42:26 -0700
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Wed, 10 Jun 2026 12:42:25 -0700
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Wed, 10 Jun 2026 12:42:25 -0700
-Received: from CY7PR03CU001.outbound.protection.outlook.com (40.93.198.40) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Wed, 10 Jun 2026 12:42:24 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=x1ejAj4iDjCYlTTOpjpOSAdGuS3ScNE5po92NYbS1dEHX1ZGQ1OXE0RzmUpVFGww0k/hPlDwSQS7cVYYisUYSbwmjO5gRw4x4yTnVEbCwE5ffPcfb3v2FQYK40oXwFeq431tQRJnF0HL5AeZGsift2qAdOE8eMD87xWzIR4Xo2s5xpfWgE2qMvRtYA49Jpal8uiUd4wPHv2KsVQo/eN5KVjqduwr9dGVj6S1RbHKyDY9bWOtZZDFsXuo5RG+jMsveNxYmfXfP3TKaSfEfOq8miwhykaAv3VPgYShMF+yKqF/E/y4Mgr3b0M4uFUtV/bh4Yrml11eTkxZVL6tUyIPeQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=x7qIe00VFIM7Zrb83Nbf7GlVckulIVFssDf4v3f/pZs=;
- b=hQCQDvdy5k0G5GhGJ4JbuLf5UcT+70/tGI+lZG1sz6FDULq+DFxMUc0NEs7iC3pismKL8UmgUYAxRKDnaUdezyClUQYgb1rqaFeRJ04Ojyjv6cAguTj5+BaRGZCHy7bemHyiNhxR02Sit1pJWxIk3B3dRMefqLw2+LANIjWM3e8/0DEi5yrU2ZjbvrAg1ptMCju5n+40/8/4WptIJYgppNObDXsOEvngpWafBJgqwfgAqoAtBXioqhdsErB6QJT7IulVNnVlnLt/743R+7cQrUtUmdgP0qAVl+KELPztW/5ntCjkP3twihEMba874AGELlnZ8d9U5b0leRApxRRAQg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from IA1PR11MB6219.namprd11.prod.outlook.com (2603:10b6:208:3e9::15)
- by SN7PR11MB7091.namprd11.prod.outlook.com (2603:10b6:806:29a::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.13; Wed, 10 Jun
- 2026 19:42:20 +0000
-Received: from IA1PR11MB6219.namprd11.prod.outlook.com
- ([fe80::a2b9:8e8:c48b:ea31]) by IA1PR11MB6219.namprd11.prod.outlook.com
- ([fe80::a2b9:8e8:c48b:ea31%5]) with mapi id 15.21.0092.011; Wed, 10 Jun 2026
- 19:42:20 +0000
-From: "Nitka, Grzegorz" <grzegorz.nitka@intel.com>
-To: "Nitka, Grzegorz" <grzegorz.nitka@intel.com>, "Kubalewski, Arkadiusz"
-	<arkadiusz.kubalewski@intel.com>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>
-CC: "Vecera, Ivan" <ivecera@redhat.com>, "vadim.fedorenko@linux.dev"
-	<vadim.fedorenko@linux.dev>, "kuba@kernel.org" <kuba@kernel.org>,
-	"jiri@resnulli.us" <jiri@resnulli.us>, "edumazet@google.com"
-	<edumazet@google.com>, "Kitszel, Przemyslaw" <przemyslaw.kitszel@intel.com>,
-	"richardcochran@gmail.com" <richardcochran@gmail.com>,
-	"donald.hunter@gmail.com" <donald.hunter@gmail.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
-	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
-	"horms@kernel.org" <horms@kernel.org>, "Prathosh.Satish@microchip.com"
-	<Prathosh.Satish@microchip.com>, "Nguyen, Anthony L"
-	<anthony.l.nguyen@intel.com>, "pabeni@redhat.com" <pabeni@redhat.com>,
-	"davem@davemloft.net" <davem@davemloft.net>
-Subject: RE: [PATCH v14 net-next 04/13] dpll: send delete notification before
- unregister in on-pin rollback
-Thread-Topic: [PATCH v14 net-next 04/13] dpll: send delete notification before
- unregister in on-pin rollback
-Thread-Index: AQHc9qx1WAOADYOsh0eBk268hx/sxrY03vWAgADwD5CAAOECgA==
-Date: Wed, 10 Jun 2026 19:42:19 +0000
-Message-ID: <IA1PR11MB62193E85F10A8ADD43343946921A2@IA1PR11MB6219.namprd11.prod.outlook.com>
-References: <20260607183045.1213735-1-grzegorz.nitka@intel.com>
- <20260607183045.1213735-5-grzegorz.nitka@intel.com>
- <CH0PR11MB539452AD940A13941ED1E6D69B1C2@CH0PR11MB5394.namprd11.prod.outlook.com>
- <IA1PR11MB621956E9C0B9EBBD32C8A332921D2@IA1PR11MB6219.namprd11.prod.outlook.com>
-In-Reply-To: <IA1PR11MB621956E9C0B9EBBD32C8A332921D2@IA1PR11MB6219.namprd11.prod.outlook.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: IA1PR11MB6219:EE_|SN7PR11MB7091:EE_
-x-ms-office365-filtering-correlation-id: 21f5546a-7637-4ac5-5b08-08dec72862a3
-x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|23010399003|1800799024|7416014|376014|366016|22082099003|18002099003|6133799003|56012099006|11063799006|4143699003|38070700021;
-x-microsoft-antispam-message-info: a1e7NewNC6fStH17btnq6gAyTN2sXcEJ16XfHI8vO2kZUP0uFWEQ6+8gX1/qpeGBe9YoOFUeOTf4GWORmxTAXV4+BzrGmlrl3cvQX829LhqSwM064eJhAZbAMIZZI+6oZuXFZ4vpZO/+syYd02l4rbOrv3SnkTyiBNOQyVqajnAWVykH65flaQpCgGDaDvBLL2P/M18NYSWUUJrtWmbxB1DfA6MQSj8rQH+ObAdOBPGnV/SeHtQ13nDxn4hnBJHdKWCc1d0KxgBG60kRTflXGmLGUy3i4lBpgGVQBFxISBhOGZSBzOjpwrvDh2bRmZNLCLAuURWnxzPip4cLdqUiBxzy+8nTRQP0jlpLbYZw/CKcuWWc8RE2rsbLZOQNQzgqlT92Dp2LJBr9bdargEic1G1xe2vizIeRd/hVeHJdBzEmN5DQtCfaozAWil5ZDnWrPFRnuxuDugV7s7yabldsYvtpZ/2Bw8Dl6Wvr0hrmsMle2oP3Wi6MDctj0+KctUdLbZvqouDBWb829kC/V/ErQQhimqSzl7qcIjBtH8BLjJG2+Gxm65oR7p9QD+iJU/xmqQQLxmZWy3y28e8A7gzuupupYQm1FY5rwmKXSeuF1F+xmZtQmxgTf5RbZ2+Gow+tou3LTj39xYzy5ZGTKHbVKTU3qD/xrFDsEVTypjdt5HWWb21VgqB3VpXrrv3jrRuF5y/NqZmjbENw5gp5g9hav9Gsym0mpuLeJDbf4biJUdeWfF0DJyJp7ta3zvqP6WnJ
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA1PR11MB6219.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(7416014)(376014)(366016)(22082099003)(18002099003)(6133799003)(56012099006)(11063799006)(4143699003)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?Cu8hTaZxFz4goggKMQTMjQjimZd+Ei+nQJ+hJy58oyFVhphpw4xG26ZtwvEE?=
- =?us-ascii?Q?TSFVsxSGS3JY5pC1/5lGLsGPmndAQefhL3HK+H+HXAEvR7FfIj+WVyMSxhEk?=
- =?us-ascii?Q?1GgQNowJI9JKJ/ThwEyI04rT4W3f1iw6sx+pHvyUCEr0WxxV/t0as0daAmPa?=
- =?us-ascii?Q?Ymd+MXAGzBSgb6SLD55VJYlg6qs3cMPWAjsUovZxmYpIIQSELfYV5W88Y3KU?=
- =?us-ascii?Q?M5J1YsbzSd95K2yH9UO+CpPizQOe+SxVMQHnkty3Cd/4TljVwMxLpH0f1kgX?=
- =?us-ascii?Q?lx89ntLbFqYv+uO3d1rJESK2izNFV/83dcKFr9C/B6xMshDnJrRYQ4oVaYLt?=
- =?us-ascii?Q?J7cQlZe2hZuQaKxdmVwsHWSUyDcQGxGynEdyHEEB1IDJZ50BPQ3iJrBpRp5V?=
- =?us-ascii?Q?l2gPYSaabf7j0OQ837IDBija6SsmwiytjPEY9n9rUbie5vw+fA9+ftyMkSvs?=
- =?us-ascii?Q?5+qfXpah8Vacsa1kXHmA9Dt5sMIj7xyouk4Wm2zs4kahFf46yuK4vwa3SXjN?=
- =?us-ascii?Q?67F95CuGzJimDDfynexegkmc13KFjSBRn9pyg8pIZHf8Iz7jaM74REz0Cfvl?=
- =?us-ascii?Q?viNM2WT0ZCOV5Ib8+wzDDPCk2YWOvOdac003QD8ksxCWB56IyZotPbnGrytn?=
- =?us-ascii?Q?g4jloyvu68zO4K4NFAlt2U1nNuPZ4OSp2VhwxZAv8wj+zEqCBQV8mcDdSn7/?=
- =?us-ascii?Q?ps3HbMmGT64g5knBNMsgE3M3NhgoGjBdu0Wv4jddzSs+yylBHBDe+2rTsoRp?=
- =?us-ascii?Q?xakdCrNTS0KaKnDu4IHd7uh/z4Q/cFJCnSggCUSLIYzksX9wA+W2ILsQ/2Zt?=
- =?us-ascii?Q?77aGn8O+/UXFMhopZ/odLwtOiYIVaU4i51Y+Ft8Z5Rkjc4RDB1s4Ob1hUvuT?=
- =?us-ascii?Q?ZRgHW8KiDT6Qhf6k8xx4bSHxgbhPFtIkvygMTi1CahY76jmWg4X8MF536Yz6?=
- =?us-ascii?Q?LfR7grK5mYC/gfDntTw/dyDHhi1LfUPAANl+TI89PRehVo8aYk08i79rcfJ1?=
- =?us-ascii?Q?yB63Ffa4BH+VFnTRvPohJbTvLPAOXu8m3KXQQin8x5KnqU86WC+qLyBbQKm0?=
- =?us-ascii?Q?seWiN7bwv1ooOFZb58mILdUrENKXZ/BBhq6mQsC9ZY+QfVppFj9oXxTgr/l+?=
- =?us-ascii?Q?bxNMgaXIfFHstLn6mNeLClh3zEe6geSgazw3hgKtXGfhTngSJ3YPxriSmD95?=
- =?us-ascii?Q?YErEd1E3Dwm/OfzABZh2r1sGhkjKVgo+VehtA9eczcCe4QA/egz7aE86vkVz?=
- =?us-ascii?Q?Pt+x7PgI6LLwFs5S7e7xF7vvHRF7JbnyfgXqgPyvBt4VrKuW8Iv5i0jwGA4R?=
- =?us-ascii?Q?5v5SvUfCl7yNlcaqQblCwLOE3BT0rGd/T+UXBs4tQQmGSHVDlS5R54Hqlbpu?=
- =?us-ascii?Q?DB0wwtQI6LJl5mDDgaebl2stsGdSmox/aHIt7hfrJAlxXRCOeDJ0xS990LTt?=
- =?us-ascii?Q?xOm6rlBBka16hDZWXCZpBqdGqEN2S0k1FOcOTylVh5dQuXai7PuBBY9y5Lr9?=
- =?us-ascii?Q?tZw9FM1Yqqw65FpEGWJrq8c73jUqw1LL0OZIe+rQg7UwChp5f8LenIrN3lbb?=
- =?us-ascii?Q?afoxFFv34JHkeWaU4KmjQOQVOOFHpWda/wYh0MVPAe3DyJXq1NedIgCcAqPA?=
- =?us-ascii?Q?D9i4hO0v34ij3nuiD1NHQHt9UmxK2DqVFENcOnfKanAPRQi2H0I0QgdWsa/h?=
- =?us-ascii?Q?gyf+LZ8APicpU6DKvEm8dFb7NuScJnGOBTtbO01x+oQfPRh18C2qEkKAkyII?=
- =?us-ascii?Q?mwMvKiJYoQ=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=markus.stockhausen@gmx.de header.b="X5ztV0D2"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1781120524; x=1781725324;
+	i=markus.stockhausen@gmx.de;
+	bh=ni0ttP217i84F4X2nAN9r76/QQ77c4cSyqiQ5/uyHgk=;
+	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-ID:In-Reply-To:
+	 References:MIME-Version:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=X5ztV0D2X8FmHlnuLFvpfMvgXb+01fNfkTdfqZv7c4KQwqxIfeBG1DmNv0I6YLRy
+	 oSX8MTB2ZTjH49v3gyVGkfUQ3YeMw3ycJmbDzFLYC8hi8FmDLwZS0ueJoMK7mLPku
+	 GVhY6nCnmk3zxHr8I1jJQhCtuMsMi1J+zcN4QDpJd36c8ToFr6h+wzCk/OGxu374V
+	 IrUiX9WUmVGC4m8vNlQyJPe7fSWdZeHtO4B/iolGpM5jblNLPGNXJtZRsFlFgzJKM
+	 34+pJMl9cBU6Eo9dP37kVtDBgLMwu+KNqmFay5mk6RqP16KwMkoKgHE8OVK0BLddN
+	 Q1jrSs8YLBGXS6Eyhw==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from client.hidden.invalid by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MOiHl-1wsbvX1tAV-00N4F6; Wed, 10
+ Jun 2026 21:42:04 +0200
+From: Markus Stockhausen <markus.stockhausen@gmx.de>
+To: andrew@lunn.ch,
+	hkallweit1@gmail.com,
+	linux@armlinux.org.uk,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org,
+	chris.packham@alliedtelesis.co.nz,
+	daniel@makrotopia.org,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	devicetree@vger.kernel.org
+Cc: Markus Stockhausen <markus.stockhausen@gmx.de>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>
+Subject: [PATCH net-next v3 3/5] net: mdio: realtek-rtl9300: Make otto_emdio_read_cmd() generic
+Date: Wed, 10 Jun 2026 21:41:43 +0200
+Message-ID: <20260610194145.4153668-4-markus.stockhausen@gmx.de>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260610194145.4153668-1-markus.stockhausen@gmx.de>
+References: <20260610194145.4153668-1-markus.stockhausen@gmx.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: n3sEQXrT60kxIcj7FNPuyQsLkQLGYhFmxbcbbzqDHZVzmnXCH7b4JmPQK1kljKDnzD7XWK4dzh0vnyLa1y8gteouP/0KS67f/LZHoIQ6gcEAyAgfuKxH5OzT/cMH/0xeUUvK6qQK0dlt9f23pW3AfewqlQZybd0EIMgQp4D1TeII42gTNG51pkD3T0QBtU9gsA0SX2p4Mk604nyGbC9mlVjRvCGDQDv+TAHZX54gnky+oL8hSmFTMVaZ2ejkQ5TCQFOzUoj4rcHkEYugAoafUB5g8cpMQ7v48r/22sDUc1ZE5eU+QMCpg9S360RzkOX/Lo7LMLf4GMhwSOl9IIuh8g==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: IA1PR11MB6219.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 21f5546a-7637-4ac5-5b08-08dec72862a3
-X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Jun 2026 19:42:20.0325
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: tzV61h/cjKgsYzyY4e6GggRk0KBP4z7zM7YYULz+93M+TceWwfY4NTpQqGBnJzp5m4iQTUNb/k6RqImYaRwUNe9Wq/H1C/+9QoK+KB5s8Ro=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR11MB7091
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:oYhGrbPaY1TkHbKPCy2r1sO5EkVGRSuKMIkHWP2n452rXD1t08K
+ MRd2D/TAdvhbE+aKRXkIQHGONDPXlJlhuZpoVZ6BvN9+/u4v27dV1DkhMzphtx3wDoGmB9t
+ w6eLEgY/Zdk9/Kfc6N7XO5gvwYFwAVlEaFkEYiG1JxR3nY3BMguowOPdkDGXAdBVcJ6YxdF
+ +apytcoNkDvqlfNn3DCSA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:WgJG+beXqAA=;RifoAogJzZ9Hn/FVHUz1Bi0B+1z
+ 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
+ +5cafJz+bzTrSxvPfnzzFrpWuyeuPJhvzBp4+hY
 
+The otto_emdio_read_cmd() helper still uses RTL9300 specific properties.
+This cannot be made generic as the I/O register has different layouts for
+the different SoCs. E.g.
 
+- RTL930x: data in bits 31-16, data out bits 15-0
+- RTL931x: data in bits 15-0, data out bits 31-16
 
-> -----Original Message-----
-> From: Intel-wired-lan <intel-wired-lan-bounces@osuosl.org> On Behalf Of
-> Nitka, Grzegorz
-> Sent: Tuesday, June 9, 2026 9:10 AM
-> To: Kubalewski, Arkadiusz <arkadiusz.kubalewski@intel.com>;
-> netdev@vger.kernel.org
-> Cc: Vecera, Ivan <ivecera@redhat.com>; vadim.fedorenko@linux.dev;
-> kuba@kernel.org; jiri@resnulli.us; edumazet@google.com; Kitszel,
-> Przemyslaw <przemyslaw.kitszel@intel.com>; richardcochran@gmail.com;
-> donald.hunter@gmail.com; linux-kernel@vger.kernel.org;
-> andrew+netdev@lunn.ch; intel-wired-lan@lists.osuosl.org;
-> horms@kernel.org; Prathosh.Satish@microchip.com; Nguyen, Anthony L
-> <anthony.l.nguyen@intel.com>; pabeni@redhat.com; davem@davemloft.net
-> Subject: Re: [Intel-wired-lan] [PATCH v14 net-next 04/13] dpll: send dele=
-te
-> notification before unregister in on-pin rollback
->=20
->=20
->=20
-> > -----Original Message-----
-> > From: Kubalewski, Arkadiusz <arkadiusz.kubalewski@intel.com>
-> > Sent: Monday, June 8, 2026 6:45 PM
-> > To: Nitka, Grzegorz <grzegorz.nitka@intel.com>; netdev@vger.kernel.org
-> > Cc: linux-kernel@vger.kernel.org; intel-wired-lan@lists.osuosl.org; Oro=
-s,
-> Petr
-> > <poros@redhat.com>; richardcochran@gmail.com;
-> andrew+netdev@lunn.ch;
-> > Kitszel, Przemyslaw <przemyslaw.kitszel@intel.com>; Nguyen, Anthony L
-> > <anthony.l.nguyen@intel.com>; Prathosh.Satish@microchip.com; Vecera,
-> > Ivan <ivecera@redhat.com>; jiri@resnulli.us; vadim.fedorenko@linux.dev;
-> > donald.hunter@gmail.com; horms@kernel.org; pabeni@redhat.com;
-> > kuba@kernel.org; davem@davemloft.net; edumazet@google.com
-> > Subject: RE: [PATCH v14 net-next 04/13] dpll: send delete notification
-> before
-> > unregister in on-pin rollback
-> >
-> > >From: Nitka, Grzegorz <grzegorz.nitka@intel.com>
-> > >Sent: Sunday, June 7, 2026 8:31 PM
-> > >
-> > >The rollback path in dpll_pin_on_pin_register() called
-> > >__dpll_pin_unregister() before dpll_pin_delete_ntf(). When the
-> > >unregister dropped the pin's last DPLL reference it cleared the
-> > >DPLL_REGISTERED mark in dpll_pin_xa, so the subsequent
-> > >dpll_pin_event_send() failed dpll_pin_available() and aborted with
-> > >-ENODEV. As a result userspace was never notified of the rollback
-> > >deletion and remained out of sync with the kernel.
-> > >
-> > >Send the delete notification first, matching the order used by
-> > >dpll_pin_unregister() and dpll_pin_on_pin_unregister().
-> > >
-> > >Fixes: 9d71b54b65b1 ("dpll: netlink: Add DPLL framework base functions=
-")
-> > >Signed-off-by: Grzegorz Nitka <grzegorz.nitka@intel.com>
-> > >---
-> > > drivers/dpll/dpll_core.c | 2 +-
-> > > 1 file changed, 1 insertion(+), 1 deletion(-)
-> > >
-> > >diff --git a/drivers/dpll/dpll_core.c b/drivers/dpll/dpll_core.c
-> > >index cea7e2be2cbc..80195f3a84f3 100644
-> > >--- a/drivers/dpll/dpll_core.c
-> > >+++ b/drivers/dpll/dpll_core.c
-> > >@@ -1007,9 +1007,9 @@ int dpll_pin_on_pin_register(struct dpll_pin
-> > >*parent, struct dpll_pin *pin,
-> > > dpll_unregister:
-> > > 	xa_for_each(&parent->dpll_refs, i, ref)
-> > > 		if (i < stop) {
-> > >+			dpll_pin_delete_ntf(pin);
-> > > 			__dpll_pin_unregister(ref->dpll, pin, ops, priv,
-> > > 					      parent);
-> > >-			dpll_pin_delete_ntf(pin);
-> >
-> > Hey Grzegorz,
-> >
-> > Since patch 7/13 this is already part of __dpll_pin_unregister ?
-> > The call should be removed at all? Please make sure all calls to
-> > __dpll_pin_unregister(..) are aware of that, also maybe better to
-> > put this all related to one patch?
-> >
->=20
-> Yes, I think this patch is a good candidate to squash with 7/13 (with
-> proper commit message edit).
-> Same 'Fixes' tag and both touch notifications fix.
->=20
-> Thanks
->=20
-> Grzegorz
+Add a mask parameter to the function signature and fill it properly
+in the callers. As the masks will always have bits set from constant
+defines, there is no need for a consistency check.
 
-Hi Arek,
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Signed-off-by: Markus Stockhausen <markus.stockhausen@gmx.de>
+=2D--
+ drivers/net/mdio/mdio-realtek-rtl9300.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-I revisited your comment, from the perspective of redundant calls
-to dpll_pin_delete_ntf after patch 7/13 is applied to.
-Yes, there are still 2 "redundant" calls to dpll_pin_delete_ntf on top of _=
-_dpll_pin_unregister.
-I'm going to send v14 with this fix and reordered commits in the patchset (=
-7/13 moved up).
-
-Regards
-
-Grzegorz
-
-> > > 		}
-> > > 	dpll_xa_ref_pin_del(&pin->parent_refs, parent, ops, priv, pin);
-> > > unlock:
-> > >--
-> > >2.39.3
+diff --git a/drivers/net/mdio/mdio-realtek-rtl9300.c b/drivers/net/mdio/md=
+io-realtek-rtl9300.c
+index 007a07136fa1..5aa447ed6424 100644
+=2D-- a/drivers/net/mdio/mdio-realtek-rtl9300.c
++++ b/drivers/net/mdio/mdio-realtek-rtl9300.c
+@@ -191,7 +191,7 @@ static int otto_emdio_run_cmd(struct mii_bus *bus, u32=
+ cmd,
+ }
+=20
+ static int otto_emdio_read_cmd(struct mii_bus *bus, u32 cmd,
+-			       struct otto_emdio_cmd_regs *cmd_data, u32 *value)
++			       struct otto_emdio_cmd_regs *cmd_data, u32 mask, u32 *value)
+ {
+ 	struct otto_emdio_priv *priv =3D otto_emdio_bus_to_priv(bus);
+ 	int ret;
+@@ -205,7 +205,7 @@ static int otto_emdio_read_cmd(struct mii_bus *bus, u3=
+2 cmd,
+ 	if (ret)
+ 		return ret;
+=20
+-	*value =3D FIELD_GET(RTL9300_PHY_CTRL_DATA, *value);
++	*value =3D field_get(mask, *value);
+=20
+ 	return 0;
+ }
+@@ -230,7 +230,8 @@ static int otto_emdio_9300_read_c22(struct mii_bus *bu=
+s, int port, int regnum, u
+ 		.io_data	=3D FIELD_PREP(RTL9300_PHY_CTRL_INDATA, port),
+ 	};
+=20
+-	return otto_emdio_read_cmd(bus, RTL9300_PHY_CTRL_TYPE_C22, &cmd_data, va=
+lue);
++	return otto_emdio_read_cmd(bus, RTL9300_PHY_CTRL_TYPE_C22, &cmd_data,
++				   RTL9300_PHY_CTRL_DATA, value);
+ }
+=20
+ static int otto_emdio_9300_write_c22(struct mii_bus *bus, int port, int r=
+egnum, u16 value)
+@@ -256,7 +257,8 @@ static int otto_emdio_9300_read_c45(struct mii_bus *bu=
+s, int port,
+ 		.io_data	=3D FIELD_PREP(RTL9300_PHY_CTRL_INDATA, port),
+ 	};
+=20
+-	return otto_emdio_read_cmd(bus, RTL9300_PHY_CTRL_TYPE_C45, &cmd_data, va=
+lue);
++	return otto_emdio_read_cmd(bus, RTL9300_PHY_CTRL_TYPE_C45, &cmd_data,
++				   RTL9300_PHY_CTRL_DATA, value);
+ }
+=20
+ static int otto_emdio_9300_write_c45(struct mii_bus *bus, int port,
+=2D-=20
+2.54.0
 
