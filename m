@@ -1,488 +1,66 @@
-Received: from mail.eswincomputing.com (mail.eswincomputing.com [123.124.195.78])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45B83264A9D;
-	Wed, 10 Jun 2026 01:32:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=123.124.195.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38E652BE033;
+	Wed, 10 Jun 2026 01:37:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781055165; cv=none; b=KVPR/tB+4cTA2uT5Wx4UCOErqTuDrvjjoe+JHVoTvEdIGrmT6/bSicEQz/o7T05fGWNhxsV2YNoDYGkinquYki/s16StHXBbRsjQ90Ct26Z7XmZIDhOr9cK9vaZXIsLRYmrV326QjOVZXZORmiMDHtOgSBWadP+FAWDWrlxoHJg=
+	t=1781055438; cv=none; b=of2CKfFT839YufwGGV9I5enYsacz/575dzJYHyV6pSIiUiv+3PmxvRGtQd3rtdYygqVU06D3M+F/w37y1Yc/UnG7jseG8ZRn27C2pYvvNxfuADGCrZsolWxCg9f/hK5/T1aBn8G/qvImFXMHVM90PbtA21hCN5HAE6RVejo74ZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781055165; c=relaxed/simple;
-	bh=jYYIResz2pwTYuOUSj8NJjtteeEO46bwEgp5v6qW/yg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fWVYsIhDPHkcL5+8gCw8xuKaMjFtdVoeNwIZqonJkTfScNTnJW4RqJcdRi2WqzdS0NnDRDUdcf62RqjESkqVtoTZOlpDjGbw/2yZIMxoaGMbo+dQkEm/z9exGlPrhUvSo/UKkABqbK6tTvhEFJfH/Qfs+NHiyo4kxc/PW7kJB/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=eswincomputing.com; spf=pass smtp.mailfrom=eswincomputing.com; arc=none smtp.client-ip=123.124.195.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=eswincomputing.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=eswincomputing.com
-Received: from E0004057DT.eswin.cn (unknown [10.11.96.26])
-	by app1 (Coremail) with SMTP id TAJkCgA32XKnvihqQJQlAA--.2890S2;
-	Wed, 10 Jun 2026 09:32:25 +0800 (CST)
-From: lizhi2@eswincomputing.com
-To: devicetree@vger.kernel.org,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	mcoquelin.stm32@gmail.com,
-	alexandre.torgue@foss.st.com,
-	rmk+kernel@armlinux.org.uk,
-	pjw@kernel.org,
-	palmer@dabbelt.com,
-	aou@eecs.berkeley.edu,
-	alex@ghiti.fr,
-	linux-riscv@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	maxime.chevallier@bootlin.com
-Cc: ningyu@eswincomputing.com,
-	linmin@eswincomputing.com,
-	pinkesh.vaghela@einfochips.com,
-	pritesh.patel@einfochips.com,
-	weishangjuan@eswincomputing.com,
-	horms@kernel.org,
-	lee@kernel.org,
-	Zhi Li <lizhi2@eswincomputing.com>
-Subject: [PATCH net-next v8 6/6] riscv: dts: eswin: eic7700-hifive-premier-p550: enable Ethernet controller
-Date: Wed, 10 Jun 2026 09:32:23 +0800
-Message-ID: <20260610013223.972-1-lizhi2@eswincomputing.com>
-X-Mailer: git-send-email 2.52.0.windows.1
-In-Reply-To: <20260610012727.848-1-lizhi2@eswincomputing.com>
-References: <20260610012727.848-1-lizhi2@eswincomputing.com>
+	s=arc-20240116; t=1781055438; c=relaxed/simple;
+	bh=m55+gK7sZpsKWCJFxXo8IOEm873NXSSucsIWi9IY8S0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=DXS2bXCJPj7KkJgpSzriZ7/4v6F1uyt6l7c6FzooTNwtemqXERqu1hOifIpTJWJulrKRF+h6A043Vjg/12m0D8gcl3Zh8PkLvvBd2dPtjHs77zRf+KEFb7Ly2csB+CVrUQMW1pkFLbybakCiWly15fRAIEQwysVKMgVtvJqhf+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XT37wAKu; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XT37wAKu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 608391F00893;
+	Wed, 10 Jun 2026 01:37:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781055436;
+	bh=oj+3BrWIohO8/102gzT0FtplulPKa4TBCTbQ5ava1A0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=XT37wAKuDJUqM0FtoBBj1B9u7+lLwkWs/MTQNoggeRTqpCUa+WqL4F1k1PjQ0e3C9
+	 Lxl6uRoOL04d6s/jaF/HcTLsdP6ERV6YAwkINUTgUa5oyhYrp8JGLfKtSKr5LcsDrD
+	 22oW6bIfTBMyLfq5kSKbxZ0gUMelnnyVZWViM9U1qUHmKX/O5KqM06mRd8agSiwlKx
+	 NVNz7AfRguZkG/U8ohRASXWhtmO/Az9NNMC9oOPKY6qNVaimbxqMDA00yQTn7kpAzv
+	 R2IArgRniPbCsk2GZUy5rI3GFttPHF/22hvoWJSlgGQHHmPHtrl2J2f5Zdaa0MawDY
+	 qqCRtw21KYTZQ==
+Date: Tue, 9 Jun 2026 18:37:15 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon
+ Horman <horms@kernel.org>, Kees Cook <kees@kernel.org>,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, Yuxiang Yang
+ <yangyx22@mails.tsinghua.edu.cn>, Ao Wang <wangao@seu.edu.cn>, Xuewei Feng
+ <fengxw06@126.com>, Qi Li <qli01@tsinghua.edu.cn>, Ke Xu
+ <xuke@tsinghua.edu.cn>
+Subject: Re: [PATCH net] vlan: prevent cross-netns promisc/allmulti
+ propagation
+Message-ID: <20260609183715.006f7bd4@kernel.org>
+In-Reply-To: <20260607113529.98178-1-zhaoyz24@mails.tsinghua.edu.cn>
+References: <20260607113529.98178-1-zhaoyz24@mails.tsinghua.edu.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:TAJkCgA32XKnvihqQJQlAA--.2890S2
-X-Coremail-Antispam: 1UD129KBjvJXoW3JF45GryxJr1fXr1DGFWkXrb_yoW3Kr4kpa
-	13urWfJr4kZFWSvw4jvF40kFZrGan7KFykCrnrtFy8Jw1v9FnYk34jqFy5XF1DZrW5Xw13
-	XFnrJ34IyF1Iy3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUBG14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4U
-	JVW0owA2z4x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
-	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
-	2Ix0cI8IcVAFwI0_JF0_Jw1lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJV
-	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2
-	Y2ka0xkIwI1lw4CEc2x0rVAKj4xxMxkF7I0En4kS14v26r4a6rW5MxkIecxEwVCm-wCF04
-	k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18
-	MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr4
-	1lIxAIcVC0I7IYx2IY67AKxVWUCVW8JwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr1j6F4U
-	JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcV
-	C2z280aVCY1x0267AKxVW8Jr0_Cr1UYxBIdaVFxhVjvjDU0xZFpf9x0pRQ6p9UUUUU=
-X-CM-SenderInfo: xol2xx2s6h245lqf0zpsxwx03jof0z/
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-From: Zhi Li <lizhi2@eswincomputing.com>
+On Sun,  7 Jun 2026 19:35:28 +0800 Yizhou Zhao wrote:
+> vlan_dev_change_rx_flags() propagates IFF_PROMISC and IFF_ALLMULTI
+> changes from a VLAN device to its real device. If the VLAN device has
+> been moved to another network namespace, a user with CAP_NET_ADMIN in
+> that namespace can toggle these flags on the VLAN device and change the
+> promiscuity/allmulti counters on the real device in the original
+> namespace.
 
-Enable the on-board Gigabit Ethernet controller on the
-HiFive Premier P550 development board.
+I'd think that's expected. There's a higher chance this patch will
+break someone's intentional setup than prevent an issue...
 
-Signed-off-by: Zhi Li <lizhi2@eswincomputing.com>
----
- .../dts/eswin/eic7700-hifive-premier-p550.dts | 240 ++++++++++++++++++
- arch/riscv/boot/dts/eswin/eic7700.dtsi        | 105 ++++++++
- 2 files changed, 345 insertions(+)
-
-diff --git a/arch/riscv/boot/dts/eswin/eic7700-hifive-premier-p550.dts b/arch/riscv/boot/dts/eswin/eic7700-hifive-premier-p550.dts
-index 131ed1fc6b2e..edd91b04e251 100644
---- a/arch/riscv/boot/dts/eswin/eic7700-hifive-premier-p550.dts
-+++ b/arch/riscv/boot/dts/eswin/eic7700-hifive-premier-p550.dts
-@@ -13,11 +13,251 @@ / {
- 
- 	aliases {
- 		serial0 = &uart0;
-+		ethernet0 = &gmac0;
-+		ethernet1 = &gmac1;
- 	};
- 
- 	chosen {
- 		stdout-path = "serial0:115200n8";
- 	};
-+
-+	vcc_1v8: vcc1v8 {
-+		 compatible = "regulator-fixed";
-+		 regulator-name = "vcc1v8";
-+		 regulator-always-on;
-+		 regulator-boot-on;
-+		 regulator-min-microvolt = <1800000>;
-+		 regulator-max-microvolt = <1800000>;
-+	 };
-+};
-+
-+&xtal24m {
-+	clock-frequency = <24000000>;
-+	clock-output-names = "xtal24m";
-+};
-+
-+&pinctrl {
-+	status = "okay";
-+	vrgmii-supply = <&vcc_1v8>;
-+
-+	pinctrl_gpio0: gpio0-grp {
-+		gpio0-pins {
-+			pins = "gpio0";
-+			function = "gpio";
-+			input-enable;
-+			bias-disable;
-+		};
-+	};
-+
-+	pinctrl_gpio5: gpio5-grp {
-+		gpio5-pins {
-+			pins = "gpio5";
-+			function = "gpio";
-+			input-enable;
-+			bias-disable;
-+		};
-+	};
-+
-+	pinctrl_gpio11: gpio11-grp {
-+		gpio11-pins {
-+			pins = "gpio11";
-+			function = "gpio";
-+			input-enable;
-+			bias-disable;
-+		};
-+	};
-+
-+	pinctrl_gpio14: gpio14-grp {
-+		gpio14-pins {
-+			pins = "mode_set1";
-+			function = "gpio";
-+			input-disable;
-+			bias-pull-up;
-+		};
-+	};
-+
-+	pinctrl_gpio15: gpio15-grp {
-+		gpio15-pins {
-+			pins = "mode_set2";
-+			function = "gpio";
-+			input-enable;
-+			bias-disable;
-+		};
-+	};
-+
-+	pinctrl_gpio28: gpio28-grp {
-+		gpio28-pins {
-+			pins = "gpio28";
-+			function = "gpio";
-+			input-enable;
-+			bias-disable;
-+		};
-+	};
-+
-+	pinctrl_gpio43: gpio43-grp {
-+		gpio43-pins {
-+			pins = "usb1_pwren";
-+			function = "gpio";
-+			input-disable;
-+			bias-disable;
-+		};
-+	};
-+
-+	pinctrl_gpio71: gpio71-grp {
-+		gpio71-pins {
-+			pins = "mipi_csi0_xhs";
-+			function = "gpio";
-+			input-disable;
-+			bias-pull-up;
-+		};
-+	};
-+
-+	pinctrl_gpio74: gpio74-grp {
-+		gpio74-pins {
-+			pins = "mipi_csi1_xhs";
-+			function = "gpio";
-+			input-disable;
-+			bias-pull-up;
-+		};
-+	};
-+
-+	pinctrl_gpio76: gpio76-grp {
-+		gpio76-pins {
-+			pins = "mipi_csi2_xvs";
-+			function = "gpio";
-+			input-disable;
-+			bias-disable;
-+		};
-+	};
-+
-+	pinctrl_gpio77: gpio77-grp {
-+		gpio77-pins {
-+			pins = "mipi_csi2_xhs";
-+			function = "gpio";
-+			input-disable;
-+			bias-pull-up;
-+		};
-+	};
-+
-+	pinctrl_gpio79: gpio79-grp {
-+		gpio79-pins {
-+			pins = "mipi_csi3_xvs";
-+			function = "gpio";
-+			input-disable;
-+			bias-disable;
-+		};
-+	};
-+
-+	pinctrl_gpio80: gpio80-grp {
-+		gpio80-pins {
-+			pins = "mipi_csi3_xhs";
-+			function = "gpio";
-+			input-disable;
-+			bias-pull-up;
-+		};
-+	};
-+
-+	pinctrl_gpio82: gpio82-grp {
-+		gpio82-pins {
-+			pins = "mipi_csi4_xvs";
-+			function = "gpio";
-+			input-disable;
-+			bias-pull-up;
-+		};
-+	};
-+
-+	pinctrl_gpio84: gpio84-grp {
-+		gpio84-pins {
-+			pins = "mipi_csi4_mclk";
-+			function = "gpio";
-+			input-disable;
-+			bias-disable;
-+		};
-+	};
-+
-+	pinctrl_gpio85: gpio85-grp {
-+		gpio85-pins {
-+			pins = "mipi_csi5_xvs";
-+			function = "gpio";
-+			input-disable;
-+			bias-pull-up;
-+		};
-+	};
-+
-+	pinctrl_gpio94: gpio94-grp {
-+		gpio94-pins {
-+			pins = "s_mode";
-+			function = "gpio";
-+			input-disable;
-+			bias-disable;
-+		};
-+	};
-+
-+	pinctrl_gpio106: gpio106-grp {
-+		gpio106-pins {
-+			pins = "gpio106";
-+			function = "gpio";
-+			input-disable;
-+			bias-disable;
-+		};
-+	};
-+
-+	pinctrl_gpio111: gpio111-grp {
-+		gpio111-pins {
-+			pins = "gpio111";
-+			function = "gpio";
-+			input-disable;
-+			bias-disable;
-+		};
-+	};
-+};
-+
-+&gmac0 {
-+	phy-handle = <&gmac0_phy0>;
-+	phy-mode = "rgmii-id";
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_gpio106>;
-+	rx-internal-delay-ps = <20>;
-+	tx-internal-delay-ps = <100>;
-+	status = "okay";
-+};
-+
-+&gmac0_mdio {
-+	gmac0_phy0: ethernet-phy@0 {
-+		compatible = "ethernet-phy-id001c.c916";
-+		reg = <0>;
-+		reset-gpios = <&gpioD 10 GPIO_ACTIVE_LOW>;
-+		reset-assert-us = <10000>;
-+		reset-deassert-us = <80000>;
-+	};
-+};
-+
-+&gmac1 {
-+	phy-handle = <&gmac1_phy0>;
-+	/*
-+	 * The MAC silicon unconditionally introduces an ~2 ns TX clock-to-data
-+	 * skew (MAC-side TX internal delay). The PHY provides the standard
-+	 * ~2 ns RX internal delay. The driver additionally inverts the RX
-+	 * clock at 1000 Mb/s to correct a silicon RX sampling timing issue.
-+	 * phy-mode is "rgmii-id": TX delay from the MAC silicon, RX delay
-+	 * from the PHY.
-+	 */
-+	phy-mode = "rgmii-id";
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_gpio111>;
-+	rx-internal-delay-ps = <200>;
-+	tx-internal-delay-ps = <2200>;
-+	status = "okay";
-+};
-+
-+&gmac1_mdio {
-+	gmac1_phy0: ethernet-phy@0 {
-+		compatible = "ethernet-phy-id001c.c916";
-+		reg = <0>;
-+		reset-gpios = <&gpioD 15 GPIO_ACTIVE_LOW>;
-+		reset-assert-us = <10000>;
-+		reset-deassert-us = <80000>;
-+	};
- };
- 
- &uart0 {
-diff --git a/arch/riscv/boot/dts/eswin/eic7700.dtsi b/arch/riscv/boot/dts/eswin/eic7700.dtsi
-index c3ed93008bca..c77bc8b1b7bc 100644
---- a/arch/riscv/boot/dts/eswin/eic7700.dtsi
-+++ b/arch/riscv/boot/dts/eswin/eic7700.dtsi
-@@ -5,6 +5,9 @@
- 
- /dts-v1/;
- 
-+#include <dt-bindings/gpio/gpio.h>
-+#include <dt-bindings/reset/eswin,eic7700-reset.h>
-+
- / {
- 	#address-cells = <2>;
- 	#size-cells = <2>;
-@@ -202,6 +205,11 @@ pmu {
- 				<0x00000000 0x0000000f 0xfffffffc 0x000000ff 0x00000078>;
- 	};
- 
-+	xtal24m: oscillator {
-+		compatible = "fixed-clock";
-+		#clock-cells = <0>;
-+	};
-+
- 	soc {
- 		compatible = "simple-bus";
- 		ranges;
-@@ -245,6 +253,85 @@ plic: interrupt-controller@c000000 {
- 			#interrupt-cells = <1>;
- 		};
- 
-+		hsp_power_domain: bus@50400000 {
-+			compatible = "simple-pm-bus";
-+			ranges;
-+			clocks = <&clk 171>;
-+			#address-cells = <2>;
-+			#size-cells = <2>;
-+
-+			hsp_sp_csr: hsp-sp-top-csr@50440000 {
-+				compatible = "eswin,eic7700-syscfg", "syscon";
-+				reg = <0x0 0x50440000 0x0 0x2000>;
-+			};
-+
-+			gmac0: ethernet@50400000 {
-+				compatible = "eswin,eic7700-qos-eth",
-+					     "snps,dwmac-5.20";
-+				reg = <0x0 0x50400000 0x0 0x10000>;
-+				interrupts = <61>;
-+				interrupt-names = "macirq";
-+				clocks = <&clk 186>,
-+					 <&clk 171>,
-+					 <&clk 40>,
-+					 <&clk 193>;
-+				clock-names = "axi", "cfg", "stmmaceth", "tx";
-+				resets = <&reset EIC7700_RESET_HSP_ETH0_ARST>;
-+				reset-names = "stmmaceth";
-+				eswin,hsp-sp-csr = <&hsp_sp_csr 0x100 0x108 0x118 0x114 0x11c>;
-+				snps,aal;
-+				snps,fixed-burst;
-+				snps,tso;
-+				snps,axi-config = <&stmmac_axi_setup_gmac0>;
-+				status = "disabled";
-+
-+				gmac0_mdio: mdio {
-+					compatible = "snps,dwmac-mdio";
-+					#address-cells = <1>;
-+					#size-cells = <0>;
-+				};
-+
-+				stmmac_axi_setup_gmac0: stmmac-axi-config {
-+					snps,blen = <0 0 0 0 16 8 4>;
-+					snps,rd_osr_lmt = <2>;
-+					snps,wr_osr_lmt = <2>;
-+				};
-+			};
-+
-+			gmac1: ethernet@50410000 {
-+				compatible = "eswin,eic7700-qos-eth-clk-inversion",
-+					     "snps,dwmac-5.20";
-+				reg = <0x0 0x50410000 0x0 0x10000>;
-+				interrupts = <70>;
-+				interrupt-names = "macirq";
-+				clocks = <&clk 186>,
-+					 <&clk 171>,
-+					 <&clk 40>,
-+					 <&clk 194>;
-+				clock-names = "axi", "cfg", "stmmaceth", "tx";
-+				resets = <&reset EIC7700_RESET_HSP_ETH1_ARST>;
-+				reset-names = "stmmaceth";
-+				eswin,hsp-sp-csr = <&hsp_sp_csr 0x200 0x208 0x218 0x214 0x21c>;
-+				snps,aal;
-+				snps,fixed-burst;
-+				snps,tso;
-+				snps,axi-config = <&stmmac_axi_setup_gmac1>;
-+				status = "disabled";
-+
-+				gmac1_mdio: mdio {
-+					compatible = "snps,dwmac-mdio";
-+					#address-cells = <1>;
-+					#size-cells = <0>;
-+				};
-+
-+				stmmac_axi_setup_gmac1: stmmac-axi-config {
-+					snps,blen = <0 0 0 0 16 8 4>;
-+					snps,rd_osr_lmt = <2>;
-+					snps,wr_osr_lmt = <2>;
-+				};
-+			};
-+		};
-+
- 		uart0: serial@50900000 {
- 			compatible = "snps,dw-apb-uart";
- 			reg = <0x0 0x50900000 0x0 0x10000>;
-@@ -341,5 +428,23 @@ gpioD: gpio-port@3 {
- 				#gpio-cells = <2>;
- 			};
- 		};
-+
-+		pinctrl: pinctrl@51600080 {
-+			compatible = "eswin,eic7700-pinctrl";
-+			reg = <0x0 0x51600080 0x0 0x1fff80>;
-+		};
-+
-+		clk: clock-controller@51828000 {
-+			compatible = "eswin,eic7700-clock";
-+			reg = <0x0 0x51828000 0x0 0x300>;
-+			clocks = <&xtal24m>;
-+			#clock-cells = <1>;
-+		};
-+
-+		reset: reset-controller@51828300 {
-+			compatible = "eswin,eic7700-reset";
-+			reg = <0x0 0x51828300 0x0 0x200>;
-+			#reset-cells = <1>;
-+		};
- 	};
- };
+If anyone on the list disagrees please speak up
 -- 
-2.25.1
-
+pw-bot: reject
