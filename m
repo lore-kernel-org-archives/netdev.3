@@ -1,142 +1,98 @@
-Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FFAF1F1304
-	for <netdev@vger.kernel.org>; Wed, 10 Jun 2026 00:55:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781052950; cv=pass; b=cMoyJyZP9VtpArlsgYUtTbQhSmeeVrDUs2BFAcVE85uA0i1qiovoG7D5eP1oj8lNprFsefZFAh9Q0nN6VVyhcmwbpu4FxRNznr6IdorG0ZnqvxoPUjK2bYUv3w1BYF8Jd9FEQVjbx9AKQ5VnXDj1VAfznDbP2aP3nWDa5GAjzH4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781052950; c=relaxed/simple;
-	bh=gSGpRHt7l6KDmu7nMUVayUHTju3psOfTkIteL66MAak=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=I6ZeiM/yRemLNhLq2MlMSvdfENK7d7veGmfjPtjUUZwPs6NyWGgjgv0shWqm2VaQL9bnAINzBko0YVmFVeWc5MQWaSSkjASIELnVhkR668OkKL7ilsKNQ3CZGSwYpX4pAAfRAwFGUnPrcRkDPUs0yyO5uPhAL/d4gPfkhqXfgoI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trailofbits.com; spf=pass smtp.mailfrom=trailofbits.com; dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b=PRoHb9Ob; arc=pass smtp.client-ip=209.85.167.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trailofbits.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trailofbits.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FE8B1F91D6;
+	Wed, 10 Jun 2026 00:58:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781053124; cv=none; b=ajsSeVLlAqFtjSYV+Q1Y+XvDfO9vcNb8GtnlSxL6rmdSd2pABFZ+/jCtbpjT2hfqqUs+Uqv/Jr03a038mwjJWZCsSHqi/3LRArp4mPrPciXl5fLXVDvobptuQ6qyDRW7CiLLCMZoPQgLZhbCtOvp2JGj40w5sitJ+hQ4CWq/4cU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781053124; c=relaxed/simple;
+	bh=OmoFitpYKHAIiEcivzw+3UTezocvyEIrQudTiKwQvLk=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=fjPlY9iFe/5yP2BUz38jJXaHL5LnIh5TqQV7eG7U8GUteI8gunwzxETAMLjuI06a829CBlMsB9I6PmIJggD0lF3xI47duqF6DAYfsXiGUKXrN1mqIUlVy7SGque1o237VdxjN4ul5vbMGy8nRb6TseASHrEWTntjd7SAa+lUgqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Yh85YTRl; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b="PRoHb9Ob"
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-5aa88b4f792so5304077e87.1
-        for <netdev@vger.kernel.org>; Tue, 09 Jun 2026 17:55:49 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781052948; cv=none;
-        d=google.com; s=arc-20240605;
-        b=BCaz2GcTEBdHiH9yNkr0YAWb+HBPVC1Cceq+Riz7tQZUgK+ls4qgV+vYCNm1Anwkn1
-         EHVoqfHM4nxe6IwB9t5ZrrfQupk5/lximoL0MGQg69toCuTf19QWrhlr2srQr08KmWzB
-         r1ghhnbzxLkybAGzmpYCW6YED0r2b/qQOD+rNZQ0krQb0jCVGGg/sd5kHMlBzRXRtFCR
-         8Ae2wb5mFQ5NdpWkYIrNpBG4EVydDH+/X77Q+KUrOZjU/S79CHj/c+kqejrRntoVTLUh
-         2aj3OGTQvDwBsCAWh0AlZDrxAdHajn5v/c+/fcKNHSHkZR8RMeq3onlOnDmkr3vFS9EC
-         B7JQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=rmwxscvtzuZg8vvmsx0DZoUt0H0TuJjZu7bDicwdGMY=;
-        fh=GUKkDv1qdnobCGmQlFiL9iq+6uKuO4ZpTEL48wHNFc0=;
-        b=BaEmk1/CaLrbl641J1f70WaDNDowUs/1dIL72XS4nob6EtTL6vmNiN/Vnw+fbwtw/q
-         fXLQOZ2Yti2IhoYwa2+9FpVpwXSAwcQZ2iTFw7cGwa7G+4Fne2a20bucufZfQ87FIKrX
-         NIBQzZFbvvEns4DyLhWzu/z3lWjykEHjPJDIALozbu+1LuIt7dga67BYK20lCUZuVGdi
-         7n/qLqO0JeSJSCgSvVvzFHKTgAxyTILCnFkDDoZyZRa5GQ9E6YBgX9pGF+h6V8qvky3a
-         if0xb7wClShV2uLq4QxeOdIg0vZAkbvG2YRXzNVhiBvGRIV1/xhr4k8sWlSqth9PGJ1i
-         Nb+Q==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=trailofbits.com; s=google; t=1781052948; x=1781657748; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rmwxscvtzuZg8vvmsx0DZoUt0H0TuJjZu7bDicwdGMY=;
-        b=PRoHb9Ob29Vb0wXFc+QJBLfPN7aWbO3bngVCaa6cwljBVXGLdrtT3mBAOrFsoYQVy4
-         sK2i+xVdzspD2Ax3ooRM3cG8Ye40qUeoOB/Ibb05EBDJ7kp0cfHHUucIMiksargTZZPD
-         MRjfPdJ4W698zACIjIYrw7tMFalcMyaR/zWcgNiFBoAs1uTq2BTtvtu0SrUv71s4pYkQ
-         TnS4Y45cwVRClnLxzDu/kUzrIY4kWYiOjb0RVB1r7qKiUVSxgCGU5SfQxe8i76n3F/c3
-         elv/SiS7uEf58r1QRePZGQyo1Q3mTV61zmKDx2YetnprxB/kA/WEa2O5JJuGqTpVH9yM
-         5EQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781052948; x=1781657748;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=rmwxscvtzuZg8vvmsx0DZoUt0H0TuJjZu7bDicwdGMY=;
-        b=HFJ74gxgpQPd9gTqsJsX5vcn67gKarC+oWqlPLePWbc33ehqvLtb617OGuSHKlLq04
-         Er2Xvg3cYGgLgA3RKoD6+/zR2qG1i3bgqHi/OuJ+o58B0VIWPYGhZlJ/roqK20UjJYF8
-         Wdp96bB/fxzGTvHKKopJBXRMOL0meCWX4Hhzkn+/SZNv2HVOYdSkTMAYWCOMJi09b90i
-         QaZSBOKfLmt4IRaRhFCP8SVxGBMeZfXryKVwGBoLe2QwElgZ9DFuagt8kcpCLfO1DqeI
-         RJ0a9pUNr3JDET1mGscrC9t+MHz183h0kFsgWPus1yGSj0w6t3E4LZ9SkEruNRgEkLRE
-         eTsA==
-X-Forwarded-Encrypted: i=1; AFNElJ/S03hNToko7qTofHpLLGrLKUpAFiPvTCvOMTdioVN2R105/eIu2nfQcBN1H3GVgyMmnBkKE5Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzKOSk0kstXJIapcknbb8NhEgwI6g1OuN86bw6oL26SXreUQRl2
-	0Ne26Wmp2ukll2CVCt+AVDprpfQSnrPVSBizW995uf7oorFny3Q4Ef4eWlDbTMDUJi3xYVuL0ym
-	sZa9DlTIx9sovOQwM/gjr0Q3BUhpCQzVSPov5sTsgHA==
-X-Gm-Gg: Acq92OFu+wa+/bC1c1oCu8ArNM68H1ShGgHi5FP4JJajXBK/40/3BBhjI7tj2EDtqpf
-	HIs6qn2Cu0ELT828Fqjvwy3ed8sKCfa/q0O+xiC/I1YnVE1pKpmKJgP7ABVtpoPV1rbdmPmEFHJ
-	Mu/SOFAUbyZh0e+5toFKwFpe/tGIZJLesq9So5ql9BCj2mZbk8vk15Dn1QNcNy1I+JDdi9NPPr0
-	zpjy0uBT0gDFNsEUU/1gdpRGkhevrR5ZYvgD84clbdK3hkeucKkH/8wyj3jwj5nsBQ/TC4009Pb
-	z36VXCGnNKzXEUaLeJ5lGifm3ho=
-X-Received: by 2002:a05:6512:6093:b0:5aa:7005:125c with SMTP id
- 2adb3069b0e04-5aa8866c7c5mr5360865e87.8.1781052947761; Tue, 09 Jun 2026
- 17:55:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Yh85YTRl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A89B1F00893;
+	Wed, 10 Jun 2026 00:58:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781053122;
+	bh=2I5nSFx17QTOsvRQJ3lHz/Nw8uM87WWs52G6x2E43tY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=Yh85YTRl4/MtXnUTaFnEBfDHb/kfCjTZMXOrYx+ThffEvO9DaWhHD1gefDT4qChBr
+	 hTUdN184LoGEpxrqyz4wKl9RuR+sP4O8eXxCUG7xnnGKjYLSx0/6BV5AwXCHdUaB+B
+	 hVdEG2Rhb4d9nlML+CX5TvgkA0AzoA/ZvORW4Phzvf8W75fj2x/hj/A01gjNNLf6QJ
+	 wbdWtTfgZ29bqf2SJOI8pluhN7W+9Aw+umAU4PxKVS0TQc1xc89xqw6g1Oe956X7M8
+	 B8yr/dcDBF1LSfleuF7NOf+RtxZtU4Y8EqfJFUC0eTS8YMM+Ro6128C3FCw/vIVH5P
+	 6NxoUhKQtg0Rw==
+Date: Tue, 9 Jun 2026 17:58:41 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: david.laight.linux@gmail.com
+Cc: Kees Cook <kees@kernel.org>, linux-hardening@vger.kernel.org, Arnd
+ Bergmann <arnd@kernel.org>, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jay
+ Vosburgh <jv@jvosburgh.net>, Paolo Abeni <pabeni@redhat.com>
+Subject: Re: [PATCH net-next] drivers/net/bonding: User strscpy() to copy
+ device name
+Message-ID: <20260609175841.3ce88cf0@kernel.org>
+In-Reply-To: <20260606202633.5018-14-david.laight.linux@gmail.com>
+References: <20260606202633.5018-14-david.laight.linux@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260609232935.1602659.8545fdb04fbe.cake-overhead-underflow@trailofbits.com>
- <20260609174544.114b82e0@kernel.org>
-In-Reply-To: <20260609174544.114b82e0@kernel.org>
-From: Samuel Moelius <sam.moelius@trailofbits.com>
-Date: Tue, 9 Jun 2026 20:55:35 -0400
-X-Gm-Features: AVVi8CefliquC2v1uxuX7tJh2x7VHT7HqmzcHLsj4MOV4swgdnMZnEMpez8EyOo
-Message-ID: <CAE+C+DYpYjQoSsr3PsQ2pN5hf9+u0CbA=JwJ-2aR9Oz1GDDNrg@mail.gmail.com>
-Subject: Re: [PATCH net v2] net/sched: cake: reject overhead values that
- underflow length
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@toke.dk>, 
-	Jamal Hadi Salim <jhs@mojatatu.com>, Jiri Pirko <jiri@resnulli.us>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	"moderated list:CAKE QDISC" <cake@lists.bufferbloat.net>, 
-	"open list:TC subsystem" <netdev@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Tue, Jun 9, 2026 at 8:45=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wro=
-te:
->
-> On Tue,  9 Jun 2026 23:29:36 +0000 Samuel Moelius wrote:
-> > CAKE accepts overhead values that can make adjusted packet length
-> > arithmetic underflow.  A negative effective length can wrap through
-> > unsigned arithmetic and become a large value.
->
-> Sorry, why are you posting more patches? You were told to stop
-> yesterday. And you received an email which said:
->
-> Here are a few ground rules which are frequently broken by newcomers:
->
->  - You must wait at least 24 hours before posting a new version to give
->    reviewers time to respond. This is a hard rule, no matter what your
->    reason to repost is.
->
->  - Each new version of your series should be a fresh / separate thread
->    Add a https://lore.kernel.org/.. link to the previous version to
->    the cover letter or changelog, instead of threading the submissions.
->
->  - Until you gain experience submit one of two patches at a time,
->    do not send multiple changes at once until some of your changes
->    were accepted. This avoids reviewers having to provide the same
->    feedback on multiple patches.
->
->  - Avoid changing the subject of the changes or cover letter unless
->    necessary, it breaks our patch tracking.
->
->  - If you're submitting changes for issues discovered using automated
->    tools - commit message should explain the discovery and testing
->    process (for drivers explicitly mention that you don't have access
->    to the device, it's not a blocker).
->
->
-> You broke at least 2 of these already.
->
-> If you keep ignoring direct maintainer feedback you will be banned.
+On Sat,  6 Jun 2026 21:26:08 +0100 david.laight.linux@gmail.com wrote:
+> From: David Laight <david.laight.linux@gmail.com>
 
-I'm sorry for my misunderstanding. When should I resume submitting patches?
+Commit message is required. Please explain why you think this patch is
+needed. AFAICT it copies data between two well formed IFNAMSIZ strings.
+
+> Signed-off-by: David Laight <david.laight.linux@gmail.com>
+> ---
+> This is one of a group of patches that remove potentially unbounded
+> strcpy() calls.
+> 
+> They are mostly replaced by strscpy() or, when strlen() has just been
+> called, with memcpy() (usually including the '\0').
+> 
+> Calls with copy string literals into arrays are left unchanged.
+> They are safe and easily detected as such.
+> 
+> The changes were made by getting the compiler to detect the calls and
+> then fixing the code by hand.
+> 
+> Note that all the changes are only compile tested.
+> 
+> Some Makefiles were changed to allow files to contain strcpy().
+> As well as 'difficult to fix' files, this included 'show' functions
+> as they really need to use sysfs_emit() or seq_printf().
+> 
+> All the patches are being sent individually to avoid very long cc lists.
+> Apologies for the terse commit messages and likely unexpected tags.
+> (There are about 100 patches in total.)
+> 
+>  drivers/net/bonding/bond_options.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/bonding/bond_options.c b/drivers/net/bonding/bond_options.c
+> index 7380cc4ee75a..c57b7d6af043 100644
+> --- a/drivers/net/bonding/bond_options.c
+> +++ b/drivers/net/bonding/bond_options.c
+> @@ -1525,7 +1525,7 @@ static int bond_option_primary_set(struct bonding *bond,
+>  		if (strncmp(slave->dev->name, primary, IFNAMSIZ) == 0) {
+>  			slave_dbg(bond->dev, slave->dev, "Setting as primary slave\n");
+>  			rcu_assign_pointer(bond->primary_slave, slave);
+> -			strcpy(bond->params.primary, slave->dev->name);
+> +			strscpy(bond->params.primary, slave->dev->name);
+>  			bond->force_primary = true;
+>  			bond_select_active_slave(bond);
+>  			goto out;
+-- 
+pw-bot: cr
