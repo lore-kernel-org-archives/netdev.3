@@ -1,289 +1,136 @@
-Received: from CHN02-SH0-obe.outbound.protection.partner.outlook.cn (mail-sh0chn02on2113.outbound.protection.partner.outlook.cn [139.219.146.113])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94AB93A453F;
-	Wed, 10 Jun 2026 08:59:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=139.219.146.113
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781081952; cv=fail; b=LfStH3CHuid1IRPabtdbIhTHtPI9CMgsH88KJGztd6mFwqm41Mn9KG+Rn007UgHN8KpaFnZwhL+rXsAyr6hHGtLDX2uRrZsxc9Ot2l2jThACxvKn4Aw5Gp8AnvgUWV5jTiM5lvadNCsvBqlN/zMgUXdNVN9+O7CZ1RhYzoKDPuI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781081952; c=relaxed/simple;
-	bh=FwLvbdfDl1OzoqogvE6AXEsGxgGULFQXwWMJMc8HKpM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Sam2imyGtxf4fnUCPXDNTMW7w+/bZ5cu62uo/htf/llxN3x74qnr6r57gIBcr7V1BB8/kWDBLhVdZcwajuvMh00zuq9bvdMeWA3PSY5ApYRyxMd4gGpTnm0LGphvJn+ot9mnidKkgOf9NX9To0uF5OkehzU/bvfOCPmfxbslIgw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com; spf=pass smtp.mailfrom=starfivetech.com; arc=fail smtp.client-ip=139.219.146.113
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=starfivetech.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=KdhNpgTVU5TGIZvPl6gYLo4zQIq0SLSXKzzyjkcp/IQU6yIW4h0WupJDsEXeotL7vUAtB5tgvsW2gjHIUd/iOo4qhlY2HmpJ4I4iZMJS/Qovrl7GcFc75U3Xb20y1p8AvFqqRrx0EojwwYNFnd15C7gFw0SKSjUUo4johGSvgWcdi84fiudFvH3cOZ73zoPlmEmhwAGQxVR2aQ4t0swEL3liIVAu75YsuX2S881qpJdec4wH4epaZdGDobjvKrkIJjuW50iXSxuiDJGuA5gKs3B3iyEJc08XoMDi1pis2ana4HTnNA6YIXyguUjx2/wUGg2ffe2blt0TGVSDLNGZyg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=G0f/BKFV38V0X8QkT8WEHyoW3pTFU3k/0NGCYIVbDtQ=;
- b=kGR2bnpndp5zWOdfl3uhzDKC5T4OYM9osXit75beAw2rHIfXif4dIXJexqju7vBWsx9FaJoX0BNvxsG/t6W1iCxpfju7GbJYP/Bjq3hgxo7/nUOWRV7xuAnFxvgcFgGRy66QTLm4PRCORawq1FSIHFj8VMJYVdPte8kxWXmmonIgwpmReTT9aBGgUgxKYN58zhX5BFyN2eO667szkB/PN37isIwzgCyigV7jr1tsty5jyKFCRaijBuLUZNo/WDgq2FOb92+50iUSpsDyXH8CPpOAi6pqmj9v3nw7YZ7ikSCev0KJnqnJsFQeIIAbeGCl4CGVtLo+uPdYlh6v6DL14g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=starfivetech.com; dmarc=pass action=none
- header.from=starfivetech.com; dkim=pass header.d=starfivetech.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=starfivetech.com;
-Received: from SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c311:25::15) by SHXPR01MB0512.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c311:1c::12) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.113.11; Wed, 10 Jun
- 2026 07:24:31 +0000
-Received: from SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn
- ([fe80::9b99:12dc:a115:b90f]) by
- SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn ([fe80::9b99:12dc:a115:b90f%3])
- with mapi id 15.21.0092.014; Wed, 10 Jun 2026 07:24:31 +0000
-From: Minda Chen <minda.chen@starfivetech.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jose Abreu <joabreu@synopsys.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Giuseppe Cavallaro <peppe.cavallaro@st.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor@kernel.org>,
-	netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	devicetree@vger.kernel.org,
-	Minda Chen <minda.chen@starfivetech.com>
-Subject: [net-next v1 3/6] net: stmmac: Add register NCSI device support
-Date: Wed, 10 Jun 2026 15:24:17 +0800
-Message-Id: <20260610072420.64699-4-minda.chen@starfivetech.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20260610072420.64699-1-minda.chen@starfivetech.com>
-References: <20260610072420.64699-1-minda.chen@starfivetech.com>
-Content-Type: text/plain
-X-ClientProxiedBy: NT0PR01CA0003.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c510::15) To SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c311:25::15)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 650303BADB2;
+	Wed, 10 Jun 2026 09:01:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781082096; cv=none; b=GO+y5Ndwi8uqbLf0noH9har+cy8OP2dUKEGHzA4/bCmw66Z5wT0ZPv1U/5d8OweAiYFpRDluDc592JF9q9+qdExSGT0mVC4Wb+9uqiQem/n70qXC6MUhn3bUxzV2qdi1OJosuHii046TvNWMdjgsWewbv/h/x3F03X6df4rWrR8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781082096; c=relaxed/simple;
+	bh=Rl1RVoWfaH3m4DcenIx2oRKkK1xNZVvubs6VOhPimLA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LBMIIvcxUDPSRtPEFWbLZpzWlRkHSqtUWJP4XoXjJBvM+Lt/TzNcjURM7pc9JLINWKSE7Jb+0DCeMtsx/2vrL5XK9CWlGOeASvuLPfRQMnp+n8BGfAjCh6/Iw28OA0p+UsNE+zbxsUAb9m3zY/zQjfiER00zIgKXj8x6pAaHq74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WcwhzxFF; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WcwhzxFF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1AB51F00893;
+	Wed, 10 Jun 2026 09:01:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781082095;
+	bh=c0CGCPVfjh9JWN2ZJMt0d9lW+ZzuCiYZNTv0YGvUlOI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=WcwhzxFF2lhcOEQX/C1z+UFRCfTxuE1vv15MJ9fpbwEBuCJPCpXe7H+ulKSsddvyc
+	 LHDu8053EzteZGbvwi2YYQDYiLjVi+YYc9EhFKm60RqFNiT75haiqWZ//g4UBhMu/H
+	 ed8/pveOgDSD+TS4j9UOMWq03PooY7Cyf3o4WbKMT5zNyPc6K1zUvGcLE4hDYvWxN7
+	 QDYmlRV5I379lJEtRj+C4PV1maOJfXhbDfWEBn//ys6DsanMepl9JqH2HJjk/nvvoV
+	 VNq6LYA7JdPLI3XFS3/+7+wCUYHHzcc3qhsnr51FZg2SGNvIk87EJSbrBRVIFrDIac
+	 2t6F8jPSzQTQw==
+Message-ID: <ded0ae1a-535f-4524-9c3c-e9970bdf387a@kernel.org>
+Date: Wed, 10 Jun 2026 11:01:27 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SHXPR01MB0863:EE_|SHXPR01MB0512:EE_
-X-MS-Office365-Filtering-Correlation-Id: 921ac0c6-6730-4976-99fb-08dec6c1507e
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam:
- BCL:0;ARA:13230040|23010399003|366016|1800799024|7416014|376014|52116014|22082099003|18002099003|38350700014|921020|56012099006;
-X-Microsoft-Antispam-Message-Info:
- drUknxUl57k4Sb8fxrVJEo0JkqvRSFvsMtaaqywIzo8iYkdkM7f0kzJD0j/l+yRcIvy5EEzMy7L4Vt++jUIFhRiaxX8s3Cvoix6cMr43JDOy715zGuXPZAciu3PqTklf/RbcY+7S4LfY6odnLFZsVsz6jBPcXQQuWDZD4wA+eJv1RGQL5J9SnyBE15eYSC/1rpdGlKjvzW4g10h5KP75oekBH991qw5kJQjmMuoJDk63BvzsXkz5UvGxKIVoH5SAsCyDlxhDB3lsdAG+dULnh8RSCF2UQVfNzRbTBJnQRkWqygMFSbRhtE7hc68djMHCokjkAJtYIOfLXaHkVDkodxT9sSmfboI1QZRlXI4fiAZdKqIcX4Ovboy4lPhOgUaXN0hIzbckXl2nMDJWbBDPnD++LytgoLN2WCHk5yYFEY2m240SuHOGFELYCmE8HJbXNuyE2eDp61OEEhAibRuqlBk8kPcTrR/1Ct6W1HxFp6qVl+Kx9JDwvXNNr/Mwf8gO2eTwaz+/NmxelNQvQpz5rPBQOvPQmOefaw4q5QP9qhDWoUwU4i3Zwxx80wpkB94eecjKQthBNim+xuH0/hGQGQ==
-X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(1800799024)(7416014)(376014)(52116014)(22082099003)(18002099003)(38350700014)(921020)(56012099006);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
- =?us-ascii?Q?fkBbwo+h3QUslv0vqPvZLl0Mte1LWEWg+mkONbdrdJobCEchT1Z1C3umaFuD?=
- =?us-ascii?Q?RTfTXfuOsF/GTyvt5hJMnwD7ga1a3F7462N43Q4kG02eg6J0sHTPbMq0jGW+?=
- =?us-ascii?Q?fvRQXqvTcV9sKvfeTw6q/zsEwEycHSBUxcZ6Q2KWwB1cyj+hEq/uG0L9vT00?=
- =?us-ascii?Q?rOPAhnEinDDfumaNszeshX8rbc7HZit6IPK3Itj6LFc6rFGBsZkdAcgxstpZ?=
- =?us-ascii?Q?gxmgSUmuS2fTdKDl0Q7sY1SYCw511b94gvmRKtVhtoDD9a0h7Tearv4+k6TO?=
- =?us-ascii?Q?9pti0W607yVuq2QZVNC4kSyaa955X/0IxLxMOnChrm5VV3KbzwGz1PWeUR/C?=
- =?us-ascii?Q?Qm6V6sFKWcUYePlIs2CtUcHdIKvW3Z0S3WuEObIMnGr+FliXJu0Up7ENdeT9?=
- =?us-ascii?Q?eD9bisSYFIWwwLmDYSTWlyJHjl/Nxru6imjCM9+H7YI2Dy42zm8YmegVWzVK?=
- =?us-ascii?Q?lHHreX/En5F6S0coEOxW4sxDw8vnM5hIh/V9p/qWCAscrEoIxknP/i7uqo0T?=
- =?us-ascii?Q?8/AzKXj3vo23UhWi8eRnkuOlMyg3y3aL7UGQnPwJlx1lkCqfRXiUt+VJff3K?=
- =?us-ascii?Q?t0/z8fZjQ7makhXxbx6GcjQnbNjHdYOKm91NziLYqf+ciGZ74YCxuIPMNNji?=
- =?us-ascii?Q?UTX/pAVcmLKNgauITw1xrYv/Pt61mYFhmEK638wZtB3rK3kGIKmmM0Zv0WiK?=
- =?us-ascii?Q?VqGfo8EZHQYvbtVt6c4k/WqY5INfd6lzCDrsCl3cXm2A01Z3Ji6PBevD+pYT?=
- =?us-ascii?Q?NkSv7EHAjE70kcMe4r8xRZVMnI/UeqkepQV54KBCkb0/4S0QrSXvun5KDdHh?=
- =?us-ascii?Q?0uv4YLHv4mXk4Afv9Yh1/jWxGqzWbmWKhaAJclmPHmqEfczR7FcrkjrEC6FM?=
- =?us-ascii?Q?vTuR6BkpL65X29RSqRAqu1Uq/vTNf8tL1s1yk4VxRgWMea0fuQtS8OyCw1ke?=
- =?us-ascii?Q?V2cGF275TTgjrJETOP0qLnk7uckemaIeBMxFpy13xj9T8VSN6fx+cJUVA2qY?=
- =?us-ascii?Q?wmvpbDg+SVgGYMCUdjbMmjv2zTqCkxZUsfE454iwCk9H6GHgMFkq/lrN5Bdq?=
- =?us-ascii?Q?fLygFY/NDw9ePbCl/Ex42u3eiOKT0Km7kgfHpZoCRSaS5XtLP5t5lNXGnaBB?=
- =?us-ascii?Q?zlyxxOQaeHphr/KjHLwTQKBfDzUHtZ8Lrk4RmDVsGqjmIgwgq2olxGXUNnH3?=
- =?us-ascii?Q?bzmZ236jBzhz1FXTrDpunYcJ4FIWaB4xVrWt3lbAdaEWnEJDAitmIxZxKbeF?=
- =?us-ascii?Q?5R9/SOvJ9Y+Ty7kMXKKYf5BSKdibT2ui+9LLSv7HWAa6k8Tviopa5UI2Bggi?=
- =?us-ascii?Q?Y0JNW8OHFywJN0c1RD9rEn0/VnVy/OrycswsbH6/Bs8DE6XgEXkc6iQUTftI?=
- =?us-ascii?Q?z1WoeNngFRME0925sFB5N/wWk6OD/JUTc6hz6pvjtn/F2EhNJvt3RwOy8HfE?=
- =?us-ascii?Q?cPu5fH/HSdH6xlujHaTEbwwPqEjkP8vTkgtifUrx25tOoFSea6S8wyX2hT50?=
- =?us-ascii?Q?ElqQZVcc7DGOEym67BYWSbUCBHtkuTdMMfTXkvYP2185OGcs42d/4xECXJ1x?=
- =?us-ascii?Q?7Xw/75feXJzYVxkuGF6WzV03Z3UYOiIpP1s98r4ocPhEaeFW74bfq29tn8I8?=
- =?us-ascii?Q?jjD+9aioxlqMvnyJtSjb6SMfkc029Oc6aaX+dR0ssCG1Wr4jpCJcqz29j2a6?=
- =?us-ascii?Q?4gIw3pSbH6Q10TmNI8BhNLKGR2z7Maht+14MUlbFXC4+96NBaGVocE//V3kl?=
- =?us-ascii?Q?psPNczKCx+gsXfvSChinCRbuco0NDxc=3D?=
-X-OriginatorOrg: starfivetech.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 921ac0c6-6730-4976-99fb-08dec6c1507e
-X-MS-Exchange-CrossTenant-AuthSource: SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jun 2026 07:24:31.6040
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 06fe3fa3-1221-43d3-861b-5a4ee687a85c
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: NEZ2rBh7tujHUMWCgpvV6kIW2m/83w8EixybmacZlAH0kIgG6cuDroSCFQK0jXV8VgTujibIVN3PvvJRu1/XdLYt3cf8+21kvk5TW/QChm0=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SHXPR01MB0512
+User-Agent: Mozilla Thunderbird
+Subject: Re: [net-next 1/3] dt-bindings: ptp: renesas,rcar-gen4-gptp: Add
+ binding for R-Car Gen4
+To: =?UTF-8?Q?Niklas_S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Geert Uytterhoeven <geert+renesas@glider.be>,
+ Magnus Damm <magnus.damm@gmail.com>,
+ Richard Cochran <richardcochran@gmail.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "DavidS. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, linux-renesas-soc@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org
+References: <20260609215711.2960150-1-niklas.soderlund+renesas@ragnatech.se>
+ <20260609215711.2960150-2-niklas.soderlund+renesas@ragnatech.se>
+ <6bd0229b-4895-48a2-9e36-0ea5296c7fb5@kernel.org>
+ <20260610085354.GC2465390@ragnatech.se>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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
+In-Reply-To: <20260610085354.GC2465390@ragnatech.se>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Add stmmac register support. The register NCSI code is
-almost from faraday ftgmac100.c
+On 10/06/2026 10:53, Niklas Söderlund wrote:
+> Hi Krzysztof,
+> 
+> Thanks for your comments.
+> 
+> On 2026-06-10 08:54:06 +0200, Krzysztof Kozlowski wrote:
+>> On 09/06/2026 23:57, Niklas Söderlund wrote:
+>>> Add bindings for the R-Car Gen4 gPTP timer. The timer enables accurate
+>>> synchronization of the clock in the control system. The timer is
+>>> system-wide and used by different Ethernet devices on each Gen4 platform.
+>>
+>> A nit, subject: drop second/last, redundant "binding for". The
+>> "dt-bindings" prefix is already stating that these are bindings.
+> 
+> Thanks, will fix.
+> 
+>> See also:
+>> https://elixir.bootlin.com/linux/v6.17-rc3/source/Documentation/devicetree/bindings/submitting-patches.rst#L18
+> 
+> Not sure I follow this one, L18 reads,
+> 
+>   "Few subsystems, like ASoC, media, regulators and SPI, expect reverse 
+>   order of the prefixes::"
+> 
+> But 'git log Documentation/devicetree/bindings/ptp/' shows all commits 
+> in that directory use the 'dt-bindings: ptp:' prefix.
 
-Signed-off-by: Minda Chen <minda.chen@starfivetech.com>
----
- drivers/net/ethernet/stmicro/stmmac/stmmac.h  |  1 +
- .../net/ethernet/stmicro/stmmac/stmmac_main.c | 44 +++++++++++++++++--
- .../ethernet/stmicro/stmmac/stmmac_platform.c | 10 ++++-
- include/linux/stmmac.h                        |  1 +
- 4 files changed, 51 insertions(+), 5 deletions(-)
+5 lines below.
+https://elixir.bootlin.com/linux/v6.17-rc3/source/Documentation/devicetree/bindings/submitting-patches.rst#L23
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac.h b/drivers/net/ethernet/stmicro/stmmac/stmmac.h
-index 8ba8f03e1ce0..1df0689e22a5 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac.h
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac.h
-@@ -383,6 +383,7 @@ struct stmmac_priv {
- 	struct bpf_prog *xdp_prog;
- 
- 	struct devlink *devlink;
-+	struct ncsi_dev *nsdev;
- };
- 
- enum stmmac_state {
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 010802389772..b6af53783883 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -41,6 +41,7 @@
- #include <linux/udp.h>
- #include <linux/bpf_trace.h>
- #include <net/devlink.h>
-+#include <net/ncsi.h>
- #include <net/page_pool/helpers.h>
- #include <net/pkt_cls.h>
- #include <net/xdp_sock_drv.h>
-@@ -4167,6 +4168,16 @@ static int __stmmac_open(struct net_device *dev,
- 	if (ret)
- 		goto irq_error;
- 
-+	if (priv->plat->use_ncsi) {
-+		/* If using NC-SI, set our carrier on and start the stack */
-+		netif_carrier_on(priv->dev);
-+
-+		/* Start the NCSI device */
-+		ret = ncsi_start_dev(priv->nsdev);
-+		if (ret)
-+			goto irq_error;
-+	}
-+
- 	stmmac_enable_all_queues(priv);
- 	netif_tx_start_all_queues(priv->dev);
- 	stmmac_enable_all_dma_irq(priv);
-@@ -4250,6 +4261,9 @@ static void __stmmac_release(struct net_device *dev)
- 
- 	netif_tx_disable(dev);
- 
-+	if (priv->plat->use_ncsi)
-+		ncsi_stop_dev(priv->nsdev);
-+
- 	/* Free the IRQ lines */
- 	stmmac_free_irq(dev, REQ_IRQ_ERR_ALL, 0);
- 
-@@ -7795,6 +7809,15 @@ struct plat_stmmacenet_data *stmmac_plat_dat_alloc(struct device *dev)
- }
- EXPORT_SYMBOL_GPL(stmmac_plat_dat_alloc);
- 
-+static void stmmac_ncsi_handler(struct ncsi_dev *nd)
-+{
-+	if (unlikely(nd->state != ncsi_dev_state_functional))
-+		return;
-+
-+	netdev_info(nd->dev, "NCSI interface %s\n",
-+		    nd->link_up ? "up" : "down");
-+}
-+
- static int __stmmac_dvr_probe(struct device *device,
- 			      struct plat_stmmacenet_data *plat_dat,
- 			      struct stmmac_resources *res)
-@@ -8048,10 +8071,19 @@ static int __stmmac_dvr_probe(struct device *device,
- 	if (ret)
- 		goto error_pcs_setup;
- 
--	ret = stmmac_phylink_setup(priv);
--	if (ret) {
--		netdev_err(ndev, "failed to setup phy (%d)\n", ret);
--		goto error_phy_setup;
-+	if (priv->plat->use_ncsi) {
-+		dev_info(priv->device, "Using NCSI interface\n");
-+		priv->nsdev = ncsi_register_dev(ndev, stmmac_ncsi_handler);
-+		if (!priv->nsdev) {
-+			ret = -ENODEV;
-+			goto error_phy_setup;
-+		}
-+	} else {
-+		ret = stmmac_phylink_setup(priv);
-+		if (ret) {
-+			netdev_err(ndev, "failed to setup phy (%d)\n", ret);
-+			goto error_phy_setup;
-+		}
- 	}
- 
- 	ret = stmmac_register_devlink(priv);
-@@ -8082,6 +8114,8 @@ static int __stmmac_dvr_probe(struct device *device,
- error_netdev_register:
- 	stmmac_unregister_devlink(priv);
- error_devlink_setup:
-+	if (priv->nsdev)
-+		ncsi_unregister_dev(priv->nsdev);
- 	stmmac_phylink_destroy(priv->phylink);
- error_phy_setup:
- 	stmmac_pcs_clean(ndev);
-@@ -8141,6 +8175,8 @@ void stmmac_dvr_remove(struct device *dev)
- 
- 	pm_runtime_get_sync(dev);
- 
-+	if (priv->nsdev)
-+		ncsi_unregister_dev(priv->nsdev);
- 	unregister_netdev(ndev);
- 
- #ifdef CONFIG_DEBUG_FS
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-index 5cae2aa72906..483ecf06fc13 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-@@ -348,7 +348,7 @@ static int stmmac_mdio_setup(struct plat_stmmacenet_data *plat,
- 	 * described assume this is the case since there must be something
- 	 * connected to the MAC.
- 	 */
--	legacy_mdio = !of_phy_is_fixed_link(np) && !plat->phy_node;
-+	legacy_mdio = !of_phy_is_fixed_link(np) && !plat->phy_node && !plat->use_ncsi;
- 	if (legacy_mdio)
- 		dev_info(dev, "Deprecated MDIO bus assumption used\n");
- 
-@@ -451,6 +451,14 @@ stmmac_probe_config_dt(struct platform_device *pdev, u8 *mac)
- 	 * they are not converted to phylink. */
- 	plat->phy_node = of_parse_phandle(np, "phy-handle", 0);
- 
-+	if (of_property_read_bool(np, "snps,use-ncsi")) {
-+		if (!IS_ENABLED(CONFIG_NET_NCSI)) {
-+			dev_err(&pdev->dev, "NCSI stack not enabled\n");
-+			return ERR_PTR(-EINVAL);
-+		}
-+		plat->use_ncsi = true;
-+	}
-+
- 	/* Get max speed of operation from device tree */
- 	of_property_read_u32(np, "max-speed", &plat->max_speed);
- 
-diff --git a/include/linux/stmmac.h b/include/linux/stmmac.h
-index 4430b967abde..8c4f1b0a1a42 100644
---- a/include/linux/stmmac.h
-+++ b/include/linux/stmmac.h
-@@ -348,6 +348,7 @@ struct plat_stmmacenet_data {
- 	int mac_port_sel_speed;
- 	u8 vlan_fail_q;
- 	bool provide_bus_info;
-+	bool use_ncsi;
- 	int int_snapshot_num;
- 	int msi_mac_vec;
- 	int msi_wol_vec;
--- 
-2.17.1
 
+Best regards,
+Krzysztof
