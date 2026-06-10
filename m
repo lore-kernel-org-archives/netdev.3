@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D22ED1459FA;
-	Wed, 10 Jun 2026 01:20:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 167AE23EAA0;
+	Wed, 10 Jun 2026 01:20:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781054410; cv=none; b=HTlbs5CzRq6aqClsAG/HdKToLMvEyU0fkhJon7yhMrMkRgkOWch/HU4gemUmA5FBVeM/r70XaVlABXKRhH/80Ai2oh9va+cJ3QzFl9L1ul9ErWC6mpioSqxcZKxqMJw0gQqEdWlxxNRWps6f0DMxiKK0zO+gV97GuSVyASOYdn8=
+	t=1781054412; cv=none; b=LXRROMOYrmxXg+bSwMX23AaXcepRNZp0TFESUrMAPbnqZoWqRr39CN2SgcZKMPfGTH2Wfcep6BromUtKftstQFO3/yEes1TGMbyKi0L59A9lpqmsSCyOzBojOAiK5+IWUgVZw54UjZjTq1LSYFOqUSnGzUCu0Z80k9n2ksL31Ds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781054410; c=relaxed/simple;
-	bh=k60GvGJzSgkzg0qiu+plSyBgeaIYproqRQQ4ehQmcx4=;
+	s=arc-20240116; t=1781054412; c=relaxed/simple;
+	bh=YZd3be3IXnDZ/5Yj+BTL31xQ9xwaraRHtHu5Obu2grg=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=JAVH5KWAFQArg22ck4zUzQ/VFFsoPybJvuHeS06C0c1bibuT1/yJah8Q+/nYZpB8+Zx21/mlrtNRHvk110L48Oa9gkD+mk1ZpJYty5t6YV1mWqFHGCqoKh5wMb+4vXTRpVUTgCC1iwy6vCeUpViScdmqdRpniSpkPgAlGiwD8xg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PrmxHQPi; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=L8dMadoYHCwB4KQu5gdAJ7mMBcIrdz35QWirNHiDHJ/KiufDrW7BwB0O+hw6WTx1/qg4KM1rERJOmI0DCt+mVc1TDBumOR6sM8S2UW9K9hICsMYVnz/vK8LKwKp4pmEoDDWuyLBcWqq1/nebHSXxuNNm339KxoOkHrq6vDpxLe0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TmpnhpTT; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PrmxHQPi"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 752A31F00893;
-	Wed, 10 Jun 2026 01:20:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TmpnhpTT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF27B1F00893;
+	Wed, 10 Jun 2026 01:20:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781054409;
-	bh=VI5ut/0YzSS8jfsx8GHvOnz5wnkTkOv8+IYHbb1PgU4=;
+	s=k20260515; t=1781054411;
+	bh=0vyG63OBWEbKlctZRJlU9wsCWVVM5Z3bEQFpubuwNp0=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=PrmxHQPiagZOfCPCBj5qcJcr4aYBZ38dOvOhoA4B7z486U8vkTg8heP1Oylcpm482
-	 0FjHOhZyUNhpjSQPdmHQGFL3YtRmu+QSlivzleRYyt3DNTzrHvOG4LwdevCKX7rz8I
-	 zw0XShnb4uEryHAngRI/5PUbWjDcYFUstUb7gp9pI54k/Q4z4fT+ZEHz56+RKlt+fY
-	 7I1S9WOsvwbg3pLwS3xreGDlw+R+l5Hjz68W+czCu62nICxqG+dS9k9l87+74+2ssm
-	 KrPdZueGY1iC2p6AK8lgkdZ+JEb/9liYn7TBIjmQgozMTpcCAtiEdzh8lyEfTV/Mtt
-	 Me0D3nYCHOjQQ==
+	b=TmpnhpTTSaRC1u6MqD08AGBWqHD2qvukcdUTc5pVFAC4jnfh/ClrgseiH7p+eTuxf
+	 /nTjvIkuoK6GMLyc8rYjcy8ZkC+UhSI9DkzZzv3sFOn0axlq/m3kbvBtfNhA8PfVq1
+	 CtHfhSxfXY1jEeIkVNP0ltWzbJE/XBaxLbxYjlbbTStTEslZ+SxVvRK3PTpmiHRTLn
+	 mq5Z6LRWVdr9Fa3Z2CpUhGD40URXdoBWWjEBqCgiHUpVd7Cs27/F3IeTEHRwnPUsJk
+	 /4+aC+q+9F0Ixhqfj4yYfeAtC9Xa6DGxkYaAEg1SayC0i5HQaqayhquY5bzZ3OGnsn
+	 g9/DZ6iYObkIQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D09883930A12;
-	Wed, 10 Jun 2026 01:20:08 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 569A33930A12;
+	Wed, 10 Jun 2026 01:20:10 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,39 +37,41 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] bnxt_en: Fix NULL pointer dereference
+Subject: Re: [PATCH net v3] sctp: fix uninit-value in
+ __sctp_rcv_asconf_lookup()
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178105440739.2779729.6594340451035463681.git-patchwork-notify@kernel.org>
-Date: Wed, 10 Jun 2026 01:20:07 +0000
-References: <aiNM1CY2-StPilxW@hpe.com>
-In-Reply-To: <aiNM1CY2-StPilxW@hpe.com>
-To: Kyle Meyer <kyle.meyer@hpe.com>
-Cc: michael.chan@broadcom.com, pavan.chebbi@broadcom.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
+ <178105440888.2779729.14941795177786710168.git-patchwork-notify@kernel.org>
+Date: Wed, 10 Jun 2026 01:20:08 +0000
+References: <20260608122234.459098-1-michael.bommarito@gmail.com>
+In-Reply-To: <20260608122234.459098-1-michael.bommarito@gmail.com>
+To: Michael Bommarito <michael.bommarito@gmail.com>
+Cc: marcelo.leitner@gmail.com, lucien.xin@gmail.com, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ vladislav.yasevich@hp.com, linux-sctp@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Fri, 5 Jun 2026 17:25:24 -0500 you wrote:
-> PCIe errors detected by a Root Port or Downstream Port cause error
-> recovery services to run on all subordinate devices regardless of
-> administrative state.
+On Mon,  8 Jun 2026 08:22:34 -0400 you wrote:
+> __sctp_rcv_asconf_lookup() in net/sctp/input.c only checks that the ASCONF
+> chunk can hold the ADDIP header and a parameter header, then calls
+> af->from_addr_param(), which reads the full address (16 bytes for IPv6)
+> trusting the parameter's declared length.
 > 
-> The .error_detected() callback, bnxt_io_error_detected(), disables
-> and synchronizes IRQs via bnxt_disable_int_sync(), which calls
-> bnxt_cp_num_to_irq_num() to map completion rings to IRQs using
-> bp->bnapi.
+> An unauthenticated peer can send a truncated trailing ASCONF chunk that
+> declares an IPv6 address parameter but stops after the 4-byte parameter
+> header; reached from the no-association lookup path, from_addr_param() then
+> reads uninitialized bytes past the parameter.
 > 
 > [...]
 
 Here is the summary with links:
-  - bnxt_en: Fix NULL pointer dereference
-    https://git.kernel.org/netdev/net/c/d930276f2cdd
+  - [net,v3] sctp: fix uninit-value in __sctp_rcv_asconf_lookup()
+    https://git.kernel.org/netdev/net/c/f8373d7090b7
 
 You are awesome, thank you!
 -- 
