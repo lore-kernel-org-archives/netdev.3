@@ -1,129 +1,90 @@
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from a9-25.smtp-out.amazonses.com (a9-25.smtp-out.amazonses.com [54.240.9.25])
+	(using TLSv1.2 with cipher AES128-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C1F23AEF58
-	for <netdev@vger.kernel.org>; Wed, 10 Jun 2026 08:38:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.177
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781080701; cv=pass; b=VX+UkLZ4v12yemiSMm6n/rTHXhzuoB+6kNJ9DHhbWfgmDgTIhxhDPReUPbd1KTeELIWEVYhOLOjjW88OFXIi5daPoKLW926R7NDd5L3aYGhsCvLwhn02g7Xu5mPEE+TGpNGN0TSwBvD8naIZQdhCCY0G+5R2YPz84rS16JEaQp0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781080701; c=relaxed/simple;
-	bh=NRlvWbJzwF/mAJk4SP+2M4uTU6SrRN6qN/Y4wVSqKs0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Eer9accNH8loogs3FDaIADTIF+hKndECvq1/soVaf1wON52jrH/YXyDEqpMf5IfsTQMSxA504peKMJti+JwBIAQg2qT7rXwD7uV94WUOYDKSGPhUFdDPijOMxYBun96LKxLxDZhjrjlB0OBkA89xLtdgGBZ01Okw+/pItXRxwKU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nTIV8HHN; arc=pass smtp.client-ip=209.85.160.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2420D3B19A9;
+	Wed, 10 Jun 2026 08:41:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.240.9.25
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781080886; cv=none; b=rSBi5As1gDnv7quz71g3KuSCIKJwOGqhOG11+si3r2O2uaqASmAg4XJcrZihlB8SoaVe80qAlB7cJ6b2rBCRnIN+DUhjS5DEI3fT6UEhKZ5SivSSL2hFhTUrDspzyOm77QkouTBQE0lh6RqjknRghFThLpubQxG6rChlvbZuXMw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781080886; c=relaxed/simple;
+	bh=mK3nrvsi7feMTvtPODs1gZ8VpHN+s4738hCZ/Exe8P4=;
+	h=From:To:Cc:Subject:Message-ID:Date:MIME-Version:Content-Type; b=OTmEC/UsFf5s0CNeIM1fqrCZquC9wbpYi/WKuMu63mVPg7lqyoaQXhpSsmESs1OHVHuYtuLJ2gsbwdLRDdBE0w86vCmChNvfsDj926pufhJyG9UFFffrMax6vPen6dUqMcij1/4XFVKs74zHnOwZWKck7hRD5tHAemNpwiZkcpU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=c127.dev; spf=pass smtp.mailfrom=send.c127.dev; dkim=pass (1024-bit key) header.d=c127.dev header.i=@c127.dev header.b=SSJw5Z6H; dkim=pass (1024-bit key) header.d=amazonses.com header.i=@amazonses.com header.b=YMn8znt/; arc=none smtp.client-ip=54.240.9.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=c127.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=send.c127.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nTIV8HHN"
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-51765331535so273581cf.1
-        for <netdev@vger.kernel.org>; Wed, 10 Jun 2026 01:38:18 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781080698; cv=none;
-        d=google.com; s=arc-20240605;
-        b=FiP/PFI2Hnm8zxfmJ7NQFUZ3pHdXsAmP1U13nE/WWX+Ia4aLNWcJaqZk1n1N7yzsKY
-         IjgSWAORG05raSd3LR6WD8P0NfXCDNE3nYFCBxQuXhF1KJe1nbMJSB0jOjqkz58QGyBf
-         BxvjgMC/bAOKV6I5jLYy5TQ3vR7GgXo7HL/0ce1ghowytUozk55SfYE+FLXD8rSVkX9L
-         eab7DoGDtO7T0ki+anM+Znwa3uXdUBhYbcL/lkJt844c8QfvJPcETVErKrEWH/Y9WIZJ
-         +tqm2DBHagoyrmQNvKV9hFNEKOkjYv+JrqGMFAyoXgGrZR0VyZvqg7vO8XoMTqwRjtsK
-         JZHg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=NRlvWbJzwF/mAJk4SP+2M4uTU6SrRN6qN/Y4wVSqKs0=;
-        fh=gGvU+5sD5/2Si/vYmH3x8ugk8nEGI3jE8noasAkn3+s=;
-        b=dLrXuaQQAvrbVwhP0HU8oJUFjqkIqbcgq7OyxoPhbOIAXpHDGT5LgEKzGaZW3b6lu3
-         FrXAithYxcOGnX9GGMx3l/PqvfVwi0MXPVSTCO/P2wZA9jWdku/U34HazOe7aFEJsyMZ
-         rG2clxT6prNVis7tIObsOfwsbWGGIX/ZpKnclZ0OWErryWSEwTCS/PAiMANv5z1EH84m
-         rALqZysnmI+k+2EC5aZ0SgB7oHrsX5EVmKGXjK4yIxQh3/ep8VSKQ9KktoOl9sSqF63f
-         jkPgZc02E5KKB4G+BkdXp4tAOUYbYBHE6XJVv+u9I+wsiqo/Tb+BIgQ/yzYuhWCc/g+Z
-         dpRA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781080698; x=1781685498; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NRlvWbJzwF/mAJk4SP+2M4uTU6SrRN6qN/Y4wVSqKs0=;
-        b=nTIV8HHNcC7dyWrbGaCOJ6FwQgWwKgiETg9MkysV2ZPJJuzY3VJCNAJQ6vXFQ9bDHd
-         ml5D2aIAldPYfqUsms2D0sVyv0UeiTTgGpxs6bhLGhCh9I7vw0csDADxbrSqqKGUi/Lj
-         yZrDMzp39IjmqbAn3dYaSsIe+WwjBYFyX/t41/5vLenSJvP0j7ry79inCOYCqXo0OsxW
-         weGsq8X7FD25Dk7/K0gNl4VJrpiTscjJxo3goReo1syiiGfeISMY/Mt3ZwkWevGodfh4
-         TFeeNUoLrxNibdVlg5l+ViT2IJLK8VJL+iWCc1dyyjlHyt6xzcTM9hGrFVmmWQOMECGY
-         Xu2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781080698; x=1781685498;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=NRlvWbJzwF/mAJk4SP+2M4uTU6SrRN6qN/Y4wVSqKs0=;
-        b=FQDa4b7bx9j3GAmcA1ENEC8Dvbjuo1tezA/SImOCT9L/9EK8yfQEQpbI+Fynn52737
-         P8pLu0zHqJTjRYDD8+bHJnNdyM7F7rWy63qN04UVD+n5aM1V8gbQXvXLCqMWSwSL826z
-         gKbFpelL0Ys2iy4+krkhIlYX9VZErFK/4K/8U/QrredI4JxPS2wTAW0t0oWG7hXI1yWU
-         eFBrXWQXHCxjvXvIyuZJAaY+8dQWkeMsXQsENXHKIzCcrJMHwfQvrAGI5pLqygYQnJGN
-         IUXT5y0alGd1KxbbukI7kmkeEWb0N18r6JAeXnvGFR3o4uymtXp9y2TFQ9X5RNESXBHw
-         02wA==
-X-Forwarded-Encrypted: i=1; AFNElJ9Euk/r7LdWqhwl4YE6yKyI4Zvl7ojTdhworhIl15zXjXkZT3ClNrTDFJXIlq9RyfJaQ0oBdJU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw9t7XmP0HI8B5C4R4r2m/b+N45ih+kVqxD9KQBBYXfV7KMJ6JR
-	R/nMaonBIgnK7+5PqneuyFSMsWeR1BSBgPWiNHU76L5QaMGdKqqyMaeLQCqSQvdLr7EQn4Vllqs
-	vUbmFfmqvyi5em9nQD3gCZgtzi3Y8SW0mkeRuTc2jzzFHtmuFz4TZdWzLa/8=
-X-Gm-Gg: Acq92OG05O7wn27JRKXbpNL4CE7jUCivPXzRRf8G3yE3b9lA2/O1mZ/qhnq5kCfDwli
-	GGo79MO5HeYwg2cX5woFEn7VYqBJiYCdIMWSr+jkmd1SJafuiF8oGzIglDQ8TrsjeTs8b5TO69L
-	U+DZjlEYiTr5EpWLXwEi5kfxSgmU1LK5ID7wos1tWivt/e6L9Y1XqPhM78RssVUkMJXlB1lhc7w
-	YsKo4uJMTHv11N+YgBvlWrdxZ0+gBNWJQ70wUFS2DE0iAFDam2uIAMhxpNKvXnUvYuZvJbAkSPe
-	FUfy+Moa3Avw/xcnvizT2l2GV0KUl0Muj8VH2G4Jg/PCSw505NYj3hn28MK9OkwZoy5p4lMQlY6
-	F5/so
-X-Received: by 2002:a05:622a:791a:10b0:50f:af60:3496 with SMTP id
- d75a77b69052e-51797ffc93amr40960591cf.1.1781080697486; Wed, 10 Jun 2026
- 01:38:17 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=c127.dev header.i=@c127.dev header.b="SSJw5Z6H";
+	dkim=pass (1024-bit key) header.d=amazonses.com header.i=@amazonses.com header.b="YMn8znt/"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple; s=resend;
+	d=c127.dev; t=1781080884;
+	h=From:To:Cc:Subject:Message-ID:Content-Transfer-Encoding:Date:MIME-Version:Content-Type;
+	bh=mK3nrvsi7feMTvtPODs1gZ8VpHN+s4738hCZ/Exe8P4=;
+	b=SSJw5Z6HIUL7WSqB6dxqpSTUn1fqiAB5qw+9p92699OQE9XcdKn3YQcRauYw2vZX
+	hL7wOu7rfNBYhUxMxr5L5HHG/STPpvgM9FyCmA+61GYoZyaro+du1GcvKEl1rtonHBn
+	oqkdAwwNRM/VtdBRz7RLCGRsyAxfzNgL2n6MsXjE=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+	s=224i4yxa5dv7c2xz3womw6peuasteono; d=amazonses.com; t=1781080884;
+	h=From:To:Cc:Subject:Message-ID:Content-Transfer-Encoding:Date:MIME-Version:Content-Type:Feedback-ID;
+	bh=mK3nrvsi7feMTvtPODs1gZ8VpHN+s4738hCZ/Exe8P4=;
+	b=YMn8znt/4EGarH9it/GIluPOqnrfFxW8DHxt3R4ddx2xd7YSR/eR3tOcJE97Khrg
+	ocP4MtPh+7uRf1EIpqRR0QeUMuPr2BZuveXsXOmHprPV9wpPBdjw8hxYyyittOoPOXe
+	x2vUzTkzFbiN/lS/WXomFw1bcp96vSMbwpxjXUYw=
+X-Mailer: git-send-email 2.54.0
+From: Johan Alvarado <contact@c127.dev>
+To: netdev@vger.kernel.org
+Cc: linusw@kernel.org, alsi@bang-olufsen.dk, andrew@lunn.ch, 
+	olteanv@gmail.com, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, pabeni@redhat.com, linux@armlinux.org.uk, 
+	linux-kernel@vger.kernel.org, contact@c127.dev
+Subject: [PATCH net-next v2 0/2] net: dsa: realtek: rtl8365mb: add
+ SGMII/HSGMII support for RTL8367S
+Message-ID: <0100019eb0b1822e-ffc5626c-1b9f-4c8a-8a1a-759a9e665f4f-000000@email.amazonses.com>
+Content-Transfer-Encoding: 7bit
+Date: Wed, 10 Jun 2026 08:41:23 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260609122646.2297540-1-yuyanghuang@google.com> <fdcc6f4b-6f81-4422-bfbc-7376dd5cd19f@6wind.com>
-In-Reply-To: <fdcc6f4b-6f81-4422-bfbc-7376dd5cd19f@6wind.com>
-From: Yuyang Huang <yuyanghuang@google.com>
-Date: Wed, 10 Jun 2026 17:37:40 +0900
-X-Gm-Features: AVVi8CcahRnBxTtyxrrYUhGPuHOoF3ozHy8x2BkH-nK4Cm6_s9U_wZryUWK1m7k
-Message-ID: <CADXeF1FaYn2sDyM3Kfic5eyP2oQO9uQE_rFbwwRZFrOqyWSJcQ@mail.gmail.com>
-Subject: Re: [PATCH net-next] ipv4: igmp: remove multicast group from hash
- table on device destruction
-To: nicolas.dichtel@6wind.com
-Cc: "David S. Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>, 
-	Eric Dumazet <edumazet@google.com>, Ido Schimmel <idosch@nvidia.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Feedback-ID: :1.us-east-1.z4rHY0qbNtjoW80ZyzVy+DEul17RQEOMT7FC66S60ffkhLWkV35D8ZWXVyxJY1/89bAuLCem4GFJq1VXsxM0u6ZfZbvT1qSjDUeuZG9/Lxk1uINIqi7CenEa93u+fNllqnJMZ0quaBrclhnmtzdFllG4KHSjZOEcaGLa1BWoSpA=:1.us-east-1.epbACCJLarUaEI78XZoGREJ9LamRjxMH5pM2kZb64rA=:AmazonSES
+X-SES-Outgoing: 2026.06.10-54.240.9.25
 
-On Wed, Jun 10, 2026 at 4:50=E2=80=AFPM Nicolas Dichtel
-<nicolas.dichtel@6wind.com> wrote:
->
-> Le 09/06/2026 =C3=A0 14:26, Yuyang Huang a =C3=A9crit :
-> > When a device is destroyed under RTNL, ip_mc_destroy_dev() iterates thr=
-ough
-> > the multicast list and calls ip_ma_put() on each membership, scheduling
-> > them for RCU reclamation. However, they are not unlinked from the devic=
-e's
-> > multicast hash table (mc_hash).
-> >
-> > Since the device remains published in dev->ip_ptr until after
-> > ip_mc_destroy_dev() completes, concurrent RCU readers traversing mc_has=
-h
-> > can still locate and access the multicast group after its refcount is
-> > decremented. If the RCU callback runs and frees the group while a reade=
-r is
-> > accessing it, a use-after-free occurs.
-> >
-> > Fix this by unlinking the multicast group from mc_hash using
-> > ip_mc_hash_remove() before scheduling it for reclamation.
-> >
-> > Signed-off-by: Yuyang Huang <yuyanghuang@google.com>
-> A 'Fixes' tag may be useful for backports.
+The RTL8367S is a 5+2 port switch from the same family as the
+RTL8365MB-VC already supported by this driver. Its chip info table
+entry declares SGMII and HSGMII on external interface 1, but the
+driver so far only implements RGMII, leaving boards that wire the
+switch to the CPU over the SerDes without a working CPU port.
 
-Thanks for the suggestion. Per discussion in the following thread, we
-don't need to add the Fixes tag for a trivial fix.
+This series implements both modes. The configuration sequence and the
+SerDes tuning parameters are derived from the GPL-licensed Realtek
+rtl8367c vendor driver, as distributed in the Mercusys MR80X GPL code
+drop. The SerDes bring-up requires firmware running on the switch's
+embedded DW8051 microcontroller; the firmware blob from the vendor
+driver will be submitted to linux-firmware separately as
+realtek/rtl8367s-sgmii.bin, and is loaded via the firmware API.
 
-https://lore.kernel.org/netdev/20260604101728.GA771160@shredder/
+Patch 1 adds the SerDes indirect access helpers, the DW8051 firmware
+loading and SGMII (1 Gbps) support. Patch 2 extends this to HSGMII
+(2.5 Gbps), which phylink represents as 2500base-x.
+
+Tested on a Mercusys MR80X v2.20 (RTL8367S connected to the SoC via
+the SerDes), in both SGMII and HSGMII modes, with a fixed-link device
+tree description.
+
+v2: no code changes. Resending the entire series because the SMTP
+provider used for v1 corrupted the mails and patch 1/2 never reached
+the list, leaving an incomplete series. Apologies for the noise.
+
+Johan Alvarado (2):
+  net: dsa: realtek: rtl8365mb: add SGMII support for RTL8367S
+  net: dsa: realtek: rtl8365mb: add HSGMII support for RTL8367S
+
+ drivers/net/dsa/realtek/rtl8365mb.c | 394 +++++++++++++++++++++++++++-
+ 1 file changed, 390 insertions(+), 4 deletions(-)
+
+-- 
+2.54.0
+
