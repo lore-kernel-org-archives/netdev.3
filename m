@@ -1,46 +1,46 @@
-Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010052.outbound.protection.outlook.com [40.93.198.52])
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011045.outbound.protection.outlook.com [40.93.194.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8F8937269C
-	for <netdev@vger.kernel.org>; Wed, 10 Jun 2026 06:18:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71049370AD3
+	for <netdev@vger.kernel.org>; Wed, 10 Jun 2026 06:19:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.45
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781072341; cv=fail; b=uqo3+vwOYItDiPjx0ZMeKAJN3V5LvtfUP1VFbD9D6qpbKURro1eeIq3FyxJCrlemj8eOPph3Fi/+/V3+p/R8tjTNmt9lizQQNaHmnMD5+jKGFpw1NdleX4XfnZQ0FszagA8TTlcOi7ou7apJGZfPJ5bLynBHH8D2fMoQgfeqWZw=
+	t=1781072345; cv=fail; b=L8GlEH1z2i6SlOkcLOhJDksB32OYJb0VG41NPVGKhsZ26eyQ96KzvG43cK+QZ7M6+7vrxwr8DG0v5yZnAkqVx905YVsDJ0nxcfByeIaxt4L+y/xUphgYxS1Bipv3J98n6ug/Ij1DgAtZDQArY7+XUSia8O2Rrw44qzSIO3LM3ew=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781072341; c=relaxed/simple;
-	bh=QBquUKAC2wVTWxWsZpopImm3bARkBv7WW49lj8/xYzg=;
+	s=arc-20240116; t=1781072345; c=relaxed/simple;
+	bh=pDU/OuetOTiPedD/Y5wZo2f44ph7elnb9uvF2t6u4rw=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=f6ZerhJ4gH5B8/p1mYDyncoDbYLiJ/HbfESAWnZa79MwZi7TDXyltmDjJKUJxJTI/pDRZj21C85Vb4DkaDkKt2k5Zr6llQ8V1CMiLUdElkA0nKPRvvco8+05FMpInvrNzIsYuS2ta+3LF+COmN2EUytfG2UiBx4W5kWd2UWDFME=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=f2s4spfU; arc=fail smtp.client-ip=40.93.198.52
+	 MIME-Version:Content-Type; b=huHmy1X0tB2GQLn/IXGZTup+rOc4zp+2ofG3NXBR8Gu3qmZMviPFsoDk4sgv93fFCxagJz4S9JH+NTwdaaq4JYURR8IGf3bAfwmujqJkA+ZJogT5CNTJ8lFERyGnX74B94g0/6LqEeeIcJF35yq/fOp1/1/R/UlgIrlE1/Cl8Ik=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=wrnXIyiR; arc=fail smtp.client-ip=40.93.194.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="f2s4spfU"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="wrnXIyiR"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=oyTFbYD9KMDmtetIsop5VRQLRtw3tyDEHYzl+3CN7HxmwDp3d4taItL46UAPGK4h1iegNo0C6tHQRVIKtXOaD9uKRXL18J39fvO27HhIjs8dTtCcHiOKHIaLMijQRMhxwgKOZwT7sybuv2IoT4/x7gTuM1fWV1VJCIb1C/WFQDWmH0GZNzMD1c80tvQNGew5kyzNigWopERNesxmdILcKhE7nbxnPxCBM6OUURpznMvRuff38D/Mb4KxeQa2R5ovPn4aL4pDe3y00/AEVoPD17caRgMjANBxxEOQ4rUPDbkFvE/Q0u3Nzs5Ivxa8MDCMHVvksxC37I5ynl/vstpplg==
+ b=Ii49a4z2C6XFhvsZD+5s+TsrZ1cOTbSIztbsb+p+yGLk3OfUQ7+9yf6DpBGGUm6PVijtRHBb+KvYNuRji2g+X72ZuQQ98X9pkX3XDwdlkP32icl/MepsiudUMPDfGi9oSd1N7A0EyJkRKFe+eHuoi/TglCwjavTPfap8Lz0TE9YA4yO9l3UalVvhaXLl4ZHjJXxDG35fmc5tOCljjhyiIfLOrfl59RtkOots7RAsTd7TRMHxK09+nvcnddqbFfPMxlXnKcjbekbLCZsRNrgSq27OXacPFm197DncRUm0EERKQDsF1vyTCOy1I/ggZZ1ZnModunlixAII9iet321wYA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=pVG4QlH/I5Yd10NSuiE4dvtFGaI/Et8f6TjPjL0w+fQ=;
- b=ZCc4tc4rvkL5fBjqBSi+qTjQjjbfJd1H6A4bSoaOpFeqsRlckptn6wLFBxlFQWI/iE8yYdSdqQSrN5I6lLdfuv/fyom+n2Uur10rFSb2vpxKDWTgcldz+5VlUOc88bUhVQ1nbvBR2ivZpTF1DXq2pPykbPk/99+InvX8KXxkzwIuR706CZYue0LOLmeJVw2CB0dPdrCZQNeMuRCmWMHgQxb4JTHVz0XpIFbcujdfHrSgTYznO13uoqcXL0RCR6ZUwEblpY0tQwtkYdANVf+ww4Sdy8nuf+Oo4VUwW1amhEJ1XkzV+sk6/A/OPZf7+wlGj7VCkm0n/+e3LplduqMFjg==
+ bh=hQ4+NXPgdco61nPRxCPptI8SxIEoz4WgsESuOHXO9UY=;
+ b=Zq/Y3FueRftpxV0QdfIq8JJxf+6pqWfhxfNFFpiju6VfCUpEFEKjO6KGPJGsQZIfbMr/NS/xDe/5dGZ7qAmGBXEV7xJUwJ3sE95iu4SXsiH3oooIqGJRoVm8qNbdte4b9h4Jrd6wgdcQd/BrEVaLMrfmfaA3xZl5DTHs3ahOh+s828IF/RMt/4mtasCSUpkpQe4joPXQZ0aoyIZMHE+MaE3ZPbYJu1z6hrze7FkVovTljYHSUVnUPyn84UtrzSuZ0IwlDj8jEZRT54b97hZDa1UkFDv6ZiCIkrDWT7c/XaX2f0YqIBOqjeMBMeUGvdajtZXVy5QfQzbTo4FA9ZEQvg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=pVG4QlH/I5Yd10NSuiE4dvtFGaI/Et8f6TjPjL0w+fQ=;
- b=f2s4spfUz2crJgQAv42cxMwa1SgfQwfqkUUzQCmPTaPopyayLVQx0CIvf3UVX7BUD4AxwVhP7qHxXn4p3ZywpR3b2xTueHzkZKt0I7a5UEp6lALADYiHq2ElF32DgLopuolYuT9DZlGcsOjKtMjoqAasDBq3kJ/zWnCegyqci5U=
-Received: from MN2PR14CA0021.namprd14.prod.outlook.com (2603:10b6:208:23e::26)
- by BN7PPFB3F5C406F.namprd12.prod.outlook.com (2603:10b6:40f:fc02::6e0) with
+ bh=hQ4+NXPgdco61nPRxCPptI8SxIEoz4WgsESuOHXO9UY=;
+ b=wrnXIyiRiX2aq1SxBMcapExZ8w71KFe+W2q+r3Xkb/CZxLWeLRMR2NjdJPyTbbmMkiLt+MUGHoOlyoa6sxdEdlhhFn6XrXOZ8k90oCjAuWtAz8zh017G2qHiPF77RWh9iYtT++kf0wp2ipbhwgl7R2kokkxeeQJhfB8kkOq/6UE=
+Received: from MN2PR14CA0016.namprd14.prod.outlook.com (2603:10b6:208:23e::21)
+ by DM4PR12MB6301.namprd12.prod.outlook.com (2603:10b6:8:a5::21) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.13; Wed, 10 Jun
- 2026 06:18:56 +0000
+ 2026 06:18:54 +0000
 Received: from MN1PEPF0000ECD7.namprd02.prod.outlook.com
- (2603:10b6:208:23e:cafe::5) by MN2PR14CA0021.outlook.office365.com
- (2603:10b6:208:23e::26) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.92.13 via Frontend Transport; Wed, 10
- Jun 2026 06:18:56 +0000
+ (2603:10b6:208:23e:cafe::d) by MN2PR14CA0016.outlook.office365.com
+ (2603:10b6:208:23e::21) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.92.14 via Frontend Transport; Wed, 10
+ Jun 2026 06:18:54 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -50,11 +50,11 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
 Received: from satlexmb07.amd.com (165.204.84.17) by
  MN1PEPF0000ECD7.mail.protection.outlook.com (10.167.242.136) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.113.7 via Frontend Transport; Wed, 10 Jun 2026 06:18:55 +0000
+ 15.21.113.7 via Frontend Transport; Wed, 10 Jun 2026 06:18:54 +0000
 Received: from driver-dev1.pensando.io (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Wed, 10 Jun
- 2026 01:18:53 -0500
+ 2026 01:18:52 -0500
 From: Eric Joyner <eric.joyner@amd.com>
 To: <netdev@vger.kernel.org>
 CC: Brett Creeley <brett.creeley@amd.com>, Andrew Lunn
@@ -62,9 +62,9 @@ CC: Brett Creeley <brett.creeley@amd.com>, Andrew Lunn
  Dumazet" <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
 	<pabeni@redhat.com>, Jacob Keller <jacob.e.keller@intel.com>, Eric Joyner
 	<eric.joyner@amd.com>
-Subject: [PATCH net-next v4 5/5] ionic: Add .get_fec_stats ethtool handler
-Date: Tue, 9 Jun 2026 23:18:30 -0700
-Message-ID: <20260610061830.51037-6-eric.joyner@amd.com>
+Subject: [PATCH net-next v4 3/5] ionic: Report "rx_bits_phy" stat to ethtool
+Date: Tue, 9 Jun 2026 23:18:28 -0700
+Message-ID: <20260610061830.51037-4-eric.joyner@amd.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20260610061830.51037-1-eric.joyner@amd.com>
 References: <20260610061830.51037-1-eric.joyner@amd.com>
@@ -79,136 +79,193 @@ X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
  (10.181.42.216)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN1PEPF0000ECD7:EE_|BN7PPFB3F5C406F:EE_
-X-MS-Office365-Filtering-Correlation-Id: 933dbcf3-5bac-46a2-1430-08dec6b826c8
+X-MS-TrafficTypeDiagnostic: MN1PEPF0000ECD7:EE_|DM4PR12MB6301:EE_
+X-MS-Office365-Filtering-Correlation-Id: 391e3d69-c143-4288-bff8-08dec6b825d2
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|82310400026|36860700016|376014|1800799024|56012099006|3023799007|11063799006|22082099003|6133799003|18002099003;
+	BCL:0;ARA:13230040|23010399003|36860700016|376014|82310400026|1800799024|11063799006|56012099006|18002099003|6133799003|22082099003|3023799007;
 X-Microsoft-Antispam-Message-Info:
-	1Nrs8cB4R5Lags4apxZDNyFIu0WRjwRWa1hnJ3Zg7/y+qce7Pz8KX/BxnRAeMUNQL1kFGhCmpiBgm5di8KPwEJez+JfhbgNizgLsVDERlx1tepAx7yPh4QLoN1SHyyeTSVbFl+qHvPtk1UnihcyR8Iv0p919dQHSysCStoC83dy546eMZgTYEuifullPmNh16Brg0/0Kzc7NmxT/lH7h+qk0whKQPi9snKRxvUbt0u1ZAgighvymPwlcfhR/bQcRgcw1sh7dkW3l1vhlY5S6GVGa3+mbk7OP0GzIJ7SaZZYYGh+FzokOm9on2UNEGgj6HYWunVYxUdj3OpMHqvoPHIHkRr+ORgkY1VhjnEsrKTD5m5FTbn7fQdtA2JAAaeeFjybt1sboN9++iHS6/R1jOVLTvDer8+51En1qScKtIBXLLPHyaQvaIYwjQzEVGlK3HiZwQAZ+LeNtcI79+aGwsIlHT4Nq5VhUK84u//rWHKjqlNJdDxeYQm7uhczyZiYGhohwvDJmIk5fTKIKNnK4pHi/0e23owae5pGluzO5FivuEmPXFH1bG37vfHeUAePiGkes6o5qNpLMHWbGUsB6bhOnWsJr9X+9Lf3ku/5q0NYgBQke9P/W7tVmnndfqKTJridrL0GXtUfZniWD/btR1T1M6xYi+N/PunD7BqeRFKzvz9U33VkTdcz6kU8kPe1O4JFCBuivU1iWx/LWfXrEtrSez9rE3khMKrOfdPmknmI=
+	2kLYYoQ1jhdTWnU2dbIY4e27NcpJS50ukfXfWOFeh0ebMteN0ZzuXaLtiMgAMSqjX9N0YT08sOYdD0i9cXu6D1V4PYN0jvKV1Hrem+ia2BY2oFqPAWk1H4vRgRTmG2t/UgucY1ugxIT1lvxEf0sIDH6oIttJBge0yfxgoKbc1RV0x4+RL+wBNRSCo99q1dkSC5rv1Oah29IWjTDjN7s8W+8XABM85DCq/JzVxjaORSQjGeSoDPDjPE/f+zqRV1AXLlA/3OwHHcJbj8GH6ajnoidgRsBhxcIAonV7XwroqCLV/PnveMEypLZl1X/DdC6o7OOGqJvi6NREo46e4k71F5+hUjpZE+4h7n6+qNEiT4rzb5NajvqP+JjBg8qZ62Rleft4jQD0H01xn5JxEg6LMbIDlrzFbOgPzH7m2ps2s8jaAz8Euzp3n13+4FLBP5Pvi6d09eBuNlEsteUFuZNoxkuva1nTg5GrcmnbITLNYxRPr2TPr3nGjp9AQsgdivIoBQjskGXY5hX78YhUJ+Qer/PPvJuPq9XKan32bdD57cvptB4AP3k4Tl182Nh4m6WoFNEu/s+fcWCObUPx+uSef/b363Lw432K+m6oWTIgrxUBj+gDX/Y39Lln7zOa8v1YsdRIDk2hUpzai8QdYmd5c106/cCwhy849h9Gnz4nLi3lJMPq3oQHMUZsXeW+Vv/vtzxSP7REZCn/mNs2NIWarUxp6m7jlc0/HlJnLDEIbRg=
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(23010399003)(82310400026)(36860700016)(376014)(1800799024)(56012099006)(3023799007)(11063799006)(22082099003)(6133799003)(18002099003);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(23010399003)(36860700016)(376014)(82310400026)(1800799024)(11063799006)(56012099006)(18002099003)(6133799003)(22082099003)(3023799007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	2eL6vDAdbuwHFJX/I2Q+XqvkfL+WZznQT+RgCEqt5zAcdbFJkY/K79lV3foVq0TjIjkx2i5J+nrw8HlUdxuINHjy35ixp/xYPWO2QCL5BKKKtxbMd8kaJARJGJN0yy0GjMWNxq4PO/U3fLXvsMXh+UOBN1uFbRk+B0IjGgBhyQcSn/mW9OGlLG62M/H8/h/LTKU61yJXRrYPMkuQCwHDF8661O5Z0YpbfWnbCDe4RElvqocieCr6MFyDMDpWA9/lW48M4MvEWm4IUqTcI8eE0MNx8aY9uM/3sCYVWz8xRGZn+3bUT2v/inokD8vsZjB+Tn0ASu8LYRDIxBvx3jvtzrSsgdtGvvvqlMTfSbUStICwniZPGKCOhxgsTh6+ARF49GVIX2zVFr5loFELa8aY9b50VYXok5Z8mG8nsqMsGQtB5Fz/E2UyluWWwRhmPbYN
+	kqGb/zTl4/Kc9aahwD7kd0EziPiXwMmzx7YAuDb/r44iI9cLeuVfnMEL2gZ/E1xthR4VT4pCrF0oINInLZ8YNqLujaCsqELruE2xHtG+LYwW6qbBWyz3/eUtUC/5OUGRNjYVX3p/rfvQUMqLNYSNBsudi9Zd4Ge0/MwGMMwY9wZLgBEUYgiodiEuU4kQITAKr1VQLjZyA5j4exTkWlum8UEqI5u+pHmVu3kJQsAeYfEuoOPuVfeU96MaFy3yfc2UL/sbXCQqanj0/uKdXDAmxU7nz4xmDcopR9a9F0cUOBw/w/b1kJBDcm3s+7jVYyUJHsqmljB6dcoSd7NtjgJBbF2hozLMlp05bBymAlCwWB4pU+CbnGPnidrFvAvzWYi5zr0W2jXMixmfaVoEz+FlVQn6sLewmPl4VFs3iGEkdGp6tqOR4NcPCVz/eBRjqIF7
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jun 2026 06:18:55.9664
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jun 2026 06:18:54.3599
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 933dbcf3-5bac-46a2-1430-08dec6b826c8
+X-MS-Exchange-CrossTenant-Network-Message-Id: 391e3d69-c143-4288-bff8-08dec6b825d2
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
 	MN1PEPF0000ECD7.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN7PPFB3F5C406F
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6301
 
-Reports FEC statistics totals and an 802.3ck FEC histogram. Per-lane
-counts currently aren't supported.
+This stat contains the number of total bits that the PHY has received;
+it's useful for BER calculations. Add it to the ethtool stats output.
 
-The reporting of these statistics is gated by DEV_CAP_EXTRA_STATS and
-checks for IONIC_STAT_INVALID, since only the newest devices support
-reporting all of these stats. Older devices can only report some of the
-statistics or not at all, and so the output will properly exclude those
-unsupported statistics.
+However, since this is one of the new "extra port stats", it's reported
+in a different manner than the existing port stats and only
+conditionally added to the ethtool stats output list: both the
+DEV_CAP_EXTRA_STATS capability must be supported by the firmware, and
+the firmware must set the value of the statistic to something other than
+IONIC_STAT_INVALID.
 
-Assisted-by: Claude:claude-4.6-sonnet
+To help support this scheme, the extra port stats region is initialized to
+0xff's/IONIC_STAT_INVALID by the driver, to ensure the statistics that
+the driver knows about but the firmware does not are still invalid
+to the driver.
+
 Signed-off-by: Eric Joyner <eric.joyner@amd.com>
 ---
- .../ethernet/pensando/ionic/ionic_ethtool.c   | 72 +++++++++++++++++++
- 1 file changed, 72 insertions(+)
+ .../net/ethernet/pensando/ionic/ionic_dev.h   |  1 +
+ .../net/ethernet/pensando/ionic/ionic_main.c  |  6 ++
+ .../net/ethernet/pensando/ionic/ionic_stats.c | 58 ++++++++++++++++++-
+ 3 files changed, 64 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c b/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c
-index 6069fa460913..41bb27669907 100644
---- a/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c
-+++ b/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c
-@@ -425,6 +425,77 @@ static int ionic_get_fecparam(struct net_device *netdev,
- 	return 0;
+diff --git a/drivers/net/ethernet/pensando/ionic/ionic_dev.h b/drivers/net/ethernet/pensando/ionic/ionic_dev.h
+index 35566f97eaea..5f677bcbaf02 100644
+--- a/drivers/net/ethernet/pensando/ionic/ionic_dev.h
++++ b/drivers/net/ethernet/pensando/ionic/ionic_dev.h
+@@ -184,6 +184,7 @@ struct ionic_dev {
+ 	u32 port_info_sz;
+ 	struct ionic_port_info *port_info;
+ 	dma_addr_t port_info_pa;
++	struct ionic_port_extra_stats port_extra_stats_cache;
+ 
+ 	struct ionic_devinfo dev_info;
+ };
+diff --git a/drivers/net/ethernet/pensando/ionic/ionic_main.c b/drivers/net/ethernet/pensando/ionic/ionic_main.c
+index 3c5200e2fdb7..306d9d160e17 100644
+--- a/drivers/net/ethernet/pensando/ionic/ionic_main.c
++++ b/drivers/net/ethernet/pensando/ionic/ionic_main.c
+@@ -731,6 +731,12 @@ int ionic_port_init(struct ionic *ionic)
+ 			return -ENOMEM;
+ 	}
+ 
++	/* If the driver knows about more "extra stats" than the firmware,
++	 * make sure these stats are marked as invalid.
++	 */
++	memset(&idev->port_info->extra_stats, 0xff,
++	       sizeof(idev->port_info->extra_stats));
++
+ 	sz = min(sizeof(ident->port.config), sizeof(idev->dev_cmd_regs->data));
+ 
+ 	mutex_lock(&ionic->dev_cmd_lock);
+diff --git a/drivers/net/ethernet/pensando/ionic/ionic_stats.c b/drivers/net/ethernet/pensando/ionic/ionic_stats.c
+index 0107599a9dd4..e81190cc9d2f 100644
+--- a/drivers/net/ethernet/pensando/ionic/ionic_stats.c
++++ b/drivers/net/ethernet/pensando/ionic/ionic_stats.c
+@@ -167,6 +167,7 @@ static const struct ionic_stat_desc ionic_rx_stats_desc[] = {
+ #define IONIC_NUM_PORT_STATS ARRAY_SIZE(ionic_port_stats_desc)
+ #define IONIC_NUM_TX_STATS ARRAY_SIZE(ionic_tx_stats_desc)
+ #define IONIC_NUM_RX_STATS ARRAY_SIZE(ionic_rx_stats_desc)
++#define IONIC_NUM_EXTRA_PORT_STATS	1
+ 
+ #define MAX_Q(lif)   ((lif)->netdev->real_num_tx_queues)
+ 
+@@ -232,6 +233,26 @@ static void ionic_get_lif_stats(struct ionic_lif *lif,
+ 	stats->hw_tx_aborted_errors = ns.tx_aborted_errors;
  }
  
-+static const struct ethtool_fec_hist_range ionic_fec_ranges[] = {
-+	{ 0, 0},
-+	{ 1, 1},
-+	{ 2, 2},
-+	{ 3, 3},
-+	{ 4, 4},
-+	{ 5, 5},
-+	{ 6, 6},
-+	{ 7, 7},
-+	{ 8, 8},
-+	{ 9, 9},
-+	{ 10, 10},
-+	{ 11, 11},
-+	{ 12, 12},
-+	{ 13, 13},
-+	{ 14, 14},
-+	{ 15, 15},
-+	{ 0, 0},
-+};
-+
-+#define IONIC_FEC_STAT(dst, src)			\
-+	do {						\
-+		if ((src) != IONIC_STAT_INVALID)	\
-+			(dst) = le64_to_cpu((src));	\
-+	} while (0)
-+
-+static void
-+ionic_fill_fec_hist(const struct ionic_port_extra_stats *port_extra_stats,
-+		    struct ethtool_fec_hist *hist)
++static u32 ionic_extra_port_stats_get_count(struct ionic_lif *lif)
 +{
-+	__le64 fec_cw_err_bin;
-+	int i;
++	struct ionic_dev *idev = &lif->ionic->idev;
++	struct ionic_port_extra_stats *pes_cache;
++	u32 count = 0;
 +
-+	if (port_extra_stats->fec_codeword_error_bin[0] == IONIC_STAT_INVALID)
-+		return;
++	if (!(lif->ionic->ident.dev.capabilities &
++	      cpu_to_le64(IONIC_DEV_CAP_EXTRA_STATS)))
++		return count;
 +
-+	hist->ranges = ionic_fec_ranges;
-+	/* All bins in ranges must be set */
-+	for (i = 0; i < ARRAY_SIZE(ionic_fec_ranges) - 1; i++) {
-+		fec_cw_err_bin = port_extra_stats->fec_codeword_error_bin[i];
++	/* Cache copy for subsequent ethtool calls */
++	pes_cache = &idev->port_extra_stats_cache;
++	*pes_cache = idev->port_info->extra_stats;
 +
-+		if (fec_cw_err_bin != IONIC_STAT_INVALID)
-+			hist->values[i].sum = le64_to_cpu(fec_cw_err_bin);
-+		else
-+			hist->values[i].sum = 0;
-+	}
++	if (pes_cache->rx_bits_phy != IONIC_STAT_INVALID)
++		count++;
++
++	return count;
 +}
 +
-+static void ionic_get_fec_stats(struct net_device *netdev,
-+				struct ethtool_fec_stats *fec_stats,
-+				struct ethtool_fec_hist *hist)
+ static u64 ionic_sw_stats_get_count(struct ionic_lif *lif)
+ {
+ 	u64 total = 0, tx_queues = MAX_Q(lif), rx_queues = MAX_Q(lif);
+@@ -243,7 +264,7 @@ static u64 ionic_sw_stats_get_count(struct ionic_lif *lif)
+ 		rx_queues += 1;
+ 
+ 	total += IONIC_NUM_LIF_STATS;
+-	total += IONIC_NUM_PORT_STATS;
++	total += IONIC_NUM_PORT_STATS + ionic_extra_port_stats_get_count(lif);
+ 
+ 	total += tx_queues * IONIC_NUM_TX_STATS;
+ 	total += rx_queues * IONIC_NUM_RX_STATS;
+@@ -271,6 +292,20 @@ static void ionic_sw_stats_get_rx_strings(struct ionic_lif *lif, u8 **buf,
+ 				ionic_rx_stats_desc[i].name);
+ }
+ 
++static void ionic_extra_port_stats_get_strings(struct ionic_lif *lif, u8 **buf)
 +{
-+	struct ionic_port_extra_stats *port_extra_stats;
-+	struct ionic_lif *lif = netdev_priv(netdev);
++	struct ionic_port_extra_stats *pes_cache;
++
++	if (!(lif->ionic->ident.dev.capabilities &
++	    cpu_to_le64(IONIC_DEV_CAP_EXTRA_STATS)))
++		return;
++
++	pes_cache = &lif->ionic->idev.port_extra_stats_cache;
++
++	if (pes_cache->rx_bits_phy != IONIC_STAT_INVALID)
++		ethtool_puts(buf, "rx_bits_phy");
++}
++
+ static void ionic_sw_stats_get_strings(struct ionic_lif *lif, u8 **buf)
+ {
+ 	int i, q_num;
+@@ -280,6 +315,7 @@ static void ionic_sw_stats_get_strings(struct ionic_lif *lif, u8 **buf)
+ 
+ 	for (i = 0; i < IONIC_NUM_PORT_STATS; i++)
+ 		ethtool_puts(buf, ionic_port_stats_desc[i].name);
++	ionic_extra_port_stats_get_strings(lif, buf);
+ 
+ 	for (q_num = 0; q_num < MAX_Q(lif); q_num++)
+ 		ionic_sw_stats_get_tx_strings(lif, buf, q_num);
+@@ -322,6 +358,25 @@ static void ionic_sw_stats_get_rxq_values(struct ionic_lif *lif, u64 **buf,
+ 	}
+ }
+ 
++static void ionic_extra_port_stats_get_values(struct ionic_lif *lif, u64 **buf)
++{
++	struct ionic_port_extra_stats *pes_cache;
 +
 +	if (!(lif->ionic->ident.dev.capabilities &
 +	      cpu_to_le64(IONIC_DEV_CAP_EXTRA_STATS)))
 +		return;
 +
-+	port_extra_stats = &lif->ionic->idev.port_info->extra_stats;
++	/* The number of statistics added to @buf here must equal
++	 * ionic_extra_port_stats_get_count().
++	 */
++	pes_cache = &lif->ionic->idev.port_extra_stats_cache;
 +
-+	IONIC_FEC_STAT(fec_stats->corrected_blocks.total,
-+		       port_extra_stats->rsfec_correctable_blocks);
-+	IONIC_FEC_STAT(fec_stats->uncorrectable_blocks.total,
-+		       port_extra_stats->rsfec_uncorrectable_blocks);
-+	IONIC_FEC_STAT(fec_stats->corrected_bits.total,
-+		       port_extra_stats->fec_corrected_bits_total);
-+
-+	ionic_fill_fec_hist(port_extra_stats, hist);
++	if (pes_cache->rx_bits_phy != IONIC_STAT_INVALID) {
++		**buf = le64_to_cpu(pes_cache->rx_bits_phy);
++		(*buf)++;
++	}
 +}
 +
- static int ionic_set_fecparam(struct net_device *netdev,
- 			      struct ethtool_fecparam *fec)
+ static void ionic_sw_stats_get_values(struct ionic_lif *lif, u64 **buf)
  {
-@@ -1161,6 +1232,7 @@ static const struct ethtool_ops ionic_ethtool_ops = {
- 	.get_module_eeprom_by_page	= ionic_get_module_eeprom_by_page,
- 	.get_pauseparam		= ionic_get_pauseparam,
- 	.set_pauseparam		= ionic_set_pauseparam,
-+	.get_fec_stats		= ionic_get_fec_stats,
- 	.get_fecparam		= ionic_get_fecparam,
- 	.set_fecparam		= ionic_set_fecparam,
- 	.get_ts_info		= ionic_get_ts_info,
+ 	struct ionic_port_stats *port_stats;
+@@ -341,6 +396,7 @@ static void ionic_sw_stats_get_values(struct ionic_lif *lif, u64 **buf)
+ 					     &ionic_port_stats_desc[i]);
+ 		(*buf)++;
+ 	}
++	ionic_extra_port_stats_get_values(lif, buf);
+ 
+ 	for (q_num = 0; q_num < MAX_Q(lif); q_num++)
+ 		ionic_sw_stats_get_txq_values(lif, buf, q_num);
 -- 
 2.17.1
 
