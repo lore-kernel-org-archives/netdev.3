@@ -1,46 +1,46 @@
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013015.outbound.protection.outlook.com [52.101.72.15])
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010071.outbound.protection.outlook.com [52.101.84.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D9DD423A88;
-	Wed, 10 Jun 2026 15:09:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0361A42669A;
+	Wed, 10 Jun 2026 15:09:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.71
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781104185; cv=fail; b=AstnIQmtp6fpulmDO6vM07bVKjB3g3sprkacOAuEZZ/U3wPH36ATkc0YI/8GeVd/b8ZWsSfPUB5YoISTlyIEVgrZm0j44rZdF7GjeLupY2T8zAoTSeiQboKc6eWADHf8lL6XxOx3hlQwmxIMvNJZUvSeNqtlvMjMVEgaqeOmtL4=
+	t=1781104189; cv=fail; b=UgEsN5t3wyNmMOVm+U9AJ5r7hv0yaMXv1lxoYqimp9iEz3gjrqrF/3vB7UVVDhqKe6idiCyrUDP0zZ1fKTCKYXBcYOLj1KFyNe+FT+uBe1LByyHiAs8/+CwiBW9Y7oGqim8HkpUp8wnXiVkglp8wkzr7Ua7TC6Ua6WYfsJIczJc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781104185; c=relaxed/simple;
-	bh=YN9gCbmR466q4/54Ou2uoVg2T2L7c4NlhBehKe5DQSE=;
+	s=arc-20240116; t=1781104189; c=relaxed/simple;
+	bh=sUM/rt8gB7H01HghJQT97WE5ZZ38a1kMEKXizwtOllw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=LetRq9mQjZ1OorWrf3I4tgR9Guv/UGgOq8lkfeJxKwz7h1tdcV42nTNZPGIk7KkU8TdjnBZ5OIaRnYckepRJw3mkOFHfsFamDwCMtKmuAJPoYfxEtON95dX/mbb2DUEH72jIXaP1bwMpFlfWla2DHGbfSzxALIRW25ra/+uTEWY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=dazfvZ0H; arc=fail smtp.client-ip=52.101.72.15
+	 Content-Type:MIME-Version; b=s5G66f4Ch+pPxCgssfwBNnIOe2+tUSnE3fy5AERg2Gako/CPWnN1dpRUF0P/7pMHXlfiVZRmcfe10RFyp3rtAkxhfE5JWSUPYHoBG36qBCfypmbgpBXpeTKm/Xx8zW5q3Xc9O0+Aa6JL0RiF4Fn1R6MwIwKS3aY2IsjYy9vIYwA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Ja6Mcw9z; arc=fail smtp.client-ip=52.101.84.71
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="dazfvZ0H"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Ja6Mcw9z"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=fvATK3jKvePorQVziEGDrq3VFfQMl4EDl1jklbPbFXUNImWUee1ZFI6TfDtonVpTJUlQNt8iM8DFqUEIgQwaS9MtQwtnIpcdK3WohJ+ZNNvxV7WuZBR9NZNV4Y6l8RMeZ0yFjbknLw/DjicKtcYF2GSVk2QfAcKWDJZK4aGFa16nVXrasJNw+1rs7DyWt6XqmSrTnIBCH4Ml3123lKUHKsLOIo7gWat+WXum/OnW/ZKZjtcQMs0L00o5ImvoKg6EyjlD2SAGAGM+jByrWrWgb92Xv/m05/gO4UI+kZisltazIKK4TPLMyzUxaKyBS2UYcaR/Y/yYw/V8ySPBRCOWmA==
+ b=C+Bb4A+DgwBAChOjRMno9f+8gP6PT0vmlkakiQou4s/8StOxXj7bVr8ZBY5KPLCIBqblQRl8nWlGsHB9h6+dSjzopkBSjP3mRGO/QN6UMYhXxz0NZ6GtwCDTdQLo91ASXAZDepncuCo8x6tu1yzsHZYWhgPUlMNBNvepeM6MVUR/LSkg1N9JxM8CYX4cscWK4RrXHuytudavpnWn8LzHm2JoO+72y+lPjOYlnkj/51VjeH2s8nQH4lgxjg53LNgTywSllTUKdGuJWvJfU6DAdizJBgZZihjsa21BbPckj5ttkL2Zqcc6yL8OqRE8NL9wHZE4FAEf9TWBxN1N0bLo6w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=MJnEsORoGOYbNVZO5XiRWXCyF7qQ1Sw4cDquk0VLcWU=;
- b=bHAWhmmHTuumbFn+ZHNOqXgmBYv7QBURD6cJk148SNYLsSuR839gJVnZ/TTIpn1aWN3kSI3saE/qnQk6netAduVS7rJFnHSdekivkJfazjIap+SZFZzQBgZ3sSU0w/Kv+arBLYx5PoWkG215vKBtiCh5+q6HjipW/v19pSiwtgJ52QAQrqTYTRYp+33PdbGZImnE+4+TiDoW8ifJTpd7/H01+phm4DwyAM00PWertw7CO4+Sy3w6kXaxOv1GzDbDIYSpK8dNckHyU2BASQzbnTDarYEUGwBgS6o6s88TmZLTG48q+AsFWAtTrRwuEkiNDBruXnmCKBu46XjCE1MRbg==
+ bh=BSiRb+4Efg45dxTZqKqDk+Fy4eAi77Qvlitwu6czWlM=;
+ b=g4s35qAOpuKmLOYZZLbJnRilyNsSaxLF1GJ2ZVrp8ryCQfR7/P/E672/el57Y9yN05f5EDde/UQYHOQDPFyg2DUrIH32S1unUvxTs9gFSmwAeZP7VDvKsRqOM5m4PcXb1A1FluyGxAEd4YeNhHq8DlLT6yH/X49caJt6UyeJKsSwy44t48W8APjYNUOjY7lHnM3MAqpNl9Up2m+UWesUT1Yg8RJ9U2l3c7gWdARR/T/CbIymGHETz1w1NegAtF5Twua5Y6kWCNZiW7+Q5z0IIiThO7B0MthXyq9L9W8bLiHuSL1ByZDIjklhI/ON9V0hriUx1t4GAYmew+aZfVFWEQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=MJnEsORoGOYbNVZO5XiRWXCyF7qQ1Sw4cDquk0VLcWU=;
- b=dazfvZ0HR+1mv92+vwpLjwdv/AHlVQlhnwrnH4b0R/ogSIgYINPfwM3JsHgFMuwNnKv6IVNdAy+WIP373rOE8xMIXq0Q2Bb1kk118f5TVi5GNoKki1golHkp3+rj/NH1gEGxUfVm90HXJZZVFnBLnMKugWB7xTm6xtdGy0CMhzsmcS77PzD6mV4JufbSbReWehyJzxpBAL78LwCPYwSr3ELID4qFaDgUchCe3yD6vDgEa63vhTuncY2sNBPoLIA60FbkSOgl8j3FQLV9sVV4HG7ugc4XRE1OJloyy4aAx4d8wzFMl38bV4iz1yjwRKSMJqS8kZifAZ+aqeix2GEKXQ==
+ bh=BSiRb+4Efg45dxTZqKqDk+Fy4eAi77Qvlitwu6czWlM=;
+ b=Ja6Mcw9zTFHKvpeNhfpgGqdWgk2Ee10gZY2+jqbg8JpUsdj9Lg2T8Bxdb0r+ZCUhGyi2SGjoRjo18es2FQhBidpTFO4CcuirqP6vfoQGmTWlw8/Jq8oBrwS0lc8sMtLhxrOR9YzYnae/FBBEw7mEeguFEbCE5a9eNsfbK0M/0WVOxxP2oiQzjOByxWCCc3FhfDMu0MLRDkxf3aUpxdn8s+KqK/QSUyxOczRNsyYDcD9osK4/AdL5uOg0OwTwYAz2xZCRGzHgyyfZUZAKCGFwNsv9rDwPupQ5CnNCcyuztnswDg6poBtTxo6WCJCFO2kYbW45VEGJ460JAlSfAWJ5zA==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from GVXPR04MB12290.eurprd04.prod.outlook.com
- (2603:10a6:150:319::13) by DB9PR04MB8268.eurprd04.prod.outlook.com
- (2603:10a6:10:240::17) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.16; Wed, 10 Jun
- 2026 15:09:35 +0000
+ (2603:10a6:150:319::13) by VI0PR04MB12113.eurprd04.prod.outlook.com
+ (2603:10a6:800:314::7) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.12; Wed, 10 Jun
+ 2026 15:09:40 +0000
 Received: from GVXPR04MB12290.eurprd04.prod.outlook.com
  ([fe80::1739:3404:2175:33dd]) by GVXPR04MB12290.eurprd04.prod.outlook.com
  ([fe80::1739:3404:2175:33dd%6]) with mapi id 15.21.0092.011; Wed, 10 Jun 2026
- 15:09:35 +0000
+ 15:09:40 +0000
 From: Ioana Ciornei <ioana.ciornei@nxp.com>
 To: andrew+netdev@lunn.ch,
 	davem@davemloft.net,
@@ -49,15 +49,15 @@ To: andrew+netdev@lunn.ch,
 	pabeni@redhat.com,
 	netdev@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org
-Subject: [PATCH net-next 1/5] dpaa2-switch: change dpaa2_switch_port_set_fdb() function prototype
-Date: Wed, 10 Jun 2026 18:09:08 +0300
-Message-Id: <20260610150912.1788482-2-ioana.ciornei@nxp.com>
+Subject: [PATCH net-next 3/5] dpaa2-switch: move FDB selection for join path into a helper
+Date: Wed, 10 Jun 2026 18:09:10 +0300
+Message-Id: <20260610150912.1788482-4-ioana.ciornei@nxp.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260610150912.1788482-1-ioana.ciornei@nxp.com>
 References: <20260610150912.1788482-1-ioana.ciornei@nxp.com>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: FRYP281CA0011.DEUP281.PROD.OUTLOOK.COM (2603:10a6:d10::21)
+X-ClientProxiedBy: FRYP281CA0006.DEUP281.PROD.OUTLOOK.COM (2603:10a6:d10::16)
  To GVXPR04MB12290.eurprd04.prod.outlook.com (2603:10a6:150:319::13)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -66,172 +66,171 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GVXPR04MB12290:EE_|DB9PR04MB8268:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8b00da0d-3b5b-49d7-2c6f-08dec702487f
+X-MS-TrafficTypeDiagnostic: GVXPR04MB12290:EE_|VI0PR04MB12113:EE_
+X-MS-Office365-Filtering-Correlation-Id: beb7ee82-bf8c-4949-f97f-08dec7024b61
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|366016|19092799006|1800799024|23010399003|18002099003|22082099003|11063799006|56012099006;
+	BCL:0;ARA:13230040|366016|1800799024|19092799006|23010399003|376014|11063799006|3023799007|56012099006|22082099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	wwCBJDKKABW5qZZXKrZUtDsbWGlvqTkqqkFB+0ujEcOorQdfhcIam8J6FeZXBCAakv4d6aCabymrh38jceXHqNteWeNielxggVwRtxMASOLhojfCDK8tTDUcTZ7tmMCd74AqGCiyB/lGarqCRtKXAkAI5KziR2vZ8HDXNcxND50J7/lVOwLfd6zGpNYacVcX3hGk+6K7IxbEl25DXb7Mgjt7wA0iHbk8PONIu9fEr/0256ixbrA0bFtASdTwi8ZrTe37+oSbphO2uS8Be+QRahGkq7t+r0sALOeE+l89DboSk4GFS9A57gq/flGawt85uqYuBQFGluBaqRNeBHDLsWp5HOHR5fFU3gSmC9u+anZcorRtWS5Cvm/fMmHZJy9Yn8utgvEMtaj0e0pIU6w++sF7x99mx1eZmnu1GEJV8rlRNUScweyI7V1tm8shsCLByZ9QVgpI71NMv94dpGo/lZRU3UR9SfJTinmzx7meoq1cXLu3XCGo/MNNasoUeRXMIXMO99uZBUz2b20aoDoIep9QgJsOWTQonL/ja1waMGYXFKIS/FhRLlhM2AGsHIKiaaL02PMBya+ArZgRiM7MU1FidDRy13WMDFXP/CZR1zw6aY20WeNUgSKZNB0eu5I+ZoFEO24tTWyBUubZaaHMtUSjax0nOZgJasorpi6igUTGlMy2fSsFyvdpfws8LoAk
+	q+4/oWD4f7A3JRwC9tfmIIk0Kpra+8VRc9qV43KNe2QQ4jHxdaILb3QJaSv91uTlLD1E8+tq1QnRryntoHjsMAYpiRB7rPkiwC+pZC538nArr5Wn+MOsvTZLg8QoWQS7waCjoj+p22v5BG121qOiWCYZBxvFXlgNb2R8vQGRJq3Jdu2beDfh228wj2cB70MXx+Ro9oQZ8VAWXIyULJZCJK6TjLbbqQMLCfP8O/DhHlkqLkxnZnZh6WMwe08EB5IKDuH2ZLp4jrA0nu7elUl9+v4vPaYkbl9FX/8BjnMgY+Tnle5Nit+5/T202JZEFSfEBs5G4LbF4qQSLQcfit8AprbtSR22xU2cApq0CG9lL+XoX1oPXgVqNq0XRXXKUJeq/VNSGbM7dRZLD7dRasGZ9Fp5/j2a4h5XgKTyMuIfAxtjQsHGXxeMDDbFD57G9e0DYlWz03ETinyJnl/TOJK0mkDgqjSJpuJkH8Sbsu0O8YtewM3A8RGGozDCZkUCEn+hVhkiwEk7bCeh/ScGI8WKxLvePQZBLpsMKE9mU6ceE/1CsrWQ/s7MKwa++nGmVKVpDwLcpLcqrMKuGd4c8diyR7tB6bbkX1lIE5som92y5Ric5FdF8LTvwkVr5+EaXJAfUe0dOWPVxhF7xT+ns9xgpqQupAFWGkpayC9PuzJL3oKJLmu0Gv5Ba9Z8Ht/7K7eD
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GVXPR04MB12290.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(19092799006)(1800799024)(23010399003)(18002099003)(22082099003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GVXPR04MB12290.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(19092799006)(23010399003)(376014)(11063799006)(3023799007)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?9Z1LwE9cZAMsEYoevn5FIbt3S3/qVZ/W7+FRTHDLivv2/IhqyB9u1KIZ/FE3?=
- =?us-ascii?Q?YyIY05MILFS7gHk77CYd2sqSwEw1oXyqhzUgv6/2ybvqDO41rywAx9rNZw1s?=
- =?us-ascii?Q?sASOFYWY6SFJvpakq4VAYOxL7qxOfYNDs4e2eECA6GsxHEWf6hpRaKvLAdfV?=
- =?us-ascii?Q?xnURYllO0K545TZwkIpsrUiSzoqBlto5RFxDfyqj63RINC1fZNIprnqGNTmg?=
- =?us-ascii?Q?153IegANntfnbLysWHzbj4rx5qCTG+oc9bwpC/act578UsjzfP79/H6GREfS?=
- =?us-ascii?Q?0lYydYXN72n9ECe4OVJbXD6Gkg0Dn2s8uo04VwSxpScXfhyn41Sc+xDY75mu?=
- =?us-ascii?Q?NX8e1sqTsQD5wt2u8Ni9nE0bvQYuMfHDq7l1xwBMC0w6kg45BxRnWjzYao75?=
- =?us-ascii?Q?V0gbA96v1PVa3uJy0xlh3TJ8p16B/wO0voXBqfp9WzlSmsxbSKfPY/aWPNXD?=
- =?us-ascii?Q?KL04dUShqfzxfscjsE3M8Wi0R6sl0fB313oumTJmRuU7kx7CDDxE1qY4Bgvb?=
- =?us-ascii?Q?PaLMKawMz40sGqLl3lMqnR793KYoblzxCLhLn6pa9x/GDo1a7KEGz/evqcrc?=
- =?us-ascii?Q?8wJIw4I5Ft21gl9ylodoXjxhi7H4sg6LDdSv+NotRA8JXyVTtDPnSrn28Va8?=
- =?us-ascii?Q?aUCXUODDgIKcoj2le5qOz31knWzMul85fq8ydxiUcXzlmlF2eQ3mSluYl+En?=
- =?us-ascii?Q?/i7fhqK2K7usFsvVEO78ar7ysfhwNwa0K19w0r0QbXhR324Qt2DqWAcs0Ogq?=
- =?us-ascii?Q?vYyEt4l36VPkjAyceyJdqCFIeNyEFxiG0hEKRHuq8S2evD5ssgCXKUdbQ2vI?=
- =?us-ascii?Q?UT1G93L/xJ9pvZaslr08rXvSSBZZmnJSnUTZXYrIjlsF+xc/KmJ0FDzN89+3?=
- =?us-ascii?Q?JoOlPsT5i4MQiSyPGK4eHIZAnCB6sjOk4w3PuCoogDCAyTqzEYLi1vlIp3Pa?=
- =?us-ascii?Q?Btdq7Vs1Cys6QpkqGVrXbbe9vjbA3te53MZBv2vy+1XTjiRoiSlutj8/ib3i?=
- =?us-ascii?Q?gdfCUeVxGyjfNGicGesTKG8p60l7GD1ktzOqRoaeldRmbXD48VWsDAsIzcNE?=
- =?us-ascii?Q?d/I01Wuq9SxzBOKaaFQ0obCkBjVOrg59y8PYWcCdKhHl8zM9AdMZJh9t0j7G?=
- =?us-ascii?Q?C/w30Nqi8dFo6r3ucSV36XCglLdyXxIPWUB3WHFzkS1PddTLBlV/AGsa+mb6?=
- =?us-ascii?Q?bUR/8ZMB86iOAyYOpSPZZXTA68WHyNtOZ9cfMA0r10Uydv/3HAGD1FieWCa2?=
- =?us-ascii?Q?KVeaZ3uC1x1jwQRThQXlP/BPFah0P0pmQ/ljPU6jJpRwbTLNpJQ7jGxv5Owj?=
- =?us-ascii?Q?5u/zP2wmrxkbykAXGrRHOL7mUN7nhgQLMwzebWJIQ4cGonZaRi7qD5pByCEf?=
- =?us-ascii?Q?dXbcDXFSyfeENJtLi6m8DxSpiGaui+X+P81hTFC/5Bju9TLnrHpyRi3G+5TA?=
- =?us-ascii?Q?z9nDlYD79XE0mvXtNdpj8XcH+f1+VL0TTwGk3Zc1hFnEp78hXLEGYJ7Ax2o9?=
- =?us-ascii?Q?vBaAgNS9Sb2V5Za4r2MRb2HB9QDcqmL2yXbGqVjD2xYBF8IMN8bWUW6G0MY7?=
- =?us-ascii?Q?eBd+OjTnXnqfYGpVvSXrc/QHZqREHybUTTG3NQw4mRycrXN0/DehCDmdwMyV?=
- =?us-ascii?Q?Rr6Ci4ftzMgM2lUcPmVCBfS/Y24DPhY6Eugv9I0UTXc152oR8iStxuQF00q1?=
- =?us-ascii?Q?oYQ6tZVwwwm71DJlN0yodZ12miHjIZI/QjDothsyeIsquZSltEiHWtWNfxGD?=
- =?us-ascii?Q?ddp78bHQIg=3D=3D?=
+	=?us-ascii?Q?3ZnGyPt8LJfrc2JeyCRiBlTWluiKF6QGV/6xUJK+4wt35XnUnZ4XghwT87Kr?=
+ =?us-ascii?Q?MVrmt7KfmG/b2H1uL7Gc2ddaSUPOHT1eF2aAK/5H+eOp7Wj1Ch/LJpc/QpDP?=
+ =?us-ascii?Q?w0q7EpcCDukU82VuRJN7We74+JtffPDrsG45JTrNWa739rFW5JgD3yRZqA7x?=
+ =?us-ascii?Q?EAqBB0JEeDSaX+8+uovP36dxJU4xyK0zrpYI6AbX8FMPUQ7xyoKOvcN3HqlL?=
+ =?us-ascii?Q?OEqYOFHx4R090EPEPuhSvktduxO1ww3qASho/vjMptM3r4x+enTU7a4qQOTU?=
+ =?us-ascii?Q?tHf0rgoOl++gzxFx0icuERgA9QlGQugejuYOuYzriPiwdKljw3C9N9DAmZvh?=
+ =?us-ascii?Q?PS1HzmpL2VBa5NSN/xQVoYfFWMb8UNVHXpR4BG8BpxH99Ue4KxmI0aTZpYO9?=
+ =?us-ascii?Q?2/l2HscqLOtj99n7cDNaI8ucACKU4nJWvEkacMGFWuLRT06s1dV7OFefQxzh?=
+ =?us-ascii?Q?qry5AWSJKJyCQxfa8Gz9NdWRghrUrsUX9vupMCvFMUyKXrn6j7ayQYgJVHD1?=
+ =?us-ascii?Q?mvpO3V8XCJh53l6c+LR2WL4S5gQV8LVUCV4mpxsA8lkElO+nvHk8AxhgVKTb?=
+ =?us-ascii?Q?iDb3IJQS8YpEQ7w6PdM30gdbz5XbinwgMeLt1wyMbHfaJd/YYRdd+waB96I5?=
+ =?us-ascii?Q?3fnxu+5WSphI9zRc9RWNV0wnOArJbBJ5Lr086OObxH2WeLL6R//5SmTRP57q?=
+ =?us-ascii?Q?+zrkz+Tg99rw4LD4HucbNPqLnXPq00k5XL7xWrwlSkdfgRYACRYRSI/HQqHR?=
+ =?us-ascii?Q?3yfi3BRv/tHz+N6SWU2ZI2BO3I3e6g3kzdHGEueTibFN+sTkaaJbFyAhxVp2?=
+ =?us-ascii?Q?korrNTRge7Jalhfeo1zIewfhqXkhnkzvtK3tQrycMUsg+lkUscv41GGLI4Hk?=
+ =?us-ascii?Q?yJ8cobz2QuK1k9yu3rs6fCALyRgnNUbtS7DY8d+uY4sIJyDMQAG2FbyNAiWe?=
+ =?us-ascii?Q?IDToKQ4ULSlqleUTbhg507kMfPVB1gzKmOTomU84c5Ca8/I1IXJ9xyhm8zno?=
+ =?us-ascii?Q?i0q9rLb0hZNKwJL0Y5xG2SMk1RGuGKxPuNRqAbnjCz2JbYzRF1PDTRtY79XA?=
+ =?us-ascii?Q?RKZnakjge8ga/BgffC78u0SWjxdlst3w+sy2D6PJTsJgEt/qc7Kd6MN0SU15?=
+ =?us-ascii?Q?uSV60ga5zBjpOh8c8q1MeG0Nm6+e4LLugSdpl+m2ZenzmWkcVvHSzwQRNVTO?=
+ =?us-ascii?Q?yRBtHDpHlJl+gZMVNqwDKYe4bTseErCY/X0KlaXyHh0MFnhz5DDSlEvg+Oxj?=
+ =?us-ascii?Q?9eZBUC19+CaMIg6snvqSIp7UI/axYwH60sDaJlNEf7XTVN5b957By8RQ/gFE?=
+ =?us-ascii?Q?aFQ2gXOsxw/dR3cDSIquvihiLgD0EW2t9G7Q2MfPs7cPYUYfwiuzPcjkD8va?=
+ =?us-ascii?Q?DelVOsFMdl9VO/olZsa84//CTVRSUMPJTaIE6iU1I/3W900Cj0a6qGdampOU?=
+ =?us-ascii?Q?C50bL/hPbVtUe/tHccJVOV4TctW8WOYq72E1UzPd5we6yCTnxMh3+ecryGEz?=
+ =?us-ascii?Q?tI+W/BBx/TdCZRUQQ1eyKZ5Wgop6Zlur0t+yXQ3mljmfLkRGIj6R91Krhjl5?=
+ =?us-ascii?Q?NbJBbHqkEyFxyJjJc2D+5e8kdNKpUH0grtr0+BgySezLi/T0HxSJ6aPJtPaT?=
+ =?us-ascii?Q?gtXRfJrYY7ClaFubyQetzWWEhoE5elJdVj1p7aHLR1v/UUJnas9Z5SQQ/gUd?=
+ =?us-ascii?Q?pomSYLQMQ+DUPfSFlQFjxWoAhkI8CIzaEd5k1rCbV8SXYZ84ycuo77Zety89?=
+ =?us-ascii?Q?NNgR9OuZ/Q=3D=3D?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8b00da0d-3b5b-49d7-2c6f-08dec702487f
+X-MS-Exchange-CrossTenant-Network-Message-Id: beb7ee82-bf8c-4949-f97f-08dec7024b61
 X-MS-Exchange-CrossTenant-AuthSource: GVXPR04MB12290.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jun 2026 15:09:35.4658
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jun 2026 15:09:40.2949
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: x0xIOz7mWAmPQbw8pB8PWlNRwU94bXwzm3Oqjs47rjXE1u3VOD9wlohF44hv0Xw/DV6jBHAxxEnr5aX6iVrbxg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB8268
+X-MS-Exchange-CrossTenant-UserPrincipalName: epMM1cZ+alm0Ee795bQ95WQl/0XHjVOIUBxH5Lh3CHawq5oSxMWnSE8mpVbFPGOZ5SDT/eLNEOfClkBFk/PEyQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB12113
 
-Since there dpaa2_switch_port_set_fdb() never fails and its return value
-was never checked, change its prototype to return void.
+The dpaa2_switch_port_set_fdb() function handles the setup of the FDB
+for both changeupper cases: join and leave. Move the code block which
+handles the join path into a new helper - dpaa2_switch_fdb_for_join() -
+with the hope that the entire function will become easier to read and
+extend with other use cases in the future.
 
-Also, instead of determining if the DPAA2 port is joining or leaving an
-upper based on the value of the 'bridge_dev' parameter, add the
-'linking' parameter to explicitly specify the action.
+This new helper just determines and returns what FDB should be used for
+a specific port, the cleanup of the old FDB and the actual setup in the
+per port structure remains in the dpaa2_switch_port_set_fdb() function.
+
+No changes in the actual behavior are intended.
 
 Signed-off-by: Ioana Ciornei <ioana.ciornei@nxp.com>
 ---
- .../ethernet/freescale/dpaa2/dpaa2-switch.c   | 29 +++++++++----------
- 1 file changed, 13 insertions(+), 16 deletions(-)
+ .../ethernet/freescale/dpaa2/dpaa2-switch.c   | 60 +++++++++++--------
+ 1 file changed, 35 insertions(+), 25 deletions(-)
 
 diff --git a/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c b/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
-index a0bf5b50aae5..6ac747b4264c 100644
+index 3052a1c63c2d..158d0f510eae 100644
 --- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
 +++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
-@@ -51,8 +51,9 @@ dpaa2_switch_filter_block_get_unused(struct ethsw_core *ethsw)
- 	return NULL;
+@@ -67,15 +67,43 @@ static bool dpaa2_switch_fdb_in_use_by_others(struct ethsw_core *ethsw,
+ 	return false;
  }
  
--static u16 dpaa2_switch_port_set_fdb(struct ethsw_port_priv *port_priv,
--				     struct net_device *bridge_dev)
-+static void dpaa2_switch_port_set_fdb(struct ethsw_port_priv *port_priv,
-+				      struct net_device *upper_dev,
-+				      bool linking)
++static struct dpaa2_switch_fdb *
++dpaa2_switch_fdb_for_join(struct ethsw_port_priv *port_priv,
++			  struct net_device *upper_dev)
++{
++	struct ethsw_port_priv *other_port_priv;
++	struct net_device *other_dev;
++	struct list_head *iter;
++
++	/* The below call to netdev_for_each_lower_dev() demands the RTNL lock
++	 * being held. Assert on it so that it's easier to catch new code
++	 * paths that reach this point without the RTNL lock.
++	 */
++	ASSERT_RTNL();
++
++	/* If part of a bridge, use the FDB of the first dpaa2 switch interface
++	 * to be present in that bridge
++	 */
++	netdev_for_each_lower_dev(upper_dev, other_dev, iter) {
++		if (!dpaa2_switch_port_dev_check(other_dev))
++			continue;
++
++		if (other_dev == port_priv->netdev)
++			continue;
++
++		other_port_priv = netdev_priv(other_dev);
++		return other_port_priv->fdb;
++	}
++
++	return port_priv->fdb;
++}
++
+ static void dpaa2_switch_port_set_fdb(struct ethsw_port_priv *port_priv,
+ 				      struct net_device *upper_dev,
+ 				      bool linking)
  {
  	struct ethsw_core *ethsw = port_priv->ethsw_data;
- 	struct ethsw_port_priv *other_port_priv = NULL;
-@@ -62,10 +63,8 @@ static u16 dpaa2_switch_port_set_fdb(struct ethsw_port_priv *port_priv,
- 	struct list_head *iter;
- 	int i;
+-	struct ethsw_port_priv *other_port_priv = NULL;
+-	struct dpaa2_switch_fdb *fdb;
+-	struct net_device *other_dev;
+-	struct list_head *iter;
++	struct dpaa2_switch_fdb *new_fdb, *fdb;
  
--	/* If we leave a bridge (bridge_dev is NULL), find an unused
--	 * FDB and use that.
--	 */
--	if (!bridge_dev) {
-+	/* If we leave a bridge, find an unused FDB and use that. */
-+	if (!linking) {
- 		/* First verify if this is the last port to leave this bridge */
- 		for (i = 0; i < ethsw->sw_attr.num_ifs; i++) {
- 			if (!ethsw->ports[i] || ethsw->ports[i] == port_priv)
-@@ -79,7 +78,7 @@ static u16 dpaa2_switch_port_set_fdb(struct ethsw_port_priv *port_priv,
- 		/* If this is the last user of the FDB, just keep using it. */
- 		if (last_fdb_user) {
- 			port_priv->fdb->bridge_dev = NULL;
--			return 0;
-+			return;
- 		}
- 
- 		/* Since we are not the last port which leaves a bridge,
-@@ -90,12 +89,12 @@ static u16 dpaa2_switch_port_set_fdb(struct ethsw_port_priv *port_priv,
- 		 */
- 		fdb = dpaa2_switch_fdb_get_unused(port_priv->ethsw_data);
- 		if (WARN_ON(!fdb))
--			return 0;
-+			return;
- 
- 		port_priv->fdb = fdb;
- 		port_priv->fdb->in_use = true;
- 		port_priv->fdb->bridge_dev = NULL;
--		return 0;
-+		return;
+ 	/* If we leave a bridge, find an unused FDB and use that. */
+ 	if (!linking) {
+@@ -102,30 +130,12 @@ static void dpaa2_switch_port_set_fdb(struct ethsw_port_priv *port_priv,
+ 		return;
  	}
  
- 	/* The below call to netdev_for_each_lower_dev() demands the RTNL lock
-@@ -107,7 +106,7 @@ static u16 dpaa2_switch_port_set_fdb(struct ethsw_port_priv *port_priv,
- 	/* If part of a bridge, use the FDB of the first dpaa2 switch interface
- 	 * to be present in that bridge
- 	 */
--	netdev_for_each_lower_dev(bridge_dev, other_dev, iter) {
-+	netdev_for_each_lower_dev(upper_dev, other_dev, iter) {
- 		if (!dpaa2_switch_port_dev_check(other_dev))
- 			continue;
+-	/* The below call to netdev_for_each_lower_dev() demands the RTNL lock
+-	 * being held. Assert on it so that it's easier to catch new code
+-	 * paths that reach this point without the RTNL lock.
+-	 */
+-	ASSERT_RTNL();
+-
+-	/* If part of a bridge, use the FDB of the first dpaa2 switch interface
+-	 * to be present in that bridge
+-	 */
+-	netdev_for_each_lower_dev(upper_dev, other_dev, iter) {
+-		if (!dpaa2_switch_port_dev_check(other_dev))
+-			continue;
+-
+-		if (other_dev == port_priv->netdev)
+-			continue;
+-
+-		other_port_priv = netdev_priv(other_dev);
+-		break;
+-	}
++	new_fdb = dpaa2_switch_fdb_for_join(port_priv, upper_dev);
  
-@@ -133,9 +132,7 @@ static u16 dpaa2_switch_port_set_fdb(struct ethsw_port_priv *port_priv,
+ 	/* The current port is about to change its FDB to the one used by the
+ 	 * first port that joined the bridge.
+ 	 */
+-	if (other_port_priv) {
++	if (port_priv->fdb != new_fdb) {
+ 		/* The previous FDB is about to become unused, since the
+ 		 * interface is no longer standalone.
+ 		 */
+@@ -133,7 +143,7 @@ static void dpaa2_switch_port_set_fdb(struct ethsw_port_priv *port_priv,
+ 		port_priv->fdb->bridge_dev = NULL;
+ 
+ 		/* Get a reference to the new FDB */
+-		port_priv->fdb = other_port_priv->fdb;
++		port_priv->fdb = new_fdb;
  	}
  
  	/* Keep track of the new upper bridge device */
--	port_priv->fdb->bridge_dev = bridge_dev;
--
--	return 0;
-+	port_priv->fdb->bridge_dev = upper_dev;
- }
- 
- static void dpaa2_switch_fdb_get_flood_cfg(struct ethsw_core *ethsw, u16 fdb_id,
-@@ -2051,7 +2048,7 @@ static int dpaa2_switch_port_bridge_join(struct net_device *netdev,
- 	if (err)
- 		return err;
- 
--	dpaa2_switch_port_set_fdb(port_priv, upper_dev);
-+	dpaa2_switch_port_set_fdb(port_priv, upper_dev, true);
- 
- 	/* Inherit the initial bridge port learning state */
- 	learn_ena = br_port_flag_is_set(netdev, BR_LEARNING);
-@@ -2077,7 +2074,7 @@ static int dpaa2_switch_port_bridge_join(struct net_device *netdev,
- 
- err_switchdev_offload:
- err_egress_flood:
--	dpaa2_switch_port_set_fdb(port_priv, NULL);
-+	dpaa2_switch_port_set_fdb(port_priv, upper_dev, false);
- 	return err;
- }
- 
-@@ -2124,7 +2121,7 @@ static int dpaa2_switch_port_bridge_leave(struct net_device *netdev)
- 	if (err)
- 		netdev_err(netdev, "Unable to clear RX VLANs from old FDB table, err (%d)\n", err);
- 
--	dpaa2_switch_port_set_fdb(port_priv, NULL);
-+	dpaa2_switch_port_set_fdb(port_priv, port_priv->fdb->bridge_dev, false);
- 
- 	/* Restore all RX VLANs into the new FDB table that we just joined */
- 	err = vlan_for_each(netdev, dpaa2_switch_port_restore_rxvlan, netdev);
 -- 
 2.25.1
 
