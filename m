@@ -1,82 +1,160 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EF593DBD41
-	for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 11:00:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 412AC3C873B
+	for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 11:04:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781175620; cv=none; b=W/7ypud1xQXALeFXudSCbynLXJahBwh2dPwZaZ7i2Nw7BmQWao1X1jzLGEjzc6pClS246WyHtkzFAjX0WsNsYv+KrE/7n6IlQai7W/kG6ejDTXcV7PvCSjFP48xyBM5X24jdW4nGL4BB6tke92ZSF3hQjYnUNpExmXyzaBQInzg=
+	t=1781175844; cv=none; b=jxsBDkOCxxpGZHqK5CuFJjlNT1tiUSkRFcyOIN8HQ66oYL3G0LE08IoIzNLeGNeH6JJzipgh9xewkrFc/yFI3qwoN7JLi4ldw878kDPRj+j5qUuI0kjF7/g+/KSeSF/F768p30IblTR/6luHzL84jyHoUDGkf7SkRf86w54A/7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781175620; c=relaxed/simple;
-	bh=5GzLJ/4RHNNPaSYUc/5rmSpGjYQ1cCXk3IR0WKn/esY=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=TqxfclskJLTY4teoDkUGZfjdvUnLU2QzS9PlzO3BX9BabApOSAEc26NVe5xY5FsmxtBja1TGjdCNQGWO6w6/WjW/5660QjrW0z2CwvZPMoM4p4R6HykHm3qc/TR2IzIEVdaRfJBhhz//g+Ksswp6DTW00/j6Ex0RtTxyhefEi/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n6SHBimz; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n6SHBimz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6B0F1F00893;
-	Thu, 11 Jun 2026 11:00:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781175618;
-	bh=vcDqTo91bW3Yq4JNsgc2zdbNeGxbYPO1wwfyyQ+UlhM=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=n6SHBimzzn+DgVK3RGtURY9UszYpuYYo+oA2R6Dwt6Mmg9JRT31g0EU2T8GTdMXz4
-	 KC2OmvmkWJEdVn8BVLJOHA0uzCI90qF9DuCT6Rcy6h1WxTGqGPcC133twOfW7NOLKS
-	 dLFsp5hgDgSIPFT6zrYi4Ov5361r1X/cNZ7dAYXHfSgjq2pDKDDJwzO/iK6p1zanmz
-	 RIt4pskVajpQJFxA2IGctrPmj7TQpaI04Q51uuIyRnswwO0B/Rq6jgya6YkXhDuGX4
-	 t+yldfRxnjynU73Ubj4jMnK0O1vJPOmWhEFoKQZzxrjaIwgleOd8C72mFfIFD5tp6E
-	 dU1XxOC6o/mBA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 567543930E4C;
-	Thu, 11 Jun 2026 11:00:17 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1781175844; c=relaxed/simple;
+	bh=0I311zuEXmpbYeS9LW04CVnyA07XyPu8cY6Eunqtxbw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=f+h+IZlOpt5x+Rl3eII8nuDHSHGSLHZMokxuoDpd4r61GqlT4PYKKuAVx+i+RGXcIFcoHQJttOu3QpR+lJQkxZ4XpupxtUauF3cr0yrOBny5hichnZ/UxjYXvseLGyztrlaN+2FzwGnq8o/cv1gHHqzMnPvSHAY92m1RvPoFSPc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <ore@pengutronix.de>)
+	id 1wXdCA-0003nc-4z; Thu, 11 Jun 2026 13:03:34 +0200
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1wXdC3-002CdD-1k;
+	Thu, 11 Jun 2026 13:03:27 +0200
+Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
+	(envelope-from <ore@pengutronix.de>)
+	id 1wXdC3-0000000ENxp-1khf;
+	Thu, 11 Jun 2026 13:03:27 +0200
+Date: Thu, 11 Jun 2026 13:03:27 +0200
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: Jonas Jelonek <jelonek.jonas@gmail.com>
+Cc: Kory Maincent <kory.maincent@bootlin.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Daniel Golle <daniel@makrotopia.org>,
+	=?utf-8?B?QmrDuHJu?= Mork <bjorn@mork.no>
+Subject: Re: [PATCH net-next 0/2] net: pse-pd: add Realtek/Broadcom PSE MCU
+ support
+Message-ID: <aiqV_10qQahSHXca@pengutronix.de>
+References: <20260608205758.1830521-1-jelonek.jonas@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next 0/4] net: shaper: follow ups to recent fixes
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178117561588.3897339.6842708895073002638.git-patchwork-notify@kernel.org>
-Date: Thu, 11 Jun 2026 11:00:15 +0000
-References: <20260609183224.1108521-1-kuba@kernel.org>
-In-Reply-To: <20260609183224.1108521-1-kuba@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
- pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260608205758.1830521-1-jelonek.jonas@gmail.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ore@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-Hello:
+Hi Jonas,
 
-This series was applied to netdev/net-next.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
-
-On Tue,  9 Jun 2026 11:32:20 -0700 you wrote:
-> As discussed previously on the patch set with real fixes the xa_locking
-> in shapers is a little confusing, remove it.
-> Link: https://lore.kernel.org/20260506000628.1501691-2-kuba@kernel.org
+On Mon, Jun 08, 2026 at 08:57:55PM +0000, Jonas Jelonek wrote:
+> This series adds a PSE-PD driver for the microcontroller (MCU) that fronts
+> the PSE silicon on a range of managed switches, together with its DT
+> binding.
 > 
-> The remaining three patches are an attempt to silence AI reviewers,
-> I believe Sashiko was complaining about these non-issues. Not adding
-> Reported tags since these are false positives.
+> Hardware model
+> ==============
 > 
-> [...]
+> These boards do not expose the PSE chips to the host directly. A small
+> microcontroller sits on an I2C/SMBus or UART bus and manages one or more PSE
+> chips behind it; the host CPU only ever talks to that MCU, using a fixed
+> 12-byte request/response protocol with a trailing checksum. The PSE silicon
+> never appears on the bus.
+> 
+> The same protocol family is used by MCUs fronting Realtek PSE chips
+> (RTL8238B, RTL8239, RTL8239C) and Broadcom PSE chips (BCM59111, BCM59121),
+> diverging in opcode numbering and a few response layouts. The driver
+> abstracts that behind a per-dialect opcode table and parser hooks, selected
+> by the compatible. The specific PSE chip behind the MCU is detected at
+> runtime and only influences per-chip constants (power scaling and the
+> per-port cap).
+> 
+> Why the compatible names the protocol, not the chip
+> ===================================================
+> 
+> The compatibles are "realtek,pse-mcu-rtk" and "realtek,pse-mcu-bcm". This is
+> a deliberate choice and the part most likely to raise questions, so the
+> reasoning up front.
+> 
+> The node names the protocol dialect, not a part:
+> 
+>   - The DT node describes the MCU, not a PSE chip: the PSE chips are behind
+>     the MCU and never appear on the bus, so naming the node after one (e.g.
+>     "realtek,rtl8239") would describe hardware that isn't at that address.
+> 
+>   - The PSE chips are, in principle, usable without this MCU (host-driven
+>     directly) - different hardware with a different programming model that
+>     would warrant its own binding. Claiming the PSE-chip compatibles here
+>     would collide with that.
+> 
+>   - Naming the MCU silicon is equally wrong: these are ordinary
+>     general-purpose microcontrollers (GigaDevice, Nuvoton, ...) that vary
+>     across boards and are not dedicated to this application.
+> 
+>   - What is fixed, and all the driver needs at DT-parse time, is the
+>     protocol dialect, so the compatible encodes exactly that. The two
+>     dialects share one protocol family and one binding, kept in a single
+>     "realtek" vendor namespace because this MCU front-end is found almost
+>     exclusively on Realtek-based switches; a "-rtk"/"-bcm" suffix selects
+>     the dialect. This follows the "google,cros-ec-*" pattern: a compatible
+>     for a firmware/protocol interface implemented by varying
+>     microcontrollers.
+> 
+> One compatible per dialect spans both transports:
+> 
+>   - The 12-byte wire protocol is identical over I2C/SMBus and UART; only the
+>     plumbing differs (SMBus vs native framing on I2C, baud rate on UART),
+>     and the transport is already expressed structurally by the node's parent
+>     bus (i2c@... vs serial@...). A "-i2c"/"-uart" suffix would only
+>     duplicate that, for a protocol that does not change across transports.
+> 
+>   - This is the multi-transport model used by e.g. "bosch,bmi160" (one
+>     compatible, separate i2c and spi drivers binding it), rather than the
+>     cros-ec model of per-transport compatibles - cros-ec splits because its
+>     on-wire framing genuinely differs per bus, which is not the case here.
+> 
+> The binding documents both points as well.
+> 
+> Testing
+> =======
+> 
+>  - Linksys LGS328MPCv2  (RTL8238B, I2C)
+>  - Zyxel GS1900-10HP A1 (BCM59121, UART)
+>  - Zyxel GS1900-10HP B1 (RTL8238B, UART)
+>  - Zyxel XMG1915-10EP   (RTL8239C, UART)
+>  - Zyxel XS1930-12HP    (RTL8239, SMBus)
+> 
+ 
+Thank you for your work!
 
-Here is the summary with links:
-  - [net-next,1/4] net: shaper: drop redundant xa_lock() bracketing
-    https://git.kernel.org/netdev/net-next/c/f26cddcf2a8a
-  - [net-next,2/4] net: shaper: drop unnecessary kfree_rcu in pre_insert
-    https://git.kernel.org/netdev/net-next/c/3500dfa6ff0e
-  - [net-next,3/4] net: shaper: add a comment why we don't need kfree_rcu() in flush
-    https://git.kernel.org/netdev/net-next/c/3b4ba5726338
-  - [net-next,4/4] net: shaper: add a note that we expect cap dumps to be tiny
-    https://git.kernel.org/netdev/net-next/c/7421a813778b
+Overall, LGTM. Can you please take a look at this report:
+https://sashiko.dev/#/patchset/20260608205758.1830521-1-jelonek.jonas%40gmail.com 
 
-You are awesome, thank you!
+kzalloc_obj - seems to be a false positive. Some other have good points.
+
+Best Regards,
+Oleksij
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
