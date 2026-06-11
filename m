@@ -1,221 +1,243 @@
-Received: from mail-dl1-f49.google.com (mail-dl1-f49.google.com [74.125.82.49])
+Received: from mail-dl1-f45.google.com (mail-dl1-f45.google.com [74.125.82.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C061634DCC8
-	for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 05:25:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8CB219AD5C
+	for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 05:36:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.45
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781155540; cv=pass; b=PQBOWrnXli6LYPfrjBmjYoFw3MKdpBUIzwhGvO3aYCaCP0sicH12n6kdM+8ojsQ4DVXdUnjR/otFKcT6MDhVxFuNltgf1t6OgI6DFGtB/7SyrgwyyWZHhWeUDJ6dbqIfEvcqHsN/CORoGxexYzIK1jUDYzfmtEB3JfYKXEBjKSc=
+	t=1781156165; cv=pass; b=T8L54dLKYOZ6BM3aG1NzSmsHKaIxQKlYwJe15gY9RFtVv47qCEcA23iB8xc7Mg4JVBvGsA9NjPkDqTRxmmCqBYArtckUYrD6TTJSSv+/RbNUrgf96OTqw+kZtiGQJmNtR0A6GfjYuChT81P0aQXKBqxj8Gqzb3yJo5LqvQEcFoY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781155540; c=relaxed/simple;
-	bh=doUH9A5FJeHhSpLTZvYVSKYZvkUfrZzvjQ6bRoxSw9Q=;
+	s=arc-20240116; t=1781156165; c=relaxed/simple;
+	bh=bwYCRmnq+jFXORV0LGb3H+BhPuUcqZI2WbWh7SUuGB0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FGrjoFLcs8noWb/iAQRUn+HUCHRGyMPexbF+v3Vce1LZTM8MpeOzDhqSj3dfsUQl7hOreTiMDMHm4U6ePXG6klOp9CkQegfPCplXuCdFiEM9zaTVQhcZHXpeIgJX0++kjOrWsdaP6wZRs6MFGhAPxxaWkAAaVCCkgrgyt2D7EU8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=kxH//JZX; arc=pass smtp.client-ip=74.125.82.49
+	 To:Cc:Content-Type; b=bI8WxJU2CWvVYHsubWuz2hxe70LR9I2jakPLsk8QzBl+2Wko5wzVwsM+hvbuLYtjEKwV3uu/q+e0b1vyUFOtK4ol20Rk3uB0wXQmKfjkU6GgQdky48Jy2lngZ+t5wP4iHDCZSpnkQl9T69Bh9Yt9yeTt79YQmAnxgnH0v+nNt18=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VTVVxToi; arc=pass smtp.client-ip=74.125.82.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="kxH//JZX"
-Received: by mail-dl1-f49.google.com with SMTP id a92af1059eb24-137ec563a95so9294957c88.0
-        for <netdev@vger.kernel.org>; Wed, 10 Jun 2026 22:25:34 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781155533; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VTVVxToi"
+Received: by mail-dl1-f45.google.com with SMTP id a92af1059eb24-13807d2f898so7023274c88.0
+        for <netdev@vger.kernel.org>; Wed, 10 Jun 2026 22:36:03 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781156163; cv=none;
         d=google.com; s=arc-20240605;
-        b=lWx3KI9tzU3/R4BShI0WlVAfSaMuaijsRTYiyJB0Yzkgz3sq2gu+w35BVs8PXAwLON
-         ixm5vD7C9dVUBuNHMmJ0xl3LNOzmVBMp2uKibm2tvxco8omu5seKlyoGdZsJSsSIH/X4
-         TItdff0o29VTElMqapdu2lN/Qlrpzh1IqMxLu/XhWW17fzO2Q0vJfPTpwov//Ak92YCB
-         g6jZ5L1lwl8X3AV5g6nqE2q4OoKHMXSvHxbIHQQ5W0+pjHqDok1wT4elSwewJcs94X8a
-         wB0D3kPhRaIKb8Qnp1A/JWhuKvUEUEptcVe0dG8pV9Wlkf5tmTVabmXh50GbRP2RbVcQ
-         Sh+g==
+        b=KC7xHYOsjJ8R8EKoRZ7CjTJgUBAz1UBv3/uqpay2v2xckHLY/dPdgG49Ru1yKIA6G1
+         BsdznDeLiaSkWdM0OkL6GA3rw12AqweEcDTEvF7/vjAUCnkSGV2MUNzqbRcdQGtwg9ju
+         REqPlW3o91mUGj6CHqheEXTbJa04sM1WeDO9GnOxGzA1g/nvAbKxDXJ+PGItuQo/8+Rc
+         p1VaxCEEPDN9MWNd672XnH3JR7WbCbs402ruyLGL19Jmnid0gravQWSIVpcoQUk4eODb
+         Acx7BAr044R0AsrOUoV46s+bsagVwmZ37HB33Vu1duxmDFDXXQjXi/q5b5k9njmtTyF2
+         k+6A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=bsXPQ0eSPRjGxPvV6S9kXwYJJ8AOokCaHBCHCpNZoVI=;
-        fh=pq0MkGENV4Jd4E9KhoDAtop/S1pOUlKYaONR8uouUz0=;
-        b=KzznGK3OKAMRgfTgBUZqcfwyhu/UunYAWT61qura34U6hw3u0Gf++p9rnO/0agsAsV
-         gGtVirrDASjZyJZoXaOqRWyHVycLra7jWf9Z3JJovfdkYsepCUd3POTpAB0/AqwljyMN
-         P8qieDj/7/Jin6cY//s217S/VytvVJbbmcmzSsjU7J0HYMVw9oMwfPfl7UkiNrUcfvs6
-         YLpLu2BNzhQBOPVEdceMQ0Czgjx6d0EYUvGXd5hCCbXhyEff7fnLQEtdH0bSJeffDM3r
-         NNcJp3jzOLJvir6Ewhps5oebdKQBB03qaCkXKzlQ0DtQWZq3Ww9nLQ+VbqVEFNta77nd
-         W08w==;
+        bh=soAjsrXNMHmygPUT/9NkcmMIYXFkAZy1qTaNlUPMtYk=;
+        fh=B1BtsyGLkEcJ0p/2o5phW9uMS0m3C6siJRxSx6qpUks=;
+        b=iRMpDzKGlIVP0RkCUzYo42iCOVvUS//eLi6v4HrGWusFp0/6wfxLua9YGFuG9LOg/s
+         ACSnHfiYIl+t31RuB5XNGNEHX35KJ34sONKiV5idDxfXv/quYeGQmAOtRS0Bd9b453l7
+         UyRUR1uT3GqBbiCuo+jseLTKC1w5ZBN3cKypB0n6A27ubOnUBNZFr73eATQMCPbgFoVN
+         PkTdCc/fg0hvRJuss0X7+q6D5nnggvqh5n3Oh0CJ9AojiUIBpoGTw0bOw0sWMQ603fo/
+         L2b64N7GuZ/kvMIYyOT6rAXeCEJ/TaBxzA7OfD66pywIoCt06sH4g9+ULX6ASd9FOBWo
+         8+jg==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781155533; x=1781760333; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1781156163; x=1781760963; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=bsXPQ0eSPRjGxPvV6S9kXwYJJ8AOokCaHBCHCpNZoVI=;
-        b=kxH//JZXSfZITF8DuxQ/71UBi7IfevT5VexptsvFppd552u5EQWCvDV4fhj1txugw8
-         MveE71rjZ4ApYdzdGX9hCGjzJy9lmatcV7sg3HEHq6MH7sIwILVDMgkw0XuJxH/6Eov4
-         vvG3NkW1OAf0PVMd1HFkUIITBdoLtlMRK4afTXVKccY9Zj1RvfJOnkFl3qxhQrVYAUIE
-         pY2kt6rkJ0z/sBRE1k4NuPVjsOmgUPK4uNUeF0b0Sj82fbAuJuyTTvpyG6MS5hvp3mXY
-         qh36eeetkBGxvF7PdeNT3ciDdk6mu/xGU9FFPJ0lb7LcaP2gS+/+VnI/kXm4MK8Anber
-         ZQnQ==
+        bh=soAjsrXNMHmygPUT/9NkcmMIYXFkAZy1qTaNlUPMtYk=;
+        b=VTVVxToitdcBptmTnPuNeiUonv7KzxBHU/QIYoPfF35dEaO5Rk1PRf7jTgC1/EuJce
+         KMGQOv1ssPw1PsoddUVJ7oiiERjg4Z29FAPbCwSxmKUVKWKbK0bgjDrfSgaMMSQjkIuj
+         EpClgceOiPyCLepq2438Aen4GzwbXS9tUZQD17awyVuQdQ3ZB+XCGvfaglIBzlJDFHV0
+         H9bpU7sIYDnOvN3yFjZFy08a0XsNAYww+errDxUUrgbcX96PIm5apUue9JtOWM2GPcBS
+         MRS64VkyuewErxoN5r5K5JoWz04ofd5FnlgyokgTWsYiH36tKts4J8zORAvHbIgOLsdx
+         P91Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781155533; x=1781760333;
+        d=1e100.net; s=20251104; t=1781156163; x=1781760963;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=bsXPQ0eSPRjGxPvV6S9kXwYJJ8AOokCaHBCHCpNZoVI=;
-        b=S/UsjpQ3DPmFuJnCj8zEjmK47NzOxeKaBdUErqsdJpXHuJDKyZmMUmRwS4ZdGga56o
-         p6jO6Ciz0Uvws4kv3GV7FbdPStYdrpfPm1h98Lhe1vlshnqN6aQ9xqAu3yhRWI8sRrt6
-         OB/vDsRa2OkGN7teZYhVxwsAhl4S+kb5Le3ntX02U6IDs6qXEbfmz4JYqIBDRZ4PDOu6
-         QHr+jbIZ8YDVxm2W38MNbec2Dhkh/ruy+gbRtOf6SmcdezZShUyhrT8YCd5O+5ZNg34T
-         Ks37QLnJJnNfrgEpfM1phza6eOoz+ZrWmO/3PSc/F79PfJ8SWvcn6qHhyJwtHf+WXxcs
-         hhwA==
-X-Forwarded-Encrypted: i=1; AFNElJ9DNfMb203B0ayXF/NLL62rwwNt6duiVyh3yY+imHawF9XbtYXoBEL1ICUMmpqwfVwxvLp8z0o=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwXoQK/KcNdWZH73qyWNQFFrfnO0MNfvEWe3WtAY4A8MFT35U/9
-	SawgweYJcsOCfx5lPIplwd3xtqP7hyWy3Y8s4h+hrOpSb/FentDqLcakV7/knVCHHXetfDr+4Ly
-	/OT8CCAaf7twiPxQOYWZP+6TK07lw/xFt9zIonBhn
-X-Gm-Gg: Acq92OHCreUkmhSMCKYMc3ZvSXe8LMjfjAZiTAQDa61pS0uMD2t9T0eNx0cKOTKhrNS
-	a5AHdYO0jvXc6Yu6IwiXVZUSpN0hC8echCly8cZfTIq/hddTKXyQdo0IvjYtEa/4VQ1Um68BsWb
-	UJ/nXGYjpQ3NN7BlApQlHncTZkoMkk3g85lKtoRWcyPB10j95bepDiLEShu5gXdVrY4OwALFxGa
-	cgwWjexHOn7sutFZNFRNCUoH3e42YkEJeC/jO5l6R/r9aKZvAO29ozbP8WMF/etVbob5wxYkb+I
-	E7550U3wF1c4BUq7U6/r/16KUxtdkQ95MXlbP73oQVFzu+85IDnZrnCJuRdUhjnGOuwmexFKAdO
-	RwdRChQDkLCBPoI1gINBAkjnek+p0rFcNFGjHxa0H7n2YKnV6i19itXMVxIfSrXk=
-X-Received: by 2002:a05:7022:fd04:b0:138:243e:ce97 with SMTP id
- a92af1059eb24-1384211ed0amr814067c88.4.1781155532797; Wed, 10 Jun 2026
- 22:25:32 -0700 (PDT)
+        bh=soAjsrXNMHmygPUT/9NkcmMIYXFkAZy1qTaNlUPMtYk=;
+        b=ByjMCtAe7cGYP9AtVacp1Z2jNfsGigLCVZXfpZP8afi2bAouxlRYuzJUADl7sttc9F
+         VC9/diN+jLZf62L6uUzvBG6nwk3L5rCRf5q/tsO/GYKRXf6rB2l+RX0HYo509dC13AZM
+         3GnZNgn3yScPehRNsVq/SFdePTS+KEb6zqxOUcAMq/WXC4wCCHFakK6dIHrnt60til2i
+         YDsbQxDWPsmRY6ze7TV8v/fEk77ci+P1yokd8xUUTXnZlUAp+u6JyFBGQDecy6IDfsst
+         vKnQg6sVVdXZVZMvpJRYQWO3yBIGrZjFcTCRmdVUGrtTPJK1tKmID39KLeCMQWqJm9fU
+         w0Og==
+X-Gm-Message-State: AOJu0YzaaCm3KgADCVtncb6ui14HjftrzfGRHj5YYKUteIgNYReBtGrC
+	CtEwRSut98gxojDtfDyIUJKUUpvwrcKwctXQpJ67ecMCQ9oNJgP7MTrF/7rDr5lLALmL9VZs8Qg
+	0AW44zYOq/Rjiy04QVo2bNHOejY9MGR1n/9ww4reB
+X-Gm-Gg: Acq92OHKIxQXgYon25ZyxDbGKlXMlH/r0vhrIDQJmpbyWJ5+Mt+xVZ/nPa6+3npbNi/
+	t0meAZzTgAhsFe6BXt7mGLIuXHO146G0g0AuTsrENPgILHnGX4JMlcdDBNZH1tE03lZICw8u5yE
+	/4/i/3ojlj4WAf0Vlk6i//dCAhQMrDM0oJT0ks0XaJdBH0+G3jzEx3wNBUkuqJuEl3wtG48uQem
+	OAROvoRjA0y9hBDtgnHqkRpSaG1MG9Oz73cX1kkt3MOAfZbvUuOF1Gl1MNOzMxjN7tZXUhbF/Lu
+	hN5/IY+dEwJNXYSfx5JP+AX5v2VG6TeGZvfpx/G3X72ZJ2fjyGphb5W9q6XWcGK1rWTmGBaUFae
+	XJRZq+lYpAvueSwwAxt4iHSAVN3SJNFH9r8DsUyiV3yRbinCm1+82m+/kEVk0QuX77TFcyLBm6g
+	==
+X-Received: by 2002:a05:7022:98d:b0:136:da48:a3e0 with SMTP id
+ a92af1059eb24-138423fe525mr872403c88.28.1781156162284; Wed, 10 Jun 2026
+ 22:36:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260609163110.1717419-1-maoyixie.tju@gmail.com> <20260609163110.1717419-2-maoyixie.tju@gmail.com>
-In-Reply-To: <20260609163110.1717419-2-maoyixie.tju@gmail.com>
+References: <20260611035318.1091442-1-runyu.xiao@seu.edu.cn>
+In-Reply-To: <20260611035318.1091442-1-runyu.xiao@seu.edu.cn>
 From: Kuniyuki Iwashima <kuniyu@google.com>
-Date: Wed, 10 Jun 2026 22:25:21 -0700
-X-Gm-Features: AVVi8Cfeeen7lsi6FYsubpu0yMJSyRS-lpOJ_IEl5eZUW7gNg_gtEJK7dUFJJ50
-Message-ID: <CAAVpQUAzWFyif353QDyOXCw9BHCFasbWHh+gKKz=EF9Ot_ODBQ@mail.gmail.com>
-Subject: Re: [PATCH net v4 1/7] net: ip_gre: require CAP_NET_ADMIN in the
- device netns for changelink
-To: Maoyi Xie <maoyixie.tju@gmail.com>
-Cc: "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, David Ahern <dsahern@kernel.org>, 
-	Xiao Liang <shaw.leon@gmail.com>, Steffen Klassert <steffen.klassert@secunet.com>, 
-	Herbert Xu <herbert@gondor.apana.org.au>, Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Date: Wed, 10 Jun 2026 22:35:50 -0700
+X-Gm-Features: AVVi8CcVWozqzu_8obd5Q8i9b5VSbUtZjE7Q1KLm7kkUKNIb1qmSfDAES2VR9q4
+Message-ID: <CAAVpQUBAYM=1gXAxRdcj2w_NSJfb8Z__Vr0tQNEm3_FTj0_9XA@mail.gmail.com>
+Subject: Re: [PATCH net v3] raw: annotate lockless match fields in raw_v4_match()
+To: Runyu Xiao <runyu.xiao@seu.edu.cn>
+Cc: netdev@vger.kernel.org, edumazet@google.com, davem@davemloft.net, 
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, maze@google.com, 
+	linux-kernel@vger.kernel.org, jianhao.xu@seu.edu.cn
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jun 9, 2026 at 9:31=E2=80=AFAM Maoyi Xie <maoyixie.tju@gmail.com> w=
-rote:
+On Wed, Jun 10, 2026 at 8:53=E2=80=AFPM Runyu Xiao <runyu.xiao@seu.edu.cn> =
+wrote:
 >
-> A tunnel changelink rewrites the tunnel in its creation netns. After an
-> IFLA_NET_NS_FD migration that netns is not the caller's. The rtnl
-> changelink path only checks CAP_NET_ADMIN against the caller's netns. A
-> caller with caps only in its current netns can then rewrite a tunnel
-> that lives in another netns, and it picks the endpoint addresses.
-
-nit: This paragraph is not precise (e.g. even without netns migration
-a device can use two netns w/ IFLA_LINK_NETNSID, "current netns"
-sounds like current->nsproxy->net_ns but not w/ IFLA_NET_NS_PID
-etc, also I don't get the last sentence after "it picks...").
-
-Simply state that changelink() operates on at most two netns,
-dev_net() and link_net.
-
+> raw_v4_match() is a lockless match helper under sk_for_each_rcu(). It
+> still reads inet->inet_daddr, inet->inet_rcv_saddr and
+> sk->sk_bound_dev_if with plain loads while bind, connect and disconnect
+> paths can update the same match fields concurrently.
 >
-> Add net_admin_capable(). It requires CAP_NET_ADMIN in the tunnel's netns
-> and is skipped when that netns is the device's current netns, where the
-> rtnl path already checked the cap. The other patches in this series use
-> the same helper.
+> Annotate only those mutable match fields in raw_v4_match(), and do so
+> at the point of use instead of hoisting the bound-device read before
+> the earlier short-circuit tests.
 >
-> Gate ipgre_changelink() and erspan_changelink() with it. The check is at
-> the top of the op, before any attribute is parsed, because the parsers
-> update live tunnel fields first. ipgre_netlink_parms() sets
-> t->collect_md before ip_tunnel_changelink() runs.
+> Also annotate the corresponding IPv4 writers so the read side matches
+> explicit WRITE_ONCE() updates when those same fields are modified.
 >
-> Commit 8b484efd5cb4 ("ip6: vti: Use ip6_tnl.net in
-> vti6_siocdevprivate().") added the same check on the ioctl path. This
-> adds it on RTM_NEWLINK.
->
-> Reported-by: Xiao Liang <shaw.leon@gmail.com>
-> Closes: https://lore.kernel.org/netdev/CABAhCOSzP1vaThGV35_VnsRCb=3D87_CP=
-jPVsTHbq905k8A+BuUg@mail.gmail.com/
-> Fixes: d0f418516022 ("net, ip_tunnel: fix namespaces move")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Maoyi Xie <maoyixie.tju@gmail.com>
+> Fixes: 0daf07e52709 ("raw: convert raw sockets to RCU")
+> Signed-off-by: Runyu Xiao <runyu.xiao@seu.edu.cn>
 > ---
->  include/net/net_namespace.h | 18 ++++++++++++++++++
->  net/ipv4/ip_gre.c           |  6 ++++++
->  2 files changed, 24 insertions(+)
+> v3:
+> - drop the inet_num annotation for raw sockets
+> - cover inet_daddr as well
+> - avoid hoisting sk_bound_dev_if into a temporary variable
+> - annotate the matching IPv4 writer paths
 >
-> diff --git a/include/net/net_namespace.h b/include/net/net_namespace.h
-> index 80de5e98a66d..17fb71a78cb6 100644
-> --- a/include/net/net_namespace.h
-> +++ b/include/net/net_namespace.h
+> v2:
+> - note that inet_num and sk_bound_dev_if already have WRITE_ONCE() writer=
+s
+> - add WRITE_ONCE() in raw_bind() for inet_rcv_saddr
+> - previous version: https://lore.kernel.org/r/20260601073937.1137673-1-ru=
+nyu.xiao@seu.edu.cn
+>
+>  include/net/ip.h    |  3 ++-
+>  net/ipv4/datagram.c |  4 ++--
+>  net/ipv4/raw.c      | 23 ++++++++++++++++-------
+>  net/ipv4/udp.c      |  4 ++--
 
-net/core/rtnetlink.c is a better fit.
-It has rtnl_get_net_ns_capable().
+UDP change should be a separate patch.
 
 
-> @@ -358,6 +358,24 @@ static inline bool net_initialized(const struct net =
-*net)
->         return READ_ONCE(net->list.next);
+>  4 files changed, 22 insertions(+), 12 deletions(-)
+>
+> diff --git a/include/net/ip.h b/include/net/ip.h
+> index 7f2fe1a8401b..3902e8b58699 100644
+> --- a/include/net/ip.h
+> +++ b/include/net/ip.h
+> @@ -679,7 +679,8 @@ static inline void ip_ipgre_mc_map(__be32 naddr, cons=
+t unsigned char *broadcast,
+>
+>  static __inline__ void inet_reset_saddr(struct sock *sk)
+>  {
+> -       inet_sk(sk)->inet_rcv_saddr =3D inet_sk(sk)->inet_saddr =3D 0;
+> +       inet_sk(sk)->inet_saddr =3D 0;
+> +       WRITE_ONCE(inet_sk(sk)->inet_rcv_saddr, 0);
+
+Where is inet_reset_saddr() called for raw_sock ?
+
+
+>  #if IS_ENABLED(CONFIG_IPV6)
+>         if (sk->sk_family =3D=3D PF_INET6) {
+>                 struct ipv6_pinfo *np =3D inet6_sk(sk);
+> diff --git a/net/ipv4/datagram.c b/net/ipv4/datagram.c
+> index 1614593b6d72..7d25519a6cdd 100644
+> --- a/net/ipv4/datagram.c
+> +++ b/net/ipv4/datagram.c
+> @@ -63,12 +63,12 @@ int __ip4_datagram_connect(struct sock *sk, struct so=
+ckaddr_unsized *uaddr, int
+>         }
+>
+>         /* Update addresses before rehashing */
+> -       inet->inet_daddr =3D fl4->daddr;
+> +       WRITE_ONCE(inet->inet_daddr, fl4->daddr);
+>         inet->inet_dport =3D usin->sin_port;
+>         if (!inet->inet_saddr)
+>                 inet->inet_saddr =3D fl4->saddr;
+>         if (!inet->inet_rcv_saddr) {
+> -               inet->inet_rcv_saddr =3D fl4->saddr;
+> +               WRITE_ONCE(inet->inet_rcv_saddr, fl4->saddr);
+>                 if (sk->sk_prot->rehash)
+>                         sk->sk_prot->rehash(sk);
+>         }
+> diff --git a/net/ipv4/raw.c b/net/ipv4/raw.c
+> index 5aaf9c62c8e1..dfb294b5c794 100644
+> --- a/net/ipv4/raw.c
+> +++ b/net/ipv4/raw.c
+> @@ -120,13 +120,21 @@ bool raw_v4_match(struct net *net, const struct soc=
+k *sk, unsigned short num,
+>                   __be32 raddr, __be32 laddr, int dif, int sdif)
+>  {
+>         const struct inet_sock *inet =3D inet_sk(sk);
+> +       __be32 daddr, rcv_saddr;
+>
+> -       if (net_eq(sock_net(sk), net) && inet->inet_num =3D=3D num  &&
+> -           !(inet->inet_daddr && inet->inet_daddr !=3D raddr)    &&
+> -           !(inet->inet_rcv_saddr && inet->inet_rcv_saddr !=3D laddr) &&
+> -           raw_sk_bound_dev_eq(net, sk->sk_bound_dev_if, dif, sdif))
+> -               return true;
+> -       return false;
+> +       if (!net_eq(sock_net(sk), net) || inet->inet_num !=3D num)
+> +               return false;
+> +
+> +       daddr =3D READ_ONCE(inet->inet_daddr);
+> +       if (daddr && daddr !=3D raddr)
+> +               return false;
+> +
+> +       rcv_saddr =3D READ_ONCE(inet->inet_rcv_saddr);
+> +       if (rcv_saddr && rcv_saddr !=3D laddr)
+> +               return false;
+> +
+> +       return raw_sk_bound_dev_eq(net, READ_ONCE(sk->sk_bound_dev_if),
+> +                                  dif, sdif);
 >  }
+>  EXPORT_SYMBOL_GPL(raw_v4_match);
 >
-> +/**
-> + * net_admin_capable - test for CAP_NET_ADMIN over a network namespace
-> + * @net: namespace whose state the operation would change
-> + * @cur: namespace the operation runs in, e.g. dev_net(dev)
-> + *
-> + * Returns true when @net is @cur, where CAP_NET_ADMIN was already
-> + * checked for the running namespace,
-> or when the caller holds
-> + * CAP_NET_ADMIN over @net. rtnl changelink paths use this: a device can
-> + * be moved so its state lives in a namespace other than the one the
-> + * request runs in, and the cap must then be held over that namespace.
-> + */
-> +static inline bool net_admin_capable(const struct net *net,
-> +                                    const struct net *cur)
-
-Rename the helper and change args to
-
-rtnl_dev_link_net_capable(const struct net_device *dev, const struct
-net *link_net)
-
-since the netns we care about here is rtnl_newlink_params.link_net
-(if specified) and dev_net() is redundant in all callers.
-
-Also remove kdoc, it just reiterates the two conditions below.
-
-
-> +{
-> +       return net_eq(net, cur) ||
-> +              ns_capable(net->user_ns, CAP_NET_ADMIN);
-> +}
-> +
->  static inline void __netns_tracker_alloc(struct net *net,
->                                          netns_tracker *tracker,
->                                          bool refcounted,
-> diff --git a/net/ipv4/ip_gre.c b/net/ipv4/ip_gre.c
-> index 169e2921a851..040a0ef95184 100644
-> --- a/net/ipv4/ip_gre.c
-> +++ b/net/ipv4/ip_gre.c
-> @@ -1457,6 +1457,9 @@ static int ipgre_changelink(struct net_device *dev,=
- struct nlattr *tb[],
->         __u32 fwmark =3D t->fwmark;
->         int err;
+> @@ -724,7 +732,8 @@ static int raw_bind(struct sock *sk, struct sockaddr_=
+unsized *uaddr,
+>                                          chk_addr_ret))
+>                 goto out;
 >
-> +       if (!net_admin_capable(t->net, dev_net(dev)))
-> +               return -EPERM;
-> +
->         err =3D ipgre_newlink_encap_setup(dev, data);
->         if (err)
->                 return err;
-> @@ -1486,6 +1489,9 @@ static int erspan_changelink(struct net_device *dev=
-, struct nlattr *tb[],
->         __u32 fwmark =3D t->fwmark;
->         int err;
+> -       inet->inet_rcv_saddr =3D inet->inet_saddr =3D addr->sin_addr.s_ad=
+dr;
+> +       inet->inet_saddr =3D addr->sin_addr.s_addr;
+> +       WRITE_ONCE(inet->inet_rcv_saddr, addr->sin_addr.s_addr);
+>         if (chk_addr_ret =3D=3D RTN_MULTICAST || chk_addr_ret =3D=3D RTN_=
+BROADCAST)
+>                 inet->inet_saddr =3D 0;  /* Use device */
+>         sk_dst_reset(sk);
+> diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
+> index 0ac2bf4f8759..5d3e07f3ac27 100644
+> --- a/net/ipv4/udp.c
+> +++ b/net/ipv4/udp.c
+> @@ -2156,10 +2156,10 @@ int __udp_disconnect(struct sock *sk, int flags)
+>          */
 >
-> +       if (!net_admin_capable(t->net, dev_net(dev)))
-> +               return -EPERM;
-> +
->         err =3D ipgre_newlink_encap_setup(dev, data);
->         if (err)
->                 return err;
+>         sk->sk_state =3D TCP_CLOSE;
+> -       inet->inet_daddr =3D 0;
+> +       WRITE_ONCE(inet->inet_daddr, 0);
+>         inet->inet_dport =3D 0;
+>         sock_rps_reset_rxhash(sk);
+> -       sk->sk_bound_dev_if =3D 0;
+> +       WRITE_ONCE(sk->sk_bound_dev_if, 0);
+>         if (!(sk->sk_userlocks & SOCK_BINDADDR_LOCK)) {
+>                 inet_reset_saddr(sk);
+>                 if (sk->sk_prot->rehash &&
 > --
 > 2.34.1
->
