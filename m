@@ -1,47 +1,47 @@
 Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95417347FEE
-	for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 08:25:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8EDE377ED2
+	for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 08:25:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.133.104.62
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781166334; cv=none; b=ZzNUZ8YOGfby2yGS0nqIQyaYys+8skwRIeZHmP0r6Fr0Lva04eS+H5yPxYuBh+/HW4sULQ9phzEqw3SUFGsdcorBOXsLpqjzt6Q1DdFZHwKadpxuORJNg9MT9kUHIqLvwaaBwfo6SQSTQLoEWZ7sXkuITzCP9CYGn6gz/I+uu8Y=
+	t=1781166334; cv=none; b=nwbnIGHup1xCWVuzRcfPCFd7vs/lnYdbsVwhKPv8jUqjtDnNSIToFbfkT5B/rqY6O0rV/LaUSzm2dQs57Na9mhvFYghBYITiTVmi3lPcBbmDWokq/Bwm5XoguQ0PfymYsE/BTsVyzbVhN6b2LGIylMC6e1sp/MLMGlpizy56IiI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1781166334; c=relaxed/simple;
-	bh=ivI7HDhMP3IELNfDfdXbbkSguyRJK8VPfid/vNTqOOA=;
+	bh=rtyJhY6aL8trwh1LOkMZqZ4fZQ6FRslvc3k4jlOv8jE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oCRjT1fXRqs63TOJyTZUsKUbs/gjlPoQVh6ivS3JiaeBoq7neU6tsubcRde2JYnLIVWSTcUA9AQQTQgXXHHylAWC6cB7Nqel84ID0ZLVcbrm/ej6B6Qg2ofGx0GgxDZQbkc01DCy5C1QF2Um8RxYQgepgpjaaBLkxYLyDqqtJks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net; spf=pass smtp.mailfrom=iogearbox.net; dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b=eyh49o3e; arc=none smtp.client-ip=213.133.104.62
+	 MIME-Version; b=P+LvGy7sGAO2vuMsC2OZ+KSLJXk1ZSiwaepOQFKp8OqPHljkmSHR/u2VWniL+lW9wPzoHtr6c/DVTxY3C6YeWoNDHiTzZxNq8moqW/OAyUBAZjbSEnHh/FAROlejJpMWu2ua82HIvnEAfPhqsdtHD34vhAo/kj/UY6Cd9+2zp34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net; spf=pass smtp.mailfrom=iogearbox.net; dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b=keLLNA8v; arc=none smtp.client-ip=213.133.104.62
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iogearbox.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b="eyh49o3e"
+	dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b="keLLNA8v"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:MIME-Version:
 	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=K1PXEjTsKYyYFML7jHnRhmgLb5kGBH4FlrIUr2KPspc=; b=eyh49o3eP8z553DDcW+NLG28ke
-	h59hOBImXaUTowpGonwDWOMezADL27FV2mF6FAIIGe1p8OjC8K9WJQkSEMEQfUDwFVPny7gMHH1kV
-	hb2tl9rjqU02gKpRUwA68NXU6JuhFiY1fbe8yOP9zYS1TNoKG/Cg4qIBBPinCqaJpcXJgyXUbTmcr
-	0rhL/z8MuI0DtA/bYvHDkOAP8g4KNCc/mSBHkroP9yI2mmD7ND/lo9LjaOxrgctiOj3HcUYQpu9hb
-	42XAULkn7GeHPc/tHGbo6nlk3FQ7x4+VDEAMirLAu70FKTd+mNQsUMyFpO9p2riWEbFvvkodya1WY
-	WvI2thpA==;
+	bh=FuSfTb6J3KpGWhNLdKKGLdQXthwu6KzgTq9OqYj+oXw=; b=keLLNA8v8dCHYgj/1uczCX7xkE
+	bnXcSzF09b3ldF++VSmnOzxF+kP3dxJR1XfVtNZbcdAEiHgXTqW4Q14AISCqhmAmcXTOZlr8URGcq
+	K8OLYgL90gNa6F+QebrRJfblNurlm7McSeQBMfAr6/xH2UsVtdFJjW5mbZpQGJqtV4muW15Af6vzm
+	FzFHOGSN992pk5vU6iENTlTnZDFkF4h39G9vv/4HRgQ36VV6Y7k72maO0FgBEN18t7Tfz8DkFL08Q
+	C7HVD8glC4N/UQ+Jm5uYHB9vJBvzGzf3KxY5qSdyZGMrJo0gocvvyLyQLpp3wdR7uI4Xet9MIpEQp
+	nOrXhBLg==;
 Received: from localhost ([127.0.0.1])
 	by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.96.2)
 	(envelope-from <daniel@iogearbox.net>)
-	id 1wXajB-0009rB-0U;
-	Thu, 11 Jun 2026 10:25:29 +0200
+	id 1wXajC-0009s8-24;
+	Thu, 11 Jun 2026 10:25:30 +0200
 From: Daniel Borkmann <daniel@iogearbox.net>
 To: kuba@kernel.org
 Cc: razor@blackwall.org,
 	bobbyeshleman@meta.com,
 	dw@davidwei.uk,
 	netdev@vger.kernel.org
-Subject: [PATCH net-next v2 1/4] selftests/net: Move netkit lease hw setup into per-test fixtures
-Date: Thu, 11 Jun 2026 10:25:24 +0200
-Message-ID: <20260611082527.741674-2-daniel@iogearbox.net>
+Subject: [PATCH net-next v2 3/4] selftests/net: Add netkit io_uring ZC test for large rx_buf_len
+Date: Thu, 11 Jun 2026 10:25:26 +0200
+Message-ID: <20260611082527.741674-4-daniel@iogearbox.net>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260611082527.741674-1-daniel@iogearbox.net>
 References: <20260611082527.741674-1-daniel@iogearbox.net>
@@ -54,351 +54,181 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Virus-Scanned: Clear (ClamAV 1.4.3/28028/Thu Jun 11 08:27:22 2026)
 
-The HW counterpart of nk_qlease.py was carrying its lease setup in main()
-and stashing src_queue / nk_queue / nk_*_ifname on cfg, which had drawbacks
-called out during the review at [0].
+Add test_iou_zcrx_large_buf, which runs iou-zcrx with rx_buf_len >
+page size (-x 2) through a netkit-leased RX queue. The netkit ifindex
+is opaque to io_uring, but rx_page_size is honoured by the leased
+physical qops via netif_mp_open_rxq()'s lease redirect.
 
-This is the deferred half of the cleanup that landed in commit e254ffb9502c
-("selftests/net: Split netdevsim tests from HW tests in nk_qlease") which
-was the SW counterpart of nk_qlease.py.
+Originally, I also added a BIG TCP variant on top, but dropped it
+here as fbnic (and the QEMU fbnic model) has no BIG TCP support
+to exercise it as this point.
 
-While at it, convert the open-coded "ip netns exec" prefixes in the test
-bodies over to the ns= argument of cmd() / bkg().
+Tested against the QEMU fbnic emulation. The new test exercises
+the > page rx_buf_len path only when the leased NIC advertises
+QCFG_RX_PAGE_SIZE; otherwise it skips.
+
+For fbnic, I used Bjorn's patches locally [0]:
+
+  # ./nk_qlease.py
+  TAP version 13
+  1..5
+  ok 1 nk_qlease.test_iou_zcrx
+  ok 2 nk_qlease.test_iou_zcrx_large_buf
+  ok 3 nk_qlease.test_attrs
+  ok 4 nk_qlease.test_attach_xdp_with_mp
+  ok 5 nk_qlease.test_destroy
+  # Totals: pass:5 fail:0 xfail:0 xpass:0 skip:0 error:0
+
+Without those patches (aka not advertising QCFG_RX_PAGE_SIZE):
+
+  # ./nk_qlease.py
+  TAP version 13
+  1..5
+  ok 1 nk_qlease.test_iou_zcrx
+  ok 2 nk_qlease.test_iou_zcrx_large_buf # SKIP Large chunks are not supported -95
+  ok 3 nk_qlease.test_attrs
+  ok 4 nk_qlease.test_attach_xdp_with_mp
+  ok 5 nk_qlease.test_destroy
+  # Totals: pass:4 fail:0 xfail:0 xpass:0 skip:1 error:0
 
 Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/netdev/20260408162238.16709090@kernel.org/ [0]
-Reviewed-by: Bobby Eshleman <bobbyeshleman@meta.com>
+Link: https://lore.kernel.org/netdev/20260522113225.241337-1-bjorn@kernel.org/ [0]
 ---
- .../selftests/drivers/net/hw/nk_qlease.py     | 198 +++++++++++++-----
- 1 file changed, 149 insertions(+), 49 deletions(-)
+ .../selftests/drivers/net/hw/nk_qlease.py     | 107 +++++++++++++++++-
+ 1 file changed, 106 insertions(+), 1 deletion(-)
 
 diff --git a/tools/testing/selftests/drivers/net/hw/nk_qlease.py b/tools/testing/selftests/drivers/net/hw/nk_qlease.py
-index 139a91ebd229..c7cb039b8181 100755
+index b97663820ccf..4f53034c9a50 100755
 --- a/tools/testing/selftests/drivers/net/hw/nk_qlease.py
 +++ b/tools/testing/selftests/drivers/net/hw/nk_qlease.py
-@@ -18,8 +18,10 @@ from lib.py import (
-     NetNSEnter,
-     EthtoolFamily,
-     NetdevFamily,
-+    RtnlFamily,
+@@ -32,6 +32,31 @@ from lib.py import (
  )
- from lib.py import (
-+    Netlink,
-     bkg,
-     cmd,
-     defer,
-@@ -31,9 +33,117 @@ from lib.py import (
  from lib.py import KsftSkipEx, CmdExitFailure
  
- 
--def set_flow_rule(cfg):
-+def _create_netkit_pair(cfg, rxqueues=2):
-+    if cfg._nk_host_ifname:
-+        cmd(f"ip link del dev {cfg._nk_host_ifname}", fail=False)
-+        cfg._nk_host_ifname = None
-+        cfg.nk_guest_ifname = None
-+    if getattr(cfg, "_tc_attached", False):
-+        cmd(
-+            f"tc filter del dev {cfg.ifname} ingress pref {cfg._bpf_prog_pref}",
-+            fail=False,
++# iou-zcrx exits with 42 from setup_zcrx() when the NIC does not advertise
++# QCFG_RX_PAGE_SIZE (or otherwise rejects the requested rx_buf_len).
++SKIP_CODE = 42
++
++
++def _restore_hugepages(count):
++    with open("/proc/sys/vm/nr_hugepages", "w", encoding="utf-8") as f:
++        f.write(str(count))
++
++
++def _mp_clear_wait(cfg, src_queue):
++    """Wait for the io_uring memory provider to clear from the leased
++    physical queue; io_uring tears it down asynchronously after the
++    process holding the ifq exits."""
++    netdevnl = NetdevFamily()
++    deadline = time.time() + 5
++    while time.time() < deadline:
++        queue_info = netdevnl.queue_get(
++            {"ifindex": cfg.ifindex, "id": src_queue, "type": "rx"}
 +        )
-+        cfg._tc_attached = False
++        if "io-uring" not in queue_info:
++            return
++        time.sleep(0.1)
++    raise TimeoutError("Timed out waiting for memory provider to clear")
 +
-+    all_links = ip("-d link show", json=True)
-+    old_idxs = {
-+        link["ifindex"]
-+        for link in all_links
-+        if link.get("linkinfo", {}).get("info_kind") == "netkit"
-+    }
-+
-+    rtnl = RtnlFamily()
-+    rtnl.newlink(
-+        {
-+            "linkinfo": {
-+                "kind": "netkit",
-+                "data": {
-+                    "mode": "l2",
-+                    "policy": "forward",
-+                    "peer-policy": "forward",
-+                },
-+            },
-+            "num-rx-queues": rxqueues,
-+        },
-+        flags=[Netlink.NLM_F_CREATE, Netlink.NLM_F_EXCL],
-+    )
-+
-+    all_links = ip("-d link show", json=True)
-+    nk_links = [
-+        link
-+        for link in all_links
-+        if link.get("linkinfo", {}).get("info_kind") == "netkit"
-+        and link["ifindex"] not in old_idxs
-+    ]
-+    if len(nk_links) != 2:
-+        raise KsftSkipEx("Failed to create netkit pair")
-+
-+    nk_links.sort(key=lambda x: x["ifindex"])
-+    cfg._nk_host_ifname = nk_links[1]["ifname"]
-+    cfg.nk_guest_ifname = nk_links[0]["ifname"]
-+    cfg.nk_host_ifindex = nk_links[1]["ifindex"]
-+    cfg.nk_guest_ifindex = nk_links[0]["ifindex"]
-+
-+    ip(f"link set dev {cfg.nk_guest_ifname} netns {cfg.netns.name}")
-+    ip(f"link set dev {cfg._nk_host_ifname} up")
-+    ip(f"-6 addr add fe80::1/64 dev {cfg._nk_host_ifname} nodad")
-+    ip(
-+        f"-6 route add {cfg.nk_guest_ipv6}/128 via fe80::2 "
-+        f"dev {cfg._nk_host_ifname}"
-+    )
-+    ip(f"link set dev {cfg.nk_guest_ifname} up", ns=cfg.netns)
-+    ip(f"-6 addr add fe80::2/64 dev {cfg.nk_guest_ifname}", ns=cfg.netns)
-+    ip(
-+        f"-6 addr add {cfg.nk_guest_ipv6}/64 dev {cfg.nk_guest_ifname} nodad",
-+        ns=cfg.netns,
-+    )
-+    ip(
-+        f"-6 route add default via fe80::1 dev {cfg.nk_guest_ifname}",
-+        ns=cfg.netns,
-+    )
-+
-+    cfg._attach_bpf()
-+
-+
-+def _setup_lease(cfg, rxqueues=2):
-+    _create_netkit_pair(cfg, rxqueues=rxqueues)
-+
-+    ethnl = EthtoolFamily()
-+    channels = ethnl.channels_get({"header": {"dev-index": cfg.ifindex}})[
-+        "combined-count"
-+    ]
-+    if channels < 2:
-+        raise KsftSkipEx(
-+            "Test requires NETIF with at least 2 combined channels"
-+        )
-+    src_queue = channels - 1
-+
-+    with NetNSEnter(str(cfg.netns)):
-+        netdevnl = NetdevFamily()
-+        bind_result = netdevnl.queue_create(
-+            {
-+                "ifindex": cfg.nk_guest_ifindex,
-+                "type": "rx",
-+                "lease": {
-+                    "ifindex": cfg.ifindex,
-+                    "queue": {"id": src_queue, "type": "rx"},
-+                    "netns-id": 0,
-+                },
-+            }
-+        )
-+    return src_queue, bind_result["id"]
-+
-+
-+def _teardown_netkit(cfg):
-+    if cfg._nk_host_ifname:
-+        cmd(f"ip link del dev {cfg._nk_host_ifname}", fail=False)
-+        cfg._nk_host_ifname = None
-+        cfg.nk_guest_ifname = None
-+
-+
-+def set_flow_rule(cfg, src_queue):
-     output = ethtool(
--        f"-N {cfg.ifname} flow-type tcp6 dst-port {cfg.port} action {cfg.src_queue}"
-+        f"-N {cfg.ifname} flow-type tcp6 dst-port {cfg.port} action {src_queue}"
-     ).stdout
-     values = re.search(r"ID (\d+)", output).group(1)
-     return int(values)
-@@ -41,6 +151,8 @@ def set_flow_rule(cfg):
  
- def test_iou_zcrx(cfg) -> None:
-     cfg.require_ipver("6")
-+    src_queue, nk_queue = _setup_lease(cfg)
-+    defer(_teardown_netkit, cfg)
-     ethnl = EthtoolFamily()
- 
-     rings = ethnl.rings_get({"header": {"dev-index": cfg.ifindex}})
-@@ -65,40 +177,47 @@ def test_iou_zcrx(cfg) -> None:
-         },
-     )
- 
--    ethtool(f"-X {cfg.ifname} equal {cfg.src_queue}")
-+    ethtool(f"-X {cfg.ifname} equal {src_queue}")
-     defer(ethtool, f"-X {cfg.ifname} default")
- 
--    flow_rule_id = set_flow_rule(cfg)
-+    flow_rule_id = set_flow_rule(cfg, src_queue)
-     defer(ethtool, f"-N {cfg.ifname} delete {flow_rule_id}")
- 
--    rx_cmd = f"ip netns exec {cfg.netns.name} {cfg.bin_local} -s -p {cfg.port} -i {cfg.nk_guest_ifname} -q {cfg.nk_queue}"
-+    rx_cmd = (
-+        f"{cfg.bin_local} -s -p {cfg.port} "
-+        f"-i {cfg.nk_guest_ifname} -q {nk_queue}"
-+    )
-     tx_cmd = f"{cfg.bin_remote} -c -h {cfg.nk_guest_ipv6} -p {cfg.port} -l 12840"
--    with bkg(rx_cmd, exit_wait=True):
-+    with bkg(rx_cmd, exit_wait=True, ns=cfg.netns):
-         wait_port_listen(cfg.port, proto="tcp", ns=cfg.netns)
+ def _create_netkit_pair(cfg, rxqueues=2):
+     if cfg.nk_host_ifname:
+@@ -188,6 +213,80 @@ def test_iou_zcrx(cfg) -> None:
          cmd(tx_cmd, host=cfg.remote)
  
  
++def test_iou_zcrx_large_buf(cfg) -> None:
++    """iou-zcrx with rx_buf_len > page size, going through a netkit-leased
++    queue. Exercises the queue rx-buf-len path via netif_mp_open_rxq()'s
++    lease redirect: the netkit ifindex is opaque to io_uring, but
++    rx_page_size is honoured by the *physical* qops because the lease
++    pointer rewrites the request from netkit onto the leased physical
++    rxq before supported_params/validate_qcfg are consulted.
++    """
++    cfg.require_ipver("6")
++    src_queue, nk_queue = _setup_lease(cfg)
++    defer(_teardown_netkit, cfg)
++    ethnl = EthtoolFamily()
++
++    with open("/proc/sys/vm/nr_hugepages", "r+", encoding="utf-8") as f:
++        nr_hugepages = int(f.read().strip())
++        if nr_hugepages < 64:
++            f.seek(0)
++            f.write("64")
++            defer(_restore_hugepages, nr_hugepages)
++
++    rings = ethnl.rings_get({"header": {"dev-index": cfg.ifindex}})
++    rx_rings = rings["rx"]
++    hds_thresh = rings.get("hds-thresh", 0)
++
++    ethnl.rings_set(
++        {
++            "header": {"dev-index": cfg.ifindex},
++            "tcp-data-split": "enabled",
++            "hds-thresh": 0,
++            "rx": 64,
++        }
++    )
++    defer(
++        ethnl.rings_set,
++        {
++            "header": {"dev-index": cfg.ifindex},
++            "tcp-data-split": "unknown",
++            "hds-thresh": hds_thresh,
++            "rx": rx_rings,
++        },
++    )
++
++    ethtool(f"-X {cfg.ifname} equal {src_queue}")
++    defer(ethtool, f"-X {cfg.ifname} default")
++
++    flow_rule_id = set_flow_rule(cfg, src_queue)
++    defer(ethtool, f"-N {cfg.ifname} delete {flow_rule_id}")
++
++    # -x 2 asks iou-zcrx for rx_buf_len = 2 * page_size (8 KiB on x86_64),
++    # backed by a 2 MiB hugepage area so the chunks are physically
++    # contiguous, which is what zcrx requires for non-default rx_buf_len.
++    rx_cmd = (
++        f"{cfg.bin_local} -s -p {cfg.port} "
++        f"-i {cfg.nk_guest_ifname} -q {nk_queue} -x 2"
++    )
++    tx_cmd = f"{cfg.bin_remote} -c -h {cfg.nk_guest_ipv6} -p {cfg.port} -l 12840"
++
++    # Probe via -d (dry run): exits with SKIP_CODE if the leased physical
++    # qops doesn't advertise QCFG_RX_PAGE_SIZE (e.g. older bnxt FW/HW).
++    probe = cmd(rx_cmd + " -d", fail=False, ns=cfg.netns)
++    if probe.ret == SKIP_CODE:
++        msg = probe.stdout.strip() or "rx_buf_len not supported by leased NIC"
++        raise KsftSkipEx(msg)
++
++    # A successful dry run still registered the zcrx ifq on the leased
++    # physical queue; wait for its async teardown before the real server
++    # binds the same queue.
++    _mp_clear_wait(cfg, src_queue)
++
++    with bkg(rx_cmd, exit_wait=True, ns=cfg.netns):
++        wait_port_listen(cfg.port, proto="tcp", ns=cfg.netns)
++        cmd(tx_cmd, host=cfg.remote)
++
++
  def test_attrs(cfg) -> None:
      cfg.require_ipver("6")
-+    src_queue, nk_queue = _setup_lease(cfg)
-+    defer(_teardown_netkit, cfg)
-     netdevnl = NetdevFamily()
-     queue_info = netdevnl.queue_get(
--        {"ifindex": cfg.ifindex, "id": cfg.src_queue, "type": "rx"}
-+        {"ifindex": cfg.ifindex, "id": src_queue, "type": "rx"}
-     )
- 
--    ksft_eq(queue_info["id"], cfg.src_queue)
-+    ksft_eq(queue_info["id"], src_queue)
-     ksft_eq(queue_info["type"], "rx")
-     ksft_eq(queue_info["ifindex"], cfg.ifindex)
- 
-     ksft_in("lease", queue_info)
-     lease = queue_info["lease"]
-     ksft_eq(lease["ifindex"], cfg.nk_guest_ifindex)
--    ksft_eq(lease["queue"]["id"], cfg.nk_queue)
-+    ksft_eq(lease["queue"]["id"], nk_queue)
-     ksft_eq(lease["queue"]["type"], "rx")
-     ksft_in("netns-id", lease)
- 
- 
- def test_attach_xdp_with_mp(cfg) -> None:
-     cfg.require_ipver("6")
-+    src_queue, nk_queue = _setup_lease(cfg)
-+    defer(_teardown_netkit, cfg)
-     ethnl = EthtoolFamily()
- 
-     rings = ethnl.rings_get({"header": {"dev-index": cfg.ifindex}})
-@@ -123,18 +242,21 @@ def test_attach_xdp_with_mp(cfg) -> None:
-         },
-     )
- 
--    ethtool(f"-X {cfg.ifname} equal {cfg.src_queue}")
-+    ethtool(f"-X {cfg.ifname} equal {src_queue}")
-     defer(ethtool, f"-X {cfg.ifname} default")
- 
-     netdevnl = NetdevFamily()
- 
--    rx_cmd = f"ip netns exec {cfg.netns.name} {cfg.bin_local} -s -p {cfg.port} -i {cfg.nk_guest_ifname} -q {cfg.nk_queue}"
--    with bkg(rx_cmd):
-+    rx_cmd = (
-+        f"{cfg.bin_local} -s -p {cfg.port} "
-+        f"-i {cfg.nk_guest_ifname} -q {nk_queue}"
-+    )
-+    with bkg(rx_cmd, ns=cfg.netns):
-         wait_port_listen(cfg.port, proto="tcp", ns=cfg.netns)
- 
-         time.sleep(0.1)
-         queue_info = netdevnl.queue_get(
--            {"ifindex": cfg.ifindex, "id": cfg.src_queue, "type": "rx"}
-+            {"ifindex": cfg.ifindex, "id": src_queue, "type": "rx"}
-         )
-         ksft_in("io-uring", queue_info)
- 
-@@ -144,13 +266,15 @@ def test_attach_xdp_with_mp(cfg) -> None:
- 
-     time.sleep(0.1)
-     queue_info = netdevnl.queue_get(
--        {"ifindex": cfg.ifindex, "id": cfg.src_queue, "type": "rx"}
-+        {"ifindex": cfg.ifindex, "id": src_queue, "type": "rx"}
-     )
-     ksft_not_in("io-uring", queue_info)
- 
- 
- def test_destroy(cfg) -> None:
-     cfg.require_ipver("6")
-+    src_queue, nk_queue = _setup_lease(cfg)
-+    defer(_teardown_netkit, cfg)
-     ethnl = EthtoolFamily()
- 
-     rings = ethnl.rings_get({"header": {"dev-index": cfg.ifindex}})
-@@ -175,16 +299,19 @@ def test_destroy(cfg) -> None:
-         },
-     )
- 
--    ethtool(f"-X {cfg.ifname} equal {cfg.src_queue}")
-+    ethtool(f"-X {cfg.ifname} equal {src_queue}")
-     defer(ethtool, f"-X {cfg.ifname} default")
- 
--    rx_cmd = f"ip netns exec {cfg.netns.name} {cfg.bin_local} -s -p {cfg.port} -i {cfg.nk_guest_ifname} -q {cfg.nk_queue}"
--    rx_proc = cmd(rx_cmd, background=True)
-+    rx_cmd = (
-+        f"{cfg.bin_local} -s -p {cfg.port} "
-+        f"-i {cfg.nk_guest_ifname} -q {nk_queue}"
-+    )
-+    rx_proc = cmd(rx_cmd, background=True, ns=cfg.netns)
-     wait_port_listen(cfg.port, proto="tcp", ns=cfg.netns)
- 
-     netdevnl = NetdevFamily()
-     queue_info = netdevnl.queue_get(
--        {"ifindex": cfg.ifindex, "id": cfg.src_queue, "type": "rx"}
-+        {"ifindex": cfg.ifindex, "id": src_queue, "type": "rx"}
-     )
-     ksft_in("io-uring", queue_info)
- 
-@@ -199,17 +326,14 @@ def test_destroy(cfg) -> None:
-     cfg.nk_guest_ifname = None
- 
-     queue_info = netdevnl.queue_get(
--        {"ifindex": cfg.ifindex, "id": cfg.src_queue, "type": "rx"}
-+        {"ifindex": cfg.ifindex, "id": src_queue, "type": "rx"}
-     )
-     ksft_not_in("io-uring", queue_info)
- 
--    cmd(f"tc filter del dev {cfg.ifname} ingress pref {cfg._bpf_prog_pref}")
--    cfg._tc_attached = False
--
--    flow_rule_id = set_flow_rule(cfg)
-+    flow_rule_id = set_flow_rule(cfg, src_queue)
-     defer(ethtool, f"-N {cfg.ifname} delete {flow_rule_id}")
- 
--    rx_cmd = f"{cfg.bin_local} -s -p {cfg.port} -i {cfg.ifname} -q {cfg.src_queue}"
-+    rx_cmd = f"{cfg.bin_local} -s -p {cfg.port} -i {cfg.ifname} -q {src_queue}"
-     tx_cmd = f"{cfg.bin_remote} -c -h {cfg.addr_v['6']} -p {cfg.port} -l 12840"
-     with bkg(rx_cmd, exit_wait=True):
-         wait_port_listen(cfg.port, proto="tcp")
-@@ -217,7 +341,7 @@ def test_destroy(cfg) -> None:
-     # Short delay since iou cleanup is async and takes a bit of time.
-     time.sleep(0.1)
-     queue_info = netdevnl.queue_get(
--        {"ifindex": cfg.ifindex, "id": cfg.src_queue, "type": "rx"}
-+        {"ifindex": cfg.ifindex, "id": src_queue, "type": "rx"}
-     )
-     ksft_not_in("io-uring", queue_info)
- 
-@@ -230,30 +354,6 @@ def main() -> None:
-         cfg.bin_remote = cfg.remote.deploy(cfg.bin_local)
+     src_queue, nk_queue = _setup_lease(cfg)
+@@ -350,7 +449,13 @@ def main() -> None:
          cfg.port = rand_port()
  
--        ethnl = EthtoolFamily()
--        channels = ethnl.channels_get({"header": {"dev-index": cfg.ifindex}})
--        channels = channels["combined-count"]
--        if channels < 2:
--            raise KsftSkipEx("Test requires NETIF with at least 2 combined channels")
--
--        cfg.src_queue = channels - 1
--
--        with NetNSEnter(str(cfg.netns)):
--            netdevnl = NetdevFamily()
--            bind_result = netdevnl.queue_create(
--                {
--                    "ifindex": cfg.nk_guest_ifindex,
--                    "type": "rx",
--                    "lease": {
--                        "ifindex": cfg.ifindex,
--                        "queue": {"id": cfg.src_queue, "type": "rx"},
--                        "netns-id": 0,
--                    },
--                }
--            )
--            cfg.nk_queue = bind_result["id"]
--
--        # test_destroy must be last because it destroys the netkit devices
          ksft_run(
-             [test_iou_zcrx, test_attrs, test_attach_xdp_with_mp, test_destroy],
+-            [test_iou_zcrx, test_attrs, test_attach_xdp_with_mp, test_destroy],
++            [
++                test_iou_zcrx,
++                test_iou_zcrx_large_buf,
++                test_attrs,
++                test_attach_xdp_with_mp,
++                test_destroy,
++            ],
              args=(cfg,),
+         )
+     ksft_exit()
 -- 
 2.43.0
 
