@@ -1,42 +1,45 @@
-Received: from mail-m49198.qiye.163.com (mail-m49198.qiye.163.com [45.254.49.198])
+Received: from mx1.buffet.re (mx1.buffet.re [51.83.41.69])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59AA642B725;
-	Thu, 11 Jun 2026 16:17:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47E534266B1;
+	Thu, 11 Jun 2026 16:21:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.83.41.69
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781194644; cv=none; b=Su+yC44wnoDNMKzpL/EY0HSKkswvPEhA7xu/BEzwcJ6bDy3TcApqQmntwNeEm6STyrHTGLgiqTn7gMUuSrrsOa46sJ0jAV+bRwZIX620l8vXHPFf1Quub3mVOsLW5sYvG70g476lBFY+HnbZkzXbm0Pp71N0g9MlUP7xk2A0riw=
+	t=1781194911; cv=none; b=fwimyRFzozv7jnxPc5N+GMdP4f63WhCGCBhH/9Z8Zxhex4+8/ISdJyAE+poiY8mBkwiEpATkAb438LEpxMaB+HwAvZtRbTyT9Ta5p1nBZBG6xEj+U2N8a+cr5QzoJPyCMKHJX3zswvAJvXJ94sI+VGDzuJ/GMkLHlMm9EbvixYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781194644; c=relaxed/simple;
-	bh=xpmzJMC9Lj1r+79ySTS1jkkVd7vSUHY35sGpP9wu+3U=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=YM9FZp5+FjpIkl69ssMpvbvgtydy7S+Uv3zyxwHLFlK+EaLMQbz8R56Rz99oRiSWdlbPWFx1gEAXWFUYKXeAwIzW+ElW6ytYFbKNzke6d/fKzGpRk9KiUrmh9+7WhntAz/7/uPtkv5ZEyHKi6x/jwByQcdLIAbAoPQM55uN5kBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=LOPuWeIV; arc=none smtp.client-ip=45.254.49.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
+	s=arc-20240116; t=1781194911; c=relaxed/simple;
+	bh=Sy/uyKwIT7avvnKqBnGYYgmi6B/oKwD7z26mUetEzUY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QLRJZNwZCFWmNm/AyxX/ql5X4M16A1vRNMbBW11vVkCbJyPW5nhESnYBTDTJfA9qDAgpAj8eEJKV77T9sjyimBMPfMzaxJ8HUKxNYrre1oRBeGbLQjt60NXD1GR99ikddffwkGjiFY7cnqw/gj3QRE10sRRsXChylM9ByqohzLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=buffet.re; spf=pass smtp.mailfrom=buffet.re; dkim=pass (2048-bit key) header.d=buffet.re header.i=@buffet.re header.b=RJ/YF946; arc=none smtp.client-ip=51.83.41.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=buffet.re
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=buffet.re
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="LOPuWeIV"
-Received: from DESKTOP-SUEFNF9.taila7e912.ts.net (unknown [58.241.16.34])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 42075fbe8;
-	Fri, 12 Jun 2026 00:12:08 +0800 (GMT+08:00)
-From: Dawei Feng <dawei.feng@seu.edu.cn>
-To: Tony Nguyen <anthony.l.nguyen@intel.com>
-Cc: Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	marcin.szycik@linux.intel.com,
-	intel-wired-lan@lists.osuosl.org,
+	dkim=pass (2048-bit key) header.d=buffet.re header.i=@buffet.re header.b="RJ/YF946"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=buffet.re; s=mx1;
+	t=1781194905; bh=Sy/uyKwIT7avvnKqBnGYYgmi6B/oKwD7z26mUetEzUY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=RJ/YF946MP4a9c8apnOjFEnP9/G7JjVMTTXBtYX6k7yCkf3tvzTzLEGdk7JHLXKQq
+	 qrng/nK/zI+bT2bw7bkIQLsEVpcAaeT9S8bkUvHe0D3pg/obglCxj/sPHJLAZ0cLo1
+	 gZ9wXFS6zY5kt4ZkHD741Lc6lCm3TfNeeQAesBfbvgdv/K7RsL9uWzllOk/w1C2jOY
+	 fDPgD67AZrG2XX8gl7dD5rAEO/1L3W+UebSqmh/Ch2iVlsbwPD/SmkV1ffGKJXNFNG
+	 phX0eSfDwh9GNLNQDFLcq4a9L9Ex59+Ih2AjAUgJk8yX51htPbZwcu1Xw1zd7pvhzf
+	 j5HBpj+wY6+Ag==
+Received: from localhost.localdomain (unknown [10.0.1.3])
+	by mx1.buffet.re (Postfix) with ESMTPSA id 7E0691253FC;
+	Thu, 11 Jun 2026 18:21:44 +0200 (CEST)
+From: Matthieu Buffet <matthieu@buffet.re>
+To: =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
+	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>
+Cc: linux-security-module@vger.kernel.org,
+	Mikhail Ivanov <ivanov.mikhail1@huawei-partners.com>,
+	konstantin.meskhidze@huawei.com,
+	Tingmao Wang <m@maowtm.org>,
 	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	zilin@seu.edu.cn,
-	Dawei Feng <dawei.feng@seu.edu.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH net v2] ice: fix memory leak in ice_lbtest_prepare_rings()
-Date: Fri, 12 Jun 2026 00:12:04 +0800
-Message-Id: <20260611161204.605962-1-dawei.feng@seu.edu.cn>
-X-Mailer: git-send-email 2.34.1
+	Matthieu Buffet <matthieu@buffet.re>
+Subject: [PATCH v5 0/6] landlock: Add UDP access control support
+Date: Thu, 11 Jun 2026 18:21:00 +0200
+Message-ID: <20260611162107.49278-1-matthieu@buffet.re>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -44,77 +47,102 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9eb77489aa03a2kunm2fb335821bb296
-X-HM-MType: 10
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkZTh5LVh8ZH0JOTk1MQx9DQ1YeHw
-	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlOQ1VJT0pVSk1VSE9ZV1kWGg8SFR0UWUFZT0tIVUpLSEpPSE
-	xVSktLVUpCS0tZBg++
-DKIM-Signature: a=rsa-sha256;
-	b=LOPuWeIVsjZnYtyyAQfxsVo40kaSfbJuE9As/8gn1PRAcCoA+4YvH0dRXq9O1d7OrTIJ0xpoQQiTzFXqO/xQBvhGwRUUIJE6nMUcUvQ74luUn3Fe9bZHv03bh2Bnh3njX9SyNFl/rRspaxF7gNmrAiHLbc0OaWvVDQTxNbo4NV8=; c=relaxed/relaxed; s=default; d=seu.edu.cn; v=1;
-	bh=9Q52+xgmmc1yQ1BqrOtrtFbwp3KVyEeS2vTssPxdECo=;
-	h=date:mime-version:subject:message-id:from;
 
-ice_lbtest_prepare_rings() frees Rx rings only when
-ice_vsi_start_all_rx_rings() fails. If ice_vsi_setup_rx_rings() fails
-after allocating some descriptors, or if ice_vsi_cfg_lan() fails after
-the Rx rings were prepared, the function reaches the Tx cleanup path
-without releasing the initialized Rx resources.
+Hi,
 
-Fix this by adding separate unwind paths for Rx setup failure and LAN
-configuration failure. The Rx setup failure path releases the partially
-prepared Rx rings before freeing Tx rings, while later failures first
-undo the LAN Tx configuration and then release the Rx rings in reverse
-setup order.
+This is V5 (hopefully final) of UDP access control in Landlock. It has
+very few changes compared to v4, described below, all feedback given so
+far should be in there (if not that's a mistake on my part). It adds
+only two access rights, to restrict configuring local and remote
+addresses on UDP sockets. The one that restricts setting a remote
+address also controls sending datagrams to explicit remote addresses
+-ignoring any remote address preset on the socket-. The one that
+restricts binding to a local port also applies when the kernel
+auto-binds an ephemeral port.
 
-The bug was first flagged by an experimental analysis tool we are
-developing for kernel memory-management bugs while analyzing
-v6.13-rc1. The tool is still under development and is not yet publicly
-available. Manual inspection confirms that the bug is still
-present in v7.1-rc5.
+Changes v1->v2
+==============
+- recvmsg hook is gone and sendmsg hook doesn't apply when sending to a
+  remote address pre-set on socket, to improve performance
+- don't add a get_addr_port() helper function, which required a weird
+  "am I in IPv4 or IPv6 context"
+- reorder hook prologue for consistency: check domain, then type and
+  family
 
-An x86_64 allyesconfig build showed no new warnings. As we do not have an
-Intel E800 Series adapter available to run the ethtool offline loopback
-selftest, no runtime testing was able to be performed.
+Changes v2->v3
+==============
+- removed support for sending datagrams with explicit destination
+  address of family AF_UNSPEC, which allowed to bypass restrictions with
+  a race condition
+- rebased on linux-mic/next => add support for auditing
+- fixed mistake in selftests when using unspec_srv variables, which were
+  implicitly of type SOCK_STREAM and did not actually test UDP code
+- add tests for IPPROTO_IP
+- improved docs, split off TCP-related refactoring
 
-Fixes: 0e674aeb0b77 ("ice: Add handler for ethtool selftest")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Signed-off-by: Dawei Feng <dawei.feng@seu.edu.cn>
----
-Changes in v2:
-- Fix cleanup order
+Changes v3->v4
+==============
+- merge LANDLOCK_ACCESS_NET_CONNECT_UDP and
+  LANDLOCK_ACCESS_NET_SENDTO_UDP into
+  LANDLOCK_ACCESS_NET_CONNECT_SEND_UDP (everything that might set the
+  destination of a datagram)
+- make LANDLOCK_ACCESS_NET_BIND_UDP apply when kernel is about to
+  auto-bind an ephemeral port for the caller. Block it if policy would
+  not allow an explicit call to bind(0)
+- only deny sending AF_UNSPEC datagrams on IPv6 sockets, where there is
+  a risk of the address family changing midway
 
- drivers/net/ethernet/intel/ice/ice_ethtool.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+Changes v4->v5
+==============
+- fix unmarked racy socket address family accesses
+- fix improper bind(0) autobind access check when connecting to AF_UNSPEC
+- fix example code structure in documentation to match pattern of usage
+  used in the rest of the code
+- fix bad copy-pastes in selftests, and some unimportant variable types
+- squash LANDLOCK_ACCESS_NET_CONNECT_SEND_UDP commits
+- add a small help note in sandboxer to point out the need to allow
+  binding a source port when emitting, to reduce surprises if people
+  try to get a feeling of the feature through sandboxer before reading
+  the docs
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool.c b/drivers/net/ethernet/intel/ice/ice_ethtool.c
-index f28416a707d7..10a4abc66974 100644
---- a/drivers/net/ethernet/intel/ice/ice_ethtool.c
-+++ b/drivers/net/ethernet/intel/ice/ice_ethtool.c
-@@ -1069,18 +1069,18 @@ static int ice_lbtest_prepare_rings(struct ice_vsi *vsi)
- 
- 	status = ice_vsi_cfg_lan(vsi);
- 	if (status)
--		goto err_setup_rx_ring;
-+		goto err_cfg_lan;
- 
- 	status = ice_vsi_start_all_rx_rings(vsi);
- 	if (status)
--		goto err_start_rx_ring;
-+		goto err_cfg_lan;
- 
- 	return 0;
- 
--err_start_rx_ring:
--	ice_vsi_free_rx_rings(vsi);
--err_setup_rx_ring:
-+err_cfg_lan:
- 	ice_vsi_stop_lan_tx_rings(vsi, ICE_NO_RESET, 0);
-+err_setup_rx_ring:
-+	ice_vsi_free_rx_rings(vsi);
- err_setup_tx_ring:
- 	ice_vsi_free_tx_rings(vsi);
- 
+v1:
+Link: https://lore.kernel.org/all/20240916122230.114800-1-matthieu@buffet.re/
+v2:
+Link: https://lore.kernel.org/all/20241214184540.3835222-1-matthieu@buffet.re/
+v3:
+Link: https://lore.kernel.org/all/20251212163704.142301-1-matthieu@buffet.re/
+v4:
+Link: https://lore.kernel.org/all/20260502124306.3975990-1-matthieu@buffet.re/
+
+Based on https://git.kernel.org/pub/scm/linux/kernel/git/mic/linux.git
+9ea6fb415fc8 ("selftests/landlock: Explicitly disable audit in teardowns")
+from branch next.
+All lines added are covered with selftests (net.c goes from 93.1% to 95.3%
+line coverage).
+
+Closes: https://github.com/landlock-lsm/linux/issues/10
+
+Matthieu Buffet (6):
+  landlock: Add UDP bind() access control
+  landlock: Add UDP send+connect access control
+  selftests/landlock: Add tests for UDP bind/connect
+  selftests/landlock: Add tests for UDP send
+  samples/landlock: Add sandboxer UDP access control
+  landlock: Add documentation for UDP support
+
+ Documentation/userspace-api/landlock.rst     |   91 +-
+ include/uapi/linux/landlock.h                |   35 +-
+ samples/landlock/sandboxer.c                 |   41 +-
+ security/landlock/audit.c                    |    3 +
+ security/landlock/limits.h                   |    2 +-
+ security/landlock/net.c                      |  155 ++-
+ security/landlock/syscalls.c                 |    2 +-
+ tools/testing/selftests/landlock/base_test.c |    4 +-
+ tools/testing/selftests/landlock/net_test.c  | 1166 ++++++++++++++++--
+ 9 files changed, 1353 insertions(+), 146 deletions(-)
+
+
+base-commit: 9ea6fb415fc8b535da91dadd74f948d96ba3d41d
 -- 
-2.34.1
+2.47.3
+
