@@ -1,109 +1,92 @@
-Received: from out30-100.freemail.mail.aliyun.com (out30-100.freemail.mail.aliyun.com [115.124.30.100])
+Received: from mail-m49197.qiye.163.com (mail-m49197.qiye.163.com [45.254.49.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D874822E3F0;
-	Thu, 11 Jun 2026 01:55:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA03A218E91;
+	Thu, 11 Jun 2026 02:08:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781142951; cv=none; b=oGc5FXDF3cZwUXzAfDccTtxPk/Un0vkleojxBlzlExVSocMmWnEl7XvF6/56m7PCbC2EvRcUnEm+XnCv2ozk7rcQnlaxUCq1YiOIGEOzmOe24BEjbmIndH2IaxexY7FpuWpCw8y9jxJAzQa+fojEajjIhlZ/5lnyxxzEBUkn5/Y=
+	t=1781143692; cv=none; b=MhzGVAHw8oyQCIv3XszeLU0vv1QUDeoKfDp5NWu6PtDaQ2kXiM/oGt1DHoUM926l9cq87WcL/lL+aRbqMWwgz4jYVYUAsbq7yyS4GS4UnrWGVMtSpv+bjSxNrNFd009E9YgTCYfQThPKHlnNiVCjBeQhcaxX5Q2mjdOThvNnYaE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781142951; c=relaxed/simple;
-	bh=uICGC2yxGlAniXxit1OUkqRwByVAR45ztTbIMmRpvPI=;
-	h=Message-ID:Subject:Date:From:To:Cc:References:In-Reply-To; b=DtR2VunRbfG1TRmKAoKmD+PqLbljqbqpSk18LHrFb7ugTVSxjKzuo1hBEHTOX/cftKabS1OWPce9ffLWjQp087sj8PPF85Im2dzy+ParwsXh/t4DNBPzEPmJiKLBTh/jg/8Ol/aPx2rxyuAdgtx6r86Rynul8ZluQomXJMJqFFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=tbpY+li0; arc=none smtp.client-ip=115.124.30.100
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	s=arc-20240116; t=1781143692; c=relaxed/simple;
+	bh=QxxTGAVVbJiQCDDc9kzk1FaC2BxjYt8KgvKClQ5hVbI=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=C1rJHsYC1/4OaKp/Xsy8yk+U4lObGbTbZhxDhIpqNXIEC+3xRbIThtrf694/Ae5O7XxTF3c7x++kprGFX0cfKkJzUUJnBz+x1ux3w1gyuF05zayH7V++0u4nnPDnXxlDgtuRsVA9h+4ORcl0jJC/kJx46uvYuddSMil2rYq0c0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=PUswkuEQ; arc=none smtp.client-ip=45.254.49.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="tbpY+li0"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1781142946; h=Message-ID:Subject:Date:From:To;
-	bh=ssfM3bgYmJ7PMTz5aWvZ74bFGz6EBIGbRO1Dwbi+lpE=;
-	b=tbpY+li0fs7nH3zRXWzSrMoEV0Oy1lzya/wYJBb63wkAPxUWd6lOE4D6pBtPOfMrBmbjWD4gH/QZzf2ZUk4bX2TvLbwmtduKTXg+oQ1TxWWVonMWylrdwtRwtyPMbRqKKm3ZZyQ0stY5ahl/x7nSyD26x656VW8A70sOaq2Q6Fg=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R261e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=xuanzhuo@linux.alibaba.com;NM=1;PH=DS;RN=14;SR=0;TI=SMTPD_---0X4c2ryc_1781142945;
-Received: from localhost(mailfrom:xuanzhuo@linux.alibaba.com fp:SMTPD_---0X4c2ryc_1781142945 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 11 Jun 2026 09:55:45 +0800
-Message-ID: <1781142936.5492013-1-xuanzhuo@linux.alibaba.com>
-Subject: Re: [PATCH net v2 1/2] virtio-net: fix len check in receive_big()
-Date: Thu, 11 Jun 2026 09:55:36 +0800
-From: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-To: Xiang Mei <xmei5@asu.edu>
+	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="PUswkuEQ"
+Received: from DESKTOP-SUEFNF9.taila7e912.ts.net (unknown [221.228.238.82])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 41eb56573;
+	Thu, 11 Jun 2026 10:02:53 +0800 (GMT+08:00)
+From: Dawei Feng <dawei.feng@seu.edu.cn>
+To: jacob.e.keller@intel.com
 Cc: andrew+netdev@lunn.ch,
- davem@davemloft.net,
- edumazet@google.com,
- kuba@kernel.org,
- pabeni@redhat.com,
- netdev@vger.kernel.org,
- virtualization@lists.linux.dev,
- linux-kernel@vger.kernel.org,
- minhquangbui99@gmail.com,
- bestswngs@gmail.com,
- Xiang Mei <xmei5@asu.edu>,
- mst@redhat.com,
- jasowang@redhat.com,
- eperezma@redhat.com
-References: <20260610232936.1176094-1-xmei5@asu.edu>
-In-Reply-To: <20260610232936.1176094-1-xmei5@asu.edu>
+	anthony.l.nguyen@intel.com,
+	davem@davemloft.net,
+	dawei.feng@seu.edu.cn,
+	edumazet@google.com,
+	intel-wired-lan@lists.osuosl.org,
+	jianhao.xu@seu.edu.cn,
+	kuba@kernel.org,
+	linux-kernel@vger.kernel.org,
+	marcin.szycik@linux.intel.com,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	przemyslaw.kitszel@intel.com,
+	stable@vger.kernel.org,
+	zilin@seu.edu.cn
+Subject: Re: [Intel-wired-lan] [PATCH net] ice: fix memory leak in ice_lbtest_prepare_rings()
+Date: Thu, 11 Jun 2026 10:02:54 +0800
+Message-Id: <20260611020254.308446-1-dawei.feng@seu.edu.cn>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <00f5f6e3-e80f-4c16-8d2f-f8148bcddfa8@intel.com>
+References: <00f5f6e3-e80f-4c16-8d2f-f8148bcddfa8@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0a9eb46b072103a2kunm4f921c24193a19
+X-HM-MType: 10
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlDTkJKVh9NGkkZSE4aHRlJHlYeHw
+	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlJSUpVSUlDVUlIQ1VDSVlXWRYaDxIVHRRZQVlPS0hVSktISk
+	9ITFVKS0tVSkJLS1kG
+DKIM-Signature: a=rsa-sha256;
+	b=PUswkuEQxvP5C6A3S2B092O9Wh4MekFk1hfTk5VwxKgi1I6czgSuBzRYEDnO3wZPmVmONgPCZ4AGzHDYk1dfkYVv1DZD/mfu2tnfMqQIIfFJapZp5LsCaqa9M5WJ/fvP9OOLyNBoPWxn97LZswaohUtIGp3sHHY2AM5J88n9z2o=; c=relaxed/relaxed; s=default; d=seu.edu.cn; v=1;
+	bh=LsfLRl7OuI64QZa7FWNmdbCqTIV71pSU3+SydKKbDjw=;
+	h=date:mime-version:subject:message-id:from;
 
-On Wed, 10 Jun 2026 16:29:35 -0700, Xiang Mei <xmei5@asu.edu> wrote:
-> receive_big() bounds the device-announced length by
-> (big_packets_num_skbfrags + 1) * PAGE_SIZE.  That is still too loose:
-> add_recvbuf_big() sets sg[1] to start at offset
-> sizeof(struct padded_vnet_hdr) into the first page, so the chain
-> actually carries hdr_len + (PAGE_SIZE - sizeof(padded_vnet_hdr)) +
-> big_packets_num_skbfrags * PAGE_SIZE bytes -- 20 bytes less than the
-> check allows for the common hdr_len == 12 case.
->
-> A malicious virtio backend can announce a len in that gap.  page_to_skb()
-> then walks one frag past the page chain, storing a NULL page->private
-> into skb_shinfo()->frags[MAX_SKB_FRAGS], which is both an out-of-bounds
-> write past the static frag array and a NULL frag handed up the rx path.
->
-> Bound len by the size add_recvbuf_big() actually advertised.
->
-> Fixes: 0c716703965f ("virtio-net: fix received length check in big packets")
-> Reported-by: Weiming Shi <bestswngs@gmail.com>
-> Signed-off-by: Xiang Mei <xmei5@asu.edu>
+Hi Marcin,
 
-Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Thanks for your review.
 
-> ---
-> v2: add 2/2 for robustness
->
->  drivers/net/virtio_net.c | 8 +++++---
->  1 file changed, 5 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-> index f4adcfee7a80..afe73eda1491 100644
-> --- a/drivers/net/virtio_net.c
-> +++ b/drivers/net/virtio_net.c
-> @@ -1999,15 +1999,17 @@ static struct sk_buff *receive_big(struct net_device *dev,
->  				   struct virtnet_rq_stats *stats)
->  {
->  	struct page *page = buf;
-> +	unsigned long max_len;
->  	struct sk_buff *skb;
->
->  	/* Make sure that len does not exceed the size allocated in
->  	 * add_recvbuf_big.
->  	 */
-> -	if (unlikely(len > (vi->big_packets_num_skbfrags + 1) * PAGE_SIZE)) {
-> +	max_len = vi->hdr_len + (PAGE_SIZE - sizeof(struct padded_vnet_hdr)) +
-> +		  vi->big_packets_num_skbfrags * PAGE_SIZE;
-> +	if (unlikely(len > max_len)) {
->  		pr_debug("%s: rx error: len %u exceeds allocated size %lu\n",
-> -			 dev->name, len,
-> -			 (vi->big_packets_num_skbfrags + 1) * PAGE_SIZE);
-> +			 dev->name, len, max_len);
->  		goto err;
->  	}
->
-> --
-> 2.43.0
->
+On Tue, 9 Jun 2026 at 16:27:20 Marcin Szycik wrote:
+> IMO last two paragraphs should not be included in commit message,
+> rather after ---.
+
+The reason the manual inspection and testing commentary was placed above
+the `---` line is that we were strictly following the example template
+provided in Documentation/process/researcher-guidelines.rst. 
+
+In the researcher-guidelines[1], the example explicitly places the build
+and hardware testing disclaimer before the Signed-off-by tags, which is
+why we included it directly in the commit message.
+
+Please let me know if you would like a v2 to adjust the position of the
+mentioned commit log details.
+
+> Correct me if I'm wrong, but looks like unroll order is reversed:
+> ice_vsi_stop_lan_tx_rings() unrolls ice_vsi_cfg_lan()
+> ice_vsi_free_rx_rings() unrolls ice_vsi_setup_rx_rings()
+> (was reversed before this patch too, but since we're fixing it, might as well)
+
+You are right. I'll update it in v2.
+
+[1] https://docs.kernel.org/process/researcher-guidelines.html
+
+Best regards,
+Dawei
