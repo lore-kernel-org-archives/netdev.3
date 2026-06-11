@@ -1,113 +1,98 @@
-Received: from mail-yx1-f51.google.com (mail-yx1-f51.google.com [74.125.224.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93B803E6DEC
-	for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 11:31:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.51
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781177485; cv=pass; b=Q5dzYEIGCcbZ4SwUlhoAEIsbTy44OQls5cqbJVjrbO+Gw1YG1PjVXROhTiJhS3GPJiU7yhbemmWo91qMRGiUselxrbmbBhAa4J5GM/EGgXnB3w4TRGwIxwSYPJzdiuFZbPJiOb7jOQosPvvy+jxV+1ug4U8iJegqvAJYlXSws1A=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781177485; c=relaxed/simple;
-	bh=rkPyzTcsuTtCf2t2tLha6H3hi23Cy4jWEal7QvWBuvc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kXVi+uFhKQfFVzrp3ay/JghvvoQ7hc55PMUvnIxZ5rMoXrgDi0KSLMbwxxIIJCnbvdheb3TBW4wTrm4DsW5W9iMSaWFL7pqtAymxJfMXDOTONaBsOFHZ3TFsjHTIwr4eCwDqqTNUgc4mRQ0eAHZU2qG952zBVryYSUXte6XlvV4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IrhV8ok0; arc=pass smtp.client-ip=74.125.224.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3EDD242D67
+	for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 11:34:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.12
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781177648; cv=none; b=hEo3jIFHPcUwDaWRG5oPOWD2rM+6xG/ib8c6yPYS+qgF7bZRonPwBjlaYDwW7Fsjn45Xvc26G0yN4r9MO98aEXY+j5tyEWni1FqYlQUTY9cv0IuDF20cT8mahVkF309pQMc3oSpQSDhdqQUSIJ0DVJ/AXuVgqPeodnaF5NtCn7E=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781177648; c=relaxed/simple;
+	bh=kWWkiFYHvJ96M7uzdCoBKIdODP6dYm/UhYjrtgcq2ww=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:MIME-Version:
+	 Content-Type:References; b=IGTgp+y63mkgWSr3+QVQzL3CGeZ687Mq5GvHHBLc6MtX5U+Fo5omuk7YHuhq42+rqPKkDXuuYda0WX5zB86Y27z1/G+xLUlqm397dxQIVhokSYZT+G7cRpJhxlWk8b5i632GGZSOx3wXGJSjbjMOJcccQ8q/1lOEqfH1TSqev8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=hs1iC8+b; arc=none smtp.client-ip=210.118.77.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="IrhV8ok0"
-Received: by mail-yx1-f51.google.com with SMTP id 956f58d0204a3-6626cd98209so333485d50.3
-        for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 04:31:22 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781177481; cv=none;
-        d=google.com; s=arc-20240605;
-        b=FGarhCubhUx6awV1zIWXpUP6fELpMuABu9u6jOeIr81ouWl1uuC+xzIFvI19JibsH7
-         11jiq1SZAtrVYknpnFZG8gCCHC+W6kXTYqZbHdJgB8c9IAkO8KJFMnxsSEVirJH70siA
-         QXXOIZgFN0Qp0U65SjldFHMhmjUUdUeXId7zk7Gck8qzyyvMXS+aT6hg7AjAKWIj52Gd
-         aLsBFYmOwWmzrsGkExwqiuTrIZ/vXTCw0SbD81M6oYthdK5KAhCifNE9mfpA6TFo95Ux
-         iiEano7cxURr5Mz2AqgICjwJyUncaXBvlavMosH9/0BCxQg2hHdWrpnBi/tvaie8zToV
-         UyOw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=rkPyzTcsuTtCf2t2tLha6H3hi23Cy4jWEal7QvWBuvc=;
-        fh=tzt+XJCgZgvvHtv6KnbSXVLIEujONp4s+cUXaRggsAQ=;
-        b=TCPAcmUDAq4RJKlYO2ATlPwG24pJU/TliQ66WZP5DwxJ2PuuoRZ3w9PMNm13F6KmU8
-         tD84iFwt4fGegHNCH+4GMCxxGcieFr9wGbH4dbpMBaUdggL/NGtccsLZXUCHxVSvKkTW
-         jl3IQrz3DDSw+xPCTON66WepY8hSKYzukUAaaqSf/Y51gC+cUY9xQgC5JA5uPjijd13u
-         FJh/+r0b27eZbiAhGOatIwTQiInrjrBaHHkmwV5BjMHLmbiXVW1qGNagLIbrHYpFWYbm
-         DjEordVfGT3JCEJ3uwlSJ7XCfKxpFd08RE76s+7RqhVqnRdwLOPf91Zo/zUwOtGyb9Hr
-         T8iQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781177481; x=1781782281; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rkPyzTcsuTtCf2t2tLha6H3hi23Cy4jWEal7QvWBuvc=;
-        b=IrhV8ok0IO0xal5YyWlaN+uyFvn4g0G0vtuiQyqReESLHAs+CrhaTXBmpUjMMu0knS
-         0M9+tGBb7/PEAJpUgKGDTkn9n0mIc0HGNFo5WXZUTPvv+E0yyfCdItRwY7TRx8zh6T/n
-         IF0glyElm3TbMfAiA0C0B4JEsolzL8svMcBIbKcbsU2F2vX6vBxCMHB0ofgUCg9TDq4m
-         HKQZ2QT+AXdc+9/uSt7iBQZdXt9R54QDtj1eSeeymUDmKWZJSh2MYouumwj1HOL2r5DE
-         pgi9OAijpq9n415cAh3azqjlgJ/akaAAx1vjx19glLuR7zYhE7RvxmeyviQ7XRHRgFqR
-         wcAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781177481; x=1781782281;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=rkPyzTcsuTtCf2t2tLha6H3hi23Cy4jWEal7QvWBuvc=;
-        b=Ac1ylMbP8xY6Tz/yu5JXygwuYmlL86/nUK7FnFfndLU2emtIS/ZumZMy01+suoPkpe
-         2U3PpExMIjHljoa6YaNaXtsY4mXwOn3jNghDvT5rOrxKfz4KjkaZe9ZArYl/BBm+T8RM
-         BvndLxDWq+wQCsB1HZ1WOx4CUVYly7GmcmggXBBb9U8ioHDHDH1zpNTxojkbFgOlai7R
-         D4PfJPLDTuWBybtLdHcuWiFPRL6KVpB+nx0qdSbQvUrSZqe8N8XPTs5d6pwMfqU/Z9vS
-         sNa1YGjM4m5Maehr4IQA+EuGdOD2vbSG87hEKswhP5ioypa31AJPZ0buQ+e3EuFsDJT3
-         9zzw==
-X-Gm-Message-State: AOJu0YyModRGT9pUlZ1FIxKBmo+QNJox9h6x8u86pPp61XeiUz5584cH
-	Yf0K4WDZY3IkGPTbtKQMen9DzZCOmrXIBVA+u3ysOiH5OUjmk9w3Telgg0deseNGoZassJUUHYC
-	KQNXLvc1h/TmfX0EdacBoRdbqO0YzY0MMWFII/XFC
-X-Gm-Gg: Acq92OE92DxHeKyR9jxrxWyel2vatr+2C1y/DJCAHZM7M3UXExM3i8Tjw67wcrikaYJ
-	kM+JLLMXIIYp3b9LlUeq9gSq2vXv/jAmRn/fZ1g7qnIrSazSJxcBoBYean42KjqC5wy3PZz2MH/
-	eZT/bUMaabTDrhW1PEo4bd47F9QGa0GLGabilsWQWut1VoOFUuKgFIuE5p4CxthdxXReZ/dXyK3
-	BfsUsAlP34UiUxLH3FgkeULXypkQAprdxk4uicdEdrZH4M26RjxLpMavrvsER+/+HNbk60mZjfE
-	elHxwUPY1P9KwzbtrOZevc1fBVXUPvolNiJtnIUxmcmnDc8RAOlpTcAXo0383+hGg8ZYQRWAD+v
-	X88fwKkHkKFenOicGJa+Jjsv2thD1
-X-Received: by 2002:a05:690e:400d:b0:660:4b21:6ca9 with SMTP id
- 956f58d0204a3-662696bef78mr1797434d50.26.1781177480983; Thu, 11 Jun 2026
- 04:31:20 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="hs1iC8+b"
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20260611113405euoutp025b4a5552f0e900d31466270b0600f15c~4A6GXCL8-1020010200euoutp02E
+	for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 11:34:05 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20260611113405euoutp025b4a5552f0e900d31466270b0600f15c~4A6GXCL8-1020010200euoutp02E
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1781177645;
+	bh=aiWNA2XcQ9MIGpb5iKT0AZ6heJ1aLAPFSuWzw5lWfBY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=hs1iC8+bqurdiMo/Cnpg9tlui3TVPRRe6dzepPnEcM8ZoHBcadWG/UAvWTFmWQsDT
+	 bQqV48UI6it831kNnUvYDFHPHTozVPlq6J6sTrUYE4hIDtQoUW+i+xSeZVXhxxfXNo
+	 LhNKjrCluhxgVIGWul3JGIvj+VmXre32GFSxsRsM=
+Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
+	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+	20260611113404eucas1p1ae62c08edaca2d98535c39c59faea923~4A6F-FrlA0882108821eucas1p1u;
+	Thu, 11 Jun 2026 11:34:04 +0000 (GMT)
+Received: from AMDC4843.eu.corp.samsungelectronics.net (unknown
+	[106.120.77.61]) by eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+	20260611113403eusmtip20658597299be23109b0b32fcf53ad27d~4A6E9bI9t0415604156eusmtip2B;
+	Thu, 11 Jun 2026 11:34:03 +0000 (GMT)
+From: Jakub Raczynski <j.raczynski@samsung.com>
+To: netdev@vger.kernel.org
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, mcoquelin.stm32@gmail.com,
+	alexandre.torgue@foss.st.com, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, k.domagalski@samsung.com,
+	k.tegowski@samsung.com, Jakub Raczynski <j.raczynski@samsung.com>, Chang-Sub
+	Lee <cs0617.lee@samsung.com>
+Subject: [PATCH net 1/2] net/stmmac: Apply TBS config only to used queues
+Date: Thu, 11 Jun 2026 13:33:57 +0200
+Message-Id: <20260611113358.3379518-2-j.raczynski@samsung.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260611113358.3379518-1-j.raczynski@samsung.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1781165969.git.sd@queasysnail.net> <1f30e73275c07bf879f547589872d0916025a52e.1781165969.git.sd@queasysnail.net>
-In-Reply-To: <1f30e73275c07bf879f547589872d0916025a52e.1781165969.git.sd@queasysnail.net>
-From: Eric Dumazet <edumazet@google.com>
-Date: Thu, 11 Jun 2026 04:31:08 -0700
-X-Gm-Features: AVVi8Cd1uuBY7qU7bTgjxyQo8MaoMPQFFwULSrOFCaHbtgyAmu9gW5waSPUt1q4
-Message-ID: <CANn89iLhV+rJqZK7_A84VagVApz_D8GNU=0Y3NRVF7A=PhJy-A@mail.gmail.com>
-Subject: Re: [PATCH net-next v2 1/2] tls: remove tls_toe and the related driver
-To: Sabrina Dubroca <sd@queasysnail.net>
-Cc: netdev@vger.kernel.org, Ayush Sawal <ayush.sawal@chelsio.com>, 
-	John Fastabend <john.fastabend@gmail.com>, Jakub Kicinski <kuba@kernel.org>, 
-	"David S. Miller" <davem@davemloft.net>, Alexander Gordeev <agordeev@linux.ibm.com>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
-	Heiko Carstens <hca@linux.ibm.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Sven Schnelle <svens@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, linux-s390@vger.kernel.org, 
-	linux-doc@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-CMS-MailID: 20260611113404eucas1p1ae62c08edaca2d98535c39c59faea923
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20260611113404eucas1p1ae62c08edaca2d98535c39c59faea923
+X-EPHeader: CA
+X-CMS-RootMailID: 20260611113404eucas1p1ae62c08edaca2d98535c39c59faea923
+References: <20260611113358.3379518-1-j.raczynski@samsung.com>
+	<CGME20260611113404eucas1p1ae62c08edaca2d98535c39c59faea923@eucas1p1.samsung.com>
 
-On Thu, Jun 11, 2026 at 3:21=E2=80=AFAM Sabrina Dubroca <sd@queasysnail.net=
-> wrote:
->
-> The tls_toe feature and its single user (chelsio chtls) have been
-> unmaintained for multiple years. It also hooks into the core of the
-> TCP implementation, and bypasses most of the networking stack.
->
-> Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
-> ---
+While opening stmmac driver, there is enabling of TBS (Time-Based Scheduling)
+option in dma config. Currently this is executed for all possible TX queues via
+MTL_MAX_TX_QUEUES macro, but actual number of queues used might differ.
+While setting this is generally harmless, since memory for MTL_MAX_TX_QUEUES
+is allocated, it is incorrect, because it prepares config for unused queues.
 
-Reviewed-by: Eric Dumazet <edumazet@google.com>
+Change this to apply tbs config only to tx_queues_to_use.
+
+Fixes: 4896bb7c0b31a ("net: stmmac: do not clear TBS enable bit on link up/down")
+Co-developed-by: Chang-Sub Lee <cs0617.lee@samsung.com>
+Signed-off-by: Chang-Sub Lee <cs0617.lee@samsung.com>
+Signed-off-by: Jakub Raczynski <j.raczynski@samsung.com>
+---
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index 3591755ea30b..5917bf47c7de 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -4140,7 +4140,7 @@ static int __stmmac_open(struct net_device *dev,
+ 	u8 chan;
+ 	int ret;
+ 
+-	for (int i = 0; i < MTL_MAX_TX_QUEUES; i++)
++	for (int i = 0; i < priv->plat->tx_queues_to_use; i++)
+ 		if (priv->dma_conf.tx_queue[i].tbs & STMMAC_TBS_EN)
+ 			dma_conf->tx_queue[i].tbs = priv->dma_conf.tx_queue[i].tbs;
+ 	memcpy(&priv->dma_conf, dma_conf, sizeof(*dma_conf));
+-- 
+2.34.1
+
