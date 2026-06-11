@@ -1,65 +1,66 @@
-Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4110D30674E
-	for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 16:17:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C33F426D2B
+	for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 16:17:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781194638; cv=none; b=c/KFw0s9GhS8+1NhZZih5SeeX7i/7t2yUpG6r+6aZfnRaxXXCGJz+5RXbhb271Vo5s0B7wyv38Q4dTSfY8iyXyi2YZ7Sh+MhqGa4jp3Cmm6vJmtH1yRN56VSxb9cgtRujLT4Uo28dnJf8xSDkdOiOHBKVF+rnUtZvQ6uySQVRdE=
+	t=1781194640; cv=none; b=C1dfmvaNgFCgtmoAgO+wHxf/1B8evV5wyT/wSlHcqxea+KJlX47DQDFnkqtmeg9SlJD1EcFG4ydtEJP7wwSSLMT4d4RtpgLni5KoyY5auIJOIQCi2Sf3xKyA+Q+aOxG5Jhr7mUl26vNkdpcoyMx3OPx1OcmjiuEtDmCRvIcSzqg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781194638; c=relaxed/simple;
-	bh=+pK8PkXLRnqlfW1AuEdNtKOaf6kjQ3HiGkOzGHRe5C4=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=K7fRidEGLI6lMExcXHc6iQzvzBs3c3eRng0x4jQTgKdx+paFWVAJW6D5kS4wawF39aY3tTbU0E30M+qOLOwTjgFoVy+aL6VZagUaMSIjxHa+4ISRUkreeNCxmmu0NKk0mFAJQv9sgblgmUFRWDsskykGdw86EK09+whTfCECjOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=n/yPXPd5; arc=none smtp.client-ip=209.85.215.179
+	s=arc-20240116; t=1781194640; c=relaxed/simple;
+	bh=Y/qboSZQk/pC41EA2RsQPuVOhUQ7kJKEY1lMdCJdYLA=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=PhvMB3lh5gA0fnfAQrlN4Z+Y2eNedrHCDilv8nYJK9g86kSvUMl5N1AYYG9wzKF9JGHg4s1693MyZVLmZr44WDTpfTBzuP8a5wIfi8pSl2dD31xtRFQqL/iAcxgWFxIJhlpkOAcVEUm+5hwWMfUOwJEaM3AI7yVC0vX6H1N7gws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lwvyUAN7; arc=none smtp.client-ip=209.85.214.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="n/yPXPd5"
-Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-c8585cd8400so3220052a12.3
-        for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 09:17:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lwvyUAN7"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2bf22d29dabso71785ad.2
+        for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 09:17:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781194637; x=1781799437; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=og57coQD3NKK4AOSZLfMT1CyFR6j8/1DFkBGKs1z5do=;
-        b=n/yPXPd5fKWYFljiv9npmnDfA7llZ5FJuz3T/gf9avWp3kNLzQFy+LnAzi6UMOdSFW
-         gg0lboINXqwkK0cnPGzoPk/2O75BhYU5tP6GEXi2VK7RcJQbvULZAd4g2Eo1aWZANQuk
-         I3aHmkp/KCmy609Z3ShvCVsE7/kY1oKwmRxrPuTZ1FLem6qUnhM0lNnzkgZCXx2Sp3Xf
-         RFuFezKaf9spzJ3FisBXJRN+nA+IwyE4b//YkGWOlV+ELCRnkRJ4MPdiaCh3vdFbpqiv
-         ZXu0aqw07F3RHkdCSRpikMoZz7gdwvrKq4rMys56O3KSvRlEuXn38or8ixqvkVZTekUG
-         3z0g==
+        d=gmail.com; s=20251104; t=1781194639; x=1781799439; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=jAxTBIOEmfhpqt503+PoPJMs1ii7LUEnvcbZDbUBB0A=;
+        b=lwvyUAN7SasG6aWtqB4lwRPoDjj3HfYo4wNbWyS7Fr8N68HYpy0zbUsx5AmT2B27wm
+         3GNDM9eTyqv839k0WADb+oe3q1yvhaHmbOrAAibug2UsRCLoBWgJ7fmKwik7RbnAfCaZ
+         usWpQVnaCog2NW9F8b2Np9P6b1Kfx5bayhhSZWCVWVWKcDeiftnegu5Q3q0JgjxZo8dE
+         tEcvhS5tfqWpS0bR7tpJAlZk5QlEBF9HkeFbPFBSohYvlHV8WjNou+bVZVle7y6/lYh9
+         Uyao6ezDpf88lSCGAHdnSYBIjn6mxodnVNbZIEOLZ/qXWcrwj2yFa2cxXU8QA0UskKT8
+         cO2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781194637; x=1781799437;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=og57coQD3NKK4AOSZLfMT1CyFR6j8/1DFkBGKs1z5do=;
-        b=ZJWTRV54i3qvUFnUReZJTrVspBouRAT/vN7SknOhHN9LQqw2JlS3NVrEDOGJLfjhLl
-         z26is7UYdjE3ds2QfpvN69ZjYNNXweUcBIRnyED/89xK9BbSMRhRywxNV5cGjPnmsRLQ
-         S1JW0qyZqQSlVlvhkvv73FNTla3LKUg3GyTePYl0RhoSR/w89FU+GFmA/Wq+5BSUQ+Rs
-         /zIOhGxnNGkF75U+M56D8/BCuCuT+m0aoJmANbTnDaZ84ew5f10RHBFw+b+WvRZEBIJg
-         EZCVkb2pu0JVHy1ZSPjH6o3Wq3Z3hroUU0/q9Ep7e6mQq+uo0Ogh3PxujXXf1210zCN7
-         DCpw==
-X-Gm-Message-State: AOJu0YxytldxOE2wHkmiT3CZ7d8ezW57O+P7jziscGndB3WsmTcL0tNb
-	2CcdfFz9m8/sMie3M+ReKEdQFFPWDbjFLDr4f1DV152xWO6PEAw7zH7H
-X-Gm-Gg: Acq92OEKnVTvkf3+YNFzt/prbZq8F6H3YAQZzM7a1V3/sE3OffLheasckIDEy1N3HfT
-	/HdHny2hs/3CsBBp7c3PLvanCuFjjonqxtZ2CXrAR7dUcBpCLJlpedrH4ZlOFHWACCDBjjlTCw6
-	IVAlXJfEXQWEM+leu5uTv7J6fmBUNoFYYgOeYX2JzHsJ+4vXesjUyDnp4xc4VR96710MnuGGp0+
-	nelZTK9lvp+0A3KzNax+RAb07NIFZDTAM6vWfJkEt8j58IigoWsP0ZxUNplTOW5w+TISLLaZxyH
-	zFlvp9rdmJuctJJjdlcXNaVJnPWRTlzLB9LUllSUt7P86uT1TPIemKqteDttIXU6lW+uEJkYdsE
-	EKtHkFYTzEIRMxAGMUfQGxjIpDJUCq3Hhk/vcirDXtXKLpm/WoCpMiFe9HHjc11afvNSFpqu4qQ
-	+Lpx+aHUk7W9i7pPtLWp0=
-X-Received: by 2002:a05:6a20:cc8e:b0:3aa:f9cb:d438 with SMTP id adf61e73a8af0-3b5e32c48ccmr4294917637.21.1781194636389;
-        Thu, 11 Jun 2026 09:17:16 -0700 (PDT)
-Received: from localhost ([2a03:2880:ff:4f::])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c865880a1aasm2190461a12.22.2026.06.11.09.17.15
+        d=1e100.net; s=20251104; t=1781194639; x=1781799439;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=jAxTBIOEmfhpqt503+PoPJMs1ii7LUEnvcbZDbUBB0A=;
+        b=WTMh8UByOUkQtA/b0DJ7V5lgyWniMA1WlMcG8l88mVUjCGYxnxzPmtgZnfWsMDYQB9
+         lc4vOs/1IykrC1BfBXnhZj7CJ+PuuVzfmPIL/8JC/+/eTe2r2sqIQDRjQCh/6YmDMC3K
+         cEirws+Wj3eMM1gXksf2a6OBl1TN3lgjEe/NEmajQ+sthlUklw6AY+sGUoDJQWo/Y/2S
+         EdvQlIKbNWEV5aYijpimQeaZkl445L+igorGt8rIuoFtHjx2z0g/2BpNd/S81PPnuzUy
+         CtrAE+2JDymcAw5PxZb85WjfCbwopwLg2sy69Nkzrks6wuw0DEKUnhOcj77y5lHur4uz
+         zzIw==
+X-Gm-Message-State: AOJu0YxPPSLOnCRZLaL2RReSDE1QsqyD8e0k++SThwiFK41eCHW42rA0
+	MQCGd1NF5TxNCxpIdS6Cl7g1c1YR90gx/TN710GvIbGE3JfVV6Yvu3oA
+X-Gm-Gg: Acq92OGAdVXeDmi9XNmYt2bYmNCVQdKeLIMyiNUl+/WZUqPUPtJ2n6Q9khPPTgWT2AU
+	F8GIT7JdIgBSozNPXb7eV7NiqmuP5aKEVRv4tjwmUlXxDh3J45HVY8UV5lkwYCru0XQEna4vq+9
+	kzT2Vwv08/T+InsABzWqycsrL429/2d9xEF/NTST6oSdFiigDuQhrdz++RvAE9hHHLrZDn0tcKE
+	hYi0H8bgWy8Vk43a6jIMKkYlp7zVpl5S27xZa9tsJ096xhqRLSKx6/bdGwoxKjQJvxY9kqtFIe5
+	6XKqadJmQtx8S6Fph4hQ4FyY1FuFdebhQdJMCTZGD5gDLP2OaI/+caTG9wweXN7QmkLgm+wF+V0
+	nwmqhpDasjcG8n4t2SvvaQy/RIRf+yU+o+FG2WxCsMD0VXblOzTFHxN4A1KtOSswiz1vrVaxK1S
+	2t4pY9Yqp0Qq4sVYEDF6Q=
+X-Received: by 2002:a17:902:c404:b0:2bf:128d:f7ff with SMTP id d9443c01a7336-2c2f0932d65mr42009805ad.16.1781194638490;
+        Thu, 11 Jun 2026 09:17:18 -0700 (PDT)
+Received: from localhost ([2a03:2880:ff:41::])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c16609e627sm288573265ad.52.2026.06.11.09.17.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Jun 2026 09:17:16 -0700 (PDT)
+        Thu, 11 Jun 2026 09:17:18 -0700 (PDT)
 From: Bobby Eshleman <bobbyeshleman@gmail.com>
-Subject: [PATCH net-next v2 0/4] net: devmem: allow rx-buf-size > PAGE_SIZE
- per binding
-Date: Thu, 11 Jun 2026 08:28:41 -0700
-Message-Id: <20260611-tcpdm-large-niovs-v2-0-ee2bf15e7523@meta.com>
+Date: Thu, 11 Jun 2026 08:28:43 -0700
+Subject: [PATCH net-next v2 2/4] udmabuf: emit one sg entry per pinned
+ folio
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -68,11 +69,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIACrUKmoC/23NQQqDMBBA0auEWTslJjUBV72HuAhx1IGaSBKCR
- bx7Qbrs+sP7J2RKTBl6cUKiypljgF6oRoBfXVgIeYJegJLKSCMVFr9PG75dWggDx5qxM53STrt
- WWguNgD3RzMdtDhCoYKCjwNgIWDmXmD73rLZ3/7n6j1tblDhr657OG6uMf21U3MPHDcbrur7y/
- TtwuwAAAA==
-X-Change-ID: 20260602-tcpdm-large-niovs-56523a3a1077
+Message-Id: <20260611-tcpdm-large-niovs-v2-2-ee2bf15e7523@meta.com>
+References: <20260611-tcpdm-large-niovs-v2-0-ee2bf15e7523@meta.com>
+In-Reply-To: <20260611-tcpdm-large-niovs-v2-0-ee2bf15e7523@meta.com>
 To: Donald Hunter <donald.hunter@gmail.com>, 
  Jakub Kicinski <kuba@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
  Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, 
@@ -90,76 +89,107 @@ Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
  dw@davidwei.uk, Bobby Eshleman <bobbyeshleman@meta.com>
 X-Mailer: b4 0.14.3
 
-Every devmem dmabuf binding hands the page_pool PAGE_SIZE niovs today.
-On NICs that consume one descriptor per netmem, this caps a single RX
-descriptor at PAGE_SIZE and burns CPU on buffer churn.
+From: Bobby Eshleman <bobbyeshleman@meta.com>
 
-In this series, we add a bind-time netlink attribute,
-NETDEV_A_DMABUF_RX_BUF_SIZE, that lets userspace request a larger niov size
-(power of two >= PAGE_SIZE). Drivers must opt in via
-queue_mgmt_ops.QCFG_RX_PAGE_SIZE.
+get_sg_table() emitted one PAGE_SIZE sg entry per page even when the
+underlying folio was larger.
 
-Selftests use udmabuf, but udmabuf sgtables were previously hardcoded to
-PAGE_SIZE. This series modifies udmabuf to respect folio sizes in its exported
-sgtable. The result is that when backing udmabuf with MFD_HUGETLB 2MB pages,
-the sgtable is populated with 2MB entries, allowing devmem's gen_pool to carve
-out large (eg. 64K) niovs.
+Instead, walk folios[] and emit one sg entry per folio. When folios
+represent large pages (as is for MFD_HUGETLB), each sg entry is a large
+page. Normal PAGE_SIZE sg tables are unchanged.
 
-Measurements
-------------
+This is helpful for importers like net/core/devmem that expect dmabuf sg
+entries to be size and length aligned. Prior to this patch udmabuf
+handed over one PAGE_SIZE sg entry per page, so devmem only saw
+PAGE_SIZE chunks regardless of the underlying folio size.
 
-Setup: kperf devmem RX/TX cuda, 4 flows, 64 MB messages, 60s, dctcp,
-num-rx-queues=4, dmabuf-rx/tx-size-mb=2048, 10 runs per niov size,
-mlx5.
-
-   niov       RX dev Gbps   RX flow avg Gbps         app sys %
-  -----  ----------------  -----------------  ----------------
-     4K  300.63 +/- 53.21    75.16 +/- 13.30   54.15 +/- 10.23
-    16K  321.35 +/- 28.20    80.34 +/-  7.05   41.05 +/-  8.87
-    32K  347.63 +/-  2.20    86.91 +/-  0.55   44.54 +/-  3.51
-    64K  332.11 +/- 14.26    83.03 +/-  3.56   35.47 +/-  3.11
-
-RX app sys % drops ~19% from 4K to 64K.
-
-kperf support (not yet merged):
-https://github.com/facebookexperimental/kperf/commit/8837577f920876bce6986ec18869ac04439ebcd2
+dma_map_sgtable() does not always merge contiguous pages for us, so we
+do this internally before exporting.
 
 Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
 ---
-Changes in v2:
-- Use NL_SET_ERR_MSG_FMT for sg alignment failure details (Stan)
-- Keep -E2BIG (not a direct ask, but seemed preferred, Stan)
-- Update udmabuf commit message and comments explaining why
-  "one sg ent per folio" is useful (Christian)
-- Set/restore nr_hugepages in py harness (Stan)
-- Link to v1: https://lore.kernel.org/r/20260603-tcpdm-large-niovs-v1-0-f37a4ac6726c@meta.com
+ drivers/dma-buf/udmabuf.c | 52 ++++++++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 47 insertions(+), 5 deletions(-)
 
----
-Bobby Eshleman (4):
-      net: devmem: allow rx-buf-size > PAGE_SIZE per dmabuf binding
-      udmabuf: emit one sg entry per pinned folio
-      selftests/net: ncdevmem: add -b option to set rx-buf-size on bind
-      selftests/net: devmem.py: add check_rx_large_niov
+diff --git a/drivers/dma-buf/udmabuf.c b/drivers/dma-buf/udmabuf.c
+index 94b8ecb892bb..9b751dd98b12 100644
+--- a/drivers/dma-buf/udmabuf.c
++++ b/drivers/dma-buf/udmabuf.c
+@@ -141,26 +141,68 @@ static void vunmap_udmabuf(struct dma_buf *buf, struct iosys_map *map)
+ 	vm_unmap_ram(map->vaddr, ubuf->pagecount);
+ }
+ 
++/* Return the number of contiguous pages backed by the folio at @i.
++ * A udmabuf may map only part of a folio, or reference the same folio
++ * in multiple non-contiguous runs, so folio_nr_pages() can't be used.
++ */
++static pgoff_t udmabuf_folio_nr_pages(struct udmabuf *ubuf, pgoff_t i)
++{
++	struct folio *f = ubuf->folios[i];
++	pgoff_t j;
++
++	for (j = 1; i + j < ubuf->pagecount; j++) {
++		if (ubuf->folios[i + j] != f)
++			break;
++		/* Same folio, but not a sequential offset within it. */
++		if (ubuf->offsets[i + j] != ubuf->offsets[i] + j * PAGE_SIZE)
++			break;
++	}
++	return j;
++}
++
++/* Count the contiguous folio runs in @ubuf, one sg entry per run.
++ *
++ * Coalescing folios into a single sg entry up front lets importers actually
++ * see large chunks. We can't rely on dma_map_sgtable() to do this for us as
++ * the dma_map_direct() path preserves the input scatterlist lengths verbatim.
++ */
++static unsigned int udmabuf_sg_nents(struct udmabuf *ubuf)
++{
++	unsigned int nents = 0;
++	pgoff_t i;
++
++	for (i = 0; i < ubuf->pagecount; i += udmabuf_folio_nr_pages(ubuf, i))
++		nents++;
++	return nents;
++}
++
+ static struct sg_table *get_sg_table(struct device *dev, struct dma_buf *buf,
+ 				     enum dma_data_direction direction)
+ {
+ 	struct udmabuf *ubuf = buf->priv;
+-	struct sg_table *sg;
+ 	struct scatterlist *sgl;
+-	unsigned int i = 0;
++	struct sg_table *sg;
++	pgoff_t i, run;
++	unsigned int nents;
+ 	int ret;
+ 
++	nents = udmabuf_sg_nents(ubuf);
++
+ 	sg = kzalloc_obj(*sg);
+ 	if (!sg)
+ 		return ERR_PTR(-ENOMEM);
+ 
+-	ret = sg_alloc_table(sg, ubuf->pagecount, GFP_KERNEL);
++	ret = sg_alloc_table(sg, nents, GFP_KERNEL);
+ 	if (ret < 0)
+ 		goto err_alloc;
+ 
+-	for_each_sg(sg->sgl, sgl, ubuf->pagecount, i)
+-		sg_set_folio(sgl, ubuf->folios[i], PAGE_SIZE,
++	sgl = sg->sgl;
++	for (i = 0; i < ubuf->pagecount; i += run) {
++		run = udmabuf_folio_nr_pages(ubuf, i);
++		sg_set_folio(sgl, ubuf->folios[i], run << PAGE_SHIFT,
+ 			     ubuf->offsets[i]);
++		sgl = sg_next(sgl);
++	}
+ 
+ 	ret = dma_map_sgtable(dev, sg, direction, 0);
+ 	if (ret < 0)
 
- Documentation/netlink/specs/netdev.yaml            |  8 +++
- drivers/dma-buf/udmabuf.c                          | 52 +++++++++++++++++--
- include/uapi/linux/netdev.h                        |  1 +
- net/core/devmem.c                                  | 51 +++++++++++--------
- net/core/devmem.h                                  | 13 +++--
- net/core/netdev-genl-gen.c                         |  5 +-
- net/core/netdev-genl.c                             | 19 ++++++-
- tools/include/uapi/linux/netdev.h                  |  1 +
- tools/testing/selftests/drivers/net/hw/config      |  1 +
- tools/testing/selftests/drivers/net/hw/devmem.py   | 12 ++++-
- .../testing/selftests/drivers/net/hw/devmem_lib.py | 58 +++++++++++++++++++++-
- tools/testing/selftests/drivers/net/hw/ncdevmem.c  | 49 ++++++++++++++++--
- .../testing/selftests/drivers/net/hw/nk_devmem.py  | 11 +++-
- 13 files changed, 238 insertions(+), 43 deletions(-)
----
-base-commit: 518d8d0199538a4d6d5e51064044ece71e0c42e7
-change-id: 20260602-tcpdm-large-niovs-56523a3a1077
-
-Best regards,
 -- 
-Bobby Eshleman <bobbyeshleman@meta.com>
+2.53.0-Meta
 
