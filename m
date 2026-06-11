@@ -1,61 +1,37 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F4543346A8
-	for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 16:37:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A810633F585;
+	Thu, 11 Jun 2026 16:37:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781195837; cv=none; b=XG+TlC9WdTXXTsqnvKfEIR/POmS/ZNfpU0w4wwDdJRw6e4k6c93yAHm+VzHgHo/yuenBG0hW4YNyFjMdGSfOmqqoAwYq4oxndC08I1C2PMurUwETfTIVJb2gwFae4wShUbvm4SpfXXOgE5EmZ84jp8xgY2+pnrrLo5XP52u196Y=
+	t=1781195880; cv=none; b=io0VR2SoI4foscPAEErf0vnBWOABhvFbp87FSMUTZWWimGlr7kNhzpohMLHcQ4G0E8xBmNiawrLYDTC4VhV1pICIjCEbDoJJxZRCVfowoYozpV1NJhGNpxqS0zQYrU8Nuy88Guf2lrURRVB1oecthpYK0kaBs+EPpZPKiezO25o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781195837; c=relaxed/simple;
-	bh=+qbA+/9Ck9tfxa9LHrlBztPOE5aSsIXC3o1gk+hJN6M=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=U72WRqnEb+ProTKGi0CtCJfEuuRzlLg8BPTqRqFd74xMmUoxSds/Xqo5hj/fw6NFFINz8vOjVFuIQ3gortCVcpyjSFhTGLCpujA9y6M27uIQiB1ai0dk9e++mydV5jUCq0OF+2YmJUjywekTVaAJxmSbKQBGAdmSQ1rfRvQFzKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=isa/pcVO; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="isa/pcVO"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1781195835;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=eWdGvaSQvKVa3S4PGrfeAWGqXDPUkbvYNJj6KykbQhc=;
-	b=isa/pcVOr+SX/w+5sAnO6qE4boWd//NAvKTNL/el8lasH2BgpquLbH963vWEzq2jn/bSJ5
-	/nH3DTvTzi9ykn6eIT9dV5JxtidPPqw606ExQ/AVmNADI/ht/v89ho/zZVqMgqVtz+PiZZ
-	RKzJ6R+SKH0CD83y04iXOrA5vAgqjdo=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-287-iyK1gUEtOuyJcqdPms30_A-1; Thu,
- 11 Jun 2026 12:37:12 -0400
-X-MC-Unique: iyK1gUEtOuyJcqdPms30_A-1
-X-Mimecast-MFC-AGG-ID: iyK1gUEtOuyJcqdPms30_A_1781195830
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 323421954B2B;
-	Thu, 11 Jun 2026 16:37:04 +0000 (UTC)
-Received: from gerbillo.redhat.com (unknown [10.44.48.53])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id AAB911800591;
-	Thu, 11 Jun 2026 16:36:59 +0000 (UTC)
-From: Paolo Abeni <pabeni@redhat.com>
-To: netdev@vger.kernel.org
-Cc: "Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	virtualization@lists.linux.dev,
-	Gabriel Goller <g.goller@proxmox.com>,
-	Fiona Ebner <f.ebner@proxmox.com>
-Subject: [PATCH v2 net] virtio_net: do not allow tunnel csum offload for non GSO packets
-Date: Thu, 11 Jun 2026 18:36:48 +0200
-Message-ID: <6c3b6c47fb05c100f384630dc48f3975cf37b67a.1781195144.git.pabeni@redhat.com>
+	s=arc-20240116; t=1781195880; c=relaxed/simple;
+	bh=2tj/KtXz7viCSArb/If5hec2upVXPx/kJLGbdyL42zs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SPTcHTlp+ZR6Q0Bc2iUEv63hcGgRtIVwE25yMqGhLBKIfv1bnkCFXu6zI+hhp2ULqbqb5U7hEIVbpQixqZih/zrdwQsIO67Okx7t/AUY+8iaOrPIu88eIdsvDsehTKlw4Dm8PB0vd5IPwYWOsLJQ+V4k5maI4wM3pU7tl3MRD9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from localhost.localdomain (unknown [117.182.75.76])
+	by APP-05 (Coremail) with SMTP id zQCowAD3Z+tZ5Cpq+kEaEw--.26165S2;
+	Fri, 12 Jun 2026 00:37:47 +0800 (CST)
+From: WenTao Liang <vulab@iscas.ac.cn>
+To: steffen.klassert@secunet.com,
+	herbert@gondor.apana.org.au,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: horms@kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	WenTao Liang <vulab@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] net: af_key: fix refcount leak in pfkey_spdadd()
+Date: Fri, 12 Jun 2026 00:37:43 +0800
+Message-ID: <20260611163743.99526-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -63,71 +39,56 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-CM-TRANSID:zQCowAD3Z+tZ5Cpq+kEaEw--.26165S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7Wry5CF4DuF4DAw1fKFW3KFg_yoW8Jr1kpF
+	43G34YkFs8X343CFs2ka4UWF1Fyay5Gw4q9a18Cr1Sy3s5tw1ruan5tFyjkF1fC3ykJay7
+	Jry3Wr98CFyDAFUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9014x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r4j6r
+	4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
+	I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
+	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628v
+	n2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7x
+	kEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E
+	67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCw
+	CI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1x
+	MIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIda
+	VFxhVjvjDU0xZFpf9x0JUZYFZUUUUU=
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBg0PA2oqzjQ-SAAAsK
 
-Fiona reports broken connectivity for virtio net setup using UDP tunnel
-inside the guest and NIC with not UDP tunnel TSO support in the host.
+In pfkey_spdadd(), an xfrm policy is allocated via xfrm_policy_alloc()
+with a refcount of 1. On the success path the policy is eventually freed
+by xfrm_pol_put(), which decrements the refcount and calls
+xfrm_policy_destroy() only when it reaches zero. However, all error
+paths directly call xfrm_policy_destroy() without releasing the initial
+reference, leaking the policy object.
 
-Currently the virtio_net driver exposes csum offload for UDP-tunneled,
-TCP non GSO packets. Such packet reach the host as CSUM_PARTIAL ones
-with the 'encapsulation' flag cleared, as the virtio specification do
-not support this specific kind of offload.
+Fix the leak by replacing the direct xfrm_policy_destroy() call with
+xfrm_pol_put() in the error unwind. Keep the xp->walk.dead assignment
+as it is required by xfrm_policy_destroy()'s BUG_ON check.
 
-HW NICs with UDP tunnel TSO support - and those drivers directly
-accessing skb->csum_start/csum_offset - are still capable of computing
-the needed csum correctly, but otherwise the packets reach the wire with
-bad csum on both the inner and outer transport header.
-
-Address the issue explicitly disabling csum offload for UDP tunneled,
-non GSO packets via the ndo_features_check op.
-
-Fixes: 56a06bd40fab ("virtio_net: enable gso over UDP tunnel support.")
-Reported-by: Fiona Ebner <f.ebner@proxmox.com>
-Closes: https://bugzilla.proxmox.com/show_bug.cgi?id=7627
-Tested-by: Fiona Ebner <f.ebner@proxmox.com>
-Tested-by: Gabriel Goller <g.goller@proxmox.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Cc: stable@vger.kernel.org
+Fixes: 64c31b3f7648 ("[XFRM] xfrm_policy_destroy: Rename and relative fixes.")
+Signed-off-by: WenTao Liang <vulab@iscas.ac.cn>
 ---
-v1 -> v2:
- - deal with to-be-segmented skbs, too.
----
- drivers/net/virtio_net.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ net/key/af_key.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-index f4adcfee7a80..7d2eeb9b1226 100644
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -6222,6 +6222,19 @@ static void virtnet_free_irq_moder(struct virtnet_info *vi)
- 	rtnl_unlock();
+diff --git a/net/key/af_key.c b/net/key/af_key.c
+index 9cffeef18cd9..013592086f1e 100644
+--- a/net/key/af_key.c
++++ b/net/key/af_key.c
+@@ -2370,7 +2370,7 @@ static int pfkey_spdadd(struct sock *sk, struct sk_buff *skb, const struct sadb_
+ 
+ out:
+ 	xp->walk.dead = 1;
+-	xfrm_policy_destroy(xp);
++	xfrm_pol_put(xp);
+ 	return err;
  }
  
-+static netdev_features_t virtnet_features_check(struct sk_buff *skb,
-+						struct net_device *dev,
-+						netdev_features_t features)
-+{
-+	/* Inner csum offload is only available for GSO packets. */
-+	if (skb->encapsulation &&
-+	    (!skb_is_gso(skb) || netif_needs_gso(skb, features)))
-+		return features & ~NETIF_F_CSUM_MASK;
-+
-+	/* Passthru. */
-+	return features;
-+}
-+
- static const struct net_device_ops virtnet_netdev = {
- 	.ndo_open            = virtnet_open,
- 	.ndo_stop   	     = virtnet_close,
-@@ -6235,7 +6248,7 @@ static const struct net_device_ops virtnet_netdev = {
- 	.ndo_bpf		= virtnet_xdp,
- 	.ndo_xdp_xmit		= virtnet_xdp_xmit,
- 	.ndo_xsk_wakeup         = virtnet_xsk_wakeup,
--	.ndo_features_check	= passthru_features_check,
-+	.ndo_features_check	= virtnet_features_check,
- 	.ndo_get_phys_port_name	= virtnet_get_phys_port_name,
- 	.ndo_set_features	= virtnet_set_features,
- 	.ndo_tx_timeout		= virtnet_tx_timeout,
 -- 
-2.54.0
+2.50.1 (Apple Git-155)
 
