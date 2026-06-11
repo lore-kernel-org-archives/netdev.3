@@ -1,61 +1,63 @@
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A3ED2F7EF5
-	for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 02:13:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 640BD2773C3
+	for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 02:13:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781144021; cv=none; b=LkaDud6g/1x2pkIoC3A3TAaP1/HpTFCulVe4YgKVXWofgBH3HKUAKo4LjnuebfhTd8q/hj4VrQDhSdQX2uZGVUXN3HDYZFmexL3DHzZEKfegiCJ4nTB4Leen7GHZdxW85zE3M+Rh44RAWkPHUdbLTz3Vl1yuOZaXPKGVFRA/u84=
+	t=1781144025; cv=none; b=X8n5TaeKCLRLobyF+9QDMNC6HEN/FfKLnhpSx4njJUGuQtaiccHCtNOGeto1FvpxAGGKSncjx/Ith98tXEANsBsZwpWbpq46DzTRdZJVQ6W9XsP3UFtZKoYL3kCPfdoNi65zHaNlQFFZ69R4X5CyXzYHl+ao1ih0xI8+1SVcUp0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781144021; c=relaxed/simple;
-	bh=QVnhuMzdUwNHmvsxo1WC+MtfAlAGVAzmGjI+6rh1pko=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=S2IhPneKspY+A89XC2X9QOD5+rqnTyJJ9010BMZ/7SvEBUmJEZ+aUCliv8tV+6I7hz1/la/l0PMQ5cEuBixgmawku6WuobcMgkWt7rLZUayt6yyv8E15JhhJkxZHMCHYFR/CI71Yh4BIcYtRKZC6SlJ44s60UDq+Xup6lsjoA88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QbjYHXEP; arc=none smtp.client-ip=209.85.216.52
+	s=arc-20240116; t=1781144025; c=relaxed/simple;
+	bh=CBIsTgpYepvuCGXqFToVF+k6SD6b2t65VP4Atc30Lzg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=GF8pOpSD7xvCHA6m/5hgWh5GGmHDxAqzlDb7Mzy6wiNLvi5h0ntntJZDLsgvG8pr4cjVLqJnhYZsr7wP/mDbglY5Esdv/m4IzTNA77/KM4CxWi/v7xnOJ/mdYep0EQUXvkwrrh5j3zOQeRNq7dxPAmfhbwLg+IwCimCC+CYJQ8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Xpj+wVnQ; arc=none smtp.client-ip=209.85.216.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QbjYHXEP"
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-36ba706ab46so5004451a91.1
-        for <netdev@vger.kernel.org>; Wed, 10 Jun 2026 19:13:35 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Xpj+wVnQ"
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-36c68964315so3697648a91.2
+        for <netdev@vger.kernel.org>; Wed, 10 Jun 2026 19:13:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781144015; x=1781748815; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=GZGIg+TSBMH1y+DPOSnGtaBlpfe4SMWXOyP2aITu4mo=;
-        b=QbjYHXEPBoPHc8V2XhthP+atEU3uh+Y7pQ5mjTKkLSexVVaw9soKcM0zYq89wBIySH
-         sjIP7jA6r84ZCKQFAE44vYrzRLrUeSRmzSLUHDKHdnAb2GKMiRvC6W4j54xmG+dxNpoS
-         Oo2W3zF6LtqfeGPmoZdKYu+YjYFs+wDSOkZXZAgOGcd34yzzpf03f2YVtpXG0KvKl0Ad
-         yXSsd5GQT+0qcgpXMw1Cql5vxy62oS8E3sV8WEdzMSYhWhoY/BaJHgXR15ymCHG3enbK
-         7K4iZcsPDr009Mp4kZqwUj9L+RefDBDAigN5GPbdASIJdHjwpF6KQHkyVLN17HKpMyp1
-         bvgQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781144015; x=1781748815;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1781144020; x=1781748820; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=GZGIg+TSBMH1y+DPOSnGtaBlpfe4SMWXOyP2aITu4mo=;
-        b=X41RutcEgidFgzwkMt5SBPtLyYIrYjx1/lDSkTNT16z0Oe/DnVBp/GtvSnby43LCd3
-         m2RK3Xy/mKqRiGExhdeoAOWJxqOiZ1c0uEV/IY8WBfYbbvR9LPUOjl8KSrtLxD8zSzbC
-         v/uXkV3O1+dPMcwS73DKgckNZVaQN089HS170VRswc0iw7SFCAyVudXObBwKH+7yfAAH
-         LzryviIDPUB+MG2RGizqL0ANk/0u2j+j6+GD+9jIID+qC4nLVMGuXr1n+b70LYBP6MKh
-         UXzbEwyqSew0yyosELmqiL5+emn95Q7bH8qqv4nwEt1qy9YDbHCYJ7Dlt/EFROr7rbGX
-         zx4A==
-X-Gm-Message-State: AOJu0YwUkJd6qwWX7EFd4ZJXEsLqfvSRLDf0sez0Jr+njXSXxtarL/zR
-	Io3clKiTTcau5BzKPK7NsRkfLEqUKh6Fa9lZI0oTNyc7F002dMiaON/MjMTLM5s0+g==
-X-Gm-Gg: Acq92OGB5I/EbSbC30UggVdJqnyXex8UtL4rqsDUa+AuBEw2PfhBKQjF21IQIsnae6V
-	Erp3Q53nPXKDMuCqSz6rF3Cc7cpdk9/+hR+eY65eMSw+LkMOSzQImbMOtLXgnxsd7fVOtNRgEJu
-	yMyHWo7GfKJWFlZrOTmlabZBAJ3O17AiXxSQgqHsRX2wZ/MYNKN8TPLx3b1J4BByxgA2XUKZGF9
-	VFcRMZvljYDRUoDkgi/1+5PhnzJS4t8wUvQYcpP16J0GEpF4k8lxTkgMZ9LCjC7WwN1PDV6/5M9
-	mx+eqixyntAavKa7vupuh7oGprpe+5tgk6Sgar3P1XkZy3qwonntpbipwjltcnFxapGHnCIaiaB
-	2JN+vBcS3D8ikNqYYXd/0LV5N6vvtrNS46EEvkAdA+WyjbqVGaCR/4JLY9UeFT4w1+Q2KcYJehl
-	kLn3svnTejjTNJftgEMWvLAM9diJvzv5kyJHGw9TCZjXqp/GJ6gs+LOkAC2Wj5WBGchF/CxpQlH
-	erNCA==
-X-Received: by 2002:a17:90b:390a:b0:36d:b818:f848 with SMTP id 98e67ed59e1d1-3779bade6f1mr972308a91.5.1781144015048;
-        Wed, 10 Jun 2026 19:13:35 -0700 (PDT)
+        bh=WnYLzFvhBsoLcQfgDB5iqWDqZ07p+tRABlGYQccfF3I=;
+        b=Xpj+wVnQn0LnixUuSD5hs43Y69xwL1vttwUC2lpZf8cfyliaC6eDIMAMpseHhNGaUa
+         Jt9ARBysxHReaNL5DtNXfim+XarmYRJpH9G5oSftklmOORKoHlDZ8vpeKpVzBjxDu1sM
+         FochzAhrvYDcRYiFyQd95gV0nrc3CVZpsWV2XfimEsdJoxIDKNLsM4GYRs+A6q05co6j
+         mMHTSXRF5y6nWltBslDMo0SVxO9FVCiQ21fgg4tcI1KYLsZK+v2x8blEl0S7iNdiZqie
+         5GCv7Xr44cSV+bZBH6TF6NnA1ZHgZLmvghYUTcNoSn+tYXAra6+DLIQ3xtEdCQ6L7pif
+         4hHg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781144020; x=1781748820;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=WnYLzFvhBsoLcQfgDB5iqWDqZ07p+tRABlGYQccfF3I=;
+        b=gAJBUMSN+INZnH005kbPI/N7Nwmt1ebhtWgmVDDm/PaienXCNYaToME5iV+5akagKO
+         5769ikyr+xdiBTZHFC7qqeTHwgKwOoWwph2TZ9J9PdRSQLw625dww9Ozw+DNoJedF8cm
+         0CUwm5tp5X5d03u2dojChbmLf6Hbq91vbxTjlAKySb4ezmBRczsmJdS/7u+fYOJOguw7
+         Lgbn+2aoTgFlxvlsd99z63t9VPCuLzHu6JmHKigiDBQ9WMqclptVNtDEk/JArm1V8uV5
+         a9gUBW4Ri9ZG1WV/3ONR/l0rOLMappT1ZtR8Y6Uf9jvpDK1Vr1g106pIryjD+eGzCm6b
+         C/MQ==
+X-Gm-Message-State: AOJu0YzJxZJ9SWqUX8Li6vBa0wctZwgqW4NUoECUSM+D0EU5eqaHJeGP
+	rNXZaOtZNK9yFZV1RlKSKpVhDPs46JMQHbZ/D7rwfH+9C6ZogeVPzThHfIV5dsBoUA==
+X-Gm-Gg: Acq92OEaTaTXMWlnUQ1/8dHW2fBErAdDzEhJqaVWtpaPrANHb7o/NVRrjZaj34EI8R7
+	7loPblLWLwEgFgt71rU0nlCwzaaf5aRfKY3waT0Ab1AJzRPOhxJYqFssHedjuHxEGkOlDcX+1zO
+	qlqI8Hja5sxrr2N5GX1XTQ9kFs4CSRyrSAQD1J3Y3oiin1+gBrKWwmAklm4gH8PI7kllt5NTu/h
+	Wax9HMiSfGPO1c8x0Od7hmjHCLvrhaU8B+8UGiZo2bPBSyZC2oSyHUjdNIpG2RJ4AjxzSWoqKyX
+	HeAnE9+Ug5DH0JBTQAp2GUTHVYz+6TAcSVQ3XNRkOFytm7BHpLNXg3JDldumq3V6xVyzakz5yY1
+	GgahYq93o+q1d4ohwjxvq4R0mjiwiK1q1lK+R91bwz/bLSGq6MVfOfavUyBXBYfzjUQIZVeUSe+
+	/4KCMlnIPsMh0OxIdDOB3mCx2zblykkB1XD8gNnQOOAFU1xpdUc6XGTPUsF+3fAzkj3j2AJxvqx
+	VpQuSRIyUYMxgru
+X-Received: by 2002:a17:90b:1fcf:b0:36a:95c:7613 with SMTP id 98e67ed59e1d1-3779ecb811dmr908513a91.10.1781144020432;
+        Wed, 10 Jun 2026 19:13:40 -0700 (PDT)
 Received: from raf.tailb4a862.ts.net ([153.124.163.116])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-377522a0eb9sm732006a91.4.2026.06.10.19.13.30
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-377522a0eb9sm732006a91.4.2026.06.10.19.13.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Jun 2026 19:13:34 -0700 (PDT)
+        Wed, 10 Jun 2026 19:13:40 -0700 (PDT)
 From: Raf Dickson <rafdog35@gmail.com>
 To: netdev@vger.kernel.org,
 	virtualization@lists.linux.dev
@@ -67,10 +69,12 @@ Cc: pabeni@redhat.com,
 	bcm-kernel-feedback-list@broadcom.com,
 	bobbyeshleman@gmail.com,
 	Raf Dickson <rafdog35@gmail.com>
-Subject: [PATCH net-next v2 0/2] vsock: fold acceptq accounting into core helpers
-Date: Thu, 11 Jun 2026 02:13:15 +0000
-Message-ID: <20260611021317.69362-1-rafdog35@gmail.com>
+Subject: [PATCH net-next v2 1/2] vsock: fold sk_acceptq_added() into vsock_enqueue_accept()
+Date: Thu, 11 Jun 2026 02:13:16 +0000
+Message-ID: <20260611021317.69362-2-rafdog35@gmail.com>
 X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260611021317.69362-1-rafdog35@gmail.com>
+References: <20260611021317.69362-1-rafdog35@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -79,29 +83,61 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-These two patches follow up on commit c05fa14db43e
-("vsock/vmci: fix sk_ack_backlog leak on failed handshake")
-by folding sk_acceptq_added() and sk_acceptq_removed() into
-vsock_enqueue_accept() and vsock_remove_pending() respectively,
-as suggested by Paolo Abeni and Stefano Garzarella.
+virtio and hyperv call sk_acceptq_added() immediately before
+vsock_enqueue_accept(). Move the call into vsock_enqueue_accept()
+itself so callers cannot forget it and the accounting is consistent.
 
-Changes since v1:
-  - Keep sk_acceptq_added() explicit in vmci, where it pairs with
-    vsock_add_pending() rather than vsock_enqueue_accept() (Bobby Eshleman)
+vmci is left unchanged as sk_acceptq_added() there pairs with
+vsock_add_pending(), not vsock_enqueue_accept(), since connections
+can be cleaned up by the pending work timer before ever reaching
+vsock_enqueue_accept().
 
-Link: https://lore.kernel.org/netdev/20260610091121.213324-1-rafdog35@gmail.com/
+Suggested-by: Paolo Abeni <pabeni@redhat.com>
+Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
 
-
-Raf Dickson (2):
-  vsock: fold sk_acceptq_added() into vsock_enqueue_accept()
-  vsock: fold sk_acceptq_removed() into vsock_remove_pending()
-
- net/vmw_vsock/af_vsock.c                | 4 ++--
+Signed-off-by: Raf Dickson <rafdog35@gmail.com>
+---
+ net/vmw_vsock/af_vsock.c                | 1 +
  net/vmw_vsock/hyperv_transport.c        | 1 -
  net/vmw_vsock/virtio_transport_common.c | 1 -
- net/vmw_vsock/vmci_transport.c          | 5 +----
- 4 files changed, 3 insertions(+), 8 deletions(-)
+ 3 files changed, 1 insertion(+), 2 deletions(-)
 
+diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+index 2ce1063d4a..73e6416ee9 100644
+--- a/net/vmw_vsock/af_vsock.c
++++ b/net/vmw_vsock/af_vsock.c
+@@ -507,6 +507,7 @@ void vsock_enqueue_accept(struct sock *listener, struct sock *connected)
+ 	sock_hold(connected);
+ 	sock_hold(listener);
+ 	list_add_tail(&vconnected->accept_queue, &vlistener->accept_queue);
++	sk_acceptq_added(listener);
+ }
+ EXPORT_SYMBOL_GPL(vsock_enqueue_accept);
+ 
+diff --git a/net/vmw_vsock/hyperv_transport.c b/net/vmw_vsock/hyperv_transport.c
+index b3394946b2..0de8148877 100644
+--- a/net/vmw_vsock/hyperv_transport.c
++++ b/net/vmw_vsock/hyperv_transport.c
+@@ -410,7 +410,6 @@ static void hvs_open_connection(struct vmbus_channel *chan)
+ 
+ 	if (conn_from_host) {
+ 		new->sk_state = TCP_ESTABLISHED;
+-		sk_acceptq_added(sk);
+ 
+ 		hvs_new->vm_srv_id = *if_type;
+ 		hvs_new->host_srv_id = *if_instance;
+diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+index b10666937c..4a39d48db9 100644
+--- a/net/vmw_vsock/virtio_transport_common.c
++++ b/net/vmw_vsock/virtio_transport_common.c
+@@ -1582,7 +1582,6 @@ virtio_transport_recv_listen(struct sock *sk, struct sk_buff *skb,
+ 		return ret;
+ 	}
+ 
+-	sk_acceptq_added(sk);
+ 	if (virtio_transport_space_update(child, skb))
+ 		child->sk_write_space(child);
+ 
 -- 
 2.54.0
 
