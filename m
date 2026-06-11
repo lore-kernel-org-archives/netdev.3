@@ -1,146 +1,81 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EC573F6C56
-	for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 12:47:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B70B223C8C7;
+	Thu, 11 Jun 2026 12:52:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781182022; cv=none; b=tHNnEQn3NtOOurnvAPou+zSElGEVYzmqj21x+f8KOgGlbhJHmepYQfFXnc7NwLZL0JVcobmtzuJuy2AaOU9kUspYUeQXVTaxHLK17d3zR8O8KBHMbCwbIh90gI96nWHq/yJ8IgEqQ7isb713RjgjYgALmax+Y+Im2ciyDwWZBH0=
+	t=1781182352; cv=none; b=X5H0nF8TvccssbJXA9jfaD96Us86YgCp7B7atxDatdlsuAw4k28Pj3doPCESLPAACuGkErMe5Hr7uPOszZhTCkjSHUPk9hyIcwE01vpeqVc/1julvyT5KQ27TogbW8fTcVgRCjpm7W1zpqsL0KsXG0n5DgPZwXeCA3rN0KxZ+QI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781182022; c=relaxed/simple;
-	bh=4OW1ZmOmzZSY8IEoVO285dyW44fXn4PmU1vr1T08E2g=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=odNuAGAAe3pMK3jrKsswUeK1kYgJFqnWi4XiX0OitZar98kPJu3AVIi+gBPM3e7UGij8ABLLV8VMGq/fCHcumAVO/o2td4Tjawg/BUapD89XnUm/8wa9zK764LHU4htZd0W587FXW6whhtmx4fI+3SQw/oJedH0u3bJJLJPJKWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 1F1606AF07;
-	Thu, 11 Jun 2026 12:46:49 +0000 (UTC)
-Authentication-Results: smtp-out1.suse.de;
-	none
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CB34E779A7;
-	Thu, 11 Jun 2026 12:46:47 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id SF0TLjeuKmpaagAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Thu, 11 Jun 2026 12:46:47 +0000
-From: Pedro Falcato <pfalcato@suse.de>
-To: Vlastimil Babka <vbabka@kernel.org>,
-	Harry Yoo <harry@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	s=arc-20240116; t=1781182352; c=relaxed/simple;
+	bh=/+tXc+z2JushcI1YiVewkG5skjb4gKzsljOWJvYgdUs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oH2rrIxQGJGa8YnjpsEfy9HcTFFWZgtZN5wNnWItp1ojZcfY0WYAZQBxt0HEwcqUa9Ot/DevEPAwuDeTeJILW9NEZPoVHSNXZfY4tFhx0qkHVjTSBH3hbGnst1JOqQt2RI2LvD8uVCU4bIxiSUa0HoEx+hBxekVxGyARn1G++Rw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=uhAc/8sD; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="uhAc/8sD"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=31VgQsFzFepavMOOxKoMWZGOpsqgkKg4iMLx2GTebx0=; b=uhAc/8sDXZ0PTkQw2QVMq3Q2BJ
+	q3XJUJjftEE1IWsdQwlsN513seZYnBuzqqAGI+53DxxeHmBL4ipMmFPawHO6Z2WAXXYXktpRk5PfZ
+	fW6txLg4pzVq3dvKbT4/IGK5kdBVpdRmtiTZDl7zv/8FwAZTdqhTnlPhjdF72KTjbjyA=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wXetJ-0079pc-VT; Thu, 11 Jun 2026 14:52:13 +0200
+Date: Thu, 11 Jun 2026 14:52:13 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Cc: George Moussalem <george.moussalem@outlook.com>,
+	Kathiravan Thirumoorthy <kathiravan.thirumoorthy@oss.qualcomm.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: linux-hardening@vger.kernel.org,
-	linux-mm@kvack.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Hao Li <hao.li@linux.dev>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Simon Horman <horms@kernel.org>,
-	Jason Xing <kerneljasonxing@gmail.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Kees Cook <kees@kernel.org>,
-	Pedro Falcato <pfalcato@suse.de>
-Subject: [PATCH net-next v2 2/2] net: skb: isolate skb data area allocations into a separate bucket
-Date: Thu, 11 Jun 2026 13:46:42 +0100
-Message-ID: <20260611124642.345400-3-pfalcato@suse.de>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260611124642.345400-1-pfalcato@suse.de>
-References: <20260611124642.345400-1-pfalcato@suse.de>
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Florian Fainelli <f.fainelli@gmail.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org
+Subject: Re: [PATCH v3 4/4] net: phy: at803x: add RX and TX clock management
+ for IPQ5018 PHY
+Message-ID: <10f2c054-3d5e-4a80-adc8-2e63c655b3ae@lunn.ch>
+References: <20260605-ipq5018-gephy-clocks-v3-0-f232d9ca0966@outlook.com>
+ <20260605-ipq5018-gephy-clocks-v3-4-f232d9ca0966@outlook.com>
+ <36cd63f4-749e-4b09-b8a6-cbf6924dea88@lunn.ch>
+ <SN7PR19MB673634FEEF98FB8BCBBB15979D112@SN7PR19MB6736.namprd19.prod.outlook.com>
+ <471a21f2-7ab0-410c-861d-5722a94b127d@lunn.ch>
+ <SN7PR19MB67363B4F852FB37071637A299D112@SN7PR19MB6736.namprd19.prod.outlook.com>
+ <afdced5b-73b9-4214-a94a-c13fadd39dce@lunn.ch>
+ <f492327c-7ee1-443f-bb11-b78af0eda207@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Pre-Result: action=no action;
-	module=replies;
-	Message is reply to one we originated
-X-Rspamd-Pre-Result: action=no action;
-	module=replies;
-	Message is reply to one we originated
-X-Spam-Flag: NO
-X-Spam-Score: -4.00
-X-Spam-Level: 
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-4.00 / 50.00];
-	REPLY(-4.00)[]
-X-Rspamd-Queue-Id: 1F1606AF07
-X-Rspamd-Action: no action
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f492327c-7ee1-443f-bb11-b78af0eda207@oss.qualcomm.com>
 
-SKB data area allocations (as done from alloc_skb()) use kmalloc().
-These allocations can be variably sized and their contents can be more
-or less controlled from userspace, which makes them useful for attackers
-that want to overwrite a use-after-free'd object from the same kmalloc slab
-(which often just requires the sizes to roughly match into the same kmalloc
-bucket). [0] is an easy example of an exploit that uses netlink skb
-allocation to target another similarly-sized accidentally freed object.
+> Is there any prior art wrt enabling/disabling the PHYs (not necessarily
+> clocks specifically, but say power supplies) at runtime?
+> A quick grep only points to this very driver, which gets the regulator
+> during probe, enables it and never turns it off
 
-While other mitigations like CONFIG_RANDOM_KMALLOC_CACHES exist, these are
-probabilistic. Use the existing kmem buckets API to further isolate these
-allocations in a guaranteed fashion, when CONFIG_SLAB_BUCKETS=y.
+Not really. PHYs which care about power do their own power
+management. They can sense the line and know if there is anything
+plugged in the other end, and only then enable parts of the PHY. The
+difference between an active and sleeping 1G PHY should be around 1
+Watt. I don't think you will save too much more by turning off the
+clocks.
 
-Link: https://github.com/google/security-research/blob/master/pocs/linux/kernelctf/CVE-2023-4207_lts_cos_mitigation_2/docs/exploit.md [0]
-Reviewed-by: Kees Cook <kees@kernel.org>
-Acked-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Pedro Falcato <pfalcato@suse.de>
----
- net/core/skbuff.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
-
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index 44a7f8401468..ac9fed7461ba 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -584,6 +584,8 @@ struct sk_buff *napi_build_skb(void *data, unsigned int frag_size)
- }
- EXPORT_SYMBOL(napi_build_skb);
- 
-+static kmem_buckets *skb_data_buckets __ro_after_init;
-+
- static void *kmalloc_pfmemalloc(size_t obj_size, gfp_t flags, int node)
- {
- 	if (!gfp_pfmemalloc_allowed(flags))
-@@ -591,7 +593,8 @@ static void *kmalloc_pfmemalloc(size_t obj_size, gfp_t flags, int node)
- 	if (!obj_size)
- 		return kmem_cache_alloc_node(net_hotdata.skb_small_head_cache,
- 					     flags, node);
--	return kmalloc_node_track_caller(obj_size, flags, node);
-+	return kmem_buckets_alloc_node_track_caller(skb_data_buckets, obj_size,
-+						    flags, node);
- }
- 
- /*
-@@ -632,7 +635,7 @@ static void *kmalloc_reserve(unsigned int *size, gfp_t flags, int node,
- 	 * Try a regular allocation, when that fails and we're not entitled
- 	 * to the reserves, fail.
- 	 */
--	obj = kmalloc_node_track_caller(obj_size,
-+	obj = kmem_buckets_alloc_node_track_caller(skb_data_buckets, obj_size,
- 					flags | __GFP_NOMEMALLOC | __GFP_NOWARN,
- 					node);
- 	if (likely(obj))
-@@ -5213,6 +5216,7 @@ void __init skb_init(void)
- 						0,
- 						SKB_SMALL_HEAD_HEADROOM,
- 						NULL);
-+	skb_data_buckets = kmem_buckets_create("skb_data", SLAB_PANIC, 0, INT_MAX, NULL);
- 	skb_extensions_init();
- }
- 
--- 
-2.54.0
-
+	Andrew
