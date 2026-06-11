@@ -1,150 +1,91 @@
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DC9C30C158
-	for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 13:40:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.178
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781185247; cv=pass; b=gAgbIBfC8hcjEosX1g5rGOj4Pjkg9aHfwTmJJUImpE5ObRoUQU1W92i5qo9tHwSeLtmc5eBhE8R95rlJeM9SO414itioHCZD4FIhELkEOZwO1P86xCG7J6omRSMR86x9JArwthc/ayhh+vIGqZEVEXMd2+aF5SYMz7SmYyRdpSg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781185247; c=relaxed/simple;
-	bh=8/nhIiPW6L/LIG/3NLUdBz9uVpdEilvbDxKPKdDSaR4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dW32RmM9AvXNG8Mb/A/N7pcksfvw0k8xYxkqQhWwTNsz+7XGGfogKkaOO8NmSdukA6SNxX3ZBlheDXBBFGWDk4DoxO9MUPpIu1CzcIUTHO2BvzYfSixWATyeivRJEQRni3K1c/HUtuXJgx/8bTcHdgg6vVCCMRcGu+725DJbQJM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=R5tjLrah; arc=pass smtp.client-ip=209.85.160.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64DB9409121
+	for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 13:45:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781185508; cv=none; b=DjzNVsLQf2l2DM67G5QnBgBpsdE0Oh2XmsR+3/rt3RYTrGs7Ach3/0xS64UwVLX1R28XpzFAYRENj7lQ0e8ZwJoXjMRl/hzhSMjQGIbqxaLcRdOfvFSVDr8Y2k4Ay/1WIUJ8yfbkvNhe9saBHkqzXuAsb1lQdeWsNlzmaiRhDFY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781185508; c=relaxed/simple;
+	bh=9I660twNq07kzK95bE4HEQ5h/eHeVHsC0f/zvk3pQRI=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=kIjBdsU0gfpZXS5P/DNutu5jkqsxUctO8ZidQ2CwEdroIZ+izbutWMyw8bKPQiQcJkh0U5ZjDWlUHDyu6/BLg5eUYm3MVAm2A+rW+l0qaaHZNUlevzIf2cLyFSRqxdMqdibtOBtWYeXUcorVjlRZVjEgAcJVRXdHcXGqt1SQlhA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HGHswiMy; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="R5tjLrah"
-Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-5176096116fso87978971cf.0
-        for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 06:40:46 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781185245; cv=none;
-        d=google.com; s=arc-20240605;
-        b=MbO3mizVNvaC5E6R6AyNSoDPDLpL7OtIYQ0T+6l4j8OxK1aw9UTp3mWATTgciwII3d
-         RkQW3nmaR7lZhg5bHTJhQ3P4PUcSyjkqYOaUkafL5HlE4wL0ZlUH5xk1kvyltzorvuyH
-         xhv3QAAH+WlVKeGCLzNZQxM9uhVBs5RDnQf9h//+84EWm4CDq+UrcCFTCcdVQnG9GdUD
-         qXKNVW98rN90ZhVpKBYFNB48odrGC0hJkRECmdX9+0qfdO9Ts06qcfIXETrRSI7+aSY1
-         fPHUwtg189Phwbqr2vQueF0ojurw0BE05/9MTh7ro2SfaN8hFFdyTbtg2Fv8Zv7MwSP7
-         mO1w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Cqtg2xqdiaa0WZHMk+DQoKDtNgEP1pNocs3pK0ENJpY=;
-        fh=ItALUqYFjFCLSoq8Dt7XfuWuNv2ZIyOXl9gKFLiIyUM=;
-        b=FCgNrgAGtGPaM4OzhSnG7mjoGou6LSZpi+fGQ3fl8tXNLq9/S3mjhM+2s8eQnWhGlb
-         H/TicMjRNSxKu+L57C/Q/js9rhjmln/MiXqxDPAsb2sWu/3936S0YJTTl3S8roWjmmLH
-         Q5fTCyfWwqycqBaTVjRBaLbyJDaiILxn4kWdXAq4x3S7WrCkq1Ax3WWnFeN9A4HyHRZD
-         JI4uq7ZG52NQCXBAL+ZGx1k36xiW4yfg6ri6Iuz8TQJIOTbbyIx7Bx+eZr5aRJug5S/9
-         MCK+GXta6ozrNKds1KJteI3C1ZJ/ebgIZ8qFLdy1gsK2qLy85G0eBxTOo5b4Oe333FV2
-         MHNg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781185245; x=1781790045; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Cqtg2xqdiaa0WZHMk+DQoKDtNgEP1pNocs3pK0ENJpY=;
-        b=R5tjLrahrtVn6oluUgyAaSuxubtiRF5PM5KHNmlKpiFTU4qgIXMbl0o/2hVE0efZQI
-         oiOlrPO/tf+oEtqovR/Fs32HDpFRwwRAXrbtyH5DN3KN0VrEHR+mJkBXFEfAsDKgG9IR
-         EQpgDgeqpaIjlf/PBnOTGNNSK8Nd7dz419wxL6qMba2o5HBkDTLVdfs18VnEQcfoTbCI
-         Zu5x583FRYPbSNZx9PWvDmhcp1WUwn67zPwOpLd6OfURFiKXpaGw1lnWIc96nZc32TvD
-         6EHTGsl0OS3BmnxhFTWTpoFJAyu8ovnfPCdePzHnirJmGurWfMpelV/h77pgitk0H6sf
-         v8Yw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781185245; x=1781790045;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Cqtg2xqdiaa0WZHMk+DQoKDtNgEP1pNocs3pK0ENJpY=;
-        b=ZkW/y99g8vJFkR9H86OTMLimUkvjCbuQnZMasiiy0Pb25wrsE5BvpGezSZ949mTVcr
-         hnrlApnaTyQqUcAM9arb65BmXzzToB7Dq779925M6KyQaZ05K6qB9X8NAUf/jw8tuGVv
-         66RHYcQnzDY/k1yFg9J4AmT/MaD25o2571f1v8tf9jvLQIilabzd4R5x+bVxQH5Z+Csw
-         +9fYmi6pbTswY9/2Eqp+DoEOqzYTXmVOJhriBd6TvOfKXUv2pqpdyftKxSI9V/4tV6W6
-         Dv/203mlaKPQCyWpu1nIPSnhiHY9XGP0lubGHtg14jIlNWR64oL9rQ3VA6cS5bNIxjzE
-         W4Jg==
-X-Forwarded-Encrypted: i=1; AFNElJ8ez2yuVwKqy2TALHs8p7cURupIXkWHM8PIVS16ggi1h9MQkEpqhyIcCUmIA+ZyDzJfUsdy84E=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwUvrkA7A6zxzD8xdnQEUSG0bZVTp9EfHsD2DMmj8oOWNk2uI3T
-	7b/LZQEoGEQysUayxH6EC44uNupcOoeL92l9emljvwq3jEjp8+vIIXibpAEHnyeUIUub53WuwyW
-	119qHRUfHsKpyPKFl3LtUDCyj7Lyu2nLvN6RUX8E0
-X-Gm-Gg: Acq92OEAMB6TTVO93prKpxucFEpSQcFJKwjfWsr9cWwEQ+lpEahcu6gN4N3TkJ5W6Vo
-	06J1YmWpKtsDqKAfjPfMbxv3LsbszN+yH53CiVHd+ynCvahLw6oXj9illdcu0W4Ik0oAJ+QgcgK
-	fAKbDuHZYQGnaOdjV8pCbT12GIqAQU+/XuJn9pAXnj+w8UKVnsIbDIt8z0hs7mC1XxhRIE+tRBW
-	KEwzriy1Y3tDKViLC1Emmc1lGbErRr5dTbx9wb0BaM0HPdDTEbFMdvd3atPB0sxasbdEIPeqWRh
-	FQQ9gJnk+wv/pvdZCgSZ9hDkQVuC+SPmjFByCA/gDwEyUuG1SVEreOZHBr/BefvxDcy19MWyHq+
-	q4GM3u5jRZgZOCeoEaNkuTQE3neOmDg==
-X-Received: by 2002:a05:622a:2592:b0:517:89d0:b8a9 with SMTP id
- d75a77b69052e-517edcca0b8mr46262981cf.9.1781185244564; Thu, 11 Jun 2026
- 06:40:44 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HGHswiMy"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1781185506;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9I660twNq07kzK95bE4HEQ5h/eHeVHsC0f/zvk3pQRI=;
+	b=HGHswiMy+RpfgSw/0xz2MiuubomKxH9ySzNtDpHWUT8WAQLyomuVGqke2UzjDdTT4DhouV
+	Kc+tNM6wlCsnsRuQbwcuMIzAyLVM2J3DnJ0KvwMaN/kiiCtdmxfiqxLYz0kYL5sk/sOuk+
+	fQIXSFaI6pdMDNc0D8+ze887g4tGpwo=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-374-A2omzyn1P2qbUPNxtcVxRg-1; Thu,
+ 11 Jun 2026 09:45:03 -0400
+X-MC-Unique: A2omzyn1P2qbUPNxtcVxRg-1
+X-Mimecast-MFC-AGG-ID: A2omzyn1P2qbUPNxtcVxRg_1781185501
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3616219560B8;
+	Thu, 11 Jun 2026 13:45:01 +0000 (UTC)
+Received: from RHTRH0061144 (unknown [10.22.65.94])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D457C3008B37;
+	Thu, 11 Jun 2026 13:44:58 +0000 (UTC)
+From: Aaron Conole <aconole@redhat.com>
+To: Minxi Hou <houminxi@gmail.com>
+Cc: netdev@vger.kernel.org,  echaudro@redhat.com,  i.maximets@ovn.org,
+  davem@davemloft.net,  edumazet@google.com,  kuba@kernel.org,
+  pabeni@redhat.com,  horms@kernel.org,  shuah@kernel.org,
+  dev@openvswitch.org,  linux-kselftest@vger.kernel.org,
+  amorenoz@redhat.com
+Subject: Re: [PATCH net-next v2] selftests/net/openvswitch: add flow modify
+ test
+In-Reply-To: <20260609165725.107484-1-houminxi@gmail.com> (Minxi Hou's message
+	of "Wed, 10 Jun 2026 00:57:25 +0800")
+References: <20260609165725.107484-1-houminxi@gmail.com>
+Date: Thu, 11 Jun 2026 09:44:57 -0400
+Message-ID: <f7t33ytfaxy.fsf@redhat.com>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260609161305.3186102-1-edumazet@google.com>
-In-Reply-To: <20260609161305.3186102-1-edumazet@google.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Thu, 11 Jun 2026 06:40:33 -0700
-X-Gm-Features: AVVi8CcnBSjeqs0s9mQiKImvKXKuL9WHoh6zmnPVJyFxkYNo-xqMKR6BiKd7arM
-Message-ID: <CANn89i+Ou5w706HALEBmNtzOS7PujNyTeXu066Fi-9Fu7Q0m=g@mail.gmail.com>
-Subject: Re: [PATCH v2 net] net: watchdog: fix refcount tracking races
-To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
-	syzbot+381d82bbf0253710b35d@syzkaller.appspotmail.com, 
-	syzbot+3479efbc2821cb2a79f2@syzkaller.appspotmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-On Tue, Jun 9, 2026 at 9:13=E2=80=AFAM Eric Dumazet <edumazet@google.com> w=
-rote:
+Minxi Hou <houminxi@gmail.com> writes:
+
+> Add mod_flow() and the mod-flow CLI command to ovs-dpctl.py, exercising
+> OVS_FLOW_CMD_SET. Add test_flow_set which first modifies an existing
+> flow with new actions and verifies the change via traffic, then modifies
+> the same flow without actions and verifies the kernel handles the
+> no-actions case gracefully.
 >
-> Blamed commit converted the untracked dev_hold()/dev_put() calls
-> in the watchdog code to use the tracked dev_hold_track()/dev_put_track()
-> (which were later renamed/interfaced to netdev_hold() and netdev_put()).
+> The no-actions path is unreachable from userspace OVS tools (dpctl
+> mod-flow requires actions) but reachable via raw netlink. This is the
+> code path where Adrian Moreno found a possible kfree_skb of ERR_PTR
+> when reply allocation fails after locking.
 >
-> By introducing dev->watchdog_dev_tracker to store the
-> reference tracking information without adding synchronization
-> between netdev_watchdog_up() and dev_watchdog(), it enabled the
-> race condition where this pointer could be overwritten or freed
-> concurrently, leading to the list corruption crash syzbot reported:
+> Make parse() skip OVS_FLOW_ATTR_ACTIONS when actstr is None so the
+> kernel enters the post-lock allocation branch in ovs_flow_cmd_set().
+> After the no-actions set, verify via dump-flows that the flow retained
+> its drop action.
 >
-> list_del corruption, ffff888114a18c00->next is NULL
->  kernel BUG at lib/list_debug.c:52 !
-> Oops: invalid opcode: 0000 [#1] SMP KASAN PTI
-> CPU: 1 UID: 0 PID: 91 Comm: kworker/u8:5 Not tainted syzkaller #0 PREEMPT=
-(lazy)
-> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS G=
-oogle 05/09/2026
-> Workqueue: events_unbound linkwatch_event
->  RIP: 0010:__list_del_entry_valid_or_report.cold+0x22/0x2a lib/list_debug=
-.c:52
-> Call Trace:
->  <TASK>
->   __list_del_entry_valid include/linux/list.h:132 [inline]
->   __list_del_entry include/linux/list.h:246 [inline]
->   list_move_tail include/linux/list.h:341 [inline]
->   ref_tracker_free+0x1a7/0x6c0 lib/ref_tracker.c:329
->   netdev_tracker_free include/linux/netdevice.h:4491 [inline]
->   netdev_put include/linux/netdevice.h:4508 [inline]
->   netdev_put include/linux/netdevice.h:4504 [inline]
->   netdev_watchdog_down net/sched/sch_generic.c:600 [inline]
->   dev_deactivate_many+0x28c/0xfe0 net/sched/sch_generic.c:1363
->   dev_deactivate+0x109/0x1d0 net/sched/sch_generic.c:1397
->   linkwatch_do_dev net/core/link_watch.c:184 [inline]
->   linkwatch_do_dev+0xd3/0x120 net/core/link_watch.c:166
->   __linkwatch_run_queue+0x3a5/0x810 net/core/link_watch.c:240
->   linkwatch_event+0x8f/0xc0 net/core/link_watch.c:314
->   process_one_work+0xa0e/0x1980 kernel/workqueue.c:3314
->   process_scheduled_works kernel/workqueue.c:3397 [inline]
->   worker_thread+0x5ef/0xe50 kernel/workqueue.c:3478
->   kthread+0x370/0x450 kernel/kthread.c:436
->   ret_from_fork+0x69a/0xc80 arch/x86/kernel/process.c:158
->   ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+> Suggested-by: Aaron Conole <aconole@redhat.com>
+> Signed-off-by: Minxi Hou <houminxi@gmail.com>
+> ---
 
+Reviewed-by: Aaron Conole <aconole@redhat.com>
 
-It seems sashiko found issues, I will have to use a dedicated lock,
-and a separate boolean.
-
-pw-bot: cr
