@@ -1,275 +1,120 @@
-Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-m49198.qiye.163.com (mail-m49198.qiye.163.com [45.254.49.198])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9843428492
-	for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 16:17:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59AA642B725;
+	Thu, 11 Jun 2026 16:17:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781194643; cv=none; b=qIGm1tRPl5S5/Wk/XGMpj0uXYZs5FIPzHovJU6ExCkDL9IH9ys0wqY40cxooasJqRwjBQDmYcYaZ+hAiJw6W2+3mNVazuZnzHnydF/M/09q5jGqOvvQvatydI3Xb8+Ck2GEbEPlK2kmwxCfire+qtoNGVYYiAtz0hdcKYbr/OBU=
+	t=1781194644; cv=none; b=Su+yC44wnoDNMKzpL/EY0HSKkswvPEhA7xu/BEzwcJ6bDy3TcApqQmntwNeEm6STyrHTGLgiqTn7gMUuSrrsOa46sJ0jAV+bRwZIX620l8vXHPFf1Quub3mVOsLW5sYvG70g476lBFY+HnbZkzXbm0Pp71N0g9MlUP7xk2A0riw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781194643; c=relaxed/simple;
-	bh=A/u1sgwJL84QuL//U05v2lBMcf3jkxTHTxBmA7D1yHo=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ckETcnx0nvZS/Im7hp3QD1vjEu+hx5HzxV8JwavLmFEtYHimIQ2wLGh7X57xVA7L/ekpVfNPu/bDJBAFtt/7qRjgiT6xCHyQhqrRMNJoyQXi9GoDLGbHa2U/1SnUZBFJTbfbLDfuhm0kF36rKP05905sjQTU6S+U/oGvFijL+tw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WfvjdvjN; arc=none smtp.client-ip=209.85.215.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1781194644; c=relaxed/simple;
+	bh=xpmzJMC9Lj1r+79ySTS1jkkVd7vSUHY35sGpP9wu+3U=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=YM9FZp5+FjpIkl69ssMpvbvgtydy7S+Uv3zyxwHLFlK+EaLMQbz8R56Rz99oRiSWdlbPWFx1gEAXWFUYKXeAwIzW+ElW6ytYFbKNzke6d/fKzGpRk9KiUrmh9+7WhntAz/7/uPtkv5ZEyHKi6x/jwByQcdLIAbAoPQM55uN5kBo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=LOPuWeIV; arc=none smtp.client-ip=45.254.49.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WfvjdvjN"
-Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-c8573e75425so3280593a12.2
-        for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 09:17:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781194640; x=1781799440; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Yj5Chnos4zVE+LHfOdXd/pBqHjH9b6HHf2TeuBkMLx4=;
-        b=WfvjdvjN5Sv61UiPoj0ulZ2tY1z1sw6YS0Az/4dDZ4EDalg4NOUrXIUT41+MyG68fj
-         G5I/APMgyKYvEIDdyMjq8h7QnAOKucUfsscU7bhZANTgBhmQRcYMDMZoHzLE+vW9K1bM
-         KxqsVFRqAO0QopNP/YSTyJwzEWTDQw7pLNRCRP1QMgzSVXzTRKYRG7hJz6Q6PyIkDfsT
-         RUldlEzztdcv0hmTidDkLpi5n+Lvezr2tUkglk6HgSk6ODDe4naNyFyTE7qvL5C+uNZ4
-         l1HgW2HET2NrcMRM0elMsHdA96lVsr97+MHmA+h8f246iHRVliRR6DaAIs8lgUDfT6EF
-         56hA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781194640; x=1781799440;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=Yj5Chnos4zVE+LHfOdXd/pBqHjH9b6HHf2TeuBkMLx4=;
-        b=ht6TNfnogW92DUKnSZCKVx7fu6aDOOSHlh5R2BoqlKAfD2TbSQEgakuZ9umvzoG0Y9
-         cn+lWWY8oNKhCwm+BL3QwwV38FNyhACK0knUmKLjt5SJuQNVSlE0jRBhMvS2CLgTomuH
-         DDXZX3KzYsZgHxw0gXA2ER3aqIxd3aJqXJ1UdLSjBH285U7l3vUjuU5r/0Quemy4D6cS
-         s96jLSfVCNMxjP1d+mi4+1nwbL1GQnqOR1QIjTn3Sqi/B03ngrMYTg3qPlt1GGmTRgz1
-         PB2BFBXk2B/FLjCosvuleQvZF2FeFPTRRz36AQY5UhSvdytzspcMAdSD5KIydtulUMHh
-         A0og==
-X-Gm-Message-State: AOJu0YwRhUmBVOPGDKxpNiHN+gI8O7SMGgviy1vLeyPsi8s7shEC3Z83
-	K/TovotWyB4ETUT2GEg50F+gg8HPrWB/y3F2QemNWJA1tTGVIa+imbwg
-X-Gm-Gg: Acq92OFCliXzZmqf6dBkTA8/4AFG66Kxroi8T8z5FesofsAzNr/0vbEtZgk5V3b8AU6
-	NA/lIYOhBEyXSu/ltX05E5KQkgA+6UyCS+1ruq0ooVjnCl9iGTrRK1ayrVeqq0nH0C73FWOsIgY
-	HQMZUa2J5IoO2aTUpder4h6idp5ZRa+YnjMGFxwjaixKUYXo3QXOeVulAASAZ06jaJbnRxvhRkK
-	VZyiPDyE+4f5G6q0Hs1WolqKel1r5rdaVWG4p7E8Oe5Cp9rPm4pKzgxV2PPF62b8rlYQp70hyiC
-	JCqa1Jj6i6g8bOxqcipeaJh24knWM3bpBT0/0fNKTqaIRDHwFiWbRFGa06TixllqAra6ugnwVxR
-	TyJn7xEtK6chQZq5CuTsLs4evucgcb/gKn/iaFEo7FKrWRPwOHOwYUW8KFM1YeGq9tQyzbWoBm2
-	B7k8a/HLxzXFsw370+jhM=
-X-Received: by 2002:a05:6a20:9398:b0:3b4:8300:7019 with SMTP id adf61e73a8af0-3b5e31ec82dmr3951773637.18.1781194640238;
-        Thu, 11 Jun 2026 09:17:20 -0700 (PDT)
-Received: from localhost ([2a03:2880:ff:52::])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c86585b5356sm2137006a12.14.2026.06.11.09.17.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Jun 2026 09:17:19 -0700 (PDT)
-From: Bobby Eshleman <bobbyeshleman@gmail.com>
-Date: Thu, 11 Jun 2026 08:28:45 -0700
-Subject: [PATCH net-next v2 4/4] selftests/net: devmem.py: add
- check_rx_large_niov
+	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="LOPuWeIV"
+Received: from DESKTOP-SUEFNF9.taila7e912.ts.net (unknown [58.241.16.34])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 42075fbe8;
+	Fri, 12 Jun 2026 00:12:08 +0800 (GMT+08:00)
+From: Dawei Feng <dawei.feng@seu.edu.cn>
+To: Tony Nguyen <anthony.l.nguyen@intel.com>
+Cc: Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	marcin.szycik@linux.intel.com,
+	intel-wired-lan@lists.osuosl.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	zilin@seu.edu.cn,
+	Dawei Feng <dawei.feng@seu.edu.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH net v2] ice: fix memory leak in ice_lbtest_prepare_rings()
+Date: Fri, 12 Jun 2026 00:12:04 +0800
+Message-Id: <20260611161204.605962-1-dawei.feng@seu.edu.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260611-tcpdm-large-niovs-v2-4-ee2bf15e7523@meta.com>
-References: <20260611-tcpdm-large-niovs-v2-0-ee2bf15e7523@meta.com>
-In-Reply-To: <20260611-tcpdm-large-niovs-v2-0-ee2bf15e7523@meta.com>
-To: Donald Hunter <donald.hunter@gmail.com>, 
- Jakub Kicinski <kuba@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
- Gerd Hoffmann <kraxel@redhat.com>, 
- Vivek Kasireddy <vivek.kasireddy@intel.com>, 
- Sumit Semwal <sumit.semwal@linaro.org>, 
- =?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
- Shuah Khan <shuah@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org, 
- linaro-mm-sig@lists.linaro.org, linux-kselftest@vger.kernel.org, 
- sdf@fomichev.me, razor@blackwall.org, daniel@iogearbox.net, 
- almasrymina@google.com, matttbe@kernel.org, skhawaja@google.com, 
- dw@davidwei.uk, Bobby Eshleman <bobbyeshleman@meta.com>
-X-Mailer: b4 0.14.3
+Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0a9eb77489aa03a2kunm2fb335821bb296
+X-HM-MType: 10
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkZTh5LVh8ZH0JOTk1MQx9DQ1YeHw
+	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlOQ1VJT0pVSk1VSE9ZV1kWGg8SFR0UWUFZT0tIVUpLSEpPSE
+	xVSktLVUpCS0tZBg++
+DKIM-Signature: a=rsa-sha256;
+	b=LOPuWeIVsjZnYtyyAQfxsVo40kaSfbJuE9As/8gn1PRAcCoA+4YvH0dRXq9O1d7OrTIJ0xpoQQiTzFXqO/xQBvhGwRUUIJE6nMUcUvQ74luUn3Fe9bZHv03bh2Bnh3njX9SyNFl/rRspaxF7gNmrAiHLbc0OaWvVDQTxNbo4NV8=; c=relaxed/relaxed; s=default; d=seu.edu.cn; v=1;
+	bh=9Q52+xgmmc1yQ1BqrOtrtFbwp3KVyEeS2vTssPxdECo=;
+	h=date:mime-version:subject:message-id:from;
 
-From: Bobby Eshleman <bobbyeshleman@meta.com>
+ice_lbtest_prepare_rings() frees Rx rings only when
+ice_vsi_start_all_rx_rings() fails. If ice_vsi_setup_rx_rings() fails
+after allocating some descriptors, or if ice_vsi_cfg_lan() fails after
+the Rx rings were prepared, the function reaches the Tx cleanup path
+without releasing the initialized Rx resources.
 
-Add a new devmem test case for binding the dmabuf with rx-buf-size=16K.
-The test sweeps RX payload sizes straddling the niov boundary to cover
-the sub-niov, exact-niov, and multi-niov RX paths.
+Fix this by adding separate unwind paths for Rx setup failure and LAN
+configuration failure. The Rx setup failure path releases the partially
+prepared Rx rings before freeing Tx rings, while later failures first
+undo the LAN Tx configuration and then release the Rx rings in reverse
+setup order.
 
-Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
+The bug was first flagged by an experimental analysis tool we are
+developing for kernel memory-management bugs while analyzing
+v6.13-rc1. The tool is still under development and is not yet publicly
+available. Manual inspection confirms that the bug is still
+present in v7.1-rc5.
+
+An x86_64 allyesconfig build showed no new warnings. As we do not have an
+Intel E800 Series adapter available to run the ethtool offline loopback
+selftest, no runtime testing was able to be performed.
+
+Fixes: 0e674aeb0b77 ("ice: Add handler for ethtool selftest")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Signed-off-by: Dawei Feng <dawei.feng@seu.edu.cn>
 ---
- tools/testing/selftests/drivers/net/hw/devmem.py   | 12 ++++-
- .../testing/selftests/drivers/net/hw/devmem_lib.py | 58 +++++++++++++++++++++-
- .../testing/selftests/drivers/net/hw/nk_devmem.py  | 11 +++-
- 3 files changed, 75 insertions(+), 6 deletions(-)
+Changes in v2:
+- Fix cleanup order
 
-diff --git a/tools/testing/selftests/drivers/net/hw/devmem.py b/tools/testing/selftests/drivers/net/hw/devmem.py
-index 031cf9905f65..47b54e18e7a6 100755
---- a/tools/testing/selftests/drivers/net/hw/devmem.py
-+++ b/tools/testing/selftests/drivers/net/hw/devmem.py
-@@ -2,7 +2,8 @@
- # SPDX-License-Identifier: GPL-2.0
- 
- from os import path
--from devmem_lib import setup_test, run_rx, run_tx, run_tx_chunks, run_rx_hds
-+from devmem_lib import (setup_test, run_rx, run_tx, run_tx_chunks, run_rx_hds,
-+                        run_rx_large_niov)
- from lib.py import ksft_run, ksft_exit, ksft_disruptive
- from lib.py import NetDrvEpEnv
- 
-@@ -30,11 +31,18 @@ def check_rx_hds(cfg) -> None:
-     run_rx_hds(cfg)
- 
- 
-+@ksft_disruptive
-+def check_rx_large_niov(cfg) -> None:
-+    """Run the devmem RX test with rx-buf-size = 16 KiB."""
-+    run_rx_large_niov(cfg)
-+
-+
- def main() -> None:
-     """Run the devmem test cases."""
-     with NetDrvEpEnv(__file__) as cfg:
-         setup_test(cfg, path.abspath(path.dirname(__file__) + "/ncdevmem"))
--        ksft_run([check_rx, check_tx, check_tx_chunks, check_rx_hds],
-+        ksft_run([check_rx, check_tx, check_tx_chunks, check_rx_hds,
-+                  check_rx_large_niov],
-                  args=(cfg,))
-     ksft_exit()
- 
-diff --git a/tools/testing/selftests/drivers/net/hw/devmem_lib.py b/tools/testing/selftests/drivers/net/hw/devmem_lib.py
-index 0921ff03eb81..d2f00a876767 100644
---- a/tools/testing/selftests/drivers/net/hw/devmem_lib.py
-+++ b/tools/testing/selftests/drivers/net/hw/devmem_lib.py
-@@ -8,7 +8,7 @@ from lib.py import (bkg, cmd, defer, ethtool, rand_port, wait_port_listen,
-                     NetdevFamily)
- 
- 
--def require_devmem(cfg):
-+def require_devmem(cfg, rx_buf_size=0):
-     """Probe ncdevmem on cfg.ifname and SKIP the test if devmem isn't supported."""
-     if not hasattr(cfg, "devmem_probed"):
-         probe_command = f"{cfg.bin_local} -f {cfg.ifname}"
-@@ -18,6 +18,19 @@ def require_devmem(cfg):
-     if not cfg.devmem_supported:
-         raise KsftSkipEx("Test requires devmem support")
- 
-+    if rx_buf_size > 0:
-+        if not hasattr(cfg, "devmem_rx_buf_size_probed"):
-+            cfg.devmem_rx_buf_size_probed = {}
-+
-+        if rx_buf_size not in cfg.devmem_rx_buf_size_probed:
-+            probe_command = f"{cfg.bin_local} -f {cfg.ifname} -b {rx_buf_size}"
-+            cfg.devmem_rx_buf_size_probed[rx_buf_size] = \
-+                cmd(probe_command, fail=False, shell=True).ret == 0
-+
-+        if not cfg.devmem_rx_buf_size_probed[rx_buf_size]:
-+            raise KsftSkipEx(
-+                f"Test requires devmem rx-buf-size={rx_buf_size} support")
-+
- 
- def configure_nic(cfg):
-     """Channels, rings, RSS, queue lease for netkit devmem."""
-@@ -76,7 +89,8 @@ def set_flow_rule(cfg, port):
-     return int(re.search(r'ID (\d+)', output).group(1))
- 
- 
--def ncdevmem_rx(cfg, port, verify=True, fail_on_linear=False, flow_steer=False):
-+def ncdevmem_rx(cfg, port, verify=True, fail_on_linear=False, flow_steer=False,
-+                rx_buf_size=0):
-     """Build the ncdevmem RX listener command."""
-     if hasattr(cfg, 'netns'):
-         flow_rule_id = set_flow_rule(cfg, port)
-@@ -96,6 +110,8 @@ def ncdevmem_rx(cfg, port, verify=True, fail_on_linear=False, flow_steer=False):
-         extras.append("-v 7")
-     if fail_on_linear:
-         extras.append("-L")
-+    if rx_buf_size > 0:
-+        extras.append(f"-b {rx_buf_size}")
- 
-     parts = [cfg.bin_local, "-l", f"-f {ifname}", f"-s {addr}",
-              f"-p {port}", *extras]
-@@ -202,6 +218,44 @@ def run_tx_chunks(cfg):
-     ksft_eq(socat.stdout.strip(), "hello\nworld")
- 
- 
-+def _restore_nr_hugepages(hp_file, nr_hugepages):
-+    with open(hp_file, 'w', encoding='utf-8') as f:
-+        f.write(str(nr_hugepages))
-+
-+
-+def run_rx_large_niov(cfg):
-+    """Run the devmem RX test with a large niov (rx-buf-size > PAGE_SIZE).
-+
-+    Sweep payload sizes that straddle the niov boundary: below, equal to,
-+    and above rx_buf_size, to exercise sub-niov, exact-niov, and multi-niov
-+    RX paths.
-+    """
-+    hp_file = "/proc/sys/vm/nr_hugepages"
-+    with open(hp_file, 'r+', encoding='utf-8') as f:
-+        nr_hugepages = int(f.read().strip())
-+        if nr_hugepages < 64:
-+            f.seek(0)
-+            f.write("64")
-+            defer(_restore_nr_hugepages, hp_file, nr_hugepages)
-+    require_devmem(cfg, rx_buf_size=16384)
-+    configure_nic(cfg)
-+    netns = getattr(cfg, "netns", None)
-+
-+    for size in [1024, 4096, 8192, 16384, 32768, 65536]:
-+        port = rand_port()
-+        socat = socat_send(cfg, port)
-+        listen_cmd = ncdevmem_rx(cfg, port,
-+                                 flow_steer=not netns,
-+                                 rx_buf_size=16384)
-+        data_pipe = (f"yes $(echo -e \x01\x02\x03\x04\x05\x06) | "
-+                     f"head -c {size} | {socat}")
-+        with bkg(listen_cmd, exit_wait=True, ns=netns) as ncdevmem:
-+            wait_port_listen(port, proto="tcp", ns=netns)
-+            cmd(data_pipe, host=cfg.remote, shell=True)
-+        ksft_eq(ncdevmem.ret, 0,
-+                f"large-niov failed for payload size {size}")
-+
-+
- def run_rx_hds(cfg):
-     """Run the HDS test by running devmem RX across a segment size sweep."""
-     require_devmem(cfg)
-diff --git a/tools/testing/selftests/drivers/net/hw/nk_devmem.py b/tools/testing/selftests/drivers/net/hw/nk_devmem.py
-index 300ed2a70ab4..7f1867e4ff32 100755
---- a/tools/testing/selftests/drivers/net/hw/nk_devmem.py
-+++ b/tools/testing/selftests/drivers/net/hw/nk_devmem.py
-@@ -3,7 +3,8 @@
- """Test devmem TCP with netkit."""
- 
- import os
--from devmem_lib import setup_test, run_rx, run_tx, run_tx_chunks, run_rx_hds
-+from devmem_lib import (setup_test, run_rx, run_tx, run_tx_chunks, run_rx_hds,
-+                        run_rx_large_niov)
- from lib.py import ksft_run, ksft_exit, ksft_disruptive
- from lib.py import NetDrvContEnv
- 
-@@ -31,6 +32,12 @@ def check_nk_rx_hds(cfg) -> None:
-     run_rx_hds(cfg)
- 
- 
-+@ksft_disruptive
-+def check_nk_rx_large_niov(cfg) -> None:
-+    """Run the devmem RX large-niov test through netkit."""
-+    run_rx_large_niov(cfg)
-+
-+
- def main() -> None:
-     """Run the netkit devmem test cases."""
-     with NetDrvContEnv(__file__, rxqueues=2, primary_rx_redirect=True) as cfg:
-@@ -38,7 +45,7 @@ def main() -> None:
-                    os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                                 "ncdevmem"))
-         ksft_run([check_nk_rx, check_nk_tx, check_nk_tx_chunks,
--                  check_nk_rx_hds], args=(cfg,))
-+                  check_nk_rx_hds, check_nk_rx_large_niov], args=(cfg,))
-     ksft_exit()
- 
- 
+ drivers/net/ethernet/intel/ice/ice_ethtool.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
+diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool.c b/drivers/net/ethernet/intel/ice/ice_ethtool.c
+index f28416a707d7..10a4abc66974 100644
+--- a/drivers/net/ethernet/intel/ice/ice_ethtool.c
++++ b/drivers/net/ethernet/intel/ice/ice_ethtool.c
+@@ -1069,18 +1069,18 @@ static int ice_lbtest_prepare_rings(struct ice_vsi *vsi)
+ 
+ 	status = ice_vsi_cfg_lan(vsi);
+ 	if (status)
+-		goto err_setup_rx_ring;
++		goto err_cfg_lan;
+ 
+ 	status = ice_vsi_start_all_rx_rings(vsi);
+ 	if (status)
+-		goto err_start_rx_ring;
++		goto err_cfg_lan;
+ 
+ 	return 0;
+ 
+-err_start_rx_ring:
+-	ice_vsi_free_rx_rings(vsi);
+-err_setup_rx_ring:
++err_cfg_lan:
+ 	ice_vsi_stop_lan_tx_rings(vsi, ICE_NO_RESET, 0);
++err_setup_rx_ring:
++	ice_vsi_free_rx_rings(vsi);
+ err_setup_tx_ring:
+ 	ice_vsi_free_tx_rings(vsi);
+ 
 -- 
-2.53.0-Meta
-
+2.34.1
