@@ -1,362 +1,158 @@
-Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f201.google.com (mail-qt1-f201.google.com [209.85.160.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A92A6383313
-	for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 16:46:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.145.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C8CE377574
+	for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 16:52:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781196387; cv=none; b=HQetkl9yHGYhqsG+A726gkw28dWwqGpd2J+M+c0spnoptfzE8gjilsEiXg42zxWA1fWDAsQ/J6SnNHYhOWTYUoxtZn5ACgmJXsWpoauPdzQLPNEq6DbGSfCwDyVVVM6l/m4HcWxuc+S7/TovJFHspnWhsFqdvvZ83yP9Mv2YMn8=
+	t=1781196770; cv=none; b=TRIMhtMYpUm+ufis07Ikt9ffEDH1iLk/xP32pTUchSFUMG/RRPbmYy4mPY/17VB1PYVH1+SCVl5DMM+lQXYr3fHpZ1rAWRViK8c0aPCaiwTrKxBQyUZ8nRNVeUvvrb9Cr+9PFtuvATN7hAV7qxo70NReA5guyOiT+E5hywjaei0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781196387; c=relaxed/simple;
-	bh=Atlcqwx1CSWgGgkvnS0mRZ+P+9R1RYqnbvptj2L+F+8=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aTcD5jUJu9gN5u4Vq9TMoQLVCqGQNlR0lSYhwPa9eAxYTREDarCWWucH8PIT02T5NQvsTmo1Ex/LWBoLGVR7udKD8rRGokWFAuJmpExio3QTvVKWNe1coJGCOuVIk/G5h4IKff2krkQICZ/Ixw1yDLS4FQgG7zzVeJW72s5xGeg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=GCRlI9JE; arc=none smtp.client-ip=67.231.145.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	s=arc-20240116; t=1781196770; c=relaxed/simple;
+	bh=PljbtlMV0PxgV8WmxnGh8eH+H2eTTVSdELrNKYqe7uc=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=ZdVE7x/ARCqa0vz/uTKakyks4Er2i860jzZBUPZ0VT1R8AEB3XF+4MgxFuSYwbL93drxGZhFMRPlOwbqa+iQeSAoiKHGmnJFBw/M5JdRDDNst/fU45tVDmjMzp5IrzageS3oaqLF3dJWr7H5CtUVPzggbAIL7bVGsrH7E2Qj/i4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JSC3wNNW; arc=none smtp.client-ip=209.85.160.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="GCRlI9JE"
-Received: from pps.filterd (m0528007.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65BECju52241299
-	for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 09:46:25 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
-	 bh=i0/fryQsHZZUsVpWLovLPhh4uANlkSKGKFUxbWvZ4kE=; b=GCRlI9JEnuhx
-	Sl1/K5JKeGBIsRlXMmgFITWKUVKP+QzM4E6F+G4ncR11jjNlaKjygRt8WQahf5Qy
-	5Owb3G2biK+qYe8Mrteh4smjeJyTLxIMjm54JOo8TGPbg7lY8vdwB/28lCB/yC1o
-	4a8pyMTDOAZPISDgT0s4U/HqY+uFlxqDf1gLN2Tqqss3/433EXpzznMQ4SwooE5t
-	EJ9idSicRgxxkkKsgvyzUgXnzbromuNz2NkT/NeO6mUfxew6vB6zEzEdPW9d4z8E
-	9XBYPDj9EOCvtw22TvvR27nCEO4LlZUBFQWslmLBpsJif0EcLx4ZgmO1Y5YrponX
-	SP5NXhy9DA==
-Received: from maileast.thefacebook.com ([163.114.135.16])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4eqe81pqcy-7
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 09:46:24 -0700 (PDT)
-Received: from twshared90953.15.frc2.facebook.com (2620:10d:c0a8:1c::1b) by
- mail.thefacebook.com (2620:10d:c0a9:6f::8fd4) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.41; Thu, 11 Jun 2026 16:46:20 +0000
-Received: by devbig259.ftw1.facebook.com (Postfix, from userid 664516)
-	id 663463DD363EC; Thu, 11 Jun 2026 09:23:46 -0700 (PDT)
-From: Zhiping Zhang <zhipingz@meta.com>
-To: <netdev@vger.kernel.org>
-CC: <kvm@vger.kernel.org>, <linux-rdma@vger.kernel.org>,
-        <linux-pci@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
-        Zhiping Zhang
-	<zhipingz@meta.com>
-Subject: [PATCH v7 4/5] vfio/pci: implement get_tph and DMA_BUF_TPH feature
-Date: Thu, 11 Jun 2026 09:11:19 -0700
-Message-ID: <20260611161546.4075580-5-zhipingz@meta.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260611161546.4075580-1-zhipingz@meta.com>
-References: <20260611161546.4075580-1-zhipingz@meta.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JSC3wNNW"
+Received: by mail-qt1-f201.google.com with SMTP id d75a77b69052e-517615db531so209657131cf.1
+        for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 09:52:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1781196768; x=1781801568; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=R7+SYFPrX06dNXHN4QC5CuvRliXsRDhq8JTa5eT8fXQ=;
+        b=JSC3wNNWvr64vq/lk/wNqRvkxVACghZx6evIGdn/oBy0C88w1cOoHP79TF2EjNI3+d
+         iNZgyyFJx22ww7F+7QRcd9eJvs6TKMyHYImudK4xgfADAyhgJmTWgFcsZshMtfOHIjTS
+         aVIxHmJFP459TdjhgD/q7sLg3aMTY8DX85lgBW6vUkO7E4cnX0BsEda9Y4DZIIBvJaCd
+         i+39Xz4lYLH+xq4LeWfXBB13UtxxRxNkrhWlasasMdQlrty+ZbqdB0Y0kXXrh7I7+j1Z
+         EANeZxiM3yzz0Kq7wgBfOt0RtY8ofi9+yATzNQ+DtIFMqiYqETjJ3Cwm+U92uvlLoPnv
+         5QqA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781196768; x=1781801568;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=R7+SYFPrX06dNXHN4QC5CuvRliXsRDhq8JTa5eT8fXQ=;
+        b=GWhUvA43h53MNNElbIGQ6d2WDUp7UkOUzfTfLgRt3Ib5oTqyjYsm0Ri2ospTXRJnx2
+         /ZRv0gYF8FKIMNzb07cOwlKBI4Fb5mfYgsWN3en4/6Com9K/9HoYFQLLtyJUmY3SFSf+
+         Jf5WrV7BFP66R5JmCu0hZ1OspnGi8F/MQICCSSWvYjqWU/ua0aZoedBhiVDoH7vawedn
+         5KkO6LI6ZcJpzpdKdqTzTtoXVlmV5OFe3prEgAX8EHsNtpSBZhnVRTbKwcEWt/gaAjZz
+         eAZRUIMpNUbtqFg8hifOy0/K7OKI9fIB6A+JBTduR5sdKD9PfCyXdi6RWyH41GprF7/J
+         ON1A==
+X-Forwarded-Encrypted: i=1; AFNElJ+NvrkBmQXRE/BYnhnHtZEJKWApuGkFIzBG9UyqgtAfqFiph/2J8RmbaoNEgIM7G3QWYED1Cjk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxXfMAtbE4JlShVMehOokR+aOdiAJ3DD47XRb+xvFN0vLFaOhFU
+	N1r2MyQptAqyXL77cAJqC8NJvL5nqduFURBMhhLcKeI1EUBstif9WK1XFOWvvTu/O8S5dLygH4G
+	qPe1RxyGD/3Yxwg==
+X-Received: from qvzm6.prod.google.com ([2002:ad4:4a06:0:b0:8cc:e8f7:c262])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:622a:6103:b0:517:7188:c47a with SMTP id d75a77b69052e-517edd3738cmr58751451cf.2.1781196768272;
+ Thu, 11 Jun 2026 09:52:48 -0700 (PDT)
+Date: Thu, 11 Jun 2026 16:52:47 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-FB-Internal: Safe
-Content-Type: text/plain
-X-Authority-Analysis: v=2.4 cv=d8nFDxjE c=1 sm=1 tr=0 ts=6a2ae660 cx=c_pps
- a=MfjaFnPeirRr97d5FC5oHw==:117 a=MfjaFnPeirRr97d5FC5oHw==:17
- a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22
- a=4h92JMTCafKA-fb_NiOh:22 a=VabnemYjAAAA:8 a=pIVkarnfHJxX8sQW8bgA:9
- a=gKebqoRLp9LExxC7YDUY:22
-X-Proofpoint-GUID: Ojal4umSsmC-2VZ74JnticHBTHjeeyE-
-X-Proofpoint-ORIG-GUID: Ojal4umSsmC-2VZ74JnticHBTHjeeyE-
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjExMDE2OCBTYWx0ZWRfX4JacchjY/Cdc
- AN/44MafhvOqh0mEIgmjasZaLneXjYfvlm1drB/agtTyNnxyHYxn3DRqmMZ9iGMLL3K/AaQPomu
- urPsW+7NAkIQTR9TPuDMmnsTVAz/Qdc=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjExMDE2OCBTYWx0ZWRfXwnxXLM3EA0ju
- Q9wR0VqThgJDCYEs0jq1lxyuKsEHRZUop/OGNltJSMbt4+uqR5q76E1kSTXLK5EVcWNQ5DncbCM
- I3jqbr2iLrjdgvAN0pqq0dIpzHf3jrv8EwQOT2ZanBpWzLrCZwHzQ/+3ctLfQtQr31IIOAAmZ5x
- MMC4y86eZPfhi6m1ktor5UoEKsX9FqV/dI+Ygs6lfmEsD1/GINdNDanBAnR3izaQ2hOvtML9hc0
- zAUSJjLQtmyp68xHkIq+0zwPhZSSXUijkNEhqMalBWmL19ILOtO+8PZs3Ldz3hIev/cWbRzj0L6
- U6ysc8jvTjufvgW0slCyEjpTsmq2T5A86e0K5R7WTzExcOj1Au3TS4qB/NGZbnsm47DFWoZuZNE
- ycy4C6pwqT3qxwvIHB9CCnfGGqFqsOrWSM9D0/1p6Jf7RrEwxjIz0xVjkMZLUFHMXH2a+aLjz1m
- weIc8iqcrgEqoNNxBXg==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-11_03,2026-06-11_01,2025-10-01_01
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.54.0.1136.gdb2ca164c4-goog
+Message-ID: <20260611165247.2710257-1-edumazet@google.com>
+Subject: [PATCH net] ip_tunnel: annotate data-races around t->err_count and t->err_time
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
+	David Ahern <dsahern@kernel.org>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
+	Eric Dumazet <edumazet@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Implement dma-buf get_tph for vfio-pci exported dma-bufs and add
-VFIO_DEVICE_FEATURE_DMA_BUF_TPH so userspace can publish TPH metadata
-for a VFIO-owned device.
+ip_tunnel_xmit() runs locklessly (dev->lltx == true).
 
-8-bit ST and 16-bit Extended ST are distinct PCIe TPH namespaces; the
-uAPI carries both with explicit validity flags, and get_tph() returns
-the value matching the importer's requested namespace or -EOPNOTSUPP.
+ipgre_err() and ipip_err() also run locklessly.
 
-Publish and read the TPH descriptor under dmabuf->resv, matching the
-locking used for other importer-visible dma-buf state. The SET ioctl
-takes dma_resv_lock_interruptible(), while the callback runs under
-DMA-buf's asserted resv lock.
+We need to add READ_ONCE() and WRITE_ONCE() annotations
+around t->err_count and t->err_time.
 
-Reject requests the device cannot consume as a completer:
-pcie_tph_completer_type() must report at least
-PCI_EXP_DEVCAP2_TPH_COMP_TPH_ONLY, and Extended ST requires
-PCI_EXP_DEVCAP2_TPH_COMP_EXT_TPH. Validate fields before the completer
-check so userspace gets the narrowest errno.
-
-Signed-off-by: Zhiping Zhang <zhipingz@meta.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
 ---
- drivers/vfio/pci/vfio_pci_core.c   |  3 +
- drivers/vfio/pci/vfio_pci_dmabuf.c | 94 +++++++++++++++++++++++++++++-
- drivers/vfio/pci/vfio_pci_priv.h   | 12 ++++
- include/uapi/linux/vfio.h          | 37 ++++++++++++
- 4 files changed, 145 insertions(+), 1 deletion(-)
+ net/ipv4/ip_gre.c    |  8 ++++----
+ net/ipv4/ip_tunnel.c | 13 ++++++++-----
+ net/ipv4/ipip.c      |  8 ++++----
+ 3 files changed, 16 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci=
-_core.c
-index 050e7542952e..4fa36f2f7555 100644
---- a/drivers/vfio/pci/vfio_pci_core.c
-+++ b/drivers/vfio/pci/vfio_pci_core.c
-@@ -1569,6 +1569,9 @@ int vfio_pci_core_ioctl_feature(struct vfio_device =
-*device, u32 flags,
- 		return vfio_pci_core_feature_token(vdev, flags, arg, argsz);
- 	case VFIO_DEVICE_FEATURE_DMA_BUF:
- 		return vfio_pci_core_feature_dma_buf(vdev, flags, arg, argsz);
-+	case VFIO_DEVICE_FEATURE_DMA_BUF_TPH:
-+		return vfio_pci_core_feature_dma_buf_tph(vdev, flags, arg,
-+							 argsz);
- 	default:
- 		return -ENOTTY;
+diff --git a/net/ipv4/ip_gre.c b/net/ipv4/ip_gre.c
+index 169e2921a851d55bb67f5a7cf3f005ded1ed2655..208dd48012d963b9df0eddbdda73dd319930e48f 100644
+--- a/net/ipv4/ip_gre.c
++++ b/net/ipv4/ip_gre.c
+@@ -207,11 +207,11 @@ static int ipgre_err(struct sk_buff *skb, u32 info,
+ 	if (t->parms.iph.ttl == 0 && type == ICMP_TIME_EXCEEDED)
+ 		return 0;
+ 
+-	if (time_before(jiffies, t->err_time + IPTUNNEL_ERR_TIMEO))
+-		t->err_count++;
++	if (time_before(jiffies, READ_ONCE(t->err_time) + IPTUNNEL_ERR_TIMEO))
++		WRITE_ONCE(t->err_count, READ_ONCE(t->err_count) + 1);
+ 	else
+-		t->err_count = 1;
+-	t->err_time = jiffies;
++		WRITE_ONCE(t->err_count, 1);
++	WRITE_ONCE(t->err_time, jiffies);
+ 
+ 	return 0;
+ }
+diff --git a/net/ipv4/ip_tunnel.c b/net/ipv4/ip_tunnel.c
+index 50d0f5fe4e4c6d83ef18cdea3ca25aed582839f0..9d114bd575f928b0ab46ef3007e456692d82b497 100644
+--- a/net/ipv4/ip_tunnel.c
++++ b/net/ipv4/ip_tunnel.c
+@@ -679,6 +679,7 @@ void ip_tunnel_xmit(struct sk_buff *skb, struct net_device *dev,
+ 	struct flowi4 fl4;
+ 	bool md = false;
+ 	bool connected;
++	int err_count;
+ 	u8 tos, ttl;
+ 	__be32 dst;
+ 	__be16 df;
+@@ -807,14 +808,16 @@ void ip_tunnel_xmit(struct sk_buff *skb, struct net_device *dev,
+ 		goto tx_error;
  	}
-diff --git a/drivers/vfio/pci/vfio_pci_dmabuf.c b/drivers/vfio/pci/vfio_p=
-ci_dmabuf.c
-index 1a177ce7de54..0a0705c8dbea 100644
---- a/drivers/vfio/pci/vfio_pci_dmabuf.c
-+++ b/drivers/vfio/pci/vfio_pci_dmabuf.c
-@@ -3,6 +3,7 @@
-  */
- #include <linux/dma-buf-mapping.h>
- #include <linux/pci-p2pdma.h>
-+#include <linux/pci-tph.h>
- #include <linux/dma-resv.h>
-=20
- #include "vfio_pci_priv.h"
-@@ -19,7 +20,12 @@ struct vfio_pci_dma_buf {
- 	u32 nr_ranges;
- 	struct kref kref;
- 	struct completion comp;
--	u8 revoked : 1;
-+	u8 tph_st_valid:1;
-+	u8 tph_st_ext_valid:1;
-+	u8 tph_ph:2;
-+	u8 tph_st;
-+	u16 tph_st_ext;
-+	u8 revoked:1;
- };
-=20
- static int vfio_pci_dma_buf_attach(struct dma_buf *dmabuf,
-@@ -69,6 +75,26 @@ vfio_pci_dma_buf_map(struct dma_buf_attachment *attach=
-ment,
- 	return ret;
- }
-=20
-+static int vfio_pci_dma_buf_get_tph(struct dma_buf *dmabuf, bool extende=
-d,
-+				    u16 *steering_tag, u8 *ph)
-+{
-+	struct vfio_pci_dma_buf *priv =3D dmabuf->priv;
-+
-+	dma_resv_assert_held(dmabuf->resv);
-+
-+	if (extended) {
-+		if (!priv->tph_st_ext_valid)
-+			return -EOPNOTSUPP;
-+		*steering_tag =3D priv->tph_st_ext;
-+	} else {
-+		if (!priv->tph_st_valid)
-+			return -EOPNOTSUPP;
-+		*steering_tag =3D priv->tph_st;
-+	}
-+	*ph =3D priv->tph_ph;
-+	return 0;
-+}
-+
- static void vfio_pci_dma_buf_unmap(struct dma_buf_attachment *attachment=
-,
- 				   struct sg_table *sgt,
- 				   enum dma_data_direction dir)
-@@ -101,6 +127,7 @@ static void vfio_pci_dma_buf_release(struct dma_buf *=
-dmabuf)
-=20
- static const struct dma_buf_ops vfio_pci_dmabuf_ops =3D {
- 	.attach =3D vfio_pci_dma_buf_attach,
-+	.get_tph =3D vfio_pci_dma_buf_get_tph,
- 	.map_dma_buf =3D vfio_pci_dma_buf_map,
- 	.unmap_dma_buf =3D vfio_pci_dma_buf_unmap,
- 	.release =3D vfio_pci_dma_buf_release,
-@@ -333,6 +360,71 @@ int vfio_pci_core_feature_dma_buf(struct vfio_pci_co=
-re_device *vdev, u32 flags,
- 	return ret;
- }
-=20
-+int vfio_pci_core_feature_dma_buf_tph(struct vfio_pci_core_device *vdev,
-+				      u32 flags,
-+				      struct vfio_device_feature_dma_buf_tph __user *arg,
-+				      size_t argsz)
-+{
-+	struct vfio_device_feature_dma_buf_tph set_tph;
-+	struct vfio_pci_dma_buf *priv;
-+	struct dma_buf *dmabuf;
-+	u8 comp;
-+	int ret;
-+
-+	ret =3D vfio_check_feature(flags, argsz, VFIO_DEVICE_FEATURE_SET,
-+				 sizeof(set_tph));
-+	if (ret !=3D 1)
-+		return ret;
-+
-+	if (copy_from_user(&set_tph, arg, sizeof(set_tph)))
-+		return -EFAULT;
-+
-+	if (set_tph.flags & ~(VFIO_DMA_BUF_TPH_ST | VFIO_DMA_BUF_TPH_ST_EXT))
-+		return -EINVAL;
-+
-+	if (set_tph.ph & ~0x3)
-+		return -EINVAL;
-+
-+	comp =3D pcie_tph_completer_type(vdev->pdev);
-+	if (comp =3D=3D PCI_EXP_DEVCAP2_TPH_COMP_NONE)
-+		return -EOPNOTSUPP;
-+	if ((set_tph.flags & VFIO_DMA_BUF_TPH_ST_EXT) &&
-+	    comp !=3D PCI_EXP_DEVCAP2_TPH_COMP_EXT_TPH)
-+		return -EOPNOTSUPP;
-+
-+	dmabuf =3D dma_buf_get(set_tph.dmabuf_fd);
-+	if (IS_ERR(dmabuf))
-+		return PTR_ERR(dmabuf);
-+
-+	if (dmabuf->ops !=3D &vfio_pci_dmabuf_ops) {
-+		ret =3D -EINVAL;
-+		goto out_put;
-+	}
-+
-+	priv =3D dmabuf->priv;
-+	if (priv->vdev !=3D vdev) {
-+		ret =3D -EINVAL;
-+		goto out_put;
-+	}
-+
-+	ret =3D dma_resv_lock_interruptible(dmabuf->resv, NULL);
-+	if (ret)
-+		goto out_put;
-+
-+	priv->tph_st         =3D set_tph.steering_tag;
-+	priv->tph_st_ext     =3D set_tph.steering_tag_ext;
-+	priv->tph_ph         =3D set_tph.ph;
-+	priv->tph_st_valid   =3D !!(set_tph.flags & VFIO_DMA_BUF_TPH_ST);
-+	priv->tph_st_ext_valid =3D
-+		!!(set_tph.flags & VFIO_DMA_BUF_TPH_ST_EXT);
-+	dma_resv_unlock(dmabuf->resv);
-+	ret =3D 0;
-+
-+out_put:
-+	dma_buf_put(dmabuf);
-+	return ret;
-+}
-+
- void vfio_pci_dma_buf_move(struct vfio_pci_core_device *vdev, bool revok=
-ed)
- {
- 	struct vfio_pci_dma_buf *priv;
-diff --git a/drivers/vfio/pci/vfio_pci_priv.h b/drivers/vfio/pci/vfio_pci=
-_priv.h
-index fca9d0dfac90..c58f369be4b3 100644
---- a/drivers/vfio/pci/vfio_pci_priv.h
-+++ b/drivers/vfio/pci/vfio_pci_priv.h
-@@ -118,6 +118,10 @@ static inline bool vfio_pci_is_vga(struct pci_dev *p=
-dev)
- int vfio_pci_core_feature_dma_buf(struct vfio_pci_core_device *vdev, u32=
- flags,
- 				  struct vfio_device_feature_dma_buf __user *arg,
- 				  size_t argsz);
-+int vfio_pci_core_feature_dma_buf_tph(struct vfio_pci_core_device *vdev,
-+				      u32 flags,
-+				      struct vfio_device_feature_dma_buf_tph __user *arg,
-+				      size_t argsz);
- void vfio_pci_dma_buf_cleanup(struct vfio_pci_core_device *vdev);
- void vfio_pci_dma_buf_move(struct vfio_pci_core_device *vdev, bool revok=
-ed);
- #else
-@@ -128,6 +132,14 @@ vfio_pci_core_feature_dma_buf(struct vfio_pci_core_d=
-evice *vdev, u32 flags,
- {
- 	return -ENOTTY;
- }
-+
-+static inline int
-+vfio_pci_core_feature_dma_buf_tph(struct vfio_pci_core_device *vdev, u32=
- flags,
-+				  struct vfio_device_feature_dma_buf_tph __user *arg,
-+				  size_t argsz)
-+{
-+	return -ENOTTY;
-+}
- static inline void vfio_pci_dma_buf_cleanup(struct vfio_pci_core_device =
-*vdev)
- {
- }
-diff --git a/include/uapi/linux/vfio.h b/include/uapi/linux/vfio.h
-index 5de618a3a5ee..5dd693220a0d 100644
---- a/include/uapi/linux/vfio.h
-+++ b/include/uapi/linux/vfio.h
-@@ -1534,6 +1534,43 @@ struct vfio_device_feature_dma_buf {
-  */
- #define VFIO_DEVICE_FEATURE_MIG_PRECOPY_INFOv2  12
-=20
-+/**
-+ * Upon VFIO_DEVICE_FEATURE_SET associate TPH (TLP Processing Hints) met=
-adata
-+ * with a vfio-exported dma-buf. The dma-buf must have been created by
-+ * VFIO_DEVICE_FEATURE_DMA_BUF on this device, and the device must repor=
-t
-+ * TPH Completer support in Device Capabilities 2 (bits 13:12); requests
-+ * carrying VFIO_DMA_BUF_TPH_ST_EXT additionally require the device to
-+ * report the Extended TPH Completer encoding. Otherwise the ioctl
-+ * returns -EOPNOTSUPP.
-+ *
-+ * dmabuf_fd is the file descriptor returned by VFIO_DEVICE_FEATURE_DMA_=
-BUF.
-+ *
-+ * 8-bit ST (steering_tag) and 16-bit Extended ST (steering_tag_ext) are
-+ * distinct namespaces. Userspace supplies whichever values are valid an=
-d sets
-+ * the matching VFIO_DMA_BUF_TPH_ST / VFIO_DMA_BUF_TPH_ST_EXT bits in @f=
-lags;
-+ * an importer requests one namespace and receives the matching value.
-+ *
-+ * @flags =3D=3D 0 marks any previously published ST / Extended-ST as in=
-valid
-+ * for future get_tph() requests on this dma-buf.
-+ *
-+ * ph is the 2-bit TLP Processing Hint and must be in the range [0, 3].
-+ *
-+ * Userspace must publish TPH before handing the dma-buf fd to an import=
-er.
-+ * Calling SET again replaces the published values.
-+ */
-+#define VFIO_DEVICE_FEATURE_DMA_BUF_TPH 13
-+
-+#define VFIO_DMA_BUF_TPH_ST		(1 << 0)
-+#define VFIO_DMA_BUF_TPH_ST_EXT		(1 << 1)
-+
-+struct vfio_device_feature_dma_buf_tph {
-+	__s32	dmabuf_fd;
-+	__u32	flags;
-+	__u16	steering_tag_ext;
-+	__u8	steering_tag;
-+	__u8	ph;
-+};
-+
- /* -------- API for Type1 VFIO IOMMU -------- */
-=20
- /**
---=20
-2.53.0-Meta
+ 
+-	if (tunnel->err_count > 0) {
++	err_count = READ_ONCE(tunnel->err_count);
++	if (err_count > 0) {
+ 		if (time_before(jiffies,
+-				tunnel->err_time + IPTUNNEL_ERR_TIMEO)) {
+-			tunnel->err_count--;
++				READ_ONCE(tunnel->err_time) + IPTUNNEL_ERR_TIMEO)) {
++			WRITE_ONCE(tunnel->err_count, err_count - 1);
+ 
+ 			dst_link_failure(skb);
+-		} else
+-			tunnel->err_count = 0;
++		} else {
++			WRITE_ONCE(tunnel->err_count, 0);
++		}
+ 	}
+ 
+ 	tos = ip_tunnel_ecn_encap(tos, inner_iph, skb);
+diff --git a/net/ipv4/ipip.c b/net/ipv4/ipip.c
+index ff95b1b9908e9f4ba4bff207a5bd2c5d5670215a..4f89a03e0b49b8fb328077a68fb72d7e4f5768ca 100644
+--- a/net/ipv4/ipip.c
++++ b/net/ipv4/ipip.c
+@@ -190,11 +190,11 @@ static int ipip_err(struct sk_buff *skb, u32 info)
+ 	if (t->parms.iph.ttl == 0 && type == ICMP_TIME_EXCEEDED)
+ 		goto out;
+ 
+-	if (time_before(jiffies, t->err_time + IPTUNNEL_ERR_TIMEO))
+-		t->err_count++;
++	if (time_before(jiffies, READ_ONCE(t->err_time) + IPTUNNEL_ERR_TIMEO))
++		WRITE_ONCE(t->err_count, READ_ONCE(t->err_count) + 1);
+ 	else
+-		t->err_count = 1;
+-	t->err_time = jiffies;
++		WRITE_ONCE(t->err_count, 1);
++	WRITE_ONCE(t->err_time, jiffies);
+ 
+ out:
+ 	return err;
+-- 
+2.54.0.1136.gdb2ca164c4-goog
 
