@@ -1,81 +1,171 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 264573AC0C0;
-	Thu, 11 Jun 2026 11:20:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F4E33CAA49
+	for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 11:21:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781176810; cv=none; b=AYDSZvfVv4OUkhQMe4WpktWckMNWPPvgUceQ+6GIb3L0S3y/7DYGEHICSxuQNp4ZOI2BaisVPZ5MlVqC8uHkLfzOBHuj+ZM0+HIaLHXm1jCzVVNZSoEHxehsdSqcKkzfOmH5uy/9oTV0i2nu11l4O+WRfReDoFAUGfgn6KqyTec=
+	t=1781176914; cv=none; b=MbkcDpxqA+q0SIe+Eo5WSKdjDgLRe9JLaH3/bqPnu891opE7Aubkh/Y+3cm5/BwX6jEWComLkz1LASzsjwSg+nNb+rO6uGlZVdC9U2H1p/flS4t/5LWmx/v5t7Z6AuhMlm+X8xRqmNeff+Dmi7GS0I2x7t/kds59KyyqgiOewxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781176810; c=relaxed/simple;
-	bh=g3JgkfXBMwpC18V6g6fDnwfCNtQ6vzyJMSGyqSOOr64=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=k/zEoUkd20NrAjJidRGK0KcQ5sMEukYzN4Keg6qFliZfglDy5xgDTMpf4xP0raG/l8hj7D0ZswUqL5S9z/tYoJ678PJJ/jrCgsdcMDx9mIsOPVkwFB9bUXI+Ck+m9S0S2Wroas6cUhy7qsZQcWWwVW0Jsrs2ignlSTFSwogjPMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oeHU5Lji; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781176914; c=relaxed/simple;
+	bh=BnzYBUOnLSiIWSs8RNklNX8J/RRI7TV+qjSBhPXGbfA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=e3B7KCdlibkkDgElMb+SNXDhBdncQ8qHmtZTWyoVE3roMp2YwlEM65cu8lj3RKMHX9qAYRIf5IEa/bVNNSU4b8XIF7ZHASws581dNxlKU25nW1TwjPczgS5uLGQQNrkkTeEZXNIguX39QIEhLP758SqlpgG4hcKCPFf7mi/4d7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DDHghERq; arc=none smtp.client-ip=209.85.216.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oeHU5Lji"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A99A91F00893;
-	Thu, 11 Jun 2026 11:20:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781176808;
-	bh=YoGEhcljlTisdlPc7HQjkmQ11dvcikGiFBdlVDn4BMM=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=oeHU5LjiLy9rRJ0e69xvgnMYM8BldE/6ipTIB/7zBnrYhEAkOFIaMZa+FjXypd0g2
-	 9MMMI5ZjaVTgBbOA2j0GPrjJEweEv/lbisqSKCz6yAuAlng82OUw0K1kwnCE10QT66
-	 HygrEXTIafSzPgwcN6GepPwgFR4RJcA5nSvnfRqA0bUy4wQ4HOk3gHNobN24cklR0Z
-	 Eq8Tkl5It1/xwtCcuFGk3sJn48mkbY3uay2YXAtpEGJTjJjzAYmJDMOlRJEwcmHInc
-	 6bQFkVXPAKJXR3ucGM1DX8k/hYbuveSzr6CIOvUU58a642yipTvAosrSUYlfMoO6hz
-	 dgDGmjtpYnCNg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 569E93930E4C;
-	Thu, 11 Jun 2026 11:20:07 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DDHghERq"
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-36bdda53d99so3293448a91.0
+        for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 04:21:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781176913; x=1781781713; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=0p9/X+E7tl8Yx7noYo8cCpp7nCnHbvyUjv3ehBjdSfw=;
+        b=DDHghERqIh+Jr6+lCwe5PsBN8eeFKNAz/Gnqt04Y19eHUnE5hL3c1wNH+MtE01vB3+
+         Cv1PBOwv82j2Ii+KpqmpSjEyP79/Kr/xNgJeEOJB53ilMDgOC/s599ggvvHXJPQDgrM7
+         ccrbWbccTf31XDxRFLsG9/t0nUpNICxg4OavdtcoX/IM4RkS6wv6ly/6xeT4rLJBzafK
+         NKKZxLGhKXSpfWPOcr+Rkbzi24ZfUh74Bj2BOTzmSextDzrHtib3B3g99hxuiYmkNlK2
+         k10VyNqKo5QRhtXsJGtot49jnuqam8Kj8AwqawIcphqj9wgpR+KMW/CVAkl3mAUsn/Iu
+         PbkQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781176913; x=1781781713;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=0p9/X+E7tl8Yx7noYo8cCpp7nCnHbvyUjv3ehBjdSfw=;
+        b=GxeYXfuu0zZcP/QAAgzQPmGmnHLXYcExCsPuT4qUzpQN9r+xDmYg+3Xj7y9pqydHIw
+         irvgbI0Ghfsl4MyavWHyBrR0PPB1UJOqkJFBh7Hl3mPHVAeApJmeMtHLuIkF/ZE3kBRi
+         dwN0IIpzjT1qJqyzQTSVrpnITWOjo2bqFtypuDvtBPjbN0sujAoCteJKBIQu+4+KZnm7
+         d65u/dxhUxo8QOjUKP9U+0kHLnW00oh5/L+vSYgVtjneZLaI9vAsdShxJk6P8WQwORW0
+         mXqFT6s9+a4HzAKmfTB6aDv2ZmnfpgicSgv08WUK62uTOfn8SB2i0N24KMWJuRqb8D1R
+         5RNA==
+X-Gm-Message-State: AOJu0YzmTXIdUFZTqyewOAcsblfZt4KS/R3j46kGOZh3jwpjxzYqIqig
+	kiy8V00UQOCb4361EGhuBWpkoPe7meLyGBpV+1zJdFkGyyEQLLU5rO5V
+X-Gm-Gg: Acq92OHzhpNuIUSvvBjgdXDARCoke2T4XkxddVcwp8f/grsXtEUG578X54yJrNF1vzp
+	UbroaWonfQnCbF//JGb3WUdfqNP+M56u11TvPGJYC1fdmoSwx9tpyHRcL1cL3w5z7qlkboExxJM
+	sK2KfXjn1YU8NU2fGjvbsAL/DOIRTP4ox79FZtHkZDzAMNx49+KnsCAFeZS5cAdQnjBLeQpih5I
+	oQV7l4+8uFfHzhcN2ycbOMR+mX9pEpNa03vvlS4RLbV4rdMK3vmtIbCBu35VInKpbT7vQq2GFbL
+	eXbemCb/1hAWGtCtGXnt+QUht5asTHfq53uDMewRQ5DF75XkjDb7Q/rlQ6l/8LAgIahSO1kJPjP
+	KnP1yDu8U0L0HUbMSa2kgPKs9WZhQ/A2CT1W7soQf1ahUwLLVZV31YIKHDZ62v6jmaLFbQlrLkm
+	GSeGfGZ/IdLztNe5g0qQO/9BYkQ/3RZAYdyGqvv+ojtstnxnsAGij1
+X-Received: by 2002:a17:90b:3f50:b0:369:c5f4:9681 with SMTP id 98e67ed59e1d1-377a870982emr2730988a91.22.1781176912529;
+        Thu, 11 Jun 2026 04:21:52 -0700 (PDT)
+Received: from [192.168.89.2] ([27.232.220.71])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-377522a19eesm2163098a91.1.2026.06.11.04.21.49
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 11 Jun 2026 04:21:52 -0700 (PDT)
+Message-ID: <3a89008a-e4ff-4249-80b5-e2caface5642@gmail.com>
+Date: Thu, 11 Jun 2026 20:21:48 +0900
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC net-next 0/4] bonding: support LAG IPsec offload with
+ replicated SAs
+To: Leon Romanovsky <leon@kernel.org>
+Cc: netdev@vger.kernel.org, Jay Vosburgh <jv@jvosburgh.net>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>,
+ Steffen Klassert <steffen.klassert@secunet.com>,
+ Herbert Xu <herbert@gondor.apana.org.au>, linux-kernel@vger.kernel.org
+References: <20260520081004.2232091-1-hurryman2212@gmail.com>
+ <20260610141843.GI327369@unreal>
+ <a7f661e5-61ee-42d7-be9e-5569e0f16e28@gmail.com>
+ <20260611100632.GL327369@unreal>
+Content-Language: en-US
+From: Jihong Min <hurryman2212@gmail.com>
+In-Reply-To: <20260611100632.GL327369@unreal>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] octeontx2-af: fix IP fragment flag corruption on
- custom
- KPU profile load
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178117680589.3906453.14413268313223181159.git-patchwork-notify@kernel.org>
-Date: Thu, 11 Jun 2026 11:20:05 +0000
-References: <20260608095455.1499203-1-nshettyj@marvell.com>
-In-Reply-To: <20260608095455.1499203-1-nshettyj@marvell.com>
-To: Nitin Shetty J <nshettyj@marvell.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- sgoutham@marvell.com, lcherian@marvell.com, gakula@marvell.com,
- hkelam@marvell.com, sbhatta@marvell.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- rkannoth@marvell.com, sumang@marvell.com, kirankumark@marvell.com
 
-Hello:
 
-This patch was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
 
-On Mon, 8 Jun 2026 15:24:55 +0530 you wrote:
-> From: Kiran Kumar K <kirankumark@marvell.com>
+On 6/11/26 19:06, Leon Romanovsky wrote:
+> On Thu, Jun 11, 2026 at 05:56:17PM +0900, Jihong Min wrote:
+>> Hi,
+>>
+>> On 6/10/26 23:18, Leon Romanovsky wrote:
+>>> On Wed, May 20, 2026 at 05:10:00PM +0900, Jihong Min wrote:
+>>>> This RFC adds a bonding model for IPsec/XFRM hardware offload on
+>>>> 802.3ad and balance-xor LAG devices when the transmit hash policy is
+>>>> layer3+4. This is an intentional scope limit rather than a hard limit,
+>>>> as this is the configuration I can test with my gear.
+>>>>
+>>>> The main idea is to leave the existing upstream single-lower-device XFRM
+>>>> offload path for active-backup intentionally untouched, while adding a
+>>>> replicated state model for LAG.
+>>>>
+>>>> For LAG bonds, the bonding driver installs the same XFRM state on every
+>>>> eligible running slave and stores the per-slave hardware handles in
+>>>> bonding-private state. Lower drivers that support this model can then
+>>>> resolve the handle for the concrete lower netdev used by the datapath.
+>>>>
+>>>> LAG IPsec features are user controlled. Newly eligible LAG bonds start
+>>>> with the ESP/XFRM features disabled, but advertise supported mutable
+>>>> features when all running eligible slaves can support them. Users can
+>>>> then opt in with ethtool. Feature enable is propagated to the lower
+>>>> devices and rolled back if a lower device cannot enable the requested
+>>>> features.
+>>>>
+>>>> The series also handles LAG membership and eligibility changes by adding
+>>>> replicated SAs to newly usable slaves, removing the departing lower
+>>>> instance on down/remove, and flushing bond-owned XFRM offload state when
+>>>> the bond leaves the supported mode or hash-policy configuration.
+>>>>
+>>>> This series does not convert any physical NIC driver. A lower driver
+>>>> must explicitly opt in to the replicated-upper-device model before it can
+>>>> use these bond-owned states in its datapath.
+>>>>
+>>>> For example, a driver such as mlx5 would opt in by marking its
+>>>> xfrmdev_ops and by resolving datapath handles through the helper:
+>>>>
+>>>>         static const struct xfrmdev_ops mlx5e_ipsec_xfrmdev_ops = {
+>>>>                 ...
+>>>>                 .xdo_dev_state_lower_handle = NULL,
+>>>>                 .flags = XFRMDEV_OPS_F_LOWER_HANDLE,
+>>>>         };
+>>>>
+>>>>         handle = xfrm_dev_state_lower_handle(x, netdev);
+>>>>         if (!handle)
+>>>>                 goto drop;
+>>>>
+>>>>         sa_entry = (struct mlx5e_ipsec_sa_entry *)handle;
+>>>
+>>> I’m curious how you replicate and maintain the hardware state across these
+>>> devices. How are you handling the anti-replay window?
+>>>
+>>> Thanks
+>>>
+>>
+>> The short answer is that the RFC I sent was not complete enough in this
+>> area.
 > 
-> npc_cn20k_apply_custom_kpu() overwrites KPU profile entries with custom
-> firmware values and then calls npc_cn20k_update_action_entries_n_flags()
-> over all entries.  Since the same function already ran during default
-> profile initialisation, entries not overridden by the custom firmware
-> get their flags translated twice, corrupting the CN20K-specific values.
+> The issue is that you are adding support for crypto offload where the
+> anti-replay window is managed in software. You must ensure that all SAs can
+> safely share and update this state.
 > 
-> [...]
+> Thanks
 
-Here is the summary with links:
-  - [net] octeontx2-af: fix IP fragment flag corruption on custom KPU profile load
-    https://git.kernel.org/netdev/net/c/7360b9609980
+I agree.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Generic XFRM crypto/packet offload with bonding enabled is not
+impossible, but crypto offload needs a different contract from packet
+offload. If the sequence number and replay window are still owned by the
+single software xfrm_state, and the lower devices only hold crypto
+context, then replicated lower handles may be valid. But the RFC did not
+prove or document that, and it used the same weak opt-in for both CRYPTO
+and PACKET.
 
-
+For a respin I should either leave XFRM_DEV_OFFLOAD_CRYPTO out of the
+replicated LAG path at first, or add a separate capability/contract for
+crypto offload which states that the software xfrm_state safely owns and
+updates the shared sequence/replay state across all lower instances.
