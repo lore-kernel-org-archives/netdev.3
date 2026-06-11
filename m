@@ -1,155 +1,94 @@
-Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D442143D4EF
-	for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 17:01:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.173
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781197275; cv=pass; b=d/knmTUNceWZZdFYvzcLScDZIkUoNBn7ZnPqa8BpBDSoiBDJ25+/pPZUCUON9kYQSqpUEu+Ik3Yn//gbdSOZo1jZmCNUi4H+nQUwk8o2juBOxeRfb58PJROXYph62CmHSt7DH8VaVMNvwOD19dTtkQe87J/Ry2XH+il3lCVPIH0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781197275; c=relaxed/simple;
-	bh=BRG/+Vzt4T53h7k5QJdHXcInjK0uh6ckGOysRuKZ8Jo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DpApn9TsuMW27AFgVN73nz5WM6fbfcxB7EOiqKV3qufCtd8wVdnqTbvOhauT3U/EiKxbtsUW61QJhEEa3jpEAuB9xBkInqlzYyJw6snl1nrb2sbebFmYlDyyYp4Z43GqbJGa05GWs+hVJMvGrtyKfCQ9f3ljjAjcIGHKlGyQfqg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tM3pjFfo; arc=pass smtp.client-ip=209.85.128.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tM3pjFfo"
-Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-7ddd3d67084so628897b3.3
-        for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 10:01:12 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781197271; cv=none;
-        d=google.com; s=arc-20240605;
-        b=OuWrGsm8skPFuNWZSFi+d2vcOL4H61vMSjBRXUT1ZbDFlWraaK9hjQpsTqBrsswWOn
-         kli3zBWGg04h5Rfu7FmzfEl/NuqMoCjIPwFjdVrXLpl3mPcLEcR0wMcCp92yL3Ies2u5
-         TfYp13fW6FxnPXhpv2yk0F7WDjp8CIC3ypYHdZip2FXgsf4o6LURA10Pz1f/Ngpuwh1e
-         oYefnChIGDSLYJv+uR3XvnVpSujuHd65aU+YcUiyXi1RNY/PqwpFzcgxJjo5NwU5gMYD
-         mE3EUQbF+X0nVD7N0t38ZRwqJqVcZK95gRXHecDyhlr+LLDbiWv1CjzJYB8IlMEvacE3
-         EV3A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=fAYyJrdDmGO0RJNipWyudCHDG9PqIFDzzEaVoKYHsmE=;
-        fh=1ECodCPcSh8UcAMLAZrqcsOYqM8lCS5qTkyd7sa9S4c=;
-        b=Ft3VdnyYZD2to2gsrDmrxa8iBbtoByO9nj3kfRwZyF2uhG+Mlq0F3yWCiQOO6MaJSW
-         hZwomriRKwlkbH2dNRthm171YHLwKN55u7+9lufhQgR2DGfpoHjsxfeXOhNRZbT8mq9H
-         QlMs8zBVeYLO783WGH+o97TK0vStbyt20NecCGPAZ728OOEMiFJdvyP6auLz+/gYaXk4
-         8+P4asyY9PKwdiXYQm81gDIhpjdZ1RxMQqk5aGYeiUAugz5bldErQoJTgV2Ta2IqMRV4
-         PiZDtxt1ZHAWiOfFLXuAScskhRLTEIUPeP6erh6bK+BbaaVy5V4D/WbmyJiCylynoSDe
-         9v6w==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781197271; x=1781802071; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fAYyJrdDmGO0RJNipWyudCHDG9PqIFDzzEaVoKYHsmE=;
-        b=tM3pjFfokCbPZbIXWfqvS5Fp8MML/h9bYU7nUBklrZq/4D3YyD5c8f/cVlStsxJswz
-         ZDwGDWKDbA+vyJlLqVX1+t8NMry+OHpB3S+aY8XktmJjpDT/puuzBeCYHGOUKPdk58Kg
-         ss0LfwiRu9sMwPNgq6cH2NzPs+0x0Goo3xE7uJtqOUyQtRx4/Rvo6PycT5RhtT2tiS/4
-         LPy/o+IV28FmJL1Tjk+v/H+PzyE81ANkMq0oUts8+G/rjiiu7xdLpFYZrPL8V037DdAx
-         y8STMM118lfIFptobHEGv5hMcwL9Q7/6GtLrbt6UjXeHOInUqbHAc5tFdOq5prpy6o40
-         NiBw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781197271; x=1781802071;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=fAYyJrdDmGO0RJNipWyudCHDG9PqIFDzzEaVoKYHsmE=;
-        b=fEP/RH+qDXM/uCFLDMcyZJ2setByqMEb+DxpXAcUcmOg9oun/bg+eyvH+dfk7kh/zo
-         Nz69AOEtJhe7B/kNM/shDNukbT3IgP3svXpAL5v0x9YAKkjvQ+mL9D2EdzzDFMFwVJtx
-         eyAnpbuF6Inx09YYZuNv6flWFhHjhXj7mI2s79P5VZKvdg0nMr0Cmd/uw1kYY2zxoKNf
-         JAuqMJ4uGWPNMAAnVExpUqvP9a0PF5pSsqkwrpTB1zW0FRFk5t7xrWd0flKvah9arAKa
-         c2tiFVmaMb/fdPqc+6Yt4Yd9gFSk6Hw1p6vXkIBRMyfyohgqphMcKBH9ErLwzmi036SK
-         SUsA==
-X-Forwarded-Encrypted: i=1; AFNElJ+ACJPTUmxpeVFPkXejIe3e8axR/PILRIF/Y5APvlnE1VOLYjFIy2VAsEaE8ND10bpJcxX2Vlo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx4AW7lGvGgPjEWGeAb+rrSZr63OECFvPl+e4Yco7s6/ec0BIqC
-	uWsa07rsJj3TolzYJUeoNZ8AC4tNy7I6WjP6Esu7lnh3zvS5Hl2DOcJeAghP3hSO6vv672VIuPB
-	Kcx8hwF7wYMD9qQSoldJqrZ55epQUpZW4jTahW3mN
-X-Gm-Gg: Acq92OHXCKjwzdgncI52UyYShij2+h1vNgQycJijkiGInFEtt4x4BwuHfb4j+zYH1rH
-	63vQisXZcI0VRwBw/qQDrXgTgzk/2j8YHUN/1YYQ5uw8ll5ebWpAVxsHkPbT+A9eMtSsCxlXXLS
-	b5WA9NxJNPsNPGDVMthDr7U087TqCiP5J8yqr9r8iLBhrWTFOeNHw5LxueBNJMkVc0QhIO+ecUQ
-	qXrVPefxeQrmioCTh9m7rT9KFa1Sycbe04JFxWUM03wyT+P//qCMQmehgJfcDY2FvrhV7h4HcyF
-	GIRmdJ0DB0dj8ObdGMpt9j/A/DLLly1O/+5OOFkLpJVKw+NmZItq0pCvtNhrMoEnVBQbA5S1G4q
-	CTfpwBa3BaFewrpwtaYHflVW/4bYUiA==
-X-Received: by 2002:a05:690c:690e:b0:7e0:97eb:f3cc with SMTP id
- 00721157ae682-7f6570993bamr43002157b3.28.1781197270694; Thu, 11 Jun 2026
- 10:01:10 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A60CF397342;
+	Thu, 11 Jun 2026 17:08:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.25
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781197688; cv=none; b=NCsJAeSCe7TalG0A77FOk9K3bE4VveczjwJpyZIlZ3VHx89U1jS4oWA02ySbXpWCLW0cYsTN5P0heuGA5qvby1asILhS5Kpag8uVws6WoqApdqUJoTzr2tr8O7nsuuh/w7CQOtk1hlrcoF9gjnnRA+Skw50vDa9lV2zviFSF3Cs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781197688; c=relaxed/simple;
+	bh=qe6nTFG7YDq3kD0Ui2R12zRI7giuhC5prS9INYAGDhg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=X265V7tFCDn2O3Rj23RWLvTjNiHHuTTqe02hqZ9Y2bEgAzFS77KHlaWZ2aB6O7XhVv1zxiTOHds/hh0IjnHjTvU3+hQrCCk54Cw83+A7tklrqLGq4ZyJq2IYVRVJaExGIcsPXe3Px0kS02e/nSUuKyy9GZarIrpkpKTnAuQK67Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from localhost.localdomain (unknown [117.182.75.76])
+	by APP-05 (Coremail) with SMTP id zQCowACX7hFu6ypq6ekaEw--.587S2;
+	Fri, 12 Jun 2026 01:07:59 +0800 (CST)
+From: WenTao Liang <vulab@iscas.ac.cn>
+To: mani@kernel.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: horms@kernel.org,
+	linux-arm-msm@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	WenTao Liang <vulab@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] net: qrtr: fix refcount leak in qrtr_send_resume_tx()
+Date: Fri, 12 Jun 2026 01:07:56 +0800
+Message-ID: <20260611170756.3590-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260611161504.228319-1-chia-yu.chang@nokia-bell-labs.com> <20260611161504.228319-4-chia-yu.chang@nokia-bell-labs.com>
-In-Reply-To: <20260611161504.228319-4-chia-yu.chang@nokia-bell-labs.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Thu, 11 Jun 2026 10:00:57 -0700
-X-Gm-Features: AVVi8CdtI2GzmyptA-tGAGNyn1dR7786EfJbaaPlfBCtP3di1yIY6vTdixZaV4g
-Message-ID: <CANn89iKkPJqOM=0KV8O8=2zWrZObj+E+VJoLztp4sUi7Vj0aQg@mail.gmail.com>
-Subject: Re: [PATCH v1 net-next 3/4] tcp: Add tso_segs() CC callback for TCP Prague
-To: chia-yu.chang@nokia-bell-labs.com
-Cc: horms@kernel.org, dsahern@kernel.org, bpf@vger.kernel.org, 
-	netdev@vger.kernel.org, pabeni@redhat.com, jhs@mojatatu.com, kuba@kernel.org, 
-	stephen@networkplumber.org, davem@davemloft.net, andrew+netdev@lunn.ch, 
-	donald.hunter@gmail.com, kuniyu@google.com, ij@kernel.org, 
-	ncardwell@google.com, koen.de_schepper@nokia-bell-labs.com, 
-	g.white@cablelabs.com, ingemar.s.johansson@ericsson.com, 
-	mirja.kuehlewind@ericsson.com, cheshire@apple.com, rs.ietf@gmx.at, 
-	Jason_Livingood@comcast.com, vidhi_goel@apple.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:zQCowACX7hFu6ypq6ekaEw--.587S2
+X-Coremail-Antispam: 1UD129KBjvdXoWrZrW8ZFW7tFWDCryDKF45Wrg_yoWDKFc_G3
+	y0gFyfW34Utr1kCwsFkwsrZrsI9a4kGF48KrW3KFWft3yagF4DJr1IqFn3ZFyUW3yUtF1f
+	Gw1I9r9xur1IvjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUb3AFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
+	Cr1l84ACjcxK6I8E87Iv67AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r4UJV
+	WxJr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
+	2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJV
+	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2
+	Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x
+	0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2
+	zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF
+	4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWU
+	CwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCT
+	nIWIevJa73UjIFyTuYvjfUFg4SDUUUU
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCQ4PA2oqzrtH4gABsa
 
-On Thu, Jun 11, 2026 at 9:15=E2=80=AFAM <chia-yu.chang@nokia-bell-labs.com>=
- wrote:
->
-> From: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
->
-> This patch adds tso_segs() CC callbak for CC algorithm to provides
-> explicit tso segment number of each data burst and overrides
-> tcp_tso_autosize().
->
-> No functional change.
->
-> Signed-off-by: Ilpo J=C3=A4rvinen <ij@kernel.org>
-> Signed-off-by: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
-> ---
->  include/net/tcp.h     | 3 +++
->  net/ipv4/tcp_output.c | 4 +++-
->  2 files changed, 6 insertions(+), 1 deletion(-)
->
-> diff --git a/include/net/tcp.h b/include/net/tcp.h
-> index e8090f542f7c..3b415c9dcc54 100644
-> --- a/include/net/tcp.h
-> +++ b/include/net/tcp.h
-> @@ -1366,6 +1366,9 @@ struct tcp_congestion_ops {
->         /* override sysctl_tcp_min_tso_segs (optional) */
->         u32 (*min_tso_segs)(struct sock *sk);
->
-> +       /* override tcp_tso_autosize */
-> +       u32 (*tso_segs)(struct sock *sk, u32 mss_now);
-> +
->         /* new value of cwnd after loss (required) */
->         u32  (*undo_cwnd)(struct sock *sk);
->         /* returns the multiplier used in tcp_sndbuf_expand (optional) */
-> diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
-> index fe725d94a225..a7206fa61957 100644
-> --- a/net/ipv4/tcp_output.c
-> +++ b/net/ipv4/tcp_output.c
-> @@ -2274,7 +2274,9 @@ static u32 tcp_tso_segs(struct sock *sk, unsigned i=
-nt mss_now)
->                         ca_ops->min_tso_segs(sk) :
->                         READ_ONCE(sock_net(sk)->ipv4.sysctl_tcp_min_tso_s=
-egs);
->
-> -       tso_segs =3D tcp_tso_autosize(sk, mss_now, min_tso);
-> +       tso_segs =3D ca_ops->tso_segs ?
-> +                       ca_ops->tso_segs(sk, mss_now) :
-> +                       tcp_tso_autosize(sk, mss_now, min_tso);
->         return min_t(u32, tso_segs, sk->sk_gso_max_segs);
->  }
+qrtr_send_resume_tx() acquires a node reference via qrtr_node_lookup().
+If the subsequent qrtr_alloc_ctrl_packet() allocation fails, the
+function returns -ENOMEM without releasing the reference. This results
+in a reference count leak.
 
-Can you explain why min_tso_segs() is not enough?
+Fix it by adding the missing qrtr_node_release(node) call on the error
+path.
 
-We do not need two different mechanisms.
+Cc: stable@vger.kernel.org
+Fixes: cb6530b99faf ("net: qrtr: Move resume-tx transmission to recvmsg")
+Signed-off-by: WenTao Liang <vulab@iscas.ac.cn>
+---
+ net/qrtr/af_qrtr.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/net/qrtr/af_qrtr.c b/net/qrtr/af_qrtr.c
+index 7cec6a7859b0..c9f892427f7c 100644
+--- a/net/qrtr/af_qrtr.c
++++ b/net/qrtr/af_qrtr.c
+@@ -1009,8 +1009,10 @@ static int qrtr_send_resume_tx(struct qrtr_cb *cb)
+ 		return -EINVAL;
+ 
+ 	skb = qrtr_alloc_ctrl_packet(&pkt, GFP_KERNEL);
+-	if (!skb)
++	if (!skb) {
++		qrtr_node_release(node);
+ 		return -ENOMEM;
++	}
+ 
+ 	pkt->cmd = cpu_to_le32(QRTR_TYPE_RESUME_TX);
+ 	pkt->client.node = cpu_to_le32(cb->dst_node);
+-- 
+2.50.1 (Apple Git-155)
+
