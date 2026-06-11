@@ -1,167 +1,76 @@
-Received: from mail-dy1-f171.google.com (mail-dy1-f171.google.com [74.125.82.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82A3F4BC00F
-	for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 16:28:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3968333A711
+	for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 16:37:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781195337; cv=none; b=UfShPDj5hdWhnd3Bj+tmAJBxf3bbWUj14kO6g/TXROhYOTdh/wzUp3IRFANSVzfU6YqPZ1rVZY/mBC2eyLJVMUaL7ZyB5euQ0I9wcUcfnnTnsa+Y41wYDvK8TVOSFPzgCvD+gpJWzWOhcsWrQpG2RrFET5jXV7hpeUIl/g1k9U0=
+	t=1781195834; cv=none; b=pSkA1QMrRHqU0Ddba65Jako9PlvETNzcxEL62t6ygZ9KvSyTeaHDzc9kLJF/0DI7+bCQ0M5yRP9r6A2uccoy3zyqLOpZRYEEAxMwSFWRATA7FnnkP5yoxbzJ0yknkJ/aSh7rmToKZw5ZiXPPR/+ZfUiJRptIE51GPe03Nd9pufI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781195337; c=relaxed/simple;
-	bh=Dq8U4JeMLdDJZCai9rkKpCchuv1uUA+lqZN3PGfqBIk=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=QfUi92R/TYvHp/qccIUQjvnzQCJpHU1MFy88Ky1n9GjmuN5gMkgQUyPb3ldAulwe1SEw4bKVx7p2m06XzPG2gGTjWEnj6HkD6TcUl+16/OkgNRNMa/qsC/EvGer81QP3wpWSXCK5iQ5OaC/6ZXPGqDGkObMFiSQExEneMxikq2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com; spf=pass smtp.mailfrom=etsalapatis.com; dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b=gO86XJ5l; arc=none smtp.client-ip=74.125.82.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=etsalapatis.com
+	s=arc-20240116; t=1781195834; c=relaxed/simple;
+	bh=THGFb424cSjMWDbvWIsERMcMVPYcS2mn3dgc/28swA0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=S75ns4ulbNggyJ4u7U2MMcvPMJpU4HTWxwvBZrdZEo7UpfSdaOZCUQCrHu7qxEetDG/c6aj3CJIlmNxYF+9BZgKUbWc58QOjpD+Ojss+ASZl9Y5H7ngNGS1Y8s+bCZ/mp+j1tuzksaa2CJKCLgiWSi8Md/y8UGbV6H5ClFz8NAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Unykz7IH; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b="gO86XJ5l"
-Received: by mail-dy1-f171.google.com with SMTP id 5a478bee46e88-30759632453so110673eec.1
-        for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 09:28:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=etsalapatis-com.20251104.gappssmtp.com; s=20251104; t=1781195336; x=1781800136; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hmILQTIhg4C2xaf23uaTPKYf63Qsqb45amOoW42QXJM=;
-        b=gO86XJ5lX2WhRMfkazLeKXLf7wv1CkXPx9mPNdIgUvnRG0+aMS1WTVPTkSFyz2/uju
-         f+dl+CDOeVOGYozPh+AO0+g+AgA2I7Wj8aG25z9PsB5fyPphzH2PzL8g7p25qK12h4XW
-         RE1fBgpAck3lEoD+tHqqnHXIFLFe91oecgiTgsV3/5L8YMOhIhmK+3xqnQ5wyeTr6DNp
-         NveThIDMWV2oQieMoMTS/P4+oOR4X/CFU0JecME9HoQLWnVGGNzexXvEn+NmYX+57mMD
-         8/SRfSGfQ2vSlSUKCnOoHLyi5Jb8wCP3EWlntz/vDnyKTNzvb+FWamw5uieCRTuHLSlo
-         G9Kw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781195336; x=1781800136;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=hmILQTIhg4C2xaf23uaTPKYf63Qsqb45amOoW42QXJM=;
-        b=oR2ipy+PNnsdX0qla+vkZhuPO97224/BZD047fi5sShNFC+ivj50RsebbnVB8t3alW
-         QUKm93XMaVz1nXlcPX3oZpUNPC7ihk+YT8d+o1IfxLk6LeJ7dMiPsuuT6HlE89NQXspL
-         kL4uVbJwbXnEvZnza8iE4sJTGHzhmOeKnmQ4Tv++j/7faIY2d1l6lG53ewU/3ON/CavT
-         nufi0qEdW2rC6j2Dh86JFUMqKSlW93qM6j+Rkeo6nyCcXJw4A4rqaroq9GE376yVc2xP
-         CFrSYx4aox6wm6+7xnG5DDlELTu/q1rm2ePylndiu7RZwuLfCushpxO0cL0sL+coSoCc
-         3ycg==
-X-Forwarded-Encrypted: i=1; AFNElJ/X5j9MeUaZjPpmsirvmKvl8Y82LtcdvUAQjARWkhvF3ZTWkssBgCq70MehHiqoh4TqPXPaNEM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyscwOvm4AXQHnyCJIp3+GHP06umiInagCAlmFpvVJLtJ9skQpG
-	DSnKO5BBOsGhOqlki4SMKwmcuNKYEpGBPxsPFHRTq6p8hguUbYhid2/D2g3locD1lbM=
-X-Gm-Gg: Acq92OFYpYe2EiiV0p+z4sFK+yrGobhMM7GoURLkPC65DFrKK3m3gOrk5b/qT7OXUFN
-	UeWBBuCl2I2UK5jYfcfk0z2NDa9OKfaH6pE9SfmJllCufH1YEkvLlhTlMSF5cajZYYkLgUadLZz
-	/1ZRv+4GksvhC7HERBW1lZ+IofdTd0iDzo/uWZEh4/qhZXF6h8XyEidVCRuJuLZwE4m6b80RO1Q
-	dHdNDZNGRL3HjOL71c6sJnUzxsCe/TcKCg9wZYgVSe33/4RrC911rnfdtmE1QB85QKXZagFxI5I
-	6d1SSqws0tHIHIHAJcDZJ/DsR7GIg3wndw29MBKE9tapZ8P38aowM3BvqQN2exD57eiG2FHBfjC
-	N2mj49YMJbIwgmkMJKOfX+6l7+9cGWP0XO+KtwkcMDheZxHGf0MxOKRujYVfM2jhS51zt7dZE5R
-	DBn2qUUX0cs0Ce14U=
-X-Received: by 2002:a05:7301:1292:b0:2fc:9ae6:e5a8 with SMTP id 5a478bee46e88-308049eb931mr2752590eec.20.1781195335328;
-        Thu, 11 Jun 2026 09:28:55 -0700 (PDT)
-Received: from localhost ([2620:10d:c090:600::9f35])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-30806c47afbsm3701418eec.10.2026.06.11.09.28.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 11 Jun 2026 09:28:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Unykz7IH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 506311F00899;
+	Thu, 11 Jun 2026 16:37:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781195832;
+	bh=ZSqDXVAqq24W1HC/0+seIWlfKFSSqkK6xzTjV0nilPk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Unykz7IHRlFiIyIQUMwgVXXNBrDresGjbKMH6FCnpRj4g+5vGqsdUt5cQ1AcS2AIn
+	 paE6IWek5jmwkllnm0thrm3x42CMqBjOTHcsneah+ZGFn9UM8R9SL29dOpuLHjFkdz
+	 HN2KG1LhXHIMrpdFkD/oCtxA5RDnUYmPhvNLJ8DzWVz4cSJV79/oBYeGGiHvk7ZB3K
+	 RMWPjTa70eBpUtrP1J9t0gzU6vINvueKksODRKfaqUdDPHX9PO2H52G6uIx2bsFMzG
+	 ZanAgXsO3B3aTWEzlJ5KgIBAKoU+uAOv/C8EsdcP11Rrnr8kpXxgp0MEJcdh3hxRVR
+	 XbQ6OuouRQmHw==
+Date: Thu, 11 Jun 2026 17:37:09 +0100
+From: Simon Horman <horms@kernel.org>
+To: Ren Wei <n05ec@lzu.edu.cn>
+Cc: linux-atm-general@lists.sourceforge.net, netdev@vger.kernel.org,
+	3chas3@gmail.com, yuantan098@gmail.com, bird@lzu.edu.cn,
+	zcliangcn@gmail.com
+Subject: Re: [PATCH net 1/1] net: atm: reject out-of-range traffic classes in
+ QoS validation
+Message-ID: <20260611163709.GW3920875@horms.kernel.org>
+References: <cover.1780965530.git.zcliangcn@gmail.com>
+ <58f02c6f73d9818fd5d2022e1116759fdde6116b.1780965530.git.zcliangcn@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 11 Jun 2026 12:28:51 -0400
-Message-Id: <DJ6D1R10KDES.B0BC2FOSLNCH@etsalapatis.com>
-Cc: "Weiming Shi" <bestswngs@gmail.com>, "Xiang Mei" <xmei5@asu.edu>,
- "Daniel Borkmann" <daniel@iogearbox.net>, "John Fastabend"
- <john.fastabend@gmail.com>, "Stanislav Fomichev" <sdf@fomichev.me>, "Martin
- KaFai Lau" <martin.lau@linux.dev>, "Alexei Starovoitov" <ast@kernel.org>,
- "Andrii Nakryiko" <andrii@kernel.org>, "Eduard Zingerman"
- <eddyz87@gmail.com>, "Kumar Kartikeya Dwivedi" <memxor@gmail.com>, "Song
- Liu" <song@kernel.org>, "Yonghong Song" <yonghong.song@linux.dev>, "Jiri
- Olsa" <jolsa@kernel.org>, "Emil Tsalapatis" <emil@etsalapatis.com>, "David
- S. Miller" <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>,
- "Jakub Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>,
- "Simon Horman" <horms@kernel.org>, "Jakub Sitnicki" <jakub@cloudflare.com>,
- "Shuah Khan" <shuah@kernel.org>, "Jesper Dangaard Brouer"
- <hawk@kernel.org>, "Sechang Lim" <rhkrqnwk98@gmail.com>, "Ihor Solodrai"
- <ihor.solodrai@linux.dev>, "Cong Wang" <cong.wang@bytedance.com>,
- <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
- <linux-kselftest@vger.kernel.org>
-Subject: Re: [PATCH bpf v2 2/7] bpf, sockmap: Fix wrong rsge offset in
- bpf_msg_push_data()
-From: "Emil Tsalapatis" <emil@etsalapatis.com>
-To: "Jiayuan Chen" <jiayuan.chen@linux.dev>, <bpf@vger.kernel.org>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20260611123538.156005-1-jiayuan.chen@linux.dev>
- <20260611123538.156005-3-jiayuan.chen@linux.dev>
-In-Reply-To: <20260611123538.156005-3-jiayuan.chen@linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <58f02c6f73d9818fd5d2022e1116759fdde6116b.1780965530.git.zcliangcn@gmail.com>
 
-On Thu Jun 11, 2026 at 8:34 AM EDT, Jiayuan Chen wrote:
-> From: Weiming Shi <bestswngs@gmail.com>
->
-> When bpf_msg_push_data() splits a scatterlist element into head and
-> tail, the tail's page offset is advanced by `start` (absolute message
-> byte offset) instead of `start - offset` (byte position within the
-> element). This makes rsge.offset overshoot by `offset` bytes, pointing
-> to the wrong location within the page or beyond its boundary. Consumers
-> of the corrupted entry either silently read wrong data or trigger an
-> out-of-bounds access.
->
->  BUG: KASAN: slab-use-after-free in bpf_msg_pull_data (net/core/filter.c:=
-2728)
->  Read of size 32752 at addr ffff8881042f0010 by task poc/130
->  Call Trace:
->   __asan_memcpy (mm/kasan/shadow.c:105)
->   bpf_msg_pull_data (net/core/filter.c:2728)
->   bpf_prog_run_pin_on_cpu (include/linux/bpf.h:1402)
->   sk_psock_msg_verdict (net/core/skmsg.c:934)
->   tcp_bpf_send_verdict (net/ipv4/tcp_bpf.c:421)
->   sock_sendmsg_nosec (net/socket.c:727)
+On Tue, Jun 09, 2026 at 04:34:37PM +0800, Ren Wei wrote:
+> From: Zhengchuan Liang <zcliangcn@gmail.com>
+> 
+> Reject ATM traffic classes above ATM_ANYCLASS in check_tp().
+> SO_ATMQOS stores the supplied QoS after check_qos() succeeds, so
+> accepting larger values leaves invalid traffic_class values in
+> vcc->qos.
+> 
+> That bad state later reaches pvc_info(), which indexes class_name[]
+> with vcc->qos.{rx,tp}.traffic_class. Values above ATM_ANYCLASS cause
+> an out-of-bounds read when /proc/net/atm/pvc is read.
+> 
+> Tighten the existing QoS validation so invalid traffic_class values
+> are rejected at the point where user supplied QoS is accepted.
+> 
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Cc: stable@vger.kernel.org
+> Reported-by: Yuan Tan <yuantan098@gmail.com>
+> Reported-by: Xin Liu <bird@lzu.edu.cn>
+> Assisted-by: Codex:GPT-5.4
+> Signed-off-by: Zhengchuan Liang <zcliangcn@gmail.com>
+> Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
 
-Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
 
->
-> Fixes: 6fff607e2f14 ("bpf: sk_msg program helper bpf_msg_push_data")
-> Reported-by: Xiang Mei <xmei5@asu.edu>
-> Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-> Cc: Jiayuan Chen <jiayuan.chen@linux.dev>
-> Signed-off-by: Weiming Shi <bestswngs@gmail.com>
-> ---
-> To sashiko:
->
-> Regarding bpf_msg_push_data() reading "copy =3D msg->sg.data[i].length" w=
-ith
-> i =3D=3D msg->sg.end (appending at the very end of a full/near-full ring)=
-:
->
-> This is pre-existing code, not touched by this series, and reproducing it=
- needs
-> a narrow combination -- a pure append at the end so the loop exits with
-> i =3D=3D msg->sg.end, a full/near-full ring, plus a prior push/pop histor=
-y that
-> leaves a stale length in the otherwise-unused end slot. A freshly built r=
-ing
-> zeroes that slot, so copy stays 0. We don't consider it practically repro=
-ducible.
->
-> Even then it's already covered: the overflow check in patch 1 ("copy + le=
-n <
-> copy") rejects the dangerous case, and __GFP_ZERO in patch 3 prevents any=
- data
-> exposure. Not worth fixing here.
-> ---
->  net/core/filter.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/net/core/filter.c b/net/core/filter.c
-> index 3c8f1cedb217f..3e555f276ba80 100644
-> --- a/net/core/filter.c
-> +++ b/net/core/filter.c
-> @@ -2872,7 +2872,7 @@ BPF_CALL_4(bpf_msg_push_data, struct sk_msg *, msg,=
- u32, start,
-> =20
->  		psge->length =3D start - offset;
->  		rsge.length -=3D psge->length;
-> -		rsge.offset +=3D start;
-> +		rsge.offset +=3D start - offset;
-> =20
->  		sk_msg_iter_var_next(i);
->  		sg_unmark_end(psge);
-
+I believe the issue flagged by AI-generated review on
+https://netdev-ai.bots.linux.dev/sashiko/ is a false positive.
