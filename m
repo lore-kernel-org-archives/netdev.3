@@ -1,102 +1,242 @@
-Received: from fout-a3-smtp.messagingengine.com (fout-a3-smtp.messagingengine.com [103.168.172.146])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9140334252C;
-	Thu, 11 Jun 2026 17:49:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.146
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77B61409E1B
+	for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 17:53:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781200199; cv=none; b=MAXCyvb0B+7urThmICUG8hCIcwb3O7/OwQ/h20O3BWhQTO1D8F3LSTMXYn6jCLkjzllS8HyfHLLJOVZKfZ+o4nv0xjSPR6DbThSLnUWMVocuNVnGGzR0ko1/X2ow1i4nKtmL3d9RYePGfqnB0zmvBcVtMg8CD+NaANWeG3/llcg=
+	t=1781200426; cv=none; b=KEJC7Op/v2joaqEJ9yMFnOz680NEZm2B/EeYdIckMOYHsUBYBtuVBAZ5U+pyD/npjztOw2GpVvbL8ffqTcNlcYNu6NbK5bdP8FU3KYIGWOURb9oirGyo3uhMIXzqTjyZPxTz1xo6e34oWAThcQKKaJXnbzrzjKlqGnsnXTxg/W0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781200199; c=relaxed/simple;
-	bh=A0tgh4WnHTxGBmbh+DeIP5G40O2qNmEvB42OOSSf30c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZLCFK3Xgdz7e2MtikdKZFTkJY/GM4BxMfpk2np1T/0SQQeVF2ipWzm+4Uq0FKr2rmccvGHgCOkf7wiwbDPe5Vl8KoI5GfOS/BQS2r76LFn93D/WBhj8qHw05pV0lbKO1RtnJ1mMwtw+/14AbIsEKRy+6biiLHM+zBbK0bsAnSA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=aYDpwFG6; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=ZalM005o; arc=none smtp.client-ip=103.168.172.146
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="aYDpwFG6";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="ZalM005o"
-Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
-	by mailfout.phl.internal (Postfix) with ESMTP id AF36CEC01F5;
-	Thu, 11 Jun 2026 13:49:55 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-09.internal (MEProxy); Thu, 11 Jun 2026 13:49:55 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1781200195; x=
-	1781286595; bh=Fv3zltmQZuUcdgjP+FmX8anaVH8F8UP5gl9/ld5PYuQ=; b=a
-	YDpwFG6N42MTs/xsMq0oIwkEr28q4aqM59KBJJkB9mX1zMJRZysGXeNRAjLEXKSj
-	yXcwNgaFHSWNTHtFvcLufn2pCVK1FQyKAlxwGyP8UPYFhw9w3u/qr5LCQmWLzjsT
-	1myyRuHh74RJEAhtNlmXXuO73XucbW6Njv/gjWYMTzCJ9XhWUC1P6z3qnC3+3XtX
-	gB3kQTb9zjCa3mDTYzCmybNS+laNfe44NUoTL38zUfB/d5EwBleieY38RfgefHXj
-	FMHDGPZs73v8Ne+s3t+2KhWM7rgZuRjYeFi9nt/B0xtfxVlWAuvfuMHIHSUeQI9d
-	W5PCr4b0hgSp2ecgMF9qw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1781200195; x=1781286595; bh=Fv3zltmQZuUcdgjP+FmX8anaVH8F8UP5gl9
-	/ld5PYuQ=; b=ZalM005o+Fz9LA8WRNXfAuVxBM/jX/JF16Yc1RFoZY5E2OQdsiT
-	94eZFeSfKJ5fT2Sk7jvQUvvMirT8+3w9KbwlGVWkDKiGczFUL6BsxeMLeYD2bXxB
-	NPL4ykPQv6oe8+BuYfZ/yWgityw8KmYbfOSY32atOBgOKCdTvb5Y98Fi7ZpqoXzb
-	EgCzJBDBRo+m8cV55/37SaZn6khOONL3ULhZB3WjtNjw3hdfjlPrmtxQcwba9KZk
-	jd9rVQgNcOV1FyQsrx4NUbthdkSy8titp8IOpxG0CMoS/C7DgiqTsGo57nrnEPaS
-	kEDQQbxQruQ/JsRmTy2s6eXvuEmZ/QY4ycQ==
-X-ME-Sender: <xms:QvUqahe7RnBPgWL6EOHhl5zjyDVWufkn5LD5rboL7X6m2-56O8ct-g>
-    <xme:QvUqanUkZ_CDy38EzZahBIZrrIfZf7ac1GvhDxAbwk-SI9xP6_4udYPRk0fC6K8W2
-    Bj0c4X0u2gubSBqVF4F1iJ2RdjlKLrGrv8dB3U8AucyOA9aZwR1xQ>
-X-ME-Received: <xmr:QvUqaqCxIOJIimaCFDhUzzc-3jyXfARjKam3fMduxoptvWeEhNVBVm0v74OwKI8J-LnIjzVd8g9Qaf96zWsgkeo>
-X-ME-Proxy-Cause: dmFkZTE+9xNvn3jpTJhf5GiPXg4ArdU+aLZLs6IgDmj1lh17R+bGZ2cfhULK8LvQkOC6gd
-    sPJ6Z5hKhXLloLTmhArtHiDtixi5soLxdAS28QGjPdxD1iV7YmP//vgXDKz7NmqIa1S0bc
-    c5crwom/9jSFmNqoWJvAhczVhCcwguIaKir/9l2kMPoBJHCcmqEw8AliwQ7S6OJxaiTvKD
-    zIowhRtEvSyO4vLm5xP0vRjK8EDlS4oOH8Dr/oCWsw0TZOGQLsYqjUd0VjGSarwzwlNEf9
-    mCZ/pyzObhJLqbkR9hcMb7WHtd5BvJA7pQx2cSXH/meQqQbbs2oUFJxmV281gKYuJSHqMr
-    iasO144mTjSoImMMtv6J8Q0RYf9jFuAlTQDAibYpomlp3CKZeSm2hSznAYYRdVmClniBkn
-    +3AGUmVNdFzw82QA+4DUttwAwSrUhwicxxdPlC37Ja8k8D0Q6Y1Tj+074DJokv4/Ho10vV
-    LZ/oMFtRjmLJ301e4ZE8DgFv3HfHnO+88s+EXF5PvRx6d5zFyzxQT8xQYGhssC8/Jl5GB1
-    i8BSrCOyCEVn1PvBz0yZcY2+FlwI7R7J+uux4Kk9zt8Hfic4DVniK4f4U1Mgj30O0zM31r
-    EKcZ5L2uXwP2W7TjqInWREzz2MOKLTqAv0VAKEY54emai4RZ57L9EMtV/3TQ
-X-ME-Proxy: <xmx:QvUqaq7fa3n3xS01vwny9P0EOVxsp69qQsvCdghPQlfEp_vokN6w_g>
-    <xmx:QvUqap2yPDNeAi1FRbmd0AGELdYZTb_gRQ3AUqq0ppcBBMfj4nsK1g>
-    <xmx:QvUqamm6eo28Ta_xIIdmW2WLOmv98GuUGqamMKBoAlwgOtKWgYLrgA>
-    <xmx:QvUqan6_cQBUrz0kb9VnQmu-stU2Nvnv_PrUTX50wL7jiNEDLFHx9g>
-    <xmx:Q_UqajkLvOsay_46oH49iZPloH6_rY6ZuBkIysmWeWhmHaH060qpCgKq>
-Feedback-ID: i934648bf:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 11 Jun 2026 13:49:53 -0400 (EDT)
-Date: Thu, 11 Jun 2026 19:49:51 +0200
-From: Sabrina Dubroca <sd@queasysnail.net>
-To: WenTao Liang <vulab@iscas.ac.cn>
-Cc: steffen.klassert@secunet.com, herbert@gondor.apana.org.au,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] net: af_key: fix refcount leak in pfkey_spdadd()
-Message-ID: <air1P8N3WC8mG4Vf@krikkit>
-References: <20260611163743.99526-1-vulab@iscas.ac.cn>
+	s=arc-20240116; t=1781200426; c=relaxed/simple;
+	bh=C1/9WqMIikG4TbvGYvRTRnQML9kGjmx5W4qtV8KonoU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kGqEX2H800rmAs9PWbfjjlpElgSmmT0TpvrIJrO1dVctx68fFfPHglr6j2lluWJ5KfXDmkqU2Xf8unKaj9kBy1yvf3ykFmRautX4BmRAjypIVqzAeJRnTDcWNPCFHi51Vm9pa8pSJlDNpPyWP9EShR4ydHPJc0F1ux5AubGfp/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=hotmail.com; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.222.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=hotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-9155183b42cso24738785a.0
+        for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 10:53:44 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781200423; x=1781805223;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=j0fUEOqCBAKWY+jF2nwnPfkq3UUQaayGSCWrTMCmKlk=;
+        b=TQ77IHXgwEPWOtCnVHMlMOEgOr+bXNL+frlnBmsKkcVUKPpcjTH51CxLH//PmbfF+2
+         dXAozr1cJbX133sW0c1xGsi0qC7diES6WYsNqI38vUSzbLn3zPLJHVUs4Oj5TBsLUskk
+         9hOxqbIpLkEdfVz8dm/rMOLjJEq89h5224No8AviP3BwOpXYGh5Qa1KfvAeX9c0HEQAn
+         B1BwHEww1wNy1ebgF+MYCWL42NqRxxp3uEr9DyW1BaFIMWDqfs4WFp2fcDcXteskED7O
+         CcY3cNaVHb4ZS8niELVmr5gpe9VAID6iafmj6EFQR5RAjjo9OvbVzEwKFv3Ib2aJnpEA
+         zv9Q==
+X-Gm-Message-State: AOJu0Yx6VbgC3GR1M5pAVy7KtQ5vMZMpMVI0PHl8Bajgm+4yRLA2NQrm
+	xZ2yf3vTR+ssI93qJftMOH2uIMVaiRfazPQosJa1ZbeOmtFws9YFBK6W
+X-Gm-Gg: Acq92OETS4pl5XLGf+kB4PsBtW6EMfsWSJ6FtVCT1QILjesXn87i8Po5m6JdkW6Cb7z
+	Vxl6JHi0mLp7Z4L2OUB+hJP2LJO50We0GvDbrO0JOMDGdiiWKjsyjzg/MddXtfOfojoKkM9qODh
+	4vX7THxZnXBZnC6FRsALCXu09hQs8uvcE7As2hjHZRCpx+VgGhAdAW6rkO+dULFFxFoWxM8t36C
+	n6BI9bfBSRcfbpvhjj8Nmevb6JO8GAXt5X3HrGSEHcuk+2CBLR4Nhhei2MUmcsTsE4FgqyRHlq0
+	HUY/ELKxX88mW6s23ZYPZnhiLtOGLL+ipljU5P3ocYroCJDa1zLD7+uKLoEJvUGpD1iL+sxNWBV
+	9bGxQGeMNwehtSA66DUus2LFnjyhjpVPHrdL3MboLKWlW873R9yCdWgV0ExwS+djifCSyRiFhw1
+	tfYDAHQJLrOieK7lKD3LNrU6RHTuxNgRtEKJyCS925o3tPHGLSrKct1TEZw4DbyU/JyfciQOx91
+	VHkrJ6KnxicWp5/t0abitCCViX5crM1
+X-Received: by 2002:a05:620a:6cca:b0:915:351b:3ad5 with SMTP id af79cd13be357-9160ae074efmr523111085a.29.1781200423338;
+        Thu, 11 Jun 2026 10:53:43 -0700 (PDT)
+Received: from lxc-docker-tertiary.local (pool-108-45-26-115.washdc.fios.verizon.net. [108.45.26.115])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-9160aca2ee9sm246142985a.13.2026.06.11.10.53.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 11 Jun 2026 10:53:42 -0700 (PDT)
+From: Greg Patrick <gregspatrick@hotmail.com>
+To: Russell King <linux@armlinux.org.uk>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Manuel Stocker <mensi@mensi.ch>
+Subject: [PATCH net-next v3] net: phy: sfp: detect presence via I2C when no MOD_DEF0 GPIO
+Date: Thu, 11 Jun 2026 17:53:41 +0000
+Message-ID: <20260611175341.2223184-1-gregspatrick@hotmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260611163743.99526-1-vulab@iscas.ac.cn>
+Content-Transfer-Encoding: 8bit
 
-2026-06-12, 00:37:43 +0800, WenTao Liang wrote:
-> In pfkey_spdadd(), an xfrm policy is allocated via xfrm_policy_alloc()
-> with a refcount of 1. On the success path the policy is eventually freed
-> by xfrm_pol_put(), which decrements the refcount and calls
-> xfrm_policy_destroy() only when it reaches zero. However, all error
-> paths directly call xfrm_policy_destroy() without releasing the initial
-> reference, leaking the policy object.
+An SFP cage (compatible "sff,sfp") whose MOD_DEF0 signal is not wired to a
+GPIO currently falls back to sff_gpio_get_state(), which unconditionally
+reports the module as present. An empty cage therefore fails its probe and
+is parked in SFP_MOD_ERROR forever; because SFP_F_PRESENT never deasserts
+there is no REMOVE event to recover the state machine, so a module inserted
+after boot is never detected, and empty cages spam -EIO at boot.
 
-Uhm... have you looked at what xfrm_policy_destroy and xfrm_pol_put
-do?
+This affects boards that route none of the cage presence signal to a
+software-readable input. On the NicGiga S100-0800S-M (RTL9303, 8x SFP+) the
+cage I2C bus is the switch's SMBus master; TX_DISABLE is driven via a
+PCA9534 I/O expander, but no MOD_ABS/MOD_DEF0 line reaches a readable GPIO
+(the RTL9303 gpio0 lines read stuck-low, the single PCA9534 is fully
+consumed by TX_DISABLE, and there is no RTL8231). The Horaco ZX-SW82TS-L2P
+(RTL9302D, 2x SFP+) is independently affected in the same way.
 
+For such an SFP cage, derive presence from a throttled single-byte I2C read
+of the module EEPROM instead: a successful read asserts SFP_F_PRESENT,
+R_PROBE_ABSENT consecutive failures clear it (to ride out a transient error
+on a live module). The existing poll then emits SFP_E_INSERT / SFP_E_REMOVE
+normally, giving working hot-plug and silencing the boot-time -EIO spam on
+empty cages. Presence is re-probed every T_PROBE_PRESENT, so insertion is
+detected within that interval and removal within
+T_PROBE_PRESENT * R_PROBE_ABSENT.
+
+A soldered-down module (compatible "sff,sff") has no presence signal and is
+genuinely always present, so it continues to use sff_gpio_get_state(); the
+new path is gated on the cage type advertising SFP_F_PRESENT.
+
+Signed-off-by: Greg Patrick <gregspatrick@hotmail.com>
+Tested-by: Manuel Stocker <mensi@mensi.ch>
+---
+v3:
+ - Reduce the presence re-probe interval to 500 ms and require 3 consecutive
+   failed probes (R_PROBE_ABSENT) to declare a live module removed, cutting
+   removal-detection latency from ~4 s to ~1.5 s while still riding out a
+   transient I2C error on a live module. Polling is gated by the existing
+   need_poll path (100 ms), so this is one single-byte SMBus read per cage
+   every 500 ms. Note that, as a polled scheme with no presence edge, a
+   same-cage swap to a different module within the removal window cannot be
+   observed; this is inherent to boards lacking a readable presence line.
+   (Maxime Chevallier)
+ - Hardware-validated on the NicGiga (now running from flash): insertion into
+   a cage that was empty at boot is detected and links within ~1 s, and clean
+   removal of a live module is detected in ~1.2-1.5 s.
+ - Note the Horaco ZX-SW82TS-L2P (RTL9302D, 2x SFP+) as a second, independent
+   board with the same no-MOD_DEF0 wiring. The Tested-by reflects a test of
+   the I2C-presence mechanism on that board; the v3 delta is the timing
+   constants above.
+
+v2: https://lore.kernel.org/netdev/20260604151614.3310544-1-gregspatrick@hotmail.com/
+v1: https://lore.kernel.org/netdev/20260602235528.2795028-1-gregspatrick@hotmail.com/
+
+ drivers/net/phy/sfp.c | 83 +++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 80 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
+index 376c705a9..5e952d095 100644
+--- a/drivers/net/phy/sfp.c
++++ b/drivers/net/phy/sfp.c
+@@ -206,6 +206,16 @@ static const enum gpiod_flags gpio_flags[] = {
+ #define T_PROBE_RETRY_SLOW	msecs_to_jiffies(5000)
+ #define R_PROBE_RETRY_SLOW	12
+ 
++/* Polling interval and consecutive-failure threshold for the I2C presence
++ * probe used on boards without a MOD_DEF0 GPIO (see sfp_i2c_get_state()).
++ * A single successful read asserts presence immediately; R_PROBE_ABSENT
++ * consecutive failures are required to declare a live module removed, to ride
++ * out a transient I2C error. Insertion is thus detected within
++ * T_PROBE_PRESENT and removal within T_PROBE_PRESENT * R_PROBE_ABSENT.
++ */
++#define T_PROBE_PRESENT		msecs_to_jiffies(500)
++#define R_PROBE_ABSENT		3
++
+ /* SFP modules appear to always have their PHY configured for bus address
+  * 0x56 (which with mdio-i2c, translates to a PHY address of 22).
+  * RollBall SFPs access phy via SFP Enhanced Digital Diagnostic Interface
+@@ -249,6 +259,13 @@ struct sfp {
+ 
+ 	bool need_poll;
+ 
++	/* I2C-probed presence, for boards without a MOD_DEF0 GPIO.
++	 * Access rules: st_mutex held (updated from the poll/state machine).
++	 */
++	bool i2c_present;
++	u8 i2c_present_nak;
++	unsigned long i2c_present_next;
++
+ 	/* Access rules:
+ 	 * state_hw_drive: st_mutex held
+ 	 * state_hw_mask: st_mutex held
+@@ -863,6 +880,45 @@ static int sfp_read(struct sfp *sfp, bool a2, u8 addr, void *buf, size_t len)
+ 	return sfp->read(sfp, a2, addr, buf, len);
+ }
+ 
++/* Probe whether a module is physically present by attempting a single-byte
++ * I2C read of the EEPROM identifier (an empty cage NAKs). Used as the presence
++ * source on boards that do not wire MOD_DEF0 to a GPIO.
++ */
++static bool sfp_module_present_i2c(struct sfp *sfp)
++{
++	u8 id;
++
++	return sfp_read(sfp, false, SFP_PHYS_ID, &id, sizeof(id)) == sizeof(id);
++}
++
++/* get_state variant for boards without a MOD_DEF0 GPIO. Instead of assuming
++ * the module is always present, derive SFP_F_PRESENT from a throttled I2C
++ * probe so that hot-insertion and removal are detected. A single ACK asserts
++ * presence; R_PROBE_ABSENT consecutive failures clear it, to ride out a
++ * transient I2C error on a live module.
++ */
++static unsigned int sfp_i2c_get_state(struct sfp *sfp)
++{
++	unsigned int state = sfp_gpio_get_state(sfp);
++
++	if (time_after_eq(jiffies, sfp->i2c_present_next)) {
++		if (sfp_module_present_i2c(sfp)) {
++			sfp->i2c_present = true;
++			sfp->i2c_present_nak = 0;
++		} else if (sfp->i2c_present &&
++			   ++sfp->i2c_present_nak >= R_PROBE_ABSENT) {
++			sfp->i2c_present = false;
++			sfp->i2c_present_nak = 0;
++		}
++		sfp->i2c_present_next = jiffies + T_PROBE_PRESENT;
++	}
++
++	if (sfp->i2c_present)
++		state |= SFP_F_PRESENT;
++
++	return state;
++}
++
+ static int sfp_write(struct sfp *sfp, bool a2, u8 addr, void *buf, size_t len)
+ {
+ 	return sfp->write(sfp, a2, addr, buf, len);
+@@ -3168,9 +3224,30 @@ static int sfp_probe(struct platform_device *pdev)
+ 	sfp->get_state = sfp_gpio_get_state;
+ 	sfp->set_state = sfp_gpio_set_state;
+ 
+-	/* Modules that have no detect signal are always present */
+-	if (!(sfp->gpio[GPIO_MODDEF0]))
+-		sfp->get_state = sff_gpio_get_state;
++	/* An SFP cage with no MOD_DEF0 GPIO has no hardware presence signal.
++	 * Assuming the module is always present traps an empty cage in
++	 * MOD_ERROR and never detects hot-insertion, so derive presence from a
++	 * throttled I2C probe and poll for changes instead. sfp_i2c_configure()
++	 * has already set i2c_max_block_size; seed i2c_block_size so the
++	 * presence read does not issue a zero-length transfer before the first
++	 * EEPROM read. Seed i2c_present_next to jiffies so the first probe
++	 * happens immediately (a zero value would be in the past relative to
++	 * the negative INITIAL_JIFFIES at boot and delay detection).
++	 *
++	 * A soldered-down module (sff,sff) has no presence signal and is
++	 * genuinely always present, so it keeps the always-present behaviour;
++	 * the I2C probe is gated on the cage type advertising SFP_F_PRESENT.
++	 */
++	if (!sfp->gpio[GPIO_MODDEF0]) {
++		if (sff->gpios & SFP_F_PRESENT) {
++			sfp->get_state = sfp_i2c_get_state;
++			sfp->i2c_block_size = sfp->i2c_max_block_size;
++			sfp->i2c_present_next = jiffies;
++			sfp->need_poll = true;
++		} else {
++			sfp->get_state = sff_gpio_get_state;
++		}
++	}
+ 
+ 	device_property_read_u32(&pdev->dev, "maximum-power-milliwatt",
+ 				 &sfp->max_power_mW);
 -- 
-Sabrina
+2.53.0
+
