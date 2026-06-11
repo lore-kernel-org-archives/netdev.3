@@ -1,103 +1,69 @@
-Received: from mail-dl1-f73.google.com (mail-dl1-f73.google.com [74.125.82.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 532C71BC2A
-	for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 00:24:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66F4C199949;
+	Thu, 11 Jun 2026 00:45:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781137499; cv=none; b=n82bZB0cAuAgcSk33tqxISoeLACN/v8atBogLBB2zGa/5WIjn6EQNdg5iX8Xox85nWFCpubYAIKkFcWzRq1Cj05YRzo5d+WLbuh6WGfRPDuCi+bHoEMM4ZTEJqG+L2TNcrI+XBELdIO+0FyepuGlkq6pMQ3FMdCAyxC/y1FWF7I=
+	t=1781138737; cv=none; b=GVpZWLX10OF56TFt1Y6wSdNVGZJk5cfdp+oiGXH4XL8WZqfd0ekqj7CoYKsQBTEvmJQwh0hBldQJ5f3recjFVfho99io1sy2ijFMp7BkYjXkMLwa48E2HcZo/CwxRo96y1a8PbgkvyCmm+a6VMIf+y2+Drc+80btKCsEfY9H3Ls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781137499; c=relaxed/simple;
-	bh=xBE549hUxlfDUzO3UdRl+STPrbuxhOZnaaDsCdSdW3g=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=ls3Vdiop/0ff1/jWlOSgbBbwoGVThJyrT6fjsebvq/b//JHpJh9lgytefexfJnZk/FaA43CHAo2wj44xmkZix67Th7s0jJZqxrVBym/l5u8UVDEhXdn6D41or+2rNPJGMgeKbBQiJkZBdmAKk7M998sMh0EqAQnBUAB5e3uTFKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--digonzal.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=v22s4GuM; arc=none smtp.client-ip=74.125.82.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--digonzal.bounces.google.com
+	s=arc-20240116; t=1781138737; c=relaxed/simple;
+	bh=PR3Oqi5TQM5S1MD49NNzRGEphF4xa22xv9/BSaUvkl4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ZMVHe58ypBoelgV7ktm8/6mh/rWMWafdqertwCVFs3bfocTKXs6vi45rB4KzlSUXYCaWHdRlRHXLMhaf17ADAlwlTn8GTfWcqh+c+rDEoxknMuZBngWqVIVdn0ad+lCgz/KiFRYdjfkLsFj4SNILPsvE+3p1elckLKkBuju2A9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RIUbwOar; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="v22s4GuM"
-Received: by mail-dl1-f73.google.com with SMTP id a92af1059eb24-1383678095cso4917165c88.0
-        for <netdev@vger.kernel.org>; Wed, 10 Jun 2026 17:24:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781137497; x=1781742297; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=D/mNN+ZL+7iwwZTVcSxzEBAbL/ejYUDxYrg2Yjp4l8w=;
-        b=v22s4GuMHx7ewQN+DmpdrCx322JkF1v3bVQNAIUaGOoMoq969lYgq0XCWefMlagRtz
-         rKMOPOeKuaTckb88RvCaRJcPYxgtwQ3QNlBK3NcGpHln1nc3dVyLpN7yluMyoq9SAXyL
-         STZWvQ7p4Zjaq11kl1we2YgGe/6Z85WCl7se62o2pkGtr9GigxOcXl22Rqh4EiPFIlDC
-         mVyV4hro3wUT6ZJ95gSpf/SWDKms2xT/XTvHC6C0vze1sxbDlWAzKLuwPZ67gGNIjDEl
-         3YqFc/f+enotmB27hkLtxOO2CxGj/puW0vITYAXLc//efmxL9qiRv3KeNCGkCUinvUuk
-         SI/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781137497; x=1781742297;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=D/mNN+ZL+7iwwZTVcSxzEBAbL/ejYUDxYrg2Yjp4l8w=;
-        b=ePe5xAy0ZBHvSiGBq3xQ2FxkorFgbkarrbcoznpgDmmmYO1iQ4GNZPJ7LNOWQSgeQo
-         2L3jS17OT93MvMztHcRX7rsjhYsJz/8HJBCUxO7tqoGpQpUYgd1MzRlp4yLZ7flFpPyH
-         /HjmqMTgjzecZARBKJeVf7uRxogcOh3bBoH66xMPNQ6619Km6zpPAbMtNqOSDSZIceuy
-         8PZGPxIzFONHx6hYYnG1pXcowRCq4m6KxHud5vPaxLZXRzEDfrp/sHLxPOtFWGU+UuDg
-         AUZbtdyioTat+C21P1bIzxxTHifBuInL1Ox1ta5JEgWR4TzN/KJQvhSBqBw1CU3eL+Mv
-         mMaw==
-X-Gm-Message-State: AOJu0YxiTa4/cknK3njqLqRGa/p6aoJfSwdZxSaP5iRW0xU/umeE+rPx
-	r1ST+9LbG97CSG1M6pvEgbB7vS5NTN+WoXk+uXaaP8ISwj0HPVmhhUmncYASqG04ZS0mt+V5Kkj
-	Vbweh2/+qS5ImjQ==
-X-Received: from dlbvv8.prod.google.com ([2002:a05:7022:5f08:b0:138:9f7:2b4a])
- (user=digonzal job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:7022:50c:b0:137:ef8d:a58 with SMTP id a92af1059eb24-13842119f60mr288616c88.3.1781137497042;
- Wed, 10 Jun 2026 17:24:57 -0700 (PDT)
-Date: Thu, 11 Jun 2026 00:24:37 +0000
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RIUbwOar"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39A521F00898;
+	Thu, 11 Jun 2026 00:45:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781138736;
+	bh=PR3Oqi5TQM5S1MD49NNzRGEphF4xa22xv9/BSaUvkl4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=RIUbwOaribefmXn7gOJFOR0McmBexb33G0oQ16M+ASyEaVTNblI2gz+2jbaYDlC12
+	 ovJX6agyAluiXIC6UgPmz/bWUiA2fAq58r9SNnFFTOokeEumiMHxb3wCoaKMHw/4FJ
+	 oGPOQmcCLu42UVJgwoTy+EvivxTBu2JZ4MIAXUMoJuawrfga2corqtgHO+AqKmJM0b
+	 AJ5kW0h+Oznl+u+BNt0/odOJF6Es8KIvW/Xq4EX1EEapoBh9vx/F6rEBEK9s7Nnd8x
+	 O3Uhw31JMT8ChhBlHko62Namk0QPDf6Poj0abg00TJ95oHlvhicEy17GLdhk/9qz+O
+	 5UUOBF7TPJX5w==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Sasha Levin <sashal@kernel.org>,
+	Alexey Panov <apanov@astralinux.ru>,
+	Jay Vosburgh <j.vosburgh@gmail.com>,
+	Veaceslav Falico <vfalico@gmail.com>,
+	Andy Gospodarek <andy@greyhouse.net>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Jeff Garzik <jeff@garzik.org>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Jay Vosburgh <jv@jvosburgh.net>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	lvc-project@linuxtesting.org,
+	syzbot+9c081b17773615f24672@syzkaller.appspotmail.com
+Subject: Re: [PATCH 5.10] bonding: limit BOND_MODE_8023AD to Ethernet devices
+Date: Wed, 10 Jun 2026 20:45:20 -0400
+Message-ID: <20260610-stable-reply-0004@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260609164835.32573-1-apanov@astralinux.ru>
+References: <20260609164835.32573-1-apanov@astralinux.ru>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.54.0.1099.g489fc7bff1-goog
-Message-ID: <20260611002437.1671401-1-digonzal@google.com>
-Subject: [PATCH iwl-net] idpf: decrease statistics refresh interval
-From: Danny Gonzalez <digonzal@google.com>
-To: Tony Nguyen <anthony.l.nguyen@intel.com>, 
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>, "David S. Miller" <davem@davemloft.net>, 
-	Jakub Kicinski <kuba@kernel.org>, Eric Dumazet <edumazet@google.com>, intel-wired-lan@lists.osuosl.org
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	David Decotigny <decot@google.com>, Anjali Singhai <anjali.singhai@intel.com>, 
-	Sridhar Samudrala <sridhar.samudrala@intel.com>, Brian Vazquez <brianvv@google.com>, 
-	Li Li <boolli@google.com>, emil.s.tantilov@intel.com, stable@vger.kernel.org, 
-	Danny Gonzalez <digonzal@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-The default 10s statistics refresh interval is too slow for real-time
-monitoring and causes network selftests (e.g., uso.py) to fail when
-verifying traffic immediately after transmission.
+On Mon, Jun 09, 2026 at 07:48:35PM +0300, Alexey Panov wrote:
+> [PATCH 5.10] bonding: limit BOND_MODE_8023AD to Ethernet devices
 
-A 10s delay also causes aliasing in telemetry tools polling at shorter
-intervals (e.g., 5s), leading to inaccurate rate calculations on
-high-throughput NICs.
+Queued for 5.10, thanks.
 
-Decrease the refresh interval to 250ms to ensure fresh stats and fix
-test failures.
-
-Tested: drivers/net/hw:uso.py now passes
-Fixes: a251eee62133 ("idpf: add SRIOV support and other ndo_ops")
-Signed-off-by: Danny Gonzalez <digonzal@google.com>
----
- drivers/net/ethernet/intel/idpf/idpf_lib.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_lib.c b/drivers/net/ethernet/intel/idpf/idpf_lib.c
-index cf966fe6c759..e2890d219431 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_lib.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_lib.c
-@@ -1364,7 +1364,7 @@ void idpf_statistics_task(struct work_struct *work)
- 	}
- 
- 	queue_delayed_work(adapter->stats_wq, &adapter->stats_task,
--			   msecs_to_jiffies(10000));
-+			   msecs_to_jiffies(250));
- }
- 
- /**
--- 
-2.54.0.1099.g489fc7bff1-goog
-
+--
+Thanks,
+Sasha
