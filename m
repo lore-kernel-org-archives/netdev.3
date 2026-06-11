@@ -1,101 +1,115 @@
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0B4231326A
-	for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 23:12:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F84B31326A
+	for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 23:12:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781219561; cv=none; b=ugpvtPhgFXI9jeGFEAXASv+JWiJ5n6Bs+EDL7qd5MW/cu/myoopN3scBNtZxnrK+8qpKmHu6TUMCvNRQN7dzyw48bNJq4ypHqdxi5uCPSFURPmdZIhzUp/qmN4oGq17aD60oQMabMV4zms89urTK7sQELZSYKeocpVzT2jmt74Q=
+	t=1781219564; cv=none; b=fqdEuHFC3udr1Ld1SsAiWerKNwj0UimijvScdw/O1QAH3qa3P2z/zVC+s0p81GzSAB+ZvBQnkEAjoEqYGD0eocIoNCcUQXIskfTtdWW36NBl6pVroXmTaQSA7NwcLAcP5R3B9Sh4BHwNnf+YrFuAiWwKArQrK2ct6QKtx3q3rHE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781219561; c=relaxed/simple;
-	bh=pjaqCry+5jomCtNcVTv7LGesukQGkSwZ3Sv1c45EeV0=;
-	h=Message-ID:From:Date:Subject:To:Cc; b=KVFNWMIsEK87D7Gj4Ev+8kJwTByhGNatiHJGVeQ8+pBeCfK1leNiU4tbdqT/Ad4MJ7EnyxbGf25f8jETA45mz7LO9SieUVd9/YDMOLR2MR8eLKIiPBFS7b+vXNy7B1TtGIL0oe9wRvkcrUuhBMYQo91oN31xvZAFcWnvoOvZHHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XSKsqaha; arc=none smtp.client-ip=209.85.210.173
+	s=arc-20240116; t=1781219564; c=relaxed/simple;
+	bh=tkvVzvKSNkc15LVXz0upvAZulnl5lnii3UoMtZ9Yj7g=;
+	h=Message-ID:From:Date:Subject:MIME-Version:Content-Type:To:Cc; b=Sgnw2shgksbp1xAaYiMi+moI8a6cCVJ3g2vJxW8KNU0sBbB1fUI7pJwkjkHA1nKu8lsGcxTwWHgQKV2sPx8PE+bpB56nWjtUUYzaW88O1MAZMg89iWFxMkSzUMQ1k+Rn69YERHtWDMS2CMVQYxEIcfvTgOh4m4O5mhPsjM0166g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kxRqYwJu; arc=none smtp.client-ip=209.85.210.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XSKsqaha"
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-842cd900ee0so206251b3a.2
-        for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 16:12:40 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kxRqYwJu"
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-842358aaf36so185295b3a.2
+        for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 16:12:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781219560; x=1781824360; darn=vger.kernel.org;
-        h=cc:to:subject:date:from:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=32LA4oVKRlobt0c3JKXFPxQfDW1KytgL05KrQQdvsrs=;
-        b=XSKsqahaCniRryta0hFFp2lPAFKVjiDZBj+PhvX9K8m2kMIbiPJtyYlWh5DgPPHE8Y
-         y9tVSTDxH1GpLEdEZiaor42IwosTKMU02W9bI0xa2wJKb4nDL20MXUcABuxybIuVJQtR
-         EUkxKgRaLlAemP719hkDfxlv2a7po+Dtb5OnDe9BVuB8y/B4HiO6oMnH4c4WhNxmyr6h
-         jgxjchx99D2cfTsI2ilO2qrciSnbqxFHrDTjLun8z4AqbxD3Ymk3IPj+aVIun+NREEQW
-         Du2CrmbRgtOfq0WHQHzHsSi48yj2ep4OzsHqvn7QFFBed6vsrbeS940RUYECRUsOdcf6
-         +YRw==
+        d=gmail.com; s=20251104; t=1781219563; x=1781824363; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:subject:date:from
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=fij/oQvu/2UXmQt0RzKkHVGLvKBTwVHkKcJT+NiS0dg=;
+        b=kxRqYwJu1PUHtQ2IuXuVNByC1WxOhaSVdkLOdPfiTeCPVM33Lx24P71LJ6b2sOODEG
+         GBfj48BeFb0jpkaVHBfI+vRs14lw8acpJf1QTBULEUN90EycoL5sQS6wuBD8R1sUBjYz
+         7QmdGfLSlV9AatHljkkUXezro7ssO1hCzofPbrgnUwrbp9BwXrDXo2vWl4tQt2FqSSua
+         zzJtMCh2TJmtQH34VCPdJi42pYVBOWfoiP2VUFjD7N/FtTZ9tLkG16yd/AZlOTHm4AR3
+         UtGy1HLl6PqfnifzUerr6quXt0sPk06swraDKP3xb7B3MZSTNnYLTp5PFmdpgjjO2IdT
+         D+GA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781219560; x=1781824360;
-        h=cc:to:subject:date:from:message-id:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=32LA4oVKRlobt0c3JKXFPxQfDW1KytgL05KrQQdvsrs=;
-        b=rl3BFyVVgEgKm9OPpjGkB2wT31459iS4G74C+dyHJiDgXV74KgCW263qFCun0A8wtL
-         zHYCLwcj0metEm66DBGTcZ0Bc3FcehiF/EDlXDLsxut6CssBflgK0a4scCz4FW9Vgd3v
-         JL/dYGuY2732zlfSTVlYDGPOvmQhEpccyuWcyJG5ySIcb3nraVwh9YTRO6LsPuBFeQPh
-         giDindCtn1t1hsiLxzaO8gAkeOS0lsp+NeaAiSf3rMH0CspF3CgyjUMLZ+2rWzXy7GkU
-         DuwD8sosPfRtFH1wPHwlwHdF5pkt9L8E7AVCbtF3+1xyluBIQPvJcK3XbkT+9IuUYHVq
-         GWXQ==
-X-Gm-Message-State: AOJu0Yw++s+fT1W/vJExL4/nYJyHBAasFMPUCc1GANAZsSLjP4kM2G11
-	dda5eEjIcVlJBVQkL4ALdB33nsvR2fI58Sr39O0F3EGBdi9nqwHDb99OkQlqfDmZky4=
-X-Gm-Gg: Acq92OFFVEN+iXoRA2i+Kx1gFCyxH/61PGsWunizm9nKmL97aiKMrbM5rI8TLTT7ZTa
-	4GtoCRn48IuWxyLnlr5p8LclusW8E3+3JRr7f8F1P9ghtvW+86QCAvW9cuiSeIRTXBS/ULucYPr
-	G1xEF+vrBPSs0g2O6qyPtsPVr7HD2NDVxjZBX7pnf+AErSnTjok7BK+u3+H3shE/B9iu4W+6WT9
-	JZyKeGs4zEcW0+SWBnOehVACniIO1HHnwbdws+iD7eX/hzqCSU4znZzsCsHNNbyuXWg9Se9NdqE
-	oHq0Z7yYZGoHMiGnj2hfE6dd0WbMcVOC1SDfIf2myXBus+Ioly+e0s7WLlwA+xwVU61+ne2w18T
-	7YzRgU90mh467ZCulIG0A+K4BZzz5JrzeoTZK2Ps8NODZAGaugVZT8b+oOjkYB4fXGdBvGFeBCY
-	cMQL8nuBhjkcIfkyLz
-X-Received: by 2002:a05:6a00:4f8e:b0:842:6a97:52f7 with SMTP id d2e1a72fcca58-8434ceddc63mr106827b3a.19.1781219559923;
-        Thu, 11 Jun 2026 16:12:39 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1781219563; x=1781824363;
+        h=cc:to:content-transfer-encoding:mime-version:subject:date:from
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fij/oQvu/2UXmQt0RzKkHVGLvKBTwVHkKcJT+NiS0dg=;
+        b=C99Vs0SVCDQ7w7y1sp+/qzJbCxE6X8Mmzq4TjYH7Qd1en/1n0GvfdnGbOZgCRvI1e4
+         j6ZNAE69cWIVuzNi0N1d4hqBN2EeDNdY1j4uPY4efC3pH6QlY8+gLbUKnjmhGMeq7zVD
+         Zy/D0cyTQDpJqWrHdzCQKjXWTvekmZZbgpgK1pqMvxk66yrM54DpOlfM1j+KEWiT0g4Y
+         7k1zUCIQnw/AQiKmRQvEATy0X9qZr2eDNMfcnFYvBe8HvlFtvTfkVZFtcIdYYs3MVylS
+         CPZ6H6Q4/fWR6o3PxRWaYDrhB6IbKojOWYmjQLa1iNfVQRqt8QR7DoB3Q1jFM4NxP3g5
+         /Knw==
+X-Gm-Message-State: AOJu0Yy0u5nM+GiJos9Gddidii+EasM3AkdJlq6h0oHEb6O3tflIRIEP
+	C0spUJehEbN0sBdN56+8wcTbUMWdEsZdyF72JK5wtbNkMAswaAHtQgiT10KPlAPCdng=
+X-Gm-Gg: Acq92OGtep9yiEu6aldhc1I7g7v7rrAtVjaZU7dqYYN7lPeHH8E38dUBK2Zbwo7oJOO
+	hkOIXcEKd/voJ48NMa86CRcx7CesnRsEv0A5Fd+BxI04o3B3vwjbu9IxOdPPd49lb4F+OEouUrR
+	duZGT7Jak7+3nrkic0V/b0rSZJbP5Tv4ubcNpTvg2cgDqoHNhTA7GCods/NBXJHEycDgQh68ROT
+	yD4QHhivIbjcrGIo6GIwZtQ05GiKVxwogbDvNCZ7wI3jv/8XY+0dF7yslSnn4JgzjC/QTllfsY8
+	G8mxyJzwBEnzuNZk1oMZZpophYaeDzc/T7o6aoR9VzvBBQb3Hh+AjDhicMKDocHYTQvEXPdG36s
+	A5sRehkcaMBL5nmN4YEtCKTX3T4a3obWzND5LcyEZWvpusX2xIhPCzVQ3cWFurQRfyJ0X6Ahm0S
+	MwVaSam2ecS0mWiiQ8
+X-Received: by 2002:a05:6a00:2351:b0:842:5712:c2c2 with SMTP id d2e1a72fcca58-8434ce5eaf1mr123505b3a.41.1781219562783;
+        Thu, 11 Jun 2026 16:12:42 -0700 (PDT)
 Received: from [127.0.1.1] ([47.253.114.73])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8434afd100esm199571b3a.34.2026.06.11.16.12.37
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8434afd100esm199571b3a.34.2026.06.11.16.12.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Jun 2026 16:12:39 -0700 (PDT)
-Message-ID: <6a2b40e7.4dd82583.3a5c46.e566@mx.google.com>
+        Thu, 11 Jun 2026 16:12:42 -0700 (PDT)
+Message-ID: <6a2b40ea.4dd82583.3a5c46.e5a2@mx.google.com>
 From: "Wayen.Yan" <win847@gmail.com>
-Date: Fri, 12 Jun 2026 07:09:13 +0800
-Subject: [PATCH] net: airoha: Fix register index for Tx-fwd counter
- configuration
-To: netdev@vger.kernel.org
-Cc: lorenzo@kernel.org, linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org
+Date: Fri, 12 Jun 2026 07:09:56 +0800
+Subject: [PATCH] net: airoha: Fix debugfs new-tuple display for IPv4 ROUTE
+ entries
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+To: netdev@vger.kernel.org
+Cc: lorenzo@kernel.org, linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org
 
-In airoha_qdma_init_qos_stats(), the Tx-fwd counter configuration
-register uses the same index (i << 1) as the Tx-cpu counter, which
-overwrites the Tx-cpu configuration. The Tx-fwd counter value register
-correctly uses (i << 1) + 1, so the configuration register should use
-the same index.
+In airoha_ppe_debugfs_foe_show(), the second switch statement falls
+through from PPE_PKT_TYPE_IPV4_HNAPT/DSLITE to PPE_PKT_TYPE_IPV4_ROUTE,
+accessing hwe->ipv4.new_tuple for all three types. However, IPv4 ROUTE
+(3-tuple) entries do not contain a valid new_tuple — this field is only
+meaningful for NATted flows (HNAPT/DSLITE). For ROUTE entries, the
+memory at the new_tuple offset holds routing information, not NAT data,
+so displaying "new=" produces garbage output.
 
-Fix the REG_CNTR_CFG index from (i << 1) to ((i << 1) + 1) so that
-the Tx-fwd counter is properly configured instead of clobbering the
-Tx-cpu counter config.
+Split the fallthrough: display new_tuple only for HNAPT and DSLITE, and
+add an explicit empty case for IPV4_ROUTE.
 
-Fixes: 20bf7d07c956 ("net: airoha: Add sched ETS offload support")
+Fixes: 3fe15c640f38 ("net: airoha: Introduce PPE debugfs support")
 Signed-off-by: Wayen.Yan <win847@gmail.com>
 ---
- drivers/net/ethernet/airoha/airoha_eth.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/airoha/airoha_ppe_debugfs.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
-index 31cdb11..329988a 100644
---- a/drivers/net/ethernet/airoha/airoha_eth.c
-+++ b/drivers/net/ethernet/airoha/airoha_eth.c
-@@ -1256,7 +1256,7 @@ static void airoha_qdma_init_qos_stats(struct airoha_qdma *qdma)
- 			       FIELD_PREP(CNTR_CHAN_MASK, i));
- 		/* Tx-fwd transferred count */
- 		airoha_qdma_wr(qdma, REG_CNTR_VAL((i << 1) + 1), 0);
--		airoha_qdma_wr(qdma, REG_CNTR_CFG(i << 1),
-+		airoha_qdma_wr(qdma, REG_CNTR_CFG((i << 1) + 1),
- 			       CNTR_EN_MASK | CNTR_ALL_QUEUE_EN_MASK |
- 			       CNTR_ALL_DSCP_RING_EN_MASK |
- 			       FIELD_PREP(CNTR_SRC_MASK, 1) |
+diff --git a/drivers/net/ethernet/airoha/airoha_ppe_debugfs.c b/drivers/net/ethernet/airoha/airoha_ppe_debugfs.c
+index 0112c41..f9c12e7 100644
+--- a/drivers/net/ethernet/airoha/airoha_ppe_debugfs.c
++++ b/drivers/net/ethernet/airoha/airoha_ppe_debugfs.c
+@@ -121,8 +121,6 @@ static int airoha_ppe_debugfs_foe_show(struct seq_file *m, void *private,
+ 		case PPE_PKT_TYPE_IPV4_DSLITE:
+ 			src_port = &hwe->ipv4.new_tuple.src_port;
+ 			dest_port = &hwe->ipv4.new_tuple.dest_port;
+-			fallthrough;
+-		case PPE_PKT_TYPE_IPV4_ROUTE:
+ 			src_addr = &hwe->ipv4.new_tuple.src_ip;
+ 			dest_addr = &hwe->ipv4.new_tuple.dest_ip;
+ 			seq_puts(m, " new=");
+@@ -130,6 +128,8 @@ static int airoha_ppe_debugfs_foe_show(struct seq_file *m, void *private,
+ 						       src_port, dest_port,
+ 						       ipv6);
+ 			break;
++		case PPE_PKT_TYPE_IPV4_ROUTE:
++			break;
+ 		default:
+ 			break;
+ 		}
 -- 
 2.51.0
 
