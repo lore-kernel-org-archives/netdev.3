@@ -1,109 +1,147 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013017.outbound.protection.outlook.com [40.93.196.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 753B442B732;
-	Thu, 11 Jun 2026 18:53:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781204042; cv=none; b=Wu8VbGq9LUhTheeofMlY1dikGHf8wqphSsamBLMS9acd+CYk43mSerI8TU7IpNwX/pvbgyY1i1RbiTYEoHtj4T/fSpo3HnZccUrQ0X5DXCn6irtEvyHNZbSDAAeOyilSnLUntY9uCmtWTQSaM2ZpKfsyM8SOuJq9NVp3QTdtUso=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781204042; c=relaxed/simple;
-	bh=lyoYDo723ITo2kQarUaC98MkKgPUszT7d+2KOjiMLk4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qF9scqKBGEVKdCaj1DU+otjZoe/dRm25p4ozLadu8w7lyHkYY50p6CvE31Om6aJMH+8RPT29LwmbhWNWSaxFRTIqmyrF5yMGKnoXKFVp4+bP09HEb2+fANE54/0TGePkiWjpIKd9Qm8gCguwR+JGG0Ct5mTa+nMlM9oFJBzvt/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LZhqOn5I; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB93642B74B;
+	Thu, 11 Jun 2026 18:57:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.17
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781204274; cv=fail; b=tPp2nJtmLwNHtZYi/0LBFh6b6JkJwvLQcXYm/ImNM6IK2AyHQlaRjWyA5rNAwJWIlBZrP7E6iQ1HtSM5j03iVnNoaB9jT4f0ie0HVYCRj9Zj1gsh4kb/RyUxjhygQtpocy8AzTBwuyb2aYfMApoeVK9ZNrKtfoH7Qmm937WMfJA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781204274; c=relaxed/simple;
+	bh=N/Q+LvKuVdOnq/I8CemD+jwmRfxD10c+VwS315ZV4as=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=jarTXq2xo8R90BdmfpTIZKy0QQuisf/wzu+7/8gZJGaOV1fmjAVKMZ5en+SAFqvW58AMruTFkNNQ6EtlyFSirrtO+OgJyIoDFNxAPEvFcfHwqmii9eLzfzLEt+jhHN7iyjHwUHJWY0vXsIV2o1XVrPXUuduazsUnMOsgiPvmkdQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=m1l2ljv5; arc=fail smtp.client-ip=40.93.196.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LZhqOn5I"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 646691F000E9;
-	Thu, 11 Jun 2026 18:53:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781204038;
-	bh=hjj5mBR6SBQTds2P7Qn6eN4rJ9W11rwc7SbsUviVMX4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=LZhqOn5Ilvsw6JsbgErLBhERiOd6NBo2fFvjxs/lQnIfx4ncu625nN6xMP+xMZc+K
-	 RKHlgAKXV/ErOS7HxpVDLqKIIIyrqe8Mjx6Ogv3oPcRgjNwTiuN1mIYaEB3H3I5sa9
-	 IUr5fHpJsBfF9CHjZ0RlJriNRhcVQII1mPn6c/BiYgPnp0Rzo4L7gnkmcfxARQoj/2
-	 eUqzxPR1hVbSL6nvvkplFE8cGcdCdBBF7chO6wGly87yCnRHboQFtqAlXLyPty/MoC
-	 RquT3NYRc4i2MYXfmJJlAiTEE6m5g1eboiVeeYYfycSdjELZO2dIlktQqWAKUCpkPi
-	 KtrCxM1gU9+tA==
-Message-ID: <943b4932-17f4-4a52-af92-b9485a0e8c7a@kernel.org>
-Date: Thu, 11 Jun 2026 12:53:56 -0600
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="m1l2ljv5"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=APpshNWehy36kvBjtUIkXUH1WsvDLKQ+JpWqsqg7nJoS5rz9EK1a7E4R3IFZPtzG9jdFSGIGdcCSuAwPMu/cXif/j26KeJx8g7i0FAUN2p0JM7NbrpOQFNFJd80yHRGJa3dGPv6mhz2qSGN3r6vrMbB9A/mHdKMkKL0IvV9iEHlt8R9JOtuo0nUU0ga6Qo6X22W30/W+g0qdCP6Me9QLxS4qEpGQivXdjJkK4kATDKqtl0tWuJczr49zbHOchFdYwnQqHx/+jnCZYVHlAZpKcnqvyeOxN2OKobEDUZAPr0jiCOIAC6EXd2giuAfWRkN/7idL7rOQ/k8OYLQKD4CJKw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=S2pImc4D8sTpFiweu+no+tpdSqPLHxJwNSYKQhfepgU=;
+ b=tkWcUBxXefGX8xVuNgsp5zK/OH/Pq2nSqdEcP1h2x7+f0DBuDm8f69A3aXD8Ii6Nf6TXglT6XrD7EE08JthNVqUPZFg3XPtT/P+PnWc2KH/KZUiYiVknxeFsvjf6WJjT6pV8AT0R/R1hct1Rd8dd+XKKG89PVJMJA9zhJuXNYDAntBramh2RqLpt5KJwZ29Wi0HW0d3yxD8ZsjNvuzBnGCiT+J6nOOXhhX1C1MSc86wQnVpPXEiYaP1WvWX+aZ129oXKn4WiwVzBJO4KfRPsX57CKsLP/vzT2XjXlwXwDXzGymN5XmsxPe+B7ozPtzxeYQZxruDowKMZyRo81d4NPg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 198.47.23.194) smtp.rcpttodomain=siemens.com smtp.mailfrom=ti.com; dmarc=pass
+ (p=quarantine sp=none pct=100) action=none header.from=ti.com; dkim=none
+ (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=S2pImc4D8sTpFiweu+no+tpdSqPLHxJwNSYKQhfepgU=;
+ b=m1l2ljv5rFf90oPITgMtGMJLh6d/u0MMi1mfPaJ3eRUfjQ3fvmOpE4mljLbQpiQQbzfibvYMP1rfMxS3WnMMx12SsK3W/kvlPx12QG7Vi6SYxRIs3jM8XJ3aI9p3MQdpbUboDAleVLgRpim8xEk/zzEDt1ovMAU2T2mtvfO+SX4=
+Received: from BN9PR03CA0249.namprd03.prod.outlook.com (2603:10b6:408:ff::14)
+ by IA3PR10MB8274.namprd10.prod.outlook.com (2603:10b6:208:570::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.113.14; Thu, 11 Jun
+ 2026 18:57:50 +0000
+Received: from BN2PEPF000055DB.namprd21.prod.outlook.com
+ (2603:10b6:408:ff:cafe::58) by BN9PR03CA0249.outlook.office365.com
+ (2603:10b6:408:ff::14) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.113.11 via Frontend Transport; Thu,
+ 11 Jun 2026 18:57:50 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 198.47.23.194)
+ smtp.mailfrom=ti.com; dkim=none (message not signed) header.d=none;dmarc=pass
+ action=none header.from=ti.com;
+Received-SPF: Pass (protection.outlook.com: domain of ti.com designates
+ 198.47.23.194 as permitted sender) receiver=protection.outlook.com;
+ client-ip=198.47.23.194; helo=lewvzet200.ext.ti.com; pr=C
+Received: from lewvzet200.ext.ti.com (198.47.23.194) by
+ BN2PEPF000055DB.mail.protection.outlook.com (10.167.245.5) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.139.1 via Frontend Transport; Thu, 11 Jun 2026 18:57:50 +0000
+Received: from DLEE213.ent.ti.com (157.170.170.116) by lewvzet200.ext.ti.com
+ (10.4.14.103) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Thu, 11 Jun
+ 2026 13:57:49 -0500
+Received: from DLEE215.ent.ti.com (157.170.170.118) by DLEE213.ent.ti.com
+ (157.170.170.116) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Thu, 11 Jun
+ 2026 13:57:49 -0500
+Received: from fllvem-mr07.itg.ti.com (10.64.41.89) by DLEE215.ent.ti.com
+ (157.170.170.118) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37 via Frontend
+ Transport; Thu, 11 Jun 2026 13:57:49 -0500
+Received: from fllv0122.itg.ti.com (fllv0122.itg.ti.com [10.247.120.72])
+	by fllvem-mr07.itg.ti.com (8.18.1/8.18.1) with ESMTP id 65BIvnNR652932;
+	Thu, 11 Jun 2026 13:57:49 -0500
+Received: from localhost (ti.dhcp.ti.com [172.24.231.93])
+	by fllv0122.itg.ti.com (8.14.7/8.14.7) with ESMTP id 65BIvmdx013169;
+	Thu, 11 Jun 2026 13:57:48 -0500
+From: Meghana Malladi <m-malladi@ti.com>
+To: <diogo.ivo@siemens.com>, <haokexin@gmail.com>,
+	<vadim.fedorenko@linux.dev>, <devnexen@gmail.com>, <horms@kernel.org>,
+	<jacob.e.keller@intel.com>, <m-malladi@ti.com>, <sdf@fomichev.me>,
+	<john.fastabend@gmail.com>, <hawk@kernel.org>, <daniel@iogearbox.net>,
+	<ast@kernel.org>, <pabeni@redhat.com>, <kuba@kernel.org>,
+	<edumazet@google.com>, <davem@davemloft.net>, <andrew+netdev@lunn.ch>
+CC: <bpf@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<netdev@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<srk@ti.com>, Vignesh Raghavendra <vigneshr@ti.com>, Roger Quadros
+	<rogerq@kernel.org>, <danishanwar@ti.com>
+Subject: [PATCH net 0/4] ICSSG XDP zero copy bug fixes
+Date: Fri, 12 Jun 2026 00:27:40 +0530
+Message-ID: <20260611185744.2498070-1-m-malladi@ti.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH iproute2-next 7/7] devlink: add scope filter to resource
- show
-Content-Language: en-US
-To: Tariq Toukan <tariqt@nvidia.com>,
- Stephen Hemminger <stephen@networkplumber.org>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>
-Cc: Donald Hunter <donald.hunter@gmail.com>, Simon Horman <horms@kernel.org>,
- Jiri Pirko <jiri@resnulli.us>, Jonathan Corbet <corbet@lwn.net>,
- Shuah Khan <skhan@linuxfoundation.org>, Saeed Mahameed <saeedm@nvidia.com>,
- Leon Romanovsky <leon@kernel.org>, Mark Bloch <mbloch@nvidia.com>,
- Shuah Khan <shuah@kernel.org>, "Matthieu Baerts (NGI0)"
- <matttbe@kernel.org>, Chuck Lever <chuck.lever@oracle.com>,
- Or Har-Toov <ohartoov@nvidia.com>, Carolina Jubran <cjubran@nvidia.com>,
- Moshe Shemesh <moshe@nvidia.com>, Shay Drori <shayd@nvidia.com>,
- Dragos Tatulea <dtatulea@nvidia.com>, Daniel Zahka <daniel.zahka@gmail.com>,
- Shahar Shitrit <shshitrit@nvidia.com>,
- Jacob Keller <jacob.e.keller@intel.com>, Cosmin Ratiu <cratiu@nvidia.com>,
- Parav Pandit <parav@nvidia.com>, Kees Cook <kees@kernel.org>,
- Adithya Jayachandran <ajayachandra@nvidia.com>,
- Daniel Jurgens <danielj@nvidia.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-rdma@vger.kernel.org, linux-kselftest@vger.kernel.org,
- Gal Pressman <gal@nvidia.com>, Ido Schimmel <idosch@nvidia.com>,
- Jiri Pirko <jiri@nvidia.com>, Petr Machata <petrm@nvidia.com>
-References: <20260609053953.487152-1-tariqt@nvidia.com>
- <20260609053953.487152-8-tariqt@nvidia.com>
-From: David Ahern <dsahern@kernel.org>
-In-Reply-To: <20260609053953.487152-8-tariqt@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN2PEPF000055DB:EE_|IA3PR10MB8274:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6fdc76e4-b203-4059-7dc6-08dec7eb55c6
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700016|23010399003|1800799024|7416014|376014|82310400026|921020|56012099006|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	WSvrIKKzhH0BfOXTmNFvbpverDdQbQ75WUq2jaNkbg0Lr/guk6gTI0ifOlmEiRZ7QWGbBymwDbaagtSWg+Iz8kax0Gbh+HUylz33phhOTGg1apWqeHG7AE1KA8TU6OmlZplO5yQIViGjePiAT76y0qUbr+HMUwJ2DUzMq7cARg/xmSEVk59Mj5S+OZMP3ulwH9rZEUBaDkmIY5Dwn/PRYi904dJqjEczjJGT6xmXVwmKOr0AfUvzqW5OIrsdXHum5k9ql4n3l9UZ47aFzNimcNST9e/lJ7rbgKCQtYhOAnxHQnbGrQvKKrMpC5yLQ4x7UgHIIagX8irf3ZtJYtXakIVgasimYRZpp9L6tBeXPmQn7AQeUueOf+wDsEtmu9HUUQUtVfjWx1OkSpiH29e9pF6VxWDr1nKIuT7hJrHlMrmG8MLBvqYLTbK5ApvrYWRSuaV7o6C1if/63TLb9mSgFGD6vYlDdbP5OD6MhndIUidJ1jF8SKf6IzZI/42GN135/6yaKZjalJVvrTnJv/+AmMOyTkCH25tt/Sq580Ilrsik7/yr54wVNdLRVjBnYQ3ft0KMHlnHdn4Uj0P2SsIXDBKgQoHdSayLgI1bpXFHSnxDS4MQBaUZse8btQ+hSacfjsm5s2tolyBPvbPZgvchGrF9CjwSiYw3ZdsOn9LWU93z2aDhY9XE+5Et91zShN/OnWEV7zeGk+iNA4AnceM3Me4Z0qfkI31ZrHqweSM5d8RuF3zKAtLkdIEeCb2wI9oz9Ssvj0RtyPpe6B34s0flwg==
+X-Forefront-Antispam-Report:
+	CIP:198.47.23.194;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:lewvzet200.ext.ti.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(23010399003)(1800799024)(7416014)(376014)(82310400026)(921020)(56012099006)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	m7TkflagbNFePcQ/V/IelM9RuqpBxKd5SdmRbAvIGm/qV6LqbqOpbvW9XZ8+J36htVq4XT363KE8F9p3teiAnkb6OLADRdrHg+QFyZZHuvCGiZ2GdvnOLtPK9JA0GA/Iz5Nr0w2qxJV8PFU8y8J5AvTWWvRFjPCGHPqzK3w6a3gnxqIxLpupBoqqephK8d1sB8j4T6Pm7HK8YQUfPqcnkFxBweFDMLlzANDCsHYmfCS/34CyYdWbtOe4TUAVY+BhYvLPK5yCGJ0Z4XQOGOXxRZkC83G2EadncJf7srozn7gWNG4qXd0ujdjqQnvxW52qPXkLCAy51FhKDMWtOeOs7l+7uqj1E/fz9r6IojGS+RoyB6z3f8EwUrZc4UZ135+KtvlDjmxADewgDt8XJEGawPe5T+ANKF7DX6s+MPApx5FflIUZab+3EoTwY3rRYQ/T
+X-OriginatorOrg: ti.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jun 2026 18:57:50.2370
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6fdc76e4-b203-4059-7dc6-08dec7eb55c6
+X-MS-Exchange-CrossTenant-Id: e5b49634-450b-4709-8abb-1e2b19b982b7
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e5b49634-450b-4709-8abb-1e2b19b982b7;Ip=[198.47.23.194];Helo=[lewvzet200.ext.ti.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN2PEPF000055DB.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA3PR10MB8274
 
-On 6/8/26 11:39 PM, Tariq Toukan wrote:
-> @@ -9010,13 +9029,29 @@ static int cmd_resource_show(struct dl *dl)
->  	uint16_t flags = NLM_F_REQUEST | NLM_F_ACK;
->  	struct nlmsghdr *nlh;
->  	struct resource_ctx resource_ctx = {};
-> +	struct dl_opts *opts = &dl->opts;
->  	int err;
->  
-> -	err = dl_argv_parse_with_selector(dl, &flags, DEVLINK_CMD_RESOURCE_DUMP,
-> -					  DL_OPT_HANDLE | DL_OPT_HANDLEP,
-> -					  0, 0, 0);
-> -	if (err)
-> -		return err;
-> +	if (dl_argv_match(dl, "scope")) {
-> +		const char *scopestr;
-> +
-> +		dl_arg_inc(dl);
-> +		err = dl_argv_str(dl, &scopestr);
-> +		if (err)
-> +			return err;
-> +		err = resource_scope_get(scopestr, &opts->resource_scope_mask);
-> +		if (err)
-> +			return err;
-> +		opts->present |= DL_OPT_RESOURCE_SCOPE;
+This patch series fixes bugs introduced while adding xdp
+zero copy support in the icssg driver.
 
-Comment from Claude that seems legit:
+Patch 1/4: Fix wakeup handling for Rx when available CPPI
+descriptor is zero
+Patch 2,3/4: Fix destination tag in CPPI descriptor to enable
+proper Tx xmit for HSR offload mode with XDP and zero copy
+Patch 4/4: Fix Tx copy wakeup handling for XDP zero copy
 
-Issue found: In cmd_resource_show, the scope path sets opts->present |=
-DL_OPT_RESOURCE_SCOPE without first clearing opts->present. In batch
-mode, dl->opts is shared across commands, and the non-scope path
-correctly resets opts->present via dl_argv_parse(). But the scope path
-bypasses dl_argv_parse(), so stale bits (e.g. DL_OPT_HANDLE from a
-previous dev show) remain. When dl_opts_put() runs, it writes the stale
-DEVLINK_ATTR_BUS_NAME/DEV_NAME attributes into the dump request,
-silently filtering to a single device instead of all devices. Fix: use =
-instead of |=
+Meghana Malladi (4):
+  net: ti: icssg-prueth: Fix AF_XDP fill ring alloc and wakeup condition
+  net: ti: icssg: Use undirected TX tag for native XDP in HSR offload
+    mode
+  net: ti: icssg: Use undirected TX tag for XDP zero copy in HSR offload
+    mode
+  net: ti: icssg: Fix XSK zero copy TX during application wakeup
 
-Are you ok with the suggested resolution?
+ drivers/net/ethernet/ti/icssg/icssg_common.c | 62 +++++++++++++-------
+ 1 file changed, 41 insertions(+), 21 deletions(-)
+
+
+base-commit: 29899ec61ac6fcc9d46f5f8d0b72117d9a676c2e
+prerequisite-patch-id: ad8d47ed85a33f742a58e9f48e060303908493ba
+-- 
+2.43.0
 
