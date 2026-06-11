@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A59863CF025;
-	Thu, 11 Jun 2026 22:30:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B943B3C5542
+	for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 22:30:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781217025; cv=none; b=GUD2XrM6IvIn4usVxP4xC4/+mJtO9GtbtCqkxqruQ3KBg0KVYxy3MYzsOX5MUNCrz2n2u22pEHmtBvYnXhDfewO87WFb1qSU0U/Qqt3dGDP1dQu8UzVaFvz1Bvaps3fyg1VKcZCTuhFiU8n1GQC8w+ijB+eXW3JIjLNniQKEhKc=
+	t=1781217034; cv=none; b=H4yv/b2ibWqxcdwKyOkt3pGOo7LNt1sfYEQ3BfJRiTLcDpLiHlVnAyFawjpYtqJ8aoEwQiFRNo1JSPPdoq6Vuy/aIi4GcHfV6efMphaqIc89MtpWCiOPHLfjpUT1WQblH5z/TSbRn0fPT/ywsT6JeWKb/q6Pn0SiY8SW6JTesck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781217025; c=relaxed/simple;
-	bh=Q7QX7aOuVpFHWd23Lgvjq/uXtFI7WY/mskuHCNmlphw=;
+	s=arc-20240116; t=1781217034; c=relaxed/simple;
+	bh=XHfYT3sF+zyRiGrqTN9Wi90kuUcJFZELzAJqJ9mQgQI=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=pOzEYfcTs5rawixv/UD11I0ershRS+AhfPNk48r9uOVVX5tOWMFXLw/67EGp94MURlPWsBhlscYp5U/zoPI/hNW3rF/ACsmsrWdXxjSkznZhBrC39sZ+KqeZgYIeaXywNqZBsPkMNlLm0fuj55PJX9FyC7noB3f+c9XLHELK+Tg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GrzOLSYh; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=QyuCeWnqBcHDg1CysEv0e0DjV6Ap+eqFT3TAxY54ss2HuxMtn6M2k52wvtz2sjDPw4qClPN7ljxc3gxvM8M4atihbiv8X2vQMk7M9lVsQWXUtClwCrb/4X16PmxK436ir+Z1KMNnqWVVRxIBvnveaRIrQQGWzDufeqBjHf8hr0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J4Gnt94I; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GrzOLSYh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EB491F000E9;
-	Thu, 11 Jun 2026 22:30:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J4Gnt94I"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69F691F00A3A;
+	Thu, 11 Jun 2026 22:30:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781217023;
-	bh=RIlIDUHGcKjCHfmOtBGc3q5oHD7TDpjiPKi+UKNilgk=;
+	s=k20260515; t=1781217030;
+	bh=Yj5EYUYxN4J6y+/HXSIACdpOV4ojowLmt/wqo3CXtNE=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=GrzOLSYhOwaXh1r19ps6AYaVvkk/MDmkZG5zWWAhb5UU+IV2Al97uz+gV1059x5aT
-	 /gmZQNP7hsYg1IVAhVXn9K9X9YQdSQRBmjOSzqJNTmROWElOcUjIiwHTLF1L8kTM4Q
-	 OJkKdPGnWdFBq9FdM74HjQguyXEv8VI7GAR3NzxQZAobXrxscZeb8nXHNBND6ekXzb
-	 JNayBYmxLSe3CZR5LY8dLPAT8agqD4//F5Gl1AFVrYPQP8smp8+6VX2I3UNYTMuglt
-	 I9NSZ6iL5YW7Qru8lcyuESNAoX4XkiCxC58TrcpGId53B+Nm0Rp1gLmzThc/lj7LKo
-	 5uY975ez22vZQ==
+	b=J4Gnt94IqiaxBQKaQHjylYlZgYD9mwJ33aX/7JypGk5Ip6DZhe8DyLPAUlhzi5psv
+	 ivyqFEX4wdUW1gAzTeFEiyC8uqIkn/q0uu7q6j9mj5MN/lQkd9IGMbIlktJ3yzexeJ
+	 wj2szOmjJN/17HX3zAb+BZrDtwXcx6kYbzwqhVYr5AhnSCpahxBozqXMJTRO7eGd05
+	 UmBW1hGmo0qa07AHMMExFnaa6cTZYcE1aQY3nBwqW0bf6k/QLaoiWDUDnu1OnqBqui
+	 AAiaZcjMZTfqOSAHWCoKSULwH2a5Muk4eXs992KdYPlN/d7Qa5DvrYKSbmBR1qWs3V
+	 Ulxr4zZDXkQ8w==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 9389D3930FAD;
-	Thu, 11 Jun 2026 22:30:21 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D09913930FAD;
+	Thu, 11 Jun 2026 22:30:28 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,38 +37,38 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] sctp: validate embedded address parameter length
+Subject: Re: [PATCH v1 net-next] ipmr: Convert
+ mr_table.cache_resolve_queue_len to
+ u32.
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178121702013.389578.4099391378396702786.git-patchwork-notify@kernel.org>
-Date: Thu, 11 Jun 2026 22:30:20 +0000
-References: 
- <7838b86b69f52add28808fb59034c8f992e97b2d.1781043268.git.lucien.xin@gmail.com>
-In-Reply-To: 
- <7838b86b69f52add28808fb59034c8f992e97b2d.1781043268.git.lucien.xin@gmail.com>
-To: Xin Long <lucien.xin@gmail.com>
-Cc: netdev@vger.kernel.org, linux-sctp@vger.kernel.org, davem@davemloft.net,
- kuba@kernel.org, edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
- marcelo.leitner@gmail.com
+ <178121702738.389578.12063239753161596176.git-patchwork-notify@kernel.org>
+Date: Thu, 11 Jun 2026 22:30:27 +0000
+References: <20260609222013.1550355-1-kuniyu@google.com>
+In-Reply-To: <20260609222013.1550355-1-kuniyu@google.com>
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: dsahern@kernel.org, idosch@nvidia.com, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ kuni1840@gmail.com, netdev@vger.kernel.org
 
 Hello:
 
-This patch was applied to netdev/net.git (main)
+This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Tue,  9 Jun 2026 18:14:28 -0400 you wrote:
-> sctp_verify_asconf() and sctp_verify_param() only validate ADD_IP, DEL_IP,
-> and SET_PRIMARY parameters against a fixed minimum size of sizeof(struct
-> sctp_addip_param) + sizeof(struct sctp_paramhdr). This ensures the outer
-> parameter is large enough to contain an embedded address parameter header,
-> but does not verify that the embedded address parameter's declared length
-> fits within the bounds of the outer parameter.
+On Tue,  9 Jun 2026 22:20:04 +0000 you wrote:
+> mr_table.cache_resolve_queue_len is always updated under
+> spin_lock_bh(&mfc_unres_lock).
+> 
+> Let's convert it to u32.
+> 
+> Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] sctp: validate embedded address parameter length
-    https://git.kernel.org/netdev/net/c/e9361d0ca55c
+  - [v1,net-next] ipmr: Convert mr_table.cache_resolve_queue_len to u32.
+    https://git.kernel.org/netdev/net-next/c/65440a8ce42d
 
 You are awesome, thank you!
 -- 
