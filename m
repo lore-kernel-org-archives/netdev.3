@@ -1,63 +1,63 @@
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A84E7361656
-	for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 06:28:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C773361675
+	for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 06:28:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781159304; cv=none; b=mRU56GZ5te2N5d6ejdTtbEFvsYIkW2nYtZnxjLmInkps0wVMKXVks/TeK+tG6gZwPBick2yVqZ4gw9c1iAkLk+4xYt+zTteGUCkDVtIVdCSlanugKPLbkC9noqOQq0vXkpOZxMLfxtizwS3UOcevn48XBnrhUdrNMQs49heug5I=
+	t=1781159309; cv=none; b=BljPM9ASomcl7kAIVyjyRhuRuTWX5i6+YYpGPDre6UhvaIirT4k2REFrUeEUZpYkqdZOnR7Mo/AnT+1w02Uo73dGs1Iksv/1pu9gJksO92/Fgq73F/jWpwgMCniHIfSbDIzaFFurNa8fSP8r09COLEfkvMygBqtipWDhUfLVW6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781159304; c=relaxed/simple;
-	bh=DBekgeW1N4O5e2NqIDoDH7qbEtlWuFn6iO98H2FVTMM=;
+	s=arc-20240116; t=1781159309; c=relaxed/simple;
+	bh=3p5/zBKQSq/8Sd7Hp4YXbXSAYly8oMx7d8QOAsa4m+k=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=hg5Zel8zOzQX9FEgQq3y1SeOvgmzqLCIuVRdkc82pViMcAmjnY4wxGQqcktrvaiYVSZ2wQQ99HCigMarxn+IzszlqRW5uiEsfB3DRcSZO1n1g14ybl3TAO3q4p4kLDCgICmMPTjFC3KD5ly32rtT+ildmvwK0zIny947oBtij84=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=q5L614WZ; arc=none smtp.client-ip=209.85.216.46
+	 MIME-Version; b=gHSx/Iu2aEpEyJ64QR8CRbIWZkB9IZb9EkO3X0Xd1dcdZBCGVnccQipBsZt3Z894qYFhaxmEnd/Zfenqc1mK/edsPzwoB/7NlnIPOSZ/FMQhoXrzQYw1QIPrlIDyOkgTNjd0HJOcHBsYVWkrHuigpK72PHoX68ZdB02MFdmcB/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LWlvFJvV; arc=none smtp.client-ip=209.85.214.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="q5L614WZ"
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-37474afe908so1915929a91.1
-        for <netdev@vger.kernel.org>; Wed, 10 Jun 2026 23:28:23 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LWlvFJvV"
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2c0c1e0b0faso52331215ad.0
+        for <netdev@vger.kernel.org>; Wed, 10 Jun 2026 23:28:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781159303; x=1781764103; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1781159306; x=1781764106; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ItoDyefAeBltx9ce0NxyAQHJ3AQNyVruVGbMuv3S9to=;
-        b=q5L614WZn2tYrW2Wwr9EYznMOsDlEH5/95EVs/qzvyqA+qHVT9e93mfbHjHDcq2bdy
-         kkEXuI8cGeyutf9vN62FTQ6c7CUK+2GzPqfWcaz5v1bgKJmWNn22eiYh2sQ5YPdh/7/e
-         kkhjMDkzARkuu8zNRFdn8tXTC3ZS62quqyyyxj+B38nY2rofj1wv2bv2B33rk+fY5qeh
-         sc/P+tMPn6oQItWy+Q2hDfh+AZB7k4twWsKH759le1MSACZD/ijN2oVSyA6NgR+lGctg
-         mqfvMXW+acTGbTtzErp1TZBgFhi0lppJkcUt5QG0x5MOLoStM775lHAfEBJ6YX4cSKDF
-         qQcg==
+        bh=FkNt/cERKxxqu5aD9ajaN/R2nzygZFTIYInKnabH6x4=;
+        b=LWlvFJvVP201dSCCa8bKqJDkpYl3vLNeVmQAPv1SG8GwvlqSHqNSdMltRCn1kC1UEk
+         Jse9QljUkN2zKhLe6iPK7kJoSVw79fiPuwOB7ZshZc1r8RYVu1fV7nExXUyQGBxV3m83
+         iKoWJJ8aXvwEFiOwGeAkZFXvPgw/+RWNRlK4X4i9ljXzrIoqfVnVUcNvE/OWfvCVs4jR
+         PEOvyLrpyFOYi8Wn285UPsVqcGkEEG1GxMv8SarXxx8SE4Hjg8IJQHcncApkl8EeB5hP
+         lY0tpAIREmnLbAFVGAILnH4FS+TU+b31ak824DWQhno3Xs4Wv9+npiRNVEoPF1XJNq9o
+         6iQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781159303; x=1781764103;
+        d=1e100.net; s=20251104; t=1781159306; x=1781764106;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=ItoDyefAeBltx9ce0NxyAQHJ3AQNyVruVGbMuv3S9to=;
-        b=GgltH02WhIQmokFUjdVvr1MiGiLpZlRH6mU4z3mFnDespvhLINl7in+5I1Yh7qvkTA
-         kyaZLs8vSu6Zcp5z5OfODzrQ1VQ1UmSIzNJ8eYQgxgqLnwKs8lmvao6jnCca8D7ygbkn
-         VYdkFELp2WpvugFCbSDI4C4/Ji4+BqtvteILi0odjx4Sqb8I2kkwybRcskWJRo0vMTXQ
-         18mBdUbN9qN66eFlUIGrq4/t467Fr3lxos0p5n15HZXa0VLPgO+dNppOUrv53G/llpLD
-         4t/YvVdlRo/ep5FhPukUTmvpgEMGpIxhVUnpF8bAWpf+Ga8CVMmuU7rRAk9QijueRDr6
-         8aew==
-X-Forwarded-Encrypted: i=1; AFNElJ+nYmO1YAEBSNx+zhP02WoLekN7GJ1M78uwkbBfYvnUMJ73fgMeQ5FM+1eT0fjRHB6EEbAeL8I=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwRPeF9enTdxXsSEyCxrPXBA99x+vQkXeushSJBCL1eGk2215FB
-	EUVNbRaHo2J3NnsuvQVoAMqlVIN7FhZNup5VDNtx2OIinrbqAc9HXpjN
-X-Gm-Gg: Acq92OE1Kq4G29UAdhSaPNC37geGLW2o1Uhs3oBjuHUdRx1j5gKVpEs6dUNSpvJDiL4
-	RtrVwE17zQB3N9sXpt+mJ0M0WJyuVzTmjlBE7f7npchFmls+ACslNWnn4BD7/YuxrfxF3C1HaRX
-	o3jCqB4SGdadOQ0GsAY0dZhxvBEE0AevINYIbqpSK1NM7UlXhacNUXrsVqAE0WjN4giEV9ZFG04
-	z6/umXSwLpCCZMpIFmG5b0NS8AMznjvVxxmp9GYWyRJtgL2hbG0NjGyJzXXWSmLlKFLzhkGUwgB
-	S64nE39SEc2w+uY2QcSE/AYqN+QW/mwBgJLRADAvqTm5FHFpGTrQt1OQ1FpKMiDYBaJq4IiwjWd
-	NL9SIuFONaxVrHyBxz45Rq7YRRaSgMJGdGarCpu8L/MsT0jzR5vKm9h/gSeghl7erbG73K+D6zu
-	PBERWT7ul5Y2SMChHOwm5JwuLDjcwYTgeTfVD254aPigQMJ+LQKTr1o1+auhc=
-X-Received: by 2002:a17:903:1a26:b0:2bc:b80f:6782 with SMTP id d9443c01a7336-2c2f092f624mr15788455ad.11.1781159302916;
-        Wed, 10 Jun 2026 23:28:22 -0700 (PDT)
+        bh=FkNt/cERKxxqu5aD9ajaN/R2nzygZFTIYInKnabH6x4=;
+        b=jvNidDBaGWDWFVtWe6ZbxTDyOzQ8LI3bFOwqH8xgIjUG1+OG2H+C8Eml+wj84/5FzD
+         /7fcnRwU8cGz1sqRYkyacoEqMAe/nXO8uxSrkWJg4v2vYScpNDRb0c56Lv7n9ytNkUkG
+         yqpDKRq4wWghHyudpAh3Cp4IxU2V0uJf9wmIL3yo/h3UOGMWKQHAMtXUirNZ7hVC8Gbn
+         8lqNc5mVWnlxV30h27l/Ct5ijL1q6ZbF/x2D8AQ255r2XIbMx3dUNuI08EN4T1UpD1PN
+         LCKQ/LbiejuLUfQykq5s4LLKDnzbvv3FWKjvJWi88nPLR8JWDKIL0dDBvjJYnWjLEuZ9
+         vPqQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/YcmsHaXa0gFJVj4Zx9GKqjX1HPPRcvTpn3rTJvA58miPaXstyah2SSJAdOQADzu0T/YbyBlA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxanm+I7C3i7rOQxkJjtbSCWdvZny1A/FyNUBgpGcx1136WAIzq
+	0slYSiXLK8dn3yHH1v+skIc2t5ZjWAtNxst8RH6Lj3iUsHu4hcbyYSwf
+X-Gm-Gg: Acq92OE95PxNNYlCtLK6lTmcDX3sZZftt8owNZrf5YpdYYDWpD2k0Aha0FrmAjnE6yU
+	w9lve1IE3iJwpvExpFeitBJsVPqoPfIeTSvZ48KIdBFPm+BaN2NaqYAhRKqbTT0+6XY7bAr+d1n
+	MA30wxWfVwIfTShaLpf/Ne7L7z9dEcrh368bknfaZ5ldu/I0mB+oV707ftB8kLacnFtHY7vxLb6
+	5IGZNITBXquxECmV/KwhMqHJAO//SPjaQVFkeshlvmaAN5vjqnS7+RJGJBfXzdeFUQJGW0xdNbp
+	3/t4waMwW/BkFPwrOSNwnTpyST8KeY6yf22FXGJ13d1XbC8HtqFnyuKCfNCT6B8rwLmbQMaUEi7
+	BrxtkG/H2CIj4ibm8NGMxMz4aSqcgKOVI624lmO2RDdJ3Tk9Vku/uZNGrYUH9yueztNNonewGE1
+	eSZJHIBtPvQ/uNrNUu0mxkzzivJXzmaOwadzaFjP4jePPT6DiZLwZhGxvRp9M=
+X-Received: by 2002:a17:902:d2c8:b0:2c0:ee6c:c53c with SMTP id d9443c01a7336-2c2f0b21db3mr17479015ad.1.1781159306435;
+        Wed, 10 Jun 2026 23:28:26 -0700 (PDT)
 Received: from csl-conti-dell7858.ntu.edu.sg ([155.69.195.57])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c164f6d2bbsm282891565ad.1.2026.06.10.23.28.19
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c164f6d2bbsm282891565ad.1.2026.06.10.23.28.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Jun 2026 23:28:22 -0700 (PDT)
+        Wed, 10 Jun 2026 23:28:26 -0700 (PDT)
 From: Maoyi Xie <maoyixie.tju@gmail.com>
 To: "David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
@@ -72,9 +72,9 @@ Cc: David Ahern <dsahern@kernel.org>,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH net v5 1/7] net: ip_gre: require CAP_NET_ADMIN in the device netns for changelink
-Date: Thu, 11 Jun 2026 14:28:08 +0800
-Message-Id: <20260611062814.2528793-2-maoyixie.tju@gmail.com>
+Subject: [PATCH net v5 2/7] net: ipip: require CAP_NET_ADMIN in the device netns for changelink
+Date: Thu, 11 Jun 2026 14:28:09 +0800
+Message-Id: <20260611062814.2528793-3-maoyixie.tju@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260611062814.2528793-1-maoyixie.tju@gmail.com>
 References: <20260611062814.2528793-1-maoyixie.tju@gmail.com>
@@ -86,26 +86,15 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-A tunnel changelink() operates on at most two netns, dev_net(dev) and
-the tunnel link netns t->net. They differ once the device is created in
-or moved to a netns other than the one the request runs in. The rtnl
+ipip_changelink() operates on at most two netns, dev_net(dev) and the
+tunnel link netns t->net. They differ once the device is created in or
+moved to a netns other than the one the request runs in. The rtnl
 changelink path checks CAP_NET_ADMIN only against dev_net(dev), so a
 caller privileged there but not in t->net can rewrite a tunnel that
 lives in t->net.
 
-Add rtnl_dev_link_net_capable() next to rtnl_get_net_ns_capable() in
-net/core/rtnetlink.c. It requires CAP_NET_ADMIN in the link netns and is
-skipped when the link netns is dev_net(dev), where the rtnl path already
-checked it. The other patches in this series use the same helper.
-
-Gate ipgre_changelink() and erspan_changelink() with it, at the top of
-the op before any attribute is parsed, because the parsers update live
-tunnel fields first. ipgre_netlink_parms() sets t->collect_md before
-ip_tunnel_changelink() runs.
-
-Commit 8b484efd5cb4 ("ip6: vti: Use ip6_tnl.net in
-vti6_siocdevprivate().") added the same check on the ioctl path. This
-adds it on RTM_NEWLINK.
+Gate ipip_changelink() on rtnl_dev_link_net_capable() at its top,
+before any attribute is parsed.
 
 Reported-by: Xiao Liang <shaw.leon@gmail.com>
 Closes: https://lore.kernel.org/netdev/CABAhCOSzP1vaThGV35_VnsRCb=87_CPjPVsTHbq905k8A+BuUg@mail.gmail.com/
@@ -113,67 +102,23 @@ Fixes: d0f418516022 ("net, ip_tunnel: fix namespaces move")
 Cc: stable@vger.kernel.org
 Signed-off-by: Maoyi Xie <maoyixie.tju@gmail.com>
 ---
- include/net/rtnetlink.h | 2 ++
- net/core/rtnetlink.c    | 8 ++++++++
- net/ipv4/ip_gre.c       | 6 ++++++
- 3 files changed, 16 insertions(+)
+ net/ipv4/ipip.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/include/net/rtnetlink.h b/include/net/rtnetlink.h
-index ec65a8cebb99..2bff41aacc98 100644
---- a/include/net/rtnetlink.h
-+++ b/include/net/rtnetlink.h
-@@ -256,6 +256,8 @@ int rtnl_configure_link(struct net_device *dev, const struct ifinfomsg *ifm,
- int rtnl_nla_parse_ifinfomsg(struct nlattr **tb, const struct nlattr *nla_peer,
- 			     struct netlink_ext_ack *exterr);
- struct net *rtnl_get_net_ns_capable(struct sock *sk, int netnsid);
-+bool rtnl_dev_link_net_capable(const struct net_device *dev,
-+			       const struct net *link_net);
- 
- #define MODULE_ALIAS_RTNL_LINK(kind) MODULE_ALIAS("rtnl-link-" kind)
- 
-diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
-index 511c25bf6f2a..3be5f264f5ad 100644
---- a/net/core/rtnetlink.c
-+++ b/net/core/rtnetlink.c
-@@ -2421,6 +2421,14 @@ struct net *rtnl_get_net_ns_capable(struct sock *sk, int netnsid)
- }
- EXPORT_SYMBOL_GPL(rtnl_get_net_ns_capable);
- 
-+bool rtnl_dev_link_net_capable(const struct net_device *dev,
-+			       const struct net *link_net)
-+{
-+	return net_eq(link_net, dev_net(dev)) ||
-+	       ns_capable(link_net->user_ns, CAP_NET_ADMIN);
-+}
-+EXPORT_SYMBOL_GPL(rtnl_dev_link_net_capable);
-+
- static int rtnl_valid_dump_ifinfo_req(const struct nlmsghdr *nlh,
- 				      bool strict_check, struct nlattr **tb,
- 				      struct netlink_ext_ack *extack)
-diff --git a/net/ipv4/ip_gre.c b/net/ipv4/ip_gre.c
-index 169e2921a851..0ebed1438f6c 100644
---- a/net/ipv4/ip_gre.c
-+++ b/net/ipv4/ip_gre.c
-@@ -1457,6 +1457,9 @@ static int ipgre_changelink(struct net_device *dev, struct nlattr *tb[],
+diff --git a/net/ipv4/ipip.c b/net/ipv4/ipip.c
+index ff95b1b9908e..e7378569bd5b 100644
+--- a/net/ipv4/ipip.c
++++ b/net/ipv4/ipip.c
+@@ -494,6 +494,9 @@ static int ipip_changelink(struct net_device *dev, struct nlattr *tb[],
+ 	bool collect_md;
  	__u32 fwmark = t->fwmark;
- 	int err;
  
 +	if (!rtnl_dev_link_net_capable(dev, t->net))
 +		return -EPERM;
 +
- 	err = ipgre_newlink_encap_setup(dev, data);
- 	if (err)
- 		return err;
-@@ -1486,6 +1489,9 @@ static int erspan_changelink(struct net_device *dev, struct nlattr *tb[],
- 	__u32 fwmark = t->fwmark;
- 	int err;
+ 	if (ip_tunnel_netlink_encap_parms(data, &ipencap)) {
+ 		int err = ip_tunnel_encap_setup(t, &ipencap);
  
-+	if (!rtnl_dev_link_net_capable(dev, t->net))
-+		return -EPERM;
-+
- 	err = ipgre_newlink_encap_setup(dev, data);
- 	if (err)
- 		return err;
 -- 
 2.34.1
 
