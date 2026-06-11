@@ -1,61 +1,165 @@
-Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [91.216.245.30])
+Received: from mx0a-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6E9937F74C;
-	Thu, 11 Jun 2026 23:12:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.216.245.30
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781219565; cv=none; b=oDSXUxhJYeiKxWxJ7/WsxtR0kM/M4+bndzZ5LmlTrWcsCckpOTaXw77qk+9U5qJ3wp0s47dscPmH5N1rCY+U3UGPCueVZ5dWnFUTVr8aeWDrAG8LVw8Fh2lx5xNM0S6Ur6tVclAKT3UCsFZ+YAPS6W+dKPUrc2vq40G0coJlnG8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781219565; c=relaxed/simple;
-	bh=KLe3hk5VUfU8noaxNmRkNEhMu7EBz0zeqqyDmsnIcAE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BQzBF21EbrYRTvh9d/GBdQ2eCcne1GElycsJoF8DGNyLRBUAqYzieSaWo2QEQSCdXnBwdkriyAYhPXX+LLreV/uRT8hAPKDOWPWmme0+dGNpow8xyjA12nfDKu+KlMRUkPFp4kxS3mIy9qgmZ2uAgRjurbA6NAVAAroahE++JjE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de; spf=pass smtp.mailfrom=strlen.de; arc=none smtp.client-ip=91.216.245.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=strlen.de
-Received: by Chamillionaire.breakpoint.cc (Postfix, from userid 1003)
-	id 58793602B9; Fri, 12 Jun 2026 01:12:35 +0200 (CEST)
-Date: Fri, 12 Jun 2026 01:12:33 +0200
-From: Florian Westphal <fw@strlen.de>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org, netfilter-devel@vger.kernel.org
-Subject: Re: [PATCH net-next 1/2] netdevsim: tc: allow to test nf_tables
- offload control plane code
-Message-ID: <aitA4f_9YaQV-I_l@strlen.de>
-References: <20260610175906.1767-1-fw@strlen.de>
- <20260610175906.1767-2-fw@strlen.de>
- <20260611133910.2887266f@kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 712283DDDB0
+	for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 23:45:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=67.231.153.30
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781221562; cv=fail; b=k1maKOp5ALpF77O93VqVuj4yrnekXJX3/jUndYAnEvOb6EosxoUMZy6z91lFcB0MMBgkzYTRmY9SsUHo3Kx9cwTPRwVf33QFz14TbYNMHAw7CreEOCULdKAARE1YJ7RYGT3onUHfGRPHoITc4ulCQG4UYJFSb3n4P6ZtbLcgu4M=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781221562; c=relaxed/simple;
+	bh=wM82CBZM/T/B4tXhf63AjAwD1f2VxLY1SoQyRorBE9I=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=CVkTZgoIESYK1EERC93b1KBUVaHOSGarTBMxPLlpxNR2LgLiVbTIrBXO8ceNvENHGyiKBosZtaQihbUlm5O3g/JExsRTNjHtwAWVGESOkyu3LyK6QqDcVeP7X5Io2TzESL+O5+MWZZPr76Y6wgN5XUIW2Sm+LAX9wDkFfC5tj+w=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=C/D5WLO0; arc=fail smtp.client-ip=67.231.153.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="C/D5WLO0"
+Received: from pps.filterd (m0001303.ppops.net [127.0.0.1])
+	by m0001303.ppops.net (8.18.1.11/8.18.1.11) with ESMTP id 65BEVm5B1112499
+	for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 16:45:54 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
+	 bh=wM82CBZM/T/B4tXhf63AjAwD1f2VxLY1SoQyRorBE9I=; b=C/D5WLO0mmbA
+	Ud0JqF5B+NiRYogOXFY27nmYpBJEirm9IRllvwozXjgx8OIFD5ZV8faeqTA3bkPS
+	QQWZkebPb05AEUyMH8P16H5UX/fEBtNpeSpSliXT4oXjzyno6ILLCxFInu9/96z5
+	1EJj/KLr2YVNpfd/nUoJ5mhagh5nM7sa5TvPfzFUJ71l8C1p7W0tPydae6CxTcqV
+	tYwT6puC45+P6mMcS1ezBsA7Os1dhZQGhyxQyH3i47tvMD+VBY2zLGJ1L2IC/Muy
+	9fS62yBoiRy7/k9VAoZ+zz+a3YlY8q3mXa4pSOy8Nssbs4fwqZWQUMQUW7GP/2Hm
+	q3IRLexocQ==
+Received: from mail-ot1-f69.google.com (mail-ot1-f69.google.com [209.85.210.69])
+	by m0001303.ppops.net (PPS) with ESMTPS id 4eqe7a9w3v-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 16:45:54 -0700 (PDT)
+Received: by mail-ot1-f69.google.com with SMTP id 46e09a7af769-7e713779405so919395a34.3
+        for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 16:45:54 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781221553; cv=none;
+        d=google.com; s=arc-20240605;
+        b=NQ331UtKiJo/xvkhSy5bJPRf4XBE2vYOh1BeXs2utffiaaWmmbL6kAbqyfC3pWdFbn
+         iTb6rwqYtbTfNSKWMJg7ohRW+s3WOs6IVaqI/WkkuASPPazgVVP5mmG+fhOBZQd6KpXw
+         e/1ptccMvaq8Z3Nwl1Fo0pgkvc8VTwFl4TkQpV3NhbuU97cYef5QHxQ0WtKpZ509UFpY
+         rkBpta4o3XVaRPfMtplsom78fL3AVluyMnONt4SPYZt4wQEaN9qvp0yGAXi4wdvLyGX2
+         9CYPy/9Ddy1x1GnTS1Jd8L1AkdLeAW727l++KIMZl861X0xuTm+t4UnepO7OhQ2DcPAo
+         AUsw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version;
+        bh=1UnBtkB8A80kDFmam85CYV9Oy02dqYtmeBOXBtV1LT0=;
+        fh=VFtLhVcj611LMti5jI4ETpB+wKu8K2BgtlGH4w19N5Q=;
+        b=UgyY17LDL2N5bgJPUlSi9BdbmNC4A+hY6oB8+e5KP4ACfq5xHbF8vfw3mA138OsckY
+         dbTYDMwTRvDgUP5EcU012iOdblQr3MSRI/nO02lyT6NExv614sjkrOz17r6Gi5biSVU6
+         H45xxYBpjnY6uEK29nXnbjQrddCFyb7lQFMi5y9gATYCz2/1a3U2zUjP0I7fMyPBjb19
+         3hZ4mW/ZHg07gy60xmZrMD81GT6jqesAqmJn2Fdqjl5UImJX5REpsaoOByxVNlqmsauu
+         Y1eXUARISc4VQx8fbUVpS7dZ1IwnJ1wzORozNyYHKTaM8amuRchW+hnIMHfhLXfi3SVi
+         JMUQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781221553; x=1781826353;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=1UnBtkB8A80kDFmam85CYV9Oy02dqYtmeBOXBtV1LT0=;
+        b=apbWyCT2VA3CvtHW7dRkZR/+YHKe/2dJYIdVozEXi7n7BfZVGDtY6toTDW1emHukv8
+         Lj6kXn6HDGPzyklZrlC+0kfM8QCd+HcsU3E+u/DleC5c/saRwQ2eFT7dHurQXcSnyO38
+         Q4N5Wl+IQB89/sgcq/q+w3dM/YAtWwdBvmbUE/5UGDXqfVlDI8yhprwmRHzF6CpUkbHR
+         rnG5jO0wQEv4Mp3NEBWjSSFnJsjF6c5JiXVjW+6LxcLz4hpC/B7f8FhrNiQryWMFb9DR
+         +j6bZ+2m7We1FiqB8Io5P6v9WPli6AGH2FC26f3zZ055B2zxOujPLhfQoOC1czDzlfWB
+         pDPw==
+X-Forwarded-Encrypted: i=1; AFNElJ+7ORmIHbWgTlxB5n4A6gSuoMI3SmkJoJSU4wCJT2TrN5YoVmt35ripA7WShOeUam0iW7c/unU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw2MwDtQxBb1sDnMmcpEUJYkLFJpngXVwKTtKXLfDxJyeQvDR85
+	RsOFbhvD+w5cY3wVL2XUtZ+hQQsl4DSPE1jj4WvcNsifuSmsKexndIv4asYFklCVeXUDYyliks/
+	Cka7B/J2x4drtYS604g8DlP7kXqnxO3c1aeBDn9M0jH33YhzbLTtxk5Hf7ExTi7UAx8IzfsQPV1
+	oqidU64WfFh32DVooNlKXePPEnLydhyTw=
+X-Gm-Gg: Acq92OHGe9XlxWEGsmdsDGnog9SGp56QwV8uOd1BYF3nV7bAQtqo/wL4nZFW6uj9khR
+	HSdkbQoJM+Qgr1y1rddD8ihGgqmSJ8YIEt/JIQsyO4EzVnFThzmuc+YJpHn7OZXMyw5h51BW5fD
+	YRjco+T2QOWHJndhM+2/rxZ4uR13r56PpkcmQASm1DtRmE3uKtD/JbjPV8a42qTzFO3m5C6F3Yj
+	JjihuLz0ghPIpWlgdFZ6A==
+X-Received: by 2002:a05:6830:6734:b0:7e7:571:114e with SMTP id 46e09a7af769-7e784871fe1mr152179a34.20.1781221553606;
+        Thu, 11 Jun 2026 16:45:53 -0700 (PDT)
+X-Received: by 2002:a05:6830:6734:b0:7e7:571:114e with SMTP id
+ 46e09a7af769-7e784871fe1mr152160a34.20.1781221553208; Thu, 11 Jun 2026
+ 16:45:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260611133910.2887266f@kernel.org>
+References: <20260610193158.2614209-1-zhipingz@meta.com> <20260610193158.2614209-2-zhipingz@meta.com>
+ <555912e9-818f-4906-a883-6f14e0790672@amd.com> <CAH3zFs2UeZfqm2M5tX5bBA6VRw2DjcyT45oGJJag5oT2WvKPJw@mail.gmail.com>
+In-Reply-To: <CAH3zFs2UeZfqm2M5tX5bBA6VRw2DjcyT45oGJJag5oT2WvKPJw@mail.gmail.com>
+From: Zhiping Zhang <zhipingz@meta.com>
+Date: Thu, 11 Jun 2026 16:45:41 -0700
+X-Gm-Features: AVVi8Cfn8yu04sl-GzuR397tWS6RCJ76opDbk_4XDQqGmuG536f9nq5T-lNoRa0
+Message-ID: <CAH3zFs21OjkJtYKSqV5rjnEqOU=221LQLY2qXo9pMb79kRSQgQ@mail.gmail.com>
+Subject: Re: [PATCH v7 1/5] net/mlx5: free mlx5_st_idx_data on final dealloc
+To: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
+Cc: Alex Williamson <alex@shazbot.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+        Leon Romanovsky <leon@kernel.org>,
+        Sumit Semwal <sumit.semwal@linaro.org>,
+        Bjorn Helgaas <helgaas@kernel.org>, kvm@vger.kernel.org,
+        linux-rdma@vger.kernel.org, linux-pci@vger.kernel.org,
+        netdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        Keith Busch <kbusch@kernel.org>, Yochai Cohen <yochai@nvidia.com>,
+        Yishai Hadas <yishaih@nvidia.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjExMDIzOCBTYWx0ZWRfX6MySb4Z3d6j4
+ ustG10XeCCeodP9cIabyhzFCmO4jfwI+V38w+lh11JlCsnvmNrf5HKpW52sLlDPjBlX/ZkBrXDG
+ XsPBqCFVGV5IQtqUgwvVVP/CPX/2wZiwSM2aj1XRiNONL8e0N1suXQYHBU1whhtoRIChAcGOQ0v
+ Zfmh79GPyrwBJzXpR6nkwWcX+6FNDC8jgyt94QgFXFlCN0N311iMAHzSsUTua/2hXLFSJMFAci6
+ mMSJifGy1dclZgMw5E4pcFl5I5j9pG7DdL+SD2HdPfDPsJEdOx8htzwUD0crj8QKmYa0pdNc8Z0
+ C1rizmUTKNAz2DJWVDrrQBOpnxwLmROhsgLQet3KIephGAzVvsWxssbKKObF3GKApEDUAUEw4Ik
+ K5ZCF3dJe6pzRaK5Uv4Aji33Y/Muqo+c6rikOLMSB318U2lHom6RmGLDtphk2TAmCA/18qONLww
+ 5U3Dv3+LhOP19pNd0RA==
+X-Authority-Analysis: v=2.4 cv=AKrEjgtd c=1 sm=1 tr=0 ts=6a2b48b2 cx=c_pps
+ a=z9lCQkyTxNhZyzAvolXo/A==:117 a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22 a=_78whYxrdx1mplLwxq1U:22
+ a=VabnemYjAAAA:8 a=zd2uoN0lAAAA:8 a=iziE14hG8lcdKKJlCxoA:9 a=QEXdDO2ut3YA:10
+ a=gKebqoRLp9LExxC7YDUY:22
+X-Proofpoint-GUID: tScf1hYYm2Gbyn3zHdtSulWjhmy4wkHw
+X-Proofpoint-ORIG-GUID: tScf1hYYm2Gbyn3zHdtSulWjhmy4wkHw
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjExMDIzOCBTYWx0ZWRfX8D3nXOA0uuSR
+ PukRj6uetIw9Ql+La0HwA9RcZJ7pueLYiokN+TRGSRqJAOVsNywlUrs9h4OjC32Lp4R8MJJtwos
+ Mhh5lF4lZQfRXE99hvf/os8DFj8lQME=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-11_05,2026-06-11_01,2025-10-01_01
 
-Jakub Kicinski <kuba@kernel.org> wrote:
-> On Wed, 10 Jun 2026 19:58:43 +0200 Florian Westphal wrote:
-> > @@ -73,7 +86,10 @@ nsim_setup_tc(struct net_device *dev, enum tc_setup_type type, void *type_data)
-> >  						  &nsim_block_cb_list,
-> >  						  nsim_setup_tc_block_cb,
-> >  						  ns, ns, true);
-> > +	case TC_SETUP_FT:
-> > +		return 0;
-> >  	default:
-> >  		return -EOPNOTSUPP;
-> >  	}
-> >  }
-> > +ALLOW_ERROR_INJECTION(nsim_setup_tc, ERRNO);
-> 
-> As you probably seen other netdevsim offloads use explicit debugfs 
-> files to "fail operation X". Slightly easier to deal with, and
-> netdevsim is a test harness anyway. But entirely up to you.
+On Thu, Jun 11, 2026 at 3:53=E2=80=AFPM Zhiping Zhang <zhipingz@meta.com> w=
+rote:
+>
+> On Thu, Jun 11, 2026 at 12:47=E2=80=AFAM Christian K=C3=B6nig
+> <christian.koenig@amd.com> wrote:
+> >
+> > > >
+> > On 6/10/26 21:31, Zhiping Zhang wrote:
+> > > When the last reference to an ST table entry is dropped,
+> > > mlx5_st_dealloc_index() removed the entry from idx_xa but leaked the
+> > > backing mlx5_st_idx_data allocation. Repeated alloc/dealloc cycles
+> > > therefore accumulate one struct mlx5_st_idx_data per cycle.
+> > >
+> > > Free idx_data after the xa_erase() so the lifetime of the bookkeeping
+> > > struct matches the lifetime of the ST entry it tracks.
+> > >
+> > > Fixes: 888a7776f4fb ("net/mlx5: Add support for device steering tag")
+> > > Signed-off-by: Zhiping Zhang <zhipingz@meta.com>
+> >
+> > Since this is an obvious bug fix I think it shouldn't be part of this p=
+atch set and go upstream completely independent.
+> >
+> > Regards,
+> > Christian.
+> >
+>
+> Sure, Michael replied that he has made a patch to fix it, i will rebase o=
+n top.
 
-I'd rather not reimplement the '30% failure rate' and the 'make-it-fail'
-logic (allows to have restrict the error injection to selected
-processed), so I would prefer to give fuzzers more rope.
+Never mind, it seems Michael's patch did not contain the fix, let me
+submit a separate set.
 
-I'll fix up the sashiko hints in v2.
+Thanks,
+Zhiping
