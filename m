@@ -1,131 +1,351 @@
-Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 111053F9F43
-	for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 12:38:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.179
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781181502; cv=pass; b=e7MUfZ22YuC/K1Aqtd7zP7o4Lloe6XiqOgHx8p5PegU8v5dc8v6xJbGWbKukwbd16Y4r9sXcKlGDcp8nVFQ968p3R+pOqvOSkDTLAL4/tW4VGS5Wlx54cFG/3u/Q4mxfbEfnQnaq7wb3eAy8LRzF5U2uN/X/qAUffoXs+lg5Lks=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781181502; c=relaxed/simple;
-	bh=ojsKbpJZqsF4mqMN6JdK1iLxFv+TqfVytC3MxmRt82U=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Oib3qwjua2DlSoO/LqPO9yRYEFYGvfZWllUqKiQf7ZHSc8irtreaiMeJ8SamJ2GdlXzx43I1yHL+D52Y03S8N+t4PG6/QRQSKxV6sK479fTnf+ecuBr+1AffWEQcDNsbAeos27E+t5Y5eSprWp5gWqdLslf5/0crAMU2Kk7n31A=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XmFgfAua; arc=pass smtp.client-ip=209.85.160.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F52E3F825C
+	for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 12:38:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.180
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781181516; cv=none; b=TU7IhAUCT9xInHVmX3GHApwZCU2J7tQ71MLQRtCbDy+97xTnUW8Lj1KPxIUxnXDuuygkPS8/cIhhLyZgKE3tVdwnXU34jTzfNAUDLexasOuQmGQ8slz8lwFJtA1q0zu/REr/7isFFZcX7BDqTIn7eWq3EZOWOtY9caTB+PSae48=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781181516; c=relaxed/simple;
+	bh=haEccmhqC7VmWW+0DSMapViaZBrWcsJHhtn5EvyTuag=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=azPkKNkMgxzLE6VHJCmsDaPyJZum3D23gRdyXitwnCpCsH7+whj43ZP90WxFRIbu0fYbvy56WFgG1tGZ6fFIs3GDqB94pHTfOze1qIPcziJlTsyTLZHcZqrCFmpeRP/XrzuO5epfz6jiT0IeyzmxNPJT7/uHEigyMBlV8+D54K0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=AKCI8xX6; arc=none smtp.client-ip=91.218.175.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XmFgfAua"
-Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-5176bbb9384so78818481cf.1
-        for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 05:38:19 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781181499; cv=none;
-        d=google.com; s=arc-20240605;
-        b=fhba2N0LMh4C21l+6UlxdF9Qgp/ZaEebK6C5U2foXyPtWVX9MbPDpmgmzuYyclUhI+
-         nVbnw+Q+fQQsdPjaVMbJDGypZ6nvD88WV1x4NX07sVPdAe4/GYRiPisDQ+HYDlrVla73
-         P9UvPm77PGFf528buTxtK/TDIuIo9hVWKm7WvYlEKK0tO6+IZvi95F/lms2hxTodytnL
-         7w9pgZJ80vHHnLimJ8i6y3jkrkMOfdKWYJijfd/nQ4QzGBCZmNunrdwCW1b3jV4RKsik
-         dJE9BUPzie+r5UN0fVF42Ew96pyZQQGqkauc4TbJqEMgxm3g7sKH53JrzljKqkVi3NiR
-         e/dQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=ojsKbpJZqsF4mqMN6JdK1iLxFv+TqfVytC3MxmRt82U=;
-        fh=rHGAY0vGuNwpJb6WtB0+yFpJS05O5FO5yHZd7Sy40bw=;
-        b=KsBiKNYv9ZW2oRu//E6bRTInHgWo+uJDSAdVZ7gBa2Kl1VRi74knxBxcz9hDh6c0gv
-         Ux/LBSXh2cRrhJq73Ly7C5sepyGNQJjFG6kU/OFDe5Mq2Uj9KcxWmHdYnp7aQlclC0RG
-         s4gqCS2ve0jSHeey/38vTUNYBmn8egplFuHM5e7m2M/0MeM+LFIWsTlChnZFY8v9Sb11
-         cXyhss4RMVaGAea+kVO3n7BbdUj12Q7iElouQO7h57ymCxrgufXtI9+fe7fw+/je6Bx+
-         YVCfw9DvOUxmv/FT+meJ6BUD1l39K9xqd7+Q+8r6w8skOOi2WkXLzoMJBsYxZGJ9nhto
-         P+ew==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781181499; x=1781786299; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ojsKbpJZqsF4mqMN6JdK1iLxFv+TqfVytC3MxmRt82U=;
-        b=XmFgfAuah5vS/dvbHCBe3N7xPqiv9/1xRY+f57Avi6F6TpLu2hDaSnxi1uulmerpIk
-         Ebm1mWCZ+u5rPJOd6d/2YrxBnAR5AwZAMJLv2jTpb65tUry5nTWn1vviOHtcjPB8pYh6
-         9jNSnWmKWXffR0d+d9cKY5B8xkiXnrZYDyUVgoEN4qlWRk5lAmVVoZvqnnkV20TMxpi0
-         qYYmhrvZZfHhUyK0OqBd8IGKkmtnQS2sgw1HfS5RBfNy90KM+rHGaZBEsFrsNeMWI2Uq
-         833MFunh1TjGCXuhCwiq3qUWA9gtlSOeot9SDk/8KEMI7rrahBOI1SU+BxkUSyfU+OS5
-         LLxQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781181499; x=1781786299;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ojsKbpJZqsF4mqMN6JdK1iLxFv+TqfVytC3MxmRt82U=;
-        b=cE2vIXw/nCif5d4uHBORlFt48G8RdFAKHbFinH505Kb2IftZZdp5oHdKU7J2ftXtWE
-         IJh1zNESMO5cd0tRdiM1KF36so9yaX9m2OU6wwHu5uXyOh0Plj2DXgqFeLLWdRYn5IVz
-         qeNbgbprezd/fhJf6mUgyR05+FYj3cCUaYEUdwAs5NUonaD5mPyuUuGionaclUN5wBTX
-         kcUbqqyOadw+zszs2SO3aEarct4JHaiE4396dSN3D0HSGsKvMv3unzYR7utMNg1RBsvR
-         rgVRM2fWpbfH8rdayi0FLZJveNnSjYww2obMJSBxqtTR65fBPh54kQAzOygyKtcY6ENV
-         uvSg==
-X-Forwarded-Encrypted: i=1; AFNElJ8k0RUYvwI61WbHnpKsdb7mAqw7mhs+AWu+w0ItT0L8lc3JgrPYP/gOgTzLaIhUDH5UARxrji8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxFH/mq6sVe8UtbKMbZJ9F9xGRj9bMUQZRJ8sn0hP1vif8H0xdA
-	GUkCkJBNFjXd6e+750cF6KSW9IzJGxwJUXLigVWZbebxLXvaR9XuQnSYSsouMxEZpApSVHWrp30
-	z2t1/FZ07yfiUPEVskWRr6T1l2BKz6nD8YPsuGzcl
-X-Gm-Gg: Acq92OFBBri33GBxt3zz0OJnkL/REb23/Pn6Ke0kGYYPMOPHdCAgsNuIaO45pidPKSm
-	jfnjoVsE8RUVVK2EhUxo4+jqk0eKvOb057xftvuLkiGKAcKj/kgXN8HSnhrjzzF56V5fhkNCjzQ
-	qXl+DvMV80KtaFu9+oXgKt8h+K3U2eQSK2XtLx1iCi5oJouqgp3EpxZQZP/mio0gy71aj14mtQl
-	AZRsxqlZlnSq4HMRkX43V+o8u22EheKM+Nf0z30BoRaqvitIjMKPLTHHch/oc8vSkubv0ZUJpjN
-	28ChmHwPAannkzXqAPZy8NiJ8MX72p0bKmv4klvr6X2f7emJpcwK6ieMSgepio69VVCi4UKlT5V
-	75wAWl7kMt6MKt9gK98LNCsUuyNAExsKnT4y3vGlU
-X-Received: by 2002:a05:622a:54a:b0:517:8541:8b70 with SMTP id
- d75a77b69052e-517ee2144afmr39725381cf.45.1781181498220; Thu, 11 Jun 2026
- 05:38:18 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="AKCI8xX6"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1781181511;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=z3RQOZCpkPzTNjmfTMEyMYiXFULFskQUrtntUJzV76c=;
+	b=AKCI8xX6vjsjwdWFni0qBmSGXe6SMtpwVhdeEol05oi5RYHPS4DFVD3lxpEms9kT+Y9+LJ
+	gqV5gkY2OmgH8+fcorngwF80CmQk6NE4TI5Ut+tNXl9fbbtCIB8MPIzyyU8Y4YabnTloLf
+	K5ErMtKqZbyfhrpKPycSz9hlSRRSmBI=
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+To: bpf@vger.kernel.org
+Cc: Zhang Cen <rollkingzzc@gmail.com>,
+	stable@vger.kernel.org,
+	Han Guidong <2045gemini@gmail.com>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Emil Tsalapatis <emil@etsalapatis.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Sitnicki <jakub@cloudflare.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	Sechang Lim <rhkrqnwk98@gmail.com>,
+	Ihor Solodrai <ihor.solodrai@linux.dev>,
+	Cong Wang <cong.wang@bytedance.com>,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH bpf v2 4/7] bpf, sockmap: keep sk_msg copy state in sync
+Date: Thu, 11 Jun 2026 20:34:12 +0800
+Message-ID: <20260611123538.156005-5-jiayuan.chen@linux.dev>
+In-Reply-To: <20260611123538.156005-1-jiayuan.chen@linux.dev>
+References: <20260611123538.156005-1-jiayuan.chen@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260605-net-next-mptcp-add-addr6-port-ts-v2-0-758e7ca73f4d@kernel.org>
- <20260605-net-next-mptcp-add-addr6-port-ts-v2-5-758e7ca73f4d@kernel.org>
- <fb96d949-dcf5-494d-8076-eb4a972fa5e4@redhat.com> <1014329c-d60f-432a-b165-62866ca6a4b4@kernel.org>
-In-Reply-To: <1014329c-d60f-432a-b165-62866ca6a4b4@kernel.org>
-From: Eric Dumazet <edumazet@google.com>
-Date: Thu, 11 Jun 2026 05:38:07 -0700
-X-Gm-Features: AVVi8CeWcYBSHusf8PMPiwu6R-DABtcuuO6WPLkteSYaC0gxDZcGsCxGDjDoZO4
-Message-ID: <CANn89iKZRmLfjO_9JURrx_6Hr9pMaQwD2zABc+dHyXiENXHNVg@mail.gmail.com>
-Subject: Re: [PATCH net-next v2 05/15] tcp: allow mptcp to drop TS for some packets
-To: Matthieu Baerts <matttbe@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, mptcp@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, Neal Cardwell <ncardwell@google.com>, 
-	Kuniyuki Iwashima <kuniyu@google.com>, Mat Martineau <martineau@kernel.org>, 
-	Geliang Tang <geliang@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
-	Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-On Thu, Jun 11, 2026 at 1:49=E2=80=AFAM Matthieu Baerts <matttbe@kernel.org=
-> wrote:
->
-> Hi Paolo, Eric,
->
-> On 11/06/2026 09:39, Paolo Abeni wrote:
-> > Hi Eric,
+From: Zhang Cen <rollkingzzc@gmail.com>
 
-> > I'm wondering if you are ok with this patch in the current form?
-> >
-> > One thing that was discussed on the mptcp ML was exposing the
-> > tcp_out_options layout so that mptcp_established_options() could receiv=
-e
-> > such argument and likely clean-up a bit this code.
-> >
-> > Not done here because placing tcp_out_options under `include` felt a bi=
-t
-> > "too much". Perhaps adding a `net/ipv4/tcp_option.h` header (and
-> > including it from the mptcp code) would be more palatable?
->
-> Note that I also didn't do this because that would mean the removal of
-> the TCP TS option would be done from the MPTCP side, and not here from
-> the TCP side. That didn't feel right to hide this from the MPTCP side.
-> But I'm fine to change if preferred.
->
+SK_MSG uses msg->sg.copy as per-scatterlist-entry provenance. Entries
+with this bit set are copied before data/data_end are exposed to SK_MSG
+BPF programs for direct packet access.
 
-Current patch LGTM, thanks!
+bpf_msg_pull_data(), bpf_msg_push_data(), and bpf_msg_pop_data()
+rewrite the sk_msg scatterlist ring by collapsing, splitting, and
+shifting entries. These operations move msg->sg.data[] entries, but the
+parallel copy bitmap can be left behind on the old slot. A copied entry
+can then return to msg->sg.start with its copy bit clear and be exposed
+as directly writable packet data.
 
-Reviewed-by: Eric Dumazet <edumazet@google.com>
+This corruption path requires an attached SK_MSG BPF program that calls
+the mutating helpers; ordinary sockmap/TLS traffic that never runs
+push/pop/pull helper sequences is not affected.
+
+Keep msg->sg.copy synchronized with scatterlist entry moves, preserve
+the copy bit when an entry is split, clear it when a helper replaces an
+entry with a private page, and clear slots vacated by pull-data
+compaction.
+
+Fixes: 015632bb30da ("bpf: sk_msg program helper bpf_sk_msg_pull_data")
+Fixes: 6fff607e2f14 ("bpf: sk_msg program helper bpf_msg_push_data")
+Fixes: 7246d8ed4dcc ("bpf: helper to pop data from messages")
+Cc: stable@vger.kernel.org
+Co-developed-by: Han Guidong <2045gemini@gmail.com>
+Cc: Jiayuan Chen <jiayuan.chen@linux.dev>
+Reviewed-by: John Fastabend <john.fastabend@gmail.com>
+Signed-off-by: Han Guidong <2045gemini@gmail.com>
+Signed-off-by: Zhang Cen <rollkingzzc@gmail.com>
+---
+ net/core/filter.c | 88 ++++++++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 83 insertions(+), 5 deletions(-)
+
+diff --git a/net/core/filter.c b/net/core/filter.c
+index 6e345ca65ca14..e35e681a15dca 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -2654,6 +2654,38 @@ static void sk_msg_reset_curr(struct sk_msg *msg)
+ 	}
+ }
+ 
++static bool sk_msg_elem_is_copy(const struct sk_msg *msg, u32 i)
++{
++	return test_bit(i, msg->sg.copy);
++}
++
++static void sk_msg_clear_elem_copy(struct sk_msg *msg, u32 i)
++{
++	__clear_bit(i, msg->sg.copy);
++}
++
++static void sk_msg_set_elem_copy(struct sk_msg *msg, u32 i)
++{
++	__set_bit(i, msg->sg.copy);
++}
++
++static void sk_msg_clear_copy_range(struct sk_msg *msg, u32 start, u32 end)
++{
++	while (start != end) {
++		sk_msg_clear_elem_copy(msg, start);
++		sk_msg_iter_var_next(start);
++	}
++}
++
++static void sk_msg_sg_move(struct sk_msg *msg, u32 dst, u32 src)
++{
++	msg->sg.data[dst] = msg->sg.data[src];
++	if (sk_msg_elem_is_copy(msg, src))
++		sk_msg_set_elem_copy(msg, dst);
++	else
++		sk_msg_clear_elem_copy(msg, dst);
++}
++
+ static const struct bpf_func_proto bpf_msg_cork_bytes_proto = {
+ 	.func           = bpf_msg_cork_bytes,
+ 	.gpl_only       = false,
+@@ -2692,7 +2724,7 @@ BPF_CALL_4(bpf_msg_pull_data, struct sk_msg *, msg, u32, start,
+ 	 * account for the headroom.
+ 	 */
+ 	bytes_sg_total = start - offset + bytes;
+-	if (!test_bit(i, msg->sg.copy) && bytes_sg_total <= len)
++	if (!sk_msg_elem_is_copy(msg, i) && bytes_sg_total <= len)
+ 		goto out;
+ 
+ 	/* At this point we need to linearize multiple scatterlist
+@@ -2738,6 +2770,7 @@ BPF_CALL_4(bpf_msg_pull_data, struct sk_msg *, msg, u32, start,
+ 	} while (i != last_sge);
+ 
+ 	sg_set_page(&msg->sg.data[first_sge], page, copy, 0);
++	sk_msg_clear_elem_copy(msg, first_sge);
+ 
+ 	/* To repair sg ring we need to shift entries. If we only
+ 	 * had a single entry though we can just replace it and
+@@ -2747,8 +2780,14 @@ BPF_CALL_4(bpf_msg_pull_data, struct sk_msg *, msg, u32, start,
+ 	shift = last_sge > first_sge ?
+ 		last_sge - first_sge - 1 :
+ 		NR_MSG_FRAG_IDS - first_sge + last_sge - 1;
+-	if (!shift)
++	if (!shift) {
++		sk_msg_clear_elem_copy(msg, msg->sg.end);
+ 		goto out;
++	}
++
++	i = first_sge;
++	sk_msg_iter_var_next(i);
++	sk_msg_clear_copy_range(msg, i, last_sge);
+ 
+ 	i = first_sge;
+ 	sk_msg_iter_var_next(i);
+@@ -2762,16 +2801,18 @@ BPF_CALL_4(bpf_msg_pull_data, struct sk_msg *, msg, u32, start,
+ 		if (move_from == msg->sg.end)
+ 			break;
+ 
+-		msg->sg.data[i] = msg->sg.data[move_from];
++		sk_msg_sg_move(msg, i, move_from);
+ 		msg->sg.data[move_from].length = 0;
+ 		msg->sg.data[move_from].page_link = 0;
+ 		msg->sg.data[move_from].offset = 0;
++		sk_msg_clear_elem_copy(msg, move_from);
+ 		sk_msg_iter_var_next(i);
+ 	} while (1);
+ 
+ 	msg->sg.end = msg->sg.end - shift > msg->sg.end ?
+ 		      msg->sg.end - shift + NR_MSG_FRAG_IDS :
+ 		      msg->sg.end - shift;
++	sk_msg_clear_elem_copy(msg, msg->sg.end);
+ out:
+ 	sk_msg_reset_curr(msg);
+ 	msg->data = sg_virt(&msg->sg.data[first_sge]) + start - offset;
+@@ -2794,6 +2835,8 @@ BPF_CALL_4(bpf_msg_push_data, struct sk_msg *, msg, u32, start,
+ {
+ 	struct scatterlist sge, nsge, nnsge, rsge = {0}, *psge;
+ 	u32 new, i = 0, l = 0, space, copy = 0, offset = 0;
++	bool sge_copy = false, nsge_copy = false, nnsge_copy = false;
++	bool rsge_copy = false;
+ 	u8 *raw, *to, *from;
+ 	struct page *page;
+ 
+@@ -2869,6 +2912,7 @@ BPF_CALL_4(bpf_msg_push_data, struct sk_msg *, msg, u32, start,
+ 			sk_msg_iter_var_prev(i);
+ 		psge = sk_msg_elem(msg, i);
+ 		rsge = sk_msg_elem_cpy(msg, i);
++		rsge_copy = sk_msg_elem_is_copy(msg, i);
+ 
+ 		psge->length = start - offset;
+ 		rsge.length -= psge->length;
+@@ -2894,23 +2938,34 @@ BPF_CALL_4(bpf_msg_push_data, struct sk_msg *, msg, u32, start,
+ 	/* Shift one or two slots as needed */
+ 	sge = sk_msg_elem_cpy(msg, new);
+ 	sg_unmark_end(&sge);
++	sge_copy = sk_msg_elem_is_copy(msg, new);
+ 
+ 	nsge = sk_msg_elem_cpy(msg, i);
++	nsge_copy = sk_msg_elem_is_copy(msg, i);
+ 	if (rsge.length) {
+ 		sk_msg_iter_var_next(i);
+ 		nnsge = sk_msg_elem_cpy(msg, i);
++		nnsge_copy = sk_msg_elem_is_copy(msg, i);
+ 		sk_msg_iter_next(msg, end);
+ 	}
+ 
+ 	while (i != msg->sg.end) {
+ 		msg->sg.data[i] = sge;
++		if (sge_copy)
++			sk_msg_set_elem_copy(msg, i);
++		else
++			sk_msg_clear_elem_copy(msg, i);
+ 		sge = nsge;
++		sge_copy = nsge_copy;
+ 		sk_msg_iter_var_next(i);
+ 		if (rsge.length) {
+ 			nsge = nnsge;
++			nsge_copy = nnsge_copy;
+ 			nnsge = sk_msg_elem_cpy(msg, i);
++			nnsge_copy = sk_msg_elem_is_copy(msg, i);
+ 		} else {
+ 			nsge = sk_msg_elem_cpy(msg, i);
++			nsge_copy = sk_msg_elem_is_copy(msg, i);
+ 		}
+ 	}
+ 
+@@ -2918,13 +2973,18 @@ BPF_CALL_4(bpf_msg_push_data, struct sk_msg *, msg, u32, start,
+ 	/* Place newly allocated data buffer */
+ 	sk_mem_charge(msg->sk, len);
+ 	msg->sg.size += len;
+-	__clear_bit(new, msg->sg.copy);
++	sk_msg_clear_elem_copy(msg, new);
+ 	sg_set_page(&msg->sg.data[new], page, len + copy, 0);
+ 	if (rsge.length) {
+ 		get_page(sg_page(&rsge));
+ 		sk_msg_iter_var_next(new);
+ 		msg->sg.data[new] = rsge;
++		if (rsge_copy)
++			sk_msg_set_elem_copy(msg, new);
++		else
++			sk_msg_clear_elem_copy(msg, new);
+ 	}
++	sk_msg_clear_elem_copy(msg, msg->sg.end);
+ 
+ 	sk_msg_reset_curr(msg);
+ 	sk_msg_compute_data_pointers(msg);
+@@ -2950,27 +3010,38 @@ static void sk_msg_shift_left(struct sk_msg *msg, int i)
+ 	do {
+ 		prev = i;
+ 		sk_msg_iter_var_next(i);
+-		msg->sg.data[prev] = msg->sg.data[i];
++		sk_msg_sg_move(msg, prev, i);
+ 	} while (i != msg->sg.end);
+ 
+ 	sk_msg_iter_prev(msg, end);
++	sk_msg_clear_elem_copy(msg, msg->sg.end);
+ }
+ 
+ static void sk_msg_shift_right(struct sk_msg *msg, int i)
+ {
+ 	struct scatterlist tmp, sge;
++	bool tmp_copy, sge_copy;
+ 
+ 	sk_msg_iter_next(msg, end);
+ 	sge = sk_msg_elem_cpy(msg, i);
++	sge_copy = sk_msg_elem_is_copy(msg, i);
+ 	sk_msg_iter_var_next(i);
+ 	tmp = sk_msg_elem_cpy(msg, i);
++	tmp_copy = sk_msg_elem_is_copy(msg, i);
+ 
+ 	while (i != msg->sg.end) {
+ 		msg->sg.data[i] = sge;
++		if (sge_copy)
++			sk_msg_set_elem_copy(msg, i);
++		else
++			sk_msg_clear_elem_copy(msg, i);
+ 		sk_msg_iter_var_next(i);
+ 		sge = tmp;
++		sge_copy = tmp_copy;
+ 		tmp = sk_msg_elem_cpy(msg, i);
++		tmp_copy = sk_msg_elem_is_copy(msg, i);
+ 	}
++	sk_msg_clear_elem_copy(msg, msg->sg.end);
+ }
+ 
+ BPF_CALL_4(bpf_msg_pop_data, struct sk_msg *, msg, u32, start,
+@@ -3027,8 +3098,10 @@ BPF_CALL_4(bpf_msg_pop_data, struct sk_msg *, msg, u32, start,
+ 	 */
+ 	if (start != offset) {
+ 		struct scatterlist *nsge, *sge = sk_msg_elem(msg, i);
++		u32 sge_idx = i;
+ 		int a = start - offset;
+ 		int b = sge->length - pop - a;
++		bool sge_copy = sk_msg_elem_is_copy(msg, sge_idx);
+ 
+ 		sk_msg_iter_var_next(i);
+ 
+@@ -3041,6 +3114,10 @@ BPF_CALL_4(bpf_msg_pop_data, struct sk_msg *, msg, u32, start,
+ 				sg_set_page(nsge,
+ 					    sg_page(sge),
+ 					    b, sge->offset + pop + a);
++				if (sge_copy)
++					sk_msg_set_elem_copy(msg, i);
++				else
++					sk_msg_clear_elem_copy(msg, i);
+ 			} else {
+ 				struct page *page, *orig;
+ 				u8 *to, *from;
+@@ -3057,6 +3134,7 @@ BPF_CALL_4(bpf_msg_pop_data, struct sk_msg *, msg, u32, start,
+ 				memcpy(to, from, a);
+ 				memcpy(to + a, from + a + pop, b);
+ 				sg_set_page(sge, page, a + b, 0);
++				sk_msg_clear_elem_copy(msg, sge_idx);
+ 				put_page(orig);
+ 			}
+ 			pop = 0;
+-- 
+2.43.0
+
