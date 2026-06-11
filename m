@@ -1,148 +1,152 @@
-Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5BDA4C6F08
-	for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 18:26:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.182
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781202397; cv=pass; b=sOd+kyf/xeTJTI6jGSa9ujVSxsiAs/FPeOuieA5qV4XnoGiCxPN89HRXvVAuqgLeMXFj5kMDrPcF9aTcoTzu+/yXsggTgP3KiNHeB76vlXoXq2Ogs7LwMQB6OzysYLOvi28DPRuA2IbVNJmch6/CjJuedaz+28dKkkAFICMwZjM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781202397; c=relaxed/simple;
-	bh=itDhPXr2ym6uljZNFH7ztIm2NNS8EYC6wS0LUwCLuIY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uLH0BSTs2/3IHOPxm12zUxt1sGXm7HKZNGahOmmDdaM5fXsAomUSoqQEbvBHjfmfnkcSLfDzQ3H/EzjLnwHCn9VRGmHkQuYPYqNO7kWcnBDdxx/APPAwcANt6uOpRgG1WMFqcIfmX18o9YQEUQgSmWskUcRd0gDoLz4MgIekfG0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CtfNN5vE; arc=pass smtp.client-ip=209.85.160.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECB331B87C0
+	for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 18:28:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781202508; cv=none; b=ocZR9YUhYIEpcCNctc2nfMlPlJDaUXev1U4eM5H21QH1VZMV23MZ7SOt25oppNycAr13EwE5fx0vVmxrkYMJmddbyBSdkPoPWvi44WtWBZ55WBhSQCTQYcYUQknTCZPGJ4Z1PghLmt5PoBKDHOFjtCGqe/eXhn0yut8nEbKjj88=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781202508; c=relaxed/simple;
+	bh=A3bv+PUyFNwYGfIaeo+qbQPPW1FKFonusD8x1AaEBYs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=IHGxvtusTPL+7ryuGmt9++gbNjVHs1Jq/ksdx1kJvITaq+OO0QgAhMpdFb4yCxU5fM63N/8fq3nMYRl0Qd6hmCxS29rwzxvcMu7TNLswZObewLd0EXt908vmY0jmG5zfmXUfTyrsXC/P74kXa4o6GEU5/ZDiP+PfHNy/u0dN9wg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F8ZP7O+q; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CtfNN5vE"
-Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-51765531803so89231cf.0
-        for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 11:26:32 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781202392; cv=none;
-        d=google.com; s=arc-20240605;
-        b=dwj/JZDvUOZwM1d0BxSr7P8EXve9yuN9L/2SIMrExTZxwfcyNuSmUdZoEnAHEKmZgY
-         oK+TfU4blpSS1Td7LUnAydimCmma6S/Pv17io0hEctULNRUf/FxXYy7D92kEbM69hRoD
-         lk90OQcDbUzGAHXTkKBCpi39ZCMprqRWsGIQ1gLYP/AAenuBOWql/77BQg78lQDRH9GO
-         uL1Ys9r4vRgE25dfu2BFxN1GBCqSiE8E56JG2N1jgYitNERqOz/1TV5A3YmHJ6u+6Ta3
-         OV89X3zpyvUPiCDfwceoLI9qH07elueIWyFxOOZe5L1IvL5XjALyzHqmUXBRfRw4OgFP
-         41KA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=RjO+U1+VNdBV2gUvNtl1hA8qIVDLyU6x+S8pv+zOymo=;
-        fh=7IOvkaRohe3fLeX8uJcyjLyWHDb8PYH1VZ5MmdEtZGI=;
-        b=czorFr9lV76QD4DsqPWARhqD7uFr8WGX3qGcDdNQ/UE3LAFSO6Vy/ikq5YRiG96RL/
-         /PUPEzBD3S09uklHrO6Wc2yFk9Ed/9IBh+wFQpgI53kuhv64dNyeAjy/ui5EQsyAkUPI
-         uabbwH27gxC7UVKW0GP1HZmyG9BxQxX32vNTVHZJOntBbh+qkiT7EZaLBcygLQbu0QI4
-         YX/Lq1MiqCvRtjApeZgUkWCJGcFb4CpeFdwvVs+rO7mBzo3PY06aU8VS7zVY/F9VqMZl
-         mvEDMxViVHKlmeskkfwIvBExClPbn0WQLURefkeXrvVPsIyn7W/frvclhajbBn/o7veP
-         NZmw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781202392; x=1781807192; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RjO+U1+VNdBV2gUvNtl1hA8qIVDLyU6x+S8pv+zOymo=;
-        b=CtfNN5vEAglz/8F5pdX68J+4E9uhHfYYmwGU1B68Eu9gVtKL6Y0oktf5KbBNyq2XTP
-         tjbyCvLWvsx3apKKKDjs4bGRz9Ze5bepSWprMJoa/zDg5FHI9B8FcIw9aXCfaGvopZEr
-         Qq9F3PzPI2uBvVia9D+uZXQvmqALavDO1QTte9X3VAJ8u6x46HwE/UrNBTXQGOazrNSx
-         Vwmtimj5BTZjJcdc26JLPUfpDWhU/en+kW5xFQIx9LcHNnVqy8ff0n+zg2Nw1ctlsjCx
-         dvy4Ab7Lj1W4yrA7EZmvAdiUJ0v2dp53FiNWm9/z5+kFlwYhMkcJf83KpvAbR3sbOf3B
-         +19A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781202392; x=1781807192;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=RjO+U1+VNdBV2gUvNtl1hA8qIVDLyU6x+S8pv+zOymo=;
-        b=gJYmiIO41SPSYOZUlKWyAQp3Z4u7er1h/wIt06RuyD9RpDpj/WsDfA7tNwQD2e3pui
-         fFpFHQh6+srMt10RWBM+V69UmbxfIYmvUk6p4q6pGPOKhIFOUUNniv8TeKzzuqtr6FCa
-         XiAJPTbFcm9sxwBXiCzRDG0LWgHixVMx6vIeyZwEuf7bQnTfV/IDvzRaXlcxrbIbhc/7
-         UqX+7FWGIaZT+a5qqFRfgIvUJmu348ReQvYz2fIYLwbw7VjFb4x4vwfDzpFu1VHM/RH1
-         7fIZmgUvTFY6K4JgGqO1IeTxbr1kSW3S7aWAgAvlxwno6xkfHOI8g4JadAUdnFfFoE8j
-         gsZQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9h0ilptv1T5PYKKAWK/5/TNof4EFV0xwQV/bOHFlYWuqWr6RZrZcGKLhCfdEt0bx0ry66heyo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwYGwqQrwJi/gEJwTCL1Nycag1VoivY+f/LgHJUmTpFz5DWVF8s
-	UDRT1yRHBnY+ao1R1IB870ou2TkQ5YJc4RQQQpR9GbPFFqrjVBWifdU9RZzkcTX31/V1lppQA8/
-	OuURyQh/ZkrxDbuaVLBhRNMXf7bRMgtyf8X1s3I9W
-X-Gm-Gg: Acq92OH6NS9yV0LnenK0Tr20BVWlmvt4E96SwO38cJJnFpktukG1ocKlXq7x/SXcZDK
-	ZBzJIMDZslbj7FrJGPbBIIqreQGfWmsqR6X6PZS/c+HCTfNLfmnWITty9JNbw9o/38HX2uG2ulT
-	l93PDV9E9Y59ewH+w/iC9N3LXN2nnKvlo6TwAi3kmj39rO6tFfgIG4I4pa3QjlOg0hOrIb/NqKu
-	p7EB08jjfYoydlDSRRI6BnvXEXDzyQd8evE/OD2ZdVqohb06qDDCvU/0Wqj/GIAuG/oBvWWw/Gp
-	3R2mRYIwjQpUJ1zT0qoaQ8cCRm2O6hni3BgHow==
-X-Received: by 2002:a05:622a:130e:b0:510:f9b:fb5f with SMTP id
- d75a77b69052e-517fb08448bmr937311cf.16.1781202391118; Thu, 11 Jun 2026
- 11:26:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F8ZP7O+q"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F303F1F000E9;
+	Thu, 11 Jun 2026 18:28:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781202505;
+	bh=PQ+7AF40V+UiCQ/so8xG7xoPIxuZce4SzWc4u0Zd2FA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=F8ZP7O+qURs/JvD+ud9qX64HvXWAIojPPqLBPUPOnZK0WacnQ4bvCpQGCNlXAhQNB
+	 +2v1ImzkD6h+QS8l9hIR/YT9CDcRjBrqhiZXdsuwqoD+esg4LC1lvkqYyLKU2ekLqX
+	 OU2+BDTSJOBjqmNRasjkS/YvS42ONDfkaxBvpUw18znh0gOv/gNhYkhW9jLLJPKEfa
+	 wgr//jnNIROrjytMXTV3LLXRJV7fk0T1HGi7UV8ROoXWs+vy9bSiqIIu0Y1qSoHKAA
+	 DH2oIHoJjiILFz7edPQmABPBgWKDSMwriCxJlDbi5R4u5J9QJy9GJrVH4S2dFnDFDX
+	 tko/ixS1IL3CQ==
+Message-ID: <9a9a8e6b-db0d-4e7c-8256-4ef31136377a@kernel.org>
+Date: Thu, 11 Jun 2026 12:28:24 -0600
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260611002437.1671401-1-digonzal@google.com> <b601d0d4-d472-450d-a966-e18c9642a433@intel.com>
-In-Reply-To: <b601d0d4-d472-450d-a966-e18c9642a433@intel.com>
-From: Danny Gonzalez <digonzal@google.com>
-Date: Thu, 11 Jun 2026 11:26:18 -0700
-X-Gm-Features: AVVi8CeVv_8rnqLZqyyC2rJzhiRpf4iydHkPcuGojuZUr1GdzQIsaDm1AuaaoYo
-Message-ID: <CAH1CuA-zQveU_pzopVMnDM11Kbz8wTzMP=SvSDBEq8Tk3RaebQ@mail.gmail.com>
-Subject: Re: [PATCH iwl-net] idpf: decrease statistics refresh interval
-To: Alexander Lobakin <aleksander.lobakin@intel.com>
-Cc: Tony Nguyen <anthony.l.nguyen@intel.com>, 
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>, "David S. Miller" <davem@davemloft.net>, 
-	Jakub Kicinski <kuba@kernel.org>, Eric Dumazet <edumazet@google.com>, intel-wired-lan@lists.osuosl.org, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	David Decotigny <decot@google.com>, Anjali Singhai <anjali.singhai@intel.com>, 
-	Sridhar Samudrala <sridhar.samudrala@intel.com>, Brian Vazquez <brianvv@google.com>, 
-	Li Li <boolli@google.com>, emil.s.tantilov@intel.com, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v3 3/3] selftests: fib_tests: Add test cases for
+ route lookup with oif
+Content-Language: en-US
+To: Ido Schimmel <idosch@nvidia.com>, netdev@vger.kernel.org
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+ edumazet@google.com, horms@kernel.org, willemb@google.com
+References: <20260611154605.992528-1-idosch@nvidia.com>
+ <20260611154605.992528-4-idosch@nvidia.com>
+From: David Ahern <dsahern@kernel.org>
+In-Reply-To: <20260611154605.992528-4-idosch@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Jun 11, 2026 at 8:57=E2=80=AFAM Alexander Lobakin
-<aleksander.lobakin@intel.com> wrote:
->
-> From: Danny Gonzalez <digonzal@google.com>
-> Date: Thu, 11 Jun 2026 00:24:37 +0000
->
-> > The default 10s statistics refresh interval is too slow for real-time
-> > monitoring and causes network selftests (e.g., uso.py) to fail when
-> > verifying traffic immediately after transmission.
-> >
-> > A 10s delay also causes aliasing in telemetry tools polling at shorter
-> > intervals (e.g., 5s), leading to inaccurate rate calculations on
-> > high-throughput NICs.
-> >
-> > Decrease the refresh interval to 250ms to ensure fresh stats and fix
-> > test failures.
->
-> Have you tried a bit more conservate value like 1s? Wouldn't it be
-> enough for tests to pass?
->
-> 250 ms is also okay, just curious.
+On 6/11/26 9:46 AM, Ido Schimmel wrote:
+> Test that both address families respect the oif parameter when a
+> matching multipath route is found, regardless of the presence of a
+> source address.
+> 
+> Output without "ipv6: Select best matching nexthop object in
+> fib6_table_lookup()" and "ipv6: Honor oif when choosing nexthop for
+> locally generated traffic":
+> 
+>  # ./fib_tests.sh -t "ipv4_mpath_oif ipv4_mpath_oif_nh ipv4_mpath_oif_vrf ipv6_mpath_oif ipv6_mpath_oif_nh ipv6_mpath_oif_vrf"
+> 
+>  IPv4 multipath oif test
+>      TEST: IPv4 multipath via first nexthop                              [ OK ]
+>      TEST: IPv4 multipath via second nexthop                             [ OK ]
+>      TEST: IPv4 multipath via first nexthop with source address          [ OK ]
+>      TEST: IPv4 multipath via second nexthop with source address         [ OK ]
+> 
+>  IPv4 multipath oif with nexthop object test
+>      TEST: IPv4 multipath via first nexthop                              [ OK ]
+>      TEST: IPv4 multipath via second nexthop                             [ OK ]
+>      TEST: IPv4 multipath via first nexthop with source address          [ OK ]
+>      TEST: IPv4 multipath via second nexthop with source address         [ OK ]
+> 
+>  IPv4 multipath oif with VRF test
+>      TEST: IPv4 multipath via first nexthop                              [ OK ]
+>      TEST: IPv4 multipath via second nexthop                             [ OK ]
+>      TEST: IPv4 multipath via first nexthop with source address          [ OK ]
+>      TEST: IPv4 multipath via second nexthop with source address         [ OK ]
+> 
+>  IPv6 multipath oif test
+>      TEST: IPv6 multipath via first nexthop                              [ OK ]
+>      TEST: IPv6 multipath via second nexthop                             [ OK ]
+>      TEST: IPv6 multipath via first nexthop with source address          [FAIL]
+>      TEST: IPv6 multipath via second nexthop with source address         [FAIL]
+> 
+>  IPv6 multipath oif with nexthop object test
+>      TEST: IPv6 multipath via first nexthop                              [FAIL]
+>      TEST: IPv6 multipath via second nexthop                             [FAIL]
+>      TEST: IPv6 multipath via first nexthop with source address          [FAIL]
+>      TEST: IPv6 multipath via second nexthop with source address         [FAIL]
+> 
+>  IPv6 multipath oif with VRF test
+>      TEST: IPv6 multipath via first nexthop                              [ OK ]
+>      TEST: IPv6 multipath via second nexthop                             [ OK ]
+>      TEST: IPv6 multipath via first nexthop with source address          [FAIL]
+>      TEST: IPv6 multipath via second nexthop with source address         [FAIL]
+> 
+>  Tests passed:  16
+>  Tests failed:   8
+> 
+> Output with the patches:
+> 
+>  # ./fib_tests.sh -t "ipv4_mpath_oif ipv4_mpath_oif_nh ipv4_mpath_oif_vrf ipv6_mpath_oif ipv6_mpath_oif_nh ipv6_mpath_oif_vrf"
+> 
+>  IPv4 multipath oif test
+>      TEST: IPv4 multipath via first nexthop                              [ OK ]
+>      TEST: IPv4 multipath via second nexthop                             [ OK ]
+>      TEST: IPv4 multipath via first nexthop with source address          [ OK ]
+>      TEST: IPv4 multipath via second nexthop with source address         [ OK ]
+> 
+>  IPv4 multipath oif with nexthop object test
+>      TEST: IPv4 multipath via first nexthop                              [ OK ]
+>      TEST: IPv4 multipath via second nexthop                             [ OK ]
+>      TEST: IPv4 multipath via first nexthop with source address          [ OK ]
+>      TEST: IPv4 multipath via second nexthop with source address         [ OK ]
+> 
+>  IPv4 multipath oif with VRF test
+>      TEST: IPv4 multipath via first nexthop                              [ OK ]
+>      TEST: IPv4 multipath via second nexthop                             [ OK ]
+>      TEST: IPv4 multipath via first nexthop with source address          [ OK ]
+>      TEST: IPv4 multipath via second nexthop with source address         [ OK ]
+> 
+>  IPv6 multipath oif test
+>      TEST: IPv6 multipath via first nexthop                              [ OK ]
+>      TEST: IPv6 multipath via second nexthop                             [ OK ]
+>      TEST: IPv6 multipath via first nexthop with source address          [ OK ]
+>      TEST: IPv6 multipath via second nexthop with source address         [ OK ]
+> 
+>  IPv6 multipath oif with nexthop object test
+>      TEST: IPv6 multipath via first nexthop                              [ OK ]
+>      TEST: IPv6 multipath via second nexthop                             [ OK ]
+>      TEST: IPv6 multipath via first nexthop with source address          [ OK ]
+>      TEST: IPv6 multipath via second nexthop with source address         [ OK ]
+> 
+>  IPv6 multipath oif with VRF test
+>      TEST: IPv6 multipath via first nexthop                              [ OK ]
+>      TEST: IPv6 multipath via second nexthop                             [ OK ]
+>      TEST: IPv6 multipath via first nexthop with source address          [ OK ]
+>      TEST: IPv6 multipath via second nexthop with source address         [ OK ]
+> 
+>  Tests passed:  24
+>  Tests failed:   0
+> 
+> Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+> ---
+>  tools/testing/selftests/net/fib_tests.sh | 251 ++++++++++++++++++++++-
+>  1 file changed, 250 insertions(+), 1 deletion(-)
+> 
 
-Yes, 1s also allows the tests to pass.
-
-We have a preference for 250 ms since High-Freq Telemetry (1s poll)
-1s driver refresh rate causes aliasing:
-
-# sar -n DEV 1 | grep eth1
-10:52:15         eth1    390.00    339.00     51.92     55.54
-0.00      0.00      0.00      0.00
-10:52:16         eth1    409.00    360.00     54.72     58.64
-0.00      0.00      0.00      0.00
-10:52:17         eth1      0.00      0.00      0.00      0.00
-0.00      0.00      0.00      0.00
-
-Thanks,
-Danny
+Reviewed-by: David Ahern <dsahern@kernel.org>
 
 
->
-> >
-> > Tested: drivers/net/hw:uso.py now passes
-> > Fixes: a251eee62133 ("idpf: add SRIOV support and other ndo_ops")
-> > Signed-off-by: Danny Gonzalez <digonzal@google.com>
->
-> Thanks,
-> Olek
