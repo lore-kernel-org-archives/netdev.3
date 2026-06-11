@@ -1,241 +1,189 @@
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+Received: from mail-yx1-f50.google.com (mail-yx1-f50.google.com [74.125.224.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E1CF3BA236
-	for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 08:56:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781168183; cv=none; b=Za9025aFzi+SGYsX/vA3YCct1Gbayj8xzef6NZOJHqn7uZKok+rqmJSTaKUkL2f2Wyy83M4DFsaES88phgb6xvu0JPy3HqNv0DXedRQkCCoahqCof8USvKSqu7zUYv/7VDw++MEaJxT4gUPkVbBxftDKyTFS+12OIARze6yjGxQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781168183; c=relaxed/simple;
-	bh=DgBPzL6z1Yltiaswa5bp/i450PjHDVfyYhPj67SlEJo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lrw3r6KLM93C8gTYfTZwE0L2IQ/ckjhX0glBfhSw5E+GngHIyrK7bFCgTCUVl/amauQ/0vPh11Xn1Z2T05L2mnfXgXD/R4K/61ZLOD1vADRfQQb514hdTGiVsoGe4jYagkRAtttK4rmRK+dttb5hmB6v3KqmPNWIUjRbRU+a24Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QJn9b/AD; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92308391826
+	for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 09:02:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.50
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781168535; cv=pass; b=p1MDHWeW/AQxR9vqB4trJOdASwp7OG0pW2lrOirlLVy+0N0DOnKnsXxAHkKshP3ERv1fXQRqaB4m+06F7CP0GqEbvrsZjTBlu5hgWPKFvVqh2cWgPWZawn7SKKmNaWG3xXuyuwImLB7IP+Tf6MliABkVYAj2Rypgn9WEavTIhbo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781168535; c=relaxed/simple;
+	bh=Q1PsgtMA+I3Pe0Hr6XqziPGeccF4AlHt2HLLuWMgILU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rxhf8NBahe2WrB7U6dGDYFTinGFeDM5LMjaeQr3DQ6uml+XE/Cj5r7i33ze7M31z+QR26oBYj7psQnw2ItvIWB97GdAKjBbAx0FBeXC2zF9I1ucTOWmTf5/8msnCS9PLw65FhmGNhJlYVg2rjvslgoWtG8ZQ1s09GR3gfGZA4vk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OCGaCUu4; arc=pass smtp.client-ip=74.125.224.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QJn9b/AD"
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2c0c20f0c0aso59762975ad.0
-        for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 01:56:21 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OCGaCUu4"
+Received: by mail-yx1-f50.google.com with SMTP id 956f58d0204a3-6626cd98209so216077d50.3
+        for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 02:02:13 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781168532; cv=none;
+        d=google.com; s=arc-20240605;
+        b=FFlnUI+CDmBxxNS062wNMg1SmPpAh849YEdXgL3EsMUjqDZCNjs1as9crsxLH+j5+K
+         Ykl1fir2ByCsW7hbwT9zk+5Ld2DGcoZLYGnaNVDObPlA7/itphrftvLlWILp0zjTHzXc
+         Z4rypS+wNIfVJw3XWJ469rK/BVaO9LCkssXY66TojKeA7l9Y0hlmD3YACf2Oyml4BC3J
+         zwzt3QIN8UCzISrBNeGUpCHbiIE3uKfYzUuMxklD4GeEJenLEi+S/rBPPSMRMreFrUxw
+         /3BUC4QGcuSjn/3Ly/w0Hxd300I2ZLWp/+jjQ5+mOuUCgnImTUgq0abNhxzSvBPn0f7d
+         AocA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=jwgGnyW8OZXRqBLUH9knN6tol2cVMvAKSmD8wOWynoc=;
+        fh=vSM6PYrELiK23q1HCHrqa/xt/bBD27tvzDP3lTlUVdI=;
+        b=Hp9d+Ly//qdrpYYjZlxAt8R2slLGfc2vkQ5I4VS28DR2P3t2ALTChumjiYQQmnnG6J
+         uRJ8hFK3FgtFUEj6QAzL24V1ckTcP97DxhF+fDsPQ3t08keQfTuhLdR5mDZTJJVUGo9m
+         /1xphwH1C/swlHwOwWhgEz7dzClLx2cANkAQ/tGJFCQ4TGa0XQHf5sFp80wELK8QKc6X
+         Enbp6nMtxiObrUw5TOWWiAQnqDmu9eqVBkK9wbfopYbizPlkhwWgaMlMyIhjhWvHRdCV
+         Ip9CfO8T/JjGNSx3ztpazmU/jx3kyQC+WOmlbIXrQwslfnaK2mKTK9/CicI1jyGwfurf
+         9eOQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781168181; x=1781772981; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=6qwMGpihlKqdGNZklUOA6TclFJahvJxIIDO9zFQ362g=;
-        b=QJn9b/ADOf5RR13Bb+fT4L+ZJab4z/lc222zx5eEBqYm0+bHU9+SGiyjRTOSpwUQwk
-         xh0ovymhrHUYpNdnvoBdfArHNnnj+q4Ry/o4scTtQ6LPh/G3N5yJgzXRjfQx6/MtB+dt
-         nUEAjh/DHz7XhaeJzYr0YqY+mxEBx8qUZFGxzyPlIxlMISDgBUBvxJwb67yiMjMlRIoM
-         gF0GqJVgp43TdCHObRnoIpYNyUsN33aiYQVeJA3KhPGXSsTlzdAO7YSYlNKrT2oTWjKy
-         74UWAWQsIzr1eG+7RoouZRdBOj2yaEQJuYP2csa9X2RspnLgThngB0D3Tr85I9c+awE6
-         Qmsg==
+        d=gmail.com; s=20251104; t=1781168532; x=1781773332; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jwgGnyW8OZXRqBLUH9knN6tol2cVMvAKSmD8wOWynoc=;
+        b=OCGaCUu4Ub0Iozx6xOL6F/dl3Eg1b7rpzo1ZDasQvD+ZQWkggaxZmg7Y5/hW52hOFs
+         Lg01MkAvSugVoGBJvm3NRDnoBUWyd+NPkr3GezdgT/r723iGQTLJ0KB8gxRI6T3lRDiX
+         ZNXC9FJiyeXUDQ7+KQ6XRJWC864Vp7NfmwpT6lrGwBh1YPuWNDkjHY0jC7fdneq2480N
+         4hkjCJGIu9gQiIKkTfO4bOWqRcOl4hDAXd4r5ePG6WXzRLXEwhTPrlkeWVNiUIyTQWxc
+         oiMkH0oJiK+JRBIHuvR2r2mZMNbs+Z5wmol1CmTqlCvnUZsUPmORm8aX6l5UCUHO8S65
+         MBlQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781168181; x=1781772981;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=6qwMGpihlKqdGNZklUOA6TclFJahvJxIIDO9zFQ362g=;
-        b=KG8EwimgV/U8wvGB0qEw35dkjja+Oh4RSZd3ajMpTdTM0LgOUO/voKcM+YjT/EMCH6
-         +ecOYvyIhAM3o8VsZEHI8ZsxqL09cF67jNGAfMc2tcwmOuTyyBt6eP5h58hYy12Kz6Hm
-         2qvII3j/9vD03ExUZe//cQpO5XASop9xgAgdwnT2hWCZYefA6WPISQ5PrbyZIuDvJ+qf
-         CoJCEQJj3oxBBeoyiqbTM/ygNUCIFFLswKSXm1MCvFybLyWwPYjteJc6FbXCixfNUXUP
-         lZ252c+VuyZjxq74uRGojBM1iXHnuJJKi5w5HYOvVfRrfdvjc5fgdtLvWLg4zY6zpLAC
-         tioQ==
-X-Gm-Message-State: AOJu0YzMiTFekFIo8zpSzAmozENNLMVi6z/OsHVRLoLDLedUOReOYgmZ
-	Bw9GD+fkiQ+StX3oOb3OKwn8uKU7Jq/r6kd45iGRnNudyUVRQS19Khx0
-X-Gm-Gg: Acq92OGAWv0kztlSB0lQ747YjZGQUBFzm2xQkmcRbp7xWj9MvpFQKItvHz6BEri7b7P
-	AsK4xaiaDQSA3a7dZP9yMwRnzWVOtCqi93+eqsgIvlg1nSwxQHY1a7wtrgdUWIHa2ET3Gwcn/F6
-	OQXcDs+vBCefhGm+n8qU4gokjeFUATrnqle+e9SdFHYPpLhSewtXDZIc9d+bopQaPJDySnwDlHL
-	wvoL0BFJy2a82/5Q7bQjFkdTTa64oGVhpAjPkETYtb5azT1G9GDWAMnn8MpbR5c0p+S5+nYrbPV
-	s0gDkQEP5cnlBAbNslDTQ9Lj5o3k95Gf/3ApMF5ipuNNuWt54AgfeHEfu2FeF3LQQ8qGi176mp4
-	0g7dgXK5uodUHflgxgNuct+OAMpy5rowjJCimRfqGpEmsPxIuFKba+aVharsARC+4XfXVUUH2dx
-	gYscPpuPFv8wO1jMENRuhjemZnHHri3Fnp59/vKxNNQw==
-X-Received: by 2002:a17:903:2acb:b0:2c0:b081:84b1 with SMTP id d9443c01a7336-2c2f1dc159cmr22565615ad.10.1781168181253;
-        Thu, 11 Jun 2026 01:56:21 -0700 (PDT)
-Received: from [192.168.89.2] ([27.232.220.71])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c2da5b7b2fsm20547105ad.0.2026.06.11.01.56.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 11 Jun 2026 01:56:20 -0700 (PDT)
-Message-ID: <a7f661e5-61ee-42d7-be9e-5569e0f16e28@gmail.com>
-Date: Thu, 11 Jun 2026 17:56:17 +0900
+        d=1e100.net; s=20251104; t=1781168532; x=1781773332;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=jwgGnyW8OZXRqBLUH9knN6tol2cVMvAKSmD8wOWynoc=;
+        b=qwb52J+stZzDORw77EdUe1ZHr64FpD62G61Cfj2Taoskb596/kVgJdrpRP9NHuM175
+         4BCeb9ZG2s3Y29Or3Pnhj/kgnYxxfMp2eh0whyD19eQNuiZUiQlIJt57bmHeadzHEMCN
+         gG1NNboSJpOtY8jBSkii23PVD/KTgilsNsPzk+82SClOWI4B9l5e35/ZLbkM+r7IlVEh
+         pfvHt4AmhbRxnCvSDBUrR7DAiHB3B4E3XUF/lmjAruUuL4ER+9SuKJ1w4QlVDQ+8DSDf
+         EP10T/vT0NxvcFrkY/npANS7cizwRJsIxEbtjt3Ph2uYm1egcHWyz4y7XSfEeFj5gXiy
+         tzng==
+X-Forwarded-Encrypted: i=1; AFNElJ/PbMysudDYNqscQOwK/8P4PsylIy8brJqrvbdjDRCp0URzaSu9S4HRzKFtsNlbO9oFqyfzmIs=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxn12Z4Co9BLE1q5/NdqeMf+264ZJHXkGhWEtYbWVU42dAcoNwi
+	miMeORblI2MFVbMbsN+d+IEkg0dlyKQFGzOMHCQZQgmeX6IhiQtv4ILcnY2eSj2IonJCIkZcYSV
+	OaaR9kCCWI6yahdW2Eo0rdIXbEUeU95qj8bPNADwg/Q==
+X-Gm-Gg: Acq92OEs2Fh9nzgv+NsBG6xTQ/2rlp+Hwc52+A4ZQ4KEhn+0gPJPlKR5J4X0dhw/319
+	8tgDVAVHcnnVsK8wguIrBP9sTvtuj80i+dBQBpXuUOshbCbpYeXhe79TQe7aWGNIWLMbeVQJFF2
+	1bagtW6qEh7W12k3yXD+JshQKwD16fakyHw8hZufSgz419C3FytgXxg2eOWmR6/7E6antpVt/Jz
+	PsGt5Kr/8r1m1yThws3EnZlZAfoYHKvtiS26fNykB4MfANwoqEJ0hpR29Uoou10t8lFvm4LkPhm
+	MyT+iTvw5bi2pTv9CkC1o18c6WT0AgOz1PiRaiU23VmXKodzmxmkNCocWNTnl5KFfThUGA==
+X-Received: by 2002:a05:690e:1289:b0:65e:40ef:dc8f with SMTP id
+ 956f58d0204a3-662699d47e2mr1333630d50.51.1781168532418; Thu, 11 Jun 2026
+ 02:02:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC net-next 0/4] bonding: support LAG IPsec offload with
- replicated SAs
-To: Leon Romanovsky <leon@kernel.org>
-Cc: netdev@vger.kernel.org, Jay Vosburgh <jv@jvosburgh.net>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>,
- Steffen Klassert <steffen.klassert@secunet.com>,
- Herbert Xu <herbert@gondor.apana.org.au>, linux-kernel@vger.kernel.org
-References: <20260520081004.2232091-1-hurryman2212@gmail.com>
- <20260610141843.GI327369@unreal>
-Content-Language: en-US
-From: Jihong Min <hurryman2212@gmail.com>
-In-Reply-To: <20260610141843.GI327369@unreal>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20260611080850.536996-1-sun.jian.kdev@gmail.com>
+ <20260611080850.536996-2-sun.jian.kdev@gmail.com> <87se6t8ono.fsf@toke.dk>
+In-Reply-To: <87se6t8ono.fsf@toke.dk>
+From: sun jian <sun.jian.kdev@gmail.com>
+Date: Thu, 11 Jun 2026 17:02:01 +0800
+X-Gm-Features: AVVi8Cf37KuwlUK8Z0rVVPD6yzLkCu6ujOmcxJpQ3mVeHP2o2QssOHKpn8udIUs
+Message-ID: <CABFUUZHMomSb0_goXcWvamVhuRCrft-L18UgJ2TowEXiptsQqw@mail.gmail.com>
+Subject: Re: [PATCH bpf v4 1/2] bpf: Run generic devmap egress prog on private skb
+To: =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@redhat.com>
+Cc: bpf@vger.kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, ast@kernel.org, daniel@iogearbox.net, 
+	andrii@kernel.org, martin.lau@linux.dev, davem@davemloft.net, kuba@kernel.org, 
+	hawk@kernel.org, john.fastabend@gmail.com, sdf@fomichev.me, shuah@kernel.org, 
+	jiayuan.chen@linux.dev, menglong.dong@linux.dev, emil@etsalapatis.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi,
+On Thu, Jun 11, 2026 at 4:30=E2=80=AFPM Toke H=C3=B8iland-J=C3=B8rgensen <t=
+oke@redhat.com> wrote:
+>
+> Sun Jian <sun.jian.kdev@gmail.com> writes:
+>
+> > Generic XDP devmap multi redirect uses skb_clone() for intermediate
+> > destinations and sends the last destination with the original skb. This
+> > can leave multiple destinations sharing the same packet data.
+> >
+> > This becomes visible after generic devmap egress-program support was
+> > added: a devmap egress program may mutate packet data, and another
+> > destination sharing the same data can observe that mutation.
+> >
+> > Native XDP broadcast redirect does not have this issue because
+> > xdpf_clone() copies the frame data for each destination. Generic XDP
+> > should provide the same per-destination isolation before running a
+> > devmap egress program.
+> >
+> > Fix this by making cloned skbs private before running the generic devma=
+p
+> > egress program. Use skb_copy() instead of skb_unshare() so allocation
+> > failure does not consume the skb and the existing caller error paths ke=
+ep
+> > their ownership semantics.
+> >
+> > Fixes: 2ea5eabaf04a ("bpf: devmap: Implement devmap prog execution for =
+generic XDP")
+> > Suggested-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+> > Suggested-by: Jakub Kicinski <kuba@kernel.org>
+> > Reviewed-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
+> > Signed-off-by: Sun Jian <sun.jian.kdev@gmail.com>
+> > ---
+> >  kernel/bpf/devmap.c | 41 +++++++++++++++++++++++++++++++----------
+> >  1 file changed, 31 insertions(+), 10 deletions(-)
+> >
+> > diff --git a/kernel/bpf/devmap.c b/kernel/bpf/devmap.c
+> > index cc0a43ebab6b..a3d6c60dbddb 100644
+> > --- a/kernel/bpf/devmap.c
+> > +++ b/kernel/bpf/devmap.c
+> > @@ -512,35 +512,52 @@ static inline int __xdp_enqueue(struct net_device=
+ *dev, struct xdp_frame *xdpf,
+> >       return 0;
+> >  }
+> >
+> > -static u32 dev_map_bpf_prog_run_skb(struct sk_buff *skb, struct bpf_dt=
+ab_netdev *dst)
+> > +static int dev_map_bpf_prog_run_skb(struct sk_buff **pskb,
+> > +                                 struct bpf_dtab_netdev *dst,
+> > +                                 u32 *act)
+> >  {
+> > +     struct sk_buff *skb =3D *pskb;
+> >       struct xdp_txq_info txq =3D { .dev =3D dst->dev };
+> >       struct xdp_buff xdp;
+> > -     u32 act;
+> >
+> > -     if (!dst->xdp_prog)
+> > -             return XDP_PASS;
+> > +     if (!dst->xdp_prog) {
+> > +             *act =3D XDP_PASS;
+> > +             return 0;
+> > +     }
+> > +
+> > +     if (skb_cloned(skb)) {
+> > +             struct sk_buff *nskb;
+> > +
+> > +             nskb =3D skb_copy(skb, GFP_ATOMIC);
+> > +             if (!nskb)
+> > +                     return -ENOMEM;
+> > +
+> > +             nskb->mac_len =3D skb->mac_len;
+> > +             consume_skb(skb);
+> > +             skb =3D nskb;
+> > +             *pskb =3D nskb;
+> > +     }
+>
+> So with all this pointer soup and back and forth, the version you had in
+> v2 (with the check and skb_copy() in dev_map_generic_redirect()) was
+> much cleaner :/
+>
+> -Toke
+>
+Hi Toke,
 
-On 6/10/26 23:18, Leon Romanovsky wrote:
-> On Wed, May 20, 2026 at 05:10:00PM +0900, Jihong Min wrote:
->> This RFC adds a bonding model for IPsec/XFRM hardware offload on
->> 802.3ad and balance-xor LAG devices when the transmit hash policy is
->> layer3+4. This is an intentional scope limit rather than a hard limit,
->> as this is the configuration I can test with my gear.
->>
->> The main idea is to leave the existing upstream single-lower-device XFRM
->> offload path for active-backup intentionally untouched, while adding a
->> replicated state model for LAG.
->>
->> For LAG bonds, the bonding driver installs the same XFRM state on every
->> eligible running slave and stores the per-slave hardware handles in
->> bonding-private state. Lower drivers that support this model can then
->> resolve the handle for the concrete lower netdev used by the datapath.
->>
->> LAG IPsec features are user controlled. Newly eligible LAG bonds start
->> with the ESP/XFRM features disabled, but advertise supported mutable
->> features when all running eligible slaves can support them. Users can
->> then opt in with ethtool. Feature enable is propagated to the lower
->> devices and rolled back if a lower device cannot enable the requested
->> features.
->>
->> The series also handles LAG membership and eligibility changes by adding
->> replicated SAs to newly usable slaves, removing the departing lower
->> instance on down/remove, and flushing bond-owned XFRM offload state when
->> the bond leaves the supported mode or hash-policy configuration.
->>
->> This series does not convert any physical NIC driver. A lower driver
->> must explicitly opt in to the replicated-upper-device model before it can
->> use these bond-owned states in its datapath.
->>
->> For example, a driver such as mlx5 would opt in by marking its
->> xfrmdev_ops and by resolving datapath handles through the helper:
->>
->>         static const struct xfrmdev_ops mlx5e_ipsec_xfrmdev_ops = {
->>                 ...
->>                 .xdo_dev_state_lower_handle = NULL,
->>                 .flags = XFRMDEV_OPS_F_LOWER_HANDLE,
->>         };
->>
->>         handle = xfrm_dev_state_lower_handle(x, netdev);
->>         if (!handle)
->>                 goto drop;
->>
->>         sa_entry = (struct mlx5e_ipsec_sa_entry *)handle;
-> 
-> I’m curious how you replicate and maintain the hardware state across these
-> devices. How are you handling the anti-replay window?
-> 
-> Thanks
-> 
+Thanks, that makes sense. I agree that v4 made the helper interface less
+clean.
 
-The short answer is that the RFC I sent was not complete enough in this
-area.
+I'll wait for more feedback before respinning.
 
-The long answer is:
-
-At that time my preliminary test setup was an Airoha AN7581 board with
-two 10G PHYs bonded together. I had ESP hardware offload working by
-modifying both airoha_eth and an EIP93 driver that was tied into
-airoha_eth in a rather ugly way. For this RFC, I tried to extract only
-the generic bonding/XFRM infrastructure and leave out the
-Airoha-specific pieces, but that split was not clean enough.
-
-The mlx5 example in the cover letter was not tested. I used it only as
-an example because the modified airoha_eth + EIP93 setup was not a good
-thing to show as a driver model. Looking back, that was misleading.
-
-After doing more work on this, I agree that the original RFC did not
-handle the replay issue well enough. The current version is quite
-different. I now have a driver for the SOE (Secure Offload Engine) block
-in AN7581, which is the SoC's ESP crypto and packet encap/decap (+
-NAT-T) offload engine, linked directly from airoha_eth. With that
-version I tested XFRM/strongSwan (IPsec/IKEv2) over the same two 10G PHY
-LAG setup, in 802.3ad with layer3+4 hashing, and I can get up to about 5
-Gbps.
-
-If I were to write the driver opt-in example again, I would not use only
-XFRMDEV_OPS_F_LOWER_HANDLE. That flag only says that the lower driver
-resolves the hardware handle through xfrm_dev_state_lower_handle()
-instead of using x->xso.offload_handle directly. It does not say
-anything about whether the replicated LAG state is safe for sequence and
-replay handling.
-
-The opt-in would need to describe those guarantees explicitly, for example:
-
-        static const struct xfrmdev_ops mlx5e_ipsec_xfrmdev_ops = {
-                ...
-                .xdo_dev_packet_xmit = mlx5e_ipsec_packet_xmit,
-                .flags = XFRMDEV_OPS_F_LOWER_HANDLE |
-                         XFRMDEV_OPS_F_LAG_SHARED_TX_SEQ |
-                         XFRMDEV_OPS_F_LAG_SHARED_RX_REPLAY,
-        };
-
-        handle = xfrm_dev_state_lower_handle(x, skb->dev);
-        if (!handle)
-                goto drop;
-
-        sa_entry = (struct mlx5e_ipsec_sa_entry *)handle;
-
-Here XFRMDEV_OPS_F_LOWER_HANDLE means that the driver uses the
-lower-handle resolver in its datapath. XFRMDEV_OPS_F_LAG_SHARED_TX_SEQ
-would mean that the driver/hardware can keep the outbound sequence state
-correct when an SA is used through a LAG upper device.
-XFRMDEV_OPS_F_LAG_SHARED_RX_REPLAY would mean that inbound packets for
-the same SA are checked against one valid replay state, so the same
-packet cannot be accepted again just because it arrived on another slave.
-
-The exact flag names are only illustrative, but the point is that the
-lower-driver opt-in needs to describe the sequence/replay guarantees,
-not only the handle lookup mechanism.
-
-I'm currently working on and distributing OpenWrt source with the newer
-bonding/XFRM LAG offload work and the Airoha SOE/PPE integration; one
-snapshot is this commit, [kernel: add bonding LAG XFRM offload
-infrastructure and Airoha
-support](https://github.com/hurryman2212/OpenW1700k-test/commit/fbfe8f919f836bb62b3849f803865a4d9b8dc76f),
-which carries both the generic bonding/XFRM patches and the
-Airoha-specific SOE pieces. I do not think it is ready for the next
-submission yet, because some logic that is still only in the Airoha path
-needs to be generalized and moved into the bonding/XFRM code, and the
-TX/RX sequence and replay protection rules still need to be made
-complete. Once that is done, I plan to submit a new version; I have not
-decided yet whether that will include the Airoha driver code or only the
-generic part.
-
-
-Sincerely,
-Jihong Min
-
->>
->> Jihong Min (4):
->>   xfrm: add a lower-device offload handle resolver
->>   bonding: replicate XFRM offload state across LAG slaves
->>   bonding: expose user-controlled IPsec features for LAG
->>   bonding: handle replicated IPsec SAs across LAG changes
->>
->>  drivers/net/bonding/bond_main.c    | 855 ++++++++++++++++++++++++++++-
->>  drivers/net/bonding/bond_options.c |  59 +-
->>  include/linux/netdevice.h          |  27 +
->>  include/net/bonding.h              |  29 +-
->>  include/net/xfrm.h                 |  48 +-
->>  net/xfrm/xfrm_state.c              |   1 +
->>  6 files changed, 1000 insertions(+), 19 deletions(-)
->>
->>
->> base-commit: 27fa82620cbaa89a7fc11ac3057701d598813e87
->> -- 
->> 2.53.0
->>
-
+Sun Jian
