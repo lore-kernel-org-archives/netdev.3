@@ -1,117 +1,115 @@
-Received: from mail-ua1-f41.google.com (mail-ua1-f41.google.com [209.85.222.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BB263382C5
-	for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 21:54:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54F9C37B402;
+	Thu, 11 Jun 2026 21:55:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781214896; cv=none; b=Ya51rjThjUs1pkIEavGxPU8yJl64Vq5Y6pl2UFDOwf0yapmncIfEQkhqdhXYHNlNiPPFjqTil+8EpdjtZcMScaEgcOcKzzwjMllO0bTGo1RLZ7ic/zqsvuzc8Tp7w2fqy59b8076amG0BBJyCO8uOikzlqulbDcRm3lO/I+YP8c=
+	t=1781214953; cv=none; b=uGSEmHGmj4fIU/NGc/VBmld4mn8DwNGRB/aIFcksA5sv8hGq5LNIDYrrSjcLK7z+JHa4ASr6+lJyN/csBgty3UO8N9U9hR9oZUhXGfjX9+VqOab8iO9PqpmSX6SYpeg+I/yeVYvHFsQyaHapdQGk4AJ2JJOx3ZmY3l0kE8IOQXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781214896; c=relaxed/simple;
-	bh=hm1Wc+ustaIFchsLjkTtlSftxZa5ZpqvSxbJSnfFq44=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=f8ueRLEvBw2ii/nYFpK9g7b4YyMzDJRfj9d80jY8/Qs6htHf/JfEdGEnrObx1pEfS94fkfrFTf0LOjQ/PFZt1PqTbiW4yW03weijcf+BMIeX+g3Uz8OK7kfJB2QvXCUgarwvpO9lq4LGgSkhqFr5ZyMVxAUcAkb5K84wSpLMgmE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=aVwdc+vd; arc=none smtp.client-ip=209.85.222.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	s=arc-20240116; t=1781214953; c=relaxed/simple;
+	bh=Pacrb1hpDheZGvPj5b6lI5qmEiVD7X2w+vLnvcN2HfM=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=awWg6kW28z/5nER8ND2wFRvf6seJxQQdwrmmGJgBLyofK5ao7jhsApc83czXV4zFXwvs+xhYkK77S5UsQIcd85tl1YTHlmE2quuREzb0udDX/DhiDUncXb+mBYMl1lvKgehIEb5xunf6yN25RAj7Il7SrmNmVDOIve9qxmy4wLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GdILK1R9; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="aVwdc+vd"
-Received: by mail-ua1-f41.google.com with SMTP id a1e0cc1a2514c-96393ce9a8aso192943241.0
-        for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 14:54:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1781214894; x=1781819694; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=cMC2fmoKJksWOh42wt9P/JeBAXM+7cbQR42DZ5fGoZU=;
-        b=aVwdc+vd7LTIhCTsHvy7wvEVQMR4s5Y3eK3vvF7zjPeW44hTzS81aVLQPxJGbmR1xC
-         BLGWSX62xK0LxZaQRx+64eNnDkGtQkUwZ62GfxLyKETU/p1840pSGW/5Y85bHDrY9lXa
-         arsX2RfwLZnTqXBRAYevoMNF79OXBsLWeAW0E=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781214894; x=1781819694;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=cMC2fmoKJksWOh42wt9P/JeBAXM+7cbQR42DZ5fGoZU=;
-        b=sxR02GsCTSCl6eptkGDXW9T+hVbZNfoso/cwKLVgvFtHJbjYvmWT0m65dcXPLv4nI9
-         LumYXA0lWD9oR2VbPNj+1g9/23QjctDt+4D2fR6KDqYcZRp+fdPXt1n2FKiqI5UkcKmr
-         l/42vNGsTwlKwcgkOCUgPTtwFFacbdLCgzZv7anoRdJZW4HieUuNwGvP+OwA9G+h0i9D
-         lCAjs8utU8O3fDatZNv/93JUpiRqQ+cjSgckEEbaHouMrDIGjd8PwfxM56Vfpx3WHH2+
-         PjZ22kts/TvImEwKo0vuesBl2A4VG+QzdJIPbKkv/2tIdivTThKfNgv7RKTSf1Lg33L9
-         jTSA==
-X-Gm-Message-State: AOJu0Yx2d5On6juLlgJQp+sW8ZwbdMYRCRd77AeV2Lt9lKGig+gICNxF
-	efBe02iZZspbF7MYw11KOctoWqzaJ5jJMtFpmvhaewXC6r0aKrLyl8VBHWM5gbwtEC8rQHZb3vA
-	2ZOElTYSR/N8=
-X-Gm-Gg: Acq92OFFItF8IEH/MvoR0AyRiUdza1k3p2J2Uoir8P5q0ijNnlkW2ugTsi+4UElhqQN
-	WxCaVg9BAAMvwVY0MIu42T/GCHsihbVDu7b48k7rQCDkljpzNE4EH2szoHrWdIKivLPgo6/hXEi
-	IktBILWJ15PyjlRquK76GFobwjj0tvqT3upwAc2OXJU0kkF5WKTGaou/MV4ErJG7l94/+xAmRic
-	tvi7MhlkkmdsKlPDNKRDaHQQPCT2Vp2pIpSSc8y8R/FwykRQPRWKqGC7rXDxfWndtVY1sT9LngH
-	JrZhdOdZsbgaMNEz5FM/oAp1PJkLTSVpzzYhxYB9XhqYxAaegJe2kC/XVXm7zKJYI56mwIm7D1D
-	d4hRsmsPWpDuzE1Qm1yM+OdWnMoCrdPt+r7cA0M8h45EUqzI9dqU/IsyvFxvzYnTTnY1P5G7x4I
-	tJrc26HZz33mBEQZxj44r4GfbJCUNSi7w=
-X-Received: by 2002:a05:6102:a47:b0:6c8:eb6e:a078 with SMTP id ada2fe7eead31-71e888f5b7emr50020137.0.1781214894151;
-        Thu, 11 Jun 2026 14:54:54 -0700 (PDT)
-Received: from [192.168.50.25] ([179.218.14.134])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-9667402fd74sm110546241.8.2026.06.11.14.54.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 11 Jun 2026 14:54:53 -0700 (PDT)
-Message-ID: <213d61b0-daf5-48ee-a4e8-bc0cabf74a10@mojatatu.com>
-Date: Thu, 11 Jun 2026 18:54:48 -0300
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GdILK1R9"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 165DDC4AF10;
+	Thu, 11 Jun 2026 21:55:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1781214953;
+	bh=Pacrb1hpDheZGvPj5b6lI5qmEiVD7X2w+vLnvcN2HfM=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=GdILK1R9hVKxL4Wds1s071usBrLyabBWvFR3w/ptHrdV3gMv007OmWy8JWob9IQ5h
+	 lztevHeu4xvdYmOeuQbX9hikTxpRXWX4AqhVsv/T375I9Ljzbc5Hk0fmzWuhh4ene6
+	 q+Mj3uRc+yFpR+DkL7zpUBW9uH7+Q56oWqSod0VabJK+ZUdJn7k1Oyvfj/x7d0Nbbw
+	 YuWz5MA0J1H9iFw0WDfwo89BgfADg98RrNaWClM+cIi8KChZ/RtYetW7bmRA6XP/a1
+	 fdmNUO2oXApz18CZjDcfbdXfRDalgX+FjRKLoX8468vTjLSho4mNEibKarYGNcE7OJ
+	 jdxTdkd+4bnbg==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0AE01CD98C7;
+	Thu, 11 Jun 2026 21:55:53 +0000 (UTC)
+From: Selvamani Rajagopal via B4 Relay <devnull+Selvamani.Rajagopal.onsemi.com@kernel.org>
+Date: Thu, 11 Jun 2026 14:55:39 -0700
+Subject: [PATCH net v5 2/4] net: ethernet: oa_tc6: mdiobus->parent
+ initialized with NULL
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net/sched: sch_dualpi2: Add missing module alias
-To: Victor Nogueira <victor@mojatatu.com>, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, jhs@mojatatu.com,
- jiri@resnulli.us, horms@kernel.org
-Cc: netdev@vger.kernel.org, chia-yu.chang@nokia-bell-labs.com
-References: <20260611205849.3287640-1-victor@mojatatu.com>
-Content-Language: en-US
-From: Pedro Tammela <pctammela@mojatatu.com>
-In-Reply-To: <20260611205849.3287640-1-victor@mojatatu.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20260611-level-trigger-v5-2-4533a9e85ce2@onsemi.com>
+References: <20260611-level-trigger-v5-0-4533a9e85ce2@onsemi.com>
+In-Reply-To: <20260611-level-trigger-v5-0-4533a9e85ce2@onsemi.com>
+To: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Piergiorgio Beruto <pier.beruto@onsemi.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Conor Dooley <conor.dooley@microchip.com>, 
+ devicetree@vger.kernel.org, 
+ Parthiban Veerasooran <Parthiban.Veerasooran@microchip.com>, 
+ Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1781214947; l=1364;
+ i=Selvamani.Rajagopal@onsemi.com; s=20260531; h=from:subject:message-id;
+ bh=t+dmUxmhz+NSvTxVN33pXrsCLCkCj0A5Bx5yqncn/ig=;
+ b=SkapaNnxGJcsM1J0VF4hAwiBSRzQVsHp2MRugT+VyfsnajInTDc6CHmD91efGhifz9rwphcyU
+ OqMNQogUT66BNFLmw8wD9e4B5NjEBaK2lLeP+tQYDBPaEKoo81bJrON
+X-Developer-Key: i=Selvamani.Rajagopal@onsemi.com; a=ed25519;
+ pk=5QRdM0HS/LGWWcUZZ9hVfZ+qbPQGZCumcTXOiN7Fyug=
+X-Endpoint-Received: by B4 Relay for
+ Selvamani.Rajagopal@onsemi.com/20260531 with auth_id=803
+X-Original-From: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
+Reply-To: Selvamani.Rajagopal@onsemi.com
 
-On 11/06/2026 17:58, Victor Nogueira wrote:
-> When a qdisc is added by name, the kernel tries to autoload its module
-> via request_qdisc_module(), which calls:
-> 
-> request_module(NET_SCH_ALIAS_PREFIX "%s", name);
-> 
-> i.e. it asks modprobe to resolve the "net-sch-<kind>" alias (e.g.
-> "net-sch-dualpi2") rather than the module's file name. Since dualpi2
-> was shipped without this alias, the autoload fails:
-> 
-> tc qdisc add dev lo root handle 1: dualpi2
-> Error: Specified qdisc kind is unknown.
-> 
-> Fix this by adding the missing alias so the qdisc is autoloaded on demand
-> like the others.
-> 
-> Fixes: 320d031ad6e4 ("sched: Struct definition and parsing of dualpi2 qdisc")
-> Signed-off-by: Victor Nogueira <victor@mojatatu.com>
+From: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
 
-Reviewed-by: Pedro Tammela <pctammela@mojatatu.com>
+As "dev" pointer in oa_tc6 structure is never initialized,
+mbiobus->parent was initialized with NULL.  This change
+fixes it by initializing it with device pointer of spi.
 
-> ---
->   net/sched/sch_dualpi2.c | 1 +
->   1 file changed, 1 insertion(+)
-> 
-> diff --git a/net/sched/sch_dualpi2.c b/net/sched/sch_dualpi2.c
-> index a22489c14458..65d0f4036efa 100644
-> --- a/net/sched/sch_dualpi2.c
-> +++ b/net/sched/sch_dualpi2.c
-> @@ -1174,6 +1174,7 @@ static struct Qdisc_ops dualpi2_qdisc_ops __read_mostly = {
->   	.dump_stats	= dualpi2_dump_stats,
->   	.owner		= THIS_MODULE,
->   };
-> +MODULE_ALIAS_NET_SCH("dualpi2");
->   
->   static int __init dualpi2_module_init(void)
->   {
+Fixes: 8f9bf857e43b ("net: ethernet: oa_tc6: implement internal PHY initialization")
+Signed-off-by: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
+
+---
+changes in v5:
+  Changed Fixes: commit ID to accurately reflect where issue originated
+changes in v4:
+   new patch
+---
+ drivers/net/ethernet/oa_tc6.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/drivers/net/ethernet/oa_tc6.c b/drivers/net/ethernet/oa_tc6.c
+index f3ac2875adfb..477ceefde2c5 100644
+--- a/drivers/net/ethernet/oa_tc6.c
++++ b/drivers/net/ethernet/oa_tc6.c
+@@ -110,7 +110,6 @@
+ 
+ /* Internal structure for MAC-PHY drivers */
+ struct oa_tc6 {
+-	struct device *dev;
+ 	struct net_device *netdev;
+ 	struct phy_device *phydev;
+ 	struct mii_bus *mdiobus;
+@@ -520,7 +519,7 @@ static int oa_tc6_mdiobus_register(struct oa_tc6 *tc6)
+ 	tc6->mdiobus->read_c45 = oa_tc6_mdiobus_read_c45;
+ 	tc6->mdiobus->write_c45 = oa_tc6_mdiobus_write_c45;
+ 	tc6->mdiobus->name = "oa-tc6-mdiobus";
+-	tc6->mdiobus->parent = tc6->dev;
++	tc6->mdiobus->parent = &tc6->spi->dev;
+ 
+ 	snprintf(tc6->mdiobus->id, ARRAY_SIZE(tc6->mdiobus->id), "%s",
+ 		 dev_name(&tc6->spi->dev));
+
+-- 
+2.43.0
+
 
