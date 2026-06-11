@@ -1,143 +1,146 @@
-Received: from canpmsgout05.his.huawei.com (canpmsgout05.his.huawei.com [113.46.200.220])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9167940D57C;
-	Thu, 11 Jun 2026 13:32:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.220
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9016721146C
+	for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 13:34:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781184776; cv=none; b=WFmMxV/EaWxfHUDcqiXSjr0FyceRE/metFkXCwg/wT4TGwZUsc0yISZhdTy2bbmNYLduxmbQtLytzswKQSczEJ42QyZhLJGjP/sa61faV6zJErZwHAkk7GKvddIUAYW3L4cx4jOUXUtyRkKTn8dBNGunfwkC8BDcaf+bGg5bCbs=
+	t=1781184860; cv=none; b=PBOp1J4OT+OaQ4ZsJ+8bGkBeGTOq95sx/hp+HReFWq4C+NhogBO0ZpRadqPinQ9uNNtdvQ69ign2r0C4GPEtRcVd0J3iEeWDf+Pr2NMNsLVCvo4FA7BGLJmiLmzsU/UUAupJ+6YBeuW1P+RYUJ0PZjPhRnz7d62SSw3GZn4M+rM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781184776; c=relaxed/simple;
-	bh=aAUIfoeB922EjpETo28UDuNkRtVHZL8vk/eG5Ayv0bQ=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=q8aUEgkONYVRd8ufVh1RkCbPIWgvAZBMIeGQJqrSslPVjVBo+3H7bzG2nx4tU0OJ2PAH1LwDKcKlidnnViZagNo/0tI1CCbmUyHDK9VzAsg3fxCVIxDyoT4STGgfSqbl0ufUo8/zwcd/qKlBiFVBAsv/3elPtyXNGoPxS/ngcro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=g3rNdNo1; arc=none smtp.client-ip=113.46.200.220
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	s=arc-20240116; t=1781184860; c=relaxed/simple;
+	bh=aLk3wlTA5BYgt/o1C3BnJ6eGYQBM95d/LBwRNKEhEBk=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=VHuVCazMBBhaOqyCzlBgykOmZzOP5BqX4spMZBq8Uih6EgZUJEEwFVzGR3Kiq5zDYPYg73M0SazAR57d+UX0OoVDY3oHyJk2Dgu4o8TEgM41/ZDGQA4Y+trP4oB4E4P6pjn+CW4d++j+XgS0Tnh8Rx77tMaM58+M/pTR6DekrW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AVhXw/36; arc=none smtp.client-ip=209.85.216.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="g3rNdNo1"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=/bIB0l/jYMMTpucxs3QWzKVYPY3EBurRt7wmrGdoY6M=;
-	b=g3rNdNo1r7KHDOHpO16wEv374RGl3AjqTQvF/ZwqkCYFQ/Owzr7mFm5mWS/PadJlWRxXsrvwL
-	efIGyI0naSWBsbOs2/HoAG5l4QfSdrze+MA1dHm/Q2aKHyZxMqVyaVSa/ieaZARwBqltIOVL8S4
-	ktdTBCLXVqFVanoKdEugJtU=
-Received: from mail.maildlp.com (unknown [172.19.162.223])
-	by canpmsgout05.his.huawei.com (SkyGuard) with ESMTPS id 4gbk040zShz12LD7;
-	Thu, 11 Jun 2026 21:24:52 +0800 (CST)
-Received: from kwepemj500018.china.huawei.com (unknown [7.202.194.48])
-	by mail.maildlp.com (Postfix) with ESMTPS id 2960140670;
-	Thu, 11 Jun 2026 21:32:43 +0800 (CST)
-Received: from huawei.com (10.50.85.128) by kwepemj500018.china.huawei.com
- (7.202.194.48) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 11 Jun
- 2026 21:32:42 +0800
-From: Li Xiasong <lixiasong1@huawei.com>
-To: Jon Maloy <jmaloy@redhat.com>
-CC: <stable@vger.kernel.org>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Ying Xue
-	<ying.xue@windriver.com>, Tuong Lien <tuong.t.lien@dektech.com.au>,
-	<netdev@vger.kernel.org>, <tipc-discussion@lists.sourceforge.net>,
-	<yuehaibing@huawei.com>, <zhangchangzhong@huawei.com>,
-	<weiyongjun1@huawei.com>
-Subject: [PATCH net] tipc: restrict socket queue dumps in enqueue tracepoints
-Date: Thu, 11 Jun 2026 21:56:47 +0800
-Message-ID: <20260611135647.3666727-1-lixiasong1@huawei.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AVhXw/36"
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-36bdb11bf8bso4706469a91.0
+        for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 06:34:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781184859; x=1781789659; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
+         :to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=MFV5XYOMdl0rTgeUoL1zf1BnAFYBoOnJJh4fcbZ3jGk=;
+        b=AVhXw/36zrsy5Skj9hJK4HLHpg86W6EzyH/ItFQskXFs6uw1So56BYgniMfbOH0SK4
+         vIWGTAkFI9kDzzMsiESN6Suj3DR7Ff8bKkvTXRojfyqJXVkMNsc2bdxdmNffxw+VXc7L
+         UViTP0nzHKAO9AuuAK3EkyaSGLHzoqKGYAyhkcSTFoTgUYvHojD+5zoQHK75Nme2Xwzg
+         2bHskARbJdICvTKBE8bjAadlj3vr4gAYpi8JYxhiNgPz5oaZYFlSzuEqPi2vIN1FUMqU
+         Hexi4qVcP2/OW5X5wEewxodjabVTdIxOgxo1fPM8Foe8hSdxLtQHXhzzzk2L6LsZ6Pnt
+         Hmqw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781184859; x=1781789659;
+        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
+         :to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=MFV5XYOMdl0rTgeUoL1zf1BnAFYBoOnJJh4fcbZ3jGk=;
+        b=RL6BIX0m0NIfBuL2u1VoCptYzIViO11Nhs3QbBZqUeND1A+Sbl5BVipmzdJ8sJvn1o
+         NhhQE6NtJMC95hVnDJdx2nFoNx9AL89E1nypgu9rGEm2bBEL9+cltLskO8UA/effTDcy
+         LOxMTwmZMQfmkfE4FAVwgTyogCaeH+CjOXeaFykFHu5LqvmWNHxueNeSQnekvwwJsYwy
+         SU4e9dUDo/2+e3a/H2RGff5LkI164YgFF8f0oPTVAE+t/b+7Hhko6NHRqhRmZXWPuOPL
+         zqKJzrtG22dRmAE/BATE1bTM5hFqz0zXjHmwii5gPjB3RBSjS8HrVRXKIm6LOphtmdjd
+         +qNg==
+X-Gm-Message-State: AOJu0YyGf6iJoq3Uq+tl4qZZP19WJ5MoCFMIMrvJ5srLU9c5xO+sJOxz
+	+NhkpzILCRjFDEKmSC+N0GamG2rXlenlwuWqf2yYPYBXjsOk1kc+PEJ8CRiEiuTX53w=
+X-Gm-Gg: Acq92OE9r/Lm/sqj/4U3/FkceH9ol4K6zMKYSptcIzy7Ju0fTCVkx+n/xr/m8k8q4hp
+	fFNlnDNIq5Cr+HI9VlOubcr9SXssUIVhewTYfY4dIh7SoMNAAGz5Xvdm1TSlgxz1zYCEjvbX+BB
+	j+Zd3aZgY/x0ZFeIbteJLKYv7+GONOlhUTiJa5tx3DK4yHLr5oRYhWGS5OR08XFvTK3kmsyWg7a
+	r2ZETFFvk6g6qBcK6ZQ+mfclhr5LSU1bbtbI8qRDI7V/H1TTdrKkveT/u1M2anlSKuW4PTdSEmW
+	+7RK9eNNkoors9vByGaou68+h2Tk4TNLJdSlYG3xNe86CKhoApoOMfoV+mUBLxlqV9m5gO8hcGS
+	Eq1oRHbJR5VX8yOvuoiDXlG4CtcfRHkvS/o6jecaZBY66QbjJ7ACuwq56W06DAAvzYEu5RjJD7I
+	PuPsueWU8EmOYmBhFizGhE30cl/8V8ZufmyE7L76s0FBUdEkFbgIIQ3Hpxb/EB0wAmkw==
+X-Received: by 2002:a17:90b:498e:b0:36e:2106:dedc with SMTP id 98e67ed59e1d1-377a73e272fmr3296310a91.22.1781184859005;
+        Thu, 11 Jun 2026 06:34:19 -0700 (PDT)
+Received: from DESKTOP-19IMU7U.localdomain ([125.242.148.221])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-37752b5a8ecsm3422304a91.7.2026.06.11.06.34.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 11 Jun 2026 06:34:18 -0700 (PDT)
+Date: Thu, 11 Jun 2026 22:34:13 +0900
+From: Wongi Lee <qw3rtyp0@gmail.com>
+To: netdev@vger.kernel.org
+Cc: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, asml.silence@gmail.com,
+	dhowells@redhat.com, willemb@google.com,
+	Jungwoo Lee <jwlee2217@gmail.com>
+Subject: [PATCH net v3 2/2] ipv6: account for fraggap on the paged allocation
+ path
+Message-ID: <aiq5VQknt1QHcvio@DESKTOP-19IMU7U.localdomain>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
- kwepemj500018.china.huawei.com (7.202.194.48)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aiq3f7UZGFp0F3MV@DESKTOP-19IMU7U.localdomain>
 
-tipc_sk_enqueue() runs with sk->sk_lock.slock held while the socket is
-owned by user context. The spinlock protects the backlog queue in this
-path, but it does not serialize against the socket owner consuming or
-purging sk_receive_queue.
+In __ip6_append_data(), when the paged-allocation branch is taken
+(MSG_MORE / NETIF_F_SG / large fraglen), alloclen and pagedlen are
+computed as
 
-KASAN reported:
+	alloclen = fragheaderlen + transhdrlen;
+	pagedlen = datalen - transhdrlen;
 
-  CPU: 14 UID: 0 PID: 1050 Comm: tipc3 Not tainted 7.1.0-rc6+ #126 PREEMPT(lazy)
-  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
-  Call Trace:
-    <TASK>
-    dump_stack_lvl+0x76/0xa0 lib/dump_stack.c:123
-    print_report+0xce/0x5b0 mm/kasan/report.c:482
-    kasan_report+0xc6/0x100 mm/kasan/report.c:597
-    __asan_report_load4_noabort+0x14/0x30 mm/kasan/report_generic.c:380
-    tipc_skb_dump+0x1327/0x16f0 net/tipc/trace.c:73
-    tipc_list_dump+0x208/0x2e0 net/tipc/trace.c:187
-    tipc_sk_dump+0xaf6/0xd60 net/tipc/socket.c:3996
-    trace_event_raw_event_tipc_sk_class+0x312/0x5a0 net/tipc/trace.h:188
-    tipc_sk_rcv+0xb1d/0x1d50 net/tipc/socket.c:2497
-    tipc_node_xmit+0x1c3/0x1440 net/tipc/node.c:1689
-    __tipc_sendmsg+0x97a/0x1440 net/tipc/socket.c:1512
-    tipc_sendmsg+0x52/0x80 net/tipc/socket.c:1400
-    sock_sendmsg+0x2f6/0x3e0 net/socket.c:825
-    splice_to_socket+0x7f9/0x1010 fs/splice.c:884
-    do_splice+0xe21/0x2330 fs/splice.c:936
-    __do_splice+0x153/0x260 fs/splice.c:1431
-    __x64_sys_splice+0x150/0x230 fs/splice.c:1616
-    x64_sys_call+0xeb5/0x2790 arch/x86/entry/syscall_64.c:41
-    do_syscall_64+0xf3/0x620 arch/x86/entry/syscall_64.c:63
-    entry_SYSCALL_64_after_hwframe+0x76/0x7e arch/x86/entry/entry_64.S:130
-  RIP: 0033:0x71624e8aafe2
-  Code: 08 0f 85 71 3a ff ff 49 89 fb 48 89 f0 48 89 d7 48 89 ce 4c 89 c2 4d 89 ca 4c 8b 44 24 08 4c 8b 4c 24 10 4c 89 5c 24 08 0f 05 <c3> 66 2e 0f 1f 84 00 00 00 00 00 66 2e 0f 1f 84 00 00 00 00 00 66
-  RSP: 002b:0000716157ffed68 EFLAGS: 00000246 ORIG_RAX: 0000000000000113
-  RAX: ffffffffffffffda RBX: 0000716157fff6c0 RCX: 000071624e8aafe2
-  RDX: 000000000000005f RSI: 0000000000000000 RDI: 0000000000000066
-  RBP: 0000716157ffed90 R08: 0000000000008000 R09: 0000000000000001
-  R10: 0000000000000000 R11: 0000000000000246 R12: ffffffffffffff00
-  R13: 0000000000000021 R14: 0000000000000000 R15: 00007fff89799c40
-    </TASK>
+datalen already includes fraggap (datalen = length + fraggap), but
+the fraggap bytes carried over from the previous skb are copied into
+the new skb's linear area at offset transhdrlen by the subsequent
+skb_copy_and_csum_bits(). The linear area is therefore undersized by
+fraggap bytes while pagedlen is overstated by the same amount, and
+the copy writes past skb->end into the trailing skb_shared_info.
 
-The TIPC_DUMP_ALL tracepoints in tipc_sk_enqueue() also dump
-sk_receive_queue and can therefore dereference skbs that the socket
-owner has already dequeued or freed. Restrict these dumps to
-TIPC_DUMP_SK_BKLGQ, which matches the queue protected by the held
-spinlock.
+An unprivileged user can trigger this via a UDPv6 socket using
+MSG_MORE together with MSG_SPLICE_PAGES.
 
-Keep the change limited to the enqueue path, where the unsafe queue dump
-is reachable while the socket is owned by user context.
+The bad accounting was introduced by commit 773ba4fe9104 ("ipv6:
+avoid partial copy for zc"). Before commit ce650a166335 ("udp6: Fix
+__ip6_append_data()'s handling of MSG_SPLICE_PAGES"), the negative
+copy value caused -EINVAL to be returned. That later commit allowed
+MSG_SPLICE_PAGES to proceed in this case, making the corruption
+triggerable.
 
-Fixes: 01e661ebfbad ("tipc: add trace_events for tipc socket")
-Cc: stable@vger.kernel.org
-Signed-off-by: Li Xiasong <lixiasong1@huawei.com>
+The non-paged branch sets alloclen to fraglen, which already accounts
+for fraggap because datalen does. Bring the paged branch in line by
+adding fraggap to alloclen and subtracting it from pagedlen.
+
+After this adjustment, copy no longer collapses to -fraggap on the
+paged path, so remove the stale comment describing that old arithmetic.
+
+Fixes: 773ba4fe9104 ("ipv6: avoid partial copy for zc")
+Signed-off-by: Jungwoo Lee <jwlee2217@gmail.com>
+Signed-off-by: Wongi Lee <qw3rtyp0@gmail.com>
 ---
- net/tipc/socket.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/ipv6/ip6_output.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/net/tipc/socket.c b/net/tipc/socket.c
-index 9329919fb07f..6b761003bcd1 100644
---- a/net/tipc/socket.c
-+++ b/net/tipc/socket.c
-@@ -2452,17 +2452,17 @@ static void tipc_sk_enqueue(struct sk_buff_head *inputq, struct sock *sk,
- 			atomic_set(dcnt, 0);
- 		lim = rcvbuf_limit(sk, skb) + atomic_read(dcnt);
- 		if (likely(!sk_add_backlog(sk, skb, lim))) {
--			trace_tipc_sk_overlimit1(sk, skb, TIPC_DUMP_ALL,
-+			trace_tipc_sk_overlimit1(sk, skb, TIPC_DUMP_SK_BKLGQ,
- 						 "bklg & rcvq >90% allocated!");
- 			continue;
- 		}
+diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
+index c14adcdd4396..bfe16cb8a0aa 100644
+--- a/net/ipv6/ip6_output.c
++++ b/net/ipv6/ip6_output.c
+@@ -1668,8 +1668,8 @@ static int __ip6_append_data(struct sock *sk,
+ 				  !(rt->dst.dev->features & NETIF_F_SG)))
+ 				alloclen = fraglen;
+ 			else {
+-				alloclen = fragheaderlen + transhdrlen;
+-				pagedlen = datalen - transhdrlen;
++				alloclen = fragheaderlen + transhdrlen + fraggap;
++				pagedlen = datalen - transhdrlen - fraggap;
+ 			}
+ 			alloclen += alloc_extra;
  
--		trace_tipc_sk_dump(sk, skb, TIPC_DUMP_ALL, "err_overload!");
-+		trace_tipc_sk_dump(sk, skb, TIPC_DUMP_SK_BKLGQ, "err_overload!");
- 		/* Overload => reject message back to sender */
- 		onode = tipc_own_addr(sock_net(sk));
- 		sk_drops_inc(sk);
- 		if (tipc_msg_reverse(onode, &skb, TIPC_ERR_OVERLOAD)) {
--			trace_tipc_sk_rej_msg(sk, skb, TIPC_DUMP_ALL,
-+			trace_tipc_sk_rej_msg(sk, skb, TIPC_DUMP_SK_BKLGQ,
- 					      "@sk_enqueue!");
- 			__skb_queue_tail(xmitq, skb);
- 		}
+@@ -1684,9 +1684,6 @@ static int __ip6_append_data(struct sock *sk,
+ 			fraglen = datalen + fragheaderlen;
+ 
+ 			copy = datalen - transhdrlen - fraggap - pagedlen;
+-			/* [!] NOTE: copy may be negative if pagedlen>0
+-			 * because then the equation may reduces to -fraggap.
+-			 */
+ 			if (copy < 0 && !(flags & MSG_SPLICE_PAGES)) {
+ 				err = -EINVAL;
+ 				goto error;
 -- 
 2.34.1
-
