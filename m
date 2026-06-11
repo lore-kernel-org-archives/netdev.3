@@ -1,117 +1,135 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010026.outbound.protection.outlook.com [52.101.201.26])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B85D0233922;
-	Thu, 11 Jun 2026 14:44:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781189089; cv=none; b=hPUc+xuRPgibdIP8eQSjVvNTpoQsGSF8vFvhGlc8UBzG9jW3I0OqvHwLFC6EW9W6cdXDWLNcSLuxPB9ZOwva72w/VZS9WWfL1xjQNsyePmDjhQ4+/m8hl4MS8pR31xAwk8Dam/RQGp8QtTuKwaao8Rc02JdgwX6FRyyaPk1SjIc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781189089; c=relaxed/simple;
-	bh=tGX2theAQhAy9tSUIsfMCcmQQSOrGpJU24wZE8u/g/Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KD/z89X2bNoUII5Z1z3GsE8LAbW2b06SFHERppChUz3entg0PUN/L36MuWG0wJcncT9IsXJDS9anNpiMAYiVx7eQQRNGJE0sy8I2UN46N/ZnJLwS5KFg2vif9Xr8+tzk/k2OFpjEXUuZrH5+VGI5y56wicT29Aqz2lyifmZq3iA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gLdHd6LO; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E8D935674D
+	for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 14:46:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.26
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781189172; cv=fail; b=nC0h2IRJSS+ls4lLHkCTBklR4/cHe2aDzp3ESb9F8amcVhksLd1Ly4bAWI3T8+vGc4c81mG7L3pn6NjS4ngfxRu2nn8/jiv+JuQKfNk8qABp+HUsFpB/IoCd+KO+syF8D1FGp885DXzionXo/PExCD6u/v/c3gJUny/JjZKv8qI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781189172; c=relaxed/simple;
+	bh=ULZqcc8UEIwKW6/xVSDq82wxFhL6sgXHRPq3U4yiK/Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=S3pFdf5D4KvKRLOSbQckkPVGFC/LVeXMej0HeDRE2vfmD+v9G0rnspw6wCeZI6rVqsLTDorEBWnHnu8q0qPnUAOpEUnsbNMjGvKhGVNZFtAwFHAuaQ9BJKftecXftdDCtAhJe6cT5up4Ae3t9BgEkKiks/ne+6F4ga+BT58zP24=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=eCM0kxg7; arc=fail smtp.client-ip=52.101.201.26
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gLdHd6LO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 157431F00893;
-	Thu, 11 Jun 2026 14:44:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781189088;
-	bh=J3IzR5NXDA4imuyDY0iZdwVa7rhntxKKeT3HhY1M8TM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gLdHd6LOElfOLC8x9m8fKdgUDNBqscivHnEJaYP18Hvy6w4iqhb05uuw8fySwTYh4
-	 tSjMoWsB6B7bdYSQywHZgRCXygV/akgCPaSVGO0+E2pYbNjkuNUoi4Txddj1dzwYFF
-	 FdfmqzjcKGTHgmw7uKAWnh3ItLjvjIHAgc/18Ek9U+O8dX16ncTsJx6MrsV0p7t+R+
-	 PehDm0fCn8JW4WV8fwm2bkuMgJj/1wlxe/sQjDf8FcGK1/JBsG6bXV98s6jJzqiVWe
-	 p7D/oG1wRK1+2JnFIMEJ1Bf3PpJZpXIIn5OBtu160YVNYEdiGWUIx8knQ50KTYXxyO
-	 gwOQyqlRtQ8VA==
-From: Simon Horman <horms@kernel.org>
-To: vulab@iscas.ac.cn
-Cc: Simon Horman <horms@kernel.org>,
-	rafal@milecki.pl,
-	bcm-kernel-feedback-list@broadcom.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] net: bgmac: fix refcount leak in bgmac_phy_connect_direct()
-Date: Thu, 11 Jun 2026 15:42:02 +0100
-Message-ID: <20260611144200.600147-3-horms@kernel.org>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260609074411.205176-1-vulab@iscas.ac.cn>
-References: <20260609074411.205176-1-vulab@iscas.ac.cn>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="eCM0kxg7"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=qWeIp/v4JEu7iC9L/YvwOQLfZ8Fmtv20ZwypbzDtjPsdfheB+dqdVPqnAFezrd3mpNG22ilggNbpK5SBjyBPtqYZllirZpI1yQ3IKqFYTd2RnfdrG5A/lyOEdaaOgjgWTe32BreRS/WC8b0XZbcDsdrHSQNGs7wwmMRKZ4ttek4N1DMSbv+CCz7Sk/5rKnwQv9D8XRFoj5BIhOvXPq74M2Y+R4YCDUqAynivDggQreFU+gBifHuY3EoZWAk+70H7PJ2Hab1LNll7WdZd0nFjEi1rm/ANrMpZ6d02Ecv7v+b/tM5rzYUGA/YgVQbzF4kmmmdZP/QCLiWNh4sXhmEHPw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Y1yX3us7hZzBDkM8HSInKDZBSR4+cCXS7vbsD3Icpqk=;
+ b=crvcnEyjunDgd8W+hA9+W7/mKoB4bVhHlDceMS/Uj7S2gB6EDiuKsomoLIvtPYLGFz/g6WrJTawxMwhpsW++gt3IgC4YKU++r8SUo3nPvu6u7S952zEzgXd9WlxS2ZmnNKorFMnU45EG/rAyfH357dLyxd3pX8AozI+TEavU8/cTiyJrINBTZOfzPoyL0tRqBGRfDZ8jelobOOJI9RTLVZh5aLtn7+KpOLir9VrW/b2pGFJIiPZ37kYmwC1wASReINi3pcWKQOnta1RTl3WQDe8uyOowAw0AviA+nyqPxIGpf8BfVmN1MyQIrf7B6Pr0Sxh0pP5x0zKgH3JjchvK8Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Y1yX3us7hZzBDkM8HSInKDZBSR4+cCXS7vbsD3Icpqk=;
+ b=eCM0kxg7dU6q6BAHMWCaw9f+1TcppgRcNhs9tllxN0iNC0YSiav2iyCw5drt24+6qhivEbMrqIyjxn/gYG2PVkZOMXcl4vZFttPU3f/WWn8eaHHi3lSG0Hg/TvJoAolJ3W6HS2aT/XwxkIBK0irhf2OhKTPrnpM+tcU5uuSaiWsoqtUM48+5ELUvyEugpTLzqeviw1lgpSVMJ5VbGo9eoBtrZU9rVGrkwtU8OojVzKkuHySxjlZh9FDvkgs/H9ovIZjbJ8WmCM7SNAFB3Ww0UcllvIjb6zZ/CCVBDUUwChzTl/3FAOu6lbvgrW+ukyRVDZz5bDsZVITYjwJCol+aKw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from SA3PR12MB7901.namprd12.prod.outlook.com (2603:10b6:806:306::12)
+ by MW6PR12MB8734.namprd12.prod.outlook.com (2603:10b6:303:249::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.113.14; Thu, 11 Jun
+ 2026 14:46:03 +0000
+Received: from SA3PR12MB7901.namprd12.prod.outlook.com
+ ([fe80::6f7f:5844:f0f7:acc2]) by SA3PR12MB7901.namprd12.prod.outlook.com
+ ([fe80::6f7f:5844:f0f7:acc2%6]) with mapi id 15.21.0092.010; Thu, 11 Jun 2026
+ 14:46:03 +0000
+Date: Thu, 11 Jun 2026 17:45:51 +0300
+From: Ido Schimmel <idosch@nvidia.com>
+To: Eric Dumazet <edumazet@google.com>
+Cc: "David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, David Ahern <dsahern@kernel.org>,
+	netdev@vger.kernel.org, eric.dumazet@gmail.com
+Subject: Re: [PATCH v2 net-next] ip6_tunnel: annotate data-races around
+ t->err_count and t->err_time
+Message-ID: <20260611144551.GA972279@shredder>
+References: <20260610171458.1359630-1-edumazet@google.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260610171458.1359630-1-edumazet@google.com>
+X-ClientProxiedBy: FR4P281CA0355.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:f4::8) To SA3PR12MB7901.namprd12.prod.outlook.com
+ (2603:10b6:806:306::12)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA3PR12MB7901:EE_|MW6PR12MB8734:EE_
+X-MS-Office365-Filtering-Correlation-Id: 97eab513-dfa2-47fb-d5f4-08dec7c82868
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|23010399003|366016|56012099006|11063799006|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	XMSAKP3lRHhi3j/fzGCU52/pG+7w9J0pL/sUyI4BJqwrrl7dO52/954D3zpfKJdBlEMJgWVj7C2QQpt0iU8ZCjjxZttamwhhiO7OF8Q2TyR50Rwbu8v0QfXYg+7bGRT+pV9c469cy251WwXChlXWLn8pJijUV4FcKLmDI3C1x4oqesqz2pa1ep5nQ4KYQcH5IEmTHnVvfJkM1ninNjJXg+hJojg07DaeYlFv5TUzGmHLnfLtCoEBSNeIuvK1iEr/phTlIvyOoTa37ZlgDA9eA/f8JFKpp8fMmh1t+TwCCIX56sqcyKazXpZBYx7ALEKbdS6x++vbsXmrG5zE8I2OxaxW198ZUnP5TuMMhU6Q/m/zGS+gL/DwlRf0l+heWoxooTTR0JeabDH3oNWu+sCe+VpSlioyv192VJVblBd71PezT3JvBdg/m552pVaOaLrjWgMNNxuh3by53wwS0Ni7ltlrxYSIg0KPz6ZsTvh8npKF85XpKOCvYwUH0RC8qfpqxMaNyFKz9fUKe6i+W6egFy+lVKnkPw6bLU+5TzI+eRQEmELXnMSh/DZWikMBCMnOwbkPfj9IVmfM9kjdNGU0qPB4Wq9DVahDoxfRTqDaf5RclU/4xhf3smeW2Wp/NiunS0NeJyEJY+Tx+vdeCj3svy1xhCrExxi1THysHObyzZrCD2L/L/ga6XAeWdiPnnJ5
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR12MB7901.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(23010399003)(366016)(56012099006)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?iPSkIEfpbTeydFIUt7E5ACTgUyWR3SlzA3U290yeRh03HxBCJnI4FnFeI2VV?=
+ =?us-ascii?Q?I9US+YkbkYPlrePHEmuM+78zolgdRbVkMuLRklzIov8FSjRp1LPfIRFOM/lR?=
+ =?us-ascii?Q?uAxf5XdGkL0Kirf2RjRWnKgG9+12rzT6iWyquc0iQlS2IE3tmAUiKpLd8UR2?=
+ =?us-ascii?Q?PdnbLvOYqmZY/wAZjiO/4goPLlxwoyXwpqRMuXpzpoXNChGrbfNOOqC3L+TT?=
+ =?us-ascii?Q?Iw5zV9x0yNBMnZfIkBSuseGpxjsNsu8cnGIN3Hb7awPkQuzViTSrcP83QMRw?=
+ =?us-ascii?Q?64MLpmntLSQn37PFeDK8pAEPTTuSF3v16WwmlKxJboBhVfcJgup6dbltW/tU?=
+ =?us-ascii?Q?21icvcW6Jp6Hd41Tb/SaMEYaIbB6VimuZkoUhITIwDq0f9lHRi82hRQcsTQ+?=
+ =?us-ascii?Q?b/S12dv23Da7A7zP1o/fquRlcYbUGGeKzBRPVqzL1CSBLioEZ3SS5BMq+W4O?=
+ =?us-ascii?Q?W5zvzg+1TYNQAH3kIo59tqjI3cn8Z9m57+4hUjUkiyz3cJ0JHNstzDpLevpJ?=
+ =?us-ascii?Q?rRRlG0TGC+U1V5d0xoONbb/DPbmkRCPpAUaSAzaTFG0f1C9pd4ay6NBY2reV?=
+ =?us-ascii?Q?mx3TxoK/0+df7hifqmABXZnpyQtwUMeFYU2XdZfnLyRBX7IjBKM2Rhw3ODDb?=
+ =?us-ascii?Q?Lunt6Nx7oxoxrfdwY+ny/zMT66qphDhuSz4C+NH16Ts0DUJ3bIdLNg6NyWBR?=
+ =?us-ascii?Q?A/tViI6nV4kXN5Oq0XLGpHtEQtQSWfB7j+t1PD7luN5GKE+wLDgIyWOtietl?=
+ =?us-ascii?Q?7Q4uu/Kgt1b3G7KCv5+Uesjc71pFk02k/odrC2D9WWf9SGCyUo7TyV9Psk5Q?=
+ =?us-ascii?Q?KY/JzBXo/92skNQcD8tHQVYKxDl0eGcVNH9aQ/2HSG/RZkg2L7VaI6yyiSVj?=
+ =?us-ascii?Q?dKg4em70XPVy7HNvL1j9WnqtHYABJEGF8orc83b6XXmS9mtFTEEZXqITK40/?=
+ =?us-ascii?Q?dHZwRnyYsPF7phaHvSHPb7vh8bpxQczbUPe6xKC8JOZQbfSledsQ0LcfnhlG?=
+ =?us-ascii?Q?TxCxpYYwAVlysWfiCgTWaGgQ7jskvhiePyUylleNGo6jisANsuzL1zgMmAPr?=
+ =?us-ascii?Q?mM1lZ1uHrxZydXc9jT6FGKcxIltIif5eotewy9T7qoNhYi5nE4tOVI1vjCKp?=
+ =?us-ascii?Q?aj6u8FxF3eb8IMcuugieJive6lRNkPoIxy6Qk515s0tQCww5JS0of8Kg8jg+?=
+ =?us-ascii?Q?GdDIScssUbMDiaeUX2D6plAkuT7IdRiwiE3fpWVnMAjx2K7mg4V7gpdsWsNd?=
+ =?us-ascii?Q?//6tjjcFDBB4fnyNYjtV1kPVzzqTISELz5EWjbxG4QzKEj+C11sJn3q5FkGh?=
+ =?us-ascii?Q?Pi/LuCPIeW1YkOG66I06vO3fC8boN+xUZHENm3ltTSspTB/LDzaIarO/Fv6H?=
+ =?us-ascii?Q?VhtkB2NkAfiE6tEOMHEZMREwYHDUU4I1e61gQXT4outBVWx8GE3SSJSIEcsA?=
+ =?us-ascii?Q?OlkYAVaPfzFaLRbfpIISc861tRX5yv4vOiJGNaCrPZetil8FQKik40mNE5lc?=
+ =?us-ascii?Q?5FOj6TMAWlGLFTWE58tAT8j+HSymCgS3cEMVCgJWS8XhDQSVOk7q8UDJ+SnR?=
+ =?us-ascii?Q?Hm8Zo40qjFhF4slPHK36g9D7b0ex7QMMP2DAXDZ2M63UKC0CA4edSNZu3fyO?=
+ =?us-ascii?Q?IzXBYa9KnkKvuxfGlvSWVyDBMSG6WtJ0564PAp1hqmw5h1b4QjI3U7QeG6SU?=
+ =?us-ascii?Q?3FNqJFYx2oBgeD+zpdm67V2DGmiUFqxJ3mlWJ6oLI90UHV4F?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 97eab513-dfa2-47fb-d5f4-08dec7c82868
+X-MS-Exchange-CrossTenant-AuthSource: SA3PR12MB7901.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jun 2026 14:46:03.0657
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: S/Rcefb7QoswZJCbN0HqZtLLiinez+EvCmZeXHHHlBKwHuAtI/NzImFO/9iDJIRIoARsj42Wd87qKmeczPZstw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW6PR12MB8734
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
-Full review at: https://sashiko.dev
+On Wed, Jun 10, 2026 at 05:14:58PM +0000, Eric Dumazet wrote:
+> ip6_tnl_xmit() and ipip6_tunnel_xmit() run locklessly (dev->lltx == true).
+> 
+> ip6gre_err() and ipip6_err() also run locklessly.
+> 
+> We need to add READ_ONCE() and WRITE_ONCE() annotations
+> around t->err_count and t->err_time.
+> 
+> Signed-off-by: Eric Dumazet <edumazet@google.com>
 
-Simon says:
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
 
-Although the issues reported below are flagged as pre-existing
-I wonder if they should be considered in the scope of this patch (set)
-as they appear to be similar issues to the one this patch addresses.
----
-net: bgmac: fix refcount leak in bgmac_phy_connect_direct()
-
-In bgmac_phy_connect_direct(), fixed_phy_register() returns a
-phy_device with an incremented refcount. If the subsequent
-phy_connect_direct() call fails, the function returns the error
-without releasing the phy_device reference. Add the missing
-fixed_phy_unregister() in the error path to prevent the leak.
-
-> diff --git a/drivers/net/ethernet/broadcom/bgmac.c b/drivers/net/ethernet/broadcom/bgmac.c
-> index 3e9c57196a397..c97cf7ebad7f1 100644
-> --- a/drivers/net/ethernet/broadcom/bgmac.c
-> +++ b/drivers/net/ethernet/broadcom/bgmac.c
-> @@ -1456,6 +1456,7 @@ int bgmac_phy_connect_direct(struct bgmac *bgmac)
->  				 PHY_INTERFACE_MODE_MII);
->  	if (err) {
->  		dev_err(bgmac->dev, "Connecting PHY failed\n");
-> +		fixed_phy_unregister(phy_dev);
-
-[Severity: High]
-This isn't a bug introduced by this patch, but does this driver still leak
-the fixed phy identifier during driver teardown and in other error paths?
-
-In bgmac_enet_remove(), the driver calls phy_disconnect() but does not
-appear to unregister the fixed phy:
-
-drivers/net/ethernet/broadcom/bgmac.c:bgmac_enet_remove() {
-	unregister_netdev(bgmac->net_dev);
-	phy_disconnect(bgmac->net_dev->phydev);
-	netif_napi_del(&bgmac->napi);
-	bgmac_dma_free(bgmac);
-}
-
-Similarly, in the error path of bgmac_enet_probe():
-
-drivers/net/ethernet/broadcom/bgmac.c:bgmac_enet_probe() {
-...
-err_phy_disconnect:
-	phy_disconnect(net_dev->phydev);
-...
-}
-
-Since fixed_phy_register() allocates an identifier from fixed_phy_ids (which
-has a hard limit of 8 slots), failing to unregister it means the identifier
-is never released. After 8 unbind or bind cycles or probe failures, the
-fixed_phy_ids bitmap will be exhausted, permanently failing subsequent probes.
-
-Should fixed_phy_unregister() also be called in these paths to prevent
-exhausting the fixed phy identifiers?
-
->  		return err;
->  	}
->
+Thanks for the patch, Eric. Are you planning to send a separate one for
+IPv4?
