@@ -1,194 +1,113 @@
-Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011022.outbound.protection.outlook.com [40.107.208.22])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A3773C0608
-	for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 10:23:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.22
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781173403; cv=fail; b=ZAIfV2PZXtDNbkF6h471/UZfwDG3wgLB0Eb7mYkAzFDv32a51gd0tTOvDZAVkll45eyQpzDslNDrIPQfgH6EFrzwAsEL9KLgQ2Ylyi4DRBd5oHHVKe5OeCpldJBKYrRkXAoberHb9kO+v6X+7zo6fl3R0roZBf20GqITbMGLC4M=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781173403; c=relaxed/simple;
-	bh=7BqmhQYH144jSSrJAC4Sc9/DzpCWITOiI5WS18v7iXc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=uyiCl6CgrGh7tOVFcY7tcyyeFhmfPk6nzk05q8uFOH4kztb5IytqNyn6sgHAifTQMxsFaM7nYoXX7ArLCeSjM6FT6IxYXI/+9V9UHmw/0KxqyDRctbwRxWSnnTyhjawDACBwLLPxWPihXESzWz44rrmKCMAGmisFMb3BNBV0XKs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=kgRG7M/j; arc=fail smtp.client-ip=40.107.208.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC4643C8738
+	for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 10:25:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781173534; cv=none; b=ehGu+zhZMG4WA+NXw9avvC3HDCKrv50TJrJs//Tx9Pdtj0ZnACEuo3yR32x5dJBF0zQh+VBfjrK17Sqy5Q2fGVJwu/59u5YUWlP8epy7Q+QQcL7NHJhsu8/eYErQNU9zfGdXtI6diY41b9tCxPi6OCOHNcQOgdfWM8S55oOnsxY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781173534; c=relaxed/simple;
+	bh=YPVGhyrz93VWfclNKtS6TYiy2rQgGU/zy47IB2JY+8o=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DUqeBHIKLqtc+y8OP/fm0XTtgnw8LXnT5aT4C0wMDiiNQKD3Sg8eiAR1v1ekcv4y+9ONjQ6F4XRc0zV88DzC/x2kMP8ybzzebWDJnb8DRWdbBRhV3Gd3L5l+0JhG3yMBiry5DRR4ldVBFKAWtUeDJ0nXe9884hat5z40tB5sJzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sartura.hr; spf=pass smtp.mailfrom=sartura.hr; dkim=pass (2048-bit key) header.d=sartura.hr header.i=@sartura.hr header.b=btB2mJIT; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sartura.hr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sartura.hr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="kgRG7M/j"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=wDUKxFpgj8Um0NQ8egeEDSOXyDw7cuBxAUJFE8S8Dg+Qc09qxf4pUf25p+rhqamXsBdg5Ah2aVaAY69EOrtSNAz/+HZIOlWtQ/8HiR/hlTG7InScc8fFaf77ZF5eNySWXnVVUTduDG8LarZc1tsKZhunETgXKsuUlTpHVnjH4z6rYOmdxl0JvFUCpCU0wUOpxljF7mJCs1vvignS7PYavqx8foxz+AAZTSrR12brNXsG59B8cE8XtbjpO1t7OfFvCWI8hhz3Vv38F4vPRphTFSOCR+Lx+r86MUmie3rEJF2EkcOe+xqM7O+NzjwrXIGWLDGZeEQH4W8/Cw2O14+3qQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9NONN1+pZxhecAOWOzIQ/cFp/k4nkNUzZ+M5U4AeOdc=;
- b=B6+GZj1eUr/3vpf1GJf0wGZVodR4YzY7WFyBsQs/CViAtry62qKgzbXZ1sy0t9QYQcMiV27IwMuhx+hyrtU4w9JE2KU8UAFiDAu2+Buw1zjlzs+rD318D42+GeKrJZiSyNVwstLaJx+l/3bFuIfD9mt0dts0QK/zfSwmR0+U1DLCtXSrjhYIGYrJcvxpqtfiORHUjrdnnJje/fKoRoqlrUnel8Zm/YTAKMNV8/NJTRksCKP4sI8nomdQV/B3E4nRZ6ANAzmdtnEDod8xW57CsbV2d1wZUJM/fwXnlwSpJpgXiOcbjqP/w7gBd4WJO3NzI3LNf8lwwp1ED74mkKcSug==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9NONN1+pZxhecAOWOzIQ/cFp/k4nkNUzZ+M5U4AeOdc=;
- b=kgRG7M/jzPAUScebVyCq6bvPGKcU6I75D/7btkqfsjrJIqhGKMx0pDBv+Tg4B0rxVR9wRnXv+RIRnrCZUDKGku6vLYsFVC2NRbmXRsABZXCxt0ThWqxiTRmBjZDt0R9uCG1IJdi9uAnPDHFLKbiYUI2+ETK8bgxl712tOn1T+nVewA9zJVr4khH2iQHO3SU3WoEzLhCpoOYzsb6gUC7yICn+qPIJE2LMyquPzgaDky4FB9Z3vqpmC98mvSOTKfAY5j+F4BQcK5uz385w9EIYAu8yUb058q8GHoBhoSAsIL/D6SARTg1KA/iFWexQ1PH9Lp+skeFw3OTdmd/qVEguFg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from SA3PR12MB7901.namprd12.prod.outlook.com (2603:10b6:806:306::12)
- by PH7PR12MB7116.namprd12.prod.outlook.com (2603:10b6:510:1ef::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.13; Thu, 11 Jun
- 2026 10:23:12 +0000
-Received: from SA3PR12MB7901.namprd12.prod.outlook.com
- ([fe80::6f7f:5844:f0f7:acc2]) by SA3PR12MB7901.namprd12.prod.outlook.com
- ([fe80::6f7f:5844:f0f7:acc2%6]) with mapi id 15.21.0092.010; Thu, 11 Jun 2026
- 10:23:12 +0000
-Date: Thu, 11 Jun 2026 13:23:03 +0300
-From: Ido Schimmel <idosch@nvidia.com>
-To: Wongi Lee <qw3rtyp0@gmail.com>
-Cc: netdev@vger.kernel.org, David Ahern <dsahern@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, asml.silence@gmail.com,
-	dhowells@redhat.com, willemb@google.com
-Subject: Re: [PATCH net v2] ipv6: account for fraggap on the paged allocation
- path
-Message-ID: <20260611102303.GA880341@shredder>
-References: <aigx83czv+UJZA0d@DESKTOP-19IMU7U.localdomain>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aigx83czv+UJZA0d@DESKTOP-19IMU7U.localdomain>
-X-ClientProxiedBy: FR5P281CA0020.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:f1::19) To SA3PR12MB7901.namprd12.prod.outlook.com
- (2603:10b6:806:306::12)
+	dkim=pass (2048-bit key) header.d=sartura.hr header.i=@sartura.hr header.b="btB2mJIT"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-490b9318997so57280795e9.2
+        for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 03:25:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=sartura.hr; s=sartura; t=1781173530; x=1781778330; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ajtLdf6kOQl/9ntlN63rJuIpsbywFjT1rs7cS24D84g=;
+        b=btB2mJITteSdzWc/TyDZXuPvlf2DaXPxV18ylWc8ZVyTd7qSt5gf6UrjOVgsQfynLV
+         ZnLN7oxNKwXsztid7b2Ybe6UicVLhi6956uJjEBVmRuUx6L3w+Y3QxwQvo+yDFijZOBg
+         pWh5OU4Sq1h17vqqWt2U1NSiGd5EFjwJE2+KjU48TsfCkOAuExZPHFCwAgj2F0xlVxdw
+         JmReiLkPkbFKLn68FwwTPd7E9ePag0x1WZ8YP1owYMBmk3gfHjKPfKkupGmrxD6r/kDY
+         WtstYQNQF/LfebsRYd+E5B3a/ni/gu9Wus+jjTx2J/ldN/ryY8o4mfdRIbrgpOMJQD09
+         dylA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781173530; x=1781778330;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ajtLdf6kOQl/9ntlN63rJuIpsbywFjT1rs7cS24D84g=;
+        b=Llzq+V7JzYi7koQQIXUv4IDLAzjv/7GfWVbriXDtRv1thWq8ATIfhn1Ubk1aDK+XK1
+         Sut1To53C9WxeWysycxFIEVdLVjWY1Cp7CYgZHKfFCnzLwB0yBMCnidlJSDHgUm4ukZU
+         jqHPuRR1ywLX8Dd4CuuDO73Bl3Qgze3xf8MjoiHzMZlCYgZHEt1vmntVH/gTmS3A1kAe
+         B0ZCphOxNOjism6FEDh/bzTan2qXXbuTu0pLZNKBKqMMS4kEM9zFpZa6opAOTjHRIeSW
+         V3qWVN9k5whG8epv6DmNJqTM2CSWf1f3bqVA+ww6M3cQkD8cbgfmexRdrp1fgVi55KFW
+         UhnQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9NaAI3Qq+sJpqsR5hNGTTmlE5pnEAIhb09lg/HseBFDbpRs7p8ZtDYsfUzrK9vF2IGOTnzy94=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxuLvilX5XhaPPieCQizr0kqz6a87eq16sHizORp0BO5X53xD4b
+	m52EVNX929vJyTEWuexhcEmNZoRgCvu4iE1vmHU6Y4hxhs70KjKgJ9Xh3JMgG5mTBbuVOFAoahA
+	B2IwM
+X-Gm-Gg: Acq92OGuA7NazsFzo8GQZ5s7saHmL9V5wrQsxYKZEb8ROLADssT+pIZtHrZFEzyaPHt
+	+rNTxQU01z2fBbAuzkilLs6LU97vRq2Yds8EcvYRowzr4PhIGvMVVA+U+4AyosvUhYko7fq2AoO
+	Qv6yQmAY6pgVPnEFWU1PkKAX9jPXXbuxGV/RaQZS2DKGiMNykTr9yNJmZuphs18PDqnhbxZeVZ6
+	k66oq11W1WXtK99l89wdSgBymbRqXVHGTGAlGcQc7FFEcdI3b6+apc+ZSdH4rsbGXRAfDpZ8suM
+	uX3W5QLk/1ymsYbCF48/kIpmJRCPoGS/2l8yLc4pRZner1VtzzYfuROEi/6/Aqnm8oJugzm5uIb
+	U+n+yUNm3ulsAyA1LfO+qXGe5Smpm9tBB+WJ87l4Y683MDXpkMEhMtRg2ZEtDeP91yDfLD42bky
+	e8y4FpTyS+6U82Pp5d/LyB554YZQbkiGphPIIrrGNmVIiFJmAIzmhWxFFqutvRysGLfN6cfcSV+
+	O1Aeh+tOK7sEbMSDx25mhAZZGoMOlB221QY2Yvq09R9bqif3pfAY5S6sm/QmI4GiIrtCRWYqjP5
+	v7LeZWz0o7uZ
+X-Received: by 2002:a05:600c:3b15:b0:490:e196:e8aa with SMTP id 5b1f17b1804b1-490e56176f6mr27546145e9.28.1781173530218;
+        Thu, 11 Jun 2026 03:25:30 -0700 (PDT)
+Received: from threadripper-fedora-workstation (cpe-94-253-164-203.zg.cable.xnet.hr. [94.253.164.203])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490e5314f4dsm36929705e9.11.2026.06.11.03.25.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 11 Jun 2026 03:25:28 -0700 (PDT)
+From: Robert Marko <robert.marko@sartura.hr>
+To: o.rempel@pengutronix.de,
+	kory.maincent@bootlin.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: luka.perkov@sartura.hr,
+	Robert Marko <robert.marko@sartura.hr>
+Subject: [PATCH net-next] net: pse-pd: set user byte command SUB2 field
+Date: Thu, 11 Jun 2026 12:24:49 +0200
+Message-ID: <20260611102517.445549-1-robert.marko@sartura.hr>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA3PR12MB7901:EE_|PH7PR12MB7116:EE_
-X-MS-Office365-Filtering-Correlation-Id: 41b4b7e3-583b-4908-da34-08dec7a37106
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|1800799024|366016|376014|23010399003|6133799003|18002099003|22082099003|3023799007|56012099006|11063799006;
-X-Microsoft-Antispam-Message-Info:
-	VtXz6pfNTmyQz1Fu0NvYeppwTG7tXvW2z/tS1eooFGuD0x+GWZaXEpshq0qAsDukPLCbFxaDeyvUwCFzoDLd/j5FwjbiIMuE1grI5O4hr4wKZpHhOnKwaLERSimtlwZvmXZjOJ9DcicsoV8+KD/CDHW8wunMmDtRfwTbyEWD2+NFcF/uI7mStjtVNGfCyuKKQ6KL0ouU8PrRhIuActX0azv8OPJ6h1C/IyNMdLM5oWDZk+VZ/oOTggU103hEhk2LV1f1wDMpGcJtv/cRDxEtum9FG2K/5DU/0SO0I+NKqdpB9DvoL9QnEW+6gWvA4sXMUx8jB0OlnC/9DGxqn4IbZE9ei2jNp4bQjpHqnx2gNOzRDeJ/8r5jE+9R54uM0QG9FMzzXmjtaPDF86hajmqkwxRkYshC0vMWA3zX8F6CMXKOzgEcN0iROAPlYjoOt3saUQGPE0Cyu4a9n6Slp4RtXILqB2YJ5enhe+bpuFHlO2IX+2/+0UCxQbQhi/Vl+LE9Xg62ggPVVVxRWeFI1D7ufNVT192JmSiE2Spvw39Uc0QoCdXG66vATvveGkNS2z3CfZxAWjVbBcoJAl5GxZIYukvwGRw4uM5VHc4P5wy098S1Y///7yxa56O+J2vMj1BD7hShIy6YG8IEMinCA8LlD9EvkA69TVrHshh60SOnvlmWlnT9/JZ4ThpWEuo9cZbw
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR12MB7901.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(366016)(376014)(23010399003)(6133799003)(18002099003)(22082099003)(3023799007)(56012099006)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?ygDQBCEU7JsusEWHE0IOzaO+nmmtqXjIgmpSaMI1S2+p2E4ZIAAjtm2bL4nD?=
- =?us-ascii?Q?Zm0ClCADdoLeVV+WUZ7yQdgpOvLh8C0SfKEQ+4e1uOptY9rWhFC58SruT+QS?=
- =?us-ascii?Q?5jEvBp3YSC9fJHaPssIAzbPPzs2BzjOh7B3RdH7449bHaBhn/Ifo/uHiOwyk?=
- =?us-ascii?Q?NL8nJjUHbivvh56nXkKWr3BWVoWYM9IJOnxhJSDoEk3ze52tBDxXN1Unn5af?=
- =?us-ascii?Q?KLy+cPsoNIiCnNNxX0vAIfvoOw6l0Ndr3uLB092W+J9pzXvJEyGPsF/0SfUU?=
- =?us-ascii?Q?7wO/WmCtV7bG/ne+e3j4it9pT436QayuXchsXxvWWWD+31KgQeNDt07sumes?=
- =?us-ascii?Q?ytJ93a5XwQ+d5wLTjv/L2xutQN9Ist3muP2N54iye51aBaTNmLFQ23VkGAl/?=
- =?us-ascii?Q?pd/v0hSfJY26xQEmfbZV3qr6ykmOKEBozQQoGPaxxgK//TIoYroV9GnRH6fA?=
- =?us-ascii?Q?s6yP4wDkKvdoJZRuKVKOR2jWBk30qR7c/GEFLSUE3Rwz9fZtv3QA5wqtyMdc?=
- =?us-ascii?Q?HDhyC9HOQabq371KUiCsYlepAw8qA7QtnO4NxWqSc9Vz6BhL5jgKYWPPAqbN?=
- =?us-ascii?Q?hnZpU3FDIQUpfYHVOL0Bwrgm7KagYwMPiloV5TAx/DfxeJUGDdGYAQQy8BCV?=
- =?us-ascii?Q?5Fg/L+HaGmzQYUDcgqITx88ZVy9FyPJPCKi1JTDF123gJZ9/0zlVQPpf+45q?=
- =?us-ascii?Q?0xIrhWpIDid/krCxNUYRU5Utnzgbv5T3xRfFIjQH92eNsT1xRJmf5X30W1CD?=
- =?us-ascii?Q?yEWLAl53JM565GwKlHNlnclbVC15w5dPOnUoJYuVgNymw4/xA7LEZvTD62TY?=
- =?us-ascii?Q?wNo1M79MhPFXGfVoJZFIMelTh21CX0NiugiNlqhmnm6n85m61yuLigArVeXz?=
- =?us-ascii?Q?idS9Ur1XogKpA6qOf8AUseBgbMksxFBUoC4GHvCKgRu91DJPJlhnhKuZyBsG?=
- =?us-ascii?Q?rKcWKGQz3f4MYIJo7JuhgMgKFoR8gGW4vLufa5LDHu0vEKgwQN+khqVxJ95z?=
- =?us-ascii?Q?FVpmydS3DrFx8WfoF37qK5YZvwHgZWrdQsBrkkCxJ5iUM7wPvS5HsFNsORXw?=
- =?us-ascii?Q?CmF17IyKYdXE7MCsEDGwHYFubMNDMl2gdSC5GMMZpq+kSQGIME6Oca5HRm3q?=
- =?us-ascii?Q?un0/awyhAV58YfRe76C99r7NaV7jq3QqE+O4zb2Y7U70BSJUuqEmSrj1vTw9?=
- =?us-ascii?Q?QsAsA7oFG8Z+GK3u4xDQcX1TIBvR5vUiEr9GWdoF+yPv9oYJ395YXbWwVft0?=
- =?us-ascii?Q?uuPl1xogBIzfe+4j4IkZ1AaP2CO4mtk9BxbOX1a7wXeie9ha4dxVWd96hxZt?=
- =?us-ascii?Q?/vyrlblNyPu2UIW9GnypYx0O4AT/+rBz702CFP9adKA1ou3r4XPBGgoU081H?=
- =?us-ascii?Q?EO3WyrmOleAsI5J6LntT0IK8NRw6tnG6fSOHBShavi3p9bsPbuePp4fapUEM?=
- =?us-ascii?Q?CsmzUMkjTTfkZz86nG/igsgYk9IiA0NYqCqpzuCLXkunuvR08ujwlVbmXYI3?=
- =?us-ascii?Q?5cgcjh3zh9gTPhs0LyxdHmCD/IBTsDQpW2CC6KLXNTQ4AB/Hljuqj+n44Nqu?=
- =?us-ascii?Q?F13XN4cKlYpMgXf1frT/Fx8TQW0/WFbdzP4VppE1kuCuxH+li3wFVsw76vzd?=
- =?us-ascii?Q?4un1ZnUJljVNjXxWFQ9693nnQ4o4a9IzaMaW+PfpHv1LIAJ6niTHRz2sdEVb?=
- =?us-ascii?Q?zARUamk5ofKUe+HzGqE6R4zGOiQW3hTks+Nkr2io3iG++/un?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 41b4b7e3-583b-4908-da34-08dec7a37106
-X-MS-Exchange-CrossTenant-AuthSource: SA3PR12MB7901.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jun 2026 10:23:12.5035
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: NjfHlL63fm7lnUFelRuy0UYvUqAZUKDpI+MXDtERSP4sjj0bJvLYsL4bvjZWtB1flcp+XhmkNxuqDlssnJMumg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7116
+Content-Transfer-Encoding: 8bit
 
-+ Pavel, David, Willem
+The Set User Byte to Save command has three subject bytes.
+The PD692x0 protocol guides defines SUB2 with value 0x4e, while SUB1
+carries the NVM user byte.
 
-On Wed, Jun 10, 2026 at 12:32:03AM +0900, Wongi Lee wrote:
-> In __ip6_append_data(), when the paged-allocation branch is taken
-> (MSG_MORE / NETIF_F_SG / large fraglen), alloclen and pagedlen are
-> computed as
-> 
-> 	alloclen = fragheaderlen + transhdrlen;
-> 	pagedlen = datalen - transhdrlen;
-> 
-> datalen already includes fraggap (datalen = length + fraggap), but
-> the fraggap bytes carried over from the previous skb are copied into
-> the new skb's linear area at offset transhdrlen by the subsequent
-> skb_copy_and_csum_bits(). The linear area is therefore undersized by
-> fraggap bytes while pagedlen is overstated by the same amount, and
-> the copy writes past skb->end into the trailing skb_shared_info.
-> 
-> An unprivileged user can trigger this via a UDPv6 socket using
-> MSG_MORE together with MSG_SPLICE_PAGES.
-> 
-> The non-paged branch a few lines above sets
-> alloclen = fraglen = datalen + fragheaderlen, which already accounts
-> for fraggap because datalen does. Bring the paged branch in line by
-> adding fraggap to alloclen and subtracting it from pagedlen.
-> 
-> Fixes: 773ba4fe9104 ("ipv6: avoid partial copy for zc")
+Template only initialized SUB and SUB1.
+Fill SUB2 explicitly so the command matches the documented layout.
 
-I'm OK with this tag if we want to be defensive, but isn't the data
-corruption only trigger-able since commit ce650a166335 ("udp6: Fix
-__ip6_append_data()'s handling of MSG_SPLICE_PAGES") ?
+Signed-off-by: Robert Marko <robert.marko@sartura.hr>
+---
+ drivers/net/pse-pd/pd692x0.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-AFAICT, before ce650a166335, a negative 'copy' would always result in
-EINVAL being returned. I would at least mention this in the commit
-message.
+diff --git a/drivers/net/pse-pd/pd692x0.c b/drivers/net/pse-pd/pd692x0.c
+index cb377d5ba7af..209de9cec849 100644
+--- a/drivers/net/pse-pd/pd692x0.c
++++ b/drivers/net/pse-pd/pd692x0.c
+@@ -200,7 +200,7 @@ static const struct pd692x0_msg pd692x0_msg_template_list[PD692X0_MSG_CNT] = {
+ 	},
+ 	[PD692X0_MSG_SET_USER_BYTE] = {
+ 		.key = PD692X0_KEY_PRG,
+-		.sub = {0x41, PD692X0_USER_BYTE},
++		.sub = {0x41, PD692X0_USER_BYTE, 0x4e},
+ 		.data = {0x4e, 0x4e, 0x4e, 0x4e,
+ 			 0x4e, 0x4e, 0x4e, 0x4e},
+ 	},
+-- 
+2.54.0
 
-Speaking of a negative 'copy', I think Sashiko is correct [1] and the
-comment regarding pagedlen>0 is now stale.
-
-Finally, what about IPv4? It has the same code in commit 8eb77cc73977
-("ipv4: avoid partial copy for zc").
-
-[1] https://netdev-ai.bots.linux.dev/sashiko/#/patchset/aigx83czv%2BUJZA0d%40DESKTOP-19IMU7U.localdomain
-
-> Assisted-by: Xint
-> Signed-off-by: Jungwoo Lee <jwlee2217@gmail.com>
-> Signed-off-by: Wongi Lee <qw3rtyp0@gmail.com>
-> ---
-> v2:
-> - Fix mail format.
-> - v1: https://lore.kernel.org/netdev/aibiIYMAwUErTw5U@DESKTOP-19IMU7U.localdomain
-> ---
->  net/ipv6/ip6_output.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
-> index c14adcdd4396..265502caa44b 100644
-> --- a/net/ipv6/ip6_output.c
-> +++ b/net/ipv6/ip6_output.c
-> @@ -1668,8 +1668,8 @@ static int __ip6_append_data(struct sock *sk,
->  				  !(rt->dst.dev->features & NETIF_F_SG)))
->  				alloclen = fraglen;
->  			else {
-> -				alloclen = fragheaderlen + transhdrlen;
-> -				pagedlen = datalen - transhdrlen;
-> +				alloclen = fragheaderlen + transhdrlen + fraggap;
-> +				pagedlen = datalen - transhdrlen - fraggap;
->  			}
->  			alloclen += alloc_extra;
->  
-> -- 
-> 2.34.1
