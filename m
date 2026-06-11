@@ -1,53 +1,52 @@
-Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
+Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3EDD242D67
-	for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 11:34:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E719357A25
+	for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 11:34:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781177648; cv=none; b=hEo3jIFHPcUwDaWRG5oPOWD2rM+6xG/ib8c6yPYS+qgF7bZRonPwBjlaYDwW7Fsjn45Xvc26G0yN4r9MO98aEXY+j5tyEWni1FqYlQUTY9cv0IuDF20cT8mahVkF309pQMc3oSpQSDhdqQUSIJ0DVJ/AXuVgqPeodnaF5NtCn7E=
+	t=1781177653; cv=none; b=Uufoh1H2LQQQxtps0xWZvTDZ9AWpnISr3sGCqPXFCbcXNOoy01ochLzcA5tMMZlodwfZAUyIgdR3sa3UKCoR+Ttnz3UFlcseYadGo8YwpRw9KUh6WftmA4rctTk1G6M7slhcrw4IUowRPFFV5bzbcRRFofPYb9Mip5WM2GWMNCs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781177648; c=relaxed/simple;
-	bh=kWWkiFYHvJ96M7uzdCoBKIdODP6dYm/UhYjrtgcq2ww=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:MIME-Version:
-	 Content-Type:References; b=IGTgp+y63mkgWSr3+QVQzL3CGeZ687Mq5GvHHBLc6MtX5U+Fo5omuk7YHuhq42+rqPKkDXuuYda0WX5zB86Y27z1/G+xLUlqm397dxQIVhokSYZT+G7cRpJhxlWk8b5i632GGZSOx3wXGJSjbjMOJcccQ8q/1lOEqfH1TSqev8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=hs1iC8+b; arc=none smtp.client-ip=210.118.77.12
+	s=arc-20240116; t=1781177653; c=relaxed/simple;
+	bh=qXGvZ1sAvRdJ7PZpmd+qgawwSEx6Iidpfn7F3CQIgm8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type:
+	 References; b=rs7bey4xx3ZsRxO3qghvJbA1Ydt9dBtIYHhxNPcaIbh6A7Slb23PVHVe0xNAA1bqyrDFk2Z3Qj3YG9lpTrRUI6/+ZSziVsL/XRKHITIiotB0WHSkPG+e7sectCrlQzjiR0TocZHclqQAs82qupQEQZmjw2OfUR0OHx+i2ns62ac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=MNdv0umz; arc=none smtp.client-ip=210.118.77.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="hs1iC8+b"
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="MNdv0umz"
 Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20260611113405euoutp025b4a5552f0e900d31466270b0600f15c~4A6GXCL8-1020010200euoutp02E
-	for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 11:34:05 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20260611113405euoutp025b4a5552f0e900d31466270b0600f15c~4A6GXCL8-1020010200euoutp02E
+	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20260611113403euoutp0149d5769f7dff689b37fc00724fad28cf~4A6FNVK-z1538115381euoutp01E
+	for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 11:34:03 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20260611113403euoutp0149d5769f7dff689b37fc00724fad28cf~4A6FNVK-z1538115381euoutp01E
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1781177645;
-	bh=aiWNA2XcQ9MIGpb5iKT0AZ6heJ1aLAPFSuWzw5lWfBY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hs1iC8+bqurdiMo/Cnpg9tlui3TVPRRe6dzepPnEcM8ZoHBcadWG/UAvWTFmWQsDT
-	 bQqV48UI6it831kNnUvYDFHPHTozVPlq6J6sTrUYE4hIDtQoUW+i+xSeZVXhxxfXNo
-	 LhNKjrCluhxgVIGWul3JGIvj+VmXre32GFSxsRsM=
+	s=mail20170921; t=1781177643;
+	bh=8vJeVAj/z4tf6ALczbGi0hk+xhcfHPNc5wF724wvVsk=;
+	h=From:To:Cc:Subject:Date:References:From;
+	b=MNdv0umzypzsIVXa6OLGXAv2/YPAT1p++ZX2Q3ucV5HTcI7TS69Sug/e/jA218Y1T
+	 1QkNCbRWz3C6k/AQASY6oWtIB0GFX0TAijBDDKNrJTHeTRTMUVI+M9rvKu4USu9kMT
+	 iZDd68kQaJn1EsCr62hFOOMFtYRkHs8NIvkKJDvI=
 Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
 	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-	20260611113404eucas1p1ae62c08edaca2d98535c39c59faea923~4A6F-FrlA0882108821eucas1p1u;
-	Thu, 11 Jun 2026 11:34:04 +0000 (GMT)
+	20260611113403eucas1p1f4b61896c875f1f6833d6ca136472af8~4A6E3YY0z0769007690eucas1p15;
+	Thu, 11 Jun 2026 11:34:03 +0000 (GMT)
 Received: from AMDC4843.eu.corp.samsungelectronics.net (unknown
 	[106.120.77.61]) by eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-	20260611113403eusmtip20658597299be23109b0b32fcf53ad27d~4A6E9bI9t0415604156eusmtip2B;
-	Thu, 11 Jun 2026 11:34:03 +0000 (GMT)
+	20260611113402eusmtip20128068a5cba2e17cd8baa05654eb531~4A6EOyVCm3265632656eusmtip28;
+	Thu, 11 Jun 2026 11:34:02 +0000 (GMT)
 From: Jakub Raczynski <j.raczynski@samsung.com>
 To: netdev@vger.kernel.org
 Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
 	kuba@kernel.org, pabeni@redhat.com, mcoquelin.stm32@gmail.com,
 	alexandre.torgue@foss.st.com, linux-kernel@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org, k.domagalski@samsung.com,
-	k.tegowski@samsung.com, Jakub Raczynski <j.raczynski@samsung.com>, Chang-Sub
-	Lee <cs0617.lee@samsung.com>
-Subject: [PATCH net 1/2] net/stmmac: Apply TBS config only to used queues
-Date: Thu, 11 Jun 2026 13:33:57 +0200
-Message-Id: <20260611113358.3379518-2-j.raczynski@samsung.com>
+	k.tegowski@samsung.com, Jakub Raczynski <j.raczynski@samsung.com>
+Subject: [PATCH net 0/2] net/stmmac: Fixes for maximum TX/RX queues to use
+ by driver
+Date: Thu, 11 Jun 2026 13:33:56 +0200
+Message-Id: <20260611113358.3379518-1-j.raczynski@samsung.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260611113358.3379518-1-j.raczynski@samsung.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -55,44 +54,31 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CMS-MailID: 20260611113404eucas1p1ae62c08edaca2d98535c39c59faea923
+X-CMS-MailID: 20260611113403eucas1p1f4b61896c875f1f6833d6ca136472af8
 X-Msg-Generator: CA
 Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20260611113404eucas1p1ae62c08edaca2d98535c39c59faea923
+X-RootMTR: 20260611113403eucas1p1f4b61896c875f1f6833d6ca136472af8
 X-EPHeader: CA
-X-CMS-RootMailID: 20260611113404eucas1p1ae62c08edaca2d98535c39c59faea923
-References: <20260611113358.3379518-1-j.raczynski@samsung.com>
-	<CGME20260611113404eucas1p1ae62c08edaca2d98535c39c59faea923@eucas1p1.samsung.com>
+X-CMS-RootMailID: 20260611113403eucas1p1f4b61896c875f1f6833d6ca136472af8
+References: <CGME20260611113403eucas1p1f4b61896c875f1f6833d6ca136472af8@eucas1p1.samsung.com>
 
-While opening stmmac driver, there is enabling of TBS (Time-Based Scheduling)
-option in dma config. Currently this is executed for all possible TX queues via
-MTL_MAX_TX_QUEUES macro, but actual number of queues used might differ.
-While setting this is generally harmless, since memory for MTL_MAX_TX_QUEUES
-is allocated, it is incorrect, because it prepares config for unused queues.
+When contributing other changes preparing functions for new XGMAC hardware
+https://lore.kernel.org/netdev/20260601162537.553512-1-j.raczynski@samsung.com/
+there have been reports by Sashiko AI review about pre-existing issues
+in the code. These problems are non-insignificant and are 'net' material fixes,
+rather than net-next features.
+One issue in this patchset was reported by Sashiko AI, while other
+technically part of new patchset, but is reasonable related fix.
+All of issues are wrong DTS configuration, but kernel needs to handle it.
 
-Change this to apply tbs config only to tx_queues_to_use.
+Jakub Raczynski (2):
+  net/stmmac: Apply TBS config only to used queues
+  net/stmmac: Apply MTL_MAX queue limit if config missing
 
-Fixes: 4896bb7c0b31a ("net: stmmac: do not clear TBS enable bit on link up/down")
-Co-developed-by: Chang-Sub Lee <cs0617.lee@samsung.com>
-Signed-off-by: Chang-Sub Lee <cs0617.lee@samsung.com>
-Signed-off-by: Jakub Raczynski <j.raczynski@samsung.com>
----
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c     | 2 +-
+ drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c | 8 ++++----
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 3591755ea30b..5917bf47c7de 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -4140,7 +4140,7 @@ static int __stmmac_open(struct net_device *dev,
- 	u8 chan;
- 	int ret;
- 
--	for (int i = 0; i < MTL_MAX_TX_QUEUES; i++)
-+	for (int i = 0; i < priv->plat->tx_queues_to_use; i++)
- 		if (priv->dma_conf.tx_queue[i].tbs & STMMAC_TBS_EN)
- 			dma_conf->tx_queue[i].tbs = priv->dma_conf.tx_queue[i].tbs;
- 	memcpy(&priv->dma_conf, dma_conf, sizeof(*dma_conf));
 -- 
 2.34.1
 
