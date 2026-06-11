@@ -1,105 +1,107 @@
 Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD2A8380FFA
-	for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 23:08:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A4B8175A7C
+	for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 23:09:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=67.231.153.30
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781219282; cv=fail; b=cBkCANUEgIno+9HAhyygR7m6BWbahGhHJ6gfKGqK6Ix9e934i3AAyPhaCquPZ/UmIHTTTmG9lKHWtAyWNRH9kilQCw3VoKrmGG5eMHA7gfOu3raq3Qzlse7Ol/ij5PZPja/Pbn3oJstcOovZmGlhEGgxyHIteJGwzjGZWRK93oY=
+	t=1781219379; cv=fail; b=bl/71sZlE4HCpVJRamoN3d9edUJi1BQa2pGVb9+OXrBRx//8fyoZ/khRKibEZT+JjKsFtURbRGxIaBEPeksUaShTwTaVzEyHo+LYtaYYF3xx/ZgfdEr7hp3wIyUyNW32ViTNowtdIjz2k+4p1YoSWg8xSJd/D6WaJNVLVH1jTCI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781219282; c=relaxed/simple;
-	bh=Xy3ScJnXdGO1uSMgz2W54lBdlaGYi8w2p6RzwRoDR08=;
+	s=arc-20240116; t=1781219379; c=relaxed/simple;
+	bh=cBWMYoXs/GgliNDLcM7BNjaQh0ZcTgZ/O0lwWDyHBjk=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=IWS9+Jm9SYg/ue1TT8qsz7Gb7d+YzvE0R6MGeQo3mzgY7klzG+Bsk78US5pmd7oKzM1IU/2gdShfqN7zVyjAG2bPCFbH0Fk631t+jt368xUW6kCXdhkm/9mB0deW9nx6YaHa7LtA1O3WvcimhzUBpkN0cEPdgZtO+vL93fpLimQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=S/OjtqUr; arc=fail smtp.client-ip=67.231.153.30
+	 To:Cc:Content-Type; b=DDIa1zl8pVts2jKbOz/847V3RODuOaCn4SmOzCfPRDPABNH646way2rx+a5HFy/XdOBTV4Z57zVVYJJoTWuWwR5OH3W9nXes80fghXB6JHsnS0sB4QXu/O5QfU5nFwJbBQGBNvaXaMQSMIlIV079fhGcUFCX0+uveBc848P6cls=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=USTVjs2G; arc=fail smtp.client-ip=67.231.153.30
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="S/OjtqUr"
-Received: from pps.filterd (m0148460.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65BETiKt1447278
-	for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 16:08:00 -0700
+	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="USTVjs2G"
+Received: from pps.filterd (m0528006.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65BK5FTL3758767
+	for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 16:09:37 -0700
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
-	 bh=eSd4DfDWKCJhrlk+WFf1HJuCXJjV3yJV405FpCwAOa8=; b=S/OjtqUrfaHy
-	U2tzFcZ8mycupW/bmzC0ry9dC6/TLZhsjYUOLx9kRDPB0KY54IyAWb3v/8NCzgIb
-	Lo7j7/o2b10gCRzYHkStHM3+46rjVxu480Rw69rpMHhOshrelnhYeaEHIAZWHY2c
-	45cn3iSQuWvr09tWHy11Rg98ilzmEcTlYqqh9Q7sHC11wTUiTKCHHmUjQuUuiz+2
-	BUzCK5pTcOnMAmuXtXpOjrSB6KpO6VLwRJcO/kgZ1gLYJTGY+KSd+TwJCKLMpmK8
-	S3GzefST7H4aOVX962Ewe73xPQFn9Ny/oy+d2hIXiJkNWwIp7UrGbCvYz36QF7sN
-	eBQXf3TFYQ==
-Received: from mail-ot1-f72.google.com (mail-ot1-f72.google.com [209.85.210.72])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4eqe78her5-1
+	 bh=cBWMYoXs/GgliNDLcM7BNjaQh0ZcTgZ/O0lwWDyHBjk=; b=USTVjs2GSY6c
+	zWNomSf5E8qjahkAqgjmiQDPFbjEPZsjQeJ/b94zb0GF9NeM8mlmXX9Gk+kwYdrj
+	cTftYVPuOSFB/1Nr+8gqaK6p3IfQ3KYjnHVtCfJwHBjSmm33QENUybqoFyJiQ/fu
+	n4EJcipp1CqI7B0zNUDMYv+OiLaw5YrOS8y/AuI2CPHIovD+hq3X3/vXm3tTqiTy
+	HHxPhprLBQNWDBST0hkTSIsZqY1y3fvMFa5eDd8O3gaW+GcwgHrjI92X6wE8vhNV
+	AHzq3kcWmOiBGIroHAC2qW3JwOJCgC75sMNCqZsKh1VQyolLrORLN0mB76o4eHEv
+	+bQz7LwmGQ==
+Received: from mail-ot1-f70.google.com (mail-ot1-f70.google.com [209.85.210.70])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4eqe791e7x-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 16:07:59 -0700 (PDT)
-Received: by mail-ot1-f72.google.com with SMTP id 46e09a7af769-7e6dcca848bso702924a34.0
-        for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 16:07:59 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781219279; cv=none;
+	for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 16:09:37 -0700 (PDT)
+Received: by mail-ot1-f70.google.com with SMTP id 46e09a7af769-7e6f45ce9ceso578884a34.2
+        for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 16:09:37 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781219376; cv=none;
         d=google.com; s=arc-20240605;
-        b=DGIiy58Kjasa5tCsQ2zUJtC2LTAo5v/0RM+hzwIz1aKvc+EqcZmVUbkOaZfogXAbJp
-         MawOUSsMi1njpKPlONsSA9V7RrhpSZGXXmCpVr4lY/BGln9Ukc6pKPXEVSXXRwcYrC1O
-         5c2i5mWl0X7S+dYF0BmszNkELyowkoiiM7PlbL9sIoLmXlEFfVvnmXOtC9JW0yLhKDga
-         an2QgS5sJ0bFMYrZ95msgAXgp7aBF7UHF7GbyUfzGiSg7NTNm0ynb8tbuK6u5aU0930b
-         Z7UQ+MeanDVVhzZSu3c3LgO6atLq7E1OuvGh+UpGzd/Brj2LEy5DxWoNYK6CCDunCrhu
-         2VSA==
+        b=GhVJ4X0S/FI+exwjEH+t0IcJmjlxah7F47joNjJo3VybooPsGFuhlF1Kge0N1xogRS
+         ggzpt+H7OpvOsmBSsRSj+PSAv+R/JY/JkwSupf43OpZLt+yxSQpi5Fv8Re954Oze27WV
+         8UWg3lp6cvCpav9MIiX38n1o2HfH91cacsB2Gi3XX8QSF68SW3HSQkopM6UBkHE2MNRF
+         P9XJ820mdnwrLEFurURUDyX8MROSG/5gcDzX8Ed8H07sxusF5SgXS2WzVllukKN0OxDE
+         lFIb2lBtIWsKNZX469Xrgmp2aRz0NAcHRCtv39G9eiC74pHQiuhi4EqAZunI/zqUrpBE
+         sEWA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version;
-        bh=jKBgDS5EhOCeCGVgkUxAvmWq6B4D8KMNSa2GuVyeKb0=;
-        fh=EetbHamIKmNRUEWxnxrsknQ6zmc+QjsvssT9V7Pqwkk=;
-        b=QI0uwdWoRaO6erhLAWICvXypBSoRQi1SxRsnHjsOuJKEPtOZ7bea3FZtb3vLxAcPi2
-         YtOxY876A1gr8U1FWOLvBx3ESpWRmTaUAV8+xGYc/ZLVbz3uUoupDx/8+t5uEIPsFO7k
-         0fF+WAYp+HDibmfzhKAFvWDEhQ01irQc4BqFanE/LR8CNdlu0UI/DNXGZcAsrfSRw5qv
-         6QkF6rWl7c1leaEw2TtXPBbUfe4JTGU7b8wwXEqNYcnj5ngXk5wuE/G6nemYz8xEcLVJ
-         P2A4t+vvtVyPs+qisLwtbairknZ6G5H2KLD1+j+X9Qpl2kd09oIdyepBPK/C7hbFgrLN
-         7jAA==;
+        bh=a/OR5+y+259I5l0RIDoEhbbMuNcwkwEsP+caYwaJh3c=;
+        fh=MqxH49szsXHq8r1Q/L+lR31Fk9FTEgn/SBTDdfaNa9I=;
+        b=ShH/StIFA5vdBTG7aDVV7S752/B1uRGBkclxAIAMp2Gx65aF2JKH4r5iSamWh4Xypq
+         QwAOGbOGJmsh6ziTinG+Un5orhHLJ7OI8dmN7rVFaSlrUf+M2kL7FLFSs1PqrQqZS5Ad
+         44b0Dvw9CeCdGnGhqYW5wp4QZAc+1EpRra8lX/dArxvEpJvD677GrDU+nG7KCDFvVOaq
+         8Uq4ACgFafCtjGf+xx5UETL3JkcrDqfhRChLCMULv56PeLovEwd/fTO5cD2LrP5BhMF/
+         gP3C4oVKx/LwRZ0Nj4HsyvFMi486xkvlgOOB5/uIRsCVDYw3H28HQtD6xKkk488kTRFR
+         RKCQ==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781219279; x=1781824079;
+        d=1e100.net; s=20251104; t=1781219376; x=1781824176;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=jKBgDS5EhOCeCGVgkUxAvmWq6B4D8KMNSa2GuVyeKb0=;
-        b=jVDLdoEU/1V3lLdh3pGhIKBxGtkDrdf7DattHuAt99tRu8zu+KfYzaNqAd28NdPoZU
-         UpP0VI/CAorbCEl/BbSEoRYBZQ8K8LMrGfhJP6RpnJezGMM+FCCTWDdHrjLMYMr+iao7
-         GsR/glosjuI5xjUT4Sby9gckAJfr0g0tUPHhXlFUqcHqp3sfJUurbGtmPgPVWyBe3pGp
-         ryj4eA5k3x5eh+j7lHWTZOKqIRkiuyoZ1VnbG868VZdXt7EgesOHC50331MuP5YzZMMP
-         /v8tWIq3OoCb3/zNz/0t/S42m5DY7NRuf5WsH0qg85csgLvJl8cADxPT4xfvViRf5gT3
-         jFzg==
-X-Forwarded-Encrypted: i=1; AFNElJ81vtGQcLR0vNtG7zfHMDUNqpMSzje3b1ntICMV/weUA1nOzQYt3xAl8FMp9mPrQoybASB9dFg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywu1gAPybqGlVTmrzHa9I4VSz7W6+iEIKxQjVT8zA9jUThiFTJS
-	pZwEuejl/+XE1qe4VzUSNfyxyN5rFjmEQgBGILr3tkfW6GMEjpUtAFhKyVqaiTKsuDvR6sa/Z8i
-	t/m2PD89VBLGsIyP7qMklbyC1ufxETk9AEteROvGPOaMuovU7JIfBakt9/pIYCsNIM04ozTUfjE
-	Ooy7TL+BNfpwp1HbdpePRy9oyQMayljx0=
-X-Gm-Gg: Acq92OG78peUtoS6jUZdwEtmL8iM0Vmx5AhdEC9x+eYfIx9CWIh609IFdL1yeBpurRM
-	+6IxpB0U+4PWahwnESR0uvTfWZObSAr46W/+HeD0rTFkKiBW8nQxQJbgUol0zoYiJiokXpZQLW1
-	8bfgw2NoiDUOo8InRRqS2aM1DJ4mUPiJYdRNc7F63gQX/C+dubO9hNZnDJhxdITwPhCkrM4lD2U
-	uB9p+PFV8mJak/L/fOfWw==
-X-Received: by 2002:a05:6830:6810:b0:7db:b7ae:ef0b with SMTP id 46e09a7af769-7e7848a9e26mr96710a34.24.1781219279121;
-        Thu, 11 Jun 2026 16:07:59 -0700 (PDT)
-X-Received: by 2002:a05:6830:6810:b0:7db:b7ae:ef0b with SMTP id
- 46e09a7af769-7e7848a9e26mr96676a34.24.1781219278679; Thu, 11 Jun 2026
- 16:07:58 -0700 (PDT)
+        bh=a/OR5+y+259I5l0RIDoEhbbMuNcwkwEsP+caYwaJh3c=;
+        b=Axis1JUwCcqOPswvvEb7qvsbL4Y8h4sY1tSKujfmEj2V0mIcOAadiLwZ9EJNzSySdO
+         Rm7xbXKBuuBPz7X4ZYo1DklMKSKAzN3lZVJPa5EPwIHmmaoUTSK6UwFlxC2UEpy1iN++
+         5fekoKG29CT7nj2CDbgfWcvuM/rroFt9zdYr89TYsr4ocLab3XeEh2U+ikxpLAULvHNe
+         H0kXwd5zFFKMGJWYZip3XLAoXv7atRoWJq+IUnPzEYHu40jW84MdJMsIkkA/8RVeXfba
+         diOggWaSfDDcfQwJvzCZBZmfcDTVPBZjZI8kEd1BlpfjsWFoUp+5TsaqkH0EOzmwTeWT
+         2bbw==
+X-Forwarded-Encrypted: i=1; AFNElJ//cIUSPtSl32XDcrNSK72uujgdb7jOdGcwoU1L9OOSJWLudFCICKxL9Qk68dYGtZtdVzxldEI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx3q4p5bXvOZEmEtKNdN9kOwC9gHu9YSsJrKZAdhEYomINAWULE
+	CYeASWFI7I2ldJg6l07UU8sYZYpBlsxvtNa1viLT9BHO3flNA7zGdAyGe/0IGeNiFrm//XfCdSj
+	0reL1oPXvfCmjFRxEgpW8QyPw/wm7e3HkdR85Mm+zOyc457E4c2q9Af0NUoZ054416Sgq1d2Dml
+	Q2MvQbr/+KlTIRfqyMIThX5AE2qe+o/pE=
+X-Gm-Gg: Acq92OESasuPtsKxV/lUnWK1vsJAz5fCyj0RkVyOqr+wNA6tAeF1DttjRX/0GlvNsg5
+	9IDL2oTxqLPILa6NZYCvb9LkzQ70SfVhpZH+lH0MtVtlOdOfvvlHnjd3Q+9gfdRkdLkGmdBHxp6
+	MSUGVgOv0EoH5hOm7oOLjtnAcC3R2cF9WBmlVL6uq9tJpSDM5dAB//DknafbwMzbYc5pevM6LFZ
+	9HntXWjRliH6FoE2chPkQ==
+X-Received: by 2002:a05:6830:83b1:b0:7e6:7dc7:4542 with SMTP id 46e09a7af769-7e78473ec89mr120371a34.16.1781219376577;
+        Thu, 11 Jun 2026 16:09:36 -0700 (PDT)
+X-Received: by 2002:a05:6830:83b1:b0:7e6:7dc7:4542 with SMTP id
+ 46e09a7af769-7e78473ec89mr120344a34.16.1781219376083; Thu, 11 Jun 2026
+ 16:09:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260610193158.2614209-1-zhipingz@meta.com> <20260610193158.2614209-4-zhipingz@meta.com>
- <98b65e1f-1b5f-47fc-a4fb-0cdfab6725ed@amd.com>
-In-Reply-To: <98b65e1f-1b5f-47fc-a4fb-0cdfab6725ed@amd.com>
+References: <20260610193158.2614209-1-zhipingz@meta.com> <20260610193158.2614209-6-zhipingz@meta.com>
+ <4dc9ad01-97ce-4c97-9c8d-189822da53b2@nvidia.com>
+In-Reply-To: <4dc9ad01-97ce-4c97-9c8d-189822da53b2@nvidia.com>
 From: Zhiping Zhang <zhipingz@meta.com>
-Date: Thu, 11 Jun 2026 16:07:47 -0700
-X-Gm-Features: AVVi8CfN6ELCKVsJhBpTTQfWRh3GrCVI0SUXGM4wH5Fa1maXhiidrAdOyWsdUPU
-Message-ID: <CAH3zFs1=CKtS524vU6f2inbX05JcyMi-5FouDxSCZAjNG0OUmQ@mail.gmail.com>
-Subject: Re: [PATCH v7 3/5] dma-buf: add optional get_tph() callback
-To: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
+Date: Thu, 11 Jun 2026 16:09:25 -0700
+X-Gm-Features: AVVi8CeB8nmACAn2v-1nCwadZsgAxPl-ide5TeaDE88hJZn8TEKcdfaG5LmdPSE
+Message-ID: <CAH3zFs3ngOXvA5DRzur-_gQ2e0N+-3Az2KmwxZTYczqw34n_Xw@mail.gmail.com>
+Subject: Re: [PATCH v7 5/5] RDMA/mlx5: get tph for p2p access when registering
+ dma-buf mr
+To: Michael Gur <michaelgur@nvidia.com>
 Cc: Alex Williamson <alex@shazbot.org>, Jason Gunthorpe <jgg@ziepe.ca>,
         Leon Romanovsky <leon@kernel.org>,
         Sumit Semwal <sumit.semwal@linaro.org>,
+        Christian Konig <christian.koenig@amd.com>,
         Bjorn Helgaas <helgaas@kernel.org>, kvm@vger.kernel.org,
         linux-rdma@vger.kernel.org, linux-pci@vger.kernel.org,
         netdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
@@ -107,140 +109,57 @@ Cc: Alex Williamson <alex@shazbot.org>, Jason Gunthorpe <jgg@ziepe.ca>,
         Yishai Hadas <yishaih@nvidia.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-ORIG-GUID: oiKP5fgDiyYULHZ60kLBm7Pixi3h3WNZ
-X-Proofpoint-GUID: oiKP5fgDiyYULHZ60kLBm7Pixi3h3WNZ
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjExMDIzMSBTYWx0ZWRfX5i3LSvvLYFwB
- iHcQvJoCM4p+7h6p/OBOHTrydW+rxotSrrbl8AKFGVjixltFvnNj6Bc/bkh6Vk8GkL6JgULD5wz
- 8ll7MmW9UQvi7dzD6+V8QeuAQ8XfDKRRChDg7gzX1qHEZbxaHsn6kuKdqSny1fbLhOLo4wXZbok
- BZ3SvLtXLlEaxX/Tjf519uvM88+lJJi08cltgjlmZ8/NehaVTZkw9Zl5v3+i5qUIoj7SpORC85W
- 6ia/Fv/pO5BxsqVOJRLBiW2MMq23ktMp9dR+j6xHsbIr9mRtCw97wLERxyiTATMef6VGUkSbBJ3
- HtPGUdGciIvVCpRjqh2ojKBGnR8LIG/DVnySRIJW5tlSvOxJnkk7rKEqODWbqnavBYVYybHF93p
- P5fw0IZvNj6SCq+xfanJXbA8W0ZOCSCpA479vzZOGR1L+dQgaV5ZvftYj/eZK16Of/UrDV7Z7+V
- MSKQbBk4PNeSvN7MdTw==
-X-Authority-Analysis: v=2.4 cv=L98theT8 c=1 sm=1 tr=0 ts=6a2b3fcf cx=c_pps
- a=+3WqYijBVYhDct2f5Fivkw==:117 a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22 a=JnKecZnUtZousrUlYMGU:22
- a=zd2uoN0lAAAA:8 a=VabnemYjAAAA:8 a=Zb6pUuT0p51Zl8jFNtYA:9 a=QEXdDO2ut3YA:10
- a=eYe2g0i6gJ5uXG_o6N4q:22 a=gKebqoRLp9LExxC7YDUY:22
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjExMDIzMSBTYWx0ZWRfX6lSgAsNUCF8h
- Xfhz9iS/wOqBQ3o+8mfquMZC9HnQEEgtBCw+rwhO3urdJVjhmZjn5oceUO/l6yOD5aMQPo10RCH
- CPgV8DDusYjRdk9bTQ/U3z3C9+RTib8=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjExMDIzMiBTYWx0ZWRfX/nAh15T13mg6
+ +nrk9WWmO4Wi6VNPFwNeZ3OZmmb2OritBbdnt2gGNDVqgV4hO3Tz5NJGelP1NzVFIHbKLp1HCE7
+ ohUaOSr5Wc3Lc6B7fk31Tnngx7VEuTcDe8EXyPUvTRTsYJPY8xA2WdlhNtSs2IffHatZ3EGp94W
+ DxH/ZupmrCZXCZp+OMlWI0QArrZmTgvNgm0kSkvKcOa21/FVXZROKGNvSVtmh7dsbcnhoSwxN9t
+ QrC2KWLeyCQCvoqIV079CF8R1I/aB/m/WLmDHaFX5EVa7qRbM03i6yB7qGyMO60BWSgEMW1181d
+ l+CXTC8lyPDxz6F8u9nkBQ9O51HTbZezSKcBs7OKSI77rT0p0hIVrOUOcEjQMVl2eEqAyIHXy82
+ PqHtB5X21wqFUqSu64bOasgcZw/DRF/pPiwIJJhu+5q50vGNJ1Wesg2TMDCpVcWXns6gE3PWTjw
+ vG3o3LKlRbGuO9UKxmA==
+X-Proofpoint-GUID: dev3st3evQRc8CF1tbhtu-1hExxECibh
+X-Authority-Analysis: v=2.4 cv=ZsLd7d7G c=1 sm=1 tr=0 ts=6a2b4031 cx=c_pps
+ a=7uPEO8VhqeOX8vTJ3z8K6Q==:117 a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22 a=kkcUborcUVj0H7zxAXTl:22
+ a=Ikd4Dj_1AAAA:8 a=G2Tmg7Ww-o-apaxFWtcA:9 a=QEXdDO2ut3YA:10
+ a=EXS-LbY8YePsIyqnH6vw:22
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjExMDIzMiBTYWx0ZWRfX2kJf9IsO9msW
+ s3UxfQV+frV6fAOQg64RYHDVVBWtMbLzvFlIakIY7/U/82JDqyjIh5+ofXDoYkcHXdaFKaSCmAt
+ nqhxUUUzvVlOBhDcNtkZPfPOyrzxt7U=
+X-Proofpoint-ORIG-GUID: dev3st3evQRc8CF1tbhtu-1hExxECibh
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
  definitions=2026-06-11_05,2026-06-11_01,2025-10-01_01
 
-On Thu, Jun 11, 2026 at 3:35=E2=80=AFAM Christian K=C3=B6nig
-<christian.koenig@amd.com> wrote:
+On Thu, Jun 11, 2026 at 5:44=E2=80=AFAM Michael Gur <michaelgur@nvidia.com>=
+ wrote:
 >
 > >
-> On 6/10/26 21:31, Zhiping Zhang wrote:
-> > Add an optional dma_buf_ops.get_tph callback and a dma_buf_get_tph()
-> > wrapper for importers.
+>
+> On 6/10/2026 10:31 PM, Zhiping Zhang wrote:
+> > Query dma-buf TPH metadata when registering a dma-buf MR for peer-to-
+> > peer access to a PCIe endpoint and use it to program requester-side TPH
+> > on the outbound mkey. If the exporter has no metadata, fall back to the
+> > existing no-TPH path.
 > >
-> > 8-bit ST and 16-bit Extended ST are distinct PCIe TPH namespaces, so
-> > the importer requests the namespace it can emit and the exporter
-> > returns the matching ST/PH tuple or -EOPNOTSUPP.
-> >
-> > dma_buf_get_tph() is the importer entry point. It returns -EOPNOTSUPP
-> > when the exporter lacks the callback and requires dmabuf->resv to be
-> > held while the callback runs.
-> >
-> > The first user is VFIO_DEVICE_FEATURE_DMA_BUF_TPH in vfio-pci, with
-> > mlx5 as the first importer.
-> >
-> > Signed-off-by: Zhiping Zhang <zhipingz@meta.com>
-> > ---
-> >  drivers/dma-buf/dma-buf.c | 25 +++++++++++++++++++++++++
-> >  include/linux/dma-buf.h   | 21 +++++++++++++++++++++
-> >  2 files changed, 46 insertions(+)
-> >
-> > diff --git a/drivers/dma-buf/dma-buf.c b/drivers/dma-buf/dma-buf.c
-> > index d504c636dc29..aff79ea12e43 100644
-> > --- a/drivers/dma-buf/dma-buf.c
-> > +++ b/drivers/dma-buf/dma-buf.c
-> > @@ -1144,6 +1144,31 @@ void dma_buf_unpin(struct dma_buf_attachment *at=
-tach)
-> >  }
-> >  EXPORT_SYMBOL_NS_GPL(dma_buf_unpin, "DMA_BUF");
-> >
-> > +/**
-> > + * dma_buf_get_tph - Retrieve TPH metadata from an exporter
-> > + * @dmabuf: DMA buffer to query
-> > + * @extended: false for 8-bit ST, true for 16-bit Extended ST
-> > + * @steering_tag: returns the raw steering tag for the requested names=
-pace
-> > + * @ph: returns the TPH processing hint
-> > + *
-> > + * Wrapper for the optional &dma_buf_ops.get_tph callback.
-> > + *
-> > + * Must be called with &dma_buf.resv held. Returns -EOPNOTSUPP if the
-> > + * exporter does not implement the callback or has no metadata for the
-> > + * requested namespace.
-> > + */
-> > +int dma_buf_get_tph(struct dma_buf *dmabuf, bool extended,
-> > +                 u16 *steering_tag, u8 *ph)
+> > For TPH-backed FRMRs, make the extra ST-table reference belong to the
+> > hardware mkey handle rather than the transient MR object. Extend the
+> > FRMR pool API so reuse and final destroy can transfer and drop that ref
+> > at the handle lifetime boundaries, and add mlx5_st_get_index() to take
+> > a ref on an already-known ST index.
+> I'd keep the ST reference tied to MRs, where the ST is actually in use.
+> There's no functional need to couple ST refcounting to mkey lifetime.
+> Once an MR is destroyed and its mkey revoked, the mkey can no longer
+> generate traffic, it's just an idle entry in the FRMR pool waiting to be
+> aged out or reused.
+> This lets us drop all FRMR pool changes from this patch and keep a
+> simple flow of 'acquire on MR create, release on MR destroy'.
+> > Also decode PH from kernel_vendor_key when recreating pooled mkeys so
+> > the requester hint matches the pool key.
+> I've fixed that in a series I've sent earlier this week, please rebase
+> next version on top of it.
 >
-> That name needs improvement, maybe something like dma_buf_get_pci_tph().
->
-> It also needs some brief explanation what TPH is, maybe a reference to th=
-e PCIe spec name etc...
->
-> And document in the list of functions that this one should be called with=
- the lock held.
->
-> > +{
-> > +     dma_resv_assert_held(dmabuf->resv);
-> > +
-> > +     if (!dmabuf->ops->get_tph)
-> > +             return -EOPNOTSUPP;
-> > +
-> > +     return dmabuf->ops->get_tph(dmabuf, extended, steering_tag, ph);
-> > +}
-> > +EXPORT_SYMBOL_NS_GPL(dma_buf_get_tph, "DMA_BUF");
-> > +
-> >  /**
-> >   * dma_buf_map_attachment - Returns the scatterlist table of the attac=
-hment;
-> >   * mapped into _device_ address space. Is a wrapper for map_dma_buf() =
-of the
-> > diff --git a/include/linux/dma-buf.h b/include/linux/dma-buf.h
-> > index d1203da56fc5..6a54e0f251a2 100644
-> > --- a/include/linux/dma-buf.h
-> > +++ b/include/linux/dma-buf.h
-> > @@ -113,6 +113,25 @@ struct dma_buf_ops {
-> >        */
-> >       void (*unpin)(struct dma_buf_attachment *attach);
-> >
-> > +     /**
-> > +      * @get_tph:
-> > +      * @dmabuf: DMA buffer for which to retrieve TPH metadata
-> > +      * @extended: false for 8-bit ST, true for 16-bit Extended ST
-> > +      * @steering_tag: Returns the raw TPH steering tag for the reques=
-ted
-> > +      *                namespace
-> > +      * @ph: Returns the TPH processing hint (2-bit value)
-> > +      *
-> > +      * Return TPH metadata for the namespace selected by @extended. R=
-eturn
-> > +      * 0 on success, or -EOPNOTSUPP if no metadata is available.
-> > +      *
-> > +      * This callback is optional. Importers must not call it directly;
-> > +      * the dma_buf_get_tph() wrapper is the only entry point and hand=
-les
-> > +      * the NULL-callback case. The callback is invoked with
-> > +      * &dma_buf.resv held.
->
-> That most of that should be obvious, we only need that it's optional and =
-that the lock should be held. Everything else can be dropped.
->
-> And most of the description/documentation should be on the wrapper functi=
-on, exporters who implement the callback should know what they are doing.
->
-> Regards,
-> Christian.
->
+> Thanks,
+> Michael
 
-sure will do
-
-Thanks,
-Zhiping
+ack, thanks!
