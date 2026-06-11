@@ -1,115 +1,118 @@
-Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh-a8-smtp.messagingengine.com (fhigh-a8-smtp.messagingengine.com [103.168.172.159])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF8F649253D
-	for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 17:54:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FF2E495519;
+	Thu, 11 Jun 2026 17:55:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.159
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781200488; cv=none; b=iP5L9hl2HT1o9q+9m2k9FVN5gHXtPNuQ2ncm+BLmO3Tbk+cqiRJaJChPcCqKPYE9Wgp12LNpgQy6/Mvu9whMDRxVX8ywHi0nD+4pmZAXa9f+hMtt2xBfbYrRpIypQ1gRW+lxSA2Wi+zR/5nEdhM/usaYTgNgj+M0hdhb+zEac6U=
+	t=1781200509; cv=none; b=OpZ+l6sQcrmhu+ZSqU9yrRGOvbcNExw8crreSzQ60rjAdkj6NS1GFK+F5/QspVNA/nMSQa9dW6+4ZKvtAnZelqX4AGESjIqoS1zuF8GYwbZZjX/plGtdkO5XbzXeKlckf3uGRTddjBZyysxwNYtp3uOn1boih1kXSKTQx/bqu7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781200488; c=relaxed/simple;
-	bh=N3qMiFXWa3P4vzXQt0vNb0DSrMF+54zK+S61h7juR2k=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ai0U1FW1fR9uvAvlG05gnHP1kFTZNPfQDJhL7SxQ+aadnFAXfLVUEbpTbGpMFc3IHsWlWmcjgkgvrDM2RlXaaCqw7OlJpulMr+TwIkEpr2i6XfhhZAELPXt/00/0nO7t6Yd9DMts6DGUMUcHHMwI/XPVTF7K9YhGY/OGdsYKytU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=hotmail.com; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.219.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=hotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-8ce9df48e1bso2266256d6.1
-        for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 10:54:46 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781200486; x=1781805286;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=A3MyD5sgrCXG8g8emQHBeewZ1qL+fszaeWMzfNzWpns=;
-        b=PT2yyKpah1rATrFQtgqX/1AVju73ySFW24M4TYX5IF0obgtZFznBUNr0EL02EqNjD4
-         RDjWVHtudPJXnlXWH5LGtBo8r2iE0ZY6xKNkjQOKMxXxzHGkBftpsaa966lz6PSDTg9c
-         eckUVhde9cJNH+Hr0VwtLd1VRzM8QbydGUNcJIg++jXssh/En1XiLdXiyLgV+uVcM8zw
-         YE+X5a1up7Tb57lfx6hVA8ceg06zjTHcpWPinbuh5K/gNsju8PxLqc3aPF2e3MiWQY/D
-         Voj3a1Aa4mycZwlkhzv6M0MqsuHv76jyS0V2FT3rbtdmeOQzGcLFzfoDorLkDj465H9b
-         Uplg==
-X-Forwarded-Encrypted: i=1; AFNElJ8UZcyFizABHV9nj4LkHhBRD66XYMaEAxhyoC1uRYSCNF7LiGrcFKyIQ93D6YUmdFUNAhT6euw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzE8Pb3MdSVzmdrXnkj1S5FKdN+5eayJuXXhZm0QtiDKM8ZScXD
-	+xxOo79XY7QG/F5IjIP/V7Cl1Zyjfue5xG89A/ETMiDlZgvYH/IfwqdHAhkeWhMk
-X-Gm-Gg: Acq92OF3MvELtH8+pmlAtAZZCrFGxzX1MaiYjkFgNjGTV8m6FfsjpQBr4zbELweQXEj
-	rowVPUuJdizYy9bUCmh/UxKVFWFgGLmcc7D4dXhKvbOvGP7p8ipvGQ9aUhjZMOIegWfVBrvoiU8
-	+kxMpUzEujmRzDD9tmJu/sokgEV3CeZ4egZ2yWxkBzbFLwJbWnnA8p2IWo/z+HjhK0cxk7IkDVe
-	NZAhVrWe7scXenYbnLw8vua2Q9Whek8CbM+WgjnGjjulHqyl9BjJHtu3WAQyW6R2zdhiBGqTwvs
-	WKKZ2obyS3am5ZkqT1eUk0JH4e+U0iV30trtFbHbyQkGSyxzg16vkuhV5CMhzWJFgfVcsJCpkkp
-	TLCpbuMdkgXW2WR2xzS8Q02Vx0oQbNJFXRoxUvwSnu7hevaP40olj1RpTi3y17/wgfAcNwQiI69
-	eYFeqBmKRBUBh4eW8FUIlDlsiu+wn27bKZ3d6qJEp/O5T32lmTMUc+uSuhGHfxraWJoI0AGWUBe
-	QldNpNqGvVEdiaZ8ubQgQ==
-X-Received: by 2002:ad4:574b:0:b0:8ca:1cee:7c5a with SMTP id 6a1803df08f44-8d1d7f63589mr64073926d6.12.1781200485513;
-        Thu, 11 Jun 2026 10:54:45 -0700 (PDT)
-Received: from lxc-docker-tertiary.local (pool-108-45-26-115.washdc.fios.verizon.net. [108.45.26.115])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8d1ea7c0d98sm24121476d6.31.2026.06.11.10.54.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Jun 2026 10:54:45 -0700 (PDT)
-From: Greg Patrick <gregspatrick@hotmail.com>
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Cc: Russell King <linux@armlinux.org.uk>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Manuel Stocker <mensi@mensi.ch>
-Subject: Re: [PATCH net-next v2] net: phy: sfp: detect presence via I2C when no MOD_DEF0 GPIO
-Date: Thu, 11 Jun 2026 17:54:44 +0000
-Message-ID: <20260611175444.2223563-1-gregspatrick@hotmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <399497f5-ab96-4a8c-81ef-d3c4588fe341@bootlin.com>
-References: <399497f5-ab96-4a8c-81ef-d3c4588fe341@bootlin.com>
+	s=arc-20240116; t=1781200509; c=relaxed/simple;
+	bh=cPIe7wNGfYJBpQv7Nx1WxLsUuivH06BEc6DUM0fs1uA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ioSHoCWd0yerXLJlwTujKXM+FFnSAdwg4BCaoap/0u8M/Vv9sWlpr+Fks6OvpdxUi6RUR/H6fpQRuyiPN5FjP8U9vb9bCsvdMj+58u9JVG27CR5dcy/QginlQhaTYbJzyKl+CD6LBQ9tLqWh34uTrf7cc+Yd8hNiOHmFpWp8dTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=wtY05MCn; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=ej0fXKWl; arc=none smtp.client-ip=103.168.172.159
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="wtY05MCn";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="ej0fXKWl"
+Received: from phl-compute-07.internal (phl-compute-07.internal [10.202.2.47])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 321E714000DE;
+	Thu, 11 Jun 2026 13:55:06 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-07.internal (MEProxy); Thu, 11 Jun 2026 13:55:06 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm2; t=1781200506; x=
+	1781286906; bh=DpDGwYTiEmlVfuPcgxAW8xBcBbXtperaiJP2RjA+kAs=; b=w
+	tY05MCnBVVFz4OHn4SQl+8VHQHeRZGaQeAXgjm3djqS/ZxbhlH+HdTD/Lb72zrA7
+	jg1wwl245M5WpZVVq/qgM4aOte5A7XLFMWZlUceY0bJFoRUDDaKRxwc9HQISnbN6
+	bI1bjvVWv80dsjCf6PUrkQJcwQqsj1NTGfQymY5Nc+wQHCFA6MBdF0ugU8rwhBUA
+	iWaVDvVGrJoGkFs3xg4eXrkfI+ecKlIKXPnBnZc1mAy5SKP2V8VJYldXTklMenwh
+	6Id2juOtQ+WdTzwP4eU8FEQBKCJex13cy3qrr27lvPNHYf4JLISpVKmQKWLjyBdV
+	y7sh7MKk/nAEeFCTst8Rw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1781200506; x=1781286906; bh=DpDGwYTiEmlVfuPcgxAW8xBcBbXtperaiJP
+	2RjA+kAs=; b=ej0fXKWlpxe2w29QdmVro99U5e6lZJf6wlPk/RPhyKTboRyGhag
+	TPiHJbdyJXuWIFNun+F0FWiMU/5GyjGGPiaEuDcgZioVBElWVwWT6nd4D8HELDGf
+	H2H2wqM2NU/QfpL4JsRY8jhMbSSxHjbeB7/jhrWl8vJNq/thieaEVpbPaWXdZUAN
+	D1u+IwG+GgqOEnTL/13TbAowdSVLsMw2Vt5h03dd1z/H24EswWkdls/P1fJExypF
+	avN/klM4ZRcS/OJ2qEpCGUeLqXykxbWL0NIjo+TswbV1fIxBJTTf+OnrUrNxhhM9
+	IajOjeZy2JidsmCLNo8UCcbk/bBbM9ACwUw==
+X-ME-Sender: <xms:evYqal5LlrIFzR944YV3uavjl8sgmyLYJUxdw9ZU8JyIg_q5fNuToA>
+    <xme:evYqarBcWzv2FfCBkNq9rAfmSk-miFLp9QU_YjEjGvpNHz1jExwEa-zeJT8b-kox9
+    KTAZAViwH-p9gt5fajXLk4L_HfIlr6KWhnAh0n-BuytXxrtC7NSPA>
+X-ME-Received: <xmr:evYqar-kBTfN14rxKamyyk09_54A4amD3TEKBg9woXLGj7MMeYVBMm0tUL_VQZCrG3vFuuX33K_eeNyGKdchftI>
+X-ME-Proxy-Cause: dmFkZTEZNBy54vgAFiR0CArURaTeZox1edOnLO2IBwBO/bGhrb+b+ifUKoNSe0IoToDONM
+    OsO9bPI0v3EXXByQMBBW4H2NW93pFXT+2VM3jrDBVmjO4imS0M2JdFcjn7FWGEMU8DNEH+
+    ZjG4YI5mgtUq2PK/aoeEb1WNMn+z6ItI/UMWQ9BI0ILzBBeuq0QOFo6G/TauVMq/XpiLW5
+    zLiRkMXMfVH/Lo89VaGlJB5Rd905cHteyfpwTTPQ5e4v8mSrITO8UthR63bIYt7llWTcPu
+    xiqfx3fQJ63lKAEmvS+7qRTVeieN7dOAw0EuHUPBexmRBmdde6ovZnoof/YKTf6+x6q9p1
+    cnwiuXYMi5T1v/fOVxgYG26z1Mn0aMPX1HspUST1EkGM1S212lNVJc8yhxrGo6vg8zlwX1
+    eMzfarovW2fOCtWprUG7ODw7bOcPTVDzWL1MX/dnQrWuTlsaPzj1HVhS6TJ+yqwczFvoH4
+    7fzEgwR2sYPmig62V48OXJXPneQo3O1lkZbiIT7TLjSd5HtMoGef9YGgGNihRm2kVKFbsk
+    DVssucBC0Sr6q/w0tTnuOe99nMyGhZw/C7quXKO4v8gbRjGhJ+OzLj+BjQPsjHkoukcUNr
+    TOmT4qPvv4bOEQJetz63F7bEQR5LGyzk7LVbWujBNYNLbg5Z8SMRuNHSnaIg
+X-ME-Proxy: <xmx:evYqauE96VMrZpBvncxbdVXbWVQuG6kG4I477GASZwI29tmouleniw>
+    <xmx:evYqalSgQ-7qgQ4YUQJN_f15wu9jDeG04_L5PmeHVFbkU0bh5_9rsA>
+    <xmx:evYqalRbtD9qw5eaZPVXfnM30sagK9zA1F_7enDJrilRihkeftx5Uw>
+    <xmx:evYqao1lMswN6oxBi6Ndyx4rKJIZ7umSYSYUWkb8eMRFNPH-2_Q8lw>
+    <xmx:evYqav50_dEkKmnUM67Z9eJGJdFIJF_Nnuiw91Sm9mT2AjPolSLh57LH>
+Feedback-ID: i934648bf:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 11 Jun 2026 13:55:05 -0400 (EDT)
+Date: Thu, 11 Jun 2026 19:55:03 +0200
+From: Sabrina Dubroca <sd@queasysnail.net>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+	pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
+	corbet@lwn.net, linux-doc@vger.kernel.org, bpf@vger.kernel.org,
+	john.fastabend@gmail.com, skhan@linuxfoundation.org
+Subject: Re: [PATCH net-next 2/3] docs: net: tls-offload: document
+ tls_dev_del, tls_dev_resync, and rekey
+Message-ID: <air2dydoeoNexwfu@krikkit>
+References: <20260609201224.1191391-1-kuba@kernel.org>
+ <20260609201224.1191391-3-kuba@kernel.org>
+ <ainR5GAK8LaHJYMP@krikkit>
+ <20260611101817.18964bd9@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260611101817.18964bd9@kernel.org>
 
-Hi Maxime,
+2026-06-11, 10:18:17 -0700, Jakub Kicinski wrote:
+> On Wed, 10 Jun 2026 23:06:44 +0200 Sabrina Dubroca wrote:
+> > > +The third TLS device callback is :c:member:`tls_dev_resync`, called by the core
+> > > +to synchronize the TCP stream with the record boundaries:
+> > > +
+> > > +.. code-block:: c
+> > > +
+> > > +	int (*tls_dev_resync)(struct net_device *netdev,
+> > > +			      struct sock *sk, u32 seq, u8 *rcd_sn,
+> > > +			      enum tls_offload_ctx_dir direction);
+> > > +
+> > > +See the `Resync handling`_ section for details.  
+> > 
+> > Hmm, this callback is not mentioned at all in the "Resync handling"
+> > section. I think it'd be good to add at least a quick note there about
+> > how/when it's invoked, and what the arguments mean (at least the two
+> > types of sequence numbers, since the rest is identical to the other
+> > driver CBs).
+> 
+> Something like this, you mean?
 
-Thanks for the review.
+Yeah, exactly.
 
-> I'm genuinly wondering if 2s for this isn't too slow. With a 4s total
-> including the retry, this definitely leaves time for a user to swap the
-> module with another different one, and we wouldn't see the hotswap from
-> linux here, leading to very interesting problems. I think we need a
-> faster removal-detection time.
-
-Agreed. v3 drops the re-probe interval to 500ms and keeps a 3-failure
-debounce, so removal is detected in ~1.5s instead of ~4s, while still
-riding out a transient I2C error on a live module:
-
-  https://lore.kernel.org/netdev/20260611175341.2223184-1-gregspatrick@hotmail.com/
-
-I've now validated v3 on the hardware (it's running from flash). Some real
-numbers from physically pulling/inserting modules:
-
- - Insertion into a cage that was empty at boot: detected and linked in ~1s.
- - Removal, clean pull: 1.2-1.5s (the design floor, 3 x 500ms).
- - Removal, slow manual extraction: 2.6-3.5s. A human sliding a module out
-   chatters the I2C contacts (intermittent ACKs), and the 3-NAK debounce
-   deliberately rides that out rather than false-flagging the live link.
-   Tightening the debounce below this trades directly against spurious
-   removals on a good link, so I've kept it where it reliably never flapped.
-
-On the same-cage swap-to-a-different-module-within-the-window case you
-raised: that one is inherent to a polled scheme with no presence edge - we
-can narrow the window but not close it without a readable MOD_ABS line,
-which this hardware doesn't have. I've noted it as a known limitation in
-the commit.
-
-Manuel Stocker independently confirmed the I2C-presence mechanism on a
-second board (Horaco ZX-SW82TS-L2P, RTL9302D); his Tested-by is carried on
-v3.
-
-No rush at all on your end - whenever you get a chance to try it is
-appreciated.
-
-Thanks,
-Greg
+-- 
+Sabrina
