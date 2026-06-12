@@ -1,57 +1,57 @@
 Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54A473E1712
-	for <netdev@vger.kernel.org>; Fri, 12 Jun 2026 07:48:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCC763E1D0F
+	for <netdev@vger.kernel.org>; Fri, 12 Jun 2026 07:48:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781250501; cv=none; b=kBCT3ooVnWHWQv+AVCVhHUCJPMAzLh1JSI13HDNE9/KycQqfNowge+7Fq8KJqqKhjT9KNoghUuZjl3egLOxqJOn88dSxyKxBez4FLibQYXWpjQfQsmfq88+2sv76874UlVClIawVaPrrLvihvVCvfDtwJ7t43I0m0c9Br52rHdk=
+	t=1781250503; cv=none; b=kPTIX9St8unXnigsbEACDI31PffHFdGbfLDbqbDqQQ84Hb61z6U80KO4gIzsncMpSKZKnmbLaXHhxrYzAs/ftNx/745EVEdLbFo7sIFoAMvTG8OzbG7u32woXMIfyS4xxbRzuSH2mTz8JsvBLHnDHxmA+qyncL9i12O1Nwvquqg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781250501; c=relaxed/simple;
-	bh=rxbWvJGrUdHSycKBj3EgO7EPWxn5Y1Ounda3TNjVUTA=;
+	s=arc-20240116; t=1781250503; c=relaxed/simple;
+	bh=7H9TCAXky61qmVxr0Ppi2KDSiia/G4Pan38e/nhqEFs=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=A2ucqaBC9doW5PmVvDkl0oIOACxWqWNgpmSBbwvjMofxLvXLpGb+l1W/yyjktbMgNiqcIc9O52j2rDfzx6NhwNFV9p7dkNk988M2i1SEJkFHABP5PNC/6/HATDWFUjqUby0vsc9RxNVUOeVcwTd8tuNpikes3gMydfTG2tsrneE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=wacxgzd5; arc=none smtp.client-ip=62.96.220.36
+	 MIME-Version:Content-Type; b=a+MPwTYSQRapBINwEfX3/09TUK2wyMJOrDIqIgDGBWTfMjQJp/2Wkttm5oeKNeL7lVxD1NCxngq7yJY9TYLfk3ab2PjyEz+Nvd+ZT7aD6twDflOJTLkAc6KbcO1zYhTGrPqQcbRjGr3YvsKRyF8pqN6ajyg6INcp2wvjg6+JiSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=AousxnfB; arc=none smtp.client-ip=62.96.220.36
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="wacxgzd5"
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="AousxnfB"
 Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id 029AB20754;
-	Fri, 12 Jun 2026 09:48:19 +0200 (CEST)
+	by mx1.secunet.com (Postfix) with ESMTP id A4196206E9;
+	Fri, 12 Jun 2026 09:48:20 +0200 (CEST)
 X-Virus-Scanned: by secunet
 Received: from mx1.secunet.com ([127.0.0.1])
  by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id 9oSHk1kYHRuy; Fri, 12 Jun 2026 09:48:18 +0200 (CEST)
+ with ESMTP id YTXENHbz-PUM; Fri, 12 Jun 2026 09:48:20 +0200 (CEST)
 Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id 6C638206D2;
-	Fri, 12 Jun 2026 09:48:18 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 6C638206D2
+	by mx1.secunet.com (Postfix) with ESMTPS id 138B3206D2;
+	Fri, 12 Jun 2026 09:48:20 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 138B3206D2
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1781250498;
-	bh=FMaSkdokqeUjyYABhHlw8iEz4pEBGgzSXGKP/Zz4dpA=;
+	s=202301; t=1781250500;
+	bh=DBGrtCjZQz9ywDccDSil1OaIaCDFvCZd/Z9qoLYP6xA=;
 	h=From:To:CC:Subject:Date:In-Reply-To:References:From;
-	b=wacxgzd56eq7uBB9UP04H+C0NKoV6IU1F/kZUgnYHhvrpkebTCAKWCZWw+Aisr+Hb
-	 6YQLXQp/pM+1R03jx9IID6f6p5cueZX9t7x1ZQ272qIoAtwnO1Bh1bQFVIZY3un1jb
-	 fppzRmnqyfXKBrP7hVEzjhZ38pmx6df0e2rgYJxRgAIeA7kFxQ02Nr0LFd0RI8okmg
-	 BoN1eTb7GQZopmjpqo7B3sIIzXlDysvQrbEoNFxqzzD9tyUFArCS/W9lK37OiHUjLO
-	 XRuCyHyiSkZrA5JQ52CfrKj7h/QExyjJP4Wijt6IK+OMPugsMNROfxp/TvQ4VC4yfF
-	 jKoD3PDrZw8Ig==
+	b=AousxnfBre1dF34EFNC6k+W/rJxzyCakkyrfEQN+kTiKKYOe7VnNlDnFdUTNi6kcr
+	 MPXcQ2Cr4P7n/khil7ShB5Lk9/AJ8V8MM+3wDjmehLkZM6mA24g4goApMCXCZ7vk2T
+	 bFYCeuMSIW6V5cSl0KWyesVW36LL352MsH64P4wNxy17qiKmyLVhH6SfZ575yBMDFN
+	 GujNrfw334ks6mJ4ei9a4hb7rj6JhI+ulSZV1CYo3fTuFzA4MTH+l/V5TK9p5MZyLp
+	 a+OccuzamMjsmtqYmqUUu1TKLj/wq3iGDzcl6ZHq7LgT1NUvkXmFtQ5DpJg4GBHdtq
+	 fA1O4oPwgXG9Q==
 Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Fri, 12 Jun
- 2026 09:48:17 +0200
-Received: (nullmailer pid 1768296 invoked by uid 1000);
+ 2026 09:48:19 +0200
+Received: (nullmailer pid 1768281 invoked by uid 1000);
 	Fri, 12 Jun 2026 07:47:57 -0000
 From: Steffen Klassert <steffen.klassert@secunet.com>
 To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
 CC: Herbert Xu <herbert@gondor.apana.org.au>, Steffen Klassert
 	<steffen.klassert@secunet.com>, <netdev@vger.kernel.org>
-Subject: [PATCH 11/18] xfrm: add error messages to state migration
-Date: Fri, 12 Jun 2026 09:46:27 +0200
-Message-ID: <20260612074725.1760473-12-steffen.klassert@secunet.com>
+Subject: [PATCH 06/18] xfrm: fix NAT-related field inheritance in SA migration
+Date: Fri, 12 Jun 2026 09:46:22 +0200
+Message-ID: <20260612074725.1760473-7-steffen.klassert@secunet.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260612074725.1760473-1-steffen.klassert@secunet.com>
 References: <20260612074725.1760473-1-steffen.klassert@secunet.com>
@@ -68,52 +68,45 @@ X-ClientProxiedBy: EXCH-04.secunet.de (10.32.0.184) To EXCH-01.secunet.de
 
 From: Antony Antony <antony.antony@secunet.com>
 
-Add descriptive(extack) error messages for all error paths
-in state migration. This improves diagnostics by
-providing clear feedback when migration fails.
+During SA migration via xfrm_state_clone_and_setup(),
+nat_keepalive_interval was silently dropped and never copied to the new
+SA. mapping_maxage was unconditionally copied even when migrating to a
+non-encapsulated SA.
 
-After xfrm_init_state() use NL_SET_ERR_MSG_WEAK() as fallback for
-error paths not yet propagating extack e.g. mode_cbs->init_state()
+Both fields are only meaningful when UDP encapsulation (NAT-T) is in
+use. Move mapping_maxage and add nat_keepalive_interval inside the
+existing if (encap) block, so both are inherited when migrating with
+encapsulation and correctly absent when migrating without it.
 
-No functional change.
-
+Fixes: f531d13bdfe3 ("xfrm: support sending NAT keepalives in ESP in UDP states")
 Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
 Signed-off-by: Antony Antony <antony.antony@secunet.com>
 Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 ---
- net/xfrm/xfrm_state.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ net/xfrm/xfrm_state.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
-index fcf6f0c6400d..1db48ecda80d 100644
+index 933541bc9093..b9de931d84c1 100644
 --- a/net/xfrm/xfrm_state.c
 +++ b/net/xfrm/xfrm_state.c
-@@ -2130,11 +2130,15 @@ struct xfrm_state *xfrm_state_migrate_create(struct xfrm_state *x,
- 	struct xfrm_state *xc;
+@@ -2012,6 +2012,8 @@ static struct xfrm_state *xfrm_state_clone_and_setup(struct xfrm_state *orig,
+ 		x->encap = kmemdup(encap, sizeof(*x->encap), GFP_KERNEL);
+ 		if (!x->encap)
+ 			goto error;
++		x->mapping_maxage = orig->mapping_maxage;
++		x->nat_keepalive_interval = orig->nat_keepalive_interval;
+ 	}
  
- 	xc = xfrm_state_clone_and_setup(x, encap, m);
--	if (!xc)
-+	if (!xc) {
-+		NL_SET_ERR_MSG(extack, "Failed to clone and setup state");
- 		return NULL;
-+	}
- 
--	if (xfrm_init_state(xc, extack) < 0)
-+	if (xfrm_init_state(xc, extack) < 0) {
-+		NL_SET_ERR_MSG_WEAK(extack, "Failed to initialize migrated state");
- 		goto error;
-+	}
- 
- 	/* configure the hardware if offload is requested */
- 	if (xuo && xfrm_dev_state_add(net, xc, xuo, extack))
-@@ -2163,6 +2167,7 @@ int xfrm_state_migrate_install(const struct xfrm_state *x,
- 		xfrm_state_insert(xc);
- 	} else {
- 		if (xfrm_state_add(xc) < 0) {
-+			NL_SET_ERR_MSG(extack, "Failed to add migrated state");
- 			if (xuo)
- 				xfrm_dev_state_delete(xc);
- 			xc->km.state = XFRM_STATE_DEAD;
+ 	if (orig->security)
+@@ -2046,7 +2048,6 @@ static struct xfrm_state *xfrm_state_clone_and_setup(struct xfrm_state *orig,
+ 	x->km.seq = orig->km.seq;
+ 	x->replay = orig->replay;
+ 	x->preplay = orig->preplay;
+-	x->mapping_maxage = orig->mapping_maxage;
+ 	x->lastused = orig->lastused;
+ 	x->new_mapping = 0;
+ 	x->new_mapping_sport = 0;
 -- 
 2.43.0
 
