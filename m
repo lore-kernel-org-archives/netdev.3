@@ -1,156 +1,94 @@
-Received: from mail-dl1-f46.google.com (mail-dl1-f46.google.com [74.125.82.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.6bit.com (www.6bit.com [66.228.49.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE5C031ED7C
-	for <netdev@vger.kernel.org>; Fri, 12 Jun 2026 01:15:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05CB930F534;
+	Fri, 12 Jun 2026 01:15:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.228.49.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781226927; cv=none; b=Ra+C1VcmHMpD/CMZQocyRR/rnU2vOHoBo+2KSaxbob/GtRBMJPcr6l0YegYVhGobiMn4aUy1qXMuImvSfalEPME6/D63HwZBs7h/DdTB8MCoZ9eRgxG+c7Y1v3Lxt9uhd0qbkcqPrdF3WDlHHA6lIT4D8ORlL87Oxrx7Db6qZ8I=
+	t=1781226929; cv=none; b=Lai9gH2vXX9URw37mI6X2fSkmtGY4A0sAhPQ0rL5unCMo+/Dwi/4psl7VM9oQNyIOaqzHDAfZQQ4Y6h1X1QKvTbckH4CImigm+ylKq5orS5F/jro17SCFC2to1c2oVKUX7YsUKSY9kYsFY8e89xtc1TjSt1fWE0Fu4XcQSk8Sdc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781226927; c=relaxed/simple;
-	bh=F+0f6GjAi0Omfa+PHFBC0H5zSWE02Vdv2b6Qqh1qNzw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZBPVFuV4m2xhKgMzd6ZeDf11KdDcaXZLa0Rk+NQ1K4Punc9kx3NqElKyVD9tP4COsZq5s30Va7d7Odz13AvHw0thK1zxf3MQ2BuLuS/cNtysCub89jsePxtuNDwGuN5WZh7IfPF+w3VYYYIKsEBDASziBBFKl9XgvcaDm/Hazic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=K7aaXMAW; arc=none smtp.client-ip=74.125.82.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1781226929; c=relaxed/simple;
+	bh=D2EVce6TIMiWfURdmqZ0DLPM5kJjXsnUmdjcT7l8h9U=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=QSDhGqfFWOaifiO4A+fAd42cqFCa/6UYePDD6xcujzJWLAE/NOdb+m5sleGsRRRoh8QoFJG52TlBLHd5uMHCxsKHHDhuHh4XDBFRNRE1QVKr0tv5SErttBUH6hyIuIY47iS0fac7giGAl8k7O6QgcVNAK/JB68lHzp/WaCieQhE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6bit.com; spf=pass smtp.mailfrom=6bit.com; dkim=pass (1024-bit key) header.d=6bit.com header.i=@6bit.com header.b=RKWInkeM; arc=none smtp.client-ip=66.228.49.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6bit.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=6bit.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="K7aaXMAW"
-Received: by mail-dl1-f46.google.com with SMTP id a92af1059eb24-13721dfd471so562717c88.1
-        for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 18:15:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781226925; x=1781831725; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ON+xkZIueelbq1KEBRaBWhyuYqrWXonUEPs0BXpVTfM=;
-        b=K7aaXMAWT3Fe77QoHr1H9VmVSaAP6tWkuzAuLmOMKNJVIrKDyvoJ1DuqcQrby1hU/M
-         r+1sx/dOZPXZdzaCIaIojFljypQ0pHLlZLQrhg5n8qBc8gXlBmVbKEAFZIcY56ZM3QQb
-         kMFCsIGi/yqUSxu02YWW1gFLCRCrNXYxeVuJ/gLNiH0zL2Lj1SpzBld1xDYO861Kny+B
-         YS0bOxD7fXVRoDl5tmZuwCvAO7usE55Qfu39jaYYteYSCT13+s27TNE4L9xqeLyRzFLr
-         RYT1MUVfR/oEpyoeMVY+PYyj7PvHTBmUkXyslyPmLj9rqAacDyiak1x5ckAfgdRl+Kxg
-         /T/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781226925; x=1781831725;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ON+xkZIueelbq1KEBRaBWhyuYqrWXonUEPs0BXpVTfM=;
-        b=pYOlC0H+VBMVfYpiNVHWtt2wgPdu9kGHmLF4YEDqAkVItBS43AxepcjgPUGTGDebRb
-         Et09QCfZzQB6yRq2VhXewJoJXDZrAjrD1DA574iUn0jko0Blx5DUnCfUtu4t3JlT1HYL
-         kfmNq62/N7VbSTyHJqYB1LyT4W5+R28aP4eSG0mIU1Y0DoRzldclZ//xPgJ4mqbh9poQ
-         m9CAMNn4DyLw24QcerptaE+ojGFhhQy7cKub3YUtjMHwZlZk1WiwDq/fOHj3JJ5DzI61
-         nORS/fIPepoh8gQDZV/JNlTDwvrifKKOlL6XMPFR8Iv1/8VFjO850u7bQAaheQh1OR5K
-         boSw==
-X-Gm-Message-State: AOJu0Yzxwju0uQJ1DbD+Dr+2GSi+4009r+jboOVpPnblFNQfdPir1Fyn
-	GTmZ5zKK7rNT7KYwaJx5lvTcRWX73koUTiwGhDJgDSVGtdAb2kh6740LnFYTmg==
-X-Gm-Gg: Acq92OEex2mnXxnvu3GOnLEfyfVI0zAzfhyGYE8SkyvqBLXgS21gTaW9G5c1OFtUAhA
-	jCWN+atjCF0+mhCm9DbUZMg09uMnJPD4M/KYKak8xnnHOIgt/I/noT54XKEmWaCNfhvSrZotI+m
-	ueIU4inBRAU6VdmH4EjsvTGvIXfRKDWDhDvssNWbtoXonDqTXZ10kq8txNwlFjEzyUFx+hAz8dj
-	oSVOLnp631RmwY4o5x+dETktU6jP5hsxiUZsZoAC7l59fv6tu0PfU+1ezsC4M31/5WFePIHKAHC
-	aiEv4ta8iABMwWSDte+drzzC4EHAIn1KpYisgyflAuWBL8GwvL4zCZFB91m68mmhoG9PIsR/7nw
-	Vk4u+qrT6TNu6/jxYqB51V9Kw+WomnTPjZHKct7mlk5o3xINGY5qSorNQD76cuXm51M4Bglx75F
-	wWmgToajukSz1ibyMUign7JQwhGLYzgJlU81gwJ+RXboyvQ/es4LvaO+3oXIJB0btGRw==
-X-Received: by 2002:a05:7022:6baa:b0:137:fc94:9758 with SMTP id a92af1059eb24-1384cc8b831mr10992c88.19.1781226924868;
-        Thu, 11 Jun 2026 18:15:24 -0700 (PDT)
-Received: from pop-os.scu.edu ([129.210.115.107])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1384b975e55sm596257c88.13.2026.06.11.18.15.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Jun 2026 18:15:24 -0700 (PDT)
-From: Cong Wang <xiyou.wangcong@gmail.com>
-To: netdev@vger.kernel.org
-Cc: bpf@vger.kernel.org,
-	John Fastabend <john.fastabend@gmail.com>,
-	Jakub Sitnicki <jakub@cloudflare.com>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	hemanthmalla@gmail.com,
-	zijianzhang@bytedance.com,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	Cong Wang <cwang@multikernel.io>
-Subject: [RFC PATCH bpf-next 5/5] selftests/bpf: set SO_BUSY_POLL from the tcp_splice sockops prog
-Date: Thu, 11 Jun 2026 18:14:52 -0700
-Message-ID: <20260612011452.134466-6-xiyou.wangcong@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260612011452.134466-1-xiyou.wangcong@gmail.com>
-References: <20260612011452.134466-1-xiyou.wangcong@gmail.com>
+	dkim=pass (1024-bit key) header.d=6bit.com header.i=@6bit.com header.b="RKWInkeM"
+Received: from [10.22.241.53] (unknown [74.253.16.1])
+	by mail.6bit.com (Postfix) with ESMTPSA id 5DDEB945CD;
+	Thu, 11 Jun 2026 19:07:24 -0600 (MDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=6bit.com; s=dkim;
+	t=1781226445; bh=D2EVce6TIMiWfURdmqZ0DLPM5kJjXsnUmdjcT7l8h9U=;
+	h=Date:To:Cc:From:Subject;
+	b=RKWInkeMCGeNrVZoVyjL0Eqx/qBF5+A+bJ9QnjNNrdETHs7i9QSyW7wBe2bhiwhD+
+	 Qa2JMeQXEV0J1vQ17f44zdTpW2LGexlUTTDictdgnet4Bpc8uprMAq+LXcBYfRODAj
+	 St0LxapnKhkQg93GX+9wgTx2EPRd9bBoQiZ38IqE=
+Message-ID: <d4aaa5e8-7366-461c-94b1-ccf3631c8bf9@6bit.com>
+Date: Thu, 11 Jun 2026 19:07:23 -0600
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: mario.limonciello@amd.com, bhelgaas@google.com
+Cc: hkallweit1@gmail.com, nic_swsd@realtek.com, rafael@kernel.org,
+ linux-pci@vger.kernel.org, netdev@vger.kernel.org,
+ regressions@lists.linux.dev
+From: Josh Perry <josh@6bit.com>
+Subject: =?UTF-8?Q?=5BREGRESSION_6=2E16=5D_r8169_RTL8168h/8111h_fails_to_pro?=
+ =?UTF-8?Q?be_=E2=80=94_=22Unable_to_change_power_state_from_D3cold_to_D0=22?=
+ =?UTF-8?Q?_=E2=80=94_bisected_to_4d4c10f763d7?=
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-Set SO_BUSY_POLL (busy_poll_us) on each paired socket via
-bpf_setsockopt() so the splice receiver busy-polls the ring instead of
-parking - without net.core.busy_read or an application setsockopt.
+#regzbot introduced: 4d4c10f763d7
 
-The sock_ops prog runs for both the active and passive established
-callbacks, so each endpoint sets its own socket. This is done before the
-peer-not-found early return: pairing is asymmetric (only the second side
-to establish finds a peer and calls bpf_sock_splice_pair), so setting it
-only on the pairing side would leave the other end without busy-poll.
-bpf_setsockopt acts on skops->sk; the peer sets itself on its own
-callback. Busy polling is a receive-path optimization
-(splice_busy_loop() in tcp_bpf_splice_recvmsg()); TCP is full-duplex so
-both ends are receivers and both need it, which the per-endpoint setting
-provides.
+Since v6.16 one of two onboard RTL8168h/8111h NICs on this board fails 
+to probe on boot; the device drops to D3cold and the driver can't bring 
+it back:
 
-Assisted-by: Claude:claude-opus-4.8
-Signed-off-by: Cong Wang <cwang@multikernel.io>
----
- .../selftests/bpf/progs/test_tcp_splice.c     | 24 +++++++++++++++++++
- 1 file changed, 24 insertions(+)
+   r8169 0000:02:00.0 eth0: RTL8168h/8111h, 00:2b:67:48:40:01, XID 541, 
+IRQ 137
+   r8169 0000:04:00.0: Unable to change power state from D3cold to D0, 
+device inaccessible
+   r8169 0000:04:00.0: Mem-Wr-Inval unavailable
+   r8169 0000:04:00.0: error -EIO: PCI read failed
+   r8169 0000:04:00.0: probe with driver r8169 failed with error -5
 
-diff --git a/tools/testing/selftests/bpf/progs/test_tcp_splice.c b/tools/testing/selftests/bpf/progs/test_tcp_splice.c
-index 09c7f0f9e311..da43f00046c0 100644
---- a/tools/testing/selftests/bpf/progs/test_tcp_splice.c
-+++ b/tools/testing/selftests/bpf/progs/test_tcp_splice.c
-@@ -9,6 +9,13 @@
- #include <bpf/bpf_helpers.h>
- #include <bpf/bpf_endian.h>
- 
-+#ifndef SOL_SOCKET
-+#define SOL_SOCKET 1
-+#endif
-+#ifndef SO_BUSY_POLL
-+#define SO_BUSY_POLL 46
-+#endif
-+
- struct flow_key {
- 	__u32	saddr;
- 	__u32	daddr;
-@@ -29,6 +36,8 @@ void *bpf_cast_to_kern_ctx(void *obj) __ksym;
- __u32 pair_ok;
- __u32 pair_other_err;
- 
-+__u32 busy_poll_us;
-+
- /* IPv4 only: the verifier doesn't accept memcpy from sock_ops ctx
-  * because it lowers to "ctx + reg" pointer arithmetic. IPv6 support
-  * would need explicit field-by-field reads of local_ip6[i] /
-@@ -71,6 +80,21 @@ int sockops_splice(struct bpf_sock_ops *skops)
- 	if (skops->family != 2 /* AF_INET */)
- 		return 0;
- 
-+	/* Enable busy-poll on this socket. Both endpoints run this callback,
-+	 * so each sets its own socket; this must happen here, before the
-+	 * peer-not-found early return below, because pairing is asymmetric -
-+	 * only the second side to establish finds a peer and calls
-+	 * bpf_sock_splice_pair. Setting it only on the pairing side would
-+	 * leave the other side without busy-poll. bpf_setsockopt acts on
-+	 * skops->sk only - there is no variant to set the peer - but the peer
-+	 * sets itself when its own ESTABLISHED callback fires.
-+	 */
-+	if (busy_poll_us) {
-+		int us = busy_poll_us;
-+
-+		bpf_setsockopt(skops, SOL_SOCKET, SO_BUSY_POLL, &us, sizeof(us));
-+	}
-+
- 	mk_key(skops, &self_key, 0);
- 	mk_key(skops, &peer_key, 1);
- 
--- 
-2.43.0
+The board has two identical RTL8168h NICs (both XID 541): 0000:02:00.0 
+and 0000:04:00.0. Only 04:00.0 fails — its sibling 02:00.0, on a 
+different root port, probes and works normally on the very same kernel 
+and boot. The failing NIC then does not appear (no enp4s0), taking the 
+machine's WAN offline. This strongly suggests the problem is 
+port/topology-specific rather than device- or driver-specific: the 
+upstream port behind 04:00.0 is placed in D3cold and the endpoint cannot 
+be resumed to D0.
 
+Hardware: RTL8168h/8111h, XID 541, PCI 04:00.0 (onboard 1GbE).
+Platform: Lenovo ThinkCentre M90n-1 (11AHS0B200), BIOS M2AKT49A 
+(2026-03-25, latest available). Firmware is current, so this is not a 
+platform-firmware issue.
+
+Bisection: v6.15 good, v6.16 bad (verified by booting both). I then 
+reverted 4d4c10f763d7 ("PCI: Explicitly put devices into D0 when 
+initializing") together with its follow-up 907a7a2e5bf4 ("PCI/PM: Set up 
+runtime PM even for devices without PCI PM") on top of 6.16.7: the NIC 
+probes and links at 1Gbps/Full normally, with no workaround:
+
+   r8169 0000:04:00.0 eth1: RTL8168h/8111h, 00:2b:67:48:40:02, XID 541, 
+IRQ 138
+   r8169 0000:04:00.0 enp4s0: Link is Up - 1Gbps/Full - flow control rx/tx
+
+Workaround: booting an unmodified v6.16+ kernel with pcie_port_pm=off 
+also restores the NIC, which is consistent with the upstream port being 
+placed in D3cold and the device failing to resume to D0 after the 
+explicit-D0 init change.
+
+The follow-up 907a7a2e5bf4 does not fix this resume case: v6.18.33 is 
+still affected (retested today on current firmware).
+
+Happy to test patches or provide full dmesg / lspci.
