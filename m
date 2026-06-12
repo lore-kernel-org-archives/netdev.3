@@ -1,119 +1,129 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f182.google.com (mail-vk1-f182.google.com [209.85.221.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 568B8366051
-	for <netdev@vger.kernel.org>; Fri, 12 Jun 2026 09:48:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0806C313E24
+	for <netdev@vger.kernel.org>; Fri, 12 Jun 2026 09:52:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781257699; cv=none; b=GCuig/qk5SIchDEKZiziCqz/5Ph+AGQ6YizrbZp3mI/vjUo4LUDjomGvNqwNi8kK/xGEte1uOZXPXgy60BtE0UHSXhhx3N5PBlM9S03YRZHJK2ues9kPUEsxpLPt1BOt90+aXoFxCw/XxCuLvlN2nd6zxEhqlmCzO7raarL36sA=
+	t=1781257977; cv=none; b=Ay50PgB2Tbgw93VtR3IBlU4rnpMfGi0RHKal6ajIG3LK2WiMUVY7vZGbXGkKRZpjZCVzEQJR+RkGcL9TcedI/hUgo4Un25it29Vsep5EKCsZLHugB+nrRPT6Ss1VoUbpGY/Svg67Y3t25izDGm3GZlsQRfZa4NsZuCvw5Lwp5RM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781257699; c=relaxed/simple;
-	bh=cAaCF69c04jCqVYjuqqPNjyeU8jG1ajAK8czCYYeKWc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bHgAB1i/Q1Yc2a7CI0j7uRhQyOfEmri3h75NDulUwKq2ioU9/5GHBjgS3veaDuQUboI4gYc4Z+OPgZtphKsMYMW5iYDP9tiFWrvpqadkjX1sotin8YyO8gRHbYY2JfgaJp7TtEWoOcgBk3sDJOC6X2/ngBnHSV0fm6sxhbbXGaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IDoZx6CM; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IDoZx6CM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67D6D1F000E9;
-	Fri, 12 Jun 2026 09:48:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781257697;
-	bh=6fXUbxNQMef3KW0BeIYSPmJZG+Y5jb6njF1/ZJj+fSc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=IDoZx6CMkmJysz3zmuz6DeQEus1tZDstIBNG9RO8Q3WKHebeBPofSrSQmBf9d1oEp
-	 T5qTOQB01dlfZTo0IISNrO3VbH8eShKKjm1wAbcEErVKPhNhVNG/hN8LjLGhYa/WQW
-	 5H7DdYGam4rlbYlnJrKN0T9NIiOLCRP/FtdjdTFWkG8/nWCF4bxLuxHFRiqH+Q2iT5
-	 yHC616RGbmlh8V+DcboLU4CWAeyZITU7+kUbRPzmPC/pICG+ffobi8fTQuPtDsziJF
-	 MT3fU4d0DnUEsyN0hq2y9nCb5HuxHNTPmRd0RrTMOXRfsOe+088qWr5i8Bj9OFd0MS
-	 gzs2HQcNF1Pug==
-Date: Fri, 12 Jun 2026 11:48:15 +0200
-From: Lorenzo Bianconi <lorenzo@kernel.org>
-To: "Wayen.Yan" <win847@gmail.com>
-Cc: netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH v2] net: airoha: Fix error handling in
- airoha_ppe_flush_sram_entries()
-Message-ID: <aivV3wr7zHQcENtI@lore-desk>
-References: <6a2bd37a.4034e349.1b41bb.1caf@mx.google.com>
+	s=arc-20240116; t=1781257977; c=relaxed/simple;
+	bh=TsdwKdc9yokgTj1o1KWL7wDregVHwkh9wLKY74tlLjY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=LLg3ommgH5UO0mypLDSsVzrS0jyUYtbemu26XGCLPr/BlfuSOg+aAxiAICtP5i8u1J9uEXER3OC/dL1hFUJgxJGg3D7+TLFqZm9CxyF+PAXxk9GG6Hyu3dmuHKIdn4gwMEMOgFEFHdxXHzdG3tYWvGxR3CiMm5rs0Wij7Gj7YuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vk1-f182.google.com with SMTP id 71dfb90a1353d-59d07df448bso489421e0c.0
+        for <netdev@vger.kernel.org>; Fri, 12 Jun 2026 02:52:55 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781257975; x=1781862775;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=6ekw+Oevfx6i4xq0d1g4dLAXWaWK/4ZFI+zNuRgMbC8=;
+        b=PTSUaKvKZGHkcx0F5qlN1mlrBkg5VFFdRbv9PLGvdeLYkjdbx2JT4DnXyWuNK9uvPm
+         E95MK1S03cpSCgeWO80A0Ct9wp1dYjJFZF1D+NY3AZAbebjcu0g1RI6gBuvoulZ+9CMf
+         9AkMU7OYh07XIk8FYrw7LfJxlJaIvDkPFwQSsnwBTsDy7l8upDr+Q4MD8VkSwo5Nj8q1
+         WKAr0ZC6pND31gLJaha8FA7ZQQjw1uk+MryDzROMoAaUcIOi3Ckdj2zkGeatO3I/ttWA
+         o2HT2pMGlTDOu2aO1sd6pxWMkQFrtpM/vGiK3kvB0JAAm/F6Uz77dQ0cnSAT/0n4suF6
+         UChw==
+X-Forwarded-Encrypted: i=1; AFNElJ8DIPluQq0SFw49T+KvX6NVsmG3dz/CaOG3XZUX07WSVLDXvOi8qmpak83nHBKyWL3hP18elbc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxQMCq/1gmRSteGmI3G6wf4Eq7gT8KA5/r2nNdqtqj7/20Gv4mE
+	jpCxP43/HeWbpZjVaLjCjSJWnKB3Co/R8oGFaGLyfHyoFN7Z1/7Etv8FU+H+Jy+R
+X-Gm-Gg: Acq92OFHooPKZHILZaGnSvvNtf7VEc/cGjgODjepZLhN4t1xVJYTq+AJkbZ6pG+zLpo
+	8IUx4kihm8kXUsTYrkGStQIwrTR5HY+ajGO1KMW6wgF2BIkVY6jHCG2uzXwcLroH3QFR9PCNthX
+	199GJ/a2c60gcgsuKn5ocMxD9gnAa5BZV5IR9aBKbBz7ZtuBiIJ7Lv9StPuYVttw9wtSfLC8bSC
+	lYXVGYSWF3onNHBufTfhNJmfGal0wvpsga53FAj2yauH0VQLpVJLI3X6bx1VcoaMjF+WUJfrW3A
+	vo73daOeCoWHmxNSXMOiFWeycfe6JcgRTqPLFNK+c611iDe+wBfXU7r+82BqGViOAJAImSJYpV+
+	qMlO7QYaSpUs2sLPS1hoDltsI85nRgTzUUPdIE877uQ4RL449ekQ/ni4n/G1ayhaup6gtfG8hX+
+	PPSTUBjMwsE0Yr2r6ReeY1l8iAP4V7OecKac89O7+d40HkBLKLlQyrJGXO8l27
+X-Received: by 2002:a05:6122:d09:b0:5a3:da51:daa3 with SMTP id 71dfb90a1353d-5bb6bfe6582mr854693e0c.1.1781257974867;
+        Fri, 12 Jun 2026 02:52:54 -0700 (PDT)
+Received: from mail-vs1-f46.google.com (mail-vs1-f46.google.com. [209.85.217.46])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5bb68fc4d73sm2001769e0c.4.2026.06.12.02.52.54
+        for <netdev@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 12 Jun 2026 02:52:54 -0700 (PDT)
+Received: by mail-vs1-f46.google.com with SMTP id ada2fe7eead31-6cfb0a137c9so437681137.1
+        for <netdev@vger.kernel.org>; Fri, 12 Jun 2026 02:52:54 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ+KflUpBaTsOfzd2jnv8z8Umx9y/qmA231E1FLooYo3fXU4TKIGwdH+A/rEbw34NjPlWgjBUb0=@vger.kernel.org
+X-Received: by 2002:a05:6102:1527:b0:6ef:db57:d472 with SMTP id
+ ada2fe7eead31-71e88fce218mr844922137.27.1781257480541; Fri, 12 Jun 2026
+ 02:44:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="EoeaF+jQtSFUc+T+"
-Content-Disposition: inline
-In-Reply-To: <6a2bd37a.4034e349.1b41bb.1caf@mx.google.com>
-
-
---EoeaF+jQtSFUc+T+
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+References: <20260612092851.2141782-1-niklas.soderlund+renesas@ragnatech.se> <20260612092851.2141782-4-niklas.soderlund+renesas@ragnatech.se>
+In-Reply-To: <20260612092851.2141782-4-niklas.soderlund+renesas@ragnatech.se>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Fri, 12 Jun 2026 11:44:29 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdXq59znV1uatwVyszTh5PjR96Ay3DTe=TzP9VxgKm5W_g@mail.gmail.com>
+X-Gm-Features: AVVi8CeFKC4WGhTZS8WnXOfTTINM5eUjUYYQa4NqNv0sVR6at_JjsT2cJ1T43Ag
+Message-ID: <CAMuHMdXq59znV1uatwVyszTh5PjR96Ay3DTe=TzP9VxgKm5W_g@mail.gmail.com>
+Subject: Re: [PATCH net-next v2 3/3] arm64: dts: renesas: r8a779g0: Add gPTP node
+To: =?UTF-8?Q?Niklas_S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Geert Uytterhoeven <geert+renesas@glider.be>, 
+	Magnus Damm <magnus.damm@gmail.com>, Richard Cochran <richardcochran@gmail.com>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "DavidS. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	linux-renesas-soc@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-> In airoha_ppe_flush_sram_entries(), the outer "err" variable was never
-> updated when the inner loop variable shadowed it, causing the function
-> to always return 0 even when airoha_ppe_foe_commit_sram_entry() fails.
->=20
-> Drop the outer "err" variable and return directly on error, propagating
-> the error code from airoha_ppe_foe_commit_sram_entry() correctly.
->=20
-> Fixes: 620d7b91aadb ("net: airoha: ppe: Flush PPE SRAM table during PPE s=
-etup")
-> Link: https://lore.kernel.org/netdev/6a2b40e4.4dd82583.3a5c46.e52f@mx.goo=
-gle.com/
-> Signed-off-by: Wayen.Yan <win847@gmail.com>
+Hi Niklas,
 
-Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
-
+On Fri, 12 Jun 2026 at 11:29, Niklas S=C3=B6derlund
+<niklas.soderlund+renesas@ragnatech.se> wrote:
+> The gPTP module is shared between the RAVB and RTSN Ethernet devices on
+> the SoC.
+>
+> Signed-off-by: Niklas S=C3=B6derlund <niklas.soderlund+renesas@ragnatech.=
+se>
 > ---
->  drivers/net/ethernet/airoha/airoha_ppe.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
->=20
-> diff --git a/drivers/net/ethernet/airoha/airoha_ppe.c b/drivers/net/ether=
-net/airoha/airoha_ppe.c
-> index 5c9dff6..a124f15 100644
-> --- a/drivers/net/ethernet/airoha/airoha_ppe.c
-> +++ b/drivers/net/ethernet/airoha/airoha_ppe.c
-> @@ -1330,7 +1330,7 @@ static int airoha_ppe_flush_sram_entries(struct air=
-oha_ppe *ppe)
->  {
->  	u32 sram_num_entries =3D airoha_ppe_get_total_sram_num_entries(ppe);
->  	struct airoha_foe_entry *hwe =3D ppe->foe;
-> -	int i, err =3D 0;
-> +	int i;
-> =20
->  	for (i =3D 0; i < sram_num_entries; i++) {
->  		int err;
-> @@ -1338,10 +1338,10 @@ static int airoha_ppe_flush_sram_entries(struct a=
-iroha_ppe *ppe)
->  		memset(&hwe[i], 0, sizeof(*hwe));
->  		err =3D airoha_ppe_foe_commit_sram_entry(ppe, i);
->  		if (err)
-> -			break;
-> +			return err;
->  	}
-> =20
-> -	return err;
-> +	return 0;
->  }
-> =20
->  static struct airoha_npu *airoha_ppe_npu_get(struct airoha_eth *eth)
-> --=20
-> 2.51.0
->=20
->=20
+> * Changes since v1
+> - Rename node ptp.
 
---EoeaF+jQtSFUc+T+
-Content-Type: application/pgp-signature; name=signature.asc
+Thanks for the update!
 
------BEGIN PGP SIGNATURE-----
+> --- a/arch/arm64/boot/dts/renesas/r8a779g0.dtsi
+> +++ b/arch/arm64/boot/dts/renesas/r8a779g0.dtsi
+> @@ -603,6 +603,15 @@ tsn0: ethernet@e6460000 {
+>                         status =3D "disabled";
+>                 };
+>
+> +               gptp: ptp@e6449000 {
 
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCaivV3wAKCRA6cBh0uS2t
-rG1XAQCCuKkYI+tIMsjd+zKovSrzkgniTy4bU0wXXl1QiLXSFQD/SnwATkCTQzfe
-Aa6qlJSWjvbDGHvmlP81Dcujo8NQZQs=
-=7Aip
------END PGP SIGNATURE-----
+Please preserve sort order (by unit-address).
 
---EoeaF+jQtSFUc+T+--
+> +                       compatible =3D "renesas,r8a779g0-gptp", "renesas,=
+rcar-gen4-gptp";
+> +                       reg =3D <0 0xe6449000 0 0x500>;
+> +                       clocks =3D <&cpg CPG_MOD 2723>;
+> +                       power-domains =3D <&sysc R8A779G0_PD_ALWAYS_ON>;
+> +                       resets =3D <&cpg 2723>;
+> +                       status =3D "disabled";
+> +               };
+> +
+>                 i2c0: i2c@e6500000 {
+>                         compatible =3D "renesas,i2c-r8a779g0",
+>                                      "renesas,rcar-gen4-i2c";
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--=20
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
+.org
+
+In personal conversations with technical people, I call myself a hacker. Bu=
+t
+when I'm talking to journalists I just say "programmer" or something like t=
+hat.
+                                -- Linus Torvalds
