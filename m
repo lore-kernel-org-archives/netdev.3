@@ -1,60 +1,57 @@
 Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 073AD38E8BC
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07314368968
 	for <netdev@vger.kernel.org>; Fri, 12 Jun 2026 07:48:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781250490; cv=none; b=fep2hc0Cmb6vOb1KRbYuD+AQETTTrM4KNvVPgRii8pRCIdemB+6ptx6qEYwmylH6uGzVwc7OGn0CjGJNo6JhxE35xGVIIDjgKXFPPlTMSm4raksQBmvEEHFa6B+z0s9HsoQuzeW3Ct15w63uPr+uRb/N6tiZ6dg0S0BxieefYbw=
+	t=1781250491; cv=none; b=GlrXiIjOT9M0sQa3Yh63t9iFs0nYW7UYuHZQTerwD96EMj1kf0+3QnkD3EClw9Fzq+JMYdcIAnyCqKlZLsRsavN9zhI6VSyZxBMJ8FtCTQ7JNY+mfDS5Ewt5T347GSbDTBKAcVVNqSy0M/30j1n8z8dMMOGITxMopXuvoYiBIW8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781250490; c=relaxed/simple;
-	bh=Wt0kee5uW5AAQjjPf4rOWldQcRF4BvUOCT8kdxy2tGk=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XNMZxRIGSdW1Da0pEIvaner8o4Vp2QGD2HLVXFipvsgVd9l0qt9IcM0FaHcLy2aLsqVjezIAgZ3jaFndYGByK4e3/Gw/TZGQEZ6hkDBw6hz+wtHkB6N38NshrmaIvlK7VWtlWQcZBiTDF1ZvbPBBUrbUmiP3U4B7ouxMxavRqc0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=HpFDsyXY; arc=none smtp.client-ip=62.96.220.36
+	s=arc-20240116; t=1781250491; c=relaxed/simple;
+	bh=e7xQN+aK6VsPcOU1iXkgNzEwNdOSaol9lhpxHvh7DEM=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Za25h1JOn/lV62QoqYSUQjD5J3puYdAimv9EBeQYMg8+7rZeEm2taMEjV63JfGL4earOZMgumBFwX4bh5jjzSG8cyfiFVP4lTlHLgYOdyZI6WU1BojGoa/T6OlWfSZeallrKGHZJvikOrUHaVGiaZ0gDwkKdHGE2mqUJfVL6mNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=NPsRpveq; arc=none smtp.client-ip=62.96.220.36
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="HpFDsyXY"
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="NPsRpveq"
 Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id 6B45A20758;
-	Fri, 12 Jun 2026 09:48:01 +0200 (CEST)
+	by mx1.secunet.com (Postfix) with ESMTP id F0B2920754;
+	Fri, 12 Jun 2026 09:47:59 +0200 (CEST)
 X-Virus-Scanned: by secunet
 Received: from mx1.secunet.com ([127.0.0.1])
  by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id 4vlH6Vcn7COz; Fri, 12 Jun 2026 09:48:00 +0200 (CEST)
+ with ESMTP id p3mIwG4ls5sV; Fri, 12 Jun 2026 09:47:59 +0200 (CEST)
 Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id D2EA2206D2;
-	Fri, 12 Jun 2026 09:48:00 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com D2EA2206D2
+	by mx1.secunet.com (Postfix) with ESMTPS id 4AECD206D2;
+	Fri, 12 Jun 2026 09:47:59 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 4AECD206D2
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1781250480;
-	bh=dbKoCfXqStKoD7KOm1kOEjm/FLOi2eUgSwOqqtNALg0=;
-	h=From:To:CC:Subject:Date:In-Reply-To:References:From;
-	b=HpFDsyXYXmdKskyVimH2cwV7su1DGhzVyA9Vht35qTl8cVSwm020nxQH7+oDWhOJP
-	 IUJ5XaTr16GyeeyHea878CoMeujdDgpirGE+PbimNpYMcSjgTUKSQOB/PvczSiFxEN
-	 EsDZgbzXh2zSuljaOwKiKJvFuGjPyddbPYqWIp/NJE2PQvDDsdh4ClrM7Hw8ennU08
-	 VSU0eNj0ocHqHBu4XpzhwxhmyazhVaHX1xX3Tgn3tIBOMm/Us79MomDxCLE1NcGcCk
-	 oZzg/pRqe4p6jeoFISCQkvouDIF8OE1GW1UvS88ebJbuixj5r1ARFq8YImEScxoYkz
-	 9czVhPXTExv6Q==
+	s=202301; t=1781250479;
+	bh=dQiNXbe/qYtIyE2i97A+fUbJ10tuVbExydbw3R4fKZY=;
+	h=From:To:CC:Subject:Date:From;
+	b=NPsRpveqZcWEkqXNr9iqign3xUhPo87QmkHWmP59IjCnL9A2H1uMeYAG+28BR3k5n
+	 Rl1TuRQ3rGF9p0APhhxA03jx1CBBeWAMOH4qYrGz5+KQAcfpfr2qFmL+Ee4xKGsqCX
+	 duAPYUTx6NbKYcIKMT9U3QA8G9lUeKGdWCp2AH/QE1aiCZjowy0AlTICqVbUXpNbGo
+	 rKeZWl05Wc8Xza7NSW2ClVvCpe/b/nsm50GWp6KYgT6iswnhJfUrab5fIR8lqAsZVu
+	 F1DdVrVZYsrSDbpPGUmUHSSIPk2W8od6YIomju6pjhU/4CpnCw7ZnhVOtn2nYT2J3W
+	 9+zaIOqecOtlw==
 Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Fri, 12 Jun
- 2026 09:48:00 +0200
-Received: (nullmailer pid 1768302 invoked by uid 1000);
+ 2026 09:47:58 +0200
+Received: (nullmailer pid 1768262 invoked by uid 1000);
 	Fri, 12 Jun 2026 07:47:57 -0000
 From: Steffen Klassert <steffen.klassert@secunet.com>
 To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
 CC: Herbert Xu <herbert@gondor.apana.org.au>, Steffen Klassert
 	<steffen.klassert@secunet.com>, <netdev@vger.kernel.org>
-Subject: [PATCH 13/18] xfrm: refactor XFRMA_MTIMER_THRESH validation into a helper
-Date: Fri, 12 Jun 2026 09:46:29 +0200
-Message-ID: <20260612074725.1760473-14-steffen.klassert@secunet.com>
+Subject: [PATCH 0/18] pull request (net-next): ipsec-next 2026-06-12
+Date: Fri, 12 Jun 2026 09:46:16 +0200
+Message-ID: <20260612074725.1760473-1-steffen.klassert@secunet.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260612074725.1760473-1-steffen.klassert@secunet.com>
-References: <20260612074725.1760473-1-steffen.klassert@secunet.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -66,65 +63,85 @@ Content-Type: text/plain
 X-ClientProxiedBy: EXCH-03.secunet.de (10.32.0.183) To EXCH-01.secunet.de
  (10.32.0.171)
 
-From: Antony Antony <antony.antony@secunet.com>
+1) Replace the open-coded manual cleanup in xfrm_add_policy() error
+   path with xfrm_policy_destroy() for consistency with
+   xfrm_policy_construct().
+   From Deepanshu Kartikey.
 
-Extract verify_mtimer_thresh() to consolidate the XFRMA_MTIMER_THRESH
-validation logic shared between the add_sa and upcoming patch.
+2) Limit XFRMA_TFCPAD to a sensible maximum (max IP length, 64k) since
+   u32 is excessive for traffic flow confidentiality padding.
+   From David Ahern.
 
-Signed-off-by: Antony Antony <antony.antony@secunet.com>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
----
- net/xfrm/xfrm_user.c | 29 ++++++++++++++++++-----------
- 1 file changed, 18 insertions(+), 11 deletions(-)
+3) Add a new netlink message XFRM_MSG_MIGRATE_STATE that
+   allows migrating individual IPsec SAs independently of
+   their policies. The existing XFRM_MSG_MIGRATE is tightly coupled
+   to policy+SA migration, lacks SPI for unique SA identification,
+   and cannot express reqid changes or migrate Transport mode
+   selectors. The new interface identifies the SA via SPI and mark,
+   supports reqid changes, address family changes, encap removal,
+   and uses an atomic create+install flow under x->lock to prevent
+   SN/IV reuse during AEAD SA migration.
+   From Antony Antony.
 
-diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
-index ce65e872cbac..62eccdbe245f 100644
---- a/net/xfrm/xfrm_user.c
-+++ b/net/xfrm/xfrm_user.c
-@@ -248,6 +248,22 @@ static inline int verify_replay(struct xfrm_usersa_info *p,
- 	return 0;
- }
- 
-+static int verify_mtimer_thresh(bool has_encap, u8 dir,
-+				struct netlink_ext_ack *extack)
-+{
-+	if (!has_encap) {
-+		NL_SET_ERR_MSG(extack,
-+			       "MTIMER_THRESH requires encapsulation");
-+		return -EINVAL;
-+	}
-+	if (dir == XFRM_SA_DIR_OUT) {
-+		NL_SET_ERR_MSG(extack,
-+			       "MTIMER_THRESH should not be set on output SA");
-+		return -EINVAL;
-+	}
-+	return 0;
-+}
-+
- static int verify_newsa_info(struct xfrm_usersa_info *p,
- 			     struct nlattr **attrs,
- 			     struct netlink_ext_ack *extack)
-@@ -455,18 +471,9 @@ static int verify_newsa_info(struct xfrm_usersa_info *p,
- 	err = 0;
- 
- 	if (attrs[XFRMA_MTIMER_THRESH]) {
--		if (!attrs[XFRMA_ENCAP]) {
--			NL_SET_ERR_MSG(extack, "MTIMER_THRESH attribute can only be set on ENCAP states");
--			err = -EINVAL;
--			goto out;
--		}
--
--		if (sa_dir == XFRM_SA_DIR_OUT) {
--			NL_SET_ERR_MSG(extack,
--				       "MTIMER_THRESH attribute should not be set on output SA");
--			err = -EINVAL;
-+		err = verify_mtimer_thresh(!!attrs[XFRMA_ENCAP], sa_dir, extack);
-+		if (err)
- 			goto out;
--		}
- 	}
- 
- 	if (sa_dir == XFRM_SA_DIR_OUT) {
--- 
-2.43.0
+Please pull or let me know if there are problems.
 
+Thanks!
+
+The following changes since commit 790ead9394860e7d70c5e0e50a35b243e909a618:
+
+  Documentation: net/smc: correct old value of smcr_max_recv_wr (2026-04-27 16:49:39 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/klassert/ipsec-next.git tags/ipsec-next-2026-06-12
+
+for you to fetch changes up to 355f808d8a11fa69b19dfd8811bc87d97830f5d6:
+
+  Merge branch 'xfrm: XFRM_MSG_MIGRATE_STATE new netlink message' (2026-06-09 16:02:12 +0200)
+
+----------------------------------------------------------------
+ipsec-next-2026-06-12
+
+----------------------------------------------------------------
+Antony Antony (16):
+      xfrm: remove redundant assignments
+      xfrm: add extack to xfrm_init_state
+      xfrm: allow migration from UDP encapsulated to non-encapsulated ESP
+      xfrm: fix NAT-related field inheritance in SA migration
+      xfrm: rename reqid in xfrm_migrate
+      xfrm: split xfrm_state_migrate into create and install functions
+      xfrm: check family before comparing addresses in migrate
+      xfrm: add state synchronization after migration
+      xfrm: add error messages to state migration
+      xfrm: move encap and xuo into struct xfrm_migrate
+      xfrm: refactor XFRMA_MTIMER_THRESH validation into a helper
+      xfrm: extract address family and selector validation helpers
+      xfrm: make xfrm_dev_state_add xuo parameter const
+      xfrm: add XFRM_MSG_MIGRATE_STATE for single SA migration
+      xfrm: restrict netlink attributes for XFRM_MSG_MIGRATE_STATE
+      xfrm: add documentation for XFRM_MSG_MIGRATE_STATE
+
+David Ahern (1):
+      xfrm: Reject excessive values for XFRMA_TFCPAD
+
+Deepanshu Kartikey (1):
+      xfrm: cleanup error path in xfrm_add_policy()
+
+Steffen Klassert (1):
+      Merge branch 'xfrm: XFRM_MSG_MIGRATE_STATE new netlink message'
+
+ Documentation/networking/xfrm/index.rst            |   1 +
+ .../networking/xfrm/xfrm_migrate_state.rst         | 274 ++++++++++++
+ include/net/xfrm.h                                 |  78 +++-
+ include/uapi/linux/xfrm.h                          |  25 ++
+ net/ipv4/ipcomp.c                                  |   2 +-
+ net/ipv6/ipcomp6.c                                 |   2 +-
+ net/key/af_key.c                                   |  12 +-
+ net/xfrm/xfrm_compat.c                             |   5 +-
+ net/xfrm/xfrm_device.c                             |   2 +-
+ net/xfrm/xfrm_policy.c                             |  25 +-
+ net/xfrm/xfrm_state.c                              | 144 +++---
+ net/xfrm/xfrm_user.c                               | 481 ++++++++++++++++++---
+ security/selinux/nlmsgtab.c                        |   3 +-
+ 13 files changed, 912 insertions(+), 142 deletions(-)
+ create mode 100644 Documentation/networking/xfrm/xfrm_migrate_state.rst
