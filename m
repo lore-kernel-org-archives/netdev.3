@@ -1,127 +1,81 @@
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EAD53B961E;
-	Fri, 12 Jun 2026 12:23:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FC6B395DAA;
+	Fri, 12 Jun 2026 12:25:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781267007; cv=none; b=aNdvpXHUJVS+bGOME2NUTNYDZxTBZa/XNlZdib4B7c71hbIof++339Tt0l9yPv0CzjFwKXjClob9bulen9ClViPvgbkT2inOQ172Bnidou+qUz+jqo1gsrBh8WWQvVFNPsyMOqMQw5Z30/lr+UDU17FRRa8hc3CLKZGZTfHfCkw=
+	t=1781267105; cv=none; b=ebtmSI5Z0zOMh01u8LPtPzYZew1L6RlD9NXgMpJ4VFvmZMb5A9klYKLAuwe6bySUgw70fAftrC3h9jQXDk8YpqCrUmhtdbLt2tzJCEF5yfPFcz6LRcDG05QiVaSHWcoRspUJh/U0Aab+pzSU0LqChdw3Pv08oG4Vbk27gCB0nGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781267007; c=relaxed/simple;
-	bh=IbToR+lgAdquklu+/Eg3oXONevqkJpD4GGPeq1xag3o=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=sx7yK1UsoMdpyLyCxbv+M84r4/GnusBJkQPTVgk2D3kCmJxOC43gQmqgKINSCgNtCoV0rrmw9CojllqH0VUJNEgdy2KAZhBmyN4ypDYzwuya1HrZNiQ02k3t+lIbSjgGy1ZUFKf6nKS1mQ0GEl0xVTN9vUKxbNwRDynJHTjYTOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=4whu0Hbt; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	s=arc-20240116; t=1781267105; c=relaxed/simple;
+	bh=8efJRhmrPygmrpPFw77bhT6JwWU62/INICk2jAhtO3Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JzJlp4SD+nZNkldNUIdgrBuUASkEOB9kcESm2sNXIjXCAe6zIUjWG9QTTkDwzfbUnBlH4NDAS5CrVQc5MmgawY0A7lZCNvy/hSGPmX/8y5lTz27l7sNQrhFJj4eYQoSB+sZIRVN71DTtgIXGSFSbITFmcXC61E3qChZmbs2uEMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LeIUvZH3; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="4whu0Hbt"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id EB711A1D1C;
-	Fri, 12 Jun 2026 14:23:14 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1781266999; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=7q2XrxfHI2F4jC37A/2Ev7F1/EsKe9OT+qstuGZnrow=;
-	b=4whu0HbtqP7CAZkbptcPO+iuHD6llV2oz5jiUJPMJGp3yLDVWB3SFMfvRWkesTLCuuzMNG
-	/CVciNVYLYBlcA4IsEJHwo3TAYqZyC2jwc8NWQjn/TrJZLrj460vpyaodY7yyKJjXGWb1Y
-	wx18lJkaNft7PAJM/X8hAlBc/mq5KG0YSSAzuKfYYCShUIDzeO/izD/ZX5dtnHkQU6mELm
-	LijkAr2M+J9og+CAZRhFC0tf9Gt2fMyvlUbqIISqpnQIJawQLfORnKXKT+sYPAQfJpQkLL
-	cxJkoyxrz0/9fabgm3gpCDtix3jhMNF08SRYGr71e+aVt5DCvEMAFRK95/Kc5Q==
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LeIUvZH3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7B271F000E9;
+	Fri, 12 Jun 2026 12:25:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781267104;
+	bh=XyKeMQWx3qJwTBdaxlwr+ooF5i8jx3bmcjQwKrMhwiQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=LeIUvZH3PIpohuB3LmYWMygUfc0OLrtkT13i5zT4gaGGH713+8TOGXFjnCqFceZwe
+	 PbXzJYmk9jKDh1Xu9RNIDJC43Nc5u+eczm7K3gQOkAiU7FInTbJsbzzTr8SRR2Yjvn
+	 AFK2DKqudWBGWNkWv2ojBr8iXqObYT4IYZpXbpMn8Z6CdOsocnsoSrGsEKjCqVXWTE
+	 BDtLMDyHwYa6cbqYOp6qP6beZnByg8SAT53B58iSe9STKBWSKawGeVv3GA0mZkjLgQ
+	 rcaZBIt4o/l5Wuw3UHFSmk/6s71fKNMQ7nT8jxKm+lnaZGYsh6OoTJY9B78Cc1x+DL
+	 lzrfJi50RaaNQ==
+Date: Fri, 12 Jun 2026 13:25:00 +0100
+From: Simon Horman <horms@kernel.org>
+To: Doruk Tan Ozturk <doruk@0sec.ai>
+Cc: david@ixit.cz, oe-linux-nfc@lists.linux.dev,
+	david.laight.linux@gmail.com, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v4] nfc: llcp: bound SNL TLV parsing to the skb and
+ add length checks
+Message-ID: <20260612122500.GB671640@horms.kernel.org>
+References: <20260609202543.42282-1-doruk@0sec.ai>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Fri, 12 Jun 2026 14:23:14 +0200
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: Andrea della Porta <andrea.porta@suse.com>
-Cc: netdev@vger.kernel.org, Theo Lebrun <theo.lebrun@bootlin.com>, Nicolas
- Ferre <nicolas.ferre@microchip.com>, Claudiu Beznea
- <claudiu.beznea@tuxon.dev>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S .
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
- Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-rpi-kernel@lists.infradead.org, Lukasz Raczylo <lukasz@raczylo.com>,
- Steffen Jaeckel <sjaeckel@suse.de>
-Subject: Re: [PATCH] net: macb: add TX stall timeout callback to recover from
- lost TSTART write
-In-Reply-To: <771b8faeaee1fce4a84a5ba2661d60b35a65a6d5.1781253818.git.andrea.porta@suse.com>
-References: <771b8faeaee1fce4a84a5ba2661d60b35a65a6d5.1781253818.git.andrea.porta@suse.com>
-Message-ID: <dbc25b24865a1ad92555bc826bef4267@tipi-net.de>
-X-Sender: nb@tipi-net.de
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260609202543.42282-1-doruk@0sec.ai>
 
-Hi Andrea
-
-On 12.6.2026 11:01, Andrea della Porta wrote:
-> From: Lukasz Raczylo <lukasz@raczylo.com>
+On Tue, Jun 09, 2026 at 10:25:43PM +0200, Doruk Tan Ozturk wrote:
+> nfc_llcp_recv_snl() walked the SNL TLV list using a u16 offset/length
+> pair derived from skb->len, without bounding reads to the actual skb
+> data. Three problems followed:
 > 
-> The MACB found in the Raspberry Pi RP1 suffers from sporadic stalls on
-> the TX queue.
-> While the exact root cause is not yet fully understood, it is likely
-> related to a hardware issue where a TSTART write to the NCR register
-> is missed, preventing the transmission from being kicked off.
+>   - For a short frame (skb->len < LLCP_HEADER_SIZE), tlv_len underflowed.
+>   - The per-TLV header (type, length) was read without checking that two
+>     bytes remained.
+>   - A declared TLV length could run past the end of the buffer, and an
+>     SDREQ with length == 0 made "service_name_len = length - 1" underflow
+>     (size_t), driving an out-of-bounds read in the following strncmp() /
+>     nfc_llcp_sock_from_sn(). The SDRES case likewise read tlv[2]/tlv[3]
+>     without a length check.
 > 
-> Implement a timeout callback to handle TX queue stalls, triggering the
-> existing restart mechanism to recover.
+> A nearby NFC device can reach this without authentication; LLCP link
+> activation happens automatically after NFC-DEP.
 > 
-> Link: 
-> https://lore.kernel.org/all/20260514215459.36109-1-lukasz@raczylo.com/
-> Fixes: dc110d1b23564 ("net: cadence: macb: Add support for Raspberry Pi 
-> RP1 ethernet controller")
-> Signed-off-by: Lukasz Raczylo <lukasz@raczylo.com>
-> Co-developed-by: Steffen Jaeckel <sjaeckel@suse.de>
-> Signed-off-by: Steffen Jaeckel <sjaeckel@suse.de>
-> Co-developed-by: Andrea della Porta <andrea.porta@suse.com>
-> Signed-off-by: Andrea della Porta <andrea.porta@suse.com>
-> ---
->  drivers/net/ethernet/cadence/macb_main.c | 11 +++++++++++
->  1 file changed, 11 insertions(+)
+> Walk the TLV list by pointer, bounded by skb_tail_pointer() over the
+> linear skb data, and validate each TLV declared length before use. Add
+> explicit length checks for SDREQ (>= 1) and SDRES (exactly 2).
 > 
-> diff --git a/drivers/net/ethernet/cadence/macb_main.c 
-> b/drivers/net/ethernet/cadence/macb_main.c
-> index a12aa21244e83..615da65d5d68d 100644
-> --- a/drivers/net/ethernet/cadence/macb_main.c
-> +++ b/drivers/net/ethernet/cadence/macb_main.c
-> @@ -4522,6 +4522,16 @@ static int macb_setup_tc(struct net_device *dev, 
-> enum tc_setup_type type,
->  	}
->  }
+> Found by 0sec automated security-research tooling (https://0sec.ai).
 > 
-> +static void macb_tx_timeout(struct net_device *dev, unsigned int q)
-> +{
-> +	struct macb *bp = netdev_priv(dev);
-> +
-> +	if (net_ratelimit())
+> Fixes: 19cfe5843e86 ("NFC: Initial SNL support")
+> Signed-off-by: Doruk Tan Ozturk <doruk@0sec.ai>
 
-Do we need the net_ratelimit() check (and message) here? AFAIU the 
-watchdog core already prints a message for every timeout.
+Reviewed-by: Simon Horman <horms@kernel.org>
 
-> +		netdev_err(dev, "TX stall detected, re-kicking TSTART\n");
-> +	dev->stats.tx_errors++;
-> +	macb_tx_restart(&bp->queues[q]);
-> +}
-> +
->  static const struct net_device_ops macb_netdev_ops = {
->  	.ndo_open		= macb_open,
->  	.ndo_stop		= macb_close,
-> @@ -4540,6 +4550,7 @@ static const struct net_device_ops 
-> macb_netdev_ops = {
->  	.ndo_hwtstamp_set	= macb_hwtstamp_set,
->  	.ndo_hwtstamp_get	= macb_hwtstamp_get,
->  	.ndo_setup_tc		= macb_setup_tc,
-> +	.ndo_tx_timeout		= macb_tx_timeout,
 
-The commit message describes it as RP1 specific, but it gets applied to 
-all other variants?
-
->  };
-> 
->  /* Configure peripheral capabilities according to device tree
-
-Thanks
-Nicolai
+FTR: There is AI-generated review of this patch-set available on both
+     https://sashiko.dev and https://netdev-ai.bots.linux.dev/sashiko/
+     While I don't think that review should effect progress of this patch
+     you may wish to consider it in the context of possible follow-up.
