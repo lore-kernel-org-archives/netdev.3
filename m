@@ -1,89 +1,87 @@
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013046.outbound.protection.outlook.com [40.93.196.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 182E53EB7FF
-	for <netdev@vger.kernel.org>; Fri, 12 Jun 2026 11:41:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781264470; cv=none; b=KRfafSGD9w6c+gPOjSvVmS5xI9gdGuK5JGNrvOTjKu4LD24zRk4YRjS+MYWhoZMhMs9dLdKbrWtNNDD4FIIwQkp1bWnQkdobVTMivw0LffACosMpliLXXDn2UmfI2KfQzBt7aW03NgMAHOZsO8abGEklthS+mR0z7ob5H6vRrTQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781264470; c=relaxed/simple;
-	bh=huaKkF4OiakemF/G5xWufP2q3bw29Ry5/D4MKYONanA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dIAann39QPPFAcYr+JBqNOZJl9wFfgeuao5xupG5Dt+g1lERNtjmDORi805xuzM5ECpAMt6m+qMTPiZIuIqtc9o/8DN6y0L4A7BqJkmpPnsu80XqxFVmR3KqTWUeHU52lIze5I+vn9MYIBy0+cFjkDO3mzG+bO2kuVX24wGF/jA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=oGweB2aj; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A55623ED3AE;
+	Fri, 12 Jun 2026 11:41:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.46
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781264473; cv=fail; b=HkUpgBlmIykJTFW7+Tgzcm3Oms44uM9NtrJ/Q2W5w7NlDC2fz232cJSHfBWvA/06OsVBf/ERYfubQ/qK18ST0iriCszgoespXxoK8f7LTUKoF5EWm4b7qLXC2hgSIFDyaag0Dc8T3+REO4FnPBoIyFIq9j07Z8nJlwB13+ixLCg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781264473; c=relaxed/simple;
+	bh=F4QrfLENmkrg+u8xJV7fgjie9kAa/KHa0Aqs8BsV7BA=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=dFRNrMpYrzu8p5ZgSKUs/gHzf+erzYuShWoiirTKPjQq6GojrWGFFyq+BGcvQpMmiBGbZ1lQraBhYV06PgSQBmHE6loofoQ2RJyk9WeBLMWkJ0UKeopC5Bsz7P35myQ8+llBn38yfDAPRXHE+4apE9smQh02iyxtm8t5xcMJu7U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=UAc97hnZ; arc=fail smtp.client-ip=40.93.196.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="oGweB2aj"
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2bf18c30bb2so7323385ad.0
-        for <netdev@vger.kernel.org>; Fri, 12 Jun 2026 04:41:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781264468; x=1781869268; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WSlICPsYDJ4jrvEuREacBilLreADCVqW54GB3CcEXOQ=;
-        b=oGweB2ajY3TcvkPOocH3D3BDZjyqR27g12SU/Zb4eGozEgyTaStJpgZHtEwTHULWZY
-         fR34Tv1rfYJR/aa0zKEd4pt+yPRKBHJKNUGm8Hdd29fey3artIt3KRgt5J7/phSpbDkT
-         UF9R3GrMVYnLT2RyoXHx3gkoH6k5wMOt2bUvur2mzV2PcwY789YveU5+tXRx66/Df8aY
-         mDU4//fE6ZgYaQCfZ0o24dqOCbALaDs6VBLjkabDuCzeEWuOLi4GYnXPLWYyPqavS2TB
-         q5tKiaYYV2VHSG8l9IaW0+dYQmdtNkXjhtspkRdc7el2qT6HK6A+qVAhzPLhNhRuf80o
-         Rc/A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781264468; x=1781869268;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=WSlICPsYDJ4jrvEuREacBilLreADCVqW54GB3CcEXOQ=;
-        b=JNI1vLLZBonPZiaqScI6nd1HeqWr3aTXk7zCF1u0xu2GRxyX/BXrReP1HqAsJWdxzz
-         TSBPxIDBza9aaGHzN5L0v3Ebg4JsPUnbiPHhGs9QWRo0sRUh23YMsgShfmhgtzAy54IX
-         H0K/LpIcmLYD/rdPmpNdjLPpRDrwA+RCUp/02iYgpKhkwED5serCXHD+WCi74decIvYD
-         uJaMJhGst8HqK6MZLwUj+/gIfdkyygWsVaWLSgFQmlRHWYTbQEmrVu/r8yxEksfBj3dx
-         XQbpMOdLxZd/loXq78+NdhtQS/cBESJfA7XYrJgAVmTr7wVzcRPiZ0OymCwI0ixhAdF1
-         7rgQ==
-X-Gm-Message-State: AOJu0YxoH098m3RA4krSTbz4bSjec7qXNsvdfPxQsNg3afKWSkF8u0VB
-	qmEb1I3aVTG4YWAIfFVHLjxIkQXpRik5aZFNs4h/myWyf7kFMZgsFB0T
-X-Gm-Gg: Acq92OEu1OkzNH5HBJH6JaIgMs/5zLjl9wtIIuY+IQnBVQJIPM4acH39/9UUvSoFS0a
-	vVD77aquzmh1h80UPRZwF1Z/HFWs1va7HS042mi5PhIPGkxXgKQrYckV+ABGeGyAAlco3DbVcVE
-	UaI6CPYIcJaPfSiz5ToGa2ihTlbcY95YsKB7fYH16frd5c8PJXb0QLnXmYnGuLf8xqXcWcJKd1y
-	VHVLrMIluoJiGw3/y9YVfpvNVDNclZSZV01zoaVNK0FF4GWyNnuypkS1l0BtT3rjeYTXmZk772D
-	5camXoAlkSTfH2lRzDap8Qs0sZMz44zTP1+ZXydG4wfvkpdtE+FWd7oPrlVMrB05m4m7xEvxCFD
-	z1gmRc8W8oQdY7g3Ewq57YAkAz59ULWUVS6MiMYuYlxA+XaTVy46UU9e32/QRvTQqVmr0nXWBK5
-	NE+Y+27I6X6Ecnn4bcHiqd6xxROFtyJ/loqQ/53TjyQwVH5mPpqwiZLawR0XBlS1hYK70lCeTSG
-	E4+9VyHj14S
-X-Received: by 2002:a17:903:46cc:b0:2c0:ccdb:e023 with SMTP id d9443c01a7336-2c41255db98mr29606425ad.17.1781264468386;
-        Fri, 12 Jun 2026 04:41:08 -0700 (PDT)
-Received: from localhost.localdomain ([45.142.165.58])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c4327ac72asm20697455ad.38.2026.06.12.04.40.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 12 Jun 2026 04:41:08 -0700 (PDT)
-From: Sun Jian <sun.jian.kdev@gmail.com>
-To: bpf@vger.kernel.org
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	andrii@kernel.org,
-	martin.lau@linux.dev,
-	davem@davemloft.net,
-	kuba@kernel.org,
-	hawk@kernel.org,
-	john.fastabend@gmail.com,
-	sdf@fomichev.me,
-	shuah@kernel.org,
-	jiayuan.chen@linux.dev,
-	toke@redhat.com,
-	menglong.dong@linux.dev,
-	emil@etsalapatis.com,
-	Sun Jian <sun.jian.kdev@gmail.com>
-Subject: [PATCH bpf v5 2/2] selftests/bpf: Cover generic devmap egress last-dst rewrite
-Date: Fri, 12 Jun 2026 19:40:32 +0800
-Message-ID: <20260612114032.244616-3-sun.jian.kdev@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260612114032.244616-1-sun.jian.kdev@gmail.com>
-References: <20260612114032.244616-1-sun.jian.kdev@gmail.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="UAc97hnZ"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=QY1ueN7+uJXBr64N94OqiBdch4eIHSVRmZPFri7KLTlYKkhgMmYr/c4POJRamtXpm192MQzfoIgDjhF1J9ptS8ZKH6ZCdec7iTxfjYvomA2F7f5NbebEsVSiRvRJr40YUWuQ1bNXEVchQPIHnkSbAzxoXm4YrrvYJMKdphVLZtTwZPaysSqYSmy6+LjIX6Gf3vF3XTPp9qFlwaMS5VCF52faFA53NRQ1vNjtr7pewH4/m7IAYjKyBsSOYmugLufV1j1rQ9DNHuGMt6Vd5nnMxoa/1DfT4qjOgaFglJeGybbZBxsinmI4sY6EBjujx2O6Ei1TeL22kdpTt2bTCbdpVA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=veiO7IyCxvjNGgGbzUrqbiXP0ugwCR5sZ/VEXYQZjmA=;
+ b=EbYfWo50aFd9cP78YYahqdV8rG5DMYMDT4AxAjKGVOaTnlq+sXUF1v8bfjLf5sgS2QL/5M0w3qvLBMcv5P3ahMFv2BDD7abqaxi/dBTdvljj3f/f+jlnGaACO6UzxYHDoACsvaMjXn7D5AZ2IMG4EIPvmVlkR8YqvlRKEQcWOxVjnkdBt/WzfhFOQpsti6zZZmSIQtabkAJMSABeDQP+LiNJ1JvsxClEnUlENxnMRH7MB3vWLXYItMuaO7ORlhXlPLJrQvX7WBUXaTLNGI/UVFwKF5Exe10cc9pSC16kSyqb4dhTBYbJVocZub2NaOq9+EcbXatad6FGHV5JgZxOUg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=google.com smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=veiO7IyCxvjNGgGbzUrqbiXP0ugwCR5sZ/VEXYQZjmA=;
+ b=UAc97hnZumnnAW4SAsnwq4v4/pqXJTcvWo3dAWql+GjUKGRDrDSQQCzY1aU3zdieW8kAfVNZFTvI3XVzY5dmPwRm8LELEMUTDX32OJ5ODFyIte4geVvKmGjbKPFi23nhOAAEH4bkZuwPzl0Cqyae4BIhoPsBlcKtAARFLVjEy5xAp0k+JO+Jhayqq31ZtcsnzopjbSbARJPoaXGJ0A2FlSgZRdqT0PlUwkEHjVMfq+ZzzQ13lc9WKlqFavpBVJZSxfLlBW1GH7RN4EKkADmJ2UcCPeqWGfvkCvKU0onDhsV+DKv5m+YARcV0x3ijrguxveArnZKp3d0K7Z5bN4sqog==
+Received: from PH8P220CA0031.NAMP220.PROD.OUTLOOK.COM (2603:10b6:510:348::14)
+ by SA3PR12MB8810.namprd12.prod.outlook.com (2603:10b6:806:31f::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.7; Fri, 12 Jun 2026
+ 11:41:05 +0000
+Received: from SN1PEPF000397AE.namprd05.prod.outlook.com
+ (2603:10b6:510:348:cafe::33) by PH8P220CA0031.outlook.office365.com
+ (2603:10b6:510:348::14) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.113.15 via Frontend Transport; Fri,
+ 12 Jun 2026 11:41:05 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ SN1PEPF000397AE.mail.protection.outlook.com (10.167.248.52) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.113.7 via Frontend Transport; Fri, 12 Jun 2026 11:41:05 +0000
+Received: from rnnvmail202.nvidia.com (10.129.68.7) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Fri, 12 Jun
+ 2026 04:40:47 -0700
+Received: from rnnvmail203.nvidia.com (10.129.68.9) by rnnvmail202.nvidia.com
+ (10.129.68.7) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Fri, 12 Jun
+ 2026 04:40:47 -0700
+Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com (10.129.68.9)
+ with Microsoft SMTP Server id 15.2.2562.20 via Frontend Transport; Fri, 12
+ Jun 2026 04:40:41 -0700
+From: Tariq Toukan <tariqt@nvidia.com>
+To: Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David
+ S. Miller" <davem@davemloft.net>
+CC: Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
+	Tariq Toukan <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>, Shay Drory
+	<shayd@nvidia.com>, Or Har-Toov <ohartoov@nvidia.com>, Edward Srouji
+	<edwards@nvidia.com>, Maher Sanalla <msanalla@nvidia.com>, Simon Horman
+	<horms@kernel.org>, Gerd Bayer <gbayer@linux.ibm.com>, Kees Cook
+	<kees@kernel.org>, Moshe Shemesh <moshe@nvidia.com>, Parav Pandit
+	<parav@nvidia.com>, Patrisious Haddad <phaddad@nvidia.com>,
+	<netdev@vger.kernel.org>, <linux-rdma@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, Gal Pressman <gal@nvidia.com>
+Subject: [PATCH net-next V3 13/15] net/mlx5: E-Switch, Tie rep load/unload to SD LAG state
+Date: Fri, 12 Jun 2026 14:39:02 +0300
+Message-ID: <20260612113904.537595-14-tariqt@nvidia.com>
+X-Mailer: git-send-email 2.44.0
+In-Reply-To: <20260612113904.537595-1-tariqt@nvidia.com>
+References: <20260612113904.537595-1-tariqt@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -91,233 +89,196 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN1PEPF000397AE:EE_|SA3PR12MB8810:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1f6a44c7-be04-4522-208f-08dec8777cca
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|36860700016|82310400026|376014|7416014|23010399003|22082099003|18002099003|56012099006|11063799006;
+X-Microsoft-Antispam-Message-Info:
+	2SLPSn7RkQqUhJ8Hs+PDO3pzqYIK/F/O//mHdLQfFdRVyogHVP3GJe5mkc30jLJRFnz4PzA17tV+on3xs1PoXm3ml66Bbiv4yoLBPJm/dA+tZULdKQk7QPolxuab9i9eRmlyLeZFJP3/VoFVe6Ra7HJGOSh7WmKNActs589U+bSSvc8H95NjXvNOA1dHmkDe9GeEYlEA6DpfpibD30zj6TESvLUBAKnCISNXHTwWIMp8phOKwRQeuKLxk+lRHY7zaUHlCJhApK/C9ugmo/cBnIF7674mafi2F5KY0OauLutpSQV+T2dVXy0uKS9Twz1YK9zprJs1yUOz0njiXc1daVMW0gckQyDQEhXTaIX4TH5hlrxAyXog9MydFtDt3lfwFK9q5SDYB6mrUnJLc1gkpTuIuN+e06I8TDzX/2Kj8WqRTPqx6/lwykKU35d1zeMvwU0d2cvM0PlAY9JbQyFjGLxd1FaxYQBUSA4WLQl5btxwbQjcRnCQM4xxJDLCB+8cnqkJKYKwDzc+a4dJoT1grguZzsJ8CCtROo/9vp/fXWQ2sILAMcagw+SMNL9Nl/xL3MrqHqE2YREyoOQ5LHzp1YEzkzYVGyc6bsUuYfZAelmp4oZNjWKFHSofApvIki7zHgPpCqDwtRbSJeVmZDz7M2h/R0pZp6mIjYaY0vPiUdoVO/Z2Xi6Oqt+5Q7DoX87BETJldE/qy+D73LhvCjt50ZDWofwStuX1BnD77MPjghA=
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(36860700016)(82310400026)(376014)(7416014)(23010399003)(22082099003)(18002099003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	EN3B6tgU7kTqLtRw9U5zm+FmV7dO6eu2GfseJdvL4MCYMzzG0hiZ/fM93h4hzdhDRCLcbpHHP3WmQKVqSF68SSQQedFQhAf4/mI93EzVjd0JgImkYs0kEaZuzOMxG6v9jNbU0Mnzgw3Wey4Yo5GKNF5NmFBOe2QnSEaBwokwJ79MsO3Rg6bxkggxoteiHP82u7vSBzkmsR1GVGX9m6RE5SlfDQt6ujVUPwkRcNgY2ol1MN5piU1EZnM/8pVY2WOdEG4X41GZmNbzVkxEIUlpZ9trdJ+ppl7SYaHDOOy7tfU5yXrqqHMw89cnNZ+1jRyIUrMn0Jw/4r2BRrvhc0t/Zf1Aes84H/+94i9uarL72e3oshOe5Jhha/GhcfLOqSBRxEkqmEhS8IauIZ5223JiuXnnyIe/rkGm9edztK0y96oYJw/jPX1xKVnlzICXUi/O
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Jun 2026 11:41:05.2039
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1f6a44c7-be04-4522-208f-08dec8777cca
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SN1PEPF000397AE.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB8810
 
-Strengthen xdp_veth_egress to check that each destination observes the
-MAC selected for its own egress ifindex, instead of only checking that
-the observed MAC differs from a single magic value.
+From: Shay Drory <shayd@nvidia.com>
 
-Add a generic XDP last-destination test where an earlier destination does
-not have a devmap egress program while the final destination does. This
-covers the case where the final destination runs on the original skb and
-could otherwise rewrite packet data still shared with an earlier cloned
-skb.
+On an SD device, vport representors are not functional until the SD
+group is combined and shared FDB is active. Skip the initial load and
+the reload paths in that window; reps are loaded as part of the SD LAG
+activation flow once it becomes active.
 
-Use deterministic DEVMAP_HASH keys for the egress map so the intended
-last destination is stable. Initialize the result map with a sentinel
-value and check that store_mac_1 overwrites it before checking that the
-earlier destination did not observe the MAC written by the final
-destination.
+In addition, explicitly unload representors when SD LAG is destroyed.
 
-Suggested-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Signed-off-by: Sun Jian <sun.jian.kdev@gmail.com>
+Signed-off-by: Shay Drory <shayd@nvidia.com>
+Reviewed-by: Mark Bloch <mbloch@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
 ---
- .../selftests/bpf/prog_tests/test_xdp_veth.c  | 166 +++++++++++++++++-
- 1 file changed, 163 insertions(+), 3 deletions(-)
+ .../net/ethernet/mellanox/mlx5/core/eswitch.h |  4 +++
+ .../mellanox/mlx5/core/eswitch_offloads.c     | 26 +++++++++++++++++++
+ .../net/ethernet/mellanox/mlx5/core/lag/lag.c | 26 +++++++++++++++++++
+ .../net/ethernet/mellanox/mlx5/core/lag/lag.h |  1 +
+ .../mellanox/mlx5/core/lag/shared_fdb.c       |  1 +
+ 5 files changed, 58 insertions(+)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/test_xdp_veth.c b/tools/testing/selftests/bpf/prog_tests/test_xdp_veth.c
-index 3e98a1665936..1675b32753a8 100644
---- a/tools/testing/selftests/bpf/prog_tests/test_xdp_veth.c
-+++ b/tools/testing/selftests/bpf/prog_tests/test_xdp_veth.c
-@@ -456,7 +456,11 @@ static void xdp_veth_egress(u32 flags)
- 			.remote_flags = flags,
- 		}
- 	};
--	const char magic_mac[6] = { 0xAA, 0xBB, 0xCC, 0xDD, 0xEE, 0xFF};
-+	const unsigned char egress_macs[VETH_PAIRS_COUNT][ETH_ALEN] = {
-+		{ 0xAA, 0xBB, 0xCC, 0xDD, 0xEE, 0x01 },
-+		{ 0xAA, 0xBB, 0xCC, 0xDD, 0xEE, 0x02 },
-+		{ 0xAA, 0xBB, 0xCC, 0xDD, 0xEE, 0x03 },
-+	};
- 	struct xdp_redirect_multi_kern *xdp_redirect_multi_kern;
- 	struct bpf_object *bpf_objs[VETH_EGRESS_SKEL_NB];
- 	struct xdp_redirect_map *xdp_redirect_map;
-@@ -512,7 +516,13 @@ static void xdp_veth_egress(u32 flags)
- 						 &net_config, prog_cfg, i))
- 			goto destroy_xdp_redirect_map;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h
+index a5f0774834fe..b2b3150f1f04 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h
+@@ -959,6 +959,7 @@ int mlx5_eswitch_offloads_single_fdb_add_one(struct mlx5_eswitch *master_esw,
+ void mlx5_eswitch_offloads_single_fdb_del_one(struct mlx5_eswitch *master_esw,
+ 					      struct mlx5_eswitch *slave_esw);
+ int mlx5_eswitch_reload_ib_reps(struct mlx5_eswitch *esw);
++void mlx5_eswitch_unload_reps(struct mlx5_eswitch *esw);
+ bool mlx5_eswitch_is_peer(struct mlx5_eswitch *esw,
+ 			  struct mlx5_eswitch *peer_esw);
  
--		err = bpf_map_update_elem(mac_map, &ifindex, magic_mac, 0);
-+		{
-+			__be64 mac = 0;
-+
-+			memcpy(&mac, egress_macs[i], ETH_ALEN);
-+			err = bpf_map_update_elem(mac_map, &ifindex, &mac, 0);
-+		}
-+
- 		if (!ASSERT_OK(err, "bpf_map_update_elem"))
- 			goto destroy_xdp_redirect_map;
+@@ -1063,6 +1064,9 @@ mlx5_eswitch_reload_ib_reps(struct mlx5_eswitch *esw)
+ 	return 0;
+ }
  
-@@ -531,15 +541,162 @@ static void xdp_veth_egress(u32 flags)
- 
- 	for (i = 0; i < 2; i++) {
- 		u32 key = i;
-+		__be64 expected = 0;
- 		u64 res;
- 
- 		err = bpf_map_lookup_elem(res_map, &key, &res);
- 		if (!ASSERT_OK(err, "get MAC res"))
- 			goto destroy_xdp_redirect_map;
- 
--		ASSERT_STRNEQ((const char *)&res, magic_mac, ETH_ALEN, "compare mac");
-+		/* store_mac_1/2 run on the second/third remote veths. */
-+		memcpy(&expected, egress_macs[i + 1], ETH_ALEN);
-+		ASSERT_EQ(res, expected, "compare mac");
-+	}
++static inline void
++mlx5_eswitch_unload_reps(struct mlx5_eswitch *esw) {}
 +
-+destroy_xdp_redirect_map:
-+	close_netns(nstoken);
-+	xdp_redirect_map__destroy(xdp_redirect_map);
-+destroy_xdp_redirect_multi_kern:
-+	xdp_redirect_multi_kern__destroy(xdp_redirect_multi_kern);
-+destroy_xdp_dummy:
-+	xdp_dummy__destroy(xdp_dummy);
+ static inline bool
+ mlx5_eswitch_block_encap(struct mlx5_core_dev *dev, bool from_fdb)
+ {
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c b/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
+index a24719cfba34..4dc190a4e7b2 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
+@@ -2863,6 +2863,10 @@ static int mlx5_esw_offloads_rep_load(struct mlx5_eswitch *esw, u16 vport_num)
+ 	int rep_type;
+ 	int err;
+ 
++	if (vport_num != MLX5_VPORT_UPLINK &&
++	    mlx5_get_sd(esw->dev) && !mlx5_lag_is_active(esw->dev))
++		return 0;
 +
-+	cleanup_network(&net_config);
-+}
-+
-+static void xdp_veth_egress_last_dst(u32 flags)
+ 	rep = mlx5_eswitch_get_rep(esw, vport_num);
+ 	for (rep_type = 0; rep_type < NUM_REP_TYPES; rep_type++) {
+ 		err = __esw_offloads_load_rep(esw, rep, rep_type,
+@@ -3779,6 +3783,21 @@ static void esw_destroy_offloads_acl_tables(struct mlx5_eswitch *esw)
+ 		esw_vport_destroy_offloads_acl_tables(esw, vport);
+ }
+ 
++void mlx5_eswitch_unload_reps(struct mlx5_eswitch *esw)
 +{
-+	struct prog_configuration prog_cfg[VETH_PAIRS_COUNT] = {
-+		{
-+			.local_name = "xdp_redirect_map_all_prog",
-+			.remote_name = "xdp_dummy_prog",
-+			.local_flags = flags,
-+			.remote_flags = flags,
-+		},
-+		{
-+			.local_name = "xdp_redirect_map_all_prog",
-+			.remote_name = "store_mac_1",
-+			.local_flags = flags,
-+			.remote_flags = flags,
-+		},
-+		{
-+			.local_name = "xdp_redirect_map_all_prog",
-+			.remote_name = "xdp_dummy_prog",
-+			.local_flags = flags,
-+			.remote_flags = flags,
-+		}
-+	};
-+	const unsigned char egress_macs[VETH_PAIRS_COUNT][ETH_ALEN] = {
-+		{ 0xAA, 0xBB, 0xCC, 0xDD, 0xEE, 0x01 },
-+		{ 0xAA, 0xBB, 0xCC, 0xDD, 0xEE, 0x02 },
-+		{ 0xAA, 0xBB, 0xCC, 0xDD, 0xEE, 0x03 },
-+	};
-+	struct xdp_redirect_multi_kern *xdp_redirect_multi_kern;
-+	struct bpf_object *bpf_objs[VETH_EGRESS_SKEL_NB];
-+	struct xdp_redirect_map *xdp_redirect_map;
-+	struct net_configuration net_config = {};
-+	int mac_map, egress_map, res_map;
-+	struct nstoken *nstoken = NULL;
-+	struct xdp_dummy *xdp_dummy;
-+	__be64 sentinel_mac = 0;
-+	__be64 last_mac = 0;
-+	__be64 res;
-+	u32 key;
-+	int err;
-+	int i;
++	struct mlx5_eswitch_rep *rep;
++	unsigned long i;
 +
-+	xdp_dummy = xdp_dummy__open_and_load();
-+	if (!ASSERT_OK_PTR(xdp_dummy, "xdp_dummy__open_and_load"))
++	if (!esw || esw->mode != MLX5_ESWITCH_OFFLOADS)
 +		return;
 +
-+	xdp_redirect_multi_kern = xdp_redirect_multi_kern__open_and_load();
-+	if (!ASSERT_OK_PTR(xdp_redirect_multi_kern, "xdp_redirect_multi_kern__open_and_load"))
-+		goto destroy_xdp_dummy;
++	mlx5_esw_for_each_rep(esw, i, rep) {
++		if (rep->vport == MLX5_VPORT_UPLINK)
++			continue;
++		mlx5_esw_offloads_rep_unload(esw, rep->vport);
++	}
++}
 +
-+	xdp_redirect_map = xdp_redirect_map__open_and_load();
-+	if (!ASSERT_OK_PTR(xdp_redirect_map, "xdp_redirect_map__open_and_load"))
-+		goto destroy_xdp_redirect_multi_kern;
+ int mlx5_eswitch_reload_ib_reps(struct mlx5_eswitch *esw)
+ {
+ 	struct mlx5_eswitch_rep *rep;
+@@ -3805,6 +3824,10 @@ int mlx5_eswitch_reload_ib_reps(struct mlx5_eswitch *esw)
+ 		if (!mlx5_sd_is_primary(esw->dev) &&
+ 		    rep->vport == MLX5_VPORT_UPLINK)
+ 			continue;
++		if (rep->vport != MLX5_VPORT_UPLINK &&
++		    mlx5_get_sd(esw->dev) && !mlx5_lag_is_active(esw->dev))
++			continue;
 +
-+	if (!ASSERT_OK(create_network(&net_config), "create network"))
-+		goto destroy_xdp_redirect_map;
-+
-+	mac_map = bpf_map__fd(xdp_redirect_multi_kern->maps.mac_map);
-+	if (!ASSERT_OK_FD(mac_map, "open mac_map"))
-+		goto destroy_xdp_redirect_map;
-+
-+	egress_map = bpf_map__fd(xdp_redirect_multi_kern->maps.map_egress);
-+	if (!ASSERT_OK_FD(egress_map, "open map_egress"))
-+		goto destroy_xdp_redirect_map;
-+
-+	bpf_objs[0] = xdp_dummy->obj;
-+	bpf_objs[1] = xdp_redirect_multi_kern->obj;
-+	bpf_objs[2] = xdp_redirect_map->obj;
-+
-+	nstoken = open_netns(net_config.ns0_name);
-+	if (!ASSERT_OK_PTR(nstoken, "open NS0"))
-+		goto destroy_xdp_redirect_map;
-+
-+	for (i = 0; i < VETH_PAIRS_COUNT; i++) {
-+		struct bpf_devmap_val devmap_val = {};
-+		int ifindex = if_nametoindex(net_config.veth_cfg[i].local_veth);
-+		u32 key = i;
-+
-+		SYS(destroy_xdp_redirect_map,
-+		    "ip -n %s neigh add %s lladdr 00:00:00:00:00:01 dev %s",
-+		    net_config.veth_cfg[i].namespace, IP_NEIGH,
-+		    net_config.veth_cfg[i].remote_veth);
-+
-+		if (attach_programs_to_veth_pair(bpf_objs, VETH_EGRESS_SKEL_NB,
-+						 &net_config, prog_cfg, i))
-+			goto destroy_xdp_redirect_map;
-+
-+		{
-+			__be64 mac = 0;
-+
-+			memcpy(&mac, egress_macs[i], ETH_ALEN);
-+			err = bpf_map_update_elem(mac_map, &ifindex, &mac, 0);
-+		}
-+
-+		if (!ASSERT_OK(err, "bpf_map_update_elem"))
-+			goto destroy_xdp_redirect_map;
-+
-+		devmap_val.ifindex = ifindex;
-+		devmap_val.bpf_prog.fd = -1;
-+
-+		if (i == VETH_PAIRS_COUNT - 1)
-+			devmap_val.bpf_prog.fd =
-+				bpf_program__fd(xdp_redirect_multi_kern->progs.xdp_devmap_prog);
-+
-+		err = bpf_map_update_elem(egress_map, &key, &devmap_val, 0);
-+		if (!ASSERT_OK(err, "bpf_map_update_elem"))
-+			goto destroy_xdp_redirect_map;
+ 		if (atomic_read(&rep->rep_data[REP_ETH].state) == REP_LOADED)
+ 			__esw_offloads_load_rep(esw, rep, REP_IB, NULL);
+ 	}
+@@ -4764,6 +4787,9 @@ static void mlx5_eswitch_reload_reps_blocked(struct mlx5_eswitch *esw)
+ 		return;
  	}
  
-+	res_map = bpf_map__fd(xdp_redirect_map->maps.rx_mac);
-+	if (!ASSERT_OK_FD(res_map, "open rx_map"))
-+		goto destroy_xdp_redirect_map;
++	if (mlx5_get_sd(esw->dev) && !mlx5_lag_is_active(esw->dev))
++		return;
 +
-+	memcpy(&sentinel_mac, egress_macs[VETH_PAIRS_COUNT - 1], ETH_ALEN);
-+	memcpy(&last_mac, egress_macs[VETH_PAIRS_COUNT - 1], ETH_ALEN);
-+
-+	key = 0;
-+	err = bpf_map_update_elem(res_map, &key, &sentinel_mac, 0);
-+	if (!ASSERT_OK(err, "init rx mac"))
-+		goto destroy_xdp_redirect_map;
-+
-+	SYS_NOFAIL("ip netns exec %s ping %s -i 0.1 -c 4 -W1 > /dev/null ",
-+		   net_config.veth_cfg[0].namespace, IP_NEIGH);
-+
-+	err = bpf_map_lookup_elem(res_map, &key, &res);
-+	if (!ASSERT_OK(err, "get MAC res"))
-+		goto destroy_xdp_redirect_map;
-+
-+	if (!ASSERT_NEQ(res, sentinel_mac, "rx_mac overwritten by store_mac_1"))
-+		goto destroy_xdp_redirect_map;
-+
-+	if (!ASSERT_NEQ(res, last_mac, "earlier dst not rewritten by last dst"))
-+		goto destroy_xdp_redirect_map;
-+
- destroy_xdp_redirect_map:
- 	close_netns(nstoken);
- 	xdp_redirect_map__destroy(xdp_redirect_map);
-@@ -596,4 +753,7 @@ void test_xdp_veth_egress(void)
- 
- 	if (test__start_subtest("SKB_MODE/egress"))
- 		xdp_veth_egress(XDP_FLAGS_SKB_MODE);
-+
-+	if (test__start_subtest("SKB_MODE/egress_last_dst"))
-+		xdp_veth_egress_last_dst(XDP_FLAGS_SKB_MODE);
+ 	mlx5_esw_for_each_vport(esw, i, vport) {
+ 		if (!vport)
+ 			continue;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c b/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
+index 424478e649ef..28d16fdc3f06 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
+@@ -1312,6 +1312,32 @@ int mlx5_lag_reload_ib_reps_from_locked(struct mlx5_lag *ldev, u32 flags,
+ 	return mlx5_lag_reload_ib_reps(ldev, flags, filter, cont_on_fail);
  }
+ 
++static void mlx5_lag_unload_reps_unlocked(struct mlx5_lag *ldev, u32 filter)
++{
++	struct lag_func *pf;
++	int i;
++
++	mlx5_lag_for_each(i, 0, ldev, filter) {
++		struct mlx5_eswitch *esw;
++
++		pf = mlx5_lag_pf(ldev, i);
++		esw = pf->dev->priv.eswitch;
++		mlx5_esw_reps_block(esw);
++		mlx5_eswitch_unload_reps(esw);
++		mlx5_esw_reps_unblock(esw);
++	}
++}
++
++void mlx5_lag_unload_reps_from_locked(struct mlx5_lag *ldev, u32 filter)
++{
++	/* Same lock dance as mlx5_lag_reload_ib_reps: drop ldev->lock around
++	 * the per-eswitch reps_lock to keep the reps_lock -> ldev->lock order.
++	 */
++	mlx5_lag_drop_lock_for_reps(ldev, filter);
++	mlx5_lag_unload_reps_unlocked(ldev, filter);
++	mlx5_lag_retake_lock_after_reps(ldev);
++}
++
+ void mlx5_disable_lag(struct mlx5_lag *ldev)
+ {
+ 	bool shared_fdb = test_bit(MLX5_LAG_MODE_FLAG_SHARED_FDB, &ldev->mode_flags);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.h b/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.h
+index 8481ce55c10a..e9f0ef83ce1d 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.h
+@@ -310,6 +310,7 @@ int mlx5_lag_num_devs(struct mlx5_lag *ldev);
+ int mlx5_lag_num_netdevs(struct mlx5_lag *ldev);
+ int mlx5_lag_reload_ib_reps_from_locked(struct mlx5_lag *ldev, u32 flags,
+ 					u32 filter, bool cont_on_fail);
++void mlx5_lag_unload_reps_from_locked(struct mlx5_lag *ldev, u32 filter);
+ int mlx5_ldev_add_mdev(struct mlx5_lag *ldev, struct mlx5_core_dev *dev,
+ 		       u32 group_id);
+ void mlx5_ldev_remove_mdev(struct mlx5_lag *ldev, struct mlx5_core_dev *dev);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lag/shared_fdb.c b/drivers/net/ethernet/mellanox/mlx5/core/lag/shared_fdb.c
+index 8d4f2903a101..113866494d16 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/lag/shared_fdb.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/lag/shared_fdb.c
+@@ -296,6 +296,7 @@ void mlx5_lag_shared_fdb_destroy(struct mlx5_lag *ldev, u32 group_id)
+ 			pf->sd_fdb_active = false;
+ 		}
+ 		mlx5_lag_destroy_single_fdb_filter(ldev, group_id);
++		mlx5_lag_unload_reps_from_locked(ldev, filter);
+ 	}
+ 
+ 	mlx5_lag_add_devices_filter(ldev, filter);
 -- 
-2.43.0
+2.44.0
 
